@@ -78,6 +78,168 @@ BEGIN_MESSAGE_MAP(CCheckForUpdatesDlg, CStandAloneDialog)
 	ON_REGISTERED_MESSAGE(WM_TASKBARBTNCREATED, OnTaskbarBtnCreated)
 END_MESSAGE_MAP()
 
+BOOL CCheckForUpdatesDlg::DownloadFile(const CString& url, const CString& dest, bool showProgress)
+{
+	CString hostname;
+	CString urlpath;
+	URL_COMPONENTS urlComponents = {0};
+	urlComponents.dwStructSize = sizeof(urlComponents);
+	urlComponents.lpszHostName = hostname.GetBufferSetLength(INTERNET_MAX_HOST_NAME_LENGTH);
+	urlComponents.dwHostNameLength = INTERNET_MAX_HOST_NAME_LENGTH;
+	urlComponents.lpszUrlPath = urlpath.GetBufferSetLength(INTERNET_MAX_PATH_LENGTH);
+	urlComponents.dwUrlPathLength = INTERNET_MAX_PATH_LENGTH;
+	if (!InternetCrackUrl(url, url.GetLength(), 0, &urlComponents))
+		return GetLastError();
+	hostname.ReleaseBuffer();
+	urlpath.ReleaseBuffer();
+
+	if (m_bForce)
+		DeleteUrlCacheEntry(url);
+
+	OSVERSIONINFOEX inf = {0};
+	inf.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
+	GetVersionEx((OSVERSIONINFO *)&inf);
+
+	CString userAgent;
+	userAgent.Format(L"TortoiseGit %s; %s; Windows%s %d.%d", _T(STRFILEVER), _T(TGIT_PLATFORM), (inf.dwPlatformId == VER_PLATFORM_WIN32_NT) ? _T(" NT") : _T(""), inf.dwMajorVersion, inf.dwMinorVersion);
+
+	HINTERNET hOpenHandle = InternetOpen(userAgent, INTERNET_OPEN_TYPE_PRECONFIG, nullptr, nullptr, 0);
+	HINTERNET hConnectHandle = InternetConnect(hOpenHandle, hostname, urlComponents.nPort, nullptr, nullptr, urlComponents.nScheme, 0, 0);
+	if (!hConnectHandle)
+	{
+		DWORD err = GetLastError();
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Download of %s failed on InternetConnect: %d\n"), url, err);
+		InternetCloseHandle(hOpenHandle);
+		return err;
+	}
+	HINTERNET hResourceHandle = HttpOpenRequest(hConnectHandle, nullptr, urlpath, nullptr, nullptr, nullptr, INTERNET_FLAG_KEEP_CONNECTION, 0);
+	if (!hResourceHandle)
+	{
+		DWORD err = GetLastError();
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Download of %s failed on HttpOpenRequest: %d\n"), url, err);
+		InternetCloseHandle(hConnectHandle);
+		InternetCloseHandle(hOpenHandle);
+		return err;
+	}
+
+	{
+resend:
+		BOOL httpsendrequest = HttpSendRequest(hResourceHandle, nullptr, 0, nullptr, 0);
+
+		DWORD dwError = InternetErrorDlg(GetSafeHwnd(), hResourceHandle, ERROR_SUCCESS, FLAGS_ERROR_UI_FILTER_FOR_ERRORS | FLAGS_ERROR_UI_FLAGS_CHANGE_OPTIONS | FLAGS_ERROR_UI_FLAGS_GENERATE_DATA, nullptr);
+
+		if (dwError == ERROR_INTERNET_FORCE_RETRY)
+			goto resend;
+		else if (!httpsendrequest)
+		{
+			DWORD err = GetLastError();
+			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Download of %s failed: %d, %d\n"), url, httpsendrequest, err);
+			InternetCloseHandle(hResourceHandle);
+			InternetCloseHandle(hConnectHandle);
+			InternetCloseHandle(hOpenHandle);
+			return err;
+		}
+	}
+
+	DWORD contentLength = 0;
+	{
+		DWORD length = sizeof(contentLength);
+		HttpQueryInfo(hResourceHandle, HTTP_QUERY_CONTENT_LENGTH | HTTP_QUERY_FLAG_NUMBER, (LPVOID)&contentLength, &length, NULL);
+	}
+	{
+		DWORD statusCode = 0;
+		DWORD length = sizeof(statusCode);
+		if (!HttpQueryInfo(hResourceHandle, HTTP_QUERY_STATUS_CODE | HTTP_QUERY_FLAG_NUMBER, (LPVOID)&statusCode, &length, NULL) || statusCode != 200)
+		{
+			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Download of %s returned %d\n"), url, statusCode);
+			InternetCloseHandle(hResourceHandle);
+			InternetCloseHandle(hConnectHandle);
+			InternetCloseHandle(hOpenHandle);
+			if (statusCode == 404)
+				return ERROR_FILE_NOT_FOUND;
+			else if (statusCode == 403)
+				return ERROR_ACCESS_DENIED;
+			return INET_E_DOWNLOAD_FAILURE;
+		}
+	}
+
+	CFile destinationFile(dest, CFile::modeCreate | CFile::modeWrite);
+	DWORD downloadedSum = 0; // sum of bytes downloaded so far
+	do
+	{
+		DWORD size; // size of the data available
+		if (!InternetQueryDataAvailable(hResourceHandle, &size, 0, 0))
+		{
+			DWORD err = GetLastError();
+			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Download of %s failed on InternetQueryDataAvailable: %d\n"), url, err);
+			InternetCloseHandle(hResourceHandle);
+			InternetCloseHandle(hConnectHandle);
+			InternetCloseHandle(hOpenHandle);
+			return err;
+		}
+
+		DWORD downloaded; // size of the downloaded data
+		LPTSTR lpszData = new TCHAR[size + 1];
+		if (!InternetReadFile(hResourceHandle, (LPVOID)lpszData, size, &downloaded))
+		{
+			delete[] lpszData;
+			DWORD err = GetLastError();
+			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Download of %s failed on InternetReadFile: %d\n"), url, err);
+			InternetCloseHandle(hResourceHandle);
+			InternetCloseHandle(hConnectHandle);
+			InternetCloseHandle(hOpenHandle);
+			return err;
+		}
+
+		if (downloaded == 0)
+		{
+			delete[] lpszData;
+			break;
+		}
+
+		lpszData[downloaded] = '\0';
+		destinationFile.Write(lpszData, downloaded);
+		delete[] lpszData;
+
+		downloadedSum += downloaded;
+
+		if (!showProgress)
+			continue;
+
+		if (contentLength == 0) // got no content-length from webserver
+		{
+			DOWNLOADSTATUS downloadStatus = { 0, 1 + 1 }; // + 1 for download of signature file
+			::SendMessage(m_hWnd, WM_USER_DISPLAYSTATUS, 0, reinterpret_cast<LPARAM>(&downloadStatus));
+		}
+		else
+		{
+			if (downloadedSum > contentLength)
+				downloadedSum = contentLength - 1;
+			DOWNLOADSTATUS downloadStatus = { downloadedSum, contentLength + 1 }; // + 1 for download of signature file
+			::SendMessage(m_hWnd, WM_USER_DISPLAYSTATUS, 0, reinterpret_cast<LPARAM>(&downloadStatus));
+		}
+
+		if (::WaitForSingleObject(m_eventStop, 0) == WAIT_OBJECT_0)
+		{
+			InternetCloseHandle(hResourceHandle);
+			InternetCloseHandle(hConnectHandle);
+			InternetCloseHandle(hOpenHandle);
+			return E_ABORT; // canceled by the user
+		}
+	}
+	while (true);
+	destinationFile.Close();
+	InternetCloseHandle(hResourceHandle);
+	InternetCloseHandle(hConnectHandle);
+	InternetCloseHandle(hOpenHandle);
+	if (downloadedSum == 0)
+	{
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Download size of %s was zero.\n"), url);
+		return INET_E_DOWNLOAD_FAILURE;
+	}
+	return 0;
+}
+
 BOOL CCheckForUpdatesDlg::OnInitDialog()
 {
 	CStandAloneDialog::OnInitDialog();
@@ -199,18 +361,13 @@ UINT CCheckForUpdatesDlg::CheckThread()
 	if (!official)
 		SetDlgItemText(IDC_SOURCE, _T("Using (unofficial) release channel: ") + sCheckURL);
 
-	CoInitialize(NULL);
 	CString errorText;
-	if (m_bForce)
-		DeleteUrlCacheEntry(sCheckURL);
-	HRESULT res = URLDownloadToFile(NULL, sCheckURL, tempfile, 0, NULL);
-	if (res == S_OK && official)
+	BOOL ret = DownloadFile(sCheckURL, tempfile, false);
+	if (!ret && official)
 	{
 		CString signatureTempfile = CTempFiles::Instance().GetTempFilePath(true).GetWinPathString();
-		if (m_bForce)
-			DeleteUrlCacheEntry(sCheckURL + SIGNATURE_FILE_ENDING);
-		res = URLDownloadToFile(nullptr, sCheckURL + SIGNATURE_FILE_ENDING, signatureTempfile, 0, nullptr);
-		if (res == S_OK && VerifyIntegrity(tempfile, signatureTempfile))
+		ret = DownloadFile(sCheckURL + SIGNATURE_FILE_ENDING, signatureTempfile, false);
+		if (!ret && VerifyIntegrity(tempfile, signatureTempfile))
 		{
 			SetDlgItemText(IDC_CHECKRESULT, _T("Could not verify digital signature."));
 			DeleteUrlCacheEntry(sCheckURL);
@@ -218,15 +375,15 @@ UINT CCheckForUpdatesDlg::CheckThread()
 			goto finish;
 		}
 	}
-	else if (FAILED(res))
+	else if (ret)
 	{
 		DeleteUrlCacheEntry(sCheckURL);
 		if (CRegDWORD(_T("Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings\\GlobalUserOffline"), 0))
 			errorText.LoadString(IDS_OFFLINEMODE); // offline mode enabled
 		else
-			errorText.Format(IDS_CHECKNEWER_NETERROR_FORMAT, res);
+			errorText.Format(IDS_CHECKNEWER_NETERROR_FORMAT, ret);
 	}
-	if (res == S_OK)
+	if (!ret)
 	{
 		try
 		{
@@ -358,7 +515,6 @@ UINT CCheckForUpdatesDlg::CheckThread()
 	}
 
 finish:
-	CoUninitialize();
 	m_bThreadRunning = FALSE;
 	DialogEnableWindow(IDOK, TRUE);
 	return 0;
@@ -444,8 +600,7 @@ void CCheckForUpdatesDlg::FillChangelog(CStdioFile &file)
 		sChangelogURL = _T("http://tortoisegit.googlecode.com/git/src/Changelog.txt");
 
 	CString tempchangelogfile = CTempFiles::Instance().GetTempFilePath(true).GetWinPathString();
-	HRESULT res = URLDownloadToFile(NULL, sChangelogURL, tempchangelogfile, 0, NULL);
-	if (SUCCEEDED(res))
+	if (!DownloadFile(sChangelogURL, tempchangelogfile, false))
 	{
 		CString temp;
 		CStdioFile file(tempchangelogfile, CFile::modeRead|CFile::typeText);
@@ -593,8 +748,6 @@ bool CCheckForUpdatesDlg::Download(CString filename)
 		}
 	}
 
-	CBSCallbackImpl bsc(this->GetSafeHwnd(), m_eventStop);
-
 	m_progress.SetRange32(0, 1);
 	m_progress.SetPos(0);
 	m_progress.ShowWindow(SW_SHOW);
@@ -606,14 +759,10 @@ bool CCheckForUpdatesDlg::Download(CString filename)
 
 	CString tempfile = CTempFiles::Instance().GetTempFilePath(true).GetWinPathString();
 	CString signatureTempfile = CTempFiles::Instance().GetTempFilePath(true).GetWinPathString();
-	if (m_bForce)
-		DeleteUrlCacheEntry(url);
-	HRESULT res = URLDownloadToFile(NULL, url, tempfile, 0, &bsc);
-	if (res == S_OK)
+	BOOL ret = DownloadFile(url, tempfile, true);
+	if (!ret)
 	{
-		if (m_bForce)
-			DeleteUrlCacheEntry(url + SIGNATURE_FILE_ENDING);
-		res = URLDownloadToFile(NULL, url + SIGNATURE_FILE_ENDING, signatureTempfile, 0, nullptr);
+		ret = DownloadFile(url + SIGNATURE_FILE_ENDING, signatureTempfile, true);
 		m_progress.SetPos(m_progress.GetPos() + 1);
 		if (m_pTaskbarList)
 		{
@@ -623,7 +772,7 @@ bool CCheckForUpdatesDlg::Download(CString filename)
 			m_pTaskbarList->SetProgressValue(m_hWnd, m_progress.GetPos(), maxValue);
 		}
 	}
-	if (res == S_OK)
+	if (!ret)
 	{
 		if (VerifyIntegrity(tempfile, signatureTempfile) == 0)
 		{
@@ -642,8 +791,6 @@ bool CCheckForUpdatesDlg::Download(CString filename)
 UINT CCheckForUpdatesDlg::DownloadThread()
 {
 	m_ctrlFiles.SetExtendedStyle(m_ctrlFiles.GetExtendedStyle() & ~LVS_EX_CHECKBOXES);
-
-	CoInitialize(NULL);
 
 	BOOL result = TRUE;
 	for (int i = 0; i < (int)m_ctrlFiles.GetItemCount(); ++i)
@@ -670,8 +817,6 @@ UINT CCheckForUpdatesDlg::DownloadThread()
 	}
 
 	::PostMessage(GetSafeHwnd(), WM_USER_ENDDOWNLOAD, 0, 0);
-
-	CoUninitialize();
 
 	return result;
 }
@@ -786,101 +931,4 @@ LRESULT CCheckForUpdatesDlg::OnTaskbarBtnCreated(WPARAM /*wParam*/, LPARAM /*lPa
 	m_pTaskbarList.Release();
 	m_pTaskbarList.CoCreateInstance(CLSID_TaskbarList);
 	return 0;
-}
-
-CBSCallbackImpl::CBSCallbackImpl(HWND hWnd, HANDLE hEventStop)
-{
-	m_hWnd = hWnd;
-	m_hEventStop = hEventStop;
-	m_ulObjRefCount = 1;
-}
-
-// IUnknown
-STDMETHODIMP CBSCallbackImpl::QueryInterface(REFIID riid, void **ppvObject)
-{
-	*ppvObject = NULL;
-
-	// IUnknown
-	if (::IsEqualIID(riid, __uuidof(IUnknown)))
-		*ppvObject = this;
-
-	// IBindStatusCallback
-	else if (::IsEqualIID(riid, __uuidof(IBindStatusCallback)))
-		*ppvObject = static_cast<IBindStatusCallback *>(this);
-
-	if (*ppvObject)
-	{
-		(*reinterpret_cast<LPUNKNOWN *>(ppvObject))->AddRef();
-		return S_OK;
-	}
-
-	return E_NOINTERFACE;
-}
-
-STDMETHODIMP_(ULONG) CBSCallbackImpl::AddRef()
-{
-	return ++m_ulObjRefCount;
-}
-
-STDMETHODIMP_(ULONG) CBSCallbackImpl::Release()
-{
-	return --m_ulObjRefCount;
-}
-
-// IBindStatusCallback
-STDMETHODIMP CBSCallbackImpl::OnStartBinding(DWORD, IBinding *)
-{
-	return S_OK;
-}
-
-STDMETHODIMP CBSCallbackImpl::GetPriority(LONG *)
-{
-	return E_NOTIMPL;
-}
-STDMETHODIMP CBSCallbackImpl::OnLowResource(DWORD)
-{
-	return S_OK;
-}
-
-STDMETHODIMP CBSCallbackImpl::OnProgress(ULONG ulProgress, ULONG ulProgressMax, ULONG ulStatusCode, LPCWSTR /* szStatusText */)
-{
-	TRACE(_T("IBindStatusCallback::OnProgress\n"));
-	TRACE(_T("ulProgress: %lu, ulProgressMax: %lu\n"), ulProgress, ulProgressMax);
-	UNREFERENCED_PARAMETER(ulStatusCode);
-	TRACE(_T("ulStatusCode: %lu "), ulStatusCode);
-
-	if (m_hWnd != NULL)
-	{
-		// inform the dialog box to display current status,
-		// don't use PostMessage
-		CCheckForUpdatesDlg::DOWNLOADSTATUS downloadStatus = { ulProgress, ulProgressMax + 1 }; // + 1 for download of signature file
-		::SendMessage(m_hWnd, WM_USER_DISPLAYSTATUS, 0, reinterpret_cast<LPARAM>(&downloadStatus));
-	}
-
-	if (m_hEventStop != NULL && ::WaitForSingleObject(m_hEventStop, 0) == WAIT_OBJECT_0)
-	{
-		return E_ABORT;  // canceled by the user
-	}
-
-	return S_OK;
-}
-
-STDMETHODIMP CBSCallbackImpl::OnStopBinding(HRESULT, LPCWSTR)
-{
-	return S_OK;
-}
-
-STDMETHODIMP CBSCallbackImpl::GetBindInfo(DWORD *, BINDINFO *)
-{
-	return S_OK;
-}
-
-STDMETHODIMP CBSCallbackImpl::OnDataAvailable(DWORD, DWORD, FORMATETC *, STGMEDIUM *)
-{
-	return S_OK;
-}
-
-STDMETHODIMP CBSCallbackImpl::OnObjectAvailable(REFIID, IUnknown *)
-{
-	return S_OK;
 }
