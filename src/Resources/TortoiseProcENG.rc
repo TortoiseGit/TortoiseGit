@@ -2967,6 +2967,10 @@ BEGIN
     VK_F5,          ID_LOGDLG_REFRESH,      VIRTKEY, NOINVERT
     VK_F5,          ID_LOGDLG_REFRESH,      VIRTKEY, CONTROL, NOINVERT
     VK_F5,          ID_LOGDLG_REFRESH,      VIRTKEY, SHIFT, NOINVERT
+    VK_RIGHT,       ID_GO_FORWARD,          VIRTKEY, ALT, NOINVERT
+    VK_LEFT,        ID_GO_BACKWARD,         VIRTKEY, ALT, NOINVERT
+    VK_BROWSER_BACK, ID_GO_BACKWARD,        VIRTKEY, NOINVERT
+    VK_BROWSER_FORWARD, ID_GO_FORWARD,      VIRTKEY, NOINVERT
 END
 
 IDR_ACC_COMMITDLG ACCELERATORS
@@ -4452,6 +4456,7 @@ BEGIN
     IDS_PROC_REBASE_CONTINUE_NOTCLEAN 
                             "The working tree is not clean and contains unstaged changes. This can cause conflicts while rebasing/cherry picking."
     IDS_PROC_COMMIT_SUPERPROJECT "Commit super project"
+    IDS_LOG_NOT_VISIBLE     "Commit %s is NOT visible right now."
 END
 
 #endif    // English (U.S.) resources

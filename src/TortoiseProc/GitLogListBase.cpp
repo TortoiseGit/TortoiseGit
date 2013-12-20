@@ -76,6 +76,11 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	GetObject(hFont, sizeof(LOGFONT), &lf);
 	lf.lfWeight = FW_BOLD;
 	m_boldFont = CreateFontIndirect(&lf);
+	lf.lfWeight = FW_DONTCARE;
+	lf.lfItalic = TRUE;
+	m_FontItalics = CreateFontIndirect(&lf);
+	lf.lfWeight = FW_BOLD;
+	m_boldItalicsFont = CreateFontIndirect(&lf);
 
 	m_bShowBugtraqColumn=false;
 
@@ -277,6 +282,12 @@ CGitLogListBase::~CGitLogListBase()
 
 	if (m_boldFont)
 		DeleteObject(m_boldFont);
+
+	if (m_FontItalics)
+		DeleteObject(m_FontItalics);
+
+	if (m_boldItalicsFont)
+		DeleteObject(m_boldItalicsFont);
 
 	if ( m_pStoreSelection )
 	{
@@ -1170,6 +1181,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 				GitRev* data = (GitRev*)m_arShownList.SafeGetAt(pLVCD->nmcd.dwItemSpec);
 				if (data)
 				{
+					HGDIOBJ hGdiObj = nullptr;
 					int action = data->GetRebaseAction();
 					if (action & (LOGACTIONS_REBASE_DONE | LOGACTIONS_REBASE_SKIP))
 						crText = RGB(128,128,128);
@@ -1182,14 +1194,20 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 						pLVCD->clrTextBk  = ::GetSysColor(COLOR_WINDOW);
 
 					if (action & LOGACTIONS_REBASE_CURRENT)
-					{
-						SelectObject(pLVCD->nmcd.hdc, m_boldFont);
-						*pResult = CDRF_NOTIFYSUBITEMDRAW | CDRF_NEWFONT;
-					}
+						hGdiObj = m_boldFont;
 
-					if (data->m_CommitHash == m_HeadHash && m_bNoHightlightHead == FALSE)
+					BOOL isHeadHash = data->m_CommitHash == m_HeadHash && m_bNoHightlightHead == FALSE;
+					BOOL isHighlight = data->m_CommitHash == m_highlight && !m_highlight.IsEmpty();
+					if (isHeadHash && isHighlight)
+						hGdiObj = m_boldItalicsFont;
+					else if (isHeadHash)
+						hGdiObj = m_boldFont;
+					else if (isHighlight)
+						hGdiObj = m_FontItalics;
+
+					if (hGdiObj)
 					{
-						SelectObject(pLVCD->nmcd.hdc, m_boldFont);
+						SelectObject(pLVCD->nmcd.hdc, hGdiObj);
 						*pResult = CDRF_NOTIFYSUBITEMDRAW | CDRF_NEWFONT;
 					}
 
