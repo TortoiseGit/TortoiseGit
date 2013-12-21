@@ -29,11 +29,12 @@ public:
 	bool	IsGravatarEnabled() const { return m_bEnableGravatar; }
 	void	EnableGravatar(bool value) { m_bEnableGravatar = value; }
 	void	LoadGravatar(CString email = _T(""));
+
+private:
 	void	GravatarThread();
 	void	SafeTerminateGravatarThread();
 	afx_msg void OnPaint();
 
-private:
 	bool				m_bEnableGravatar;
 	CString				m_filename;
 	CString				m_email;
