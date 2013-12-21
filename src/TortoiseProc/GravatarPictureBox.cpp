@@ -166,8 +166,10 @@ void CGravatar::GravatarThread()
 			tempFile += md5;
 			if (PathFileExists(tempFile))
 			{
+				m_gravatarLock.Lock();
 				m_filename = tempFile;
 				m_email = _T("");
+				m_gravatarLock.Unlock();
 			}
 			else
 			{
