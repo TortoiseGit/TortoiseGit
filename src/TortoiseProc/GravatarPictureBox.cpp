@@ -104,7 +104,7 @@ void CGravatar::Init()
 	}
 }
 
-void CGravatar::LoadGravatar(CString email)
+void CGravatar::LoadGravatar(const CString& email)
 {
 	if (m_gravatarThread == nullptr)
 		return;
