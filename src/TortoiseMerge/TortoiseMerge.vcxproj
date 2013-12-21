@@ -384,7 +384,6 @@
     <ClInclude Include="..\Utils\ProfilingInfo.h" />
     <ClInclude Include="..\Utils\TaskbarUUID.h" />
     <ClInclude Include="EncodingDlg.h" />
-    <ClInclude Include="Patch.h" />
     <ClInclude Include="TempFile.h" />
     <ClInclude Include="AboutDlg.h" />
     <ClInclude Include="BaseView.h" />
@@ -406,6 +405,7 @@
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="MovedBlocks.h" />
     <ClInclude Include="OpenDlg.h" />
+    <ClInclude Include="Patch.h" />
     <ClInclude Include="..\Utils\MiscUI\SysProgressDlg.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="RightView.h" />
