@@ -296,6 +296,34 @@ BEGIN
     EDITTEXT        IDC_NUMBER,7,20,161,14,ES_AUTOHSCROLL | ES_NUMBER
 END
 
+IDD_REGEXFILTERS DIALOGEX 0, 0, 321, 183
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+CAPTION "Regex Filters"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,211,162,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,264,162,50,14
+    CONTROL         "",IDC_REGEXLIST,"SysListView32",LVS_REPORT | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,7,7,307,131
+    PUSHBUTTON      "&Add Filter",IDC_ADD,92,141,68,14
+    PUSHBUTTON      "&Edit Filter",IDC_EDIT,169,141,68,14,WS_DISABLED
+    PUSHBUTTON      "&Delete Filter",IDC_REMOVE,246,141,68,14,WS_DISABLED
+END
+
+IDD_REGEXFILTER DIALOGEX 0, 0, 309, 86
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Regex Filter"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,198,65,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,252,65,50,14
+    LTEXT           "Name:",IDC_STATIC,7,9,61,8
+    EDITTEXT        IDC_NAME,74,7,228,14,ES_AUTOHSCROLL
+    LTEXT           "Regex:",IDC_STATIC,7,26,61,8
+    EDITTEXT        IDC_REGEX,74,24,228,14,ES_AUTOHSCROLL
+    LTEXT           "Replace:",IDC_STATIC,7,45,61,8
+    EDITTEXT        IDC_REPLACE,74,42,228,14,ES_AUTOHSCROLL
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -382,6 +410,25 @@ BEGIN
         RIGHTMARGIN, 168
         TOPMARGIN, 7
         BOTTOMMARGIN, 62
+    END
+
+    IDD_REGEXFILTERS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 314
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 176
+        HORZGUIDE, 155
+    END
+
+    IDD_REGEXFILTER, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 302
+        VERTGUIDE, 68
+        VERTGUIDE, 74
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 79
     END
 END
 #endif    // APSTUDIO_INVOKED
@@ -628,6 +675,13 @@ IDR_RIBBON              RT_RIBBON_XML           "ribbon.mfcribbon-ms"
 
 /////////////////////////////////////////////////////////////////////////////
 //
+// config
+//
+
+IDR_REGEXFILTERINI      config                  "RegexFilter.ini"
+
+/////////////////////////////////////////////////////////////////////////////
+//
 // String Table
 //
 
@@ -635,6 +689,7 @@ STRINGTABLE
 BEGIN
     IDR_MAINFRAME           "TortoiseGitMerge"
     IDS_TITLE_REJECTEDHUNKS "Rejected patch hunks for '%s'"
+    IDS_CONFIGUREREGEXES    "Configure Filter Regexes"
     IDS_ERR_PATCH_FILENAMENOTUNIQUE 
                             "TortoiseGitMerge cannot process this patch file. The filename ""%s"" appears more than once."
     IDS_ERR_MAINFRAME_FILECONFLICTNOVERSION 
@@ -1060,6 +1115,7 @@ END
 
 STRINGTABLE
 BEGIN
+    ID_VIEW_IGNORECOMMENTS  "Remove all comments before doing the diff so changes inside comments don't show as different"
     ID_LOGOBUTTON           "TortoiseGitMerge"
 END
 
@@ -1110,6 +1166,11 @@ BEGIN
     ID_EDIT_ENABLE          "Allow Editing for this view\nAllow Edit"
     ID_EDIT_TABSPACE        "When selected, Spaces will be used instead of tab\nUse spaces"
     ID_EDIT_SMARTTAB        "When selected, it tries to infer tab / spaces to use\nSmart tab char"
+END
+
+STRINGTABLE
+BEGIN
+    ID_REGEXFILTER          "Regex Filter"
 END
 
 STRINGTABLE

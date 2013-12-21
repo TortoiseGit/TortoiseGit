@@ -6,6 +6,7 @@
 #define IDR_MAINFRAME                   100
 #define IDP_OLE_INIT_FAILED             101
 #define IDS_TITLE_REJECTEDHUNKS         101
+#define IDS_CONFIGUREREGEXES            102
 #define IDD_SETMAINPAGE                 107
 #define IDD_OPENDLG                     130
 #define IDD_DIFFLOCATOR                 131
@@ -41,6 +42,11 @@
 #define IDB_RIBBONSMALLHDPI             161
 #define IDB_PNG3                        162
 #define IDB_RIBBONLARGEHDPI             162
+#define IDD_REGEXFILTERS                164
+#define IDD_REGEXFILTER                 165
+#define IDR_CONFIG1                     166
+#define IDR_REGEXFILTERINI              166
+#define IDR_CONFIG2                     167
 #define IDB_LOGOFLIPPED                 168
 #define IDD_PATCH_FILE_OPEN_CUSTOM      180
 #define IDS_SELECTFILE                  200
@@ -49,6 +55,7 @@
 #define IDC_COMBO_ENCODING              302
 #define IDC_STATIC_EOL                  303
 #define IDC_COMBO_EOL                   304
+#define ID_REGEXFILTER                  500
 #define IDC_BASEFILEEDIT                1000
 #define IDC_BASEFILEBROWSE              1001
 #define IDC_THEIRFILEEDIT               1002
@@ -178,8 +185,16 @@
 #define IDS_FIND_COUNT                  1502
 #define IDC_FINDSTATUS                  1503
 #define IDS_FIND_NOTFOUND               1504
+#define IDC_REGEXLIST                   1504
 #define IDS_FIND_BOTTOMREACHED          1505
+#define IDC_ADD                         1505
 #define IDS_FIND_TOPREACHED             1506
+#define IDC_EDIT                        1506
+#define IDC_REMOVE                      1507
+#define IDC_NAME                        1508
+#define IDC_REGEX                       1509
+#define IDC_NAME3                       1511
+#define IDC_REPLACE                     1511
 #define IDS_TEXTIDENTICAL_MAIN          1600
 #define IDS_TEXTIDENTICAL_WHITESPACE    1601
 #define IDS_TEXTIDENTICAL_ENCODING      1602
@@ -374,6 +389,7 @@
 #define ID_EDIT_GOTOLINE                32893
 #define ID_EDIT_GOTOLINE32895           32895
 #define ID_BUTTON2                      32896
+#define ID_VIEW_IGNORECOMMENTS          32896
 #define ID_LOGOBUTTON                   32897
 #define ID_USEBLOCKS                    32914
 #define ID_BUTTON20                     32916
@@ -397,9 +413,9 @@
 //
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        164
+#define _APS_NEXT_RESOURCE_VALUE        168
 #define _APS_NEXT_COMMAND_VALUE         32981
-#define _APS_NEXT_CONTROL_VALUE         1504
+#define _APS_NEXT_CONTROL_VALUE         1509
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

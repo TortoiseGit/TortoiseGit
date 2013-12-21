@@ -328,6 +328,10 @@ msgstr ""
 msgid "&Add >>"
 msgstr ""
 
+#. Resource IDs: (1505)
+msgid "&Add Filter"
+msgstr ""
+
 #. Resource IDs: (1382)
 msgid "&Add New/Save"
 msgstr ""
@@ -544,6 +548,10 @@ msgstr ""
 msgid "&Delete (keep local)"
 msgstr ""
 
+#. Resource IDs: (1507)
+msgid "&Delete Filter"
+msgstr ""
+
 #. Resource IDs: (70)
 msgid "&Delete remote && local"
 msgstr ""
@@ -602,6 +610,10 @@ msgstr ""
 
 #. Resource IDs: (1559)
 msgid "&Edit ALL"
+msgstr ""
+
+#. Resource IDs: (1506)
+msgid "&Edit Filter"
 msgstr ""
 
 #. Resource IDs: (12)
@@ -2812,6 +2824,10 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Config type:"
+msgstr ""
+
+#. Resource IDs: (7)
+msgid "Configure Filter Regexes"
 msgstr ""
 
 #. Resource IDs: (236)
@@ -5162,6 +5178,10 @@ msgstr ""
 msgid "Ignore %d items by &extension"
 msgstr ""
 
+#. Resource IDs: (156)
+msgid "Ignore Comments"
+msgstr ""
+
 #. Resource IDs: (1692)
 msgid "Ignore File"
 msgstr ""
@@ -7056,6 +7076,18 @@ msgstr ""
 msgid "Refreshing..."
 msgstr ""
 
+#. Resource IDs: (32, 156, 165)
+msgid "Regex Filter"
+msgstr ""
+
+#. Resource IDs: (164)
+msgid "Regex Filters"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Regex:"
+msgstr ""
+
 #. Resource IDs: (117)
 msgid "Regular expressions filter:\r\n.   : any character\r\nc+   : match character c one or more times\r\nc*   : match character c zero or more times\r\n^   : start of line\r\n$   : end of line\r\n(string){n} : match string n times\r\n(abcd)   : subexpression\r\n[aei0-9]   : match a,e,i and 0..9\r\n[^aei0-9] : anything but a,e,i and 0..9\r\n\r\n\\w   : matches a-z,A-Z,0-9 and _\r\n\\W   : any non-alphanumeric character\r\n\\d   : digits 0-9\r\n\\s   : whitespaces"
 msgstr ""
@@ -7151,6 +7183,10 @@ msgstr ""
 msgid "Remove &non-ignored untracked files (-f)"
 msgstr ""
 
+#. Resource IDs: (2057)
+msgid "Remove all comments before doing the diff so changes inside comments don't show as different"
+msgstr ""
+
 #. Resource IDs: (15)
 msgid "Remove from &ignore list"
 msgstr ""
@@ -7228,6 +7264,10 @@ msgstr ""
 
 #. Resource IDs: (3603)
 msgid "Replace specific text with different text\nReplace"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Replace:"
 msgstr ""
 
 #. Resource IDs: (74)

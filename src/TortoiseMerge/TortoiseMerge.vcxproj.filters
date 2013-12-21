@@ -282,6 +282,12 @@
     <ClCompile Include="EOL.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="RegexFiltersDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RegexFilterDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="libsvn_diff\adler32.c">
       <Filter>Libdiff</Filter>
     </ClCompile>
@@ -503,6 +509,15 @@
     <ClInclude Include="EncodingDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\Utils\SimpleIni.h">
+      <Filter>Utils\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RegexFiltersDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RegexFilterDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="..\Utils\MiscUI\IconBitmapUtils.h">
       <Filter>Utils\Header Files</Filter>
     </ClInclude>
@@ -580,6 +595,7 @@
     <None Include="..\Resources\ribbon\ribbonsmallhdpi.png">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="..\Resources\RegexFilter.ini" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\Resources\TortoiseMergeENG.rc">
