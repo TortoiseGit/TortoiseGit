@@ -217,6 +217,8 @@
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="MovedBlocks.cpp" />
     <ClCompile Include="OpenDlg.cpp" />
+    <ClCompile Include="RegexFilterDlg.cpp" />
+    <ClCompile Include="RegexFiltersDlg.cpp" />
     <ClCompile Include="..\Utils\MiscUI\SysProgressDlg.cpp" />
     <ClCompile Include="RightView.cpp" />
     <ClCompile Include="SetColorPage.cpp" />
@@ -382,9 +384,9 @@
     <ClInclude Include="..\Utils\MiscUI\StandAloneDlg.h" />
     <ClInclude Include="..\Utils\MiscUI\TripleClick.h" />
     <ClInclude Include="..\Utils\ProfilingInfo.h" />
+    <ClInclude Include="..\Utils\SimpleIni.h" />
     <ClInclude Include="..\Utils\TaskbarUUID.h" />
     <ClInclude Include="EncodingDlg.h" />
-    <ClInclude Include="Patch.h" />
     <ClInclude Include="TempFile.h" />
     <ClInclude Include="AboutDlg.h" />
     <ClInclude Include="BaseView.h" />
@@ -406,6 +408,9 @@
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="MovedBlocks.h" />
     <ClInclude Include="OpenDlg.h" />
+    <ClInclude Include="Patch.h" />
+    <ClInclude Include="RegexFilterDlg.h" />
+    <ClInclude Include="RegexFiltersDlg.h" />
     <ClInclude Include="..\Utils\MiscUI\SysProgressDlg.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="RightView.h" />
@@ -450,6 +455,7 @@
     <None Include="..\Resources\linewhitespace.ico" />
     <None Include="..\Resources\Margin.cur" />
     <None Include="..\Resources\moved.ico" />
+    <None Include="..\Resources\RegexFilter.ini" />
     <None Include="..\Resources\ribbon.mfcribbon-ms" />
     <None Include="..\Resources\ribbon\ribbonlarge.png" />
     <None Include="..\Resources\ribbon\ribbonlargehdpi.png" />

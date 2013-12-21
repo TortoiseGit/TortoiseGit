@@ -37,6 +37,7 @@
 #include "FormatMessageWrapper.h"
 #include "TaskbarUUID.h"
 #include "git2.h"
+#include "RegexFiltersDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -145,6 +146,10 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_COMMAND(ID_INDICATOR_RIGHTVIEW, &CMainFrame::OnIndicatorRightview)
 	ON_COMMAND(ID_INDICATOR_BOTTOMVIEW, &CMainFrame::OnIndicatorBottomview)
 	ON_WM_TIMER()
+	ON_COMMAND(ID_VIEW_IGNORECOMMENTS, &CMainFrame::OnViewIgnorecomments)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_IGNORECOMMENTS, &CMainFrame::OnUpdateViewIgnorecomments)
+	ON_COMMAND_RANGE(ID_REGEXFILTER, ID_REGEXFILTER+400, &CMainFrame::OnRegexfilter)
+	ON_UPDATE_COMMAND_UI_RANGE(ID_REGEXFILTER, ID_REGEXFILTER+400, &CMainFrame::OnUpdateViewRegexFilter)
 	ON_COMMAND(ID_INDICATOR_LEFTVIEWCOMBOENCODING, &CMainFrame::OnDummyEnabled)
 	ON_COMMAND(ID_INDICATOR_RIGHTVIEWCOMBOENCODING, &CMainFrame::OnDummyEnabled)
 	ON_COMMAND(ID_INDICATOR_BOTTOMVIEWCOMBOENCODING, &CMainFrame::OnDummyEnabled)
@@ -204,6 +209,8 @@ CMainFrame::CMainFrame()
 	, m_regInlineDiff(L"Software\\TortoiseGitMerge\\DisplayBinDiff", TRUE)
 	, m_regUseRibbons(L"Software\\TortoiseGitMerge\\UseRibbons", TRUE)
 	, m_regUseTaskDialog(L"Software\\TortoiseGitMerge\\UseTaskDialog", TRUE)
+	, m_regIgnoreComments(_T("Software\\TortoiseGitMerge\\IgnoreComments"), FALSE)
+	, m_regexIndex(-1)
 	, m_regTabMode(L"Software\\TortoiseGitMerge\\TabMode", TABMODE_NONE)
 {
 	m_bOneWay = (0 != ((DWORD)m_regOneWay));
@@ -270,6 +277,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 				}
 			}
 		}
+		BuildRegexSubitems();
 		if (!m_wndRibbonStatusBar.Create(this))
 		{
 			TRACE0("Failed to create ribbon status bar\n");
@@ -759,6 +767,7 @@ void CMainFrame::ClearViewNamesAndPaths()
 
 bool CMainFrame::LoadViews(int line)
 {
+	LoadIgnoreCommentData();
 	m_Data.SetBlame(m_bBlame);
 	m_Data.SetMovedBlocks(m_bViewMovedBlocks);
 	m_bHasConflicts = false;
@@ -772,6 +781,23 @@ bool CMainFrame::LoadViews(int line)
 		ptOldCaretPos = m_pwndRightView->GetCaretPosition();
 	if (m_pwndBottomView && m_pwndBottomView->IsTarget())
 		ptOldCaretPos = m_pwndBottomView->GetCaretPosition();
+	CString sExt = CPathUtils::GetFileExtFromPath(m_Data.m_baseFile.GetFilename()).MakeLower();
+	sExt.TrimLeft(L".");
+	auto sC = m_IgnoreCommentsMap.find(sExt);
+	if (sC == m_IgnoreCommentsMap.end())
+	{
+		sExt = CPathUtils::GetFileExtFromPath(m_Data.m_yourFile.GetFilename()).MakeLower();
+		sC = m_IgnoreCommentsMap.find(sExt);
+		if (sC == m_IgnoreCommentsMap.end())
+		{
+			sExt = CPathUtils::GetFileExtFromPath(m_Data.m_theirFile.GetFilename()).MakeLower();
+			sC = m_IgnoreCommentsMap.find(sExt);
+		}
+	}
+	if (sC != m_IgnoreCommentsMap.end())
+		m_Data.SetCommentTokens(std::get<0>(sC->second), std::get<1>(sC->second), std::get<2>(sC->second));
+	else
+		m_Data.SetCommentTokens(L"", L"", L"");
 	if (!m_Data.Load())
 	{
 		m_pwndLeftView->BuildAllScreen2ViewVector();
@@ -3230,4 +3256,220 @@ void CMainFrame::OnUpdateEOLBottom( CCmdUI *pCmdUI )
 	}
 	else
 		pCmdUI->Enable(FALSE);
+}
+
+void CMainFrame::LoadIgnoreCommentData()
+{
+	static bool bLoaded = false;
+	if (bLoaded)
+		return;
+	CString sPath = CPathUtils::GetAppDataDirectory() + L"IgnoreComments";
+	if (!PathFileExists(sPath))
+	{
+		CStdioFile file;
+		if (file.Open(sPath, CFile::modeReadWrite|CFile::modeCreate))
+		{
+			file.WriteString(L"js,c,cc,cpp,cxx,h,hh,hpp,hxx,ipp,m,mm,sma,cs,vb,vbs,rs,st,il,osx,ecl,eclattr,hql,powerpro,impl,sign,prg,gui,gc,v,vh,em,src,pov,inc,java,jad,pde,es,ch,chs,chf,go,rc,rc2,dlg,idl,odl,as,asc,jsfl,vala,pike=//,/*,*/\n");
+			file.WriteString(L"html,htm,asp,shtml,htd,jsp,htt,cfm,tpl,dtd,hta,wxi,wxs,wxl,php,php3,phtml,vxml,xml,xsl,svg,xul,xsd,xslt,axl,xrc,rdf,build,docbook,mako=,<!--,-->\n");
+			file.WriteString(L"kvs,nim,po,pot,ps1,g,gd,gi,cmake,ctest,sh,bsh,ksh,yaml,yml,lt,ant,tab,tcl,exp,rb,rbw,rake,rjs,rakefile,conf,htaccess,pl,pm,pod,py,pyw,mak,mk,configure,properties,session,ini,inf,reg,url,cfg,cnf,aut,=#,,\n");
+			file.WriteString(L"pro,=%,/*,*/\n");
+			file.WriteString(L"coffee,=#,###,###\n");
+			file.WriteString(L"m3,i3,mg,ig,dpr,dpk,pas,dfm,pp=,(*,*)\n");
+			file.WriteString(L"t2t,erl,hrl,mp,mpx,mms,ps,asm,octave=%,,\n");
+			file.WriteString(L"avs,avsi=#,/*,*/\n");
+			file.WriteString(L"ins,iss,isl,orc,sco,csd,au3,kix,nsi,nsh,=;,,\n");
+			file.WriteString(L"tacl===,,\n");
+			file.WriteString(L"cob=*>,,\n");
+			file.WriteString(L"tal,vhdl,vhd,asn1,mib,e,ada,adb=--,,\n");
+			file.WriteString(L"r,reb,lisp,lsp,el=;,;;,;;\n");
+			file.WriteString(L"inp,dat,msg=**,,\n");
+			file.WriteString(L"d=//,/+,+/\n");
+			file.WriteString(L"als,cir,sch,scp=*,,\n");
+			file.WriteString(L"hs=-,{-,-}\n");
+			file.WriteString(L"bas,bi,pb,bb,=',/','/\n");
+			file.WriteString(L"forth,spf=\\,(,)\n");
+			file.WriteString(L"css=,/*,*/\n");
+			file.WriteString(L"f,for,90,f95,f2k,app,apl=!,,\n");
+			file.WriteString(L"ave='--,,\n");
+			file.WriteString(L"lua=--,--[[,]]\n");
+			file.WriteString(L"sql,spec,body,sps,spb,sf,sp=-- ,/*,*/\n");
+
+			file.Close();
+		}
+	}
+	CStdioFile file;
+	if (file.Open(sPath, CFile::modeRead))
+	{
+		CString sLine;
+		while (file.ReadString(sLine))
+		{
+			int eqpos = sLine.Find('=');
+			if (eqpos >= 0)
+			{
+				CString sExts = sLine.Left(eqpos);
+				CString sComments = sLine.Mid(eqpos+1);
+
+				int pos = sComments.Find(',');
+				CString sLineStart = sComments.Left(pos);
+				pos = sComments.Find(',', pos);
+				int pos2 = sComments.Find(',', pos+1);
+				CString sBlockStart = sComments.Mid(pos+1, pos2-pos-1);
+				CString sBlockEnd = sComments.Mid(pos2+1);
+
+				auto commentTuple = std::make_tuple(sLineStart, sBlockStart, sBlockEnd);
+
+				pos = 0;
+				CString temp;
+				for (;;)
+				{
+					temp = sExts.Tokenize(_T(","),pos);
+					if (temp.IsEmpty())
+					{
+						break;
+					}
+					ASSERT(m_IgnoreCommentsMap.find(temp) == m_IgnoreCommentsMap.end());
+					m_IgnoreCommentsMap[temp] = commentTuple;
+				}
+			}
+		}
+	}
+	bLoaded = true;
+}
+
+void CMainFrame::OnViewIgnorecomments()
+{
+	if (CheckForSave(CHFSR_OPTIONS)==IDCANCEL)
+		return;
+	m_regIgnoreComments = !DWORD(m_regIgnoreComments);
+	LoadViews(-1);
+}
+
+void CMainFrame::OnUpdateViewIgnorecomments(CCmdUI *pCmdUI)
+{
+	// only enable if we have comments defined for this file extension
+	CString sExt = CPathUtils::GetFileExtFromPath(m_Data.m_baseFile.GetFilename()).MakeLower();
+	sExt.TrimLeft(L".");
+	auto sC = m_IgnoreCommentsMap.find(sExt);
+	if (sC == m_IgnoreCommentsMap.end())
+	{
+		sExt = CPathUtils::GetFileExtFromPath(m_Data.m_yourFile.GetFilename()).MakeLower();
+		sExt.TrimLeft(L".");
+		sC = m_IgnoreCommentsMap.find(sExt);
+		if (sC == m_IgnoreCommentsMap.end())
+		{
+			sExt = CPathUtils::GetFileExtFromPath(m_Data.m_theirFile.GetFilename()).MakeLower();
+			sExt.TrimLeft(L".");
+			sC = m_IgnoreCommentsMap.find(sExt);
+		}
+	}
+	pCmdUI->Enable(sC != m_IgnoreCommentsMap.end());
+
+	pCmdUI->SetCheck(DWORD(m_regIgnoreComments) != 0);
+}
+
+
+void CMainFrame::OnRegexfilter(UINT cmd)
+{
+	if ((cmd == ID_REGEXFILTER)||(cmd == (ID_REGEXFILTER+1)))
+	{
+		CRegexFiltersDlg dlg(this);
+		dlg.SetIniFile(&m_regexIni);
+		dlg.DoModal();
+		BuildRegexSubitems();
+		FILE * pFile = NULL;
+		_tfopen_s(&pFile, CPathUtils::GetAppDataDirectory() + L"regexfilters.ini", _T("wb"));
+		m_regexIni.SaveFile(pFile);
+		fclose(pFile);
+	}
+	else
+	{
+		if (cmd == (UINT)m_regexIndex)
+		{
+			if (CheckForSave(CHFSR_OPTIONS)==IDCANCEL)
+				return;
+			m_Data.SetRegexTokens(std::wregex(), L"");
+			m_regexIndex = -1;
+			LoadViews(-1);
+		}
+		else
+		{
+			CSimpleIni::TNamesDepend sections;
+			m_regexIni.GetAllSections(sections);
+			int index = ID_REGEXFILTER + 2;
+			m_regexIndex = -1;
+			for (const auto& section : sections)
+			{
+				if (cmd == (UINT)index)
+				{
+					if (CheckForSave(CHFSR_OPTIONS)==IDCANCEL)
+						break;
+					std::wregex rx(m_regexIni.GetValue(section, L"regex", L""));
+					m_Data.SetRegexTokens(rx, m_regexIni.GetValue(section, L"replace", L""));
+					m_regexIndex = index;
+					LoadViews(-1);
+					break;
+				}
+				++index;
+			}
+		}
+	}
+}
+
+void CMainFrame::OnUpdateViewRegexFilter( CCmdUI *pCmdUI )
+{
+	pCmdUI->Enable();
+	pCmdUI->SetCheck(pCmdUI->m_nID == (UINT)m_regexIndex);
+}
+
+void CMainFrame::BuildRegexSubitems()
+{
+	CArray<CMFCRibbonBaseElement*, CMFCRibbonBaseElement*> arButtons;
+	m_wndRibbonBar.GetElementsByID(ID_REGEXFILTER, arButtons);
+	if (arButtons.GetCount() == 1)
+	{
+		CMFCRibbonButton * pButton = (CMFCRibbonButton*)arButtons.GetAt(0);
+		if (pButton)
+		{
+			pButton->RemoveAllSubItems();
+			pButton->AddSubItem(new CMFCRibbonButton(ID_REGEXFILTER+1, CString(MAKEINTRESOURCE(IDS_CONFIGUREREGEXES)), 47));
+
+			CString sIniPath = CPathUtils::GetAppDataDirectory() + L"regexfilters.ini";
+			if (!PathFileExists(sIniPath))
+			{
+				// ini file does not exist (yet), so create a default one
+				HRSRC hRes = FindResource(NULL, MAKEINTRESOURCE(IDR_REGEXFILTERINI), L"config");
+				if (hRes)
+				{
+					HGLOBAL hResourceLoaded = LoadResource(NULL, hRes);
+					if (hResourceLoaded)
+					{
+						char * lpResLock = (char *) LockResource(hResourceLoaded);
+						DWORD dwSizeRes = SizeofResource(NULL, hRes);
+						if (lpResLock)
+						{
+							HANDLE hFile = CreateFile(sIniPath, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+							if (hFile != INVALID_HANDLE_VALUE)
+							{
+								DWORD dwWritten = 0;
+								WriteFile(hFile, lpResLock, dwSizeRes, &dwWritten, NULL);
+								CloseHandle(hFile);
+							}
+						}
+					}
+				}
+			}
+
+			m_regexIni.LoadFile(sIniPath);
+			CSimpleIni::TNamesDepend sections;
+			m_regexIni.GetAllSections(sections);
+			if (!sections.empty())
+				pButton->AddSubItem(new CMFCRibbonSeparator(TRUE));
+			int cmdIndex = 2;
+			for (const auto& section : sections)
+			{
+				pButton->AddSubItem(new CMFCRibbonButton(ID_REGEXFILTER+cmdIndex, section, 46));
+				cmdIndex++;
+			}
+		}
+	}
 }

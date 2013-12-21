@@ -26,6 +26,9 @@
 #include "TempFile.h"
 #include "XSplitter.h"
 #include "GitPatch.h"
+#include "SimpleIni.h"
+
+#include <tuple>
 
 class CLeftView;
 class CRightView;
@@ -154,6 +157,10 @@ protected:
 	afx_msg void	OnIndicatorRightview();
 	afx_msg void	OnIndicatorBottomview();
 	afx_msg void	OnTimer(UINT_PTR nIDEvent);
+	afx_msg void	OnViewIgnorecomments();
+	afx_msg void	OnUpdateViewIgnorecomments(CCmdUI *pCmdUI);
+	afx_msg void	OnUpdateViewRegexFilter(CCmdUI *pCmdUI);
+	afx_msg void	OnRegexfilter(UINT cmd);
 	afx_msg void	OnDummyEnabled() {};
 	afx_msg void	OnEncodingLeft(UINT cmd);
 	afx_msg void	OnEncodingRight(UINT cmd);
@@ -181,6 +188,7 @@ protected:
 	bool			FileSave(bool bCheckResolved=true);
 	void			PatchSave();
 	bool			FileSaveAs(bool bCheckResolved=true);
+	void			LoadIgnoreCommentData();
 	/// checks if there are modifications and asks the user to save them first
 	/// IDCANCEL is returned if the user wants to cancel.
 	/// If the user wanted to save the modifications, this method does the saving
@@ -212,6 +220,7 @@ protected:
 	static bool		HasNextConflict(CBaseView* view);
 	static bool		HasPrevInlineDiff(CBaseView* view);
 	static bool		HasNextInlineDiff(CBaseView* view);
+	void			BuildRegexSubitems();
 
 protected:
 	CMFCStatusBar	m_wndStatusBar;
@@ -245,6 +254,11 @@ protected:
 	CRegDWORD		m_regInlineDiff;
 	CRegDWORD		m_regUseRibbons;
 	CRegDWORD		m_regUseTaskDialog;
+	CRegDWORD		m_regIgnoreComments;
+
+	std::map<CString, std::tuple<CString, CString, CString>>	m_IgnoreCommentsMap;
+	CSimpleIni		m_regexIni;
+	int				m_regexIndex;
 	CRegDWORD		m_regTabMode;
 public:
 	CLeftView *		m_pwndLeftView;

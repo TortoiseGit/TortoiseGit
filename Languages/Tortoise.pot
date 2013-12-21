@@ -328,6 +328,10 @@ msgstr ""
 msgid "&Add >>"
 msgstr ""
 
+#. Resource IDs: (1505)
+msgid "&Add Filter"
+msgstr ""
+
 #. Resource IDs: (1382)
 msgid "&Add New/Save"
 msgstr ""
@@ -544,6 +548,10 @@ msgstr ""
 msgid "&Delete (keep local)"
 msgstr ""
 
+#. Resource IDs: (1507)
+msgid "&Delete Filter"
+msgstr ""
+
 #. Resource IDs: (70)
 msgid "&Delete remote && local"
 msgstr ""
@@ -602,6 +610,10 @@ msgstr ""
 
 #. Resource IDs: (1559)
 msgid "&Edit ALL"
+msgstr ""
+
+#. Resource IDs: (1506)
+msgid "&Edit Filter"
 msgstr ""
 
 #. Resource IDs: (12)
@@ -2290,10 +2302,6 @@ msgid "Cancel\nDon't quit TortoiseGitMerge"
 msgstr ""
 
 #. Resource IDs: (315)
-msgid "Cancel\nDon't reload views"
-msgstr ""
-
-#. Resource IDs: (315)
 msgid "Cancel\nDon't switch the views"
 msgstr ""
 
@@ -2818,6 +2826,10 @@ msgstr ""
 msgid "Config type:"
 msgstr ""
 
+#. Resource IDs: (7)
+msgid "Configure Filter Regexes"
+msgstr ""
+
 #. Resource IDs: (236)
 msgid "Configure Hook Scripts"
 msgstr ""
@@ -3053,17 +3065,7 @@ msgid "Could not retrieve revision %s of the file %s.\nPatching is not possible!
 msgstr ""
 
 #. Resource IDs: (64)
-#, c-format
-msgid "Could not save the file %s!"
-msgstr ""
-
-#. Resource IDs: (64)
 msgid "Could not start TortoiseGitBlame"
-msgstr ""
-
-#. Resource IDs: (70)
-#, c-format
-msgid "Could not start diff viewer!\n%s"
 msgstr ""
 
 #. Resource IDs: (81)
@@ -3083,11 +3085,6 @@ msgstr ""
 
 #. Resource IDs: (3857)
 msgid "Could not start print job."
-msgstr ""
-
-#. Resource IDs: (83)
-#, c-format
-msgid "Could not start text viewer!\n%s"
 msgstr ""
 
 #. Resource IDs: (83)
@@ -3678,10 +3675,6 @@ msgstr ""
 msgid "Do you want to reload the documents to reflect the settings changes?\nNote: you will lose all changes you've made!"
 msgstr ""
 
-#. Resource IDs: (313)
-msgid "Do you want to save your changes?"
-msgstr ""
-
 #. Resource IDs: (66)
 msgid "Do you want to see changes?"
 msgstr ""
@@ -3692,10 +3685,6 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Document :"
-msgstr ""
-
-#. Resource IDs: (564)
-msgid "Don't ask me again"
 msgstr ""
 
 #. Resource IDs: (75)
@@ -3721,10 +3710,6 @@ msgstr ""
 
 #. Resource IDs: (73, 80)
 msgid "Don't show this message again"
-msgstr ""
-
-#. Resource IDs: (564)
-msgid "Don't tell me again"
 msgstr ""
 
 #. Resource IDs: (66, 602)
@@ -5193,16 +5178,16 @@ msgstr ""
 msgid "Ignore %d items by &extension"
 msgstr ""
 
+#. Resource IDs: (156)
+msgid "Ignore Comments"
+msgstr ""
+
 #. Resource IDs: (1692)
 msgid "Ignore File"
 msgstr ""
 
 #. Resource IDs: (1686)
 msgid "Ignore Type"
-msgstr ""
-
-#. Resource IDs: (564)
-msgid "Ignore all"
 msgstr ""
 
 #. Resource IDs: (156)
@@ -6142,10 +6127,6 @@ msgstr ""
 
 #. Resource IDs: (1253)
 msgid "No thesaurus suggestions"
-msgstr ""
-
-#. Resource IDs: (564)
-msgid "No to all"
 msgstr ""
 
 #. Resource IDs: (65)
@@ -7095,6 +7076,18 @@ msgstr ""
 msgid "Refreshing..."
 msgstr ""
 
+#. Resource IDs: (32, 156, 165)
+msgid "Regex Filter"
+msgstr ""
+
+#. Resource IDs: (164)
+msgid "Regex Filters"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Regex:"
+msgstr ""
+
 #. Resource IDs: (117)
 msgid "Regular expressions filter:\r\n.   : any character\r\nc+   : match character c one or more times\r\nc*   : match character c zero or more times\r\n^   : start of line\r\n$   : end of line\r\n(string){n} : match string n times\r\n(abcd)   : subexpression\r\n[aei0-9]   : match a,e,i and 0..9\r\n[^aei0-9] : anything but a,e,i and 0..9\r\n\r\n\\w   : matches a-z,A-Z,0-9 and _\r\n\\W   : any non-alphanumeric character\r\n\\d   : digits 0-9\r\n\\s   : whitespaces"
 msgstr ""
@@ -7190,6 +7183,10 @@ msgstr ""
 msgid "Remove &non-ignored untracked files (-f)"
 msgstr ""
 
+#. Resource IDs: (2057)
+msgid "Remove all comments before doing the diff so changes inside comments don't show as different"
+msgstr ""
+
 #. Resource IDs: (15)
 msgid "Remove from &ignore list"
 msgstr ""
@@ -7269,12 +7266,12 @@ msgstr ""
 msgid "Replace specific text with different text\nReplace"
 msgstr ""
 
-#. Resource IDs: (74)
-msgid "Replacing"
+#. Resource IDs: (65535)
+msgid "Replace:"
 msgstr ""
 
-#. Resource IDs: (564)
-msgid "Report"
+#. Resource IDs: (74)
+msgid "Replacing"
 msgstr ""
 
 #. Resource IDs: (1618)
@@ -7825,14 +7822,6 @@ msgstr ""
 msgid "Select merge target"
 msgstr ""
 
-#. Resource IDs: (13)
-msgid "Select patch file..."
-msgstr ""
-
-#. Resource IDs: (79)
-msgid "Select text editor application"
-msgstr ""
-
 #. Resource IDs: (79)
 msgid "Select the behaviour of the progress dialog at the end of the operation."
 msgstr ""
@@ -8256,10 +8245,6 @@ msgstr ""
 msgid "Skip Patch: %s"
 msgstr ""
 
-#. Resource IDs: (564)
-msgid "Skip all"
-msgstr ""
-
 #. Resource IDs: (11029)
 msgid "Skip worktree"
 msgstr ""
@@ -8680,11 +8665,6 @@ msgstr ""
 msgid "The chunk size did not match the number of added/removed lines!"
 msgstr ""
 
-#. Resource IDs: (63)
-#, c-format
-msgid "The chunk start '@@' was expected in line %d !"
-msgstr ""
-
 #. Resource IDs: (67)
 msgid "The commit message must not be empty."
 msgstr ""
@@ -8778,21 +8758,7 @@ msgstr ""
 
 #. Resource IDs: (63)
 #, c-format
-msgid "The line '====' was expected in line %d !"
-msgstr ""
-
-#. Resource IDs: (63)
-msgid "The line 'Index: ' was not found!\nEither this is not a diff file or the diff is empty."
-msgstr ""
-
-#. Resource IDs: (63)
-#, c-format
 msgid "The line indicating the new file was expected in line %d !"
-msgstr ""
-
-#. Resource IDs: (63)
-#, c-format
-msgid "The line indicating the old file was expected in line %d !"
 msgstr ""
 
 #. Resource IDs: (88)
@@ -8817,10 +8783,6 @@ msgstr ""
 msgid "The maximum number of action log lines to keep.\nAny lines added over this limit will remove the oldest lines from the file."
 msgstr ""
 
-#. Resource IDs: (63)
-msgid "The old file does not match the new file.\nRenaming of files is not (yet) supported!"
-msgstr ""
-
 #. Resource IDs: (220)
 msgid "The operation failed."
 msgstr ""
@@ -8841,16 +8803,6 @@ msgstr ""
 
 #. Resource IDs: (88)
 msgid "The path/URL you've entered seems to be illegal on Windows!\nYou can try it anyway, but you might get an error later.\n\nA valid path on windows must not contain '<<>|\"?*:' or one of the following device names:\ncom1-com9, lpt1-lpt9, prn, aux, con, nul, clock$\n\nDo you want to proceed anyway?"
-msgstr ""
-
-#. Resource IDs: (314)
-#, c-format
-msgid "The path\n%s\nin the patchfile does not exist.\nTortoiseGitMerge found the relative path\n%s\nwhich seems to match the directory you're applying the patch.\n\nDo you want to use the suggested path? Answering 'no' will quit TortoiseGitMerge."
-msgstr ""
-
-#. Resource IDs: (314)
-#, c-format
-msgid "The path\n%s\nin the patchfile does not exist.\nTortoiseGitMerge tried to apply the patch by stripping prefixes but no matching path could be found."
 msgstr ""
 
 #. Resource IDs: (314)
@@ -9702,10 +9654,6 @@ msgstr ""
 
 #. Resource IDs: (197)
 msgid "When enabled, the versioned items listed in the commit dialog are automatically selected"
-msgstr ""
-
-#. Resource IDs: (316)
-msgid "When resolving conflicts, you always have to save even if there is no conflict shown. TortoiseGitMerge can merge changes that Git can't and won't show a conflict for those!"
 msgstr ""
 
 #. Resource IDs: (2062)
