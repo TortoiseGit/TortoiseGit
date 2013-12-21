@@ -134,7 +134,32 @@ void CGravatar::LoadGravatar(const CString& email)
 void CGravatar::GravatarThread()
 {
 	CString gravatarBaseUrl = CRegString(_T("Software\\TortoiseGit\\GravatarUrl"), _T("http://www.gravatar.com/avatar/%HASH%"));
-	CoInitialize(nullptr);
+
+	CString hostname;
+	CString baseUrlPath;
+	URL_COMPONENTS urlComponents = {0};
+	urlComponents.dwStructSize = sizeof(urlComponents);
+	urlComponents.lpszHostName = hostname.GetBufferSetLength(INTERNET_MAX_HOST_NAME_LENGTH);
+	urlComponents.dwHostNameLength = INTERNET_MAX_HOST_NAME_LENGTH;
+	urlComponents.lpszUrlPath = baseUrlPath.GetBufferSetLength(INTERNET_MAX_PATH_LENGTH);
+	urlComponents.dwUrlPathLength = INTERNET_MAX_PATH_LENGTH;
+	if (!InternetCrackUrl(gravatarBaseUrl, gravatarBaseUrl.GetLength(), 0, &urlComponents))
+	{
+		m_filename.Empty();
+		return;
+	}
+	hostname.ReleaseBuffer();
+	baseUrlPath.ReleaseBuffer();
+
+	HINTERNET hOpenHandle = InternetOpen(L"TortoiseGit", INTERNET_OPEN_TYPE_PRECONFIG, nullptr, nullptr, 0);
+	HINTERNET hConnectHandle = InternetConnect(hOpenHandle, hostname, urlComponents.nPort, nullptr, nullptr, urlComponents.nScheme, 0, 0);
+	if (!hConnectHandle)
+	{
+		InternetCloseHandle(hOpenHandle);
+		m_filename.Empty();
+		return;
+	}
+
 	while (!m_gravatarExit)
 	{
 		::WaitForSingleObject(m_gravatarEvent, INFINITE);
@@ -159,7 +184,7 @@ void CGravatar::GravatarThread()
 			if (md5.IsEmpty())
 				continue;
 
-			CString gravatarUrl = gravatarBaseUrl;
+			CString gravatarUrl = baseUrlPath;
 			gravatarUrl.Replace(_T("%HASH%"), md5);
 			CString tempFile;
 			GetTempPath(tempFile);
@@ -173,11 +198,18 @@ void CGravatar::GravatarThread()
 			}
 			else
 			{
-				HRESULT res = URLDownloadToFile(nullptr, gravatarUrl, tempFile, 0, nullptr);
+				BOOL ret = DownloadToFile(hConnectHandle, gravatarUrl, tempFile);
+				if (ret)
+				{
+					DeleteFile(tempFile);
+					m_gravatarLock.Lock();
+					m_filename.Empty();
+					m_gravatarLock.Unlock();
+				}
 				if (m_gravatarExit)
 					break;
 				m_gravatarLock.Lock();
-				if (m_email == email && res == S_OK)
+				if (m_email == email && !ret)
 				{
 					HANDLE hFile = CreateFile(tempFile, FILE_READ_ATTRIBUTES | FILE_WRITE_ATTRIBUTES, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 					FILETIME creationTime = {};
@@ -200,7 +232,80 @@ void CGravatar::GravatarThread()
 			Invalidate();
 		}
 	}
-	CoUninitialize();
+	InternetCloseHandle(hConnectHandle);
+	InternetCloseHandle(hOpenHandle);
+}
+
+BOOL CGravatar::DownloadToFile(const HINTERNET hConnectHandle, const CString& urlpath, const CString& dest)
+{
+	HINTERNET hResourceHandle = HttpOpenRequest(hConnectHandle, nullptr, urlpath, nullptr, nullptr, nullptr, INTERNET_FLAG_KEEP_CONNECTION, 0);
+	if (!hResourceHandle)
+		return -1;
+
+resend:
+	BOOL httpsendrequest = HttpSendRequest(hResourceHandle, nullptr, 0, nullptr, 0);
+
+	DWORD dwError = InternetErrorDlg(GetSafeHwnd(), hResourceHandle, ERROR_SUCCESS, FLAGS_ERROR_UI_FILTER_FOR_ERRORS | FLAGS_ERROR_UI_FLAGS_CHANGE_OPTIONS | FLAGS_ERROR_UI_FLAGS_GENERATE_DATA, nullptr);
+
+	if (dwError == ERROR_INTERNET_FORCE_RETRY)
+		goto resend;
+	else if (!httpsendrequest)
+	{
+		InternetCloseHandle(hResourceHandle);
+		return INET_E_DOWNLOAD_FAILURE;
+	}
+
+	DWORD statusCode = 0;
+	DWORD length = sizeof(statusCode);
+	if (!HttpQueryInfo(hResourceHandle, HTTP_QUERY_STATUS_CODE | HTTP_QUERY_FLAG_NUMBER, (LPVOID)&statusCode, &length, NULL) || statusCode != 200)
+	{
+		InternetCloseHandle(hResourceHandle);
+		if (statusCode == 404)
+			return ERROR_FILE_NOT_FOUND;
+		else if (statusCode == 403)
+			return ERROR_ACCESS_DENIED;
+		return INET_E_DOWNLOAD_FAILURE;
+	}
+
+	CFile destinationFile(dest, CFile::modeCreate | CFile::modeWrite);
+	DWORD downloadedSum = 0; // sum of bytes downloaded so far
+	do
+	{
+		DWORD size; // size of the data available
+		if (!InternetQueryDataAvailable(hResourceHandle, &size, 0, 0))
+		{
+			InternetCloseHandle(hResourceHandle);
+			return INET_E_DOWNLOAD_FAILURE;
+		}
+
+		DWORD downloaded; // size of the downloaded data
+		LPTSTR lpszData = new TCHAR[size + 1];
+		if (!InternetReadFile(hResourceHandle, (LPVOID)lpszData, size, &downloaded))
+		{
+			delete[] lpszData;
+			InternetCloseHandle(hResourceHandle);
+			return INET_E_DOWNLOAD_FAILURE;
+		}
+
+		if (downloaded == 0)
+		{
+			delete[] lpszData;
+			break;
+		}
+
+		lpszData[downloaded] = '\0';
+		destinationFile.Write(lpszData, downloaded);
+		delete[] lpszData;
+
+		downloadedSum += downloaded;
+	}
+	while (!m_gravatarExit);
+	destinationFile.Close();
+	InternetCloseHandle(hResourceHandle);
+	if (downloadedSum == 0)
+		return INET_E_DOWNLOAD_FAILURE;
+
+	return 0;
 }
 
 void CGravatar::SafeTerminateGravatarThread()

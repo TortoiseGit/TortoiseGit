@@ -19,6 +19,7 @@
 #pragma once
 #include <afx.h>
 #include "gittype.h"
+#include <WinInet.h>
 
 class CGravatar : public CStatic
 {
@@ -34,6 +35,7 @@ private:
 	void	GravatarThread();
 	void	SafeTerminateGravatarThread();
 	afx_msg void OnPaint();
+	BOOL	DownloadToFile(const HINTERNET hConnectHandle, const CString& urlpath, const CString& dest);
 
 	bool				m_bEnableGravatar;
 	CString				m_filename;
