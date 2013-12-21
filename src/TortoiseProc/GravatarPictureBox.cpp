@@ -207,6 +207,7 @@ void CGravatar::SafeTerminateGravatarThread()
 	if (m_gravatarThread)
 	{
 		::SetEvent(m_gravatarEvent);
+		::WaitForSingleObject(m_gravatarThread, 1000);
 		m_gravatarThread = nullptr;
 	}
 }
