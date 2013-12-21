@@ -40,7 +40,7 @@ private:
 	CString				m_email;
 	HANDLE				m_gravatarEvent;
 	CWinThread*			m_gravatarThread;
-	bool				m_gravatarExit;
+	volatile bool		m_gravatarExit;
 	CComCriticalSection m_gravatarLock;
 
 	DECLARE_MESSAGE_MAP();
