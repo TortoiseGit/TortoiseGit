@@ -30,7 +30,7 @@ IMPLEMENT_DYNAMIC(CGitBlameLogList, CHintListCtrl)
 
 void CGitBlameLogList::hideUnimplementedCommands()
 {
-	m_ContextMenuMask |= GetContextMenuBit(ID_BLAMEPREVIOUS);
+	m_ContextMenuMask |= GetContextMenuBit(ID_BLAMEPREVIOUS) | GetContextMenuBit(ID_LOG);
 	hideFromContextMenu(
 		GetContextMenuBit(ID_COMPAREWITHPREVIOUS) |
 		GetContextMenuBit(ID_BLAMEPREVIOUS) |
