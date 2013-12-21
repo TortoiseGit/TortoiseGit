@@ -729,7 +729,6 @@ END
 STRINGTABLE
 BEGIN
     IDS_SELECTFILE          "Select File..."
-    IDS_SELECTDIFFFILE      "Select patch file..."
 END
 
 STRINGTABLE
@@ -744,17 +743,8 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_ERR_PATCH_NOINDEX   "The line 'Index: ' was not found!\nEither this is not a diff file or the diff is empty."
-    IDS_ERR_PATCH_NOEQUATIONCHARLINE 
-                            "The line '====' was expected in line %d !"
-    IDS_ERR_PATCH_NOREMOVEFILELINE 
-                            "The line indicating the old file was expected in line %d !"
     IDS_ERR_PATCH_NOADDFILELINE 
                             "The line indicating the new file was expected in line %d !"
-    IDS_ERR_PATCH_RENAMINGNOTSUPPORTED 
-                            "The old file does not match the new file.\nRenaming of files is not (yet) supported!"
-    IDS_ERR_PATCH_CHUNKSTARTNOTFOUND 
-                            "The chunk start '@@' was expected in line %d !"
     IDS_ERR_PATCH_UNKOWNLINETYPE "An unknown line type was found in line %d !"
     IDS_ERR_PATCH_CHUNKMISMATCH 
                             "The chunk size did not match the number of added/removed lines!"
@@ -767,7 +757,6 @@ BEGIN
                             "The file %s was not found in the patch file!"
     IDS_ERR_PATCH_DOESNOTMATCH 
                             "The patch seems outdated! The file line\n%s\nand the patchline\n%s\ndo not match!"
-    IDS_ERR_PATCH_FILESAVE  "Could not save the file %s!"
 END
 
 STRINGTABLE
@@ -834,7 +823,6 @@ BEGIN
     IDS_GETVERSIONOFFILE    "Fetching revision %s of file:"
     IDS_WARNMODIFIEDLOOSECHANGES 
                             "There are unsaved modifications!\nDo you want to save your changes?"
-    IDS_ASKFORSAVE          "Do you want to save your changes?"
     IDS_WARNMODIFIEDLOOSECHANGESOPTIONS 
                             "Do you want to reload the documents to reflect the settings changes?\nNote: you will lose all changes you've made!"
 END
@@ -917,10 +905,6 @@ BEGIN
     IDS_WARNBETTERPATCHPATHFOUND 
                             "The path\n%s\nseems not to match the paths in the patchfile.\nBut TortoiseGitMerge found the path\n%s\nmatches it better. Do you want to use the suggested path instead?"
     IDS_NOTFOUNDVIEWTITLEINDICATOR "(not found)"
-    IDS_WARNABSOLUTEPATHFOUND 
-                            "The path\n%s\nin the patchfile does not exist.\nTortoiseGitMerge found the relative path\n%s\nwhich seems to match the directory you're applying the patch.\n\nDo you want to use the suggested path? Answering 'no' will quit TortoiseGitMerge."
-    IDS_WARNABSOLUTEPATHNOTFOUND 
-                            "The path\n%s\nin the patchfile does not exist.\nTortoiseGitMerge tried to apply the patch by stripping prefixes but no matching path could be found."
     IDS_DELETEWHENEMPTY     "The file \n%s\nis empty.\nDo you want to remove the file?"
     IDS_EMPTYLINETT         "(no line number)"
     IDS_WARNMODIFIEDOUTSIDELOOSECHANGES 
@@ -1029,28 +1013,12 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_ERR_THREADSTARTFAILED "Could not start thread!"
-END
-
-STRINGTABLE
-BEGIN
     IDS_APPNAME             "TortoiseGitMerge"
 END
 
 STRINGTABLE
 BEGIN
-    IDS_ERR_DIFFVIEWSTART   "Could not start diff viewer!\n%s"
     IDS_ERR_PATCHPATHS      "Both the path to the patch file and the target path must be absolute paths!"
-END
-
-STRINGTABLE
-BEGIN
-    IDS_UTILS_SELECTTEXTVIEWER "Select text editor application"
-END
-
-STRINGTABLE
-BEGIN
-    IDS_ERR_TEXTVIEWSTART   "Could not start text viewer!\n%s"
 END
 
 STRINGTABLE
@@ -1081,7 +1049,6 @@ BEGIN
     IDS_ASKFORSAVE_NOSAVE_OPEN 
                             "Don't save\nClose the views without saving the modifications"
     IDS_ASKFORSAVE_CANCEL_OPEN "Cancel\nStay with current files"
-    IDS_ASKFORSAVE_CANCEL_RELOAD "Cancel\nDon't reload views"
     IDS_ASKFORSAVE_CANCEL_OPTIONS "Cancel\nStay with current settings"
 END
 
@@ -1108,34 +1075,6 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_MSGBOX_OK           "&OK"
-    IDS_MSGBOX_CANCEL       "&Cancel"
-    IDS_MSGBOX_IGNORE       "Ignore"
-    IDS_MSGBOX_RETRY        "Retry"
-    IDS_MSGBOX_ABORT        "Abort"
-    IDS_MSGBOX_HELP         "&Help"
-    IDS_MSGBOX_YES          "Yes"
-END
-
-STRINGTABLE
-BEGIN
-    IDS_MSGBOX_NO           "No"
-    IDS_MSGBOX_CONTINUE     "Continue"
-    IDS_MSGBOX_DONOTASKAGAIN "Don't ask me again"
-    IDS_MSGBOX_DONOTTELLAGAIN "Don't tell me again"
-    IDS_MSGBOX_DONOTSHOWAGAIN "Don't show this message again"
-    IDS_MSGBOX_YESTOALL     "Yes to all"
-    IDS_MSGBOX_NOTOALL      "No to all"
-    IDS_MSGBOX_TRYAGAIN     "Try again"
-    IDS_MSGBOX_REPORT       "Report"
-    IDS_MSGBOX_IGNOREALL    "Ignore all"
-    IDS_MSGBOX_SKIP         "Skip"
-    IDS_MSGBOX_SKIPALL      "Skip all"
-END
-
-STRINGTABLE
-BEGIN
-    IDS_ASKFORSAVE_TASK9    "When resolving conflicts, you always have to save even if there is no conflict shown. TortoiseGitMerge can merge changes that Git can't and won't show a conflict for those!"
     IDS_ASKFORSAVE_SAVELEFT "Save Left File\nThe modifications are saved to\n%s"
     IDS_ASKFORSAVE_SAVELEFTAS 
                             "Save Left File as\nYou're asked where to save the left file"
