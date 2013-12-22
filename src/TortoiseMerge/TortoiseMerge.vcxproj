@@ -443,6 +443,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resources\download.avi" />
+    <None Include="..\Resources\ignorecomments.txt" />
     <None Include="..\Resources\lineadded.ico" />
     <None Include="..\Resources\lineconflicted.ico" />
     <None Include="..\Resources\lineconflictedignored.ico" />
