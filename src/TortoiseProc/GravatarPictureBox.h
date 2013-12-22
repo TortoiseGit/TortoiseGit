@@ -17,8 +17,6 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #pragma once
-#include <afx.h>
-#include "gittype.h"
 #include <WinInet.h>
 
 class CGravatar : public CStatic
