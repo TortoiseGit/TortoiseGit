@@ -262,14 +262,6 @@ BOOL CRebaseDlg::OnInitDialog()
 
 	this->SetControlEnable();
 
-	if(!this->m_PreCmd.IsEmpty())
-	{
-		CProgressDlg progress;
-		progress.m_GitCmd=m_PreCmd;
-		progress.m_bAutoCloseOnSuccess=true;
-		progress.DoModal();
-	}
-
 	if(m_IsCherryPick)
 	{
 		this->m_BranchCtrl.SetCurSel(-1);
