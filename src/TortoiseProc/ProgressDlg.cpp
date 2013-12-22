@@ -36,13 +36,18 @@
 #include "Win7.h"
 #include "MessageBox.h"
 #include "LogFile.h"
+#include "CmdLineParser.h"
 
 // CProgressDlg dialog
 
 IMPLEMENT_DYNAMIC(CProgressDlg, CResizableStandAloneDialog)
 
 CProgressDlg::CProgressDlg(CWnd* pParent /*=NULL*/)
-	: CResizableStandAloneDialog(CProgressDlg::IDD, pParent), m_bShowCommand(true), m_bAutoCloseOnSuccess(false), m_bAbort(false), m_bDone(false), m_startTick(GetTickCount())
+	: CResizableStandAloneDialog(CProgressDlg::IDD, pParent)
+	, m_bShowCommand(true)
+	, m_bAbort(false)
+	, m_bDone(false)
+	, m_startTick(GetTickCount())
 	, m_bThreadRunning(FALSE)
 	, m_BufStart(0)
 	, m_Git(&g_Git)
@@ -53,6 +58,22 @@ CProgressDlg::CProgressDlg(CWnd* pParent /*=NULL*/)
 	m_bAltAbortPress=false;
 	m_bBufferAll=false;
 	m_GitStatus = (DWORD)-1;
+	int autoClose = CRegDWORD(_T("Software\\TortoiseGit\\AutoCloseGitProgress"), 0);
+	CCmdLineParser parser(AfxGetApp()->m_lpCmdLine);
+	if (parser.HasKey(_T("AutoClose")))
+		autoClose = parser.GetLongVal(_T("AutoClose"));
+	switch (autoClose)
+	{
+	case 1:
+		m_AutoClose = AUTOCLOSE_IF_NO_OPTIONS;
+		break;
+	case 2:
+		m_AutoClose = AUTOCLOSE_IF_NO_ERRORS;
+		break;
+	default:
+		m_AutoClose = AUTOCLOSE_NO;
+		break;
+	}
 }
 
 CProgressDlg::~CProgressDlg()
@@ -409,11 +430,8 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 
 		if(wParam == MSG_PROGRESSDLG_END && m_GitStatus == 0)
 		{
-			if(m_bAutoCloseOnSuccess)
-			{
-				m_Log.GetWindowText(this->m_LogText);
-				EndDialog(IDOK);
-			}
+			if (m_AutoClose == AUTOCLOSE_IF_NO_OPTIONS && m_PostCmdList.IsEmpty() || m_AutoClose == AUTOCLOSE_IF_NO_ERRORS)
+				PostMessage(WM_COMMAND, 1, (LPARAM)GetDlgItem(IDOK)->m_hWnd);
 		}
 	}
 

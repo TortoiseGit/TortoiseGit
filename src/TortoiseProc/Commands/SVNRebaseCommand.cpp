@@ -102,7 +102,7 @@ bool SVNRebaseCommand::Execute()
 	}
 	CProgressDlg progress;
 	progress.m_GitCmd=_T("git.exe svn fetch");
-	progress.m_bAutoCloseOnSuccess = true;
+	progress.m_AutoClose = AUTOCLOSE_IF_NO_ERRORS;
 
 	if(progress.DoModal()!=IDOK)
 	{
@@ -136,7 +136,7 @@ bool SVNRebaseCommand::Execute()
 		CProgressDlg progressReset;
 		cmd.Format(_T("git.exe reset --hard %s --"), out);
 		progressReset.m_GitCmd = cmd;
-		progressReset.m_bAutoCloseOnSuccess = true;
+		progressReset.m_AutoClose = AUTOCLOSE_IF_NO_ERRORS;
 
 		if (progressReset.DoModal() != IDOK)
 			return false;

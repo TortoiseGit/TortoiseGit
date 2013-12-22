@@ -708,8 +708,8 @@ CAPTION "General::Dialogs 2"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
     GROUPBOX        "Misc",IDC_STATIC,7,8,287,108
-    LTEXT           "&Autoclose:",IDC_STATIC,14,16,85,16,SS_CENTERIMAGE | NOT WS_VISIBLE
-    COMBOBOX        IDC_AUTOCLOSECOMBO,107,18,177,75,CBS_DROPDOWNLIST | NOT WS_VISIBLE | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "&Autoclose Git.exe dialog:",IDC_STATIC,14,16,85,16,SS_CENTERIMAGE
+    COMBOBOX        IDC_AUTOCLOSECOMBO,107,18,177,75,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
     CONTROL         "Use recycle bin when reverting",IDC_USERECYCLEBIN,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,34,270,10
     CONTROL         "Confirm to kill running git process",IDC_CONFIRMKILLPROCESS,
@@ -3691,7 +3691,7 @@ BEGIN
     IDS_PROGRS_CLOSE_NOERROR "Auto-close if no errors"
     IDS_PROGRS_CLOSE_NOCONFLICTS "Auto-close if no conflicts"
     IDS_PROGRS_CLOSE_NOMERGES "Auto-close if no merges, adds or deletes"
-    IDS_PROGRS_CLOSE_LOCAL  "Auto-close for local operations"
+    IDS_PROGRS_CLOSE_NOPTIONS "Auto-close if no further options are available"
 END
 
 STRINGTABLE

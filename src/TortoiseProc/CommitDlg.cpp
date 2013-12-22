@@ -999,7 +999,6 @@ void CCommitDlg::OnOK()
 		progress.m_GitCmd=cmd;
 		progress.m_bShowCommand = FALSE;	// don't show the commit command
 		progress.m_PreText = out;			// show any output already generated in log window
-		progress.m_bAutoCloseOnSuccess = m_bAutoClose;
 
 		int indexPull = -1;
 		int indexReCommit = -1;

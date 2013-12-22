@@ -29,8 +29,5 @@ bool PullCommand::Execute()
 		return false;
 	}
 
-	bool autoClose = false;
-	if (parser.HasVal(_T("closeonend")))
-		autoClose = !!parser.GetLongVal(_T("closeonend"));
-	return CAppUtils::Pull(false, autoClose);
+	return CAppUtils::Pull(false);
 }

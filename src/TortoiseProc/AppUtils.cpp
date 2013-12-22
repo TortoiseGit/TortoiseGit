@@ -1127,7 +1127,7 @@ bool CAppUtils::CreateBranchTag(bool IsTag,CString *CommitHash, bool switch_new_
 	return FALSE;
 }
 
-bool CAppUtils::Switch(CString initialRefName, bool autoclose)
+bool CAppUtils::Switch(CString initialRefName)
 {
 	CGitSwitchDlg dlg;
 	if(!initialRefName.IsEmpty())
@@ -1144,12 +1144,12 @@ bool CAppUtils::Switch(CString initialRefName, bool autoclose)
 		if (dlg.m_VersionName.Left(11) ==_T("refs/heads/") && dlg.m_bBranchOverride != TRUE)
 			dlg.m_VersionName = dlg.m_VersionName.Mid(11);
 
-		return PerformSwitch(dlg.m_VersionName, dlg.m_bForce == TRUE , branch, dlg.m_bBranchOverride == TRUE, dlg.m_bTrack, autoclose, dlg.m_bMerge == TRUE);
+		return PerformSwitch(dlg.m_VersionName, dlg.m_bForce == TRUE , branch, dlg.m_bBranchOverride == TRUE, dlg.m_bTrack, dlg.m_bMerge == TRUE);
 	}
 	return FALSE;
 }
 
-bool CAppUtils::PerformSwitch(CString ref, bool bForce /* false */, CString sNewBranch /* CString() */, bool bBranchOverride /* false */, BOOL bTrack /* 2 */, bool autoClose /* false */, bool bMerge /* false */)
+bool CAppUtils::PerformSwitch(CString ref, bool bForce /* false */, CString sNewBranch /* CString() */, bool bBranchOverride /* false */, BOOL bTrack /* 2 */, bool bMerge /* false */)
 {
 	CString cmd;
 	CString track;
@@ -1184,7 +1184,6 @@ bool CAppUtils::PerformSwitch(CString ref, bool bForce /* false */, CString sNew
 		 g_Git.FixBranchName(ref));
 
 	CProgressDlg progress;
-	progress.m_bAutoCloseOnSuccess = autoClose;
 	progress.m_GitCmd = cmd;
 
 	INT_PTR idPull = -1;
@@ -2093,7 +2092,7 @@ CString CAppUtils::ChooseRepository(CString *path)
 	}
 }
 
-bool CAppUtils::SendPatchMail(CTGitPathList &list,bool autoclose)
+bool CAppUtils::SendPatchMail(CTGitPathList& list)
 {
 	CSendMailDlg dlg;
 
@@ -2108,8 +2107,6 @@ bool CAppUtils::SendPatchMail(CTGitPathList &list,bool autoclose)
 
 		theApp.m_pMainWnd = &progDlg;
 		progDlg.SetCommand(CGitProgressList::GitProgress_SendMail);
-
-		progDlg.SetAutoClose(autoclose);
 
 		progDlg.SetPathList(dlg.m_PathList);
 				//ProjectProperties props;
@@ -2127,7 +2124,7 @@ bool CAppUtils::SendPatchMail(CTGitPathList &list,bool autoclose)
 	return false;
 }
 
-bool CAppUtils::SendPatchMail(CString &cmd,CString &formatpatchoutput,bool autoclose)
+bool CAppUtils::SendPatchMail(CString &cmd,CString &formatpatchoutput)
 {
 	CTGitPathList list;
 	CString log=formatpatchoutput;
@@ -2150,7 +2147,7 @@ bool CAppUtils::SendPatchMail(CString &cmd,CString &formatpatchoutput,bool autoc
 	}
 	if (!list.IsEmpty())
 	{
-		return SendPatchMail(list, autoclose);
+		return SendPatchMail(list);
 	}
 	else
 	{
@@ -2202,7 +2199,7 @@ int CAppUtils::SaveCommitUnicodeFile(CString &filename, CString &message)
 	return 0;
 }
 
-bool CAppUtils::Pull(bool showPush, bool autoClose)
+bool CAppUtils::Pull(bool showPush)
 {
 	CPullFetchDlg dlg;
 	dlg.m_IsPull = TRUE;
@@ -2263,8 +2260,6 @@ bool CAppUtils::Pull(bool showPush, bool autoClose)
 		CTGitPath gitPath = g_Git.m_CurrentDir;
 		INT_PTR smUpdateButton = gitPath.HasSubmodules() ? progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_SUBMODULESUPDATE))) + IDC_PROGRESS_BUTTON1 : -1;
 
-		progress.m_bAutoCloseOnSuccess = autoClose;
-
 		INT_PTR ret = progress.DoModal();
 
 		if (ret == IDOK && progress.m_GitStatus == 1 && progress.m_LogText.Find(_T("CONFLICT")) >= 0 && CMessageBox::Show(NULL, IDS_SEECHANGES, IDS_APPNAME, MB_YESNO | MB_ICONINFORMATION) == IDYES)
@@ -2313,7 +2308,7 @@ bool CAppUtils::Pull(bool showPush, bool autoClose)
 		}
 		else if (ret == pushButton)
 		{
-			Push(_T(""), autoClose);
+			Push(_T(""));
 			return true;
 		}
 		else if (ret == smUpdateButton)
@@ -2329,7 +2324,7 @@ bool CAppUtils::Pull(bool showPush, bool autoClose)
 	return true;
 }
 
-bool CAppUtils::Fetch(CString remoteName, bool allowRebase, bool autoClose)
+bool CAppUtils::Fetch(CString remoteName, bool allowRebase)
 {
 	CPullFetchDlg dlg;
 	dlg.m_PreSelectRemote = remoteName;
@@ -2386,8 +2381,6 @@ bool CAppUtils::Fetch(CString remoteName, bool allowRebase, bool autoClose)
 			cmd.Format(_T("git.exe fetch -v %s \"%s\" %s"), arg, url, dlg.m_RemoteBranchName);
 
 		CProgressDlg progress;
-
-		progress.m_bAutoCloseOnSuccess = autoClose;
 
 		progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENULOG)));
 		progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_RESET)));
@@ -2501,7 +2494,7 @@ static void PushCallback(CProgressDlg *dlg, void *caller, int result)
 	}
 }
 
-bool CAppUtils::Push(CString selectLocalBranch, bool autoClose)
+bool CAppUtils::Push(CString selectLocalBranch)
 {
 	CPushDlg dlg;
 	dlg.m_BranchSourceName = selectLocalBranch;
@@ -2544,7 +2537,6 @@ bool CAppUtils::Push(CString selectLocalBranch, bool autoClose)
 			arg += _T("--progress ");
 
 		CProgressDlg progress;
-		progress.m_bAutoCloseOnSuccess=autoClose;
 
 		STRING_VECTOR remotesList;
 		if (dlg.m_bPushAllRemotes)
@@ -2610,7 +2602,7 @@ bool CAppUtils::Push(CString selectLocalBranch, bool autoClose)
 			}
 			else if(ret == IDC_PROGRESS_BUTTON1 + 1)
 			{
-				Push(selectLocalBranch, autoClose);
+				Push(selectLocalBranch);
 			}
 			return TRUE;
 		}
@@ -2621,18 +2613,18 @@ bool CAppUtils::Push(CString selectLocalBranch, bool autoClose)
 				// failed, pull first
 				if (ret == IDC_PROGRESS_BUTTON1)
 				{
-					Pull(true, autoClose);
+					Pull(true);
 				}
 				else if (ret == IDC_PROGRESS_BUTTON1 + 1)
 				{
-					Push(selectLocalBranch, autoClose);
+					Push(selectLocalBranch);
 				}
 			}
 			else
 			{
 				if (ret == IDC_PROGRESS_BUTTON1)
 				{
-					Push(selectLocalBranch, autoClose);
+					Push(selectLocalBranch);
 				}
 			}
 		}
@@ -2791,8 +2783,7 @@ bool CAppUtils::CheckUserData()
 BOOL CAppUtils::Commit(CString bugid,BOOL bWholeProject,CString &sLogMsg,
 					CTGitPathList &pathList,
 					CTGitPathList &selectedList,
-					bool bSelectFilesForCommit,
-					bool autoClose)
+					bool bSelectFilesForCommit)
 {
 	bool bFailed = true;
 
@@ -2811,7 +2802,6 @@ BOOL CAppUtils::Commit(CString bugid,BOOL bWholeProject,CString &sLogMsg,
 		dlg.m_pathList = pathList;
 		dlg.m_checkedPathList = selectedList;
 		dlg.m_bSelectFilesForCommit = bSelectFilesForCommit;
-		dlg.m_bAutoClose = autoClose;
 		if (dlg.DoModal() == IDOK)
 		{
 			if (dlg.m_pathList.IsEmpty())
@@ -3308,7 +3298,7 @@ void CAppUtils::SetWindowTitle(HWND hWnd, const CString& urlorpath, const CStrin
 	SetWindowText(hWnd, pathbuf);
 }
 
-bool CAppUtils::BisectStart(CString lastGood, CString firstBad, bool autoClose)
+bool CAppUtils::BisectStart(CString lastGood, CString firstBad)
 {
 	if (!g_Git.CheckCleanWorkTree())
 	{
@@ -3347,7 +3337,6 @@ bool CAppUtils::BisectStart(CString lastGood, CString firstBad, bool autoClose)
 	{
 		CProgressDlg progress;
 		theApp.m_pMainWnd = &progress;
-		progress.m_bAutoCloseOnSuccess = autoClose;
 		progress.m_GitCmdList.push_back(_T("git.exe bisect start"));
 		progress.m_GitCmdList.push_back(_T("git.exe bisect good ") + bisectStartDlg.m_LastGoodRevision);
 		progress.m_GitCmdList.push_back(_T("git.exe bisect bad ") + bisectStartDlg.m_FirstBadRevision);

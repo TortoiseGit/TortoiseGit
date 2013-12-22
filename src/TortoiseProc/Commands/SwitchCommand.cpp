@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -29,9 +29,5 @@ bool SwitchCommand::Execute()
 {
 	CString base=parser.GetVal(_T("rev"));
 
-	bool autoClose = false;
-	if (parser.HasVal(_T("closeonend")))
-		autoClose = !!parser.GetLongVal(_T("closeonend"));
-
-	return CAppUtils::Switch(base, autoClose);
+	return CAppUtils::Switch(base);
 }

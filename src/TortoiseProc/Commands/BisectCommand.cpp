@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -29,17 +29,13 @@ bool BisectCommand::Execute()
 
 	if (this->parser.HasKey(_T("start")) && !path.IsBisectActive())
 	{
-		bool autoClose = false;
-		if (parser.HasVal(_T("closeonend")))
-			autoClose = !!parser.GetLongVal(_T("closeonend"));
-
 		CString lastGood, firstBad;
 		if (parser.HasKey(_T("good")))
 			lastGood = parser.GetVal(_T("good"));
 		if (parser.HasKey(_T("bad")))
 			firstBad = parser.GetVal(_T("bad"));
 
-		return CAppUtils::BisectStart(lastGood, firstBad, autoClose);
+		return CAppUtils::BisectStart(lastGood, firstBad);
 	}
 	else if ((this->parser.HasKey(_T("good")) || this->parser.HasKey(_T("bad")) || this->parser.HasKey(_T("reset"))) && path.IsBisectActive())
 	{
@@ -60,8 +56,6 @@ bool BisectCommand::Execute()
 
 		CProgressDlg progress;
 		theApp.m_pMainWnd = &progress;
-		if (parser.HasVal(_T("closeonend")))
-			progress.m_bAutoCloseOnSuccess = !!parser.GetLongVal(_T("closeonend"));
 		progress.m_GitCmd = cmd;
 
 		if (path.HasSubmodules())

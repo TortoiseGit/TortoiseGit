@@ -64,7 +64,6 @@ bool SVNFetchCommand::Execute()
 	progress.m_GitCmd=_T("git.exe svn fetch");
 	progress.m_PostCmdList.Add(_T("Fetched Diff"));
 	progress.m_PostCmdList.Add(_T("Fetched Log"));
-	progress.m_bAutoCloseOnSuccess = autoClose;
 
 	INT_PTR userResponse = progress.DoModal();
 	::DeleteFile(g_Git.m_CurrentDir + _T("\\sys$command"));

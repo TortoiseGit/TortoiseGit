@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -30,6 +30,12 @@
 #define MSG_PROGRESSDLG_END   110
 #define MSG_PROGRESSDLG_FAILED 111
 
+typedef enum {
+	AUTOCLOSE_NO,
+	AUTOCLOSE_IF_NO_OPTIONS,
+	AUTOCLOSE_IF_NO_ERRORS,
+} GitProgressAutoClose;
+
 class CProgressDlg : public CResizableStandAloneDialog
 {
 	DECLARE_DYNAMIC(CProgressDlg)
@@ -57,7 +63,7 @@ public:
 	bool					m_bShowCommand;	// whether to display the command in the log window (default true)
 	CString					m_LogFile;
 	bool					m_bBufferAll;	// Buffer All to improve speed when there are many file add at commit
-	bool					m_bAutoCloseOnSuccess;
+	GitProgressAutoClose	m_AutoClose;
 	CGit *					m_Git;
 
 	DWORD					m_GitStatus;

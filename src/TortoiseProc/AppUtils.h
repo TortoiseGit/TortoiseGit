@@ -150,8 +150,8 @@ public:
 
 	static bool Export(CString *BashHash = nullptr, const CTGitPath *orgPath = nullptr);
 	static bool CreateBranchTag(bool IsTag=TRUE,CString *CommitHash=NULL, bool switch_new_brach=false);
-	static bool Switch(CString initialRefName = CString(), bool autoClose = false);
-	static bool PerformSwitch(CString ref, bool bForce = false, CString sNewBranch = CString(), bool bBranchOverride = false, BOOL bTrack = 2, bool autoClose = false, bool bMerge = false);
+	static bool Switch(CString initialRefName = CString());
+	static bool PerformSwitch(CString ref, bool bForce = false, CString sNewBranch = CString(), bool bBranchOverride = false, BOOL bTrack = 2, bool bMerge = false);
 
 	static bool IgnoreFile(CTGitPathList &filelist,bool IsMask);
 	static bool GitReset(CString *CommitHash,int type=1);
@@ -171,16 +171,16 @@ public:
 	static CString GetClipboardLink(const CString &skipGitPrefix = _T(""), int paramsCount = 0);
 	static CString ChooseRepository(CString *path);
 
-	static bool SendPatchMail(CTGitPathList &pathlist,bool autoclose=false);
-	static bool SendPatchMail(CString &cmd,CString &formatpatchoutput,bool autoclose=false);
+	static bool SendPatchMail(CTGitPathList &pathlist);
+	static bool SendPatchMail(CString &cmd,CString &formatpatchoutput);
 
 	static int  SaveCommitUnicodeFile(CString &filename, CString &mesage);
 
 	static int  GetLogOutputEncode(CGit *pGit=&g_Git);
 
-	static bool Pull(bool showPush = false, bool autoClose = false);
-	static bool Fetch(CString remoteName = _T(""), bool allowRebase = false, bool autoClose = false);
-	static bool Push(CString selectLocalBranch = CString(), bool autoClose = false);
+	static bool Pull(bool showPush = false);
+	static bool Fetch(CString remoteName = _T(""), bool allowRebase = false);
+	static bool Push(CString selectLocalBranch = CString());
 	static bool RequestPull(CString endrevision = _T(""), CString repositoryUrl = _T(""));
 
 	static bool CreateMultipleDirectory(const CString &dir);
@@ -192,8 +192,7 @@ public:
 	static BOOL Commit(CString bugid,BOOL bWholeProject,CString &sLogMsg,
 					CTGitPathList &pathList,
 					CTGitPathList &selectedList,
-					bool bSelectFilesForCommit,
-					bool autoClose = false);
+					bool bSelectFilesForCommit);
 
 	static BOOL SVNDCommit();
 	static BOOL Merge(CString *commit =NULL);
@@ -203,7 +202,7 @@ public:
 	static int GetMsysgitVersion();
 	static void MarkWindowAsUnpinnable(HWND hWnd);
 
-	static bool BisectStart(CString lastGood, CString firstBad, bool autoClose = false);
+	static bool BisectStart(CString lastGood, CString firstBad);
 
 	static int	Git2GetUserPassword(git_cred **out, const char *url, const char *username_from_url, unsigned int allowed_types, void *payload);
 

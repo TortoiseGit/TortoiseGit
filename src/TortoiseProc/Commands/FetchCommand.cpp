@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2013 Sven Strickroth <email@cs-ware.de>
+// Copyright (C) 2008-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -28,9 +28,5 @@ bool FetchCommand::Execute()
 		return false;
 	}
 
-	bool autoClose = false;
-	if (parser.HasVal(_T("closeonend")))
-		autoClose = !!parser.GetLongVal(_T("closeonend"));
-
-	return CAppUtils::Fetch(parser.GetVal(_T("remote")), true, autoClose);
+	return CAppUtils::Fetch(parser.GetVal(_T("remote")), true);
 }

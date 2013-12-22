@@ -56,9 +56,9 @@ private:
 	CToolTips		m_tooltips;
 	CRegDWORD		m_regUseRecycleBin;
 	BOOL			m_bUseRecycleBin;
-	CRegDWORD		m_regAutoClose;
-	DWORD_PTR		m_dwAutoClose;
-	CComboBox		m_cAutoClose;
+	CRegDWORD		m_regAutoCloseGitProgress;
+	DWORD_PTR		m_dwAutoCloseGitProgress;
+	CComboBox		m_cAutoCloseGitProgress;
 	CRegDWORD		m_regConfirmKillProcess;
 	BOOL			m_bConfirmKillProcess;
 	CRegDWORD		m_regSyncDialogRandomPos;

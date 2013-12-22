@@ -301,9 +301,8 @@
 			dialogs the way you like them.
 		</para>
 		<variablelist>
-<!--
 			<varlistentry>
-				<term>Progress Dialog</term>
+				<term>Git.exe Progress Dialog</term>
 				<listitem>
 					<para>
 						TortoiseGit can automatically close all progress dialogs 
@@ -316,6 +315,7 @@
 						ignore some types of message and have the dialog
 						close automatically if there are no critical changes.
 					</para>
+<!--
 					<para>
 						<guilabel>Auto-close if no merges, adds or deletes</guilabel>
 						means that the progress dialog will close if there were
@@ -339,18 +339,18 @@
 						if there were any conflicts or errors, the dialog
 						remains open.
 					</para>
+-->
+					<para>
+						<guilabel>Auto-close if no further options are available</guilabel>
+						will close the dialog if git.exe exited cleanly (i.e. no error occurred)
+						and no further options are presented in the progress dialog.
+					</para>
 					<para>
 						<guilabel>Auto-close if no errors</guilabel>
-						always closes the dialog even if there were conflicts.
-						The only condition that keeps the dialog open is an
-						error condition, which occurs when Git is unable
-						to complete the task. For example, an update fails
-						because the server is inaccessible, or a commit fails
-						because the working tree is out-of-date.
+						always closes the dialog if git.exe exists with no error code.
 					</para>
 				</listitem>
 			</varlistentry>
--->
 			<varlistentry>
 				<term>Use recycle bin when reverting</term>
 				<listitem>

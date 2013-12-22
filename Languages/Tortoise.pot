@@ -389,7 +389,7 @@ msgid "&Auto Hide"
 msgstr ""
 
 #. Resource IDs: (65535)
-msgid "&Autoclose:"
+msgid "&Autoclose Git.exe dialog:"
 msgstr ""
 
 #. Resource IDs: (1505)
@@ -2004,15 +2004,15 @@ msgid "Auto&Crlf"
 msgstr ""
 
 #. Resource IDs: (222)
-msgid "Auto-close for local operations"
-msgstr ""
-
-#. Resource IDs: (222)
 msgid "Auto-close if no conflicts"
 msgstr ""
 
 #. Resource IDs: (222)
 msgid "Auto-close if no errors"
+msgstr ""
+
+#. Resource IDs: (222)
+msgid "Auto-close if no further options are available"
 msgstr ""
 
 #. Resource IDs: (222)
