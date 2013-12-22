@@ -3114,38 +3114,29 @@ void CMainFrame::LoadIgnoreCommentData()
 	static bool bLoaded = false;
 	if (bLoaded)
 		return;
-	CString sPath = CPathUtils::GetAppDataDirectory() + L"IgnoreComments";
+	CString sPath = CPathUtils::GetAppDataDirectory() + L"ignorecomments.txt";
 	if (!PathFileExists(sPath))
 	{
-		CStdioFile file;
-		if (file.Open(sPath, CFile::modeReadWrite|CFile::modeCreate))
+		// ignore comments file does not exist (yet), so create a default one
+		HRSRC hRes = FindResource(NULL, MAKEINTRESOURCE(IDR_IGNORECOMMENTSTXT), L"config");
+		if (hRes)
 		{
-			file.WriteString(L"js,c,cc,cpp,cxx,h,hh,hpp,hxx,ipp,m,mm,sma,cs,vb,vbs,rs,st,il,osx,ecl,eclattr,hql,powerpro,impl,sign,prg,gui,gc,v,vh,em,src,pov,inc,java,jad,pde,es,ch,chs,chf,go,rc,rc2,dlg,idl,odl,as,asc,jsfl,vala,pike=//,/*,*/\n");
-			file.WriteString(L"html,htm,asp,shtml,htd,jsp,htt,cfm,tpl,dtd,hta,wxi,wxs,wxl,php,php3,phtml,vxml,xml,xsl,svg,xul,xsd,xslt,axl,xrc,rdf,build,docbook,mako=,<!--,-->\n");
-			file.WriteString(L"kvs,nim,po,pot,ps1,g,gd,gi,cmake,ctest,sh,bsh,ksh,yaml,yml,lt,ant,tab,tcl,exp,rb,rbw,rake,rjs,rakefile,conf,htaccess,pl,pm,pod,py,pyw,mak,mk,configure,properties,session,ini,inf,reg,url,cfg,cnf,aut,=#,,\n");
-			file.WriteString(L"pro,=%,/*,*/\n");
-			file.WriteString(L"coffee,=#,###,###\n");
-			file.WriteString(L"m3,i3,mg,ig,dpr,dpk,pas,dfm,pp=,(*,*)\n");
-			file.WriteString(L"t2t,erl,hrl,mp,mpx,mms,ps,asm,octave=%,,\n");
-			file.WriteString(L"avs,avsi=#,/*,*/\n");
-			file.WriteString(L"ins,iss,isl,orc,sco,csd,au3,kix,nsi,nsh,=;,,\n");
-			file.WriteString(L"tacl===,,\n");
-			file.WriteString(L"cob=*>,,\n");
-			file.WriteString(L"tal,vhdl,vhd,asn1,mib,e,ada,adb=--,,\n");
-			file.WriteString(L"r,reb,lisp,lsp,el=;,;;,;;\n");
-			file.WriteString(L"inp,dat,msg=**,,\n");
-			file.WriteString(L"d=//,/+,+/\n");
-			file.WriteString(L"als,cir,sch,scp=*,,\n");
-			file.WriteString(L"hs=-,{-,-}\n");
-			file.WriteString(L"bas,bi,pb,bb,=',/','/\n");
-			file.WriteString(L"forth,spf=\\,(,)\n");
-			file.WriteString(L"css=,/*,*/\n");
-			file.WriteString(L"f,for,90,f95,f2k,app,apl=!,,\n");
-			file.WriteString(L"ave='--,,\n");
-			file.WriteString(L"lua=--,--[[,]]\n");
-			file.WriteString(L"sql,spec,body,sps,spb,sf,sp=-- ,/*,*/\n");
-
-			file.Close();
+			HGLOBAL hResourceLoaded = LoadResource(NULL, hRes);
+			if (hResourceLoaded)
+			{
+				char * lpResLock = (char *) LockResource(hResourceLoaded);
+				DWORD dwSizeRes = SizeofResource(NULL, hRes);
+				if (lpResLock)
+				{
+					HANDLE hFile = CreateFile(sPath, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+					if (hFile != INVALID_HANDLE_VALUE)
+					{
+						DWORD dwWritten = 0;
+						WriteFile(hFile, lpResLock, dwSizeRes, &dwWritten, NULL);
+						CloseHandle(hFile);
+					}
+				}
+			}
 		}
 	}
 	CStdioFile file;

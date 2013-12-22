@@ -598,6 +598,9 @@
     <None Include="..\Resources\RegexFilter.ini">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="..\Resources\ignorecomments.txt">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\Resources\TortoiseMergeENG.rc">

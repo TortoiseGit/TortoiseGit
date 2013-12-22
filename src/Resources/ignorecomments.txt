@@ -1,0 +1,24 @@
+js,c,cc,cpp,cxx,h,hh,hpp,hxx,ipp,m,mm,sma,cs,vb,vbs,rs,st,il,osx,ecl,eclattr,hql,powerpro,impl,sign,prg,gui,gc,v,vh,em,src,pov,inc,java,jad,pde,es,ch,chs,chf,go,rc,rc2,dlg,idl,odl,as,asc,jsfl,vala,pike=//,/*,*/
+html,htm,asp,shtml,htd,jsp,htt,cfm,tpl,dtd,hta,wxi,wxs,wxl,php,php3,phtml,vxml,xml,xsl,svg,xul,xsd,xslt,axl,xrc,rdf,build,docbook,mako=,<!--,-->
+kvs,nim,po,pot,ps1,g,gd,gi,cmake,ctest,sh,bsh,ksh,yaml,yml,lt,ant,tab,tcl,exp,rb,rbw,rake,rjs,rakefile,conf,htaccess,pl,pm,pod,py,pyw,mak,mk,configure,properties,session,ini,inf,reg,url,cfg,cnf,aut,=#,,
+pro,=%,/*,*/
+coffee,=#,###,###
+m3,i3,mg,ig,dpr,dpk,pas,dfm,pp=,(*,*)
+t2t,erl,hrl,mp,mpx,mms,ps,asm,octave=%,,
+avs,avsi=#,/*,*/
+ins,iss,isl,orc,sco,csd,au3,kix,nsi,nsh,=;,,
+tacl===,,
+cob=*>,,
+tal,vhdl,vhd,asn1,mib,e,ada,adb=--,,
+r,reb,lisp,lsp,el=;,;;,;;
+inp,dat,msg=**,,
+d=//,/+,+/
+als,cir,sch,scp=*,,
+hs=-,{-,-}
+bas,bi,pb,bb,=',/','/
+forth,spf=\,(,)
+css=,/*,*/
+f,for,90,f95,f2k,app,apl=!,,
+ave='--,,
+lua=--,--[[,]]
+sql,spec,body,sps,spb,sf,sp=-- ,/*,*/
