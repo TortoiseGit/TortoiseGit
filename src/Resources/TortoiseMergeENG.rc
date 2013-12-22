@@ -675,10 +675,10 @@ IDR_RIBBON              RT_RIBBON_XML           "ribbon.mfcribbon-ms"
 
 /////////////////////////////////////////////////////////////////////////////
 //
-// config
+// CONFIG
 //
 
-IDR_REGEXFILTERINI      config                  "RegexFilter.ini"
+IDR_REGEXFILTERINI      CONFIG                  "RegexFilter.ini"
 
 /////////////////////////////////////////////////////////////////////////////
 //

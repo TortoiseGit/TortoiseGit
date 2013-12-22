@@ -595,7 +595,9 @@
     <None Include="..\Resources\ribbon\ribbonsmallhdpi.png">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="..\Resources\RegexFilter.ini" />
+    <None Include="..\Resources\RegexFilter.ini">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\Resources\TortoiseMergeENG.rc">

@@ -3109,155 +3109,6 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 	__super::OnTimer(nIDEvent);
 }
 
-void CMainFrame::FillEncodingButton( CMFCRibbonButton * pButton, int start )
-{
-	pButton->SetDefaultCommand(FALSE);
-	pButton->AddSubItem(new CMFCRibbonButton(start + CFileTextLines::UnicodeType::ASCII,       L"ASCII"       ));
-	pButton->AddSubItem(new CMFCRibbonButton(start + CFileTextLines::UnicodeType::BINARY,      L"BINARY"      ));
-	pButton->AddSubItem(new CMFCRibbonButton(start + CFileTextLines::UnicodeType::UTF16_LE,    L"UTF-16LE"    ));
-	pButton->AddSubItem(new CMFCRibbonButton(start + CFileTextLines::UnicodeType::UTF16_LEBOM, L"UTF-16LE BOM"));
-	pButton->AddSubItem(new CMFCRibbonButton(start + CFileTextLines::UnicodeType::UTF16_BE,    L"UTF-16BE"    ));
-	pButton->AddSubItem(new CMFCRibbonButton(start + CFileTextLines::UnicodeType::UTF16_BEBOM, L"UTF-16BE BOM"));
-	pButton->AddSubItem(new CMFCRibbonButton(start + CFileTextLines::UnicodeType::UTF32_LE,    L"UTF-32LE"    ));
-	pButton->AddSubItem(new CMFCRibbonButton(start + CFileTextLines::UnicodeType::UTF32_BE,    L"UTF-32BE"    ));
-	pButton->AddSubItem(new CMFCRibbonButton(start + CFileTextLines::UnicodeType::UTF8,        L"UTF-8"       ));
-	pButton->AddSubItem(new CMFCRibbonButton(start + CFileTextLines::UnicodeType::UTF8BOM,     L"UTF-8 BOM"   ));
-}
-
-void CMainFrame::FillEOLButton( CMFCRibbonButton * pButton, int start )
-{
-	pButton->SetDefaultCommand(FALSE);
-	pButton->AddSubItem(new CMFCRibbonButton(start + EOL::EOL_LF  , L"LF"  ));
-	pButton->AddSubItem(new CMFCRibbonButton(start + EOL::EOL_CRLF, L"CRLF"));
-	pButton->AddSubItem(new CMFCRibbonButton(start + EOL::EOL_LFCR, L"LRCR"));
-	pButton->AddSubItem(new CMFCRibbonButton(start + EOL::EOL_CR  , L"CR"  ));
-	pButton->AddSubItem(new CMFCRibbonButton(start + EOL::EOL_VT  , L"VT"  ));
-	pButton->AddSubItem(new CMFCRibbonButton(start + EOL::EOL_FF  , L"FF"  ));
-	pButton->AddSubItem(new CMFCRibbonButton(start + EOL::EOL_NEL , L"NEL" ));
-	pButton->AddSubItem(new CMFCRibbonButton(start + EOL::EOL_LS  , L"LS"  ));
-	pButton->AddSubItem(new CMFCRibbonButton(start + EOL::EOL_PS  , L"PS"  ));
-}
-
-void CMainFrame::OnEncodingLeft( UINT cmd )
-{
-	if (m_pwndLeftView)
-	{
-		m_pwndLeftView->SetTextType(CFileTextLines::UnicodeType(cmd-ID_INDICATOR_LEFTENCODINGSTART));
-		m_pwndLeftView->RefreshViews();
-	}
-}
-
-void CMainFrame::OnEncodingRight( UINT cmd )
-{
-	if (m_pwndRightView)
-	{
-		m_pwndRightView->SetTextType(CFileTextLines::UnicodeType(cmd-ID_INDICATOR_RIGHTENCODINGSTART));
-		m_pwndRightView->RefreshViews();
-	}
-}
-
-void CMainFrame::OnEncodingBottom( UINT cmd )
-{
-	if (m_pwndBottomView)
-	{
-		m_pwndBottomView->SetTextType(CFileTextLines::UnicodeType(cmd-ID_INDICATOR_BOTTOMENCODINGSTART));
-		m_pwndBottomView->RefreshViews();
-	}
-}
-
-void CMainFrame::OnEOLLeft( UINT cmd )
-{
-	if (m_pwndLeftView)
-	{
-		m_pwndLeftView->ReplaceLineEndings(EOL(cmd-ID_INDICATOR_LEFTEOLSTART));
-		m_pwndLeftView->RefreshViews();
-	}
-}
-
-void CMainFrame::OnEOLRight( UINT cmd )
-{
-	if (m_pwndRightView)
-	{
-		m_pwndRightView->ReplaceLineEndings(EOL(cmd-ID_INDICATOR_RIGHTEOLSTART));
-		m_pwndRightView->RefreshViews();
-	}
-}
-
-void CMainFrame::OnEOLBottom( UINT cmd )
-{
-	if (m_pwndBottomView)
-	{
-		m_pwndBottomView->ReplaceLineEndings(EOL(cmd-ID_INDICATOR_BOTTOMEOLSTART));
-		m_pwndBottomView->RefreshViews();
-	}
-}
-
-void CMainFrame::OnUpdateEncodingLeft( CCmdUI *pCmdUI )
-{
-	if (m_pwndLeftView)
-	{
-		pCmdUI->SetCheck(CFileTextLines::UnicodeType(pCmdUI->m_nID - ID_INDICATOR_LEFTENCODINGSTART) == m_pwndLeftView->GetTextType());
-		pCmdUI->Enable(m_pwndLeftView->IsWritable());
-	}
-	else
-		pCmdUI->Enable(FALSE);
-}
-
-void CMainFrame::OnUpdateEncodingRight( CCmdUI *pCmdUI )
-{
-	if (m_pwndRightView)
-	{
-		pCmdUI->SetCheck(CFileTextLines::UnicodeType(pCmdUI->m_nID - ID_INDICATOR_RIGHTENCODINGSTART) == m_pwndRightView->GetTextType());
-		pCmdUI->Enable(m_pwndRightView->IsWritable());
-	}
-	else
-		pCmdUI->Enable(FALSE);
-}
-
-void CMainFrame::OnUpdateEncodingBottom( CCmdUI *pCmdUI )
-{
-	if (m_pwndBottomView)
-	{
-		pCmdUI->SetCheck(CFileTextLines::UnicodeType(pCmdUI->m_nID - ID_INDICATOR_BOTTOMENCODINGSTART) == m_pwndBottomView->GetTextType());
-		pCmdUI->Enable(m_pwndBottomView->IsWritable());
-	}
-	else
-		pCmdUI->Enable(FALSE);
-}
-
-void CMainFrame::OnUpdateEOLLeft( CCmdUI *pCmdUI )
-{
-	if (m_pwndLeftView)
-	{
-		pCmdUI->SetCheck(EOL(pCmdUI->m_nID - ID_INDICATOR_LEFTEOLSTART) == m_pwndLeftView->GetLineEndings());
-		pCmdUI->Enable(m_pwndLeftView->IsWritable());
-	}
-	else
-		pCmdUI->Enable(FALSE);
-}
-
-void CMainFrame::OnUpdateEOLRight( CCmdUI *pCmdUI )
-{
-	if (m_pwndRightView)
-	{
-		pCmdUI->SetCheck(EOL(pCmdUI->m_nID - ID_INDICATOR_RIGHTEOLSTART) == m_pwndRightView->GetLineEndings());
-		pCmdUI->Enable(m_pwndRightView->IsWritable());
-	}
-	else
-		pCmdUI->Enable(FALSE);
-}
-
-void CMainFrame::OnUpdateEOLBottom( CCmdUI *pCmdUI )
-{
-	if (m_pwndBottomView)
-	{
-		pCmdUI->SetCheck(EOL(pCmdUI->m_nID - ID_INDICATOR_BOTTOMEOLSTART) == m_pwndBottomView->GetLineEndings());
-		pCmdUI->Enable(m_pwndBottomView->IsWritable());
-	}
-	else
-		pCmdUI->Enable(FALSE);
-}
-
 void CMainFrame::LoadIgnoreCommentData()
 {
 	static bool bLoaded = false;
@@ -3472,4 +3323,153 @@ void CMainFrame::BuildRegexSubitems()
 			}
 		}
 	}
+}
+
+void CMainFrame::FillEncodingButton( CMFCRibbonButton * pButton, int start )
+{
+	pButton->SetDefaultCommand(FALSE);
+	pButton->AddSubItem(new CMFCRibbonButton(start + CFileTextLines::UnicodeType::ASCII,       L"ASCII"       ));
+	pButton->AddSubItem(new CMFCRibbonButton(start + CFileTextLines::UnicodeType::BINARY,      L"BINARY"      ));
+	pButton->AddSubItem(new CMFCRibbonButton(start + CFileTextLines::UnicodeType::UTF16_LE,    L"UTF-16LE"    ));
+	pButton->AddSubItem(new CMFCRibbonButton(start + CFileTextLines::UnicodeType::UTF16_LEBOM, L"UTF-16LE BOM"));
+	pButton->AddSubItem(new CMFCRibbonButton(start + CFileTextLines::UnicodeType::UTF16_BE,    L"UTF-16BE"    ));
+	pButton->AddSubItem(new CMFCRibbonButton(start + CFileTextLines::UnicodeType::UTF16_BEBOM, L"UTF-16BE BOM"));
+	pButton->AddSubItem(new CMFCRibbonButton(start + CFileTextLines::UnicodeType::UTF32_LE,    L"UTF-32LE"    ));
+	pButton->AddSubItem(new CMFCRibbonButton(start + CFileTextLines::UnicodeType::UTF32_BE,    L"UTF-32BE"    ));
+	pButton->AddSubItem(new CMFCRibbonButton(start + CFileTextLines::UnicodeType::UTF8,        L"UTF-8"       ));
+	pButton->AddSubItem(new CMFCRibbonButton(start + CFileTextLines::UnicodeType::UTF8BOM,     L"UTF-8 BOM"   ));
+}
+
+void CMainFrame::FillEOLButton( CMFCRibbonButton * pButton, int start )
+{
+	pButton->SetDefaultCommand(FALSE);
+	pButton->AddSubItem(new CMFCRibbonButton(start + EOL::EOL_LF  , L"LF"  ));
+	pButton->AddSubItem(new CMFCRibbonButton(start + EOL::EOL_CRLF, L"CRLF"));
+	pButton->AddSubItem(new CMFCRibbonButton(start + EOL::EOL_LFCR, L"LRCR"));
+	pButton->AddSubItem(new CMFCRibbonButton(start + EOL::EOL_CR  , L"CR"  ));
+	pButton->AddSubItem(new CMFCRibbonButton(start + EOL::EOL_VT  , L"VT"  ));
+	pButton->AddSubItem(new CMFCRibbonButton(start + EOL::EOL_FF  , L"FF"  ));
+	pButton->AddSubItem(new CMFCRibbonButton(start + EOL::EOL_NEL , L"NEL" ));
+	pButton->AddSubItem(new CMFCRibbonButton(start + EOL::EOL_LS  , L"LS"  ));
+	pButton->AddSubItem(new CMFCRibbonButton(start + EOL::EOL_PS  , L"PS"  ));
+}
+
+void CMainFrame::OnEncodingLeft( UINT cmd )
+{
+	if (m_pwndLeftView)
+	{
+		m_pwndLeftView->SetTextType(CFileTextLines::UnicodeType(cmd-ID_INDICATOR_LEFTENCODINGSTART));
+		m_pwndLeftView->RefreshViews();
+	}
+}
+
+void CMainFrame::OnEncodingRight( UINT cmd )
+{
+	if (m_pwndRightView)
+	{
+		m_pwndRightView->SetTextType(CFileTextLines::UnicodeType(cmd-ID_INDICATOR_RIGHTENCODINGSTART));
+		m_pwndRightView->RefreshViews();
+	}
+}
+
+void CMainFrame::OnEncodingBottom( UINT cmd )
+{
+	if (m_pwndBottomView)
+	{
+		m_pwndBottomView->SetTextType(CFileTextLines::UnicodeType(cmd-ID_INDICATOR_BOTTOMENCODINGSTART));
+		m_pwndBottomView->RefreshViews();
+	}
+}
+
+void CMainFrame::OnEOLLeft( UINT cmd )
+{
+	if (m_pwndLeftView)
+	{
+		m_pwndLeftView->ReplaceLineEndings(EOL(cmd-ID_INDICATOR_LEFTEOLSTART));
+		m_pwndLeftView->RefreshViews();
+	}
+}
+
+void CMainFrame::OnEOLRight( UINT cmd )
+{
+	if (m_pwndRightView)
+	{
+		m_pwndRightView->ReplaceLineEndings(EOL(cmd-ID_INDICATOR_RIGHTEOLSTART));
+		m_pwndRightView->RefreshViews();
+	}
+}
+
+void CMainFrame::OnEOLBottom( UINT cmd )
+{
+	if (m_pwndBottomView)
+	{
+		m_pwndBottomView->ReplaceLineEndings(EOL(cmd-ID_INDICATOR_BOTTOMEOLSTART));
+		m_pwndBottomView->RefreshViews();
+	}
+}
+
+void CMainFrame::OnUpdateEncodingLeft( CCmdUI *pCmdUI )
+{
+	if (m_pwndLeftView)
+	{
+		pCmdUI->SetCheck(CFileTextLines::UnicodeType(pCmdUI->m_nID - ID_INDICATOR_LEFTENCODINGSTART) == m_pwndLeftView->GetTextType());
+		pCmdUI->Enable(m_pwndLeftView->IsWritable());
+	}
+	else
+		pCmdUI->Enable(FALSE);
+}
+
+void CMainFrame::OnUpdateEncodingRight( CCmdUI *pCmdUI )
+{
+	if (m_pwndRightView)
+	{
+		pCmdUI->SetCheck(CFileTextLines::UnicodeType(pCmdUI->m_nID - ID_INDICATOR_RIGHTENCODINGSTART) == m_pwndRightView->GetTextType());
+		pCmdUI->Enable(m_pwndRightView->IsWritable());
+	}
+	else
+		pCmdUI->Enable(FALSE);
+}
+
+void CMainFrame::OnUpdateEncodingBottom( CCmdUI *pCmdUI )
+{
+	if (m_pwndBottomView)
+	{
+		pCmdUI->SetCheck(CFileTextLines::UnicodeType(pCmdUI->m_nID - ID_INDICATOR_BOTTOMENCODINGSTART) == m_pwndBottomView->GetTextType());
+		pCmdUI->Enable(m_pwndBottomView->IsWritable());
+	}
+	else
+		pCmdUI->Enable(FALSE);
+}
+
+void CMainFrame::OnUpdateEOLLeft( CCmdUI *pCmdUI )
+{
+	if (m_pwndLeftView)
+	{
+		pCmdUI->SetCheck(EOL(pCmdUI->m_nID - ID_INDICATOR_LEFTEOLSTART) == m_pwndLeftView->GetLineEndings());
+		pCmdUI->Enable(m_pwndLeftView->IsWritable());
+	}
+	else
+		pCmdUI->Enable(FALSE);
+}
+
+void CMainFrame::OnUpdateEOLRight( CCmdUI *pCmdUI )
+{
+	if (m_pwndRightView)
+	{
+		pCmdUI->SetCheck(EOL(pCmdUI->m_nID - ID_INDICATOR_RIGHTEOLSTART) == m_pwndRightView->GetLineEndings());
+		pCmdUI->Enable(m_pwndRightView->IsWritable());
+	}
+	else
+		pCmdUI->Enable(FALSE);
+}
+
+void CMainFrame::OnUpdateEOLBottom( CCmdUI *pCmdUI )
+{
+	if (m_pwndBottomView)
+	{
+		pCmdUI->SetCheck(EOL(pCmdUI->m_nID - ID_INDICATOR_BOTTOMEOLSTART) == m_pwndBottomView->GetLineEndings());
+		pCmdUI->Enable(m_pwndBottomView->IsWritable());
+	}
+	else
+		pCmdUI->Enable(FALSE);
 }
