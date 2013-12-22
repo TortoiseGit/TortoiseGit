@@ -41,8 +41,8 @@ static CString CalcMD5(CString text)
 	CStringA textA = CUnicodeUtils::GetUTF8(text);
 	if (!CryptHashData(hHash, (LPBYTE)textA.GetBuffer(), textA.GetLength(), 0))
 	{
-		CryptReleaseContext(hProv, 0);
 		CryptDestroyHash(hHash);
+		CryptReleaseContext(hProv, 0);
 		return _T("");
 	}
 
@@ -50,7 +50,11 @@ static CString CalcMD5(CString text)
 	BYTE rgbHash[16];
 	DWORD cbHash = _countof(rgbHash);
 	if (!CryptGetHashParam(hHash, HP_HASHVAL, rgbHash, &cbHash, 0))
+	{
+		CryptDestroyHash(hHash);
+		CryptReleaseContext(hProv, 0);
 		return _T("");
+	}
 	for (DWORD i = 0; i < cbHash; i++)
 	{
 		BYTE hi = rgbHash[i] >> 4;
