@@ -3216,12 +3216,14 @@ void CMainFrame::OnRegexfilter(UINT cmd)
 	{
 		CRegexFiltersDlg dlg(this);
 		dlg.SetIniFile(&m_regexIni);
-		dlg.DoModal();
+		if (dlg.DoModal() == IDOK)
+		{
+			FILE * pFile = NULL;
+			_tfopen_s(&pFile, CPathUtils::GetAppDataDirectory() + L"regexfilters.ini", _T("wb"));
+			m_regexIni.SaveFile(pFile);
+			fclose(pFile);
+		}
 		BuildRegexSubitems();
-		FILE * pFile = NULL;
-		_tfopen_s(&pFile, CPathUtils::GetAppDataDirectory() + L"regexfilters.ini", _T("wb"));
-		m_regexIni.SaveFile(pFile);
-		fclose(pFile);
 	}
 	else
 	{
