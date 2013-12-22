@@ -246,9 +246,6 @@ BOOL CLogDlg::OnInitDialog()
 	// "unrelated paths" should be in gray color
 	m_iHidePaths = 2;
 
-	//SetWindowTheme(m_LogList.GetSafeHwnd(), L"Explorer", NULL);
-	//SetWindowTheme(m_ChangedFileListCtrl.GetSafeHwnd(), L"Explorer", NULL);
-
 	// set up the columns
 	m_LogList.DeleteAllItems();
 
