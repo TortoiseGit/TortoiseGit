@@ -887,7 +887,6 @@ void CLogDlg::OnCancel()
 	{
 		m_LogList.SafeTerminateThread();
 	}
-	m_gravatar.SafeTerminateGravatarThread();
 	UpdateData();
 
 	SaveSplitterPos();
@@ -1081,7 +1080,6 @@ void CLogDlg::OnOK()
 	{
 		m_LogList.SafeTerminateThread();
 	}
-	m_gravatar.SafeTerminateGravatarThread();
 	UpdateData();
 	// check that one and only one row is selected
 	if (m_LogList.GetSelectedCount() == 1)

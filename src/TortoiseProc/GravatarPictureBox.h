@@ -17,8 +17,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #pragma once
-#include <afx.h>
-#include "gittype.h"
+#include <WinInet.h>
 
 class CGravatar : public CStatic
 {
@@ -28,18 +27,20 @@ public:
 	void	Init();
 	bool	IsGravatarEnabled() const { return m_bEnableGravatar; }
 	void	EnableGravatar(bool value) { m_bEnableGravatar = value; }
-	void	LoadGravatar(CString email = _T(""));
+	void	LoadGravatar(const CString& email = _T(""));
+
+private:
 	void	GravatarThread();
 	void	SafeTerminateGravatarThread();
 	afx_msg void OnPaint();
+	BOOL	DownloadToFile(const HINTERNET hConnectHandle, const CString& urlpath, const CString& dest);
 
-private:
 	bool				m_bEnableGravatar;
 	CString				m_filename;
 	CString				m_email;
 	HANDLE				m_gravatarEvent;
 	CWinThread*			m_gravatarThread;
-	bool				m_gravatarExit;
+	volatile bool		m_gravatarExit;
 	CComCriticalSection m_gravatarLock;
 
 	DECLARE_MESSAGE_MAP();
