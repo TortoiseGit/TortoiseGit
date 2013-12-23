@@ -95,6 +95,7 @@ protected:
 	afx_msg LRESULT	OnTaskbarBtnCreated(WPARAM wParam, LPARAM lParam);
 	CComPtr<ITaskbarList3>	m_pTaskbarList;
 
+	afx_msg LRESULT OnRefreshSelection(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnClickedInfoIcon(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnClickedCancelFilter(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnLogListLoading(WPARAM wParam, LPARAM lParam);

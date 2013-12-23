@@ -34,6 +34,8 @@
 #include "SmartHandle.h"
 #include "LogOrdering.h"
 
+#define WM_TGIT_REFRESH_SELECTION   (WM_APP + 1)
+
 IMPLEMENT_DYNAMIC(CLogDlg, CResizableStandAloneDialog)
 CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
 	: CResizableStandAloneDialog(CLogDlg::IDD, pParent)
@@ -136,6 +138,7 @@ BEGIN_MESSAGE_MAP(CLogDlg, CResizableStandAloneDialog)
 	ON_NOTIFY(EN_LINK, IDC_MSGVIEW, OnEnLinkMsgview)
 	ON_BN_CLICKED(IDC_STATBUTTON, OnBnClickedStatbutton)
 
+	ON_MESSAGE(WM_TGIT_REFRESH_SELECTION, OnRefreshSelection)
 	ON_MESSAGE(WM_FILTEREDIT_INFOCLICKED, OnClickedInfoIcon)
 	ON_MESSAGE(WM_FILTEREDIT_CANCELCLICKED, OnClickedCancelFilter)
 
@@ -752,6 +755,11 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 			if (((DWORD)CRegStdDWORD(_T("Software\\TortoiseGit\\StyleCommitMessages"), TRUE)) == TRUE)
 				CAppUtils::FormatTextInRichEditControl(pMsgView);
 
+			CHARRANGE range;
+			range.cpMin = 0;
+			range.cpMax = 0;
+			pMsgView->SendMessage(EM_EXSETSEL, NULL, (LPARAM)&range);
+
 			CString matchpath=this->m_path.GetGitPathString();
 
 			int count = pLogEntry->GetFiles(&m_LogList).GetCount();
@@ -1356,6 +1364,7 @@ void CLogDlg::OnEnLinkMsgview(NMHDR *pNMHDR, LRESULT *pResult)
 					m_LogList.EnsureVisible(i, FALSE);
 					m_LogList.SetSelectionMark(i);
 					found = true;
+					PostMessage(WM_TGIT_REFRESH_SELECTION, 0, 0);
 					break;
 				}
 			}
@@ -2716,5 +2725,18 @@ LRESULT CLogDlg::OnTaskbarBtnCreated(WPARAM /*wParam*/, LPARAM /*lParam*/)
 	m_pTaskbarList.Release();
 	m_pTaskbarList.CoCreateInstance(CLSID_TaskbarList);
 	SetUUIDOverlayIcon(m_hWnd);
+	return 0;
+}
+
+LRESULT CLogDlg::OnRefreshSelection(WPARAM /*wParam*/, LPARAM /*lParam*/)
+{
+	// it's enough to deselect, then select again one item of the whole selection
+	int selMark = m_LogList.GetSelectionMark();
+	if (selMark >= 0)
+	{
+		m_LogList.SetSelectionMark(selMark);
+		m_LogList.SetItemState(selMark, 0, LVIS_SELECTED);
+		m_LogList.SetItemState(selMark, LVIS_SELECTED, LVIS_SELECTED);
+	}
 	return 0;
 }
