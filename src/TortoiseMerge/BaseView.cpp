@@ -5852,7 +5852,7 @@ int CBaseView::GetIndentCharsForLine(int x, int y)
 		for (int i = y - 1, j = y + 1; nTabMode == -1; --i, ++j)
 		{
 			bool above = i > 0 && i >= y - maxGuessLine;
-			bool below = j < GetLineCount() && j <= y + maxGuessLine;
+			bool below = j < GetViewCount() && j <= y + maxGuessLine;
 			if (!(above || below))
 				break;
 			TCHAR ac = above ? GetViewLine(i)[0] : '\0';
