@@ -78,7 +78,7 @@ bool CAppUtils::StashSave()
 
 	if (dlg.DoModal() == IDOK)
 	{
-		CString cmd, out;
+		CString cmd;
 		cmd = _T("git.exe stash save");
 
 		if (CAppUtils::GetMsysgitVersion() >= 0x01070700)
@@ -96,25 +96,9 @@ bool CAppUtils::StashSave()
 			cmd += _T(" \"") + message + _T("\"");
 		}
 
-		CSysProgressDlg sysProgressDlg;
-		sysProgressDlg.SetTitle(CString(MAKEINTRESOURCE(IDS_APPNAME)));
-		sysProgressDlg.SetLine(1, CString(MAKEINTRESOURCE(IDS_PROC_STASHRUNNING)));
-		sysProgressDlg.SetLine(2, CString(MAKEINTRESOURCE(IDS_PROGRESSWAIT)));
-		sysProgressDlg.SetShowProgressBar(false);
-		sysProgressDlg.SetCancelMsg(IDS_PROGRS_INFOFAILED);
-		sysProgressDlg.ShowModeless((HWND)NULL, true);
-
-		if (g_Git.Run(cmd, &out, CP_UTF8))
-		{
-			sysProgressDlg.Stop();
-			CMessageBox::Show(NULL, CString(MAKEINTRESOURCE(IDS_PROC_STASHFAILED)) + _T("\n") + out, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
-		}
-		else
-		{
-			sysProgressDlg.Stop();
-			CMessageBox::Show(NULL, CString(MAKEINTRESOURCE(IDS_PROC_STASHSUCCESS)) + _T("\n") + out, _T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
-			return true;
-		}
+		CProgressDlg progress;
+		progress.m_GitCmd = cmd;
+		return (progress.DoModal() == IDOK);
 	}
 	return false;
 }
