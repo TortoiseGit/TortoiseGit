@@ -125,7 +125,6 @@
 #define IDD_APPLY_PATCH_LIST            311
 #define IDD_FORMAT_PATCH                312
 #define IDD_MERGE                       313
-#define IDD_GIT_HISTORY                 314
 #define IDD_SETTINGSCOLORS_1            315
 #define IDD_SETTINGSCOLORS_3            316
 #define IDD_RESET                       317
@@ -969,7 +968,6 @@
 #define IDC_LINK_CHANGE_LOG             1467
 #define IDS_PROC_OVERWRITEEXPORT_OVERWRITE 1467
 #define IDS_PROC_OVERWRITEEXPORT_KEEP   1468
-#define IDC_EDIT1                       1469
 #define IDC_BUGTRAQPARAMETERS           1469
 #define IDC_CLONE_DIR                   1469
 #define IDS_WARN_RENAMEREQUIRED         1469
@@ -1062,7 +1060,6 @@
 #define IDS_OLDMESSAGE                  1508
 #define IDS_NEWHASH                     1509
 #define IDS_NEWMESSAGE                  1510
-#define IDC_LIST2                       1510
 #define IDC_SENDMAIL_SUBJECT            1510
 #define IDC_SMTP_PASSWORD               1510
 #define IDC_BUGTRAQ_LABEL               1510
