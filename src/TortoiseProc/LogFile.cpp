@@ -33,6 +33,8 @@ CLogFile::~CLogFile(void)
 
 bool CLogFile::Open()
 {
+	if (m_maxlines == 0)
+		return false;
 	CTGitPath logfile = CTGitPath(CPathUtils::GetAppDataDirectory() + _T("\\logfile.txt"));
 	return Open(logfile);
 }
@@ -85,6 +87,9 @@ bool CLogFile::AddLine(const CString& line)
 
 bool CLogFile::Close()
 {
+	if (m_maxlines == 0)
+		return false;
+
 	AdjustSize();
 	try
 	{
