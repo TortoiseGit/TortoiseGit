@@ -2272,7 +2272,7 @@ bool CAppUtils::Pull(bool showPush, bool autoClose)
 			dlg.m_pathList.AddPath(CTGitPath());
 			dlg.DoModal();
 
-			return FALSE;
+			return true;
 		}
 
 		CGitHash hashNew;
@@ -2295,7 +2295,7 @@ bool CAppUtils::Pull(bool showPush, bool autoClose)
 			dlg.SetDiff(NULL, hashNew.ToString(), hashOld.ToString());
 			dlg.DoModal();
 
-			return TRUE;
+			return true;
 		}
 		else if ( ret == IDC_PROGRESS_BUTTON1 +1 )
 		{
@@ -2313,6 +2313,7 @@ bool CAppUtils::Pull(bool showPush, bool autoClose)
 		else if (ret == pushButton)
 		{
 			Push(_T(""), autoClose);
+			return true;
 		}
 		else if (ret == smUpdateButton)
 		{
@@ -2320,10 +2321,11 @@ bool CAppUtils::Pull(bool showPush, bool autoClose)
 			sCmd.Format(_T("/command:subupdate /bkpath:\"%s\""), g_Git.m_CurrentDir);
 
 			CAppUtils::RunTortoiseGitProc(sCmd);
+			return true;
 		}
 	}
 
-	return false;
+	return true;
 }
 
 bool CAppUtils::Fetch(CString remoteName, bool allowRebase, bool autoClose)

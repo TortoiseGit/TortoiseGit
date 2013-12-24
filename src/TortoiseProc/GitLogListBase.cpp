@@ -1870,6 +1870,9 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 
 				if (pSelLogEntry->m_CommitHash.IsEmpty())
 				{
+					if (m_ContextMenuMask & GetContextMenuBit(ID_PULL) && !isMergeActive)
+						popup.AppendMenuIcon(ID_PULL, IDS_MENUPULL, IDI_PULL);
+
 					if(m_ContextMenuMask&GetContextMenuBit(ID_FETCH))
 						popup.AppendMenuIcon(ID_FETCH, IDS_MENUFETCH, IDI_PULL);
 
@@ -2122,6 +2125,12 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					bAddSeparator = true;
 				}
 			}
+			if (m_ContextMenuMask & GetContextMenuBit(ID_PULL) && isHeadCommit && !isMergeActive)
+			{
+				popup.AppendMenuIcon(ID_PULL, IDS_MENUPULL, IDI_PULL);
+				bAddSeparator = true;
+			}
+
 
 			if(m_ContextMenuMask &GetContextMenuBit(ID_DELETE))
 			{
