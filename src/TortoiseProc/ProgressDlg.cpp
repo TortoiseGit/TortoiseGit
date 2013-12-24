@@ -35,6 +35,7 @@
 #include "SoundUtils.h"
 #include "Win7.h"
 #include "MessageBox.h"
+#include "LogFile.h"
 
 // CProgressDlg dialog
 
@@ -585,14 +586,47 @@ void CProgressDlg::RemoveLastLine(CString &str)
 }
 // CProgressDlg message handlers
 
+void CProgressDlg::WriteLog() const
+{
+	CLogFile logfile(g_Git.m_CurrentDir);
+	if (logfile.Open())
+	{
+		logfile.AddTimeLine();
+		CString text = GetLogText();
+		LPTSTR psz_string = text.GetBuffer();
+		while (*psz_string)
+		{
+			if (*psz_string == '\r')
+			{
+				++psz_string;
+				continue;
+			}
+			size_t i_len = wcscspn(psz_string, L"\n");
+			logfile.AddLine(CString(psz_string, (int)i_len));
+			psz_string += i_len;
+			if (*psz_string == '\n')
+				++psz_string;
+		}
+		if (m_bAbort)
+		{
+			CString canceled;
+			canceled.LoadString(IDS_SVN_USERCANCELLED);
+			logfile.AddLine(canceled);
+		}
+		logfile.Close();
+	}
+}
+
 void CProgressDlg::OnBnClickedOk()
 {
 	m_Log.GetWindowText(this->m_LogText);
+	WriteLog();
 	OnOK();
 }
 
 void CProgressDlg::OnBnClickedButton1()
 {
+	WriteLog();
 	this->EndDialog((int)(IDC_PROGRESS_BUTTON1 + this->m_ctrlPostCmd.GetCurrentEntry()));
 }
 
@@ -606,6 +640,7 @@ void CProgressDlg::OnCancel()
 {
 	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": User canceled\n"));
 	m_bAbort = true;
+	WriteLog();
 	if(m_bDone)
 	{
 		CResizableStandAloneDialog::OnCancel();
