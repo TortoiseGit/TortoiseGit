@@ -944,7 +944,7 @@ UINT CGitProgressList::ProgressThread()
 	if ((count > 0)&&(m_bLastVisible))
 		EnsureVisible(count-1, FALSE);
 
-	CLogFile logfile;
+	CLogFile logfile(g_Git.m_CurrentDir);
 	if (logfile.Open())
 	{
 		logfile.AddTimeLine();

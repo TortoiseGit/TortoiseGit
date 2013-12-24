@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2013 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -31,7 +32,7 @@
 class CLogFile
 {
 public:
-	CLogFile(void);
+	CLogFile(const CString& repo);
 	~CLogFile(void);
 
 	/**
@@ -59,6 +60,7 @@ protected:
 	void	AdjustSize();
 
 private:
+	CString					m_sRepo;
 	CRegStdDWORD				m_maxlines;
 	CTGitPath				m_logfile;
 	std::list<CString>		m_lines;

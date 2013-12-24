@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008 - TortoiseGit
+// Copyright (C) 2008, 2013 - TortoiseGit
 // Copyright (C) 2007 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -21,9 +21,10 @@
 #include "LogFile.h"
 #include "PathUtils.h"
 
-CLogFile::CLogFile(void)
+CLogFile::CLogFile(const CString& repo)
 {
 	m_maxlines = CRegStdDWORD(_T("Software\\TortoiseGit\\MaxLinesInLogfile"), 4000);
+	m_sRepo = repo;
 }
 
 CLogFile::~CLogFile(void)
@@ -129,6 +130,8 @@ bool CLogFile::AddTimeLine()
 	GetTimeFormat(LOCALE_USER_DEFAULT, 0, NULL, NULL, datebuf, 4096);
 	sLine += _T(" - ");
 	sLine += datebuf;
+	sLine += _T(" - ");
+	sLine += m_sRepo;
 	m_lines.push_back(sLine);
 	return true;
 }
