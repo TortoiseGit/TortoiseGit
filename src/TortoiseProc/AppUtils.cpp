@@ -284,6 +284,7 @@ BOOL CAppUtils::StartExtMerge(
 			com = _T("\"") + com + _T("\"");
 			com = com + _T(" /base:%base /theirs:%theirs /mine:%mine /merged:%merged");
 			com = com + _T(" /basename:%bname /theirsname:%tname /minename:%yname /mergedname:%mname");
+			com += _T(" /saverequired");
 		}
 		if (!g_sGroupingUUID.IsEmpty())
 		{
