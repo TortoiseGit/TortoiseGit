@@ -35,6 +35,8 @@ bool DiffCommand::Execute()
 //	bool bBlame = !!parser.HasKey(_T("blame"));
 	if (path2.IsEmpty())
 	{
+		if (cmdLinePath.IsEmpty())
+			return false;
 		if (this->orgCmdLinePath.IsDirectory())
 		{
 			CChangedDlg dlg;
