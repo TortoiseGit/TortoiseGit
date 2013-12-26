@@ -262,10 +262,14 @@ void CChangedDlg::OnBnClickedShowUnmodified()
 void CChangedDlg::OnBnClickedShowignored()
 {
 	UpdateData();
-	if (AfxBeginThread(ChangedStatusThreadEntry, this)==NULL)
+	if (m_FileListCtrl.m_FileLoaded & CGitStatusListCtrl::FILELIST_IGNORE)
+		m_FileListCtrl.Show(UpdateShowFlags());
+	else if (m_bShowIgnored)
 	{
-		CMessageBox::Show(NULL, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
+		if (AfxBeginThread(ChangedStatusThreadEntry, this) == nullptr)
+			CMessageBox::Show(NULL, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
 	}
+	UpdateStatistics();
 }
 
 void CChangedDlg::OnBnClickedShowexternals()

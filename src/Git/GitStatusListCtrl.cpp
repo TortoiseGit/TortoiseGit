@@ -3958,7 +3958,7 @@ int CGitStatusListCtrl::UpdateUnRevFileList(CTGitPathList *List)
 
 int CGitStatusListCtrl::UpdateIgnoreFileList(CTGitPathList *List)
 {
-	this->m_IgnoreFileList.FillUnRev(CTGitPath::LOGACTIONS_UNVER|CTGitPath::LOGACTIONS_IGNORE,List);
+	this->m_IgnoreFileList.FillUnRev(CTGitPath::LOGACTIONS_IGNORE, List);
 	for (int i = 0; i < m_IgnoreFileList.GetCount(); ++i)
 	{
 		CTGitPath * gitpatch=(CTGitPath*)&m_IgnoreFileList[i];
@@ -3977,7 +3977,7 @@ int CGitStatusListCtrl::UpdateFileList(int mask,bool once,CTGitPathList *List)
 			m_FileLoaded|=CGitStatusListCtrl::FILELIST_MODIFY;
 		}
 	}
-	if(mask&CGitStatusListCtrl::FILELIST_UNVER)
+	if (mask & CGitStatusListCtrl::FILELIST_UNVER || mask & CGitStatusListCtrl::FILELIST_IGNORE)
 	{
 		if(once || (!(m_FileLoaded&CGitStatusListCtrl::FILELIST_UNVER)))
 		{
@@ -3987,7 +3987,7 @@ int CGitStatusListCtrl::UpdateFileList(int mask,bool once,CTGitPathList *List)
 		if(mask&CGitStatusListCtrl::FILELIST_IGNORE && (once || (!(m_FileLoaded&CGitStatusListCtrl::FILELIST_IGNORE))))
 		{
 			UpdateIgnoreFileList(List);
-			m_FileLoaded|=CGitStatusListCtrl::FILELIST_UNVER;
+			m_FileLoaded |= CGitStatusListCtrl::FILELIST_IGNORE;
 		}
 	}
 	return 0;
