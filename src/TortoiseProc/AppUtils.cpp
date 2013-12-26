@@ -2844,6 +2844,8 @@ BOOL CAppUtils::Commit(CString bugid,BOOL bWholeProject,CString &sLogMsg,
 			{
 				CAppUtils::CreateBranchTag(TRUE);
 			}
+			else if (dlg.m_bPullAfterCommit)
+				CAppUtils::Pull(true);
 
 //			CGitProgressDlg progDlg;
 //			progDlg.SetChangeList(dlg.m_sChangeList, !!dlg.m_bKeepChangeList);

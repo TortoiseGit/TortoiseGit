@@ -70,6 +70,7 @@ CCommitDlg::CCommitDlg(CWnd* pParent /*=NULL*/)
 	, m_bSetCommitDateTime(FALSE)
 	, m_bCreateNewBranch(FALSE)
 	, m_bCreateTagAfterCommit(FALSE)
+	, m_bPullAfterCommit(FALSE)
 	, m_bForceCommitAmend(false)
 	, m_bCommitMessageOnly(FALSE)
 	, m_bSetAuthor(FALSE)
@@ -998,6 +999,7 @@ void CCommitDlg::OnOK()
 		progress.m_PreText = out;			// show any output already generated in log window
 		progress.m_bAutoCloseOnSuccess = m_bAutoClose;
 
+		int indexPull = -1;
 		int indexReCommit = -1;
 		int indexTag = -1;
 
@@ -1006,6 +1008,7 @@ void CCommitDlg::OnOK()
 			if (IsGitSVN)
 				progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUSVNDCOMMIT)));
 			progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUPUSH)));
+			indexPull = (int)progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUPULL)));
 			indexReCommit = (int)progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_COMMIT_RECOMMIT)));
 			indexTag = (int)progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUTAG)));
 		}
@@ -1031,7 +1034,9 @@ void CCommitDlg::OnOK()
 		{
 			m_bCreateTagAfterCommit=true;
 		}
-		else if (userResponse >= IDC_PROGRESS_BUTTON1 && userResponse < IDC_PROGRESS_BUTTON1 + indexReCommit)
+		else if (userResponse == IDC_PROGRESS_BUTTON1 + indexPull)
+			m_bPullAfterCommit = TRUE;
+		else if (userResponse >= IDC_PROGRESS_BUTTON1 && userResponse < IDC_PROGRESS_BUTTON1 + indexPull)
 		{
 			// User pressed 'DCommit' or 'Push' button after successful commit.
 			m_bPushAfterCommit=true;

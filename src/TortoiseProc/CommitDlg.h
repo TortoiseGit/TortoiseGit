@@ -135,6 +135,7 @@ public:
 	BOOL				m_bPushAfterCommit;
 	BOOL				m_bCreateTagAfterCommit;
 	BOOL				m_bAmendDiffToLastCommit;
+	BOOL				m_bPullAfterCommit;
 	BOOL				m_bCommitMessageOnly;
 
 protected:

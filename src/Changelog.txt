@@ -24,6 +24,7 @@ Released: Unreleased
  * Fixed issue #2047: Create a log file with git commands and output
  * Fixed issue #1129: Add Fetch/Pull operations in Show Log window
  * Fixed issue #2048: Add date to stash list / reflog
+ * Fixed issue #2049: Add pull to after commit actions
 
 == Bug Fixes ==
  * Fixed issue #1947: When editing git notes, spurious reformatting is done
