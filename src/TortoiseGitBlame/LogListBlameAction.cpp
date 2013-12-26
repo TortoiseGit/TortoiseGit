@@ -33,6 +33,7 @@ void CGitBlameLogList::hideUnimplementedCommands()
 	m_ContextMenuMask |= GetContextMenuBit(ID_BLAMEPREVIOUS) | GetContextMenuBit(ID_LOG);
 	hideFromContextMenu(
 		GetContextMenuBit(ID_COMPAREWITHPREVIOUS) |
+		GetContextMenuBit(ID_GNUDIFF1) |
 		GetContextMenuBit(ID_BLAMEPREVIOUS) |
 		GetContextMenuBit(ID_COPYCLIPBOARD) |
 		GetContextMenuBit(ID_COPYHASH) |
@@ -99,6 +100,7 @@ void CGitBlameLogList::ContextMenuAction(int cmd, int /*FirstSelect*/, int /*Las
 				}
 			}
 			break;
+		case ID_GNUDIFF1: // fallthrough
 		case ID_COMPAREWITHPREVIOUS:
 			{
 				int index = (cmd >> 16) & 0xFFFF;
@@ -114,6 +116,8 @@ void CGitBlameLogList::ContextMenuAction(int cmd, int /*FirstSelect*/, int /*Las
 					procCmd += _T(" /command:diff");
 					procCmd += _T(" /startrev:") + pRev->m_CommitHash.ToString();
 					procCmd += _T(" /endrev:") + parentHash.ToString();
+					if ((cmd & 0xFFFF) == ID_GNUDIFF1)
+						procCmd += _T(" /unified");
 
 					CCommonAppUtils::RunTortoiseGitProc(procCmd);
 				}

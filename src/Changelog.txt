@@ -25,6 +25,7 @@ Released: Unreleased
  * Fixed issue #1129: Add Fetch/Pull operations in Show Log window
  * Fixed issue #2048: Add date to stash list / reflog
  * Fixed issue #2049: Add pull to after commit actions
+ * Fixed issue #1980: Add Show Unified Diff entry to context menu in TortoiseGitBlame in Revision List
 
 == Bug Fixes ==
  * Fixed issue #1947: When editing git notes, spurious reformatting is done

@@ -388,9 +388,10 @@ Don't touch these lines:
 								two files. If <option>/path2</option> is omitted,
 								then the diff is done between the file in
 								<option>/path</option> and its BASE.
-								To explicitly set the revision numbers use
+								To explicitly set the revision use
 								<option>/startrev:xxx</option> and
 								<option>/endrev:xxx</option>.
+								Add <option>/unified</option> to get a unified diff.
 <!--
 								If <option>/blame</option> is set and <option>/path2</option>
 								is not set, then the diff is done by first blaming 
