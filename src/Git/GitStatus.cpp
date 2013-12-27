@@ -732,7 +732,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir, const CString &subpath, git_
 								*status = git_wc_status_normal;
 							}
 							if(callback)
-								callback(gitdir + _T("/") + filename, *status, false, pData, false, skipWorktree);
+								callback(gitdir + _T("/") + (*it).m_FileName, *status, false, pData, false, skipWorktree);
 						}
 					}
 				}
