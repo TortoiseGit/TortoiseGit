@@ -1622,6 +1622,11 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					popup.AppendMenuIcon(IDGITLC_ASSUMEVALID, IDS_MENUASSUMEVALID);
 				}
 
+				if ((m_dwContextMenus & GITLC_POPUNSETIGNORELOCALCHANGES) && (this->m_CurrentVersion.IsEmpty() || this->m_CurrentVersion == GIT_REV_ZERO) && (wcStatus & (CTGitPath::LOGACTIONS_SKIPWORKTREE | CTGitPath::LOGACTIONS_ASSUMEVALID)) && !filepath->IsDirectory())
+				{
+					popup.AppendMenuIcon(IDGITLC_UNSETIGNORELOCALCHANGES, IDS_STATUSLIST_UNSETIGNORELOCALCHANGES);
+				}
+
 				if (m_dwContextMenus & GITSLC_POPRESTORE && !filepath->IsDirectory())
 				{
 					if (m_restorepaths.find(filepath->GetWinPathString()) == m_restorepaths.end())
@@ -2355,6 +2360,58 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						}
 					}
 					if (NULL != GetLogicalParent() && NULL != GetLogicalParent()->GetSafeHwnd())
+						GetLogicalParent()->SendMessage(GITSLNM_NEEDSREFRESH);
+
+					SetRedraw(TRUE);
+				}
+				break;
+			case IDGITLC_UNSETIGNORELOCALCHANGES:
+				{
+					if (CMessageBox::Show(GetSafeHwnd(), IDS_PROC_UNSET_IGNORELOCALCHANGES, IDS_APPNAME, MB_YESNO | MB_DEFBUTTON2 | MB_ICONQUESTION) == IDNO)
+						break;
+
+					CStringA gitdir = CUnicodeUtils::GetMulti(g_Git.m_CurrentDir, CP_UTF8);
+
+					git_repository *repository = nullptr;
+					if (git_repository_open(&repository, gitdir.GetBuffer()))
+						break;
+
+					git_index *gitindex = nullptr;
+					if (git_repository_index(&gitindex, repository))
+					{
+						git_repository_free(repository);
+						break;
+					}
+
+					POSITION pos = GetFirstSelectedItemPosition();
+					int index = -1;
+					while ((index = GetNextSelectedItem(pos)) >= 0)
+					{
+						CTGitPath * path = (CTGitPath *)GetItemData(index);
+						ASSERT(path);
+						if (path == nullptr)
+							continue;
+
+						size_t idx;
+						if (!git_index_find(&idx, gitindex, CUnicodeUtils::GetMulti(path->GetGitPathString(), CP_UTF8)))
+						{
+							git_index_entry *e = const_cast<git_index_entry *>(git_index_get_byindex(gitindex, idx)); // HACK
+							e->flags &= ~GIT_IDXENTRY_VALID;
+							e->flags_extended &= ~GIT_IDXENTRY_SKIP_WORKTREE;
+							git_index_add(gitindex, e);
+						}
+					}
+
+					if (git_index_write(gitindex))
+					{
+						git_index_free(gitindex);
+						git_repository_free(repository);
+						break;
+					}
+
+					git_repository_free(repository);
+
+					if (nullptr != GetLogicalParent() && nullptr != GetLogicalParent()->GetSafeHwnd())
 						GetLogicalParent()->SendMessage(GITSLNM_NEEDSREFRESH);
 
 					SetRedraw(TRUE);

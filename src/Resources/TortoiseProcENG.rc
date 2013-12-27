@@ -4328,6 +4328,10 @@ BEGIN
     IDS_PROC_LOG_SELECT_LOCAL_BRANCHES "All local branches"
     IDS_STATUSLIST_GROUP_IGNORELOCALCHANGES 
                             "Local changes ignored (assumed valid/unchanged or skip worktree flagged files)"
+    IDS_PROC_UNSET_IGNORELOCALCHANGES 
+                            "Do you really want to unflag the selected file(s) as skip-worktree or assume-unchanged?"
+    IDS_STATUSLIST_UNSETIGNORELOCALCHANGES 
+                            "Unflag as skip-worktree and assume-unchanged"
 END
 
 STRINGTABLE

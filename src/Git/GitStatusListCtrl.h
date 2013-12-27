@@ -123,6 +123,7 @@ GITSLC_SHOWINCOMPLETE|GITSLC_SHOWEXTERNAL|GITSLC_SHOWINEXTERNALS)
 #define GITSLC_POPASSUMEVALID			CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDGITLC_ASSUMEVALID)
 #define GITSLC_POPSKIPWORKTREE			CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDGITLC_SKIPWORKTREE)
 #define GITSLC_POPEXPORT				CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDGITLC_EXPORT)
+#define GITLC_POPUNSETIGNORELOCALCHANGES CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDGITLC_UNSETIGNORELOCALCHANGES)
 
 #define GITSLC_IGNORECHANGELIST			_T("ignore-on-commit")
 
@@ -509,6 +510,7 @@ public:
 		IDGITLC_ASSUMEVALID		,
 		IDGITLC_SKIPWORKTREE	,
 		IDGITLC_EXPORT			,
+		IDGITLC_UNSETIGNORELOCALCHANGES,
 // the IDSVNLC_MOVETOCS *must* be the last index, because it contains a dynamic submenu where
 // the submenu items get command ID's sequent to this number
 		IDGITLC_MOVETOCS		,
