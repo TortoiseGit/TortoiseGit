@@ -3650,6 +3650,10 @@ msgstr ""
 msgid "Do you really want to revert all changes in\n%s\nwhich were made in this revision? These changes will be reverted by reverse-merging the revision into your working tree."
 msgstr ""
 
+#. Resource IDs: (93)
+msgid "Do you really want to unflag the selected file(s) as skip-worktree or assume-unchanged?"
+msgstr ""
+
 #. Resource IDs: (86)
 msgid "Do you want to fetch remote branches from the newly added remote?"
 msgstr ""
@@ -9225,6 +9229,10 @@ msgstr ""
 
 #. Resource IDs: (3859)
 msgid "Unexpected file format."
+msgstr ""
+
+#. Resource IDs: (93)
+msgid "Unflag as skip-worktree and assume-unchanged"
 msgstr ""
 
 #. Resource IDs: (1070)
