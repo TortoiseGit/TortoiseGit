@@ -244,7 +244,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			{
 				CString sInfoTip;
 				NOTIFYICONDATA SystemTray;
-				sInfoTip.Format(_T("TortoiseGit Overlay Icon Server\nCached Directories : %ld\nWatched paths : %ld"),
+				sInfoTip.Format(_T("TortoiseGit Overlay Icon Server\nCached Directories: %Id\nWatched paths: %d"),
 					CGitStatusCache::Instance().GetCacheSize(),
 					CGitStatusCache::Instance().GetNumberOfWatchedPaths());
 
