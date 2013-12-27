@@ -1103,8 +1103,6 @@ void CCommitDlg::OnOK()
 	UpdateData();
 	m_regAddBeforeCommit = m_bShowUnversioned;
 	m_regShowWholeProject = m_bWholeProject;
-	if (!GetDlgItem(IDC_WHOLE_PROJECT)->IsWindowEnabled())
-		m_bWholeProject = FALSE;
 	m_regKeepChangelists = m_bKeepChangeList;
 	m_regDoNotAutoselectSubmodules = m_bDoNotAutoselectSubmodules;
 	if (!GetDlgItem(IDC_KEEPLISTS)->IsWindowEnabled())
@@ -1275,8 +1273,6 @@ UINT CCommitDlg::StatusThread()
 		DialogEnableWindow(IDC_NOAUTOSELECTSUBMODULES, true);
 		if (m_ListCtrl.HasChangeLists())
 			DialogEnableWindow(IDC_KEEPLISTS, true);
-		if (m_ListCtrl.HasLocks())
-			DialogEnableWindow(IDC_WHOLE_PROJECT, true);
 
 		// activate amend checkbox (if necessary)
 		if (g_Git.IsInitRepos())
