@@ -590,9 +590,6 @@
     <ClCompile Include="RevisionGraph\RevisionGraphWnd.cpp">
       <Filter>Commands\RevisionGraph</Filter>
     </ClCompile>
-    <ClCompile Include="ChangedDlg.cpp">
-      <Filter>Utility Dialogs</Filter>
-    </ClCompile>
     <ClCompile Include="DeleteRemoteTagDlg.cpp">
       <Filter>Utility Dialogs</Filter>
     </ClCompile>
@@ -679,6 +676,9 @@
     </ClCompile>
     <ClCompile Include="AutoTextTestDlg.cpp">
       <Filter>Commands\AutoTextTest</Filter>
+    </ClCompile>
+    <ClCompile Include="ChangedDlg.cpp">
+      <Filter>Commands\ReposStatus</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1093,9 +1093,6 @@
     <ClInclude Include="BranchCombox.h">
       <Filter>Utility Dialogs</Filter>
     </ClInclude>
-    <ClInclude Include="ChangedDlg.h">
-      <Filter>Utility Dialogs</Filter>
-    </ClInclude>
     <ClInclude Include="ChooseVersion.h">
       <Filter>Utility Dialogs</Filter>
     </ClInclude>
@@ -1197,6 +1194,9 @@
     </ClInclude>
     <ClInclude Include="Commands\AutoTextTestCommand.h">
       <Filter>Commands\AutoTextTest</Filter>
+    </ClInclude>
+    <ClInclude Include="ChangedDlg.h">
+      <Filter>Commands\ReposStatus</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
