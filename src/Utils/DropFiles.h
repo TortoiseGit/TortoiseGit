@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2013 - TortoiseGit
 // Copyright (C) 2006-2007 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -45,7 +46,7 @@ public:
 	/**
 	 * Returns the number of files which have been added
 	 */
-	INT_PTR GetCount();
+	INT_PTR GetCount() const;
 
 	/**
 	 * Call this method when dragging begins. It will fill

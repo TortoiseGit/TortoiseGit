@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2013 - TortoiseGit
 // Copyright (C) 2006, 2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -35,7 +36,7 @@ void CDropFiles::AddFile(const CString &sFile)
 	m_arFiles.Add(sFile);
 }
 
-INT_PTR CDropFiles::GetCount()
+INT_PTR CDropFiles::GetCount() const
 {
 	return m_arFiles.GetCount();
 }
