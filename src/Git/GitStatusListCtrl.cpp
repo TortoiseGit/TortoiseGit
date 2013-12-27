@@ -2310,112 +2310,13 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				break;
 
 			case IDGITLC_ASSUMEVALID:
-				{
-					if (CMessageBox::Show(GetSafeHwnd(), IDS_PROC_MARK_ASSUMEVALID, IDS_APPNAME, MB_YESNO | MB_DEFBUTTON2 | MB_ICONQUESTION) == IDNO)
-						break;
-					CString cmdTemplate;
-					cmdTemplate = _T("git.exe update-index --assume-unchanged -- \"%s\"");
-					POSITION pos = GetFirstSelectedItemPosition();
-					int index = -1;
-					while ((index = GetNextSelectedItem(pos)) >= 0)
-					{
-						CTGitPath * path = (CTGitPath *)GetItemData(index);
-						ASSERT(path);
-						if(path == NULL)
-							continue;
-
-						CString cmd, output;
-						cmd.Format(cmdTemplate, path->GetGitPathString());
-						if (g_Git.Run(cmd, &output, CP_UTF8))
-						{
-							MessageBox(output, _T("TortoiseGit"), MB_ICONERROR);
-						}
-					}
-					if (NULL != GetLogicalParent() && NULL != GetLogicalParent()->GetSafeHwnd())
-						GetLogicalParent()->SendMessage(GITSLNM_NEEDSREFRESH);
-
-					SetRedraw(TRUE);
-				}
+				SetGitIndexFlagsForSelectedFiles(IDS_PROC_MARK_ASSUMEVALID, BST_CHECKED, BST_INDETERMINATE);
 				break;
 			case IDGITLC_SKIPWORKTREE:
-				{
-					if (CMessageBox::Show(GetSafeHwnd(), IDS_PROC_MARK_SKIPWORKTREE, IDS_APPNAME, MB_YESNO | MB_DEFBUTTON2 | MB_ICONQUESTION) == IDNO)
-						break;
-					CString cmdTemplate;
-					cmdTemplate = _T("git.exe update-index --skip-worktree -- \"%s\"");
-					POSITION pos = GetFirstSelectedItemPosition();
-					int index = -1;
-					while ((index = GetNextSelectedItem(pos)) >= 0)
-					{
-						CTGitPath * path = (CTGitPath *)GetItemData(index);
-						ASSERT(path);
-						if(path == NULL)
-							continue;
-
-						CString cmd, output;
-						cmd.Format(cmdTemplate, path->GetGitPathString());
-						if (g_Git.Run(cmd, &output, CP_UTF8))
-						{
-							MessageBox(output, _T("TortoiseGit"), MB_ICONERROR);
-						}
-					}
-					if (NULL != GetLogicalParent() && NULL != GetLogicalParent()->GetSafeHwnd())
-						GetLogicalParent()->SendMessage(GITSLNM_NEEDSREFRESH);
-
-					SetRedraw(TRUE);
-				}
+				SetGitIndexFlagsForSelectedFiles(IDS_PROC_MARK_SKIPWORKTREE, BST_INDETERMINATE, BST_CHECKED);
 				break;
 			case IDGITLC_UNSETIGNORELOCALCHANGES:
-				{
-					if (CMessageBox::Show(GetSafeHwnd(), IDS_PROC_UNSET_IGNORELOCALCHANGES, IDS_APPNAME, MB_YESNO | MB_DEFBUTTON2 | MB_ICONQUESTION) == IDNO)
-						break;
-
-					CStringA gitdir = CUnicodeUtils::GetMulti(g_Git.m_CurrentDir, CP_UTF8);
-
-					git_repository *repository = nullptr;
-					if (git_repository_open(&repository, gitdir.GetBuffer()))
-						break;
-
-					git_index *gitindex = nullptr;
-					if (git_repository_index(&gitindex, repository))
-					{
-						git_repository_free(repository);
-						break;
-					}
-
-					POSITION pos = GetFirstSelectedItemPosition();
-					int index = -1;
-					while ((index = GetNextSelectedItem(pos)) >= 0)
-					{
-						CTGitPath * path = (CTGitPath *)GetItemData(index);
-						ASSERT(path);
-						if (path == nullptr)
-							continue;
-
-						size_t idx;
-						if (!git_index_find(&idx, gitindex, CUnicodeUtils::GetMulti(path->GetGitPathString(), CP_UTF8)))
-						{
-							git_index_entry *e = const_cast<git_index_entry *>(git_index_get_byindex(gitindex, idx)); // HACK
-							e->flags &= ~GIT_IDXENTRY_VALID;
-							e->flags_extended &= ~GIT_IDXENTRY_SKIP_WORKTREE;
-							git_index_add(gitindex, e);
-						}
-					}
-
-					if (git_index_write(gitindex))
-					{
-						git_index_free(gitindex);
-						git_repository_free(repository);
-						break;
-					}
-
-					git_repository_free(repository);
-
-					if (nullptr != GetLogicalParent() && nullptr != GetLogicalParent()->GetSafeHwnd())
-						GetLogicalParent()->SendMessage(GITSLNM_NEEDSREFRESH);
-
-					SetRedraw(TRUE);
-				}
+				SetGitIndexFlagsForSelectedFiles(IDS_PROC_UNSET_IGNORELOCALCHANGES, BST_UNCHECKED, BST_UNCHECKED);
 				break;
 			case IDGITLC_COPY:
 				CopySelectedEntriesToClipboard(0);
@@ -2533,6 +2434,71 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 		} // if (popup.CreatePopupMenu())
 	} // if (selIndex >= 0)
 
+}
+
+void CGitStatusListCtrl::SetGitIndexFlagsForSelectedFiles(UINT message, BOOL assumevalid, BOOL skipworktree)
+{
+	if (CMessageBox::Show(GetSafeHwnd(), message, IDS_APPNAME, MB_YESNO | MB_DEFBUTTON2 | MB_ICONQUESTION) == IDNO)
+		return;
+
+	CStringA gitdir = CUnicodeUtils::GetMulti(g_Git.m_CurrentDir, CP_UTF8);
+
+	git_repository *repository = nullptr;
+	if (git_repository_open(&repository, gitdir.GetBuffer()))
+	{
+		CMessageBox::Show(m_hWnd, g_Git.GetLibGit2LastErr(), _T("TortoiseGit"), MB_ICONERROR);
+		return;
+	}
+
+	git_index *gitindex = nullptr;
+	if (git_repository_index(&gitindex, repository))
+	{
+		CMessageBox::Show(m_hWnd, g_Git.GetLibGit2LastErr(), _T("TortoiseGit"), MB_ICONERROR);
+		git_repository_free(repository);
+		return;
+	}
+
+	POSITION pos = GetFirstSelectedItemPosition();
+	int index = -1;
+	while ((index = GetNextSelectedItem(pos)) >= 0)
+	{
+		CTGitPath * path = (CTGitPath *)GetItemData(index);
+		ASSERT(path);
+		if (path == nullptr)
+			continue;
+
+		size_t idx;
+		if (!git_index_find(&idx, gitindex, CUnicodeUtils::GetMulti(path->GetGitPathString(), CP_UTF8)))
+		{
+			git_index_entry *e = const_cast<git_index_entry *>(git_index_get_byindex(gitindex, idx)); // HACK
+			if (assumevalid == BST_UNCHECKED)
+				e->flags &= ~GIT_IDXENTRY_VALID;
+			else if (assumevalid == BST_CHECKED)
+				e->flags |= GIT_IDXENTRY_VALID;
+			if (skipworktree == BST_UNCHECKED)
+				e->flags_extended &= ~GIT_IDXENTRY_SKIP_WORKTREE;
+			else if (skipworktree == BST_CHECKED)
+				e->flags_extended |= GIT_IDXENTRY_SKIP_WORKTREE;
+			git_index_add(gitindex, e);
+		}
+		else
+			CMessageBox::Show(m_hWnd, g_Git.GetLibGit2LastErr(), _T("TortoiseGit"), MB_ICONERROR);
+	}
+
+	if (git_index_write(gitindex))
+	{
+		CMessageBox::Show(m_hWnd, g_Git.GetLibGit2LastErr(), _T("TortoiseGit"), MB_ICONERROR);
+		git_index_free(gitindex);
+		git_repository_free(repository);
+		return;
+	}
+
+	git_repository_free(repository);
+
+	if (nullptr != GetLogicalParent() && nullptr != GetLogicalParent()->GetSafeHwnd())
+		GetLogicalParent()->SendMessage(GITSLNM_NEEDSREFRESH);
+
+	SetRedraw(TRUE);
 }
 
 void CGitStatusListCtrl::OnContextMenuHeader(CWnd * pWnd, CPoint point)

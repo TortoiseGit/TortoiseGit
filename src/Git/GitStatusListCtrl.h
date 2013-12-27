@@ -972,6 +972,8 @@ private:
 	void StartDiffWC(int fileindex);	///< start the external diff program
 	void StartDiffTwo(int fileindex);
 
+	void SetGitIndexFlagsForSelectedFiles(UINT message, BOOL assumevalid, BOOL skipworktree);
+
 	enum
 	{
 		ALTERNATIVEEDITOR,
