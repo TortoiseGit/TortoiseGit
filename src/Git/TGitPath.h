@@ -46,6 +46,8 @@ public:
 		LOGACTIONS_COPY		= 0x00000040,
 		LOGACTIONS_MERGED   = 0x00000080,
 		LOGACTIONS_FORWORD  = 0x00000100,
+		LOGACTIONS_ASSUMEVALID = 0x00000200,
+		LOGACTIONS_SKIPWORKTREE = 0x00000400,
 		LOGACTIONS_UNVER	= 0x80000000,
 		LOGACTIONS_IGNORE	= 0x40000000,
 		//LOGACTIONS_CONFLICT = 0x20000000,
@@ -368,6 +370,7 @@ public:
 	int	ParserFromLog(BYTE_VECTOR &log, bool parseDeletes = false);
 	int ParserFromLsFile(BYTE_VECTOR &out,bool staged=true);
 	int FillUnRev(unsigned int Action,CTGitPathList *list=NULL);
+	int FillBasedOnIndexFlags(unsigned short flag, CTGitPathList* list = nullptr);
 	int GetAction();
 	/**
 	 * Load from the path argument string, when the 'path' parameter is used

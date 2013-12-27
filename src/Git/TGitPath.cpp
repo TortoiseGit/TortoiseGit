@@ -1122,6 +1122,57 @@ int CTGitPathList::FillUnRev(unsigned int action,CTGitPathList *list)
 	}
 	return 0;
 }
+int CTGitPathList::FillBasedOnIndexFlags(unsigned short flag, CTGitPathList* list /*nullptr*/)
+{
+	Clear();
+	CTGitPath path;
+	CString one;
+
+	CStringA gitdir = CUnicodeUtils::GetMulti(g_Git.m_CurrentDir, CP_UTF8);
+	git_repository *repository = nullptr;
+	if (git_repository_open(&repository, gitdir.GetBuffer()))
+		return -1;
+
+	git_index *index = nullptr;
+	if (git_repository_index(&index, repository))
+	{
+		git_repository_free(repository);
+		return -1;
+	}
+
+	int count;
+	if (list == nullptr)
+		count = 1;
+	else
+		count = list->GetCount();
+	for (int j = 0; j < count; ++j)
+	{
+		for (size_t i = 0, ecount = git_index_entrycount(index); i < ecount; ++i)
+		{
+			const git_index_entry *e = git_index_get_byindex(index, i);
+
+			if (!e || !((e->flags | e->flags_extended) & flag) || !e->path)
+				continue;
+
+			one.Empty();
+			g_Git.StringAppend(&one, (BYTE*)e->path, CP_UTF8);
+
+			if (!(!list || (*list)[j].GetWinPathString().IsEmpty() || one == (*list)[j].GetWinPathString() || (PathIsDirectory(g_Git.m_CurrentDir + L"\\" + (*list)[j].GetWinPathString()) && one.Find((*list)[j].GetWinPathString() + _T("/")) == 0)))
+				continue;
+
+			//SetFromGit will clear all status
+			path.SetFromGit(one);
+			if ((e->flags | e->flags_extended) & GIT_IDXENTRY_SKIP_WORKTREE)
+				path.m_Action = CTGitPath::LOGACTIONS_SKIPWORKTREE;
+			else if ((e->flags | e->flags_extended) & GIT_IDXENTRY_VALID)
+				path.m_Action = CTGitPath::LOGACTIONS_ASSUMEVALID;
+			AddPath(path);
+		}
+	}
+	git_index_free(index);
+	RemoveDuplicates();
+	return 0;
+}
 int CTGitPathList::ParserFromLog(BYTE_VECTOR &log, bool parseDeletes /*false*/)
 {
 	this->Clear();
@@ -2076,6 +2127,11 @@ CString CTGitPath::GetActionName(int action)
 		return MAKEINTRESOURCE(IDS_PATHACTIONS_PICK);
 	if(action & CTGitPath::LOGACTIONS_REBASE_SKIP)
 		return MAKEINTRESOURCE(IDS_PATHACTIONS_SKIP);
+
+	if (action & CTGitPath::LOGACTIONS_ASSUMEVALID)
+		return MAKEINTRESOURCE(IDS_PATHACTIONS_ASSUMEUNCHANGED);
+	if (action & CTGitPath::LOGACTIONS_SKIPWORKTREE)
+		return MAKEINTRESOURCE(IDS_PATHACTIONS_SKIPWORKTREE);
 
 	return MAKEINTRESOURCE(IDS_PATHACTIONS_UNKNOWN);
 }

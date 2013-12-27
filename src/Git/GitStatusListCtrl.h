@@ -2,7 +2,7 @@
 
 // Copyright (C) 2008-2013 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
-// Copyright (C) 2010-2012 Sven Strickroth <email@cs-ware.de>
+// Copyright (C) 2010-2013 Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -66,6 +66,8 @@
 #define GITSLC_SHOWEXTERNALFROMDIFFERENTREPO 0x00000000
 #define GITSLC_SHOWSWITCHED		0x00000000
 #define GITSLC_SHOWINCHANGELIST 0x00000000
+#define GITSLC_SHOWASSUMEVALID  CTGitPath::LOGACTIONS_ASSUMEVALID
+#define GITSLC_SHOWSKIPWORKTREE CTGitPath::LOGACTIONS_SKIPWORKTREE
 
 #define GITSLC_SHOWDIRECTS		(GITSLC_SHOWDIRECTFILES | GITSLC_SHOWDIRECTFOLDER)
 
@@ -723,7 +725,8 @@ public:
 	BOOL GetStatus ( const CTGitPathList* pathList=NULL
                    , bool bUpdate = false
                    , bool bShowIgnores = false
-				   , bool bShowUnRev=false);
+				   , bool bShowUnRev = false
+				   , bool bShowLocalChangesIgnored = false);
 
 	/**
 	 * Populates the list control with the previously (with GetStatus) gathered status information.
@@ -1082,6 +1085,7 @@ private:
 	CTGitPathList				m_StatusFileList;
 	CTGitPathList				m_UnRevFileList;
 	CTGitPathList				m_IgnoreFileList;
+	CTGitPathList				m_LocalChangesIgnoredFileList; // assume valid & skip worktree
 	//CTGitPathList				m_StatusUrlList;
 	CString						m_sLastError;
 
@@ -1147,7 +1151,8 @@ public:
 	{
 		FILELIST_MODIFY= 0x1,
 		FILELIST_UNVER = 0x2,
-		FILELIST_IGNORE =0x4
+		FILELIST_IGNORE =0x4,
+		FILELIST_LOCALCHANGESIGNORED = 0x8, // assume valid & skip worktree files
 	};
 public:
 	int UpdateFileList(git_revnum_t hash,CTGitPathList *List=NULL);
@@ -1155,6 +1160,7 @@ public:
 	int UpdateUnRevFileList(CTGitPathList &list);
 	int UpdateUnRevFileList(CTGitPathList *List=NULL);
 	int UpdateIgnoreFileList(CTGitPathList *List=NULL);
+	int UpdateLocalChangesIgnoredFileList(CTGitPathList* list = nullptr);
 
 	int UpdateWithGitPathList(CTGitPathList &list);
 

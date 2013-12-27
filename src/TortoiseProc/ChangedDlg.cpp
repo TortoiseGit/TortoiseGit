@@ -38,6 +38,7 @@ CChangedDlg::CChangedDlg(CWnd* pParent /*=NULL*/)
 	, m_bBlock(FALSE)
 	, m_bCanceled(false)
 	, m_bShowIgnored(FALSE)
+	, m_bShowLocalChangesIgnored(FALSE)
 {
 	m_bRemote = FALSE;
 }
@@ -54,6 +55,7 @@ void CChangedDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_SHOWUNVERSIONED, m_bShowUnversioned);
 	DDX_Check(pDX, IDC_SHOWUNMODIFIED, m_iShowUnmodified);
 	DDX_Check(pDX, IDC_SHOWIGNORED, m_bShowIgnored);
+	DDX_Check(pDX, IDC_SHOWLOCALCHANGESIGNORED, m_bShowLocalChangesIgnored);
 }
 
 
@@ -67,6 +69,7 @@ BEGIN_MESSAGE_MAP(CChangedDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_COMMIT, &CChangedDlg::OnBnClickedCommit)
 	ON_BN_CLICKED(IDC_BUTTON_STASH, &CChangedDlg::OnBnClickedStash)
 	ON_BN_CLICKED(IDC_BUTTON_UNIFIEDDIFF, &CChangedDlg::OnBnClickedButtonUnifieddiff)
+	ON_BN_CLICKED(IDC_SHOWLOCALCHANGESIGNORED, &CChangedDlg::OnBnClickedShowlocalchangesignored)
 END_MESSAGE_MAP()
 
 BOOL CChangedDlg::OnInitDialog()
@@ -136,9 +139,10 @@ UINT CChangedDlg::ChangedStatusThread()
 	DialogEnableWindow(IDC_SHOWUNVERSIONED, FALSE);
 	DialogEnableWindow(IDC_SHOWUNMODIFIED, FALSE);
 	DialogEnableWindow(IDC_SHOWIGNORED, FALSE);
+	DialogEnableWindow(IDC_SHOWLOCALCHANGESIGNORED, FALSE);
 	CString temp;
 	m_FileListCtrl.Clear();
-	if (!m_FileListCtrl.GetStatus(&m_pathList, m_bRemote, m_bShowIgnored != FALSE, m_bShowUnversioned != FALSE))
+	if (!m_FileListCtrl.GetStatus(&m_pathList, m_bRemote, m_bShowIgnored != FALSE, m_bShowUnversioned != FALSE, m_bShowLocalChangesIgnored != FALSE))
 	{
 		if (!m_FileListCtrl.GetLastErrorMessage().IsEmpty())
 			m_FileListCtrl.SetEmptyString(m_FileListCtrl.GetLastErrorMessage());
@@ -147,6 +151,7 @@ UINT CChangedDlg::ChangedStatusThread()
 	dwShow |= m_bShowUnversioned ? GITSLC_SHOWUNVERSIONED : 0;
 	dwShow |= m_iShowUnmodified ? GITSLC_SHOWNORMAL : 0;
 	dwShow |= m_bShowIgnored ? GITSLC_SHOWIGNORED : 0;
+	dwShow |= m_bShowLocalChangesIgnored ? GITSLC_SHOWASSUMEVALID | GITSLC_SHOWSKIPWORKTREE : 0;
 	m_FileListCtrl.Show(dwShow);
 	UpdateStatistics();
 
@@ -169,6 +174,7 @@ UINT CChangedDlg::ChangedStatusThread()
 	DialogEnableWindow(IDC_SHOWUNVERSIONED, bIsDirectory);
 	//DialogEnableWindow(IDC_SHOWUNMODIFIED, bIsDirectory);
 	DialogEnableWindow(IDC_SHOWIGNORED, bIsDirectory);
+	DialogEnableWindow(IDC_SHOWLOCALCHANGESIGNORED, TRUE);
 	InterlockedExchange(&m_bBlock, FALSE);
 	// revert the remote flag back to the default
 	m_bRemote = !!(DWORD)CRegDWORD(_T("Software\\TortoiseGit\\CheckRepo"), FALSE);
@@ -211,6 +217,10 @@ DWORD CChangedDlg::UpdateShowFlags()
 		dwShow |= GITSLC_SHOWIGNORED;
 	else
 		dwShow &= ~GITSLC_SHOWIGNORED;
+	if (m_bShowLocalChangesIgnored)
+		dwShow |= GITSLC_SHOWASSUMEVALID|GITSLC_SHOWSKIPWORKTREE;
+	else
+		dwShow &= ~(GITSLC_SHOWASSUMEVALID|GITSLC_SHOWSKIPWORKTREE);
 
 	// old bShowExternals:
 	dwShow &= ~(GITSLC_SHOWEXTERNAL | GITSLC_SHOWINEXTERNALS | GITSLC_SHOWEXTERNALFROMDIFFERENTREPO);
@@ -256,6 +266,19 @@ void CChangedDlg::OnBnClickedShowignored()
 	{
 		if (AfxBeginThread(ChangedStatusThreadEntry, this) == nullptr)
 			CMessageBox::Show(NULL, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
+	}
+	UpdateStatistics();
+}
+
+void CChangedDlg::OnBnClickedShowlocalchangesignored()
+{
+	UpdateData();
+	if (m_FileListCtrl.m_FileLoaded & CGitStatusListCtrl::FILELIST_LOCALCHANGESIGNORED)
+		m_FileListCtrl.Show(UpdateShowFlags());
+	else if (m_bShowLocalChangesIgnored)
+	{
+		if (AfxBeginThread(ChangedStatusThreadEntry, this) == nullptr)
+			CMessageBox::Show(nullptr, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
 	}
 	UpdateStatistics();
 }

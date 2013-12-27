@@ -240,7 +240,8 @@ bool CGitStatusListCtrl::SetBackgroundImage(UINT nID)
 BOOL CGitStatusListCtrl::GetStatus ( const CTGitPathList* pathList
 									, bool bUpdate /* = FALSE */
 									, bool bShowIgnores /* = false */
-									, bool bShowUnRev)
+									, bool bShowUnRev /* = false */
+									, bool bShowLocalChangesIgnored /* = false */)
 {
 	Locker lock(m_critSec);
 	int mask= CGitStatusListCtrl::FILELIST_MODIFY;
@@ -248,6 +249,8 @@ BOOL CGitStatusListCtrl::GetStatus ( const CTGitPathList* pathList
 		mask|= CGitStatusListCtrl::FILELIST_IGNORE;
 	if(bShowUnRev)
 		mask|= CGitStatusListCtrl::FILELIST_UNVER;
+	if (bShowLocalChangesIgnored)
+		mask |= CGitStatusListCtrl::FILELIST_LOCALCHANGESIGNORED;
 	this->UpdateFileList(mask,bUpdate,(CTGitPathList*)pathList);
 
 	if (pathList && m_mapDirectFiles.empty())
@@ -994,8 +997,9 @@ void CGitStatusListCtrl::AddEntry(CTGitPath * GitPath, WORD /*langID*/, int list
 	if (GitPath->m_Checked)
 		m_nSelected++;
 
-
-	if( GitPath->m_Action & CTGitPath::LOGACTIONS_IGNORE)
+	if ((GitPath->m_Action & CTGitPath::LOGACTIONS_SKIPWORKTREE) || (GitPath->m_Action & CTGitPath::LOGACTIONS_ASSUMEVALID))
+		SetItemGroup(index, 3);
+	else if (GitPath->m_Action & CTGitPath::LOGACTIONS_IGNORE)
 		SetItemGroup(index, 2);
 	else if( GitPath->m_Action & CTGitPath::LOGACTIONS_UNVER)
 		SetItemGroup(index,1);
@@ -1598,7 +1602,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 
 			if ( (GetSelectedCount() >0 ) && (!(wcStatus & CTGitPath::LOGACTIONS_UNVER)) && m_bHasWC)
 			{
-				if ((m_dwContextMenus & GITSLC_POPCOMMIT) && (this->m_CurrentVersion.IsEmpty() || this->m_CurrentVersion == GIT_REV_ZERO))
+				if ((m_dwContextMenus & GITSLC_POPCOMMIT) && (this->m_CurrentVersion.IsEmpty() || this->m_CurrentVersion == GIT_REV_ZERO) && !(wcStatus & (CTGitPath::LOGACTIONS_SKIPWORKTREE | CTGitPath::LOGACTIONS_ASSUMEVALID)))
 				{
 					popup.AppendMenuIcon(IDGITLC_COMMIT, IDS_STATUSLIST_CONTEXT_COMMIT, IDI_COMMIT);
 				}
@@ -1608,12 +1612,12 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					popup.AppendMenuIcon(IDGITLC_REVERT, IDS_MENUREVERT, IDI_REVERT);
 				}
 
-				if ((m_dwContextMenus & GITSLC_POPSKIPWORKTREE) && (this->m_CurrentVersion.IsEmpty() || this->m_CurrentVersion == GIT_REV_ZERO) && !(wcStatus & (CTGitPath::LOGACTIONS_ADDED | CTGitPath::LOGACTIONS_UNMERGED)) && !filepath->IsDirectory())
+				if ((m_dwContextMenus & GITSLC_POPSKIPWORKTREE) && (this->m_CurrentVersion.IsEmpty() || this->m_CurrentVersion == GIT_REV_ZERO) && !(wcStatus & (CTGitPath::LOGACTIONS_ADDED | CTGitPath::LOGACTIONS_UNMERGED | CTGitPath::LOGACTIONS_SKIPWORKTREE)) && !filepath->IsDirectory())
 				{
 					popup.AppendMenuIcon(IDGITLC_SKIPWORKTREE, IDS_STATUSLIST_SKIPWORKTREE);
 				}
 
-				if ((m_dwContextMenus & GITSLC_POPASSUMEVALID) && (this->m_CurrentVersion.IsEmpty() || this->m_CurrentVersion == GIT_REV_ZERO) && !(wcStatus & (CTGitPath::LOGACTIONS_ADDED | CTGitPath::LOGACTIONS_DELETED | CTGitPath::LOGACTIONS_UNMERGED)) && !filepath->IsDirectory())
+				if ((m_dwContextMenus & GITSLC_POPASSUMEVALID) && (this->m_CurrentVersion.IsEmpty() || this->m_CurrentVersion == GIT_REV_ZERO) && !(wcStatus & (CTGitPath::LOGACTIONS_ADDED | CTGitPath::LOGACTIONS_DELETED | CTGitPath::LOGACTIONS_UNMERGED | CTGitPath::LOGACTIONS_ASSUMEVALID)) && !filepath->IsDirectory())
 				{
 					popup.AppendMenuIcon(IDGITLC_ASSUMEVALID, IDS_MENUASSUMEVALID);
 				}
@@ -3600,6 +3604,7 @@ bool CGitStatusListCtrl::PrepareGroups(bool bForce /* = false */)
 
 	if (!m_UnRevFileList.IsEmpty() ||
 		!m_IgnoreFileList.IsEmpty() ||
+		!m_LocalChangesIgnoredFileList.IsEmpty() ||
 		max>0 || bForce)
 	{
 		bHasGroups = true;
@@ -3658,6 +3663,14 @@ bool CGitStatusListCtrl::PrepareGroups(bool bForce /* = false */)
 			//if(m_IgnoreFileList.GetCount()>0)
 			{
 				_tcsncpy_s(groupname, 1024, (LPCTSTR)CString(MAKEINTRESOURCE(IDS_STATUSLIST_GROUP_IGNOREDFILES)), 1023);
+				grp.pszHeader = groupname;
+				grp.iGroupId = groupindex;
+				grp.uAlign = LVGA_HEADER_LEFT;
+				InsertGroup(groupindex++, &grp);
+			}
+
+			{
+				_tcsncpy_s(groupname, 1024, (LPCTSTR)CString(MAKEINTRESOURCE(IDS_STATUSLIST_GROUP_IGNORELOCALCHANGES)), 1023);
 				grp.pszHeader = groupname;
 				grp.iGroupId = groupindex;
 				grp.uAlign = LVGA_HEADER_LEFT;
@@ -3960,6 +3973,19 @@ int CGitStatusListCtrl::UpdateIgnoreFileList(CTGitPathList *List)
 	}
 	return 0;
 }
+
+int CGitStatusListCtrl::UpdateLocalChangesIgnoredFileList(CTGitPathList *list)
+{
+	m_LocalChangesIgnoredFileList.FillBasedOnIndexFlags(GIT_IDXENTRY_VALID | GIT_IDXENTRY_SKIP_WORKTREE, list);
+	for (int i = 0; i < m_LocalChangesIgnoredFileList.GetCount(); ++i)
+	{
+		CTGitPath * gitpatch = (CTGitPath*)&m_LocalChangesIgnoredFileList[i];
+		gitpatch->m_Checked = FALSE;
+		m_arStatusArray.push_back((CTGitPath*)&m_LocalChangesIgnoredFileList[i]);
+	}
+	return 0;
+}
+
 int CGitStatusListCtrl::UpdateFileList(int mask,bool once,CTGitPathList *List)
 {
 	if(mask&CGitStatusListCtrl::FILELIST_MODIFY)
@@ -3982,6 +4008,11 @@ int CGitStatusListCtrl::UpdateFileList(int mask,bool once,CTGitPathList *List)
 			UpdateIgnoreFileList(List);
 			m_FileLoaded |= CGitStatusListCtrl::FILELIST_IGNORE;
 		}
+	}
+	if (mask & CGitStatusListCtrl::FILELIST_LOCALCHANGESIGNORED && (once || (!(m_FileLoaded & CGitStatusListCtrl::FILELIST_LOCALCHANGESIGNORED))))
+	{
+		UpdateLocalChangesIgnoredFileList(List);
+		m_FileLoaded |= CGitStatusListCtrl::FILELIST_LOCALCHANGESIGNORED;
 	}
 	return 0;
 }

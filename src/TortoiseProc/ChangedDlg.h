@@ -54,6 +54,7 @@ protected:
 	afx_msg void			OnBnClickedShowunversioned();
 	afx_msg void			OnBnClickedShowUnmodified();
 	afx_msg void			OnBnClickedShowignored();
+	afx_msg void			OnBnClickedShowlocalchangesignored();
 	afx_msg LRESULT			OnSVNStatusListCtrlNeedsRefresh(WPARAM, LPARAM);
 	afx_msg LRESULT			OnSVNStatusListCtrlItemCountChanged(WPARAM, LPARAM);
 
@@ -84,6 +85,7 @@ private:
 	bool					m_bRemote;
 	BOOL					m_bShowUnversioned;
 	int						m_iShowUnmodified;
+	BOOL					m_bShowLocalChangesIgnored;
 	volatile LONG			m_bBlock;
 	CString					m_sTitle;
 	bool					m_bCanceled;
