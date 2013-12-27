@@ -61,7 +61,7 @@ void CShellUpdater::AddPathForUpdate(const CTGitPath& path)
 */
 void CShellUpdater::AddPathsForUpdate(const CTGitPathList& pathList)
 {
-	for(int nPath=0; nPath < pathList.GetCount(); nPath++)
+	for (int nPath=0; nPath < pathList.GetCount(); ++nPath)
 	{
 		AddPathForUpdate(pathList[nPath]);
 	}
@@ -117,7 +117,7 @@ void CShellUpdater::UpdateShell()
 			NULL))    // don't set maximum time
 		{
 			CTGitPath path;
-			for(int nPath = 0; nPath < m_pathsForUpdating.GetCount(); nPath++)
+			for(int nPath = 0; nPath < m_pathsForUpdating.GetCount(); ++nPath)
 			{
 				path.SetFromWin(g_Git.m_CurrentDir+_T("\\")+m_pathsForUpdating[nPath].GetWinPathString());
 				CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Cache Item Update for %s (%d)\n"), path.GetWinPathString(), GetTickCount());
