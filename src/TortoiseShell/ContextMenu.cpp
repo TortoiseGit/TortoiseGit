@@ -1642,7 +1642,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 			{
 				gitCmd += _T(" /hwnd:");
 				TCHAR buf[30];
-				_stprintf_s(buf, _T("%ld"), (LONG_PTR)lpcmi->hwnd);
+				_stprintf_s(buf, _T("%p"), (void*)lpcmi->hwnd);
 				gitCmd += buf;
 				myIDMap.clear();
 				myVerbsIDMap.clear();

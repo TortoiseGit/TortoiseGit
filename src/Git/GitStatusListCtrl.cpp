@@ -1960,7 +1960,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 							break;
 
 						CString sCmd;
-						sCmd.Format(_T("/command:diff /path:\"%s\" /path2:\"%s\" /hwnd:%ld"), firstfilepath->GetWinPath(), secondfilepath->GetWinPath(), (unsigned long)m_hWnd);
+						sCmd.Format(_T("/command:diff /path:\"%s\" /path2:\"%s\" /hwnd:%p"), firstfilepath->GetWinPath(), secondfilepath->GetWinPath(), (void*)m_hWnd);
 						CAppUtils::RunTortoiseGitProc(sCmd);
 					}
 				}

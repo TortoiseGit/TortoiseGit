@@ -929,7 +929,7 @@ bool CAppUtils::StartShowUnifiedDiff(HWND /*hWnd*/, const CTGitPath& url1, const
 	{
 		sCmd += _T(" /hwnd:");
 		TCHAR buf[30];
-		_stprintf_s(buf, 30, _T("%d"), hWnd);
+		_stprintf_s(buf, 30, _T("%p"), (void*)hWnd);
 		sCmd += buf;
 	}
 

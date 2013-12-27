@@ -54,7 +54,7 @@ BOOL CAppUtils::GetVersionedFile(CString sPath, CString sVersion, CString sSaveP
 		sSCMPath += _T(" /command:cat /path:\"%1\" /revision:%2 /savepath:\"%3\" /hwnd:%4");
 	}
 	CString sTemp;
-	sTemp.Format(_T("%Id"), hWnd);
+	sTemp.Format(_T("%p"), (void*)hWnd);
 	sSCMPath.Replace(_T("%1"), sPath);
 	sSCMPath.Replace(_T("%2"), sVersion);
 	sSCMPath.Replace(_T("%3"), sSavePath);
