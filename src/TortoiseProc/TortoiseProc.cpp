@@ -375,7 +375,7 @@ BOOL CTortoiseProcApp::InitInstance()
 		pathList.LoadFromAsteriskSeparatedString(sPathArgument);
 	}
 
-	if (pathList.GetCount() == 0) {
+	if (pathList.IsEmpty()) {
 		pathList.AddPath(CTGitPath::CTGitPath(g_Git.m_CurrentDir));
 	}
 

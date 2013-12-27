@@ -1595,7 +1595,7 @@ bool CAppUtils::ConflictEdit(CTGitPath &path,bool /*bAlternativeTool*/,bool reve
 		return FALSE;
 	}
 
-	if(list.GetCount() == 0)
+	if (list.IsEmpty())
 		return FALSE;
 
 	CTGitPath theirs;
@@ -2101,7 +2101,7 @@ bool CAppUtils::SendPatchMail(CTGitPathList &list,bool autoclose)
 
 	if(dlg.DoModal()==IDOK)
 	{
-		if(dlg.m_PathList.GetCount() == 0)
+		if (dlg.m_PathList.IsEmpty())
 			return FALSE;
 
 		CGitProgressDlg progDlg;
@@ -2148,7 +2148,7 @@ bool CAppUtils::SendPatchMail(CString &cmd,CString &formatpatchoutput,bool autoc
 		path.SetFromWin(one);
 		list.AddPath(path);
 	}
-	if (list.GetCount() > 0)
+	if (!list.IsEmpty())
 	{
 		return SendPatchMail(list, autoclose);
 	}
@@ -2684,7 +2684,7 @@ bool CAppUtils::RequestPull(CString endrevision, CString repositoryUrl)
 
 			if (dlg.DoModal() == IDOK)
 			{
-				if(dlg.m_PathList.GetCount() == 0)
+				if (dlg.m_PathList.IsEmpty())
 					return FALSE;
 
 				CGitProgressDlg progDlg;
@@ -2814,7 +2814,7 @@ BOOL CAppUtils::Commit(CString bugid,BOOL bWholeProject,CString &sLogMsg,
 		dlg.m_bAutoClose = autoClose;
 		if (dlg.DoModal() == IDOK)
 		{
-			if (dlg.m_pathList.GetCount()==0)
+			if (dlg.m_pathList.IsEmpty())
 				return false;
 			// if the user hasn't changed the list of selected items
 			// we don't use that list. Because if we would use the list
@@ -2986,7 +2986,7 @@ static void MergeCallback(CProgressDlg *dlg, void * /*caller*/, int result)
 		dlg->m_PostCmdList.RemoveAll();
 
 		CTGitPathList list;
-		if (!g_Git.ListConflictFile(list) && list.GetCount() > 0)
+		if (!g_Git.ListConflictFile(list) && !list.IsEmpty())
 		{
 			// there are conflict files
 			dlg->m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROGRS_CMD_RESOLVE)));

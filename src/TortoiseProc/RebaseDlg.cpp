@@ -884,7 +884,7 @@ int CRebaseDlg::VerifyNoConflict()
 		AddLogString(_T("Get conflict files fail"));
 		return -1;
 	}
-	if( list.GetCount() != 0 )
+	if (!list.IsEmpty())
 	{
 		CMessageBox::Show(NULL, IDS_PROGRS_CONFLICTSOCCURED, IDS_APPNAME, MB_OK);
 		return -1;
@@ -1584,7 +1584,7 @@ int CRebaseDlg::DoRebase()
 			AddLogString(_T("Get conflict files fail"));
 			return -1;
 		}
-		if(list.GetCount() == 0 )
+		if (list.IsEmpty())
 		{
 			if(mode ==  CTGitPath::LOGACTIONS_REBASE_PICK)
 			{

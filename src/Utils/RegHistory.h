@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2013 - TortoiseGit
 // Copyright (C) 2007 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -45,6 +46,7 @@ public:
 	void SetMaxHistoryItems(int nMax) {m_nMaxHistoryItems = nMax;}
 	/// Returns the number of items in the history.
 	size_t GetCount() const {return m_arEntries.size(); }
+	bool IsEmpty() const { return m_arEntries.empty(); }
 	/// Returns the entry at index \c pos
 	LPCTSTR GetEntry(size_t pos) {return m_arEntries[pos].c_str();}
 

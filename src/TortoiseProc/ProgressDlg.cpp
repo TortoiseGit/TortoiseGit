@@ -383,7 +383,7 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 			{
 				m_PostCmdCallback(this, m_caller, m_GitStatus);
 
-				if (m_PostCmdList.GetCount() > 0)
+				if (!m_PostCmdList.IsEmpty())
 				{
 					m_ctrlPostCmd.AddEntries(m_PostCmdList);
 					GetDlgItem(IDC_PROGRESS_BUTTON1)->ShowWindow(SW_SHOW);
@@ -391,7 +391,7 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 			}
 			else if (m_GitStatus == 0)	// default old behaviour on success
 			{
-				if (m_PostCmdList.GetCount() > 0)
+				if (!m_PostCmdList.IsEmpty())
 				{
 					m_ctrlPostCmd.AddEntries(m_PostCmdList);
 					GetDlgItem(IDC_PROGRESS_BUTTON1)->ShowWindow(SW_SHOW);
@@ -399,7 +399,7 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 			}
 			else	// simple method to show buttons on failed
 			{
-				if (m_PostFailCmdList.GetCount() > 0)
+				if (!m_PostFailCmdList.IsEmpty())
 				{
 					m_ctrlPostCmd.AddEntries(m_PostFailCmdList);
 					GetDlgItem(IDC_PROGRESS_BUTTON1)->ShowWindow(SW_SHOW);

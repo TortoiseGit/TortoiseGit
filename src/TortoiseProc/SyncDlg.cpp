@@ -362,7 +362,7 @@ void CSyncDlg::PullComplete()
 			return;
 		}
 
-		if(list.GetCount()>0)
+		if (!list.IsEmpty())
 		{
 			this->m_ConflictFileList.Clear();
 			CTGitPathList list;
@@ -468,7 +468,7 @@ void CSyncDlg::StashComplete()
 			return;
 		}
 
-		if (list.GetCount() > 0)
+		if (!list.IsEmpty())
 		{
 			m_ConflictFileList.Clear();
 			CTGitPathList list;

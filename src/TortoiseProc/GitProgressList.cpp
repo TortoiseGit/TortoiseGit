@@ -1654,7 +1654,7 @@ void CGitProgressList::OnLvnBegindragSvnprogress(NMHDR* , LRESULT *pResult)
 		}
 	}
 
-	if ( dropFiles.GetCount()>0 )
+	if (!dropFiles.IsEmpty())
 	{
 		dropFiles.CreateStructure();
 	}
@@ -2031,7 +2031,7 @@ bool CGitProgressList::CmdClone(CString& sWindowTitle, bool& /*localoperation*/)
 	SetBackgroundImage(IDI_SWITCH_BKG);
 	ReportCmd(CString(MAKEINTRESOURCE(IDS_PROG_CLONE)));
 
-	if (m_url.IsEmpty() || m_targetPathList.GetCount() == 0)
+	if (m_url.IsEmpty() || m_targetPathList.IsEmpty())
 		return false;
 
 	CStringA url = CUnicodeUtils::GetMulti(m_url.GetGitPathString(), CP_UTF8);

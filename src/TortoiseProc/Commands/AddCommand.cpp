@@ -55,7 +55,7 @@ bool AddCommand::Execute()
 			dlg.m_pathList = pathList;
 			if (dlg.DoModal() == IDOK)
 			{
-				if (dlg.m_pathList.GetCount() == 0)
+				if (dlg.m_pathList.IsEmpty())
 					return FALSE;
 				CGitProgressDlg progDlg;
 				theApp.m_pMainWnd = &progDlg;

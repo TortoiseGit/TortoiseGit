@@ -33,7 +33,7 @@ bool ResolveCommand::Execute()
 		ret = dlg.DoModal();
 	if (ret == IDOK)
 	{
-		if (dlg.m_pathList.GetCount())
+		if (!dlg.m_pathList.IsEmpty())
 		{
 			if (parser.HasKey(L"silent"))
 			{

@@ -41,11 +41,16 @@ INT_PTR CDropFiles::GetCount() const
 	return m_arFiles.GetCount();
 }
 
+bool CDropFiles::IsEmpty() const
+{
+	return m_arFiles.IsEmpty() == TRUE;
+}
+
 void CDropFiles::CreateBuffer()
 {
 	ASSERT(m_pBuffer == NULL);
 	ASSERT(m_nBufferSize == 0);
-	ASSERT(m_arFiles.GetCount()>0);
+	ASSERT(!m_arFiles.IsEmpty());
 
 	int nLength = 0;
 

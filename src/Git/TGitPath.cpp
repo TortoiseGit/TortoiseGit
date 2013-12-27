@@ -1296,6 +1296,10 @@ int CTGitPathList::GetCount() const
 {
 	return (int)m_paths.size();
 }
+bool CTGitPathList::IsEmpty() const
+{
+	return m_paths.empty();
+}
 void CTGitPathList::Clear()
 {
 	m_paths.clear();
@@ -1474,7 +1478,7 @@ CTGitPath CTGitPathList::GetCommonDirectory() const
 
 CTGitPath CTGitPathList::GetCommonRoot() const
 {
-	if (GetCount() == 0)
+	if (IsEmpty())
 		return CTGitPath();
 
 	if (GetCount() == 1)

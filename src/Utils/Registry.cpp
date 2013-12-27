@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2013 - TortoiseGit
 // Copyright (C) 2003-2006,2008-2010 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -180,7 +181,7 @@ bool CRegistryKey::getValues(CStringList& values)
         }
     }
 
-    return values.GetCount() > 0;
+    return !values.IsEmpty();
 }
 
 bool CRegistryKey::getSubKeys(CStringList& subkeys)
@@ -202,7 +203,7 @@ bool CRegistryKey::getSubKeys(CStringList& subkeys)
         }
     }
 
-    return subkeys.GetCount() > 0;
+    return !subkeys.IsEmpty();
 }
 #endif
 

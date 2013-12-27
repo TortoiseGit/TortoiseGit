@@ -381,7 +381,7 @@ LRESULT CFileDiffDlg::OnDiffFinished(WPARAM, LPARAM)
 	m_cFilter.GetWindowText(sFilterText);
 	m_cFileList.SetRedraw(false);
 	Filter(sFilterText);
-	if (m_arFileList.GetCount() > 0)
+	if (!m_arFileList.IsEmpty())
 	{
 		// Highlight first entry in file list
 		m_cFileList.SetSelectionMark(0);
@@ -397,7 +397,7 @@ LRESULT CFileDiffDlg::OnDiffFinished(WPARAM, LPARAM)
 	}
 
 	m_cFileList.ClearText();
-	if (m_arFileList.GetCount() == 0)
+	if (m_arFileList.IsEmpty())
 		m_cFileList.ShowText(CString(MAKEINTRESOURCE(IDS_COMPAREREV_NODIFF)));
 	m_cFileList.SetRedraw(true);
 

@@ -258,7 +258,7 @@ void CDirectoryWatcher::WorkerThread()
 	while (m_bRunning)
 	{
 		CleanupWatchInfo();
-		if (watchedPaths.GetCount())
+		if (!watchedPaths.IsEmpty())
 		{
 			// Any incoming notifications?
 
@@ -540,7 +540,7 @@ void CDirectoryWatcher::WorkerThread()
 					}
 				}
 			}
-		}// if (watchedPaths.GetCount())
+		}// if (!watchedPaths.IsEmpty())
 		else
 			Sleep(200);
 	}// while (m_bRunning)

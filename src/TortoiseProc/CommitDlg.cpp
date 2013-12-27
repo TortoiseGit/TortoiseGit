@@ -241,7 +241,7 @@ BOOL CCommitDlg::OnInitDialog()
 //	GitConfig config;
 //	m_bWholeProject = config.KeepLocks();
 
-	if(this->m_pathList.GetCount() == 0)
+	if (m_pathList.IsEmpty())
 		m_bWholeProject =true;
 
 	if(this->m_pathList.GetCount() == 1 && m_pathList[0].IsEmpty())
@@ -1180,7 +1180,7 @@ UINT CCommitDlg::StatusThread()
 	DialogEnableWindow(IDC_CHECKFILES, false);
 	DialogEnableWindow(IDC_CHECKSUBMODULES, false);
 
-	if (m_History.GetCount()==0)
+	if (m_History.IsEmpty())
 	{
 		CString reg;
 		reg.Format(_T("Software\\TortoiseGit\\History\\commit%s"), (LPCTSTR)m_ListCtrl.m_sUUID);
@@ -1212,7 +1212,7 @@ UINT CCommitDlg::StatusThread()
 	dwShow |= DWORD(m_regAddBeforeCommit) ? GITSLC_SHOWUNVERSIONED : 0;
 	if (success)
 	{
-		if (m_checkedPathList.GetCount())
+		if (!m_checkedPathList.IsEmpty())
 			m_ListCtrl.Show(dwShow, m_checkedPathList);
 		else
 		{
@@ -1795,7 +1795,7 @@ void CCommitDlg::InsertMenuItems(CMenu& mPopup, int& nCmd)
 	m_nPopupPasteListCmd = nCmd++;
 	mPopup.AppendMenu(MF_STRING | MF_ENABLED, m_nPopupPasteListCmd, sMenuItemText);
 
-	if (m_History.GetCount() > 0)
+	if (!m_History.IsEmpty())
 	{
 		sMenuItemText.LoadString(IDS_COMMITDLG_POPUP_PASTELASTMESSAGE);
 		m_nPopupPasteLastMessage = nCmd++;
@@ -1875,7 +1875,7 @@ bool CCommitDlg::HandleMenuItemClick(int cmd, CSciEdit * pSciEdit)
 
 	if(cmd == m_nPopupPasteLastMessage)
 	{
-		if(m_History.GetCount() ==0 )
+		if (m_History.IsEmpty())
 			return false;
 
 		CString logmsg;
@@ -1923,7 +1923,7 @@ void CCommitDlg::OnTimer(UINT_PTR nIDEvent)
 void CCommitDlg::OnBnClickedHistory()
 {
 	m_tooltips.Pop();	// hide the tooltips
-	if (m_pathList.GetCount() == 0)
+	if (m_pathList.IsEmpty())
 		return;
 
 	CHistoryDlg historyDlg;

@@ -3388,7 +3388,7 @@ void CGitStatusListCtrl::OnBeginDrag(NMHDR* /*pNMHDR*/, LRESULT* pResult)
 		dropFiles.AddFile(tempFile);
 	}
 
-	if ( dropFiles.GetCount()>0 )
+	if (!dropFiles.IsEmpty())
 	{
 		m_bOwnDrag = true;
 		dropFiles.CreateStructure();
@@ -3598,8 +3598,8 @@ bool CGitStatusListCtrl::PrepareGroups(bool bForce /* = false */)
 			max=m_arStatusArray[i]->m_ParentNo&PARENT_MASK;
 	}
 
-	if ( this->m_UnRevFileList.GetCount()>0 ||
-		this->m_IgnoreFileList.GetCount()>0 ||
+	if (!m_UnRevFileList.IsEmpty() ||
+		!m_IgnoreFileList.IsEmpty() ||
 		max>0 || bForce)
 	{
 		bHasGroups = true;

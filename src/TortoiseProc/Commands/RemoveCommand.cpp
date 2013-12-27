@@ -37,7 +37,7 @@ bool RemoveCommand::Execute()
 #if 0
 	BOOL bForce = FALSE;
 	SVN svn;
-	if ((pathList.GetCount())&&(SVN::PathIsURL(pathList[0])))
+	if ((!pathList.IsEmpty())&&(SVN::PathIsURL(pathList[0])))
 	{
 		// Delete using URL's, not wc paths
 		svn.SetPromptApp(&theApp);

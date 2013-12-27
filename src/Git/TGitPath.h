@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -377,6 +377,7 @@ public:
 	CString CreateAsteriskSeparatedString() const;
 
 	int GetCount() const;
+	bool IsEmpty() const;
 	void Clear();
 	const CTGitPath& operator[](INT_PTR index) const;
 	bool AreAllPathsFiles() const;

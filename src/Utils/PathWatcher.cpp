@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2013 - TortoiseGit
 // External Cache Copyright (C) 2007-2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -190,7 +191,7 @@ void CPathWatcher::WorkerThread()
 	TCHAR buf[bufferSize] = {0};
 	while (m_bRunning)
 	{
-		if (watchedPaths.GetCount())
+		if (!watchedPaths.IsEmpty())
 		{
 			if (!m_hCompPort || !GetQueuedCompletionStatus(m_hCompPort,
 											&numBytes,
@@ -331,7 +332,7 @@ continuewatching:
 					}
 				}
 			}
-		}// if (watchedPaths.GetCount())
+		}// if (!watchedPaths.IsEmpty())
 		else
 			Sleep(200);
 	}// while (m_bRunning)

@@ -123,7 +123,7 @@ BOOL CMergeDlg::OnInitDialog()
 	m_cLogMessage.SetText(m_pDefaultText);
 
 	m_History.SetMaxHistoryItems((LONG)CRegDWORD(_T("Software\\TortoiseGit\\MaxHistoryItems"), 25));
-	if (m_History.GetCount() == 0)
+	if (m_History.IsEmpty())
 		m_History.Load(_T("Software\\TortoiseGit\\History\\merge"), _T("logmsgs"));
 
 	((CComboBox *)GetDlgItem(IDC_COMBO_MERGESTRATEGY))->AddString(_T("resolve"));
@@ -213,7 +213,7 @@ void CMergeDlg::InsertMenuItems(CMenu& mPopup, int& nCmd)
 
 bool CMergeDlg::HandleMenuItemClick(int cmd, CSciEdit * pSciEdit)
 {
-	if (m_History.GetCount() == 0)
+	if (m_History.IsEmpty())
 		return false;
 
 	if (cmd == m_nPopupPasteLastMessage)

@@ -48,6 +48,8 @@ public:
 	 */
 	INT_PTR GetCount() const;
 
+	bool IsEmpty() const;
+
 	/**
 	 * Call this method when dragging begins. It will fill
 	 * the DROPFILES structure with the files previously
