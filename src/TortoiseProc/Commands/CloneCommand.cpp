@@ -208,6 +208,7 @@ bool CloneCommand::Execute()
 		}
 		CProgressDlg progress;
 		progress.m_GitCmd=cmd;
+		progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENULOG)));
 		INT_PTR ret = progress.DoModal();
 
 		if (dlg.m_bSVN)
@@ -225,6 +226,13 @@ bool CloneCommand::Execute()
 					CMessageBox::Show(NULL,_T("Fail set config remote.origin.puttykeyfile"),_T("TortoiseGit"),MB_OK|MB_ICONERROR);
 					return FALSE;
 				}
+			}
+			if (ret == IDC_PROGRESS_BUTTON1 + 1)
+			{
+				CString cmd = _T("/command:log");
+				cmd += _T(" /path:\"") + g_Git.m_CurrentDir + _T("\"");
+				CAppUtils::RunTortoiseGitProc(cmd);
+				return TRUE;
 			}
 		}
 		if(ret == IDOK)
