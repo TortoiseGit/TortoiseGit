@@ -172,6 +172,7 @@ private:
 	CRegDWORD			m_regAddBeforeCommit;
 	CRegDWORD			m_regKeepChangelists;
 	CRegDWORD			m_regDoNotAutoselectSubmodules;
+	CRegDWORD			m_regShowWholeProject;
 	ProjectProperties	m_ProjectProperties;
 	CString				m_sWindowTitle;
 	static UINT			WM_AUTOLISTREADY;

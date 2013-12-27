@@ -152,6 +152,7 @@ private:
 	CRegDWORD m_regbShowLocalBranches;
 	CRegDWORD m_regbShowRemoteBranches;
 	CRegDWORD m_regbShowGravatar;
+	CRegDWORD m_regShowWholeProject;
 
 	void Refresh (bool clearfilter = false);
 	void MoveToSameTop(CWnd *pWndRef, CWnd *pWndTarget);

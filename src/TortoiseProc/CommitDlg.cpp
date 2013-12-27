@@ -225,6 +225,11 @@ BOOL CCommitDlg::OnInitDialog()
 	m_regAddBeforeCommit = CRegDWORD(_T("Software\\TortoiseGit\\AddBeforeCommit"), TRUE);
 	m_bShowUnversioned = m_regAddBeforeCommit;
 
+	CString regPath(g_Git.m_CurrentDir);
+	regPath.Replace(_T(":"), _T("_"));
+	m_regShowWholeProject = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\ShowWholeProject\\") + regPath, FALSE);
+	m_bWholeProject = m_regShowWholeProject;
+
 	m_History.SetMaxHistoryItems((LONG)CRegDWORD(_T("Software\\TortoiseGit\\MaxHistoryItems"), 25));
 
 	m_regKeepChangelists = CRegDWORD(_T("Software\\TortoiseGit\\KeepChangeLists"), FALSE);
@@ -1104,6 +1109,7 @@ void CCommitDlg::OnOK()
 
 	UpdateData();
 	m_regAddBeforeCommit = m_bShowUnversioned;
+	m_regShowWholeProject = m_bWholeProject;
 	if (!GetDlgItem(IDC_WHOLE_PROJECT)->IsWindowEnabled())
 		m_bWholeProject = FALSE;
 	m_regKeepChangelists = m_bKeepChangeList;
@@ -2380,6 +2386,8 @@ void CCommitDlg::OnBnClickedWholeProject()
 			m_ListCtrl.GetStatus(NULL,true,false,true);
 		else
 			m_ListCtrl.GetStatus(&this->m_pathList,true,false,true);
+
+		m_regShowWholeProject = m_bWholeProject;
 
 		DWORD dwShow = m_ListCtrl.GetShowFlags();
 		if (DWORD(m_regAddBeforeCommit))

@@ -80,6 +80,8 @@ CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
 
 	str = g_Git.m_CurrentDir;
 	str.Replace(_T(":"),_T("_"));
+	m_regShowWholeProject = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\ShowWholeProject\\") + str, FALSE);
+	m_bWholeProject = m_regShowWholeProject;
 	m_regbShowTags = CRegDWORD(_T("Software\\TortoiseGit\\LogDialog\\ShowTags\\") + str, TRUE);
 	m_bShowTags = !!m_regbShowTags;
 	m_regbShowLocalBranches = CRegDWORD(_T("Software\\TortoiseGit\\LogDialog\\ShowLocalBranches\\") + str, TRUE);
@@ -255,6 +257,9 @@ BOOL CLogDlg::OnInitDialog()
 	m_LogList.m_Path=m_path;
 	m_LogList.m_hasWC = m_LogList.m_bShowWC = !g_GitAdminDir.IsBareRepo(g_Git.m_CurrentDir);
 	m_LogList.InsertGitColumn();
+
+	if (m_bWholeProject)
+		m_LogList.m_Path.Reset();
 
 	m_ChangedFileListCtrl.Init(GITSLC_COLEXT | GITSLC_COLSTATUS |GITSLC_COLADD|GITSLC_COLDEL, _T("LogDlg"), (GITSLC_POPALL ^ (GITSLC_POPCOMMIT|GITSLC_POPIGNORE|GITSLC_POPRESTORE)), false, m_LogList.m_hasWC, GITSLC_COLEXT | GITSLC_COLSTATUS | GITSLC_COLADD| GITSLC_COLDEL);
 
@@ -2703,6 +2708,8 @@ void CLogDlg::OnBnClickShowWholeProject()
 	}
 	else
 		m_LogList.m_Path=m_path;
+
+	m_regShowWholeProject = m_bWholeProject;
 
 	SetDlgTitle();
 
