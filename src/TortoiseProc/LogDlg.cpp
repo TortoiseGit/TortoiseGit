@@ -473,7 +473,7 @@ LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM /*lParam*/)
 		if (m_pTaskbarList)
 			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NOPROGRESS);
 
-		DialogEnableWindow(IDC_SHOWWHOLEPROJECT, !m_bFollowRenames);
+		DialogEnableWindow(IDC_SHOWWHOLEPROJECT, !m_bFollowRenames && !m_path.IsEmpty());
 
 		DialogEnableWindow(IDC_STATBUTTON, !(m_LogList.m_arShownList.IsEmpty() || m_LogList.m_arShownList.GetCount() == 1 && m_LogList.m_bShowWC));
 		DialogEnableWindow(IDC_REFRESH, TRUE);
@@ -2425,7 +2425,7 @@ void CLogDlg::OnBnClickedFollowRenames()
 		m_LogList.m_ShowMask &= ~CGit::LOG_INFO_FOLLOW;
 
 	DialogEnableWindow(IDC_LOG_ALLBRANCH, !m_bFollowRenames);
-	DialogEnableWindow(IDC_SHOWWHOLEPROJECT, !m_bFollowRenames);
+	DialogEnableWindow(IDC_SHOWWHOLEPROJECT, !m_bFollowRenames && !m_path.IsEmpty());
 
 	OnRefresh();
 

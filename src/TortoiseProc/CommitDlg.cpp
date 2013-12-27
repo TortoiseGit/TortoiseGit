@@ -1102,7 +1102,6 @@ void CCommitDlg::OnOK()
 
 	UpdateData();
 	m_regAddBeforeCommit = m_bShowUnversioned;
-	m_regShowWholeProject = m_bWholeProject;
 	m_regKeepChangelists = m_bKeepChangeList;
 	m_regDoNotAutoselectSubmodules = m_bDoNotAutoselectSubmodules;
 	if (!GetDlgItem(IDC_KEEPLISTS)->IsWindowEnabled())
@@ -1269,7 +1268,7 @@ UINT CCommitDlg::StatusThread()
 	if (m_bRunThread)
 	{
 		DialogEnableWindow(IDC_SHOWUNVERSIONED, true);
-		DialogEnableWindow(IDC_WHOLE_PROJECT, true);
+		DialogEnableWindow(IDC_WHOLE_PROJECT, !(m_pathList.IsEmpty() || (m_pathList.GetCount() == 1 && m_pathList[0].IsEmpty())));
 		DialogEnableWindow(IDC_NOAUTOSELECTSUBMODULES, true);
 		if (m_ListCtrl.HasChangeLists())
 			DialogEnableWindow(IDC_KEEPLISTS, true);
