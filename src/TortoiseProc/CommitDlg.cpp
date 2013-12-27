@@ -243,12 +243,6 @@ BOOL CCommitDlg::OnInitDialog()
 //	GitConfig config;
 //	m_bWholeProject = config.KeepLocks();
 
-	if (m_pathList.IsEmpty())
-		m_bWholeProject =true;
-
-	if(this->m_pathList.GetCount() == 1 && m_pathList[0].IsEmpty())
-		m_bWholeProject =true;
-
 	SetDlgTitle();
 
 	UpdateData(FALSE);
