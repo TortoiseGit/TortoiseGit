@@ -38,7 +38,6 @@ CChangedDlg::CChangedDlg(CWnd* pParent /*=NULL*/)
 	, m_bBlock(FALSE)
 	, m_bCanceled(false)
 	, m_bShowIgnored(FALSE)
-	, m_bShowExternals(TRUE)
 {
 	m_bRemote = FALSE;
 }
@@ -55,19 +54,16 @@ void CChangedDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_SHOWUNVERSIONED, m_bShowUnversioned);
 	DDX_Check(pDX, IDC_SHOWUNMODIFIED, m_iShowUnmodified);
 	DDX_Check(pDX, IDC_SHOWIGNORED, m_bShowIgnored);
-//	DDX_Check(pDX, IDC_SHOWEXTERNALS, m_bShowExternals);
 }
 
 
 BEGIN_MESSAGE_MAP(CChangedDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_SHOWUNVERSIONED, OnBnClickedShowunversioned)
 	ON_BN_CLICKED(IDC_SHOWUNMODIFIED, OnBnClickedShowUnmodified)
-//	ON_BN_CLICKED(IDC_SHOWUSERPROPS, OnBnClickedShowUserProps)
 	ON_REGISTERED_MESSAGE(CGitStatusListCtrl::GITSLNM_NEEDSREFRESH, OnSVNStatusListCtrlNeedsRefresh)
 	ON_REGISTERED_MESSAGE(CGitStatusListCtrl::GITSLNM_ITEMCOUNTCHANGED, OnSVNStatusListCtrlItemCountChanged)
 	ON_BN_CLICKED(IDC_SHOWIGNORED, &CChangedDlg::OnBnClickedShowignored)
 	ON_BN_CLICKED(IDC_REFRESH, &CChangedDlg::OnBnClickedRefresh)
-//	ON_BN_CLICKED(IDC_SHOWEXTERNALS, &CChangedDlg::OnBnClickedShowexternals)
 	ON_BN_CLICKED(IDC_COMMIT, &CChangedDlg::OnBnClickedCommit)
 	ON_BN_CLICKED(IDC_BUTTON_STASH, &CChangedDlg::OnBnClickedStash)
 	ON_BN_CLICKED(IDC_BUTTON_UNIFIEDDIFF, &CChangedDlg::OnBnClickedButtonUnifieddiff)
@@ -94,16 +90,12 @@ BOOL CChangedDlg::OnInitDialog()
 	AdjustControlSize(IDC_SHOWUNVERSIONED);
 	AdjustControlSize(IDC_SHOWUNMODIFIED);
 	AdjustControlSize(IDC_SHOWIGNORED);
-//	AdjustControlSize(IDC_SHOWEXTERNALS);
-//	AdjustControlSize(IDC_SHOWUSERPROPS);
 
 	AddAnchor(IDC_CHANGEDLIST, TOP_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDC_SUMMARYTEXT, BOTTOM_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDC_SHOWUNVERSIONED, BOTTOM_LEFT);
 	AddAnchor(IDC_SHOWUNMODIFIED, BOTTOM_LEFT);
 	AddAnchor(IDC_SHOWIGNORED, BOTTOM_LEFT);
-//	AddAnchor(IDC_SHOWEXTERNALS, BOTTOM_LEFT);
-//	AddAnchor(IDC_SHOWUSERPROPS, BOTTOM_LEFT);
 	AddAnchor(IDC_INFOLABEL, BOTTOM_RIGHT);
 	AddAnchor(IDC_BUTTON_STASH, BOTTOM_RIGHT);
 	AddAnchor(IDC_BUTTON_UNIFIEDDIFF, BOTTOM_RIGHT);
@@ -144,7 +136,6 @@ UINT CChangedDlg::ChangedStatusThread()
 	DialogEnableWindow(IDC_SHOWUNVERSIONED, FALSE);
 	DialogEnableWindow(IDC_SHOWUNMODIFIED, FALSE);
 	DialogEnableWindow(IDC_SHOWIGNORED, FALSE);
-	DialogEnableWindow(IDC_SHOWUSERPROPS, FALSE);
 	CString temp;
 	m_FileListCtrl.Clear();
 	if (!m_FileListCtrl.GetStatus(&m_pathList, m_bRemote, m_bShowIgnored != FALSE, m_bShowUnversioned != FALSE))
@@ -156,7 +147,6 @@ UINT CChangedDlg::ChangedStatusThread()
 	dwShow |= m_bShowUnversioned ? GITSLC_SHOWUNVERSIONED : 0;
 	dwShow |= m_iShowUnmodified ? GITSLC_SHOWNORMAL : 0;
 	dwShow |= m_bShowIgnored ? GITSLC_SHOWIGNORED : 0;
-	dwShow |= m_bShowExternals ? GITSLC_SHOWEXTERNAL | GITSLC_SHOWINEXTERNALS | GITSLC_SHOWEXTERNALFROMDIFFERENTREPO : 0;
 	m_FileListCtrl.Show(dwShow);
 	UpdateStatistics();
 
@@ -179,7 +169,6 @@ UINT CChangedDlg::ChangedStatusThread()
 	DialogEnableWindow(IDC_SHOWUNVERSIONED, bIsDirectory);
 	//DialogEnableWindow(IDC_SHOWUNMODIFIED, bIsDirectory);
 	DialogEnableWindow(IDC_SHOWIGNORED, bIsDirectory);
-	DialogEnableWindow(IDC_SHOWUSERPROPS, TRUE);
 	InterlockedExchange(&m_bBlock, FALSE);
 	// revert the remote flag back to the default
 	m_bRemote = !!(DWORD)CRegDWORD(_T("Software\\TortoiseGit\\CheckRepo"), FALSE);
@@ -222,10 +211,9 @@ DWORD CChangedDlg::UpdateShowFlags()
 		dwShow |= GITSLC_SHOWIGNORED;
 	else
 		dwShow &= ~GITSLC_SHOWIGNORED;
-	if (m_bShowExternals)
-		dwShow |= GITSLC_SHOWEXTERNAL | GITSLC_SHOWINEXTERNALS | GITSLC_SHOWEXTERNALFROMDIFFERENTREPO;
-	else
-		dwShow &= ~(GITSLC_SHOWEXTERNAL | GITSLC_SHOWINEXTERNALS | GITSLC_SHOWEXTERNALFROMDIFFERENTREPO);
+
+	// old bShowExternals:
+	dwShow &= ~(GITSLC_SHOWEXTERNAL | GITSLC_SHOWINEXTERNALS | GITSLC_SHOWEXTERNALFROMDIFFERENTREPO);
 
 	return dwShow;
 }
@@ -270,22 +258,6 @@ void CChangedDlg::OnBnClickedShowignored()
 			CMessageBox::Show(NULL, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
 	}
 	UpdateStatistics();
-}
-
-void CChangedDlg::OnBnClickedShowexternals()
-{
-	UpdateData();
-	m_FileListCtrl.Show(UpdateShowFlags());
-	UpdateStatistics();
-}
-
-void CChangedDlg::OnBnClickedShowUserProps()
-{
-	UpdateData();
-	if (AfxBeginThread(ChangedStatusThreadEntry, this)==NULL)
-	{
-		CMessageBox::Show(NULL, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
-	}
 }
 
 LRESULT CChangedDlg::OnSVNStatusListCtrlNeedsRefresh(WPARAM, LPARAM)

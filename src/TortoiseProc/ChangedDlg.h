@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2008, 2011-2013 - TortoiseGit
 // Copyright (C) 2003-2006,2008 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
@@ -53,8 +54,6 @@ protected:
 	afx_msg void			OnBnClickedShowunversioned();
 	afx_msg void			OnBnClickedShowUnmodified();
 	afx_msg void			OnBnClickedShowignored();
-	afx_msg void			OnBnClickedShowexternals();
-	afx_msg void			OnBnClickedShowUserProps();
 	afx_msg LRESULT			OnSVNStatusListCtrlNeedsRefresh(WPARAM, LPARAM);
 	afx_msg LRESULT			OnSVNStatusListCtrlItemCountChanged(WPARAM, LPARAM);
 
@@ -89,7 +88,6 @@ private:
 	CString					m_sTitle;
 	bool					m_bCanceled;
 	BOOL					m_bShowIgnored;
-	BOOL					m_bShowExternals;
 	CToolTips				m_tooltips;
 };
 
