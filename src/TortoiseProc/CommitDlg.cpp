@@ -1022,6 +1022,11 @@ void CCommitDlg::OnOK()
 			{
 				this->m_sLogMessage.Empty();
 				m_cLogMessage.SetText(m_sLogMessage);
+				if (m_bCreateNewBranch)
+				{
+					GetDlgItem(IDC_COMMIT_TO)->ShowWindow(SW_SHOW);
+					GetDlgItem(IDC_NEWBRANCH)->ShowWindow(SW_HIDE);
+				}
 				m_bCreateNewBranch = FALSE;
 			}
 
