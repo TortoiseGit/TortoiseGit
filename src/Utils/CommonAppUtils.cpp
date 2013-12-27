@@ -216,8 +216,8 @@ bool CCommonAppUtils::SetListCtrlBackgroundImage(HWND hListCtrl, UINT nID, int w
 				}
 				::DeleteDC(dst_hdc);
 			}
+			::ReleaseDC(desktop, screen_dev);
 		}
-		::ReleaseDC(desktop, screen_dev);
 	}
 
 	// Restore settings
