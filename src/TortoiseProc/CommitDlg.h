@@ -40,6 +40,16 @@
 #define REFRESHTIMER	101
 #define FILLPATCHVTIMER	102
 
+typedef enum
+{
+	GIT_POSTCOMMIT_CMD_NOTHING,
+	GIT_POSTCOMMIT_CMD_PUSH,
+	GIT_POSTCOMMIT_CMD_DCOMMIT,
+	GIT_POSTCOMMIT_CMD_PULL,
+	GIT_POSTCOMMIT_CMD_CREATETAG,
+} GIT_POSTCOMMIT_CMD;
+
+
 /**
  * \ingroup TortoiseProc
  * Dialog to enter log messages used in a commit.
@@ -131,11 +141,8 @@ public:
 	CTGitPathList		m_pathList;
 	CTGitPathList		m_checkedPathList;
 	CTGitPathList		m_updatedPathList;
-	int					m_PostCmd;
-	BOOL				m_bPushAfterCommit;
-	BOOL				m_bCreateTagAfterCommit;
+	GIT_POSTCOMMIT_CMD	m_PostCmd;
 	BOOL				m_bAmendDiffToLastCommit;
-	BOOL				m_bPullAfterCommit;
 	BOOL				m_bCommitMessageOnly;
 
 protected:

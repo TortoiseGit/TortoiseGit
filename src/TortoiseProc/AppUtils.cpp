@@ -2829,23 +2829,23 @@ BOOL CAppUtils::Commit(CString bugid,BOOL bWholeProject,CString &sLogMsg,
 			sLogMsg = dlg.m_sLogMessage;
 			bSelectFilesForCommit = true;
 
-			if( dlg.m_bPushAfterCommit )
+			switch (dlg.m_PostCmd)
 			{
-				switch(dlg.m_PostCmd)
-				{
-				case GIT_POST_CMD_DCOMMIT:
-					CAppUtils::SVNDCommit();
-					break;
-				default:
-					CAppUtils::Push();
-				}
-			}
-			else if (dlg.m_bCreateTagAfterCommit)
-			{
+			case GIT_POSTCOMMIT_CMD_DCOMMIT:
+				CAppUtils::SVNDCommit();
+				break;
+			case GIT_POSTCOMMIT_CMD_PUSH:
+				CAppUtils::Push();
+				break;
+			case GIT_POSTCOMMIT_CMD_CREATETAG:
 				CAppUtils::CreateBranchTag(TRUE);
-			}
-			else if (dlg.m_bPullAfterCommit)
+				break;
+			case GIT_POSTCOMMIT_CMD_PULL:
 				CAppUtils::Pull(true);
+				break;
+			default:
+				break;
+			}
 
 //			CGitProgressDlg progDlg;
 //			progDlg.SetChangeList(dlg.m_sChangeList, !!dlg.m_bKeepChangeList);

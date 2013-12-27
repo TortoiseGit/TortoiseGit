@@ -69,13 +69,11 @@ CCommitDlg::CCommitDlg(CWnd* pParent /*=NULL*/)
 	, m_bAutoClose(false)
 	, m_bSetCommitDateTime(FALSE)
 	, m_bCreateNewBranch(FALSE)
-	, m_bCreateTagAfterCommit(FALSE)
-	, m_bPullAfterCommit(FALSE)
 	, m_bForceCommitAmend(false)
 	, m_bCommitMessageOnly(FALSE)
 	, m_bSetAuthor(FALSE)
 	, m_bCancelled(false)
-	, m_PostCmd(-1)
+	, m_PostCmd(GIT_POSTCOMMIT_CMD_NOTHING)
 	, m_bAmendDiffToLastCommit(FALSE)
 	, m_nPopupPasteListCmd(0)
 	, m_nPopupPasteLastMessage(0)
@@ -84,7 +82,6 @@ CCommitDlg::CCommitDlg(CWnd* pParent /*=NULL*/)
 	, m_hAccel(nullptr)
 {
 	this->m_bCommitAmend=FALSE;
-	m_bPushAfterCommit = FALSE;
 }
 
 CCommitDlg::~CCommitDlg()
@@ -1015,6 +1012,7 @@ void CCommitDlg::OnOK()
 
 		INT_PTR userResponse = progress.DoModal();
 
+		m_PostCmd = GIT_POSTCOMMIT_CMD_NOTHING;
 		if(progress.m_GitStatus || userResponse == (IDC_PROGRESS_BUTTON1 + indexReCommit))
 		{
 			bCloseCommitDlg = false;
@@ -1036,19 +1034,16 @@ void CCommitDlg::OnOK()
 			this->BringWindowToTop();
 		}
 		else if (userResponse == IDC_PROGRESS_BUTTON1 + indexTag)
-		{
-			m_bCreateTagAfterCommit=true;
-		}
+			m_PostCmd = GIT_POSTCOMMIT_CMD_CREATETAG;
 		else if (userResponse == IDC_PROGRESS_BUTTON1 + indexPull)
-			m_bPullAfterCommit = TRUE;
+			m_PostCmd = GIT_POSTCOMMIT_CMD_PULL;
 		else if (userResponse >= IDC_PROGRESS_BUTTON1 && userResponse < IDC_PROGRESS_BUTTON1 + indexPull)
 		{
 			// User pressed 'DCommit' or 'Push' button after successful commit.
-			m_bPushAfterCommit=true;
 			if (userResponse == IDC_PROGRESS_BUTTON1 && IsGitSVN)
-				m_PostCmd = GIT_POST_CMD_DCOMMIT;
+				m_PostCmd = GIT_POSTCOMMIT_CMD_DCOMMIT;
 			else
-				m_PostCmd = GIT_POST_CMD_PUSH;
+				m_PostCmd = GIT_POSTCOMMIT_CMD_PUSH;
 		}
 
 		CFile::Remove(tempfile);

@@ -27,11 +27,6 @@ struct git_cred;
 struct git_transfer_progress;
 class CIgnoreFile;
 
-enum GIT_POST_CMD
-{
-	GIT_POST_CMD_PUSH,
-	GIT_POST_CMD_DCOMMIT
-};
 /**
  * \ingroup TortoiseProc
  * An utility class with static functions.
