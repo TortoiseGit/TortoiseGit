@@ -113,6 +113,13 @@ BOOL CSubmoduleUpdateDlg::OnInitDialog()
 	CStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
+	CString str(g_Git.m_CurrentDir);
+	str.Replace(_T(":"), _T("_"));
+	m_regShowWholeProject = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\ShowWholeProject\\") + str, FALSE);
+	m_bWholeProject = m_regShowWholeProject;
+
+	DialogEnableWindow(IDC_SHOWWHOLEPROJECT, !(m_PathFilterList.empty() || (m_PathFilterList.size() == 1 && m_PathFilterList[0].IsEmpty())));
+
 	SetDlgTitle();
 
 	AdjustControlSize(IDC_CHECK_SUBMODULE_INIT);
@@ -208,6 +215,7 @@ void CSubmoduleUpdateDlg::OnBnClickedSelectall()
 void CSubmoduleUpdateDlg::OnBnClickedShowWholeProject()
 {
 	UpdateData();
+	m_regShowWholeProject = m_bWholeProject;
 	SetDlgTitle();
 	Refresh();
 }

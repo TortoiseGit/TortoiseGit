@@ -61,6 +61,7 @@ public:
 	STRING_VECTOR m_PathList;
 
 protected:
+	CRegDWORD		m_regShowWholeProject;
 	CListBox	m_PathListBox;
 	CRegString		m_regPath;
 	CButton			m_SelectAll;
