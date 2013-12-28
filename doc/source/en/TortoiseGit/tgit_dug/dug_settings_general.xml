@@ -347,7 +347,7 @@
 					</para>
 					<para>
 						<guilabel>Auto-close if no errors</guilabel>
-						always closes the dialog if git.exe exists with no error code.
+						always closes the dialog if git.exe exited with 0 error code.
 					</para>
 				</listitem>
 			</varlistentry>
