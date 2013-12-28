@@ -108,7 +108,7 @@ bool SubmoduleUpdateCommand::Execute()
 	}
 
 	STRING_VECTOR pathFilterList;
-	for (size_t i = 0; i < orgPathList.GetCount(); i++)
+	for (int i = 0; i < orgPathList.GetCount(); i++)
 	{
 		if (orgPathList[i].IsDirectory())
 		{
@@ -193,7 +193,7 @@ bool SubmoduleCommand::Execute(CString cmd,  CString arg)
 	//progress.m_GitCmd.Format(_T("git.exe submodule update --init "));
 
 	CString str;
-	for (size_t i = 0; i < this->orgPathList.GetCount(); ++i)
+	for (int i = 0; i < this->orgPathList.GetCount(); ++i)
 	{
 		if(orgPathList[i].IsDirectory())
 		{

@@ -983,7 +983,7 @@ void CLogDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 		if (m_History.GetCount() > 0)
 		{
 			popup.AppendMenu(MF_SEPARATOR, 0);
-			for (int i = 0; i < m_History.GetCount(); ++i)
+			for (size_t i = 0; i < m_History.GetCount(); ++i)
 				popup.AppendMenuIcon(cnt++, m_History.GetEntry(i));
 		}
 
