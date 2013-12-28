@@ -728,6 +728,8 @@ void CCachedDirectory::UpdateCurrentStatus()
 			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": force update project root directory as normal status\n"));
 			this->m_ownStatus.ForceStatus(git_wc_status_normal);
 		}
+		else if (m_mostImportantFileStatus > git_wc_status_unversioned)
+			m_ownStatus.ForceStatus(m_mostImportantFileStatus);
 	}
 
 	if ((newStatus != m_currentFullStatus) && m_ownStatus.IsVersioned())

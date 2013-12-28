@@ -53,6 +53,7 @@ Released: Unreleased
  * Fixed issue #2040: "fatal: pathspec did not match any files" error when resolving deleted/modified conflict
  * Fixed issue #1866: Check for newer version of tgit behind proxy
  * Fixed issue #1927: Clicking on a hyperlinked commit hash leaves the target's log message un-hyperlinked
+ * Fixed issue #1835: Question mark icons on committed unchanged files
 
 = Release 1.8.6.0 =
 Released: 2013-10-20
