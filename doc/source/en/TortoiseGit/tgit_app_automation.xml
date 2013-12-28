@@ -49,12 +49,11 @@
 			to add it anymore.
 		</para>
 		<para>
-			The progress dialog which is used for commits, updates and many more commands
+			The progress dialog which is used for commits, updates and many more git.exe commands
 			usually stays open after the command has finished until the user presses
-			the <guibutton>OK</guibutton> button. This can be changed by checking
-			the corresponding option in the settings dialog. But using that setting
-			will close the progress dialog, no matter if you start the command
-			from your batch file or from the TortoiseGit context menu.
+			the <guibutton>OK</guibutton> button. This can be changed in the settings dialog.
+			You may use <option>/autoclose</option> parameter to override the this setting
+			from your batch file.
 		</para>
 		<para>
 			To specify a different location of the configuration file, use the parameter
