@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012 Sven Strickroth, <email@cs-ware.de>
-// Copyright (C) 2013 - TortoiseGit
+// Copyright (C) 2012-2013 Sven Strickroth, <email@cs-ware.de>
+// Copyright (C) 2012-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -113,14 +113,7 @@ BOOL CSubmoduleUpdateDlg::OnInitDialog()
 	CStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
-	CString sWindowTitle;
-	GetWindowText(sWindowTitle);
-	CString dir = g_Git.m_CurrentDir;
-	if (m_PathFilterList.size() > 0)
-		dir += (g_Git.m_CurrentDir.Right(1) == _T('\\') ? _T("") : _T("\\")) + CTGitPath(m_PathFilterList[0]).GetWinPathString();
-	if (m_PathFilterList.size() > 1)
-		dir += _T(", ...");
-	CAppUtils::SetWindowTitle(m_hWnd, dir, sWindowTitle);
+	SetDlgTitle();
 
 	AdjustControlSize(IDC_CHECK_SUBMODULE_INIT);
 	AdjustControlSize(IDC_CHECK_SUBMODULE_RECURSIVE);
@@ -132,6 +125,21 @@ BOOL CSubmoduleUpdateDlg::OnInitDialog()
 	UpdateData(FALSE);
 
 	return TRUE;
+}
+
+void CSubmoduleUpdateDlg::SetDlgTitle()
+{
+	if (m_sTitle.IsEmpty())
+		GetWindowText(m_sTitle);
+	CString dir = g_Git.m_CurrentDir;
+	if (!m_bWholeProject)
+	{
+		if (!m_PathFilterList.empty())
+			dir += (g_Git.m_CurrentDir.Right(1) == _T('\\') ? _T("") : _T("\\")) + CTGitPath(m_PathFilterList[0]).GetWinPathString();
+		if (m_PathFilterList.size() > 1)
+			dir += _T(", ...");
+	}
+	CAppUtils::SetWindowTitle(m_hWnd, dir, m_sTitle);
 }
 
 void CSubmoduleUpdateDlg::OnBnClickedOk()
@@ -200,6 +208,7 @@ void CSubmoduleUpdateDlg::OnBnClickedSelectall()
 void CSubmoduleUpdateDlg::OnBnClickedShowWholeProject()
 {
 	UpdateData();
+	SetDlgTitle();
 	Refresh();
 }
 

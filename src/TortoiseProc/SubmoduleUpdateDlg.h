@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012 Sven Strickroth, <email@cs-ware.de>
-// Copyright (C) 2013 - TortoiseGit
+// Copyright (C) 2012-2013 Sven Strickroth, <email@cs-ware.de>
+// Copyright (C) 2012-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -47,6 +47,7 @@ protected:
 	afx_msg void OnBnClickedShowWholeProject();
 
 	void Refresh();
+	void SetDlgTitle();
 
 public:
 	BOOL m_bInit;
@@ -64,4 +65,5 @@ protected:
 	CRegString		m_regPath;
 	CButton			m_SelectAll;
 	BOOL			m_bWholeProject;
+	CString			m_sTitle;
 };
