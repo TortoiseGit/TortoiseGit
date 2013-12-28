@@ -1171,6 +1171,8 @@ void CGitLogList::SetSelectedAction(int action)
 	while(pos)
 	{
 		index = GetNextSelectedItem(pos);
+		if (((GitRev*)m_arShownList[index])->GetAction(this) & (CTGitPath::LOGACTIONS_REBASE_CURRENT | CTGitPath::LOGACTIONS_REBASE_DONE))
+			continue;
 		((GitRev*)m_arShownList[index])->GetAction(this) = action;
 		CRect rect;
 		this->GetItemRect(index,&rect,LVIR_BOUNDS);

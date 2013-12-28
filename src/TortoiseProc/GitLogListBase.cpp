@@ -1726,20 +1726,19 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 		GIT_REV_LIST parentHash;
 		GetParentHashes(pSelLogEntry, parentHash);
 
-		if(m_ContextMenuMask&GetContextMenuBit(ID_REBASE_PICK))
+		if (m_ContextMenuMask & GetContextMenuBit(ID_REBASE_PICK) && !(pSelLogEntry->GetAction(this) & (CTGitPath::LOGACTIONS_REBASE_CURRENT | CTGitPath::LOGACTIONS_REBASE_DONE)))
 			popup.AppendMenuIcon(ID_REBASE_PICK, IDS_REBASE_PICK, IDI_PICK);
 
-		if(m_ContextMenuMask&GetContextMenuBit(ID_REBASE_SQUASH))
+		if (m_ContextMenuMask & GetContextMenuBit(ID_REBASE_SQUASH) && !(pSelLogEntry->GetAction(this) & (CTGitPath::LOGACTIONS_REBASE_CURRENT | CTGitPath::LOGACTIONS_REBASE_DONE)))
 			popup.AppendMenuIcon(ID_REBASE_SQUASH, IDS_REBASE_SQUASH, IDI_SQUASH);
 
-		if(m_ContextMenuMask&GetContextMenuBit(ID_REBASE_EDIT))
+		if (m_ContextMenuMask & GetContextMenuBit(ID_REBASE_EDIT) && !(pSelLogEntry->GetAction(this) & (CTGitPath::LOGACTIONS_REBASE_CURRENT | CTGitPath::LOGACTIONS_REBASE_DONE)))
 			popup.AppendMenuIcon(ID_REBASE_EDIT, IDS_REBASE_EDIT, IDI_EDIT);
 
-		if(m_ContextMenuMask&GetContextMenuBit(ID_REBASE_SKIP))
+		if (m_ContextMenuMask & GetContextMenuBit(ID_REBASE_SKIP) && !(pSelLogEntry->GetAction(this) & (CTGitPath::LOGACTIONS_REBASE_CURRENT | CTGitPath::LOGACTIONS_REBASE_DONE)))
 			popup.AppendMenuIcon(ID_REBASE_SKIP, IDS_REBASE_SKIP, IDI_SKIP);
 
-		if(m_ContextMenuMask&(GetContextMenuBit(ID_REBASE_SKIP)|GetContextMenuBit(ID_REBASE_EDIT)|
-			GetContextMenuBit(ID_REBASE_SQUASH)|GetContextMenuBit(ID_REBASE_PICK)))
+		if (m_ContextMenuMask & (GetContextMenuBit(ID_REBASE_SKIP) | GetContextMenuBit(ID_REBASE_EDIT) | GetContextMenuBit(ID_REBASE_SQUASH) | GetContextMenuBit(ID_REBASE_PICK)) && !(pSelLogEntry->GetAction(this) & (CTGitPath::LOGACTIONS_REBASE_CURRENT | CTGitPath::LOGACTIONS_REBASE_DONE)))
 			popup.AppendMenu(MF_SEPARATOR, NULL);
 
 		if (GetSelectedCount() == 1)

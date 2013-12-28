@@ -1376,7 +1376,6 @@ void CRebaseDlg::SetControlEnable()
 			this->GetDlgItem(IDC_REBASE_COMBOXEX_UPSTREAM)->EnableWindow(TRUE);
 			this->GetDlgItem(IDC_REBASE_CHECK_FORCE)->EnableWindow(TRUE);
 		}
-		//this->m_CommitList.m_IsEnableRebaseMenu=TRUE;
 		this->m_CommitList.m_ContextMenuMask |= m_CommitList.GetContextMenuBit(CGitLogListBase::ID_REBASE_PICK)|
 												m_CommitList.GetContextMenuBit(CGitLogListBase::ID_REBASE_SQUASH)|
 												m_CommitList.GetContextMenuBit(CGitLogListBase::ID_REBASE_EDIT)|
@@ -1400,10 +1399,6 @@ void CRebaseDlg::SetControlEnable()
 		this->GetDlgItem(IDC_REBASE_CHECK_FORCE)->EnableWindow(FALSE);
 		this->GetDlgItem(IDC_BUTTON_UP2)->EnableWindow(FALSE);
 		this->GetDlgItem(IDC_BUTTON_DOWN2)->EnableWindow(FALSE);
-		//this->m_CommitList.m_IsEnableRebaseMenu=FALSE;
-		this->m_CommitList.m_ContextMenuMask &= ~(m_CommitList.GetContextMenuBit(CGitLogListBase::ID_REBASE_PICK)|
-												m_CommitList.GetContextMenuBit(CGitLogListBase::ID_REBASE_SQUASH)|
-												m_CommitList.GetContextMenuBit(CGitLogListBase::ID_REBASE_EDIT));
 
 		if( m_RebaseStage == REBASE_DONE && (this->m_PostButtonTexts.GetCount() != 0) )
 		{
