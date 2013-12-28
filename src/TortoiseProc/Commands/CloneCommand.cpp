@@ -227,10 +227,10 @@ bool CloneCommand::Execute()
 					return FALSE;
 				}
 			}
-			if (ret == IDC_PROGRESS_BUTTON1 + 1)
+			if (ret == IDC_PROGRESS_BUTTON1)
 			{
 				CString cmd = _T("/command:log");
-				cmd += _T(" /path:\"") + g_Git.m_CurrentDir + _T("\"");
+				cmd += _T(" /path:\"") + dlg.m_Directory + _T("\"");
 				CAppUtils::RunTortoiseGitProc(cmd);
 				return TRUE;
 			}
