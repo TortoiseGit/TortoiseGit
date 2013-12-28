@@ -63,6 +63,7 @@
 #include "SysProgressDlg.h"
 #include "UserPassword.h"
 #include "Patch.h"
+#include "Globals.h"
 
 CAppUtils::CAppUtils(void)
 {
@@ -3036,10 +3037,17 @@ BOOL CAppUtils::Merge(CString *commit)
 		CProgressDlg Prodlg;
 		Prodlg.m_GitCmd = cmd;
 
+		BOOL hasGitSVN = CTGitPath(g_Git.m_CurrentDir).GetAdminDirMask() & ITEMIS_GITSVN;
 		if (dlg.m_bNoCommit)
 			Prodlg.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUCOMMIT)));
-		else if (dlg.m_bIsBranch)
-			Prodlg.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_REMOVEBRANCH)));
+		else
+		{
+			if (dlg.m_bIsBranch)
+				Prodlg.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_REMOVEBRANCH)));
+			
+			if (hasGitSVN)
+				Prodlg.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUSVNDCOMMIT)));
+		}
 
 		Prodlg.m_PostCmdCallback = MergeCallback;
 
@@ -3074,7 +3082,11 @@ BOOL CAppUtils::Merge(CString *commit)
 						MessageBox(NULL, out, _T("TortoiseGit"), MB_OK);
 				}
 			}
+			else if (hasGitSVN)
+				CAppUtils::SVNDCommit();
 		}
+		else if (ret == IDC_PROGRESS_BUTTON1 + 1 && hasGitSVN)
+			CAppUtils::SVNDCommit();
 
 		return !Prodlg.m_GitStatus;
 	}

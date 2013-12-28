@@ -29,6 +29,7 @@ Released: Unreleased
  * Fixed issue #1820: Show Assume valid/unchanged files in repo status dialog on a separate list
  * Fixed issue #1603: Make "Show Whole Project" in log and commit dialog autosaved
  * Fixed issue #827: add the option to autoclose the "Git command progress" window
+ * Fixed issue #1913: SVN DCommit Button in successful merge Dialog
 
 == Bug Fixes ==
  * Fixed issue #1947: When editing git notes, spurious reformatting is done
