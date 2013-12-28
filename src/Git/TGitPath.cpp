@@ -1171,6 +1171,7 @@ int CTGitPathList::FillBasedOnIndexFlags(unsigned short flag, CTGitPathList* lis
 	}
 	git_index_free(index);
 	RemoveDuplicates();
+	git_repository_free(repository);
 	return 0;
 }
 int CTGitPathList::ParserFromLog(BYTE_VECTOR &log, bool parseDeletes /*false*/)
