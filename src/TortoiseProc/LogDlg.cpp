@@ -984,7 +984,12 @@ void CLogDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 		{
 			popup.AppendMenu(MF_SEPARATOR, 0);
 			for (size_t i = 0; i < m_History.GetCount(); ++i)
-				popup.AppendMenuIcon(cnt++, m_History.GetEntry(i));
+			{
+				CString entry = m_History.GetEntry(i);
+				if (entry.GetLength() > 150)
+					entry = entry.Left(150) + _T("...");
+				popup.AppendMenuIcon(cnt++, entry);
+			}
 		}
 
 		int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this, 0);
