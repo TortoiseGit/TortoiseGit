@@ -1482,30 +1482,9 @@ void CAppUtils::DescribeConflictFile(bool mode, bool base,CString &descript)
 
 void CAppUtils::RemoveTempMergeFile(CTGitPath &path)
 {
-		CString tempmergefile;
-		try
-		{
-			tempmergefile = CAppUtils::GetMergeTempFile(_T("LOCAL"),path);
-			CFile::Remove(tempmergefile);
-		}catch(...)
-		{
-		}
-
-		try
-		{
-			tempmergefile = CAppUtils::GetMergeTempFile(_T("REMOTE"),path);
-			CFile::Remove(tempmergefile);
-		}catch(...)
-		{
-		}
-
-		try
-		{
-			tempmergefile = CAppUtils::GetMergeTempFile(_T("BASE"),path);
-			CFile::Remove(tempmergefile);
-		}catch(...)
-		{
-		}
+	::DeleteFile(CAppUtils::GetMergeTempFile(_T("LOCAL"), path));
+	::DeleteFile(CAppUtils::GetMergeTempFile(_T("REMOTE"), path));
+	::DeleteFile(CAppUtils::GetMergeTempFile(_T("BASE"), path));
 }
 CString CAppUtils::GetMergeTempFile(CString type,CTGitPath &merge)
 {
@@ -1682,9 +1661,9 @@ bool CAppUtils::ConflictEdit(CTGitPath &path,bool /*bAlternativeTool*/,bool reve
 	}
 	else
 	{
-		CFile::Remove(mine.GetWinPathString());
-		CFile::Remove(theirs.GetWinPathString());
-		CFile::Remove(base.GetWinPathString());
+		::DeleteFile(mine.GetWinPathString());
+		::DeleteFile(theirs.GetWinPathString());
+		::DeleteFile(base.GetWinPathString());
 
 		CDeleteConflictDlg dlg;
 		DescribeConflictFile(b_local, b_base,dlg.m_LocalStatus);
@@ -3194,7 +3173,7 @@ void CAppUtils::EditNote(GitRev *rev)
 		{
 			CMessageBox::Show(NULL, IDS_PROC_FAILEDSAVINGNOTES, IDS_APPNAME, MB_OK | MB_ICONERROR);
 		}
-		CFile::Remove(tempfile);
+		::DeleteFile(tempfile);
 
 	}
 }

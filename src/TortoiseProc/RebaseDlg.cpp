@@ -1236,7 +1236,7 @@ void CRebaseDlg::OnBnClickedContinue()
 			}
 		}
 
-		CFile::Remove(tempfile);
+		::DeleteFile(tempfile);
 		AddLogString(out);
 		m_SquashMessage.Empty();
 		this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_LOG);

@@ -1044,7 +1044,7 @@ void CCommitDlg::OnOK()
 				m_PostCmd = GIT_POSTCOMMIT_CMD_PUSH;
 		}
 
-		CFile::Remove(tempfile);
+		::DeleteFile(tempfile);
 
 		if (m_BugTraqProvider && progress.m_GitStatus == 0)
 		{
