@@ -629,40 +629,6 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 							msg.Format(_T("Error while cherry pick commits on top of combined commits. Aborting.\r\n\r\n"));
 							throw std::exception(CUnicodeUtils::GetUTF8(msg));
 						}
-#if 0
-						CString currentBranch=g_Git.GetCurrentBranch();
-						cmd.Format(_T("git.exe rebase --onto \"%s\" %s %s"),
-							currentBranch,
-							pFirstEntry->m_CommitHash,
-							headhash);
-						if(g_Git.Run(cmd,&out,CP_UTF8)!=0)
-						{
-							CString msg;
-							msg.Format(_T("Error while rebasing commits on top of combined commits. Aborting.\r\n\r\n%s"),out);
-//							CMessageBox::Show(NULL,msg,_T("TortoiseGit"),MB_OK);
-							g_Git.Run(_T("git.exe rebase --abort"),&out,CP_UTF8);
-							throw std::exception(CUnicodeUtils::GetUTF8(msg));
-						}
-
-						//HEAD is now on <no branch>.
-						//The following steps are to get HEAD back on the original branch and reset the branch to the new HEAD
-						//To avoid 2 working copy changes, we could use git branch -f <original branch> <hash new head>
-						//And then git checkout <original branch>
-						//But I don't know if 'git branch -f' removes tracking options. So for now, do a checkout and a reset.
-
-						//Store new HEAD
-						CString newHead=g_Git.GetHash(CString(_T("HEAD")));
-
-						//Checkout working branch
-						cmd.Format(_T("git.exe checkout -f \"%s\" --"), currentBranch);
-						if(g_Git.Run(cmd,&out,CP_UTF8))
-							throw std::exception(CUnicodeUtils::GetUTF8(_T("Could not checkout original branch. Aborting...\r\n\r\n")+out));
-
-						//Reset to new HEAD
-						cmd.Format(_T("git.exe reset --hard %s --"), newHead);
-						if(g_Git.Run(cmd,&out,CP_UTF8))
-							throw std::exception(CUnicodeUtils::GetUTF8(_T("Could not reset to new head. Aborting...\r\n\r\n")+out));
-#endif
 					}
 				}
 				else
