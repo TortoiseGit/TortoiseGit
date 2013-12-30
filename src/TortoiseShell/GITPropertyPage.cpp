@@ -548,6 +548,13 @@ void CGitPropertyPage::LogThreadEntry(void *param)
 	((CGitPropertyPage*)param)->LogThread();
 }
 
+static void ReadConfigValue(git_config * config, CString& value, const char * key)
+{
+	const char * out = nullptr;
+	git_config_get_string(&out, config, key);
+	value = CUnicodeUtils::GetUnicode(out);
+}
+
 void CGitPropertyPage::InitWorkfileView()
 {
 	if (filenames.empty())
@@ -567,34 +574,48 @@ void CGitPropertyPage::InitWorkfileView()
 	if (ret)
 		return;
 
-	CGit git;
-
-	git.SetCurrentDir(ProjectTopDir);
 	CString username;
-	git.Run(_T("git.exe config user.name"), &username, CP_UTF8);
 	CString useremail;
-	git.Run(_T("git.exe config user.email"), &useremail, CP_UTF8);
 	CString autocrlf;
-	git.Run(_T("git.exe config core.autocrlf"), &autocrlf, CP_UTF8);
 	CString safecrlf;
-	git.Run(_T("git.exe config core.safecrlf"), &safecrlf, CP_UTF8);
+
+	git_config* config = nullptr;
+	if (!git_repository_config(&config, repository))
+	{
+		ReadConfigValue(config, username, "user.name");
+		ReadConfigValue(config, useremail, "user.email");
+		ReadConfigValue(config, autocrlf, "core.autocrlf");
+		ReadConfigValue(config, safecrlf, "core.safecrlf");
+	}
 
 	CString branch;
 	CString remotebranch;
-
-	if (!CGit::GetCurrentBranchFromFile(ProjectTopDir, branch))
+	if (!git_repository_head_detached(repository))
 	{
-		CString cmd, remote;
-		cmd.Format(_T("git.exe config branch.%s.merge"), branch.Trim());
-		git.Run(cmd, &remotebranch, CP_UTF8);
-		cmd.Format(_T("git.exe config branch.%s.remote"), branch.Trim());
-		git.Run(cmd, &remote, CP_UTF8);
-		remote.Trim();
-		remotebranch.Trim();
-		if((!remote.IsEmpty()) && (!remotebranch.IsEmpty()))
+		git_reference * head = nullptr;
+		if (git_repository_head_unborn(repository))
 		{
-			remotebranch = remotebranch.Mid(11);
-			remotebranch = remote + _T("/") + remotebranch;
+			git_reference_lookup(&head, repository, "HEAD");
+			branch = CUnicodeUtils::GetUnicode(git_reference_symbolic_target(head));
+			if (branch.Find(_T("refs/heads/")) == 0)
+				branch = branch.Mid(11); // 11 = len("refs/heads/")
+			git_reference_free(head);
+		}
+		else if (!git_repository_head(&head, repository))
+		{
+			const char * branchChar = git_reference_shorthand(head);
+			branch = CUnicodeUtils::GetUnicode(branchChar);
+
+			const char * branchFullChar = git_reference_name(head);
+			CStringA upstreambranchnameA;
+			if (git_branch_upstream_name(upstreambranchnameA.GetBufferSetLength(4096), 4096, repository, branchFullChar) > 0)
+			{
+				upstreambranchnameA.ReleaseBuffer();
+				remotebranch = CUnicodeUtils::GetUnicode(upstreambranchnameA);
+				remotebranch = remotebranch.Mid(13); // 13=len("refs/remotes/")
+			}
+
+			git_reference_free(head);
 		}
 	}
 	else
@@ -611,7 +632,6 @@ void CGitPropertyPage::InitWorkfileView()
 	SetDlgItemText(m_hwnd,IDC_CONFIG_SAFECRLF,safecrlf.Trim());
 
 	SetDlgItemText(m_hwnd,IDC_SHELL_CURRENT_BRANCH,branch.Trim());
-	remotebranch.Trim().Replace(_T("\n"), _T("; "));
 	SetDlgItemText(m_hwnd,IDC_SHELL_REMOTE_BRANCH, remotebranch);
 
 	git_oid oid;
