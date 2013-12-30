@@ -279,7 +279,7 @@ void CGitPropertyPage::RunCommand(const tstring& command)
 		return;
 	}
 
-	MessageBox(NULL, CFormatMessageWrapper(), _T("TortoiseProc launch failed"), MB_OK | MB_ICONINFORMATION);
+	MessageBox(NULL, CFormatMessageWrapper(), _T("TortoiseGitProc launch failed"), MB_OK | MB_ICONINFORMATION);
 }
 
 void CGitPropertyPage::Time64ToTimeString(__time64_t time, TCHAR * buf, size_t buflen)
