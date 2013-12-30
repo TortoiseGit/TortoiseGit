@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2009,2011-2013 - TortoiseSVN
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -25,10 +26,8 @@
 
 bool CatCommand::Execute()
 {
-
 	CString savepath = CPathUtils::GetLongPathname(parser.GetVal(_T("savepath")));
 	CString revision = parser.GetVal(_T("revision"));
-	CString pegrevision = parser.GetVal(_T("pegrevision"));
 
 	CString cmd, output, err;
 	cmd.Format(_T("git.exe cat-file -t %s"),revision);
