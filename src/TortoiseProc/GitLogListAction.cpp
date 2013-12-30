@@ -614,18 +614,6 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				{
 					if(pFirstEntry->m_CommitHash!=headhash)
 					{
-						//Commitrange firstEntry..headhash (from top of combine to original head) needs to be 'cherry-picked'
-						//on top of new commit.
-						//Use the rebase --onto command for it.
-						//
-						//All this can be done in one step using the following command:
-						//cmd.Format(_T("git.exe format-patch --stdout --binary --full-index -k %s..%s | git am -k -3"),
-						//	pFirstEntry->m_CommitHash,
-						//	headhash);
-						//But I am not sure if a '|' is going to work in a CreateProcess() call.
-						//
-						//Later the progress dialog could be used to execute these steps.
-
 						if(CherryPickFrom(pFirstEntry->m_CommitHash.ToString(),headhash))
 						{
 							CString msg;
