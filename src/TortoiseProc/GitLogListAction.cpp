@@ -597,6 +597,9 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				dlg.m_bWholeProject=true;
 				dlg.m_bSelectFilesForCommit = true;
 				dlg.m_bForceCommitAmend=true;
+				CTGitPathList gpl;
+				gpl.AddPath(CTGitPath(g_Git.m_CurrentDir));
+				dlg.m_pathList = gpl;
 				if (lastRevision.ParentsCount() != 1)
 				{
 					CMessageBox::Show(NULL, _T("The following commit dialog can only show changes of oldest commit if it has exactly one parent. This is not the case right now."), _T("TortoiseGit"),MB_OK);

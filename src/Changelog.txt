@@ -55,6 +55,7 @@ Released: Unreleased
  * Fixed issue #1866: Check for newer version of tgit behind proxy
  * Fixed issue #1927: Clicking on a hyperlinked commit hash leaves the target's log message un-hyperlinked
  * Fixed issue #1835: Question mark icons on committed unchanged files
+ * Fixed issue #2053: Can't do "Combine to one commit"; changed file list wrongly empty
 
 = Release 1.8.6.0 =
 Released: 2013-10-20
