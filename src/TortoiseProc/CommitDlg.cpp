@@ -2505,7 +2505,7 @@ void CCommitDlg::OnHdnItemchangedFilelist(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 int CCommitDlg::CheckHeadDetach()
 {
 	CString output;
-	if(g_Git.GetCurrentBranchFromFile(g_Git.m_CurrentDir,output))
+	if (CGit::GetCurrentBranchFromFile(g_Git.m_CurrentDir, output))
 	{
 		int retval = CMessageBox::Show(NULL, IDS_PROC_COMMIT_DETACHEDWARNING, IDS_APPNAME, MB_YESNOCANCEL | MB_ICONWARNING);
 		if(retval == IDYES)

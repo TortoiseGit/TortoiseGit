@@ -582,7 +582,7 @@ void CGitPropertyPage::InitWorkfileView()
 	CString branch;
 	CString remotebranch;
 
-	if (!g_Git.GetCurrentBranchFromFile(ProjectTopDir, branch))
+	if (!CGit::GetCurrentBranchFromFile(ProjectTopDir, branch))
 	{
 		CString cmd, remote;
 		cmd.Format(_T("git.exe config branch.%s.merge"), branch.Trim());

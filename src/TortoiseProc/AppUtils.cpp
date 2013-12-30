@@ -1196,7 +1196,7 @@ bool CAppUtils::PerformSwitch(CString ref, bool bForce /* false */, CString sNew
 		idSubmoduleUpdate = progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_SUBMODULESUPDATE)));
 	idPull = progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUPULL)));
 	CString currentBranch;
-	bool hasBranch = g_Git.GetCurrentBranchFromFile(g_Git.m_CurrentDir, currentBranch) == 0;
+	bool hasBranch = CGit::GetCurrentBranchFromFile(g_Git.m_CurrentDir, currentBranch) == 0;
 	if (hasBranch)
 		idMerge = progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUMERGE)));
 
