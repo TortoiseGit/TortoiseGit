@@ -734,20 +734,7 @@ void CProgressDlg::InsertColorText(CRichEditCtrl &edit,CString text,COLORREF rgb
 
 CString CCommitProgressDlg::Convert2UnionCode(char *buff, int size)
 {
-	CString str;
-
-	CString cmd, output;
-	int cp=CP_UTF8;
-
-	cmd=_T("git.exe config i18n.logOutputEncoding");
-	if (m_Git->Run(cmd, &output, NULL, CP_UTF8))
-		cp=CP_UTF8;
-
 	int start=0;
-	output=output.Tokenize(_T("\n"),start);
-	cp=CUnicodeUtils::GetCPCode(output);
-
-	start =0;
 	if(size == -1)
 		size = (int)strlen(buff);
 
@@ -762,8 +749,8 @@ CString CCommitProgressDlg::Convert2UnionCode(char *buff, int size)
 		}
 	}
 
-	str.Empty();
-	g_Git.StringAppend(&str, (BYTE*)buff, cp, start);
+	CString str;
+	g_Git.StringAppend(&str, (BYTE*)buff, g_Git.m_LogEncode, start);
 	g_Git.StringAppend(&str, (BYTE*)buff + start, CP_UTF8, size - start);
 
 	ClearESC(str);
