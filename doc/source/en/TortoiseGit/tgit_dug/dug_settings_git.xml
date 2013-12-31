@@ -64,6 +64,11 @@
 			None: No tags are downloaded (--no-tags).
 			All tags only: Only all tags are downloaded but no branches are downloaded (--tags).
 		</para>
+		<para>
+			<guilabel>Prune</guilabel>
+			This sets remote.name.prune config, which controls the default prune option of remote tracking branches of the specified remote.
+			Default is false.
+		</para>
 	</sect3>
 	<sect3 id="tgit-dug-settings-credential">
 		<title>Credential</title>

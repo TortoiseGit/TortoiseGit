@@ -6842,7 +6842,7 @@ msgid "Proxy Settings"
 msgstr ""
 
 #. Resource IDs: (1603)
-msgid "Prune (remove remote-tracking branches which no longer exist on the remote)"
+msgid "Prune"
 msgstr ""
 
 #. Resource IDs: (22, 66, 1611)

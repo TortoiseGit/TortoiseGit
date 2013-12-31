@@ -2342,9 +2342,10 @@ bool CAppUtils::Fetch(CString remoteName, bool allowRebase)
 		if(ver >= 0x01070203) //above 1.7.0.2
 			arg = _T("--progress ");
 
-		if (dlg.m_bPrune) {
+		if (dlg.m_bPrune == TRUE)
 			arg += _T("--prune ");
-		}
+		else if (dlg.m_bPrune == FALSE && ver >= 0x01080500)
+			arg += _T("--no-prune ");
 
 		if (dlg.m_bFetchTags == 1)
 		{

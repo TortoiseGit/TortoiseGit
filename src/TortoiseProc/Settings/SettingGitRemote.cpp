@@ -39,6 +39,7 @@ CSettingGitRemote::CSettingGitRemote(CString cmdPath)
 	, m_strPuttyKeyfile(_T(""))
 	, m_cmdPath(cmdPath)
 	, m_bNoFetch(false)
+	, m_bPrune(2)
 {
 
 	m_ChangedMask = 0;
@@ -56,6 +57,7 @@ void CSettingGitRemote::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT_URL, m_strUrl);
 	DDX_Text(pDX, IDC_EDIT_PUTTY_KEY, m_strPuttyKeyfile);
 	DDX_Control(pDX, IDC_COMBO_TAGOPT, m_ctrlTagOpt);
+	DDX_Check(pDX, IDC_CHECK_PRUNE, m_bPrune);
 }
 
 
@@ -68,6 +70,7 @@ BEGIN_MESSAGE_MAP(CSettingGitRemote, CPropertyPage)
 	ON_EN_CHANGE(IDC_EDIT_URL, &CSettingGitRemote::OnEnChangeEditUrl)
 	ON_EN_CHANGE(IDC_EDIT_PUTTY_KEY, &CSettingGitRemote::OnEnChangeEditPuttyKey)
 	ON_CBN_SELCHANGE(IDC_COMBO_TAGOPT, &CSettingGitRemote::OnCbnSelchangeComboTagOpt)
+	ON_BN_CLICKED(IDC_CHECK_PRUNE, &CSettingGitRemote::OnBnClickedCheckprune)
 	ON_BN_CLICKED(IDC_BUTTON_REMOVE, &CSettingGitRemote::OnBnClickedButtonRemove)
 	ON_BN_CLICKED(IDC_BUTTON_RENAME_REMOTE, &CSettingGitRemote::OnBnClickedButtonRenameRemote)
 END_MESSAGE_MAP()
@@ -109,6 +112,9 @@ BOOL CSettingGitRemote::OnInitDialog()
 	m_ctrlTagOpt.AddString(CString(MAKEINTRESOURCE(IDS_NONE)));
 	m_ctrlTagOpt.AddString(CString(MAKEINTRESOURCE(IDS_FETCH_TAGS_ONLY)));
 	m_ctrlTagOpt.SetCurSel(0);
+
+	if (CAppUtils::GetMsysgitVersion() < 0x0108050)
+		GetDlgItem(IDC_CHECK_PRUNE)->ShowWindow(SW_HIDE);
 
 	//this->GetDlgItem(IDC_EDIT_REMOTE)->EnableWindow(FALSE);
 	this->UpdateData(FALSE);
@@ -164,7 +170,7 @@ void CSettingGitRemote::OnBnClickedButtonAdd()
 		return;
 	}
 
-	m_ChangedMask = REMOTE_NAME | REMOTE_URL | REMOTE_PUTTYKEY | REMOTE_TAGOPT;
+	m_ChangedMask = REMOTE_NAME | REMOTE_URL | REMOTE_PUTTYKEY | REMOTE_TAGOPT | REMOTE_PRUNE;
 	if(IsRemoteExist(m_strRemote))
 	{
 		CString msg;
@@ -240,6 +246,10 @@ void CSettingGitRemote::OnLbnSelchangeListRemote()
 		index = 2;
 	m_ctrlTagOpt.SetCurSel(index);
 
+	cmd.Format(_T("remote.%s.prune"), remote);
+	CString prune = g_Git.GetConfigValue(cmd, CP_UTF8);
+	m_bPrune = prune == _T("true") ? TRUE : prune == _T("false") ? FALSE : 2;
+
 	GetDlgItem(IDC_BUTTON_ADD)->EnableWindow(TRUE);
 	GetDlgItem(IDC_BUTTON_REMOVE)->EnableWindow(TRUE);
 	GetDlgItem(IDC_BUTTON_RENAME_REMOTE)->EnableWindow(TRUE);
@@ -293,6 +303,17 @@ void CSettingGitRemote::OnCbnSelchangeComboTagOpt()
 
 	this->UpdateData();
 	if (this->m_ctrlTagOpt.GetCurSel() > 0)
+		this->SetModified();
+	else
+		this->SetModified(0);
+}
+
+void CSettingGitRemote::OnBnClickedCheckprune()
+{
+	m_ChangedMask |= REMOTE_PRUNE;
+
+	this->UpdateData();
+	if (m_bPrune != 2)
 		this->SetModified();
 	else
 		this->SetModified(0);
@@ -398,6 +419,12 @@ BOOL CSettingGitRemote::OnApply()
 		else if (index == 2)
 			tagopt = "--tags";
 		if (!Save(_T("tagopt"), tagopt))
+			return FALSE;
+	}
+
+	if (m_ChangedMask & REMOTE_PRUNE)
+	{
+		if (!Save(_T("prune"), m_bPrune == TRUE ? _T("true") : m_bPrune == FALSE ? _T("false") : _T("")))
 			return FALSE;
 	}
 
