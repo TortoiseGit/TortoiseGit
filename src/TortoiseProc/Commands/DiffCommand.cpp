@@ -35,8 +35,6 @@ bool DiffCommand::Execute()
 //	bool bBlame = !!parser.HasKey(_T("blame"));
 	if (path2.IsEmpty())
 	{
-		if (cmdLinePath.IsEmpty())
-			return false;
 		if (this->orgCmdLinePath.IsDirectory())
 		{
 			CChangedDlg dlg;
@@ -46,6 +44,8 @@ bool DiffCommand::Execute()
 		}
 		else
 		{
+			if (cmdLinePath.IsEmpty())
+				return false;
 			CGitDiff diff;
 			//diff.SetAlternativeTool(bAlternativeTool);
 			if ( parser.HasKey(_T("startrev")) && parser.HasKey(_T("endrev")) )
