@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 // Copyright (C) 2011-2013 - Sven Strickroth <email@cs-ware.de>
 // Copyright (C) 2005-2007 Marco Costalba
 
@@ -821,6 +821,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				CString cmd;
 				cmd.Format(_T("git.exe branch -a --contains %s"), pSelLogEntry->m_CommitHash.ToString());
 				CProgressDlg progress;
+				progress.m_AutoClose = AUTOCLOSE_NO;
 				progress.m_GitCmd = cmd;
 				progress.DoModal();
 			}
