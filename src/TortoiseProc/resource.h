@@ -1437,6 +1437,7 @@
 #define IDS_PROGRESSGETFILEREVISION     1906
 #define IDS_PROGRESSIMPORT              1907
 #define IDS_PROGRESSREVISIONTEXT        1908
+#define IDC_STATIC_PRUNE                1909
 #define IDS_INPUT_REMOVEONE             2014
 #define IDS_INPUT_REMOVEMORE            2015
 #define IDS_MENUREFRESH                 2150

@@ -45,7 +45,7 @@ CPullFetchDlg::CPullFetchDlg(CWnd* pParent /*=NULL*/)
 	m_bFFonly = false;
 	m_bFetchTags = 2;
 	m_bAllRemotes = FALSE;
-	m_bPrune = false;
+	m_bPrune = CAppUtils::GetMsysgitVersion() >= 0x01080500 ? 2 : FALSE;
 }
 
 CPullFetchDlg::~CPullFetchDlg()
@@ -246,6 +246,7 @@ void CPullFetchDlg::OnCbnSelchangeRemote()
 	if (remote.IsEmpty() || remote == _T("- all -"))
 	{
 		GetDlgItem(IDC_STATIC_TAGOPT)->SetWindowText(_T(""));
+		GetDlgItem(IDC_STATIC_PRUNE)->SetWindowText(_T(""));
 		return;
 	}
 
@@ -261,6 +262,23 @@ void CPullFetchDlg::OnCbnSelchangeRemote()
 	CString value;
 	value.Format(_T("%s: %s"), CString(MAKEINTRESOURCE(IDS_DEFAULT)), tagopt);
 	GetDlgItem(IDC_STATIC_TAGOPT)->SetWindowText(value);
+
+	CString prune;
+	if (CAppUtils::GetMsysgitVersion() >= 0x01080500)
+	{
+		key.Format(_T("remote.%s.prune"), remote);
+		prune = g_Git.GetConfigValue(key);
+		if (prune.IsEmpty())
+			prune = g_Git.GetConfigValue(_T("fetch.prune"));
+	}
+	if (!prune.IsEmpty())
+	{
+		CString value;
+		value.Format(_T("%s: %s"), CString(MAKEINTRESOURCE(IDS_DEFAULT)), prune);
+		GetDlgItem(IDC_STATIC_PRUNE)->SetWindowText(value);
+	}
+	else
+		GetDlgItem(IDC_STATIC_PRUNE)->SetWindowText(_T(""));
 }
 
 void CPullFetchDlg::OnBnClickedRd()
