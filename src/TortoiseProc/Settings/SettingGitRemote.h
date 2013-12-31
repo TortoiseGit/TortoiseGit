@@ -35,6 +35,7 @@ public:
 		REMOTE_URL		=0x2,
 		REMOTE_PUTTYKEY	=0x4,
 		REMOTE_TAGOPT	=0x8,
+		REMOTE_PRUNE	=0x10,
 	};
 	CSettingGitRemote(CString cmdPath);
 	virtual ~CSettingGitRemote();
@@ -57,6 +58,7 @@ protected:
 	afx_msg void OnEnChangeEditUrl();
 	afx_msg void OnEnChangeEditPuttyKey();
 	afx_msg void OnCbnSelchangeComboTagOpt();
+	afx_msg void OnBnClickedCheckprune();
 	afx_msg void OnBnClickedButtonRemove();
 	afx_msg void OnBnClickedButtonRenameRemote();
 
@@ -77,4 +79,5 @@ protected:
 
 	CString		m_strPuttyKeyfile;
 	CComboBox	m_ctrlTagOpt;
+	BOOL		m_bPrune;
 };
