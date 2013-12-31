@@ -4247,8 +4247,7 @@ void CGitStatusListCtrl::FileSaveAs(CTGitPath *path)
 					OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
 					NULL);
 	CString currentpath;
-	currentpath=g_Git.m_CurrentDir+_T("\\");
-	currentpath+=path->GetWinPathString();
+	currentpath = g_Git.m_CurrentDir + _T("\\") + path->GetContainingDirectory().GetWinPath();
 
 	dlg.m_ofn.lpstrInitialDir=currentpath.GetBuffer();
 

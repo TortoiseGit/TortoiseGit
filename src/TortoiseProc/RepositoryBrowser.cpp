@@ -1095,6 +1095,9 @@ void CRepositoryBrowser::FileSaveAs(const CString path)
 	filename.Format(_T("%s-%s%s"), gitPath.GetBaseFilename(), hash.ToString().Left(g_Git.GetShortHASHLength()), gitPath.GetFileExtension());
 	CFileDialog dlg(FALSE, NULL, filename, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, NULL);
 
+	CString currentpath(g_Git.m_CurrentDir + _T("\\") + gitPath.GetContainingDirectory().GetWinPath());
+	dlg.m_ofn.lpstrInitialDir = currentpath.GetBuffer();
+
 	CString cmd, out;
 	INT_PTR ret = dlg.DoModal();
 	SetCurrentDirectory(g_Git.m_CurrentDir);
