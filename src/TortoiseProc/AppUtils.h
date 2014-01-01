@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -208,7 +208,6 @@ public:
 
 private:
 	static CString PickDiffTool(const CTGitPath& file1, const CTGitPath& file2);
-	static bool GetMimeType(const CTGitPath& file, CString& mimetype);
 
 	static bool OpenIgnoreFile(CIgnoreFile &file, const CString& filename);
 

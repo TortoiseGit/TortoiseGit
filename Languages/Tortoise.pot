@@ -4119,12 +4119,12 @@ msgstr ""
 msgid "Extension"
 msgstr ""
 
-#. Resource IDs: (65535)
-msgid "Extension or mime-type:"
+#. Resource IDs: (1722)
+msgid "Extension specific programs"
 msgstr ""
 
 #. Resource IDs: (65535)
-msgid "Extension/mime-type specific programs"
+msgid "Extension:"
 msgstr ""
 
 #. Resource IDs: (65535)
