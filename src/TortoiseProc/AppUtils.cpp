@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 // Copyright (C) 2003-2011, 2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -205,22 +205,6 @@ bool CAppUtils::StashPop(bool showChanges /* true */)
 	return false;
 }
 
-bool CAppUtils::GetMimeType(const CTGitPath& /*file*/, CString& /*mimetype*/)
-{
-#if 0
-	GitProperties props(file, GitRev::REV_WC, false);
-	for (int i = 0; i < props.GetCount(); ++i)
-	{
-		if (props.GetItemName(i).compare(_T("svn:mime-type"))==0)
-		{
-			mimetype = props.GetItemValue(i).c_str();
-			return true;
-		}
-	}
-#endif
-	return false;
-}
-
 BOOL CAppUtils::StartExtMerge(
 	const CTGitPath& basefile, const CTGitPath& theirfile, const CTGitPath& yourfile, const CTGitPath& mergedfile,
 	const CString& basename, const CString& theirname, const CString& yourname, const CString& mergedname, bool bReadOnly)
@@ -231,22 +215,11 @@ BOOL CAppUtils::StartExtMerge(
 	CString com = regCom;
 	bool bInternal = false;
 
-	CString mimetype;
-
 	if (!ext.IsEmpty())
 	{
 		// is there an extension specific merge tool?
 		CRegString mergetool(_T("Software\\TortoiseGit\\MergeTools\\") + ext.MakeLower());
 		if (!CString(mergetool).IsEmpty())
-		{
-			com = mergetool;
-		}
-	}
-	if (GetMimeType(yourfile, mimetype) || GetMimeType(theirfile, mimetype) || GetMimeType(basefile, mimetype))
-	{
-		// is there a mime type specific merge tool?
-		CRegString mergetool(_T("Software\\TortoiseGit\\MergeTools\\") + mimetype);
-		if (CString(mergetool) != "")
 		{
 			com = mergetool;
 		}
@@ -435,15 +408,6 @@ CString CAppUtils::PickDiffTool(const CTGitPath& file1, const CTGitPath& file2)
 	difftool = CRegString(_T("Software\\TortoiseGit\\DiffTools\\.") + file1.GetFilename().MakeLower());
 	if (!difftool.IsEmpty())
 		return difftool;
-
-	// Is there a mime type specific diff tool?
-	CString mimetype;
-	if (GetMimeType(file1, mimetype) ||  GetMimeType(file2, mimetype))
-	{
-		difftool = CRegString(_T("Software\\TortoiseGit\\DiffTools\\") + mimetype);
-		if (!difftool.IsEmpty())
-			return difftool;
-	}
 
 	// Is there an extension specific diff tool?
 	CString ext = file2.GetFileExtension().MakeLower();
