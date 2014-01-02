@@ -35,9 +35,9 @@ BEGIN
             VALUE "FileDescription", "TortoiseGitIDiff\0"
             VALUE "FileVersion", STRFILEVER
             VALUE "InternalName", "TortoiseGitIDiff.exe\0"
-            VALUE "LegalCopyright", "Copyright (C) 2006-2012 - TortoiseSVN\0"
+            VALUE "LegalCopyright", "Copyright (C) 2006-2013 - TortoiseSVN\0"
             VALUE "OriginalFilename", "TortoiseGitIDiff.exe\0"
-            VALUE "ProductName", "TortoiseIDiff\0"
+            VALUE "ProductName", "TortoiseGitIDiff\0"
             VALUE "ProductVersion", STRPRODUCTVER
         END
     END
