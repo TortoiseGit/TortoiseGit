@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2012 - TortoiseSVN
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -553,7 +553,7 @@ void CShellExt::InsertGitMenu(BOOL istop, HMENU menu, UINT pos, UINT_PTR id, UIN
 		}
 	}
 	_tcscat_s(menutextbuffer, 255, stringtablebuffer);
-#if 1
+
 	// insert branch name into "Git Commit..." entry, so it looks like "Git Commit "master"..."
 	// so we have an easy and fast way to check the current branch
 	// (the other alternative is using a separate disabled menu entry, the code is already done but commented out)
@@ -628,7 +628,7 @@ void CShellExt::InsertGitMenu(BOOL istop, HMENU menu, UINT pos, UINT_PTR id, UIN
 			wcscpy_s(menutextbuffer, sMenu);
 		}
 	}
-#endif
+
 	MENUITEMINFO menuiteminfo;
 	SecureZeroMemory(&menuiteminfo, sizeof(menuiteminfo));
 	menuiteminfo.cbSize = sizeof(menuiteminfo);
@@ -1225,7 +1225,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 			tstring tortoiseProcPath = CPathUtils::GetAppDirectory(g_hmodThisDll) + _T("TortoiseGitProc.exe");
 			tstring tortoiseMergePath = CPathUtils::GetAppDirectory(g_hmodThisDll) + _T("TortoiseGitMerge.exe");
 
-			//TortoiseProc expects a command line of the form:
+			//TortoiseGitProc expects a command line of the form:
 			//"/command:<commandname> /pathfile:<path> /startrev:<startrevision> /endrev:<endrevision> /deletepathfile
 			// or
 			//"/command:<commandname> /path:<path> /startrev:<startrevision> /endrev:<endrevision>
