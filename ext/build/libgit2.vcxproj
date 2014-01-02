@@ -201,6 +201,7 @@
     <ClCompile Include="..\libgit2\src\remote.c" />
     <ClCompile Include="..\libgit2\src\repository.c" />
     <ClCompile Include="..\libgit2\src\reset.c" />
+    <ClCompile Include="..\libgit2\src\revert.c" />
     <ClCompile Include="..\libgit2\src\revparse.c" />
     <ClCompile Include="..\libgit2\src\revwalk.c" />
     <ClCompile Include="..\libgit2\src\sha1_lookup.c" />
@@ -262,6 +263,7 @@
     <ClInclude Include="..\libgit2\include\git2\push.h" />
     <ClInclude Include="..\libgit2\include\git2\refdb.h" />
     <ClInclude Include="..\libgit2\include\git2\reset.h" />
+    <ClInclude Include="..\libgit2\include\git2\revert.h" />
     <ClInclude Include="..\libgit2\include\git2\revparse.h" />
     <ClInclude Include="..\libgit2\include\git2\stash.h" />
     <ClInclude Include="..\libgit2\include\git2\strarray.h" />
