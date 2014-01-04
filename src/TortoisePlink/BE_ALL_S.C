@@ -14,7 +14,7 @@
  * have tiny little source modules containing nothing but
  * declarations of appname, for as long as I can...
  */
-const char *const appname = "TortoiseGitPLink";
+const char *const appname = "TortoiseGitPlink";
 
 #ifdef TELNET_DEFAULT
 const int be_default_protocol = PROT_TELNET;

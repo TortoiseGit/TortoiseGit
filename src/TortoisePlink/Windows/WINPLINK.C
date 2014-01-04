@@ -197,7 +197,7 @@ static void usage(void)
 	char buf[10000];
 	int j = 0;
 
-	j += sprintf(buf+j, "TortoiseGitPLink: command-line connection utility (based on PuTTY PLink)\n");
+	j += sprintf(buf+j, "TortoiseGitPlink: command-line connection utility (based on PuTTY Plink)\n");
     j += sprintf(buf+j, "%s\n", ver);
     j += sprintf(buf+j, "Usage: tortoisegitplink [options] [user@]host [command]\n");
     j += sprintf(buf+j, "       (\"host\" can also be a PuTTY saved session name)\n");
@@ -351,7 +351,7 @@ int main(int argc, char **argv)
 					    1, conf);
 	    if (ret == -2) {
 		fprintf(stderr,
-			"plink: option \"%s\" requires an argument\n", p);
+			"tortoisegitplink: option \"%s\" requires an argument\n", p);
 		errors = 1;
 	    } else if (ret == 2) {
 		--argc, ++argv;
@@ -370,7 +370,7 @@ int main(int argc, char **argv)
                 pgp_fingerprints();
                 exit(1);
 	    } else {
-		fprintf(stderr, "plink: unknown option \"%s\"\n", p);
+		fprintf(stderr, "tortoisegitplink: unknown option \"%s\"\n", p);
 		errors = 1;
 	    }
 	} else if (*p) {

@@ -311,7 +311,7 @@
 
 				<Component Id="C_SSHCLIENT_PLINK" Guid="$(var.RegSSHPLINK)" Win64="$(var.Win64YesNo)" Permanent="yes">
 					<Condition>(OLDSSH = "") and (SSHTOOL="Plink")</Condition>
-					<RegistryValue Root="HKCU" Key="Software\[Manufacturer]" Name="SSH" Value="[INSTALLDIR]bin\TortoiseGitPLink.exe" Type="string" />
+					<RegistryValue Root="HKCU" Key="Software\[Manufacturer]" Name="SSH" Value="[INSTALLDIR]bin\TortoiseGitPlink.exe" Type="string" />
 				</Component>
 				<Component Id="C_SSHCLIENT_OPENSSH" Guid="$(var.RegSSHOpen)" Win64="$(var.Win64YesNo)" Permanent="yes">
 					<Condition>(OLDSSH = "") and (SSHTOOL="OpenSSH")</Condition>
@@ -635,12 +635,12 @@
 
 					<Component Id="C__TortoiseGitTools" Guid="$(var.GuidTortoiseGitTools)" Win64="$(var.Win64YesNo)">
             <?if $(var.Platform) = "x86" ?>
-            <File Id="F__TortoisePlinkold" ShortName="TORTPLI.EXE" Name="TortoisePLink.exe" DiskId="1" Source="..\..\ext\putty\TortoisePLink-x86.exe" />
+            <File Id="F__TortoisePlinkold" ShortName="TORTPLI.EXE" Name="TortoisePlink.exe" DiskId="1" Source="..\..\ext\putty\TortoisePlink-x86.exe" />
             <?endif ?>
             <?if $(var.Platform) = "x64" ?>
-            <File Id="F__TortoisePlinkold" ShortName="TORTPLI.EXE" Name="TortoisePLink.exe" DiskId="1" Source="..\..\ext\putty\TortoisePLink-x64.exe" />
+            <File Id="F__TortoisePlinkold" ShortName="TORTPLI.EXE" Name="TortoisePlink.exe" DiskId="1" Source="..\..\ext\putty\TortoisePlink-x64.exe" />
             <?endif ?>
-            <File Id="F__TortoisePlink" ShortName="TGITPLI.EXE" Name="TortoiseGitPLink.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGitPLink.exe" />
+            <File Id="F__TortoisePlink" ShortName="TGITPLI.EXE" Name="TortoiseGitPlink.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGitPlink.exe" />
             <File Id="F__PuttyGen" ShortName="puttygen.EXE" Name="puttygen.exe" DiskId="1" Source="..\..\ext\putty\puttygen.exe" />
 						<File Id="F__pageant" ShortName="pageant.EXE" Name="pageant.exe" DiskId="1" Source="..\..\ext\putty\pageant.exe" />
 						<?if $(var.Platform) = "x86" ?>
