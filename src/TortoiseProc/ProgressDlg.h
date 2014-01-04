@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -81,11 +81,9 @@ private:
 	CAnimateCtrl			m_Animate;
 	CStatic					m_CurrentWork;
 	CWinThread*				m_pThread;
-	volatile LONG			m_bThreadRunning;
 
 	bool					m_bAbort;
 	bool					m_bDone;
-	bool					m_bAltAbortPress;
 	DWORD					m_startTick;
 
 	virtual void			DoDataExchange(CDataExchange* pDX);    // DDX/DDV support

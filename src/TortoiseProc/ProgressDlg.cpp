@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -48,14 +48,12 @@ CProgressDlg::CProgressDlg(CWnd* pParent /*=NULL*/)
 	, m_bAbort(false)
 	, m_bDone(false)
 	, m_startTick(GetTickCount())
-	, m_bThreadRunning(FALSE)
 	, m_BufStart(0)
 	, m_Git(&g_Git)
 {
 	m_pThread = NULL;
 	m_PostCmdCallback = NULL;
 	m_caller = NULL;
-	m_bAltAbortPress=false;
 	m_bBufferAll=false;
 	m_GitStatus = (DWORD)-1;
 	int autoClose = CRegDWORD(_T("Software\\TortoiseGit\\AutoCloseGitProgress"), 0);
@@ -673,10 +671,6 @@ void CProgressDlg::OnCancel()
 		if(::GenerateConsoleCtrlEvent(CTRL_C_EVENT,0))
 		{
 			::WaitForSingleObject(m_Git->m_CurrentGitPi.hProcess ,10000);
-		}
-		else
-		{
-			GetLastError();
 		}
 
 		KillProcessTree(m_Git->m_CurrentGitPi.dwProcessId);
