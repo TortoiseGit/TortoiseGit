@@ -316,10 +316,22 @@ CString GetSystemInformation()
             case 1: info += rcOS.wProductType == VER_NT_WORKSTATION ? _T("7") : _T("Server 2008 R2"); break;
             case 2: info += rcOS.wProductType == VER_NT_WORKSTATION ? _T("8") : _T("Server 2012"); break;
             case 3: info += rcOS.wProductType == VER_NT_WORKSTATION ? _T("8.1") : _T("Server 2012 R2"); break;
-            default: ASSERT(false); info += _T("future version"); break;
+            default:
+                {
+                    CString future;
+                    future.Format(_T("%ld.%ld%s"), rcOS.dwMajorVersion, rcOS.dwMinorVersion, VER_NT_WORKSTATION ? _T("") : _T(" Server"));
+                    info += future;
+                    break;
+                }
             }
             break;
-        default: ASSERT(false); info += _T("future version"); break;
+        default:
+            {
+                CString future;
+                future.Format(_T("%ld.%ld%s"), rcOS.dwMajorVersion, rcOS.dwMinorVersion, VER_NT_WORKSTATION ? _T("") : _T(" Server"));
+                info += future;
+                break;
+            }
         }
         if (_tcslen(rcOS.szCSDVersion) > 0)
         {
