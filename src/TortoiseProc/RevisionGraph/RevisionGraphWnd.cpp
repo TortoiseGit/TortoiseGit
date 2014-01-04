@@ -55,11 +55,6 @@ static char THIS_FILE[] = __FILE__;
 using namespace Gdiplus;
 using namespace ogdf;
 
-#if (_WIN32_WINNT < 0x0600)
-#define WM_MOUSEHWHEEL				  0x020E
-#endif
-
-
 enum RevisionGraphContextMenuCommands
 {
 	// needs to start with 1, since 0 is the return value if *nothing* is clicked on in the context menu
