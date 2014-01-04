@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -101,7 +101,7 @@ BOOL CCheckForUpdatesDlg::DownloadFile(const CString& url, const CString& dest, 
 	GetVersionEx((OSVERSIONINFO *)&inf);
 
 	CString userAgent;
-	userAgent.Format(L"TortoiseGit %s; %s; Windows%s %d.%d", _T(STRFILEVER), _T(TGIT_PLATFORM), (inf.dwPlatformId == VER_PLATFORM_WIN32_NT) ? _T(" NT") : _T(""), inf.dwMajorVersion, inf.dwMinorVersion);
+	userAgent.Format(L"TortoiseGit %s; %s; Windows%s %ld.%ld", _T(STRFILEVER), _T(TGIT_PLATFORM), (inf.dwPlatformId == VER_PLATFORM_WIN32_NT) ? _T(" NT") : _T(""), inf.dwMajorVersion, inf.dwMinorVersion);
 
 	HINTERNET hOpenHandle = InternetOpen(userAgent, INTERNET_OPEN_TYPE_PRECONFIG, nullptr, nullptr, 0);
 	HINTERNET hConnectHandle = InternetConnect(hOpenHandle, hostname, urlComponents.nPort, nullptr, nullptr, urlComponents.nScheme, 0, 0);
