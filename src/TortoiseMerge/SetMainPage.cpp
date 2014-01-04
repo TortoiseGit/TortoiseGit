@@ -1,6 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2013 - TortoiseGit
+// Copyright (C) 2013-2014 - TortoiseGit
 // Copyright (C) 2006-2010, 2012-2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -158,7 +158,7 @@ BOOL CSetMainPage::OnInitDialog()
 	m_bAutoAdd = m_regAutoAdd;
 	m_nMaxInline = m_regMaxInline;
 	m_bUseRibbons = m_regUseRibbons;
-	m_bUseTaskDialog = m_regUseTaskDialog;
+	m_bUseTaskDialog = CTaskDialog::IsSupported() && (DWORD)m_regUseTaskDialog;
 
 	DialogEnableWindow(IDC_FIRSTCONFLICTONLOAD, m_bFirstDiffOnLoad);
 	DialogEnableWindow(IDC_USETASKDIALOG, CTaskDialog::IsSupported());
