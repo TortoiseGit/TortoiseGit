@@ -314,6 +314,8 @@ CString GetSystemInformation()
             {
             case 0: info += rcOS.wProductType == VER_NT_WORKSTATION ? _T("Vista") : _T("Server 2008"); break;
             case 1: info += rcOS.wProductType == VER_NT_WORKSTATION ? _T("7") : _T("Server 2008 R2"); break;
+            case 2: info += rcOS.wProductType == VER_NT_WORKSTATION ? _T("8") : _T("Server 2012"); break;
+            case 3: info += rcOS.wProductType == VER_NT_WORKSTATION ? _T("8.1") : _T("Server 2012 R2"); break;
             default: ASSERT(false); info += _T("future version"); break;
             }
             break;
