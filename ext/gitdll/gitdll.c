@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -908,7 +908,7 @@ int git_checkout_file(const char *ref, const char *path, const char *outputpath)
 	struct tree * root;
 	struct checkout state;
 	struct pathspec pathspec;
-	const char *match[2];
+	const char *matchbuf[1];
 	ret = get_sha1(ref, sha1);
 	if(ret)
 		return ret;
@@ -924,10 +924,8 @@ int git_checkout_file(const char *ref, const char *path, const char *outputpath)
 
 	ce = xcalloc(1, cache_entry_size(strlen(path)));
 
-	match[0] = path;
-	match[1] = NULL;
-
-	init_pathspec(&pathspec, match);
+	matchbuf[0] = NULL;
+	parse_pathspec(&pathspec, PATHSPEC_ALL_MAGIC, PATHSPEC_PREFER_CWD, path, matchbuf);
 	pathspec.items[0].nowildcard_len = pathspec.items[0].len;
 	ret = read_tree_recursive(root, "", 0, 0, &pathspec, update_some, ce);
 	free_pathspec(&pathspec);
@@ -1022,13 +1020,13 @@ int git_get_config(const char *key, char *buffer, int size)
 	local = git_pathdup("config");
 
 	if ( !buf.seen)
-		git_config_with_options(get_config, &buf, local, 1);
+		git_config_with_options(get_config, &buf, local, NULL, 1);
 	if (!buf.seen && global)
-		git_config_with_options(get_config, &buf, global, 1);
+		git_config_with_options(get_config, &buf, global, NULL, 1);
 	if (!buf.seen && globalxdg)
-		git_config_with_options(get_config, &buf, globalxdg, 1);
+		git_config_with_options(get_config, &buf, globalxdg, NULL, 1);
 	if (!buf.seen && system)
-		git_config_with_options(get_config, &buf, system, 1);
+		git_config_with_options(get_config, &buf, system, NULL, 1);
 
 	if(local)
 		free(local);

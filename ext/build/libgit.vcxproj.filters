@@ -287,9 +287,6 @@
     <ClCompile Include="..\tgit\pack-check.c">
       <Filter>git</Filter>
     </ClCompile>
-    <ClCompile Include="..\tgit\pack-refs.c">
-      <Filter>git</Filter>
-    </ClCompile>
     <ClCompile Include="..\tgit\pack-revindex.c">
       <Filter>git</Filter>
     </ClCompile>
@@ -785,6 +782,27 @@
     <ClCompile Include="..\tgit\pager.c">
       <Filter>git</Filter>
     </ClCompile>
+    <ClCompile Include="..\tgit\urlmatch.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\prio-queue.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\notes-utils.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\line-range.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\line-log.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\builtin\check-mailmap.c">
+      <Filter>BuildIn</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\builtin\repack.c">
+      <Filter>BuildIn</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\tgit\compat\msvc.h">
@@ -910,9 +928,6 @@
     <ClInclude Include="..\tgit\object.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\tgit\pack-refs.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\tgit\pack-revindex.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -1027,9 +1042,6 @@
     <ClInclude Include="..\tgit\xdiff-interface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\tgit\compat\cygwin.h">
-      <Filter>compat</Filter>
-    </ClInclude>
     <ClInclude Include="..\tgit\compat\fnmatch\fnmatch.h">
       <Filter>compat</Filter>
     </ClInclude>
@@ -1079,6 +1091,27 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\tgit\wildmatch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\urlmatch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\prio-queue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\notes-utils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\line-log.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\line-range.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\connect.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\commit-slab.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -106,6 +106,8 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\tgit\builtin\check-mailmap.c" />
+    <ClCompile Include="..\tgit\builtin\repack.c" />
     <ClCompile Include="..\tgit\compat\msvc.c" />
     <ClCompile Include="..\tgit\block-sha1\sha1.c" />
     <ClCompile Include="..\tgit\compat\basename.c" />
@@ -181,6 +183,8 @@
     <ClCompile Include="..\tgit\ident.c" />
     <ClCompile Include="..\tgit\kwset.c" />
     <ClCompile Include="..\tgit\levenshtein.c" />
+    <ClCompile Include="..\tgit\line-log.c" />
+    <ClCompile Include="..\tgit\line-range.c" />
     <ClCompile Include="..\tgit\list-objects.c" />
     <ClCompile Include="..\tgit\ll-merge.c" />
     <ClCompile Include="..\tgit\lockfile.c" />
@@ -194,10 +198,10 @@
     <ClCompile Include="..\tgit\name-hash.c" />
     <ClCompile Include="..\tgit\notes-cache.c" />
     <ClCompile Include="..\tgit\notes-merge.c" />
+    <ClCompile Include="..\tgit\notes-utils.c" />
     <ClCompile Include="..\tgit\notes.c" />
     <ClCompile Include="..\tgit\object.c" />
     <ClCompile Include="..\tgit\pack-check.c" />
-    <ClCompile Include="..\tgit\pack-refs.c" />
     <ClCompile Include="..\tgit\pack-revindex.c" />
     <ClCompile Include="..\tgit\pack-write.c" />
     <ClCompile Include="..\tgit\pager.c" />
@@ -210,6 +214,7 @@
     <ClCompile Include="..\tgit\pkt-line.c" />
     <ClCompile Include="..\tgit\preload-index.c" />
     <ClCompile Include="..\tgit\pretty.c" />
+    <ClCompile Include="..\tgit\prio-queue.c" />
     <ClCompile Include="..\tgit\progress.c" />
     <ClCompile Include="..\tgit\quote.c" />
     <ClCompile Include="..\tgit\reachable.c" />
@@ -249,6 +254,7 @@
     <ClCompile Include="..\tgit\unpack-trees.c" />
     <ClCompile Include="..\tgit\upload-pack.c" />
     <ClCompile Include="..\tgit\url.c" />
+    <ClCompile Include="..\tgit\urlmatch.c" />
     <ClCompile Include="..\tgit\usage.c" />
     <ClCompile Include="..\tgit\userdiff.c" />
     <ClCompile Include="..\tgit\utf8.c" />
@@ -400,6 +406,7 @@
     <ClCompile Include="..\tgit\builtin\write-tree.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\tgit\commit-slab.h" />
     <ClInclude Include="..\tgit\compat\msvc.h" />
     <ClInclude Include="..\tgit\archive.h" />
     <ClInclude Include="..\tgit\argv-array.h" />
@@ -414,6 +421,7 @@
     <ClInclude Include="..\tgit\color.h" />
     <ClInclude Include="..\tgit\column.h" />
     <ClInclude Include="..\tgit\commit.h" />
+    <ClInclude Include="..\tgit\connect.h" />
     <ClInclude Include="..\tgit\connected.h" />
     <ClInclude Include="..\tgit\csum-file.h" />
     <ClInclude Include="..\tgit\decorate.h" />
@@ -432,6 +440,8 @@
     <ClInclude Include="..\tgit\help.h" />
     <ClInclude Include="..\tgit\kwset.h" />
     <ClInclude Include="..\tgit\levenshtein.h" />
+    <ClInclude Include="..\tgit\line-log.h" />
+    <ClInclude Include="..\tgit\line-range.h" />
     <ClInclude Include="..\tgit\list-objects.h" />
     <ClInclude Include="..\tgit\ll-merge.h" />
     <ClInclude Include="..\tgit\log-tree.h" />
@@ -440,15 +450,16 @@
     <ClInclude Include="..\tgit\merge-recursive.h" />
     <ClInclude Include="..\tgit\mergesort.h" />
     <ClInclude Include="..\tgit\notes-merge.h" />
+    <ClInclude Include="..\tgit\notes-utils.h" />
     <ClInclude Include="..\tgit\notes.h" />
     <ClInclude Include="..\tgit\object.h" />
-    <ClInclude Include="..\tgit\pack-refs.h" />
     <ClInclude Include="..\tgit\pack-revindex.h" />
     <ClInclude Include="..\tgit\pack.h" />
     <ClInclude Include="..\tgit\parse-options.h" />
     <ClInclude Include="..\tgit\patch-ids.h" />
     <ClInclude Include="..\tgit\pathspec.h" />
     <ClInclude Include="..\tgit\pkt-line.h" />
+    <ClInclude Include="..\tgit\prio-queue.h" />
     <ClInclude Include="..\tgit\progress.h" />
     <ClInclude Include="..\tgit\quote.h" />
     <ClInclude Include="..\tgit\reachable.h" />
@@ -475,6 +486,7 @@
     <ClInclude Include="..\tgit\tree-walk.h" />
     <ClInclude Include="..\tgit\tree.h" />
     <ClInclude Include="..\tgit\unpack-trees.h" />
+    <ClInclude Include="..\tgit\urlmatch.h" />
     <ClInclude Include="..\tgit\userdiff.h" />
     <ClInclude Include="..\tgit\utf8.h" />
     <ClInclude Include="..\tgit\varint.h" />
@@ -483,7 +495,6 @@
     <ClInclude Include="..\tgit\wildmatch.h" />
     <ClInclude Include="..\tgit\wt-status.h" />
     <ClInclude Include="..\tgit\xdiff-interface.h" />
-    <ClInclude Include="..\tgit\compat\cygwin.h" />
     <ClInclude Include="..\tgit\compat\fnmatch\fnmatch.h" />
     <ClInclude Include="..\tgit\compat\mingw.h" />
     <ClInclude Include="..\tgit\compat\obstack.h" />
