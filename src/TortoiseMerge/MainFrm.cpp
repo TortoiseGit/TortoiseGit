@@ -1,8 +1,8 @@
 // TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 // Copyright (C) 2004-2013 - TortoiseSVN
-// Copyright (C) 2012-2013 - Sven Strickroth <email@cs-ware.de>
+// Copyright (C) 2012-2014 - Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -38,6 +38,7 @@
 #include "TaskbarUUID.h"
 #include "git2.h"
 #include "RegexFiltersDlg.h"
+#include "SysInfo.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -220,6 +221,10 @@ CMainFrame::CMainFrame()
 	m_bWrapLines = !!(DWORD)m_regWrapLines;
 	m_bInlineDiff = !!m_regInlineDiff;
 	m_bUseRibbons = !!m_regUseRibbons;
+#if _WIN64
+	if (SysInfo::Instance().IsXP())
+		m_bUseRibbons = FALSE;
+#endif
 	m_bUseTaskDialog = CTaskDialog::IsSupported() && (DWORD)m_regUseTaskDialog;
 	CMFCVisualManagerWindows::m_b3DTabsXPTheme = TRUE;
 }
