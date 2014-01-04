@@ -42,7 +42,7 @@ BEGIN
             VALUE "FileDescription", "Creates a file.\0"
             VALUE "FileVersion", STRFILEVER
             VALUE "InternalName", "tgittouch.exe\0"
-            VALUE "LegalCopyright", "Copyright (C) 2010-2013 - TortoiseGit\0"
+            VALUE "LegalCopyright", "Copyright (C) 2010-2014 - TortoiseGit\0"
             VALUE "OriginalFilename", "tgittouch.exe\0"
             VALUE "ProductName", "tgittouch\0"
             VALUE "ProductVersion", STRPRODUCTVER

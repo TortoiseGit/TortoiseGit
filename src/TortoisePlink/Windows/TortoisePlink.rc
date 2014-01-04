@@ -74,7 +74,7 @@ BEGIN
             VALUE "FileDescription", "TortoiseGitPlink"
             VALUE "FileVersion", "Release 0.63"
             VALUE "InternalName", "TortoiseGitPlink"
-            VALUE "LegalCopyright", "Copyright © 2003-2013"
+            VALUE "LegalCopyright", "Copyright (C) 2003-2014"
             VALUE "OriginalFilename", "TortoiseGitPlink.exe"
             VALUE "ProductName", "TortoiseGit TortoiseGitPlink"
             VALUE "ProductVersion", "Release 0.63"
