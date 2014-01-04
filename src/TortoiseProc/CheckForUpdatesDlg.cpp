@@ -78,6 +78,22 @@ BEGIN_MESSAGE_MAP(CCheckForUpdatesDlg, CStandAloneDialog)
 	ON_REGISTERED_MESSAGE(WM_TASKBARBTNCREATED, OnTaskbarBtnCreated)
 END_MESSAGE_MAP()
 
+static void BruteforceGetVersionNumbers(OSVERSIONINFOEX& osVersionInfo)
+{
+	osVersionInfo.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
+	GetVersionEx((OSVERSIONINFO *)&osVersionInfo);
+
+	ULONGLONG maskConditioMajor = ::VerSetConditionMask(0, VER_MAJORVERSION, VER_LESS);
+	ULONGLONG maskConditioMinor = ::VerSetConditionMask(0, VER_MINORVERSION, VER_LESS);
+	while (!::VerifyVersionInfo(&osVersionInfo, VER_MAJORVERSION, maskConditioMajor))
+	{
+		++osVersionInfo.dwMajorVersion;
+		osVersionInfo.dwMinorVersion = 0;
+	}
+	while (!::VerifyVersionInfo(&osVersionInfo, VER_MINORVERSION, maskConditioMinor))
+		++osVersionInfo.dwMinorVersion;
+}
+
 BOOL CCheckForUpdatesDlg::DownloadFile(const CString& url, const CString& dest, bool showProgress)
 {
 	CString hostname;
@@ -97,8 +113,7 @@ BOOL CCheckForUpdatesDlg::DownloadFile(const CString& url, const CString& dest, 
 		DeleteUrlCacheEntry(url);
 
 	OSVERSIONINFOEX inf = {0};
-	inf.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
-	GetVersionEx((OSVERSIONINFO *)&inf);
+	BruteforceGetVersionNumbers(inf);
 
 	CString userAgent;
 	userAgent.Format(L"TortoiseGit %s; %s; Windows%s %ld.%ld", _T(STRFILEVER), _T(TGIT_PLATFORM), (inf.dwPlatformId == VER_PLATFORM_WIN32_NT) ? _T(" NT") : _T(""), inf.dwMajorVersion, inf.dwMinorVersion);
