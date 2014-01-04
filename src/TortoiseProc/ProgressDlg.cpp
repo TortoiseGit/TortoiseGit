@@ -656,9 +656,9 @@ void CProgressDlg::OnCancel()
 {
 	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": User canceled\n"));
 	m_bAbort = true;
-	WriteLog();
 	if(m_bDone)
 	{
+		WriteLog();
 		CResizableStandAloneDialog::OnCancel();
 		return;
 	}
@@ -677,6 +677,7 @@ void CProgressDlg::OnCancel()
 	}
 
 	::WaitForSingleObject(m_Git->m_CurrentGitPi.hProcess ,10000);
+	WriteLog();
 	CResizableStandAloneDialog::OnCancel();
 }
 
