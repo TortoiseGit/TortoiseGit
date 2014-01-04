@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 // Copyright (C) 2011-2013 - Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
@@ -734,7 +734,8 @@ BOOL CRebaseDlg::PreTranslateMessage(MSG*pMsg)
 	}
 	else if (pMsg->message == WM_NEXTDLGCTL)
 	{
-		if (GetFocus()->GetSafeHwnd() == m_LogMessageCtrl.GetSafeHwnd())
+		HWND hwnd = GetFocus()->GetSafeHwnd();
+		if (hwnd == m_LogMessageCtrl.GetSafeHwnd() || hwnd == m_wndOutputRebase.GetSafeHwnd())
 		{
 			if (GetDlgItem(IDC_REBASE_CONTINUE)->IsWindowEnabled())
 				GetDlgItem(IDC_REBASE_CONTINUE)->SetFocus();
