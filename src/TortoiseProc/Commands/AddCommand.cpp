@@ -60,8 +60,6 @@ bool AddCommand::Execute()
 				CGitProgressDlg progDlg;
 				theApp.m_pMainWnd = &progDlg;
 				progDlg.SetCommand(CGitProgressList::GitProgress_Add);
-				if (parser.HasVal(_T("closeonend")))
-					progDlg.SetAutoClose(parser.GetLongVal(_T("closeonend")));
 				progDlg.SetPathList(dlg.m_pathList);
 				progDlg.SetItemCount(dlg.m_pathList.GetCount());
 				progDlg.DoModal();

@@ -28,10 +28,6 @@
 
 bool SVNFetchCommand::Execute()
 {
-	bool autoClose = false;
-	if (parser.HasVal(_T("closeonend")))
-		autoClose = !!parser.GetLongVal(_T("closeonend"));
-
 	CString cmd, out, err;
 	cmd = _T("git.exe config svn-remote.svn.fetch");
 
