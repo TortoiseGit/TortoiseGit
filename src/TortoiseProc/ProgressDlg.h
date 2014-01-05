@@ -52,7 +52,6 @@ private:
 	enum { IDD = IDD_GITPROGRESS };
 
 public:
-	CString					m_Title;
 	CString					m_GitCmd;
 	CStringArray			m_PostCmdList;
 	CStringArray			m_PostFailCmdList;

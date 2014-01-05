@@ -168,9 +168,6 @@ BOOL CProgressDlg::OnInitDialog()
 		m_pThread->ResumeThread();
 	}
 
-	if(!m_Title.IsEmpty())
-		this->SetWindowText(m_Title);
-
 	CString sWindowTitle;
 	GetWindowText(sWindowTitle);
 	CAppUtils::SetWindowTitle(m_hWnd, m_Git->m_CurrentDir, sWindowTitle);
