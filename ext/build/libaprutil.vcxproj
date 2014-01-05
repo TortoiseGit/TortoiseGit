@@ -293,7 +293,6 @@ if errorlevel 1 type ..\apr-util\include\apu.hw &gt; ..\apr-util\include\apu.h
 </Command>
       <Outputs>..\apr-util\include\apu.h;%(Outputs)</Outputs>
     </CustomBuild>
-    <None Include="..\apr-util\include\private\apu_config.h.in" />
     <CustomBuild Include="..\apr-util\include\private\apu_config.hw">
       <Message>Creating apu_config.h from apu_config.hw</Message>
       <Command>fc ..\apr-util\include\private\apu_config.hw ..\apr-util\include\private\apu_config.h &gt;NUL 2&gt;NUL
