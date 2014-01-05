@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -33,16 +33,14 @@
 
 // Global Variables:
 HINSTANCE hInst;								// current instance
-TCHAR szTitle[MAX_LOADSTRING];					// The title bar text
-TCHAR szWindowClass[MAX_LOADSTRING];			// the main window class name
 
-// Forward declarations of functions included in this code module:
-INT_PTR CALLBACK	About(HWND, UINT, WPARAM, LPARAM);
-
-TCHAR g_Promptphrase[] = _T("Enter your OpenSSH passphrase:");
-TCHAR *g_Prompt = NULL;
+const TCHAR g_Promptphrase[] = _T("Enter your OpenSSH passphrase:");
+const TCHAR *g_Prompt = g_Promptphrase;
 
 TCHAR g_PassWord[MAX_LOADSTRING];
+
+// Forward declarations of functions included in this code module:
+INT_PTR CALLBACK PasswdDlg(HWND, UINT, WPARAM, LPARAM);
 
 int APIENTRY _tWinMain(HINSTANCE	/*hInstance*/,
 					 HINSTANCE		/*hPrevInstance*/,
@@ -53,18 +51,18 @@ int APIENTRY _tWinMain(HINSTANCE	/*hInstance*/,
 
 	InitCommonControls();
 
-	if( _tcslen(lpCmdLine) == 0 )
+	size_t cmdlineLen =_tcslen(lpCmdLine);
+	if (lpCmdLine[0] == '"' && cmdlineLen > 1 && lpCmdLine[cmdlineLen - 1] == '"')
 	{
-		g_Prompt = g_Promptphrase;
+		lpCmdLine[cmdlineLen - 1] = 0;
+		++lpCmdLine;
 	}
-	else
-	{
+	if (lpCmdLine[0] != 0)
 		g_Prompt = lpCmdLine;
-	}
 
-	TCHAR *yesno=_T("(yes/no)");
-	size_t lens = _tcslen(yesno);
-	TCHAR *p = lpCmdLine;
+	const TCHAR *yesno=_T("(yes/no)");
+	const size_t lens = _tcslen(yesno);
+	const TCHAR *p = lpCmdLine;
 	BOOL bYesNo=FALSE;
 
 	while(*p)
@@ -79,7 +77,7 @@ int APIENTRY _tWinMain(HINSTANCE	/*hInstance*/,
 
 	if(bYesNo)
 	{
-		if (::MessageBox(NULL, lpCmdLine, _T("TortoiseGit - git CLI stdin wrapper"), MB_YESNO|MB_ICONQUESTION) == IDYES)
+		if (::MessageBox(NULL, g_Prompt, _T("TortoiseGit - git CLI stdin wrapper"), MB_YESNO|MB_ICONQUESTION) == IDYES)
 		{
 			_tprintf(_T("yes"));
 		}
@@ -91,7 +89,7 @@ int APIENTRY _tWinMain(HINSTANCE	/*hInstance*/,
 	}
 	else
 	{
-		if(DialogBox(hInst, MAKEINTRESOURCE(IDD_ASK_PASSWORD), NULL, About) == IDOK)
+		if (DialogBox(hInst, MAKEINTRESOURCE(IDD_ASK_PASSWORD), nullptr, PasswdDlg) == IDOK)
 		{
 			_tprintf(_T("%s\n"), g_PassWord);
 			return 0;
@@ -125,7 +123,7 @@ void MarkWindowAsUnpinnable(HWND hWnd)
 }
 
 // Message handler for password box.
-INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM /*lParam*/)
+INT_PTR CALLBACK PasswdDlg(HWND hDlg, UINT message, WPARAM wParam, LPARAM /*lParam*/)
 {
 	switch (message)
 	{
@@ -145,9 +143,9 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM /*lParam*/
 			HWND title=::GetDlgItem(hDlg,IDC_STATIC_TITLE);
 			::SetWindowText(title,g_Prompt);
 
-			TCHAR *pass =_T("pass");
-			size_t passlens = _tcslen(pass);
-			TCHAR *p = g_Prompt;
+			const TCHAR *pass =_T("pass");
+			const size_t passlens = _tcslen(pass);
+			const TCHAR *p = g_Prompt;
 			bool password = false;
 			while (*p)
 			{
