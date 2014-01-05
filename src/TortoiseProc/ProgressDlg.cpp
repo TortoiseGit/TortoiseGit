@@ -329,7 +329,7 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 	{
 		m_BufStart = 0 ;
 		m_Animate.Play(0, INT_MAX, INT_MAX);
-		this->DialogEnableWindow(IDOK,FALSE);
+		DialogEnableWindow(IDCANCEL, TRUE);
 		if (m_pTaskbarList)
 		{
 			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NORMAL);
@@ -635,6 +635,8 @@ void CProgressDlg::WriteLog() const
 
 void CProgressDlg::OnBnClickedOk()
 {
+	if (m_pThread) // added here because Close-button is "called" from thread by PostMessage
+		::WaitForSingleObject(m_pThread->m_hThread, 5000);
 	m_Log.GetWindowText(this->m_LogText);
 	WriteLog();
 	OnOK();
@@ -677,6 +679,8 @@ void CProgressDlg::OnCancel()
 	}
 
 	::WaitForSingleObject(m_Git->m_CurrentGitPi.hProcess ,10000);
+	if (m_pThread)
+		::WaitForSingleObject(m_pThread->m_hThread, 5000);
 	WriteLog();
 	CResizableStandAloneDialog::OnCancel();
 }

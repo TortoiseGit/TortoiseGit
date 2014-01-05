@@ -59,6 +59,7 @@ Released: Unreleased
  * Fixed issue #1835: Question mark icons on committed unchanged files
  * Fixed issue #2053: Can't do "Combine to one commit"; changed file list wrongly empty
  * Fixed issue #2051: Submodule update error when fetchRecurseSubmodules has value on-demand
+ * Fixed issue #1860: Race condition in git.exe Progress Dialog
 
 = Release 1.8.6.0 =
 Released: 2013-10-20
