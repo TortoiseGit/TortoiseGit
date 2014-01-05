@@ -34,13 +34,13 @@
 // Global Variables:
 HINSTANCE hInst;								// current instance
 
-// Forward declarations of functions included in this code module:
-INT_PTR CALLBACK	About(HWND, UINT, WPARAM, LPARAM);
-
 const TCHAR g_Promptphrase[] = _T("Enter your OpenSSH passphrase:");
 const TCHAR *g_Prompt;
 
 TCHAR g_PassWord[MAX_LOADSTRING];
+
+// Forward declarations of functions included in this code module:
+INT_PTR CALLBACK PasswdDlg(HWND, UINT, WPARAM, LPARAM);
 
 int APIENTRY _tWinMain(HINSTANCE	/*hInstance*/,
 					 HINSTANCE		/*hPrevInstance*/,
@@ -89,7 +89,7 @@ int APIENTRY _tWinMain(HINSTANCE	/*hInstance*/,
 	}
 	else
 	{
-		if(DialogBox(hInst, MAKEINTRESOURCE(IDD_ASK_PASSWORD), NULL, About) == IDOK)
+		if (DialogBox(hInst, MAKEINTRESOURCE(IDD_ASK_PASSWORD), nullptr, PasswdDlg) == IDOK)
 		{
 			_tprintf(_T("%s\n"), g_PassWord);
 			return 0;
@@ -123,7 +123,7 @@ void MarkWindowAsUnpinnable(HWND hWnd)
 }
 
 // Message handler for password box.
-INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM /*lParam*/)
+INT_PTR CALLBACK PasswdDlg(HWND hDlg, UINT message, WPARAM wParam, LPARAM /*lParam*/)
 {
 	switch (message)
 	{
