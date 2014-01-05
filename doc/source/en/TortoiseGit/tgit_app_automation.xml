@@ -52,7 +52,7 @@
 			The progress dialog which is used for commits, updates and many more git.exe commands
 			usually stays open after the command has finished until the user presses
 			the <guibutton>OK</guibutton> button. This can be changed in the settings dialog.
-			You may use <option>/autoclose</option> parameter to override the this setting
+			You may use <option>/closeonend</option> parameter to override the this setting
 			from your batch file.
 		</para>
 		<para>
