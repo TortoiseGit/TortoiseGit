@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -39,8 +39,8 @@ TCHAR szWindowClass[MAX_LOADSTRING];			// the main window class name
 // Forward declarations of functions included in this code module:
 INT_PTR CALLBACK	About(HWND, UINT, WPARAM, LPARAM);
 
-TCHAR g_Promptphrase[] = _T("Enter your OpenSSH passphrase:");
-TCHAR *g_Prompt = NULL;
+const TCHAR g_Promptphrase[] = _T("Enter your OpenSSH passphrase:");
+const TCHAR *g_Prompt;
 
 TCHAR g_PassWord[MAX_LOADSTRING];
 
@@ -62,9 +62,9 @@ int APIENTRY _tWinMain(HINSTANCE	/*hInstance*/,
 		g_Prompt = lpCmdLine;
 	}
 
-	TCHAR *yesno=_T("(yes/no)");
-	size_t lens = _tcslen(yesno);
-	TCHAR *p = lpCmdLine;
+	const TCHAR *yesno=_T("(yes/no)");
+	const size_t lens = _tcslen(yesno);
+	const TCHAR *p = lpCmdLine;
 	BOOL bYesNo=FALSE;
 
 	while(*p)
@@ -145,9 +145,9 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM /*lParam*/
 			HWND title=::GetDlgItem(hDlg,IDC_STATIC_TITLE);
 			::SetWindowText(title,g_Prompt);
 
-			TCHAR *pass =_T("pass");
-			size_t passlens = _tcslen(pass);
-			TCHAR *p = g_Prompt;
+			const TCHAR *pass =_T("pass");
+			const size_t passlens = _tcslen(pass);
+			const TCHAR *p = g_Prompt;
 			bool password = false;
 			while (*p)
 			{
