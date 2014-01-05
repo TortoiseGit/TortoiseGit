@@ -35,7 +35,7 @@
 HINSTANCE hInst;								// current instance
 
 const TCHAR g_Promptphrase[] = _T("Enter your OpenSSH passphrase:");
-const TCHAR *g_Prompt;
+const TCHAR *g_Prompt = g_Promptphrase;
 
 TCHAR g_PassWord[MAX_LOADSTRING];
 
@@ -51,14 +51,14 @@ int APIENTRY _tWinMain(HINSTANCE	/*hInstance*/,
 
 	InitCommonControls();
 
-	if( _tcslen(lpCmdLine) == 0 )
+	size_t cmdlineLen =_tcslen(lpCmdLine);
+	if (lpCmdLine[0] == '"' && cmdlineLen > 1 && lpCmdLine[cmdlineLen - 1] == '"')
 	{
-		g_Prompt = g_Promptphrase;
+		lpCmdLine[cmdlineLen - 1] = 0;
+		++lpCmdLine;
 	}
-	else
-	{
+	if (lpCmdLine[0] != 0)
 		g_Prompt = lpCmdLine;
-	}
 
 	const TCHAR *yesno=_T("(yes/no)");
 	const size_t lens = _tcslen(yesno);
@@ -77,7 +77,7 @@ int APIENTRY _tWinMain(HINSTANCE	/*hInstance*/,
 
 	if(bYesNo)
 	{
-		if (::MessageBox(NULL, lpCmdLine, _T("TortoiseGit - git CLI stdin wrapper"), MB_YESNO|MB_ICONQUESTION) == IDYES)
+		if (::MessageBox(NULL, g_Prompt, _T("TortoiseGit - git CLI stdin wrapper"), MB_YESNO|MB_ICONQUESTION) == IDYES)
 		{
 			_tprintf(_T("yes"));
 		}
