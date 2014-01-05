@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -2324,7 +2324,7 @@ CString CGit::GetUnifiedDiffCmd(const CTGitPath& path, const git_revnum_t& rev1,
 
 	if (!path.IsEmpty())
 	{
-		cmd += _T(" -- \"");
+		cmd += _T(" \"");
 		cmd += path.GetGitPathString();
 		cmd += _T("\"");
 	}
