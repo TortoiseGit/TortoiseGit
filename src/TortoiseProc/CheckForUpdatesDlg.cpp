@@ -48,6 +48,7 @@ CCheckForUpdatesDlg::CCheckForUpdatesDlg(CWnd* pParent /*=NULL*/)
 	, m_bVisible(FALSE)
 	, m_pDownloadThread(NULL)
 	, m_bThreadRunning(FALSE)
+	, m_updateDownloader(nullptr)
 {
 	m_sUpdateDownloadLink = _T("http://redir.tortoisegit.org/download");
 }
@@ -77,183 +78,6 @@ BEGIN_MESSAGE_MAP(CCheckForUpdatesDlg, CStandAloneDialog)
 	ON_MESSAGE(WM_USER_FILLCHANGELOG, OnFillChangelog)
 	ON_REGISTERED_MESSAGE(WM_TASKBARBTNCREATED, OnTaskbarBtnCreated)
 END_MESSAGE_MAP()
-
-static void BruteforceGetVersionNumbers(OSVERSIONINFOEX& osVersionInfo)
-{
-	osVersionInfo.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
-	GetVersionEx((OSVERSIONINFO *)&osVersionInfo);
-
-	ULONGLONG maskConditioMajor = ::VerSetConditionMask(0, VER_MAJORVERSION, VER_LESS);
-	ULONGLONG maskConditioMinor = ::VerSetConditionMask(0, VER_MINORVERSION, VER_LESS);
-	while (!::VerifyVersionInfo(&osVersionInfo, VER_MAJORVERSION, maskConditioMajor))
-	{
-		++osVersionInfo.dwMajorVersion;
-		osVersionInfo.dwMinorVersion = 0;
-	}
-	while (!::VerifyVersionInfo(&osVersionInfo, VER_MINORVERSION, maskConditioMinor))
-		++osVersionInfo.dwMinorVersion;
-}
-
-BOOL CCheckForUpdatesDlg::DownloadFile(const CString& url, const CString& dest, bool showProgress)
-{
-	CString hostname;
-	CString urlpath;
-	URL_COMPONENTS urlComponents = {0};
-	urlComponents.dwStructSize = sizeof(urlComponents);
-	urlComponents.lpszHostName = hostname.GetBufferSetLength(INTERNET_MAX_HOST_NAME_LENGTH);
-	urlComponents.dwHostNameLength = INTERNET_MAX_HOST_NAME_LENGTH;
-	urlComponents.lpszUrlPath = urlpath.GetBufferSetLength(INTERNET_MAX_PATH_LENGTH);
-	urlComponents.dwUrlPathLength = INTERNET_MAX_PATH_LENGTH;
-	if (!InternetCrackUrl(url, url.GetLength(), 0, &urlComponents))
-		return GetLastError();
-	hostname.ReleaseBuffer();
-	urlpath.ReleaseBuffer();
-
-	if (m_bForce)
-		DeleteUrlCacheEntry(url);
-
-	OSVERSIONINFOEX inf = {0};
-	BruteforceGetVersionNumbers(inf);
-
-	CString userAgent;
-	userAgent.Format(L"TortoiseGit %s; %s; Windows%s %ld.%ld", _T(STRFILEVER), _T(TGIT_PLATFORM), (inf.dwPlatformId == VER_PLATFORM_WIN32_NT) ? _T(" NT") : _T(""), inf.dwMajorVersion, inf.dwMinorVersion);
-
-	HINTERNET hOpenHandle = InternetOpen(userAgent, INTERNET_OPEN_TYPE_PRECONFIG, nullptr, nullptr, 0);
-	HINTERNET hConnectHandle = InternetConnect(hOpenHandle, hostname, urlComponents.nPort, nullptr, nullptr, urlComponents.nScheme, 0, 0);
-	if (!hConnectHandle)
-	{
-		DWORD err = GetLastError();
-		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Download of %s failed on InternetConnect: %d\n"), url, err);
-		InternetCloseHandle(hOpenHandle);
-		return err;
-	}
-	HINTERNET hResourceHandle = HttpOpenRequest(hConnectHandle, nullptr, urlpath, nullptr, nullptr, nullptr, INTERNET_FLAG_KEEP_CONNECTION, 0);
-	if (!hResourceHandle)
-	{
-		DWORD err = GetLastError();
-		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Download of %s failed on HttpOpenRequest: %d\n"), url, err);
-		InternetCloseHandle(hConnectHandle);
-		InternetCloseHandle(hOpenHandle);
-		return err;
-	}
-
-	{
-resend:
-		BOOL httpsendrequest = HttpSendRequest(hResourceHandle, nullptr, 0, nullptr, 0);
-
-		DWORD dwError = InternetErrorDlg(GetSafeHwnd(), hResourceHandle, ERROR_SUCCESS, FLAGS_ERROR_UI_FILTER_FOR_ERRORS | FLAGS_ERROR_UI_FLAGS_CHANGE_OPTIONS | FLAGS_ERROR_UI_FLAGS_GENERATE_DATA, nullptr);
-
-		if (dwError == ERROR_INTERNET_FORCE_RETRY)
-			goto resend;
-		else if (!httpsendrequest)
-		{
-			DWORD err = GetLastError();
-			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Download of %s failed: %d, %d\n"), url, httpsendrequest, err);
-			InternetCloseHandle(hResourceHandle);
-			InternetCloseHandle(hConnectHandle);
-			InternetCloseHandle(hOpenHandle);
-			return err;
-		}
-	}
-
-	DWORD contentLength = 0;
-	{
-		DWORD length = sizeof(contentLength);
-		HttpQueryInfo(hResourceHandle, HTTP_QUERY_CONTENT_LENGTH | HTTP_QUERY_FLAG_NUMBER, (LPVOID)&contentLength, &length, NULL);
-	}
-	{
-		DWORD statusCode = 0;
-		DWORD length = sizeof(statusCode);
-		if (!HttpQueryInfo(hResourceHandle, HTTP_QUERY_STATUS_CODE | HTTP_QUERY_FLAG_NUMBER, (LPVOID)&statusCode, &length, NULL) || statusCode != 200)
-		{
-			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Download of %s returned %d\n"), url, statusCode);
-			InternetCloseHandle(hResourceHandle);
-			InternetCloseHandle(hConnectHandle);
-			InternetCloseHandle(hOpenHandle);
-			if (statusCode == 404)
-				return ERROR_FILE_NOT_FOUND;
-			else if (statusCode == 403)
-				return ERROR_ACCESS_DENIED;
-			return INET_E_DOWNLOAD_FAILURE;
-		}
-	}
-
-	CFile destinationFile(dest, CFile::modeCreate | CFile::modeWrite);
-	DWORD downloadedSum = 0; // sum of bytes downloaded so far
-	do
-	{
-		DWORD size; // size of the data available
-		if (!InternetQueryDataAvailable(hResourceHandle, &size, 0, 0))
-		{
-			DWORD err = GetLastError();
-			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Download of %s failed on InternetQueryDataAvailable: %d\n"), url, err);
-			InternetCloseHandle(hResourceHandle);
-			InternetCloseHandle(hConnectHandle);
-			InternetCloseHandle(hOpenHandle);
-			return err;
-		}
-
-		DWORD downloaded; // size of the downloaded data
-		LPTSTR lpszData = new TCHAR[size + 1];
-		if (!InternetReadFile(hResourceHandle, (LPVOID)lpszData, size, &downloaded))
-		{
-			delete[] lpszData;
-			DWORD err = GetLastError();
-			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Download of %s failed on InternetReadFile: %d\n"), url, err);
-			InternetCloseHandle(hResourceHandle);
-			InternetCloseHandle(hConnectHandle);
-			InternetCloseHandle(hOpenHandle);
-			return err;
-		}
-
-		if (downloaded == 0)
-		{
-			delete[] lpszData;
-			break;
-		}
-
-		lpszData[downloaded] = '\0';
-		destinationFile.Write(lpszData, downloaded);
-		delete[] lpszData;
-
-		downloadedSum += downloaded;
-
-		if (!showProgress)
-			continue;
-
-		if (contentLength == 0) // got no content-length from webserver
-		{
-			DOWNLOADSTATUS downloadStatus = { 0, 1 + 1 }; // + 1 for download of signature file
-			::SendMessage(m_hWnd, WM_USER_DISPLAYSTATUS, 0, reinterpret_cast<LPARAM>(&downloadStatus));
-		}
-		else
-		{
-			if (downloadedSum > contentLength)
-				downloadedSum = contentLength - 1;
-			DOWNLOADSTATUS downloadStatus = { downloadedSum, contentLength + 1 }; // + 1 for download of signature file
-			::SendMessage(m_hWnd, WM_USER_DISPLAYSTATUS, 0, reinterpret_cast<LPARAM>(&downloadStatus));
-		}
-
-		if (::WaitForSingleObject(m_eventStop, 0) == WAIT_OBJECT_0)
-		{
-			InternetCloseHandle(hResourceHandle);
-			InternetCloseHandle(hConnectHandle);
-			InternetCloseHandle(hOpenHandle);
-			return E_ABORT; // canceled by the user
-		}
-	}
-	while (true);
-	destinationFile.Close();
-	InternetCloseHandle(hResourceHandle);
-	InternetCloseHandle(hConnectHandle);
-	InternetCloseHandle(hOpenHandle);
-	if (downloadedSum == 0)
-	{
-		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Download size of %s was zero.\n"), url);
-		return INET_E_DOWNLOAD_FAILURE;
-	}
-	return 0;
-}
 
 BOOL CCheckForUpdatesDlg::OnInitDialog()
 {
@@ -300,6 +124,8 @@ BOOL CCheckForUpdatesDlg::OnInitDialog()
 	m_cLogMessage.SetFont((CString)CRegString(_T("Software\\TortoiseGit\\LogFontName"), _T("Courier New")), (DWORD)CRegDWORD(_T("Software\\TortoiseGit\\LogFontSize"), 8));
 	m_cLogMessage.Call(SCI_SETREADONLY, TRUE);
 
+	m_updateDownloader = new CUpdateDownloader(GetSafeHwnd(), m_bForce == TRUE, WM_USER_DISPLAYSTATUS, &m_eventStop);
+
 	if (AfxBeginThread(CheckThreadEntry, this)==NULL)
 	{
 		CMessageBox::Show(NULL, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
@@ -313,6 +139,9 @@ void CCheckForUpdatesDlg::OnDestroy()
 {
 	for (int i = 0; i < m_ctrlFiles.GetItemCount(); ++i)
 		delete (CUpdateListCtrl::Entry *)m_ctrlFiles.GetItemData(i);
+
+	if (m_updateDownloader)
+		delete m_updateDownloader;
 
 	CStandAloneDialog::OnDestroy();
 }
@@ -377,12 +206,12 @@ UINT CCheckForUpdatesDlg::CheckThread()
 		SetDlgItemText(IDC_SOURCE, _T("Using (unofficial) release channel: ") + sCheckURL);
 
 	CString errorText;
-	BOOL ret = DownloadFile(sCheckURL, tempfile, false);
+	BOOL ret = m_updateDownloader->DownloadFile(sCheckURL, tempfile, false);
 	if (!ret && official)
 	{
 		CString signatureTempfile = CTempFiles::Instance().GetTempFilePath(true).GetWinPathString();
-		ret = DownloadFile(sCheckURL + SIGNATURE_FILE_ENDING, signatureTempfile, false);
-		if (!ret && VerifyIntegrity(tempfile, signatureTempfile))
+		ret = m_updateDownloader->DownloadFile(sCheckURL + SIGNATURE_FILE_ENDING, signatureTempfile, false);
+		if (!ret && VerifyIntegrity(tempfile, signatureTempfile, m_updateDownloader))
 		{
 			SetDlgItemText(IDC_CHECKRESULT, _T("Could not verify digital signature."));
 			DeleteUrlCacheEntry(sCheckURL);
@@ -615,7 +444,7 @@ void CCheckForUpdatesDlg::FillChangelog(CStdioFile &file)
 		sChangelogURL = _T("http://tortoisegit.googlecode.com/git/src/Changelog.txt");
 
 	CString tempchangelogfile = CTempFiles::Instance().GetTempFilePath(true).GetWinPathString();
-	if (!DownloadFile(sChangelogURL, tempchangelogfile, false))
+	if (!m_updateDownloader->DownloadFile(sChangelogURL, tempchangelogfile, false))
 	{
 		CString temp;
 		CStdioFile file(tempchangelogfile, CFile::modeRead|CFile::typeText);
@@ -752,7 +581,7 @@ bool CCheckForUpdatesDlg::Download(CString filename)
 	CString destFilename = GetDownloadsDirectory() + filename;
 	if (PathFileExists(destFilename) && PathFileExists(destFilename + SIGNATURE_FILE_ENDING))
 	{
-		if (VerifyIntegrity(destFilename, destFilename + SIGNATURE_FILE_ENDING) == 0)
+		if (VerifyIntegrity(destFilename, destFilename + SIGNATURE_FILE_ENDING, m_updateDownloader) == 0)
 			return true;
 		else
 		{
@@ -774,10 +603,10 @@ bool CCheckForUpdatesDlg::Download(CString filename)
 
 	CString tempfile = CTempFiles::Instance().GetTempFilePath(true).GetWinPathString();
 	CString signatureTempfile = CTempFiles::Instance().GetTempFilePath(true).GetWinPathString();
-	BOOL ret = DownloadFile(url, tempfile, true);
+	BOOL ret = m_updateDownloader->DownloadFile(url, tempfile, true);
 	if (!ret)
 	{
-		ret = DownloadFile(url + SIGNATURE_FILE_ENDING, signatureTempfile, true);
+		ret = m_updateDownloader->DownloadFile(url + SIGNATURE_FILE_ENDING, signatureTempfile, true);
 		m_progress.SetPos(m_progress.GetPos() + 1);
 		if (m_pTaskbarList)
 		{
@@ -789,7 +618,7 @@ bool CCheckForUpdatesDlg::Download(CString filename)
 	}
 	if (!ret)
 	{
-		if (VerifyIntegrity(tempfile, signatureTempfile) == 0)
+		if (VerifyIntegrity(tempfile, signatureTempfile, m_updateDownloader) == 0)
 		{
 			DeleteFile(destFilename);
 			DeleteFile(destFilename + SIGNATURE_FILE_ENDING);
@@ -924,10 +753,10 @@ CString CCheckForUpdatesDlg::GetDownloadsDirectory()
 
 LRESULT CCheckForUpdatesDlg::OnDisplayStatus(WPARAM, LPARAM lParam)
 {
-	const DOWNLOADSTATUS *const pDownloadStatus = reinterpret_cast<DOWNLOADSTATUS *>(lParam);
+	const CUpdateDownloader::DOWNLOADSTATUS *const pDownloadStatus = reinterpret_cast<CUpdateDownloader::DOWNLOADSTATUS *>(lParam);
 	if (pDownloadStatus != NULL)
 	{
-		ASSERT(::AfxIsValidAddress(pDownloadStatus, sizeof(DOWNLOADSTATUS)));
+		ASSERT(::AfxIsValidAddress(pDownloadStatus, sizeof(CUpdateDownloader::DOWNLOADSTATUS)));
 
 		m_progress.SetRange32(0, pDownloadStatus->ulProgressMax);
 		m_progress.SetPos(pDownloadStatus->ulProgress);

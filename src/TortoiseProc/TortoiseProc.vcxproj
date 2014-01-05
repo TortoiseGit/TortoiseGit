@@ -269,6 +269,7 @@
     <ClCompile Include="CheckForUpdatesDlg.cpp" />
     <ClCompile Include="Commands\UpdateCheckCommand.cpp" />
     <ClCompile Include="UpdateCrypto.cpp" />
+    <ClCompile Include="UpdateDownloader.cpp" />
     <ClCompile Include="UpdateListCtrl.cpp" />
     <ClCompile Include="Commands\PasteCopyCommand.cpp" />
     <ClCompile Include="Commands\PasteMoveCommand.cpp" />
@@ -447,6 +448,7 @@
     <ClInclude Include="CheckForUpdatesDlg.h" />
     <ClInclude Include="Commands\UpdateCheckCommand.h" />
     <ClInclude Include="UpdateCrypto.h" />
+    <ClInclude Include="UpdateDownloader.h" />
     <ClInclude Include="UpdateListCtrl.h" />
     <ClInclude Include="Commands\RequestPullCommand.h" />
     <ClInclude Include="RequestPullDlg.h" />

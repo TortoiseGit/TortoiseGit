@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2013 - TortoiseGit
+// Copyright (C) 2012-2014 - TortoiseGit
 // Copyright (C) 2003-2008 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
@@ -21,6 +21,7 @@
 
 #include "StandAloneDlg.h"
 #include "UpdateListCtrl.h"
+#include "UpdateDownloader.h"
 #include "HyperLink.h"
 #include "MenuButton.h"
 #include "SciEdit.h"
@@ -39,12 +40,6 @@ public:
 	virtual ~CCheckForUpdatesDlg();
 
 	enum { IDD = IDD_CHECKFORUPDATES };
-
-	struct DOWNLOADSTATUS
-	{
-		ULONG ulProgress;
-		ULONG ulProgressMax;
-	};
 
 protected:
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
@@ -81,10 +76,10 @@ private:
 	CWinThread	*m_pDownloadThread;
 	CString		m_sFilesURL;
 
-	BOOL		DownloadFile(const CString &url, const CString& dest, bool showProgress);
 	static UINT	DownloadThreadEntry(LPVOID pParam);
 	UINT		DownloadThread();
 	bool		Download(CString filename);
+	CUpdateDownloader* m_updateDownloader;
 
 	CUpdateListCtrl	m_ctrlFiles;
 

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013 Sven Strickroth <email@cs-ware.de>
+// Copyright (C) 2013-2014 Sven Strickroth <email@cs-ware.de>
 // Copyright (C) VLC project (http://videolan.org)
 
 // This program is free software; you can redistribute it and/or
@@ -20,6 +20,7 @@
 
 #include <stdint.h>
 #include <WinCrypt.h>
+#include "UpdateDownloader.h"
 
 enum    /* Public key algorithms */
 {
@@ -136,4 +137,4 @@ typedef struct _DSAKEY
   BYTE y[128]; // (G^X) mod P
 } DSAKEY;
 
-int VerifyIntegrity(const CString &filename, const CString &signatureFilename);
+int VerifyIntegrity(const CString &filename, const CString &signatureFilename, CUpdateDownloader *updateDownloader);

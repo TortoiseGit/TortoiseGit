@@ -680,6 +680,9 @@
     <ClCompile Include="ChangedDlg.cpp">
       <Filter>Commands\ReposStatus</Filter>
     </ClCompile>
+    <ClCompile Include="UpdateDownloader.cpp">
+      <Filter>Commands\UpdateCheck</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddRemoteDlg.h">
@@ -1197,6 +1200,9 @@
     </ClInclude>
     <ClInclude Include="ChangedDlg.h">
       <Filter>Commands\ReposStatus</Filter>
+    </ClInclude>
+    <ClInclude Include="UpdateDownloader.h">
+      <Filter>Commands\UpdateCheck</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

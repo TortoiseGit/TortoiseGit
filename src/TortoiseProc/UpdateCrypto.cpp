@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013 Sven Strickroth <email@cs-ware.de>
+// Copyright (C) 2013-2014 Sven Strickroth <email@cs-ware.de>
 // Copyright (C) 2014 TortoiseGit
 // Copyright (C) VLC project (http://videolan.org)
 // - pgp parsing code was copied from src/misc/update(_crypto)?.c
@@ -785,13 +785,15 @@ static int verify_signature(HCRYPTPROV hCryptProv, HCRYPTHASH hHash, public_key_
 /*
  * download a public key (the last one) from TortoiseGit server, and parse it
  */
-static public_key_t *download_key(const uint8_t *p_longid, const uint8_t *p_signature_issuer)
+static public_key_t *download_key(const uint8_t *p_longid, const uint8_t *p_signature_issuer, CUpdateDownloader *updateDownloader)
 {
+	ASSERT(updateDownloader);
+
 	CString url;
 	url.Format(L"http://download.tortoisegit.org/keys/%.2X%.2X%.2X%.2X%.2X%.2X%.2X%.2X.asc", p_longid[0], p_longid[1], p_longid[2], p_longid[3], p_longid[4], p_longid[5], p_longid[6], p_longid[7]);
 
 	CString tempfile = CTempFiles::Instance().GetTempFilePath(true).GetWinPathString();
-	if (URLDownloadToFile(nullptr, url, tempfile, 0, nullptr) != S_OK)
+	if (updateDownloader->DownloadFile(url, tempfile, false))
 		return nullptr;
 
 	int size = 65536;
@@ -832,8 +834,10 @@ static public_key_t *download_key(const uint8_t *p_longid, const uint8_t *p_sign
 	return p_pkey;
 }
 
-int VerifyIntegrity(const CString &filename, const CString &signatureFilename)
+int VerifyIntegrity(const CString &filename, const CString &signatureFilename, CUpdateDownloader *updateDownloader)
 {
+	ASSERT(updateDownloader);
+
 	signature_packet_t p_sig;
 	memset(&p_sig, 0, sizeof(signature_packet_t));
 	if (LoadSignature(signatureFilename, &p_sig))
@@ -866,7 +870,7 @@ int VerifyIntegrity(const CString &filename, const CString &signatureFilename)
 
 	if (memcmp(p_sig.issuer_longid, p_pkey.longid, 8) != 0)
 	{
-		public_key_t *p_new_pkey = download_key(p_sig.issuer_longid, tortoisegit_public_key_longid);
+		public_key_t *p_new_pkey = download_key(p_sig.issuer_longid, tortoisegit_public_key_longid, updateDownloader);
 		if (!p_new_pkey)
 		{
 			if (p_sig.version == 4)
