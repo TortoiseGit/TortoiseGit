@@ -329,6 +329,7 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 	{
 		m_BufStart = 0 ;
 		m_Animate.Play(0, INT_MAX, INT_MAX);
+		DialogEnableWindow(IDCANCEL, TRUE);
 		if (m_pTaskbarList)
 		{
 			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NORMAL);
