@@ -1,6 +1,6 @@
 // TortoiseGitBlame - a Viewer for Git Blames
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 // Copyright (C) 2010-2013 Sven Strickroth <email@cs-ware.de>
 // Copyright (C) 2003-2008 - TortoiseSVN
 
@@ -155,7 +155,7 @@ CTortoiseGitBlameView::CTortoiseGitBlameView()
 	m_bShowOriginalLineNumber = (theApp.GetInt(_T("ShowOriginalLineNumber"), 0) == 1);
 	m_dwDetectMovedOrCopiedLines = theApp.GetInt(_T("DetectMovedOrCopiedLines"), 0);
 	m_bIgnoreWhitespace = (theApp.GetInt(_T("IgnoreWhitespace"), 0) == 1);
-	m_bShowCompleteLog = (theApp.GetInt(_T("ShowCompleteLog"), 0) == 1);
+	m_bShowCompleteLog = (theApp.GetInt(_T("ShowCompleteLog"), 1) == 1);
 	m_bFollowRenames = (theApp.GetInt(_T("FollowRenames"), 0) == 1);
 	m_bBlameOuputContainsOtherFilenames = FALSE;
 

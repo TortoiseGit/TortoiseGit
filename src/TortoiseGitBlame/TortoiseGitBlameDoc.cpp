@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -231,7 +231,7 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 		}
 		pView->ParseBlame();
 
-		BOOL bShowCompleteLog = (theApp.GetInt(_T("ShowCompleteLog"), 0) == 1);
+		BOOL bShowCompleteLog = (theApp.GetInt(_T("ShowCompleteLog"), 1) == 1);
 		if (bShowCompleteLog && BlameIsLimitedToOneFilename(dwDetectMovedOrCopiedLines))
 		{
 			if (GetMainFrame()->m_wndOutput.LoadHistory(path.GetGitPathString(), m_Rev, (theApp.GetInt(_T("FollowRenames"), 0) == 1)))

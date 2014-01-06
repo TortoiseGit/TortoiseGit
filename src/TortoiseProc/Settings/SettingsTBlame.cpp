@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2007-2008 - TortoiseSVN
-// Copyright (C) 2011-2013 - TortoiseGit
+// Copyright (C) 2011-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -46,7 +46,7 @@ CSettingsTBlame::CSettingsTBlame()
 	m_regTabSize = CRegDWORD(_T("Software\\TortoiseGit\\BlameTabSize"), 4);
 	m_regDetectMovedOrCopiedLines = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseGitBlame\\Workspace\\DetectMovedOrCopiedLines"), BLAME_DETECT_MOVED_OR_COPIED_LINES_DISABLED);
 	m_regIgnoreWhitespace = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseGitBlame\\Workspace\\IgnoreWhitespace"), 0);
-	m_regShowCompleteLog = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseGitBlame\\Workspace\\ShowCompleteLog"), 0);
+	m_regShowCompleteLog = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseGitBlame\\Workspace\\ShowCompleteLog"), 1);
 	m_regFollowRenames = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseGitBlame\\Workspace\\FollowRenames"), 0);
 }
 
