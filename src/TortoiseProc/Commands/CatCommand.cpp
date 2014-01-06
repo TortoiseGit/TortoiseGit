@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009,2011-2013 - TortoiseGit
+// Copyright (C) 2009,2011-2014 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -48,10 +48,10 @@ bool CatCommand::Execute()
 		cmd.Format(_T("git.exe show %s -- \"%s\""),revision,this->cmdLinePath);
 	}
 
-	if(g_Git.RunLogFile(cmd,savepath))
+	if (g_Git.RunLogFile(cmd, savepath, &err))
 	{
 		::DeleteFile(savepath);
-		CMessageBox::Show(NULL,_T("Cat file fail"),_T("TortoiseGit"), MB_ICONERROR);
+		CMessageBox::Show(hwndExplorer, _T("Cat file failed:\n") + err, _T("TortoiseGit"), MB_ICONERROR);
 		return false;
 	}
 	return true;

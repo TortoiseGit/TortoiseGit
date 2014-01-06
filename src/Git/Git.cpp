@@ -1005,7 +1005,7 @@ DWORD GetTortoiseGitTempPath(DWORD nBufferLength, LPTSTR lpBuffer)
 	return result + 13;
 }
 
-int CGit::RunLogFile(CString cmd,const CString &filename)
+int CGit::RunLogFile(CString cmd, const CString &filename, CString *stdErr)
 {
 	STARTUPINFO si;
 	PROCESS_INFORMATION pi;
@@ -1015,12 +1015,28 @@ int CGit::RunLogFile(CString cmd,const CString &filename)
 	SECURITY_ATTRIBUTES   psa={sizeof(psa),NULL,TRUE};;
 	psa.bInheritHandle=TRUE;
 
+	HANDLE hReadErr, hWriteErr;
+	if (!CreatePipe(&hReadErr, &hWriteErr, &psa, 0))
+	{
+		CString err = CFormatMessageWrapper();
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": could not open stderr pipe: %s\n"), err.Trim());
+		return TGIT_GIT_ERROR_OPEN_PIP;
+	}
+
 	HANDLE houtfile=CreateFile(filename,GENERIC_WRITE,FILE_SHARE_READ | FILE_SHARE_WRITE,
 			&psa,CREATE_ALWAYS,FILE_ATTRIBUTE_NORMAL,NULL);
+
+	if (!houtfile)
+	{
+		CString err = CFormatMessageWrapper();
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": could not open stdout pipe: %s\n"), err.Trim());
+		return TGIT_GIT_ERROR_OPEN_PIP;
+	}
 
 	si.wShowWindow = SW_HIDE;
 	si.dwFlags = STARTF_USESTDHANDLES|STARTF_USESHOWWINDOW;
 	si.hStdOutput = houtfile;
+	si.hStdError = hWriteErr;
 
 	LPTSTR pEnv = (!m_Environment.empty()) ? &m_Environment[0]: NULL;
 	DWORD dwFlags = pEnv ? CREATE_UNICODE_ENVIRONMENT : 0;
@@ -1031,15 +1047,30 @@ int CGit::RunLogFile(CString cmd,const CString &filename)
 	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": executing %s\n"), cmd);
 	if(!CreateProcess(NULL,(LPWSTR)cmd.GetString(), NULL,NULL,TRUE,dwFlags,pEnv,(LPWSTR)m_CurrentDir.GetString(),&si,&pi))
 	{
-		LPVOID lpMsgBuf;
-		FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER|FORMAT_MESSAGE_FROM_SYSTEM,
-						NULL,GetLastError(),MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-						(LPTSTR)&lpMsgBuf,
-						0,NULL);
+		CString err = CFormatMessageWrapper();
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": failed to create Process: %s\n"), err.Trim());
+		stdErr = &err;
 		return TGIT_GIT_ERROR_CREATE_PROCESS;
 	}
 
+	BYTE_VECTOR stderrVector;
+	CGitCall_ByteVector pcall(L"", nullptr, &stderrVector);
+	HANDLE thread;
+	ASYNCREADSTDERRTHREADARGS threadArguments;
+	threadArguments.fileHandle = hReadErr;
+	threadArguments.pcall = &pcall;
+	thread = CreateThread(nullptr, 0, AsyncReadStdErrThread, &threadArguments, 0, nullptr);
+
 	WaitForSingleObject(pi.hProcess,INFINITE);
+
+	CloseHandle(hWriteErr);
+	CloseHandle(hReadErr);
+
+	if (thread)
+		WaitForSingleObject(thread, INFINITE);
+
+	stderrVector.push_back(0);
+	StringAppend(stdErr, &(stderrVector[0]), CP_UTF8);
 
 	DWORD exitcode = 0;
 	if (!GetExitCodeProcess(pi.hProcess, &exitcode))
@@ -2082,7 +2113,7 @@ int CGit::GetOneFile(const CString &Refname, const CTGitPath &path, const CStrin
 	{
 		CString cmd;
 		cmd.Format(_T("git.exe cat-file -p %s:\"%s\""), Refname, path.GetGitPathString());
-		return RunLogFile(cmd,outputfile);
+		return RunLogFile(cmd, outputfile, &gitLastErr);
 	}
 }
 void CEnvironment::CopyProcessEnvironment()
@@ -2571,7 +2602,7 @@ int CGit::GetUnifiedDiff(const CTGitPath& path, const git_revnum_t& rev1, const 
 	{
 		CString cmd;
 		cmd = GetUnifiedDiffCmd(path, rev1, rev2, bMerge, bCombine, diffContext);
-		return g_Git.RunLogFile(cmd, patchfile);
+		return g_Git.RunLogFile(cmd, patchfile, &gitLastErr);
 	}
 }
 

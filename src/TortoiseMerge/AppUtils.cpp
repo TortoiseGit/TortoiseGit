@@ -1,6 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2010-2011 - TortoiseGit
+// Copyright (C) 2010-2011,2014 - TortoiseGit
 // Copyright (C) 2006-2010, 2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -86,12 +86,12 @@ BOOL CAppUtils::GetVersionedFile(CString sPath, CString sVersion, CString sSaveP
 
 bool CAppUtils::CreateUnifiedDiff(const CString& orig, const CString& modified, const CString& output, bool bShowError)
 {
-	CString cmd;
+	CString cmd, err;
 	cmd.Format(_T("git.exe diff --no-index -- \"%s\" \"%s\""),orig, modified);
 
-	if(g_Git.RunLogFile(cmd,(CString&)output) && bShowError)
+	if(g_Git.RunLogFile(cmd, output, &err) && bShowError)
 	{
-		MessageBox(NULL, _T("Fail Create Patch"), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+		MessageBox(NULL, _T("Failed to create patch.\n") + err, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 		return false;
 	}
 	return true;

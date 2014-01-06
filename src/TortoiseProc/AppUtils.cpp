@@ -864,7 +864,7 @@ bool CAppUtils::StartShowUnifiedDiff(HWND hWnd, const CTGitPath& url1, const git
 	CString tempfile=GetTempFile();
 	if (g_Git.GetUnifiedDiff(url1, rev1, rev2, tempfile, bMerge, bCombine, diffContext))
 	{
-		CMessageBox::Show(hWnd, _T("Could not get unified diff."), _T("TortoiseGit"), MB_OK);
+		CMessageBox::Show(hWnd, g_Git.GetGitLastErr(_T("Could not get unified diff."), CGit::GIT_CMD_DIFF), _T("TortoiseGit"), MB_OK);
 		return false;
 	}
 	CAppUtils::StartUnifiedDiffViewer(tempfile, rev1 + _T(":") + rev2);
@@ -2595,12 +2595,15 @@ bool CAppUtils::RequestPull(CString endrevision, CString repositoryUrl)
 		sysProgressDlg.ShowModeless((HWND)NULL, true);
 
 		CString tempFileName = GetTempFile();
+		CString err;
 		DeleteFile(tempFileName);
 		CreateDirectory(tempFileName, NULL);
 		tempFileName += _T("\\pullrequest.txt");
-		if (g_Git.RunLogFile(cmd, tempFileName))
+		if (g_Git.RunLogFile(cmd, tempFileName, &err))
 		{
-			CMessageBox::Show(NULL, IDS_ERR_PULLREUQESTFAILED, IDS_APPNAME, MB_OK);
+			CString msg;
+			msg.LoadString(IDS_ERR_PULLREUQESTFAILED);
+			CMessageBox::Show(NULL, msg + _T("\n") + err, _T("TortoiseGit"), MB_OK);
 			return false;
 		}
 

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -322,11 +322,15 @@ void CSetMainPage::OnCheck()
 
 void CSetMainPage::OnBnClickedButtonShowEnv()
 {
-	CString cmd;
+	CString cmd, err;
 	CString tempfile=::GetTempFile();
 
 	cmd=_T("cmd /c set");
-	g_Git.RunLogFile(cmd,tempfile);
+	if (g_Git.RunLogFile(cmd, tempfile, &err))
+	{
+		CMessageBox::Show(GetSafeHwnd(), _T("Could not get environment variables:\n") + err, _T("TortoiseGit"), MB_OK);
+		return;
+	}
 	CAppUtils::LaunchAlternativeEditor(tempfile);
 }
 
