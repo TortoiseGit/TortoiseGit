@@ -26,7 +26,9 @@
 			<listitem>
 				<para>
 					Selects your user interface language.
-					What else did you expect?
+					What else did you expect? Only languages of installed LanguagePacks are listed.
+					You can download language packs on the <ulink url="http://redir.tortoisegit.org/download">TortoiseGit download page</ulink>
+					or <ulink url="http://redir.tortoisegit.org/translate">help translating</ulink>.
 				</para>
 			</listitem>
 		</varlistentry>
