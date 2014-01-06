@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
 <sect1 id="tgit-dug-add">
-	<title>Adding New Files And Directories</title>
+	<title>Adding New Files</title>
 	<indexterm>
 		<primary>add</primary>
 	</indexterm>
@@ -14,9 +14,9 @@
 			<title>Explorer context menu for unversioned files</title>
 			<graphic fileref="../images/ContextMenuFileNoControl.png"/>
 		</figure>
-		If you created new files and/or directories during
+		If you created new files during
 		your development process then you need to add them
-		to source control too. Select the file(s) and/or directory
+		to source control too. Select the file(s) and/or NOT empty directory
 		and use
 		<menuchoice>
 			<guimenu>TortoiseGit</guimenu>
@@ -24,12 +24,12 @@
 		</menuchoice>.
 	</para>
 	<para>
-		After you added the files/directories to source control
+		After you added the files to source control
 		the file appears with a <literal>added</literal> icon overlay which means you
-		first have to commit your working tree to make those
-		files/directories available to other developers.
-		Adding a file/directory does <emphasis>not</emphasis> affect
-		the repository!
+		first have to commit (and push) your working tree to make those
+		files available to other developers.
+		Adding a file does <emphasis>not</emphasis> affect any remote
+		repository!
 	</para>
 	<tip>
 		<title>Many Adds</title>
@@ -39,6 +39,14 @@
 			unversioned files inside that versioned folder.
 			This helps if you have many new files and need to add
 			them all at once.
+		</para>
+	</tip>
+	<tip>
+		<title>Empty directories</title>
+		<para>
+			Git only tracks content and, thus, cannot version (empty) directories. If you
+			need a directory to be automatically created on checkout, make sure at least one
+			versioned file is in it (e.g. a flaceholder file ).
 		</para>
 	</tip>
 <!--
@@ -81,11 +89,12 @@
 	</para>
 -->
 	<para>
-		If you add a file or folder by mistake, you can undo the addition
+		If you add a file by mistake, you can undo the addition
 		before you commit using
 		<menuchoice>
 			<guimenu>TortoiseGit</guimenu>
 			<guimenuitem>Delete (keep local)...</guimenuitem>
-		</menuchoice>.
+		</menuchoice>
+		or <guimenuitem>Revert</guimenuitem>.
 	</para>
 </sect1>
