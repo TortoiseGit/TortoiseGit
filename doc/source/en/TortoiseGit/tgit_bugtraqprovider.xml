@@ -244,7 +244,7 @@ HRESULT GetCommitMessage2 (
         <para>
             The parameter <literal>bugID</literal> contains the content of
             the bug-ID field (if it is shown, configured with the property
-            <literal>bugtraq:message</literal>).
+            <literal>bugtraq.message</literal>).
         </para>
         <para>
             The return parameter <literal>bugIDOut</literal> is used to fill

@@ -850,7 +850,7 @@ bool CAppUtils::FindStyleChars(const CString& sText, TCHAR stylechar, int& start
 	return bFoundMarker;
 }
 
-bool CAppUtils::StartShowUnifiedDiff(HWND /*hWnd*/, const CTGitPath& url1, const git_revnum_t& rev1,
+bool CAppUtils::StartShowUnifiedDiff(HWND hWnd, const CTGitPath& url1, const git_revnum_t& rev1,
 												const CTGitPath& /*url2*/, const git_revnum_t& rev2,
 												//const GitRev& peg /* = GitRev */, const GitRev& headpeg /* = GitRev */,
 												bool /*bAlternateDiff*/ /* = false */, bool /*bIgnoreAncestry*/ /* = false */,
@@ -864,7 +864,7 @@ bool CAppUtils::StartShowUnifiedDiff(HWND /*hWnd*/, const CTGitPath& url1, const
 	CString tempfile=GetTempFile();
 	if (g_Git.GetUnifiedDiff(url1, rev1, rev2, tempfile, bMerge, bCombine, diffContext))
 	{
-		TRACE("Fail get unified diff\n");
+		CMessageBox::Show(hWnd, _T("Could not get unified diff."), _T("TortoiseGit"), MB_OK);
 		return false;
 	}
 	CAppUtils::StartUnifiedDiffViewer(tempfile, rev1 + _T(":") + rev2);

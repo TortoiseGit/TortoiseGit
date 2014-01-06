@@ -1041,11 +1041,20 @@ int CGit::RunLogFile(CString cmd,const CString &filename)
 
 	WaitForSingleObject(pi.hProcess,INFINITE);
 
+	DWORD exitcode = 0;
+	if (!GetExitCodeProcess(pi.hProcess, &exitcode))
+	{
+		CString err = CFormatMessageWrapper();
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": could not get exit code: %s\n"), err.Trim());
+		return TGIT_GIT_ERROR_GET_EXIT_CODE;
+	}
+	else
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": process exited: %d\n"), exitcode);
+
 	CloseHandle(pi.hThread);
 	CloseHandle(pi.hProcess);
 	CloseHandle(houtfile);
-	return TGIT_GIT_SUCCESS;
-//	return 0;
+	return exitcode;
 }
 
 int CGit::GetHash(CGitHash &hash, TCHAR* friendname)
