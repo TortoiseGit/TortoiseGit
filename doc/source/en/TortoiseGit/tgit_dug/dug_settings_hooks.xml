@@ -350,6 +350,7 @@
 				<title>The Settings Dialog, Issue Tracker Config</title>
 				<graphic fileref="../images/SettingsIssueTrackerConfig.png"/>
 			</figure>
+			See  <xref linkend="tgit-dug-bugtracker"/> for a descriptions of the different options.
 		</para>
 	</sect3>
 </sect2>

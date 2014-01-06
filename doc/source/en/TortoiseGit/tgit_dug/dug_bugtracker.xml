@@ -55,7 +55,7 @@
 			You can integrate a bug tracking tool of your choice in
 			TortoiseGit. To do this, you have to define
 			some configuration, which start with <literal>bugtraq.</literal>.
-			<xref linkend="git-config(1)"/>)
+			These settings can be edited using TortoiseGit settings dialog: <xref linkend="tgit-dug-settings-hooks-issuetracker-config"/>
 		</para>
 		<para>
 			There are two ways to integrate TortoiseGit with issue trackers. One is
