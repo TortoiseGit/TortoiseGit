@@ -352,5 +352,10 @@
 			</figure>
 			See  <xref linkend="tgit-dug-bugtracker"/> for a descriptions of the different options.
 		</para>
+		<important>
+			<para>
+				If you have problems entering/storing data please see <xref linkend="tgit-dug-settings-hierachical"/>.
+			</para>
+		</important>
 	</sect3>
 </sect2>

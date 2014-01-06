@@ -450,6 +450,11 @@
 			dialogs the way you like them.
 			This third page mainly affects the Commit dialog and the settings which are stored in git config files.
 		</para>
+		<important>
+			<para>
+				If you have problems entering/storing data please see <xref linkend="tgit-dug-settings-hierachical"/>.
+			</para>
+		</important>
 		<variablelist>
 			<varlistentry>
 				<term>Language</term>

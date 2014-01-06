@@ -2,12 +2,29 @@
 <!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
 <sect2 id="tgit-dug-settings-git">
 	<title>Git</title>
+	<sect3 id="tgit-dug-settings-hierachical">
+		<title>The hierarchical git configuration</title>
+		<para>
+			Git uses the concept of a hierarchical configuration (cf. <xref linkend="git-config(1)"/>). I.e. there are multiple levels; settings in higher levels override values in lower levels. The <guilabel>Effective</guilabel> tab shows you the effective values for the current scope (read-only).
+		</para>
+		<para>
+			Select any level (e.g. <guilabel>Local</guilabel> - the current repository settings stored locally in .git/config, <guilabel>Project</guilabel> - settings for the current repository stored within the repository in /.tgitconfig, <guilabel>Global</guilabel> - settings for the current user, <guilabel>System</guilabel> - settings for all users of the system) to see the values stored there.
+		</para>
+		<para>
+			In order to change settings select a level, enter the values, select where to store to and click on <guibutton>Apply</guibutton>.
+		</para>
+		<caution>
+			<para>
+				If you want to inherit a value of a higher level don't leave a textbox empty (this means than an empty string will be stored, which might evaluate to <literal>true</literal>), select <guilabel>Inherit</guilabel> instead.
+			</para>
+		</caution>
+	</sect3>
 	<sect3 id="tgit-dug-settings-config">
-		<title>Config</title>
+		<title>Git Config</title>
 		<?dbhh topicname="HIDD_SETTINGIT_CONFIG"?>
 		<para>
 			<figure id="tgit-dug-settings-git-config">
-				<title>The Settings Dialog, Config</title>
+				<title>The Settings Dialog, Git</title>
 				<graphic fileref="../images/SettingsGitConfig.png"/>
 			</figure>
 		</para>
@@ -32,13 +49,18 @@
 			in which case git will only warn about an irreversible conversion but continue the operation.
 		</para>
 		<para> <guilabel>QuotePath</guilabel> Controls the <literal>core.quotepath</literal> setting which might be interesting when you have non ASCII filenames: See <xref linkend="git-config(1)"/>.</para>
+		<important>
+			<para>
+				If you have problems entering/storing data please see <xref linkend="tgit-dug-settings-hierachical"/>.
+			</para>
+		</important>
 	</sect3>
 	<sect3 id="tgit-dug-settings-remote">
 		<title>Remote</title>
 		<?dbhh topicname="HIDD_SETTINREMOTE"?>
 		<para>
 			<figure id="tgit-dug-settings-git-remote">
-				<title>The Settings Dialog, Remote</title>
+				<title>The Settings Dialog, Git, Remote</title>
 				<graphic fileref="../images/SettingsGitRemote.png"/>
 			</figure>
 		</para>
@@ -75,7 +97,7 @@
 		<?dbhh topicname="HIDD_SETTINCREDENTIAL"?>
 		<para>
 			<figure id="tgit-dug-settings-git-credential">
-				<title>The Settings Dialog, Credential</title>
+				<title>The Settings Dialog, Git, Credential</title>
 				<graphic fileref="../images/SettingsGitCredential.png"/>
 			</figure>
 		</para>
