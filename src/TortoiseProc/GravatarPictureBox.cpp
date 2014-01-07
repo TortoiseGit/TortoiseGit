@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013 - TortoiseGit
+// Copyright (C) 2013-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -116,6 +116,7 @@ void CGravatar::LoadGravatar(const CString& email)
 	if (email.IsEmpty())
 	{
 		m_gravatarLock.Lock();
+		m_email = "";
 		if (!m_filename.IsEmpty())
 		{
 			m_filename = _T("");
@@ -196,8 +197,10 @@ void CGravatar::GravatarThread()
 			if (PathFileExists(tempFile))
 			{
 				m_gravatarLock.Lock();
-				m_filename = tempFile;
-				m_email = _T("");
+				if (m_email == email)
+					m_filename = tempFile;
+				else
+					m_filename = _T("");
 				m_gravatarLock.Unlock();
 			}
 			else
@@ -227,7 +230,6 @@ void CGravatar::GravatarThread()
 					SetFileTime(hFile, &creationTime, nullptr, nullptr);
 					CloseHandle(hFile);
 					m_filename = tempFile;
-					m_email = _T("");
 				}
 				else
 					m_filename = _T("");
