@@ -1026,7 +1026,7 @@ int CGit::RunLogFile(CString cmd, const CString &filename, CString *stdErr)
 	HANDLE houtfile=CreateFile(filename,GENERIC_WRITE,FILE_SHARE_READ | FILE_SHARE_WRITE,
 			&psa,CREATE_ALWAYS,FILE_ATTRIBUTE_NORMAL,NULL);
 
-	if (!houtfile)
+	if (houtfile == INVALID_HANDLE_VALUE)
 	{
 		CString err = CFormatMessageWrapper();
 		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": could not open stdout pipe: %s\n"), err.Trim());
