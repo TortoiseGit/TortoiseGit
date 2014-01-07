@@ -158,6 +158,7 @@ INT_PTR CALLBACK PasswdDlg(HWND hDlg, UINT message, WPARAM wParam, LPARAM /*lPar
 			}
 			if (!password)
 				SendMessage(::GetDlgItem(hDlg, IDC_PASSWORD), EM_SETPASSWORDCHAR, 0, 0);
+			::FlashWindow(hDlg, TRUE);
 		}
 		return (INT_PTR)TRUE;
 
