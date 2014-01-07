@@ -116,10 +116,10 @@ void CGravatar::LoadGravatar(const CString& email)
 	if (email.IsEmpty())
 	{
 		m_gravatarLock.Lock();
-		m_email = "";
+		m_email.Empty();
 		if (!m_filename.IsEmpty())
 		{
-			m_filename = _T("");
+			m_filename.Empty();
 			m_gravatarLock.Unlock();
 			Invalidate();
 		}
@@ -200,7 +200,7 @@ void CGravatar::GravatarThread()
 				if (m_email == email)
 					m_filename = tempFile;
 				else
-					m_filename = _T("");
+					m_filename.Empty();
 				m_gravatarLock.Unlock();
 			}
 			else
@@ -232,7 +232,7 @@ void CGravatar::GravatarThread()
 					m_filename = tempFile;
 				}
 				else
-					m_filename = _T("");
+					m_filename.Empty();
 				m_gravatarLock.Unlock();
 			}
 			Invalidate();
