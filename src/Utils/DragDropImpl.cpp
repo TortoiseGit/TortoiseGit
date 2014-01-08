@@ -286,6 +286,8 @@ HRESULT CIDataObject::SetDropDescription(DROPIMAGETYPE image, LPCTSTR format, LP
 		return E_OUTOFMEMORY;
 
 	DROPDESCRIPTION* pDropDescription = (DROPDESCRIPTION*)GlobalLock(medium.hGlobal);
+	if (pDropDescription == nullptr)
+		return E_OUTOFMEMORY;
 	StringCchCopy(pDropDescription->szInsert, _countof(pDropDescription->szInsert), insert);
 	StringCchCopy(pDropDescription->szMessage, _countof(pDropDescription->szMessage), format);
 	pDropDescription->type = image;
@@ -683,6 +685,8 @@ HRESULT CIDropTarget::SetDropDescription(DROPIMAGETYPE image, LPCTSTR format, LP
 	if(medium.hGlobal)
 	{
 		DROPDESCRIPTION* pDropDescription = (DROPDESCRIPTION*)GlobalLock(medium.hGlobal);
+		if (pDropDescription == nullptr)
+			return hr;
 
 		if (insert)
 			StringCchCopy(pDropDescription->szInsert, _countof(pDropDescription->szInsert), insert);
