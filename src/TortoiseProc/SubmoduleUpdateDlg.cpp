@@ -1,7 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2013 Sven Strickroth, <email@cs-ware.de>
-// Copyright (C) 2012-2013 - TortoiseGit
+// Copyright (C) 2012-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -27,6 +26,8 @@
 
 IMPLEMENT_DYNAMIC(CSubmoduleUpdateDlg, CStandAloneDialog)
 
+bool CSubmoduleUpdateDlg::s_bSortLogical = true;
+
 CSubmoduleUpdateDlg::CSubmoduleUpdateDlg(CWnd* pParent /*=NULL*/)
 	: CStandAloneDialog(CSubmoduleUpdateDlg::IDD, pParent)
 	, m_bInit(true)
@@ -38,6 +39,9 @@ CSubmoduleUpdateDlg::CSubmoduleUpdateDlg(CWnd* pParent /*=NULL*/)
 	, m_bRemote(FALSE)
 	, m_bWholeProject(FALSE)
 {
+	s_bSortLogical = !CRegDWORD(L"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer\\NoStrCmpLogical", 0, false, HKEY_CURRENT_USER);
+	if (s_bSortLogical)
+		s_bSortLogical = !CRegDWORD(L"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer\\NoStrCmpLogical", 0, false, HKEY_LOCAL_MACHINE);
 }
 
 CSubmoduleUpdateDlg::~CSubmoduleUpdateDlg()
@@ -88,6 +92,13 @@ static int SubmoduleCallback(git_submodule *sm, const char * /*name*/, void *pay
 	return 0;
 }
 
+int LogicalComparePredicate(const CString &left, const CString &right)
+{
+	if (CSubmoduleUpdateDlg::s_bSortLogical)
+		return StrCmpLogicalW(left, right) < 0;
+	return StrCmpI(left, right) < 0;
+}
+
 static void GetSubmodulePathList(STRING_VECTOR &list, STRING_VECTOR &prefixList)
 {
 	git_repository *repo;
@@ -106,7 +117,7 @@ static void GetSubmodulePathList(STRING_VECTOR &list, STRING_VECTOR &prefixList)
 	}
 
 	git_repository_free(repo);
-	std::sort(list.begin(), list.end());
+	std::sort(list.begin(), list.end(), LogicalComparePredicate);
 }
 
 BOOL CSubmoduleUpdateDlg::OnInitDialog()
