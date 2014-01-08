@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2013 - TortoiseGit
+// Copyright (C) 2011-2014 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -355,9 +355,9 @@ DWORD CHooks::RunScript(CString cmd, LPCTSTR currentDir, CString& error, bool bW
 	error.Empty();
 
 	// Create Temp File for redirection
-	TCHAR szTempPath[MAX_PATH];
-	TCHAR szOutput[MAX_PATH];
-	TCHAR szErr[MAX_PATH];
+	TCHAR szTempPath[MAX_PATH] = {0};
+	TCHAR szOutput[MAX_PATH] = {0};
+	TCHAR szErr[MAX_PATH] = {0};
 	GetTortoiseGitTempPath(_countof(szTempPath), szTempPath);
 	GetTempFileName(szTempPath, _T("git"), 0, szErr);
 

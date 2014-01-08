@@ -703,7 +703,7 @@ bool CShellExt::WriteClipboardPathsToTempFile(stdstring& tempfile)
 	HDROP hDrop = (HDROP)GlobalLock(hglb);
 	if(hDrop != NULL)
 	{
-		TCHAR szFileName[MAX_PATH];
+		TCHAR szFileName[MAX_PATH] = {0};
 		UINT cFiles = DragQueryFile(hDrop, 0xFFFFFFFF, NULL, 0);
 		for(UINT i = 0; i < cFiles; ++i)
 		{
@@ -954,7 +954,7 @@ STDMETHODIMP CShellExt::QueryContextMenu_Wrap(HMENU hMenu,
 	//we check that by iterating through all menu entries and check if
 	//the dwItemData member points to our global ID string. That string is set
 	//by our shell extension when the folder menu is inserted.
-	TCHAR menubuf[MAX_PATH];
+	TCHAR menubuf[MAX_PATH] = {0};
 	int count = GetMenuItemCount(hMenu);
 	for (int i=0; i<count; ++i)
 	{
@@ -1939,7 +1939,7 @@ LPCTSTR CShellExt::GetMenuTextFromResource(int id)
 bool CShellExt::IsIllegalFolder(std::wstring folder, int * cslidarray)
 {
 	int i=0;
-	TCHAR buf[MAX_PATH];	//MAX_PATH ok, since SHGetSpecialFolderPath doesn't return the required buffer length!
+	TCHAR buf[MAX_PATH] = {0};	//MAX_PATH ok, since SHGetSpecialFolderPath doesn't return the required buffer length!
 	LPITEMIDLIST pidl = NULL;
 	while (cslidarray[i])
 	{
@@ -1967,8 +1967,8 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 	HMENU ignoresubmenu = NULL;
 	int indexignoresub = 0;
 	bool bShowIgnoreMenu = false;
-	TCHAR maskbuf[MAX_PATH];		// MAX_PATH is ok, since this only holds a filename
-	TCHAR ignorepath[MAX_PATH];		// MAX_PATH is ok, since this only holds a filename
+	TCHAR maskbuf[MAX_PATH] = {0};		// MAX_PATH is ok, since this only holds a filename
+	TCHAR ignorepath[MAX_PATH] = {0};		// MAX_PATH is ok, since this only holds a filename
 	if (files_.empty())
 		return false;
 	UINT icon = bShowIcons ? IDI_IGNORE : 0;

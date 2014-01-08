@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -125,7 +125,7 @@ int CGitDiff::DiffNull(const CTGitPath *pPath, git_revnum_t rev1, bool bIsAdd)
 
 	if(rev1 != GIT_REV_ZERO )
 	{
-		TCHAR szTempName[MAX_PATH];
+		TCHAR szTempName[MAX_PATH] = {0};
 		GetTempFileName(temppath, pPath->GetBaseFilename(), 0, szTempName);
 		CString temp(szTempName);
 		DeleteFile(szTempName);
@@ -398,7 +398,7 @@ int CGitDiff::Diff(const CTGitPath * pPath, const CTGitPath * pPath2, git_revnum
 
 	if(rev1 != GIT_REV_ZERO )
 	{
-		TCHAR szTempName[MAX_PATH];
+		TCHAR szTempName[MAX_PATH] = {0};
 		GetTempFileName(temppath, pPath->GetBaseFilename(), 0, szTempName);
 		CString temp(szTempName);
 		DeleteFile(szTempName);
@@ -433,7 +433,7 @@ int CGitDiff::Diff(const CTGitPath * pPath, const CTGitPath * pPath2, git_revnum
 	CString title2;
 	if(rev2 != GIT_REV_ZERO)
 	{
-		TCHAR szTempName[MAX_PATH];
+		TCHAR szTempName[MAX_PATH] = {0};
 		GetTempFileName(temppath, pPath2->GetBaseFilename(), 0, szTempName);
 		CString temp(szTempName);
 		DeleteFile(szTempName);

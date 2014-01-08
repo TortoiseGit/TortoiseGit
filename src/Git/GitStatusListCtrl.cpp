@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 // Copyright (C) 2003-2008, 2013 - TortoiseSVN
 // Copyright (C) 2010-2012 Sven Strickroth <email@cs-ware.de>
 
@@ -3392,7 +3392,7 @@ void CGitStatusListCtrl::OnBeginDrag(NMHDR* /*pNMHDR*/, LRESULT* pResult)
 
 		if (version.IsEmpty())
 		{
-			TCHAR abspath[MAX_PATH];
+			TCHAR abspath[MAX_PATH] = {0};
 			PathCombine(abspath, g_Git.m_CurrentDir, path->GetWinPath());
 			if (!CopyFile(abspath, tempFile, FALSE))	// prevent from being moved accidentally
 			{
@@ -4069,7 +4069,7 @@ bool CGitStatusListCtrlDropTarget::OnDrop(FORMATETC* pFmtEtc, STGMEDIUM& medium,
 		HDROP hDrop = (HDROP)GlobalLock(medium.hGlobal);
 		if(hDrop != NULL)
 		{
-			TCHAR szFileName[MAX_PATH];
+			TCHAR szFileName[MAX_PATH] = {0};
 
 			UINT cFiles = DragQueryFile(hDrop, 0xFFFFFFFF, NULL, 0);
 
@@ -4344,7 +4344,7 @@ void CGitStatusListCtrl::OpenFile(CTGitPath*filepath,int mode)
 	{
 		CString temppath;
 		GetTempPath(temppath);
-		TCHAR szTempName[MAX_PATH];
+		TCHAR szTempName[MAX_PATH] = {0};
 		GetTempFileName(temppath, filepath->GetBaseFilename(), 0, szTempName);
 		CString temp(szTempName);
 		DeleteFile(szTempName);

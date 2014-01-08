@@ -1067,7 +1067,7 @@ BOOL CALLBACK CMainWindow::OpenDlgProc(HWND hwndDlg, UINT message, WPARAM wParam
             break;
         case IDOK:
             {
-                TCHAR path[MAX_PATH];
+                TCHAR path[MAX_PATH] = {0};
                 if (!GetDlgItemText(hwndDlg, IDC_LEFTIMAGE, path, _countof(path)))
                     *path = 0;
                 leftpicpath = path;

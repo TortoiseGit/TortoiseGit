@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -695,7 +695,7 @@ void CGitProgressList::ResizeColumns()
 {
 	SetRedraw(FALSE);
 
-	TCHAR textbuf[MAX_PATH];
+	TCHAR textbuf[MAX_PATH] = {0};
 
 	CHeaderCtrl * pHeaderCtrl = (CHeaderCtrl*)(GetDlgItem(0));
 	if (pHeaderCtrl)

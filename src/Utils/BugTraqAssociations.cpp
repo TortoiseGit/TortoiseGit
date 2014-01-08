@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009,2012-2013 - TortoiseGit
+// Copyright (C) 2009,2012-2014 - TortoiseGit
 // Copyright (C) 2008,2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -55,7 +55,7 @@ void CBugTraqAssociations::Load(LPCTSTR uuid /* = nullptr */, LPCTSTR params /* 
 
 	for (DWORD dwIndex = 0; /* nothing */; ++dwIndex)
 	{
-		TCHAR szSubKey[MAX_PATH];
+		TCHAR szSubKey[MAX_PATH] = {0};
 		DWORD cchSubKey = MAX_PATH;
 		LSTATUS status = RegEnumKeyEx(hk, dwIndex, szSubKey, &cchSubKey, NULL, NULL, NULL, NULL);
 		if (status != ERROR_SUCCESS)
@@ -64,11 +64,11 @@ void CBugTraqAssociations::Load(LPCTSTR uuid /* = nullptr */, LPCTSTR params /* 
 		HKEY hk2;
 		if (RegOpenKeyEx(hk, szSubKey, 0, KEY_READ, &hk2) == ERROR_SUCCESS)
 		{
-			TCHAR szWorkingCopy[MAX_PATH];
+			TCHAR szWorkingCopy[MAX_PATH] = {0};
 			DWORD cbWorkingCopy = sizeof(szWorkingCopy);
 			RegQueryValueEx(hk2, _T("WorkingCopy"), NULL, NULL, (LPBYTE)szWorkingCopy, &cbWorkingCopy);
 
-			TCHAR szClsid[MAX_PATH];
+			TCHAR szClsid[MAX_PATH] = {0};
 			DWORD cbClsid = sizeof(szClsid);
 			RegQueryValueEx(hk2, _T("Provider"), NULL, NULL, (LPBYTE)szClsid, &cbClsid);
 
@@ -146,7 +146,7 @@ CString CBugTraqAssociations::LookupProviderName(const CLSID &provider_clsid)
 	OLECHAR szClsid[40];
 	StringFromGUID2(provider_clsid, szClsid, ARRAYSIZE(szClsid));
 
-	TCHAR szSubKey[MAX_PATH];
+	TCHAR szSubKey[MAX_PATH] = {0};
 	_stprintf_s(szSubKey, _T("CLSID\\%ls"), szClsid);
 
 	CString provider_name = CString(szClsid);
@@ -154,7 +154,7 @@ CString CBugTraqAssociations::LookupProviderName(const CLSID &provider_clsid)
 	HKEY hk;
 	if (RegOpenKeyEx(HKEY_CLASSES_ROOT, szSubKey, 0, KEY_READ, &hk) == ERROR_SUCCESS)
 	{
-		TCHAR szClassName[MAX_PATH];
+		TCHAR szClassName[MAX_PATH] = {0};
 		DWORD cbClassName = sizeof(szClassName);
 
 		if (RegQueryValueEx(hk, NULL, NULL, NULL, (LPBYTE)szClassName, &cbClassName) == ERROR_SUCCESS)
@@ -184,7 +184,7 @@ void CBugTraqAssociations::Save() const
 	DWORD dwIndex = 0;
 	for (const_iterator it = begin(); it != end(); ++it)
 	{
-		TCHAR szSubKey[MAX_PATH];
+		TCHAR szSubKey[MAX_PATH] = {0};
 		_stprintf_s(szSubKey, _T("%lu"), dwIndex);
 
 		HKEY hk2;

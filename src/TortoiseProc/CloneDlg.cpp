@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -146,7 +146,7 @@ BOOL CCloneDlg::OnInitDialog()
 	}
 	if (m_Directory.IsEmpty())
 	{
-		TCHAR szPath[MAX_PATH];
+		TCHAR szPath[MAX_PATH] = {0};
 		if (SUCCEEDED(SHGetFolderPath(NULL, CSIDL_PERSONAL | CSIDL_FLAG_CREATE, NULL, SHGFP_TYPE_CURRENT, szPath)))
 			m_Directory = szPath;
 	}

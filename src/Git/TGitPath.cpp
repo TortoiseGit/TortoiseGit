@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
-// Copyright (C) 2010-2013 Sven Strickroth <email@cs-ware.de>
+// Copyright (C) 2008-2014 - TortoiseGit
+// Copyright (C) 2010-2014 Sven Strickroth <email@cs-ware.de>
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -1721,7 +1721,7 @@ private:
 	{
 		// Bit tricky, this test, because we need to know something about the file
 		// layout on the machine which is running the test
-		TCHAR winDir[MAX_PATH+1];
+		TCHAR winDir[MAX_PATH+1] = {0};
 		GetWindowsDirectory(winDir, MAX_PATH);
 		CString sWinDir(winDir);
 
@@ -1879,7 +1879,7 @@ private:
 #if defined(_MFC_VER)
 	void ListLoadingTest()
 	{
-		TCHAR buf[MAX_PATH];
+		TCHAR buf[MAX_PATH] = {0};
 		GetCurrentDirectory(MAX_PATH, buf);
 		CString sPathList(_T("Path1*c:\\path2 with spaces and stuff*\\funnypath\\*"));
 		CTGitPathList testList;

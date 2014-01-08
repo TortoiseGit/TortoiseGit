@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2013 - TortoiseGit
+// Copyright (C) 2012-2014 - TortoiseGit
 // Copyright (C) 2003-2008 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
@@ -391,7 +391,7 @@ public:
 				else
 				{
 					drivetypeticker = GetTickCount();
-					TCHAR pathbuf[MAX_PATH+4];		// MAX_PATH ok here. PathStripToRoot works with partial paths too.
+					TCHAR pathbuf[MAX_PATH+4] = {0};		// MAX_PATH ok here. PathStripToRoot works with partial paths too.
 					_tcsncpy_s(pathbuf, MAX_PATH+4, path, MAX_PATH+3);
 					PathStripToRoot(pathbuf);
 					PathAddBackslash(pathbuf);
@@ -403,7 +403,7 @@ public:
 		}
 		else
 		{
-			TCHAR pathbuf[MAX_PATH+4];		// MAX_PATH ok here. PathIsUNCServer works with partial paths too.
+			TCHAR pathbuf[MAX_PATH+4] = {0};		// MAX_PATH ok here. PathIsUNCServer works with partial paths too.
 			_tcsncpy_s(pathbuf, MAX_PATH+4, path, MAX_PATH+3);
 			if (PathIsUNCServer(pathbuf))
 				drivetype = DRIVE_REMOTE;

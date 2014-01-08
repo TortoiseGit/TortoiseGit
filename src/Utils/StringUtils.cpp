@@ -312,7 +312,7 @@ CString CStringUtils::WordWrap(const CString& longstring, int limit, bool bCompa
 				{
 					if (((!PathIsFileSpec(longline))&&longline.Find(':')<3)||(PathIsURL(longline)))
 					{
-						TCHAR buf[MAX_PATH];
+						TCHAR buf[MAX_PATH] = {0};
 						PathCompactPathEx(buf, longline, limit+1, 0);
 						longline = buf;
 					}
@@ -340,7 +340,7 @@ CString CStringUtils::WordWrap(const CString& longstring, int limit, bool bCompa
 		{
 			if (((!PathIsFileSpec(longline))&&longline.Find(':')<3)||(PathIsURL(longline)))
 			{
-				TCHAR buf[MAX_PATH];
+				TCHAR buf[MAX_PATH] = {0};
 				PathCompactPathEx(buf, longline, limit+1, 0);
 				longline = buf;
 			}

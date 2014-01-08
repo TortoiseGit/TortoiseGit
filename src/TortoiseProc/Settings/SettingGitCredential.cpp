@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013 - TortoiseGit
+// Copyright (C) 2013-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -120,7 +120,7 @@ static bool RunUAC()
 
 static CString GetWinstorePath()
 {
-	TCHAR winstorebuf[MAX_PATH];
+	TCHAR winstorebuf[MAX_PATH] = {0};
 	ExpandEnvironmentStrings(_T("%AppData%\\GitCredStore\\git-credential-winstore.exe"), winstorebuf, MAX_PATH);
 	CString winstore;
 	winstore.Format(_T("!'%s'"), winstorebuf);

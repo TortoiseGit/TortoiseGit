@@ -70,7 +70,7 @@ static BOOL FindGitPath()
 	TCHAR *env = (TCHAR*)alloca(size * sizeof(TCHAR));
 	_tgetenv_s(&size, env, size, _T("PATH"));
 
-	TCHAR buf[MAX_PATH];
+	TCHAR buf[MAX_PATH] = {0};
 
 	// search in all paths defined in PATH
 	while ((env = nextpath(env, buf, MAX_PATH - 1)) != NULL && *buf)
@@ -1774,7 +1774,7 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 	}
 	else
 	{
-		TCHAR sPlink[MAX_PATH];
+		TCHAR sPlink[MAX_PATH] = {0};
 		GetModuleFileName(NULL, sPlink, _countof(sPlink));
 		LPTSTR ptr = _tcsrchr(sPlink, _T('\\'));
 		if (ptr) {
@@ -1785,7 +1785,7 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 	}
 
 	{
-		TCHAR sAskPass[MAX_PATH];
+		TCHAR sAskPass[MAX_PATH] = {0};
 		GetModuleFileName(NULL, sAskPass, _countof(sAskPass));
 		LPTSTR ptr = _tcsrchr(sAskPass, _T('\\'));
 		if (ptr)

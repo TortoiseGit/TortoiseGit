@@ -27,7 +27,7 @@ CSysImageList * CSysImageList::instance = 0;
 CSysImageList::CSysImageList()
 {
 	SHFILEINFO ssfi;
-	TCHAR windir[MAX_PATH];
+	TCHAR windir[MAX_PATH] = {0};
 	GetWindowsDirectory(windir, _countof(windir));  // MAX_PATH ok.
 	HIMAGELIST hSystemImageList =
 		(HIMAGELIST)SHGetFileInfo(

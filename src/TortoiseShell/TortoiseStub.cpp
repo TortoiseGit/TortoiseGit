@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2013 - TortoiseGit
+// Copyright (C) 2012-2014 - TortoiseGit
 // Copyright (C) 2007, 2009, 2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -232,7 +232,7 @@ BOOL WINAPI DllMain(HINSTANCE hInstance, DWORD Reason, LPVOID /*Reserved*/)
 	// it.
 
 	BOOL bInShellTest = FALSE;
-	TCHAR buf[MAX_PATH + 1];       // MAX_PATH ok, the test really is for debugging anyway.
+	TCHAR buf[MAX_PATH + 1] = {0};       // MAX_PATH ok, the test really is for debugging anyway.
 	DWORD pathLength = GetModuleFileName(NULL, buf, MAX_PATH);
 
 	if (pathLength >= 14)

@@ -156,7 +156,7 @@ BOOL CFilePatchesDlg::Init(GitPatch * pPatch, CPatchFilesDlgCallBack * pCallBack
 		m_arFileStates.Add(state);
 		CString sFileName = GetFullPath(i);
 		sFileName = CPathUtils::GetFileNameFromPath(sFileName);
-		SHFILEINFO    sfi;
+		SHFILEINFO sfi = {0};
 		SHGetFileInfo(
 			sFileName,
 			FILE_ATTRIBUTE_NORMAL,

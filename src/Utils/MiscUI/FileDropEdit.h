@@ -120,7 +120,7 @@ public:
 			HDROP hDrop = (HDROP)GlobalLock(medium.hGlobal);
 			if(hDrop != NULL)
 			{
-				TCHAR szFileName[MAX_PATH];
+				TCHAR szFileName[MAX_PATH] = {0};
 
 				UINT cFiles = DragQueryFile(hDrop, 0xFFFFFFFF, NULL, 0);
 				for(UINT i = 0; i < cFiles; ++i)

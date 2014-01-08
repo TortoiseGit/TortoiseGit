@@ -35,9 +35,9 @@ CLangDll::~CLangDll()
 
 HINSTANCE CLangDll::Init(LPCTSTR appname, unsigned long langID)
 {
-	TCHAR langpath[MAX_PATH];
-	TCHAR langdllpath[MAX_PATH];
-	TCHAR sVer[MAX_PATH];
+	TCHAR langpath[MAX_PATH] = {0};
+	TCHAR langdllpath[MAX_PATH] = {0};
+	TCHAR sVer[MAX_PATH] = {0};
 	_tcscpy_s(sVer, MAX_PATH, _T(STRPRODUCTVER));
 	GetModuleFileName(NULL, langpath, MAX_PATH);
 	TCHAR * pSlash = _tcsrchr(langpath, '\\');
@@ -110,7 +110,7 @@ bool CLangDll::DoVersionStringsMatch(LPCTSTR sVer, LPCTSTR langDll)
 			LPSTR       lpVersion = NULL;
 			VOID*       lpFixedPointer;
 			TRANSARRAY* lpTransArray;
-			TCHAR       strLangProductVersion[MAX_PATH];
+			TCHAR       strLangProductVersion[MAX_PATH] = {0};
 
 			GetFileVersionInfo((LPTSTR)langDll,
 				dwReserved,

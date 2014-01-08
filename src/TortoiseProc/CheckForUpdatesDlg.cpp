@@ -584,7 +584,7 @@ void CCheckForUpdatesDlg::FillDownloads(CStdioFile &file, CString version)
 		CString sLang = _T("TortoiseGit Language Pack ") + langs.Mid(5);
 
 		DWORD loc = _tstoi(langs.Mid(0, 4));
-		TCHAR buf[MAX_PATH];
+		TCHAR buf[MAX_PATH] = {0};
 		GetLocaleInfo(loc, LOCALE_SNATIVELANGNAME, buf, _countof(buf));
 		CString sLang2(buf);
 		GetLocaleInfo(loc, LOCALE_SNATIVECTRYNAME, buf, _countof(buf));
@@ -912,7 +912,7 @@ CString CCheckForUpdatesDlg::GetDownloadsDirectory()
 		}
 	}
 
-	TCHAR szPath[MAX_PATH];
+	TCHAR szPath[MAX_PATH] = {0};
 	if (SUCCEEDED(SHGetFolderPath(NULL, CSIDL_PERSONAL | CSIDL_FLAG_CREATE, NULL, SHGFP_TYPE_CURRENT, szPath)))
 		folder = szPath;
 	CString downloads = folder.TrimRight(_T("\\")) + _T("\\Downloads\\");

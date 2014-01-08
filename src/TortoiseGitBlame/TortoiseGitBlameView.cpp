@@ -886,7 +886,7 @@ void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 	int linesonscreen = (int)SendEditor(SCI_LINESONSCREEN);
 	int height = (int)SendEditor(SCI_TEXTHEIGHT);
 	int Y = 0;
-	TCHAR buf[MAX_PATH];
+	TCHAR buf[MAX_PATH] = {0};
 	RECT rc;
 	BOOL sel = FALSE;
 	//::GetClientRect(this->m_hWnd, &rc);

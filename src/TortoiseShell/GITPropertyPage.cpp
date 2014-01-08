@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -328,7 +328,7 @@ struct TreewalkStruct
 static int TreewalkCB_FindFileRecentCommit(const char *root, const git_tree_entry *entry, void *payload)
 {
 	TreewalkStruct *treewalkstruct = (TreewalkStruct *)payload;
-	char folder[MAX_PATH];
+	char folder[MAX_PATH] = {0};
 	strcpy_s(folder, root);
 	strcat_s(folder, git_tree_entry_name(entry));
 	strcat_s(folder, "/");
@@ -358,7 +358,7 @@ static git_commit * FindFileRecentCommit(git_repository *repository, CString pat
 
 	CStringA pathA = CUnicodeUtils::GetUTF8(path);
 	const char *pathC = pathA.GetBuffer();
-	char folder[MAX_PATH], file[MAX_PATH];
+	char folder[MAX_PATH] = {0}, file[MAX_PATH] = {0};
 	const char *slash = strrchr(pathC, '/');
 	if (slash)
 	{

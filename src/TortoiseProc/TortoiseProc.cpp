@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -394,7 +394,7 @@ BOOL CTortoiseProcApp::InitInstance()
 				sOrigCWD = CPathUtils::GetLongPathname(sOrigCWD);
 			}
 		}
-		TCHAR pathbuf[MAX_PATH];
+		TCHAR pathbuf[MAX_PATH] = {0};
 		GetTortoiseGitTempPath(MAX_PATH, pathbuf);
 		SetCurrentDirectory(pathbuf);
 	}

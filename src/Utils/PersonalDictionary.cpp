@@ -39,7 +39,7 @@ bool CPersonalDictionary::Load()
 
 	if (m_bLoaded)
 		return true;
-	TCHAR path[MAX_PATH];		//MAX_PATH ok here.
+	TCHAR path[MAX_PATH] = {0};		//MAX_PATH ok here.
 	_tcscpy_s (path, CPathUtils::GetAppDataDirectory());
 
 	if (m_lLanguage==0)

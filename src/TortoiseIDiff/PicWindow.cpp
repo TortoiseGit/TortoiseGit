@@ -345,7 +345,7 @@ LRESULT CALLBACK CPicWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, 
     case WM_DROPFILES:
         {
             HDROP hDrop = (HDROP)wParam;
-            TCHAR szFileName[MAX_PATH];
+            TCHAR szFileName[MAX_PATH] = {0};
             // we only use the first file dropped (if multiple files are dropped)
             if (DragQueryFile(hDrop, 0, szFileName, _countof(szFileName)))
             {
@@ -606,7 +606,7 @@ void CPicWindow::DrawViewTitle(HDC hDC, RECT * rect)
 
     if (HasMultipleImages())
     {
-        TCHAR buf[MAX_PATH];
+        TCHAR buf[MAX_PATH] = {0};
         if (nFrames > 1)
             _stprintf_s(buf, (const TCHAR *)ResString(hResource, IDS_DIMENSIONSANDFRAMES), nCurrentFrame, nFrames);
         else
