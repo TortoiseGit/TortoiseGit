@@ -1,7 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2013 Sven Strickroth, <email@cs-ware.de>
-// Copyright (C) 2012-2013 - TortoiseGit
+// Copyright (C) 2012-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -34,6 +33,8 @@ public:
 
 // Dialog Data
 	enum { IDD = IDD_SUBMODULE_UPDATE };
+
+	static bool s_bSortLogical;
 
 protected:
 	virtual BOOL OnInitDialog();
