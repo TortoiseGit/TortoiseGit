@@ -126,10 +126,12 @@ BOOL CResizableWndState::LoadWindowRect(LPCTSTR pszName, BOOL bRectOnly)
 			wp.flags = 0;
 			return GetResizableWnd()->SetWindowPlacement(&wp);
 		}
-		else	// restore also max state
+		else	// restore minimized window to normal or maximized state
 		{
-			if (wp.showCmd == SW_SHOWMINIMIZED)
+			if (wp.showCmd == SW_SHOWMINIMIZED && wp.flags == 0)
 				wp.showCmd = SW_SHOWNORMAL;
+			else if (wp.showCmd == SW_SHOWMINIMIZED && wp.flags == WPF_RESTORETOMAXIMIZED)
+				wp.showCmd = SW_SHOWMAXIMIZED;
 			return GetResizableWnd()->SetWindowPlacement(&wp);
 		}
 	}
