@@ -122,14 +122,14 @@ static void GetSortOptions()
 		g_bSortLocalBranchesFirst = !CRegDWORD(L"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer\\NoSortLocalBranchesFirst", 0, false, HKEY_LOCAL_MACHINE);
 }
 
-static int LogicalComparePredicate(CString &left, CString &right)
+static int LogicalComparePredicate(const CString &left, const CString &right)
 {
 	if (g_bSortLogical)
 		return StrCmpLogicalW(left, right) < 0;
 	return StrCmpI(left, right) < 0;
 }
 
-static int LogicalCompareBranchesPredicate(CString &left, CString &right)
+static int LogicalCompareBranchesPredicate(const CString &left, const CString &right)
 {
 	if (g_bSortLocalBranchesFirst)
 	{
@@ -698,7 +698,7 @@ CString CGit::GetSymbolicRef(const wchar_t* symbolicRefName, bool bStripRefsHead
 	return refName;
 }
 
-CString CGit::GetFullRefName(CString shortRefName)
+CString CGit::GetFullRefName(const CString& shortRefName)
 {
 	CString refName;
 	CString cmd;
@@ -820,7 +820,7 @@ int CGit::BuildOutputFormat(CString &format,bool IsFull)
 	return 0;
 }
 
-CString CGit::GetLogCmd(CString &range, CTGitPath *path, int count, int mask, bool paramonly,
+CString CGit::GetLogCmd(const CString &range, CTGitPath *path, int count, int mask, bool paramonly,
 						CFilterData *Filter)
 {
 	CString cmd;
