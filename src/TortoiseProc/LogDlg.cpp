@@ -842,7 +842,6 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 	else
 		SetSortArrow(&m_ChangedFileListCtrl, -1, false);
 	m_ChangedFileListCtrl.SetRedraw(TRUE);
-	m_gravatar.LoadGravatar();
 
 }
 
