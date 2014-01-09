@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008 - TortoiseSVN
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -557,7 +557,7 @@ CString ColumnManager::GetWidthString() const
 
 	// regular columns
 
-	TCHAR buf[10];
+	TCHAR buf[10] = { 0 };
 	for (size_t i = 0; i < itemName.size(); ++i)
 	{
 		_stprintf_s (buf, 10, _T("%08X"), columns[i].width);
@@ -571,7 +571,7 @@ CString ColumnManager::GetColumnOrderString() const
 {
 	CString result;
 
-	TCHAR buf[3];
+	TCHAR buf[3] = { 0 };
 	for (size_t i = 0, count = columnOrder.size(); i < count; ++i)
 	{
 		_stprintf_s (buf, 3, _T("%02X"), columnOrder[i]);

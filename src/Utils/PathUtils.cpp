@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2012-2014 - TortoiseGit
-// Copyright (C) 2003-2008, 2013 - TortoiseSVN
+// Copyright (C) 2003-2008, 2013-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -350,7 +350,7 @@ CString CPathUtils::GetAppParentDirectory(HMODULE hMod /* = NULL */)
 
 CString CPathUtils::GetAppDataDirectory()
 {
-	TCHAR path[MAX_PATH];		//MAX_PATH ok here.
+	TCHAR path[MAX_PATH] = { 0 };		//MAX_PATH ok here.
 	SecureZeroMemory(path, sizeof(path));
 	if (SHGetFolderPath(NULL, CSIDL_APPDATA, NULL, SHGFP_TYPE_CURRENT, path)!=S_OK)
 		return CString();

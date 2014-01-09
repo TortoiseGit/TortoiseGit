@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005-2006,2008,2010 - TortoiseSVN
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -48,8 +48,8 @@ void CGitStatusCache::Create()
 	unsigned int value = (unsigned int)-1;
 	FILE * pFile = NULL;
 	// find the location of the cache
-	TCHAR path[MAX_PATH];		//MAX_PATH ok here.
-	TCHAR path2[MAX_PATH];
+	TCHAR path[MAX_PATH] = { 0 };		//MAX_PATH ok here.
+	TCHAR path2[MAX_PATH] = { 0 };
 	SecureZeroMemory(path, sizeof(path));
 	SecureZeroMemory(path2, sizeof(path2));
 	if (SHGetFolderPath(NULL, CSIDL_LOCAL_APPDATA, NULL, SHGFP_TYPE_CURRENT, path)==S_OK)
@@ -152,7 +152,7 @@ bool CGitStatusCache::SaveCache()
 	// save the cache to disk
 	FILE * pFile = NULL;
 	// find a location to write the cache to
-	TCHAR path[MAX_PATH];		//MAX_PATH ok here.
+	TCHAR path[MAX_PATH] = { 0 };		//MAX_PATH ok here.
 	SecureZeroMemory(path, sizeof(path));
 	if (SHGetFolderPath(NULL, CSIDL_LOCAL_APPDATA, NULL, SHGFP_TYPE_CURRENT, path)==S_OK)
 	{
@@ -227,7 +227,7 @@ CGitStatusCache::CGitStatusCache(void)
 {
 	#define forever DWORD(-1)
 	AutoLocker lock(m_NoWatchPathCritSec);
-	TCHAR path[MAX_PATH];
+	TCHAR path[MAX_PATH] = { 0 };
 	SecureZeroMemory(path, sizeof(path));
 	SHGetFolderPath(NULL, CSIDL_COOKIES, NULL, 0, path);
 	m_NoWatchPaths[CTGitPath(CString(path))] = forever;

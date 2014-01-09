@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -126,7 +126,7 @@ BOOL CTortoiseGitBlameApp::InitInstance()
 				langId = 0;
 		}
 	} while ((hInst == NULL) && (langId != 0));
-	TCHAR buf[6];
+	TCHAR buf[6] = { 0 };
 	_tcscpy_s(buf, _T("en"));
 	langId = loc;
 	CString sHelppath;

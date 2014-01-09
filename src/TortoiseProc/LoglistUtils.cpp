@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2012, 2014 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -58,7 +58,7 @@ CString CLoglistUtils::FormatDateAndTime(const CTime& cTime, DWORD option, bool 
 			SYSTEMTIME sysTime;
 			cTime.GetAsSystemTime(sysTime);
 
-			TCHAR buf[100];
+			TCHAR buf[100] = { 0 };
 
 			GetDateFormat(LOCALE_USER_DEFAULT, option, &sysTime, NULL, buf, _countof(buf) - 1);
 			CString datetime = buf;

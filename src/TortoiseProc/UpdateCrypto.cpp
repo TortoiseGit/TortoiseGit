@@ -1,6 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2013 Sven Strickroth <email@cs-ware.de>
+// Copyright (C) 2014 TortoiseGit
 // Copyright (C) VLC project (http://videolan.org)
 // - pgp parsing code was copied from src/misc/update(_crypto)?.c
 // Copyright (C) The Internet Society (1998).  All Rights Reserved.
@@ -661,7 +662,7 @@ static int hash_sha1_from_file(HCRYPTHASH hHash, CString filename, signature_pac
 	if (!pFile)
 		return -1;
 
-	char buf[4097];
+	char buf[4097] = { 0 };
 	int read = 0;
 	int nlHandling = 0;
 	while ((read = (int)fread(buf, sizeof(char), sizeof(buf) - 1, pFile)) > 0)
@@ -734,7 +735,7 @@ static int hash_sha1_from_file(HCRYPTHASH hHash, CString filename, signature_pac
 static int check_hash(HCRYPTHASH hHash, signature_packet_t *p_sig)
 {
 	DWORD len = 20;
-	unsigned char hash[20];
+	unsigned char hash[20] = { 0 };
 	CryptGetHashParam(hHash, HP_HASHVAL, hash, &len, 0);
 
 	if (hash[0] != p_sig->hash_verification[0] || hash[1] != p_sig->hash_verification[1])
@@ -766,7 +767,7 @@ static int verify_signature(HCRYPTPROV hCryptProv, HCRYPTHASH hHash, public_key_
 	if (CryptImportKey(hCryptProv, (BYTE*)&dsakey, sizeof(dsakey), 0, 0, &hPubKey) == 0)
 		return -1;
 
-	unsigned char signature[40];
+	unsigned char signature[40] = { 0 };
 	memcpy(signature, p_sig.r + 2, 20);
 	memcpy(signature + 20, p_sig.s + 2, 20);
 	std::reverse(signature, signature + 20);

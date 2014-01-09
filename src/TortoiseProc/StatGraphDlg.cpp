@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 // Copyright (C) 2003-2011,2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -312,7 +312,7 @@ BOOL CStatGraphDlg::OnInitDialog()
 	bool bUseSystemLocale = !!(DWORD)CRegStdDWORD(_T("Software\\TortoiseGit\\UseSystemLocaleForDates"), TRUE);
 	LCID locale = bUseSystemLocale ? MAKELCID(MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), SORT_DEFAULT) : m_locale;
 
-	TCHAR langBuf[11];
+	TCHAR langBuf[11] = { 0 };
 	memset(langBuf, 0, sizeof(langBuf));
 	GetLocaleInfo(locale, LOCALE_IDATE, langBuf, _countof(langBuf));
 
@@ -430,7 +430,7 @@ int CStatGraphDlg::GetCalendarWeek(const CTime& time)
 	int iYear = time.GetYear();
 	int iFirstDayOfWeek = 0;
 	int iFirstWeekOfYear = 0;
-	TCHAR loc[2];
+	TCHAR loc[2] = { 0 };
 	GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_IFIRSTDAYOFWEEK, loc, _countof(loc));
 	iFirstDayOfWeek = int(loc[0]-'0');
 	GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_IFIRSTWEEKOFYEAR, loc, _countof(loc));
@@ -1768,7 +1768,7 @@ void CStatGraphDlg::SaveGraph(CString sFilename)
 		}
 		catch (CException * pE)
 		{
-			TCHAR szErrorMsg[2048];
+			TCHAR szErrorMsg[2048] = { 0 };
 			pE->GetErrorMessage(szErrorMsg, 2048);
 			pE->Delete();
 			::MessageBox(m_hWnd, szErrorMsg, _T("TortoiseGit"), MB_ICONERROR);

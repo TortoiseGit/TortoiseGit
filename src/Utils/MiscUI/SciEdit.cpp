@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2013 - TortoiseGit
+// Copyright (C) 2012-2014 - TortoiseGit
 // Copyright (C) 2003-2008,2012-2013 - TortoiseSVN
 // Copyright (C) 2012-2013 - Sven Strickroth <email@cs-ware.de>
 
@@ -192,7 +192,7 @@ void CSciEdit::Init(const ProjectProperties& props)
 BOOL CSciEdit::LoadDictionaries(LONG lLanguageID)
 {
 	//Setup the spell checker and thesaurus
-	TCHAR buf[6];
+	TCHAR buf[6] = { 0 };
 	CString sFolder = CPathUtils::GetAppDirectory();
 	CString sFolderUp = CPathUtils::GetAppParentDirectory();
 	CString sFile;
@@ -1474,7 +1474,7 @@ int CSciEdit::LoadFromFile(CString &filename)
 	if (fp)
 	{
 		//SetTitle();
-				char data[4096];
+				char data[4096] = { 0 };
 				size_t lenFile = fread(data, 1, sizeof(data), fp);
 				bool bUTF8 = IsUTF8(data, lenFile);
 				while (lenFile > 0)

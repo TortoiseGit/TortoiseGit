@@ -144,7 +144,7 @@ BOOL CTortoiseProcApp::InitInstance()
 				langId = 0;
 		}
 	} while ((hInst == NULL) && (langId != 0));
-	TCHAR buf[6];
+	TCHAR buf[6] = { 0 };
 	_tcscpy_s(buf, _T("en"));
 	langId = loc;
 	// MFC uses a help file with the same name as the application by default,

@@ -415,7 +415,7 @@ DWORD CHooks::RunScript(CString cmd, LPCTSTR currentDir, CString& error, bool bW
 	if (bWait)
 	{
 		DWORD dw;
-		char buf[256];
+		char buf[256] = { 0 };
 		do
 		{
 			SecureZeroMemory(&buf,sizeof(buf));

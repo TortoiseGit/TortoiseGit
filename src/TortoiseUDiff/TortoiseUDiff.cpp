@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2008, 2010-2012 - TortoiseSVN
+// Copyright (C) 2003-2008, 2010-2012, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -43,7 +43,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 
 	if (parser.HasKey(_T("?")) || parser.HasKey(_T("help")))
 	{
-		TCHAR buf[1024];
+		TCHAR buf[1024] = { 0 };
 		LoadString(hInstance, IDS_COMMANDLINEHELP, buf, sizeof(buf)/sizeof(TCHAR));
 		MessageBox(NULL, buf, _T("TortoiseGitUDiff"), MB_ICONINFORMATION);
 		return 0;

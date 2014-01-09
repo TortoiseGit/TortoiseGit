@@ -1239,7 +1239,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				//#region case
 			case ShellMenuSync:
 				{
-					TCHAR syncSeq[12];
+					TCHAR syncSeq[12] = { 0 };
 					_stprintf_s(syncSeq, _T("%d"), g_syncSeq++);
 					AddPathCommand(gitCmd, L"sync", false);
 					gitCmd += _T(" /seq:");
@@ -1641,7 +1641,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 			if (!gitCmd.empty())
 			{
 				gitCmd += _T(" /hwnd:");
-				TCHAR buf[30];
+				TCHAR buf[30] = { 0 };
 				_stprintf_s(buf, _T("%p"), (void*)lpcmi->hwnd);
 				gitCmd += buf;
 				myIDMap.clear();
@@ -1898,7 +1898,7 @@ STDMETHODIMP CShellExt::HandleMenuMsg2_Wrap(UINT uMsg, WPARAM wParam, LPARAM lPa
 
 LPCTSTR CShellExt::GetMenuTextFromResource(int id)
 {
-	TCHAR textbuf[255];
+	TCHAR textbuf[255] = { 0 };
 	LPCTSTR resource = NULL;
 	unsigned __int64 layout = g_ShellCache.GetMenuLayout();
 	space = 6;

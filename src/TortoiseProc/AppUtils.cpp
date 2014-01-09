@@ -1250,7 +1250,7 @@ bool CAppUtils::OpenIgnoreFile(CIgnoreFile &file, const CString& filename)
 		while (file.ReadString(fileText))
 			file.m_Items.push_back(fileText);
 		file.Seek(file.GetLength() - 1, 0);
-		char lastchar[1];
+		char lastchar[1] = { 0 };
 		file.Read(lastchar, 1);
 		file.SeekToEnd();
 		if (lastchar[0] != '\n')

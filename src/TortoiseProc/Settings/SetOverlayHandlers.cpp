@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2010, 2012 - TortoiseSVN
+// Copyright (C) 2010, 2012, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -133,8 +133,8 @@ int CSetOverlayHandlers::GetInstalledOverlays()
 		_T("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\ShellIconOverlayIdentifiers"),
 		0, KEY_ENUMERATE_SUB_KEYS, &hKey)==ERROR_SUCCESS)
 	{
-		TCHAR value[2048];
-		TCHAR keystring[2048];
+		TCHAR value[2048] = { 0 };
+		TCHAR keystring[2048] = { 0 };
 		for (int i = 0, rc = ERROR_SUCCESS; rc == ERROR_SUCCESS; i++)
 		{
 			DWORD size = _countof(value);

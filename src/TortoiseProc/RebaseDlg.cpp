@@ -715,7 +715,7 @@ BOOL CRebaseDlg::PreTranslateMessage(MSG*pMsg)
 		case VK_ESCAPE:
 		case VK_CANCEL:
 			{
-				TCHAR buff[128];
+				TCHAR buff[128] = { 0 };
 				::GetClassName(pMsg->hwnd,buff,128);
 
 
@@ -752,7 +752,7 @@ BOOL CRebaseDlg::PreTranslateMessage(MSG*pMsg)
 
 bool CRebaseDlg::LogListHasFocus(HWND hwnd)
 {
-	TCHAR buff[128];
+	TCHAR buff[128] = { 0 };
 	::GetClassName(hwnd, buff, 128);
 
 	if(_tcsnicmp(buff, _T("SysListView32"), 128) == 0)

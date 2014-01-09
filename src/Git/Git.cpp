@@ -663,7 +663,7 @@ CString CGit::GetSymbolicRef(const wchar_t* symbolicRefName, bool bStripRefsHead
 	CString refName;
 	if(this->m_IsUseGitDLL)
 	{
-		unsigned char sha1[20];
+		unsigned char sha1[20] = { 0 };
 		int flag = 0;
 
 		CAutoLocker lock(g_Git.m_critGitDllSec);
@@ -947,7 +947,7 @@ CString CGit::GetLogCmd(const CString &range, CTGitPath *path, int count, int ma
 #define BUFSIZE 512
 void GetTempPath(CString &path)
 {
-	TCHAR lpPathBuffer[BUFSIZE];
+	TCHAR lpPathBuffer[BUFSIZE] = { 0 };
 	DWORD dwRetVal;
 	DWORD dwBufSize=BUFSIZE;
 	dwRetVal = GetTortoiseGitTempPath(dwBufSize,		// length of the buffer
@@ -960,10 +960,10 @@ void GetTempPath(CString &path)
 }
 CString GetTempFile()
 {
-	TCHAR lpPathBuffer[BUFSIZE];
+	TCHAR lpPathBuffer[BUFSIZE] = { 0 };
 	DWORD dwRetVal;
 	DWORD dwBufSize=BUFSIZE;
-	TCHAR szTempName[BUFSIZE];
+	TCHAR szTempName[BUFSIZE] = { 0 };
 	UINT uRetVal;
 
 	dwRetVal = GetTortoiseGitTempPath(dwBufSize,		// length of the buffer

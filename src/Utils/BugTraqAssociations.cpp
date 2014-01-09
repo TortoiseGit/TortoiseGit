@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2009,2012-2014 - TortoiseGit
-// Copyright (C) 2008,2013 - TortoiseSVN
+// Copyright (C) 2008,2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -143,7 +143,7 @@ bool CBugTraqAssociations::FindProviderForPath(CTGitPath path, CBugTraqAssociati
 /* static */
 CString CBugTraqAssociations::LookupProviderName(const CLSID &provider_clsid)
 {
-	OLECHAR szClsid[40];
+	OLECHAR szClsid[40] = { 0 };
 	StringFromGUID2(provider_clsid, szClsid, ARRAYSIZE(szClsid));
 
 	TCHAR szSubKey[MAX_PATH] = {0};
@@ -215,7 +215,7 @@ void CBugTraqAssociations::RemoveByPath(const CTGitPath &path)
 
 CString CBugTraqAssociation::GetProviderClassAsString() const
 {
-	OLECHAR szTemp[40];
+	OLECHAR szTemp[40] = { 0 };
 	StringFromGUID2(m_provider.clsid, szTemp, ARRAYSIZE(szTemp));
 
 	return CString(szTemp);

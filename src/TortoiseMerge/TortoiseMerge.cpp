@@ -1,7 +1,7 @@
 // TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2013 - TortoiseGit
-// Copyright (C) 2006-2013 - TortoiseSVN
+// Copyright (C) 2006-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -133,7 +133,7 @@ BOOL CTortoiseMergeApp::InitInstance()
 				langId = 0;
 		}
 	} while ((hInst == NULL) && (langId != 0));
-	TCHAR buf[6];
+	TCHAR buf[6] = { 0 };
 	_tcscpy_s(buf, _T("en"));
 	langId = loc;
 	CString sHelppath = CPathUtils::GetAppDirectory() + _T("TortoiseMerge_en.chm");

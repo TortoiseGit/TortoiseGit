@@ -988,7 +988,7 @@ void CGitStatusListCtrl::AddEntry(CTGitPath * GitPath, WORD /*langID*/, int list
 		SetItemText(index, GetColumnIndex(GITSLC_COLSIZE), _T(""));
 	else
 	{
-		TCHAR buf[100];
+		TCHAR buf[100] = { 0 };
 		StrFormatByteSize64(GitPath->GetFileSize(), buf, 100);
 		SetItemText(index, GetColumnIndex(GITSLC_COLSIZE), buf);
 	}
@@ -2816,7 +2816,7 @@ CString CGitStatusListCtrl::GetStatisticsString(bool simple)
 
 	CString sNormal, sAdded, sDeleted, sModified, sConflicted, sUnversioned, sRenamed;
 	WORD langID = (WORD)(DWORD)CRegStdDWORD(_T("Software\\TortoiseGit\\LanguageID"), GetUserDefaultLangID());
-	TCHAR buf[MAX_STATUS_STRING_LENGTH];
+	TCHAR buf[MAX_STATUS_STRING_LENGTH] = { 0 };
 	GitStatus::GetStatusString(AfxGetResourceHandle(), git_wc_status_normal, buf, _countof(buf), langID);
 	sNormal = buf;
 	GitStatus::GetStatusString(AfxGetResourceHandle(), git_wc_status_added, buf, _countof(buf), langID);
@@ -3636,7 +3636,7 @@ bool CGitStatusListCtrl::PrepareGroups(bool bForce /* = false */)
 	RemoveAllGroups();
 	EnableGroupView(bHasGroups);
 
-	TCHAR groupname[1024];
+	TCHAR groupname[1024] = { 0 };
 	int groupindex = 0;
 
 	if(bHasGroups)

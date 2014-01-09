@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2012-2013 - TortoiseGit
-// Copyright (C) 2003-2013 - TortoiseSVN
+// Copyright (C) 2003-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -267,7 +267,7 @@ LRESULT CMainWindow::DoCommand(int id)
 		break;
 	case ID_FILE_PAGESETUP:
 		{
-			TCHAR localeInfo[3];
+			TCHAR localeInfo[3] = { 0 };
 			GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_IMEASURE, localeInfo, 3);
 			// Metric system. '1' is US System
 			int defaultMargin = localeInfo[0] == '0' ? 2540 : 1000;
@@ -369,7 +369,7 @@ LRESULT CMainWindow::DoCommand(int id)
 				- GetDeviceCaps(hdc, VERTRES)                       // printable height
 				- rectPhysMargins.top;                              // right unprintable margin
 
-			TCHAR localeInfo[3];
+			TCHAR localeInfo[3] = { 0 };
 			GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_IMEASURE, localeInfo, 3);
 			// Metric system. '1' is US System
 			int defaultMargin = localeInfo[0] == '0' ? 2540 : 1000;
@@ -610,7 +610,7 @@ bool CMainWindow::Initialize()
 bool CMainWindow::LoadFile(HANDLE hFile)
 {
 	InitEditor();
-	char data[4096];
+	char data[4096] = { 0 };
 	DWORD dwRead = 0;
 
 	BOOL bRet = ReadFile(hFile, data, sizeof(data), &dwRead, NULL);
@@ -634,7 +634,7 @@ bool CMainWindow::LoadFile(LPCTSTR filename)
 		return false;
 
 	//SetTitle();
-	char data[4096];
+	char data[4096] = { 0 };
 	size_t lenFile = fread(data, 1, sizeof(data), fp);
 	bool bUTF8 = IsUTF8(data, lenFile);
 	while (lenFile > 0)
@@ -807,7 +807,7 @@ void CMainWindow::loadOrSaveFile(bool doLoad, const std::wstring& filename /* = 
 	ofn.hwndOwner = *this;
 	ofn.lpstrFile = szFile;
 	ofn.nMaxFile = sizeof(szFile)/sizeof(TCHAR);
-	TCHAR filter[1024];
+	TCHAR filter[1024] = { 0 };
 	LoadString(hResource, IDS_PATCHFILEFILTER, filter, sizeof(filter)/sizeof(TCHAR));
 	CStringUtils::PipesToNulls(filter);
 	ofn.lpstrFilter = filter;
@@ -815,7 +815,7 @@ void CMainWindow::loadOrSaveFile(bool doLoad, const std::wstring& filename /* = 
 	ofn.lpstrFileTitle = NULL;
 	ofn.nMaxFileTitle = 0;
 	ofn.lpstrInitialDir = NULL;
-	TCHAR fileTitle[1024];
+	TCHAR fileTitle[1024] = { 0 };
 	LoadString(hResource, doLoad ? IDS_OPENPATCH : IDS_SAVEPATCH, fileTitle, sizeof(fileTitle)/sizeof(TCHAR));
 	ofn.lpstrTitle = fileTitle;
 	ofn.Flags = OFN_ENABLESIZING | OFN_EXPLORER;

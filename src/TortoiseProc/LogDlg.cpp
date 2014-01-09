@@ -2294,7 +2294,7 @@ CString CLogDlg::GetAbsoluteUrlFromRelativeUrl(const CString& url)
 	{
 		// URL is relative to the repository root
 		CString url1 = m_sRepositoryRoot + url.Mid(1);
-		TCHAR buf[INTERNET_MAX_URL_LENGTH];
+		TCHAR buf[INTERNET_MAX_URL_LENGTH] = { 0 };
 		DWORD len = url.GetLength();
 		if (UrlCanonicalize((LPCTSTR)url1, buf, &len, 0) == S_OK)
 			return CString(buf, len);
@@ -2310,7 +2310,7 @@ CString CLogDlg::GetAbsoluteUrlFromRelativeUrl(const CString& url)
 		{
 			sHost = m_sRepositoryRoot.Left(m_sRepositoryRoot.Find('/', schemepos+3));
 			CString url1 = sHost + url;
-			TCHAR buf[INTERNET_MAX_URL_LENGTH];
+			TCHAR buf[INTERNET_MAX_URL_LENGTH] = { 0 };
 			DWORD len = url.GetLength();
 			if (UrlCanonicalize((LPCTSTR)url, buf, &len, 0) == S_OK)
 				return CString(buf, len);

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2006, 2008 - TortoiseSVN
+// Copyright (C) 2003-2006, 2008, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -45,7 +45,7 @@ bool CPersonalDictionary::Load()
 	if (m_lLanguage==0)
 		m_lLanguage = GetUserDefaultLCID();
 
-	TCHAR sLang[10];
+	TCHAR sLang[10] = { 0 };
 	_stprintf_s(sLang, 10, _T("%ld"), m_lLanguage);
 	_tcscat_s(path, MAX_PATH, sLang);
 	_tcscat_s(path, MAX_PATH, _T(".dic"));
@@ -96,13 +96,13 @@ bool CPersonalDictionary::Save()
 {
 	if (!m_bLoaded)
 		return false;
-	TCHAR path[MAX_PATH];		//MAX_PATH ok here.
+	TCHAR path[MAX_PATH] = { 0 };		//MAX_PATH ok here.
 	_tcscpy_s (path, CPathUtils::GetAppDataDirectory());
 
 	if (m_lLanguage==0)
 		m_lLanguage = GetUserDefaultLCID();
 
-	TCHAR sLang[10];
+	TCHAR sLang[10] = { 0 };
 	_stprintf_s(sLang, 10, _T("%ld"), m_lLanguage);
 	_tcscat_s(path, MAX_PATH, sLang);
 	_tcscat_s(path, MAX_PATH, _T(".dic"));

@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008-2011,2013 - TortoiseGit
-// Copyright (C) 2003-2008 - TortoiseSVN
+// Copyright (C) 2003-2008, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -107,7 +107,7 @@ BOOL CSetOverlayIcons::OnInitDialog()
 	}
 
 	WORD langID = (WORD)(DWORD)CRegStdDWORD(_T("Software\\TortoiseGit\\LanguageID"), GetUserDefaultLangID());
-	TCHAR statustext[MAX_STATUS_STRING_LENGTH];
+	TCHAR statustext[MAX_STATUS_STRING_LENGTH] = { 0 };
 	GitStatus::GetStatusString(AfxGetResourceHandle(), git_wc_status_normal, statustext, _countof(statustext), langID);
 	m_sNormal = statustext;
 	GitStatus::GetStatusString(AfxGetResourceHandle(), git_wc_status_modified, statustext, _countof(statustext), langID);

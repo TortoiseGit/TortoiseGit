@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013 - TortoiseGit
+// Copyright (C) 2013-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -38,7 +38,7 @@ bool DaemonCommand::Execute()
 		return false;
 	}
 
-	char hostName[128];
+	char hostName[128] = { 0 };
 	if (gethostname(hostName, sizeof(hostName)) == SOCKET_ERROR)
 	{
 		MessageBox(NULL, _T("gethostname failed!"), _T("TortoiseGit"), MB_OK | MB_ICONERROR);

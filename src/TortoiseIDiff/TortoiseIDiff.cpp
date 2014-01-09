@@ -1,6 +1,6 @@
 // TortoiseIDiff - an image diff viewer in TortoiseSVN and TortoiseGit
 
-// Copyright (C) 2006-2007, 2010-2013 - TortoiseSVN
+// Copyright (C) 2006-2007, 2010-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -53,7 +53,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 
     if (parser.HasKey(_T("?")) || parser.HasKey(_T("help")))
     {
-        TCHAR buf[1024];
+        TCHAR buf[1024] = { 0 };
         LoadString(hResource, IDS_COMMANDLINEHELP, buf, _countof(buf));
         MessageBox(NULL, buf, _T("TortoiseIDiff"), MB_ICONINFORMATION);
         langDLL.Close();

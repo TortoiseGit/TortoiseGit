@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2008 - TortoiseSVN
+// Copyright (C) 2003-2008, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -145,7 +145,7 @@ CProfilingInfo* CProfilingInfo::GetInstance()
 
 static std::string IntToStr (unsigned __int64 value)
 {
-	char buffer[100];
+	char buffer[100] = { 0 };
 	_ui64toa_s (value, buffer, 100, 10);
 
 	std::string result = buffer;

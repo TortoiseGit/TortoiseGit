@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2012 - TortoiseSVN
-// Copyright (C) 2012-2013 - TortoiseGit
+// Copyright (C) 2012-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -1075,7 +1075,7 @@ void CRevisionGraphWnd::SaveGraphAs(CString sSavePath)
 		}
 		catch (CException * pE)
 		{
-			TCHAR szErrorMsg[2048];
+			TCHAR szErrorMsg[2048] = { 0 };
 			pE->GetErrorMessage(szErrorMsg, 2048);
 			pE->Delete();
 			::MessageBox(m_hWnd, szErrorMsg, _T("TortoiseGit"), MB_ICONERROR);
