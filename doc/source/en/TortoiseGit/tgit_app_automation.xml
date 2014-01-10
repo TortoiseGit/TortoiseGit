@@ -391,6 +391,7 @@ Don't touch these lines:
 								<option>/startrev:xxx</option> and
 								<option>/endrev:xxx</option>.
 								Add <option>/unified</option> to get a unified diff.
+								Add <option>/line:NN</option> to get scroll to the mentioned line.
 <!--
 								If <option>/blame</option> is set and <option>/path2</option>
 								is not set, then the diff is done by first blaming 

@@ -50,7 +50,7 @@ bool DiffCommand::Execute()
 			//diff.SetAlternativeTool(bAlternativeTool);
 			if ( parser.HasKey(_T("startrev")) && parser.HasKey(_T("endrev")) )
 			{
-				bRet = !!diff.Diff(&cmdLinePath, &cmdLinePath, git_revnum_t(parser.GetVal(_T("startrev"))), git_revnum_t(parser.GetVal(_T("endrev"))), false, parser.HasKey(_T("unified")) == TRUE);
+				bRet = !!diff.Diff(&cmdLinePath, &cmdLinePath, git_revnum_t(parser.GetVal(_T("startrev"))), git_revnum_t(parser.GetVal(_T("endrev"))), false, parser.HasKey(_T("unified")) == TRUE, parser.GetLongVal(_T("line")));
 			}
 			else
 			{
@@ -88,7 +88,7 @@ bool DiffCommand::Execute()
 								if (!changedFiles[i].GetGitOldPathString().IsEmpty())
 								{
 									CTGitPath oldPath(changedFiles[i].GetGitOldPathString());
-									return !!diff.Diff(&cmdLinePath, &oldPath, git_revnum_t(GIT_REV_ZERO), git_revnum_t(_T("HEAD")), false, parser.HasKey(_T("unified")) == TRUE);
+									return !!diff.Diff(&cmdLinePath, &oldPath, git_revnum_t(GIT_REV_ZERO), git_revnum_t(_T("HEAD")), false, parser.HasKey(_T("unified")) == TRUE, parser.GetLongVal(_T("line")));
 								}
 								break;
 							}
@@ -97,7 +97,7 @@ bool DiffCommand::Execute()
 					cmdLinePath.m_Action = cmdLinePath.LOGACTIONS_ADDED;
 				}
 
-				bRet = !!diff.Diff(&cmdLinePath,&cmdLinePath,git_revnum_t(GIT_REV_ZERO),git_revnum_t(_T("HEAD")), false, parser.HasKey(_T("unified")) == TRUE);
+				bRet = !!diff.Diff(&cmdLinePath, &cmdLinePath, git_revnum_t(GIT_REV_ZERO), git_revnum_t(_T("HEAD")), false, parser.HasKey(_T("unified")) == TRUE, parser.GetLongVal(_T("line")));
 			}
 		}
 	}
@@ -107,14 +107,14 @@ bool DiffCommand::Execute()
 		if ( parser.HasKey(_T("startrev")) && parser.HasKey(_T("endrev")) && path2.Left(g_Git.m_CurrentDir.GetLength() + 1) == g_Git.m_CurrentDir + _T("\\"))
 		{
 			CTGitPath tgitPath2 = path2.Mid(g_Git.m_CurrentDir.GetLength() + 1);
-			bRet = !!diff.Diff(&tgitPath2, &cmdLinePath, git_revnum_t(parser.GetVal(_T("startrev"))), git_revnum_t(parser.GetVal(_T("endrev"))), false, parser.HasKey(_T("unified")) == TRUE);
+			bRet = !!diff.Diff(&tgitPath2, &cmdLinePath, git_revnum_t(parser.GetVal(_T("startrev"))), git_revnum_t(parser.GetVal(_T("endrev"))), false, parser.HasKey(_T("unified")) == TRUE, parser.GetLongVal(_T("line")));
 		}
 		else
 		{
 			bRet = CAppUtils::StartExtDiff(
 				path2, orgCmdLinePath.GetWinPathString(), CString(), CString(),
 				CString(), CString(), git_revnum_t(GIT_REV_ZERO), git_revnum_t(GIT_REV_ZERO),
-				CAppUtils::DiffFlags().AlternativeTool(bAlternativeTool));
+				CAppUtils::DiffFlags().AlternativeTool(bAlternativeTool), parser.GetLongVal(_T("line")));
 		}
 	}
 

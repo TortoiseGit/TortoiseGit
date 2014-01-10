@@ -439,7 +439,7 @@ bool CAppUtils::StartExtDiff(
 	const CString& sName1, const CString& sName2,
 	const CString& originalFile1, const CString& originalFile2,
 	const git_revnum_t& hash1, const git_revnum_t& hash2,
-	const DiffFlags& flags)
+	const DiffFlags& flags, int jumpToLine)
 {
 	CString viewer;
 
@@ -509,6 +509,13 @@ bool CAppUtils::StartExtDiff(
 
 	if (flags.bReadOnly && bInternal)
 		viewer += _T(" /readonly");
+
+	if (jumpToLine > 0)
+	{
+		CString temp;
+		temp.Format(_T(" /line:%d"), jumpToLine);
+		viewer += temp;
+	}
 
 	return LaunchApplication(viewer, IDS_ERR_EXTDIFFSTART, flags.bWait);
 }

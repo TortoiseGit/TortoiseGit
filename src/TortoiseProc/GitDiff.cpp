@@ -93,7 +93,7 @@ int CGitDiff::SubmoduleDiffNull(const CTGitPath * pPath, const git_revnum_t &rev
 	return -1;
 }
 
-int CGitDiff::DiffNull(const CTGitPath *pPath, git_revnum_t rev1, bool bIsAdd)
+int CGitDiff::DiffNull(const CTGitPath *pPath, git_revnum_t rev1, bool bIsAdd, int jumpToLine)
 {
 	CString temppath;
 	GetTempPath(temppath);
@@ -158,14 +158,14 @@ int CGitDiff::DiffNull(const CTGitPath *pPath, git_revnum_t rev1, bool bIsAdd)
 							pPath->GetGitPathString() + _T(":") + rev1.Left(g_Git.GetShortHASHLength()),
 							g_Git.m_CurrentDir + _T("\\") + pPath->GetWinPathString(), g_Git.m_CurrentDir + _T("\\") + pPath->GetWinPathString(),
 							git_revnum_t(GIT_REV_ZERO), rev1
-							, flags);
+							, flags, jumpToLine);
 	else
 		CAppUtils::StartExtDiff(file1,tempfile,
 							pPath->GetGitPathString() + _T(":") + rev1.Left(g_Git.GetShortHASHLength()),
 							pPath->GetGitPathString(),
 							g_Git.m_CurrentDir + _T("\\") + pPath->GetWinPathString(), g_Git.m_CurrentDir + _T("\\") + pPath->GetWinPathString(),
 							rev1, git_revnum_t(GIT_REV_ZERO)
-							, flags);
+							, flags, jumpToLine);
 
 	return 0;
 }
@@ -351,7 +351,7 @@ int CGitDiff::SubmoduleDiff(const CTGitPath * pPath, const CTGitPath * /*pPath2*
 	return 0;
 }
 
-int CGitDiff::Diff(const CTGitPath * pPath, const CTGitPath * pPath2, git_revnum_t rev1, git_revnum_t rev2, bool /*blame*/, bool /*unified*/)
+int CGitDiff::Diff(const CTGitPath * pPath, const CTGitPath * pPath2, git_revnum_t rev1, git_revnum_t rev2, bool /*blame*/, bool /*unified*/, int jumpToLine)
 {
 	CString temppath;
 	GetTempPath(temppath);
@@ -460,11 +460,11 @@ int CGitDiff::Diff(const CTGitPath * pPath, const CTGitPath * pPath2, git_revnum
 
 	if (pPath->m_Action == pPath->LOGACTIONS_ADDED)
 	{
-		CGitDiff::DiffNull(pPath, rev1, true);
+		CGitDiff::DiffNull(pPath, rev1, true, jumpToLine);
 	}
 	else if (pPath->m_Action == pPath->LOGACTIONS_DELETED)
 	{
-		CGitDiff::DiffNull(pPath, rev2, false);
+		CGitDiff::DiffNull(pPath, rev2, false, jumpToLine);
 	}
 	else
 	{
@@ -476,7 +476,7 @@ int CGitDiff::Diff(const CTGitPath * pPath, const CTGitPath * pPath2, git_revnum
 								g_Git.m_CurrentDir + _T("\\") + pPath->GetWinPathString(),
 								rev2,
 								rev1,
-								flags);
+								flags, jumpToLine);
 	}
 	return 0;
 }

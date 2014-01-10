@@ -32,6 +32,7 @@ Released: Unreleased
  * Fixed issue #1913: SVN DCommit Button in successful merge Dialog
  * Fixed issue #1978: Use file directory on Save revision to path in Repository Browser and log dialog
  * Updated libgit to version 1.8.5.2
+ * Fixed issue #2059: "Go to line" CLI argument support for diff command
 
 == Bug Fixes ==
  * Fixed issue #1947: When editing git notes, spurious reformatting is done
