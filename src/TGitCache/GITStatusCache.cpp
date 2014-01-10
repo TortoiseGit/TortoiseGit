@@ -50,8 +50,6 @@ void CGitStatusCache::Create()
 	// find the location of the cache
 	TCHAR path[MAX_PATH] = { 0 };		//MAX_PATH ok here.
 	TCHAR path2[MAX_PATH] = { 0 };
-	SecureZeroMemory(path, sizeof(path));
-	SecureZeroMemory(path2, sizeof(path2));
 	if (SHGetFolderPath(NULL, CSIDL_LOCAL_APPDATA, NULL, SHGFP_TYPE_CURRENT, path)==S_OK)
 	{
 		_tcscat_s(path, MAX_PATH, _T("\\TGitCache"));
@@ -153,7 +151,6 @@ bool CGitStatusCache::SaveCache()
 	FILE * pFile = NULL;
 	// find a location to write the cache to
 	TCHAR path[MAX_PATH] = { 0 };		//MAX_PATH ok here.
-	SecureZeroMemory(path, sizeof(path));
 	if (SHGetFolderPath(NULL, CSIDL_LOCAL_APPDATA, NULL, SHGFP_TYPE_CURRENT, path)==S_OK)
 	{
 		_tcscat_s(path, MAX_PATH, _T("\\TGitCache"));
@@ -228,7 +225,6 @@ CGitStatusCache::CGitStatusCache(void)
 	#define forever DWORD(-1)
 	AutoLocker lock(m_NoWatchPathCritSec);
 	TCHAR path[MAX_PATH] = { 0 };
-	SecureZeroMemory(path, sizeof(path));
 	SHGetFolderPath(NULL, CSIDL_COOKIES, NULL, 0, path);
 	m_NoWatchPaths[CTGitPath(CString(path))] = forever;
 	SecureZeroMemory(path, sizeof(path));

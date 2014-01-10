@@ -351,7 +351,6 @@ CString CPathUtils::GetAppParentDirectory(HMODULE hMod /* = NULL */)
 CString CPathUtils::GetAppDataDirectory()
 {
 	TCHAR path[MAX_PATH] = { 0 };		//MAX_PATH ok here.
-	SecureZeroMemory(path, sizeof(path));
 	if (SHGetFolderPath(NULL, CSIDL_APPDATA, NULL, SHGFP_TYPE_CURRENT, path)!=S_OK)
 		return CString();
 

@@ -46,10 +46,7 @@ LRESULT CAboutDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
             // initialize the controls
             TCHAR verbuf[1024] = {0};
             TCHAR maskbuf[1024] = {0};
-            if (!::LoadString (hResource, IDS_VERSION, maskbuf, _countof(maskbuf)))
-            {
-                SecureZeroMemory(maskbuf, sizeof(maskbuf));
-            }
+            ::LoadString (hResource, IDS_VERSION, maskbuf, _countof(maskbuf));
             _stprintf_s(verbuf, maskbuf, TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD);
             SetDlgItemText(hwndDlg, IDC_ABOUTVERSION, verbuf);
         }

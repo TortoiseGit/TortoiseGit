@@ -285,10 +285,7 @@ BOOL CAboutDlg::OnInitDialog()
 
 	TCHAR verbuf[1024] = {0};
 	TCHAR maskbuf[1024] = {0};
-	if (!::LoadString(GetModuleHandle(NULL), IDS_VERSION, maskbuf, _countof(maskbuf)))
-	{
-		SecureZeroMemory(maskbuf, sizeof(maskbuf));
-	}
+	::LoadString(GetModuleHandle(NULL), IDS_VERSION, maskbuf, _countof(maskbuf));
 	_stprintf_s(verbuf, maskbuf, TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD);
 	SetDlgItemText(IDC_VERSION, verbuf);
 
