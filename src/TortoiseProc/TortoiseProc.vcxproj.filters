@@ -156,13 +156,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AddRemoteDlg.cpp">
-      <Filter>Utils</Filter>
+      <Filter>Utility Dialogs</Filter>
     </ClCompile>
     <ClCompile Include="..\TGitCache\CacheInterface.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="FindDlg.cpp">
-      <Filter>Utils</Filter>
+      <Filter>Utility Dialogs</Filter>
     </ClCompile>
     <ClCompile Include="..\Utils\Libraries.cpp">
       <Filter>Utils</Filter>
@@ -180,16 +180,16 @@
       <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="SinglePropSheetDlg.cpp">
-      <Filter>Utils</Filter>
+      <Filter>Utility Dialogs</Filter>
     </ClCompile>
     <ClCompile Include="AppUtils.cpp">
       <Filter>Utils\General</Filter>
     </ClCompile>
     <ClCompile Include="DeleteConflictDlg.cpp">
-      <Filter>Utils\General</Filter>
+      <Filter>Utility Dialogs</Filter>
     </ClCompile>
     <ClCompile Include="HistoryDlg.cpp">
-      <Filter>Utils\General</Filter>
+      <Filter>Utility Dialogs</Filter>
     </ClCompile>
     <ClCompile Include="Colors.cpp">
       <Filter>Utils\UI</Filter>
@@ -636,7 +636,7 @@
       <Filter>Utils\UI</Filter>
     </ClCompile>
     <ClCompile Include="UserPassword.cpp">
-      <Filter>Utils</Filter>
+      <Filter>Utility Dialogs</Filter>
     </ClCompile>
     <ClCompile Include="GitProgressList.cpp">
       <Filter>Utility Dialogs</Filter>
@@ -683,10 +683,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddRemoteDlg.h">
-      <Filter>Utils</Filter>
+      <Filter>Utility Dialogs</Filter>
     </ClInclude>
     <ClInclude Include="FindDlg.h">
-      <Filter>Utils</Filter>
+      <Filter>Utility Dialogs</Filter>
     </ClInclude>
     <ClInclude Include="LogFile.h">
       <Filter>Utils</Filter>
@@ -704,13 +704,13 @@
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="SinglePropSheetDlg.h">
-      <Filter>Utils</Filter>
+      <Filter>Utility Dialogs</Filter>
     </ClInclude>
     <ClInclude Include="DeleteConflictDlg.h">
-      <Filter>Utils\General</Filter>
+      <Filter>Utility Dialogs</Filter>
     </ClInclude>
     <ClInclude Include="HistoryDlg.h">
-      <Filter>Utils\General</Filter>
+      <Filter>Utility Dialogs</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\MiscUI\HorizontalResizableStandAloneDialog.h">
       <Filter>Utils\UI</Filter>
@@ -1142,7 +1142,7 @@
       <Filter>Utils\UI</Filter>
     </ClInclude>
     <ClInclude Include="UserPassword.h">
-      <Filter>Utils</Filter>
+      <Filter>Utility Dialogs</Filter>
     </ClInclude>
     <ClInclude Include="GitProgressList.h">
       <Filter>Utility Dialogs</Filter>
