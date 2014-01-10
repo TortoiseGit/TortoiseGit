@@ -591,7 +591,12 @@ Don't touch these lines:
 								<option>/path</option>.
 							</entry>
 						</row>
-
+						<row>
+							<entry condition="pot">:pgpfp</entry>
+							<entry>
+								Prints the TortoiseGit Release Signing Key fingerprint. If you trust the current TortoiseGit installation, thius can be used as a trust anchor to future releases.
+							</entry>
+						</row>
 						<!--
 						<row>
 							<entry condition="pot">:rebuildiconcache</entry>

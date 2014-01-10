@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 // Copyright (C) 2007-2009 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -167,6 +167,7 @@ typedef enum
 	cmdRepoBrowser,
 	cmdRevisionGraph,
 	cmdDaemon,
+	cmdPGPFP,
 } TGitCommand;
 
 static const struct CommandInfo
@@ -240,6 +241,7 @@ static const struct CommandInfo
 	{	cmdRepoBrowser,		_T("repobrowser")		},
 	{	cmdRevisionGraph,	_T("revisiongraph")		},
 	{	cmdDaemon,			_T("daemon")			},
+	{	cmdPGPFP,			_T("pgpfp")				},
 };
 
 
@@ -401,6 +403,11 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 	case cmdUnIgnore:
 		return new UnIgnoreCommand;
 #endif
+	case cmdPGPFP:
+		{
+			CMessageBox::Show(hWndExplorer, _T("This is the fingerprint of the TortoiseGit Release Signing Key.\nIt can be used to establish a trust path from this release to another one.\n\nTortoiseGit Release Signing Key, 1024-bit DSA:\n078A CFC9 7834 0A4E FB8C  917A 33F7 5DCF 2BC0 D362"), _T("TortoiseGit"), MB_OK);
+			return nullptr;
+		}
 	default:
 		CMessageBox::Show(hWndExplorer, _T("Command not implemented"), _T("TortoiseGit"), MB_ICONERROR);
 		return new AboutCommand;
