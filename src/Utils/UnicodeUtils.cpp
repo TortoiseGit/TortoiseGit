@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2013 - TortoiseGit
+// Copyright (C) 2009-2014 - TortoiseGit
 // Copyright (C) 2003-2006, 2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -229,7 +229,6 @@ CStringA CUnicodeUtils::GetMulti(const CStringW& string,int acp)
 	if (len==0)
 		return retVal;
 	buf = retVal.GetBuffer(len*4 + 1);
-//	SecureZeroMemory(buf, (string.GetLength()*4 + 1)*sizeof(char));
 	int lengthIncTerminator = WideCharToMultiByte(acp, 0, string, -1, buf, len*4, NULL, NULL);
 	retVal.ReleaseBuffer(lengthIncTerminator-1);
 	return retVal;
@@ -243,9 +242,8 @@ CStringA CUnicodeUtils::GetUTF8(const CStringA& string)
 	if (len==0)
 		return CStringA();
 	buf = new WCHAR[len*4 + 1];
-	SecureZeroMemory(buf, (len*4 + 1)*sizeof(WCHAR));
-	MultiByteToWideChar(CP_ACP, 0, string, -1, buf, len*4);
-	CStringW temp = CStringW(buf);
+	int lengthIncTerminator = MultiByteToWideChar(CP_ACP, 0, string, -1, buf, len * 4);
+	CStringW temp = CStringW(buf, lengthIncTerminator - 1);
 	delete [] buf;
 	return (CUnicodeUtils::GetUTF8(temp));
 }
@@ -253,15 +251,14 @@ CStringA CUnicodeUtils::GetUTF8(const CStringA& string)
 CString CUnicodeUtils::GetUnicode(const CStringA& string, int acp)
 {
 	WCHAR * buf;
+	CString retVal;
 	int len = string.GetLength();
 	if (len==0)
-		return CString();
-	buf = new WCHAR[len*4 + 1];
-	SecureZeroMemory(buf, (len*4 + 1)*sizeof(WCHAR));
-	MultiByteToWideChar(acp, 0, string, -1, buf, len*4);
-	CString ret = CString(buf);
-	delete [] buf;
-	return ret;
+		return retVal;
+	buf = retVal.GetBuffer(len * 4 + 1);
+	int lengthIncTerminator = MultiByteToWideChar(acp, 0, string, -1, buf, len * 4);
+	retVal.ReleaseBuffer(lengthIncTerminator - 1);
+	return retVal;
 }
 
 CStringA CUnicodeUtils::ConvertWCHARStringToUTF8(const CString& string)

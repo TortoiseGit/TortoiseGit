@@ -418,13 +418,11 @@ DWORD CHooks::RunScript(CString cmd, LPCTSTR currentDir, CString& error, bool bW
 		char buf[256] = { 0 };
 		do
 		{
-			SecureZeroMemory(&buf,sizeof(buf));
 			while (ReadFile(hRedir, &buf, sizeof(buf)-1, &dw, NULL))
 			{
 				if (dw == 0)
 					break;
 				error += CString(CStringA(buf,dw));
-				SecureZeroMemory(&buf,sizeof(buf));
 			}
 		} while (WaitForSingleObject(pi.hProcess, 0) != WAIT_OBJECT_0);
 
@@ -435,7 +433,6 @@ DWORD CHooks::RunScript(CString cmd, LPCTSTR currentDir, CString& error, bool bW
 				break;
 
 			error += CString(CStringA(buf, dw));
-			SecureZeroMemory(&buf,sizeof(buf));
 		}
 		WaitForSingleObject(pi.hProcess, INFINITE);
 		GetExitCodeProcess(pi.hProcess, &exitcode);
