@@ -290,7 +290,7 @@ public:
 
 	CString GetLogCmd(const CString &range, const CTGitPath *path = NULL, int count=-1, int InfoMask = LOG_INFO_FULL_DIFF|LOG_INFO_STAT|LOG_INFO_FILESTATE|LOG_INFO_BOUNDARY|LOG_INFO_DETECT_COPYRENAME|LOG_INFO_SHOW_MERGEDFILE, bool paramonly=false, CFilterData * filter =NULL);
 
-	int GetHash(CGitHash &hash, const TCHAR* friendname);
+	int GetHash(CGitHash &hash, const CString& friendname);
 
 	int BuildOutputFormat(CString &format,bool IsFull=TRUE);
 	//int GetShortLog(const CString &log,CTGitPath * path=NULL, int count =-1);

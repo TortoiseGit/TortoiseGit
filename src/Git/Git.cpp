@@ -1081,7 +1081,7 @@ int CGit::RunLogFile(CString cmd, const CString &filename, CString *stdErr)
 	return exitcode;
 }
 
-int CGit::GetHash(CGitHash &hash, const TCHAR* friendname)
+int CGit::GetHash(CGitHash &hash, const CString& friendname)
 {
 	// no need to parse a ref if it's already a 40-byte hash
 	if (CGitHash::IsValidSHA1(friendname))
