@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013 - TortoiseGit
+// Copyright (C) 2013-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -85,9 +85,8 @@ int CGitRefCompareList::OpenRepository()
 {
 	m_Repository = nullptr;
 	CStringA gitdir = CUnicodeUtils::GetMulti(CTGitPath(g_Git.m_CurrentDir).GetGitPathString(), CP_UTF8);
-	if (git_repository_open(&m_Repository, gitdir.GetBuffer()))
+	if (git_repository_open(&m_Repository, gitdir))
 	{
-		gitdir.ReleaseBuffer();
 		CMessageBox::Show(m_hWnd, CGit::GetLibGit2LastErr(_T("Could not open repository.")), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 		return -1;
 	}

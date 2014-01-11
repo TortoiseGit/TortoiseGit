@@ -114,9 +114,7 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 	}
 	git_index *index = NULL;
 
-	int ret = git_repository_open(&repository, gitdir.GetBuffer());
-	gitdir.ReleaseBuffer();
-	if (ret)
+	if (git_repository_open(&repository, gitdir))
 	{
 		m_critRepoSec.Unlock();
 		return -1;
@@ -181,8 +179,7 @@ int CGitIndexList::GetFileStatus(const CString &gitdir, const CString &pathorg, 
 		CString path = pathorg;
 		path.MakeLower();
 
-		int start = SearchInSortVector(*this, ((CString&)path).GetBuffer(), -1);
-		((CString&)path).ReleaseBuffer();
+		int start = SearchInSortVector(*this, path, -1);
 
 		if (start < 0)
 		{
@@ -219,14 +216,13 @@ int CGitIndexList::GetFileStatus(const CString &gitdir, const CString &pathorg, 
 				git_oid actual;
 				CStringA fileA = CUnicodeUtils::GetMulti(pathorg, CP_UTF8);
 				m_critRepoSec.Lock(); // prevent concurrent access to repository instance and especially filter-lists
-				if (!git_repository_hashfile(&actual, repository, fileA.GetBuffer(), GIT_OBJ_BLOB, NULL) && !git_oid_cmp(&actual, (const git_oid*)at(index).m_IndexHash.m_hash))
+				if (!git_repository_hashfile(&actual, repository, fileA, GIT_OBJ_BLOB, NULL) && !git_oid_cmp(&actual, (const git_oid*)at(index).m_IndexHash.m_hash))
 				{
 					at(index).m_ModifyTime = time;
 					*status = git_wc_status_normal;
 				}
 				else
 					*status = git_wc_status_modified;
-				fileA.ReleaseBuffer();
 				m_critRepoSec.Unlock();
 			}
 			else
@@ -456,10 +452,9 @@ int CGitIndexFileMap::IsUnderVersionControl(const CString &gitdir, const CString
 		if(pIndex.get())
 		{
 			if(isDir)
-				*isVersion = (SearchInSortVector(*pIndex, subpath.GetBuffer(), subpath.GetLength()) >= 0);
+				*isVersion = (SearchInSortVector(*pIndex, subpath, subpath.GetLength()) >= 0);
 			else
-				*isVersion = (SearchInSortVector(*pIndex, subpath.GetBuffer(), -1) >= 0);
-			subpath.ReleaseBuffer();
+				*isVersion = (SearchInSortVector(*pIndex, subpath, -1) >= 0);
 		}
 
 	}catch(...)
@@ -873,8 +868,7 @@ int CGitHeadFileList::ReadTree()
 	ATLASSERT(this->empty());
 	do
 	{
-		ret = git_repository_open(&repository, gitdir.GetBuffer());
-		gitdir.ReleaseBuffer();
+		ret = git_repository_open(&repository, gitdir);
 		if(ret)
 			break;
 		ret = git_commit_lookup(&commit, repository, (const git_oid*)m_Head.m_hash);
@@ -989,7 +983,7 @@ int CGitIgnoreItem::FetchIgnoreList(const CString &projectroot, const CString &f
 
 				if(p[0] != '#' && p[0] != 0)
 					git_add_exclude((const char*)p,
-										this->m_BaseDir.GetBuffer(),
+										this->m_BaseDir,
 										m_BaseDir.GetLength(),
 										this->m_pExcludeList, ++line);
 
@@ -1229,8 +1223,7 @@ bool CGitIgnoreList::CheckAndUpdateCoreExcludefile(const CString &adminDir)
 		git_config_add_file_ondisk(config, CGit::GetGitPathStringA(systemConfig), GIT_CONFIG_LEVEL_SYSTEM, FALSE);
 	const char * out = NULL;
 	CStringA name(_T("core.excludesfile"));
-	git_config_get_string(&out, config, name.GetBuffer());
-	name.ReleaseBuffer();
+	git_config_get_string(&out, config, name);
 	CStringA excludesFileA(out);
 	excludesFile = CUnicodeUtils::GetUnicode(excludesFileA);
 	if (excludesFile.IsEmpty())
@@ -1442,10 +1435,9 @@ int CGitHeadFileMap::IsUnderVersionControl(const CString &gitdir, const CString 
 		}
 
 		if(isDir)
-			*isVersion = (SearchInSortVector(*treeptr, subpath.GetBuffer(), subpath.GetLength()) >= 0);
+			*isVersion = (SearchInSortVector(*treeptr, subpath, subpath.GetLength()) >= 0);
 		else
-			*isVersion = (SearchInSortVector(*treeptr, subpath.GetBuffer(), -1) >= 0);
-		subpath.ReleaseBuffer();
+			*isVersion = (SearchInSortVector(*treeptr, subpath, -1) >= 0);
 	}
 	catch(...)
 	{

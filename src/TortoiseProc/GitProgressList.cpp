@@ -1694,13 +1694,11 @@ bool CGitProgressList::CmdAdd(CString& sWindowTitle, bool& localoperation)
 		git_index *index;
 
 		CStringA gitdir = CUnicodeUtils::GetMulti(CTGitPath(g_Git.m_CurrentDir).GetGitPathString(), CP_UTF8);
-		if (git_repository_open(&repo, gitdir.GetBuffer()))
+		if (git_repository_open(&repo, gitdir))
 		{
-			gitdir.ReleaseBuffer();
 			ReportGitError();
 			return false;
 		}
-		gitdir.ReleaseBuffer();
 
 		if (git_repository_index(&index, repo))
 		{
@@ -1718,7 +1716,7 @@ bool CGitProgressList::CmdAdd(CString& sWindowTitle, bool& localoperation)
 
 		for (m_itemCount = 0; m_itemCount < m_itemCountTotal; ++m_itemCount)
 		{
-			if (git_index_add_bypath(index, CStringA(CUnicodeUtils::GetMulti(m_targetPathList[m_itemCount].GetGitPathString(), CP_UTF8)).GetBuffer()))
+			if (git_index_add_bypath(index, CUnicodeUtils::GetMulti(m_targetPathList[m_itemCount].GetGitPathString(), CP_UTF8)))
 			{
 				ReportGitError();
 				git_index_free(index);
@@ -2136,9 +2134,8 @@ bool CGitProgressList::CmdFetch(CString& sWindowTitle, bool& /*localoperation*/)
 			m_pAnimate->Play(0, INT_MAX, INT_MAX);
 		}
 
-		if (git_repository_open(&repo, gitdir.GetBuffer()))
+		if (git_repository_open(&repo, gitdir))
 		{
-			gitdir.ReleaseBuffer();
 			ReportGitError();
 			ret = false;
 			break;
@@ -2245,9 +2242,8 @@ bool CGitProgressList::CmdReset(CString& sWindowTitle, bool& /*localoperation*/)
 			m_pAnimate->Play(0, INT_MAX, INT_MAX);
 		}
 
-		if (git_repository_open(&repo, gitdir.GetBuffer()))
+		if (git_repository_open(&repo, gitdir))
 		{
-			gitdir.ReleaseBuffer();
 			ReportGitError();
 			ret = false;
 			break;

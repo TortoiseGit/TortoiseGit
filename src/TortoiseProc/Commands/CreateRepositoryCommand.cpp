@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -44,13 +44,11 @@ bool CreateRepositoryCommand::Execute()
 		options.flags = GIT_REPOSITORY_INIT_MKPATH | GIT_REPOSITORY_INIT_EXTERNAL_TEMPLATE;
 		options.flags |= dlg.m_bBare ? GIT_REPOSITORY_INIT_BARE : 0;
 		CStringA path(CUnicodeUtils::GetMulti(folder, CP_UTF8));
-		if (git_repository_init_ext(&repo, path.GetBuffer(), &options))
+		if (git_repository_init_ext(&repo, path, &options))
 		{
-			path.ReleaseBuffer();
 			CMessageBox::Show(hwndExplorer, CGit::GetLibGit2LastErr(_T("Could not initialize a new repository.")), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 			return false;
 		}
-		path.ReleaseBuffer();
 		git_repository_free(repo);
 
 		if (!dlg.m_bBare)

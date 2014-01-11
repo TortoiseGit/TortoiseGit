@@ -1658,19 +1658,14 @@ bool CMainFrame::FileSave(bool bCheckResolved /*=true*/)
 			bool hasConflictInIndex = false;
 			do
 			{
-				if (git_repository_open(&repository, gitdir.GetBuffer()))
-				{
-					gitdir.ReleaseBuffer();
+				if (git_repository_open(&repository, gitdir))
 					break;
-				}
-				gitdir.ReleaseBuffer();
 
 				if (git_repository_index(&index, repository))
 					break;
 
 				CStringA path = CUnicodeUtils::GetMulti(subpath, CP_UTF8);
-				const git_index_entry * entry = git_index_get_bypath(index, path.GetBuffer(), 1);
-				path.ReleaseBuffer();
+				const git_index_entry * entry = git_index_get_bypath(index, path, 1);
 				hasConflictInIndex = entry != nullptr;
 			} while(0);
 

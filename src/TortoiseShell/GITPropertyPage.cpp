@@ -123,9 +123,7 @@ BOOL CGitPropertyPage::PageProc (HWND /*hwnd*/, UINT uMessage, WPARAM wParam, LP
 					git_repository *repository = NULL;
 					git_index *index = NULL;
 
-					int ret = git_repository_open(&repository, gitdir.GetBuffer());
-					gitdir.ReleaseBuffer();
-					if (ret)
+					if (git_repository_open(&repository, gitdir))
 						break;
 
 					if (git_repository_index(&index, repository))
@@ -357,7 +355,7 @@ static git_commit * FindFileRecentCommit(git_repository *repository, CString pat
 		return NULL;
 
 	CStringA pathA = CUnicodeUtils::GetUTF8(path);
-	const char *pathC = pathA.GetBuffer();
+	const char *pathC = pathA;
 	char folder[MAX_PATH] = {0}, file[MAX_PATH] = {0};
 	const char *slash = strrchr(pathC, '/');
 	if (slash)
@@ -371,7 +369,6 @@ static git_commit * FindFileRecentCommit(git_repository *repository, CString pat
 		folder[0] = '\0';
 		strcpy(file, pathC);
 	}
-	pathA.ReleaseBuffer();
 
 	TreewalkStruct treewalkstruct = { folder, file };
 	TreewalkStruct treewalkstruct2 = { folder, file };
@@ -515,9 +512,7 @@ int CGitPropertyPage::LogThread()
 	CStringA gitdir = CUnicodeUtils::GetMulti(ProjectTopDir, CP_UTF8);
 	git_repository *repository = NULL;
 
-	int ret = git_repository_open(&repository, gitdir.GetBuffer());
-	gitdir.ReleaseBuffer();
-	if (ret)
+	if (git_repository_open(&repository, gitdir))
 		return 0;
 
 	int stripLength = ProjectTopDir.GetLength();
@@ -569,9 +564,7 @@ void CGitPropertyPage::InitWorkfileView()
 	CStringA gitdir = CUnicodeUtils::GetMulti(ProjectTopDir, CP_UTF8);
 	git_repository *repository = NULL;
 
-	int ret = git_repository_open(&repository, gitdir.GetBuffer());
-	gitdir.ReleaseBuffer();
-	if (ret)
+	if (git_repository_open(&repository, gitdir))
 		return;
 
 	CString username;

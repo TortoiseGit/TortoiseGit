@@ -58,12 +58,8 @@ int ProjectProperties::GetStringProps(CString &prop, const CString &key)
 
 	CStringA keyA = CUnicodeUtils::GetUTF8(key);
 	const char * value = nullptr;
-	if (git_config_get_string(&value, gitconfig, keyA.GetBuffer()))
-	{
-		keyA.ReleaseBuffer();
+	if (git_config_get_string(&value, gitconfig, keyA))
 		return -1;
-	}
-	keyA.ReleaseBuffer();
 
 	prop = CUnicodeUtils::GetUnicode(value);
 
@@ -76,12 +72,8 @@ int ProjectProperties::GetBOOLProps(BOOL &b, const CString &key)
 
 	CStringA keyA = CUnicodeUtils::GetUTF8(key);
 	int value = FALSE;
-	if (git_config_get_bool(&value, gitconfig, keyA.GetBuffer()))
-	{
-		keyA.ReleaseBuffer();
+	if (git_config_get_bool(&value, gitconfig, keyA))
 		return -1;
-	}
-	keyA.ReleaseBuffer();
 
 	b = value;
 

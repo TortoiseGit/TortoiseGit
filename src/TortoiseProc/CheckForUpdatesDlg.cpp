@@ -641,7 +641,7 @@ void CCheckForUpdatesDlg::FillChangelog(CStdioFile &file)
 			str = CUnicodeUtils::GetUnicode(CStringA(str), CP_UTF8);
 			temp += str + _T("\n");
 		}
-		::SendMessage(m_hWnd, WM_USER_FILLCHANGELOG, 0, reinterpret_cast<LPARAM>(temp.GetBuffer()));
+		::SendMessage(m_hWnd, WM_USER_FILLCHANGELOG, 0, reinterpret_cast<LPARAM>((LPCTSTR)temp));
 	}
 	else
 		::SendMessage(m_hWnd, WM_USER_FILLCHANGELOG, 0, reinterpret_cast<LPARAM>(_T("Could not load changelog.")));
@@ -878,7 +878,7 @@ LRESULT CCheckForUpdatesDlg::OnFillChangelog(WPARAM, LPARAM lParam)
 {
 	ASSERT(lParam != NULL);
 
-	TCHAR * changelog = reinterpret_cast<TCHAR *>(lParam);
+	LPCTSTR changelog = reinterpret_cast<LPCTSTR>(lParam);
 	m_cLogMessage.Call(SCI_SETREADONLY, FALSE);
 	m_cLogMessage.SetText(changelog);
 	m_cLogMessage.Call(SCI_SETREADONLY, TRUE);

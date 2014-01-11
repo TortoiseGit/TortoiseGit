@@ -498,7 +498,7 @@ CString CGit::GetConfigValue(const CString& name, int encoding, BOOL RemoveCR)
 
 		try
 		{
-			if (git_get_config(key.GetBuffer(), value.GetBufferSetLength(4096), 4096))
+			if (git_get_config(key, value.GetBufferSetLength(4096), 4096))
 				return CString();
 		}
 		catch (const char *msg)
@@ -507,7 +507,7 @@ CString CGit::GetConfigValue(const CString& name, int encoding, BOOL RemoveCR)
 			return CString();
 		}
 
-		StringAppend(&configValue,(BYTE*)value.GetBuffer(),encoding);
+		StringAppend(&configValue, (BYTE*)(LPCSTR)value, encoding);
 		if(RemoveCR)
 			return configValue.Tokenize(_T("\n"),start);
 		return configValue;
@@ -553,7 +553,7 @@ int CGit::SetConfigValue(const CString& key, const CString& value, CONFIG_TYPE t
 
 		try
 		{
-			return get_set_config(keya.GetBuffer(), valuea.GetBuffer(), type);
+			return get_set_config(keya, valuea, type);
 		}
 		catch (const char *msg)
 		{
@@ -603,7 +603,7 @@ int CGit::UnsetConfigValue(const CString& key, CONFIG_TYPE type, int encoding)
 
 		try
 		{
-			return get_set_config(keya.GetBuffer(), nullptr, type);
+			return get_set_config(keya, nullptr, type);
 		}
 		catch (const char *msg)
 		{
@@ -1095,12 +1095,8 @@ int CGit::GetHash(CGitHash &hash, const TCHAR* friendname)
 	{
 		git_repository *repo = NULL;
 		CStringA gitdirA = CUnicodeUtils::GetMulti(CTGitPath(m_CurrentDir).GetGitPathString(), CP_UTF8);
-		if (git_repository_open(&repo, gitdirA.GetBuffer()))
-		{
-			gitdirA.ReleaseBuffer();
+		if (git_repository_open(&repo, gitdirA))
 			return -1;
-		}
-		gitdirA.ReleaseBuffer();
 
 		int isHeadOrphan = git_repository_head_unborn(repo);
 		if (isHeadOrphan != 0)
@@ -1116,13 +1112,11 @@ int CGit::GetHash(CGitHash &hash, const TCHAR* friendname)
 		CStringA refnameA = CUnicodeUtils::GetMulti(friendname, CP_UTF8);
 
 		git_object * gitObject = NULL;
-		if (git_revparse_single(&gitObject, repo, refnameA.GetBuffer()))
+		if (git_revparse_single(&gitObject, repo, refnameA))
 		{
-			refnameA.ReleaseBuffer();
 			git_repository_free(repo);
 			return -1;
 		}
-		refnameA.ReleaseBuffer();
 
 		const git_oid * oid = git_object_id(gitObject);
 		if (oid == NULL)
@@ -1211,12 +1205,8 @@ int CGit::GetTagList(STRING_VECTOR &list)
 		git_repository *repo = NULL;
 
 		CStringA gitdir = CUnicodeUtils::GetMulti(CTGitPath(m_CurrentDir).GetGitPathString(), CP_UTF8);
-		if (git_repository_open(&repo, gitdir.GetBuffer()))
-		{
-			gitdir.ReleaseBuffer();
+		if (git_repository_open(&repo, gitdir))
 			return -1;
-		}
-		gitdir.ReleaseBuffer();
 
 		git_strarray tag_names;
 
@@ -1471,12 +1461,8 @@ int CGit::GetRemoteList(STRING_VECTOR &list)
 		git_repository *repo = NULL;
 
 		CStringA gitdir = CUnicodeUtils::GetMulti(CTGitPath(m_CurrentDir).GetGitPathString(), CP_UTF8);
-		if (git_repository_open(&repo, gitdir.GetBuffer()))
-		{
-			gitdir.ReleaseBuffer();
+		if (git_repository_open(&repo, gitdir))
 			return -1;
-		}
-		gitdir.ReleaseBuffer();
 
 		git_strarray remotes;
 
@@ -1561,12 +1547,8 @@ int CGit::GetRefList(STRING_VECTOR &list)
 		git_repository *repo = NULL;
 
 		CStringA gitdir = CUnicodeUtils::GetMulti(CTGitPath(m_CurrentDir).GetGitPathString(), CP_UTF8);
-		if (git_repository_open(&repo, gitdir.GetBuffer()))
-		{
-			gitdir.ReleaseBuffer();
+		if (git_repository_open(&repo, gitdir))
 			return -1;
-		}
-		gitdir.ReleaseBuffer();
 
 		if (git_reference_foreach(repo, libgit2_addto_list_each_ref_fn, &list))
 		{
@@ -1665,12 +1647,8 @@ int CGit::GetMapHashToFriendName(MAP_HASH_NAME &map)
 		git_repository *repo = NULL;
 
 		CStringA gitdir = CUnicodeUtils::GetMulti(CTGitPath(m_CurrentDir).GetGitPathString(), CP_UTF8);
-		if (git_repository_open(&repo, gitdir.GetBuffer()))
-		{
-			gitdir.ReleaseBuffer();
+		if (git_repository_open(&repo, gitdir))
 			return -1;
-		}
-		gitdir.ReleaseBuffer();
 
 		map_each_ref_payload payloadContent = { repo, &map };
 
@@ -1721,15 +1699,13 @@ int CGit::GetMapHashToFriendName(MAP_HASH_NAME &map)
 static void SetLibGit2SearchPath(int level, const CString &value)
 {
 	CStringA valueA = CUnicodeUtils::GetMulti(value, CP_UTF8);
-	git_libgit2_opts(GIT_OPT_SET_SEARCH_PATH, level, valueA.GetBuffer());
-	valueA.ReleaseBuffer();
+	git_libgit2_opts(GIT_OPT_SET_SEARCH_PATH, level, valueA);
 }
 
 static void SetLibGit2TemplatePath(const CString &value)
 {
 	CStringA valueA = CUnicodeUtils::GetMulti(value, CP_UTF8);
-	git_libgit2_opts(GIT_OPT_SET_TEMPLATE_PATH, valueA.GetBuffer());
-	valueA.ReleaseBuffer();
+	git_libgit2_opts(GIT_OPT_SET_TEMPLATE_PATH, valueA);
 }
 
 BOOL CGit::CheckMsysGitDir(BOOL bFallback)
@@ -1750,8 +1726,7 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 	if (!homesize)
 	{
 		CString home = GetHomeDirectory();
-		m_Environment.SetEnv(_T("HOME"), home.GetBuffer());
-		home.ReleaseBuffer();
+		m_Environment.SetEnv(_T("HOME"), home);
 	}
 	CString str;
 
@@ -1762,8 +1737,8 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 
 	if(!sshclient.IsEmpty())
 	{
-		m_Environment.SetEnv(_T("GIT_SSH"), sshclient.GetBuffer());
-		m_Environment.SetEnv(_T("SVN_SSH"), sshclient.GetBuffer());
+		m_Environment.SetEnv(_T("GIT_SSH"), sshclient);
+		m_Environment.SetEnv(_T("SVN_SSH"), sshclient);
 	}
 	else
 	{
@@ -1856,7 +1831,7 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 	CString path;
 	path.Format(_T("%s;%s"),oldpath,str + _T(";")+ (CString)CRegString(REG_MSYSGIT_EXTRA_PATH,_T(""),FALSE));
 
-	m_Environment.SetEnv(_T("PATH"),path.GetBuffer());
+	m_Environment.SetEnv(_T("PATH"), path);
 
 	CString str1 = m_Environment.GetEnv(_T("PATH"));
 
@@ -2095,7 +2070,7 @@ int CGit::GetOneFile(const CString &Refname, const CTGitPath &path, const CStrin
 			patha = CUnicodeUtils::GetMulti(path.GetGitPathString(), CP_UTF8);
 			outa = CUnicodeUtils::GetMulti(outputfile, CP_UTF8);
 			::DeleteFile(outputfile);
-			return git_checkout_file((const char*)ref.GetBuffer(),(const char*)patha.GetBuffer(),(const char*)outa.GetBuffer());
+			return git_checkout_file(ref, patha, outa);
 
 		}catch(...)
 		{
@@ -2426,12 +2401,8 @@ static int GetUnifiedDiffLibGit2(const CTGitPath& /*path*/, const git_revnum_t& 
 	CStringA tree2 = CUnicodeUtils::GetMulti(rev2, CP_UTF8);
 	int ret = 0;
 
-	if (git_repository_open(&repo, gitdirA.GetBuffer()))
-	{
-		gitdirA.ReleaseBuffer();
+	if (git_repository_open(&repo, gitdirA))
 		return -1;
-	}
-	gitdirA.ReleaseBuffer();
 
 	int isHeadOrphan = git_repository_head_unborn(repo);
 	if (isHeadOrphan != 0)

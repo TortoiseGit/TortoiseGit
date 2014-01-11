@@ -1263,8 +1263,7 @@ bool CAppUtils::OpenIgnoreFile(CIgnoreFile &file, const CString& filename)
 		if (lastchar[0] != '\n')
 		{
 			CStringA eol = CStringA(file.m_eol.IsEmpty() ? _T("\n") : file.m_eol);
-			file.Write(eol.GetBuffer(), eol.GetLength());
-			eol.ReleaseBuffer();
+			file.Write(eol, eol.GetLength());
 		}
 	}
 	else
@@ -1342,8 +1341,7 @@ bool CAppUtils::IgnoreFile(CTGitPathList &path,bool IsMask)
 					file.m_Items.push_back(ignorePattern);
 					ignorePattern += file.m_eol.IsEmpty() ? _T("\n") : file.m_eol;
 					CStringA ignorePatternA = CUnicodeUtils::GetUTF8(ignorePattern);
-					file.Write(ignorePatternA.GetBuffer(), ignorePatternA.GetLength());
-					ignorePatternA.ReleaseBuffer();
+					file.Write(ignorePatternA, ignorePatternA.GetLength());
 				}
 
 				if (ignoreDlg.m_IgnoreFile == 1)

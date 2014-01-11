@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2013 - TortoiseSVN
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -666,13 +666,11 @@ void CCommitDlg::OnOK()
 		{
 			git_repository *repository = nullptr;
 			CStringA gitdir = CUnicodeUtils::GetMulti(CTGitPath(g_Git.m_CurrentDir).GetGitPathString(), CP_UTF8);
-			if (git_repository_open(&repository, gitdir.GetBuffer()))
+			if (git_repository_open(&repository, gitdir))
 			{
-				gitdir.ReleaseBuffer();
 				CMessageBox::Show(m_hWnd, CGit::GetLibGit2LastErr(_T("Could not open repository.")), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 				break;
 			}
-			gitdir.ReleaseBuffer();
 
 			CGitHash revHash;
 			CString revRef = _T("HEAD");
@@ -753,14 +751,12 @@ void CCommitDlg::OnOK()
 					if (entry->IsDirectory())
 					{
 						git_submodule *submodule = nullptr;
-						if (git_submodule_lookup(&submodule, repository, filePathA.GetBuffer()))
+						if (git_submodule_lookup(&submodule, repository, filePathA))
 						{
-							filePathA.ReleaseBuffer();
 							bAddSuccess = false;
 							CMessageBox::Show(m_hWnd, CGit::GetLibGit2LastErr(_T("Could not open submodule \"") + entry->GetGitPathString() + _T("\".")), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 							break;
 						}
-						filePathA.ReleaseBuffer();
 						if (git_submodule_add_to_index(submodule, FALSE))
 						{
 							bAddSuccess = false;
@@ -770,25 +766,21 @@ void CCommitDlg::OnOK()
 					}
 					else if (entry->m_Action & CTGitPath::LOGACTIONS_DELETED)
 					{
-						git_index_remove_bypath(index, filePathA.GetBuffer()); // ignore error
-						filePathA.ReleaseBuffer();
+						git_index_remove_bypath(index, filePathA); // ignore error
 					}
 					else
 					{
-						if (git_index_add_bypath(index, filePathA.GetBuffer()))
+						if (git_index_add_bypath(index, filePathA))
 						{
-							filePathA.ReleaseBuffer();
 							bAddSuccess = false;
 							CMessageBox::Show(m_hWnd, CGit::GetLibGit2LastErr(_T("Could not add \"") + entry->GetGitPathString() + _T("\" to index.")), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 							break;
 						}
-						filePathA.ReleaseBuffer();
 					}
 
 					if (entry->m_Action & CTGitPath::LOGACTIONS_REPLACED)
 					{
-						git_index_remove_bypath(index, filePathA.GetBuffer()); // ignore error
-						filePathA.ReleaseBuffer();
+						git_index_remove_bypath(index, filePathA); // ignore error
 					}
 
 					++nchecked;

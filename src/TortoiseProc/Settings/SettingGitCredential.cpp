@@ -519,7 +519,6 @@ CString CSettingGitCredential::Load(CString key)
 	const git_config_entry *entry;
 	if (!git_config_get_entry(&entry, config, cmdA))
 		valueA = CStringA(entry->value);
-	cmdA.ReleaseBuffer();
 	git_config_free(config);
 
 	return CUnicodeUtils::GetUnicode(valueA);

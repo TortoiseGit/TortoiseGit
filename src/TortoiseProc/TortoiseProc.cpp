@@ -432,7 +432,7 @@ BOOL CTortoiseProcApp::InitInstance()
 				{
 					git_oid oid;
 					CStringA wcRootA(wcroot + CPathUtils::GetAppDirectory());
-					if (!git_odb_hash(&oid, wcRootA.GetBuffer(), wcRootA.GetLength(), GIT_OBJ_BLOB))
+					if (!git_odb_hash(&oid, wcRootA, wcRootA.GetLength(), GIT_OBJ_BLOB))
 					{
 						CStringA hash;
 						git_oid_tostr(hash.GetBufferSetLength(GIT_OID_HEXSZ + 1), GIT_OID_HEXSZ + 1, &oid);
