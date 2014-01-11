@@ -299,9 +299,10 @@ void CGit::StringAppend(CString *str,BYTE *p,int code,int length)
 	//if (len==0)
 	//	return ;
 	//buf = new WCHAR[len*4 + 1];
-	buf = str->GetBuffer(len*4+1+str->GetLength())+str->GetLength();
-	int newLen = MultiByteToWideChar(code, 0, (LPCSTR)p, len, buf, len*4);
-	str->ReleaseBuffer(newLen); // no - 1 because MultiByteToWideChar is called with a fixed length (and *p is not null-terminated)
+	int currentContentLen = str->GetLength();
+	buf = str->GetBuffer(len * 4 + 1 + currentContentLen) + currentContentLen;
+	int appendedLen = MultiByteToWideChar(code, 0, (LPCSTR)p, len, buf, len * 4);
+	str->ReleaseBuffer(currentContentLen + appendedLen); // no - 1 because MultiByteToWideChar is called with a fixed length (thus no nul char included)
 	//str->Append(buf);
 	//delete buf;
 }
