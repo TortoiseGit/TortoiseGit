@@ -284,12 +284,8 @@ int CGit::RunAsync(CString cmd, PROCESS_INFORMATION *piOut, HANDLE *hReadOut, HA
 //Becuase A2W use stack as internal convert buffer.
 void CGit::StringAppend(CString *str,BYTE *p,int code,int length)
 {
-	//USES_CONVERSION;
-	//str->Append(A2W_CP((LPCSTR)p,code));
 	if(str == NULL)
 		return ;
-
-	WCHAR * buf;
 
 	int len ;
 	if(length<0)
@@ -298,13 +294,10 @@ void CGit::StringAppend(CString *str,BYTE *p,int code,int length)
 		len=length;
 	//if (len==0)
 	//	return ;
-	//buf = new WCHAR[len*4 + 1];
 	int currentContentLen = str->GetLength();
-	buf = str->GetBuffer(len * 4 + 1 + currentContentLen) + currentContentLen;
+	WCHAR * buf = str->GetBuffer(len * 4 + 1 + currentContentLen) + currentContentLen;
 	int appendedLen = MultiByteToWideChar(code, 0, (LPCSTR)p, len, buf, len * 4);
 	str->ReleaseBuffer(currentContentLen + appendedLen); // no - 1 because MultiByteToWideChar is called with a fixed length (thus no nul char included)
-	//str->Append(buf);
-	//delete buf;
 }
 
 // This method was originally used to check for orphaned branches
