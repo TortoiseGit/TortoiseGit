@@ -802,9 +802,7 @@ int CGitHeadFileList::CallBack(const unsigned char *sha1, const char *base, int 
 	p->at(cur).m_Hash = (char*)sha1;
 	p->at(cur).m_FileName.Empty();
 
-	if(base)
-		g_Git.StringAppend(&p->at(cur).m_FileName, (BYTE*)base, CP_UTF8, baselen);
-
+	g_Git.StringAppend(&p->at(cur).m_FileName, (BYTE*)base, CP_UTF8, baselen);
 	g_Git.StringAppend(&p->at(cur).m_FileName,(BYTE*)pathname, CP_UTF8);
 
 	p->at(cur).m_FileName.MakeLower();
