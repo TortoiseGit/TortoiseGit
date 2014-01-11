@@ -57,7 +57,6 @@
 			a folder, a shortcut or for multiple selected items.
 		</para>
 	</sect2>
-<!--
 	<sect2 id="tgit-dug-general-drag">
 		<title>Drag and Drop</title>
 		<indexterm>
@@ -80,7 +79,6 @@
 			which is under version control.
 		</para>
 	</sect2>
--->
 	<sect2 id="tgit-dug-general-shortcuts">
 		<title>Common Shortcuts</title>
 		<para>
