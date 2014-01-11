@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2013 - TortoiseGit
+// Copyright (C) 2009-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -110,7 +110,7 @@ public:
 			(CShadowTree*)m_pList->GetItemData((int)lParam2));
 	}
 
-	int Compare(CShadowTree* pLeft, CShadowTree* pRight)
+	int Compare(const CShadowTree* pLeft, const CShadowTree* pRight)
 	{
 		int result=CompareNoDesc(pLeft,pRight);
 		if(m_desc)
@@ -118,7 +118,7 @@ public:
 		return result;
 	}
 
-	int CompareNoDesc(CShadowTree* pLeft, CShadowTree* pRight)
+	int CompareNoDesc(const CShadowTree* pLeft, const CShadowTree* pRight)
 	{
 		switch(m_col)
 		{
@@ -131,7 +131,7 @@ public:
 		}
 		return 0;
 	}
-	int SortStrCmp(CString left, CString right)
+	int SortStrCmp(const CString& left, const CString& right)
 	{
 		if (m_bSortLogical)
 			return StrCmpLogicalW(left, right);

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -90,12 +90,12 @@ CGitIndexList::~CGitIndexList()
 	m_critRepoSec.Term();
 }
 
-static bool SortIndex(CGitIndex &Item1, CGitIndex &Item2)
+static bool SortIndex(const CGitIndex &Item1, const CGitIndex &Item2)
 {
 	return Item1.m_FileName.Compare(Item2.m_FileName) < 0;
 }
 
-static bool SortTree(CGitTreeItem &Item1, CGitTreeItem &Item2)
+static bool SortTree(const CGitTreeItem &Item1, const CGitTreeItem &Item2)
 {
 	return Item1.m_FileName.Compare(Item2.m_FileName) < 0;
 }
@@ -824,7 +824,7 @@ int CGitHeadFileList::CallBack(const unsigned char *sha1, const char *base, int 
 	return READ_TREE_RECURSIVE;
 }
 
-int ReadTreeRecursive(git_repository &repo, git_tree * tree, CStringA base, int (*CallBack) (const unsigned char *, const char *, int, const char *, unsigned int, int, void *),void *data)
+int ReadTreeRecursive(git_repository &repo, const git_tree * tree, const CStringA& base, int (*CallBack) (const unsigned char *, const char *, int, const char *, unsigned int, int, void *), void *data)
 {
 	size_t count = git_tree_entrycount(tree);
 	for (size_t i = 0; i < count; ++i)

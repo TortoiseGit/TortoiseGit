@@ -66,8 +66,8 @@ class CEnvironment:public std::vector<TCHAR>
 {
 public:
 	void CopyProcessEnvironment();
-	CString GetEnv(TCHAR *name);
-	void SetEnv(TCHAR* name, TCHAR* value);
+	CString GetEnv(const TCHAR *name);
+	void SetEnv(const TCHAR* name, const TCHAR* value);
 };
 class CGit
 {
@@ -155,10 +155,10 @@ public:
 	static CString ms_LastMsysGitDir;	// the last msysgitdir added to the path, blank if none
 	static int ms_LastMsysGitVersion;
 	static int m_LogEncode;
-	static bool IsBranchNameValid(CString branchname);
+	static bool IsBranchNameValid(const CString& branchname);
 	bool IsBranchTagNameUnique(const CString& name);
 	bool BranchTagExists(const CString& name, bool isBranch = true);
-	unsigned int Hash2int(CGitHash &hash);
+	unsigned int Hash2int(const CGitHash &hash);
 
 	PROCESS_INFORMATION m_CurrentGitPi;
 
@@ -188,11 +188,11 @@ public:
 	int GetGitEncode(TCHAR* configkey);
 
 	bool IsFastForward(const CString &from, const CString &to, CGitHash * commonAncestor = NULL);
-	CString GetConfigValue(CString name, int encoding = CP_UTF8, BOOL RemoveCR = TRUE);
-	bool GetConfigValueBool(CString name);
+	CString GetConfigValue(const CString& name, int encoding = CP_UTF8, BOOL RemoveCR = TRUE);
+	bool GetConfigValueBool(const CString& name);
 
-	int SetConfigValue(CString key, CString value, CONFIG_TYPE type = CONFIG_LOCAL, int encoding = CP_UTF8);
-	int UnsetConfigValue(CString key, CONFIG_TYPE type = CONFIG_LOCAL, int encoding = CP_UTF8);
+	int SetConfigValue(const CString& key, const CString& value, CONFIG_TYPE type = CONFIG_LOCAL, int encoding = CP_UTF8);
+	int UnsetConfigValue(const CString& key, CONFIG_TYPE type = CONFIG_LOCAL, int encoding = CP_UTF8);
 
 	CString GetUserName(void);
 	CString GetUserEmail(void);
@@ -201,12 +201,12 @@ public:
 	// read current branch name from HEAD file, returns 0 on success, -1 on failure, 1 detached (branch name "HEAD" returned)
 	static int GetCurrentBranchFromFile(const CString &sProjectRoot, CString &sBranchOut, bool fallback = false);
 	BOOL CheckCleanWorkTree();
-	int Revert(CString commit, CTGitPathList &list, bool keep=true);
-	int Revert(CString commit, CTGitPath &path);
-	CString GetGitLastErr(CString msg);
-	CString GetGitLastErr(CString msg, int cmd);
+	int Revert(const CString& commit, const CTGitPathList &list, bool keep=true);
+	int Revert(const CString& commit, const CTGitPath &path);
+	CString GetGitLastErr(const CString& msg);
+	CString GetGitLastErr(const CString& msg, int cmd);
 	static CString GetLibGit2LastErr();
-	static CString GetLibGit2LastErr(CString msg);
+	static CString GetLibGit2LastErr(const CString& msg);
 	bool SetCurrentDir(CString path, bool submodule = false)
 	{
 		bool b = m_GitDir.HasAdminDir(path, submodule ? false : !!PathIsDirectory(path), &m_CurrentDir);
@@ -276,7 +276,7 @@ public:
 	int GetRemoteList(STRING_VECTOR &list);
 	int GetBranchList(STRING_VECTOR &list, int *Current,BRANCH_TYPE type=BRANCH_LOCAL);
 	int GetTagList(STRING_VECTOR &list);
-	int GetRemoteTags(CString remote, STRING_VECTOR &list);
+	int GetRemoteTags(const CString& remote, STRING_VECTOR &list);
 	int GetMapHashToFriendName(MAP_HASH_NAME &map);
 
 	CString DerefFetchHead();
@@ -288,18 +288,18 @@ public:
 	CString	FixBranchName_Mod(CString& branchName);
 	CString	FixBranchName(const CString& branchName);
 
-	CString GetLogCmd(const CString &range, CTGitPath *path = NULL, int count=-1, int InfoMask = LOG_INFO_FULL_DIFF|LOG_INFO_STAT|LOG_INFO_FILESTATE|LOG_INFO_BOUNDARY|LOG_INFO_DETECT_COPYRENAME|LOG_INFO_SHOW_MERGEDFILE, bool paramonly=false, CFilterData * filter =NULL);
+	CString GetLogCmd(const CString &range, const CTGitPath *path = NULL, int count=-1, int InfoMask = LOG_INFO_FULL_DIFF|LOG_INFO_STAT|LOG_INFO_FILESTATE|LOG_INFO_BOUNDARY|LOG_INFO_DETECT_COPYRENAME|LOG_INFO_SHOW_MERGEDFILE, bool paramonly=false, CFilterData * filter =NULL);
 
-	int GetHash(CGitHash &hash, TCHAR* friendname);
+	int GetHash(CGitHash &hash, const TCHAR* friendname);
 	int GetHash(CGitHash &hash, CString ref) { return GetHash(hash, ref.GetBuffer()); }
 
 	int BuildOutputFormat(CString &format,bool IsFull=TRUE);
 	//int GetShortLog(const CString &log,CTGitPath * path=NULL, int count =-1);
-	static void StringAppend(CString *str,BYTE *p,int code=CP_UTF8,int length=-1);
+	static void StringAppend(CString *str, const BYTE *p, int code = CP_UTF8, int length = -1);
 
 	BOOL CanParseRev(CString ref);
 	BOOL IsInitRepos();
-	int ListConflictFile(CTGitPathList &list,CTGitPath *path=NULL);
+	int ListConflictFile(CTGitPathList &list, const CTGitPath *path = nullptr);
 	int GetRefList(STRING_VECTOR &list);
 
 	int RefreshGitIndex();
@@ -352,7 +352,7 @@ public:
 		return FALSE;
 	}
 
-	static CString GetShortName(CString ref, REF_TYPE *type);
+	static CString GetShortName(const CString& ref, REF_TYPE *type);
 
 	enum
 	{

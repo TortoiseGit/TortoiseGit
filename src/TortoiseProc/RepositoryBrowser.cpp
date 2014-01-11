@@ -1,7 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2013 - TortoiseGit
-// Copyright (C) 2012-2013 Sven Strickroth <email@cs-ware.de>
+// Copyright (C) 2009-2014 - TortoiseGit
 // Copyright (C) 2003-2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -115,7 +114,7 @@ public:
 
 		return result;
 	}
-	int SortStrCmp(CString &left, CString &right)
+	int SortStrCmp(const CString &left, const CString &right)
 	{
 		if (CRepositoryBrowser::s_bSortLogical)
 			return StrCmpLogicalW(left, right);
@@ -352,7 +351,7 @@ void CRepositoryBrowser::Refresh()
 	EndWaitCursor();
 }
 
-int CRepositoryBrowser::ReadTreeRecursive(git_repository &repo, git_tree * tree, CShadowFilesTree * treeroot)
+int CRepositoryBrowser::ReadTreeRecursive(git_repository &repo, const git_tree * tree, CShadowFilesTree * treeroot)
 {
 	size_t count = git_tree_entrycount(tree);
 

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -286,7 +286,7 @@ public:
 };
 
 template<class T>
-int GetRangeInSortVector(T &vector,LPTSTR pstr,int len, int *start, int *end, int pos)
+int GetRangeInSortVector(const T &vector, LPCTSTR pstr, int len, int *start, int *end, int pos)
 {
 	if( pos < 0)
 	{
@@ -348,7 +348,7 @@ int GetRangeInSortVector(T &vector,LPTSTR pstr,int len, int *start, int *end, in
 }
 
 template<class T>
-int SearchInSortVector(T &vector, LPTSTR pstr, int len)
+int SearchInSortVector(const T &vector, LPCTSTR pstr, int len)
 {
 	int end = (int)vector.size() - 1;
 	int start = 0;

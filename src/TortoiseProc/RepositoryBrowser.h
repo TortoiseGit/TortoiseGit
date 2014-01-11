@@ -1,7 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2013 - TortoiseGit
-// Copyright (C) 2012-2013 - Sven Strickroth <email@cs-ware.de>
+// Copyright (C) 2009-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -134,7 +133,7 @@ private:
 	bool					m_currSortDesc;
 
 	CShadowFilesTree		m_TreeRoot;
-	int						ReadTreeRecursive(git_repository &repo, git_tree * tree, CShadowFilesTree * treeroot);
+	int						ReadTreeRecursive(git_repository &repo, const git_tree * tree, CShadowFilesTree * treeroot);
 	int						ReadTree(CShadowFilesTree * treeroot);
 	int						m_nIconFolder;
 	int						m_nOpenIconFolder;

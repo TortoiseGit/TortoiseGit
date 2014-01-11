@@ -187,7 +187,7 @@ CGit::~CGit(void)
 	}
 }
 
-bool CGit::IsBranchNameValid(CString branchname)
+bool CGit::IsBranchNameValid(const CString& branchname)
 {
 	CStringA branchA = CUnicodeUtils::GetUTF8(_T("refs/heads/") + branchname);
 	return !!git_reference_is_valid_name(branchA);
@@ -282,7 +282,7 @@ int CGit::RunAsync(CString cmd, PROCESS_INFORMATION *piOut, HANDLE *hReadOut, HA
 }
 //Must use sperate function to convert ANSI str to union code string
 //Becuase A2W use stack as internal convert buffer.
-void CGit::StringAppend(CString *str,BYTE *p,int code,int length)
+void CGit::StringAppend(CString *str, const BYTE *p, int code,int length)
 {
 	if(str == NULL)
 		return ;
@@ -479,7 +479,7 @@ CString CGit::GetUserEmail(void)
 	return GetConfigValue(L"user.email");
 }
 
-CString CGit::GetConfigValue(CString name,int encoding, BOOL RemoveCR)
+CString CGit::GetConfigValue(const CString& name, int encoding, BOOL RemoveCR)
 {
 	CString configValue;
 	int start = 0;
@@ -523,7 +523,7 @@ CString CGit::GetConfigValue(CString name,int encoding, BOOL RemoveCR)
 	}
 }
 
-bool CGit::GetConfigValueBool(CString name)
+bool CGit::GetConfigValueBool(const CString& name)
 {
 	CString configValue = GetConfigValue(name);
 	configValue.MakeLower();
@@ -534,7 +534,7 @@ bool CGit::GetConfigValueBool(CString name)
 		return false;
 }
 
-int CGit::SetConfigValue(CString key, CString value, CONFIG_TYPE type, int encoding)
+int CGit::SetConfigValue(const CString& key, const CString& value, CONFIG_TYPE type, int encoding)
 {
 	if(this->m_IsUseGitDLL)
 	{
@@ -586,7 +586,7 @@ int CGit::SetConfigValue(CString key, CString value, CONFIG_TYPE type, int encod
 	return 0;
 }
 
-int CGit::UnsetConfigValue(CString key, CONFIG_TYPE type, int encoding)
+int CGit::UnsetConfigValue(const CString& key, CONFIG_TYPE type, int encoding)
 {
 	if(this->m_IsUseGitDLL)
 	{
@@ -813,7 +813,7 @@ int CGit::BuildOutputFormat(CString &format,bool IsFull)
 	return 0;
 }
 
-CString CGit::GetLogCmd(const CString &range, CTGitPath *path, int count, int mask, bool paramonly,
+CString CGit::GetLogCmd(const CString &range, const CTGitPath *path, int count, int mask, bool paramonly,
 						CFilterData *Filter)
 {
 	CString cmd;
@@ -1081,7 +1081,7 @@ int CGit::RunLogFile(CString cmd, const CString &filename, CString *stdErr)
 	return exitcode;
 }
 
-int CGit::GetHash(CGitHash &hash, TCHAR* friendname)
+int CGit::GetHash(CGitHash &hash, const TCHAR* friendname)
 {
 	// no need to parse a ref if it's already a 40-byte hash
 	if (CGitHash::IsValidSHA1(friendname))
@@ -1265,7 +1265,7 @@ int CGit::GetTagList(STRING_VECTOR &list)
 Use this method only if m_IsUseLibGit2 is used for fallbacks.
 If you directly use libgit2 methods, use GetLibGit2LastErr instead.
 */
-CString CGit::GetGitLastErr(CString msg)
+CString CGit::GetGitLastErr(const CString& msg)
 {
 	if (this->m_IsUseLibGit2)
 		return GetLibGit2LastErr(msg);
@@ -1279,7 +1279,7 @@ CString CGit::GetGitLastErr(CString msg)
 	}
 }
 
-CString CGit::GetGitLastErr(CString msg, int cmd)
+CString CGit::GetGitLastErr(const CString& msg, int cmd)
 {
 	if (UsingLibGit2(cmd))
 		return GetLibGit2LastErr(msg);
@@ -1306,7 +1306,7 @@ CString CGit::GetLibGit2LastErr()
 		return _T("An error occoured in libgit2, but no message is available.");
 }
 
-CString CGit::GetLibGit2LastErr(CString msg)
+CString CGit::GetLibGit2LastErr(const CString& msg)
 {
 	if (!msg.IsEmpty())
 		return msg + _T("\n") + GetLibGit2LastErr();
@@ -1521,7 +1521,7 @@ int CGit::GetRemoteList(STRING_VECTOR &list)
 	}
 }
 
-int CGit::GetRemoteTags(CString remote, STRING_VECTOR &list)
+int CGit::GetRemoteTags(const CString& remote, STRING_VECTOR &list)
 {
 	CString cmd, out, err;
 	cmd.Format(_T("git.exe ls-remote -t \"%s\""), remote);
@@ -1930,7 +1930,7 @@ BOOL CGit::CheckCleanWorkTree()
 
 	return TRUE;
 }
-int CGit::Revert(CString commit, CTGitPathList &list, bool)
+int CGit::Revert(const CString& commit, const CTGitPathList &list, bool)
 {
 	int ret;
 	for (int i = 0; i < list.GetCount(); ++i)
@@ -1941,7 +1941,7 @@ int CGit::Revert(CString commit, CTGitPathList &list, bool)
 	}
 	return 0;
 }
-int CGit::Revert(CString commit, CTGitPath &path)
+int CGit::Revert(const CString& commit, const CTGitPath &path)
 {
 	CString cmd, out;
 
@@ -2006,7 +2006,7 @@ int CGit::Revert(CString commit, CTGitPath &path)
 	return 0;
 }
 
-int CGit::ListConflictFile(CTGitPathList &list,CTGitPath *path)
+int CGit::ListConflictFile(CTGitPathList &list, const CTGitPath *path)
 {
 	BYTE_VECTOR vector;
 
@@ -2048,7 +2048,7 @@ bool CGit::IsFastForward(const CString &from, const CString &to, CGitHash * comm
 	return hash == basehash;
 }
 
-unsigned int CGit::Hash2int(CGitHash &hash)
+unsigned int CGit::Hash2int(const CGitHash &hash)
 {
 	int ret=0;
 	for (int i = 0; i < 4; ++i)
@@ -2122,7 +2122,7 @@ void CEnvironment::CopyProcessEnvironment()
 	FreeEnvironmentStrings(porig);
 }
 
-CString CEnvironment::GetEnv(TCHAR *name)
+CString CEnvironment::GetEnv(const TCHAR *name)
 {
 	CString str;
 	for (size_t i = 0; i < size(); ++i)
@@ -2139,7 +2139,7 @@ CString CEnvironment::GetEnv(TCHAR *name)
 	return _T("");
 }
 
-void CEnvironment::SetEnv(TCHAR *name, TCHAR* value)
+void CEnvironment::SetEnv(const TCHAR *name, const TCHAR* value)
 {
 	unsigned int i;
 	for (i = 0; i < size(); ++i)
@@ -2282,7 +2282,7 @@ int CGit::GetShortHASHLength()
 	return 7;
 }
 
-CString CGit::GetShortName(CString ref, REF_TYPE *out_type)
+CString CGit::GetShortName(const CString& ref, REF_TYPE *out_type)
 {
 	CString str=ref;
 	CString shortname;
