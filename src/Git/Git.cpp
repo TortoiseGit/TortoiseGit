@@ -292,8 +292,8 @@ void CGit::StringAppend(CString *str,BYTE *p,int code,int length)
 		len = (int)strlen((const char*)p);
 	else
 		len=length;
-	//if (len==0)
-	//	return ;
+	if (len == 0)
+		return;
 	int currentContentLen = str->GetLength();
 	WCHAR * buf = str->GetBuffer(len * 4 + 1 + currentContentLen) + currentContentLen;
 	int appendedLen = MultiByteToWideChar(code, 0, (LPCSTR)p, len, buf, len * 4);
