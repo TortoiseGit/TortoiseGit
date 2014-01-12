@@ -49,7 +49,6 @@
 			versioned file is in it (e.g. a flaceholder file ).
 		</para>
 	</tip>
-<!--
 	<para>
 		To add files from outside your working tree you can use
 		the drag-and-drop handler:
@@ -83,6 +82,7 @@
 			</listitem>
 		</orderedlist>
 	</para>
+<!--
 	<para>
 		You can also add files within a working copy simply by left-dragging and
 		dropping them onto the commit dialog.
