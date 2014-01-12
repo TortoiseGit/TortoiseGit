@@ -77,7 +77,7 @@ CSciEdit::CSciEdit(void) : m_DirectFunction(NULL)
 	, m_bDoStyle(false)
 	, m_nAutoCompleteMinChars(3)
 {
-	m_hModule = ::LoadLibrary(_T("SciLexer.DLL"));
+	m_hModule = ::LoadLibrary(_T("SciLexer_tgit.dll"));
 }
 
 CSciEdit::~CSciEdit(void)

@@ -591,20 +591,20 @@
 					<Component Id="C__gitlibs" Guid="$(var.GuidGitLibs)" Win64="$(var.Win64YesNo)">
 						<?if $(var.Platform) = "x86" ?>
 						<File Id="F__gitdll32" Name="gitdll32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\gitdll32.dll" KeyPath="yes" />
-						<File Id="F__zlib32" ShortName="ZLIB132.DLL" Name="zlib132.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\zlib132.dll" />
-						<File Id="F__libgit232" Name="libgit232.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\libgit232.dll" />
+						<File Id="F__zlib32" ShortName="ZLIB132.DLL" Name="zlib132_tgit.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\zlib132_tgit.dll" />
+						<File Id="F__libgit232" Name="libgit232_tgit.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\libgit232_tgit.dll" />
 						<?endif ?>
 						<?if $(var.Platform) = "x64" ?>
 						<File Id="F__gitdll" Name="gitdll.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\gitdll.dll" />
-						<File Id="F__zlib" ShortName="ZLIB1.DLL" Name="zlib1.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\zlib1.dll" />
-						<File Id="F__libgit2" Name="libgit2.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\libgit2.dll" />
+						<File Id="F__zlib" ShortName="ZLIB1.DLL" Name="zlib1_tgit.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\zlib1_tgit.dll" />
+						<File Id="F__libgit2" Name="libgit2_tgit.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\libgit2_tgit.dll" />
 						<?endif ?>
 					</Component>
 					<?if $(var.Platform) = "x64" ?>
 					<Component Id="C__gitlibs32" Guid="$(var.GuidGitLibs32)" Win64="$(var.Win64YesNo)">
 						<File Id="F__gitdll32" Name="gitdll32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\gitdll32.dll" KeyPath="yes" />
-						<File Id="F__zlib32" ShortName="ZLIB132.DLL" Name="zlib132.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\zlib132.dll" />
-						<File Id="F__libgit232" Name="libgit232.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\libgit232.dll" />
+						<File Id="F__zlib32" ShortName="ZLIB132.DLL" Name="zlib132_tgit.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\zlib132_tgit.dll" />
+						<File Id="F__libgit232" Name="libgit232_tgit.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\libgit232_tgit.dll" />
 					</Component>
 					<?endif ?>
 
@@ -716,7 +716,7 @@
 
 					<Component Id="C__TortoiseBlame" Guid="$(var.GuidTortoiseBlame)" Win64="$(var.Win64YesNo)">
 						<File Id="F__TortoiseBlame" ShortName="TBLAME.EXE" Name="TortoiseGitBlame.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGitBlame.exe" KeyPath="yes" />
-						<File Id="F__SciLexer" ShortName="SCILEX.DLL" Name="SciLexer.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\SciLexer.dll" />
+						<File Id="F__SciLexer" ShortName="SCILEX.DLL" Name="SciLexer_tgit.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\SciLexer_tgit.dll" />
 					</Component>
 
 					<Component Id="C__TortoiseGitBlameShortcuts" Guid="$(var.GuidTortoiseGitBlameShortcuts)" Win64="$(var.Win64YesNo)">

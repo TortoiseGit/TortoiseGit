@@ -56,7 +56,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	InitCommonControlsEx(&used);
 
 
-	HMODULE hSciLexerDll = ::LoadLibrary(_T("SciLexer.DLL"));
+	HMODULE hSciLexerDll = ::LoadLibrary(_T("SciLexer_tgit.dll"));
 	if (hSciLexerDll == NULL)
 		return FALSE;
 
