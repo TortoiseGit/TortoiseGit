@@ -231,7 +231,7 @@ void CPullFetchDlg::Refresh()
 		for (unsigned int i = 0; i < list.size(); ++i)
 		{
 			m_Remote.AddString(list[i]);
-			if(list[i] == pullRemote)
+			if (!m_bAllRemotes && list[i] == pullRemote)
 				sel = i;
 		}
 	}

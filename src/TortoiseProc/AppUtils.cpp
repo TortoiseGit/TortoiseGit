@@ -2273,12 +2273,13 @@ bool CAppUtils::Pull(bool showPush)
 	return true;
 }
 
-bool CAppUtils::Fetch(CString remoteName, bool allowRebase)
+bool CAppUtils::Fetch(CString remoteName, bool allowRebase, bool allRemotes)
 {
 	CPullFetchDlg dlg;
 	dlg.m_PreSelectRemote = remoteName;
 	dlg.m_bAllowRebase = allowRebase;
 	dlg.m_IsPull=FALSE;
+	dlg.m_bAllRemotes = allRemotes;
 
 	if(dlg.DoModal()==IDOK)
 	{
@@ -2439,7 +2440,10 @@ static void PushCallback(CProgressDlg *dlg, void *caller, int result)
 		bool rejected = dlg->GetLogText().Find(_T("! [rejected]")) > 0;
 		*(bool*)caller = rejected;
 		if (rejected)
+		{
 			dlg->m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUPULL)));
+			dlg->m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUFETCH)));
+		}
 		dlg->m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUPUSH)));
 	}
 }
@@ -2566,6 +2570,10 @@ bool CAppUtils::Push(CString selectLocalBranch)
 					Pull(true);
 				}
 				else if (ret == IDC_PROGRESS_BUTTON1 + 1)
+				{
+					Fetch(dlg.m_bPushAllRemotes ? _T("") : dlg.m_URL, true, !!dlg.m_bPushAllRemotes);
+				}
+				else if (ret == IDC_PROGRESS_BUTTON1 + 2)
 				{
 					Push(selectLocalBranch);
 				}
