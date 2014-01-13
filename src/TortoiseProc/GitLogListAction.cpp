@@ -86,17 +86,11 @@ int CGitLogList::RevertSelectedCommits(int parent)
 		if(r1->m_CommitHash.IsEmpty())
 			continue;
 
-		CString cmd, output, merge;
-		if (parent)
-			merge.Format(_T("-m %d "), parent);
-		cmd.Format(_T("git.exe revert --no-edit --no-commit %s%s"), merge, r1->m_CommitHash.ToString());
-		if (g_Git.Run(cmd, &output, CP_UTF8))
+		if (g_Git.GitRevert(true, true, parent, r1->m_CommitHash))
 		{
 			CString str;
 			str.LoadString(IDS_SVNACTION_FAILEDREVERT);
-			str += _T("\n");
-			str+= cmd;
-			str+= _T("\n")+output;
+			str = g_Git.GetGitLastErr(str, CGit::GIT_CMD_REVERT);
 			if( GetSelectedCount() == 1)
 				CMessageBox::Show(NULL, str, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 			else

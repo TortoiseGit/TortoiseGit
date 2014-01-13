@@ -360,11 +360,14 @@ public:
 		GIT_CMD_COMMIT_UPDATE_INDEX,
 		GIT_CMD_DIFF,
 		GIT_CMD_RESET,
+		GIT_CMD_REVERT,
 	};
 	bool UsingLibGit2(int cmd);
 
 	int GetUnifiedDiff(const CTGitPath& path, const git_revnum_t& rev1, const git_revnum_t& rev2, CString patchfile, bool bMerge, bool bCombine, int diffContext);
 	int GetUnifiedDiff(const CTGitPath& path, const git_revnum_t& rev1, const git_revnum_t& rev2, CStringA * buffer, bool bMerge, bool bCombine, int diffContext);
+
+	int GitRevert(bool bNoEdit, bool bNoCommit, int parent, const CGitHash &hash);
 };
 extern void GetTempPath(CString &path);
 extern CString GetTempFile();

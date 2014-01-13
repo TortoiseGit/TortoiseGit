@@ -2595,3 +2595,46 @@ int CGit::GetUnifiedDiff(const CTGitPath& path, const git_revnum_t& rev1, const 
 		return ret;
 	}
 }
+
+int CGit::GitRevert(bool bNoEdit, bool bNoCommit, int parent, const CGitHash &hash)
+{
+	if (UsingLibGit2(GIT_CMD_REVERT))
+	{
+		git_repository *repo = nullptr;
+		CStringA gitdirA = CUnicodeUtils::GetUTF8(CTGitPath(m_CurrentDir).GetGitPathString());
+		if (git_repository_open(&repo, gitdirA))
+			return -1;
+
+		git_commit *commit = nullptr;
+		if (git_commit_lookup(&commit, repo, (const git_oid *)hash.m_hash))
+		{
+			git_repository_free(repo);
+			return -1;
+		}
+
+		git_revert_opts revert_opts = GIT_REVERT_OPTS_INIT;
+		revert_opts.mainline = parent;
+		int result = git_revert(repo, commit, &revert_opts);
+
+		git_commit_free(commit);
+		git_repository_free(repo);
+		return !result ? 0 : -1;
+	}
+	else
+	{
+		CString cmd, merge, gitLastErr;
+		if (parent)
+			merge.Format(_T("-m %d "), parent);
+		cmd.Format(_T("git.exe revert --no-edit --no-commit %s%s"), merge, hash.ToString());
+		gitLastErr = cmd + _T("\n");
+		if (g_Git.Run(cmd, &gitLastErr, CP_UTF8))
+		{
+			return -1;
+		}
+		else
+		{
+			gitLastErr.Empty();
+			return 0;
+		}
+	}
+}
