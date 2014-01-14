@@ -108,7 +108,7 @@ void CGravatar::Init()
 	}
 }
 
-void CGravatar::LoadGravatar(const CString& email)
+void CGravatar::LoadGravatar(CString email)
 {
 	if (m_gravatarThread == nullptr)
 		return;
@@ -128,6 +128,8 @@ void CGravatar::LoadGravatar(const CString& email)
 		return;
 	}
 
+	email.Trim();
+	email.MakeLower();
 	m_gravatarLock.Lock();
 	bool diff = m_email != email;
 	m_email = email;
