@@ -67,9 +67,6 @@
     <Import Project="$(SolutionDir)TortoiseGit.common-staticlib.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup>
-    <_ProjectFileVersion>11.0.51106.1</_ProjectFileVersion>
-  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <AdditionalIncludeDirectories>..\tgit;..\zlib;..\include;..\tgit\compat;..\tgit\compat\poll;..\tgit\compat\vcbuild\include;..\tgit\compat\fnmatch;..\tgit\compat\regex;..\tgit\compat\win32;.\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>

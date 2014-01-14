@@ -38,9 +38,6 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(SolutionDir)TortoiseGit.common.props" />
   </ImportGroup>
-  <PropertyGroup>
-    <_ProjectFileVersion>11.0.51106.1</_ProjectFileVersion>
-  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <AdditionalIncludeDirectories>..\..\src\TortoiseShell;..\..\ext\gitdll;..\..\src\Utils;..\..\src\Git;..\..\src\TortoiseProc;..\..\src\Utils\MiscUI;..\..\src\TGitCache;..\..\ext\libgit2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>

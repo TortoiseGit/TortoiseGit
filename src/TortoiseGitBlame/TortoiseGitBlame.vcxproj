@@ -67,9 +67,6 @@
     <Import Project="$(SolutionDir)TortoiseGit.common.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup>
-    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
-  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <AdditionalIncludeDirectories>.\;..\..\ext\gitdll;..\..\ext\libgit2\include;..\Git;..\TortoiseProc;..\..\ext\scintilla\include;..\Utils;..\Utils\MiscUI;..\..\ext\hunspell;..\..\ext\ResizableLib;..\Resources;..\TortoiseMerge;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>

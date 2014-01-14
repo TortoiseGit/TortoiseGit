@@ -71,9 +71,6 @@
     <Import Project="$(SolutionDir)TortoiseGit.common-staticlib.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup>
-    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
-  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <AdditionalIncludeDirectories>..\..\ext\gitdll;..\git;..\;..\ext\scintilla\include;..\ext\hunspell;.\;.\MiscUi;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>

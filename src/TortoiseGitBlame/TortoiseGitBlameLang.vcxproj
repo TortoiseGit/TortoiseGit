@@ -69,9 +69,6 @@
     <Import Project="$(SolutionDir)TortoiseGit.common-langs.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup>
-    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
-  </PropertyGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
   </ItemGroup>

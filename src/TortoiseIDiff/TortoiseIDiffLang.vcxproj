@@ -69,9 +69,6 @@
     <Import Project="$(SolutionDir)TortoiseGit.common-langs.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup>
-    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
-  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ResourceCompile>
       <AdditionalIncludeDirectories>..\TortoiseShell;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>

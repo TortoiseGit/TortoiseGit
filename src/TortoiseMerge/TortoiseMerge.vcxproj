@@ -68,9 +68,6 @@
     <Import Project="$(SolutionDir)TortoiseGit.common.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup>
-    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
-  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <AdditionalIncludeDirectories>..\TortoiseMerge;..\..\ext\gitdll;..\git;.\svninclude;..\..\ext\apr\include;..\..\ext\apr-util\include;.\libsvn_diff;..\Utils;..\;..\Utils\MiscUI;..\..\ext\ResizableLib;..\..\ext\libgit2\include;..\..\ext\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>

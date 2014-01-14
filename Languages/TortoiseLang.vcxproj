@@ -63,9 +63,6 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
-  </PropertyGroup>
-  <PropertyGroup>
     <NMakeBuildCommandLine>build-lang.cmd $(OutDir)</NMakeBuildCommandLine>
     <NMakeReBuildCommandLine>build-lang.cmd $(OutDir)</NMakeReBuildCommandLine>
     <NMakeCleanCommandLine>build-lang.cmd $(OutDir) clean</NMakeCleanCommandLine>
