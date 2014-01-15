@@ -44,30 +44,10 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(SolutionDir)TortoiseGit.common.props" />
-    <Import Project="$(SolutionDir)TortoiseGit.common-dll.props" />
-    <Import Project="$(SolutionDir)TortoiseGit.common-langs.props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(SolutionDir)TortoiseGit.common.props" />
-    <Import Project="$(SolutionDir)TortoiseGit.common-dll.props" />
-    <Import Project="$(SolutionDir)TortoiseGit.common-langs.props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(SolutionDir)TortoiseGit.common.props" />
-    <Import Project="$(SolutionDir)TortoiseGit.common-dll.props" />
-    <Import Project="$(SolutionDir)TortoiseGit.common-langs.props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(SolutionDir)TortoiseGit.common.props" />
-    <Import Project="$(SolutionDir)TortoiseGit.common-dll.props" />
-    <Import Project="$(SolutionDir)TortoiseGit.common-langs.props" />
-  </ImportGroup>
+  <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  <Import Project="$(SolutionDir)TortoiseGit.common.props" />
+  <Import Project="$(SolutionDir)TortoiseGit.common-dll.props" />
+  <Import Project="$(SolutionDir)TortoiseGit.common-langs.props" />
   <PropertyGroup Label="UserMacros" />
   <ItemGroup>
     <ClInclude Include="resource.h" />
