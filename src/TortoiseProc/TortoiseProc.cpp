@@ -379,10 +379,7 @@ BOOL CTortoiseProcApp::InitInstance()
 		pathList.AddPath(CTGitPath::CTGitPath(g_Git.m_CurrentDir));
 	}
 
-	// Subversion sometimes writes temp files to the current directory!
-	// Since TSVN doesn't need a specific CWD anyway, we just set it
-	// to the users temp folder: that way, Subversion is guaranteed to
-	// have write access to the CWD
+	// Set CWD to temporary dir, and restore it later
 	{
 		DWORD len = GetCurrentDirectory(0, NULL);
 		if (len)

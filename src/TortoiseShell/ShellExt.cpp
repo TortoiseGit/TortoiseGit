@@ -91,7 +91,6 @@ void LoadLangDll()
 		if (dirpointA)
 			*dirpointA = 0;
 		strcat_s(langdirA, "\\Languages");
-//		bindtextdomain ("subversion", langdirA);
 
 		BOOL bIsWow = FALSE;
 		IsWow64Process(GetCurrentProcess(), &bIsWow);

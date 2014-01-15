@@ -124,7 +124,7 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 						files_.push_back(str);
 						if (i == 0)
 						{
-							//get the Subversion status of the item
+							//get the git status of the item
 							git_wc_status_kind status = git_wc_status_none;
 							CTGitPath askedpath;
 							askedpath.SetFromWin(str.c_str());
@@ -231,7 +231,7 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 					stdstring str = child.toString();
 					if ((str.empty() == false)&&(g_ShellCache.IsContextPathAllowed(str.c_str())))
 					{
-						//check if our menu is requested for a subversion admin directory
+						//check if our menu is requested for a git admin directory
 						if (g_GitAdminDir.IsAdminDirPath(str.c_str()))
 							continue;
 
@@ -242,7 +242,7 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 						itemStates |= (strpath.GetFileExtension().CompareNoCase(_T(".patch"))==0) ? ITEMIS_PATCHFILE : 0;
 						if (!statfetched)
 						{
-							//get the Subversion status of the item
+							//get the git status of the item
 							git_wc_status_kind status = git_wc_status_none;
 							if ((g_ShellCache.IsSimpleContext())&&(strpath.IsDirectory()))
 							{
@@ -925,7 +925,7 @@ STDMETHODIMP CShellExt::QueryContextMenu_Wrap(HMENU hMenu,
 			return S_OK;
 	}
 
-	//check if our menu is requested for a subversion admin directory
+	//check if our menu is requested for a git admin directory
 	if (g_GitAdminDir.IsAdminDirPath(folder_.c_str()))
 		return S_OK;
 

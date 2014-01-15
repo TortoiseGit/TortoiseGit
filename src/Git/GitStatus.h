@@ -89,7 +89,7 @@ typedef BOOL (*FILL_STATUS_CALLBACK)(const CString &path, git_wc_status_kind sta
 
 /**
  * \ingroup Git
- * Handles Subversion status of working copies.
+ * Handles git status of working copies.
  */
 class GitStatus
 {
@@ -113,7 +113,7 @@ public:
 
 
 	/**
-	 * Reads the Subversion status of the working copy entry. No
+	 * Reads the git status of the working copy entry. No
 	 * recurse is done, even if the entry is a directory.
 	 * If the status of the text and property part are different
 	 * then the more important status is returned.
@@ -121,7 +121,7 @@ public:
 	static git_wc_status_kind GetAllStatus(const CTGitPath& path, git_depth_t depth = git_depth_empty, bool * assumeValid = NULL, bool * skipWorktree = NULL);
 
 	/**
-	 * Reads the Subversion status of the working copy entry and all its
+	 * Reads the git status of the working copy entry and all its
 	 * subitems. The resulting status is determined by using priorities for
 	 * each status. The status with the highest priority is then returned.
 	 * If the status of the text and property part are different then
@@ -145,7 +145,7 @@ public:
 	static BOOL IsImportant(git_wc_status_kind status) {return (GetMoreImportant(git_wc_status_added, status)==status);}
 
 	/**
-	 * Reads the Subversion text status of the working copy entry. No
+	 * Reads the git text status of the working copy entry. No
 	 * recurse is done, even if the entry is a directory.
 	 * The result is stored in the public member variable status.
 	 * Use this method if you need detailed information about a file/folder, not just the raw status (like "normal", "modified").
@@ -158,7 +158,7 @@ public:
 	void GetStatus(const CTGitPath& path, bool update = false, bool noignore = false, bool noexternals = false);
 
 	/**
-	 * Returns a string representation of a Subversion status.
+	 * Returns a string representation of a git status.
 	 * \param status the status enum
 	 * \param string a string representation
 	 */

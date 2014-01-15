@@ -24,7 +24,7 @@
 /**
  * \ingroup TortoiseProc
  *
- * A dialog box which is used by Subversion authentication callback
+ * A dialog box which is used by git authentication callback
  * to prompt the user for authentication data.
  */
 class CPromptDlg : public CDialog

@@ -150,7 +150,7 @@ void CShellUpdater::WorkerThread()
 						CGitStatusCache::Instance().AddPathToWatch(workingPath);
 				}
 				// first send a notification about a sub folder change, so explorer doesn't discard
-				// the folder notification. Since we only know for sure that the subversion admin
+				// the folder notification. Since we only know for sure that the git admin
 				// dir is present, we send a notification for that folder.
 				CString admindir = workingPath.GetWinPathString() + _T("\\") + g_GitAdminDir.GetAdminDirName();
 				if(::PathFileExists(admindir))

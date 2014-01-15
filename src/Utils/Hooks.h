@@ -145,7 +145,7 @@ public:
 	 * in \c pathList, separated by newlines. The hook script can parse this
 	 * file to get all the paths the update is about to be done on.
 	 * The string "%DEPTH%" is replaced with the numerical value (string) of the
-	 * Git_depth_t parameter. See the Subversion source documentation about the
+	 * Git_depth_t parameter. See the git source documentation about the
 	 * values.
 	 */
 	bool				PreCommit(const CTGitPathList& pathList, git_depth_t depth,
@@ -165,7 +165,7 @@ public:
 	 * in \c pathList, separated by newlines. The hook script can parse this
 	 * file to get all the paths the commit is about to be done on.
 	 * The string "%DEPTH%" is replaced with the numerical value (string) of the
-	 * Git_depth_t parameter. See the Subversion source documentation about the
+	 * Git_depth_t parameter. See the git source documentation about the
 	 * values.
 	 */
 	bool				PostCommit(const CTGitPathList& pathList, git_depth_t depth,

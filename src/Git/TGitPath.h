@@ -241,7 +241,7 @@ public:
 	bool Delete(bool bTrash) const;
 
 	/**
-	 * Checks if a Subversion admin directory is present. For files, the check
+	 * Checks if a git admin directory is present. For files, the check
 	 * is done in the same directory. For folders, it checks if the folder itself
 	 * contains an admin directory.
 	 */
@@ -259,7 +259,7 @@ public:
 	int  GetAdminDirMask() const;
 
 	/**
-	 * Checks if the path point to or below a Subversion admin directory (.Git).
+	 * Checks if the path point to or below a git admin directory (.Git).
 	 */
 	bool IsAdminDir() const;
 
@@ -396,7 +396,7 @@ public:
 	static bool DeleteViaShell(LPCTSTR path, bool useTrashbin);
 	/** Remove duplicate entries from the list (sorts the list as a side-effect */
 	void RemoveDuplicates();
-	/** Removes all paths which are on or in a Subversion admin directory */
+	/** Removes all paths which are on or in a git admin directory */
 	void RemoveAdminPaths();
 	void RemovePath(const CTGitPath& path);
 	void RemoveItem(CTGitPath &path);

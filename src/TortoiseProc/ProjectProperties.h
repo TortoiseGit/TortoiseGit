@@ -46,7 +46,7 @@
 /**
  * \ingroup TortoiseProc
  * Provides methods for retrieving information about bug/issue trackers
- * associated with a Subversion repository/working copy and other project
+ * associated with a git repository/working copy and other project
  * related properties.
  */
 class ProjectProperties

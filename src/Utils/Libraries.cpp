@@ -34,7 +34,7 @@ DEFINE_GUID(FOLDERTYPEID_GITWC,       0xb118c031, 0xa977, 0x4a67, 0x93, 0x44, 0x
 #endif
 
 /**
- * Makes sure a library named "Subversion" exists and has our template
+ * Makes sure a library named "Git" exists and has our template
  * set to it.
  * If the library already exists, the template is set.
  * If the library doesn't exist, it is created.

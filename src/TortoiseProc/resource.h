@@ -213,7 +213,6 @@
 #define IDS_PROCEXPORTERRFOLDER         1030
 #define IDC_LOGBUTTON                   1031
 #define IDC_GETALL                      1031
-#define IDC_EDITCONFIG                  1031
 #define IDC_UPDATE                      1031
 #define IDS_PROC_NOZIPFILE              1031
 #define IDS_PROC_KEEPFILELOCAL          1032

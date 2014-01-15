@@ -38,11 +38,11 @@ typedef struct FileStatusCacheEntry
 /**
  * \ingroup TortoiseShell
  * This class represents a caching mechanism for the
- * subversion statuses. Once a status for a versioned
+ * git statuses. Once a status for a versioned
  * file is requested (GetFileStatus()) first its checked
  * if that status is already in the cache. If it is not
- * then the subversion statuses for ALL files in the same
- * directory is fetched and cached. This is because subversion
+ * then the git statuses for ALL files in the same
+ * directory is fetched and cached. This is because git
  * needs almost the same time to get one or all status (in
  * the same directory).
  * To prevent a cache flush for the explorer folder view

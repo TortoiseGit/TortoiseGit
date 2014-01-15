@@ -27,7 +27,7 @@
 /**
  * \ingroup TortoiseProc
  * This is the Proxy page of the settings dialog. It gives the user the
- * possibility to set the proxy settings for subversion clients.
+ * possibility to set the proxy settings for git clients.
  */
 class CSetProxyPage : public ISettingsPropPage
 {

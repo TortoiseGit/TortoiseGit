@@ -27,8 +27,8 @@ typedef int (__cdecl *GENERICCOMPAREFN)(const void * elem1, const void * elem2);
 
 /**
  * \ingroup TortoiseProc
- * Handles different Subversion commands and shows the notify messages
- * in a listbox. Since several Subversion commands have similar notify
+ * Handles different git commands and shows the notify messages
+ * in a listbox. Since several git commands have similar notify
  * messages they are grouped together in this single class.
  */
 class CGitProgressDlg : public CResizableStandAloneDialog

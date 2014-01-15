@@ -2687,7 +2687,6 @@ int CGitLogListBase::FetchLogAsync(void * data)
 	return 0;
 }
 
-//this is the thread function which calls the subversion function
 UINT CGitLogListBase::LogThreadEntry(LPVOID pVoid)
 {
 	return ((CGitLogListBase*)pVoid)->LogThread();

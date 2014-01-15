@@ -455,8 +455,8 @@ private:
 /**
  * \ingroup SVN
  * A List control, based on the MFC CListCtrl which shows a list of
- * files with their Subversion status. The control also provides a context
- * menu to do some Subversion tasks on the selected files.
+ * files with their git status. The control also provides a context
+ * menu to do some git tasks on the selected files.
  *
  * This is the main control used in many dialogs to show a list of files to
  * work on.
@@ -717,7 +717,7 @@ public:
 	 */
 	void PutUnversionedLast(bool bLast) {m_bUnversionedLast = bLast;}
 	/**
-	 * Fetches the Subversion status of all files and stores the information
+	 * Fetches the git status of all files and stores the information
 	 * about them in an internal array.
 	 * \param sFilePath path to a file which contains a list of files and/or folders for which to
 	 *                  fetch the status, separated by newlines.
