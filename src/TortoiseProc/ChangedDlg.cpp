@@ -39,6 +39,7 @@ CChangedDlg::CChangedDlg(CWnd* pParent /*=NULL*/)
 	, m_bCanceled(false)
 	, m_bShowIgnored(FALSE)
 	, m_bShowLocalChangesIgnored(FALSE)
+	, m_bWholeProject(FALSE)
 {
 	m_bRemote = FALSE;
 }
@@ -56,6 +57,7 @@ void CChangedDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_SHOWUNMODIFIED, m_iShowUnmodified);
 	DDX_Check(pDX, IDC_SHOWIGNORED, m_bShowIgnored);
 	DDX_Check(pDX, IDC_SHOWLOCALCHANGESIGNORED, m_bShowLocalChangesIgnored);
+	DDX_Check(pDX, IDC_WHOLE_PROJECT, m_bWholeProject);
 }
 
 
@@ -70,18 +72,24 @@ BEGIN_MESSAGE_MAP(CChangedDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_BUTTON_STASH, &CChangedDlg::OnBnClickedStash)
 	ON_BN_CLICKED(IDC_BUTTON_UNIFIEDDIFF, &CChangedDlg::OnBnClickedButtonUnifieddiff)
 	ON_BN_CLICKED(IDC_SHOWLOCALCHANGESIGNORED, &CChangedDlg::OnBnClickedShowlocalchangesignored)
+	ON_BN_CLICKED(IDC_WHOLE_PROJECT, OnBnClickedWholeProject)
 END_MESSAGE_MAP()
 
 BOOL CChangedDlg::OnInitDialog()
 {
 	CResizableStandAloneDialog::OnInitDialog();
 
-	GetWindowText(m_sTitle);
-
 	m_tooltips.Create(this);
 
 	m_regAddBeforeCommit = CRegDWORD(_T("Software\\TortoiseGit\\AddBeforeCommit"), TRUE);
 	m_bShowUnversioned = m_regAddBeforeCommit;
+
+	CString regPath(g_Git.m_CurrentDir);
+	regPath.Replace(_T(":"), _T("_"));
+	m_regShowWholeProject = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\ShowWholeProject\\") + regPath, FALSE);
+	m_bWholeProject = m_regShowWholeProject;
+	SetDlgTitle();
+
 	UpdateData(FALSE);
 
 	m_FileListCtrl.Init(GITSLC_COLEXT | GITSLC_COLSTATUS | GITSLC_COLADD| GITSLC_COLDEL | GITSLC_COLMODIFICATIONDATE, _T("ChangedDlg"),
@@ -94,6 +102,7 @@ BOOL CChangedDlg::OnInitDialog()
 	AdjustControlSize(IDC_SHOWUNMODIFIED);
 	AdjustControlSize(IDC_SHOWLOCALCHANGESIGNORED);
 	AdjustControlSize(IDC_SHOWIGNORED);
+	AdjustControlSize(IDC_WHOLE_PROJECT);
 
 	AddAnchor(IDC_CHANGEDLIST, TOP_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDC_SUMMARYTEXT, BOTTOM_LEFT, BOTTOM_RIGHT);
@@ -101,6 +110,7 @@ BOOL CChangedDlg::OnInitDialog()
 	AddAnchor(IDC_SHOWUNMODIFIED, BOTTOM_LEFT);
 	AddAnchor(IDC_SHOWLOCALCHANGESIGNORED, BOTTOM_LEFT);
 	AddAnchor(IDC_SHOWIGNORED, BOTTOM_LEFT);
+	AddAnchor(IDC_WHOLE_PROJECT, BOTTOM_LEFT);
 	AddAnchor(IDC_INFOLABEL, BOTTOM_RIGHT);
 	AddAnchor(IDC_BUTTON_STASH, BOTTOM_RIGHT);
 	AddAnchor(IDC_BUTTON_UNIFIEDDIFF, BOTTOM_RIGHT);
@@ -144,7 +154,7 @@ UINT CChangedDlg::ChangedStatusThread()
 	DialogEnableWindow(IDC_SHOWLOCALCHANGESIGNORED, FALSE);
 	CString temp;
 	m_FileListCtrl.Clear();
-	if (!m_FileListCtrl.GetStatus(&m_pathList, m_bRemote, m_bShowIgnored != FALSE, m_bShowUnversioned != FALSE, m_bShowLocalChangesIgnored != FALSE))
+	if (!m_FileListCtrl.GetStatus(m_bWholeProject ? nullptr : &m_pathList, m_bRemote, m_bShowIgnored != FALSE, m_bShowUnversioned != FALSE, m_bShowLocalChangesIgnored != FALSE))
 	{
 		if (!m_FileListCtrl.GetLastErrorMessage().IsEmpty())
 			m_FileListCtrl.SetEmptyString(m_FileListCtrl.GetLastErrorMessage());
@@ -157,19 +167,10 @@ UINT CChangedDlg::ChangedStatusThread()
 	m_FileListCtrl.Show(dwShow);
 	UpdateStatistics();
 
+	SetDlgTitle();
 	bool bIsDirectory = false;
-
-	CTGitPath commonDir = m_FileListCtrl.GetCommonDirectory(false);
 	if (m_pathList.GetCount() == 1)
-	{
-		if (m_pathList[0].IsEmpty())
-			CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, m_sTitle);
-		else
-			CAppUtils::SetWindowTitle(m_hWnd, (g_Git.m_CurrentDir + _T("\\") + m_pathList[0].GetWinPathString()).TrimRight('\\'), m_sTitle);
 		bIsDirectory = m_pathList[0].IsDirectory() || m_pathList[0].IsEmpty(); // if it is empty it is g_Git.m_CurrentDir which is a directory
-	}
-	else
-		CAppUtils::SetWindowTitle(m_hWnd, commonDir.GetWinPathString(), m_sTitle);
 
 	SetDlgItemText(IDOK, CString(MAKEINTRESOURCE(IDS_MSGBOX_OK)));
 	DialogEnableWindow(IDC_REFRESH, TRUE);
@@ -228,6 +229,22 @@ DWORD CChangedDlg::UpdateShowFlags()
 	dwShow &= ~(GITSLC_SHOWEXTERNAL | GITSLC_SHOWINEXTERNALS | GITSLC_SHOWEXTERNALFROMDIFFERENTREPO);
 
 	return dwShow;
+}
+
+void CChangedDlg::SetDlgTitle()
+{
+	if (m_sTitle.IsEmpty())
+		GetWindowText(m_sTitle);
+
+	if (m_bWholeProject)
+		CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, m_sTitle);
+	else
+	{
+		if (m_pathList.GetCount() == 1)
+			CAppUtils::SetWindowTitle(m_hWnd, (g_Git.m_CurrentDir + _T("\\") + m_pathList[0].GetUIPathString()).TrimRight('\\'), m_sTitle);
+		else
+			CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir + _T("\\") + m_FileListCtrl.GetCommonDirectory(false), m_sTitle);
+	}
 }
 
 void CChangedDlg::OnBnClickedShowunversioned()
@@ -418,9 +435,16 @@ void CChangedDlg::OnBnClickedStash()
 
 void CChangedDlg::OnBnClickedButtonUnifieddiff()
 {
-	CTGitPath commonDirectory = m_pathList.GetCommonRoot().GetDirectory();
+	CTGitPath commonDirectory = m_bWholeProject ? g_Git.m_CurrentDir : m_pathList.GetCommonRoot().GetDirectory();
 	bool bSingleFile = ((m_pathList.GetCount()==1)&&(!m_pathList[0].IsEmpty())&&(!m_pathList[0].IsDirectory()));
 	if (bSingleFile)
 		commonDirectory = m_pathList[0];
 	CAppUtils::StartShowUnifiedDiff(m_hWnd, commonDirectory, GitRev::GetHead(), commonDirectory, GitRev::GetWorkingCopy());
+}
+
+void CChangedDlg::OnBnClickedWholeProject()
+{
+	UpdateData();
+	m_regShowWholeProject = m_bWholeProject;
+	OnBnClickedRefresh();
 }

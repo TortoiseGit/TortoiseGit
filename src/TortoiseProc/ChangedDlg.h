@@ -55,6 +55,7 @@ protected:
 	afx_msg void			OnBnClickedShowUnmodified();
 	afx_msg void			OnBnClickedShowignored();
 	afx_msg void			OnBnClickedShowlocalchangesignored();
+	afx_msg void			OnBnClickedWholeProject();
 	afx_msg LRESULT			OnSVNStatusListCtrlNeedsRefresh(WPARAM, LPARAM);
 	afx_msg LRESULT			OnSVNStatusListCtrlItemCountChanged(WPARAM, LPARAM);
 
@@ -66,6 +67,7 @@ private:
 	UINT					ChangedStatusThread();
 	void					UpdateStatistics();
 	DWORD					UpdateShowFlags();
+	void					SetDlgTitle();
 
 	enum
 	{
@@ -81,6 +83,7 @@ public:
 
 private:
 	CRegDWORD				m_regAddBeforeCommit;
+	CRegDWORD				m_regShowWholeProject;
 	CGitStatusListCtrl		m_FileListCtrl;
 	bool					m_bRemote;
 	BOOL					m_bShowUnversioned;
@@ -90,6 +93,7 @@ private:
 	CString					m_sTitle;
 	bool					m_bCanceled;
 	BOOL					m_bShowIgnored;
+	BOOL					m_bWholeProject;
 	CToolTips				m_tooltips;
 };
 
