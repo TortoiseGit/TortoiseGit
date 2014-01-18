@@ -200,7 +200,10 @@ void CGravatar::GravatarThread()
 			{
 				m_gravatarLock.Lock();
 				if (m_email == email)
+				{
 					m_filename = tempFile;
+					m_email.Empty();
+				}
 				else
 					m_filename.Empty();
 				m_gravatarLock.Unlock();
@@ -232,6 +235,7 @@ void CGravatar::GravatarThread()
 					SetFileTime(hFile, &creationTime, nullptr, nullptr);
 					CloseHandle(hFile);
 					m_filename = tempFile;
+					m_email.Empty();
 				}
 				else
 					m_filename.Empty();
