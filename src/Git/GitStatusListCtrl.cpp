@@ -3364,18 +3364,14 @@ void CGitStatusListCtrl::OnBeginDrag(NMHDR* /*pNMHDR*/, LRESULT* pResult)
 	if (!pos)
 		return;
 
-	CString tempDir = GetTempFile();
-	::DeleteFile(tempDir);
-	::CreateDirectory(tempDir, NULL);
+	bool bTempDirCreated = false;
+	CString tempDir;
 	while ( (index = GetNextSelectedItem(pos)) >= 0 )
 	{
 		CTGitPath *path = (CTGitPath *)GetItemData(index); // m_arStatusArray[index] does not work with SyncDlg
 		if (path->IsDirectory())
 			continue;
 
-		CString tempFile = tempDir + _T("\\") + path->GetWinPathString();
-		CString tempSubDir = tempDir + _T("\\") + path->GetContainingDirectory().GetWinPathString();
-		CPathUtils::MakeSureDirectoryPathExists(tempSubDir);
 		CString version;
 		if (!this->m_CurrentVersion.IsEmpty() && this->m_CurrentVersion != GIT_REV_ZERO)
 		{
@@ -3390,6 +3386,7 @@ void CGitStatusListCtrl::OnBeginDrag(NMHDR* /*pNMHDR*/, LRESULT* pResult)
 				version = _T("HEAD");
 		}
 
+		CString tempFile;
 		if (version.IsEmpty())
 		{
 			TCHAR abspath[MAX_PATH] = {0};
@@ -3398,6 +3395,16 @@ void CGitStatusListCtrl::OnBeginDrag(NMHDR* /*pNMHDR*/, LRESULT* pResult)
 		}
 		else
 		{
+			if (!bTempDirCreated)
+			{
+				tempDir = GetTempFile();
+				::DeleteFile(tempDir);
+				::CreateDirectory(tempDir, NULL);
+				bTempDirCreated = true;
+			}
+			tempFile = tempDir + _T("\\") + path->GetWinPathString();
+			CString tempSubDir = tempDir + _T("\\") + path->GetContainingDirectory().GetWinPathString();
+			CPathUtils::MakeSureDirectoryPathExists(tempSubDir);
 			if (g_Git.GetOneFile(version, *path, tempFile))
 			{
 				CString out;
