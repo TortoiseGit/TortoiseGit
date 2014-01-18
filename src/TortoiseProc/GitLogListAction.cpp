@@ -86,7 +86,7 @@ int CGitLogList::RevertSelectedCommits(int parent)
 		if(r1->m_CommitHash.IsEmpty())
 			continue;
 
-		if (g_Git.GitRevert(true, true, parent, r1->m_CommitHash))
+		if (g_Git.GitRevert(parent, r1->m_CommitHash))
 		{
 			CString str;
 			str.LoadString(IDS_SVNACTION_FAILEDREVERT);

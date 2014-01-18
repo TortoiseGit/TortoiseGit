@@ -2596,7 +2596,7 @@ int CGit::GetUnifiedDiff(const CTGitPath& path, const git_revnum_t& rev1, const 
 	}
 }
 
-int CGit::GitRevert(bool bNoEdit, bool bNoCommit, int parent, const CGitHash &hash)
+int CGit::GitRevert(int parent, const CGitHash &hash)
 {
 	if (UsingLibGit2(GIT_CMD_REVERT))
 	{

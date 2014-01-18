@@ -367,7 +367,7 @@ public:
 	int GetUnifiedDiff(const CTGitPath& path, const git_revnum_t& rev1, const git_revnum_t& rev2, CString patchfile, bool bMerge, bool bCombine, int diffContext);
 	int GetUnifiedDiff(const CTGitPath& path, const git_revnum_t& rev1, const git_revnum_t& rev2, CStringA * buffer, bool bMerge, bool bCombine, int diffContext);
 
-	int GitRevert(bool bNoEdit, bool bNoCommit, int parent, const CGitHash &hash);
+	int GitRevert(int parent, const CGitHash &hash);
 };
 extern void GetTempPath(CString &path);
 extern CString GetTempFile();
