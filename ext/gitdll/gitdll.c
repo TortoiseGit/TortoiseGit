@@ -1051,7 +1051,7 @@ const char *get_windows_home_directory(void)
 	if (home_directory && *home_directory)
 		return home_directory;
 
-	strbuf_addf(&buf, "%s/%s", getenv("HOMEDRIVE"), getenv("HOMEPATH"));
+	strbuf_addf(&buf, "%s%s", getenv("HOMEDRIVE"), getenv("HOMEPATH"));
 	home_directory = strbuf_detach(&buf, NULL);
 
 	return home_directory;
