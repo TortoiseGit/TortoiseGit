@@ -3394,13 +3394,7 @@ void CGitStatusListCtrl::OnBeginDrag(NMHDR* /*pNMHDR*/, LRESULT* pResult)
 		{
 			TCHAR abspath[MAX_PATH] = {0};
 			PathCombine(abspath, g_Git.m_CurrentDir, path->GetWinPath());
-			if (!CopyFile(abspath, tempFile, FALSE))	// prevent from being moved accidentally
-			{
-				CString out;
-				out.Format(IDS_STATUSLIST_CHECKOUTFILEFAILED, path->GetGitPathString(), CString(MAKEINTRESOURCE(IDS_LOG_WORKINGDIRCHANGES)), tempFile);
-				CMessageBox::Show(NULL, out, _T("TortoiseGit"), MB_OK);
-				return;
-			}
+			tempFile = abspath;
 		}
 		else
 		{
