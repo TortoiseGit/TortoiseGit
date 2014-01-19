@@ -73,6 +73,7 @@ Released: 2014-01-12
  * Fixed issue #1860: Race condition in git.exe Progress Dialog
  * Fixed issue #2020: Passworddialog in background after requesting username
  * Fixed issue #1802: submodule update module selection not always accurate
+ * Fixed issue #1579: Log Dialog sometimes forgets the dialog height
 
 == Known Issues ==
  * If you upgraded Windows 8 to 8.1 and you experience problems with the installer, please see issue #2061.
