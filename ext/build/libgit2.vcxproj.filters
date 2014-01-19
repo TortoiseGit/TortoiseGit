@@ -86,9 +86,6 @@
     <ClCompile Include="..\libgit2\src\commit_list.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\libgit2\src\compress.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\libgit2\src\config.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -407,6 +404,12 @@
     <ClCompile Include="..\libgit2\src\revert.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\libgit2\src\settings.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libgit2\src\zstream.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\libgit2\src\attr.h">
@@ -440,9 +443,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\libgit2\src\common.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\libgit2\src\compress.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\libgit2\src\config.h">
@@ -915,6 +915,9 @@
     </ClInclude>
     <ClInclude Include="..\libgit2\include\git2\revert.h">
       <Filter>Public Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\src\zstream.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
