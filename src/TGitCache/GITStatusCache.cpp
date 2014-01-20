@@ -20,9 +20,9 @@
 
 #include "stdafx.h"
 #include "GitStatus.h"
-#include "GitStatuscache.h"
+#include "GitStatusCache.h"
 #include "CacheInterface.h"
-#include "shlobj.h"
+#include <ShlObj.h>
 
 //////////////////////////////////////////////////////////////////////////
 

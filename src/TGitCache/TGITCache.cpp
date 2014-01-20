@@ -19,7 +19,7 @@
 //
 
 #include "stdafx.h"
-#include <shellapi.h>
+#include <ShellAPI.h>
 #include "TGITCache.h"
 #include "GitStatusCache.h"
 #include "CacheInterface.h"
@@ -27,15 +27,12 @@
 #include "registry.h"
 #include "CrashReport.h"
 #include "GitAdminDir.h"
-#include "Dbt.h"
-#include <initguid.h>
-#include "ioevent.h"
+#include <Dbt.h>
+#include <InitGuid.h>
+#include <Ioevent.h>
 #include "..\version.h"
-//#include "svn_dso.h"
 #include "SmartHandle.h"
 #include "DllVersion.h"
-
-#include <ShellAPI.h>
 
 #ifndef GET_X_LPARAM
 #define GET_X_LPARAM(lp)                        ((int)(short)LOWORD(lp))
