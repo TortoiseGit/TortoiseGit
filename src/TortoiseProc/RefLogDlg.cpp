@@ -187,13 +187,16 @@ int ParserFromRefLog(CString ref, std::vector<GitRev> &refloglist)
 			rev.m_CommitHash = (char *)git_reflog_entry_id_new(entry)->id;
 			rev.m_Ref.Format(_T("%s@{%d}"), ref, i);
 			rev.GetCommitterDate() = CTime(git_reflog_entry_committer(entry)->when.time);
-			CString one;
-			g_Git.StringAppend(&one, (BYTE *)git_reflog_entry_message(entry));
-			int message = one.Find(_T(":"), 0);
-			if (message > 0)
+			if (git_reflog_entry_message(entry) != nullptr)
 			{
-				rev.m_RefAction = one.Left(message);
-				rev.GetSubject() = one.Mid(message + 1);
+				CString one;
+				g_Git.StringAppend(&one, (BYTE *)git_reflog_entry_message(entry));
+				int message = one.Find(_T(":"), 0);
+				if (message > 0)
+				{
+					rev.m_RefAction = one.Left(message);
+					rev.GetSubject() = one.Mid(message + 1);
+				}
 			}
 			refloglist.push_back(rev); 
 		}
