@@ -595,4 +595,5 @@ void CGitStatusCache::CloseWatcherHandles(const CTGitPath& path)
 {
 	watcher.CloseHandlesForPath(path);
 	m_folderCrawler.ReleasePathForUpdate(path);
+	CGitStatusCache::Instance().m_GitStatus.ReleasePath(path.GetWinPathString());
 }
