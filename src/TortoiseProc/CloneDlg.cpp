@@ -228,14 +228,14 @@ void CCloneDlg::OnOK()
 
 	if (m_bBranch && !g_Git.IsBranchNameValid(m_strBranch))
 	{
-		ShowEditBalloon(IDC_EDIT_BRANCH, IDS_B_T_NOTEMPTY, TTI_ERROR);
+		ShowEditBalloon(IDC_EDIT_BRANCH, IDS_B_T_NOTEMPTY, IDS_ERR_ERROR, TTI_ERROR);
 		m_bSaving = false;
 		return;
 	}
 
 	if (m_bOrigin && m_strOrigin.GetLength() == 0)
 	{
-		ShowEditBalloon(IDC_EDIT_ORIGIN, IDS_B_T_NOTEMPTY, TTI_ERROR);
+		ShowEditBalloon(IDC_EDIT_ORIGIN, IDS_B_T_NOTEMPTY, IDS_ERR_ERROR, TTI_ERROR);
 		m_bSaving = false;
 		return;
 	}

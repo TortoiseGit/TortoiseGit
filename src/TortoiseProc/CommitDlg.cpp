@@ -521,7 +521,7 @@ void CCommitDlg::OnOK()
 	{
 		if (!g_Git.IsBranchNameValid(m_sCreateNewBranch))
 		{
-			ShowEditBalloon(IDC_NEWBRANCH, IDS_B_T_NOTEMPTY, TTI_ERROR);
+			ShowEditBalloon(IDC_NEWBRANCH, IDS_B_T_NOTEMPTY, IDS_ERR_ERROR, TTI_ERROR);
 			return;
 		}
 		if (g_Git.BranchTagExists(m_sCreateNewBranch))
@@ -545,7 +545,7 @@ void CCommitDlg::OnOK()
 	GetDlgItemText(IDC_BUGID, id);
 	if (!m_ProjectProperties.CheckBugID(id))
 	{
-		ShowEditBalloon(IDC_BUGID, IDS_COMMITDLG_ONLYNUMBERS, TTI_ERROR);
+		ShowEditBalloon(IDC_BUGID, IDS_COMMITDLG_ONLYNUMBERS, IDS_ERR_ERROR, TTI_ERROR);
 		return;
 	}
 	m_sLogMessage = m_cLogMessage.GetText();

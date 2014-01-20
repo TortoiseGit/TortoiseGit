@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -165,7 +165,7 @@ void CCreateBranchTagDlg::OnBnClickedOk()
 	this->m_BranchTagName.Trim();
 	if(!g_Git.IsBranchNameValid(this->m_BranchTagName))
 	{
-		ShowEditBalloon(IDC_BRANCH_TAG, IDS_B_T_NOTEMPTY, TTI_ERROR);
+		ShowEditBalloon(IDC_BRANCH_TAG, IDS_B_T_NOTEMPTY, IDS_ERR_ERROR, TTI_ERROR);
 		return;
 	}
 	if (!m_bForce && g_Git.BranchTagExists(m_BranchTagName, !m_bIsTag))

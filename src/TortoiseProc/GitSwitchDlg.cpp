@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -157,7 +157,7 @@ void CGitSwitchDlg::OnBnClickedOk()
 		if (!g_Git.IsBranchNameValid(m_NewBranch))
 		{
 			// new branch requested but name is empty or contains spaces
-			ShowEditBalloon(IDC_EDIT_BRANCH, IDS_B_T_NOTEMPTY, TTI_ERROR);
+			ShowEditBalloon(IDC_EDIT_BRANCH, IDS_B_T_NOTEMPTY, IDS_ERR_ERROR, TTI_ERROR);
 			return;
 		}
 		else if (!m_bBranchOverride && g_Git.BranchTagExists(m_NewBranch))
