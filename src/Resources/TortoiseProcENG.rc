@@ -4334,6 +4334,7 @@ BEGIN
                             "Do you really want to unflag the selected file(s) as skip-worktree or assume-unchanged?"
     IDS_STATUSLIST_UNSETIGNORELOCALCHANGES 
                             "Unflag as skip-worktree and assume-unchanged"
+    IDS_LOG_FILTER_TOGGLE   "Toggle checked filters"
 END
 
 STRINGTABLE

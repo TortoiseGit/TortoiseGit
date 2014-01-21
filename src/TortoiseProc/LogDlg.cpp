@@ -1571,6 +1571,9 @@ LRESULT CLogDlg::OnClickedInfoIcon(WPARAM /*wParam*/, LPARAM lParam)
 			popup.AppendMenu(LOGMENUFLAGS(LOGFILTER_BUGID), LOGFILTER_BUGID, temp);
 		}
 
+		temp.LoadString(IDS_LOG_FILTER_TOGGLE);
+		popup.AppendMenu(MF_STRING | MF_ENABLED, LOGFILTER_TOGGLE, temp);
+
 		popup.AppendMenu(MF_SEPARATOR, NULL);
 
 		temp.LoadString(IDS_LOG_FILTER_REGEX);
@@ -1589,6 +1592,10 @@ LRESULT CLogDlg::OnClickedInfoIcon(WPARAM /*wParam*/, LPARAM lParam)
 				m_LogList.m_bFilterWithRegex = m_bFilterWithRegex;
 				SetFilterCueText();
 				CheckRegexpTooltip();
+			}
+			else if (selection == LOGFILTER_TOGGLE)
+			{
+				m_LogList.m_SelectedFilters = (~m_LogList.m_SelectedFilters) & LOGFILTER_ALL;
 			}
 			else
 			{

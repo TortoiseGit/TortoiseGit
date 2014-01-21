@@ -1012,6 +1012,7 @@
 #define IDC_CHECK_NOCOMMIT              1482
 #define IDC_SENDMAIL_MAPI               1482
 #define IDC_PROC_PUSH_SET_PUSHREMOTE    1482
+#define IDS_LOG_FILTER_TOGGLE           1482
 #define IDC_BUTTON_BROWSE               1483
 #define IDC_BUTTON_BROWSE_SOURCE_BRANCH 1483
 #define IDC_BUTTON_BROWSE_REF           1483
