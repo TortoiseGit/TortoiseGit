@@ -371,6 +371,8 @@ public:
 
 	CString GetRange() const { return m_sRange; }
 
+	bool HasFilterText() const { return !m_sFilterText.IsEmpty() && m_sFilterText != _T("!"); }
+
 	int					m_nSearchIndex;
 
 	volatile LONG		m_bExitThread;
