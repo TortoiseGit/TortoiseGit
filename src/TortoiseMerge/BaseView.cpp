@@ -5771,6 +5771,16 @@ void CBaseView::UseViewBlock(CBaseView * pwndView, int nFirstViewLine, int nLast
 			break;
 		}
 		SetViewData(viewLine, line);
+		if ((m_texttype == UnicodeType::ASCII) && (pwndView->GetTextType() != UnicodeType::ASCII))
+		{
+			// if this view is in ASCII and the other is not, we have to make sure that
+			// the text we copy from the other view can actually be saved in ASCII encoding.
+			// if not, we have to change this views encoding to the same encoding as the other view
+			BOOL useDefault = FALSE;
+			WideCharToMultiByte(CP_ACP, WC_NO_BEST_FIT_CHARS, line.sLine, -1, NULL, 0, 0, &useDefault);
+			if (useDefault) // a default char is required, so the char can not be saved as ASCII
+				SetTextType(pwndView->GetTextType());
+		}
 	}
 	// normal lines is mostly same but may differ in EOL so any copied line change view state to modified
 	// TODO: check if copied line is same as original one set modified only when differ
