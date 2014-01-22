@@ -1190,7 +1190,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 				pLVCD->nmcd.uItemState &= ~(CDIS_SELECTED|CDIS_FOCUS);
 			}
 
-			if (pLVCD->iSubItem == LOGLIST_GRAPH && m_sFilterText.IsEmpty() && (m_ShowFilter & FILTERSHOW_MERGEPOINTS))
+			if (pLVCD->iSubItem == LOGLIST_GRAPH && !HasFilterText() && (m_ShowFilter & FILTERSHOW_MERGEPOINTS))
 			{
 				if (m_arShownList.GetCount() > (INT_PTR)pLVCD->nmcd.dwItemSpec && (!this->m_IsRebaseReplaceGraph) )
 				{
@@ -2873,7 +2873,7 @@ UINT CGitLogListBase::LogThread()
 #endif
 
 			bool visible = true;
-			if(!m_sFilterText.IsEmpty())
+			if (HasFilterText())
 			{
 				if(!IsMatchFilter(bRegex,pRev,pat))
 					visible = false;
@@ -3035,7 +3035,7 @@ bool CGitLogListBase::ValidateRegexp(LPCTSTR regexp_str, std::tr1::wregex& pat, 
 }
 BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, std::tr1::wregex &pat)
 {
-
+	BOOL result = TRUE;
 	std::tr1::regex_constants::match_flag_type flags = std::tr1::regex_constants::match_any;
 	CString sRev;
 
@@ -3157,6 +3157,9 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, std::tr1::wregex 
 	{
 		CString find = m_sFilterText;
 		find.MakeLower();
+		result = find[0] == '!' ? FALSE : TRUE;
+		if (!result)
+			find = find.Mid(1);
 
 		if (m_SelectedFilters & LOGFILTER_BUGID)
 		{
@@ -3167,7 +3170,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, std::tr1::wregex 
 				sBugIds.MakeLower();
 				if ((sBugIds.Find(find) >= 0))
 				{
-					return TRUE;
+					return result;
 				}
 			}
 		}
@@ -3179,7 +3182,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, std::tr1::wregex 
 			msg = msg.MakeLower();
 			if ((msg.Find(find) >= 0))
 			{
-				return TRUE;
+				return result;
 			}
 		}
 
@@ -3190,7 +3193,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, std::tr1::wregex 
 			msg = msg.MakeLower();
 			if ((msg.Find(find) >= 0))
 			{
-				return TRUE;
+				return result;
 			}
 		}
 
@@ -3200,7 +3203,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, std::tr1::wregex 
 			msg = msg.MakeLower();
 			if ((msg.Find(find) >= 0))
 			{
-				return TRUE;
+				return result;
 			}
 		}
 
@@ -3210,7 +3213,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, std::tr1::wregex 
 			msg = msg.MakeLower();
 			if ((msg.Find(find) >= 0))
 			{
-				return TRUE;
+				return result;
 			}
 		}
 
@@ -3219,7 +3222,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, std::tr1::wregex 
 			sRev.Format(_T("%s"), pRev->m_CommitHash.ToString());
 			if ((sRev.Find(find) >= 0))
 			{
-				return TRUE;
+				return result;
 			}
 		}
 
@@ -3230,7 +3233,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, std::tr1::wregex 
 			{
 				if (it->Find(find) >= 0)
 				{
-					return TRUE;
+					return result;
 				}
 			}
 		}
@@ -3253,13 +3256,13 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, std::tr1::wregex 
 					path.MakeLower();
 					if ((path.Find(find)>=0))
 					{
-						return true;
+						return result;
 					}
 					path = cpath->GetGitPathString();
 					path.MakeLower();
 					if ((path.Find(find)>=0))
 					{
-						return true;
+						return result;
 					}
 				}
 
@@ -3269,12 +3272,12 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, std::tr1::wregex 
 				path.MakeLower();
 				if ((path.Find(find)>=0))
 				{
-					return true;
+					return result;
 				}
 			}
 		}
 	} // else (from if (bRegex))
-	return FALSE;
+	return !result;
 }
 
 static bool CStringStartsWith(const CString &str, const CString &prefix)

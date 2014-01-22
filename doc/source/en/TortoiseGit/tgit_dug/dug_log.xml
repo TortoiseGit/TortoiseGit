@@ -594,14 +594,12 @@
 			the log entries, and then only those entries which <emphasis>match</emphasis>
 			the filter string are shown.
 		</para>
-<!--
 		<para>
 			To make the filter show all log entries that do <emphasis>not</emphasis>
 			match the filter string, start the string with an exclamation mark ('!').
 			For example, a filter string <literal>!username</literal> will only
 			show those entries which were not committed by <literal>username</literal>.
 		</para>
--->
 		<para>
 			You can also filter the path names in the bottom pane using the
 			<menuchoice>

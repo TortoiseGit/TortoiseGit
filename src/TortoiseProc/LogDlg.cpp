@@ -1603,7 +1603,7 @@ LRESULT CLogDlg::OnClickedInfoIcon(WPARAM /*wParam*/, LPARAM lParam)
 				SetFilterCueText();
 			}
 			// Reload only if a search text is entered
-			if (!m_LogList.m_sFilterText.IsEmpty())
+			if (m_LogList.HasFilterText())
 				SetTimer(LOGFILTER_TIMER, 1000, NULL);
 		}
 	}
@@ -2358,7 +2358,7 @@ void CLogDlg::ShowGravatar()
 void CLogDlg::OnEnChangeSearchedit()
 {
 	UpdateData();
-	if (m_LogList.m_sFilterText.IsEmpty())
+	if (!m_LogList.HasFilterText())
 	{
 		CStoreSelection storeselection(this);
 		// clear the filter, i.e. make all entries appear
