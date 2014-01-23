@@ -279,7 +279,13 @@ resend:
 		return INET_E_DOWNLOAD_FAILURE;
 	}
 
-	CFile destinationFile(dest, CFile::modeCreate | CFile::modeWrite);
+	CFile destinationFile;
+	if (!destinationFile.Open(dest, CFile::modeCreate | CFile::modeWrite))
+	{
+		InternetCloseHandle(hResourceHandle);
+		return ERROR_ACCESS_DENIED;
+	}
+
 	DWORD downloadedSum = 0; // sum of bytes downloaded so far
 	do
 	{
