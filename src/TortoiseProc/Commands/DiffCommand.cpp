@@ -50,7 +50,10 @@ bool DiffCommand::Execute()
 			//diff.SetAlternativeTool(bAlternativeTool);
 			if ( parser.HasKey(_T("startrev")) && parser.HasKey(_T("endrev")) )
 			{
-				bRet = !!diff.Diff(&cmdLinePath, &cmdLinePath, git_revnum_t(parser.GetVal(_T("startrev"))), git_revnum_t(parser.GetVal(_T("endrev"))), false, parser.HasKey(_T("unified")) == TRUE, parser.GetLongVal(_T("line")));
+				if (parser.HasKey(_T("unified")))
+					bRet = !!CAppUtils::StartShowUnifiedDiff(nullptr, cmdLinePath, git_revnum_t(parser.GetVal(_T("endrev"))), cmdLinePath, git_revnum_t(parser.GetVal(_T("startrev"))));
+				else
+					bRet = !!diff.Diff(&cmdLinePath, &cmdLinePath, git_revnum_t(parser.GetVal(_T("startrev"))), git_revnum_t(parser.GetVal(_T("endrev"))), false, parser.HasKey(_T("unified")) == TRUE, parser.GetLongVal(_T("line")));
 			}
 			else
 			{
@@ -88,6 +91,8 @@ bool DiffCommand::Execute()
 								if (!changedFiles[i].GetGitOldPathString().IsEmpty())
 								{
 									CTGitPath oldPath(changedFiles[i].GetGitOldPathString());
+									if (parser.HasKey(_T("unified")))
+										return !!CAppUtils::StartShowUnifiedDiff(nullptr, cmdLinePath, git_revnum_t(_T("HEAD")), cmdLinePath, git_revnum_t(GIT_REV_ZERO));
 									return !!diff.Diff(&cmdLinePath, &oldPath, git_revnum_t(GIT_REV_ZERO), git_revnum_t(_T("HEAD")), false, parser.HasKey(_T("unified")) == TRUE, parser.GetLongVal(_T("line")));
 								}
 								break;
@@ -97,7 +102,10 @@ bool DiffCommand::Execute()
 					cmdLinePath.m_Action = cmdLinePath.LOGACTIONS_ADDED;
 				}
 
-				bRet = !!diff.Diff(&cmdLinePath, &cmdLinePath, git_revnum_t(GIT_REV_ZERO), git_revnum_t(_T("HEAD")), false, parser.HasKey(_T("unified")) == TRUE, parser.GetLongVal(_T("line")));
+				if (parser.HasKey(_T("unified")))
+					bRet = !!CAppUtils::StartShowUnifiedDiff(nullptr, cmdLinePath, git_revnum_t(_T("HEAD")), cmdLinePath, git_revnum_t(GIT_REV_ZERO));
+				else
+					bRet = !!diff.Diff(&cmdLinePath, &cmdLinePath, git_revnum_t(GIT_REV_ZERO), git_revnum_t(_T("HEAD")), false, parser.HasKey(_T("unified")) == TRUE, parser.GetLongVal(_T("line")));
 			}
 		}
 	}
