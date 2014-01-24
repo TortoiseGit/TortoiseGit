@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -195,6 +195,7 @@ private:
 	CDateTimeCtrl		m_CommitDate;
 	CDateTimeCtrl		m_CommitTime;
 	CLinkControl		m_linkControl;
+	CString				m_sLogTemplate;
 
 	CBugTraqAssociation	m_bugtraq_association;
 	HACCEL				m_hAccel;

@@ -209,7 +209,10 @@ BOOL CCommitDlg::OnInitDialog()
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
 	if (!m_bForceCommitAmend)
+	{
 		GetCommitTemplate(this->m_sLogMessage);
+		m_sLogMessage = m_sLogMessage;
+	}
 
 	CString dotGitPath;
 	g_GitAdminDir.GetAdminDirPath(g_Git.m_CurrentDir, dotGitPath);
@@ -1372,7 +1375,7 @@ void CCommitDlg::OnCancel()
 		else
 			m_sLogMessage = sBugID + _T("\n") + m_sLogMessage;
 	}
-	if ((m_ProjectProperties.sLogTemplate.Compare(m_sLogMessage) != 0) && !m_sLogMessage.IsEmpty())
+	if ((m_sLogTemplate.Compare(m_sLogMessage) != 0) && !m_sLogMessage.IsEmpty())
 	{
 		m_History.AddEntry(m_sLogMessage);
 		m_History.Save();
@@ -1926,7 +1929,7 @@ void CCommitDlg::OnBnClickedHistory()
 		{
 			SetDlgItemText(IDC_BUGID, sBugID);
 		}
-		if (m_ProjectProperties.sLogTemplate.Compare(m_cLogMessage.GetText())!=0)
+		if (m_sLogTemplate.Compare(m_cLogMessage.GetText()) != 0)
 			m_cLogMessage.InsertText(sMsg, !m_cLogMessage.GetText().IsEmpty());
 		else
 			m_cLogMessage.SetText(sMsg);
