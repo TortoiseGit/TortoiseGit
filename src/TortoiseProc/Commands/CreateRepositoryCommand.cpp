@@ -57,6 +57,13 @@ bool CheckSpecialFolder(CString &folder)
 bool CreateRepositoryCommand::Execute()
 {
 	CString folder = this->orgCmdLinePath.GetWinPath();
+	if (folder.IsEmpty())
+		folder = g_Git.m_CurrentDir;
+	if (folder.IsEmpty())
+	{
+		GetCurrentDirectory(MAX_PATH, folder.GetBuffer(MAX_PATH));
+		folder.ReleaseBuffer();
+	}
 	if (CheckSpecialFolder(folder))
 	{
 		CString message;
