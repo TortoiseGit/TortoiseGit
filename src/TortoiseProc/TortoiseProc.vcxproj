@@ -57,6 +57,7 @@
     <ClCompile Include="AddRemoteDlg.cpp" />
     <ClCompile Include="..\TGitCache\CacheInterface.cpp" />
     <ClCompile Include="AutoTextTestDlg.cpp" />
+    <ClCompile Include="BugtraqRegexTestDlg.cpp" />
     <ClCompile Include="Commands\DaemonCommand.cpp" />
     <ClCompile Include="GravatarPictureBox.cpp" />
     <ClCompile Include="MergeAbortDlg.cpp" />
@@ -238,6 +239,7 @@
     <ClInclude Include="..\Utils\MiscUI\ControlsBridge.h" />
     <ClInclude Include="AddRemoteDlg.h" />
     <ClInclude Include="AutoTextTestDlg.h" />
+    <ClInclude Include="BugtraqRegexTestDlg.h" />
     <ClInclude Include="Commands\AutoTextTestCommand.h" />
     <ClInclude Include="Commands\DaemonCommand.h" />
     <ClInclude Include="GravatarPictureBox.h" />

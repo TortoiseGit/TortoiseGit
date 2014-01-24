@@ -2208,6 +2208,10 @@ msgstr ""
 msgid "Bug-ID"
 msgstr ""
 
+#. Resource IDs: (1578)
+msgid "Bug-ID e&xpression:"
+msgstr ""
+
 #. Resource IDs: (1119)
 msgid "Bug-ID/Issue-Nr:"
 msgstr ""
@@ -2218,6 +2222,10 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "BugTraq"
+msgstr ""
+
+#. Resource IDs: (327)
+msgid "Bugtraq Regex Tester - TortoiseGit"
 msgstr ""
 
 #. Resource IDs: (16132)
@@ -5797,6 +5805,10 @@ msgstr ""
 msgid "Message onl&y"
 msgstr ""
 
+#. Resource IDs: (1579)
+msgid "Message part &expression:"
+msgstr ""
+
 #. Resource IDs: (116)
 msgid "Messages"
 msgstr ""
@@ -7592,6 +7604,14 @@ msgstr ""
 msgid "Same commit time"
 msgstr ""
 
+#. Resource IDs: (93)
+msgid "Sample log message to test the bugtraq: regex strings.\n\nTesting mentions of issues inside a text: Mention single issue #55. Mention issues #77, #78, and #78. Mention more issues #123, #124 and #125 and some more separate ones: Issue #45, issue #46 and issue #47.\n\n\nUpdate issue #101\nFixes issue #202\nFixed issue #123\nResolves issue #88.\nCloses issue #99.\n"
+msgstr ""
+
+#. Resource IDs: (1612)
+msgid "Sample text:"
+msgstr ""
+
 #. Resource IDs: (156)
 msgid "Save"
 msgstr ""
@@ -8646,6 +8666,10 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Temp files (including Gravatar images)"
+msgstr ""
+
+#. Resource IDs: (1787)
+msgid "Test"
 msgstr ""
 
 #. Resource IDs: (219)

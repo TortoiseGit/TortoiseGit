@@ -683,6 +683,9 @@
     <ClCompile Include="UpdateDownloader.cpp">
       <Filter>Commands\UpdateCheck</Filter>
     </ClCompile>
+    <ClCompile Include="BugtraqRegexTestDlg.cpp">
+      <Filter>Commands\setting</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddRemoteDlg.h">
@@ -1203,6 +1206,9 @@
     </ClInclude>
     <ClInclude Include="UpdateDownloader.h">
       <Filter>Commands\UpdateCheck</Filter>
+    </ClInclude>
+    <ClInclude Include="BugtraqRegexTestDlg.h">
+      <Filter>Commands\setting</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

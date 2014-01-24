@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2013 - TortoiseGit
+// Copyright (C) 2009-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -24,6 +24,8 @@
 #include "SettingsBugtraqConfig.h"
 #include "ProjectProperties.h"
 #include "Git.h"
+#include "BugtraqRegexTestDlg.h"
+
 // CSettingsBugtraqConfig dialog
 
 IMPLEMENT_DYNAMIC(CSettingsBugtraqConfig, ISettingsPropPage)
@@ -77,6 +79,7 @@ BEGIN_MESSAGE_MAP(CSettingsBugtraqConfig, ISettingsPropPage)
 	ON_BN_CLICKED(IDC_CHECK_INHERIT_BTMSG, &OnChange)
 	ON_BN_CLICKED(IDC_CHECK_INHERIT_BTLABEL, &OnChange)
 	ON_BN_CLICKED(IDC_CHECK_INHERIT_BTREGEXP, &OnChange)
+	ON_BN_CLICKED(IDC_TESTBUGTRAQREGEXBUTTON, &CSettingsBugtraqConfig::OnBnClickedTestbugtraqregexbutton)
 END_MESSAGE_MAP()
 
 BOOL CSettingsBugtraqConfig::OnInitDialog()
@@ -231,4 +234,25 @@ BOOL CSettingsBugtraqConfig::PreTranslateMessage(MSG* pMsg)
 {
 	m_tooltips.RelayEvent(pMsg);
 	return ISettingsPropPage::PreTranslateMessage(pMsg);
+}
+
+void CSettingsBugtraqConfig::OnBnClickedTestbugtraqregexbutton()
+{
+	m_tooltips.Pop(); // hide the tooltips
+	CBugtraqRegexTestDlg dlg(this);
+	dlg.m_sBugtraqRegex2 = m_Logregex;
+	dlg.m_sBugtraqRegex2.Trim();
+	dlg.m_sBugtraqRegex2.Replace(_T("\r\n"), _T("\n"));
+	if (dlg.m_sBugtraqRegex2.Find('\n') >= 0)
+	{
+		dlg.m_sBugtraqRegex1 = dlg.m_sBugtraqRegex2.Mid(dlg.m_sBugtraqRegex2.Find('\n')).Trim();
+		dlg.m_sBugtraqRegex2 = dlg.m_sBugtraqRegex2.Left(dlg.m_sBugtraqRegex2.Find('\n')).Trim();
+	}
+	if (dlg.DoModal() == IDOK)
+	{
+		m_Logregex = dlg.m_sBugtraqRegex1 + _T("\n") + dlg.m_sBugtraqRegex2;
+		m_Logregex.Trim();
+		m_Logregex.Replace(_T("\n"), _T("\r\n"));
+		UpdateData(FALSE);
+	}
 }

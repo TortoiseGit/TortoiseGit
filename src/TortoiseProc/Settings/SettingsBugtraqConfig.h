@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2013 - TortoiseGit
+// Copyright (C) 2009-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -41,6 +41,8 @@ protected:
 	virtual BOOL OnInitDialog();
 	virtual BOOL OnApply();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
+
+	afx_msg void OnBnClickedTestbugtraqregexbutton();
 
 	virtual void LoadDataImpl(git_config * config);
 	virtual BOOL SafeDataImpl(git_config * config);

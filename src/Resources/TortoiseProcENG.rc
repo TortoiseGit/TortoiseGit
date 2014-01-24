@@ -964,6 +964,7 @@ BEGIN
     COMBOBOX        IDC_BUGTRAQ_NUMBER,113,128,63,15,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
     EDITTEXT        IDC_BUGTRAQ_LOGREGEX,113,144,170,25,ES_MULTILINE | ES_AUTOHSCROLL | ES_WANTRETURN
     CONTROL         "inherit",IDC_CHECK_INHERIT_BTREGEXP,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,113,172,60,10
+    PUSHBUTTON      "Test",IDC_TESTBUGTRAQREGEXBUTTON,231,171,52,12
     LTEXT           "bugtraq.url",IDC_STATIC,14,44,89,8
     LTEXT           "bugtraq.warningifnoissue",IDC_STATIC,14,60,91,10
     LTEXT           "bugtraq.message",IDC_STATIC,14,77,86,10
@@ -1948,6 +1949,21 @@ BEGIN
     COMBOBOX        IDC_COMBO_SETTINGS_SAFETO,65,211,103,15,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
 END
 
+IDD_BUGTRAQREGEXTESTER DIALOGEX 0, 0, 317, 188
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+CAPTION "Bugtraq Regex Tester - TortoiseGit"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    LTEXT           "Sample text:",IDC_SAMPLELABEL,7,7,303,8
+    CONTROL         "Scintilla",IDC_LOGMESSAGE,"Scintilla",WS_TABSTOP,7,18,303,100,WS_EX_STATICEDGE
+    LTEXT           "Message part &expression:",IDC_REGEXMSGLABEL,7,124,74,18
+    EDITTEXT        IDC_BUGTRAQLOGREGEX2,88,123,222,14,ES_AUTOHSCROLL
+    LTEXT           "Bug-ID e&xpression:",IDC_REGEXIDLABEL,7,144,74,17
+    EDITTEXT        IDC_BUGTRAQLOGREGEX1,88,144,222,14,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,205,167,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,260,167,50,14
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -2814,6 +2830,15 @@ BEGIN
         VERTGUIDE, 283
         TOPMARGIN, 7
         BOTTOMMARGIN, 224
+    END
+
+    IDD_BUGTRAQREGEXTESTER, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 310
+        VERTGUIDE, 88
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 181
     END
 END
 #endif    // APSTUDIO_INVOKED
@@ -4337,6 +4362,8 @@ BEGIN
     IDS_LOG_FILTER_TOGGLE   "Toggle checked filters"
     IDS_WARN_GITINIT_SPECIALFOLDER 
                             "The target folder \n%s\nis a special folder and is not supposed to be a repository root!\nAre you sure you want to initialize a git repository inside that folder?"
+    IDS_SAMPLEBUGTRAQTESTMSG 
+                            "Sample log message to test the bugtraq: regex strings.\n\nTesting mentions of issues inside a text: Mention single issue #55. Mention issues #77, #78, and #78. Mention more issues #123, #124 and #125 and some more separate ones: Issue #45, issue #46 and issue #47.\n\n\nUpdate issue #101\nFixes issue #202\nFixed issue #123\nResolves issue #88.\nCloses issue #99.\n"
 END
 
 STRINGTABLE

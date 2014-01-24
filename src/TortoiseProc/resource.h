@@ -139,6 +139,7 @@
 #define IDR_ACC_COMMITDLG               325
 #define IDD_SYNC                        326
 #define IDI_SHOWBRANCHES                326
+#define IDD_BUGTRAQREGEXTESTER          327
 #define IDD_PATCH_VIEW                  328
 #define IDD_SVNIGNORE                   329
 #define IDD_CREATEREPO                  330
@@ -1023,6 +1024,7 @@
 #define IDC_BUTTON_BROWSE_SOURCE_BRANCH2 1484
 #define IDC_BUTTON_BROWSE_DEST_BRANCH   1484
 #define IDC_CHECK_FFONLY                1484
+#define IDS_SAMPLEBUGTRAQTESTMSG        1484
 #define IDC_TITLE_ANIMATE               1485
 #define IDC_CHECK_FETCHTAGS             1485
 #define IDC_PROC_PUSH_SET_PUSHBRANCH    1485
@@ -1166,7 +1168,9 @@
 #define IDC_CHECK_GLOBAL                1567
 #define IDC_EDIT_URL                    1568
 #define IDC_EDIT_PUTTY_KEY              1569
+#define IDC_BUGTRAQLOGREGEX1            1569
 #define IDC_CHECK_ISAUTOLOADPUTTYKEY    1570
+#define IDC_BUGTRAQLOGREGEX2            1570
 #define IDC_PUTTYKEYFILE                1571
 #define IDC_GROUP_CLONE                 1572
 #define IDC_GROUPT_REMOTE               1573
@@ -1174,8 +1178,10 @@
 #define IDC_SENDMAIL_TO                 1577
 #define IDC_COMBOBOXEX_REF              1578
 #define IDC_SENDMAIL_CC                 1578
+#define IDC_REGEXIDLABEL                1578
 #define IDC_STATIC_REF                  1579
 #define IDC_SENDMAIL_ATTACHMENT         1579
+#define IDC_REGEXMSGLABEL               1579
 #define IDC_REFLOG_LIST                 1580
 #define IDC_SENDMAIL_SETUP              1580
 #define IDC_STATIC_REPOURL              1580
@@ -1221,6 +1227,7 @@
 #define IDC_COMBOBOXEX_URL              1610
 #define IDC_BUTTON_PULL                 1611
 #define IDC_BUTTON_PUSH                 1612
+#define IDC_SAMPLELABEL                 1612
 #define IDC_BUTTON_APPLY                1613
 #define IDC_BUTTON_EMAIL                1614
 #define IDC_STATIC_LOCAL_BRANCH         1616
@@ -1414,6 +1421,7 @@
 #define IDC_CHECK_INHERIT_BTMSG         1782
 #define IDC_CHECK_INHERIT_BTLABEL       1783
 #define IDC_CURRENTBRANCH               1784
+#define IDC_TESTBUGTRAQREGEXBUTTON      1787
 #define IDS_LOG_FILTER_BY               1850
 #define IDS_LOG_FILTER_PATHS            1851
 #define IDS_LOG_FILTER_AUTHORS          1852
@@ -1859,7 +1867,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        350
 #define _APS_NEXT_COMMAND_VALUE         32865
-#define _APS_NEXT_CONTROL_VALUE         1785
+#define _APS_NEXT_CONTROL_VALUE         1788
 #define _APS_NEXT_SYMED_VALUE           201
 #endif
 #endif

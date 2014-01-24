@@ -1489,3 +1489,13 @@ int CSciEdit::LoadFromFile(CString &filename)
 	else
 		return -1;
 }
+
+void CSciEdit::RestyleBugIDs()
+{
+	int endstylepos = (int)Call(SCI_GETLENGTH);
+	// clear all styles
+	Call(SCI_STARTSTYLING, 0, STYLE_MASK);
+	Call(SCI_SETSTYLING, endstylepos, STYLE_DEFAULT);
+	// style the bug IDs
+	MarkEnteredBugID(0, endstylepos);
+}
