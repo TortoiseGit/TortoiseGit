@@ -8836,6 +8836,11 @@ msgstr ""
 msgid "The submodule \"%s\" is dirty.\nMerely committing the superproject cannot track or save such changes to the submodule.\nCommit the submodule now or ignore dirty changes?"
 msgstr ""
 
+#. Resource IDs: (93)
+#, c-format
+msgid "The target folder \n%s\nis a special folder and is not supposed to be a repository root!\nAre you sure you want to initialize a git repository inside that folder?"
+msgstr ""
+
 #. Resource IDs: (88)
 #, c-format
 msgid "The target folder \n%s\nis not empty!\nAre you sure you want to initialize a git repository inside that folder?"
