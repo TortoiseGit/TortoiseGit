@@ -72,7 +72,7 @@ BOOL CInputDlg::OnInitDialog()
 			m_cInput.Call(SCI_SETEDGEMODE, EDGE_NONE);
 			m_cInput.Call(SCI_SETWRAPMODE, SC_WRAP_WORD);
 		}
-		m_cInput.SetText(m_pProjectProperties->sLogTemplate);
+		//m_cInput.SetText(m_pProjectProperties->sLogTemplate);
 	}
 	if (!m_sInputText.IsEmpty())
 	{

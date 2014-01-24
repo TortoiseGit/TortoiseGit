@@ -186,7 +186,6 @@ void CSciEdit::Init(const ProjectProperties& props)
 		Call(SCI_SETEDGEMODE, EDGE_NONE);
 		Call(SCI_SETWRAPMODE, SC_WRAP_WORD);
 	}
-	SetText(props.sLogTemplate);
 }
 
 BOOL CSciEdit::LoadDictionaries(LONG lLanguageID)

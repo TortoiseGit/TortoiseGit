@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009,2011-2013 - TortoiseGit
+// Copyright (C) 2009,2011-2014 - TortoiseGit
 // Copyright (C) 2003-2008,2011-2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -32,7 +32,6 @@
 #define BUGTRAQPROPNAME_PROVIDERUUID64    _T("bugtraq.provideruuid64")
 #define BUGTRAQPROPNAME_PROVIDERPARAMS    _T("bugtraq.providerparams")
 
-#define PROJECTPROPNAME_LOGTEMPLATE		  _T("tsvn.logtemplate")
 #define PROJECTPROPNAME_LOGWIDTHLINE	  _T("tgit.logwidthmarker")
 #define PROJECTPROPNAME_LOGMINSIZE		  _T("tgit.logminsize")
 #define PROJECTPROPNAME_LOGFILELISTLANG	  _T("tsvn.logfilelistenglish")
@@ -168,9 +167,6 @@ public:
 	/** The number of chars the width marker should be shown at. If the property
 	 * is not set, then this value is 80 by default. */
 	int			nLogWidthMarker;
-
-	/** The template to use for log messages. */
-	CString		sLogTemplate;
 
 	/** Minimum size a log message must have in chars */
 	int			nMinLogSize;
