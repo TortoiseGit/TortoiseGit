@@ -25,9 +25,53 @@
 
 #include "CreateRepoDlg.h"
 
+bool CheckSpecialFolder(CString &folder)
+{
+	// Drive root
+	if (folder == "\\" || folder.GetLength() == 2 && folder[1] == ':' || folder.GetLength() == 3 && folder[1] == ':' && folder[2] == '\\')
+		return true;
+
+	// UNC root
+	if (folder.GetLength() > 2 && folder.Left(2) == "\\\\")
+	{
+		int index = folder.Find('\\', 2);
+		if (index < 0)
+			return true;
+		else if (folder.GetLength() == index - 1)
+			return true;
+	}
+
+	TCHAR path[MAX_PATH + 1];
+	int code[] = { CSIDL_DESKTOPDIRECTORY, CSIDL_PROFILE, CSIDL_PERSONAL, CSIDL_WINDOWS, CSIDL_SYSTEM, CSIDL_PROGRAM_FILES, CSIDL_SYSTEMX86, CSIDL_PROGRAM_FILESX86 };
+	for (int i = 0; i < _countof(code); i++)
+	{
+		path[0] = '\0';
+		if (SUCCEEDED(SHGetFolderPath(nullptr, code[i], nullptr, 0, path)))
+			if (folder == path)
+				return true;
+	}
+
+	return false;
+}
+
 bool CreateRepositoryCommand::Execute()
 {
 	CString folder = this->orgCmdLinePath.GetWinPath();
+	if (folder.IsEmpty())
+		folder = g_Git.m_CurrentDir;
+	if (folder.IsEmpty())
+	{
+		GetCurrentDirectory(MAX_PATH, folder.GetBuffer(MAX_PATH));
+		folder.ReleaseBuffer();
+	}
+	if (CheckSpecialFolder(folder))
+	{
+		CString message;
+		message.Format(IDS_WARN_GITINIT_SPECIALFOLDER, folder);
+		if (CMessageBox::Show(hwndExplorer, message, _T("TortoiseGit"), 1, IDI_ERROR, CString(MAKEINTRESOURCE(IDS_ABORTBUTTON)), CString(MAKEINTRESOURCE(IDS_PROCEEDBUTTON))) == 1)
+			return false;
+	}
+
 	CCreateRepoDlg dlg;
 	dlg.m_folder = folder;
 	if(dlg.DoModal() == IDOK)
