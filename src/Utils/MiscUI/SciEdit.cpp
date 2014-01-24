@@ -1192,45 +1192,56 @@ BOOL CSciEdit::MarkEnteredBugID(int startstylepos, int endstylepos)
 		end_pos = switchtemp;
 	}
 
-	char * textbuffer = new char[end_pos - start_pos + 2];
+	std::unique_ptr<char[]> textbuffer(new char[end_pos - start_pos + 2]);
 	TEXTRANGEA textrange;
-	textrange.lpstrText = textbuffer;
+	textrange.lpstrText = textbuffer.get();
 	textrange.chrg.cpMin = start_pos;
 	textrange.chrg.cpMax = end_pos;
 	Call(SCI_GETTEXTRANGE, 0, (LPARAM)&textrange);
-	CStringA msg = CStringA(textbuffer);
+	CStringA msg = CStringA(textbuffer.get());
 
 	Call(SCI_STARTSTYLING, start_pos, STYLE_MASK);
 
-	if (!m_sBugID.IsEmpty())
+	try
 	{
-		// match with two regex strings (without grouping!)
-		try
+		if (!m_sBugID.IsEmpty())
 		{
+			// match with two regex strings (without grouping!)
 			const std::tr1::regex regCheck(m_sCommand);
 			const std::tr1::regex regBugID(m_sBugID);
 			const std::tr1::sregex_iterator end;
 			std::string s = msg;
 			LONG pos = 0;
-			for (std::tr1::sregex_iterator it(s.begin(), s.end(), regCheck); it != end; ++it)
+			// note:
+			// if start_pos is 0, we're styling from the beginning and let the ^ char match the beginning of the line
+			// that way, the ^ matches the very beginning of the log message and not the beginning of further lines.
+			// problem is: this only works *while* entering log messages. If a log message is pasted in whole or
+			// multiple lines are pasted, start_pos can be 0 and styling goes over multiple lines. In that case, those
+			// additional line starts also match ^
+			for (std::tr1::sregex_iterator it(s.begin(), s.end(), regCheck, start_pos != 0 ? std::tr1::regex_constants::match_not_bol : std::tr1::regex_constants::match_default); it != end; ++it)
 			{
 				// clear the styles up to the match position
 				Call(SCI_SETSTYLING, it->position(0)-pos, STYLE_DEFAULT);
-				pos = (LONG)it->position(0);
 
 				// (*it)[0] is the matched string
 				std::string matchedString = (*it)[0];
+				LONG matchedpos = 0;
 				for (std::tr1::sregex_iterator it2(matchedString.begin(), matchedString.end(), regBugID); it2 != end; ++it2)
 				{
-					ATLTRACE(_T("matched id : %s\n"), (*it2)[0].str().c_str());
+					ATLTRACE(_T("matched id : %s\n"), std::string((*it2)[0]).c_str());
 
 					// bold style up to the id match
 					ATLTRACE("position = %ld\n", it2->position(0));
 					if (it2->position(0))
-						Call(SCI_SETSTYLING, it2->position(0), STYLE_ISSUEBOLD);
+						Call(SCI_SETSTYLING, it2->position(0) - matchedpos, STYLE_ISSUEBOLD);
 					// bold and recursive style for the bug ID itself
 					if ((*it2)[0].str().size())
 						Call(SCI_SETSTYLING, (*it2)[0].str().size(), STYLE_ISSUEBOLDITALIC);
+					matchedpos = (LONG)(it2->position(0) + (*it2)[0].str().size());
+				}
+				if ((matchedpos)&&(matchedpos < (LONG)matchedString.size()))
+				{
+					Call(SCI_SETSTYLING, matchedString.size() - matchedpos, STYLE_ISSUEBOLD);
 				}
 				pos = (LONG)(it->position(0) + matchedString.size());
 			}
@@ -1238,11 +1249,7 @@ BOOL CSciEdit::MarkEnteredBugID(int startstylepos, int endstylepos)
 			if (s.size()-pos)
 				Call(SCI_SETSTYLING, s.size()-pos, STYLE_DEFAULT);
 		}
-		catch (std::exception) {}
-	}
-	else
-	{
-		try
+		else
 		{
 			const std::tr1::regex regCheck(m_sCommand);
 			const std::tr1::sregex_iterator end;
@@ -1266,9 +1273,8 @@ BOOL CSciEdit::MarkEnteredBugID(int startstylepos, int endstylepos)
 				}
 			}
 		}
-		catch (std::exception) {}
 	}
-	delete [] textbuffer;
+	catch (std::exception) {}
 
 	return FALSE;
 }
