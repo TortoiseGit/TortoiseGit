@@ -30,7 +30,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 /**
- * \ingroup TSVNCache
+ * \ingroup TGitCache
  * The main class handling the status cache.
  * Provides access to a global object of itself which handles all
  * the requests for status.

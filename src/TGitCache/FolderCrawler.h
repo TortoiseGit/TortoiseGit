@@ -31,7 +31,7 @@
 #pragma pack(push, r1, 16)
 
 /**
- * \ingroup TSVNCache
+ * \ingroup TGitCache
  * Helper class to crawl folders in the background (in a separate thread)
  * so that the main cache isn't blocked until all the status are fetched.
  */

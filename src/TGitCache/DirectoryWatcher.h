@@ -25,7 +25,7 @@
 #define READ_DIR_CHANGE_BUFFER_SIZE 4096
 
 /**
- * \ingroup TSVNCache
+ * \ingroup TGitCache
  * Watches the file system for changes.
  * When changes are detected, those changes are reported back to the CFolderCrawler
  * which then can update the status cache.
@@ -116,7 +116,7 @@ private:
 	DWORD					blockTickCount;
 
 	/**
-	 * \ingroup TSVNCache
+	 * \ingroup TGitCache
 	 * Helper class: provides information about watched directories.
 	 */
 	class CDirWatchInfo

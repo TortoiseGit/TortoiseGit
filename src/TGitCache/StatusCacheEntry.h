@@ -26,7 +26,7 @@ extern DWORD cachetimeout;
 #include "CacheInterface.h"
 
 /**
- * \ingroup TSVNCache
+ * \ingroup TGitCache
  * Holds all the status data of one file or folder.
  */
 class CStatusCacheEntry

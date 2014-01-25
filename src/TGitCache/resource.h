@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
-// Used by TSVNCache.rc
+// Used by TGitCache.rc
 //
 #define IDI_TGITCACHE                   101
 

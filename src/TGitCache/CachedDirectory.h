@@ -23,7 +23,7 @@
 #include "TGitPath.h"
 
 /**
- * \ingroup TSVNCache
+ * \ingroup TGitCache
  * Holds the status for a folder and all files and folders directly inside
  * that folder.
  */

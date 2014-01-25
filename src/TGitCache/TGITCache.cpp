@@ -182,7 +182,7 @@ int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*
 
 	if (!hPipeThread)
 	{
-		//OutputDebugStringA("TSVNCache: Could not create pipe thread\n");
+		//OutputDebugStringA("TGitCache: Could not create pipe thread\n");
 		//DebugOutputLastError();
 		return 0;
 	}
@@ -199,7 +199,7 @@ int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*
 
 	if (!hCommandWaitThread)
 	{
-		//OutputDebugStringA("TSVNCache: Could not create command wait thread\n");
+		//OutputDebugStringA("TGitCache: Could not create command wait thread\n");
 		//DebugOutputLastError();
 		return 0;
 	}
@@ -446,7 +446,7 @@ DWORD WINAPI PipeThread(LPVOID lpvParam)
 
 		if (!hPipe)
 		{
-			//OutputDebugStringA("TSVNCache: CreatePipe failed\n");
+			//OutputDebugStringA("TGitCache: CreatePipe failed\n");
 			//DebugOutputLastError();
 			if (*bRun)
 				Sleep(200);
@@ -470,7 +470,7 @@ DWORD WINAPI PipeThread(LPVOID lpvParam)
 
 			if (!hInstanceThread)
 			{
-				//OutputDebugStringA("TSVNCache: Could not create Instance thread\n");
+				//OutputDebugStringA("TGitCache: Could not create Instance thread\n");
 				//DebugOutputLastError();
 				DisconnectNamedPipe(hPipe);
 				// since we're now closing this thread, we also have to close the whole application!
@@ -485,7 +485,7 @@ DWORD WINAPI PipeThread(LPVOID lpvParam)
 		else
 		{
 			// The client could not connect, so close the pipe.
-			//OutputDebugStringA("TSVNCache: ConnectNamedPipe failed\n");
+			//OutputDebugStringA("TGitCache: ConnectNamedPipe failed\n");
 			//DebugOutputLastError();
 			hPipe.CloseHandle();
 			if (*bRun)
@@ -525,7 +525,7 @@ DWORD WINAPI CommandWaitThread(LPVOID lpvParam)
 
 		if (!hPipe)
 		{
-			//OutputDebugStringA("TSVNCache: CreatePipe failed\n");
+			//OutputDebugStringA("TGitCache: CreatePipe failed\n");
 			//DebugOutputLastError();
 			if (*bRun)
 				Sleep(200);
@@ -549,7 +549,7 @@ DWORD WINAPI CommandWaitThread(LPVOID lpvParam)
 
 			if (!hCommandThread)
 			{
-				//OutputDebugStringA("TSVNCache: Could not create Command thread\n");
+				//OutputDebugStringA("TGitCache: Could not create Command thread\n");
 				//DebugOutputLastError();
 				DisconnectNamedPipe(hPipe);
 				hPipe.CloseHandle();
@@ -565,7 +565,7 @@ DWORD WINAPI CommandWaitThread(LPVOID lpvParam)
 		else
 		{
 			// The client could not connect, so close the pipe.
-			//OutputDebugStringA("TSVNCache: ConnectNamedPipe failed\n");
+			//OutputDebugStringA("TGitCache: ConnectNamedPipe failed\n");
 			//DebugOutputLastError();
 			hPipe.CloseHandle();
 			if (*bRun)

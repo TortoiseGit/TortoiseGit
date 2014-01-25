@@ -22,7 +22,7 @@
 #include "SmartHandle.h"
 
 /**
- * \ingroup TSVNCache
+ * \ingroup TGitCache
  * Handles notifications to the shell about status changes. This is done
  * in a separate thread to avoid deadlocks.
  */

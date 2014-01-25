@@ -407,7 +407,7 @@ void CFolderCrawler::WorkerThread()
 					AutoLocker lock(m_critSec);
 					m_bItemsAddedSinceLastCrawl = false;
 
-					// create a new CTSVNPath object to make sure the cached flags are requested again.
+					// create a new CTGitPath object to make sure the cached flags are requested again.
 					// without this, a missing file/folder is still treated as missing even if it is available
 					// now when crawling.
 					workingPath = CTGitPath(m_foldersToUpdate.Pop().GetWinPath());
