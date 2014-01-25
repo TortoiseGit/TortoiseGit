@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005-2008, 2011-2012 - TortoiseSVN
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -577,17 +577,17 @@ void CDirectoryWatcher::ClearInfoMap()
 
 CTGitPath CDirectoryWatcher::CloseInfoMap(HANDLE hDir)
 {
+	CTGitPath path;
 	AutoLocker lock(m_critSec);
 	TInfoMap::const_iterator d = watchInfoMap.find(hDir);
 	if (d != watchInfoMap.end())
 	{
-		CTGitPath root = CTGitPath(CTGitPath(d->second->m_DirPath).GetRootPathString());
-		RemovePathAndChildren(root);
-		BlockPath(root);
+		path = CTGitPath(CTGitPath(d->second->m_DirPath).GetRootPathString());
+		RemovePathAndChildren(path);
+		BlockPath(path);
 	}
 	CloseWatchHandles();
 
-	CTGitPath path;
 	if (watchInfoMap.empty())
 		return path;
 
