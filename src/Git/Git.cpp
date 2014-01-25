@@ -2622,7 +2622,7 @@ int CGit::GitRevert(int parent, const CGitHash &hash)
 	}
 	else
 	{
-		CString cmd, merge, gitLastErr;
+		CString cmd, merge;
 		if (parent)
 			merge.Format(_T("-m %d "), parent);
 		cmd.Format(_T("git.exe revert --no-edit --no-commit %s%s"), merge, hash.ToString());
