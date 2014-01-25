@@ -374,7 +374,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				{
 					DEV_BROADCAST_HANDLE * phandle = (DEV_BROADCAST_HANDLE*)lParam;
 					CAutoWriteLock writeLock(CGitStatusCache::Instance().GetGuard());
-					CGitStatusCache::Instance().CloseWatcherHandles(phandle->dbch_hdevnotify);
+					CGitStatusCache::Instance().CloseWatcherHandles(phandle->dbch_handle);
 				}
 				else
 				{
