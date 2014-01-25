@@ -18,10 +18,10 @@
 //
 
 #include "stdafx.h"
-#include "ATLComTime.h"
+#include <ATLComTime.h>
 #include "GitRev.h"
 #include "Git.h"
-#include "GitDLL.h"
+#include "gitdll.h"
 #include "UnicodeUtils.h"
 
 class CException; //Just in case afx.h is not included (cannot be included in every project which uses this file)

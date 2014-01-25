@@ -19,7 +19,7 @@
 
 #include "GitHash.h"
 #include "gitdll.h"
-#include "gitstatus.h"
+#include "GitStatus.h"
 #include "SharedMutex.h"
 #include "UnicodeUtils.h"
 

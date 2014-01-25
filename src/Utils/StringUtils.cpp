@@ -18,7 +18,7 @@
 //
 #include "stdafx.h"
 #include "UnicodeUtils.h"
-#include "stringutils.h"
+#include "StringUtils.h"
 #include "ClipboardHelper.h"
 #include "SmartHandle.h"
 

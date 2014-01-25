@@ -19,7 +19,7 @@
 //
 
 #include "stdafx.h"
-#include "shlobj.h"
+#include <ShlObj.h>
 #include "GitStatusCache.h"
 
 CShellUpdater::CShellUpdater(void)

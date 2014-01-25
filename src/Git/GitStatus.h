@@ -19,9 +19,6 @@
 
 #pragma once
 
-#ifdef _MFC_VER
-//#	include "SVNPrompt.h"
-#endif
 #include "TGitPath.h"
 
 class CGitFileName;

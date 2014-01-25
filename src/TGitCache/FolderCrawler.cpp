@@ -19,11 +19,11 @@
 //
 
 #include "stdafx.h"
-#include "foldercrawler.h"
+#include "FolderCrawler.h"
 #include "GitStatusCache.h"
 #include "registry.h"
 #include "TGitCache.h"
-#include "shlobj.h"
+#include <ShlObj.h>
 #include "SysInfo.h"
 
 

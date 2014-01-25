@@ -20,15 +20,13 @@
 #pragma once
 
 #include "TGitPath.h"
-//#include "SVNHelpers.h"
 #include "StatusCacheEntry.h"
 #include "CachedDirectory.h"
 #include "FolderCrawler.h"
 #include "DirectoryWatcher.h"
 #include "ShellUpdater.h"
 #include "ReaderWriterLock.h"
-#include "atlcoll.h"
-
+#include <atlcoll.h>
 //////////////////////////////////////////////////////////////////////////
 
 /**

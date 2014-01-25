@@ -18,9 +18,9 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #include "stdafx.h"
-#include "Dbt.h"
+#include <Dbt.h>
 #include "GitStatusCache.h"
-#include "directorywatcher.h"
+#include "DirectoryWatcher.h"
 #include "GitIndex.h"
 #include "SmartHandle.h"
 
