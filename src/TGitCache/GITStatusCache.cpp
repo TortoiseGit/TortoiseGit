@@ -589,6 +589,7 @@ void CGitStatusCache::CloseWatcherHandles(HDEVNOTIFY hdev)
 {
 	CTGitPath path = watcher.CloseInfoMap(hdev);
 	m_folderCrawler.BlockPath(path);
+	CGitStatusCache::Instance().m_GitStatus.ReleasePathsRecursively(path.GetWinPathString());
 }
 
 void CGitStatusCache::CloseWatcherHandles(const CTGitPath& path)
