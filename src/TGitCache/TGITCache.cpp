@@ -374,6 +374,21 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 					CAutoWriteLock writeLock(CGitStatusCache::Instance().GetGuard());
 					CGitStatusCache::Instance().CloseWatcherHandles(phandle->dbch_handle);
 				}
+				else if (phdr->dbch_devicetype == DBT_DEVTYP_VOLUME)
+				{
+					DEV_BROADCAST_VOLUME * pVolume = (DEV_BROADCAST_VOLUME*)lParam;
+					CAutoWriteLock writeLock(CGitStatusCache::Instance().GetGuard());
+					for (BYTE i = 0; i < 26; ++i)
+					{
+						if (pVolume->dbcv_unitmask & (1 << i))
+						{
+							TCHAR driveletter = 'A' + i;
+							CString drive = CString(driveletter);
+							drive += L":\\";
+							CGitStatusCache::Instance().CloseWatcherHandles(CTGitPath(drive));
+						}
+					}
+				}
 				else
 				{
 					CAutoWriteLock writeLock(CGitStatusCache::Instance().GetGuard());
