@@ -95,6 +95,19 @@ public:
 		return true;
 	}
 
+	bool SafeClearRecursively(const CString &rootpath)
+	{
+		CString thePath = rootpath;
+		thePath.MakeLower();
+		CAutoLocker lock(m_critIndexSec);
+		for (auto it = this->begin(); it != this->end(); ++it)
+		{
+			if ((*it).first.Find(thePath) == 0)
+				(*this)[(*it).first] = nullptr;
+		}
+		return true;
+	}
+
 	int Check(const CString &gitdir, bool *isChanged);
 	int LoadIndex(const CString &gitdir);
 

@@ -368,13 +368,26 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			case DBT_DEVICEQUERYREMOVE:
 			case DBT_DEVICEREMOVECOMPLETE:
 				CTraceToOutputDebugString::Instance()(__FUNCTION__ ": WM_DEVICECHANGE with DBT_DEVICEREMOVEPENDING/DBT_DEVICEQUERYREMOVE/DBT_DEVICEREMOVECOMPLETE\n");
-				// Quit the program immediately as a workaround so the drive is released ASAP
-				ExitProcess(32);
 				if (phdr->dbch_devicetype == DBT_DEVTYP_HANDLE)
 				{
 					DEV_BROADCAST_HANDLE * phandle = (DEV_BROADCAST_HANDLE*)lParam;
 					CAutoWriteLock writeLock(CGitStatusCache::Instance().GetGuard());
-					CGitStatusCache::Instance().CloseWatcherHandles(phandle->dbch_hdevnotify);
+					CGitStatusCache::Instance().CloseWatcherHandles(phandle->dbch_handle);
+				}
+				else if (phdr->dbch_devicetype == DBT_DEVTYP_VOLUME)
+				{
+					DEV_BROADCAST_VOLUME * pVolume = (DEV_BROADCAST_VOLUME*)lParam;
+					CAutoWriteLock writeLock(CGitStatusCache::Instance().GetGuard());
+					for (BYTE i = 0; i < 26; ++i)
+					{
+						if (pVolume->dbcv_unitmask & (1 << i))
+						{
+							TCHAR driveletter = 'A' + i;
+							CString drive = CString(driveletter);
+							drive += L":\\";
+							CGitStatusCache::Instance().CloseWatcherHandles(CTGitPath(drive));
+						}
+					}
 				}
 				else
 				{

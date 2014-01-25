@@ -1025,3 +1025,9 @@ bool GitStatus::ReleasePath(const CString &gitdir)
 	return true;
 }
 
+bool GitStatus::ReleasePathsRecursively(const CString &rootpath)
+{
+	g_IndexFileMap.SafeClearRecursively(rootpath);
+	return true;
+}
+

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2012,2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -103,6 +103,7 @@ public:
 	static __int64 GetIndexFileTime(const CString &gitdir);
 	static bool IsExistIndexLockFile(const CString &gitdir);
 	static bool ReleasePath(const CString &gitdir);
+	static bool ReleasePathsRecursively(const CString &rootpath);
 
 public:
 	GitStatus();
