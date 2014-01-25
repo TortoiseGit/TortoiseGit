@@ -1596,6 +1596,7 @@ LRESULT CLogDlg::OnClickedInfoIcon(WPARAM /*wParam*/, LPARAM lParam)
 			else if (selection == LOGFILTER_TOGGLE)
 			{
 				m_LogList.m_SelectedFilters = (~m_LogList.m_SelectedFilters) & LOGFILTER_ALL;
+				SetFilterCueText();
 			}
 			else
 			{
