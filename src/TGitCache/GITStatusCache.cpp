@@ -588,11 +588,14 @@ void CGitStatusCache::AddFolderForCrawling(const CTGitPath& path)
 void CGitStatusCache::CloseWatcherHandles(HDEVNOTIFY hdev)
 {
 	CTGitPath path = watcher.CloseInfoMap(hdev);
-	m_folderCrawler.BlockPath(path);
+	if (!path.IsEmpty())
+		m_folderCrawler.BlockPath(path);
+	CGitStatusCache::Instance().m_GitStatus.ReleasePathsRecursively(path.GetWinPathString());
 }
 
 void CGitStatusCache::CloseWatcherHandles(const CTGitPath& path)
 {
 	watcher.CloseHandlesForPath(path);
 	m_folderCrawler.ReleasePathForUpdate(path);
+	CGitStatusCache::Instance().m_GitStatus.ReleasePathsRecursively(path.GetWinPathString());
 }
