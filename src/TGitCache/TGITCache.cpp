@@ -353,13 +353,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 						{
 							CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Device to be dismounted\n");
 							CAutoWriteLock writeLock(CGitStatusCache::Instance().GetGuard());
-							CGitStatusCache::Instance().CloseWatcherHandles(phandle->dbch_hdevnotify);
+							CGitStatusCache::Instance().CloseWatcherHandles(phandle->dbch_handle);
 						}
 						if (IsEqualGUID(phandle->dbch_eventguid, GUID_IO_VOLUME_LOCK))
 						{
 							CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Device lock event\n");
 							CAutoWriteLock writeLock(CGitStatusCache::Instance().GetGuard());
-							CGitStatusCache::Instance().CloseWatcherHandles(phandle->dbch_hdevnotify);
+							CGitStatusCache::Instance().CloseWatcherHandles(phandle->dbch_handle);
 						}
 					}
 				}
