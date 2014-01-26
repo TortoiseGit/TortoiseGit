@@ -34,6 +34,7 @@ IMPLEMENT_DYNCREATE(CResizableFrame, CFrameWnd)
 CResizableFrame::CResizableFrame()
 {
 	m_bEnableSaveRestore = FALSE;
+	m_bRectOnly = FALSE;
 }
 
 CResizableFrame::~CResizableFrame()
