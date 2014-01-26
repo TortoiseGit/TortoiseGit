@@ -4360,7 +4360,7 @@ BEGIN
                             "Do you really want to unflag the selected file(s) as skip-worktree or assume-unchanged?"
     IDS_STATUSLIST_UNSETIGNORELOCALCHANGES 
                             "Unflag as skip-worktree and assume-unchanged"
-    IDS_LOG_FILTER_TOGGLE   "Toggle checked filters"
+    IDS_LOG_FILTER_TOGGLE   "Toggle filters"
     IDS_WARN_GITINIT_SPECIALFOLDER 
                             "The target folder \n%s\nis a special folder and is not supposed to be a repository root!\nAre you sure you want to initialize a git repository inside that folder?"
     IDS_SAMPLEBUGTRAQTESTMSG 

@@ -9000,7 +9000,7 @@ msgid "Toggle One/Two Pages display\nToggle One/Two Pages display"
 msgstr ""
 
 #. Resource IDs: (93)
-msgid "Toggle checked filters"
+msgid "Toggle filters"
 msgstr ""
 
 #. Resource IDs: (65535)
