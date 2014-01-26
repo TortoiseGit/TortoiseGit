@@ -585,9 +585,9 @@ void CGitStatusCache::AddFolderForCrawling(const CTGitPath& path)
 	m_folderCrawler.AddDirectoryForUpdate(path);
 }
 
-void CGitStatusCache::CloseWatcherHandles(HDEVNOTIFY hdev)
+void CGitStatusCache::CloseWatcherHandles(HANDLE hFile)
 {
-	CTGitPath path = watcher.CloseInfoMap(hdev);
+	CTGitPath path = watcher.CloseInfoMap(hFile);
 	if (!path.IsEmpty())
 		m_folderCrawler.BlockPath(path);
 	CGitStatusCache::Instance().m_GitStatus.ReleasePathsRecursively(path.GetWinPathString());
