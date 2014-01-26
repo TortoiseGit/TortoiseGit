@@ -1028,6 +1028,7 @@
 #define IDC_TITLE_ANIMATE               1485
 #define IDC_CHECK_FETCHTAGS             1485
 #define IDC_PROC_PUSH_SET_PUSHBRANCH    1485
+#define IDS_REFBROWSE_INFO              1485
 #define IDC_RUN_PROGRESS                1486
 #define IDC_PROC_PUSH_SET_UPSTREAM      1486
 #define IDC_CURRENT                     1487

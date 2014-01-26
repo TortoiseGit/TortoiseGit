@@ -8215,6 +8215,11 @@ msgstr ""
 msgid "Show/Hide"
 msgstr ""
 
+#. Resource IDs: (93)
+#, c-format
+msgid "Showing %1!d! ref(s), %2!d! ref(s) selected"
+msgstr ""
+
 #. Resource IDs: (76)
 #, c-format
 msgid "Showing %ld revision(s), from revision %s to revision %s - %ld revision(s) selected, %ld file(s) selected\r\n"

@@ -181,6 +181,7 @@ private:
 	afx_msg void OnLvnEndlabeleditListRefLeafs(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnLvnBeginlabeleditListRefLeafs(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnBnClickedCurrentbranch();
+	void		UpdateInfoLabel();
 
 	CString	m_sLastSelected;
 	CString m_initialRef;

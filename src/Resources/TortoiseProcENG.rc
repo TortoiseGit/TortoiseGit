@@ -1806,6 +1806,7 @@ BEGIN
     EDITTEXT        IDC_BROWSEREFS_EDIT_FILTER,164,7,294,14,ES_MULTILINE | ES_AUTOHSCROLL | ES_WANTRETURN
     CONTROL         "",IDC_TREE_REF,"SysTreeView32",TVS_HASBUTTONS | TVS_HASLINES | TVS_SHOWSELALWAYS | WS_BORDER | WS_HSCROLL | WS_TABSTOP,7,24,108,207
     CONTROL         "",IDC_LIST_REF_LEAFS,"SysListView32",LVS_REPORT | LVS_SHOWSELALWAYS | LVS_EDITLABELS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,125,24,333,207
+    LTEXT           "",IDC_INFOLABEL,7,234,192,14,SS_NOPREFIX,WS_EX_RIGHT
     PUSHBUTTON      "Current Branch",IDC_CURRENTBRANCH,204,234,67,14
     DEFPUSHBUTTON   "OK",IDOK,285,234,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,347,234,50,14
@@ -4364,6 +4365,7 @@ BEGIN
                             "The target folder \n%s\nis a special folder and is not supposed to be a repository root!\nAre you sure you want to initialize a git repository inside that folder?"
     IDS_SAMPLEBUGTRAQTESTMSG 
                             "Sample log message to test the bugtraq: regex strings.\n\nTesting mentions of issues inside a text: Mention single issue #55. Mention issues #77, #78, and #78. Mention more issues #123, #124 and #125 and some more separate ones: Issue #45, issue #46 and issue #47.\n\n\nUpdate issue #101\nFixes issue #202\nFixed issue #123\nResolves issue #88.\nCloses issue #99.\n"
+    IDS_REFBROWSE_INFO      "Showing %1!d! ref(s), %2!d! ref(s) selected"
 END
 
 STRINGTABLE

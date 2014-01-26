@@ -257,6 +257,7 @@ BOOL CBrowseRefsDlg::OnInitDialog()
 	AddAnchor(IDC_LIST_REF_LEAFS, TOP_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDC_BROWSEREFS_STATIC_FILTER, TOP_LEFT);
 	AddAnchor(IDC_BROWSEREFS_EDIT_FILTER, TOP_LEFT, TOP_RIGHT);
+	AddAnchor(IDC_INFOLABEL, BOTTOM_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
 
 	m_ListRefLeafs.SetExtendedStyle(m_ListRefLeafs.GetExtendedStyle()|LVS_EX_FULLROWSELECT);
@@ -1317,6 +1318,8 @@ void CBrowseRefsDlg::OnItemChangedListRefLeafs(NMHDR *pNMHDR, LRESULT *pResult)
 	CShadowTree *item = (CShadowTree*)m_ListRefLeafs.GetItemData(pNMListView->iItem);
 	if (item && pNMListView->uNewState == LVIS_SELECTED)
 		m_sLastSelected = item->GetRefName();
+
+	UpdateInfoLabel();
 }
 
 void CBrowseRefsDlg::OnNMDblclkListRefLeafs(NMHDR * /*pNMHDR*/, LRESULT *pResult)
@@ -1533,4 +1536,11 @@ void CBrowseRefsDlg::OnBnClickedCurrentbranch()
 	m_pickedRef = g_Git.GetCurrentBranch(true);
 	m_bPickedRefSet = true;
 	OnOK();
+}
+
+void CBrowseRefsDlg::UpdateInfoLabel()
+{
+	CString temp;
+	temp.FormatMessage(IDS_REFBROWSE_INFO, m_ListRefLeafs.GetItemCount(), m_ListRefLeafs.GetSelectedCount());
+	SetDlgItemText(IDC_INFOLABEL, temp);
 }
