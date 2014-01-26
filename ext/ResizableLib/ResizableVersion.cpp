@@ -82,7 +82,7 @@ static void CheckCommCtrlsVersion()
 {
 	// Check Common Controls version
 	SecureZeroMemory(&g_dviCommCtrls, sizeof(DLLVERSIONINFO));
-	HMODULE hMod = ::LoadLibrary(_T("comctl32.dll"));
+	HMODULE hMod = AtlLoadSystemLibraryUsingFullPath(_T("comctl32.dll"));
 	if (hMod != NULL)
 	{
 		// Get the version function
