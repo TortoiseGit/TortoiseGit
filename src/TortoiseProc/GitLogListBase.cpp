@@ -565,12 +565,15 @@ void CGitLogListBase::DrawTagBranchMessage(HDC hdc, CRect &rect, INT_PTR index, 
 	if (IsAppThemed() && SysInfo::Instance().IsVistaOrLater())
 		hTheme = OpenThemeData(m_hWnd, L"Explorer::ListView;ListView");
 
-	if (!m_bTagsBranchesOnRightSide)
-		DrawTagBranch(hdc, W_Dc, hTheme, rect, rt, rItem, data, refList);
-
 	SIZE oneSpaceSize;
 	GetTextExtentPoint32(hdc, L" ", 1, &oneSpaceSize);
-	rt.left += oneSpaceSize.cx;
+	if (!m_bTagsBranchesOnRightSide)
+	{
+		DrawTagBranch(hdc, W_Dc, hTheme, rect, rt, rItem, data, refList);
+		rt.left += oneSpaceSize.cx;
+	}
+	else
+		rt.left += 6;
 
 	if (IsAppThemed() && SysInfo::Instance().IsVistaOrLater())
 	{
