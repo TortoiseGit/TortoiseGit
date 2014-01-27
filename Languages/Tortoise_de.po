@@ -5832,7 +5832,7 @@ msgstr "Letzte bekannte &gute Version:"
 
 #. Resource IDs: (12)
 msgid "Launches the external diff/merge program to solve the conflicts"
-msgstr "Startet den externen Konflikteditor, um den Konflikt zu bearbeiten."
+msgstr "Startet den externen Konflikteditor, um den Konflikt zu bearbeitet."
 
 #. Resource IDs: (1137)
 msgid "Least active author:"
@@ -7795,7 +7795,7 @@ msgstr "Erfordert GPG und einen Schlüssel ohne Passphrase."
 
 #. Resource IDs: (8)
 msgid "Res&olve..."
-msgstr "Konflikt &bearbeiten"
+msgstr "Konflikt &bearbeitet"
 
 #. Resource IDs: (317)
 msgid "Reset"
