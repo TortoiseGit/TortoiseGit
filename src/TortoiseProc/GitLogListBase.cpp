@@ -566,14 +566,19 @@ void CGitLogListBase::DrawTagBranchMessage(HDC hdc, CRect &rect, INT_PTR index, 
 		hTheme = OpenThemeData(m_hWnd, L"Explorer::ListView;ListView");
 
 	SIZE oneSpaceSize;
-	GetTextExtentPoint32(hdc, L" ", 1, &oneSpaceSize);
-	if (!m_bTagsBranchesOnRightSide)
+	if (m_bTagsBranchesOnRightSide)
 	{
+		HFONT oldFont = (HFONT)SelectObject(hdc, (HFONT)GetStockObject(DEFAULT_GUI_FONT));
+		GetTextExtentPoint32(hdc, L" ", 1, &oneSpaceSize);
+		SelectObject(hdc, oldFont);
+		rt.left += oneSpaceSize.cx * 2;
+	}
+	else
+	{
+		GetTextExtentPoint32(hdc, L" ", 1, &oneSpaceSize);
 		DrawTagBranch(hdc, W_Dc, hTheme, rect, rt, rItem, data, refList);
 		rt.left += oneSpaceSize.cx;
 	}
-	else
-		rt.left += 6;
 
 	if (IsAppThemed() && SysInfo::Instance().IsVistaOrLater())
 	{
