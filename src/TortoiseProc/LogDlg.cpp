@@ -1306,6 +1306,8 @@ void CLogDlg::OnLvnItemchangedLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 	{
 		this->m_LogList.m_nSearchIndex = pNMLV->iItem;
 		GitRev* pLogEntry = reinterpret_cast<GitRev *>(m_LogList.m_arShownList.SafeGetAt(pNMLV->iItem));
+		if (pLogEntry == nullptr)
+			return;
 		m_LogList.m_lastSelectedHash = pLogEntry->m_CommitHash;
 		if (pNMLV->iSubItem != 0)
 			return;
