@@ -78,6 +78,7 @@ void CSetDialogs::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_ENABLELOGCACHE, m_bEnableLogCache);
 	DDX_Check(pDX, IDC_ENABLEGRAVATAR, m_bEnableGravatar);
 	DDX_Text(pDX, IDC_GRAVATARURL, m_GravatarUrl);
+	DDX_Control(pDX, IDC_GRAVATARURL, m_cGravatarUrl);
 	DDX_Check(pDX, IDC_RIGHTSIDEBRANCHESTAGS, m_bDrawBranchesTagsOnRightSide);
 }
 
@@ -155,6 +156,14 @@ BOOL CSetDialogs::OnInitDialog()
 
 	m_cFontNames.Setup(DEVICE_FONTTYPE|RASTER_FONTTYPE|TRUETYPE_FONTTYPE, 1, FIXED_PITCH);
 	m_cFontNames.SelectFont(m_sFontName);
+
+	m_cGravatarUrl.AddString(_T("http://www.gravatar.com/avatar/%HASH%"));
+	m_cGravatarUrl.AddString(_T("http://www.gravatar.com/avatar/%HASH%?d=mm"));
+	m_cGravatarUrl.AddString(_T("http://www.gravatar.com/avatar/%HASH%?d=identicon"));
+	m_cGravatarUrl.AddString(_T("http://www.gravatar.com/avatar/%HASH%?d=monsterid"));
+	m_cGravatarUrl.AddString(_T("http://www.gravatar.com/avatar/%HASH%?d=wavatar"));
+	m_cGravatarUrl.AddString(_T("http://www.gravatar.com/avatar/%HASH%?d=retro"));
+	m_cGravatarUrl.AddString(_T("http://www.gravatar.com/avatar/%HASH%?d=blank"));;
 
 	UpdateData(FALSE);
 	return TRUE;
