@@ -159,7 +159,8 @@ void CGravatar::GravatarThread()
 	baseUrlPath.ReleaseBuffer();
 
 	HINTERNET hOpenHandle = InternetOpen(L"TortoiseGit", INTERNET_OPEN_TYPE_PRECONFIG, nullptr, nullptr, 0);
-	HINTERNET hConnectHandle = InternetConnect(hOpenHandle, hostname, urlComponents.nPort, nullptr, nullptr, urlComponents.nScheme, 0, 0);
+	bool isHttps = urlComponents.nScheme == INTERNET_SCHEME_HTTPS;
+	HINTERNET hConnectHandle = InternetConnect(hOpenHandle, hostname, urlComponents.nPort, nullptr, nullptr, isHttps ? INTERNET_SCHEME_HTTP : urlComponents.nScheme, 0, 0);
 	if (!hConnectHandle)
 	{
 		InternetCloseHandle(hOpenHandle);
@@ -210,7 +211,7 @@ void CGravatar::GravatarThread()
 			}
 			else
 			{
-				BOOL ret = DownloadToFile(hConnectHandle, gravatarUrl, tempFile);
+				BOOL ret = DownloadToFile(hConnectHandle, isHttps, gravatarUrl, tempFile);
 				if (ret)
 				{
 					DeleteFile(tempFile);
@@ -248,9 +249,9 @@ void CGravatar::GravatarThread()
 	InternetCloseHandle(hOpenHandle);
 }
 
-BOOL CGravatar::DownloadToFile(const HINTERNET hConnectHandle, const CString& urlpath, const CString& dest)
+BOOL CGravatar::DownloadToFile(const HINTERNET hConnectHandle, bool isHttps, const CString& urlpath, const CString& dest)
 {
-	HINTERNET hResourceHandle = HttpOpenRequest(hConnectHandle, nullptr, urlpath, nullptr, nullptr, nullptr, INTERNET_FLAG_KEEP_CONNECTION, 0);
+	HINTERNET hResourceHandle = HttpOpenRequest(hConnectHandle, nullptr, urlpath, nullptr, nullptr, nullptr, INTERNET_FLAG_KEEP_CONNECTION | (isHttps ? INTERNET_FLAG_SECURE : 0), 0);
 	if (!hResourceHandle)
 		return -1;
 

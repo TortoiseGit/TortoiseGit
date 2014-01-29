@@ -33,7 +33,7 @@ private:
 	void	GravatarThread();
 	void	SafeTerminateGravatarThread();
 	afx_msg void OnPaint();
-	BOOL	DownloadToFile(const HINTERNET hConnectHandle, const CString& urlpath, const CString& dest);
+	BOOL	DownloadToFile(const HINTERNET hConnectHandle, bool isHttps, const CString& urlpath, const CString& dest);
 
 	bool				m_bEnableGravatar;
 	CString				m_filename;
