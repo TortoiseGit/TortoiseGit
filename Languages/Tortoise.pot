@@ -1266,12 +1266,12 @@ msgstr ""
 msgid "&Up"
 msgstr ""
 
-#. Resource IDs: (4567)
-msgid "&UpStream:"
-msgstr ""
-
 #. Resource IDs: (1253)
 msgid "&Update item to revision"
+msgstr ""
+
+#. Resource IDs: (4567)
+msgid "&Upstream:"
 msgstr ""
 
 #. Resource IDs: (1184)
