@@ -1031,6 +1031,7 @@
 #define IDS_REFBROWSE_INFO              1485
 #define IDC_RUN_PROGRESS                1486
 #define IDC_PROC_PUSH_SET_UPSTREAM      1486
+#define IDS_SWITCH_WITH_MERGE           1486
 #define IDC_CURRENT                     1487
 #define IDC_STATIC_RECURSE_SUBMODULES   1487
 #define IDC_COMBOBOX_RECURSE_SUBMODULES 1488

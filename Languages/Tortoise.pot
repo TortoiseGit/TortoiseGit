@@ -2481,6 +2481,10 @@ msgstr ""
 msgid "Checkout"
 msgstr ""
 
+#. Resource IDs: (93)
+msgid "Checkout with merge"
+msgstr ""
+
 #. Resource IDs: (67)
 msgid "Cherry Pick"
 msgstr ""
