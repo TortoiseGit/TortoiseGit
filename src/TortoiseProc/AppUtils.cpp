@@ -1174,6 +1174,7 @@ bool CAppUtils::PerformSwitch(CString ref, bool bForce /* false */, CString sNew
 			idMerge = progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUMERGE)));
 
 		progress.m_PostFailCmdList.Add(CString(MAKEINTRESOURCE(IDS_MSGBOX_RETRY)));
+		progress.m_PostFailCmdList.Add(CString(MAKEINTRESOURCE(IDS_SWITCH_WITH_MERGE)));
 
 		INT_PTR ret = progress.DoModal();
 		if (progress.m_GitStatus == 0)
@@ -1201,6 +1202,13 @@ bool CAppUtils::PerformSwitch(CString ref, bool bForce /* false */, CString sNew
 		}
 		else if (ret == IDC_PROGRESS_BUTTON1)
 			continue;	// retry
+		else if (ret == IDC_PROGRESS_BUTTON1 + 1)
+		{
+			merge = _T("--merge");
+			cmd.Format(_T("git.exe checkout %s %s %s %s %s --"),
+				force, track, merge, branch, g_Git.FixBranchName(ref));
+			continue;	// retry
+		}
 
 		return FALSE;
 	}

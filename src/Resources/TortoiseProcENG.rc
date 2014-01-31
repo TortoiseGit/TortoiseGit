@@ -4366,6 +4366,7 @@ BEGIN
     IDS_SAMPLEBUGTRAQTESTMSG 
                             "Sample log message to test the bugtraq: regex strings.\n\nTesting mentions of issues inside a text: Mention single issue #55. Mention issues #77, #78, and #78. Mention more issues #123, #124 and #125 and some more separate ones: Issue #45, issue #46 and issue #47.\n\n\nUpdate issue #101\nFixes issue #202\nFixed issue #123\nResolves issue #88.\nCloses issue #99.\n"
     IDS_REFBROWSE_INFO      "Showing %1!d! ref(s), %2!d! ref(s) selected"
+    IDS_SWITCH_WITH_MERGE   "Checkout with merge"
 END
 
 STRINGTABLE
