@@ -12,6 +12,7 @@ Released: Unreleased
  * Fixed issue #2083: TortoiseGitBlame 'show unified diff' actually performs compare
  * Fixed issue #2087: Rebase ComboBox DropDown List too short
  * Fixed issue #2088: log entries have space in front of message without labels if right side drawing is enabled
+ * Fixed issue #2075: Commit do not show merged files after merge
 
 = Release 1.8.7.0 =
 Released: 2014-01-12

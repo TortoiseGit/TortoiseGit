@@ -138,6 +138,7 @@ public:
 	CString				m_AmendStr;
 	CString				m_sBugID;
 	BOOL				m_bWholeProject;
+	BOOL				m_bWholeProject2;
 	CTGitPathList		m_pathList;
 	CTGitPathList		m_checkedPathList;
 	CTGitPathList		m_updatedPathList;

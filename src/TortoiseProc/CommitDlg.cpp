@@ -61,6 +61,7 @@ CCommitDlg::CCommitDlg(CWnd* pParent /*=NULL*/)
 	, m_bRunThread(FALSE)
 	, m_pThread(NULL)
 	, m_bWholeProject(FALSE)
+	, m_bWholeProject2(FALSE)
 	, m_bKeepChangeList(TRUE)
 	, m_bDoNotAutoselectSubmodules(FALSE)
 	, m_itemsCount(0)
@@ -246,6 +247,12 @@ BOOL CCommitDlg::OnInitDialog()
 
 //	GitConfig config;
 //	m_bWholeProject = config.KeepLocks();
+
+	if (m_pathList.IsEmpty())
+		m_bWholeProject2 = true;
+
+	if(this->m_pathList.GetCount() == 1 && m_pathList[0].IsEmpty())
+		m_bWholeProject2 = true;
 
 	SetDlgTitle();
 
@@ -1187,7 +1194,7 @@ UINT CCommitDlg::StatusThread()
 	m_ListCtrl.m_amend = (m_bCommitAmend==TRUE || m_bForceCommitAmend) && (m_bAmendDiffToLastCommit==FALSE);
 	m_ListCtrl.m_bDoNotAutoselectSubmodules = (m_bDoNotAutoselectSubmodules == TRUE);
 
-	if(m_bWholeProject)
+	if(m_bWholeProject || m_bWholeProject2)
 		pList=NULL;
 	else
 		pList = &m_pathList;
@@ -1333,7 +1340,7 @@ void CCommitDlg::SetDlgTitle()
 	if (m_sTitle.IsEmpty())
 		GetWindowText(m_sTitle);
 
-	if (m_bWholeProject)
+	if (m_bWholeProject || m_bWholeProject2)
 		CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, m_sTitle);
 	else
 	{
@@ -1466,7 +1473,7 @@ void CCommitDlg::OnBnClickedShowunversioned()
 			dwShow &= ~GITSLC_SHOWUNVERSIONED;
 		if(dwShow & GITSLC_SHOWUNVERSIONED)
 		{
-			if(m_bWholeProject)
+			if (m_bWholeProject || m_bWholeProject2)
 				m_ListCtrl.GetStatus(NULL,false,false,true);
 			else
 				m_ListCtrl.GetStatus(&this->m_pathList,false,false,true);
@@ -2366,7 +2373,7 @@ void CCommitDlg::OnBnClickedWholeProject()
 	m_ListCtrl.Clear();
 	if (!m_bBlock)
 	{
-		if(m_bWholeProject)
+		if (m_bWholeProject || m_bWholeProject2)
 			m_ListCtrl.GetStatus(NULL,true,false,true);
 		else
 			m_ListCtrl.GetStatus(&this->m_pathList,true,false,true);
