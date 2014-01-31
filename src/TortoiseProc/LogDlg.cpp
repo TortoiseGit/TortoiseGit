@@ -280,8 +280,6 @@ BOOL CLogDlg::OnInitDialog()
 	AdjustControlSize(IDC_LOG_ALLBRANCH);
 	AdjustControlSize(IDC_SHOWWHOLEPROJECT);
 
-	ShowGravatar();
-
 	GetClientRect(m_DlgOrigRect);
 	m_LogList.GetClientRect(m_LogListOrigRect);
 	GetDlgItem(IDC_MSGVIEW)->GetClientRect(m_MsgViewOrigRect);
@@ -420,6 +418,7 @@ BOOL CLogDlg::OnInitDialog()
 	}
 
 	m_LogList.FetchLogAsync(this);
+	ShowGravatar();
 	m_gravatar.Init();
 
 	GetDlgItem(IDC_LOGLIST)->SetFocus();
@@ -2333,6 +2332,7 @@ CString CLogDlg::GetAbsoluteUrlFromRelativeUrl(const CString& url)
 void CLogDlg::ShowGravatar()
 {
 	m_gravatar.EnableGravatar(m_bShowGravatar);
+	RemoveAnchor(IDC_MSGVIEW);
 	if (m_gravatar.IsGravatarEnabled())
 	{
 		RECT rect, rect2;
@@ -2355,6 +2355,7 @@ void CLogDlg::ShowGravatar()
 		GetDlgItem(IDC_MSGVIEW)->MoveWindow(&rect);
 		m_gravatar.ShowWindow(SW_HIDE);
 	}
+	AddAnchor(IDC_MSGVIEW, TOP_LEFT, BOTTOM_RIGHT);
 }
 
 
