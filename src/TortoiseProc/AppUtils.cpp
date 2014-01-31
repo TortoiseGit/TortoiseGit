@@ -1155,45 +1155,55 @@ bool CAppUtils::PerformSwitch(CString ref, bool bForce /* false */, CString sNew
 		 branch,
 		 g_Git.FixBranchName(ref));
 
-	CProgressDlg progress;
-	progress.m_GitCmd = cmd;
-
-	INT_PTR idPull = -1;
-	INT_PTR idSubmoduleUpdate = -1;
-	INT_PTR idMerge = -1;
-
-	CTGitPath gitPath = g_Git.m_CurrentDir;
-	if (gitPath.HasSubmodules())
-		idSubmoduleUpdate = progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_SUBMODULESUPDATE)));
-	idPull = progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUPULL)));
-	CString currentBranch;
-	bool hasBranch = CGit::GetCurrentBranchFromFile(g_Git.m_CurrentDir, currentBranch) == 0;
-	if (hasBranch)
-		idMerge = progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUMERGE)));
-
-	INT_PTR ret = progress.DoModal();
-	if (idSubmoduleUpdate >= 0 && ret == IDC_PROGRESS_BUTTON1 + idSubmoduleUpdate)
+	while (true)
 	{
-		CString sCmd;
-		sCmd.Format(_T("/command:subupdate /bkpath:\"%s\""), g_Git.m_CurrentDir);
+		CProgressDlg progress;
+		progress.m_GitCmd = cmd;
 
-		RunTortoiseGitProc(sCmd);
-		return TRUE;
-	}
-	else if (ret == IDC_PROGRESS_BUTTON1 + idPull)
-	{
-		Pull();
-		return TRUE;
-	}
-	else if (ret == IDC_PROGRESS_BUTTON1 + idMerge)
-	{
-		Merge(&currentBranch);
-		return TRUE;
-	}
-	else if (ret == IDOK)
-		return TRUE;
+		INT_PTR idPull = -1;
+		INT_PTR idSubmoduleUpdate = -1;
+		INT_PTR idMerge = -1;
 
-	return FALSE;
+		CTGitPath gitPath = g_Git.m_CurrentDir;
+		if (gitPath.HasSubmodules())
+			idSubmoduleUpdate = progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_SUBMODULESUPDATE)));
+		idPull = progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUPULL)));
+		CString currentBranch;
+		bool hasBranch = CGit::GetCurrentBranchFromFile(g_Git.m_CurrentDir, currentBranch) == 0;
+		if (hasBranch)
+			idMerge = progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUMERGE)));
+
+		progress.m_PostFailCmdList.Add(CString(MAKEINTRESOURCE(IDS_MSGBOX_RETRY)));
+
+		INT_PTR ret = progress.DoModal();
+		if (progress.m_GitStatus == 0)
+		{
+			if (idSubmoduleUpdate >= 0 && ret == IDC_PROGRESS_BUTTON1 + idSubmoduleUpdate)
+			{
+				CString sCmd;
+				sCmd.Format(_T("/command:subupdate /bkpath:\"%s\""), g_Git.m_CurrentDir);
+
+				RunTortoiseGitProc(sCmd);
+				return TRUE;
+			}
+			else if (ret == IDC_PROGRESS_BUTTON1 + idPull)
+			{
+				Pull();
+				return TRUE;
+			}
+			else if (ret == IDC_PROGRESS_BUTTON1 + idMerge)
+			{
+				Merge(&currentBranch);
+				return TRUE;
+			}
+			else if (ret == IDOK)
+				return TRUE;
+		}
+		else if (ret == IDC_PROGRESS_BUTTON1)
+			continue;	// retry
+
+		return FALSE;
+	}
 }
 
 class CIgnoreFile : public CStdioFile
