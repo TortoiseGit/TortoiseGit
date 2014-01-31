@@ -1271,7 +1271,7 @@ UINT CCommitDlg::StatusThread()
 	if (m_bRunThread)
 	{
 		DialogEnableWindow(IDC_SHOWUNVERSIONED, true);
-		DialogEnableWindow(IDC_WHOLE_PROJECT, !(m_pathList.IsEmpty() || (m_pathList.GetCount() == 1 && m_pathList[0].IsEmpty())));
+		DialogEnableWindow(IDC_WHOLE_PROJECT, !m_bWholeProject2);
 		DialogEnableWindow(IDC_NOAUTOSELECTSUBMODULES, true);
 		if (m_ListCtrl.HasChangeLists())
 			DialogEnableWindow(IDC_KEEPLISTS, true);
