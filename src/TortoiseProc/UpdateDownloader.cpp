@@ -74,14 +74,15 @@ BOOL CUpdateDownloader::DownloadFile(const CString& url, const CString& dest, bo
 	if (m_bForce)
 		DeleteUrlCacheEntry(url);
 
-	HINTERNET hConnectHandle = InternetConnect(hOpenHandle, hostname, urlComponents.nPort, nullptr, nullptr, urlComponents.nScheme, 0, 0);
+	bool isHttps = urlComponents.nScheme == INTERNET_SCHEME_HTTPS;
+	HINTERNET hConnectHandle = InternetConnect(hOpenHandle, hostname, urlComponents.nPort, nullptr, nullptr, isHttps ? INTERNET_SCHEME_HTTP : urlComponents.nScheme, 0, 0);
 	if (!hConnectHandle)
 	{
 		DWORD err = GetLastError();
 		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Download of %s failed on InternetConnect: %d\n"), url, err);
 		return err;
 	}
-	HINTERNET hResourceHandle = HttpOpenRequest(hConnectHandle, nullptr, urlpath, nullptr, nullptr, nullptr, INTERNET_FLAG_KEEP_CONNECTION, 0);
+	HINTERNET hResourceHandle = HttpOpenRequest(hConnectHandle, nullptr, urlpath, nullptr, nullptr, nullptr, INTERNET_FLAG_KEEP_CONNECTION | (isHttps ? INTERNET_FLAG_SECURE : 0), 0);
 	if (!hResourceHandle)
 	{
 		DWORD err = GetLastError();
@@ -129,7 +130,13 @@ resend:
 		}
 	}
 
-	CFile destinationFile(dest, CFile::modeCreate | CFile::modeWrite);
+	CFile destinationFile;
+	if (!destinationFile.Open(dest, CFile::modeCreate | CFile::modeWrite))
+	{
+		InternetCloseHandle(hResourceHandle);
+		InternetCloseHandle(hConnectHandle);
+		return ERROR_ACCESS_DENIED;
+	}
 	DWORD downloadedSum = 0; // sum of bytes downloaded so far
 	do
 	{
