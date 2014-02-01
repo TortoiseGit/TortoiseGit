@@ -600,12 +600,12 @@ void CGitPropertyPage::InitWorkfileView()
 			branch = CUnicodeUtils::GetUnicode(branchChar);
 
 			const char * branchFullChar = git_reference_name(head);
-			CStringA upstreambranchnameA;
-			if (git_branch_upstream_name(upstreambranchnameA.GetBufferSetLength(4096), 4096, repository, branchFullChar) > 0)
+			git_buf upstreambranchname = GIT_BUF_INIT_CONST("", 0);
+			if (!git_branch_upstream_name(&upstreambranchname, repository, branchFullChar))
 			{
-				upstreambranchnameA.ReleaseBuffer();
-				remotebranch = CUnicodeUtils::GetUnicode(upstreambranchnameA);
+				remotebranch = CUnicodeUtils::GetUnicode(CStringA(upstreambranchname.ptr, (int)upstreambranchname.size));
 				remotebranch = remotebranch.Mid(13); // 13=len("refs/remotes/")
+				git_buf_free(&upstreambranchname);
 			}
 
 			git_reference_free(head);

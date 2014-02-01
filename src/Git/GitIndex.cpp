@@ -159,7 +159,7 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 		this->at(i).m_FileName.MakeLower();
 		this->at(i).m_ModifyTime = e->mtime.seconds;
 		this->at(i).m_Flags = e->flags | e->flags_extended;
-		this->at(i).m_IndexHash = (char *) e->oid.id;
+		this->at(i).m_IndexHash = (char *) e->id.id;
 	}
 
 	git_index_free(index);

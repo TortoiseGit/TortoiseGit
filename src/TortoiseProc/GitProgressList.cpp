@@ -2073,7 +2073,7 @@ bool CGitProgressList::CmdClone(CString& sWindowTitle, bool& /*localoperation*/)
 		if ((error = git_remote_create(&origin, cloned_repo, remoteA.IsEmpty() ? "origin" : remoteA, url)) < 0)
 			break;
 		git_remote_set_callbacks(origin, &callbacks);
-		error = git_clone_into(cloned_repo, origin, &checkout_opts, refspecA.IsEmpty() ? nullptr : (const char*)refspecA);
+		error = git_clone_into(cloned_repo, origin, &checkout_opts, refspecA.IsEmpty() ? nullptr : (const char*)refspecA, nullptr);
 	} while (false);
 
 	if (m_pAnimate)
