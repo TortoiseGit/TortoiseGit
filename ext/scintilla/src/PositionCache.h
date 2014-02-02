@@ -53,7 +53,7 @@ public:
 	int lines;
 	XYPOSITION wrapIndent; // In pixels
 
-	LineLayout(int maxLineLength_);
+	explicit LineLayout(int maxLineLength_);
 	virtual ~LineLayout();
 	void Resize(int maxLineLength_);
 	void Free();
@@ -116,7 +116,7 @@ public:
 class Representation {
 public:
 	std::string stringRep;
-	Representation(const char *value="") : stringRep(value) {
+	explicit Representation(const char *value="") : stringRep(value) {
 	}
 };
 

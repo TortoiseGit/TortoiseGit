@@ -120,7 +120,7 @@ void XPM::Init(const char *const *linesForm) {
 	for (int y=0; y<height; y++) {
 		const char *lform = linesForm[y+nColours+1];
 		size_t len = MeasureLength(lform);
-		for (size_t x = 0; x<len; x++) 
+		for (size_t x = 0; x<len; x++)
 			pixels[y * width + x] = static_cast<unsigned char>(lform[x]);
 	}
 }
@@ -244,7 +244,7 @@ void RGBAImage::SetPixel(int x, int y, ColourDesired colour, int alpha) {
 	pixel[3] = static_cast<unsigned char>(alpha);
 }
 
-RGBAImageSet::RGBAImageSet() : height(-1), width(-1){
+RGBAImageSet::RGBAImageSet() : height(-1), width(-1) {
 }
 
 RGBAImageSet::~RGBAImageSet() {

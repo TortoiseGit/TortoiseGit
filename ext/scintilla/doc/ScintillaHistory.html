@@ -439,6 +439,7 @@
 	<td>Thomas Martitz</td>
 	<td>felix</td>
 	<td>Christian Walther</td>
+	<td>Ebben</td>
     </tr>
     </table>
     <p>
@@ -449,6 +450,95 @@
         <a href="http://sourceforge.net/projects/icon-collection/">
         Icons</a> Copyright(C) 1998 by Dean S. Jones<br />
       </li>
+    </ul>
+    <h3>
+       <a href="http://prdownloads.sourceforge.net/scintilla/scite339.zip?download">Release 3.3.9</a>
+    </h3>
+    <ul>
+	<li>
+	Released 31 January 2014.
+	</li>
+	<li>
+	Fix 3.3.8 bug where external lexers became inaccessible.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1574/">Bug #1574</a>.
+	</li>
+    </ul>
+    <h3>
+       <a href="http://prdownloads.sourceforge.net/scintilla/scite338.zip?download">Release 3.3.8</a>
+    </h3>
+    <ul>
+	<li>
+	Released 28 January 2014.
+	</li>
+	<li>
+	DropSelectionN API added to drop a selection from a multiple selection.
+	</li>
+	<li>
+	CallTipSetPosStart API added to change the position at which backspacing removes the calltip.
+	</li>
+	<li>
+	SC_MARK_BOOKMARK marker symbol added which looks like bookmark ribbons used in
+	book reading applications.
+	</li>
+	<li>
+	Basic lexer highlights hex, octal, and binary numbers in FreeBASIC which use the prefixes
+	&amp;h, &amp;o and &amp;b respectively.
+	<a href="http://sourceforge.net/p/scintilla/feature-requests/1041/">Feature #1041.</a>
+	</li>
+	<li>
+	C++ lexer fixes bug where keyword followed immediately by quoted string continued
+	keyword style.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1564/">Bug #1564</a>.
+	</li>
+	<li>
+	Matlab lexer treats '!' differently for Matlab and Octave languages.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1571/">Bug #1571</a>.
+	</li>
+	<li>
+	Rust lexer improved with nested comments, more compliant doc-comment detection,
+	octal literals, NUL characters treated as valid, and highlighting of raw string literals and float literals fixed.
+	<a href="http://sourceforge.net/p/scintilla/feature-requests/1038/">Feature #1038.</a>
+	<a href="http://sourceforge.net/p/scintilla/bugs/1570/">Bug #1570</a>.
+	</li>
+	<li>
+	On Qt expose the EOLMode on the document object.
+	</li>
+	<li>
+	Fix hotspot clicking where area was off by half a character width.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1562/">Bug #1562</a>.
+	</li>
+	<li>
+	Tweaked scroll positioning by either 2 pixels or 1 pixel when caret is at left or right of view
+	to ensure caret is inside visible area.
+	</li>
+	<li>
+	Send SCN_UPDATEUI with SC_UPDATE_SELECTION for Shift+Tab inside text.
+	</li>
+	<li>
+	On Windows update the system caret position when scrolling to help screen readers
+	see the scroll quickly.
+	</li>
+	<li>
+	On Cocoa, GTK+, and Windows/Direct2D draw circles more accurately so that
+	circular folding margin markers appear circular, of consistent size, and centred.
+	Make SC_MARK_ARROWS drawing more even.
+	Fix corners of SC_MARK_ROUNDRECT with Direct2D to be similar to other platforms.
+	</li>
+	<li>
+	SciTE uses a bookmark ribbon symbol for bookmarks as it scales better to higher resolutions
+	than the previous blue gem bitmap.
+	</li>
+	<li>
+	SciTE will change the width of margins while running when the margin.width and fold.margin.width
+	properties are changed.
+	</li>
+	<li>
+	SciTE on Windows can display a larger tool bar with the toolbar.large property.
+	</li>
+	<li>
+	SciTE displays a warning message when asked to open a directory.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1568/">Bug #1568</a>.
+	</li>
     </ul>
     <h3>
        <a href="http://prdownloads.sourceforge.net/scintilla/scite337.zip?download">Release 3.3.7</a>
@@ -511,6 +601,9 @@
 	</li>
 	<li>
 	When scroll width is tracked, take width of annotation lines into account.
+	</li>
+	<li>
+	For Cocoa on OS X 10.9, responsive scrolling is supported.
 	</li>
 	<li>
 	On Cocoa, apply font quality setting to line numbers.

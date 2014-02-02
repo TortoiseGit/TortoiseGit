@@ -55,8 +55,9 @@ const char *FontNames::Save(const char *name) {
 			return *it;
 		}
 	}
-	char *nameSave = new char[strlen(name) + 1];
-	strcpy(nameSave, name);
+	const size_t lenName = strlen(name) + 1;
+	char *nameSave = new char[lenName];
+	memcpy(nameSave, name, lenName);
 	names.push_back(nameSave);
 	return nameSave;
 }

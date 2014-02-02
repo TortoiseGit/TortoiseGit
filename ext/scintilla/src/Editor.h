@@ -119,7 +119,7 @@ public:
 	}
 private:
 	void FixSelectionForClipboard() {
-		// To avoid truncating the contents of the clipboard when pasted where the 
+		// To avoid truncating the contents of the clipboard when pasted where the
 		// clipboard contains NUL characters, replace NUL characters by spaces.
 		std::replace(s.begin(), s.end(), '\0', ' ');
 	}
@@ -633,6 +633,7 @@ protected:	// ScintillaBase subclass needs access to much of Editor
 	static const char *StringFromEOLMode(int eolMode);
 
 	static sptr_t StringResult(sptr_t lParam, const char *val);
+	static sptr_t BytesResult(sptr_t lParam, const unsigned char *val, size_t len);
 
 public:
 	// Public so the COM thunks can access it.

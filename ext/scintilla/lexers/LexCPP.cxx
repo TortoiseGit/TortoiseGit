@@ -336,7 +336,7 @@ class LexerCPP : public ILexerWithSubStyles {
 	enum { ssIdentifier, ssDocKeyword };
 	SubStyles subStyles;
 public:
-	LexerCPP(bool caseSensitive_) :
+	explicit LexerCPP(bool caseSensitive_) :
 		caseSensitive(caseSensitive_),
 		setWord(CharacterSet::setAlphaNum, "._", 0x80, true),
 		setNegationOp(CharacterSet::setNone, "!"),
@@ -376,7 +376,7 @@ public:
 
 	int SCI_METHOD LineEndTypesSupported() {
 		return SC_LINE_END_TYPE_UNICODE;
-	};
+	}
 
 	int SCI_METHOD AllocateSubStyles(int styleBase, int numberStyles) {
 		return subStyles.Allocate(styleBase, numberStyles);
@@ -485,7 +485,7 @@ int SCI_METHOD LexerCPP::WordListSet(int n, const char *wl) {
 // Functor used to truncate history
 struct After {
 	int line;
-	After(int line_) : line(line_) {}
+	explicit After(int line_) : line(line_) {}
 	bool operator()(PPDefinition &p) const {
 		return p.line > line;
 	}
@@ -683,6 +683,8 @@ void SCI_METHOD LexerCPP::Lex(unsigned int startPos, int length, int initStyle, 
 								sc.ChangeState((raw ? SCE_C_STRINGRAW : SCE_C_STRING)|activitySet);
 							else
 								sc.ChangeState(SCE_C_CHARACTER|activitySet);
+						} else {
+							sc.SetState(SCE_C_DEFAULT | activitySet);
 						}
 					} else {
 						sc.SetState(SCE_C_DEFAULT|activitySet);
