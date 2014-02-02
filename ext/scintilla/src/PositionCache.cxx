@@ -359,7 +359,7 @@ void SpecialRepresentations::SetRepresentation(const char *charBytes, const char
 		// New entry so increment for first byte
 		startByteHasReprs[static_cast<unsigned char>(charBytes[0])]++;
 	}
-	mapReprs[KeyFromString(charBytes, UTF8MaxBytes)] = value;
+	mapReprs[KeyFromString(charBytes, UTF8MaxBytes)] = Representation(value);
 }
 
 void SpecialRepresentations::ClearRepresentation(const char *charBytes) {
@@ -454,7 +454,7 @@ BreakFinder::~BreakFinder() {
 TextSegment BreakFinder::Next() {
 	if (subBreak == -1) {
 		int prev = nextBreak;
- 		while (nextBreak < lineEnd) {
+		while (nextBreak < lineEnd) {
 			int charWidth = 1;
 			if (encodingFamily == efUnicode)
 				charWidth = UTF8DrawBytes(reinterpret_cast<unsigned char *>(ll->chars) + nextBreak, lineEnd - nextBreak);

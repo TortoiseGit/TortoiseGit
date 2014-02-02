@@ -397,7 +397,7 @@ static void ColouriseCoffeeScriptDoc(unsigned int startPos, int length, int init
 					sc.SetState(SCE_COFFEESCRIPT_COMMENTBLOCK);
 					sc.Forward();
 					sc.Forward();
-					
+
 				} else {
 					sc.SetState(SCE_COFFEESCRIPT_COMMENTLINE);
 				}

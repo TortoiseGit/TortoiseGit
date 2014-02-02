@@ -268,6 +268,7 @@ val SC_MARK_LEFTRECT=27
 val SC_MARK_AVAILABLE=28
 val SC_MARK_UNDERLINE=29
 val SC_MARK_RGBAIMAGE=30
+val SC_MARK_BOOKMARK=31
 
 val SC_MARK_CHARACTER=10000
 
@@ -1041,6 +1042,9 @@ fun bool CallTipActive=2202(,)
 
 # Retrieve the position where the caret was before displaying the call tip.
 fun position CallTipPosStart=2203(,)
+
+# Set the start position in order to change when backspacing removes the calltip.
+set void CallTipSetPosStart=2214(int posStart,)
 
 # Highlight a segment of the definition.
 fun void CallTipSetHlt=2204(int start, int end)
@@ -2175,6 +2179,9 @@ fun int SetSelection=2572(int caret, int anchor)
 
 # Add a selection
 fun int AddSelection=2573(int caret, int anchor)
+
+# Drop one selection
+fun void DropSelectionN=2671(int selection,)
 
 # Set the main selection
 set void SetMainSelection=2574(int selection,)
