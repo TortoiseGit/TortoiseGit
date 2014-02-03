@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -110,7 +110,7 @@ BOOL CSettingGitRemote::OnInitDialog()
 
 	m_ctrlTagOpt.AddString(CString(MAKEINTRESOURCE(IDS_FETCH_REACHABLE)));
 	m_ctrlTagOpt.AddString(CString(MAKEINTRESOURCE(IDS_NONE)));
-	m_ctrlTagOpt.AddString(CString(MAKEINTRESOURCE(IDS_FETCH_TAGS_ONLY)));
+	m_ctrlTagOpt.AddString(CString(MAKEINTRESOURCE(CAppUtils::GetMsysgitVersion() < 0x01090000 ? IDS_FETCH_TAGS_ONLY : IDS_ALL)));
 	m_ctrlTagOpt.SetCurSel(0);
 
 	if (CAppUtils::GetMsysgitVersion() < 0x0108050)
