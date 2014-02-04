@@ -22,6 +22,7 @@
 #include "Tooltip.h"
 #include "registry.h"
 #include "afxwin.h"
+#include "HistoryCombo.h"
 
 
 /**
@@ -78,7 +79,7 @@ private:
 	BOOL				m_bEnableGravatar;
 	CRegString			m_regGravatarUrl;
 	CString				m_GravatarUrl;
-	CComboBox			m_cGravatarUrl;
+	CHistoryCombo		m_cGravatarUrl;
 	BOOL				m_bDrawBranchesTagsOnRightSide;
 	CRegDWORD			m_regDrawBranchesTagsOnRightSide;
 };
