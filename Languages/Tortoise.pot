@@ -7814,6 +7814,10 @@ msgstr ""
 msgid "Select diff application"
 msgstr ""
 
+#. Resource IDs: (93)
+msgid "Select file"
+msgstr ""
+
 #. Resource IDs: (64)
 msgid "Select folder to associate with this issue tracker"
 msgstr ""

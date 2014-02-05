@@ -1034,6 +1034,7 @@
 #define IDS_SWITCH_WITH_MERGE           1486
 #define IDC_CURRENT                     1487
 #define IDC_STATIC_RECURSE_SUBMODULES   1487
+#define IDS_SELECTFILE                  1487
 #define IDC_COMBOBOX_RECURSE_SUBMODULES 1488
 #define IDC_COMBOBOXEX1                 1489
 #define IDC_REMOTE_COMBO                1489

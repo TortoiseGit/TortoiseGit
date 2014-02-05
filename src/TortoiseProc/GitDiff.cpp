@@ -423,7 +423,7 @@ int CGitDiff::Diff(const CTGitPath * pPath, const CTGitPath * pPath2, git_revnum
 			sMsg.Format(IDS_PROC_DIFFERROR_FILENOTINWORKINGTREE, file1);
 			if (MessageBox(NULL, sMsg, _T("TortoiseGit"), MB_ICONEXCLAMATION | MB_YESNO) == IDNO)
 				return 1;
-			if (!CCommonAppUtils::FileOpenSave(file1, NULL, IDS_DIFF_WCNAME, IDS_COMMONFILEFILTER, true))
+			if (!CCommonAppUtils::FileOpenSave(file1, NULL, IDS_SELECTFILE, IDS_COMMONFILEFILTER, true))
 				return 1;
 			title1.Format(IDS_DIFF_WCNAME, CTGitPath(file1).GetUIFileOrDirectoryName());
 		}
