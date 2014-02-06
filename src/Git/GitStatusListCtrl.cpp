@@ -1504,7 +1504,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 
 			if (GetSelectedCount() > 0)
 			{
-				if (wcStatus & CTGitPath::LOGACTIONS_UNVER)
+				if (wcStatus & (CTGitPath::LOGACTIONS_UNVER | CTGitPath::LOGACTIONS_IGNORE))
 				{
 					if (m_dwContextMenus & GITSLC_POPADD)
 					{
@@ -1524,7 +1524,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				}
 			}
 
-			if (!(wcStatus & CTGitPath::LOGACTIONS_UNVER) && GetSelectedCount() > 0)
+			if (!(wcStatus & (CTGitPath::LOGACTIONS_UNVER | CTGitPath::LOGACTIONS_IGNORE)) && GetSelectedCount() > 0)
 			{
 				bool bEntryAdded = false;
 				if (m_dwContextMenus & GITSLC_POPCOMPAREWITHBASE)
@@ -1600,7 +1600,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				}
 			}
 
-			if ( (GetSelectedCount() >0 ) && (!(wcStatus & CTGitPath::LOGACTIONS_UNVER)) && m_bHasWC)
+			if ( (GetSelectedCount() >0 ) && (!(wcStatus & (CTGitPath::LOGACTIONS_UNVER | CTGitPath::LOGACTIONS_IGNORE))) && m_bHasWC)
 			{
 				if ((m_dwContextMenus & GITSLC_POPCOMMIT) && (this->m_CurrentVersion.IsEmpty() || this->m_CurrentVersion == GIT_REV_ZERO) && !(wcStatus & (CTGitPath::LOGACTIONS_SKIPWORKTREE | CTGitPath::LOGACTIONS_ASSUMEVALID)))
 				{
@@ -1688,7 +1688,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					popup.AppendMenuIcon(IDGITLC_VIEWREV, IDS_LOG_POPUP_VIEWREV);
 					popup.AppendMenuIcon(IDGITLC_OPEN, IDS_REPOBROWSE_OPEN, IDI_OPEN);
 					popup.AppendMenuIcon(IDGITLC_OPENWITH, IDS_LOG_POPUP_OPENWITH, IDI_OPEN);
-					if (wcStatus &CTGitPath::LOGACTIONS_UNVER) {
+					if (wcStatus & (CTGitPath::LOGACTIONS_UNVER | CTGitPath::LOGACTIONS_IGNORE)) {
 						popup.SetDefaultItem(IDGITLC_OPEN, FALSE);
 					}
 				}
@@ -1712,7 +1712,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 //					else
 //						popup.AppendMenuIcon(IDGitLC_REMOVE, IDS_MENUREMOVE, IDI_DELETE);
 //				}
-				if ((wcStatus & CTGitPath::LOGACTIONS_UNVER)/*||(wcStatus == git_wc_status_deleted)*/)
+				if ((wcStatus & (CTGitPath::LOGACTIONS_UNVER | CTGitPath::LOGACTIONS_IGNORE))/*||(wcStatus == git_wc_status_deleted)*/)
 				{
 					if (m_dwContextMenus & GITSLC_POPDELETE)
 					{
@@ -2584,7 +2584,7 @@ void CGitStatusListCtrl::OnNMDblclk(NMHDR *pNMHDR, LRESULT *pResult)
 
 	CTGitPath *file=(CTGitPath*)GetItemData(pNMLV->iItem);
 
-	if (file->m_Action == CTGitPath::LOGACTIONS_UNVER) {
+	if (file->m_Action & (CTGitPath::LOGACTIONS_UNVER | CTGitPath::LOGACTIONS_IGNORE)) {
 		OpenFile(file, OPEN);
 		return;
 	}
@@ -3225,7 +3225,7 @@ void CGitStatusListCtrl::OnNMReturn(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 	{
 		int index = GetNextSelectedItem(pos);
 		CTGitPath *file=(CTGitPath*)GetItemData(index);
-		if (file->m_Action == CTGitPath::LOGACTIONS_UNVER)
+		if (file->m_Action & (CTGitPath::LOGACTIONS_UNVER | CTGitPath::LOGACTIONS_IGNORE))
 		{
 			OpenFile(file, OPEN);
 		}
@@ -3492,7 +3492,7 @@ BOOL CGitStatusListCtrl::PreTranslateMessage(MSG* pMsg)
 				{
 					m_bBlock = TRUE;
 					CTGitPath * filepath = (CTGitPath *)GetItemData(GetSelectionMark());
-					if (filepath != nullptr && (filepath->m_Action & CTGitPath::LOGACTIONS_UNVER))
+					if (filepath != nullptr && (filepath->m_Action & (CTGitPath::LOGACTIONS_UNVER | CTGitPath::LOGACTIONS_IGNORE)))
 						DeleteSelectedFiles();
 					m_bBlock = FALSE;
 				}
