@@ -351,6 +351,7 @@ void CGitStatusCache::UpdateShell(const CTGitPath& path)
 
 void CGitStatusCache::ClearCache()
 {
+	CAutoWriteLock writeLock(m_guard);
 	for (CCachedDirectory::CachedDirMap::iterator I = m_directoryCache.begin(); I != m_directoryCache.end(); ++I)
 	{
 		delete I->second;
@@ -365,6 +366,7 @@ bool CGitStatusCache::RemoveCacheForDirectory(CCachedDirectory * cdir)
 		return false;
 
 	typedef std::map<CTGitPath, git_wc_status_kind>  ChildDirStatus;
+	CAutoWriteLock writeLock(m_guard);
 	if (!cdir->m_childDirectories.empty())
 	{
 		ChildDirStatus::iterator it = cdir->m_childDirectories.begin();
@@ -450,8 +452,8 @@ CCachedDirectory * CGitStatusCache::GetDirectoryCacheEntry(const CTGitPath& path
 		if (itMap!=m_directoryCache.end())
 		{
 			delete itMap->second;
-			itMap->second = NULL;
 			m_directoryCache.erase(itMap);
+			itMap->second = NULL;
 		}
 		// We don't know anything about this directory yet - lets add it to our cache
 		// but only if it exists!
