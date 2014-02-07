@@ -3,6 +3,7 @@ Released: Unreleased
 
 == Features ==
  * Fixed issue #2065: Add link to fetch to screen when push failed
+ * Fixed issue #1855: Support negative log filter syntax
 
 == Bug Fixes ==
  * Fixed issue #2067: Normalize email with capital letters when calculating gravatar hash
