@@ -35,6 +35,8 @@ bool IgnoreCommand::Execute()
 	}
 
 	bool ret = CAppUtils::IgnoreFile(pathList,bmask);
+	if (!ret)
+		return false;
 
 	if (parser.HasKey(_T("delete")))
 	{
