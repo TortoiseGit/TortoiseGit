@@ -117,9 +117,9 @@ static void GetSortOptions()
 	g_bSortLogical = !CRegDWORD(L"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer\\NoStrCmpLogical", 0, false, HKEY_CURRENT_USER);
 	if (g_bSortLogical)
 		g_bSortLogical = !CRegDWORD(L"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer\\NoStrCmpLogical", 0, false, HKEY_LOCAL_MACHINE);
-	g_bSortLocalBranchesFirst = !CRegDWORD(L"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer\\NoSortLocalBranchesFirst", 0, false, HKEY_CURRENT_USER);
+	g_bSortLocalBranchesFirst = !CRegDWORD(L"Software\\TortoiseGit\\NoSortLocalBranchesFirst", 0, false, HKEY_CURRENT_USER);
 	if (g_bSortLocalBranchesFirst)
-		g_bSortLocalBranchesFirst = !CRegDWORD(L"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer\\NoSortLocalBranchesFirst", 0, false, HKEY_LOCAL_MACHINE);
+		g_bSortLocalBranchesFirst = !CRegDWORD(L"Software\\TortoiseGit\\NoSortLocalBranchesFirst", 0, false, HKEY_LOCAL_MACHINE);
 }
 
 static int LogicalComparePredicate(const CString &left, const CString &right)
