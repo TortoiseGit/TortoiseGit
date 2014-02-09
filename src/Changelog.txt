@@ -4,6 +4,7 @@ Released: Unreleased
 == Features ==
  * Fixed issue #2065: Add link to fetch to screen when push failed
  * Fixed issue #1855: Support negative log filter syntax
+ * Fixed issue #1029: Add function to control the TGitCache module
 
 == Bug Fixes ==
  * Fixed issue #2067: Normalize email with capital letters when calculating gravatar hash

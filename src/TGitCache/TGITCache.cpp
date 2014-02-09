@@ -33,6 +33,7 @@
 #include "..\version.h"
 #include "SmartHandle.h"
 #include "DllVersion.h"
+#include "CreateProcessHelper.h"
 
 #ifndef GET_X_LPARAM
 #define GET_X_LPARAM(lp)                        ((int)(short)LOWORD(lp))
@@ -54,6 +55,7 @@ DWORD WINAPI		CommandWaitThread(LPVOID);
 DWORD WINAPI		CommandThread(LPVOID);
 LRESULT CALLBACK	WndProc(HWND, UINT, WPARAM, LPARAM);
 bool				bRun = true;
+bool				bRestart = false;
 NOTIFYICONDATA		niData;
 HWND				hWnd;
 HWND				hTrayWnd;
@@ -91,9 +93,52 @@ void DebugOutputLastError()
 	LocalFree( lpMsgBuf );
 }
 
-int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*lpCmdLine*/, int /*cmdShow*/)
+void HandleCommandLine(LPSTR lpCmdLine)
+{
+	char *ptr = strstr(lpCmdLine, "/kill:");
+	if (ptr)
+	{
+		DWORD pid = (DWORD)atoi(ptr + strlen("/kill:"));
+		HANDLE hProcess = ::OpenProcess(PROCESS_TERMINATE, FALSE, pid);
+		if (hProcess)
+		{
+			if (::WaitForSingleObject(hProcess, 5000) != WAIT_OBJECT_0)
+			{
+				CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Killing previous TGitCache PID %d\n", pid);
+				if (!::TerminateProcess(hProcess, (UINT)-1))
+					CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Kill previous TGitCache PID %d failed\n", pid);
+				::WaitForSingleObject(hProcess, 5000);
+			}
+			::CloseHandle(hProcess);
+			for (int i = 0; i < 5; i++)
+			{
+				HANDLE hMutex = ::OpenMutex(MUTEX_ALL_ACCESS, FALSE, GetCacheMutexName());
+				if (!hMutex)
+					break;
+				::CloseHandle(hMutex);
+				::Sleep(1000);
+			}
+		}
+	}
+}
+
+void HandleRestart()
+{
+	if (bRestart)
+	{
+		TCHAR exeName[MAX_PATH] = { 0 };
+		::GetModuleFileName(nullptr, exeName, sizeof(exeName));
+		TCHAR cmdLine[20] = { 0 };
+		_stprintf_s(cmdLine, _T(" /kill:%d"), GetCurrentProcessId());
+		if (!CCreateProcessHelper::CreateProcessDetached(exeName, cmdLine))
+			CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Failed to start cache\n");
+	}
+}
+
+int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR lpCmdLine, int /*cmdShow*/)
 {
 	SetDllDirectory(L"");
+	HandleCommandLine(lpCmdLine);
 	CAutoGeneralHandle hReloadProtection = ::CreateMutex(NULL, FALSE, GetCacheMutexName());
 
 	if ((!hReloadProtection) || (GetLastError() == ERROR_ALREADY_EXISTS))
@@ -219,6 +264,7 @@ int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*
 
 	Shell_NotifyIcon(NIM_DELETE,&niData);
 	CGitStatusCache::Destroy();
+	HandleRestart();
 
 	return 0;
 }
@@ -261,6 +307,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				HMENU hMenu = CreatePopupMenu();
 				if(hMenu)
 				{
+					bool enabled = (DWORD)CRegStdDWORD(_T("Software\\TortoiseGit\\CacheType"), GetSystemMetrics(SM_REMOTESESSION) ? ShellCache::dll : ShellCache::exe) != ShellCache::none;
+					InsertMenu(hMenu, (UINT)-1, MF_BYPOSITION, TRAYPOP_ENABLE, enabled ? _T("Disable Status Cache") : _T("Enable Status Cache"));
 					InsertMenu(hMenu, (UINT)-1, MF_BYPOSITION, TRAYPOP_EXIT, _T("Exit"));
 					SetForegroundWindow(hWnd);
 					TrackPopupMenu(hMenu, TPM_BOTTOMALIGN, pt.x, pt.y, 0, hWnd, NULL);
@@ -309,6 +357,18 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 			switch (wmId)
 			{
+			case TRAYPOP_ENABLE:
+				{
+					CRegStdDWORD reg = CRegStdDWORD(_T("Software\\TortoiseGit\\CacheType"), GetSystemMetrics(SM_REMOTESESSION) ? ShellCache::dll : ShellCache::exe);
+					bool enabled = (DWORD)reg != ShellCache::none;
+					reg = enabled ? ShellCache::none : ShellCache::exe;
+					if (enabled)
+					{
+						bRestart = true;
+						DestroyWindow(hWnd);
+					}
+					break;
+				}
 			case TRAYPOP_EXIT:
 				DestroyWindow(hWnd);
 				break;
