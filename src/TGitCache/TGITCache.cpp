@@ -261,6 +261,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				HMENU hMenu = CreatePopupMenu();
 				if(hMenu)
 				{
+					bool enabled = (DWORD)CRegStdDWORD(_T("Software\\TortoiseGit\\CacheType"), GetSystemMetrics(SM_REMOTESESSION) ? ShellCache::dll : ShellCache::exe) != ShellCache::none;
+					InsertMenu(hMenu, (UINT)-1, MF_BYPOSITION, TRAYPOP_ENABLE, enabled ? _T("Disable Status Cache") : _T("Enable Status Cache"));
 					InsertMenu(hMenu, (UINT)-1, MF_BYPOSITION, TRAYPOP_EXIT, _T("Exit"));
 					SetForegroundWindow(hWnd);
 					TrackPopupMenu(hMenu, TPM_BOTTOMALIGN, pt.x, pt.y, 0, hWnd, NULL);
@@ -309,6 +311,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 			switch (wmId)
 			{
+			case TRAYPOP_ENABLE:
+				{
+					CRegStdDWORD reg = CRegStdDWORD(_T("Software\\TortoiseGit\\CacheType"), GetSystemMetrics(SM_REMOTESESSION) ? ShellCache::dll : ShellCache::exe);
+					bool enabled = (DWORD)reg != ShellCache::none;
+					reg = enabled ? ShellCache::none : ShellCache::exe;
+					break;
+				}
 			case TRAYPOP_EXIT:
 				DestroyWindow(hWnd);
 				break;
