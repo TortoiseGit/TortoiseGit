@@ -78,6 +78,11 @@ void CGitRefCompareList::Init()
 	for (int i = 0; i < index; ++i)
 		SetColumnWidth(i, LVSCW_AUTOSIZE_USEHEADER);
 	SetColumnWidth(colRef, 130);
+
+	CImageList *imagelist = new CImageList();
+	imagelist->Create(IDB_BITMAP_REFTYPE, 16, 3, RGB(255, 255, 255));
+	SetImageList(imagelist, LVSIL_SMALL);
+
 	SetWindowTheme(m_hWnd, L"Explorer", NULL);
 }
 
@@ -201,7 +206,14 @@ void CGitRefCompareList::Show()
 		if (entry->changeType == ChangeType::Same && m_bHideUnchanged)
 			continue;
 
-		InsertItem(index, entry->shortName);
+		int nImage = -1;
+		if (entry->refType == CGit::REF_TYPE::LOCAL_BRANCH)
+			nImage = 1;
+		else if (entry->refType == CGit::REF_TYPE::REMOTE_BRANCH)
+			nImage = 2;
+		else if (entry->refType == CGit::REF_TYPE::TAG)
+			nImage = 0;
+		InsertItem(index, entry->shortName, nImage);
 		SetItemText(index, colChange, entry->change);
 		SetItemText(index, colOldHash, entry->oldHash);
 		SetItemText(index, colOldMessage, entry->oldMessage);
