@@ -280,8 +280,12 @@ void CPushDlg::GetRemoteBranch(CString currentBranch)
 	CString pushRemote = g_Git.GetConfigValue(configName);
 	if( pushRemote.IsEmpty() )
 	{
-		configName.Format(L"branch.%s.remote", currentBranch);
-		pushRemote = g_Git.GetConfigValue(configName);
+		pushRemote = g_Git.GetConfigValue(L"remote.pushdefault");
+		if (pushRemote.IsEmpty())
+		{
+			configName.Format(L"branch.%s.remote", currentBranch);
+			pushRemote = g_Git.GetConfigValue(configName);
+		}
 	}
 
 	CRegString remote(CString(_T("Software\\TortoiseGit\\History\\PushRemote\\")+WorkingDir));
