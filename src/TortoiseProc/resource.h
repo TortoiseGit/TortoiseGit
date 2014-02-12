@@ -1424,6 +1424,8 @@
 #define IDC_CHECK_INHERIT_BTMSG         1782
 #define IDC_CHECK_INHERIT_BTLABEL       1783
 #define IDC_CURRENTBRANCH               1784
+#define IDC_CHECK_PRUNEALL              1785
+#define IDC_CHECK_PUSHDEFAULT           1786
 #define IDC_TESTBUGTRAQREGEXBUTTON      1787
 #define IDS_LOG_FILTER_BY               1850
 #define IDS_LOG_FILTER_PATHS            1851

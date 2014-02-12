@@ -40,6 +40,8 @@ CSettingGitRemote::CSettingGitRemote(CString cmdPath)
 	, m_cmdPath(cmdPath)
 	, m_bNoFetch(false)
 	, m_bPrune(2)
+	, m_bPruneAll(FALSE)
+	, m_bPushDefault(FALSE)
 {
 
 	m_ChangedMask = 0;
@@ -58,6 +60,8 @@ void CSettingGitRemote::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT_PUTTY_KEY, m_strPuttyKeyfile);
 	DDX_Control(pDX, IDC_COMBO_TAGOPT, m_ctrlTagOpt);
 	DDX_Check(pDX, IDC_CHECK_PRUNE, m_bPrune);
+	DDX_Check(pDX, IDC_CHECK_PRUNEALL, m_bPruneAll);
+	DDX_Check(pDX, IDC_CHECK_PUSHDEFAULT, m_bPushDefault);
 }
 
 
@@ -71,6 +75,8 @@ BEGIN_MESSAGE_MAP(CSettingGitRemote, CPropertyPage)
 	ON_EN_CHANGE(IDC_EDIT_PUTTY_KEY, &CSettingGitRemote::OnEnChangeEditPuttyKey)
 	ON_CBN_SELCHANGE(IDC_COMBO_TAGOPT, &CSettingGitRemote::OnCbnSelchangeComboTagOpt)
 	ON_BN_CLICKED(IDC_CHECK_PRUNE, &CSettingGitRemote::OnBnClickedCheckprune)
+	ON_BN_CLICKED(IDC_CHECK_PRUNEALL, &CSettingGitRemote::OnBnClickedCheckpruneall)
+	ON_BN_CLICKED(IDC_CHECK_PUSHDEFAULT, &CSettingGitRemote::OnBnClickedCheckpushdefault)
 	ON_BN_CLICKED(IDC_BUTTON_REMOVE, &CSettingGitRemote::OnBnClickedButtonRemove)
 	ON_BN_CLICKED(IDC_BUTTON_RENAME_REMOTE, &CSettingGitRemote::OnBnClickedButtonRenameRemote)
 END_MESSAGE_MAP()
@@ -113,8 +119,18 @@ BOOL CSettingGitRemote::OnInitDialog()
 	m_ctrlTagOpt.AddString(CString(MAKEINTRESOURCE(CAppUtils::GetMsysgitVersion() < 0x01090000 ? IDS_FETCH_TAGS_ONLY : IDS_ALL)));
 	m_ctrlTagOpt.SetCurSel(0);
 
+	if (CAppUtils::GetMsysgitVersion() < 0x0108030)
+	{
+		GetDlgItem(IDC_CHECK_PUSHDEFAULT)->ShowWindow(SW_HIDE);
+	}
 	if (CAppUtils::GetMsysgitVersion() < 0x0108050)
+	{
 		GetDlgItem(IDC_CHECK_PRUNE)->ShowWindow(SW_HIDE);
+		GetDlgItem(IDC_CHECK_PRUNEALL)->ShowWindow(SW_HIDE);
+	}
+
+	CString pruneAll = g_Git.GetConfigValue(_T("fetch.prune"));
+	m_bPruneAll = pruneAll == _T("true") ? TRUE : FALSE;
 
 	//this->GetDlgItem(IDC_EDIT_REMOTE)->EnableWindow(FALSE);
 	this->UpdateData(FALSE);
@@ -170,7 +186,7 @@ void CSettingGitRemote::OnBnClickedButtonAdd()
 		return;
 	}
 
-	m_ChangedMask = REMOTE_NAME | REMOTE_URL | REMOTE_PUTTYKEY | REMOTE_TAGOPT | REMOTE_PRUNE;
+	m_ChangedMask = REMOTE_NAME | REMOTE_URL | REMOTE_PUTTYKEY | REMOTE_TAGOPT | REMOTE_PRUNE | REMOTE_PRUNEALL | REMOTE_PUSHDEFAULT;
 	if(IsRemoteExist(m_strRemote))
 	{
 		CString msg;
@@ -246,9 +262,13 @@ void CSettingGitRemote::OnLbnSelchangeListRemote()
 		index = 2;
 	m_ctrlTagOpt.SetCurSel(index);
 
+	CString pushDefault = g_Git.GetConfigValue(_T("remote.pushdefault"), CP_UTF8);
+	m_bPushDefault = pushDefault == remote ? TRUE : FALSE;
 	cmd.Format(_T("remote.%s.prune"), remote);
 	CString prune = g_Git.GetConfigValue(cmd, CP_UTF8);
 	m_bPrune = prune == _T("true") ? TRUE : prune == _T("false") ? FALSE : 2;
+	CString pruneAll = g_Git.GetConfigValue(_T("fetch.prune"), CP_UTF8);
+	m_bPruneAll = pruneAll == _T("true") ? TRUE : FALSE;
 
 	GetDlgItem(IDC_BUTTON_ADD)->EnableWindow(TRUE);
 	GetDlgItem(IDC_BUTTON_REMOVE)->EnableWindow(TRUE);
@@ -319,6 +339,20 @@ void CSettingGitRemote::OnBnClickedCheckprune()
 		this->SetModified(0);
 }
 
+void CSettingGitRemote::OnBnClickedCheckpruneall()
+{
+	m_ChangedMask |= REMOTE_PRUNEALL;
+	UpdateData();
+	SetModified();
+}
+
+void CSettingGitRemote::OnBnClickedCheckpushdefault()
+{
+	m_ChangedMask |= REMOTE_PUSHDEFAULT;
+	UpdateData();
+	SetModified();
+}
+
 BOOL CSettingGitRemote::Save(CString key,CString value)
 {
 	CString cmd,out;
@@ -347,10 +381,62 @@ BOOL CSettingGitRemote::Save(CString key,CString value)
 	}
 	return TRUE;
 }
+
+BOOL CSettingGitRemote::SaveGeneral(CString key, CString value)
+{
+	if (value.IsEmpty())
+	{
+		// don't check result code. it fails if the entry not exist
+		g_Git.UnsetConfigValue(key, CONFIG_LOCAL);
+		if (!g_Git.GetConfigValue(key).IsEmpty())
+		{
+			CString msg;
+			msg.Format(IDS_PROC_SAVECONFIGFAILED, key, value);
+			CMessageBox::Show(NULL, msg, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+			return FALSE;
+		}
+		return TRUE;
+	}
+
+	if (g_Git.SetConfigValue(key, value, CONFIG_LOCAL))
+	{
+		CString msg;
+		msg.Format(IDS_PROC_SAVECONFIGFAILED, key, value);
+		CMessageBox::Show(NULL, msg, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+		return FALSE;
+	}
+
+	return TRUE;
+}
+
 BOOL CSettingGitRemote::OnApply()
 {
 	CWaitCursor wait;
 	this->UpdateData();
+
+	if (m_ChangedMask & REMOTE_PUSHDEFAULT)
+	{
+		if (!m_strRemote.Trim().IsEmpty() && m_bPushDefault)
+		{
+			if (!SaveGeneral(_T("remote.pushdefault"), m_strRemote.Trim()))
+				return FALSE;
+		}
+		if (!m_bPushDefault)
+		{
+			if (!SaveGeneral(_T("remote.pushdefault"), _T("")))
+				return FALSE;
+		}
+
+		m_ChangedMask &= ~REMOTE_PUSHDEFAULT;
+	}
+
+	if (m_ChangedMask & REMOTE_PRUNEALL)
+	{
+		if (!SaveGeneral(_T("fetch.prune"), m_bPruneAll == TRUE ? _T("true") : _T("")))
+			return FALSE;
+		m_ChangedMask &= ~REMOTE_PRUNEALL;
+	}
+
 	if (m_ChangedMask && m_strRemote.Trim().IsEmpty())
 	{
 		CMessageBox::Show(NULL, IDS_PROC_GITCONFIG_REMOTEEMPTY, IDS_APPNAME, MB_OK | MB_ICONERROR);
