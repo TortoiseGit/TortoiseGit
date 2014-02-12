@@ -37,6 +37,7 @@ public:
 		REMOTE_TAGOPT	=0x8,
 		REMOTE_PRUNE	=0x10,
 		REMOTE_PRUNEALL	=0x20,
+		REMOTE_PUSHDEFAULT	= 0x40,
 	};
 	CSettingGitRemote(CString cmdPath);
 	virtual ~CSettingGitRemote();
@@ -61,6 +62,7 @@ protected:
 	afx_msg void OnCbnSelchangeComboTagOpt();
 	afx_msg void OnBnClickedCheckprune();
 	afx_msg void OnBnClickedCheckpruneall();
+	afx_msg void OnBnClickedCheckpushdefault();
 	afx_msg void OnBnClickedButtonRemove();
 	afx_msg void OnBnClickedButtonRenameRemote();
 
@@ -82,6 +84,7 @@ protected:
 
 	CString		m_strPuttyKeyfile;
 	CComboBox	m_ctrlTagOpt;
+	BOOL		m_bPushDefault;
 	BOOL		m_bPrune;
 	BOOL		m_bPruneAll;
 };

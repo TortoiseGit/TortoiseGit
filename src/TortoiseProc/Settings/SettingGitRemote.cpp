@@ -41,6 +41,7 @@ CSettingGitRemote::CSettingGitRemote(CString cmdPath)
 	, m_bNoFetch(false)
 	, m_bPrune(2)
 	, m_bPruneAll(FALSE)
+	, m_bPushDefault(FALSE)
 {
 
 	m_ChangedMask = 0;
@@ -60,6 +61,7 @@ void CSettingGitRemote::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_COMBO_TAGOPT, m_ctrlTagOpt);
 	DDX_Check(pDX, IDC_CHECK_PRUNE, m_bPrune);
 	DDX_Check(pDX, IDC_CHECK_PRUNEALL, m_bPruneAll);
+	DDX_Check(pDX, IDC_CHECK_PUSHDEFAULT, m_bPushDefault);
 }
 
 
@@ -74,6 +76,7 @@ BEGIN_MESSAGE_MAP(CSettingGitRemote, CPropertyPage)
 	ON_CBN_SELCHANGE(IDC_COMBO_TAGOPT, &CSettingGitRemote::OnCbnSelchangeComboTagOpt)
 	ON_BN_CLICKED(IDC_CHECK_PRUNE, &CSettingGitRemote::OnBnClickedCheckprune)
 	ON_BN_CLICKED(IDC_CHECK_PRUNEALL, &CSettingGitRemote::OnBnClickedCheckpruneall)
+	ON_BN_CLICKED(IDC_CHECK_PUSHDEFAULT, &CSettingGitRemote::OnBnClickedCheckpushdefault)
 	ON_BN_CLICKED(IDC_BUTTON_REMOVE, &CSettingGitRemote::OnBnClickedButtonRemove)
 	ON_BN_CLICKED(IDC_BUTTON_RENAME_REMOTE, &CSettingGitRemote::OnBnClickedButtonRenameRemote)
 END_MESSAGE_MAP()
@@ -116,6 +119,10 @@ BOOL CSettingGitRemote::OnInitDialog()
 	m_ctrlTagOpt.AddString(CString(MAKEINTRESOURCE(CAppUtils::GetMsysgitVersion() < 0x01090000 ? IDS_FETCH_TAGS_ONLY : IDS_ALL)));
 	m_ctrlTagOpt.SetCurSel(0);
 
+	if (CAppUtils::GetMsysgitVersion() < 0x0108030)
+	{
+		GetDlgItem(IDC_CHECK_PUSHDEFAULT)->ShowWindow(SW_HIDE);
+	}
 	if (CAppUtils::GetMsysgitVersion() < 0x0108050)
 	{
 		GetDlgItem(IDC_CHECK_PRUNE)->ShowWindow(SW_HIDE);
@@ -179,7 +186,7 @@ void CSettingGitRemote::OnBnClickedButtonAdd()
 		return;
 	}
 
-	m_ChangedMask = REMOTE_NAME | REMOTE_URL | REMOTE_PUTTYKEY | REMOTE_TAGOPT | REMOTE_PRUNE | REMOTE_PRUNEALL;
+	m_ChangedMask = REMOTE_NAME | REMOTE_URL | REMOTE_PUTTYKEY | REMOTE_TAGOPT | REMOTE_PRUNE | REMOTE_PRUNEALL | REMOTE_PUSHDEFAULT;
 	if(IsRemoteExist(m_strRemote))
 	{
 		CString msg;
@@ -255,6 +262,8 @@ void CSettingGitRemote::OnLbnSelchangeListRemote()
 		index = 2;
 	m_ctrlTagOpt.SetCurSel(index);
 
+	CString pushDefault = g_Git.GetConfigValue(_T("remote.pushdefault"), CP_UTF8);
+	m_bPushDefault = pushDefault == remote ? TRUE : FALSE;
 	cmd.Format(_T("remote.%s.prune"), remote);
 	CString prune = g_Git.GetConfigValue(cmd, CP_UTF8);
 	m_bPrune = prune == _T("true") ? TRUE : prune == _T("false") ? FALSE : 2;
@@ -337,6 +346,13 @@ void CSettingGitRemote::OnBnClickedCheckpruneall()
 	SetModified();
 }
 
+void CSettingGitRemote::OnBnClickedCheckpushdefault()
+{
+	m_ChangedMask |= REMOTE_PUSHDEFAULT;
+	UpdateData();
+	SetModified();
+}
+
 BOOL CSettingGitRemote::Save(CString key,CString value)
 {
 	CString cmd,out;
@@ -397,6 +413,22 @@ BOOL CSettingGitRemote::OnApply()
 {
 	CWaitCursor wait;
 	this->UpdateData();
+
+	if (m_ChangedMask & REMOTE_PUSHDEFAULT)
+	{
+		if (!m_strRemote.Trim().IsEmpty() && m_bPushDefault)
+		{
+			if (!SaveGeneral(_T("remote.pushdefault"), m_strRemote.Trim()))
+				return FALSE;
+		}
+		if (!m_bPushDefault)
+		{
+			if (!SaveGeneral(_T("remote.pushdefault"), _T("")))
+				return FALSE;
+		}
+
+		m_ChangedMask &= ~REMOTE_PUSHDEFAULT;
+	}
 
 	if (m_ChangedMask & REMOTE_PRUNEALL)
 	{
