@@ -6861,6 +6861,10 @@ msgstr ""
 msgid "Prune"
 msgstr ""
 
+#. Resource IDs: (1785)
+msgid "Prune (All remotes)"
+msgstr ""
+
 #. Resource IDs: (22, 66, 1611)
 msgid "Pull"
 msgstr ""
@@ -6891,6 +6895,10 @@ msgstr ""
 
 #. Resource IDs: (22, 303, 1612)
 msgid "Push"
+msgstr ""
+
+#. Resource IDs: (1786)
+msgid "Push Default"
 msgstr ""
 
 #. Resource IDs: (1385)
