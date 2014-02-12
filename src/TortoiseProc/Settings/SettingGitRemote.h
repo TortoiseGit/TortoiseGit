@@ -36,6 +36,7 @@ public:
 		REMOTE_PUTTYKEY	=0x4,
 		REMOTE_TAGOPT	=0x8,
 		REMOTE_PRUNE	=0x10,
+		REMOTE_PRUNEALL	=0x20,
 	};
 	CSettingGitRemote(CString cmdPath);
 	virtual ~CSettingGitRemote();
@@ -59,6 +60,7 @@ protected:
 	afx_msg void OnEnChangeEditPuttyKey();
 	afx_msg void OnCbnSelchangeComboTagOpt();
 	afx_msg void OnBnClickedCheckprune();
+	afx_msg void OnBnClickedCheckpruneall();
 	afx_msg void OnBnClickedButtonRemove();
 	afx_msg void OnBnClickedButtonRenameRemote();
 
@@ -68,6 +70,7 @@ protected:
 	BOOL IsRemoteExist(CString &remote);
 
 	BOOL Save(CString key, CString value);
+	BOOL SaveGeneral(CString key, CString value);
 
 	int			m_ChangedMask;
 
@@ -80,4 +83,5 @@ protected:
 	CString		m_strPuttyKeyfile;
 	CComboBox	m_ctrlTagOpt;
 	BOOL		m_bPrune;
+	BOOL		m_bPruneAll;
 };
