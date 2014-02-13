@@ -2450,22 +2450,6 @@ bool CAppUtils::Fetch(CString remoteName, bool allowRebase, bool allRemotes)
 	return FALSE;
 }
 
-static void PushCallback(CProgressDlg *dlg, void *caller, int result)
-{
-	if (result)
-	{
-		dlg->m_PostCmdList.RemoveAll();
-		bool rejected = dlg->GetLogText().Find(_T("! [rejected]")) > 0;
-		*(bool*)caller = rejected;
-		if (rejected)
-		{
-			dlg->m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUPULL)));
-			dlg->m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUFETCH)));
-		}
-		dlg->m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUPUSH)));
-	}
-}
-
 bool CAppUtils::Push(CString selectLocalBranch)
 {
 	CPushDlg dlg;
@@ -2551,8 +2535,21 @@ bool CAppUtils::Push(CString selectLocalBranch)
 		progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_REQUESTPULL)));
 		progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUPUSH)));
 		bool rejected = false;
-		progress.m_caller = &rejected;
-		progress.m_PostCmdCallback = PushCallback;
+		progress.m_PostCmdCallback = [&] ()
+		{
+			if (progress.m_GitStatus)
+			{
+				progress.m_PostCmdList.RemoveAll();
+				rejected = progress.GetLogText().Find(_T("! [rejected]")) > 0;
+				if (rejected)
+				{
+					progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUPULL)));
+					progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUFETCH)));
+				}
+				progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUPUSH)));
+			}
+		};
+
 		INT_PTR ret = progress.DoModal();
 
 		if(!progress.m_GitStatus)
@@ -2948,21 +2945,6 @@ BOOL CAppUtils::SVNDCommit()
 	return FALSE;
 }
 
-static void MergeCallback(CProgressDlg *dlg, void * /*caller*/, int result)
-{
-	if (result)
-	{
-		dlg->m_PostCmdList.RemoveAll();
-
-		CTGitPathList list;
-		if (!g_Git.ListConflictFile(list) && !list.IsEmpty())
-		{
-			// there are conflict files
-			dlg->m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROGRS_CMD_RESOLVE)));
-		}
-	}
-}
-
 BOOL CAppUtils::Merge(CString *commit)
 {
 	if (!CheckUserData())
@@ -3027,7 +3009,20 @@ BOOL CAppUtils::Merge(CString *commit)
 				Prodlg.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUSVNDCOMMIT)));
 		}
 
-		Prodlg.m_PostCmdCallback = MergeCallback;
+		Prodlg.m_PostCmdCallback = [&] ()
+		{
+			if (Prodlg.m_GitStatus)
+			{
+				Prodlg.m_PostCmdList.RemoveAll();
+
+				CTGitPathList list;
+				if (!g_Git.ListConflictFile(list) && !list.IsEmpty())
+				{
+					// there are conflict files
+					Prodlg.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROGRS_CMD_RESOLVE)));
+				}
+			}
+		};
 
 		INT_PTR ret = Prodlg.DoModal();
 		if (Prodlg.m_GitStatus != 0 && ret == IDC_PROGRESS_BUTTON1)

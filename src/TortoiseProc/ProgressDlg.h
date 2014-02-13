@@ -21,6 +21,7 @@
 #include "StandAloneDlg.h"
 #include "Git.h"
 #include "MenuButton.h"
+#include <functional>
 
 #define MSG_PROGRESSDLG_UPDATE_UI	(WM_USER+121)
 
@@ -40,7 +41,7 @@ class CProgressDlg : public CResizableStandAloneDialog
 {
 	DECLARE_DYNAMIC(CProgressDlg)
 public:
-	typedef void (*PostCmdCallback)(CProgressDlg *dlg, void *caller, int result);
+	typedef std::function<void()> PostCmdCallback;
 
 	CProgressDlg(CWnd* pParent = NULL); // standard constructor
 	virtual ~CProgressDlg();
@@ -56,7 +57,6 @@ public:
 	CStringArray			m_PostCmdList;
 	CStringArray			m_PostFailCmdList;
 	PostCmdCallback			m_PostCmdCallback;
-	void *					m_caller;
 	std::vector<CString>	m_GitCmdList;
 	CString					m_PreText;		// optional text to show in log window before running command
 	bool					m_bShowCommand;	// whether to display the command in the log window (default true)
