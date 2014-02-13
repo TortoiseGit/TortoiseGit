@@ -17,6 +17,7 @@ Released: Unreleased
  * Fixed issue #2075: Commit do not show merged files after merge
  * Fixed issue #2097: Wrong context menu when selecting ignored file in Status dialog
  * Fixed issue #2099: Cannot cancel "Delete and add to ignore list"
+ * Fixed issue #2109: Checkout Tag without creating Branch - Remove Pull Option
 
 = Release 1.8.7.0 =
 Released: 2014-01-12

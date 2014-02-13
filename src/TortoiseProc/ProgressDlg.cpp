@@ -52,8 +52,6 @@ CProgressDlg::CProgressDlg(CWnd* pParent /*=NULL*/)
 	, m_Git(&g_Git)
 {
 	m_pThread = NULL;
-	m_PostCmdCallback = NULL;
-	m_caller = NULL;
 	m_bBufferAll=false;
 	m_GitStatus = (DWORD)-1;
 	int autoClose = CRegDWORD(_T("Software\\TortoiseGit\\AutoCloseGitProgress"), 0);
@@ -398,7 +396,7 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 		{
 			if (m_PostCmdCallback)	// new handling method using callback
 			{
-				m_PostCmdCallback(this, m_caller, m_GitStatus);
+				m_PostCmdCallback();
 
 				if (!m_PostCmdList.IsEmpty())
 				{
