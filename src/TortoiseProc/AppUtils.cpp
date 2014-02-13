@@ -1167,7 +1167,6 @@ bool CAppUtils::PerformSwitch(CString ref, bool bForce /* false */, CString sNew
 		CTGitPath gitPath = g_Git.m_CurrentDir;
 		if (gitPath.HasSubmodules())
 			idSubmoduleUpdate = progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_SUBMODULESUPDATE)));
-		idPull = progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUPULL)));
 		CString currentBranch;
 		bool hasBranch = CGit::GetCurrentBranchFromFile(g_Git.m_CurrentDir, currentBranch) == 0;
 		if (hasBranch)
@@ -1175,6 +1174,15 @@ bool CAppUtils::PerformSwitch(CString ref, bool bForce /* false */, CString sNew
 
 		progress.m_PostFailCmdList.Add(CString(MAKEINTRESOURCE(IDS_MSGBOX_RETRY)));
 		progress.m_PostFailCmdList.Add(CString(MAKEINTRESOURCE(IDS_SWITCH_WITH_MERGE)));
+		progress.m_PostCmdCallback = [&] ()
+		{
+			if (!progress.m_GitStatus)
+			{
+				CString newBranch;
+				if (!CGit::GetCurrentBranchFromFile(g_Git.m_CurrentDir, newBranch))
+					idPull = progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUPULL)));
+			}
+		};
 
 		INT_PTR ret = progress.DoModal();
 		if (progress.m_GitStatus == 0)
