@@ -99,7 +99,7 @@ CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
 CLogDlg::~CLogDlg()
 {
 
-	m_regbAllBranch = (m_bAllBranch == BST_CHECKED) ? BST_CHECKED : BST_UNCHECKED;
+	m_regbAllBranch = m_bAllBranch;
 	m_regbShowTags = m_bShowTags;
 	m_regbShowLocalBranches = m_bShowLocalBranches;
 	m_regbShowRemoteBranches = m_bShowRemoteBranches;
@@ -324,8 +324,10 @@ BOOL CLogDlg::OnInitDialog()
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
 
 	m_LogList.m_ShowMask &= ~CGit::LOG_INFO_LOCAL_BRANCHES;
-	if(this->m_bAllBranch)
+	if (m_bAllBranch == BST_CHECKED)
 		m_LogList.m_ShowMask|=CGit::LOG_INFO_ALL_BRANCH;
+	else if (m_bAllBranch == BST_INDETERMINATE)
+		m_LogList.m_ShowMask |= CGit::LOG_INFO_LOCAL_BRANCHES;
 	else
 		m_LogList.m_ShowMask&=~CGit::LOG_INFO_ALL_BRANCH;
 
