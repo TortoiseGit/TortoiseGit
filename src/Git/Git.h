@@ -59,7 +59,6 @@ public:
 
 private:
 	CString m_Cmd;
-
 };
 
 typedef std::function<void (const CStringA&)> GitReceiverFunc;
@@ -297,7 +296,6 @@ public:
 	int GetHash(CGitHash &hash, const CString& friendname);
 
 	int BuildOutputFormat(CString &format,bool IsFull=TRUE);
-	//int GetShortLog(const CString &log,CTGitPath * path=NULL, int count =-1);
 	static void StringAppend(CString *str, const BYTE *p, int code = CP_UTF8, int length = -1);
 
 	BOOL CanParseRev(CString ref);
