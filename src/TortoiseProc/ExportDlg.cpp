@@ -78,7 +78,6 @@ BOOL CExportDlg::OnInitDialog()
 	AddAnchor(IDCANCEL, BOTTOM_RIGHT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
 
-	AdjustControlSize(IDC_RADIO_HEAD);
 	AdjustControlSize(IDC_RADIO_BRANCH);
 	AdjustControlSize(IDC_RADIO_TAGS);
 	AdjustControlSize(IDC_RADIO_VERSION);
@@ -97,6 +96,12 @@ BOOL CExportDlg::OnInitDialog()
 		SetDefaultChoose(IDC_RADIO_VERSION);
 		this->GetDlgItem(IDC_COMBOBOXEX_VERSION)->SetWindowTextW(m_Revision);
 	}
+
+	CWnd* pHead = GetDlgItem(IDC_RADIO_HEAD);
+	CString headText;
+	pHead->GetWindowText(headText);
+	pHead->SetWindowText(headText + " (" + g_Git.GetCurrentBranch() + ")");
+	AdjustControlSize(IDC_RADIO_HEAD);
 
 	m_tooltips.Create(this);
 	m_tooltips.AddTool(IDC_EXPORTFILE, IDS_EXPORTFILE_TT);
