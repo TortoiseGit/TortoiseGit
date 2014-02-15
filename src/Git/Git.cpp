@@ -459,6 +459,52 @@ int CGit::Run(CString cmd, CString* output, CString* outputErr, int code)
 	return ret;
 }
 
+class CGitCallCb : public CGitCall
+{
+public:
+	CGitCallCb(CString cmd, const GitReceiverFunc& recv):CGitCall(cmd), m_recv(recv){}
+
+	virtual bool OnOutputData(const BYTE* data, size_t size) override
+	{
+		//Add data
+		if (size == 0) return false;
+		int oldEndPos = m_buffer.GetLength();
+		memcpy(m_buffer.GetBufferSetLength(oldEndPos + (int)size) + oldEndPos, data, size);
+		m_buffer.ReleaseBuffer(oldEndPos + (int)size);
+
+		//Break into lines and feed to m_recv
+		int eolPos;
+		while ((eolPos = m_buffer.Find('\n')) >= 0)
+		{
+			m_recv(m_buffer.Left(eolPos));
+			m_buffer = m_buffer.Mid(eolPos + 1);
+		}
+		return false;
+	}
+
+	virtual bool OnOutputErrData(const BYTE*, size_t) override
+	{
+		return false; //Ignore error output for now
+	}
+
+	virtual void OnEnd() override
+	{
+		if(!m_buffer.IsEmpty())
+			m_recv(m_buffer);
+		m_buffer.Empty(); // Just for sure
+	}
+
+private:
+	GitReceiverFunc m_recv;
+	CStringA m_buffer;
+};
+
+int CGit::Run(CString cmd, const GitReceiverFunc& recv)
+{
+	CGitCallCb call(cmd, recv);
+	return Run(&call);
+}
+
 CString CGit::GetUserName(void)
 {
 	CEnvironment env;

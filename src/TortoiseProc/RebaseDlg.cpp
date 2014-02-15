@@ -563,8 +563,10 @@ void CRebaseDlg::FetchLogList()
 	}
 
 	m_CommitList.Clear();
+	CString refFrom = g_Git.FixBranchName(m_UpstreamCtrl.GetString());
+	CString refTo   = g_Git.FixBranchName(m_BranchCtrl.GetString());
 	CString range;
-	range.Format(_T("%s..%s"), g_Git.FixBranchName(m_UpstreamCtrl.GetString()), g_Git.FixBranchName(m_BranchCtrl.GetString()));
+	range.Format(_T("%s..%s"), refFrom, refTo);
 	this->m_CommitList.FillGitLog(nullptr, &range, 0);
 
 	if( m_CommitList.GetItemCount() == 0 )
@@ -585,10 +587,33 @@ void CRebaseDlg::FetchLogList()
 	AddBranchToolTips(&this->m_BranchCtrl);
 	AddBranchToolTips(&this->m_UpstreamCtrl);
 
+	//Default all actions to 'pick'
+	std::map<CGitHash, size_t> revIxMap;
 	for (size_t i = 0; i < m_CommitList.m_logEntries.size(); ++i)
 	{
-		m_CommitList.m_logEntries.GetGitRevAt(i).GetAction(&m_CommitList) = CTGitPath::LOGACTIONS_REBASE_PICK;
+		GitRev& rev = m_CommitList.m_logEntries.GetGitRevAt(i);
+		rev.GetAction(&m_CommitList) = CTGitPath::LOGACTIONS_REBASE_PICK;
+		revIxMap[rev.m_CommitHash] = i;
 	}
+
+	//Default to skip when already in upstream
+	CString cherryCmd;
+	cherryCmd.Format(L"git.exe cherry \"%s\" \"%s\"", refFrom, refTo);
+	g_Git.Run(cherryCmd, [&](const CStringA& line)
+	{
+		if (line.GetLength() < 2)
+			return;
+		if (line[0] != '-')
+			return; //Dont skip (only skip commits starting with a '-')
+		CString hash = CUnicodeUtils::GetUnicode(line.Mid(1));
+		hash.Trim();
+		auto itIx = revIxMap.find(CGitHash(hash));
+		if (itIx == revIxMap.end())
+			return; //Not found?? Should not occur...
+
+		//Found. Skip it.
+		m_CommitList.m_logEntries.GetGitRevAt(itIx->second).GetAction(&m_CommitList) = CTGitPath::LOGACTIONS_REBASE_SKIP;
+	});
 
 	m_CommitList.Invalidate();
 
