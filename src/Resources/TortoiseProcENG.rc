@@ -676,6 +676,8 @@ BEGIN
     CONTROL         "Hide Menus for unversioned paths",IDC_HIDEMENUS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,148,274,10
     GROUPBOX        "Do not show the context menu for the following paths:",IDC_STATIC,7,161,286,56
     EDITTEXT        IDC_NOCONTEXTPATHS,12,173,274,36,ES_MULTILINE | ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_WANTRETURN | WS_VSCROLL
+    CONTROL         "Enable drag context menu",IDC_ENABLEDRAGCONTEXTMENU,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,220,100,10
 END
 
 IDD_SETTINGSDIALOGS DIALOGEX 0, 0, 301, 231
@@ -3343,6 +3345,8 @@ END
 
 STRINGTABLE
 BEGIN
+    IDS_SETTINGS_ENABLEDRAGCONTEXTMENU_TT 
+                            "When enabled, TortoiseGit move context menu items will be available when dragging folders / files"
     IDS_EXPORTFILE_TT       "Location where the contents of the\nselected revision of the repository will be saved to."
     IDS_CHECKOUT_EXPORTDIR  "Export directory:"
 END

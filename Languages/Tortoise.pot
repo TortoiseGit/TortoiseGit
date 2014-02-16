@@ -3892,6 +3892,10 @@ msgstr ""
 msgid "Enable Gravatar"
 msgstr ""
 
+#. Resource IDs: (1788)
+msgid "Enable drag context menu"
+msgstr ""
+
 #. Resource IDs: (87)
 msgid "Enable loading/saving log cache files (tortoisegit.data, tortoisegit.index)"
 msgstr ""
@@ -9712,6 +9716,10 @@ msgstr ""
 
 #. Resource IDs: (91)
 msgid "When closing a progress dialog with a running git process, ask for confirmation before killing it"
+msgstr ""
+
+#. Resource IDs: (94)
+msgid "When enabled, TortoiseGit move context menu items will be available when dragging folders / files"
 msgstr ""
 
 #. Resource IDs: (197)

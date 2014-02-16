@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2011-2012 - TortoiseGit
-// Copyright (C) 2003-2008,2011 - TortoiseSVN
+// Copyright (C) 2003-2008, 2011, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -68,4 +68,7 @@ private:
 
 	CString				m_sNoContextPaths;
 	CRegString			m_regNoContextPaths;
+
+	CRegDWORD			m_regEnableDragContextMenu;
+	BOOL				m_bEnableDragContextMenu;
 };

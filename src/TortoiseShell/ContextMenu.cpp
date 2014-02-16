@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2012 - TortoiseSVN
+// Copyright (C) 2003-2012, 2014 - TortoiseSVN
 // Copyright (C) 2008-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
@@ -761,6 +761,9 @@ stdstring CShellExt::WriteFileListToTempFile()
 
 STDMETHODIMP CShellExt::QueryDropContext(UINT uFlags, UINT idCmdFirst, HMENU hMenu, UINT &indexMenu)
 {
+	if (!CRegStdDWORD(L"Software\\TortoiseGit\\EnableDragContextMenu", TRUE))
+		return S_OK;
+
 	PreserveChdir preserveChdir;
 	LoadLangDll();
 

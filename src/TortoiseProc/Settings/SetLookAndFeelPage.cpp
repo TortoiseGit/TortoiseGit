@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2011-2013 - TortoiseGit
-// Copyright (C) 2003-2008,2011 - TortoiseSVN
+// Copyright (C) 2003-2008, 2011, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -152,6 +152,9 @@ CSetLookAndFeelPage::CSetLookAndFeelPage()
 	m_regNoContextPaths = CRegString(_T("Software\\TortoiseGit\\NoContextPaths"), _T(""));
 	m_sNoContextPaths = m_regNoContextPaths;
 	m_sNoContextPaths.Replace(_T("\n"), _T("\r\n"));
+
+	m_regEnableDragContextMenu = CRegDWORD(_T("Software\\TortoiseGit\\EnableDragContextMenu"), TRUE);
+	m_bEnableDragContextMenu = m_regEnableDragContextMenu;
 }
 
 CSetLookAndFeelPage::~CSetLookAndFeelPage()
@@ -164,6 +167,7 @@ void CSetLookAndFeelPage::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_MENULIST, m_cMenuList);
 	DDX_Check(pDX, IDC_HIDEMENUS, m_bHideMenus);
 	DDX_Text(pDX, IDC_NOCONTEXTPATHS, m_sNoContextPaths);
+	DDX_Check(pDX, IDC_ENABLEDRAGCONTEXTMENU, m_bEnableDragContextMenu);
 }
 
 
@@ -173,6 +177,7 @@ BEGIN_MESSAGE_MAP(CSetLookAndFeelPage, ISettingsPropPage)
 	ON_BN_CLICKED(IDC_RESTORE, OnBnClickedRestoreDefaults)
 	ON_BN_CLICKED(IDC_HIDEMENUS, OnChange)
 	ON_EN_CHANGE(IDC_NOCONTEXTPATHS, &CSetLookAndFeelPage::OnEnChangeNocontextpaths)
+	ON_BN_CLICKED(IDC_ENABLEDRAGCONTEXTMENU, OnChange)
 END_MESSAGE_MAP()
 
 
@@ -184,6 +189,7 @@ BOOL CSetLookAndFeelPage::OnInitDialog()
 	m_tooltips.AddTool(IDC_MENULIST, IDS_SETTINGS_MENULAYOUT_TT);
 	m_tooltips.AddTool(IDC_HIDEMENUS, IDS_SETTINGS_HIDEMENUS_TT);
 	m_tooltips.AddTool(IDC_NOCONTEXTPATHS, IDS_SETTINGS_EXCLUDECONTEXTLIST_TT);
+	m_tooltips.AddTool(IDC_ENABLEDRAGCONTEXTMENU, IDS_SETTINGS_ENABLEDRAGCONTEXTMENU_TT);
 
 	m_cMenuList.SetExtendedStyle(LVS_EX_CHECKBOXES | LVS_EX_FULLROWSELECT | LVS_EX_DOUBLEBUFFER);
 
@@ -241,6 +247,7 @@ BOOL CSetLookAndFeelPage::OnApply()
 
 	Store (m_bHideMenus, m_regHideMenus);
 	Store (m_sNoContextPaths, m_regNoContextPaths);
+	Store (m_bEnableDragContextMenu, m_regEnableDragContextMenu);
 
 	m_sNoContextPaths.Replace(_T("\n"), _T("\r\n"));
 
