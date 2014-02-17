@@ -2611,7 +2611,10 @@ void CGitStatusListCtrl::StartDiffTwo(int fileindex)
 	if(fileindex<0)
 		return;
 
-	CTGitPath file1=*(CTGitPath*)GetItemData(fileindex);
+	auto ptr = (CTGitPath*)GetItemData(fileindex);
+	if (ptr == nullptr)
+		return;
+	CTGitPath file1 = *ptr;
 
 	CGitDiff::Diff(&file1,&file1,
 					m_Rev1,
@@ -2627,7 +2630,10 @@ void CGitStatusListCtrl::StartDiffWC(int fileindex)
 	if(this->m_CurrentVersion.IsEmpty() || m_CurrentVersion== GIT_REV_ZERO)
 		return;
 
-	CTGitPath file1=*(CTGitPath*)GetItemData(fileindex);
+	auto ptr = (CTGitPath*)GetItemData(fileindex);
+	if (ptr == nullptr)
+		return;
+	CTGitPath file1 = *ptr;
 	file1.m_Action = 0; // reset action, so that diff is not started as added/deleted file; see issue #1757
 
 	CGitDiff::Diff(&file1,&file1, GIT_REV_ZERO, m_CurrentVersion);
@@ -2639,7 +2645,10 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 	if(fileindex<0)
 		return;
 
-	CTGitPath file1=*(CTGitPath*)GetItemData(fileindex);
+	auto ptr = (CTGitPath*)GetItemData(fileindex);
+	if (ptr == nullptr)
+		return;
+	CTGitPath file1 = *ptr;
 	CTGitPath file2;
 	if(file1.m_Action & (CTGitPath::LOGACTIONS_REPLACED|CTGitPath::LOGACTIONS_COPY))
 	{
