@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -167,11 +167,13 @@ protected:
 	CHistoryCombo		m_UpstreamCtrl;
 
 	REBASE_STAGE		m_RebaseStage;
+	bool				m_bStashed;
 
 	void AddBranchToolTips(CHistoryCombo *pBranch);
 	void AddLogString(CString str);
 	int StartRebase();
 	int CheckRebaseCondition();
+	void CheckRestoreStash();
 	int m_CurrentRebaseIndex;
 	int StateAction();
 	int GoNext();

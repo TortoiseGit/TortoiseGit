@@ -47,6 +47,7 @@ CRebaseDlg::CRebaseDlg(CWnd* pParent /*=NULL*/)
 	, m_bAddCherryPickedFrom(FALSE)
 	, m_bStatusWarning(false)
 	, m_bAutoSkipFailedCommit(FALSE)
+	, m_bStashed(false)
 {
 	m_RebaseStage=CHOOSE_BRANCH;
 	m_CurrentRebaseIndex=-1;
@@ -806,7 +807,7 @@ int CRebaseDlg::CheckRebaseCondition()
 				CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
 				return -1;
 			}
-
+			m_bStashed = true;
 		}
 		else
 			return -1;
@@ -820,6 +821,14 @@ int CRebaseDlg::CheckRebaseCondition()
 	//Todo call pre_rebase_hook
 	return 0;
 }
+
+void CRebaseDlg::CheckRestoreStash()
+{
+	if (m_bStashed && CMessageBox::Show(NULL, IDS_DCOMMIT_STASH_POP, IDS_APPNAME, 1, IDI_QUESTION, IDS_STASHBUTTON, IDS_ABORTBUTTON) == 1)
+		CAppUtils::StashPop();
+	m_bStashed = false;
+}
+
 int CRebaseDlg::StartRebase()
 {
 	CString cmd,out;
@@ -984,6 +993,7 @@ void CRebaseDlg::OnBnClickedContinue()
 	if( m_RebaseStage == REBASE_DONE)
 	{
 		OnOK();
+		CheckRestoreStash();
 		return;
 	}
 
@@ -1862,11 +1872,11 @@ void CRebaseDlg::OnBnClickedAbort()
 
 	if(m_RebaseStage == CHOOSE_BRANCH || m_RebaseStage== CHOOSE_COMMIT_PICK_MODE)
 	{
-		return;
+		goto end;
 	}
 
 	if(CMessageBox::Show(NULL, IDS_PROC_REBASE_ABORT, IDS_APPNAME, MB_YESNO) != IDYES)
-		return;
+		goto end;
 
 	if(this->m_IsFastForward)
 	{
@@ -1884,7 +1894,7 @@ void CRebaseDlg::OnBnClickedAbort()
 				break;
 		}
 		__super::OnCancel();
-		return;
+		goto end;
 	}
 	cmd.Format(_T("git.exe checkout -f %s --"), g_Git.FixBranchName(this->m_UpstreamCtrl.GetString()));
 	while (true)
@@ -1896,7 +1906,7 @@ void CRebaseDlg::OnBnClickedAbort()
 			if (CMessageBox::Show(this->m_hWnd, _T("Retry?\nUnrecoverable error on cleanup:\n") + out, _T("TortoiseGit"), MB_YESNO | MB_ICONERROR) != IDYES)
 			{
 				__super::OnCancel();
-				return;
+				goto end;
 			}
 		}
 		else
@@ -1913,7 +1923,7 @@ void CRebaseDlg::OnBnClickedAbort()
 			if (CMessageBox::Show(m_hWnd, _T("Retry?\nUnrecoverable error on cleanup:\n") + out, _T("TortoiseGit"), MB_YESNO | MB_ICONERROR) != IDYES)
 			{
 				__super::OnCancel();
-				return;
+				goto end;
 			}
 		}
 		else
@@ -1923,7 +1933,7 @@ void CRebaseDlg::OnBnClickedAbort()
 	if(this->m_IsCherryPick) //there are not "branch" at cherry pick mode
 	{
 		__super::OnCancel();
-		return;
+		goto end;
 	}
 
 	cmd.Format(_T("git.exe checkout -f %s --"), this->m_BranchCtrl.GetString());
@@ -1932,7 +1942,7 @@ void CRebaseDlg::OnBnClickedAbort()
 		AddLogString(out);
 		::MessageBox(this->m_hWnd, _T("Unrecoverable error on cleanup:\n") + out, _T("TortoiseGit"), MB_ICONERROR);
 		__super::OnCancel();
-		return;
+		goto end;
 	}
 
 	cmd.Format(_T("git.exe reset --hard %s --"), this->m_OrigBranchHash.ToString());
@@ -1949,6 +1959,8 @@ void CRebaseDlg::OnBnClickedAbort()
 			break;
 	}
 	__super::OnCancel();
+end:
+	CheckRestoreStash();
 }
 
 void CRebaseDlg::OnBnClickedButtonBrowse()
