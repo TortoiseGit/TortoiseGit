@@ -92,6 +92,7 @@ BEGIN_MESSAGE_MAP(CRebaseDlg, CResizableStandAloneDialog)
 	ON_CBN_SELCHANGE(IDC_REBASE_COMBOXEX_UPSTREAM, &CRebaseDlg::OnCbnSelchangeUpstream)
 	ON_MESSAGE(MSG_REBASE_UPDATE_UI, OnRebaseUpdateUI)
 	ON_REGISTERED_MESSAGE(CGitStatusListCtrl::GITSLNM_NEEDSREFRESH, OnGitStatusListCtrlNeedsRefresh)
+	ON_BN_CLICKED(IDC_BUTTON_REVERSE, OnBnClickedButtonReverse)
 	ON_BN_CLICKED(IDC_BUTTON_BROWSE, &CRebaseDlg::OnBnClickedButtonBrowse)
 	ON_BN_CLICKED(IDC_REBASE_CHECK_FORCE, &CRebaseDlg::OnBnClickedRebaseCheckForce)
 	ON_BN_CLICKED(IDC_CHECK_CHERRYPICKED_FROM, &CRebaseDlg::OnBnClickedCheckCherryPickedFrom)
@@ -252,6 +253,7 @@ BOOL CRebaseDlg::OnInitDialog()
 	{
 		this->m_BranchCtrl.EnableWindow(FALSE);
 		this->m_UpstreamCtrl.EnableWindow(FALSE);
+		GetDlgItem(IDC_BUTTON_REVERSE)->EnableWindow(FALSE);
 	}
 
 	m_CommitList.m_ColumnRegKey = _T("Rebase");
@@ -270,6 +272,7 @@ BOOL CRebaseDlg::OnInitDialog()
 		this->m_BranchCtrl.EnableWindow(FALSE);
 		GetDlgItem(IDC_REBASE_CHECK_FORCE)->ShowWindow(SW_HIDE);
 		GetDlgItem(IDC_BUTTON_BROWSE)->EnableWindow(FALSE);
+		GetDlgItem(IDC_BUTTON_REVERSE)->EnableWindow(FALSE);
 		this->m_UpstreamCtrl.AddString(_T("HEAD"));
 		this->m_UpstreamCtrl.EnableWindow(FALSE);
 		CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, CString(MAKEINTRESOURCE(IDS_PROGS_TITLE_CHERRYPICK)));
@@ -278,6 +281,7 @@ BOOL CRebaseDlg::OnInitDialog()
 	else
 	{
 		GetDlgItem(IDC_CHECK_CHERRYPICKED_FROM)->ShowWindow(SW_HIDE);
+		((CButton *)GetDlgItem(IDC_BUTTON_REVERSE))->SetIcon((HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_SWITCHLEFTRIGHT), IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR));
 		SetContinueButtonText();
 		m_CommitList.DeleteAllItems();
 		FetchLogList();
@@ -1425,6 +1429,7 @@ void CRebaseDlg::SetControlEnable()
 		{
 			this->GetDlgItem(IDC_REBASE_COMBOXEX_BRANCH)->EnableWindow(TRUE);
 			this->GetDlgItem(IDC_REBASE_COMBOXEX_UPSTREAM)->EnableWindow(TRUE);
+			this->GetDlgItem(IDC_BUTTON_REVERSE)->EnableWindow(TRUE);
 			this->GetDlgItem(IDC_REBASE_CHECK_FORCE)->EnableWindow(TRUE);
 		}
 		this->m_CommitList.m_ContextMenuMask |= m_CommitList.GetContextMenuBit(CGitLogListBase::ID_REBASE_PICK)|
@@ -1447,6 +1452,7 @@ void CRebaseDlg::SetControlEnable()
 		this->GetDlgItem(IDC_SQUASH_ALL)->EnableWindow(FALSE);
 		this->GetDlgItem(IDC_REBASE_COMBOXEX_BRANCH)->EnableWindow(FALSE);
 		this->GetDlgItem(IDC_REBASE_COMBOXEX_UPSTREAM)->EnableWindow(FALSE);
+		this->GetDlgItem(IDC_BUTTON_REVERSE)->EnableWindow(FALSE);
 		this->GetDlgItem(IDC_REBASE_CHECK_FORCE)->EnableWindow(FALSE);
 		this->GetDlgItem(IDC_BUTTON_UP2)->EnableWindow(FALSE);
 		this->GetDlgItem(IDC_BUTTON_DOWN2)->EnableWindow(FALSE);
@@ -1995,6 +2001,14 @@ void CRebaseDlg::OnBnClickedAbort()
 	__super::OnCancel();
 end:
 	CheckRestoreStash();
+}
+
+void CRebaseDlg::OnBnClickedButtonReverse()
+{
+	CString temp = m_BranchCtrl.GetString();
+	m_BranchCtrl.AddString(m_UpstreamCtrl.GetString());
+	m_UpstreamCtrl.AddString(temp);
+	OnCbnSelchangeUpstream();
 }
 
 void CRebaseDlg::OnBnClickedButtonBrowse()

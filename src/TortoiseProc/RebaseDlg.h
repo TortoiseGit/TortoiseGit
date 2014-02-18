@@ -179,6 +179,7 @@ protected:
 	int m_CurrentRebaseIndex;
 	int StateAction();
 	int GoNext();
+	afx_msg void OnBnClickedButtonReverse();
 	afx_msg void OnBnClickedButtonBrowse();
 	afx_msg void OnBnClickedRebaseCheckForce();
 	afx_msg void OnBnClickedCheckCherryPickedFrom();
