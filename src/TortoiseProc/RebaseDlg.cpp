@@ -851,29 +851,9 @@ int CRebaseDlg::StartRebase()
 {
 	CString cmd,out;
 	m_FileListCtrl.m_bIsRevertTheirMy = !m_IsCherryPick;
-	if(!this->m_IsCherryPick)
-	{
-		//Todo call comment_for_reflog
-		cmd.Format(_T("git.exe checkout %s --"), this->m_BranchCtrl.GetString());
-		this->AddLogString(cmd);
-		while (true)
-		{
-			out.Empty();
-			if (g_Git.Run(cmd, &out, CP_UTF8))
-			{
-				this->AddLogString(out);
-				if (CMessageBox::Show(m_hWnd, out + _T("\nRetry?"), _T("TortoiseGit"), MB_YESNO | MB_ICONERROR) != IDYES)
-					return -1;
-			}
-			else
-				break;
-		}
 
-		this->AddLogString(out);
-	}
-
-	cmd=_T("git.exe rev-parse --verify HEAD");
-	if(g_Git.Run(cmd,&out,CP_UTF8))
+	CGitHash hash;
+	if (g_Git.GetHash(hash, m_IsCherryPick ? _T("HEAD") : this->m_BranchCtrl.GetString()))
 	{
 		AddLogString(CString(MAKEINTRESOURCE(IDS_PROC_NOHEAD)));
 		return -1;
@@ -882,7 +862,7 @@ int CRebaseDlg::StartRebase()
 	//git symbolic-ref HEAD > "$DOTEST"/head-name 2> /dev/null ||
 	//		echo "detached HEAD" > "$DOTEST"/head-name
 
-	cmd.Format(_T("git.exe update-ref ORIG_HEAD HEAD"));
+	cmd.Format(_T("git.exe update-ref ORIG_HEAD ") + hash.ToString());
 	if(g_Git.Run(cmd,&out,CP_UTF8))
 	{
 		AddLogString(_T("update ORIG_HEAD Fail"));
@@ -946,6 +926,14 @@ int CRebaseDlg::VerifyNoConflict()
 	return 0;
 
 }
+
+static bool IsLocalBranch(CString ref)
+{
+	STRING_VECTOR list;
+	g_Git.GetBranchList(list, nullptr, CGit::BRANCH_LOCAL);
+	return std::find(list.begin(), list.end(), ref) != list.end();
+}
+
 int CRebaseDlg::FinishRebase()
 {
 	if (m_bFinishedRebase)
@@ -969,21 +957,24 @@ int CRebaseDlg::FinishRebase()
 	}
 	CString out,cmd;
 
-	cmd.Format(_T("git.exe checkout -f %s --"), this->m_BranchCtrl.GetString());
-	AddLogString(cmd);
-	while (true)
+	if (IsLocalBranch(m_BranchCtrl.GetString()))
 	{
-		out.Empty();
-		if (g_Git.Run(cmd, &out, CP_UTF8))
+		cmd.Format(_T("git.exe checkout -f -B %s %s --"), m_BranchCtrl.GetString(), head.ToString());
+		AddLogString(cmd);
+		while (true)
 		{
-			AddLogString(out);
-			if (CMessageBox::Show(m_hWnd, out + _T("\nRetry?"), _T("TortoiseGit"), MB_YESNO | MB_ICONERROR) != IDYES)
-				return -1;
+			out.Empty();
+			if (g_Git.Run(cmd, &out, CP_UTF8))
+			{
+				AddLogString(out);
+				if (CMessageBox::Show(m_hWnd, out + _T("\nRetry?"), _T("TortoiseGit"), MB_YESNO | MB_ICONERROR) != IDYES)
+					return -1;
+			}
+			else
+				break;
 		}
-		else
-			break;
+		AddLogString(out);
 	}
-	AddLogString(out);
 
 	cmd.Format(_T("git.exe reset --hard %s --"), head.ToString());
 	AddLogString(cmd);
@@ -1028,27 +1019,6 @@ void CRebaseDlg::OnBnClickedContinue()
 	if( this->m_IsFastForward )
 	{
 		CString cmd,out;
-		CString oldbranch = g_Git.GetCurrentBranch();
-		if( oldbranch != m_BranchCtrl.GetString() )
-		{
-			cmd.Format(_T("git.exe checkout %s --"), m_BranchCtrl.GetString());
-			AddLogString(cmd);
-			while (true)
-			{
-				out.Empty();
-				if (g_Git.Run(cmd, &out, CP_UTF8))
-				{
-					this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_LOG);
-					AddLogString(out);
-					if (CMessageBox::Show(m_hWnd, out + _T("\nRetry?"), _T("TortoiseGit"), MB_YESNO | MB_ICONERROR) != IDYES)
-						return;
-				}
-				else
-					break;
-			}
-		}
-		AddLogString(out);
-		out.Empty();
 		if (g_Git.GetHash(m_OrigBranchHash, m_BranchCtrl.GetString()))
 		{
 			MessageBox(g_Git.GetGitLastErr(_T("Could not get hash of \"") + m_BranchCtrl.GetString() + _T("\".")), _T("TortoiseGit"), MB_ICONERROR);
@@ -1067,6 +1037,26 @@ void CRebaseDlg::OnBnClickedContinue()
 			return;
 		}
 
+		if (IsLocalBranch(m_BranchCtrl.GetString()))
+		{
+			cmd.Format(_T("git.exe checkout -f -B %s %s --"), m_BranchCtrl.GetString(), m_UpstreamCtrl.GetString());
+			AddLogString(cmd);
+			while (true)
+			{
+				out.Empty();
+				if (g_Git.Run(cmd, &out, CP_UTF8))
+				{
+					this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_LOG);
+					AddLogString(out);
+					if (CMessageBox::Show(m_hWnd, out + _T("\nRetry?"), _T("TortoiseGit"), MB_YESNO | MB_ICONERROR) != IDYES)
+						return;
+				}
+				else
+					break;
+			}
+			AddLogString(out);
+			out.Empty();
+		}
 		cmd.Format(_T("git.exe reset --hard %s --"), g_Git.FixBranchName(this->m_UpstreamCtrl.GetString()));
 		CString log;
 		log.Format(IDS_PROC_REBASE_FFTO, m_UpstreamCtrl.GetString());
@@ -1920,42 +1910,23 @@ void CRebaseDlg::OnBnClickedAbort()
 		__super::OnCancel();
 		goto end;
 	}
-	cmd.Format(_T("git.exe checkout -f %s --"), g_Git.FixBranchName(this->m_UpstreamCtrl.GetString()));
-	while (true)
-	{
-		out.Empty();
-		if (g_Git.Run(cmd, &out, CP_UTF8))
-		{
-			AddLogString(out);
-			if (CMessageBox::Show(this->m_hWnd, _T("Retry?\nUnrecoverable error on cleanup:\n") + out, _T("TortoiseGit"), MB_YESNO | MB_ICONERROR) != IDYES)
-			{
-				__super::OnCancel();
-				goto end;
-			}
-		}
-		else
-			break;
-	}
 
-	cmd.Format(_T("git.exe reset --hard %s --"), this->m_OrigUpstreamHash.ToString());
-	while (true)
+	if (m_IsCherryPick) // there are not "branch" at cherry pick mode
 	{
-		out.Empty();
-		if (g_Git.Run(cmd, &out, CP_UTF8))
+		cmd.Format(_T("git.exe reset --hard %s --"), m_OrigUpstreamHash.ToString());
+		while (true)
 		{
-			AddLogString(out);
-			if (CMessageBox::Show(m_hWnd, _T("Retry?\nUnrecoverable error on cleanup:\n") + out, _T("TortoiseGit"), MB_YESNO | MB_ICONERROR) != IDYES)
+			out.Empty();
+			if (g_Git.Run(cmd, &out, CP_UTF8))
 			{
-				__super::OnCancel();
-				goto end;
+				AddLogString(out);
+				if (CMessageBox::Show(m_hWnd, _T("Retry?\nUnrecoverable error on cleanup:\n") + out, _T("TortoiseGit"), MB_YESNO | MB_ICONERROR) != IDYES)
+					break;
 			}
+			else
+				break;
 		}
-		else
-			break;
-	}
 
-	if(this->m_IsCherryPick) //there are not "branch" at cherry pick mode
-	{
 		__super::OnCancel();
 		goto end;
 	}
