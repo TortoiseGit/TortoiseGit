@@ -656,7 +656,17 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 		case ID_REBASE_TO_VERSION:
 			{
 				CRebaseDlg dlg;
-				dlg.m_Upstream = pSelLogEntry->m_CommitHash;
+				auto refList = m_HashMap[pSelLogEntry->m_CommitHash];
+				dlg.m_Upstream = refList.empty() ? pSelLogEntry->m_CommitHash.ToString() : refList.front();
+				for (auto ref : refList)
+				{
+					if (ref.Left(11) == _T("refs/heads/"))
+					{
+						// 11=len("refs/heads/")
+						dlg.m_Upstream = ref.Mid(11);
+						break;
+					}
+				}
 
 				if(dlg.DoModal() == IDOK)
 				{
