@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -190,7 +190,7 @@ protected:
 	{
 		STRING_VECTOR list;
 
-		int current;
+		int current = -1;
 		g_Git.GetBranchList(list,&current,CGit::BRANCH_ALL_F);
 		for (int i = m_ChooseVersioinBranch.GetCount(); i >= 0; --i)
 			m_ChooseVersioinBranch.DeleteString(i);
