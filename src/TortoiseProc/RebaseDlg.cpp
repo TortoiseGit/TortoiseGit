@@ -452,10 +452,13 @@ void CRebaseDlg::LoadBranchInfo()
 
 	STRING_VECTOR list;
 	list.clear();
-	int current;
+	int current = -1;
 	g_Git.GetBranchList(list,&current,CGit::BRANCH_ALL);
 	m_BranchCtrl.AddString(list);
-	m_BranchCtrl.SetCurSel(current);
+	if (current >= 0)
+		m_BranchCtrl.SetCurSel(current);
+	else
+		m_BranchCtrl.AddString(g_Git.GetCurrentBranch(true));
 	list.clear();
 	g_Git.GetBranchList(list, NULL, CGit::BRANCH_ALL_F);
 	m_UpstreamCtrl.AddString(list);
@@ -466,7 +469,6 @@ void CRebaseDlg::LoadBranchInfo()
 	if(!m_Upstream.IsEmpty())
 	{
 		m_UpstreamCtrl.AddString(m_Upstream);
-		m_UpstreamCtrl.SetCurSel(m_UpstreamCtrl.GetCount()-1);
 	}
 	else
 	{
