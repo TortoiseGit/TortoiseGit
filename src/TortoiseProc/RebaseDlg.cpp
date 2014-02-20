@@ -1525,6 +1525,8 @@ void CRebaseDlg::UpdateCurrentStatus()
 	SetContinueButtonText();
 	SetControlEnable();
 	UpdateProgress();
+	if (m_RebaseStage == REBASE_DONE)
+		GetDlgItem(IDC_REBASE_CONTINUE)->SetFocus();
 }
 
 void CRebaseDlg::AddLogString(CString str)
