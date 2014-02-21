@@ -3874,7 +3874,7 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_FILEDIFF_SWITCHLEFTRIGHT_TT "Switches the comparison left<<->right"
+    IDS_FILEDIFF_SWITCHLEFTRIGHT_TT "Switches the comparison left<->right"
 END
 
 STRINGTABLE
