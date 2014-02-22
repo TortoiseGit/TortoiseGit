@@ -1210,21 +1210,30 @@ int CGit::GetInitAddList(CTGitPathList &outputlist)
 
 	return 0;
 }
-int CGit::GetCommitDiffList(const CString &rev1,const CString &rev2,CTGitPathList &outputlist)
+int CGit::GetCommitDiffList(const CString &rev1, const CString &rev2, CTGitPathList &outputlist, bool ignoreSpaceAtEol, bool ignoreSpaceChange, bool ignoreAllSpace , bool ignoreBlankLines)
 {
 	CString cmd;
+	CString ignore;
+	if (ignoreSpaceAtEol)
+		ignore += _T(" --ignore-space-at-eol");
+	if (ignoreSpaceChange)
+		ignore += _T(" --ignore-space-change");
+	if (ignoreAllSpace)
+		ignore += _T(" --ignore-all-space");
+	if (ignoreBlankLines)
+		ignore += _T(" --ignore-blank-lines");
 
 	if(rev1 == GIT_REV_ZERO || rev2 == GIT_REV_ZERO)
 	{
 		//rev1=+_T("");
 		if(rev1 == GIT_REV_ZERO)
-			cmd.Format(_T("git.exe diff -r --raw -C -M --numstat -z %s --"), rev2);
+			cmd.Format(_T("git.exe diff -r --raw -C -M --numstat -z %s %s --"), ignore, rev2);
 		else
-			cmd.Format(_T("git.exe diff -r -R --raw -C -M --numstat -z %s --"), rev1);
+			cmd.Format(_T("git.exe diff -r -R --raw -C -M --numstat -z %s --"), ignore, rev1);
 	}
 	else
 	{
-		cmd.Format(_T("git.exe diff-tree -r --raw -C -M --numstat -z %s %s --"), rev2, rev1);
+		cmd.Format(_T("git.exe diff-tree -r --raw -C -M --numstat -z %s %s %s --"), ignore, rev2, rev1);
 	}
 
 	BYTE_VECTOR out;
