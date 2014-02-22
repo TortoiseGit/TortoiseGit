@@ -754,6 +754,7 @@ CAPTION "Changed Files"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     LTEXT           "Difference between",IDC_DIFFSTATIC1,7,7,125,8
+    PUSHBUTTON      "Diff Options",IDC_DIFFOPTION,132,4,68,14
     PUSHBUTTON      "",IDC_SWITCHLEFTRIGHT,262,4,21,14,BS_ICON
     PUSHBUTTON      "Show log",IDC_LOG,203,4,52,14
     GROUPBOX        "Version 1",IDC_REV1GROUP,6,16,288,45
@@ -3347,6 +3348,10 @@ STRINGTABLE
 BEGIN
     IDS_SETTINGS_ENABLEDRAGCONTEXTMENU_TT 
                             "When enabled, TortoiseGit move context menu items will be available when dragging folders / files"
+    IDS_DIFFOPTION_IGNORESPACEATEOL "Ignore space at EOL"
+    IDS_DIFFOPTION_IGNORESPACECHANGE "Ignore space change"
+    IDS_DIFFOPTION_IGNOREALLSPACE "Ignore all space"
+    IDS_DIFFOPTION_IGNORBLANKLINES "Ignore blank lines"
     IDS_EXPORTFILE_TT       "Location where the contents of the\nselected revision of the repository will be saved to."
     IDS_CHECKOUT_EXPORTDIR  "Export directory:"
 END

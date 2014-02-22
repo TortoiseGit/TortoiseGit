@@ -311,7 +311,7 @@ public:
 	//Removes 'refs/heads/' or just 'refs'. Example: refs/heads/master -> master
 	static CString StripRefName(CString refName);
 
-	int GetCommitDiffList(const CString &rev1,const CString &rev2,CTGitPathList &outpathlist);
+	int GetCommitDiffList(const CString &rev1, const CString &rev2, CTGitPathList &outpathlist, bool ignoreSpaceAtEol = false, bool ignoreSpaceChange = false, bool ignoreAllSpace = false, bool ignoreBlankLines = false);
 	int GetInitAddList(CTGitPathList &outpathlist);
 
 	__int64 filetime_to_time_t(const FILETIME *ft)

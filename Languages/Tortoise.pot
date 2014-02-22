@@ -3496,6 +3496,10 @@ msgstr ""
 msgid "Dialogs"
 msgstr ""
 
+#. Resource IDs: (1789)
+msgid "Diff Options"
+msgstr ""
+
 #. Resource IDs: (22)
 msgid "Diff Two Commits"
 msgstr ""
@@ -5202,8 +5206,16 @@ msgstr ""
 msgid "Ignore Type"
 msgstr ""
 
+#. Resource IDs: (94)
+msgid "Ignore all space"
+msgstr ""
+
 #. Resource IDs: (156)
 msgid "Ignore all whitespace changes"
+msgstr ""
+
+#. Resource IDs: (94)
+msgid "Ignore blank lines"
 msgstr ""
 
 #. Resource IDs: (1067)
@@ -5224,6 +5236,14 @@ msgstr ""
 
 #. Resource IDs: (1018)
 msgid "Ignore line &endings (recommended)"
+msgstr ""
+
+#. Resource IDs: (94)
+msgid "Ignore space at EOL"
+msgstr ""
+
+#. Resource IDs: (94)
+msgid "Ignore space change"
 msgstr ""
 
 #. Resource IDs: (1676)

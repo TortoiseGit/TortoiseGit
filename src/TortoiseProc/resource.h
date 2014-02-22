@@ -1042,12 +1042,20 @@
 #define IDC_BRANCH_REMOTE               1489
 #define IDC_COMBOBOXEX_BRANCH           1489
 #define IDC_COMBOBOXEX_FROM             1489
+#define IDS_IGNORESPACEATEOL            1489
+#define IDS_DIFFOPTION_IGNORESPACEATEOL 1489
 #define IDC_REMOTE_RD                   1490
 #define IDC_URL                         1490
 #define IDC_COMBOBOXEX_TAGS             1490
 #define IDC_COMBOBOXEX_TO               1490
+#define IDS_IGNORESPACECHANGE           1490
+#define IDS_DIFFOPTION_IGNORESPACECHANGE 1490
 #define IDC_COMBOBOXEX_VERSION          1491
+#define IDS_IGNOREALLSPACE              1491
+#define IDS_DIFFOPTION_IGNOREALLSPACE   1491
 #define IDC_OTHER_RD                    1492
+#define IDS_IGNORBLANKLINES             1492
+#define IDS_DIFFOPTION_IGNORBLANKLINES  1492
 #define IDC_OTHER                       1493
 #define IDC_BRANCH_SOURCE               1493
 #define IDC_REMOTE_BRANCH               1494
@@ -1429,6 +1437,7 @@
 #define IDC_CHECK_PUSHDEFAULT           1786
 #define IDC_TESTBUGTRAQREGEXBUTTON      1787
 #define IDC_ENABLEDRAGCONTEXTMENU       1788
+#define IDC_DIFFOPTION                  1789
 #define IDS_LOG_FILTER_BY               1850
 #define IDS_LOG_FILTER_PATHS            1851
 #define IDS_LOG_FILTER_AUTHORS          1852
@@ -1874,7 +1883,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        350
 #define _APS_NEXT_COMMAND_VALUE         32865
-#define _APS_NEXT_CONTROL_VALUE         1789
+#define _APS_NEXT_CONTROL_VALUE         1790
 #define _APS_NEXT_SYMED_VALUE           201
 #endif
 #endif
