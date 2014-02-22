@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -63,6 +63,10 @@ CFileDiffDlg::CFileDiffDlg(CWnd* pParent /*=NULL*/)
 	, m_bCancelled(false)
 	, m_nIconFolder(0)
 	, m_bThreadRunning(FALSE)
+	, m_bIgnoreSpaceAtEol(false)
+	, m_bIgnoreSpaceChange(false)
+	, m_bIgnoreAllSpace(false)
+	, m_bIgnoreBlankLines(false)
 {
 	m_bLoadingRef=FALSE;
 }
@@ -103,6 +107,7 @@ BEGIN_MESSAGE_MAP(CFileDiffDlg, CResizableStandAloneDialog)
 	ON_MESSAGE(MSG_REF_LOADED, OnRefLoad)
 	ON_REGISTERED_MESSAGE(WM_DISABLEBUTTONS, OnDisableButtons)
 	ON_REGISTERED_MESSAGE(WM_DIFFFINISHED, OnDiffFinished)
+	ON_BN_CLICKED(IDC_DIFFOPTION, OnBnClickedDiffoption)
 	ON_BN_CLICKED(IDC_LOG, &CFileDiffDlg::OnBnClickedLog)
 END_MESSAGE_MAP()
 
@@ -258,6 +263,7 @@ BOOL CFileDiffDlg::OnInitDialog()
 	AddAnchor(IDC_REV2GROUP,TOP_LEFT,TOP_RIGHT);
 	AddAnchor(IDC_REV1EDIT,TOP_LEFT);
 	AddAnchor(IDC_REV2EDIT,TOP_LEFT);
+	AddAnchor(IDC_DIFFOPTION, TOP_RIGHT);
 	AddAnchor(IDC_LOG, TOP_RIGHT);
 
 	EnableSaveRestore(_T("FileDiffDlg"));
@@ -356,7 +362,7 @@ UINT CFileDiffDlg::DiffThread()
 	if( m_rev1.m_CommitHash.IsEmpty() || m_rev2.m_CommitHash.IsEmpty())
 		g_Git.RefreshGitIndex();
 
-	g_Git.GetCommitDiffList(m_rev1.m_CommitHash.ToString(),m_rev2.m_CommitHash.ToString(),m_arFileList);
+	g_Git.GetCommitDiffList(m_rev1.m_CommitHash.ToString(), m_rev2.m_CommitHash.ToString(), m_arFileList, m_bIgnoreSpaceAtEol, m_bIgnoreSpaceChange, m_bIgnoreAllSpace, m_bIgnoreBlankLines);
 	Sort();
 
 	SendMessage(WM_DIFFFINISHED);
@@ -1277,6 +1283,57 @@ int CFileDiffDlg::RevertSelectedItemToVersion(CString rev)
 	out.Format(IDS_STATUSLIST_FILESREVERTED, count, rev);
 	CMessageBox::Show(NULL, out, _T("TortoiseGit"), MB_OK);
 	return 0;
+}
+
+static void AppendMenuChecked(CMenu &menu, UINT nTextID, UINT_PTR nItemID, BOOL checked = FALSE, BOOL enabled = TRUE)
+{
+	CString text;
+	text.LoadString(nTextID);
+	menu.AppendMenu(MF_STRING | (enabled ? MF_ENABLED : MF_DISABLED) | (checked ? MF_CHECKED : MF_UNCHECKED), nItemID, text);
+}
+
+#define DIFFOPTION_IGNORESPACEATEOL		1
+#define DIFFOPTION_IGNORESPACECHANGE	2
+#define DIFFOPTION_IGNOREALLSPACE		3
+#define DIFFOPTION_IGNORBLANKLINES		4
+
+void CFileDiffDlg::OnBnClickedDiffoption()
+{
+	CMenu popup;
+	if (popup.CreatePopupMenu())
+	{
+		AppendMenuChecked(popup, IDS_DIFFOPTION_IGNORESPACEATEOL, DIFFOPTION_IGNORESPACEATEOL, m_bIgnoreSpaceAtEol);
+		AppendMenuChecked(popup, IDS_DIFFOPTION_IGNORESPACECHANGE, DIFFOPTION_IGNORESPACECHANGE, m_bIgnoreSpaceChange);
+		AppendMenuChecked(popup, IDS_DIFFOPTION_IGNOREALLSPACE, DIFFOPTION_IGNOREALLSPACE, m_bIgnoreAllSpace);
+		AppendMenuChecked(popup, IDS_DIFFOPTION_IGNORBLANKLINES, DIFFOPTION_IGNORBLANKLINES, m_bIgnoreBlankLines);
+
+		m_tooltips.Pop();
+		RECT rect;
+		GetDlgItem(IDC_DIFFOPTION)->GetWindowRect(&rect);
+		int selection = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, rect.left, rect.bottom, this, 0);
+		switch (selection)
+		{
+		case DIFFOPTION_IGNORESPACEATEOL:
+			m_bIgnoreSpaceAtEol = !m_bIgnoreSpaceAtEol;
+			OnTimer(IDT_INPUT);
+			break;
+		case DIFFOPTION_IGNORESPACECHANGE:
+			m_bIgnoreSpaceChange = !m_bIgnoreSpaceChange;
+			OnTimer(IDT_INPUT);
+			break;
+		case DIFFOPTION_IGNOREALLSPACE:
+			m_bIgnoreAllSpace = !m_bIgnoreAllSpace;
+			OnTimer(IDT_INPUT);
+			break;
+		case DIFFOPTION_IGNORBLANKLINES:
+			m_bIgnoreBlankLines = !m_bIgnoreBlankLines;
+			OnTimer(IDT_INPUT);
+			break;
+		default:
+			break;
+		}
+		UpdateData(FALSE);
+	}
 }
 
 void CFileDiffDlg::OnBnClickedLog()
