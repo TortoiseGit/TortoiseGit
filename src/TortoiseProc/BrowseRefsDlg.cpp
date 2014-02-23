@@ -427,7 +427,7 @@ void CBrowseRefsDlg::Refresh(CString selectRef)
 	m_ListRefLeafs.DeleteAllItems();
 	m_TreeRoot.m_ShadowTree.clear();
 	m_TreeRoot.m_csRefName = "refs";
-	m_TreeRoot.m_hTree=m_RefTreeCtrl.InsertItem(L"Refs",NULL,NULL);
+	m_TreeRoot.m_hTree=m_RefTreeCtrl.InsertItem(L"refs",NULL,NULL);
 	m_RefTreeCtrl.SetItemData(m_TreeRoot.m_hTree,(DWORD_PTR)&m_TreeRoot);
 
 	CString allRefs, error;
