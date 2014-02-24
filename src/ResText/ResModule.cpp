@@ -608,7 +608,6 @@ const WORD* CResModule::ParseMenuResource(const WORD * res)
 {
 	WORD        flags;
 	WORD        id = 0;
-	LPCWSTR     str;
 
 	//struct PopupMenuItem {
 	//	WORD   fItemFlags;
@@ -632,7 +631,7 @@ const WORD* CResModule::ParseMenuResource(const WORD * res)
 		else
 			id = (WORD)-1;			//popup menu item
 
-		str = (LPCWSTR)res;
+		LPCWSTR str = (LPCWSTR)res;
 		size_t l = wcslen(str)+1;
 		res += l;
 
@@ -741,9 +740,7 @@ const WORD* CResModule::CountMemReplaceMenuResource(const WORD * res, size_t * w
 
 const WORD* CResModule::ParseMenuExResource(const WORD * res)
 {
-	DWORD dwType, menuId;
 	WORD bResInfo;
-	LPCWSTR		str;
 
 	//struct MenuExItem {
 	//    DWORD dwType;
@@ -756,16 +753,16 @@ const WORD* CResModule::ParseMenuExResource(const WORD * res)
 
 	do
 	{
-		dwType = GET_DWORD(res);
+		DWORD dwType = GET_DWORD(res);
 		res += 2;
 		//dwState = GET_DWORD(res);
 		res += 2;
-		menuId = GET_DWORD(res);
+		DWORD menuId = GET_DWORD(res);
 		res += 2;
 		bResInfo = GET_WORD(res);
 		res++;
 
-		str = (LPCWSTR)res;
+		LPCWSTR str = (LPCWSTR)res;
 		size_t l = wcslen(str)+1;
 		res += l;
 		// Align to DWORD boundary
@@ -829,9 +826,7 @@ const WORD* CResModule::ParseMenuExResource(const WORD * res)
 
 const WORD* CResModule::CountMemReplaceMenuExResource(const WORD * res, size_t * wordcount, WORD * newMenu)
 {
-	DWORD dwType, menuId;
 	WORD bResInfo;
-	WORD *p0;
 
 	//struct MenuExItem {
 	//    DWORD dwType;
@@ -844,12 +839,12 @@ const WORD* CResModule::CountMemReplaceMenuExResource(const WORD * res, size_t *
 
 	do
 	{
-		p0 = (WORD *)res;
-		dwType = GET_DWORD(res);
+		WORD * p0 = (WORD *)res;
+		DWORD dwType = GET_DWORD(res);
 		res += 2;
 		//dwState = GET_DWORD(res);
 		res += 2;
-		menuId = GET_DWORD(res);
+		DWORD menuId = GET_DWORD(res);
 		res += 2;
 		bResInfo = GET_WORD(res);
 		res++;

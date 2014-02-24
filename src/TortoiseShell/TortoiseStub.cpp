@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2012-2014 - TortoiseGit
-// Copyright (C) 2007, 2009, 2013 - TortoiseSVN
+// Copyright (C) 2007, 2009, 2013-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -81,7 +81,6 @@ static BOOL WantRealVersion(void)
 
 	DWORD bExplorerOnly = 0;
 	WCHAR ModuleName[MAX_PATH] = {0};
-	WCHAR ExplorerPath[MAX_PATH] = {0};
 
 	HKEY hKey = HKEY_CURRENT_USER;
 	LONG Result = ERROR;
@@ -106,6 +105,7 @@ static BOOL WantRealVersion(void)
 			{
 				TRACE(_T("Process is %s\n"), ModuleName);
 
+				WCHAR ExplorerPath[MAX_PATH] = {0};
 				Len = ExpandEnvironmentStrings(ExplorerEnvPath, ExplorerPath, _countof(ExplorerPath));
 				if (Len && (Len <= _countof(ExplorerPath)))
 				{

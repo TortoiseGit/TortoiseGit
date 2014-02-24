@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2003-2013 - TortoiseSVN
+// Copyright (C) 2003-2014 - TortoiseSVN
 // Copyright (C) 2011-2012 Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
@@ -330,11 +330,11 @@ void CBaseView::UpdateStatusBar()
 	}
 	if (m_pwndStatusBar || m_pwndRibbonStatusBar)
 	{
-		UINT nID;
-		UINT nStyle;
-		int cxWidth;
 		if (m_pwndStatusBar)
 		{
+			UINT nID;
+			UINT nStyle;
+			int cxWidth;
 			if (m_nStatusBarID == ID_INDICATOR_BOTTOMVIEW)
 			{
 				sBarText.Format(IDS_STATUSBAR_CONFLICTS, nConflictedLines);
