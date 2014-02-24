@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// External Cache Copyright (C) 2005-2006,2008,2010 - TortoiseSVN
+// External Cache Copyright (C) 2005-2006,2008,2010,2014 - TortoiseSVN
 // Copyright (C) 2008-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
@@ -453,7 +453,6 @@ CCachedDirectory * CGitStatusCache::GetDirectoryCacheEntry(const CTGitPath& path
 		{
 			delete itMap->second;
 			m_directoryCache.erase(itMap);
-			itMap->second = NULL;
 		}
 		// We don't know anything about this directory yet - lets add it to our cache
 		// but only if it exists!
