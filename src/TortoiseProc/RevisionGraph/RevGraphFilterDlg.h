@@ -19,7 +19,6 @@
 //
 #pragma once
 #include "afxcmn.h"
-#include "afxwin.h"
 #include "acedit.h"
 
 /**

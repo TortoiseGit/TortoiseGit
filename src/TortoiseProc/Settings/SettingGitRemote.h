@@ -21,7 +21,6 @@
 #include "SettingsPropPage.h"
 #include "Tooltip.h"
 #include "registry.h"
-#include "afxwin.h"
 
 // CSettingGitRemote dialog
 class CSettingGitRemote : public ISettingsPropPage
