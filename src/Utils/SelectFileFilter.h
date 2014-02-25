@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2010-2012 - TortoiseSVN
+// Copyright (C) 2010-2012, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -28,7 +28,7 @@ public:
 
 	operator const TCHAR*() { return buffer.get(); }
 	void Load(UINT stringId);
-	UINT GetCount() { return (UINT)filternames.size(); }
+	UINT GetCount() const { return (UINT)filternames.size(); }
 	operator const COMDLG_FILTERSPEC*() { return filterspec.get(); }
 
 private:

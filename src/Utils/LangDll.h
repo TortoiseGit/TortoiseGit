@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2007 - TortoiseSVN
+// Copyright (C) 2003-2007, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -31,6 +31,6 @@ public:
 	HINSTANCE	Init(LPCTSTR appname, unsigned long langID);
 	void		Close();
 private:
-	bool		DoVersionStringsMatch(LPCTSTR sVer, LPCTSTR langDll);
+	bool		DoVersionStringsMatch(LPCTSTR sVer, LPCTSTR langDll) const;
 	HINSTANCE	m_hInstance;
 };

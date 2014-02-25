@@ -1,6 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2006-2007,2009-2013 - TortoiseSVN
+// Copyright (C) 2006-2007,2009-2014 - TortoiseSVN
 // Copyright (C) 2011 Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
@@ -42,7 +42,7 @@ typedef struct viewstate
 
 	void	AddViewLineFromView(CBaseView *pView, int nViewLine, bool bAddEmptyLine);
 	void	Clear();
-	bool	IsEmpty() { return difflines.empty() && linestates.empty() && linelines.empty() && linesEOL.empty() && addedlines.empty() && removedlines.empty() && replacedlines.empty(); }
+	bool	IsEmpty() const { return difflines.empty() && linestates.empty() && linelines.empty() && linesEOL.empty() && addedlines.empty() && removedlines.empty() && replacedlines.empty(); }
 } viewstate;
 
 /**
@@ -56,7 +56,7 @@ struct allviewstate
 	viewstate left;
 
 	void	Clear() { right.Clear(); bottom.Clear(); left.Clear(); }
-	bool	IsEmpty() { return right.IsEmpty() && bottom.IsEmpty() && left.IsEmpty(); }
+	bool	IsEmpty() const { return right.IsEmpty() && bottom.IsEmpty() && left.IsEmpty(); }
 };
 
 /**
@@ -71,9 +71,9 @@ public:
 
 	bool Undo(CBaseView * pLeft, CBaseView * pRight, CBaseView * pBottom);
 	void AddState(const allviewstate& allstate, POINT pt);
-	bool CanUndo() {return !m_viewstates.empty();}
+	bool CanUndo() const {return !m_viewstates.empty();}
 
-	bool IsGrouping() { return m_groups.size() % 2 == 1; }
+	bool IsGrouping() const { return m_groups.size() % 2 == 1; }
 	void BeginGrouping() { if (m_groupCount==0) m_groups.push_back(m_caretpoints.size()); m_groupCount++; }
 	void EndGrouping(){ m_groupCount--; if (m_groupCount==0) m_groups.push_back(m_caretpoints.size()); }
 	void Clear();

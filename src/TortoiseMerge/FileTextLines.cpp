@@ -1,6 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2007-2013 - TortoiseSVN
+// Copyright (C) 2007-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -619,7 +619,7 @@ void CFileTextLines::SetErrorString()
 	m_sErrorString = CFormatMessageWrapper();
 }
 
-void CFileTextLines::CopySettings(CFileTextLines * pFileToCopySettingsTo)
+void CFileTextLines::CopySettings(CFileTextLines * pFileToCopySettingsTo) const
 {
 	if (pFileToCopySettingsTo)
 	{
@@ -697,7 +697,7 @@ bool CFileTextLines::StripComments( CString& sLine, bool bInBlockComment )
 	return bInBlockComment;
 }
 
-void CFileTextLines::LineRegex( CString& sLine, const std::wregex& rx, const std::wstring& replacement )
+void CFileTextLines::LineRegex( CString& sLine, const std::wregex& rx, const std::wstring& replacement ) const
 {
 	std::wstring str = (LPCTSTR)sLine;
 	std::wstring str2 = std::regex_replace(str, rx, replacement);

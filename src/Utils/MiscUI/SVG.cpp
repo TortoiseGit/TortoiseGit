@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2010-2011 - TortoiseSVN
+// Copyright (C) 2010-2011, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -230,7 +230,7 @@ fill:#%06lx;\">%s</text>",
 	objects.push_back(sObj);
 }
 
-DWORD SVG::GetColor( Gdiplus::Color c )
+DWORD SVG::GetColor( Gdiplus::Color c ) const
 {
 	return ((DWORD)c.GetRed() << 16) | ((DWORD)c.GetGreen() << 8) | ((DWORD)c.GetBlue());
 }

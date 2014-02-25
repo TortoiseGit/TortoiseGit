@@ -1,6 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2003-2013 - TortoiseSVN
+// Copyright (C) 2003-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -641,8 +641,8 @@ protected:  // variables
 
 		bool			FixScreenedCacheSize(CBaseView* View);
 		void			RebuildIfNecessary();
-		bool			ResetScreenedViewLineCache(CBaseView* View);
-		bool			ResetScreenedViewLineCache(CBaseView* View, const TRebuildRange& Range);
+		bool			ResetScreenedViewLineCache(CBaseView* View) const;
+		bool			ResetScreenedViewLineCache(CBaseView* View, const TRebuildRange& Range) const;
 
 		CViewData *						m_pViewData;
 		bool							m_bFull;

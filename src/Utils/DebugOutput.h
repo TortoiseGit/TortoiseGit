@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009, 2011, 2013 - TortoiseSVN
+// Copyright (C) 2009, 2011, 2013-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -75,7 +75,7 @@ private:
 	static CTraceToOutputDebugString * m_pInstance;
 
 	// Non Unicode output helper
-	void TraceV(PCSTR pszFormat, va_list args)
+	void TraceV(PCSTR pszFormat, va_list args) const
 	{
 		// Format the output buffer
 		char szBuffer[1024];
@@ -84,14 +84,14 @@ private:
 	}
 
 	// Unicode output helper
-	void TraceV(PCWSTR pszFormat, va_list args)
+	void TraceV(PCWSTR pszFormat, va_list args) const
 	{
 		wchar_t szBuffer[1024];
 		_vsnwprintf_s(szBuffer, _countof(szBuffer), _countof(szBuffer)-1, pszFormat, args);
 		OutputDebugStringW(szBuffer);
 	}
 
-	bool IsActive()
+	bool IsActive() const
 	{
 #ifdef DEBUG
 		return true;

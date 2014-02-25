@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2010 - TortoiseSVN
+// Copyright (C) 2009-2010, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -36,9 +36,9 @@ public:
     CFormatMessageWrapper() : buffer(0), result(0) {obtainMessage();}
     CFormatMessageWrapper(DWORD lastError) : buffer(0), result(0) {obtainMessage(lastError);}
     ~CFormatMessageWrapper() { release(); }
-    operator LPCTSTR() { return buffer; }
-    operator bool() { return result != 0; }
-    bool operator!() { return result == 0; }
+    operator LPCTSTR() const { return buffer; }
+    operator bool() const { return result != 0; }
+    bool operator!() const { return result == 0; }
 };
 
 inline void CFormatMessageWrapper::obtainMessage(DWORD errorCode)

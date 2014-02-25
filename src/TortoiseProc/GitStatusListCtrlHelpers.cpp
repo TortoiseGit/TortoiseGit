@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008 - TortoiseSVN
+// Copyright (C) 2008, 2014 - TortoiseSVN
 // Copyright (C) 2008-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
@@ -488,7 +488,7 @@ void ColumnManager::ParseColumnOrder
 // map internal column order onto visible column order
 // (all invisibles in front)
 
-std::vector<int> ColumnManager::GetGridColumnOrder()
+std::vector<int> ColumnManager::GetGridColumnOrder() const
 {
 	// extract order of used columns from order of all columns
 

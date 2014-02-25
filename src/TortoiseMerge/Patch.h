@@ -1,6 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2006-2008 - TortoiseSVN
+// Copyright (C) 2006-2008, 2014 - TortoiseSVN
 // Copyright (C) 2012-2013 - Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
@@ -56,17 +56,17 @@ public:
 	BOOL		StripPrefixes(const CString& path);
 protected:
 	void		FreeMemory();
-	BOOL		HasExpandedKeyWords(const CString& line);
+	BOOL		HasExpandedKeyWords(const CString& line) const;
 	int			CountMatches(const CString& path);
 	int			CountDirMatches(const CString& path);
-	CString		RemoveUnicodeBOM(const CString& str);
+	CString		RemoveUnicodeBOM(const CString& str) const;
 
 	BOOL		ParsePatchFile(CFileTextLines &PatchLines);
 
 	/**
 	 * Strips the filename by removing m_nStrip prefixes.
 	 */
-	CString		Strip(const CString& filename);
+	CString		Strip(const CString& filename) const;
 	struct Chunk
 	{
 		LONG					lRemoveStart;

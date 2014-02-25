@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2007, 2010, 2013 - TortoiseSVN
+// Copyright (C) 2003-2007, 2010, 2013-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -66,9 +66,8 @@ public:
     virtual bool CreateEx(DWORD dwExStyles, DWORD dwStyles, HWND hParent = NULL, RECT* rect = NULL, LPCTSTR classname = NULL);
 
     //void MsgLoop();
-    bool IsWindowClosed() { return bWindowClosed; };
+    bool IsWindowClosed() const { return bWindowClosed; };
 
-    operator HWND() {return m_hwnd;}
     operator HWND() const {return m_hwnd;}
 protected:
     HINSTANCE hResource;

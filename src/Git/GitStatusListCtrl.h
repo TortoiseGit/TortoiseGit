@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008-2013 - TortoiseGit
-// Copyright (C) 2003-2008 - TortoiseSVN
+// Copyright (C) 2003-2008, 2014 - TortoiseSVN
 // Copyright (C) 2010-2013 Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
@@ -381,7 +381,7 @@ private:
 	/// map internal column order onto visible column order
 	/// (all invisibles in front)
 
-	std::vector<int> GetGridColumnOrder();
+	std::vector<int> GetGridColumnOrder() const;
 	void ApplyColumnOrder();
 
 	/// utilities used when writing data to the registry

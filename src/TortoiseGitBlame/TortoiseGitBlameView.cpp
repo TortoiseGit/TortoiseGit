@@ -2,7 +2,7 @@
 
 // Copyright (C) 2008-2014 - TortoiseGit
 // Copyright (C) 2010-2013 Sven Strickroth <email@cs-ware.de>
-// Copyright (C) 2003-2008 - TortoiseSVN
+// Copyright (C) 2003-2008, 2014 - TortoiseSVN
 
 // Copyright (C)2003 Don HO <donho@altern.org>
 
@@ -1045,7 +1045,7 @@ void CTortoiseGitBlameView::DrawLocatorBar(HDC hDC)
 
 }
 
-void CTortoiseGitBlameView::StringExpand(LPSTR str)
+void CTortoiseGitBlameView::StringExpand(LPSTR str) const
 {
 	char * cPos = str;
 	do
@@ -1060,7 +1060,7 @@ void CTortoiseGitBlameView::StringExpand(LPSTR str)
 		}
 	} while (cPos != NULL);
 }
-void CTortoiseGitBlameView::StringExpand(LPWSTR str)
+void CTortoiseGitBlameView::StringExpand(LPWSTR str) const
 {
 	wchar_t * cPos = str;
 	do

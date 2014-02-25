@@ -2,7 +2,7 @@
 
 // Copyright (C) 2009-2013 - TortoiseGit
 // Copyright (C) 2012-2013 - Sven Strickroth <email@cs-ware.de>
-// Copyright (C) 2004-2009,2011-2013 - TortoiseSVN
+// Copyright (C) 2004-2009,2011-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -620,7 +620,7 @@ int CPatch::PatchFile(const int strip, int nIndex, const CString& sPatchPath, co
 	return TRUE;
 }
 
-BOOL CPatch::HasExpandedKeyWords(const CString& line)
+BOOL CPatch::HasExpandedKeyWords(const CString& line) const
 {
 	if (line.Find(_T("$LastChangedDate"))>=0)
 		return TRUE;
@@ -743,7 +743,7 @@ BOOL CPatch::StripPrefixes(const CString& path)
 	return FALSE;
 }
 
-CString	CPatch::Strip(const CString& filename)
+CString	CPatch::Strip(const CString& filename) const
 {
 	CString s = filename;
 	if ( m_nStrip>0 )
@@ -790,7 +790,7 @@ CString CPatch::GetFullPath(const CString& sPath, int nIndex, int fileno /* = 0*
 	return temp;
 }
 
-CString CPatch::RemoveUnicodeBOM(const CString& str)
+CString CPatch::RemoveUnicodeBOM(const CString& str) const
 {
 	if (str.IsEmpty())
 		return str;

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2008 - TortoiseSVN
+// Copyright (C) 2003-2008, 2014 - TortoiseSVN
 // Copyright (C) 2008-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
@@ -280,7 +280,7 @@ void CGitPropertyPage::RunCommand(const tstring& command)
 	MessageBox(NULL, CFormatMessageWrapper(), _T("TortoiseGitProc launch failed"), MB_OK | MB_ICONINFORMATION);
 }
 
-void CGitPropertyPage::Time64ToTimeString(__time64_t time, TCHAR * buf, size_t buflen)
+void CGitPropertyPage::Time64ToTimeString(__time64_t time, TCHAR * buf, size_t buflen) const
 {
 	struct tm newtime;
 	SYSTEMTIME systime;

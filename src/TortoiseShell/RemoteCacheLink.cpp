@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2009-2013 - TortoiseGit
-// Copyright (C) 2003-2013 - TortoiseSVN
+// Copyright (C) 2003-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -47,7 +47,7 @@ CRemoteCacheLink::~CRemoteCacheLink(void)
 }
 
 bool CRemoteCacheLink::InternalEnsurePipeOpen ( CAutoFile& hPipe
-											  , const CString& pipeName)
+											  , const CString& pipeName) const
 {
 	if (hPipe)
 		return true;
@@ -277,7 +277,7 @@ bool CRemoteCacheLink::ReleaseLockForPath(const CTGitPath& path)
 	return false;
 }
 
-DWORD CRemoteCacheLink::GetProcessIntegrityLevel()
+DWORD CRemoteCacheLink::GetProcessIntegrityLevel() const
 {
 	DWORD dwIntegrityLevel = SECURITY_MANDATORY_MEDIUM_RID;
 
@@ -325,7 +325,7 @@ bool CRemoteCacheLink::RunTGitCacheProcess()
 	return true;
 }
 
-CString CRemoteCacheLink::GetTGitCachePath()
+CString CRemoteCacheLink::GetTGitCachePath() const
 {
 	CString sCachePath = CPathUtils::GetAppDirectory(g_hmodThisDll) + _T("TGitCache.exe");
 	return sCachePath;

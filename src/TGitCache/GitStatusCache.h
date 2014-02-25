@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// External Cache Copyright (C) 2005 - 2006,2010 - Will Dean, Stefan Kueng
+// External Cache Copyright (C) 2005 - 2006,2010, 2014 - TortoiseSVN
 // Copyright (C) 2008-2011 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
@@ -78,7 +78,7 @@ public:
 	/// in the list of handled shell requests to avoid deadlocks.
 	void UpdateShell(const CTGitPath& path);
 
-	size_t GetCacheSize() {return m_directoryCache.size();}
+	size_t GetCacheSize() const {return m_directoryCache.size();}
 	int GetNumberOfWatchedPaths() {return watcher.GetNumberOfWatchedPaths();}
 
 	void Init();

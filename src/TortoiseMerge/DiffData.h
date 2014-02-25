@@ -1,6 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2006-2008, 2010-2013 - TortoiseSVN
+// Copyright (C) 2006-2008, 2010-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -57,7 +57,7 @@ public:
 private:
 	bool DoTwoWayDiff(const CString& sBaseFilename, const CString& sYourFilename, DWORD dwIgnoreWS, bool bIgnoreEOL, apr_pool_t * pool);
 
-	void StickAndSkip(svn_diff_t * &tempdiff, apr_off_t &original_length_sticked, apr_off_t &modified_length_sticked);
+	void StickAndSkip(svn_diff_t * &tempdiff, apr_off_t &original_length_sticked, apr_off_t &modified_length_sticked) const;
 	bool DoThreeWayDiff(const CString& sBaseFilename, const CString& sYourFilename, const CString& sTheirFilename, DWORD dwIgnoreWS, bool bIgnoreEOL, bool bIgnoreCase, apr_pool_t * pool);
 /**
 * Moved blocks detection for further highlighting,
@@ -67,12 +67,12 @@ private:
 
 	void TieMovedBlocks(int from, int to, apr_off_t length);
 
-	void HideUnchangedSections(CViewData * data1, CViewData * data2, CViewData * data3);
+	void HideUnchangedSections(CViewData * data1, CViewData * data2, CViewData * data3) const;
 
-	svn_diff_file_ignore_space_t GetIgnoreSpaceMode(DWORD dwIgnoreWS);
+	svn_diff_file_ignore_space_t GetIgnoreSpaceMode(DWORD dwIgnoreWS) const;
 	svn_diff_file_options_t * CreateDiffFileOptions(DWORD dwIgnoreWS, bool bIgnoreEOL, apr_pool_t * pool);
 	bool HandleSvnError(svn_error_t * svnerr);
-	bool CompareWithIgnoreWS(CString s1, CString s2, DWORD dwIgnoreWS);
+	bool CompareWithIgnoreWS(CString s1, CString s2, DWORD dwIgnoreWS) const;
 public:
 	CWorkingFile				m_baseFile;
 	CWorkingFile				m_theirFile;

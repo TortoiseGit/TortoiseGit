@@ -1,6 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2006-2013 - TortoiseSVN
+// Copyright (C) 2006-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -70,7 +70,7 @@ int CDiffData::GetLineCount() const
 	return count;
 }
 
-svn_diff_file_ignore_space_t CDiffData::GetIgnoreSpaceMode(DWORD dwIgnoreWS)
+svn_diff_file_ignore_space_t CDiffData::GetIgnoreSpaceMode(DWORD dwIgnoreWS) const
 {
 	switch (dwIgnoreWS)
 	{
@@ -148,7 +148,7 @@ void CDiffData::TieMovedBlocks(int from, int to, apr_off_t length)
 	}
 }
 
-bool CDiffData::CompareWithIgnoreWS(CString s1, CString s2, DWORD dwIgnoreWS)
+bool CDiffData::CompareWithIgnoreWS(CString s1, CString s2, DWORD dwIgnoreWS) const
 {
 	if (dwIgnoreWS == 2)
 	{
@@ -164,7 +164,7 @@ bool CDiffData::CompareWithIgnoreWS(CString s1, CString s2, DWORD dwIgnoreWS)
 	return s1 != s2;
 }
 
-void CDiffData::StickAndSkip(svn_diff_t * &tempdiff, apr_off_t &original_length_sticked, apr_off_t &modified_length_sticked)
+void CDiffData::StickAndSkip(svn_diff_t * &tempdiff, apr_off_t &original_length_sticked, apr_off_t &modified_length_sticked) const
 {
 	if((m_bViewMovedBlocks)&&(tempdiff->type == svn_diff__type_diff_modified))
 	{
@@ -971,7 +971,7 @@ CDiffData::DoThreeWayDiff(const CString& sBaseFilename, const CString& sYourFile
 	return true;
 }
 
-void CDiffData::HideUnchangedSections(CViewData * data1, CViewData * data2, CViewData * data3)
+void CDiffData::HideUnchangedSections(CViewData * data1, CViewData * data2, CViewData * data3) const
 {
 	if (data1 == NULL)
 		return;

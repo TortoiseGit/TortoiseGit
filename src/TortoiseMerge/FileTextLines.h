@@ -1,6 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2006-2007, 2012-2013 - TortoiseSVN
+// Copyright (C) 2006-2007, 2012-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -140,7 +140,7 @@ public:
 	 * Copies the settings of a file like the line ending styles
 	 * to another CFileTextLines object.
 	 */
-	void			CopySettings(CFileTextLines * pFileToCopySettingsTo);
+	void			CopySettings(CFileTextLines * pFileToCopySettingsTo) const;
 
 	void			SetCommentTokens();
 
@@ -171,7 +171,7 @@ private:
 
 	static void		StripWhiteSpace(CString& sLine, DWORD dwIgnoreWhitespaces, bool blame);
 	bool			StripComments(CString& sLine, bool bInBlockComment);
-	void			LineRegex(CString& sLine, const std::wregex& rx, const std::wstring& replacement);
+	void			LineRegex(CString& sLine, const std::wregex& rx, const std::wstring& replacement) const;
 
 
 private:
@@ -194,7 +194,7 @@ public:
 	~CBuffer() {Free(); }
 
 	CBuffer & operator =(const CBuffer & Src) { Copy(Src); return *this; }
-	operator bool () { return !IsEmpty(); }
+	operator bool () const { return !IsEmpty(); }
 	template<typename T>
 	operator T () const { return  (T)m_pBuffer; }
 
@@ -224,7 +224,7 @@ public:
 
 	virtual bool Decode(/*in out*/ CBuffer & s);
 	virtual const CBuffer & Encode(const CString data);
-	const CBuffer & GetBuffer() {return m_oBuffer; }
+	const CBuffer & GetBuffer() const {return m_oBuffer; }
 	void Write(const CString s) { Write(Encode(s)); } ///< encode into buffer and write
 	void Write() { Write(m_oBuffer); } ///< write preencoded internal buffer
 	void Write(const CBuffer & buffer) { if (buffer.GetLength()) m_pFile->Write((void*)buffer, buffer.GetLength()); } ///< write preencoded buffer
