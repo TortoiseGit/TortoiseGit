@@ -416,6 +416,18 @@ void CSyncDlg::FetchComplete()
 	if( (!this->m_GitCmdStatus) && this->m_CurrentCmd == GIT_COMMAND_FETCHANDREBASE)
 	{
 		CRebaseDlg dlg;
+		CString remote, remotebranch;
+		m_ctrlURL.GetWindowText(remote);
+		if (!remote.IsEmpty())
+		{
+			STRING_VECTOR remotes;
+			g_Git.GetRemoteList(remotes);
+			if (std::find(remotes.begin(), remotes.end(), remote) == remotes.end())
+				remote.Empty();
+		}
+		m_ctrlRemoteBranch.GetWindowText(remotebranch);
+		if (!remote.IsEmpty() && !remotebranch.IsEmpty())
+			dlg.m_Upstream = _T("remotes/") + remote + _T("/") + remotebranch;
 		dlg.m_PostButtonTexts.Add(CString(MAKEINTRESOURCE(IDS_MENULOG)));
 		dlg.m_PostButtonTexts.Add(_T("Email &Patch..."));
 		INT_PTR response = dlg.DoModal();

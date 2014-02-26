@@ -20,6 +20,7 @@ Released: Unreleased
  * Fixed issue #2099: Cannot cancel "Delete and add to ignore list"
  * Fixed issue #2109: Checkout Tag without creating Branch - Remove Pull Option
  * Fixed issue #2106: "All local branches" option is not remembered
+ * Fixed issue #2121: Sync Dialog Fetch and Rebase fails due to no branch selection
 
 = Release 1.8.7.0 =
 Released: 2014-01-12
