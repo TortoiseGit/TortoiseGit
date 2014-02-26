@@ -167,6 +167,7 @@ protected:
 	CHistoryCombo		m_UpstreamCtrl;
 
 	REBASE_STAGE		m_RebaseStage;
+	bool				m_bFinishedRebase;
 	bool				m_bStashed;
 
 	void AddBranchToolTips(CHistoryCombo *pBranch);

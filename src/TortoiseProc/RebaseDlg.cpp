@@ -47,6 +47,7 @@ CRebaseDlg::CRebaseDlg(CWnd* pParent /*=NULL*/)
 	, m_bAddCherryPickedFrom(FALSE)
 	, m_bStatusWarning(false)
 	, m_bAutoSkipFailedCommit(FALSE)
+	, m_bFinishedRebase(false)
 	, m_bStashed(false)
 {
 	m_RebaseStage=CHOOSE_BRANCH;
@@ -932,6 +933,10 @@ int CRebaseDlg::VerifyNoConflict()
 }
 int CRebaseDlg::FinishRebase()
 {
+	if (m_bFinishedRebase)
+		return 0;
+
+	m_bFinishedRebase = true;
 	if(this->m_IsCherryPick) //cherry pick mode no "branch", working at upstream branch
 	{
 		m_sStatusText.LoadString(IDS_DONE);
