@@ -508,12 +508,27 @@ void CRebaseDlg::FetchLogList()
 	CGitHash base,hash,upstream;
 	m_IsFastForward=FALSE;
 
+	if (m_BranchCtrl.GetString().IsEmpty())
+	{
+		m_CommitList.ShowText(CString(MAKEINTRESOURCE(IDS_SELECTBRANCH)));
+		this->GetDlgItem(IDC_REBASE_CONTINUE)->EnableWindow(false);
+		return;
+	}
+
 	if (g_Git.GetHash(hash, m_BranchCtrl.GetString()))
 	{
 		m_CommitList.ShowText(g_Git.GetGitLastErr(_T("Could not get hash of \"") + m_BranchCtrl.GetString() + _T("\".")));
 		this->GetDlgItem(IDC_REBASE_CONTINUE)->EnableWindow(false);
 		return;
 	}
+
+	if (m_UpstreamCtrl.GetString().IsEmpty())
+	{
+		m_CommitList.ShowText(CString(MAKEINTRESOURCE(IDS_SELECTUPSTREAM)));
+		this->GetDlgItem(IDC_REBASE_CONTINUE)->EnableWindow(false);
+		return;
+	}
+
 	if (g_Git.GetHash(upstream, m_UpstreamCtrl.GetString()))
 	{
 		m_CommitList.ShowText(g_Git.GetGitLastErr(_T("Could not get hash of \"") + m_UpstreamCtrl.GetString() + _T("\".")));

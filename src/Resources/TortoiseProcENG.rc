@@ -3352,6 +3352,8 @@ BEGIN
     IDS_DIFFOPTION_IGNORESPACECHANGE "Ignore space change"
     IDS_DIFFOPTION_IGNOREALLSPACE "Ignore all space"
     IDS_DIFFOPTION_IGNORBLANKLINES "Ignore blank lines"
+    IDS_SELECTUPSTREAM      "Please select upstream"
+    IDS_SELECTBRANCH        "Please select branch"
     IDS_EXPORTFILE_TT       "Location where the contents of the\nselected revision of the repository will be saved to."
     IDS_CHECKOUT_EXPORTDIR  "Export directory:"
 END

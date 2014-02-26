@@ -6713,6 +6713,14 @@ msgstr ""
 msgid "Please select a hook type"
 msgstr ""
 
+#. Resource IDs: (94)
+msgid "Please select branch"
+msgstr ""
+
+#. Resource IDs: (94)
+msgid "Please select upstream"
+msgstr ""
+
 #. Resource IDs: (13)
 msgid "Please wait while cancelling..."
 msgstr ""

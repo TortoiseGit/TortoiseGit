@@ -1058,8 +1058,10 @@
 #define IDS_DIFFOPTION_IGNORBLANKLINES  1492
 #define IDC_OTHER                       1493
 #define IDC_BRANCH_SOURCE               1493
+#define IDS_SELECTUPSTREAM              1493
 #define IDC_REMOTE_BRANCH               1494
 #define IDC_RD_REMOTE                   1494
+#define IDS_SELECTBRANCH                1494
 #define IDC_RD_URL                      1495
 #define IDC_COLOR_LINE7                 1495
 #define IDC_REMOTE                      1496
