@@ -91,7 +91,7 @@ private:
 		OutputDebugStringW(szBuffer);
 	}
 
-	bool IsActive() const
+	bool IsActive()
 	{
 #ifdef DEBUG
 		return true;
