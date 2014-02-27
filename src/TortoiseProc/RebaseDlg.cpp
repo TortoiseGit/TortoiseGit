@@ -852,6 +852,8 @@ int CRebaseDlg::StartRebase()
 	CString cmd,out;
 	m_FileListCtrl.m_bIsRevertTheirMy = !m_IsCherryPick;
 
+	m_OrigHEADBranch = g_Git.GetCurrentBranch(true);
+
 	CGitHash hash;
 	if (g_Git.GetHash(hash, m_IsCherryPick ? _T("HEAD") : this->m_BranchCtrl.GetString()))
 	{
@@ -1931,27 +1933,64 @@ void CRebaseDlg::OnBnClickedAbort()
 		goto end;
 	}
 
-	cmd.Format(_T("git.exe checkout -f %s --"), this->m_BranchCtrl.GetString());
-	if(g_Git.Run(cmd,&out,CP_UTF8))
+	if (m_OrigHEADBranch == m_BranchCtrl.GetString())
 	{
-		AddLogString(out);
-		::MessageBox(this->m_hWnd, _T("Unrecoverable error on cleanup:\n") + out, _T("TortoiseGit"), MB_ICONERROR);
-		__super::OnCancel();
-		goto end;
-	}
-
-	cmd.Format(_T("git.exe reset --hard %s --"), this->m_OrigBranchHash.ToString());
-	while (true)
-	{
-		out.Empty();
+		cmd.Format(_T("git.exe checkout -f %s --"), m_BranchCtrl.GetString());
 		if (g_Git.Run(cmd, &out, CP_UTF8))
 		{
 			AddLogString(out);
-			if (CMessageBox::Show(m_hWnd, _T("Retry?\nUnrecoverable error on cleanup:\n") + out, _T("TortoiseGit"), MB_YESNO | MB_ICONERROR) != IDYES)
+			::MessageBox(m_hWnd, _T("Unrecoverable error on cleanup:\n") + out, _T("TortoiseGit"), MB_ICONERROR);
+			__super::OnCancel();
+			goto end;
+		}
+
+		cmd.Format(_T("git.exe reset --hard %s --"), m_OrigBranchHash.ToString());
+		while (true)
+		{
+			out.Empty();
+			if (g_Git.Run(cmd, &out, CP_UTF8))
+			{
+				AddLogString(out);
+				if (CMessageBox::Show(m_hWnd, _T("Retry?\nUnrecoverable error on cleanup:\n") + out, _T("TortoiseGit"), MB_YESNO | MB_ICONERROR) != IDYES)
+					break;
+			}
+			else
 				break;
 		}
-		else
-			break;
+	}
+	else
+	{
+		cmd.Format(_T("git.exe branch -f %s %s --"), m_BranchCtrl.GetString(), m_OrigBranchHash.ToString());
+		if (g_Git.Run(cmd, &out, CP_UTF8))
+		{
+			AddLogString(out);
+			::MessageBox(m_hWnd, _T("Unrecoverable error on cleanup:\n") + out, _T("TortoiseGit"), MB_ICONERROR);
+			__super::OnCancel();
+			goto end;
+		}
+
+		cmd.Format(_T("git.exe checkout -f %s --"), m_OrigHEADBranch);
+		if (g_Git.Run(cmd, &out, CP_UTF8))
+		{
+			AddLogString(out);
+			::MessageBox(m_hWnd, _T("Unrecoverable error on cleanup:\n") + out, _T("TortoiseGit"), MB_ICONERROR);
+			__super::OnCancel();
+			goto end;
+		}
+
+		cmd.Format(_T("git.exe reset --hard %s --"), m_OrigHEADBranch);
+		while (true)
+		{
+			out.Empty();
+			if (g_Git.Run(cmd, &out, CP_UTF8))
+			{
+				AddLogString(out);
+				if (CMessageBox::Show(m_hWnd, _T("Retry?\nUnrecoverable error on cleanup:\n") + out, _T("TortoiseGit"), MB_YESNO | MB_ICONERROR) != IDYES)
+					break;
+			}
+			else
+				break;
+		}
 	}
 	__super::OnCancel();
 end:
