@@ -2333,6 +2333,10 @@ msgstr ""
 msgid "Cannot combine commits now.\r\nMake sure you are viewing the log of your current branch and no filters are applied."
 msgstr ""
 
+#. Resource IDs: (94)
+msgid "Cannot force updating current branch. Use reset command if you want to do so."
+msgstr ""
+
 #. Resource IDs: (1)
 #, c-format
 msgid "Cannot show blame. \"%s\" is not under version control by git."

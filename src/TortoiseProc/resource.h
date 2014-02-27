@@ -1064,6 +1064,7 @@
 #define IDS_SELECTBRANCH                1494
 #define IDC_RD_URL                      1495
 #define IDC_COLOR_LINE7                 1495
+#define IDS_B_CANNOTFORCECURRENT        1495
 #define IDC_REMOTE                      1496
 #define IDC_PACK                        1497
 #define IDC_TAGS                        1499

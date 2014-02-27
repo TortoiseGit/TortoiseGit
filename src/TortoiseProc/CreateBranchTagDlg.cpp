@@ -170,6 +170,11 @@ void CCreateBranchTagDlg::OnBnClickedOk()
 	}
 	if (!m_bForce && g_Git.BranchTagExists(m_BranchTagName, !m_bIsTag))
 	{
+		if (!m_bIsTag && g_Git.GetCurrentBranch(true) == m_BranchTagName)
+		{
+			ShowEditBalloon(IDC_BRANCH_TAG, CString(MAKEINTRESOURCE(IDS_B_CANNOTFORCECURRENT)), CString(MAKEINTRESOURCE(IDS_WARN_WARNING)));
+			return;
+		}
 		CString msg;
 		if (m_bIsTag)
 			msg.LoadString(IDS_T_EXISTS);

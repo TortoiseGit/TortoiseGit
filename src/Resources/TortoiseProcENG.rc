@@ -3354,6 +3354,8 @@ BEGIN
     IDS_DIFFOPTION_IGNORBLANKLINES "Ignore blank lines"
     IDS_SELECTUPSTREAM      "Please select upstream"
     IDS_SELECTBRANCH        "Please select branch"
+    IDS_B_CANNOTFORCECURRENT 
+                            "Cannot force updating current branch. Use reset command if you want to do so."
     IDS_EXPORTFILE_TT       "Location where the contents of the\nselected revision of the repository will be saved to."
     IDS_CHECKOUT_EXPORTDIR  "Export directory:"
 END
