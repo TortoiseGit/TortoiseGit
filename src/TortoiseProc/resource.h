@@ -1441,6 +1441,7 @@
 #define IDC_TESTBUGTRAQREGEXBUTTON      1787
 #define IDC_ENABLEDRAGCONTEXTMENU       1788
 #define IDC_DIFFOPTION                  1789
+#define IDC_BUTTON_REVERSE              1790
 #define IDS_LOG_FILTER_BY               1850
 #define IDS_LOG_FILTER_PATHS            1851
 #define IDS_LOG_FILTER_AUTHORS          1852
@@ -1886,7 +1887,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        350
 #define _APS_NEXT_COMMAND_VALUE         32865
-#define _APS_NEXT_CONTROL_VALUE         1790
+#define _APS_NEXT_CONTROL_VALUE         1791
 #define _APS_NEXT_SYMED_VALUE           201
 #endif
 #endif

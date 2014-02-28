@@ -111,6 +111,7 @@ protected:
 
 	CGitHash m_OrigBranchHash;
 	CGitHash m_OrigUpstreamHash;
+	CString m_OrigHEADBranch;
 
 	int VerifyNoConflict();
 	CString GetRebaseModeName(int rebasemode);
@@ -178,6 +179,7 @@ protected:
 	int m_CurrentRebaseIndex;
 	int StateAction();
 	int GoNext();
+	afx_msg void OnBnClickedButtonReverse();
 	afx_msg void OnBnClickedButtonBrowse();
 	afx_msg void OnBnClickedRebaseCheckForce();
 	afx_msg void OnBnClickedCheckCherryPickedFrom();
