@@ -6,6 +6,7 @@ Released: Unreleased
  * Fixed issue #1855: Support negative log filter syntax
  * Fixed issue #1029: Add function to control the TGitCache module
  * Fixed issue #2112: Disable option for Drag & Drop Handler
+ * Fixed issue #2114: Allow to swap rebase refs
 
 == Bug Fixes ==
  * Fixed issue #2067: Normalize email with capital letters when calculating gravatar hash
@@ -20,7 +21,6 @@ Released: Unreleased
  * Fixed issue #2099: Cannot cancel "Delete and add to ignore list"
  * Fixed issue #2109: Checkout Tag without creating Branch - Remove Pull Option
  * Fixed issue #2106: "All local branches" option is not remembered
- * Fixed issue #2121: Sync Dialog Fetch and Rebase fails due to no branch selection
 
 = Release 1.8.7.0 =
 Released: 2014-01-12
