@@ -697,13 +697,6 @@ const char git_usage_string[] =
 const char git_more_info_string[] =
 	"See 'git help COMMAND' for more information on a specific command.";
 
-int git_run_cmd(char *cmd, char *arg)
-{
-
-	int i=0;
-	char ** argv=0;
-	int argc=0;
-
 static struct cmd_struct commands[] = {
 		{ "add", cmd_add, RUN_SETUP | NEED_WORK_TREE },
 		{ "stage", cmd_add, RUN_SETUP | NEED_WORK_TREE },
@@ -773,7 +766,6 @@ static struct cmd_struct commands[] = {
 		{ "pack-objects", cmd_pack_objects, RUN_SETUP },
 		{ "pack-redundant", cmd_pack_redundant, RUN_SETUP },
 		{ "patch-id", cmd_patch_id },
-		{ "peek-remote", cmd_ls_remote },
 		{ "pickaxe", cmd_blame, RUN_SETUP },
 		{ "prune", cmd_prune, RUN_SETUP },
 		{ "prune-packed", cmd_prune_packed, RUN_SETUP },
@@ -783,7 +775,6 @@ static struct cmd_struct commands[] = {
 		{ "reflog", cmd_reflog, RUN_SETUP },
 		{ "remote", cmd_remote, RUN_SETUP },
 		{ "replace", cmd_replace, RUN_SETUP },
-		{ "repo-config", cmd_config },
 		{ "rerere", cmd_rerere, RUN_SETUP },
 		{ "reset", cmd_reset, RUN_SETUP },
 		{ "rev-list", cmd_rev_list, RUN_SETUP },
@@ -798,7 +789,6 @@ static struct cmd_struct commands[] = {
 		{ "stripspace", cmd_stripspace },
 		{ "symbolic-ref", cmd_symbolic_ref, RUN_SETUP },
 		{ "tag", cmd_tag, RUN_SETUP },
-		{ "tar-tree", cmd_tar_tree },
 		{ "unpack-file", cmd_unpack_file, RUN_SETUP },
 		{ "unpack-objects", cmd_unpack_objects, RUN_SETUP },
 		{ "update-index", cmd_update_index, RUN_SETUP },
@@ -814,6 +804,24 @@ static struct cmd_struct commands[] = {
 		{ "show-ref", cmd_show_ref, RUN_SETUP },
 		{ "pack-refs", cmd_pack_refs, RUN_SETUP },
 	};
+
+int is_builtin(const char *s)
+{
+	int i;
+	for (i = 0; i < ARRAY_SIZE(commands); i++) {
+		struct cmd_struct *p = commands+i;
+		if (!strcmp(s, p->cmd))
+			return 1;
+	}
+	return 0;
+}
+
+int git_run_cmd(char *cmd, char *arg)
+{
+
+	int i=0;
+	char ** argv=0;
+	int argc=0;
 
 	git_init();
 

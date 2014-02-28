@@ -47,6 +47,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\tgit\builtin\check-mailmap.c" />
+    <ClCompile Include="..\tgit\builtin\get-tar-commit-id.c" />
     <ClCompile Include="..\tgit\builtin\repack.c" />
     <ClCompile Include="..\tgit\compat\msvc.c" />
     <ClCompile Include="..\tgit\block-sha1\sha1.c" />
@@ -333,7 +334,6 @@
     <ClCompile Include="..\tgit\builtin\tag.c">
       <ObjectFileName>$(IntDir)BuildIn%(Filename).obj</ObjectFileName>
     </ClCompile>
-    <ClCompile Include="..\tgit\builtin\tar-tree.c" />
     <ClCompile Include="..\tgit\builtin\unpack-file.c" />
     <ClCompile Include="..\tgit\builtin\unpack-objects.c" />
     <ClCompile Include="..\tgit\builtin\update-index.c" />

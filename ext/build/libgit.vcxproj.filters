@@ -728,9 +728,6 @@
     <ClCompile Include="..\tgit\builtin\tag.c">
       <Filter>BuildIn</Filter>
     </ClCompile>
-    <ClCompile Include="..\tgit\builtin\tar-tree.c">
-      <Filter>BuildIn</Filter>
-    </ClCompile>
     <ClCompile Include="..\tgit\builtin\unpack-file.c">
       <Filter>BuildIn</Filter>
     </ClCompile>
@@ -801,6 +798,9 @@
       <Filter>BuildIn</Filter>
     </ClCompile>
     <ClCompile Include="..\tgit\builtin\repack.c">
+      <Filter>BuildIn</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\builtin\get-tar-commit-id.c">
       <Filter>BuildIn</Filter>
     </ClCompile>
   </ItemGroup>
