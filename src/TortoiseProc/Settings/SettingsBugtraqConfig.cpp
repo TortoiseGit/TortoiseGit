@@ -25,22 +25,22 @@
 #include "ProjectProperties.h"
 #include "Git.h"
 #include "BugtraqRegexTestDlg.h"
+#include "BugTraqAssociations.h"
 
 // CSettingsBugtraqConfig dialog
 
 IMPLEMENT_DYNAMIC(CSettingsBugtraqConfig, ISettingsPropPage)
 
 CSettingsBugtraqConfig::CSettingsBugtraqConfig(CString cmdPath)
-	: ISettingsPropPage(CSettingsBugtraqConfig::IDD)
-	, m_URL(_T(""))
-	, m_Message(_T(""))
-	, m_Label(_T(""))
-	, m_Logregex(_T(""))
-	, m_bNeedSave(false)
-	, m_bInheritURL(FALSE)
-	, m_bInheritMessage(FALSE)
-	, m_bInheritLabel(FALSE)
-	, m_bInheritLogregex(FALSE)
+: ISettingsPropPage(CSettingsBugtraqConfig::IDD)
+, m_bNeedSave(false)
+, m_bInheritURL(FALSE)
+, m_bInheritMessage(FALSE)
+, m_bInheritLabel(FALSE)
+, m_bInheritLogregex(FALSE)
+, m_bInheritUUID32(FALSE)
+, m_bInheritUUID64(FALSE)
+, m_bInheritParams(FALSE)
 {
 }
 
@@ -63,6 +63,12 @@ void CSettingsBugtraqConfig::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_CHECK_INHERIT_BTMSG, m_bInheritMessage);
 	DDX_Check(pDX, IDC_CHECK_INHERIT_BTLABEL, m_bInheritLabel);
 	DDX_Check(pDX, IDC_CHECK_INHERIT_BTREGEXP, m_bInheritLogregex);
+	DDX_Check(pDX, IDC_CHECK_INHERIT_BTUUID32, m_bInheritUUID32);
+	DDX_Check(pDX, IDC_CHECK_INHERIT_BTUUID64, m_bInheritUUID64);
+	DDX_Check(pDX, IDC_CHECK_INHERIT_BTPARAMS, m_bInheritParams);
+	DDX_Text(pDX, IDC_UUID32, m_UUID32);
+	DDX_Text(pDX, IDC_UUID64, m_UUID64);
+	DDX_Text(pDX, IDC_PARAMS, m_Params);
 	GITSETTINGS_DDX
 }
 
@@ -75,10 +81,16 @@ BEGIN_MESSAGE_MAP(CSettingsBugtraqConfig, ISettingsPropPage)
 	ON_EN_CHANGE(IDC_BUGTRAQ_LABEL, &CSettingsBugtraqConfig::OnChange)
 	ON_CBN_SELCHANGE(IDC_BUGTRAQ_NUMBER, &CSettingsBugtraqConfig::OnChange)
 	ON_EN_CHANGE(IDC_BUGTRAQ_LOGREGEX, &CSettingsBugtraqConfig::OnChange)
+	ON_EN_CHANGE(IDC_UUID32, &CSettingsBugtraqConfig::OnChange)
+	ON_EN_CHANGE(IDC_UUID64, &CSettingsBugtraqConfig::OnChange)
+	ON_EN_CHANGE(IDC_PARAMS, &CSettingsBugtraqConfig::OnChange)
 	ON_BN_CLICKED(IDC_CHECK_INHERIT_BTURL, &OnChange)
 	ON_BN_CLICKED(IDC_CHECK_INHERIT_BTMSG, &OnChange)
 	ON_BN_CLICKED(IDC_CHECK_INHERIT_BTLABEL, &OnChange)
 	ON_BN_CLICKED(IDC_CHECK_INHERIT_BTREGEXP, &OnChange)
+	ON_BN_CLICKED(IDC_CHECK_INHERIT_BTUUID32, &OnChange)
+	ON_BN_CLICKED(IDC_CHECK_INHERIT_BTUUID64, &OnChange)
+	ON_BN_CLICKED(IDC_CHECK_INHERIT_BTPARAMS, &OnChange)
 	ON_BN_CLICKED(IDC_TESTBUGTRAQREGEXBUTTON, &CSettingsBugtraqConfig::OnBnClickedTestbugtraqregexbutton)
 END_MESSAGE_MAP()
 
@@ -104,6 +116,10 @@ void CSettingsBugtraqConfig::EnDisableControls()
 	GetDlgItem(IDC_BUGTRAQ_MESSAGE)->SendMessage(EM_SETREADONLY, m_iConfigSource == 0, 0);
 	GetDlgItem(IDC_BUGTRAQ_LABEL)->SendMessage(EM_SETREADONLY, m_iConfigSource == 0, 0);
 	GetDlgItem(IDC_BUGTRAQ_LOGREGEX)->SendMessage(EM_SETREADONLY, m_iConfigSource == 0, 0);
+	GetDlgItem(IDC_UUID32)->SendMessage(EM_SETREADONLY, m_iConfigSource == 0, 0);
+	GetDlgItem(IDC_UUID64)->SendMessage(EM_SETREADONLY, m_iConfigSource == 0, 0);
+	GetDlgItem(IDC_PARAMS)->SendMessage(EM_SETREADONLY, m_iConfigSource == 0, 0);
+
 	GetDlgItem(IDC_BUGTRAQ_WARNINGIFNOISSUE)->EnableWindow(m_iConfigSource != 0);
 	GetDlgItem(IDC_BUGTRAQ_APPEND)->EnableWindow(m_iConfigSource != 0);
 	GetDlgItem(IDC_BUGTRAQ_NUMBER)->EnableWindow(m_iConfigSource != 0);
@@ -112,11 +128,17 @@ void CSettingsBugtraqConfig::EnDisableControls()
 	GetDlgItem(IDC_CHECK_INHERIT_BTMSG)->EnableWindow(m_iConfigSource != 0);
 	GetDlgItem(IDC_CHECK_INHERIT_BTLABEL)->EnableWindow(m_iConfigSource != 0);
 	GetDlgItem(IDC_CHECK_INHERIT_BTREGEXP)->EnableWindow(m_iConfigSource != 0);
+	GetDlgItem(IDC_CHECK_INHERIT_BTUUID32)->EnableWindow(m_iConfigSource != 0);
+	GetDlgItem(IDC_CHECK_INHERIT_BTUUID64)->EnableWindow(m_iConfigSource != 0);
+	GetDlgItem(IDC_CHECK_INHERIT_BTPARAMS)->EnableWindow(m_iConfigSource != 0);
 
 	GetDlgItem(IDC_BUGTRAQ_URL)->EnableWindow(!m_bInheritURL);
 	GetDlgItem(IDC_BUGTRAQ_MESSAGE)->EnableWindow(!m_bInheritMessage);
 	GetDlgItem(IDC_BUGTRAQ_LABEL)->EnableWindow(!m_bInheritLabel);
 	GetDlgItem(IDC_BUGTRAQ_LOGREGEX)->EnableWindow(!m_bInheritLogregex);
+	GetDlgItem(IDC_UUID32)->EnableWindow(!m_bInheritUUID32);
+	GetDlgItem(IDC_UUID64)->EnableWindow(!m_bInheritUUID64);
+	GetDlgItem(IDC_PARAMS)->EnableWindow(!m_bInheritParams);
 	UpdateData(FALSE);
 }
 
@@ -139,6 +161,24 @@ void CSettingsBugtraqConfig::LoadDataImpl(git_config * config)
 		m_Logregex = props.sCheckRe + _T("\n") + props.sBugIDRe;
 		m_Label = props.sLabel;
 		m_Message = props.sMessage;
+		m_UUID32 = props.sProviderUuid;
+		m_UUID64 = props.sProviderUuid64;
+		m_Params = props.sProviderParams;
+		// read legacy registry values
+		CBugTraqAssociations bugtraq_associations;
+		bugtraq_associations.Load(props.GetProviderUUID(), props.sProviderParams);
+		CBugTraqAssociation bugtraq_association;
+		if (bugtraq_associations.FindProvider(g_Git.m_CurrentDir, &bugtraq_association))
+		{
+#if _WIN64
+			m_UUID64 = bugtraq_association.GetProviderClassAsString();
+#else
+			m_UUID32 = bugtraq_association.GetProviderClassAsString();
+			if (m_UUID64.IsEmpty())
+				m_UUID64 = m_UUID32;
+#endif
+			m_Params = bugtraq_association.GetParameters();
+		}
 
 		if (props.bAppend)
 			m_cAppend.SetCurSel(1);
@@ -159,6 +199,9 @@ void CSettingsBugtraqConfig::LoadDataImpl(git_config * config)
 		m_bInheritMessage = FALSE;
 		m_bInheritLabel = FALSE;
 		m_bInheritLogregex = FALSE;
+		m_bInheritParams = FALSE;
+		m_bInheritUUID32 = FALSE;
+		m_bInheritUUID64 = FALSE;
 	}
 	else
 	{
@@ -169,6 +212,9 @@ void CSettingsBugtraqConfig::LoadDataImpl(git_config * config)
 		GetBoolConfigValueComboBox(config, BUGTRAQPROPNAME_APPEND, m_cAppend);
 		GetBoolConfigValueComboBox(config, BUGTRAQPROPNAME_WARNIFNOISSUE, m_cWarningifnoissue);
 		m_bInheritLogregex = (GetConfigValue(config, BUGTRAQPROPNAME_LOGREGEX, m_Logregex) == GIT_ENOTFOUND);
+		m_bInheritParams = (GetConfigValue(config, BUGTRAQPROPNAME_PROVIDERPARAMS, m_Params) == GIT_ENOTFOUND);
+		m_bInheritUUID32 = (GetConfigValue(config, BUGTRAQPROPNAME_PROVIDERUUID, m_UUID32) == GIT_ENOTFOUND);
+		m_bInheritUUID64 = (GetConfigValue(config, BUGTRAQPROPNAME_PROVIDERUUID64, m_UUID64) == GIT_ENOTFOUND);
 	}
 
 	m_Logregex.Trim();
@@ -188,6 +234,15 @@ BOOL CSettingsBugtraqConfig::SafeDataImpl(git_config * config)
 		return FALSE;
 
 	if (!Save(config, BUGTRAQPROPNAME_LABEL, m_Label, m_bInheritLabel == TRUE))
+		return FALSE;
+
+	if (!Save(config, BUGTRAQPROPNAME_PROVIDERPARAMS, m_Params, m_bInheritParams == TRUE))
+		return FALSE;
+
+	if (!Save(config, BUGTRAQPROPNAME_PROVIDERUUID, m_UUID32, m_bInheritUUID32 == TRUE))
+		return FALSE;
+
+	if (!Save(config, BUGTRAQPROPNAME_PROVIDERUUID64, m_UUID64, m_bInheritUUID64 == TRUE))
 		return FALSE;
 
 	{

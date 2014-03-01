@@ -194,13 +194,14 @@ public:
 	 * A regex string to extract revisions from a log message.
 	 */
 	CString		sLogRevRegex;
-private:
-	git_config *gitconfig;
 
 	/** the COM uuid of the bugtraq provider which implements the IBugTraqProvider
 	   interface. */
 	CString		sProviderUuid;
 	CString		sProviderUuid64;
+
+private:
+	git_config *gitconfig;
 
 	/**
 	 * Constructing regex objects is expensive. Therefore, cache them here.

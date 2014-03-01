@@ -69,4 +69,10 @@ protected:
 	CComboBox	m_cNumber;
 	CString	m_Logregex;
 	BOOL	m_bInheritLogregex;
+	CString m_UUID32;
+	BOOL	m_bInheritUUID32;
+	CString m_UUID64;
+	BOOL	m_bInheritUUID64;
+	CString m_Params;
+	BOOL	m_bInheritParams;
 };
