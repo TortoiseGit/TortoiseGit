@@ -104,7 +104,7 @@ BOOL CCreateBranchTagDlg::OnInitDialog()
 
 	this->SetDefaultChoose(IDC_RADIO_HEAD);
 
-	Init();
+	InitChooseVersion();
 
 	this->GetDlgItem(IDC_CHECK_TRACK)->EnableWindow(FALSE);
 

@@ -92,7 +92,7 @@ BOOL CResetDlg::OnInitDialog()
 	}
 	this->CheckRadioButton(IDC_RADIO_RESET_SOFT,IDC_RADIO_RESET_HARD,IDC_RADIO_RESET_SOFT+m_ResetType);
 
-	Init();
+	InitChooseVersion();
 	SetDefaultChoose(IDC_RADIO_BRANCH);
 	GetDlgItem(IDC_RADIO_RESET_SOFT + m_ResetType)->SetFocus();
 

@@ -137,12 +137,12 @@ protected:
 		{
 			m_pendingRefName = m_VersionName;
 			m_bNotFullName = true;
-			Init(false, true);
+			InitChooseVersion(false, true);
 			return;
 		}
 		m_pendingRefName = resultRef;
 		m_bNotFullName = false;
-		Init(false, true);
+		InitChooseVersion(false, true);
 	}
 
 	void SelectRef(CString refName, bool bRefNameIsPossiblyNotFullName = true)
@@ -223,7 +223,7 @@ protected:
 			m_pWin->GetDlgItem(IDC_COMBOBOXEX_BRANCH)->SetFocus();
 		m_bIsFirstTimeToSetFocus = false;
 	}
-	void Init(bool setFocusToBranchComboBox = false, bool bReInit = false)
+	void InitChooseVersion(bool setFocusToBranchComboBox = false, bool bReInit = false)
 	{
 		m_ChooseVersioinBranch.SetMaxHistoryItems(0x7FFFFFFF);
 		m_ChooseVersioinTags.SetMaxHistoryItems(0x7FFFFFFF);

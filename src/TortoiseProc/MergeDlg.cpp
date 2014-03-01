@@ -112,7 +112,7 @@ BOOL CMergeDlg::OnInitDialog()
 	GetWindowText(sWindowTitle);
 	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);
 
-	Init(true);
+	InitChooseVersion(true);
 
 	m_ProjectProperties.ReadProps();
 
