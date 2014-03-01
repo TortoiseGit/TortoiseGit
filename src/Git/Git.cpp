@@ -1780,11 +1780,7 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 	// set HOME if not set already
 	_tgetenv_s(&homesize, NULL, 0, _T("HOME"));
 	if (!homesize)
-	{
-		CString home = GetHomeDirectory();
-		m_Environment.SetEnv(_T("HOME"), home);
-	}
-	CString str;
+		m_Environment.SetEnv(_T("HOME"), GetHomeDirectory());
 
 	//setup ssh client
 	CString sshclient=CRegString(_T("Software\\TortoiseGit\\SSH"));
@@ -1824,7 +1820,7 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 	// add git/bin path to PATH
 
 	CRegString msysdir=CRegString(REG_MSYSGIT_PATH,_T(""),FALSE);
-	str=msysdir;
+	CString str = msysdir;
 	if(str.IsEmpty() || !FileExists(str + _T("\\git.exe")))
 	{
 		if (!bFallback)
