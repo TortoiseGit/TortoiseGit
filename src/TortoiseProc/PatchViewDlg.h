@@ -19,8 +19,13 @@
 #pragma once
 #include "SciEdit.h"
 
+class IHasPatchView
+{
+public:
+	virtual void TogglePatchView() = 0;
+};
+
 // CPatchViewDlg dialog
-class CCommitDlg;
 class CPatchViewDlg : public CDialog
 {
 	DECLARE_DYNAMIC(CPatchViewDlg)
@@ -28,8 +33,9 @@ class CPatchViewDlg : public CDialog
 public:
 	CPatchViewDlg(CWnd* pParent = NULL);   // standard constructor
 	virtual ~CPatchViewDlg();
-	CCommitDlg	*m_ParentCommitDlg;
+	IHasPatchView	*m_ParentDlg;
 	void SetText(const CString& text);
+	void ClearView();
 
 // Dialog Data
 	enum { IDD = IDD_PATCH_VIEW };
@@ -47,6 +53,5 @@ protected:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnMoving(UINT fwSide, LPRECT pRect);
-	afx_msg void OnDestroy();
 	afx_msg void OnClose();
 };

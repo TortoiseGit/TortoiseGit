@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -38,10 +38,11 @@
 #include "HyperLink.h"
 #include "Win7.h"
 #include "GravatarPictureBox.h"
-
+#include "PatchViewDlg.h"
 
 #define LOGFILTER_TIMER	101
 #define LOGFTIME_TIMER	102
+#define LOG_FILLPATCHVTIMER	103
 
 typedef int (__cdecl *GENERICCOMPAREFN)(const void * elem1, const void * elem2);
 
@@ -49,7 +50,7 @@ typedef int (__cdecl *GENERICCOMPAREFN)(const void * elem1, const void * elem2);
  * \ingroup TortoiseProc
  * Shows log messages of a single file or folder in a listbox.
  */
-class CLogDlg : public CResizableStandAloneDialog, IFilterEditValidator
+class CLogDlg : public CResizableStandAloneDialog, IFilterEditValidator, IHasPatchView
 {
 	DECLARE_DYNAMIC(CLogDlg)
 
@@ -180,6 +181,12 @@ private:
 	CString GetAbsoluteUrlFromRelativeUrl(const CString& url);
 	void ShowGravatar();
 
+	CPatchViewDlg		m_patchViewdlg;
+	void FillPatchView(bool onlySetTimer = false);
+	virtual void TogglePatchView();
+	LRESULT OnFileListCtrlItemChanged(WPARAM /*wparam*/, LPARAM /*lparam*/);
+	afx_msg void OnMoving(UINT fwSide, LPRECT pRect);
+	afx_msg void OnSizing(UINT fwSide, LPRECT pRect);
 
 	virtual LRESULT DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam);
 

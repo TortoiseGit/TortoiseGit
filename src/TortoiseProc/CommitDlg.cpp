@@ -2408,10 +2408,16 @@ void CCommitDlg::OnScnUpdateUI(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 	if(*pResult)
 		*pResult=0;
 }
+
+void CCommitDlg::TogglePatchView()
+{
+	OnStnClickedViewPatch();
+}
+
 void CCommitDlg::OnStnClickedViewPatch()
 {
 	m_patchViewdlg.m_pProjectProperties = &this->m_ProjectProperties;
-	m_patchViewdlg.m_ParentCommitDlg = this;
+	m_patchViewdlg.m_ParentDlg = this;
 	if(!IsWindow(this->m_patchViewdlg.m_hWnd))
 	{
 		BOOL viewPatchEnabled = FALSE;

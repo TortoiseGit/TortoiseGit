@@ -54,7 +54,7 @@ typedef enum
  * \ingroup TortoiseProc
  * Dialog to enter log messages used in a commit.
  */
-class CCommitDlg : public CResizableStandAloneDialog, public CSciEditContextMenuInterface
+class CCommitDlg : public CResizableStandAloneDialog, public CSciEditContextMenuInterface, IHasPatchView
 {
 	DECLARE_DYNAMIC(CCommitDlg)
 
@@ -81,6 +81,7 @@ private:
 	static UINT StatusThreadEntry(LPVOID pVoid);
 	UINT StatusThread();
 	void FillPatchView(bool onlySetTimer = false);
+	virtual void TogglePatchView();
 	void SetDlgTitle();
 	CString GetSignedOffByLine();
 	CString m_sTitle;

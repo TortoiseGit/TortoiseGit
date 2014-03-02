@@ -23,7 +23,6 @@
 #include "TortoiseProc.h"
 #include "PatchViewDlg.h"
 #include "registry.h"
-#include "CommitDlg.h"
 #include "UnicodeUtils.h"
 // CPatchViewDlg dialog
 
@@ -31,7 +30,7 @@ IMPLEMENT_DYNAMIC(CPatchViewDlg, CDialog)
 
 CPatchViewDlg::CPatchViewDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(CPatchViewDlg::IDD, pParent)
-	, m_ParentCommitDlg(nullptr)
+	, m_ParentDlg(nullptr)
 	, m_pProjectProperties(nullptr)
 {
 
@@ -50,7 +49,6 @@ void CPatchViewDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CPatchViewDlg, CDialog)
 	ON_WM_SIZE()
 	ON_WM_MOVING()
-	ON_WM_DESTROY()
 	ON_WM_CLOSE()
 END_MESSAGE_MAP()
 
@@ -83,6 +81,11 @@ void CPatchViewDlg::SetText(const CString& text)
 	}
 }
 
+void CPatchViewDlg::ClearView()
+{
+	SetText(CString());
+}
+
 void CPatchViewDlg::OnSize(UINT nType, int cx, int cy)
 {
 	CDialog::OnSize(nType, cx, cy);
@@ -102,7 +105,7 @@ void CPatchViewDlg::OnMoving(UINT fwSide, LPRECT pRect)
 {
 #define STICKYSIZE 5
 	RECT parentRect;
-	this->m_ParentCommitDlg->GetWindowRect(&parentRect);
+	m_pParentWnd->GetWindowRect(&parentRect);
 	if (abs(parentRect.right - pRect->left) < STICKYSIZE)
 	{
 		int width = pRect->right - pRect->left;
@@ -112,15 +115,8 @@ void CPatchViewDlg::OnMoving(UINT fwSide, LPRECT pRect)
 	CDialog::OnMoving(fwSide, pRect);
 }
 
-void CPatchViewDlg::OnDestroy()
-{
-	CDialog::OnDestroy();
-
-	this->m_ParentCommitDlg->ShowViewPatchText(true);
-}
-
 void CPatchViewDlg::OnClose()
 {
 	CDialog::OnClose();
-	this->DestroyWindow();
+	m_ParentDlg->TogglePatchView();
 }

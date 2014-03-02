@@ -8,6 +8,7 @@ Released: Unreleased
  * Fixed issue #2112: Disable option for Drag & Drop Handler
  * Fixed issue #2114: Allow to swap rebase refs
  * Updated libgit to version 1.9.0
+ * Fixed issue #1920: Diff in log dialog like in commit dialog
 
 == Bug Fixes ==
  * Fixed issue #2067: Normalize email with capital letters when calculating gravatar hash

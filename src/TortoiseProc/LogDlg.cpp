@@ -171,6 +171,11 @@ BEGIN_MESSAGE_MAP(CLogDlg, CResizableStandAloneDialog)
 	ON_COMMAND(ID_EDIT_COPY, &CLogDlg::OnEditCopy)
 	ON_MESSAGE(MSG_REFLOG_CHANGED, OnRefLogChanged)
 	ON_REGISTERED_MESSAGE(WM_TASKBARBTNCREATED, OnTaskbarBtnCreated)
+
+	ON_REGISTERED_MESSAGE(CGitStatusListCtrl::GITSLNM_ITEMCHANGED, &CLogDlg::OnFileListCtrlItemChanged)
+	ON_WM_MOVE()
+	ON_WM_MOVING()
+	ON_WM_SIZING()
 END_MESSAGE_MAP()
 
 enum JumpType
@@ -418,6 +423,9 @@ BOOL CLogDlg::OnInitDialog()
 		if (g_Git.GetHash(m_LogList.m_lastSelectedHash, _T("HEAD")))
 			MessageBox(g_Git.GetGitLastErr(_T("Could not get HEAD hash.")), _T("TortoiseGit"), MB_ICONERROR);
 	}
+
+	if (g_Git.GetConfigValueBool(_T("tgit.logshowpatch")))
+		TogglePatchView();
 
 	m_LogList.FetchLogAsync(this);
 	ShowGravatar();
@@ -668,6 +676,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 	CRichEditCtrl * pMsgView = (CRichEditCtrl*)GetDlgItem(IDC_MSGVIEW);
 	// empty the log message view
 	pMsgView->SetWindowText(_T(" "));
+	FillPatchView(true);
 	// empty the changed files list
 	m_ChangedFileListCtrl.SetRedraw(FALSE);
 //	InterlockedExchange(&m_bNoDispUpdates, TRUE);
@@ -844,6 +853,127 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 		SetSortArrow(&m_ChangedFileListCtrl, -1, false);
 	m_ChangedFileListCtrl.SetRedraw(TRUE);
 
+}
+
+void CLogDlg::FillPatchView(bool onlySetTimer)
+{
+	if (!::IsWindow(this->m_patchViewdlg.m_hWnd))
+		return;
+
+	KillTimer(LOG_FILLPATCHVTIMER);
+	if (onlySetTimer)
+	{
+		SetTimer(LOG_FILLPATCHVTIMER, 100, nullptr);
+		return;
+	}
+
+	POSITION posLogList = m_LogList.GetFirstSelectedItemPosition();
+	if (posLogList == nullptr)
+	{
+		m_patchViewdlg.ClearView();
+		return; // nothing is selected, get out of here
+	}
+
+	GitRev * pLogEntry = reinterpret_cast<GitRev* >(m_LogList.m_arShownList.SafeGetAt(m_LogList.GetNextSelectedItem(posLogList)));
+	if (pLogEntry == nullptr || m_LogList.GetNextSelectedItem(posLogList) != -1)
+	{
+		m_patchViewdlg.ClearView();
+		return;
+	}
+
+	POSITION pos = m_ChangedFileListCtrl.GetFirstSelectedItemPosition();
+	CString out;
+
+	while (pos)
+	{
+		int nSelect = m_ChangedFileListCtrl.GetNextSelectedItem(pos);
+		CTGitPath * p = (CTGitPath*)m_ChangedFileListCtrl.GetItemData(nSelect);
+		if (p && !(p->m_Action&CTGitPath::LOGACTIONS_UNVER))
+		{
+			CString cmd;
+			cmd.Format(_T("git.exe diff %s~1..%s -- \"%s\""), pLogEntry->m_CommitHash.ToString(), pLogEntry->m_CommitHash.ToString(), p->GetGitPathString());
+			g_Git.Run(cmd, &out, CP_UTF8);
+		}
+	}
+
+	m_patchViewdlg.SetText(out);
+}
+
+void CLogDlg::TogglePatchView()
+{
+	m_patchViewdlg.m_pProjectProperties = &m_LogList.m_ProjectProperties;
+	m_patchViewdlg.m_ParentDlg = this;
+	if (!IsWindow(m_patchViewdlg.m_hWnd))
+	{
+		BOOL viewPatchEnabled = FALSE;
+		viewPatchEnabled = g_Git.GetConfigValueBool(_T("tgit.logshowpatch"));
+		if (viewPatchEnabled == FALSE)
+			g_Git.SetConfigValue(_T("tgit.logshowpatch"), _T("true"));
+		m_patchViewdlg.Create(IDD_PATCH_VIEW, this);
+		m_patchViewdlg.m_ctrlPatchView.Call(SCI_SETSCROLLWIDTHTRACKING, TRUE);
+		CRect rect;
+		this->GetWindowRect(&rect);
+
+		m_patchViewdlg.ShowWindow(SW_SHOW);
+		m_patchViewdlg.SetWindowPos(nullptr, rect.right, rect.top, rect.Width(), rect.Height(), SWP_NOACTIVATE | SWP_NOOWNERZORDER | SWP_NOZORDER);
+
+		FillPatchView();
+	}
+	else
+	{
+		g_Git.SetConfigValue(_T("tgit.logshowpatch"), _T("false"));
+		m_patchViewdlg.ShowWindow(SW_HIDE);
+		m_patchViewdlg.DestroyWindow();
+	}
+}
+
+LRESULT CLogDlg::OnFileListCtrlItemChanged(WPARAM /*wparam*/, LPARAM /*lparam*/)
+{
+	FillPatchView(true);
+	return 0;
+}
+
+void CLogDlg::OnMoving(UINT fwSide, LPRECT pRect)
+{
+	__super::OnMoving(fwSide, pRect);
+
+	if (!::IsWindow(m_patchViewdlg.m_hWnd))
+		return;
+
+	RECT patchrect;
+	m_patchViewdlg.GetWindowRect(&patchrect);
+	if (!::IsWindow(m_hWnd))
+		return;
+
+	RECT thisrect;
+	GetWindowRect(&thisrect);
+	if (patchrect.left == thisrect.right)
+	{
+		m_patchViewdlg.SetWindowPos(nullptr, patchrect.left - (thisrect.left - pRect->left), patchrect.top - (thisrect.top - pRect->top), 0, 0, SWP_NOACTIVATE | SWP_NOOWNERZORDER | SWP_NOSIZE | SWP_NOZORDER);
+	}
+}
+
+void CLogDlg::OnSizing(UINT fwSide, LPRECT pRect)
+{
+	__super::OnSizing(fwSide, pRect);
+
+	if (!::IsWindow(this->m_patchViewdlg.m_hWnd))
+		return;
+
+	CRect thisrect, patchrect;
+	this->GetWindowRect(thisrect);
+	this->m_patchViewdlg.GetWindowRect(patchrect);
+	if (thisrect.right != patchrect.left)
+		return;
+
+	patchrect.left -= (thisrect.right - pRect->right);
+	patchrect.right -= (thisrect.right - pRect->right);
+
+	if (patchrect.bottom == thisrect.bottom)
+		patchrect.bottom -= (thisrect.bottom - pRect->bottom);
+	if (patchrect.top == thisrect.top)
+		patchrect.top -= thisrect.top - pRect->top;
+	m_patchViewdlg.MoveWindow(patchrect);
 }
 
 void CLogDlg::OnBnClickedRefresh()
@@ -1726,8 +1856,11 @@ void CLogDlg::OnTimer(UINT_PTR nIDEvent)
 		m_LogList.Refresh(FALSE);
 		FillLogMessageCtrl(false);
 	}
-
-	if (nIDEvent == LOGFILTER_TIMER)
+	else if (nIDEvent == LOG_FILLPATCHVTIMER)
+	{
+		FillPatchView();
+	}
+	else if (nIDEvent == LOGFILTER_TIMER)
 	{
 		KillTimer(LOGFILTER_TIMER);
 		m_limit = 0;
@@ -2618,6 +2751,7 @@ void CLogDlg::OnBnClickedWalkBehaviour()
 #define VIEW_SHOWLOCALBRANCHES		4
 #define VIEW_SHOWREMOTEBRANCHES		5
 #define VIEW_SHOWGRAVATAR			6
+#define VIEW_SHOWPATCH				7
 
 void CLogDlg::OnBnClickedView()
 {
@@ -2637,6 +2771,7 @@ void CLogDlg::OnBnClickedView()
 		}
 		popup.AppendMenu(MF_SEPARATOR, NULL);
 		AppendMenuChecked(popup, IDS_VIEW_SHOWGRAVATAR, VIEW_SHOWGRAVATAR, m_bShowGravatar);
+		AppendMenuChecked(popup, IDS_MENU_VIEWPATCH, VIEW_SHOWPATCH, IsWindow(this->m_patchViewdlg.m_hWnd));
 
 		m_tooltips.Pop();
 		RECT rect;
@@ -2691,6 +2826,9 @@ void CLogDlg::OnBnClickedView()
 				m_gravatar.LoadGravatar(email);
 				break;
 			}
+		case VIEW_SHOWPATCH:
+			TogglePatchView();
+			break;
 		default:
 			break;
 		}
