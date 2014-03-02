@@ -4935,6 +4935,10 @@ msgstr ""
 msgid "I&nclude paths:"
 msgstr ""
 
+#. Resource IDs: (1580)
+msgid "IBugTraqProvider"
+msgstr ""
+
 #. Resource IDs: (1251)
 msgid "ID"
 msgstr ""
@@ -6883,6 +6887,18 @@ msgstr ""
 
 #. Resource IDs: (63)
 msgid "Provider"
+msgstr ""
+
+#. Resource IDs: (1586)
+msgid "Provider para&meters:"
+msgstr ""
+
+#. Resource IDs: (1581)
+msgid "Provider uuid win&32:"
+msgstr ""
+
+#. Resource IDs: (1583)
+msgid "Provider uuid x6&4:"
 msgstr ""
 
 #. Resource IDs: (1475)
