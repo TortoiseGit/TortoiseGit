@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -67,6 +67,20 @@ BOOL CPatchViewDlg::OnInitDialog()
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
+}
+
+void CPatchViewDlg::SetText(const CString& text)
+{
+	m_ctrlPatchView.Call(SCI_SETREADONLY, FALSE);
+	m_ctrlPatchView.SetText(text);
+	m_ctrlPatchView.Call(SCI_SETREADONLY, TRUE);
+	if (!text.IsEmpty())
+	{
+		m_ctrlPatchView.Call(SCI_GOTOPOS, 0);
+		CRect rect;
+		m_ctrlPatchView.GetClientRect(rect);
+		m_ctrlPatchView.Call(SCI_SETSCROLLWIDTH, rect.Width() - 4);
+	}
 }
 
 void CPatchViewDlg::OnSize(UINT nType, int cx, int cy)

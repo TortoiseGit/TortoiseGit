@@ -34,7 +34,6 @@
 #include "ProgressDlg.h"
 #include "ShellUpdater.h"
 #include "Commands/PushCommand.h"
-#include "PatchViewDlg.h"
 #include "COMError.h"
 #include "Globals.h"
 #include "SysProgressDlg.h"
@@ -2078,10 +2077,8 @@ void CCommitDlg::FillPatchView(bool onlySetTimer)
 			SetTimer(FILLPATCHVTIMER, 100, NULL);
 			return;
 		}
-		m_patchViewdlg.m_ctrlPatchView.SetText(CString());
 
 		POSITION pos=m_ListCtrl.GetFirstSelectedItemPosition();
-		m_patchViewdlg.m_ctrlPatchView.Call(SCI_SETREADONLY, FALSE);
 		CString cmd,out;
 
 		while(pos)
@@ -2098,12 +2095,7 @@ void CCommitDlg::FillPatchView(bool onlySetTimer)
 			}
 		}
 
-		m_patchViewdlg.m_ctrlPatchView.SetText(out);
-		m_patchViewdlg.m_ctrlPatchView.Call(SCI_SETREADONLY, TRUE);
-		m_patchViewdlg.m_ctrlPatchView.Call(SCI_GOTOPOS, 0);
-		CRect rect;
-		m_patchViewdlg.m_ctrlPatchView.GetClientRect(rect);
-		m_patchViewdlg.m_ctrlPatchView.Call(SCI_SETSCROLLWIDTH, rect.Width() - 4);
+		m_patchViewdlg.SetText(out);
 	}
 }
 LRESULT CCommitDlg::OnGitStatusListCtrlItemChanged(WPARAM /*wparam*/, LPARAM /*lparam*/)
