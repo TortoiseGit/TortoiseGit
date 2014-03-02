@@ -902,14 +902,14 @@ void CLogDlg::OnCancel()
 void CLogDlg::CopyChangedSelectionToClipBoard()
 {
 
-	POSITION pos = m_LogList.GetFirstSelectedItemPosition();
-	if (pos == NULL)
+	POSITION posLogList = m_LogList.GetFirstSelectedItemPosition();
+	if (posLogList == nullptr)
 		return;	// nothing is selected, get out of here
 
 	CString sPaths;
 
 //	CGitRev* pLogEntry = reinterpret_cast<CGitRev* >(m_LogList.m_arShownList.SafeGetAt(m_LogList.GetNextSelectedItem(pos)));
-//	if (pos)
+//	if (posLogList)
 	{
 		POSITION pos = m_ChangedFileListCtrl.GetFirstSelectedItemPosition();
 		while (pos)
