@@ -2150,7 +2150,8 @@ int CAppUtils::SaveCommitUnicodeFile(CString &filename, CString &message)
 
 	bool stripComments = (CRegDWORD(_T("Software\\TortoiseGit\\StripCommentedLines"), FALSE) == TRUE);
 
-	message.TrimRight(L" \r\n");
+	if (CRegDWORD(_T("Software\\TortoiseGit\\SanitizeCommitMsg"), TRUE) == TRUE)
+		message.TrimRight(L" \r\n");
 
 	int len = message.GetLength();
 	int start = 0;

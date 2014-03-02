@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2013 - TortoiseGit
+// Copyright (C) 2012-2014 - TortoiseGit
 // Copyright (C) 2009-2011, 2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -90,6 +90,10 @@ CSettingsAdvanced::CSettingsAdvanced()
 	settings[i].sName	= L"ReaddUnselectedAddedFilesAfterCommit";
 	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
 	settings[i++].def.b	= true;
+
+	settings[i].sName   = L"SanitizeCommitMsg";
+	settings[i].type    = CSettingsAdvanced::SettingTypeBoolean;
+	settings[i++].def.b = true;
 
 	settings[i].sName	= L"ScintillaDirect2D";
 	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
