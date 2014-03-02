@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -65,6 +65,7 @@ protected:
 
 	CTGitPathList	m_Files;
 	int		m_Action;
+	int		m_RebaseAction;
 	CTGitPathList	m_UnRevFiles;
 
 public:
@@ -92,6 +93,11 @@ public:
 		else
 			CheckAndDiff();
 		return m_Action;
+	}
+
+	int & GetRebaseAction()
+	{
+		return m_RebaseAction;
 	}
 
 	CTGitPathList & GetFiles(void * data)

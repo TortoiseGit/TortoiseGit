@@ -465,16 +465,16 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			}
 			break;
 		case ID_REBASE_PICK:
-			SetSelectedAction(CTGitPath::LOGACTIONS_REBASE_PICK);
+			SetSelectedRebaseAction(LOGACTIONS_REBASE_PICK);
 			break;
 		case ID_REBASE_EDIT:
-			SetSelectedAction(CTGitPath::LOGACTIONS_REBASE_EDIT);
+			SetSelectedRebaseAction(LOGACTIONS_REBASE_EDIT);
 			break;
 		case ID_REBASE_SQUASH:
-			SetSelectedAction(CTGitPath::LOGACTIONS_REBASE_SQUASH);
+			SetSelectedRebaseAction(LOGACTIONS_REBASE_SQUASH);
 			break;
 		case ID_REBASE_SKIP:
-			SetSelectedAction(CTGitPath::LOGACTIONS_REBASE_SKIP);
+			SetSelectedRebaseAction(LOGACTIONS_REBASE_SKIP);
 			break;
 		case ID_COMBINE_COMMIT:
 		{
@@ -644,7 +644,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 					int indexNext = GetNextSelectedItem(pos);
 					dlg.m_CommitList.m_logEntries.push_back( ((GitRev*)m_arShownList[indexNext])->m_CommitHash );
 					dlg.m_CommitList.m_LogCache.m_HashMap[((GitRev*)m_arShownList[indexNext])->m_CommitHash]=*(GitRev*)m_arShownList[indexNext];
-					dlg.m_CommitList.m_logEntries.GetGitRevAt(dlg.m_CommitList.m_logEntries.size()-1).GetAction(this) |= CTGitPath::LOGACTIONS_REBASE_PICK;
+					dlg.m_CommitList.m_logEntries.GetGitRevAt(dlg.m_CommitList.m_logEntries.size() - 1).GetRebaseAction() |= LOGACTIONS_REBASE_PICK;
 				}
 
 				if(dlg.DoModal() == IDOK)
@@ -1125,7 +1125,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 		theApp.DoWaitCursor(-1);
 }
 
-void CGitLogList::SetSelectedAction(int action)
+void CGitLogList::SetSelectedRebaseAction(int action)
 {
 	POSITION pos = GetFirstSelectedItemPosition();
 	if (!pos) return;
@@ -1133,9 +1133,9 @@ void CGitLogList::SetSelectedAction(int action)
 	while(pos)
 	{
 		index = GetNextSelectedItem(pos);
-		if (((GitRev*)m_arShownList[index])->GetAction(this) & (CTGitPath::LOGACTIONS_REBASE_CURRENT | CTGitPath::LOGACTIONS_REBASE_DONE))
+		if (((GitRev*)m_arShownList[index])->GetRebaseAction() & (LOGACTIONS_REBASE_CURRENT | LOGACTIONS_REBASE_DONE))
 			continue;
-		((GitRev*)m_arShownList[index])->GetAction(this) = action;
+		((GitRev*)m_arShownList[index])->GetRebaseAction() = action;
 		CRect rect;
 		this->GetItemRect(index,&rect,LVIR_BOUNDS);
 		this->InvalidateRect(rect);
@@ -1143,7 +1143,7 @@ void CGitLogList::SetSelectedAction(int action)
 	}
 	GetParent()->PostMessage(CGitLogListBase::m_RebaseActionMessage);
 }
-void CGitLogList::ShiftSelectedAction()
+void CGitLogList::ShiftSelectedRebaseAction()
 {
 	POSITION pos = GetFirstSelectedItemPosition();
 	int index;
@@ -1152,20 +1152,20 @@ void CGitLogList::ShiftSelectedAction()
 		index = GetNextSelectedItem(pos);
 		int dummyAction = 0;
 		int *action = &dummyAction;
-		SafeGetAction(((GitRev*)m_arShownList[index]), &action);
+		action = &((GitRev*)m_arShownList[index])->GetRebaseAction();
 		switch (*action)
 		{
-		case CTGitPath::LOGACTIONS_REBASE_PICK:
-			*action = CTGitPath::LOGACTIONS_REBASE_SKIP;
+		case LOGACTIONS_REBASE_PICK:
+			*action = LOGACTIONS_REBASE_SKIP;
 			break;
-		case CTGitPath::LOGACTIONS_REBASE_SKIP:
-			*action= CTGitPath::LOGACTIONS_REBASE_EDIT;
+		case LOGACTIONS_REBASE_SKIP:
+			*action= LOGACTIONS_REBASE_EDIT;
 			break;
-		case CTGitPath::LOGACTIONS_REBASE_EDIT:
-			*action = CTGitPath::LOGACTIONS_REBASE_SQUASH;
+		case LOGACTIONS_REBASE_EDIT:
+			*action = LOGACTIONS_REBASE_SQUASH;
 			break;
-		case CTGitPath::LOGACTIONS_REBASE_SQUASH:
-			*action= CTGitPath::LOGACTIONS_REBASE_PICK;
+		case LOGACTIONS_REBASE_SQUASH:
+			*action= LOGACTIONS_REBASE_PICK;
 			break;
 		}
 		CRect rect;

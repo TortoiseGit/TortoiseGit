@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2012, 2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -26,8 +26,8 @@ class CGitLogList : public CGitLogListBase
 	DECLARE_DYNAMIC(CGitLogList)
 
 public:
-	void ShiftSelectedAction();
-	void SetSelectedAction(int action);
+	void ShiftSelectedRebaseAction();
+	void SetSelectedRebaseAction(int action);
 
 protected:
 	int	 CherryPickFrom(CString from, CString to);

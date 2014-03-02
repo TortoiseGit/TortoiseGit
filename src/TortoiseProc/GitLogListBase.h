@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -278,7 +278,20 @@ public:
 		FILTERSHOW_ANYCOMMIT = 4,
 		FILTERSHOW_ALL = FILTERSHOW_ANYCOMMIT | FILTERSHOW_REFS | FILTERSHOW_MERGEPOINTS
 	};
+	enum : unsigned int
+	{
+		// For Rebase only
+		LOGACTIONS_REBASE_CURRENT	= 0x08000000,
+		LOGACTIONS_REBASE_PICK		= 0x04000000,
+		LOGACTIONS_REBASE_SQUASH	= 0x02000000,
+		LOGACTIONS_REBASE_EDIT		= 0x01000000,
+		LOGACTIONS_REBASE_DONE		= 0x00800000,
+		LOGACTIONS_REBASE_SKIP		= 0x00400000,
+		LOGACTIONS_REBASE_MASK		= 0x0FC00000,
+		LOGACTIONS_REBASE_MODE_MASK	= 0x07C00000,
+	};
 	inline unsigned __int64 GetContextMenuBit(int i){ return ((unsigned __int64 )0x1)<<i ;}
+	static CString GetRebaseActionName(int action);
 	void InsertGitColumn();
 	void ResizeAllListCtrlCols();
 	void CopySelectionToClipBoard(int toCopy = ID_COPY_ALL);

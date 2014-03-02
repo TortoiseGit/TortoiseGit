@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 // Copyright (C) 2005-2007 Marco Costalba
 // Copyright (C) 2011-2013 - Sven Strickroth <email@cs-ware.de>
 
@@ -331,6 +331,20 @@ void CGitLogListBase::PreSubclassWindow()
 	CHintListCtrl::PreSubclassWindow();
 }
 
+CString CGitLogListBase::GetRebaseActionName(int action)
+{
+	if (action & LOGACTIONS_REBASE_EDIT)
+		return MAKEINTRESOURCE(IDS_PATHACTIONS_EDIT);
+	if (action & LOGACTIONS_REBASE_SQUASH)
+		return MAKEINTRESOURCE(IDS_PATHACTIONS_SQUASH);
+	if (action & LOGACTIONS_REBASE_PICK)
+		return MAKEINTRESOURCE(IDS_PATHACTIONS_PICK);
+	if (action & LOGACTIONS_REBASE_SKIP)
+		return MAKEINTRESOURCE(IDS_PATHACTIONS_SKIP);
+
+	return MAKEINTRESOURCE(IDS_PATHACTIONS_UNKNOWN);
+}
+
 void CGitLogListBase::InsertGitColumn()
 {
 	CString temp;
@@ -478,10 +492,10 @@ void CGitLogListBase::FillBackGround(HDC hdc, DWORD_PTR Index, CRect &rect)
 
 	if (!(rItem.state & LVIS_SELECTED))
 	{
-		int action = SafeGetAction(pLogEntry);
-		if (action & CTGitPath::LOGACTIONS_REBASE_SQUASH)
+		int action = pLogEntry->GetRebaseAction();
+		if (action & LOGACTIONS_REBASE_SQUASH)
 			brush = ::CreateSolidBrush(RGB(156,156,156));
-		else if (action & CTGitPath::LOGACTIONS_REBASE_EDIT)
+		else if (action & LOGACTIONS_REBASE_EDIT)
 			brush = ::CreateSolidBrush(RGB(200,200,128));
 	}
 	else if (!(IsAppThemed() && SysInfo::Instance().IsVistaOrLater()))
@@ -1145,18 +1159,18 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 				GitRev* data = (GitRev*)m_arShownList.SafeGetAt(pLVCD->nmcd.dwItemSpec);
 				if (data)
 				{
-					int action = SafeGetAction(data);
-					if (action & (CTGitPath::LOGACTIONS_REBASE_DONE | CTGitPath::LOGACTIONS_REBASE_SKIP))
+					int action = data->GetRebaseAction();
+					if (action & (LOGACTIONS_REBASE_DONE | LOGACTIONS_REBASE_SKIP))
 						crText = RGB(128,128,128);
 
-					if (action & CTGitPath::LOGACTIONS_REBASE_SQUASH)
+					if (action & LOGACTIONS_REBASE_SQUASH)
 						pLVCD->clrTextBk = RGB(156,156,156);
-					else if (action & CTGitPath::LOGACTIONS_REBASE_EDIT)
+					else if (action & LOGACTIONS_REBASE_EDIT)
 						pLVCD->clrTextBk  = RGB(200,200,128);
 					else
 						pLVCD->clrTextBk  = ::GetSysColor(COLOR_WINDOW);
 
-					if (action & CTGitPath::LOGACTIONS_REBASE_CURRENT)
+					if (action & LOGACTIONS_REBASE_CURRENT)
 					{
 						SelectObject(pLVCD->nmcd.hdc, m_boldFont);
 						*pResult = CDRF_NOTIFYSUBITEMDRAW | CDRF_NEWFONT;
@@ -1223,7 +1237,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 				{
 					GitRev* data = (GitRev*)m_arShownList.SafeGetAt(pLVCD->nmcd.dwItemSpec);
 
-					if (!m_HashMap[data->m_CommitHash].empty() && !(SafeGetAction(data) & CTGitPath::LOGACTIONS_REBASE_DONE))
+					if (!m_HashMap[data->m_CommitHash].empty() && !(data->GetRebaseAction() & LOGACTIONS_REBASE_DONE))
 					{
 						CRect rect;
 						GetSubItemRect((int)pLVCD->nmcd.dwItemSpec, pLVCD->iSubItem, LVIR_BOUNDS, rect);
@@ -1528,11 +1542,7 @@ void CGitLogListBase::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 	case this->LOGLIST_REBASE:
 		{
 			if (this->m_IsRebaseReplaceGraph && pLogEntry)
-			{
-				CTGitPath path;
-				path.m_Action = SafeGetAction(pLogEntry) & CTGitPath::LOGACTIONS_REBASE_MODE_MASK;
-				lstrcpyn(pItem->pszText,path.GetActionName(), pItem->cchTextMax);
-			}
+				lstrcpyn(pItem->pszText, GetRebaseActionName(pLogEntry->GetRebaseAction() & LOGACTIONS_REBASE_MODE_MASK), pItem->cchTextMax);
 		}
 		break;
 	case this->LOGLIST_ACTION: //action -- no text in the column
@@ -1734,19 +1744,19 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 		GIT_REV_LIST parentHash;
 		GetParentHashes(pSelLogEntry, parentHash);
 
-		if (m_ContextMenuMask & GetContextMenuBit(ID_REBASE_PICK) && !(pSelLogEntry->GetAction(this) & (CTGitPath::LOGACTIONS_REBASE_CURRENT | CTGitPath::LOGACTIONS_REBASE_DONE)))
+		if (m_ContextMenuMask & GetContextMenuBit(ID_REBASE_PICK) && !(pSelLogEntry->GetRebaseAction() & (LOGACTIONS_REBASE_CURRENT | LOGACTIONS_REBASE_DONE)))
 			popup.AppendMenuIcon(ID_REBASE_PICK, IDS_REBASE_PICK, IDI_PICK);
 
-		if (m_ContextMenuMask & GetContextMenuBit(ID_REBASE_SQUASH) && !(pSelLogEntry->GetAction(this) & (CTGitPath::LOGACTIONS_REBASE_CURRENT | CTGitPath::LOGACTIONS_REBASE_DONE)))
+		if (m_ContextMenuMask & GetContextMenuBit(ID_REBASE_SQUASH) && !(pSelLogEntry->GetRebaseAction() & (LOGACTIONS_REBASE_CURRENT | LOGACTIONS_REBASE_DONE)))
 			popup.AppendMenuIcon(ID_REBASE_SQUASH, IDS_REBASE_SQUASH, IDI_SQUASH);
 
-		if (m_ContextMenuMask & GetContextMenuBit(ID_REBASE_EDIT) && !(pSelLogEntry->GetAction(this) & (CTGitPath::LOGACTIONS_REBASE_CURRENT | CTGitPath::LOGACTIONS_REBASE_DONE)))
+		if (m_ContextMenuMask & GetContextMenuBit(ID_REBASE_EDIT) && !(pSelLogEntry->GetRebaseAction() & (LOGACTIONS_REBASE_CURRENT | LOGACTIONS_REBASE_DONE)))
 			popup.AppendMenuIcon(ID_REBASE_EDIT, IDS_REBASE_EDIT, IDI_EDIT);
 
-		if (m_ContextMenuMask & GetContextMenuBit(ID_REBASE_SKIP) && !(pSelLogEntry->GetAction(this) & (CTGitPath::LOGACTIONS_REBASE_CURRENT | CTGitPath::LOGACTIONS_REBASE_DONE)))
+		if (m_ContextMenuMask & GetContextMenuBit(ID_REBASE_SKIP) && !(pSelLogEntry->GetRebaseAction() & (LOGACTIONS_REBASE_CURRENT | LOGACTIONS_REBASE_DONE)))
 			popup.AppendMenuIcon(ID_REBASE_SKIP, IDS_REBASE_SKIP, IDI_SKIP);
 
-		if (m_ContextMenuMask & (GetContextMenuBit(ID_REBASE_SKIP) | GetContextMenuBit(ID_REBASE_EDIT) | GetContextMenuBit(ID_REBASE_SQUASH) | GetContextMenuBit(ID_REBASE_PICK)) && !(pSelLogEntry->GetAction(this) & (CTGitPath::LOGACTIONS_REBASE_CURRENT | CTGitPath::LOGACTIONS_REBASE_DONE)))
+		if (m_ContextMenuMask & (GetContextMenuBit(ID_REBASE_SKIP) | GetContextMenuBit(ID_REBASE_EDIT) | GetContextMenuBit(ID_REBASE_SQUASH) | GetContextMenuBit(ID_REBASE_PICK)) && !(pSelLogEntry->GetRebaseAction() & (LOGACTIONS_REBASE_CURRENT | LOGACTIONS_REBASE_DONE)))
 			popup.AppendMenu(MF_SEPARATOR, NULL);
 
 		if (GetSelectedCount() == 1)
