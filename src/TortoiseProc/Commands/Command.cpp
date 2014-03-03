@@ -63,6 +63,7 @@
 #include "SendMailCommand.h"
 #include "CatCommand.h"
 #include "RefBrowseCommand.h"
+#include "SubtreeCommand.h"
 #include "SVNDCommitCommand.h"
 #include "SVNRebaseCommand.h"
 #include "SVNFetchCommand.h"
@@ -155,6 +156,9 @@ typedef enum
 	cmdSubAdd,
 	cmdSubUpdate,
 	cmdSubSync,
+	cmdSubtreeAdd,
+	cmdSubtreePull,
+	cmdSubtreePush,
 	cmdRefLog,
 	cmdRefBrowse,
 	cmdSVNDCommit,
@@ -229,6 +233,9 @@ static const struct CommandInfo
 	{	cmdSubAdd,			_T("subadd")			},
 	{	cmdSubUpdate,		_T("subupdate")			},
 	{	cmdSubSync,			_T("subsync")			},
+	{	cmdSubtreeAdd,		_T("subtreeadd")		},
+	{	cmdSubtreePull,		_T("subtreepull")		},
+	{	cmdSubtreePush,		_T("subtreepush")		},
 	{	cmdRefLog,			_T("reflog")			},
 	{	cmdRefBrowse,		_T("refbrowse")			},
 	{	cmdSVNDCommit,		_T("svndcommit")		},
@@ -346,6 +353,12 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new RefLogCommand;
 	case cmdSubSync:
 		return new SubmoduleSyncCommand;
+	case cmdSubtreeAdd:
+		return new SubtreeAddCommand;
+	case cmdSubtreePush:
+		return new SubtreePushCommand;
+	case cmdSubtreePull:
+		return new SubtreePullCommand;
 	case cmdSendMail:
 		return new SendMailCommand;
 	case cmdCat:

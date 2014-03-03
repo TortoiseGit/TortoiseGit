@@ -171,6 +171,7 @@
 #define IDI_CERTCHECK                   355
 #define IDI_TORTOISEUDIFF               356
 #define IDD_SETTINGSUDIFF               357
+#define IDD_SUBTREE_ADD                 358
 #define IDS_CHSTAT_FILECOL              1000
 #define IDS_CHSTAT_WCCOL                1001
 #define IDS_CHSTAT_REPOCOL              1002
@@ -1559,6 +1560,9 @@
 #define IDC_BUTTON_ONTO                 1828
 #define IDC_STATIC_AUTHORS              1829
 #define IDC_INCLUDENESTEDREFS           1830
+#define IDC_STATIC_DEST                 1831
+#define IDC_LOCAL_PATH                  1832
+#define IDC_LOCAL_PATH_BROWSE           1833
 #define IDS_LOG_FILTER_BY               1850
 #define IDS_LOG_FILTER_PATHS            1851
 #define IDS_LOG_FILTER_AUTHORS          1852
@@ -2014,9 +2018,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        358
+#define _APS_NEXT_RESOURCE_VALUE        359
 #define _APS_NEXT_COMMAND_VALUE         32874
-#define _APS_NEXT_CONTROL_VALUE         1831
+#define _APS_NEXT_CONTROL_VALUE         1834
 #define _APS_NEXT_SYMED_VALUE           201
 #endif
 #endif
