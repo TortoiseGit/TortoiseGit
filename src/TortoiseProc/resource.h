@@ -161,6 +161,7 @@
 #define IDI_GITCREDENTIAL               346
 #define IDI_EXTERNALOVL                 347
 #define IDI_MERGEACTIVE                 348
+#define IDD_SUBTREE_ADD                 350
 #define IDS_CHSTAT_FILECOL              1000
 #define IDS_CHSTAT_WCCOL                1001
 #define IDS_CHSTAT_REPOCOL              1002
@@ -1452,6 +1453,9 @@
 #define IDC_CHECK_INHERIT_BTUUID32      1791
 #define IDC_CHECK_INHERIT_BTUUID64      1792
 #define IDC_CHECK_INHERIT_BTPARAMS      1793
+#define IDC_STATIC_DEST                 1794
+#define IDC_LOCAL_PATH                  1795
+#define IDC_LOCAL_PATH_BROWSE           1796
 #define IDS_LOG_FILTER_BY               1850
 #define IDS_LOG_FILTER_PATHS            1851
 #define IDS_LOG_FILTER_AUTHORS          1852
@@ -1895,9 +1899,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        350
+#define _APS_NEXT_RESOURCE_VALUE        351
 #define _APS_NEXT_COMMAND_VALUE         32865
-#define _APS_NEXT_CONTROL_VALUE         1791
+#define _APS_NEXT_CONTROL_VALUE         1797
 #define _APS_NEXT_SYMED_VALUE           201
 #endif
 #endif

@@ -59,6 +59,7 @@
     <ClCompile Include="AutoTextTestDlg.cpp" />
     <ClCompile Include="BugtraqRegexTestDlg.cpp" />
     <ClCompile Include="Commands\DaemonCommand.cpp" />
+    <ClCompile Include="Commands\SubtreeCommand.cpp" />
     <ClCompile Include="GravatarPictureBox.cpp" />
     <ClCompile Include="MergeAbortDlg.cpp" />
     <ClCompile Include="GitRefCompareList.cpp" />
@@ -185,6 +186,7 @@
     <ClCompile Include="StashSave.cpp" />
     <ClCompile Include="BrowseRefsDlg.cpp" />
     <ClCompile Include="Commands\SVNDCommitCommand.cpp" />
+    <ClCompile Include="SubtreeAddDlg.cpp" />
     <ClCompile Include="SVNDCommitDlg.cpp" />
     <ClCompile Include="Commands\SVNFetchCommand.cpp" />
     <ClCompile Include="Commands\SVNIgnoreCommand.cpp" />
@@ -242,6 +244,7 @@
     <ClInclude Include="BugtraqRegexTestDlg.h" />
     <ClInclude Include="Commands\AutoTextTestCommand.h" />
     <ClInclude Include="Commands\DaemonCommand.h" />
+    <ClInclude Include="Commands\SubtreeCommand.h" />
     <ClInclude Include="GravatarPictureBox.h" />
     <ClInclude Include="MergeAbortDlg.h" />
     <ClInclude Include="GitRefCompareList.h" />
@@ -365,6 +368,7 @@
     <ClInclude Include="BrowseRefsDlg.h" />
     <ClInclude Include="Commands\RefBrowseCommand.h" />
     <ClInclude Include="Commands\SVNDCommitCommand.h" />
+    <ClInclude Include="SubtreeAddDlg.h" />
     <ClInclude Include="SVNDCommitDlg.h" />
     <ClInclude Include="Commands\SVNFetchCommand.h" />
     <ClInclude Include="Commands\SVNIgnoreCommand.h" />

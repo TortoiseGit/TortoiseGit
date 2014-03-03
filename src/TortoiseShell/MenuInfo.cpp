@@ -44,6 +44,17 @@ MenuInfo menuInfo[] =
 
 	{ ShellSeparator, 0, 0, 0, 0, {0, 0}, {0, 0}, {0, 0}, {0, 0} },
 
+	{ ShellMenuSubtreeAdd,					MENUSUBTREEADD,		IDI_ADD,				IDS_MENUSUBTREEADD,			IDS_MENUDESC_SUBTREEADD,
+		{ITEMIS_FOLDERINGIT|ITEMIS_ONLYONE, 0}, {0, 0}, {0, 0}, {0, 0} },
+
+
+	// Pull a subtree that is already setup
+// 	{ ShellMenuSubtreePull,					MENUSUBTREEPULL,	IDI_PULL,				IDS_MENUSUBTREEPULL,		IDS_MENUDESC_SUBTREEPULL,
+// 	{ITEMIS_FOLDERINGIT|ITEMIS_ONLYONE, 0}, {0, 0}, {0, 0}, {0, 0} },
+
+
+	{ ShellSeparator, 0, 0, 0, 0, {0, 0}, {0, 0}, {0, 0}, {0, 0} },
+
 	{ ShellMenuCommit,						MENUCOMMIT,			IDI_COMMIT,				IDS_MENUCOMMIT,				IDS_MENUDESCCOMMIT,
 		{ITEMIS_INGIT, 0}, {ITEMIS_FOLDERINGIT, 0}, {0, 0}, {0, 0} },
 

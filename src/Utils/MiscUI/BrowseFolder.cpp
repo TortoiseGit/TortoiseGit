@@ -20,6 +20,9 @@
 #include <windowsx.h>
 #include "BrowseFolder.h"
 #include <strsafe.h>
+#include <shtypes.h>
+#include <shobjidl.h>
+#include <shlobj.h>
 
 BOOL CBrowseFolder::m_bCheck = FALSE;
 BOOL CBrowseFolder::m_bCheck2 = FALSE;
@@ -309,4 +312,10 @@ LRESULT CBrowseFolder::CheckBoxSubclassProc2(HWND hwnd,UINT uMsg,WPARAM wParam,L
 
 	return CallWindowProc(CBProc, hwnd, uMsg,
 		wParam, lParam);
+}
+
+BOOL CBrowseFolder::SetRootFolder( LPCWSTR lpszPath )
+{
+	HRESULT hr = SHParseDisplayName(lpszPath, NULL, &m_root, NULL, NULL);
+	return SUCCEEDED(hr);
 }

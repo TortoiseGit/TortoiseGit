@@ -153,6 +153,9 @@
     <Filter Include="Commands\AutoTextTest">
       <UniqueIdentifier>{9baf680f-fe31-4b6d-bd01-50b7a2c043b8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Commands\Subtree">
+      <UniqueIdentifier>{948d663b-f368-4fe6-b111-265438df8b63}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AddRemoteDlg.cpp">
@@ -686,6 +689,12 @@
     <ClCompile Include="BugtraqRegexTestDlg.cpp">
       <Filter>Commands\setting</Filter>
     </ClCompile>
+    <ClCompile Include="Commands\SubtreeCommand.cpp">
+      <Filter>Commands\Subtree</Filter>
+    </ClCompile>
+    <ClCompile Include="SubtreeAddDlg.cpp">
+      <Filter>Commands\Subtree</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddRemoteDlg.h">
@@ -1209,6 +1218,12 @@
     </ClInclude>
     <ClInclude Include="BugtraqRegexTestDlg.h">
       <Filter>Commands\setting</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\SubtreeCommand.h">
+      <Filter>Commands\Subtree</Filter>
+    </ClInclude>
+    <ClInclude Include="SubtreeAddDlg.h">
+      <Filter>Commands\Subtree</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
