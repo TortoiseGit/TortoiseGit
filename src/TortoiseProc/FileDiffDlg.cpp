@@ -49,7 +49,7 @@
 #define ID_REVERT1 9
 #define ID_REVERT2 10
 
-BOOL	CFileDiffDlg::m_bAscending = FALSE;
+BOOL	CFileDiffDlg::m_bAscending = TRUE;
 int		CFileDiffDlg::m_nSortedColumn = -1;
 
 UINT CFileDiffDlg::WM_DISABLEBUTTONS = RegisterWindowMessage(_T("TORTOISEGIT_FILEDIFF_DISABLEBUTTONS"));
