@@ -463,7 +463,10 @@ BOOL CSettingGitRemote::OnApply()
 			if (m_ctrlTagOpt.GetCurSel() != 1)
 			{
 				if (CMessageBox::ShowCheck(GetSafeHwnd(), IDS_PROC_GITCONFIG_ASKTAGOPT, IDS_APPNAME, MB_YESNO | MB_ICONQUESTION, _T("TagOptNoTagsWarning"), IDS_MSGBOX_DONOTSHOWAGAIN) == IDYES)
+				{
 					m_ctrlTagOpt.SetCurSel(1);
+					m_ChangedMask |= REMOTE_TAGOPT;
+				}
 			}
 		}
 
