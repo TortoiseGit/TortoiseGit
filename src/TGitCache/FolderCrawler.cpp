@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005-2008,2011 - TortoiseSVN
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -50,7 +50,7 @@ void CFolderCrawler::Stop()
 	if (m_hTerminationEvent)
 	{
 		SetEvent(m_hTerminationEvent);
-		if(WaitForSingleObject(m_hThread, 4000) != WAIT_OBJECT_0)
+		if (m_hThread.IsValid() && WaitForSingleObject(m_hThread, 4000) != WAIT_OBJECT_0)
 		{
 			CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Error terminating crawler thread\n");
 		}
