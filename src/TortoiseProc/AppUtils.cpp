@@ -1172,8 +1172,6 @@ bool CAppUtils::PerformSwitch(CString ref, bool bForce /* false */, CString sNew
 		if (hasBranch)
 			idMerge = progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUMERGE)));
 
-		progress.m_PostFailCmdList.Add(CString(MAKEINTRESOURCE(IDS_MSGBOX_RETRY)));
-		progress.m_PostFailCmdList.Add(CString(MAKEINTRESOURCE(IDS_SWITCH_WITH_MERGE)));
 		progress.m_PostCmdCallback = [&] ()
 		{
 			if (!progress.m_GitStatus)
@@ -1181,6 +1179,12 @@ bool CAppUtils::PerformSwitch(CString ref, bool bForce /* false */, CString sNew
 				CString newBranch;
 				if (!CGit::GetCurrentBranchFromFile(g_Git.m_CurrentDir, newBranch))
 					idPull = progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUPULL)));
+			}
+			else
+			{
+				progress.m_PostCmdList.RemoveAll();
+				progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MSGBOX_RETRY)));
+				progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_SWITCH_WITH_MERGE)));
 			}
 		};
 
