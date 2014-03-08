@@ -14,10 +14,7 @@
 	<para>
 		It is important to understand how branching and merging works in
 		Git before you start using it, as it can become quite complex.
-		It is highly recommended that you read the chapter
-		<xref linkend="Basic_Branching_and_Mergin"/>
-		in the Git book, which gives a full description and many 
-		examples of how it is used.
+		For hints where to find more information about Git and merging see <xref linkend="tgit-preface-readingguide"/>.
 	</para>
 	<para>
 		The next point to note is that merging <emphasis>always</emphasis>
