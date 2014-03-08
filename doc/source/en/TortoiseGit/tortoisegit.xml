@@ -28,7 +28,6 @@
 	<!-- include external files -->
 	<xi:include href="./tgit_preface.xml"/>
 	<xi:include href="./tgit_introduction.xml"/>
-	<xi:include href="./git_book/gitbook.xml"/>	
 
 	<!--
 	<xi:include href="./tgit_repository/repository.xml"/>
