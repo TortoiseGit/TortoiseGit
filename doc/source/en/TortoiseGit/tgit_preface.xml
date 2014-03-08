@@ -80,10 +80,10 @@ and
 <citetitle>Tech Talk: Git</citetitle>
 </ulink> (more technical). You can also read <ulink url="http://git-scm.com/book">
 <citetitle>Pro Git book (multiple translations as well as downloadable versions available)</citetitle>
-</ulink>
-			which is a short introduction
-			to the <emphasis>Git</emphasis> revision control system
-			and explains the different approaches to version
+</ulink>, <xref linkend="git_user-manual"/>, or <xref linkend="Git-Tutorial"/>
+			which are a short introductions
+			to the <emphasis>Git</emphasis> revision control system,
+			explain the different approaches to version
 			control, and how Git works (with a bunch of examples).
 		</para>
     <!--
