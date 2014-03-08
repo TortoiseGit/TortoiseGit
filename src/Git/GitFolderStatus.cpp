@@ -48,6 +48,7 @@ GitFolderStatus::GitFolderStatus(void)
 
 GitFolderStatus::~GitFolderStatus(void)
 {
+	CloseHandle(m_hInvalidationEvent);
 }
 
 const FileStatusCacheEntry * GitFolderStatus::BuildCache(const CTGitPath& filepath, const CString& /*sProjectRoot*/, BOOL bIsFolder, BOOL bDirectFolder)
