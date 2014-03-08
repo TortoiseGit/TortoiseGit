@@ -25,7 +25,7 @@
 
 #include "CreateRepoDlg.h"
 
-bool CheckSpecialFolder(CString &folder)
+static bool CheckSpecialFolder(CString &folder)
 {
 	// Drive root
 	if (folder == "\\" || folder.GetLength() == 2 && folder[1] == ':' || folder.GetLength() == 3 && folder[1] == ':' && folder[2] == '\\')
