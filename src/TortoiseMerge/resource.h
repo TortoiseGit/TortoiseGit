@@ -171,6 +171,7 @@
 #define IDC_TITLE                       1094
 #define IDC_DESCRIPTION                 1095
 #define IDC_FIXEOLS                     1096
+#define IDC_RESTORE                     1097
 #define IDS_ERR_FILE_OPEN               1100
 #define IDS_ERR_FILE_BINARY             1101
 #define IDS_ERR_FILE_NOTAFILE           1102

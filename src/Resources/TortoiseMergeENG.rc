@@ -221,7 +221,7 @@ STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "Colors"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
-    GROUPBOX        "Line differences",IDC_STATIC,7,7,251,161
+    GROUPBOX        "Line differences",IDC_STATIC,7,7,251,149
     LTEXT           "Normal",IDC_STATIC,15,16,113,8,0,WS_EX_RIGHT
     PUSHBUTTON      "",IDC_BKNORMAL,152,14,50,14
     LTEXT           "Added",IDC_STATIC,15,32,113,8,0,WS_EX_RIGHT
@@ -236,14 +236,15 @@ BEGIN
     PUSHBUTTON      "",IDC_BKCONFLICTRESOLVED,152,98,50,14
     LTEXT           "Empty",IDC_STATIC,15,116,113,8,0,WS_EX_RIGHT
     PUSHBUTTON      "",IDC_BKEMPTY,152,114,50,14
-    GROUPBOX        "Inline differences",IDC_STATIC,7,171,251,43
-    LTEXT           "Added",IDC_STATIC,15,181,113,8,0,WS_EX_RIGHT
-    PUSHBUTTON      "",IDC_BKWHITESPACES,152,179,50,14
-    LTEXT           "Removed",IDC_STATIC,15,197,113,8,0,WS_EX_RIGHT
-    PUSHBUTTON      "",IDC_BKWHITESPACEDIFF,152,195,50,14
-    GROUPBOX        "Misc",IDC_STATIC,7,217,251,33
-    RTEXT           "Whitespaces",IDC_STATIC,15,232,113,8
-    PUSHBUTTON      "",IDC_FGWHITESPACES,152,228,50,14
+    GROUPBOX        "Inline differences",IDC_STATIC,7,158,251,43
+    LTEXT           "Added",IDC_STATIC,15,169,113,8,0,WS_EX_RIGHT
+    PUSHBUTTON      "",IDC_BKWHITESPACES,152,167,50,14
+    LTEXT           "Removed",IDC_STATIC,15,185,113,8,0,WS_EX_RIGHT
+    PUSHBUTTON      "",IDC_BKWHITESPACEDIFF,152,183,50,14
+    GROUPBOX        "Misc",IDC_STATIC,7,201,251,26
+    RTEXT           "Whitespaces",IDC_STATIC,15,211,113,8
+    PUSHBUTTON      "",IDC_FGWHITESPACES,152,209,50,14
+    PUSHBUTTON      "Restore Default",IDC_RESTORE,176,236,82,14
 END
 
 IDD_PATCH_FILE_OPEN_CUSTOM DIALOGEX 0, 0, 122, 28
@@ -691,10 +692,16 @@ BEGIN
     IDR_MAINFRAME           "TortoiseGitMerge"
     IDS_TITLE_REJECTEDHUNKS "Rejected patch hunks for '%s'"
     IDS_CONFIGUREREGEXES    "Configure Filter Regexes"
+END
+
+STRINGTABLE
+BEGIN
     IDS_ERR_PATCH_FILENAMENOTUNIQUE 
                             "TortoiseGitMerge cannot process this patch file. The filename ""%s"" appears more than once."
     IDS_ERR_MAINFRAME_FILECONFLICTNOVERSION 
                             "The patch does not apply cleanly to %s and no version information is given.\nPatching is not possible!"
+    IDS_MOVED_FROM_TT       "Line moved from line %ld"
+    IDS_MOVED_TO_TT         "Line moved to line %ld"
 END
 
 STRINGTABLE
@@ -1075,12 +1082,6 @@ END
 STRINGTABLE
 BEGIN
     IDS_ERR_PATCHPATHS      "Both the path to the patch file and the target path must be absolute paths!"
-END
-
-STRINGTABLE
-BEGIN
-    IDS_MOVED_FROM_TT       "Line moved from line %ld"
-    IDS_MOVED_TO_TT         "Line moved to line %ld"
 END
 
 STRINGTABLE

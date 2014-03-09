@@ -1,6 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2006-2008, 2012-2013 - TortoiseSVN
+// Copyright (C) 2006-2008, 2012-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -134,6 +134,7 @@ BEGIN_MESSAGE_MAP(CSetColorPage, CPropertyPage)
 	ON_BN_CLICKED(IDC_BKCONFLICTED, &CSetColorPage::OnBnClickedColor)
 	ON_BN_CLICKED(IDC_BKCONFLICTRESOLVED, &CSetColorPage::OnBnClickedColor)
 	ON_BN_CLICKED(IDC_FGWHITESPACES, &CSetColorPage::OnBnClickedColor)
+	ON_BN_CLICKED(IDC_RESTORE, &CSetColorPage::OnBnClickedRestore)
 END_MESSAGE_MAP()
 
 
@@ -218,3 +219,17 @@ void CSetColorPage::OnBnClickedColor()
 	SetModified();
 }
 
+void CSetColorPage::OnBnClickedRestore()
+{
+	m_cBkNormal.SetColor(DIFFSTATE_NORMAL_DEFAULT_BG);
+	m_cBkRemoved.SetColor(DIFFSTATE_REMOVED_DEFAULT_BG);
+	m_cBkAdded.SetColor(DIFFSTATE_ADDED_DEFAULT_BG);
+	m_cBkInlineAdded.SetColor(INLINEADDED_COLOR);
+	m_cBkInlineRemoved.SetColor(INLINEREMOVED_COLOR);
+	m_cBkModified.SetColor(MODIFIED_COLOR);
+	m_cBkEmpty.SetColor(DIFFSTATE_EMPTY_DEFAULT_BG);
+	m_cBkConflict.SetColor(DIFFSTATE_CONFLICTED_DEFAULT_BG);
+	m_cBkConflictResolved.SetColor(DIFFSTATE_CONFLICTRESOLVED_DEFAULT_BG);
+	m_cFgWhitespaces.SetColor(GetSysColor(COLOR_GRAYTEXT));
+	SetModified();
+}
