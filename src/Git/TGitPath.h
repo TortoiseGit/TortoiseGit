@@ -359,7 +359,7 @@ public:
 	CTGitPath * LookForGitPath(CString path);
 	int	ParserFromLog(BYTE_VECTOR &log, bool parseDeletes = false);
 	int ParserFromLsFile(BYTE_VECTOR &out,bool staged=true);
-	int FillUnRev(unsigned int Action,CTGitPathList *list=NULL);
+	int FillUnRev(unsigned int Action, CTGitPathList *list = nullptr, CString *err = nullptr);
 	int FillBasedOnIndexFlags(unsigned short flag, CTGitPathList* list = nullptr);
 	int GetAction();
 	/**

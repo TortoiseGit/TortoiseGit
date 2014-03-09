@@ -198,7 +198,12 @@ int CGitLogListBase::AsyncDiffThread()
 				for (int j = 0; j < pRev->GetFiles(this).GetCount(); ++j)
 					*action |= pRev->GetFiles(this)[j].m_Action;
 
-				pRev->GetUnRevFiles().FillUnRev(CTGitPath::LOGACTIONS_UNVER);
+				CString err;
+				if (pRev->GetUnRevFiles().FillUnRev(CTGitPath::LOGACTIONS_UNVER, nullptr, &err))
+				{
+					CMessageBox::Show(NULL, _T("Failed to get UnRev file list\n") + err, _T("TortoiseGit"), MB_OK);
+					return -1;
+				}
 
 				InterlockedExchange(&pRev->m_IsDiffFiles, TRUE);
 				InterlockedExchange(&pRev->m_IsFull, TRUE);

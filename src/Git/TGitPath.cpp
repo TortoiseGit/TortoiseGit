@@ -1068,7 +1068,7 @@ int CTGitPathList::ParserFromLsFile(BYTE_VECTOR &out,bool /*staged*/)
 	}
 	return 0;
 }
-int CTGitPathList::FillUnRev(unsigned int action,CTGitPathList *list)
+int CTGitPathList::FillUnRev(unsigned int action, CTGitPathList *list, CString *err)
 {
 	this->Clear();
 	CTGitPath path;
@@ -1099,9 +1099,14 @@ int CTGitPathList::FillUnRev(unsigned int action,CTGitPathList *list)
 					(*list)[i].GetWinPathString());
 		}
 
-		BYTE_VECTOR out;
+		BYTE_VECTOR out, errb;
 		out.clear();
-		g_Git.Run(cmd, &out);
+		if (g_Git.Run(cmd, &out, &errb))
+		{
+			if (err != nullptr)
+				g_Git.StringAppend(err, &errb[0], CP_UTF8, (int)errb.size());
+			return -1;
+		}
 
 		pos=0;
 		CString one;

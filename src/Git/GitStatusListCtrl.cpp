@@ -3985,7 +3985,13 @@ int CGitStatusListCtrl::UpdateUnRevFileList(CTGitPathList &list)
 
 int CGitStatusListCtrl::UpdateUnRevFileList(CTGitPathList *List)
 {
-	this->m_UnRevFileList.FillUnRev(CTGitPath::LOGACTIONS_UNVER,List);
+	CString err;
+	if (m_UnRevFileList.FillUnRev(CTGitPath::LOGACTIONS_UNVER, List, &err))
+	{
+		CMessageBox::Show(NULL, _T("Failed to get UnRev file list\n") + err, _T("TortoiseGit"), MB_OK);
+		return -1;
+	}
+
 	for (int i = 0; i < m_UnRevFileList.GetCount(); ++i)
 	{
 		CTGitPath * gitpatch=(CTGitPath*)&m_UnRevFileList[i];
@@ -3997,7 +4003,13 @@ int CGitStatusListCtrl::UpdateUnRevFileList(CTGitPathList *List)
 
 int CGitStatusListCtrl::UpdateIgnoreFileList(CTGitPathList *List)
 {
-	this->m_IgnoreFileList.FillUnRev(CTGitPath::LOGACTIONS_IGNORE, List);
+	CString err;
+	if (m_IgnoreFileList.FillUnRev(CTGitPath::LOGACTIONS_IGNORE, List, &err))
+	{
+		CMessageBox::Show(NULL, _T("Failed to get Ignore file list\n") + err, _T("TortoiseGit"), MB_OK);
+		return -1;
+	}
+
 	for (int i = 0; i < m_IgnoreFileList.GetCount(); ++i)
 	{
 		CTGitPath * gitpatch=(CTGitPath*)&m_IgnoreFileList[i];
