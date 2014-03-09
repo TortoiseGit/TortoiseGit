@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2007-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -74,6 +74,7 @@ BEGIN_MESSAGE_MAP(CMergeDlg, CResizableStandAloneDialog)
 	CHOOSE_VERSION_EVENT
 	ON_BN_CLICKED(IDOK, &CMergeDlg::OnBnClickedOk)
 	ON_WM_DESTROY()
+	ON_BN_CLICKED(IDC_CHECK_SQUASH, &CMergeDlg::OnBnClickedCheckSquash)
 	ON_BN_CLICKED(IDC_CHECK_MERGE_LOG, &CMergeDlg::OnBnClickedCheckMergeLog)
 	ON_CBN_SELCHANGE(IDC_COMBO_MERGESTRATEGY, &CMergeDlg::OnCbnSelchangeComboMergestrategy)
 	ON_CBN_SELCHANGE(IDC_COMBO_STRATEGYOPTION, &CMergeDlg::OnCbnSelchangeComboStrategyoption)
@@ -121,6 +122,9 @@ BOOL CMergeDlg::OnInitDialog()
 	m_cLogMessage.RegisterContextMenuHandler(this);
 
 	m_cLogMessage.SetText(m_pDefaultText);
+	m_cLogMessage.EnableWindow(!m_bSquash);
+	if (m_bSquash)
+		m_cLogMessage.SetAStyle(STYLE_DEFAULT, ::GetSysColor(COLOR_GRAYTEXT), ::GetSysColor(COLOR_BTNFACE));
 
 	m_History.SetMaxHistoryItems((LONG)CRegDWORD(_T("Software\\TortoiseGit\\MaxHistoryItems"), 25));
 	if (m_History.IsEmpty())
@@ -239,6 +243,13 @@ bool CMergeDlg::HandleMenuItemClick(int cmd, CSciEdit * pSciEdit)
 		return true;
 	}
 	return false;
+}
+
+void CMergeDlg::OnBnClickedCheckSquash()
+{
+	UpdateData(TRUE);
+	m_cLogMessage.EnableWindow(!m_bSquash);
+	m_cLogMessage.SetAStyle(STYLE_DEFAULT, ::GetSysColor(m_bSquash ? COLOR_GRAYTEXT : COLOR_WINDOWTEXT), ::GetSysColor(m_bSquash ? COLOR_BTNFACE : COLOR_WINDOW));
 }
 
 void CMergeDlg::OnBnClickedCheckMergeLog()

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2007-2009,2013 - TortoiseGit
+// Copyright (C) 2007-2011, 2013-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -75,6 +75,7 @@ private:
 	afx_msg void OnBnClickedOk();
 	virtual void OnCancel();
 	afx_msg void OnDestroy();
+	afx_msg void OnBnClickedCheckSquash();
 	afx_msg void OnBnClickedCheckMergeLog();
 	afx_msg void OnCbnSelchangeComboMergestrategy();
 	afx_msg void OnCbnSelchangeComboStrategyoption();
