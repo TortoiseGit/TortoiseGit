@@ -35,6 +35,8 @@ CSettingsTBlame::CSettingsTBlame()
 	, m_sFontName(_T(""))
 	, m_dwTabSize(4)
 	, m_dwDetectMovedOrCopiedLines(BLAME_DETECT_MOVED_OR_COPIED_LINES_DISABLED)
+	, m_dwDetectMovedOrCopiedLinesNumCharactersWithinFile(BLAME_DETECT_MOVED_OR_COPIED_LINES_NUM_CHARACTERS_WITHIN_FILE_DEFAULT)
+	, m_dwDetectMovedOrCopiedLinesNumCharactersFromFiles(BLAME_DETECT_MOVED_OR_COPIED_LINES_NUM_CHARACTERS_FROM_FILES_DEFAULT)
 	, m_bIgnoreWhitespace(0)
 	, m_bShowCompleteLog(0)
 	, m_bFollowRenames(0)
@@ -45,6 +47,8 @@ CSettingsTBlame::CSettingsTBlame()
 	m_regFontSize = CRegDWORD(_T("Software\\TortoiseGit\\BlameFontSize"), 10);
 	m_regTabSize = CRegDWORD(_T("Software\\TortoiseGit\\BlameTabSize"), 4);
 	m_regDetectMovedOrCopiedLines = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseGitBlame\\Workspace\\DetectMovedOrCopiedLines"), BLAME_DETECT_MOVED_OR_COPIED_LINES_DISABLED);
+	m_regDetectMovedOrCopiedLinesNumCharactersWithinFile = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseGitBlame\\Workspace\\DetectMovedOrCopiedLinesNumCharactersWithinFile"), BLAME_DETECT_MOVED_OR_COPIED_LINES_NUM_CHARACTERS_WITHIN_FILE_DEFAULT);
+	m_regDetectMovedOrCopiedLinesNumCharactersFromFiles = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseGitBlame\\Workspace\\DetectMovedOrCopiedLinesNumCharactersFromFiles"), BLAME_DETECT_MOVED_OR_COPIED_LINES_NUM_CHARACTERS_FROM_FILES_DEFAULT);
 	m_regIgnoreWhitespace = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseGitBlame\\Workspace\\IgnoreWhitespace"), 0);
 	m_regShowCompleteLog = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseGitBlame\\Workspace\\ShowCompleteLog"), 1);
 	m_regFollowRenames = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseGitBlame\\Workspace\\FollowRenames"), 0);
@@ -74,6 +78,8 @@ void CSettingsTBlame::DoDataExchange(CDataExchange* pDX)
 	if (m_dwDetectMovedOrCopiedLines == -1){
 		m_dwDetectMovedOrCopiedLines = BLAME_DETECT_MOVED_OR_COPIED_LINES_DISABLED;
 	}
+	DDX_Text(pDX, IDC_DETECT_MOVED_OR_COPIED_LINES_NUM_CHARACTERS_WITHIN_FILE, m_dwDetectMovedOrCopiedLinesNumCharactersWithinFile);
+	DDX_Text(pDX, IDC_DETECT_MOVED_OR_COPIED_LINES_NUM_CHARACTERS_FROM_FILES, m_dwDetectMovedOrCopiedLinesNumCharactersFromFiles);
 	DDX_Check(pDX, IDC_IGNORE_WHITESPACE, m_bIgnoreWhitespace);
 	DDX_Check(pDX, IDC_SHOWCOMPLETELOG, m_bShowCompleteLog);
 	DDX_Check(pDX, IDC_FOLLOWRENAMES, m_bFollowRenames);
@@ -86,6 +92,8 @@ BEGIN_MESSAGE_MAP(CSettingsTBlame, ISettingsPropPage)
 	ON_CBN_SELCHANGE(IDC_FONTNAMES, OnChange)
 	ON_EN_CHANGE(IDC_TABSIZE, OnChange)
 	ON_CBN_SELCHANGE(IDC_DETECT_MOVED_OR_COPIED_LINES, OnChange)
+	ON_EN_CHANGE(IDC_DETECT_MOVED_OR_COPIED_LINES_NUM_CHARACTERS_WITHIN_FILE, OnChange)
+	ON_EN_CHANGE(IDC_DETECT_MOVED_OR_COPIED_LINES_NUM_CHARACTERS_FROM_FILES, OnChange)
 	ON_BN_CLICKED(IDC_IGNORE_WHITESPACE, OnChange)
 	ON_BN_CLICKED(IDC_SHOWCOMPLETELOG, OnChange)
 	ON_BN_CLICKED(IDC_FOLLOWRENAMES, OnChange)
@@ -117,6 +125,8 @@ BOOL CSettingsTBlame::OnInitDialog()
 	m_sFontName = m_regFontName;
 	m_dwFontSize = m_regFontSize;
 	m_dwDetectMovedOrCopiedLines = m_regDetectMovedOrCopiedLines;
+	m_dwDetectMovedOrCopiedLinesNumCharactersWithinFile = m_regDetectMovedOrCopiedLinesNumCharactersWithinFile;
+	m_dwDetectMovedOrCopiedLinesNumCharactersFromFiles = m_regDetectMovedOrCopiedLinesNumCharactersFromFiles;
 	m_bIgnoreWhitespace = m_regIgnoreWhitespace;
 	m_bShowCompleteLog = m_regShowCompleteLog;
 	m_bFollowRenames = m_regFollowRenames;
@@ -208,6 +218,8 @@ BOOL CSettingsTBlame::OnApply()
     Store (m_dwFontSize, m_regFontSize);
     Store (m_dwTabSize, m_regTabSize);
 	Store (m_dwDetectMovedOrCopiedLines, m_regDetectMovedOrCopiedLines);
+	Store (m_dwDetectMovedOrCopiedLinesNumCharactersWithinFile, m_regDetectMovedOrCopiedLinesNumCharactersWithinFile);
+	Store (m_dwDetectMovedOrCopiedLinesNumCharactersFromFiles, m_regDetectMovedOrCopiedLinesNumCharactersFromFiles);
 	Store (m_bIgnoreWhitespace, m_regIgnoreWhitespace);
 	Store (m_bShowCompleteLog, m_regShowCompleteLog);
 	Store (m_bFollowRenames, m_regFollowRenames);
@@ -223,6 +235,16 @@ void CSettingsTBlame::OnBnClickedColor()
 
 void CSettingsTBlame::UpdateDependencies()
 {
+	BOOL enableDetectMovedOrCopiedLinesNumCharactersWithinFile = FALSE;
+	BOOL enableDetectMovedOrCopiedLinesNumCharactersFromFiles = FALSE;
+	if (m_dwDetectMovedOrCopiedLines == BLAME_DETECT_MOVED_OR_COPIED_LINES_WITHIN_FILE)
+	{
+		enableDetectMovedOrCopiedLinesNumCharactersWithinFile = TRUE;
+	}
+	if (m_dwDetectMovedOrCopiedLines == BLAME_DETECT_MOVED_OR_COPIED_LINES_FROM_MODIFIED_FILES || m_dwDetectMovedOrCopiedLines == BLAME_DETECT_MOVED_OR_COPIED_LINES_FROM_EXISTING_FILES_AT_FILE_CREATION || m_dwDetectMovedOrCopiedLines == BLAME_DETECT_MOVED_OR_COPIED_LINES_FROM_EXISTING_FILES)
+	{
+		enableDetectMovedOrCopiedLinesNumCharactersFromFiles = TRUE;
+	}
 	BOOL enableShowCompleteLog = FALSE;
 	BOOL enableFollowRenames = FALSE;
 	if (BlameIsLimitedToOneFilename(m_dwDetectMovedOrCopiedLines))
@@ -242,6 +264,8 @@ void CSettingsTBlame::UpdateDependencies()
 		m_bFollowRenames = FALSE;
 		UpdateData(FALSE);
 	}
+	GetDlgItem(IDC_DETECT_MOVED_OR_COPIED_LINES_NUM_CHARACTERS_WITHIN_FILE)->EnableWindow(enableDetectMovedOrCopiedLinesNumCharactersWithinFile);
+	GetDlgItem(IDC_DETECT_MOVED_OR_COPIED_LINES_NUM_CHARACTERS_FROM_FILES)->EnableWindow(enableDetectMovedOrCopiedLinesNumCharactersFromFiles);
 	GetDlgItem(IDC_SHOWCOMPLETELOG)->EnableWindow(enableShowCompleteLog);
 	GetDlgItem(IDC_FOLLOWRENAMES)->EnableWindow(enableFollowRenames);
 }

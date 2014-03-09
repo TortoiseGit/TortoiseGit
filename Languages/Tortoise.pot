@@ -2083,6 +2083,10 @@ msgstr ""
 msgid "Basic Info"
 msgstr ""
 
+#. Resource IDs: (65535)
+msgid "Between files:"
+msgstr ""
+
 #. Resource IDs: (5060)
 msgid "Big5 (Traditional)"
 msgstr ""
@@ -6292,6 +6296,10 @@ msgstr ""
 msgid "Number of authors:"
 msgstr ""
 
+#. Resource IDs: (65535)
+msgid "Number of characters required for moved or copied line detection:"
+msgstr ""
+
 #. Resource IDs: (1160)
 msgid "Number of weeks:"
 msgstr ""
@@ -9893,6 +9901,10 @@ msgstr ""
 
 #. Resource IDs: (5028)
 msgid "Windows-1258"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Within a file:"
 msgstr ""
 
 #. Resource IDs: (2054)

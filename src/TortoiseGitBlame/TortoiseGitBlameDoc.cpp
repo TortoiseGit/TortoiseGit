@@ -160,6 +160,8 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 
 		CString cmd, option;
 		int dwDetectMovedOrCopiedLines = theApp.GetInt(_T("DetectMovedOrCopiedLines"), BLAME_DETECT_MOVED_OR_COPIED_LINES_DISABLED);
+		int dwDetectMovedOrCopiedLinesNumCharactersWithinFile = theApp.GetInt(_T("DetectMovedOrCopiedLinesNumCharactersWithinFile"), BLAME_DETECT_MOVED_OR_COPIED_LINES_NUM_CHARACTERS_WITHIN_FILE_DEFAULT);
+		int dwDetectMovedOrCopiedLinesNumCharactersFromFiles = theApp.GetInt(_T("DetectMovedOrCopiedLinesNumCharactersFromFiles"), BLAME_DETECT_MOVED_OR_COPIED_LINES_NUM_CHARACTERS_FROM_FILES_DEFAULT);
 		switch(dwDetectMovedOrCopiedLines)
 		{
 		default:
@@ -167,16 +169,16 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 			option.Empty();
 			break;
 		case BLAME_DETECT_MOVED_OR_COPIED_LINES_WITHIN_FILE:
-			option = _T("-M");
+			option.Format(_T("-M%d"), dwDetectMovedOrCopiedLinesNumCharactersWithinFile);
 			break;
 		case BLAME_DETECT_MOVED_OR_COPIED_LINES_FROM_MODIFIED_FILES:
-			option = _T("-C");
+			option.Format(_T("-C%d"), dwDetectMovedOrCopiedLinesNumCharactersFromFiles);
 			break;
 		case BLAME_DETECT_MOVED_OR_COPIED_LINES_FROM_EXISTING_FILES_AT_FILE_CREATION:
-			option = _T("-C -C");
+			option.Format(_T("-C -C%d"), dwDetectMovedOrCopiedLinesNumCharactersFromFiles);
 			break;
 		case BLAME_DETECT_MOVED_OR_COPIED_LINES_FROM_EXISTING_FILES:
-			option = _T("-C -C -C");
+			option.Format(_T("-C -C -C%d"), dwDetectMovedOrCopiedLinesNumCharactersFromFiles);
 			break;
 		}
 

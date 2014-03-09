@@ -67,6 +67,10 @@ private:
 	CComboBox			m_cDetectMovedOrCopiedLines;
 	DWORD				m_dwDetectMovedOrCopiedLines;
 	CRegDWORD			m_regDetectMovedOrCopiedLines;
+	DWORD				m_dwDetectMovedOrCopiedLinesNumCharactersWithinFile;
+	CRegDWORD			m_regDetectMovedOrCopiedLinesNumCharactersWithinFile;
+	DWORD				m_dwDetectMovedOrCopiedLinesNumCharactersFromFiles;
+	CRegDWORD			m_regDetectMovedOrCopiedLinesNumCharactersFromFiles;
 	BOOL				m_bIgnoreWhitespace;
 	CRegDWORD			m_regIgnoreWhitespace;
 	BOOL				m_bShowCompleteLog;
