@@ -39,6 +39,7 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 // 	void OnRepBrowse();
 // 	void OnBranchCheck();
+	void OnBnClickedCheckSquash();
 	void OnCbnSelchangeRemote();
 	void OnPathBrowse();
  	void OnBnClickedPuttykeyAutoload();
@@ -46,6 +47,12 @@ protected:
  	virtual void OnOK();
 
 	DECLARE_MESSAGE_MAP()
+	void OnBnClickedRd();
+	void SetupComboBoxValues();
+
+	ProjectProperties m_ProjectProperties;
+	CSciEdit m_cLogMessage;
+
 public:
 
 	// values in the dialog, Data exachange assigns them to the controls
@@ -53,14 +60,20 @@ public:
 	CHistoryCombo m_PathCtrl;
 	CHistoryCombo m_Remote;
 	CHistoryCombo m_RemoteBranch;
-	CString	m_URL;
+
+	CHistoryCombo m_RemoteURL;
+	CHistoryCombo m_RemoteURLBranch;
+
+	CString	m_URL;	// remote url or path
+	CString	m_BranchName;	// remote branch
 
 	BOOL m_bAutoloadPuttyKeyFile;
 	BOOL m_bSquash;
 
+	// This is the path where we'll create the new subtree
 	CString m_strPath;
+	CString	m_strPuttyKeyFile;
+	CString m_strLogMesage;
 
-	ProjectProperties m_ProjectProperties;
-	CSciEdit m_cLogMessage;
 	TCHAR *m_pDefaultText;
 };
