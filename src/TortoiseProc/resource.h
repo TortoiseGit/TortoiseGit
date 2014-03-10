@@ -1054,6 +1054,7 @@
 #define IDC_COMBOBOXEX_VERSION          1491
 #define IDS_IGNOREALLSPACE              1491
 #define IDS_DIFFOPTION_IGNOREALLSPACE   1491
+#define IDC_OTHER_COMBO                 1491
 #define IDC_OTHER_RD                    1492
 #define IDS_IGNORBLANKLINES             1492
 #define IDS_DIFFOPTION_IGNORBLANKLINES  1492
@@ -1066,6 +1067,8 @@
 #define IDC_RD_URL                      1495
 #define IDC_COLOR_LINE7                 1495
 #define IDS_B_CANNOTFORCECURRENT        1495
+#define IDC_REMOTE_BRANCH2              1495
+#define IDC_OTHER_BRANCH                1495
 #define IDC_REMOTE                      1496
 #define IDC_PACK                        1497
 #define IDC_TAGS                        1499

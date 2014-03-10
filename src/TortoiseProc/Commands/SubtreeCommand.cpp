@@ -19,6 +19,9 @@
 #include "stdafx.h"
 #include "SubtreeCommand.h"
 #include "SubtreeAddDlg.h"
+#include "AppUtils.h"
+#include "MessageBox.h"
+#include "ProgressDlg.h"
 
 
 
@@ -36,32 +39,40 @@ bool SubtreeAddCommand::Execute()
 // 	dlg.m_strProject = g_Git.m_CurrentDir;
 	if( dlg.DoModal() == IDOK )
 	{
-// 		if (dlg.m_bAutoloadPuttyKeyFile)
-// 			CAppUtils::LaunchPAgent(&dlg.m_strPuttyKeyFile);
-// 
-// 		CString cmd;
-// 		if(dlg.m_strPath.Left(g_Git.m_CurrentDir.GetLength()) == g_Git.m_CurrentDir)
-// 			dlg.m_strPath = dlg.m_strPath.Right(dlg.m_strPath.GetLength()-g_Git.m_CurrentDir.GetLength()-1);
-// 
-// 		CString branch;
-// 		if(dlg.m_bBranch)
-// 			branch.Format(_T(" -b %s "), dlg.m_strBranch);
-// 
-// 		CString force;
-// 		if (dlg.m_bForce)
-// 			force = _T("--force");
-// 
-// 		dlg.m_strPath.Replace(_T('\\'),_T('/'));
+ 		if (dlg.m_bAutoloadPuttyKeyFile)
+ 			CAppUtils::LaunchPAgent(&dlg.m_strPuttyKeyFile);
+ 
+ 		CString cmd;
+		CString args;
+ 		dlg.m_strPath.Replace(_T('\\'),_T('/'));
 // 		dlg.m_strRepos.Replace(_T('\\'),_T('/'));
 // 
-// 		cmd.Format(_T("git.exe submodule add %s %s -- \"%s\"  \"%s\""),
-// 			branch, force,
-// 			dlg.m_strRepos, dlg.m_strPath);
-// 
-// 		CProgressDlg progress;
-// 		progress.m_GitCmd=cmd;
-// 		progress.DoModal();
-// 
+		// remove the target if it's empty so we can re-create it.
+		CTGitPath path = g_Git.m_CurrentDir + _T("\\") + dlg.m_strPath;
+		if (path.Exists() && path.IsDirectory() && PathIsDirectoryEmpty(path.GetWinPath()))
+			path.Delete(false);
+
+		if (dlg.m_bSquash)
+			args = _T("--squash");
+
+		CString commitMessage;
+		if (!dlg.m_strLogMesage.IsEmpty())
+		{
+			commitMessage = dlg.m_strLogMesage;
+			commitMessage.Replace(_T("\""), _T("\\\""));
+			commitMessage.Format(_T("-m \"%s\""), commitMessage);
+		}
+
+ 		cmd.Format(_T("git.exe subtree add %s --prefix=\"%s\" \"%s\" %s %s"),
+ 			args, dlg.m_strPath, dlg.m_URL, dlg.m_BranchName, commitMessage);
+
+		// Debug testing
+//		CMessageBox::Show(NULL, cmd, _T("TortoiseGit"), MB_OK| MB_ICONINFORMATION);
+
+ 		CProgressDlg progress;
+ 		progress.m_GitCmd=cmd;
+ 		progress.DoModal();
+ 
 // 		if (progress.m_GitStatus == 0)
 // 		{
 // 			if (dlg.m_bAutoloadPuttyKeyFile)

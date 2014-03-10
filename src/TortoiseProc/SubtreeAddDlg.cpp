@@ -52,6 +52,8 @@ void CSubtreeAddDlg::DoDataExchange(CDataExchange* pDX)
 	__super::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_REMOTE_COMBO, m_Remote);
 	DDX_Control(pDX, IDC_REMOTE_BRANCH, m_RemoteBranch);
+	DDX_Control(pDX, IDC_OTHER_COMBO, m_RemoteURL);
+	DDX_Control(pDX, IDC_OTHER_BRANCH, m_RemoteURLBranch);
 	DDX_Control(pDX, IDC_LOCAL_PATH, m_PathCtrl);
 	DDX_Control(pDX, IDC_LOGMESSAGE, m_cLogMessage);
 	DDX_Control(pDX, IDC_PUTTYKEYFILE, m_PuttyKeyCombo);
@@ -64,6 +66,9 @@ BEGIN_MESSAGE_MAP(CSubtreeAddDlg, CResizableStandAloneDialog)
 	ON_COMMAND(IDC_LOCAL_PATH_BROWSE, OnPathBrowse)
 	ON_BN_CLICKED(IDC_PUTTYKEY_AUTOLOAD, OnBnClickedPuttykeyAutoload)
 	ON_BN_CLICKED(IDC_PUTTYKEYFILE_BROWSE, OnBnClickedPuttykeyfileBrowse)
+	ON_BN_CLICKED(IDC_CHECK_SQUASH, OnBnClickedCheckSquash)
+	ON_BN_CLICKED(IDC_REMOTE_RD, OnBnClickedRd)
+	ON_BN_CLICKED(IDC_OTHER_RD, OnBnClickedRd)
 END_MESSAGE_MAP()
 
 BOOL CSubtreeAddDlg::OnInitDialog()
@@ -74,7 +79,9 @@ BOOL CSubtreeAddDlg::OnInitDialog()
 	// source group (top, horizontal stretch)
 	AddAnchor(IDC_STATIC_SOURCE, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_REMOTE_COMBO, TOP_LEFT, TOP_RIGHT);		// repo dropdown
+	AddAnchor(IDC_OTHER_COMBO, TOP_LEFT, TOP_RIGHT);		// repo dropdown
 	AddAnchor(IDC_REMOTE_BRANCH, TOP_LEFT, TOP_RIGHT);		// branch dropdown
+	AddAnchor(IDC_OTHER_BRANCH, TOP_LEFT, TOP_RIGHT);		// branch dropdown
 	AddAnchor(IDC_REP_BROWSE, TOP_RIGHT);					// ... browse button (align top right)
 
 	// dest group (top, horizontal stretch)
@@ -117,88 +124,92 @@ BOOL CSubtreeAddDlg::OnInitDialog()
 	// For the init, we'll default to, arbitrary url:
 	// A) clipboard -- like clone
 	// B) history init source -- like clone / submodule
-	CheckRadioButton(IDC_REMOTE_RD,IDC_OTHER_RD,IDC_REMOTE_RD);
+	CheckRadioButton(IDC_REMOTE_RD,IDC_OTHER_RD,IDC_OTHER_RD);
 
-	m_Remote.SetCaseSensitive(TRUE);
-	m_Remote.SetURLHistory(TRUE);
-	m_Remote.LoadHistory(_T("Software\\TortoiseGit\\History\\repoURLS"), _T("url"));
-	if(m_URL.IsEmpty())
-	{
-		CString str = CAppUtils::GetClipboardLink(_T("git clone "));
-		str.Trim();
-		if(str.IsEmpty())
-			m_Remote.SetCurSel(0);
-		else
-			m_Remote.SetWindowText(str);
-	}
-	else
-		m_Remote.SetWindowText(m_URL);
+	SetupComboBoxValues();
 
+	OnBnClickedRd();
 
-
-	//Select remote from current branch
-	CString currentBranch = g_Git.GetSymbolicRef();
-	CString configName;
-	configName.Format(L"branch.%s.remote", currentBranch);
-	CString remoteStr = /*m_configPullRemote = */g_Git.GetConfigValue(configName);
+// 	m_Remote.SetCaseSensitive(TRUE);
+// 	m_Remote.SetURLHistory(TRUE);
+// 	m_Remote.LoadHistory(_T("Software\\TortoiseGit\\History\\repoURLS"), _T("url"));
+// 	if(m_URL.IsEmpty())
+// 	{
+// 		CString str = CAppUtils::GetClipboardLink(_T("git clone "));
+// 		str.Trim();
+// 		if(str.IsEmpty())
+// 			m_Remote.SetCurSel(0);
+// 		else
+// 			m_Remote.SetWindowText(str);
+// 	}
+// 	else
+// 		m_Remote.SetWindowText(m_URL);
 
 
-// 	if(pullRemote.IsEmpty())
-// 		pullRemote = m_RemoteReg;
-
-// 	if (!m_PreSelectRemote.IsEmpty())
-// 		pullRemote = m_PreSelectRemote;
-
-	STRING_VECTOR list;
-	int sel=0;
-	if(!g_Git.GetRemoteList(list))
-	{
-		for (unsigned int i = 0; i < list.size(); ++i)
-		{
-			m_Remote.AddString(list[i]);
-			if (list[i] == remoteStr)
-				sel = i;
-		}
-	}
-	m_Remote.SetCurSel(sel);
-	OnCbnSelchangeRemote();
-
-
-	//Select branch from current
-	configName.Format(L"branch.%s.merge", currentBranch);
-	CString branchStr = /*m_configPullBranch = */CGit::StripRefName(g_Git.GetConfigValue(configName));
-	// 	if (branchStr.IsEmpty())
-	// 		m_RemoteBranch.AddString(currentBranch);
-	// 	else
-	// 		m_RemoteBranch.AddString(branchStr);
-
-	STRING_VECTOR brList;
-	int brsel=0;
-	if(!g_Git.GetBranchList(brList, NULL, CGit::BRANCH_LOCAL))
-	{
-		for (unsigned int i = 0; i < brList.size(); ++i)
-		{
-			m_RemoteBranch.AddString(brList[i]);
-			if (brList[i] == branchStr)
-				brsel = i;
-		}
-	}
-	m_RemoteBranch.SetCurSel(brsel);
-
-
-
-
-
+// 	//Select remote from current branch
+// 	CString currentBranch = g_Git.GetSymbolicRef();
+// 	CString configName;
+// 	configName.Format(L"branch.%s.remote", currentBranch);
+// 	CString remoteStr = /*m_configPullRemote = */g_Git.GetConfigValue(configName);
+// 
+// 
+// 	// 	if(pullRemote.IsEmpty())
+// 	// 		pullRemote = m_RemoteReg;
+// 
+// 	// 	if (!m_PreSelectRemote.IsEmpty())
+// 	// 		pullRemote = m_PreSelectRemote;
+// 
+// 	STRING_VECTOR list;
+// 	int sel=0;
+// 	if(!g_Git.GetRemoteList(list))
+// 	{
+// 		for (unsigned int i = 0; i < list.size(); ++i)
+// 		{
+// 			m_Remote.AddString(list[i]);
+// 			if (list[i] == remoteStr)
+// 				sel = i;
+// 		}
+// 	}
+// 	m_Remote.SetCurSel(sel);
+// 	OnCbnSelchangeRemote();
+// 
+// 
+// 	//Select branch from current
+// 	configName.Format(L"branch.%s.merge", currentBranch);
+// 	CString branchStr = /*m_configPullBranch = */CGit::StripRefName(g_Git.GetConfigValue(configName));
+// 	// 	if (branchStr.IsEmpty())
+// 	// 		m_RemoteBranch.AddString(currentBranch);
+// 	// 	else
+// 	// 		m_RemoteBranch.AddString(branchStr);
+// 
+// 	STRING_VECTOR brList;
+// 	int brsel=0;
+// 	if(!g_Git.GetBranchList(brList, NULL, CGit::BRANCH_LOCAL))
+// 	{
+// 		for (unsigned int i = 0; i < brList.size(); ++i)
+// 		{
+// 			m_RemoteBranch.AddString(brList[i]);
+// 			if (brList[i] == branchStr)
+// 				brsel = i;
+// 		}
+// 	}
+// 	m_RemoteBranch.SetCurSel(brsel);
+// 
 
 	m_PathCtrl.SetPathHistory(true);
 	m_PathCtrl.LoadHistory(_T("Software\\TortoiseGit\\History\\SubtreePath"), _T("url"));
 	m_PathCtrl.SetWindowText(m_strPath);
 	
+
 	m_ProjectProperties.ReadProps();
 	m_cLogMessage.Init(m_ProjectProperties);
 	m_cLogMessage.SetFont((CString)CRegString(_T("Software\\TortoiseGit\\LogFontName"), _T("Courier New")), (DWORD)CRegDWORD(_T("Software\\TortoiseGit\\LogFontSize"), 8));
 	m_cLogMessage.RegisterContextMenuHandler(this);
 	m_cLogMessage.SetText(m_pDefaultText);
+	m_cLogMessage.EnableWindow(m_bSquash);
+	if (!m_bSquash)
+		m_cLogMessage.SetAStyle(STYLE_DEFAULT, ::GetSysColor(COLOR_GRAYTEXT), ::GetSysColor(COLOR_BTNFACE));
+
 
 	m_PuttyKeyCombo.SetPathHistory(TRUE);
 	m_PuttyKeyCombo.LoadHistory(_T("Software\\TortoiseGit\\History\\puttykey"), _T("key"));
@@ -248,52 +259,62 @@ void CSubtreeAddDlg::OnPathBrowse()
 	}
 }
 
+void CSubtreeAddDlg::OnBnClickedRd()
+{
+	int choice = GetCheckedRadioButton(IDC_REMOTE_RD,IDC_OTHER_RD);
+	if( choice == IDC_OTHER_RD)
+	{
+//		m_Remote.ModifyStyleEx(CBS_DROPDOWNLIST, CBS_DROPDOWN, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER);
+		m_Remote.ShowWindow(SW_HIDE);
+		m_RemoteBranch.ShowWindow(SW_HIDE);
+		m_RemoteURL.ShowWindow(SW_SHOW);
+		m_RemoteURLBranch.ShowWindow(SW_SHOW);
+
+	}
+	else if( choice == IDC_REMOTE_RD)
+	{
+	//	m_Remote.ModifyStyleEx(CBS_DROPDOWN, CBS_DROPDOWNLIST, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER);
+		m_RemoteURL.ShowWindow(SW_HIDE);
+		m_RemoteURLBranch.ShowWindow(SW_HIDE);
+		m_Remote.ShowWindow(SW_SHOW);
+		m_RemoteBranch.ShowWindow(SW_SHOW);
+
+	}
+}
+
+void CSubtreeAddDlg::OnBnClickedCheckSquash()
+{
+	UpdateData(TRUE);
+	m_cLogMessage.EnableWindow(m_bSquash);
+	m_cLogMessage.SetAStyle(STYLE_DEFAULT, ::GetSysColor(m_bSquash ? COLOR_WINDOWTEXT : COLOR_GRAYTEXT), ::GetSysColor(m_bSquash ? COLOR_WINDOW : COLOR_BTNFACE));
+}
+
+
 void CSubtreeAddDlg::OnCbnSelchangeRemote()
 {
-// 	CString remote = m_Remote.GetString();
-// 	if (remote.IsEmpty() || remote == _T("- all -"))
-// 	{
-// 		GetDlgItem(IDC_STATIC_TAGOPT)->SetWindowText(_T(""));
-// 		GetDlgItem(IDC_STATIC_PRUNE)->SetWindowText(_T(""));
-// 		return;
-// 	}
-// 
-// 	CString key;
-// 	key.Format(_T("remote.%s.tagopt"), remote);
-// 	CString tagopt = g_Git.GetConfigValue(key);
-// 	if (tagopt == "--no-tags")
-// 		tagopt = CString(MAKEINTRESOURCE(IDS_NONE));
-// 	else if (tagopt == "--tags")
-// 		tagopt = CString(MAKEINTRESOURCE(CAppUtils::GetMsysgitVersion() < 0x01090000 ? IDS_FETCH_TAGS_ONLY : IDS_ALL));
-// 	else
-// 		tagopt = CString(MAKEINTRESOURCE(IDS_FETCH_REACHABLE));
-// 	CString value;
-// 	value.Format(_T("%s: %s"), CString(MAKEINTRESOURCE(IDS_DEFAULT)), tagopt);
-// 	GetDlgItem(IDC_STATIC_TAGOPT)->SetWindowText(value);
-// 
-// 	CString prune;
-// 	if (CAppUtils::GetMsysgitVersion() >= 0x01080500)
-// 	{
-// 		key.Format(_T("remote.%s.prune"), remote);
-// 		prune = g_Git.GetConfigValue(key);
-// 		if (prune.IsEmpty())
-// 			prune = g_Git.GetConfigValue(_T("fetch.prune"));
-// 	}
-// 	if (!prune.IsEmpty())
-// 	{
-// 		CString value;
-// 		value.Format(_T("%s: %s"), CString(MAKEINTRESOURCE(IDS_DEFAULT)), prune);
-// 		GetDlgItem(IDC_STATIC_PRUNE)->SetWindowText(value);
-// 	}
-// 	else
-// 		GetDlgItem(IDC_STATIC_PRUNE)->SetWindowText(_T(""));
-
 }
 
 void CSubtreeAddDlg::OnOK()
 {
-	m_Remote.GetWindowTextW(m_URL);
+	int choice = GetCheckedRadioButton(IDC_REMOTE_RD,IDC_OTHER_RD);
+	if( choice == IDC_OTHER_RD)
+	{
+		m_RemoteURL.GetWindowTextW(m_URL);
+		m_RemoteURLBranch.GetWindowTextW(m_BranchName);
+	}
+	else if( choice == IDC_REMOTE_RD)
+	{
+		m_Remote.GetWindowTextW(m_URL);
+		m_RemoteBranch.GetWindowTextW(m_BranchName);
+	}
+
+	m_strLogMesage = m_cLogMessage.GetText() ;
+	if( m_strLogMesage == CString(m_pDefaultText) )
+		m_strLogMesage.Empty();
+
+	m_PathCtrl.GetWindowTextW(m_strPath);
 	m_URL.Trim();
+	m_BranchName.Trim();
 	UpdateData(TRUE);
 	if(m_URL.IsEmpty() || m_strPath.IsEmpty())
 	{
@@ -301,6 +322,78 @@ void CSubtreeAddDlg::OnOK()
 //		m_bSaving = false;
 		return;
 	}
+	__super::OnOK();
+}
+
+void CSubtreeAddDlg::SetupComboBoxValues()
+{
+	m_RemoteURL.SetCaseSensitive(TRUE);
+	m_RemoteURL.SetURLHistory(TRUE);
+	m_RemoteURL.LoadHistory(_T("Software\\TortoiseGit\\History\\repoURLS"), _T("url"));
+	m_Remote.SetCaseSensitive(TRUE);
+
+	CString clippath = CAppUtils::GetClipboardLink(_T("git clone"), 1);
+	clippath.Trim();
+	if (clippath.IsEmpty())
+	{
+		m_RemoteURL.SetCurSel(0);
+		m_RemoteURLBranch.SetWindowTextW(_T("master"));
+	}
+	else
+	{
+		int argSeparator = clippath.Find(' ');
+		if (1 < argSeparator && argSeparator + 2 < clippath.GetLength())
+		{
+			m_RemoteURL.SetWindowText(clippath.Left(argSeparator));
+			m_RemoteURLBranch.SetWindowText(clippath.Mid(argSeparator + 1));
+		}
+		else
+		{
+			m_RemoteURL.SetWindowText(clippath);
+			m_RemoteURLBranch.SetWindowTextW(_T("master"));
+		}
+	}
+
+	//Select remote from current branch
+	CString currentBranch = g_Git.GetSymbolicRef();
+	CString configName;
+	configName.Format(L"branch.%s.remote", currentBranch);
+	CString remoteStr = g_Git.GetConfigValue(configName);	// copied from pull
+
+	STRING_VECTOR list;
+	int sel=0;
+	if(!g_Git.GetRemoteList(list))
+	{
+		for (unsigned int i = 0; i < list.size(); ++i)
+		{
+			m_Remote.AddString(list[i]);
+			if (list[i] == remoteStr)
+				sel = i;
+		}
+	}
+	m_Remote.SetCurSel(sel);
+	OnCbnSelchangeRemote();
+	OnBnClickedRd();
+
+
+	// TODO: Seems like it'd be better to look at the refs to check what branches have been fetched for the selected remote
+	//Select branch from current
+	configName.Format(L"branch.%s.merge", currentBranch);
+	CString branchStr = CGit::StripRefName(g_Git.GetConfigValue(configName));
+
+	STRING_VECTOR brList;
+	int brsel=0;
+	if(!g_Git.GetBranchList(brList, NULL, CGit::BRANCH_LOCAL))
+	{
+		for (unsigned int i = 0; i < brList.size(); ++i)
+		{
+			m_RemoteBranch.AddString(brList[i]);
+			if (brList[i] == branchStr)
+				brsel = i;
+		}
+	}
+	m_RemoteBranch.SetCurSel(brsel);
+
 }
 
 // CAddRemoteDlg message handlers
