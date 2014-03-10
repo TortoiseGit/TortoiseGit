@@ -38,6 +38,7 @@ IDI_LINEENDINGLF        ICON                    "LineEndingLF.ico"
 IDI_CONFLICTEDIGNOREDLINE ICON                    "lineconflictedignored.ico"
 IDI_LINEEDITED          ICON                    "lineedited.ico"
 IDI_MOVEDLINE           ICON                    "moved.ico"
+IDI_LINEMARKED          ICON                    "linemarked.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -875,6 +876,10 @@ STRINGTABLE
 BEGIN
     IDS_VIEWCONTEXTMENU_EOL "End of Line Style"
     IDS_VIEWCONTEXTMENU_ENCODING "File Encoding"
+    IDS_VIEWCONTEXTMENU_MARKBLOCK "Mark this block"
+    IDS_VIEWCONTEXTMENU_UNMARKBLOCK "Unmark this block"
+    IDS_VIEWCONTEXTMENU_USELEFTFILEEXCEPTMARKED 
+                            "Use left file except marked blocks"
 END
 
 STRINGTABLE

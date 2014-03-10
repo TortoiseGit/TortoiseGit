@@ -187,6 +187,7 @@ public: // methods
 	virtual void	UseLeftFile() {return UseViewFile(m_pwndLeft); }
 	virtual void	UseRightBlock() {return UseViewBlock(m_pwndRight); }
 	virtual void	UseRightFile() {return UseViewFile(m_pwndRight); }
+	virtual void	UseLeftFileExceptMarked() { return UseViewFileExceptMarked(m_pwndLeft); }
 
 	// ViewData methods
 	void			InsertViewData(int index, const CString& sLine, DiffStates state, int linenumber, EOL ending, HIDESTATE hide, int movedline);
@@ -201,6 +202,7 @@ public: // methods
 	int				GetViewMovedIndex(int index) {return m_pViewData->GetMovedIndex(index); }
 	int				FindViewLineNumber(int number) {return m_pViewData->FindLineNumber(number); }
 	EOL				GetViewLineEnding(int index) const {return m_pViewData->GetLineEnding(index); }
+	bool			GetViewMarked(int index) const {return m_pViewData->GetMarked(index); }
 
 	int				GetViewCount() const {return m_pViewData ? m_pViewData->GetCount() : -1; }
 
@@ -209,6 +211,7 @@ public: // methods
 	void			SetViewLine(int index, const CString& sLine);
 	void			SetViewLineNumber(int index, int linenumber);
 	void			SetViewLineEnding(int index, EOL ending);
+	void			SetViewMarked(int index, bool marked);
 
 	static bool		IsViewGood(const CBaseView* view ) { return (view != 0) && view->IsWindowVisible(); }
 	static CBaseView * GetFirstGoodView();
@@ -429,8 +432,11 @@ protected:  // methods
 
 	virtual void	UseBothBlocks(CBaseView * /*pwndFirst*/, CBaseView * /*pwndLast*/) {};
 	virtual void	UseViewBlock(CBaseView * /*pwndView*/) {}
-	void			UseViewBlock(CBaseView * pwndView, int nFirstViewLine, int nLastViewLine);
+	void			UseViewBlock(CBaseView * pwndView, int nFirstViewLine, int nLastViewLine, bool skipMarked = false);
 	virtual void	UseViewFile(CBaseView * /*pwndView*/) {}
+	virtual void	MarkBlock(bool /*marked*/) {}
+	void			MarkBlock(bool marked, int nFirstViewLine, int nLastViewLine);
+	void			UseViewFileExceptMarked(CBaseView *pwndView);
 
 	virtual void	AddContextItems(CIconMenu& popup, DiffStates state);
 	void			AddCutCopyAndPaste(CIconMenu& popup);
@@ -511,6 +517,7 @@ protected:  // variables
 	HICON			m_hLineEndingLF;
 
 	HICON			m_hMovedIcon;
+	HICON			m_hMarkedIcon;
 
 	LOGFONT			m_lfBaseFont;
 	static const int fontsCount = 4;
@@ -575,6 +582,7 @@ protected:  // variables
 			ICN_ADD,
 			ICN_REMOVED,
 			ICN_MOVED,
+			ICN_MARKED,
 			ICN_CONFLICT,
 			ICN_CONFLICTIGNORED,
 		} eIcon;
@@ -597,6 +605,9 @@ protected:  // variables
 		POPUPCOMMAND_USELEFTFILE,
 		POPUPCOMMAND_USEBOTHLEFTFIRST,
 		POPUPCOMMAND_USEBOTHRIGHTFIRST,
+		POPUPCOMMAND_MARKBLOCK,
+		POPUPCOMMAND_UNMARKBLOCK,
+		POPUPCOMMAND_USELEFTFILEEXCEPTMARKED,
 		// multiple writable views
 		POPUPCOMMAND_PREPENDFROMRIGHT,
 		POPUPCOMMAND_REPLACEBYRIGHT,

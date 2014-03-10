@@ -380,6 +380,7 @@
     <None Include="..\Resources\LineEndingCRLF.ico" />
     <None Include="..\Resources\LineEndingLF.ico" />
     <None Include="..\Resources\lineequal.ico" />
+    <None Include="..\Resources\linemarked.ico" />
     <None Include="..\Resources\lineremoved.ico" />
     <None Include="..\Resources\linewhitespace.ico" />
     <None Include="..\Resources\Margin.cur" />
