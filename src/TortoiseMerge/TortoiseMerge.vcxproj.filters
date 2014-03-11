@@ -550,6 +550,9 @@
     <None Include="..\Resources\lineequal.ico">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="..\Resources\linemarked.ico">
+      <Filter>Resource Files</Filter>
+    </None>
     <None Include="..\Resources\lineremoved.ico">
       <Filter>Resource Files</Filter>
     </None>

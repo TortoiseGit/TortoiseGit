@@ -43,6 +43,7 @@ public:
 		, movedFrom(true)
 		, ending(EOL_AUTOLINE)
 		, hidestate(HIDESTATE_HIDDEN)
+		, marked(false)
 	{
 	}
 
@@ -51,13 +52,15 @@ public:
 			DiffStates stateInit,
 			int linenumberInit,
 			EOL endingInit,
-			HIDESTATE hideInit)
+			HIDESTATE hideInit,
+			bool markedInit = false)
 		: state(stateInit)
 		, linenumber(linenumberInit)
 		, movedIndex(-1)
 		, movedFrom(true)
 		, ending(endingInit)
 		, hidestate(hideInit)
+		, marked(markedInit)
 	{
 		sLine=sLineInit;
 	}
@@ -69,6 +72,7 @@ public:
 	bool			movedFrom;
 	EOL				ending;
 	HIDESTATE 		hidestate;
+	bool			marked;
 };
 
 /**
@@ -98,6 +102,7 @@ public:
 	bool			IsMovedFrom(int index) const {return m_data.size() ? m_data[index].movedFrom : true;}
 	int				FindLineNumber(int number) const;
 	EOL				GetLineEnding(int index) const {return m_data[index].ending;}
+	bool			GetMarked(int index) const {return m_data[index].marked;}
 
 	int				GetCount() const { return (int)m_data.size();}
 
@@ -108,6 +113,7 @@ public:
 	void			SetLineEnding(int index, EOL ending) {m_data[index].ending = ending;}
 	void			SetMovedIndex(int index, int movedIndex, bool movedFrom) {m_data[index].movedIndex = movedIndex; m_data[index].movedFrom = movedFrom;}
 	void			SetLineHideState(int index, HIDESTATE state) {m_data[index].hidestate = state;}
+	void			SetMarked(int index, bool marked) {m_data[index].marked = marked;}
 
 	void			Clear() {m_data.clear();}
 	void			Reserve(int length) {m_data.reserve(length);}

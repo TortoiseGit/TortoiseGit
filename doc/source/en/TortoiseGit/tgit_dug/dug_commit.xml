@@ -169,6 +169,28 @@
 			can edit the file, e.g. in TortoiseGitMerge and undo all
 			the changes you don't want to commit. After saving those
 			changes you can commit the file.
+			<tip>
+				<title>Using TortoiseGitMerge</title>
+				<para>
+					If you use TortoiseGitMerge to edit the file, you can either edit
+					the changes as you're used to, or mark
+					all the changes that you want to include. <action>right click</action>
+					on a modified block and use
+					<menuchoice>
+						<guimenu>Context Menu</guimenu>
+						<guimenuitem>Mark this block</guimenuitem>
+					</menuchoice>
+					to include that change.
+					Finally <action>right click</action>
+					and use
+					<menuchoice>
+						<guimenu>Context Menu</guimenu>
+						<guimenuitem>Use left file except marked blocks</guimenuitem>
+					</menuchoice>
+					which will invert your changes (unmarked blocks) that you
+					don't want to them to appear in current commit.
+				</para>
+			</tip>
 		</para>
 		<para>
 			After the commit is done, the copy of the file is restored

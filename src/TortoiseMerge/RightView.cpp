@@ -1,6 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2006-2013 - TortoiseSVN
+// Copyright (C) 2006-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -190,6 +190,22 @@ void CRightView::UseLeftFile()
 	return UseViewBlock(m_pwndLeft, nFirstViewLine, nLastViewLine);
 }
 
+void CRightView::MarkBlock(bool marked)
+{
+	int nFirstViewLine = 0;
+	int nLastViewLine  = 0;
+
+	if (!IsWritable())
+		return;
+	if (!GetViewSelection(nFirstViewLine, nLastViewLine))
+		return;
+	CBaseView::MarkBlock(marked, nFirstViewLine, nLastViewLine);
+}
+
+void CRightView::UseViewFileExceptMarked()
+{
+	CBaseView::UseViewFileExceptMarked(m_pwndLeft);
+}
 
 void CRightView::AddContextItems(CIconMenu& popup, DiffStates state)
 {
@@ -222,6 +238,24 @@ void CRightView::AddContextItems(CIconMenu& popup, DiffStates state)
 			}
 			popup.AppendMenu(MF_SEPARATOR, NULL);
 		}
+
+		int nFirstViewLine = 0;
+		int nLastViewLine  = 0;
+		if (GetViewSelection(nFirstViewLine, nLastViewLine))
+		{
+			bool showMark = true;
+			bool showUnmark = true;
+			if (nFirstViewLine == nLastViewLine)
+			{
+				showUnmark = GetViewMarked(nFirstViewLine);
+				showMark = !showUnmark;
+			}
+			if (showMark)
+				popup.AppendMenuIcon(POPUPCOMMAND_MARKBLOCK, IDS_VIEWCONTEXTMENU_MARKBLOCK);
+			if (showUnmark)
+				popup.AppendMenuIcon(POPUPCOMMAND_UNMARKBLOCK, IDS_VIEWCONTEXTMENU_UNMARKBLOCK);
+		}
+		popup.AppendMenuIcon(POPUPCOMMAND_USELEFTFILEEXCEPTMARKED, IDS_VIEWCONTEXTMENU_USELEFTFILEEXCEPTMARKED);
 		popup.AppendMenuIcon(POPUPCOMMAND_USELEFTFILE, IDS_VIEWCONTEXTMENU_USEOTHERFILE);
 		if (IsLeftViewGood() && !m_pwndLeft->IsReadonly())
 		{

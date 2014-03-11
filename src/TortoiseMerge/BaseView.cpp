@@ -134,6 +134,7 @@ CBaseView::CBaseView()
 	m_hLineEndingLF = LoadIcon(IDI_LINEENDINGLF);
 	m_hEditedIcon = LoadIcon(IDI_LINEEDITED);
 	m_hMovedIcon = LoadIcon(IDI_MOVEDLINE);
+	m_hMarkedIcon = LoadIcon(IDI_LINEMARKED);
 	m_margincursor = (HCURSOR)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDC_MARGINCURSOR), IMAGE_CURSOR, 0, 0, LR_DEFAULTSIZE);
 
 	for (int i=0; i<1024; ++i)
@@ -176,6 +177,7 @@ CBaseView::~CBaseView()
 	DestroyIcon(m_hLineEndingLF);
 	DestroyIcon(m_hEditedIcon);
 	DestroyIcon(m_hMovedIcon);
+	DestroyIcon(m_hMarkedIcon);
 	DestroyCursor(m_margincursor);
 }
 
@@ -1203,6 +1205,8 @@ void CBaseView::DrawMargin(CDC *pdc, const CRect &rect, int nLineIndex)
 			}
 			if (m_pViewData->GetMovedIndex(nViewLine) >= 0)
 				eIcon = TScreenedViewLine::ICN_MOVED;
+			if (m_pViewData->GetMarked(nViewLine))
+				eIcon = TScreenedViewLine::ICN_MARKED;
 			m_ScreenedViewLine[nViewLine].eIcon = eIcon;
 		}
 		switch (eIcon)
@@ -1233,6 +1237,9 @@ void CBaseView::DrawMargin(CDC *pdc, const CRect &rect, int nLineIndex)
 			break;
 		case TScreenedViewLine::ICN_MOVED:
 			icon = m_hMovedIcon;
+			break;
+		case TScreenedViewLine::ICN_MARKED:
+			icon = m_hMarkedIcon;
 			break;
 		}
 
@@ -2363,6 +2370,15 @@ void CBaseView::OnContextMenu(CPoint point, DiffStates state)
 		break;
 	case POPUPCOMMAND_USEBOTHRIGHTFIRST:
 		m_pwndRight->UseBothRightFirst();
+		break;
+	case POPUPCOMMAND_MARKBLOCK:
+		m_pwndRight->MarkBlock(true);
+		break;
+	case POPUPCOMMAND_UNMARKBLOCK:
+		m_pwndRight->MarkBlock(false);
+		break;
+	case POPUPCOMMAND_USELEFTFILEEXCEPTMARKED:
+		m_pwndRight->UseLeftFileExceptMarked();
 		break;
 	// 2-pane view multiedit commands; target is left view
 	case POPUPCOMMAND_PREPENDFROMRIGHT:
@@ -4916,6 +4932,11 @@ void CBaseView::SetViewLineEnding( int index, EOL ending )
 	m_pViewData->SetLineEnding(index, ending);
 }
 
+void CBaseView::SetViewMarked( int index, bool marked )
+{
+	m_pViewData->SetMarked(index, marked);
+}
+
 
 BOOL CBaseView::GetViewSelection( int& start, int& end ) const
 {
@@ -5732,7 +5753,7 @@ void CBaseView::AskUserForNewLineEndingsAndTextType(int nTextId)
 /**
 	Replaces lines from source view to this
 */
-void CBaseView::UseViewBlock(CBaseView * pwndView, int nFirstViewLine, int nLastViewLine)
+void CBaseView::UseViewBlock(CBaseView * pwndView, int nFirstViewLine, int nLastViewLine, bool skipMarked)
 {
 	if (!IsViewGood(pwndView))
 		return;
@@ -5742,6 +5763,8 @@ void CBaseView::UseViewBlock(CBaseView * pwndView, int nFirstViewLine, int nLast
 
 	for (int viewLine = nFirstViewLine; viewLine <= nLastViewLine; viewLine++)
 	{
+		if (skipMarked && GetViewMarked(viewLine))
+			continue;
 		viewdata line = pwndView->GetViewData(viewLine);
 		if (line.ending != EOL_NOENDING)
 			line.ending = m_lineendings;
@@ -5839,6 +5862,20 @@ void CBaseView::UseViewBlock(CBaseView * pwndView, int nFirstViewLine, int nLast
 	BuildAllScreen2ViewVector();
 	pwndView->Invalidate();
 	RefreshViews();
+}
+
+void CBaseView::MarkBlock(bool marked, int nFirstViewLine, int nLastViewLine)
+{
+	for (int viewLine = nFirstViewLine; viewLine <= nLastViewLine; viewLine++)
+		SetViewMarked(viewLine, marked);
+	BuildAllScreen2ViewVector();
+	Invalidate();
+	RefreshViews();
+}
+
+void CBaseView::UseViewFileExceptMarked(CBaseView *pwndView)
+{
+	UseViewBlock(pwndView, 0, GetViewCount() - 1, true);
 }
 
 int CBaseView::GetIndentCharsForLine(int x, int y)
