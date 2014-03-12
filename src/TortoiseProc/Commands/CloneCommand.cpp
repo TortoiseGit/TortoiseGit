@@ -209,6 +209,7 @@ bool CloneCommand::Execute()
 		CProgressDlg progress;
 		progress.m_GitCmd=cmd;
 		progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENULOG)));
+		progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_STATUSLIST_CONTEXT_EXPLORE)));
 		INT_PTR ret = progress.DoModal();
 
 		if (dlg.m_bSVN)
@@ -232,6 +233,11 @@ bool CloneCommand::Execute()
 				CString cmd = _T("/command:log");
 				cmd += _T(" /path:\"") + dlg.m_Directory + _T("\"");
 				CAppUtils::RunTortoiseGitProc(cmd);
+				return TRUE;
+			}
+			if (ret == IDC_PROGRESS_BUTTON1 + 1)
+			{
+				ShellExecute(nullptr, _T("explore"), dlg.m_Directory, nullptr, nullptr, SW_SHOW);
 				return TRUE;
 			}
 		}

@@ -11,6 +11,7 @@ Released: Unreleased
  * Updated libgit to version 1.9.0
  * Fixed issue #1920: Diff in log dialog like in commit dialog
  * Fixed issue #2134: Easier to select lines to partial commit in TortoiseGitMerge
+ * Fixed issue #2135: Add menu button to open Explorer when clone finishes
 
 == Bug Fixes ==
  * Fixed issue #2067: Normalize email with capital letters when calculating gravatar hash
