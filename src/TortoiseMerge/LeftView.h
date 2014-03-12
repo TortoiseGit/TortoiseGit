@@ -1,6 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2006-2007, 2011, 2013 - TortoiseSVN
+// Copyright (C) 2006-2007, 2011, 2013-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -30,11 +30,11 @@ public:
 	CLeftView(void);
 	~CLeftView(void);
 
-	void	UseBothLeftFirst();
-	void	UseBothRightFirst();
-	void	UseRightBlock(); ///< Use Block from Right
-	void	UseRightFile(); ///< Use File from Right
+	void	UseBothLeftFirst() override;
+	void	UseBothRightFirst() override;
+	void	UseRightBlock() override; ///< Use Block from Right
+	void	UseRightFile() override; ///< Use File from Right
 
 protected:
-	void	AddContextItems(CIconMenu& popup, DiffStates state);
+	void	AddContextItems(CIconMenu& popup, DiffStates state) override;
 };

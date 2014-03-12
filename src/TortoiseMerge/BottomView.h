@@ -1,6 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2006-2007, 2011 - TortoiseSVN
+// Copyright (C) 2006-2007, 2011, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -30,14 +30,14 @@ public:
 	CBottomView(void);
 	~CBottomView(void);
 
-	void	UseMyTextBlock() {UseRightBlock(); };
-	void	UseTheirTextBlock() {UseLeftBlock(); };
+	void	UseMyTextBlock() { UseRightBlock(); };
+	void	UseTheirTextBlock() { UseLeftBlock(); };
 
- protected:
-	void	AddContextItems(CIconMenu& popup, DiffStates state);
+protected:
+	void	AddContextItems(CIconMenu& popup, DiffStates state) override;
 
 	void	UseBlock(CBaseView * pwndView, int nFirstViewLine, int nLastViewLine);
-	void	UseBothBlocks(CBaseView * pwndFirst, CBaseView * pwndLast);
-	void	UseViewBlock(CBaseView * pwndView);
-	void	UseViewFile(CBaseView * pwndView);
+	void	UseBothBlocks(CBaseView * pwndFirst, CBaseView * pwndLast) override;
+	void	UseViewBlock(CBaseView * pwndView) override;
+	void	UseViewFile(CBaseView * pwndView) override;
 };

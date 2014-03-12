@@ -31,13 +31,13 @@ public:
 	CRightView(void);
 	~CRightView(void);
 
-	void	UseBothLeftFirst();
-	void	UseBothRightFirst();
-	void	UseLeftBlock(); ///< Use Block from Left
-	void	UseLeftFile(); ///< Use File from Left
-	void	MarkBlock(bool marked);
+	void	UseBothLeftFirst() override;
+	void	UseBothRightFirst() override;
+	void	UseLeftBlock() override; ///< Use Block from Left
+	void	UseLeftFile() override; ///< Use File from Left
+	void	MarkBlock(bool marked) override;
 	void	UseViewFileExceptMarked();
 
 protected:
-	void	AddContextItems(CIconMenu& popup, DiffStates state);
+	void	AddContextItems(CIconMenu& popup, DiffStates state) override;
 };
