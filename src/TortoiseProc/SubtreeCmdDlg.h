@@ -22,23 +22,29 @@
 #include "HistoryCombo.h"
 #include "SciEdit.h"
 
-class CSubtreeAddDlg : public CResizableStandAloneDialog, public CSciEditContextMenuInterface
+class CSubtreeCmdDlg : public CResizableStandAloneDialog, public CSciEditContextMenuInterface
 {
-	DECLARE_DYNAMIC(CSubtreeAddDlg)
+	DECLARE_DYNAMIC(CSubtreeCmdDlg)
 
 public:
-	CSubtreeAddDlg(const CString &subFolder, CWnd* pParent = NULL);
-	virtual ~CSubtreeAddDlg();
+	// TODO: would it be better to expose strings on the dialog instead of using this? See usage in cpp.
+	enum SubCommand
+	{
+		SubCommand_Add,
+		SubCommand_Push,
+		SubCommand_Pull,
+	};
+
+	CSubtreeCmdDlg(const CString &subFolder, SubCommand subCommand, CWnd* pParent = NULL);
+	virtual ~CSubtreeCmdDlg();
 
 	BOOL OnInitDialog();
 
 	// Dialog Data
-	enum { IDD = IDD_SUBTREE_ADD };
+	enum { IDD = IDD_SUBTREE };
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-// 	void OnRepBrowse();
-// 	void OnBranchCheck();
 	void OnBnClickedCheckSquash();
 	void OnCbnSelchangeRemote();
 	void OnPathBrowse();
@@ -54,6 +60,8 @@ protected:
 	CSciEdit m_cLogMessage;
 
 public:
+
+	SubCommand m_eSubCommand;
 
 	// values in the dialog, Data exachange assigns them to the controls
 	CHistoryCombo m_PuttyKeyCombo;

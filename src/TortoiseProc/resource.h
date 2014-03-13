@@ -171,7 +171,7 @@
 #define IDI_CERTCHECK                   355
 #define IDI_TORTOISEUDIFF               356
 #define IDD_SETTINGSUDIFF               357
-#define IDD_SUBTREE_ADD                 358
+#define IDD_SUBTREE                     358
 #define IDS_CHSTAT_FILECOL              1000
 #define IDS_CHSTAT_WCCOL                1001
 #define IDS_CHSTAT_REPOCOL              1002
@@ -1952,6 +1952,15 @@
 #define IDC_USER_PASSWORD               9693
 #define IDS_PROGRS_TITLE_CLONE          9694
 #define IDS_GITACTION_UPDATE_REF        9697
+#define IDS_SUBTREE_PULL_GRP_REMOTE     9699
+#define IDS_SUBTREE_PULL_GRP_LOCAL      9700
+#define IDS_SUBTREE_ADD_GRP_REMOTE      9701
+#define IDS_SUBTREE_ADD_GRP_LOCAL       9702
+#define IDS_SUBTREE_PUSH_GRP_REMOTE     9703
+#define IDS_SUBTREE_PUSH_GRP_LOCAL      9704
+#define IDS_SUBTREE_TITLE_ADD           9705
+#define IDS_SUBTREE_TITLE_PUSH          9706
+#define IDS_SUBTREE_TITLE_PULL          9707
 #define ID_VIEW_ZOOMIN                  32772
 #define ID_VIEW_ZOOMOUT                 32773
 #define ID_VIEW_ZOOM100                 32803

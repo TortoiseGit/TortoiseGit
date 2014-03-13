@@ -70,6 +70,8 @@ enum GitCommands
 		ShellMenuSubAdd,		// submodules
 		ShellMenuSubSync,
 		ShellMenuSubtreeAdd,	// subtree
+		ShellMenuSubtreePull,
+		ShellMenuSubtreePush,
 		ShellMenuSendMail,
 		ShellMenuGitSVNRebase,
 		ShellMenuGitSVNDCommit,
