@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009 - TortoiseGit
+// Copyright (C) 2009-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -26,9 +26,6 @@
 #include "AppUtils.h"
 #include "BrowseFolder.h"
 #include "MessageBox.h"
-
-
-// CSubtreeCmdDlg dialog
 
 IMPLEMENT_DYNAMIC(CSubtreeCmdDlg, CDialog);
 
@@ -113,26 +110,25 @@ BOOL CSubtreeCmdDlg::OnInitDialog()
 	switch (m_eSubCommand)
 	{
 	case SubCommand_Add:
-		sWindowTitle = _T("Subtree Add");
-		GetDlgItem(IDC_STATIC_REMOTE)->SetWindowTextW(_T("Add Source:"));
-		GetDlgItem(IDC_STATIC_LOCAL)->SetWindowTextW(_T("Destination:"));
+		sWindowTitle = MAKEINTRESOURCE(IDS_SUBTREE_TITLE_ADD);
+		GetDlgItem(IDC_STATIC_REMOTE)->SetWindowTextW(MAKEINTRESOURCE(IDS_SUBTREE_ADD_GRP_REMOTE));
+		GetDlgItem(IDC_STATIC_LOCAL)->SetWindowTextW(MAKEINTRESOURCE(IDS_SUBTREE_ADD_GRP_LOCAL));
 		break;
 	case SubCommand_Pull:
-		sWindowTitle = _T("Subtree Pull");
-		GetDlgItem(IDC_STATIC_REMOTE)->SetWindowTextW(_T("Pull Source:"));
-		GetDlgItem(IDC_STATIC_LOCAL)->SetWindowTextW(_T("Destination:"));
+		sWindowTitle = MAKEINTRESOURCE(IDS_SUBTREE_TITLE_PULL);
+		GetDlgItem(IDC_STATIC_REMOTE)->SetWindowTextW(MAKEINTRESOURCE(IDS_SUBTREE_PULL_GRP_REMOTE));
+		GetDlgItem(IDC_STATIC_LOCAL)->SetWindowTextW(MAKEINTRESOURCE(IDS_SUBTREE_PULL_GRP_LOCAL));
 		break;
 	case SubCommand_Push:
-		sWindowTitle = _T("Subtree Push");
-		GetDlgItem(IDC_STATIC_REMOTE)->SetWindowTextW(_T("Push Destination:"));
-		GetDlgItem(IDC_STATIC_LOCAL)->SetWindowTextW(_T("Source:"));
+		sWindowTitle = MAKEINTRESOURCE(IDS_SUBTREE_TITLE_PUSH);
+		GetDlgItem(IDC_STATIC_REMOTE)->SetWindowTextW(MAKEINTRESOURCE(IDS_SUBTREE_PUSH_GRP_REMOTE));
+		GetDlgItem(IDC_STATIC_LOCAL)->SetWindowTextW(MAKEINTRESOURCE(IDS_SUBTREE_PUSH_GRP_LOCAL));
 		break;
 	}
 
 	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);
 
 // 	GetWindowText(sWindowTitle);
-	
 
 	//////////////////////////////////////////////////////////////////////////
 	// Set up the remote branch drop down + branch
@@ -149,72 +145,6 @@ BOOL CSubtreeCmdDlg::OnInitDialog()
 	SetupComboBoxValues();
 
 	OnBnClickedRd();
-
-// 	m_Remote.SetCaseSensitive(TRUE);
-// 	m_Remote.SetURLHistory(TRUE);
-// 	m_Remote.LoadHistory(_T("Software\\TortoiseGit\\History\\repoURLS"), _T("url"));
-// 	if(m_URL.IsEmpty())
-// 	{
-// 		CString str = CAppUtils::GetClipboardLink(_T("git clone "));
-// 		str.Trim();
-// 		if(str.IsEmpty())
-// 			m_Remote.SetCurSel(0);
-// 		else
-// 			m_Remote.SetWindowText(str);
-// 	}
-// 	else
-// 		m_Remote.SetWindowText(m_URL);
-
-
-// 	//Select remote from current branch
-// 	CString currentBranch = g_Git.GetSymbolicRef();
-// 	CString configName;
-// 	configName.Format(L"branch.%s.remote", currentBranch);
-// 	CString remoteStr = /*m_configPullRemote = */g_Git.GetConfigValue(configName);
-// 
-// 
-// 	// 	if(pullRemote.IsEmpty())
-// 	// 		pullRemote = m_RemoteReg;
-// 
-// 	// 	if (!m_PreSelectRemote.IsEmpty())
-// 	// 		pullRemote = m_PreSelectRemote;
-// 
-// 	STRING_VECTOR list;
-// 	int sel=0;
-// 	if(!g_Git.GetRemoteList(list))
-// 	{
-// 		for (unsigned int i = 0; i < list.size(); ++i)
-// 		{
-// 			m_Remote.AddString(list[i]);
-// 			if (list[i] == remoteStr)
-// 				sel = i;
-// 		}
-// 	}
-// 	m_Remote.SetCurSel(sel);
-// 	OnCbnSelchangeRemote();
-// 
-// 
-// 	//Select branch from current
-// 	configName.Format(L"branch.%s.merge", currentBranch);
-// 	CString branchStr = /*m_configPullBranch = */CGit::StripRefName(g_Git.GetConfigValue(configName));
-// 	// 	if (branchStr.IsEmpty())
-// 	// 		m_RemoteBranch.AddString(currentBranch);
-// 	// 	else
-// 	// 		m_RemoteBranch.AddString(branchStr);
-// 
-// 	STRING_VECTOR brList;
-// 	int brsel=0;
-// 	if(!g_Git.GetBranchList(brList, NULL, CGit::BRANCH_LOCAL))
-// 	{
-// 		for (unsigned int i = 0; i < brList.size(); ++i)
-// 		{
-// 			m_RemoteBranch.AddString(brList[i]);
-// 			if (brList[i] == branchStr)
-// 				brsel = i;
-// 		}
-// 	}
-// 	m_RemoteBranch.SetCurSel(brsel);
-// 
 
 	m_PathCtrl.SetPathHistory(true);
 	m_PathCtrl.LoadHistory(_T("Software\\TortoiseGit\\History\\SubtreePath"), _T("url"));

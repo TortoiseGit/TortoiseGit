@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2009,2012-2013 - TortoiseGit
+// Copyright (C) 2008-2009,2012-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -22,8 +22,6 @@
 #include "AppUtils.h"
 #include "MessageBox.h"
 #include "ProgressDlg.h"
-
-
 
 bool SubtreeCommand::ExecuteSubtree( CSubtreeCmdDlg &dlg )
 {
@@ -49,10 +47,13 @@ bool SubtreeCommand::ExecuteSubtree( CSubtreeCmdDlg &dlg )
 		CString args;
 		dlg.m_strPath.Replace(_T('\\'),_T('/'));
 
-		// remove the target if it's empty so we can re-create it.
-		CTGitPath path = g_Git.m_CurrentDir + _T("\\") + dlg.m_strPath;
-		if (path.Exists() && path.IsDirectory() && PathIsDirectoryEmpty(path.GetWinPath()))
-			path.Delete(false);
+		if (dlg.m_eSubCommand == CSubtreeCmdDlg::SubCommand_Add)
+		{
+			// remove the target if it's empty so we can re-create it.
+			CTGitPath path = g_Git.m_CurrentDir + _T("\\") + dlg.m_strPath;
+			if (path.Exists() && path.IsDirectory() && PathIsDirectoryEmpty(path.GetWinPath()))
+				path.Delete(false);
+		}
 
 		if (dlg.m_bSquash)
 			args += _T(" --squash");
@@ -67,8 +68,7 @@ bool SubtreeCommand::ExecuteSubtree( CSubtreeCmdDlg &dlg )
 
 		// TODO: This should alternatively support a commit id
 		CString cmd;
-		cmd.Format(_T("git.exe subtree %s %s --prefix=\"%s\" \"%s\" %s %s"),
-			subCommand, args, dlg.m_strPath, dlg.m_URL, dlg.m_BranchName, commitMessage);
+		cmd.Format(_T("git.exe subtree %s %s --prefix=\"%s\" \"%s\" %s %s"), subCommand, args, dlg.m_strPath, dlg.m_URL, dlg.m_BranchName, commitMessage);
 
 		CProgressDlg progress;
 		progress.m_GitCmd=cmd;
