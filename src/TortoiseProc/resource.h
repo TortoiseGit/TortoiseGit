@@ -161,7 +161,7 @@
 #define IDI_GITCREDENTIAL               346
 #define IDI_EXTERNALOVL                 347
 #define IDI_MERGEACTIVE                 348
-#define IDD_SUBTREE_ADD                 350
+#define IDD_SUBTREE                     350
 #define IDS_CHSTAT_FILECOL              1000
 #define IDS_CHSTAT_WCCOL                1001
 #define IDS_CHSTAT_REPOCOL              1002
@@ -1457,6 +1457,7 @@
 #define IDC_CHECK_INHERIT_BTUUID64      1792
 #define IDC_CHECK_INHERIT_BTPARAMS      1793
 #define IDC_STATIC_DEST                 1794
+#define IDC_STATIC_LOCAL                1794
 #define IDC_LOCAL_PATH                  1795
 #define IDC_LOCAL_PATH_BROWSE           1796
 #define IDS_LOG_FILTER_BY               1850

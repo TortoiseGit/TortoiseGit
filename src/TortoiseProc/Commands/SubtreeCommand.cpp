@@ -18,42 +18,44 @@
 //
 #include "stdafx.h"
 #include "SubtreeCommand.h"
-#include "SubtreeAddDlg.h"
+#include "SubtreeCmdDlg.h"
 #include "AppUtils.h"
 #include "MessageBox.h"
 #include "ProgressDlg.h"
 
 
 
-bool SubtreeCommand::ExecuteSubtree( CString cmd, CString arg/*=_T("")*/ )
+bool SubtreeCommand::ExecuteSubtree( CSubtreeCmdDlg &dlg )
 {
-	ASSERT(false);
-	return true;
-}
+	CString subCommand;
+	switch(dlg.m_eSubCommand)
+	{
+	case CSubtreeCmdDlg::SubCommand_Add:
+		subCommand = _T("add");
+		break;
+	case CSubtreeCmdDlg::SubCommand_Push:
+		subCommand = _T("push");
+		break;
+	case CSubtreeCmdDlg::SubCommand_Pull:
+		subCommand = _T("pull");
+		break;
+	}
 
-bool SubtreeAddCommand::Execute()
-{
-	bool bRet = false;
-	CSubtreeAddDlg dlg(cmdLinePath.GetDirectory().GetWinPathString());
-// 	dlg.m_strPath = cmdLinePath.GetDirectory().GetWinPathString();
-// 	dlg.m_strProject = g_Git.m_CurrentDir;
 	if( dlg.DoModal() == IDOK )
 	{
- 		if (dlg.m_bAutoloadPuttyKeyFile)
- 			CAppUtils::LaunchPAgent(&dlg.m_strPuttyKeyFile);
- 
- 		CString cmd;
+		if (dlg.m_bAutoloadPuttyKeyFile)
+			CAppUtils::LaunchPAgent(&dlg.m_strPuttyKeyFile);
+
 		CString args;
- 		dlg.m_strPath.Replace(_T('\\'),_T('/'));
-// 		dlg.m_strRepos.Replace(_T('\\'),_T('/'));
-// 
+		dlg.m_strPath.Replace(_T('\\'),_T('/'));
+
 		// remove the target if it's empty so we can re-create it.
 		CTGitPath path = g_Git.m_CurrentDir + _T("\\") + dlg.m_strPath;
 		if (path.Exists() && path.IsDirectory() && PathIsDirectoryEmpty(path.GetWinPath()))
 			path.Delete(false);
 
 		if (dlg.m_bSquash)
-			args = _T("--squash");
+			args += _T(" --squash");
 
 		CString commitMessage;
 		if (!dlg.m_strLogMesage.IsEmpty())
@@ -63,44 +65,36 @@ bool SubtreeAddCommand::Execute()
 			commitMessage.Format(_T("-m \"%s\""), commitMessage);
 		}
 
- 		cmd.Format(_T("git.exe subtree add %s --prefix=\"%s\" \"%s\" %s %s"),
- 			args, dlg.m_strPath, dlg.m_URL, dlg.m_BranchName, commitMessage);
+		// TODO: This should alternatively support a commit id
+		CString cmd;
+		cmd.Format(_T("git.exe subtree %s %s --prefix=\"%s\" \"%s\" %s %s"),
+			subCommand, args, dlg.m_strPath, dlg.m_URL, dlg.m_BranchName, commitMessage);
 
-		// Debug testing
-//		CMessageBox::Show(NULL, cmd, _T("TortoiseGit"), MB_OK| MB_ICONINFORMATION);
+		CProgressDlg progress;
+		progress.m_GitCmd=cmd;
+		progress.DoModal();
 
- 		CProgressDlg progress;
- 		progress.m_GitCmd=cmd;
- 		progress.DoModal();
- 
-// 		if (progress.m_GitStatus == 0)
-// 		{
-// 			if (dlg.m_bAutoloadPuttyKeyFile)
-// 			{
-// 				SetCurrentDirectory(g_Git.m_CurrentDir);
-// 				CGit subgit;
-// 				dlg.m_strPath.Replace(_T('/'), _T('\\'));
-// 				subgit.m_CurrentDir = PathIsRelative(dlg.m_strPath) ? g_Git.m_CurrentDir + _T("\\") + dlg.m_strPath : dlg.m_strPath;
-// 
-// 				if (subgit.SetConfigValue(_T("remote.origin.puttykeyfile"), dlg.m_strPuttyKeyFile, CONFIG_LOCAL, CP_UTF8))
-// 				{
-// 					CMessageBox::Show(NULL, _T("Fail set config remote.origin.puttykeyfile"), _T("TortoiseGit"), MB_OK| MB_ICONERROR);
-// 					return FALSE;
-// 				}
-// 			}
-// 		}
+		// TODO: Save puttykeyfile provided to the config
 
-		bRet = true;
+		return true;
 	}
-	return bRet;
+	return false;
+}
+
+bool SubtreeAddCommand::Execute()
+{
+	CSubtreeCmdDlg dlg(cmdLinePath.GetDirectory().GetWinPathString(), CSubtreeCmdDlg::SubCommand_Add);
+	return ExecuteSubtree(dlg);
 }
 
 bool SubtreePushCommand::Execute()
 {
-	return ExecuteSubtree(_T("push"));
+	CSubtreeCmdDlg dlg(cmdLinePath.GetDirectory().GetWinPathString(), CSubtreeCmdDlg::SubCommand_Push);
+	return ExecuteSubtree(dlg);
 }
 
 bool SubtreePullCommand::Execute()
 {
-	return ExecuteSubtree(_T("pull"));
+	CSubtreeCmdDlg dlg(cmdLinePath.GetDirectory().GetWinPathString(), CSubtreeCmdDlg::SubCommand_Pull);
+	return ExecuteSubtree(dlg);
 }

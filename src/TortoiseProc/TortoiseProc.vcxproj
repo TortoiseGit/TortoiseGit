@@ -186,7 +186,7 @@
     <ClCompile Include="StashSave.cpp" />
     <ClCompile Include="BrowseRefsDlg.cpp" />
     <ClCompile Include="Commands\SVNDCommitCommand.cpp" />
-    <ClCompile Include="SubtreeAddDlg.cpp" />
+    <ClCompile Include="SubtreeCmdDlg.cpp" />
     <ClCompile Include="SVNDCommitDlg.cpp" />
     <ClCompile Include="Commands\SVNFetchCommand.cpp" />
     <ClCompile Include="Commands\SVNIgnoreCommand.cpp" />
@@ -368,7 +368,7 @@
     <ClInclude Include="BrowseRefsDlg.h" />
     <ClInclude Include="Commands\RefBrowseCommand.h" />
     <ClInclude Include="Commands\SVNDCommitCommand.h" />
-    <ClInclude Include="SubtreeAddDlg.h" />
+    <ClInclude Include="SubtreeCmdDlg.h" />
     <ClInclude Include="SVNDCommitDlg.h" />
     <ClInclude Include="Commands\SVNFetchCommand.h" />
     <ClInclude Include="Commands\SVNIgnoreCommand.h" />

@@ -24,11 +24,13 @@
 #pragma once
 #include "Command.h"
 
+class CSubtreeCmdDlg;
+
 class SubtreeCommand : public Command
 {
 public:
 	// non virtual helper
-	bool ExecuteSubtree(CString cmd, CString arg=_T(""));
+	bool ExecuteSubtree( CSubtreeCmdDlg &dlg );
 };
 
 class SubtreeAddCommand : public SubtreeCommand

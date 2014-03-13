@@ -692,7 +692,7 @@
     <ClCompile Include="Commands\SubtreeCommand.cpp">
       <Filter>Commands\Subtree</Filter>
     </ClCompile>
-    <ClCompile Include="SubtreeAddDlg.cpp">
+    <ClCompile Include="SubtreeCmdDlg.cpp">
       <Filter>Commands\Subtree</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1222,7 +1222,7 @@
     <ClInclude Include="Commands\SubtreeCommand.h">
       <Filter>Commands\Subtree</Filter>
     </ClInclude>
-    <ClInclude Include="SubtreeAddDlg.h">
+    <ClInclude Include="SubtreeCmdDlg.h">
       <Filter>Commands\Subtree</Filter>
     </ClInclude>
   </ItemGroup>
