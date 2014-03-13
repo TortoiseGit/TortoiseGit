@@ -2091,14 +2091,19 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					CString head;
 					int headindex;
 					headindex = this->GetHeadIndex();
-					if(headindex>=0 && LastSelect >= headindex)
+					if(headindex>=0 && LastSelect >= headindex && FirstSelect >= headindex)
 					{
+						head.Format(_T("HEAD~%d"), FirstSelect - headindex);
+						CGitHash hashFirst;
+						if (g_Git.GetHash(hashFirst, head))
+							MessageBox(g_Git.GetGitLastErr(_T("Could not get hash of ") + head + _T(".")), _T("TortoiseGit"), MB_ICONERROR);
 						head.Format(_T("HEAD~%d"),LastSelect-headindex);
 						CGitHash hash;
 						if (g_Git.GetHash(hash, head))
 							MessageBox(g_Git.GetGitLastErr(_T("Could not get hash of ") + head + _T(".")), _T("TortoiseGit"), MB_ICONERROR);
+						GitRev* pFirstEntry = reinterpret_cast<GitRev*>(m_arShownList.SafeGetAt(FirstSelect));
 						GitRev* pLastEntry = reinterpret_cast<GitRev*>(m_arShownList.SafeGetAt(LastSelect));
-						if(pLastEntry->m_CommitHash == hash) {
+						if (pFirstEntry->m_CommitHash == hashFirst && pLastEntry->m_CommitHash == hash) {
 							popup.AppendMenuIcon(ID_COMBINE_COMMIT,IDS_COMBINE_TO_ONE,IDI_COMBINE);
 							bAddSeparator = true;
 						}
