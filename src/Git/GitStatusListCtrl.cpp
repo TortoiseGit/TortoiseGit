@@ -3831,6 +3831,8 @@ int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash,CTGitPathList *list)
 				g_Git.Run(cmd, &cmdout);
 				//out+=cmdout;
 				out.append(cmdout,0);
+
+				break;
 			}
 		}
 
