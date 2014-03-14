@@ -112,6 +112,7 @@ protected:
 	CGitHash m_OrigBranchHash;
 	CGitHash m_OrigUpstreamHash;
 	CString m_OrigHEADBranch;
+	CGitHash m_OrigHEADHash;
 
 	int VerifyNoConflict();
 	CString GetRebaseModeName(int rebasemode);
