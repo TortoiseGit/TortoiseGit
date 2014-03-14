@@ -127,7 +127,7 @@ void HandleRestart()
 	if (bRestart)
 	{
 		TCHAR exeName[MAX_PATH] = { 0 };
-		::GetModuleFileName(nullptr, exeName, sizeof(exeName));
+		::GetModuleFileName(nullptr, exeName, _countof(exeName));
 		TCHAR cmdLine[20] = { 0 };
 		_stprintf_s(cmdLine, _T(" /kill:%d"), GetCurrentProcessId());
 		if (!CCreateProcessHelper::CreateProcessDetached(exeName, cmdLine))
