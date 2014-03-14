@@ -2873,6 +2873,8 @@ UINT CGitLogListBase::LogThread()
 			{
 				pRev->m_Notes.Empty();
 				g_Git.StringAppend(&pRev->m_Notes,(BYTE*)note);
+				free(note);
+				note = nullptr;
 			}
 
 			if(!pRev->m_IsDiffFiles)

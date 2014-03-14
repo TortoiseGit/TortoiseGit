@@ -214,6 +214,8 @@ int CGit::RunAsync(CString cmd, PROCESS_INFORMATION *piOut, HANDLE *hReadOut, HA
 	{
 		CString err = CFormatMessageWrapper();
 		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": could not open stderr pipe: %s\n"), err.Trim());
+		CloseHandle(hRead);
+		CloseHandle(hWrite);
 		return TGIT_GIT_ERROR_OPEN_PIP;
 	}
 
@@ -263,6 +265,13 @@ int CGit::RunAsync(CString cmd, PROCESS_INFORMATION *piOut, HANDLE *hReadOut, HA
 	{
 		CString err = CFormatMessageWrapper();
 		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": error while executing command: %s\n"), err.Trim());
+		CloseHandle(hRead);
+		CloseHandle(hWrite);
+		if (hErrReadOut)
+		{
+			CloseHandle(hReadErr);
+			CloseHandle(hWriteErr);
+		}
 		return TGIT_GIT_ERROR_CREATE_PROCESS;
 	}
 
@@ -275,6 +284,8 @@ int CGit::RunAsync(CString cmd, PROCESS_INFORMATION *piOut, HANDLE *hReadOut, HA
 		*piOut=pi;
 	if(hReadOut)
 		*hReadOut=hRead;
+	else
+		CloseHandle(hRead);
 	if(hErrReadOut)
 		*hErrReadOut = hReadErr;
 	return 0;
@@ -1070,6 +1081,8 @@ int CGit::RunLogFile(CString cmd, const CString &filename, CString *stdErr)
 	{
 		CString err = CFormatMessageWrapper();
 		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": could not open stdout pipe: %s\n"), err.Trim());
+		CloseHandle(hReadErr);
+		CloseHandle(hWriteErr);
 		return TGIT_GIT_ERROR_OPEN_PIP;
 	}
 
@@ -1090,6 +1103,9 @@ int CGit::RunLogFile(CString cmd, const CString &filename, CString *stdErr)
 		CString err = CFormatMessageWrapper();
 		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": failed to create Process: %s\n"), err.Trim());
 		stdErr = &err;
+		CloseHandle(hReadErr);
+		CloseHandle(hWriteErr);
+		CloseHandle(houtfile);
 		return TGIT_GIT_ERROR_CREATE_PROCESS;
 	}
 

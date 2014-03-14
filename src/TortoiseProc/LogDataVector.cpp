@@ -140,6 +140,8 @@ int CLogDataVector::ParserFromLog(CTGitPath *path, int count, int infomask, CStr
 		{
 			pRev->m_Notes.Empty();
 			g_Git.StringAppend(&pRev->m_Notes,(BYTE*)pNote);
+			free(pNote);
+			pNote = nullptr;
 		}
 
 		ASSERT(pRev->m_CommitHash == hash);
