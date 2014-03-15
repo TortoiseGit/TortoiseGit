@@ -32,11 +32,11 @@ public:
 	{
 		memset(m_hash,0, GIT_HASH_SIZE);
 	}
-	CGitHash(char *p)
+	CGitHash(const char *p)
 	{
 		memcpy(m_hash,p,GIT_HASH_SIZE);
 	}
-	CGitHash & operator = (CString &str)
+	CGitHash & operator = (const CString &str)
 	{
 		CGitHash hash(str);
 		*this = hash;
@@ -47,7 +47,7 @@ public:
 		memcpy(m_hash, p, GIT_HASH_SIZE);
 		return *this;
 	}
-	CGitHash(CString &str)
+	CGitHash(const CString &str)
 	{
 		if (!IsValidSHA1(str))
 		{
@@ -105,7 +105,7 @@ public:
 	{
 		memset(m_hash,0, GIT_HASH_SIZE);
 	}
-	bool IsEmpty()
+	bool IsEmpty() const
 	{
 		for (int i = 0; i < GIT_HASH_SIZE; ++i)
 		{
@@ -126,28 +126,27 @@ public:
 		}
 		return str;
 	}
-	operator CString ()
+	operator CString () const
 	{
 		return ToString();
 	}
 
-	bool operator == (const CGitHash &hash)
+	bool operator == (const CGitHash &hash) const
 	{
 		return memcmp(m_hash,hash.m_hash,GIT_HASH_SIZE) == 0;
 	}
 
-
-	friend bool operator<(const CGitHash& left, const CGitHash& right)
+	static friend bool operator<(const CGitHash& left, const CGitHash& right)
 	{
 		return memcmp(left.m_hash,right.m_hash,GIT_HASH_SIZE) < 0;
 	}
 
-	friend bool operator>(const CGitHash& left, const CGitHash& right)
+	static friend bool operator>(const CGitHash& left, const CGitHash& right)
 	{
 		return memcmp(left.m_hash, right.m_hash, GIT_HASH_SIZE) > 0;
 	}
 
-	friend bool operator != (const CGitHash& left, const CGitHash& right)
+	static friend bool operator != (const CGitHash& left, const CGitHash& right)
 	{
 		return memcmp(left.m_hash, right.m_hash, GIT_HASH_SIZE) != 0;
 	}

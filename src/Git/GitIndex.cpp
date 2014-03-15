@@ -159,7 +159,7 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 		this->at(i).m_FileName.MakeLower();
 		this->at(i).m_ModifyTime = e->mtime.seconds;
 		this->at(i).m_Flags = e->flags | e->flags_extended;
-		this->at(i).m_IndexHash = (char *) e->id.id;
+		this->at(i).m_IndexHash = e->id.id;
 	}
 
 	git_index_free(index);
@@ -799,7 +799,7 @@ int CGitHeadFileList::CallBack(const unsigned char *sha1, const char *base, int 
 
 	size_t cur = p->size();
 	p->resize(p->size() + 1);
-	p->at(cur).m_Hash = (char*)sha1;
+	p->at(cur).m_Hash = sha1;
 	p->at(cur).m_FileName.Empty();
 
 	g_Git.StringAppend(&p->at(cur).m_FileName, (BYTE*)base, CP_UTF8, baselen);
@@ -882,7 +882,7 @@ int CGitHeadFileList::ReadTree()
 			break;
 
 		std::sort(this->begin(), this->end(), SortTree);
-		this->m_TreeHash = (char*)(git_commit_id(commit)->id);
+		this->m_TreeHash = git_commit_id(commit)->id;
 
 	} while(0);
 

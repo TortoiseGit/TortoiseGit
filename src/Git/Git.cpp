@@ -1149,8 +1149,7 @@ int CGit::GetHash(CGitHash &hash, const CString& friendname)
 	// no need to parse a ref if it's already a 40-byte hash
 	if (CGitHash::IsValidSHA1(friendname))
 	{
-		CString sHash(friendname);
-		hash = CGitHash(sHash);
+		hash = CGitHash(friendname);
 		return 0;
 	}
 

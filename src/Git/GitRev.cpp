@@ -371,7 +371,7 @@ int GitRev::ParserFromCommit(GIT_COMMIT *commit)
 		encode = CUnicodeUtils::GetCPCode(str);
 	}
 
-	this->m_CommitHash = (char*)commit->m_hash;
+	this->m_CommitHash = commit->m_hash;
 
 	this->m_AuthorDate = commit->m_Author.Date;
 
