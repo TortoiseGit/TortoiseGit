@@ -3822,15 +3822,11 @@ int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash,CTGitPathList *list)
 			else // Init Repository
 			{
 				//We will list all added file for init repository because commit will comit these
-				//if(list == NULL)
 				cmd=_T("git.exe ls-files -s -t -z");
 				cmdList += cmd + _T("\n");
-				//else
-				//	cmd.Format(_T("git.exe ls-files -s -t -z -- \"%s\""),(*list)[i].GetGitPathString());
-
 				g_Git.Run(cmd, &cmdout);
-				//out+=cmdout;
 				out.append(cmdout,0);
+				break;
 			}
 		}
 
