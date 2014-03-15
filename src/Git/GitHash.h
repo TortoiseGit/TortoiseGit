@@ -18,9 +18,6 @@
 //
 
 #pragma once
-#if defined(_MFC_VER)
-#include "afx.h"
-#endif
 #define GIT_HASH_SIZE 20
 
 class CGitHash
@@ -150,20 +147,7 @@ public:
 	{
 		return memcmp(left.m_hash, right.m_hash, GIT_HASH_SIZE) != 0;
 	}
-#if defined(_MFC_VER)
-	friend CArchive& AFXAPI operator<<(CArchive& ar, CGitHash& hash)
-	{
-		for (int i = 0; i < GIT_HASH_SIZE; ++i)
-			ar<<hash.m_hash[i];
-		return ar;
-	}
-	friend CArchive& AFXAPI operator>>(CArchive& ar, CGitHash& hash)
-	{
-		for (int i = 0; i < GIT_HASH_SIZE; ++i)
-			ar>>hash.m_hash[i];
-		return ar;
-	}
-#endif
+
 	static bool IsValidSHA1(const CString &possibleSHA1)
 	{
 		if (possibleSHA1.GetLength() != 2 * GIT_HASH_SIZE)
