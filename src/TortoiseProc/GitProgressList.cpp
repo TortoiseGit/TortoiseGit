@@ -1589,6 +1589,8 @@ void CGitProgressList::OnContextMenu(CWnd* pWnd, CPoint point)
 #endif
 					case ID_LOG:
 						{
+							if (!data)
+								return;
 							CString cmd = _T("/command:log");
 							CString sPath = GetPathFromColumnText(data->sPathColumnText);
 							if(data->action == git_wc_notify_update_ref)
@@ -1608,6 +1610,8 @@ void CGitProgressList::OnContextMenu(CWnd* pWnd, CPoint point)
 						bOpenWith = true;
 					case ID_OPEN:
 						{
+							if (!data)
+								return;
 							int ret = 0;
 							CString sWinPath = GetPathFromColumnText(data->sPathColumnText);
 							if (!bOpenWith)
