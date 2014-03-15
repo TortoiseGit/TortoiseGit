@@ -156,7 +156,6 @@ BOOL CPullFetchDlg::OnInitDialog()
 	if(m_IsPull)
 	{
 		GetDlgItem(IDC_CHECK_REBASE)->ShowWindow(SW_HIDE);
-		GetDlgItem(IDC_CHECK_PRUNE)->ShowWindow(SW_HIDE);
 		// check tags checkbox and make it a normal checkbox
 		m_bFetchTags = 1;
 		m_bFFonly = m_regFFonly;
