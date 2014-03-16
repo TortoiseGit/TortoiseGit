@@ -77,6 +77,8 @@ BEGIN_MESSAGE_MAP(CPullFetchDlg, CHorizontalResizableStandAloneDialog)
 	ON_BN_CLICKED(IDOK, &CPullFetchDlg::OnBnClickedOk)
 	ON_STN_CLICKED(IDC_REMOTE_MANAGE, &CPullFetchDlg::OnStnClickedRemoteManage)
 	ON_BN_CLICKED(IDC_BUTTON_BROWSE_REF, &CPullFetchDlg::OnBnClickedButtonBrowseRef)
+	ON_BN_CLICKED(IDC_CHECK_FFONLY, OnBnClickedCheckFfonly)
+	ON_BN_CLICKED(IDC_CHECK_NOFF, OnBnClickedCheckFfonly)
 END_MESSAGE_MAP()
 
 BOOL CPullFetchDlg::OnInitDialog()
@@ -161,6 +163,7 @@ BOOL CPullFetchDlg::OnInitDialog()
 		m_bFFonly = m_regFFonly;
 		UpdateData(FALSE);
 		::SendMessage(GetDlgItem(IDC_CHECK_FETCHTAGS)->GetSafeHwnd(), BM_SETSTYLE, GetDlgItem(IDC_CHECK_FETCHTAGS)->GetStyle() & ~BS_AUTO3STATE | BS_AUTOCHECKBOX, 0);
+		OnBnClickedCheckFfonly();
 	}
 	else
 	{
@@ -373,4 +376,28 @@ void CPullFetchDlg::OnBnClickedButtonBrowseRef()
 	m_RemoteBranch.AddString(remoteBranch, 0);
 
 	CheckRadioButton(IDC_REMOTE_RD,IDC_OTHER_RD,IDC_REMOTE_RD);
+}
+
+void CPullFetchDlg::OnBnClickedCheckFfonly()
+{
+	UpdateData();
+	if (m_bNoFF)
+	{
+		m_bFFonly = FALSE;
+		GetDlgItem(IDC_CHECK_FFONLY)->EnableWindow(FALSE);
+	}
+	else
+	{
+		GetDlgItem(IDC_CHECK_FFONLY)->EnableWindow(TRUE);
+	}
+	if (m_bFFonly)
+	{
+		m_bNoFF = FALSE;
+		GetDlgItem(IDC_CHECK_NOFF)->EnableWindow(FALSE);
+	}
+	else
+	{
+		GetDlgItem(IDC_CHECK_NOFF)->EnableWindow(TRUE);
+	}
+	UpdateData(FALSE);
 }
