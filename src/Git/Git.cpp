@@ -2460,12 +2460,12 @@ static int resolve_to_tree(git_repository *repo, const char *identifier, git_tre
 }
 
 /* use libgit2 get unified diff */
-static int GetUnifiedDiffLibGit2(const CTGitPath& /*path*/, const git_revnum_t& rev1, const git_revnum_t& rev2, git_diff_line_cb callback, void *data, bool /* bMerge */)
+static int GetUnifiedDiffLibGit2(const CTGitPath& /*path*/, const git_revnum_t& revOld, const git_revnum_t& revNew, git_diff_line_cb callback, void *data, bool /* bMerge */)
 {
 	git_repository *repo = nullptr;
 	CStringA gitdirA = CUnicodeUtils::GetMulti(CTGitPath(g_Git.m_CurrentDir).GetGitPathString(), CP_UTF8);
-	CStringA tree1 = CUnicodeUtils::GetMulti(rev1, CP_UTF8);
-	CStringA tree2 = CUnicodeUtils::GetMulti(rev2, CP_UTF8);
+	CStringA tree1 = CUnicodeUtils::GetMulti(revNew, CP_UTF8);
+	CStringA tree2 = CUnicodeUtils::GetMulti(revOld, CP_UTF8);
 	int ret = 0;
 
 	if (git_repository_open(&repo, gitdirA))
@@ -2484,14 +2484,14 @@ static int GetUnifiedDiffLibGit2(const CTGitPath& /*path*/, const git_revnum_t& 
 	git_diff_options opts = GIT_DIFF_OPTIONS_INIT;
 	git_diff *diff = nullptr;
 
-	if (rev1 == GitRev::GetWorkingCopy() || rev2 == GitRev::GetWorkingCopy())
+	if (revNew == GitRev::GetWorkingCopy() || revOld == GitRev::GetWorkingCopy())
 	{
 		git_tree *t1 = nullptr;
 		git_diff *diff2 = nullptr;
 
 		do
 		{
-			if (rev1 != GitRev::GetWorkingCopy())
+			if (revNew != GitRev::GetWorkingCopy())
 			{
 				if (resolve_to_tree(repo, tree1, &t1))
 				{
@@ -2499,7 +2499,7 @@ static int GetUnifiedDiffLibGit2(const CTGitPath& /*path*/, const git_revnum_t& 
 					break;
 				}
 			}
-			if (rev2 != GitRev::GetWorkingCopy())
+			if (revOld != GitRev::GetWorkingCopy())
 			{
 				if (resolve_to_tree(repo, tree2, &t1))
 				{
