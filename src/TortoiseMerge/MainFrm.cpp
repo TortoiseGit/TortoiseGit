@@ -1324,7 +1324,7 @@ int CMainFrame::CheckResolved()
 {
 	//only in three way diffs can be conflicts!
 	m_bHasConflicts = true;
-	if (m_pwndBottomView->IsWindowVisible())
+	if (IsViewGood(m_pwndBottomView))
 	{
 		CViewData* viewdata = m_pwndBottomView->m_pViewData;
 		if (viewdata)
