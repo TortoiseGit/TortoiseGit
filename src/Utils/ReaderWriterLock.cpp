@@ -40,6 +40,11 @@ Email questions, comments or suggestions to quynhnguyenhuu@gmail.com
 // CReaderWriterLockNonReentrance implementation
 
 CReaderWriterLockNonReentrance::CReaderWriterLockNonReentrance()
+    : m_hSafeToReadEvent(NULL)
+    , m_hSafeToWriteEvent(NULL)
+    , m_iNumOfWriter(0)
+    , m_iNumOfReaderWaiting(0)
+    , m_iNumOfReaderEntered(0)
 {
     SecureZeroMemory(this, sizeof(*this));
 #if (_WIN32_WINNT >= 0x0403)
