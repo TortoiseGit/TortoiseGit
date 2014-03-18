@@ -2460,7 +2460,7 @@ static int resolve_to_tree(git_repository *repo, const char *identifier, git_tre
 }
 
 /* use libgit2 get unified diff */
-static int GetUnifiedDiffLibGit2(const CTGitPath& /*path*/, const git_revnum_t& revOld, const git_revnum_t& revNew, git_diff_line_cb callback, void *data, bool /* bMerge */)
+static int GetUnifiedDiffLibGit2(const CTGitPath& path, const git_revnum_t& revOld, const git_revnum_t& revNew, git_diff_line_cb callback, void *data, bool /* bMerge */)
 {
 	git_repository *repo = nullptr;
 	CStringA gitdirA = CUnicodeUtils::GetMulti(CTGitPath(g_Git.m_CurrentDir).GetGitPathString(), CP_UTF8);
@@ -2482,6 +2482,13 @@ static int GetUnifiedDiffLibGit2(const CTGitPath& /*path*/, const git_revnum_t& 
 	}
 
 	git_diff_options opts = GIT_DIFF_OPTIONS_INIT;
+	CStringA pathA = CUnicodeUtils::GetMulti(path.GetGitPathString(), CP_UTF8);
+	char *buf = pathA.GetBuffer();
+	if (!pathA.IsEmpty())
+	{
+		opts.pathspec.strings = &buf;
+		opts.pathspec.count = 1;
+	}
 	git_diff *diff = nullptr;
 
 	if (revNew == GitRev::GetWorkingCopy() || revOld == GitRev::GetWorkingCopy())
@@ -2613,6 +2620,7 @@ static int GetUnifiedDiffLibGit2(const CTGitPath& /*path*/, const git_revnum_t& 
 			git_tree_free(t2);
 	}
 	git_repository_free(repo);
+	pathA.ReleaseBuffer();
 
 	return ret;
 }
