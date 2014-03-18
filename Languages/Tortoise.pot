@@ -5730,6 +5730,10 @@ msgstr ""
 msgid "Mark as resolved\nThe file status is changed to modified"
 msgstr ""
 
+#. Resource IDs: (252)
+msgid "Mark this block"
+msgstr ""
+
 #. Resource IDs: (2051)
 msgid "Marks a file as resolved in Git\nMark as resolved"
 msgstr ""
@@ -9361,6 +9365,10 @@ msgstr ""
 msgid "Unknown depth"
 msgstr ""
 
+#. Resource IDs: (252)
+msgid "Unmark this block"
+msgstr ""
+
 #. Resource IDs: (315)
 msgid "Unresolved conflicts!"
 msgstr ""
@@ -9504,6 +9512,10 @@ msgstr ""
 
 #. Resource IDs: (32856)
 msgid "Use left file"
+msgstr ""
+
+#. Resource IDs: (252)
+msgid "Use left file except marked blocks"
 msgstr ""
 
 #. Resource IDs: (1762)
