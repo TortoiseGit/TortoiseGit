@@ -3370,6 +3370,7 @@ BEGIN
                             "Cannot force updating current branch. Use reset command if you want to do so."
     IDS_REPOBROWSEASKSUBMODULEUPDATE 
                             "Commit %s not found in ""%s"". Update submodule now?"
+    IDS_TRACKEDBRANCH       "Tracked branch"
     IDS_EXPORTFILE_TT       "Location where the contents of the\nselected revision of the repository will be saved to."
     IDS_CHECKOUT_EXPORTDIR  "Export directory:"
 END

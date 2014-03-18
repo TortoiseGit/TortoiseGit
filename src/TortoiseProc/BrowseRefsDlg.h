@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2013 - TortoiseGit
+// Copyright (C) 2009-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -55,6 +55,7 @@ public:
 	CShadowTree*	FindLeaf(CString partialRefName);
 
 	CString			m_csRefName;
+	CString			m_csUpstream;
 	CString			m_csRefHash;
 	CString			m_csDate;
 	CString			m_csDate_Iso8601;
@@ -105,6 +106,7 @@ public:
 	enum eCol
 	{
 		eCol_Name,
+		eCol_Upstream,
 		eCol_Date,
 		eCol_Msg,
 		eCol_LastAuthor,
