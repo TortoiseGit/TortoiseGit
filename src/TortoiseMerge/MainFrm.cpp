@@ -1,7 +1,7 @@
 // TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2008-2014 - TortoiseGit
-// Copyright (C) 2004-2013 - TortoiseSVN
+// Copyright (C) 2004-2014 - TortoiseSVN
 // Copyright (C) 2012-2014 - Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
@@ -3246,8 +3246,15 @@ void CMainFrame::OnRegexfilter(UINT cmd)
 				{
 					if (CheckForSave(CHFSR_OPTIONS)==IDCANCEL)
 						break;
-					std::wregex rx(m_regexIni.GetValue(section, L"regex", L""));
-					m_Data.SetRegexTokens(rx, m_regexIni.GetValue(section, L"replace", L""));
+					try
+					{
+						std::wregex rx(m_regexIni.GetValue(section, L"regex", L""));
+						m_Data.SetRegexTokens(rx, m_regexIni.GetValue(section, L"replace", L""));
+					}
+					catch (std::exception &ex)
+					{
+						MessageBox(_T("Regex is invalid!\r\n") + CString(ex.what()));
+					}
 					m_regexIndex = index;
 					LoadViews(-1);
 					break;
