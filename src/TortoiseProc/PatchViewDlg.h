@@ -22,6 +22,7 @@
 class IHasPatchView
 {
 public:
+	virtual CWnd *GetPatchViewParentWnd() = 0;
 	virtual void TogglePatchView() = 0;
 };
 

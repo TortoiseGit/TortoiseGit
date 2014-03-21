@@ -105,7 +105,7 @@ void CPatchViewDlg::OnMoving(UINT fwSide, LPRECT pRect)
 {
 #define STICKYSIZE 5
 	RECT parentRect;
-	m_pParentWnd->GetWindowRect(&parentRect);
+	m_ParentDlg->GetPatchViewParentWnd()->GetWindowRect(&parentRect);
 	if (abs(parentRect.right - pRect->left) < STICKYSIZE)
 	{
 		int width = pRect->right - pRect->left;

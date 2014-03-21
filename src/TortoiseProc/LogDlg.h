@@ -183,6 +183,7 @@ private:
 
 	CPatchViewDlg		m_patchViewdlg;
 	void FillPatchView(bool onlySetTimer = false);
+	CWnd * GetPatchViewParentWnd() { return this; }
 	virtual void TogglePatchView();
 	LRESULT OnFileListCtrlItemChanged(WPARAM /*wparam*/, LPARAM /*lparam*/);
 	afx_msg void OnMoving(UINT fwSide, LPRECT pRect);

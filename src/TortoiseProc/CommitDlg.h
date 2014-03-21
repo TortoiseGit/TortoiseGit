@@ -81,6 +81,7 @@ private:
 	static UINT StatusThreadEntry(LPVOID pVoid);
 	UINT StatusThread();
 	void FillPatchView(bool onlySetTimer = false);
+	CWnd * GetPatchViewParentWnd() { return this; }
 	virtual void TogglePatchView();
 	void SetDlgTitle();
 	CString GetSignedOffByLine();
