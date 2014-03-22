@@ -131,10 +131,9 @@ class FormatEnumerator {
 public:
 	VFunction **vtbl;
 	int ref;
-	int pos;
-	CLIPFORMAT formats[2];
-	int formatsLen;
-	FormatEnumerator(int pos_, CLIPFORMAT formats_[], int formatsLen_);
+	unsigned int pos;
+	std::vector<CLIPFORMAT> formats;
+	FormatEnumerator(int pos_, CLIPFORMAT formats_[], size_t formatsLen_);
 };
 
 /**
@@ -243,7 +242,6 @@ class ScintillaWin :
 	virtual void SetCtrlID(int identifier);
 	virtual int GetCtrlID();
 	virtual void NotifyParent(SCNotification scn);
-	virtual void NotifyParent(SCNotification * scn);
 	virtual void NotifyDoubleClick(Point pt, bool shift, bool ctrl, bool alt);
 	virtual CaseFolder *CaseFolderForEncoding();
 	virtual std::string CaseMapString(const std::string &s, int caseMapping);
@@ -1424,13 +1422,6 @@ void ScintillaWin::NotifyParent(SCNotification scn) {
 	              GetCtrlID(), reinterpret_cast<LPARAM>(&scn));
 }
 
-void ScintillaWin::NotifyParent(SCNotification * scn) {
-	scn->nmhdr.hwndFrom = MainHWND();
-	scn->nmhdr.idFrom = GetCtrlID();
-	::SendMessage(::GetParent(MainHWND()), WM_NOTIFY,
-		GetCtrlID(), reinterpret_cast<LPARAM>(scn));
-}
-
 void ScintillaWin::NotifyDoubleClick(Point pt, bool shift, bool ctrl, bool alt) {
 	//Platform::DebugPrintf("ScintillaWin Double click 0\n");
 	ScintillaBase::NotifyDoubleClick(pt, shift, ctrl, alt);
@@ -1819,16 +1810,15 @@ STDMETHODIMP_(ULONG)FormatEnumerator_Release(FormatEnumerator *fe) {
 }
 /// Implement IEnumFORMATETC
 STDMETHODIMP FormatEnumerator_Next(FormatEnumerator *fe, ULONG celt, FORMATETC *rgelt, ULONG *pceltFetched) {
-	//Platform::DebugPrintf("EFE Next %d %d", fe->pos, celt);
 	if (rgelt == NULL) return E_POINTER;
-	// We only support one format, so this is simple.
 	unsigned int putPos = 0;
-	while ((fe->pos < fe->formatsLen) && (putPos < celt)) {
+	while ((fe->pos < fe->formats.size()) && (putPos < celt)) {
 		rgelt->cfFormat = fe->formats[fe->pos];
 		rgelt->ptd = 0;
 		rgelt->dwAspect = DVASPECT_CONTENT;
 		rgelt->lindex = -1;
 		rgelt->tymed = TYMED_HGLOBAL;
+		rgelt++;
 		fe->pos++;
 		putPos++;
 	}
@@ -1847,7 +1837,7 @@ STDMETHODIMP FormatEnumerator_Reset(FormatEnumerator *fe) {
 STDMETHODIMP FormatEnumerator_Clone(FormatEnumerator *fe, IEnumFORMATETC **ppenum) {
 	FormatEnumerator *pfe;
 	try {
-		pfe = new FormatEnumerator(fe->pos, fe->formats, fe->formatsLen);
+		pfe = new FormatEnumerator(fe->pos, &fe->formats[0], fe->formats.size());
 	} catch (...) {
 		return E_OUTOFMEMORY;
 	}
@@ -1865,13 +1855,11 @@ static VFunction *vtFormatEnumerator[] = {
 	(VFunction *)(FormatEnumerator_Clone)
 };
 
-FormatEnumerator::FormatEnumerator(int pos_, CLIPFORMAT formats_[], int formatsLen_) {
+FormatEnumerator::FormatEnumerator(int pos_, CLIPFORMAT formats_[], size_t formatsLen_) {
 	vtbl = vtFormatEnumerator;
 	ref = 0;   // First QI adds first reference...
 	pos = pos_;
-	formatsLen = formatsLen_;
-	for (int i=0; i<formatsLen; i++)
-		formats[i] = formats_[i];
+	formats.insert(formats.begin(), formats_, formats_+formatsLen_);
 }
 
 /// Implement IUnknown
@@ -1986,10 +1974,10 @@ STDMETHODIMP DataObject_EnumFormatEtc(DataObject *pd, DWORD dwDirection, IEnumFO
 		FormatEnumerator *pfe;
 		if (pd->sci->IsUnicodeMode()) {
 			CLIPFORMAT formats[] = {CF_UNICODETEXT, CF_TEXT};
-			pfe = new FormatEnumerator(0, formats, 2);
+			pfe = new FormatEnumerator(0, formats, ELEMENTS(formats));
 		} else {
 			CLIPFORMAT formats[] = {CF_TEXT};
-			pfe = new FormatEnumerator(0, formats, 1);
+			pfe = new FormatEnumerator(0, formats, ELEMENTS(formats));
 		}
 		return FormatEnumerator_QueryInterface(pfe, IID_IEnumFORMATETC,
 											   reinterpret_cast<void **>(ppEnum));

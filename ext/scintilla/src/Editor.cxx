@@ -477,36 +477,17 @@ Point Editor::LocationFromPosition(SelectionPosition pos) {
 	RefreshStyleData();
 	if (pos.Position() == INVALID_POSITION)
 		return pt;
-	int line = pdoc->LineFromPosition(pos.Position());
-	int lineVisible = cs.DisplayFromDoc(line);
+	const int line = pdoc->LineFromPosition(pos.Position());
+	const int lineVisible = cs.DisplayFromDoc(line);
 	//Platform::DebugPrintf("line=%d\n", line);
 	AutoSurface surface(this);
 	AutoLineLayout ll(llc, RetrieveLineLayout(line));
 	if (surface && ll) {
-		// -1 because of adding in for visible lines in following loop.
-		pt.y = (lineVisible - topLine - 1) * vs.lineHeight;
-		pt.x = 0;
-		unsigned int posLineStart = pdoc->LineStart(line);
+		const int posLineStart = pdoc->LineStart(line);
 		LayoutLine(line, surface, vs, ll, wrapWidth);
-		int posInLine = pos.Position() - posLineStart;
-		// In case of very long line put x at arbitrary large position
-		if (posInLine > ll->maxLineLength) {
-			pt.x = ll->positions[ll->maxLineLength] - ll->positions[ll->LineStart(ll->lines)];
-		}
-
-		for (int subLine = 0; subLine < ll->lines; subLine++) {
-			if ((posInLine >= ll->LineStart(subLine)) && (posInLine <= ll->LineStart(subLine + 1))) {
-				pt.x = ll->positions[posInLine] - ll->positions[ll->LineStart(subLine)];
-				if (ll->wrapIndent != 0) {
-					int lineStart = ll->LineStart(subLine);
-					if (lineStart != 0)	// Wrapped
-						pt.x += ll->wrapIndent;
-				}
-			}
-			if (posInLine >= ll->LineStart(subLine)) {
-				pt.y += vs.lineHeight;
-			}
-		}
+		const int posInLine = pos.Position() - posLineStart;
+		pt = ll->PointFromPosition(posInLine, vs.lineHeight);
+		pt.y += (lineVisible - topLine) * vs.lineHeight;
 		pt.x += vs.textStart - xOffset;
 	}
 	pt.x += pos.VirtualSpace() * vs.styles[ll->EndLineStyle()].spaceWidth;
@@ -558,58 +539,44 @@ SelectionPosition Editor::SPositionFromLocation(Point pt, bool canReturnInvalid,
 	int visibleLine = floor(pt.y / vs.lineHeight);
 	if (!canReturnInvalid && (visibleLine < 0))
 		visibleLine = 0;
-	int lineDoc = cs.DocFromDisplay(visibleLine);
+	const int lineDoc = cs.DocFromDisplay(visibleLine);
 	if (canReturnInvalid && (lineDoc < 0))
 		return SelectionPosition(INVALID_POSITION);
 	if (lineDoc >= pdoc->LinesTotal())
 		return SelectionPosition(canReturnInvalid ? INVALID_POSITION : pdoc->Length());
-	unsigned int posLineStart = pdoc->LineStart(lineDoc);
-	SelectionPosition retVal(canReturnInvalid ? INVALID_POSITION : static_cast<int>(posLineStart));
+	const int posLineStart = pdoc->LineStart(lineDoc);
 	AutoSurface surface(this);
 	AutoLineLayout ll(llc, RetrieveLineLayout(lineDoc));
 	if (surface && ll) {
 		LayoutLine(lineDoc, surface, vs, ll, wrapWidth);
-		int lineStartSet = cs.DisplayFromDoc(lineDoc);
-		int subLine = visibleLine - lineStartSet;
+		const int lineStartSet = cs.DisplayFromDoc(lineDoc);
+		const int subLine = visibleLine - lineStartSet;
 		if (subLine < ll->lines) {
-			int lineStart = ll->LineStart(subLine);
-			int lineEnd = ll->LineLastVisible(subLine);
-			XYPOSITION subLineStart = ll->positions[lineStart];
-
-			if (ll->wrapIndent != 0) {
-				if (lineStart != 0)	// Wrapped
-					pt.x -= ll->wrapIndent;
-			}
-			int i = ll->FindBefore(pt.x + subLineStart, lineStart, lineEnd);
-			while (i < lineEnd) {
-				if (charPosition) {
-					if ((pt.x + subLineStart) < (ll->positions[i + 1])) {
-						return SelectionPosition(pdoc->MovePositionOutsideChar(i + posLineStart, 1));
-					}
-				} else {
-					if ((pt.x + subLineStart) < ((ll->positions[i] + ll->positions[i + 1]) / 2)) {
-						return SelectionPosition(pdoc->MovePositionOutsideChar(i + posLineStart, 1));
-					}
-				}
-				i++;
+			const Range rangeSubLine = ll->SubLineRange(subLine);
+			const XYPOSITION subLineStart = ll->positions[rangeSubLine.start];
+			if (subLine > 0)	// Wrapped
+				pt.x -= ll->wrapIndent;
+			const int positionInLine = ll->FindPositionFromX(pt.x + subLineStart, rangeSubLine, charPosition);
+			if (positionInLine < rangeSubLine.end) {
+				return SelectionPosition(pdoc->MovePositionOutsideChar(positionInLine + posLineStart, 1));
 			}
 			if (virtualSpace) {
 				const XYPOSITION spaceWidth = vs.styles[ll->EndLineStyle()].spaceWidth;
-				int spaceOffset = (pt.x + subLineStart - ll->positions[lineEnd] + spaceWidth / 2) /
+				const int spaceOffset = (pt.x + subLineStart - ll->positions[rangeSubLine.end] + spaceWidth / 2) /
 					spaceWidth;
-				return SelectionPosition(lineEnd + posLineStart, spaceOffset);
+				return SelectionPosition(rangeSubLine.end + posLineStart, spaceOffset);
 			} else if (canReturnInvalid) {
-				if (pt.x < (ll->positions[lineEnd] - subLineStart)) {
-					return SelectionPosition(pdoc->MovePositionOutsideChar(lineEnd + posLineStart, 1));
+				if (pt.x < (ll->positions[rangeSubLine.end] - subLineStart)) {
+					return SelectionPosition(pdoc->MovePositionOutsideChar(rangeSubLine.end + posLineStart, 1));
 				}
 			} else {
-				return SelectionPosition(lineEnd + posLineStart);
+				return SelectionPosition(rangeSubLine.end + posLineStart);
 			}
 		}
 		if (!canReturnInvalid)
 			return SelectionPosition(ll->numCharsInLine + posLineStart);
 	}
-	return retVal;
+	return SelectionPosition(canReturnInvalid ? INVALID_POSITION : posLineStart);
 }
 
 int Editor::PositionFromLocation(Point pt, bool canReturnInvalid, bool charPosition) {
@@ -619,6 +586,7 @@ int Editor::PositionFromLocation(Point pt, bool canReturnInvalid, bool charPosit
 /**
  * Find the document position corresponding to an x coordinate on a particular document line.
  * Ensure is between whole characters when document is in multi-byte or UTF-8 mode.
+ * This method is used for rectangular selections and does not work on wrapped lines.
  */
 SelectionPosition Editor::SPositionFromLineX(int lineDoc, int x) {
 	RefreshStyleData();
@@ -627,33 +595,20 @@ SelectionPosition Editor::SPositionFromLineX(int lineDoc, int x) {
 	//Platform::DebugPrintf("Position of (%d,%d) line = %d top=%d\n", pt.x, pt.y, line, topLine);
 	AutoSurface surface(this);
 	AutoLineLayout ll(llc, RetrieveLineLayout(lineDoc));
-	int retVal = 0;
 	if (surface && ll) {
-		unsigned int posLineStart = pdoc->LineStart(lineDoc);
+		const int posLineStart = pdoc->LineStart(lineDoc);
 		LayoutLine(lineDoc, surface, vs, ll, wrapWidth);
-		int subLine = 0;
-		int lineStart = ll->LineStart(subLine);
-		int lineEnd = ll->LineLastVisible(subLine);
-		XYPOSITION subLineStart = ll->positions[lineStart];
-		XYPOSITION newX = x;
-
-		if (ll->wrapIndent != 0) {
-			if (lineStart != 0)	// Wrapped
-				newX -= ll->wrapIndent;
-		}
-		int i = ll->FindBefore(newX + subLineStart, lineStart, lineEnd);
-		while (i < lineEnd) {
-			if ((newX + subLineStart) < ((ll->positions[i] + ll->positions[i + 1]) / 2)) {
-				retVal = pdoc->MovePositionOutsideChar(i + posLineStart, 1);
-				return SelectionPosition(retVal);
-			}
-			i++;
+		const Range rangeSubLine = ll->SubLineRange(0);
+		const XYPOSITION subLineStart = ll->positions[rangeSubLine.start];
+		const int positionInLine = ll->FindPositionFromX(x + subLineStart, rangeSubLine, false);
+		if (positionInLine < rangeSubLine.end) {
+			return SelectionPosition(pdoc->MovePositionOutsideChar(positionInLine + posLineStart, 1));
 		}
 		const XYPOSITION spaceWidth = vs.styles[ll->EndLineStyle()].spaceWidth;
-		int spaceOffset = (newX + subLineStart - ll->positions[lineEnd] + spaceWidth / 2) / spaceWidth;
-		return SelectionPosition(lineEnd + posLineStart, spaceOffset);
+		const int spaceOffset = (x + subLineStart - ll->positions[rangeSubLine.end] + spaceWidth / 2) / spaceWidth;
+		return SelectionPosition(rangeSubLine.end + posLineStart, spaceOffset);
 	}
-	return SelectionPosition(retVal);
+	return SelectionPosition(0);
 }
 
 int Editor::PositionFromLineX(int lineDoc, int x) {
@@ -1279,7 +1234,7 @@ slop | strict | jumps | even | Caret can go to the margin                 | When
   1  |   1    |   1   |   1  | No, kept out of UZ                         | moved to put caret at 3UZ of the margin
 */
 
-Editor::XYScrollPosition Editor::XYScrollToMakeVisible(const SelectionRange range, const XYScrollOptions options) {
+Editor::XYScrollPosition Editor::XYScrollToMakeVisible(const SelectionRange &range, const XYScrollOptions options) {
 	PRectangle rcClient = GetTextRectangle();
 	Point pt = LocationFromPosition(range.caret);
 	Point ptAnchor = LocationFromPosition(range.anchor);
@@ -2400,7 +2355,7 @@ void Editor::LayoutLine(int line, Surface *surface, ViewStyle &vstyle, LineLayou
 						        - posLineStart;
 						p = pdoc->MovePositionOutsideChar(p + 1 + posLineStart, 1) - posLineStart;
 						continue;
-					} else if (ll->styles[p] != ll->styles[p - 1]) {
+					} else if ((vstyle.wrapState == eWrapWord) && (ll->styles[p] != ll->styles[p - 1])) {
 						lastGoodBreak = p;
 					} else if (IsSpaceOrTab(ll->chars[p - 1]) && !IsSpaceOrTab(ll->chars[p])) {
 						lastGoodBreak = p;
@@ -2871,17 +2826,6 @@ void Editor::DrawLine(Surface *surface, ViewStyle &vsDraw, int line, int lineVis
 				}
 			}
 		}
-	}
-
-	SCNotification scn = {0};
-	scn.nmhdr.code = SCN_GETBKCOLOR;
-	scn.line = line;
-	scn.lParam = -1;
-	NotifyParent(&scn);
-	if (scn.lParam != -1)
-	{
-		background = scn.lParam;
-		overrideBackground = true;
 	}
 
 	const bool drawWhitespaceBackground = (vsDraw.viewWhitespace != wsInvisible) &&
