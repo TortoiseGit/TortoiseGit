@@ -2532,8 +2532,9 @@ POINT ListBoxX::MinTrackSize() const {
 
 POINT ListBoxX::MaxTrackSize() const {
 	PRectangle rc(0, 0,
+		Platform::Maximum(MinClientWidth(), 
 		maxCharWidth * maxItemCharacters + TextInset.x * 2 +
-		 TextOffset() + ::GetSystemMetrics(SM_CXVSCROLL),
+		 TextOffset() + ::GetSystemMetrics(SM_CXVSCROLL)),
 		ItemHeight() * lti.Count());
 	AdjustWindowRect(&rc);
 	POINT ret = {static_cast<LONG>(rc.Width()), static_cast<LONG>(rc.Height())};

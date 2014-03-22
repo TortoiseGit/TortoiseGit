@@ -412,7 +412,7 @@ protected:	// ScintillaBase subclass needs access to much of Editor
 		xysVertical=0x2,
 		xysHorizontal=0x4,
 		xysDefault=xysUseMargin|xysVertical|xysHorizontal};
-	XYScrollPosition XYScrollToMakeVisible(const SelectionRange range, const XYScrollOptions options);
+	XYScrollPosition XYScrollToMakeVisible(const SelectionRange &range, const XYScrollOptions options);
 	void SetXYScroll(XYScrollPosition newXY);
 	void EnsureCaretVisible(bool useMargin=true, bool vert=true, bool horiz=true);
 	void ScrollRange(SelectionRange range);
@@ -437,12 +437,12 @@ protected:	// ScintillaBase subclass needs access to much of Editor
 	ColourDesired SelectionBackground(ViewStyle &vsDraw, bool main) const;
 	ColourDesired TextBackground(ViewStyle &vsDraw, bool overrideBackground, ColourDesired background, int inSelection, bool inHotspot, int styleMain, int i, LineLayout *ll) const;
 	void DrawIndentGuide(Surface *surface, int lineVisible, int lineHeight, int start, PRectangle rcSegment, bool highlight);
-	void DrawWrapMarker(Surface *surface, PRectangle rcPlace, bool isEndMarker, ColourDesired wrapColour);
+	static void DrawWrapMarker(Surface *surface, PRectangle rcPlace, bool isEndMarker, ColourDesired wrapColour);
 	void DrawEOL(Surface *surface, ViewStyle &vsDraw, PRectangle rcLine, LineLayout *ll,
 		int line, int lineEnd, int xStart, int subLine, XYACCUMULATOR subLineStart,
 		bool overrideBackground, ColourDesired background,
 		bool drawWrapMark, ColourDesired wrapColour);
-	void DrawIndicator(int indicNum, int startPos, int endPos, Surface *surface, ViewStyle &vsDraw,
+	static void DrawIndicator(int indicNum, int startPos, int endPos, Surface *surface, ViewStyle &vsDraw,
 		int xStart, PRectangle rcLine, LineLayout *ll, int subLine);
 	void DrawIndicators(Surface *surface, ViewStyle &vsDraw, int line, int xStart,
 		PRectangle rcLine, LineLayout *ll, int subLine, int lineEnd, bool under);

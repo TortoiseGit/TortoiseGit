@@ -2256,8 +2256,8 @@ struct Sci_TextToFind {
 
     <h2 id="LineEndings">Line endings</h2>
 
-    <p>Scintilla can handle the major line end conventions <span class="provisional">and, depending on settings and
-    the current lexer also support additional Unicode line ends</span>.</p>
+    <p>Scintilla can handle the major line end conventions and, depending on settings and
+    the current lexer also support additional Unicode line ends.</p>
 
     <p>Scintilla can interpret any of the Macintosh (\r), Unix (\n) and Windows (\r\n)
     line ends.
@@ -2267,12 +2267,10 @@ struct Sci_TextToFind {
     entire document to one of these line endings with <code>SCI_CONVERTEOLS</code>. Finally, you
     can choose to display the line endings with <code>SCI_SETVIEWEOL</code>.</p>
 
-<div  class="provisional">
     <p>For the UTF-8 encoding, three additional Unicode line ends,
     Next Line (<code>NEL=U+0085</code>), Line Separator (<code>LS=U+2028</code>), and Paragraph Separator (<code>PS=U+2029</code>)
     may optionally be interpreted when Unicode line ends is turned on and the current lexer also supports
     Unicode line ends.</p>
-</div>
 
     <a class="message" href="#SCI_SETEOLMODE">SCI_SETEOLMODE(int eolMode)</a><br />
      <a class="message" href="#SCI_GETEOLMODE">SCI_GETEOLMODE</a><br />
@@ -2280,12 +2278,10 @@ struct Sci_TextToFind {
      <a class="message" href="#SCI_SETVIEWEOL">SCI_SETVIEWEOL(bool visible)</a><br />
      <a class="message" href="#SCI_GETVIEWEOL">SCI_GETVIEWEOL</a><br />
 
-<div  class="provisional">
      <a class="message" href="#SCI_GETLINEENDTYPESSUPPORTED">SCI_GETLINEENDTYPESSUPPORTED</a><br />
      <a class="message" href="#SCI_SETLINEENDTYPESALLOWED">SCI_SETLINEENDTYPESALLOWED(int lineEndBitSet)</a><br />
      <a class="message" href="#SCI_GETLINEENDTYPESALLOWED">SCI_GETLINEENDTYPESALLOWED</a><br />
      <a class="message" href="#SCI_GETLINEENDTYPESACTIVE">SCI_GETLINEENDTYPESACTIVE</a><br />
-</div>
 
     <p><b id="SCI_SETEOLMODE">SCI_SETEOLMODE(int eolMode)</b><br />
      <b id="SCI_GETEOLMODE">SCI_GETEOLMODE</b><br />
@@ -2307,9 +2303,6 @@ struct Sci_TextToFind {
     <code>(CR)</code>, <code>(LF)</code>, or <code>(CR)(LF)</code>. <code>SCI_GETVIEWEOL</code>
     returns the current state.</p>
 
-<div  class="provisional">
-    <a href="#ProvisionalMessages">These features are provisional</a><br />
-
     <p><b id="SCI_GETLINEENDTYPESSUPPORTED">SCI_GETLINEENDTYPESSUPPORTED</b><br />
      <code>SCI_GETLINEENDTYPESSUPPORTED</code> reports the different types of line ends supported
      by the current lexer. This is a bit set although there is currently only a single choice
@@ -2326,7 +2319,6 @@ struct Sci_TextToFind {
     <p><b id="SCI_GETLINEENDTYPESACTIVE">SCI_GETLINEENDTYPESACTIVE</b><br />
      <code>SCI_GETLINEENDTYPESACTIVE</code> reports the set of line ends currently interpreted
      by Scintilla. It is <code>SCI_GETLINEENDTYPESSUPPORTED &amp; SCI_GETLINEENDTYPESALLOWED</code>.</p>
-</div>
 
     <h2 id="Styling">Styling</h2>
 
@@ -3533,7 +3525,7 @@ struct Sci_TextToFind {
     <p>The markers are drawn in the order of their numbers, so higher numbered markers appear on
     top of lower numbered ones. Markers try to move with their text by tracking where the start of
     their line moves. When a line is deleted, its markers are combined, by an <code>OR</code>
-    operation, with the markers of the previous line.</p>
+    operation, with the markers of the next line.</p>
     <code><a class="message" href="#SCI_MARKERDEFINE">SCI_MARKERDEFINE(int markerNumber, int
     markerSymbols)</a><br />
      <a class="message" href="#SCI_MARKERDEFINEPIXMAP">SCI_MARKERDEFINEPIXMAP(int markerNumber,
@@ -5625,11 +5617,12 @@ sptr_t CallScintilla(unsigned int iMessage, uptr_t wParam, sptr_t lParam){
     <p><b id="SCI_SETWRAPMODE">SCI_SETWRAPMODE(int wrapMode)</b><br />
      <b id="SCI_GETWRAPMODE">SCI_GETWRAPMODE</b><br />
      Set wrapMode to <code>SC_WRAP_WORD</code> (1) to enable wrapping
-     on word boundaries, <code>SC_WRAP_CHAR</code> (2) to enable wrapping
-     between any characters, and to <code>SC_WRAP_NONE</code> (0) to disable line
-     wrapping. <code>SC_WRAP_CHAR</code> is preferred to
-     <code>SC_WRAP_WORD</code> for Asian languages where there is no white space
-     between words.</p>
+     on word or style boundaries, <code>SC_WRAP_CHAR</code> (2) to enable wrapping
+     between any characters, <code>SC_WRAP_WHITESPACE</code> (3) to enable
+     wrapping on whitespace, and <code>SC_WRAP_NONE</code> (0) to disable line
+     wrapping. <code>SC_WRAP_CHAR</code> is preferred for Asian languages where
+     there is no white space between words.
+    </p>
 
 
     <p><b id="SCI_SETWRAPVISUALFLAGS">SCI_SETWRAPVISUALFLAGS(int wrapVisualFlags)</b><br />
@@ -5962,7 +5955,6 @@ sptr_t CallScintilla(unsigned int iMessage, uptr_t wParam, sptr_t lParam){
     *keyWordList)</a><br />
      <a class="message" href="#SCI_GETSTYLEBITSNEEDED">SCI_GETSTYLEBITSNEEDED</a><br />
 
-<div  class="provisional">
      <a class="message" href="#SCI_GETSUBSTYLEBASES">SCI_GETSUBSTYLEBASES(&lt;unused&gt;, char *styles)</a><br />
      <a class="message" href="#SCI_DISTANCETOSECONDARYSTYLES">SCI_DISTANCETOSECONDARYSTYLES</a><br />
      <a class="message" href="#SCI_ALLOCATESUBSTYLES">SCI_ALLOCATESUBSTYLES(int styleBase, int numberStyles)</a><br />
@@ -5972,7 +5964,6 @@ sptr_t CallScintilla(unsigned int iMessage, uptr_t wParam, sptr_t lParam){
      <a class="message" href="#SCI_GETSTYLEFROMSUBSTYLE">SCI_GETSTYLEFROMSUBSTYLE(int subStyle)</a><br />
      <a class="message" href="#SCI_GETPRIMARYSTYLEFROMSTYLE">SCI_GETPRIMARYSTYLEFROMSTYLE(int style)</a><br />
      <a class="message" href="#SCI_SETIDENTIFIERS">SCI_SETIDENTIFIERS(int style, const char *identifiers)</a><br />
-</div>
 
     <p><b id="SCI_SETLEXER">SCI_SETLEXER(int lexer)</b><br />
      <b id="SCI_GETLEXER">SCI_GETLEXER</b><br />
@@ -6117,9 +6108,7 @@ sptr_t CallScintilla(unsigned int iMessage, uptr_t wParam, sptr_t lParam){
      to <a class="message" href="#SCI_SETSTYLEBITS">SCI_SETSTYLEBITS</a>.
      </p>
 
-<div  class="provisional">
     <h3 id="Substyles">Substyles</h3>
-    <a href="#ProvisionalMessages">These features are provisional</a><br />
     <p>Lexers may support several different sublanguages and each sublanguage may want to style some number of
     sets of identifiers (or similar lexemes such as documentation keywords) uniquely. Preallocating a large number for each
     purpose would exhaust the number of allowed styles quickly.
@@ -6153,7 +6142,6 @@ sptr_t CallScintilla(unsigned int iMessage, uptr_t wParam, sptr_t lParam){
     <p><b id="SCI_SETIDENTIFIERS">SCI_SETIDENTIFIERS(int style, const char *identifiers)</b><br />
      Similar to <code>SCI_SETKEYWORDS</code> but for substyles.
      The prefix feature available with <code>SCI_SETKEYWORDS</code> is not implemented for <code>SCI_SETIDENTIFIERS</code>.</p>
-</div>
 
     <h2 id="LexerObjects">Lexer Objects</h2>
 
@@ -6253,6 +6241,9 @@ A simple approach is to return 0 if there is any possibility that a change requi
 optimisation could be to remember where a setting first affects the document and return that position.
 </p>
 
+<p><code>Version</code> returns an enumerated value specifying which version of the interface is implemented:
+<code>lvOriginal</code> for <code>ILexer</code> and <code>lvSubStyles</code> for <code>ILexerWithSubStyles</code>.</p>
+
 <p><code>Release</code> is called to destroy the lexer object.</p>
 
 <p><code>PrivateCall</code> allows for direct communication between the
@@ -6269,9 +6260,9 @@ needs to be folded as this allowed fixing up the last line from the previous fol
 The new approach allows the lexer to decide whether to backtrack or to handle this
 more efficiently.</p>
 
-<h4 class="provisional">ILexerWithSubStyles</h4>
+<h4>ILexerWithSubStyles</h4>
 
-<p class="provisional">
+<p>
 To allow lexers to report which line ends they support, and to support substyles,
 <code>Ilexer</code> is extended to <code>ILexerWithSubStyles</code>.
 </p>
@@ -7395,6 +7386,8 @@ for line = lineStart to lineEnd do SCI_ENSUREVISIBLE(line) next
     Provisional features may even be removed if experience shows they are a mistake.</p>
 
     <p>Provisional features are displayed in this document with <span class="provisional">a distinctive background colour</span>.</p>
+
+    <p>There are currently no provisional features.</p>
 
     <p>Some developers may want to only use features that are stable and have graduated from
     provisional status. To avoid using provisional messages compile with the symbol
