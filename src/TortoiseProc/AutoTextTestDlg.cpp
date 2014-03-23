@@ -1,6 +1,6 @@
 // TortoiseSVN - a Windows shell extension for easy version control
 
-// Copyright (C) 2009, 2011, 2013 - TortoiseSVN
+// Copyright (C) 2009, 2011, 2013-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -108,9 +108,9 @@ void CAutoTextTestDlg::OnBnClickedAutotextscan()
 			}
 			m_sTimingLabel.Format(_T("Parse time: %ld uSecs"), timer.GetMusecsTaken());
 		}
-		catch (std::exception)
+		catch (std::exception &ex)
 		{
-			m_sResult = _T("Regex is invalid!");
+			m_sResult = _T("Regex is invalid!\r\n") + CString(ex.what());
 		}
 	}
 	UpdateData(FALSE);
