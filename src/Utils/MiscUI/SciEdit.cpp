@@ -895,7 +895,8 @@ void CSciEdit::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 		sMenuItemText.LoadString(IDS_SCIEDIT_SPLITLINES);
 		popup.AppendMenu(bHasSelection ? uEnabledMenu : uDisabledMenu, SCI_LINESSPLIT, sMenuItemText);
 
-		popup.AppendMenu(MF_SEPARATOR);
+		if (m_arContextHandlers.GetCount() > 0)
+			popup.AppendMenu(MF_SEPARATOR);
 
 		int nCustoms = nCorrections;
 		// now add any custom context menus
@@ -904,13 +905,13 @@ void CSciEdit::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 			CSciEditContextMenuInterface * pHandler = m_arContextHandlers.GetAt(handlerindex);
 			pHandler->InsertMenuItems(popup, nCustoms);
 		}
+#if THESAURUS
 		if (nCustoms > nCorrections)
 		{
 			// custom menu entries present, so add another separator
 			popup.AppendMenu(MF_SEPARATOR);
 		}
 
-#if THESAURUS
 		// add found thesauri to sub menu's
 		CMenu thesaurs;
 		int nThesaurs = 0;
