@@ -171,6 +171,7 @@ void CExportDlg::OnBnClickedCheckoutdirectoryBrowse()
 		UpdateData(TRUE);
 		m_strFile = dlg.GetPathName();
 		UpdateData(FALSE);
+		OnEnChangeCheckoutdirectory();
 	}
 }
 
