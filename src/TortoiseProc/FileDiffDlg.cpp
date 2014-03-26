@@ -825,7 +825,7 @@ void CFileDiffDlg::SetURLLabels(int mask)
 	this->GetDlgItem(IDC_REV2GROUP)->SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_FILEDIFF_VERSION2BASE)));
 	this->GetDlgItem(IDC_REV1GROUP)->SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_FILEDIFF_VERSION1)));
 
-	if( (mask&0x3) == 0x3)
+	if( (mask&0x3) == 0x3 && !m_rev1.m_CommitHash.IsEmpty() && !m_rev2.m_CommitHash.IsEmpty())
 		if(m_rev2.GetCommitterDate() > m_rev1.GetCommitterDate())
 		{
 			this->GetDlgItem(IDC_REV2GROUP)->SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_FILEDIFF_VERSION2BASENEWER)));
