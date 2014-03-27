@@ -154,12 +154,15 @@ HBRUSH CFindDlg::OnCtlColor(CDC* pDC, CWnd *pWnd, UINT nCtlColor)
 	case CTLCOLOR_STATIC:
 		if (pWnd == &m_FindStatus)
 		{
+			HBRUSH hbr = CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
 			pDC->SetTextColor(m_clrFindStatus);
-			return (HBRUSH)GetStockObject(WHITE_BRUSH);
+			pDC->SetBkMode(TRANSPARENT);
+			return hbr;
 		}
 	default:
-		return CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
+		break;
 	}
+	return CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
 }
 
 void CFindDlg::SetStatusText(const CString& str, COLORREF color)
