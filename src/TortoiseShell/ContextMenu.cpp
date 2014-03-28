@@ -1612,6 +1612,15 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				}
 				else return S_OK;
 				break;
+			case ShellMenuSubtreeAdd:
+				AddPathCommand(gitCmd, L"subtreeadd", false);
+				break;
+ 			case ShellMenuSubtreePush:
+				AddPathCommand(gitCmd, L"subtreepush", false);
+				break;
+ 			case ShellMenuSubtreePull:
+				AddPathCommand(gitCmd, L"subtreepull", false);
+				break;
 			case ShellMenuClone:
 				AddPathCommand(gitCmd, L"clone", false);
 				break;

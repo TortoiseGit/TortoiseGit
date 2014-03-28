@@ -67,8 +67,11 @@ enum GitCommands
 		ShellMenuStashApply,
 		ShellMenuStashList,
 		ShellMenuStashPop,
-		ShellMenuSubAdd,
+		ShellMenuSubAdd,		// submodules
 		ShellMenuSubSync,
+		ShellMenuSubtreeAdd,	// subtree
+		ShellMenuSubtreePull,
+		ShellMenuSubtreePush,
 		ShellMenuSendMail,
 		ShellMenuGitSVNRebase,
 		ShellMenuGitSVNDCommit,

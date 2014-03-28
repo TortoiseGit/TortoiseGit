@@ -217,6 +217,14 @@ END
 
 STRINGTABLE
 BEGIN
+	IDS_MENUSUBTREEADD		"Subtree Add..."
+	IDS_MENUDESC_SUBTREEADD	"Add another remote repository in this folder as a subtree"
+	IDS_MENUSUBTREEPUSH		"Subtree Push..."
+	IDS_MENUSUBTREEPULL		"Subtree Pull..."
+END
+
+STRINGTABLE
+BEGIN
     IDS_MENUSWITCH          "S&witch/Checkout..."
     IDS_MENUMERGE           "&Merge..."
     IDS_MENUBRANCH          "Create Branch..."
