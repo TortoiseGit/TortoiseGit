@@ -32,6 +32,7 @@ Released: Unreleased
  * Fixed issue #2128: tagopt not saved when asked to disable tag fetching
  * Fixed issue #2127: After delete last tag in Browse references, tree of refs disappeared
  * Fixed issue #2131: Commit message not used when merging with "squash" option
+ * Fixed issue #2147: Resolve not dealing correctly with (modify/delete) conflicts
 
 = Release 1.8.7.0 =
 Released: 2014-01-12
