@@ -49,7 +49,7 @@ CSetDialogs::CSetDialogs()
 	m_regSymbolizeRefNames = CRegDWORD(_T("Software\\TortoiseGit\\SymbolizeRefNames"), FALSE);
 	m_regEnableLogCache = CRegDWORD(_T("Software\\TortoiseGit\\EnableLogCache"), TRUE);
 	m_regEnableGravatar = CRegDWORD(_T("Software\\TortoiseGit\\EnableGravatar"), FALSE);
-	m_regGravatarUrl = CRegString(_T("Software\\TortoiseGit\\GravatarUrl"), _T("http://www.gravatar.com/avatar/%HASH%"));
+	m_regGravatarUrl = CRegString(_T("Software\\TortoiseGit\\GravatarUrl"), _T("http://www.gravatar.com/avatar/%HASH%?d=identicon"));
 	m_regDrawBranchesTagsOnRightSide = CRegDWORD(_T("Software\\TortoiseGit\\DrawTagsBranchesOnRightSide"), FALSE);
 }
 

@@ -140,7 +140,7 @@ void CGravatar::LoadGravatar(CString email)
 
 void CGravatar::GravatarThread()
 {
-	CString gravatarBaseUrl = CRegString(_T("Software\\TortoiseGit\\GravatarUrl"), _T("http://www.gravatar.com/avatar/%HASH%"));
+	CString gravatarBaseUrl = CRegString(_T("Software\\TortoiseGit\\GravatarUrl"), _T("http://www.gravatar.com/avatar/%HASH%?d=identicon"));
 
 	CString hostname;
 	CString baseUrlPath;
