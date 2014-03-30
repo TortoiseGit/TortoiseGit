@@ -189,6 +189,10 @@ CGit::~CGit(void)
 
 bool CGit::IsBranchNameValid(const CString& branchname)
 {
+	if (branchname.Left(1) == _T("-")) // git command line always treat it as command line option
+		return false;
+	if (branchname.FindOneOf(_T("\"|<>")) >= 0) // not valid on Windows
+		return false;
 	CStringA branchA = CUnicodeUtils::GetUTF8(_T("refs/heads/") + branchname);
 	return !!git_reference_is_valid_name(branchA);
 }
