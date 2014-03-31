@@ -154,7 +154,7 @@ BEGIN_MESSAGE_MAP(CCommitDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_COMMIT_SETAUTHOR, &CCommitDlg::OnBnClickedCommitSetauthor)
 END_MESSAGE_MAP()
 
-bool PrefillMessage(const CString &filename, CString &msg)
+static bool PrefillMessage(const CString &filename, CString &msg)
 {
 	if (PathFileExists(filename))
 	{
