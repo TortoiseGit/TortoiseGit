@@ -105,6 +105,29 @@ BEGIN_MESSAGE_MAP(CRebaseDlg, CResizableStandAloneDialog)
 	ON_WM_CTLCOLOR()
 END_MESSAGE_MAP()
 
+static bool PrefillMessage(const CString &filename, CString &msg)
+{
+	if (PathFileExists(filename))
+	{
+		CStdioFile file;
+		if (file.Open(filename, CFile::modeRead | CFile::typeBinary))
+		{
+			CString str;
+			std::unique_ptr<BYTE[]> buf(new BYTE[file.GetLength()]);
+			UINT read = file.Read(buf.get(), (UINT)file.GetLength());
+			g_Git.StringAppend(&str, buf.get(), CP_UTF8, read);
+			str.Replace(_T("\r\n"), _T("\n"));
+			str.TrimRight(_T("\n"));
+			str += _T("\n");
+			msg = str;
+		}
+		else
+			::MessageBox(nullptr, _T("Could not open ") + filename, _T("TortoiseGit"), MB_ICONERROR);
+		return true; // load no further files
+	}
+	return false;
+}
+
 void CRebaseDlg::AddRebaseAnchor()
 {
 	AddAnchor(IDC_REBASE_TAB,TOP_LEFT,BOTTOM_RIGHT);
@@ -1848,13 +1871,21 @@ LRESULT CRebaseDlg::OnRebaseUpdateUI(WPARAM,LPARAM)
 	{
 	case REBASE_CONFLICT:
 	case REBASE_SQUASH_CONFLICT:
+		{
 		ListConflictFile();
 		this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_CONFLICT);
 		if (m_pTaskbarList)
 			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_ERROR);
 		this->m_LogMessageCtrl.Call(SCI_SETREADONLY, FALSE);
-		this->m_LogMessageCtrl.SetText(curRev->GetSubject()+_T("\n")+curRev->GetBody());
+		CString dotGitPath;
+		g_GitAdminDir.GetAdminDirPath(g_Git.m_CurrentDir, dotGitPath);
+		CString logMessage;
+		bool loadedMsg = PrefillMessage(dotGitPath + _T("MERGE_MSG"), logMessage);
+		if (!loadedMsg)
+			logMessage = curRev->GetSubject() + _T("\n") + curRev->GetBody();
+		this->m_LogMessageCtrl.SetText(logMessage);
 		break;
+		}
 	case REBASE_EDIT:
 		this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_MESSAGE);
 		if (m_pTaskbarList)
