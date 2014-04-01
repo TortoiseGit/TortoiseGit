@@ -1484,44 +1484,47 @@ void CLogDlg::OnEnLinkMsgview(NMHDR *pNMHDR, LRESULT *pResult)
 		GetDlgItemText(IDC_MSGVIEW, msg);
 		msg.Replace(_T("\r\n"), _T("\n"));
 		url = msg.Mid(pEnLink->chrg.cpMin, pEnLink->chrg.cpMax-pEnLink->chrg.cpMin);
-		int pos = 0;
-		if (LookLikeGitHash(url, pos))
+		auto findResult = m_LogList.m_ProjectProperties.FindBugIDPositions(msg);
+		if (std::find_if(findResult.begin(), findResult.end(), 
+			[=] (const CHARRANGE &cr) -> bool { return cr.cpMin == pEnLink->chrg.cpMin && cr.cpMax == pEnLink->chrg.cpMax; }
+		) != findResult.end())
 		{
-			bool found = false;
-			for (int i = 0; i < m_LogList.m_arShownList.GetCount(); ++i)
-			{
-				GitRev *rev = (GitRev *)m_LogList.m_arShownList.SafeGetAt(i);
-				if (!rev) continue;
-				if (rev->m_CommitHash.ToString().Left(url.GetLength()) == url)
-				{
-					POSITION pos = m_LogList.GetFirstSelectedItemPosition();
-					if (pos)
-					{
-						int index = m_LogList.GetNextSelectedItem(pos);
-						if (index > 0)
-							m_LogList.SetItemState(index, 0, LVIS_SELECTED);
-					}
-					m_LogList.SetItemState(i, LVIS_SELECTED, LVIS_SELECTED);
-					m_LogList.EnsureVisible(i, FALSE);
-					m_LogList.SetSelectionMark(i);
-					found = true;
-					PostMessage(WM_TGIT_REFRESH_SELECTION, 0, 0);
-					break;
-				}
-			}
-
-			if (!found)
-				CMessageBox::ShowCheck(GetSafeHwnd(), IDS_PROC_LOG_JUMPNOTFOUND, IDS_APPNAME, 1, IDI_INFORMATION, IDS_OKBUTTON, 0, 0, _T("NoJumpNotFoundWarning"), IDS_MSGBOX_DONOTSHOWAGAIN);
+			url = m_LogList.m_ProjectProperties.GetBugIDUrl(url);
+			url = GetAbsoluteUrlFromRelativeUrl(url);
 		}
+		if (::PathIsURL(url))
+			ShellExecute(this->m_hWnd, _T("open"), url, NULL, NULL, SW_SHOWDEFAULT);
 		else
 		{
-			if (!::PathIsURL(url))
+			int pos = 0;
+			if (LookLikeGitHash(url, pos))
 			{
-				url = m_LogList.m_ProjectProperties.GetBugIDUrl(url);
-				url = GetAbsoluteUrlFromRelativeUrl(url);
+				bool found = false;
+				for (int i = 0; i < m_LogList.m_arShownList.GetCount(); ++i)
+				{
+					GitRev *rev = (GitRev *)m_LogList.m_arShownList.SafeGetAt(i);
+					if (!rev) continue;
+					if (rev->m_CommitHash.ToString().Left(url.GetLength()) == url)
+					{
+						POSITION pos = m_LogList.GetFirstSelectedItemPosition();
+						if (pos)
+						{
+							int index = m_LogList.GetNextSelectedItem(pos);
+							if (index > 0)
+								m_LogList.SetItemState(index, 0, LVIS_SELECTED);
+						}
+						m_LogList.SetItemState(i, LVIS_SELECTED, LVIS_SELECTED);
+						m_LogList.EnsureVisible(i, FALSE);
+						m_LogList.SetSelectionMark(i);
+						found = true;
+						PostMessage(WM_TGIT_REFRESH_SELECTION, 0, 0);
+						break;
+					}
+				}
+
+				if (!found)
+					CMessageBox::ShowCheck(GetSafeHwnd(), IDS_PROC_LOG_JUMPNOTFOUND, IDS_APPNAME, 1, IDI_INFORMATION, IDS_OKBUTTON, 0, 0, _T("NoJumpNotFoundWarning"), IDS_MSGBOX_DONOTSHOWAGAIN);
 			}
-			if (!url.IsEmpty())
-				ShellExecute(this->m_hWnd, _T("open"), url, NULL, NULL, SW_SHOWDEFAULT);
 		}
 	}
 	*pResult = 0;

@@ -34,6 +34,7 @@ Released: Unreleased
  * Fixed issue #2131: Commit message not used when merging with "squash" option
  * Fixed issue #2147: Resolve not dealing correctly with (modify/delete) conflicts
  * Fixed issue #2148: Cherry pick with conflicts does not add "Cherry picked from..."
+ * Fixed issue #2150: Integrate with issue tracker - bug Id can not be larger than 6 digit number
 
 = Release 1.8.7.0 =
 Released: 2014-01-12
