@@ -24,4 +24,20 @@
 			<keycap>space</keycap>: shifts the state, <keycap>s</keycap>: skip, <keycap>e</keycap>: edit, <keycap>p</keycap>: pick, <keycap>q</keycap>: squash
 		</para>
 	</tip>
+	<tip>
+		<para>
+			There is a button that swaps branch and upstream.
+			Assume you are currently working on <literal>master</literal> branch, 
+			and wish to rebase <literal>feature</literal> branch onto <literal>master</literal>.
+			Instead of switching to <literal>feature</literal> in advance, 
+			select the commit of <literal>feature</literal> in log list, 
+			<menuchoice>
+				<guimenu>Context Menu</guimenu>
+				<guimenuitem>Rebase</guimenuitem>
+			</menuchoice>
+			and click this swap button.
+			TortoiseGit's rebase moves <literal>feature</literal> to <literal>master</literal> directly, then 
+			cherry-picks the commits. This approach touches fewer files and runs faster.
+		</para>
+	</tip>
 </sect1>

@@ -328,6 +328,11 @@
 			you have already installed and registered, this is the place to
 			specify how it integrates with your working tree.
 		</para>
+		<tip>
+			There is also a hierarchical git configuration to associate issue tracker plugin with your project,
+			rather than with to a specific directory path. Such settings are more portable.
+			See <xref linkend="tgit-dug-bugtracker"/> to configure these settings.
+		</tip>
 		<para>
 			<figure id="tgit-dug-settings-dia-issuetracker">
 				<title>The Settings Dialog, Issue Tracker Integration Page</title>

@@ -158,6 +158,12 @@
 			TortoiseGit's context menu to appear at all, you can list them in
 			the box at the bottom.
 		</para>
+		<para>
+			If you right click and drag folder/file in Windows Explorer, 
+			a context menu will be shown when you drop. It provides some TortoiseGit actions.
+			You can uncheck <guibutton>Enable drag context menu</guibutton>
+			to prevent from carelessly clicking the TortoiseGit actions.
+		</para>
 	</sect3>
 	
 	<sect3 id="tgit-dug-settings-look-feel-extended">

@@ -266,6 +266,40 @@
 				which relate to a particular issue.
 			</para>
 		</tip>
+		<sect3 id="tgit-dug-bugtracker-link-provider">
+			<title>Issue Tracker Provider Settings based on Hierarchical Git Configuration</title>
+			<para>
+				This is a hierarchical git configuration to associate issue tracker plugin with your project,
+				rather than with to a specific directory path. Such settings are more portable.
+				To deploy the settings, set to Project level and commit <literal>.tgitconfig</literal>.
+				<variablelist>
+					<varlistentry>
+						<term condition="pot">bugtraq.provideruuid</term>
+						<listitem>
+							<para>
+								This is the GUID of 32-bit issue tracker plugin.
+							</para>
+						</listitem>
+					</varlistentry>
+					<varlistentry>
+						<term condition="pot">bugtraq.provideruuid64</term>
+						<listitem>
+							<para>
+								This is the GUID of 64-bit issue tracker plugin.
+							</para>
+						</listitem>
+					</varlistentry>
+					<varlistentry>
+						<term condition="pot">bugtraq.providerparams</term>
+						<listitem>
+							<para>
+								This is the parameter string for the issue tracker plugin.
+							</para>
+						</listitem>
+					</varlistentry>
+				</variablelist>
+			</para>
+		</sect3>
 		<para>
 			This issue tracker integration is not restricted to TortoiseGit; it can be used
 			with other clients (e.g. TortoiseSVN). For more information, read the full
