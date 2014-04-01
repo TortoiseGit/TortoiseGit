@@ -84,7 +84,8 @@
 			This sets remote.name.tagopt config, which controls the default tag fetching behaviour of the specified remote.
 			Reachable: Download tags that are reachable from remote branch heads (default behaviour).
 			None: No tags are downloaded (--no-tags).
-			All tags only: Only all tags are downloaded but no branches are downloaded (--tags).
+			(git 1.9 and later) All: All tags as well as branches are downloaded (--tags).
+			(prior to git 1.9) All tags only: Only all tags are downloaded but no branches are downloaded (--tags).
 		</para>
 		<para>
 			<guilabel>Prune</guilabel>
