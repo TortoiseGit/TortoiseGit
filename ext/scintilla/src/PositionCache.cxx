@@ -237,8 +237,9 @@ Point LineLayout::PointFromPosition(int posInLine, int lineHeight) const {
 				pt.x = positions[posInLine] - positions[rangeSubLine.start];
 				if (rangeSubLine.start != 0)	// Wrapped lines may be indented
 					pt.x += wrapIndent;
-				break;
 			}
+		} else {
+			break;
 		}
 	}
 	return pt;

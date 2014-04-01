@@ -459,6 +459,52 @@
       </li>
     </ul>
     <h3>
+       <a href="http://prdownloads.sourceforge.net/scintilla/scite341.zip?download">Release 3.4.1</a>
+    </h3>
+    <ul>
+	<li>
+	Released 1 April 2014.
+	</li>
+	<li>
+	Display Unicode line ends as [LS], [PS], and [NEL] blobs.
+	</li>
+	<li>
+	Bug fixed where cursor down failed on wrapped lines.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1585/">Bug #1585</a>.
+	</li>
+	<li>
+	Caret positioning changed a little to appear inside characters less often by
+	rounding the caret position to the pixel grid instead of truncating.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1588/">Bug #1588</a>.
+	</li>
+	<li>
+	Bug fixed where automatic indentation wrong when caret in virtual space.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1586/">Bug #1586</a>.
+	</li>
+	<li>
+	Bug fixed on Windows where WM_LBUTTONDBLCLK was no longer sent to window.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1587/">Bug #1587</a>.
+	</li>
+	<li>
+	Bug fixed with SciTE on Windows XP where black stripes appeared inside the find and
+	replace strips.
+	</li>
+	<li>
+	Crash fixed in SciTE with recursive properties files.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1507/">Bug #1507</a>.
+	</li>
+	<li>
+	Bug fixed with SciTE where Ctrl+E before an unmatched end brace jumps to file start.
+	<a href="http://sourceforge.net/p/scintilla/bugs/315/">Bug #315</a>.
+	</li>
+	<li>
+	Fixed scrolling on Cocoa to avoid display glitches and be smoother.
+	</li>
+	<li>
+	Fixed crash on Cocoa when character composition used when autocompletion list active.
+	</li>
+    </ul>
+    <h3>
        <a href="http://prdownloads.sourceforge.net/scintilla/scite340.zip?download">Release 3.4.0</a>
     </h3>
     <ul>
@@ -629,7 +675,7 @@
 	<a href="http://sourceforge.net/p/scintilla/bugs/1553/">Bug #1553</a>.
 	</li>
 	<li>
-	C++ lexer recognizes C++11 user-defined lierals and applies lexical class SCE_C_USERLITERAL.
+	C++ lexer recognizes C++11 user-defined literals and applies lexical class SCE_C_USERLITERAL.
 	</li>
 	<li>
 	C++ lexer allows single quote characters as digit separators in numeric literals like 123'456 as this is
