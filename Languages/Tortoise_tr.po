@@ -23,7 +23,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2014-01-01 20:32+0000\n"
+"PO-Revision-Date: 2014-03-18 19:09+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Turkish (http://www.transifex.com/projects/p/tortoisegit/language/tr/)\n"
 "MIME-Version: 1.0\n"
@@ -1301,13 +1301,13 @@ msgstr "&Bilinmeyen sürücüler"
 msgid "&Up"
 msgstr "&Yukarı"
 
-#. Resource IDs: (4567)
-msgid "&UpStream:"
-msgstr ""
-
 #. Resource IDs: (1253)
 msgid "&Update item to revision"
 msgstr "Öğeyi revizyona göre &güncelle"
+
+#. Resource IDs: (4567)
+msgid "&Upstream:"
+msgstr ""
 
 #. Resource IDs: (1184)
 msgid "&Use auto-completion of file paths and keywords"
@@ -2316,6 +2316,10 @@ msgstr "Gözat..."
 msgid "Bug-ID"
 msgstr "Böcek-ID"
 
+#. Resource IDs: (1578)
+msgid "Bug-ID e&xpression:"
+msgstr ""
+
 #. Resource IDs: (1119)
 msgid "Bug-ID/Issue-Nr:"
 msgstr "Böcek-ID/Sorun-No."
@@ -2327,6 +2331,10 @@ msgstr "Böcek-IDleri"
 #. Resource IDs: (65535)
 msgid "BugTraq"
 msgstr "BugTraq"
+
+#. Resource IDs: (327)
+msgid "Bugtraq Regex Tester - TortoiseGit"
+msgstr ""
 
 #. Resource IDs: (16132)
 msgid "Button Appearance"
@@ -2449,6 +2457,12 @@ msgstr ""
 msgid ""
 "Cannot combine commits now.\r\n"
 "Make sure you are viewing the log of your current branch and no filters are applied."
+msgstr ""
+
+#. Resource IDs: (94)
+msgid ""
+"Cannot force updating current branch. Use reset command if you want to do "
+"so."
 msgstr ""
 
 #. Resource IDs: (1)
@@ -2608,6 +2622,10 @@ msgstr "Kontol Et"
 #. Resource IDs: (77)
 msgid "Checkout"
 msgstr "Çıkar(al)"
+
+#. Resource IDs: (93)
+msgid "Checkout with merge"
+msgstr ""
 
 #. Resource IDs: (67)
 msgid "Cherry Pick"
@@ -3699,6 +3717,10 @@ msgstr "Diyalog boyutları ve konumları"
 msgid "Dialogs"
 msgstr ""
 
+#. Resource IDs: (1789)
+msgid "Diff Options"
+msgstr ""
+
 #. Resource IDs: (22)
 msgid "Diff Two Commits"
 msgstr "İki Teslimi Karşılaştır"
@@ -4130,6 +4152,10 @@ msgstr ""
 
 #. Resource IDs: (1766)
 msgid "Enable Gravatar"
+msgstr ""
+
+#. Resource IDs: (1788)
+msgid "Enable drag context menu"
 msgstr ""
 
 #. Resource IDs: (87)
@@ -5254,6 +5280,10 @@ msgstr "Yakalayıcı türü:"
 msgid "I&nclude paths:"
 msgstr "Bu dizi&nleri dahil et:"
 
+#. Resource IDs: (1580)
+msgid "IBugTraqProvider"
+msgstr ""
+
 #. Resource IDs: (1251)
 msgid "ID"
 msgstr "ID"
@@ -5549,8 +5579,16 @@ msgstr ""
 msgid "Ignore Type"
 msgstr ""
 
+#. Resource IDs: (94)
+msgid "Ignore all space"
+msgstr ""
+
 #. Resource IDs: (156)
 msgid "Ignore all whitespace changes"
+msgstr ""
+
+#. Resource IDs: (94)
+msgid "Ignore blank lines"
 msgstr ""
 
 #. Resource IDs: (1067)
@@ -5574,6 +5612,14 @@ msgstr ""
 #. Resource IDs: (1018)
 msgid "Ignore line &endings (recommended)"
 msgstr "Satır &sonlarına aldırma (önerilir)"
+
+#. Resource IDs: (94)
+msgid "Ignore space at EOL"
+msgstr ""
+
+#. Resource IDs: (94)
+msgid "Ignore space change"
+msgstr ""
 
 #. Resource IDs: (1676)
 msgid "Ignore whitespace"
@@ -6083,6 +6129,10 @@ msgid ""
 "The file status is changed to modified"
 msgstr ""
 
+#. Resource IDs: (252)
+msgid "Mark this block"
+msgstr ""
+
 #. Resource IDs: (2051)
 msgid ""
 "Marks a file as resolved in Git\n"
@@ -6197,6 +6247,10 @@ msgstr "Mesaj"
 
 #. Resource IDs: (1719)
 msgid "Message onl&y"
+msgstr ""
+
+#. Resource IDs: (1579)
+msgid "Message part &expression:"
 msgstr ""
 
 #. Resource IDs: (116)
@@ -7130,6 +7184,14 @@ msgstr "Lütfen Komut-dosyasını uygulamak istediğiniz dizini giriniz."
 msgid "Please select a hook type"
 msgstr "Lütfen yakalayıcı türünü belirtiniz"
 
+#. Resource IDs: (94)
+msgid "Please select branch"
+msgstr ""
+
+#. Resource IDs: (94)
+msgid "Please select upstream"
+msgstr ""
+
 #. Resource IDs: (13)
 msgid "Please wait while cancelling..."
 msgstr "Iptal işlemi yapılırken lütfen bekleyiniz..."
@@ -7298,6 +7360,18 @@ msgstr "Özellik Sayfası"
 msgid "Provider"
 msgstr "Sağlayıcı"
 
+#. Resource IDs: (1586)
+msgid "Provider para&meters:"
+msgstr ""
+
+#. Resource IDs: (1581)
+msgid "Provider uuid win&32:"
+msgstr ""
+
+#. Resource IDs: (1583)
+msgid "Provider uuid x6&4:"
+msgstr ""
+
 #. Resource IDs: (1475)
 msgid "Provider:"
 msgstr "Sağlayıcı:"
@@ -7308,6 +7382,10 @@ msgstr "Proxy Ayarları"
 
 #. Resource IDs: (1603)
 msgid "Prune"
+msgstr ""
+
+#. Resource IDs: (1785)
+msgid "Prune (All remotes)"
 msgstr ""
 
 #. Resource IDs: (22, 66, 1611)
@@ -7341,6 +7419,10 @@ msgstr ""
 #. Resource IDs: (22, 303, 1612)
 msgid "Push"
 msgstr "Yolla"
+
+#. Resource IDs: (1786)
+msgid "Push Default"
+msgstr ""
 
 #. Resource IDs: (1385)
 msgid "Push notes"
@@ -8100,6 +8182,24 @@ msgstr ""
 msgid "Same commit time"
 msgstr ""
 
+#. Resource IDs: (93)
+msgid ""
+"Sample log message to test the bugtraq: regex strings.\n"
+"\n"
+"Testing mentions of issues inside a text: Mention single issue #55. Mention issues #77, #78, and #78. Mention more issues #123, #124 and #125 and some more separate ones: Issue #45, issue #46 and issue #47.\n"
+"\n"
+"\n"
+"Update issue #101\n"
+"Fixes issue #202\n"
+"Fixed issue #123\n"
+"Resolves issue #88.\n"
+"Closes issue #99.\n"
+msgstr ""
+
+#. Resource IDs: (1612)
+msgid "Sample text:"
+msgstr ""
+
 #. Resource IDs: (156)
 msgid "Save"
 msgstr ""
@@ -8326,6 +8426,10 @@ msgstr "Değişiklik listesini seç"
 #. Resource IDs: (78)
 msgid "Select diff application"
 msgstr "Karşılaştırma uygulaması seç"
+
+#. Resource IDs: (93)
+msgid "Select file"
+msgstr ""
 
 #. Resource IDs: (64)
 msgid "Select folder to associate with this issue tracker"
@@ -8762,6 +8866,11 @@ msgstr "Versiyonlan&mamış dosyaları göster"
 msgid "Show/Hide"
 msgstr "Göster/Gizle"
 
+#. Resource IDs: (93)
+#, c-format
+msgid "Showing %1!d! ref(s), %2!d! ref(s) selected"
+msgstr ""
+
 #. Resource IDs: (76)
 #, c-format
 msgid ""
@@ -9157,8 +9266,8 @@ msgid "Switch/Checkout working tree to another branch/tag"
 msgstr "Çalışma ağacını farklı dal/etiket olarak değiştir/dışarı çıkart"
 
 #. Resource IDs: (325)
-msgid "Switches the comparison left<<->right"
-msgstr "Karşılaştırmayı sol<<->sağ olarak değiştir"
+msgid "Switches the comparison left<->right"
+msgstr ""
 
 #. Resource IDs: (1733)
 msgid "Symbolize ref names"
@@ -9245,6 +9354,10 @@ msgstr "Görev Bölümü"
 
 #. Resource IDs: (65535)
 msgid "Temp files (including Gravatar images)"
+msgstr ""
+
+#. Resource IDs: (1787)
+msgid "Test"
 msgstr ""
 
 #. Resource IDs: (219)
@@ -9509,6 +9622,15 @@ msgid ""
 "Commit the submodule now or ignore dirty changes?"
 msgstr ""
 
+#. Resource IDs: (93)
+#, c-format
+msgid ""
+"The target folder \n"
+"%s\n"
+"is a special folder and is not supposed to be a repository root!\n"
+"Are you sure you want to initialize a git repository inside that folder?"
+msgstr ""
+
 #. Resource IDs: (88)
 #, c-format
 msgid ""
@@ -9684,6 +9806,10 @@ msgid ""
 "Toggle One/Two Pages display"
 msgstr "Bir/İki sayfa görüntülemeye geçiş\nBir/İki sayfa görüntülemeye geçiş"
 
+#. Resource IDs: (93)
+msgid "Toggle filters"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Toolbar"
 msgstr "Araç çubuğu"
@@ -9855,6 +9981,10 @@ msgstr "Takip"
 msgid "Tracked Remote Branch:"
 msgstr ""
 
+#. Resource IDs: (94)
+msgid "Tracked branch"
+msgstr ""
+
 #. Resource IDs: (357)
 #, c-format
 msgid "Transferring at %s"
@@ -10017,6 +10147,10 @@ msgstr ""
 msgid "Unknown depth"
 msgstr "Bilinmeyen derinlik"
 
+#. Resource IDs: (252)
+msgid "Unmark this block"
+msgstr ""
+
 #. Resource IDs: (315)
 msgid "Unresolved conflicts!"
 msgstr ""
@@ -10167,6 +10301,10 @@ msgstr ""
 #. Resource IDs: (32856)
 msgid "Use left file"
 msgstr "Soldaki dosyayı kullan"
+
+#. Resource IDs: (252)
+msgid "Use left file except marked blocks"
+msgstr ""
 
 #. Resource IDs: (1762)
 msgid "Use local branch color for current branch"
@@ -10463,6 +10601,12 @@ msgstr ""
 msgid ""
 "When closing a progress dialog with a running git process, ask for "
 "confirmation before killing it"
+msgstr ""
+
+#. Resource IDs: (94)
+msgid ""
+"When enabled, TortoiseGit move context menu items will be available when "
+"dragging folders / files"
 msgstr ""
 
 #. Resource IDs: (197)

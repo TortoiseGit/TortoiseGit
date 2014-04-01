@@ -9,13 +9,14 @@
 # 鋰 乙酸 <ch3cooli@gmail.com>, 2012-2014
 # Hydriz <admin@alphacorp.tk>, 2013
 # Sven Strickroth <sstrickroth@googlemail.com>, 2013
+# Yue_Lin_Ho <yuelinho777@gmail.com>, 2014
 # 鋰 乙酸 <ch3cooli@gmail.com>, 2012-2013
 msgid ""
 msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2014-01-02 13:14+0000\n"
+"PO-Revision-Date: 2014-04-01 15:19+0000\n"
 "Last-Translator: 鋰 乙酸 <ch3cooli@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/tortoisegit/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -1293,13 +1294,13 @@ msgstr "未知磁碟(&U)"
 msgid "&Up"
 msgstr "向上(&U)"
 
-#. Resource IDs: (4567)
-msgid "&UpStream:"
-msgstr "上游(&U)"
-
 #. Resource IDs: (1253)
 msgid "&Update item to revision"
 msgstr "更新項目至版本(&U)"
+
+#. Resource IDs: (4567)
+msgid "&Upstream:"
+msgstr "上游(&U)"
 
 #. Resource IDs: (1184)
 msgid "&Use auto-completion of file paths and keywords"
@@ -1335,7 +1336,7 @@ msgstr "在檔案之內(&W)"
 
 #. Resource IDs: (1657)
 msgid "&ignore space change"
-msgstr "忽略空格改動(&i)"
+msgstr "忽略空格變更(&i)"
 
 #. Resource IDs: (88)
 msgid "(TortoiseGit default)"
@@ -2308,6 +2309,10 @@ msgstr "瀏覽..."
 msgid "Bug-ID"
 msgstr "Bug編號"
 
+#. Resource IDs: (1578)
+msgid "Bug-ID e&xpression:"
+msgstr "Bug 編號表示式(&X)："
+
 #. Resource IDs: (1119)
 msgid "Bug-ID/Issue-Nr:"
 msgstr "Bug編號 / 問題編號:"
@@ -2319,6 +2324,10 @@ msgstr "Bug編號"
 #. Resource IDs: (65535)
 msgid "BugTraq"
 msgstr "BugTraq"
+
+#. Resource IDs: (327)
+msgid "Bugtraq Regex Tester - TortoiseGit"
+msgstr "Bugtraq 正規表示式測試器 - TortoiseGit"
 
 #. Resource IDs: (16132)
 msgid "Button Appearance"
@@ -2442,6 +2451,12 @@ msgid ""
 "Cannot combine commits now.\r\n"
 "Make sure you are viewing the log of your current branch and no filters are applied."
 msgstr "現在無法合併提交\r\n請確定你正在檢視當前分支及沒有套用過濾器"
+
+#. Resource IDs: (94)
+msgid ""
+"Cannot force updating current branch. Use reset command if you want to do "
+"so."
+msgstr "將與目前分支產生同名衝突而無法新建分支. 可使用重置命令移動目前分支來達到相同結果."
 
 #. Resource IDs: (1)
 #, c-format
@@ -2600,6 +2615,10 @@ msgstr "勾選:"
 #. Resource IDs: (77)
 msgid "Checkout"
 msgstr "取出"
+
+#. Resource IDs: (93)
+msgid "Checkout with merge"
+msgstr "取出並合併"
 
 #. Resource IDs: (67)
 msgid "Cherry Pick"
@@ -3691,6 +3710,10 @@ msgstr "視窗大小與位置"
 msgid "Dialogs"
 msgstr "視窗"
 
+#. Resource IDs: (1789)
+msgid "Diff Options"
+msgstr "比對差異選項"
+
 #. Resource IDs: (22)
 msgid "Diff Two Commits"
 msgstr "比較兩個版本差異"
@@ -4123,6 +4146,10 @@ msgstr "啟用編輯"
 #. Resource IDs: (1766)
 msgid "Enable Gravatar"
 msgstr "啟用 Gravatar"
+
+#. Resource IDs: (1788)
+msgid "Enable drag context menu"
+msgstr "啟用拖曳快顯功能表"
 
 #. Resource IDs: (87)
 msgid ""
@@ -5246,6 +5273,10 @@ msgstr "掛勾類型:"
 msgid "I&nclude paths:"
 msgstr "包含路徑(&N):"
 
+#. Resource IDs: (1580)
+msgid "IBugTraqProvider"
+msgstr "IBugTraqProvider"
+
 #. Resource IDs: (1251)
 msgid "ID"
 msgstr "ID"
@@ -5541,9 +5572,17 @@ msgstr "忽略檔案"
 msgid "Ignore Type"
 msgstr "忽略類別"
 
+#. Resource IDs: (94)
+msgid "Ignore all space"
+msgstr "忽略所有空格"
+
 #. Resource IDs: (156)
 msgid "Ignore all whitespace changes"
 msgstr "無視所有空白字元變更"
+
+#. Resource IDs: (94)
+msgid "Ignore blank lines"
+msgstr "忽略空白行"
 
 #. Resource IDs: (1067)
 msgid "Ignore case cha&nges"
@@ -5567,13 +5606,21 @@ msgstr "遞迴地忽略項目"
 msgid "Ignore line &endings (recommended)"
 msgstr "(建議)忽略換行CRLF符號(&E)"
 
+#. Resource IDs: (94)
+msgid "Ignore space at EOL"
+msgstr "忽略行末空白字元"
+
+#. Resource IDs: (94)
+msgid "Ignore space change"
+msgstr "忽略空格變更"
+
 #. Resource IDs: (1676)
 msgid "Ignore whitespace"
 msgstr "忽略空白字元"
 
 #. Resource IDs: (156)
 msgid "Ignore whitespace changes"
-msgstr "無視空白字元變更"
+msgstr "忽略空白字元變更"
 
 #. Resource IDs: (2050)
 msgid "Ignore whitespace when comparing the parents version and the child's "
@@ -6075,6 +6122,10 @@ msgid ""
 "The file status is changed to modified"
 msgstr "標記為已解決\n清除衝突狀態並標示為已更改"
 
+#. Resource IDs: (252)
+msgid "Mark this block"
+msgstr "標記這個區塊"
+
 #. Resource IDs: (2051)
 msgid ""
 "Marks a file as resolved in Git\n"
@@ -6190,6 +6241,10 @@ msgstr "訊息"
 #. Resource IDs: (1719)
 msgid "Message onl&y"
 msgstr "只輸入訊息(&Y)"
+
+#. Resource IDs: (1579)
+msgid "Message part &expression:"
+msgstr "訊息正規表示式(&E)："
 
 #. Resource IDs: (116)
 msgid "Messages"
@@ -7122,6 +7177,14 @@ msgstr "請輸入要套用這個掛勾指令檔的路徑"
 msgid "Please select a hook type"
 msgstr "請選擇掛勾類型"
 
+#. Resource IDs: (94)
+msgid "Please select branch"
+msgstr "請選擇分支"
+
+#. Resource IDs: (94)
+msgid "Please select upstream"
+msgstr "請選擇上游"
+
 #. Resource IDs: (13)
 msgid "Please wait while cancelling..."
 msgstr "正在取消, 請稍候..."
@@ -7290,6 +7353,18 @@ msgstr "性質頁面"
 msgid "Provider"
 msgstr "提供者"
 
+#. Resource IDs: (1586)
+msgid "Provider para&meters:"
+msgstr "提供者參數(&m):"
+
+#. Resource IDs: (1581)
+msgid "Provider uuid win&32:"
+msgstr "提供者 uuid win&32:"
+
+#. Resource IDs: (1583)
+msgid "Provider uuid x6&4:"
+msgstr "提供者 uuid x6&4"
+
 #. Resource IDs: (1475)
 msgid "Provider:"
 msgstr "提供者:"
@@ -7300,7 +7375,11 @@ msgstr "Proxy 設定"
 
 #. Resource IDs: (1603)
 msgid "Prune"
-msgstr "砍掉"
+msgstr "剪除"
+
+#. Resource IDs: (1785)
+msgid "Prune (All remotes)"
+msgstr "剪除 (所有遠端)"
 
 #. Resource IDs: (22, 66, 1611)
 msgid "Pull"
@@ -7333,6 +7412,10 @@ msgstr "推送(&H)"
 #. Resource IDs: (22, 303, 1612)
 msgid "Push"
 msgstr "推送"
+
+#. Resource IDs: (1786)
+msgid "Push Default"
+msgstr "推送預設值"
 
 #. Resource IDs: (1385)
 msgid "Push notes"
@@ -8092,6 +8175,24 @@ msgstr "相同"
 msgid "Same commit time"
 msgstr "相同提交時間"
 
+#. Resource IDs: (93)
+msgid ""
+"Sample log message to test the bugtraq: regex strings.\n"
+"\n"
+"Testing mentions of issues inside a text: Mention single issue #55. Mention issues #77, #78, and #78. Mention more issues #123, #124 and #125 and some more separate ones: Issue #45, issue #46 and issue #47.\n"
+"\n"
+"\n"
+"Update issue #101\n"
+"Fixes issue #202\n"
+"Fixed issue #123\n"
+"Resolves issue #88.\n"
+"Closes issue #99.\n"
+msgstr "用來測試 bugtraq:regex 的記錄訊息範本. \n\n測試在段落中提到問題: Mention single issue #55. Mention issues #77, #78, and #78. Mention more issues #123, #124 and #125 and some more separate ones: Issue #45, issue #46 and issue #47.\n\n\nUpdate issue #101\nFixes issue #202\nFixed issue #123\nResolves issue #88.\nCloses issue #99.\n"
+
+#. Resource IDs: (1612)
+msgid "Sample text:"
+msgstr "樣本文字："
+
 #. Resource IDs: (156)
 msgid "Save"
 msgstr "儲存"
@@ -8318,6 +8419,10 @@ msgstr "選擇變更列表"
 #. Resource IDs: (78)
 msgid "Select diff application"
 msgstr "選擇比對差異工具"
+
+#. Resource IDs: (93)
+msgid "Select file"
+msgstr "選擇檔案"
 
 #. Resource IDs: (64)
 msgid "Select folder to associate with this issue tracker"
@@ -8754,6 +8859,11 @@ msgstr "顯示無版本控制的檔案(&V)"
 msgid "Show/Hide"
 msgstr "顯示/隱藏"
 
+#. Resource IDs: (93)
+#, c-format
+msgid "Showing %1!d! ref(s), %2!d! ref(s) selected"
+msgstr "顯示 %1!d! 個參考點，%2!d! 個已選取"
+
 #. Resource IDs: (76)
 #, c-format
 msgid ""
@@ -9149,7 +9259,7 @@ msgid "Switch/Checkout working tree to another branch/tag"
 msgstr "切換工作目錄至其他分支/標記"
 
 #. Resource IDs: (325)
-msgid "Switches the comparison left<<->right"
+msgid "Switches the comparison left<->right"
 msgstr "左右切換比對視窗"
 
 #. Resource IDs: (1733)
@@ -9238,6 +9348,10 @@ msgstr "工作面板"
 #. Resource IDs: (65535)
 msgid "Temp files (including Gravatar images)"
 msgstr "暫時檔案 (包括 Gravatar 圖像)"
+
+#. Resource IDs: (1787)
+msgid "Test"
+msgstr "測試"
 
 #. Resource IDs: (219)
 msgid "Test Only"
@@ -9501,6 +9615,15 @@ msgid ""
 "Commit the submodule now or ignore dirty changes?"
 msgstr "子模組 \"%s\" 有未提交的變更，\n僅僅提交至父專案並不能夠儲存子模組的變更。\n要現在提交子模組的變更，還是忽略呢？"
 
+#. Resource IDs: (93)
+#, c-format
+msgid ""
+"The target folder \n"
+"%s\n"
+"is a special folder and is not supposed to be a repository root!\n"
+"Are you sure you want to initialize a git repository inside that folder?"
+msgstr "目的資料夾\n%s\n是特殊資料夾，可能不適合用作檔案庫根目錄！\n確定要初始化 git 檔案庫至那個資料夾嗎？"
+
 #. Resource IDs: (88)
 #, c-format
 msgid ""
@@ -9676,6 +9799,10 @@ msgid ""
 "Toggle One/Two Pages display"
 msgstr "切換單/雙頁顯示\n切換單/雙頁顯示"
 
+#. Resource IDs: (93)
+msgid "Toggle filters"
+msgstr "反選取過濾器"
+
 #. Resource IDs: (65535)
 msgid "Toolbar"
 msgstr "工具列"
@@ -9847,6 +9974,10 @@ msgstr "追蹤"
 msgid "Tracked Remote Branch:"
 msgstr "追蹤遠端分支："
 
+#. Resource IDs: (94)
+msgid "Tracked branch"
+msgstr "追蹤分支"
+
 #. Resource IDs: (357)
 #, c-format
 msgid "Transferring at %s"
@@ -10009,6 +10140,10 @@ msgstr "不明"
 msgid "Unknown depth"
 msgstr "不明層數"
 
+#. Resource IDs: (252)
+msgid "Unmark this block"
+msgstr "取消標記這個區塊"
+
 #. Resource IDs: (315)
 msgid "Unresolved conflicts!"
 msgstr "未消除的衝突！"
@@ -10159,6 +10294,10 @@ msgstr "使用左方區塊"
 #. Resource IDs: (32856)
 msgid "Use left file"
 msgstr "使用左方檔案"
+
+#. Resource IDs: (252)
+msgid "Use left file except marked blocks"
+msgstr "使用左視窗中未被標記的內容"
 
 #. Resource IDs: (1762)
 msgid "Use local branch color for current branch"
@@ -10456,6 +10595,12 @@ msgid ""
 "When closing a progress dialog with a running git process, ask for "
 "confirmation before killing it"
 msgstr "當要關閉進度視窗仍有執行中的 git 程序，需確認才停止它"
+
+#. Resource IDs: (94)
+msgid ""
+"When enabled, TortoiseGit move context menu items will be available when "
+"dragging folders / files"
+msgstr "啟用後, 在拖曳資料夾/檔案時, 將顯示 TortoiseGit 快顯功能表移動選項"
 
 #. Resource IDs: (197)
 msgid ""

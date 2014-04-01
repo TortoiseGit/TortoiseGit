@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2014-01-01 20:32+0000\n"
+"PO-Revision-Date: 2014-03-18 19:09+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Catalan (http://www.transifex.com/projects/p/tortoisegit/language/ca/)\n"
 "MIME-Version: 1.0\n"
@@ -1293,13 +1293,13 @@ msgstr "&Unitats desconegudes"
 msgid "&Up"
 msgstr "Amunt"
 
-#. Resource IDs: (4567)
-msgid "&UpStream:"
-msgstr "&UpStream:"
-
 #. Resource IDs: (1253)
 msgid "&Update item to revision"
 msgstr "Actualitza element a una revisió"
+
+#. Resource IDs: (4567)
+msgid "&Upstream:"
+msgstr ""
 
 #. Resource IDs: (1184)
 msgid "&Use auto-completion of file paths and keywords"
@@ -2308,6 +2308,10 @@ msgstr "Navega..."
 msgid "Bug-ID"
 msgstr "Codi d'error"
 
+#. Resource IDs: (1578)
+msgid "Bug-ID e&xpression:"
+msgstr ""
+
 #. Resource IDs: (1119)
 msgid "Bug-ID/Issue-Nr:"
 msgstr "Id d'error/Número de problema:"
@@ -2319,6 +2323,10 @@ msgstr "Codis d'error"
 #. Resource IDs: (65535)
 msgid "BugTraq"
 msgstr "BugTraq"
+
+#. Resource IDs: (327)
+msgid "Bugtraq Regex Tester - TortoiseGit"
+msgstr ""
 
 #. Resource IDs: (16132)
 msgid "Button Appearance"
@@ -2442,6 +2450,12 @@ msgid ""
 "Cannot combine commits now.\r\n"
 "Make sure you are viewing the log of your current branch and no filters are applied."
 msgstr "No es poden combinar entregues ara\nAsseguri's que esta veient el registre de la branca actual i que no hi ha filtres aplicats"
+
+#. Resource IDs: (94)
+msgid ""
+"Cannot force updating current branch. Use reset command if you want to do "
+"so."
+msgstr ""
 
 #. Resource IDs: (1)
 #, c-format
@@ -2600,6 +2614,10 @@ msgstr "Selecciona:"
 #. Resource IDs: (77)
 msgid "Checkout"
 msgstr "Extreu"
+
+#. Resource IDs: (93)
+msgid "Checkout with merge"
+msgstr ""
 
 #. Resource IDs: (67)
 msgid "Cherry Pick"
@@ -3691,6 +3709,10 @@ msgstr "Mides i posicions dels formularis"
 msgid "Dialogs"
 msgstr ""
 
+#. Resource IDs: (1789)
+msgid "Diff Options"
+msgstr ""
+
 #. Resource IDs: (22)
 msgid "Diff Two Commits"
 msgstr "Diffs de dues entregues"
@@ -4123,6 +4145,10 @@ msgstr "Activa l'edició"
 #. Resource IDs: (1766)
 msgid "Enable Gravatar"
 msgstr "Activa Gravatar"
+
+#. Resource IDs: (1788)
+msgid "Enable drag context menu"
+msgstr ""
 
 #. Resource IDs: (87)
 msgid ""
@@ -5246,6 +5272,10 @@ msgstr "Tipus d'interconnexió:"
 msgid "I&nclude paths:"
 msgstr "&Inclou els camins:"
 
+#. Resource IDs: (1580)
+msgid "IBugTraqProvider"
+msgstr ""
+
 #. Resource IDs: (1251)
 msgid "ID"
 msgstr "ID"
@@ -5541,9 +5571,17 @@ msgstr "Ignora arxiu"
 msgid "Ignore Type"
 msgstr "Ignora tipus"
 
+#. Resource IDs: (94)
+msgid "Ignore all space"
+msgstr ""
+
 #. Resource IDs: (156)
 msgid "Ignore all whitespace changes"
 msgstr "Ignora tots els canvis d'espais en blanc"
+
+#. Resource IDs: (94)
+msgid "Ignore blank lines"
+msgstr ""
 
 #. Resource IDs: (1067)
 msgid "Ignore case cha&nges"
@@ -5566,6 +5604,14 @@ msgstr "Ignora element(s) recursivament"
 #. Resource IDs: (1018)
 msgid "Ignore line &endings (recommended)"
 msgstr "Ignora &finals de línia (recomanat)"
+
+#. Resource IDs: (94)
+msgid "Ignore space at EOL"
+msgstr ""
+
+#. Resource IDs: (94)
+msgid "Ignore space change"
+msgstr ""
 
 #. Resource IDs: (1676)
 msgid "Ignore whitespace"
@@ -6075,6 +6121,10 @@ msgid ""
 "The file status is changed to modified"
 msgstr "Marca com a resolt.\nL'estatus de l'arxiu s'ha canviat a modificat"
 
+#. Resource IDs: (252)
+msgid "Mark this block"
+msgstr ""
+
 #. Resource IDs: (2051)
 msgid ""
 "Marks a file as resolved in Git\n"
@@ -6190,6 +6240,10 @@ msgstr "Missatge"
 #. Resource IDs: (1719)
 msgid "Message onl&y"
 msgstr "Només missatge"
+
+#. Resource IDs: (1579)
+msgid "Message part &expression:"
+msgstr ""
 
 #. Resource IDs: (116)
 msgid "Messages"
@@ -7122,6 +7176,14 @@ msgstr "Introdueix una ruta a on aplicar l'scripts d'interconnexió"
 msgid "Please select a hook type"
 msgstr "Seleccioneu un tipus d'interconnexió"
 
+#. Resource IDs: (94)
+msgid "Please select branch"
+msgstr ""
+
+#. Resource IDs: (94)
+msgid "Please select upstream"
+msgstr ""
+
 #. Resource IDs: (13)
 msgid "Please wait while cancelling..."
 msgstr "Espereu mentre es cancel·la..."
@@ -7290,6 +7352,18 @@ msgstr "Pàgina de Propietats"
 msgid "Provider"
 msgstr "Proveïdor"
 
+#. Resource IDs: (1586)
+msgid "Provider para&meters:"
+msgstr ""
+
+#. Resource IDs: (1581)
+msgid "Provider uuid win&32:"
+msgstr ""
+
+#. Resource IDs: (1583)
+msgid "Provider uuid x6&4:"
+msgstr ""
+
 #. Resource IDs: (1475)
 msgid "Provider:"
 msgstr "Proveïdor:"
@@ -7300,6 +7374,10 @@ msgstr "Configuració proxy"
 
 #. Resource IDs: (1603)
 msgid "Prune"
+msgstr ""
+
+#. Resource IDs: (1785)
+msgid "Prune (All remotes)"
 msgstr ""
 
 #. Resource IDs: (22, 66, 1611)
@@ -7333,6 +7411,10 @@ msgstr "Empeny"
 #. Resource IDs: (22, 303, 1612)
 msgid "Push"
 msgstr "Empeny"
+
+#. Resource IDs: (1786)
+msgid "Push Default"
+msgstr ""
 
 #. Resource IDs: (1385)
 msgid "Push notes"
@@ -8092,6 +8174,24 @@ msgstr ""
 msgid "Same commit time"
 msgstr "Mateixa hora d'entrega"
 
+#. Resource IDs: (93)
+msgid ""
+"Sample log message to test the bugtraq: regex strings.\n"
+"\n"
+"Testing mentions of issues inside a text: Mention single issue #55. Mention issues #77, #78, and #78. Mention more issues #123, #124 and #125 and some more separate ones: Issue #45, issue #46 and issue #47.\n"
+"\n"
+"\n"
+"Update issue #101\n"
+"Fixes issue #202\n"
+"Fixed issue #123\n"
+"Resolves issue #88.\n"
+"Closes issue #99.\n"
+msgstr ""
+
+#. Resource IDs: (1612)
+msgid "Sample text:"
+msgstr ""
+
 #. Resource IDs: (156)
 msgid "Save"
 msgstr "Desa"
@@ -8318,6 +8418,10 @@ msgstr "Selecciona llista de canvis"
 #. Resource IDs: (78)
 msgid "Select diff application"
 msgstr "Selecciona aplicació comparació"
+
+#. Resource IDs: (93)
+msgid "Select file"
+msgstr ""
 
 #. Resource IDs: (64)
 msgid "Select folder to associate with this issue tracker"
@@ -8754,6 +8858,11 @@ msgstr "Mostra arxius no versionats"
 msgid "Show/Hide"
 msgstr "Mostra/Amaga"
 
+#. Resource IDs: (93)
+#, c-format
+msgid "Showing %1!d! ref(s), %2!d! ref(s) selected"
+msgstr ""
+
 #. Resource IDs: (76)
 #, c-format
 msgid ""
@@ -9149,8 +9258,8 @@ msgid "Switch/Checkout working tree to another branch/tag"
 msgstr "Extreu a/canvia el directori de treball a una altra branca/etiqueta"
 
 #. Resource IDs: (325)
-msgid "Switches the comparison left<<->right"
-msgstr "Intercanvia dreta i esquerra"
+msgid "Switches the comparison left<->right"
+msgstr ""
 
 #. Resource IDs: (1733)
 msgid "Symbolize ref names"
@@ -9237,6 +9346,10 @@ msgstr "Zona de Tasques"
 
 #. Resource IDs: (65535)
 msgid "Temp files (including Gravatar images)"
+msgstr ""
+
+#. Resource IDs: (1787)
+msgid "Test"
 msgstr ""
 
 #. Resource IDs: (219)
@@ -9501,6 +9614,15 @@ msgid ""
 "Commit the submodule now or ignore dirty changes?"
 msgstr "El sub-mòdul \"%s\" no està net.\nSimplement fent una entrega en el super-projecte pare no pot registrar els canvis fets al sub-mòdul.\nFeu una entrega del sub-mòdul ara, o voleu ignorar els canvis bruts?"
 
+#. Resource IDs: (93)
+#, c-format
+msgid ""
+"The target folder \n"
+"%s\n"
+"is a special folder and is not supposed to be a repository root!\n"
+"Are you sure you want to initialize a git repository inside that folder?"
+msgstr ""
+
 #. Resource IDs: (88)
 #, c-format
 msgid ""
@@ -9676,6 +9798,10 @@ msgid ""
 "Toggle One/Two Pages display"
 msgstr "Commuta Una/Dues Pàgines\nCommuta Una/Dues Pàgines"
 
+#. Resource IDs: (93)
+msgid "Toggle filters"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Toolbar"
 msgstr "Barra d'Eines"
@@ -9847,6 +9973,10 @@ msgstr "Rastreja"
 msgid "Tracked Remote Branch:"
 msgstr "Segueix branca remota:"
 
+#. Resource IDs: (94)
+msgid "Tracked branch"
+msgstr ""
+
 #. Resource IDs: (357)
 #, c-format
 msgid "Transferring at %s"
@@ -10009,6 +10139,10 @@ msgstr "Desconegut"
 msgid "Unknown depth"
 msgstr "&Profunditat desconeguda"
 
+#. Resource IDs: (252)
+msgid "Unmark this block"
+msgstr ""
+
 #. Resource IDs: (315)
 msgid "Unresolved conflicts!"
 msgstr "Conflictes sense resoldre!"
@@ -10159,6 +10293,10 @@ msgstr "Utilitza el bloc de l'esquerra"
 #. Resource IDs: (32856)
 msgid "Use left file"
 msgstr "Utilitza fitxer esquerra"
+
+#. Resource IDs: (252)
+msgid "Use left file except marked blocks"
+msgstr ""
 
 #. Resource IDs: (1762)
 msgid "Use local branch color for current branch"
@@ -10455,6 +10593,12 @@ msgstr "Quan s'apliqui un pedaç, ignora els canvis en els espais en blanc, si f
 msgid ""
 "When closing a progress dialog with a running git process, ask for "
 "confirmation before killing it"
+msgstr ""
+
+#. Resource IDs: (94)
+msgid ""
+"When enabled, TortoiseGit move context menu items will be available when "
+"dragging folders / files"
 msgstr ""
 
 #. Resource IDs: (197)

@@ -26,7 +26,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2014-01-02 14:56+0000\n"
+"PO-Revision-Date: 2014-03-27 13:09+0000\n"
 "Last-Translator: shcham <shcham@gmail.com>\n"
 "Language-Team: Russian (http://www.transifex.com/projects/p/tortoisegit/language/ru/)\n"
 "MIME-Version: 1.0\n"
@@ -1304,13 +1304,13 @@ msgstr "&Неизвестные носители"
 msgid "&Up"
 msgstr "&Вверх"
 
-#. Resource IDs: (4567)
-msgid "&UpStream:"
-msgstr "&Верховой:"
-
 #. Resource IDs: (1253)
 msgid "&Update item to revision"
 msgstr "&Обновить элемент до ревизии"
+
+#. Resource IDs: (4567)
+msgid "&Upstream:"
+msgstr "&Верховая:"
 
 #. Resource IDs: (1184)
 msgid "&Use auto-completion of file paths and keywords"
@@ -2319,6 +2319,10 @@ msgstr "Обзор..."
 msgid "Bug-ID"
 msgstr "ID ошибки"
 
+#. Resource IDs: (1578)
+msgid "Bug-ID e&xpression:"
+msgstr "&Выражение ID ошибки:"
+
 #. Resource IDs: (1119)
 msgid "Bug-ID/Issue-Nr:"
 msgstr "ID ошибки/N проблемы:"
@@ -2330,6 +2334,10 @@ msgstr "ID ошибок"
 #. Resource IDs: (65535)
 msgid "BugTraq"
 msgstr "BugTraq"
+
+#. Resource IDs: (327)
+msgid "Bugtraq Regex Tester - TortoiseGit"
+msgstr "Bugtraq тестер регулярных выражений - TortoiseGit"
 
 #. Resource IDs: (16132)
 msgid "Button Appearance"
@@ -2453,6 +2461,12 @@ msgid ""
 "Cannot combine commits now.\r\n"
 "Make sure you are viewing the log of your current branch and no filters are applied."
 msgstr "Невозможно объединить коммиты сейчас.\nУбедитесь что вы просматриваете журнал вашей текущей ветви и не применено ни одного фильтра."
+
+#. Resource IDs: (94)
+msgid ""
+"Cannot force updating current branch. Use reset command if you want to do "
+"so."
+msgstr "Невозможно форсировать обновление текущей ветви. Используйте команду reset если вы хотите так поступить."
 
 #. Resource IDs: (1)
 #, c-format
@@ -2611,6 +2625,10 @@ msgstr "Отметить:"
 #. Resource IDs: (77)
 msgid "Checkout"
 msgstr "Извлечение"
+
+#. Resource IDs: (93)
+msgid "Checkout with merge"
+msgstr "Извлечение со слиянием"
 
 #. Resource IDs: (67)
 msgid "Cherry Pick"
@@ -3702,6 +3720,10 @@ msgstr "Размеры и расположение окон"
 msgid "Dialogs"
 msgstr "Диалоги"
 
+#. Resource IDs: (1789)
+msgid "Diff Options"
+msgstr "Настройки сравнения"
+
 #. Resource IDs: (22)
 msgid "Diff Two Commits"
 msgstr "Различие двух коммитов"
@@ -4134,6 +4156,10 @@ msgstr "Разрешить редактирование"
 #. Resource IDs: (1766)
 msgid "Enable Gravatar"
 msgstr "Включить Gravatar"
+
+#. Resource IDs: (1788)
+msgid "Enable drag context menu"
+msgstr "Включить перетаскиваемое контекстное меню"
 
 #. Resource IDs: (87)
 msgid ""
@@ -5257,6 +5283,10 @@ msgstr "Тип Хука:"
 msgid "I&nclude paths:"
 msgstr "В&ключить пути:"
 
+#. Resource IDs: (1580)
+msgid "IBugTraqProvider"
+msgstr "IBugTraqProvider"
+
 #. Resource IDs: (1251)
 msgid "ID"
 msgstr "ID"
@@ -5552,9 +5582,17 @@ msgstr "Игнорировать файл"
 msgid "Ignore Type"
 msgstr "Игнорируемые типы файлов"
 
+#. Resource IDs: (94)
+msgid "Ignore all space"
+msgstr "Игнорировать все пробелы"
+
 #. Resource IDs: (156)
 msgid "Ignore all whitespace changes"
 msgstr "Игнорировать все изменения непечатаемых знаков"
+
+#. Resource IDs: (94)
+msgid "Ignore blank lines"
+msgstr "Игнорировать пустые строки"
 
 #. Resource IDs: (1067)
 msgid "Ignore case cha&nges"
@@ -5577,6 +5615,14 @@ msgstr "Игнорировать элемент(ы) рекурсивно"
 #. Resource IDs: (1018)
 msgid "Ignore line &endings (recommended)"
 msgstr "Игнорировать &завершения строк(рекомендуется)"
+
+#. Resource IDs: (94)
+msgid "Ignore space at EOL"
+msgstr "Игнорировать все пробелы в конце строки"
+
+#. Resource IDs: (94)
+msgid "Ignore space change"
+msgstr "Игнорировать изменения пробелов"
 
 #. Resource IDs: (1676)
 msgid "Ignore whitespace"
@@ -6086,6 +6132,10 @@ msgid ""
 "The file status is changed to modified"
 msgstr "Отметить как улаженный⏎\nСтатус файла меняется на изменённый"
 
+#. Resource IDs: (252)
+msgid "Mark this block"
+msgstr "Пометить этот блок"
+
 #. Resource IDs: (2051)
 msgid ""
 "Marks a file as resolved in Git\n"
@@ -6201,6 +6251,10 @@ msgstr "Сообщение"
 #. Resource IDs: (1719)
 msgid "Message onl&y"
 msgstr "Т&олько сообщение"
+
+#. Resource IDs: (1579)
+msgid "Message part &expression:"
+msgstr "В&ыражение части сообщения:"
 
 #. Resource IDs: (116)
 msgid "Messages"
@@ -7133,6 +7187,14 @@ msgstr "Пожалуйста, введите путь для применени�
 msgid "Please select a hook type"
 msgstr "Пожалуйста, выберите тип хука"
 
+#. Resource IDs: (94)
+msgid "Please select branch"
+msgstr "Выберите, пожалуйста, ветвь"
+
+#. Resource IDs: (94)
+msgid "Please select upstream"
+msgstr "Выберите, пожалуйста, верховую:"
+
 #. Resource IDs: (13)
 msgid "Please wait while cancelling..."
 msgstr "Пожалуйста, подождите отмены..."
@@ -7301,6 +7363,18 @@ msgstr "Страница свойств"
 msgid "Provider"
 msgstr "Поставщик"
 
+#. Resource IDs: (1586)
+msgid "Provider para&meters:"
+msgstr "Пара&метры поставщика:"
+
+#. Resource IDs: (1581)
+msgid "Provider uuid win&32:"
+msgstr "uuid win&32 поставщика:"
+
+#. Resource IDs: (1583)
+msgid "Provider uuid x6&4:"
+msgstr "uuid x6&4 поставщика:"
+
 #. Resource IDs: (1475)
 msgid "Provider:"
 msgstr "Поставщик:"
@@ -7312,6 +7386,10 @@ msgstr "Настройки сервера-посредника"
 #. Resource IDs: (1603)
 msgid "Prune"
 msgstr "Упростить"
+
+#. Resource IDs: (1785)
+msgid "Prune (All remotes)"
+msgstr "Подрезать (все отдалённые)"
 
 #. Resource IDs: (22, 66, 1611)
 msgid "Pull"
@@ -7344,6 +7422,10 @@ msgstr "Отп&равить"
 #. Resource IDs: (22, 303, 1612)
 msgid "Push"
 msgstr "Отправить"
+
+#. Resource IDs: (1786)
+msgid "Push Default"
+msgstr "Отправить по-умолчанию"
 
 #. Resource IDs: (1385)
 msgid "Push notes"
@@ -8103,6 +8185,24 @@ msgstr "Совпадение"
 msgid "Same commit time"
 msgstr "Совпадающее время фиксации"
 
+#. Resource IDs: (93)
+msgid ""
+"Sample log message to test the bugtraq: regex strings.\n"
+"\n"
+"Testing mentions of issues inside a text: Mention single issue #55. Mention issues #77, #78, and #78. Mention more issues #123, #124 and #125 and some more separate ones: Issue #45, issue #46 and issue #47.\n"
+"\n"
+"\n"
+"Update issue #101\n"
+"Fixes issue #202\n"
+"Fixed issue #123\n"
+"Resolves issue #88.\n"
+"Closes issue #99.\n"
+msgstr "Пример сообщения журнала для тестирования bugtraq: строки c регулярными выражениями.\n\nТестирование пометок проблем внутри текста: пометка одиночной проблемы #55. Помечены проблемы #77, #78 и #78. Помечены ещё проблемы #123, #124 и #125 и еще несколько одиночных: проблема #45, проблема #46 и проблема #47.\n\nОбновлена проблема #101\nРешена проблема #202\nРешена проблема #123\nРешена проблема #202\nРазрешена проблема #88.\nЗакрыта проблема #99.\n\n"
+
+#. Resource IDs: (1612)
+msgid "Sample text:"
+msgstr "Примерный текст:"
+
 #. Resource IDs: (156)
 msgid "Save"
 msgstr "Сохранить"
@@ -8329,6 +8429,10 @@ msgstr "Отметить группу изменений"
 #. Resource IDs: (78)
 msgid "Select diff application"
 msgstr "Выбрать приложение просмотра различий"
+
+#. Resource IDs: (93)
+msgid "Select file"
+msgstr "Выбрать файл"
 
 #. Resource IDs: (64)
 msgid "Select folder to associate with this issue tracker"
@@ -8765,6 +8869,11 @@ msgstr "Показать не&версированные файлы"
 msgid "Show/Hide"
 msgstr "Показать/скрыть"
 
+#. Resource IDs: (93)
+#, c-format
+msgid "Showing %1!d! ref(s), %2!d! ref(s) selected"
+msgstr "Отображается %1!d! ссылки(-ок), %2!d! ссылки(-ок) выбрано"
+
 #. Resource IDs: (76)
 #, c-format
 msgid ""
@@ -9160,8 +9269,8 @@ msgid "Switch/Checkout working tree to another branch/tag"
 msgstr "Переключить рабочую копию на другую ветвь/метку"
 
 #. Resource IDs: (325)
-msgid "Switches the comparison left<<->right"
-msgstr "Меняет направление сравнения: левое <<-> правое"
+msgid "Switches the comparison left<->right"
+msgstr "Изменить сравнение левый<->правый"
 
 #. Resource IDs: (1733)
 msgid "Symbolize ref names"
@@ -9249,6 +9358,10 @@ msgstr "Панель задач"
 #. Resource IDs: (65535)
 msgid "Temp files (including Gravatar images)"
 msgstr "Временные файлы (включая изображения Gravatar)"
+
+#. Resource IDs: (1787)
+msgid "Test"
+msgstr "Тест"
 
 #. Resource IDs: (219)
 msgid "Test Only"
@@ -9512,6 +9625,15 @@ msgid ""
 "Commit the submodule now or ignore dirty changes?"
 msgstr "Подмодуль \"%s\" не чист.\nПростой фиксацией родительского модуля невозможно отследить или сохранить подобные изменения в подмодуле.\nФиксировать подмодуль сейчас или игнорировать нечистые изменения?"
 
+#. Resource IDs: (93)
+#, c-format
+msgid ""
+"The target folder \n"
+"%s\n"
+"is a special folder and is not supposed to be a repository root!\n"
+"Are you sure you want to initialize a git repository inside that folder?"
+msgstr "Целевая папка\n%s\nявляется специальной и нежелательно чтобы она была корнем хранилища!\nВы действительно хотите инициализировать хранилище Гит внутри этой папки?"
+
 #. Resource IDs: (88)
 #, c-format
 msgid ""
@@ -9687,6 +9809,10 @@ msgid ""
 "Toggle One/Two Pages display"
 msgstr "Переключение отображения одной/двух страниц\nПереключение отображения одной/двух страниц"
 
+#. Resource IDs: (93)
+msgid "Toggle filters"
+msgstr "Переключить фильтры"
+
 #. Resource IDs: (65535)
 msgid "Toolbar"
 msgstr "Панель инструментов"
@@ -9858,6 +9984,10 @@ msgstr "Отслеживать"
 msgid "Tracked Remote Branch:"
 msgstr "Отслеживаемая отдалённая ветвь:"
 
+#. Resource IDs: (94)
+msgid "Tracked branch"
+msgstr "Отслеживаемая ветвь"
+
 #. Resource IDs: (357)
 #, c-format
 msgid "Transferring at %s"
@@ -10020,6 +10150,10 @@ msgstr "Неизвестно"
 msgid "Unknown depth"
 msgstr "Неизвестная глубина"
 
+#. Resource IDs: (252)
+msgid "Unmark this block"
+msgstr "Снять пометку с этого блока"
+
 #. Resource IDs: (315)
 msgid "Unresolved conflicts!"
 msgstr "Неулаженные конфликты!"
@@ -10170,6 +10304,10 @@ msgstr "Использовать левый блок"
 #. Resource IDs: (32856)
 msgid "Use left file"
 msgstr "Использовать левый файл"
+
+#. Resource IDs: (252)
+msgid "Use left file except marked blocks"
+msgstr "Использовать файл слева кроме выделенных блоков"
 
 #. Resource IDs: (1762)
 msgid "Use local branch color for current branch"
@@ -10467,6 +10605,12 @@ msgid ""
 "When closing a progress dialog with a running git process, ask for "
 "confirmation before killing it"
 msgstr "Спрашивать о завершении процесса при попытке закрыть окно до завершения обработки"
+
+#. Resource IDs: (94)
+msgid ""
+"When enabled, TortoiseGit move context menu items will be available when "
+"dragging folders / files"
+msgstr "Когда включен, пункты перемещения контекстного меню TortoiseGit будут доступны при перетаскивании папок / файлов"
 
 #. Resource IDs: (197)
 msgid ""

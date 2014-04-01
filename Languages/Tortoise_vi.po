@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2014-01-01 20:32+0000\n"
+"PO-Revision-Date: 2014-03-18 19:09+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Vietnamese (http://www.transifex.com/projects/p/tortoisegit/language/vi/)\n"
 "MIME-Version: 1.0\n"
@@ -1292,13 +1292,13 @@ msgstr "&Ổ đĩa không nhận ra"
 msgid "&Up"
 msgstr "&Lên"
 
-#. Resource IDs: (4567)
-msgid "&UpStream:"
-msgstr ""
-
 #. Resource IDs: (1253)
 msgid "&Update item to revision"
 msgstr "&Cập nhật món vào bản chỉnh sửa"
+
+#. Resource IDs: (4567)
+msgid "&Upstream:"
+msgstr ""
 
 #. Resource IDs: (1184)
 msgid "&Use auto-completion of file paths and keywords"
@@ -2307,6 +2307,10 @@ msgstr "Duyệt..."
 msgid "Bug-ID"
 msgstr "Lỗi-ID"
 
+#. Resource IDs: (1578)
+msgid "Bug-ID e&xpression:"
+msgstr ""
+
 #. Resource IDs: (1119)
 msgid "Bug-ID/Issue-Nr:"
 msgstr "Chỉ số Lỗi/Chỉ số vấn đề lỗi:"
@@ -2318,6 +2322,10 @@ msgstr "Những lỗi-ID"
 #. Resource IDs: (65535)
 msgid "BugTraq"
 msgstr "BugTraq"
+
+#. Resource IDs: (327)
+msgid "Bugtraq Regex Tester - TortoiseGit"
+msgstr ""
 
 #. Resource IDs: (16132)
 msgid "Button Appearance"
@@ -2440,6 +2448,12 @@ msgstr ""
 msgid ""
 "Cannot combine commits now.\r\n"
 "Make sure you are viewing the log of your current branch and no filters are applied."
+msgstr ""
+
+#. Resource IDs: (94)
+msgid ""
+"Cannot force updating current branch. Use reset command if you want to do "
+"so."
 msgstr ""
 
 #. Resource IDs: (1)
@@ -2599,6 +2613,10 @@ msgstr "Kiểm tra:"
 #. Resource IDs: (77)
 msgid "Checkout"
 msgstr "Lấy ra"
+
+#. Resource IDs: (93)
+msgid "Checkout with merge"
+msgstr ""
 
 #. Resource IDs: (67)
 msgid "Cherry Pick"
@@ -3690,6 +3708,10 @@ msgstr "Kích thước và vị trí của hộp thoại"
 msgid "Dialogs"
 msgstr ""
 
+#. Resource IDs: (1789)
+msgid "Diff Options"
+msgstr ""
+
 #. Resource IDs: (22)
 msgid "Diff Two Commits"
 msgstr ""
@@ -4121,6 +4143,10 @@ msgstr ""
 
 #. Resource IDs: (1766)
 msgid "Enable Gravatar"
+msgstr ""
+
+#. Resource IDs: (1788)
+msgid "Enable drag context menu"
 msgstr ""
 
 #. Resource IDs: (87)
@@ -5245,6 +5271,10 @@ msgstr "Kiểu móc:"
 msgid "I&nclude paths:"
 msgstr "Đường dẫn &bao gồm:"
 
+#. Resource IDs: (1580)
+msgid "IBugTraqProvider"
+msgstr ""
+
 #. Resource IDs: (1251)
 msgid "ID"
 msgstr "ID"
@@ -5540,9 +5570,17 @@ msgstr ""
 msgid "Ignore Type"
 msgstr ""
 
+#. Resource IDs: (94)
+msgid "Ignore all space"
+msgstr ""
+
 #. Resource IDs: (156)
 msgid "Ignore all whitespace changes"
 msgstr "Bỏ qua tất cả các thay đổi trên khoảng trắng"
+
+#. Resource IDs: (94)
+msgid "Ignore blank lines"
+msgstr ""
 
 #. Resource IDs: (1067)
 msgid "Ignore case cha&nges"
@@ -5565,6 +5603,14 @@ msgstr ""
 #. Resource IDs: (1018)
 msgid "Ignore line &endings (recommended)"
 msgstr "Bỏ qua các dấu &hết dòng (khuyên dùng)"
+
+#. Resource IDs: (94)
+msgid "Ignore space at EOL"
+msgstr ""
+
+#. Resource IDs: (94)
+msgid "Ignore space change"
+msgstr ""
 
 #. Resource IDs: (1676)
 msgid "Ignore whitespace"
@@ -6074,6 +6120,10 @@ msgid ""
 "The file status is changed to modified"
 msgstr "Đánh dấu là đã giải quyết\nTrạng thái của tập tin được đổi thành đã sửa đổi"
 
+#. Resource IDs: (252)
+msgid "Mark this block"
+msgstr ""
+
 #. Resource IDs: (2051)
 msgid ""
 "Marks a file as resolved in Git\n"
@@ -6188,6 +6238,10 @@ msgstr "Thông điệp"
 
 #. Resource IDs: (1719)
 msgid "Message onl&y"
+msgstr ""
+
+#. Resource IDs: (1579)
+msgid "Message part &expression:"
 msgstr ""
 
 #. Resource IDs: (116)
@@ -7121,6 +7175,14 @@ msgstr "Vui lòng nhập vào một đường dẫn để áp dụng kịch bả
 msgid "Please select a hook type"
 msgstr "Vui lòng chọn kiểu hook"
 
+#. Resource IDs: (94)
+msgid "Please select branch"
+msgstr ""
+
+#. Resource IDs: (94)
+msgid "Please select upstream"
+msgstr ""
+
 #. Resource IDs: (13)
 msgid "Please wait while cancelling..."
 msgstr "Vui lòng chờ trong khi đang hủy bỏ..."
@@ -7289,6 +7351,18 @@ msgstr "Trang thuộc tính"
 msgid "Provider"
 msgstr "Nhà cung cấp"
 
+#. Resource IDs: (1586)
+msgid "Provider para&meters:"
+msgstr ""
+
+#. Resource IDs: (1581)
+msgid "Provider uuid win&32:"
+msgstr ""
+
+#. Resource IDs: (1583)
+msgid "Provider uuid x6&4:"
+msgstr ""
+
 #. Resource IDs: (1475)
 msgid "Provider:"
 msgstr "Nhà cung cấp:"
@@ -7299,6 +7373,10 @@ msgstr "Thiết lập Proxy"
 
 #. Resource IDs: (1603)
 msgid "Prune"
+msgstr ""
+
+#. Resource IDs: (1785)
+msgid "Prune (All remotes)"
 msgstr ""
 
 #. Resource IDs: (22, 66, 1611)
@@ -7332,6 +7410,10 @@ msgstr ""
 #. Resource IDs: (22, 303, 1612)
 msgid "Push"
 msgstr "Đẩy"
+
+#. Resource IDs: (1786)
+msgid "Push Default"
+msgstr ""
 
 #. Resource IDs: (1385)
 msgid "Push notes"
@@ -8091,6 +8173,24 @@ msgstr ""
 msgid "Same commit time"
 msgstr ""
 
+#. Resource IDs: (93)
+msgid ""
+"Sample log message to test the bugtraq: regex strings.\n"
+"\n"
+"Testing mentions of issues inside a text: Mention single issue #55. Mention issues #77, #78, and #78. Mention more issues #123, #124 and #125 and some more separate ones: Issue #45, issue #46 and issue #47.\n"
+"\n"
+"\n"
+"Update issue #101\n"
+"Fixes issue #202\n"
+"Fixed issue #123\n"
+"Resolves issue #88.\n"
+"Closes issue #99.\n"
+msgstr ""
+
+#. Resource IDs: (1612)
+msgid "Sample text:"
+msgstr ""
+
 #. Resource IDs: (156)
 msgid "Save"
 msgstr "Lưu"
@@ -8317,6 +8417,10 @@ msgstr "Chọn danh sách thay đổi"
 #. Resource IDs: (78)
 msgid "Select diff application"
 msgstr "Chọn ứng dụng tìm khác biệt"
+
+#. Resource IDs: (93)
+msgid "Select file"
+msgstr ""
 
 #. Resource IDs: (64)
 msgid "Select folder to associate with this issue tracker"
@@ -8753,6 +8857,11 @@ msgstr "Hiển thị các tập tin chưa đượ&c xếp loại phiên bản"
 msgid "Show/Hide"
 msgstr "Hiện/Ẩn"
 
+#. Resource IDs: (93)
+#, c-format
+msgid "Showing %1!d! ref(s), %2!d! ref(s) selected"
+msgstr ""
+
 #. Resource IDs: (76)
 #, c-format
 msgid ""
@@ -9148,8 +9257,8 @@ msgid "Switch/Checkout working tree to another branch/tag"
 msgstr ""
 
 #. Resource IDs: (325)
-msgid "Switches the comparison left<<->right"
-msgstr "Chuyển đổi dạng so sánh trái<<->phải"
+msgid "Switches the comparison left<->right"
+msgstr ""
 
 #. Resource IDs: (1733)
 msgid "Symbolize ref names"
@@ -9236,6 +9345,10 @@ msgstr "Bảng nhiệm vụ"
 
 #. Resource IDs: (65535)
 msgid "Temp files (including Gravatar images)"
+msgstr ""
+
+#. Resource IDs: (1787)
+msgid "Test"
 msgstr ""
 
 #. Resource IDs: (219)
@@ -9500,6 +9613,15 @@ msgid ""
 "Commit the submodule now or ignore dirty changes?"
 msgstr ""
 
+#. Resource IDs: (93)
+#, c-format
+msgid ""
+"The target folder \n"
+"%s\n"
+"is a special folder and is not supposed to be a repository root!\n"
+"Are you sure you want to initialize a git repository inside that folder?"
+msgstr ""
+
 #. Resource IDs: (88)
 #, c-format
 msgid ""
@@ -9675,6 +9797,10 @@ msgid ""
 "Toggle One/Two Pages display"
 msgstr "Lật thể hiện Một/Hai trang\nLật thể hiện Một/Hai trang"
 
+#. Resource IDs: (93)
+msgid "Toggle filters"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Toolbar"
 msgstr "Thanh công cụ"
@@ -9846,6 +9972,10 @@ msgstr "Theo dõi"
 msgid "Tracked Remote Branch:"
 msgstr ""
 
+#. Resource IDs: (94)
+msgid "Tracked branch"
+msgstr ""
+
 #. Resource IDs: (357)
 #, c-format
 msgid "Transferring at %s"
@@ -10008,6 +10138,10 @@ msgstr ""
 msgid "Unknown depth"
 msgstr "Độ sâu không biết được"
 
+#. Resource IDs: (252)
+msgid "Unmark this block"
+msgstr ""
+
 #. Resource IDs: (315)
 msgid "Unresolved conflicts!"
 msgstr "Các mâu thuẫn chưa được giải quyết!"
@@ -10158,6 +10292,10 @@ msgstr "Sử dụng khối bên trái"
 #. Resource IDs: (32856)
 msgid "Use left file"
 msgstr "Dùng tập tin bên trái"
+
+#. Resource IDs: (252)
+msgid "Use left file except marked blocks"
+msgstr ""
 
 #. Resource IDs: (1762)
 msgid "Use local branch color for current branch"
@@ -10454,6 +10592,12 @@ msgstr ""
 msgid ""
 "When closing a progress dialog with a running git process, ask for "
 "confirmation before killing it"
+msgstr ""
+
+#. Resource IDs: (94)
+msgid ""
+"When enabled, TortoiseGit move context menu items will be available when "
+"dragging folders / files"
 msgstr ""
 
 #. Resource IDs: (197)
