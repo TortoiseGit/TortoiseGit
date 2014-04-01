@@ -338,6 +338,7 @@ protected:	// ScintillaBase subclass needs access to much of Editor
 	Point DocumentPointFromView(Point ptView);  // Convert a point from view space to document
 	int TopLineOfMain() const;   // Return the line at Main's y coordinate 0
 	virtual PRectangle GetClientRectangle();
+	virtual PRectangle GetClientDrawingRectangle();
 	PRectangle GetTextRectangle();
 
 	int LinesOnScreen();
@@ -357,6 +358,7 @@ protected:	// ScintillaBase subclass needs access to much of Editor
 
 	bool AbandonPaint();
 	virtual void RedrawRect(PRectangle rc);
+	virtual void DiscardOverdraw();
 	virtual void Redraw();
 	void RedrawSelMargin(int line=-1, bool allAfter=false);
 	PRectangle RectangleFromRange(int start, int end);
