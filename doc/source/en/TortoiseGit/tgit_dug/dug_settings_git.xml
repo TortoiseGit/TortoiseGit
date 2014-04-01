@@ -86,6 +86,8 @@
 			None: No tags are downloaded (--no-tags).
 			(git 1.9 and later) All: All tags as well as branches are downloaded (--tags).
 			(prior to git 1.9) All tags only: Only all tags are downloaded but no branches are downloaded (--tags).
+			Use case of All: Always fetch tags from a git-svn mirror. 
+			Subversion tags never exist on trunk, so such tags are not reachable from branch heads.
 		</para>
 		<para>
 			<guilabel>Prune</guilabel>
