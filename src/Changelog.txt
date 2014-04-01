@@ -1,5 +1,5 @@
 ﻿= Release 1.8.8.0 =
-Released: Unreleased
+Released: 2014-04-01
 
 == Features ==
  * Fixed issue #2065: Add link to fetch to screen when push failed
