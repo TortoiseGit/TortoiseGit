@@ -9255,7 +9255,7 @@ msgid "URL"
 msgstr ""
 
 #. Resource IDs: (71)
-msgid "URL and directory must not be empty at the same time."
+msgid "URL and directory must not be empty."
 msgstr ""
 
 #. Resource IDs: (1272)

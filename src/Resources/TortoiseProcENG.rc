@@ -3510,8 +3510,7 @@ BEGIN
                             "Git directory not set (see ""General"" settings page)."
     IDS_PROC_CLONE_DIR      "Dir..."
     IDS_PROC_CLONE_WEB      "Web"
-    IDS_PROC_CLONE_URLDIREMPTY 
-                            "URL and directory must not be empty at the same time."
+    IDS_PROC_CLONE_URLDIREMPTY "URL and directory must not be empty."
     IDS_PROC_COMMIT_SHOWPATCH "View Patch>>"
     IDS_PROC_COMMIT_HIDEPATCH "Hide Patch<<"
 END
