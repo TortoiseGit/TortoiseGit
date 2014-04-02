@@ -2691,7 +2691,7 @@ int CGit::GitRevert(int parent, const CGitHash &hash)
 			return -1;
 		}
 
-		git_revert_opts revert_opts = GIT_REVERT_OPTS_INIT;
+		git_revert_options revert_opts = GIT_REVERT_OPTIONS_INIT;
 		revert_opts.mainline = parent;
 		int result = git_revert(repo, commit, &revert_opts);
 

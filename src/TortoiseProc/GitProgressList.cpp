@@ -2041,7 +2041,7 @@ bool CGitProgressList::CmdClone(CString& sWindowTitle, bool& /*localoperation*/)
 
 	git_repository *cloned_repo = NULL;
 	git_remote *origin = NULL;
-	git_checkout_opts checkout_opts = GIT_CHECKOUT_OPTS_INIT;
+	git_checkout_options checkout_opts = GIT_CHECKOUT_OPTIONS_INIT;
 
 	int error = 0;
 
@@ -2149,7 +2149,7 @@ bool CGitProgressList::CmdFetch(CString& sWindowTitle, bool& /*localoperation*/)
 		if (git_remote_load(&remote, repo, url) < 0) 
 		{
 			// retry with repository located at a specific url
-			if (git_remote_create_inmemory(&remote, repo, NULL, url) < 0)
+			if (git_remote_create_anonymous(&remote, repo, url, nullptr) < 0)
 			{
 				ReportGitError();
 				ret = false;
@@ -2201,7 +2201,7 @@ bool CGitProgressList::CmdFetch(CString& sWindowTitle, bool& /*localoperation*/)
 		// right commits. This may be needed even if there was no packfile
 		// to download, which can happen e.g. when the branches have been
 		// changed but all the neede objects are available locally.
-		if (git_remote_update_tips(remote) < 0)
+		if (git_remote_update_tips(remote, nullptr, nullptr) < 0)
 		{
 			ReportGitError();
 			ret = false;
@@ -2256,7 +2256,7 @@ bool CGitProgressList::CmdReset(CString& sWindowTitle, bool& /*localoperation*/)
 		CStringA revstr = CUnicodeUtils::GetUTF8(m_revision);
 		git_object *target;
 		git_revparse_single(&target, repo, revstr);
-		if (git_reset(repo, target, (git_reset_t)(m_resetType + 1)))
+		if (git_reset(repo, target, (git_reset_t)(m_resetType + 1), nullptr, nullptr))
 		{
 			ReportGitError();
 			ret = false;

@@ -410,6 +410,12 @@
     <ClCompile Include="..\libgit2\src\zstream.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\libgit2\src\sysdir.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libgit2\src\odb_mempack.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\libgit2\src\attr.h">
@@ -918,6 +924,15 @@
     </ClInclude>
     <ClInclude Include="..\libgit2\src\zstream.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\src\strnlen.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\src\sysdir.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\include\git2\sys\mempack.h">
+      <Filter>Public Header Files\sys</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -110,6 +110,7 @@
     <ClCompile Include="..\libgit2\src\object_api.c" />
     <ClCompile Include="..\libgit2\src\odb.c" />
     <ClCompile Include="..\libgit2\src\odb_loose.c" />
+    <ClCompile Include="..\libgit2\src\odb_mempack.c" />
     <ClCompile Include="..\libgit2\src\odb_pack.c" />
     <ClCompile Include="..\libgit2\src\oid.c" />
     <ClCompile Include="..\libgit2\src\pack-objects.c" />
@@ -139,6 +140,7 @@
     <ClCompile Include="..\libgit2\src\status.c" />
     <ClCompile Include="..\libgit2\src\strmap.c" />
     <ClCompile Include="..\libgit2\src\submodule.c" />
+    <ClCompile Include="..\libgit2\src\sysdir.c" />
     <ClCompile Include="..\libgit2\src\tag.c" />
     <ClCompile Include="..\libgit2\src\thread-utils.c" />
     <ClCompile Include="..\libgit2\src\trace.c" />
@@ -201,6 +203,7 @@
     <ClInclude Include="..\libgit2\include\git2\sys\config.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\filter.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\index.h" />
+    <ClInclude Include="..\libgit2\include\git2\sys\mempack.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\odb_backend.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\refdb_backend.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\reflog.h" />
@@ -282,7 +285,9 @@
     <ClInclude Include="..\libgit2\src\sortedcache.h" />
     <ClInclude Include="..\libgit2\src\status.h" />
     <ClInclude Include="..\libgit2\src\strmap.h" />
+    <ClInclude Include="..\libgit2\src\strnlen.h" />
     <ClInclude Include="..\libgit2\src\submodule.h" />
+    <ClInclude Include="..\libgit2\src\sysdir.h" />
     <ClInclude Include="..\libgit2\src\tag.h" />
     <ClInclude Include="..\libgit2\src\thread-utils.h" />
     <ClInclude Include="..\libgit2\src\trace.h" />
