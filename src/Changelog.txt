@@ -1,4 +1,10 @@
-﻿= Release 1.8.8.0 =
+﻿= Release 1.8.9.0 =
+Released: Unreleased
+
+== Features ==
+ * Fixed issue #2152: Log window show whole commit in "View patch"
+
+= Release 1.8.8.0 =
 Released: 2014-04-01
 
 == Features ==
