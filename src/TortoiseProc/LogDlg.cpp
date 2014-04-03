@@ -884,15 +884,27 @@ void CLogDlg::FillPatchView(bool onlySetTimer)
 	POSITION pos = m_ChangedFileListCtrl.GetFirstSelectedItemPosition();
 	CString out;
 
-	while (pos)
+	if (pos == nullptr)
 	{
-		int nSelect = m_ChangedFileListCtrl.GetNextSelectedItem(pos);
-		CTGitPath * p = (CTGitPath*)m_ChangedFileListCtrl.GetItemData(nSelect);
-		if (p && !(p->m_Action&CTGitPath::LOGACTIONS_UNVER))
+		int diffContext = 0;
+		if (CAppUtils::GetMsysgitVersion() > 0x01080100)
+			diffContext = _ttoi(g_Git.GetConfigValue(_T("diff.context")));
+		CStringA outA;
+		g_Git.GetUnifiedDiff(CTGitPath(), pLogEntry->m_CommitHash.ToString() + _T("~1"), pLogEntry->m_CommitHash.ToString(), &outA, false, false, diffContext);
+		out = CUnicodeUtils::GetUnicode(outA);
+	}
+	else
+	{
+		while (pos)
 		{
-			CString cmd;
-			cmd.Format(_T("git.exe diff %s^%d..%s -- \"%s\""), pLogEntry->m_CommitHash.ToString(), p->m_ParentNo + 1, pLogEntry->m_CommitHash.ToString(), p->GetGitPathString());
-			g_Git.Run(cmd, &out, CP_UTF8);
+			int nSelect = m_ChangedFileListCtrl.GetNextSelectedItem(pos);
+			CTGitPath * p = (CTGitPath*)m_ChangedFileListCtrl.GetItemData(nSelect);
+			if (p && !(p->m_Action&CTGitPath::LOGACTIONS_UNVER))
+			{
+				CString cmd;
+				cmd.Format(_T("git.exe diff %s^%d..%s -- \"%s\""), pLogEntry->m_CommitHash.ToString(), p->m_ParentNo + 1, pLogEntry->m_CommitHash.ToString(), p->GetGitPathString());
+				g_Git.Run(cmd, &out, CP_UTF8);
+			}
 		}
 	}
 

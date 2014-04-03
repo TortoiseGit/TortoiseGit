@@ -2669,6 +2669,7 @@ int CGit::GetUnifiedDiff(const CTGitPath& path, const git_revnum_t& rev1, const 
 		cmd = GetUnifiedDiffCmd(path, rev1, rev2, bMerge, bCombine, diffContext);
 		BYTE_VECTOR vector;
 		int ret = Run(cmd, &vector);
+		vector.push_back(0);
 		if (!vector.empty())
 			buffer->Append((char *)&vector[0]);
 		return ret;
