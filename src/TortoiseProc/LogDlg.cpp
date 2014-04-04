@@ -870,7 +870,10 @@ void CLogDlg::FillPatchView(bool onlySetTimer)
 			if (p && !(p->m_Action&CTGitPath::LOGACTIONS_UNVER))
 			{
 				CString cmd;
-				cmd.Format(_T("git.exe diff %s^%d..%s -- \"%s\""), pLogEntry->m_CommitHash.ToString(), p->m_ParentNo + 1, pLogEntry->m_CommitHash.ToString(), p->GetGitPathString());
+				if (pLogEntry->m_CommitHash.IsEmpty())
+					cmd.Format(_T("git.exe diff HEAD -- \"%s\""), p->GetGitPathString());
+				else
+					cmd.Format(_T("git.exe diff %s^%d..%s -- \"%s\""), pLogEntry->m_CommitHash.ToString(), p->m_ParentNo + 1, pLogEntry->m_CommitHash.ToString(), p->GetGitPathString());
 				g_Git.Run(cmd, &out, CP_UTF8);
 			}
 		}
