@@ -563,41 +563,6 @@ void CLogDlg::EnableOKButton()
 		DialogEnableWindow(IDOK, TRUE);
 }
 
-CString CLogDlg::GetTagInfo(GitRev* pLogEntry)
-{
-	CString cmd;
-	CString output;
-
-	if(m_LogList.m_HashMap.find(pLogEntry->m_CommitHash) != m_LogList.m_HashMap.end())
-	{
-		STRING_VECTOR &vector = m_LogList.m_HashMap[pLogEntry->m_CommitHash];
-		for (size_t i = 0; i < vector.size(); ++i)
-		{
-			if(vector[i].Find(_T("refs/tags/")) == 0 )
-			{
-				CString tag= vector[i];
-				int start = vector[i].Find(_T("^{}"));
-				if(start>0)
-					tag=tag.Left(start);
-				else
-					continue;
-
-				cmd.Format(_T("git.exe cat-file	tag %s"), tag);
-
-				if(g_Git.Run(cmd, &output, NULL, CP_UTF8) == 0 )
-					output+=_T("\n");
-			}
-		}
-	}
-
-	if(!output.IsEmpty())
-	{
-		output = _T("\n*") + CString(MAKEINTRESOURCE(IDS_PROC_LOG_TAGINFO)) + _T("*\n\n") + output;
-	}
-
-	return output;
-}
-
 bool LookLikeGitHash(const CString& msg, int &pos)
 {
 	int c = 0;
@@ -755,7 +720,10 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 				msg+= _T("\n\n");
 			}
 
-			msg+=GetTagInfo(pLogEntry);
+			CString tagInfo = m_LogList.GetTagInfo(pLogEntry);
+			if(!tagInfo.IsEmpty())
+				tagInfo = _T("\n*") + CString(MAKEINTRESOURCE(IDS_PROC_LOG_TAGINFO)) + _T("*\n\n") + tagInfo;
+			msg += tagInfo;
 
 			pMsgView->ReplaceSel(msg);
 

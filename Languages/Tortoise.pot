@@ -1026,6 +1026,10 @@ msgstr ""
 msgid "&Refresh"
 msgstr ""
 
+#. Resource IDs: (20093)
+msgid "&Regular Expression"
+msgstr ""
+
 #. Resource IDs: (1617)
 msgid "&Remote Branch:"
 msgstr ""

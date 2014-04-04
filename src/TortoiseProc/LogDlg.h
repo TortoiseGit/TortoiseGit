@@ -78,7 +78,6 @@ public:
 	enum { IDD = IDD_LOGMESSAGE };
 
 	void	FillLogMessageCtrl(bool bShow = true);
-	CString	GetTagInfo(GitRev* pLogEntry);
 
 	void UpdateLogInfoLabel();
 

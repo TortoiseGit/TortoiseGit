@@ -3,6 +3,7 @@ Released: Unreleased
 
 == Features ==
  * Fixed issue #2152: Log window show whole commit in "View patch"
+ * Fixed issue #2149: Can't search message in annotated tag or text in notes
 
 = Release 1.8.8.0 =
 Released: 2014-04-01
