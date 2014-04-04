@@ -3844,7 +3844,9 @@ LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*
 		bool bMatchCase = (m_pFindDialog->MatchCase() == TRUE);
 
 		std::tr1::wregex pat;
-		bool bRegex = ValidateRegexp(FindText, pat, bMatchCase);
+		bool bRegex = false;
+		if (m_pFindDialog->Regex())
+			bRegex = ValidateRegexp(FindText, pat, bMatchCase);
 
 		std::tr1::regex_constants::match_flag_type flags = std::tr1::regex_constants::match_not_null;
 
