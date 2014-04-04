@@ -3381,6 +3381,35 @@ void CGitLogListBase::ShowGraphColumn(bool bShow)
 		SetColumnWidth(0, 0);
 }
 
+CString CGitLogListBase::GetTagInfo(GitRev* pLogEntry)
+{
+	CString cmd;
+	CString output;
+
+	if (m_HashMap.find(pLogEntry->m_CommitHash) != m_HashMap.end())
+	{
+		STRING_VECTOR &vector = m_HashMap[pLogEntry->m_CommitHash];
+		for (size_t i = 0; i < vector.size(); ++i)
+		{
+			if (vector[i].Find(_T("refs/tags/")) == 0)
+			{
+				CString tag = vector[i];
+				int start = vector[i].Find(_T("^{}"));
+				if (start > 0)
+					tag = tag.Left(start);
+				else
+					continue;
+
+				cmd.Format(_T("git.exe cat-file	tag %s"), tag);
+				if (g_Git.Run(cmd, &output, nullptr, CP_UTF8) == 0)
+					output.AppendChar(_T('\n'));
+			}
+		}
+	}
+
+	return output;
+}
+
 void CGitLogListBase::RecalculateShownList(CThreadSafePtrArray * pShownlist)
 {
 

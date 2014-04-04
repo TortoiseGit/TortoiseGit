@@ -303,6 +303,7 @@ public:
 	BOOL IsMatchFilter(bool bRegex, GitRev *pRev, std::tr1::wregex &pat);
 	bool ShouldShowFilter(GitRev *pRev, const std::map<CGitHash, std::set<CGitHash>> &commitChildren);
 	void ShowGraphColumn(bool bShow);
+	CString	GetTagInfo(GitRev* pLogEntry);
 
 	CFindDlg *m_pFindDialog;
 	static const UINT	m_FindDialogMessage;
