@@ -3922,6 +3922,8 @@ LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*
 			str+=_T("\n");
 			str+=pLogEntry->m_Notes;
 			str+=_T("\n");
+			str+=GetTagInfo(pLogEntry);
+			str+=_T("\n");
 
 
 			/*Because changed files list is loaded on demand when gui show,
