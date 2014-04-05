@@ -1087,6 +1087,8 @@ END
 STRINGTABLE
 BEGIN
     IDS_ERR_PATCHPATHS      "Both the path to the patch file and the target path must be absolute paths!"
+    IDS_ERR_ERROR           "Error"
+    IDS_ERR_INVALIDREGEX    "The regular expression is invalid!\nPlease enter a valid regular expression."
 END
 
 STRINGTABLE

@@ -1,6 +1,6 @@
 // TortoiseMerge - a Diff/Patch program
 
-// Copyright (C) 2013 - TortoiseSVN
+// Copyright (C) 2013-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -20,6 +20,7 @@
 #include "TortoiseMerge.h"
 #include "RegexFilterDlg.h"
 #include <afxdialogex.h>
+#include <regex>
 
 
 // CRegexFilterDlg dialog
@@ -63,4 +64,34 @@ BOOL CRegexFilterDlg::OnInitDialog()
 	GetDlgItem(IDC_NAME)->SetFocus();
 	return FALSE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
+}
+
+void CRegexFilterDlg::OnOK()
+{
+	UpdateData();
+
+	try
+	{
+		std::wregex r1 = std::wregex(m_sRegex);
+		UNREFERENCED_PARAMETER(r1);
+	}
+	catch (std::exception)
+	{
+		ShowEditBalloon(IDC_REGEX, IDS_ERR_INVALIDREGEX, IDS_ERR_ERROR);
+		return;
+	}
+
+	CDialog::OnOK();
+}
+
+void CRegexFilterDlg::ShowEditBalloon(UINT nIdControl, UINT nIdText, UINT nIdTitle, int nIcon)
+{
+	CString text = CString(MAKEINTRESOURCE(nIdText));
+	CString title = CString(MAKEINTRESOURCE(nIdTitle));
+	EDITBALLOONTIP bt;
+	bt.cbStruct = sizeof(bt);
+	bt.pszText = text;
+	bt.pszTitle = title;
+	bt.ttiIcon = nIcon;
+	SendDlgItemMessage(nIdControl, EM_SHOWBALLOONTIP, 0, (LPARAM)&bt);
 }
