@@ -453,7 +453,7 @@ void CCheckForUpdatesDlg::FillChangelog(CStdioFile &file)
 			std::unique_ptr<BYTE[]> buf(new BYTE[(UINT)file.GetLength()]);
 			UINT read = file.Read(buf.get(), (UINT)file.GetLength());
 			bool skipBom = read >= 3 && buf[0] == 0xEF && buf[1] == 0xBB && buf[2] == 0xBF;
-			g_Git.StringAppend(&temp, buf.get() + (skipBom ? 3 : 0), CP_UTF8, read);
+			g_Git.StringAppend(&temp, buf.get() + (skipBom ? 3 : 0), CP_UTF8, read - (skipBom ? 3 : 0));
 		}
 		::SendMessage(m_hWnd, WM_USER_FILLCHANGELOG, 0, reinterpret_cast<LPARAM>((LPCTSTR)temp));
 	}
