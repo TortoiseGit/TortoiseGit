@@ -447,28 +447,13 @@ void CCheckForUpdatesDlg::FillChangelog(CStdioFile &file)
 	if (!m_updateDownloader->DownloadFile(sChangelogURL, tempchangelogfile, false))
 	{
 		CString temp;
-		CStdioFile file(tempchangelogfile, CFile::modeRead|CFile::typeText);
-		CString str;
-		bool first = true;
-		while (file.ReadString(str))
+		CStdioFile file;
+		if (file.Open(tempchangelogfile, CFile::modeRead | CFile::typeBinary))
 		{
-			if (first)
-			{
-				first = false;
-				if (str.GetLength() > 2 && str.GetAt(0) == 0xEF && str.GetAt(1) == 0xBB)
-				{
-					if (str.GetAt(2) == 0xBF)
-					{
-						str = str.Mid(3);
-					}
-					else
-					{
-						str = str.Mid(2);
-					}
-				}
-			}
-			str = CUnicodeUtils::GetUnicode(CStringA(str), CP_UTF8);
-			temp += str + _T("\n");
+			std::unique_ptr<BYTE[]> buf(new BYTE[(UINT)file.GetLength()]);
+			UINT read = file.Read(buf.get(), (UINT)file.GetLength());
+			bool skipBom = read >= 3 && buf[0] == 0xEF && buf[1] == 0xBB && buf[2] == 0xBF;
+			g_Git.StringAppend(&temp, buf.get() + (skipBom ? 3 : 0), CP_UTF8, read);
 		}
 		::SendMessage(m_hWnd, WM_USER_FILLCHANGELOG, 0, reinterpret_cast<LPARAM>((LPCTSTR)temp));
 	}
