@@ -138,6 +138,10 @@ void CSyncDlg::OnBnClickedButtonPull()
 	m_refList.Clear();
 	m_newHashMap.clear();
 	m_oldHashMap.clear();
+	if (g_Git.GetMapHashToFriendName(m_oldHashMap))
+	{
+		MessageBox(g_Git.GetGitLastErr(_T("Could not get all refs.")), _T("TortoiseGit"), MB_ICONERROR);
+	}
 
 	if( CurrentEntry == 0)
 	{
@@ -1213,9 +1217,6 @@ void CSyncDlg::OnCbnEditchangeComboboxex()
 
 UINT CSyncDlg::ProgressThread()
 {
-	if (g_Git.GetMapHashToFriendName(m_oldHashMap))
-		MessageBox(g_Git.GetGitLastErr(_T("Could not get all refs.")), _T("TortoiseGit"), MB_ICONERROR);
-
 	m_startTick = GetTickCount();
 	m_bDone = false;
 	CProgressDlg::RunCmdList(this, m_GitCmdList, true, NULL, &this->m_bAbort, &this->m_Databuf);
