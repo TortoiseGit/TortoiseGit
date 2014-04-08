@@ -242,6 +242,8 @@ void CGravatar::GravatarThread()
 					m_filename.Empty();
 				m_gravatarLock.Unlock();
 			}
+			if (m_gravatarExit)
+				break;
 			Invalidate();
 		}
 	}
@@ -256,13 +258,19 @@ BOOL CGravatar::DownloadToFile(const HINTERNET hConnectHandle, bool isHttps, con
 		return -1;
 
 resend:
+	if (m_gravatarExit)
+	{
+		InternetCloseHandle(hResourceHandle);
+		return INET_E_DOWNLOAD_FAILURE;
+	}
+
 	BOOL httpsendrequest = HttpSendRequest(hResourceHandle, nullptr, 0, nullptr, 0);
 
 	DWORD dwError = InternetErrorDlg(GetSafeHwnd(), hResourceHandle, ERROR_SUCCESS, FLAGS_ERROR_UI_FILTER_FOR_ERRORS | FLAGS_ERROR_UI_FLAGS_CHANGE_OPTIONS | FLAGS_ERROR_UI_FLAGS_GENERATE_DATA, nullptr);
 
 	if (dwError == ERROR_INTERNET_FORCE_RETRY)
 		goto resend;
-	else if (!httpsendrequest)
+	else if (!httpsendrequest || m_gravatarExit)
 	{
 		InternetCloseHandle(hResourceHandle);
 		return INET_E_DOWNLOAD_FAILURE;
@@ -288,7 +296,7 @@ resend:
 	}
 
 	DWORD downloadedSum = 0; // sum of bytes downloaded so far
-	do
+	while (!m_gravatarExit)
 	{
 		DWORD size; // size of the data available
 		if (!InternetQueryDataAvailable(hResourceHandle, &size, 0, 0))
@@ -318,7 +326,6 @@ resend:
 
 		downloadedSum += downloaded;
 	}
-	while (!m_gravatarExit);
 	destinationFile.Close();
 	InternetCloseHandle(hResourceHandle);
 	if (downloadedSum == 0)
