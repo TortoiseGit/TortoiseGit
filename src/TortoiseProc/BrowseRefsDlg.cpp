@@ -484,6 +484,7 @@ void CBrowseRefsDlg::Refresh(CString selectRef)
 		int valuePos=0;
 		treeLeaf.m_csRefHash=		values.Tokenize(L"\04",valuePos); if(valuePos < 0) continue;
 		treeLeaf.m_csUpstream =		values.Tokenize(L"\04", valuePos); if (valuePos < 0) continue;
+		CGit::GetShortName(treeLeaf.m_csUpstream, treeLeaf.m_csUpstream, L"refs/remotes/");
 		treeLeaf.m_csDate=			values.Tokenize(L"\04",valuePos); if(valuePos < 0) continue;
 		treeLeaf.m_csSubject=		values.Tokenize(L"\04",valuePos); if(valuePos < 0) continue;
 		treeLeaf.m_csAuthor=		values.Tokenize(L"\04",valuePos); if(valuePos < 0) continue;
