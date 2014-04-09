@@ -33,14 +33,14 @@ private:
 	void	GravatarThread();
 	void	SafeTerminateGravatarThread();
 	afx_msg void OnPaint();
-	BOOL	DownloadToFile(const HINTERNET hConnectHandle, bool isHttps, const CString& urlpath, const CString& dest);
+	BOOL	DownloadToFile(bool *gravatarExit, const HINTERNET hConnectHandle, bool isHttps, const CString& urlpath, const CString& dest);
 
 	bool				m_bEnableGravatar;
 	CString				m_filename;
 	CString				m_email;
 	HANDLE				m_gravatarEvent;
 	CWinThread*			m_gravatarThread;
-	volatile bool		m_gravatarExit;
+	bool*				m_gravatarExit;
 	CComCriticalSection m_gravatarLock;
 
 	DECLARE_MESSAGE_MAP();

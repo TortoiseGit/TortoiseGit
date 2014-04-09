@@ -76,7 +76,7 @@ CGravatar::CGravatar()
 	: CStatic()
 	, m_gravatarEvent(INVALID_HANDLE_VALUE)
 	, m_gravatarThread(nullptr)
-	, m_gravatarExit(false)
+	, m_gravatarExit(nullptr)
 	, m_bEnableGravatar(false)
 {
 	m_gravatarLock.Init();
@@ -98,10 +98,13 @@ void CGravatar::Init()
 			m_gravatarEvent = ::CreateEvent(nullptr, FALSE, TRUE, nullptr);
 		if (m_gravatarThread == nullptr)
 		{
+			m_gravatarExit = new bool(false);
 			m_gravatarThread = AfxBeginThread([] (LPVOID lpVoid) -> UINT { ((CGravatar *)lpVoid)->GravatarThread(); return 0; }, this, THREAD_PRIORITY_BELOW_NORMAL);
 			if (m_gravatarThread == nullptr)
 			{
 				CMessageBox::Show(nullptr, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
+				delete m_gravatarExit;
+				m_gravatarExit = nullptr;
 				return;
 			}
 		}
@@ -140,6 +143,7 @@ void CGravatar::LoadGravatar(CString email)
 
 void CGravatar::GravatarThread()
 {
+	bool *gravatarExit = m_gravatarExit;
 	CString gravatarBaseUrl = CRegString(_T("Software\\TortoiseGit\\GravatarUrl"), _T("http://www.gravatar.com/avatar/%HASH%?d=identicon"));
 
 	CString hostname;
@@ -153,6 +157,7 @@ void CGravatar::GravatarThread()
 	if (!InternetCrackUrl(gravatarBaseUrl, gravatarBaseUrl.GetLength(), 0, &urlComponents))
 	{
 		m_filename.Empty();
+		delete gravatarExit;
 		return;
 	}
 	hostname.ReleaseBuffer();
@@ -165,13 +170,14 @@ void CGravatar::GravatarThread()
 	{
 		InternetCloseHandle(hOpenHandle);
 		m_filename.Empty();
+		delete gravatarExit;
 		return;
 	}
 
-	while (!m_gravatarExit)
+	while (!*gravatarExit)
 	{
 		::WaitForSingleObject(m_gravatarEvent, INFINITE);
-		while (!m_gravatarExit)
+		while (!*gravatarExit)
 		{
 			m_gravatarLock.Lock();
 			CString email = m_email;
@@ -180,7 +186,7 @@ void CGravatar::GravatarThread()
 				break;
 
 			Sleep(500);
-			if (m_gravatarExit)
+			if (*gravatarExit)
 				break;
 			m_gravatarLock.Lock();
 			bool diff = email != m_email;
@@ -211,15 +217,17 @@ void CGravatar::GravatarThread()
 			}
 			else
 			{
-				BOOL ret = DownloadToFile(hConnectHandle, isHttps, gravatarUrl, tempFile);
+				BOOL ret = DownloadToFile(gravatarExit, hConnectHandle, isHttps, gravatarUrl, tempFile);
 				if (ret)
 				{
 					DeleteFile(tempFile);
+					if (*gravatarExit)
+						break;
 					m_gravatarLock.Lock();
 					m_filename.Empty();
 					m_gravatarLock.Unlock();
 				}
-				if (m_gravatarExit)
+				if (*gravatarExit)
 					break;
 				m_gravatarLock.Lock();
 				if (m_email == email && !ret)
@@ -242,23 +250,24 @@ void CGravatar::GravatarThread()
 					m_filename.Empty();
 				m_gravatarLock.Unlock();
 			}
-			if (m_gravatarExit)
+			if (*gravatarExit)
 				break;
 			Invalidate();
 		}
 	}
 	InternetCloseHandle(hConnectHandle);
 	InternetCloseHandle(hOpenHandle);
+	delete gravatarExit;
 }
 
-BOOL CGravatar::DownloadToFile(const HINTERNET hConnectHandle, bool isHttps, const CString& urlpath, const CString& dest)
+BOOL CGravatar::DownloadToFile(bool *gravatarExit, const HINTERNET hConnectHandle, bool isHttps, const CString& urlpath, const CString& dest)
 {
 	HINTERNET hResourceHandle = HttpOpenRequest(hConnectHandle, nullptr, urlpath, nullptr, nullptr, nullptr, INTERNET_FLAG_KEEP_CONNECTION | (isHttps ? INTERNET_FLAG_SECURE : 0), 0);
 	if (!hResourceHandle)
 		return -1;
 
 resend:
-	if (m_gravatarExit)
+	if (*gravatarExit)
 	{
 		InternetCloseHandle(hResourceHandle);
 		return INET_E_DOWNLOAD_FAILURE;
@@ -270,7 +279,7 @@ resend:
 
 	if (dwError == ERROR_INTERNET_FORCE_RETRY)
 		goto resend;
-	else if (!httpsendrequest || m_gravatarExit)
+	else if (!httpsendrequest || *gravatarExit)
 	{
 		InternetCloseHandle(hResourceHandle);
 		return INET_E_DOWNLOAD_FAILURE;
@@ -296,7 +305,7 @@ resend:
 	}
 
 	DWORD downloadedSum = 0; // sum of bytes downloaded so far
-	while (!m_gravatarExit)
+	while (!*gravatarExit)
 	{
 		DWORD size; // size of the data available
 		if (!InternetQueryDataAvailable(hResourceHandle, &size, 0, 0))
@@ -336,7 +345,8 @@ resend:
 
 void CGravatar::SafeTerminateGravatarThread()
 {
-	m_gravatarExit = true;
+	if (m_gravatarExit != nullptr)
+		*m_gravatarExit = true;
 	if (m_gravatarThread)
 	{
 		::SetEvent(m_gravatarEvent);
