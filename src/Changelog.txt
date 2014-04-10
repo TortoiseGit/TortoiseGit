@@ -7,6 +7,7 @@ Released: Unreleased
 
 == Bug Fixes ==
  * Fixed issue #2158: TortoiseGit sometimes crashes when doing Sync > Pull
+ * Fixed issue #2159: URL combo box in Submodule Add is not case sensitive
 
 = Release 1.8.8.0 =
 Released: 2014-04-01

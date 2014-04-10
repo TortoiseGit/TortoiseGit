@@ -100,6 +100,7 @@ BOOL CSubmoduleAddDlg::OnInitDialog()
 	CAppUtils::SetWindowTitle(m_hWnd, (g_Git.m_CurrentDir + _T("\\") + m_strPath).TrimRight('\\'), sWindowTitle);
 
 	m_Repository.SetURLHistory(true);
+	m_Repository.SetCaseSensitive(TRUE);
 	m_PathCtrl.SetPathHistory(true);
 
 	m_Repository.LoadHistory(_T("Software\\TortoiseGit\\History\\SubModuleRepoURLS"), _T("url"));
