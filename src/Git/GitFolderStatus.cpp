@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008,2011 - TortoiseSVN
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -43,12 +43,11 @@ GitFolderStatus::GitFolderStatus(void)
 	sCacheKey.reserve(MAX_PATH);
 
 	g_Git.SetCurrentDir(_T(""));
-	m_hInvalidationEvent = CreateEvent(NULL, FALSE, FALSE, _T("TortoiseGitCacheInvalidationEvent"));
+	m_hInvalidationEvent = CreateEvent(NULL, FALSE, FALSE, _T("TortoiseGitCacheInvalidationEvent")); // no need to explicitely close m_hInvalidationEvent in ~GitFolderStatus as it is CAutoGeneralHandle
 }
 
 GitFolderStatus::~GitFolderStatus(void)
 {
-	CloseHandle(m_hInvalidationEvent);
 }
 
 const FileStatusCacheEntry * GitFolderStatus::BuildCache(const CTGitPath& filepath, const CString& /*sProjectRoot*/, BOOL bIsFolder, BOOL bDirectFolder)
