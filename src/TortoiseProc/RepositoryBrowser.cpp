@@ -1130,6 +1130,14 @@ void CRepositoryBrowser::OpenFile(const CString path, eOpenType mode, bool isSub
 
 	if (isSubmodule)
 	{
+		if (mode == OPEN)
+		{
+			CString cmd;
+			cmd.Format(_T("/command:repobrowser /path:\"%s\" /rev:%s"), g_Git.m_CurrentDir + _T("\\") + path, itemHash.ToString());
+			CAppUtils::RunTortoiseGitProc(cmd);
+			return;
+		}
+
 		file += _T(".txt");
 		CFile submoduleCommit(file, CFile::modeCreate | CFile::modeWrite);
 		CStringA commitInfo = "Subproject commit " + CStringA(itemHash.ToString());
