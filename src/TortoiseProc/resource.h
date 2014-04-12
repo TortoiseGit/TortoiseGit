@@ -1066,6 +1066,7 @@
 #define IDC_COLOR_LINE7                 1495
 #define IDS_B_CANNOTFORCECURRENT        1495
 #define IDC_REMOTE                      1496
+#define IDS_REPOBROWSEASKSUBMODULEUPDATE 1496
 #define IDC_PACK                        1497
 #define IDC_TAGS                        1499
 #define IDS_EXPORTFILE_TT               1500

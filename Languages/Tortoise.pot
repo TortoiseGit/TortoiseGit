@@ -2724,6 +2724,11 @@ msgstr ""
 msgid "Commit"
 msgstr ""
 
+#. Resource IDs: (94)
+#, c-format
+msgid "Commit %s not found in \"%s\". Update submodule now?"
+msgstr ""
+
 #. Resource IDs: (1255)
 msgid "Commit Date"
 msgstr ""

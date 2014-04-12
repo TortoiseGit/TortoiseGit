@@ -1132,6 +1132,36 @@ void CRepositoryBrowser::OpenFile(const CString path, eOpenType mode, bool isSub
 	{
 		if (mode == OPEN && !g_GitAdminDir.IsBareRepo(g_Git.m_CurrentDir))
 		{
+			CTGitPath subPath = CTGitPath(g_Git.m_CurrentDir);
+			subPath.AppendPathString(gitPath.GetWinPathString());
+			CStringA gitdir = CUnicodeUtils::GetMulti(subPath.GetGitPathString(), CP_UTF8);
+			bool failed = false;
+			git_repository *repo = nullptr;
+			if (git_repository_open(&repo, gitdir))
+				failed = true;
+			else
+			{
+				git_commit *commit = nullptr;
+				if (git_commit_lookup(&commit, repo, (const git_oid *)itemHash.m_hash))
+					failed = true;
+				else
+					git_commit_free(commit);
+				git_repository_free(repo);
+			}
+
+			if (failed)
+			{
+				CString out;
+				out.Format(IDS_REPOBROWSEASKSUBMODULEUPDATE, itemHash.ToString(), gitPath.GetGitPathString());
+				if (MessageBox(out, _T("TortoiseGit"), MB_YESNO | MB_ICONQUESTION) != IDYES)
+					return;
+
+				CString sCmd;
+				sCmd.Format(_T("/command:subupdate /bkpath:\"%s\" /selectedpath:\"%s\""), g_Git.m_CurrentDir, gitPath.GetGitPathString());
+				CAppUtils::RunTortoiseGitProc(sCmd);
+				return;
+			}
+
 			CString cmd;
 			cmd.Format(_T("/command:repobrowser /path:\"%s\" /rev:%s"), g_Git.m_CurrentDir + _T("\\") + path, itemHash.ToString());
 			CAppUtils::RunTortoiseGitProc(cmd);
