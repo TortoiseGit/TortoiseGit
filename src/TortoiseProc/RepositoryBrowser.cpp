@@ -1130,7 +1130,7 @@ void CRepositoryBrowser::OpenFile(const CString path, eOpenType mode, bool isSub
 
 	if (isSubmodule)
 	{
-		if (mode == OPEN)
+		if (mode == OPEN && !g_GitAdminDir.IsBareRepo(g_Git.m_CurrentDir))
 		{
 			CString cmd;
 			cmd.Format(_T("/command:repobrowser /path:\"%s\" /rev:%s"), g_Git.m_CurrentDir + _T("\\") + path, itemHash.ToString());
