@@ -37,6 +37,7 @@ public:
 	, m_pParent(NULL)
 	, m_bFolder(false)
 	, m_bSubmodule(false)
+	, m_bExecutable(false)
 	, m_iSize(0)
 	{}
 
@@ -45,6 +46,7 @@ public:
 	git_off_t			m_iSize;
 	bool				m_bFolder;
 	bool				m_bSubmodule;
+	bool				m_bExecutable;
 
 	HTREEITEM			m_hTree;
 
@@ -138,6 +140,7 @@ private:
 	int						m_nIconFolder;
 	int						m_nOpenIconFolder;
 	int						m_nExternalOvl;
+	int						m_nExecutableOvl;
 
 	bool					m_bHasWC;
 

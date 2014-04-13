@@ -1272,6 +1272,9 @@
     <Image Include="..\Resources\Drives.ico">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="..\Resources\executableovl.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
     <Image Include="..\Resources\explorer.ico">
       <Filter>Resource Files</Filter>
     </Image>

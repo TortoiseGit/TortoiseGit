@@ -36,6 +36,7 @@
 #include "GitDiff.h"
 
 #define OVERLAY_EXTERNAL	1
+#define OVERLAY_EXECUTABLE	2
 
 void SetSortArrowA(CListCtrl * control, int nColumn, bool bAscending)
 {
@@ -142,6 +143,7 @@ CRepositoryBrowser::CRepositoryBrowser(CString rev, CWnd* pParent /*=NULL*/)
 , m_nIconFolder(0)
 , m_nOpenIconFolder(0)
 , m_nExternalOvl(0)
+, m_nExecutableOvl(0)
 , bDragMode(false)
 , oldy(0)
 , oldx(0)
@@ -222,6 +224,7 @@ BOOL CRepositoryBrowser::OnInitDialog()
 	}
 
 	m_nExternalOvl = SYS_IMAGE_LIST().AddIcon((HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_EXTERNALOVL), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE));
+	m_nExecutableOvl = SYS_IMAGE_LIST().AddIcon((HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_EXECUTABLEOVL), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE));
 	// set externaloverlay in SYS_IMAGE_LIST() in Refresh method, so that it is updated after every launch of the logdialog
 
 	SetWindowTheme(m_RepoTree.GetSafeHwnd(), L"Explorer", NULL);
@@ -327,6 +330,8 @@ void CRepositoryBrowser::Refresh()
 	BeginWaitCursor();
 	if (m_nExternalOvl >= 0)
 		SYS_IMAGE_LIST().SetOverlayImage(m_nExternalOvl, OVERLAY_EXTERNAL);
+	if (m_nExecutableOvl >= 0)
+		SYS_IMAGE_LIST().SetOverlayImage(m_nExecutableOvl, OVERLAY_EXECUTABLE);
 
 	m_RepoTree.DeleteAllItems();
 	m_RepoList.DeleteAllItems();
@@ -399,6 +404,8 @@ int CRepositoryBrowser::ReadTreeRecursive(git_repository &repo, const git_tree *
 		}
 		else
 		{
+			if (mode == GIT_FILEMODE_BLOB_EXECUTABLE)
+				pNextTree->m_bExecutable = true;
 			git_blob * blob = nullptr;
 			git_blob_lookup(&blob, &repo, oid);
 			if (blob == NULL)
@@ -528,6 +535,8 @@ void CRepositoryBrowser::FillListCtrlForShadowTree(CShadowFilesTree* pTree)
 		{
 			m_RepoList.SetItemState(indexItem, INDEXTOOVERLAYMASK(OVERLAY_EXTERNAL), LVIS_OVERLAYMASK);
 		}
+		if ((*itShadowTree).second.m_bExecutable)
+			m_RepoList.SetItemState(indexItem, INDEXTOOVERLAYMASK(OVERLAY_EXECUTABLE), LVIS_OVERLAYMASK);
 		m_RepoList.SetItemData(indexItem, (DWORD_PTR)&(*itShadowTree).second);
 		if (!(*itShadowTree).second.m_bFolder && !(*itShadowTree).second.m_bSubmodule)
 		{

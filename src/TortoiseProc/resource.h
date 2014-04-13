@@ -161,6 +161,7 @@
 #define IDI_GITCREDENTIAL               346
 #define IDI_EXTERNALOVL                 347
 #define IDI_MERGEACTIVE                 348
+#define IDI_EXECUTABLEOVL               349
 #define IDS_CHSTAT_FILECOL              1000
 #define IDS_CHSTAT_WCCOL                1001
 #define IDS_CHSTAT_REPOCOL              1002

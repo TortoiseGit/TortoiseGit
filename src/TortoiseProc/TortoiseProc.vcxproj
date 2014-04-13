@@ -429,6 +429,7 @@
     <Image Include="..\Resources\DelunversionedBackground.ico" />
     <Image Include="..\Resources\dialogs.ico" />
     <Image Include="..\Resources\Drives.ico" />
+    <Image Include="..\Resources\executableovl.ico" />
     <Image Include="..\Resources\explorer.ico" />
     <Image Include="..\Resources\ExportBackground.ico" />
     <Image Include="..\Resources\externalovl.ico" />
