@@ -123,6 +123,7 @@ public:
 		switch(m_col)
 		{
 		case CBrowseRefsDlg::eCol_Name:	return SortStrCmp(pLeft->GetRefName(), pRight->GetRefName());
+		case CBrowseRefsDlg::eCol_Upstream:	return SortStrCmp(pLeft->m_csUpstream, pRight->m_csUpstream);
 		case CBrowseRefsDlg::eCol_Date:	return pLeft->m_csDate_Iso8601.CompareNoCase(pRight->m_csDate_Iso8601);
 		case CBrowseRefsDlg::eCol_Msg:	return SortStrCmp(pLeft->m_csSubject, pRight->m_csSubject);
 		case CBrowseRefsDlg::eCol_LastAuthor: return SortStrCmp(pLeft->m_csAuthor, pRight->m_csAuthor);
@@ -261,9 +262,9 @@ BOOL CBrowseRefsDlg::OnInitDialog()
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
 
 	m_ListRefLeafs.SetExtendedStyle(m_ListRefLeafs.GetExtendedStyle()|LVS_EX_FULLROWSELECT);
-	static UINT columnNames[] = { IDS_BRANCHNAME, IDS_DATELASTCOMMIT, IDS_LASTCOMMIT, IDS_LASTAUTHOR, IDS_HASH, IDS_DESCRIPTION };
-	static int columnWidths[] = { 150, 100, 300, 100, 80, 80 };
-	DWORD dwDefaultColumns = (1 << eCol_Name) | (1 << eCol_Date) | (1 << eCol_Msg) | 
+	static UINT columnNames[] = { IDS_BRANCHNAME, IDS_TRACKEDBRANCH, IDS_DATELASTCOMMIT, IDS_LASTCOMMIT, IDS_LASTAUTHOR, IDS_HASH, IDS_DESCRIPTION };
+	static int columnWidths[] = { 150, 100, 100, 300, 100, 80, 80 };
+	DWORD dwDefaultColumns = (1 << eCol_Name) | (1 << eCol_Upstream ) | (1 << eCol_Date) | (1 << eCol_Msg) |
 		(1 << eCol_LastAuthor) | (1 << eCol_Hash) | (1 << eCol_Description);
 	m_ColumnManager.SetNames(columnNames, _countof(columnNames));
 	m_ColumnManager.ReadSettings(dwDefaultColumns, 0, _T("BrowseRefs"), _countof(columnNames), columnWidths);
@@ -434,6 +435,7 @@ void CBrowseRefsDlg::Refresh(CString selectRef)
 	if (g_Git.Run(L"git.exe for-each-ref --format="
 			  L"%(refname)%04"
 			  L"%(objectname)%04"
+			  L"%(upstream)%04"
 			  L"%(authordate:relative)%04"
 			  L"%(subject)%04"
 			  L"%(authorname)%04"
@@ -481,6 +483,8 @@ void CBrowseRefsDlg::Refresh(CString selectRef)
 
 		int valuePos=0;
 		treeLeaf.m_csRefHash=		values.Tokenize(L"\04",valuePos); if(valuePos < 0) continue;
+		treeLeaf.m_csUpstream =		values.Tokenize(L"\04", valuePos); if (valuePos < 0) continue;
+		CGit::GetShortName(treeLeaf.m_csUpstream, treeLeaf.m_csUpstream, L"refs/remotes/");
 		treeLeaf.m_csDate=			values.Tokenize(L"\04",valuePos); if(valuePos < 0) continue;
 		treeLeaf.m_csSubject=		values.Tokenize(L"\04",valuePos); if(valuePos < 0) continue;
 		treeLeaf.m_csAuthor=		values.Tokenize(L"\04",valuePos); if(valuePos < 0) continue;
@@ -591,6 +595,7 @@ void CBrowseRefsDlg::FillListCtrlForTreeNode(HTREEITEM treeNode)
 		return;
 	}
 	FillListCtrlForShadowTree(pTree,L"",true);
+	m_ColumnManager.SetVisible(eCol_Upstream, (wcsncmp(pTree->GetRefName(), L"refs/heads", 11) == 0));
 }
 
 void CBrowseRefsDlg::FillListCtrlForShadowTree(CShadowTree* pTree, CString refNamePrefix, bool isFirstLevel)
@@ -607,6 +612,7 @@ void CBrowseRefsDlg::FillListCtrlForShadowTree(CShadowTree* pTree, CString refNa
 
 			m_ListRefLeafs.SetItemData(indexItem,(DWORD_PTR)pTree);
 			m_ListRefLeafs.SetItemText(indexItem,eCol_Name, ref);
+			m_ListRefLeafs.SetItemText(indexItem, eCol_Upstream, pTree->m_csUpstream);
 			m_ListRefLeafs.SetItemText(indexItem,eCol_Date, pTree->m_csDate);
 			m_ListRefLeafs.SetItemText(indexItem,eCol_Msg, pTree->m_csSubject);
 			m_ListRefLeafs.SetItemText(indexItem,eCol_LastAuthor, pTree->m_csAuthor);

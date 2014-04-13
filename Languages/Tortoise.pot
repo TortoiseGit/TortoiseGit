@@ -9226,6 +9226,10 @@ msgstr ""
 msgid "Tracked Remote Branch:"
 msgstr ""
 
+#. Resource IDs: (94)
+msgid "Tracked branch"
+msgstr ""
+
 #. Resource IDs: (357)
 #, c-format
 msgid "Transferring at %s"
