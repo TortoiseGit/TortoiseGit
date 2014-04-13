@@ -29,6 +29,7 @@
   <ItemDefinitionGroup>
     <ClCompile>
       <PreprocessorDefinitions>CUSTOMACTIONS_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <ModuleDefinitionFile>CustomActions.def</ModuleDefinitionFile>
