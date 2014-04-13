@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -87,8 +87,6 @@ public:
 		const BYTE* dataEnd=&*(begin()+(size()-dataSize) );++dataEnd;//Set end one step after last place to search
 		if(pos>=dataEnd)
 			return -1;//Started over end. Return not found
-		if(dataSize==0)
-			return start;//No search data. Return current position
 		BYTE firstByte=dataToFind[0];
 		while(pos<dataEnd)
 		{
