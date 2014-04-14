@@ -1070,6 +1070,7 @@
 #define IDS_REPOBROWSEASKSUBMODULEUPDATE 1496
 #define IDC_PACK                        1497
 #define IDS_TRACKEDBRANCH               1497
+#define IDS_REBASE_AUTOSKIPPED          1498
 #define IDC_TAGS                        1499
 #define IDS_EXPORTFILE_TT               1500
 #define IDC_BRANCH_GROUP                1500

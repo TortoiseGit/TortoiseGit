@@ -645,6 +645,7 @@ void CRebaseDlg::FetchLogList()
 	// Default to skip when already in upstream
 	CString cherryCmd;
 	cherryCmd.Format(L"git.exe cherry \"%s\" \"%s\"", refFrom, refTo);
+	bool bHasSKip = false;
 	g_Git.Run(cherryCmd, [&](const CStringA& line)
 	{
 		if (line.GetLength() < 2)
@@ -659,9 +660,21 @@ void CRebaseDlg::FetchLogList()
 
 		// Found. Skip it.
 		m_CommitList.m_logEntries.GetGitRevAt(itIx->second).GetRebaseAction() = CGitLogListBase::LOGACTIONS_REBASE_SKIP;
+		bHasSKip = true;
 	});
 
 	m_CommitList.Invalidate();
+	if (bHasSKip)
+	{
+		m_CtrlStatusText.SetWindowText(CString(MAKEINTRESOURCE(IDS_REBASE_AUTOSKIPPED)));
+		m_bStatusWarning = true;
+	}
+	else
+	{
+		m_CtrlStatusText.SetWindowText(m_sStatusText);
+		m_bStatusWarning = false;
+	}
+	m_CtrlStatusText.Invalidate();
 
 	if(m_CommitList.m_IsOldFirst)
 		this->m_CurrentRebaseIndex = -1;

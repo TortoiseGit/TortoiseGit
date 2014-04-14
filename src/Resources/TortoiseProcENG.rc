@@ -3371,6 +3371,7 @@ BEGIN
     IDS_REPOBROWSEASKSUBMODULEUPDATE 
                             "Commit %s not found in ""%s"". Update submodule now?"
     IDS_TRACKEDBRANCH       "Tracked branch"
+    IDS_REBASE_AUTOSKIPPED  "Please take a look at the skipped commits"
     IDS_EXPORTFILE_TT       "Location where the contents of the\nselected revision of the repository will be saved to."
     IDS_CHECKOUT_EXPORTDIR  "Export directory:"
 END
