@@ -37,6 +37,7 @@
 
 #define OVERLAY_EXTERNAL	1
 #define OVERLAY_EXECUTABLE	2
+#define OVERLAY_SYMLINK		3
 
 void SetSortArrowA(CListCtrl * control, int nColumn, bool bAscending)
 {
@@ -144,6 +145,7 @@ CRepositoryBrowser::CRepositoryBrowser(CString rev, CWnd* pParent /*=NULL*/)
 , m_nOpenIconFolder(0)
 , m_nExternalOvl(0)
 , m_nExecutableOvl(0)
+, m_nSymlinkOvl(0)
 , bDragMode(false)
 , oldy(0)
 , oldx(0)
@@ -225,6 +227,7 @@ BOOL CRepositoryBrowser::OnInitDialog()
 
 	m_nExternalOvl = SYS_IMAGE_LIST().AddIcon((HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_EXTERNALOVL), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE));
 	m_nExecutableOvl = SYS_IMAGE_LIST().AddIcon((HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_EXECUTABLEOVL), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE));
+	m_nSymlinkOvl = SYS_IMAGE_LIST().AddIcon((HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_SYMLINKOVL), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE));
 	// set externaloverlay in SYS_IMAGE_LIST() in Refresh method, so that it is updated after every launch of the logdialog
 
 	SetWindowTheme(m_RepoTree.GetSafeHwnd(), L"Explorer", NULL);
@@ -332,6 +335,8 @@ void CRepositoryBrowser::Refresh()
 		SYS_IMAGE_LIST().SetOverlayImage(m_nExternalOvl, OVERLAY_EXTERNAL);
 	if (m_nExecutableOvl >= 0)
 		SYS_IMAGE_LIST().SetOverlayImage(m_nExecutableOvl, OVERLAY_EXECUTABLE);
+	if (m_nSymlinkOvl >= 0)
+		SYS_IMAGE_LIST().SetOverlayImage(m_nSymlinkOvl, OVERLAY_SYMLINK);
 
 	m_RepoTree.DeleteAllItems();
 	m_RepoList.DeleteAllItems();
@@ -406,6 +411,8 @@ int CRepositoryBrowser::ReadTreeRecursive(git_repository &repo, const git_tree *
 		{
 			if (mode == GIT_FILEMODE_BLOB_EXECUTABLE)
 				pNextTree->m_bExecutable = true;
+			if (mode == GIT_FILEMODE_LINK)
+				pNextTree->m_bSymlink = true;
 			git_blob * blob = nullptr;
 			git_blob_lookup(&blob, &repo, oid);
 			if (blob == NULL)
@@ -537,6 +544,8 @@ void CRepositoryBrowser::FillListCtrlForShadowTree(CShadowFilesTree* pTree)
 		}
 		if ((*itShadowTree).second.m_bExecutable)
 			m_RepoList.SetItemState(indexItem, INDEXTOOVERLAYMASK(OVERLAY_EXECUTABLE), LVIS_OVERLAYMASK);
+		if ((*itShadowTree).second.m_bSymlink)
+			m_RepoList.SetItemState(indexItem, INDEXTOOVERLAYMASK(OVERLAY_SYMLINK), LVIS_OVERLAYMASK);
 		m_RepoList.SetItemData(indexItem, (DWORD_PTR)&(*itShadowTree).second);
 		if (!(*itShadowTree).second.m_bFolder && !(*itShadowTree).second.m_bSubmodule)
 		{

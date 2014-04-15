@@ -38,6 +38,7 @@ public:
 	, m_bFolder(false)
 	, m_bSubmodule(false)
 	, m_bExecutable(false)
+	, m_bSymlink(false)
 	, m_iSize(0)
 	{}
 
@@ -47,6 +48,7 @@ public:
 	bool				m_bFolder;
 	bool				m_bSubmodule;
 	bool				m_bExecutable;
+	bool				m_bSymlink;
 
 	HTREEITEM			m_hTree;
 
@@ -141,6 +143,7 @@ private:
 	int						m_nOpenIconFolder;
 	int						m_nExternalOvl;
 	int						m_nExecutableOvl;
+	int						m_nSymlinkOvl;
 
 	bool					m_bHasWC;
 
