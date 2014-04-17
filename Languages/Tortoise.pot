@@ -8677,6 +8677,10 @@ msgstr ""
 msgid "Symbolize ref names"
 msgstr ""
 
+#. Resource IDs: (11031)
+msgid "Symlink"
+msgstr ""
+
 #. Resource IDs: (22)
 msgid "Sync Remote Repositories, including pull, push, email patch and so on"
 msgstr ""

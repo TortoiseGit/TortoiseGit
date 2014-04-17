@@ -121,6 +121,8 @@ int CTGitPath::ParserAction(BYTE action)
 		m_Action|= LOGACTIONS_CACHE;
 	if(action == 'C' )
 		m_Action|= LOGACTIONS_COPY;
+	if(action == 'T')
+		m_Action|= LOGACTIONS_MODIFIED;
 
 	return m_Action;
 }

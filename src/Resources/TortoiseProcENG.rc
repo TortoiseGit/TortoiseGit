@@ -100,6 +100,7 @@ IDI_GITCREDENTIAL       ICON                    "gitcredential.ico"
 IDI_EXTERNALOVL         ICON                    "externalovl.ico"
 IDI_MERGEACTIVE         ICON                    "menumerge.ico"
 IDI_EXECUTABLEOVL       ICON                    "executableovl.ico"
+IDI_SYMLINKOVL          ICON                    "symlinkovl.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //

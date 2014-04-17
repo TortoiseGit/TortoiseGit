@@ -517,6 +517,7 @@
     <Image Include="..\Resources\ssh.ico" />
     <Image Include="..\Resources\switch.ico" />
     <Image Include="..\Resources\SwitchBackground.ico" />
+    <Image Include="..\Resources\symlinkovl.ico" />
     <Image Include="..\Resources\Toolbar.bmp" />
     <Image Include="..\Resources\Tortoise.ico" />
     <Image Include="..\Resources\TortoiseBlame.ico" />

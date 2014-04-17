@@ -1527,6 +1527,9 @@
     <Image Include="..\Resources\SwitchBackground.ico">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="..\Resources\symlinkovl.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
     <Image Include="..\Resources\Toolbar.bmp">
       <Filter>Resource Files</Filter>
     </Image>
