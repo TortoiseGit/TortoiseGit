@@ -135,6 +135,7 @@ BOOL CGitPropertyPage::PageProc (HWND /*hwnd*/, UINT uMessage, WPARAM wParam, LP
 					BOOL assumeValid = (BOOL)SendMessage(GetDlgItem(m_hwnd, IDC_ASSUMEVALID), BM_GETCHECK, 0, 0);
 					BOOL skipWorktree = (BOOL)SendMessage(GetDlgItem(m_hwnd, IDC_SKIPWORKTREE), BM_GETCHECK, 0, 0);
 					BOOL executable = (BOOL)SendMessage(GetDlgItem(m_hwnd, IDC_EXECUTABLE), BM_GETCHECK, 0, 0);
+					BOOL symlink = (BOOL)SendMessage(GetDlgItem(m_hwnd, IDC_SYMLINK), BM_GETCHECK, 0, 0);
 
 					bool changed = false;
 
@@ -193,6 +194,22 @@ BOOL CGitPropertyPage::PageProc (HWND /*hwnd*/, UINT uMessage, WPARAM wParam, LP
 								if (e->mode & 0111)
 								{
 									e->mode &= ~0111;
+									changed = true;
+								}
+							}
+							if (symlink == BST_CHECKED)
+							{
+								if (!(e->mode & 0120000))
+								{
+									e->mode |= 0120000;
+									changed = true;
+								}
+							}
+							else if (symlink != BST_INDETERMINATE)
+							{
+								if ((e->mode & 0120000) == 0120000)
+								{
+									e->mode &= ~0120000;
 									changed = true;
 								}
 							}
@@ -262,6 +279,23 @@ void CGitPropertyPage::PageProcOnCommand(WPARAM wParam)
 	case IDC_ASSUMEVALID:
 	case IDC_SKIPWORKTREE:
 	case IDC_EXECUTABLE:
+	case IDC_SYMLINK:
+		BOOL executable = (BOOL)SendMessage(GetDlgItem(m_hwnd, IDC_EXECUTABLE), BM_GETCHECK, 0, 0);
+		BOOL symlink = (BOOL)SendMessage(GetDlgItem(m_hwnd, IDC_SYMLINK), BM_GETCHECK, 0, 0);
+		if (executable == BST_CHECKED)
+		{
+			EnableWindow(GetDlgItem(m_hwnd, IDC_SYMLINK), FALSE);
+			SendMessage(GetDlgItem(m_hwnd, IDC_SYMLINK), BM_SETCHECK, BST_UNCHECKED, 0);
+		}
+		else
+			EnableWindow(GetDlgItem(m_hwnd, IDC_SYMLINK), TRUE);
+		if (symlink == BST_CHECKED)
+		{
+			EnableWindow(GetDlgItem(m_hwnd, IDC_EXECUTABLE), FALSE);
+			SendMessage(GetDlgItem(m_hwnd, IDC_EXECUTABLE), BM_SETCHECK, BST_UNCHECKED, 0);
+		}
+		else
+			EnableWindow(GetDlgItem(m_hwnd, IDC_EXECUTABLE), TRUE);
 		m_bChanged = true;
 		SendMessage(GetParent(m_hwnd), PSM_CHANGED, (WPARAM)m_hwnd, 0);
 		break;
@@ -654,6 +688,7 @@ void CGitPropertyPage::InitWorkfileView()
 			size_t assumevalid = 0;
 			size_t skipworktree = 0;
 			size_t executable = 0;
+			size_t symlink = 0;
 			do
 			{
 				git_index *index = NULL;
@@ -679,6 +714,9 @@ void CGitPropertyPage::InitWorkfileView()
 
 						if (e->mode & 0111)
 							++executable;
+
+						if ((e->mode & 0120000) == 0120000)
+							++symlink;
 					}
 					else
 					{
@@ -686,6 +724,7 @@ void CGitPropertyPage::InitWorkfileView()
 						ShowWindow(GetDlgItem(m_hwnd, IDC_ASSUMEVALID), SW_HIDE);
 						ShowWindow(GetDlgItem(m_hwnd, IDC_SKIPWORKTREE), SW_HIDE);
 						ShowWindow(GetDlgItem(m_hwnd, IDC_EXECUTABLE), SW_HIDE);
+						ShowWindow(GetDlgItem(m_hwnd, IDC_SYMLINK), SW_HIDE);
 						break;
 					}
 				}
@@ -712,15 +751,32 @@ void CGitPropertyPage::InitWorkfileView()
 			{
 				SendMessage(GetDlgItem(m_hwnd, IDC_EXECUTABLE), BM_SETSTYLE, (DWORD)GetWindowLong(GetDlgItem(m_hwnd, IDC_EXECUTABLE), GWL_STYLE) & ~BS_AUTOCHECKBOX | BS_AUTO3STATE, 0);
 				SendMessage(GetDlgItem(m_hwnd, IDC_EXECUTABLE), BM_SETCHECK, BST_INDETERMINATE, 0);
+				EnableWindow(GetDlgItem(m_hwnd, IDC_SYMLINK), TRUE);
 			}
 			else
+			{
 				SendMessage(GetDlgItem(m_hwnd, IDC_EXECUTABLE), BM_SETCHECK, (executable == 0) ? BST_UNCHECKED : BST_CHECKED, 0);
+				EnableWindow(GetDlgItem(m_hwnd, IDC_SYMLINK), (executable == 0) ? TRUE : FALSE);
+			}
+
+			if (symlink != 0 && symlink != filenames.size())
+			{
+				SendMessage(GetDlgItem(m_hwnd, IDC_SYMLINK), BM_SETSTYLE, (DWORD)GetWindowLong(GetDlgItem(m_hwnd, IDC_SYMLINK), GWL_STYLE) & ~BS_AUTOCHECKBOX | BS_AUTO3STATE, 0);
+				SendMessage(GetDlgItem(m_hwnd, IDC_SYMLINK), BM_SETCHECK, BST_INDETERMINATE, 0);
+				EnableWindow(GetDlgItem(m_hwnd, IDC_EXECUTABLE), TRUE);
+			}
+			else
+			{
+				SendMessage(GetDlgItem(m_hwnd, IDC_SYMLINK), BM_SETCHECK, (symlink == 0) ? BST_UNCHECKED : BST_CHECKED, 0);
+				EnableWindow(GetDlgItem(m_hwnd, IDC_EXECUTABLE), (symlink == 0) ? TRUE : FALSE);
+			}
 		}
 		else
 		{
 			ShowWindow(GetDlgItem(m_hwnd, IDC_ASSUMEVALID), SW_HIDE);
 			ShowWindow(GetDlgItem(m_hwnd, IDC_SKIPWORKTREE), SW_HIDE);
 			ShowWindow(GetDlgItem(m_hwnd, IDC_EXECUTABLE), SW_HIDE);
+			ShowWindow(GetDlgItem(m_hwnd, IDC_SYMLINK), SW_HIDE);
 		}
 	}
 	git_repository_free(repository);
