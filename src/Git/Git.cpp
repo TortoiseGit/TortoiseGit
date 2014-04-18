@@ -197,8 +197,6 @@ bool CGit::IsBranchNameValid(const CString& branchname)
 	return !!git_reference_is_valid_name(branchA);
 }
 
-static char g_Buffer[4096];
-
 int CGit::RunAsync(CString cmd, PROCESS_INFORMATION *piOut, HANDLE *hReadOut, HANDLE *hErrReadOut, CString *StdioFile)
 {
 	SECURITY_ATTRIBUTES sa;
