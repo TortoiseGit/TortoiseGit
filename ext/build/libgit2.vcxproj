@@ -58,6 +58,7 @@
   <ItemGroup>
     <ClCompile Include="..\libgit2\deps\http-parser\http_parser.c" />
     <ClCompile Include="..\libgit2\src\attr.c" />
+    <ClCompile Include="..\libgit2\src\attrcache.c" />
     <ClCompile Include="..\libgit2\src\attr_file.c" />
     <ClCompile Include="..\libgit2\src\blame.c" />
     <ClCompile Include="..\libgit2\src\blame_git.c" />
@@ -67,6 +68,7 @@
     <ClCompile Include="..\libgit2\src\buffer.c" />
     <ClCompile Include="..\libgit2\src\cache.c" />
     <ClCompile Include="..\libgit2\src\checkout.c" />
+    <ClCompile Include="..\libgit2\src\cherrypick.c" />
     <ClCompile Include="..\libgit2\src\clone.c" />
     <ClCompile Include="..\libgit2\src\commit.c" />
     <ClCompile Include="..\libgit2\src\commit_list.c" />
@@ -82,6 +84,7 @@
     <ClCompile Include="..\libgit2\src\diff_file.c" />
     <ClCompile Include="..\libgit2\src\diff_patch.c" />
     <ClCompile Include="..\libgit2\src\diff_print.c" />
+    <ClCompile Include="..\libgit2\src\diff_stats.c" />
     <ClCompile Include="..\libgit2\src\diff_tform.c" />
     <ClCompile Include="..\libgit2\src\diff_xdiff.c" />
     <ClCompile Include="..\libgit2\src\errors.c" />
@@ -184,6 +187,7 @@
     <ClInclude Include="..\libgit2\deps\http-parser\http_parser.h" />
     <ClInclude Include="..\libgit2\include\git2\blame.h" />
     <ClInclude Include="..\libgit2\include\git2\buffer.h" />
+    <ClInclude Include="..\libgit2\include\git2\cherrypick.h" />
     <ClInclude Include="..\libgit2\include\git2\cred_helpers.h" />
     <ClInclude Include="..\libgit2\include\git2\filter.h" />
     <ClInclude Include="..\libgit2\include\git2\graph.h" />
@@ -201,6 +205,7 @@
     <ClInclude Include="..\libgit2\include\git2\submodule.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\commit.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\config.h" />
+    <ClInclude Include="..\libgit2\include\git2\sys\diff.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\filter.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\index.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\mempack.h" />

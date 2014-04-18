@@ -416,6 +416,15 @@
     <ClCompile Include="..\libgit2\src\odb_mempack.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\libgit2\src\cherrypick.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libgit2\src\diff_stats.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libgit2\src\attrcache.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\libgit2\src\attr.h">
@@ -932,6 +941,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\libgit2\include\git2\sys\mempack.h">
+      <Filter>Public Header Files\sys</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\include\git2\cherrypick.h">
+      <Filter>Public Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\include\git2\sys\diff.h">
       <Filter>Public Header Files\sys</Filter>
     </ClInclude>
   </ItemGroup>
