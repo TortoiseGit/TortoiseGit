@@ -751,15 +751,15 @@ bool CBrowseRefsDlg::ConfirmDeleteRef(VectorPShadowTree& leafs)
 
 }
 
-bool CBrowseRefsDlg::DoDeleteRefs(VectorPShadowTree& leafs, bool bForce)
+bool CBrowseRefsDlg::DoDeleteRefs(VectorPShadowTree& leafs)
 {
 	for(VectorPShadowTree::iterator i = leafs.begin(); i != leafs.end(); ++i)
-		if(!DoDeleteRef((*i)->GetRefName(), bForce))
+		if(!DoDeleteRef((*i)->GetRefName()))
 			return false;
 	return true;
 }
 
-bool CBrowseRefsDlg::DoDeleteRef(CString completeRefName, bool bForce)
+bool CBrowseRefsDlg::DoDeleteRef(CString completeRefName)
 {
 	bool bIsRemoteBranch = false;
 	bool bIsBranch = false;
@@ -799,8 +799,6 @@ bool CBrowseRefsDlg::DoDeleteRef(CString completeRefName, bool bForce)
 	}
 	else if (bIsBranch)
 	{
-		if (!bForce && !g_Git.IsFastForward(completeRefName, _T("HEAD")))
-			return true;
 		if (g_Git.DeleteRef(completeRefName))
 		{
 			CMessageBox::Show(m_hWnd, g_Git.GetGitLastErr(L"Could not delete reference.", CGit::GIT_CMD_DELETETAGBRANCH), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
@@ -1102,14 +1100,14 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 	case eCmd_DeleteRemoteBranch:
 		{
 			if(ConfirmDeleteRef(selectedLeafs))
-				DoDeleteRefs(selectedLeafs, true);
+				DoDeleteRefs(selectedLeafs);
 			Refresh();
 		}
 		break;
 	case eCmd_DeleteTag:
 		{
 			if(ConfirmDeleteRef(selectedLeafs))
-				DoDeleteRefs(selectedLeafs, true);
+				DoDeleteRefs(selectedLeafs);
 			Refresh();
 		}
 		break;
@@ -1188,7 +1186,7 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 				selectedLeafs.push_back((CShadowTree*)m_ListRefLeafs.GetItemData(i));
 			}
 			if (ConfirmDeleteRef(selectedLeafs))
-				DoDeleteRefs(selectedLeafs, true);
+				DoDeleteRefs(selectedLeafs);
 			Refresh();
 		}
 		break;
