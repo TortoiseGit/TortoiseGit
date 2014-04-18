@@ -163,7 +163,7 @@ CGit::CGit(void)
 	m_GitSimpleListDiff=0;
 	m_IsUseGitDLL = !!CRegDWORD(_T("Software\\TortoiseGit\\UsingGitDLL"),1);
 	m_IsUseLibGit2 = !!CRegDWORD(_T("Software\\TortoiseGit\\UseLibgit2"), TRUE);
-	m_IsUseLibGit2_mask = CRegDWORD(_T("Software\\TortoiseGit\\UseLibgit2_mask"), (1 << GIT_CMD_MERGE_BASE) | (1 << GIT_CMD_DELETETAGBRANCH));
+	m_IsUseLibGit2_mask = CRegDWORD(_T("Software\\TortoiseGit\\UseLibgit2_mask"), (1 << GIT_CMD_MERGE_BASE) | (1 << GIT_CMD_DELETETAGBRANCH) | (1 << GIT_CMD_GETONEFILE));
 
 	SecureZeroMemory(&m_CurrentGitPi, sizeof(PROCESS_INFORMATION));
 
@@ -2158,7 +2158,97 @@ int CGit::RefreshGitIndex()
 
 int CGit::GetOneFile(const CString &Refname, const CTGitPath &path, const CString &outputfile)
 {
-	if(g_Git.m_IsUseGitDLL)
+	if (UsingLibGit2(GIT_CMD_GETONEFILE))
+	{
+		CGitHash hash;
+		if (GetHash(hash, Refname))
+			return -1;
+
+		git_repository *repo = nullptr;
+		if (git_repository_open(&repo, CUnicodeUtils::GetUTF8(CTGitPath(m_CurrentDir).GetGitPathString())))
+			return -1;
+
+		git_commit * commit = nullptr;
+		if (git_commit_lookup(&commit, repo, (const git_oid *)hash.m_hash))
+		{
+			git_repository_free(repo);
+			return -1;
+		}
+
+		git_tree * tree = nullptr;
+		if (git_commit_tree(&tree, commit))
+		{
+			git_commit_free(commit);
+			git_repository_free(repo);
+			return -1;
+		}
+
+		git_tree_entry * entry = nullptr;
+		if (git_tree_entry_bypath(&entry, tree, CUnicodeUtils::GetUTF8(path.GetGitPathString())))
+		{
+			git_tree_free(tree);
+			git_commit_free(commit);
+			git_repository_free(repo);
+			return -1;
+		}
+
+		git_blob * blob = nullptr;
+		if (git_tree_entry_to_object((git_object**)&blob, repo, entry))
+		{
+			git_tree_entry_free(entry);
+			git_tree_free(tree);
+			git_commit_free(commit);
+			git_repository_free(repo);
+			return -1;
+		}
+
+		FILE *file = nullptr;
+		_tfopen_s(&file, outputfile, _T("w"));
+		if (file == nullptr)
+		{
+			giterr_set_str(GITERR_NONE, "Could not create file.");
+			git_blob_free(blob);
+			git_tree_entry_free(entry);
+			git_tree_free(tree);
+			git_commit_free(commit);
+			git_repository_free(repo);
+			return -1;
+		}
+		git_buf buf = { 0 };
+		if (git_blob_filtered_content(&buf, blob, CUnicodeUtils::GetUTF8(path.GetGitPathString()), 1))
+		{
+			git_blob_free(blob);
+			git_tree_entry_free(entry);
+			git_tree_free(tree);
+			git_commit_free(commit);
+			git_repository_free(repo);
+			return -1;
+		}
+		if (fwrite(buf.ptr, sizeof(char), buf.size, file) != buf.size)
+		{
+			giterr_set_str(GITERR_OS, "Could not write to file.");
+			git_buf_free(&buf);
+			fclose(file);
+
+			git_blob_free(blob);
+			git_tree_entry_free(entry);
+			git_tree_free(tree);
+			git_commit_free(commit);
+			git_repository_free(repo);
+			return -1;
+		}
+		git_buf_free(&buf);
+		fclose(file);
+
+		git_blob_free(blob);
+		git_tree_entry_free(entry);
+		git_tree_free(tree);
+		git_commit_free(commit);
+		git_repository_free(repo);
+
+		return 0;
+	}
+	else if (g_Git.m_IsUseGitDLL)
 	{
 		CAutoLocker lock(g_Git.m_critGitDllSec);
 		try
@@ -2171,8 +2261,15 @@ int CGit::GetOneFile(const CString &Refname, const CTGitPath &path, const CStrin
 			::DeleteFile(outputfile);
 			return git_checkout_file(ref, patha, outa);
 
-		}catch(...)
+		}
+		catch (const char * msg)
 		{
+			gitLastErr = L"gitdll.dll reports: " + CString(msg);
+			return -1;
+		}
+		catch (...)
+		{
+			gitLastErr = L"An unknown gitdll.dll error occurred.";
 			return -1;
 		}
 	}
