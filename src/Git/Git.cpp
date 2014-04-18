@@ -163,7 +163,7 @@ CGit::CGit(void)
 	m_GitSimpleListDiff=0;
 	m_IsUseGitDLL = !!CRegDWORD(_T("Software\\TortoiseGit\\UsingGitDLL"),1);
 	m_IsUseLibGit2 = !!CRegDWORD(_T("Software\\TortoiseGit\\UseLibgit2"), TRUE);
-	m_IsUseLibGit2_mask = CRegDWORD(_T("Software\\TortoiseGit\\UseLibgit2_mask"), 0);
+	m_IsUseLibGit2_mask = CRegDWORD(_T("Software\\TortoiseGit\\UseLibgit2_mask"), (1 << GIT_CMD_MERGE_BASE));
 
 	SecureZeroMemory(&m_CurrentGitPi, sizeof(PROCESS_INFORMATION));
 
@@ -2073,6 +2073,36 @@ int CGit::ListConflictFile(CTGitPathList &list, const CTGitPath *path)
 
 bool CGit::IsFastForward(const CString &from, const CString &to, CGitHash * commonAncestor)
 {
+	if (UsingLibGit2(GIT_CMD_MERGE_BASE))
+	{
+		CGitHash fromHash, toHash, baseHash;
+		if (GetHash(toHash, FixBranchName(to)))
+			return false;
+
+		if (GetHash(fromHash, FixBranchName(from)))
+			return false;
+
+		git_repository *repo = nullptr;
+		if (git_repository_open(&repo, CUnicodeUtils::GetMulti(CTGitPath(m_CurrentDir).GetGitPathString(), CP_UTF8)))
+			return false;
+
+		git_oid baseOid;
+		if (git_merge_base(&baseOid, repo, (const git_oid*)toHash.m_hash, (const git_oid*)fromHash.m_hash))
+		{
+			git_repository_free(repo);
+			return false;
+		}
+
+		baseHash = baseOid.id;
+
+		if (commonAncestor)
+			*commonAncestor = baseHash;
+
+		git_repository_free(repo);
+
+		return fromHash == baseHash;
+	}
+	// else
 	CString base;
 	CGitHash basehash,hash;
 	CString cmd, err;

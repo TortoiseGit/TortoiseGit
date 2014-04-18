@@ -155,6 +155,7 @@ public:
 		GIT_CMD_DIFF,
 		GIT_CMD_RESET,
 		GIT_CMD_REVERT,
+		GIT_CMD_MERGE_BASE,
 	} LIBGIT2_CMD;
 	bool UsingLibGit2(LIBGIT2_CMD cmd);
 
