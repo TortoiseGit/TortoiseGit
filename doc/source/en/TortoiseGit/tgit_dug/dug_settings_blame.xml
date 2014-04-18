@@ -10,6 +10,7 @@
 		</figure>
 		The settings used by TortoiseGitBlame are controlled from the
 		main context menu, not directly with TortoiseGitBlame itself.
+		Details for the parameters for the blame algorithm are described in <xref linkend="git-blame(1)"/>.
 	</para>
 	<variablelist>
 		<varlistentry>
@@ -35,11 +36,81 @@
 			</listitem>
 		</varlistentry>
 		<varlistentry>
-			<term>Tabs</term>
+			<term>Tab size</term>
 			<listitem>
 				<para>
 					Defines how many spaces to use for expansion when a tab character
 					is found in the file content.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term>Detect moved or copied lines</term>
+			<listitem>
+				<para>
+					<guilabel>Disabled</guilabel>
+					Traditional blame algorithm, the search for parents is limited
+					to the file and will follow renames.
+				</para>
+				<para>
+					<guilabel>Within file</guilabel>
+					Extra passes of inspection are applied to detect moved and
+					copied lines within the file (<literal>git blame -M</literal>). 
+				</para>
+				<para>
+					<guilabel>From modified files</guilabel>
+					In addition to the annotated file detect moved or copied lines 
+					from all modified files within a commit (<literal>git blame -C</literal>). 
+				</para>
+				<para>
+					<guilabel>At file creation</guilabel>
+					In addition to the annotated file and the modified files
+					within a commit detect moved or copied lines from other files
+					in the commit that creates the file (<literal>git blame -C -C</literal>).
+				</para>
+				<para>
+					<guilabel>From existing files</guilabel>
+					In addition detect moved or modified lines from other files in any commit
+					(<literal>git blame -C -C -C</literal>).
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term>Number of characters required for moved or copied line detection</term>
+			<listitem>
+				<para>
+					Lower bound on the number of alphanumeric characters that Git must detect 
+					as moving/copying between files for it to associate those lines with the parent commit.
+				</para>
+				<para>
+					<guilabel>Within a file</guilabel>
+					Number of alphanumeric characters required to detect moving lines within a file 
+					(<literal>git blame -M|&lt;num&gt;|</literal>). 
+				</para>
+				<para>
+					<guilabel>Between files</guilabel>
+					Number of alphanumeric characters required to detect moved or copied lines between files
+					(<literal>git blame -C|&lt;num&gt;|</literal>). 
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term>Ignore whitespace</term>
+			<listitem>
+				<para>
+					Defines if whitespace is ignored when comparing the parent's version and the child's version
+					to find where the lines came from (<literal>git blame -w</literal>).
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term>Show complete log</term>
+			<listitem>
+				<para>
+					Defines if the log should be complete, i.e. the log contains all changes for a file,
+					even the changes have no impact on the file content of the annotated revision.
+					If deactivated the log contains only revisions which last modified a line for the
+					annotated revision.
 				</para>
 			</listitem>
 		</varlistentry>
