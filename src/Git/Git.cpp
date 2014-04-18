@@ -1342,7 +1342,7 @@ CString CGit::GetGitLastErr(const CString& msg)
 	}
 }
 
-CString CGit::GetGitLastErr(const CString& msg, int cmd)
+CString CGit::GetGitLastErr(const CString& msg, LIBGIT2_CMD cmd)
 {
 	if (UsingLibGit2(cmd))
 		return GetLibGit2LastErr(msg);
@@ -2384,11 +2384,9 @@ CString CGit::GetShortName(const CString& ref, REF_TYPE *out_type)
 	return shortname;
 }
 
-bool CGit::UsingLibGit2(int cmd)
+bool CGit::UsingLibGit2(LIBGIT2_CMD cmd)
 {
-	if (cmd >= 0 && cmd < 32)
-		return ((1 << cmd) & m_IsUseLibGit2_mask) ? true : false;
-	return false;
+	return ((1 << cmd) & m_IsUseLibGit2_mask) ? true : false;
 }
 
 CString CGit::GetUnifiedDiffCmd(const CTGitPath& path, const git_revnum_t& rev1, const git_revnum_t& rev2, bool bMerge, bool bCombine, int diffContext)
