@@ -199,7 +199,7 @@ BOOL CGitPropertyPage::PageProc (HWND /*hwnd*/, UINT uMessage, WPARAM wParam, LP
 							}
 							if (symlink == BST_CHECKED)
 							{
-								if (!(e->mode & 0120000))
+								if ((e->mode & 0120000) != 0120000)
 								{
 									e->mode |= 0120000;
 									changed = true;
