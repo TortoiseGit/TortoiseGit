@@ -1446,6 +1446,32 @@ isBranch is true -> branch, tag otherwise
 */
 bool CGit::BranchTagExists(const CString& name, bool isBranch /*= true*/)
 {
+	if (m_IsUseLibGit2)
+	{
+		git_repository *repo = nullptr;
+
+		if (git_repository_open(&repo, CUnicodeUtils::GetUTF8(CTGitPath(m_CurrentDir).GetGitPathString())))
+			return false; // TODO: optimize error reporting
+
+		CString prefix;
+		if (isBranch)
+			prefix = _T("refs/heads/");
+		else
+			prefix = _T("refs/tags/");
+
+		git_reference * ref = nullptr;
+		if (git_reference_lookup(&ref, repo, CUnicodeUtils::GetUTF8(prefix + name)))
+		{
+			git_repository_free(repo);
+			return false;
+		}
+
+		git_reference_free(ref);
+		git_repository_free(repo);
+
+		return true;
+	}
+	// else
 	CString cmd, output;
 
 	cmd = _T("git.exe show-ref ");
