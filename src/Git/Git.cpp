@@ -1392,6 +1392,34 @@ CString	CGit::FixBranchName(const CString& branchName)
 
 bool CGit::IsBranchTagNameUnique(const CString& name)
 {
+	if (m_IsUseLibGit2)
+	{
+		git_repository *repo = nullptr;
+
+		if (git_repository_open(&repo, CUnicodeUtils::GetUTF8(CTGitPath(m_CurrentDir).GetGitPathString())))
+			return true; // TODO: optimize error reporting
+
+		git_reference * tagRef = nullptr;
+		if (git_reference_lookup(&tagRef, repo, CUnicodeUtils::GetUTF8(L"refs/tags/" + name)))
+		{
+			git_repository_free(repo);
+			return true;
+		}
+		git_reference_free(tagRef);
+
+		git_reference * branchRef = nullptr;
+		if (git_reference_lookup(&branchRef, repo, CUnicodeUtils::GetUTF8(L"refs/heads/" + name)))
+		{
+			git_repository_free(repo);
+			return true;
+		}
+
+		git_reference_free(branchRef);
+		git_repository_free(repo);
+
+		return false;
+	}
+	// else
 	CString output;
 
 	CString cmd;
