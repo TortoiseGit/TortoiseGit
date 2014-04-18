@@ -1531,33 +1531,86 @@ CString CGit::DerefFetchHead()
 
 int CGit::GetBranchList(STRING_VECTOR &list,int *current,BRANCH_TYPE type)
 {
-	int ret;
-	CString cmd, output, cur;
-	cmd = _T("git.exe branch --no-color");
-
-	if((type&BRANCH_ALL) == BRANCH_ALL)
-		cmd += _T(" -a");
-	else if(type&BRANCH_REMOTE)
-		cmd += _T(" -r");
-
-	ret = Run(cmd, &output, NULL, CP_UTF8);
-	if(!ret)
+	int ret = 0;
+	CString cur;
+	if (m_IsUseLibGit2)
 	{
-		int pos=0;
-		CString one;
-		while( pos>=0 )
+		git_repository *repo = nullptr;
+
+		if (git_repository_open(&repo, CUnicodeUtils::GetUTF8(CTGitPath(m_CurrentDir).GetGitPathString())))
+			return -1;
+
+		if (git_repository_head_detached(repo) == 1)
+			cur = _T("(detached from ");
+
+		if ((type & (BRANCH_LOCAL | BRANCH_REMOTE)) != 0)
 		{
-			one=output.Tokenize(_T("\n"),pos);
-			one.Trim(L" \r\n\t");
-			if(one.Find(L" -> ") >= 0 || one.IsEmpty())
-				continue; // skip something like: refs/origin/HEAD -> refs/origin/master
-			if(one[0] == _T('*'))
+			git_branch_iterator * it = nullptr;
+
+			git_branch_t flags = GIT_BRANCH_LOCAL;
+			if ((type & BRANCH_LOCAL) && (type & BRANCH_REMOTE))
+				flags = GIT_BRANCH_ALL;
+			else if (type & BRANCH_REMOTE)
+				flags = GIT_BRANCH_REMOTE;
+
+			if (git_branch_iterator_new(&it, repo, flags))
 			{
-				one = one.Mid(2);
-				cur = one;
+				git_repository_free(repo);
+				return -1;
 			}
-			if (one.Left(10) != _T("(no branch") && one.Left(15) != _T("(detached from "))
-				list.push_back(one);
+
+			git_reference * ref = nullptr;
+			git_branch_t branchType;
+			while (git_branch_next(&ref, &branchType, it) == 0)
+			{
+				const char * name = nullptr;
+				if (git_branch_name(&name, ref))
+					continue;
+				CString branchname = CUnicodeUtils::GetUnicode(name);
+				if (branchType & GIT_BRANCH_REMOTE)
+					list.push_back(_T("remotes/") + branchname);
+				else
+				{
+					if (git_branch_is_head(ref))
+						cur = branchname;
+					list.push_back(branchname);
+				}
+				git_reference_free(ref);
+			}
+
+			git_branch_iterator_free(it);
+		}
+		git_repository_free(repo);
+	}
+	else
+	{
+		CString cmd, output;
+		cmd = _T("git.exe branch --no-color");
+
+		if ((type & BRANCH_ALL) == BRANCH_ALL)
+			cmd += _T(" -a");
+		else if (type & BRANCH_REMOTE)
+			cmd += _T(" -r");
+
+		ret = Run(cmd, &output, nullptr, CP_UTF8);
+		if (!ret)
+		{
+			int pos = 0;
+			CString one;
+			while (pos >= 0)
+			{
+				one = output.Tokenize(_T("\n"), pos);
+				one.Trim(L" \r\n\t");
+				if (one.Find(L" -> ") >= 0 || one.IsEmpty())
+					continue; // skip something like: refs/origin/HEAD -> refs/origin/master
+				if (one[0] == _T('*'))
+				{
+					one = one.Mid(2);
+					cur = one;
+				}
+				if (one.Left(10) != _T("(no branch") && one.Left(15) != _T("(detached from "))
+					list.push_back(one);
+			}
 		}
 	}
 
