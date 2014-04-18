@@ -1353,8 +1353,24 @@ void CLogDlg::DoDiffFromLog(INT_PTR selIndex, GitRev* rev1, GitRev* rev2, bool /
 	CString cmd;
 	CTGitPath &path = (CTGitPath &)(*m_currentChangedArray)[selIndex];
 
-	g_Git.GetOneFile(rev1->m_CommitHash.ToString(), path, file1);
-	g_Git.GetOneFile(rev2->m_CommitHash.ToString(), path, file2);
+	if (g_Git.GetOneFile(rev1->m_CommitHash.ToString(), path, file1))
+	{
+		CString out;
+		out.Format(IDS_STATUSLIST_CHECKOUTFILEFAILED, path.GetGitPathString(), rev1->m_CommitHash.ToString(), file1);
+		CMessageBox::Show(nullptr, g_Git.GetGitLastErr(out, CGit::GIT_CMD_GETONEFILE), _T("TortoiseGit"), MB_OK);
+		theApp.DoWaitCursor(-1);
+		EnableOKButton();
+		return;
+	}
+	if (g_Git.GetOneFile(rev2->m_CommitHash.ToString(), path, file2))
+	{
+		CString out;
+		out.Format(IDS_STATUSLIST_CHECKOUTFILEFAILED, path.GetGitPathString(), rev2->m_CommitHash.ToString(), file2);
+		CMessageBox::Show(nullptr, g_Git.GetGitLastErr(out, CGit::GIT_CMD_GETONEFILE), _T("TortoiseGit"), MB_OK);
+		theApp.DoWaitCursor(-1);
+		EnableOKButton();
+		return;
+	}
 
 	CAppUtils::DiffFlags flags;
 	CAppUtils::StartExtDiff(file1,file2,_T("A"),_T("B"),
