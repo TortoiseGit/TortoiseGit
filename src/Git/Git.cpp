@@ -163,7 +163,7 @@ CGit::CGit(void)
 	m_GitSimpleListDiff=0;
 	m_IsUseGitDLL = !!CRegDWORD(_T("Software\\TortoiseGit\\UsingGitDLL"),1);
 	m_IsUseLibGit2 = !!CRegDWORD(_T("Software\\TortoiseGit\\UseLibgit2"), TRUE);
-	m_IsUseLibGit2_mask = CRegDWORD(_T("Software\\TortoiseGit\\UseLibgit2_mask"), (1 << GIT_CMD_MERGE_BASE));
+	m_IsUseLibGit2_mask = CRegDWORD(_T("Software\\TortoiseGit\\UseLibgit2_mask"), (1 << GIT_CMD_MERGE_BASE) | (1 << GIT_CMD_DELETETAGBRANCH));
 
 	SecureZeroMemory(&m_CurrentGitPi, sizeof(PROCESS_INFORMATION));
 
@@ -2744,5 +2744,57 @@ int CGit::GitRevert(int parent, const CGitHash &hash)
 			gitLastErr.Empty();
 			return 0;
 		}
+	}
+}
+
+int CGit::DeleteRef(const CString& reference)
+{
+	if (UsingLibGit2(GIT_CMD_DELETETAGBRANCH))
+	{
+		git_repository *repo = nullptr;
+		if (git_repository_open(&repo, CUnicodeUtils::GetUTF8(CTGitPath(m_CurrentDir).GetGitPathString())))
+			return -1;
+
+		git_reference *ref = nullptr;
+		if (git_reference_lookup(&ref, repo, CUnicodeUtils::GetUTF8(reference)))
+		{
+			git_repository_free(repo);
+			return -1;
+		}
+
+		int result = -1;
+		if (git_reference_is_tag(ref))
+			result = git_tag_delete(repo, git_reference_shorthand(ref));
+		else if (git_reference_is_branch(ref))
+			result = git_branch_delete(ref);
+		else if (git_reference_is_remote(ref))
+			result = git_branch_delete(ref);
+		else
+			giterr_set_str(GITERR_REFERENCE, CUnicodeUtils::GetUTF8(L"unsupported reference type: " + reference));
+
+		git_reference_free(ref);
+		git_repository_free(repo);
+		return result;
+	}
+	else
+	{
+		CString cmd, shortname;
+		if (GetShortName(reference, shortname, _T("refs/heads/")))
+			cmd.Format(_T("git.exe branch -D -- %s"), shortname);
+		else if (GetShortName(reference, shortname, _T("refs/tags/")))
+			cmd.Format(_T("git.exe tag -d -- %s"), shortname);
+		else if (GetShortName(reference, shortname, _T("refs/remotes/")))
+			cmd.Format(_T("git.exe branch -r -D -- %s"), shortname);
+		else
+		{
+			gitLastErr = L"unsupported reference type: " + reference;
+			return -1;
+		}
+
+		if (g_Git.Run(cmd, &gitLastErr, CP_UTF8))
+			return -1;
+
+		gitLastErr.Empty();
+		return 0;
 	}
 }

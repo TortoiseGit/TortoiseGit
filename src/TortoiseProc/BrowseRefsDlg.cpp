@@ -766,56 +766,52 @@ bool CBrowseRefsDlg::DoDeleteRef(CString completeRefName, bool bForce)
 	if		(wcsncmp(completeRefName, L"refs/remotes/",13) == 0)	{bIsBranch = true; bIsRemoteBranch = true;}
 	else if	(wcsncmp(completeRefName, L"refs/heads/",11) == 0)		{bIsBranch = true;}
 
-	if(bIsBranch)
+	if (bIsRemoteBranch)
 	{
-		CString branchToDelete = completeRefName.Mid(bIsRemoteBranch ? 13 : 11);
+		CString branchToDelete = completeRefName.Mid(13);
 		CString cmd;
-		if(bIsRemoteBranch)
-		{
-			CString remoteName, remoteBranchToDelete;
-			if (SplitRemoteBranchName(branchToDelete, remoteName, remoteBranchToDelete))
-				return false;
+		CString remoteName, remoteBranchToDelete;
+		if (SplitRemoteBranchName(branchToDelete, remoteName, remoteBranchToDelete))
+			return false;
 
-			if(CAppUtils::IsSSHPutty())
-			{
-				CAppUtils::LaunchPAgent(NULL, &remoteName);
-			}
+		if (CAppUtils::IsSSHPutty())
+			CAppUtils::LaunchPAgent(NULL, &remoteName);
 
-			cmd.Format(L"git.exe push \"%s\" :refs/heads/%s", remoteName, remoteBranchToDelete);
-		}
-		else
-			cmd.Format(L"git.exe branch -%c -- %s",bForce?L'D':L'd',branchToDelete);
+		cmd.Format(L"git.exe push \"%s\" :refs/heads/%s", remoteName, remoteBranchToDelete);
+
 		CSysProgressDlg sysProgressDlg;
-		if (bIsRemoteBranch)
-		{
-			sysProgressDlg.SetTitle(CString(MAKEINTRESOURCE(IDS_APPNAME)));
-			sysProgressDlg.SetLine(1, CString(MAKEINTRESOURCE(IDS_DELETING_REMOTE_REFS)));
-			sysProgressDlg.SetLine(2, CString(MAKEINTRESOURCE(IDS_PROGRESSWAIT)));
-			sysProgressDlg.SetShowProgressBar(false);
-			sysProgressDlg.ShowModal(this, true);
-		}
+		sysProgressDlg.SetTitle(CString(MAKEINTRESOURCE(IDS_APPNAME)));
+		sysProgressDlg.SetLine(1, CString(MAKEINTRESOURCE(IDS_DELETING_REMOTE_REFS)));
+		sysProgressDlg.SetLine(2, CString(MAKEINTRESOURCE(IDS_PROGRESSWAIT)));
+		sysProgressDlg.SetShowProgressBar(false);
+		sysProgressDlg.ShowModal(this, true);
+
 		CString errorMsg;
-		if(g_Git.Run(cmd,&errorMsg,CP_UTF8)!=0)
+		if (g_Git.Run(cmd, &errorMsg, CP_UTF8) != 0)
 		{
 			CMessageBox::Show(m_hWnd, errorMsg, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
-			if (bIsRemoteBranch)
-				sysProgressDlg.Stop();
+			sysProgressDlg.Stop();
 			BringWindowToTop();
 			return false;
 		}
-		if (bIsRemoteBranch)
-			sysProgressDlg.Stop();
+		sysProgressDlg.Stop();
 		BringWindowToTop();
+	}
+	else if (bIsBranch)
+	{
+		if (!bForce && !g_Git.IsFastForward(completeRefName, _T("HEAD")))
+			return true;
+		if (g_Git.DeleteRef(completeRefName))
+		{
+			CMessageBox::Show(m_hWnd, g_Git.GetGitLastErr(L"Could not delete reference.", CGit::GIT_CMD_DELETETAGBRANCH), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+			return false;
+		}
 	}
 	else if (wcsncmp(completeRefName, L"refs/tags/", 10) == 0)
 	{
-		CString tagToDelete = completeRefName.Mid(10);
-		CString cmd;
-		cmd.Format(L"git.exe tag -d -- %s",tagToDelete);
-		CString errorMsg;
-		if(g_Git.Run(cmd,&errorMsg,CP_UTF8)!=0)
+		if (g_Git.DeleteRef(completeRefName))
 		{
-			CMessageBox::Show(m_hWnd, errorMsg, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+			CMessageBox::Show(m_hWnd, g_Git.GetGitLastErr(L"Could not delete reference.", CGit::GIT_CMD_DELETETAGBRANCH), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 			return false;
 		}
 	}
