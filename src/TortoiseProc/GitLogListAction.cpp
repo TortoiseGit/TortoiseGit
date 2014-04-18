@@ -857,7 +857,13 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 						showProgress = true;
 					}
 					else if (result == 2)
-						cmd.Format(_T("git.exe branch -r -D -- %s"), shortname);
+					{
+						if (g_Git.DeleteRef(*branch))
+						{
+							CMessageBox::Show(nullptr, g_Git.GetGitLastErr(L"Could not delete reference.", CGit::GIT_CMD_DELETETAGBRANCH), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+							return;
+						}
+					}
 					else
 						return;
 				}
@@ -874,14 +880,10 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 					msg.Format(IDS_PROC_DELETEBRANCHTAG, *branch);
 					if (CMessageBox::Show(NULL, msg, _T("TortoiseGit"), 2, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_DELETEBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 1)
 					{
-						if(CGit::GetShortName(*branch,shortname,_T("refs/heads/")))
+						if (g_Git.DeleteRef(*branch))
 						{
-							cmd.Format(_T("git.exe branch -D -- %s"),shortname);
-						}
-
-						if(CGit::GetShortName(*branch,shortname,_T("refs/tags/")))
-						{
-							cmd.Format(_T("git.exe tag -d -- %s"),shortname);
+							CMessageBox::Show(nullptr, g_Git.GetGitLastErr(L"Could not delete reference.", CGit::GIT_CMD_DELETETAGBRANCH), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+							return;
 						}
 					}
 				}
@@ -903,11 +905,11 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 					}
 					if (showProgress)
 						sysProgressDlg.Stop();
-					this->ReloadHashMap();
-					CRect rect;
-					this->GetItemRect(FirstSelect,&rect,LVIR_BOUNDS);
-					this->InvalidateRect(rect);
 				}
+				this->ReloadHashMap();
+				CRect rect;
+				this->GetItemRect(FirstSelect,&rect,LVIR_BOUNDS);
+				this->InvalidateRect(rect);
 			}
 			break;
 

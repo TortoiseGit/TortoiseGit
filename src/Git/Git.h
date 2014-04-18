@@ -156,6 +156,7 @@ public:
 		GIT_CMD_RESET,
 		GIT_CMD_REVERT,
 		GIT_CMD_MERGE_BASE,
+		GIT_CMD_DELETETAGBRANCH,
 	} LIBGIT2_CMD;
 	bool UsingLibGit2(LIBGIT2_CMD cmd);
 
@@ -218,6 +219,7 @@ public:
 	BOOL CheckCleanWorkTree();
 	int Revert(const CString& commit, const CTGitPathList &list, bool keep=true);
 	int Revert(const CString& commit, const CTGitPath &path);
+	int DeleteRef(const CString& reference);
 	CString GetGitLastErr(const CString& msg);
 	CString GetGitLastErr(const CString& msg, LIBGIT2_CMD cmd);
 	static CString GetLibGit2LastErr();
