@@ -189,7 +189,7 @@ CGit::~CGit(void)
 
 bool CGit::IsBranchNameValid(const CString& branchname)
 {
-	if (branchname.Left(1) == _T("-")) // git command line always treat it as command line option
+	if (branchname.Left(1) == _T("-")) // branch names starting with a dash are discouraged when used with git.exe, see https://github.com/git/git/commit/6348624010888bd2353e5cebdc2b5329490b0f6d
 		return false;
 	if (branchname.FindOneOf(_T("\"|<>")) >= 0) // not valid on Windows
 		return false;
