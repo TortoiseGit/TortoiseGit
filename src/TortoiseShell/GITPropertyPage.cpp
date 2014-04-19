@@ -199,17 +199,17 @@ BOOL CGitPropertyPage::PageProc (HWND /*hwnd*/, UINT uMessage, WPARAM wParam, LP
 							}
 							if (symlink == BST_CHECKED)
 							{
-								if ((e->mode & 0120000) != 0120000)
+								if ((e->mode & GIT_FILEMODE_LINK) != GIT_FILEMODE_LINK)
 								{
-									e->mode |= 0120000;
+									e->mode |= GIT_FILEMODE_LINK;
 									changed = true;
 								}
 							}
 							else if (symlink != BST_INDETERMINATE)
 							{
-								if ((e->mode & 0120000) == 0120000)
+								if ((e->mode & GIT_FILEMODE_LINK) == GIT_FILEMODE_LINK)
 								{
-									e->mode &= ~0120000;
+									e->mode &= ~GIT_FILEMODE_LINK;
 									changed = true;
 								}
 							}
@@ -715,7 +715,7 @@ void CGitPropertyPage::InitWorkfileView()
 						if (e->mode & 0111)
 							++executable;
 
-						if ((e->mode & 0120000) == 0120000)
+						if ((e->mode & GIT_FILEMODE_LINK) == GIT_FILEMODE_LINK)
 							++symlink;
 					}
 					else
