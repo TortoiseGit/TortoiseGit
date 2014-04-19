@@ -3002,3 +3002,33 @@ int CGit::DeleteRef(const CString& reference)
 		return 0;
 	}
 }
+
+bool CGit::LoadTextFile(const CString &filename, CString &msg)
+{
+	if (PathFileExists(filename))
+	{
+		FILE *pFile = nullptr;
+		_tfopen_s(&pFile, filename, _T("r"));
+		if (pFile)
+		{
+			CStringA str;
+			do
+			{
+				char s[8196] = { 0 };
+				int read = (int)fread(s, sizeof(char), sizeof(s), pFile);
+				if (read == 0)
+					break;
+				str += CStringA(s, read);
+			} while (true);
+			fclose(pFile);
+			msg = CUnicodeUtils::GetUnicode(str);
+			msg.Replace(_T("\r\n"), _T("\n"));
+			msg.TrimRight(_T("\n"));
+			msg += _T("\n");
+		}
+		else
+			::MessageBox(nullptr, _T("Could not open ") + filename, _T("TortoiseGit"), MB_ICONERROR);
+		return true; // load no further files
+	}
+	return false;
+}

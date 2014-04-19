@@ -154,29 +154,6 @@ BEGIN_MESSAGE_MAP(CCommitDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_COMMIT_SETAUTHOR, &CCommitDlg::OnBnClickedCommitSetauthor)
 END_MESSAGE_MAP()
 
-static bool PrefillMessage(const CString &filename, CString &msg)
-{
-	if (PathFileExists(filename))
-	{
-		CStdioFile file;
-		if (file.Open(filename, CFile::modeRead | CFile::typeBinary))
-		{
-			CString str;
-			std::unique_ptr<BYTE[]> buf(new BYTE[file.GetLength()]);
-			UINT read = file.Read(buf.get(), (UINT)file.GetLength());
-			g_Git.StringAppend(&str, buf.get(), CP_UTF8, read);
-			str.Replace(_T("\r\n"), _T("\n"));
-			str.TrimRight(_T("\n"));
-			str += _T("\n");
-			msg = str;
-		}
-		else
-			::MessageBox(nullptr, _T("Could not open ") + filename, _T("TortoiseGit"), MB_ICONERROR);
-		return true; // load no further files
-	}
-	return false;
-}
-
 int GetCommitTemplate(CString &msg)
 {
 	CString tplFilename = g_Git.GetConfigValue(_T("commit.template"));
@@ -198,7 +175,7 @@ int GetCommitTemplate(CString &msg)
 
 	tplFilename.Replace(_T('/'), _T('\\'));
 
-	if (!PrefillMessage(tplFilename, msg))
+	if (!CGit::LoadTextFile(tplFilename, msg))
 		return -1;
 	return 0;
 }
@@ -216,8 +193,8 @@ BOOL CCommitDlg::OnInitDialog()
 
 	CString dotGitPath;
 	g_GitAdminDir.GetAdminDirPath(g_Git.m_CurrentDir, dotGitPath);
-	bool loadedMsg = !PrefillMessage(dotGitPath + _T("MERGE_MSG"), m_sLogMessage);
-	loadedMsg = loadedMsg && !PrefillMessage(dotGitPath + _T("SQUASH_MSG"), m_sLogMessage);
+	bool loadedMsg = !CGit::LoadTextFile(dotGitPath + _T("MERGE_MSG"), m_sLogMessage);
+	loadedMsg = loadedMsg && !CGit::LoadTextFile(dotGitPath + _T("SQUASH_MSG"), m_sLogMessage);
 
 	if (CTGitPath(g_Git.m_CurrentDir).IsMergeActive())
 	{
