@@ -356,8 +356,58 @@ int CTortoiseGitBlameData::FindNextLine(CGitHash& CommitHash, int line, bool bUp
 	return -1;
 }
 
+static int FindAsciiLower(const CStringA &str, const CStringA &find)
+{
+	if (find.GetLength() == 0)
+		return 0;
+
+	for (int i = 0; i < str.GetLength(); ++i)
+	{
+		char c = str[i];
+		c += (c >= 'A' && c <= 'Z') ? 32 : 0;
+		if (c == find[0])
+		{
+			bool diff = false;
+			int k = 1;
+			for (int j = i + 1; j < str.GetLength() && k < find.GetLength(); ++j, ++k)
+			{
+				char d = str[j];
+				d += (d >= 'A' && d <= 'Z') ? 32 : 0;
+				if (d != find[k])
+				{
+					diff = true;
+					break;
+				}
+			}
+
+			if (!diff && k == find.GetLength())
+				return i;
+		}
+	}
+
+	return -1;
+}
+
+static int FindUtf8Lower(const CStringA& strA, bool allAscii, const CString &findW, const CStringA &findA)
+{
+	if (allAscii)
+		return FindAsciiLower(strA, findA);
+
+	CString strW = CUnicodeUtils::GetUnicode(strA);
+	return strW.MakeLower().Find(findW);
+}
+
 int CTortoiseGitBlameData::FindFirstLineWrapAround(const CString& what, int line, bool bCaseSensitive)
 {
+	bool allAscii = true;
+	for (int i = 0; i < what.GetLength(); ++i)
+	{
+		if (what[i] > 0x7f)
+		{
+			allAscii = false;
+			break;
+		}
+	}
 	CString whatNormalized(what);
 	if (!bCaseSensitive)
 	{
@@ -386,7 +436,7 @@ int CTortoiseGitBlameData::FindFirstLineWrapAround(const CString& what, int line
 		{
 			if (CString(m_Authors[i]).MakeLower().Find(whatNormalized) >= 0)
 				bFound = true;
-			else if (CStringA(m_Utf8Lines[i]).MakeLower().Find(whatNormalizedUtf8) >=0)
+			else if (FindUtf8Lower(m_Utf8Lines[i], allAscii, whatNormalized, whatNormalizedUtf8) >= 0)
 				bFound = true;
 		}
 
