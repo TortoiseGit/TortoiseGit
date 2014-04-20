@@ -588,37 +588,53 @@ std::vector<CHARRANGE> FindGitHashPositions(const CString& msg, int offset)
 	while (offset < msg.GetLength())
 	{
 		old = offset;
-		TCHAR b = offset > 1 ? msg[offset - 2] : '\0';
-		TCHAR c = offset > 0 ? msg[offset - 1] : '\0';
-		// git hash can optionally starts with 'g'
-		if ((c == 'g' && (offset == 0 || !((b >= 'A' && b <= 'Z') || (b >= 'h' && b <= 'z'))))
-			|| (!((c >= 'A' && c <= 'Z') || (c >= 'h' && c <= 'z'))))
+		TCHAR e = msg[offset];
+		if (e == '\n')
 		{
-			if (b == '\n')
+			++offset;
+			if (msg.Mid(offset, 11) == _T("git-svn-id:")
+				|| msg.Mid(offset, 14) == _T("Signed-off-by:")
+				|| msg.Mid(offset, 10) == _T("Change-Id:")
+			)
 			{
-				if (msg.Mid(offset, 11) == _T("git-svn-id:") || msg.Mid(offset, 14) == _T("Signed-off-by:"))
+				offset += 10;
+				while (offset < msg.GetLength())
 				{
-					offset += 11;
-					while (offset < msg.GetLength())
-					{
-						if (msg[offset++] == '\n')
-							break;
-					}
-					continue;
+					if (msg[offset++] == '\n')
+						break;
 				}
+				continue;
 			}
-
+		}
+		else if (e >= 'A' && e <= 'Z' || e >= 'h' && e <= 'z')
+		{
+			do
+			{
+				e = msg[++offset];
+			} while (offset < msg.GetLength() && (e >= 'A' && e <= 'Z' || e >= 'a' && e <= 'z' || e >= '0' && e <= '9'));
+		}
+		else if (e >= 'a' && e <= 'g' || e >= '0' && e <= '9')
+		{
+			if (e == 'g')
+			{
+				++old;
+				++offset;
+			}
 			if (LookLikeGitHash(msg, offset))
 			{
 				TCHAR d = offset < msg.GetLength() ? msg[offset] : '\0';
-				if (!((d >= 'A' && d <= 'Z') || (d >= 'g' && d <= 'z')))
+				if (!((d >= 'A' && d <= 'Z') || (d >= 'a' && d <= 'z') || (d >= '0' && d <= '9')))
 				{
 					CHARRANGE range = { old, offset };
 					result.push_back(range);
 				}
 			}
+			++offset;
 		}
-		++offset;
+		else
+		{
+			++offset;
+		}
 	}
 
 	return result;
