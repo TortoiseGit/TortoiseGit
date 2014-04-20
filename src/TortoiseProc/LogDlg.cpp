@@ -596,9 +596,12 @@ std::vector<CHARRANGE> FindGitHashPositions(const CString& msg, int offset)
 		{
 			if (b == '\n')
 			{
-				if (msg.Mid(offset, 11) == _T("git-svn-id:") || msg.Mid(offset, 14) == _T("Signed-off-by:"))
+				if (msg.Mid(offset, 11) == _T("git-svn-id:")
+					|| msg.Mid(offset, 14) == _T("Signed-off-by:")
+					|| msg.Mid(offset, 10) == _T("Change-Id:")
+				)
 				{
-					offset += 11;
+					offset += 10;
 					while (offset < msg.GetLength())
 					{
 						if (msg[offset++] == '\n')
