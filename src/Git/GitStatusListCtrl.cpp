@@ -3458,7 +3458,7 @@ void CGitStatusListCtrl::OnBeginDrag(NMHDR* /*pNMHDR*/, LRESULT* pResult)
 			{
 				CString out;
 				out.Format(IDS_STATUSLIST_CHECKOUTFILEFAILED, path->GetGitPathString(), version, tempFile);
-				CMessageBox::Show(NULL, out, _T("TortoiseGit"), MB_OK);
+				CMessageBox::Show(nullptr, g_Git.GetGitLastErr(out, CGit::GIT_CMD_GETONEFILE), _T("TortoiseGit"), MB_OK);
 				return;
 			}
 		}
@@ -4295,7 +4295,7 @@ void CGitStatusListCtrl::FilesExport()
 			{
 				CString out;
 				out.Format(IDS_STATUSLIST_CHECKOUTFILEFAILED, fd->GetGitPathString(), m_CurrentVersion, filename);
-				if (CMessageBox::Show(NULL, out, _T("TortoiseGit"), 2, IDI_WARNING, CString(MAKEINTRESOURCE(IDS_IGNOREBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)
+				if (CMessageBox::Show(nullptr, g_Git.GetGitLastErr(out, CGit::GIT_CMD_GETONEFILE), _T("TortoiseGit"), 2, IDI_WARNING, CString(MAKEINTRESOURCE(IDS_IGNOREBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)
 					return;
 			}
 		}
@@ -4335,7 +4335,7 @@ void CGitStatusListCtrl::FileSaveAs(CTGitPath *path)
 			if(g_Git.GetOneFile(m_CurrentVersion,*path,filename))
 			{
 				out.Format(IDS_STATUSLIST_CHECKOUTFILEFAILED, path->GetGitPathString(), m_CurrentVersion, filename);
-				CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
+				CMessageBox::Show(nullptr, g_Git.GetGitLastErr(out, CGit::GIT_CMD_GETONEFILE), _T("TortoiseGit"), MB_OK);
 				return;
 			}
 		}
@@ -4422,7 +4422,7 @@ void CGitStatusListCtrl::OpenFile(CTGitPath*filepath,int mode)
 		if(g_Git.GetOneFile(m_CurrentVersion, *filepath, file))
 		{
 			out.Format(IDS_STATUSLIST_CHECKOUTFILEFAILED, filepath->GetGitPathString(), m_CurrentVersion, file);
-			CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
+			CMessageBox::Show(nullptr, g_Git.GetGitLastErr(out, CGit::GIT_CMD_GETONEFILE), _T("TortoiseGit"), MB_OK);
 			return;
 		}
 		SetFileAttributes(file, FILE_ATTRIBUTE_READONLY);

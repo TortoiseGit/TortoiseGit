@@ -1,7 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2009,2011-2014 - TortoiseGit
-// Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -19,7 +18,7 @@
 //
 #include "stdafx.h"
 #include "CatCommand.h"
-
+#include "UnicodeUtils.h"
 #include "PathUtils.h"
 #include "Git.h"
 #include "MessageBox.h"
@@ -28,6 +27,64 @@ bool CatCommand::Execute()
 {
 	CString savepath = CPathUtils::GetLongPathname(parser.GetVal(_T("savepath")));
 	CString revision = parser.GetVal(_T("revision"));
+
+	if (g_Git.UsingLibGit2(CGit::GIT_CMD_GETONEFILE))
+	{
+		git_repository *repo = nullptr;
+		if (git_repository_open(&repo, CUnicodeUtils::GetUTF8(CTGitPath(g_Git.m_CurrentDir).GetGitPathString())))
+		{
+			::DeleteFile(savepath);
+			CMessageBox::Show(hwndExplorer, g_Git.GetLibGit2LastErr(L"Could not open repository."), L"TortoiseGit", MB_ICONERROR);
+			return false;
+		}
+
+		git_object *obj = nullptr;
+		if (git_revparse_single(&obj, repo, CUnicodeUtils::GetUTF8(revision)))
+		{
+			::DeleteFile(savepath);
+			git_repository_free(repo);
+			CMessageBox::Show(hwndExplorer, g_Git.GetLibGit2LastErr(L"Could not parse revision."), L"TortoiseGit", MB_ICONERROR);
+			return false;
+		}
+
+		if (git_object_type(obj) == GIT_OBJ_BLOB)
+		{
+			FILE *file = nullptr;
+			_tfopen_s(&file, savepath, _T("w"));
+			if (file == nullptr)
+			{
+				::DeleteFile(savepath);
+				CMessageBox::Show(hwndExplorer, L"Could not open file for writing.", L"TortoiseGit", MB_ICONERROR);
+				git_object_free(obj);
+				git_repository_free(repo);
+				return false;
+			}
+			if (fwrite(git_blob_rawcontent((const git_blob *)obj), 1, git_blob_rawsize((const git_blob *)obj), file) != (size_t)git_blob_rawsize((const git_blob *)obj)) // TODO: need to apply git_blob_filtered_content?
+			{
+				::DeleteFile(savepath);
+				CString err = CFormatMessageWrapper();
+				CMessageBox::Show(hwndExplorer, _T("Could not write to file: ") + err, L"TortoiseGit", MB_ICONERROR);
+				fclose(file);
+				git_object_free(obj);
+				git_repository_free(repo);
+				return false;
+			}
+			fclose(file);
+			git_object_free(obj);
+			git_repository_free(repo);
+			return true;
+		}
+
+		git_object_free(obj);
+		git_repository_free(repo);
+
+		if (g_Git.GetOneFile(revision, cmdLinePath, savepath))
+		{
+			CMessageBox::Show(hwndExplorer, g_Git.GetGitLastErr(L"Could get file.", CGit::GIT_CMD_GETONEFILE), L"TortoiseGit", MB_ICONERROR);
+			return false;
+		}
+		return true;
+	}
 
 	CString cmd, output, err;
 	cmd.Format(_T("git.exe cat-file -t %s"),revision);

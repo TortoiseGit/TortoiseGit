@@ -147,6 +147,20 @@ public:
 	BOOL CheckMsysGitDir(BOOL bFallback = TRUE);
 	BOOL m_bInitialized;
 
+	typedef enum
+	{
+		GIT_CMD_CLONE,
+		GIT_CMD_FETCH,
+		GIT_CMD_COMMIT_UPDATE_INDEX,
+		GIT_CMD_DIFF,
+		GIT_CMD_RESET,
+		GIT_CMD_REVERT,
+		GIT_CMD_MERGE_BASE,
+		GIT_CMD_DELETETAGBRANCH,
+		GIT_CMD_GETONEFILE,
+	} LIBGIT2_CMD;
+	bool UsingLibGit2(LIBGIT2_CMD cmd);
+
 	CString GetHomeDirectory();
 	CString GetGitLocalConfig();
 	CString GetGitGlobalConfig();
@@ -206,8 +220,9 @@ public:
 	BOOL CheckCleanWorkTree();
 	int Revert(const CString& commit, const CTGitPathList &list, bool keep=true);
 	int Revert(const CString& commit, const CTGitPath &path);
+	int DeleteRef(const CString& reference);
 	CString GetGitLastErr(const CString& msg);
-	CString GetGitLastErr(const CString& msg, int cmd);
+	CString GetGitLastErr(const CString& msg, LIBGIT2_CMD cmd);
 	static CString GetLibGit2LastErr();
 	static CString GetLibGit2LastErr(const CString& msg);
 	bool SetCurrentDir(CString path, bool submodule = false)
@@ -354,17 +369,6 @@ public:
 	}
 
 	static CString GetShortName(const CString& ref, REF_TYPE *type);
-
-	enum
-	{
-		GIT_CMD_CLONE,
-		GIT_CMD_FETCH,
-		GIT_CMD_COMMIT_UPDATE_INDEX,
-		GIT_CMD_DIFF,
-		GIT_CMD_RESET,
-		GIT_CMD_REVERT,
-	};
-	bool UsingLibGit2(int cmd);
 
 	int GetUnifiedDiff(const CTGitPath& path, const git_revnum_t& rev1, const git_revnum_t& rev2, CString patchfile, bool bMerge, bool bCombine, int diffContext);
 	int GetUnifiedDiff(const CTGitPath& path, const git_revnum_t& rev1, const git_revnum_t& rev2, CStringA * buffer, bool bMerge, bool bCombine, int diffContext);
