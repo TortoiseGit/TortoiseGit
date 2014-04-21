@@ -94,7 +94,7 @@ bool CAppUtils::StashSave()
 		{
 			CString message = dlg.m_sMessage;
 			message.Replace(_T("\""), _T("\"\""));
-			cmd += _T(" \"") + message + _T("\"");
+			cmd += _T(" -- \"") + message + _T("\"");
 		}
 
 		CProgressDlg progress;
