@@ -138,8 +138,8 @@ protected:
 	bool			SelectRef(CString refName, bool bExactMatch);
 
 	bool			ConfirmDeleteRef(VectorPShadowTree& leafs);
-	bool			DoDeleteRefs(VectorPShadowTree& leafs, bool bForce);
-	bool			DoDeleteRef(CString completeRefName, bool bForce);
+	bool			DoDeleteRefs(VectorPShadowTree& leafs);
+	bool			DoDeleteRef(CString completeRefName);
 
 	CString			GetFullRefName(CString partialRefName);
 

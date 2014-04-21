@@ -163,7 +163,7 @@ CGit::CGit(void)
 	m_GitSimpleListDiff=0;
 	m_IsUseGitDLL = !!CRegDWORD(_T("Software\\TortoiseGit\\UsingGitDLL"),1);
 	m_IsUseLibGit2 = !!CRegDWORD(_T("Software\\TortoiseGit\\UseLibgit2"), TRUE);
-	m_IsUseLibGit2_mask = CRegDWORD(_T("Software\\TortoiseGit\\UseLibgit2_mask"), 0);
+	m_IsUseLibGit2_mask = CRegDWORD(_T("Software\\TortoiseGit\\UseLibgit2_mask"), (1 << GIT_CMD_MERGE_BASE) | (1 << GIT_CMD_DELETETAGBRANCH) | (1 << GIT_CMD_GETONEFILE));
 
 	SecureZeroMemory(&m_CurrentGitPi, sizeof(PROCESS_INFORMATION));
 
@@ -1342,7 +1342,7 @@ CString CGit::GetGitLastErr(const CString& msg)
 	}
 }
 
-CString CGit::GetGitLastErr(const CString& msg, int cmd)
+CString CGit::GetGitLastErr(const CString& msg, LIBGIT2_CMD cmd)
 {
 	if (UsingLibGit2(cmd))
 		return GetLibGit2LastErr(msg);
@@ -1392,6 +1392,34 @@ CString	CGit::FixBranchName(const CString& branchName)
 
 bool CGit::IsBranchTagNameUnique(const CString& name)
 {
+	if (m_IsUseLibGit2)
+	{
+		git_repository *repo = nullptr;
+
+		if (git_repository_open(&repo, CUnicodeUtils::GetUTF8(CTGitPath(m_CurrentDir).GetGitPathString())))
+			return true; // TODO: optimize error reporting
+
+		git_reference * tagRef = nullptr;
+		if (git_reference_lookup(&tagRef, repo, CUnicodeUtils::GetUTF8(L"refs/tags/" + name)))
+		{
+			git_repository_free(repo);
+			return true;
+		}
+		git_reference_free(tagRef);
+
+		git_reference * branchRef = nullptr;
+		if (git_reference_lookup(&branchRef, repo, CUnicodeUtils::GetUTF8(L"refs/heads/" + name)))
+		{
+			git_repository_free(repo);
+			return true;
+		}
+
+		git_reference_free(branchRef);
+		git_repository_free(repo);
+
+		return false;
+	}
+	// else
 	CString output;
 
 	CString cmd;
@@ -1418,6 +1446,32 @@ isBranch is true -> branch, tag otherwise
 */
 bool CGit::BranchTagExists(const CString& name, bool isBranch /*= true*/)
 {
+	if (m_IsUseLibGit2)
+	{
+		git_repository *repo = nullptr;
+
+		if (git_repository_open(&repo, CUnicodeUtils::GetUTF8(CTGitPath(m_CurrentDir).GetGitPathString())))
+			return false; // TODO: optimize error reporting
+
+		CString prefix;
+		if (isBranch)
+			prefix = _T("refs/heads/");
+		else
+			prefix = _T("refs/tags/");
+
+		git_reference * ref = nullptr;
+		if (git_reference_lookup(&ref, repo, CUnicodeUtils::GetUTF8(prefix + name)))
+		{
+			git_repository_free(repo);
+			return false;
+		}
+
+		git_reference_free(ref);
+		git_repository_free(repo);
+
+		return true;
+	}
+	// else
 	CString cmd, output;
 
 	cmd = _T("git.exe show-ref ");
@@ -1477,33 +1531,86 @@ CString CGit::DerefFetchHead()
 
 int CGit::GetBranchList(STRING_VECTOR &list,int *current,BRANCH_TYPE type)
 {
-	int ret;
-	CString cmd, output, cur;
-	cmd = _T("git.exe branch --no-color");
-
-	if((type&BRANCH_ALL) == BRANCH_ALL)
-		cmd += _T(" -a");
-	else if(type&BRANCH_REMOTE)
-		cmd += _T(" -r");
-
-	ret = Run(cmd, &output, NULL, CP_UTF8);
-	if(!ret)
+	int ret = 0;
+	CString cur;
+	if (m_IsUseLibGit2)
 	{
-		int pos=0;
-		CString one;
-		while( pos>=0 )
+		git_repository *repo = nullptr;
+
+		if (git_repository_open(&repo, CUnicodeUtils::GetUTF8(CTGitPath(m_CurrentDir).GetGitPathString())))
+			return -1;
+
+		if (git_repository_head_detached(repo) == 1)
+			cur = _T("(detached from ");
+
+		if ((type & (BRANCH_LOCAL | BRANCH_REMOTE)) != 0)
 		{
-			one=output.Tokenize(_T("\n"),pos);
-			one.Trim(L" \r\n\t");
-			if(one.Find(L" -> ") >= 0 || one.IsEmpty())
-				continue; // skip something like: refs/origin/HEAD -> refs/origin/master
-			if(one[0] == _T('*'))
+			git_branch_iterator * it = nullptr;
+
+			git_branch_t flags = GIT_BRANCH_LOCAL;
+			if ((type & BRANCH_LOCAL) && (type & BRANCH_REMOTE))
+				flags = GIT_BRANCH_ALL;
+			else if (type & BRANCH_REMOTE)
+				flags = GIT_BRANCH_REMOTE;
+
+			if (git_branch_iterator_new(&it, repo, flags))
 			{
-				one = one.Mid(2);
-				cur = one;
+				git_repository_free(repo);
+				return -1;
 			}
-			if (one.Left(10) != _T("(no branch") && one.Left(15) != _T("(detached from "))
-				list.push_back(one);
+
+			git_reference * ref = nullptr;
+			git_branch_t branchType;
+			while (git_branch_next(&ref, &branchType, it) == 0)
+			{
+				const char * name = nullptr;
+				if (git_branch_name(&name, ref))
+					continue;
+				CString branchname = CUnicodeUtils::GetUnicode(name);
+				if (branchType & GIT_BRANCH_REMOTE)
+					list.push_back(_T("remotes/") + branchname);
+				else
+				{
+					if (git_branch_is_head(ref))
+						cur = branchname;
+					list.push_back(branchname);
+				}
+				git_reference_free(ref);
+			}
+
+			git_branch_iterator_free(it);
+		}
+		git_repository_free(repo);
+	}
+	else
+	{
+		CString cmd, output;
+		cmd = _T("git.exe branch --no-color");
+
+		if ((type & BRANCH_ALL) == BRANCH_ALL)
+			cmd += _T(" -a");
+		else if (type & BRANCH_REMOTE)
+			cmd += _T(" -r");
+
+		ret = Run(cmd, &output, nullptr, CP_UTF8);
+		if (!ret)
+		{
+			int pos = 0;
+			CString one;
+			while (pos >= 0)
+			{
+				one = output.Tokenize(_T("\n"), pos);
+				one.Trim(L" \r\n\t");
+				if (one.Find(L" -> ") >= 0 || one.IsEmpty())
+					continue; // skip something like: refs/origin/HEAD -> refs/origin/master
+				if (one[0] == _T('*'))
+				{
+					one = one.Mid(2);
+					cur = one;
+				}
+				if (one.Left(10) != _T("(no branch") && one.Left(15) != _T("(detached from "))
+					list.push_back(one);
+			}
 		}
 	}
 
@@ -2073,6 +2180,36 @@ int CGit::ListConflictFile(CTGitPathList &list, const CTGitPath *path)
 
 bool CGit::IsFastForward(const CString &from, const CString &to, CGitHash * commonAncestor)
 {
+	if (UsingLibGit2(GIT_CMD_MERGE_BASE))
+	{
+		CGitHash fromHash, toHash, baseHash;
+		if (GetHash(toHash, FixBranchName(to)))
+			return false;
+
+		if (GetHash(fromHash, FixBranchName(from)))
+			return false;
+
+		git_repository *repo = nullptr;
+		if (git_repository_open(&repo, CUnicodeUtils::GetMulti(CTGitPath(m_CurrentDir).GetGitPathString(), CP_UTF8)))
+			return false;
+
+		git_oid baseOid;
+		if (git_merge_base(&baseOid, repo, (const git_oid*)toHash.m_hash, (const git_oid*)fromHash.m_hash))
+		{
+			git_repository_free(repo);
+			return false;
+		}
+
+		baseHash = baseOid.id;
+
+		if (commonAncestor)
+			*commonAncestor = baseHash;
+
+		git_repository_free(repo);
+
+		return fromHash == baseHash;
+	}
+	// else
 	CString base;
 	CGitHash basehash,hash;
 	CString cmd, err;
@@ -2128,7 +2265,97 @@ int CGit::RefreshGitIndex()
 
 int CGit::GetOneFile(const CString &Refname, const CTGitPath &path, const CString &outputfile)
 {
-	if(g_Git.m_IsUseGitDLL)
+	if (UsingLibGit2(GIT_CMD_GETONEFILE))
+	{
+		CGitHash hash;
+		if (GetHash(hash, Refname))
+			return -1;
+
+		git_repository *repo = nullptr;
+		if (git_repository_open(&repo, CUnicodeUtils::GetUTF8(CTGitPath(m_CurrentDir).GetGitPathString())))
+			return -1;
+
+		git_commit * commit = nullptr;
+		if (git_commit_lookup(&commit, repo, (const git_oid *)hash.m_hash))
+		{
+			git_repository_free(repo);
+			return -1;
+		}
+
+		git_tree * tree = nullptr;
+		if (git_commit_tree(&tree, commit))
+		{
+			git_commit_free(commit);
+			git_repository_free(repo);
+			return -1;
+		}
+
+		git_tree_entry * entry = nullptr;
+		if (git_tree_entry_bypath(&entry, tree, CUnicodeUtils::GetUTF8(path.GetGitPathString())))
+		{
+			git_tree_free(tree);
+			git_commit_free(commit);
+			git_repository_free(repo);
+			return -1;
+		}
+
+		git_blob * blob = nullptr;
+		if (git_tree_entry_to_object((git_object**)&blob, repo, entry))
+		{
+			git_tree_entry_free(entry);
+			git_tree_free(tree);
+			git_commit_free(commit);
+			git_repository_free(repo);
+			return -1;
+		}
+
+		FILE *file = nullptr;
+		_tfopen_s(&file, outputfile, _T("w"));
+		if (file == nullptr)
+		{
+			giterr_set_str(GITERR_NONE, "Could not create file.");
+			git_blob_free(blob);
+			git_tree_entry_free(entry);
+			git_tree_free(tree);
+			git_commit_free(commit);
+			git_repository_free(repo);
+			return -1;
+		}
+		git_buf buf = { 0 };
+		if (git_blob_filtered_content(&buf, blob, CUnicodeUtils::GetUTF8(path.GetGitPathString()), 1))
+		{
+			git_blob_free(blob);
+			git_tree_entry_free(entry);
+			git_tree_free(tree);
+			git_commit_free(commit);
+			git_repository_free(repo);
+			return -1;
+		}
+		if (fwrite(buf.ptr, sizeof(char), buf.size, file) != buf.size)
+		{
+			giterr_set_str(GITERR_OS, "Could not write to file.");
+			git_buf_free(&buf);
+			fclose(file);
+
+			git_blob_free(blob);
+			git_tree_entry_free(entry);
+			git_tree_free(tree);
+			git_commit_free(commit);
+			git_repository_free(repo);
+			return -1;
+		}
+		git_buf_free(&buf);
+		fclose(file);
+
+		git_blob_free(blob);
+		git_tree_entry_free(entry);
+		git_tree_free(tree);
+		git_commit_free(commit);
+		git_repository_free(repo);
+
+		return 0;
+	}
+	else if (g_Git.m_IsUseGitDLL)
 	{
 		CAutoLocker lock(g_Git.m_critGitDllSec);
 		try
@@ -2141,8 +2368,15 @@ int CGit::GetOneFile(const CString &Refname, const CTGitPath &path, const CStrin
 			::DeleteFile(outputfile);
 			return git_checkout_file(ref, patha, outa);
 
-		}catch(...)
+		}
+		catch (const char * msg)
 		{
+			gitLastErr = L"gitdll.dll reports: " + CString(msg);
+			return -1;
+		}
+		catch (...)
+		{
+			gitLastErr = L"An unknown gitdll.dll error occurred.";
 			return -1;
 		}
 	}
@@ -2384,11 +2618,9 @@ CString CGit::GetShortName(const CString& ref, REF_TYPE *out_type)
 	return shortname;
 }
 
-bool CGit::UsingLibGit2(int cmd)
+bool CGit::UsingLibGit2(LIBGIT2_CMD cmd)
 {
-	if (cmd >= 0 && cmd < 32)
-		return ((1 << cmd) & m_IsUseLibGit2_mask) ? true : false;
-	return false;
+	return ((1 << cmd) & m_IsUseLibGit2_mask) ? true : false;
 }
 
 CString CGit::GetUnifiedDiffCmd(const CTGitPath& path, const git_revnum_t& rev1, const git_revnum_t& rev2, bool bMerge, bool bCombine, int diffContext)
@@ -2716,5 +2948,57 @@ int CGit::GitRevert(int parent, const CGitHash &hash)
 			gitLastErr.Empty();
 			return 0;
 		}
+	}
+}
+
+int CGit::DeleteRef(const CString& reference)
+{
+	if (UsingLibGit2(GIT_CMD_DELETETAGBRANCH))
+	{
+		git_repository *repo = nullptr;
+		if (git_repository_open(&repo, CUnicodeUtils::GetUTF8(CTGitPath(m_CurrentDir).GetGitPathString())))
+			return -1;
+
+		git_reference *ref = nullptr;
+		if (git_reference_lookup(&ref, repo, CUnicodeUtils::GetUTF8(reference)))
+		{
+			git_repository_free(repo);
+			return -1;
+		}
+
+		int result = -1;
+		if (git_reference_is_tag(ref))
+			result = git_tag_delete(repo, git_reference_shorthand(ref));
+		else if (git_reference_is_branch(ref))
+			result = git_branch_delete(ref);
+		else if (git_reference_is_remote(ref))
+			result = git_branch_delete(ref);
+		else
+			giterr_set_str(GITERR_REFERENCE, CUnicodeUtils::GetUTF8(L"unsupported reference type: " + reference));
+
+		git_reference_free(ref);
+		git_repository_free(repo);
+		return result;
+	}
+	else
+	{
+		CString cmd, shortname;
+		if (GetShortName(reference, shortname, _T("refs/heads/")))
+			cmd.Format(_T("git.exe branch -D -- %s"), shortname);
+		else if (GetShortName(reference, shortname, _T("refs/tags/")))
+			cmd.Format(_T("git.exe tag -d -- %s"), shortname);
+		else if (GetShortName(reference, shortname, _T("refs/remotes/")))
+			cmd.Format(_T("git.exe branch -r -D -- %s"), shortname);
+		else
+		{
+			gitLastErr = L"unsupported reference type: " + reference;
+			return -1;
+		}
+
+		if (g_Git.Run(cmd, &gitLastErr, CP_UTF8))
+			return -1;
+
+		gitLastErr.Empty();
+		return 0;
 	}
 }

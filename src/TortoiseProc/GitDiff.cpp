@@ -136,7 +136,13 @@ int CGitDiff::DiffNull(const CTGitPath *pPath, git_revnum_t rev1, bool bIsAdd, i
 				rev1.Left(g_Git.GetShortHASHLength()),
 				pPath->GetFileExtension());
 
-		g_Git.GetOneFile(rev1,*pPath,file1);
+		if (g_Git.GetOneFile(rev1, *pPath, file1))
+		{
+			CString out;
+			out.Format(IDS_STATUSLIST_CHECKOUTFILEFAILED, pPath->GetGitPathString(), rev1, file1);
+			CMessageBox::Show(nullptr, g_Git.GetGitLastErr(out, CGit::GIT_CMD_GETONEFILE), _T("TortoiseGit"), MB_OK);
+			return -1;
+		}
 	}
 	else
 	{
@@ -410,7 +416,13 @@ int CGitDiff::Diff(const CTGitPath * pPath, const CTGitPath * pPath2, git_revnum
 				rev1.Left(g_Git.GetShortHASHLength()),
 				pPath->GetFileExtension());
 		title1 = pPath->GetFileOrDirectoryName() + _T(":") + rev1.Left(g_Git.GetShortHASHLength());
-		g_Git.GetOneFile(rev1,*pPath,file1);
+		if (g_Git.GetOneFile(rev1, *pPath, file1))
+		{
+			CString out;
+			out.Format(IDS_STATUSLIST_CHECKOUTFILEFAILED, pPath->GetGitPathString(), rev1, file1);
+			CMessageBox::Show(nullptr, g_Git.GetGitLastErr(out, CGit::GIT_CMD_GETONEFILE), _T("TortoiseGit"), MB_OK);
+			return -1;
+		}
 		::SetFileAttributes(file1, FILE_ATTRIBUTE_READONLY);
 	}
 	else
@@ -449,7 +461,13 @@ int CGitDiff::Diff(const CTGitPath * pPath, const CTGitPath * pPath2, git_revnum
 				rev2.Left(g_Git.GetShortHASHLength()),
 				fileName.GetFileExtension());
 		title2 = fileName.GetFileOrDirectoryName() + _T(":") + rev2.Left(g_Git.GetShortHASHLength());
-		g_Git.GetOneFile(rev2, fileName, file2);
+		if (g_Git.GetOneFile(rev2, fileName, file2))
+		{
+			CString out;
+			out.Format(IDS_STATUSLIST_CHECKOUTFILEFAILED, pPath->GetGitPathString(), rev2, file2);
+			CMessageBox::Show(nullptr, g_Git.GetGitLastErr(out, CGit::GIT_CMD_GETONEFILE), _T("TortoiseGit"), MB_OK);
+			return -1;
+		}
 		::SetFileAttributes(file2, FILE_ATTRIBUTE_READONLY);
 	}
 	else

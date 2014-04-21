@@ -1124,7 +1124,7 @@ void CRepositoryBrowser::FileSaveAs(const CString path)
 		if (g_Git.GetOneFile(m_sRevision, gitPath, filename))
 		{
 			out.Format(IDS_STATUSLIST_CHECKOUTFILEFAILED, gitPath.GetGitPathString(), m_sRevision, filename);
-			MessageBox(out, _T("TortoiseGit"), MB_OK);
+			MessageBox(g_Git.GetGitLastErr(out, CGit::GIT_CMD_GETONEFILE), _T("TortoiseGit"), MB_ICONERROR);
 			return;
 		}
 	}
@@ -1195,7 +1195,7 @@ void CRepositoryBrowser::OpenFile(const CString path, eOpenType mode, bool isSub
 	{
 		CString out;
 		out.Format(IDS_STATUSLIST_CHECKOUTFILEFAILED, gitPath.GetGitPathString(), m_sRevision, file);
-		MessageBox(out, _T("TortoiseGit"), MB_OK);
+		MessageBox(g_Git.GetGitLastErr(out, CGit::GIT_CMD_GETONEFILE), _T("TortoiseGit"), MB_ICONERROR);
 		return;
 	}
 
