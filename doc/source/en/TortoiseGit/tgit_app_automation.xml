@@ -447,8 +447,8 @@ Don't touch these lines:
 							<entry condition="pot">:ignore</entry>
 							<entry>
 								Adds all targets in <option>/path</option> to the
-								ignore list, i.e. adds the <literal>svn:ignore</literal>
-								property to those files.
+								ignore list, i.e. adds the <literal>.gitignore</literal>
+								file to those files.
 							</entry>
 						</row>
 						<row>
@@ -618,13 +618,11 @@ Don't touch these lines:
 			Examples (which should be entered on one line):
 <screen>
 TortoiseGitProc.exe /command:commit
-                 /path:"c:\svn_wc\file1.txt*c:\svn_wc\file2.txt"
-                 /logmsg:"test log message" /closeonend:0
+                 /path:"d:\git_wc\file1.txt*c:\git_wc\file2.txt"
+                 /logmsg:"test log message" /closeonend:2
 
-TortoiseGitProc.exe /command:update /path:"c:\svn_wc\" /closeonend:0
-
-TortoiseGitProc.exe /command:log /path:"c:\svn_wc\file1.txt"
-                 /startrev:50 /endrev:60 /closeonend:0
+TortoiseGitProc.exe /command:log /path:"c:\git_wc\file1.txt"
+                 /startrev:master~100 /endrev:master
 </screen>
 		</para>
 	</sect1>
