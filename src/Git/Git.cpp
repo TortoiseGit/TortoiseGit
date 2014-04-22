@@ -2322,7 +2322,7 @@ int CGit::GetOneFile(const CString &Refname, const CTGitPath &path, const CStrin
 			return -1;
 		}
 		git_buf buf = { 0 };
-		if (git_blob_filtered_content(&buf, blob, CUnicodeUtils::GetUTF8(path.GetGitPathString()), 1))
+		if (git_blob_filtered_content(&buf, blob, CUnicodeUtils::GetUTF8(path.GetGitPathString()), 0))
 		{
 			git_blob_free(blob);
 			git_tree_entry_free(entry);
