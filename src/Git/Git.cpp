@@ -711,43 +711,14 @@ CString CGit::GetCurrentBranch(bool fallback)
 
 }
 
-CString CGit::GetSymbolicRef(const wchar_t* symbolicRefName, bool bStripRefsHeads)
+CString CGit::GetSymbolicRef()
 {
+	// return symbolic name of HEAD or empty string (e.g. on detached head)
+	// must also return the symbolic name of HEAD in unborn state
+	// NOTE: cannot use libgit2 git_repository_head since it fails for unborn state
 	CString refName;
-	if(this->m_IsUseGitDLL)
-	{
-		unsigned char sha1[20] = { 0 };
-		int flag = 0;
-
-		CAutoLocker lock(g_Git.m_critGitDllSec);
-		const char *refs_heads_master = nullptr;
-		try
-		{
-			refs_heads_master = git_resolve_ref(CUnicodeUtils::GetUTF8(CString(symbolicRefName)), sha1, 0, &flag);
-		}
-		catch (const char *err)
-		{
-			::MessageBox(NULL, _T("Could not resolve ref ") + CString(symbolicRefName) + _T(".\nlibgit reports:\n") + CString(err), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
-		}
-		if(refs_heads_master && (flag&REF_ISSYMREF))
-		{
-			StringAppend(&refName,(BYTE*)refs_heads_master);
-			if(bStripRefsHeads)
-				refName = StripRefName(refName);
-		}
-
-	}
-	else
-	{
-		CString cmd;
-		cmd.Format(L"git.exe symbolic-ref %s", symbolicRefName);
-		if (Run(cmd, &refName, NULL, CP_UTF8) != 0)
-			return CString();//Error
-		int iStart = 0;
-		refName = refName.Tokenize(L"\n", iStart);
-		if(bStripRefsHeads)
-			refName = StripRefName(refName);
-	}
+	if (GetCurrentBranchFromFile(g_Git.m_CurrentDir, refName))
+		return _T("");
 	return refName;
 }
 

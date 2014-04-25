@@ -416,7 +416,10 @@ void CBrowseRefsDlg::Refresh(CString selectRef)
 	{
 		if(selectRef == "HEAD")
 		{
-			selectRef = g_Git.GetSymbolicRef(selectRef, false);
+			if (g_Git.GetCurrentBranchFromFile(g_Git.m_CurrentDir, selectRef))
+				selectRef.Empty();
+			else
+				selectRef = L"refs/heads/" + selectRef;
 		}
 	}
 	else
