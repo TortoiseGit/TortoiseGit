@@ -613,7 +613,7 @@ int CGit::SetConfigValue(const CString& key, const CString& value, CONFIG_TYPE t
 
 		try
 		{
-			return get_set_config(keya, valuea, type);
+			return [=]() { return get_set_config(keya, valuea, type); }();
 		}
 		catch (const char *msg)
 		{
@@ -663,7 +663,7 @@ int CGit::UnsetConfigValue(const CString& key, CONFIG_TYPE type, int encoding)
 
 		try
 		{
-			return get_set_config(keya, nullptr, type);
+			return [=]() { return get_set_config(keya, nullptr, type); }();
 		}
 		catch (const char *msg)
 		{
