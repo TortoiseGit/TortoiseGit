@@ -2959,8 +2959,14 @@ int CGit::DeleteRef(const CString& reference)
 		if (git_repository_open(&repo, CUnicodeUtils::GetUTF8(CTGitPath(m_CurrentDir).GetGitPathString())))
 			return -1;
 
+		CStringA refA;
+		if (reference.Right(3) == _T("^{}"))
+			refA = CUnicodeUtils::GetUTF8(reference.Left(reference.GetLength() - 3));
+		else
+			refA = CUnicodeUtils::GetUTF8(reference);
+
 		git_reference *ref = nullptr;
-		if (git_reference_lookup(&ref, repo, CUnicodeUtils::GetUTF8(reference)))
+		if (git_reference_lookup(&ref, repo, refA))
 		{
 			git_repository_free(repo);
 			return -1;
