@@ -711,15 +711,26 @@ CString CGit::GetCurrentBranch(bool fallback)
 
 }
 
-CString CGit::GetSymbolicRef()
+void CGit::GetRemoteTrackedBranch(const CString& localBranch, CString& pullRemote, CString& pullBranch)
 {
-	// return symbolic name of HEAD or empty string (e.g. on detached head)
-	// must also return the symbolic name of HEAD in unborn state
-	// NOTE: cannot use libgit2 git_repository_head since it fails for unborn state
+	if (localBranch.IsEmpty())
+		return;
+
+	CString configName;
+	configName.Format(L"branch.%s.remote", localBranch);
+	pullRemote =  GetConfigValue(configName);
+
+	//Select pull-branch from current branch
+	configName.Format(L"branch.%s.merge", localBranch);
+	pullBranch = StripRefName(GetConfigValue(configName));
+}
+
+void CGit::GetRemoteTrackedBranchForHEAD(CString& remote, CString& branch)
+{
 	CString refName;
-	if (GetCurrentBranchFromFile(g_Git.m_CurrentDir, refName))
-		return _T("");
-	return refName;
+	if (GetCurrentBranchFromFile(m_CurrentDir, refName))
+		return;
+	GetRemoteTrackedBranch(StripRefName(refName), remote, branch);
 }
 
 CString CGit::GetFullRefName(const CString& shortRefName)

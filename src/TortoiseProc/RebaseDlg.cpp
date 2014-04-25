@@ -478,14 +478,8 @@ void CRebaseDlg::LoadBranchInfo()
 	else
 	{
 		//Select pull-remote from current branch
-		CString currentBranch = g_Git.GetSymbolicRef();
-		CString configName;
-		configName.Format(L"branch.%s.remote", currentBranch);
-		CString pullRemote = g_Git.GetConfigValue(configName);
-
-		//Select pull-branch from current branch
-		configName.Format(L"branch.%s.merge", currentBranch);
-		CString pullBranch = CGit::StripRefName(g_Git.GetConfigValue(configName));
+		CString pullRemote, pullBranch;
+		g_Git.GetRemoteTrackedBranchForHEAD(pullRemote, pullBranch);
 
 		CString defaultUpstream;
 		defaultUpstream.Format(L"remotes/%s/%s", pullRemote, pullBranch);

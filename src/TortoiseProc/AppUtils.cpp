@@ -2399,14 +2399,8 @@ bool CAppUtils::Fetch(CString remoteName, bool allowRebase, bool allRemotes)
 		}
 		else if (userResponse == IDC_PROGRESS_BUTTON1 + 1)
 		{
-			CString currentBranch = g_Git.GetSymbolicRef();
-			CString configName;
-			configName.Format(_T("branch.%s.remote"), currentBranch);
-			CString pullRemote = g_Git.GetConfigValue(configName);
-
-			//Select pull-branch from current branch
-			configName.Format(_T("branch.%s.merge"), currentBranch);
-			CString pullBranch = CGit::StripRefName(g_Git.GetConfigValue(configName));
+			CString pullRemote, pullBranch;
+			g_Git.GetRemoteTrackedBranchForHEAD(pullRemote, pullBranch);
 
 			CString defaultUpstream;
 			if (!pullRemote.IsEmpty() && !pullBranch.IsEmpty())

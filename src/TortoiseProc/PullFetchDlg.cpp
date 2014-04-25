@@ -202,14 +202,15 @@ BOOL CPullFetchDlg::OnInitDialog()
 void CPullFetchDlg::Refresh()
 {
 	//Select pull-remote from current branch
-	CString currentBranch = g_Git.GetSymbolicRef();
-	CString configName;
-	configName.Format(L"branch.%s.remote", currentBranch);
-	CString pullRemote = this->m_configPullRemote = g_Git.GetConfigValue(configName);
+	CString currentBranch;
+	if (g_Git.GetCurrentBranchFromFile(g_Git.m_CurrentDir, currentBranch))
+		currentBranch.Empty();
 
-	//Select pull-branch from current branch
-	configName.Format(L"branch.%s.merge", currentBranch);
-	CString pullBranch = m_configPullBranch = CGit::StripRefName(g_Git.GetConfigValue(configName));
+	CString pullRemote, pullBranch;
+	g_Git.GetRemoteTrackedBranch(currentBranch, pullRemote, pullBranch);
+	m_configPullRemote = pullRemote;
+	m_configPullBranch  = pullBranch;
+
 	if (pullBranch.IsEmpty())
 		m_RemoteBranch.AddString(currentBranch);
 	else
