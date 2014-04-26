@@ -394,8 +394,8 @@ BEGIN
     CONTROL         "Assume valid/unchanged (""Needs-lock"" in TortoiseSVN)",IDC_SHOWREADONLYOVERLAY,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,127,270,10
     CONTROL         "Deleted",IDC_SHOWDELETEDOVERLAY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,142,270,10
-    LTEXT           "",IDC_HANDLERHINT,14,159,270,36
-    PUSHBUTTON      "Start registry editor",IDC_REGEDT,172,196,121,14
+    LTEXT           "",IDC_HANDLERHINT,14,159,270,24
+    PUSHBUTTON      "Start registry editor",IDC_REGEDT,163,188,121,14
 END
 
 IDD_SETTINGSPROXY DIALOGEX 0, 0, 300, 217
