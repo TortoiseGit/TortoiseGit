@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2012 - TortoiseSVN
-// Copyright (C) 2012-2013 - TortoiseGit
+// Copyright (C) 2012-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -497,7 +497,7 @@ void CRevisionGraphDlg::OnMenuhelp()
 
 void CRevisionGraphDlg::OnViewCompareheadrevisions()
 {
-	m_Graph.CompareRevs(true);
+	m_Graph.CompareRevs(_T("HEAD"));
 }
 
 void CRevisionGraphDlg::OnViewComparerevisions()

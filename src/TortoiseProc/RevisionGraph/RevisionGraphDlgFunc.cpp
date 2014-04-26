@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2011 - TortoiseSVN
-// Copyright (C) 2012-2013 - TortoiseGit
+// Copyright (C) 2012-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -428,10 +428,10 @@ STRING_VECTOR CRevisionGraphWnd::GetFriendRefNames(ogdf::node v, CGit::REF_TYPE 
 	}
 }
 
-void CRevisionGraphWnd::CompareRevs(bool bHead)
+void CRevisionGraphWnd::CompareRevs(const CString& revTo)
 {
 	ASSERT(m_SelectedEntry1 != NULL);
-	ASSERT(bHead || m_SelectedEntry2 != NULL);
+	ASSERT(!revTo.IsEmpty() || m_SelectedEntry2 != NULL);
 
 //	bool alternativeTool = !!(GetAsyncKeyState(VK_SHIFT) & 0x8000);
 
@@ -440,7 +440,7 @@ void CRevisionGraphWnd::CompareRevs(bool bHead)
 	sCmd.Format(_T("/command:showcompare %s /revision1:%s /revision2:%s"),
 			this->m_sPath.IsEmpty() ?  _T("") : (_T("/path:\"") + this->m_sPath + _T("\"")),
 			GetFriendRefName(m_SelectedEntry1),
-			bHead ?  _T("HEAD"): GetFriendRefName(m_SelectedEntry2));
+			!revTo.IsEmpty() ? revTo : GetFriendRefName(m_SelectedEntry2));
 
 	CAppUtils::RunTortoiseGitProc(sCmd);
 

@@ -64,6 +64,7 @@ enum RevisionGraphContextMenuCommands
 	ID_BROWSEREPO,
 	ID_COMPAREREVS = 0x100,
 	ID_COMPAREHEADS,
+	ID_COMPAREWT,
 	ID_UNIDIFFREVS,
 	ID_UNIDIFFHEADS,
 	ID_MERGETO = 0x300,
@@ -1479,6 +1480,8 @@ void CRevisionGraphWnd::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 
 		AppendMenu(popup, IDS_REVGRAPH_POPUP_COMPAREHEADS, ID_COMPAREHEADS);
 		AppendMenu(popup, IDS_REVGRAPH_POPUP_UNIDIFFHEADS,  ID_UNIDIFFHEADS);
+
+		AppendMenu(popup, IDS_LOG_POPUP_COMPARE, ID_COMPAREWT);
 	}
 
 	if (bothPresent)
@@ -1538,9 +1541,12 @@ void CRevisionGraphWnd::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 		break;
 	case ID_COMPAREHEADS:
 		if (m_SelectedEntry1 != NULL)
-			CompareRevs(true);
+			CompareRevs(_T("HEAD"));
 		break;
-
+	case ID_COMPAREWT:
+		if (m_SelectedEntry1 != NULL)
+			CompareRevs(CGitHash().ToString());
+		break;
 
 #if 0
 	case ID_COMPAREREVS:
