@@ -206,11 +206,10 @@ void CSetOverlayHandlers::UpdateInfoLabel()
 
 void CSetOverlayHandlers::OnBnClickedRegedt()
 {
-	PWSTR pszPath = NULL;
-	if (SHGetKnownFolderPath(FOLDERID_Windows, KF_FLAG_CREATE, NULL, &pszPath) == S_OK)
+	TCHAR szPath[MAX_PATH] = { 0 };
+	if (SUCCEEDED(SHGetFolderPath(nullptr, CSIDL_WINDOWS | CSIDL_FLAG_CREATE, nullptr, SHGFP_TYPE_CURRENT, szPath)))
 	{
-		CString path = pszPath;
-		CoTaskMemFree(pszPath);
+		CString path = szPath;
 		path += L"\\regedit.exe";
 
 		// regedit stores the key it showed last in
