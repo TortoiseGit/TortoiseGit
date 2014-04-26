@@ -106,16 +106,6 @@ CFileTextLines::UnicodeType CFileTextLines::CheckUnicodeType(LPVOID pBuffer, int
 	bool bNonANSI = false;
 	int nNeedData = 0;
 	int i=0;
-	// run fast for ascii
-	for (; i<(cb-7); i+=8)
-	{
-		if ((*(UINT64 *)&pVal8[i] & 0x8080808080808080)!=0) // any non ASCII
-		{
-			bNonANSI = true;
-			break;
-		}
-	}
-	// continue slow
 	int nullcount = 0;
 	if (!bNonANSI)
 	{
