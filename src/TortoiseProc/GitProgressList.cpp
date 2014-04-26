@@ -2052,7 +2052,7 @@ bool CGitProgressList::CmdClone(CString& sWindowTitle, bool& /*localoperation*/)
 	git_remote_callbacks callbacks = GIT_REMOTE_CALLBACKS_INIT;
 
 	callbacks.update_tips = RemoteUpdatetipsCallback;
-	callbacks.progress = RemoteProgressCallback;
+	callbacks.sideband_progress = RemoteProgressCallback;
 	callbacks.completion = RemoteCompletionCallback;
 	callbacks.transfer_progress = FetchCallback;
 	callbacks.credentials = CAppUtils::Git2GetUserPassword;
@@ -2160,7 +2160,7 @@ bool CGitProgressList::CmdFetch(CString& sWindowTitle, bool& /*localoperation*/)
 		git_remote_callbacks callbacks = GIT_REMOTE_CALLBACKS_INIT;
 
 		callbacks.update_tips = RemoteUpdatetipsCallback;
-		callbacks.progress = RemoteProgressCallback;
+		callbacks.sideband_progress = RemoteProgressCallback;
 		callbacks.transfer_progress = FetchCallback;
 		callbacks.completion = RemoteCompletionCallback;
 		callbacks.credentials = CAppUtils::Git2GetUserPassword;
