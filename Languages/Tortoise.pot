@@ -8463,6 +8463,10 @@ msgstr ""
 msgid "Start bisect mode..."
 msgstr ""
 
+#. Resource IDs: (1542)
+msgid "Start registry editor"
+msgstr ""
+
 #. Resource IDs: (14)
 msgid "Starts a git server running git protocol"
 msgstr ""

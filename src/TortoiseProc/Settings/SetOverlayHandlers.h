@@ -45,6 +45,7 @@ protected:
 	virtual BOOL OnInitDialog();
 	virtual BOOL OnApply();
 	afx_msg void OnChange();
+	afx_msg void OnBnClickedRegedt();
 
 	DECLARE_MESSAGE_MAP()
 
