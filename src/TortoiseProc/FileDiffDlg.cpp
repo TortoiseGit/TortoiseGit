@@ -825,7 +825,7 @@ void CFileDiffDlg::SetURLLabels(int mask)
 	{
 		SetDlgItemText(IDC_FIRSTURL, m_rev1.m_CommitHash.ToString().Left(8)+_T(": ")+m_rev1.GetSubject());
 		m_tooltips.AddTool(IDC_FIRSTURL,
-			CLoglistUtils::FormatDateAndTime(m_rev1.GetAuthorDate(), DATE_SHORTDATE, false) + _T("  ") + m_rev1.GetAuthorName());
+			CLoglistUtils::FormatDateAndTime(m_rev1.GetAuthorDate(), DATE_SHORTDATE) + _T("  ") + m_rev1.GetAuthorName());
 
 	}
 
@@ -834,7 +834,7 @@ void CFileDiffDlg::SetURLLabels(int mask)
 		SetDlgItemText(IDC_SECONDURL,m_rev2.m_CommitHash.ToString().Left(8)+_T(": ")+m_rev2.GetSubject());
 
 		m_tooltips.AddTool(IDC_SECONDURL,
-			CLoglistUtils::FormatDateAndTime(m_rev2.GetAuthorDate(), DATE_SHORTDATE, false) + _T("  ") + m_rev2.GetAuthorName());
+			CLoglistUtils::FormatDateAndTime(m_rev2.GetAuthorDate(), DATE_SHORTDATE) + _T("  ") + m_rev2.GetAuthorName());
 	}
 
 	this->GetDlgItem(IDC_REV2GROUP)->SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_FILEDIFF_VERSION2BASE)));
