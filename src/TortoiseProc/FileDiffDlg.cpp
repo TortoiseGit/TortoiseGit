@@ -889,6 +889,8 @@ BOOL CFileDiffDlg::PreTranslateMessage(MSG* pMsg)
 		{
 		case 'A':
 			{
+				if (GetFocus() != GetDlgItem(IDC_FILELIST))
+					break;
 				if (GetAsyncKeyState(VK_CONTROL)&0x8000)
 				{
 					// select all entries
@@ -903,6 +905,8 @@ BOOL CFileDiffDlg::PreTranslateMessage(MSG* pMsg)
 		case 'C':
 		case VK_INSERT:
 			{
+				if (GetFocus() != GetDlgItem(IDC_FILELIST))
+					break;
 				if (GetAsyncKeyState(VK_CONTROL)&0x8000)
 				{
 					CopySelectionToClipboard();
