@@ -48,6 +48,7 @@
 #define ID_GNUDIFFCOMPARE 8
 #define ID_REVERT1 9
 #define ID_REVERT2 10
+#define ID_LOGSUBMODULE 11
 
 BOOL	CFileDiffDlg::m_bAscending = TRUE;
 int		CFileDiffDlg::m_nSortedColumn = -1;
@@ -577,6 +578,11 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 	CIconMenu popup;
 	if (popup.CreatePopupMenu())
 	{
+		int firstEntry = -1;
+		POSITION firstPos = m_cFileList.GetFirstSelectedItemPosition();
+		if (firstPos)
+			firstEntry = m_cFileList.GetNextSelectedItem(firstPos);
+
 		CString menuText;
 		popup.AppendMenuIcon(ID_COMPARE, IDS_LOG_POPUP_COMPARETWO, IDI_DIFF);
 		popup.AppendMenuIcon(ID_GNUDIFFCOMPARE, IDS_LOG_POPUP_GNUDIFF, IDI_DIFF);
@@ -587,9 +593,14 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 		popup.AppendMenuIcon(ID_REVERT2, menuText, IDI_REVERT);
 		popup.AppendMenu(MF_SEPARATOR, NULL);
 		popup.AppendMenuIcon(ID_LOG, IDS_FILEDIFF_LOG, IDI_LOG);
-		popup.AppendMenuIcon(ID_BLAME, IDS_FILEDIFF_POPBLAME, IDI_BLAME);
-		popup.AppendMenu(MF_SEPARATOR, NULL);
-		popup.AppendMenuIcon(ID_EXPORT, IDS_FILEDIFF_POPEXPORT, IDI_EXPORT);
+		if (firstEntry >= 0 && !m_arFilteredList[firstEntry]->IsDirectory())
+		{
+			popup.AppendMenuIcon(ID_BLAME, IDS_FILEDIFF_POPBLAME, IDI_BLAME);
+			popup.AppendMenu(MF_SEPARATOR, NULL);
+			popup.AppendMenuIcon(ID_EXPORT, IDS_FILEDIFF_POPEXPORT, IDI_EXPORT);
+		}
+		else if (firstEntry >= 0)
+			popup.AppendMenuIcon(ID_LOGSUBMODULE, IDS_MENULOGSUBMODULE, IDI_LOG);
 		popup.AppendMenu(MF_SEPARATOR, NULL);
 		popup.AppendMenuIcon(ID_SAVEAS, IDS_FILEDIFF_POPSAVELIST, IDI_SAVEAS);
 		popup.AppendMenuIcon(ID_CLIPBOARD_PATH, IDS_STATUSLIST_CONTEXT_COPY, IDI_COPYCLIP);
@@ -641,12 +652,15 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 			}
 			break;
 		case ID_LOG:
+		case ID_LOGSUBMODULE:
 			{
 				POSITION pos = m_cFileList.GetFirstSelectedItemPosition();
 				while (pos)
 				{
 					int index = m_cFileList.GetNextSelectedItem(pos);
 					CString cmd = _T("/command:log");
+					if (cmd == ID_LOGSUBMODULE)
+						cmd += _T(" /submodule");
 					cmd += _T(" /path:\"")+m_arFilteredList[index]->GetWinPathString()+_T("\" ");
 					cmd += _T(" /endrev:")+m_rev1.m_CommitHash.ToString();
 					CAppUtils::RunTortoiseGitProc(cmd);
