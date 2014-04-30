@@ -116,11 +116,6 @@ public:
 		drivetypecache[0] = DRIVE_REMOVABLE;
 		drivetypecache[1] = DRIVE_REMOVABLE;
 		drivetypepathcache[0] = 0;
-		TCHAR szBuffer[5];
-		GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SDECIMAL, &szDecSep[0], _countof(szDecSep));
-		GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_STHOUSAND, &szThousandsSep[0], _countof(szThousandsSep));
-		GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SGROUPING, &szBuffer[0], _countof(szBuffer));
-		GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_INEGNUMBER, &szBuffer[0], _countof(szBuffer));
 		sAdminDirCacheKey.reserve(MAX_PATH);		// MAX_PATH as buffer reservation ok.
 		nocontextpaths = CRegStdString(_T("Software\\TortoiseGit\\NoContextPaths"), _T(""));
 		m_critSec.Init();

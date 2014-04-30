@@ -114,40 +114,6 @@
 			<xref linkend="tgit-app-internals-overlays"/>.
 		</para>
 	</sect2>
-	<sect2>
-		<title>TortoiseGit Columns In Windows Explorer</title>
-		<indexterm>
-			<primary>Explorer Columns</primary>
-		</indexterm>
-		<para>
-			The same information which is available from the icon overlays
-			(and much more) can be displayed as additional columns in
-			Windows Explorer's Details View.
-		</para>
-		<para>
-			Simply right click on one of the headings of a column, choose
-			<guimenuitem>More...</guimenuitem> from the context menu displayed. A
-			dialog will appear where you can specify the columns and their
-			order, which is displayed in the <quote>Detailed View</quote>. Scroll down
-			until the entries starting with Git come into view. Check the
-			ones you would like to have displayed and close the dialog by
-			pressing <guibutton>OK</guibutton>. The columns will be appended
-			to the right of those currently displayed. You can reorder them by
-			drag and drop, or resize them, so that they fit your needs.
-		</para>
-		<important>
-			<para>The additional columns in the Windows Explorer are not
-			available on Vista, since Microsoft decided to not allow such
-			columns for <emphasis>all</emphasis> files anymore but only
-			for specific file types.</para>
-		</important>
-		<tip>
-			<para>
-				If you want the current layout to be displayed in all your
-				working trees, you may want to make this the default view.
-			</para>
-		</tip>
-	</sect2>
 	<sect2 id="tgit-dug-wcstatus-2">
 		<?dbhh topicname="HIDD_CHANGEDFILES"?>
 		<title>Status</title>
