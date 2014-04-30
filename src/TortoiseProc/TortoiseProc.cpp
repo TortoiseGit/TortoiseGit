@@ -25,6 +25,7 @@
 #include "Hooks.h"
 #include "AppUtils.h"
 #include "PathUtils.h"
+#include "StringUtils.h"
 #include "UnicodeUtils.h"
 #include "MessageBox.h"
 #include "DirFileEnum.h"
@@ -665,7 +666,7 @@ void CTortoiseProcApp::DoInitializeJumpList(const CString& appid)
 		return;
 
 	CString sTemp = CString(MAKEINTRESOURCE(IDS_MENUSETTINGS));
-	sTemp.Remove('&');
+	CStringUtils::RemoveAccelerators(sTemp);
 
 	ATL::CComPtr<IShellLink> psl;
 	hr = CreateShellLink(_T("/command:settings"), (LPCTSTR)sTemp, 20, &psl);
@@ -673,7 +674,7 @@ void CTortoiseProcApp::DoInitializeJumpList(const CString& appid)
 		poc->AddObject(psl);
 	}
 	sTemp = CString(MAKEINTRESOURCE(IDS_MENUHELP));
-	sTemp.Remove('&');
+	CStringUtils::RemoveAccelerators(sTemp);
 	psl.Release(); // Need to release the object before calling operator&()
 	hr = CreateShellLink(_T("/command:help"), (LPCTSTR)sTemp, 19, &psl);
 	if (SUCCEEDED(hr)) {
