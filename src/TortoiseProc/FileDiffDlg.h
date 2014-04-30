@@ -162,6 +162,7 @@ private:
 
 	int					m_nIconFolder;
 
+	bool				m_bIsBare;
 	CTGitPath			m_path1;
 	GitRev				m_peg;
 	GitRev				m_rev1;

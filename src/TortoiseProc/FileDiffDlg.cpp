@@ -68,6 +68,7 @@ CFileDiffDlg::CFileDiffDlg(CWnd* pParent /*=NULL*/)
 	, m_bIgnoreSpaceChange(false)
 	, m_bIgnoreAllSpace(false)
 	, m_bIgnoreBlankLines(false)
+	, m_bIsBare(false)
 {
 	m_bLoadingRef=FALSE;
 }
@@ -268,6 +269,8 @@ BOOL CFileDiffDlg::OnInitDialog()
 	AddAnchor(IDC_LOG, TOP_RIGHT);
 
 	EnableSaveRestore(_T("FileDiffDlg"));
+
+	m_bIsBare = GitAdminDir().IsBareRepo(g_Git.m_CurrentDir);
 
 	if(this->m_strRev1.IsEmpty())
 		this->m_ctrRev1Edit.SetWindowText(this->m_rev1.m_CommitHash.ToString());
@@ -587,16 +590,22 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 		popup.AppendMenuIcon(ID_COMPARE, IDS_LOG_POPUP_COMPARETWO, IDI_DIFF);
 		popup.AppendMenuIcon(ID_GNUDIFFCOMPARE, IDS_LOG_POPUP_GNUDIFF, IDI_DIFF);
 		popup.AppendMenu(MF_SEPARATOR, NULL);
-		menuText.Format(IDS_FILEDIFF_POPREVERTTOREV, m_rev1.m_CommitHash.ToString().Left(g_Git.GetShortHASHLength()));
-		popup.AppendMenuIcon(ID_REVERT1, menuText, IDI_REVERT);
-		menuText.Format(IDS_FILEDIFF_POPREVERTTOREV, m_rev2.m_CommitHash.ToString().Left(g_Git.GetShortHASHLength()));
-		popup.AppendMenuIcon(ID_REVERT2, menuText, IDI_REVERT);
-		popup.AppendMenu(MF_SEPARATOR, NULL);
+		if (!m_bIsBare)
+		{
+			menuText.Format(IDS_FILEDIFF_POPREVERTTOREV, m_rev1.m_CommitHash.ToString().Left(g_Git.GetShortHASHLength()));
+			popup.AppendMenuIcon(ID_REVERT1, menuText, IDI_REVERT);
+			menuText.Format(IDS_FILEDIFF_POPREVERTTOREV, m_rev2.m_CommitHash.ToString().Left(g_Git.GetShortHASHLength()));
+			popup.AppendMenuIcon(ID_REVERT2, menuText, IDI_REVERT);
+			popup.AppendMenu(MF_SEPARATOR, NULL);
+		}
 		popup.AppendMenuIcon(ID_LOG, IDS_FILEDIFF_LOG, IDI_LOG);
 		if (firstEntry >= 0 && !m_arFilteredList[firstEntry]->IsDirectory())
 		{
-			popup.AppendMenuIcon(ID_BLAME, IDS_FILEDIFF_POPBLAME, IDI_BLAME);
-			popup.AppendMenu(MF_SEPARATOR, NULL);
+			if (!m_bIsBare)
+			{
+				popup.AppendMenuIcon(ID_BLAME, IDS_FILEDIFF_POPBLAME, IDI_BLAME);
+				popup.AppendMenu(MF_SEPARATOR, NULL);
+			}
 			popup.AppendMenuIcon(ID_EXPORT, IDS_FILEDIFF_POPEXPORT, IDI_EXPORT);
 		}
 		else if (firstEntry >= 0)
