@@ -197,7 +197,7 @@ BOOL CTortoiseProcApp::InitInstance()
 		UINT ret = CMessageBox::Show(NULL, IDS_PROC_NOMSYSGIT, IDS_APPNAME, 3, IDI_HAND, IDS_PROC_SETMSYSGITPATH, IDS_PROC_GOTOMSYSGITWEBSITE, IDS_ABORTBUTTON);
 		if(ret == 2)
 		{
-			ShellExecute(NULL, NULL, _T("http://code.google.com/p/msysgit/"), NULL, NULL, SW_SHOW);
+			ShellExecute(NULL, NULL, _T("http://msysgit.github.io/"), NULL, NULL, SW_SHOW);
 		}
 		else if(ret == 1)
 		{
@@ -212,7 +212,7 @@ BOOL CTortoiseProcApp::InitInstance()
 		if (ret == 1)
 		{
 			CMessageBox::RemoveRegistryKey(_T("OldMsysgitVersionWarning")); // only store answer if it is "Ignore"
-			ShellExecute(NULL, NULL, _T("http://code.google.com/p/msysgit/"), NULL, NULL, SW_SHOW);
+			ShellExecute(NULL, NULL, _T("http://msysgit.github.io/"), NULL, NULL, SW_SHOW);
 			return FALSE;
 		}
 		else if (ret == 2)
