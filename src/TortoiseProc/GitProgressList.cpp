@@ -2118,77 +2118,69 @@ bool CGitProgressList::CmdFetch(CString& sWindowTitle, bool& /*localoperation*/)
 		ReportGitError();
 		return false;
 	}
+	
+	CSmartAnimation animate(m_pAnimate);
+
 	CAutoRemote remote;
-	bool ret = true;
-
-	do
+	// first try with a named remote (e.g. "origin")
+	if (git_remote_load(remote.GetPointer(), repo, url) < 0) 
 	{
-		CSmartAnimation animate(m_pAnimate);
-
-		// first try with a named remote (e.g. "origin")
-		if (git_remote_load(remote.GetPointer(), repo, url) < 0) 
-		{
-			// retry with repository located at a specific url
-			if (git_remote_create_anonymous(remote.GetPointer(), repo, url, nullptr) < 0)
-			{
-				ReportGitError();
-				ret = false;
-				break;
-			}
-		}
-
-		git_remote_callbacks callbacks = GIT_REMOTE_CALLBACKS_INIT;
-
-		callbacks.update_tips = RemoteUpdatetipsCallback;
-		callbacks.sideband_progress = RemoteProgressCallback;
-		callbacks.transfer_progress = FetchCallback;
-		callbacks.completion = RemoteCompletionCallback;
-		callbacks.credentials = CAppUtils::Git2GetUserPassword;
-		callbacks.payload = this;
-
-		git_remote_set_callbacks(remote, &callbacks);
-		git_remote_set_autotag(remote, (git_remote_autotag_option_t)m_AutoTag);
-
-		if (!m_RefSpec.IsEmpty() && git_remote_add_fetch(remote, CUnicodeUtils::GetUTF8(m_RefSpec)))
+		// retry with repository located at a specific url
+		if (git_remote_create_anonymous(remote.GetPointer(), repo, url, nullptr) < 0)
 		{
 			ReportGitError();
-			ret = false;
-			break;
+			return false;
 		}
+	}
 
-		// Connect to the remote end specifying that we want to fetch
-		// information from it.
-		if (git_remote_connect(remote, GIT_DIRECTION_FETCH) < 0) {
-			ReportGitError();
-			ret = false;
-			break;
-		}
+	git_remote_callbacks callbacks = GIT_REMOTE_CALLBACKS_INIT;
 
-		// Download the packfile and index it. This function updates the
-		// amount of received data and the indexer stats which lets you
-		// inform the user about progress.
-		if (git_remote_download(remote) < 0) {
-			ReportGitError();
-			ret = false;
-			break;
-		}
+	callbacks.update_tips = RemoteUpdatetipsCallback;
+	callbacks.sideband_progress = RemoteProgressCallback;
+	callbacks.transfer_progress = FetchCallback;
+	callbacks.completion = RemoteCompletionCallback;
+	callbacks.credentials = CAppUtils::Git2GetUserPassword;
+	callbacks.payload = this;
 
-		// Update the references in the remote's namespace to point to the
-		// right commits. This may be needed even if there was no packfile
-		// to download, which can happen e.g. when the branches have been
-		// changed but all the neede objects are available locally.
-		if (git_remote_update_tips(remote, nullptr, nullptr) < 0)
-		{
-			ReportGitError();
-			ret = false;
-			break;
-		}
+	git_remote_set_callbacks(remote, &callbacks);
+	git_remote_set_autotag(remote, (git_remote_autotag_option_t)m_AutoTag);
 
-		git_remote_disconnect(remote);
+	if (!m_RefSpec.IsEmpty() && git_remote_add_fetch(remote, CUnicodeUtils::GetUTF8(m_RefSpec)))
+	{
+		ReportGitError();
+		return false;
+	}
 
-	} while(0);
+	// Connect to the remote end specifying that we want to fetch
+	// information from it.
+	if (git_remote_connect(remote, GIT_DIRECTION_FETCH) < 0)
+	{
+		ReportGitError();
+		return false;
+	}
 
-	return ret;
+	// Download the packfile and index it. This function updates the
+	// amount of received data and the indexer stats which lets you
+	// inform the user about progress.
+	if (git_remote_download(remote) < 0)
+	{
+		ReportGitError();
+		return false;
+	}
+
+	// Update the references in the remote's namespace to point to the
+	// right commits. This may be needed even if there was no packfile
+	// to download, which can happen e.g. when the branches have been
+	// changed but all the neede objects are available locally.
+	if (git_remote_update_tips(remote, nullptr, nullptr) < 0)
+	{
+		ReportGitError();
+		return false;
+	}
+
+	git_remote_disconnect(remote);
+
+	return true;
 }
 
 bool CGitProgressList::CmdReset(CString& sWindowTitle, bool& /*localoperation*/)
@@ -2211,23 +2203,18 @@ bool CGitProgressList::CmdReset(CString& sWindowTitle, bool& /*localoperation*/)
 		ReportGitError();
 		return false;
 	}
-	bool ret = true;
 
-	do
+	CSmartAnimation animate(m_pAnimate);
+	CStringA revstr = CUnicodeUtils::GetUTF8(m_revision);
+	CAutoObject target;
+	git_revparse_single(target.GetPointer(), repo, revstr); // why no error checking?
+	if (git_reset(repo, target, (git_reset_t)(m_resetType + 1), nullptr, nullptr))
 	{
-		CSmartAnimation animate(m_pAnimate);
-		CStringA revstr = CUnicodeUtils::GetUTF8(m_revision);
-		CAutoObject target;
-		git_revparse_single(target.GetPointer(), repo, revstr); // why no error checking?
-		if (git_reset(repo, target, (git_reset_t)(m_resetType + 1), nullptr, nullptr))
-		{
-			ReportGitError();
-			ret = false;
-			break;
-		}
-	} while (0);
+		ReportGitError();
+		return false;
+	}
 
-	return ret;
+	return true;
 }
 
 
