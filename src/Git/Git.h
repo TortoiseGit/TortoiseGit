@@ -159,14 +159,14 @@ public:
 		GIT_CMD_DELETETAGBRANCH,
 		GIT_CMD_GETONEFILE,
 	} LIBGIT2_CMD;
-	bool UsingLibGit2(LIBGIT2_CMD cmd);
+	bool UsingLibGit2(LIBGIT2_CMD cmd) const;
 
-	CString GetHomeDirectory();
-	CString GetGitLocalConfig();
-	CString GetGitGlobalConfig();
-	CString GetGitGlobalXDGConfigPath();
-	CString GetGitGlobalXDGConfig();
-	CString GetGitSystemConfig();
+	CString GetHomeDirectory() const;
+	CString GetGitLocalConfig() const;
+	CString GetGitGlobalConfig() const;
+	CString GetGitGlobalXDGConfigPath() const;
+	CString GetGitGlobalXDGConfig() const;
+	CString GetGitSystemConfig() const;
 	static CStringA GetGitPathStringA(const CString &path);
 	static CString ms_LastMsysGitDir;	// the last msysgitdir added to the path, blank if none
 	static int ms_LastMsysGitVersion;
@@ -354,7 +354,7 @@ public:
 		return -1;
 	}
 
-	int GetShortHASHLength();
+	int GetShortHASHLength() const;
 
 	static BOOL GetShortName(CString ref, CString &shortname, CString prefix)
 	{

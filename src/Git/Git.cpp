@@ -2000,13 +2000,13 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 	return true;
 }
 
-CString CGit::GetHomeDirectory()
+CString CGit::GetHomeDirectory() const
 {
 	const wchar_t * homeDir = wget_windows_home_directory();
 	return CString(homeDir, (int)wcslen(homeDir));
 }
 
-CString CGit::GetGitLocalConfig()
+CString CGit::GetGitLocalConfig() const
 {
 	CString path;
 	g_GitAdminDir.GetAdminDirPath(m_CurrentDir, path);
@@ -2019,22 +2019,22 @@ CStringA CGit::GetGitPathStringA(const CString &path)
 	return CUnicodeUtils::GetUTF8(CTGitPath(path).GetGitPathString());
 }
 
-CString CGit::GetGitGlobalConfig()
+CString CGit::GetGitGlobalConfig() const
 {
 	return g_Git.GetHomeDirectory() + _T("\\.gitconfig");
 }
 
-CString CGit::GetGitGlobalXDGConfigPath()
+CString CGit::GetGitGlobalXDGConfigPath() const
 {
 	return g_Git.GetHomeDirectory() + _T("\\.config\\git");
 }
 
-CString CGit::GetGitGlobalXDGConfig()
+CString CGit::GetGitGlobalXDGConfig() const
 {
 	return g_Git.GetGitGlobalXDGConfigPath() + _T("\\config");
 }
 
-CString CGit::GetGitSystemConfig()
+CString CGit::GetGitSystemConfig() const
 {
 	const wchar_t * systemConfig = wget_msysgit_etc();
 	return CString(systemConfig, (int)wcslen(systemConfig));
@@ -2537,7 +2537,7 @@ int CGit::GetDiffPath(CTGitPathList *PathList, CGitHash *hash1, CGitHash *hash2,
 	return 0;
 }
 
-int CGit::GetShortHASHLength()
+int CGit::GetShortHASHLength() const
 {
 	return 7;
 }
@@ -2600,7 +2600,7 @@ CString CGit::GetShortName(const CString& ref, REF_TYPE *out_type)
 	return shortname;
 }
 
-bool CGit::UsingLibGit2(LIBGIT2_CMD cmd)
+bool CGit::UsingLibGit2(LIBGIT2_CMD cmd) const
 {
 	return ((1 << cmd) & m_IsUseLibGit2_mask) ? true : false;
 }
