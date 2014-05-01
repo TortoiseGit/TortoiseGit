@@ -2857,7 +2857,7 @@ int CGit::GetUnifiedDiff(const CTGitPath& path, const git_revnum_t& rev1, const 
 	{
 		CString cmd;
 		cmd = GetUnifiedDiffCmd(path, rev1, rev2, bMerge, bCombine, diffContext);
-		return g_Git.RunLogFile(cmd, patchfile, &gitLastErr);
+		return RunLogFile(cmd, patchfile, &gitLastErr);
 	}
 }
 
@@ -2921,7 +2921,7 @@ int CGit::GitRevert(int parent, const CGitHash &hash)
 			merge.Format(_T("-m %d "), parent);
 		cmd.Format(_T("git.exe revert --no-edit --no-commit %s%s"), merge, hash.ToString());
 		gitLastErr = cmd + _T("\n");
-		if (g_Git.Run(cmd, &gitLastErr, CP_UTF8))
+		if (Run(cmd, &gitLastErr, CP_UTF8))
 		{
 			return -1;
 		}
@@ -2983,7 +2983,7 @@ int CGit::DeleteRef(const CString& reference)
 			return -1;
 		}
 
-		if (g_Git.Run(cmd, &gitLastErr, CP_UTF8))
+		if (Run(cmd, &gitLastErr, CP_UTF8))
 			return -1;
 
 		gitLastErr.Empty();
