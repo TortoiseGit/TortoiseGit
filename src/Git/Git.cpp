@@ -1736,8 +1736,6 @@ int CGit::GetMapHashToFriendName(MAP_HASH_NAME &map)
 {
 	if (this->m_IsUseLibGit2)
 	{
-		git_repository *repo = NULL;
-
 		CAutoRepository repo(CTGitPath(m_CurrentDir).GetGitPathString());
 		if (!repo)
 			return -1;
