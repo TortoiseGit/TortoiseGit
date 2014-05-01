@@ -194,3 +194,18 @@ protected:
 		git_config_free(m_Ref);
 	}
 };
+
+class CAutoReference : public CSmartLibgit2Ref<git_reference>
+{
+public:
+	~CAutoReference()
+	{
+		CleanUp();
+	}
+
+protected:
+	virtual void FreeRef()
+	{
+		git_reference_free(m_Ref);
+	}
+};
