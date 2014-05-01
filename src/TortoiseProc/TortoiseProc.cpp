@@ -621,12 +621,9 @@ void CTortoiseProcApp::CheckUpgrade()
 		CRegStdDWORD(_T("Software\\TortoiseGit\\DiffProps")).removeValue();
 		if (CRegStdDWORD(_T("Software\\TortoiseGit\\CheckNewer"), TRUE) == FALSE)
 			CRegStdDWORD(_T("Software\\TortoiseGit\\VersionCheck")) = FALSE;
-	}
-
-	if (lVersion <= 0x01070E00)
-	{
 		CRegStdDWORD(_T("Software\\TortoiseGit\\CheckNewer")).removeValue();
 	}
+
 	CAppUtils::SetupDiffScripts(false, CString());
 
 	// set the current version so we don't come here again until the next update!
