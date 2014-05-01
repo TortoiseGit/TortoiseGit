@@ -21,6 +21,7 @@
 //
 
 #include "stdafx.h"
+#include "SmartLibgit2Ref.h"
 #include "TortoiseProc.h"
 #include "RepositoryBrowser.h"
 #include "LogDlg.h"
@@ -398,14 +399,12 @@ int CRepositoryBrowser::ReadTreeRecursive(git_repository &repo, const git_tree *
 			pNextTree->m_hTree = m_RepoTree.InsertItem(&tvinsert);
 			base.ReleaseBuffer();
 
-			git_object *object = nullptr;
-			git_tree_entry_to_object(&object, &repo, entry);
-			if (object == nullptr)
+			CAutoObject object;
+			git_tree_entry_to_object(object.GetPointer(), &repo, entry);
+			if (!object)
 				continue;
 
-			ReadTreeRecursive(repo, (git_tree*)object, pNextTree);
-
-			git_object_free(object);
+			ReadTreeRecursive(repo, (git_tree *)(git_object *)object, pNextTree);
 		}
 		else
 		{
@@ -413,13 +412,12 @@ int CRepositoryBrowser::ReadTreeRecursive(git_repository &repo, const git_tree *
 				pNextTree->m_bExecutable = true;
 			if (mode == GIT_FILEMODE_LINK)
 				pNextTree->m_bSymlink = true;
-			git_blob * blob = nullptr;
-			git_blob_lookup(&blob, &repo, oid);
-			if (blob == NULL)
+			CAutoBlob blob;
+			git_blob_lookup(blob.GetPointer(), &repo, oid);
+			if (!blob)
 				continue;
 
 			pNextTree->m_iSize = git_blob_rawsize(blob);
-			git_blob_free(blob);
 		}
 	}
 
@@ -428,14 +426,13 @@ int CRepositoryBrowser::ReadTreeRecursive(git_repository &repo, const git_tree *
 
 int CRepositoryBrowser::ReadTree(CShadowFilesTree * treeroot)
 {
-	CStringA gitdir = CUnicodeUtils::GetMulti(g_Git.m_CurrentDir, CP_UTF8);
-	git_repository *repository = NULL;
-	git_commit *commit = NULL;
-	git_tree * tree = NULL;
+	CAutoRepository repository;
+	CAutoCommit commit;
+	CAutoTree tree;
 	int ret = 0;
 	do
 	{
-		ret = git_repository_open(&repository, gitdir.GetBuffer());
+		ret = git_repository_open(repository.GetPointer(), CUnicodeUtils::GetUTF8(g_Git.m_CurrentDir));
 		if (ret)
 		{
 			MessageBox(CGit::GetLibGit2LastErr(_T("Could not open repository.")), _T("TortoiseGit"), MB_ICONERROR);
@@ -460,14 +457,14 @@ int CRepositoryBrowser::ReadTree(CShadowFilesTree * treeroot)
 			MessageBox(g_Git.GetGitLastErr(_T("Could not get hash of ") + m_sRevision + _T(".")), _T("TortoiseGit"), MB_ICONERROR);
 			break;
 		}
-		ret = git_commit_lookup(&commit, repository, (git_oid *) hash.m_hash);
+		ret = git_commit_lookup(commit.GetPointer(), repository, (git_oid *) hash.m_hash);
 		if (ret)
 		{
 			MessageBox(CGit::GetLibGit2LastErr(_T("Could not lookup commit.")), _T("TortoiseGit"), MB_ICONERROR);
 			break;
 		}
 
-		ret = git_commit_tree(&tree, commit);
+		ret = git_commit_tree(tree.GetPointer(), commit);
 		if (ret)
 		{
 			MessageBox(CGit::GetLibGit2LastErr(_T("Could not get tree of commit.")), _T("TortoiseGit"), MB_ICONERROR);
@@ -488,15 +485,6 @@ int CRepositoryBrowser::ReadTree(CShadowFilesTree * treeroot)
 		}
 		this->GetDlgItem(IDC_BUTTON_REVISION)->SetWindowText(m_sRevision);
 	} while(0);
-
-	if (tree)
-		git_tree_free(tree);
-
-	if (commit)
-		git_commit_free(commit);
-
-	if (repository)
-		git_repository_free(repository);
 
 	return ret;
 }
