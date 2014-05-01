@@ -2253,9 +2253,13 @@ bool CGitProgressList::CmdReset(CString& sWindowTitle, bool& /*localoperation*/)
 			break;
 		}
 
-		CStringA revstr = CUnicodeUtils::GetUTF8(m_revision);
 		git_object *target;
-		git_revparse_single(&target, repo, revstr);
+		if (git_revparse_single(&target, repo, CUnicodeUtils::GetUTF8(m_revision)))
+		{
+			ReportGitError();
+			ret = false;
+			break;
+		}
 		if (git_reset(repo, target, (git_reset_t)(m_resetType + 1), nullptr, nullptr))
 		{
 			ReportGitError();
