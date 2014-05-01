@@ -2262,6 +2262,7 @@ bool CGitProgressList::CmdReset(CString& sWindowTitle, bool& /*localoperation*/)
 			ret = false;
 			break;
 		}
+		git_object_free(target);
 	} while (0);
 
 	git_repository_free(repo);
