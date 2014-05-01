@@ -2934,10 +2934,28 @@ void CBaseView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 			}
 			else
 			{
-				SetCaretToLineStart();
-				m_nCaretGoalPos = 0;
-				OnCaretMove(MOVERIGHT, bShift);
-				ScrollAllToChar(0);
+				POINT ptCaretPos = GetCaretPosition();
+				const CString &sLine = GetViewLine(ptCaretPos.y);
+				int pos = 0;
+				while (pos < sLine.GetLength())
+				{
+					if (sLine[pos] != ' ' && sLine[pos] != '\t')
+						break;
+					++pos;
+				}
+				if (ptCaretPos.x == pos)
+				{
+					SetCaretToLineStart();
+					m_nCaretGoalPos = 0;
+					OnCaretMove(MOVERIGHT, bShift);
+					ScrollAllToChar(0);
+				}
+				else
+				{
+					ptCaretPos.x = pos;
+					SetCaretAndGoalPosition(ptCaretPos);
+					OnCaretMove(bShift);
+				}
 			}
 		}
 		break;
