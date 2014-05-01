@@ -254,3 +254,34 @@ protected:
 		git_patch_free(m_Ref);
 	}
 };
+
+class CAutoIndex : public CSmartLibgit2Ref<git_index>
+{
+public:
+	~CAutoIndex()
+	{
+		CleanUp();
+	}
+
+protected:
+	virtual void FreeRef()
+	{
+		git_index_free(m_Ref);
+	}
+};
+
+class CAutoRemote : public CSmartLibgit2Ref<git_remote>
+{
+public:
+	~CAutoRemote()
+	{
+		CleanUp();
+	}
+
+protected:
+	virtual void FreeRef()
+	{
+		// should we call git_remote_disconnect?
+		git_remote_free(m_Ref);
+	}
+};

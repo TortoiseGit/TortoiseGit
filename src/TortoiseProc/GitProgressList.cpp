@@ -18,6 +18,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "stdafx.h"
+#include "SmartLibgit2Ref.h"
 #include "GitProgressList.h"
 #include "TortoiseProc.h"
 #include "MessageBox.h"
@@ -1694,27 +1695,22 @@ bool CGitProgressList::CmdAdd(CString& sWindowTitle, bool& localoperation)
 
 	if (CRegDWORD(_T("Software\\TortoiseGit\\UseLibgit2"), TRUE) == TRUE)
 	{
-		git_repository *repo = NULL;
-		git_index *index;
-
-		CStringA gitdir = CUnicodeUtils::GetMulti(CTGitPath(g_Git.m_CurrentDir).GetGitPathString(), CP_UTF8);
-		if (git_repository_open(&repo, gitdir))
+		CAutoRepository repo(CTGitPath(g_Git.m_CurrentDir).GetGitPathString());
+		if (!repo)
 		{
 			ReportGitError();
 			return false;
 		}
 
-		if (git_repository_index(&index, repo))
+		CAutoIndex index;
+		if (git_repository_index(index.GetPointer(), repo))
 		{
 			ReportGitError();
-			git_repository_free(repo);
 			return false;
 		}
 		if (git_index_read(index, true))
 		{
 			ReportGitError();
-			git_index_free(index);
-			git_repository_free(repo);
 			return false;
 		}
 
@@ -1723,17 +1719,12 @@ bool CGitProgressList::CmdAdd(CString& sWindowTitle, bool& localoperation)
 			if (git_index_add_bypath(index, CUnicodeUtils::GetMulti(m_targetPathList[m_itemCount].GetGitPathString(), CP_UTF8)))
 			{
 				ReportGitError();
-				git_index_free(index);
-				git_repository_free(repo);
 				return false;
 			}
 			Notify(m_targetPathList[m_itemCount], git_wc_notify_add);
 
 			if (IsCancelled() == TRUE)
 			{
-				git_index_free(index);
-				git_repository_free(repo);
-
 				ReportUserCanceled();
 				return false;
 			}
@@ -1742,13 +1733,8 @@ bool CGitProgressList::CmdAdd(CString& sWindowTitle, bool& localoperation)
 		if (git_index_write(index))
 		{
 			ReportGitError();
-			git_index_free(index);
-			git_repository_free(repo);
 			return false;
 		}
-
-		git_index_free(index);
-		git_repository_free(repo);
 	}
 	else
 	{
@@ -2036,11 +2022,8 @@ bool CGitProgressList::CmdClone(CString& sWindowTitle, bool& /*localoperation*/)
 	if (m_url.IsEmpty() || m_targetPathList.IsEmpty())
 		return false;
 
-	CStringA url = CUnicodeUtils::GetMulti(m_url.GetGitPathString(), CP_UTF8);
-	CStringA path = CUnicodeUtils::GetMulti(m_targetPathList[0].GetWinPathString(),CP_UTF8);
-
-	git_repository *cloned_repo = NULL;
-	git_remote *origin = NULL;
+	CAutoRepository cloned_repo;
+	CAutoRemote origin;
 	git_checkout_options checkout_opts = GIT_CHECKOUT_OPTIONS_INIT;
 
 	int error = 0;
@@ -2058,9 +2041,6 @@ bool CGitProgressList::CmdClone(CString& sWindowTitle, bool& /*localoperation*/)
 	callbacks.credentials = CAppUtils::Git2GetUserPassword;
 	callbacks.payload = this;
 
-	CStringA refspecA = CUnicodeUtils::GetMulti(m_RefSpec, CP_UTF8);
-	CStringA remoteA = CUnicodeUtils::GetMulti(m_remote, CP_UTF8);
-
 	git_repository_init_options init_options = GIT_REPOSITORY_INIT_OPTIONS_INIT;
 	init_options.flags = GIT_REPOSITORY_INIT_MKPATH | GIT_REPOSITORY_INIT_EXTERNAL_TEMPLATE;
 	init_options.flags |= m_bBare ? GIT_REPOSITORY_INIT_BARE : 0;
@@ -2072,30 +2052,25 @@ bool CGitProgressList::CmdClone(CString& sWindowTitle, bool& /*localoperation*/)
 	}
 	do
 	{
-		if ((error = git_repository_init_ext(&cloned_repo, path, &init_options)) < 0)
+		if ((error = git_repository_init_ext(cloned_repo.GetPointer(), CUnicodeUtils::GetUTF8(m_targetPathList[0].GetWinPathString()), &init_options)) < 0)
 			break;
-		if ((error = git_remote_create(&origin, cloned_repo, remoteA.IsEmpty() ? "origin" : remoteA, url)) < 0)
+		if ((error = git_remote_create(origin.GetPointer(), cloned_repo, m_remote.IsEmpty() ? "origin" : CUnicodeUtils::GetUTF8(m_remote), CUnicodeUtils::GetUTF8(m_url.GetGitPathString()))) < 0)
 			break;
 		git_remote_set_callbacks(origin, &callbacks);
-		error = git_clone_into(cloned_repo, origin, &checkout_opts, refspecA.IsEmpty() ? nullptr : (const char*)refspecA, nullptr);
+		error = git_clone_into(cloned_repo, origin, &checkout_opts, m_RefSpec.IsEmpty() ? nullptr : CUnicodeUtils::GetUTF8(m_RefSpec), nullptr);
 	} while (false);
 
 	if (m_pAnimate)
 	{
-		m_pAnimate->Stop();
+		m_pAnimate->Stop(); // TODO: we should also add an animation object which stops anymiation on destruction!!
 		m_pAnimate->ShowWindow(SW_HIDE);
 	}
 
-	refspecA.ReleaseBuffer();
-	remoteA.ReleaseBuffer();
-	git_remote_free(origin);
 	if (error)
 	{
 		ReportGitError();
 		return false;
 	}
-	else if (cloned_repo)
-		git_repository_free(cloned_repo);
 	return true;
 }
 bool CGitProgressList::CmdSendMail(CString& sWindowTitle, bool& /*localoperation*/)
@@ -2123,11 +2098,14 @@ bool CGitProgressList::CmdFetch(CString& sWindowTitle, bool& /*localoperation*/)
 	ReportCmd(CString(MAKEINTRESOURCE(IDS_PROGRS_TITLE_FETCH)) + _T(" ") + m_url.GetGitPathString() + _T(" ") + m_RefSpec);
 
 	CStringA url = CUnicodeUtils::GetMulti(m_url.GetGitPathString(), CP_UTF8);
-	CStringA gitdir = CUnicodeUtils::GetMulti(CTGitPath(g_Git.m_CurrentDir).GetGitPathString(), CP_UTF8);
-	CStringA remotebranch = CUnicodeUtils::GetMulti(m_RefSpec, CP_UTF8);
 
-	git_remote *remote = NULL;
-	git_repository *repo = NULL;
+	CAutoRepository repo(CTGitPath(g_Git.m_CurrentDir).GetGitPathString());
+	if (!repo)
+	{
+		ReportGitError();
+		return false;
+	}
+	CAutoRemote remote;
 	bool ret = true;
 
 	do
@@ -2138,18 +2116,11 @@ bool CGitProgressList::CmdFetch(CString& sWindowTitle, bool& /*localoperation*/)
 			m_pAnimate->Play(0, INT_MAX, INT_MAX);
 		}
 
-		if (git_repository_open(&repo, gitdir))
-		{
-			ReportGitError();
-			ret = false;
-			break;
-		}
-
 		// first try with a named remote (e.g. "origin")
-		if (git_remote_load(&remote, repo, url) < 0) 
+		if (git_remote_load(remote.GetPointer(), repo, url) < 0) 
 		{
 			// retry with repository located at a specific url
-			if (git_remote_create_anonymous(&remote, repo, url, nullptr) < 0)
+			if (git_remote_create_anonymous(remote.GetPointer(), repo, url, nullptr) < 0)
 			{
 				ReportGitError();
 				ret = false;
@@ -2169,7 +2140,7 @@ bool CGitProgressList::CmdFetch(CString& sWindowTitle, bool& /*localoperation*/)
 		git_remote_set_callbacks(remote, &callbacks);
 		git_remote_set_autotag(remote, (git_remote_autotag_option_t)m_AutoTag);
 
-		if (!remotebranch.IsEmpty() && git_remote_add_fetch(remote, remotebranch))
+		if (!m_RefSpec.IsEmpty() && git_remote_add_fetch(remote, CUnicodeUtils::GetUTF8(m_RefSpec)))
 		{
 			ReportGitError();
 			ret = false;
@@ -2212,8 +2183,6 @@ bool CGitProgressList::CmdFetch(CString& sWindowTitle, bool& /*localoperation*/)
 
 	} while(0);
 
-	git_remote_free(remote);
-	git_repository_free(repo);
 	if (m_pAnimate)
 		m_pAnimate->ShowWindow(SW_HIDE);
 	return ret;
@@ -2233,9 +2202,12 @@ bool CGitProgressList::CmdReset(CString& sWindowTitle, bool& /*localoperation*/)
 	int resetTypesResource[] = { IDS_RESET_SOFT, IDS_RESET_MIXED, IDS_RESET_HARD };
 	ReportCmd(CString(MAKEINTRESOURCE(IDS_PROGRS_TITLE_RESET)) + _T(" ") + CString(MAKEINTRESOURCE(resetTypesResource[m_resetType])) + _T(" ") + m_revision);
 
-	CStringA gitdir = CUnicodeUtils::GetMulti(CTGitPath(g_Git.m_CurrentDir).GetGitPathString(), CP_UTF8);
-
-	git_repository *repo = NULL;
+	CAutoRepository repo(CTGitPath(g_Git.m_CurrentDir).GetGitPathString());
+	if (!repo)
+	{
+		ReportGitError();
+		return false;
+	}
 	bool ret = true;
 
 	do
@@ -2246,16 +2218,9 @@ bool CGitProgressList::CmdReset(CString& sWindowTitle, bool& /*localoperation*/)
 			m_pAnimate->Play(0, INT_MAX, INT_MAX);
 		}
 
-		if (git_repository_open(&repo, gitdir))
-		{
-			ReportGitError();
-			ret = false;
-			break;
-		}
-
 		CStringA revstr = CUnicodeUtils::GetUTF8(m_revision);
-		git_object *target;
-		git_revparse_single(&target, repo, revstr);
+		CAutoObject target;
+		git_revparse_single(target.GetPointer(), repo, revstr); // why no error checking?
 		if (git_reset(repo, target, (git_reset_t)(m_resetType + 1), nullptr, nullptr))
 		{
 			ReportGitError();
@@ -2264,7 +2229,6 @@ bool CGitProgressList::CmdReset(CString& sWindowTitle, bool& /*localoperation*/)
 		}
 	} while (0);
 
-	git_repository_free(repo);
 	if (m_pAnimate)
 		m_pAnimate->ShowWindow(SW_HIDE);
 	return ret;
