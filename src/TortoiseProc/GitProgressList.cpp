@@ -71,6 +71,29 @@ enum GITProgressDlgContextMenuCommands
 
 IMPLEMENT_DYNAMIC(CGitProgressList, CListCtrl)
 
+class CSmartAnimation
+{
+	CAnimateCtrl* m_pAnimate;
+public:
+	CSmartAnimation(CAnimateCtrl* pAnimate)
+	{
+		m_pAnimate = pAnimate;
+		if (m_pAnimate)
+		{
+			m_pAnimate->ShowWindow(SW_SHOW);
+			m_pAnimate->Play(0, INT_MAX, INT_MAX);
+		}
+	}
+	~CSmartAnimation()
+	{
+		if (m_pAnimate)
+		{
+			m_pAnimate->Stop();
+			m_pAnimate->ShowWindow(SW_HIDE);
+		}
+	}
+};
+
 CGitProgressList::CGitProgressList():CListCtrl()
 	, m_bCancelled(FALSE)
 	, m_pThread(NULL)
@@ -2045,11 +2068,7 @@ bool CGitProgressList::CmdClone(CString& sWindowTitle, bool& /*localoperation*/)
 	init_options.flags = GIT_REPOSITORY_INIT_MKPATH | GIT_REPOSITORY_INIT_EXTERNAL_TEMPLATE;
 	init_options.flags |= m_bBare ? GIT_REPOSITORY_INIT_BARE : 0;
 
-	if(m_pAnimate)
-	{
-		m_pAnimate->ShowWindow(SW_SHOW);
-		m_pAnimate->Play(0, INT_MAX, INT_MAX);
-	}
+	CSmartAnimation animate(m_pAnimate);
 	do
 	{
 		if ((error = git_repository_init_ext(cloned_repo.GetPointer(), CUnicodeUtils::GetUTF8(m_targetPathList[0].GetWinPathString()), &init_options)) < 0)
@@ -2059,12 +2078,6 @@ bool CGitProgressList::CmdClone(CString& sWindowTitle, bool& /*localoperation*/)
 		git_remote_set_callbacks(origin, &callbacks);
 		error = git_clone_into(cloned_repo, origin, &checkout_opts, m_RefSpec.IsEmpty() ? nullptr : CUnicodeUtils::GetUTF8(m_RefSpec), nullptr);
 	} while (false);
-
-	if (m_pAnimate)
-	{
-		m_pAnimate->Stop(); // TODO: we should also add an animation object which stops anymiation on destruction!!
-		m_pAnimate->ShowWindow(SW_HIDE);
-	}
 
 	if (error)
 	{
@@ -2110,11 +2123,7 @@ bool CGitProgressList::CmdFetch(CString& sWindowTitle, bool& /*localoperation*/)
 
 	do
 	{
-		if (m_pAnimate)
-		{
-			m_pAnimate->ShowWindow(SW_SHOW);
-			m_pAnimate->Play(0, INT_MAX, INT_MAX);
-		}
+		CSmartAnimation animate(m_pAnimate);
 
 		// first try with a named remote (e.g. "origin")
 		if (git_remote_load(remote.GetPointer(), repo, url) < 0) 
@@ -2164,10 +2173,6 @@ bool CGitProgressList::CmdFetch(CString& sWindowTitle, bool& /*localoperation*/)
 			break;
 		}
 
-		if (m_pAnimate)
-		{
-			m_pAnimate->ShowWindow(SW_HIDE);
-		}
 		// Update the references in the remote's namespace to point to the
 		// right commits. This may be needed even if there was no packfile
 		// to download, which can happen e.g. when the branches have been
@@ -2183,8 +2188,6 @@ bool CGitProgressList::CmdFetch(CString& sWindowTitle, bool& /*localoperation*/)
 
 	} while(0);
 
-	if (m_pAnimate)
-		m_pAnimate->ShowWindow(SW_HIDE);
 	return ret;
 }
 
@@ -2212,12 +2215,7 @@ bool CGitProgressList::CmdReset(CString& sWindowTitle, bool& /*localoperation*/)
 
 	do
 	{
-		if (m_pAnimate)
-		{
-			m_pAnimate->ShowWindow(SW_SHOW);
-			m_pAnimate->Play(0, INT_MAX, INT_MAX);
-		}
-
+		CSmartAnimation animate(m_pAnimate);
 		CStringA revstr = CUnicodeUtils::GetUTF8(m_revision);
 		CAutoObject target;
 		git_revparse_single(target.GetPointer(), repo, revstr); // why no error checking?
@@ -2229,8 +2227,6 @@ bool CGitProgressList::CmdReset(CString& sWindowTitle, bool& /*localoperation*/)
 		}
 	} while (0);
 
-	if (m_pAnimate)
-		m_pAnimate->ShowWindow(SW_HIDE);
 	return ret;
 }
 
