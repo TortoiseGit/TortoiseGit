@@ -209,3 +209,48 @@ protected:
 		git_reference_free(m_Ref);
 	}
 };
+
+class CAutoTreeEntry : public CSmartLibgit2Ref<git_tree_entry>
+{
+public:
+	~CAutoTreeEntry()
+	{
+		CleanUp();
+	}
+
+protected:
+	virtual void FreeRef()
+	{
+		git_tree_entry_free(m_Ref);
+	}
+};
+
+class CAutoDiff : public CSmartLibgit2Ref<git_diff>
+{
+public:
+	~CAutoDiff()
+	{
+		CleanUp();
+	}
+
+protected:
+	virtual void FreeRef()
+	{
+		git_diff_free(m_Ref);
+	}
+};
+
+class CAutoPatch : public CSmartLibgit2Ref<git_patch>
+{
+public:
+	~CAutoPatch()
+	{
+		CleanUp();
+	}
+
+protected:
+	virtual void FreeRef()
+	{
+		git_patch_free(m_Ref);
+	}
+};
