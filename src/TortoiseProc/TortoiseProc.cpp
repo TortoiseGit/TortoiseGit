@@ -572,6 +572,20 @@ void CTortoiseProcApp::CheckUpgrade()
 		}
 	}
 
+	// generic cleanup
+	if (CRegStdDWORD(_T("Software\\TortoiseGit\\UseLibgit2"), TRUE) != TRUE)
+	{
+		if (CMessageBox::Show(nullptr, _T("You have disabled the usage of libgit2 in TortoiseGit.\n\nThis might be the case in order to resolve an issue in an older TortoiseGit version.\n\nDo you want to restore the default value (i.e., enable it)?"), _T("TortoiseGit"), MB_ICONQUESTION | MB_YESNO) == IDYES)
+			CRegStdDWORD(_T("Software\\TortoiseGit\\UseLibgit2")).removeValue();
+	}
+
+	if (CRegStdDWORD(_T("Software\\TortoiseGit\\UseLibgit2_mask")).exists())
+	{
+		if (CMessageBox::Show(nullptr, _T("You have a non-default setting of UseLibgit2_mask in your registry.\n\nThis might be the case in order to resolve an issue in an older TortoiseGit version.\n\nDo you want to restore the default value (i.e., remove from registry)?"), _T("TortoiseGit"), MB_ICONQUESTION | MB_YESNO) == IDYES)
+			CRegStdDWORD(_T("Software\\TortoiseGit\\UseLibgit2_mask")).removeValue();
+	}
+
+	// version specific updates
 	if (lVersion <= 0x01080401)
 	{
 		if (CRegStdDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\UseMAPI"), FALSE) == TRUE)
