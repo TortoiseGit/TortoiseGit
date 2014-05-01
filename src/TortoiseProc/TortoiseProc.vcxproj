@@ -237,6 +237,7 @@
     <ClInclude Include="..\Utils\Graphviz.h" />
     <ClInclude Include="..\Utils\IInputValidator.h" />
     <ClInclude Include="..\Utils\MiscUI\ControlsBridge.h" />
+    <ClInclude Include="..\Utils\SmartLibgit2Ref.h" />
     <ClInclude Include="AddRemoteDlg.h" />
     <ClInclude Include="AutoTextTestDlg.h" />
     <ClInclude Include="BugtraqRegexTestDlg.h" />

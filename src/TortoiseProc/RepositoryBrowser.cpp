@@ -21,6 +21,7 @@
 //
 
 #include "stdafx.h"
+#include "SmartLibgit2Ref.h"
 #include "TortoiseProc.h"
 #include "RepositoryBrowser.h"
 #include "LogDlg.h"
@@ -398,14 +399,12 @@ int CRepositoryBrowser::ReadTreeRecursive(git_repository &repo, const git_tree *
 			pNextTree->m_hTree = m_RepoTree.InsertItem(&tvinsert);
 			base.ReleaseBuffer();
 
-			git_object *object = nullptr;
-			git_tree_entry_to_object(&object, &repo, entry);
-			if (object == nullptr)
+			CAutoObject object;
+			git_tree_entry_to_object(object.GetPointer(), &repo, entry);
+			if (!object)
 				continue;
 
-			ReadTreeRecursive(repo, (git_tree*)object, pNextTree);
-
-			git_object_free(object);
+			ReadTreeRecursive(repo, (git_tree *)(git_object *)object, pNextTree);
 		}
 		else
 		{
@@ -413,13 +412,12 @@ int CRepositoryBrowser::ReadTreeRecursive(git_repository &repo, const git_tree *
 				pNextTree->m_bExecutable = true;
 			if (mode == GIT_FILEMODE_LINK)
 				pNextTree->m_bSymlink = true;
-			git_blob * blob = nullptr;
-			git_blob_lookup(&blob, &repo, oid);
-			if (blob == NULL)
+			CAutoBlob blob;
+			git_blob_lookup(blob.GetPointer(), &repo, oid);
+			if (!blob)
 				continue;
 
 			pNextTree->m_iSize = git_blob_rawsize(blob);
-			git_blob_free(blob);
 		}
 	}
 
@@ -428,77 +426,61 @@ int CRepositoryBrowser::ReadTreeRecursive(git_repository &repo, const git_tree *
 
 int CRepositoryBrowser::ReadTree(CShadowFilesTree * treeroot)
 {
-	CStringA gitdir = CUnicodeUtils::GetMulti(g_Git.m_CurrentDir, CP_UTF8);
-	git_repository *repository = NULL;
-	git_commit *commit = NULL;
-	git_tree * tree = NULL;
-	int ret = 0;
-	do
+	CAutoRepository repository(g_Git.m_CurrentDir);
+	if (!repository)
 	{
-		ret = git_repository_open(&repository, gitdir.GetBuffer());
-		if (ret)
+		MessageBox(CGit::GetLibGit2LastErr(_T("Could not open repository.")), _T("TortoiseGit"), MB_ICONERROR);
+		return -1;
+	}
+
+	if (m_sRevision == _T("HEAD"))
+	{
+		int ret = git_repository_head_unborn(repository);
+		if (ret == 1)	// is orphan
+			return ret;
+		else if (ret != 0)
 		{
-			MessageBox(CGit::GetLibGit2LastErr(_T("Could not open repository.")), _T("TortoiseGit"), MB_ICONERROR);
-			break;
+			MessageBox(g_Git.GetLibGit2LastErr(_T("Could not check HEAD.")), _T("TortoiseGit"), MB_ICONERROR);
+			return ret;
 		}
+	}
 
-		if (m_sRevision == _T("HEAD"))
-		{
-			ret = git_repository_head_unborn(repository);
-			if (ret == 1)	// is orphan
-				break;
-			else if (ret != 0)
-			{
-				MessageBox(g_Git.GetLibGit2LastErr(_T("Could not check HEAD.")), _T("TortoiseGit"), MB_ICONERROR);
-				break;
-			}
-		}
+	CGitHash hash;
+	if (g_Git.GetHash(hash, m_sRevision))
+	{
+		MessageBox(g_Git.GetGitLastErr(_T("Could not get hash of ") + m_sRevision + _T(".")), _T("TortoiseGit"), MB_ICONERROR);
+		return -1;
+	}
 
-		CGitHash hash;
-		if (g_Git.GetHash(hash, m_sRevision))
-		{
-			MessageBox(g_Git.GetGitLastErr(_T("Could not get hash of ") + m_sRevision + _T(".")), _T("TortoiseGit"), MB_ICONERROR);
-			break;
-		}
-		ret = git_commit_lookup(&commit, repository, (git_oid *) hash.m_hash);
-		if (ret)
-		{
-			MessageBox(CGit::GetLibGit2LastErr(_T("Could not lookup commit.")), _T("TortoiseGit"), MB_ICONERROR);
-			break;
-		}
+	CAutoCommit commit;
+	if (git_commit_lookup(commit.GetPointer(), repository, (git_oid *)hash.m_hash))
+	{
+		MessageBox(CGit::GetLibGit2LastErr(_T("Could not lookup commit.")), _T("TortoiseGit"), MB_ICONERROR);
+		return -1;
+	}
 
-		ret = git_commit_tree(&tree, commit);
-		if (ret)
-		{
-			MessageBox(CGit::GetLibGit2LastErr(_T("Could not get tree of commit.")), _T("TortoiseGit"), MB_ICONERROR);
-			break;
-		}
+	CAutoTree tree;
+	if (git_commit_tree(tree.GetPointer(), commit))
+	{
+		MessageBox(CGit::GetLibGit2LastErr(_T("Could not get tree of commit.")), _T("TortoiseGit"), MB_ICONERROR);
+		return -1;
+	}
 
-		treeroot->m_hash = CGitHash((char *)git_tree_id(tree)->id);
-		ReadTreeRecursive(*repository, tree, treeroot);
+	treeroot->m_hash = CGitHash((char *)git_tree_id(tree)->id);
+	ReadTreeRecursive(*repository, tree, treeroot);
 
-		// try to resolve hash to a branch name
-		if (m_sRevision == hash.ToString())
-		{
-			MAP_HASH_NAME map;
-			if (g_Git.GetMapHashToFriendName(map))
-				MessageBox(g_Git.GetGitLastErr(_T("Could not get all refs.")), _T("TortoiseGit"), MB_ICONERROR);
-			if (!map[hash].empty())
-				m_sRevision = map[hash].at(0);
-		}
-		this->GetDlgItem(IDC_BUTTON_REVISION)->SetWindowText(m_sRevision);
-	} while(0);
+	// try to resolve hash to a branch name
+	if (m_sRevision == hash.ToString())
+	{
+		MAP_HASH_NAME map;
+		if (g_Git.GetMapHashToFriendName(map))
+			MessageBox(g_Git.GetGitLastErr(_T("Could not get all refs.")), _T("TortoiseGit"), MB_ICONERROR);
+		if (!map[hash].empty())
+			m_sRevision = map[hash].at(0);
+	}
+	this->GetDlgItem(IDC_BUTTON_REVISION)->SetWindowText(m_sRevision);
 
-	if (tree)
-		git_tree_free(tree);
-
-	if (commit)
-		git_commit_free(commit);
-
-	if (repository)
-		git_repository_free(repository);
-
-	return ret;
+	return 0;
 }
 
 void CRepositoryBrowser::OnTvnSelchangedRepoTree(NMHDR *pNMHDR, LRESULT *pResult)

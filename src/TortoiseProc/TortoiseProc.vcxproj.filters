@@ -1210,6 +1210,9 @@
     <ClInclude Include="BugtraqRegexTestDlg.h">
       <Filter>Commands\setting</Filter>
     </ClInclude>
+    <ClInclude Include="..\Utils\SmartLibgit2Ref.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Resources\actionadded.ico">
