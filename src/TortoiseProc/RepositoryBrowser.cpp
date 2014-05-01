@@ -432,7 +432,7 @@ int CRepositoryBrowser::ReadTree(CShadowFilesTree * treeroot)
 	int ret = 0;
 	do
 	{
-		ret = git_repository_open(repository.GetPointer(), CUnicodeUtils::GetUTF8(g_Git.m_CurrentDir));
+		ret = repository.Open(g_Git.m_CurrentDir);
 		if (ret)
 		{
 			MessageBox(CGit::GetLibGit2LastErr(_T("Could not open repository.")), _T("TortoiseGit"), MB_ICONERROR);

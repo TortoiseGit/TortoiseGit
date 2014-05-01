@@ -18,13 +18,14 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #pragma once
+#include "UnicodeUtils.h"
 
 /**
- * \ingroup Utils
- * Helper classes for libgit2 references.
- */
-template <typename ReferenceType, template <class> class FreeFunction>
-class CSmartLibgit2Ref : public FreeFunction<ReferenceType>
+* \ingroup Utils
+* Helper classes for libgit2 references.
+*/
+template <typename ReferenceType>
+class CSmartLibgit2Ref
 {
 public:
 	CSmartLibgit2Ref()
@@ -45,7 +46,7 @@ public:
 			m_Ref = h;
 		}
 
-		return(*this);
+		return (*this);
 	}
 
 	void Free()
@@ -78,116 +79,118 @@ public:
 		return m_Ref != nullptr;
 	}
 
-
-	~CSmartLibgit2Ref()
-	{
-		CleanUp();
-	}
-
-
 protected:
+	virtual void FreeRef() = 0;
+
 	void CleanUp()
 	{
 		if (m_Ref != nullptr)
 		{
-			FreeRef(m_Ref);
+			FreeRef();
 			m_Ref = nullptr;
 		}
 	}
 
-
 	ReferenceType* m_Ref;
 };
 
-template <typename T>
-struct CFreeRepository
+class CAutoRepository : public CSmartLibgit2Ref<git_repository>
 {
-	void FreeRef(T* ref)
+public:
+	CAutoRepository() {};
+
+	CAutoRepository(const CString& gitDir)
 	{
-		git_repository_free(ref);
+		Open(gitDir);
+	}
+
+	int Open(const CString& gitDir)
+	{
+		return git_repository_open(GetPointer(), CUnicodeUtils::GetUTF8(gitDir));
+	}
+
+	~CAutoRepository()
+	{
+		CleanUp();
 	}
 
 protected:
-	~CFreeRepository()
+	virtual void FreeRef()
 	{
+		git_repository_free(m_Ref);
 	}
 };
 
-template <typename T>
-struct CFreeCommit
+class CAutoCommit : public CSmartLibgit2Ref<git_commit>
 {
-	void FreeRef(T* ref)
+public:
+	~CAutoCommit()
 	{
-		git_commit_free(ref);
+		CleanUp();
+	}
+protected:
+	virtual void FreeRef()
+	{
+		git_commit_free(m_Ref);
+	}
+};
+
+class CAutoTree : public CSmartLibgit2Ref<git_tree>
+{
+public:
+	~CAutoTree()
+	{
+		CleanUp();
 	}
 
 protected:
-	~CFreeCommit()
+	virtual void FreeRef()
 	{
+		git_tree_free(m_Ref);
 	}
 };
 
-template <typename T>
-struct CFreeTree
+class CAutoObject : public CSmartLibgit2Ref<git_object>
 {
-	void FreeRef(T* ref)
+public:
+	~CAutoObject()
 	{
-		git_tree_free(ref);
+		CleanUp();
 	}
 
 protected:
-	~CFreeTree()
+	virtual void FreeRef()
 	{
+		git_object_free(m_Ref);
 	}
 };
 
-template <typename T>
-struct CFreeConfig
+class CAutoBlob : public CSmartLibgit2Ref<git_blob>
 {
-	void FreeRef(T* ref)
+public:
+	~CAutoBlob()
 	{
-		git_config_free(ref);
+		CleanUp();
 	}
 
 protected:
-	~CFreeConfig()
+	virtual void FreeRef()
 	{
+		git_blob_free(m_Ref);
 	}
 };
 
-template <typename T>
-struct CFreeObject
+class CAutoConfig : public CSmartLibgit2Ref<git_config>
 {
-	void FreeRef(T* ref)
+public:
+	~CAutoConfig()
 	{
-		git_object_free(ref);
+		CleanUp();
 	}
 
 protected:
-	~CFreeObject()
+	virtual void FreeRef()
 	{
+		git_config_free(m_Ref);
 	}
 };
-
-template <typename T>
-struct CFreeBlob
-{
-	void FreeRef(T* ref)
-	{
-		git_blob_free(ref);
-	}
-
-protected:
-	~CFreeBlob()
-	{
-	}
-};
-
-
-// Client code (definitions of standard Windows handles).
-typedef CSmartLibgit2Ref<git_repository,		CFreeRepository>						CAutoRepository;
-typedef CSmartLibgit2Ref<git_commit,			CFreeCommit>							CAutoCommit;
-typedef CSmartLibgit2Ref<git_tree,				CFreeTree>								CAutoTree;
-typedef CSmartLibgit2Ref<git_object,			CFreeObject>							CAutoObject;
-typedef CSmartLibgit2Ref<git_blob,				CFreeBlob>								CAutoBlob;
-typedef CSmartLibgit2Ref<git_config,			CFreeConfig>							CAutoConfig;
