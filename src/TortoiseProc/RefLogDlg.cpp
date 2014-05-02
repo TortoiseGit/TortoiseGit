@@ -173,6 +173,7 @@ int ParserFromRefLog(CString ref, std::vector<GitRev> &refloglist)
 		git_reflog *reflog;
 		if (git_reflog_read(&reflog, repo, refA) < 0)
 		{
+			git_repository_free(repo);
 			MessageBox(nullptr, CGit::GetLibGit2LastErr(_T("Could not read reflog.")), _T("TortoiseGit"), MB_ICONERROR);
 			return -1;
 		}

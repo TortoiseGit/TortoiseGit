@@ -1547,7 +1547,10 @@ int CGit::GetBranchList(STRING_VECTOR &list,int *current,BRANCH_TYPE type)
 			{
 				const char * name = nullptr;
 				if (git_branch_name(&name, ref))
+				{
+					git_reference_free(ref);
 					continue;
+				}
 				CString branchname = CUnicodeUtils::GetUnicode(name);
 				if (branchType & GIT_BRANCH_REMOTE)
 					list.push_back(_T("remotes/") + branchname);
