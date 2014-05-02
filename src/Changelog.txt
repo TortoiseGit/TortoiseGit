@@ -14,6 +14,7 @@ Released: Unreleased
  * Fixed issue #2174: Submodule update shows wrong submodule list
  * Fixed issue #2175: TortoiseGitBlame fails to search if line has non-ascii chars and system locale is not US
  * Fixed issue #2141: libgit2 still added the file with mixing EOL, while autocrlf and safecrlf are true
+ * Fixed issue #2183: Explorer Property Page "Last modified" stays empty
 
 = Release 1.8.8.0 =
 Released: 2014-04-01

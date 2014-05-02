@@ -372,7 +372,7 @@ static int TreewalkCB_FindFileRecentCommit(const char *root, const git_tree_entr
 		if (!strcmp(git_tree_entry_name(entry), treewalkstruct->name))
 		{
 			git_oid_cpy(&treewalkstruct->oid, git_tree_entry_id(entry));
-			return -1;
+			return GIT_EUSER;
 		}
 
 		return 1;
