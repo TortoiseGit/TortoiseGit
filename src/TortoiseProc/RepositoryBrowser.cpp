@@ -166,6 +166,7 @@ void CRepositoryBrowser::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CRepositoryBrowser, CResizableStandAloneDialog)
 	ON_NOTIFY(TVN_SELCHANGED, IDC_REPOTREE, &CRepositoryBrowser::OnTvnSelchangedRepoTree)
+	ON_NOTIFY(TVN_ITEMEXPANDING, IDC_REPOTREE, &CRepositoryBrowser::OnTvnItemExpandingRepoTree)
 	ON_WM_CONTEXTMENU()
 	ON_NOTIFY(LVN_COLUMNCLICK, IDC_REPOLIST, &CRepositoryBrowser::OnLvnColumnclickRepoList)
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_REPOLIST, &CRepositoryBrowser::OnLvnItemchangedRepolist)
@@ -364,6 +365,7 @@ void CRepositoryBrowser::Refresh()
 int CRepositoryBrowser::ReadTreeRecursive(git_repository &repo, const git_tree * tree, CShadowFilesTree * treeroot)
 {
 	size_t count = git_tree_entrycount(tree);
+	bool hasSubfolders = false;
 
 	for (size_t i = 0; i < count; ++i)
 	{
@@ -385,27 +387,21 @@ int CRepositoryBrowser::ReadTreeRecursive(git_repository &repo, const git_tree *
 			pNextTree->m_bSubmodule = true;
 		else if (mode & S_IFDIR)
 		{
+			hasSubfolders = true;
 			pNextTree->m_bFolder = true;
+			pNextTree->m_bLoaded = false;
 
 			TVINSERTSTRUCT tvinsert = {0};
 			tvinsert.hParent = treeroot->m_hTree;
 			tvinsert.hInsertAfter = TVI_SORT;
-			tvinsert.itemex.mask = TVIF_DI_SETITEM | TVIF_PARAM | TVIF_TEXT | TVIF_IMAGE | TVIF_SELECTEDIMAGE | TVIF_STATE;
+			tvinsert.itemex.mask = TVIF_DI_SETITEM | TVIF_PARAM | TVIF_TEXT | TVIF_IMAGE | TVIF_SELECTEDIMAGE | TVIF_STATE | TVIF_CHILDREN;
 			tvinsert.itemex.pszText = base.GetBuffer(base.GetLength());
+			tvinsert.itemex.cChildren = 1;
 			tvinsert.itemex.lParam = (LPARAM)pNextTree;
 			tvinsert.itemex.iImage = m_nIconFolder;
 			tvinsert.itemex.iSelectedImage = m_nOpenIconFolder;
 			pNextTree->m_hTree = m_RepoTree.InsertItem(&tvinsert);
 			base.ReleaseBuffer();
-
-			git_object *object = nullptr;
-			git_tree_entry_to_object(&object, &repo, entry);
-			if (object == nullptr)
-				continue;
-
-			ReadTreeRecursive(repo, (git_tree*)object, pNextTree);
-
-			git_object_free(object);
 		}
 		else
 		{
@@ -423,11 +419,21 @@ int CRepositoryBrowser::ReadTreeRecursive(git_repository &repo, const git_tree *
 		}
 	}
 
+	if (!hasSubfolders)
+	{
+		TVITEM tvitem = { 0 };
+		tvitem.hItem = treeroot->m_hTree;
+		tvitem.mask = TVIF_CHILDREN;
+		tvitem.cChildren = 0;
+		m_RepoTree.SetItem(&tvitem);
+	}
+
 	return 0;
 }
 
-int CRepositoryBrowser::ReadTree(CShadowFilesTree * treeroot)
+int CRepositoryBrowser::ReadTree(CShadowFilesTree * treeroot, const CString& root)
 {
+	CWaitCursor wait;
 	CStringA gitdir = CUnicodeUtils::GetMulti(g_Git.m_CurrentDir, CP_UTF8);
 	git_repository *repository = NULL;
 	git_commit *commit = NULL;
@@ -474,6 +480,36 @@ int CRepositoryBrowser::ReadTree(CShadowFilesTree * treeroot)
 			break;
 		}
 
+		if (!root.IsEmpty())
+		{
+			git_tree_entry * treeEntry = nullptr;
+			if ((ret = git_tree_entry_bypath(&treeEntry, tree, CUnicodeUtils::GetUTF8(root))) != 0)
+			{
+				MessageBox(CGit::GetLibGit2LastErr(_T("Could not lookup path.")), _T("TortoiseGit"), MB_ICONERROR);
+				break;
+			}
+			if (git_tree_entry_type(treeEntry) != GIT_OBJ_TREE)
+			{
+				git_tree_entry_free(treeEntry);
+				MessageBox(CGit::GetLibGit2LastErr(_T("Could not lookup path.")), _T("TortoiseGit"), MB_ICONERROR);
+				break;
+			}
+
+			git_object *object = nullptr;
+			git_tree_entry_to_object(&object, repository, treeEntry);
+			if (object == nullptr)
+			{
+				git_tree_entry_free(treeEntry);
+				MessageBox(CGit::GetLibGit2LastErr(_T("Could not lookup path.")), _T("TortoiseGit"), MB_ICONERROR);
+				break;
+			}
+
+			git_tree_free(tree);
+
+			tree = (git_tree*)object;
+			git_tree_entry_free(treeEntry);
+		}
+
 		treeroot->m_hash = CGitHash((char *)git_tree_id(tree)->id);
 		ReadTreeRecursive(*repository, tree, treeroot);
 
@@ -509,6 +545,25 @@ void CRepositoryBrowser::OnTvnSelchangedRepoTree(NMHDR *pNMHDR, LRESULT *pResult
 	FillListCtrlForTreeNode(pNMTreeView->itemNew.hItem);
 }
 
+void CRepositoryBrowser::OnTvnItemExpandingRepoTree(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMTREEVIEW pNMTreeView = reinterpret_cast<LPNMTREEVIEW>(pNMHDR);
+	*pResult = 0;
+
+	CShadowFilesTree* pTree = (CShadowFilesTree*)(m_RepoTree.GetItemData(pNMTreeView->itemNew.hItem));
+	if (pTree == NULL)
+	{
+		ASSERT(FALSE);
+		return;
+	}
+
+	if (!pTree->m_bLoaded)
+	{
+		pTree->m_bLoaded = true;
+		ReadTree(pTree, pTree->GetFullName());
+	}
+}
+
 void CRepositoryBrowser::FillListCtrlForTreeNode(HTREEITEM treeNode)
 {
 	m_RepoList.DeleteAllItems();
@@ -522,6 +577,12 @@ void CRepositoryBrowser::FillListCtrlForTreeNode(HTREEITEM treeNode)
 
 	CString url = _T("/") + pTree->GetFullName();
 	GetDlgItem(IDC_REPOBROWSER_URL)->SetWindowText(url);
+
+	if (!pTree->m_bLoaded)
+	{
+		pTree->m_bLoaded = true;
+		ReadTree(pTree, pTree->GetFullName());
+	}
 
 	FillListCtrlForShadowTree(pTree);
 }

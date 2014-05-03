@@ -36,6 +36,7 @@ public:
 	: m_hTree(NULL)
 	, m_pParent(NULL)
 	, m_bFolder(false)
+	, m_bLoaded(true)
 	, m_bSubmodule(false)
 	, m_bExecutable(false)
 	, m_bSymlink(false)
@@ -46,6 +47,7 @@ public:
 	CGitHash			m_hash;
 	git_off_t			m_iSize;
 	bool				m_bFolder;
+	bool				m_bLoaded;
 	bool				m_bSubmodule;
 	bool				m_bExecutable;
 	bool				m_bSymlink;
@@ -138,7 +140,7 @@ private:
 
 	CShadowFilesTree		m_TreeRoot;
 	int						ReadTreeRecursive(git_repository &repo, const git_tree * tree, CShadowFilesTree * treeroot);
-	int						ReadTree(CShadowFilesTree * treeroot);
+	int						ReadTree(CShadowFilesTree * treeroot, const CString& root = L"");
 	int						m_nIconFolder;
 	int						m_nOpenIconFolder;
 	int						m_nExternalOvl;
@@ -153,6 +155,7 @@ private:
 	void					FillListCtrlForShadowTree(CShadowFilesTree* pTree);
 	void					UpdateInfoLabel();
 	afx_msg void			OnTvnSelchangedRepoTree(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void			OnTvnItemExpandingRepoTree(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void			OnLvnItemchangedRepolist(NMHDR *pNMHDR, LRESULT *pResult);
 
 	afx_msg void			OnNMDblclk_RepoList(NMHDR *pNMHDR, LRESULT *pResult);
