@@ -1,4 +1,4 @@
-/**
+ï»¿/**
 * SharedMutex.cpp
 * @Author   Tu Yongce <yongce (at) 126 (dot) com>
 * @Created  2008-11-17
@@ -40,15 +40,15 @@ void SharedMutex::Init()
 	m_sharedNum = m_exclusiveNum = 0;
 	m_lockType = LOCK_NONE;
 
-	// ´´½¨ÓÃÓÚ±£»¤ÄÚ²¿Êı¾İµÄ»¥³âÁ¿
+    // åˆ›å»ºç”¨äºä¿æŠ¤å†…éƒ¨æ•°æ®çš„äº’æ–¥é‡
     m_mutex = ::CreateMutex(NULL, FALSE, NULL);
-    // ´´½¨ÓÃÓÚÍ¬²½¹²Ïí·ÃÎÊÏß³ÌµÄÊÂ¼ş£¨ÊÖ¶¯ÊÂ¼ş£©
+    // åˆ›å»ºç”¨äºåŒæ­¥å…±äº«è®¿é—®çº¿ç¨‹çš„äº‹ä»¶ï¼ˆæ‰‹åŠ¨äº‹ä»¶ï¼‰
     m_sharedEvent = ::CreateEvent(NULL, TRUE, FALSE, NULL);
-    // ´´½¨ÓÃÓÚÍ¬²½¶ÀÕ¼·ÃÎÊÏß³ÌµÄÊÂ¼ş£¨×Ô¶¯ÊÂ¼ş£©
+    // åˆ›å»ºç”¨äºåŒæ­¥ç‹¬å è®¿é—®çº¿ç¨‹çš„äº‹ä»¶ï¼ˆè‡ªåŠ¨äº‹ä»¶ï¼‰
     m_exclusiveEvent = ::CreateEvent(NULL, FALSE, FALSE, NULL);
 }
 
-// »ñÈ¡¹²Ïí·ÃÎÊÈ¨
+// è·å–å…±äº«è®¿é—®æƒ
 bool SharedMutex::AcquireShared(DWORD waitTime)
 {
     ::WaitForSingleObject(m_mutex, INFINITE);
@@ -68,7 +68,7 @@ bool SharedMutex::AcquireShared(DWORD waitTime)
     return true;
 }
 
-// ÊÍ·Å¹²Ïí·ÃÎÊÈ¨
+// é‡Šæ”¾å…±äº«è®¿é—®æƒ
 void SharedMutex::ReleaseShared()
 {
     //assert(m_lockType == LOCK_SHARED);
@@ -76,18 +76,18 @@ void SharedMutex::ReleaseShared()
     --m_sharedNum;
     if (m_sharedNum == 0) {
         if (m_exclusiveNum > 0) {
-            // »½ĞÑÒ»¸ö¶ÀÕ¼·ÃÎÊÏß³Ì
+            // å”¤é†’ä¸€ä¸ªç‹¬å è®¿é—®çº¿ç¨‹
             m_lockType = LOCK_EXCLUSIVE;
             ::SetEvent(m_exclusiveEvent);
         } else {
-            // Ã»ÓĞµÈ´ıÏß³Ì
+            // æ²¡æœ‰ç­‰å¾…çº¿ç¨‹
             m_lockType = LOCK_NONE;
         }
     }
     ::ReleaseMutex(m_mutex);
 }
 
-// »ñÈ¡¶ÀÕ¼·ÃÎÊÈ¨
+// è·å–ç‹¬å è®¿é—®æƒ
 bool SharedMutex::AcquireExclusive(DWORD waitTime)
 {
 
@@ -108,22 +108,22 @@ bool SharedMutex::AcquireExclusive(DWORD waitTime)
     return true;
 }
 
-// ÊÍ·Å¶ÀÕ¼·ÃÎÊÈ¨
+// é‡Šæ”¾ç‹¬å è®¿é—®æƒ
 void SharedMutex::ReleaseExclusive()
 {
 //    assert(m_lockType == LOCK_EXCLUSIVE);
     ::WaitForSingleObject(m_mutex, INFINITE);
     --m_exclusiveNum;
-    // ¶ÀÕ¼·ÃÎÊÏß³ÌÓÅÏÈ
+    // ç‹¬å è®¿é—®çº¿ç¨‹ä¼˜å…ˆ
     if (m_exclusiveNum > 0) {
-        // »½ĞÑÒ»¸ö¶ÀÕ¼·ÃÎÊÏß³Ì
+        // å”¤é†’ä¸€ä¸ªç‹¬å è®¿é—®çº¿ç¨‹
         ::SetEvent(m_exclusiveEvent);
     } else if (m_sharedNum > 0) {
-        // »½ĞÑµ±Ç°ËùÓĞ¹²Ïí·ÃÎÊÏß³Ì
+        // å”¤é†’å½“å‰æ‰€æœ‰å…±äº«è®¿é—®çº¿ç¨‹
         m_lockType = LOCK_SHARED;
         ::PulseEvent(m_sharedEvent);
     } else {
-        // Ã»ÓĞµÈ´ıÏß³Ì
+        // æ²¡æœ‰ç­‰å¾…çº¿ç¨‹
         m_lockType = LOCK_NONE;
     }
     ::ReleaseMutex(m_mutex);
