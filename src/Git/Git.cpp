@@ -2314,6 +2314,7 @@ int CGit::GetOneFile(const CString &Refname, const CTGitPath &path, const CStrin
 			git_tree_free(tree);
 			git_commit_free(commit);
 			git_repository_free(repo);
+			fclose(file);
 			return -1;
 		}
 		if (fwrite(buf.ptr, sizeof(char), buf.size, file) != buf.size)
