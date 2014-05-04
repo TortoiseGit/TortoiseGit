@@ -572,6 +572,11 @@ void CTortoiseProcApp::CheckUpgrade()
 		}
 	}
 
+	if (lVersion <= 0x01080802)
+	{
+		CRegStdDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\ResizableState\\CleanTypeDlgWindowPlacement")).removeValue();
+	}
+
 	if (lVersion <= 0x01080401)
 	{
 		if (CRegStdDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\UseMAPI"), FALSE) == TRUE)

@@ -197,7 +197,7 @@ UINT CProgressDlg::ProgressThreadEntry(LPVOID pVoid)
 }
 
 //static function, Share with SyncDialog
-UINT CProgressDlg::RunCmdList(CWnd *pWnd,std::vector<CString> &cmdlist,bool bShowCommand,CString *pfilename,bool *bAbort,CGitByteArray *pdata, CGit *git)
+UINT CProgressDlg::RunCmdList(CWnd *pWnd, STRING_VECTOR &cmdlist, STRING_VECTOR &dirlist, bool bShowCommand, CString *pfilename, bool *bAbort, CGitByteArray *pdata, CGit *git)
 {
 	UINT ret=0;
 
@@ -206,7 +206,20 @@ UINT CProgressDlg::RunCmdList(CWnd *pWnd,std::vector<CString> &cmdlist,bool bSho
 
 	memset(&pi,0,sizeof(PROCESS_INFORMATION));
 
-	CBlockCacheForPath cacheBlock(git->m_CurrentDir);
+	std::vector<std::unique_ptr<CBlockCacheForPath>> cacheBlockList;
+	std::vector<std::unique_ptr<CGit>> gitList;
+	if (dirlist.empty())
+		cacheBlockList.push_back(std::unique_ptr<CBlockCacheForPath>(new CBlockCacheForPath(git->m_CurrentDir)));
+	else
+	{
+		for (auto dir : dirlist)
+		{
+			CGit *pGit = new CGit;
+			pGit->m_CurrentDir = dir;
+			gitList.push_back(std::unique_ptr<CGit>(pGit));
+			cacheBlockList.push_back(std::unique_ptr<CBlockCacheForPath>(new CBlockCacheForPath(dir)));
+		}
+	}
 
 	EnsurePostMessage(pWnd, MSG_PROGRESSDLG_UPDATE_UI, MSG_PROGRESSDLG_START, 0);
 
@@ -220,7 +233,11 @@ UINT CProgressDlg::RunCmdList(CWnd *pWnd,std::vector<CString> &cmdlist,bool bSho
 
 		if (bShowCommand)
 		{
-			CStringA str = CUnicodeUtils::GetMulti(cmdlist[i].Trim() + _T("\r\n\r\n"), CP_UTF8);
+			CStringA str;
+			if (gitList.empty() || gitList.size() == 1 && gitList[0]->m_CurrentDir == git->m_CurrentDir)
+				str = CUnicodeUtils::GetMulti(cmdlist[i].Trim() + _T("\r\n\r\n"), CP_UTF8);
+			else
+				str = CUnicodeUtils::GetMulti((i > 0 ? _T("\r\n") : _T("")) + gitList[i]->m_CurrentDir + _T("\r\n") + cmdlist[i].Trim() + _T("\r\n\r\n"), CP_UTF8);
 			for (int j = 0; j < str.GetLength(); ++j)
 			{
 				if(pdata)
@@ -236,7 +253,10 @@ UINT CProgressDlg::RunCmdList(CWnd *pWnd,std::vector<CString> &cmdlist,bool bSho
 				pWnd->PostMessage(MSG_PROGRESSDLG_UPDATE_UI,MSG_PROGRESSDLG_RUN,0);
 		}
 
-		git->RunAsync(cmdlist[i].Trim(),&pi, &hRead, NULL, pfilename);
+		if (gitList.empty())
+			git->RunAsync(cmdlist[i].Trim(), &pi, &hRead, nullptr, pfilename);
+		else
+			gitList[i]->RunAsync(cmdlist[i].Trim(), &pi, &hRead, nullptr, pfilename);
 
 		DWORD readnumber;
 		char lastByte = '\0';
@@ -315,7 +335,7 @@ UINT CProgressDlg::ProgressThread()
 		pfilename=&m_LogFile;
 
 	m_startTick = GetTickCount();
-	m_GitStatus = RunCmdList(this, m_GitCmdList, m_bShowCommand, pfilename, &m_bAbort, &this->m_Databuf, m_Git);
+	m_GitStatus = RunCmdList(this, m_GitCmdList, m_GitDirList, m_bShowCommand, pfilename, &m_bAbort, &this->m_Databuf, m_Git);
 	return 0;
 }
 

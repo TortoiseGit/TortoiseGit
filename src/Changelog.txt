@@ -6,6 +6,7 @@ Released: Unreleased
  * Fixed issue #2149: Can't search message in annotated tag or text in notes
  * Fixed issue #2172: Support num parameters of git blame -M and git blame -C
  * Fixed issue #2179: Revision comparisons against HEAD should not generate temporary files (allow to compare to working tree)
+ * Fixed issue #2168: Add to the "Clean up" dialog "Recursive" option for submodules
 
 == Bug Fixes ==
  * Fixed issue #2158: TortoiseGit sometimes crashes when doing Sync > Pull

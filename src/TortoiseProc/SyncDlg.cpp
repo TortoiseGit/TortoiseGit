@@ -1217,7 +1217,8 @@ UINT CSyncDlg::ProgressThread()
 {
 	m_startTick = GetTickCount();
 	m_bDone = false;
-	CProgressDlg::RunCmdList(this, m_GitCmdList, true, NULL, &this->m_bAbort, &this->m_Databuf);
+	STRING_VECTOR list;
+	CProgressDlg::RunCmdList(this, m_GitCmdList, list, true, nullptr, &this->m_bAbort, &this->m_Databuf);
 	InterlockedExchange(&m_bBlock, FALSE);
 	return 0;
 }

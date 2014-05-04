@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -42,6 +42,7 @@ CCleanTypeDlg::CCleanTypeDlg(CWnd* pParent /*=NULL*/)
 	this->m_CleanType = this->m_regType;
 	m_bNoRecycleBin = FALSE;
 	m_bDryRun = FALSE;
+	m_bSubmodules = FALSE;
 }
 
 CCleanTypeDlg::~CCleanTypeDlg()
@@ -54,6 +55,7 @@ void CCleanTypeDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_CHECK_DIR, m_bDir);
 	DDX_Check(pDX, IDC_CHECK_NORECYCLEBIN, m_bNoRecycleBin);
 	DDX_Check(pDX, IDC_CHECK_DRYRUN, m_bDryRun);
+	DDX_Check(pDX, IDC_CHECKSUBMODULES, m_bSubmodules);
 	DDX_Radio(pDX, IDC_RADIO_CLEAN_ALL,m_CleanType);
 }
 
@@ -75,6 +77,7 @@ BOOL CCleanTypeDlg::OnInitDialog()
 	AdjustControlSize(IDC_CHECK_DIR);
 	AdjustControlSize(IDC_CHECK_NORECYCLEBIN);
 	AdjustControlSize(IDC_CHECK_DRYRUN);
+	AdjustControlSize(IDC_CHECKSUBMODULES);
 
 	EnableSaveRestore(_T("CleanTypeDlg"));
 
