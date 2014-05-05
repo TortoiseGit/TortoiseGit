@@ -163,30 +163,40 @@ bool CleanupCommand::Execute()
 
 		if (dlg.m_bDryRun || dlg.m_bNoRecycleBin)
 		{
-			CProgressDlg progress;
-			for (int i = 0; i < this->pathList.GetCount(); ++i)
+			while (true)
 			{
-				CString path;
-				if (this->pathList[i].IsDirectory())
-					path = pathList[i].GetGitPathString();
-				else
-					path = pathList[i].GetContainingDirectory().GetGitPathString();
-
-				progress.m_GitDirList.push_back(g_Git.m_CurrentDir);
-				progress.m_GitCmdList.push_back(cmd + _T(" \"") + path + _T("\""));
-			}
-
-			if (dlg.m_bSubmodules)
-			{
-				for (CString dir : submoduleList)
+				CProgressDlg progress;
+				for (int i = 0; i < this->pathList.GetCount(); ++i)
 				{
-					progress.m_GitDirList.push_back(CTGitPath(dir).GetWinPathString());
-					progress.m_GitCmdList.push_back(cmd);
-				}
-			}
+					CString path;
+					if (this->pathList[i].IsDirectory())
+						path = pathList[i].GetGitPathString();
+					else
+						path = pathList[i].GetContainingDirectory().GetGitPathString();
 
-			if (progress.DoModal()==IDOK)
-				return TRUE;
+					progress.m_GitDirList.push_back(g_Git.m_CurrentDir);
+					progress.m_GitCmdList.push_back(cmd + _T(" \"") + path + _T("\""));
+				}
+
+				if (dlg.m_bSubmodules)
+				{
+					for (CString dir : submoduleList)
+					{
+						progress.m_GitDirList.push_back(CTGitPath(dir).GetWinPathString());
+						progress.m_GitCmdList.push_back(cmd);
+					}
+				}
+
+				INT_PTR idRetry = -1;
+				if (!dlg.m_bDryRun)
+					idRetry = progress.m_PostFailCmdList.Add(CString(MAKEINTRESOURCE(IDS_MSGBOX_RETRY)));
+				INT_PTR result = progress.DoModal();
+				if (result == IDOK)
+					return TRUE;
+				if (progress.m_GitStatus && result == IDC_PROGRESS_BUTTON1 + idRetry)
+					continue;
+				break;
+			}
 		}
 		else
 		{
