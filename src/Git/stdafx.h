@@ -53,3 +53,4 @@
 #pragma warning(push)
 #include "git2.h"
 #pragma warning(pop)
+#include "SmartLibgit2Ref.h"

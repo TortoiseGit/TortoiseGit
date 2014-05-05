@@ -161,19 +161,16 @@ int ParserFromRefLog(CString ref, std::vector<GitRev> &refloglist)
 	refloglist.clear();
 	if (g_Git.m_IsUseLibGit2)
 	{
-		CStringA refA = CUnicodeUtils::GetUTF8(ref);
-		git_repository *repo;
-		CStringA gitdirA = CUnicodeUtils::GetMulti(CTGitPath(g_Git.m_CurrentDir).GetGitPathString(), CP_UTF8);
-		if (git_repository_open(&repo, gitdirA) < 0)
+		CAutoRepository repo(CGit::GetGitPathStringA(g_Git.m_CurrentDir));
+		if (!repo)
 		{
 			MessageBox(nullptr, CGit::GetLibGit2LastErr(_T("Could not open repository.")), _T("TortoiseGit"), MB_ICONERROR);
 			return -1;
 		}
 
-		git_reflog *reflog;
-		if (git_reflog_read(&reflog, repo, refA) < 0)
+		CAutoReflog reflog;
+		if (git_reflog_read(reflog.GetPointer(), repo, CUnicodeUtils::GetUTF8(ref)) < 0)
 		{
-			git_repository_free(repo);
 			MessageBox(nullptr, CGit::GetLibGit2LastErr(_T("Could not read reflog.")), _T("TortoiseGit"), MB_ICONERROR);
 			return -1;
 		}
@@ -201,9 +198,6 @@ int ParserFromRefLog(CString ref, std::vector<GitRev> &refloglist)
 			}
 			refloglist.push_back(rev); 
 		}
-
-		git_reflog_free(reflog);
-		git_repository_free(repo);
 	}
 	else if (g_Git.m_IsUseGitDLL)
 	{

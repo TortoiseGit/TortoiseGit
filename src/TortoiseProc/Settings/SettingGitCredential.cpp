@@ -407,8 +407,7 @@ void CSettingGitCredential::AddSimpleCredential(int &index, CString text, bool a
 
 void CSettingGitCredential::LoadList()
 {
-	git_config * config;
-	git_config_new(&config);
+	CAutoConfig config(true);
 	git_config_add_file_ondisk(config, CGit::GetGitPathStringA(g_Git.GetGitLocalConfig()), GIT_CONFIG_LEVEL_LOCAL, FALSE);
 	git_config_add_file_ondisk(config, CGit::GetGitPathStringA(g_Git.GetGitGlobalConfig()), GIT_CONFIG_LEVEL_GLOBAL, FALSE);
 	git_config_add_file_ondisk(config, CGit::GetGitPathStringA(g_Git.GetGitGlobalXDGConfig()), GIT_CONFIG_LEVEL_XDG, FALSE);
@@ -419,7 +418,6 @@ void CSettingGitCredential::LoadList()
 	git_config_foreach_match(config, "credential\\..*\\.helper", GetCredentialUrlCallback, &urlList);
 	STRING_VECTOR anyList;
 	git_config_foreach_match(config, "credential\\..*", GetCredentialAnyEntryCallback, &anyList);
-	git_config_free(config);
 
 	for (size_t i = 0; i < defaultList.size(); ++i)
 		m_ctrlUrlList.AddString(defaultList[i]);
@@ -497,8 +495,7 @@ CString CSettingGitCredential::Load(CString key)
 	else
 		cmd.Format(_T("credential.%s.%s"), m_strUrl, key);
 
-	git_config * config;
-	git_config_new(&config);
+	CAutoConfig config(true);
 	int sel = m_ctrlConfigType.GetCurSel();
 	if (sel == ConfigType::Local)
 	{
@@ -519,7 +516,6 @@ CString CSettingGitCredential::Load(CString key)
 	const git_config_entry *entry;
 	if (!git_config_get_entry(&entry, config, cmdA))
 		valueA = CStringA(entry->value);
-	git_config_free(config);
 
 	return CUnicodeUtils::GetUnicode(valueA);
 }
@@ -758,8 +754,7 @@ void CSettingGitCredential::OnBnClickedButtonRemove()
 		msg.Format(IDS_GITCREDENTIAL_DELETEHELPER, str);
 		if (CMessageBox::Show(NULL, msg, _T("TortoiseGit"), MB_YESNO | MB_ICONQUESTION) == IDYES)
 		{
-			git_config * config;
-			git_config_new(&config);
+			CAutoConfig config(true);
 			int pos = str.Find(_T(':'));
 			CString prefix = pos >= 0 ? str.Left(pos) : str;
 			CString url = pos >= 0 ? str.Mid(pos + 1) : _T("");
@@ -785,7 +780,6 @@ void CSettingGitCredential::OnBnClickedButtonRemove()
 				if (!CAppUtils::IsAdminLogin())
 				{
 					RunUAC();
-					git_config_free(config);
 					EndDialog(0);
 					return;
 				}
@@ -799,7 +793,6 @@ void CSettingGitCredential::OnBnClickedButtonRemove()
 			CStringA urlA = CUnicodeUtils::GetUTF8(url);
 			CStringA pattern = urlA.IsEmpty() ? "^credential\\.[^.]+$" : ("credential\\." + RegexEscape(urlA) + "\\..*");
 			git_config_foreach_match(config, pattern, GetCredentialEntryCallback, &list);
-			git_config_free(config);
 			for (size_t i = 0; i < list.size(); ++i)
 				g_Git.UnsetConfigValue(list[i], configLevel, CP_UTF8);
 			m_ctrlUrlList.DeleteString(index);

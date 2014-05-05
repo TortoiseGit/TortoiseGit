@@ -33,6 +33,7 @@
 #pragma warning(push)
 #include "git2.h"
 #pragma warning(pop)
+#include "SmartLibgit2Ref.h"
 
 #ifndef _AFX_NO_OLE_SUPPORT
 #include <afxdtctl.h>           // MFC support for Internet Explorer 4 Common Controls

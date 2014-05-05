@@ -52,7 +52,6 @@ enum IDGITRCLH
 
 CGitRefCompareList::CGitRefCompareList()
 	: CHintListCtrl()
-	, m_Repository(nullptr)
 	, colRef(0)
 	, colChange(0)
 	, colOldHash(0)
@@ -88,9 +87,9 @@ void CGitRefCompareList::Init()
 
 int CGitRefCompareList::OpenRepository()
 {
-	m_Repository = nullptr;
-	CStringA gitdir = CUnicodeUtils::GetMulti(CTGitPath(g_Git.m_CurrentDir).GetGitPathString(), CP_UTF8);
-	if (git_repository_open(&m_Repository, gitdir))
+	CAutoRepository tmp(CGit::GetGitPathStringA(g_Git.m_CurrentDir));
+	m_Repository.Swap(tmp);
+	if (!m_Repository)
 	{
 		CMessageBox::Show(m_hWnd, CGit::GetLibGit2LastErr(_T("Could not open repository.")), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 		return -1;
@@ -101,9 +100,7 @@ int CGitRefCompareList::OpenRepository()
 
 void CGitRefCompareList::CloseRepository()
 {
-	if (m_Repository)
-		git_repository_free(m_Repository);
-	m_Repository = nullptr;
+	m_Repository.Free();
 }
 
 int CGitRefCompareList::AddEntry(CString ref, CGitHash *oldHash, CGitHash *newHash)
@@ -116,17 +113,17 @@ int CGitRefCompareList::AddEntry(CString ref, CGitHash *oldHash, CGitHash *newHa
 	if (newHash)
 		entry.newHash = newHash->ToString().Left(g_Git.GetShortHASHLength());
 
-	git_commit *oldCommit = nullptr;
+	CAutoCommit oldCommit;
 	if (oldHash)
 	{
-		if (!git_commit_lookup(&oldCommit, m_Repository, (const git_oid *)&oldHash->m_hash))
+		if (!git_commit_lookup(oldCommit.GetPointer(), m_Repository, (const git_oid *)&oldHash->m_hash))
 			entry.oldMessage = GetCommitMessage(oldCommit);
 	}
 
-	git_commit *newCommit = nullptr;
+	CAutoCommit newCommit;
 	if (newHash)
 	{
-		if (!git_commit_lookup(&newCommit, m_Repository, (const git_oid *)&newHash->m_hash))
+		if (!git_commit_lookup(newCommit.GetPointer(), m_Repository, (const git_oid *)&newHash->m_hash))
 			entry.newMessage = GetCommitMessage(newCommit);
 	}
 
@@ -186,11 +183,6 @@ int CGitRefCompareList::AddEntry(CString ref, CGitHash *oldHash, CGitHash *newHa
 		entry.change = CString(MAKEINTRESOURCE(IDS_NEW));
 		entry.changeType = ChangeType::New;
 	}
-
-	if (oldCommit)
-		git_commit_free(oldCommit);
-	if (newCommit)
-		git_commit_free(newCommit);
 
 	m_RefList.push_back(entry);
 	return (int)m_RefList.size() - 1;

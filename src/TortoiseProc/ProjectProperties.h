@@ -52,7 +52,6 @@ class ProjectProperties
 {
 public:
 	ProjectProperties(void);
-	~ProjectProperties(void);
 
 	/**
 	 * Reads the properties from the current working tree
@@ -201,7 +200,7 @@ public:
 	CString		sProviderUuid64;
 
 private:
-	git_config *gitconfig;
+	CAutoConfig gitconfig;
 
 	/**
 	 * Constructing regex objects is expensive. Therefore, cache them here.

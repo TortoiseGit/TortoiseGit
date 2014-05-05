@@ -43,13 +43,6 @@ ProjectProperties::ProjectProperties(void)
 	bFileListInEnglish = TRUE;
 	bAppend = TRUE;
 	lProjectLanguage = 0;
-	gitconfig = nullptr;
-}
-
-ProjectProperties::~ProjectProperties(void)
-{
-	if (gitconfig)
-		git_config_free(gitconfig);
 }
 
 int ProjectProperties::GetStringProps(CString &prop, const CString &key)
@@ -82,10 +75,7 @@ int ProjectProperties::GetBOOLProps(BOOL &b, const CString &key)
 
 int ProjectProperties::ReadProps()
 {
-	if (gitconfig)
-		git_config_free(gitconfig);
-
-	git_config_new(&gitconfig);
+	gitconfig.New();
 	CString adminDirPath;
 	if (g_GitAdminDir.GetAdminDirPath(g_Git.m_CurrentDir, adminDirPath))
 		git_config_add_file_ondisk(gitconfig, CGit::GetGitPathStringA(adminDirPath + L"config"), GIT_CONFIG_LEVEL_APP, FALSE); // this needs to have the highest priority in order to override .tgitconfig settings

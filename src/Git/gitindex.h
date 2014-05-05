@@ -49,7 +49,7 @@ public:
 protected:
 	bool m_bCheckContent;
 	CComCriticalSection m_critRepoSec;
-	git_repository * repository;
+	CAutoRepository repository;
 	int GetFileStatus(const CString &gitdir, const CString &path, git_wc_status_kind * status, __int64 time, FILL_STATUS_CALLBACK callback = nullptr, void *pData = nullptr, CGitHash *pHash = nullptr, bool * assumeValid = nullptr, bool * skipWorktree = nullptr);
 	int GetDirStatus(const CString &gitdir, const CString &path, git_wc_status_kind * status,__int64 time, FILL_STATUS_CALLBACK callback = nullptr, void *pData = nullptr,CGitHash *pHash = nullptr);
 };

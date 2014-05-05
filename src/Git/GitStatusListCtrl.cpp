@@ -2481,20 +2481,17 @@ void CGitStatusListCtrl::SetGitIndexFlagsForSelectedFiles(UINT message, BOOL ass
 	if (CMessageBox::Show(GetSafeHwnd(), message, IDS_APPNAME, MB_YESNO | MB_DEFBUTTON2 | MB_ICONQUESTION) == IDNO)
 		return;
 
-	CStringA gitdir = CUnicodeUtils::GetMulti(g_Git.m_CurrentDir, CP_UTF8);
-
-	git_repository *repository = nullptr;
-	if (git_repository_open(&repository, gitdir.GetBuffer()))
+	CAutoRepository repository(CGit::GetGitPathStringA(g_Git.m_CurrentDir));
+	if (!repository)
 	{
 		CMessageBox::Show(m_hWnd, g_Git.GetLibGit2LastErr(), _T("TortoiseGit"), MB_ICONERROR);
 		return;
 	}
 
-	git_index *gitindex = nullptr;
-	if (git_repository_index(&gitindex, repository))
+	CAutoIndex gitindex;
+	if (git_repository_index(gitindex.GetPointer(), repository))
 	{
 		CMessageBox::Show(m_hWnd, g_Git.GetLibGit2LastErr(), _T("TortoiseGit"), MB_ICONERROR);
-		git_repository_free(repository);
 		return;
 	}
 
@@ -2528,12 +2525,8 @@ void CGitStatusListCtrl::SetGitIndexFlagsForSelectedFiles(UINT message, BOOL ass
 	if (git_index_write(gitindex))
 	{
 		CMessageBox::Show(m_hWnd, g_Git.GetLibGit2LastErr(), _T("TortoiseGit"), MB_ICONERROR);
-		git_index_free(gitindex);
-		git_repository_free(repository);
 		return;
 	}
-
-	git_repository_free(repository);
 
 	if (nullptr != GetLogicalParent() && nullptr != GetLogicalParent()->GetSafeHwnd())
 		GetLogicalParent()->SendMessage(GITSLNM_NEEDSREFRESH);

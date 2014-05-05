@@ -830,8 +830,7 @@ int CTGitPath::GetAdminDirMask() const
 			{
 				if (PathFileExists(topProjectDir + _T("\\.gitmodules")))
 				{
-					git_config * config;
-					git_config_new(&config);
+					CAutoConfig config(true);
 					git_config_add_file_ondisk(config, CGit::GetGitPathStringA(topProjectDir + _T("\\.gitmodules")), GIT_CONFIG_LEVEL_APP, FALSE);
 					CString relativePath = GetWinPathString().Mid(topProjectDir.GetLength());
 					relativePath.Replace(_T("\\"), _T("/"));
@@ -840,7 +839,6 @@ int CTGitPath::GetAdminDirMask() const
 					CStringA key(CUnicodeUtils::GetUTF8(_T("submodule.") + relativePath + _T(".path")));
 					if (!git_config_get_string(&out, config, key))
 						status |= ITEMIS_SUBMODULE;
-					git_config_free(config);
 				}
 			}
 		}
@@ -1135,17 +1133,13 @@ int CTGitPathList::FillBasedOnIndexFlags(unsigned short flag, CTGitPathList* lis
 	CTGitPath path;
 	CString one;
 
-	CStringA gitdir = CUnicodeUtils::GetMulti(g_Git.m_CurrentDir, CP_UTF8);
-	git_repository *repository = nullptr;
-	if (git_repository_open(&repository, gitdir.GetBuffer()))
+	CAutoRepository repository(CGit::GetGitPathStringA(g_Git.m_CurrentDir));
+	if (!repository)
 		return -1;
 
-	git_index *index = nullptr;
-	if (git_repository_index(&index, repository))
-	{
-		git_repository_free(repository);
+	CAutoIndex index;
+	if (git_repository_index(index.GetPointer(), repository))
 		return -1;
-	}
 
 	int count;
 	if (list == nullptr)
@@ -1176,9 +1170,7 @@ int CTGitPathList::FillBasedOnIndexFlags(unsigned short flag, CTGitPathList* lis
 			AddPath(path);
 		}
 	}
-	git_index_free(index);
 	RemoveDuplicates();
-	git_repository_free(repository);
 	return 0;
 }
 int CTGitPathList::ParserFromLog(BYTE_VECTOR &log, bool parseDeletes /*false*/)

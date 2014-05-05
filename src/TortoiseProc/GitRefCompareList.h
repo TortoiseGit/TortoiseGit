@@ -79,7 +79,7 @@ private:
 	static CString GetCommitMessage(git_commit *commit);
 	static bool SortPredicate(const RefEntry &e1, const RefEntry &e2);
 
-	git_repository			*m_Repository;
+	CAutoRepository			m_Repository;
 	std::vector<RefEntry>	m_RefList;
 	BOOL					m_bHideUnchanged;
 	static BOOL 			m_bSortLogical;

@@ -30,19 +30,18 @@ bool CatCommand::Execute()
 
 	if (g_Git.UsingLibGit2(CGit::GIT_CMD_GETONEFILE))
 	{
-		git_repository *repo = nullptr;
-		if (git_repository_open(&repo, CUnicodeUtils::GetUTF8(CTGitPath(g_Git.m_CurrentDir).GetGitPathString())))
+		CAutoRepository repo(CGit::GetGitPathStringA(g_Git.m_CurrentDir));
+		if (!repo)
 		{
 			::DeleteFile(savepath);
 			CMessageBox::Show(hwndExplorer, g_Git.GetLibGit2LastErr(L"Could not open repository."), L"TortoiseGit", MB_ICONERROR);
 			return false;
 		}
 
-		git_object *obj = nullptr;
-		if (git_revparse_single(&obj, repo, CUnicodeUtils::GetUTF8(revision)))
+		CAutoObject obj;
+		if (git_revparse_single(obj.GetPointer(), repo, CUnicodeUtils::GetUTF8(revision)))
 		{
 			::DeleteFile(savepath);
-			git_repository_free(repo);
 			CMessageBox::Show(hwndExplorer, g_Git.GetLibGit2LastErr(L"Could not parse revision."), L"TortoiseGit", MB_ICONERROR);
 			return false;
 		}
@@ -55,28 +54,19 @@ bool CatCommand::Execute()
 			{
 				::DeleteFile(savepath);
 				CMessageBox::Show(hwndExplorer, L"Could not open file for writing.", L"TortoiseGit", MB_ICONERROR);
-				git_object_free(obj);
-				git_repository_free(repo);
 				return false;
 			}
-			if (fwrite(git_blob_rawcontent((const git_blob *)obj), 1, git_blob_rawsize((const git_blob *)obj), file) != (size_t)git_blob_rawsize((const git_blob *)obj)) // TODO: need to apply git_blob_filtered_content?
+			if (fwrite(git_blob_rawcontent((const git_blob *)(git_object *)obj), 1, git_blob_rawsize((const git_blob *)(git_object *)obj), file) != (size_t)git_blob_rawsize((const git_blob *)(git_object *)obj)) // TODO: need to apply git_blob_filtered_content?
 			{
 				::DeleteFile(savepath);
 				CString err = CFormatMessageWrapper();
 				CMessageBox::Show(hwndExplorer, _T("Could not write to file: ") + err, L"TortoiseGit", MB_ICONERROR);
 				fclose(file);
-				git_object_free(obj);
-				git_repository_free(repo);
 				return false;
 			}
 			fclose(file);
-			git_object_free(obj);
-			git_repository_free(repo);
 			return true;
 		}
-
-		git_object_free(obj);
-		git_repository_free(repo);
 
 		if (g_Git.GetOneFile(revision, cmdLinePath, savepath))
 		{

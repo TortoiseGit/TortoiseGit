@@ -2993,13 +2993,8 @@ void CGitLogListBase::FetchTrackingBranchList()
 			CString branchName;
 			if (CGit::GetShortName(it->second[j], branchName, _T("refs/heads/")))
 			{
-				CString configName;
-				configName.Format(_T("branch.%s.remote"), branchName);
-				CString pullRemote = g_Git.GetConfigValue(configName);
-
-				configName.Format(_T("branch.%s.merge"), branchName);
-				CString pullBranch = CGit::StripRefName(g_Git.GetConfigValue(configName));
-
+				CString pullRemote, pullBranch;
+				g_Git.GetRemoteTrackedBranch(branchName, pullRemote, pullBranch);
 				if (!pullRemote.IsEmpty() && !pullBranch.IsEmpty())
 				{
 					m_TrackingMap[branchName] = std::make_pair(pullRemote, pullBranch);

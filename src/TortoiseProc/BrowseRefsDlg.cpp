@@ -399,11 +399,9 @@ static int GetBranchDescriptionsCallback(const git_config_entry *entry, void *da
 MAP_STRING_STRING GetBranchDescriptions()
 {
 	MAP_STRING_STRING descriptions;
-	git_config * config;
-	git_config_new(&config);
+	CAutoConfig config(true);
 	git_config_add_file_ondisk(config, CGit::GetGitPathStringA(g_Git.GetGitLocalConfig()), GIT_CONFIG_LEVEL_LOCAL, FALSE);
 	git_config_foreach_match(config, "branch\\..*\\.description", GetBranchDescriptionsCallback, &descriptions);
-	git_config_free(config);
 	return descriptions;
 }
 

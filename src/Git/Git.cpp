@@ -1139,15 +1139,13 @@ int CGit::GetHash(CGitHash &hash, const CString& friendname)
 
 	if (m_IsUseLibGit2)
 	{
-		git_repository *repo = NULL;
-		CStringA gitdirA = CUnicodeUtils::GetMulti(CTGitPath(m_CurrentDir).GetGitPathString(), CP_UTF8);
-		if (git_repository_open(&repo, gitdirA))
+		CAutoRepository repo(GetGitPathStringA(m_CurrentDir));
+		if (!repo)
 			return -1;
 
 		int isHeadOrphan = git_repository_head_unborn(repo);
 		if (isHeadOrphan != 0)
 		{
-			git_repository_free(repo);
 			hash.Empty();
 			if (isHeadOrphan == 1)
 				return 0;
@@ -1155,27 +1153,15 @@ int CGit::GetHash(CGitHash &hash, const CString& friendname)
 				return -1;
 		}
 
-		CStringA refnameA = CUnicodeUtils::GetMulti(friendname, CP_UTF8);
-
-		git_object * gitObject = NULL;
-		if (git_revparse_single(&gitObject, repo, refnameA))
-		{
-			git_repository_free(repo);
+		CAutoObject gitObject;
+		if (git_revparse_single(gitObject.GetPointer(), repo, CUnicodeUtils::GetUTF8(friendname)))
 			return -1;
-		}
 
 		const git_oid * oid = git_object_id(gitObject);
 		if (oid == NULL)
-		{
-			git_object_free(gitObject);
-			git_repository_free(repo);
 			return -1;
-		}
 
 		hash = CGitHash((char *)oid->id);
-
-		git_object_free(gitObject); // also frees oid
-		git_repository_free(repo);
 
 		return 0;
 	}
@@ -1257,29 +1243,20 @@ int CGit::GetTagList(STRING_VECTOR &list)
 {
 	if (this->m_IsUseLibGit2)
 	{
-		git_repository *repo = NULL;
-
-		CStringA gitdir = CUnicodeUtils::GetMulti(CTGitPath(m_CurrentDir).GetGitPathString(), CP_UTF8);
-		if (git_repository_open(&repo, gitdir))
+		CAutoRepository repo(GetGitPathStringA(m_CurrentDir));
+		if (!repo)
 			return -1;
 
-		git_strarray tag_names;
+		CAutoStrArray tag_names;
 
-		if (git_tag_list(&tag_names, repo))
-		{
-			git_repository_free(repo);
+		if (git_tag_list(tag_names, repo))
 			return -1;
-		}
 
-		for (size_t i = 0; i < tag_names.count; ++i)
+		for (size_t i = 0; i < tag_names->count; ++i)
 		{
-			CStringA tagName(tag_names.strings[i]);
+			CStringA tagName(tag_names->strings[i]);
 			list.push_back(CUnicodeUtils::GetUnicode(tagName));
 		}
-
-		git_strarray_free(&tag_names);
-
-		git_repository_free(repo);
 
 		std::sort(list.begin(), list.end(), LogicalComparePredicate);
 
@@ -1376,28 +1353,17 @@ bool CGit::IsBranchTagNameUnique(const CString& name)
 {
 	if (m_IsUseLibGit2)
 	{
-		git_repository *repo = nullptr;
-
-		if (git_repository_open(&repo, CUnicodeUtils::GetUTF8(CTGitPath(m_CurrentDir).GetGitPathString())))
+		CAutoRepository repo(GetGitPathStringA(m_CurrentDir));
+		if (!repo)
 			return true; // TODO: optimize error reporting
 
-		git_reference * tagRef = nullptr;
-		if (git_reference_lookup(&tagRef, repo, CUnicodeUtils::GetUTF8(L"refs/tags/" + name)))
-		{
-			git_repository_free(repo);
+		CAutoReference tagRef;
+		if (git_reference_lookup(tagRef.GetPointer(), repo, CUnicodeUtils::GetUTF8(L"refs/tags/" + name)))
 			return true;
-		}
-		git_reference_free(tagRef);
 
-		git_reference * branchRef = nullptr;
-		if (git_reference_lookup(&branchRef, repo, CUnicodeUtils::GetUTF8(L"refs/heads/" + name)))
-		{
-			git_repository_free(repo);
+		CAutoReference branchRef;
+		if (git_reference_lookup(branchRef.GetPointer(), repo, CUnicodeUtils::GetUTF8(L"refs/heads/" + name)))
 			return true;
-		}
-
-		git_reference_free(branchRef);
-		git_repository_free(repo);
 
 		return false;
 	}
@@ -1430,9 +1396,8 @@ bool CGit::BranchTagExists(const CString& name, bool isBranch /*= true*/)
 {
 	if (m_IsUseLibGit2)
 	{
-		git_repository *repo = nullptr;
-
-		if (git_repository_open(&repo, CUnicodeUtils::GetUTF8(CTGitPath(m_CurrentDir).GetGitPathString())))
+		CAutoRepository repo(GetGitPathStringA(m_CurrentDir));
+		if (!repo)
 			return false; // TODO: optimize error reporting
 
 		CString prefix;
@@ -1441,15 +1406,9 @@ bool CGit::BranchTagExists(const CString& name, bool isBranch /*= true*/)
 		else
 			prefix = _T("refs/tags/");
 
-		git_reference * ref = nullptr;
-		if (git_reference_lookup(&ref, repo, CUnicodeUtils::GetUTF8(prefix + name)))
-		{
-			git_repository_free(repo);
+		CAutoReference ref;
+		if (git_reference_lookup(ref.GetPointer(), repo, CUnicodeUtils::GetUTF8(prefix + name)))
 			return false;
-		}
-
-		git_reference_free(ref);
-		git_repository_free(repo);
 
 		return true;
 	}
@@ -1517,9 +1476,8 @@ int CGit::GetBranchList(STRING_VECTOR &list,int *current,BRANCH_TYPE type)
 	CString cur;
 	if (m_IsUseLibGit2)
 	{
-		git_repository *repo = nullptr;
-
-		if (git_repository_open(&repo, CUnicodeUtils::GetUTF8(CTGitPath(m_CurrentDir).GetGitPathString())))
+		CAutoRepository repo(GetGitPathStringA(m_CurrentDir));
+		if (!repo)
 			return -1;
 
 		if (git_repository_head_detached(repo) == 1)
@@ -1527,30 +1485,25 @@ int CGit::GetBranchList(STRING_VECTOR &list,int *current,BRANCH_TYPE type)
 
 		if ((type & (BRANCH_LOCAL | BRANCH_REMOTE)) != 0)
 		{
-			git_branch_iterator * it = nullptr;
-
 			git_branch_t flags = GIT_BRANCH_LOCAL;
 			if ((type & BRANCH_LOCAL) && (type & BRANCH_REMOTE))
 				flags = GIT_BRANCH_ALL;
 			else if (type & BRANCH_REMOTE)
 				flags = GIT_BRANCH_REMOTE;
 
-			if (git_branch_iterator_new(&it, repo, flags))
-			{
-				git_repository_free(repo);
+			CAutoBranchIterator it;
+			if (git_branch_iterator_new(it.GetPointer(), repo, flags))
 				return -1;
-			}
 
 			git_reference * ref = nullptr;
 			git_branch_t branchType;
 			while (git_branch_next(&ref, &branchType, it) == 0)
 			{
+				CAutoReference autoRef(ref);
 				const char * name = nullptr;
 				if (git_branch_name(&name, ref))
-				{
-					git_reference_free(ref);
 					continue;
-				}
+
 				CString branchname = CUnicodeUtils::GetUnicode(name);
 				if (branchType & GIT_BRANCH_REMOTE)
 					list.push_back(_T("remotes/") + branchname);
@@ -1560,12 +1513,8 @@ int CGit::GetBranchList(STRING_VECTOR &list,int *current,BRANCH_TYPE type)
 						cur = branchname;
 					list.push_back(branchname);
 				}
-				git_reference_free(ref);
 			}
-
-			git_branch_iterator_free(it);
 		}
-		git_repository_free(repo);
 	}
 	else
 	{
@@ -1623,29 +1572,19 @@ int CGit::GetRemoteList(STRING_VECTOR &list)
 {
 	if (this->m_IsUseLibGit2)
 	{
-		git_repository *repo = NULL;
-
-		CStringA gitdir = CUnicodeUtils::GetMulti(CTGitPath(m_CurrentDir).GetGitPathString(), CP_UTF8);
-		if (git_repository_open(&repo, gitdir))
+		CAutoRepository repo(GetGitPathStringA(m_CurrentDir));
+		if (!repo)
 			return -1;
 
-		git_strarray remotes;
-
-		if (git_remote_list(&remotes, repo))
-		{
-			git_repository_free(repo);
+		CAutoStrArray remotes;
+		if (git_remote_list(remotes, repo))
 			return -1;
-		}
 
-		for (size_t i = 0; i < remotes.count; ++i)
+		for (size_t i = 0; i < remotes->count; ++i)
 		{
-			CStringA remote(remotes.strings[i]);
+			CStringA remote(remotes->strings[i]);
 			list.push_back(CUnicodeUtils::GetUnicode(remote));
 		}
-
-		git_strarray_free(&remotes);
-
-		git_repository_free(repo);
 
 		std::sort(list.begin(), list.end());
 
@@ -1709,19 +1648,12 @@ int CGit::GetRefList(STRING_VECTOR &list)
 {
 	if (this->m_IsUseLibGit2)
 	{
-		git_repository *repo = NULL;
-
-		CStringA gitdir = CUnicodeUtils::GetMulti(CTGitPath(m_CurrentDir).GetGitPathString(), CP_UTF8);
-		if (git_repository_open(&repo, gitdir))
+		CAutoRepository repo(GetGitPathStringA(m_CurrentDir));
+		if (!repo)
 			return -1;
 
 		if (git_reference_foreach(repo, libgit2_addto_list_each_ref_fn, &list))
-		{
-			git_repository_free(repo);
 			return -1;
-		}
-
-		git_repository_free(repo);
 
 		std::sort(list.begin(), list.end(), LogicalComparePredicate);
 
@@ -1765,65 +1697,41 @@ int libgit2_addto_map_each_ref_fn(git_reference *ref, void *payload)
 	CString str;
 	g_Git.StringAppend(&str, (BYTE*)git_reference_name(ref), CP_UTF8);
 
-	git_object * gitObject = NULL;
+	CAutoObject gitObject;
+	if (git_revparse_single(gitObject.GetPointer(), payloadContent->repo, git_reference_name(ref)))
+		return 1;
 
-	do
+	if (git_object_type(gitObject) == GIT_OBJ_TAG)
 	{
-		if (git_revparse_single(&gitObject, payloadContent->repo, git_reference_name(ref)))
-		{
-			break;
-		}
-
-		if (git_object_type(gitObject) == GIT_OBJ_TAG)
-		{
-			str += _T("^{}"); // deref tag
-			git_object * derefedTag = NULL;
-			if (git_object_peel(&derefedTag, gitObject, GIT_OBJ_ANY))
-			{
-				break;
-			}
-			git_object_free(gitObject);
-			gitObject = derefedTag;
-		}
-
-		const git_oid * oid = git_object_id(gitObject);
-		if (oid == NULL)
-		{
-			break;
-		}
-
-		CGitHash hash((char *)oid->id);
-		(*payloadContent->map)[hash].push_back(str);
-	} while (false);
-
-	if (gitObject)
-	{
-		git_object_free(gitObject);
-		return 0;
+		str += _T("^{}"); // deref tag
+		CAutoObject derefedTag;
+		if (git_object_peel(derefedTag.GetPointer(), gitObject, GIT_OBJ_ANY))
+			return 1;
+		gitObject.Swap(derefedTag);
 	}
 
-	return 1;
+	const git_oid * oid = git_object_id(gitObject);
+	if (oid == NULL)
+		return 1;
+
+	CGitHash hash((char *)oid->id);
+	(*payloadContent->map)[hash].push_back(str);
+
+	return 0;
 }
 
 int CGit::GetMapHashToFriendName(MAP_HASH_NAME &map)
 {
 	if (this->m_IsUseLibGit2)
 	{
-		git_repository *repo = NULL;
-
-		CStringA gitdir = CUnicodeUtils::GetMulti(CTGitPath(m_CurrentDir).GetGitPathString(), CP_UTF8);
-		if (git_repository_open(&repo, gitdir))
+		CAutoRepository repo(GetGitPathStringA(m_CurrentDir));
+		if (!repo)
 			return -1;
 
 		map_each_ref_payload payloadContent = { repo, &map };
 
 		if (git_reference_foreach(repo, libgit2_addto_map_each_ref_fn, &payloadContent))
-		{
-			git_repository_free(repo);
 			return -1;
-		}
-
-		git_repository_free(repo);
 
 		for (auto it = map.begin(); it != map.end(); ++it)
 		{
@@ -2167,6 +2075,10 @@ bool CGit::IsFastForward(const CString &from, const CString &to, CGitHash * comm
 {
 	if (UsingLibGit2(GIT_CMD_MERGE_BASE))
 	{
+		CAutoRepository repo(GetGitPathStringA(m_CurrentDir));
+		if (!repo)
+			return false;
+
 		CGitHash fromHash, toHash, baseHash;
 		if (GetHash(toHash, FixBranchName(to)))
 			return false;
@@ -2174,23 +2086,14 @@ bool CGit::IsFastForward(const CString &from, const CString &to, CGitHash * comm
 		if (GetHash(fromHash, FixBranchName(from)))
 			return false;
 
-		git_repository *repo = nullptr;
-		if (git_repository_open(&repo, CUnicodeUtils::GetMulti(CTGitPath(m_CurrentDir).GetGitPathString(), CP_UTF8)))
-			return false;
-
 		git_oid baseOid;
 		if (git_merge_base(&baseOid, repo, (const git_oid*)toHash.m_hash, (const git_oid*)fromHash.m_hash))
-		{
-			git_repository_free(repo);
 			return false;
-		}
 
 		baseHash = baseOid.id;
 
 		if (commonAncestor)
 			*commonAncestor = baseHash;
-
-		git_repository_free(repo);
 
 		return fromHash == baseHash;
 	}
@@ -2252,92 +2155,51 @@ int CGit::GetOneFile(const CString &Refname, const CTGitPath &path, const CStrin
 {
 	if (UsingLibGit2(GIT_CMD_GETONEFILE))
 	{
+		CAutoRepository repo(GetGitPathStringA(m_CurrentDir));
+		if (!repo)
+			return -1;
+
 		CGitHash hash;
 		if (GetHash(hash, Refname))
 			return -1;
 
-		git_repository *repo = nullptr;
-		if (git_repository_open(&repo, CUnicodeUtils::GetUTF8(CTGitPath(m_CurrentDir).GetGitPathString())))
+		CAutoCommit commit;
+		if (git_commit_lookup(commit.GetPointer(), repo, (const git_oid *)hash.m_hash))
 			return -1;
 
-		git_commit * commit = nullptr;
-		if (git_commit_lookup(&commit, repo, (const git_oid *)hash.m_hash))
-		{
-			git_repository_free(repo);
+		CAutoTree tree;
+		if (git_commit_tree(tree.GetPointer(), commit))
 			return -1;
-		}
 
-		git_tree * tree = nullptr;
-		if (git_commit_tree(&tree, commit))
-		{
-			git_commit_free(commit);
-			git_repository_free(repo);
+		CAutoTreeEntry entry;
+		if (git_tree_entry_bypath(entry.GetPointer(), tree, CUnicodeUtils::GetUTF8(path.GetGitPathString())))
 			return -1;
-		}
 
-		git_tree_entry * entry = nullptr;
-		if (git_tree_entry_bypath(&entry, tree, CUnicodeUtils::GetUTF8(path.GetGitPathString())))
-		{
-			git_tree_free(tree);
-			git_commit_free(commit);
-			git_repository_free(repo);
+		CAutoBlob blob;
+		if (git_tree_entry_to_object((git_object**)blob.GetPointer(), repo, entry))
 			return -1;
-		}
-
-		git_blob * blob = nullptr;
-		if (git_tree_entry_to_object((git_object**)&blob, repo, entry))
-		{
-			git_tree_entry_free(entry);
-			git_tree_free(tree);
-			git_commit_free(commit);
-			git_repository_free(repo);
-			return -1;
-		}
 
 		FILE *file = nullptr;
 		_tfopen_s(&file, outputfile, _T("w"));
 		if (file == nullptr)
 		{
 			giterr_set_str(GITERR_NONE, "Could not create file.");
-			git_blob_free(blob);
-			git_tree_entry_free(entry);
-			git_tree_free(tree);
-			git_commit_free(commit);
-			git_repository_free(repo);
 			return -1;
 		}
-		git_buf buf = { 0 };
-		if (git_blob_filtered_content(&buf, blob, CUnicodeUtils::GetUTF8(path.GetGitPathString()), 0))
+		CAutoBuf buf;
+		if (git_blob_filtered_content(buf, blob, CUnicodeUtils::GetUTF8(path.GetGitPathString()), 0))
 		{
-			git_blob_free(blob);
-			git_tree_entry_free(entry);
-			git_tree_free(tree);
-			git_commit_free(commit);
-			git_repository_free(repo);
 			fclose(file);
 			return -1;
 		}
-		if (fwrite(buf.ptr, sizeof(char), buf.size, file) != buf.size)
+		if (fwrite(buf->ptr, sizeof(char), buf->size, file) != buf->size)
 		{
 			giterr_set_str(GITERR_OS, "Could not write to file.");
-			git_buf_free(&buf);
 			fclose(file);
 
-			git_blob_free(blob);
-			git_tree_entry_free(entry);
-			git_tree_free(tree);
-			git_commit_free(commit);
-			git_repository_free(repo);
 			return -1;
 		}
-		git_buf_free(&buf);
 		fclose(file);
-
-		git_blob_free(blob);
-		git_tree_entry_free(entry);
-		git_tree_free(tree);
-		git_commit_free(commit);
-		git_repository_free(repo);
 
 		return 0;
 	}
@@ -2655,8 +2517,8 @@ static int resolve_to_tree(git_repository *repo, const char *identifier, git_tre
 	ATLASSERT(repo && identifier && tree);
 
 	/* try to resolve identifier */
-	git_object *obj = nullptr;
-	if (git_revparse_single(&obj, repo, identifier))
+	CAutoObject obj;
+	if (git_revparse_single(obj.GetPointer(), repo, identifier))
 		return -1;
 
 	if (obj == nullptr)
@@ -2666,11 +2528,10 @@ static int resolve_to_tree(git_repository *repo, const char *identifier, git_tre
 	switch (git_object_type(obj))
 	{
 	case GIT_OBJ_TREE:
-		*tree = (git_tree *)obj;
+		*tree = (git_tree *)obj.Detach();
 		break;
 	case GIT_OBJ_COMMIT:
-		err = git_commit_tree(tree, (git_commit *)obj);
-		git_object_free(obj);
+		err = git_commit_tree(tree, (git_commit *)(git_object*)obj);
 		break;
 	default:
 		err = GIT_ENOTFOUND;
@@ -2682,24 +2543,18 @@ static int resolve_to_tree(git_repository *repo, const char *identifier, git_tre
 /* use libgit2 get unified diff */
 static int GetUnifiedDiffLibGit2(const CTGitPath& path, const git_revnum_t& revOld, const git_revnum_t& revNew, git_diff_line_cb callback, void *data, bool /* bMerge */)
 {
-	git_repository *repo = nullptr;
-	CStringA gitdirA = CUnicodeUtils::GetMulti(CTGitPath(g_Git.m_CurrentDir).GetGitPathString(), CP_UTF8);
 	CStringA tree1 = CUnicodeUtils::GetMulti(revNew, CP_UTF8);
 	CStringA tree2 = CUnicodeUtils::GetMulti(revOld, CP_UTF8);
-	int ret = 0;
 
-	if (git_repository_open(&repo, gitdirA))
+	CAutoRepository repo(CGit::GetGitPathStringA(g_Git.m_CurrentDir));
+	if (!repo)
 		return -1;
 
 	int isHeadOrphan = git_repository_head_unborn(repo);
-	if (isHeadOrphan != 0)
-	{
-		git_repository_free(repo);
-		if (isHeadOrphan == 1)
-			return 0;
-		else
-			return -1;
-	}
+	if (isHeadOrphan == 1)
+		return 0;
+	else if (isHeadOrphan != 0)
+		return -1;
 
 	git_diff_options opts = GIT_DIFF_OPTIONS_INIT;
 	CStringA pathA = CUnicodeUtils::GetMulti(path.GetGitPathString(), CP_UTF8);
@@ -2709,140 +2564,68 @@ static int GetUnifiedDiffLibGit2(const CTGitPath& path, const git_revnum_t& revO
 		opts.pathspec.strings = &buf;
 		opts.pathspec.count = 1;
 	}
-	git_diff *diff = nullptr;
+	CAutoDiff diff;
 
 	if (revNew == GitRev::GetWorkingCopy() || revOld == GitRev::GetWorkingCopy())
 	{
-		git_tree *t1 = nullptr;
-		git_diff *diff2 = nullptr;
+		CAutoTree t1;
+		CAutoDiff diff2;
 
-		do
-		{
-			if (revNew != GitRev::GetWorkingCopy())
-			{
-				if (resolve_to_tree(repo, tree1, &t1))
-				{
-					ret = -1;
-					break;
-				}
-			}
-			if (revOld != GitRev::GetWorkingCopy())
-			{
-				if (resolve_to_tree(repo, tree2, &t1))
-				{
-					ret = -1;
-					break;
-				}
-			}
+		if (revNew != GitRev::GetWorkingCopy() && resolve_to_tree(repo, tree1, t1.GetPointer()))
+			return -1;
 
-			ret = git_diff_tree_to_index(&diff, repo, t1, nullptr, &opts);
-			if (ret)
-				break;
+		if (revOld != GitRev::GetWorkingCopy() && resolve_to_tree(repo, tree2, t1.GetPointer()))
+			return -1;
 
-			ret = git_diff_index_to_workdir(&diff2, repo, nullptr, &opts);
-			if (ret) 
-				break;
+		if (git_diff_tree_to_index(diff.GetPointer(), repo, t1, nullptr, &opts))
+			return -1;
 
-			ret = git_diff_merge(diff, diff2);
-			if (ret) 
-				break;
+		if (git_diff_index_to_workdir(diff2.GetPointer(), repo, nullptr, &opts)) 
+			return -1;
 
-			for (size_t i = 0; i < git_diff_num_deltas(diff); ++i)
-			{
-				git_patch *patch;
-				if (git_patch_from_diff(&patch, diff, i))
-				{
-					ret = -1;
-					break;
-				}
-
-				if (git_patch_print(patch, callback, data))
-				{
-					git_patch_free(patch);
-					ret = -1;
-					break;
-				}
-
-				git_patch_free(patch);
-			}
-		} while(0);
-		if (diff)
-			git_diff_free(diff);
-		if (diff2)
-			git_diff_free(diff2);
-		if (t1)
-			git_tree_free(t1);
+		if (git_diff_merge(diff, diff2)) 
+			return -1;
 	}
 	else
 	{
-		git_tree *t1 = nullptr, *t2 = nullptr;
-		do
+		if (tree1.IsEmpty() && tree2.IsEmpty())
+			return -1;
+
+		if (tree1.IsEmpty())
 		{
-			if (tree1.IsEmpty() && tree2.IsEmpty())
-			{
-				ret = -1;
-				break;
-			}
+			tree1 = tree2;
+			tree2.Empty();
+		}
 
-			if (tree1.IsEmpty())
-			{
-				tree1 = tree2;
-				tree2.Empty();
-			}
+		CAutoTree t1;
+		CAutoTree t2;
+		if (!tree1.IsEmpty() && resolve_to_tree(repo, tree1, t1.GetPointer()))
+			return -1;
 
-			if (!tree1.IsEmpty() && resolve_to_tree(repo, tree1, &t1))
-			{
-				ret = -1;
-				break;
-			}
-
-			if (tree2.IsEmpty())
-			{
-				/* don't check return value, there are not parent commit at first commit*/
-				resolve_to_tree(repo, tree1 + "~1", &t2);
-			}
-			else if (resolve_to_tree(repo, tree2, &t2))
-			{
-				ret = -1;
-				break;
-			}
-			if (git_diff_tree_to_tree(&diff, repo, t2, t1, &opts))
-			{
-				ret = -1;
-				break;
-			}
-
-			for (size_t i = 0; i < git_diff_num_deltas(diff); ++i)
-			{
-				git_patch *patch;
-				if (git_patch_from_diff(&patch, diff, i))
-				{
-					ret = -1;
-					break;
-				}
-
-				if (git_patch_print(patch, callback, data))
-				{
-					git_patch_free(patch);
-					ret = -1;
-					break;
-				}
-
-				git_patch_free(patch);
-			}
-		} while(0);
-
-		if (diff)
-			git_diff_free(diff);
-		if (t1)
-			git_tree_free(t1);
-		if (t2)
-			git_tree_free(t2);
+		if (tree2.IsEmpty())
+		{
+			/* don't check return value, there are not parent commit at first commit*/
+			resolve_to_tree(repo, tree1 + "~1", t2.GetPointer());
+		}
+		else if (resolve_to_tree(repo, tree2, t2.GetPointer()))
+			return -1;
+		if (git_diff_tree_to_tree(diff.GetPointer(), repo, t2, t1, &opts))
+			return -1;
 	}
-	git_repository_free(repo);
+
+	for (size_t i = 0; i < git_diff_num_deltas(diff); ++i)
+	{
+		CAutoPatch patch;
+		if (git_patch_from_diff(patch.GetPointer(), diff, i))
+			return -1;
+
+		if (git_patch_print(patch, callback, data))
+			return -1;
+	}
+
 	pathA.ReleaseBuffer();
 
-	return ret;
+	return 0;
 }
 
 int CGit::GetUnifiedDiff(const CTGitPath& path, const git_revnum_t& rev1, const git_revnum_t& rev2, CString patchfile, bool bMerge, bool bCombine, int diffContext)
@@ -2898,24 +2681,18 @@ int CGit::GitRevert(int parent, const CGitHash &hash)
 {
 	if (UsingLibGit2(GIT_CMD_REVERT))
 	{
-		git_repository *repo = nullptr;
-		CStringA gitdirA = CUnicodeUtils::GetUTF8(CTGitPath(m_CurrentDir).GetGitPathString());
-		if (git_repository_open(&repo, gitdirA))
+		CAutoRepository repo(GetGitPathStringA(m_CurrentDir));
+		if (!repo)
 			return -1;
 
-		git_commit *commit = nullptr;
-		if (git_commit_lookup(&commit, repo, (const git_oid *)hash.m_hash))
-		{
-			git_repository_free(repo);
+		CAutoCommit commit;
+		if (git_commit_lookup(commit.GetPointer(), repo, (const git_oid *)hash.m_hash))
 			return -1;
-		}
 
 		git_revert_options revert_opts = GIT_REVERT_OPTIONS_INIT;
 		revert_opts.mainline = parent;
 		int result = git_revert(repo, commit, &revert_opts);
 
-		git_commit_free(commit);
-		git_repository_free(repo);
 		return !result ? 0 : -1;
 	}
 	else
@@ -2941,8 +2718,8 @@ int CGit::DeleteRef(const CString& reference)
 {
 	if (UsingLibGit2(GIT_CMD_DELETETAGBRANCH))
 	{
-		git_repository *repo = nullptr;
-		if (git_repository_open(&repo, CUnicodeUtils::GetUTF8(CTGitPath(m_CurrentDir).GetGitPathString())))
+		CAutoRepository repo(GetGitPathStringA(m_CurrentDir));
+		if (!repo)
 			return -1;
 
 		CStringA refA;
@@ -2951,12 +2728,9 @@ int CGit::DeleteRef(const CString& reference)
 		else
 			refA = CUnicodeUtils::GetUTF8(reference);
 
-		git_reference *ref = nullptr;
-		if (git_reference_lookup(&ref, repo, refA))
-		{
-			git_repository_free(repo);
+		CAutoReference ref;
+		if (git_reference_lookup(ref.GetPointer(), repo, refA))
 			return -1;
-		}
 
 		int result = -1;
 		if (git_reference_is_tag(ref))
@@ -2968,8 +2742,6 @@ int CGit::DeleteRef(const CString& reference)
 		else
 			giterr_set_str(GITERR_REFERENCE, CUnicodeUtils::GetUTF8(L"unsupported reference type: " + reference));
 
-		git_reference_free(ref);
-		git_repository_free(repo);
 		return result;
 	}
 	else

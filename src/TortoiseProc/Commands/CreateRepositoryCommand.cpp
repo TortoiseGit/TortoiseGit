@@ -83,17 +83,15 @@ bool CreateRepositoryCommand::Execute()
 			return false;
 		}
 
-		git_repository *repo;
 		git_repository_init_options options = GIT_REPOSITORY_INIT_OPTIONS_INIT;
 		options.flags = GIT_REPOSITORY_INIT_MKPATH | GIT_REPOSITORY_INIT_EXTERNAL_TEMPLATE;
 		options.flags |= dlg.m_bBare ? GIT_REPOSITORY_INIT_BARE : 0;
-		CStringA path(CUnicodeUtils::GetMulti(folder, CP_UTF8));
-		if (git_repository_init_ext(&repo, path, &options))
+		CAutoRepository repo;
+		if (git_repository_init_ext(repo.GetPointer(), CUnicodeUtils::GetUTF8(folder), &options))
 		{
 			CMessageBox::Show(hwndExplorer, CGit::GetLibGit2LastErr(_T("Could not initialize a new repository.")), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 			return false;
 		}
-		git_repository_free(repo);
 
 		if (!dlg.m_bBare)
 			CShellUpdater::Instance().AddPathForUpdate(orgCmdLinePath);

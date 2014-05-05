@@ -119,18 +119,13 @@ BOOL CGitPropertyPage::PageProc (HWND /*hwnd*/, UINT uMessage, WPARAM wParam, LP
 					if (projectTopDir[stripLength - 1] != _T('\\'))
 						++stripLength;
 
-					CStringA gitdir = CUnicodeUtils::GetMulti(projectTopDir, CP_UTF8);
-					git_repository *repository = NULL;
-					git_index *index = NULL;
-
-					if (git_repository_open(&repository, gitdir))
+					CAutoRepository repository(CUnicodeUtils::GetUTF8(projectTopDir));
+					if (!repository)
 						break;
 
-					if (git_repository_index(&index, repository))
-					{
-						git_repository_free(repository);
+					CAutoIndex index;
+					if (git_repository_index(index.GetPointer(), repository))
 						break;
-					}
 
 					BOOL assumeValid = (BOOL)SendMessage(GetDlgItem(m_hwnd, IDC_ASSUMEVALID), BM_GETCHECK, 0, 0);
 					BOOL skipWorktree = (BOOL)SendMessage(GetDlgItem(m_hwnd, IDC_SKIPWORKTREE), BM_GETCHECK, 0, 0);
@@ -223,8 +218,6 @@ BOOL CGitPropertyPage::PageProc (HWND /*hwnd*/, UINT uMessage, WPARAM wParam, LP
 						if (!git_index_write(index))
 							m_bChanged = false;
 					}
-
-					git_index_free(index);
 				} while (0);
 			}
 			SetWindowLongPtr (m_hwnd, DWLP_MSGRESULT, FALSE);
@@ -383,10 +376,9 @@ static int TreewalkCB_FindFileRecentCommit(const char *root, const git_tree_entr
 
 static git_commit * FindFileRecentCommit(git_repository *repository, CString path)
 {
-	git_commit *commit = NULL, *commit2 = NULL;
-	git_revwalk *walk;
-	if (git_revwalk_new(&walk, repository))
-		return NULL;
+	CAutoRevwalk walk;
+	if (git_revwalk_new(walk.GetPointer(), repository))
+		return nullptr;
 
 	CStringA pathA = CUnicodeUtils::GetUTF8(path);
 	const char *pathC = pathA;
@@ -405,93 +397,63 @@ static git_commit * FindFileRecentCommit(git_repository *repository, CString pat
 	}
 
 	TreewalkStruct treewalkstruct = { folder, file };
-	TreewalkStruct treewalkstruct2 = { folder, file };
 
-	try
+	if (git_revwalk_push_head(walk))
+		return nullptr;
+
+	git_oid oid;
+	CAutoCommit commit;
+	while (!git_revwalk_next(&oid, walk))
 	{
-		if (git_revwalk_push_head(walk))
-			throw "git_revwalk_push_head";
+		commit.Free();
+		if (git_commit_lookup(commit.GetPointer(), repository, &oid))
+			return nullptr;
 
-		git_oid oid;
-		while (!git_revwalk_next(&oid, walk))
+		CAutoTree tree;
+		if (git_commit_tree(tree.GetPointer(), commit))
+			return nullptr;
+
+		memset(&treewalkstruct.oid.id, 0, sizeof(treewalkstruct.oid.id));
+		int ret = git_tree_walk(tree, GIT_TREEWALK_PRE, TreewalkCB_FindFileRecentCommit, &treewalkstruct);
+
+		if (ret < 0 && ret != GIT_EUSER)
+			return nullptr;
+
+		// check if file not found
+		if (git_oid_iszero(&treewalkstruct.oid))
+			return nullptr;
+
+		bool diff = true;
+		// for merge point, check if it is different to all parents, if yes then there are real change in the merge point.
+		// if no parent then of course it is different
+		for (unsigned int i = 0; i < git_commit_parentcount(commit); ++i)
 		{
-			if (commit != NULL)
-			{
-				git_commit_free(commit);
-				commit = NULL;
-			}
+			CAutoCommit commit2;
+			if (git_commit_parent(commit2.GetPointer(), commit, i))
+				return nullptr;
 
-			if (git_commit_lookup(&commit, repository, &oid))
-			{
-				commit = NULL;
-				throw "git_commit_lookup 1";
-			}
+			CAutoTree tree2;
+			if (git_commit_tree(tree2.GetPointer(), commit2))
+				return nullptr;
 
-			git_tree *tree;
-			if (git_commit_tree(&tree, commit))
-				throw "git_commit_tree 1";
+			TreewalkStruct treewalkstruct2 = { folder, file };
+			memset(&treewalkstruct2.oid.id, 0, sizeof(treewalkstruct2.oid.id));
+			int ret = git_tree_walk(tree2, GIT_TREEWALK_PRE, TreewalkCB_FindFileRecentCommit, &treewalkstruct2);
 
-			memset(&treewalkstruct.oid.id, 0, sizeof(treewalkstruct.oid.id));
-			int ret = git_tree_walk(tree, GIT_TREEWALK_PRE, TreewalkCB_FindFileRecentCommit, &treewalkstruct);
-			git_tree_free(tree);
 			if (ret < 0 && ret != GIT_EUSER)
-				throw "git_tree_walk 1";
+				return nullptr;
 
-			// check if file not found
-			if (git_oid_iszero(&treewalkstruct.oid))
-			{
-				git_commit_free(commit);
-				commit = NULL;
-				break;
-			}
-
-			bool diff = true;
-			// for merge point, check if it is different to all parents, if yes then there are real change in the merge point.
-			// if no parent then of course it is different
-			for (unsigned int i = 0; i < git_commit_parentcount(commit); ++i)
-			{
-				if (git_commit_parent(&commit2, commit, i))
-				{
-					commit2 = NULL;
-					throw "git_commit_parent";
-				}
-
-				if (git_commit_tree(&tree, commit2))
-					throw "git_commit_tree 2";
-
-				git_commit_free(commit2);
-				memset(&treewalkstruct2.oid.id, 0, sizeof(treewalkstruct2.oid.id));
-				int ret = git_tree_walk(tree, GIT_TREEWALK_PRE, TreewalkCB_FindFileRecentCommit, &treewalkstruct2);
-				git_tree_free(tree);
-				if (ret < 0 && ret != GIT_EUSER)
-					throw "git_tree_walk 2";
-
-				if (!git_oid_cmp(&treewalkstruct.oid, &treewalkstruct2.oid))
-					diff = false;
-				else if (git_revwalk_hide(walk, git_commit_parent_id(commit, i)))
-					throw "git_revwalk_hide";
-			}
-
-			if (diff)
-				break;
+			if (!git_oid_cmp(&treewalkstruct.oid, &treewalkstruct2.oid))
+				diff = false;
+			else if (git_revwalk_hide(walk, git_commit_parent_id(commit, i)))
+				return nullptr;
 		}
-	}
-	catch (...)
-	{
-		if (commit != NULL)
-		{
-			git_commit_free(commit);
-			commit = NULL;
-		}
-		if (commit2 != NULL)
-		{
-			git_commit_free(commit2);
-			commit2 = NULL;
-		}
+
+		if (diff)
+			break;
 	}
 
-	git_revwalk_free(walk);
-	return commit;
+	return commit.Detach();
 }
 
 void CGitPropertyPage::DisplayCommit(git_commit * commit, UINT hashLabel, UINT subjectLabel, UINT authorLabel, UINT dateLabel)
@@ -543,10 +505,8 @@ int CGitPropertyPage::LogThread()
 	if(!path.HasAdminDir(&ProjectTopDir))
 		return 0;
 
-	CStringA gitdir = CUnicodeUtils::GetMulti(ProjectTopDir, CP_UTF8);
-	git_repository *repository = NULL;
-
-	if (git_repository_open(&repository, gitdir))
+	CAutoRepository repository(CUnicodeUtils::GetUTF8(ProjectTopDir));
+	if (!repository)
 		return 0;
 
 	int stripLength = ProjectTopDir.GetLength();
@@ -556,18 +516,15 @@ int CGitPropertyPage::LogThread()
 	CTGitPath relatepath;
 	relatepath.SetFromWin(path.GetWinPathString().Mid(stripLength));
 
-	git_commit *commit = FindFileRecentCommit(repository, relatepath.GetGitPathString());
-	if (commit != NULL)
+	CAutoCommit commit(FindFileRecentCommit(repository, relatepath.GetGitPathString()));
+	if (commit)
 	{
-		SendMessage(m_hwnd, m_UpdateLastCommit, NULL, (LPARAM)commit);
-		git_commit_free(commit);
+		SendMessage(m_hwnd, m_UpdateLastCommit, NULL, (LPARAM)(git_commit*)commit);
 	}
 	else
 	{
 		SendMessage(m_hwnd, m_UpdateLastCommit, NULL, NULL);
 	}
-
-	git_repository_free(repository);
 
 	return 0;
 }
@@ -595,10 +552,8 @@ void CGitPropertyPage::InitWorkfileView()
 	if(!path.HasAdminDir(&ProjectTopDir))
 		return;
 
-	CStringA gitdir = CUnicodeUtils::GetMulti(ProjectTopDir, CP_UTF8);
-	git_repository *repository = NULL;
-
-	if (git_repository_open(&repository, gitdir))
+	CAutoRepository repository(CUnicodeUtils::GetUTF8(ProjectTopDir));
+	if (!repository)
 		return;
 
 	CString username;
@@ -606,8 +561,8 @@ void CGitPropertyPage::InitWorkfileView()
 	CString autocrlf;
 	CString safecrlf;
 
-	git_config* config = nullptr;
-	if (!git_repository_config(&config, repository))
+	CAutoConfig config;
+	if (!git_repository_config(config.GetPointer(), repository))
 	{
 		ReadConfigValue(config, username, "user.name");
 		ReadConfigValue(config, useremail, "user.email");
@@ -619,30 +574,26 @@ void CGitPropertyPage::InitWorkfileView()
 	CString remotebranch;
 	if (!git_repository_head_detached(repository))
 	{
-		git_reference * head = nullptr;
+		CAutoReference head;
 		if (git_repository_head_unborn(repository))
 		{
-			git_reference_lookup(&head, repository, "HEAD");
+			git_reference_lookup(head.GetPointer(), repository, "HEAD");
 			branch = CUnicodeUtils::GetUnicode(git_reference_symbolic_target(head));
 			if (branch.Find(_T("refs/heads/")) == 0)
 				branch = branch.Mid(11); // 11 = len("refs/heads/")
-			git_reference_free(head);
 		}
-		else if (!git_repository_head(&head, repository))
+		else if (!git_repository_head(head.GetPointer(), repository))
 		{
 			const char * branchChar = git_reference_shorthand(head);
 			branch = CUnicodeUtils::GetUnicode(branchChar);
 
 			const char * branchFullChar = git_reference_name(head);
-			git_buf upstreambranchname = GIT_BUF_INIT_CONST("", 0);
-			if (!git_branch_upstream_name(&upstreambranchname, repository, branchFullChar))
+			CAutoBuf upstreambranchname;
+			if (!git_branch_upstream_name(upstreambranchname, repository, branchFullChar))
 			{
-				remotebranch = CUnicodeUtils::GetUnicode(CStringA(upstreambranchname.ptr, (int)upstreambranchname.size));
+				remotebranch = CUnicodeUtils::GetUnicode(CStringA(upstreambranchname->ptr, (int)upstreambranchname->size));
 				remotebranch = remotebranch.Mid(13); // 13=len("refs/remotes/")
-				git_buf_free(&upstreambranchname);
 			}
-
-			git_reference_free(head);
 		}
 	}
 	else
@@ -662,12 +613,9 @@ void CGitPropertyPage::InitWorkfileView()
 	SetDlgItemText(m_hwnd,IDC_SHELL_REMOTE_BRANCH, remotebranch);
 
 	git_oid oid;
-	git_commit *HEADcommit = NULL;
-	if (!git_reference_name_to_id(&oid, repository, "HEAD") && !git_commit_lookup(&HEADcommit, repository, &oid) && HEADcommit != NULL)
-	{
+	CAutoCommit HEADcommit;
+	if (!git_reference_name_to_id(&oid, repository, "HEAD") && !git_commit_lookup(HEADcommit.GetPointer(), repository, &oid) && HEADcommit)
 		DisplayCommit(HEADcommit, IDC_HEAD_HASH, IDC_HEAD_SUBJECT, IDC_HEAD_AUTHOR, IDC_HEAD_DATE);
-		git_commit_free(HEADcommit);
-	}
 
 	{
 		int stripLength = ProjectTopDir.GetLength();
@@ -691,9 +639,8 @@ void CGitPropertyPage::InitWorkfileView()
 			size_t symlink = 0;
 			do
 			{
-				git_index *index = NULL;
-
-				if (git_repository_index(&index, repository))
+				CAutoIndex index;
+				if (git_repository_index(index.GetPointer(), repository))
 					break;
 
 				for (auto it = filenames.cbegin(); it < filenames.cend(); ++it)
@@ -728,7 +675,6 @@ void CGitPropertyPage::InitWorkfileView()
 						break;
 					}
 				}
-				git_index_free(index);
 			} while (0);
 
 			if (assumevalid != 0 && assumevalid != filenames.size())
@@ -779,7 +725,6 @@ void CGitPropertyPage::InitWorkfileView()
 			ShowWindow(GetDlgItem(m_hwnd, IDC_SYMLINK), SW_HIDE);
 		}
 	}
-	git_repository_free(repository);
 
 	if (filenames.size() == 1 && !PathIsDirectory(filenames[0].c_str()))
 	{

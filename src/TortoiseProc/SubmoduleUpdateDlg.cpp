@@ -101,8 +101,8 @@ int LogicalComparePredicate(const CString &left, const CString &right)
 
 static void GetSubmodulePathList(STRING_VECTOR &list, STRING_VECTOR &prefixList)
 {
-	git_repository *repo;
-	if (git_repository_open(&repo, CUnicodeUtils::GetUTF8(g_Git.m_CurrentDir)))
+	CAutoRepository repo(CGit::GetGitPathStringA(g_Git.m_CurrentDir));
+	if (!repo)
 	{
 		MessageBox(NULL, CGit::GetLibGit2LastErr(_T("Could not open repository.")), _T("TortoiseGit"), MB_ICONERROR);
 		return;
@@ -111,12 +111,10 @@ static void GetSubmodulePathList(STRING_VECTOR &list, STRING_VECTOR &prefixList)
 	STRING_VECTOR *listParams[] = { &list, &prefixList };
 	if (git_submodule_foreach(repo, SubmoduleCallback, &listParams))
 	{
-		git_repository_free(repo);
 		MessageBox(NULL, CGit::GetLibGit2LastErr(_T("Could not get submodule list.")), _T("TortoiseGit"), MB_ICONERROR);
 		return;
 	}
 
-	git_repository_free(repo);
 	std::sort(list.begin(), list.end(), LogicalComparePredicate);
 }
 

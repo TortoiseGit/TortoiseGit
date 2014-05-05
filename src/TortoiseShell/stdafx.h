@@ -31,11 +31,13 @@
 #include <algorithm>
 #include <functional>
 
+#define CSTRING_AVAILABLE
+
 #pragma warning(push)
 #include "git2.h"
 #pragma warning(pop)
+#include "SmartLibgit2Ref.h"
 
 #include "SysInfo.h"
 #include "DebugOutput.h"
 
-#define CSTRING_AVAILABLE

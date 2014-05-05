@@ -94,8 +94,8 @@ static int SubmoduleCallback(git_submodule *sm, const char * /*name*/, void *pay
 
 static bool GetSubmodulePathList(SubmodulePayload &payload)
 {
-	git_repository *repo;
-	if (git_repository_open(&repo, CUnicodeUtils::GetUTF8(payload.basePath)))
+	CAutoRepository repo;
+	if (repo.Open(payload.basePath))
 	{
 		// Silence the warning message, submodule may not be initialized yet.
 		return false;
@@ -103,12 +103,10 @@ static bool GetSubmodulePathList(SubmodulePayload &payload)
 
 	if (git_submodule_foreach(repo, SubmoduleCallback, &payload))
 	{
-		git_repository_free(repo);
 		MessageBox(nullptr, CGit::GetLibGit2LastErr(_T("Could not get submodule list.")), _T("TortoiseGit"), MB_ICONERROR);
 		return false;
 	}
 
-	git_repository_free(repo);
 	return true;
 }
 

@@ -77,16 +77,11 @@ CGitIndexList::CGitIndexList()
 {
 	this->m_LastModifyTime = 0;
 	m_critRepoSec.Init();
-	repository = NULL;
 	m_bCheckContent = !!(CRegDWORD(_T("Software\\TortoiseGit\\TGitCacheCheckContent"), TRUE) == TRUE);
 }
 
 CGitIndexList::~CGitIndexList()
 {
-	if (repository != NULL)
-	{
-		git_repository_free(repository);
-	}
 	m_critRepoSec.Term();
 }
 
@@ -104,25 +99,15 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 {
 	this->clear();
 
-	CStringA gitdir = CUnicodeUtils::GetMulti(dgitdir, CP_UTF8);
-
 	m_critRepoSec.Lock();
-	if (repository != NULL)
-	{
-		git_repository_free(repository);
-		repository = NULL;
-	}
-	git_index *index = NULL;
-
-	if (git_repository_open(&repository, gitdir))
+	if (repository.Open(dgitdir))
 	{
 		m_critRepoSec.Unlock();
 		return -1;
 	}
 
 	// add config files
-	git_config * config;
-	git_config_new(&config);
+	CAutoConfig config(true);
 
 	CString projectConfig = dgitdir + _T("config");
 	CString globalConfig = g_Git.GetGitGlobalConfig();
@@ -136,14 +121,12 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 		git_config_add_file_ondisk(config, CGit::GetGitPathStringA(msysGitBinPath + _T("\\..\\etc\\gitconfig")), GIT_CONFIG_LEVEL_SYSTEM, FALSE);
 
 	git_repository_set_config(repository, config);
-	git_config_free(config);
-	config = nullptr;
 
+	CAutoIndex index;
 	// load index in order to enumerate files
-	if (git_repository_index(&index, repository))
+	if (git_repository_index(index.GetPointer(), repository))
 	{
-		git_repository_free(repository);
-		repository = NULL;
+		repository.Free();
 		m_critRepoSec.Unlock();
 		return -1;
 	}
@@ -161,8 +144,6 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 		this->at(i).m_Flags = e->flags | e->flags_extended;
 		this->at(i).m_IndexHash = e->id.id;
 	}
-
-	git_index_free(index);
 
 	g_Git.GetFileModifyTime(dgitdir + _T("index"), &this->m_LastModifyTime);
 	std::sort(this->begin(), this->end(), SortIndex);
@@ -858,51 +839,26 @@ int ReadTreeRecursive(git_repository &repo, const git_tree * tree, const CString
 int CGitHeadFileList::ReadTree()
 {
 	CAutoWriteLock lock(&m_SharedMutex);
-	CStringA gitdir = CUnicodeUtils::GetMulti(m_Gitdir, CP_UTF8);
-	git_repository *repository = NULL;
-	git_commit *commit = NULL;
-	git_tree * tree = NULL;
-	int ret = 0;
-	ATLASSERT(this->empty());
-	do
-	{
-		ret = git_repository_open(&repository, gitdir);
-		if(ret)
-			break;
-		ret = git_commit_lookup(&commit, repository, (const git_oid*)m_Head.m_hash);
-		if(ret)
-			break;
+	ATLASSERT(empty());
 
-		ret = git_commit_tree(&tree, commit);
-		if(ret)
-			break;
-
-		ret = ReadTreeRecursive(*repository, tree,"", CGitHeadFileList::CallBack,this);
-		if(ret)
-			break;
-
-		std::sort(this->begin(), this->end(), SortTree);
-		this->m_TreeHash = git_commit_id(commit)->id;
-
-	} while(0);
-
-	if (tree)
-		git_tree_free(tree);
-
-	if (commit)
-		git_commit_free(commit);
-
-	if (repository)
-		git_repository_free(repository);
-
-	if (ret)
+	CAutoRepository repository(m_Gitdir);
+	CAutoCommit commit;
+	CAutoTree tree;
+	bool ret = repository;
+	ret = ret && !git_commit_lookup(commit.GetPointer(), repository, (const git_oid*)m_Head.m_hash);
+	ret = ret && !git_commit_tree(tree.GetPointer(), commit);
+	ret = ret && !ReadTreeRecursive(*repository, tree, "", CGitHeadFileList::CallBack, this);
+	if (!ret)
 	{
 		clear();
 		m_LastModifyTimeHead = 0;
+		return -1;
 	}
 
-	return ret;
+	std::sort(this->begin(), this->end(), SortTree);
+	m_TreeHash = git_commit_id(commit)->id;
 
+	return 0;
 }
 int CGitIgnoreItem::FetchIgnoreList(const CString &projectroot, const CString &file, bool isGlobal)
 {
@@ -1212,8 +1168,7 @@ bool CGitIgnoreList::CheckAndUpdateCoreExcludefile(const CString &adminDir)
 	if (!hasChanged)
 		return false;
 
-	git_config * config;
-	git_config_new(&config);
+	CAutoConfig config(true);
 	git_config_add_file_ondisk(config, CGit::GetGitPathStringA(projectConfig), GIT_CONFIG_LEVEL_LOCAL, FALSE);
 	git_config_add_file_ondisk(config, CGit::GetGitPathStringA(globalConfig), GIT_CONFIG_LEVEL_GLOBAL, FALSE);
 	git_config_add_file_ondisk(config, CGit::GetGitPathStringA(globalXDGConfig), GIT_CONFIG_LEVEL_XDG, FALSE);
@@ -1228,7 +1183,6 @@ bool CGitIgnoreList::CheckAndUpdateCoreExcludefile(const CString &adminDir)
 		excludesFile = GetWindowsHome() + _T("\\.config\\git\\ignore");
 	else if (excludesFile.Find(_T("~/")) == 0)
 		excludesFile = GetWindowsHome() + excludesFile.Mid(1);
-	git_config_free(config);
 
 	CAutoWriteLock lockMap(&m_SharedMutex);
 	g_Git.GetFileModifyTime(projectConfig, &m_Map[projectConfig].m_LastModifyTime);

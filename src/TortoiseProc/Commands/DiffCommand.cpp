@@ -63,17 +63,14 @@ bool DiffCommand::Execute()
 				if (orgCmdLinePath.HasAdminDir(&topDir))
 				{
 					CBlockCacheForPath cacheBlock(topDir);
-					git_index *index = nullptr;
+					CAutoIndex index;
 					CString adminDir;
 					g_GitAdminDir.GetAdminDirPath(topDir, adminDir);
-					if (!git_index_open(&index, CUnicodeUtils::GetMulti(adminDir + _T("index"), CP_UTF8)))
+					if (!git_index_open(index.GetPointer(), CUnicodeUtils::GetUTF8(adminDir + _T("index"))))
 						g_Git.Run(_T("git.exe update-index -- \"") + cmdLinePath.GetGitPathString() + _T("\""), nullptr); // make sure we get the right status
 					GitStatus::GetFileStatus(topDir, cmdLinePath.GetWinPathString(), &status, true);
 					if (index)
-					{
 						git_index_write(index);
-						git_index_free(index);
-					}
 				}
 				if (status == git_wc_status_added)
 				{

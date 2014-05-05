@@ -36,6 +36,7 @@
 #include "FormatMessageWrapper.h"
 #include "TaskbarUUID.h"
 #include "git2.h"
+#include "SmartLibgit2Ref.h" // needs to be included after git2.h
 #include "RegexFiltersDlg.h"
 #include "SysInfo.h"
 
@@ -1651,28 +1652,21 @@ bool CMainFrame::FileSave(bool bCheckResolved /*=true*/)
 					subpath = subpath.Right(subpath.GetLength() - projectRoot.GetLength());
 			}
 			
-			CStringA gitdir = CUnicodeUtils::GetMulti(projectRoot, CP_UTF8);
-			git_repository *repository = NULL;
-			git_index *index = NULL;
+			CAutoRepository repository(projectRoot);
 			bool hasConflictInIndex = false;
 			do
 			{
-				if (git_repository_open(&repository, gitdir))
+				if (!repository)
 					break;
 
-				if (git_repository_index(&index, repository))
+				CAutoIndex index;
+				if (git_repository_index(index.GetPointer(), repository))
 					break;
 
 				CStringA path = CUnicodeUtils::GetMulti(subpath, CP_UTF8);
 				const git_index_entry * entry = git_index_get_bypath(index, path, 1);
 				hasConflictInIndex = entry != nullptr;
 			} while(0);
-
-			if (index)
-				git_index_free(index);
-
-			if (repository)
-				git_repository_free(repository);
 
 			if (hasConflictInIndex)
 			{
