@@ -2477,7 +2477,7 @@ CString CGit::GetShortName(const CString& ref, REF_TYPE *out_type)
 
 bool CGit::UsingLibGit2(LIBGIT2_CMD cmd) const
 {
-	return ((1 << cmd) & m_IsUseLibGit2_mask) ? true : false;
+	return m_IsUseLibGit2 && ((1 << cmd) & m_IsUseLibGit2_mask) ? true : false;
 }
 
 CString CGit::GetUnifiedDiffCmd(const CTGitPath& path, const git_revnum_t& rev1, const git_revnum_t& rev2, bool bMerge, bool bCombine, int diffContext)
