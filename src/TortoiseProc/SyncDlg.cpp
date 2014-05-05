@@ -1322,19 +1322,21 @@ void CSyncDlg::FillNewRefMap()
 {
 	m_refList.Clear();
 	m_newHashMap.clear();
-	if (g_Git.GetMapHashToFriendName(m_newHashMap))
+	CAutoRepository repo(g_Git.GetGitRepository());
+	if (!repo)
 	{
-		MessageBox(g_Git.GetGitLastErr(_T("Could not get all refs.")), _T("TortoiseGit"), MB_ICONERROR);
+		CMessageBox::Show(m_hWnd, CGit::GetLibGit2LastErr(_T("Could not open repository.")), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+		return;
+	}
+
+	if (CGit::GetMapHashToFriendName(repo, m_newHashMap))
+	{
+		MessageBox(CGit::GetLibGit2LastErr(_T("Could not get all refs.")), _T("TortoiseGit"), MB_ICONERROR);
+		return;
 	}
 
 	auto oldRefMap = HashMapToRefMap(m_oldHashMap);
 	auto newRefMap = HashMapToRefMap(m_newHashMap);
-	if (m_refList.OpenRepository())
-	{
-		delete oldRefMap;
-		delete newRefMap;
-		return;
-	}
 	for (auto oit = oldRefMap->begin(); oit != oldRefMap->end(); ++oit)
 	{
 		bool found = false;
@@ -1344,14 +1346,14 @@ void CSyncDlg::FillNewRefMap()
 			if (oit->first == nit->first)
 			{
 				found = true;
-				m_refList.AddEntry(oit->first, &oit->second, &nit->second);
+				m_refList.AddEntry(repo, oit->first, &oit->second, &nit->second);
 				break;
 			}
 		}
 		// deleted ref
 		if (!found)
 		{
-			m_refList.AddEntry(oit->first, &oit->second, nullptr);
+			m_refList.AddEntry(repo, oit->first, &oit->second, nullptr);
 		}
 	}
 	for (auto nit = newRefMap->begin(); nit != newRefMap->end(); ++nit)
@@ -1368,10 +1370,9 @@ void CSyncDlg::FillNewRefMap()
 		// new ref
 		if (!found)
 		{
-			m_refList.AddEntry(nit->first, nullptr, &nit->second);
+			m_refList.AddEntry(repo, nit->first, nullptr, &nit->second);
 		}
 	}
-	m_refList.CloseRepository();
 	delete oldRefMap;
 	delete newRefMap;
 	m_refList.Show();

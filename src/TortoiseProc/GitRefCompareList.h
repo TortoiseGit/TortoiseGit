@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -61,10 +61,8 @@ public:
 	}
 
 	void Init();
-	int OpenRepository();
-	void CloseRepository();
 
-	int AddEntry(CString ref, CGitHash *oldHash, CGitHash *newHash);
+	int AddEntry(git_repository* repo, CString ref, CGitHash *oldHash, CGitHash *newHash);
 	void Show();
 	void Clear();
 
@@ -79,7 +77,6 @@ private:
 	static CString GetCommitMessage(git_commit *commit);
 	static bool SortPredicate(const RefEntry &e1, const RefEntry &e2);
 
-	CAutoRepository			m_Repository;
 	std::vector<RefEntry>	m_RefList;
 	BOOL					m_bHideUnchanged;
 	static BOOL 			m_bSortLogical;

@@ -87,25 +87,7 @@ void CGitRefCompareList::Init()
 	SetWindowTheme(m_hWnd, L"Explorer", NULL);
 }
 
-int CGitRefCompareList::OpenRepository()
-{
-	CAutoRepository tmp(g_Git.GetGitRepository());
-	m_Repository.Swap(tmp);
-	if (!m_Repository)
-	{
-		CMessageBox::Show(m_hWnd, CGit::GetLibGit2LastErr(_T("Could not open repository.")), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
-		return -1;
-	}
-
-	return 0;
-}
-
-void CGitRefCompareList::CloseRepository()
-{
-	m_Repository.Free();
-}
-
-int CGitRefCompareList::AddEntry(CString ref, CGitHash *oldHash, CGitHash *newHash)
+int CGitRefCompareList::AddEntry(git_repository *repo, CString ref, CGitHash *oldHash, CGitHash *newHash)
 {
 	RefEntry entry;
 	entry.fullName = ref;
@@ -118,14 +100,14 @@ int CGitRefCompareList::AddEntry(CString ref, CGitHash *oldHash, CGitHash *newHa
 	CAutoCommit oldCommit;
 	if (oldHash)
 	{
-		if (!git_commit_lookup(oldCommit.GetPointer(), m_Repository, (const git_oid *)&oldHash->m_hash))
+		if (!git_commit_lookup(oldCommit.GetPointer(), repo, (const git_oid *)&oldHash->m_hash))
 			entry.oldMessage = GetCommitMessage(oldCommit);
 	}
 
 	CAutoCommit newCommit;
 	if (newHash)
 	{
-		if (!git_commit_lookup(newCommit.GetPointer(), m_Repository, (const git_oid *)&newHash->m_hash))
+		if (!git_commit_lookup(newCommit.GetPointer(), repo, (const git_oid *)&newHash->m_hash))
 			entry.newMessage = GetCommitMessage(newCommit);
 	}
 
@@ -139,7 +121,7 @@ int CGitRefCompareList::AddEntry(CString ref, CGitHash *oldHash, CGitHash *newHa
 		else
 		{
 			size_t ahead = 0, behind = 0;
-			if (!git_graph_ahead_behind(&ahead, &behind, m_Repository, (const git_oid *)&oldHash->m_hash, (const git_oid *)&newHash->m_hash))
+			if (!git_graph_ahead_behind(&ahead, &behind, repo, (const git_oid *)&oldHash->m_hash, (const git_oid *)&newHash->m_hash))
 			{
 				CString change;
 				if (ahead > 0 && behind == 0)
