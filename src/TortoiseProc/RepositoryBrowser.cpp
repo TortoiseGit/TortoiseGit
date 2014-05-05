@@ -453,9 +453,9 @@ int CRepositoryBrowser::ReadTree(CShadowFilesTree * treeroot, const CString& roo
 	}
 
 	CGitHash hash;
-	if (g_Git.GetHash(hash, m_sRevision))
+	if (CGit::GetHash(repository, hash, m_sRevision))
 	{
-		MessageBox(g_Git.GetGitLastErr(_T("Could not get hash of ") + m_sRevision + _T(".")), _T("TortoiseGit"), MB_ICONERROR);
+		MessageBox(CGit::GetLibGit2LastErr(_T("Could not get hash of ") + m_sRevision + _T(".")), _T("TortoiseGit"), MB_ICONERROR);
 		return -1;
 	}
 
@@ -504,7 +504,7 @@ int CRepositoryBrowser::ReadTree(CShadowFilesTree * treeroot, const CString& roo
 	if (m_sRevision == hash.ToString())
 	{
 		MAP_HASH_NAME map;
-		if (g_Git.GetMapHashToFriendName(map))
+		if (CGit::GetMapHashToFriendName(repository, map))
 			MessageBox(g_Git.GetLibGit2LastErr(_T("Could not get all refs.")), _T("TortoiseGit"), MB_ICONERROR);
 		if (!map[hash].empty())
 			m_sRevision = map[hash].at(0);
