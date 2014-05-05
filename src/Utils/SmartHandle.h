@@ -55,9 +55,14 @@ public:
 		return CleanUp();
 	}
 
-	void Detach()
+	HandleType Detach()
 	{
+		HandleType p;
+
+		p = m_Handle;
 		m_Handle = NULL_VALUE;
+
+		return p;
 	}
 
 	operator HandleType()

@@ -201,11 +201,6 @@ UINT CProgressDlg::RunCmdList(CWnd *pWnd, STRING_VECTOR &cmdlist, STRING_VECTOR 
 {
 	UINT ret=0;
 
-	PROCESS_INFORMATION pi;
-	HANDLE hRead = 0;
-
-	memset(&pi,0,sizeof(PROCESS_INFORMATION));
-
 	std::vector<std::unique_ptr<CBlockCacheForPath>> cacheBlockList;
 	std::vector<std::unique_ptr<CGit>> gitList;
 	if (dirlist.empty())
@@ -253,11 +248,15 @@ UINT CProgressDlg::RunCmdList(CWnd *pWnd, STRING_VECTOR &cmdlist, STRING_VECTOR 
 				pWnd->PostMessage(MSG_PROGRESSDLG_UPDATE_UI,MSG_PROGRESSDLG_RUN,0);
 		}
 
+		PROCESS_INFORMATION pi;
+		CAutoGeneralHandle hRead;
 		if (gitList.empty())
-			git->RunAsync(cmdlist[i].Trim(), &pi, &hRead, nullptr, pfilename);
+			git->RunAsync(cmdlist[i].Trim(), &pi, hRead.GetPointer(), nullptr, pfilename);
 		else
-			gitList[i]->RunAsync(cmdlist[i].Trim(), &pi, &hRead, nullptr, pfilename);
+			gitList[i]->RunAsync(cmdlist[i].Trim(), &pi, hRead.GetPointer(), nullptr, pfilename);
 
+		CAutoGeneralHandle piProcess(pi.hProcess);
+		CAutoGeneralHandle piThread(pi.hThread);
 		DWORD readnumber;
 		char lastByte = '\0';
 		char byte;
@@ -291,8 +290,6 @@ UINT CProgressDlg::RunCmdList(CWnd *pWnd, STRING_VECTOR &cmdlist, STRING_VECTOR 
 				EnsurePostMessage(pWnd, MSG_PROGRESSDLG_UPDATE_UI, MSG_PROGRESSDLG_RUN, 0);
 		}
 
-		CloseHandle(pi.hThread);
-
 		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": waiting for process to finish (%s), aborted: %d\n"), cmdlist[i], *bAbort);
 
 		WaitForSingleObject(pi.hProcess, INFINITE);
@@ -300,10 +297,6 @@ UINT CProgressDlg::RunCmdList(CWnd *pWnd, STRING_VECTOR &cmdlist, STRING_VECTOR 
 		DWORD status=0;
 		if(!GetExitCodeProcess(pi.hProcess,&status) || *bAbort)
 		{
-			CloseHandle(pi.hProcess);
-
-			CloseHandle(hRead);
-
 			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": process %s finished, status code could not be fetched, (error %d; %s), aborted: %d\n"), cmdlist[i], GetLastError(), (CString)CFormatMessageWrapper(), *bAbort);
 
 			EnsurePostMessage(pWnd, MSG_PROGRESSDLG_UPDATE_UI, MSG_PROGRESSDLG_FAILED, status);
@@ -312,10 +305,6 @@ UINT CProgressDlg::RunCmdList(CWnd *pWnd, STRING_VECTOR &cmdlist, STRING_VECTOR 
 		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": process %s finished with code %d\n"), cmdlist[i], status);
 		ret |= status;
 	}
-
-	CloseHandle(pi.hProcess);
-
-	CloseHandle(hRead);
 
 	EnsurePostMessage(pWnd, MSG_PROGRESSDLG_UPDATE_UI, MSG_PROGRESSDLG_END, ret);
 

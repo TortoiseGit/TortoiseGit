@@ -27,6 +27,7 @@
 #include "gitdll.h"
 #include <fstream>
 #include "FormatMessageWrapper.h"
+#include "SmartHandle.h"
 
 int CGit::m_LogEncode=CP_UTF8;
 typedef CComCritSecLock<CComCriticalSection> CAutoLocker;
@@ -200,24 +201,22 @@ bool CGit::IsBranchNameValid(const CString& branchname)
 int CGit::RunAsync(CString cmd, PROCESS_INFORMATION *piOut, HANDLE *hReadOut, HANDLE *hErrReadOut, CString *StdioFile)
 {
 	SECURITY_ATTRIBUTES sa;
-	HANDLE hRead, hWrite, hReadErr = NULL, hWriteErr = NULL;
-	HANDLE hStdioFile = NULL;
+	CAutoGeneralHandle hRead, hWrite, hReadErr, hWriteErr;
+	CAutoGeneralHandle hStdioFile;
 
 	sa.nLength = sizeof(SECURITY_ATTRIBUTES);
 	sa.lpSecurityDescriptor=NULL;
 	sa.bInheritHandle=TRUE;
-	if(!CreatePipe(&hRead,&hWrite,&sa,0))
+	if (!CreatePipe(hRead.GetPointer(), hWrite.GetPointer(), &sa, 0))
 	{
 		CString err = CFormatMessageWrapper();
 		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": could not open stdout pipe: %s\n"), err.Trim());
 		return TGIT_GIT_ERROR_OPEN_PIP;
 	}
-	if (hErrReadOut && !CreatePipe(&hReadErr, &hWriteErr, &sa, 0))
+	if (hErrReadOut && !CreatePipe(hReadErr.GetPointer(), hWriteErr.GetPointer(), &sa, 0))
 	{
 		CString err = CFormatMessageWrapper();
 		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": could not open stderr pipe: %s\n"), err.Trim());
-		CloseHandle(hRead);
-		CloseHandle(hWrite);
 		return TGIT_GIT_ERROR_OPEN_PIP;
 	}
 
@@ -267,29 +266,17 @@ int CGit::RunAsync(CString cmd, PROCESS_INFORMATION *piOut, HANDLE *hReadOut, HA
 	{
 		CString err = CFormatMessageWrapper();
 		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": error while executing command: %s\n"), err.Trim());
-		CloseHandle(hRead);
-		CloseHandle(hWrite);
-		if (hErrReadOut)
-		{
-			CloseHandle(hReadErr);
-			CloseHandle(hWriteErr);
-		}
 		return TGIT_GIT_ERROR_CREATE_PROCESS;
 	}
 
 	m_CurrentGitPi = pi;
 
-	CloseHandle(hWrite);
-	if (hErrReadOut)
-		CloseHandle(hWriteErr);
 	if(piOut)
 		*piOut=pi;
 	if(hReadOut)
-		*hReadOut=hRead;
-	else
-		CloseHandle(hRead);
+		*hReadOut = hRead.Detach();
 	if(hErrReadOut)
-		*hErrReadOut = hReadErr;
+		*hErrReadOut = hReadErr.Detach();
 	return 0;
 
 }
@@ -359,15 +346,17 @@ DWORD WINAPI CGit::AsyncReadStdErrThread(LPVOID lpParam)
 int CGit::Run(CGitCall* pcall)
 {
 	PROCESS_INFORMATION pi;
-	HANDLE hRead, hReadErr;
-	if(RunAsync(pcall->GetCmd(),&pi,&hRead, &hReadErr))
+	CAutoGeneralHandle hRead, hReadErr;
+	if (RunAsync(pcall->GetCmd(), &pi, hRead.GetPointer(), hReadErr.GetPointer()))
 		return TGIT_GIT_ERROR_CREATE_PROCESS;
 
-	HANDLE thread;
+	CAutoGeneralHandle piThread(pi.hThread);
+	CAutoGeneralHandle piProcess(pi.hProcess);
+
 	ASYNCREADSTDERRTHREADARGS threadArguments;
 	threadArguments.fileHandle = hReadErr;
 	threadArguments.pcall = pcall;
-	thread = CreateThread(NULL, 0, AsyncReadStdErrThread, &threadArguments, 0, NULL);
+	CAutoGeneralHandle thread = CreateThread(NULL, 0, AsyncReadStdErrThread, &threadArguments, 0, NULL);
 
 	DWORD readnumber;
 	BYTE data[CALL_OUTPUT_READ_CHUNK_SIZE];
@@ -385,8 +374,6 @@ int CGit::Run(CGitCall* pcall)
 	if (thread)
 		WaitForSingleObject(thread, INFINITE);
 
-	CloseHandle(pi.hThread);
-
 	WaitForSingleObject(pi.hProcess, INFINITE);
 	DWORD exitcode =0;
 
@@ -399,10 +386,6 @@ int CGit::Run(CGitCall* pcall)
 	else
 		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": process exited: %d\n"), exitcode);
 
-	CloseHandle(pi.hProcess);
-
-	CloseHandle(hRead);
-	CloseHandle(hReadErr);
 	return exitcode;
 }
 class CGitCall_ByteVector : public CGitCall
