@@ -70,6 +70,30 @@ enum GITProgressDlgContextMenuCommands
 
 IMPLEMENT_DYNAMIC(CGitProgressList, CListCtrl)
 
+class CSmartAnimation
+{
+	CAnimateCtrl* m_pAnimate;
+
+public:
+	CSmartAnimation(CAnimateCtrl* pAnimate)
+	{
+		m_pAnimate = pAnimate;
+		if (m_pAnimate)
+		{
+			m_pAnimate->ShowWindow(SW_SHOW);
+			m_pAnimate->Play(0, INT_MAX, INT_MAX);
+		}
+	}
+	~CSmartAnimation()
+	{
+		if (m_pAnimate)
+		{
+			m_pAnimate->Stop();
+			m_pAnimate->ShowWindow(SW_HIDE);
+		}
+	}
+};
+
 CGitProgressList::CGitProgressList():CListCtrl()
 	, m_bCancelled(FALSE)
 	, m_pThread(NULL)
@@ -2065,11 +2089,7 @@ bool CGitProgressList::CmdClone(CString& sWindowTitle, bool& /*localoperation*/)
 	init_options.flags = GIT_REPOSITORY_INIT_MKPATH | GIT_REPOSITORY_INIT_EXTERNAL_TEMPLATE;
 	init_options.flags |= m_bBare ? GIT_REPOSITORY_INIT_BARE : 0;
 
-	if(m_pAnimate)
-	{
-		m_pAnimate->ShowWindow(SW_SHOW);
-		m_pAnimate->Play(0, INT_MAX, INT_MAX);
-	}
+	CSmartAnimation animate(m_pAnimate);
 	do
 	{
 		if ((error = git_repository_init_ext(&cloned_repo, path, &init_options)) < 0)
@@ -2079,12 +2099,6 @@ bool CGitProgressList::CmdClone(CString& sWindowTitle, bool& /*localoperation*/)
 		git_remote_set_callbacks(origin, &callbacks);
 		error = git_clone_into(cloned_repo, origin, &checkout_opts, refspecA.IsEmpty() ? nullptr : (const char*)refspecA, nullptr);
 	} while (false);
-
-	if (m_pAnimate)
-	{
-		m_pAnimate->Stop();
-		m_pAnimate->ShowWindow(SW_HIDE);
-	}
 
 	refspecA.ReleaseBuffer();
 	remoteA.ReleaseBuffer();
@@ -2126,18 +2140,14 @@ bool CGitProgressList::CmdFetch(CString& sWindowTitle, bool& /*localoperation*/)
 	CStringA gitdir = CUnicodeUtils::GetMulti(CTGitPath(g_Git.m_CurrentDir).GetGitPathString(), CP_UTF8);
 	CStringA remotebranch = CUnicodeUtils::GetMulti(m_RefSpec, CP_UTF8);
 
+	CSmartAnimation animate(m_pAnimate);
+
 	git_remote *remote = NULL;
 	git_repository *repo = NULL;
 	bool ret = true;
 
 	do
 	{
-		if (m_pAnimate)
-		{
-			m_pAnimate->ShowWindow(SW_SHOW);
-			m_pAnimate->Play(0, INT_MAX, INT_MAX);
-		}
-
 		if (git_repository_open(&repo, gitdir))
 		{
 			ReportGitError();
@@ -2193,10 +2203,6 @@ bool CGitProgressList::CmdFetch(CString& sWindowTitle, bool& /*localoperation*/)
 			break;
 		}
 
-		if (m_pAnimate)
-		{
-			m_pAnimate->ShowWindow(SW_HIDE);
-		}
 		// Update the references in the remote's namespace to point to the
 		// right commits. This may be needed even if there was no packfile
 		// to download, which can happen e.g. when the branches have been
@@ -2214,8 +2220,6 @@ bool CGitProgressList::CmdFetch(CString& sWindowTitle, bool& /*localoperation*/)
 
 	git_remote_free(remote);
 	git_repository_free(repo);
-	if (m_pAnimate)
-		m_pAnimate->ShowWindow(SW_HIDE);
 	return ret;
 }
 
@@ -2233,6 +2237,8 @@ bool CGitProgressList::CmdReset(CString& sWindowTitle, bool& /*localoperation*/)
 	int resetTypesResource[] = { IDS_RESET_SOFT, IDS_RESET_MIXED, IDS_RESET_HARD };
 	ReportCmd(CString(MAKEINTRESOURCE(IDS_PROGRS_TITLE_RESET)) + _T(" ") + CString(MAKEINTRESOURCE(resetTypesResource[m_resetType])) + _T(" ") + m_revision);
 
+	CSmartAnimation animate(m_pAnimate);
+
 	CStringA gitdir = CUnicodeUtils::GetMulti(CTGitPath(g_Git.m_CurrentDir).GetGitPathString(), CP_UTF8);
 
 	git_repository *repo = NULL;
@@ -2240,12 +2246,6 @@ bool CGitProgressList::CmdReset(CString& sWindowTitle, bool& /*localoperation*/)
 
 	do
 	{
-		if (m_pAnimate)
-		{
-			m_pAnimate->ShowWindow(SW_SHOW);
-			m_pAnimate->Play(0, INT_MAX, INT_MAX);
-		}
-
 		if (git_repository_open(&repo, gitdir))
 		{
 			ReportGitError();
@@ -2270,8 +2270,6 @@ bool CGitProgressList::CmdReset(CString& sWindowTitle, bool& /*localoperation*/)
 	} while (0);
 
 	git_repository_free(repo);
-	if (m_pAnimate)
-		m_pAnimate->ShowWindow(SW_HIDE);
 	return ret;
 }
 
