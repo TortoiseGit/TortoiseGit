@@ -468,108 +468,84 @@ int CGitHeadFileList::GetPackRef(const CString &gitdir)
 		this->m_LastModifyTimePackRef = mtime;
 	}
 
-	int ret = 0;
+	m_PackRefMap.clear();
+
+	CAutoFile hfile = CreateFile(PackRef,
+		GENERIC_READ,
+		FILE_SHARE_READ | FILE_SHARE_DELETE | FILE_SHARE_WRITE,
+		nullptr,
+		OPEN_EXISTING,
+		FILE_ATTRIBUTE_NORMAL,
+		nullptr);
+
+	if (!hfile)
+		return -1;
+
+	DWORD filesize = GetFileSize(hfile, nullptr);
+	if (filesize == 0)
+		return -1;
+
+	DWORD size = 0;
+	std::unique_ptr<char[]> buff(new char[filesize]);
+	ReadFile(hfile, buff.get(), filesize, &size, nullptr);
+
+	if (size != filesize)
+		return -1;
+
+	CString hash;
+	CString ref;
+	for (DWORD i = 0; i < filesize;)
 	{
-		this->m_PackRefMap.clear();
-
-		CAutoFile hfile = CreateFile(PackRef,
-			GENERIC_READ,
-			FILE_SHARE_READ|FILE_SHARE_DELETE|FILE_SHARE_WRITE,
-			NULL,
-			OPEN_EXISTING,
-			FILE_ATTRIBUTE_NORMAL,
-			NULL);
-		do
+		hash.Empty();
+		ref.Empty();
+		if (buff[i] == '#' || buff[i] == '^')
 		{
-			if (!hfile)
+			while (buff[i] != '\n')
 			{
-				ret = -1;
-				break;
-			}
-
-			DWORD filesize = GetFileSize(hfile, NULL);
-			if (filesize == 0)
-			{
-				ret = -1;
-				break;
-			}
-			DWORD size =0;
-			char *buff;
-			buff = new char[filesize];
-
-			ReadFile(hfile, buff, filesize, &size, NULL);
-
-			if (size != filesize)
-			{
-				delete[] buff;
-				ret = -1;
-				break;
-			}
-
-			CString hash;
-			CString ref;
-
-			for(DWORD i=0;i<filesize;)
-			{
-				hash.Empty();
-				ref.Empty();
-				if (buff[i] == '#' || buff[i] == '^')
-				{
-					while (buff[i] != '\n')
-					{
-						++i;
-						if (i == filesize)
-							break;
-					}
-					++i;
-				}
-
-				if (i >= filesize)
-					break;
-
-				while (buff[i] != ' ')
-				{
-					hash.AppendChar(buff[i]);
-					++i;
-					if (i == filesize)
-						break;
-				}
-
 				++i;
-				if (i >= filesize)
+				if (i == filesize)
 					break;
-
-				while (buff[i] != '\n')
-				{
-					ref.AppendChar(buff[i]);
-					++i;
-					if (i == filesize)
-						break;
-				}
-
-				if (!ref.IsEmpty() )
-				{
-					this->m_PackRefMap[ref] = hash;
-				}
-
-				while (buff[i] == '\n')
-				{
-					++i;
-					if (i == filesize)
-						break;
-				}
 			}
+			++i;
+		}
 
-			delete[] buff;
+		if (i >= filesize)
+			break;
 
-		} while(0);
+		while (buff[i] != ' ')
+		{
+			hash.AppendChar(buff[i]);
+			++i;
+			if (i == filesize)
+				break;
+		}
+
+		++i;
+		if (i >= filesize)
+			break;
+
+		while (buff[i] != '\n')
+		{
+			ref.AppendChar(buff[i]);
+			++i;
+			if (i == filesize)
+				break;
+		}
+
+		if (!ref.IsEmpty())
+			m_PackRefMap[ref] = hash;
+
+		while (buff[i] == '\n')
+		{
+			++i;
+			if (i == filesize)
+				break;
+		}
 	}
-	return ret;
-
+	return 0;
 }
 int CGitHeadFileList::ReadHeadHash(CString gitdir)
 {
-	int ret = 0;
 	CAutoWriteLock lock(&this->m_SharedMutex);
 	m_Gitdir = g_AdminDirMap.GetAdminDir(gitdir);
 
@@ -578,134 +554,99 @@ int CGitHeadFileList::ReadHeadHash(CString gitdir)
 	if( g_Git.GetFileModifyTime(m_HeadFile, &m_LastModifyTimeHead))
 		return -1;
 
-	try
+	CAutoFile hfile = CreateFile(m_HeadFile,
+		GENERIC_READ,
+		FILE_SHARE_READ | FILE_SHARE_DELETE | FILE_SHARE_WRITE,
+		nullptr,
+		OPEN_EXISTING,
+		FILE_ATTRIBUTE_NORMAL,
+		nullptr);
+
+	if (!hfile)
+		return -1;
+
+	DWORD size = 0;
+	unsigned char buffer[40];
+	ReadFile(hfile, buffer, 4, &size, nullptr);
+	if (size != 4)
+		return -1;
+	buffer[4] = 0;
+	if (strcmp((const char*)buffer, "ref:") == 0)
 	{
-		do
+		m_HeadRefFile.Empty();
+		DWORD filesize = GetFileSize(hfile, nullptr);
+		if (filesize < 5)
+			return -1;
+
+		unsigned char *p = (unsigned char*)malloc(filesize - 4);
+		if (!p)
+			return -1;
+
+		ReadFile(hfile, p, filesize - 4, &size, nullptr);
+		g_Git.StringAppend(&m_HeadRefFile, p, CP_UTF8, filesize - 4);
+		free(p);
+
+		CString ref = m_HeadRefFile.Trim();
+		int start = 0;
+		ref = ref.Tokenize(_T("\n"), start);
+		m_HeadRefFile = m_Gitdir + m_HeadRefFile;
+		m_HeadRefFile.Replace(_T('/'), _T('\\'));
+
+		__int64 time;
+		if (g_Git.GetFileModifyTime(m_HeadRefFile, &time, nullptr))
 		{
-			CAutoFile hfile = CreateFile(m_HeadFile,
-				GENERIC_READ,
-				FILE_SHARE_READ|FILE_SHARE_DELETE|FILE_SHARE_WRITE,
-				NULL,
-				OPEN_EXISTING,
-				FILE_ATTRIBUTE_NORMAL,
-				NULL);
+			m_HeadRefFile.Empty();
+			if (GetPackRef(gitdir))
+				return -1;
+			if (m_PackRefMap.find(ref) == m_PackRefMap.end())
+				return -1;
 
-			if (!hfile)
-			{
-				ret = -1;
-				break;
-			}
+			m_Head = m_PackRefMap[ref];
+			return 0;
+		}
 
-			DWORD size = 0;
-			unsigned char buffer[40] ;
-			ReadFile(hfile, buffer, 4, &size, NULL);
-			if (size != 4)
-			{
-				ret = -1;
-				break;
-			}
-			buffer[4]=0;
-			if (strcmp((const char*)buffer,"ref:") == 0)
-			{
-				DWORD filesize = GetFileSize(hfile, NULL);
-				if (filesize < 5)
-				{
-					m_HeadRefFile.Empty();
-					ret = -1;
-					break;
-				}
+		CAutoFile href = CreateFile(m_HeadRefFile,
+			GENERIC_READ,
+			FILE_SHARE_READ | FILE_SHARE_DELETE | FILE_SHARE_WRITE,
+			nullptr,
+			OPEN_EXISTING,
+			FILE_ATTRIBUTE_NORMAL,
+			nullptr);
 
-				unsigned char *p = (unsigned char*)malloc(filesize -4);
+		if (!href)
+		{
+			m_HeadRefFile.Empty();
 
-				ReadFile(hfile, p, filesize - 4, &size, NULL);
+			if (GetPackRef(gitdir))
+				return -1;
 
-				m_HeadRefFile.Empty();
-				g_Git.StringAppend(&this->m_HeadRefFile, p, CP_UTF8, filesize - 4);
-				CString ref = this->m_HeadRefFile;
-				ref = ref.Trim();
-				int start = 0;
-				ref = ref.Tokenize(_T("\n"), start);
-				free(p);
-				m_HeadRefFile = m_Gitdir + m_HeadRefFile.Trim();
-				m_HeadRefFile.Replace(_T('/'),_T('\\'));
+			if (m_PackRefMap.find(ref) == m_PackRefMap.end())
+				return -1;
 
-				__int64 time;
-				if (g_Git.GetFileModifyTime(m_HeadRefFile, &time, NULL))
-				{
-					m_HeadRefFile.Empty();
-					if (GetPackRef(gitdir))
-					{
-						ret = -1;
-						break;
-					}
-					if (this->m_PackRefMap.find(ref) == m_PackRefMap.end())
-					{
-						ret = -1;
-						break;
-					}
-					this ->m_Head = m_PackRefMap[ref];
-					ret = 0;
-					break;
-				}
+			m_Head = m_PackRefMap[ref];
+			return 0;
+		}
 
-				CAutoFile href = CreateFile(m_HeadRefFile,
-					GENERIC_READ,
-					FILE_SHARE_READ|FILE_SHARE_DELETE|FILE_SHARE_WRITE,
-					NULL,
-					OPEN_EXISTING,
-					FILE_ATTRIBUTE_NORMAL,
-					NULL);
+		ReadFile(href, buffer, 40, &size, nullptr);
+		if (size != 40)
+			return -1;
 
-				if (!href)
-				{
-					m_HeadRefFile.Empty();
+		m_Head.ConvertFromStrA((char*)buffer);
 
-					if (GetPackRef(gitdir))
-					{
-						ret = -1;
-						break;
-					}
-
-					if (this->m_PackRefMap.find(ref) == m_PackRefMap.end())
-					{
-						ret = -1;
-						break;
-					}
-					this ->m_Head = m_PackRefMap[ref];
-					ret = 0;
-					break;
-				}
-				ReadFile(href, buffer, 40, &size, NULL);
-				if (size != 40)
-				{
-					ret = -1;
-					break;
-				}
-				this->m_Head.ConvertFromStrA((char*)buffer);
-
-				this->m_LastModifyTimeRef = time;
-
-			}
-			else
-			{
-				ReadFile(hfile, buffer + 4, 40 - 4, &size, NULL);
-				if(size != 36)
-				{
-					ret = -1;
-					break;
-				}
-				m_HeadRefFile.Empty();
-
-				this->m_Head.ConvertFromStrA((char*)buffer);
-			}
-		} while(0);
+		m_LastModifyTimeRef = time;
 	}
-	catch(...)
+	else
 	{
-		ret = -1;
+		ReadFile(hfile, buffer + 4, 40 - 4, &size, NULL);
+		if (size != 36)
+			return -1;
+
+		m_HeadRefFile.Empty();
+
+		m_Head.ConvertFromStrA((char*)buffer);
 	}
 
-	return ret;
+	return 0;
 }
 
 bool CGitHeadFileList::CheckHeadUpdate()
