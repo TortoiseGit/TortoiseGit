@@ -250,10 +250,16 @@ UINT CProgressDlg::RunCmdList(CWnd *pWnd, STRING_VECTOR &cmdlist, STRING_VECTOR 
 
 		PROCESS_INFORMATION pi;
 		CAutoGeneralHandle hRead;
+		int runAsyncRet = -1;
 		if (gitList.empty())
-			git->RunAsync(cmdlist[i].Trim(), &pi, hRead.GetPointer(), nullptr, pfilename);
+			runAsyncRet = git->RunAsync(cmdlist[i].Trim(), &pi, hRead.GetPointer(), nullptr, pfilename);
 		else
-			gitList[i]->RunAsync(cmdlist[i].Trim(), &pi, hRead.GetPointer(), nullptr, pfilename);
+			runAsyncRet = gitList[i]->RunAsync(cmdlist[i].Trim(), &pi, hRead.GetPointer(), nullptr, pfilename);
+		if (runAsyncRet)
+		{
+			EnsurePostMessage(pWnd, MSG_PROGRESSDLG_UPDATE_UI, MSG_PROGRESSDLG_FAILED, -1 * runAsyncRet);
+			return runAsyncRet;
+		}
 
 		CAutoGeneralHandle piProcess(pi.hProcess);
 		CAutoGeneralHandle piThread(pi.hThread);
