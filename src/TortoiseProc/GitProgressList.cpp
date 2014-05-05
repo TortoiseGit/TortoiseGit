@@ -1718,7 +1718,7 @@ bool CGitProgressList::CmdAdd(CString& sWindowTitle, bool& localoperation)
 
 	if (CRegDWORD(_T("Software\\TortoiseGit\\UseLibgit2"), TRUE) == TRUE)
 	{
-		CAutoRepository repo(CGit::GetGitPathStringA(g_Git.m_CurrentDir));
+		CAutoRepository repo(g_Git.GetGitRepository());
 		if (!repo)
 		{
 			ReportGitError();
@@ -2107,7 +2107,7 @@ bool CGitProgressList::CmdFetch(CString& sWindowTitle, bool& /*localoperation*/)
 
 	CSmartAnimation animate(m_pAnimate);
 
-	CAutoRepository repo(CGit::GetGitPathStringA(g_Git.m_CurrentDir));
+	CAutoRepository repo(g_Git.GetGitRepository());
 	if (!repo)
 	{
 		ReportGitError();
@@ -2181,7 +2181,7 @@ bool CGitProgressList::CmdReset(CString& sWindowTitle, bool& /*localoperation*/)
 	int resetTypesResource[] = { IDS_RESET_SOFT, IDS_RESET_MIXED, IDS_RESET_HARD };
 	ReportCmd(CString(MAKEINTRESOURCE(IDS_PROGRS_TITLE_RESET)) + _T(" ") + CString(MAKEINTRESOURCE(resetTypesResource[m_resetType])) + _T(" ") + m_revision);
 
-	CAutoRepository repo(CGit::GetGitPathStringA(g_Git.m_CurrentDir));
+	CAutoRepository repo(g_Git.GetGitRepository());
 	if (!repo)
 	{
 		ReportGitError();

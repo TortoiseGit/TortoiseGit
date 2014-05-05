@@ -2481,7 +2481,7 @@ void CGitStatusListCtrl::SetGitIndexFlagsForSelectedFiles(UINT message, BOOL ass
 	if (CMessageBox::Show(GetSafeHwnd(), message, IDS_APPNAME, MB_YESNO | MB_DEFBUTTON2 | MB_ICONQUESTION) == IDNO)
 		return;
 
-	CAutoRepository repository(CGit::GetGitPathStringA(g_Git.m_CurrentDir));
+	CAutoRepository repository(g_Git.GetGitRepository());
 	if (!repository)
 	{
 		CMessageBox::Show(m_hWnd, g_Git.GetLibGit2LastErr(), _T("TortoiseGit"), MB_ICONERROR);

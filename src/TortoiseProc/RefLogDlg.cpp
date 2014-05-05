@@ -161,7 +161,7 @@ int ParserFromRefLog(CString ref, std::vector<GitRev> &refloglist)
 	refloglist.clear();
 	if (g_Git.m_IsUseLibGit2)
 	{
-		CAutoRepository repo(CGit::GetGitPathStringA(g_Git.m_CurrentDir));
+		CAutoRepository repo(g_Git.GetGitRepository());
 		if (!repo)
 		{
 			MessageBox(nullptr, CGit::GetLibGit2LastErr(_T("Could not open repository.")), _T("TortoiseGit"), MB_ICONERROR);

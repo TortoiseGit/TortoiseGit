@@ -25,6 +25,8 @@
 #include "gitdll.h"
 #include <functional>
 
+struct git_repository;
+
 class CFilterData
 {
 public:
@@ -167,6 +169,7 @@ public:
 	CString GetGitGlobalXDGConfigPath() const;
 	CString GetGitGlobalXDGConfig() const;
 	CString GetGitSystemConfig() const;
+	git_repository * GetGitRepository() const;
 	static CStringA GetGitPathStringA(const CString &path);
 	static CString ms_LastMsysGitDir;	// the last msysgitdir added to the path, blank if none
 	static int ms_LastMsysGitVersion;

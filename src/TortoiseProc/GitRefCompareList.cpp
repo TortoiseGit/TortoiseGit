@@ -87,7 +87,7 @@ void CGitRefCompareList::Init()
 
 int CGitRefCompareList::OpenRepository()
 {
-	CAutoRepository tmp(CGit::GetGitPathStringA(g_Git.m_CurrentDir));
+	CAutoRepository tmp(g_Git.GetGitRepository());
 	m_Repository.Swap(tmp);
 	if (!m_Repository)
 	{

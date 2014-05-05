@@ -433,7 +433,7 @@ int CRepositoryBrowser::ReadTreeRecursive(git_repository &repo, const git_tree *
 int CRepositoryBrowser::ReadTree(CShadowFilesTree * treeroot, const CString& root)
 {
 	CWaitCursor wait;
-	CAutoRepository repository(CGit::GetGitPathStringA(g_Git.m_CurrentDir));
+	CAutoRepository repository(g_Git.GetGitRepository());
 	if (!repository)
 	{
 		MessageBox(CGit::GetLibGit2LastErr(_T("Could not open repository.")), _T("TortoiseGit"), MB_ICONERROR);
@@ -1190,7 +1190,7 @@ void CRepositoryBrowser::OpenFile(const CString path, eOpenType mode, bool isSub
 		{
 			CTGitPath subPath = CTGitPath(g_Git.m_CurrentDir);
 			subPath.AppendPathString(gitPath.GetWinPathString());
-			CAutoRepository repo(CGit::GetGitPathStringA(g_Git.m_CurrentDir));
+			CAutoRepository repo(g_Git.GetGitRepository());
 			CAutoCommit commit;
 			if (!repo || git_commit_lookup(commit.GetPointer(), repo, (const git_oid *)itemHash.m_hash))
 			{

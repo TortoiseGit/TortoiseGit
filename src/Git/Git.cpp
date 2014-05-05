@@ -1128,6 +1128,13 @@ int CGit::RunLogFile(CString cmd, const CString &filename, CString *stdErr)
 	return exitcode;
 }
 
+git_repository * CGit::GetGitRepository() const
+{
+	git_repository * repo = nullptr;
+	git_repository_open(&repo, GetGitPathStringA(m_CurrentDir));
+	return repo;
+}
+
 int CGit::GetHash(CGitHash &hash, const CString& friendname)
 {
 	// no need to parse a ref if it's already a 40-byte hash
@@ -1139,7 +1146,7 @@ int CGit::GetHash(CGitHash &hash, const CString& friendname)
 
 	if (m_IsUseLibGit2)
 	{
-		CAutoRepository repo(GetGitPathStringA(m_CurrentDir));
+		CAutoRepository repo(GetGitRepository());
 		if (!repo)
 			return -1;
 
@@ -1243,7 +1250,7 @@ int CGit::GetTagList(STRING_VECTOR &list)
 {
 	if (this->m_IsUseLibGit2)
 	{
-		CAutoRepository repo(GetGitPathStringA(m_CurrentDir));
+		CAutoRepository repo(GetGitRepository());
 		if (!repo)
 			return -1;
 
@@ -1353,7 +1360,7 @@ bool CGit::IsBranchTagNameUnique(const CString& name)
 {
 	if (m_IsUseLibGit2)
 	{
-		CAutoRepository repo(GetGitPathStringA(m_CurrentDir));
+		CAutoRepository repo(GetGitRepository());
 		if (!repo)
 			return true; // TODO: optimize error reporting
 
@@ -1396,7 +1403,7 @@ bool CGit::BranchTagExists(const CString& name, bool isBranch /*= true*/)
 {
 	if (m_IsUseLibGit2)
 	{
-		CAutoRepository repo(GetGitPathStringA(m_CurrentDir));
+		CAutoRepository repo(GetGitRepository());
 		if (!repo)
 			return false; // TODO: optimize error reporting
 
@@ -1476,7 +1483,7 @@ int CGit::GetBranchList(STRING_VECTOR &list,int *current,BRANCH_TYPE type)
 	CString cur;
 	if (m_IsUseLibGit2)
 	{
-		CAutoRepository repo(GetGitPathStringA(m_CurrentDir));
+		CAutoRepository repo(GetGitRepository());
 		if (!repo)
 			return -1;
 
@@ -1572,7 +1579,7 @@ int CGit::GetRemoteList(STRING_VECTOR &list)
 {
 	if (this->m_IsUseLibGit2)
 	{
-		CAutoRepository repo(GetGitPathStringA(m_CurrentDir));
+		CAutoRepository repo(GetGitRepository());
 		if (!repo)
 			return -1;
 
@@ -1648,7 +1655,7 @@ int CGit::GetRefList(STRING_VECTOR &list)
 {
 	if (this->m_IsUseLibGit2)
 	{
-		CAutoRepository repo(GetGitPathStringA(m_CurrentDir));
+		CAutoRepository repo(GetGitRepository());
 		if (!repo)
 			return -1;
 
@@ -1724,7 +1731,7 @@ int CGit::GetMapHashToFriendName(MAP_HASH_NAME &map)
 {
 	if (this->m_IsUseLibGit2)
 	{
-		CAutoRepository repo(GetGitPathStringA(m_CurrentDir));
+		CAutoRepository repo(GetGitRepository());
 		if (!repo)
 			return -1;
 
@@ -2075,7 +2082,7 @@ bool CGit::IsFastForward(const CString &from, const CString &to, CGitHash * comm
 {
 	if (UsingLibGit2(GIT_CMD_MERGE_BASE))
 	{
-		CAutoRepository repo(GetGitPathStringA(m_CurrentDir));
+		CAutoRepository repo(GetGitRepository());
 		if (!repo)
 			return false;
 
@@ -2155,7 +2162,7 @@ int CGit::GetOneFile(const CString &Refname, const CTGitPath &path, const CStrin
 {
 	if (UsingLibGit2(GIT_CMD_GETONEFILE))
 	{
-		CAutoRepository repo(GetGitPathStringA(m_CurrentDir));
+		CAutoRepository repo(GetGitRepository());
 		if (!repo)
 			return -1;
 
@@ -2546,7 +2553,7 @@ static int GetUnifiedDiffLibGit2(const CTGitPath& path, const git_revnum_t& revO
 	CStringA tree1 = CUnicodeUtils::GetMulti(revNew, CP_UTF8);
 	CStringA tree2 = CUnicodeUtils::GetMulti(revOld, CP_UTF8);
 
-	CAutoRepository repo(CGit::GetGitPathStringA(g_Git.m_CurrentDir));
+	CAutoRepository repo(g_Git.GetGitRepository());
 	if (!repo)
 		return -1;
 
@@ -2681,7 +2688,7 @@ int CGit::GitRevert(int parent, const CGitHash &hash)
 {
 	if (UsingLibGit2(GIT_CMD_REVERT))
 	{
-		CAutoRepository repo(GetGitPathStringA(m_CurrentDir));
+		CAutoRepository repo(GetGitRepository());
 		if (!repo)
 			return -1;
 
@@ -2718,7 +2725,7 @@ int CGit::DeleteRef(const CString& reference)
 {
 	if (UsingLibGit2(GIT_CMD_DELETETAGBRANCH))
 	{
-		CAutoRepository repo(GetGitPathStringA(m_CurrentDir));
+		CAutoRepository repo(GetGitRepository());
 		if (!repo)
 			return -1;
 

@@ -30,7 +30,7 @@ bool CatCommand::Execute()
 
 	if (g_Git.UsingLibGit2(CGit::GIT_CMD_GETONEFILE))
 	{
-		CAutoRepository repo(CGit::GetGitPathStringA(g_Git.m_CurrentDir));
+		CAutoRepository repo(g_Git.GetGitRepository());
 		if (!repo)
 		{
 			::DeleteFile(savepath);

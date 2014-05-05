@@ -101,7 +101,7 @@ int LogicalComparePredicate(const CString &left, const CString &right)
 
 static void GetSubmodulePathList(STRING_VECTOR &list, STRING_VECTOR &prefixList)
 {
-	CAutoRepository repo(CGit::GetGitPathStringA(g_Git.m_CurrentDir));
+	CAutoRepository repo(g_Git.GetGitRepository());
 	if (!repo)
 	{
 		MessageBox(NULL, CGit::GetLibGit2LastErr(_T("Could not open repository.")), _T("TortoiseGit"), MB_ICONERROR);

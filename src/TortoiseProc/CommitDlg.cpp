@@ -650,7 +650,7 @@ void CCommitDlg::OnOK()
 		bAddSuccess = false;
 		do
 		{
-			CAutoRepository repository(CGit::GetGitPathStringA(g_Git.m_CurrentDir));
+			CAutoRepository repository(g_Git.GetGitRepository());
 			if (!repository)
 			{
 				CMessageBox::Show(m_hWnd, CGit::GetLibGit2LastErr(_T("Could not open repository.")), _T("TortoiseGit"), MB_OK | MB_ICONERROR);

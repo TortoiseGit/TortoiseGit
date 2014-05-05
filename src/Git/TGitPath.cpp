@@ -1133,7 +1133,7 @@ int CTGitPathList::FillBasedOnIndexFlags(unsigned short flag, CTGitPathList* lis
 	CTGitPath path;
 	CString one;
 
-	CAutoRepository repository(CGit::GetGitPathStringA(g_Git.m_CurrentDir));
+	CAutoRepository repository(g_Git.GetGitRepository());
 	if (!repository)
 		return -1;
 
