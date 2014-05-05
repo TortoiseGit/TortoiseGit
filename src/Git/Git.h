@@ -300,6 +300,7 @@ public:
 	int GetTagList(STRING_VECTOR &list);
 	int GetRemoteTags(const CString& remote, STRING_VECTOR &list);
 	int GetMapHashToFriendName(MAP_HASH_NAME &map);
+	static int GetMapHashToFriendName(git_repository* repo, MAP_HASH_NAME &map);
 
 	CString DerefFetchHead();
 
@@ -313,6 +314,7 @@ public:
 	CString GetLogCmd(const CString &range, const CTGitPath *path = NULL, int count=-1, int InfoMask = LOG_INFO_FULL_DIFF|LOG_INFO_STAT|LOG_INFO_FILESTATE|LOG_INFO_BOUNDARY|LOG_INFO_DETECT_COPYRENAME|LOG_INFO_SHOW_MERGEDFILE, bool paramonly=false, CFilterData * filter =NULL);
 
 	int GetHash(CGitHash &hash, const CString& friendname);
+	static int GetHash(git_repository * repo, CGitHash &hash, const CString& friendname, bool skipFastCheck = false);
 
 	int BuildOutputFormat(CString &format,bool IsFull=TRUE);
 	static void StringAppend(CString *str, const BYTE *p, int code = CP_UTF8, int length = -1);

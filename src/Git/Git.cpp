@@ -1135,6 +1135,40 @@ git_repository * CGit::GetGitRepository() const
 	return repo;
 }
 
+int CGit::GetHash(git_repository * repo, CGitHash &hash, const CString& friendname, bool skipFastCheck /* = false */)
+{
+	ATLASSERT(repo);
+
+	// no need to parse a ref if it's already a 40-byte hash
+	if (!skipFastCheck && CGitHash::IsValidSHA1(friendname))
+	{
+		hash = CGitHash(friendname);
+		return 0;
+	}
+
+	int isHeadOrphan = git_repository_head_unborn(repo);
+	if (isHeadOrphan != 0)
+	{
+		hash.Empty();
+		if (isHeadOrphan == 1)
+			return 0;
+		else
+			return -1;
+	}
+
+	CAutoObject gitObject;
+	if (git_revparse_single(gitObject.GetPointer(), repo, CUnicodeUtils::GetUTF8(friendname)))
+		return -1;
+
+	const git_oid * oid = git_object_id(gitObject);
+	if (!oid)
+		return -1;
+
+	hash = CGitHash((char *)oid->id);
+
+	return 0;
+}
+
 int CGit::GetHash(CGitHash &hash, const CString& friendname)
 {
 	// no need to parse a ref if it's already a 40-byte hash
@@ -1150,27 +1184,7 @@ int CGit::GetHash(CGitHash &hash, const CString& friendname)
 		if (!repo)
 			return -1;
 
-		int isHeadOrphan = git_repository_head_unborn(repo);
-		if (isHeadOrphan != 0)
-		{
-			hash.Empty();
-			if (isHeadOrphan == 1)
-				return 0;
-			else
-				return -1;
-		}
-
-		CAutoObject gitObject;
-		if (git_revparse_single(gitObject.GetPointer(), repo, CUnicodeUtils::GetUTF8(friendname)))
-			return -1;
-
-		const git_oid * oid = git_object_id(gitObject);
-		if (oid == NULL)
-			return -1;
-
-		hash = CGitHash((char *)oid->id);
-
-		return 0;
+		return GetHash(repo, hash, friendname, true);
 	}
 	else
 	{
@@ -1726,6 +1740,22 @@ int libgit2_addto_map_each_ref_fn(git_reference *ref, void *payload)
 
 	return 0;
 }
+int CGit::GetMapHashToFriendName(git_repository* repo, MAP_HASH_NAME &map)
+{
+	ATLASSERT(repo);
+
+	map_each_ref_payload payloadContent = { repo, &map };
+
+	if (git_reference_foreach(repo, libgit2_addto_map_each_ref_fn, &payloadContent))
+		return -1;
+
+	for (auto it = map.begin(); it != map.end(); ++it)
+	{
+		std::sort(it->second.begin(), it->second.end());
+	}
+
+	return 0;
+}
 
 int CGit::GetMapHashToFriendName(MAP_HASH_NAME &map)
 {
@@ -1735,17 +1765,7 @@ int CGit::GetMapHashToFriendName(MAP_HASH_NAME &map)
 		if (!repo)
 			return -1;
 
-		map_each_ref_payload payloadContent = { repo, &map };
-
-		if (git_reference_foreach(repo, libgit2_addto_map_each_ref_fn, &payloadContent))
-			return -1;
-
-		for (auto it = map.begin(); it != map.end(); ++it)
-		{
-			std::sort(it->second.begin(), it->second.end());
-		}
-
-		return 0;
+		return GetMapHashToFriendName(repo, map);
 	}
 	else
 	{
@@ -2087,10 +2107,10 @@ bool CGit::IsFastForward(const CString &from, const CString &to, CGitHash * comm
 			return false;
 
 		CGitHash fromHash, toHash, baseHash;
-		if (GetHash(toHash, FixBranchName(to)))
+		if (GetHash(repo, toHash, FixBranchName(to)))
 			return false;
 
-		if (GetHash(fromHash, FixBranchName(from)))
+		if (GetHash(repo, fromHash, FixBranchName(from)))
 			return false;
 
 		git_oid baseOid;
@@ -2167,7 +2187,7 @@ int CGit::GetOneFile(const CString &Refname, const CTGitPath &path, const CStrin
 			return -1;
 
 		CGitHash hash;
-		if (GetHash(hash, Refname))
+		if (GetHash(repo, hash, Refname))
 			return -1;
 
 		CAutoCommit commit;

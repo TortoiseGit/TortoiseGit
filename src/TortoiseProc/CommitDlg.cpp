@@ -661,7 +661,7 @@ void CCommitDlg::OnOK()
 			CString revRef = _T("HEAD");
 			if (m_bCommitAmend && !m_bAmendDiffToLastCommit)
 				revRef = _T("HEAD~1");
-			if (g_Git.GetHash(revHash, revRef))
+			if (CGit::GetHash(repository, revHash, revRef))
 			{
 				MessageBox(g_Git.GetLibGit2LastErr(_T("Could not get HEAD hash after committing.")), _T("TortoiseGit"), MB_ICONERROR);
 				break;
