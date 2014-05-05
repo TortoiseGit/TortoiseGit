@@ -343,21 +343,28 @@ public:
 	{
 		m_HashMap.clear();
 
-		if (g_Git.GetMapHashToFriendName(m_HashMap))
+		CAutoRepository repo(g_Git.GetGitRepository());
+		if (!repo)
+		{
+			MessageBox(CGit::GetLibGit2LastErr(_T("Could not open repository. Quitting...")), _T("TortoiseGit"), MB_ICONERROR);
+			ExitProcess(1);
+		}
+
+		if (CGit::GetMapHashToFriendName(repo, m_HashMap))
 			MessageBox(g_Git.GetGitLastErr(_T("Could not get all refs.")), _T("TortoiseGit"), MB_ICONERROR);
 
 		m_CurrentBranch=g_Git.GetCurrentBranch();
 
-		if (g_Git.GetHash(m_HeadHash, _T("HEAD")))
+		if (CGit::GetHash(repo, m_HeadHash, _T("HEAD")))
 		{
-			MessageBox(g_Git.GetGitLastErr(_T("Could not get HEAD hash. Quitting...")), _T("TortoiseGit"), MB_ICONERROR);
+			MessageBox(CGit::GetLibGit2LastErr(_T("Could not get HEAD hash. Quitting...")), _T("TortoiseGit"), MB_ICONERROR);
 			ExitProcess(1);
 		}
 
 		m_wcRev.m_ParentHash.clear();
 		m_wcRev.m_ParentHash.push_back(m_HeadHash);
 
-		FetchRemoteList();
+		FetchRemoteList(repo);
 		FetchTrackingBranchList();
 	}
 	void SafeTerminateThread()
@@ -430,7 +437,7 @@ protected:
 	UINT LogThread();
 	bool IsOnStash(int index);
 	bool IsStash(const GitRev * pSelLogEntry);
-	void FetchRemoteList();
+	void FetchRemoteList(git_repository * repo);
 	void FetchTrackingBranchList();
 	void FetchLastLogInfo();
 	void FetchFullLogInfo(CString &from, CString &to);

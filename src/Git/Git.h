@@ -299,6 +299,7 @@ public:
 	}REF_TYPE;
 
 	int GetRemoteList(STRING_VECTOR &list);
+	static int GetRemoteList(git_repository* repo, STRING_VECTOR &list);
 	int GetBranchList(STRING_VECTOR &list, int *Current,BRANCH_TYPE type=BRANCH_LOCAL);
 	int GetTagList(STRING_VECTOR &list);
 	int GetRemoteTags(const CString& remote, STRING_VECTOR &list);

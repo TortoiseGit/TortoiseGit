@@ -2976,10 +2976,10 @@ UINT CGitLogListBase::LogThread()
 	return 0;
 }
 
-void CGitLogListBase::FetchRemoteList()
+void CGitLogListBase::FetchRemoteList(git_repository * repo)
 {
 	STRING_VECTOR remoteList;
-	if (!g_Git.GetRemoteList(remoteList))
+	if (!CGit::GetRemoteList(repo, remoteList))
 		m_SingleRemote = remoteList.size() == 1 ? remoteList[0] : _T("");
 	else
 		m_SingleRemote = _T("");

@@ -1567,6 +1567,25 @@ int CGit::GetBranchList(STRING_VECTOR &list,int *current,BRANCH_TYPE type)
 	return ret;
 }
 
+int CGit::GetRemoteList(git_repository* repo, STRING_VECTOR &list)
+{
+	ATLASSERT(repo);
+
+	CAutoStrArray remotes;
+	if (git_remote_list(remotes, repo))
+		return -1;
+
+	for (size_t i = 0; i < remotes->count; ++i)
+	{
+		CStringA remote(remotes->strings[i]);
+		list.push_back(CUnicodeUtils::GetUnicode(remote));
+	}
+
+	std::sort(list.begin(), list.end());
+
+	return 0;
+}
+
 int CGit::GetRemoteList(STRING_VECTOR &list)
 {
 	if (this->m_IsUseLibGit2)
@@ -1575,19 +1594,7 @@ int CGit::GetRemoteList(STRING_VECTOR &list)
 		if (!repo)
 			return -1;
 
-		CAutoStrArray remotes;
-		if (git_remote_list(remotes, repo))
-			return -1;
-
-		for (size_t i = 0; i < remotes->count; ++i)
-		{
-			CStringA remote(remotes->strings[i]);
-			list.push_back(CUnicodeUtils::GetUnicode(remote));
-		}
-
-		std::sort(list.begin(), list.end());
-
-		return 0;
+		return GetRemoteList(repo, list);
 	}
 	else
 	{
