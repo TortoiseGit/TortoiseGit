@@ -1684,6 +1684,8 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 		return;
 
 	GitRev* pSelLogEntry = reinterpret_cast<GitRev*>(m_arShownList.SafeGetAt(indexNext));
+	if (pSelLogEntry == nullptr)
+		return;
 #if 0
 	GitRev revSelected = pSelLogEntry->Rev;
 	GitRev revPrevious = git_revnum_t(revSelected)-1;
