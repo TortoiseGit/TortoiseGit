@@ -20,7 +20,7 @@ SuggestMgr::SuggestMgr(const char * tryme, int maxn,
   // try when building candidate suggestions
   pAMgr = aptr;
 
-  csconv = NULL;
+  csconv = get_current_cs(SPELL_ENCODING);
 
   ckeyl = 0;
   ckey = NULL;
