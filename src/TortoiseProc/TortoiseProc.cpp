@@ -591,6 +591,13 @@ void CTortoiseProcApp::CheckUpgrade()
 		CRegStdDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\ResizableState\\CleanTypeDlgWindowPlacement")).removeValue();
 	}
 
+	if (lVersion <= 0x01080801)
+	{
+		CRegStdDWORD(_T("HKEY_CURRENT_USER\Software\TortoiseGit\StatusColumns\BrowseRefs")).removeValue();
+		CRegStdString(_T("HKEY_CURRENT_USER\Software\TortoiseGit\StatusColumns\BrowseRefs_Order")).removeValue();
+		CRegStdString(_T("HKEY_CURRENT_USER\Software\TortoiseGit\StatusColumns\BrowseRefs_Width")).removeValue();
+	}
+
 	if (lVersion <= 0x01080401)
 	{
 		if (CRegStdDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\UseMAPI"), FALSE) == TRUE)
