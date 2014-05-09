@@ -744,6 +744,11 @@ void CRepositoryBrowser::ShowContextMenu(CPoint point, TShadowFilesTreeList &sel
 		CString temp;
 		temp.LoadString(IDS_MENULOG);
 		popupMenu.AppendMenuIcon(eCmd_ViewLog, temp, IDI_LOG);
+		if (selectedLeafs[0]->m_bSubmodule)
+		{
+			temp.LoadString(IDS_MENULOGSUBMODULE);
+			popupMenu.AppendMenuIcon(eCmd_ViewLogSubmodule, temp, IDI_LOG);
+		}
 
 		if (selType == ONLY_FILES)
 		{
@@ -778,10 +783,11 @@ void CRepositoryBrowser::ShowContextMenu(CPoint point, TShadowFilesTreeList &sel
 	switch(cmd)
 	{
 	case eCmd_ViewLog:
+	case eCmd_ViewLogSubmodule:
 		{
 			CString sCmd;
 			sCmd.Format(_T("/command:log /path:\"%s\\%s\""), g_Git.m_CurrentDir, selectedLeafs.at(0)->GetFullName());
-			if (selectedLeafs.at(0)->m_bSubmodule)
+			if (cmd == eCmd_ViewLog && selectedLeafs.at(0)->m_bSubmodule)
 				sCmd += _T(" /submodule");
 			CAppUtils::RunTortoiseGitProc(sCmd);
 		}

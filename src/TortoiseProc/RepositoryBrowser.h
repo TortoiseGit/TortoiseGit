@@ -96,6 +96,7 @@ public:
 		eCmd_SaveAs,
 		eCmd_CopyPath,
 		eCmd_CopyHash,
+		eCmd_ViewLogSubmodule,
 	};
 
 	enum eCol
