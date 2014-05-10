@@ -147,7 +147,6 @@ static int LogicalCompareBranchesPredicate(const CString &left, const CString &r
 	return StrCmpI(left, right) < 0;
 }
 
-#define MAX_DIRBUFFER 1000
 #define CALL_OUTPUT_READ_CHUNK_SIZE 1024
 
 CString CGit::ms_LastMsysGitDir;
@@ -157,7 +156,7 @@ CGit g_Git;
 
 CGit::CGit(void)
 {
-	GetCurrentDirectory(MAX_DIRBUFFER,m_CurrentDir.GetBuffer(MAX_DIRBUFFER));
+	GetCurrentDirectory(MAX_PATH, m_CurrentDir.GetBuffer(MAX_PATH));
 	m_CurrentDir.ReleaseBuffer();
 	m_IsGitDllInited = false;
 	m_GitDiff=0;
