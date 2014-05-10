@@ -2649,9 +2649,12 @@ void CGitStatusListCtrl::StartDiffTwo(int fileindex)
 		return;
 	CTGitPath file1 = *ptr;
 
-	CGitDiff::Diff(&file1,&file1,
-					m_Rev1,
-					m_Rev2);
+	if (file1.m_Action & CTGitPath::LOGACTIONS_ADDED)
+		CGitDiff::DiffNull(&file1, m_Rev1, true);
+	else if (file1.m_Action & CTGitPath::LOGACTIONS_DELETED)
+		CGitDiff::DiffNull(&file1, m_Rev2, false);
+	else
+		CGitDiff::Diff(&file1, &file1, m_Rev1, m_Rev2);
 
 }
 void CGitStatusListCtrl::StartDiffWC(int fileindex)
