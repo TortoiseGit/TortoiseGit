@@ -593,9 +593,9 @@ void CTortoiseProcApp::CheckUpgrade()
 
 	if (lVersion <= 0x01080801)
 	{
-		CRegStdDWORD(_T("HKEY_CURRENT_USER\Software\TortoiseGit\StatusColumns\BrowseRefs")).removeValue();
-		CRegStdString(_T("HKEY_CURRENT_USER\Software\TortoiseGit\StatusColumns\BrowseRefs_Order")).removeValue();
-		CRegStdString(_T("HKEY_CURRENT_USER\Software\TortoiseGit\StatusColumns\BrowseRefs_Width")).removeValue();
+		CRegStdDWORD(_T("Software\\TortoiseGit\\StatusColumns\\BrowseRefs")).removeValue();
+		CRegStdString(_T("Software\\TortoiseGit\\StatusColumns\\BrowseRefs_Order")).removeValue();
+		CRegStdString(_T("Software\\TortoiseGit\\StatusColumns\\BrowseRefs_Width")).removeValue();
 	}
 
 	if (lVersion <= 0x01080401)
