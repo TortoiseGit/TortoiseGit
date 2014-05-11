@@ -17,9 +17,6 @@
     <ClCompile Include="GitAdminDir.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GitConfig.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GitFolderStatus.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -50,9 +47,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GitAdminDir.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GitConfig.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GitFolderStatus.h">

@@ -28,7 +28,7 @@
 #include "SetMainPage.h"
 #include "Git.h"
 #include "MessageBox.h"
-#include "GitConfig.h"
+#include "GitForWindows.h"
 #include "BrowseFolder.h"
 #include "SysInfo.h"
 #include "Libraries.h"

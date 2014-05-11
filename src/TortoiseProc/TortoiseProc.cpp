@@ -39,7 +39,6 @@
 #include "Settings\setmainpage.h"
 #include "Libraries.h"
 #include "TaskbarUUID.h"
-#include "GitConfig.h"
 #include "SoundUtils.h"
 #include "ProjectProperties.h"
 

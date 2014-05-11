@@ -20,7 +20,6 @@
 #include "stdafx.h"
 #include "Git.h"
 #include "registry.h"
-#include "GitConfig.h"
 #include <map>
 #include "UnicodeUtils.h"
 #include "TGitPath.h"

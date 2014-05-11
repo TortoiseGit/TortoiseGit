@@ -47,7 +47,6 @@
     <ClCompile Include="..\Utils\DebugOutput.cpp" />
     <ClCompile Include="Git.cpp" />
     <ClCompile Include="GitAdminDir.cpp" />
-    <ClCompile Include="GitConfig.cpp" />
     <ClCompile Include="GitFolderStatus.cpp" />
     <ClCompile Include="GitIndex.cpp" />
     <ClCompile Include="GitRev.cpp" />
@@ -63,7 +62,6 @@
     <ClInclude Include="TGitPath.h" />
     <ClInclude Include="Git.h" />
     <ClInclude Include="GitAdminDir.h" />
-    <ClInclude Include="GitConfig.h" />
     <ClInclude Include="GitFolderStatus.h" />
     <ClInclude Include="GitHash.h" />
     <ClInclude Include="gitindex.h" />

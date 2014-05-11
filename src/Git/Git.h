@@ -25,6 +25,9 @@
 #include "gitdll.h"
 #include <functional>
 
+#define REG_MSYSGIT_PATH _T("Software\\TortoiseGit\\MSysGit")
+#define REG_MSYSGIT_EXTRA_PATH _T("Software\\TortoiseGit\\MSysGitExtra")
+
 struct git_repository;
 
 class CFilterData
