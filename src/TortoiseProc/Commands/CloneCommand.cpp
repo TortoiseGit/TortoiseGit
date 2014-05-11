@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 // Copyright (C) 2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -222,7 +222,7 @@ bool CloneCommand::Execute()
 				g_Git.m_CurrentDir = dlg.m_Directory;
 				SetCurrentDirectory(g_Git.m_CurrentDir);
 
-				if(g_Git.SetConfigValue(_T("remote.origin.puttykeyfile"), dlg.m_strPuttyKeyFile, CONFIG_LOCAL, CP_UTF8))
+				if(g_Git.SetConfigValue(_T("remote.origin.puttykeyfile"), dlg.m_strPuttyKeyFile, CONFIG_LOCAL))
 				{
 					CMessageBox::Show(NULL,_T("Fail set config remote.origin.puttykeyfile"),_T("TortoiseGit"),MB_OK|MB_ICONERROR);
 					return FALSE;

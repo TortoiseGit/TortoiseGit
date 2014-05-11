@@ -244,17 +244,17 @@ void CSettingGitRemote::OnLbnSelchangeListRemote()
 
 	cmd.Format(_T("remote.%s.url"),remote);
 	m_strUrl.Empty();
-	m_strUrl = g_Git.GetConfigValue(cmd, CP_UTF8);
+	m_strUrl = g_Git.GetConfigValue(cmd);
 
 	cmd.Format(_T("remote.%s.puttykeyfile"),remote);
 
-	this->m_strPuttyKeyfile = g_Git.GetConfigValue(cmd, CP_UTF8);
+	this->m_strPuttyKeyfile = g_Git.GetConfigValue(cmd);
 
 	m_ChangedMask=0;
 
 
 	cmd.Format(_T("remote.%s.tagopt"), remote);
-	CString tagopt = g_Git.GetConfigValue(cmd, CP_UTF8);
+	CString tagopt = g_Git.GetConfigValue(cmd);
 	index = 0;
 	if (tagopt == "--no-tags")
 		index = 1;
@@ -262,12 +262,12 @@ void CSettingGitRemote::OnLbnSelchangeListRemote()
 		index = 2;
 	m_ctrlTagOpt.SetCurSel(index);
 
-	CString pushDefault = g_Git.GetConfigValue(_T("remote.pushdefault"), CP_UTF8);
+	CString pushDefault = g_Git.GetConfigValue(_T("remote.pushdefault"));
 	m_bPushDefault = pushDefault == remote ? TRUE : FALSE;
 	cmd.Format(_T("remote.%s.prune"), remote);
-	CString prune = g_Git.GetConfigValue(cmd, CP_UTF8);
+	CString prune = g_Git.GetConfigValue(cmd);
 	m_bPrune = prune == _T("true") ? TRUE : prune == _T("false") ? FALSE : 2;
-	CString pruneAll = g_Git.GetConfigValue(_T("fetch.prune"), CP_UTF8);
+	CString pruneAll = g_Git.GetConfigValue(_T("fetch.prune"));
 	m_bPruneAll = pruneAll == _T("true") ? TRUE : FALSE;
 
 	GetDlgItem(IDC_BUTTON_ADD)->EnableWindow(TRUE);

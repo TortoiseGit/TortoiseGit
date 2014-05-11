@@ -521,7 +521,7 @@ CString CGit::GetUserEmail(void)
 	return GetConfigValue(L"user.email");
 }
 
-CString CGit::GetConfigValue(const CString& name, int encoding)
+CString CGit::GetConfigValue(const CString& name)
 {
 	CString configValue;
 	int start = 0;
@@ -536,7 +536,7 @@ CString CGit::GetConfigValue(const CString& name, int encoding)
 		{
 		}
 		CStringA key, value;
-		key =  CUnicodeUtils::GetMulti(name, encoding);
+		key =  CUnicodeUtils::GetUTF8(name);
 
 		try
 		{
@@ -549,14 +549,14 @@ CString CGit::GetConfigValue(const CString& name, int encoding)
 			return CString();
 		}
 
-		StringAppend(&configValue, (BYTE*)(LPCSTR)value, encoding);
+		StringAppend(&configValue, (BYTE*)(LPCSTR)value);
 		return configValue.Tokenize(_T("\n"),start);
 	}
 	else
 	{
 		CString cmd;
 		cmd.Format(L"git.exe config %s", name);
-		Run(cmd, &configValue, NULL, encoding);
+		Run(cmd, &configValue, nullptr, CP_UTF8);
 		return configValue.Tokenize(_T("\n"),start);
 	}
 }
@@ -572,7 +572,7 @@ bool CGit::GetConfigValueBool(const CString& name)
 		return false;
 }
 
-int CGit::SetConfigValue(const CString& key, const CString& value, CONFIG_TYPE type, int encoding)
+int CGit::SetConfigValue(const CString& key, const CString& value, CONFIG_TYPE type)
 {
 	if(this->m_IsUseGitDLL)
 	{
@@ -587,7 +587,7 @@ int CGit::SetConfigValue(const CString& key, const CString& value, CONFIG_TYPE t
 		}
 		CStringA keya, valuea;
 		keya = CUnicodeUtils::GetMulti(key, CP_UTF8);
-		valuea = CUnicodeUtils::GetMulti(value, encoding);
+		valuea = CUnicodeUtils::GetUTF8(value);
 
 		try
 		{
@@ -616,7 +616,7 @@ int CGit::SetConfigValue(const CString& key, const CString& value, CONFIG_TYPE t
 		}
 		cmd.Format(_T("git.exe config %s %s \"%s\""), option, key, value);
 		CString out;
-		if (Run(cmd, &out, NULL, encoding))
+		if (Run(cmd, &out, nullptr, CP_UTF8))
 		{
 			return -1;
 		}
@@ -624,7 +624,7 @@ int CGit::SetConfigValue(const CString& key, const CString& value, CONFIG_TYPE t
 	return 0;
 }
 
-int CGit::UnsetConfigValue(const CString& key, CONFIG_TYPE type, int encoding)
+int CGit::UnsetConfigValue(const CString& key, CONFIG_TYPE type)
 {
 	if(this->m_IsUseGitDLL)
 	{
@@ -666,7 +666,7 @@ int CGit::UnsetConfigValue(const CString& key, CONFIG_TYPE type, int encoding)
 		}
 		cmd.Format(_T("git.exe config %s --unset %s"), option, key);
 		CString out;
-		if (Run(cmd, &out, NULL, encoding))
+		if (Run(cmd, &out, nullptr, CP_UTF8))
 		{
 			return -1;
 		}

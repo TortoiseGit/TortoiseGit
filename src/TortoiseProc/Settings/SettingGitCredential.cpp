@@ -536,7 +536,7 @@ void CSettingGitCredential::Save(CString key, CString value)
 	// workaround gitdll bug
 	// TODO: switch to libgit2
 	g_Git.m_IsUseGitDLL = false;
-	if (g_Git.SetConfigValue(cmd, value, configLevel, CP_UTF8))
+	if (g_Git.SetConfigValue(cmd, value, configLevel))
 	{
 		CString msg;
 		msg.Format(IDS_PROC_SAVECONFIGFAILED, cmd, value);
@@ -544,7 +544,7 @@ void CSettingGitCredential::Save(CString key, CString value)
 	}
 	if (value.IsEmpty())
 	{
-		if (g_Git.UnsetConfigValue(cmd, configLevel, CP_UTF8))
+		if (g_Git.UnsetConfigValue(cmd, configLevel))
 		{
 			CString msg;
 			msg.Format(IDS_PROC_SAVECONFIGFAILED, cmd, value);
@@ -601,7 +601,7 @@ static int DeleteOtherKeys(int type)
 			CString prefix = list[i].Tokenize(_T("\n"), pos);
 			CString key = list[i].Tokenize(_T("\n"), pos);
 			CONFIG_TYPE configLevel = prefix == _T("S") ? CONFIG_SYSTEM : prefix == _T("G") || prefix == _T("X") ? CONFIG_GLOBAL : CONFIG_LOCAL;
-			if (g_Git.UnsetConfigValue(key, configLevel, CP_UTF8))
+			if (g_Git.UnsetConfigValue(key, configLevel))
 			{
 				CString msg;
 				msg.Format(IDS_PROC_SAVECONFIGFAILED, key, _T(""));
@@ -654,7 +654,7 @@ bool SaveSimpleCredential(int type)
 	// TODO: switch to libgit2
 	bool old = g_Git.m_IsUseGitDLL;
 	g_Git.m_IsUseGitDLL = false;
-	if (g_Git.SetConfigValue(_T("credential.helper"), value, configLevel, CP_UTF8))
+	if (g_Git.SetConfigValue(_T("credential.helper"), value, configLevel))
 	{
 		CString msg;
 		msg.Format(IDS_PROC_SAVECONFIGFAILED, _T("credential.helper"), value);
@@ -794,7 +794,7 @@ void CSettingGitCredential::OnBnClickedButtonRemove()
 			CStringA pattern = urlA.IsEmpty() ? "^credential\\.[^.]+$" : ("credential\\." + RegexEscape(urlA) + "\\..*");
 			git_config_foreach_match(config, pattern, GetCredentialEntryCallback, &list);
 			for (size_t i = 0; i < list.size(); ++i)
-				g_Git.UnsetConfigValue(list[i], configLevel, CP_UTF8);
+				g_Git.UnsetConfigValue(list[i], configLevel);
 			m_ctrlUrlList.DeleteString(index);
 			OnLbnSelchangeListUrl();
 		}
