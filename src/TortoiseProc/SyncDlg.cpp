@@ -190,13 +190,8 @@ void CSyncDlg::OnBnClickedButtonPull()
 
 		if(!IsURL())
 		{
-			CString configName;
-			configName.Format(L"branch.%s.merge", this->m_strLocalBranch);
-			CString pullBranch = CGit::StripRefName(g_Git.GetConfigValue(configName));
-
-			configName.Format(L"branch.%s.remote", m_strLocalBranch);
-			CString pullRemote = g_Git.GetConfigValue(configName);
-
+			CString pullRemote, pullBranch;
+			g_Git.GetRemoteTrackedBranch(m_strLocalBranch, pullRemote, pullBranch);
 			if(pullBranch == remotebranch && pullRemote == this->m_strURL)
 				remotebranch.Empty();
 		}

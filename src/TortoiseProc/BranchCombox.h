@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2012 - TortoiseGit
+// Copyright (C) 2009-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -50,16 +50,10 @@ protected:
 	void  CbnSelchangeLocalBranch()
 	{
 		//Select pull-remote from current branch
-		CString configName;
-		CString currentBranch=this->m_ctrlLocalBranch.GetString();
-		configName.Format(L"branch.%s.remote", currentBranch);
-		CString pullRemote = g_Git.GetConfigValue(configName);
+		CString pullRemote, pullBranch;
+		g_Git.GetRemoteTrackedBranch(m_ctrlLocalBranch.GetString(), pullRemote, pullBranch);
 
 		this->SetRemote(pullRemote);
-
-		//Select pull-branch from current branch
-		configName.Format(L"branch.%s.merge", currentBranch);
-		CString pullBranch = CGit::StripRefName(g_Git.GetConfigValue(configName));
 
 		CString defaultUpstream;
 		defaultUpstream.Format(L"remotes/%s/%s", pullRemote, pullBranch);
