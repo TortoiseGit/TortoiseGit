@@ -22,7 +22,6 @@
 #include "TGitPath.h"
 #include "GitStatus.h"
 #include "GitRev.h"
-#include "GitConfig.h"
 #include "Colors.h"
 #include "LoglistCommonResource.h"
 #include "HintListCtrl.h"
@@ -981,17 +980,6 @@ private:
 		OPEN_WITH,
 	};
 	void OpenFile(CTGitPath *path,int mode);
-
-	/// Process one line of the command file supplied to GetStatus
-	bool FetchStatusForSingleTarget(GitConfig& config, GitStatus& status, const CTGitPath& target,
-		bool bFetchStatusFromRepository, CStringA& strCurrentRepositoryUUID, CTGitPathList& arExtPaths,
-		bool bAllDirect, git_depth_t depth = git_depth_infinity, bool bShowIgnores = false);
-
-	/// Create 'status' data for each item in an unversioned folder
-	void AddUnversionedFolder(const CTGitPath& strFolderName, const CTGitPath& strBasePath, GitConfig * config);
-
-	/// Read the all the other status items which result from a single GetFirstStatus call
-	void ReadRemainingItemsStatus(GitStatus& status, const CTGitPath& strBasePath, CStringA& strCurrentRepositoryUUID, CTGitPathList& arExtPaths, GitConfig * config, bool bAllDirect);
 
 	/// Clear the status vector (contains custodial pointers)
 	void ClearStatusArray();

@@ -31,7 +31,6 @@
 #include "TempFile.h"
 #include "StringUtils.h"
 #include "DirFileEnum.h"
-#include "GitConfig.h"
 #include "LoglistUtils.h"
 #include "Git.h"
 #include "GitDiff.h"
