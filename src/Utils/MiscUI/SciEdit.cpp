@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2012-2014 - TortoiseGit
-// Copyright (C) 2003-2008,2012-2013 - TortoiseSVN
+// Copyright (C) 2003-2008,2012-2014 - TortoiseSVN
 // Copyright (C) 2012-2013 - Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
@@ -934,7 +934,7 @@ void CSciEdit::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 						for (int j=0; j < pm->count; j++)
 						{
 							CString sug = CString(pm->psyns[j]);
-							submenu->InsertMenu((UINT)-1, 0, nThesaurs++, sug);
+							submenu->InsertMenu((UINT)-1, 0, nCorrections + nCustoms + (nThesaurs++), sug);
 						}
 						thesaurs.InsertMenu((UINT)-1, MF_POPUP, (UINT_PTR)(submenu->m_hMenu), CString(pm->defn));
 						pm++;
