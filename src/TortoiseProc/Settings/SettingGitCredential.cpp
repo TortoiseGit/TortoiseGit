@@ -568,8 +568,7 @@ static int DeleteOtherKeys(int type)
 	else if (type == SimpleCredentialType::SystemWincred)
 		match = _T("S\ncredential.helper\nwincred");
 
-	git_config * config;
-	git_config_new(&config);
+	CAutoConfig config(true);
 	git_config_add_file_ondisk(config, CGit::GetGitPathStringA(g_Git.GetGitLocalConfig()), GIT_CONFIG_LEVEL_LOCAL, FALSE);
 	git_config_add_file_ondisk(config, CGit::GetGitPathStringA(g_Git.GetGitGlobalConfig()), GIT_CONFIG_LEVEL_GLOBAL, FALSE);
 	git_config_add_file_ondisk(config, CGit::GetGitPathStringA(g_Git.GetGitGlobalXDGConfig()), GIT_CONFIG_LEVEL_XDG, FALSE);
