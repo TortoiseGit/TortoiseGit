@@ -337,7 +337,7 @@ CString CPathUtils::GetAppDirectory(HMODULE hMod /* = NULL */)
     } while(len == bufferlen);
     path.ReleaseBuffer();
     path = path.Left(path.ReverseFind('\\')+1);
-    return path;
+    return GetLongPathname(path);
 }
 
 CString CPathUtils::GetAppParentDirectory(HMODULE hMod /* = NULL */)
