@@ -27,6 +27,7 @@
 #include "IconMenu.h"
 #include "AppUtils.h"
 #include "..\TortoiseShell\resource.h"
+#include "LoglistCommonResource.h"
 
 IMPLEMENT_DYNAMIC(CGitRefCompareList, CHintListCtrl)
 
@@ -41,6 +42,7 @@ enum IDGITRCL
 	IDGITRCL_DUMMY,
 	IDGITRCL_OLDLOG,
 	IDGITRCL_NEWLOG,
+	IDGITRCL_COMPARE,
 	IDGITRCL_REFLOG,
 };
 
@@ -255,6 +257,8 @@ void CGitRefCompareList::OnContextMenuList(CWnd * /*pWnd*/, CPoint point)
 		logStr.Format(IDS_SHOWLOG_OF, newHash);
 		popup.AppendMenuIcon(IDGITRCL_NEWLOG, logStr, IDI_LOG);
 	}
+	if (!oldHash.IsEmpty() && !newHash.IsEmpty() && oldHash != newHash)
+		popup.AppendMenuIcon(IDGITRCL_COMPARE, IDS_LOG_POPUP_COMPAREWITHPREVIOUS, IDI_DIFF);
 	popup.AppendMenuIcon(IDGITRCL_REFLOG, IDS_MENUREFLOG, IDI_LOG);
 
 	int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this, 0);
@@ -266,6 +270,13 @@ void CGitRefCompareList::OnContextMenuList(CWnd * /*pWnd*/, CPoint point)
 		{
 			CString sCmd;
 			sCmd.Format(_T("/command:log /path:\"%s\" /endrev:\"%s\""), g_Git.m_CurrentDir, cmd == IDGITRCL_OLDLOG ? oldHash : newHash);
+			CAppUtils::RunTortoiseGitProc(sCmd);
+			break;
+		}
+		case IDGITRCL_COMPARE:
+		{
+			CString sCmd;
+			sCmd.Format(_T("/command:showcompare /path:\"%s\" /revision1:\"%s\" /revision2:\"%s\""), g_Git.m_CurrentDir, oldHash, newHash);
 			CAppUtils::RunTortoiseGitProc(sCmd);
 			break;
 		}
