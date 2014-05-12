@@ -150,7 +150,7 @@ void CSettingsBugtraqConfig::OnChange()
 	SetModified();
 }
 
-void CSettingsBugtraqConfig::LoadDataImpl(git_config * config)
+void CSettingsBugtraqConfig::LoadDataImpl(CAutoConfig& config)
 {
 	if (m_iConfigSource == 0)
 	{
@@ -205,16 +205,16 @@ void CSettingsBugtraqConfig::LoadDataImpl(git_config * config)
 	}
 	else
 	{
-		m_bInheritURL = (GetConfigValue(config, BUGTRAQPROPNAME_URL, m_URL) == GIT_ENOTFOUND);
-		m_bInheritMessage = (GetConfigValue(config, BUGTRAQPROPNAME_MESSAGE, m_Message) == GIT_ENOTFOUND);
-		m_bInheritLabel = (GetConfigValue(config, BUGTRAQPROPNAME_LABEL, m_Label) == GIT_ENOTFOUND);
+		m_bInheritURL = (config.GetString(BUGTRAQPROPNAME_URL, m_URL) == GIT_ENOTFOUND);
+		m_bInheritMessage = (config.GetString(BUGTRAQPROPNAME_MESSAGE, m_Message) == GIT_ENOTFOUND);
+		m_bInheritLabel = (config.GetString(BUGTRAQPROPNAME_LABEL, m_Label) == GIT_ENOTFOUND);
 		GetBoolConfigValueComboBox(config, BUGTRAQPROPNAME_NUMBER, m_cNumber);
 		GetBoolConfigValueComboBox(config, BUGTRAQPROPNAME_APPEND, m_cAppend);
 		GetBoolConfigValueComboBox(config, BUGTRAQPROPNAME_WARNIFNOISSUE, m_cWarningifnoissue);
-		m_bInheritLogregex = (GetConfigValue(config, BUGTRAQPROPNAME_LOGREGEX, m_Logregex) == GIT_ENOTFOUND);
-		m_bInheritParams = (GetConfigValue(config, BUGTRAQPROPNAME_PROVIDERPARAMS, m_Params) == GIT_ENOTFOUND);
-		m_bInheritUUID32 = (GetConfigValue(config, BUGTRAQPROPNAME_PROVIDERUUID, m_UUID32) == GIT_ENOTFOUND);
-		m_bInheritUUID64 = (GetConfigValue(config, BUGTRAQPROPNAME_PROVIDERUUID64, m_UUID64) == GIT_ENOTFOUND);
+		m_bInheritLogregex = (config.GetString(BUGTRAQPROPNAME_LOGREGEX, m_Logregex) == GIT_ENOTFOUND);
+		m_bInheritParams = (config.GetString(BUGTRAQPROPNAME_PROVIDERPARAMS, m_Params) == GIT_ENOTFOUND);
+		m_bInheritUUID32 = (config.GetString(BUGTRAQPROPNAME_PROVIDERUUID, m_UUID32) == GIT_ENOTFOUND);
+		m_bInheritUUID64 = (config.GetString(BUGTRAQPROPNAME_PROVIDERUUID64, m_UUID64) == GIT_ENOTFOUND);
 	}
 
 	m_Logregex.Trim();
@@ -225,7 +225,7 @@ void CSettingsBugtraqConfig::LoadDataImpl(git_config * config)
 	UpdateData(FALSE);
 }
 
-BOOL CSettingsBugtraqConfig::SafeDataImpl(git_config * config)
+BOOL CSettingsBugtraqConfig::SafeDataImpl(CAutoConfig& config)
 {
 	if (!Save(config, BUGTRAQPROPNAME_URL, m_URL, m_bInheritURL == TRUE))
 		return FALSE;

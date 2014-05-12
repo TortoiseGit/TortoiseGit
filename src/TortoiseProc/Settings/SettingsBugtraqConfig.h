@@ -44,8 +44,8 @@ protected:
 
 	afx_msg void OnBnClickedTestbugtraqregexbutton();
 
-	virtual void LoadDataImpl(git_config * config);
-	virtual BOOL SafeDataImpl(git_config * config);
+	virtual void LoadDataImpl(CAutoConfig& config);
+	virtual BOOL SafeDataImpl(CAutoConfig& config);
 	virtual void EnDisableControls();
 
 	DECLARE_MESSAGE_MAP()

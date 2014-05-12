@@ -534,13 +534,6 @@ void CGitPropertyPage::LogThreadEntry(void *param)
 	((CGitPropertyPage*)param)->LogThread();
 }
 
-static void ReadConfigValue(git_config * config, CString& value, const char * key)
-{
-	const char * out = nullptr;
-	git_config_get_string(&out, config, key);
-	value = CUnicodeUtils::GetUnicode(out);
-}
-
 void CGitPropertyPage::InitWorkfileView()
 {
 	if (filenames.empty())
@@ -561,13 +554,13 @@ void CGitPropertyPage::InitWorkfileView()
 	CString autocrlf;
 	CString safecrlf;
 
-	CAutoConfig config;
-	if (!git_repository_config(config.GetPointer(), repository))
+	CAutoConfig config(repository);
+	if (config)
 	{
-		ReadConfigValue(config, username, "user.name");
-		ReadConfigValue(config, useremail, "user.email");
-		ReadConfigValue(config, autocrlf, "core.autocrlf");
-		ReadConfigValue(config, safecrlf, "core.safecrlf");
+		config.GetString(L"user.name", username);
+		config.GetString(L"user.email", useremail);
+		config.GetString(L"core.autocrlf", autocrlf);
+		config.GetString(L"core.safecrlf", safecrlf);
 	}
 
 	CString branch;

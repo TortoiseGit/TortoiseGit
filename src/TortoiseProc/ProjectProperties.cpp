@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2011,2013 - TortoiseGit
+// Copyright (C) 2003-2011,2013-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -45,37 +45,9 @@ ProjectProperties::ProjectProperties(void)
 	lProjectLanguage = 0;
 }
 
-int ProjectProperties::GetStringProps(CString &prop, const CString &key)
-{
-	ATLASSERT(gitconfig);
-
-	CStringA keyA = CUnicodeUtils::GetUTF8(key);
-	const char * value = nullptr;
-	if (git_config_get_string(&value, gitconfig, keyA))
-		return -1;
-
-	prop = CUnicodeUtils::GetUnicode(value);
-
-	return 0;
-}
-
-int ProjectProperties::GetBOOLProps(BOOL &b, const CString &key)
-{
-	ATLASSERT(gitconfig);
-
-	CStringA keyA = CUnicodeUtils::GetUTF8(key);
-	int value = FALSE;
-	if (git_config_get_bool(&value, gitconfig, keyA))
-		return -1;
-
-	b = value;
-
-	return 0;
-}
-
 int ProjectProperties::ReadProps()
 {
-	gitconfig.New();
+	CAutoConfig gitconfig(true);
 	CString adminDirPath;
 	if (g_GitAdminDir.GetAdminDirPath(g_Git.m_CurrentDir, adminDirPath))
 		git_config_add_file_ondisk(gitconfig, CGit::GetGitPathStringA(adminDirPath + L"config"), GIT_CONFIG_LEVEL_APP, FALSE); // this needs to have the highest priority in order to override .tgitconfig settings
@@ -97,23 +69,23 @@ int ProjectProperties::ReadProps()
 
 	CString sPropVal;
 
-	GetStringProps(this->sLabel,BUGTRAQPROPNAME_LABEL);
-	GetStringProps(this->sMessage,BUGTRAQPROPNAME_MESSAGE);
+	gitconfig.GetString(BUGTRAQPROPNAME_LABEL, sLabel);
+	gitconfig.GetString(BUGTRAQPROPNAME_MESSAGE, sMessage);
 	nBugIdPos = sMessage.Find(L"%BUGID%");
-	GetStringProps(this->sUrl,BUGTRAQPROPNAME_URL);
+	gitconfig.GetString(BUGTRAQPROPNAME_URL, sUrl);
 
-	GetBOOLProps(this->bWarnIfNoIssue,BUGTRAQPROPNAME_WARNIFNOISSUE);
-	GetBOOLProps(this->bNumber,BUGTRAQPROPNAME_NUMBER);
-	GetBOOLProps(this->bAppend,BUGTRAQPROPNAME_APPEND);
+	gitconfig.GetBOOL(BUGTRAQPROPNAME_WARNIFNOISSUE, bWarnIfNoIssue);
+	gitconfig.GetBOOL(BUGTRAQPROPNAME_NUMBER, bNumber);
+	gitconfig.GetBOOL(BUGTRAQPROPNAME_APPEND, bAppend);
 
-	GetStringProps(sProviderUuid, BUGTRAQPROPNAME_PROVIDERUUID);
-	GetStringProps(sProviderUuid64, BUGTRAQPROPNAME_PROVIDERUUID64);
-	GetStringProps(sProviderParams, BUGTRAQPROPNAME_PROVIDERPARAMS);
+	gitconfig.GetString(BUGTRAQPROPNAME_PROVIDERUUID, sProviderUuid);
+	gitconfig.GetString(BUGTRAQPROPNAME_PROVIDERUUID64, sProviderUuid64);
+	gitconfig.GetString(BUGTRAQPROPNAME_PROVIDERPARAMS, sProviderParams);
 
-	GetBOOLProps(this->bWarnNoSignedOffBy, PROJECTPROPNAME_WARNNOSIGNEDOFFBY);
-	GetStringProps(sIcon, PROJECTPROPNAME_ICON);
+	gitconfig.GetBOOL(PROJECTPROPNAME_WARNNOSIGNEDOFFBY, bWarnNoSignedOffBy);
+	gitconfig.GetString(PROJECTPROPNAME_ICON, sIcon);
 
-	GetStringProps(sPropVal, BUGTRAQPROPNAME_LOGREGEX);
+	gitconfig.GetString(BUGTRAQPROPNAME_LOGREGEX, sPropVal);
 
 	sCheckRe = sPropVal;
 	if (sCheckRe.Find('\n')>=0)
@@ -126,7 +98,7 @@ int ProjectProperties::ReadProps()
 		sCheckRe = sCheckRe.Trim();
 	}
 
-	if (GetStringProps(sPropVal, PROJECTPROPNAME_LOGWIDTHLINE) == 0)
+	if (gitconfig.GetString(PROJECTPROPNAME_LOGWIDTHLINE, sPropVal) == 0)
 	{
 		CString val;
 		val = sPropVal;
@@ -134,7 +106,7 @@ int ProjectProperties::ReadProps()
 			nLogWidthMarker = _ttoi(val) + 2; // HACK, + 2 needed
 	}
 
-	if (GetStringProps(sPropVal, PROJECTPROPNAME_PROJECTLANGUAGE) == 0)
+	if (gitconfig.GetString(PROJECTPROPNAME_PROJECTLANGUAGE, sPropVal) == 0)
 	{
 		CString val;
 		val = sPropVal;
@@ -147,7 +119,7 @@ int ProjectProperties::ReadProps()
 		}
 	}
 
-	if (GetStringProps(sPropVal, PROJECTPROPNAME_LOGMINSIZE) == 0)
+	if (gitconfig.GetString(PROJECTPROPNAME_LOGMINSIZE, sPropVal) == 0)
 	{
 		CString val;
 		val = sPropVal;

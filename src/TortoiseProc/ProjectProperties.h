@@ -58,10 +58,6 @@ public:
 	 */
 	BOOL ReadProps();
 
-private:
-	int GetStringProps(CString &prop, const CString &key);
-	int GetBOOLProps(BOOL &b, const CString &key);
-
 public:
 	/**
 	 * Searches for the BugID inside a log message. If one is found,
@@ -200,8 +196,6 @@ public:
 	CString		sProviderUuid64;
 
 private:
-	CAutoConfig gitconfig;
-
 	/**
 	 * Constructing regex objects is expensive. Therefore, cache them here.
 	 */

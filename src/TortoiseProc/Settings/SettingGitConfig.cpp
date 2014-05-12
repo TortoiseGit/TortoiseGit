@@ -132,9 +132,9 @@ BOOL CSettingGitConfig::OnInitDialog()
 }
 // CSettingGitConfig message handlers
 
-void CSettingGitConfig::LoadDataImpl(git_config * config)
+void CSettingGitConfig::LoadDataImpl(CAutoConfig& config)
 {
-	m_bInheritSigningKey = (GetConfigValue(config, _T("user.signingkey"), m_UserSigningKey) == GIT_ENOTFOUND);
+	m_bInheritSigningKey = (config.GetString(_T("user.signingkey"), m_UserSigningKey) == GIT_ENOTFOUND);
 
 	// special handling for UserName and UserEmail, because these can also be defined as environment variables for effective settings
 	if (m_iConfigSource == 0)
@@ -147,8 +147,8 @@ void CSettingGitConfig::LoadDataImpl(git_config * config)
 	}
 	else
 	{
-		m_bInheritUserName = (GetConfigValue(config, _T("user.name"), m_UserName) == GIT_ENOTFOUND);
-		m_bInheritEmail = (GetConfigValue(config, _T("user.email"), m_UserEmail) == GIT_ENOTFOUND);
+		m_bInheritUserName = (config.GetString(_T("user.name"), m_UserName) == GIT_ENOTFOUND);
+		m_bInheritEmail = (config.GetString(_T("user.email"), m_UserEmail) == GIT_ENOTFOUND);
 	}
 
 	if (git_config_get_bool(&m_bAutoCrlf, config, "core.autocrlf") == GIT_ENOTFOUND)
@@ -170,7 +170,7 @@ void CSettingGitConfig::LoadDataImpl(git_config * config)
 	else
 	{
 		CString sSafeCrLf;
-		GetConfigValue(config, _T("core.safecrlf"), sSafeCrLf);
+		config.GetString(_T("core.safecrlf"), sSafeCrLf);
 		sSafeCrLf = sSafeCrLf.MakeLower().Trim();
 		if (sSafeCrLf == _T("warn"))
 			m_cSafeCrLf.SetCurSel(3);
@@ -210,7 +210,7 @@ void CSettingGitConfig::OnChange()
 	SetModified();
 }
 
-BOOL CSettingGitConfig::SafeDataImpl(git_config * config)
+BOOL CSettingGitConfig::SafeDataImpl(CAutoConfig& config)
 {
 	if (!Save(config, _T("user.name"), m_UserName, m_bInheritUserName == TRUE))
 		return FALSE;

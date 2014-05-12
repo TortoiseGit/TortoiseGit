@@ -1114,11 +1114,7 @@ bool CGitIgnoreList::CheckAndUpdateCoreExcludefile(const CString &adminDir)
 	git_config_add_file_ondisk(config, CGit::GetGitPathStringA(globalXDGConfig), GIT_CONFIG_LEVEL_XDG, FALSE);
 	if (!m_sMsysGitBinPath.IsEmpty())
 		git_config_add_file_ondisk(config, CGit::GetGitPathStringA(systemConfig), GIT_CONFIG_LEVEL_SYSTEM, FALSE);
-	const char * out = NULL;
-	CStringA name(_T("core.excludesfile"));
-	git_config_get_string(&out, config, name);
-	CStringA excludesFileA(out);
-	excludesFile = CUnicodeUtils::GetUnicode(excludesFileA);
+	config.GetString(_T("core.excludesfile"), excludesFile);
 	if (excludesFile.IsEmpty())
 		excludesFile = GetWindowsHome() + _T("\\.config\\git\\ignore");
 	else if (excludesFile.Find(_T("~/")) == 0)

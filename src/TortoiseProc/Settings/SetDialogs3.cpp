@@ -101,11 +101,11 @@ static void SelectLanguage(CComboBox &combobox, LONG langueage)
 	}
 }
 
-void CSetDialogs3::LoadDataImpl(git_config * config)
+void CSetDialogs3::LoadDataImpl(CAutoConfig& config)
 {
 	{
 		CString value;
-		if (GetConfigValue(config, PROJECTPROPNAME_PROJECTLANGUAGE, value) == GIT_ENOTFOUND && m_iConfigSource != 0)
+		if (config.GetString(PROJECTPROPNAME_PROJECTLANGUAGE, value) == GIT_ENOTFOUND && m_iConfigSource != 0)
 			m_langCombo.SetCurSel(0);
 		else if (value == _T("-1"))
 			m_langCombo.SetCurSel(2);
@@ -132,7 +132,7 @@ void CSetDialogs3::LoadDataImpl(git_config * config)
 	{
 		m_LogMinSize = _T("");
 		CString value;
-		m_bInheritLogMinSize = (GetConfigValue(config, PROJECTPROPNAME_LOGMINSIZE, value) == GIT_ENOTFOUND);
+		m_bInheritLogMinSize = (config.GetString(PROJECTPROPNAME_LOGMINSIZE, value) == GIT_ENOTFOUND);
 		if (!value.IsEmpty() || m_iConfigSource == 0)
 		{
 			int nMinLogSize = _ttoi(value);
@@ -144,7 +144,7 @@ void CSetDialogs3::LoadDataImpl(git_config * config)
 	{
 		m_Border = _T("");
 		CString value;
-		m_bInheritBorder = (GetConfigValue(config, PROJECTPROPNAME_LOGWIDTHLINE, value) == GIT_ENOTFOUND);
+		m_bInheritBorder = (config.GetString(PROJECTPROPNAME_LOGWIDTHLINE, value) == GIT_ENOTFOUND);
 		if (!value.IsEmpty() || m_iConfigSource == 0)
 		{
 			int nLogWidthMarker = _ttoi(value);
@@ -155,14 +155,14 @@ void CSetDialogs3::LoadDataImpl(git_config * config)
 
 	GetBoolConfigValueComboBox(config, PROJECTPROPNAME_WARNNOSIGNEDOFFBY, m_cWarnNoSignedOffBy);
 
-	m_bInheritIconFile = (GetConfigValue(config, PROJECTPROPNAME_ICON, m_iconFile) == GIT_ENOTFOUND);
+	m_bInheritIconFile = (config.GetString(PROJECTPROPNAME_ICON, m_iconFile) == GIT_ENOTFOUND);
 
 	m_bNeedSave = false;
 	SetModified(FALSE);
 	UpdateData(FALSE);
 }
 
-BOOL CSetDialogs3::SafeDataImpl(git_config * config)
+BOOL CSetDialogs3::SafeDataImpl(CAutoConfig& config)
 {
 	if (m_langCombo.GetCurSel() == 2) // disable
 	{

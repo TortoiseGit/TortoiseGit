@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013 - TortoiseGit
+// Copyright (C) 2013-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -213,8 +213,8 @@ protected:
 		return SafeDataImpl(config);
 	}
 
-	virtual void LoadDataImpl(git_config * config) = 0;
-	virtual BOOL SafeDataImpl(git_config * config) = 0;
+	virtual void LoadDataImpl(CAutoConfig& config) = 0;
+	virtual BOOL SafeDataImpl(CAutoConfig& config) = 0;
 	virtual void EnDisableControls() = 0;
 
 	static void AddTrueFalseToComboBox(CComboBox &combobox)
@@ -224,25 +224,15 @@ protected:
 		combobox.AddString(_T("false"));
 	}
 
-	static void GetBoolConfigValueComboBox(git_config * config, const CString &key, CComboBox &combobox)
+	static void GetBoolConfigValueComboBox(CAutoConfig& config, const CString &key, CComboBox &combobox)
 	{
-		CStringA keyA = CUnicodeUtils::GetUTF8(key);
 		BOOL out = 0;
-		if (git_config_get_bool(&out, config, keyA) == GIT_ENOTFOUND)
+		if (config.GetBOOL(key, out) == GIT_ENOTFOUND)
 			combobox.SetCurSel(0);
 		else if (out)
 			combobox.SetCurSel(1);
 		else
 			combobox.SetCurSel(2);
-	}
-
-	static int GetConfigValue(git_config * config, const CString &key, CString &value)
-	{
-		CStringA keyA = CUnicodeUtils::GetUTF8(key);
-		const char *out = nullptr;
-		int retval = git_config_get_string(&out, config, keyA);
-		value = CUnicodeUtils::GetUnicode((CStringA)out);
-		return retval;
 	}
 };
 

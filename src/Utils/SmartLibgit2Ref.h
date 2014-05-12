@@ -72,7 +72,7 @@ public:
 		return IsValid();
 	}
 
-	bool IsValid()
+	bool IsValid() const
 	{
 		return m_Ref != nullptr;
 	}
@@ -216,6 +216,11 @@ class CAutoConfig : public CSmartLibgit2Ref<git_config>
 public:
 	CAutoConfig() {}
 
+	CAutoConfig(CAutoRepository &repo)
+	{
+		git_repository_config(&m_Ref, repo);
+	}
+
 	CAutoConfig(bool init)
 	{
 		if (init)
@@ -227,9 +232,51 @@ public:
 		CleanUp();
 		git_config_new(&m_Ref);
 	}
+
 	~CAutoConfig()
 	{
 		CleanUp();
+	}
+
+	int GetString(const CString &key, CString &value) const
+	{
+		if (!IsValid())
+			return -1;
+
+		const char* out = nullptr;
+		int ret = 0;
+		if ((ret = git_config_get_string(&out, m_Ref, CUnicodeUtils::GetUTF8(key))))
+		{
+			value.Empty();
+			return ret;
+		}
+
+		value = CUnicodeUtils::GetUnicode((CStringA)out);
+
+		return ret;
+	}
+
+	int GetBOOL(const CString &key, BOOL &b) const
+	{
+		if (!IsValid())
+			return -1;
+
+		return git_config_get_bool(&b, m_Ref, CUnicodeUtils::GetUTF8(key));
+	}
+
+	int GetBool(const CString &key, bool &b) const
+	{
+		if (!IsValid())
+			return -1;
+
+		int value = FALSE;
+		int ret = 0;
+		if ((ret = GetBOOL(key, value)))
+			return ret;
+
+		b = (value == TRUE);
+
+		return ret;
 	}
 
 protected:
