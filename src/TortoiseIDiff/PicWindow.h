@@ -111,10 +111,10 @@ public:
         m_szTip[0]    = 0;
         ptPanStart.x = -1;
         ptPanStart.y = -1;
-		m_inforect.left = 0;
-		m_inforect.right = 0;
-		m_inforect.bottom = 0;
-		m_inforect.top = 0;
+        m_inforect.left = 0;
+        m_inforect.right = 0;
+        m_inforect.bottom = 0;
+        m_inforect.top = 0;
     };
 
     enum BlendType
