@@ -155,12 +155,12 @@ int CHistoryCombo::AddString(CString str, INT_PTR pos,BOOL isSel)
 	if (m_bURLHistory)
 	{
 		cbei.iImage = SYS_IMAGE_LIST().GetFileIconIndex(str);
-		if (cbei.iImage == SYS_IMAGE_LIST().GetDefaultIconIndex())
+		if (cbei.iImage == 0 || cbei.iImage == SYS_IMAGE_LIST().GetDefaultIconIndex())
 		{
 			if (str.Left(5) == _T("http:"))
 				cbei.iImage = SYS_IMAGE_LIST().GetFileIconIndex(_T(".html"));
 			else if (str.Left(6) == _T("https:"))
-				cbei.iImage = SYS_IMAGE_LIST().GetFileIconIndex(_T(".shtml"));
+				cbei.iImage = SYS_IMAGE_LIST().GetFileIconIndex(_T(".html"));
 			else if (str.Left(5) == _T("file:"))
 				cbei.iImage = SYS_IMAGE_LIST().GetDirIconIndex();
 			else if (str.Left(4) == _T("git:"))
