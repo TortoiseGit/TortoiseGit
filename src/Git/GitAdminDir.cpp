@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -216,6 +216,13 @@ bool GitAdminDir::IsBareRepo(const CString& path) const
 
 	if (IsAdminDirPath(path))
 		return false;
+
+	// don't check for \\COMPUTERNAME\HEAD
+	if (path[0] == _T('\\') && path[1] == _T('\\'))
+	{
+		if (path.Find(_T('\\'), 2) < 0)
+			return false;
+	}
 
 	if (!PathFileExists(path + _T("\\HEAD")) || !PathFileExists(path + _T("\\config")))
 		return false;
