@@ -65,6 +65,7 @@ CTortoiseProcApp::CTortoiseProcApp()
 	CCrashReport::Instance().AddUserInfoToReport(L"CommandLine", GetCommandLine());
 	EnableHtmlHelp();
 	SYS_IMAGE_LIST();
+	CHistoryCombo::m_nGitIconIndex = SYS_IMAGE_LIST().AddIcon((HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_GITCONFIG), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE));
 	CHooks::Create();
 	m_bLoadUserToolbars = FALSE;
 	m_bSaveState = FALSE;
