@@ -1,6 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2012 - TortoiseSVN
+// Copyright (C) 2013-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -25,6 +26,8 @@
 #endif
 
 #define MAX_HISTORY_ITEMS 25
+
+int CHistoryCombo::m_nGitIconIndex = 0;
 
 CHistoryCombo::CHistoryCombo(BOOL bAllowSortStyle /*=FALSE*/ )
 {
@@ -155,18 +158,18 @@ int CHistoryCombo::AddString(CString str, INT_PTR pos,BOOL isSel)
 	if (m_bURLHistory)
 	{
 		cbei.iImage = SYS_IMAGE_LIST().GetFileIconIndex(str);
-		if (cbei.iImage == SYS_IMAGE_LIST().GetDefaultIconIndex())
+		if (cbei.iImage == 0 || cbei.iImage == SYS_IMAGE_LIST().GetDefaultIconIndex())
 		{
 			if (str.Left(5) == _T("http:"))
 				cbei.iImage = SYS_IMAGE_LIST().GetFileIconIndex(_T(".html"));
 			else if (str.Left(6) == _T("https:"))
-				cbei.iImage = SYS_IMAGE_LIST().GetFileIconIndex(_T(".shtml"));
+				cbei.iImage = SYS_IMAGE_LIST().GetFileIconIndex(_T(".html"));
 			else if (str.Left(5) == _T("file:"))
 				cbei.iImage = SYS_IMAGE_LIST().GetDirIconIndex();
 			else if (str.Left(4) == _T("git:"))
-				cbei.iImage = SYS_IMAGE_LIST().GetDirIconIndex();
+				cbei.iImage = m_nGitIconIndex;
 			else if (str.Left(4) == _T("ssh:"))
-				cbei.iImage = SYS_IMAGE_LIST().GetDirIconIndex();
+				cbei.iImage = m_nGitIconIndex;
 			else
 				cbei.iImage = SYS_IMAGE_LIST().GetDirIconIndex();
 		}

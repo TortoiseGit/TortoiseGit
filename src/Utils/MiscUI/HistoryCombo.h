@@ -135,6 +135,8 @@ public:
 
 	int FindStringExactCaseSensitive(int nIndexStart, LPCTSTR lpszFind);
 
+	static int		m_nGitIconIndex;
+
 protected:
 	/**
 	 * Will be called whenever the return key is pressed while the
