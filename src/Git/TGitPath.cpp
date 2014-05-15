@@ -30,11 +30,6 @@
 #include "../Resources/LoglistCommonResource.h"
 #include <memory>
 
-#if defined(_MFC_VER)
-//#include "MessageBox.h"
-//#include "AppUtils.h"
-#endif
-
 #ifndef ASSERT
 #define ASSERT()
 #endif
@@ -247,38 +242,6 @@ const CString &CTGitPath::GetGitOldPathString() const
 {
 	return m_sOldFwdslashPath;
 }
-#if 0
-const char* CTGitPath::GetGitApiPath(apr_pool_t *pool) const
-{
-	// This funny-looking 'if' is to avoid a subtle problem with empty paths, whereby
-	// each call to GetGitApiPath returns a different pointer value.
-	// If you made multiple calls to GetGitApiPath on the same string, only the last
-	// one would give you a valid pointer to an empty string, because each
-	// call would invalidate the previous call's return.
-	if(IsEmpty())
-	{
-		return "";
-	}
-	if(m_sFwdslashPath.IsEmpty())
-	{
-		SetFwdslashPath(m_sBackslashPath);
-	}
-	if(m_sUTF8FwdslashPath.IsEmpty())
-	{
-		SetUTF8FwdslashPath(m_sFwdslashPath);
-	}
-	if (svn_path_is_url(m_sUTF8FwdslashPath))
-	{
-		m_sUTF8FwdslashPathEscaped = CPathUtils::PathEscape(m_sUTF8FwdslashPath);
-		m_sUTF8FwdslashPathEscaped.Replace("file:////", "file:///\\");
-		m_sUTF8FwdslashPathEscaped = svn_path_canonicalize(m_sUTF8FwdslashPathEscaped, pool);
-		return m_sUTF8FwdslashPathEscaped;
-	}
-	m_sUTF8FwdslashPath = svn_path_canonicalize(m_sUTF8FwdslashPath, pool);
-
-	return m_sUTF8FwdslashPath;
-}
-#endif
 
 const CString& CTGitPath::GetUIPathString() const
 {
@@ -1669,23 +1632,6 @@ bool CTGitPathList::IsEqual(const CTGitPathList& list)
 	return true;
 }
 
-//////////////////////////////////////////////////////////////////////////
-#if 0
-apr_array_header_t * CTGitPathList::MakePathArray (apr_pool_t *pool) const
-{
-	apr_array_header_t *targets = apr_array_make (pool, GetCount(), sizeof(const char *));
-
-	for (int nItem = 0; nItem < GetCount(); ++nItem)
-	{
-		const char * target = m_paths[nItem].GetGitApiPath(pool);
-		(*((const char **) apr_array_push (targets))) = target;
-	}
-
-	return targets;
-}
-#endif
-//////////////////////////////////////////////////////////////////////////
-
 #if 0
 #if defined(_DEBUG)
 // Some test cases for these classes
@@ -1694,8 +1640,6 @@ static class CTGitPathTests
 public:
 	CTGitPathTests()
 	{
-		apr_initialize();
-		pool = svn_pool_create(NULL);
 		GetDirectoryTest();
 		AdminDirTest();
 		SortTest();
@@ -1711,11 +1655,9 @@ public:
 		ValidPathAndUrlTest();
 		ListLoadingTest();
 #endif
-		apr_terminate();
 	}
 
 private:
-//	apr_pool_t * pool;
 	void GetDirectoryTest()
 	{
 		// Bit tricky, this test, because we need to know something about the file

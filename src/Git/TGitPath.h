@@ -98,11 +98,7 @@ public:
 	const CString& GetGitPathString() const;
 
 	const CString& GetGitOldPathString() const;
-	/**
-	 * Returns the path completely prepared to be fed the the Git APIs
-	 * It will be in UTF8, with URLs escaped, if necessary
-	 */
-//	const char* GetGitApiPath(apr_pool_t *pool) const;
+
 	/**
 	 * Returns the path for showing in an UI.
 	 *
@@ -399,9 +395,6 @@ public:
 
 	/** Checks if two CTGitPathLists are the same */
 	bool IsEqual(const CTGitPathList& list);
-
-	/** Convert into the Git API parameter format */
-//	apr_array_header_t * MakePathArray (apr_pool_t *pool) const;
 
 	typedef std::vector<CTGitPath> PathVector;
 	PathVector m_paths;
