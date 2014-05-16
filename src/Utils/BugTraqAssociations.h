@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009,2013 - TortoiseGit
+// Copyright (C) 2009,2014 - TortoiseGit
 // Copyright (C) 2008,2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -79,7 +79,7 @@ public:
 	static CString LookupProviderName(const CLSID &provider_clsid);
 
 private:
-	bool FindProviderForPath(CTGitPath path, CBugTraqAssociation *assoc) const;
+	bool FindProviderForPath(const CTGitPath& path, CBugTraqAssociation *assoc) const;
 
 	struct FindByPathPred
 	{

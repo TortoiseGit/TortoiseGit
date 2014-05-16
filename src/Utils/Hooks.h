@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2013 - TortoiseGit
+// Copyright (C) 2011-2014 - TortoiseGit
 // Copyright (C) 2006-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -169,7 +169,7 @@ public:
 	 * values.
 	 */
 	bool				PostCommit(const CTGitPathList& pathList, git_depth_t depth,
-									GitRev rev, const CString& message,
+									const GitRev& rev, const CString& message,
 									DWORD& exitcode, CString& error);
 
 	bool	PrePush(const CTGitPathList& pathList,DWORD& exitcode, CString& error);

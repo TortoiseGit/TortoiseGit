@@ -128,7 +128,7 @@ bool CBugTraqAssociations::FindProvider(const CString &path, CBugTraqAssociation
 	return false;
 }
 
-bool CBugTraqAssociations::FindProviderForPath(CTGitPath path, CBugTraqAssociation *assoc) const
+bool CBugTraqAssociations::FindProviderForPath(const CTGitPath& path, CBugTraqAssociation *assoc) const
 {
 		inner_t::const_iterator it = std::find_if(m_inner.begin(), m_inner.end(), FindByPathPred(path));
 		if (it != m_inner.end())

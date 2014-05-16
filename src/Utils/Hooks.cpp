@@ -267,7 +267,7 @@ bool CHooks::PreCommit(const CTGitPathList& pathList, git_depth_t depth, const C
 	return true;
 }
 
-bool CHooks::PostCommit(const CTGitPathList& pathList, git_depth_t depth, GitRev rev, const CString& message, DWORD& exitcode, CString& error)
+bool CHooks::PostCommit(const CTGitPathList& pathList, git_depth_t depth, const GitRev& rev, const CString& message, DWORD& exitcode, CString& error)
 {
 	hookiterator it = FindItem(post_commit_hook, pathList);
 	if (it == end())
