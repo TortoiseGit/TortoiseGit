@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2007-2008,2011 - TortoiseSVN
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -21,9 +21,15 @@
 #include "LogCommand.h"
 #include "StringUtils.h"
 #include "LogDlg.h"
+#include "MessageBox.h"
 
 bool LogCommand::Execute()
 {
+	if (!GitAdminDir().HasAdminDir(g_Git.m_CurrentDir) && !g_GitAdminDir.IsBareRepo(g_Git.m_CurrentDir)) {
+		CMessageBox::Show(hwndExplorer, IDS_NOWORKINGCOPY, IDS_APPNAME, MB_ICONERROR);
+		return false;
+	}
+
 	//the log command line looks like this:
 	//command:log path:<path_to_file_or_directory_to_show_the_log_messages> [startrev:<startrevision>] [endrev:<endrevision>]
 

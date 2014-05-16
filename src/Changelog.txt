@@ -17,6 +17,7 @@ Released: Unreleased
  * Fixed issue #2141: libgit2 still added the file with mixing EOL, while autocrlf and safecrlf are true
  * Fixed issue #2183: Explorer Property Page "Last modified" stays empty
  * Fixed issue #2180: When opening revision graph, scroll to current branch
+ * Fixed issue #2104: Opening log for non-git folder results in multiple error messages
 
 = Release 1.8.8.0 =
 Released: 2014-04-01
