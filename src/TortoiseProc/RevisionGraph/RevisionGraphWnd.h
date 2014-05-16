@@ -207,6 +207,7 @@ protected:
 
 	CRevisionGraphDlg *m_parent;
 
+	ogdf::node		m_HeadNode;
 	ogdf::node		m_SelectedEntry1;
 	ogdf::node		m_SelectedEntry2;
 	LOGFONT			m_lfBaseFont;

@@ -222,6 +222,10 @@ bool CRevisionGraphWnd::FetchRevisionData
 	dev.graphics = Graphics::FromHDC(dev.pDC->m_hDC);
 	dev.graphics->SetPageUnit (UnitPixel);
 
+	CGitHash head;
+	g_Git.GetHash(head, _T("HEAD"));
+	m_HeadNode = nullptr;
+
 	for (size_t i = 0; i < m_logEntries.size(); ++i)
 	{
 		node nd;
@@ -230,6 +234,8 @@ bool CRevisionGraphWnd::FetchRevisionData
 		m_GraphAttr.width(nd)=100;
 		m_GraphAttr.height(nd)=20;
 		SetNodeRect(dev, &nd, m_logEntries[i], 0);
+		if (m_logEntries[i] == head)
+			m_HeadNode = nd;
 	}
 
 	for (size_t i = 0; i < m_logEntries.size(); ++i)

@@ -86,6 +86,7 @@ CRevisionGraphWnd::CRevisionGraphWnd()
 	: CWnd()
 	, m_SelectedEntry1(NULL)
 	, m_SelectedEntry2(NULL)
+	, m_HeadNode(nullptr)
 	, m_pDlgTip(NULL)
 	, m_nFontSize(12)
 	, m_bTweakTrunkColors(true)
@@ -1739,11 +1740,21 @@ LRESULT CRevisionGraphWnd::OnWorkerThreadDone(WPARAM, LPARAM)
 	InitView();
 	BuildPreview();
 
-	SCROLLINFO sinfo = {0};
-	sinfo.cbSize = sizeof(SCROLLINFO);
-	GetScrollInfo(SB_HORZ, &sinfo);
-	sinfo.nPos = sinfo.nMax;
-	SetScrollInfo(SB_HORZ, &sinfo);
+	if (m_HeadNode)
+	{
+		SCROLLINFO sinfo = { 0 };
+		sinfo.cbSize = sizeof(SCROLLINFO);
+		if (GetScrollInfo(SB_HORZ, &sinfo))
+		{
+			sinfo.nPos = (int)min(max(sinfo.nMin, m_GraphAttr.x(m_HeadNode) - m_GraphAttr.width(m_HeadNode) / 2), sinfo.nMax);
+			SetScrollInfo(SB_HORZ, &sinfo);
+		}
+		if (GetScrollInfo(SB_VERT, &sinfo))
+		{
+			sinfo.nPos = (int)min(max(sinfo.nMin, m_GraphAttr.y(m_HeadNode) - m_GraphAttr.height(m_HeadNode) / 2), sinfo.nMax);
+			SetScrollInfo(SB_VERT, &sinfo);
+		}
+	}
 
 	Invalidate(FALSE);
 
