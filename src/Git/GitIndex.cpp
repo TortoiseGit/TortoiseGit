@@ -1228,9 +1228,8 @@ int CGitIgnoreList::CheckIgnore(const CString &path, const CString &projectroot,
 			temp = temp.Left(x);
 	}
 
-	char * base = NULL;
 	int pos = patha.ReverseFind('/');
-	base = pos >= 0 ? patha.GetBuffer() + pos + 1 : patha.GetBuffer();
+	const char * base = (pos >= 0) ? ((const char*)patha + pos + 1) : patha;
 
 	int ret = -1;
 
@@ -1280,8 +1279,6 @@ int CGitIgnoreList::CheckIgnore(const CString &path, const CString &projectroot,
 
 		temp = temp.Left(i);
 	}
-
-	patha.ReleaseBuffer();
 
 	return ret;
 }
