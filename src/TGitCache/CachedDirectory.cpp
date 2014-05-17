@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005-2008 - TortoiseSVN
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -272,14 +272,15 @@ CStatusCacheEntry CCachedDirectory::GetStatusFromGit(const CTGitPath &path, CStr
 	pGitStatus->IsUnderVersionControl(sProjectRoot, subpaths, path.IsDirectory(), &isVersion);
 	if(!isVersion)
 	{	//untracked file
-		bool isIgnoreFileChanged = pGitStatus->HasIgnoreFilesChanged(sProjectRoot, subpaths);
+		bool isDir = path.IsDirectory();
+		bool isIgnoreFileChanged = pGitStatus->HasIgnoreFilesChanged(sProjectRoot, subpaths, isDir);
 
 		if( isIgnoreFileChanged)
 		{
-			pGitStatus->LoadIgnoreFile(sProjectRoot, subpaths);
+			pGitStatus->LoadIgnoreFile(sProjectRoot, subpaths, isDir);
 		}
 
-		if(path.IsDirectory())
+		if (isDir)
 		{
 
 			CCachedDirectory * dirEntry = CGitStatusCache::Instance().GetDirectoryCacheEntry(path,
@@ -294,7 +295,7 @@ CStatusCacheEntry CCachedDirectory::GetStatusFromGit(const CTGitPath &path, CStr
 				{/* status have not initialized*/
 					git_wc_status2_t status2;
 					bool isignore = false;
-					pGitStatus->IsIgnore(sProjectRoot,subpaths,&isignore);
+					pGitStatus->IsIgnore(sProjectRoot, subpaths, &isignore, isDir);
 					status2.text_status = status2.prop_status =
 						(isignore? git_wc_status_ignored:git_wc_status_unversioned);
 
@@ -319,7 +320,7 @@ CStatusCacheEntry CCachedDirectory::GetStatusFromGit(const CTGitPath &path, CStr
 			{
 				git_wc_status2_t status2;
 				bool isignore = false;
-				pGitStatus->IsIgnore(sProjectRoot,subpaths,&isignore);
+				pGitStatus->IsIgnore(sProjectRoot, subpaths, &isignore, isDir);
 				status2.text_status = status2.prop_status =
 					(isignore? git_wc_status_ignored:git_wc_status_unversioned);
 				AddEntry(path, &status2);

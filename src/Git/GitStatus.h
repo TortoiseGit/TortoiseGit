@@ -96,10 +96,10 @@ public:
 	static int GetDirStatus(const CString &gitdir, const CString &path, git_wc_status_kind * status, BOOL IsFull = false, BOOL IsRecursive = false, BOOL isIgnore = true, FILL_STATUS_CALLBACK callback = nullptr, void *pData = nullptr);
 	static int EnumDirStatus(const CString &gitdir, const CString &path, git_wc_status_kind * status, BOOL IsFull = false, BOOL IsRecursive = false, BOOL isIgnore = true, FILL_STATUS_CALLBACK callback = nullptr, void *pData = nullptr);
 	static int GetFileList(const CString &gitdir, const CString &path, std::vector<CGitFileName> &list);
-	static bool HasIgnoreFilesChanged(const CString &gitdir, const CString &subpaths);
-	static int LoadIgnoreFile(const CString &gitdir, const CString &subpaths);
+	static bool HasIgnoreFilesChanged(const CString &gitdir, const CString &subpaths, bool isDir);
+	static int LoadIgnoreFile(const CString &gitdir, const CString &subpaths, bool isDir);
 	static int IsUnderVersionControl(const CString &gitdir, const CString &path, bool isDir,bool *isVersion);
-	static int IsIgnore(const CString &gitdir, const CString &path, bool *isIgnore);
+	static int IsIgnore(const CString &gitdir, const CString &path, bool *isIgnore, bool isDir);
 	static __int64 GetIndexFileTime(const CString &gitdir);
 	static bool IsExistIndexLockFile(const CString &gitdir);
 	static bool ReleasePath(const CString &gitdir);

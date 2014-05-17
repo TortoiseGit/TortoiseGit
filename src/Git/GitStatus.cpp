@@ -389,11 +389,11 @@ int GitStatus::GetFileStatus(const CString &gitdir, const CString &pathParam, gi
 					return 0;
 				}
 
-				if( g_IgnoreList.CheckIgnoreChanged(gitdir,path))
+				if (g_IgnoreList.CheckIgnoreChanged(gitdir, path, false))
 				{
-					g_IgnoreList.LoadAllIgnoreFile(gitdir,path);
+					g_IgnoreList.LoadAllIgnoreFile(gitdir, path, false);
 				}
-				if( g_IgnoreList.IsIgnore(path, gitdir) )
+				if (g_IgnoreList.IsIgnore(path, gitdir, false))
 				{
 					st = git_wc_status_ignored;
 				}
@@ -454,14 +454,14 @@ int GitStatus::GetFileStatus(const CString &gitdir, const CString &pathParam, gi
 
 }
 
-bool GitStatus::HasIgnoreFilesChanged(const CString &gitdir, const CString &subpaths)
+bool GitStatus::HasIgnoreFilesChanged(const CString &gitdir, const CString &subpaths, bool isDir)
 {
-	return g_IgnoreList.CheckIgnoreChanged(gitdir, subpaths);
+	return g_IgnoreList.CheckIgnoreChanged(gitdir, subpaths, isDir);
 }
 
-int GitStatus::LoadIgnoreFile(const CString &gitdir,const CString &subpaths)
+int GitStatus::LoadIgnoreFile(const CString &gitdir, const CString &subpaths, bool isDir)
 {
-	return g_IgnoreList.LoadAllIgnoreFile(gitdir,subpaths);
+	return g_IgnoreList.LoadAllIgnoreFile(gitdir, subpaths, isDir);
 }
 int GitStatus::IsUnderVersionControl(const CString &gitdir, const CString &path, bool isDir,bool *isVersion)
 {
@@ -481,12 +481,12 @@ __int64 GitStatus::GetIndexFileTime(const CString &gitdir)
 	return ptr->m_LastModifyTime;
 }
 
-int GitStatus::IsIgnore(const CString &gitdir, const CString &path, bool *isIgnore)
+int GitStatus::IsIgnore(const CString &gitdir, const CString &path, bool *isIgnore, bool isDir)
 {
-	if(::g_IgnoreList.CheckIgnoreChanged(gitdir,path))
-		g_IgnoreList.LoadAllIgnoreFile(gitdir,path);
+	if (g_IgnoreList.CheckIgnoreChanged(gitdir, path, isDir))
+		g_IgnoreList.LoadAllIgnoreFile(gitdir, path, isDir);
 
-	 *isIgnore = g_IgnoreList.IsIgnore(path,gitdir);
+	*isIgnore = g_IgnoreList.IsIgnore(path, gitdir, isDir);
 
 	return 0;
 }
@@ -583,10 +583,10 @@ int GitStatus::EnumDirStatus(const CString &gitdir, const CString &subpath, git_
 
 					if (IsIgnore)
 					{
-						if (g_IgnoreList.CheckIgnoreChanged(gitdir, casepath))
-							g_IgnoreList.LoadAllIgnoreFile(gitdir, casepath);
+						if (g_IgnoreList.CheckIgnoreChanged(gitdir, casepath, bIsDir))
+							g_IgnoreList.LoadAllIgnoreFile(gitdir, casepath, bIsDir);
 
-						if (g_IgnoreList.IsIgnore(casepath, gitdir))
+						if (g_IgnoreList.IsIgnore(casepath, gitdir, bIsDir))
 							*status = git_wc_status_ignored;
 						else if (bIsDir)
 							continue;
@@ -647,10 +647,10 @@ int GitStatus::EnumDirStatus(const CString &gitdir, const CString &subpath, git_
 						continue;
 					}
 
-					if(::g_IgnoreList.CheckIgnoreChanged(gitdir,casepath))
-						g_IgnoreList.LoadAllIgnoreFile(gitdir,casepath);
+					if (g_IgnoreList.CheckIgnoreChanged(gitdir, casepath, bIsDir))
+						g_IgnoreList.LoadAllIgnoreFile(gitdir, casepath, bIsDir);
 
-					if(g_IgnoreList.IsIgnore(casepath,gitdir))
+					if (g_IgnoreList.IsIgnore(casepath, gitdir, bIsDir))
 						*status = git_wc_status_ignored;
 					else
 						*status = git_wc_status_unversioned;
@@ -812,10 +812,10 @@ int GitStatus::GetDirStatus(const CString &gitdir, const CString &subpath, git_w
 				}
 				//Check ignore always.
 				{
-					if(::g_IgnoreList.CheckIgnoreChanged(gitdir,path))
-						g_IgnoreList.LoadAllIgnoreFile(gitdir,path);
+					if (g_IgnoreList.CheckIgnoreChanged(gitdir, path, true))
+						g_IgnoreList.LoadAllIgnoreFile(gitdir, path, true);
 
-					if(g_IgnoreList.IsIgnore(path,gitdir))
+					if (g_IgnoreList.IsIgnore(path, gitdir, true))
 						*status = git_wc_status_ignored;
 					else
 						*status = git_wc_status_unversioned;
@@ -1000,6 +1000,15 @@ int GitStatus::GetDirStatus(const CString &gitdir, const CString &subpath, git_w
 bool GitStatus::IsExistIndexLockFile(const CString &gitdir)
 {
 	CString sDirName= gitdir;
+
+	if (!PathIsDirectory(sDirName))
+	{
+		int x = sDirName.ReverseFind(_T('\\'));
+		if (x < 2)
+			return false;
+
+		sDirName = sDirName.Left(x);
+	}
 
 	for (;;)
 	{

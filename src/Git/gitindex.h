@@ -270,7 +270,7 @@ private:
 	bool CheckFileChanged(const CString &path);
 	int FetchIgnoreFile(const CString &gitdir, const CString &gitignore, bool isGlobal);
 
-	int  CheckIgnore(const CString &path,const CString &root);
+	int  CheckIgnore(const CString &path, const CString &root, bool isDir);
 	int CheckFileAgainstIgnoreList(const CString &ignorefile, const CStringA &patha, const char * base, int &type);
 
 	// core.excludesfile stuff
@@ -293,9 +293,9 @@ public:
 
 	std::map<CString, CGitIgnoreItem> m_Map;
 
-	bool CheckIgnoreChanged(const CString &gitdir,const CString &path);
-	int  LoadAllIgnoreFile(const CString &gitdir,const CString &path);
-	bool IsIgnore(const CString &path,const CString &root);
+	bool CheckIgnoreChanged(const CString &gitdir,const CString &path, bool isDir);
+	int  LoadAllIgnoreFile(const CString &gitdir, const CString &path, bool isDir);
+	bool IsIgnore(const CString &path, const CString &root, bool isDir);
 };
 
 template<class T>

@@ -927,7 +927,7 @@ bool CGitIgnoreList::CheckFileChanged(const CString &path)
 	return true;
 }
 
-bool CGitIgnoreList::CheckIgnoreChanged(const CString &gitdir,const CString &path)
+bool CGitIgnoreList::CheckIgnoreChanged(const CString &gitdir, const CString &path, bool isDir)
 {
 	CString temp;
 	temp = gitdir;
@@ -935,6 +935,13 @@ bool CGitIgnoreList::CheckIgnoreChanged(const CString &gitdir,const CString &pat
 	temp += path;
 
 	temp.Replace(_T('/'), _T('\\'));
+
+	if (!isDir)
+	{
+		int x = temp.ReverseFind(_T('\\'));
+		if (x >= 2)
+			temp = temp.Left(x);
+	}
 
 	while(!temp.IsEmpty())
 	{
@@ -1002,7 +1009,7 @@ int CGitIgnoreList::FetchIgnoreFile(const CString &gitdir, const CString &gitign
 	return 0;
 }
 
-int CGitIgnoreList::LoadAllIgnoreFile(const CString &gitdir,const CString &path)
+int CGitIgnoreList::LoadAllIgnoreFile(const CString &gitdir, const CString &path, bool isDir)
 {
 	CString temp;
 
@@ -1011,6 +1018,13 @@ int CGitIgnoreList::LoadAllIgnoreFile(const CString &gitdir,const CString &path)
 	temp += path;
 
 	temp.Replace(_T('/'), _T('\\'));
+
+	if (!isDir)
+	{
+		int x = temp.ReverseFind(_T('\\'));
+		if (x >= 2)
+			temp = temp.Left(x);
+	}
 
 	while (!temp.IsEmpty())
 	{
@@ -1150,7 +1164,7 @@ const CString CGitIgnoreList::GetWindowsHome()
 	static CString sWindowsHome(g_Git.GetHomeDirectory());
 	return sWindowsHome;
 }
-bool CGitIgnoreList::IsIgnore(const CString &path,const CString &projectroot)
+bool CGitIgnoreList::IsIgnore(const CString &path, const CString &projectroot, bool isDir)
 {
 	CString str=path;
 
@@ -1161,7 +1175,7 @@ bool CGitIgnoreList::IsIgnore(const CString &path,const CString &projectroot)
 			str = str.Left(str.GetLength() - 1);
 
 	int ret;
-	ret = CheckIgnore(str, projectroot);
+	ret = CheckIgnore(str, projectroot, isDir);
 	while (ret < 0)
 	{
 		int start = str.ReverseFind(_T('/'));
@@ -1169,7 +1183,7 @@ bool CGitIgnoreList::IsIgnore(const CString &path,const CString &projectroot)
 			return (ret == 1);
 
 		str = str.Left(start);
-		ret = CheckIgnore(str, projectroot);
+		ret = CheckIgnore(str, projectroot, isDir);
 	}
 
 	return (ret == 1);
@@ -1186,21 +1200,16 @@ int CGitIgnoreList::CheckFileAgainstIgnoreList(const CString &ignorefile, const 
 	}
 	return -1;
 }
-int CGitIgnoreList::CheckIgnore(const CString &path,const CString &projectroot)
+int CGitIgnoreList::CheckIgnore(const CString &path, const CString &projectroot, bool isDir)
 {
-	__int64 time = 0;
-	bool dir = 0;
 	CString temp = projectroot + _T("\\") + path;
 	temp.Replace(_T('/'), _T('\\'));
 
 	CStringA patha = CUnicodeUtils::GetMulti(path, CP_UTF8);
 	patha.Replace('\\', '/');
 
-	if(g_Git.GetFileModifyTime(temp, &time, &dir))
-		return -1;
-
 	int type = 0;
-	if (dir)
+	if (isDir)
 	{
 		type = DT_DIR;
 
@@ -1211,7 +1220,13 @@ int CGitIgnoreList::CheckIgnore(const CString &path,const CString &projectroot)
 			temp = temp.Left(i);
 	}
 	else
+	{
 		type = DT_REG;
+
+		int x = temp.ReverseFind(_T('\\'));
+		if (x >= 2)
+			temp = temp.Left(x);
+	}
 
 	char * base = NULL;
 	int pos = patha.ReverseFind('/');
