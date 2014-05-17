@@ -853,7 +853,7 @@ int CRebaseDlg::CheckRebaseCondition()
 
 void CRebaseDlg::CheckRestoreStash()
 {
-	if (m_bStashed && CMessageBox::Show(NULL, IDS_DCOMMIT_STASH_POP, IDS_APPNAME, 1, IDI_QUESTION, IDS_STASHBUTTON, IDS_ABORTBUTTON) == 1)
+	if (m_bStashed && CMessageBox::Show(nullptr, IDS_DCOMMIT_STASH_POP, IDS_APPNAME, MB_YESNO | MB_ICONQUESTION) == IDYES)
 		CAppUtils::StashPop();
 	m_bStashed = false;
 }
