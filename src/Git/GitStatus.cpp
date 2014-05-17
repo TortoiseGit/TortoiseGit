@@ -567,7 +567,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir, const CString &subpath, git_
 					CString casepath = path + it->m_CaseFileName;
 
 					bool bIsDir = false;
-					if (casepath.GetLength() > 0 && casepath[casepath.GetLength() - 1] == _T('/'))
+					if (it->m_FileName.GetLength() > 0 && it->m_FileName[it->m_FileName.GetLength() - 1] == _T('/'))
 						bIsDir = true;
 
 					if (bIsDir) /*check if it is directory*/
