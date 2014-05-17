@@ -798,9 +798,9 @@ int CTGitPath::GetAdminDirMask() const
 					CString relativePath = GetWinPathString().Mid(topProjectDir.GetLength());
 					relativePath.Replace(_T("\\"), _T("/"));
 					relativePath.Trim(_T("/"));
-					const char * out;
-					CStringA key(CUnicodeUtils::GetUTF8(_T("submodule.") + relativePath + _T(".path")));
-					if (!git_config_get_string(&out, config, key))
+					CStringA submodulePath = CUnicodeUtils::GetUTF8(relativePath);
+					if (git_config_foreach_match(config, "submodule\\..*\\.path", 
+						[](const git_config_entry *entry, void *data) { return entry->value == *(CStringA *)data ? GIT_EUSER : 0; }, &submodulePath) == GIT_EUSER)
 						status |= ITEMIS_SUBMODULE;
 				}
 			}
