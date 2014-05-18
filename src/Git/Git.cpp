@@ -1213,7 +1213,7 @@ int CGit::GetCommitDiffList(const CString &rev1, const CString &rev2, CTGitPathL
 		if(rev1 == GIT_REV_ZERO)
 			cmd.Format(_T("git.exe diff -r --raw -C -M --numstat -z %s %s --"), ignore, rev2);
 		else
-			cmd.Format(_T("git.exe diff -r -R --raw -C -M --numstat -z %s --"), ignore, rev1);
+			cmd.Format(_T("git.exe diff -r -R --raw -C -M --numstat -z %s %s --"), ignore, rev1);
 	}
 	else
 	{
