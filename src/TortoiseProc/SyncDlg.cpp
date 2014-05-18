@@ -796,8 +796,8 @@ BOOL CSyncDlg::OnInitDialog()
 	m_ctrlTabCtrl.InsertTab(&m_InChangeFileList, CString(MAKEINTRESOURCE(IDS_PROC_SYNC_INCHANGELIST)), -1);
 
 	m_InChangeFileList.Init(GITSLC_COLEXT | GITSLC_COLSTATUS |GITSLC_COLADD|GITSLC_COLDEL , _T("InSyncDlg"),
-							(CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDGITLC_COMPARETWO)|
-							CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDGITLC_GNUDIFF2)), false, true, GITSLC_COLEXT | GITSLC_COLSTATUS | GITSLC_COLADD| GITSLC_COLDEL);
+							(CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDGITLC_COMPARETWOREVISIONS) |
+							CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDGITLC_GNUDIFF2REVISIONS)), false, true, GITSLC_COLEXT | GITSLC_COLSTATUS | GITSLC_COLADD| GITSLC_COLDEL);
 
 
 	//---------- Create Conflict List Ctrl -----------------
@@ -811,8 +811,8 @@ BOOL CSyncDlg::OnInitDialog()
 	m_ctrlTabCtrl.InsertTab(&m_ConflictFileList, CString(MAKEINTRESOURCE(IDS_PROC_SYNC_CONFLICTS)), -1);
 
 	m_ConflictFileList.Init(GITSLC_COLEXT | GITSLC_COLSTATUS |GITSLC_COLADD|GITSLC_COLDEL , _T("ConflictSyncDlg"),
-							(CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDGITLC_COMPARETWO)|
-							CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDGITLC_GNUDIFF2)|
+							(CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDGITLC_COMPARETWOREVISIONS) |
+							CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDGITLC_GNUDIFF2REVISIONS) |
 							GITSLC_POPCONFLICT|GITSLC_POPRESOLVE),false);
 
 
@@ -844,8 +844,8 @@ BOOL CSyncDlg::OnInitDialog()
 	m_ctrlTabCtrl.InsertTab(&m_OutChangeFileList, CString(MAKEINTRESOURCE(IDS_PROC_SYNC_OUTCHANGELIST)), -1);
 
 	m_OutChangeFileList.Init(GITSLC_COLEXT | GITSLC_COLSTATUS | GITSLC_COLADD | GITSLC_COLDEL, _T("OutSyncDlg"),
-							(CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDGITLC_COMPARETWO)|
-							CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDGITLC_GNUDIFF2)), false, true, GITSLC_COLEXT | GITSLC_COLSTATUS | GITSLC_COLADD| GITSLC_COLDEL);
+							(CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDGITLC_COMPARETWOREVISIONS) |
+							CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDGITLC_GNUDIFF2REVISIONS)), false, true, GITSLC_COLEXT | GITSLC_COLSTATUS | GITSLC_COLADD | GITSLC_COLDEL);
 
 	if (!m_GitProgressList.Create(dwStyle | LVS_OWNERDATA, rectDummy, &m_ctrlTabCtrl, IDC_CMD_GIT_PROG))
 	{

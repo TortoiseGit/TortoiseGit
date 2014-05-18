@@ -1,8 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
-// Copyright (C) 2010-2013 Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -117,7 +116,7 @@ GITSLC_SHOWINCOMPLETE|GITSLC_SHOWEXTERNAL|GITSLC_SHOWINEXTERNALS)
 #define GITSLC_POPCHANGELISTS			CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDGITLC_CHECKGROUP)
 #define GITSLC_POPBLAME					CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDGITLC_BLAME)
 #define GITSLC_POPSAVEAS				CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDGITLC_SAVEAS)
-#define GITSLC_POPCOMPARETWOFILES		CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDGITLC_COMPARETWO)
+#define GITSLC_POPCOMPARETWOFILES		CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDGITLC_COMPARETWOFILES)
 #define GITSLC_POPRESTORE				CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDGITLC_POPRESTORE)
 #define GITSLC_POPASSUMEVALID			CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDGITLC_ASSUMEVALID)
 #define GITSLC_POPSKIPWORKTREE			CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDGITLC_SKIPWORKTREE)
@@ -467,10 +466,12 @@ public:
 	enum
 	{
 		IDGITLC_REVERT = 1,
+		/** Compare with base version. when current version is zero (i.e. working tree changes), compare working tree and HEAD */
 		IDGITLC_COMPARE,
 		IDGITLC_OPEN,
 		IDGITLC_DELETE,
 		IDGITLC_IGNORE,
+		/** Compare with base version and generate unified diff. when current version is zero (i.e. working tree changes), compare working tree and HEAD  */
 		IDGITLC_GNUDIFF1		 ,
 		IDGITLC_LOG              ,
 		IDGITLC_LOGOLDNAME,
@@ -493,6 +494,7 @@ public:
 		IDGITLC_CREATEIGNORECS	,
 		IDGITLC_CHECKGROUP		,
 		IDGITLC_UNCHECKGROUP	,
+		/** Compare current version and working tree */
 		IDGITLC_COMPAREWC		,
 		IDGITLC_BLAME			,
 		IDGITLC_SAVEAS			,
@@ -500,8 +502,11 @@ public:
 		IDGITLC_REVERTTOPARENT	,
 		IDGITLC_VIEWREV			,
 		IDGITLC_FINDENTRY       ,
-		IDGITLC_COMPARETWO		,
-		IDGITLC_GNUDIFF2		,
+		/** used in sync dlg, compare in/out file changes; in combination with m_Rev1 and m_Rev2 */
+		IDGITLC_COMPARETWOREVISIONS,
+		/** used in sync dlg, compare in/out file changes; in combination with m_Rev1 and m_Rev2 */
+		IDGITLC_GNUDIFF2REVISIONS,
+		/** Compare two selected files */
 		IDGITLC_COMPARETWOFILES	,
 		IDGITLC_POPRESTORE		,
 		IDGITLC_CREATERESTORE	,

@@ -2,7 +2,6 @@
 
 // Copyright (C) 2008-2014 - TortoiseGit
 // Copyright (C) 2003-2008, 2013 - TortoiseSVN
-// Copyright (C) 2010-2012 Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -1560,14 +1559,14 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 			{
 				if(GetSelectedCount() == 1)
 				{
-					if (m_dwContextMenus & this->GetContextMenuBit(IDGITLC_COMPARETWO))
+					if (m_dwContextMenus & this->GetContextMenuBit(IDGITLC_COMPARETWOREVISIONS))
 					{
-						popup.AppendMenuIcon(IDGITLC_COMPARETWO, IDS_LOG_POPUP_COMPARETWO, IDI_DIFF);
-						popup.SetDefaultItem(IDGITLC_COMPARETWO, FALSE);
+						popup.AppendMenuIcon(IDGITLC_COMPARETWOREVISIONS, IDS_LOG_POPUP_COMPARETWO, IDI_DIFF);
+						popup.SetDefaultItem(IDGITLC_COMPARETWOREVISIONS, FALSE);
 					}
-					if (m_dwContextMenus & this->GetContextMenuBit(IDGITLC_GNUDIFF2))
+					if (m_dwContextMenus & this->GetContextMenuBit(IDGITLC_GNUDIFF2REVISIONS))
 					{
-						popup.AppendMenuIcon(IDGITLC_GNUDIFF2, IDS_LOG_POPUP_GNUDIFF, IDI_DIFF);
+						popup.AppendMenuIcon(IDGITLC_GNUDIFF2REVISIONS, IDS_LOG_POPUP_GNUDIFF, IDI_DIFF);
 					}
 				}
 			}
@@ -1933,7 +1932,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				}
 				break;
 
-			case IDGITLC_COMPARETWO:
+			case IDGITLC_COMPARETWOREVISIONS:
 				{
 					POSITION pos = GetFirstSelectedItemPosition();
 					while ( pos )
@@ -1997,7 +1996,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				}
 				break;
 
-			case IDGITLC_GNUDIFF2:
+			case IDGITLC_GNUDIFF2REVISIONS:
 				{
 					CAppUtils::StartShowUnifiedDiff(m_hWnd, *filepath, m_Rev2, *filepath, m_Rev1);
 				}
