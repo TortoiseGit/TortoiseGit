@@ -8016,7 +8016,7 @@ msgid "Set au&thor"
 msgstr ""
 
 #. Resource IDs: (1557)
-msgid "Set commit &date"
+msgid "Set author &date"
 msgstr ""
 
 #. Resource IDs: (86)
