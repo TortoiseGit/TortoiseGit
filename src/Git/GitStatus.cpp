@@ -570,17 +570,6 @@ int GitStatus::EnumDirStatus(const CString &gitdir, const CString &subpath, git_
 					if (it->m_FileName.GetLength() > 0 && it->m_FileName[it->m_FileName.GetLength() - 1] == _T('/'))
 						bIsDir = true;
 
-					if (bIsDir) /*check if it is directory*/
-					{
-						if (::PathFileExists(gitdir + casepath + _T("\\.git")))
-						{ /* That is git submodule */
-							*status = git_wc_status_unknown;
-							if (callback)
-								callback(gitdir + _T("/") + casepath, *status, bIsDir, pData, false, false);
-							continue;
-						}
-					}
-
 					if (IsIgnore)
 					{
 						if (g_IgnoreList.CheckIgnoreChanged(gitdir, casepath, bIsDir))
@@ -627,17 +616,6 @@ int GitStatus::EnumDirStatus(const CString &gitdir, const CString &subpath, git_
 				{
 					if (onepath.IsEmpty())
 						continue;
-
-					if(bIsDir) /*check if it is directory*/
-					{
-						if(::PathFileExists(gitdir+onepath+_T("/.git")))
-						{ /* That is git submodule */
-							*status = git_wc_status_unknown;
-							if(callback)
-								callback(gitdir + _T("/") + casepath, *status, bIsDir, pData, false, false);
-							continue;
-						}
-					}
 
 					if(!IsIgnore)
 					{
