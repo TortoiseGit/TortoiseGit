@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2009,2011,2013 - TortoiseGit
+// Copyright (C) 2008-2009,2011,2013-2014 - TortoiseGit
 // Copyright (C) 2007 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -36,6 +36,9 @@ public:
 	 * Executes the command.
 	 */
 	virtual bool			Execute() = 0;
+
+	// allow sub-classes to execute code during destruction
+	virtual ~Command() {};
 
 	void					SetParser(const CCmdLineParser& p) {parser = p;}
 	void					SetPaths(const CTGitPathList& plist, const CTGitPath &path)
