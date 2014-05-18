@@ -339,9 +339,7 @@ void CCloneDlg::OnCbnEditchangeUrlcombo()
 	url.Replace(_T('\\'),_T('/'));
 
 	// add compatibility for Google Code git urls
-	if (url.GetLength() > 0 && url[url.GetLength()-1] == _T('/')) {
-		url = url.Left(url.GetLength() - 1);
-	}
+	url.TrimRight(L"/");
 
 	int start=url.ReverseFind(_T('/'));
 	if(start<0)
@@ -372,28 +370,12 @@ void CCloneDlg::OnCbnEditchangeUrlcombo()
 
 	int dirstart=m_Directory.Find(old,start);
 	if(dirstart>=0 && (dirstart+old.GetLength() == m_Directory.GetLength()) )
-	{
 		m_Directory=m_Directory.Left(dirstart);
-		m_Directory+=m_ModuleName;
 
-	}
-	else
-	{
-		m_Directory.TrimRight(L"\\/");
-		m_Directory += _T('\\');
-		m_Directory += m_ModuleName;
-	}
+	m_Directory.TrimRight(L"\\/");
+	m_Directory += _T('\\');
+	m_Directory += m_ModuleName;
 
-	if(m_Directory.GetLength()>0)
-	{
-		if( m_Directory[m_Directory.GetLength()-1] == _T('\\') ||
-			m_Directory[m_Directory.GetLength()-1] == _T('/')
-			)
-		{
-			m_Directory=m_Directory.Left(m_Directory.GetLength()-1);
-		}
-
-	}
 	this->UpdateData(FALSE);
 }
 
