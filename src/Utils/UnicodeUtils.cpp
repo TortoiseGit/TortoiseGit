@@ -39,7 +39,7 @@ int CUnicodeUtils::GetCPCode(const CString &codename)
 {
 	static CodeMap map[]=
 	{
-		{037, _T("IBM037")},// IBM EBCDIC US-Canada
+		{ 37, _T("IBM037")},// IBM EBCDIC US-Canada
 		{437, _T("IBM437")},// OEM United States
 		{500, _T("IBM500")},// IBM EBCDIC International
 		{708, _T("ASMO-708")},// Arabic (ASMO 708)
