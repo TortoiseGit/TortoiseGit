@@ -379,12 +379,8 @@ void CCloneDlg::OnCbnEditchangeUrlcombo()
 	}
 	else
 	{
-		if(m_Directory.GetLength()>0 &&
-			(m_Directory[m_Directory.GetLength()-1] != _T('\\') &&
-			m_Directory[m_Directory.GetLength()-1] != _T('/') ) )
-		{
-			m_Directory += _T('\\');
-		}
+		m_Directory.TrimRight(L"\\/");
+		m_Directory += _T('\\');
 		m_Directory += m_ModuleName;
 	}
 
@@ -410,12 +406,7 @@ void CCloneDlg::OnBnClickedCheckSvn()
 		CString str;
 		m_URLCombo.GetWindowText(str);
 
-		while(str.GetLength()>=1 &&
-			str[str.GetLength()-1] == _T('\\') &&
-			str[str.GetLength()-1] == _T('/'))
-		{
-			str=str.Left(str.GetLength()-1);
-		}
+		str.TrimRight(L"\\/");
 		if(str.GetLength()>=5 && (str.Right(5).MakeLower() == _T("trunk") ))
 		{
 			this->m_bSVNBranch=this->m_bSVNTags=this->m_bSVNTrunk = FALSE;
