@@ -20,6 +20,7 @@ Released: Unreleased
  * Fixed issue #2104: Opening log for non-git folder results in multiple error messages
  * Fixed issue #2192: Shell context menu not detecting submodule if submodule name differs from submodule path
  * Fixed issue #2187: Misshowed branch on many dialogs in the new version
+ * Fixed issue #2191: Skip-worktree or assume-valid flagged files are not always listed if subfolder is selected
 
 = Release 1.8.8.0 =
 Released: 2014-04-01
