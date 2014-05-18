@@ -1556,7 +1556,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					popup.AppendMenu(MF_SEPARATOR);
 			}
 
-			if( (!this->m_Rev1.IsEmpty()) || (!this->m_Rev1.IsEmpty()) )
+			if (!m_Rev1.IsEmpty() && !m_Rev2.IsEmpty())
 			{
 				if(GetSelectedCount() == 1)
 				{
@@ -2631,7 +2631,7 @@ void CGitStatusListCtrl::OnNMDblclk(NMHDR *pNMHDR, LRESULT *pResult)
 	}
 	else
 	{
-		if( (!m_Rev1.IsEmpty()) || (!m_Rev1.IsEmpty())) // m_Rev1 twice???
+		if (!m_Rev1.IsEmpty() && !m_Rev2.IsEmpty())
 			StartDiffTwo(pNMLV->iItem);
 		else
 			StartDiff(pNMLV->iItem);
@@ -3266,7 +3266,7 @@ void CGitStatusListCtrl::OnNMReturn(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 		}
 		else
 		{
-			if( (!m_Rev1.IsEmpty()) || (!m_Rev1.IsEmpty())) // m_Rev1 twice???
+			if (!m_Rev1.IsEmpty() && !m_Rev2.IsEmpty())
 				StartDiffTwo(index);
 			else
 				StartDiff(index);
