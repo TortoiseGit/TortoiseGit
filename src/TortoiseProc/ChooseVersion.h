@@ -222,6 +222,7 @@ protected:
 		if (m_bIsFirstTimeToSetFocus && m_pWin->GetDlgItem(IDC_COMBOBOXEX_BRANCH)->IsWindowEnabled())
 			m_pWin->GetDlgItem(IDC_COMBOBOXEX_BRANCH)->SetFocus();
 		m_bIsFirstTimeToSetFocus = false;
+		m_pWin->GetDlgItem(IDOK)->EnableWindow(TRUE);
 	}
 	void InitChooseVersion(bool setFocusToBranchComboBox = false, bool bReInit = false)
 	{
@@ -238,6 +239,8 @@ protected:
 			m_pendingRefName = m_initialRefName;
 			m_bNotFullName = true;
 		}
+
+		m_pWin->GetDlgItem(IDOK)->EnableWindow(FALSE);
 
 		InterlockedExchange(&m_bLoadingThreadRunning, TRUE);
 
