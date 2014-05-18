@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -52,6 +52,7 @@ void CResetDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CResetDlg, CHorizontalResizableStandAloneDialog)
 	CHOOSE_VERSION_EVENT
 	ON_BN_CLICKED(IDC_SHOW_MODIFIED_FILES, &CResetDlg::OnBnClickedShowModifiedFiles)
+	ON_WM_DESTROY()
 END_MESSAGE_MAP()
 
 
@@ -133,4 +134,10 @@ void CResetDlg::OnBnClickedShowModifiedFiles()
 		dlg.m_strRev2 = _T("HEAD");
 
 		dlg.DoModal();
+}
+
+void CResetDlg::OnDestroy()
+{
+	WaitForFinishLoading();
+	__super::OnDestroy();
 }
