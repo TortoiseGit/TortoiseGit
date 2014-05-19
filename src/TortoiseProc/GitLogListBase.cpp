@@ -2838,7 +2838,11 @@ UINT CGitLogListBase::LogThread()
 			g_Git.m_critGitDllSec.Unlock();
 
 			if(ret)
+			{
+				if (ret != -2) // other than end of revision walking
+					MessageBox((_T("Could not get next commit.\nlibgit returns:") + std::to_wstring(ret)).c_str(), _T("TortoiseGit"), MB_ICONERROR);
 				break;
+			}
 
 			if (commit.m_ignore == 1)
 			{
