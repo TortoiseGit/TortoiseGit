@@ -127,7 +127,7 @@ public:
 
 	OgmlAttributeValue(int id) {
 		if(id >= 0 && id < Ogml::ATT_VAL_NUM) this->id = id;
-		else id = Ogml::av_any;
+		else this->id = Ogml::av_any;
 	}
 
 	// Destruction
@@ -140,7 +140,7 @@ public:
 	// Setter
 	void setId(int id) {
 		if(id >= 0 && id < Ogml::ATT_VAL_NUM) this->id = id;
-		else id = Ogml::av_any;
+		else this->id = Ogml::av_any;
 	}
 
 
@@ -622,7 +622,7 @@ public:
 
 	OgmlTag(int id) : id(Ogml::t_none), ignoreContent(0) {
 		if(id >= 0 && id < Ogml::TAG_NUM) this->id = id;
-		else id = Ogml::a_none;
+		else this->id = Ogml::a_none;
 	}
 
 	//Destruction
@@ -635,7 +635,7 @@ public:
 	//Setter
 	void setId(int id){
 		if(id >= 0 && id < Ogml::TAG_NUM) this->id = id;
-		else id = Ogml::a_none;
+		else this->id = Ogml::a_none;
 	}
 
 
