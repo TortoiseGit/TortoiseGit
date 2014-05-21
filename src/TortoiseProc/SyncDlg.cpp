@@ -950,6 +950,7 @@ BOOL CSyncDlg::OnInitDialog()
 	EnableSaveRestore(_T("SyncDlg"));
 
 	m_ctrlURL.SetCaseSensitive(TRUE);
+	m_ctrlURL.SetURLHistory(true);
 	this->m_ctrlURL.LoadHistory(CString(_T("Software\\TortoiseGit\\History\\SyncURL\\"))+WorkingDir, _T("url"));
 
 	STRING_VECTOR list;
@@ -963,7 +964,6 @@ BOOL CSyncDlg::OnInitDialog()
 	}
 	m_ctrlURL.SetCurSel(0);
 	m_ctrlRemoteBranch.SetCurSel(0);
-	m_ctrlURL.SetURLHistory(true);
 
 	this->LoadBranchInfo();
 
