@@ -54,7 +54,7 @@ End If
 ' Compare files using fc.exe
 If bDiffers = False Then
     Set WshShell = WScript.CreateObject("WScript.Shell")
-    exitStatus = WshShell.Run("fc.exe /b """+sBaseDoc+""" """+sNewDoc+"""", 0, True)
+    exitStatus = WshShell.Run("fc.exe """+sBaseDoc+""" """+sNewDoc+"""", 0, True)
     If exitStatus = 1 Then
         bDiffers = True
         sMessage = sMessage + "File content differs!" + vbCrLf
