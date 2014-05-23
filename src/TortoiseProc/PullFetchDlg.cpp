@@ -228,7 +228,7 @@ void CPullFetchDlg::Refresh()
 	if(!g_Git.GetRemoteList(list))
 	{
 		if (!m_IsPull && list.size() > 1)
-			m_Remote.AddString(_T("- all - "));
+			m_Remote.AddString(CString(MAKEINTRESOURCE(IDS_PROC_PUSHFETCH_ALLREMOTES)));
 
 		for (unsigned int i = 0; i < list.size(); ++i)
 		{
@@ -245,7 +245,7 @@ void CPullFetchDlg::Refresh()
 void CPullFetchDlg::OnCbnSelchangeRemote()
 {
 	CString remote = m_Remote.GetString();
-	if (remote.IsEmpty() || remote == _T("- all -"))
+	if (remote.IsEmpty() || remote == CString(MAKEINTRESOURCE(IDS_PROC_PUSHFETCH_ALLREMOTES)))
 	{
 		GetDlgItem(IDC_STATIC_TAGOPT)->SetWindowText(_T(""));
 		GetDlgItem(IDC_STATIC_PRUNE)->SetWindowText(_T(""));
