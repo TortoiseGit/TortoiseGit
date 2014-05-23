@@ -223,19 +223,18 @@ void CPullFetchDlg::Refresh()
 		pullRemote = m_PreSelectRemote;
 
 	STRING_VECTOR list;
+	m_Remote.Reset();
 	int sel=0;
-	if (!m_IsPull)
-		list.push_back(_T("- all -"));
 	if(!g_Git.GetRemoteList(list))
 	{
-		if (!m_IsPull && list.size() <= 2)
-			list.erase(list.begin());
+		if (!m_IsPull && list.size() > 1)
+			m_Remote.AddString(CString(MAKEINTRESOURCE(IDS_PROC_PUSHFETCH_ALLREMOTES)));
 
 		for (unsigned int i = 0; i < list.size(); ++i)
 		{
 			m_Remote.AddString(list[i]);
 			if (!m_bAllRemotes && list[i] == pullRemote)
-				sel = i;
+				sel = i + (!m_IsPull && list.size() > 1 ? 1 : 0);
 		}
 	}
 	m_Remote.SetCurSel(sel);
@@ -246,7 +245,7 @@ void CPullFetchDlg::Refresh()
 void CPullFetchDlg::OnCbnSelchangeRemote()
 {
 	CString remote = m_Remote.GetString();
-	if (remote.IsEmpty() || remote == _T("- all -"))
+	if (remote.IsEmpty() || remote == CString(MAKEINTRESOURCE(IDS_PROC_PUSHFETCH_ALLREMOTES)))
 	{
 		GetDlgItem(IDC_STATIC_TAGOPT)->SetWindowText(_T(""));
 		GetDlgItem(IDC_STATIC_PRUNE)->SetWindowText(_T(""));
