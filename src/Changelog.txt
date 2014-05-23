@@ -22,6 +22,7 @@ Released: Unreleased
  * Fixed issue #2192: Shell context menu not detecting submodule if submodule name differs from submodule path
  * Fixed issue #2187: Misshowed branch on many dialogs in the new version
  * Fixed issue #2191: Skip-worktree or assume-valid flagged files are not always listed if subfolder is selected
+ * Fixed issue #2199: Fetch dialog does not delete remote in remote list after managing remotes
 
 = Release 1.8.8.0 =
 Released: 2014-04-01

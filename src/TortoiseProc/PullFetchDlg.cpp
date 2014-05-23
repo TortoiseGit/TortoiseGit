@@ -223,6 +223,7 @@ void CPullFetchDlg::Refresh()
 		pullRemote = m_PreSelectRemote;
 
 	STRING_VECTOR list;
+	m_Remote.Reset();
 	int sel=0;
 	if (!m_IsPull)
 		list.push_back(_T("- all -"));
