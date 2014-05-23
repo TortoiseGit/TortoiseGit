@@ -225,18 +225,16 @@ void CPullFetchDlg::Refresh()
 	STRING_VECTOR list;
 	m_Remote.Reset();
 	int sel=0;
-	if (!m_IsPull)
-		list.push_back(_T("- all -"));
 	if(!g_Git.GetRemoteList(list))
 	{
-		if (!m_IsPull && list.size() <= 2)
-			list.erase(list.begin());
+		if (!m_IsPull && list.size() > 1)
+			m_Remote.AddString(_T("- all - "));
 
 		for (unsigned int i = 0; i < list.size(); ++i)
 		{
 			m_Remote.AddString(list[i]);
 			if (!m_bAllRemotes && list[i] == pullRemote)
-				sel = i;
+				sel = i + (!m_IsPull && list.size() > 1 ? 1 : 0);
 		}
 	}
 	m_Remote.SetCurSel(sel);

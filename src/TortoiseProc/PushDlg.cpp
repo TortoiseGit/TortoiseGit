@@ -213,17 +213,15 @@ void CPushDlg::Refresh()
 	STRING_VECTOR list;
 	m_Remote.Reset();
 
-	list.push_back(CString(MAKEINTRESOURCE(IDS_PROC_PUSHFETCH_ALLREMOTES)));
 	if(!g_Git.GetRemoteList(list))
 	{
-		if (list.size() <= 2)
-			list.erase(list.begin());
-
+		if (list.size() > 1)
+			m_Remote.AddString(CString(MAKEINTRESOURCE(IDS_PROC_PUSHFETCH_ALLREMOTES)));
 		for (unsigned int i = 0; i < list.size(); ++i)
 		{
 			m_Remote.AddString(list[i]);
 			if(list[i] == remote)
-				sel = i;
+				sel = i + (list.size() > 1 ? 1 : 0);
 		}
 	}
 	// if the last selected remote was "- All -" and "- All -" is still in the list -> select it
