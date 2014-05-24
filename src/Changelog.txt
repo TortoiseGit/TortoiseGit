@@ -8,6 +8,7 @@ Released: Unreleased
  * Fixed issue #2179: Revision comparisons against HEAD should not generate temporary files (allow to compare to working tree)
  * Fixed issue #2168: Add to the "Clean up" dialog "Recursive" option for submodules
  * Fixed issue #2196: Log dialog file list group headers show parent SHA-1
+ * Fixed issue #2144: TortoiseGit should support configuring pushurl for remotes
 
 == Bug Fixes ==
  * Fixed issue #2158: TortoiseGit sometimes crashes when doing Sync > Pull

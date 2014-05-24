@@ -57,6 +57,7 @@ void CSettingGitRemote::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_LIST_REMOTE, m_ctrlRemoteList);
 	DDX_Text(pDX, IDC_EDIT_REMOTE, m_strRemote);
 	DDX_Text(pDX, IDC_EDIT_URL, m_strUrl);
+	DDX_Text(pDX, IDC_EDIT_PUSHURL, m_strPushUrl);
 	DDX_Text(pDX, IDC_EDIT_PUTTY_KEY, m_strPuttyKeyfile);
 	DDX_Control(pDX, IDC_COMBO_TAGOPT, m_ctrlTagOpt);
 	DDX_Check(pDX, IDC_CHECK_PRUNE, m_bPrune);
@@ -72,6 +73,7 @@ BEGIN_MESSAGE_MAP(CSettingGitRemote, CPropertyPage)
 	ON_LBN_SELCHANGE(IDC_LIST_REMOTE, &CSettingGitRemote::OnLbnSelchangeListRemote)
 	ON_EN_CHANGE(IDC_EDIT_REMOTE, &CSettingGitRemote::OnEnChangeEditRemote)
 	ON_EN_CHANGE(IDC_EDIT_URL, &CSettingGitRemote::OnEnChangeEditUrl)
+	ON_EN_CHANGE(IDC_EDIT_PUSHURL, &CSettingGitRemote::OnEnChangeEditPushUrl)
 	ON_EN_CHANGE(IDC_EDIT_PUTTY_KEY, &CSettingGitRemote::OnEnChangeEditPuttyKey)
 	ON_CBN_SELCHANGE(IDC_COMBO_TAGOPT, &CSettingGitRemote::OnCbnSelchangeComboTagOpt)
 	ON_BN_CLICKED(IDC_CHECK_PRUNE, &CSettingGitRemote::OnBnClickedCheckprune)
@@ -186,7 +188,7 @@ void CSettingGitRemote::OnBnClickedButtonAdd()
 		return;
 	}
 
-	m_ChangedMask = REMOTE_NAME | REMOTE_URL | REMOTE_PUTTYKEY | REMOTE_TAGOPT | REMOTE_PRUNE | REMOTE_PRUNEALL | REMOTE_PUSHDEFAULT;
+	m_ChangedMask = REMOTE_NAME | REMOTE_URL | REMOTE_PUTTYKEY | REMOTE_TAGOPT | REMOTE_PRUNE | REMOTE_PRUNEALL | REMOTE_PUSHDEFAULT | REMOTE_PUSHURL;
 	if(IsRemoteExist(m_strRemote))
 	{
 		CString msg;
@@ -233,6 +235,7 @@ void CSettingGitRemote::OnLbnSelchangeListRemote()
 	if(index<0)
 	{
 		m_strUrl.Empty();
+		m_strPushUrl.Empty();
 		m_strRemote.Empty();
 		m_strPuttyKeyfile.Empty();
 		this->UpdateData(FALSE);
@@ -245,6 +248,10 @@ void CSettingGitRemote::OnLbnSelchangeListRemote()
 	cmd.Format(_T("remote.%s.url"),remote);
 	m_strUrl.Empty();
 	m_strUrl = g_Git.GetConfigValue(cmd);
+
+	cmd.Format(_T("remote.%s.pushurl"), remote);
+	m_strPushUrl.Empty();
+	m_strPushUrl = g_Git.GetConfigValue(cmd);
 
 	cmd.Format(_T("remote.%s.puttykeyfile"),remote);
 
@@ -301,6 +308,18 @@ void CSettingGitRemote::OnEnChangeEditUrl()
 	}
 
 	if( (!this->m_strRemote.IsEmpty())&&(!this->m_strUrl.IsEmpty()) )
+		this->SetModified();
+	else
+		this->SetModified(0);
+}
+
+void CSettingGitRemote::OnEnChangeEditPushUrl()
+{
+	m_ChangedMask |= REMOTE_PUSHURL;
+
+	this->UpdateData();
+
+	if ((!this->m_strRemote.IsEmpty()) && (!this->m_strPushUrl.IsEmpty()))
 		this->SetModified();
 	else
 		this->SetModified(0);
@@ -514,6 +533,13 @@ BOOL CSettingGitRemote::OnApply()
 	if (m_ChangedMask & REMOTE_PRUNE)
 	{
 		if (!Save(_T("prune"), m_bPrune == TRUE ? _T("true") : m_bPrune == FALSE ? _T("false") : _T("")))
+			return FALSE;
+	}
+
+	if (m_ChangedMask & REMOTE_PUSHURL)
+	{
+		m_strPushUrl.Replace(L'\\', L'/');
+		if (!Save(_T("pushurl"), m_strPushUrl))
 			return FALSE;
 	}
 
