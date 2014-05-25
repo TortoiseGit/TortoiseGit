@@ -3926,6 +3926,7 @@ END
 STRINGTABLE
 BEGIN
     IDS_FILEDIFF_CHANGEDLISTINTRO "Changed files between %s, %s and %s, %s"
+    IDS_FILEDIFF_CHANGEDLISTINTROROOT "Changed files between %s and %s"
 END
 
 STRINGTABLE

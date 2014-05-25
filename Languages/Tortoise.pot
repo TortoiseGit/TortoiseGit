@@ -2408,6 +2408,11 @@ msgstr ""
 
 #. Resource IDs: (324)
 #, c-format
+msgid "Changed files between %s and %s"
+msgstr ""
+
+#. Resource IDs: (324)
+#, c-format
 msgid "Changed files between %s, %s and %s, %s"
 msgstr ""
 

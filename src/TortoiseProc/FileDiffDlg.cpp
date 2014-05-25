@@ -693,7 +693,10 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 					try
 					{
 						CStdioFile file(savePath.GetWinPathString(), CFile::typeBinary | CFile::modeReadWrite | CFile::modeCreate);
-//						temp.Format(IDS_FILEDIFF_CHANGEDLISTINTRO, (LPCTSTR)m_path1.GetGitPathString(), (LPCTSTR)m_rev1.ToString(), (LPCTSTR)m_path2.GetGitPathString(), (LPCTSTR)m_rev2.ToString());
+						if (m_path1.IsEmpty() && m_path2.IsEmpty())
+							temp.Format(IDS_FILEDIFF_CHANGEDLISTINTROROOT, m_rev1.m_CommitHash.ToString(), m_rev2.m_CommitHash.ToString());
+						else
+							temp.Format(IDS_FILEDIFF_CHANGEDLISTINTRO, m_path1.GetGitPathString(), m_rev1.m_CommitHash.ToString(), m_path2.GetGitPathString(), m_rev2.m_CommitHash.ToString());
 						file.WriteString(temp + _T("\n"));
 						POSITION pos = m_cFileList.GetFirstSelectedItemPosition();
 						while (pos)
