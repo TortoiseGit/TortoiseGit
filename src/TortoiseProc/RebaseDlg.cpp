@@ -1,7 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008-2014 - TortoiseGit
-// Copyright (C) 2011-2013 - Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -41,9 +40,6 @@ IMPLEMENT_DYNAMIC(CRebaseDlg, CResizableStandAloneDialog)
 
 CRebaseDlg::CRebaseDlg(CWnd* pParent /*=NULL*/)
 	: CResizableStandAloneDialog(CRebaseDlg::IDD, pParent)
-	, m_bPickAll(FALSE)
-	, m_bSquashAll(FALSE)
-	, m_bEditAll(FALSE)
 	, m_bAddCherryPickedFrom(FALSE)
 	, m_bStatusWarning(false)
 	, m_bAutoSkipFailedCommit(FALSE)
@@ -67,9 +63,6 @@ void CRebaseDlg::DoDataExchange(CDataExchange* pDX)
 	CDialog::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_REBASE_PROGRESS, m_ProgressBar);
 	DDX_Control(pDX, IDC_STATUS_STATIC, m_CtrlStatusText);
-	DDX_Check(pDX, IDC_PICK_ALL, m_bPickAll);
-	DDX_Check(pDX, IDC_SQUASH_ALL, m_bSquashAll);
-	DDX_Check(pDX, IDC_EDIT_ALL, m_bEditAll);
 	DDX_Control(pDX, IDC_REBASE_SPLIT, m_wndSplitter);
 	DDX_Control(pDX,IDC_COMMIT_LIST,m_CommitList);
 	DDX_Control(pDX,IDC_REBASE_COMBOXEX_BRANCH, this->m_BranchCtrl);
@@ -77,13 +70,11 @@ void CRebaseDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_REBASE_CHECK_FORCE,m_bForce);
 	DDX_Check(pDX, IDC_CHECK_CHERRYPICKED_FROM, m_bAddCherryPickedFrom);
 	DDX_Control(pDX,IDC_REBASE_POST_BUTTON,m_PostButton);
+	DDX_Control(pDX, IDC_SPLITALLOPTIONS, m_SplitAllOptions);
 }
 
 
 BEGIN_MESSAGE_MAP(CRebaseDlg, CResizableStandAloneDialog)
-	ON_BN_CLICKED(IDC_PICK_ALL, &CRebaseDlg::OnBnClickedPickAll)
-	ON_BN_CLICKED(IDC_SQUASH_ALL, &CRebaseDlg::OnBnClickedSquashAll)
-	ON_BN_CLICKED(IDC_EDIT_ALL, &CRebaseDlg::OnBnClickedEditAll)
 	ON_BN_CLICKED(IDC_REBASE_SPLIT, &CRebaseDlg::OnBnClickedRebaseSplit)
 	ON_BN_CLICKED(IDC_REBASE_CONTINUE,OnBnClickedContinue)
 	ON_BN_CLICKED(IDC_REBASE_ABORT,  OnBnClickedAbort)
@@ -103,6 +94,7 @@ BEGIN_MESSAGE_MAP(CRebaseDlg, CResizableStandAloneDialog)
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_COMMIT_LIST, OnLvnItemchangedLoglist)
 	ON_REGISTERED_MESSAGE(CGitLogListBase::m_RebaseActionMessage, OnRebaseActionMessage)
 	ON_WM_CTLCOLOR()
+	ON_BN_CLICKED(IDC_SPLITALLOPTIONS, &CRebaseDlg::OnBnClickedSplitAllOptions)
 END_MESSAGE_MAP()
 
 void CRebaseDlg::AddRebaseAnchor()
@@ -114,9 +106,7 @@ void CRebaseDlg::AddRebaseAnchor()
 	AddAnchor(IDC_REBASE_CONTINUE,BOTTOM_RIGHT);
 	AddAnchor(IDC_REBASE_ABORT, BOTTOM_RIGHT);
 	AddAnchor(IDC_REBASE_PROGRESS,BOTTOM_LEFT, BOTTOM_RIGHT);
-	AddAnchor(IDC_PICK_ALL,TOP_LEFT);
-	AddAnchor(IDC_SQUASH_ALL,TOP_LEFT);
-	AddAnchor(IDC_EDIT_ALL,TOP_LEFT);
+	AddAnchor(IDC_SPLITALLOPTIONS, TOP_LEFT);
 	AddAnchor(IDC_BUTTON_UP2,TOP_LEFT);
 	AddAnchor(IDC_BUTTON_DOWN2,TOP_LEFT);
 	AddAnchor(IDC_REBASE_COMBOXEX_UPSTREAM,TOP_LEFT);
@@ -203,9 +193,17 @@ BOOL CRebaseDlg::OnInitDialog()
 	m_tooltips.Create(this);
 
 	m_tooltips.AddTool(IDC_REBASE_CHECK_FORCE,IDS_REBASE_FORCE_TT);
-	m_tooltips.AddTool(IDC_REBASE_ABORT,IDS_REBASE_ABORT_TT);
+	m_tooltips.AddTool(IDC_REBASE_ABORT, IDS_REBASE_ABORT_TT);
 
-
+	{
+		CString temp;
+		temp.LoadString(IDS_PROC_REBASE_SELECTALL_PICK);
+		m_SplitAllOptions.AddEntry(temp);
+		temp.LoadString(IDS_PROC_REBASE_SELECTALL_SQUASH);
+		m_SplitAllOptions.AddEntry(temp);
+		temp.LoadString(IDS_PROC_REBASE_SELECTALL_EDIT);
+		m_SplitAllOptions.AddEntry(temp);
+	}
 
 	m_FileListCtrl.Init(GITSLC_COLEXT | GITSLC_COLSTATUS |GITSLC_COLADD|GITSLC_COLDEL , _T("RebaseDlg"),(GITSLC_POPALL ^ (GITSLC_POPCOMMIT|GITSLC_POPRESTORE)), false, true, GITSLC_COLEXT | GITSLC_COLSTATUS | GITSLC_COLADD| GITSLC_COLDEL);
 
@@ -213,9 +211,6 @@ BOOL CRebaseDlg::OnInitDialog()
 	m_ctrlTabCtrl.AddTab(&m_LogMessageCtrl, CString(MAKEINTRESOURCE(IDS_PROC_COMMITMESSAGE)), 1);
 	AddRebaseAnchor();
 
-	AdjustControlSize(IDC_PICK_ALL);
-	AdjustControlSize(IDC_SQUASH_ALL);
-	AdjustControlSize(IDC_EDIT_ALL);
 	AdjustControlSize(IDC_CHECK_CHERRYPICKED_FROM);
 
 	CString sWindowTitle;
@@ -317,39 +312,6 @@ HBRUSH CRebaseDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 	return CResizableStandAloneDialog::OnCtlColor(pDC, pWnd, nCtlColor);
 }
 
-void CRebaseDlg::OnBnClickedPickAll()
-{
-	this->UpdateData();
-	if(this->m_bPickAll)
-		SetAllRebaseAction(CGitLogListBase::LOGACTIONS_REBASE_PICK);
-
-	this->m_bEditAll=FALSE;
-	this->m_bSquashAll=FALSE;
-	this->UpdateData(FALSE);
-}
-
-void CRebaseDlg::OnBnClickedSquashAll()
-{
-	this->UpdateData();
-	if(this->m_bSquashAll)
-		SetAllRebaseAction(CGitLogListBase::LOGACTIONS_REBASE_SQUASH);
-
-	this->m_bEditAll=FALSE;
-	this->m_bPickAll=FALSE;
-	this->UpdateData(FALSE);
-}
-
-void CRebaseDlg::OnBnClickedEditAll()
-{
-	this->UpdateData();
-	if( this->m_bEditAll )
-		SetAllRebaseAction(CGitLogListBase::LOGACTIONS_REBASE_EDIT);
-
-	this->m_bPickAll=FALSE;
-	this->m_bSquashAll=FALSE;
-	this->UpdateData(FALSE);
-}
-
 void CRebaseDlg::SetAllRebaseAction(int action)
 {
 	for (size_t i = 0; i < this->m_CommitList.m_logEntries.size(); ++i)
@@ -387,9 +349,7 @@ void CRebaseDlg::DoSize(int delta)
 	//CSplitterControl::ChangeHeight(GetDlgItem(), delta, CW_TOPALIGN);
 	CSplitterControl::ChangeHeight(GetDlgItem(IDC_REBASE_TAB), -delta, CW_BOTTOMALIGN);
 	//CSplitterControl::ChangeHeight(GetDlgItem(), -delta, CW_BOTTOMALIGN);
-	CSplitterControl::ChangePos(GetDlgItem(IDC_SQUASH_ALL),0,delta);
-	CSplitterControl::ChangePos(GetDlgItem(IDC_PICK_ALL),0,delta);
-	CSplitterControl::ChangePos(GetDlgItem(IDC_EDIT_ALL),0,delta);
+	CSplitterControl::ChangePos(GetDlgItem(IDC_SPLITALLOPTIONS), 0, delta);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_BUTTON_UP2),0,delta);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_BUTTON_DOWN2),0,delta);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_REBASE_CHECK_FORCE),0,delta);
@@ -1426,9 +1386,7 @@ void CRebaseDlg::SetControlEnable()
 	case CHOOSE_BRANCH:
 	case CHOOSE_COMMIT_PICK_MODE:
 
-		this->GetDlgItem(IDC_PICK_ALL)->EnableWindow(TRUE);
-		this->GetDlgItem(IDC_EDIT_ALL)->EnableWindow(TRUE);
-		this->GetDlgItem(IDC_SQUASH_ALL)->EnableWindow(TRUE);
+		this->GetDlgItem(IDC_SPLITALLOPTIONS)->EnableWindow(TRUE);
 		this->GetDlgItem(IDC_BUTTON_UP2)->EnableWindow(TRUE);
 		this->GetDlgItem(IDC_BUTTON_DOWN2)->EnableWindow(TRUE);
 
@@ -1454,9 +1412,7 @@ void CRebaseDlg::SetControlEnable()
 	case REBASE_EDIT:
 	case REBASE_SQUASH_CONFLICT:
 	case REBASE_DONE:
-		this->GetDlgItem(IDC_PICK_ALL)->EnableWindow(FALSE);
-		this->GetDlgItem(IDC_EDIT_ALL)->EnableWindow(FALSE);
-		this->GetDlgItem(IDC_SQUASH_ALL)->EnableWindow(FALSE);
+		this->GetDlgItem(IDC_SPLITALLOPTIONS)->EnableWindow(FALSE);
 		this->GetDlgItem(IDC_REBASE_COMBOXEX_BRANCH)->EnableWindow(FALSE);
 		this->GetDlgItem(IDC_REBASE_COMBOXEX_UPSTREAM)->EnableWindow(FALSE);
 		this->GetDlgItem(IDC_BUTTON_REVERSE)->EnableWindow(FALSE);
@@ -2253,4 +2209,23 @@ LRESULT CRebaseDlg::OnRebaseActionMessage(WPARAM, LPARAM)
 		}
 	}
 	return 0;
+}
+
+
+void CRebaseDlg::OnBnClickedSplitAllOptions()
+{
+	switch (m_SplitAllOptions.GetCurrentEntry())
+	{
+	case 0: 
+		SetAllRebaseAction(CGitLogListBase::LOGACTIONS_REBASE_PICK);
+		break;
+	case 1:
+		SetAllRebaseAction(CGitLogListBase::LOGACTIONS_REBASE_SQUASH);
+		break;
+	case 2:
+		SetAllRebaseAction(CGitLogListBase::LOGACTIONS_REBASE_EDIT);
+		break;
+	default:
+		ATLASSERT(false);
+	}
 }

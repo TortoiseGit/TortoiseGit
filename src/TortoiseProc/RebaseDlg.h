@@ -142,10 +142,6 @@ protected:
 	CStatic				m_CtrlStatusText;
 	CToolTips			m_tooltips;
 
-	BOOL				m_bPickAll;
-	BOOL				m_bSquashAll;
-	BOOL				m_bEditAll;
-
 	BOOL				m_bForce;
 	BOOL				m_bAddCherryPickedFrom;
 	BOOL				m_bAutoSkipFailedCommit;
@@ -168,6 +164,8 @@ protected:
 	CHistoryCombo		m_BranchCtrl;
 	CHistoryCombo		m_UpstreamCtrl;
 
+	CMenuButton			m_SplitAllOptions;
+
 	REBASE_STAGE		m_RebaseStage;
 	bool				m_bFinishedRebase;
 	bool				m_bStashed;
@@ -185,6 +183,7 @@ protected:
 	afx_msg void OnBnClickedRebaseCheckForce();
 	afx_msg void OnBnClickedCheckCherryPickedFrom();
 	afx_msg void OnBnClickedRebasePostButton();
+	afx_msg void OnBnClickedSplitAllOptions();
 	afx_msg void OnBnClickedButtonUp2();
 	afx_msg void OnBnClickedButtonDown2();
 
