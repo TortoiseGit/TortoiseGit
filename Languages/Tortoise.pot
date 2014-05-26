@@ -8791,6 +8791,10 @@ msgstr ""
 msgid "Test Only"
 msgstr ""
 
+#. Resource IDs: (157)
+msgid "Text Files (*.txt)|*.txt|All Files (*.*)|*.*||"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Thai"
 msgstr ""

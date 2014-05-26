@@ -3504,6 +3504,7 @@ BEGIN
     IDS_PATCHFILEFILTER     "Patchfiles (*.diff, *.patch)|*.diff;*.patch|All Files (*.*)|*.*||"
     IDS_PICTUREFILEFILTER   "Pictures (*.svg, *.wmf, *.jpg, *.png, *.bmp, *.gif)|*.svg;*.wmf;*.jpg;*.jpeg;*.png;*.bmp;*.gif|Graphs (*.gv)|*.gv|All Files (*.*)|*.*||"
     IDS_STATPICFILEFILTER   "Pictures (*.wmf, *.jpg, *.png, *.bmp, *.gif)|*.wmf;*.jpg;*.jpeg;*.png;*.bmp;*.gif|All Files (*.*)|*.*||"
+    IDS_TEXTFILEFILTER      "Text Files (*.txt)|*.txt|All Files (*.*)|*.*||"
 END
 
 STRINGTABLE

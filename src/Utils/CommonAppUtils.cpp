@@ -235,7 +235,7 @@ bool CCommonAppUtils::SetListCtrlBackgroundImage(HWND hListCtrl, UINT nID, int w
 	return true;
 }
 
-bool CCommonAppUtils::FileOpenSave(CString& path, int * filterindex, UINT title, UINT filter, bool bOpen, HWND hwndOwner)
+bool CCommonAppUtils::FileOpenSave(CString& path, int * filterindex, UINT title, UINT filter, bool bOpen, HWND hwndOwner, LPCTSTR defaultExt)
 {
 	OPENFILENAME ofn = {0};				// common dialog box structure
 	TCHAR szFile[MAX_PATH] = {0};		// buffer for file name. Explorer can't handle paths longer than MAX_PATH.
@@ -273,6 +273,7 @@ bool CCommonAppUtils::FileOpenSave(CString& path, int * filterindex, UINT title,
 	ofn.lpstrFileTitle = NULL;
 	ofn.nMaxFileTitle = 0;
 	ofn.lpstrInitialDir = NULL;
+	ofn.lpstrDefExt = defaultExt;
 	CString temp;
 	if (title)
 	{
