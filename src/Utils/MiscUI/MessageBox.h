@@ -238,6 +238,7 @@ class CMessageBox : public CDialog, public CHTMLFormatter
 public:
 	CMessageBox(void);
 	~CMessageBox(void);
+
 	/**
 	 * Shows a message box. Use this as a replacement for the usual ::MessageBox() calls.
 	 * Most of the flags of the Platform SDK version are supported. See the class descriptions
@@ -250,6 +251,18 @@ public:
 	 * \return see class descriptions for details
 	 */
 	static UINT Show(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, UINT uType, LPCTSTR sHelpPath = NULL);
+
+	/**
+	 * Shows a message box.
+	 * \param hWnd handle to the parent window or NULL
+	 * \param lpMessage the message string to show on the message box
+	 * \param nCaption resource ID of the title string
+	 * \param uType see class description for details
+	 * \param sHelpPath if uType has MB_HELP, this is the path of the help file to use
+	 * \return see class description for details
+	 */
+	static UINT Show(HWND hWnd, LPCTSTR lpMessage, UINT nCaption, UINT uType, LPCTSTR sHelpPath = NULL);
+
 	/**
 	 * Shows a message box.
 	 * \param hWnd handle to the parent window or NULL
@@ -260,6 +273,7 @@ public:
 	 * \return see class description for details
 	 */
 	static UINT Show(HWND hWnd, UINT nMessage, UINT nCaption, UINT uType, LPCTSTR sHelpPath = NULL);
+
 	/**
 	* Shows a message box.
 	* \param hWnd handle to the parent window or NULL
@@ -270,6 +284,7 @@ public:
 	* \return see class description for details
 	*/
 	static UINT Show(HWND hWnd, UINT nMessage, UINT nCaption, UINT uType, UINT nHelpID);
+
 	/**
 	 * Shows a message box with a checkbox. If the user checks it then the next time
 	 * the message box isn't shown anymore - the method simply returns the same value as
@@ -288,6 +303,7 @@ public:
 	 * \return see class description for details
 	 */
 	static UINT ShowCheck(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, UINT uType, LPCTSTR lpRegistry, LPCTSTR lpCheckMessage = NULL, BOOL *bChecked = NULL);
+
 	/**
 	 * Shows a message box with a checkbox. If the user checks it then the next time
 	 * the message box isn't shown anymore - the method simply returns the same value as
@@ -320,6 +336,7 @@ public:
 	 * \return the number of the button pressed (1,2 or 3)
 	 */
 	static UINT Show(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, int nDef, LPCTSTR icon, LPCTSTR lpButton1, LPCTSTR lpButton2 = NULL, LPCTSTR lpButton3 = NULL);
+
 	/**
 	 * Shows a message box with user defined button texts.
 	 * \param hWnd handle to the parent window or NULL
@@ -334,6 +351,7 @@ public:
 	 * \return the number of the button pressed (1,2 or 3)
 	 */
 	static UINT Show(HWND hWnd, UINT nMessage, UINT nCaption, int nDef, LPCTSTR icon, UINT nButton1, UINT nButton2 = NULL, UINT nButton3 = NULL);
+
 	/**
 	 * Shows a message box with user defined button texts and a checkbox.
 	 * \param hWnd handle to the parent window or NULL
@@ -354,6 +372,7 @@ public:
 	 * \return the number of the button pressed (1,2 or 3)
 	 */
 	static UINT ShowCheck(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, int nDef, LPCTSTR icon, LPCTSTR lpButton1, LPCTSTR lpButton2, LPCTSTR lpButton3, LPCTSTR lpRegistry, LPCTSTR lpCheckMessage = NULL, BOOL *bChecked = NULL);
+
 	/**
 	 * Shows a message box with user defined button texts and a checkbox.
 	 * \param hWnd handle to the parent window or NULL
@@ -386,6 +405,7 @@ protected:
 	 * \param value DWORD to store
 	 */
 	static void SetRegistryValue(const CString& sValue, DWORD value);
+
 	/**
 	 * Shows the modal dialog
 	 * \param pWnd handle to the parent window or NULL
@@ -407,10 +427,12 @@ protected:
 	 * \param str the string to check the size
 	 */
 	CSize GetTextSize(const CString& str);
+
 	/**
 	 * Returns the size of the icon
 	 */
 	CSize GetIconSize(HICON hIcon);
+
 	/**
 	 * Returns the size of all four buttons (three pushbuttons and the checkbox).
 	 * Also resizes the buttons accordingly and fills in m_szAllButtons and m_szButtons.

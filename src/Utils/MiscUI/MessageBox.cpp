@@ -227,6 +227,13 @@ UINT CMessageBox::Show(HWND hWnd, UINT nMessage, UINT nCaption, UINT uType, LPCT
 	return CMessageBox::Show(hWnd, sMessage, sCaption, uType, sHelpPath);
 }
 
+UINT CMessageBox::Show(HWND hWnd, LPCTSTR lpMessage, UINT nCaption, UINT uType, LPCTSTR sHelpPath)
+{
+	CString sCaption;
+	sCaption.LoadString(nCaption);
+	return CMessageBox::Show(hWnd, lpMessage, sCaption, uType, sHelpPath);
+}
+
 UINT CMessageBox::Show(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, UINT uType, LPCTSTR sHelpPath)
 {
 	CMessageBox box;
