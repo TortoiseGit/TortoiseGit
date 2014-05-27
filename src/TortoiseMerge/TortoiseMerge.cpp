@@ -32,6 +32,7 @@
 #include "FileDlgEventHandler.h"
 #include "TempFile.h"
 #include "TaskbarUUID.h"
+#include "MessageBox.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -228,8 +229,8 @@ BOOL CTortoiseMergeApp::InitInstance()
 	// Change the registry key under which our settings are stored
 	SetRegistryKey(_T("TortoiseGitMerge"));
 
-	if (CRegDWORD(_T("Software\\TortoiseGitMerge\\Debug"), FALSE)==TRUE)
-		AfxMessageBox(AfxGetApp()->m_lpCmdLine, MB_OK | MB_ICONINFORMATION);
+	if (CRegDWORD(_T("Software\\TortoiseGitMerge\\Debug"), FALSE) == TRUE)
+		CMessageBox::Show(NULL, AfxGetApp()->m_lpCmdLine, IDS_APPNAME, MB_OK | MB_ICONINFORMATION);
 
 	// To create the main window, this code creates a new frame window
 	// object and then sets it as the application's main window object

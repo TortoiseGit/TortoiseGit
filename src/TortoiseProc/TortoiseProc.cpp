@@ -265,8 +265,8 @@ BOOL CTortoiseProcApp::InitInstance()
 
 	// if HKCU\Software\TortoiseGit\Debug is not 0, show our command line
 	// in a message box
-	if (CRegDWORD(_T("Software\\TortoiseGit\\Debug"), FALSE)==TRUE)
-		AfxMessageBox(AfxGetApp()->m_lpCmdLine, MB_OK | MB_ICONINFORMATION);
+	if (CRegDWORD(_T("Software\\TortoiseGit\\Debug"), FALSE) == TRUE)
+		CMessageBox::Show(NULL, AfxGetApp()->m_lpCmdLine, IDS_APPNAME, MB_OK | MB_ICONINFORMATION);
 
 	if (parser.HasKey(_T("urlhandler")))
 	{
