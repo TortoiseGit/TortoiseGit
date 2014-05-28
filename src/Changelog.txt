@@ -26,6 +26,7 @@ Released: Unreleased
  * Fixed issue #2199: Fetch dialog does not delete remote in remote list after managing remotes
  * Fixed issue #2200: Add remote name starts with # should not fetch all
  * Fixed issue #2190: "Force Rebase" after "Squash ALL" does not mark commits for squashing
+ * Fixed issue #2073: Remove Entry of remote in "Remote Url" box in sync window
 
 = Release 1.8.8.0 =
 Released: 2014-04-01

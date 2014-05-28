@@ -283,6 +283,49 @@ void CHistoryCombo::ClearHistory(BOOL bDeleteRegistryEntries/*=TRUE*/)
 	}
 }
 
+void CHistoryCombo::RemoveEntryFromHistory(LPCTSTR lpszSection, LPCTSTR lpszKeyPrefix, const CString& entryToRemove)
+{
+	if (entryToRemove.IsEmpty())
+		return;
+	CString sText;
+	bool found = false;
+	int n = -1;
+	do
+	{
+		CString sKey;
+		sKey.Format(_T("%s\\%s%d"), lpszSection, lpszKeyPrefix, ++n);
+		CRegString regkey = CRegString(sKey);
+		sText = regkey;
+		if (sText == entryToRemove)
+		{
+			regkey.removeValue();
+			found = true;
+			++n;
+			break;
+		}
+	} while (!sText.IsEmpty());
+	if (!found)
+		return;
+	for (;; ++n)
+	{
+		CString sKey;
+		sKey.Format(_T("%s\\%s%d"), lpszSection, lpszKeyPrefix, n);
+		CRegString regkey = CRegString(sKey);
+		sText = regkey;
+		if (!sText.IsEmpty())
+		{
+			CString sKeyNew;
+			sKeyNew.Format(_T("%s\\%s%d"), lpszSection, lpszKeyPrefix, n - 1);
+			CRegString regkeyNew = CRegString(sKeyNew);
+			regkeyNew = sText;
+			regkey.removeValue();
+			continue;
+		}
+		else
+			break;
+	}
+}
+
 void CHistoryCombo::SetURLHistory(BOOL bURLHistory)
 {
 	m_bURLHistory = bURLHistory;

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoioseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -111,6 +111,11 @@ public:
 	 * \param lpszKeyPrefix a prefix to use for the history entries in registry/inifiles. E.g. "file" or "entry"
 	 */
 	CString LoadHistory(LPCTSTR lpszSection, LPCTSTR lpszKeyPrefix);
+
+	/**
+	 * Goes through the stored history in registry and removes a specific entry
+	 */
+	static void RemoveEntryFromHistory(LPCTSTR lpszSection, LPCTSTR lpszKeyPrefix, const CString& entryToRemove);
 
 	/**
 	 * Returns the string in the combobox which is either selected or the user has entered.

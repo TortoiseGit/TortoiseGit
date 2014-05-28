@@ -27,6 +27,7 @@
 #include "MessageBox.h"
 #include "AppUtils.h"
 #include "Git.h"
+#include "HistoryCombo.h"
 
 // CSettingGitRemote dialog
 
@@ -548,6 +549,14 @@ BOOL CSettingGitRemote::OnApply()
 	m_ChangedMask = 0;
 	return ISettingsPropPage::OnApply();
 }
+
+void CleanupSyncRemotes(const CString& remote)
+{
+	CString workingDir = g_Git.m_CurrentDir;
+	workingDir.Replace(_T(':'), _T('_'));
+	CHistoryCombo::RemoveEntryFromHistory(_T("Software\\TortoiseGit\\History\\SyncURL\\") + workingDir, _T("url"), remote);
+}
+
 void CSettingGitRemote::OnBnClickedButtonRemove()
 {
 	int index;
@@ -568,6 +577,7 @@ void CSettingGitRemote::OnBnClickedButtonRemove()
 				return;
 			}
 
+			CleanupSyncRemotes(str);
 			m_ctrlRemoteList.DeleteString(index);
 			OnLbnSelchangeListRemote();
 		}
@@ -590,6 +600,7 @@ void CSettingGitRemote::OnBnClickedButtonRenameRemote()
 			return;
 		}
 
+		CleanupSyncRemotes(oldRemote);
 		m_ctrlRemoteList.DeleteString(sel);
 		m_ctrlRemoteList.SetCurSel(m_ctrlRemoteList.AddString(newRemote));
 		m_ChangedMask &= ~REMOTE_NAME;
