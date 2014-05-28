@@ -299,6 +299,9 @@
 				commit log messages. This is especially useful if the project language
 				is not your native language.
 				The spell checker uses the same dictionary files as
+				<ulink url="http://libreoffice.org">
+					<citetitle>LibreOffice</citetitle>
+				</ulink>,
 				<ulink url="http://openoffice.org">
 					<citetitle>OpenOffice</citetitle>
 				</ulink>
@@ -309,19 +312,21 @@
 			</para>
 			<para>
 				The installer automatically adds the US and UK English dictionaries.
-<!--
 				If you want other languages, the easiest option is simply to
 				install one of TortoiseGit's language packs. This will install
 				the appropriate dictionary files as well as the TortoiseGit local
 				user interface.
 				After the installation finishes, the translation will be available.
--->
 			</para>
 			<para>
 				Or you can install the dictionaries yourself. If you have OpenOffice or
 				Mozilla installed, you can copy those dictionaries, which are located
 				in the installation folders for those applications.
 				Otherwise, you need to download the required dictionary files from
+				<ulink url="http://cgit.freedesktop.org/libreoffice/dictionaries/">
+					<citetitle>http://cgit.freedesktop.org/libreoffice/dictionaries/</citetitle>
+				</ulink>
+				or
 				<ulink url="http://wiki.services.openoffice.org/wiki/Dictionaries">
 					<citetitle>http://wiki.services.openoffice.org/wiki/Dictionaries</citetitle>
 				</ulink>
@@ -358,7 +363,7 @@
 				<orderedlist>
 					<listitem>
 						<para>
-						Check the <literal>tgit.projectlanguage</literal> setting.
+						Check the <literal>tgit.projectlanguage</literal> setting. This setting can be set using TortoiseGit Settings <guilabel>Dialogs 3</guilabel> page (<xref linkend="tgit-dug-settings-dialogs3"/>).
 						Refer to <xref linkend="git-config(1)"/> for information
 						about setting properties (use the <literal>LCID Dec</literal> value as <ulink url="http://msdn.microsoft.com/de-de/goglobal/bb964664.aspx">assigned by Microsoft</ulink>).
 						</para>
