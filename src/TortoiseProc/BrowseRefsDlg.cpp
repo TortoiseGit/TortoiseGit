@@ -829,7 +829,13 @@ CString CBrowseRefsDlg::GetFullRefName(CString partialRefName)
 void CBrowseRefsDlg::OnContextMenu(CWnd* pWndFrom, CPoint point)
 {
 	if(pWndFrom==&m_RefTreeCtrl)       OnContextMenu_RefTreeCtrl(point);
-	else if(pWndFrom==&m_ListRefLeafs) OnContextMenu_ListRefLeafs(point);
+	else if (pWndFrom == &m_ListRefLeafs)
+	{
+		CRect headerPosition;
+		m_ListRefLeafs.GetHeaderCtrl()->GetWindowRect(headerPosition);
+		if (!headerPosition.PtInRect(point))
+			OnContextMenu_ListRefLeafs(point);
+	}
 }
 
 void CBrowseRefsDlg::OnContextMenu_RefTreeCtrl(CPoint point)
