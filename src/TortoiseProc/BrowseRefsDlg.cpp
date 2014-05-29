@@ -411,7 +411,8 @@ void CBrowseRefsDlg::Refresh(CString selectRef)
 //	g_Git.GetMapHashToFriendName(m_RefMap);
 
 	remotes.clear();
-	g_Git.GetRemoteList(remotes);
+	if (g_Git.GetRemoteList(remotes))
+		MessageBox(CGit::GetLibGit2LastErr(_T("Could not get a list of remotes.")), _T("TortoiseGit"), MB_ICONERROR);
 
 	if(!selectRef.IsEmpty())
 	{
