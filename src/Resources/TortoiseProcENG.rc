@@ -4415,6 +4415,7 @@ END
 
 STRINGTABLE
 BEGIN
+    IDS_DELETEREMOTETAGON   "Delete remote tags on ""%s""..."
     IDS_CHANGETYPE          "Change type"
     IDS_OLDHASH             "Old hash"
     IDS_OLDMESSAGE          "Old message"

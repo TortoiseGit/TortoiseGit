@@ -410,6 +410,9 @@ void CBrowseRefsDlg::Refresh(CString selectRef)
 //	m_RefMap.clear();
 //	g_Git.GetMapHashToFriendName(m_RefMap);
 
+	remotes.clear();
+	g_Git.GetRemoteList(remotes);
+
 	if(!selectRef.IsEmpty())
 	{
 		if(selectRef == "HEAD")
@@ -878,6 +881,17 @@ CString CBrowseRefsDlg::GetTwoSelectedRefs(VectorPShadowTree& selectedLeafs, con
 		return g_Git.StripRefName(selectedLeafs.at(0)->GetRefName()) + separator + g_Git.StripRefName(lastSelected);
 }
 
+int findVectorPosition(const STRING_VECTOR& vector, const CString& entry)
+{
+	int i = 0;
+	for (auto it = vector.cbegin(); it != vector.cend(); ++it, ++i)
+	{
+		if (*it == entry)
+			return i;
+	}
+	return -1;
+}
+
 void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPShadowTree& selectedLeafs)
 {
 	CIconMenu popupMenu;
@@ -1044,14 +1058,15 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 				CString remoteBranch;
 				if (SplitRemoteBranchName(pTree->GetRefName(), remoteName, remoteBranch))
 					remoteName = _T("");
-				if(!remoteName.IsEmpty())
+				int pos = findVectorPosition(remotes, remoteName);
+				if (pos >= 0)
 				{
 					CString temp;
 					temp.Format(IDS_PROC_BROWSEREFS_FETCHFROM, remoteName);
 					popupMenu.AppendMenuIcon(eCmd_Fetch, temp, IDI_PULL);
 
 					temp.LoadString(IDS_DELETEREMOTETAG);
-					popupMenu.AppendMenuIcon(eCmd_DeleteRemoteTag, temp, IDI_DELETE);
+					popupMenu.AppendMenuIcon(eCmd_DeleteRemoteTag | (pos << 16), temp, IDI_DELETE);
 				}
 			}
 		}
@@ -1072,12 +1087,22 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 			popupMenu.AppendMenuIcon(eCmd_CreateTag, temp, IDI_TAG);
 			temp.LoadString(IDS_PROC_BROWSEREFS_DELETEALLTAGS);
 			popupMenu.AppendMenuIcon(eCmd_DeleteAllTags, temp, IDI_DELETE);
+			if (!remotes.empty())
+			{
+				popupMenu.AppendMenu(MF_SEPARATOR);
+				int i = 0;
+				for (auto it = remotes.cbegin(); it != remotes.cend(); ++it, ++i)
+				{
+					temp.Format(IDS_DELETEREMOTETAGON, *it);
+					popupMenu.AppendMenuIcon(eCmd_DeleteRemoteTag | (i << 16), temp, IDI_DELETE);
+				}
+			}
 		}
 	}
 
 
-	eCmd cmd=(eCmd)popupMenu.TrackPopupMenuEx(TPM_LEFTALIGN|TPM_RETURNCMD, point.x, point.y, this, 0);
-	switch(cmd)
+	int selection = popupMenu.TrackPopupMenuEx(TPM_LEFTALIGN | TPM_RETURNCMD, point.x, point.y, this, 0);
+	switch ((eCmd)(selection & 0xFFFF))
 	{
 	case eCmd_ViewLog:
 		{
@@ -1134,7 +1159,10 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 	case eCmd_DeleteRemoteTag:
 		{
 			CDeleteRemoteTagDlg deleteRemoteTagDlg;
-			deleteRemoteTagDlg.m_sRemote = remoteName;
+			int remoteInx = selection >> 16;
+			if (remoteInx < 0 || remoteInx >= remotes.size())
+				return;
+			deleteRemoteTagDlg.m_sRemote = remotes[remoteInx];
 			deleteRemoteTagDlg.DoModal();
 		}
 		break;

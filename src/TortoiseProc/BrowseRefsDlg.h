@@ -148,6 +148,8 @@ private:
 
 	CString			m_cmdPath;
 
+	STRING_VECTOR	remotes;
+
 	CShadowTree		m_TreeRoot;
 	CShadowTree*	m_pListCtrlRoot;
 	CTreeCtrl		m_RefTreeCtrl;

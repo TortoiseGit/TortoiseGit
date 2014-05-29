@@ -3410,6 +3410,11 @@ msgstr ""
 msgid "Delete remote tag - TortoiseGit"
 msgstr ""
 
+#. Resource IDs: (95)
+#, c-format
+msgid "Delete remote tags on \"%s\"..."
+msgstr ""
+
 #. Resource IDs: (86)
 msgid "Delete remote tags..."
 msgstr ""

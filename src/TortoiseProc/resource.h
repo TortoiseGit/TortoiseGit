@@ -1084,6 +1084,7 @@
 #define IDC_STATIC_REMOTE               1503
 #define IDS_PROC_REBASE_SELECTALL_PICK  1503
 #define IDC_STATIC_SOURCE               1504
+#define IDS_DELETEREMOTETAGON           1504
 #define IDC_PUTTYKEY_AUTOLOAD           1505
 #define IDS_CHANGETYPE                  1506
 #define IDS_OLDHASH                     1507
