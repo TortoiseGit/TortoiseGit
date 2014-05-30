@@ -10,6 +10,7 @@ Released: Unreleased
  * Fixed issue #2196: Log dialog file list group headers show parent SHA-1
  * Fixed issue #2144: TortoiseGit should support configuring pushurl for remotes
  * Fixed issue #2155: Make "Delete Remote Tags..." more discoverable
+ * Fixed issue #2164: allow Commit from Log > Working dir changes of selected files
 
 == Bug Fixes ==
  * Fixed issue #2158: TortoiseGit sometimes crashes when doing Sync > Pull
