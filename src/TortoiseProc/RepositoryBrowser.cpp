@@ -660,7 +660,12 @@ void CRepositoryBrowser::OnLvnItemchangedRepolist(NMHDR * /* pNMHDR */, LRESULT 
 void CRepositoryBrowser::OnContextMenu(CWnd* pWndFrom, CPoint point)
 {
 	if (pWndFrom == &m_RepoList)
-		OnContextMenu_RepoList(point);
+	{
+		CRect headerPosition;
+		m_RepoList.GetHeaderCtrl()->GetWindowRect(headerPosition);
+		if (!headerPosition.PtInRect(point))
+			OnContextMenu_RepoList(point);
+	}
 	else if (pWndFrom == &m_RepoTree)
 		OnContextMenu_RepoTree(point);
 }
