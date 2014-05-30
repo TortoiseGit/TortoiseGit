@@ -1086,6 +1086,7 @@
 #define IDC_STATIC_SOURCE               1504
 #define IDS_DELETEREMOTETAGON           1504
 #define IDC_PUTTYKEY_AUTOLOAD           1505
+#define IDS_B_T_REMOTE_NAME_COLLIDE     1505
 #define IDS_CHANGETYPE                  1506
 #define IDS_OLDHASH                     1507
 #define IDS_OLDMESSAGE                  1508

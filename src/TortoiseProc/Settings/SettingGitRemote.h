@@ -71,6 +71,7 @@ protected:
 	BOOL OnApply();
 
 	BOOL IsRemoteExist(CString &remote);
+	bool IsRemoteCollideWithRefspec(CString remote);
 
 	BOOL Save(CString key, CString value);
 	BOOL SaveGeneral(CString key, CString value);

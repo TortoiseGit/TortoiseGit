@@ -4416,6 +4416,8 @@ END
 STRINGTABLE
 BEGIN
     IDS_DELETEREMOTETAGON   "Delete remote tags on ""%s""..."
+    IDS_B_T_REMOTE_NAME_COLLIDE 
+                            "This remote name collides with fetch refspec of other remotes\nPlease use another name"
     IDS_CHANGETYPE          "Change type"
     IDS_OLDHASH             "Old hash"
     IDS_OLDMESSAGE          "Old message"

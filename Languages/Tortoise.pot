@@ -9082,6 +9082,10 @@ msgstr ""
 msgid "This property is only allowed on folders, not files."
 msgstr ""
 
+#. Resource IDs: (95)
+msgid "This remote name collides with fetch refspec of other remotes\nPlease use another name"
+msgstr ""
+
 #. Resource IDs: (67)
 msgid "This task requires a clean working tree."
 msgstr ""

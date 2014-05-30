@@ -219,6 +219,46 @@ BOOL CSettingGitRemote::IsRemoteExist(CString &remote)
 	return false;
 }
 
+struct CheckRefspecStruct
+{
+	CStringA remote;
+	bool result;
+};
+
+static int CheckRemoteCollideWithRefspec(const git_config_entry *entry, void * payload)
+{
+	auto crs = (CheckRefspecStruct *)payload;
+	crs->result = false;
+	if (entry->name == "remote." + crs->remote + ".fetch")
+		return 0;
+	CStringA value = CStringA(entry->value);
+	CStringA match = ":refs/remotes/" + crs->remote;
+	int pos = value.Find(match);
+	if (pos < 0)
+		return 0;
+	if ((pos + match.GetLength() == value.GetLength()) || (value[pos + match.GetLength()] == '/'))
+	{
+		crs->result = true;
+		return GIT_EUSER;
+	}
+	return 0;
+}
+
+bool CSettingGitRemote::IsRemoteCollideWithRefspec(CString remote)
+{
+	CheckRefspecStruct crs = { CUnicodeUtils::GetUTF8(remote), false };
+	CAutoConfig config(true);
+	git_config_add_file_ondisk(config, CGit::GetGitPathStringA(g_Git.GetGitLocalConfig()), GIT_CONFIG_LEVEL_LOCAL, FALSE);
+	char *patterns[] = { "remote\\..*\\.fetch", "svn-remote\\..*\\.fetch", "svn-remote\\..*\\.branches", "svn-remote\\..*\\.tags" };
+	for (auto pattern : patterns)
+	{
+		git_config_foreach_match(config, pattern, CheckRemoteCollideWithRefspec, &crs);
+		if (crs.result)
+			return true;
+	}
+	return false;
+}
+
 void CSettingGitRemote::OnLbnSelchangeListRemote()
 {
 	CWaitCursor wait;
@@ -290,6 +330,9 @@ void CSettingGitRemote::OnEnChangeEditRemote()
 	m_ChangedMask|=REMOTE_NAME;
 
 	this->UpdateData();
+
+	if (IsRemoteCollideWithRefspec(m_strRemote))
+		ShowEditBalloon(m_hWnd, IDC_EDIT_REMOTE, IDS_B_T_REMOTE_NAME_COLLIDE, IDS_HINT, TTI_WARNING);
 	if( (!this->m_strRemote.IsEmpty())&&(!this->m_strUrl.IsEmpty()) )
 		this->SetModified();
 	else
