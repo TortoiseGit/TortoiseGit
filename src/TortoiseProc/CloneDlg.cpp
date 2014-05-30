@@ -208,6 +208,7 @@ BEGIN_MESSAGE_MAP(CCloneDlg, CHorizontalResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_CHECK_DEPTH, &CCloneDlg::OnBnClickedCheckDepth)
 	ON_BN_CLICKED(IDC_CHECK_BARE, &CCloneDlg::OnBnClickedCheckBare)
 	ON_BN_CLICKED(IDC_CHECK_RECURSIVE, &CCloneDlg::OnBnClickedCheckRecursive)
+	ON_BN_CLICKED(IDC_CHECK_NOCHECKOUT, &CCloneDlg::OnBnClickedCheckRecursive)
 	ON_BN_CLICKED(IDC_CHECK_USERNAME, &CCloneDlg::OnBnClickedCheckUsername)
 END_MESSAGE_MAP()
 
@@ -450,10 +451,32 @@ void CCloneDlg::OnBnClickedCheckSvnFrom()
 void CCloneDlg::OnBnClickedCheckRecursive()
 {
 	UpdateData(TRUE);
+	if (m_bRecursive || m_bNoCheckout)
+	{
+		m_bBare = FALSE;
+		GetDlgItem(IDC_CHECK_BARE)->EnableWindow(FALSE);
+		UpdateData(FALSE);
+	}
+	else
+		GetDlgItem(IDC_CHECK_BARE)->EnableWindow(TRUE);
 }
+
 void CCloneDlg::OnBnClickedCheckBare()
 {
 	UpdateData(TRUE);
+	if (m_bBare)
+	{
+		m_bRecursive = FALSE;
+		m_bNoCheckout = FALSE;
+		GetDlgItem(IDC_CHECK_RECURSIVE)->EnableWindow(FALSE);
+		GetDlgItem(IDC_CHECK_NOCHECKOUT)->EnableWindow(FALSE);
+		UpdateData(FALSE);
+	}
+	else
+	{
+		GetDlgItem(IDC_CHECK_RECURSIVE)->EnableWindow(TRUE);
+		GetDlgItem(IDC_CHECK_NOCHECKOUT)->EnableWindow(TRUE);
+	}
 }
 void CCloneDlg::OnBnClickedCheckDepth()
 {
