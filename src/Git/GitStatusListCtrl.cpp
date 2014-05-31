@@ -1851,14 +1851,24 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 			case IDGITLC_EXPLORE:
 				{
 					CString p = g_Git.m_CurrentDir + _T("\\") + filepath->GetWinPathString();
+					if (PathFileExists(p))
+					{
+						ITEMIDLIST __unaligned * pidl = ILCreateFromPath(p);
+						if (pidl)
+						{
+							SHOpenFolderAndSelectItems(pidl, 0, 0, 0);
+							ILFree(pidl);
+						}
+						break;
+					}
 					// if filepath does not exist any more, navigate to closest matching folder
-					while (!PathFileExists(p))
+					do
 					{
 						int pos = p.ReverseFind(_T('\\'));
 						if (pos <= 3)
 							break;
 						p = p.Left(pos);
-					}
+					} while (!PathFileExists(p));
 					ShellExecute(GetSafeHwnd(), _T("explore"), p, nullptr, nullptr, SW_SHOW);
 				}
 				break;
