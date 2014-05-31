@@ -249,12 +249,7 @@ BOOL CAppUtils::StartExtMerge(
 		{
 			// use TortoiseGitMerge
 			bInternal = true;
-			CRegString tortoiseMergePath(_T("Software\\TortoiseGit\\TMergePath"), _T(""), false, HKEY_LOCAL_MACHINE);
-			com = tortoiseMergePath;
-			if (com.IsEmpty())
-			{
-				com = CPathUtils::GetAppDirectory() + _T("TortoiseGitMerge.exe");
-			}
+			com = CPathUtils::GetAppDirectory() + _T("TortoiseGitMerge.exe");
 			com = _T("\"") + com + _T("\"");
 			com = com + _T(" /base:%base /theirs:%theirs /mine:%mine /merged:%merged");
 			com = com + _T(" /basename:%bname /theirsname:%tname /minename:%yname /mergedname:%mname");
