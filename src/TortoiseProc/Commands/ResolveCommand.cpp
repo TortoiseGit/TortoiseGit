@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2013 - TortoiseGit
-// Copyright (C) 2007-2008 - TortoiseSVN
+// Copyright (C) 2009-2014 - TortoiseGit
+// Copyright (C) 2007-2008,2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -48,6 +48,13 @@ bool ResolveCommand::Execute()
 					}
 
 					CAppUtils::RemoveTempMergeFile((CTGitPath &)dlg.m_pathList[i]);
+				}
+
+				HWND resolveMsgWnd = parser.HasVal(L"resolvemsghwnd") ? (HWND)parser.GetLongLongVal(L"resolvemsghwnd") : 0;
+				if (resolveMsgWnd)
+				{
+					static UINT WM_REVERTMSG = RegisterWindowMessage(_T("GITSLNM_NEEDSREFRESH"));
+					::PostMessage(resolveMsgWnd, WM_REVERTMSG, NULL, NULL);
 				}
 				return true;
 			}

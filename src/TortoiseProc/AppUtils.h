@@ -61,7 +61,7 @@ public:
 	static BOOL StartExtMerge(
 		const CTGitPath& basefile, const CTGitPath& theirfile, const CTGitPath& yourfile, const CTGitPath& mergedfile,
 		const CString& basename = CString(), const CString& theirname = CString(), const CString& yourname = CString(),
-		const CString& mergedname = CString(), bool bReadOnly = false);
+		const CString& mergedname = CString(), bool bReadOnly = false, HWND resolveMsgHwnd = nullptr);
 
 	/**
 	 * Starts the external patch program (currently always TortoiseGitMerge)
@@ -155,7 +155,7 @@ public:
 
 	static bool IgnoreFile(CTGitPathList &filelist,bool IsMask);
 	static bool GitReset(CString *CommitHash,int type=1);
-	static bool ConflictEdit(CTGitPath &file,bool bAlternativeTool=false,bool revertTheirMy=false);
+	static bool ConflictEdit(CTGitPath& file, bool bAlternativeTool = false, bool revertTheirMy = false, HWND resolveMsgHwnd = nullptr);
 
 	static CString GetMergeTempFile(CString str,CTGitPath &merge);
 	static bool	StashSave();

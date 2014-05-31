@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2013 - TortoiseGit
-// Copyright (C) 2003-2006 - Stefan Kueng
+// Copyright (C) 2003-2006,2012 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -194,6 +194,13 @@ LONG CCmdLineParser::GetLongVal(LPCTSTR sKey) const
 	return _tstol(it->second.c_str());
 }
 
+__int64 CCmdLineParser::GetLongLongVal(LPCTSTR sKey) const
+{
+	CValsMap::const_iterator it = findKey(sKey);
+	if (it == m_valueMap.end())
+		return 0;
+	return _ttoi64(it->second.c_str());
+}
 
 CCmdLineParser::ITERPOS CCmdLineParser::begin() const
 {

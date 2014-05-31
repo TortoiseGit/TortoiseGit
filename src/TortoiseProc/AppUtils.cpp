@@ -207,7 +207,8 @@ bool CAppUtils::StashPop(bool showChanges /* true */)
 
 BOOL CAppUtils::StartExtMerge(
 	const CTGitPath& basefile, const CTGitPath& theirfile, const CTGitPath& yourfile, const CTGitPath& mergedfile,
-	const CString& basename, const CString& theirname, const CString& yourname, const CString& mergedname, bool bReadOnly)
+	const CString& basename, const CString& theirname, const CString& yourname, const CString& mergedname, bool bReadOnly,
+	HWND resolveMsgHwnd)
 {
 
 	CRegString regCom = CRegString(_T("Software\\TortoiseGit\\Merge"));
@@ -254,6 +255,12 @@ BOOL CAppUtils::StartExtMerge(
 			com = com + _T(" /base:%base /theirs:%theirs /mine:%mine /merged:%merged");
 			com = com + _T(" /basename:%bname /theirsname:%tname /minename:%yname /mergedname:%mname");
 			com += _T(" /saverequired");
+			if (resolveMsgHwnd)
+			{
+				CString s;
+				s.Format(L" /resolvemsghwnd:%I64d", (__int64)resolveMsgHwnd);
+				com += s;
+			}
 		}
 		if (!g_sGroupingUUID.IsEmpty())
 		{
@@ -1525,7 +1532,7 @@ bool ParseHashesFromLsFile(BYTE_VECTOR &out, CString &hash1, CString &hash2, CSt
 	return false;
 }
 
-bool CAppUtils::ConflictEdit(CTGitPath &path,bool /*bAlternativeTool*/,bool revertTheirMy)
+bool CAppUtils::ConflictEdit(CTGitPath& path, bool /*bAlternativeTool = false*/, bool revertTheirMy /*= false*/, HWND resolveMsgHwnd /*= nullptr*/)
 {
 	bool bRet = false;
 
@@ -1648,9 +1655,9 @@ bool CAppUtils::ConflictEdit(CTGitPath &path,bool /*bAlternativeTool*/,bool reve
 	{
 		merge.SetFromWin(g_Git.m_CurrentDir+_T("\\")+merge.GetWinPathString());
 		if( revertTheirMy )
-			bRet = !!CAppUtils::StartExtMerge(base, mine, theirs, merge, _T("BASE"), _T("REMOTE"), _T("LOCAL"));
+			bRet = !!CAppUtils::StartExtMerge(base, mine, theirs, merge, _T("BASE"), _T("REMOTE"), _T("LOCAL"), CString(), false, resolveMsgHwnd);
 		else
-			bRet = !!CAppUtils::StartExtMerge(base, theirs, mine, merge,_T("BASE"), _T("REMOTE"), _T("LOCAL"));
+			bRet = !!CAppUtils::StartExtMerge(base, theirs, mine, merge, _T("BASE"), _T("REMOTE"), _T("LOCAL"), CString(), false, resolveMsgHwnd);
 
 	}
 	else

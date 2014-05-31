@@ -12,6 +12,7 @@ Released: Unreleased
  * Fixed issue #2155: Make "Delete Remote Tags..." more discoverable
  * Fixed issue #2164: allow Commit from Log > Working dir changes of selected files
  * Fixed issue #2096: Allow to disable blue text-label about git.exe execution timings on progress dialog
+ * Fixed issue #968: Rebase / Cherry Pick dialogs should update "conflict" status when conflicts are resolved
 
 == Bug Fixes ==
  * Fixed issue #2158: TortoiseGit sometimes crashes when doing Sync > Pull

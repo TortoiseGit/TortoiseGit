@@ -2079,7 +2079,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 
 			case IDGITLC_EDITCONFLICT:
 				{
-					if (CAppUtils::ConflictEdit(*filepath, false, this->m_bIsRevertTheirMy))
+					if (CAppUtils::ConflictEdit(*filepath, false, m_bIsRevertTheirMy, GetLogicalParent() ? GetLogicalParent()->GetSafeHwnd() : nullptr))
 					{
 						CString conflictedFile = g_Git.m_CurrentDir + _T("\\") + filepath->GetWinPathString();
 						if (!PathFileExists(conflictedFile) && NULL != GetLogicalParent() && NULL != GetLogicalParent()->GetSafeHwnd())
@@ -2640,7 +2640,7 @@ void CGitStatusListCtrl::OnNMDblclk(NMHDR *pNMHDR, LRESULT *pResult)
 	}
 	if( file->m_Action&CTGitPath::LOGACTIONS_UNMERGED )
 	{
-		if (CAppUtils::ConflictEdit(*file, false, m_bIsRevertTheirMy))
+		if (CAppUtils::ConflictEdit(*file, false, m_bIsRevertTheirMy, GetLogicalParent() ? GetLogicalParent()->GetSafeHwnd() : nullptr))
 		{
 			CString conflictedFile = g_Git.m_CurrentDir + _T("\\") + file->GetWinPathString();
 			if (!PathFileExists(conflictedFile) && NULL != GetLogicalParent() && NULL != GetLogicalParent()->GetSafeHwnd())

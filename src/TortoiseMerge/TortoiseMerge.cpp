@@ -481,11 +481,9 @@ BOOL CTortoiseMergeApp::InitInstance()
 		}
 	}
 
-#if 0
 	pFrame->resolveMsgWnd    = parser.HasVal(L"resolvemsghwnd")   ? (HWND)parser.GetLongLongVal(L"resolvemsghwnd")     : 0;
 	pFrame->resolveMsgWParam = parser.HasVal(L"resolvemsgwparam") ? (WPARAM)parser.GetLongLongVal(L"resolvemsgwparam") : 0;
 	pFrame->resolveMsgLParam = parser.HasVal(L"resolvemsglparam") ? (LPARAM)parser.GetLongLongVal(L"resolvemsglparam") : 0;
-#endif
 
 	// The one and only window has been initialized, so show and update it
 	pFrame->ActivateFrame();
