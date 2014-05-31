@@ -948,6 +948,8 @@ public:
 
 	CString						m_sUUID;			///< the UUID of the associated repository
 
+	CString						m_sDisplayedBranch; ///< When on LogDialog, what is the current displayed branch
+
 	bool						m_bIsRevertTheirMy;	///< at rebase case, Their and My version is revert.
 
 	CWnd						*m_hwndLogicalParent;
