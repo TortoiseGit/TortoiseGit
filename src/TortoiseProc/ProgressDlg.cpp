@@ -392,7 +392,10 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 			CString log;
 			log.Format(IDS_PROC_PROGRESS_GITUNCLEANEXIT, m_GitStatus);
 			CString err;
-			err.Format(_T("\r\n\r\n%s (%lu ms @ %s)\r\n"), log, tickSpent, strEndTime);
+			if (CRegDWORD(_T("Software\\TortoiseGit\\ShowGitexeTimings"), TRUE))
+				err.Format(_T("\r\n\r\n%s (%lu ms @ %s)\r\n"), log, tickSpent, strEndTime);
+			else
+				err.Format(_T("\r\n\r\n%s\r\n"), log);
 			InsertColorText(this->m_Log, err, RGB(255,0,0));
 			CSoundUtils::PlayTGitError();
 		}
@@ -402,7 +405,10 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 			CString temp;
 			temp.LoadString(IDS_SUCCESS);
 			CString log;
-			log.Format(_T("\r\n%s (%lu ms @ %s)\r\n"), temp, tickSpent, strEndTime);
+			if (CRegDWORD(_T("Software\\TortoiseGit\\ShowGitexeTimings"), TRUE))
+				log.Format(_T("\r\n%s (%lu ms @ %s)\r\n"), temp, tickSpent, strEndTime);
+			else
+				log.Format(_T("\r\n%s\r\n"), temp);
 			InsertColorText(this->m_Log, log, RGB(0,0,255));
 			this->DialogEnableWindow(IDCANCEL,FALSE);
 		}

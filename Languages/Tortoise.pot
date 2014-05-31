@@ -8213,6 +8213,10 @@ msgstr ""
 msgid "Show file name"
 msgstr ""
 
+#. Resource IDs: (1782)
+msgid "Show git.exe execution timings and timestamp"
+msgstr ""
+
 #. Resource IDs: (1264)
 msgid "Show i&gnored files"
 msgstr ""

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -36,6 +36,7 @@ CSetDialogs2::CSetDialogs2()
 	, m_dwAutocompletionTimeout(0)
 	, m_dwMaxHistory(25)
 	, m_bAutoSelect(TRUE)
+	, m_bShowGitexeTimings(TRUE)
 {
 	m_regAutoCloseGitProgress = CRegDWORD(_T("Software\\TortoiseGit\\AutoCloseGitProgress"));
 	m_regUseRecycleBin = CRegDWORD(_T("Software\\TortoiseGit\\RevertWithRecycleBin"), TRUE);
@@ -55,6 +56,8 @@ CSetDialogs2::CSetDialogs2()
 	m_bAutoSelect = (BOOL)(DWORD)m_regAutoSelect;
 	m_regStripCommentedLines = CRegDWORD(_T("Software\\TortoiseGit\\StripCommentedLines"), FALSE);
 	m_bStripCommentedLines = (BOOL)(DWORD)m_regStripCommentedLines;
+	m_regShowGitexeTimings = CRegDWORD(_T("Software\\TortoiseGit\\ShowGitexeTimings"), TRUE);
+	m_bShowGitexeTimings = (BOOL)(DWORD)m_regShowGitexeTimings;
 }
 
 CSetDialogs2::~CSetDialogs2()
@@ -76,6 +79,7 @@ void CSetDialogs2::DoDataExchange(CDataExchange* pDX)
 	DDV_MinMaxUInt(pDX, m_dwMaxHistory, 1, 100);
 	DDX_Check(pDX, IDC_SELECTFILESONCOMMIT, m_bAutoSelect);
 	DDX_Check(pDX, IDC_STRIPCOMMENTEDLINES, m_bStripCommentedLines);
+	DDX_Check(pDX, IDC_PROGRESSDLG_SHOW_TIMES, m_bShowGitexeTimings);
 }
 
 BEGIN_MESSAGE_MAP(CSetDialogs2, ISettingsPropPage)
@@ -89,6 +93,7 @@ BEGIN_MESSAGE_MAP(CSetDialogs2, ISettingsPropPage)
 	ON_EN_CHANGE(IDC_MAXHISTORY, OnChange)
 	ON_BN_CLICKED(IDC_SELECTFILESONCOMMIT, OnChange)
 	ON_BN_CLICKED(IDC_STRIPCOMMENTEDLINES, OnChange)
+	ON_BN_CLICKED(IDC_PROGRESSDLG_SHOW_TIMES, OnChange)
 END_MESSAGE_MAP()
 
 // CSetDialogs2 message handlers
@@ -157,6 +162,7 @@ BOOL CSetDialogs2::OnApply()
 	Store (m_dwMaxHistory, m_regMaxHistory);
 	Store (m_bAutoSelect, m_regAutoSelect);
 	Store (m_bStripCommentedLines, m_regStripCommentedLines);
+	Store(m_bShowGitexeTimings, m_regShowGitexeTimings);
 
 	SetModified(FALSE);
 	return ISettingsPropPage::OnApply();

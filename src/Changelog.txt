@@ -11,6 +11,7 @@ Released: Unreleased
  * Fixed issue #2144: TortoiseGit should support configuring pushurl for remotes
  * Fixed issue #2155: Make "Delete Remote Tags..." more discoverable
  * Fixed issue #2164: allow Commit from Log > Working dir changes of selected files
+ * Fixed issue #2096: Allow to disable blue text-label about git.exe execution timings on progress dialog
 
 == Bug Fixes ==
  * Fixed issue #2158: TortoiseGit sometimes crashes when doing Sync > Pull
