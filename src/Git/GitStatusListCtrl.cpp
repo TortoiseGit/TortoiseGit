@@ -1850,7 +1850,16 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 
 			case IDGITLC_EXPLORE:
 				{
-					ShellExecute(this->m_hWnd, _T("explore"), filepath->GetDirectory().GetWinPath(), NULL, NULL, SW_SHOW);
+					CString p = g_Git.m_CurrentDir + _T("\\") + filepath->GetWinPathString();
+					// if filepath does not exist any more, navigate to closest matching folder
+					while (!PathFileExists(p))
+					{
+						int pos = p.ReverseFind(_T('\\'));
+						if (pos <= 3)
+							break;
+						p = p.Left(pos);
+					}
+					ShellExecute(GetSafeHwnd(), _T("explore"), p, nullptr, nullptr, SW_SHOW);
 				}
 				break;
 
