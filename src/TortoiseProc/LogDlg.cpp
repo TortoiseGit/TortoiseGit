@@ -2562,12 +2562,19 @@ void CLogDlg::OnBnClickedAllBranch()
 	m_LogList.m_ShowMask &=~ (CGit::LOG_INFO_LOCAL_BRANCHES | CGit::LOG_INFO_ALL_BRANCH);
 
 	if (m_bAllBranch)
+	{
 		m_bAllBranch = BST_UNCHECKED;
+		m_ChangedFileListCtrl.m_sDisplayedBranch = m_LogList.GetRange();
+	}
 	else
 	{
 		m_bAllBranch = BST_CHECKED;
 		m_LogList.m_ShowMask|=CGit::LOG_INFO_ALL_BRANCH;
+		m_ChangedFileListCtrl.m_sDisplayedBranch.Empty();
 	}
+
+	// need to save value here, so that log dialogs started from now on also have AllBranch activated
+	m_regbAllBranch = m_bAllBranch;
 
 	UpdateData(FALSE);
 
@@ -2700,6 +2707,7 @@ void CLogDlg::ShowStartRef()
 void CLogDlg::SetRange(const CString& range)
 {
 	m_LogList.SetRange(range);
+	m_ChangedFileListCtrl.m_sDisplayedBranch = range;
 
 	ShowStartRef();
 }
