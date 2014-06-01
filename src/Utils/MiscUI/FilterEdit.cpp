@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012 - TortoiseGit
+// Copyright (C) 2012, 2014 - TortoiseGit
 // Copyright (C) 2007, 2012-2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -229,7 +229,7 @@ void CFilterEdit::OnLButtonUp(UINT nFlags, CPoint point)
 		CWnd *pOwner = GetOwner();
 		if (pOwner)
 		{
-			pOwner->SendMessage(m_iCancelClickedMessageId, 0, 0);
+			pOwner->SendMessage(m_iCancelClickedMessageId, (WPARAM)GetSafeHwnd(), 0);
 		}
 		Validate();
 	}
@@ -240,7 +240,7 @@ void CFilterEdit::OnLButtonUp(UINT nFlags, CPoint point)
 		{
 			RECT rc = m_rcInfoArea;
 			ClientToScreen(&rc);
-			pOwner->SendMessage(m_iButtonClickedMessageId, 0, (LPARAM)(LPRECT)&rc);
+			pOwner->SendMessage(m_iButtonClickedMessageId, (WPARAM)GetSafeHwnd(), (LPARAM)(LPRECT)&rc);
 		}
 	}
 
