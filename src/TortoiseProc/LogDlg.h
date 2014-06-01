@@ -44,6 +44,7 @@
 #define LOGFTIME_TIMER	102
 #define LOG_FILLPATCHVTIMER	103
 #define LOG_HEADER_ORDER_TIMER 104
+#define FILEFILTER_TIMER	105
 
 typedef int (__cdecl *GENERICCOMPAREFN)(const void * elem1, const void * elem2);
 
@@ -143,6 +144,7 @@ protected:
 	afx_msg void OnRefresh();
 	afx_msg void OnFocusFilter();
 	afx_msg void OnEditCopy();
+	afx_msg void OnEnChangeFileFilter();
 
 	virtual void OnCancel();
 	virtual void OnOK();
@@ -216,6 +218,8 @@ private:
 	bool				m_bSelectionMustBeContinuous;
 	bool				m_bSelectionMustBeSingle;
 	bool				m_bCancelled;
+
+	CFilterEdit			m_cFileFilter;
 
 	BOOL				m_iHidePaths;
 	bool				m_bFirstParent;
