@@ -4,5 +4,6 @@ cocoa
 gtk
 qt
 test
+scripts
 
 apply backgroundcolors.patch

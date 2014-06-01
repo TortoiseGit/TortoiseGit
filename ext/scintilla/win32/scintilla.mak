@@ -116,6 +116,7 @@ LEXOBJS=\
 	$(DIR_O)\LexCSS.obj \
 	$(DIR_O)\LexD.obj \
 	$(DIR_O)\LexDMAP.obj \
+	$(DIR_O)\LexDMIS.obj \
 	$(DIR_O)\LexECL.obj \
 	$(DIR_O)\LexEiffel.obj \
 	$(DIR_O)\LexErlang.obj \
@@ -368,6 +369,8 @@ $(DIR_O)\LexCSS.obj: ..\lexers\LexCSS.cxx $(LEX_HEADERS)
 $(DIR_O)\LexD.obj: ..\lexers\LexD.cxx $(LEX_HEADERS)
 
 $(DIR_O)\LexDMAP.obj: ..\lexers\LexDMAP.cxx $(LEX_HEADERS)
+
+$(DIR_O)\LexDMIS.obj: ..\lexers\LexDMIS.cxx $(LEX_HEADERS)
 
 $(DIR_O)\LexECL.obj: ..\lexers\LexECL.cxx $(LEX_HEADERS)
 
