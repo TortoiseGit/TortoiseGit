@@ -2064,6 +2064,8 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					sCmd.Format(_T("/command:log /path:\"%s\""), g_Git.m_CurrentDir + _T("\\") + filepath->GetWinPath());
 					if (cmd == IDGITLC_LOG && filepath->IsDirectory())
 						sCmd += _T(" /submodule");
+					if (!m_sDisplayedBranch.IsEmpty())
+						sCmd += _T(" /range:\"") + m_sDisplayedBranch + _T("\"");
 					CAppUtils::RunTortoiseGitProc(sCmd, false, !(cmd == IDGITLC_LOGSUBMODULE));
 				}
 				break;
@@ -2073,6 +2075,8 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					CTGitPath oldName(filepath->GetGitOldPathString());
 					CString sCmd;
 					sCmd.Format(_T("/command:log /path:\"%s\""), g_Git.m_CurrentDir + _T("\\") + oldName.GetWinPath());
+					if (!m_sDisplayedBranch.IsEmpty())
+						sCmd += _T(" /range:\"") + m_sDisplayedBranch + _T("\"");
 					CAppUtils::RunTortoiseGitProc(sCmd);
 				}
 				break;
