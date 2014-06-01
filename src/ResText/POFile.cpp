@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2012-2013 - TortoiseGit
-// Copyright (C) 2003-2008, 2011-2013 - TortoiseSVN
+// Copyright (C) 2003-2008, 2011-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -158,8 +158,7 @@ BOOL CPOFile::ParseFile(LPCTSTR szPath, BOOL bUpdateExisting, bool bAdjustEOLs)
 	} while (File.gcount() > 0);
 	printf(File.getloc().name().c_str());
 	File.close();
-	RESOURCEENTRY emptyentry;
-	emptyentry.menuID = 0;
+	RESOURCEENTRY emptyentry = {0};
 	(*this)[std::wstring(_T(""))] = emptyentry;
 	if (!m_bQuiet)
 		_ftprintf(stdout, _T("%d Entries found, %d were already translated and %d got deleted\n"), nEntries, nTranslated, nDeleted);
