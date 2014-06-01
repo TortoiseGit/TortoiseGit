@@ -71,6 +71,8 @@ BOOL CDeleteRemoteTagDlg::OnInitDialog()
 	m_ctrlTags.SetColumnWidth(0, LVSCW_AUTOSIZE_USEHEADER);
 	m_ctrlTags.SetExtendedStyle(LVS_EX_DOUBLEBUFFER);
 
+	GetDlgItem(IDC_EDIT_REMOTE)->SetWindowText(m_sRemote);
+
 	Refresh();
 
 	EnableSaveRestore(_T("DeleteRemoteTagDlg"));
