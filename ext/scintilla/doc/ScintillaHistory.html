@@ -447,6 +447,7 @@
 	<td>Mike M</td>
       </tr><tr>
 	<td>nkmathew</td>
+	<td>Andreas Tscharner</td>
     </tr>
     </table>
     <p>
@@ -457,6 +458,100 @@
         <a href="http://sourceforge.net/projects/icon-collection/">
         Icons</a> Copyright(C) 1998 by Dean S. Jones<br />
       </li>
+    </ul>
+    <h3>
+       <a href="http://prdownloads.sourceforge.net/scintilla/scite343.zip?download">Release 3.4.3</a>
+    </h3>
+    <ul>
+	<li>
+	Released 27 May 2014.
+	</li>
+	<li>
+	Fix hangs and crashes in DLL at shutdown on Windows when using Direct2D.
+	</li>
+    </ul>
+    <h3>
+       <a href="http://prdownloads.sourceforge.net/scintilla/scite342.zip?download">Release 3.4.2</a>
+    </h3>
+    <ul>
+	<li>
+	Released 22 May 2014.
+	</li>
+	<li>
+	Insertions can be filtered or modified by calling SCI_CHANGEINSERTION inside a handler for
+	SC_MOD_INSERTCHECK.
+	</li>
+	<li>
+	DMIS lexer added. DMIS is a language for coordinate measuring machines.
+	<a href="http://sourceforge.net/p/scintilla/feature-requests/1049/">Feature #1049.</a>
+	</li>
+	<li>
+	Line state may be displayed in the line number margin to aid in debugging lexing and folding with
+	SC_FOLDFLAG_LINESTATE (128).
+	</li>
+	<li>
+	C++ lexer understands more preprocessor statements. #if defined SYMBOL is understood.
+	Some macros with arguments can be understood and these may be predefined in keyword set 4
+	(keywords5 for SciTE)
+	with syntax similar to CHECKVERSION(x)=(x&lt;3).
+	<a href="http://sourceforge.net/p/scintilla/feature-requests/1051/">Feature #1051.</a>
+	</li>
+	<li>
+	C++ lexer can highlight task marker keywords in comments as SCE_C_TASKMARKER.
+	</li>
+	<li>
+	C++ lexer can optionally highlight escape sequences in strings as SCE_C_ESCAPESEQUENCE.
+	</li>
+	<li>
+	C++ lexer supports Go back quoted raw string literals with lexer.cpp.backquoted.strings option.
+	<a href="http://sourceforge.net/p/scintilla/feature-requests/1047/">Feature #1047.</a>
+	</li>
+	<li>
+	SciTE performs word and search match highlighting as an idle task to improve interactivity
+	and allow use of these features on large files.
+	</li>
+	<li>
+	Bug fixed on Cocoa where previous caret lines were visible.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1593/">Bug #1593</a>.
+	</li>
+	<li>
+	Bug fixed where caret remained invisible when period set to 0.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1592/">Bug #1592</a>.
+	</li>
+	<li>
+	Fixed display flashing when scrolling with GTK+ 3.10.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1567/">Bug #1567</a>.
+	</li>
+	<li>
+	Fixed calls and constants deprecated in GTK+ 3.10.
+	</li>
+	<li>
+	Fixed bug on Windows where WM_GETTEXT did not provide data in UTF-16 for Unicode window.
+	<a href="http://sourceforge.net/p/scintilla/bugs/685/">Bug #685</a>.
+	</li>
+	<li>
+	For SciTE, protect access to variables used by threads with a mutex to prevent data races.
+	</li>
+	<li>
+	For SciTE on GTK+ fix thread object leaks.
+	Display the version of GTK+ compiled against in the about box.
+	</li>
+	<li>
+	For SciTE on GTK+ 3.10, fix the size of the tab bar's content and use
+	freedesktop.org standard icon names where possible.
+	</li>
+	<li>
+	For SciTE on Windows, fix bug where invoking help resubmitted the
+	running program.
+	<a href="http://sourceforge.net/p/scintilla/bugs/272/">Bug #272</a>.
+	</li>
+	<li>
+	SciTE's highlight current word feature no longer matches the selection when it contains space.
+	</li>
+	<li>
+	For building SciTE in Visual C++, the win\SciTE.vcxproj project file should be used.
+	The boundscheck directory and its project and solution files have been removed.
+	</li>
     </ul>
     <h3>
        <a href="http://prdownloads.sourceforge.net/scintilla/scite341.zip?download">Release 3.4.1</a>

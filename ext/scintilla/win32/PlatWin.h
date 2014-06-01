@@ -14,7 +14,7 @@ namespace Scintilla {
 
 extern bool IsNT();
 extern void Platform_Initialise(void *hInstance);
-extern void Platform_Finalise();
+extern void Platform_Finalise(bool fromDllMain);
 
 #if defined(USE_D2D)
 extern bool LoadD2D();
