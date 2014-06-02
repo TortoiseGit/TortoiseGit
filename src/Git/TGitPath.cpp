@@ -254,26 +254,28 @@ const CString& CTGitPath::GetUIPathString() const
 
 void CTGitPath::SetFwdslashPath(const CString& sPath) const
 {
-	m_sFwdslashPath = sPath;
-	m_sFwdslashPath.Replace('\\', '/');
+	CString path = sPath;
+	path.Replace('\\', '/');
 
 	// We don't leave a trailing /
-	m_sFwdslashPath.TrimRight('/');
-	m_sFwdslashPath.Replace(L"//?/", L"");
+	path.TrimRight('/');
+	path.Replace(L"//?/", L"");
 
-	SanitizeRootPath(m_sFwdslashPath, true);
+	SanitizeRootPath(path, true);
 
-	m_sFwdslashPath.Replace(_T("file:////"), _T("file://"));
+	path.Replace(_T("file:////"), _T("file://"));
+	m_sFwdslashPath = path;
 
 	m_sUTF8FwdslashPath.Empty();
 }
 
 void CTGitPath::SetBackslashPath(const CString& sPath) const
 {
-	m_sBackslashPath = sPath;
-	m_sBackslashPath.Replace('/', '\\');
-	m_sBackslashPath.TrimRight('\\');
-	SanitizeRootPath(m_sBackslashPath, false);
+	CString path = sPath;
+	path.Replace('/', '\\');
+	path.TrimRight('\\');
+	SanitizeRootPath(path, false);
+	m_sBackslashPath = path;
 }
 
 void CTGitPath::SetUTF8FwdslashPath(const CString& sPath) const
