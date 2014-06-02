@@ -535,6 +535,7 @@ protected:  // variables
 
 	UnicodeType		m_texttype;		///< the text encoding this view uses
 	EOL				m_lineendings;	///< the line endings the view uses
+	bool			m_bInsertMode;
 
 	char			m_szTip[MAX_PATH*2+1];
 	wchar_t			m_wszTip[MAX_PATH*2+1];
