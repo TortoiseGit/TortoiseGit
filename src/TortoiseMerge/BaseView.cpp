@@ -3449,11 +3449,17 @@ void CBaseView::UpdateCaret()
 		nCaretOffset >= m_nOffsetChar &&
 		nCaretOffset < (m_nOffsetChar+GetScreenChars()))
 	{
+		POINT pt1 = TextToClient(ptCaretPos);
 		if (m_bInsertMode)
 			CreateSolidCaret(2, GetLineHeight());
 		else
-			CreateSolidCaret(GetCharWidth(), GetLineHeight());
-		SetCaretPos(TextToClient(ptCaretPos));
+		{
+			POINT pt = { ptCaretPos.x + 1, ptCaretPos.y };
+			POINT pt2 = TextToClient(pt);
+			int width = max(GetCharWidth(), pt2.x - pt1.x);
+			CreateSolidCaret(width, GetLineHeight());
+		}
+		SetCaretPos(pt1);
 		ShowCaret();
 	}
 	else
