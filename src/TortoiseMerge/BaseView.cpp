@@ -3945,95 +3945,7 @@ void CBaseView::PasteText()
 	sClipboardText.Replace(_T("\r\n"), _T("\r"));
 	sClipboardText.Replace('\n', '\r');
 
-	ResetUndoStep();
-
-	POINT ptCaretViewPos = GetCaretViewPosition();
-	int nLeft = ptCaretViewPos.x;
-	int nViewLine = ptCaretViewPos.y;
-
-	if ((nViewLine==0)&&(GetViewCount()==0))
-		OnChar(VK_RETURN, 0, 0);
-
-	std::vector<CString> lines;
-	int nStart = 0;
-	int nEolPos = 0;
-	while ((nEolPos = sClipboardText.Find('\r', nEolPos))>=0)
-	{
-		CString sLine = sClipboardText.Mid(nStart, nEolPos-nStart);
-		lines.push_back(sLine);
-		nEolPos++;
-		nStart = nEolPos;
-	}
-	CString sLine = sClipboardText.Mid(nStart);
-	lines.push_back(sLine);
-
-	int nLinesToPaste = (int)lines.size();
-	if (nLinesToPaste > 1)
-	{
-		// multiline text
-
-		// We want to undo the multiline insertion in a single step.
-		CUndo::GetInstance().BeginGrouping();
-
-		sLine = GetViewLineChars(nViewLine);
-		CString sLineLeft = sLine.Left(nLeft);
-		CString sLineRight = sLine.Right(sLine.GetLength() - nLeft);
-		EOL eOriginalEnding = GetViewLineEnding(nViewLine);
-		viewdata newLine(_T(""), DIFFSTATE_EDITED, 1, m_lineendings, HIDESTATE_SHOWN);
-		if (!lines[0].IsEmpty() || !sLineRight.IsEmpty() || (eOriginalEnding!=m_lineendings))
-		{
-			newLine.sLine = sLineLeft + lines[0];
-			SetViewData(nViewLine, newLine);
-		}
-
-		int nInsertLine = nViewLine;
-		for (int i = 1; i < nLinesToPaste-1; i++)
-		{
-			newLine.sLine = lines[i];
-			InsertViewData(++nInsertLine, newLine);
-		}
-		newLine.sLine = lines[nLinesToPaste-1] + sLineRight;
-		newLine.ending = eOriginalEnding;
-		InsertViewData(++nInsertLine, newLine);
-
-		SetModified();
-		SaveUndoStep();
-
-		// adds new lines everywhere except me
-		if (IsViewGood(m_pwndLeft) && m_pwndLeft!=this)
-		{
-			m_pwndLeft->InsertViewEmptyLines(nViewLine+1, nLinesToPaste-1);
-		}
-		if (IsViewGood(m_pwndRight) && m_pwndRight!=this)
-		{
-			m_pwndRight->InsertViewEmptyLines(nViewLine+1, nLinesToPaste-1);
-		}
-		if (IsViewGood(m_pwndBottom) && m_pwndBottom!=this)
-		{
-			m_pwndBottom->InsertViewEmptyLines(nViewLine+1, nLinesToPaste-1);
-		}
-		SaveUndoStep();
-
-		UpdateViewLineNumbers();
-		CUndo::GetInstance().EndGrouping();
-
-		ptCaretViewPos = SetupPoint(lines[nLinesToPaste-1].GetLength(), nInsertLine);
-	}
-	else
-	{
-		 // single line text - just insert it
-		sLine = GetViewLineChars(nViewLine);
-		sLine.Insert(nLeft, sClipboardText);
-		ptCaretViewPos = SetupPoint(nLeft + sClipboardText.GetLength(), nViewLine);
-		SetViewLine(nViewLine, sLine);
-		SetViewState(nViewLine, DIFFSTATE_EDITED);
-		SetModified();
-		SaveUndoStep();
-	}
-
-	RefreshViews();
-	BuildAllScreen2ViewVector();
-	UpdateCaretViewPosition(ptCaretViewPos);
+	InsertText(sClipboardText);
 }
 
 void CBaseView::OnCaretDown()
@@ -5218,6 +5130,7 @@ void CBaseView::OnEditFind()
 	m_pFindDialog->Create(this);
 
 	m_pFindDialog->SetFindString(HasTextSelection() ? GetSelectedText() : L"");
+	m_pFindDialog->SetReadonly(m_bReadonly);
 }
 
 LRESULT CBaseView::OnFindDialogMessage(WPARAM wParam, LPARAM /*lParam*/)
@@ -5260,6 +5173,54 @@ LRESULT CBaseView::OnFindDialogMessage(WPARAM wParam, LPARAM /*lParam*/)
 			CString matches;
 			matches.Format(format, count);
 			m_pFindDialog->SetStatusText(matches);
+		}
+		else if ((CFindDlg::FindType)wParam == CFindDlg::FindType::Replace)
+		{
+			if (!IsWritable())
+				return 0;
+			bool bFound = false;
+			if (m_pFindDialog->SearchUp())
+				bFound = Search(SearchPrevious, true, true, false);
+			else
+				bFound = Search(SearchNext, true, true, false);
+			if (bFound)
+			{
+				CString sReplaceText = m_pFindDialog->GetReplaceString();
+				CUndo::GetInstance().BeginGrouping();
+				RemoveSelectedText();
+				InsertText(sReplaceText);
+				CUndo::GetInstance().EndGrouping();
+			}
+
+		}
+		else if ((CFindDlg::FindType)wParam == CFindDlg::FindType::ReplaceAll)
+		{
+			if (!IsWritable())
+				return 0;
+			bool bFound = false;
+			int replaceCount = 0;
+			POINT lastPoint = m_ptSelectionViewPosStart;
+			m_ptSelectionViewPosStart.x = m_ptSelectionViewPosStart.y = 0;
+			CUndo::GetInstance().BeginGrouping();
+			do
+			{
+				bFound = Search(SearchNext, true, false, true);
+				if (bFound)
+				{
+					CString sReplaceText = m_pFindDialog->GetReplaceString();
+					RemoveSelectedText();
+					InsertText(sReplaceText);
+					++replaceCount;
+				}
+			} while (bFound);
+			CUndo::GetInstance().EndGrouping();
+			if (replaceCount == 0)
+				m_ptSelectionViewPosStart = lastPoint;
+			CString message;
+			message.Format(IDS_FIND_REPLACED, replaceCount);
+			if (m_pFindDialog)
+				m_pFindDialog->SetStatusText(message, RGB(0, 0, 0));
+
 		}
 	}
 
@@ -5343,26 +5304,26 @@ bool CBaseView::StringFound(const CString& str, SearchDirection srchDir, int& st
 
 void CBaseView::OnEditFindprev()
 {
-	Search(SearchPrevious);
+	Search(SearchPrevious, false, true, false);
 }
 
 void CBaseView::OnEditFindnext()
 {
-	Search(SearchNext);
+	Search(SearchNext, false, true, false);
 }
 
-void CBaseView::Search(SearchDirection srchDir)
+bool CBaseView::Search(SearchDirection srchDir, bool useStart, bool flashIfNotFound, bool stopEof)
 {
 	if (m_sFindText.IsEmpty())
-		return;
+		return false;
 	if(!m_pViewData)
-		return;
+		return false;
 
-	POINT start = m_ptSelectionViewPosEnd;
+	POINT start = useStart ? m_ptSelectionViewPosStart : m_ptSelectionViewPosEnd;
 	POINT end;
 	end.y = m_pViewData->GetCount()-1;
 	if (end.y < 0)
-		return;
+		return false;
 
 	if (srchDir==SearchNext)
 		end.x = GetViewLineLength(end.y);
@@ -5389,19 +5350,29 @@ void CBaseView::Search(SearchDirection srchDir)
 	{
 		if (nViewLine < 0)
 		{
+			if (stopEof)
+				return false;
 			nViewLine = m_pViewData->GetCount()-1;
 			startline = start.y;
-			if (m_pFindDialog)
-				m_pFindDialog->SetStatusText(CString(MAKEINTRESOURCE(IDS_FIND_TOPREACHED)), RGB(63, 127, 47));
-			m_pMainFrame->FlashWindowEx(FLASHW_ALL, 2, 100);
+			if (flashIfNotFound)
+			{
+				if (m_pFindDialog)
+					m_pFindDialog->SetStatusText(CString(MAKEINTRESOURCE(IDS_FIND_TOPREACHED)), RGB(63, 127, 47));
+				m_pMainFrame->FlashWindowEx(FLASHW_ALL, 2, 100);
+			}
 		}
 		if (nViewLine > end.y)
 		{
+			if (stopEof)
+				return false;
 			nViewLine = 0;
 			startline = start.y;
-			if (m_pFindDialog)
-				m_pFindDialog->SetStatusText(CString(MAKEINTRESOURCE(IDS_FIND_BOTTOMREACHED)), RGB(63, 127, 47));
-			m_pMainFrame->FlashWindowEx(FLASHW_ALL, 2, 100);
+			if (flashIfNotFound)
+			{
+				if (m_pFindDialog)
+					m_pFindDialog->SetStatusText(CString(MAKEINTRESOURCE(IDS_FIND_BOTTOMREACHED)), RGB(63, 127, 47));
+				m_pMainFrame->FlashWindowEx(FLASHW_ALL, 2, 100);
+			}
 		}
 		switch (m_pViewData->GetState(nViewLine))
 		{
@@ -5454,7 +5425,7 @@ void CBaseView::Search(SearchDirection srchDir)
 					UpdateViewsCaretPosition();
 					EnsureCaretVisible();
 					Invalidate();
-					return;
+					return true;
 				}
 			}
 			break;
@@ -5464,17 +5435,21 @@ void CBaseView::Search(SearchDirection srchDir)
 		{
 			if (nViewLine == startline)
 			{
-				CString message;
-				message.Format(IDS_FIND_NOTFOUND, m_sFindText);
-				if (m_pFindDialog)
-					m_pFindDialog->SetStatusText(message, RGB(255, 0, 0));
-				::MessageBeep(0xFFFFFFFF);
-				m_pMainFrame->FlashWindowEx(FLASHW_ALL, 3, 100);
+				if (flashIfNotFound)
+				{
+					CString message;
+					message.Format(IDS_FIND_NOTFOUND, m_sFindText);
+					if (m_pFindDialog)
+						m_pFindDialog->SetStatusText(message, RGB(255, 0, 0));
+					::MessageBeep(0xFFFFFFFF);
+					m_pMainFrame->FlashWindowEx(FLASHW_ALL, 3, 100);
+				}
 				break;
 			}
 		}
 	}
 	m_pMainFrame->m_nMoveMovesToIgnore = MOVESTOIGNORE;
+	return false;
 }
 
 CString CBaseView::GetSelectedText() const
@@ -6245,4 +6220,97 @@ CBaseView::TWhitecharsProperties CBaseView::GetWhitecharsProperties()
 		}
 	}
 	return oRet;
+}
+
+void CBaseView::InsertText(const CString& sText)
+{
+	ResetUndoStep();
+
+	POINT ptCaretViewPos = GetCaretViewPosition();
+	int nLeft = ptCaretViewPos.x;
+	int nViewLine = ptCaretViewPos.y;
+
+	if ((nViewLine == 0) && (GetViewCount() == 0))
+		OnChar(VK_RETURN, 0, 0);
+
+	std::vector<CString> lines;
+	int nStart = 0;
+	int nEolPos = 0;
+	while ((nEolPos = sText.Find('\r', nEolPos)) >= 0)
+	{
+		CString sLine = sText.Mid(nStart, nEolPos - nStart);
+		lines.push_back(sLine);
+		nEolPos++;
+		nStart = nEolPos;
+	}
+	CString sLine = sText.Mid(nStart);
+	lines.push_back(sLine);
+
+	int nLinesToPaste = (int)lines.size();
+	if (nLinesToPaste > 1)
+	{
+		// multiline text
+
+		// We want to undo the multiline insertion in a single step.
+		CUndo::GetInstance().BeginGrouping();
+
+		sLine = GetViewLineChars(nViewLine);
+		CString sLineLeft = sLine.Left(nLeft);
+		CString sLineRight = sLine.Right(sLine.GetLength() - nLeft);
+		EOL eOriginalEnding = GetViewLineEnding(nViewLine);
+		viewdata newLine(L"", DIFFSTATE_EDITED, 1, m_lineendings, HIDESTATE_SHOWN);
+		if (!lines[0].IsEmpty() || !sLineRight.IsEmpty() || (eOriginalEnding != m_lineendings))
+		{
+			newLine.sLine = sLineLeft + lines[0];
+			SetViewData(nViewLine, newLine);
+		}
+
+		int nInsertLine = nViewLine;
+		for (int i = 1; i < nLinesToPaste - 1; i++)
+		{
+			newLine.sLine = lines[i];
+			InsertViewData(++nInsertLine, newLine);
+		}
+		newLine.sLine = lines[nLinesToPaste - 1] + sLineRight;
+		newLine.ending = eOriginalEnding;
+		InsertViewData(++nInsertLine, newLine);
+
+		SetModified();
+		SaveUndoStep();
+
+		// adds new lines everywhere except me
+		if (IsViewGood(m_pwndLeft) && m_pwndLeft != this)
+		{
+			m_pwndLeft->InsertViewEmptyLines(nViewLine + 1, nLinesToPaste - 1);
+		}
+		if (IsViewGood(m_pwndRight) && m_pwndRight != this)
+		{
+			m_pwndRight->InsertViewEmptyLines(nViewLine + 1, nLinesToPaste - 1);
+		}
+		if (IsViewGood(m_pwndBottom) && m_pwndBottom != this)
+		{
+			m_pwndBottom->InsertViewEmptyLines(nViewLine + 1, nLinesToPaste - 1);
+		}
+		SaveUndoStep();
+
+		UpdateViewLineNumbers();
+		CUndo::GetInstance().EndGrouping();
+
+		ptCaretViewPos = SetupPoint(lines[nLinesToPaste - 1].GetLength(), nInsertLine);
+	}
+	else
+	{
+		// single line text - just insert it
+		sLine = GetViewLineChars(nViewLine);
+		sLine.Insert(nLeft, sText);
+		ptCaretViewPos = SetupPoint(nLeft + sText.GetLength(), nViewLine);
+		SetViewLine(nViewLine, sLine);
+		SetViewState(nViewLine, DIFFSTATE_EDITED);
+		SetModified();
+		SaveUndoStep();
+	}
+
+	RefreshViews();
+	BuildAllScreen2ViewVector();
+	UpdateCaretViewPosition(ptCaretViewPos);
 }

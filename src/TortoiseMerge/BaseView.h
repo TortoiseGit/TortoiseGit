@@ -407,12 +407,13 @@ protected:  // methods
 
 	enum			SearchDirection{SearchNext=0, SearchPrevious=1};
 	bool			StringFound(const CString& str, SearchDirection srchDir, int& start, int& end) const;
-	void			Search(SearchDirection srchDir);
+	bool			Search(SearchDirection srchDir, bool useStart, bool flashIfNotFound, bool stopEof);
 	void			BuildFindStringArray();
 
 	void			RemoveLine(int nLineIndex);
 	void			RemoveSelectedText();
 	void			PasteText();
+	void			InsertText(const CString& sText);
 	void			AddUndoViewLine(int nViewLine, bool bAddEmptyLine = false);
 
 	bool			MoveCaretLeft();
