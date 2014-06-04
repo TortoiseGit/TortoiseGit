@@ -2098,7 +2098,7 @@ int CBaseView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	if (CView::OnCreate(lpCreateStruct) == -1)
 		return -1;
 
-	memset(&m_lfBaseFont, 0, sizeof(m_lfBaseFont));
+	SecureZeroMemory(&m_lfBaseFont, sizeof(m_lfBaseFont));
 	//lstrcpy(m_lfBaseFont.lfFaceName, _T("Courier New"));
 	//lstrcpy(m_lfBaseFont.lfFaceName, _T("FixedSys"));
 	m_lfBaseFont.lfHeight = 0;
@@ -2309,11 +2309,11 @@ void CBaseView::OnContextMenu(CPoint point, DiffStates state)
 		CString temp;
 		TWhitecharsProperties oWhites = GetWhitecharsProperties();
 		temp.LoadString(IDS_EDIT_TAB2SPACE);
-		popup.AppendMenu(MF_STRING | oWhites.HasTabsToConvert ? MF_ENABLED : (MF_DISABLED|MF_GRAYED), POPUPCOMMAND_TABTOSPACES, temp);
+		popup.AppendMenu((MF_STRING | oWhites.HasTabsToConvert) ? MF_ENABLED : (MF_DISABLED|MF_GRAYED), POPUPCOMMAND_TABTOSPACES, temp);
 		temp.LoadString(IDS_EDIT_SPACE2TAB);
-		popup.AppendMenu(MF_STRING | oWhites.HasSpacesToConvert ? MF_ENABLED : (MF_DISABLED|MF_GRAYED), POPUPCOMMAND_SPACESTOTABS, temp);
+		popup.AppendMenu((MF_STRING | oWhites.HasSpacesToConvert) ? MF_ENABLED : (MF_DISABLED|MF_GRAYED), POPUPCOMMAND_SPACESTOTABS, temp);
 		temp.LoadString(IDS_EDIT_TRIM);
-		popup.AppendMenu(MF_STRING | oWhites.HasTrailWhiteChars ? MF_ENABLED : (MF_DISABLED|MF_GRAYED), POPUPCOMMAND_REMOVETRAILWHITES, temp);
+		popup.AppendMenu((MF_STRING | oWhites.HasTrailWhiteChars) ? MF_ENABLED : (MF_DISABLED|MF_GRAYED), POPUPCOMMAND_REMOVETRAILWHITES, temp);
 
 		// add eol submenu
 		if (!popupEols.CreatePopupMenu())
