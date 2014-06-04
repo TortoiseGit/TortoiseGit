@@ -498,7 +498,19 @@ UINT CMessageBox::GoModal(CWnd * pWnd, const CString& title, const CString& msg,
 		pDC = pWnd->GetDC();
 	else
 		pDC = GetDesktopWindow()->GetDC();
-	int pix = -MulDiv(m_LogFont.lfHeight, 72, GetDeviceCaps(pDC->m_hDC, LOGPIXELSY));
+	HDC hdc;
+	if (pDC)
+		hdc = pDC->m_hDC;
+	else
+		hdc = ::GetDC(NULL);
+	if (!hdc)
+	{
+		HWND hw = pWnd ? pWnd->m_hWnd : nullptr;
+		int defButton = nDefaultButton == 1 ? MB_DEFBUTTON1 : nDefaultButton == 2 ? MB_DEFBUTTON2 : nDefaultButton == 3 ? MB_DEFBUTTON3 : 0;
+		return ::MessageBox(hw, msg, title, m_uType | defButton);
+	}
+
+	int pix = -MulDiv(m_LogFont.lfHeight, 72, GetDeviceCaps(hdc, LOGPIXELSY));
 	CDlgTemplate dialogTemplate = CDlgTemplate(title, WS_CAPTION | DS_CENTER,
 		0, 0, 0, 0, m_LogFont.lfFaceName, pix);
 	dialogTemplate.AddButton(_T("Button1"), WS_CHILD | WS_VISIBLE | WS_TABSTOP | BS_PUSHBUTTON | ((nDefaultButton == 1) ? BS_DEFPUSHBUTTON : 0), 0,
