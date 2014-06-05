@@ -83,8 +83,8 @@ public: // methods
 	void			GoToLine(int nNewLine, BOOL bAll = TRUE);
 	void			ScrollToChar(int nNewOffsetChar, BOOL bTrackScrollBar = TRUE);
 	void			ScrollAllToChar(int nNewOffsetChar, BOOL bTrackScrollBar = TRUE);
-	void			SetReadonly(bool bReadonly = true) {m_bReadonly = bReadonly;}
-	void			SetWritable(bool bWritable = true) {m_bReadonly = !bWritable;}
+	void			SetReadonly(bool bReadonly = true) {m_bReadonly = bReadonly; if (m_pFindDialog) m_pFindDialog->SetReadonly(m_bReadonly); }
+	void			SetWritable(bool bWritable = true) {m_bReadonly = !bWritable; if (m_pFindDialog) m_pFindDialog->SetReadonly(m_bReadonly); }
 	void			SetWritableIsChangable(bool bWritableIsChangable = true) {m_bReadonlyIsChangable = bWritableIsChangable;}
 	void			SetTarget(bool bTarget = true) {m_bTarget = bTarget;}
 	bool			IsReadonly() const {return m_bReadonly;}

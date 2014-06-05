@@ -87,4 +87,5 @@ private:
 	CRegDWORD		m_regLimitToDiffs;
 	CRegDWORD		m_regWholeWord;
 	COLORREF		m_clrFindStatus;
+	bool			m_bReadonly;
 };

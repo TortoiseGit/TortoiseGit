@@ -36,6 +36,7 @@ CFindDlg::CFindDlg(CWnd* pParent /*=NULL*/)
 	, m_bSearchUp(FALSE)
 	, m_FindMsg(0)
 	, m_clrFindStatus(RGB(0, 0, 255))
+	, m_bReadonly(false)
 	, m_regMatchCase(L"Software\\TortoiseGitMerge\\FindMatchCase", FALSE)
 	, m_regLimitToDiffs(L"Software\\TortoiseGitMerge\\FindLimitToDiffs", FALSE)
 	, m_regWholeWord(L"Software\\TortoiseGitMerge\\FindWholeWord", FALSE)
@@ -134,8 +135,8 @@ void CFindDlg::OnCbnEditchangeFindcombo()
 {
 	UpdateData();
 	GetDlgItem(IDOK)->EnableWindow(!m_FindCombo.GetString().IsEmpty());
-	GetDlgItem(IDC_REPLACE)->EnableWindow(!m_ReplaceCombo.GetString().IsEmpty());
-	GetDlgItem(IDC_REPLACEALL)->EnableWindow(!m_ReplaceCombo.GetString().IsEmpty());
+	GetDlgItem(IDC_REPLACE)->EnableWindow(!m_bReadonly && !m_FindCombo.GetString().IsEmpty());
+	GetDlgItem(IDC_REPLACEALL)->EnableWindow(!m_bReadonly && !m_FindCombo.GetString().IsEmpty());
 }
 
 void CFindDlg::OnBnClickedCount()
@@ -183,9 +184,10 @@ void CFindDlg::SetStatusText(const CString& str, COLORREF color)
 
 void CFindDlg::SetReadonly(bool bReadonly)
 {
+	m_bReadonly = bReadonly;
 	m_ReplaceCombo.EnableWindow(bReadonly ? FALSE : TRUE);
-	GetDlgItem(IDC_REPLACE)->EnableWindow(bReadonly ? FALSE : TRUE);
-	GetDlgItem(IDC_REPLACEALL)->EnableWindow(bReadonly ? FALSE : TRUE);
+	GetDlgItem(IDC_REPLACE)->EnableWindow(!m_bReadonly && !m_FindCombo.GetString().IsEmpty());
+	GetDlgItem(IDC_REPLACEALL)->EnableWindow(!m_bReadonly && !m_FindCombo.GetString().IsEmpty());
 }
 
 void CFindDlg::OnBnClickedReplace()
@@ -198,8 +200,6 @@ void CFindDlg::OnBnClickedReplace()
 	m_regLimitToDiffs = m_bLimitToDiffs;
 	m_regWholeWord = m_bWholeWord;
 
-	if (m_ReplaceCombo.GetString().IsEmpty())
-		return;
 	m_bFindNext = true;
 	if (m_pParent)
 		m_pParent->SendMessage(m_FindMsg, FindType::Replace);
@@ -218,8 +218,6 @@ void CFindDlg::OnBnClickedReplaceall()
 	m_regLimitToDiffs = m_bLimitToDiffs;
 	m_regWholeWord = m_bWholeWord;
 
-	if (m_ReplaceCombo.GetString().IsEmpty())
-		return;
 	m_bFindNext = true;
 	if (m_pParent)
 		m_pParent->SendMessage(m_FindMsg, FindType::ReplaceAll);
