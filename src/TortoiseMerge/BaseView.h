@@ -83,8 +83,8 @@ public: // methods
 	void			GoToLine(int nNewLine, BOOL bAll = TRUE);
 	void			ScrollToChar(int nNewOffsetChar, BOOL bTrackScrollBar = TRUE);
 	void			ScrollAllToChar(int nNewOffsetChar, BOOL bTrackScrollBar = TRUE);
-	void			SetReadonly(bool bReadonly = true) {m_bReadonly = bReadonly;}
-	void			SetWritable(bool bWritable = true) {m_bReadonly = !bWritable;}
+	void			SetReadonly(bool bReadonly = true) {m_bReadonly = bReadonly; if (m_pFindDialog) m_pFindDialog->SetReadonly(m_bReadonly); }
+	void			SetWritable(bool bWritable = true) {m_bReadonly = !bWritable; if (m_pFindDialog) m_pFindDialog->SetReadonly(m_bReadonly); }
 	void			SetWritableIsChangable(bool bWritableIsChangable = true) {m_bReadonlyIsChangable = bWritableIsChangable;}
 	void			SetTarget(bool bTarget = true) {m_bTarget = bTarget;}
 	bool			IsReadonly() const {return m_bReadonly;}
@@ -407,12 +407,13 @@ protected:  // methods
 
 	enum			SearchDirection{SearchNext=0, SearchPrevious=1};
 	bool			StringFound(const CString& str, SearchDirection srchDir, int& start, int& end) const;
-	void			Search(SearchDirection srchDir);
+	bool			Search(SearchDirection srchDir, bool useStart, bool flashIfNotFound, bool stopEof);
 	void			BuildFindStringArray();
 
 	void			RemoveLine(int nLineIndex);
 	void			RemoveSelectedText();
 	void			PasteText();
+	void			InsertText(const CString& sText);
 	void			AddUndoViewLine(int nViewLine, bool bAddEmptyLine = false);
 
 	bool			MoveCaretLeft();

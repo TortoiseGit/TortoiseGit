@@ -95,6 +95,7 @@
 #define IDC_FINDCOMBO                   1029
 #define IDC_FGNORMAL                    1030
 #define IDC_FONTNAMES                   1030
+#define IDC_REPLACECOMBO                1030
 #define IDC_BKREMOVED                   1031
 #define IDC_FGREMOVED                   1032
 #define IDC_BKWHITESPACEREMOVED         1033
@@ -195,10 +196,12 @@
 #define IDS_FIND_TOPREACHED             1506
 #define IDC_EDIT                        1506
 #define IDC_REMOVE                      1507
+#define IDS_FIND_REPLACED               1507
 #define IDC_NAME                        1508
 #define IDC_REGEX                       1509
 #define IDC_NAME3                       1511
 #define IDC_REPLACE                     1511
+#define IDC_REPLACEALL                  1512
 #define IDS_TEXTIDENTICAL_MAIN          1600
 #define IDS_TEXTIDENTICAL_WHITESPACE    1601
 #define IDS_TEXTIDENTICAL_ENCODING      1602

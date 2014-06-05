@@ -1,6 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2006, 2011-2013 - TortoiseSVN
+// Copyright (C) 2006, 2011-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -36,6 +36,7 @@ CFindDlg::CFindDlg(CWnd* pParent /*=NULL*/)
 	, m_bSearchUp(FALSE)
 	, m_FindMsg(0)
 	, m_clrFindStatus(RGB(0, 0, 255))
+	, m_bReadonly(false)
 	, m_regMatchCase(L"Software\\TortoiseGitMerge\\FindMatchCase", FALSE)
 	, m_regLimitToDiffs(L"Software\\TortoiseGitMerge\\FindLimitToDiffs", FALSE)
 	, m_regWholeWord(L"Software\\TortoiseGitMerge\\FindWholeWord", FALSE)
@@ -54,14 +55,18 @@ void CFindDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_WHOLEWORD, m_bWholeWord);
 	DDX_Check(pDX, IDC_SEARCHUP, m_bSearchUp);
 	DDX_Control(pDX, IDC_FINDCOMBO, m_FindCombo);
+	DDX_Control(pDX, IDC_REPLACECOMBO, m_ReplaceCombo);
 	DDX_Control(pDX, IDC_FINDSTATUS, m_FindStatus);
 }
 
 
 BEGIN_MESSAGE_MAP(CFindDlg, CDialog)
 	ON_CBN_EDITCHANGE(IDC_FINDCOMBO, &CFindDlg::OnCbnEditchangeFindcombo)
+	ON_CBN_EDITCHANGE(IDC_REPLACECOMBO, &CFindDlg::OnCbnEditchangeFindcombo)
 	ON_BN_CLICKED(IDC_COUNT, &CFindDlg::OnBnClickedCount)
 	ON_WM_CTLCOLOR()
+	ON_BN_CLICKED(IDC_REPLACE, &CFindDlg::OnBnClickedReplace)
+	ON_BN_CLICKED(IDC_REPLACEALL, &CFindDlg::OnBnClickedReplaceall)
 END_MESSAGE_MAP()
 
 
@@ -117,6 +122,11 @@ BOOL CFindDlg::OnInitDialog()
 	m_FindCombo.LoadHistory(_T("Software\\TortoiseGitMerge\\History\\Find"), _T("Search"));
 	m_FindCombo.SetCurSel(0);
 
+	m_ReplaceCombo.SetCaseSensitive(TRUE);
+	m_ReplaceCombo.DisableTrimming();
+	m_ReplaceCombo.LoadHistory(L"Software\\TortoiseGitMerge\\History\\Find", L"Replace");
+	m_ReplaceCombo.SetCurSel(0);
+
 	m_FindCombo.SetFocus();
 
 	return FALSE;
@@ -126,6 +136,8 @@ void CFindDlg::OnCbnEditchangeFindcombo()
 {
 	UpdateData();
 	GetDlgItem(IDOK)->EnableWindow(!m_FindCombo.GetString().IsEmpty());
+	GetDlgItem(IDC_REPLACE)->EnableWindow(!m_bReadonly && !m_FindCombo.GetString().IsEmpty());
+	GetDlgItem(IDC_REPLACEALL)->EnableWindow(!m_bReadonly && !m_FindCombo.GetString().IsEmpty());
 }
 
 void CFindDlg::OnBnClickedCount()
@@ -169,4 +181,48 @@ void CFindDlg::SetStatusText(const CString& str, COLORREF color)
 {
 	m_clrFindStatus = color;
 	m_FindStatus.SetWindowText(str);
+}
+
+void CFindDlg::SetReadonly(bool bReadonly)
+{
+	m_bReadonly = bReadonly;
+	m_ReplaceCombo.EnableWindow(bReadonly ? FALSE : TRUE);
+	GetDlgItem(IDC_REPLACE)->EnableWindow(!m_bReadonly && !m_FindCombo.GetString().IsEmpty());
+	GetDlgItem(IDC_REPLACEALL)->EnableWindow(!m_bReadonly && !m_FindCombo.GetString().IsEmpty());
+}
+
+void CFindDlg::OnBnClickedReplace()
+{
+	UpdateData();
+	SetStatusText(L"");
+	m_FindCombo.SaveHistory();
+	m_ReplaceCombo.SaveHistory();
+	m_regMatchCase = m_bMatchCase;
+	m_regLimitToDiffs = m_bLimitToDiffs;
+	m_regWholeWord = m_bWholeWord;
+
+	m_bFindNext = true;
+	if (m_pParent)
+		m_pParent->SendMessage(m_FindMsg, FindType::Replace);
+	else if (GetParent())
+		GetParent()->SendMessage(m_FindMsg, FindType::Replace);
+	m_bFindNext = false;
+}
+
+void CFindDlg::OnBnClickedReplaceall()
+{
+	UpdateData();
+	SetStatusText(L"");
+	m_FindCombo.SaveHistory();
+	m_ReplaceCombo.SaveHistory();
+	m_regMatchCase = m_bMatchCase;
+	m_regLimitToDiffs = m_bLimitToDiffs;
+	m_regWholeWord = m_bWholeWord;
+
+	m_bFindNext = true;
+	if (m_pParent)
+		m_pParent->SendMessage(m_FindMsg, FindType::ReplaceAll);
+	else if (GetParent())
+		GetParent()->SendMessage(m_FindMsg, FindType::ReplaceAll);
+	m_bFindNext = false;
 }

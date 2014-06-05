@@ -1050,6 +1050,14 @@ msgstr ""
 msgid "&Remove this file from index"
 msgstr ""
 
+#. Resource IDs: (1511)
+msgid "&Replace"
+msgstr ""
+
+#. Resource IDs: (1512)
+msgid "&Replace All"
+msgstr ""
+
 #. Resource IDs: (15)
 msgid "&Repo-browser"
 msgstr ""
@@ -7382,7 +7390,16 @@ msgid "Replace specific text with different text\nReplace"
 msgstr ""
 
 #. Resource IDs: (65535)
+msgid "Replace with:"
+msgstr ""
+
+#. Resource IDs: (65535)
 msgid "Replace:"
+msgstr ""
+
+#. Resource IDs: (95)
+#, c-format
+msgid "Replaced %d matches"
 msgstr ""
 
 #. Resource IDs: (74)
@@ -7850,6 +7867,10 @@ msgstr ""
 
 #. Resource IDs: (1253)
 msgid "Search &log messages..."
+msgstr ""
+
+#. Resource IDs: (1074)
+msgid "Search &up"
 msgstr ""
 
 #. Resource IDs: (65535)

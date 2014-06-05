@@ -15,6 +15,7 @@ Released: Unreleased
  * Fixed issue #968: Rebase / Cherry Pick dialogs should update "conflict" status when conflicts are resolved
  * Fixed issue #1706: Show log in different branch reverts to active branch
  * Fixed issue #1973: Support INS/OVR mode in TortoiseMerge
+ * Fixed issue #1970: Provide replacement function in TortoiseGitMerge
 
 == Bug Fixes ==
  * Fixed issue #2158: TortoiseGit sometimes crashes when doing Sync > Pull
