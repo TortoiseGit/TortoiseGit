@@ -122,6 +122,7 @@ BOOL CFindDlg::OnInitDialog()
 	m_FindCombo.LoadHistory(_T("Software\\TortoiseGitMerge\\History\\Find"), _T("Search"));
 	m_FindCombo.SetCurSel(0);
 
+	m_ReplaceCombo.SetCaseSensitive(TRUE);
 	m_ReplaceCombo.DisableTrimming();
 	m_ReplaceCombo.LoadHistory(L"Software\\TortoiseGitMerge\\History\\Find", L"Replace");
 	m_ReplaceCombo.SetCurSel(0);
