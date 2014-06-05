@@ -481,6 +481,17 @@ static bool UpdateIndex(CMassiveGitTask &mgt, CSysProgressDlg &sysProgressDlg, i
 	return mgt.Execute(cancel);
 }
 
+static int ProcessWarnConfig(const git_config_entry *entry, void *payload)
+{
+	CString name = CUnicodeUtils::GetUnicode(entry->name);
+	int index = name.ReverseFind('.');
+	CString key = name.Left(index);
+	CString attr = name.Mid(index + 1);
+	auto dict = (std::map<CString, std::map<CString, STRING_VECTOR>> *)payload;
+	(*dict)[key][attr].push_back(CUnicodeUtils::GetUnicode(entry->value));
+	return 0;
+}
+
 void CCommitDlg::OnOK()
 {
 	if (m_bBlock)
@@ -573,11 +584,52 @@ void CCommitDlg::OnOK()
 		}
 	}
 
+	std::map<CString, std::map<CString, STRING_VECTOR>> dict;
+	{
+		CAutoConfig config(true);
+		git_config_add_file_ondisk(config, CGit::GetGitPathStringA(g_Git.GetGitLocalConfig()), GIT_CONFIG_LEVEL_APP, FALSE); // this needs to have the highest priority in order to override .tgitconfig settings
+		git_config_add_file_ondisk(config, CGit::GetGitPathStringA(g_Git.m_CurrentDir + L"\\.tgitconfig"), GIT_CONFIG_LEVEL_LOCAL, FALSE); // this needs to have the second highest priority
+		git_config_add_file_ondisk(config, CGit::GetGitPathStringA(g_Git.GetGitGlobalConfig()), GIT_CONFIG_LEVEL_GLOBAL, FALSE);
+		git_config_add_file_ondisk(config, CGit::GetGitPathStringA(g_Git.GetGitGlobalXDGConfig()), GIT_CONFIG_LEVEL_XDG, FALSE);
+		git_config_add_file_ondisk(config, CGit::GetGitPathStringA(g_Git.GetGitSystemConfig()), GIT_CONFIG_LEVEL_SYSTEM, FALSE);
+		git_config_foreach_match(config, "tgitwarn\\..*\\..*", ProcessWarnConfig, &dict);
+	}
+	CString csPath = _T("path");
 	int nListItems = m_ListCtrl.GetItemCount();
 	bool needResetIndex = false;
 	for (int i = 0; i < nListItems && !m_bCommitMessageOnly; ++i)
 	{
 		CTGitPath *entry = (CTGitPath *)m_ListCtrl.GetItemData(i);
+		if (entry->m_Checked && (!(entry->m_Action & CTGitPath::LOGACTIONS_UNVER)))
+		{
+			CString message;
+			for (auto it1 = dict.cbegin(); it1 != dict.cend(); ++it1)
+			{
+				auto vec = it1->second.at(csPath);
+				for (auto it2 = vec.cbegin(); it2 != vec.cend(); ++it2)
+				{
+					if (*it2 == entry->GetGitPathString())
+					{
+						auto msgit = it1->second.at(_T("message"));
+						message = !msgit.empty() ? msgit[0] : _T("");
+					}
+				}
+			}
+			if (!message.IsEmpty())
+			{
+				int result = CMessageBox::Show(m_hWnd, message, _T("TortoiseGit"), 2, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_PROGRS_CMD_COMMIT)), CString(MAKEINTRESOURCE(IDS_MSGBOX_IGNORE)), CString(MAKEINTRESOURCE(IDS_MSGBOX_CANCEL)));
+				if (result == 1)
+					continue;
+				else if (result == 2)
+				{
+					m_ListCtrl.SetCheck(i, FALSE);
+					continue;
+				}
+				else
+					return;
+			}
+		}
+
 		if (!entry->m_Checked && !(entry->m_Action & CTGitPath::LOGACTIONS_UNVER))
 			needResetIndex = true;
 		if (!entry->m_Checked || !entry->IsDirectory())
@@ -618,6 +670,9 @@ void CCommitDlg::OnOK()
 				return;
 		}
 	}
+
+	if (m_ListCtrl.GetSelected() == 0 || !m_bCommitMessageOnly)
+		return;
 
 	if (!m_bCommitMessageOnly)
 		m_ListCtrl.WriteCheckedNamesToPathList(m_selectedPathList);
