@@ -89,7 +89,8 @@ bool CAppUtils::CreateUnifiedDiff(const CString& orig, const CString& modified, 
 	CString cmd, err;
 	cmd.Format(_T("git.exe diff --no-index -- \"%s\" \"%s\""),orig, modified);
 
-	if(g_Git.RunLogFile(cmd, output, &err) && bShowError)
+	int result = g_Git.RunLogFile(cmd, output, &err);
+	if (result != 0 && result != 1 && bShowError)
 	{
 		MessageBox(NULL, _T("Failed to create patch.\n") + err, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 		return false;
