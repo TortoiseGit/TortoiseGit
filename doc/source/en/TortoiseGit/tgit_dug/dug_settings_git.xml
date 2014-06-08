@@ -76,6 +76,14 @@
 			for absolute path, use /C/Project1 for C:\Project1.
 		</para>
 		<para>
+			<guilabel>Push URL</guilabel>
+			The Push URL of the remote.
+			It is for some cases you cannot use the same url to fetch and push
+			(for example, fetch via passwordless git protocol but push via ssh). Otherwise, leave it empty.
+			Note: This is not designed for forking workflow. For forking workflow, you should have 2 remotes.
+			The format is the same as URL.
+		</para>
+		<para>
 			<guilabel>Putty Key</guilabel>
 			The putty key file to load when performing network operations.
 		</para>

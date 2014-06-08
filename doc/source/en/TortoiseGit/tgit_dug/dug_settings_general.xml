@@ -397,6 +397,23 @@
 				</listitem>
 			</varlistentry>
 			<varlistentry>
+				<term>Hide unchanged refs in Ref Compare List</term>
+				<listitem>
+					<para>
+						When enabled, unchanged refs will not be shown in Ref Compare List, so you can focus on changed refs.
+						Currently, this list is in Sync Dialog Ref List tab.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Show git.exe execution timings and timestamp</term>
+				<listitem>
+					<para>
+						When enabled, git.exe execution timings and timestamp will be appended at the end of progress message.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
 				<term>Use auto-completion of file paths and keywords</term>
 				<listitem>
 					<para>
