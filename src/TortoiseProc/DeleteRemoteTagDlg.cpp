@@ -56,6 +56,7 @@ BOOL CDeleteRemoteTagDlg::OnInitDialog()
 	CHorizontalResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
+	AddAnchor(IDC_EDIT_REMOTE, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_LIST_TAGS, TOP_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDC_SELECTALL, BOTTOM_RIGHT);
 	AddAnchor(IDOK, BOTTOM_RIGHT);
