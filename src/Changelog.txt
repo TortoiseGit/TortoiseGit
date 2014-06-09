@@ -16,6 +16,7 @@ Released: Unreleased
  * Fixed issue #1706: Show log in different branch reverts to active branch
  * Fixed issue #1973: Support INS/OVR mode in TortoiseMerge
  * Fixed issue #1970: Provide replacement function in TortoiseGitMerge
+ * Use libgit2 for more operations instead of calling git.exe
 
 == Bug Fixes ==
  * Fixed issue #2158: TortoiseGit sometimes crashes when doing Sync > Pull
@@ -34,6 +35,9 @@ Released: Unreleased
  * Fixed issue #2200: Add remote name starts with # should not fetch all
  * Fixed issue #2190: "Force Rebase" after "Squash ALL" does not mark commits for squashing
  * Fixed issue #2073: Remove Entry of remote in "Remote Url" box in sync window
+ * Fixed issue #2207: "Do you want to stash pop now?" dialog shows "Stash" labeled button instead of "Pop"
+ * Fixed issue #2161: Windows explorer slow/very long delays with shell extension enabled and accessing network folders
+ * Fixed issue #2198: MSVCR110.dll error with TortoisePlink. However, using TortoiseGitPlink is recommended
 
 = Release 1.8.8.0 =
 Released: 2014-04-01
