@@ -7,18 +7,19 @@
 #  Koto <>, 2012
 # Sven Strickroth <sstrickroth@googlemail.com>, 2012-2013
 # Takumi Shotoku <sinsoku.listy@gmail.com>, 2012
-# Tetsuhiko Koto <>, 2012-2014
-# tt yn <tetuyano+transi@gmail.com>, 2012-2013
-# tt yn <tetuyano+transi@gmail.com>, 2013
-# tt yn <tetuyano+transi@gmail.com>, 2013
+# Tetsuhiko Koto, 2012-2014
+# Tetsuhiko Koto, 2014
+# YANO Tetsu <tetuyano+transi@gmail.com>, 2012-2013
+# YANO Tetsu <tetuyano+transi@gmail.com>, 2013
+# YANO Tetsu <tetuyano+transi@gmail.com>, 2013
 # Yoshiharu Hirose <yh1224@gmail.com>, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2014-03-19 08:43+0000\n"
-"Last-Translator: Tetsuhiko Koto <>\n"
+"PO-Revision-Date: 2014-06-02 03:37+0000\n"
+"Last-Translator: Tetsuhiko Koto\n"
 "Language-Team: Japanese (http://www.transifex.com/projects/p/tortoisegit/language/ja/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1054,6 +1055,10 @@ msgstr "&Ref:"
 #. Resource IDs: (1382)
 msgid "&Refresh"
 msgstr "更新(&R)"
+
+#. Resource IDs: (20093)
+msgid "&Regular Expression"
+msgstr "正規表現(&R)"
 
 #. Resource IDs: (1617)
 msgid "&Remote Branch:"
@@ -2174,6 +2179,10 @@ msgstr "TortoiseSVN の TortoiseIDiff を元にしています"
 msgid "Basic Info"
 msgstr "基本情報"
 
+#. Resource IDs: (65535)
+msgid "Between files:"
+msgstr "ファイル間:"
+
 #. Resource IDs: (5060)
 msgid "Big5 (Traditional)"
 msgstr "Big5 (Traditional)"
@@ -2528,6 +2537,11 @@ msgstr "変更されたファイル"
 
 #. Resource IDs: (324)
 #, c-format
+msgid "Changed files between %s and %s"
+msgstr "%s と %s の間で変更されたファイル"
+
+#. Resource IDs: (324)
+#, c-format
 msgid "Changed files between %s, %s and %s, %s"
 msgstr "%s, %s と %s, %s の間に変更されたファイル"
 
@@ -2874,6 +2888,11 @@ msgstr "コマンド"
 #. Resource IDs: (67, 77, 135, 229, 1083, 1383, 1514)
 msgid "Commit"
 msgstr "コミット"
+
+#. Resource IDs: (94)
+#, c-format
+msgid "Commit %s not found in \"%s\". Update submodule now?"
+msgstr "コミット %s が \"%s\" の中に見つかりませんでした。サブモジュールを更新しますか?"
 
 #. Resource IDs: (1255)
 msgid "Commit Date"
@@ -3595,6 +3614,11 @@ msgstr "リモートブランチを削除"
 #. Resource IDs: (4579)
 msgid "Delete remote tag - TortoiseGit"
 msgstr "リモートタグ を削除 - TortoiseGit"
+
+#. Resource IDs: (95)
+#, c-format
+msgid "Delete remote tags on \"%s\"..."
+msgstr "\"%s\" のリモートのタグを削除..."
 
 #. Resource IDs: (86)
 msgid "Delete remote tags..."
@@ -6711,6 +6735,10 @@ msgstr "%sの数"
 msgid "Number of authors:"
 msgstr "作者の数:"
 
+#. Resource IDs: (65535)
+msgid "Number of characters required for moved or copied line detection:"
+msgstr "移動/コピーされた行と判定するのに必要な文字数"
+
 #. Resource IDs: (1160)
 msgid "Number of weeks:"
 msgstr "経過した週:"
@@ -7186,6 +7214,10 @@ msgstr "ブランチを選択してください"
 msgid "Please select upstream"
 msgstr "上流を選択してください"
 
+#. Resource IDs: (94)
+msgid "Please take a look at the skipped commits"
+msgstr "スキップされたコミットに注意してください"
+
 #. Resource IDs: (13)
 msgid "Please wait while cancelling..."
 msgstr "キャンセル処理が完了するまでしばらくお待ちください ..."
@@ -7417,6 +7449,10 @@ msgstr "プッシュ"
 #. Resource IDs: (1786)
 msgid "Push Default"
 msgstr "デフォルトのプッシュ先"
+
+#. Resource IDs: (65535)
+msgid "Push URL:"
+msgstr "プッシュ URL:"
 
 #. Resource IDs: (1385)
 msgid "Push notes"
@@ -8547,8 +8583,8 @@ msgid "Set au&thor"
 msgstr "作者を設定(&T)"
 
 #. Resource IDs: (1557)
-msgid "Set commit &date"
-msgstr "コミットの日時を設定する(D)"
+msgid "Set author &date"
+msgstr "著述日時を設定する(D)"
 
 #. Resource IDs: (86)
 msgid "Sets the remote as the \"pushremote\" for the selected local branch."
@@ -8734,6 +8770,10 @@ msgstr "少しの遅延の後にすべてのメニューを表示(&U)"
 #. Resource IDs: (2051, 32802)
 msgid "Show file name"
 msgstr "ファイル名を表示"
+
+#. Resource IDs: (1782)
+msgid "Show git.exe execution timings and timestamp"
+msgstr "git.exe の実行のタイミングと時刻を表示"
 
 #. Resource IDs: (1264)
 msgid "Show i&gnored files"
@@ -9027,6 +9067,10 @@ msgstr "リベース開始"
 msgid "Start bisect mode..."
 msgstr "二分探索モードを開始..."
 
+#. Resource IDs: (1542)
+msgid "Start registry editor"
+msgstr "レジストリエディターを起動する"
+
 #. Resource IDs: (14)
 msgid "Starts a git server running git protocol"
 msgstr "gitプロトコルで稼働するgitサーバーを起動"
@@ -9267,6 +9311,10 @@ msgstr "比較対象を入れ替える"
 msgid "Symbolize ref names"
 msgstr "ref名の記号化"
 
+#. Resource IDs: (11031)
+msgid "Symlink"
+msgstr "シンボリックリンク"
+
 #. Resource IDs: (22)
 msgid "Sync Remote Repositories, including pull, push, email patch and so on"
 msgstr "リモートリポジトリと同期します(プル、プッシュ、パッチの送信などを行います)"
@@ -9357,6 +9405,10 @@ msgstr "テスト"
 #. Resource IDs: (219)
 msgid "Test Only"
 msgstr "テストのみ"
+
+#. Resource IDs: (157)
+msgid "Text Files (*.txt)|*.txt|All Files (*.*)|*.*||"
+msgstr "テキストファイル (*.txt)|*.txt|すべてのファイル (*.*)|*.*||"
 
 #. Resource IDs: (65535)
 msgid "Thai"
@@ -9591,6 +9643,12 @@ msgid ""
 "Are you sure to abort?"
 msgstr "プロセスは実行中です。中止してよろしいですか?"
 
+#. Resource IDs: (70)
+msgid ""
+"The regular expression is invalid!\n"
+"Please enter a valid regular expression."
+msgstr "正規表現が無効です!\n正しい正規表現を入力してください。"
+
 #. Resource IDs: (71)
 #, c-format
 msgid ""
@@ -9747,6 +9805,12 @@ msgstr "このプログラムはファイル %s を必要としますが、こ�
 #. Resource IDs: (15)
 msgid "This property is only allowed on folders, not files."
 msgstr "このプロパティはフォルダーに対してのみ有効で、ファイルに対しては有効ではありません。"
+
+#. Resource IDs: (95)
+msgid ""
+"This remote name collides with fetch refspec of other remotes\n"
+"Please use another name"
+msgstr "このリモート名は、他のリモートのフェッチの refspec と衝突します。\n他の名前を使用してください。"
 
 #. Resource IDs: (67)
 msgid "This task requires a clean working tree."
@@ -10021,8 +10085,8 @@ msgid "URL"
 msgstr "URL"
 
 #. Resource IDs: (71)
-msgid "URL and directory must not be empty at the same time."
-msgstr "URL とディレクトリーいづれにも空白を指定する事はできません。"
+msgid "URL and directory must not be empty."
+msgstr "URL とディレクトリーに空白を指定する事はできません。"
 
 #. Resource IDs: (1272)
 msgid "URL history"
@@ -10703,6 +10767,10 @@ msgstr "Windows-1257"
 #. Resource IDs: (5028)
 msgid "Windows-1258"
 msgstr "Windows-1258"
+
+#. Resource IDs: (65535)
+msgid "Within a file:"
+msgstr "ファイル内:"
 
 #. Resource IDs: (2054)
 msgid "Within file"

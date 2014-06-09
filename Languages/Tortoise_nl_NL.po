@@ -4,20 +4,20 @@
 # This file is distributed under the same license as TortoiseGit
 # 
 # Translators:
-# duvel3 <duvel3@gmail.com>, 2013
-# duvel3 <duvel3@gmail.com>, 2013
+# Bas <duvel3@gmail.com>, 2013
+# Bas <duvel3@gmail.com>, 2013
 # Eric van Aert <ericvanaert@gmail.com>, 2012
-# GMTA <jelle@gmta.nl>, 2013
+# Jelle Raaijmakers <jelle@gmta.nl>, 2013
 # Jean-Marc van Leerdam <j.m.van.leerdam@gmail.com>, 2011-2012
-# GMTA <jelle@gmta.nl>, 2013-2014
+# Jelle Raaijmakers <jelle@gmta.nl>, 2013-2014
 # Lübbe TortoiseSVN <luebbe.tortoisesvn@gmail.com>, 2011
 # Lübbe  <luebbe.tortoisesvn@googlemail.com>, 2012
 # Lübbe TortoiseSVN <luebbe.tortoisesvn@gmail.com>, 2011
 # Maarten Hilferink <mhilferink@objectvision.nl>, 2011
 # Paul <paul@piak.nl>, 2011
 # Paul <paul@piak.nl>, 2011
-# Rvanlaak <rvanlaak@gmail.com>, 2012
-# Rvanlaak <rvanlaak@gmail.com>, 2012
+# Richard van Laak <rvanlaak@gmail.com>, 2012
+# Richard van Laak <rvanlaak@gmail.com>, 2012
 # Sven Strickroth <sstrickroth@googlemail.com>, 2013
 # W VB <vanbeirendonck.willem@gmail.com>, 2011
 msgid ""
@@ -25,7 +25,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2014-03-18 19:09+0000\n"
+"PO-Revision-Date: 2014-05-31 10:17+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/projects/p/tortoisegit/language/nl_NL/)\n"
 "MIME-Version: 1.0\n"
@@ -1062,6 +1062,10 @@ msgstr "&Referentie:"
 #. Resource IDs: (1382)
 msgid "&Refresh"
 msgstr "&Vernieuwen"
+
+#. Resource IDs: (20093)
+msgid "&Regular Expression"
+msgstr ""
 
 #. Resource IDs: (1617)
 msgid "&Remote Branch:"
@@ -2182,6 +2186,10 @@ msgstr "Gebaseerd op TortoiseIDiff van TortoiseSVN"
 msgid "Basic Info"
 msgstr "Algemene Info"
 
+#. Resource IDs: (65535)
+msgid "Between files:"
+msgstr ""
+
 #. Resource IDs: (5060)
 msgid "Big5 (Traditional)"
 msgstr "Big5 (Traditioneel)"
@@ -2536,6 +2544,11 @@ msgstr "Gewijzigde bestanden"
 
 #. Resource IDs: (324)
 #, c-format
+msgid "Changed files between %s and %s"
+msgstr ""
+
+#. Resource IDs: (324)
+#, c-format
 msgid "Changed files between %s, %s and %s, %s"
 msgstr "Gewijzigde bestanden tussen %s, %s en %s, %s"
 
@@ -2882,6 +2895,11 @@ msgstr "Commando's"
 #. Resource IDs: (67, 77, 135, 229, 1083, 1383, 1514)
 msgid "Commit"
 msgstr "Vastleggen"
+
+#. Resource IDs: (94)
+#, c-format
+msgid "Commit %s not found in \"%s\". Update submodule now?"
+msgstr ""
 
 #. Resource IDs: (1255)
 msgid "Commit Date"
@@ -3603,6 +3621,11 @@ msgstr "Verwijder externe branch"
 #. Resource IDs: (4579)
 msgid "Delete remote tag - TortoiseGit"
 msgstr "Verwijder externe label - TortoiseGit"
+
+#. Resource IDs: (95)
+#, c-format
+msgid "Delete remote tags on \"%s\"..."
+msgstr ""
 
 #. Resource IDs: (86)
 msgid "Delete remote tags..."
@@ -6719,6 +6742,10 @@ msgstr "Aantal %s"
 msgid "Number of authors:"
 msgstr "Aantal auteurs:"
 
+#. Resource IDs: (65535)
+msgid "Number of characters required for moved or copied line detection:"
+msgstr ""
+
 #. Resource IDs: (1160)
 msgid "Number of weeks:"
 msgstr "Aantal weken:"
@@ -7194,6 +7221,10 @@ msgstr ""
 msgid "Please select upstream"
 msgstr ""
 
+#. Resource IDs: (94)
+msgid "Please take a look at the skipped commits"
+msgstr ""
+
 #. Resource IDs: (13)
 msgid "Please wait while cancelling..."
 msgstr "Even geduld terwijl er wordt afgebroken..."
@@ -7424,6 +7455,10 @@ msgstr "Push"
 
 #. Resource IDs: (1786)
 msgid "Push Default"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Push URL:"
 msgstr ""
 
 #. Resource IDs: (1385)
@@ -8555,8 +8590,8 @@ msgid "Set au&thor"
 msgstr "Au&teur instellen"
 
 #. Resource IDs: (1557)
-msgid "Set commit &date"
-msgstr "&Datum vastlegging"
+msgid "Set author &date"
+msgstr ""
 
 #. Resource IDs: (86)
 msgid "Sets the remote as the \"pushremote\" for the selected local branch."
@@ -8742,6 +8777,10 @@ msgstr "Toon &gehele menu na korte tijd"
 #. Resource IDs: (2051, 32802)
 msgid "Show file name"
 msgstr "Toon bestandsnaam"
+
+#. Resource IDs: (1782)
+msgid "Show git.exe execution timings and timestamp"
+msgstr ""
 
 #. Resource IDs: (1264)
 msgid "Show i&gnored files"
@@ -9035,6 +9074,10 @@ msgstr "Start met Rebasen"
 msgid "Start bisect mode..."
 msgstr "Start bisect modus..."
 
+#. Resource IDs: (1542)
+msgid "Start registry editor"
+msgstr ""
+
 #. Resource IDs: (14)
 msgid "Starts a git server running git protocol"
 msgstr "Start een git server die het git procotol draait"
@@ -9275,6 +9318,10 @@ msgstr ""
 msgid "Symbolize ref names"
 msgstr ""
 
+#. Resource IDs: (11031)
+msgid "Symlink"
+msgstr ""
+
 #. Resource IDs: (22)
 msgid "Sync Remote Repositories, including pull, push, email patch and so on"
 msgstr ""
@@ -9365,6 +9412,10 @@ msgstr ""
 #. Resource IDs: (219)
 msgid "Test Only"
 msgstr "Alleen testen"
+
+#. Resource IDs: (157)
+msgid "Text Files (*.txt)|*.txt|All Files (*.*)|*.*||"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Thai"
@@ -9599,6 +9650,12 @@ msgid ""
 "Are you sure to abort?"
 msgstr "Het proces is nog bezig.\nWeet u zeker dat u het wilt afbreken?"
 
+#. Resource IDs: (70)
+msgid ""
+"The regular expression is invalid!\n"
+"Please enter a valid regular expression."
+msgstr ""
+
 #. Resource IDs: (71)
 #, c-format
 msgid ""
@@ -9755,6 +9812,12 @@ msgstr "Voor dit programma is het bestand %s vereist, maar dat ontbreekt op deze
 #. Resource IDs: (15)
 msgid "This property is only allowed on folders, not files."
 msgstr "Deze eigenschap is alleen geldig voor mappen, niet voor bestanden."
+
+#. Resource IDs: (95)
+msgid ""
+"This remote name collides with fetch refspec of other remotes\n"
+"Please use another name"
+msgstr ""
 
 #. Resource IDs: (67)
 msgid "This task requires a clean working tree."
@@ -10029,8 +10092,8 @@ msgid "URL"
 msgstr "URL"
 
 #. Resource IDs: (71)
-msgid "URL and directory must not be empty at the same time."
-msgstr "URL en map mogen niet beiden leeg zijn."
+msgid "URL and directory must not be empty."
+msgstr ""
 
 #. Resource IDs: (1272)
 msgid "URL history"
@@ -10711,6 +10774,10 @@ msgstr "Windows-1257"
 #. Resource IDs: (5028)
 msgid "Windows-1258"
 msgstr "Windows-1258"
+
+#. Resource IDs: (65535)
+msgid "Within a file:"
+msgstr ""
 
 #. Resource IDs: (2054)
 msgid "Within file"

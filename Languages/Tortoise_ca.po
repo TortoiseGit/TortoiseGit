@@ -4,18 +4,18 @@
 # This file is distributed under the same license as TortoiseGit
 # 
 # Translators:
-# abanibi <abanibi@tempemail.net>, 2013
+# TempEmail.net <abanibi@tempemail.net>, 2013
 # Adrià Vilanova Martínez <jocdeladria@gmail.com>, 2012
-# jmonguillot <jmonguillot@gmail.com>, 2013
-# Libre El Chaval <el.libre@gmail.com>, 2011
+# Joan Monguillot <jmonguillot@gmail.com>, 2013
+# el_libre como el chaval <el.libre@gmail.com>, 2011
 # Sven Strickroth <sstrickroth@googlemail.com>, 2013
-# abanibi <abanibi@tempemail.net>, 2013
+# TempEmail.net <abanibi@tempemail.net>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2014-03-18 19:09+0000\n"
+"PO-Revision-Date: 2014-05-31 10:17+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Catalan (http://www.transifex.com/projects/p/tortoisegit/language/ca/)\n"
 "MIME-Version: 1.0\n"
@@ -1052,6 +1052,10 @@ msgstr "&Ref:"
 #. Resource IDs: (1382)
 msgid "&Refresh"
 msgstr "&Refresca"
+
+#. Resource IDs: (20093)
+msgid "&Regular Expression"
+msgstr ""
 
 #. Resource IDs: (1617)
 msgid "&Remote Branch:"
@@ -2172,6 +2176,10 @@ msgstr "Basat en TortoiseIDiff de TortoiseSVN"
 msgid "Basic Info"
 msgstr "Informació bàsica"
 
+#. Resource IDs: (65535)
+msgid "Between files:"
+msgstr ""
+
 #. Resource IDs: (5060)
 msgid "Big5 (Traditional)"
 msgstr "Big5 (Tradicional)"
@@ -2526,6 +2534,11 @@ msgstr "Fitxers canviats"
 
 #. Resource IDs: (324)
 #, c-format
+msgid "Changed files between %s and %s"
+msgstr ""
+
+#. Resource IDs: (324)
+#, c-format
 msgid "Changed files between %s, %s and %s, %s"
 msgstr "Fitxers modificats entre %s, %s i %s, %s"
 
@@ -2872,6 +2885,11 @@ msgstr "Comandes"
 #. Resource IDs: (67, 77, 135, 229, 1083, 1383, 1514)
 msgid "Commit"
 msgstr "Entrega"
+
+#. Resource IDs: (94)
+#, c-format
+msgid "Commit %s not found in \"%s\". Update submodule now?"
+msgstr ""
 
 #. Resource IDs: (1255)
 msgid "Commit Date"
@@ -3593,6 +3611,11 @@ msgstr "Elimina branca remota"
 #. Resource IDs: (4579)
 msgid "Delete remote tag - TortoiseGit"
 msgstr "Elimina etiqueta remota - TortoiseGit"
+
+#. Resource IDs: (95)
+#, c-format
+msgid "Delete remote tags on \"%s\"..."
+msgstr ""
 
 #. Resource IDs: (86)
 msgid "Delete remote tags..."
@@ -6709,6 +6732,10 @@ msgstr "Nombre de %s"
 msgid "Number of authors:"
 msgstr "Nombre d'autors"
 
+#. Resource IDs: (65535)
+msgid "Number of characters required for moved or copied line detection:"
+msgstr ""
+
 #. Resource IDs: (1160)
 msgid "Number of weeks:"
 msgstr "Nombre de setmanes:"
@@ -7184,6 +7211,10 @@ msgstr ""
 msgid "Please select upstream"
 msgstr ""
 
+#. Resource IDs: (94)
+msgid "Please take a look at the skipped commits"
+msgstr ""
+
 #. Resource IDs: (13)
 msgid "Please wait while cancelling..."
 msgstr "Espereu mentre es cancel·la..."
@@ -7414,6 +7445,10 @@ msgstr "Empeny"
 
 #. Resource IDs: (1786)
 msgid "Push Default"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Push URL:"
 msgstr ""
 
 #. Resource IDs: (1385)
@@ -8545,8 +8580,8 @@ msgid "Set au&thor"
 msgstr "Estableix &autor"
 
 #. Resource IDs: (1557)
-msgid "Set commit &date"
-msgstr "Estableix la data d'entrega"
+msgid "Set author &date"
+msgstr ""
 
 #. Resource IDs: (86)
 msgid "Sets the remote as the \"pushremote\" for the selected local branch."
@@ -8731,6 +8766,10 @@ msgstr "Mostra menús &sencers després d'un temps curt"
 
 #. Resource IDs: (2051, 32802)
 msgid "Show file name"
+msgstr ""
+
+#. Resource IDs: (1782)
+msgid "Show git.exe execution timings and timestamp"
 msgstr ""
 
 #. Resource IDs: (1264)
@@ -9025,6 +9064,10 @@ msgstr "Inicia Rebase"
 msgid "Start bisect mode..."
 msgstr "Inicia mode Bisect..."
 
+#. Resource IDs: (1542)
+msgid "Start registry editor"
+msgstr ""
+
 #. Resource IDs: (14)
 msgid "Starts a git server running git protocol"
 msgstr "Inicia un servidor git utilitzant el protocol git"
@@ -9265,6 +9308,10 @@ msgstr ""
 msgid "Symbolize ref names"
 msgstr "Simbolitza noms de refs"
 
+#. Resource IDs: (11031)
+msgid "Symlink"
+msgstr ""
+
 #. Resource IDs: (22)
 msgid "Sync Remote Repositories, including pull, push, email patch and so on"
 msgstr "Sincronitza dipòsits remots, incloent Pull, Push, Email patch, etc..."
@@ -9355,6 +9402,10 @@ msgstr ""
 #. Resource IDs: (219)
 msgid "Test Only"
 msgstr "Només prova"
+
+#. Resource IDs: (157)
+msgid "Text Files (*.txt)|*.txt|All Files (*.*)|*.*||"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Thai"
@@ -9589,6 +9640,12 @@ msgid ""
 "Are you sure to abort?"
 msgstr ""
 
+#. Resource IDs: (70)
+msgid ""
+"The regular expression is invalid!\n"
+"Please enter a valid regular expression."
+msgstr ""
+
 #. Resource IDs: (71)
 #, c-format
 msgid ""
@@ -9745,6 +9802,12 @@ msgstr "Aquest programa requereix el fitxer %s, que no s'ha trobat al sistema."
 #. Resource IDs: (15)
 msgid "This property is only allowed on folders, not files."
 msgstr "Aquesta propietat només s'accepta en carpetes, no en fitxers."
+
+#. Resource IDs: (95)
+msgid ""
+"This remote name collides with fetch refspec of other remotes\n"
+"Please use another name"
+msgstr ""
 
 #. Resource IDs: (67)
 msgid "This task requires a clean working tree."
@@ -10019,8 +10082,8 @@ msgid "URL"
 msgstr "URL"
 
 #. Resource IDs: (71)
-msgid "URL and directory must not be empty at the same time."
-msgstr "URL i directori no poden estar buides a la vegada"
+msgid "URL and directory must not be empty."
+msgstr ""
 
 #. Resource IDs: (1272)
 msgid "URL history"
@@ -10701,6 +10764,10 @@ msgstr "Windows-1257"
 #. Resource IDs: (5028)
 msgid "Windows-1258"
 msgstr "Windows-1258"
+
+#. Resource IDs: (65535)
+msgid "Within a file:"
+msgstr ""
 
 #. Resource IDs: (2054)
 msgid "Within file"

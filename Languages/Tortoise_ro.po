@@ -4,12 +4,12 @@
 # This file is distributed under the same license as TortoiseGit
 # 
 # Translators:
-# Eugen Cocalea <eugen.cocalea@gmail.com>, 2013
-# Eugen Cocalea <eugen.cocalea@gmail.com>, 2013
+# eugen.cocalea <eugen.cocalea@gmail.com>, 2013
+# eugen.cocalea <eugen.cocalea@gmail.com>, 2013
 # Lübbe TortoiseSVN <luebbe.tortoisesvn@gmail.com>, 2011
 # Lübbe TortoiseSVN <luebbe.tortoisesvn@gmail.com>, 2011
-# Radu Murzea <radu.murzea@gmail.com>, 2013
-# Radu Murzea <radu.murzea@gmail.com>, 2013
+# radu.murzea <radu.murzea@gmail.com>, 2013
+# radu.murzea <radu.murzea@gmail.com>, 2013
 # Sven Strickroth <sstrickroth@googlemail.com>, 2013
 # zveriu <zveriu@gmail.com>, 2011
 # zveriu <zveriu@gmail.com>, 2011
@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2014-03-18 19:09+0000\n"
+"PO-Revision-Date: 2014-05-31 10:17+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Romanian (http://www.transifex.com/projects/p/tortoisegit/language/ro/)\n"
 "MIME-Version: 1.0\n"
@@ -1055,6 +1055,10 @@ msgstr "Ref:"
 #. Resource IDs: (1382)
 msgid "&Refresh"
 msgstr "&Reîmprospătează"
+
+#. Resource IDs: (20093)
+msgid "&Regular Expression"
+msgstr ""
 
 #. Resource IDs: (1617)
 msgid "&Remote Branch:"
@@ -2175,6 +2179,10 @@ msgstr "Bazat pe TortoiseIDiff din TortoiseSVN"
 msgid "Basic Info"
 msgstr "Informaţii de bază"
 
+#. Resource IDs: (65535)
+msgid "Between files:"
+msgstr ""
+
 #. Resource IDs: (5060)
 msgid "Big5 (Traditional)"
 msgstr "Big5 (Traditional)"
@@ -2529,6 +2537,11 @@ msgstr "Fişiere modificate"
 
 #. Resource IDs: (324)
 #, c-format
+msgid "Changed files between %s and %s"
+msgstr ""
+
+#. Resource IDs: (324)
+#, c-format
 msgid "Changed files between %s, %s and %s, %s"
 msgstr "Fişiere modificate între %s, %s şi %s, %s"
 
@@ -2875,6 +2888,11 @@ msgstr "Comenzi"
 #. Resource IDs: (67, 77, 135, 229, 1083, 1383, 1514)
 msgid "Commit"
 msgstr "Transmite"
+
+#. Resource IDs: (94)
+#, c-format
+msgid "Commit %s not found in \"%s\". Update submodule now?"
+msgstr ""
 
 #. Resource IDs: (1255)
 msgid "Commit Date"
@@ -3596,6 +3614,11 @@ msgstr "Şterge ramură destinaţie"
 #. Resource IDs: (4579)
 msgid "Delete remote tag - TortoiseGit"
 msgstr "Şterge etichetă destinaţie - TortoiseGit"
+
+#. Resource IDs: (95)
+#, c-format
+msgid "Delete remote tags on \"%s\"..."
+msgstr ""
 
 #. Resource IDs: (86)
 msgid "Delete remote tags..."
@@ -6712,6 +6735,10 @@ msgstr "Numărul de %s"
 msgid "Number of authors:"
 msgstr "Numărul de autori:"
 
+#. Resource IDs: (65535)
+msgid "Number of characters required for moved or copied line detection:"
+msgstr ""
+
 #. Resource IDs: (1160)
 msgid "Number of weeks:"
 msgstr "Numărul de săptămâni:"
@@ -7187,6 +7214,10 @@ msgstr ""
 msgid "Please select upstream"
 msgstr ""
 
+#. Resource IDs: (94)
+msgid "Please take a look at the skipped commits"
+msgstr ""
+
 #. Resource IDs: (13)
 msgid "Please wait while cancelling..."
 msgstr "Aştepataţi în timp ce se anulează..."
@@ -7417,6 +7448,10 @@ msgstr "Împinge"
 
 #. Resource IDs: (1786)
 msgid "Push Default"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Push URL:"
 msgstr ""
 
 #. Resource IDs: (1385)
@@ -8548,8 +8583,8 @@ msgid "Set au&thor"
 msgstr "Setează au&tor"
 
 #. Resource IDs: (1557)
-msgid "Set commit &date"
-msgstr "Setează &data transmiterii"
+msgid "Set author &date"
+msgstr ""
 
 #. Resource IDs: (86)
 msgid "Sets the remote as the \"pushremote\" for the selected local branch."
@@ -8734,6 +8769,10 @@ msgstr "Afişează &meniul întreg după o mică întârziere"
 
 #. Resource IDs: (2051, 32802)
 msgid "Show file name"
+msgstr ""
+
+#. Resource IDs: (1782)
+msgid "Show git.exe execution timings and timestamp"
 msgstr ""
 
 #. Resource IDs: (1264)
@@ -9028,6 +9067,10 @@ msgstr "Porneşte reamplasarea"
 msgid "Start bisect mode..."
 msgstr "Porneşte modul înjumătăţire..."
 
+#. Resource IDs: (1542)
+msgid "Start registry editor"
+msgstr ""
+
 #. Resource IDs: (14)
 msgid "Starts a git server running git protocol"
 msgstr "Pornește un server git folosind protocolul git"
@@ -9268,6 +9311,10 @@ msgstr ""
 msgid "Symbolize ref names"
 msgstr "Adaugă simboluri la numele de referinţă"
 
+#. Resource IDs: (11031)
+msgid "Symlink"
+msgstr ""
+
 #. Resource IDs: (22)
 msgid "Sync Remote Repositories, including pull, push, email patch and so on"
 msgstr "Sincronizează depozitele destinaţie, incluzând tragere, împingere, petic email şi aşa mai departe"
@@ -9358,6 +9405,10 @@ msgstr ""
 #. Resource IDs: (219)
 msgid "Test Only"
 msgstr "Numai test"
+
+#. Resource IDs: (157)
+msgid "Text Files (*.txt)|*.txt|All Files (*.*)|*.*||"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Thai"
@@ -9592,6 +9643,12 @@ msgid ""
 "Are you sure to abort?"
 msgstr ""
 
+#. Resource IDs: (70)
+msgid ""
+"The regular expression is invalid!\n"
+"Please enter a valid regular expression."
+msgstr ""
+
 #. Resource IDs: (71)
 #, c-format
 msgid ""
@@ -9748,6 +9805,12 @@ msgstr "Acest program are nevoie de fişierul %s, care nu a fost găsit pe acest
 #. Resource IDs: (15)
 msgid "This property is only allowed on folders, not files."
 msgstr "Aceasta proprietate este permisă numai la dosare, nu la fişiere."
+
+#. Resource IDs: (95)
+msgid ""
+"This remote name collides with fetch refspec of other remotes\n"
+"Please use another name"
+msgstr ""
 
 #. Resource IDs: (67)
 msgid "This task requires a clean working tree."
@@ -10022,8 +10085,8 @@ msgid "URL"
 msgstr "URL"
 
 #. Resource IDs: (71)
-msgid "URL and directory must not be empty at the same time."
-msgstr "URL-ul şi dosarul nu pot fi ambele nule în acelaşi timp."
+msgid "URL and directory must not be empty."
+msgstr ""
 
 #. Resource IDs: (1272)
 msgid "URL history"
@@ -10704,6 +10767,10 @@ msgstr "Windows-1257"
 #. Resource IDs: (5028)
 msgid "Windows-1258"
 msgstr "Windows-1258"
+
+#. Resource IDs: (65535)
+msgid "Within a file:"
+msgstr ""
 
 #. Resource IDs: (2054)
 msgid "Within file"

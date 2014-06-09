@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2014-04-01 13:28+0000\n"
+"PO-Revision-Date: 2014-05-31 10:17+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: German (http://www.transifex.com/projects/p/tortoisegit/language/de/)\n"
 "MIME-Version: 1.0\n"
@@ -1052,6 +1052,10 @@ msgstr "&Ref:"
 #. Resource IDs: (1382)
 msgid "&Refresh"
 msgstr "&Aktualisieren"
+
+#. Resource IDs: (20093)
+msgid "&Regular Expression"
+msgstr "&Regulärer Ausdruck"
 
 #. Resource IDs: (1617)
 msgid "&Remote Branch:"
@@ -2172,6 +2176,10 @@ msgstr "Basiert auf TortoiseIDiff von TortoiseSVN"
 msgid "Basic Info"
 msgstr "Allgemeine Informationen"
 
+#. Resource IDs: (65535)
+msgid "Between files:"
+msgstr "Zwischen den Dateien:"
+
 #. Resource IDs: (5060)
 msgid "Big5 (Traditional)"
 msgstr "Big5 (Traditionell)"
@@ -2526,6 +2534,11 @@ msgstr "Geänderte Dateien"
 
 #. Resource IDs: (324)
 #, c-format
+msgid "Changed files between %s and %s"
+msgstr "Geänderte Dateien zwischen %s und %s"
+
+#. Resource IDs: (324)
+#, c-format
 msgid "Changed files between %s, %s and %s, %s"
 msgstr "Geänderte Dateien zwischen %s, %s und %s, %s"
 
@@ -2872,6 +2885,11 @@ msgstr "Befehle"
 #. Resource IDs: (67, 77, 135, 229, 1083, 1383, 1514)
 msgid "Commit"
 msgstr "Eintragen"
+
+#. Resource IDs: (94)
+#, c-format
+msgid "Commit %s not found in \"%s\". Update submodule now?"
+msgstr "Eintragung %s in \"%s\" nicht gefunden. Submodul jetzt aktualisieren?"
 
 #. Resource IDs: (1255)
 msgid "Commit Date"
@@ -3593,6 +3611,11 @@ msgstr "Lösche entfernten Zweig"
 #. Resource IDs: (4579)
 msgid "Delete remote tag - TortoiseGit"
 msgstr "Entfernte Markierungen löschen - TortoiseGit"
+
+#. Resource IDs: (95)
+#, c-format
+msgid "Delete remote tags on \"%s\"..."
+msgstr "Entfernte Markierungen auf \"%s\" löschen..."
 
 #. Resource IDs: (86)
 msgid "Delete remote tags..."
@@ -6709,6 +6732,10 @@ msgstr "Anzahl %s:"
 msgid "Number of authors:"
 msgstr "Anzahl Autoren:"
 
+#. Resource IDs: (65535)
+msgid "Number of characters required for moved or copied line detection:"
+msgstr "Anzahl erforderlicher Zeichen für Erkennung verschobener oder kopierter Zeilen:"
+
 #. Resource IDs: (1160)
 msgid "Number of weeks:"
 msgstr "Anzahl Wochen:"
@@ -7184,6 +7211,10 @@ msgstr "Bitte Zweig auswählen"
 msgid "Please select upstream"
 msgstr "Bitte Upstream auswählen"
 
+#. Resource IDs: (94)
+msgid "Please take a look at the skipped commits"
+msgstr "Bitte überprüfen Sie die ausgelassenen Eintragungen"
+
 #. Resource IDs: (13)
 msgid "Please wait while cancelling..."
 msgstr "Bitte warten Sie auf den Abbruch..."
@@ -7415,6 +7446,10 @@ msgstr "Versenden"
 #. Resource IDs: (1786)
 msgid "Push Default"
 msgstr "Push Default"
+
+#. Resource IDs: (65535)
+msgid "Push URL:"
+msgstr "Versand URL:"
 
 #. Resource IDs: (1385)
 msgid "Push notes"
@@ -8545,7 +8580,7 @@ msgid "Set au&thor"
 msgstr "Setze Autor"
 
 #. Resource IDs: (1557)
-msgid "Set commit &date"
+msgid "Set author &date"
 msgstr "Setze Eintrage&datum"
 
 #. Resource IDs: (86)
@@ -8732,6 +8767,10 @@ msgstr "Zeige &vollständige Menüs nach einer kurzen Pause"
 #. Resource IDs: (2051, 32802)
 msgid "Show file name"
 msgstr "Zeige Dateiname"
+
+#. Resource IDs: (1782)
+msgid "Show git.exe execution timings and timestamp"
+msgstr "Zeige git.exe Laufzeiten und Zeitstempel"
 
 #. Resource IDs: (1264)
 msgid "Show i&gnored files"
@@ -9025,6 +9064,10 @@ msgstr "Neuaufbau starten"
 msgid "Start bisect mode..."
 msgstr "Starte bisect Modus..."
 
+#. Resource IDs: (1542)
+msgid "Start registry editor"
+msgstr "Registrierungseditor starten"
+
 #. Resource IDs: (14)
 msgid "Starts a git server running git protocol"
 msgstr "Started einen Git-Server mit dem git-Protokoll"
@@ -9265,6 +9308,10 @@ msgstr "Tausche Links <-> Rechts"
 msgid "Symbolize ref names"
 msgstr "Ref-Namen durch Symbole abkürzen"
 
+#. Resource IDs: (11031)
+msgid "Symlink"
+msgstr "Symlink"
+
 #. Resource IDs: (22)
 msgid "Sync Remote Repositories, including pull, push, email patch and so on"
 msgstr "Synchronisiert Projektarchive, inklusive Versenden, Aktualisieren, Patches mailen usw."
@@ -9355,6 +9402,10 @@ msgstr "Test"
 #. Resource IDs: (219)
 msgid "Test Only"
 msgstr "Nur testen"
+
+#. Resource IDs: (157)
+msgid "Text Files (*.txt)|*.txt|All Files (*.*)|*.*||"
+msgstr "Text Dateien (*.txt)|*.txt|Alle Dateien (*.*)|*.*||"
 
 #. Resource IDs: (65535)
 msgid "Thai"
@@ -9589,6 +9640,12 @@ msgid ""
 "Are you sure to abort?"
 msgstr "Der Prozess befindet sich noch in der Ausführung.\nSind Sie sicher, dass Sie abbrechen möchten?"
 
+#. Resource IDs: (70)
+msgid ""
+"The regular expression is invalid!\n"
+"Please enter a valid regular expression."
+msgstr "Der reguläre Ausdruck ist ungültig.\nBitte geben Sie einen gültigen regulären Ausdruck ein."
+
 #. Resource IDs: (71)
 #, c-format
 msgid ""
@@ -9745,6 +9802,12 @@ msgstr "Dieses Programm benötigt die Datei %s, welche nicht auf diesem System g
 #. Resource IDs: (15)
 msgid "This property is only allowed on folders, not files."
 msgstr "Diese Eigenschaft ist nur für Dateien und nicht für Ordner zugelassen."
+
+#. Resource IDs: (95)
+msgid ""
+"This remote name collides with fetch refspec of other remotes\n"
+"Please use another name"
+msgstr "Der Name des entfernten Repositories kollidiert mit dem refspec eines anderen entfernten Repositories.\nBitte benutzen Sie einen anderen Namen"
 
 #. Resource IDs: (67)
 msgid "This task requires a clean working tree."
@@ -10019,8 +10082,8 @@ msgid "URL"
 msgstr "URL"
 
 #. Resource IDs: (71)
-msgid "URL and directory must not be empty at the same time."
-msgstr "URL und Verzeichnis dürfen nicht gleichzeitig leer sein."
+msgid "URL and directory must not be empty."
+msgstr "URL und Verzeichnis dürfen nicht leer sein."
 
 #. Resource IDs: (1272)
 msgid "URL history"
@@ -10701,6 +10764,10 @@ msgstr "Windows-1257"
 #. Resource IDs: (5028)
 msgid "Windows-1258"
 msgstr "Windows-1258"
+
+#. Resource IDs: (65535)
+msgid "Within a file:"
+msgstr "Innerhalb einer Datei:"
 
 #. Resource IDs: (2054)
 msgid "Within file"

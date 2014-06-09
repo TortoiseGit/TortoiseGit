@@ -4,20 +4,20 @@
 # This file is distributed under the same license as TortoiseGit
 # 
 # Translators:
-# Hydriz <admin@alphacorp.tk>, 2013
-# 鋰 乙酸 <ch3cooli@gmail.com>, 2012
-# 鋰 乙酸 <ch3cooli@gmail.com>, 2012-2014
-# Hydriz <admin@alphacorp.tk>, 2013
+# Hydriz Scholz <admin@alphacorp.tk>, 2013
+# ch cooli <ch3cooli@gmail.com>, 2012
+# ch cooli <ch3cooli@gmail.com>, 2012-2014
+# Hydriz Scholz <admin@alphacorp.tk>, 2013
 # Sven Strickroth <sstrickroth@googlemail.com>, 2013
-# Yue_Lin_Ho <yuelinho777@gmail.com>, 2014
-# 鋰 乙酸 <ch3cooli@gmail.com>, 2012-2013
+# Yue Lin Ho <yuelinho777@gmail.com>, 2014
+# ch cooli <ch3cooli@gmail.com>, 2012-2013
 msgid ""
 msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2014-04-01 15:19+0000\n"
-"Last-Translator: 鋰 乙酸 <ch3cooli@gmail.com>\n"
+"PO-Revision-Date: 2014-06-08 15:20+0000\n"
+"Last-Translator: ch cooli <ch3cooli@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/tortoisegit/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1054,6 +1054,10 @@ msgstr "參考點(&R)："
 msgid "&Refresh"
 msgstr "重新整理(&R)"
 
+#. Resource IDs: (20093)
+msgid "&Regular Expression"
+msgstr "正規表示式(&R)"
+
 #. Resource IDs: (1617)
 msgid "&Remote Branch:"
 msgstr "遠端分支(&R)"
@@ -1272,7 +1276,7 @@ msgstr "雙頁(&T)"
 
 #. Resource IDs: (1076, 65535)
 msgid "&URL:"
-msgstr "&URL："
+msgstr "&URL:"
 
 #. Resource IDs: (1253, 57643)
 msgid "&Undo"
@@ -2173,6 +2177,10 @@ msgstr "基於 TortoiseSVN 的 TortoiseIDiff"
 msgid "Basic Info"
 msgstr "基本資訊"
 
+#. Resource IDs: (65535)
+msgid "Between files:"
+msgstr "檔案之間"
+
 #. Resource IDs: (5060)
 msgid "Big5 (Traditional)"
 msgstr "Big5 (繁體)"
@@ -2527,6 +2535,11 @@ msgstr "已變動的檔案"
 
 #. Resource IDs: (324)
 #, c-format
+msgid "Changed files between %s and %s"
+msgstr "%s 至 %s 間變更的檔案"
+
+#. Resource IDs: (324)
+#, c-format
 msgid "Changed files between %s, %s and %s, %s"
 msgstr "%s, %s 至 %s, %s 間變更的檔案"
 
@@ -2873,6 +2886,11 @@ msgstr "命令"
 #. Resource IDs: (67, 77, 135, 229, 1083, 1383, 1514)
 msgid "Commit"
 msgstr "提交"
+
+#. Resource IDs: (94)
+#, c-format
+msgid "Commit %s not found in \"%s\". Update submodule now?"
+msgstr "提交 %s 沒在 \"%s\" 中被找到。立即更新子模組？"
 
 #. Resource IDs: (1255)
 msgid "Commit Date"
@@ -3594,6 +3612,11 @@ msgstr "刪除遠端分支"
 #. Resource IDs: (4579)
 msgid "Delete remote tag - TortoiseGit"
 msgstr "刪除遠端標籤 - TortoiseGit"
+
+#. Resource IDs: (95)
+#, c-format
+msgid "Delete remote tags on \"%s\"..."
+msgstr "刪除遠端標籤在\"%s\"..."
 
 #. Resource IDs: (86)
 msgid "Delete remote tags..."
@@ -4321,7 +4344,7 @@ msgstr "建立圖示快取失敗！"
 msgid ""
 "Error while reading/writing the registry key %s\n"
 "%s"
-msgstr "讀寫註冊樹時發生錯誤: %s\n%s"
+msgstr "讀寫登錄機碼時發生錯誤: %s\n%s"
 
 #. Resource IDs: (75)
 msgid "Everything updated."
@@ -4459,7 +4482,7 @@ msgstr "無法建立空文件."
 msgid ""
 "Failed to create object.  Make sure the application is entered in the system"
 " registry."
-msgstr "無法建立物件. 請確定系統註冊樹中有此應用程式."
+msgstr "無法建立物件. 請確定系統登錄檔中有此應用程式."
 
 #. Resource IDs: (72)
 msgid "Failed to create pull-request."
@@ -6710,6 +6733,10 @@ msgstr "%s數"
 msgid "Number of authors:"
 msgstr "作者數:"
 
+#. Resource IDs: (65535)
+msgid "Number of characters required for moved or copied line detection:"
+msgstr "偵測 移動行 或 複製行 所需的字元數"
+
 #. Resource IDs: (1160)
 msgid "Number of weeks:"
 msgstr "週數:"
@@ -7185,6 +7212,10 @@ msgstr "請選擇分支"
 msgid "Please select upstream"
 msgstr "請選擇上游"
 
+#. Resource IDs: (94)
+msgid "Please take a look at the skipped commits"
+msgstr "請查看被忽略的提交"
+
 #. Resource IDs: (13)
 msgid "Please wait while cancelling..."
 msgstr "正在取消, 請稍候..."
@@ -7416,6 +7447,10 @@ msgstr "推送"
 #. Resource IDs: (1786)
 msgid "Push Default"
 msgstr "推送預設值"
+
+#. Resource IDs: (65535)
+msgid "Push URL:"
+msgstr "推送 URL:"
 
 #. Resource IDs: (1385)
 msgid "Push notes"
@@ -7696,7 +7731,7 @@ msgstr "遠端分支(&B)："
 
 #. Resource IDs: (1618)
 msgid "Remote &URL:"
-msgstr "遠端URL(&URL)"
+msgstr "遠端 &URL:"
 
 #. Resource IDs: (1754)
 msgid "Remote &tracking branch"
@@ -8546,8 +8581,8 @@ msgid "Set au&thor"
 msgstr "設定作者(&T)"
 
 #. Resource IDs: (1557)
-msgid "Set commit &date"
-msgstr "將檔案日期設定(&d)"
+msgid "Set author &date"
+msgstr "設定作者日期(&d)"
 
 #. Resource IDs: (86)
 msgid "Sets the remote as the \"pushremote\" for the selected local branch."
@@ -8733,6 +8768,10 @@ msgstr "在短暫延遲後顯示完整選單(&U)"
 #. Resource IDs: (2051, 32802)
 msgid "Show file name"
 msgstr "顯示檔案名稱"
+
+#. Resource IDs: (1782)
+msgid "Show git.exe execution timings and timestamp"
+msgstr "顯示 git.exe 執行需時及時間戳"
 
 #. Resource IDs: (1264)
 msgid "Show i&gnored files"
@@ -9026,6 +9065,10 @@ msgstr "開始變基"
 msgid "Start bisect mode..."
 msgstr "開始二分法模式"
 
+#. Resource IDs: (1542)
+msgid "Start registry editor"
+msgstr "啟動登錄檔編輯器"
+
 #. Resource IDs: (14)
 msgid "Starts a git server running git protocol"
 msgstr "啟動 Git 服務採用 Git 協定"
@@ -9266,6 +9309,10 @@ msgstr "左右切換比對視窗"
 msgid "Symbolize ref names"
 msgstr "符號化參考點名稱"
 
+#. Resource IDs: (11031)
+msgid "Symlink"
+msgstr "符號連結"
+
 #. Resource IDs: (22)
 msgid "Sync Remote Repositories, including pull, push, email patch and so on"
 msgstr "同步遠端倉儲,包括拉取,推送,電郵補綴等等"
@@ -9356,6 +9403,10 @@ msgstr "測試"
 #. Resource IDs: (219)
 msgid "Test Only"
 msgstr "僅測試"
+
+#. Resource IDs: (157)
+msgid "Text Files (*.txt)|*.txt|All Files (*.*)|*.*||"
+msgstr "文字檔案 (*.txt)|*.txt|所有檔案 (*.*)|*.*||"
 
 #. Resource IDs: (65535)
 msgid "Thai"
@@ -9571,7 +9622,7 @@ msgid ""
 "com1-com9, lpt1-lpt9, prn, aux, con, nul, clock$\n"
 "\n"
 "Do you want to proceed anyway?"
-msgstr "您輸入的路徑/URL在Windows上有錯誤!\n您可以照用, 但之後可能發生問題.\n\n檔案名稱中不可以包含下列字元 '<<>|\"?*:' 或是下列的裝置名稱:\ncom1-com9, lpt1-lpt9, prn, aux, con, nul, clock$\n\n確定要繼續嗎?"
+msgstr "您輸入的 路徑/URL 在Windows上有錯誤!\n您可以照用, 但之後可能發生問題.\n\n檔案名稱中不可以包含下列字元 '<<>|\"?*:' 或是下列的裝置名稱:\ncom1-com9, lpt1-lpt9, prn, aux, con, nul, clock$\n\n確定要繼續嗎?"
 
 #. Resource IDs: (314)
 #, c-format
@@ -9589,6 +9640,12 @@ msgid ""
 "The process is still running.\n"
 "Are you sure to abort?"
 msgstr "程序仍在執行中，\n確定要終止？"
+
+#. Resource IDs: (70)
+msgid ""
+"The regular expression is invalid!\n"
+"Please enter a valid regular expression."
+msgstr "該正規表示式是無效的！\n請輸入一個有效的正規表示式。"
 
 #. Resource IDs: (71)
 #, c-format
@@ -9746,6 +9803,12 @@ msgstr "系統中找不到本程式需要的 %s."
 #. Resource IDs: (15)
 msgid "This property is only allowed on folders, not files."
 msgstr "這個性質只能設置在資料夾上, 檔案不能."
+
+#. Resource IDs: (95)
+msgid ""
+"This remote name collides with fetch refspec of other remotes\n"
+"Please use another name"
+msgstr "遠端名稱與其他遠端的獲取 refspec 衝突，請用另一名稱"
 
 #. Resource IDs: (67)
 msgid "This task requires a clean working tree."
@@ -10020,8 +10083,8 @@ msgid "URL"
 msgstr "URL"
 
 #. Resource IDs: (71)
-msgid "URL and directory must not be empty at the same time."
-msgstr "URL 及目錄不能同時留空"
+msgid "URL and directory must not be empty."
+msgstr "URL 或 目錄 不可為空"
 
 #. Resource IDs: (1272)
 msgid "URL history"
@@ -10702,6 +10765,10 @@ msgstr "Windows-1257"
 #. Resource IDs: (5028)
 msgid "Windows-1258"
 msgstr "Windows-1258"
+
+#. Resource IDs: (65535)
+msgid "Within a file:"
+msgstr "檔案內"
 
 #. Resource IDs: (2054)
 msgid "Within file"

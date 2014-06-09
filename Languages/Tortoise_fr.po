@@ -5,16 +5,16 @@
 # 
 # Translators:
 # deathart <deathart@hotmail.fr>, 2013-2014
-# Freddydelanuit Dec <fred.dec@free.fr>, 2012-2013
-# Pinky007 <pinky__007@hotmail.com>, 2013-2014
+# Freddydelanuit Dec <fred.dec@free.fr>, 2012-2014
+# Fred <pinky__007@hotmail.com>, 2013-2014
 # gregseth <greg.seth@gmail.com>, 2013
 # gregseth <greg.seth@gmail.com>, 2013
 # bauland <nicolas.bauland@laposte.net>, 2014
-# softity <softy@yopmail.com>, 2013
-# Pinky007 <pinky__007@hotmail.com>, 2013
-# Pinky007 <pinky__007@hotmail.com>, 2013
-# softity <softy@yopmail.com>, 2013
-# Stéphane Aulery, 2012
+# peter griffin <softy@yopmail.com>, 2013
+# Fred <pinky__007@hotmail.com>, 2013
+# Fred <pinky__007@hotmail.com>, 2013
+# peter griffin <softy@yopmail.com>, 2013
+# lkppo, 2012
 # Sven Strickroth <sstrickroth@googlemail.com>, 2012-2013
 # ykatchou <ykatchou@gmail.com>, 2012-2013
 msgid ""
@@ -22,8 +22,8 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2014-03-18 19:09+0000\n"
-"Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
+"PO-Revision-Date: 2014-06-09 20:00+0000\n"
+"Last-Translator: bauland <nicolas.bauland@laposte.net>\n"
 "Language-Team: French (http://www.transifex.com/projects/p/tortoisegit/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -51,7 +51,7 @@ msgstr "! %d"
 
 #. Resource IDs: (1262)
 msgid "# authors shown individually:"
-msgstr "# auteurs affichés individuellement :"
+msgstr "# auteurs vus individuellement :"
 
 #. Resource IDs: (357)
 #, c-format
@@ -424,7 +424,7 @@ msgstr "Cacher &Automatiquement"
 
 #. Resource IDs: (65535)
 msgid "&Autoclose Git.exe dialog:"
-msgstr ""
+msgstr "Fermeture &Automatique de la fenêtre Git.exe:"
 
 #. Resource IDs: (1505)
 msgid "&Autoload Putty Key"
@@ -1059,6 +1059,10 @@ msgstr "&Ref:"
 #. Resource IDs: (1382)
 msgid "&Refresh"
 msgstr "&Rafraîchir"
+
+#. Resource IDs: (20093)
+msgid "&Regular Expression"
+msgstr "Expression &Régulière"
 
 #. Resource IDs: (1617)
 msgid "&Remote Branch:"
@@ -2179,6 +2183,10 @@ msgstr "Basé sur TortoiseIDiff de TortoiseSVN"
 msgid "Basic Info"
 msgstr "Info basique"
 
+#. Resource IDs: (65535)
+msgid "Between files:"
+msgstr "Entre les fichiers:"
+
 #. Resource IDs: (5060)
 msgid "Big5 (Traditional)"
 msgstr "Big5 (Traditionel)"
@@ -2317,7 +2325,7 @@ msgstr "Bug-ID"
 
 #. Resource IDs: (1578)
 msgid "Bug-ID e&xpression:"
-msgstr ""
+msgstr "E&xpression de l'identifiant de bug:"
 
 #. Resource IDs: (1119)
 msgid "Bug-ID/Issue-Nr:"
@@ -2333,7 +2341,7 @@ msgstr "BugTraq"
 
 #. Resource IDs: (327)
 msgid "Bugtraq Regex Tester - TortoiseGit"
-msgstr ""
+msgstr "Testeur d'expression régulière Bugtraq - TortoiseGit"
 
 #. Resource IDs: (16132)
 msgid "Button Appearance"
@@ -2462,7 +2470,7 @@ msgstr "Impossible de combiner les livraisons pour le moment.\nAssurez-vous que 
 msgid ""
 "Cannot force updating current branch. Use reset command if you want to do "
 "so."
-msgstr ""
+msgstr "Ne peut pas forcer la mise à jour de la branche courante. Utiliser la command reset, si vous voulez le faire."
 
 #. Resource IDs: (1)
 #, c-format
@@ -2530,6 +2538,11 @@ msgstr "Changer le type"
 #. Resource IDs: (199)
 msgid "Changed Files"
 msgstr "Fichiers modifiés"
+
+#. Resource IDs: (324)
+#, c-format
+msgid "Changed files between %s and %s"
+msgstr "Fichiers modifiées entre %s et %s"
 
 #. Resource IDs: (324)
 #, c-format
@@ -2879,6 +2892,11 @@ msgstr "Commandes"
 #. Resource IDs: (67, 77, 135, 229, 1083, 1383, 1514)
 msgid "Commit"
 msgstr "Livrer"
+
+#. Resource IDs: (94)
+#, c-format
+msgid "Commit %s not found in \"%s\". Update submodule now?"
+msgstr "Livraison %s non trouvée dans \"%s\". Mettre à jour le sous-module maintenant ?"
 
 #. Resource IDs: (1255)
 msgid "Commit Date"
@@ -3313,7 +3331,7 @@ msgstr "Ne peut pas démarrer l'unité d'exécution(thread) !"
 
 #. Resource IDs: (1501)
 msgid "Coun&t"
-msgstr ""
+msgstr "Comp&ter"
 
 #. Resource IDs: (94)
 #, c-format
@@ -3601,6 +3619,11 @@ msgstr "Supprimer la branche distante"
 msgid "Delete remote tag - TortoiseGit"
 msgstr "Supprimer le tag distant - Tortoisegit"
 
+#. Resource IDs: (95)
+#, c-format
+msgid "Delete remote tags on \"%s\"..."
+msgstr "Supprimer l'étiquette distante sur \"%s\"..."
+
 #. Resource IDs: (86)
 msgid "Delete remote tags..."
 msgstr "Supprimer les tags distants..."
@@ -3718,7 +3741,7 @@ msgstr "Boîtes de dialogue"
 
 #. Resource IDs: (1789)
 msgid "Diff Options"
-msgstr ""
+msgstr "Options du Diff"
 
 #. Resource IDs: (22)
 msgid "Diff Two Commits"
@@ -3738,12 +3761,12 @@ msgstr "Fichier diff :"
 
 #. Resource IDs: (15)
 msgid "Diff later"
-msgstr ""
+msgstr "Diff plus tard"
 
 #. Resource IDs: (15)
 #, c-format
 msgid "Diff with \"%s\""
-msgstr ""
+msgstr "Diff avec \"%s\""
 
 #. Resource IDs: (81)
 #, c-format
@@ -3912,7 +3935,7 @@ msgstr "Voulez-vous vraiment annuler toutes vos modifications dans \n%s\nqui ont
 msgid ""
 "Do you really want to unflag the selected file(s) as skip-worktree or "
 "assume-unchanged?"
-msgstr ""
+msgstr "Voulez-vous réellement marquer le(s) fichier(s) sélectionné(s) comme à ne pas afficher dans l'arborescence de travail?"
 
 #. Resource IDs: (86)
 msgid "Do you want to fetch remote branches from the newly added remote?"
@@ -4411,7 +4434,7 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Extension:"
-msgstr ""
+msgstr "Extension :"
 
 #. Resource IDs: (65535)
 msgid "Extern DLL Path:"
@@ -5073,7 +5096,7 @@ msgid ""
 "The \"Effective\" tab shows you the effective values for the current scope (read-only).\n"
 "Select any level to see the values stored there.\n"
 "In order to change settings select a level, enter the values and select where to store to."
-msgstr ""
+msgstr "Git utilise le concept d'une configuration hiérarchique.\nI.e. il y a plusieurs niveaux; paramètres d'un plus haut niveau écrasent ceux d'un niveau plus faible.\nL'onglet \"Effectif\" vous montre les valeurs effective pour la portée actuelle (lecture seule).\nChoisissez n'importe quel niveau pour voir les valeurs qui y sont sauvegardées.\nAfin de changer paramètres , sélectionner un niveau, entrer les valeurs et sélectionner ou les sauvegarder."
 
 #. Resource IDs: (65535)
 msgid "Git.exe Path:"
@@ -6130,7 +6153,7 @@ msgstr "Marquer comme résolu⏎\nLe statut du fichier est changé en modifié"
 
 #. Resource IDs: (252)
 msgid "Mark this block"
-msgstr ""
+msgstr "Marquer ce bloc"
 
 #. Resource IDs: (2051)
 msgid ""
@@ -6467,7 +6490,7 @@ msgstr "Dernier moment d'engagement"
 
 #. Resource IDs: (101)
 msgid "Newlines"
-msgstr ""
+msgstr "Nouvelles lignes"
 
 #. Resource IDs: (20308)
 msgid "Next"
@@ -6715,6 +6738,10 @@ msgstr "Nombre de %s"
 #. Resource IDs: (1161)
 msgid "Number of authors:"
 msgstr "Nombre d'auteurs :"
+
+#. Resource IDs: (65535)
+msgid "Number of characters required for moved or copied line detection:"
+msgstr "Nombre de caractères nécessaires pour déplacer ou copier la détection de ligne:"
 
 #. Resource IDs: (1160)
 msgid "Number of weeks:"
@@ -7191,6 +7218,10 @@ msgstr "Merci de sélectionner une branche"
 msgid "Please select upstream"
 msgstr ""
 
+#. Resource IDs: (94)
+msgid "Please take a look at the skipped commits"
+msgstr "Merci de regarder les livraisons ignorées"
+
 #. Resource IDs: (13)
 msgid "Please wait while cancelling..."
 msgstr "Attente de l'annulation..."
@@ -7423,6 +7454,10 @@ msgstr "Pousser"
 msgid "Push Default"
 msgstr ""
 
+#. Resource IDs: (65535)
+msgid "Push URL:"
+msgstr "URL pour pousser:"
+
 #. Resource IDs: (1385)
 msgid "Push notes"
 msgstr "Pousser les notes"
@@ -7482,13 +7517,13 @@ msgstr "REBASE"
 
 #. Resource IDs: (1769)
 msgid "Randomize Sync Dialog startup position"
-msgstr ""
+msgstr "Position aléatoire de la fenêtre de dialogue de synchronisation"
 
 #. Resource IDs: (91)
 msgid ""
 "Randomize the startup position of Sync Dialog. This prevents from pressing "
 "the Pull button of same dialog"
-msgstr ""
+msgstr "Position aléatoire de la fenêtre de dialogue de synchronisation. Cela empêche un appui involontaire du bouton Tirer de la même fenêtre de dialogue"
 
 #. Resource IDs: (1535)
 msgid "Range"
@@ -7762,7 +7797,7 @@ msgstr "Retirer les fichiers &non-ignorés et non pistés (-f)"
 msgid ""
 "Remove all comments before doing the diff so changes inside comments don't "
 "show as different"
-msgstr ""
+msgstr "Enlever tout les commentaires avant de faire le diff, de façon à ce que les commentaires modifiés ne soient pas affichés comme différents"
 
 #. Resource IDs: (15)
 msgid "Remove from &ignore list"
@@ -8552,8 +8587,8 @@ msgid "Set au&thor"
 msgstr "Régler le nom de l'Au&teur"
 
 #. Resource IDs: (1557)
-msgid "Set commit &date"
-msgstr "Sélectionner la date de livraison"
+msgid "Set author &date"
+msgstr "Définir la date de l'auteur"
 
 #. Resource IDs: (86)
 msgid "Sets the remote as the \"pushremote\" for the selected local branch."
@@ -8739,6 +8774,10 @@ msgstr "Afficher les men&us complets après un court délai"
 #. Resource IDs: (2051, 32802)
 msgid "Show file name"
 msgstr "Afficher le nom du fichier"
+
+#. Resource IDs: (1782)
+msgid "Show git.exe execution timings and timestamp"
+msgstr "Afficher l'horodatage et les temps d'exécution de git.exe"
 
 #. Resource IDs: (1264)
 msgid "Show i&gnored files"
@@ -9032,6 +9071,10 @@ msgstr "Démarrer le Rebase"
 msgid "Start bisect mode..."
 msgstr "Démarrer le mode bifurcation"
 
+#. Resource IDs: (1542)
+msgid "Start registry editor"
+msgstr "Démarrer l'éditeur de registre"
+
 #. Resource IDs: (14)
 msgid "Starts a git server running git protocol"
 msgstr "Démarre un serveur git utilisant le protocole git"
@@ -9111,7 +9154,7 @@ msgstr "Arrêter le mode bifurcation"
 msgid ""
 "Stores the path of the file to be used for a diff on a later right-click. "
 "Hold down the Ctrl key to remove the last saved path."
-msgstr ""
+msgstr "Stocke le chemin du fichier à utiliser pour un diff sur un prochain clic droit. Maintenir la touche Ctrl pour supprimer le dernier chemin enregistré."
 
 #. Resource IDs: (1)
 msgid "Strategy"
@@ -9266,11 +9309,15 @@ msgstr "Permuter/Déplacer l'arborescence de travail sur une autre branche / ét
 
 #. Resource IDs: (325)
 msgid "Switches the comparison left<->right"
-msgstr ""
+msgstr "Permuter la comparaison gauche<->droite"
 
 #. Resource IDs: (1733)
 msgid "Symbolize ref names"
 msgstr "Rétrécir les noms de référence aux symboles"
+
+#. Resource IDs: (11031)
+msgid "Symlink"
+msgstr "Lien symbolique"
 
 #. Resource IDs: (22)
 msgid "Sync Remote Repositories, including pull, push, email patch and so on"
@@ -9362,6 +9409,10 @@ msgstr "Test"
 #. Resource IDs: (219)
 msgid "Test Only"
 msgstr "Tester uniquement"
+
+#. Resource IDs: (157)
+msgid "Text Files (*.txt)|*.txt|All Files (*.*)|*.*||"
+msgstr "Fichiers texte (*.txt)|*.txt|Tous les fichiers (*.*)|*.*||"
 
 #. Resource IDs: (65535)
 msgid "Thai"
@@ -9596,6 +9647,12 @@ msgid ""
 "Are you sure to abort?"
 msgstr "Le processus est encore en cours.\nÊtes-vous sur de vouloir annuler?"
 
+#. Resource IDs: (70)
+msgid ""
+"The regular expression is invalid!\n"
+"Please enter a valid regular expression."
+msgstr "L'expression régulière est invalide!\nMerci de saisir une expression régulière valide."
+
 #. Resource IDs: (71)
 #, c-format
 msgid ""
@@ -9628,7 +9685,7 @@ msgid ""
 "%s\n"
 "is a special folder and is not supposed to be a repository root!\n"
 "Are you sure you want to initialize a git repository inside that folder?"
-msgstr ""
+msgstr "Le dossier d'arrivée\n%s\nest un dossier spécial et n'est pas supposé être la racine d'un dépôt !\nÊtes-vous sur de vouloir initialiser un dépôt Git dans ce dossier ?"
 
 #. Resource IDs: (88)
 #, c-format
@@ -9753,6 +9810,12 @@ msgstr "Ce programme demande le fichier %s, lequel n'a pas été trouvé."
 msgid "This property is only allowed on folders, not files."
 msgstr "Cette propriété est seulement autorisée sur les répertoires, pas sur les fichiers."
 
+#. Resource IDs: (95)
+msgid ""
+"This remote name collides with fetch refspec of other remotes\n"
+"Please use another name"
+msgstr "Ce nom distant est en conflit avec le fetch refspec d'un autre serveur distant\nMerci d'utiliser un autre nom"
+
 #. Resource IDs: (67)
 msgid "This task requires a clean working tree."
 msgstr "Cette tâche nécessite une arborescence de travail propre."
@@ -9807,7 +9870,7 @@ msgstr "Basculer l'afficher Une/Deux Pages\nBasculer l'afficher Une/Deux Pages"
 
 #. Resource IDs: (93)
 msgid "Toggle filters"
-msgstr ""
+msgstr "Basculer les filtres"
 
 #. Resource IDs: (65535)
 msgid "Toolbar"
@@ -9982,7 +10045,7 @@ msgstr "Branche distante suivie :"
 
 #. Resource IDs: (94)
 msgid "Tracked branch"
-msgstr ""
+msgstr "Branche suivie"
 
 #. Resource IDs: (357)
 #, c-format
@@ -10026,8 +10089,8 @@ msgid "URL"
 msgstr "URL"
 
 #. Resource IDs: (71)
-msgid "URL and directory must not be empty at the same time."
-msgstr "L'URL et le répertoire ne peuvent pas être vide en même temps."
+msgid "URL and directory must not be empty."
+msgstr "L'URL et le répertoire ne peuvent pas être vides."
 
 #. Resource IDs: (1272)
 msgid "URL history"
@@ -10303,7 +10366,7 @@ msgstr "Utiliser le fichier gauche"
 
 #. Resource IDs: (252)
 msgid "Use left file except marked blocks"
-msgstr ""
+msgstr "Utiliser le fichier gauche sauf pour les blocs marqués"
 
 #. Resource IDs: (1762)
 msgid "Use local branch color for current branch"
@@ -10558,7 +10621,7 @@ msgstr "En attente d'une saisie"
 
 #. Resource IDs: (1776)
 msgid "Walk Be&haviour"
-msgstr ""
+msgstr "Comportement de parcours"
 
 #. Resource IDs: (88)
 msgid "Warning"
@@ -10606,7 +10669,7 @@ msgstr "Lors de la fermeture d'une fenêtre d'avancement avec un processus git e
 msgid ""
 "When enabled, TortoiseGit move context menu items will be available when "
 "dragging folders / files"
-msgstr ""
+msgstr "Si activé, TortoiseGit le choix de déplacement dans le menu contextuel sera disponible lors de glissement de dossiers / fichiers"
 
 #. Resource IDs: (197)
 msgid ""
@@ -10624,7 +10687,7 @@ msgstr "Lorsque sélectionné, les espaces sont utilisés à la place des tabula
 msgid ""
 "When selected, it tries to infer tab / spaces to use\n"
 "Smart tab char"
-msgstr ""
+msgstr "Lorsque sélectionné, cela tente d'inférer les tabulations / espaces à utiliser\nCaractère de tabulation intelligente"
 
 #. Resource IDs: (604)
 msgid ""
@@ -10708,6 +10771,10 @@ msgstr "Windows-1257"
 #. Resource IDs: (5028)
 msgid "Windows-1258"
 msgstr "Windows-1258"
+
+#. Resource IDs: (65535)
+msgid "Within a file:"
+msgstr "A l'intérieur d'un fichier:"
 
 #. Resource IDs: (2054)
 msgid "Within file"

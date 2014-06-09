@@ -5,8 +5,8 @@
 # 
 # Translators:
 # acehigh, 2011
-# akira80 <akirarulez@yahoo.it>, 2013
-# akira80 <akirarulez@yahoo.it>, 2013
+# Antonio <akirarulez@yahoo.it>, 2013
+# Antonio <akirarulez@yahoo.it>, 2013
 # Cecilia Saltori <csaltori@gmail.com>, 2011
 # Emilio Bologna <>, 2012
 # Lübbe TortoiseSVN <luebbe.tortoisesvn@gmail.com>, 2011
@@ -15,8 +15,8 @@
 # Lübbe TortoiseSVN <luebbe.tortoisesvn@gmail.com>, 2011
 # acehigh, 2011
 # Michele Locati <mlocati@gmail.com>, 2012
-# natemccoy, 2013
-# natemccoy, 2013
+# Nathan McCoy, 2013
+# Nathan McCoy, 2013
 # Roberto Casazza <roberto.casazza@alice.it>, 2011
 # Sven Strickroth <sstrickroth@googlemail.com>, 2012-2013
 msgid ""
@@ -24,7 +24,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2014-03-18 19:09+0000\n"
+"PO-Revision-Date: 2014-05-31 10:17+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Italian (Italy) (http://www.transifex.com/projects/p/tortoisegit/language/it_IT/)\n"
 "MIME-Version: 1.0\n"
@@ -1061,6 +1061,10 @@ msgstr ""
 #. Resource IDs: (1382)
 msgid "&Refresh"
 msgstr "&Aggiorna"
+
+#. Resource IDs: (20093)
+msgid "&Regular Expression"
+msgstr ""
 
 #. Resource IDs: (1617)
 msgid "&Remote Branch:"
@@ -2181,6 +2185,10 @@ msgstr ""
 msgid "Basic Info"
 msgstr ""
 
+#. Resource IDs: (65535)
+msgid "Between files:"
+msgstr ""
+
 #. Resource IDs: (5060)
 msgid "Big5 (Traditional)"
 msgstr ""
@@ -2535,6 +2543,11 @@ msgstr "File modificati"
 
 #. Resource IDs: (324)
 #, c-format
+msgid "Changed files between %s and %s"
+msgstr ""
+
+#. Resource IDs: (324)
+#, c-format
 msgid "Changed files between %s, %s and %s, %s"
 msgstr "File modificati tra %s, %s e %s, %s"
 
@@ -2881,6 +2894,11 @@ msgstr "Comandi"
 #. Resource IDs: (67, 77, 135, 229, 1083, 1383, 1514)
 msgid "Commit"
 msgstr "Invia"
+
+#. Resource IDs: (94)
+#, c-format
+msgid "Commit %s not found in \"%s\". Update submodule now?"
+msgstr ""
 
 #. Resource IDs: (1255)
 msgid "Commit Date"
@@ -3601,6 +3619,11 @@ msgstr ""
 
 #. Resource IDs: (4579)
 msgid "Delete remote tag - TortoiseGit"
+msgstr ""
+
+#. Resource IDs: (95)
+#, c-format
+msgid "Delete remote tags on \"%s\"..."
 msgstr ""
 
 #. Resource IDs: (86)
@@ -6718,6 +6741,10 @@ msgstr "Numero di %s"
 msgid "Number of authors:"
 msgstr "Numero di autori:"
 
+#. Resource IDs: (65535)
+msgid "Number of characters required for moved or copied line detection:"
+msgstr ""
+
 #. Resource IDs: (1160)
 msgid "Number of weeks:"
 msgstr "Numero di settimane:"
@@ -7193,6 +7220,10 @@ msgstr ""
 msgid "Please select upstream"
 msgstr ""
 
+#. Resource IDs: (94)
+msgid "Please take a look at the skipped commits"
+msgstr ""
+
 #. Resource IDs: (13)
 msgid "Please wait while cancelling..."
 msgstr "Attendere. Annullamento in corso..."
@@ -7423,6 +7454,10 @@ msgstr "Push"
 
 #. Resource IDs: (1786)
 msgid "Push Default"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Push URL:"
 msgstr ""
 
 #. Resource IDs: (1385)
@@ -8554,8 +8589,8 @@ msgid "Set au&thor"
 msgstr ""
 
 #. Resource IDs: (1557)
-msgid "Set commit &date"
-msgstr "Imposta la data dell'invio"
+msgid "Set author &date"
+msgstr ""
 
 #. Resource IDs: (86)
 msgid "Sets the remote as the \"pushremote\" for the selected local branch."
@@ -8740,6 +8775,10 @@ msgstr "Visualizza menu inte&ri dopo un piccolo ritardo"
 
 #. Resource IDs: (2051, 32802)
 msgid "Show file name"
+msgstr ""
+
+#. Resource IDs: (1782)
+msgid "Show git.exe execution timings and timestamp"
 msgstr ""
 
 #. Resource IDs: (1264)
@@ -9034,6 +9073,10 @@ msgstr ""
 msgid "Start bisect mode..."
 msgstr ""
 
+#. Resource IDs: (1542)
+msgid "Start registry editor"
+msgstr ""
+
 #. Resource IDs: (14)
 msgid "Starts a git server running git protocol"
 msgstr ""
@@ -9274,6 +9317,10 @@ msgstr ""
 msgid "Symbolize ref names"
 msgstr ""
 
+#. Resource IDs: (11031)
+msgid "Symlink"
+msgstr ""
+
 #. Resource IDs: (22)
 msgid "Sync Remote Repositories, including pull, push, email patch and so on"
 msgstr ""
@@ -9364,6 +9411,10 @@ msgstr ""
 #. Resource IDs: (219)
 msgid "Test Only"
 msgstr "Solo Test"
+
+#. Resource IDs: (157)
+msgid "Text Files (*.txt)|*.txt|All Files (*.*)|*.*||"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Thai"
@@ -9598,6 +9649,12 @@ msgid ""
 "Are you sure to abort?"
 msgstr ""
 
+#. Resource IDs: (70)
+msgid ""
+"The regular expression is invalid!\n"
+"Please enter a valid regular expression."
+msgstr ""
+
 #. Resource IDs: (71)
 #, c-format
 msgid ""
@@ -9754,6 +9811,12 @@ msgstr "Questa applicazione richiede il file %s, ma il file non è stato trovato
 #. Resource IDs: (15)
 msgid "This property is only allowed on folders, not files."
 msgstr "Questa proprietà è disponibile solo per le cartelle, non per i file."
+
+#. Resource IDs: (95)
+msgid ""
+"This remote name collides with fetch refspec of other remotes\n"
+"Please use another name"
+msgstr ""
 
 #. Resource IDs: (67)
 msgid "This task requires a clean working tree."
@@ -10028,7 +10091,7 @@ msgid "URL"
 msgstr "URL"
 
 #. Resource IDs: (71)
-msgid "URL and directory must not be empty at the same time."
+msgid "URL and directory must not be empty."
 msgstr ""
 
 #. Resource IDs: (1272)
@@ -10710,6 +10773,10 @@ msgstr "Windows-1257"
 #. Resource IDs: (5028)
 msgid "Windows-1258"
 msgstr "Windows-1258"
+
+#. Resource IDs: (65535)
+msgid "Within a file:"
+msgstr ""
 
 #. Resource IDs: (2054)
 msgid "Within file"

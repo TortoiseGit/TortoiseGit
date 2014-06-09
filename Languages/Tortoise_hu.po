@@ -6,18 +6,18 @@
 # Translators:
 # Baquatelle <abel@abel.hu>, 2012
 # Baquatelle <abel@abel.hu>, 2012
-# gaborpro <protar.gabor@gmail.com>, 2013
-# gaborpro <protar.gabor@gmail.com>, 2013
-# hgrg <hgrg.wp@gmail.com>, 2013
-# hgrg <hgrg.wp@gmail.com>, 2013
+# Gábor Prótár <protar.gabor@gmail.com>, 2013
+# Gábor Prótár <protar.gabor@gmail.com>, 2013-2014
+# Hgrg <hgrg.wp@gmail.com>, 2013
+# Hgrg <hgrg.wp@gmail.com>, 2013
 # Sven Strickroth <sstrickroth@googlemail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2014-03-18 19:09+0000\n"
-"Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
+"PO-Revision-Date: 2014-06-01 19:02+0000\n"
+"Last-Translator: Gábor Prótár <protar.gabor@gmail.com>\n"
 "Language-Team: Hungarian (http://www.transifex.com/projects/p/tortoisegit/language/hu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -450,11 +450,11 @@ msgstr ""
 
 #. Resource IDs: (1512)
 msgid "&Branch"
-msgstr ""
+msgstr "&Ág"
 
 #. Resource IDs: (4566)
 msgid "&Branch:"
-msgstr ""
+msgstr "&Ág:"
 
 #. Resource IDs: (1382)
 msgid "&Browse Dir"
@@ -522,7 +522,7 @@ msgstr "&Művelet:"
 
 #. Resource IDs: (1625)
 msgid "&Commit"
-msgstr ""
+msgstr "&Beküldés..."
 
 #. Resource IDs: (355)
 msgid "&Commit submodule..."
@@ -558,7 +558,7 @@ msgstr "Gomb képének &másolása"
 
 #. Resource IDs: (57634)
 msgid "&Copy\tCtrl+C"
-msgstr ""
+msgstr "&Másolás⇥Ctrl+C"
 
 #. Resource IDs: (1662)
 msgid "&Custom"
@@ -686,7 +686,7 @@ msgstr "&Keresés"
 
 #. Resource IDs: (57636)
 msgid "&Find\tCtrl+F"
-msgstr ""
+msgstr "&Keresés⇥Ctrl+F"
 
 #. Resource IDs: (32778)
 msgid "&Fit images in window"
@@ -734,7 +734,7 @@ msgstr ""
 
 #. Resource IDs: (220)
 msgid "&Go to\tCtrl+G"
-msgstr ""
+msgstr "&Ugrás⇥Ctrl+G"
 
 #. Resource IDs: (91)
 msgid "&Gray Unrelated Changed Paths"
@@ -916,11 +916,11 @@ msgstr ""
 
 #. Resource IDs: (1515)
 msgid "&Name"
-msgstr ""
+msgstr "&Név"
 
 #. Resource IDs: (65535)
 msgid "&Name:"
-msgstr ""
+msgstr "&Név:"
 
 #. Resource IDs: (65535)
 msgid "&Navigate"
@@ -976,7 +976,7 @@ msgstr ""
 
 #. Resource IDs: (57601)
 msgid "&Open...\tCtrl+O"
-msgstr ""
+msgstr "&Megnyitás...⇥Ctrl+O"
 
 #. Resource IDs: (1382)
 msgid "&Options"
@@ -1053,6 +1053,10 @@ msgstr ""
 #. Resource IDs: (1382)
 msgid "&Refresh"
 msgstr "&Frissítés"
+
+#. Resource IDs: (20093)
+msgid "&Regular Expression"
+msgstr ""
 
 #. Resource IDs: (1617)
 msgid "&Remote Branch:"
@@ -1156,7 +1160,7 @@ msgstr "&Beállítások"
 
 #. Resource IDs: (32783)
 msgid "&Settings..."
-msgstr ""
+msgstr "&Beállítások..."
 
 #. Resource IDs: (65535)
 msgid "&Show Menus for:"
@@ -1184,7 +1188,7 @@ msgstr ""
 
 #. Resource IDs: (1616)
 msgid "&Start"
-msgstr ""
+msgstr "&Indítás"
 
 #. Resource IDs: (16917)
 msgid "&Start Group"
@@ -1200,7 +1204,7 @@ msgstr "&Állapotsor"
 
 #. Resource IDs: (1525)
 msgid "&Switch to new branch"
-msgstr ""
+msgstr "Új ágra &váltás"
 
 #. Resource IDs: (1173)
 msgid "&Symbol View"
@@ -1292,7 +1296,7 @@ msgstr "&Ismeretlen meghajtók"
 
 #. Resource IDs: (1383)
 msgid "&Up"
-msgstr ""
+msgstr "&Fel"
 
 #. Resource IDs: (1253)
 msgid "&Update item to revision"
@@ -1609,7 +1613,7 @@ msgstr "&Névjegy"
 
 #. Resource IDs: (1)
 msgid "A&pply"
-msgstr ""
+msgstr "&Alkalmaz"
 
 #. Resource IDs: (1128)
 msgid "Abbreviate renamings"
@@ -1760,7 +1764,7 @@ msgstr "Beállítás\nBeállítások"
 
 #. Resource IDs: (340)
 msgid "Advanced"
-msgstr ""
+msgstr "Speciális"
 
 #. Resource IDs: (170)
 msgid "Advanced Diff/Merge Settings"
@@ -1946,7 +1950,7 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Arabic"
-msgstr ""
+msgstr "arab"
 
 #. Resource IDs: (1495)
 msgid "Arbitrary &URL:"
@@ -2173,6 +2177,10 @@ msgstr ""
 msgid "Basic Info"
 msgstr ""
 
+#. Resource IDs: (65535)
+msgid "Between files:"
+msgstr ""
+
 #. Resource IDs: (5060)
 msgid "Big5 (Traditional)"
 msgstr ""
@@ -2287,7 +2295,7 @@ msgstr "Ág:"
 
 #. Resource IDs: (1383)
 msgid "Bro&wse"
-msgstr ""
+msgstr "Bön&gészés"
 
 #. Resource IDs: (21)
 msgid "Browse References"
@@ -2485,7 +2493,7 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Central European"
-msgstr ""
+msgstr "közép-európai"
 
 #. Resource IDs: (1697)
 msgid "Change log"
@@ -2524,6 +2532,11 @@ msgstr ""
 #. Resource IDs: (199)
 msgid "Changed Files"
 msgstr "Megváltozott fájlok"
+
+#. Resource IDs: (324)
+#, c-format
+msgid "Changed files between %s and %s"
+msgstr ""
 
 #. Resource IDs: (324)
 #, c-format
@@ -2642,11 +2655,11 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Chinese"
-msgstr ""
+msgstr "kínai"
 
 #. Resource IDs: (602)
 msgid "Choose Repository"
-msgstr ""
+msgstr "Tároló választás"
 
 #. Resource IDs: (88)
 msgid "Chronological reversed (git default)"
@@ -2768,7 +2781,7 @@ msgstr "Meglévő tároló klónozása"
 
 #. Resource IDs: (22)
 msgid "Clone a repository"
-msgstr ""
+msgstr "Tároló klónozása"
 
 #. Resource IDs: (1653)
 msgid "Clone into Bare Repo"
@@ -2874,6 +2887,11 @@ msgstr "Parancsok"
 msgid "Commit"
 msgstr "Beküldés"
 
+#. Resource IDs: (94)
+#, c-format
+msgid "Commit %s not found in \"%s\". Update submodule now?"
+msgstr ""
+
 #. Resource IDs: (1255)
 msgid "Commit Date"
 msgstr ""
@@ -2896,7 +2914,7 @@ msgstr ""
 
 #. Resource IDs: (1255)
 msgid "Commit Name"
-msgstr ""
+msgstr "Beküldéshez használt név"
 
 #. Resource IDs: (1750)
 msgid "Commit Ordering:"
@@ -2953,7 +2971,7 @@ msgstr ""
 
 #. Resource IDs: (64)
 msgid "Compare two files"
-msgstr ""
+msgstr "Két fájl összehasonlítása"
 
 #. Resource IDs: (156)
 msgid "Compare whitespaces"
@@ -2994,7 +3012,7 @@ msgstr "Befejezve"
 
 #. Resource IDs: (65535)
 msgid "Config"
-msgstr ""
+msgstr "Beállítások"
 
 #. Resource IDs: (65535)
 msgid "Config source"
@@ -3040,7 +3058,7 @@ msgstr ""
 
 #. Resource IDs: (1257, 4568)
 msgid "Conflict"
-msgstr ""
+msgstr "Konfliktus"
 
 #. Resource IDs: (67)
 msgid "Conflict Files"
@@ -3259,7 +3277,7 @@ msgstr "Nem érhető el a(z) %s verziója a %s fájlnak.\nNem lehetséges a patc
 
 #. Resource IDs: (64)
 msgid "Could not start TortoiseGitBlame"
-msgstr ""
+msgstr "A TortoiseGitBlame elindítása nem sikerült"
 
 #. Resource IDs: (81)
 #, c-format
@@ -3320,7 +3338,7 @@ msgstr ""
 
 #. Resource IDs: (1641)
 msgid "Create .gitignore file"
-msgstr ""
+msgstr ".gitignore fájl létrehozása"
 
 #. Resource IDs: (82)
 msgid "Create Branch"
@@ -3328,11 +3346,11 @@ msgstr ""
 
 #. Resource IDs: (1254)
 msgid "Create Branch at this version..."
-msgstr ""
+msgstr "Új ág létrehozása a választott verzió alapján..."
 
 #. Resource IDs: (9)
 msgid "Create Branch..."
-msgstr ""
+msgstr "Új ág..."
 
 #. Resource IDs: (243)
 msgid "Create Changelist"
@@ -3383,7 +3401,7 @@ msgstr ""
 
 #. Resource IDs: (8)
 msgid "Create repositor&y here..."
-msgstr ""
+msgstr "Új tároló &létrehozása itt..."
 
 #. Resource IDs: (85)
 msgid "Created"
@@ -3445,7 +3463,7 @@ msgstr "Aktuális ág"
 
 #. Resource IDs: (65535)
 msgid "Current Branch:"
-msgstr ""
+msgstr "Aktuális ág:"
 
 #. Resource IDs: (603)
 #, c-format
@@ -3585,7 +3603,7 @@ msgstr ""
 
 #. Resource IDs: (1255)
 msgid "Delete branch/tag"
-msgstr ""
+msgstr "Ág/címke törlése"
 
 #. Resource IDs: (80)
 msgid "Delete remote branch"
@@ -3593,6 +3611,11 @@ msgstr ""
 
 #. Resource IDs: (4579)
 msgid "Delete remote tag - TortoiseGit"
+msgstr ""
+
+#. Resource IDs: (95)
+#, c-format
+msgid "Delete remote tags on \"%s\"..."
 msgstr ""
 
 #. Resource IDs: (86)
@@ -3623,7 +3646,7 @@ msgstr "Törölt"
 
 #. Resource IDs: (4570)
 msgid "Deleted merge conflict"
-msgstr ""
+msgstr "Törölt ellentmondásos rész"
 
 #. Resource IDs: (23)
 msgid ""
@@ -3716,7 +3739,7 @@ msgstr ""
 
 #. Resource IDs: (22)
 msgid "Diff Two Commits"
-msgstr ""
+msgstr "Két beküldés összehasonlítása"
 
 #. Resource IDs: (192)
 msgid "Diff Viewer"
@@ -3979,7 +4002,7 @@ msgstr "Ne mutassa többet ezt az üzenetet"
 
 #. Resource IDs: (66, 602)
 msgid "Done"
-msgstr ""
+msgstr "Kész"
 
 #. Resource IDs: (1385)
 msgid "Down"
@@ -4031,7 +4054,7 @@ msgstr "&Exportálás..."
 
 #. Resource IDs: (1097)
 msgid "E&xternal"
-msgstr ""
+msgstr "Kül&ső"
 
 #. Resource IDs: (303)
 msgid "EOL"
@@ -4055,7 +4078,7 @@ msgstr ""
 
 #. Resource IDs: (1383)
 msgid "Edit &local .git/config"
-msgstr ""
+msgstr "A helyi .git/config szerkesztése"
 
 #. Resource IDs: (1755)
 msgid "Edit .tgitconfig"
@@ -4067,7 +4090,7 @@ msgstr "Nyomógomb Kép szeresztése"
 
 #. Resource IDs: (75, 1255)
 msgid "Edit Notes"
-msgstr ""
+msgstr "Jegyzetek szerkesztése"
 
 #. Resource IDs: (1252)
 msgid "Edit author"
@@ -4087,7 +4110,7 @@ msgstr "Kiterjesztésfüggő egyesítő program szerkesztése"
 
 #. Resource IDs: (1382)
 msgid "Edit gl&obal .gitconfig"
-msgstr ""
+msgstr "A globális .git/config szerkesztése"
 
 #. Resource IDs: (1718)
 msgid "Edit global &XDG config"
@@ -4125,7 +4148,7 @@ msgstr "Ellipszis eszközök\nEllipszis"
 
 #. Resource IDs: (1255)
 msgid "Email"
-msgstr ""
+msgstr "Email"
 
 #. Resource IDs: (602)
 msgid "Email Address To and CC can't empty at the same time."
@@ -4211,7 +4234,7 @@ msgstr ""
 
 #. Resource IDs: (1617)
 msgid "End"
-msgstr ""
+msgstr "Vége"
 
 #. Resource IDs: (252)
 msgid "End of Line Style"
@@ -4974,7 +4997,7 @@ msgstr ""
 
 #. Resource IDs: (12)
 msgid "Git Copy and add files to this WC"
-msgstr ""
+msgstr "Git Copy és fájlok hozzáadása"
 
 #. Resource IDs: (16)
 msgid "Git Copy and rename versioned item here"
@@ -4986,7 +5009,7 @@ msgstr ""
 
 #. Resource IDs: (14)
 msgid "Git Export all items here"
-msgstr ""
+msgstr "Git minden fájl exportálása"
 
 #. Resource IDs: (14)
 msgid "Git Export versioned items here"
@@ -5071,7 +5094,7 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Git.exe Path:"
-msgstr ""
+msgstr "A git.exe elérési útja:"
 
 #. Resource IDs: (4591)
 msgid "Git::Credential"
@@ -5524,7 +5547,7 @@ msgstr "Ha ba van jelölve, akkor a beküldés ablak hiba és/vagy sikertelen\r\
 #. Resource IDs: (194)
 msgid ""
 "If enabled, TortoiseGit checks once a week if a newer version is available"
-msgstr ""
+msgstr "Ha engedélyezve van, a TortoiseGit hetente egyszer ellenőrzi, hogy elérhető-e frissebb verzió"
 
 #. Resource IDs: (197)
 msgid ""
@@ -5871,11 +5894,11 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Last Modified:"
-msgstr ""
+msgstr "Utoljára módosítva:"
 
 #. Resource IDs: (1616)
 msgid "Last known &good:"
-msgstr ""
+msgstr "Utolsó &jó állapot:"
 
 #. Resource IDs: (12)
 msgid "Launches the external diff/merge program to solve the conflicts"
@@ -5970,7 +5993,7 @@ msgstr "Képek betöltése"
 
 #. Resource IDs: (1505)
 msgid "Load Putty &Key"
-msgstr ""
+msgstr "Putty &kulcs betöltése"
 
 #. Resource IDs: (315)
 msgid ""
@@ -6058,7 +6081,7 @@ msgstr "Megjegyzések (\"Változási napló\" ablakban)"
 
 #. Resource IDs: (1760)
 msgid "Login:"
-msgstr ""
+msgstr "Bejelentkezés:"
 
 #. Resource IDs: (238)
 #, c-format
@@ -6086,7 +6109,7 @@ msgstr ""
 
 #. Resource IDs: (1582)
 msgid "Mail"
-msgstr ""
+msgstr "Mail"
 
 #. Resource IDs: (3866)
 msgid "Mail system DLL is invalid."
@@ -6102,11 +6125,11 @@ msgstr ""
 
 #. Resource IDs: (1382)
 msgid "Mana&ge"
-msgstr ""
+msgstr "Keze&lés"
 
 #. Resource IDs: (1483)
 msgid "Manage"
-msgstr ""
+msgstr "Kezelés"
 
 #. Resource IDs: (79, 1382)
 msgid "Manage Remotes"
@@ -6382,7 +6405,7 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Name:"
-msgstr ""
+msgstr "Név:"
 
 #. Resource IDs: (156)
 msgid "Navigate"
@@ -6465,7 +6488,7 @@ msgstr ""
 
 #. Resource IDs: (20308)
 msgid "Next"
-msgstr ""
+msgstr "Következő"
 
 #. Resource IDs: (3633)
 msgid ""
@@ -6710,6 +6733,10 @@ msgstr "%s szám"
 msgid "Number of authors:"
 msgstr "Fejlesztők száma:"
 
+#. Resource IDs: (65535)
+msgid "Number of characters required for moved or copied line detection:"
+msgstr ""
+
 #. Resource IDs: (1160)
 msgid "Number of weeks:"
 msgstr "Hetek száma:"
@@ -6942,7 +6969,7 @@ msgstr "Nincs elég memória."
 
 #. Resource IDs: (1538)
 msgid "Output Directory"
-msgstr ""
+msgstr "Célmappa"
 
 #. Resource IDs: (3845)
 msgid "Output.prn"
@@ -7185,6 +7212,10 @@ msgstr ""
 msgid "Please select upstream"
 msgstr ""
 
+#. Resource IDs: (94)
+msgid "Please take a look at the skipped commits"
+msgstr ""
+
 #. Resource IDs: (13)
 msgid "Please wait while cancelling..."
 msgstr "Várj, megszakítás folyamatban..."
@@ -7415,6 +7446,10 @@ msgstr ""
 
 #. Resource IDs: (1786)
 msgid "Push Default"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Push URL:"
 msgstr ""
 
 #. Resource IDs: (1385)
@@ -8495,15 +8530,15 @@ msgstr ""
 
 #. Resource IDs: (1)
 msgid "Send"
-msgstr ""
+msgstr "Küldés"
 
 #. Resource IDs: (602)
 msgid "Send Email"
-msgstr ""
+msgstr "Email küldése"
 
 #. Resource IDs: (1587)
 msgid "Send Mail after create"
-msgstr ""
+msgstr "Email küldése létrehozás után"
 
 #. Resource IDs: (3866)
 msgid "Send Mail failed to send message."
@@ -8511,7 +8546,7 @@ msgstr "Nem sikerült a levelet küldeni."
 
 #. Resource IDs: (21, 603)
 msgid "Send Mail..."
-msgstr ""
+msgstr "Mail küldése..."
 
 #. Resource IDs: (320)
 msgid "Send Patch"
@@ -8531,7 +8566,7 @@ msgstr "Tartalom küldése"
 
 #. Resource IDs: (602)
 msgid "Sending..."
-msgstr ""
+msgstr "Küldés..."
 
 #. Resource IDs: (1409)
 msgid "Server &address:"
@@ -8546,7 +8581,7 @@ msgid "Set au&thor"
 msgstr ""
 
 #. Resource IDs: (1557)
-msgid "Set commit &date"
+msgid "Set author &date"
 msgstr ""
 
 #. Resource IDs: (86)
@@ -8734,6 +8769,10 @@ msgstr "&Teljes menü megjelenítése egy rövid késleltetés után"
 msgid "Show file name"
 msgstr ""
 
+#. Resource IDs: (1782)
+msgid "Show git.exe execution timings and timestamp"
+msgstr ""
+
 #. Resource IDs: (1264)
 msgid "Show i&gnored files"
 msgstr "&Kizárt fájlok mutatása"
@@ -8752,7 +8791,7 @@ msgstr "Sorszámo&k mutatása"
 
 #. Resource IDs: (64)
 msgid "Show log"
-msgstr ""
+msgstr "Napló megtekintése"
 
 #. Resource IDs: (65)
 msgid "Show log &before rename/copy"
@@ -8773,7 +8812,7 @@ msgstr ""
 
 #. Resource IDs: (1256)
 msgid "Show log..."
-msgstr ""
+msgstr "Napló megtekintése..."
 
 #. Resource IDs: (1382)
 msgid "Show modified files in working tree"
@@ -8915,7 +8954,7 @@ msgstr "Méret"
 
 #. Resource IDs: (1254, 1258)
 msgid "Skip"
-msgstr ""
+msgstr "Kihagyás"
 
 #. Resource IDs: (66)
 #, c-format
@@ -9026,6 +9065,10 @@ msgstr ""
 msgid "Start bisect mode..."
 msgstr ""
 
+#. Resource IDs: (1542)
+msgid "Start registry editor"
+msgstr ""
+
 #. Resource IDs: (14)
 msgid "Starts a git server running git protocol"
 msgstr ""
@@ -9121,15 +9164,15 @@ msgstr ""
 
 #. Resource IDs: (1, 65)
 msgid "Subject"
-msgstr ""
+msgstr "Tárgy"
 
 #. Resource IDs: (65535)
 msgid "Subject:"
-msgstr ""
+msgstr "Tárgy:"
 
 #. Resource IDs: (1639)
 msgid "Submodule"
-msgstr ""
+msgstr "Almodul"
 
 #. Resource IDs: (11)
 msgid "Submodule &Update..."
@@ -9137,7 +9180,7 @@ msgstr ""
 
 #. Resource IDs: (1589)
 msgid "Submodule Add"
-msgstr ""
+msgstr "Almodul hozzáadás"
 
 #. Resource IDs: (20)
 msgid "Submodule Add..."
@@ -9191,7 +9234,7 @@ msgstr "Sup Yut Sum <ch3cooli@gmail.com>, Colin Law <clanlaw@googlemail.com>, My
 
 #. Resource IDs: (78)
 msgid "Switch"
-msgstr ""
+msgstr "Váltás"
 
 #. Resource IDs: (229)
 #, c-format
@@ -9266,13 +9309,17 @@ msgstr ""
 msgid "Symbolize ref names"
 msgstr ""
 
+#. Resource IDs: (11031)
+msgid "Symlink"
+msgstr ""
+
 #. Resource IDs: (22)
 msgid "Sync Remote Repositories, including pull, push, email patch and so on"
 msgstr ""
 
 #. Resource IDs: (22)
 msgid "Sync..."
-msgstr ""
+msgstr "Szinkronizálás..."
 
 #. Resource IDs: (89)
 msgid "System"
@@ -9356,6 +9403,10 @@ msgstr ""
 #. Resource IDs: (219)
 msgid "Test Only"
 msgstr "Teszt"
+
+#. Resource IDs: (157)
+msgid "Text Files (*.txt)|*.txt|All Files (*.*)|*.*||"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Thai"
@@ -9590,6 +9641,12 @@ msgid ""
 "Are you sure to abort?"
 msgstr ""
 
+#. Resource IDs: (70)
+msgid ""
+"The regular expression is invalid!\n"
+"Please enter a valid regular expression."
+msgstr ""
+
 #. Resource IDs: (71)
 #, c-format
 msgid ""
@@ -9746,6 +9803,12 @@ msgstr "A programnak a(z) %s fájlra van szüksége, amely nem található ezen 
 #. Resource IDs: (15)
 msgid "This property is only allowed on folders, not files."
 msgstr "Ezt a tulajdonságot csak a mappákhoz lehet használni, fájlokhoz nem."
+
+#. Resource IDs: (95)
+msgid ""
+"This remote name collides with fetch refspec of other remotes\n"
+"Please use another name"
+msgstr ""
 
 #. Resource IDs: (67)
 msgid "This task requires a clean working tree."
@@ -10009,7 +10072,7 @@ msgstr ""
 
 #. Resource IDs: (1642)
 msgid "Type"
-msgstr ""
+msgstr "Típus"
 
 #. Resource IDs: (1720)
 msgid "Type:"
@@ -10020,7 +10083,7 @@ msgid "URL"
 msgstr "URL"
 
 #. Resource IDs: (71)
-msgid "URL and directory must not be empty at the same time."
+msgid "URL and directory must not be empty."
 msgstr ""
 
 #. Resource IDs: (1272)
@@ -10703,6 +10766,10 @@ msgstr "Windows-1257"
 msgid "Windows-1258"
 msgstr "Windows-1258"
 
+#. Resource IDs: (65535)
+msgid "Within a file:"
+msgstr ""
+
 #. Resource IDs: (2054)
 msgid "Within file"
 msgstr ""
@@ -11160,7 +11227,7 @@ msgstr "hónap"
 
 #. Resource IDs: (1681)
 msgid "new branch"
-msgstr ""
+msgstr "új ág"
 
 #. Resource IDs: (18)
 msgid "no"
