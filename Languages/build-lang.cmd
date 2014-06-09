@@ -20,6 +20,7 @@ call :nmake 1045 pl_PL
 call :nmake 1046 pt_BR
 call :nmake 1048 ro
 call :nmake 1049 ru
+call :nmake 1051 sk
 call :nmake 1053 sv
 call :nmake 1055 tr
 call :nmake 1057 id
