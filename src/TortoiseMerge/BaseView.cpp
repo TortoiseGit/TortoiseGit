@@ -2936,7 +2936,7 @@ void CBaseView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 			else
 			{
 				POINT ptCaretPos = GetCaretPosition();
-				const CString &sLine = GetViewLine(ptCaretPos.y);
+				CString sLine = GetLineChars(ptCaretPos.y);
 				int pos = 0;
 				while (pos < sLine.GetLength())
 				{
