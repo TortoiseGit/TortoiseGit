@@ -348,7 +348,9 @@ public:
 			}
 			else if (cmd == columnCount+2)
 			{
-				ResetColumns (m_dwDefaultColumns);
+				temp.LoadString(IDS_CONFIRMRESETCOLUMNORDER);
+				if (MessageBox(pWnd->m_hWnd, temp, _T("TortoiseGit"), MB_YESNO | MB_ICONQUESTION) == IDYES)
+					ResetColumns (m_dwDefaultColumns);
 			}
 		}
 	}
