@@ -1054,10 +1054,6 @@ msgstr ""
 msgid "&Replace"
 msgstr ""
 
-#. Resource IDs: (1512)
-msgid "&Replace All"
-msgstr ""
-
 #. Resource IDs: (15)
 msgid "&Repo-browser"
 msgstr ""
@@ -7387,6 +7383,10 @@ msgstr ""
 
 #. Resource IDs: (3603)
 msgid "Repeat the last action\nRepeat"
+msgstr ""
+
+#. Resource IDs: (1512)
+msgid "Replace &All"
 msgstr ""
 
 #. Resource IDs: (3603)
