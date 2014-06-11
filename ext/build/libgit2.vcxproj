@@ -232,6 +232,7 @@
     <ClInclude Include="..\libgit2\src\cache.h" />
     <ClInclude Include="..\libgit2\src\cc-compat.h" />
     <ClInclude Include="..\libgit2\src\checkout.h" />
+    <ClInclude Include="..\libgit2\src\clone.h" />
     <ClInclude Include="..\libgit2\src\commit.h" />
     <ClInclude Include="..\libgit2\src\commit_list.h" />
     <ClInclude Include="..\libgit2\src\common.h" />

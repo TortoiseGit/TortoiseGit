@@ -1,4 +1,13 @@
-﻿= Release 1.8.9.0 =
+﻿= Release 1.8.10.0 =
+Released: unreleased
+
+== Features ==
+ * Updated shipped libgit2 to version 0.21
+
+== Bug Fixes ==
+ * Fixed issue #2216: Add fails with message: libgit2: "failed to parse 'warn' as boolean"
+
+= Release 1.8.9.0 =
 Released: 2014-06-09
 
 == Features ==

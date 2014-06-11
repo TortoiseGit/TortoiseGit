@@ -958,6 +958,9 @@
     <ClInclude Include="..\libgit2\src\win32\w32_util.h">
       <Filter>Header Files\win32</Filter>
     </ClInclude>
+    <ClInclude Include="..\libgit2\src\clone.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\libgit2\src\win32\git2.rc">
