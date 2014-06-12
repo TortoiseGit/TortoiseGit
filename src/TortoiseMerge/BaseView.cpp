@@ -982,7 +982,7 @@ void CBaseView::RecalcHorzScrollBar(BOOL bPositionOnly /*= FALSE*/)
 			si.nMin = 0;
 			si.nMax = m_pMainFrame->m_bWrapLines ? minScreenChars : maxLineLength;
 			si.nMax += GetMarginWidth()/GetCharWidth();
-			si.nPage = minScreenChars;
+			si.nPage = GetScreenChars();
 			si.nPos = m_nOffsetChar;
 		}
 	}
