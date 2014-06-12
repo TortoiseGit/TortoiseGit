@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{DA843306-3D6D-4198-890E-25E6177E01C3}</ProjectGuid>
+    <RootNamespace>editorconfig</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(SolutionDir)TortoiseGit.toolset.props" />
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>NotSet</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Release'" Label="Configuration">
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  <Import Project="$(SolutionDir)TortoiseGit.common.props" />
+  <Import Project="$(SolutionDir)TortoiseGit.common-staticlib.props" />
+  <PropertyGroup Label="UserMacros" />
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>editorconfig;..\editorconfig\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <CompileAs>CompileAsC</CompileAs>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\editorconfig\src\lib\ec_fnmatch.c" />
+    <ClCompile Include="..\editorconfig\src\lib\editorconfig.c" />
+    <ClCompile Include="..\editorconfig\src\lib\editorconfig_handle.c" />
+    <ClCompile Include="..\editorconfig\src\lib\ini.c" />
+    <ClCompile Include="..\editorconfig\src\lib\misc.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\editorconfig\include\editorconfig\editorconfig.h" />
+    <ClInclude Include="..\editorconfig\include\editorconfig\editorconfig_handle.h" />
+    <ClInclude Include="..\editorconfig\src\lib\ec_fnmatch.h" />
+    <ClInclude Include="..\editorconfig\src\lib\editorconfig.h" />
+    <ClInclude Include="..\editorconfig\src\lib\editorconfig_handle.h" />
+    <ClInclude Include="..\editorconfig\src\lib\global.h" />
+    <ClInclude Include="..\editorconfig\src\lib\ini.h" />
+    <ClInclude Include="..\editorconfig\src\lib\misc.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
