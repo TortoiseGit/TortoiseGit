@@ -1510,6 +1510,8 @@ COLORREF CBaseView::InlineViewLineDiffColor(int nViewLine)
 
 void CBaseView::DrawLineEnding(CDC *pDC, const CRect &rc, int nLineIndex, const CPoint& origin)
 {
+	if (origin.x < (rc.left - GetCharWidth() +1))
+		return;
 	if (!(m_bViewWhitespace && m_pViewData && (nLineIndex >= 0) && (nLineIndex < GetLineCount())))
 		return;
 	int viewLine = GetViewLineForScreen(nLineIndex);
@@ -1524,8 +1526,6 @@ void CBaseView::DrawLineEnding(CDC *pDC, const CRect &rc, int nLineIndex, const 
 		case EOL_LF:	hEndingIcon = m_hLineEndingLF;		break;
 		default: return;
 		}
-		if (origin.x < (rc.left-GetCharWidth()))
-			return;
 		// If EOL style has changed, color end-of-line markers as inline differences.
 		if(
 			m_bShowInlineDiff && m_pOtherViewData &&
