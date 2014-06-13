@@ -105,7 +105,7 @@ BEGIN_MESSAGE_MAP(CHistoryCombo, CComboBoxEx)
 	ON_WM_CREATE()
 END_MESSAGE_MAP()
 
-int CHistoryCombo::AddString(CString str, INT_PTR pos,BOOL isSel)
+int CHistoryCombo::AddString(CString str, INT_PTR pos/*=-1*/, BOOL isSel/*=TRUE*/, BOOL removeDuplicate/*=TRUE*/)
 {
 	if (str.IsEmpty())
 		return -1;
@@ -123,7 +123,9 @@ int CHistoryCombo::AddString(CString str, INT_PTR pos,BOOL isSel)
 
 	//search the Combo for another string like this
 	//and do not insert if found
-	int nIndex = m_bCaseSensitive ? FindStringExactCaseSensitive(-1, combostring) : FindStringExact(-1, combostring);
+	int nIndex = -1;
+	if (removeDuplicate)
+		nIndex = m_bCaseSensitive ? FindStringExactCaseSensitive(-1, combostring) : FindStringExact(-1, combostring);
 	if (nIndex != -1)
 	{
 		if (nIndex > pos)
@@ -392,11 +394,11 @@ void CHistoryCombo::SetMaxHistoryItems(int nMaxItems)
 	for (int n = m_nMaxHistoryItems; n < nNumItems; n++)
 		DeleteString(m_nMaxHistoryItems);
 }
-void CHistoryCombo::AddString(STRING_VECTOR &list,BOOL isSel)
+void CHistoryCombo::AddString(STRING_VECTOR &list, BOOL isSel/*=TRUE*/, BOOL removeDuplicate/*=TRUE*/)
 {
 	for(unsigned int i=0;i<list.size();i++)
 	{
-		AddString(list[i], -1, isSel);
+		AddString(list[i], -1, isSel, removeDuplicate);
 	}
 }
 CString CHistoryCombo::GetString() const
