@@ -53,7 +53,7 @@ public:
 	 * If \a pos is specified, insert the string at the specified
 	 * position, otherwise add it to the end of the list.
 	 */
-	int AddString(CString str, INT_PTR pos = -1, BOOL isSel = true);
+	int AddString(CString str, INT_PTR pos = -1, BOOL isSel = TRUE, BOOL removeDuplicate = TRUE);
 
 	void DisableTooltip(){m_bDyn = FALSE;} //because rebase need disable combox tooltip to show version info
 protected:
@@ -122,7 +122,7 @@ public:
 	 */
 	CString GetString() const;
 
-	void AddString(STRING_VECTOR &list,BOOL isSel=true);
+	void AddString(STRING_VECTOR &list, BOOL isSel = TRUE, BOOL removeDuplicate = TRUE);
 
 	/**
 	 * Removes the selected item from the combo box and updates

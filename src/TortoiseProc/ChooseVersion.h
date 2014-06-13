@@ -194,14 +194,14 @@ protected:
 		g_Git.GetBranchList(list,&current,CGit::BRANCH_ALL_F);
 		for (int i = m_ChooseVersioinBranch.GetCount(); i >= 0; --i)
 			m_ChooseVersioinBranch.DeleteString(i);
-		m_ChooseVersioinBranch.AddString(list, false);
+		m_ChooseVersioinBranch.AddString(list, FALSE, FALSE);
 		m_ChooseVersioinBranch.SetCurSel(current);
 
 		list.clear();
 		g_Git.GetTagList(list);
 		for (int i = m_ChooseVersioinTags.GetCount(); i >= 0; --i)
 			m_ChooseVersioinTags.DeleteString(i);
-		m_ChooseVersioinTags.AddString(list, false);
+		m_ChooseVersioinTags.AddString(list, FALSE, FALSE);
 		m_ChooseVersioinTags.SetCurSel(0);
 
 		m_pWin->SendMessage(WM_GUIUPDATES);
