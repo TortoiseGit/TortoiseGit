@@ -573,7 +573,7 @@ void CCommitDlg::OnOK()
 		if (entry->m_Action & CTGitPath::LOGACTIONS_UNVER)
 		{
 			CGit subgit;
-			subgit.m_CurrentDir = g_Git.m_CurrentDir + _T("\\") + entry->GetWinPathString();
+			subgit.m_CurrentDir = g_Git.CombinePath(entry);
 			CString subcmdout;
 			subgit.Run(_T("git.exe status --porcelain"), &subcmdout, CP_UTF8);
 			dirty = !subcmdout.IsEmpty();
@@ -1300,9 +1300,9 @@ void CCommitDlg::SetDlgTitle()
 	else
 	{
 		if (m_pathList.GetCount() == 1)
-			CAppUtils::SetWindowTitle(m_hWnd, (g_Git.m_CurrentDir + _T("\\") + m_pathList[0].GetUIPathString()).TrimRight('\\'), m_sTitle);
+			CAppUtils::SetWindowTitle(m_hWnd, g_Git.CombinePath(m_pathList[0].GetUIPathString()), m_sTitle);
 		else
-			CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir + _T("\\") + m_ListCtrl.GetCommonDirectory(false), m_sTitle);
+			CAppUtils::SetWindowTitle(m_hWnd, g_Git.CombinePath(m_ListCtrl.GetCommonDirectory(false)), m_sTitle);
 	}
 }
 
@@ -2541,7 +2541,7 @@ void CCommitDlg::RestoreFiles(bool doNotAsk)
 	if (!m_ListCtrl.m_restorepaths.empty() && (doNotAsk || CMessageBox::Show(m_hWnd, IDS_PROC_COMMIT_RESTOREFILES, IDS_APPNAME, 2, IDI_QUESTION, IDS_PROC_COMMIT_RESTOREFILES_RESTORE, IDS_PROC_COMMIT_RESTOREFILES_KEEP) == 1))
 	{
 		for (std::map<CString, CString>::iterator it = m_ListCtrl.m_restorepaths.begin(); it != m_ListCtrl.m_restorepaths.end(); ++it)
-			CopyFile(it->second, g_Git.m_CurrentDir + _T("\\") + it->first, FALSE);
+			CopyFile(it->second, g_Git.CombinePath(it->first), FALSE);
 		m_ListCtrl.m_restorepaths.clear();
 	}
 }

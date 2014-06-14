@@ -1710,7 +1710,7 @@ void CGitProgressList::OnSize(UINT nType, int cx, int cy)
 bool CGitProgressList::CmdAdd(CString& sWindowTitle, bool& localoperation)
 {
 	localoperation = true;
-	SetWindowTitle(IDS_PROGRS_TITLE_ADD, g_Git.m_CurrentDir + _T("\\") + m_targetPathList.GetCommonRoot().GetUIPathString(), sWindowTitle);
+	SetWindowTitle(IDS_PROGRS_TITLE_ADD, g_Git.CombinePath(m_targetPathList.GetCommonRoot().GetUIPathString()), sWindowTitle);
 	SetBackgroundImage(IDI_ADD_BKG);
 	ReportCmd(CString(MAKEINTRESOURCE(IDS_PROGRS_CMD_ADD)));
 
@@ -1866,7 +1866,7 @@ bool CGitProgressList::CmdResolve(CString& sWindowTitle, bool& localoperation)
 
 	localoperation = true;
 	ASSERT(m_targetPathList.GetCount() == 1);
-	SetWindowTitle(IDS_PROGRS_TITLE_RESOLVE, g_Git.m_CurrentDir + _T("\\") + m_targetPathList.GetCommonRoot().GetUIPathString(), sWindowTitle);
+	SetWindowTitle(IDS_PROGRS_TITLE_RESOLVE, g_Git.CombinePath(m_targetPathList.GetCommonRoot().GetUIPathString()), sWindowTitle);
 	SetBackgroundImage(IDI_RESOLVE_BKG);
 	// check if the file may still have conflict markers in it.
 	//BOOL bMarkers = FALSE;
@@ -1945,7 +1945,7 @@ bool CGitProgressList::CmdRevert(CString& sWindowTitle, bool& localoperation)
 {
 
 	localoperation = true;
-	SetWindowTitle(IDS_PROGRS_TITLE_REVERT, g_Git.m_CurrentDir + _T("\\") + m_targetPathList.GetCommonRoot().GetUIPathString(), sWindowTitle);
+	SetWindowTitle(IDS_PROGRS_TITLE_REVERT, g_Git.CombinePath(m_targetPathList.GetCommonRoot().GetUIPathString()), sWindowTitle);
 	SetBackgroundImage(IDI_REVERT_BKG);
 
 	m_itemCountTotal = 2 * m_selectedPaths.GetCount();
@@ -1954,7 +1954,7 @@ bool CGitProgressList::CmdRevert(CString& sWindowTitle, bool& localoperation)
 	{
 		CTGitPath path;
 		int action;
-		path.SetFromWin(g_Git.m_CurrentDir + _T("\\") + m_selectedPaths[m_itemCount].GetWinPath());
+		path.SetFromWin(g_Git.CombinePath(m_selectedPaths[m_itemCount]));
 		action = m_selectedPaths[m_itemCount].m_Action;
 		/* rename file can't delete because it needs original file*/
 		if((!(action & CTGitPath::LOGACTIONS_ADDED)) &&
@@ -2082,7 +2082,7 @@ error:
 bool CGitProgressList::CmdSendMail(CString& sWindowTitle, bool& /*localoperation*/)
 {
 	ASSERT(m_SendMail);
-	SetWindowTitle(IDS_PROGRS_TITLE_SENDMAIL, g_Git.m_CurrentDir + _T("\\") + m_targetPathList.GetCommonRoot().GetUIPathString(), sWindowTitle);
+	SetWindowTitle(IDS_PROGRS_TITLE_SENDMAIL, g_Git.CombinePath(m_targetPathList.GetCommonRoot().GetUIPathString()), sWindowTitle);
 	//SetBackgroundImage(IDI_ADD_BKG);
 	ReportCmd(CString(MAKEINTRESOURCE(IDS_PROGRS_CMD_SENDMAIL)));
 
@@ -2309,7 +2309,7 @@ CString CGitProgressList::GetPathFromColumnText(const CString& sColumnText)
 	if (sPath.Find(':')<0)
 	{
 		// the path is not absolute: add the common root of all paths to it
-		sPath = g_Git.m_CurrentDir + _T("\\") + sColumnText;
+		sPath = g_Git.CombinePath(sColumnText);
 	}
 	return sPath;
 }

@@ -1850,7 +1850,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 
 			case IDGITLC_EXPLORE:
 				{
-					CString p = g_Git.m_CurrentDir + _T("\\") + filepath->GetWinPathString();
+					CString p = g_Git.CombinePath(filepath);
 					if (PathFileExists(p))
 					{
 						ITEMIDLIST __unaligned * pidl = ILCreateFromPath(p);
@@ -1889,7 +1889,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						// delete the temp file: the temp file has the FILE_ATTRIBUTE_TEMPORARY flag set
 						// and copying the real file over it would leave that temp flag.
 						DeleteFile(tempFile.GetWinPath());
-						if (CopyFile(g_Git.m_CurrentDir + _T("\\") + entry2->GetWinPathString(), tempFile.GetWinPath(), FALSE))
+						if (CopyFile(g_Git.CombinePath(entry2), tempFile.GetWinPath(), FALSE))
 						{
 							m_restorepaths[entry2->GetWinPathString()] = tempFile.GetWinPathString();
 							SetItemState(index, INDEXTOOVERLAYMASK(OVL_RESTORE), LVIS_OVERLAYMASK);
@@ -1913,7 +1913,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 							continue;
 						if (m_restorepaths.find(entry2->GetWinPathString()) == m_restorepaths.end())
 							continue;
-						if (CopyFile(m_restorepaths[entry2->GetWinPathString()], g_Git.m_CurrentDir + _T("\\") + entry2->GetWinPathString(), FALSE))
+						if (CopyFile(m_restorepaths[entry2->GetWinPathString()], g_Git.CombinePath(entry2), FALSE))
 						{
 							m_restorepaths.erase(entry2->GetWinPathString());
 							SetItemState(index, 0, LVIS_OVERLAYMASK);
@@ -2061,7 +2061,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 			case IDGITLC_LOGSUBMODULE:
 				{
 					CString sCmd;
-					sCmd.Format(_T("/command:log /path:\"%s\""), g_Git.m_CurrentDir + _T("\\") + filepath->GetWinPath());
+					sCmd.Format(_T("/command:log /path:\"%s\""), g_Git.CombinePath(filepath));
 					if (cmd == IDGITLC_LOG && filepath->IsDirectory())
 						sCmd += _T(" /submodule");
 					if (!m_sDisplayedBranch.IsEmpty())
@@ -2074,7 +2074,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				{
 					CTGitPath oldName(filepath->GetGitOldPathString());
 					CString sCmd;
-					sCmd.Format(_T("/command:log /path:\"%s\""), g_Git.m_CurrentDir + _T("\\") + oldName.GetWinPath());
+					sCmd.Format(_T("/command:log /path:\"%s\""), g_Git.CombinePath(oldName));
 					if (!m_sDisplayedBranch.IsEmpty())
 						sCmd += _T(" /range:\"") + m_sDisplayedBranch + _T("\"");
 					CAppUtils::RunTortoiseGitProc(sCmd);
@@ -2085,7 +2085,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				{
 					if (CAppUtils::ConflictEdit(*filepath, false, m_bIsRevertTheirMy, GetLogicalParent() ? GetLogicalParent()->GetSafeHwnd() : nullptr))
 					{
-						CString conflictedFile = g_Git.m_CurrentDir + _T("\\") + filepath->GetWinPathString();
+						CString conflictedFile = g_Git.CombinePath(filepath);
 						if (!PathFileExists(conflictedFile) && NULL != GetLogicalParent() && NULL != GetLogicalParent()->GetSafeHwnd())
 							GetLogicalParent()->SendMessage(GITSLNM_NEEDSREFRESH);
 					}
@@ -2646,7 +2646,7 @@ void CGitStatusListCtrl::OnNMDblclk(NMHDR *pNMHDR, LRESULT *pResult)
 	{
 		if (CAppUtils::ConflictEdit(*file, false, m_bIsRevertTheirMy, GetLogicalParent() ? GetLogicalParent()->GetSafeHwnd() : nullptr))
 		{
-			CString conflictedFile = g_Git.m_CurrentDir + _T("\\") + file->GetWinPathString();
+			CString conflictedFile = g_Git.CombinePath(file);
 			if (!PathFileExists(conflictedFile) && NULL != GetLogicalParent() && NULL != GetLogicalParent()->GetSafeHwnd())
 				GetLogicalParent()->SendMessage(GITSLNM_NEEDSREFRESH);
 		}
@@ -4302,7 +4302,7 @@ void CGitStatusListCtrl::FilesExport()
 		CString filename = exportDir + _T("\\") + fd->GetWinPathString();
 		if (m_CurrentVersion == GIT_REV_ZERO)
 		{
-			if (!CopyFile(g_Git.m_CurrentDir + _T("\\") + fd->GetWinPath(), filename, false))
+			if (!CopyFile(g_Git.CombinePath(fd), filename, false))
 			{
 				MessageBox(CFormatMessageWrapper(), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 				return;
@@ -4330,7 +4330,7 @@ void CGitStatusListCtrl::FileSaveAs(CTGitPath *path)
 					OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
 					NULL);
 	CString currentpath;
-	currentpath = g_Git.m_CurrentDir + _T("\\") + path->GetContainingDirectory().GetWinPath();
+	currentpath = g_Git.CombinePath(path->GetContainingDirectory());
 
 	dlg.m_ofn.lpstrInitialDir=currentpath.GetBuffer();
 
@@ -4421,7 +4421,7 @@ void CGitStatusListCtrl::OpenFile(CTGitPath*filepath,int mode)
 	CString file;
 	if(this->m_CurrentVersion.IsEmpty() || m_CurrentVersion == GIT_REV_ZERO)
 	{
-		file = g_Git.m_CurrentDir + _T("\\") + filepath->GetWinPath();
+		file = g_Git.CombinePath(filepath);
 	}
 	else
 	{

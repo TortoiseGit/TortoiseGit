@@ -799,7 +799,7 @@ void CRepositoryBrowser::ShowContextMenu(CPoint point, TShadowFilesTreeList &sel
 		break;
 	case eCmd_Blame:
 		{
-			CAppUtils::LaunchTortoiseBlame(g_Git.m_CurrentDir + _T("\\") + selectedLeafs.at(0)->GetFullName(), m_sRevision);
+			CAppUtils::LaunchTortoiseBlame(g_Git.CombinePath(selectedLeafs.at(0)->GetFullName()), m_sRevision);
 		}
 		break;
 	case eCmd_Open:
@@ -1161,7 +1161,7 @@ void CRepositoryBrowser::FileSaveAs(const CString path)
 	filename.Format(_T("%s-%s%s"), gitPath.GetBaseFilename(), hash.ToString().Left(g_Git.GetShortHASHLength()), gitPath.GetFileExtension());
 	CFileDialog dlg(FALSE, NULL, filename, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, NULL);
 
-	CString currentpath(g_Git.m_CurrentDir + _T("\\") + gitPath.GetContainingDirectory().GetWinPath());
+	CString currentpath(g_Git.CombinePath(gitPath.GetContainingDirectory()));
 	dlg.m_ofn.lpstrInitialDir = currentpath.GetBuffer();
 
 	CString cmd, out;
@@ -1217,7 +1217,7 @@ void CRepositoryBrowser::OpenFile(const CString path, eOpenType mode, bool isSub
 			}
 
 			CString cmd;
-			cmd.Format(_T("/command:repobrowser /path:\"%s\" /rev:%s"), g_Git.m_CurrentDir + _T("\\") + path, itemHash.ToString());
+			cmd.Format(_T("/command:repobrowser /path:\"%s\" /rev:%s"), g_Git.CombinePath(path), itemHash.ToString());
 			CAppUtils::RunTortoiseGitProc(cmd);
 			return;
 		}

@@ -241,9 +241,9 @@ void CChangedDlg::SetDlgTitle()
 	else
 	{
 		if (m_pathList.GetCount() == 1)
-			CAppUtils::SetWindowTitle(m_hWnd, (g_Git.m_CurrentDir + _T("\\") + m_pathList[0].GetUIPathString()).TrimRight('\\'), m_sTitle);
+			CAppUtils::SetWindowTitle(m_hWnd, g_Git.CombinePath(m_pathList[0].GetUIPathString()), m_sTitle);
 		else
-			CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir + _T("\\") + m_FileListCtrl.GetCommonDirectory(false), m_sTitle);
+			CAppUtils::SetWindowTitle(m_hWnd, g_Git.CombinePath(m_FileListCtrl.GetCommonDirectory(false)), m_sTitle);
 	}
 }
 
@@ -383,7 +383,7 @@ void CChangedDlg::OnBnClickedCommit()
 	if (bSingleFile)
 		cmd += m_pathList[0].GetWinPathString();
 	else
-		cmd += g_Git.m_CurrentDir + _T("\\") + m_pathList.GetCommonRoot().GetDirectory().GetWinPath();
+		cmd += g_Git.CombinePath(m_pathList.GetCommonRoot().GetDirectory());
 	cmd += _T("\"");
 	CAppUtils::RunTortoiseGitProc(cmd);
 }
