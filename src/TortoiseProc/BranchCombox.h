@@ -180,23 +180,22 @@ protected:
 		STRING_VECTOR list;
 		list.clear();
 		int current=0;
-		m_ctrlLocalBranch.Reset();
-		m_ctrlRemoteBranch.Reset();
 
 		g_Git.GetBranchList(list,&current,CGit::BRANCH_LOCAL_F);
 
-		m_ctrlLocalBranch.AddString(list);
+		m_ctrlLocalBranch.SetList(list);
 
 		if(this->m_RegKeyRemoteBranch.IsEmpty())
 		{
 			list.clear();
 			g_Git.GetBranchList(list, NULL, CGit::BRANCH_REMOTE);
 
-			m_ctrlRemoteBranch.AddString(list);
+			m_ctrlRemoteBranch.SetList(list);
 
 		}
 		else
 		{
+			m_ctrlRemoteBranch.Reset();
 			m_ctrlRemoteBranch.LoadHistory(m_RegKeyRemoteBranch,_T("sync"));
 		}
 

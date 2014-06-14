@@ -419,14 +419,14 @@ void CRebaseDlg::LoadBranchInfo()
 	list.clear();
 	int current = -1;
 	g_Git.GetBranchList(list,&current,CGit::BRANCH_ALL);
-	m_BranchCtrl.AddString(list);
+	m_BranchCtrl.SetList(list);
 	if (current >= 0)
 		m_BranchCtrl.SetCurSel(current);
 	else
 		m_BranchCtrl.AddString(g_Git.GetCurrentBranch(true));
 	list.clear();
 	g_Git.GetBranchList(list, NULL, CGit::BRANCH_ALL_F);
-	m_UpstreamCtrl.AddString(list);
+	m_UpstreamCtrl.SetList(list);
 
 	AddBranchToolTips(&m_BranchCtrl);
 	AddBranchToolTips(&m_UpstreamCtrl);

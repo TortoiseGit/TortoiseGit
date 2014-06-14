@@ -7,6 +7,7 @@ Released: unreleased
 == Bug Fixes ==
  * Fixed issue #2216: Add fails with message: libgit2: "failed to parse 'warn' as boolean"
  * Fixed issue #2218: Tortoise Git Extra Backslash with SUBST Drive Paths
+ * Fixed issue #1951: Slow switch/checkout dialog
 
 = Release 1.8.9.0 =
 Released: 2014-06-09
@@ -125,7 +126,6 @@ Released: 2014-01-12
 
 == Bug Fixes ==
  * Fixed issue #1947: When editing git notes, spurious reformatting is done
- * Fixed issue #1951: Slow switch/checkout dialog
  * Fixed issue #1958: Revision graph crashes when trying to switch/checkout via context menu
  * Fixed issue #1963: TortoiseGitMerge: Missing color config when an added line is changed
  * Fixed issue #1976: Commit log crashes if it receives a WM_PRINTCLIENT while opening

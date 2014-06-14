@@ -147,8 +147,16 @@ int CHistoryCombo::AddString(const CString& str, INT_PTR pos /* = -1*/, BOOL isS
 		m_arEntries.RemoveAt(m_nMaxHistoryItems);
 	}
 
-	COMBOBOXEXITEM cbei;
-	SecureZeroMemory(&cbei, sizeof cbei);
+	int nRet = InsertEntry(combostring, pos);
+
+	if (isSel)
+		SetCurSel(nRet);
+	return nRet;
+}
+
+int CHistoryCombo::InsertEntry(const CString& combostring, INT_PTR pos)
+{
+	COMBOBOXEXITEM cbei = { 0 };
 	cbei.mask = CBEIF_TEXT;
 	cbei.iItem = pos;
 
@@ -192,9 +200,24 @@ int CHistoryCombo::AddString(const CString& str, INT_PTR pos /* = -1*/, BOOL isS
 	if (nRet >= 0)
 		m_arEntries.InsertAt(nRet, combostring);
 
-	if(isSel)
-		SetCurSel(nRet);
 	return nRet;
+}
+
+void CHistoryCombo::SetList(const STRING_VECTOR& list)
+{
+	Reset();
+	for (int i = 0; i < list.size(); ++i)
+	{
+		CString combostring = list[i];
+		combostring.Replace('\r', ' ');
+		combostring.Replace('\n', ' ');
+		if (m_bTrim)
+			combostring.Trim();
+		if (combostring.IsEmpty())
+			continue;
+
+		InsertEntry(combostring, i);
+	}
 }
 
 CString CHistoryCombo::LoadHistory(LPCTSTR lpszSection, LPCTSTR lpszKeyPrefix)
@@ -392,13 +415,7 @@ void CHistoryCombo::SetMaxHistoryItems(int nMaxItems)
 	for (int n = m_nMaxHistoryItems; n < nNumItems; n++)
 		DeleteString(m_nMaxHistoryItems);
 }
-void CHistoryCombo::AddString(STRING_VECTOR &list,BOOL isSel)
-{
-	for(unsigned int i=0;i<list.size();i++)
-	{
-		AddString(list[i], -1, isSel);
-	}
-}
+
 CString CHistoryCombo::GetString() const
 {
 	CString str;

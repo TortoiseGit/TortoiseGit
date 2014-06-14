@@ -68,6 +68,12 @@ protected:
 
 	void CreateToolTip();
 
+private:
+	/**
+	 * Inserts an entry into the combobox
+	 */
+	int InsertEntry(const CString& combostring, INT_PTR pos);
+
 // Implementation
 public:
 	/**
@@ -122,7 +128,12 @@ public:
 	 */
 	CString GetString() const;
 
-	void AddString(STRING_VECTOR &list,BOOL isSel=true);
+	/**
+	 * Populates the combobox with the items provided in the list, existing
+	 * items will be removed.
+	 * No checks for duplicates are performed!
+	 */
+	void SetList(const STRING_VECTOR& list);
 
 	/**
 	 * Removes the selected item from the combo box and updates
