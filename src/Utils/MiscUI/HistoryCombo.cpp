@@ -113,13 +113,13 @@ int CHistoryCombo::AddString(CString str, INT_PTR pos,BOOL isSel)
 	if (pos < 0)
 		pos = GetCount();
 
-	if (m_bTrim)
-		str.Trim(_T(" "));
 	CString combostring = str;
 	combostring.Replace('\r', ' ');
 	combostring.Replace('\n', ' ');
 	if (m_bTrim)
 		combostring.Trim();
+	if (combostring.IsEmpty())
+		return -1;
 
 	//search the Combo for another string like this
 	//and do not insert if found
