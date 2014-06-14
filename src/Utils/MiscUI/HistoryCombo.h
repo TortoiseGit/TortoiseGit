@@ -53,7 +53,7 @@ public:
 	 * If \a pos is specified, insert the string at the specified
 	 * position, otherwise add it to the end of the list.
 	 */
-	int AddString(CString str, INT_PTR pos = -1, BOOL isSel = true);
+	int AddString(const CString& str, INT_PTR pos = -1, BOOL isSel = true);
 
 	void DisableTooltip(){m_bDyn = FALSE;} //because rebase need disable combox tooltip to show version info
 protected:

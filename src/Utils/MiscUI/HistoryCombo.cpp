@@ -105,7 +105,7 @@ BEGIN_MESSAGE_MAP(CHistoryCombo, CComboBoxEx)
 	ON_WM_CREATE()
 END_MESSAGE_MAP()
 
-int CHistoryCombo::AddString(CString str, INT_PTR pos,BOOL isSel)
+int CHistoryCombo::AddString(const CString& str, INT_PTR pos /* = -1*/, BOOL isSel /* = TRUE */)
 {
 	if (str.IsEmpty())
 		return -1;
