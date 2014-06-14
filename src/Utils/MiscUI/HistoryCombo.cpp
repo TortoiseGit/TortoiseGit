@@ -157,18 +157,18 @@ int CHistoryCombo::AddString(CString str, INT_PTR pos,BOOL isSel)
 #ifdef HISTORYCOMBO_WITH_SYSIMAGELIST
 	if (m_bURLHistory)
 	{
-		cbei.iImage = SYS_IMAGE_LIST().GetFileIconIndex(str);
+		cbei.iImage = SYS_IMAGE_LIST().GetFileIconIndex(combostring);
 		if (cbei.iImage == 0 || cbei.iImage == SYS_IMAGE_LIST().GetDefaultIconIndex())
 		{
-			if (str.Left(5) == _T("http:"))
+			if (combostring.Left(5) == _T("http:"))
 				cbei.iImage = SYS_IMAGE_LIST().GetFileIconIndex(_T(".html"));
-			else if (str.Left(6) == _T("https:"))
+			else if (combostring.Left(6) == _T("https:"))
 				cbei.iImage = SYS_IMAGE_LIST().GetFileIconIndex(_T(".html"));
-			else if (str.Left(5) == _T("file:"))
+			else if (combostring.Left(5) == _T("file:"))
 				cbei.iImage = SYS_IMAGE_LIST().GetDirIconIndex();
-			else if (str.Left(4) == _T("git:"))
+			else if (combostring.Left(4) == _T("git:"))
 				cbei.iImage = m_nGitIconIndex;
-			else if (str.Left(4) == _T("ssh:"))
+			else if (combostring.Left(4) == _T("ssh:"))
 				cbei.iImage = m_nGitIconIndex;
 			else
 				cbei.iImage = SYS_IMAGE_LIST().GetDirIconIndex();
@@ -178,7 +178,7 @@ int CHistoryCombo::AddString(CString str, INT_PTR pos,BOOL isSel)
 	}
 	if (m_bPathHistory)
 	{
-		cbei.iImage = SYS_IMAGE_LIST().GetFileIconIndex(str);
+		cbei.iImage = SYS_IMAGE_LIST().GetFileIconIndex(combostring);
 		if (cbei.iImage == SYS_IMAGE_LIST().GetDefaultIconIndex())
 		{
 			cbei.iImage = SYS_IMAGE_LIST().GetDirIconIndex();
@@ -190,7 +190,7 @@ int CHistoryCombo::AddString(CString str, INT_PTR pos,BOOL isSel)
 
 	int nRet = InsertItem(&cbei);
 	if (nRet >= 0)
-		m_arEntries.InsertAt(nRet, str);
+		m_arEntries.InsertAt(nRet, combostring);
 
 	if(isSel)
 		SetCurSel(nRet);
