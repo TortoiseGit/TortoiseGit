@@ -40,7 +40,7 @@ CHistoryCombo::CHistoryCombo(BOOL bAllowSortStyle /*=FALSE*/ )
 	m_bDyn = FALSE;
 	m_bWantReturn = FALSE;
 	m_bTrim = TRUE;
-    m_bCaseSensitive = FALSE;
+	m_bCaseSensitive = FALSE;
 	SecureZeroMemory(&m_ToolInfo, sizeof(m_ToolInfo));
 }
 
