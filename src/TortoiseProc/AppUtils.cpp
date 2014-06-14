@@ -1009,7 +1009,7 @@ bool CAppUtils::Export(CString *BashHash, const CTGitPath *orgPath)
 	if (orgPath)
 	{
 		if (PathIsRelative(orgPath->GetWinPath()))
-			dlg.m_orgPath = g_Git.m_CurrentDir + _T("\\") + orgPath->GetWinPathString();
+			dlg.m_orgPath = g_Git.CombinePath(orgPath);
 		else
 			dlg.m_orgPath = *orgPath;
 	}
@@ -1333,7 +1333,7 @@ bool CAppUtils::IgnoreFile(CTGitPathList &path,bool IsMask)
 			{
 				if (ignoreDlg.m_IgnoreFile == 1)
 				{
-					ignorefile = g_Git.m_CurrentDir + _T("\\") + path[i].GetContainingDirectory().GetWinPathString() + _T("\\.gitignore");
+					ignorefile = g_Git.CombinePath(path[i].GetContainingDirectory()) + _T("\\.gitignore");
 					if (!OpenIgnoreFile(file, ignorefile))
 						return false;
 				}

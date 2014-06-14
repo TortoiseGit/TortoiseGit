@@ -385,6 +385,26 @@ public:
 	int GetUnifiedDiff(const CTGitPath& path, const git_revnum_t& rev1, const git_revnum_t& rev2, CStringA * buffer, bool bMerge, bool bCombine, int diffContext);
 
 	int GitRevert(int parent, const CGitHash &hash);
+
+	CString CombinePath(const CString &path) const
+	{
+		if (path.IsEmpty())
+			return m_CurrentDir;
+		if (m_CurrentDir.IsEmpty())
+			return path;
+		return m_CurrentDir + (m_CurrentDir.Right(1) == _T("\\") ? _T("") : _T("\\")) + path;
+	}
+
+	CString CombinePath(const CTGitPath &path) const
+	{
+		return CombinePath(path.GetWinPath());
+	}
+
+	CString CombinePath(const CTGitPath *path) const
+	{
+		ATLASSERT(path);
+		return CombinePath(path->GetWinPath());
+	}
 };
 extern void GetTempPath(CString &path);
 extern CString GetTempFile();

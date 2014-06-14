@@ -1374,7 +1374,7 @@ void CLogDlg::DoDiffFromLog(INT_PTR selIndex, GitRev* rev1, GitRev* rev2, bool /
 
 	CAppUtils::DiffFlags flags;
 	CAppUtils::StartExtDiff(file1,file2,_T("A"),_T("B"),
-													g_Git.m_CurrentDir + _T("\\") + path.GetWinPathString(), g_Git.m_CurrentDir + _T("\\") + path.GetWinPathString(),
+													g_Git.CombinePath(path), g_Git.CombinePath(path),
 													rev1->m_CommitHash.ToString(), rev2->m_CommitHash.ToString(),
 													flags);
 

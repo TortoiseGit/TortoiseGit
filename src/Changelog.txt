@@ -6,6 +6,7 @@ Released: unreleased
 
 == Bug Fixes ==
  * Fixed issue #2216: Add fails with message: libgit2: "failed to parse 'warn' as boolean"
+ * Fixed issue #2218: Tortoise Git Extra Backslash with SUBST Drive Paths
 
 = Release 1.8.9.0 =
 Released: 2014-06-09

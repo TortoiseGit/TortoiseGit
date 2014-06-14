@@ -71,7 +71,7 @@ bool SubmoduleAddCommand::Execute()
 				SetCurrentDirectory(g_Git.m_CurrentDir);
 				CGit subgit;
 				dlg.m_strPath.Replace(_T('/'), _T('\\'));
-				subgit.m_CurrentDir = PathIsRelative(dlg.m_strPath) ? g_Git.m_CurrentDir + _T("\\") + dlg.m_strPath : dlg.m_strPath;
+				subgit.m_CurrentDir = PathIsRelative(dlg.m_strPath) ? g_Git.CombinePath(dlg.m_strPath) : dlg.m_strPath;
 
 				if (subgit.SetConfigValue(_T("remote.origin.puttykeyfile"), dlg.m_strPuttyKeyFile, CONFIG_LOCAL))
 				{

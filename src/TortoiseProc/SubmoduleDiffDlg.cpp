@@ -224,7 +224,7 @@ void CSubmoduleDiffDlg::SetDiff(CString path, bool toIsWorkingCopy, CString from
 void CSubmoduleDiffDlg::ShowLog(CString hash)
 {
 	CString sCmd;
-	sCmd.Format(_T("/command:log /path:\"%s\" /endrev:%s"), g_Git.m_CurrentDir + _T("\\") + m_sPath, hash);
+	sCmd.Format(_T("/command:log /path:\"%s\" /endrev:%s"), g_Git.CombinePath(m_sPath), hash);
 	CAppUtils::RunTortoiseGitProc(sCmd, false, false);
 }
 
@@ -241,7 +241,7 @@ void CSubmoduleDiffDlg::OnBnClickedLog2()
 void CSubmoduleDiffDlg::OnBnClickedShowDiff()
 {
 	CString sCmd;
-	sCmd.Format(_T("/command:showcompare /path:\"%s\" /revision1:%s /revision2:%s"), g_Git.m_CurrentDir + _T("\\") + m_sPath, m_sFromHash, ((m_bDirty && m_nChangeType == Unknown) || m_ctrlShowDiffBtn.GetCurrentEntry() == 1) ? GIT_REV_ZERO : m_sToHash);
+	sCmd.Format(_T("/command:showcompare /path:\"%s\" /revision1:%s /revision2:%s"), g_Git.CombinePath(m_sPath), m_sFromHash, ((m_bDirty && m_nChangeType == Unknown) || m_ctrlShowDiffBtn.GetCurrentEntry() == 1) ? GIT_REV_ZERO : m_sToHash);
 	CAppUtils::RunTortoiseGitProc(sCmd, false, false);
 }
 

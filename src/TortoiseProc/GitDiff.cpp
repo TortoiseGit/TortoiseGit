@@ -162,14 +162,14 @@ int CGitDiff::DiffNull(const CTGitPath *pPath, git_revnum_t rev1, bool bIsAdd, i
 		CAppUtils::StartExtDiff(tempfile,file1,
 							pPath->GetGitPathString(),
 							pPath->GetGitPathString() + _T(":") + rev1.Left(g_Git.GetShortHASHLength()),
-							g_Git.m_CurrentDir + _T("\\") + pPath->GetWinPathString(), g_Git.m_CurrentDir + _T("\\") + pPath->GetWinPathString(),
+							g_Git.CombinePath(pPath), g_Git.CombinePath(pPath),
 							git_revnum_t(GIT_REV_ZERO), rev1
 							, flags, jumpToLine);
 	else
 		CAppUtils::StartExtDiff(file1,tempfile,
 							pPath->GetGitPathString() + _T(":") + rev1.Left(g_Git.GetShortHASHLength()),
 							pPath->GetGitPathString(),
-							g_Git.m_CurrentDir + _T("\\") + pPath->GetWinPathString(), g_Git.m_CurrentDir + _T("\\") + pPath->GetWinPathString(),
+							g_Git.CombinePath(pPath), g_Git.CombinePath(pPath),
 							rev1, git_revnum_t(GIT_REV_ZERO)
 							, flags, jumpToLine);
 
@@ -427,7 +427,7 @@ int CGitDiff::Diff(const CTGitPath * pPath, const CTGitPath * pPath2, git_revnum
 	}
 	else
 	{
-		file1=g_Git.m_CurrentDir+_T("\\")+pPath->GetWinPathString();
+		file1 = g_Git.CombinePath(pPath);
 		title1.Format( IDS_DIFF_WCNAME, pPath->GetFileOrDirectoryName() );
 		if (!PathFileExists(file1))
 		{
@@ -490,8 +490,8 @@ int CGitDiff::Diff(const CTGitPath * pPath, const CTGitPath * pPath2, git_revnum
 		CAppUtils::StartExtDiff(file2,file1,
 								title2,
 								title1,
-								g_Git.m_CurrentDir + _T("\\") + pPath2->GetWinPathString(),
-								g_Git.m_CurrentDir + _T("\\") + pPath->GetWinPathString(),
+								g_Git.CombinePath(pPath2),
+								g_Git.CombinePath(pPath),
 								rev2,
 								rev1,
 								flags, jumpToLine);

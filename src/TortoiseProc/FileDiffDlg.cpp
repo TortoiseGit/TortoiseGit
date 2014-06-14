@@ -198,7 +198,7 @@ BOOL CFileDiffDlg::OnInitDialog()
 	GetWindowText(sWindowTitle);
 	CString pathText = g_Git.m_CurrentDir;
 	if (!m_path1.IsEmpty())
-		pathText = g_Git.m_CurrentDir + _T("\\") + m_path1.GetWinPathString();
+		pathText = g_Git.CombinePath(m_path1);
 	CAppUtils::SetWindowTitle(m_hWnd, pathText, sWindowTitle);
 
 	this->m_ctrRev1Edit.Init();
@@ -745,7 +745,7 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 						CString filename = m_strExportDir + _T("\\") + fd->GetWinPathString();
 						if(m_rev1.m_CommitHash.ToString() == GIT_REV_ZERO)
 						{
-							if(!CopyFile(g_Git.m_CurrentDir + _T("\\") + fd->GetWinPath(), filename, false))
+							if(!CopyFile(g_Git.CombinePath(fd), filename, false))
 							{
 								MessageBox(CFormatMessageWrapper(), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 								return;
