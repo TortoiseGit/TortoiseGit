@@ -1829,9 +1829,23 @@ void CBaseView::DrawTextLine(
 				int leftcoord = nLeft;
 				if (nLeft < 0)
 				{
-					offset = (-nLeft/GetCharWidth());
+					int fit = nTextLength;
+					std::unique_ptr<int> posBuffer(new int[fit]);
+					GetTextExtentExPoint(pDC->GetSafeHdc(), p_zBlockText, nTextLength, INT_MAX, &fit, posBuffer.get(), &Size);
+					int lower = 0, upper = fit - 1;
+					do
+					{
+						int middle = (upper + lower + 1) / 2;
+						int width = posBuffer.get()[middle];
+						if (rc.left - nLeft < width)
+							upper = middle - 1;
+						else
+							lower = middle;
+					} while (lower < upper);
+
+					offset = lower;
 					nTextLength -= offset;
-					leftcoord = nLeft % GetCharWidth();
+					leftcoord += lower > 0 ? posBuffer.get()[lower - 1] : 0;
 				}
 
 				pDC->ExtTextOut(leftcoord, coords.y, ETO_CLIPPED, &rc, p_zBlockText+offset, min(nTextLength, 4094), NULL);
