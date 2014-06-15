@@ -53,7 +53,6 @@ UINT CCommitDlg::WM_UPDATEDATAFALSE = RegisterWindowMessage(_T("TORTOISEGIT_COMM
 IMPLEMENT_DYNAMIC(CCommitDlg, CResizableStandAloneDialog)
 CCommitDlg::CCommitDlg(CWnd* pParent /*=NULL*/)
 	: CResizableStandAloneDialog(CCommitDlg::IDD, pParent)
-	, m_bRecursive(FALSE)
 	, m_bShowUnversioned(FALSE)
 	, m_bBlock(FALSE)
 	, m_bThreadRunning(FALSE)
@@ -609,14 +608,10 @@ void CCommitDlg::OnOK()
 		m_ListCtrl.WriteCheckedNamesToPathList(m_selectedPathList);
 	m_pathwatcher.Stop();
 	InterlockedExchange(&m_bBlock, TRUE);
-	CDWordArray arDeleted;
 	//first add all the unversioned files the user selected
 	//and check if all versioned files are selected
 	int nchecked = 0;
-	m_bRecursive = true;
 
-	CTGitPathList itemsToAdd;
-	CTGitPathList itemsToRemove;
 	CMassiveGitTask mgtReAddAfterCommit(_T("add --ignore-errors -f"));
 
 	CString cmd;

@@ -150,9 +150,7 @@ public:
 
 protected:
 	CTGitPathList		m_selectedPathList;
-	BOOL				m_bRecursive;
 	CSciEdit			m_cLogMessage;
-	CString				m_sChangeList;
 	INT_PTR				m_itemsCount;
 	CComPtr<IBugTraqProvider> m_BugTraqProvider;
 	CString				m_NoAmendStr;
