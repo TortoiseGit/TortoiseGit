@@ -234,10 +234,7 @@ void CPushDlg::Refresh()
 	m_BranchSource.Reset();
 	m_BranchSource.SetMaxHistoryItems(0x7FFFFFFF);
 	if(!g_Git.GetBranchList(list,&current))
-	{
-		for (unsigned int i = 0; i < list.size(); ++i)
-			m_BranchSource.AddString(list[i]);
-	}
+		m_BranchSource.SetList(list);
 	if (wcsncmp(m_BranchSourceName, _T("refs/"), 5) == 0)
 		m_BranchSourceName = m_BranchSourceName.Mid(5);
 	if (wcsncmp(m_BranchSourceName, _T("heads/"), 6) == 0)
