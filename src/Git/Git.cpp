@@ -1283,10 +1283,6 @@ int CGit::GetTagList(STRING_VECTOR &list)
 	}
 }
 
-/**
-Use this method only if m_IsUseLibGit2 is used for fallbacks.
-If you directly use libgit2 methods, use GetLibGit2LastErr instead.
-*/
 CString CGit::GetGitLastErr(const CString& msg)
 {
 	if (this->m_IsUseLibGit2)
@@ -1388,10 +1384,6 @@ bool CGit::IsBranchTagNameUnique(const CString& name)
 	return true;
 }
 
-/*
-Checks if a branch or tag with the given name exists
-isBranch is true -> branch, tag otherwise
-*/
 bool CGit::BranchTagExists(const CString& name, bool isBranch /*= true*/)
 {
 	if (m_IsUseLibGit2)

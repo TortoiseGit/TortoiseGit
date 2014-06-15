@@ -179,6 +179,10 @@ public:
 	static int m_LogEncode;
 	static bool IsBranchNameValid(const CString& branchname);
 	bool IsBranchTagNameUnique(const CString& name);
+	/**
+	* Checks if a branch or tag with the given name exists
+	*isBranch is true -> branch, tag otherwise
+	*/
 	bool BranchTagExists(const CString& name, bool isBranch = true);
 	unsigned int Hash2int(const CGitHash &hash);
 
@@ -228,6 +232,10 @@ public:
 	int Revert(const CString& commit, const CTGitPathList &list, bool keep=true);
 	int Revert(const CString& commit, const CTGitPath &path);
 	int DeleteRef(const CString& reference);
+	/**
+	Use this method only if m_IsUseLibGit2 is used for fallbacks.
+	If you directly use libgit2 methods, use GetLibGit2LastErr instead.
+	*/
 	CString GetGitLastErr(const CString& msg);
 	CString GetGitLastErr(const CString& msg, LIBGIT2_CMD cmd);
 	static CString GetLibGit2LastErr();
