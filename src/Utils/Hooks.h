@@ -83,7 +83,6 @@ private:
 	CHooks();
 	~CHooks();
 	void AddPathParam(CString& sCmd, const CTGitPathList& pathList);
-	void AddDepthParam(CString& sCmd, git_depth_t depth);
 	void AddCWDParam(CString& sCmd, const CTGitPathList& pathList);
 	void AddErrorParam(CString& sCmd, const CString& error);
 	void AddParam(CString& sCmd, const CString& param);
@@ -136,7 +135,6 @@ public:
 	 * Executes the Pre-Commit-Hook that first matches one of the paths in
 	 * \c pathList.
 	 * \param pathList a list of paths to look for the hook scripts
-	 * \param depth the depth of the commit
 	 * \param message the commit message
 	 * \param exitcode on return, contains the exit code of the hook script
 	 * \param error the data the hook script outputs to stderr
@@ -144,18 +142,14 @@ public:
 	 * replaced with the path to a temporary file which contains a list of files
 	 * in \c pathList, separated by newlines. The hook script can parse this
 	 * file to get all the paths the update is about to be done on.
-	 * The string "%DEPTH%" is replaced with the numerical value (string) of the
-	 * Git_depth_t parameter. See the git source documentation about the
-	 * values.
 	 */
-	bool				PreCommit(const CTGitPathList& pathList, git_depth_t depth,
+	bool				PreCommit(const CTGitPathList& pathList,
 									const CString& message, DWORD& exitcode,
 									CString& error);
 	/**
 	 * Executes the Post-Commit-Hook that first matches one of the paths in
 	 * \c pathList.
 	 * \param pathList a list of paths to look for the hook scripts
-	 * \param depth the depth of the commit
 	 * \param message the commit message
 	 * \param rev the revision the commit was done to
 	 * \param exitcode on return, contains the exit code of the hook script
@@ -164,11 +158,8 @@ public:
 	 * replaced with the path to a temporary file which contains a list of files
 	 * in \c pathList, separated by newlines. The hook script can parse this
 	 * file to get all the paths the commit is about to be done on.
-	 * The string "%DEPTH%" is replaced with the numerical value (string) of the
-	 * Git_depth_t parameter. See the git source documentation about the
-	 * values.
 	 */
-	bool				PostCommit(const CTGitPathList& pathList, git_depth_t depth,
+	bool				PostCommit(const CTGitPathList& pathList,
 									const GitRev& rev, const CString& message,
 									DWORD& exitcode, CString& error);
 

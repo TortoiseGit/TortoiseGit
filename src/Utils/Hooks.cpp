@@ -212,13 +212,6 @@ void CHooks::AddCWDParam(CString& sCmd, const CTGitPathList& pathList)
 	AddParam(sCmd, pathList.GetCommonRoot().GetDirectory().GetWinPathString());
 }
 
-void CHooks::AddDepthParam(CString& sCmd, git_depth_t depth)
-{
-	CString sTemp;
-	sTemp.Format(_T("%d"), depth);
-	AddParam(sCmd, sTemp);
-}
-
 void CHooks::AddErrorParam(CString& sCmd, const CString& error)
 {
 	CTGitPath tempPath;
@@ -253,28 +246,26 @@ bool CHooks::StartCommit(const CTGitPathList& pathList, CString& message, DWORD&
 	return true;
 }
 
-bool CHooks::PreCommit(const CTGitPathList& pathList, git_depth_t depth, const CString& message, DWORD& exitcode, CString& error)
+bool CHooks::PreCommit(const CTGitPathList& pathList, const CString& message, DWORD& exitcode, CString& error)
 {
 	hookiterator it = FindItem(pre_commit_hook, pathList);
 	if (it == end())
 		return false;
 	CString sCmd = it->second.commandline;
 	AddPathParam(sCmd, pathList);
-	AddDepthParam(sCmd, depth);
 	AddMessageFileParam(sCmd, message);
 	AddCWDParam(sCmd, pathList);
 	exitcode = RunScript(sCmd, pathList.GetCommonRoot().GetDirectory().GetWinPath(), error, it->second.bWait, it->second.bShow);
 	return true;
 }
 
-bool CHooks::PostCommit(const CTGitPathList& pathList, git_depth_t depth, const GitRev& rev, const CString& message, DWORD& exitcode, CString& error)
+bool CHooks::PostCommit(const CTGitPathList& pathList, const GitRev& rev, const CString& message, DWORD& exitcode, CString& error)
 {
 	hookiterator it = FindItem(post_commit_hook, pathList);
 	if (it == end())
 		return false;
 	CString sCmd = it->second.commandline;
 	AddPathParam(sCmd, pathList);
-	AddDepthParam(sCmd, depth);
 	AddMessageFileParam(sCmd, message);
 	AddParam(sCmd, rev.m_CommitHash.ToString());
 	AddErrorParam(sCmd, error);
