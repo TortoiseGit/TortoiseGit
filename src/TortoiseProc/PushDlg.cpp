@@ -224,6 +224,8 @@ void CPushDlg::Refresh()
 				sel = i + (list.size() > 1 ? 1 : 0);
 		}
 	}
+	else
+		MessageBox(g_Git.GetGitLastErr(_T("Could not get list of remotes.")), _T("TortoiseGit"), MB_ICONERROR);
 	// if the last selected remote was "- All -" and "- All -" is still in the list -> select it
 	if (list.size() > 1 && remote == CString(MAKEINTRESOURCE(IDS_PROC_PUSHFETCH_ALLREMOTES)))
 		sel = 0;
@@ -235,6 +237,8 @@ void CPushDlg::Refresh()
 	m_BranchSource.SetMaxHistoryItems(0x7FFFFFFF);
 	if(!g_Git.GetBranchList(list,&current))
 		m_BranchSource.SetList(list);
+	else
+		MessageBox(g_Git.GetGitLastErr(_T("Could not get list of local branches.")), _T("TortoiseGit"), MB_ICONERROR);
 	if (wcsncmp(m_BranchSourceName, _T("refs/"), 5) == 0)
 		m_BranchSourceName = m_BranchSourceName.Mid(5);
 	if (wcsncmp(m_BranchSourceName, _T("heads/"), 6) == 0)
