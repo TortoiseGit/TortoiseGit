@@ -1829,9 +1829,23 @@ void CBaseView::DrawTextLine(
 				int leftcoord = nLeft;
 				if (nLeft < 0)
 				{
-					offset = (-nLeft/GetCharWidth());
+					int fit = nTextLength;
+					std::unique_ptr<int> posBuffer(new int[fit]);
+					GetTextExtentExPoint(pDC->GetSafeHdc(), p_zBlockText, nTextLength, INT_MAX, &fit, posBuffer.get(), &Size);
+					int lower = 0, upper = fit - 1;
+					do
+					{
+						int middle = (upper + lower + 1) / 2;
+						int width = posBuffer.get()[middle];
+						if (rc.left - nLeft < width)
+							upper = middle - 1;
+						else
+							lower = middle;
+					} while (lower < upper);
+
+					offset = lower;
 					nTextLength -= offset;
-					leftcoord = nLeft % GetCharWidth();
+					leftcoord += lower > 0 ? posBuffer.get()[lower - 1] : 0;
 				}
 
 				pDC->ExtTextOut(leftcoord, coords.y, ETO_CLIPPED, &rc, p_zBlockText+offset, min(nTextLength, 4094), NULL);
@@ -1928,19 +1942,10 @@ void CBaseView::DrawSingleLine(CDC *pDC, const CRect &rc, int nLineIndex)
 	if (m_bViewWhitespace)
 	{
 		int xpos = 0;
+		int nChars = 0;
+		LPCTSTR pLastSpace = pszChars;
 		int y = rc.top + (rc.bottom-rc.top)/2;
-
-		int nActualOffset = 0;
-		while ((nActualOffset < m_nOffsetChar) && (*pszChars))
-		{
-			if (*pszChars == _T('\t'))
-				nActualOffset += (GetTabSize() - nActualOffset % GetTabSize());
-			else
-				nActualOffset++;
-			pszChars++;
-		}
-		if (nActualOffset > m_nOffsetChar)
-			pszChars--;
+		xpos -= m_nOffsetChar * GetCharWidth();
 
 		CPen pen(PS_SOLID, 0, m_WhiteSpaceFg);
 		CPen pen2(PS_SOLID, 2, m_WhiteSpaceFg);
@@ -1950,30 +1955,42 @@ void CBaseView::DrawSingleLine(CDC *pDC, const CRect &rc, int nLineIndex)
 			{
 			case _T('\t'):
 				{
+					xpos += pDC->GetTextExtent(pLastSpace, (int)(pszChars - pLastSpace)).cx;
+					pLastSpace = pszChars + 1;
 					// draw an arrow
-					CPen * oldPen = pDC->SelectObject(&pen);
-					int nSpaces = GetTabSize() - (m_nOffsetChar + xpos) % GetTabSize();
-					pDC->MoveTo(xpos * GetCharWidth() + rc.left, y);
-					pDC->LineTo((xpos + nSpaces) * GetCharWidth() + rc.left-2, y);
-					pDC->LineTo((xpos + nSpaces) * GetCharWidth() + rc.left-6, y-4);
-					pDC->MoveTo((xpos + nSpaces) * GetCharWidth() + rc.left-2, y);
-					pDC->LineTo((xpos + nSpaces) * GetCharWidth() + rc.left-6, y+4);
-					xpos += nSpaces;
-					pDC->SelectObject(oldPen);
+					int nSpaces = GetTabSize() - nChars % GetTabSize();
+					if (xpos + nSpaces * GetCharWidth() >= 0)
+					{
+						CPen * oldPen = pDC->SelectObject(&pen);
+						pDC->MoveTo(xpos + rc.left, y);
+						pDC->LineTo((xpos + nSpaces * GetCharWidth()) + rc.left-2, y);
+						pDC->LineTo((xpos + nSpaces * GetCharWidth()) + rc.left-6, y-4);
+						pDC->MoveTo((xpos + nSpaces * GetCharWidth()) + rc.left-2, y);
+						pDC->LineTo((xpos + nSpaces * GetCharWidth()) + rc.left-6, y+4);
+						pDC->SelectObject(oldPen);
+					}
+					xpos += nSpaces * GetCharWidth();
+					nChars += nSpaces;
 				}
 				break;
 			case _T(' '):
 				{
+					xpos += pDC->GetTextExtent(pLastSpace, (int)(pszChars - pLastSpace)).cx;
+					pLastSpace = pszChars + 1;
 					// draw a small dot
 					CPen * oldPen = pDC->SelectObject(&pen2);
-					pDC->MoveTo(xpos * GetCharWidth() + rc.left + GetCharWidth()/2-1, y);
-					pDC->LineTo(xpos * GetCharWidth() + rc.left + GetCharWidth()/2+1, y);
-					xpos++;
-					pDC->SelectObject(oldPen);
+					if (xpos + GetCharWidth() >= 0)
+					{
+						pDC->MoveTo(xpos + rc.left + GetCharWidth()/2-1, y);
+						pDC->LineTo(xpos + rc.left + GetCharWidth()/2+1, y);
+						pDC->SelectObject(oldPen);
+					}
+					xpos += GetCharWidth();
+					nChars++;
 				}
 				break;
 			default:
-				xpos++;
+				nChars++;
 				break;
 			}
 			pszChars++;
@@ -3047,11 +3064,7 @@ void CBaseView::OnLButtonDown(UINT nFlags, CPoint point)
 	{
 		POINT ptCaretPos;
 		ptCaretPos.y = nClickedLine;
-		LONG xpos = point.x - GetMarginWidth();
-		LONG xpos2 = xpos / GetCharWidth();
-		xpos2 += m_nOffsetChar;
-		if ((xpos % GetCharWidth()) >= (GetCharWidth()/2))
-			xpos2++;
+		int xpos2 = CalcColFromPoint(point.x, nClickedLine);
 		ptCaretPos.x = CalculateCharIndex(ptCaretPos.y, xpos2);
 		SetCaretAndGoalPosition(ptCaretPos);
 
@@ -3298,7 +3311,8 @@ void CBaseView::OnMouseMove(UINT nFlags, CPoint point)
 		saveMouseLine = saveMouseLine < GetLineCount() ? saveMouseLine : GetLineCount() - 1;
 		if (saveMouseLine < 0)
 			return;
-		int charIndex = CalculateCharIndex(saveMouseLine, m_nOffsetChar + (point.x - GetMarginWidth()) / GetCharWidth());
+		int col = CalcColFromPoint(point.x, saveMouseLine);
+		int charIndex = CalculateCharIndex(saveMouseLine, col);
 		if (HasSelection() &&
 			((nMouseLine >= m_nTopLine)&&(nMouseLine < GetLineCount())))
 		{
@@ -3585,6 +3599,52 @@ int CBaseView::CalculateCharIndex(int nLineIndex, int nActualOffset)
 		++nIndex;
 	}
 	return nIndex;
+}
+
+/**
+ * @param xpos X coordinate in CBaseView
+ * @param lineIndex logical line index (e.g. wrap/collapse)
+ */
+int CBaseView::CalcColFromPoint(int xpos, int lineIndex)
+{
+	int xpos2;
+	CDC *pDC = GetDC();
+	if (pDC != nullptr)
+	{
+		CString text = ExpandChars(GetLineChars(lineIndex), 0);
+		int fit = text.GetLength();
+		std::unique_ptr<int> posBuffer(new int[fit]);
+		pDC->SelectObject(GetFont()); // is this right font ?
+		SIZE size;
+		GetTextExtentExPoint(pDC->GetSafeHdc(), text, fit, INT_MAX, &fit, posBuffer.get(), &size);
+		ReleaseDC(pDC);
+		int lower = -1, upper = fit - 1;
+		int xcheck = xpos - GetMarginWidth() + m_nOffsetChar * GetCharWidth();
+		do
+		{
+			int middle = (upper + lower + 1) / 2;
+			int width = posBuffer.get()[middle];
+			if (xcheck < width)
+				upper = middle - 1;
+			else
+				lower = middle;
+		} while (lower < upper);
+		lower++;
+		xpos2 = lower;
+		if (lower < fit - 1)
+		{
+			int charWidth = posBuffer.get()[lower] - (lower > 0 ? posBuffer.get()[lower - 1] : 0);
+			if (posBuffer.get()[lower] - xcheck <= charWidth / 2)
+				xpos2++;
+		}
+	}
+	else
+	{
+		xpos2 = (xpos - GetMarginWidth()) / GetCharWidth() + m_nOffsetChar;
+		if ((xpos % GetCharWidth()) >= (GetCharWidth()/2))
+			xpos2++;
+	}
+	return xpos2;
 }
 
 POINT CBaseView::TextToClient(const POINT& point)
