@@ -184,16 +184,16 @@ BOOL CCommitDlg::OnInitDialog()
 	CResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
-	if (!m_bForceCommitAmend)
+	if (m_sLogMessage.IsEmpty())
 	{
-		GetCommitTemplate(this->m_sLogMessage);
-		m_sLogMessage = m_sLogMessage;
-	}
+		if (!m_bForceCommitAmend)
+			GetCommitTemplate(m_sLogMessage);
 
-	CString dotGitPath;
-	g_GitAdminDir.GetAdminDirPath(g_Git.m_CurrentDir, dotGitPath);
-	bool loadedMsg = !CGit::LoadTextFile(dotGitPath + _T("MERGE_MSG"), m_sLogMessage);
-	loadedMsg = loadedMsg && !CGit::LoadTextFile(dotGitPath + _T("SQUASH_MSG"), m_sLogMessage);
+		CString dotGitPath;
+		g_GitAdminDir.GetAdminDirPath(g_Git.m_CurrentDir, dotGitPath);
+		bool loadedMsg = !CGit::LoadTextFile(dotGitPath + _T("MERGE_MSG"), m_sLogMessage);
+		loadedMsg = loadedMsg && !CGit::LoadTextFile(dotGitPath + _T("SQUASH_MSG"), m_sLogMessage);
+	}
 
 	if (CTGitPath(g_Git.m_CurrentDir).IsMergeActive())
 	{
