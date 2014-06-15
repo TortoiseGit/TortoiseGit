@@ -399,6 +399,7 @@ protected:  // methods
 
 	int				CalculateActualOffset(const POINT& point);
 	int				CalculateCharIndex(int nLineIndex, int nActualOffset);
+	int				CalcColFromPoint(int xpos, int lineIndex);
 	POINT			TextToClient(const POINT& point);
 	void			DrawTextLine(CDC * pDC, const CRect &rc, int nLineIndex, POINT& coords);
 	void			ClearCurrentSelection();

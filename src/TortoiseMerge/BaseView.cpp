@@ -3064,11 +3064,7 @@ void CBaseView::OnLButtonDown(UINT nFlags, CPoint point)
 	{
 		POINT ptCaretPos;
 		ptCaretPos.y = nClickedLine;
-		LONG xpos = point.x - GetMarginWidth();
-		LONG xpos2 = xpos / GetCharWidth();
-		xpos2 += m_nOffsetChar;
-		if ((xpos % GetCharWidth()) >= (GetCharWidth()/2))
-			xpos2++;
+		int xpos2 = CalcColFromPoint(point.x, nClickedLine);
 		ptCaretPos.x = CalculateCharIndex(ptCaretPos.y, xpos2);
 		SetCaretAndGoalPosition(ptCaretPos);
 
@@ -3315,7 +3311,8 @@ void CBaseView::OnMouseMove(UINT nFlags, CPoint point)
 		saveMouseLine = saveMouseLine < GetLineCount() ? saveMouseLine : GetLineCount() - 1;
 		if (saveMouseLine < 0)
 			return;
-		int charIndex = CalculateCharIndex(saveMouseLine, m_nOffsetChar + (point.x - GetMarginWidth()) / GetCharWidth());
+		int col = CalcColFromPoint(point.x, saveMouseLine);
+		int charIndex = CalculateCharIndex(saveMouseLine, col);
 		if (HasSelection() &&
 			((nMouseLine >= m_nTopLine)&&(nMouseLine < GetLineCount())))
 		{
@@ -3602,6 +3599,52 @@ int CBaseView::CalculateCharIndex(int nLineIndex, int nActualOffset)
 		++nIndex;
 	}
 	return nIndex;
+}
+
+/**
+ * @param xpos X coordinate in CBaseView
+ * @param lineIndex logical line index (e.g. wrap/collapse)
+ */
+int CBaseView::CalcColFromPoint(int xpos, int lineIndex)
+{
+	int xpos2;
+	CDC *pDC = GetDC();
+	if (pDC != nullptr)
+	{
+		CString text = ExpandChars(GetLineChars(lineIndex), 0);
+		int fit = text.GetLength();
+		std::unique_ptr<int> posBuffer(new int[fit]);
+		pDC->SelectObject(GetFont()); // is this right font ?
+		SIZE size;
+		GetTextExtentExPoint(pDC->GetSafeHdc(), text, fit, INT_MAX, &fit, posBuffer.get(), &size);
+		ReleaseDC(pDC);
+		int lower = -1, upper = fit - 1;
+		int xcheck = xpos - GetMarginWidth() + m_nOffsetChar * GetCharWidth();
+		do
+		{
+			int middle = (upper + lower + 1) / 2;
+			int width = posBuffer.get()[middle];
+			if (xcheck < width)
+				upper = middle - 1;
+			else
+				lower = middle;
+		} while (lower < upper);
+		lower++;
+		xpos2 = lower;
+		if (lower < fit - 1)
+		{
+			int charWidth = posBuffer.get()[lower] - (lower > 0 ? posBuffer.get()[lower - 1] : 0);
+			if (posBuffer.get()[lower] - xcheck <= charWidth / 2)
+				xpos2++;
+		}
+	}
+	else
+	{
+		xpos2 = (xpos - GetMarginWidth()) / GetCharWidth() + m_nOffsetChar;
+		if ((xpos % GetCharWidth()) >= (GetCharWidth()/2))
+			xpos2++;
+	}
+	return xpos2;
 }
 
 POINT CBaseView::TextToClient(const POINT& point)
