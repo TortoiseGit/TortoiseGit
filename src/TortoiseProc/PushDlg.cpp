@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -229,16 +229,14 @@ void CPushDlg::Refresh()
 		sel = 0;
 	m_Remote.SetCurSel(sel);
 
-	int current=0;
+	int current = -1;
 	list.clear();
 	m_BranchSource.Reset();
-	m_BranchSource.AddString(_T(" ")); // empty string does not work, for removal of remote branches/tags
 	m_BranchSource.SetMaxHistoryItems(0x7FFFFFFF);
 	if(!g_Git.GetBranchList(list,&current))
 	{
 		for (unsigned int i = 0; i < list.size(); ++i)
 			m_BranchSource.AddString(list[i]);
-		++current; // shift for " "
 	}
 	if (wcsncmp(m_BranchSourceName, _T("refs/"), 5) == 0)
 		m_BranchSourceName = m_BranchSourceName.Mid(5);
