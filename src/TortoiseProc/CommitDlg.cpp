@@ -970,6 +970,7 @@ void CCommitDlg::OnOK()
 			if (userResponse == IDC_PROGRESS_BUTTON1 + indexReCommit)
 			{
 				this->m_sLogMessage.Empty();
+				GetCommitTemplate(m_sLogMessage);
 				m_cLogMessage.SetText(m_sLogMessage);
 				if (m_bCreateNewBranch)
 				{
