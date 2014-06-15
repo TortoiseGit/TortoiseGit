@@ -979,6 +979,7 @@ void CCommitDlg::OnOK()
 				m_bCreateNewBranch = FALSE;
 			}
 
+			m_AmendStr.Empty();
 			m_bCommitAmend = FALSE;
 			UpdateData(FALSE);
 			this->Refresh();
