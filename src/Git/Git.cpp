@@ -245,8 +245,9 @@ int CGit::RunAsync(CString cmd, PROCESS_INFORMATION *piOut, HANDLE *hReadOut, HA
 	LPTSTR pEnv = (!m_Environment.empty()) ? &m_Environment[0]: NULL;
 	DWORD dwFlags = pEnv ? CREATE_UNICODE_ENVIRONMENT : 0;
 
-	//DETACHED_PROCESS make ssh recognize that it has no console to launch askpass to input password.
-	dwFlags |= DETACHED_PROCESS | CREATE_NEW_PROCESS_GROUP;
+	// CREATE_NEW_CONSOLE makes ssh recognize that it has no console in order to launch askpass to ask for the password.
+	// DETACHED_PROCESS which was originally used here has the same effect, however, it prevents PowerShell from working (cf. issue #2143)
+	dwFlags |= CREATE_NEW_PROCESS_GROUP | CREATE_NEW_CONSOLE;
 
 	memset(&this->m_CurrentGitPi,0,sizeof(PROCESS_INFORMATION));
 	memset(&pi, 0, sizeof(PROCESS_INFORMATION));
