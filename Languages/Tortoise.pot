@@ -3021,7 +3021,7 @@ msgid "Copying..."
 msgstr ""
 
 #. Resource IDs: (1001)
-msgid "Copyright (C) 2009-2013 TortoiseGit"
+msgid "Copyright (C) 2009-2014 TortoiseGit"
 msgstr ""
 
 #. Resource IDs: (1254)

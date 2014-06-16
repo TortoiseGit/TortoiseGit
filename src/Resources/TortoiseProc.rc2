@@ -35,7 +35,7 @@ BEGIN
             VALUE "FileDescription", "TortoiseGit client\0"
             VALUE "FileVersion", STRFILEVER
             VALUE "InternalName", "TortoiseGitProc.exe\0"
-            VALUE "LegalCopyright", "Copyright (C) 2008-2014 - TortoiseGit and Copyright (C) 2003-2013 - TortoiseSVN\0"
+            VALUE "LegalCopyright", "Copyright (C) 2008-2014 - TortoiseGit and Copyright (C) 2003-2014 - TortoiseSVN\0"
             VALUE "OriginalFilename", "TortoiseGitProc.exe\0"
             VALUE "ProductName", "TortoiseGit\0"
             VALUE "ProductVersion", STRPRODUCTVER
