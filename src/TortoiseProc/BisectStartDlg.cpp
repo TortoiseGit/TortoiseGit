@@ -1,6 +1,5 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2013 Sven Strickroth, <email@cs-ware.de>
 // Copyright (C) 2014 TortoiseGit
 
 // with code of PullFetchDlg.cpp
@@ -56,6 +55,19 @@ BEGIN_MESSAGE_MAP(CBisectStartDlg, CHorizontalResizableStandAloneDialog)
 	ON_CBN_EDITCHANGE(IDC_COMBOBOXEX_BAD, &CBisectStartDlg::OnChangedRevision)
 END_MESSAGE_MAP()
 
+static void uniqueMergeLists(STRING_VECTOR& list, const STRING_VECTOR& listToMerge)
+{
+	std::map<CString, int> map;
+	for (CString entry : list)
+		map[entry] = 1;
+
+	for (CString entry : listToMerge)
+	{
+		if (map.find(entry) == map.end())
+			list.push_back(entry);
+	}
+}
+
 BOOL CBisectStartDlg::OnInitDialog()
 {
 	CHorizontalResizableStandAloneDialog::OnInitDialog();
@@ -81,19 +93,11 @@ BOOL CBisectStartDlg::OnInitDialog()
 	g_Git.GetBranchList(list, &current, CGit::BRANCH_ALL);
 	m_cLastGoodRevision.SetMaxHistoryItems(0x7FFFFFFF);
 	m_cFirstBadRevision.SetMaxHistoryItems(0x7FFFFFFF);
-	for (unsigned int i = 0; i < list.size(); ++i)
-	{
-		m_cLastGoodRevision.AddString(list[i]);
-		m_cFirstBadRevision.AddString(list[i]);
-	}
-	list.clear();
-	g_Git.GetTagList(list);
-	for (unsigned int i = 0; i < list.size(); ++i)
-	{
-		m_cLastGoodRevision.AddString(list[i]);
-		m_cFirstBadRevision.AddString(list[i]);
-	}
-
+	STRING_VECTOR tagsList;
+	g_Git.GetTagList(tagsList);
+	uniqueMergeLists(list, tagsList);
+	m_cLastGoodRevision.SetList(list);
+	m_cFirstBadRevision.SetList(list);
 	if (m_sLastGood.IsEmpty())
 		m_cLastGoodRevision.SetCurSel(-1);
 	else
