@@ -4,7 +4,6 @@
 	<title>Client Side Hook Scripts</title>
 	<?dbhh topicname="HIDD_SETTINGSHOOKS"?>
 	<?dbhh topicname="HIDD_SETTINGSHOOKCONFIG"?>
-	<!--
 	<indexterm>
 		<primary>client hooks</primary>
 	</indexterm>
@@ -17,9 +16,7 @@
 			<graphic fileref="../images/SettingsHooks.png"/>
 		</figure>
 		This dialog allows you to set up hook scripts which will be
-		executed automatically when certain Git actions are performed.
-		As opposed to the hook scripts explained in <xref linkend="tgit-repository-hooks"/>,
-		these scripts are executed locally on the client. 
+		executed automatically when certain TortoiseGit actions are performed on the client side.
 	</para>
 	<para>
 		For various security and implementation reasons, hook scripts are defined
@@ -38,6 +35,7 @@
 	<para>
 		There are currently six types of hook script available
 		<variablelist>
+			<!--
 			<varlistentry>
 				<term>Start-commit</term>
 				<listitem>
@@ -69,27 +67,20 @@
 					</para>
 				</listitem>
 			</varlistentry>
+			-->
 			<varlistentry>
-				<term>Start-update</term>
+				<term>Pre-push</term>
 				<listitem>
 					<para>
-						Called before the update-to-revision dialog is shown.
+						Called before actual Git push begins.
 					</para>
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term>Pre-update</term>
+				<term>Post-push</term>
 				<listitem>
 					<para>
-						Called before the actual Git update begins.
-					</para>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>Post-update</term>
-				<listitem>
-					<para>
-						Called after the update finishes (whether successful or not).
+						Called after successful pushing finishes.
 					</para>
 				</listitem>
 			</varlistentry>
@@ -111,6 +102,7 @@
 		by TortoiseGit. The parameters passed depend upon which hook is called.
 		Each hook has its own parameters which are passed in the following order:
 		<variablelist>
+			<!--
 			<varlistentry>
 				<term>Start-commit</term>
 				<listitem condition="pot">
@@ -126,7 +118,6 @@
 				<listitem condition="pot">
 					<para>
 						<literal>PATH</literal>
-						<literal>DEPTH</literal>
 						<literal>MESSAGEFILE</literal>
 						<literal>CWD</literal>
 					</para>
@@ -137,7 +128,6 @@
 				<listitem condition="pot">
 					<para>
 						<literal>PATH</literal>
-						<literal>DEPTH</literal>
 						<literal>MESSAGEFILE</literal>
 						<literal>REVISION</literal>
 						<literal>ERROR</literal>
@@ -145,33 +135,22 @@
 					</para>
 				</listitem>
 			</varlistentry>
+			-->
 			<varlistentry>
-				<term>Start-update</term>
+				<term>Pre-push</term>
 				<listitem condition="pot">
 					<para>
 						<literal>PATH</literal>
+						<literal>ERROR</literal>
 						<literal>CWD</literal>
 					</para>
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term>Pre-update</term>
+				<term>Post-push</term>
 				<listitem condition="pot">
 					<para>
 						<literal>PATH</literal>
-						<literal>DEPTH</literal>
-						<literal>REVISION</literal>
-						<literal>CWD</literal>
-					</para>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>Post-update</term>
-				<listitem condition="pot">
-					<para>
-						<literal>PATH</literal>
-						<literal>DEPTH</literal>
-						<literal>REVISION</literal>
 						<literal>ERROR</literal>
 						<literal>CWD</literal>
 					</para>
@@ -193,67 +172,6 @@
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term condition="pot">DEPTH</term>
-				<listitem>
-					<para>
-						The depth with which the commit/update is done.
-					</para>
-					<para>
-					Possible values are:
-					<variablelist>
-						<varlistentry>
-							<term condition="pot">-2</term>
-							<listitem>
-								<para>
-									<literal>svn_depth_unknown</literal>
-								</para>
-							</listitem>
-						</varlistentry>
-						<varlistentry>
-							<term condition="pot">-1</term>
-							<listitem>
-								<para>
-									<literal>svn_depth_exclude</literal>
-								</para>
-							</listitem>
-						</varlistentry>
-						<varlistentry>
-							<term condition="pot">0</term>
-							<listitem>
-								<para>
-									<literal>svn_depth_empty</literal>
-								</para>
-							</listitem>
-						</varlistentry>
-						<varlistentry>
-							<term condition="pot">1</term>
-							<listitem>
-								<para>
-									<literal>svn_depth_files</literal>
-								</para>
-							</listitem>
-						</varlistentry>
-						<varlistentry>
-							<term condition="pot">2</term>
-							<listitem>
-								<para>
-									<literal>svn_depth_immediates</literal>
-								</para>
-							</listitem>
-						</varlistentry>
-						<varlistentry>
-							<term condition="pot">3</term>
-							<listitem>
-								<para>
-									<literal>svn_depth_infinity</literal>
-								</para>
-							</listitem>
-						</varlistentry>
-					</variablelist>
-					</para>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
 				<term condition="pot">MESSAGEFILE</term>
 				<listitem>
 					<para>
@@ -265,6 +183,7 @@
 					</para>
 				</listitem>
 			</varlistentry>
+			<!--
 			<varlistentry>
 				<term condition="pot">REVISION</term>
 				<listitem>
@@ -274,6 +193,7 @@
 					</para>
 				</listitem>
 			</varlistentry>
+			-->
 			<varlistentry>
 				<term condition="pot">ERROR</term>
 				<listitem>
@@ -308,14 +228,6 @@
 		Normally you will want to hide ugly DOS boxes when the script runs,
 		so <guilabel>Hide the script while running</guilabel> is checked by default.
 	</para>
-	<para>
-		Sample client hook scripts can be found in the <literal>contrib</literal> folder in the
-		<ulink url="http://TortoiseGit.tigris.org/svn/TortoiseGit/trunk/contrib/hook-scripts">
-			<citetitle>TortoiseGit repository</citetitle>
-		</ulink>.
-		(<xref linkend="tgit-preface-source"/> explains how to access the repository).
-	</para>
-	-->
 	<sect3 id="tgit-dug-settings-hooks-issuetracker">
 		<title>Issue Tracker Integration</title>
 		<?dbhh topicname="HIDD_SETTINGSBUGTRAQ"?>
