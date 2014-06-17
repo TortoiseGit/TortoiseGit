@@ -518,7 +518,7 @@ void CSyncDlg::OnBnClickedButtonPush()
 	CString arg;
 
 	CString error;
-	DWORD exitcode;
+	DWORD exitcode = 0xFFFFFFFF;
 	if (CHooks::Instance().PrePush(g_Git.m_CurrentDir, exitcode, error))
 	{
 		if (exitcode)
@@ -1385,7 +1385,7 @@ void CSyncDlg::RunPostAction()
 	{
 		if (!m_GitCmdStatus)
 		{
-			DWORD exitcode;
+			DWORD exitcode = 0xFFFFFFFF;
 			CString error;
 			if (CHooks::Instance().PostPush(g_Git.m_CurrentDir, exitcode, error))
 			{

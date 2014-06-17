@@ -2560,6 +2560,8 @@ bool CAppUtils::Push(CString selectLocalBranch)
 
 		if(!progress.m_GitStatus)
 		{
+			exitcode = 0xFFFFFFFF;
+			error.Empty();
 			if (CHooks::Instance().PostPush(g_Git.m_CurrentDir, exitcode, error))
 			{
 				if (exitcode)
