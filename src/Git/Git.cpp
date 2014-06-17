@@ -112,6 +112,7 @@ static BOOL FindGitPath()
 
 static bool g_bSortLogical;
 static bool g_bSortLocalBranchesFirst;
+static bool g_bSortTagsReversed;
 
 static void GetSortOptions()
 {
@@ -121,6 +122,9 @@ static void GetSortOptions()
 	g_bSortLocalBranchesFirst = !CRegDWORD(L"Software\\TortoiseGit\\NoSortLocalBranchesFirst", 0, false, HKEY_CURRENT_USER);
 	if (g_bSortLocalBranchesFirst)
 		g_bSortLocalBranchesFirst = !CRegDWORD(L"Software\\TortoiseGit\\NoSortLocalBranchesFirst", 0, false, HKEY_LOCAL_MACHINE);
+	g_bSortTagsReversed = !!CRegDWORD(L"Software\\TortoiseGit\\SortTagsReversed", 0, false, HKEY_LOCAL_MACHINE);
+	if (!g_bSortTagsReversed)
+		g_bSortTagsReversed = !!CRegDWORD(L"Software\\TortoiseGit\\SortTagsReversed", 0, false, HKEY_CURRENT_USER);
 }
 
 static int LogicalComparePredicate(const CString &left, const CString &right)
@@ -128,6 +132,13 @@ static int LogicalComparePredicate(const CString &left, const CString &right)
 	if (g_bSortLogical)
 		return StrCmpLogicalW(left, right) < 0;
 	return StrCmpI(left, right) < 0;
+}
+
+static int LogicalCompareReversedPredicate(const CString &left, const CString &right)
+{
+	if (g_bSortLogical)
+		return StrCmpLogicalW(left, right) > 0;
+	return StrCmpI(left, right) > 0;
 }
 
 static int LogicalCompareBranchesPredicate(const CString &left, const CString &right)
@@ -1258,7 +1269,7 @@ int CGit::GetTagList(STRING_VECTOR &list)
 			list.push_back(CUnicodeUtils::GetUnicode(tagName));
 		}
 
-		std::sort(list.begin(), list.end(), LogicalComparePredicate);
+		std::sort(list.begin(), list.end(), g_bSortTagsReversed ? LogicalCompareReversedPredicate : LogicalComparePredicate);
 
 		return 0;
 	}
@@ -1277,7 +1288,7 @@ int CGit::GetTagList(STRING_VECTOR &list)
 				if (!one.IsEmpty())
 					list.push_back(one);
 			}
-			std::sort(list.begin(), list.end(), LogicalComparePredicate);
+			std::sort(list.begin(), list.end(), g_bSortTagsReversed ? LogicalCompareReversedPredicate : LogicalComparePredicate);
 		}
 		return ret;
 	}
@@ -1623,7 +1634,7 @@ int CGit::GetRemoteTags(const CString& remote, STRING_VECTOR &list)
 		if (!one.IsEmpty())
 			list.push_back(one);
 	}
-	std::sort(list.begin(), list.end(), LogicalComparePredicate);
+	std::sort(list.begin(), list.end(), g_bSortTagsReversed ? LogicalCompareReversedPredicate : LogicalComparePredicate);
 	return 0;
 }
 
