@@ -8454,6 +8454,10 @@ msgstr ""
 msgid "Sort by commit count"
 msgstr ""
 
+#. Resource IDs: (1795)
+msgid "Sort tag list in reversed order"
+msgstr ""
+
 #. Resource IDs: (196)
 msgid "Specifies how many items you want to keep in the most recent log messages dialog."
 msgstr ""
@@ -9868,6 +9872,10 @@ msgstr ""
 
 #. Resource IDs: (94)
 msgid "When enabled, TortoiseGit move context menu items will be available when dragging folders / files"
+msgstr ""
+
+#. Resource IDs: (95)
+msgid "When enabled, larger version numbers come first. It is because latest versions are usually more useful."
 msgstr ""
 
 #. Resource IDs: (197)

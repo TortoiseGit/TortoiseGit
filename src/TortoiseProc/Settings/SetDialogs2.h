@@ -65,6 +65,8 @@ private:
 	BOOL			m_bSyncDialogRandomPos;
 	CRegDWORD		m_regRefCompareHideUnchanged;
 	BOOL			m_bRefCompareHideUnchanged;
+	CRegDWORD		m_regSortTagsReversed;
+	BOOL			m_bSortTagsReversed;
 	CRegDWORD		m_regAutocompletion;
 	BOOL			m_bAutocompletion;
 	CRegDWORD		m_regAutocompletionTimeout;

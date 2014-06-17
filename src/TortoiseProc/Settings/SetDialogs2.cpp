@@ -32,6 +32,7 @@ CSetDialogs2::CSetDialogs2()
 	, m_bConfirmKillProcess(FALSE)
 	, m_bSyncDialogRandomPos(FALSE)
 	, m_bRefCompareHideUnchanged(FALSE)
+	, m_bSortTagsReversed(FALSE)
 	, m_bAutocompletion(FALSE)
 	, m_dwAutocompletionTimeout(0)
 	, m_dwMaxHistory(25)
@@ -46,6 +47,8 @@ CSetDialogs2::CSetDialogs2()
 	m_bSyncDialogRandomPos = (BOOL)m_regSyncDialogRandomPos;
 	m_regRefCompareHideUnchanged = CRegDWORD(_T("Software\\TortoiseGit\\RefCompareHideUnchanged"), FALSE);
 	m_bRefCompareHideUnchanged = (BOOL)m_regRefCompareHideUnchanged;
+	m_regSortTagsReversed = CRegDWORD(_T("Software\\TortoiseGit\\SortTagsReversed"), FALSE);
+	m_bSortTagsReversed = (BOOL)(DWORD)m_regSortTagsReversed;
 	m_regAutocompletion = CRegDWORD(_T("Software\\TortoiseGit\\Autocompletion"), TRUE);
 	m_bAutocompletion = (DWORD)m_regAutocompletion;
 	m_regAutocompletionTimeout = CRegDWORD(_T("Software\\TortoiseGit\\AutocompleteParseTimeout"), 5);
@@ -72,6 +75,7 @@ void CSetDialogs2::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_CONFIRMKILLPROCESS, m_bConfirmKillProcess);
 	DDX_Check(pDX, IDC_SYNCDIALOGRANDOMPOS, m_bSyncDialogRandomPos);
 	DDX_Check(pDX, IDC_REFCOMPAREHIDEUNCHANGED, m_bRefCompareHideUnchanged);
+	DDX_Check(pDX, IDC_SORTTAGSREVERSED, m_bSortTagsReversed);
 	DDX_Check(pDX, IDC_AUTOCOMPLETION, m_bAutocompletion);
 	DDX_Text(pDX, IDC_AUTOCOMPLETIONTIMEOUT, m_dwAutocompletionTimeout);
 	DDV_MinMaxUInt(pDX, m_dwAutocompletionTimeout, 1, 100);
@@ -88,6 +92,7 @@ BEGIN_MESSAGE_MAP(CSetDialogs2, ISettingsPropPage)
 	ON_BN_CLICKED(IDC_CONFIRMKILLPROCESS, OnChange)
 	ON_BN_CLICKED(IDC_SYNCDIALOGRANDOMPOS, OnChange)
 	ON_BN_CLICKED(IDC_REFCOMPAREHIDEUNCHANGED, OnChange)
+	ON_BN_CLICKED(IDC_SORTTAGSREVERSED, OnChange)
 	ON_BN_CLICKED(IDC_AUTOCOMPLETION, OnChange)
 	ON_EN_CHANGE(IDC_AUTOCOMPLETIONTIMEOUT, OnChange)
 	ON_EN_CHANGE(IDC_MAXHISTORY, OnChange)
@@ -125,6 +130,7 @@ BOOL CSetDialogs2::OnInitDialog()
 	m_tooltips.AddTool(IDC_CONFIRMKILLPROCESS, IDS_SETTINGS_CONFIRMKILLPROCESS_TT);
 	m_tooltips.AddTool(IDC_SYNCDIALOGRANDOMPOS, IDS_SYNCDIALOGRANDOMPOS_TT);
 	m_tooltips.AddTool(IDC_REFCOMPAREHIDEUNCHANGED, IDS_REFCOMPAREHIDEUNCHANGED_TT);
+	m_tooltips.AddTool(IDC_SORTTAGSREVERSED, IDS_SORTTAGSREVERSED_TT);
 	m_tooltips.AddTool(IDC_AUTOCOMPLETION, IDS_SETTINGS_AUTOCOMPLETION_TT);
 	m_tooltips.AddTool(IDC_AUTOCOMPLETIONTIMEOUT, IDS_SETTINGS_AUTOCOMPLETIONTIMEOUT_TT);
 	m_tooltips.AddTool(IDC_AUTOCOMPLETIONTIMEOUTLABEL, IDS_SETTINGS_AUTOCOMPLETIONTIMEOUT_TT);
@@ -156,6 +162,7 @@ BOOL CSetDialogs2::OnApply()
 	Store (m_bConfirmKillProcess, m_regConfirmKillProcess);
 	Store (m_bSyncDialogRandomPos, m_regSyncDialogRandomPos);
 	Store (m_bRefCompareHideUnchanged, m_regRefCompareHideUnchanged);
+	Store(m_bSortTagsReversed, m_regSortTagsReversed);
 
 	Store (m_bAutocompletion, m_regAutocompletion);
 	Store (m_dwAutocompletionTimeout, m_regAutocompletionTimeout);

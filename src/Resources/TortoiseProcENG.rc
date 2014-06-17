@@ -726,6 +726,8 @@ BEGIN
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,73,193,10
     CONTROL         "Show git.exe execution timings and timestamp",IDC_PROGRESSDLG_SHOW_TIMES,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,87,193,10
+    CONTROL         "Sort tag list in reversed order",IDC_SORTTAGSREVERSED,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,101,135,10
     GROUPBOX        "Commit",IDC_COMMITGROUP,7,121,287,103
     CONTROL         "&Use auto-completion of file paths and keywords",IDC_AUTOCOMPLETION,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,133,271,10
@@ -4435,6 +4437,7 @@ BEGIN
     IDS_REFLIST             "Ref List"
     IDS_HIDEUNCHANGED       "Hide unchanged"
     IDS_REFCOMPAREHIDEUNCHANGED_TT "Hide unchanged refs in Ref Compare List"
+    IDS_SORTTAGSREVERSED_TT "When enabled, larger version numbers come first. It is because latest versions are usually more useful."
 END
 
 #endif    // English (U.S.) resources
