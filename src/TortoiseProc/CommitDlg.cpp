@@ -220,9 +220,6 @@ BOOL CCommitDlg::OnInitDialog()
 
 	m_hAccel = LoadAccelerators(AfxGetResourceHandle(),MAKEINTRESOURCE(IDR_ACC_COMMITDLG));
 
-//	GitConfig config;
-//	m_bWholeProject = config.KeepLocks();
-
 	if (m_pathList.IsEmpty())
 		m_bWholeProject2 = true;
 
@@ -1924,7 +1921,6 @@ void CCommitDlg::OnBnClickedBugtraqbutton()
 	bool bugIdOutSet = false;
 	if (SUCCEEDED(hr))
 	{
-		//CString common = m_ListCtrl.GetCommonURL(false).GetGitPathString();
 		BSTR repositoryRoot = g_Git.m_CurrentDir.AllocSysString();
 		BSTR bugIDOut = NULL;
 		GetDlgItemText(IDC_BUGID, m_sBugID);

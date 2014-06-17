@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2010, 2013-2014 - TortoiseGit
 // Copyright (C) 2003-2008,2010 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -27,8 +28,6 @@ IMPLEMENT_DYNAMIC(CSetHooksAdv, CResizableStandAloneDialog)
 
 CSetHooksAdv::CSetHooksAdv(CWnd* pParent /*=NULL*/)
 	: CResizableStandAloneDialog(CSetHooksAdv::IDD, pParent)
-	, m_sPath(_T(""))
-	, m_sCommandLine(_T(""))
 	, m_bWait(FALSE)
 	, m_bHide(FALSE)
 {
@@ -67,12 +66,6 @@ BOOL CSetHooksAdv::OnInitDialog()
 	m_cHookTypeCombo.SetItemData(index, pre_commit_hook);
 	index = m_cHookTypeCombo.AddString(CString(MAKEINTRESOURCE(IDS_HOOKTYPE_POSTCOMMIT)));
 	m_cHookTypeCombo.SetItemData(index, post_commit_hook);
-	index = m_cHookTypeCombo.AddString(CString(MAKEINTRESOURCE(IDS_HOOKTYPE_STARTUPDATE)));
-	m_cHookTypeCombo.SetItemData(index, start_update_hook);
-	index = m_cHookTypeCombo.AddString(CString(MAKEINTRESOURCE(IDS_HOOKTYPE_PREUPDATE)));
-	m_cHookTypeCombo.SetItemData(index, pre_update_hook);
-	index = m_cHookTypeCombo.AddString(CString(MAKEINTRESOURCE(IDS_HOOKTYPE_POSTUPDATE)));
-	m_cHookTypeCombo.SetItemData(index, post_update_hook);
 	*/
 	index = m_cHookTypeCombo.AddString(CString(MAKEINTRESOURCE(IDS_HOOKTYPE_PREPUSH)));
 	m_cHookTypeCombo.SetItemData(index, pre_push_hook);

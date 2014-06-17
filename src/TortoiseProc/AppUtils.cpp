@@ -2473,7 +2473,6 @@ bool CAppUtils::Push(CString selectLocalBranch)
 		{
 			CString temp;
 			temp.Format(IDS_ERR_HOOKFAILED, (LPCTSTR)error);
-			//ReportError(temp);
 			CMessageBox::Show(NULL,temp,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
 			return false;
 		}
@@ -2569,7 +2568,6 @@ bool CAppUtils::Push(CString selectLocalBranch)
 				{
 					CString temp;
 					temp.Format(IDS_ERR_HOOKFAILED, (LPCTSTR)error);
-					//ReportError(temp);
 					CMessageBox::Show(NULL,temp,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
 					return false;
 				}

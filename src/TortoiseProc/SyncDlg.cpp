@@ -528,7 +528,6 @@ void CSyncDlg::OnBnClickedButtonPush()
 		{
 			CString temp;
 			temp.Format(IDS_ERR_HOOKFAILED, (LPCTSTR)error);
-			//ReportError(temp);
 			CMessageBox::Show(NULL,temp,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
 			return ;
 		}
@@ -1399,7 +1398,6 @@ void CSyncDlg::RunPostAction()
 				{
 					CString temp;
 					temp.Format(IDS_ERR_HOOKFAILED, (LPCTSTR)error);
-					//ReportError(temp);
 					CMessageBox::Show(NULL,temp,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
 					return;
 				}
