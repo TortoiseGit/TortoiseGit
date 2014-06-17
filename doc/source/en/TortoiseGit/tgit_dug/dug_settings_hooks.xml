@@ -208,7 +208,7 @@
 				<listitem>
 					<para>
 						The current working directory with which the script is run.
-						This is set to the common root directory of all affected paths.
+						This is set to the working tree root.
 					</para>
 				</listitem>
 			</varlistentry>

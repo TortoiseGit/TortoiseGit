@@ -207,9 +207,9 @@ void CHooks::AddPathParam(CString& sCmd, const CTGitPathList& pathList)
 	AddParam(sCmd, temppath.GetWinPathString());
 }
 
-void CHooks::AddCWDParam(CString& sCmd, const CTGitPathList& pathList)
+void CHooks::AddCWDParam(CString& sCmd, const CString& workingTree)
 {
-	AddParam(sCmd, pathList.GetCommonRoot().GetDirectory().GetWinPathString());
+	AddParam(sCmd, workingTree);
 }
 
 void CHooks::AddErrorParam(CString& sCmd, const CString& error)
@@ -229,16 +229,16 @@ CTGitPath CHooks::AddMessageFileParam(CString& sCmd, const CString& message)
 	return tempPath;
 }
 
-bool CHooks::StartCommit(const CTGitPathList& pathList, CString& message, DWORD& exitcode, CString& error)
+bool CHooks::StartCommit(const CString& workingTree, const CTGitPathList& pathList, CString& message, DWORD& exitcode, CString& error)
 {
-	auto it = FindItem(start_commit_hook, pathList);
+	auto it = FindItem(start_commit_hook, workingTree);
 	if (it == end())
 		return false;
 	CString sCmd = it->second.commandline;
 	AddPathParam(sCmd, pathList);
 	CTGitPath temppath = AddMessageFileParam(sCmd, message);
-	AddCWDParam(sCmd, pathList);
-	exitcode = RunScript(sCmd, pathList.GetCommonRoot().GetDirectory().GetWinPath(), error, it->second.bWait, it->second.bShow);
+	AddCWDParam(sCmd, workingTree);
+	exitcode = RunScript(sCmd, workingTree, error, it->second.bWait, it->second.bShow);
 	if (!exitcode && !temppath.IsEmpty())
 	{
 		CStringUtils::ReadStringFromTextFile(temppath.GetWinPathString(), message);
@@ -246,22 +246,22 @@ bool CHooks::StartCommit(const CTGitPathList& pathList, CString& message, DWORD&
 	return true;
 }
 
-bool CHooks::PreCommit(const CTGitPathList& pathList, const CString& message, DWORD& exitcode, CString& error)
+bool CHooks::PreCommit(const CString& workingTree, const CTGitPathList& pathList, CString& message, DWORD& exitcode, CString& error)
 {
-	auto it = FindItem(pre_commit_hook, pathList);
+	auto it = FindItem(pre_commit_hook, workingTree);
 	if (it == end())
 		return false;
 	CString sCmd = it->second.commandline;
 	AddPathParam(sCmd, pathList);
 	AddMessageFileParam(sCmd, message);
-	AddCWDParam(sCmd, pathList);
-	exitcode = RunScript(sCmd, pathList.GetCommonRoot().GetDirectory().GetWinPath(), error, it->second.bWait, it->second.bShow);
+	AddCWDParam(sCmd, workingTree);
+	exitcode = RunScript(sCmd, workingTree, error, it->second.bWait, it->second.bShow);
 	return true;
 }
 
-bool CHooks::PostCommit(const CTGitPathList& pathList, const GitRev& rev, const CString& message, DWORD& exitcode, CString& error)
+bool CHooks::PostCommit(const CString& workingTree, const CTGitPathList& pathList, const GitRev& rev, const CString& message, DWORD& exitcode, CString& error)
 {
-	auto it = FindItem(post_commit_hook, pathList);
+	auto it = FindItem(post_commit_hook, workingTree);
 	if (it == end())
 		return false;
 	CString sCmd = it->second.commandline;
@@ -269,56 +269,52 @@ bool CHooks::PostCommit(const CTGitPathList& pathList, const GitRev& rev, const 
 	AddMessageFileParam(sCmd, message);
 	AddParam(sCmd, rev.m_CommitHash.ToString());
 	AddErrorParam(sCmd, error);
-	AddCWDParam(sCmd, pathList);
-	exitcode = RunScript(sCmd, pathList.GetCommonRoot().GetDirectory().GetWinPath(), error, it->second.bWait, it->second.bShow);
+	AddCWDParam(sCmd, workingTree);
+	exitcode = RunScript(sCmd, workingTree, error, it->second.bWait, it->second.bShow);
 	return true;
 }
 
-bool CHooks::PrePush(const CTGitPathList& pathList,DWORD& exitcode, CString& error)
+bool CHooks::PrePush(const CString& workingTree, DWORD& exitcode, CString& error)
 {
-	auto it = FindItem(pre_push_hook, pathList);
+	auto it = FindItem(pre_push_hook, workingTree);
 	if (it == end())
 		return false;
 	CString sCmd = it->second.commandline;
-	AddPathParam(sCmd, pathList);
+	AddPathParam(sCmd, CTGitPathList(workingTree));
 	AddErrorParam(sCmd, error);
-	AddCWDParam(sCmd, pathList);
-	exitcode = RunScript(sCmd, pathList.GetCommonRoot().GetDirectory().GetWinPath(), error, it->second.bWait, it->second.bShow);
+	AddCWDParam(sCmd, workingTree);
+	exitcode = RunScript(sCmd, workingTree, error, it->second.bWait, it->second.bShow);
 	return true;
 }
 
-bool CHooks::PostPush(const CTGitPathList& pathList,DWORD& exitcode, CString& error)
+bool CHooks::PostPush(const CString& workingTree, DWORD& exitcode, CString& error)
 {
-	auto it = FindItem(post_push_hook, pathList);
+	auto it = FindItem(post_push_hook, workingTree);
 	if (it == end())
 		return false;
 	CString sCmd = it->second.commandline;
-	AddPathParam(sCmd, pathList);
+	AddPathParam(sCmd, CTGitPathList(workingTree));
 	AddErrorParam(sCmd, error);
-	AddCWDParam(sCmd, pathList);
-	exitcode = RunScript(sCmd, pathList.GetCommonRoot().GetDirectory().GetWinPath(), error, it->second.bWait, it->second.bShow);
+	AddCWDParam(sCmd, workingTree);
+	exitcode = RunScript(sCmd, workingTree, error, it->second.bWait, it->second.bShow);
 	return true;
-
 }
 
-const_hookiterator CHooks::FindItem(hooktype t, const CTGitPathList& pathList) const
+const_hookiterator CHooks::FindItem(hooktype t, const CString& workingTree) const
 {
 	hookkey key;
-	for (int i=0; i<pathList.GetCount(); ++i)
+	CTGitPath path = workingTree;
+	do
 	{
-		CTGitPath path = pathList[i];
-		do
+		key.htype = t;
+		key.path = path;
+		auto it = find(key);
+		if (it != end())
 		{
-			key.htype = t;
-			key.path = path;
-			auto it = find(key);
-			if (it != end())
-			{
-				return it;
-			}
-			path = path.GetContainingDirectory();
-		} while(!path.IsEmpty());
-	}
+			return it;
+		}
+		path = path.GetContainingDirectory();
+	} while(!path.IsEmpty());
 	// look for a script with a path as '*'
 	key.htype = t;
 	key.path = CTGitPath(_T("*"));

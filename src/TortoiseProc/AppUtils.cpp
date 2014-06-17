@@ -2465,9 +2465,7 @@ bool CAppUtils::Push(CString selectLocalBranch)
 	dlg.m_BranchSourceName = selectLocalBranch;
 	CString error;
 	DWORD exitcode = 0xFFFFFFFF;
-	CTGitPathList list;
-	list.AddPath(CTGitPath(g_Git.m_CurrentDir));
-	if (CHooks::Instance().PrePush(list,exitcode, error))
+	if (CHooks::Instance().PrePush(g_Git.m_CurrentDir, exitcode, error))
 	{
 		if (exitcode)
 		{
@@ -2562,7 +2560,7 @@ bool CAppUtils::Push(CString selectLocalBranch)
 
 		if(!progress.m_GitStatus)
 		{
-			if (CHooks::Instance().PostPush(list,exitcode, error))
+			if (CHooks::Instance().PostPush(g_Git.m_CurrentDir, exitcode, error))
 			{
 				if (exitcode)
 				{

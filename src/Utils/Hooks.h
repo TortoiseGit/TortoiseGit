@@ -84,7 +84,7 @@ private:
 	CHooks();
 	~CHooks();
 	static void AddPathParam(CString& sCmd, const CTGitPathList& pathList);
-	static void AddCWDParam(CString& sCmd, const CTGitPathList& pathList);
+	static void AddCWDParam(CString& sCmd, const CString& workingTree);
 	static void AddErrorParam(CString& sCmd, const CString& error);
 	static void AddParam(CString& sCmd, const CString& param);
 	static CTGitPath AddMessageFileParam(CString& sCmd, const CString& message);
@@ -116,8 +116,9 @@ public:
 	static hooktype		GetHookType(const CString& s);
 
 	/**
-	 * Executes the Start-Commit-Hook that first matches one of the paths in
-	 * \c pathList.
+	 * Executes the Start-Commit-Hook that first matches the path in
+	 * \c workingTree.
+	 * \param workingTree working tree root directory
 	 * \param pathList a list of paths to look for the hook scripts
 	 * \param message a commit message
 	 * \param exitcode on return, contains the exit code of the hook script
@@ -130,11 +131,12 @@ public:
 	 * \c message. If the script finishes successfully, contents of this file
 	 * is read back into \c message parameter.
 	 */
-	bool				StartCommit(const CTGitPathList& pathList, CString& message,
+	bool				StartCommit(const CString& workingTree, const CTGitPathList& pathList, CString& message,
 									DWORD& exitcode, CString& error);
 	/**
-	 * Executes the Pre-Commit-Hook that first matches one of the paths in
-	 * \c pathList.
+	 * Executes the Pre-Commit-Hook that first matches the path in
+	 * \c workingTree.
+	 * \param workingTree working tree root directory
 	 * \param pathList a list of paths to look for the hook scripts
 	 * \param message the commit message
 	 * \param exitcode on return, contains the exit code of the hook script
@@ -144,12 +146,13 @@ public:
 	 * in \c pathList, separated by newlines. The hook script can parse this
 	 * file to get all the paths the update is about to be done on.
 	 */
-	bool				PreCommit(const CTGitPathList& pathList,
+	bool				PreCommit(const CString& workingTree, const CTGitPathList& pathList,
 									const CString& message, DWORD& exitcode,
 									CString& error);
 	/**
-	 * Executes the Post-Commit-Hook that first matches one of the paths in
-	 * \c pathList.
+	 * Executes the Post-Commit-Hook that first matches the path in
+	 * \c workingTree.
+	 * \param workingTree working tree root directory
 	 * \param pathList a list of paths to look for the hook scripts
 	 * \param message the commit message
 	 * \param rev the revision the commit was done to
@@ -160,12 +163,13 @@ public:
 	 * in \c pathList, separated by newlines. The hook script can parse this
 	 * file to get all the paths the commit is about to be done on.
 	 */
-	bool				PostCommit(const CTGitPathList& pathList,
+	bool				PostCommit(const CString& workingTree, const CTGitPathList& pathList,
 									const GitRev& rev, const CString& message,
 									DWORD& exitcode, CString& error);
 
-	bool	PrePush(const CTGitPathList& pathList,DWORD& exitcode, CString& error);
-	bool	PostPush(const CTGitPathList& pathList,DWORD& exitcode, CString& error);
+	bool	PrePush(const CString& workingTree, DWORD& exitcode, CString& error);
+	bool	PostPush(const CString& workingTree, DWORD& exitcode, CString& error);
+
 private:
 	/**
 	 * Starts a new process, specified in \c cmd.
@@ -177,9 +181,9 @@ private:
 	 */
 	static DWORD		RunScript(CString cmd, LPCTSTR currentDir, CString& error, bool bWait, bool bShow);
 	/**
-	 * Find the hook script information for the hook type \c t which matches a
-	 * path in \c pathList.
+	 * Find the hook script information for the hook type \c t which matches the
+	 * path in \c workingTree.
 	 */
-	const_hookiterator	FindItem(hooktype t, const CTGitPathList& pathList) const;
+	const_hookiterator	FindItem(hooktype t, const CString& workingTree) const;
 	static CHooks *		m_pInstance;
 };

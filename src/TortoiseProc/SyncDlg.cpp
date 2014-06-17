@@ -519,10 +519,7 @@ void CSyncDlg::OnBnClickedButtonPush()
 
 	CString error;
 	DWORD exitcode;
-	CTGitPathList list;
-	list.AddPath(CTGitPath(g_Git.m_CurrentDir));
-
-	if (CHooks::Instance().PrePush(list,exitcode, error))
+	if (CHooks::Instance().PrePush(g_Git.m_CurrentDir, exitcode, error))
 	{
 		if (exitcode)
 		{
@@ -1388,11 +1385,9 @@ void CSyncDlg::RunPostAction()
 	{
 		if (!m_GitCmdStatus)
 		{
-			CTGitPathList list;
-			list.AddPath(CTGitPath(g_Git.m_CurrentDir));
 			DWORD exitcode;
 			CString error;
-			if (CHooks::Instance().PostPush(list,exitcode, error))
+			if (CHooks::Instance().PostPush(g_Git.m_CurrentDir, exitcode, error))
 			{
 				if (exitcode)
 				{
