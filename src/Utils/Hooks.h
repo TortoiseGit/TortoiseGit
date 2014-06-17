@@ -37,6 +37,8 @@ typedef enum hooktype
 	issue_tracker_hook,
 	pre_push_hook,
 	post_push_hook,
+	pre_pull_hook,
+	post_pull_hook,
 } hooktype;
 
 /**
@@ -171,6 +173,9 @@ public:
 
 	bool	PrePush(const CString& workingTree, DWORD& exitcode, CString& error);
 	bool	PostPush(const CString& workingTree, DWORD& exitcode, CString& error);
+
+	bool	PrePull(const CString& workingTree, DWORD& exitcode, CString& error);
+	bool	PostPull(const CString& workingTree, DWORD& exitcode, CString& error);
 
 	bool	IsHookPresent(hooktype t, const CString& workingTree) const;
 

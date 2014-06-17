@@ -1226,9 +1226,11 @@
 #define IDC_REP_BROWSE                  1583
 #define IDC_SEND_ADDRESS                1583
 #define IDC_UUIDLABEL64                 1583
+#define IDS_HOOKTYPE_PREPULL            1583
 #define IDC_BUTTON_PATH_BROWSE          1584
 #define IDC_SMTP_SERVER                 1584
 #define IDC_UUID64                      1584
+#define IDS_HOOKTYPE_POSTPULL           1584
 #define IDC_GROUP_SUBMODULE             1585
 #define IDC_SMTP_AUTH                   1585
 #define IDC_PARAMS                      1585

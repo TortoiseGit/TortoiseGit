@@ -4711,6 +4711,12 @@ BEGIN
     IDS_MERGEBUTTON         "&Merge"
     IDS_REBASEBUTTON        "&Rebase"
     IDS_RESTORE_FROM_INDEX  "R&estore this file from index"
+    IDS_HOOKTYPE_PREPULL    "Pre-pull hook"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_HOOKTYPE_POSTPULL   "Post-pull hook"
 END
 
 #endif    // English (U.S.) resources

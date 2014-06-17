@@ -174,6 +174,10 @@ CString CHooks::GetHookTypeString(hooktype t)
 		return _T("pre_push_hook");
 	case post_push_hook:
 		return _T("post_push_hook");
+	case pre_pull_hook:
+		return _T("pre_pull_hook");
+	case post_pull_hook:
+		return _T("post_pull_hook");
 	}
 	return _T("");
 }
@@ -190,6 +194,10 @@ hooktype CHooks::GetHookType(const CString& s)
 		return pre_push_hook;
 	if (s.Compare(_T("post_push_hook"))==0)
 		return post_push_hook;
+	if (s.Compare(_T("pre_pull_hook")) == 0)
+		return pre_pull_hook;
+	if (s.Compare(_T("post_pull_hook")) == 0)
+		return post_pull_hook;
 
 	return unknown_hook;
 }
@@ -283,7 +291,6 @@ bool CHooks::PrePush(const CString& workingTree, DWORD& exitcode, CString& error
 	if (it == end())
 		return false;
 	CString sCmd = it->second.commandline;
-	AddPathParam(sCmd, CTGitPathList(workingTree));
 	AddErrorParam(sCmd, error);
 	AddCWDParam(sCmd, workingTree);
 	exitcode = RunScript(sCmd, workingTree, error, it->second.bWait, it->second.bShow);
@@ -296,7 +303,30 @@ bool CHooks::PostPush(const CString& workingTree, DWORD& exitcode, CString& erro
 	if (it == end())
 		return false;
 	CString sCmd = it->second.commandline;
-	AddPathParam(sCmd, CTGitPathList(workingTree));
+	AddErrorParam(sCmd, error);
+	AddCWDParam(sCmd, workingTree);
+	exitcode = RunScript(sCmd, workingTree, error, it->second.bWait, it->second.bShow);
+	return true;
+}
+
+bool CHooks::PrePull(const CString& workingTree, DWORD& exitcode, CString& error)
+{
+	auto it = FindItem(pre_pull_hook, workingTree);
+	if (it == end())
+		return false;
+	CString sCmd = it->second.commandline;
+	AddErrorParam(sCmd, error);
+	AddCWDParam(sCmd, workingTree);
+	exitcode = RunScript(sCmd, workingTree, error, it->second.bWait, it->second.bShow);
+	return true;
+}
+
+bool CHooks::PostPull(const CString& workingTree, DWORD& exitcode, CString& error)
+{
+	auto it = FindItem(post_pull_hook, workingTree);
+	if (it == end())
+		return false;
+	CString sCmd = it->second.commandline;
 	AddErrorParam(sCmd, error);
 	AddCWDParam(sCmd, workingTree);
 	exitcode = RunScript(sCmd, workingTree, error, it->second.bWait, it->second.bShow);

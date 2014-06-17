@@ -74,6 +74,10 @@ BOOL CSetHooksAdv::OnInitDialog()
 	m_cHookTypeCombo.SetItemData(index, pre_push_hook);
 	index = m_cHookTypeCombo.AddString(CString(MAKEINTRESOURCE(IDS_HOOKTYPE_POSTPUSH)));
 	m_cHookTypeCombo.SetItemData(index, post_push_hook);
+	index = m_cHookTypeCombo.AddString(CString(MAKEINTRESOURCE(IDS_HOOKTYPE_PREPULL)));
+	m_cHookTypeCombo.SetItemData(index, pre_pull_hook);
+	index = m_cHookTypeCombo.AddString(CString(MAKEINTRESOURCE(IDS_HOOKTYPE_POSTPULL)));
+	m_cHookTypeCombo.SetItemData(index, post_pull_hook);
 
 	// preselect the right hook type in the combobox
 	for (int i=0; i<m_cHookTypeCombo.GetCount(); ++i)
