@@ -72,6 +72,7 @@ typedef struct hookcmd
 } hookcmd;
 
 typedef std::map<hookkey, hookcmd>::iterator hookiterator;
+typedef std::map<hookkey, hookcmd>::const_iterator const_hookiterator;
 
 /**
  * \ingroup TortoiseProc
@@ -82,11 +83,11 @@ class CHooks : public std::map<hookkey, hookcmd>
 private:
 	CHooks();
 	~CHooks();
-	void AddPathParam(CString& sCmd, const CTGitPathList& pathList);
-	void AddCWDParam(CString& sCmd, const CTGitPathList& pathList);
-	void AddErrorParam(CString& sCmd, const CString& error);
-	void AddParam(CString& sCmd, const CString& param);
-	CTGitPath AddMessageFileParam(CString& sCmd, const CString& message);
+	static void AddPathParam(CString& sCmd, const CTGitPathList& pathList);
+	static void AddCWDParam(CString& sCmd, const CTGitPathList& pathList);
+	static void AddErrorParam(CString& sCmd, const CString& error);
+	static void AddParam(CString& sCmd, const CString& param);
+	static CTGitPath AddMessageFileParam(CString& sCmd, const CString& message);
 public:
 	/// Create the singleton. Call this at the start of the program.
 	static bool			Create();
@@ -174,11 +175,11 @@ private:
 	 * \param bShow set to true if the process should be started visible.
 	 * \return the exit code of the process if \c bWait is true, zero otherwise.
 	 */
-	DWORD				RunScript(CString cmd, LPCTSTR currentDir, CString& error, bool bWait, bool bShow);
+	static DWORD		RunScript(CString cmd, LPCTSTR currentDir, CString& error, bool bWait, bool bShow);
 	/**
 	 * Find the hook script information for the hook type \c t which matches a
 	 * path in \c pathList.
 	 */
-	hookiterator		FindItem(hooktype t, const CTGitPathList& pathList);
+	const_hookiterator	FindItem(hooktype t, const CTGitPathList& pathList) const;
 	static CHooks *		m_pInstance;
 };

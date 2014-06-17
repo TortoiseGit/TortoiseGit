@@ -231,7 +231,7 @@ CTGitPath CHooks::AddMessageFileParam(CString& sCmd, const CString& message)
 
 bool CHooks::StartCommit(const CTGitPathList& pathList, CString& message, DWORD& exitcode, CString& error)
 {
-	hookiterator it = FindItem(start_commit_hook, pathList);
+	auto it = FindItem(start_commit_hook, pathList);
 	if (it == end())
 		return false;
 	CString sCmd = it->second.commandline;
@@ -248,7 +248,7 @@ bool CHooks::StartCommit(const CTGitPathList& pathList, CString& message, DWORD&
 
 bool CHooks::PreCommit(const CTGitPathList& pathList, const CString& message, DWORD& exitcode, CString& error)
 {
-	hookiterator it = FindItem(pre_commit_hook, pathList);
+	auto it = FindItem(pre_commit_hook, pathList);
 	if (it == end())
 		return false;
 	CString sCmd = it->second.commandline;
@@ -261,7 +261,7 @@ bool CHooks::PreCommit(const CTGitPathList& pathList, const CString& message, DW
 
 bool CHooks::PostCommit(const CTGitPathList& pathList, const GitRev& rev, const CString& message, DWORD& exitcode, CString& error)
 {
-	hookiterator it = FindItem(post_commit_hook, pathList);
+	auto it = FindItem(post_commit_hook, pathList);
 	if (it == end())
 		return false;
 	CString sCmd = it->second.commandline;
@@ -276,7 +276,7 @@ bool CHooks::PostCommit(const CTGitPathList& pathList, const GitRev& rev, const 
 
 bool CHooks::PrePush(const CTGitPathList& pathList,DWORD& exitcode, CString& error)
 {
-	hookiterator it = FindItem(pre_push_hook, pathList);
+	auto it = FindItem(pre_push_hook, pathList);
 	if (it == end())
 		return false;
 	CString sCmd = it->second.commandline;
@@ -289,7 +289,7 @@ bool CHooks::PrePush(const CTGitPathList& pathList,DWORD& exitcode, CString& err
 
 bool CHooks::PostPush(const CTGitPathList& pathList,DWORD& exitcode, CString& error)
 {
-	hookiterator it = FindItem(post_push_hook, pathList);
+	auto it = FindItem(post_push_hook, pathList);
 	if (it == end())
 		return false;
 	CString sCmd = it->second.commandline;
@@ -300,7 +300,8 @@ bool CHooks::PostPush(const CTGitPathList& pathList,DWORD& exitcode, CString& er
 	return true;
 
 }
-hookiterator CHooks::FindItem(hooktype t, const CTGitPathList& pathList)
+
+const_hookiterator CHooks::FindItem(hooktype t, const CTGitPathList& pathList) const
 {
 	hookkey key;
 	for (int i=0; i<pathList.GetCount(); ++i)
@@ -310,7 +311,7 @@ hookiterator CHooks::FindItem(hooktype t, const CTGitPathList& pathList)
 		{
 			key.htype = t;
 			key.path = path;
-			hookiterator it = find(key);
+			auto it = find(key);
 			if (it != end())
 			{
 				return it;
@@ -321,7 +322,7 @@ hookiterator CHooks::FindItem(hooktype t, const CTGitPathList& pathList)
 	// look for a script with a path as '*'
 	key.htype = t;
 	key.path = CTGitPath(_T("*"));
-	hookiterator it = find(key);
+	auto it = find(key);
 	if (it != end())
 	{
 		return it;
