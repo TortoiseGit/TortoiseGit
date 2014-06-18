@@ -246,7 +246,7 @@ bool CHooks::StartCommit(const CString& workingTree, const CTGitPathList& pathLi
 	return true;
 }
 
-bool CHooks::PreCommit(const CString& workingTree, const CTGitPathList& pathList, CString& message, DWORD& exitcode, CString& error)
+bool CHooks::PreCommit(const CString& workingTree, const CTGitPathList& pathList, const CString& message, DWORD& exitcode, CString& error)
 {
 	auto it = FindItem(pre_commit_hook, workingTree);
 	if (it == end())
