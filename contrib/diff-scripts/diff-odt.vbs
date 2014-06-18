@@ -2,7 +2,7 @@
 '
 ' TortoiseSVN Diff script for Open Office Text files
 '
-' Copyright (C) 2004-2009 the TortoiseSVN team
+' Copyright (C) 2004-2009, 2012-2014 the TortoiseSVN team
 ' This file is distributed under the same license as TortoiseSVN
 '
 ' Last commit by:
@@ -14,7 +14,7 @@
 ' Jonathan Ashley, 2007
 ' Stefan Küng, 2006, 2009
 '
-dim objArgs,num,sBaseDoc,sNewDoc,objScript,word,destination
+dim objArgs, num, sBaseDoc, sNewDoc, objScript
 
 Set objArgs = WScript.Arguments
 num = objArgs.Count
@@ -23,16 +23,16 @@ if num < 2 then
     WScript.Quit 1
 end if
 
-sBaseDoc=objArgs(0)
-sNewDoc=objArgs(1)
+sBaseDoc = objArgs(0)
+sNewDoc = objArgs(1)
 
 Set objScript = CreateObject("Scripting.FileSystemObject")
 If objScript.FileExists(sBaseDoc) = False Then
-    MsgBox "File " + sBaseDoc +" does not exist.  Cannot compare the documents.", vbExclamation, "File not found"
+    MsgBox "File " + sBaseDoc + " does not exist.  Cannot compare the documents.", vbExclamation, "File not found"
     Wscript.Quit 1
 End If
 If objScript.FileExists(sNewDoc) = False Then
-    MsgBox "File " + sNewDoc +" does not exist.  Cannot compare the documents.", vbExclamation, "File not found"
+    MsgBox "File " + sNewDoc + " does not exist.  Cannot compare the documents.", vbExclamation, "File not found"
     Wscript.Quit 1
 End If
 'remove the file write protection
@@ -44,7 +44,7 @@ Set objScript = Nothing
 On Error Resume Next
 'The service manager is always the starting point
 'If there is no office running then an office is started
-Set objServiceManager= Wscript.CreateObject("com.sun.star.ServiceManager")
+Set objServiceManager = Wscript.CreateObject("com.sun.star.ServiceManager")
 If Err.Number <> 0 Then
     Wscript.Echo "You must have OpenOffice installed to perform this operation."
     Wscript.Quit 1
@@ -57,7 +57,7 @@ On Error Goto 0
 'Make sure we un-set that flag.
 Set objFSO = CreateObject("Scripting.FileSystemObject")
 Set objFile = objFSO.GetFile(sNewDoc)
-If (objFile.Attributes AND 1)=1 Then
+If (objFile.Attributes AND 1) = 1 Then
     objFile.Attributes = objFile.Attributes XOR 1
 End If
 
@@ -65,32 +65,32 @@ End If
 Set objDesktop = objServiceManager.createInstance("com.sun.star.frame.Desktop")
 Set objUriTranslator = objServiceManager.createInstance("com.sun.star.uri.ExternalUriReferenceTranslator")
 'Adjust the paths for OO
-sBaseDoc=Replace(sBaseDoc, "\", "/")
-sBaseDoc=Replace(sBaseDoc, ":", "|")
-sBaseDoc=Replace(sBaseDoc, "%", "%25")
-sBaseDoc=Replace(sBaseDoc, " ", "%20")
-sBaseDoc=Replace(sBaseDoc, "#", "%23")
-sBaseDoc="file:///"&sBaseDoc
-sBaseDoc=objUriTranslator.translateToInternal(sBaseDoc)
-sNewDoc=Replace(sNewDoc, "\", "/")
-sNewDoc=Replace(sNewDoc, ":", "|")
-sNewDoc=Replace(sNewDoc, "%", "%25")
-sNewDoc=Replace(sNewDoc, " ", "%20")
-sNewDoc=Replace(sNewDoc, "#", "%23")
-sNewDoc="file:///"&sNewDoc
-sNewDoc=objUriTranslator.translateToInternal(sNewDoc)
+sBaseDoc = Replace(sBaseDoc, "\", "/")
+sBaseDoc = Replace(sBaseDoc, ":", "|")
+sBaseDoc = Replace(sBaseDoc, "%", "%25")
+sBaseDoc = Replace(sBaseDoc, " ", "%20")
+sBaseDoc = Replace(sBaseDoc, "#", "%23")
+sBaseDoc = "file:///"&sBaseDoc
+sBaseDoc = objUriTranslator.translateToInternal(sBaseDoc)
+sNewDoc = Replace(sNewDoc, "\", "/")
+sNewDoc = Replace(sNewDoc, ":", "|")
+sNewDoc = Replace(sNewDoc, "%", "%25")
+sNewDoc = Replace(sNewDoc, " ", "%20")
+sNewDoc = Replace(sNewDoc, "#", "%23")
+sNewDoc = "file:///"&sNewDoc
+sNewDoc = objUriTranslator.translateToInternal(sNewDoc)
 
 'Open the %base document
 Dim oPropertyValue(0)
 Set oPropertyValue(0) = objServiceManager.Bridge_GetStruct("com.sun.star.beans.PropertyValue")
 oPropertyValue(0).Name = "ShowTrackedChanges"
 oPropertyValue(0).Value = true
-Set objDocument=objDesktop.loadComponentFromURL(sNewDoc,"_blank", 0, oPropertyValue)
+Set objDocument = objDesktop.loadComponentFromURL(sNewDoc, "_blank", 0, oPropertyValue)
 
 'Set the frame
 Set Frame = objDesktop.getCurrentFrame
 
-Set dispatcher=objServiceManager.CreateInstance("com.sun.star.frame.DispatchHelper")
+Set dispatcher = objServiceManager.CreateInstance("com.sun.star.frame.DispatchHelper")
 
 'Execute the comparison
 dispatcher.executeDispatch Frame, ".uno:ShowTrackedChanges", "", 0, oPropertyValue

@@ -2,7 +2,7 @@
 '
 ' TortoiseSVN Diff script for binary files
 '
-' Copyright (C) 2010 the TortoiseSVN team
+' Copyright (C) 2010-2014 the TortoiseSVN team
 ' This file is distributed under the same license as TortoiseSVN
 '
 ' Last commit by:
@@ -21,27 +21,27 @@ bDiffers = False
 Set objArgs = WScript.Arguments
 num = objArgs.Count
 if num < 2 then
-    MsgBox "Usage: [CScript | WScript] compare.vbs base.doc new.doc", vbCritical, "Invalid arguments"
+    MsgBox "Usage: [CScript | WScript] diff-dll.vbs base.[dll|exe] new.[dll|exe]", vbCritical, "Invalid arguments"
     WScript.Quit 1
 end if
 
-sBaseDoc = objArgs(0)
-sNewDoc = objArgs(1)
+sBaseFile = objArgs(0)
+sNewFile = objArgs(1)
 
 Set objFileSystem = CreateObject("Scripting.FileSystemObject")
-If objFileSystem.FileExists(sBaseDoc) = False Then
-    MsgBox "File " + sBaseDoc +" does not exist.  Cannot compare the files.", vbCritical, "File not found"
+If objFileSystem.FileExists(sBaseFile) = False Then
+    MsgBox "File " + sBaseFile + " does not exist.  Cannot compare the files.", vbCritical, "File not found"
     Wscript.Quit 1
 End If
-If objFileSystem.FileExists(sNewDoc) = False Then
-    MsgBox "File " + sNewDoc +" does not exist.  Cannot compare the files.", vbCritical, "File not found"
+If objFileSystem.FileExists(sNewFile) = False Then
+    MsgBox "File " + sNewFile + " does not exist.  Cannot compare the files.", vbCritical, "File not found"
     Wscript.Quit 1
 End If
 
 ' Compare file size
 dim fBaseFile, fNewFile
-Set fBaseFile = objFileSystem.GetFile(sBaseDoc)
-Set fNewFile = objFileSystem.GetFile(sNewDoc)
+Set fBaseFile = objFileSystem.GetFile(sBaseFile)
+Set fNewFile = objFileSystem.GetFile(sNewFile)
 
 If fBaseFile.size <> fNewFile.size Then
     bDiffers = True
@@ -54,7 +54,7 @@ End If
 ' Compare files using fc.exe
 If bDiffers = False Then
     Set WshShell = WScript.CreateObject("WScript.Shell")
-    exitStatus = WshShell.Run("fc.exe """+sBaseDoc+""" """+sNewDoc+"""", 0, True)
+    exitStatus = WshShell.Run("fc.exe """ + sBaseFile + """ """ + sNewFile + """", 0, True)
     If exitStatus = 1 Then
         bDiffers = True
         sMessage = sMessage + "File content differs!" + vbCrLf
@@ -64,12 +64,12 @@ If bDiffers = False Then
 End If
 
 ' Only compare versions if we are comparing exe:s or dll:s
-If LCase(Right(sBaseDoc, 3)) = "exe" or LCase(Right(sNewDoc, 3)) = "exe" or _
-    LCase(Right(sBaseDoc, 3)) = "dll" or LCase(Right(sNewDoc, 3)) = "dll" Then
+If LCase(Right(sBaseFile, 3)) = "exe" or LCase(Right(sNewFile, 3)) = "exe" or _
+    LCase(Right(sBaseFile, 3)) = "dll" or LCase(Right(sNewFile, 3)) = "dll" Then
 
     ' Compare version
-    sBaseVer = objFileSystem.GetFileVersion(sBaseDoc)
-    sNewVer = objFileSystem.GetFileVersion(sNewDoc)
+    sBaseVer = objFileSystem.GetFileVersion(sBaseFile)
+    sNewVer = objFileSystem.GetFileVersion(sNewFile)
 
     If Len(sBaseVer) = 0 and Len(sNewVer) = 0 Then
           sMessage = sMessage + "No version information available."
@@ -83,10 +83,10 @@ End If
 
 ' Generate result message
 sBaseMessage = "Base" + vbCrLf _
-    + "  File: " + sBaseDoc + vbCrLf _
+    + "  File: " + sBaseFile + vbCrLf _
     + sBaseMessage
 sNewMessage = + "New" + vbCrLf _
-    + "  File: " + sNewDoc + vbCrLf _
+    + "  File: " + sNewFile + vbCrLf _
     + sNewMessage
 
 If bDiffers = True Then
