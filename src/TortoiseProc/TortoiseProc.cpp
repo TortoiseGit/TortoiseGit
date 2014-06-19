@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008-2014 - TortoiseGit
-// Copyright (C) 2003-2008 - TortoiseSVN
+// Copyright (C) 2003-2008, 2012-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -244,7 +244,7 @@ BOOL CTortoiseProcApp::InitInstance()
 	InitCommonControlsEx(&used);
 	AfxOleInit();
 	AfxEnableControlContainer();
-	AfxInitRichEdit2();
+	AfxInitRichEdit5();
 	CWinAppEx::InitInstance();
 	SetRegistryKey(_T("TortoiseGit"));
 	AfxGetApp()->m_pszProfileName = _tcsdup(_T("TortoiseProc")); // w/o this ResizableLib will store data under TortoiseGitProc which is not compatible with older versions
