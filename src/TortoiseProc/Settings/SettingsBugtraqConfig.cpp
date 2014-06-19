@@ -131,6 +131,7 @@ void CSettingsBugtraqConfig::EnDisableControls()
 	GetDlgItem(IDC_CHECK_INHERIT_BTUUID32)->EnableWindow(m_iConfigSource != 0);
 	GetDlgItem(IDC_CHECK_INHERIT_BTUUID64)->EnableWindow(m_iConfigSource != 0);
 	GetDlgItem(IDC_CHECK_INHERIT_BTPARAMS)->EnableWindow(m_iConfigSource != 0);
+	GetDlgItem(IDC_TESTBUGTRAQREGEXBUTTON)->EnableWindow(m_iConfigSource != 0 && !m_bInheritLogregex);
 
 	GetDlgItem(IDC_BUGTRAQ_URL)->EnableWindow(!m_bInheritURL);
 	GetDlgItem(IDC_BUGTRAQ_MESSAGE)->EnableWindow(!m_bInheritMessage);
