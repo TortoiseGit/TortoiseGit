@@ -355,16 +355,14 @@ CString CSciEdit::GetWordUnderCursor(bool bSelectWord)
 		return CString();
 	textrange.chrg.cpMax = (LONG)Call(SCI_WORDENDPOSITION, textrange.chrg.cpMin, TRUE);
 
-	char * textbuffer = new char[textrange.chrg.cpMax - textrange.chrg.cpMin + 1];
-
-	textrange.lpstrText = textbuffer;
+	std::unique_ptr<char[]> textbuffer(new char[textrange.chrg.cpMax - textrange.chrg.cpMin + 1]);
+	textrange.lpstrText = textbuffer.get();
 	Call(SCI_GETTEXTRANGE, 0, (LPARAM)&textrange);
 	if (bSelectWord)
 	{
 		Call(SCI_SETSEL, textrange.chrg.cpMin, textrange.chrg.cpMax);
 	}
-	CString sRet = StringFromControl(textbuffer);
-	delete [] textbuffer;
+	CString sRet = StringFromControl(textbuffer.get());
 	return sRet;
 }
 
@@ -492,9 +490,9 @@ void CSciEdit::CheckSpelling()
 			continue;
 		}
 		ATLASSERT(textrange.chrg.cpMax >= textrange.chrg.cpMin);
-		char * textbuffer = new char[textrange.chrg.cpMax - textrange.chrg.cpMin + 2];
-		SecureZeroMemory(textbuffer, textrange.chrg.cpMax - textrange.chrg.cpMin + 2);
-		textrange.lpstrText = textbuffer;
+		std::unique_ptr<char[]> textbuffer(new char[textrange.chrg.cpMax - textrange.chrg.cpMin + 2]);
+		SecureZeroMemory(textbuffer.get(), textrange.chrg.cpMax - textrange.chrg.cpMin + 2);
+		textrange.lpstrText = textbuffer.get();
 		textrange.chrg.cpMax++;
 		Call(SCI_GETTEXTRANGE, 0, (LPARAM)&textrange);
 		int len = (int)strlen(textrange.lpstrText);
@@ -514,18 +512,17 @@ void CSciEdit::CheckSpelling()
 			TEXTRANGEA twoWords;
 			twoWords.chrg.cpMin = (LONG)textrange.chrg.cpMin;
 			twoWords.chrg.cpMax = (LONG)Call(SCI_WORDENDPOSITION, textrange.chrg.cpMax + 1, TRUE);
-			twoWords.lpstrText = new char[twoWords.chrg.cpMax - twoWords.chrg.cpMin + 1];
+			std::unique_ptr<char[]> twoWordsBuffer(new char[twoWords.chrg.cpMax - twoWords.chrg.cpMin + 1]);
+			twoWords.lpstrText = twoWordsBuffer.get();
 			SecureZeroMemory(twoWords.lpstrText, twoWords.chrg.cpMax - twoWords.chrg.cpMin + 1);
 			Call(SCI_GETTEXTRANGE, 0, (LPARAM)&twoWords);
 			CString sWord = StringFromControl(twoWords.lpstrText);
-			delete [] twoWords.lpstrText;
 			if (m_autolist.find(sWord) != m_autolist.end())
 			{
 				//mark word as correct (remove the squiggle line)
 				Call(SCI_STARTSTYLING, twoWords.chrg.cpMin, INDICS_MASK);
 				Call(SCI_SETSTYLING, twoWords.chrg.cpMax - twoWords.chrg.cpMin, 0);
 				textrange.chrg.cpMax = twoWords.chrg.cpMax;
-				delete [] textbuffer;
 				continue;
 			}
 		}
@@ -548,7 +545,6 @@ void CSciEdit::CheckSpelling()
 				Call(SCI_SETSTYLING, textrange.chrg.cpMax - textrange.chrg.cpMin, 0);
 			}
 		}
-		delete [] textbuffer;
 	}
 }
 
@@ -702,18 +698,17 @@ BOOL CSciEdit::OnChildNotify(UINT message, WPARAM wParam, LPARAM lParam, LRESULT
 				while (GetStyleAt(textrange.chrg.cpMax + 1) == style)
 					++textrange.chrg.cpMax;
 				++textrange.chrg.cpMax;
-				char * textbuffer = new char[textrange.chrg.cpMax - textrange.chrg.cpMin + 1];
-				textrange.lpstrText = textbuffer;
+				std::unique_ptr<char[]> textbuffer(new char[textrange.chrg.cpMax - textrange.chrg.cpMin + 1]);
+				textrange.lpstrText = textbuffer.get();
 				Call(SCI_GETTEXTRANGE, 0, (LPARAM)&textrange);
 				CString url;
 				if (style == STYLE_URL)
-					url = StringFromControl(textbuffer);
+					url = StringFromControl(textbuffer.get());
 				else
 				{
 					url = m_sUrl;
-					url.Replace(_T("%BUGID%"), StringFromControl(textbuffer));
+					url.Replace(L"%BUGID%", StringFromControl(textbuffer.get()));
 				}
-				delete [] textbuffer;
 				if (!url.IsEmpty())
 					ShellExecute(GetParent()->GetSafeHwnd(), _T("open"), url, NULL, NULL, SW_SHOWDEFAULT);
 			}
@@ -1052,12 +1047,12 @@ bool CSciEdit::StyleEnteredText(int startstylepos, int endstylepos)
 	{
 		int offset = (int)Call(SCI_POSITIONFROMLINE, line_number);
 		int line_len = (int)Call(SCI_LINELENGTH, line_number);
-		char * linebuffer = new char[line_len+1];
-		Call(SCI_GETLINE, line_number, (LPARAM)linebuffer);
+		std::unique_ptr<char[]> linebuffer(new char[line_len+1]);
+		Call(SCI_GETLINE, line_number, (LPARAM)linebuffer.get());
 		linebuffer[line_len] = 0;
 		int start = 0;
 		int end = 0;
-		while (FindStyleChars(linebuffer, '*', start, end))
+		while (FindStyleChars(linebuffer.get(), '*', start, end))
 		{
 			Call(SCI_STARTSTYLING, start+offset, STYLE_MASK);
 			Call(SCI_SETSTYLING, end-start, STYLE_BOLD);
@@ -1066,7 +1061,7 @@ bool CSciEdit::StyleEnteredText(int startstylepos, int endstylepos)
 		}
 		start = 0;
 		end = 0;
-		while (FindStyleChars(linebuffer, '^', start, end))
+		while (FindStyleChars(linebuffer.get(), '^', start, end))
 		{
 			Call(SCI_STARTSTYLING, start+offset, STYLE_MASK);
 			Call(SCI_SETSTYLING, end-start, STYLE_ITALIC);
@@ -1075,14 +1070,13 @@ bool CSciEdit::StyleEnteredText(int startstylepos, int endstylepos)
 		}
 		start = 0;
 		end = 0;
-		while (FindStyleChars(linebuffer, '_', start, end))
+		while (FindStyleChars(linebuffer.get(), '_', start, end))
 		{
 			Call(SCI_STARTSTYLING, start+offset, STYLE_MASK);
 			Call(SCI_SETSTYLING, end-start, STYLE_UNDERLINED);
 			bStyled = true;
 			start = end;
 		}
-		delete [] linebuffer;
 	}
 	return bStyled;
 }
@@ -1293,17 +1287,16 @@ void CSciEdit::StyleURLs(int startstylepos, int endstylepos)
 	startstylepos = (int)Call(SCI_POSITIONFROMLINE, (WPARAM)line_number);
 
 	int len = endstylepos - startstylepos + 1;
-	char* textbuffer = new char[len + 1];
+	std::unique_ptr<char[]> textbuffer(new char[len + 1]);
 	TEXTRANGEA textrange;
-	textrange.lpstrText = textbuffer;
+	textrange.lpstrText = textbuffer.get();
 	textrange.chrg.cpMin = startstylepos;
 	textrange.chrg.cpMax = endstylepos;
 	Call(SCI_GETTEXTRANGE, 0, (LPARAM)&textrange);
 	// we're dealing with utf8 encoded text here, which means one glyph is
 	// not necessarily one byte/wchar_t
 	// that's why we use CStringA to still get a correct char index
-    CStringA msg = textbuffer;
-	delete [] textbuffer;
+	CStringA msg = textbuffer.get();
 
 	int starturl = -1;
 	for(int i = 0; i <= msg.GetLength(); )
