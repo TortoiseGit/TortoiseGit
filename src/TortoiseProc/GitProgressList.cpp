@@ -2070,7 +2070,7 @@ bool CGitProgressList::CmdClone(CString& sWindowTitle, bool& /*localoperation*/)
 	if (git_remote_create(origin.GetPointer(), cloned_repo, m_remote.IsEmpty() ? "origin" : CUnicodeUtils::GetUTF8(m_remote), CUnicodeUtils::GetUTF8(m_url.GetGitPathString())) < 0)
 		goto error;
 	git_remote_set_callbacks(origin, &callbacks);
-	if (git_clone_into(cloned_repo, origin, &checkout_opts, m_RefSpec.IsEmpty() ? nullptr : CUnicodeUtils::GetUTF8(m_RefSpec), nullptr) < 0)
+	if (git_clone_into(cloned_repo, origin, &checkout_opts, m_RefSpec.IsEmpty() ? nullptr : (const char *)CUnicodeUtils::GetUTF8(m_RefSpec), nullptr) < 0)
 		goto error;
 
 	return true;
