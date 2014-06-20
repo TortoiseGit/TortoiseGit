@@ -31,6 +31,7 @@ Released: unreleased
    The reason for this change is that libgit2 reads a file to memory for hashing and,
    thus, locking the file and the repository for this time span.
    Fixed issue #2240: TGitCache keeps crashing when I look at my folders or commit
+ * Fixed issue #2219: "add cherry picked from" is not applied when squashing/editing the commits
 
 = Release 1.8.9.0 =
 Released: 2014-06-09
