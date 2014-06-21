@@ -246,16 +246,18 @@ bool CHooks::StartCommit(const CString& workingTree, const CTGitPathList& pathLi
 	return true;
 }
 
-bool CHooks::PreCommit(const CString& workingTree, const CTGitPathList& pathList, const CString& message, DWORD& exitcode, CString& error)
+bool CHooks::PreCommit(const CString& workingTree, const CTGitPathList& pathList, CString& message, DWORD& exitcode, CString& error)
 {
 	auto it = FindItem(pre_commit_hook, workingTree);
 	if (it == end())
 		return false;
 	CString sCmd = it->second.commandline;
 	AddPathParam(sCmd, pathList);
-	AddMessageFileParam(sCmd, message);
+	CTGitPath temppath = AddMessageFileParam(sCmd, message);
 	AddCWDParam(sCmd, workingTree);
 	exitcode = RunScript(sCmd, workingTree, error, it->second.bWait, it->second.bShow);
+	if (!exitcode && !temppath.IsEmpty())
+		CStringUtils::ReadStringFromTextFile(temppath.GetWinPathString(), message);
 	return true;
 }
 
@@ -298,6 +300,12 @@ bool CHooks::PostPush(const CString& workingTree, DWORD& exitcode, CString& erro
 	AddCWDParam(sCmd, workingTree);
 	exitcode = RunScript(sCmd, workingTree, error, it->second.bWait, it->second.bShow);
 	return true;
+}
+
+bool CHooks::IsHookPresent(hooktype t, const CString& workingTree) const
+{
+	auto it = FindItem(t, workingTree);
+	return it != end();
 }
 
 const_hookiterator CHooks::FindItem(hooktype t, const CString& workingTree) const

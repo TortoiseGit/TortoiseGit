@@ -35,7 +35,6 @@
 	<para>
 		There are currently six types of hook script available
 		<variablelist>
-			<!--
 			<varlistentry>
 				<term>Start-commit</term>
 				<listitem>
@@ -59,6 +58,7 @@
 					</para>
 				</listitem>
 			</varlistentry>
+			<!--
 			<varlistentry>
 				<term>Post-commit</term>
 				<listitem>
@@ -102,7 +102,6 @@
 		by TortoiseGit. The parameters passed depend upon which hook is called.
 		Each hook has its own parameters which are passed in the following order:
 		<variablelist>
-			<!--
 			<varlistentry>
 				<term>Start-commit</term>
 				<listitem condition="pot">
@@ -123,6 +122,7 @@
 					</para>
 				</listitem>
 			</varlistentry>
+			<!--
 			<varlistentry>
 				<term>Post-commit</term>
 				<listitem condition="pot">
@@ -178,7 +178,7 @@
 						Path to a file containing the log message for
 						the commit. The file contains the text in UTF-8
 						encoding. After successful execution of the
-						start-commit hook, the log message is read back,
+						start-commit and pre-commit hooks, the log message is read back,
 						giving the hook a chance to modify it.
 					</para>
 				</listitem>

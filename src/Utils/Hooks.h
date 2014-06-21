@@ -145,9 +145,11 @@ public:
 	 * replaced with the path to a temporary file which contains a list of files
 	 * in \c pathList, separated by newlines. The hook script can parse this
 	 * file to get all the paths the update is about to be done on.
+	 * If the script finishes successfully, contents of this file is read back
+	 * into \c message parameter.
 	 */
 	bool				PreCommit(const CString& workingTree, const CTGitPathList& pathList,
-									const CString& message, DWORD& exitcode,
+									CString& message, DWORD& exitcode,
 									CString& error);
 	/**
 	 * Executes the Post-Commit-Hook that first matches the path in
@@ -169,6 +171,8 @@ public:
 
 	bool	PrePush(const CString& workingTree, DWORD& exitcode, CString& error);
 	bool	PostPush(const CString& workingTree, DWORD& exitcode, CString& error);
+
+	bool	IsHookPresent(hooktype t, const CString& workingTree) const;
 
 private:
 	/**

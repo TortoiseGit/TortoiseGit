@@ -59,11 +59,11 @@ BOOL CSetHooksAdv::OnInitDialog()
 
 	// initialize the combo box with all the hook types we have
 	int index;
-	/*
 	index = m_cHookTypeCombo.AddString(CString(MAKEINTRESOURCE(IDS_HOOKTYPE_STARTCOMMIT)));
 	m_cHookTypeCombo.SetItemData(index, start_commit_hook);
 	index = m_cHookTypeCombo.AddString(CString(MAKEINTRESOURCE(IDS_HOOKTYPE_PRECOMMIT)));
 	m_cHookTypeCombo.SetItemData(index, pre_commit_hook);
+	/*
 	index = m_cHookTypeCombo.AddString(CString(MAKEINTRESOURCE(IDS_HOOKTYPE_POSTCOMMIT)));
 	m_cHookTypeCombo.SetItemData(index, post_commit_hook);
 	*/

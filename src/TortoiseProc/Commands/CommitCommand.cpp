@@ -51,20 +51,6 @@ bool CommitCommand::Execute()
 	}
 	CString sLogMsg = LoadLogMessage();
 	bool bSelectFilesForCommit = !!DWORD(CRegStdDWORD(_T("Software\\TortoiseGit\\SelectFilesForCommit"), TRUE));
-#if 0
-	DWORD exitcode = 0;
-	CString error;
-	if (CHooks::Instance().StartCommit(pathList, sLogMsg, exitcode, error))
-	{
-		if (exitcode)
-		{
-			CString temp;
-			temp.Format(IDS_ERR_HOOKFAILED, (LPCTSTR)error);
-			CMessageBox::Show(hwndExplorer, temp, _T("TortoiseGit"), MB_ICONERROR);
-			return false;
-		}
-	}
-#endif
 
 	if (!GitAdminDir().HasAdminDir(g_Git.m_CurrentDir)) {
 		CMessageBox::Show(hwndExplorer, IDS_NOWORKINGCOPY, IDS_APPNAME, MB_ICONERROR);

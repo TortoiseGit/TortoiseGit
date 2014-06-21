@@ -3,6 +3,7 @@ Released: unreleased
 
 == Features ==
  * Updated shipped libgit2 to version 0.21
+ * Fixed issue #1605: Add TortoiseGit start and pre commit hooks
 
 == Bug Fixes ==
  * Fixed issue #2216: Add fails with message: libgit2: "failed to parse 'warn' as boolean"

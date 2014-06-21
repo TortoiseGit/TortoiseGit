@@ -194,6 +194,7 @@ BOOL CCommitDlg::OnInitDialog()
 		bool loadedMsg = !CGit::LoadTextFile(dotGitPath + _T("MERGE_MSG"), m_sLogMessage);
 		loadedMsg = loadedMsg && !CGit::LoadTextFile(dotGitPath + _T("SQUASH_MSG"), m_sLogMessage);
 	}
+	RunStartCommitHook();
 
 	if (CTGitPath(g_Git.m_CurrentDir).IsMergeActive())
 	{
@@ -553,6 +554,23 @@ void CCommitDlg::OnOK()
 		}
 		else if (retval == 3)
 			return;
+	}
+
+	if (CHooks::Instance().IsHookPresent(pre_commit_hook, g_Git.m_CurrentDir)) {
+		DWORD exitcode = 0xFFFFFFFF;
+		CString error;
+		CTGitPathList list;
+		m_ListCtrl.WriteCheckedNamesToPathList(list);
+		if (CHooks::Instance().PreCommit(g_Git.m_CurrentDir, list, m_sLogMessage, exitcode, error))
+		{
+			if (exitcode)
+			{
+				CString temp;
+				temp.Format(IDS_ERR_HOOKFAILED, (LPCTSTR)error);
+				MessageBox(temp, _T("TortoiseGit"), MB_ICONERROR);
+				return;
+			}
+		}
 	}
 
 	int nListItems = m_ListCtrl.GetItemCount();
@@ -968,6 +986,7 @@ void CCommitDlg::OnOK()
 			{
 				this->m_sLogMessage.Empty();
 				GetCommitTemplate(m_sLogMessage);
+				RunStartCommitHook();
 				m_cLogMessage.SetText(m_sLogMessage);
 				if (m_bCreateNewBranch)
 				{
@@ -2579,4 +2598,20 @@ void CCommitDlg::OnBnClickedCommitSetauthor()
 	}
 	else
 		GetDlgItem(IDC_COMMIT_AUTHORDATA)->ShowWindow(SW_HIDE);
+}
+
+void CCommitDlg::RunStartCommitHook()
+{
+	DWORD exitcode = 0xFFFFFFFF;
+	CString error;
+	if (CHooks::Instance().StartCommit(g_Git.m_CurrentDir, m_pathList, m_sLogMessage, exitcode, error))
+	{
+		if (exitcode)
+		{
+			CString temp;
+			temp.Format(IDS_ERR_HOOKFAILED, (LPCTSTR)error);
+			MessageBox(temp, _T("TortoiseGit"), MB_ICONERROR);
+			return;
+		}
+	}
 }
