@@ -390,26 +390,21 @@ DWORD CHooks::RunScript(CString cmd, LPCTSTR currentDir, CString& error, bool bW
 	STARTUPINFO si;
 	SecureZeroMemory(&si, sizeof(si));
 	si.cb = sizeof(si);
-	if (hOut  != INVALID_HANDLE_VALUE)
-	{
-		si.dwFlags     = STARTF_USESTDHANDLES | STARTF_USESHOWWINDOW;
-		si.hStdOutput  = hOut;
-		si.hStdError   = hErr;
-		si.wShowWindow = bShow ? SW_SHOW : SW_HIDE;
-	}
+	si.dwFlags = STARTF_USESTDHANDLES | STARTF_USESHOWWINDOW;
+	si.hStdOutput = hOut;
+	si.hStdError = hErr;
+	si.wShowWindow = bShow ? SW_SHOW : SW_HIDE;
 
 	PROCESS_INFORMATION pi;
 	SecureZeroMemory(&pi, sizeof(pi));
 
-	DWORD dwFlags = 0;
-
-	if (!CreateProcess(NULL, cmd.GetBuffer(), NULL, NULL, TRUE, dwFlags, NULL, currentDir, &si, &pi))
+	if (!CreateProcess(nullptr, cmd.GetBuffer(), nullptr, nullptr, TRUE, 0, nullptr, currentDir, &si, &pi))
 	{
-			int err = GetLastError();  // preserve the CreateProcess error
-			error = CFormatMessageWrapper(err);
-			SetLastError(err);
-			cmd.ReleaseBuffer();
-			return (DWORD)-1;
+		const DWORD err = GetLastError();  // preserve the CreateProcess error
+		error = CFormatMessageWrapper(err);
+		SetLastError(err);
+		cmd.ReleaseBuffer();
+		return (DWORD)-1;
 	}
 	cmd.ReleaseBuffer();
 
