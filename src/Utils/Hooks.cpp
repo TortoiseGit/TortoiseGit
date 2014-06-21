@@ -363,18 +363,27 @@ DWORD CHooks::RunScript(CString cmd, LPCTSTR currentDir, CString& error, bool bW
 	hErr   = CreateFile(szErr, GENERIC_WRITE, FILE_SHARE_READ, &sa, CREATE_ALWAYS, FILE_ATTRIBUTE_TEMPORARY,	0);
 
 	if (!hErr)
+	{
+		error = CFormatMessageWrapper();
 		return (DWORD)-1;
+	}
 
 	hRedir = CreateFile(szErr, GENERIC_READ, FILE_SHARE_WRITE, 0, OPEN_EXISTING, 0, 0);
 
 	if (!hRedir)
+	{
+		error = CFormatMessageWrapper();
 		return (DWORD)-1;
+	}
 
 	GetTempFileName(szTempPath, _T("git"), 0, szOutput);
 	hOut   = CreateFile(szOutput, GENERIC_WRITE, FILE_SHARE_READ, &sa, CREATE_ALWAYS, FILE_ATTRIBUTE_TEMPORARY,	0);
 
 	if (!hOut)
+	{
+		error = CFormatMessageWrapper();
 		return (DWORD)-1;
+	}
 
 	// setup startup info, set std out/err handles
 	// hide window
