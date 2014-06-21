@@ -80,7 +80,7 @@
 				<term>Post-push</term>
 				<listitem>
 					<para>
-						Called after successful pushing finishes.
+						Called after pushing finishes (whether successful or not).
 					</para>
 				</listitem>
 			</varlistentry>

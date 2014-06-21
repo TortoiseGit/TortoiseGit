@@ -2559,20 +2559,21 @@ bool CAppUtils::Push(CString selectLocalBranch)
 
 		INT_PTR ret = progress.DoModal();
 
-		if(!progress.m_GitStatus)
+		exitcode = 0xFFFFFFFF;
+		error.Empty();
+		if (CHooks::Instance().PostPush(g_Git.m_CurrentDir, exitcode, error))
 		{
-			exitcode = 0xFFFFFFFF;
-			error.Empty();
-			if (CHooks::Instance().PostPush(g_Git.m_CurrentDir, exitcode, error))
+			if (exitcode)
 			{
-				if (exitcode)
-				{
-					CString temp;
-					temp.Format(IDS_ERR_HOOKFAILED, (LPCTSTR)error);
-					CMessageBox::Show(NULL,temp,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
-					return false;
-				}
+				CString temp;
+				temp.Format(IDS_ERR_HOOKFAILED, (LPCTSTR)error);
+				CMessageBox::Show(nullptr, temp, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+				return false;
 			}
+		}
+
+		if (!progress.m_GitStatus)
+		{
 			if(ret == IDC_PROGRESS_BUTTON1)
 			{
 				RequestPull(dlg.m_BranchRemoteName);

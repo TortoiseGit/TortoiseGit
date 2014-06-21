@@ -1383,22 +1383,19 @@ void CSyncDlg::RunPostAction()
 
 	if (this->m_CurrentCmd == GIT_COMMAND_PUSH)
 	{
-		if (!m_GitCmdStatus)
+		DWORD exitcode = 0xFFFFFFFF;
+		CString error;
+		if (CHooks::Instance().PostPush(g_Git.m_CurrentDir, exitcode, error))
 		{
-			DWORD exitcode = 0xFFFFFFFF;
-			CString error;
-			if (CHooks::Instance().PostPush(g_Git.m_CurrentDir, exitcode, error))
+			if (exitcode)
 			{
-				if (exitcode)
-				{
-					CString temp;
-					temp.Format(IDS_ERR_HOOKFAILED, (LPCTSTR)error);
-					CMessageBox::Show(NULL,temp,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
-					return;
-				}
+				CString temp;
+				temp.Format(IDS_ERR_HOOKFAILED, (LPCTSTR)error);
+				CMessageBox::Show(nullptr, temp,_T("TortoiseGit"), MB_OK | MB_ICONERROR);
+				return;
 			}
-
 		}
+
 		EnableControlButton(true);
 		SwitchToInput();
 		this->FetchOutList(true);
