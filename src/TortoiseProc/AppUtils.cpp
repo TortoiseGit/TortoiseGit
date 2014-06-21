@@ -64,6 +64,9 @@
 #include "UserPassword.h"
 #include "Patch.h"
 #include "Globals.h"
+#include "ProgressCommands/ResetProgressCommand.h"
+#include "ProgressCommands/FetchProgressCommand.h"
+#include "ProgressCommands/SendMailProgressCommand.h"
 
 CAppUtils::CAppUtils(void)
 {
@@ -1441,9 +1444,10 @@ bool CAppUtils::GitReset(CString *CommitHash,int type)
 			if (g_Git.UsingLibGit2(CGit::GIT_CMD_RESET))
 			{
 				CGitProgressDlg gitdlg;
-				gitdlg.SetCommand(CGitProgressList::GitProgress_Reset);
-				gitdlg.SetRevision(dlg.m_ResetToVersion);
-				gitdlg.SetResetType(dlg.m_ResetType);
+				ResetProgressCommand resetProgressCommand;
+				gitdlg.SetCommand(&resetProgressCommand);
+				resetProgressCommand.SetRevision(dlg.m_ResetToVersion);
+				resetProgressCommand.SetResetType(dlg.m_ResetType);
 				ret = gitdlg.DoModal();
 			}
 			else
@@ -2090,16 +2094,14 @@ bool CAppUtils::SendPatchMail(CTGitPathList& list)
 		CGitProgressDlg progDlg;
 
 		theApp.m_pMainWnd = &progDlg;
-		progDlg.SetCommand(CGitProgressList::GitProgress_SendMail);
+		SendMailProgressCommand sendMailProgressCommand;
+		progDlg.SetCommand(&sendMailProgressCommand);
 
-		progDlg.SetPathList(dlg.m_PathList);
-				//ProjectProperties props;
-				//props.ReadPropsPathList(dlg.m_pathList);
-				//progDlg.SetProjectProperties(props);
+		sendMailProgressCommand.SetPathList(dlg.m_PathList);
 		progDlg.SetItemCount(dlg.m_PathList.GetCount());
 
 		CSendMailPatch sendMailPatch(dlg.m_To, dlg.m_CC, dlg.m_Subject, !!dlg.m_bAttachment, !!dlg.m_bCombine);
-		progDlg.SetSendMailOption(&sendMailPatch);
+		sendMailProgressCommand.SetSendMailOption(&sendMailPatch);
 
 		progDlg.DoModal();
 
@@ -2398,12 +2400,13 @@ bool CAppUtils::Fetch(CString remoteName, bool allowRebase, bool allRemotes)
 			if (g_Git.UsingLibGit2(CGit::GIT_CMD_FETCH))
 			{
 				CGitProgressDlg gitdlg;
+				FetchProgressCommand fetchProgressCommand;
 				if (!dlg.m_bAllRemotes)
-					gitdlg.SetUrl(url);
-				gitdlg.SetCommand(CGitProgressList::GitProgress_Fetch);
-				gitdlg.SetAutoTag(dlg.m_bFetchTags == 1 ? GIT_REMOTE_DOWNLOAD_TAGS_ALL : dlg.m_bFetchTags == 2 ? GIT_REMOTE_DOWNLOAD_TAGS_AUTO : GIT_REMOTE_DOWNLOAD_TAGS_NONE);
+					fetchProgressCommand.SetUrl(url);
+				gitdlg.SetCommand(&fetchProgressCommand);
+				fetchProgressCommand.SetAutoTag(dlg.m_bFetchTags == 1 ? GIT_REMOTE_DOWNLOAD_TAGS_ALL : dlg.m_bFetchTags == 2 ? GIT_REMOTE_DOWNLOAD_TAGS_AUTO : GIT_REMOTE_DOWNLOAD_TAGS_NONE);
 				if (!dlg.m_bAllRemotes)
-					gitdlg.SetRefSpec(dlg.m_RemoteBranchName);
+					fetchProgressCommand.SetRefSpec(dlg.m_RemoteBranchName);
 				userResponse = gitdlg.DoModal();
 			}
 			else
@@ -2695,13 +2698,14 @@ bool CAppUtils::RequestPull(CString endrevision, CString repositoryUrl)
 				CGitProgressDlg progDlg;
 
 				theApp.m_pMainWnd = &progDlg;
-				progDlg.SetCommand(CGitProgressList::GitProgress_SendMail);
+				SendMailProgressCommand sendMailProgressCommand;
+				progDlg.SetCommand(&sendMailProgressCommand);
 
-				progDlg.SetPathList(dlg.m_PathList);
+				sendMailProgressCommand.SetPathList(dlg.m_PathList);
 				progDlg.SetItemCount(dlg.m_PathList.GetCount());
 
 				CSendMailCombineable sendMailCombineable(dlg.m_To, dlg.m_CC, dlg.m_Subject, !!dlg.m_bAttachment, !!dlg.m_bCombine);
-				progDlg.SetSendMailOption(&sendMailCombineable);
+				sendMailProgressCommand.SetSendMailOption(&sendMailCombineable);
 
 				progDlg.DoModal();
 
@@ -3148,9 +3152,10 @@ BOOL CAppUtils::MergeAbort()
 			if (g_Git.UsingLibGit2(CGit::GIT_CMD_RESET))
 			{
 				CGitProgressDlg gitdlg;
-				gitdlg.SetCommand(CGitProgressList::GitProgress_Reset);
-				gitdlg.SetRevision(_T("HEAD"));
-				gitdlg.SetResetType(dlg.m_ResetType + 1);
+				ResetProgressCommand resetProgressCommand;
+				gitdlg.SetCommand(&resetProgressCommand);
+				resetProgressCommand.SetRevision(_T("HEAD"));
+				resetProgressCommand.SetResetType(dlg.m_ResetType + 1);
 				ret = gitdlg.DoModal();
 			}
 			else

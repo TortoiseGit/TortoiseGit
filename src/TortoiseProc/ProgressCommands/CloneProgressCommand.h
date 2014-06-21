@@ -1,7 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2014 - TortoiseGit
-// Copyright (C) 2007-2008 - TortoiseSVN
+// Copyright (C) 2013-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -16,31 +15,26 @@
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-//
-#include "stdafx.h"
-#include "RevertCommand.h"
 
-#include "RevertDlg.h"
-#include "GitProgressDlg.h"
-#include "ProgressCommands/RevertProgressCommand.h"
+#include "GitProgressList.h"
+#include "FetchProgressCommand.h"
 
-bool RevertCommand::Execute()
+class CloneProgressCommand : public FetchProgressCommand
 {
-	CRevertDlg dlg;
-	dlg.m_pathList = pathList;
-	if (dlg.DoModal() == IDOK)
+protected:
+	bool m_bBare;
+	bool m_bNoCheckout;
+
+	static void CheckoutCallback(const char *path, size_t cur, size_t tot, void *payload)
 	{
-
-		CGitProgressDlg progDlg;
-		theApp.m_pMainWnd = &progDlg;
-
-		RevertProgressCommand revertCommand;
-		progDlg.SetCommand(&revertCommand);
-		progDlg.SetItemCount(dlg.m_selectedPathList.GetCount());
-		revertCommand.SetPathList(dlg.m_selectedPathList);
-		progDlg.DoModal();
-
-		return true;
+		CTGitPath tpath = CUnicodeUtils::GetUnicode(CStringA(path), CP_UTF8);
+		((CGitProgressList*)payload)->m_itemCountTotal = (int)tot;
+		((CGitProgressList*)payload)->m_itemCount = (int)cur;
+		((CGitProgressList*)payload)->Notify(tpath, git_wc_notify_checkout);
 	}
-	return false;
-}
+
+public:
+	void SetIsBare(bool b) { m_bBare = b; }
+	void SetNoCheckout(bool b){ m_bNoCheckout = b; }
+	virtual bool Run(CGitProgressList* list, CString& sWindowTitle, int& m_itemCountTotal, int& m_itemCount);
+};

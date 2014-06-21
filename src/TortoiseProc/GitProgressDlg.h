@@ -20,7 +20,6 @@
 #pragma once
 
 #include "StandAloneDlg.h"
-#include "TGitPath.h"
 #include "GitProgressList.h"
 
 typedef int (__cdecl *GENERICCOMPAREFN)(const void * elem1, const void * elem2);
@@ -43,21 +42,10 @@ public:
 	virtual ~CGitProgressDlg();
 
 
-	void SetCommand(CGitProgressList::Command cmd) {m_ProgList.SetCommand(cmd);}
+	void SetCommand(ProgressCommand* cmd) { m_ProgList.SetCommand(cmd); }
 	void SetAutoClose(DWORD ac) {m_dwCloseOnEnd = ac;}
 	void SetOptions(DWORD opts) {m_ProgList.SetOptions(opts);}
-	void SetPathList(const CTGitPathList& pathList) {m_ProgList.SetPathList(pathList);}
-	void SetUrl(const CString& url) {m_ProgList.SetUrl(url);}
-	void SetIsBare(bool b) { m_ProgList.SetIsBare(b); }
-	void SetNoCheckout(bool b){ m_ProgList.SetNoCheckout(b); }
-	void SetRefSpec(CString spec){ m_ProgList.SetRefSpec(spec); }
-	void SetRemote(const CString& remote) { m_ProgList.SetRemote(remote); }
-	void SetAutoTag(int tag){ m_ProgList.SetAutoTag(tag); }	
-	void SetRevision(CString revision){ m_ProgList.SetRevision(revision); }
-	void SetResetType(int resetType){ m_ProgList.SetResetType(resetType); }
 
-	void SetSendMailOption(CSendMail *sendmail) { m_ProgList.SetSendMailOption(sendmail); }
-	void SetSelectedList(const CTGitPathList& selPaths) {m_ProgList.SetSelectedList(selPaths);};
 	/**
 	 * If the number of items for which the operation is done on is known
 	 * beforehand, that number can be set here. It is then used to show a more

@@ -28,22 +28,6 @@ IMPLEMENT_DYNAMIC(CGitProgressDlg, CResizableStandAloneDialog)
 CGitProgressDlg::CGitProgressDlg(CWnd* pParent /*=NULL*/)
 	: CResizableStandAloneDialog(CGitProgressDlg::IDD, pParent)
 	, m_dwCloseOnEnd((DWORD)-1)
-#if 0
-	, m_Revision(_T("HEAD"))
-	//, m_RevisionEnd(0)
-	, m_bLockWarning(false)
-	, m_bLockExists(false)
-	, m_nConflicts(0)
-	, m_bMergesAddsDeletesOccurred(FALSE)
-	, m_bFinishedItemAdded(false)
-	, m_bLastVisible(false)
-	, m_itemCount(-1)
-	, m_itemCountTotal(-1)
-	, m_AlwaysConflicted(false)
-	, m_BugTraqProvider(NULL)
-	, sDryRun(MAKEINTRESOURCE(IDS_PROGRS_DRYRUN))
-	, sRecordOnly(MAKEINTRESOURCE(IDS_MERGE_RECORDONLY))
-#endif
 {
 }
 
@@ -137,33 +121,14 @@ LRESULT CGitProgressDlg::OnTaskbarBtnCreated(WPARAM /*wParam*/, LPARAM /*lParam*
 
 void CGitProgressDlg::OnBnClickedLogbutton()
 {
-	switch(m_ProgList.m_Command)
+	if (m_ProgList.m_Command->ShowCommitButton())
 	{
-	case CGitProgressList::GitProgress_Add:
-	case CGitProgressList::GitProgress_Resolve:
-	case CGitProgressList::GitProgress_Revert:
-		{
-			CString cmd = _T(" /command:commit");
-			cmd += _T(" /path:\"")+g_Git.m_CurrentDir+_T("\"");
+		CString cmd = _T(" /command:commit");
+		cmd += _T(" /path:\"") + g_Git.m_CurrentDir + _T("\"");
 
-			CAppUtils::RunTortoiseGitProc(cmd);
-			this->EndDialog(IDOK);
-			break;
-		}
+		CAppUtils::RunTortoiseGitProc(cmd);
+		EndDialog(IDOK);
 	}
-#if 0
-	if (m_targetPathList.GetCount() != 1)
-		return;
-	StringRevMap::iterator it = m_UpdateStartRevMap.begin();
-	svn_revnum_t rev = -1;
-	if (it != m_UpdateStartRevMap.end())
-	{
-		rev = it->second;
-	}
-	CLogDlg dlg;
-	dlg.SetParams(m_targetPathList[0], m_RevisionEnd, m_RevisionEnd, rev, 0, TRUE);
-	dlg.DoModal();
-#endif
 }
 
 
@@ -280,18 +245,14 @@ HBRUSH CGitProgressDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 
 LRESULT	CGitProgressDlg::OnCmdEnd(WPARAM wParam, LPARAM /*lParam*/)
 {
+	ATLASSERT(wParam);
 	DialogEnableWindow(IDCANCEL, FALSE);
 	DialogEnableWindow(IDOK, TRUE);
 
-	switch(wParam)
+	if (!DidErrorsOccur() && ((ProgressCommand*)wParam)->ShowCommitButton())
 	{
-	case CGitProgressList::GitProgress_Add:
-	case CGitProgressList::GitProgress_Revert:
-		if (DidErrorsOccur())
-			break;
 		this->GetDlgItem(IDC_LOGBUTTON)->SetWindowText(CString(MAKEINTRESOURCE(IDS_COMMITBUTTON)));
 		this->GetDlgItem(IDC_LOGBUTTON)->ShowWindow(SW_SHOW);
-		break;
 	}
 
 	CWnd * pWndOk = GetDlgItem(IDOK);

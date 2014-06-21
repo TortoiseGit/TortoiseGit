@@ -22,6 +22,7 @@
 
 #include "AddDlg.h"
 #include "GitProgressDlg.h"
+#include "ProgressCommands/AddProgressCommand.h"
 #include "ShellUpdater.h"
 
 bool AddCommand::Execute()
@@ -59,12 +60,11 @@ bool AddCommand::Execute()
 					return FALSE;
 				CGitProgressDlg progDlg;
 				theApp.m_pMainWnd = &progDlg;
-				progDlg.SetCommand(CGitProgressList::GitProgress_Add);
-				progDlg.SetPathList(dlg.m_pathList);
+				AddProgressCommand addCommand;
+				progDlg.SetCommand(&addCommand);
+				addCommand.SetPathList(dlg.m_pathList);
 				progDlg.SetItemCount(dlg.m_pathList.GetCount());
 				progDlg.DoModal();
-
-				CShellUpdater::Instance().AddPathsForUpdate(dlg.m_pathList);
 
 				bRet = !progDlg.DidErrorsOccur();
 

@@ -23,6 +23,7 @@
 #include "MessageBox.h"
 #include "ResolveDlg.h"
 #include "GitProgressDlg.h"
+#include "ProgressCommands/ResolveProgressCommand.h"
 
 bool ResolveCommand::Execute()
 {
@@ -62,8 +63,9 @@ bool ResolveCommand::Execute()
 			{
 				CGitProgressDlg progDlg(CWnd::FromHandle(hWndExplorer));
 				theApp.m_pMainWnd = &progDlg;
-				progDlg.SetCommand(CGitProgressList::GitProgress_Resolve);
-				progDlg.SetPathList(dlg.m_pathList);
+				ResolveProgressCommand resolveProgressCommand;
+				progDlg.SetCommand(&resolveProgressCommand);
+				resolveProgressCommand.SetPathList(dlg.m_pathList);
 				progDlg.DoModal();
 				return !progDlg.DidErrorsOccur();
 			}

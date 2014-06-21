@@ -1,7 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2014 - TortoiseGit
-// Copyright (C) 2007-2008 - TortoiseSVN
+// Copyright (C) 2013-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -16,31 +15,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-//
+
 #include "stdafx.h"
-#include "RevertCommand.h"
+#include "SendMailProgressCommand.h"
+#include "ShellUpdater.h"
 
-#include "RevertDlg.h"
-#include "GitProgressDlg.h"
-#include "ProgressCommands/RevertProgressCommand.h"
-
-bool RevertCommand::Execute()
+bool SendMailProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, int& /*m_itemCountTotal*/, int& /*m_itemCount*/)
 {
-	CRevertDlg dlg;
-	dlg.m_pathList = pathList;
-	if (dlg.DoModal() == IDOK)
-	{
+	ASSERT(m_SendMail);
+	list->SetWindowTitle(IDS_PROGRS_TITLE_SENDMAIL, g_Git.CombinePath(m_targetPathList.GetCommonRoot().GetUIPathString()), sWindowTitle);
+	//SetBackgroundImage(IDI_ADD_BKG);
+	list->ReportCmd(CString(MAKEINTRESOURCE(IDS_PROGRS_CMD_SENDMAIL)));
 
-		CGitProgressDlg progDlg;
-		theApp.m_pMainWnd = &progDlg;
-
-		RevertProgressCommand revertCommand;
-		progDlg.SetCommand(&revertCommand);
-		progDlg.SetItemCount(dlg.m_selectedPathList.GetCount());
-		revertCommand.SetPathList(dlg.m_selectedPathList);
-		progDlg.DoModal();
-
-		return true;
-	}
-	return false;
+	return m_SendMail->Send(m_targetPathList, list) == 0;
 }

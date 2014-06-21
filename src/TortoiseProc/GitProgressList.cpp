@@ -20,18 +20,13 @@
 #include "stdafx.h"
 #include "GitProgressList.h"
 #include "TortoiseProc.h"
-#include "MessageBox.h"
-#include "GitProgressDlg.h"
 #include "LogDlg.h"
 #include "registry.h"
 #include "AppUtils.h"
 #include "StringUtils.h"
 #include "SoundUtils.h"
 #include "LogFile.h"
-#include "ShellUpdater.h"
 #include "IconMenu.h"
-#include "Patch.h"
-#include "MassiveGitTask.h"
 #include "LoglistUtils.h"
 
 BOOL	CGitProgressList::m_bAscending = FALSE;
@@ -58,47 +53,15 @@ enum GITProgressDlgContextMenuCommands
 
 IMPLEMENT_DYNAMIC(CGitProgressList, CListCtrl)
 
-class CSmartAnimation
-{
-	CAnimateCtrl* m_pAnimate;
-
-public:
-	CSmartAnimation(CAnimateCtrl* pAnimate)
-	{
-		m_pAnimate = pAnimate;
-		if (m_pAnimate)
-		{
-			m_pAnimate->ShowWindow(SW_SHOW);
-			m_pAnimate->Play(0, INT_MAX, INT_MAX);
-		}
-	}
-	~CSmartAnimation()
-	{
-		if (m_pAnimate)
-		{
-			m_pAnimate->Stop();
-			m_pAnimate->ShowWindow(SW_HIDE);
-		}
-	}
-};
-
 CGitProgressList::CGitProgressList():CListCtrl()
 	, m_bCancelled(FALSE)
 	, m_pThread(NULL)
 	, m_bErrorsOccurred(false)
-	, m_bBare(false)
-	, m_bNoCheckout(false)
-	, m_AutoTag(GIT_REMOTE_DOWNLOAD_TAGS_AUTO)
-	, m_resetType(0)
 	, m_options(ProgOptNone)
 	, m_bSetTitle(false)
 	, m_pTaskbarList(nullptr)
-	, m_SendMail(nullptr)
-	, m_Command(GitProgress_none)
+	, m_Command(nullptr)
 	, m_bThreadRunning(FALSE)
-	, m_keepchangelist(false)
-	, m_nConflicts(0)
-	, m_bMergesAddsDeletesOccurred(FALSE)
 	, iFirstResized(0)
 	, bSecondResized(false)
 	, nEnsureVisibleCount(0)
@@ -245,6 +208,7 @@ BOOL CGitProgressList::Notify(const CTGitPath& path, git_wc_notify_action_t acti
 	data->sPathColumnText=path.GetGitPathString();
 	data->bAuxItem = false;
 
+	// needed as long as RemoteCompletionCallback never gets called by libgit2
 	if (this->m_pAnimate)
 		this->m_pAnimate->ShowWindow(SW_HIDE);
 
@@ -313,7 +277,7 @@ BOOL CGitProgressList::Notify(const CTGitPath& path, git_wc_notify_action_t acti
 CString CGitProgressList::BuildInfoString()
 {
 	CString infotext;
-	if(this->m_Command == GitProgress_Resolve)
+	if (m_Command->NeedsCommit())
 		infotext = _T("You need commit your change after resolve conflict");
 #if 0
 
@@ -457,11 +421,6 @@ CString CGitProgressList::BuildInfoString()
 	return infotext;
 }
 
-void CGitProgressList::SetSelectedList(const CTGitPathList& selPaths)
-{
-	m_selectedPaths = selPaths;
-}
-
 void CGitProgressList::ResizeColumns()
 {
 	SetRedraw(FALSE);
@@ -587,11 +546,10 @@ UINT CGitProgressList::ProgressThread()
 
 	CString temp;
 	CString sWindowTitle;
-	bool localoperation = false;
 	bool bSuccess = false;
 
 	if(m_pPostWnd)
-		m_pPostWnd->PostMessage(WM_PROG_CMD_START, m_Command);
+		m_pPostWnd->PostMessage(WM_PROG_CMD_START, (WPARAM)m_Command);
 
 	if(m_pProgressLabelCtrl)
 	{
@@ -611,30 +569,12 @@ UINT CGitProgressList::ProgressThread()
 	if (m_pTaskbarList && m_pPostWnd)
 		m_pTaskbarList->SetProgressState(m_pPostWnd->GetSafeHwnd(), TBPF_INDETERMINATE);
 
-	switch (m_Command)
-	{
-	case GitProgress_Add:
-		bSuccess = CmdAdd(sWindowTitle, localoperation);
-		break;
-	case GitProgress_Resolve:
-		bSuccess = CmdResolve(sWindowTitle, localoperation);
-		break;
-	case GitProgress_Revert:
-		bSuccess = CmdRevert(sWindowTitle, localoperation);
-		break;
-	case GitProgress_SendMail:
-		bSuccess = CmdSendMail(sWindowTitle, localoperation);
-		break;
-	case GitProgress_Clone:
-		bSuccess = CmdClone(sWindowTitle, localoperation);
-		break;
-	case GitProgress_Fetch:
-		bSuccess = CmdFetch(sWindowTitle, localoperation);
-		break;
-	case GitProgress_Reset:
-		bSuccess = CmdReset(sWindowTitle, localoperation);
-		break;
-	}
+	m_TotalBytesTransferred = 0;
+	if (m_Command)
+		bSuccess = m_Command->Run(this, sWindowTitle, m_itemCountTotal, m_itemCount);
+	else
+		bSuccess = false;
+
 	if (!bSuccess)
 		temp.LoadString(IDS_PROGRS_TITLEFAILED);
 	else
@@ -657,12 +597,16 @@ UINT CGitProgressList::ProgressThread()
 			m_pTaskbarList->SetProgressState(m_pPostWnd->GetSafeHwnd(), TBPF_NOPROGRESS);
 	}
 
-	CString info = BuildInfoString();
-	if (!bSuccess)
-		info.LoadString(IDS_PROGRS_INFOFAILED);
 	if (m_pInfoCtrl)
+	{
+		CString info;
+		if (!bSuccess)
+			info.LoadString(IDS_PROGRS_INFOFAILED);
+		else // this implies that command is not nullptr
+			info = BuildInfoString();
 		m_pInfoCtrl->SetWindowText(info);
-	
+	}
+
 	ResizeColumns();
 
 	DWORD time = GetCurrentTime() - startTime;
@@ -724,7 +668,7 @@ UINT CGitProgressList::ProgressThread()
 #endif
 
 	if (m_pPostWnd)
-		m_pPostWnd->PostMessage(WM_PROG_CMD_FINISH, this->m_Command, 0L);
+		m_pPostWnd->PostMessage(WM_PROG_CMD_FINISH, (WPARAM)m_Command, 0L);
 
 	//Don't do anything here which might cause messages to be sent to the window
 	//The window thread is probably now blocked in OnOK if we've done an auto close
@@ -900,10 +844,10 @@ BOOL CGitProgressList::Notify(const git_wc_notify_action_t action, CString str, 
 	m_arData.push_back(data);
 	AddItemToList();
 
-	if (m_pAnimate)
-		m_pAnimate->Stop();
+	// needed as long as RemoteCompletionCallback never gets called by libgit2
 	if (m_pAnimate)
 		m_pAnimate->ShowWindow(SW_HIDE);
+
 	return TRUE;
 }
 BOOL CGitProgressList::Notify(const git_wc_notify_action_t /*action*/, const git_transfer_progress *stat)
@@ -1422,355 +1366,6 @@ void CGitProgressList::OnSize(UINT nType, int cx, int cy)
 			EnsureVisible(count-1, false);
 	}
 }
-
-//////////////////////////////////////////////////////////////////////////
-/// commands
-//////////////////////////////////////////////////////////////////////////
-bool CGitProgressList::CmdAdd(CString& sWindowTitle, bool& localoperation)
-{
-	localoperation = true;
-	SetWindowTitle(IDS_PROGRS_TITLE_ADD, g_Git.CombinePath(m_targetPathList.GetCommonRoot().GetUIPathString()), sWindowTitle);
-	SetBackgroundImage(IDI_ADD_BKG);
-	ReportCmd(CString(MAKEINTRESOURCE(IDS_PROGRS_CMD_ADD)));
-
-	m_itemCountTotal = m_targetPathList.GetCount();
-
-	if (g_Git.UsingLibGit2(CGit::GIT_CMD_ADD))
-	{
-		CAutoRepository repo(g_Git.GetGitRepository());
-		if (!repo)
-		{
-			ReportGitError();
-			return false;
-		}
-
-		CAutoIndex index;
-		if (git_repository_index(index.GetPointer(), repo))
-		{
-			ReportGitError();
-			return false;
-		}
-		if (git_index_read(index, true))
-		{
-			ReportGitError();
-			return false;
-		}
-
-		for (m_itemCount = 0; m_itemCount < m_itemCountTotal; ++m_itemCount)
-		{
-			if (git_index_add_bypath(index, CUnicodeUtils::GetMulti(m_targetPathList[m_itemCount].GetGitPathString(), CP_UTF8)))
-			{
-				ReportGitError();
-				return false;
-			}
-			Notify(m_targetPathList[m_itemCount], git_wc_notify_add);
-
-			if (IsCancelled() == TRUE)
-			{
-				ReportUserCanceled();
-				return false;
-			}
-		}
-
-		if (git_index_write(index))
-		{
-			ReportGitError();
-			return false;
-		}
-	}
-	else
-	{
-		CMassiveGitTask mgt(L"add -f");
-		if (!mgt.ExecuteWithNotify(&m_targetPathList, m_bCancelled, git_wc_notify_add, this))
-			return false;
-	}
-
-	CShellUpdater::Instance().AddPathsForUpdate(m_targetPathList);
-
-	return true;
-}
-
-bool CGitProgressList::CmdResolve(CString& sWindowTitle, bool& localoperation)
-{
-
-	localoperation = true;
-	ASSERT(m_targetPathList.GetCount() == 1);
-	SetWindowTitle(IDS_PROGRS_TITLE_RESOLVE, g_Git.CombinePath(m_targetPathList.GetCommonRoot().GetUIPathString()), sWindowTitle);
-	SetBackgroundImage(IDI_RESOLVE_BKG);
-
-	m_itemCountTotal = m_targetPathList.GetCount();
-	for (m_itemCount = 0; m_itemCount < m_itemCountTotal; ++m_itemCount)
-	{
-		CString cmd,out,tempmergefile;
-		cmd.Format(_T("git.exe add -f -- \"%s\""),m_targetPathList[m_itemCount].GetGitPathString());
-		if (g_Git.Run(cmd, &out, CP_UTF8))
-		{
-			ReportError(out);
-			return false;
-		}
-
-		CAppUtils::RemoveTempMergeFile((CTGitPath &)m_targetPathList[m_itemCount]);
-
-		Notify(m_targetPathList[m_itemCount], git_wc_notify_resolved);
-	}
-
-	CShellUpdater::Instance().AddPathsForUpdate(m_targetPathList);
-
-	return true;
-}
-
-bool CGitProgressList::CmdRevert(CString& sWindowTitle, bool& localoperation)
-{
-
-	localoperation = true;
-	SetWindowTitle(IDS_PROGRS_TITLE_REVERT, g_Git.CombinePath(m_targetPathList.GetCommonRoot().GetUIPathString()), sWindowTitle);
-	SetBackgroundImage(IDI_REVERT_BKG);
-
-	m_itemCountTotal = 2 * m_selectedPaths.GetCount();
-	CTGitPathList delList;
-	for (m_itemCount = 0; m_itemCount < m_selectedPaths.GetCount(); ++m_itemCount)
-	{
-		CTGitPath path;
-		int action;
-		path.SetFromWin(g_Git.CombinePath(m_selectedPaths[m_itemCount]));
-		action = m_selectedPaths[m_itemCount].m_Action;
-		/* rename file can't delete because it needs original file*/
-		if((!(action & CTGitPath::LOGACTIONS_ADDED)) &&
-			(!(action & CTGitPath::LOGACTIONS_REPLACED)))
-			delList.AddPath(path);
-	}
-	if (DWORD(CRegDWORD(_T("Software\\TortoiseGit\\RevertWithRecycleBin"), TRUE)))
-		delList.DeleteAllFiles(true);
-
-	ReportCmd(CString(MAKEINTRESOURCE(IDS_PROGRS_CMD_REVERT)));
-	for (int i = 0; i < m_selectedPaths.GetCount(); ++i)
-	{
-		CString err;
-		if (g_Git.Revert(_T("HEAD"), (CTGitPath&)m_selectedPaths[i], err))
-		{
-			ReportError(err);
-			return false;
-		}
-		Notify(m_selectedPaths[i], git_wc_notify_revert);
-		++m_itemCount;
-
-		if (IsCancelled() == TRUE)
-		{
-			ReportUserCanceled();
-			return false;
-		}
-	}
-
-	CShellUpdater::Instance().AddPathsForUpdate(m_selectedPaths);
-
-	return true;
-}
-
-bool CGitProgressList::CmdClone(CString& sWindowTitle, bool& /*localoperation*/)
-{
-	if (!g_Git.UsingLibGit2(CGit::GIT_CMD_CLONE))
-	{
-		// should never run to here
-		ASSERT(FALSE);
-		return false;
-	}
-	this->m_TotalBytesTransferred = 0;
-
-	SetWindowTitle(IDS_PROGRS_TITLE_CLONE, m_url.GetGitPathString(), sWindowTitle);
-	SetBackgroundImage(IDI_SWITCH_BKG);
-	ReportCmd(CString(MAKEINTRESOURCE(IDS_PROG_CLONE)));
-
-	if (m_url.IsEmpty() || m_targetPathList.IsEmpty())
-		return false;
-
-	git_checkout_options checkout_opts = GIT_CHECKOUT_OPTIONS_INIT;
-	checkout_opts.checkout_strategy = m_bNoCheckout? GIT_CHECKOUT_NONE : GIT_CHECKOUT_SAFE_CREATE;
-	checkout_opts.progress_cb = CheckoutCallback;
-	checkout_opts.progress_payload = this;
-
-	git_remote_callbacks callbacks = GIT_REMOTE_CALLBACKS_INIT;
-	callbacks.update_tips = RemoteUpdatetipsCallback;
-	callbacks.sideband_progress = RemoteProgressCallback;
-	callbacks.completion = RemoteCompletionCallback;
-	callbacks.transfer_progress = FetchCallback;
-	callbacks.credentials = CAppUtils::Git2GetUserPassword;
-	callbacks.payload = this;
-
-	CSmartAnimation animate(m_pAnimate);
-	CAutoRepository cloned_repo;
-
-	git_clone_options cloneOpts = GIT_CLONE_OPTIONS_INIT;
-	cloneOpts.bare = m_bBare;
-	cloneOpts.repository_cb = [](git_repository** out, const char* path, int bare, void* /*payload*/) -> int {
-		git_repository_init_options init_options = GIT_REPOSITORY_INIT_OPTIONS_INIT;
-		init_options.flags = GIT_REPOSITORY_INIT_MKPATH | GIT_REPOSITORY_INIT_EXTERNAL_TEMPLATE;
-		init_options.flags |= bare ? GIT_REPOSITORY_INIT_BARE : 0;
-
-		return git_repository_init_ext(out, path, &init_options);
-	};
-
-	struct remote_cb_payload {
-		const char* remoteName;
-		const git_remote_callbacks* callbacks;
-	};
-
-	cloneOpts.remote_cb = [](git_remote** out, git_repository* repo, const char* /*name*/, const char* url, void* payload) -> int {
-		int error;
-
-		remote_cb_payload* data = (remote_cb_payload*)payload;
-
-		CAutoRemote origin;
-		if ((error = git_remote_create(origin.GetPointer(), repo, data->remoteName, url)) < 0)
-			return error;
-
-		if ((error = git_remote_set_callbacks(origin, data->callbacks)) < 0) // if remote_cb is used, one has to manually set remote_callbacks
-			return error;
-
-		*out = origin.Detach();
-		return 0;
-	};
-	remote_cb_payload remote_cb_payloadData;
-	remote_cb_payloadData.callbacks = &callbacks;
-	remote_cb_payloadData.remoteName = m_remote.IsEmpty() ? "origin" : CUnicodeUtils::GetUTF8(m_remote);
-	cloneOpts.remote_cb_payload = &remote_cb_payloadData;
-
-	CStringA checkout_branch = CUnicodeUtils::GetUTF8(m_RefSpec);
-	if (!checkout_branch.IsEmpty())
-		cloneOpts.checkout_branch = checkout_branch;
-	cloneOpts.checkout_opts = checkout_opts;
-
-	if (git_clone(cloned_repo.GetPointer(), CUnicodeUtils::GetUTF8(m_url.GetGitPathString()), CUnicodeUtils::GetUTF8(m_targetPathList[0].GetWinPathString()), &cloneOpts) < 0)
-		goto error;
-
-	return true;
-
-error:
-	ReportGitError();
-	return false;
-}
-bool CGitProgressList::CmdSendMail(CString& sWindowTitle, bool& /*localoperation*/)
-{
-	ASSERT(m_SendMail);
-	SetWindowTitle(IDS_PROGRS_TITLE_SENDMAIL, g_Git.CombinePath(m_targetPathList.GetCommonRoot().GetUIPathString()), sWindowTitle);
-	//SetBackgroundImage(IDI_ADD_BKG);
-	ReportCmd(CString(MAKEINTRESOURCE(IDS_PROGRS_CMD_SENDMAIL)));
-
-	return m_SendMail->Send(m_targetPathList, this) == 0;
-}
-
-bool CGitProgressList::CmdFetch(CString& sWindowTitle, bool& /*localoperation*/)
-{
-	if (!g_Git.UsingLibGit2(CGit::GIT_CMD_FETCH))
-	{
-		// should never run to here
-		ASSERT(0);
-		return false;
-	}
-	this->m_TotalBytesTransferred = 0;
-
-	SetWindowTitle(IDS_PROGRS_TITLE_FETCH, g_Git.m_CurrentDir, sWindowTitle);
-	SetBackgroundImage(IDI_UPDATE_BKG);
-	ReportCmd(CString(MAKEINTRESOURCE(IDS_PROGRS_TITLE_FETCH)) + _T(" ") + m_url.GetGitPathString() + _T(" ") + m_RefSpec);
-
-	CStringA url = CUnicodeUtils::GetMulti(m_url.GetGitPathString(), CP_UTF8);
-
-	CSmartAnimation animate(m_pAnimate);
-
-	CAutoRepository repo(g_Git.GetGitRepository());
-	if (!repo)
-	{
-		ReportGitError();
-		return false;
-	}
-
-	CAutoRemote remote;
-	// first try with a named remote (e.g. "origin")
-	if (git_remote_load(remote.GetPointer(), repo, url) < 0) 
-	{
-		// retry with repository located at a specific url
-		if (git_remote_create_anonymous(remote.GetPointer(), repo, url, nullptr) < 0)
-		{
-			ReportGitError();
-			return false;
-		}
-	}
-
-	git_remote_callbacks callbacks = GIT_REMOTE_CALLBACKS_INIT;
-	callbacks.update_tips = RemoteUpdatetipsCallback;
-	callbacks.sideband_progress = RemoteProgressCallback;
-	callbacks.transfer_progress = FetchCallback;
-	callbacks.completion = RemoteCompletionCallback;
-	callbacks.credentials = CAppUtils::Git2GetUserPassword;
-	callbacks.payload = this;
-
-	git_remote_set_callbacks(remote, &callbacks);
-	git_remote_set_autotag(remote, (git_remote_autotag_option_t)m_AutoTag);
-
-	if (!m_RefSpec.IsEmpty() && git_remote_add_fetch(remote, CUnicodeUtils::GetUTF8(m_RefSpec)))
-		goto error;
-
-	// Connect to the remote end specifying that we want to fetch
-	// information from it.
-	if (git_remote_connect(remote, GIT_DIRECTION_FETCH) < 0)
-		goto error;
-
-	// Download the packfile and index it. This function updates the
-	// amount of received data and the indexer stats which lets you
-	// inform the user about progress.
-	if (git_remote_download(remote) < 0)
-		goto error;
-
-	// Update the references in the remote's namespace to point to the
-	// right commits. This may be needed even if there was no packfile
-	// to download, which can happen e.g. when the branches have been
-	// changed but all the neede objects are available locally.
-	if (git_remote_update_tips(remote, nullptr, nullptr) < 0)
-		goto error;
-
-	git_remote_disconnect(remote);
-
-	return true;
-
-error:
-	ReportGitError();
-	return false;
-}
-
-bool CGitProgressList::CmdReset(CString& sWindowTitle, bool& /*localoperation*/)
-{
-	if (!g_Git.UsingLibGit2(CGit::GIT_CMD_RESET))
-	{
-		// should never run to here
-		ASSERT(0);
-		return false;
-	}
-
-	SetWindowTitle(IDS_PROGRS_TITLE_RESET, g_Git.m_CurrentDir, sWindowTitle);
-	SetBackgroundImage(IDI_UPDATE_BKG);
-	int resetTypesResource[] = { IDS_RESET_SOFT, IDS_RESET_MIXED, IDS_RESET_HARD };
-	ReportCmd(CString(MAKEINTRESOURCE(IDS_PROGRS_TITLE_RESET)) + _T(" ") + CString(MAKEINTRESOURCE(resetTypesResource[m_resetType])) + _T(" ") + m_revision);
-
-	ShowProgressBar();
-	CAutoRepository repo(g_Git.GetGitRepository());
-	if (!repo)
-	{
-		ReportGitError();
-		return false;
-	}
-
-	CAutoObject target;
-	if (git_revparse_single(target.GetPointer(), repo, CUnicodeUtils::GetUTF8(m_revision)))
-		goto error;
-	if (git_reset(repo, target, (git_reset_t)(m_resetType + 1), nullptr, nullptr))
-		goto error;
-
-	return true;
-
-error:
-	ReportGitError();
-	return false;
-}
-
 
 void CGitProgressList::Init()
 {

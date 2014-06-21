@@ -31,6 +31,7 @@
 #include "hooks.h"
 #include "SmartHandle.h"
 #include "SoundUtils.h"
+#include "ProgressCommands/FetchProgressCommand.h"
 
 // CSyncDlg dialog
 
@@ -251,9 +252,11 @@ void CSyncDlg::OnBnClickedButtonPull()
 			CString refspec;
 			// current libgit2 only supports well formated refspec
 			refspec.Format(_T("refs/heads/%s:refs/remotes/%s/%s"), m_strRemoteBranch, m_strURL, m_strRemoteBranch);
-			m_GitProgressList.SetUrl(m_strURL);
-			m_GitProgressList.SetRefSpec(refspec);
-			m_GitProgressList.SetCommand(CGitProgressList::GitProgress_Fetch);
+
+			FetchProgressCommand fetchProgressCommand;
+			fetchProgressCommand.SetUrl(m_strURL);
+			fetchProgressCommand.SetRefSpec(refspec);
+			m_GitProgressList.SetCommand(&fetchProgressCommand);
 			m_GitProgressList.Init();
 			ShowTab(IDC_CMD_GIT_PROG);
 		}

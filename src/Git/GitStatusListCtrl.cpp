@@ -42,6 +42,7 @@
 #include "ShellUpdater.h"
 #include "GitAdminDir.h"
 #include "DropFiles.h"
+#include "ProgressCommands/AddProgressCommand.h"
 #include "IconMenu.h"
 #include "FormatMessageWrapper.h"
 #include "BrowseFolder.h"
@@ -2006,8 +2007,9 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					FillListOfSelectedItemPaths(paths, true);
 
 					CGitProgressDlg progDlg;
-					progDlg.SetCommand(CGitProgressList::GitProgress_Add);
-					progDlg.SetPathList(paths);
+					AddProgressCommand addCommand;
+					progDlg.SetCommand(&addCommand);
+					addCommand.SetPathList(paths);
 					progDlg.SetItemCount(paths.GetCount());
 					progDlg.DoModal();
 

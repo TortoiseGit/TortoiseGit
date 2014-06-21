@@ -153,6 +153,9 @@
     <Filter Include="Commands\AutoTextTest">
       <UniqueIdentifier>{9baf680f-fe31-4b6d-bd01-50b7a2c043b8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Utility Dialogs\ProgressCommands">
+      <UniqueIdentifier>{7f759aba-0396-4af9-bdbe-45a4a6475536}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AddRemoteDlg.cpp">
@@ -686,6 +689,27 @@
     <ClCompile Include="BugtraqRegexTestDlg.cpp">
       <Filter>Commands\setting</Filter>
     </ClCompile>
+    <ClCompile Include="ProgressCommands\CloneProgressCommand.cpp">
+      <Filter>Utility Dialogs\ProgressCommands</Filter>
+    </ClCompile>
+    <ClCompile Include="ProgressCommands\AddProgressCommand.cpp">
+      <Filter>Utility Dialogs\ProgressCommands</Filter>
+    </ClCompile>
+    <ClCompile Include="ProgressCommands\ResolveProgressCommand.cpp">
+      <Filter>Utility Dialogs\ProgressCommands</Filter>
+    </ClCompile>
+    <ClCompile Include="ProgressCommands\RevertProgressCommand.cpp">
+      <Filter>Utility Dialogs\ProgressCommands</Filter>
+    </ClCompile>
+    <ClCompile Include="ProgressCommands\ResetProgressCommand.cpp">
+      <Filter>Utility Dialogs\ProgressCommands</Filter>
+    </ClCompile>
+    <ClCompile Include="ProgressCommands\FetchProgressCommand.cpp">
+      <Filter>Utility Dialogs\ProgressCommands</Filter>
+    </ClCompile>
+    <ClCompile Include="ProgressCommands\SendMailProgressCommand.cpp">
+      <Filter>Utility Dialogs\ProgressCommands</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddRemoteDlg.h">
@@ -1215,6 +1239,30 @@
     </ClInclude>
     <ClInclude Include="BstrSafeVector.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="ProgressCommands\AddProgressCommand.h">
+      <Filter>Utility Dialogs\ProgressCommands</Filter>
+    </ClInclude>
+    <ClInclude Include="ProgressCommands\ResolveProgressCommand.h">
+      <Filter>Utility Dialogs\ProgressCommands</Filter>
+    </ClInclude>
+    <ClInclude Include="ProgressCommands\RevertProgressCommand.h">
+      <Filter>Utility Dialogs\ProgressCommands</Filter>
+    </ClInclude>
+    <ClInclude Include="ProgressCommands\CloneProgressCommand.h">
+      <Filter>Utility Dialogs\ProgressCommands</Filter>
+    </ClInclude>
+    <ClInclude Include="ProgressCommands\ResetProgressCommand.h">
+      <Filter>Utility Dialogs\ProgressCommands</Filter>
+    </ClInclude>
+    <ClInclude Include="ProgressCommands\FetchProgressCommand.h">
+      <Filter>Utility Dialogs\ProgressCommands</Filter>
+    </ClInclude>
+    <ClInclude Include="ProgressCommands\SendMailProgressCommand.h">
+      <Filter>Utility Dialogs\ProgressCommands</Filter>
+    </ClInclude>
+    <ClInclude Include="ProgressCommands\RemoteProgressCommand.h">
+      <Filter>Utility Dialogs\ProgressCommands</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
