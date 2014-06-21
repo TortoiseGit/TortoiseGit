@@ -1457,13 +1457,28 @@ void CGitProgressList::OnContextMenu(CWnd* pWnd, CPoint point)
 						break;
 					case ID_EXPLORE:
 						{
-							if (data)
+							if (!data)
+								return;
+							CString p = GetPathFromColumnText(data->sPathColumnText);
+							if (PathFileExists(p))
 							{
-								CString sPath = GetPathFromColumnText(data->sPathColumnText);
-
-								CTGitPath path = CTGitPath(sPath);
-								ShellExecute(m_hWnd, _T("explore"), path.GetDirectory().GetWinPath(), NULL, path.GetDirectory().GetWinPath(), SW_SHOW);
+								ITEMIDLIST __unaligned * pidl = ILCreateFromPath(p);
+								if (pidl)
+								{
+									SHOpenFolderAndSelectItems(pidl, 0, 0, 0);
+									ILFree(pidl);
+								}
+								break;
 							}
+							// if filepath does not exist any more, navigate to closest matching folder
+							do
+							{
+								int pos = p.ReverseFind(_T('\\'));
+								if (pos <= 3)
+									break;
+								p = p.Left(pos);
+							} while (!PathFileExists(p));
+							ShellExecute(GetSafeHwnd(), _T("explore"), p, nullptr, nullptr, SW_SHOW);
 						}
 						break;
 #if 0
