@@ -2463,21 +2463,22 @@ bool CAppUtils::Push(CString selectLocalBranch)
 {
 	CPushDlg dlg;
 	dlg.m_BranchSourceName = selectLocalBranch;
-	CString error;
-	DWORD exitcode = 0xFFFFFFFF;
-	if (CHooks::Instance().PrePush(g_Git.m_CurrentDir, exitcode, error))
-	{
-		if (exitcode)
-		{
-			CString temp;
-			temp.Format(IDS_ERR_HOOKFAILED, (LPCTSTR)error);
-			CMessageBox::Show(NULL,temp,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
-			return false;
-		}
-	}
 
-	if(dlg.DoModal()==IDOK)
+	if (dlg.DoModal() == IDOK)
 	{
+		CString error;
+		DWORD exitcode = 0xFFFFFFFF;
+		if (CHooks::Instance().PrePush(g_Git.m_CurrentDir, exitcode, error))
+		{
+			if (exitcode)
+			{
+				CString temp;
+				temp.Format(IDS_ERR_HOOKFAILED, (LPCTSTR)error);
+				CMessageBox::Show(nullptr, temp, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+				return false;
+			}
+		}
+
 		CString arg;
 
 		if(dlg.m_bPack)
