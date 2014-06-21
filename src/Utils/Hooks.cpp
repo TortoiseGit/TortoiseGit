@@ -420,6 +420,7 @@ DWORD CHooks::RunScript(CString cmd, LPCTSTR currentDir, CString& error, bool bW
 					break;
 				error += CString(CStringA(buf,dw));
 			}
+			Sleep(150);
 		} while (WaitForSingleObject(pi.hProcess, 0) != WAIT_OBJECT_0);
 
 		// perform any final flushing
