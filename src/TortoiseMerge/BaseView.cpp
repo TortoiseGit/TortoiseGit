@@ -4413,7 +4413,7 @@ void CBaseView::BuildFindStringArray()
 
 			if (!line.IsEmpty())
 			{
-				switch (m_pViewData->GetState(i))
+				switch (m_pViewData->GetState(GetViewLineForScreen(i)))
 				{
 				case DIFFSTATE_EMPTY:
 					m_arFindStringLines.push_back(0);
