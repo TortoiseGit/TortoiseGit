@@ -7712,6 +7712,10 @@ msgstr ""
 msgid "SVN Rebase"
 msgstr ""
 
+#. Resource IDs: (1256)
+msgid "SVN Rev"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Sa&feCrLf:"
 msgstr ""

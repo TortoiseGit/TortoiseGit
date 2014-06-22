@@ -114,6 +114,7 @@
 #define IDC_EDIT_FILTER                 20091
 #define IDS_DELETE_BRANCHTAG_SHORT      20092
 #define IDC_CHECK_REGEX					20093
+#define IDS_LOG_SVNREV                  20094
 #define IDD_FIND                        20100
 #define IDS_CHERRY_PICK_VERSIONS        20101
 
