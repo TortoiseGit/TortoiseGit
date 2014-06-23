@@ -4478,7 +4478,9 @@ bool CBaseView::GetInlineDiffPositions(int nViewLine, std::vector<inlineDiffPos>
 	if ((m_pwndBottom != NULL) && !(m_pwndBottom->IsHidden()))
 		return false;
 
-	CString sLine = GetViewLineChars(nViewLine);
+	if (m_pViewData == nullptr || m_pViewData->GetCount() <= nViewLine)
+		return false;
+	const CString &sLine = m_pViewData->GetLine(nViewLine);
 	if (sLine.IsEmpty())
 		return false;
 
@@ -4486,14 +4488,12 @@ bool CBaseView::GetInlineDiffPositions(int nViewLine, std::vector<inlineDiffPos>
 	if (!m_pOtherViewData)
 		return false;
 
-	CString sDiffLine = m_pOtherViewData->GetLine(nViewLine);
+	const CString &sDiffLine = m_pOtherViewData->GetLine(nViewLine);
 	if (sDiffLine.IsEmpty())
 		return false;
 
-	CString sLineExp = ExpandChars(sLine);
-	CString sDiffLineExp = ExpandChars(sDiffLine);
 	svn_diff_t * diff = NULL;
-	m_svnlinediff.Diff(&diff, sLineExp, sLineExp.GetLength(), sDiffLineExp, sDiffLineExp.GetLength(), m_bInlineWordDiff);
+	m_svnlinediff.Diff(&diff, sLine, sLine.GetLength(), sDiffLine, sDiffLine.GetLength(), m_bInlineWordDiff);
 	if (!diff || !SVNLineDiff::ShowInlineDiff(diff))
 		return false;
 
