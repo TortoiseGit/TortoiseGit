@@ -3281,7 +3281,11 @@ void CGitStatusListCtrl::OnNMReturn(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 	while ( pos )
 	{
 		int index = GetNextSelectedItem(pos);
+		if (index < 0)
+			return;
 		CTGitPath *file=(CTGitPath*)GetItemData(index);
+		if (file == nullptr)
+			return;
 		if (file->m_Action & (CTGitPath::LOGACTIONS_UNVER | CTGitPath::LOGACTIONS_IGNORE))
 		{
 			OpenFile(file, OPEN);
