@@ -11,6 +11,7 @@ Released: unreleased
  * Fixed issue #1951: Slow switch/checkout dialog
  * Fixed issue #2064: Broken characters when dragging the horizontal bar in TortoiseGitMerge
  * Fixed issue #2143: PowerShell not working in git hooks
+ * Fixed issue #2222: 'Prune' in the pull dialog does not work
 
 = Release 1.8.9.0 =
 Released: 2014-06-09
