@@ -12,6 +12,7 @@ Released: unreleased
  * Fixed issue #2064: Broken characters when dragging the horizontal bar in TortoiseGitMerge
  * Fixed issue #2143: PowerShell not working in git hooks
  * Fixed issue #2222: 'Prune' in the pull dialog does not work
+ * Fixed issue #2223: Move & revert operations not as expected if working tree root is directly on a drive
 
 = Release 1.8.9.0 =
 Released: 2014-06-09
