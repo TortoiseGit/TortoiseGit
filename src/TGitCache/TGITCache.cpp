@@ -227,8 +227,6 @@ int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR lp
 
 	if (!hPipeThread)
 	{
-		//OutputDebugStringA("TGitCache: Could not create pipe thread\n");
-		//DebugOutputLastError();
 		return 0;
 	}
 	else hPipeThread.CloseHandle();
@@ -244,8 +242,6 @@ int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR lp
 
 	if (!hCommandWaitThread)
 	{
-		//OutputDebugStringA("TGitCache: Could not create command wait thread\n");
-		//DebugOutputLastError();
 		return 0;
 	}
 
@@ -519,8 +515,6 @@ DWORD WINAPI PipeThread(LPVOID lpvParam)
 
 		if (!hPipe)
 		{
-			//OutputDebugStringA("TGitCache: CreatePipe failed\n");
-			//DebugOutputLastError();
 			if (*bRun)
 				Sleep(200);
 			continue; // never leave the thread!
@@ -543,8 +537,6 @@ DWORD WINAPI PipeThread(LPVOID lpvParam)
 
 			if (!hInstanceThread)
 			{
-				//OutputDebugStringA("TGitCache: Could not create Instance thread\n");
-				//DebugOutputLastError();
 				DisconnectNamedPipe(hPipe);
 				// since we're now closing this thread, we also have to close the whole application!
 				// otherwise the thread is dead, but the app is still running, refusing new instances
@@ -558,8 +550,6 @@ DWORD WINAPI PipeThread(LPVOID lpvParam)
 		else
 		{
 			// The client could not connect, so close the pipe.
-			//OutputDebugStringA("TGitCache: ConnectNamedPipe failed\n");
-			//DebugOutputLastError();
 			hPipe.CloseHandle();
 			if (*bRun)
 				Sleep(200);
@@ -598,8 +588,6 @@ DWORD WINAPI CommandWaitThread(LPVOID lpvParam)
 
 		if (!hPipe)
 		{
-			//OutputDebugStringA("TGitCache: CreatePipe failed\n");
-			//DebugOutputLastError();
 			if (*bRun)
 				Sleep(200);
 			continue; // never leave the thread!
@@ -622,8 +610,6 @@ DWORD WINAPI CommandWaitThread(LPVOID lpvParam)
 
 			if (!hCommandThread)
 			{
-				//OutputDebugStringA("TGitCache: Could not create Command thread\n");
-				//DebugOutputLastError();
 				DisconnectNamedPipe(hPipe);
 				hPipe.CloseHandle();
 				// since we're now closing this thread, we also have to close the whole application!
@@ -638,8 +624,6 @@ DWORD WINAPI CommandWaitThread(LPVOID lpvParam)
 		else
 		{
 			// The client could not connect, so close the pipe.
-			//OutputDebugStringA("TGitCache: ConnectNamedPipe failed\n");
-			//DebugOutputLastError();
 			hPipe.CloseHandle();
 			if (*bRun)
 				Sleep(200);
