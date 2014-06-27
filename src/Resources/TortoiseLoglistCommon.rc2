@@ -24,6 +24,7 @@ BEGIN
     IDS_LOG_EMAIL           "Email"
     IDS_LOG_DATE            "Date"
     IDS_LOG_BUGIDS          "Bug-ID"
+    IDS_LOG_SVNREV          "SVN Rev"
     IDS_LOG_ID              "ID"
     IDS_LOG_HASH            "SHA-1"
     IDS_LOG_POPUP_COMPARE   "Compare with &working tree"

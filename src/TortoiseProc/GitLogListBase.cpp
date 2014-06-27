@@ -379,6 +379,7 @@ void CGitLogListBase::InsertGitColumn()
 		IDS_LOG_COMMIT_EMAIL,
 		IDS_LOG_COMMIT_DATE,
 		IDS_LOG_BUGIDS,
+		IDS_LOG_SVNREV,
 	};
 
 	static int with[] =
@@ -389,6 +390,7 @@ void CGitLogListBase::InsertGitColumn()
 		ICONITEMBORDER+16*4,
 		ICONITEMBORDER+16*4,
 		LOGLIST_MESSAGE_MIN,
+		ICONITEMBORDER+16*4,
 		ICONITEMBORDER+16*4,
 		ICONITEMBORDER+16*4,
 		ICONITEMBORDER+16*4,
@@ -428,6 +430,10 @@ void CGitLogListBase::InsertGitColumn()
 	{
 		hideColumns |= GIT_LOGLIST_BUG;
 	}
+	if (CTGitPath(g_Git.m_CurrentDir).HasGitSVNDir())
+		m_dwDefaultColumns |= GIT_LOGLIST_SVNREV;
+	else
+		hideColumns |= GIT_LOGLIST_SVNREV;
 	SetRedraw(false);
 
 	m_ColumnManager.SetNames(normal, _countof(normal));
@@ -1500,6 +1506,36 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 	*pResult = CDRF_DODEFAULT;
 }
 
+CString FindSVNRev(const CString& msg)
+{
+	try
+	{
+		const std::tr1::wsregex_iterator end;
+		std::wstring s = msg;
+		for (std::tr1::wsregex_iterator it(s.begin(), s.end(), std::tr1::wregex(_T("^\\s*git-svn-id:\\s+(.*)\\@(\\d+)\\s([a-f\\d\\-]+)$"))); it != end; ++it)
+		{
+			const std::tr1::wsmatch match = *it;
+			if (match.size() == 4)
+			{
+				ATLTRACE(_T("matched rev: %s\n"), std::wstring(match[2]).c_str());
+				return std::wstring(match[2]).c_str();
+			}
+		}
+		for (std::tr1::wsregex_iterator it(s.begin(), s.end(), std::tr1::wregex(_T("^\\s*git-svn-id:\\s(\\d+)\\@([a-f\\d\\-]+"))); it != end; ++it)
+		{
+			const std::tr1::wsmatch match = *it;
+			if (match.size() == 3)
+			{
+				ATLTRACE(_T("matched rev: %s\n"), std::wstring(match[1]).c_str());
+				return std::wstring(match[1]).c_str();
+			}
+		}
+	}
+	catch (std::exception) {}
+
+	return _T("");
+}
+
 // CGitLogListBase message handlers
 
 void CGitLogListBase::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
@@ -1599,6 +1635,10 @@ void CGitLogListBase::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 	case this->LOGLIST_BUG: //Bug ID
 		if(pLogEntry)
 			lstrcpyn(pItem->pszText, (LPCTSTR)this->m_ProjectProperties.FindBugID(pLogEntry->GetSubject() + _T("\r\n\r\n") + pLogEntry->GetBody()), pItem->cchTextMax);
+		break;
+	case this->LOGLIST_SVNREV: //SVN revision
+		if (pLogEntry)
+			lstrcpyn(pItem->pszText, (LPCTSTR)FindSVNRev(pLogEntry->GetSubject() + _T("\r\n\r\n") + pLogEntry->GetBody()), pItem->cchTextMax);
 		break;
 
 	default:
