@@ -2053,7 +2053,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 
 			case IDGITLC_BLAME:
 				{
-					CAppUtils::LaunchTortoiseBlame(g_Git.m_CurrentDir+_T("\\")+filepath->GetWinPath(), m_CurrentVersion);
+					CAppUtils::LaunchTortoiseBlame(g_Git.CombinePath(filepath), m_CurrentVersion);
 				}
 				break;
 
@@ -2305,7 +2305,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 									&& (!(entry->m_Action& CTGitPath::LOGACTIONS_REPLACED)) && !entry->IsDirectory())
 							{
 								CTGitPath fullpath;
-								fullpath.SetFromWin(g_Git.m_CurrentDir+_T("\\")+entry->GetWinPath());
+								fullpath.SetFromWin(g_Git.CombinePath(entry));
 								delList.AddPath(fullpath);
 							}
 						}
@@ -2970,7 +2970,7 @@ CString CGitStatusListCtrl::GetCommonDirectory(bool bStrict)
 			}
 		}
 	}
-	return g_Git.m_CurrentDir+CString(_T("\\"))+commonBaseDirectory.GetWinPath();
+	return g_Git.CombinePath(commonBaseDirectory);
 }
 
 
@@ -4346,7 +4346,7 @@ void CGitStatusListCtrl::FileSaveAs(CTGitPath *path)
 		filename = dlg.GetPathName();
 		if(m_CurrentVersion == GIT_REV_ZERO)
 		{
-			if(!CopyFile(g_Git.m_CurrentDir +_T("\\") + path->GetWinPath(),filename,false))
+			if(!CopyFile(g_Git.CombinePath(path), filename, false))
 			{
 				MessageBox(CFormatMessageWrapper(), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 				return;

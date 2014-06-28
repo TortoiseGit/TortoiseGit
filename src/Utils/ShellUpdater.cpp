@@ -119,7 +119,7 @@ void CShellUpdater::UpdateShell()
 			CTGitPath path;
 			for(int nPath = 0; nPath < m_pathsForUpdating.GetCount(); ++nPath)
 			{
-				path.SetFromWin(g_Git.m_CurrentDir+_T("\\")+m_pathsForUpdating[nPath].GetWinPathString());
+				path.SetFromWin(g_Git.CombinePath(m_pathsForUpdating[nPath]));
 				CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Cache Item Update for %s (%d)\n"), path.GetWinPathString(), GetTickCount());
 				if (!path.IsDirectory())
 				{

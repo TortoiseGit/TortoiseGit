@@ -1490,7 +1490,7 @@ void CAppUtils::RemoveTempMergeFile(CTGitPath &path)
 CString CAppUtils::GetMergeTempFile(CString type,CTGitPath &merge)
 {
 	CString file;
-	file=g_Git.m_CurrentDir+_T("\\") + merge.GetWinPathString()+_T(".")+type+merge.GetFileExtension();
+	file = g_Git.CombinePath(merge.GetWinPathString() + _T(".") + type + merge.GetFileExtension());
 
 	return file;
 }
@@ -1653,7 +1653,7 @@ bool CAppUtils::ConflictEdit(CTGitPath& path, bool /*bAlternativeTool = false*/,
 
 	if(b_local && b_remote )
 	{
-		merge.SetFromWin(g_Git.m_CurrentDir+_T("\\")+merge.GetWinPathString());
+		merge.SetFromWin(g_Git.CombinePath(merge));
 		if( revertTheirMy )
 			bRet = !!CAppUtils::StartExtMerge(base, mine, theirs, merge, _T("BASE"), _T("REMOTE"), _T("LOCAL"), CString(), false, resolveMsgHwnd);
 		else

@@ -63,7 +63,7 @@ int CGitDiff::SubmoduleDiffNull(const CTGitPath * pPath, const git_revnum_t &rev
 			newhash=output.Mid(start+1, 40);
 
 		CGit subgit;
-		subgit.m_CurrentDir=g_Git.m_CurrentDir+_T("\\")+pPath->GetWinPathString();
+		subgit.m_CurrentDir = g_Git.CombinePath(pPath);
 		int encode=CAppUtils::GetLogOutputEncode(&subgit);
 
 		cmd.Format(_T("git.exe log -n1  --pretty=format:\"%%s\" %s --"), newhash);
@@ -146,7 +146,7 @@ int CGitDiff::DiffNull(const CTGitPath *pPath, git_revnum_t rev1, bool bIsAdd, i
 	}
 	else
 	{
-		file1=g_Git.m_CurrentDir+_T("\\")+pPath->GetWinPathString();
+		file1 = g_Git.CombinePath(pPath);
 	}
 
 	// preserve FileExtension, needed especially for diffing deleted images (detection on new filename extension)
@@ -274,7 +274,7 @@ int CGitDiff::SubmoduleDiff(const CTGitPath * pPath, const CTGitPath * /*pPath2*
 	bool oldOK = false, newOK = false;
 
 	CGit subgit;
-	subgit.m_CurrentDir=g_Git.m_CurrentDir+_T("\\")+pPath->GetWinPathString();
+	subgit.m_CurrentDir = g_Git.CombinePath(pPath);
 	CSubmoduleDiffDlg::ChangeType changeType = CSubmoduleDiffDlg::Unknown;
 
 	if(pPath->HasAdminDir())
@@ -472,7 +472,7 @@ int CGitDiff::Diff(const CTGitPath * pPath, const CTGitPath * pPath2, git_revnum
 	}
 	else
 	{
-		file2=g_Git.m_CurrentDir+_T("\\")+pPath2->GetWinPathString();
+		file2 = g_Git.CombinePath(pPath2);
 		title2.Format( IDS_DIFF_WCNAME, pPath2->GetFileOrDirectoryName() );
 	}
 
