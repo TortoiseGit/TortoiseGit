@@ -652,10 +652,9 @@ void CCommitDlg::OnOK()
 	{
 		/*
 			Do not use the libgit2 implementation right now, since it has several flaws:
-			* https://github.com/libgit2/libgit2/issues/1397: crlf issue
 			* http://code.google.com/p/tortoisegit/issues/detail?id=1690: possible access denied problem
-			* https://github.com/libgit2/libgit2/pull/1291: git.exe path is searched again and again
-			* changes to x-bit are not correctly committed
+			* https://code.google.com/p/tortoisegit/issues/detail?id=2224: filters not correctly applied
+			* changes to x-bit are not correctly committed, since we reset the index
 		*/
 		bAddSuccess = false;
 		do
