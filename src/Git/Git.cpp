@@ -174,7 +174,7 @@ CGit::CGit(void)
 	m_GitSimpleListDiff=0;
 	m_IsUseGitDLL = !!CRegDWORD(_T("Software\\TortoiseGit\\UsingGitDLL"),1);
 	m_IsUseLibGit2 = !!CRegDWORD(_T("Software\\TortoiseGit\\UseLibgit2"), TRUE);
-	m_IsUseLibGit2_mask = CRegDWORD(_T("Software\\TortoiseGit\\UseLibgit2_mask"), (1 << GIT_CMD_MERGE_BASE) | (1 << GIT_CMD_DELETETAGBRANCH) | (1 << GIT_CMD_GETONEFILE));
+	m_IsUseLibGit2_mask = CRegDWORD(_T("Software\\TortoiseGit\\UseLibgit2_mask"), (1 << GIT_CMD_MERGE_BASE) | (1 << GIT_CMD_DELETETAGBRANCH) | (1 << GIT_CMD_GETONEFILE) | (1 << GIT_CMD_ADD));
 
 	SecureZeroMemory(&m_CurrentGitPi, sizeof(PROCESS_INFORMATION));
 

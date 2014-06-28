@@ -1731,7 +1731,7 @@ bool CGitProgressList::CmdAdd(CString& sWindowTitle, bool& localoperation)
 
 	m_itemCountTotal = m_targetPathList.GetCount();
 
-	if (CRegDWORD(_T("Software\\TortoiseGit\\UseLibgit2"), TRUE) == TRUE)
+	if (g_Git.UsingLibGit2(CGit::GIT_CMD_ADD))
 	{
 		CAutoRepository repo(g_Git.GetGitRepository());
 		if (!repo)
