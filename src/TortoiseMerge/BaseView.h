@@ -272,6 +272,10 @@ public: // variables
 	UnicodeType		GetTextType() { return m_texttype; }
 	void			SetTextType(UnicodeType);									///< Changes TextType
 	void			AskUserForNewLineEndingsAndTextType(int);					///< Open gui
+	int				GetTabMode() { return m_nTabMode; }
+	void			SetTabMode(int nTabMode) { m_nTabMode = nTabMode; }
+	int				GetTabSize() { return m_nTabSize; }
+	void			SetTabSize(int nTabSize) { m_nTabSize = nTabSize; }
 
 	CWorkingFile * m_pWorkingFile; ///< pointer to source/destination file parametrers
 

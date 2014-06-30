@@ -262,6 +262,19 @@ void CBaseView::DocumentUpdated()
 	Invalidate();
 }
 
+static CString GetTabModeString(int nTabMode, int nTabSize)
+{
+	CString text;
+	if (nTabMode & TABMODE_USESPACES)
+		text = L"Space";
+	else
+		text = L"Tab";
+	text.AppendFormat(L" %d", nTabSize);
+	if (nTabMode & TABMODE_SMARTINDENT)
+		text += L" Smart";
+	return text;
+}
+
 void CBaseView::UpdateStatusBar()
 {
 	int nRemovedLines = 0;
@@ -380,6 +393,9 @@ void CBaseView::UpdateStatusBar()
 				pButton = new CMFCRibbonButton(ID_INDICATOR_BOTTOMVIEWCOMBOEOL, L"");
 				m_pMainFrame->FillEOLButton(pButton, ID_INDICATOR_BOTTOMEOLSTART);
 				apBtnGroupBottom->AddButton(pButton);
+				pButton = new CMFCRibbonButton(ID_INDICATOR_BOTTOMVIEWCOMBOTABMODE, L"");
+				m_pMainFrame->FillEOLButton(pButton, ID_INDICATOR_BOTTOMTABMODESTART);
+				apBtnGroupBottom->AddButton(pButton);
 				apBtnGroupBottom->AddButton(new CMFCRibbonStatusBarPane(ID_INDICATOR_BOTTOMVIEW, L"", TRUE));
 				m_pwndRibbonStatusBar->AddExtendedElement(apBtnGroupBottom.release(), L"");
 			}
@@ -387,7 +403,7 @@ void CBaseView::UpdateStatusBar()
 			CMFCRibbonButtonsGroup * pGroup = DYNAMIC_DOWNCAST(CMFCRibbonButtonsGroup, m_pwndRibbonStatusBar->FindByID(m_nStatusBarID));
 			if (pGroup)
 			{
-				CMFCRibbonStatusBarPane* pPane = DYNAMIC_DOWNCAST(CMFCRibbonStatusBarPane, pGroup->GetButton(3));
+				CMFCRibbonStatusBarPane* pPane = DYNAMIC_DOWNCAST(CMFCRibbonStatusBarPane, pGroup->GetButton(4));
 				if (pPane)
 				{
 					pPane->SetText(sBarText);
@@ -403,6 +419,12 @@ void CBaseView::UpdateStatusBar()
 				{
 					pButton->SetText(GetEolName(m_lineendings));
 					pButton->SetDescription(GetEolName(m_lineendings));
+				}
+				pButton = DYNAMIC_DOWNCAST(CMFCRibbonButton, pGroup->GetButton(3));
+				if (pButton)
+				{
+					pButton->SetText(GetTabModeString(m_nTabMode, m_nTabSize));
+					pButton->SetDescription(GetTabModeString(m_nTabMode, m_nTabSize));
 				}
 			}
 			m_pwndRibbonStatusBar->RecalcLayout();
