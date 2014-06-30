@@ -62,6 +62,7 @@
 #include "ReflogCommand.h"
 #include "SendMailCommand.h"
 #include "CatCommand.h"
+#include "GetOneFileCommand.h"
 #include "RefBrowseCommand.h"
 #include "SVNDCommitCommand.h"
 #include "SVNRebaseCommand.h"
@@ -121,6 +122,7 @@ typedef enum
 	cmdFetch,
 	cmdFormatPatch,
 	cmdExport,
+	cmdGetOneFile,
 	cmdHelp,
 	cmdIgnore,
 	cmdImportPatch,
@@ -195,6 +197,7 @@ static const struct CommandInfo
 	{	cmdFetch,			_T("fetch")				},
 	{	cmdFormatPatch,		_T("formatpatch")		},
 	{	cmdExport,			_T("export")			},
+	{	cmdGetOneFile,		_T("getonefile")		},
 	{	cmdHelp,			_T("help")				},
 	{	cmdIgnore,			_T("ignore")			},
 	{	cmdImportPatch,		_T("importpatch")		},
@@ -350,6 +353,8 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new SendMailCommand;
 	case cmdCat:
 		return new CatCommand;
+	case cmdGetOneFile:
+		return new GetOneFileCommand;
 	case cmdRefBrowse:
 		return new RefBrowseCommand;
 	case cmdSVNDCommit:
