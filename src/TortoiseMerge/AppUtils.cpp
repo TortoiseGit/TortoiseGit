@@ -51,7 +51,7 @@ BOOL CAppUtils::GetVersionedFile(CString sPath, CString sVersion, CString sSaveP
 	{
 		// no path set, so use TortoiseGit as default
 		sSCMPath = CPathUtils::GetAppDirectory() + _T("TortoiseGitProc.exe");
-		sSCMPath += _T(" /command:cat /path:\"%1\" /revision:%2 /savepath:\"%3\" /hwnd:%4");
+		sSCMPath += _T(" /command:getonefile /path:\"%1\" /revision:%2 /savepath:\"%3\" /hwnd:%4");
 	}
 	CString sTemp;
 	sTemp.Format(_T("%p"), (void*)hWnd);
