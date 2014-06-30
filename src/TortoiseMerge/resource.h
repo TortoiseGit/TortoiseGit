@@ -174,6 +174,7 @@
 #define IDC_DESCRIPTION                 1095
 #define IDC_FIXEOLS                     1096
 #define IDC_RESTORE                     1097
+#define IDC_SMARTTABCHAR                1098
 #define IDS_ERR_FILE_OPEN               1100
 #define IDS_ERR_FILE_BINARY             1101
 #define IDS_ERR_FILE_NOTAFILE           1102
@@ -422,8 +423,6 @@
 #define ID_BUTTON17                     32971
 #define ID_EDIT_ENABLE                  32976
 #define ID_FILE_ENABLEEDIT              32978
-#define ID_EDIT_TABSPACE                32979
-#define ID_EDIT_SMARTTAB                32980
 #define ID_BUTTON3                      32981
 
 // Next default values for new objects

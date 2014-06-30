@@ -110,10 +110,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_INLINEDIFF, &CMainFrame::OnUpdateViewInlinediff)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_CREATEUNIFIEDDIFFFILE, &CMainFrame::OnUpdateEditCreateunifieddifffile)
 	ON_COMMAND(ID_EDIT_CREATEUNIFIEDDIFFFILE, &CMainFrame::OnEditCreateunifieddifffile)
-	ON_UPDATE_COMMAND_UI(ID_EDIT_TABSPACE, &CMainFrame::OnUpdateEditTabspace)
-	ON_COMMAND(ID_EDIT_TABSPACE, &CMainFrame::OnEditTabspace)
-	ON_UPDATE_COMMAND_UI(ID_EDIT_SMARTTAB, &CMainFrame::OnUpdateEditSmartTab)
-	ON_COMMAND(ID_EDIT_SMARTTAB, &CMainFrame::OnEditSmartTab)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_LINEDIFFBAR, &CMainFrame::OnUpdateViewLinediffbar)
 	ON_COMMAND(ID_VIEW_LINEDIFFBAR, &CMainFrame::OnViewLinediffbar)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_LOCATORBAR, &CMainFrame::OnUpdateViewLocatorbar)
@@ -221,7 +217,6 @@ CMainFrame::CMainFrame()
 	, m_regUseTaskDialog(L"Software\\TortoiseGitMerge\\UseTaskDialog", TRUE)
 	, m_regIgnoreComments(_T("Software\\TortoiseGitMerge\\IgnoreComments"), FALSE)
 	, m_regexIndex(-1)
-	, m_regTabMode(L"Software\\TortoiseGitMerge\\TabMode", TABMODE_NONE)
 {
 	m_bOneWay = (0 != ((DWORD)m_regOneWay));
 	theApp.m_nAppLook = theApp.GetInt(_T("ApplicationLook"), ID_VIEW_APPLOOK_VS_2005);
@@ -2878,46 +2873,6 @@ void CMainFrame::OnEditCreateunifieddifffile()
 		return;
 
 	CAppUtils::CreateUnifiedDiff(origFile, modifiedFile, outputFile, true);
-}
-
-void CMainFrame::OnUpdateEditTabspace(CCmdUI *pCmdUI)
-{
-	pCmdUI->Enable(true);
-	int nTabMode = m_regTabMode;
-	pCmdUI->SetCheck(nTabMode & TABMODE_USESPACES);
-}
-
-void CMainFrame::OnEditTabspace()
-{
-	int nTabMode = m_regTabMode;
-	nTabMode ^= TABMODE_USESPACES;
-	m_regTabMode = nTabMode;
-	if (IsViewGood(m_pwndLeftView))
-		m_pwndLeftView->m_nTabMode = nTabMode;
-	if (IsViewGood(m_pwndRightView))
-		m_pwndRightView->m_nTabMode = nTabMode;
-	if (IsViewGood(m_pwndBottomView))
-		m_pwndBottomView->m_nTabMode = nTabMode;
-}
-
-void CMainFrame::OnUpdateEditSmartTab(CCmdUI *pCmdUI)
-{
-	pCmdUI->Enable(true);
-	int nTabMode = m_regTabMode;
-	pCmdUI->SetCheck(nTabMode & TABMODE_SMARTINDENT);
-}
-
-void CMainFrame::OnEditSmartTab()
-{
-	int nTabMode = m_regTabMode;
-	nTabMode ^= TABMODE_SMARTINDENT;
-	m_regTabMode = nTabMode;
-	if (IsViewGood(m_pwndLeftView))
-		m_pwndLeftView->m_nTabMode = nTabMode;
-	if (IsViewGood(m_pwndRightView))
-		m_pwndRightView->m_nTabMode = nTabMode;
-	if (IsViewGood(m_pwndBottomView))
-		m_pwndBottomView->m_nTabMode = nTabMode;
 }
 
 void CMainFrame::OnUpdateViewLinediffbar(CCmdUI *pCmdUI)
