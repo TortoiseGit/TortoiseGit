@@ -110,10 +110,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_INLINEDIFF, &CMainFrame::OnUpdateViewInlinediff)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_CREATEUNIFIEDDIFFFILE, &CMainFrame::OnUpdateEditCreateunifieddifffile)
 	ON_COMMAND(ID_EDIT_CREATEUNIFIEDDIFFFILE, &CMainFrame::OnEditCreateunifieddifffile)
-	ON_UPDATE_COMMAND_UI(ID_EDIT_TABSPACE, &CMainFrame::OnUpdateEditTabspace)
-	ON_COMMAND(ID_EDIT_TABSPACE, &CMainFrame::OnEditTabspace)
-	ON_UPDATE_COMMAND_UI(ID_EDIT_SMARTTAB, &CMainFrame::OnUpdateEditSmartTab)
-	ON_COMMAND(ID_EDIT_SMARTTAB, &CMainFrame::OnEditSmartTab)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_LINEDIFFBAR, &CMainFrame::OnUpdateViewLinediffbar)
 	ON_COMMAND(ID_VIEW_LINEDIFFBAR, &CMainFrame::OnViewLinediffbar)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_LOCATORBAR, &CMainFrame::OnUpdateViewLocatorbar)
@@ -157,18 +153,27 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_COMMAND(ID_INDICATOR_LEFTVIEWCOMBOEOL, &CMainFrame::OnDummyEnabled)
 	ON_COMMAND(ID_INDICATOR_RIGHTVIEWCOMBOEOL, &CMainFrame::OnDummyEnabled)
 	ON_COMMAND(ID_INDICATOR_BOTTOMVIEWCOMBOEOL, &CMainFrame::OnDummyEnabled)
+	ON_COMMAND(ID_INDICATOR_LEFTVIEWCOMBOTABMODE, &CMainFrame::OnDummyEnabled)
+	ON_COMMAND(ID_INDICATOR_RIGHTVIEWCOMBOTABMODE, &CMainFrame::OnDummyEnabled)
+	ON_COMMAND(ID_INDICATOR_BOTTOMVIEWCOMBOTABMODE, &CMainFrame::OnDummyEnabled)
 	ON_COMMAND_RANGE(ID_INDICATOR_LEFTENCODINGSTART, ID_INDICATOR_LEFTENCODINGSTART+19, &CMainFrame::OnEncodingLeft)
 	ON_COMMAND_RANGE(ID_INDICATOR_RIGHTENCODINGSTART, ID_INDICATOR_RIGHTENCODINGSTART+19, &CMainFrame::OnEncodingRight)
 	ON_COMMAND_RANGE(ID_INDICATOR_BOTTOMENCODINGSTART, ID_INDICATOR_BOTTOMENCODINGSTART+19, &CMainFrame::OnEncodingBottom)
 	ON_COMMAND_RANGE(ID_INDICATOR_LEFTEOLSTART, ID_INDICATOR_LEFTEOLSTART+19, &CMainFrame::OnEOLLeft)
 	ON_COMMAND_RANGE(ID_INDICATOR_RIGHTEOLSTART, ID_INDICATOR_RIGHTEOLSTART+19, &CMainFrame::OnEOLRight)
 	ON_COMMAND_RANGE(ID_INDICATOR_BOTTOMEOLSTART, ID_INDICATOR_BOTTOMEOLSTART+19, &CMainFrame::OnEOLBottom)
+	ON_COMMAND_RANGE(ID_INDICATOR_LEFTTABMODESTART, ID_INDICATOR_LEFTTABMODESTART+19, &CMainFrame::OnTabModeLeft)
+	ON_COMMAND_RANGE(ID_INDICATOR_RIGHTTABMODESTART, ID_INDICATOR_RIGHTTABMODESTART+19, &CMainFrame::OnTabModeRight)
+	ON_COMMAND_RANGE(ID_INDICATOR_BOTTOMTABMODESTART, ID_INDICATOR_BOTTOMTABMODESTART+19, &CMainFrame::OnTabModeBottom)
 	ON_UPDATE_COMMAND_UI_RANGE(ID_INDICATOR_LEFTENCODINGSTART, ID_INDICATOR_LEFTENCODINGSTART+19, &CMainFrame::OnUpdateEncodingLeft)
 	ON_UPDATE_COMMAND_UI_RANGE(ID_INDICATOR_RIGHTENCODINGSTART, ID_INDICATOR_RIGHTENCODINGSTART+19, &CMainFrame::OnUpdateEncodingRight)
 	ON_UPDATE_COMMAND_UI_RANGE(ID_INDICATOR_BOTTOMENCODINGSTART, ID_INDICATOR_BOTTOMENCODINGSTART+19, &CMainFrame::OnUpdateEncodingBottom)
 	ON_UPDATE_COMMAND_UI_RANGE(ID_INDICATOR_LEFTEOLSTART, ID_INDICATOR_LEFTEOLSTART+19, &CMainFrame::OnUpdateEOLLeft)
 	ON_UPDATE_COMMAND_UI_RANGE(ID_INDICATOR_RIGHTEOLSTART, ID_INDICATOR_RIGHTEOLSTART+19, &CMainFrame::OnUpdateEOLRight)
 	ON_UPDATE_COMMAND_UI_RANGE(ID_INDICATOR_BOTTOMEOLSTART, ID_INDICATOR_BOTTOMEOLSTART+19, &CMainFrame::OnUpdateEOLBottom)
+	ON_UPDATE_COMMAND_UI_RANGE(ID_INDICATOR_LEFTTABMODESTART, ID_INDICATOR_LEFTTABMODESTART+19, &CMainFrame::OnUpdateTabModeLeft)
+	ON_UPDATE_COMMAND_UI_RANGE(ID_INDICATOR_RIGHTTABMODESTART, ID_INDICATOR_RIGHTTABMODESTART+19, &CMainFrame::OnUpdateTabModeRight)
+	ON_UPDATE_COMMAND_UI_RANGE(ID_INDICATOR_BOTTOMTABMODESTART, ID_INDICATOR_BOTTOMTABMODESTART+19, &CMainFrame::OnUpdateTabModeBottom)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -212,7 +217,6 @@ CMainFrame::CMainFrame()
 	, m_regUseTaskDialog(L"Software\\TortoiseGitMerge\\UseTaskDialog", TRUE)
 	, m_regIgnoreComments(_T("Software\\TortoiseGitMerge\\IgnoreComments"), FALSE)
 	, m_regexIndex(-1)
-	, m_regTabMode(L"Software\\TortoiseGitMerge\\TabMode", TABMODE_NONE)
 {
 	m_bOneWay = (0 != ((DWORD)m_regOneWay));
 	theApp.m_nAppLook = theApp.GetInt(_T("ApplicationLook"), ID_VIEW_APPLOOK_VS_2005);
@@ -299,6 +303,9 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		pButton = new CMFCRibbonButton(ID_INDICATOR_LEFTVIEWCOMBOEOL, L"");
 		FillEOLButton(pButton, ID_INDICATOR_LEFTEOLSTART);
 		apBtnGroupLeft->AddButton(pButton);
+		pButton = new CMFCRibbonButton(ID_INDICATOR_LEFTVIEWCOMBOTABMODE, L"");
+		FillTabModeButton(pButton, ID_INDICATOR_LEFTTABMODESTART);
+		apBtnGroupLeft->AddButton(pButton);
 		apBtnGroupLeft->AddButton(new CMFCRibbonStatusBarPane(ID_INDICATOR_LEFTVIEW,   L"", TRUE));
 		m_wndRibbonStatusBar.AddExtendedElement(apBtnGroupLeft.release(), L"");
 
@@ -310,6 +317,9 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		apBtnGroupRight->AddButton(pButton);
 		pButton = new CMFCRibbonButton(ID_INDICATOR_RIGHTVIEWCOMBOEOL, L"");
 		FillEOLButton(pButton, ID_INDICATOR_RIGHTEOLSTART);
+		apBtnGroupRight->AddButton(pButton);
+		pButton = new CMFCRibbonButton(ID_INDICATOR_RIGHTVIEWCOMBOTABMODE, L"");
+		FillTabModeButton(pButton, ID_INDICATOR_RIGHTTABMODESTART);
 		apBtnGroupRight->AddButton(pButton);
 		apBtnGroupRight->AddButton(new CMFCRibbonStatusBarPane(ID_INDICATOR_RIGHTVIEW,  L"", TRUE));
 		m_wndRibbonStatusBar.AddExtendedElement(apBtnGroupRight.release(), L"");
@@ -764,10 +774,13 @@ void CMainFrame::ClearViewNamesAndPaths()
 {
 	m_pwndLeftView->m_sWindowName.Empty();
 	m_pwndLeftView->m_sFullFilePath.Empty();
+	m_pwndLeftView->m_sReflectedName.Empty();
 	m_pwndRightView->m_sWindowName.Empty();
 	m_pwndRightView->m_sFullFilePath.Empty();
+	m_pwndRightView->m_sReflectedName.Empty();
 	m_pwndBottomView->m_sWindowName.Empty();
 	m_pwndBottomView->m_sFullFilePath.Empty();
+	m_pwndBottomView->m_sReflectedName.Empty();
 }
 
 bool CMainFrame::LoadViews(int line)
@@ -919,6 +932,7 @@ bool CMainFrame::LoadViews(int line)
 			m_pwndLeftView->SetLineEndingStyle(m_Data.m_arYourFile.GetLineEndings());
 			m_pwndLeftView->m_sWindowName = m_Data.m_baseFile.GetWindowName() + _T(" - ") + m_Data.m_yourFile.GetWindowName();
 			m_pwndLeftView->m_sFullFilePath = m_Data.m_baseFile.GetFilename() + _T(" - ") + m_Data.m_yourFile.GetFilename();
+			m_pwndLeftView->m_sReflectedName = m_Data.m_yourFile.GetReflectedName();
 			m_pwndLeftView->m_pWorkingFile = &m_Data.m_yourFile;
 			m_pwndLeftView->SetTarget();
 			m_pwndLeftView->SetWritableIsChangable(true);
@@ -947,6 +961,7 @@ bool CMainFrame::LoadViews(int line)
 			m_pwndLeftView->m_sWindowName = m_Data.m_baseFile.GetWindowName();
 			m_pwndLeftView->m_sFullFilePath = m_Data.m_baseFile.GetFilename();
 			m_pwndLeftView->m_sConvertedFilePath = m_Data.m_baseFile.GetConvertedFileName();
+			m_pwndLeftView->m_sReflectedName = m_Data.m_baseFile.GetReflectedName();
 			m_pwndLeftView->m_pWorkingFile = &m_Data.m_baseFile;
 			m_pwndLeftView->SetWritableIsChangable(true);
 
@@ -956,6 +971,7 @@ bool CMainFrame::LoadViews(int line)
 			m_pwndRightView->m_sWindowName = m_Data.m_yourFile.GetWindowName();
 			m_pwndRightView->m_sFullFilePath = m_Data.m_yourFile.GetFilename();
 			m_pwndRightView->m_sConvertedFilePath = m_Data.m_yourFile.GetConvertedFileName();
+			m_pwndRightView->m_sReflectedName = m_Data.m_yourFile.GetReflectedName();
 			m_pwndRightView->m_pWorkingFile = &m_Data.m_yourFile;
 			m_pwndRightView->SetWritable();
 			m_pwndRightView->SetTarget();
@@ -1022,6 +1038,7 @@ bool CMainFrame::LoadViews(int line)
 		m_pwndLeftView->m_sWindowName += _T(" - ") + m_Data.m_theirFile.GetWindowName();
 		m_pwndLeftView->m_sFullFilePath = m_Data.m_theirFile.GetFilename();
 		m_pwndLeftView->m_sConvertedFilePath = m_Data.m_theirFile.GetConvertedFileName();
+		m_pwndLeftView->m_sReflectedName = m_Data.m_theirFile.GetReflectedName();
 		m_pwndLeftView->m_pWorkingFile = &m_Data.m_theirFile;
 
 		m_pwndRightView->m_pViewData = &m_Data.m_YourBaseBoth;
@@ -1031,6 +1048,7 @@ bool CMainFrame::LoadViews(int line)
 		m_pwndRightView->m_sWindowName += _T(" - ") + m_Data.m_yourFile.GetWindowName();
 		m_pwndRightView->m_sFullFilePath = m_Data.m_yourFile.GetFilename();
 		m_pwndRightView->m_sConvertedFilePath = m_Data.m_yourFile.GetConvertedFileName();
+		m_pwndRightView->m_sReflectedName = m_Data.m_yourFile.GetReflectedName();
 		m_pwndRightView->m_pWorkingFile = &m_Data.m_yourFile;
 
 		m_pwndBottomView->m_pViewData = &m_Data.m_Diff3;
@@ -1040,6 +1058,7 @@ bool CMainFrame::LoadViews(int line)
 		m_pwndBottomView->m_sWindowName += _T(" - ") + m_Data.m_mergedFile.GetWindowName();
 		m_pwndBottomView->m_sFullFilePath = m_Data.m_mergedFile.GetFilename();
 		m_pwndBottomView->m_sConvertedFilePath = m_Data.m_mergedFile.GetConvertedFileName();
+		m_pwndBottomView->m_sReflectedName = m_Data.m_mergedFile.GetReflectedName();
 		m_pwndBottomView->m_pWorkingFile = &m_Data.m_mergedFile;
 
 		if (m_wndSplitter2.IsColumnHidden(1))
@@ -2865,46 +2884,6 @@ void CMainFrame::OnEditCreateunifieddifffile()
 	CAppUtils::CreateUnifiedDiff(origFile, modifiedFile, outputFile, true);
 }
 
-void CMainFrame::OnUpdateEditTabspace(CCmdUI *pCmdUI)
-{
-	pCmdUI->Enable(true);
-	int nTabMode = m_regTabMode;
-	pCmdUI->SetCheck(nTabMode & TABMODE_USESPACES);
-}
-
-void CMainFrame::OnEditTabspace()
-{
-	int nTabMode = m_regTabMode;
-	nTabMode ^= TABMODE_USESPACES;
-	m_regTabMode = nTabMode;
-	if (IsViewGood(m_pwndLeftView))
-		m_pwndLeftView->m_nTabMode = nTabMode;
-	if (IsViewGood(m_pwndRightView))
-		m_pwndRightView->m_nTabMode = nTabMode;
-	if (IsViewGood(m_pwndBottomView))
-		m_pwndBottomView->m_nTabMode = nTabMode;
-}
-
-void CMainFrame::OnUpdateEditSmartTab(CCmdUI *pCmdUI)
-{
-	pCmdUI->Enable(true);
-	int nTabMode = m_regTabMode;
-	pCmdUI->SetCheck(nTabMode & TABMODE_SMARTINDENT);
-}
-
-void CMainFrame::OnEditSmartTab()
-{
-	int nTabMode = m_regTabMode;
-	nTabMode ^= TABMODE_SMARTINDENT;
-	m_regTabMode = nTabMode;
-	if (IsViewGood(m_pwndLeftView))
-		m_pwndLeftView->m_nTabMode = nTabMode;
-	if (IsViewGood(m_pwndRightView))
-		m_pwndRightView->m_nTabMode = nTabMode;
-	if (IsViewGood(m_pwndBottomView))
-		m_pwndBottomView->m_nTabMode = nTabMode;
-}
-
 void CMainFrame::OnUpdateViewLinediffbar(CCmdUI *pCmdUI)
 {
 	pCmdUI->SetCheck(m_bLineDiff);
@@ -3347,6 +3326,22 @@ void CMainFrame::FillEOLButton( CMFCRibbonButton * pButton, int start )
 	pButton->AddSubItem(new CMFCRibbonButton(start + EOL::EOL_PS  , L"PS"  ));
 }
 
+void CMainFrame::FillTabModeButton(CMFCRibbonButton * pButton, int start)
+{
+	pButton->SetDefaultCommand(FALSE);
+	pButton->AddSubItem(new CMFCRibbonButton(start + TABMODE_NONE        , L"Tab"));
+	pButton->AddSubItem(new CMFCRibbonButton(start + TABMODE_USESPACES   , L"Space"));
+	pButton->AddSubItem(new CMFCRibbonSeparator(TRUE));
+	pButton->AddSubItem(new CMFCRibbonButton(start + TABMODE_SMARTINDENT , L"Smart tab char"));
+	pButton->AddSubItem(new CMFCRibbonSeparator(TRUE));
+	pButton->AddSubItem(new CMFCRibbonButton(start + TABSIZEBUTTON1, L"1"));
+	pButton->AddSubItem(new CMFCRibbonButton(start + TABSIZEBUTTON2, L"2"));
+	pButton->AddSubItem(new CMFCRibbonButton(start + TABSIZEBUTTON4, L"4"));
+	pButton->AddSubItem(new CMFCRibbonButton(start + TABSIZEBUTTON8, L"8"));
+	pButton->AddSubItem(new CMFCRibbonSeparator(TRUE));
+	pButton->AddSubItem(new CMFCRibbonButton(start + ENABLEEDITORCONFIG, L"EditorConfig"));
+}
+
 void CMainFrame::OnEncodingLeft( UINT cmd )
 {
 	if (m_pwndLeftView)
@@ -3399,6 +3394,43 @@ void CMainFrame::OnEOLBottom( UINT cmd )
 		m_pwndBottomView->ReplaceLineEndings(EOL(cmd-ID_INDICATOR_BOTTOMEOLSTART));
 		m_pwndBottomView->RefreshViews();
 	}
+}
+
+void CMainFrame::OnTabModeLeft( UINT cmd )
+{
+	OnTabMode(m_pwndLeftView, (int)cmd - ID_INDICATOR_LEFTTABMODESTART);
+}
+
+void CMainFrame::OnTabModeRight( UINT cmd )
+{
+	OnTabMode(m_pwndRightView, (int)cmd - ID_INDICATOR_RIGHTTABMODESTART);
+}
+
+void CMainFrame::OnTabModeBottom( UINT cmd )
+{
+	OnTabMode(m_pwndBottomView, (int)cmd - ID_INDICATOR_BOTTOMTABMODESTART);
+}
+
+void CMainFrame::OnTabMode(CBaseView *view, int cmd)
+{
+	if (!view)
+		return;
+	int nTabMode = view->GetTabMode();
+	if (cmd == TABMODE_NONE || cmd == TABMODE_USESPACES)
+		view->SetTabMode((nTabMode & (~TABMODE_USESPACES)) | (cmd & TABMODE_USESPACES));
+	else if (cmd == TABMODE_SMARTINDENT) // Toggle
+		view->SetTabMode((nTabMode & (~TABMODE_SMARTINDENT)) | (nTabMode & TABMODE_SMARTINDENT ? 0 : TABMODE_SMARTINDENT));
+	else if (cmd == TABSIZEBUTTON1)
+		view->SetTabSize(1);
+	else if (cmd == TABSIZEBUTTON2)
+		view->SetTabSize(2);
+	else if (cmd == TABSIZEBUTTON4)
+		view->SetTabSize(4);
+	else if (cmd == TABSIZEBUTTON8)
+		view->SetTabSize(8);
+	else if (cmd == ENABLEEDITORCONFIG)
+		view->SetEditorConfigEnabled(!view->GetEditorConfigEnabled());
+	view->RefreshViews();
 }
 
 void CMainFrame::OnUpdateEncodingLeft( CCmdUI *pCmdUI )
@@ -3462,6 +3494,50 @@ void CMainFrame::OnUpdateEOLBottom( CCmdUI *pCmdUI )
 	{
 		pCmdUI->SetCheck(EOL(pCmdUI->m_nID - ID_INDICATOR_BOTTOMEOLSTART) == m_pwndBottomView->GetLineEndings());
 		pCmdUI->Enable(m_pwndBottomView->IsWritable());
+	}
+	else
+		pCmdUI->Enable(FALSE);
+}
+
+void CMainFrame::OnUpdateTabModeLeft(CCmdUI *pCmdUI)
+{
+	OnUpdateTabMode(m_pwndLeftView, pCmdUI, ID_INDICATOR_LEFTTABMODESTART);
+}
+
+void CMainFrame::OnUpdateTabModeRight(CCmdUI *pCmdUI)
+{
+	OnUpdateTabMode(m_pwndRightView, pCmdUI, ID_INDICATOR_RIGHTTABMODESTART);
+}
+
+void CMainFrame::OnUpdateTabModeBottom(CCmdUI *pCmdUI)
+{
+	OnUpdateTabMode(m_pwndBottomView, pCmdUI, ID_INDICATOR_BOTTOMTABMODESTART);
+}
+
+void CMainFrame::OnUpdateTabMode(CBaseView *view, CCmdUI *pCmdUI, int startid)
+{
+	if (view)
+	{
+		int cmd = (int)pCmdUI->m_nID - startid;
+		if (cmd == TABMODE_NONE)
+			pCmdUI->SetCheck((view->GetTabMode() & TABMODE_USESPACES) == TABMODE_NONE);
+		else if (cmd == TABMODE_USESPACES)
+			pCmdUI->SetCheck(view->GetTabMode() & TABMODE_USESPACES);
+		else if (cmd == TABMODE_SMARTINDENT)
+			pCmdUI->SetCheck(view->GetTabMode() & TABMODE_SMARTINDENT);
+		else if (cmd == TABSIZEBUTTON1)
+			pCmdUI->SetCheck(view->GetTabSize() == 1);
+		else if (cmd == TABSIZEBUTTON2)
+			pCmdUI->SetCheck(view->GetTabSize() == 2);
+		else if (cmd == TABSIZEBUTTON4)
+			pCmdUI->SetCheck(view->GetTabSize() == 4);
+		else if (cmd == TABSIZEBUTTON8)
+			pCmdUI->SetCheck(view->GetTabSize() == 8);
+		else if (cmd == ENABLEEDITORCONFIG)
+			pCmdUI->SetCheck(view->GetEditorConfigEnabled());
+		pCmdUI->Enable(view->IsWritable());
+		if (cmd == ENABLEEDITORCONFIG)
+			pCmdUI->Enable(view->IsWritable() && view->GetEditorConfigLoaded());
 	}
 	else
 		pCmdUI->Enable(FALSE);

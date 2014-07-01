@@ -241,6 +241,7 @@ public: // variables
 	CString			m_sWindowName;		///< The name of the view which is shown as a window title to the user
 	CString			m_sFullFilePath;	///< The full path of the file shown
 	CString			m_sConvertedFilePath;   ///< the path to the converted file that's shown in the view
+	CString			m_sReflectedName;	///< The reflected name of file
 
 	BOOL			m_bViewWhitespace;	///< If TRUE, then SPACE and TAB are shown as special characters
 	BOOL			m_bShowInlineDiff;	///< If TRUE, diffs in lines are marked colored
@@ -257,6 +258,8 @@ public: // variables
 	static CMainFrame * m_pMainFrame;	///< Pointer to the mainframe
 
 	int				m_nTabMode;
+	bool			m_bEditorConfigEnabled;
+	BOOL			m_bEditorConfigLoaded;
 
 	void			GoToFirstDifference();
 	void			GoToFirstConflict();
@@ -272,6 +275,13 @@ public: // variables
 	UnicodeType		GetTextType() { return m_texttype; }
 	void			SetTextType(UnicodeType);									///< Changes TextType
 	void			AskUserForNewLineEndingsAndTextType(int);					///< Open gui
+	int				GetTabMode() { return m_nTabMode; }
+	void			SetTabMode(int nTabMode) { m_nTabMode = nTabMode; }
+	int				GetTabSize() { return m_nTabSize; }
+	void			SetTabSize(int nTabSize) { m_nTabSize = nTabSize; }
+	bool			GetEditorConfigEnabled() { return m_bEditorConfigEnabled; }
+	void			SetEditorConfigEnabled(bool bEditorConfigEnabled);
+	BOOL			GetEditorConfigLoaded() { return m_bEditorConfigLoaded; }
 
 	CWorkingFile * m_pWorkingFile; ///< pointer to source/destination file parametrers
 

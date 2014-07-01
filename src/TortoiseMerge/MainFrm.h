@@ -1,7 +1,7 @@
 // TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2013 - TortoiseGit
-// Copyright (C) 2006-2013 - TortoiseSVN
+// Copyright (C) 2006-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -38,6 +38,12 @@ class CBottomView;
 #define TABMODE_NONE		0x00
 #define TABMODE_USESPACES	0x01
 #define TABMODE_SMARTINDENT	0x02
+
+#define TABSIZEBUTTON1 3
+#define TABSIZEBUTTON2 4
+#define TABSIZEBUTTON4 5
+#define TABSIZEBUTTON8 6
+#define ENABLEEDITORCONFIG 8
 
 
 /**
@@ -120,10 +126,6 @@ protected:
 	afx_msg void	OnUpdateViewInlinediff(CCmdUI *pCmdUI);
 	afx_msg void	OnUpdateEditCreateunifieddifffile(CCmdUI *pCmdUI);
 	afx_msg void	OnEditCreateunifieddifffile();
-	afx_msg void	OnUpdateEditTabspace(CCmdUI *pCmdUI);
-	afx_msg void	OnEditTabspace();
-	afx_msg void	OnUpdateEditSmartTab(CCmdUI *pCmdUI);
-	afx_msg void	OnEditSmartTab();
 	afx_msg void	OnUpdateViewLinediffbar(CCmdUI *pCmdUI);
 	afx_msg void	OnViewLinediffbar();
 	afx_msg void	OnUpdateViewLocatorbar(CCmdUI *pCmdUI);
@@ -168,12 +170,18 @@ protected:
 	afx_msg void	OnEOLLeft(UINT cmd);
 	afx_msg void	OnEOLRight(UINT cmd);
 	afx_msg void	OnEOLBottom(UINT cmd);
+	afx_msg void	OnTabModeLeft(UINT cmd);
+	afx_msg void	OnTabModeRight(UINT cmd);
+	afx_msg void	OnTabModeBottom(UINT cmd);
 	afx_msg void	OnUpdateEncodingLeft(CCmdUI *pCmdUI);
 	afx_msg void	OnUpdateEncodingRight(CCmdUI *pCmdUI);
 	afx_msg void	OnUpdateEncodingBottom(CCmdUI *pCmdUI);
 	afx_msg void	OnUpdateEOLLeft(CCmdUI *pCmdUI);
 	afx_msg void	OnUpdateEOLRight(CCmdUI *pCmdUI);
 	afx_msg void	OnUpdateEOLBottom(CCmdUI *pCmdUI);
+	afx_msg void	OnUpdateTabModeLeft(CCmdUI *pCmdUI);
+	afx_msg void	OnUpdateTabModeRight(CCmdUI *pCmdUI);
+	afx_msg void	OnUpdateTabModeBottom(CCmdUI *pCmdUI);
 
 	DECLARE_MESSAGE_MAP()
 protected:
@@ -208,6 +216,8 @@ protected:
 	int				CheckForSave(ECheckForSaveReason eReason/* = CHFSR_SWITCH*/);
 	void			OnViewLineUpDown(int direction);
 	void			OnViewLineLeftRight(int direction);
+	static void		OnTabMode(CBaseView *view, int cmd);
+	static void		OnUpdateTabMode(CBaseView *view, CCmdUI *pCmdUI, int startid);
 	bool			HasConflictsWontKeep();
 	bool			TryGetFileName(CString& result);
 	CBaseView*		GetActiveBaseView() const;
@@ -259,7 +269,6 @@ protected:
 	std::map<CString, std::tuple<CString, CString, CString>>	m_IgnoreCommentsMap;
 	CSimpleIni		m_regexIni;
 	int				m_regexIndex;
-	CRegDWORD		m_regTabMode;
 public:
 	CLeftView *		m_pwndLeftView;
 	CRightView *	m_pwndRightView;
@@ -282,6 +291,7 @@ public:
 	const CMFCToolBar *   GetToolbar() const { return &m_wndToolBar; }
 	void			FillEncodingButton( CMFCRibbonButton * pButton, int start );
 	void			FillEOLButton( CMFCRibbonButton * pButton, int start );
+	void			FillTabModeButton(CMFCRibbonButton * pButton, int start);
 	CMFCMenuBar		m_wndMenuBar;
 	CMFCToolBar		m_wndToolBar;
 };

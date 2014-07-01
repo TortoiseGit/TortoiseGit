@@ -468,7 +468,8 @@ bool CAppUtils::StartExtDiff(
 	{
 		viewer =
 			_T("\"") + CPathUtils::GetAppDirectory() + _T("TortoiseGitMerge.exe") + _T("\"") +
-			_T(" /base:%base /mine:%mine /basename:%bname /minename:%yname");
+			_T(" /base:%base /mine:%mine /basename:%bname /minename:%yname") +
+			_T(" /basereflectedname:%bpath /minereflectedname:%ypath");
 		if (!g_sGroupingUUID.IsEmpty())
 		{
 			viewer += L" /groupuuid:\"";

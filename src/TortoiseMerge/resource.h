@@ -174,6 +174,7 @@
 #define IDC_DESCRIPTION                 1095
 #define IDC_FIXEOLS                     1096
 #define IDC_RESTORE                     1097
+#define IDC_SMARTTABCHAR                1098
 #define IDS_ERR_FILE_OPEN               1100
 #define IDS_ERR_FILE_BINARY             1101
 #define IDS_ERR_FILE_NOTAFILE           1102
@@ -199,6 +200,7 @@
 #define IDS_FIND_REPLACED               1507
 #define IDC_NAME                        1508
 #define IDC_REGEX                       1509
+#define IDC_ENABLEEDITORCONFIG          1510
 #define IDC_NAME3                       1511
 #define IDC_REPLACE                     1511
 #define IDC_REPLACEALL                  1512
@@ -218,12 +220,18 @@
 #define ID_INDICATOR_LEFTVIEWCOMBOEOL   2020
 #define ID_INDICATOR_RIGHTVIEWCOMBOEOL  2021
 #define ID_INDICATOR_BOTTOMVIEWCOMBOEOL 2022
+#define ID_INDICATOR_LEFTVIEWCOMBOTABMODE 2030
+#define ID_INDICATOR_RIGHTVIEWCOMBOTABMODE 2031
+#define ID_INDICATOR_BOTTOMVIEWCOMBOTABMODE 2032
 #define ID_INDICATOR_LEFTENCODINGSTART  2100
 #define ID_INDICATOR_RIGHTENCODINGSTART 2120
 #define ID_INDICATOR_BOTTOMENCODINGSTART 2140
 #define ID_INDICATOR_LEFTEOLSTART       2200
 #define ID_INDICATOR_RIGHTEOLSTART      2220
 #define ID_INDICATOR_BOTTOMEOLSTART     2240
+#define ID_INDICATOR_LEFTTABMODESTART   2300
+#define ID_INDICATOR_RIGHTTABMODESTART  2320
+#define ID_INDICATOR_BOTTOMTABMODESTART 2340
 #define IDS_COMMONFILEFILTER            2500
 #define IDS_PATCHFILEFILTER             2501
 #define IDS_PATCH_SEARCHPATHTITLE       2700
@@ -416,8 +424,6 @@
 #define ID_BUTTON17                     32971
 #define ID_EDIT_ENABLE                  32976
 #define ID_FILE_ENABLEEDIT              32978
-#define ID_EDIT_TABSPACE                32979
-#define ID_EDIT_SMARTTAB                32980
 #define ID_BUTTON3                      32981
 
 // Next default values for new objects
@@ -426,7 +432,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        171
 #define _APS_NEXT_COMMAND_VALUE         32982
-#define _APS_NEXT_CONTROL_VALUE         1509
+#define _APS_NEXT_CONTROL_VALUE         1513
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

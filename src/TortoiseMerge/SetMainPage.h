@@ -64,8 +64,13 @@ protected:
 	CRegDWORD		m_regFirstDiffOnLoad;
 	BOOL			m_bFirstConflictOnLoad;
 	CRegDWORD		m_regFirstConflictOnLoad;
+	BOOL			m_bUseSpaces;
+	BOOL			m_bSmartTabChar;
+	CRegDWORD		m_regTabMode;
 	int				m_nTabSize;
 	CRegDWORD		m_regTabSize;
+	BOOL			m_bEnableEditorConfig;
+	CRegDWORD		m_regEnableEditorConfig;
 	BOOL			m_bIgnoreEOL;
 	CRegDWORD		m_regIgnoreEOL;
 	BOOL			m_bOnePane;

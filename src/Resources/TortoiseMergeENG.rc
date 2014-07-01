@@ -204,8 +204,11 @@ BEGIN
     CONTROL         "Add new files automatically to Git",IDC_AUTOADD,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,79,236,10
     CONTROL         "Use Ribbons",IDC_USERIBBONS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,90,109,10
     CONTROL         "Use Task Dialog",IDC_USETASKDIALOG,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,130,90,128,10
+    CONTROL         "Use spaces",IDC_USESPACES,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,103,95,10
+    CONTROL         "Smart tab char",IDC_SMARTTABCHAR,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,130,103,95,10
     LTEXT           "&Tab size:",IDC_STATIC,15,118,54,8
     EDITTEXT        IDC_TABSIZE,80,115,41,14,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Enable EditorConfig",IDC_ENABLEEDITORCONFIG,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,149,118,102,10
     LTEXT           "&Font:",IDC_STATIC,15,135,52,8
     COMBOBOX        IDC_FONTNAMES,80,133,122,90,CBS_DROPDOWNLIST | CBS_OWNERDRAWVARIABLE | CBS_SORT | CBS_HASSTRINGS | WS_VSCROLL | WS_TABSTOP
     COMBOBOX        IDC_FONTSIZES,211,133,40,47,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
@@ -1178,8 +1181,6 @@ END
 STRINGTABLE
 BEGIN
     ID_EDIT_ENABLE          "Allow Editing for this view\nAllow Edit"
-    ID_EDIT_TABSPACE        "When selected, Spaces will be used instead of tab\nUse spaces"
-    ID_EDIT_SMARTTAB        "When selected, it tries to infer tab / spaces to use\nSmart tab char"
 END
 
 STRINGTABLE

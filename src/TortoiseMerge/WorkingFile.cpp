@@ -1,6 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2006-2007, 2011-2013 - TortoiseSVN
+// Copyright (C) 2006-2007, 2011-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -57,6 +57,17 @@ CString CWorkingFile::GetDescriptiveName()
 	}
 	return m_sDescriptiveName;
 }
+
+CString CWorkingFile::GetReflectedName()
+{
+	return m_sReflectedName;
+}
+
+void CWorkingFile::SetReflectedName(const CString& newReflectedName)
+{
+	m_sReflectedName = newReflectedName;
+}
+
 //
 // Make an empty file with this name
 void CWorkingFile::CreateEmptyFile()

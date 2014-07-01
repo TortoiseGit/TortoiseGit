@@ -3927,6 +3927,10 @@ msgstr ""
 msgid "Enable Edit"
 msgstr ""
 
+#. Resource IDs: (1510)
+msgid "Enable EditorConfig"
+msgstr ""
+
 #. Resource IDs: (1766)
 msgid "Enable Gravatar"
 msgstr ""
@@ -9884,14 +9888,6 @@ msgstr ""
 
 #. Resource IDs: (197)
 msgid "When enabled, the versioned items listed in the commit dialog are automatically selected"
-msgstr ""
-
-#. Resource IDs: (2062)
-msgid "When selected, Spaces will be used instead of tab\nUse spaces"
-msgstr ""
-
-#. Resource IDs: (2062)
-msgid "When selected, it tries to infer tab / spaces to use\nSmart tab char"
 msgstr ""
 
 #. Resource IDs: (604)
