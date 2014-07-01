@@ -257,6 +257,8 @@ public: // variables
 	static CMainFrame * m_pMainFrame;	///< Pointer to the mainframe
 
 	int				m_nTabMode;
+	bool			m_bEditorConfigEnabled;
+	BOOL			m_bEditorConfigLoaded;
 
 	void			GoToFirstDifference();
 	void			GoToFirstConflict();
@@ -276,6 +278,9 @@ public: // variables
 	void			SetTabMode(int nTabMode) { m_nTabMode = nTabMode; }
 	int				GetTabSize() { return m_nTabSize; }
 	void			SetTabSize(int nTabSize) { m_nTabSize = nTabSize; }
+	bool			GetEditorConfigEnabled() { return m_bEditorConfigEnabled; }
+	void			SetEditorConfigEnabled(bool bEditorConfigEnabled);
+	BOOL			GetEditorConfigLoaded() { return m_bEditorConfigLoaded; }
 
 	CWorkingFile * m_pWorkingFile; ///< pointer to source/destination file parametrers
 

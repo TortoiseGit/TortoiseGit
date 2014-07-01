@@ -43,6 +43,7 @@ class CBottomView;
 #define TABSIZEBUTTON2 4
 #define TABSIZEBUTTON4 5
 #define TABSIZEBUTTON8 6
+#define ENABLEEDITORCONFIG 8
 
 
 /**

@@ -28,6 +28,7 @@
 #include "AppUtils.h"
 #include "GotoLineDlg.h"
 #include "EncodingDlg.h"
+#include "EditorConfigWrapper.h"
 
 // Note about lines:
 // We use three different kind of lines here:
@@ -105,6 +106,8 @@ CBaseView::CBaseView()
 	, m_pDC(NULL)
 	, m_pWorkingFile(NULL)
 	, m_bInsertMode(true)
+	, m_bEditorConfigEnabled(false)
+	, m_bEditorConfigLoaded(2) // 2 = not evaluated
 {
 	m_ptCaretViewPos.x = 0;
 	m_ptCaretViewPos.y = 0;
@@ -123,6 +126,7 @@ CBaseView::CBaseView()
 	m_bIconLFs = CRegDWORD(_T("Software\\TortoiseGitMerge\\IconLFs"), 0);
 	m_nTabSize = (int)(DWORD)CRegDWORD(_T("Software\\TortoiseGitMerge\\TabSize"), 4);
 	m_nTabMode = (int)(DWORD)CRegDWORD(_T("Software\\TortoiseGitMerge\\TabMode"), TABMODE_NONE);
+	m_bEditorConfigEnabled = !!(DWORD)CRegDWORD(_T("Software\\TortoiseGitMerge\\EnableEditorConfig"), FALSE);
 	std::fill_n(m_apFonts, fontsCount, (CFont*)NULL);
 	m_hConflictedIcon = LoadIcon(IDI_CONFLICTEDLINE);
 	m_hConflictedIgnoredIcon = LoadIcon(IDI_CONFLICTEDIGNOREDLINE);
@@ -256,13 +260,34 @@ void CBaseView::DocumentUpdated()
 	m_Eols[EOL_AUTOLINE] = m_Eols[m_lineendings==EOL_AUTOLINE
 								? EOL_CRLF
 								: m_lineendings];
+	SetEditorConfigEnabled(m_bEditorConfigEnabled);
 	DeleteFonts();
 	ClearCurrentSelection();
 	UpdateStatusBar();
 	Invalidate();
 }
 
-static CString GetTabModeString(int nTabMode, int nTabSize)
+void CBaseView::SetEditorConfigEnabled(bool bEditorConfigEnabled)
+{
+	m_bEditorConfigEnabled = bEditorConfigEnabled;
+	m_nTabSize = (int)(DWORD)CRegDWORD(_T("Software\\TortoiseGitMerge\\TabSize"), 4);
+	m_nTabMode = (int)(DWORD)CRegDWORD(_T("Software\\TortoiseGitMerge\\TabMode"), TABMODE_NONE);
+	if (m_bEditorConfigEnabled)
+	{
+		m_bEditorConfigLoaded = FALSE; // no editorconfig entries loaded
+		CEditorConfigWrapper ec;
+		if (ec.Load(m_sFullFilePath))
+		{
+			m_bEditorConfigLoaded = TRUE;
+			if (ec.m_nTabWidth != nullptr)
+				m_nTabSize = ec.m_nTabWidth;
+			if (ec.m_bIndentStyle != nullptr)
+				m_nTabMode = (m_nTabMode & ~TABMODE_USESPACES) | (ec.m_bIndentStyle ? TABMODE_USESPACES : TABMODE_NONE);
+		}
+	}
+}
+
+static CString GetTabModeString(int nTabMode, int nTabSize, bool bEditorConfig)
 {
 	CString text;
 	if (nTabMode & TABMODE_USESPACES)
@@ -272,6 +297,8 @@ static CString GetTabModeString(int nTabMode, int nTabSize)
 	text.AppendFormat(L" %d", nTabSize);
 	if (nTabMode & TABMODE_SMARTINDENT)
 		text += L" Smart";
+	if (bEditorConfig)
+		text += L" EC";
 	return text;
 }
 
@@ -423,8 +450,8 @@ void CBaseView::UpdateStatusBar()
 				pButton = DYNAMIC_DOWNCAST(CMFCRibbonButton, pGroup->GetButton(3));
 				if (pButton)
 				{
-					pButton->SetText(GetTabModeString(m_nTabMode, m_nTabSize));
-					pButton->SetDescription(GetTabModeString(m_nTabMode, m_nTabSize));
+					pButton->SetText(GetTabModeString(m_nTabMode, m_nTabSize, m_bEditorConfigEnabled && m_bEditorConfigLoaded));
+					pButton->SetDescription(GetTabModeString(m_nTabMode, m_nTabSize, m_bEditorConfigEnabled && m_bEditorConfigLoaded));
 				}
 			}
 			m_pwndRibbonStatusBar->RecalcLayout();
