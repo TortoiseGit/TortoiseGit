@@ -245,12 +245,16 @@ BOOL CTortoiseMergeApp::InitInstance()
 	// Fill in the command line options
 	pFrame->m_Data.m_baseFile.SetFileName(parser.GetVal(_T("base")));
 	pFrame->m_Data.m_baseFile.SetDescriptiveName(parser.GetVal(_T("basename")));
+	pFrame->m_Data.m_baseFile.SetReflectedName(parser.GetVal(_T("basereflectedname")));
 	pFrame->m_Data.m_theirFile.SetFileName(parser.GetVal(_T("theirs")));
 	pFrame->m_Data.m_theirFile.SetDescriptiveName(parser.GetVal(_T("theirsname")));
+	pFrame->m_Data.m_theirFile.SetReflectedName(parser.GetVal(_T("theirsreflectedname")));
 	pFrame->m_Data.m_yourFile.SetFileName(parser.GetVal(_T("mine")));
 	pFrame->m_Data.m_yourFile.SetDescriptiveName(parser.GetVal(_T("minename")));
+	pFrame->m_Data.m_yourFile.SetReflectedName(parser.GetVal(_T("minereflectedname")));
 	pFrame->m_Data.m_mergedFile.SetFileName(parser.GetVal(_T("merged")));
 	pFrame->m_Data.m_mergedFile.SetDescriptiveName(parser.GetVal(_T("mergedname")));
+	pFrame->m_Data.m_mergedFile.SetReflectedName(parser.GetVal(_T("mergedreflectedname")));
 	pFrame->m_Data.m_sPatchPath = parser.HasVal(_T("patchpath")) ? parser.GetVal(_T("patchpath")) : _T("");
 	pFrame->m_Data.m_sPatchPath.Replace('/', '\\');
 	if (parser.HasKey(_T("patchoriginal")))

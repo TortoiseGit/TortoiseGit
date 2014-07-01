@@ -276,7 +276,7 @@ void CBaseView::SetEditorConfigEnabled(bool bEditorConfigEnabled)
 	{
 		m_bEditorConfigLoaded = FALSE; // no editorconfig entries loaded
 		CEditorConfigWrapper ec;
-		if (ec.Load(m_sFullFilePath))
+		if (ec.Load(m_sReflectedName.IsEmpty() ? m_sFullFilePath : m_sReflectedName))
 		{
 			m_bEditorConfigLoaded = TRUE;
 			if (ec.m_nTabWidth != nullptr)

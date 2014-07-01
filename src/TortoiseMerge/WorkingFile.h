@@ -1,6 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2006-2007, 2011, 2013 - TortoiseSVN
+// Copyright (C) 2006-2007, 2011, 2013-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -38,6 +38,8 @@ public:
 	CString GetConvertedFileName() const { return m_sConvertedFilename; }
 	void SetDescriptiveName(const CString& newDescName);
 	CString GetDescriptiveName();
+	void SetReflectedName(const CString& newReflectedName);
+	CString GetReflectedName();
 	void CreateEmptyFile();
 	CString GetWindowName() const;
 	CString GetFilename() const		{ return m_sFilename; }
@@ -57,5 +59,6 @@ private:
 	CString m_sFilename;
 	CString m_sConvertedFilename;
 	CString m_sDescriptiveName;
+	CString m_sReflectedName;
 	WIN32_FILE_ATTRIBUTE_DATA m_attribs;
 };

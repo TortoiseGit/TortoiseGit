@@ -241,6 +241,7 @@ public: // variables
 	CString			m_sWindowName;		///< The name of the view which is shown as a window title to the user
 	CString			m_sFullFilePath;	///< The full path of the file shown
 	CString			m_sConvertedFilePath;   ///< the path to the converted file that's shown in the view
+	CString			m_sReflectedName;	///< The reflected name of file
 
 	BOOL			m_bViewWhitespace;	///< If TRUE, then SPACE and TAB are shown as special characters
 	BOOL			m_bShowInlineDiff;	///< If TRUE, diffs in lines are marked colored
