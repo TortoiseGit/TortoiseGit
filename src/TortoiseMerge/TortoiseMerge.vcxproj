@@ -40,7 +40,7 @@
   <PropertyGroup Label="UserMacros" />
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>..\TortoiseMerge;..\..\ext\gitdll;..\git;.\svninclude;..\..\ext\apr\include;..\..\ext\apr-util\include;.\libsvn_diff;..\Utils;..\;..\Utils\MiscUI;..\..\ext\ResizableLib;..\..\ext\libgit2\include;..\..\ext\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\TortoiseMerge;..\..\ext\gitdll;..\git;.\svninclude;..\..\ext\apr\include;..\..\ext\apr-util\include;.\libsvn_diff;..\Utils;..\;..\Utils\MiscUI;..\..\ext\ResizableLib;..\..\ext\libgit2\include;..\..\ext\zlib;..\..\ext\editorconfig\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>APR_DECLARE_STATIC;APU_DECLARE_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <ResourceCompile>
@@ -61,6 +61,7 @@
     <ClCompile Include="..\Utils\MiscUI\StandAloneDlg.cpp" />
     <ClCompile Include="..\Utils\ProfilingInfo.cpp" />
     <ClCompile Include="..\Utils\TaskbarUUID.cpp" />
+    <ClCompile Include="EditorConfigWrapper.cpp" />
     <ClCompile Include="EncodingDlg.cpp" />
     <ClCompile Include="EOL.cpp" />
     <ClCompile Include="libsvn_diff\adler32.c">
@@ -314,6 +315,7 @@
     <ClInclude Include="..\Utils\ProfilingInfo.h" />
     <ClInclude Include="..\Utils\SimpleIni.h" />
     <ClInclude Include="..\Utils\TaskbarUUID.h" />
+    <ClInclude Include="EditorConfigWrapper.h" />
     <ClInclude Include="EncodingDlg.h" />
     <ClInclude Include="TempFile.h" />
     <ClInclude Include="AboutDlg.h" />
@@ -402,6 +404,9 @@
     <ResourceCompile Include="..\Resources\TortoiseMergeENG.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\ext\build\editorconfig.vcxproj">
+      <Project>{da843306-3d6d-4198-890e-25e6177e01c3}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\ext\build\libapr.vcxproj">
       <Project>{4472028d-4acf-474e-aa95-9b7e12b50f60}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
