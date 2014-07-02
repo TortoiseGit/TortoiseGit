@@ -6,4 +6,4 @@ qt
 test
 scripts
 
-apply backgroundcolors.patch
+apply backgroundcolors.patch and unicodefont.patch
