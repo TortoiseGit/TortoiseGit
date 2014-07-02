@@ -472,11 +472,18 @@ Don't touch these lines:
 						<row>
 							<entry condition="pot">:cat</entry>
 							<entry>
+								<emphasis>Deprecate</emphasis>
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">:getonefile</entry>
+							<entry>
 								Saves a file from an URL or working tree path given
 								in <option>/path</option> to the location given in
 								<option>/savepath:path</option>. The revision is
 								given in <option>/revision:xxx</option>. This can
-								be used to get a file with a specific revision.
+								be used to get a file with a specific revision,
+								where xxx specifies to the SHA1 of commit or blob.
 							</entry>
 						</row>
 <!--
