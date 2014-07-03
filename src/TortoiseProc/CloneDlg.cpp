@@ -56,7 +56,7 @@ CCloneDlg::CCloneDlg(CWnd* pParent /*=NULL*/)
 	m_regCloneDir = CRegString(_T("Software\\TortoiseGit\\TortoiseProc\\CloneDir"));
 	m_nSVNFrom = 0;
 
-	m_nDepth = 0;
+	m_nDepth = 1;
 	m_bDepth = false;
 	m_bSaving = false;
 }
