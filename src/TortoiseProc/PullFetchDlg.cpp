@@ -42,6 +42,8 @@ CPullFetchDlg::CPullFetchDlg(CWnd* pParent /*=NULL*/)
 	m_bRebase = FALSE;
 	m_bSquash = false;
 	m_bNoCommit = false;
+	m_nDepth = 1;
+	m_bDepth = FALSE;
 	m_bFFonly = false;
 	m_bFetchTags = 2;
 	m_bAllRemotes = FALSE;
@@ -65,6 +67,8 @@ void CPullFetchDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX,IDC_PUTTYKEY_AUTOLOAD,m_bAutoLoad);
 	DDX_Check(pDX,IDC_CHECK_REBASE,m_bRebase);
 	DDX_Check(pDX,IDC_CHECK_PRUNE,m_bPrune);
+	DDX_Check(pDX, IDC_CHECK_DEPTH, m_bDepth);
+	DDX_Text(pDX, IDC_EDIT_DEPTH, m_nDepth);
 	DDX_Check(pDX, IDC_CHECK_FFONLY, m_bFFonly);
 	DDX_Check(pDX, IDC_CHECK_FETCHTAGS, m_bFetchTags);
 }
@@ -77,6 +81,7 @@ BEGIN_MESSAGE_MAP(CPullFetchDlg, CHorizontalResizableStandAloneDialog)
 	ON_BN_CLICKED(IDOK, &CPullFetchDlg::OnBnClickedOk)
 	ON_STN_CLICKED(IDC_REMOTE_MANAGE, &CPullFetchDlg::OnStnClickedRemoteManage)
 	ON_BN_CLICKED(IDC_BUTTON_BROWSE_REF, &CPullFetchDlg::OnBnClickedButtonBrowseRef)
+	ON_BN_CLICKED(IDC_CHECK_DEPTH, OnBnClickedCheckDepth)
 	ON_BN_CLICKED(IDC_CHECK_FFONLY, OnBnClickedCheckFfonly)
 	ON_BN_CLICKED(IDC_CHECK_NOFF, OnBnClickedCheckFfonly)
 END_MESSAGE_MAP()
@@ -106,6 +111,7 @@ BOOL CPullFetchDlg::OnInitDialog()
 	AdjustControlSize(IDC_OTHER_RD);
 	AdjustControlSize(IDC_CHECK_SQUASH);
 	AdjustControlSize(IDC_CHECK_NOCOMMIT);
+	AdjustControlSize(IDC_CHECK_DEPTH);
 	AdjustControlSize(IDC_CHECK_NOFF);
 	AdjustControlSize(IDC_CHECK_FFONLY);
 	AdjustControlSize(IDC_CHECK_FETCHTAGS);
@@ -176,6 +182,8 @@ BOOL CPullFetchDlg::OnInitDialog()
 
 	if (g_GitAdminDir.IsBareRepo(g_Git.m_CurrentDir))
 		this->GetDlgItem(IDC_CHECK_REBASE)->EnableWindow(FALSE);
+
+	OnBnClickedCheckDepth();
 
 	m_Other.SetCaseSensitive(TRUE);
 	m_Other.SetURLHistory(TRUE);
@@ -376,6 +384,12 @@ void CPullFetchDlg::OnBnClickedButtonBrowseRef()
 	m_RemoteBranch.AddString(remoteBranch, 0);
 
 	CheckRadioButton(IDC_REMOTE_RD,IDC_OTHER_RD,IDC_REMOTE_RD);
+}
+
+void CPullFetchDlg::OnBnClickedCheckDepth()
+{
+	UpdateData(TRUE);
+	GetDlgItem(IDC_EDIT_DEPTH)->EnableWindow(m_bDepth);
 }
 
 void CPullFetchDlg::OnBnClickedCheckFfonly()

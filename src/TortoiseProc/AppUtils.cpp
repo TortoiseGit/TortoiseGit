@@ -2208,6 +2208,7 @@ bool CAppUtils::Pull(bool showPush)
 		CString ffonly;
 		CString squash;
 		CString nocommit;
+		CString depth;
 		CString notags;
 		CString prune;
 
@@ -2229,6 +2230,9 @@ bool CAppUtils::Pull(bool showPush)
 		if (dlg.m_bNoCommit)
 			nocommit = _T("--no-commit");
 
+		if (dlg.m_bDepth)
+			depth.Format(_T("--depth %d "), dlg.m_nDepth);
+
 		int ver = CAppUtils::GetMsysgitVersion();
 
 		if (dlg.m_bPrune == TRUE)
@@ -2239,7 +2243,7 @@ bool CAppUtils::Pull(bool showPush)
 		if(ver >= 0x01070203) //above 1.7.0.2
 			cmdRebase += _T("--progress ");
 
-		cmd.Format(_T("git.exe pull -v %s %s %s %s %s %s %s \"%s\" %s"), cmdRebase, noff, ffonly, squash, nocommit, notags, prune, url, dlg.m_RemoteBranchName);
+		cmd.Format(_T("git.exe pull -v %s %s %s %s %s %s %s %s \"%s\" %s"), cmdRebase, noff, ffonly, squash, nocommit, depth, notags, prune, url, dlg.m_RemoteBranchName);
 		CProgressDlg progress;
 		progress.m_GitCmd = cmd;
 		progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_PULL_DIFFS)));
@@ -2351,6 +2355,9 @@ bool CAppUtils::Fetch(CString remoteName, bool allowRebase, bool allRemotes)
 
 		if(ver >= 0x01070203) //above 1.7.0.2
 			arg = _T("--progress ");
+
+		if (dlg.m_bDepth)
+			arg.AppendFormat(_T("--depth %d "), dlg.m_nDepth);
 
 		if (dlg.m_bPrune == TRUE)
 			arg += _T("--prune ");

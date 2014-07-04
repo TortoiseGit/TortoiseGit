@@ -59,6 +59,8 @@ public:
 	BOOL		m_bFFonly;
 	BOOL		m_bFetchTags;
 	BOOL		m_bNoCommit;
+	BOOL		m_bDepth;
+	int			m_nDepth;
 	BOOL		m_bAutoLoadEnable;
 	BOOL		m_bAllRemotes;
 	CString		m_PreSelectRemote;
@@ -78,6 +80,7 @@ protected:
 	void Refresh();
 	afx_msg void OnStnClickedRemoteManage();
 	afx_msg void OnBnClickedButtonBrowseRef();
+	afx_msg void OnBnClickedCheckDepth();
 	afx_msg void OnBnClickedCheckFetchtags();
 	afx_msg void OnBnClickedCheckFfonly();
 };
