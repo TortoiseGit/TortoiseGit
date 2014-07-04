@@ -183,6 +183,17 @@ BOOL CPullFetchDlg::OnInitDialog()
 	if (g_GitAdminDir.IsBareRepo(g_Git.m_CurrentDir))
 		this->GetDlgItem(IDC_CHECK_REBASE)->EnableWindow(FALSE);
 
+	CAutoRepository repo(g_Git.GetGitRepository());
+	if (git_repository_is_shallow(repo))
+	{
+		m_bDepth = TRUE;
+		UpdateData(FALSE);
+	}
+	else
+	{
+		GetDlgItem(IDC_CHECK_DEPTH)->ShowWindow(SW_HIDE);
+		GetDlgItem(IDC_EDIT_DEPTH)->ShowWindow(SW_HIDE);
+	}
 	OnBnClickedCheckDepth();
 
 	m_Other.SetCaseSensitive(TRUE);
