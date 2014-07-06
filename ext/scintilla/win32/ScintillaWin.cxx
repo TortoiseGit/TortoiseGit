@@ -8,8 +8,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-#include <ctype.h>
 #include <assert.h>
+#include <ctype.h>
 #include <limits.h>
 
 #include <new>
@@ -26,6 +26,8 @@
 #include <commctrl.h>
 #include <richedit.h>
 #include <windowsx.h>
+#include <zmouse.h>
+#include <ole2.h>
 
 #if defined(NTDDI_WIN7) && !defined(DISABLE_D2D)
 #define USE_D2D 1
@@ -43,9 +45,11 @@
 
 #ifdef SCI_LEXER
 #include "SciLexer.h"
-#include "LexerModule.h"
 #endif
 #include "StringCopy.h"
+#ifdef SCI_LEXER
+#include "LexerModule.h"
+#endif
 #include "SplitVector.h"
 #include "Partitioning.h"
 #include "RunStyles.h"
@@ -57,24 +61,25 @@
 #include "XPM.h"
 #include "LineMarker.h"
 #include "Style.h"
-#include "AutoComplete.h"
 #include "ViewStyle.h"
 #include "CharClassify.h"
 #include "Decoration.h"
 #include "CaseFolder.h"
 #include "Document.h"
+#include "CaseConvert.h"
+#include "UniConversion.h"
 #include "Selection.h"
 #include "PositionCache.h"
 #include "Editor.h"
-#include "ScintillaBase.h"
-#include "UniConversion.h"
-#include "CaseConvert.h"
 
-#include "PlatWin.h"
+#include "AutoComplete.h"
+#include "ScintillaBase.h"
 
 #ifdef SCI_LEXER
 #include "ExternalLexer.h"
 #endif
+
+#include "PlatWin.h"
 
 #ifndef SPI_GETWHEELSCROLLLINES
 #define SPI_GETWHEELSCROLLLINES   104
@@ -87,10 +92,6 @@
 #ifndef UNICODE_NOCHAR
 #define UNICODE_NOCHAR                  0xFFFF
 #endif
-
-#include <commctrl.h>
-#include <zmouse.h>
-#include <ole2.h>
 
 #ifndef MK_ALT
 #define MK_ALT 32
@@ -248,7 +249,6 @@ class ScintillaWin :
 	virtual void SetCtrlID(int identifier);
 	virtual int GetCtrlID();
 	virtual void NotifyParent(SCNotification scn);
-	virtual void NotifyParent(SCNotification * scn);
 	virtual void NotifyDoubleClick(Point pt, int modifiers);
 	virtual CaseFolder *CaseFolderForEncoding();
 	virtual std::string CaseMapString(const std::string &s, int caseMapping);
@@ -553,6 +553,31 @@ static int KeyTranslate(int keyIn) {
 	}
 }
 
+static bool BoundsContains(PRectangle rcBounds, HRGN hRgnBounds, PRectangle rcCheck) {
+	bool contains = true;
+	if (!rcCheck.Empty()) {
+		if (!rcBounds.Contains(rcCheck)) {
+			contains = false;
+		} else if (hRgnBounds) {
+			// In bounding rectangle so check more accurately using region
+			HRGN hRgnCheck = ::CreateRectRgn(static_cast<int>(rcCheck.left), static_cast<int>(rcCheck.top),
+				static_cast<int>(rcCheck.right), static_cast<int>(rcCheck.bottom));
+			if (hRgnCheck) {
+				HRGN hRgnDifference = ::CreateRectRgn(0, 0, 0, 0);
+				if (hRgnDifference) {
+					int combination = ::CombineRgn(hRgnDifference, hRgnCheck, hRgnBounds, RGN_DIFF);
+					if (combination != NULLREGION) {
+						contains = false;
+					}
+					::DeleteRgn(hRgnDifference);
+				}
+				::DeleteRgn(hRgnCheck);
+			}
+		}
+	}
+	return contains;
+}
+
 LRESULT ScintillaWin::WndPaint(uptr_t wParam) {
 	//ElapsedTime et;
 
@@ -576,7 +601,7 @@ LRESULT ScintillaWin::WndPaint(uptr_t wParam) {
 	}
 	rcPaint = PRectangle::FromInts(pps->rcPaint.left, pps->rcPaint.top, pps->rcPaint.right, pps->rcPaint.bottom);
 	PRectangle rcClient = GetClientRectangle();
-	paintingAllText = rcPaint.Contains(rcClient);
+	paintingAllText = BoundsContains(rcPaint, hRgnUpdate, rcClient);
 	if (technology == SC_TECHNOLOGY_DEFAULT) {
 		AutoSurface surfaceWindow(pps->hdc, this);
 		if (surfaceWindow) {
@@ -1339,33 +1364,17 @@ void ScintillaWin::SetTrackMouseLeaveEvent(bool on) {
 		tme.cbSize = sizeof(tme);
 		tme.dwFlags = TME_LEAVE;
 		tme.hwndTrack = MainHWND();
+		tme.dwHoverTime = HOVER_DEFAULT;	// Unused but triggers Dr. Memory if not initialized
 		TrackMouseEventFn(&tme);
 	}
 	trackedMouseLeave = on;
 }
 
 bool ScintillaWin::PaintContains(PRectangle rc) {
-	bool contains = true;
-	if ((paintState == painting) && (!rc.Empty())) {
-		if (!rcPaint.Contains(rc)) {
-			contains = false;
-		} else {
-			// In bounding rectangle so check more accurately using region
-			HRGN hRgnRange = ::CreateRectRgn(static_cast<int>(rc.left), static_cast<int>(rc.top), static_cast<int>(rc.right), static_cast<int>(rc.bottom));
-			if (hRgnRange) {
-				HRGN hRgnDest = ::CreateRectRgn(0, 0, 0, 0);
-				if (hRgnDest) {
-					int combination = ::CombineRgn(hRgnDest, hRgnRange, hRgnUpdate, RGN_DIFF);
-					if (combination != NULLREGION) {
-						contains = false;
-					}
-					::DeleteRgn(hRgnDest);
-				}
-				::DeleteRgn(hRgnRange);
-			}
-		}
+	if (paintState == painting) {
+		return BoundsContains(rcPaint, hRgnUpdate, rc);
 	}
-	return contains;
+	return true;
 }
 
 void ScintillaWin::ScrollText(int /* linesToMove */) {
@@ -1496,13 +1505,6 @@ void ScintillaWin::NotifyParent(SCNotification scn) {
 	scn.nmhdr.idFrom = GetCtrlID();
 	::SendMessage(::GetParent(MainHWND()), WM_NOTIFY,
 	              GetCtrlID(), reinterpret_cast<LPARAM>(&scn));
-}
-
-void ScintillaWin::NotifyParent(SCNotification * scn) {
-	scn->nmhdr.hwndFrom = MainHWND();
-	scn->nmhdr.idFrom = GetCtrlID();
-	::SendMessage(::GetParent(MainHWND()), WM_NOTIFY,
-		GetCtrlID(), reinterpret_cast<LPARAM>(scn));
 }
 
 void ScintillaWin::NotifyDoubleClick(Point pt, int modifiers) {
@@ -2161,7 +2163,7 @@ void ScintillaWin::ImeStartComposition() {
 			// Since the style creation code has been made platform independent,
 			// The logfont for the IME is recreated here.
 			int styleHere = (pdoc->StyleAt(sel.MainCaret())) & 31;
-			LOGFONTW lf = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, L""};
+			LOGFONTA lf = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ""};
 			int sizeZoomed = vs.styles[styleHere].size + vs.zoomLevel * SC_FONT_SIZE_MULTIPLIER;
 			if (sizeZoomed <= 2 * SC_FONT_SIZE_MULTIPLIER)	// Hangs if sizeZoomed <= 1
 				sizeZoomed = 2 * SC_FONT_SIZE_MULTIPLIER;
@@ -2176,11 +2178,10 @@ void ScintillaWin::ImeStartComposition() {
 			lf.lfItalic = static_cast<BYTE>(vs.styles[styleHere].italic ? 1 : 0);
 			lf.lfCharSet = DEFAULT_CHARSET;
 			lf.lfFaceName[0] = '\0';
-			if (vs.styles[styleHere].fontName) {
-				const char* fontName = vs.styles[styleHere].fontName;
-				UTF16FromUTF8(fontName, strlen(fontName)+1, lf.lfFaceName, LF_FACESIZE);
-			}
-			::ImmSetCompositionFontW(hIMC, &lf);
+			if (vs.styles[styleHere].fontName)
+				StringCopy(lf.lfFaceName, vs.styles[styleHere].fontName);
+
+			::ImmSetCompositionFontA(hIMC, &lf);
 		}
 		::ImmReleaseContext(MainHWND(), hIMC);
 		// Caret is displayed in IME window. So, caret in Scintilla is useless.

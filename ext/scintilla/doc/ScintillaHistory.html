@@ -460,6 +460,84 @@
       </li>
     </ul>
     <h3>
+       <a href="http://prdownloads.sourceforge.net/scintilla/scite344.zip?download">Release 3.4.4</a>
+    </h3>
+    <ul>
+	<li>
+	Released 3 July 2014.
+	</li>
+	<li>
+	Style byte indicators removed. They were deprecated in 2007. Standard indicators should be used instead.
+	</li>
+	<li>
+	When multiple selections are active, autocompletion text may be inserted at each selection with new
+	SCI_AUTOCSETMULTI method.
+	</li>
+	<li>
+	C++ lexer fixes crash for "#define x(".
+	<a href="http://sourceforge.net/p/scintilla/bugs/1614/">Bug #1614</a>.
+	</li>
+	<li>
+	C++ lexer fixes raw string recognition so that R"xxx(blah)xxx" is styled as SCE_C_STRINGRAW.
+	</li>
+	<li>
+	The Postscript lexer no longer marks token edges with indicators as this used style byte indicators.
+	</li>
+	<li>
+	The Scriptol lexer no longer displays indicators for poor indentation as this used style byte indicators.
+	</li>
+	<li>
+	TCL lexer fixes names of keyword sets.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1615/">Bug #1615</a>.
+	</li>
+	<li>
+	Shell lexer fixes fold matching problem caused by "&lt;&lt;&lt;".
+	<a href="http://sourceforge.net/p/scintilla/bugs/1605/">Bug #1605</a>.
+	</li>
+	<li>
+	Fix bug where indicators were not removed when fold highlighting on.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1604/">Bug #1604</a>.
+	</li>
+	<li>
+	Fix bug on Cocoa where emoji were treated as being zero width.
+	</li>
+	<li>
+	Fix crash on GTK+ with Ubuntu 12.04 and overlay scroll bars.
+	</li>
+	<li>
+	Avoid creating a Cairo context when measuring text on GTK+ as future versions of GTK+
+	may prohibit calling gdk_cairo_create except inside drawing handlers. This prohibition may
+	be required on Wayland.
+	</li>
+	<li>
+	On Cocoa, the registerNotifyCallback method is now marked as deprecated so client code that
+	uses it will display an error message.
+	Client code should use the delegate mechanism or subclassing instead.
+	The method will be removed in the next version.
+	</li>
+	<li>
+	On Cocoa, package Scintilla more in compliance with platform conventions.
+	Only publish public headers in the framework headers directory.
+	Only define the Scintilla namespace in Scintilla.h when compiling as C++.
+	Use the Cocoa NS_ENUM and NS_OPTIONS macros for exposed enumerations.
+	Hide internal methods from public headers.
+	These changes are aimed towards publishing Scintilla as a module which will allow it to
+	be used from the Swift programming language, although more changes will be needed here.
+	</li>
+	<li>
+	Fix crash in SciTE when stream comment performed at line end.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1610/">Bug #1610</a>.
+	</li>
+	<li>
+	For SciTE on Windows, display error message when common dialogs fail.
+	<a href="http://sourceforge.net/p/scintilla/bugs/156/">Bug #156</a>.
+	</li>
+	<li>
+	For SciTE on GTK+ fix bug with initialisation of toggle buttons in find and replace strips.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1612/">Bug #1612</a>.
+	</li>
+    </ul>
+    <h3>
        <a href="http://prdownloads.sourceforge.net/scintilla/scite343.zip?download">Release 3.4.3</a>
     </h3>
     <ul>

@@ -5,8 +5,7 @@
 # be needed to use other compilers.
 
 .SUFFIXES: .cxx
-CC = g++
-DEL = del /q
+DEL ?= del /q
 
 COMPONENT = ../bin/Scintilla.dll
 LEXCOMPONENT = ../bin/SciLexer.dll
@@ -36,7 +35,7 @@ STRIPFLAG=-s
 endif
 
 .cxx.o:
-	$(CC) $(CXXFLAGS) -c $<
+	$(CXX) $(CXXFLAGS) -c $<
 
 ALL:	$(COMPONENT) $(LEXCOMPONENT) $(LEXLIB) ScintillaWinS.o
 
@@ -47,7 +46,7 @@ analyze:
 	clang --analyze -D DISABLE_D2D $(CXXFLAGS) *.cxx ../src/*.cxx ../lexlib/*.cxx ../lexers/*.cxx
 
 deps:
-	$(CC) -MM $(CXXFLAGS) *.cxx ../src/*.cxx ../lexlib/*.cxx ../lexers/*.cxx >deps.mak
+	$(CXX) -MM $(CXXFLAGS) *.cxx ../src/*.cxx ../lexlib/*.cxx ../lexers/*.cxx >deps.mak
 
 LEXOBJS:=$(addsuffix .o,$(basename $(notdir $(wildcard ../lexers/Lex*.cxx))))
 
@@ -84,7 +83,7 @@ BASEOBJS = \
 SOBJS = ScintillaWin.o ScintillaBase.o $(BASEOBJS)
 
 $(COMPONENT): $(SOBJS) Scintilla.def
-	$(CC) $(LDFLAGS) -o $@ $(STRIPFLAG) $(SOBJS) $(CXXFLAGS) $(LIBS)
+	$(CXX) $(LDFLAGS) -o $@ $(STRIPFLAG) $(SOBJS) $(CXXFLAGS) $(LIBS)
 
 LOBJS = \
 	Accessor.o \
@@ -100,7 +99,7 @@ LOBJS = \
 	$(BASEOBJS) \
 	$(LEXOBJS)
 $(LEXCOMPONENT): $(LOBJS) Scintilla.def
-	$(CC) $(LDFLAGS) -o $@ $(STRIPFLAG) $(LOBJS) $(CXXFLAGS) $(LIBS)
+	$(CXX) $(LDFLAGS) -o $@ $(STRIPFLAG) $(LOBJS) $(CXXFLAGS) $(LIBS)
 
 $(LEXLIB): $(LEXOBJS)
 	$(AR) rc $@ $^
@@ -145,13 +144,13 @@ ScintillaWinS.o: ScintillaWin.cxx Platform.h \
  CaseConvert.h CaseFolder.h
 
 ScintillaBaseL.o:
-	$(CC) $(CXXFLAGS) -D SCI_LEXER -c $< -o $@
+	$(CXX) $(CXXFLAGS) -D SCI_LEXER -c $< -o $@
 
 ScintillaWinS.o:
-	$(CC) $(CXXFLAGS) -D STATIC_BUILD -c $< -o $@
+	$(CXX) $(CXXFLAGS) -D STATIC_BUILD -c $< -o $@
 
 ScintillaWinL.o:
-	$(CC) $(CXXFLAGS) -D SCI_LEXER -c $< -o $@
+	$(CXX) $(CXXFLAGS) -D SCI_LEXER -c $< -o $@
 
 ScintRes.o:	ScintRes.rc
 	windres ScintRes.rc $@
