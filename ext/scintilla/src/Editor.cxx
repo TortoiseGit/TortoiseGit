@@ -2789,7 +2789,18 @@ void Editor::DrawLine(Surface *surface, const ViewStyle &vsDraw, int line, int l
 	FontAlias ctrlCharsFont = vsDraw.styles[STYLE_CONTROLCHAR].font;
 
 	// See if something overrides the line background color.
-	const ColourOptional background = vsDraw.Background(pdoc->GetMark(line), caret.active, ll->containsCaret);
+	ColourOptional background = vsDraw.Background(pdoc->GetMark(line), caret.active, ll->containsCaret);
+
+	SCNotification scn = {0};
+	scn.nmhdr.code = SCN_GETBKCOLOR;
+	scn.line = line;
+	scn.lParam = -1;
+	NotifyParent(&scn);
+	if (scn.lParam != -1)
+	{
+		background.Set(scn.lParam);
+		background.isSet = true;
+	}
 
 	const bool drawWhitespaceBackground = (vsDraw.viewWhitespace != wsInvisible) &&
 	        (!background.isSet) && (vsDraw.whitespaceColours.back.isSet);
