@@ -2171,7 +2171,7 @@ void ScintillaWin::ImeStartComposition() {
 			// Since the style creation code has been made platform independent,
 			// The logfont for the IME is recreated here.
 			int styleHere = (pdoc->StyleAt(sel.MainCaret())) & 31;
-			LOGFONTA lf = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ""};
+			LOGFONTW lf = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, L""};
 			int sizeZoomed = vs.styles[styleHere].size + vs.zoomLevel * SC_FONT_SIZE_MULTIPLIER;
 			if (sizeZoomed <= 2 * SC_FONT_SIZE_MULTIPLIER)	// Hangs if sizeZoomed <= 1
 				sizeZoomed = 2 * SC_FONT_SIZE_MULTIPLIER;
@@ -2186,10 +2186,11 @@ void ScintillaWin::ImeStartComposition() {
 			lf.lfItalic = static_cast<BYTE>(vs.styles[styleHere].italic ? 1 : 0);
 			lf.lfCharSet = DEFAULT_CHARSET;
 			lf.lfFaceName[0] = '\0';
-			if (vs.styles[styleHere].fontName)
-				StringCopy(lf.lfFaceName, vs.styles[styleHere].fontName);
-
-			::ImmSetCompositionFontA(hIMC, &lf);
+			if (vs.styles[styleHere].fontName) {
+				const char* fontName = vs.styles[styleHere].fontName;
+				UTF16FromUTF8(fontName, strlen(fontName)+1, lf.lfFaceName, LF_FACESIZE);
+			}
+			::ImmSetCompositionFontW(hIMC, &lf);
 		}
 		::ImmReleaseContext(MainHWND(), hIMC);
 		// Caret is displayed in IME window. So, caret in Scintilla is useless.
