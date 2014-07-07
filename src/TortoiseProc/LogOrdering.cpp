@@ -57,15 +57,11 @@ BOOL CLogOrdering::OnInitDialog()
 		if (m_cLogOrdering.GetItemData(i) == curOrder)
 			m_cLogOrdering.SetCurSel(i);
 
-	UpdateData(FALSE);
-
 	return TRUE;
 }
 
 void CLogOrdering::OnOK()
 {
-	UpdateData();
-
 	if (m_cLogOrdering.GetCurSel() != CB_ERR)
 		CRegDWORD(_T("Software\\TortoiseGit\\LogOrderBy")) = (DWORD)m_cLogOrdering.GetItemData(m_cLogOrdering.GetCurSel());
 
