@@ -449,6 +449,15 @@ BOOL CTortoiseMergeApp::InitInstance()
 					}
 				}
 			}
+			else if (nArgs == 2)
+			{
+				// only one path specified: use it to fill the "open" dialog
+				if (PathFileExists(szArglist[1]))
+				{
+					pFrame->m_Data.m_yourFile.SetFileName(szArglist[1]);
+					pFrame->m_Data.m_yourFile.StoreFileAttributes();
+				}
+			}
 		}
 
 		// Free memory allocated for CommandLineToArgvW arguments.
@@ -496,7 +505,7 @@ BOOL CTortoiseMergeApp::InitInstance()
 	pFrame->ShowDiffBar(!pFrame->m_bOneWay);
 	if (!pFrame->m_Data.IsBaseFileInUse() && pFrame->m_Data.m_sPatchPath.IsEmpty() && pFrame->m_Data.m_sDiffFile.IsEmpty())
 	{
-		pFrame->OnFileOpen();
+		pFrame->OnFileOpen(pFrame->m_Data.m_yourFile.InUse());
 		return TRUE;
 	}
 

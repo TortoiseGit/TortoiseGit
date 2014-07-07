@@ -81,6 +81,8 @@ protected:
 	afx_msg void	OnFileSave();
 	afx_msg void	OnFileSaveAs();
 	afx_msg void	OnFileOpen();
+	afx_msg void	OnFileOpen(bool fillyours);
+
 	afx_msg void	OnFileReload();
 	afx_msg void	OnClose();
 	afx_msg void	OnActivate(UINT, CWnd*, BOOL);

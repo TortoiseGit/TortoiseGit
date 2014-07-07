@@ -735,8 +735,15 @@ void CMainFrame::OnFileOpen()
 {
 	if (CheckForSave(CHFSR_OPEN)==IDCANCEL)
 		return;
+	return OnFileOpen(false);
+}
+
+void CMainFrame::OnFileOpen(bool fillyours)
+{
 	COpenDlg dlg;
-	if (dlg.DoModal()!=IDOK)
+	if (fillyours)
+		dlg.m_sBaseFile = m_Data.m_yourFile.GetFilename();
+	if (dlg.DoModal() != IDOK)
 	{
 		return;
 	}
