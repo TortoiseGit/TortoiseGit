@@ -43,6 +43,7 @@
 #define LOGFILTER_TIMER	101
 #define LOGFTIME_TIMER	102
 #define LOG_FILLPATCHVTIMER	103
+#define LOG_HEADER_ORDER_TIMER 104
 
 typedef int (__cdecl *GENERICCOMPAREFN)(const void * elem1, const void * elem2);
 

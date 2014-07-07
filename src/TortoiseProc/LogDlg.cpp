@@ -1925,6 +1925,13 @@ void CLogDlg::OnTimer(UINT_PTR nIDEvent)
 		UpdateLogInfoLabel();
 #endif
 	} // if (nIDEvent == LOGFILTER_TIMER)
+	else if (nIDEvent == LOG_HEADER_ORDER_TIMER)
+	{
+		KillTimer(LOG_HEADER_ORDER_TIMER);
+		CLogOrdering orderDlg;
+		if (orderDlg.DoModal() == IDOK)
+			Refresh();
+	}
 	DialogEnableWindow(IDC_STATBUTTON, !(((this->IsThreadRunning())||(m_LogList.m_arShownList.IsEmpty() || m_LogList.m_arShownList.GetCount() == 1 && m_LogList.m_bShowWC))));
 	__super::OnTimer(nIDEvent);
 }
@@ -2315,9 +2322,7 @@ void CLogDlg::OnLvnColumnclick(NMHDR *pNMHDR, LRESULT *pResult)
 #endif
 	*pResult = 0;
 
-	CLogOrdering orderDlg;
-	if (orderDlg.DoModal() == IDOK)
-		Refresh();
+	SetTimer(LOG_HEADER_ORDER_TIMER, 10, nullptr);
 }
 
 void CLogDlg::SortShownListArray()
