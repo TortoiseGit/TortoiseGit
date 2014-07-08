@@ -276,7 +276,7 @@ bool CCacheDlg::GetStatusFromRemoteCache(const CTGitPath& Path, bool bRecursive)
 	{
 		request.flags |= TGITCACHE_FLAGS_RECUSIVE_STATUS;
 	}
-	wcsncpy(request.path, Path.GetWinPath(), MAX_PATH);
+	wcsncpy_s(request.path, Path.GetWinPath(), MAX_PATH);
 	SecureZeroMemory(&m_Overlapped, sizeof(OVERLAPPED));
 	m_Overlapped.hEvent = m_hEvent;
 	// Do the transaction in overlapped mode.
@@ -351,7 +351,7 @@ void CCacheDlg::RemoveFromCache(const CString& path)
 			DWORD cbWritten; 
 			TGITCacheCommand cmd;
 			cmd.command = TGITCACHECOMMAND_CRAWL;
-			wcsncpy(cmd.path, path, MAX_PATH);
+			wcsncpy_s(cmd.path, path, MAX_PATH);
 			BOOL fSuccess = WriteFile( 
 				hPipe,			// handle to pipe 
 				&cmd,			// buffer to write from 
