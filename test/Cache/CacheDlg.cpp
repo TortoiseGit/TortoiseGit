@@ -420,14 +420,19 @@ UINT CCacheDlg::WatchTestThread()
 	srand(GetTickCount());
 	filepath = m_filelist.GetAt(rand() % m_filelist.GetCount());
 	GetStatusFromRemoteCache(CTGitPath(m_sRootPath), false);
-	for (int i=0; i < 10000; ++i)
+	for (int i = 0; i < 10000;)
 	{
 		filepath = m_filelist.GetAt(rand() % m_filelist.GetCount());
+		if (PathIsDirectory(filepath))
+			continue;
+		if (filepath.Find(_T(".git")) >= 0)
+			continue;
 		GetDlgItem(IDC_FILEPATH)->SetWindowText(filepath);
 		TouchFile(filepath);
 		CopyRemoveCopy(filepath);
 		sNumber.Format(_T("%d"), i);
 		GetDlgItem(IDC_DONE)->SetWindowText(sNumber);
+		++i;
 	}
 
 	// create dummy directories and remove them again several times
@@ -485,10 +490,6 @@ void CCacheDlg::TouchFile(const CString& path)
 
 void CCacheDlg::CopyRemoveCopy(const CString& path)
 {
-	if (PathIsDirectory(path))
-		return;
-	if (path.Find(_T(".svn"))>=0)
-		return;
 	if (CopyFile(path, path+_T(".tmp"), FALSE))
 	{
 		if (DeleteFile(path))
