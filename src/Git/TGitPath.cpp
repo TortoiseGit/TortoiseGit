@@ -371,7 +371,11 @@ void CTGitPath::UpdateAttributes() const
 	if(GetFileAttributesEx(m_sBackslashPath.GetLength() >= 248 ? m_sLongBackslashPath : m_sBackslashPath, GetFileExInfoStandard, &attribs))
 	{
 		m_bIsDirectory = !!(attribs.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY);
-		m_lastWriteTime = *(__int64*)&attribs.ftLastWriteTime;
+		// don't cast directly to an __int64:
+		// http://msdn.microsoft.com/en-us/library/windows/desktop/ms724284%28v=vs.85%29.aspx
+		// "Do not cast a pointer to a FILETIME structure to either a ULARGE_INTEGER* or __int64* value
+		// because it can cause alignment faults on 64-bit Windows."
+		m_lastWriteTime = static_cast<__int64>(attribs.ftLastWriteTime.dwHighDateTime) << 32 | attribs.ftLastWriteTime.dwLowDateTime;
 		if (m_bIsDirectory)
 		{
 			m_fileSize = 0;
