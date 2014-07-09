@@ -983,6 +983,12 @@ void CCommitDlg::OnOK()
 			bCloseCommitDlg = false;
 			if (userResponse == IDC_PROGRESS_BUTTON1 + indexReCommit)
 			{
+				if (!m_sLogMessage.IsEmpty())
+				{
+					m_History.AddEntry(m_sLogMessage);
+					m_History.Save();
+				}
+
 				this->m_sLogMessage.Empty();
 				GetCommitTemplate(m_sLogMessage);
 				RunStartCommitHook();
