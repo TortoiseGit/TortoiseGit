@@ -1590,56 +1590,100 @@ int CRebaseDlg::DoRebase()
 	else if (!m_IsCherryPick && nocommit.IsEmpty())
 		cherryPickedFrom = _T("--ff "); // for issue #1833: "If the current HEAD is the same as the parent of the cherry-pick’ed commit, then a fast forward to this commit will be performed."
 
-	cmd.Format(_T("git.exe cherry-pick %s%s %s"), cherryPickedFrom, nocommit, pRev->m_CommitHash.ToString());
-
-	if(g_Git.Run(cmd,&out,CP_UTF8))
+	while (true)
 	{
-		AddLogString(out);
-		CTGitPathList list;
-		if(g_Git.ListConflictFile(list))
+		cmd.Format(_T("git.exe cherry-pick %s%s %s"), cherryPickedFrom, nocommit, pRev->m_CommitHash.ToString());
+
+		if(g_Git.Run(cmd,&out,CP_UTF8))
 		{
-			AddLogString(_T("Get conflict files fail"));
-			return -1;
-		}
-		if (list.IsEmpty())
-		{
-			if (mode ==  CGitLogListBase::LOGACTIONS_REBASE_PICK)
+			AddLogString(out);
+			CTGitPathList list;
+			if(g_Git.ListConflictFile(list))
 			{
-				if (m_pTaskbarList)
-					m_pTaskbarList->SetProgressState(m_hWnd, TBPF_ERROR);
-				if (m_bAutoSkipFailedCommit || CMessageBox::ShowCheck(m_hWnd, IDS_CHERRYPICKFAILEDSKIP, IDS_APPNAME, 1, IDI_QUESTION, IDS_SKIPBUTTON, IDS_MSGBOX_CANCEL, 0, NULL, IDS_DO_SAME_FOR_REST, &m_bAutoSkipFailedCommit) == 1)
-				{
-					bool resetOK = false;
-					while (!resetOK)
-					{
-						out.Empty();
-						if (g_Git.Run(_T("git.exe reset --hard"), &out, CP_UTF8))
-						{
-							AddLogString(out);
-							if (CMessageBox::Show(m_hWnd, _T("Retry?\nUnrecoverable error on cleanup:\n") + out, _T("TortoiseGit"), MB_YESNO | MB_ICONERROR) != IDYES)
-								break;
-						}
-						else
-							resetOK = true;
-					}
-
-					if (resetOK)
-					{
-						pRev->GetRebaseAction() = CGitLogListBase::LOGACTIONS_REBASE_SKIP;
-						m_CommitList.Invalidate();
-						return 0;
-					}
-				}
-
-				m_RebaseStage = REBASE_ERROR;
-				AddLogString(_T("An unrecoverable error occurred."));
+				AddLogString(_T("Get conflict files fail"));
 				return -1;
+			}
+			if (list.IsEmpty())
+			{
+				if (mode ==  CGitLogListBase::LOGACTIONS_REBASE_PICK)
+				{
+					if (m_pTaskbarList)
+						m_pTaskbarList->SetProgressState(m_hWnd, TBPF_ERROR);
+					int choose = -1;
+					if (!m_bAutoSkipFailedCommit)
+					{
+						choose = CMessageBox::ShowCheck(m_hWnd, IDS_CHERRYPICKFAILEDSKIP, IDS_APPNAME, 1, IDI_QUESTION, IDS_SKIPBUTTON, IDS_MSGBOX_RETRY, IDS_MSGBOX_CANCEL, NULL, IDS_DO_SAME_FOR_REST, &m_bAutoSkipFailedCommit);
+						if (choose == 2)
+						{
+							m_bAutoSkipFailedCommit = FALSE;
+							continue;  // retry cherry pick
+						}
+					}
+					if (m_bAutoSkipFailedCommit || choose == 1)
+					{
+						bool resetOK = false;
+						while (!resetOK)
+						{
+							out.Empty();
+							if (g_Git.Run(_T("git.exe reset --hard"), &out, CP_UTF8))
+							{
+								AddLogString(out);
+								if (CMessageBox::Show(m_hWnd, _T("Retry?\nUnrecoverable error on cleanup:\n") + out, _T("TortoiseGit"), MB_YESNO | MB_ICONERROR) != IDYES)
+									break;
+							}
+							else
+								resetOK = true;
+						}
+
+						if (resetOK)
+						{
+							pRev->GetRebaseAction() = CGitLogListBase::LOGACTIONS_REBASE_SKIP;
+							m_CommitList.Invalidate();
+							return 0;
+						}
+					}
+
+					m_RebaseStage = REBASE_ERROR;
+					AddLogString(_T("An unrecoverable error occurred."));
+					return -1;
+				}
+				if (mode == CGitLogListBase::LOGACTIONS_REBASE_EDIT)
+				{
+					this->m_RebaseStage = REBASE_EDIT ;
+					return -1; // Edit return -1 to stop rebase.
+				}
+				// Squash Case
+				if(CheckNextCommitIsSquash())
+				{   // no squash
+					// let user edit last commmit message
+					this->m_RebaseStage = REBASE_SQUASH_EDIT;
+					return -1;
+				}
+			}
+
+			if (m_pTaskbarList)
+				m_pTaskbarList->SetProgressState(m_hWnd, TBPF_ERROR);
+			if (mode == CGitLogListBase::LOGACTIONS_REBASE_SQUASH)
+				m_RebaseStage = REBASE_SQUASH_CONFLICT;
+			else
+				m_RebaseStage = REBASE_CONFLICT;
+			return -1;
+
+		}
+		else
+		{
+			AddLogString(out);
+			if (mode == CGitLogListBase::LOGACTIONS_REBASE_PICK)
+			{
+				pRev->GetRebaseAction() |= CGitLogListBase::LOGACTIONS_REBASE_DONE;
+				return 0;
 			}
 			if (mode == CGitLogListBase::LOGACTIONS_REBASE_EDIT)
 			{
 				this->m_RebaseStage = REBASE_EDIT ;
 				return -1; // Edit return -1 to stop rebase.
 			}
+
 			// Squash Case
 			if(CheckNextCommitIsSquash())
 			{   // no squash
@@ -1647,43 +1691,12 @@ int CRebaseDlg::DoRebase()
 				this->m_RebaseStage = REBASE_SQUASH_EDIT;
 				return -1;
 			}
+			else if (mode == CGitLogListBase::LOGACTIONS_REBASE_SQUASH)
+				pRev->GetRebaseAction() |= CGitLogListBase::LOGACTIONS_REBASE_DONE;
 		}
 
-		if (m_pTaskbarList)
-			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_ERROR);
-		if (mode == CGitLogListBase::LOGACTIONS_REBASE_SQUASH)
-			m_RebaseStage = REBASE_SQUASH_CONFLICT;
-		else
-			m_RebaseStage = REBASE_CONFLICT;
-		return -1;
-
+		return 0;
 	}
-	else
-	{
-		AddLogString(out);
-		if (mode == CGitLogListBase::LOGACTIONS_REBASE_PICK)
-		{
-			pRev->GetRebaseAction() |= CGitLogListBase::LOGACTIONS_REBASE_DONE;
-			return 0;
-		}
-		if (mode == CGitLogListBase::LOGACTIONS_REBASE_EDIT)
-		{
-			this->m_RebaseStage = REBASE_EDIT ;
-			return -1; // Edit return -1 to stop rebase.
-		}
-
-		// Squash Case
-		if(CheckNextCommitIsSquash())
-		{   // no squash
-			// let user edit last commmit message
-			this->m_RebaseStage = REBASE_SQUASH_EDIT;
-			return -1;
-		}
-		else if (mode == CGitLogListBase::LOGACTIONS_REBASE_SQUASH)
-			pRev->GetRebaseAction() |= CGitLogListBase::LOGACTIONS_REBASE_DONE;
-	}
-
-	return 0;
 }
 
 BOOL CRebaseDlg::IsEnd()
