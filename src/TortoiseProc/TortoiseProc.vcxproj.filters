@@ -153,6 +153,9 @@
     <Filter Include="Commands\AutoTextTest">
       <UniqueIdentifier>{9baf680f-fe31-4b6d-bd01-50b7a2c043b8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Commands\GetOneFile">
+      <UniqueIdentifier>{71841248-6d24-402d-a484-f22c203fdba5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AddRemoteDlg.cpp">
@@ -686,6 +689,9 @@
     <ClCompile Include="BugtraqRegexTestDlg.cpp">
       <Filter>Commands\setting</Filter>
     </ClCompile>
+    <ClCompile Include="Commands\GetOneFileCommand.cpp">
+      <Filter>Commands\GetOneFile</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddRemoteDlg.h">
@@ -1212,6 +1218,9 @@
     </ClInclude>
     <ClInclude Include="..\Utils\SmartLibgit2Ref.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\GetOneFileCommand.h">
+      <Filter>Commands\GetOneFile</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

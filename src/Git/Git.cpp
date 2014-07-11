@@ -2168,25 +2168,35 @@ int CGit::GetOneFile(const CString &Refname, const CTGitPath &path, const CStrin
 		if (!repo)
 			return -1;
 
-		CGitHash hash;
-		if (GetHash(repo, hash, Refname))
+		CAutoObject obj;
+		if (git_revparse_single(obj.GetPointer(), repo, CUnicodeUtils::GetUTF8(Refname)))
 			return -1;
+		
+		git_otype objType = git_object_type(obj);
+		if (objType == GIT_OBJ_COMMIT)
+		{
+			CGitHash hash;
+			if (GetHash(repo, hash, Refname))
+				return -1;
 
-		CAutoCommit commit;
-		if (git_commit_lookup(commit.GetPointer(), repo, (const git_oid *)hash.m_hash))
-			return -1;
+			CAutoCommit commit;
+			if (git_commit_lookup(commit.GetPointer(), repo, (const git_oid *)hash.m_hash))
+				return -1;
 
-		CAutoTree tree;
-		if (git_commit_tree(tree.GetPointer(), commit))
-			return -1;
+			CAutoTree tree;
+			if (git_commit_tree(tree.GetPointer(), commit))
+				return -1;
 
-		CAutoTreeEntry entry;
-		if (git_tree_entry_bypath(entry.GetPointer(), tree, CUnicodeUtils::GetUTF8(path.GetGitPathString())))
-			return -1;
+			CAutoTreeEntry entry;
+			if (git_tree_entry_bypath(entry.GetPointer(), tree, CUnicodeUtils::GetUTF8(path.GetGitPathString())))
+				return -1;
 
-		CAutoBlob blob;
-		if (git_tree_entry_to_object((git_object**)blob.GetPointer(), repo, entry))
+			if (git_tree_entry_to_object((git_object**)obj.GetPointer(), repo, entry))
+				return -1;
+		}
+		else if (objType != GIT_OBJ_BLOB)
 			return -1;
+		// TODO: get blob from tree?
 
 		FILE *file = nullptr;
 		_tfopen_s(&file, outputfile, _T("w"));
@@ -2196,7 +2206,7 @@ int CGit::GetOneFile(const CString &Refname, const CTGitPath &path, const CStrin
 			return -1;
 		}
 		CAutoBuf buf;
-		if (git_blob_filtered_content(buf, blob, CUnicodeUtils::GetUTF8(path.GetGitPathString()), 0))
+		if (git_blob_filtered_content(buf, (git_blob *)(git_object *)obj, CUnicodeUtils::GetUTF8(path.GetGitPathString()), 0))
 		{
 			fclose(file);
 			return -1;
@@ -2239,9 +2249,31 @@ int CGit::GetOneFile(const CString &Refname, const CTGitPath &path, const CStrin
 	}
 	else
 	{
+		// Note: The EOL filter is NOT applied on output file via cat-file command.
+		// Thus, the output file might have wrong EOL.
+		// And these code will/should be dropped.
 		CString cmd;
-		cmd.Format(_T("git.exe cat-file -p %s:\"%s\""), Refname, path.GetGitPathString());
-		return RunLogFile(cmd, outputfile, &gitLastErr);
+		CString output;
+
+		cmd.Format(_T("git.exe cat-file -t %s"), Refname);
+		if (g_Git.Run(cmd, &output, &gitLastErr, CP_UTF8))
+		{
+			::DeleteFile(outputfile);
+			return -1;
+		}
+
+		if (output.Find(_T("blob")) == 0)
+			cmd.Format(_T("git.exe cat-file -p %s"), Refname);
+		else
+			cmd.Format(_T("git.exe cat-file -p %s:\"%s\""), Refname, path.GetGitPathString());
+
+		if (g_Git.RunLogFile(cmd, outputfile, &gitLastErr))
+		{
+			::DeleteFile(outputfile);
+			return -1;
+		}
+
+		return 0;
 	}
 }
 void CEnvironment::CopyProcessEnvironment()

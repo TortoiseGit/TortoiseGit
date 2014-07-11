@@ -911,44 +911,74 @@ static int update_some(const unsigned char *sha1, const char *base, int baselen,
 int git_checkout_file(const char *ref, const char *path, const char *outputpath)
 {
 	struct cache_entry *ce;
-	int ret;
+	int ret = -1;
 	GIT_HASH sha1;
-	struct tree * root;
+	enum object_type type;
 	struct checkout state;
-	struct pathspec pathspec;
-	const char *matchbuf[1];
+
+	if (!path || !outputpath)
+		return ret;
+
 	ret = get_sha1(ref, sha1);
-	if(ret)
+	if (ret)
 		return ret;
 
 	reprepare_packed_git();
-	root = parse_tree_indirect(sha1);
-
-	if(!root)
-	{
-		free_all_pack();
-		return -1;
-	}
 
 	ce = xcalloc(1, cache_entry_size(strlen(path)));
 
-	matchbuf[0] = NULL;
-	parse_pathspec(&pathspec, PATHSPEC_ALL_MAGIC, PATHSPEC_PREFER_CWD, path, matchbuf);
-	pathspec.items[0].nowildcard_len = pathspec.items[0].len;
-	ret = read_tree_recursive(root, "", 0, 0, &pathspec, update_some, ce);
-	free_pathspec(&pathspec);
-
-	if(ret)
+	type = sha1_object_info(sha1, NULL);
+	switch (type)
 	{
-		free_all_pack();
-		free(ce);
-		return ret;
-	}
-	memset(&state, 0, sizeof(state));
-	state.force = 1;
-	state.refresh_cache = 0;
+	case OBJ_COMMIT:
+		{
+		struct tree * root;
+		struct pathspec pathspec;
+		const char *matchbuf[1];
 
-	ret = write_entry(ce, outputpath, &state, 0);
+		root = parse_tree_indirect(sha1);
+		if(!root)
+			break;
+
+		matchbuf[0] = NULL;
+		parse_pathspec(&pathspec, PATHSPEC_ALL_MAGIC, PATHSPEC_PREFER_CWD, path, matchbuf);
+		pathspec.items[0].nowildcard_len = pathspec.items[0].len;
+		ret = read_tree_recursive(root, "", 0, 0, &pathspec, update_some, ce);
+		free_pathspec(&pathspec);
+		}
+		break;
+	case OBJ_TREE:
+		break;
+	case OBJ_BLOB:
+		{
+		// Refer to the function get_mode() in diff-no-index.c
+		struct stat st;
+		if (lstat(path, &st))
+			break;	// Could not access the path, seems the file was deleted in the working tree.
+		// TODO: looking up the tree which has the file 
+		// for the case that the file was deleted.
+		// Not fix it until user report the issue.
+
+		if(!update_some(sha1, "", 0, path, st.st_mode, 0, ce))
+			ret = 0;
+		}
+		break;
+	default:
+		break;
+	}
+
+	if (!ret)
+	{
+		memset(&state, 0, sizeof(state));
+		state.force = 1;
+		state.refresh_cache = 0;
+
+		// TODO:
+		// .gitattributes is not applied in write_entry(),
+		// not going to fix it until user report the issue.
+		ret = write_entry(ce, outputpath, &state, 0);
+	}
+
 	free_all_pack();
 	free(ce);
 	return ret;
