@@ -2073,19 +2073,39 @@ bool CGitProgressList::CmdClone(CString& sWindowTitle, bool& /*localoperation*/)
 	callbacks.credentials = CAppUtils::Git2GetUserPassword;
 	callbacks.payload = this;
 
-	git_repository_init_options init_options = GIT_REPOSITORY_INIT_OPTIONS_INIT;
-	init_options.flags = GIT_REPOSITORY_INIT_MKPATH | GIT_REPOSITORY_INIT_EXTERNAL_TEMPLATE;
-	init_options.flags |= m_bBare ? GIT_REPOSITORY_INIT_BARE : 0;
-
 	CSmartAnimation animate(m_pAnimate);
 	CAutoRepository cloned_repo;
-	CAutoRemote origin;
-	if (git_repository_init_ext(cloned_repo.GetPointer(), CUnicodeUtils::GetUTF8(m_targetPathList[0].GetWinPathString()), &init_options) < 0)
-		goto error;
-	if (git_remote_create(origin.GetPointer(), cloned_repo, m_remote.IsEmpty() ? "origin" : CUnicodeUtils::GetUTF8(m_remote), CUnicodeUtils::GetUTF8(m_url.GetGitPathString())) < 0)
-		goto error;
-	git_remote_set_callbacks(origin, &callbacks);
-	if (git_clone_into(cloned_repo, origin, &checkout_opts, m_RefSpec.IsEmpty() ? nullptr : (const char *)CUnicodeUtils::GetUTF8(m_RefSpec), nullptr) < 0)
+
+	git_clone_options cloneOpts = GIT_CLONE_OPTIONS_INIT;
+	cloneOpts.bare = m_bBare;
+	cloneOpts.repository_cb = [](git_repository** out, const char* path, int bare, void* /*payload*/) -> int {
+		git_repository_init_options init_options = GIT_REPOSITORY_INIT_OPTIONS_INIT;
+		init_options.flags = GIT_REPOSITORY_INIT_MKPATH | GIT_REPOSITORY_INIT_EXTERNAL_TEMPLATE;
+		init_options.flags |= bare ? GIT_REPOSITORY_INIT_BARE : 0;
+
+		return git_repository_init_ext(out, path, &init_options);
+	};
+
+	cloneOpts.remote_cb = [](git_remote** out, git_repository* repo, const char* /*name*/, const char* url, void* payload) -> int {
+		int error;
+
+		CAutoRemote origin;
+		if ((error = git_remote_create(origin.GetPointer(), repo, (const char*)payload, url)) < 0)
+			return error;
+
+		*out = origin.Detach();
+		return 0;
+	};
+	cloneOpts.remote_callbacks = callbacks;
+	CStringA remoteName = m_remote.IsEmpty() ? "origin" : CUnicodeUtils::GetUTF8(m_remote);
+	cloneOpts.remote_cb_payload = (void*)(const char*)remoteName;
+
+	CStringA checkout_branch = CUnicodeUtils::GetUTF8(m_RefSpec);
+	if (!checkout_branch.IsEmpty())
+		cloneOpts.checkout_branch = checkout_branch;
+	cloneOpts.checkout_opts = checkout_opts;
+
+	if (git_clone(cloned_repo.GetPointer(), CUnicodeUtils::GetUTF8(m_url.GetGitPathString()), CUnicodeUtils::GetUTF8(m_targetPathList[0].GetWinPathString()), &cloneOpts) < 0)
 		goto error;
 
 	return true;
