@@ -46,8 +46,6 @@ BEGIN_MESSAGE_MAP(CTortoiseGitBlameApp, CWinAppEx)
 	// Standard file based document commands
 	ON_COMMAND(ID_FILE_OPEN, &CWinAppEx::OnFileOpen)
 	ON_COMMAND(ID_FILE_SETTINGS, &CTortoiseGitBlameApp::OnFileSettings)
-	// Standard print setup command
-	ON_COMMAND(ID_FILE_PRINT_SETUP, &CWinAppEx::OnFilePrintSetup)
 END_MESSAGE_MAP()
 
 
