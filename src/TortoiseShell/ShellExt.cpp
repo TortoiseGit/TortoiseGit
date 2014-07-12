@@ -32,15 +32,12 @@ extern ShellObjects g_shellObjects;
 
 // *********************** CShellExt *************************
 CShellExt::CShellExt(FileState state)
-#if ENABLE_CRASHHANLDER
-	: m_crasher(L"TortoiseGit", TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD, TGIT_VERDATE, false)
-#else
 	: m_State(state)
+#if ENABLE_CRASHHANLDER
+	, m_crasher(L"TortoiseGit", TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD, TGIT_VERDATE, false)
 #endif
 	,regDiffLater(L"Software\\TortoiseGit\\DiffLater", L"")
 {
-	m_State = state;
-
 	m_cRef = 0L;
 	InterlockedIncrement(&g_cRefThisDll);
 
