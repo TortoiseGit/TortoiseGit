@@ -2057,9 +2057,12 @@ void CRebaseDlg::OnBnClickedButtonUp2()
 	pos = m_CommitList.GetFirstSelectedItemPosition();
 
 	// do nothing if the first selected item is the first item in the list
-	if (m_CommitList.GetNextSelectedItem(pos) == 0)
+	int idx = m_CommitList.GetNextSelectedItem(pos);
+	if (idx == 0)
 		return;
 
+	bool moveToTop = !!(GetAsyncKeyState(VK_SHIFT) & 0x8000);
+	int move = moveToTop ? idx : 1;
 	pos = m_CommitList.GetFirstSelectedItemPosition();
 
 	bool changed = false;
@@ -2068,11 +2071,11 @@ void CRebaseDlg::OnBnClickedButtonUp2()
 		int index=m_CommitList.GetNextSelectedItem(pos);
 		if(index>=1)
 		{
-			CGitHash old = m_CommitList.m_logEntries[index-1];
-			m_CommitList.m_logEntries[index-1] = m_CommitList.m_logEntries[index];
+			CGitHash old = m_CommitList.m_logEntries[index - move];
+			m_CommitList.m_logEntries[index - move] = m_CommitList.m_logEntries[index];
 			m_CommitList.m_logEntries[index] = old;
 			m_CommitList.RecalculateShownList(&m_CommitList.m_arShownList);
-			m_CommitList.SetItemState(index-1, LVIS_SELECTED, LVIS_SELECTED);
+			m_CommitList.SetItemState(index - move, LVIS_SELECTED, LVIS_SELECTED);
 			m_CommitList.SetItemState(index, 0, LVIS_SELECTED);
 			changed = true;
 		}
@@ -2091,6 +2094,7 @@ void CRebaseDlg::OnBnClickedButtonDown2()
 	if (m_CommitList.GetSelectedCount() == 0)
 		return;
 
+	bool moveToBottom = !!(GetAsyncKeyState(VK_SHIFT) & 0x8000);
 	POSITION pos;
 	pos = m_CommitList.GetFirstSelectedItemPosition();
 	bool changed = false;
@@ -2102,24 +2106,26 @@ void CRebaseDlg::OnBnClickedButtonDown2()
 	{
 		indexes[i++] = m_CommitList.GetNextSelectedItem(pos);
 	}
+	int distanceToBottom = m_CommitList.GetItemCount() - 1 - indexes[m_CommitList.GetSelectedCount() - 1];
+	int move = moveToBottom ? distanceToBottom : 1;
 	// don't move any item if the last selected item is the last item in the m_CommitList
 	// (that would change the order of the selected items)
-	if(indexes[m_CommitList.GetSelectedCount() - 1] < m_CommitList.GetItemCount() - 1)
+	if (distanceToBottom > 0)
 	{
 		// iterate over the indexes backwards in order to correctly move multiselected items
 		for (i = m_CommitList.GetSelectedCount() - 1; i >= 0; i--)
 		{
 			int index = indexes[i];
-			CGitHash old = m_CommitList.m_logEntries[index+1];
-			m_CommitList.m_logEntries[index+1] = m_CommitList.m_logEntries[index];
+			CGitHash old = m_CommitList.m_logEntries[index + move];
+			m_CommitList.m_logEntries[index + move] = m_CommitList.m_logEntries[index];
 			m_CommitList.m_logEntries[index] = old;
 			m_CommitList.RecalculateShownList(&m_CommitList.m_arShownList);
 			m_CommitList.SetItemState(index, 0, LVIS_SELECTED);
-			m_CommitList.SetItemState(index+1, LVIS_SELECTED, LVIS_SELECTED);
+			m_CommitList.SetItemState(index + move, LVIS_SELECTED, LVIS_SELECTED);
 			changed = true;
 		}
 	}
-	m_CommitList.EnsureVisible(indexes[m_CommitList.GetSelectedCount() - 1] + 1, false);
+	m_CommitList.EnsureVisible(indexes[m_CommitList.GetSelectedCount() - 1] + move, false);
 	delete [] indexes;
 	indexes = NULL;
 	if (changed)
