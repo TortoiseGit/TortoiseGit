@@ -23,27 +23,15 @@
 #include "MessageBox.h"
 #include "GitProgressDlg.h"
 #include "LogDlg.h"
-#include "TGitPath.h"
 #include "registry.h"
-#include "GitStatus.h"
 #include "AppUtils.h"
-#include "PathUtils.h"
 #include "StringUtils.h"
-#include "TempFile.h"
-#include "UnicodeUtils.h"
 #include "SoundUtils.h"
-#include "GitDiff.h"
-#include "Hooks.h"
-#include "DropFiles.h"
-//#include "GitLogHelper.h"
-#include "RegHistory.h"
 #include "LogFile.h"
 #include "ShellUpdater.h"
 #include "IconMenu.h"
-#include "BugTraqAssociations.h"
 #include "Patch.h"
 #include "MassiveGitTask.h"
-#include "SmartHandle.h"
 #include "LoglistUtils.h"
 
 BOOL	CGitProgressList::m_bAscending = FALSE;
@@ -107,7 +95,6 @@ CGitProgressList::CGitProgressList():CListCtrl()
 	, m_pTaskbarList(nullptr)
 	, m_SendMail(nullptr)
 	, m_Command(GitProgress_none)
-	, m_AlwaysConflicted(false)
 	, m_bThreadRunning(FALSE)
 	, m_keepchangelist(false)
 	, m_nConflicts(0)
@@ -248,16 +235,7 @@ void CGitProgressList::AddItemToList()
 }
 
 
-BOOL CGitProgressList::Notify(const CTGitPath& path, git_wc_notify_action_t action
-							 /*
-							 svn_node_kind_t kind, const CString& mime_type,
-							 svn_wc_notify_state_t content_state,
-							 svn_wc_notify_state_t prop_state, LONG rev,
-							 const svn_lock_t * lock, svn_wc_notify_lock_state_t lock_state,
-							 const CString& changelistname,
-							 svn_merge_range_t * range,
-							 svn_error_t * err, apr_pool_t * pool
-							 */)
+BOOL CGitProgressList::Notify(const CTGitPath& path, git_wc_notify_action_t action)
 {
 	bool bNoNotify = false;
 	bool bDoAddData = true;
@@ -270,39 +248,11 @@ BOOL CGitProgressList::Notify(const CTGitPath& path, git_wc_notify_action_t acti
 	if (this->m_pAnimate)
 		this->m_pAnimate->ShowWindow(SW_HIDE);
 
-#if 0
-	data->kind = kind;
-	data->mime_type = mime_type;
-	data->content_state = content_state;
-	data->prop_state = prop_state;
-	data->rev = rev;
-	data->lock_state = lock_state;
-	data->changelistname = changelistname;
-	if ((lock)&&(lock->owner))
-		data->owner = CUnicodeUtils::GetUnicode(lock->owner);
-	data->sPathColumnText = path.GetUIPathString();
-	if (!m_basePath.IsEmpty())
-		data->basepath = m_basePath;
-	if (range)
-		data->merge_range = *range;
-#endif
 	switch (data->action)
 	{
 	case git_wc_notify_add:
-	//case svn_wc_notify_update_add:
-	//	if ((data->content_state == svn_wc_notify_state_conflicted) || (data->prop_state == svn_wc_notify_state_conflicted))
-	//	{
-	//		data->color = m_Colors.GetColor(CColors::Conflict);
-	//		data->bConflictedActionItem = true;
-	//		data->sActionColumnText.LoadString(IDS_SVNACTION_CONFLICTED);
-	//		++m_nConflicts;
-	//	}
-	//	else
-	//	{
-	//		m_bMergesAddsDeletesOccurred = true;
-			data->sActionColumnText.LoadString(IDS_SVNACTION_ADD);
-			data->color = m_Colors.GetColor(CColors::Added);
-	//	}
+		data->sActionColumnText.LoadString(IDS_SVNACTION_ADD);
+		data->color = m_Colors.GetColor(CColors::Added);
 		break;
 	case git_wc_notify_sendmail:
 		data->sActionColumnText.LoadString(IDS_SVNACTION_SENDMAIL_START);
@@ -322,209 +272,6 @@ BOOL CGitProgressList::Notify(const CTGitPath& path, git_wc_notify_action_t acti
 		data->color = m_Colors.GetColor(CColors::Added);
 		data->bAuxItem = false;
 		break;
-
-#if 0
-	case svn_wc_notify_commit_added:
-		data->sActionColumnText.LoadString(IDS_SVNACTION_ADDING);
-		data->color = m_Colors.GetColor(CColors::Added);
-		break;
-	case svn_wc_notify_copy:
-		data->sActionColumnText.LoadString(IDS_SVNACTION_COPY);
-		break;
-	case svn_wc_notify_commit_modified:
-		data->sActionColumnText.LoadString(IDS_SVNACTION_MODIFIED);
-		data->color = m_Colors.GetColor(CColors::Modified);
-		break;
-	case svn_wc_notify_delete:
-	case svn_wc_notify_update_delete:
-		data->sActionColumnText.LoadString(IDS_SVNACTION_DELETE);
-		m_bMergesAddsDeletesOccurred = true;
-		data->color = m_Colors.GetColor(CColors::Deleted);
-		break;
-	case svn_wc_notify_commit_deleted:
-		data->sActionColumnText.LoadString(IDS_SVNACTION_DELETING);
-		data->color = m_Colors.GetColor(CColors::Deleted);
-		break;
-	case svn_wc_notify_restore:
-		data->sActionColumnText.LoadString(IDS_SVNACTION_RESTORE);
-		break;
-
-	case svn_wc_notify_update_replace:
-	case svn_wc_notify_commit_replaced:
-		data->sActionColumnText.LoadString(IDS_SVNACTION_REPLACED);
-		data->color = m_Colors.GetColor(CColors::Deleted);
-		break;
-	case svn_wc_notify_exists:
-		if ((data->content_state == svn_wc_notify_state_conflicted) || (data->prop_state == svn_wc_notify_state_conflicted))
-		{
-			data->color = m_Colors.GetColor(CColors::Conflict);
-			data->bConflictedActionItem = true;
-			++m_nConflicts;
-			data->sActionColumnText.LoadString(IDS_SVNACTION_CONFLICTED);
-		}
-		else if ((data->content_state == svn_wc_notify_state_merged) || (data->prop_state == svn_wc_notify_state_merged))
-		{
-			data->color = m_Colors.GetColor(CColors::Merged);
-			m_bMergesAddsDeletesOccurred = true;
-			data->sActionColumnText.LoadString(IDS_SVNACTION_MERGED);
-		}
-		else
-			data->sActionColumnText.LoadString(IDS_SVNACTION_EXISTS);
-		break;
-	case svn_wc_notify_update_update:
-		// if this is an inoperative dir change, don't show the notification.
-		// an inoperative dir change is when a directory gets updated without
-		// any real change in either text or properties.
-		if ((kind == svn_node_dir)
-			&& ((prop_state == svn_wc_notify_state_inapplicable)
-			|| (prop_state == svn_wc_notify_state_unknown)
-			|| (prop_state == svn_wc_notify_state_unchanged)))
-		{
-			bNoNotify = true;
-			break;
-		}
-		if ((data->content_state == svn_wc_notify_state_conflicted) || (data->prop_state == svn_wc_notify_state_conflicted))
-		{
-			data->color = m_Colors.GetColor(CColors::Conflict);
-			data->bConflictedActionItem = true;
-			++m_nConflicts;
-			data->sActionColumnText.LoadString(IDS_SVNACTION_CONFLICTED);
-		}
-		else if ((data->content_state == svn_wc_notify_state_merged) || (data->prop_state == svn_wc_notify_state_merged))
-		{
-			data->color = m_Colors.GetColor(CColors::Merged);
-			m_bMergesAddsDeletesOccurred = true;
-			data->sActionColumnText.LoadString(IDS_SVNACTION_MERGED);
-		}
-		else if (((data->content_state != svn_wc_notify_state_unchanged)&&(data->content_state != svn_wc_notify_state_unknown)) ||
-			((data->prop_state != svn_wc_notify_state_unchanged)&&(data->prop_state != svn_wc_notify_state_unknown)))
-		{
-			data->sActionColumnText.LoadString(IDS_SVNACTION_UPDATE);
-		}
-		else
-		{
-			bNoNotify = true;
-			break;
-		}
-		if (lock_state == svn_wc_notify_lock_state_unlocked)
-		{
-			CString temp(MAKEINTRESOURCE(IDS_SVNACTION_UNLOCKED));
-			data->sActionColumnText += _T(", ") + temp;
-		}
-		break;
-
-	case svn_wc_notify_update_external:
-		// For some reason we build a list of externals...
-		m_ExtStack.AddHead(path.GetUIPathString());
-		data->sActionColumnText.LoadString(IDS_SVNACTION_EXTERNAL);
-		data->bAuxItem = true;
-		break;
-
-	case svn_wc_notify_update_completed:
-		{
-			data->sActionColumnText.LoadString(IDS_SVNACTION_COMPLETED);
-			data->bAuxItem = true;
-			bool bEmpty = !!m_ExtStack.IsEmpty();
-			if (!bEmpty)
-				data->sPathColumnText.Format(IDS_PROGRS_PATHATREV, (LPCTSTR)m_ExtStack.RemoveHead(), rev);
-			else
-				data->sPathColumnText.Format(IDS_PROGRS_ATREV, rev);
-
-			if ((m_nConflicts>0)&&(bEmpty))
-			{
-				// We're going to add another aux item - let's shove this current onto the list first
-				// I don't really like this, but it will do for the moment.
-				m_arData.push_back(data);
-				AddItemToList();
-
-				data = new NotificationData();
-				data->bAuxItem = true;
-				data->sActionColumnText.LoadString(IDS_PROGRS_CONFLICTSOCCURED_WARNING);
-				data->sPathColumnText.LoadString(IDS_PROGRS_CONFLICTSOCCURED);
-				data->color = m_Colors.GetColor(CColors::Conflict);
-				CSoundUtils::PlayTSVNWarning();
-				// This item will now be added after the switch statement
-			}
-			if (!m_basePath.IsEmpty())
-				m_FinishedRevMap[m_basePath.GetSVNApiPath(pool)] = rev;
-			m_RevisionEnd = rev;
-			m_bFinishedItemAdded = true;
-		}
-		break;
-	case svn_wc_notify_commit_postfix_txdelta:
-		data->sActionColumnText.LoadString(IDS_SVNACTION_POSTFIX);
-		break;
-	case svn_wc_notify_failed_revert:
-		data->sActionColumnText.LoadString(IDS_SVNACTION_FAILEDREVERT);
-		break;
-	case svn_wc_notify_status_completed:
-	case svn_wc_notify_status_external:
-		data->sActionColumnText.LoadString(IDS_SVNACTION_STATUS);
-		break;
-	case svn_wc_notify_skip:
-		if ((content_state == svn_wc_notify_state_missing)||(content_state == svn_wc_notify_state_obstructed)||(content_state == svn_wc_notify_state_conflicted))
-		{
-			data->sActionColumnText.LoadString(IDS_SVNACTION_SKIPMISSING);
-
-			// The color settings dialog describes the red color with
-			// "possible or real conflict / obstructed" which also applies to
-			// skipped targets during a merge. So we just use the same color.
-			data->color = m_Colors.GetColor(CColors::Conflict);
-		}
-		else
-			data->sActionColumnText.LoadString(IDS_SVNACTION_SKIP);
-		break;
-	case svn_wc_notify_locked:
-		if ((lock)&&(lock->owner))
-			data->sActionColumnText.Format(IDS_SVNACTION_LOCKEDBY, (LPCTSTR)CUnicodeUtils::GetUnicode(lock->owner));
-		break;
-	case svn_wc_notify_unlocked:
-		data->sActionColumnText.LoadString(IDS_SVNACTION_UNLOCKED);
-		break;
-	case svn_wc_notify_failed_lock:
-		data->sActionColumnText.LoadString(IDS_SVNACTION_FAILEDLOCK);
-		m_arData.push_back(data);
-		AddItemToList();
-		ReportError(SVN::GetErrorString(err));
-		bDoAddData = false;
-		if (err->apr_err == SVN_ERR_FS_OUT_OF_DATE)
-			m_bLockWarning = true;
-		if (err->apr_err == SVN_ERR_FS_PATH_ALREADY_LOCKED)
-			m_bLockExists = true;
-		break;
-	case svn_wc_notify_failed_unlock:
-		data->sActionColumnText.LoadString(IDS_SVNACTION_FAILEDUNLOCK);
-		m_arData.push_back(data);
-		AddItemToList();
-		ReportError(SVN::GetErrorString(err));
-		bDoAddData = false;
-		if (err->apr_err == SVN_ERR_FS_OUT_OF_DATE)
-			m_bLockWarning = true;
-		break;
-	case svn_wc_notify_changelist_set:
-		data->sActionColumnText.Format(IDS_SVNACTION_CHANGELISTSET, (LPCTSTR)data->changelistname);
-		break;
-	case svn_wc_notify_changelist_clear:
-		data->sActionColumnText.LoadString(IDS_SVNACTION_CHANGELISTCLEAR);
-		break;
-	case svn_wc_notify_changelist_moved:
-		data->sActionColumnText.Format(IDS_SVNACTION_CHANGELISTMOVED, (LPCTSTR)data->changelistname);
-		break;
-	case svn_wc_notify_foreign_merge_begin:
-	case svn_wc_notify_merge_begin:
-		if (range == NULL)
-			data->sActionColumnText.LoadString(IDS_SVNACTION_MERGEBEGINNONE);
-		else if ((data->merge_range.start == data->merge_range.end) || (data->merge_range.start == data->merge_range.end - 1))
-			data->sActionColumnText.Format(IDS_SVNACTION_MERGEBEGINSINGLE, data->merge_range.end);
-		else if (data->merge_range.start - 1 == data->merge_range.end)
-			data->sActionColumnText.Format(IDS_SVNACTION_MERGEBEGINSINGLEREVERSE, data->merge_range.start);
-		else if (data->merge_range.start < data->merge_range.end)
-			data->sActionColumnText.Format(IDS_SVNACTION_MERGEBEGINMULTIPLE, data->merge_range.start + 1, data->merge_range.end);
-		else
-			data->sActionColumnText.Format(IDS_SVNACTION_MERGEBEGINMULTIPLEREVERSE, data->merge_range.start, data->merge_range.end + 1);
-		data->bAuxItem = true;
-		break;
-#endif
 	default:
 		break;
 	} // switch (data->action)
@@ -842,7 +589,6 @@ UINT CGitProgressList::ProgressThread()
 	CString sWindowTitle;
 	bool localoperation = false;
 	bool bSuccess = false;
-	m_AlwaysConflicted = false;
 
 	if(m_pPostWnd)
 		m_pPostWnd->PostMessage(WM_PROG_CMD_START, m_Command);
@@ -870,23 +616,11 @@ UINT CGitProgressList::ProgressThread()
 	case GitProgress_Add:
 		bSuccess = CmdAdd(sWindowTitle, localoperation);
 		break;
-	case GitProgress_Copy:
-		bSuccess = CmdCopy(sWindowTitle, localoperation);
-		break;
-	case GitProgress_Export:
-		bSuccess = CmdExport(sWindowTitle, localoperation);
-		break;
-	case GitProgress_Rename:
-		bSuccess = CmdRename(sWindowTitle, localoperation);
-		break;
 	case GitProgress_Resolve:
 		bSuccess = CmdResolve(sWindowTitle, localoperation);
 		break;
 	case GitProgress_Revert:
 		bSuccess = CmdRevert(sWindowTitle, localoperation);
-		break;
-	case GitProgress_Switch:
-		bSuccess = CmdSwitch(sWindowTitle, localoperation);
 		break;
 	case GitProgress_SendMail:
 		bSuccess = CmdSendMail(sWindowTitle, localoperation);
@@ -992,24 +726,6 @@ UINT CGitProgressList::ProgressThread()
 	if (m_pPostWnd)
 		m_pPostWnd->PostMessage(WM_PROG_CMD_FINISH, this->m_Command, 0L);
 
-#if 0
-	DWORD dwAutoClose = CRegStdDWORD(_T("Software\\TortoiseGit\\AutoClose"), CLOSE_MANUAL);
-	if (m_options & ProgOptDryRun)
-		dwAutoClose = 0;		// dry run means progress dialog doesn't auto close at all
-	if (!m_bLastVisible)
-		dwAutoClose = 0;
-	if (m_dwCloseOnEnd != (DWORD)-1)
-		dwAutoClose = m_dwCloseOnEnd;		// command line value has priority over setting value
-	if ((dwAutoClose == CLOSE_NOERRORS)&&(!m_bErrorsOccurred))
-		PostMessage(WM_COMMAND, 1, (LPARAM)GetDlgItem(IDOK)->m_hWnd);
-	if ((dwAutoClose == CLOSE_NOCONFLICTS)&&(!m_bErrorsOccurred)&&(m_nConflicts==0))
-		PostMessage(WM_COMMAND, 1, (LPARAM)GetDlgItem(IDOK)->m_hWnd);
-	if ((dwAutoClose == CLOSE_NOMERGES)&&(!m_bErrorsOccurred)&&(m_nConflicts==0)&&(!m_bMergesAddsDeletesOccurred))
-		PostMessage(WM_COMMAND, 1, (LPARAM)GetDlgItem(IDOK)->m_hWnd);
-	if ((dwAutoClose == CLOSE_LOCAL)&&(!m_bErrorsOccurred)&&(m_nConflicts==0)&&(localoperation))
-		PostMessage(WM_COMMAND, 1, (LPARAM)GetDlgItem(IDOK)->m_hWnd);
-#endif
-
 	//Don't do anything here which might cause messages to be sent to the window
 	//The window thread is probably now blocked in OnOK if we've done an auto close
 	return 0;
@@ -1038,13 +754,13 @@ void CGitProgressList::OnLvnGetdispinfoSvnprogress(NMHDR *pNMHDR, LRESULT *pResu
 						int cWidth = GetColumnWidth(1);
 						cWidth = max(12, cWidth-12);
 						CDC * pDC = GetDC();
-                        if (pDC != NULL)
-                        {
-						    CFont * pFont = pDC->SelectObject(GetFont());
-						    PathCompactPath(pDC->GetSafeHdc(), m_columnbuf, cWidth);
-						    pDC->SelectObject(pFont);
+						if (pDC != NULL)
+						{
+							CFont * pFont = pDC->SelectObject(GetFont());
+							PathCompactPath(pDC->GetSafeHdc(), m_columnbuf, cWidth);
+							pDC->SelectObject(pFont);
 							ReleaseDC(pDC);
-                        }
+						}
 					}
 					break;
 				default:
@@ -1179,7 +895,6 @@ BOOL CGitProgressList::Notify(const git_wc_notify_action_t action, CString str, 
 		data->sPathColumnText.Format(_T("%s\t %s -> %s"), str, 
 				data->m_OldHash.ToString().Left(g_Git.GetShortHASHLength()),
 				data->m_NewHash.ToString().Left(g_Git.GetShortHASHLength()));
-
 	}
 
 	m_arData.push_back(data);
@@ -1786,96 +1501,6 @@ bool CGitProgressList::CmdAdd(CString& sWindowTitle, bool& localoperation)
 	return true;
 }
 
-bool CGitProgressList::CmdCopy(CString& /*sWindowTitle*/, bool& /*localoperation*/)
-{
-#if 0
-	ASSERT(m_targetPathList.GetCount() == 1);
-	sWindowTitle.LoadString(IDS_PROGRS_TITLE_COPY);
-	SetWindowText(sWindowTitle); // needs to be updated, see TSVN rev. 21375
-	SetBackgroundImage(IDI_COPY_BKG);
-
-	CString sCmdInfo;
-	sCmdInfo.Format(IDS_PROGRS_CMD_COPY,
-		m_targetPathList[0].IsUrl() ? (LPCTSTR)m_targetPathList[0].GetSVNPathString() : m_targetPathList[0].GetWinPath(),
-		(LPCTSTR)m_url.GetSVNPathString(), (LPCTSTR)m_Revision.ToString());
-	ReportCmd(sCmdInfo);
-
-	if (!Copy(m_targetPathList, m_url, m_Revision, m_pegRev, m_sMessage))
-	{
-		ReportSVNError();
-		return false;
-	}
-	if (m_options & ProgOptSwitchAfterCopy)
-	{
-		sCmdInfo.Format(IDS_PROGRS_CMD_SWITCH,
-			m_targetPathList[0].GetWinPath(),
-			(LPCTSTR)m_url.GetSVNPathString(), (LPCTSTR)m_Revision.ToString());
-		ReportCmd(sCmdInfo);
-		if (!Switch(m_targetPathList[0], m_url, SVNRev::REV_HEAD, SVNRev::REV_HEAD, m_depth, TRUE, m_options & ProgOptIgnoreExternals))
-		{
-			if (!Switch(m_targetPathList[0], m_url, SVNRev::REV_HEAD, m_Revision, m_depth, TRUE, m_options & ProgOptIgnoreExternals))
-			{
-				ReportSVNError();
-				return false;
-			}
-		}
-	}
-	else
-	{
-		if (SVN::PathIsURL(m_url))
-		{
-			CString sMsg(MAKEINTRESOURCE(IDS_PROGRS_COPY_WARNING));
-			ReportNotification(sMsg);
-		}
-	}
-#endif
-	return true;
-}
-
-bool CGitProgressList::CmdExport(CString& /*sWindowTitle*/, bool& /*localoperation*/)
-{
-#if 0
-	ASSERT(m_targetPathList.GetCount() == 1);
-	sWindowTitle.LoadString(IDS_PROGRS_TITLE_EXPORT);
-	sWindowTitle = m_url.GetUIFileOrDirectoryName()+_T(" - ")+sWindowTitle;
-	SetWindowText(sWindowTitle); // needs to be updated, see TSVN rev. 21375
-	SetBackgroundImage(IDI_EXPORT_BKG);
-	CString eol;
-	if (m_options & ProgOptEolCRLF)
-		eol = _T("CRLF");
-	if (m_options & ProgOptEolLF)
-		eol = _T("LF");
-	if (m_options & ProgOptEolCR)
-		eol = _T("CR");
-	ReportCmd(CString(MAKEINTRESOURCE(IDS_PROGRS_CMD_EXPORT)));
-	if (!Export(m_url, m_targetPathList[0], m_Revision, m_Revision, TRUE, m_options & ProgOptIgnoreExternals, m_depth, NULL, FALSE, eol))
-	{
-		ReportSVNError();
-		return false;
-	}
-#endif
-	return true;
-}
-
-bool CGitProgressList::CmdRename(CString& /*sWindowTitle*/, bool& /*localoperation*/)
-{
-#if 0
-	ASSERT(m_targetPathList.GetCount() == 1);
-	if ((!m_targetPathList[0].IsUrl())&&(!m_url.IsUrl()))
-		localoperation = true;
-	sWindowTitle.LoadString(IDS_PROGRS_TITLE_RENAME);
-	SetWindowText(sWindowTitle); // needs to be updated, see TSVN rev. 21375
-	SetBackgroundImage(IDI_RENAME_BKG);
-	ReportCmd(CString(MAKEINTRESOURCE(IDS_PROGRS_CMD_RENAME)));
-	if (!Move(m_targetPathList, m_url, m_Revision, m_sMessage))
-	{
-		ReportSVNError();
-		return false;
-	}
-#endif
-	return true;
-}
-
 bool CGitProgressList::CmdResolve(CString& sWindowTitle, bool& localoperation)
 {
 
@@ -1883,8 +1508,6 @@ bool CGitProgressList::CmdResolve(CString& sWindowTitle, bool& localoperation)
 	ASSERT(m_targetPathList.GetCount() == 1);
 	SetWindowTitle(IDS_PROGRS_TITLE_RESOLVE, g_Git.CombinePath(m_targetPathList.GetCommonRoot().GetUIPathString()), sWindowTitle);
 	SetBackgroundImage(IDI_RESOLVE_BKG);
-	// check if the file may still have conflict markers in it.
-	//BOOL bMarkers = FALSE;
 
 	m_itemCountTotal = m_targetPathList.GetCount();
 	for (m_itemCount = 0; m_itemCount < m_itemCountTotal; ++m_itemCount)
@@ -1902,55 +1525,7 @@ bool CGitProgressList::CmdResolve(CString& sWindowTitle, bool& localoperation)
 
 		Notify(m_targetPathList[m_itemCount], git_wc_notify_resolved);
 	}
-#if 0
-	if ((m_options & ProgOptSkipConflictCheck) == 0)
-	{
-		try
-		{
-			for (INT_PTR fileindex=0; (fileindex<m_targetPathList.GetCount()) && (bMarkers==FALSE); ++fileindex)
-			{
-				if (!m_targetPathList[fileindex].IsDirectory())
-				{
-					CStdioFile file(m_targetPathList[fileindex].GetWinPath(), CFile::typeBinary | CFile::modeRead);
-					CString strLine = _T("");
-					while (file.ReadString(strLine))
-					{
-						if (strLine.Find(_T("<<<<<<<"))==0)
-						{
-							bMarkers = TRUE;
-							break;
-						}
-					}
-					file.Close();
-				}
-			}
-		}
-		catch (CFileException* pE)
-		{
-			CTraceToOutputDebugString::Instance()(__FUNCTION__ ": CFileException in Resolve!\n");
-			TCHAR error[10000] = {0};
-			pE->GetErrorMessage(error, 10000);
-			ReportError(error);
-			pE->Delete();
-			return false;
-		}
-	}
-	if (bMarkers)
-	{
-		if (CMessageBox::Show(m_hWnd, IDS_PROGRS_REVERTMARKERS, IDS_APPNAME, MB_YESNO | MB_ICONQUESTION)==IDYES)
-		{
-			ReportCmd(CString(MAKEINTRESOURCE(IDS_PROGRS_CMD_RESOLVE)));
-			for (INT_PTR fileindex=0; fileindex<m_targetPathList.GetCount(); ++fileindex)
-				Resolve(m_targetPathList[fileindex], svn_wc_conflict_choose_merged, true);
-		}
-	}
-	else
-	{
-		ReportCmd(CString(MAKEINTRESOURCE(IDS_PROGRS_CMD_RESOLVE)));
-		for (INT_PTR fileindex=0; fileindex<m_targetPathList.GetCount(); ++fileindex)
-			Resolve(m_targetPathList[fileindex], svn_wc_conflict_choose_merged, true);
-	}
-#endif
+
 	CShellUpdater::Instance().AddPathsForUpdate(m_targetPathList);
 
 	return true;
@@ -2003,46 +1578,6 @@ bool CGitProgressList::CmdRevert(CString& sWindowTitle, bool& localoperation)
 	return true;
 }
 
-bool CGitProgressList::CmdSwitch(CString& /*sWindowTitle*/, bool& /*localoperation*/)
-{
-#if 0
-	ASSERT(m_targetPathList.GetCount() == 1);
-	SVNStatus st;
-	sWindowTitle.LoadString(IDS_PROGRS_TITLE_SWITCH);
-	SetWindowText(sWindowTitle); // needs to be updated, see TSVN rev. 21375
-	SetBackgroundImage(IDI_SWITCH_BKG);
-	LONG rev = 0;
-	if (st.GetStatus(m_targetPathList[0]) != (-2))
-	{
-		if (st.status->entry != NULL)
-		{
-			rev = st.status->entry->revision;
-		}
-	}
-
-	CString sCmdInfo;
-	sCmdInfo.Format(IDS_PROGRS_CMD_SWITCH,
-		m_targetPathList[0].GetWinPath(), (LPCTSTR)m_url.GetSVNPathString(),
-		(LPCTSTR)m_Revision.ToString());
-	ReportCmd(sCmdInfo);
-
-	bool depthIsSticky = true;
-	if (m_depth == svn_depth_unknown)
-		depthIsSticky = false;
-	if (!Switch(m_targetPathList[0], m_url, m_Revision, m_Revision, m_depth, depthIsSticky, m_options & ProgOptIgnoreExternals))
-	{
-		ReportSVNError();
-		return false;
-	}
-	m_UpdateStartRevMap[m_targetPathList[0].GetSVNApiPath(pool)] = rev;
-	if ((m_RevisionEnd >= 0)&&(rev >= 0)
-		&&((LONG)m_RevisionEnd > (LONG)rev))
-	{
-		GetDlgItem(IDC_LOGBUTTON)->ShowWindow(SW_SHOW);
-	}
-#endif
-	return true;
-}
 bool CGitProgressList::CmdClone(CString& sWindowTitle, bool& /*localoperation*/)
 {
 	if (!g_Git.UsingLibGit2(CGit::GIT_CMD_CLONE))
@@ -2274,7 +1809,6 @@ void CGitProgressList::Init()
 
 void CGitProgressList::OnClose()
 {
-	// TODO: Add your message handler code here and/or call default
 	if (m_bCancelled)
 	{
 		TerminateThread(m_pThread->m_hThread, (DWORD)-1);
@@ -2291,7 +1825,6 @@ void CGitProgressList::OnClose()
 
 BOOL CGitProgressList::PreTranslateMessage(MSG* pMsg)
 {
-	// TODO: Add your specialized code here and/or call the base class
 	if (pMsg->message == WM_KEYDOWN)
 	{
 		if (pMsg->wParam == 'A')

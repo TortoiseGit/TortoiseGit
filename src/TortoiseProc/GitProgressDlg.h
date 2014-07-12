@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -48,8 +48,6 @@ public:
 	void SetOptions(DWORD opts) {m_ProgList.SetOptions(opts);}
 	void SetPathList(const CTGitPathList& pathList) {m_ProgList.SetPathList(pathList);}
 	void SetUrl(const CString& url) {m_ProgList.SetUrl(url);}
-	void SetSecondUrl(const CString& url) {m_ProgList.SetSecondUrl(url);}
-	void SetCommitMessage(const CString& msg) {m_ProgList.SetCommitMessage(msg);}
 	void SetIsBare(bool b) { m_ProgList.SetIsBare(b); }
 	void SetNoCheckout(bool b){ m_ProgList.SetNoCheckout(b); }
 	void SetRefSpec(CString spec){ m_ProgList.SetRefSpec(spec); }
@@ -58,17 +56,8 @@ public:
 	void SetRevision(CString revision){ m_ProgList.SetRevision(revision); }
 	void SetResetType(int resetType){ m_ProgList.SetResetType(resetType); }
 
-//	void SetRevision(const GitRev& rev) {m_Revision = rev;}
-//	void SetRevisionEnd(const GitRev& rev) {m_RevisionEnd = rev;}
-
-	void SetDiffOptions(const CString& opts) {m_ProgList.SetDiffOptions(opts);}
 	void SetSendMailOption(CSendMail *sendmail) { m_ProgList.SetSendMailOption(sendmail); }
-	void SetPegRevision(GitRev pegrev = GitRev()) {m_ProgList.SetPegRevision(pegrev);}
-	void SetProjectProperties(ProjectProperties props) {m_ProgList.SetProjectProperties(props);}
-	void SetChangeList(const CString& changelist, bool keepchangelist) {m_ProgList.SetChangeList(changelist, keepchangelist);}
 	void SetSelectedList(const CTGitPathList& selPaths) {m_ProgList.SetSelectedList(selPaths);};
-//	void SetRevisionRanges(const GitRevRangeArray& revArray) {m_revisionArray = revArray;}
-//	void SetBugTraqProvider(const CComPtr<IBugTraqProvider> pBugtraqProvider) { m_BugTraqProvider = pBugtraqProvider;}
 	/**
 	 * If the number of items for which the operation is done on is known
 	 * beforehand, that number can be set here. It is then used to show a more
@@ -90,7 +79,6 @@ protected:
 
 	afx_msg void	OnBnClickedLogbutton();
 	afx_msg void	OnBnClickedOk();
-	afx_msg void	OnBnClickedNoninteractive();
 	afx_msg BOOL	OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
 	afx_msg void	OnClose();
 	afx_msg void	OnEnSetfocusInfotext();

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -66,7 +66,6 @@ BEGIN_MESSAGE_MAP(CGitProgressDlg, CResizableStandAloneDialog)
 	ON_WM_CLOSE()
 	ON_WM_SETCURSOR()
 	ON_EN_SETFOCUS(IDC_INFOTEXT, &CGitProgressDlg::OnEnSetfocusInfotext)
-	ON_BN_CLICKED(IDC_NONINTERACTIVE, &CGitProgressDlg::OnBnClickedNoninteractive)
 	ON_WM_CTLCOLOR()
 	ON_MESSAGE(WM_PROG_CMD_FINISH, OnCmdEnd)
 	ON_MESSAGE(WM_PROG_CMD_START, OnCmdStart)
@@ -105,7 +104,6 @@ BOOL CGitProgressDlg::OnInitDialog()
 	AddAnchor(IDC_PROGRESSLABEL, BOTTOM_LEFT, BOTTOM_CENTER);
 	AddAnchor(IDC_PROGRESSBAR, BOTTOM_CENTER, BOTTOM_RIGHT);
 	AddAnchor(IDC_INFOTEXT, BOTTOM_LEFT, BOTTOM_RIGHT);
-	AddAnchor(IDC_NONINTERACTIVE, BOTTOM_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL, BOTTOM_RIGHT);
 	AddAnchor(IDOK, BOTTOM_RIGHT);
 	AddAnchor(IDC_LOGBUTTON, BOTTOM_RIGHT);
@@ -248,14 +246,6 @@ void CGitProgressDlg::OnEnSetfocusInfotext()
 		GetDlgItem(IDC_INFOTEXT)->HideCaret();
 }
 
-
-void CGitProgressDlg::OnBnClickedNoninteractive()
-{
-	LRESULT res = ::SendMessage(GetDlgItem(IDC_NONINTERACTIVE)->GetSafeHwnd(), BM_GETCHECK, 0, 0);
-	m_ProgList.m_AlwaysConflicted = (res == BST_CHECKED);
-	CRegDWORD nonint = CRegDWORD(_T("Software\\TortoiseGit\\MergeNonInteractive"), FALSE);
-	nonint = m_ProgList.m_AlwaysConflicted;
-}
 
 LRESULT CGitProgressDlg::OnCtlColorStatic(WPARAM wParam, LPARAM lParam)
 {

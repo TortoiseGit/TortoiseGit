@@ -63,7 +63,6 @@ bool ResolveCommand::Execute()
 				CGitProgressDlg progDlg(CWnd::FromHandle(hWndExplorer));
 				theApp.m_pMainWnd = &progDlg;
 				progDlg.SetCommand(CGitProgressList::GitProgress_Resolve);
-				progDlg.SetOptions(parser.HasKey(_T("skipcheck")) ? ProgOptSkipConflictCheck : ProgOptNone);
 				progDlg.SetPathList(dlg.m_pathList);
 				progDlg.DoModal();
 				return !progDlg.DidErrorsOccur();

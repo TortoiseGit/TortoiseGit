@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -19,11 +19,8 @@
 
 #pragma once
 #include "TGitPath.h"
-#include "ProjectProperties.h"
 #include "Git.h"
-#include "GitStatus.h"
 #include "Colors.h"
-//#include "..\IBugTraqProvider\IBugTraqProvider_h.h"
 #include "Win7.h"
 #include "UnicodeUtils.h"
 #include "resource.h"
@@ -34,33 +31,9 @@
 typedef enum
 {
 	ProgOptNone = 0,
-	ProgOptRecursive = 0x01,
-	ProgOptNonRecursive = 0x00,
 	/// Don't actually do the merge - just practice it
 	ProgOptDryRun = 0x04,
-	ProgOptIgnoreExternals = 0x08,
-	ProgOptKeeplocks = 0x10,
-	/// for locking this means steal the lock, for unlocking it means breaking the lock
-	ProgOptLockForce = 0x20,
-	ProgOptSwitchAfterCopy = 0x40,
-	ProgOptIncludeIgnored = 0x80,
-	ProgOptIgnoreAncestry = 0x100,
-	ProgOptEolDefault = 0x200,
-	ProgOptEolCRLF = 0x400,
-	ProgOptEolLF = 0x800,
-	ProgOptEolCR = 0x1000,
-	ProgOptSkipConflictCheck = 0x2000,
-	ProgOptRecordOnly = 0x4000
 } ProgressOptions;
-
-typedef enum
-{
-	CLOSE_MANUAL = 0,
-	CLOSE_NOERRORS,
-	CLOSE_NOCONFLICTS,
-	CLOSE_NOMERGES,
-	CLOSE_LOCAL
-} ProgressCloseOptions;
 
 typedef enum
 {
@@ -92,12 +65,8 @@ public:
 		GitProgress_none,
 		GitProgress_Add,
 		GitProgress_Checkout,
-		GitProgress_Copy,
-		GitProgress_Export,
-		GitProgress_Rename,
 		GitProgress_Resolve,
 		GitProgress_Revert,
-		GitProgress_Switch,
 		GitProgress_SendMail,
 		GitProgress_Clone,
 		GitProgress_Fetch,
@@ -121,17 +90,8 @@ public:
 	void SetRevision(CString revision){ m_revision = revision; }
 	void SetResetType(int resetType){ m_resetType = resetType; }
 
-//	void SetRevision(const GitRev& rev) {m_Revision = rev;}
-//	void SetRevisionEnd(const GitRev& rev) {m_RevisionEnd = rev;}
-
-	void SetDiffOptions(const CString& opts) {m_diffoptions = opts;}
 	void SetSendMailOption(CSendMail *sendmail) { m_SendMail = sendmail; }
-	void SetPegRevision(GitRev pegrev = GitRev()) {m_pegRev = pegrev;}
-	void SetProjectProperties(ProjectProperties props) {m_ProjectProperties = props;}
-	void SetChangeList(const CString& changelist, bool keepchangelist) {m_changelist = changelist; m_keepchangelist = keepchangelist;}
 	void SetSelectedList(const CTGitPathList& selPaths);
-//	void SetRevisionRanges(const GitRevRangeArray& revArray) {m_revisionArray = revArray;}
-//	void SetBugTraqProvider(const CComPtr<IBugTraqProvider> pBugtraqProvider) { m_BugTraqProvider = pBugtraqProvider;}
 	/**
 	 * If the number of items for which the operation is done on is known
 	 * beforehand, that number can be set here. It is then used to show a more
@@ -151,7 +111,6 @@ public:
 	volatile BOOL IsCancelled()	{return m_bCancelled;}
 	volatile LONG IsRunning()	{return m_bThreadRunning;}
 	CWinThread*				m_pThread;
-	bool					m_AlwaysConflicted;
 	CWnd			*m_pPostWnd;
 	bool					m_bSetTitle;
 private:
@@ -161,43 +120,16 @@ private:
 		NotificationData()
 		: color(::GetSysColor(COLOR_WINDOWTEXT))
 		, action((git_wc_notify_action_t)-1)
-		, bConflictedActionItem(false)
 		, bAuxItem(false)
 		{};
-	    git_wc_notify_action_t action;
-#if 0
-		  action((git_wc_notify_action_t)-1),
-			  kind(git_node_none),
-			  content_state(git_wc_notify_state_inapplicable),
-			  prop_state(git_wc_notify_state_inapplicable),
-			  rev(0),
-
-			  bConflictedActionItem(false),
-			  bAuxItem(false)
-			  //,
-//			  lock_state(git_wc_notify_lock_state_unchanged)
-		  {
-//			  merge_range.end = 0;
-//			  merge_range.start = 0;
-		  }
-#endif
+		git_wc_notify_action_t action;
 	public:
 		// The text we put into the first column (the Git action for normal items, just text for aux items)
 		CString					sActionColumnText;
 		CTGitPath				path;
 		CTGitPath				basepath;
-//		CString					changelistname;
-
-//		git_node_kind_t			kind;
-//		CString					mime_type;
-//		git_wc_notify_state_t	content_state;
-//		git_wc_notify_state_t	prop_state;
-//		git_wc_notify_lock_state_t lock_state;
-//		git_merge_range_t		merge_range;
 		git_revnum_t			rev;
 		COLORREF				color;
-//		CString					owner;						///< lock owner
-		bool					bConflictedActionItem;		// Is this item a conflict?
 		bool					bAuxItem;					// Set if this item is not a true 'Git action'
 		CString					sPathColumnText;
 		CGitHash				m_OldHash;
@@ -208,24 +140,12 @@ protected:
 
 public:
 	//Need update in the future implement the virtual methods from Git base class
-	virtual BOOL Notify(const CTGitPath& path,
-								git_wc_notify_action_t action
-		/*
-		git_node_kind_t kind, const CString& mime_type,
-		git_wc_notify_state_t content_state,
-		git_wc_notify_state_t prop_state, LONG rev,
-		const git_lock_t * lock, git_wc_notify_lock_state_t lock_state,
-		const CString& changelistname,
-		git_merge_range_t * range,
-		git_error_t * err, apr_pool_t * pool*/
-		);
+	virtual BOOL Notify(const CTGitPath& path, git_wc_notify_action_t action);
 protected:
 	virtual BOOL Notify(const git_wc_notify_action_t action, const git_transfer_progress *stat);
 	virtual BOOL Notify(const git_wc_notify_action_t action, CString str, const git_oid *a, const git_oid *b);
 
 	void SetWindowTitle(UINT id, const CString& urlorpath, CString& dialogname);
-
-//	virtual git_wc_conflict_choice_t	ConflictResolveCallback(const git_wc_conflict_description_t *description, CString& mergedfile);
 
 	static int FetchCallback(const git_transfer_progress *stats, void *payload)
 	{
@@ -274,7 +194,6 @@ protected:
 
 	static BOOL		m_bAscending;
 	static int		m_nSortedColumn;
-	CStringList		m_ExtStack;
 
 private:
 	static UINT ProgressThreadEntry(LPVOID pVoid);
@@ -288,12 +207,13 @@ public:
 	void		ReportNotification(const CString& sNotification);
 	void		ReportCmd(const CString& sCmd);
 	void		ReportString(CString sMessage, const CString& sMsgKind, COLORREF color = ::GetSysColor(COLOR_WINDOWTEXT));
+
 private:
 	void		AddItemToList();
 	CString		BuildInfoString();
 	CString		GetPathFromColumnText(const CString& sColumnText);
 
-		/**
+	/**
 	 * Resizes the columns of the progress list so that the headings are visible.
 	 */
 	void		ResizeColumns();
@@ -304,12 +224,8 @@ private:
 	// the commands to execute
 	bool		CmdAdd(CString& sWindowTitle, bool& localoperation);
 	bool		CmdCheckout(CString& sWindowTitle, bool& localoperation);
-	bool		CmdCopy(CString& sWindowTitle, bool& localoperation);
-	bool		CmdExport(CString& sWindowTitle, bool& localoperation);
-	bool		CmdRename(CString& sWindowTitle, bool& localoperation);
 	bool		CmdResolve(CString& sWindowTitle, bool& localoperation);
 	bool		CmdRevert(CString& sWindowTitle, bool& localoperation);
-	bool		CmdSwitch(CString& sWindowTitle, bool& localoperation);
 	bool		CmdSendMail(CString& sWindowTitle, bool& localoperation);
 	bool		CmdClone(CString& sWindowTitle, bool& localoperation);
 	bool		CmdFetch(CString& sWindowTitle, bool& localoperation);
@@ -319,12 +235,9 @@ private:
 	typedef std::map<CStringA, git_revnum_t> StringRevMap;
 	typedef std::vector<NotificationData *> NotificationDataVect;
 
-	CString					m_mergedfile;
 	NotificationDataVect	m_arData;
 
 	volatile LONG			m_bThreadRunning;
-
-	ProjectProperties		m_ProjectProperties;
 
 	int						m_options;	// Use values from the ProgressOptions enum
 	CTGitPathList			m_targetPathList;
@@ -332,15 +245,13 @@ private:
 	CTGitPath				m_url;
 	CTGitPath				m_url2;
 	CString					m_sMessage;
-	CString					m_diffoptions;
 	GitRev					m_Revision;
 	GitRev					m_RevisionEnd;
 	GitRev					m_pegRev;
-//	GitRevRangeArray		m_revisionArray;
 	CString					m_changelist;
 	bool					m_keepchangelist;
 
-		CTGitPath				m_basePath;
+	CTGitPath				m_basePath;
 	StringRevMap			m_UpdateStartRevMap;
 	StringRevMap			m_FinishedRevMap;
 
@@ -367,8 +278,6 @@ private:
 
 	CSendMail *				m_SendMail;
 
-///	CComPtr<IBugTraqProvider> m_BugTraqProvider;
-
 	// some strings different methods can use
 	CString					sDryRun;
 	CString					sRecordOnly;
@@ -380,11 +289,10 @@ private:
 	int						m_AutoTag;
 	CString					m_revision;
 	int						m_resetType;
+
 public:
 	CComPtr<ITaskbarList3>	m_pTaskbarList;
 	void Init();
 	afx_msg void OnClose();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 };
-
-
