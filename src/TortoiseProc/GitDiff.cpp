@@ -242,7 +242,7 @@ int CGitDiff::SubmoduleDiff(const CTGitPath * pPath, const CTGitPath * /*pPath2*
 		oldhash = output.Mid(oldstart+ CString(_T("-Subproject commit")).GetLength()+1,40);
 		start = 0;
 		int newstart = output.Find(_T("+Subproject commit"),start);
-		if(oldstart<0)
+		if (newstart < 0)
 		{
 			CMessageBox::Show(NULL,_T("Subproject Diff Format error") ,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
 			return -1;
