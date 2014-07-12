@@ -1060,6 +1060,7 @@ void CCommitDlg::OnOK()
 					}
 				}
 
+				SysFreeString(logMessage);
 				SysFreeString(temp);
 			}
 		}
@@ -1956,6 +1957,8 @@ void CCommitDlg::OnBnClickedBugtraqbutton()
 			CString sErr;
 			sErr.Format(IDS_ERR_FAILEDISSUETRACKERCOM, m_bugtraq_association.GetProviderName(), _com_error(hr).ErrorMessage());
 			CMessageBox::Show(m_hWnd, sErr, _T("TortoiseGit"), MB_ICONERROR);
+			SysFreeString(bugID);
+			SysFreeString(repositoryRoot);
 		}
 		else
 		{

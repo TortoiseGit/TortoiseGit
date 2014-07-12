@@ -353,7 +353,10 @@ int git_open_log(GIT_LOG * handle, char * arg)
 
 	p_Rev = malloc(sizeof(struct rev_info));
 	if (p_Rev == NULL)
+	{
+		free(argv);
 		return -1;
+	}
 
 	memset(p_Rev,0,sizeof(struct rev_info));
 

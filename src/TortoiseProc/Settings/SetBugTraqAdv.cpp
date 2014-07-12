@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2014 - TortoiseGit
 // Copyright (C) 2008,2010 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -230,6 +231,7 @@ void CSetBugTraqAdv::OnBnClickedOptions()
 			SetDlgItemText(IDC_BUGTRAQPARAMETERS, temp);
 		}
 		SysFreeString(temp);
+		SysFreeString(params);
 	}
 }
 
