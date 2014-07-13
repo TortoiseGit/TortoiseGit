@@ -74,6 +74,7 @@ CSciEdit::CSciEdit(void) : m_DirectFunction(NULL)
 	, pThesaur(NULL)
 	, m_spellcodepage(0)
 	, m_separator(0)
+	, m_typeSeparator(1)
 	, m_bDoStyle(false)
 	, m_nAutoCompleteMinChars(3)
 {
@@ -89,6 +90,74 @@ CSciEdit::~CSciEdit(void)
 		delete pChecker;
 	if (pThesaur)
 		delete pThesaur;
+}
+
+static LPBYTE Icon2Image(HICON hIcon)
+{
+	if (hIcon == nullptr)
+		return nullptr;
+
+	ICONINFO iconInfo;
+	if (!GetIconInfo(hIcon, &iconInfo))
+		return nullptr;
+
+	BITMAP bm;
+	if (!GetObject(iconInfo.hbmColor, sizeof(BITMAP), &bm))
+		return nullptr;
+
+	int width = bm.bmWidth;
+	int height = bm.bmHeight;
+	int bytesPerScanLine = (width * 3 + 3) & 0xFFFFFFFC;
+	int size = bytesPerScanLine * height;
+	BITMAPINFO infoheader;
+	infoheader.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
+	infoheader.bmiHeader.biWidth = width;
+	infoheader.bmiHeader.biHeight = height;
+	infoheader.bmiHeader.biPlanes = 1;
+	infoheader.bmiHeader.biBitCount = 24;
+	infoheader.bmiHeader.biCompression = BI_RGB;
+	infoheader.bmiHeader.biSizeImage = size;
+
+	std::unique_ptr<BYTE> ptrb(new BYTE[(size * 2 + height * width * 4)]);
+	LPBYTE pixelsIconRGB = ptrb.get();
+	LPBYTE alphaPixels = pixelsIconRGB + size;
+	HDC hDC = CreateCompatibleDC(nullptr);
+	HBITMAP hBmpOld = (HBITMAP)SelectObject(hDC, (HGDIOBJ)iconInfo.hbmColor);
+	if (!GetDIBits(hDC, iconInfo.hbmColor, 0, height, (LPVOID)pixelsIconRGB, &infoheader, DIB_RGB_COLORS))
+	{
+		DeleteDC(hDC);
+		return nullptr;
+	}
+
+	SelectObject(hDC, hBmpOld);
+	if (!GetDIBits(hDC, iconInfo.hbmMask, 0,height, (LPVOID)alphaPixels, &infoheader, DIB_RGB_COLORS))
+	{
+		DeleteDC(hDC);
+		return nullptr;
+	}
+
+	DeleteDC(hDC);
+	UINT* imagePixels = new UINT[height * width];
+	int lsSrc = width * 3;
+	int vsDest = height - 1;
+	for (int y = 0; y < height; y++)
+	{
+		int linePosSrc = (vsDest - y) * lsSrc;
+		int linePosDest = y * width;
+		for (int x = 0; x < width; x++)
+		{
+			int currentDestPos = linePosDest + x;
+			int currentSrcPos = linePosSrc + x * 3;
+			imagePixels[currentDestPos] = (((UINT)(
+				(
+					((pixelsIconRGB[currentSrcPos + 2]  /*Red*/)
+					| (pixelsIconRGB[currentSrcPos + 1] << 8 /*Green*/)) 
+					| pixelsIconRGB[currentSrcPos] << 16 /*Blue*/
+				)
+				| ((alphaPixels[currentSrcPos] ? 0 : 0xff) << 24))) & 0xffffffff);
+		}
+	}
+	return (LPBYTE)imagePixels;
 }
 
 void CSciEdit::Init(LONG lLanguage, BOOL bLoadSpellCheck)
@@ -185,6 +254,19 @@ void CSciEdit::Init(const ProjectProperties& props)
 	{
 		Call(SCI_SETEDGEMODE, EDGE_NONE);
 		Call(SCI_SETWRAPMODE, SC_WRAP_WORD);
+	}
+}
+
+void CSciEdit::SetIcon(const std::map<int, UINT> &icons)
+{
+	Call(SCI_RGBAIMAGESETWIDTH, 16);
+	Call(SCI_RGBAIMAGESETHEIGHT, 16);
+	for (auto icon : icons)
+	{
+		auto hIcon = (HICON)::LoadImage(AfxGetInstanceHandle(), MAKEINTRESOURCE(icon.second), IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
+		std::unique_ptr<BYTE> bytes(Icon2Image(hIcon));
+		DestroyIcon(hIcon);
+		Call(SCI_REGISTERRGBAIMAGE, icon.first, (LPARAM)bytes.get());
 	}
 }
 
@@ -393,7 +475,7 @@ void CSciEdit::SetFont(CString sFontName, int iFontSizeInPoints)
 	Call(SCI_SETHOTSPOTACTIVEUNDERLINE, (LPARAM)TRUE);
 }
 
-void CSciEdit::SetAutoCompletionList(const std::set<CString>& list, const TCHAR separator)
+void CSciEdit::SetAutoCompletionList(const std::map<CString, int>& list, TCHAR separator, TCHAR typeSeparator)
 {
 	//copy the auto completion list.
 
@@ -403,6 +485,7 @@ void CSciEdit::SetAutoCompletionList(const std::set<CString>& list, const TCHAR 
 	m_autolist.clear();
 	m_autolist = list;
 	m_separator = separator;
+	m_typeSeparator = typeSeparator;
 }
 
 BOOL CSciEdit::IsMisspelled(const CString& sWord)
@@ -563,7 +646,7 @@ void CSciEdit::SuggestSpellingAlternatives()
 		CString suggestions;
 		for (int i=0; i < ns; i++)
 		{
-			suggestions += CString(wlst[i]) + m_separator;
+			suggestions.AppendFormat(_T("%s%c%d%c"), CString(wlst[i]), m_typeSeparator, AUTOCOMPLETE_SPELLING, m_separator);
 			free(wlst[i]);
 		}
 		free(wlst);
@@ -571,6 +654,7 @@ void CSciEdit::SuggestSpellingAlternatives()
 		if (suggestions.IsEmpty())
 			return;
 		Call(SCI_AUTOCSETSEPARATOR, (WPARAM)CStringA(m_separator).GetAt(0));
+		Call(SCI_AUTOCSETTYPESEPARATOR, (WPARAM)m_typeSeparator);
 		Call(SCI_AUTOCSETDROPRESTOFWORD, 1);
 		Call(SCI_AUTOCSHOW, 0, (LPARAM)(LPCSTR)StringForControl(suggestions));
 		return;
@@ -620,18 +704,18 @@ void CSciEdit::DoAutoCompletion(int nMinPrefixLength)
 			words.push_back(wordHigher.Mid(pos+1));
 	}
 
-	std::set<CString> wordset;
+	std::map<CString, int> wordset;
 	for (const auto& w : words)
 	{
-		for (std::set<CString>::const_iterator lowerit = m_autolist.lower_bound(w);
+		for (auto lowerit = m_autolist.lower_bound(w);
 		lowerit != m_autolist.end(); ++lowerit)
 		{
-			int compare = w.CompareNoCase(lowerit->Left(w.GetLength()));
+			int compare = w.CompareNoCase(lowerit->first.Left(w.GetLength()));
 			if (compare>0)
 				continue;
 			else if (compare == 0)
 			{
-				wordset.insert(*lowerit);
+				wordset.insert(std::make_pair(lowerit->first, lowerit->second));
 			}
 			else
 			{
@@ -641,13 +725,14 @@ void CSciEdit::DoAutoCompletion(int nMinPrefixLength)
 	}
 
 	for (const auto& w : wordset)
-		sAutoCompleteList += w + m_separator;
+		sAutoCompleteList.AppendFormat(_T("%s%c%d%c"), w.first, m_typeSeparator, w.second, m_separator);
 
 	sAutoCompleteList.TrimRight(m_separator);
 	if (sAutoCompleteList.IsEmpty())
 		return;
 
 	Call(SCI_AUTOCSETSEPARATOR, (WPARAM)CStringA(m_separator).GetAt(0));
+	Call(SCI_AUTOCSETTYPESEPARATOR, (WPARAM)m_typeSeparator);
 	Call(SCI_AUTOCSHOW, word.GetLength(), (LPARAM)(LPCSTR)StringForControl(sAutoCompleteList));
 }
 

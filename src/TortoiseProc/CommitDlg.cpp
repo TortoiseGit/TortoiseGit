@@ -244,6 +244,11 @@ BOOL CCommitDlg::OnInitDialog()
 	m_cLogMessage.Init(m_ProjectProperties);
 	m_cLogMessage.SetFont((CString)CRegString(_T("Software\\TortoiseGit\\LogFontName"), _T("Courier New")), (DWORD)CRegDWORD(_T("Software\\TortoiseGit\\LogFontSize"), 8));
 	m_cLogMessage.RegisterContextMenuHandler(this);
+	std::map<int, UINT> icons;
+	icons[AUTOCOMPLETE_SPELLING] = IDI_SPELL;
+	icons[AUTOCOMPLETE_FILENAME] = IDI_FILE;
+	icons[AUTOCOMPLETE_PROGRAMCODE] = IDI_CODE;
+	m_cLogMessage.SetIcon(icons);
 
 	OnEnChangeLogmessage();
 
@@ -1642,7 +1647,7 @@ void CCommitDlg::GetAutocompletionList()
 			continue;
 
 		CString sPartPath =path->GetGitPathString();
-		m_autolist.insert(sPartPath);
+		m_autolist.insert(std::make_pair(sPartPath, AUTOCOMPLETE_FILENAME));
 
 		int pos = 0;
 		int lastPos = 0;
@@ -1650,7 +1655,7 @@ void CCommitDlg::GetAutocompletionList()
 		{
 			++pos;
 			lastPos = pos;
-			m_autolist.insert(sPartPath.Mid(pos));
+			m_autolist.insert(std::make_pair(sPartPath.Mid(pos), AUTOCOMPLETE_FILENAME));
 		}
 
 		// Last inserted entry is a file name.
@@ -1659,7 +1664,7 @@ void CCommitDlg::GetAutocompletionList()
 		{
 			int dotPos = sPartPath.ReverseFind('.');
 			if ((dotPos >= 0) && (dotPos > lastPos))
-				m_autolist.insert(sPartPath.Mid(lastPos, dotPos - lastPos));
+				m_autolist.insert(std::make_pair(sPartPath.Mid(lastPos, dotPos - lastPos), AUTOCOMPLETE_FILENAME));
 		}
 
 		if (path->m_Action == CTGitPath::LOGACTIONS_UNVER && !CRegDWORD(_T("Software\\TortoiseGit\\AutocompleteParseUnversioned"), FALSE))
@@ -1742,7 +1747,7 @@ void CCommitDlg::ScanFile(const CString& sFilePath, const CString& sRegex, const
 			{
 				if (match[i].second-match[i].first)
 				{
-					m_autolist.insert(std::wstring(match[i]).c_str());
+					m_autolist.insert(std::make_pair(std::wstring(match[i]).c_str(), AUTOCOMPLETE_PROGRAMCODE));
 				}
 			}
 		}

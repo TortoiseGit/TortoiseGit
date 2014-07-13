@@ -101,6 +101,9 @@ IDI_EXTERNALOVL         ICON                    "externalovl.ico"
 IDI_MERGEACTIVE         ICON                    "menumerge.ico"
 IDI_EXECUTABLEOVL       ICON                    "executableovl.ico"
 IDI_SYMLINKOVL          ICON                    "symlinkovl.ico"
+IDI_SPELL               ICON                    "spell.ico"
+IDI_FILE                ICON                    "file.ico"
+IDI_CODE                ICON                    "code.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //

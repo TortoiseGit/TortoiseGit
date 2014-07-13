@@ -424,6 +424,7 @@
     <Image Include="..\Resources\CFMBackground.ico" />
     <Image Include="..\Resources\checkout.ico" />
     <Image Include="..\Resources\clippaste.ico" />
+    <Image Include="..\Resources\code.ico" />
     <Image Include="..\Resources\CommitBackground.ico" />
     <Image Include="..\Resources\copy.ico" />
     <Image Include="..\Resources\CopyBackground.ico" />
@@ -434,6 +435,7 @@
     <Image Include="..\Resources\explorer.ico" />
     <Image Include="..\Resources\ExportBackground.ico" />
     <Image Include="..\Resources\externalovl.ico" />
+    <Image Include="..\Resources\file.ico" />
     <Image Include="..\Resources\filteredit.ico" />
     <Image Include="..\Resources\general.ico" />
     <Image Include="..\Resources\git.bmp" />
@@ -514,6 +516,7 @@
     <Image Include="..\Resources\saveas.ico" />
     <Image Include="..\Resources\saveddata.ico" />
     <Image Include="..\Resources\showbranches.ico" />
+    <Image Include="..\Resources\spell.ico" />
     <Image Include="..\Resources\UpdateBackground.ico" />
     <Image Include="..\Resources\ssh.ico" />
     <Image Include="..\Resources\switch.ico" />

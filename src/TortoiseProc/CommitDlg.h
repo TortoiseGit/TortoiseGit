@@ -164,7 +164,7 @@ protected:
 
 private:
 	CWinThread*			m_pThread;
-	std::set<CString>	m_autolist;
+	std::map<CString, int>	m_autolist;
 	CGitStatusListCtrl	m_ListCtrl;
 	BOOL				m_bShowUnversioned;
 	volatile LONG		m_bBlock;

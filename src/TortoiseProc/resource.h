@@ -163,6 +163,9 @@
 #define IDI_MERGEACTIVE                 348
 #define IDI_EXECUTABLEOVL               349
 #define IDI_SYMLINKOVL                  350
+#define IDI_SPELL                       351
+#define IDI_FILE                        352
+#define IDI_CODE                        353
 #define IDS_CHSTAT_FILECOL              1000
 #define IDS_CHSTAT_WCCOL                1001
 #define IDS_CHSTAT_REPOCOL              1002
@@ -1911,7 +1914,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        351
+#define _APS_NEXT_RESOURCE_VALUE        354
 #define _APS_NEXT_COMMAND_VALUE         32867
 #define _APS_NEXT_CONTROL_VALUE         1796
 #define _APS_NEXT_SYMED_VALUE           201
