@@ -17,6 +17,7 @@ Released: unreleased
  * Fixed issue #2225: include.path does not understand tilde (~)
  * Fixed issue #2228: TortoiseGitUDiff incorrect font by non-ascii char name
  * Fixed issue #2230: First click on order dialog is ignored
+ * Fixed issue #2003: TortoiseMerge uses wrong EOL with patches
 
 = Release 1.8.9.0 =
 Released: 2014-06-09

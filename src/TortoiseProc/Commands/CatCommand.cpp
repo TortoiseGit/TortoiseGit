@@ -56,12 +56,21 @@ bool CatCommand::Execute()
 				CMessageBox::Show(hwndExplorer, L"Could not open file for writing.", L"TortoiseGit", MB_ICONERROR);
 				return false;
 			}
-			if (fwrite(git_blob_rawcontent((const git_blob *)(git_object *)obj), 1, git_blob_rawsize((const git_blob *)(git_object *)obj), file) != (size_t)git_blob_rawsize((const git_blob *)(git_object *)obj)) // TODO: need to apply git_blob_filtered_content?
+
+			CAutoBuf buf;
+			if (git_blob_filtered_content(buf, (git_blob *)(git_object *)obj, CUnicodeUtils::GetUTF8(cmdLinePath.GetGitPathString()), 0))
+			{
+				::DeleteFile(savepath);
+				fclose(file);
+				CMessageBox::Show(hwndExplorer, g_Git.GetLibGit2LastErr(L"Could not get filtered content."), L"TortoiseGit", MB_ICONERROR);
+				return false;
+			}
+			if (fwrite(buf->ptr, sizeof(char), buf->size, file) != buf->size)
 			{
 				::DeleteFile(savepath);
 				CString err = CFormatMessageWrapper();
-				CMessageBox::Show(hwndExplorer, _T("Could not write to file: ") + err, L"TortoiseGit", MB_ICONERROR);
 				fclose(file);
+				CMessageBox::Show(hwndExplorer, _T("Could not write to file: ") + err, L"TortoiseGit", MB_ICONERROR);
 				return false;
 			}
 			fclose(file);
