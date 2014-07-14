@@ -2378,97 +2378,109 @@ bool CAppUtils::Fetch(CString remoteName, bool allowRebase, bool allRemotes)
 		else
 			cmd.Format(_T("git.exe fetch -v %s \"%s\" %s"), arg, url, dlg.m_RemoteBranchName);
 
-		CProgressDlg progress;
-
-		progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENULOG)));
-		progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_RESET)));
-
-		if(!dlg.m_bRebase && !g_GitAdminDir.IsBareRepo(g_Git.m_CurrentDir))
+		while (true)
 		{
-			progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUREBASE)));
-		}
+			CProgressDlg progress;
 
-		progress.m_GitCmd=cmd;
-		INT_PTR userResponse;
+			progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENULOG)));
+			progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_RESET)));
 
-		if (g_Git.UsingLibGit2(CGit::GIT_CMD_FETCH))
-		{
-			CGitProgressDlg gitdlg;
-			if (!dlg.m_bAllRemotes)
-				gitdlg.SetUrl(url);
-			gitdlg.SetCommand(CGitProgressList::GitProgress_Fetch);
-			gitdlg.SetAutoTag(dlg.m_bFetchTags == 1 ? GIT_REMOTE_DOWNLOAD_TAGS_ALL : dlg.m_bFetchTags == 2 ? GIT_REMOTE_DOWNLOAD_TAGS_AUTO : GIT_REMOTE_DOWNLOAD_TAGS_NONE);
-			if (!dlg.m_bAllRemotes)
-				gitdlg.SetRefSpec(dlg.m_RemoteBranchName);
-			userResponse = gitdlg.DoModal();
+			if (!dlg.m_bRebase && !g_GitAdminDir.IsBareRepo(g_Git.m_CurrentDir))
+				progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUREBASE)));
 
-		}
-		else
-			userResponse = progress.DoModal();
+			progress.m_PostFailCmdList.Add(CString(MAKEINTRESOURCE(IDS_MSGBOX_RETRY)));
 
-		if (userResponse == IDC_PROGRESS_BUTTON1)
-		{
-			CString cmd = _T("/command:log");
-			cmd += _T(" /path:\"") + g_Git.m_CurrentDir + _T("\"");
-			RunTortoiseGitProc(cmd);
-			return TRUE;
-		}
-		else if (userResponse == IDC_PROGRESS_BUTTON1 + 1)
-		{
-			CString pullRemote, pullBranch;
-			g_Git.GetRemoteTrackedBranchForHEAD(pullRemote, pullBranch);
+			progress.m_GitCmd=cmd;
+			INT_PTR userResponse;
 
-			CString defaultUpstream;
-			if (!pullRemote.IsEmpty() && !pullBranch.IsEmpty())
-				defaultUpstream.Format(_T("remotes/%s/%s"), pullRemote, pullBranch);
-			GitReset(&defaultUpstream, 2);
-			return TRUE;
-		}
-		else if ((userResponse == IDC_PROGRESS_BUTTON1 + 2) || (progress.m_GitStatus == 0 && dlg.m_bRebase))
-		{
-			while(1)
+			if (g_Git.UsingLibGit2(CGit::GIT_CMD_FETCH))
 			{
-				CRebaseDlg dlg;
-				dlg.m_PostButtonTexts.Add(CString(MAKEINTRESOURCE(IDS_MENULOG)));
-				dlg.m_PostButtonTexts.Add(CString(MAKEINTRESOURCE(IDS_MENUDESSENDMAIL)));
-				dlg.m_PostButtonTexts.Add(CString(MAKEINTRESOURCE(IDS_MENUREBASE)));
-				INT_PTR response = dlg.DoModal();
-				if(response == IDOK)
-				{
-					return TRUE;
-				}
-				else if (response == IDC_REBASE_POST_BUTTON)
+				CGitProgressDlg gitdlg;
+				if (!dlg.m_bAllRemotes)
+					gitdlg.SetUrl(url);
+				gitdlg.SetCommand(CGitProgressList::GitProgress_Fetch);
+				gitdlg.SetAutoTag(dlg.m_bFetchTags == 1 ? GIT_REMOTE_DOWNLOAD_TAGS_ALL : dlg.m_bFetchTags == 2 ? GIT_REMOTE_DOWNLOAD_TAGS_AUTO : GIT_REMOTE_DOWNLOAD_TAGS_NONE);
+				if (!dlg.m_bAllRemotes)
+					gitdlg.SetRefSpec(dlg.m_RemoteBranchName);
+				userResponse = gitdlg.DoModal();
+			}
+			else
+				userResponse = progress.DoModal();
+
+			if (!progress.m_GitStatus)
+			{
+				if (userResponse == IDC_PROGRESS_BUTTON1)
 				{
 					CString cmd = _T("/command:log");
 					cmd += _T(" /path:\"") + g_Git.m_CurrentDir + _T("\"");
 					RunTortoiseGitProc(cmd);
 					return TRUE;
 				}
-				else if (response == IDC_REBASE_POST_BUTTON + 1)
+				else if (userResponse == IDC_PROGRESS_BUTTON1 + 1)
 				{
-					CString cmd, out, err;
-					cmd.Format(_T("git.exe format-patch -o \"%s\" %s..%s"),
-						g_Git.m_CurrentDir,
-						g_Git.FixBranchName(dlg.m_Upstream),
-						g_Git.FixBranchName(dlg.m_Branch));
-					if (g_Git.Run(cmd, &out, &err, CP_UTF8))
-					{
-						CMessageBox::Show(NULL, out + L"\n" + err, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
-						return FALSE;
-					}
+					CString pullRemote, pullBranch;
+					g_Git.GetRemoteTrackedBranchForHEAD(pullRemote, pullBranch);
 
-					CAppUtils::SendPatchMail(cmd,out);
+					CString defaultUpstream;
+					if (!pullRemote.IsEmpty() && !pullBranch.IsEmpty())
+						defaultUpstream.Format(_T("remotes/%s/%s"), pullRemote, pullBranch);
+					GitReset(&defaultUpstream, 2);
 					return TRUE;
 				}
-				else if (response == IDC_REBASE_POST_BUTTON + 2)
-					continue;
-				else if(response == IDCANCEL)
-					return FALSE;
+				else if ((userResponse == IDC_PROGRESS_BUTTON1 + 2) || dlg.m_bRebase)
+				{
+					while(1)
+					{
+						CRebaseDlg dlg;
+						dlg.m_PostButtonTexts.Add(CString(MAKEINTRESOURCE(IDS_MENULOG)));
+						dlg.m_PostButtonTexts.Add(CString(MAKEINTRESOURCE(IDS_MENUDESSENDMAIL)));
+						dlg.m_PostButtonTexts.Add(CString(MAKEINTRESOURCE(IDS_MENUREBASE)));
+						INT_PTR response = dlg.DoModal();
+						if(response == IDOK)
+						{
+							return TRUE;
+						}
+						else if (response == IDC_REBASE_POST_BUTTON)
+						{
+							CString cmd = _T("/command:log");
+							cmd += _T(" /path:\"") + g_Git.m_CurrentDir + _T("\"");
+							RunTortoiseGitProc(cmd);
+							return TRUE;
+						}
+						else if (response == IDC_REBASE_POST_BUTTON + 1)
+						{
+							CString cmd, out, err;
+							cmd.Format(_T("git.exe format-patch -o \"%s\" %s..%s"),
+								g_Git.m_CurrentDir,
+								g_Git.FixBranchName(dlg.m_Upstream),
+								g_Git.FixBranchName(dlg.m_Branch));
+							if (g_Git.Run(cmd, &out, &err, CP_UTF8))
+							{
+								CMessageBox::Show(NULL, out + L"\n" + err, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
+								return FALSE;
+							}
+
+							CAppUtils::SendPatchMail(cmd,out);
+							return TRUE;
+						}
+						else if (response == IDC_REBASE_POST_BUTTON + 2)
+							continue;
+						else if(response == IDCANCEL)
+							return FALSE;
+					}
+					return TRUE;
+				}
+				else if (userResponse != IDCANCEL)
+					return TRUE;
+				return FALSE;
 			}
-			return TRUE;
+			else
+			{
+				if (userResponse == IDC_PROGRESS_BUTTON1)
+					continue;
+				return FALSE;
+			}
 		}
-		else if (userResponse != IDCANCEL)
-			return TRUE;
 	}
 	return FALSE;
 }
