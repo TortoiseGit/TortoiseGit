@@ -231,7 +231,7 @@ protected:
 		m_bIsFirstTimeToSetFocus = false;
 		m_pWin->GetDlgItem(IDOK)->EnableWindow(TRUE);
 	}
-	void InitChooseVersion(bool setFocusToBranchComboBox = false, bool bReInit = false)
+	void InitChooseVersion(bool setFocusToBranchComboBox = false, bool bReInit = false, bool bWaitLoading = true)
 	{
 		m_ChooseVersioinBranch.SetMaxHistoryItems(0x7FFFFFFF);
 		m_ChooseVersioinTags.SetMaxHistoryItems(0x7FFFFFFF);
@@ -247,7 +247,8 @@ protected:
 			m_bNotFullName = true;
 		}
 
-		m_pWin->GetDlgItem(IDOK)->EnableWindow(FALSE);
+		if (bWaitLoading)
+			m_pWin->GetDlgItem(IDOK)->EnableWindow(FALSE);
 
 		InterlockedExchange(&m_bLoadingThreadRunning, TRUE);
 
