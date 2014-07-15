@@ -250,9 +250,7 @@ protected:
 	{
 		if(m_bLoadingThreadRunning && m_pLoadingThread)
 		{
-			DWORD ret =::WaitForSingleObject(m_pLoadingThread->m_hThread,20000);
-			if(ret == WAIT_TIMEOUT)
-				::TerminateThread(m_pLoadingThread,0);
+			::WaitForSingleObject(m_pLoadingThread->m_hThread, 20000);
 		}
 	}
 public:
