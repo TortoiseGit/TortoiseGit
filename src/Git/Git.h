@@ -308,8 +308,8 @@ public:
 	}REF_TYPE;
 
 	int GetRemoteList(STRING_VECTOR &list);
-	int GetBranchList(STRING_VECTOR &list, int *Current,BRANCH_TYPE type=BRANCH_LOCAL);
-	int GetTagList(STRING_VECTOR &list);
+	int GetBranchList(STRING_VECTOR &list, int *Current, BRANCH_TYPE type = BRANCH_LOCAL, BOOL* pAbort = nullptr);
+	int GetTagList(STRING_VECTOR &list, BOOL* pAbort = nullptr);
 	int GetRemoteTags(const CString& remote, STRING_VECTOR &list);
 	int GetMapHashToFriendName(MAP_HASH_NAME &map);
 	static int GetMapHashToFriendName(git_repository* repo, MAP_HASH_NAME &map);

@@ -46,6 +46,7 @@ protected:
 	CButton			m_RadioTag;
 	CString			m_pendingRefName;
 	bool			m_bNotFullName;
+	BOOL			m_AbortLoading;
 
 	//Notification when version changed. Can be implemented in derived classes.
 	virtual void OnVersionChanged(){}
@@ -188,19 +189,29 @@ protected:
 
 	UINT LoadingThread()
 	{
-		STRING_VECTOR list;
+		do
+		{
+			STRING_VECTOR list;
+			int current = -1;
+			g_Git.GetBranchList(list, &current, CGit::BRANCH_ALL_F, &m_AbortLoading);
+			if (m_AbortLoading)
+				break;
+			m_ChooseVersioinBranch.SetList(list, &m_AbortLoading);
+			if (m_AbortLoading)
+				break;
+			m_ChooseVersioinBranch.SetCurSel(current);
 
-		int current = -1;
-		g_Git.GetBranchList(list,&current,CGit::BRANCH_ALL_F);
-		m_ChooseVersioinBranch.SetList(list);
-		m_ChooseVersioinBranch.SetCurSel(current);
+			list.clear();
+			g_Git.GetTagList(list, &m_AbortLoading);
+			if (m_AbortLoading)
+				break;
+			m_ChooseVersioinTags.SetList(list, &m_AbortLoading);
+			if (m_AbortLoading)
+				break;
+			m_ChooseVersioinTags.SetCurSel(0);
 
-		list.clear();
-		g_Git.GetTagList(list);
-		m_ChooseVersioinTags.SetList(list);
-		m_ChooseVersioinTags.SetCurSel(0);
-
-		m_pWin->SendMessage(WM_GUIUPDATES);
+			m_pWin->SendMessage(WM_GUIUPDATES);
+		} while (0);
 
 		InterlockedExchange(&m_bLoadingThreadRunning, FALSE);
 		return 0;
@@ -250,6 +261,7 @@ protected:
 	{
 		if(m_bLoadingThreadRunning && m_pLoadingThread)
 		{
+			m_AbortLoading = TRUE;
 			::WaitForSingleObject(m_pLoadingThread->m_hThread, 20000);
 		}
 	}
@@ -263,6 +275,7 @@ public:
 	, m_pLoadingThread(nullptr)
 	, m_bLoadingThreadRunning(FALSE)
 	, m_bNotFullName(true)
+	, m_AbortLoading(FALSE)
 	{
 		m_pWin=win;
 	};

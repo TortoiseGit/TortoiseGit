@@ -1250,7 +1250,7 @@ int addto_list_each_ref_fn(const char *refname, const unsigned char * /*sha1*/, 
 	return 0;
 }
 
-int CGit::GetTagList(STRING_VECTOR &list)
+int CGit::GetTagList(STRING_VECTOR &list, BOOL* pAbort/*=nullptr*/)
 {
 	if (this->m_IsUseLibGit2)
 	{
@@ -1265,6 +1265,8 @@ int CGit::GetTagList(STRING_VECTOR &list)
 
 		for (size_t i = 0; i < tag_names->count; ++i)
 		{
+			if (pAbort && *pAbort)
+				break;
 			CStringA tagName(tag_names->strings[i]);
 			list.push_back(CUnicodeUtils::GetUnicode(tagName));
 		}
@@ -1284,6 +1286,8 @@ int CGit::GetTagList(STRING_VECTOR &list)
 			CString one;
 			while( pos>=0 )
 			{
+				if (pAbort && *pAbort)
+					break;
 				one=output.Tokenize(_T("\n"),pos);
 				if (!one.IsEmpty())
 					list.push_back(one);
@@ -1473,7 +1477,7 @@ CString CGit::DerefFetchHead()
 	return CUnicodeUtils::GetUnicode(hashToReturn.c_str());
 }
 
-int CGit::GetBranchList(STRING_VECTOR &list,int *current,BRANCH_TYPE type)
+int CGit::GetBranchList(STRING_VECTOR &list, int *current, BRANCH_TYPE type/*=BRANCH_LOCAL*/, BOOL* pAbort/*=nullptr*/)
 {
 	int ret = 0;
 	CString cur;
@@ -1502,6 +1506,8 @@ int CGit::GetBranchList(STRING_VECTOR &list,int *current,BRANCH_TYPE type)
 			git_branch_t branchType;
 			while (git_branch_next(&ref, &branchType, it) == 0)
 			{
+				if (pAbort && *pAbort)
+					break;
 				CAutoReference autoRef(ref);
 				const char * name = nullptr;
 				if (git_branch_name(&name, ref))
@@ -1536,6 +1542,8 @@ int CGit::GetBranchList(STRING_VECTOR &list,int *current,BRANCH_TYPE type)
 			CString one;
 			while (pos >= 0)
 			{
+				if (pAbort && *pAbort)
+					break;
 				one = output.Tokenize(_T("\n"), pos);
 				one.Trim(L" \r\n\t");
 				if (one.Find(L" -> ") >= 0 || one.IsEmpty())
@@ -1560,6 +1568,8 @@ int CGit::GetBranchList(STRING_VECTOR &list,int *current,BRANCH_TYPE type)
 	{
 		for (unsigned int i = 0; i < list.size(); ++i)
 		{
+			if (pAbort && *pAbort)
+				break;
 			if (list[i] == cur)
 			{
 				*current = i;

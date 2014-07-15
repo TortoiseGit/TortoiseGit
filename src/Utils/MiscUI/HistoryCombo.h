@@ -133,7 +133,7 @@ public:
 	 * items will be removed.
 	 * No checks for duplicates are performed!
 	 */
-	void SetList(const STRING_VECTOR& list);
+	void SetList(const STRING_VECTOR& list, BOOL* pAbort = nullptr);
 
 	/**
 	 * Removes the selected item from the combo box and updates

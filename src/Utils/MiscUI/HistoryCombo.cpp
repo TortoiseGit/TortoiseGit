@@ -203,11 +203,13 @@ int CHistoryCombo::InsertEntry(const CString& combostring, INT_PTR pos)
 	return nRet;
 }
 
-void CHistoryCombo::SetList(const STRING_VECTOR& list)
+void CHistoryCombo::SetList(const STRING_VECTOR& list, BOOL* pAbort/*=nullptr*/)
 {
 	Reset();
 	for (int i = 0; i < list.size(); ++i)
 	{
+		if (pAbort && *pAbort)
+			break;
 		CString combostring = list[i];
 		combostring.Replace('\r', ' ');
 		combostring.Replace('\n', ' ');
