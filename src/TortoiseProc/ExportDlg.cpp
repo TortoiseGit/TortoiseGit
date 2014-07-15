@@ -86,7 +86,7 @@ BOOL CExportDlg::OnInitDialog()
 
 	CHOOSE_VERSION_ADDANCHOR;
 	this->AddOthersToAnchor();
-	InitChooseVersion();
+	InitChooseVersion(false, false, false);
 	if (m_Revision.IsEmpty() || m_Revision == _T("HEAD"))
 	{
 		SetDefaultChoose(IDC_RADIO_HEAD);
