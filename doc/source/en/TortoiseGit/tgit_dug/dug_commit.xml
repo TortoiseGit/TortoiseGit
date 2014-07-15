@@ -267,6 +267,13 @@
 			can be customized in the TortoiseGit settings dialog.
 		</para>
 		<para>
+			The log message window also includes commit message snippet facility.
+			The snippets supplied with TortoiseGit are held in the TortoiseGit
+			installation <filename>bin</filename> folder. You can also define your own
+			snippets and store them in <filename>%APPDATA%\TortoiseGit\snippet.txt</filename>.
+			# is the comment character. Use escape sequences \t \r \n \\.
+		</para>
+		<para>
 			You can add your name and email address to end of log message by click
 			<guibutton>Sign</guibutton>
 		</para>
