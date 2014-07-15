@@ -28,6 +28,7 @@
 #define AUTOCOMPLETE_SPELLING		0
 #define AUTOCOMPLETE_FILENAME		1
 #define AUTOCOMPLETE_PROGRAMCODE	2
+#define AUTOCOMPLETE_SNIPPET		3
 
 //forward declaration
 class CSciEdit;
@@ -58,6 +59,8 @@ public:
 	 * it should return \a false
 	 */
 	virtual bool		HandleMenuItemClick(int cmd, CSciEdit * pSciEdit);
+
+	virtual void		HandleSnippet(int type, const CString &text, CSciEdit *pSciEdit);
 };
 
 /**

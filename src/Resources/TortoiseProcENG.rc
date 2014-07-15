@@ -104,6 +104,7 @@ IDI_SYMLINKOVL          ICON                    "symlinkovl.ico"
 IDI_SPELL               ICON                    "spell.ico"
 IDI_FILE                ICON                    "file.ico"
 IDI_CODE                ICON                    "code.ico"
+IDI_SNIPPET             ICON                    "snippet.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
