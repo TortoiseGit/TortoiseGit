@@ -218,6 +218,8 @@ protected:
 	}
 	void UpdateGUI()
 	{
+		m_RadioBranch.SetWindowText(L"Branch");
+		m_RadioTag.SetWindowText(L"Tag");
 		m_RadioBranch.EnableWindow(TRUE);
 		m_RadioTag.EnableWindow(TRUE);
 
@@ -237,6 +239,8 @@ protected:
 		m_ChooseVersioinTags.SetMaxHistoryItems(0x7FFFFFFF);
 
 		m_bIsBranch = false;
+		m_RadioBranch.SetWindowText(L"Loading Branches");
+		m_RadioTag.SetWindowText(L"Loading Tags");
 		m_RadioBranch.EnableWindow(FALSE);
 		m_RadioTag.EnableWindow(FALSE);
 

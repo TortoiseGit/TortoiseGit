@@ -94,6 +94,8 @@ BOOL CCreateBranchTagDlg::OnInitDialog()
 
 	this->AddOthersToAnchor();
 
+	InitChooseVersion(false, false, false);
+
 	AdjustControlSize(IDC_RADIO_BRANCH);
 	AdjustControlSize(IDC_RADIO_TAGS);
 	AdjustControlSize(IDC_RADIO_VERSION);
@@ -103,8 +105,6 @@ BOOL CCreateBranchTagDlg::OnInitDialog()
 	AdjustControlSize(IDC_CHECK_SIGN);
 
 	this->SetDefaultChoose(IDC_RADIO_HEAD);
-
-	InitChooseVersion(false, false, false);
 
 	this->GetDlgItem(IDC_CHECK_TRACK)->EnableWindow(FALSE);
 

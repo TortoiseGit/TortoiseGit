@@ -71,6 +71,8 @@ BOOL CResetDlg::OnInitDialog()
 	CHOOSE_VERSION_ADDANCHOR;
 	this->AddOthersToAnchor();
 
+	InitChooseVersion();
+
 	AdjustControlSize(IDC_RADIO_BRANCH);
 	AdjustControlSize(IDC_RADIO_TAGS);
 	AdjustControlSize(IDC_RADIO_VERSION);
@@ -93,7 +95,6 @@ BOOL CResetDlg::OnInitDialog()
 	}
 	this->CheckRadioButton(IDC_RADIO_RESET_SOFT,IDC_RADIO_RESET_HARD,IDC_RADIO_RESET_SOFT+m_ResetType);
 
-	InitChooseVersion();
 	SetDefaultChoose(IDC_RADIO_BRANCH);
 	GetDlgItem(IDC_RADIO_RESET_SOFT + m_ResetType)->SetFocus();
 

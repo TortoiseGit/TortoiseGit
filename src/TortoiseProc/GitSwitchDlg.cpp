@@ -96,6 +96,8 @@ BOOL CGitSwitchDlg::OnInitDialog()
 	CHOOSE_VERSION_ADDANCHOR;
 	this->AddOthersToAnchor();
 
+	InitChooseVersion(true);
+
 	AdjustControlSize(IDC_RADIO_BRANCH);
 	AdjustControlSize(IDC_RADIO_TAGS);
 	AdjustControlSize(IDC_RADIO_VERSION);
@@ -110,8 +112,6 @@ BOOL CGitSwitchDlg::OnInitDialog()
 	CString sWindowTitle;
 	GetWindowText(sWindowTitle);
 	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);
-
-	InitChooseVersion(true);
 
 	SetDefaultChoose(IDC_RADIO_BRANCH);
 	GetDlgItem(IDC_CHECK_BRANCH)->SetFocus();

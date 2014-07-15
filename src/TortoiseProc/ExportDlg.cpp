@@ -78,6 +78,8 @@ BOOL CExportDlg::OnInitDialog()
 	AddAnchor(IDCANCEL, BOTTOM_RIGHT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
 
+	InitChooseVersion(false, false, false);
+
 	AdjustControlSize(IDC_RADIO_BRANCH);
 	AdjustControlSize(IDC_RADIO_TAGS);
 	AdjustControlSize(IDC_RADIO_VERSION);
@@ -86,7 +88,6 @@ BOOL CExportDlg::OnInitDialog()
 
 	CHOOSE_VERSION_ADDANCHOR;
 	this->AddOthersToAnchor();
-	InitChooseVersion(false, false, false);
 	if (m_Revision.IsEmpty() || m_Revision == _T("HEAD"))
 	{
 		SetDefaultChoose(IDC_RADIO_HEAD);
