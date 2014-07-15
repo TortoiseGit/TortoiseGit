@@ -5,6 +5,7 @@ Released: unreleased
  * Updated shipped libgit2 to version 0.21
  * Fixed issue #1605: Add TortoiseGit start and pre commit hooks
  * Fixed issue #2170: Please add interface to "git svn log -v"
+ * Fixed issue #1787: auto-complete label when writing commit message
 
 == Bug Fixes ==
  * Fixed issue #2216: Add fails with message: libgit2: "failed to parse 'warn' as boolean"

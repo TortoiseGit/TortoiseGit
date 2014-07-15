@@ -30,6 +30,7 @@
 
 void CSciEditContextMenuInterface::InsertMenuItems(CMenu&, int&) {return;}
 bool CSciEditContextMenuInterface::HandleMenuItemClick(int, CSciEdit *) {return false;}
+void CSciEditContextMenuInterface::HandleSnippet(int type, const CString &text, CSciEdit *pSciEdit) { return; }
 
 
 #define STYLE_ISSUEBOLD			11
@@ -759,6 +760,20 @@ BOOL CSciEdit::OnChildNotify(UINT message, WPARAM wParam, LPARAM lParam, LRESULT
 				return TRUE;
 			}
 			break;
+		case SCN_AUTOCSELECTION:
+			{
+				CString text = StringFromControl(lpSCN->text);
+				if (m_autolist[text] == AUTOCOMPLETE_SNIPPET)
+				{
+					Call(SCI_AUTOCCANCEL);
+					for (INT_PTR handlerindex = 0; handlerindex < m_arContextHandlers.GetCount(); ++handlerindex)
+					{
+						CSciEditContextMenuInterface * pHandler = m_arContextHandlers.GetAt(handlerindex);
+						pHandler->HandleSnippet(m_autolist[text], text, this);
+					}
+				}
+				return TRUE;
+			}
 		case SCN_STYLENEEDED:
 			{
 				int startstylepos = (int)Call(SCI_GETENDSTYLED);

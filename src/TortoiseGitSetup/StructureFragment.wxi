@@ -806,6 +806,7 @@
 					<Component Id="C__TortoiseProc" Guid="$(var.GuidTortoiseProc)" Win64="$(var.Win64YesNo)">
 						<File Id="F__TortoiseProc" Name="TortoiseGitProc.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGitProc.exe" KeyPath="yes" />
 						<File Id="F__TGITAutolist" Name="autolist.txt" DiskId="1" Source="include\autolist.txt" />
+						<File Id="F__TGITSnippet" Name="snippet.txt" DiskId="1" Source="include\snippet.txt" />
 						<Environment Id="Environment" Name="PATH" Part="last" System="yes" Value="[INSTALLDIR]bin" Action="set" />
 					</Component>
 

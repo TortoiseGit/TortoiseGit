@@ -1,0 +1,2 @@
+# sample snippet
+tortoisegit=Prepare release and bump version numbers to 
