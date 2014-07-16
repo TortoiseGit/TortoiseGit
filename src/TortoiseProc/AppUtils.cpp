@@ -3034,6 +3034,7 @@ BOOL CAppUtils::Merge(CString *commit)
 
 		INT_PTR idCommit = -1;
 		INT_PTR idRemoveBranch = -1;
+		INT_PTR idPush = -1;
 		INT_PTR idSVNDCommit = -1;
 		INT_PTR idResolve = -1;
 		BOOL hasGitSVN = CTGitPath(g_Git.m_CurrentDir).GetAdminDirMask() & ITEMIS_GITSVN;
@@ -3042,7 +3043,10 @@ BOOL CAppUtils::Merge(CString *commit)
 		else
 		{
 			if (dlg.m_bIsBranch)
+			{
 				idRemoveBranch = Prodlg.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_REMOVEBRANCH)));
+				idPush = Prodlg.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUPUSH)));
+			}
 			
 			if (hasGitSVN)
 				idSVNDCommit = Prodlg.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUSVNDCOMMIT)));
@@ -3094,6 +3098,8 @@ BOOL CAppUtils::Merge(CString *commit)
 						MessageBox(NULL, out, _T("TortoiseGit"), MB_OK);
 				}
 			}
+			else if (ret == IDC_PROGRESS_BUTTON1 + idPush)
+				CAppUtils::Push();
 			else if (ret == IDC_PROGRESS_BUTTON1 + idSVNDCommit)
 				CAppUtils::SVNDCommit();
 		}
