@@ -3032,16 +3032,20 @@ BOOL CAppUtils::Merge(CString *commit)
 		CProgressDlg Prodlg;
 		Prodlg.m_GitCmd = cmd;
 
+		INT_PTR idCommit = -1;
+		INT_PTR idRemoveBranch = -1;
+		INT_PTR idSVNDCommit = -1;
+		INT_PTR idResolve = -1;
 		BOOL hasGitSVN = CTGitPath(g_Git.m_CurrentDir).GetAdminDirMask() & ITEMIS_GITSVN;
 		if (dlg.m_bNoCommit)
-			Prodlg.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUCOMMIT)));
+			idCommit = Prodlg.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUCOMMIT)));
 		else
 		{
 			if (dlg.m_bIsBranch)
-				Prodlg.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_REMOVEBRANCH)));
+				idRemoveBranch = Prodlg.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_REMOVEBRANCH)));
 			
 			if (hasGitSVN)
-				Prodlg.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUSVNDCOMMIT)));
+				idSVNDCommit = Prodlg.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUSVNDCOMMIT)));
 		}
 
 		Prodlg.m_PostCmdCallback = [&] ()
@@ -3054,13 +3058,13 @@ BOOL CAppUtils::Merge(CString *commit)
 				if (!g_Git.ListConflictFile(list) && !list.IsEmpty())
 				{
 					// there are conflict files
-					Prodlg.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROGRS_CMD_RESOLVE)));
+					idResolve = Prodlg.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROGRS_CMD_RESOLVE)));
 				}
 			}
 		};
 
 		INT_PTR ret = Prodlg.DoModal();
-		if (Prodlg.m_GitStatus != 0 && ret == IDC_PROGRESS_BUTTON1)
+		if (Prodlg.m_GitStatus && (ret == IDC_PROGRESS_BUTTON1 + idResolve))
 		{
 			CTGitPathList pathlist;
 			CTGitPathList selectedlist;
@@ -3069,16 +3073,16 @@ BOOL CAppUtils::Merge(CString *commit)
 			CString str;
 			CAppUtils::Commit(CString(), false, str, pathlist, selectedlist, bSelectFilesForCommit);
 		}
-		else if (ret == IDC_PROGRESS_BUTTON1)
+		else if (!Prodlg.m_GitStatus)
 		{
-			if (dlg.m_bNoCommit)
+			if (ret == IDC_PROGRESS_BUTTON1 + idCommit)
 			{
 				CString sLogMsg;
 				CTGitPathList pathList;
 				CTGitPathList selectedList;
 				return Commit(_T(""), TRUE, sLogMsg, pathList, selectedList, true);
 			}
-			else if (dlg.m_bIsBranch)
+			else if (ret == IDC_PROGRESS_BUTTON1 + idRemoveBranch)
 			{
 				CString msg;
 				msg.Format(IDS_PROC_DELETEBRANCHTAG, dlg.m_VersionName);
@@ -3090,11 +3094,9 @@ BOOL CAppUtils::Merge(CString *commit)
 						MessageBox(NULL, out, _T("TortoiseGit"), MB_OK);
 				}
 			}
-			else if (hasGitSVN)
+			else if (ret == IDC_PROGRESS_BUTTON1 + idSVNDCommit)
 				CAppUtils::SVNDCommit();
 		}
-		else if (ret == IDC_PROGRESS_BUTTON1 + 1 && hasGitSVN)
-			CAppUtils::SVNDCommit();
 
 		return !Prodlg.m_GitStatus;
 	}
