@@ -196,6 +196,9 @@ int CHistoryCombo::InsertEntry(const CString& combostring, INT_PTR pos)
 	}
 #endif
 
+	if (!::IsWindow(m_hWnd))
+		return -1;
+
 	int nRet = InsertItem(&cbei);
 	if (nRet >= 0)
 		m_arEntries.InsertAt(nRet, combostring);
@@ -218,7 +221,8 @@ void CHistoryCombo::SetList(const STRING_VECTOR& list, BOOL* pAbort/*=nullptr*/)
 		if (combostring.IsEmpty())
 			continue;
 
-		InsertEntry(combostring, i);
+		if (InsertEntry(combostring, i) < 0)
+			break;
 	}
 }
 
