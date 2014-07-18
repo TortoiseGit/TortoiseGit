@@ -872,7 +872,7 @@ void CLogDlg::FillPatchView(bool onlySetTimer)
 	{
 		int diffContext = 0;
 		if (CAppUtils::GetMsysgitVersion() > 0x01080100)
-			diffContext = _ttoi(g_Git.GetConfigValue(_T("diff.context")));
+			diffContext = g_Git.GetConfigValueInt32(_T("diff.context"), -1);
 		CStringA outA;
 		g_Git.GetUnifiedDiff(CTGitPath(), pLogEntry->m_CommitHash.ToString() + _T("~1"), pLogEntry->m_CommitHash.ToString(), &outA, false, false, diffContext);
 		out = CUnicodeUtils::GetUnicode(outA);

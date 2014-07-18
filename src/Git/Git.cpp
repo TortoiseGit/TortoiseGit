@@ -2506,7 +2506,7 @@ CString CGit::GetUnifiedDiffCmd(const CTGitPath& path, const git_revnum_t& rev1,
 			merge += _T(" -c");
 
 		CString unified;
-		if (diffContext > 0)
+		if (diffContext >= 0)
 			unified.Format(_T(" --unified=%d"), diffContext);
 		cmd.Format(_T("git.exe diff-tree -r -p %s %s --stat %s %s --"), merge, unified, rev1, rev2);
 	}
