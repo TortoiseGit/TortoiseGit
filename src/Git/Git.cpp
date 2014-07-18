@@ -584,6 +584,15 @@ bool CGit::GetConfigValueBool(const CString& name)
 		return false;
 }
 
+int CGit::GetConfigValueInt32(const CString& name, int def)
+{
+	CString configValue = GetConfigValue(name);
+	int value = def;
+	if (!git_config_parse_int32(&value, CUnicodeUtils::GetUTF8(configValue)))
+		return value;
+	return def;
+}
+
 int CGit::SetConfigValue(const CString& key, const CString& value, CONFIG_TYPE type)
 {
 	if(this->m_IsUseGitDLL)
