@@ -1,7 +1,7 @@
 // TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2010-2011,2014 - TortoiseGit
-// Copyright (C) 2006-2010, 2013 - TortoiseSVN
+// Copyright (C) 2006-2010, 2012-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -84,10 +84,13 @@ BOOL CAppUtils::GetVersionedFile(CString sPath, CString sVersion, CString sSaveP
 	return TRUE;
 }
 
-bool CAppUtils::CreateUnifiedDiff(const CString& orig, const CString& modified, const CString& output, bool bShowError)
+bool CAppUtils::CreateUnifiedDiff(const CString& orig, const CString& modified, const CString& output, int contextsize, bool bShowError)
 {
+	CString diffContext;
+	if (contextsize >= 0)
+		diffContext.Format(_T("--unified=%d"), contextsize);
 	CString cmd, err;
-	cmd.Format(_T("git.exe diff --no-index -- \"%s\" \"%s\""),orig, modified);
+	cmd.Format(_T("git.exe diff --no-index %s -- \"%s\" \"%s\""), diffContext, orig, modified);
 
 	int result = g_Git.RunLogFile(cmd, output, &err);
 	if (result != 0 && result != 1 && bShowError)

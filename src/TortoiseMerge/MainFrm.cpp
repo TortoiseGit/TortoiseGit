@@ -2888,7 +2888,8 @@ void CMainFrame::OnEditCreateunifieddifffile()
 	if(!TryGetFileName(outputFile))
 		return;
 
-	CAppUtils::CreateUnifiedDiff(origFile, modifiedFile, outputFile, true);
+	CRegStdDWORD regContextLines(L"Software\\TortoiseGitMerge\\ContextLines", (DWORD)-1);
+	CAppUtils::CreateUnifiedDiff(origFile, modifiedFile, outputFile, regContextLines, true);
 }
 
 void CMainFrame::OnUpdateViewLinediffbar(CCmdUI *pCmdUI)

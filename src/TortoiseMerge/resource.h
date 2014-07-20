@@ -200,6 +200,7 @@
 #define IDS_FIND_REPLACED               1507
 #define IDC_NAME                        1508
 #define IDC_REGEX                       1509
+#define IDC_CONTEXTLINES                1509
 #define IDC_ENABLEEDITORCONFIG          1510
 #define IDC_NAME3                       1511
 #define IDC_REPLACE                     1511

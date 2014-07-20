@@ -1,6 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2006-2008, 2010, 2013 - TortoiseSVN
+// Copyright (C) 2006-2010, 2013-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -46,7 +46,7 @@ public:
 	/**
 	 * Creates a unified diff from two files
 	 */
-	static bool CreateUnifiedDiff(const CString& orig, const CString& modified, const CString& output, bool bShowError);
+	static bool CreateUnifiedDiff(const CString& orig, const CString& modified, const CString& output, int contextsize, bool bShowError);
 
 	static bool HasClipboardFormat(UINT format);
 	static COLORREF IntenseColor(long scale, COLORREF col);

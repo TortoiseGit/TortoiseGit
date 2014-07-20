@@ -1,7 +1,7 @@
 // TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2013 - TortoiseGit
-// Copyright (C) 2006-2010, 2013 - TortoiseSVN
+// Copyright (C) 2006-2010, 2013-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -71,6 +71,8 @@ protected:
 	CRegDWORD		m_regTabSize;
 	BOOL			m_bEnableEditorConfig;
 	CRegDWORD		m_regEnableEditorConfig;
+	int				m_nContextLines;
+	CRegDWORD		m_regContextLines;
 	BOOL			m_bIgnoreEOL;
 	CRegDWORD		m_regIgnoreEOL;
 	BOOL			m_bOnePane;

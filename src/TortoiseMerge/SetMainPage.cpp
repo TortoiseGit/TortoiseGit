@@ -1,7 +1,7 @@
 // TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2013-2014 - TortoiseGit
-// Copyright (C) 2006-2010, 2012-2013 - TortoiseSVN
+// Copyright (C) 2006-2010, 2012-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -38,6 +38,7 @@ CSetMainPage::CSetMainPage()
 	, m_bSmartTabChar(FALSE)
 	, m_nTabSize(0)
 	, m_bEnableEditorConfig(FALSE)
+	, m_nContextLines(-1)
 	, m_bIgnoreEOL(FALSE)
 	, m_bOnePane(FALSE)
 	, m_bViewLinenumbers(FALSE)
@@ -65,6 +66,7 @@ CSetMainPage::CSetMainPage()
 	m_regMaxInline = CRegDWORD(_T("Software\\TortoiseGitMerge\\InlineDiffMaxLineLength"), 3000);
 	m_regUseRibbons = CRegDWORD(L"Software\\TortoiseGitMerge\\UseRibbons", TRUE);
 	m_regUseTaskDialog = CRegDWORD(L"Software\\TortoiseGitMerge\\UseTaskDialog", TRUE);
+	m_regContextLines = CRegDWORD(L"Software\\TortoiseGitMerge\\ContextLines", (DWORD)-1);
 
 	m_bBackup = m_regBackup;
 	m_bFirstDiffOnLoad = m_regFirstDiffOnLoad;
@@ -73,6 +75,7 @@ CSetMainPage::CSetMainPage()
 	m_bSmartTabChar = (m_regTabMode & TABMODE_SMARTINDENT) ? TRUE : FALSE;
 	m_nTabSize = m_regTabSize;
 	m_bEnableEditorConfig = m_regEnableEditorConfig;
+	m_nContextLines = m_regContextLines;
 	m_bIgnoreEOL = m_regIgnoreEOL;
 	m_bOnePane = m_regOnePane;
 	m_bViewLinenumbers = m_regViewLinenumbers;
@@ -99,6 +102,8 @@ void CSetMainPage::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_TABSIZE, m_nTabSize);
 	DDV_MinMaxInt(pDX, m_nTabSize, 1, 1000);
 	DDX_Check(pDX, IDC_ENABLEEDITORCONFIG, m_bEnableEditorConfig);
+	DDX_Text(pDX, IDC_CONTEXTLINES, m_nContextLines);
+	DDV_MinMaxInt(pDX, m_nContextLines, -1, 1000);
 	DDX_Check(pDX, IDC_IGNORELF, m_bIgnoreEOL);
 	DDX_Check(pDX, IDC_ONEPANE, m_bOnePane);
 	DDX_Control(pDX, IDC_FONTSIZES, m_cFontSizes);
@@ -127,6 +132,7 @@ void CSetMainPage::SaveData()
 	m_regTabMode = (m_bUseSpaces ? TABMODE_USESPACES : TABMODE_NONE) | (m_bSmartTabChar ? TABMODE_SMARTINDENT : TABMODE_NONE);
 	m_regTabSize = m_nTabSize;
 	m_regEnableEditorConfig = m_bEnableEditorConfig;
+	m_regContextLines = m_nContextLines;
 	m_regIgnoreEOL = m_bIgnoreEOL;
 	m_regOnePane = m_bOnePane;
 	m_regFontName = m_sFontName;
@@ -165,6 +171,7 @@ BOOL CSetMainPage::OnInitDialog()
 	m_bSmartTabChar = (m_regTabMode & TABMODE_SMARTINDENT) ? TRUE : FALSE;
 	m_nTabSize = m_regTabSize;
 	m_bEnableEditorConfig = m_regEnableEditorConfig;
+	m_nContextLines = m_regContextLines;
 	m_bIgnoreEOL = m_regIgnoreEOL;
 	m_bOnePane = m_regOnePane;
 	m_sFontName = m_regFontName;
@@ -228,6 +235,7 @@ BEGIN_MESSAGE_MAP(CSetMainPage, CPropertyPage)
 	ON_BN_CLICKED(IDC_SMARTTABCHAR, &CSetMainPage::OnModified)
 	ON_EN_CHANGE(IDC_TABSIZE, &CSetMainPage::OnModified)
 	ON_BN_CLICKED(IDC_ENABLEEDITORCONFIG, &CSetMainPage::OnModified)
+	ON_EN_CHANGE(IDC_CONTEXTLINES, &CSetMainPage::OnModified)
 	ON_CBN_SELCHANGE(IDC_FONTSIZES, &CSetMainPage::OnModified)
 	ON_CBN_SELCHANGE(IDC_FONTNAMES, &CSetMainPage::OnModified)
 	ON_BN_CLICKED(IDC_CASEINSENSITIVE, &CSetMainPage::OnModified)
