@@ -30,7 +30,7 @@
 
 void CSciEditContextMenuInterface::InsertMenuItems(CMenu&, int&) {return;}
 bool CSciEditContextMenuInterface::HandleMenuItemClick(int, CSciEdit *) {return false;}
-void CSciEditContextMenuInterface::HandleSnippet(int type, const CString &text, CSciEdit *pSciEdit) { return; }
+void CSciEditContextMenuInterface::HandleSnippet(int, const CString &, CSciEdit *) { return; }
 
 
 #define STYLE_ISSUEBOLD			11
