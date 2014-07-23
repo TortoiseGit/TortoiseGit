@@ -235,6 +235,18 @@
             </listitem>
         </varlistentry>
         <varlistentry>
+            <term condition="pot">SanitizeCommitMsg</term>
+            <listitem>
+                <para>
+                    This option trims space, CR, LF characters at the end of commit messages you enter.
+                    This covers commit, rebase, notes, annotated tag.
+                    This value is <literal>true</literal> by default.
+                    If such trimming breaks your scripts/plugins,
+                    you can disable trimming by set it to <literal>false</literal>.
+                </para>
+            </listitem>
+        </varlistentry>
+        <varlistentry>
             <term condition="pot">ScintillaDirect2D</term>
             <listitem>
                 <para>
