@@ -262,7 +262,7 @@ public:
     *
     * @param dirName The directory to search in.
     */
-	CDirFileEnum(const CString& dirName);
+   CDirFileEnum(const CString& dirName);
 
    /**
     * Destructor.  Frees all resources.
