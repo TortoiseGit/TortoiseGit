@@ -39,7 +39,7 @@ styled systems and older windows versions (without themes).
 @author Sven Wiegand
 */
 class /*AFX_EXT_CLASS*/ CPropPageFrameDefault : public CWnd,
-                                            public CPropPageFrame
+											public CPropPageFrame
 {
 // construction/destruction
 public:

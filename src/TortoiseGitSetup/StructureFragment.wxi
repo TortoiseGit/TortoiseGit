@@ -535,7 +535,7 @@
 					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidSearchFolderGit)\TopViews\{bd6ab8cf-c0fd-4d50-bc73-7aad9b067958}" Name="LogicalViewMode" Value="5" Type="integer" />
 
 					<!-- no need to create these on x64 in the Wow6432Node too: these are only used by the explorer, and that one is 64-bit. If
-					     a user really starts the 32-bit explorer on win64 and these buttons aren't there, it won't be that bad -->
+						 a user really starts the 32-bit explorer on win64 and these buttons aren't there, it won't be that bad -->
 					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\0\$(var.GuidFolderTypeCmd0)" />
 					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\0\$(var.GuidFolderTypeCmd0)" Name="Icon" Value="[INSTALLDIR]bin\TortoiseGitProc.exe,-123" Type="string" />
 					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\0\$(var.GuidFolderTypeCmd0)" Name="Title" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-122" Type="string" />
@@ -781,12 +781,12 @@
 					</Component>
 
 					<Component Id="C__TortoiseGitTools" Guid="$(var.GuidTortoiseGitTools)" Win64="$(var.Win64YesNo)">
-            <?if $(var.Platform) = "x86" ?>
+						<?if $(var.Platform) = "x86" ?>
 						<File Id="F__TortoisePlinkold" Name="TortoisePlink.exe" DiskId="1" Source="..\..\ext\putty\TortoisePlink-x86.exe" />
-            <?endif ?>
-            <?if $(var.Platform) = "x64" ?>
+						<?endif ?>
+						<?if $(var.Platform) = "x64" ?>
 						<File Id="F__TortoisePlinkold" Name="TortoisePlink.exe" DiskId="1" Source="..\..\ext\putty\TortoisePlink-x64.exe" />
-            <?endif ?>
+						<?endif ?>
 						<File Id="F__TortoisePlink" Name="TortoiseGitPlink.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGitPlink.exe" />
 						<File Id="F__PuttyGen" Name="puttygen.exe" DiskId="1" Source="..\..\ext\putty\puttygen.exe" />
 						<File Id="F__pageant" Name="pageant.exe" DiskId="1" Source="..\..\ext\putty\pageant.exe" />
@@ -945,7 +945,7 @@
 					<Directory Id='TortoioseOverlays' Name='TortoiseOverlays'>
 						<Directory Id="D__icons" Name="icons">
 							<Directory Id="D__iconscvsclassic" Name="CVSClassic" >
-							 	<Component Id="C__iconscvsclassic" Guid="$(var.GuidIconsCVSClassic)" Win64="$(var.Win64YesNo)">
+								<Component Id="C__iconscvsclassic" Guid="$(var.GuidIconsCVSClassic)" Win64="$(var.Win64YesNo)">
 									<File Id="F__CVSClassicConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\CVSClassic\ConflictIcon.ico" KeyPath="yes" />
 									<File Id="F__CVSClassicInSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\CVSClassic\NormalIcon.ico" />
 									<File Id="F__CVSClassicModifiedIcon" Name="ModifiedIcon.ico" DiskId="1" Source="..\Resources\Icons\CVSClassic\ModifiedIcon.ico" />
@@ -959,7 +959,7 @@
 							</Directory>
 
 							<Directory Id="D__iconsmodern" Name="Modern" >
-							 	<Component Id="C__iconsmodern" Guid="$(var.GuidIconsModern)" Win64="$(var.Win64YesNo)">
+								<Component Id="C__iconsmodern" Guid="$(var.GuidIconsModern)" Win64="$(var.Win64YesNo)">
 									<File Id="F__ModernConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\Modern\ConflictIcon.ico" KeyPath="yes" />
 									<File Id="F__ModernInSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\Modern\NormalIcon.ico" />
 									<File Id="F__ModernModifiedIcon" Name="ModifiedIcon.ico" DiskId="1" Source="..\Resources\Icons\Modern\ModifiedIcon.ico" />

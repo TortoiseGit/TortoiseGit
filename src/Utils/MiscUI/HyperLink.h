@@ -25,11 +25,11 @@
 class CHyperLink : public CStatic
 {
 public:
-    CHyperLink();
-    virtual ~CHyperLink();
+	CHyperLink();
+	virtual ~CHyperLink();
 
 public:
-    enum UnderLineOptions
+	enum UnderLineOptions
 	{
 		ulHover = -1,
 		ulNone = 0,
@@ -37,44 +37,44 @@ public:
 	};
 
 public:
-    void		SetURL(CString strURL);
-    CString		GetURL() const;
+	void		SetURL(CString strURL);
+	CString		GetURL() const;
 
-    void		SetColors(COLORREF crLinkColor, COLORREF crHoverColor = -1);
-    COLORREF	GetLinkColor() const;
-    COLORREF	GetHoverColor() const;
+	void		SetColors(COLORREF crLinkColor, COLORREF crHoverColor = -1);
+	COLORREF	GetLinkColor() const;
+	COLORREF	GetHoverColor() const;
 
-    void		SetUnderline(int nUnderline = ulHover);
-    int			GetUnderline() const;
+	void		SetUnderline(int nUnderline = ulHover);
+	int			GetUnderline() const;
 
 public:
-    virtual BOOL PreTranslateMessage(MSG* pMsg);
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	virtual BOOL DestroyWindow();
 protected:
-    virtual void PreSubclassWindow();
+	virtual void PreSubclassWindow();
 
 protected:
-    HINSTANCE	GotoURL(LPCTSTR url);
-    void		SetDefaultCursor();
+	HINSTANCE	GotoURL(LPCTSTR url);
+	void		SetDefaultCursor();
 
 protected:
-    COLORREF	m_crLinkColor;			///< Hyperlink color
-    COLORREF	m_crHoverColor;			///< Hover color
-    BOOL		m_bOverControl;			///< cursor over control?
-    int			m_nUnderline;			///< underline hyperlink?
-    CString		m_strURL;				///< hyperlink URL
-    CFont		m_UnderlineFont;		///< Font for underline display
-    CFont		m_StdFont;				///< Standard font
-    HCURSOR		m_hLinkCursor;			///< Cursor for hyperlink
-    CToolTipCtrl m_ToolTip;				///< The tooltip
-    UINT		m_nTimerID;
+	COLORREF	m_crLinkColor;			///< Hyperlink color
+	COLORREF	m_crHoverColor;			///< Hover color
+	BOOL		m_bOverControl;			///< cursor over control?
+	int			m_nUnderline;			///< underline hyperlink?
+	CString		m_strURL;				///< hyperlink URL
+	CFont		m_UnderlineFont;		///< Font for underline display
+	CFont		m_StdFont;				///< Standard font
+	HCURSOR		m_hLinkCursor;			///< Cursor for hyperlink
+	CToolTipCtrl m_ToolTip;				///< The tooltip
+	UINT		m_nTimerID;
 
 protected:
-    afx_msg HBRUSH CtlColor(CDC* pDC, UINT nCtlColor);
-    afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
-    afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+	afx_msg HBRUSH CtlColor(CDC* pDC, UINT nCtlColor);
+	afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
+	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
-    afx_msg void OnClicked();
-    DECLARE_MESSAGE_MAP()
+	afx_msg void OnClicked();
+	DECLARE_MESSAGE_MAP()
 };

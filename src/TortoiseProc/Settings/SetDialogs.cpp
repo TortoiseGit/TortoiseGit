@@ -190,10 +190,10 @@ BOOL CSetDialogs::OnApply()
 
 	Store (m_bShortDateFormat, m_regShortDateFormat);
 	Store (m_bRelativeTimes, m_regRelativeTimes);
-    Store (m_bUseSystemLocaleForDates, m_regUseSystemLocaleForDates);
+	Store (m_bUseSystemLocaleForDates, m_regUseSystemLocaleForDates);
 
-    Store (m_sFontName, m_regFontName);
-    Store (m_dwFontSize, m_regFontSize);
+	Store (m_sFontName, m_regFontName);
+	Store (m_dwFontSize, m_regFontSize);
 	Store (m_bDiffByDoubleClick, m_regDiffByDoubleClick);
 	Store (m_bAbbreviateRenamings, m_regAbbreviateRenamings);
 	Store (m_bSymbolizeRefNames, m_regSymbolizeRefNames);
@@ -202,6 +202,6 @@ BOOL CSetDialogs::OnApply()
 	Store (m_GravatarUrl, m_regGravatarUrl);
 	Store (m_bDrawBranchesTagsOnRightSide, m_regDrawBranchesTagsOnRightSide);
 
-    SetModified(FALSE);
+	SetModified(FALSE);
 	return ISettingsPropPage::OnApply();
 }

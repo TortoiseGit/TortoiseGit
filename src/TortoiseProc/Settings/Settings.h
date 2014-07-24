@@ -88,8 +88,8 @@ private:
 	CSetDialogs2 *						m_pDialogsPage2;
 	CSetDialogs3 *						m_pDialogsPage3;
 	CSettingsColors *					m_pColorsPage;
-    CSettingsColors2 *					m_pColorsPage2;
-    CSettingsColors3 *					m_pColorsPage3;
+	CSettingsColors2 *					m_pColorsPage2;
+	CSettingsColors3 *					m_pColorsPage3;
 	CSetSavedDataPage *					m_pSavedPage;
 	CSetHooks *							m_pHooksPage;
 	CSetBugTraq *						m_pBugTraqPage;

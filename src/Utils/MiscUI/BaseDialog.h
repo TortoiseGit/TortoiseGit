@@ -30,7 +30,7 @@ class CDialog
 {
 public:
 	INT_PTR DoModal(HINSTANCE hInstance, int resID, HWND hWndParent);
-    HWND    Create(HINSTANCE hInstance, int resID, HWND hWndParent);
+	HWND    Create(HINSTANCE hInstance, int resID, HWND hWndParent);
 
 	virtual LRESULT CALLBACK DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam) = 0;
 

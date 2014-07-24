@@ -212,11 +212,11 @@ BOOL CSettingsTBlame::OnApply()
 	else
 		m_sFontName = m_regFontName;
 
-    Store ((m_cNewLinesColor.GetColor() == -1 ? m_cNewLinesColor.GetAutomaticColor() : m_cNewLinesColor.GetColor()), m_regNewLinesColor);
-    Store ((m_cOldLinesColor.GetColor() == -1 ? m_cOldLinesColor.GetAutomaticColor() : m_cOldLinesColor.GetColor()), m_regOldLinesColor);
-    Store ((LPCTSTR)m_sFontName, m_regFontName);
-    Store (m_dwFontSize, m_regFontSize);
-    Store (m_dwTabSize, m_regTabSize);
+	Store ((m_cNewLinesColor.GetColor() == -1 ? m_cNewLinesColor.GetAutomaticColor() : m_cNewLinesColor.GetColor()), m_regNewLinesColor);
+	Store ((m_cOldLinesColor.GetColor() == -1 ? m_cOldLinesColor.GetAutomaticColor() : m_cOldLinesColor.GetColor()), m_regOldLinesColor);
+	Store ((LPCTSTR)m_sFontName, m_regFontName);
+	Store (m_dwFontSize, m_regFontSize);
+	Store (m_dwTabSize, m_regTabSize);
 	Store (m_dwDetectMovedOrCopiedLines, m_regDetectMovedOrCopiedLines);
 	Store (m_dwDetectMovedOrCopiedLinesNumCharactersWithinFile, m_regDetectMovedOrCopiedLinesNumCharactersWithinFile);
 	Store (m_dwDetectMovedOrCopiedLinesNumCharactersFromFiles, m_regDetectMovedOrCopiedLinesNumCharactersFromFiles);
@@ -224,7 +224,7 @@ BOOL CSettingsTBlame::OnApply()
 	Store (m_bShowCompleteLog, m_regShowCompleteLog);
 	Store (m_bFollowRenames, m_regFollowRenames);
 
-    SetModified(FALSE);
+	SetModified(FALSE);
 	return ISettingsPropPage::OnApply();
 }
 
