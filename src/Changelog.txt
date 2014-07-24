@@ -6,6 +6,7 @@ Released: unreleased
  * Fixed issue #1605: Add TortoiseGit start and pre commit hooks
  * Fixed issue #2170: Please add interface to "git svn log -v"
  * Fixed issue #1787: auto-complete label when writing commit message
+ * Fixed issue #2241: Cleanup: result window of dry run should offer to "really remove"
 
 == Bug Fixes ==
  * Fixed issue #2216: Add fails with message: libgit2: "failed to parse 'warn' as boolean"

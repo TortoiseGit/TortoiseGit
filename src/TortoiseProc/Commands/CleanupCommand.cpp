@@ -119,49 +119,49 @@ bool CleanupCommand::Execute()
 	{
 		bool quotepath = g_Git.GetConfigValueBool(_T("core.quotepath"));
 
-		CString cmd;
-		cmd.Format(_T("git.exe clean"));
-		if (dlg.m_bDryRun || !dlg.m_bNoRecycleBin)
-			cmd += _T(" -n ");
-		if(dlg.m_bDir)
-			cmd += _T(" -d ");
-		switch(dlg.m_CleanType)
+		while (true)
 		{
-		case 0:
-			cmd += _T(" -fx");
-			break;
-		case 1:
-			cmd += _T(" -f");
-			break;
-		case 2:
-			cmd += _T(" -fX");
-			break;
-		}
-
-		STRING_VECTOR submoduleList;
-		SubmodulePayload payload(submoduleList);
-		if (dlg.m_bSubmodules)
-		{
-			payload.basePath = CTGitPath(g_Git.m_CurrentDir).GetGitPathString();
-			if (pathList.GetCount() != 1 || pathList.GetCount() == 1 && !pathList[0].IsEmpty())
+			CString cmd;
+			cmd.Format(_T("git.exe clean"));
+			if (dlg.m_bDryRun || !dlg.m_bNoRecycleBin)
+				cmd += _T(" -n ");
+			if (dlg.m_bDir)
+				cmd += _T(" -d ");
+			switch (dlg.m_CleanType)
 			{
-				for (int i = 0; i < pathList.GetCount(); ++i)
-				{
-					CString path;
-					if (pathList[i].IsDirectory())
-						payload.prefixList.push_back(pathList[i].GetGitPathString());
-					else
-						payload.prefixList.push_back(pathList[i].GetContainingDirectory().GetGitPathString());
-				}
+			case 0:
+				cmd += _T(" -fx");
+				break;
+			case 1:
+				cmd += _T(" -f");
+				break;
+			case 2:
+				cmd += _T(" -fX");
+				break;
 			}
-			if (!GetSubmodulePathList(payload))
-				return FALSE;
-			std::sort(submoduleList.begin(), submoduleList.end());
-		}
 
-		if (dlg.m_bDryRun || dlg.m_bNoRecycleBin)
-		{
-			while (true)
+			STRING_VECTOR submoduleList;
+			SubmodulePayload payload(submoduleList);
+			if (dlg.m_bSubmodules)
+			{
+				payload.basePath = CTGitPath(g_Git.m_CurrentDir).GetGitPathString();
+				if (pathList.GetCount() != 1 || pathList.GetCount() == 1 && !pathList[0].IsEmpty())
+				{
+					for (int i = 0; i < pathList.GetCount(); ++i)
+					{
+						CString path;
+						if (pathList[i].IsDirectory())
+							payload.prefixList.push_back(pathList[i].GetGitPathString());
+						else
+							payload.prefixList.push_back(pathList[i].GetContainingDirectory().GetGitPathString());
+					}
+				}
+				if (!GetSubmodulePathList(payload))
+					return FALSE;
+				std::sort(submoduleList.begin(), submoduleList.end());
+			}
+
+			if (dlg.m_bDryRun || dlg.m_bNoRecycleBin)
 			{
 				CProgressDlg progress;
 				for (int i = 0; i < this->pathList.GetCount(); ++i)
@@ -186,81 +186,110 @@ bool CleanupCommand::Execute()
 				}
 
 				INT_PTR idRetry = -1;
+				INT_PTR idDeleteRecycle = -1;
+				INT_PTR idDeleteNoRecycle = -1;
 				if (!dlg.m_bDryRun)
 					idRetry = progress.m_PostFailCmdList.Add(CString(MAKEINTRESOURCE(IDS_MSGBOX_RETRY)));
+				else
+				{
+					if (dlg.m_bNoRecycleBin)
+					{
+						idDeleteNoRecycle = progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_CLEAN_NO_RECYCLEBIN)));
+						idDeleteRecycle = progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_CLEAN_TO_RECYCLEBIN)));
+					}
+					else
+					{
+						idDeleteRecycle = progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_CLEAN_TO_RECYCLEBIN)));
+						idDeleteNoRecycle = progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_CLEAN_NO_RECYCLEBIN)));
+					}
+				}
+
 				INT_PTR result = progress.DoModal();
 				if (result == IDOK)
 					return TRUE;
 				if (progress.m_GitStatus && result == IDC_PROGRESS_BUTTON1 + idRetry)
 					continue;
+				if (!progress.m_GitStatus && result == IDC_PROGRESS_BUTTON1 + idDeleteRecycle)
+				{
+					dlg.m_bDryRun = FALSE;
+					dlg.m_bNoRecycleBin = FALSE;
+					continue;
+				}
+				if (!progress.m_GitStatus && result == IDC_PROGRESS_BUTTON1 + idDeleteNoRecycle)
+				{
+					dlg.m_bDryRun = FALSE;
+					dlg.m_bNoRecycleBin = TRUE;
+					continue;
+				}
 				break;
 			}
-		}
-		else
-		{
-			CSysProgressDlg sysProgressDlg;
-			sysProgressDlg.SetAnimation(IDR_CLEANUPANI);
-			sysProgressDlg.SetTitle(CString(MAKEINTRESOURCE(IDS_APPNAME)));
-			sysProgressDlg.SetLine(1, CString(MAKEINTRESOURCE(IDS_PROC_CLEANUP_INFO1)));
-			sysProgressDlg.SetLine(2, CString(MAKEINTRESOURCE(IDS_PROGRESSWAIT)));
-			sysProgressDlg.SetShowProgressBar(false);
-			sysProgressDlg.ShowModeless((HWND)NULL, true);
-
-			CTGitPathList delList;
-			for (size_t i = 0; i <= submoduleList.size(); ++i)
+			else
 			{
-				CGit git;
-				CGit *pGit;
-				if (i == 0)
-					pGit = &g_Git;
-				else
-				{
-					git.m_CurrentDir = submoduleList[i - 1];
-					pGit = &git;
-				}
-				CString cmdout, cmdouterr;
-				if (pGit->Run(cmd, &cmdout, &cmdouterr, CP_UTF8))
-				{
-					MessageBox(nullptr, cmdouterr, _T("TortoiseGit"), MB_ICONERROR);
-					return FALSE;
-				}
+				CSysProgressDlg sysProgressDlg;
+				sysProgressDlg.SetAnimation(IDR_CLEANUPANI);
+				sysProgressDlg.SetTitle(CString(MAKEINTRESOURCE(IDS_APPNAME)));
+				sysProgressDlg.SetLine(1, CString(MAKEINTRESOURCE(IDS_PROC_CLEANUP_INFO1)));
+				sysProgressDlg.SetLine(2, CString(MAKEINTRESOURCE(IDS_PROGRESSWAIT)));
+				sysProgressDlg.SetShowProgressBar(false);
+				sysProgressDlg.ShowModeless((HWND)NULL, true);
 
-				if (sysProgressDlg.HasUserCancelled())
+				CTGitPathList delList;
+				for (size_t i = 0; i <= submoduleList.size(); ++i)
 				{
-					CMessageBox::Show(nullptr, IDS_SVN_USERCANCELLED, IDS_APPNAME, MB_OK);
-					return FALSE;
-				}
-
-				int pos = 0;
-				CString token = cmdout.Tokenize(_T("\n"), pos);
-				while (!token.IsEmpty())
-				{
-					if (token.Mid(0, 13) == _T("Would remove "))
+					CGit git;
+					CGit *pGit;
+					if (i == 0)
+						pGit = &g_Git;
+					else
 					{
-						CString tempPath = token.Mid(13).TrimRight();
-						if (quotepath)
-						{
-							tempPath = UnescapeQuotePath(tempPath.Trim(_T('"')));
-						}
-						if (i == 0)
-							delList.AddPath(CTGitPath(tempPath));
-						else
-							delList.AddPath(CTGitPath(submoduleList[i - 1] + "/" + tempPath));
+						git.m_CurrentDir = submoduleList[i - 1];
+						pGit = &git;
+					}
+					CString cmdout, cmdouterr;
+					if (pGit->Run(cmd, &cmdout, &cmdouterr, CP_UTF8))
+					{
+						MessageBox(nullptr, cmdouterr, _T("TortoiseGit"), MB_ICONERROR);
+						return FALSE;
 					}
 
-					token = cmdout.Tokenize(_T("\n"), pos);
+					if (sysProgressDlg.HasUserCancelled())
+					{
+						CMessageBox::Show(nullptr, IDS_SVN_USERCANCELLED, IDS_APPNAME, MB_OK);
+						return FALSE;
+					}
+
+					int pos = 0;
+					CString token = cmdout.Tokenize(_T("\n"), pos);
+					while (!token.IsEmpty())
+					{
+						if (token.Mid(0, 13) == _T("Would remove "))
+						{
+							CString tempPath = token.Mid(13).TrimRight();
+							if (quotepath)
+							{
+								tempPath = UnescapeQuotePath(tempPath.Trim(_T('"')));
+							}
+							if (i == 0)
+								delList.AddPath(CTGitPath(tempPath));
+							else
+								delList.AddPath(CTGitPath(submoduleList[i - 1] + "/" + tempPath));
+						}
+
+						token = cmdout.Tokenize(_T("\n"), pos);
+					}
+
+					if (sysProgressDlg.HasUserCancelled())
+					{
+						CMessageBox::Show(nullptr, IDS_SVN_USERCANCELLED, IDS_APPNAME, MB_OK);
+						return FALSE;
+					}
 				}
 
-				if (sysProgressDlg.HasUserCancelled())
-				{
-					CMessageBox::Show(nullptr, IDS_SVN_USERCANCELLED, IDS_APPNAME, MB_OK);
-					return FALSE;
-				}
+				delList.DeleteAllFiles(true, false);
+
+				sysProgressDlg.Stop();
+				break;
 			}
-
-			delList.DeleteAllFiles(true, false);
-
-			sysProgressDlg.Stop();
 		}
 	}
 #if 0

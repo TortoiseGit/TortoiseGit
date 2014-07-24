@@ -2550,6 +2550,14 @@ msgstr ""
 msgid "Clean Type"
 msgstr ""
 
+#. Resource IDs: (96)
+msgid "Clean permanently"
+msgstr ""
+
+#. Resource IDs: (96)
+msgid "Clean to recycle bin"
+msgstr ""
+
 #. Resource IDs: (76)
 msgid "Clean up stale remote branches"
 msgstr ""
