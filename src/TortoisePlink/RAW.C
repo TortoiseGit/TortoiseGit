@@ -37,7 +37,7 @@ static void c_write(Raw raw, char *buf, int len)
 }
 
 static void raw_log(Plug plug, int type, SockAddr addr, int port,
-		    const char *error_msg, int error_code)
+                    const char *error_msg, int error_code)
 {
     Raw raw = (Raw) plug;
     char addrbuf[256], *msg;
@@ -45,9 +45,9 @@ static void raw_log(Plug plug, int type, SockAddr addr, int port,
     sk_getaddr(addr, addrbuf, lenof(addrbuf));
 
     if (type == 0)
-	msg = dupprintf("Connecting to %s port %d", addrbuf, port);
+        msg = dupprintf("Connecting to %s port %d", addrbuf, port);
     else
-	msg = dupprintf("Failed to connect to %s: %s", addrbuf, error_msg);
+        msg = dupprintf("Failed to connect to %s: %s", addrbuf, error_msg);
 
     logevent(raw->frontend, msg);
     sfree(msg);
@@ -69,7 +69,7 @@ static void raw_check_close(Raw raw)
 }
 
 static int raw_closing(Plug plug, const char *error_msg, int error_code,
-		       int calling_back)
+                       int calling_back)
 {
     Raw raw = (Raw) plug;
 
@@ -124,15 +124,15 @@ static void raw_sent(Plug plug, int bufsize)
  * freed by the caller.
  */
 static const char *raw_init(void *frontend_handle, void **backend_handle,
-			    Conf *conf,
-			    char *host, int port, char **realhost, int nodelay,
-			    int keepalive)
+                            Conf *conf,
+                            char *host, int port, char **realhost, int nodelay,
+                            int keepalive)
 {
     static const struct plug_function_table fn_table = {
-	raw_log,
-	raw_closing,
-	raw_receive,
-	raw_sent
+        raw_log,
+        raw_closing,
+        raw_receive,
+        raw_sent
     };
     SockAddr addr;
     const char *err;
@@ -154,46 +154,46 @@ static const char *raw_init(void *frontend_handle, void **backend_handle,
      * Try to find host.
      */
     {
-	char *buf;
-	buf = dupprintf("Looking up host \"%s\"%s", host,
-			(addressfamily == ADDRTYPE_IPV4 ? " (IPv4)" :
-			 (addressfamily == ADDRTYPE_IPV6 ? " (IPv6)" :
-			  "")));
-	logevent(raw->frontend, buf);
-	sfree(buf);
+        char *buf;
+        buf = dupprintf("Looking up host \"%s\"%s", host,
+                        (addressfamily == ADDRTYPE_IPV4 ? " (IPv4)" :
+                         (addressfamily == ADDRTYPE_IPV6 ? " (IPv6)" :
+                          "")));
+        logevent(raw->frontend, buf);
+        sfree(buf);
     }
     addr = name_lookup(host, port, realhost, conf, addressfamily);
     if ((err = sk_addr_error(addr)) != NULL) {
-	sk_addr_free(addr);
-	return err;
+        sk_addr_free(addr);
+        return err;
     }
 
     if (port < 0)
-	port = 23;		       /* default telnet port */
+        port = 23;                   /* default telnet port */
 
     /*
      * Open socket.
      */
     raw->s = new_connection(addr, *realhost, port, 0, 1, nodelay, keepalive,
-			    (Plug) raw, conf);
+                            (Plug) raw, conf);
     if ((err = sk_socket_error(raw->s)) != NULL)
-	return err;
+        return err;
 
     loghost = conf_get_str(conf, CONF_loghost);
     if (*loghost) {
-	char *colon;
+        char *colon;
 
-	sfree(*realhost);
-	*realhost = dupstr(loghost);
-	colon = strrchr(*realhost, ':');
-	if (colon) {
-	    /*
-	     * FIXME: if we ever update this aspect of ssh.c for
-	     * IPv6 literal management, this should change in line
-	     * with it.
-	     */
-	    *colon++ = '\0';
-	}
+        sfree(*realhost);
+        *realhost = dupstr(loghost);
+        colon = strrchr(*realhost, ':');
+        if (colon) {
+            /*
+             * FIXME: if we ever update this aspect of ssh.c for
+             * IPv6 literal management, this should change in line
+             * with it.
+             */
+            *colon++ = '\0';
+        }
     }
 
     return NULL;
@@ -204,7 +204,7 @@ static void raw_free(void *handle)
     Raw raw = (Raw) handle;
 
     if (raw->s)
-	sk_close(raw->s);
+        sk_close(raw->s);
     sfree(raw);
 }
 
@@ -223,7 +223,7 @@ static int raw_send(void *handle, char *buf, int len)
     Raw raw = (Raw) handle;
 
     if (raw->s == NULL)
-	return 0;
+        return 0;
 
     raw->bufsize = sk_write(raw->s, buf, len);
 
@@ -292,7 +292,7 @@ static void raw_unthrottle(void *handle, int backlog)
 static int raw_ldisc(void *handle, int option)
 {
     if (option == LD_EDIT || option == LD_ECHO)
-	return 1;
+        return 1;
     return 0;
 }
 

@@ -44,11 +44,11 @@ void SHATransform(word32 * digest, word32 * block)
 #endif
 
     for (t = 0; t < 16; t++)
-	w[t] = block[t];
+        w[t] = block[t];
 
     for (t = 16; t < 80; t++) {
-	word32 tmp = w[t - 3] ^ w[t - 8] ^ w[t - 14] ^ w[t - 16];
-	w[t] = rol(tmp, 1);
+        word32 tmp = w[t - 3] ^ w[t - 8] ^ w[t - 14] ^ w[t - 16];
+        w[t] = rol(tmp, 1);
     }
 
     a = digest[0];
@@ -58,39 +58,39 @@ void SHATransform(word32 * digest, word32 * block)
     e = digest[4];
 
     for (t = 0; t < 20; t++) {
-	word32 tmp =
-	    rol(a, 5) + ((b & c) | (d & ~b)) + e + w[t] + 0x5a827999;
-	e = d;
-	d = c;
-	c = rol(b, 30);
-	b = a;
-	a = tmp;
+        word32 tmp =
+            rol(a, 5) + ((b & c) | (d & ~b)) + e + w[t] + 0x5a827999;
+        e = d;
+        d = c;
+        c = rol(b, 30);
+        b = a;
+        a = tmp;
     }
     for (t = 20; t < 40; t++) {
-	word32 tmp = rol(a, 5) + (b ^ c ^ d) + e + w[t] + 0x6ed9eba1;
-	e = d;
-	d = c;
-	c = rol(b, 30);
-	b = a;
-	a = tmp;
+        word32 tmp = rol(a, 5) + (b ^ c ^ d) + e + w[t] + 0x6ed9eba1;
+        e = d;
+        d = c;
+        c = rol(b, 30);
+        b = a;
+        a = tmp;
     }
     for (t = 40; t < 60; t++) {
-	word32 tmp = rol(a,
-			 5) + ((b & c) | (b & d) | (c & d)) + e + w[t] +
-	    0x8f1bbcdc;
-	e = d;
-	d = c;
-	c = rol(b, 30);
-	b = a;
-	a = tmp;
+        word32 tmp = rol(a,
+                         5) + ((b & c) | (b & d) | (c & d)) + e + w[t] +
+            0x8f1bbcdc;
+        e = d;
+        d = c;
+        c = rol(b, 30);
+        b = a;
+        a = tmp;
     }
     for (t = 60; t < 80; t++) {
-	word32 tmp = rol(a, 5) + (b ^ c ^ d) + e + w[t] + 0xca62c1d6;
-	e = d;
-	d = c;
-	c = rol(b, 30);
-	b = a;
-	a = tmp;
+        word32 tmp = rol(a, 5) + (b ^ c ^ d) + e + w[t] + 0xca62c1d6;
+        e = d;
+        d = c;
+        c = rol(b, 30);
+        b = a;
+        a = tmp;
     }
 
     digest[0] += a;
@@ -140,32 +140,32 @@ void SHA_Bytes(SHA_State * s, const void *p, int len)
     s->lenhi += (s->lenlo < lenw);
 
     if (s->blkused && s->blkused + len < 64) {
-	/*
-	 * Trivial case: just add to the block.
-	 */
-	memcpy(s->block + s->blkused, q, len);
-	s->blkused += len;
+        /*
+         * Trivial case: just add to the block.
+         */
+        memcpy(s->block + s->blkused, q, len);
+        s->blkused += len;
     } else {
-	/*
-	 * We must complete and process at least one block.
-	 */
-	while (s->blkused + len >= 64) {
-	    memcpy(s->block + s->blkused, q, 64 - s->blkused);
-	    q += 64 - s->blkused;
-	    len -= 64 - s->blkused;
-	    /* Now process the block. Gather bytes big-endian into words */
-	    for (i = 0; i < 16; i++) {
-		wordblock[i] =
-		    (((uint32) s->block[i * 4 + 0]) << 24) |
-		    (((uint32) s->block[i * 4 + 1]) << 16) |
-		    (((uint32) s->block[i * 4 + 2]) << 8) |
-		    (((uint32) s->block[i * 4 + 3]) << 0);
-	    }
-	    SHATransform(s->h, wordblock);
-	    s->blkused = 0;
-	}
-	memcpy(s->block, q, len);
-	s->blkused = len;
+        /*
+         * We must complete and process at least one block.
+         */
+        while (s->blkused + len >= 64) {
+            memcpy(s->block + s->blkused, q, 64 - s->blkused);
+            q += 64 - s->blkused;
+            len -= 64 - s->blkused;
+            /* Now process the block. Gather bytes big-endian into words */
+            for (i = 0; i < 16; i++) {
+                wordblock[i] =
+                    (((uint32) s->block[i * 4 + 0]) << 24) |
+                    (((uint32) s->block[i * 4 + 1]) << 16) |
+                    (((uint32) s->block[i * 4 + 2]) << 8) |
+                    (((uint32) s->block[i * 4 + 3]) << 0);
+            }
+            SHATransform(s->h, wordblock);
+            s->blkused = 0;
+        }
+        memcpy(s->block, q, len);
+        s->blkused = len;
     }
 }
 
@@ -177,9 +177,9 @@ void SHA_Final(SHA_State * s, unsigned char *output)
     uint32 lenhi, lenlo;
 
     if (s->blkused >= 56)
-	pad = 56 + 64 - s->blkused;
+        pad = 56 + 64 - s->blkused;
     else
-	pad = 56 - s->blkused;
+        pad = 56 - s->blkused;
 
     lenhi = (s->lenhi << 3) | (s->lenlo >> (32 - 3));
     lenlo = (s->lenlo << 3);
@@ -200,10 +200,10 @@ void SHA_Final(SHA_State * s, unsigned char *output)
     SHA_Bytes(s, &c, 8);
 
     for (i = 0; i < 5; i++) {
-	output[i * 4] = (s->h[i] >> 24) & 0xFF;
-	output[i * 4 + 1] = (s->h[i] >> 16) & 0xFF;
-	output[i * 4 + 2] = (s->h[i] >> 8) & 0xFF;
-	output[i * 4 + 3] = (s->h[i]) & 0xFF;
+        output[i * 4] = (s->h[i] >> 24) & 0xFF;
+        output[i * 4 + 1] = (s->h[i] >> 16) & 0xFF;
+        output[i * 4 + 2] = (s->h[i] >> 8) & 0xFF;
+        output[i * 4 + 3] = (s->h[i]) & 0xFF;
     }
 }
 
@@ -271,13 +271,13 @@ static void sha1_key_internal(void *handle, unsigned char *key, int len)
 
     memset(foo, 0x36, 64);
     for (i = 0; i < len && i < 64; i++)
-	foo[i] ^= key[i];
+        foo[i] ^= key[i];
     SHA_Init(&keys[0]);
     SHA_Bytes(&keys[0], foo, 64);
 
     memset(foo, 0x5C, 64);
     for (i = 0; i < len && i < 64; i++)
-	foo[i] ^= key[i];
+        foo[i] ^= key[i];
     SHA_Init(&keys[1]);
     SHA_Bytes(&keys[1], foo, 64);
 
@@ -321,7 +321,7 @@ static void hmacsha1_genresult(void *handle, unsigned char *hmac)
 }
 
 static void sha1_do_hmac(void *handle, unsigned char *blk, int len,
-			 unsigned long seq, unsigned char *hmac)
+                         unsigned long seq, unsigned char *hmac)
 {
     unsigned char seqbuf[4];
 
@@ -333,7 +333,7 @@ static void sha1_do_hmac(void *handle, unsigned char *blk, int len,
 }
 
 static void sha1_generate(void *handle, unsigned char *blk, int len,
-			  unsigned long seq)
+                          unsigned long seq)
 {
     sha1_do_hmac(handle, blk, len, seq, blk + len);
 }
@@ -346,7 +346,7 @@ static int hmacsha1_verresult(void *handle, unsigned char const *hmac)
 }
 
 static int sha1_verify(void *handle, unsigned char *blk, int len,
-		       unsigned long seq)
+                       unsigned long seq)
 {
     unsigned char correct[20];
     sha1_do_hmac(handle, blk, len, seq, correct);
@@ -361,7 +361,7 @@ static void hmacsha1_96_genresult(void *handle, unsigned char *hmac)
 }
 
 static void sha1_96_generate(void *handle, unsigned char *blk, int len,
-			     unsigned long seq)
+                             unsigned long seq)
 {
     unsigned char full[20];
     sha1_do_hmac(handle, blk, len, seq, full);
@@ -376,7 +376,7 @@ static int hmacsha1_96_verresult(void *handle, unsigned char const *hmac)
 }
 
 static int sha1_96_verify(void *handle, unsigned char *blk, int len,
-		       unsigned long seq)
+                       unsigned long seq)
 {
     unsigned char correct[20];
     sha1_do_hmac(handle, blk, len, seq, correct);
@@ -384,7 +384,7 @@ static int sha1_96_verify(void *handle, unsigned char *blk, int len,
 }
 
 void hmac_sha1_simple(void *key, int keylen, void *data, int datalen,
-		      unsigned char *output) {
+                      unsigned char *output) {
     SHA_State states[2];
     unsigned char intermediate[20];
 

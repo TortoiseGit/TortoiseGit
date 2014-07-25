@@ -45,7 +45,7 @@ static void c_write(Rlogin rlogin, char *buf, int len)
 }
 
 static void rlogin_log(Plug plug, int type, SockAddr addr, int port,
-		       const char *error_msg, int error_code)
+                       const char *error_msg, int error_code)
 {
     Rlogin rlogin = (Rlogin) plug;
     char addrbuf[256], *msg;
@@ -53,16 +53,16 @@ static void rlogin_log(Plug plug, int type, SockAddr addr, int port,
     sk_getaddr(addr, addrbuf, lenof(addrbuf));
 
     if (type == 0)
-	msg = dupprintf("Connecting to %s port %d", addrbuf, port);
+        msg = dupprintf("Connecting to %s port %d", addrbuf, port);
     else
-	msg = dupprintf("Failed to connect to %s: %s", addrbuf, error_msg);
+        msg = dupprintf("Failed to connect to %s: %s", addrbuf, error_msg);
 
     logevent(rlogin->frontend, msg);
     sfree(msg);
 }
 
 static int rlogin_closing(Plug plug, const char *error_msg, int error_code,
-			  int calling_back)
+                          int calling_back)
 {
     Rlogin rlogin = (Rlogin) plug;
 
@@ -77,12 +77,12 @@ static int rlogin_closing(Plug plug, const char *error_msg, int error_code,
         rlogin->s = NULL;
         if (error_msg)
             rlogin->closed_on_socket_error = TRUE;
-	notify_remote_exit(rlogin->frontend);
+        notify_remote_exit(rlogin->frontend);
     }
     if (error_msg) {
-	/* A socket error has occurred. */
-	logevent(rlogin->frontend, error_msg);
-	connection_fatal(rlogin->frontend, "%s", error_msg);
+        /* A socket error has occurred. */
+        logevent(rlogin->frontend, error_msg);
+        connection_fatal(rlogin->frontend, "%s", error_msg);
     }				       /* Otherwise, the remote side closed the connection normally. */
     return 0;
 }
@@ -91,34 +91,34 @@ static int rlogin_receive(Plug plug, int urgent, char *data, int len)
 {
     Rlogin rlogin = (Rlogin) plug;
     if (urgent == 2) {
-	char c;
+        char c;
 
-	c = *data++;
-	len--;
-	if (c == '\x80') {
-	    rlogin->cansize = 1;
-	    rlogin_size(rlogin, rlogin->term_width, rlogin->term_height);
+        c = *data++;
+        len--;
+        if (c == '\x80') {
+            rlogin->cansize = 1;
+            rlogin_size(rlogin, rlogin->term_width, rlogin->term_height);
         }
-	/*
-	 * We should flush everything (aka Telnet SYNCH) if we see
-	 * 0x02, and we should turn off and on _local_ flow control
-	 * on 0x10 and 0x20 respectively. I'm not convinced it's
-	 * worth it...
-	 */
+        /*
+         * We should flush everything (aka Telnet SYNCH) if we see
+         * 0x02, and we should turn off and on _local_ flow control
+         * on 0x10 and 0x20 respectively. I'm not convinced it's
+         * worth it...
+         */
     } else {
-	/*
-	 * Main rlogin protocol. This is really simple: the first
-	 * byte is expected to be NULL and is ignored, and the rest
-	 * is printed.
-	 */
-	if (rlogin->firstbyte) {
-	    if (data[0] == '\0') {
-		data++;
-		len--;
-	    }
-	    rlogin->firstbyte = 0;
-	}
-	if (len > 0)
+        /*
+         * Main rlogin protocol. This is really simple: the first
+         * byte is expected to be NULL and is ignored, and the rest
+         * is printed.
+         */
+        if (rlogin->firstbyte) {
+            if (data[0] == '\0') {
+                data++;
+                len--;
+            }
+            rlogin->firstbyte = 0;
+        }
+        if (len > 0)
             c_write(rlogin, data, len);
     }
     return 1;
@@ -160,15 +160,15 @@ static void rlogin_startup(Rlogin rlogin, const char *ruser)
  * freed by the caller.
  */
 static const char *rlogin_init(void *frontend_handle, void **backend_handle,
-			       Conf *conf,
-			       char *host, int port, char **realhost,
-			       int nodelay, int keepalive)
+                               Conf *conf,
+                               char *host, int port, char **realhost,
+                               int nodelay, int keepalive)
 {
     static const struct plug_function_table fn_table = {
-	rlogin_log,
-	rlogin_closing,
-	rlogin_receive,
-	rlogin_sent
+        rlogin_log,
+        rlogin_closing,
+        rlogin_receive,
+        rlogin_sent
     };
     SockAddr addr;
     const char *err;
@@ -195,46 +195,46 @@ static const char *rlogin_init(void *frontend_handle, void **backend_handle,
      * Try to find host.
      */
     {
-	char *buf;
-	buf = dupprintf("Looking up host \"%s\"%s", host,
-			(addressfamily == ADDRTYPE_IPV4 ? " (IPv4)" :
-			 (addressfamily == ADDRTYPE_IPV6 ? " (IPv6)" :
-			  "")));
-	logevent(rlogin->frontend, buf);
-	sfree(buf);
+        char *buf;
+        buf = dupprintf("Looking up host \"%s\"%s", host,
+                        (addressfamily == ADDRTYPE_IPV4 ? " (IPv4)" :
+                         (addressfamily == ADDRTYPE_IPV6 ? " (IPv6)" :
+                          "")));
+        logevent(rlogin->frontend, buf);
+        sfree(buf);
     }
     addr = name_lookup(host, port, realhost, conf, addressfamily);
     if ((err = sk_addr_error(addr)) != NULL) {
-	sk_addr_free(addr);
-	return err;
+        sk_addr_free(addr);
+        return err;
     }
 
     if (port < 0)
-	port = 513;		       /* default rlogin port */
+        port = 513;                 /* default rlogin port */
 
     /*
      * Open socket.
      */
     rlogin->s = new_connection(addr, *realhost, port, 1, 0,
-			       nodelay, keepalive, (Plug) rlogin, conf);
+                               nodelay, keepalive, (Plug) rlogin, conf);
     if ((err = sk_socket_error(rlogin->s)) != NULL)
-	return err;
+        return err;
 
     loghost = conf_get_str(conf, CONF_loghost);
     if (*loghost) {
-	char *colon;
+        char *colon;
 
-	sfree(*realhost);
-	*realhost = dupstr(loghost);
-	colon = strrchr(*realhost, ':');
-	if (colon) {
-	    /*
-	     * FIXME: if we ever update this aspect of ssh.c for
-	     * IPv6 literal management, this should change in line
-	     * with it.
-	     */
-	    *colon++ = '\0';
-	}
+        sfree(*realhost);
+        *realhost = dupstr(loghost);
+        colon = strrchr(*realhost, ':');
+        if (colon) {
+            /*
+             * FIXME: if we ever update this aspect of ssh.c for
+             * IPv6 literal management, this should change in line
+             * with it.
+             */
+            *colon++ = '\0';
+        }
     }
 
     /*
@@ -269,7 +269,7 @@ static void rlogin_free(void *handle)
     if (rlogin->prompt)
         free_prompts(rlogin->prompt);
     if (rlogin->s)
-	sk_close(rlogin->s);
+        sk_close(rlogin->s);
     conf_free(rlogin->conf);
     sfree(rlogin);
 }
@@ -289,7 +289,7 @@ static int rlogin_send(void *handle, char *buf, int len)
     Rlogin rlogin = (Rlogin) handle;
 
     if (rlogin->s == NULL)
-	return 0;
+        return 0;
 
     if (rlogin->prompt) {
         /*
@@ -331,7 +331,7 @@ static void rlogin_size(void *handle, int width, int height)
     rlogin->term_height = height;
 
     if (rlogin->s == NULL || !rlogin->cansize)
-	return;
+        return;
 
     b[6] = rlogin->term_width >> 8;
     b[7] = rlogin->term_width & 0xFF;

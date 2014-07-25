@@ -13,9 +13,9 @@
  * character sets known to this library.
  */
 typedef enum {
-    CS_NONE,			       /* used for reporting errors, etc */
+    CS_NONE,                       /* used for reporting errors, etc */
     CS_ISO8859_1,
-    CS_ISO8859_1_X11,		       /* X font encoding with VT100 glyphs */
+    CS_ISO8859_1_X11,              /* X font encoding with VT100 glyphs */
     CS_ISO8859_2,
     CS_ISO8859_3,
     CS_ISO8859_4,
@@ -101,8 +101,8 @@ typedef struct {
 
 int charset_to_unicode(const char **input, int *inlen,
                        wchar_t *output, int outlen,
-		       int charset, charset_state *state,
-		       const wchar_t *errstr, int errlen);
+                       int charset, charset_state *state,
+                       const wchar_t *errstr, int errlen);
 
 /*
  * Routine to convert Unicode to an MB/SB character set.
@@ -125,8 +125,8 @@ int charset_to_unicode(const char **input, int *inlen,
 
 int charset_from_unicode(const wchar_t **input, int *inlen,
                          char *output, int outlen,
-			 int charset, charset_state *state,
-			 const char *errstr, int errlen);
+                         int charset, charset_state *state,
+                         const char *errstr, int errlen);
 
 /*
  * Convert X11 encoding names to and from our charset identifiers.
@@ -152,6 +152,6 @@ int charset_localenc_nth(int n);
  * Convert Mac OS script/region/font to our charset identifiers.
  */
 int charset_from_macenc(int script, int region, int sysvers,
-			const char *fontname);
+                        const char *fontname);
 
 #endif /* charset_charset_h */

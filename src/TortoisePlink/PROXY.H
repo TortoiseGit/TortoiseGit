@@ -36,14 +36,14 @@ struct Socket_proxy_tag {
 #define PROXY_STATE_ACTIVE  0
 
     int state; /* proxy states greater than 0 are implementation
-		* dependent, but represent various stages/states
-		* of the initialization/setup/negotiation with the
-		* proxy server.
-		*/
+                * dependent, but represent various stages/states
+                * of the initialization/setup/negotiation with the
+                * proxy server.
+                */
     int freeze; /* should we freeze the underlying socket when
-		 * we are done with the proxy negotiation? this
-		 * simply caches the value of sk_set_frozen calls.
-		 */
+                 * we are done with the proxy negotiation? this
+                 * simply caches the value of sk_set_frozen calls.
+                 */
 
 #define PROXY_CHANGE_NEW      -1
 #define PROXY_CHANGE_CLOSING   0

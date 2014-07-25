@@ -58,7 +58,7 @@ void SHA256_Block(SHA256_State *s, uint32 *block) {
         w[t] = block[t];
 
     for (t = 16; t < 64; t++)
-	w[t] = smallsigma1(w[t-2]) + w[t-7] + smallsigma0(w[t-15]) + w[t-16];
+        w[t] = smallsigma1(w[t-2]) + w[t-7] + smallsigma0(w[t-15]) + w[t-16];
 
     a = s->h[0]; b = s->h[1]; c = s->h[2]; d = s->h[3];
     e = s->h[4]; f = s->h[5]; g = s->h[6]; h = s->h[7];
@@ -67,18 +67,18 @@ void SHA256_Block(SHA256_State *s, uint32 *block) {
         uint32 t1, t2;
 
 #define ROUND(j,a,b,c,d,e,f,g,h) \
-	t1 = h + bigsigma1(e) + Ch(e,f,g) + k[j] + w[j]; \
-	t2 = bigsigma0(a) + Maj(a,b,c); \
+        t1 = h + bigsigma1(e) + Ch(e,f,g) + k[j] + w[j]; \
+        t2 = bigsigma0(a) + Maj(a,b,c); \
         d = d + t1; h = t1 + t2;
 
-	ROUND(t+0, a,b,c,d,e,f,g,h);
-	ROUND(t+1, h,a,b,c,d,e,f,g);
-	ROUND(t+2, g,h,a,b,c,d,e,f);
-	ROUND(t+3, f,g,h,a,b,c,d,e);
-	ROUND(t+4, e,f,g,h,a,b,c,d);
-	ROUND(t+5, d,e,f,g,h,a,b,c);
-	ROUND(t+6, c,d,e,f,g,h,a,b);
-	ROUND(t+7, b,c,d,e,f,g,h,a);
+        ROUND(t+0, a,b,c,d,e,f,g,h);
+        ROUND(t+1, h,a,b,c,d,e,f,g);
+        ROUND(t+2, g,h,a,b,c,d,e,f);
+        ROUND(t+3, f,g,h,a,b,c,d,e);
+        ROUND(t+4, e,f,g,h,a,b,c,d);
+        ROUND(t+5, d,e,f,g,h,a,b,c);
+        ROUND(t+6, c,d,e,f,g,h,a,b);
+        ROUND(t+7, b,c,d,e,f,g,h,a);
     }
 
     s->h[0] += a; s->h[1] += b; s->h[2] += c; s->h[3] += d;
@@ -171,10 +171,10 @@ void SHA256_Final(SHA256_State *s, unsigned char *digest) {
     SHA256_Bytes(s, &c, 8);
 
     for (i = 0; i < 8; i++) {
-	digest[i*4+0] = (s->h[i] >> 24) & 0xFF;
-	digest[i*4+1] = (s->h[i] >> 16) & 0xFF;
-	digest[i*4+2] = (s->h[i] >>  8) & 0xFF;
-	digest[i*4+3] = (s->h[i] >>  0) & 0xFF;
+        digest[i*4+0] = (s->h[i] >> 24) & 0xFF;
+        digest[i*4+1] = (s->h[i] >> 16) & 0xFF;
+        digest[i*4+2] = (s->h[i] >>  8) & 0xFF;
+        digest[i*4+3] = (s->h[i] >>  0) & 0xFF;
     }
 }
 
@@ -241,13 +241,13 @@ static void sha256_key_internal(void *handle, unsigned char *key, int len)
 
     memset(foo, 0x36, 64);
     for (i = 0; i < len && i < 64; i++)
-	foo[i] ^= key[i];
+        foo[i] ^= key[i];
     SHA256_Init(&keys[0]);
     SHA256_Bytes(&keys[0], foo, 64);
 
     memset(foo, 0x5C, 64);
     for (i = 0; i < len && i < 64; i++)
-	foo[i] ^= key[i];
+        foo[i] ^= key[i];
     SHA256_Init(&keys[1]);
     SHA256_Bytes(&keys[1], foo, 64);
 
@@ -286,7 +286,7 @@ static void hmacsha256_genresult(void *handle, unsigned char *hmac)
 }
 
 static void sha256_do_hmac(void *handle, unsigned char *blk, int len,
-			 unsigned long seq, unsigned char *hmac)
+                         unsigned long seq, unsigned char *hmac)
 {
     unsigned char seqbuf[4];
 
@@ -298,7 +298,7 @@ static void sha256_do_hmac(void *handle, unsigned char *blk, int len,
 }
 
 static void sha256_generate(void *handle, unsigned char *blk, int len,
-			  unsigned long seq)
+                          unsigned long seq)
 {
     sha256_do_hmac(handle, blk, len, seq, blk + len);
 }
@@ -311,7 +311,7 @@ static int hmacsha256_verresult(void *handle, unsigned char const *hmac)
 }
 
 static int sha256_verify(void *handle, unsigned char *blk, int len,
-		       unsigned long seq)
+                       unsigned long seq)
 {
     unsigned char correct[32];
     sha256_do_hmac(handle, blk, len, seq, correct);
@@ -339,36 +339,36 @@ int main(void) {
     int i, j, errors;
 
     struct {
-	const char *teststring;
-	unsigned char digest[32];
+        const char *teststring;
+        unsigned char digest[32];
     } tests[] = {
-	{ "abc", {
-	    0xba, 0x78, 0x16, 0xbf, 0x8f, 0x01, 0xcf, 0xea,
-	    0x41, 0x41, 0x40, 0xde, 0x5d, 0xae, 0x22, 0x23,
-	    0xb0, 0x03, 0x61, 0xa3, 0x96, 0x17, 0x7a, 0x9c,
-	    0xb4, 0x10, 0xff, 0x61, 0xf2, 0x00, 0x15, 0xad,
-	} },
-	{ "abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq", {
-	    0x24, 0x8d, 0x6a, 0x61, 0xd2, 0x06, 0x38, 0xb8,
-	    0xe5, 0xc0, 0x26, 0x93, 0x0c, 0x3e, 0x60, 0x39,
-	    0xa3, 0x3c, 0xe4, 0x59, 0x64, 0xff, 0x21, 0x67,
-	    0xf6, 0xec, 0xed, 0xd4, 0x19, 0xdb, 0x06, 0xc1,
-	} },
+        { "abc", {
+            0xba, 0x78, 0x16, 0xbf, 0x8f, 0x01, 0xcf, 0xea,
+            0x41, 0x41, 0x40, 0xde, 0x5d, 0xae, 0x22, 0x23,
+            0xb0, 0x03, 0x61, 0xa3, 0x96, 0x17, 0x7a, 0x9c,
+            0xb4, 0x10, 0xff, 0x61, 0xf2, 0x00, 0x15, 0xad,
+        } },
+        { "abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq", {
+            0x24, 0x8d, 0x6a, 0x61, 0xd2, 0x06, 0x38, 0xb8,
+            0xe5, 0xc0, 0x26, 0x93, 0x0c, 0x3e, 0x60, 0x39,
+            0xa3, 0x3c, 0xe4, 0x59, 0x64, 0xff, 0x21, 0x67,
+            0xf6, 0xec, 0xed, 0xd4, 0x19, 0xdb, 0x06, 0xc1,
+        } },
     };
 
     errors = 0;
 
     for (i = 0; i < sizeof(tests) / sizeof(*tests); i++) {
-	SHA256_Simple(tests[i].teststring,
-		      strlen(tests[i].teststring), digest);
-	for (j = 0; j < 32; j++) {
-	    if (digest[j] != tests[i].digest[j]) {
-		fprintf(stderr,
-			"\"%s\" digest byte %d should be 0x%02x, is 0x%02x\n",
-			tests[i].teststring, j, tests[i].digest[j], digest[j]);
-		errors++;
-	    }
-	}
+        SHA256_Simple(tests[i].teststring,
+                      strlen(tests[i].teststring), digest);
+        for (j = 0; j < 32; j++) {
+            if (digest[j] != tests[i].digest[j]) {
+                fprintf(stderr,
+                        "\"%s\" digest byte %d should be 0x%02x, is 0x%02x\n",
+                        tests[i].teststring, j, tests[i].digest[j], digest[j]);
+                errors++;
+            }
+        }
     }
 
     printf("%d errors\n", errors);

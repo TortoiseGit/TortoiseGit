@@ -84,56 +84,56 @@ char *get_username(void)
     char *user;
     int got_username = FALSE;
     DECL_WINDOWS_FUNCTION(static, BOOLEAN, GetUserNameExA,
-			  (EXTENDED_NAME_FORMAT, LPSTR, PULONG));
+                          (EXTENDED_NAME_FORMAT, LPSTR, PULONG));
 
     {
-	static int tried_usernameex = FALSE;
-	if (!tried_usernameex) {
-	    /* Not available on Win9x, so load dynamically */
-	    HMODULE secur32 = load_system32_dll("secur32.dll");
-	    GET_WINDOWS_FUNCTION(secur32, GetUserNameExA);
-	    tried_usernameex = TRUE;
-	}
+        static int tried_usernameex = FALSE;
+        if (!tried_usernameex) {
+            /* Not available on Win9x, so load dynamically */
+            HMODULE secur32 = load_system32_dll("secur32.dll");
+            GET_WINDOWS_FUNCTION(secur32, GetUserNameExA);
+            tried_usernameex = TRUE;
+        }
     }
 
     if (p_GetUserNameExA) {
-	/*
-	 * If available, use the principal -- this avoids the problem
-	 * that the local username is case-insensitive but Kerberos
-	 * usernames are case-sensitive.
-	 */
+        /*
+         * If available, use the principal -- this avoids the problem
+         * that the local username is case-insensitive but Kerberos
+         * usernames are case-sensitive.
+         */
 
-	/* Get the length */
-	namelen = 0;
-	(void) p_GetUserNameExA(NameUserPrincipal, NULL, &namelen);
+        /* Get the length */
+        namelen = 0;
+        (void) p_GetUserNameExA(NameUserPrincipal, NULL, &namelen);
 
-	user = snewn(namelen, char);
-	got_username = p_GetUserNameExA(NameUserPrincipal, user, &namelen);
-	if (got_username) {
-	    char *p = strchr(user, '@');
-	    if (p) *p = 0;
-	} else {
-	    sfree(user);
-	}
+        user = snewn(namelen, char);
+        got_username = p_GetUserNameExA(NameUserPrincipal, user, &namelen);
+        if (got_username) {
+            char *p = strchr(user, '@');
+            if (p) *p = 0;
+        } else {
+            sfree(user);
+        }
     }
 
     if (!got_username) {
-	/* Fall back to local user name */
-	namelen = 0;
-	if (GetUserName(NULL, &namelen) == FALSE) {
-	    /*
-	     * Apparently this doesn't work at least on Windows XP SP2.
-	     * Thus assume a maximum of 256. It will fail again if it
-	     * doesn't fit.
-	     */
-	    namelen = 256;
-	}
+        /* Fall back to local user name */
+        namelen = 0;
+        if (GetUserName(NULL, &namelen) == FALSE) {
+            /*
+             * Apparently this doesn't work at least on Windows XP SP2.
+             * Thus assume a maximum of 256. It will fail again if it
+             * doesn't fit.
+             */
+            namelen = 256;
+        }
 
-	user = snewn(namelen, char);
-	got_username = GetUserName(user, &namelen);
-	if (!got_username) {
-	    sfree(user);
-	}
+        user = snewn(namelen, char);
+        got_username = GetUserName(user, &namelen);
+        if (!got_username) {
+            sfree(user);
+        }
     }
 
     return got_username ? user : NULL;
@@ -159,12 +159,12 @@ HMODULE load_system32_dll(const char *libname)
     HMODULE ret;
 
     if (!sysdir) {
-	int size = 0, len;
-	do {
-	    size = 3*size/2 + 512;
-	    sysdir = sresize(sysdir, size, char);
-	    len = GetSystemDirectory(sysdir, size);
-	} while (len >= size);
+        int size = 0, len;
+        do {
+            size = 3*size/2 + 512;
+            sysdir = sresize(sysdir, size, char);
+            len = GetSystemDirectory(sysdir, size);
+        } while (len >= size);
     }
 
     fullpath = dupcat(sysdir, "\\", libname, NULL);
@@ -246,17 +246,17 @@ void dputs(char *buf)
     DWORD dw;
 
     if (!debug_got_console) {
-	if (AllocConsole()) {
-	    debug_got_console = 1;
-	    debug_hdl = GetStdHandle(STD_OUTPUT_HANDLE);
-	}
+        if (AllocConsole()) {
+            debug_got_console = 1;
+            debug_hdl = GetStdHandle(STD_OUTPUT_HANDLE);
+        }
     }
     if (!debug_fp) {
-	debug_fp = fopen("debug.log", "w");
+        debug_fp = fopen("debug.log", "w");
     }
 
     if (debug_hdl != INVALID_HANDLE_VALUE) {
-	WriteFile(debug_hdl, buf, strlen(buf), &dw, NULL);
+        WriteFile(debug_hdl, buf, strlen(buf), &dw, NULL);
     }
     fputs(buf, debug_fp);
     fflush(debug_fp);
@@ -306,10 +306,10 @@ static void minefield_init(void)
     int i;
 
     for (size = 0x40000000; size > 0; size = ((size >> 3) * 7) & ~0xFFF) {
-	minefield_region = VirtualAlloc(NULL, size,
-					MEM_RESERVE, PAGE_NOACCESS);
-	if (minefield_region)
-	    break;
+        minefield_region = VirtualAlloc(NULL, size,
+                                        MEM_RESERVE, PAGE_NOACCESS);
+        if (minefield_region)
+            break;
     }
     minefield_size = size;
 
@@ -327,13 +327,13 @@ static void minefield_init(void)
      * Commit the admin region.
      */
     VirtualAlloc(minefield_admin, minefield_npages * 2,
-		 MEM_COMMIT, PAGE_READWRITE);
+                 MEM_COMMIT, PAGE_READWRITE);
 
     /*
      * Mark all pages as unused (0xFFFF).
      */
     for (i = 0; i < minefield_npages; i++)
-	minefield_admin[i] = 0xFFFF;
+        minefield_admin[i] = 0xFFFF;
 
     /*
      * Hide the admin region.
@@ -366,27 +366,27 @@ static void *minefield_alloc(int size)
     pos = minefield_curpos;
     lim = minefield_npages;
     while (1) {
-	/* Skip over used pages. */
-	while (pos < lim && minefield_admin[pos] != 0xFFFF)
-	    pos++;
-	/* Count unused pages. */
-	start = pos;
-	while (pos < lim && pos - start < npages + 2 &&
-	       minefield_admin[pos] == 0xFFFF)
-	    pos++;
-	if (pos - start == npages + 2)
-	    break;
-	/* If we've reached the limit, reset the limit or stop. */
-	if (pos >= lim) {
-	    if (lim == minefield_npages) {
-		/* go round and start again at zero */
-		lim = minefield_curpos;
-		pos = 0;
-	    } else {
-		minefield_admin_hide(1);
-		return NULL;
-	    }
-	}
+        /* Skip over used pages. */
+        while (pos < lim && minefield_admin[pos] != 0xFFFF)
+            pos++;
+        /* Count unused pages. */
+        start = pos;
+        while (pos < lim && pos - start < npages + 2 &&
+               minefield_admin[pos] == 0xFFFF)
+            pos++;
+        if (pos - start == npages + 2)
+            break;
+        /* If we've reached the limit, reset the limit or stop. */
+        if (pos >= lim) {
+            if (lim == minefield_npages) {
+                /* go round and start again at zero */
+                lim = minefield_curpos;
+                pos = 0;
+            } else {
+                minefield_admin_hide(1);
+                return NULL;
+            }
+        }
     }
 
     minefield_curpos = pos - 1;
@@ -403,13 +403,13 @@ static void *minefield_alloc(int size)
      * Update the admin region.
      */
     for (i = start + 2; i < start + npages + 1; i++)
-	minefield_admin[i] = 0xFFFE;   /* used but no region starts here */
+        minefield_admin[i] = 0xFFFE;   /* used but no region starts here */
     minefield_admin[start + 1] = region_start % PAGESIZE;
 
     minefield_admin_hide(1);
 
     VirtualAlloc((char *) minefield_pages + region_start, size,
-		 MEM_COMMIT, PAGE_READWRITE);
+                 MEM_COMMIT, PAGE_READWRITE);
     return (char *) minefield_pages + region_start;
 }
 
@@ -422,10 +422,10 @@ static void minefield_free(void *ptr)
     region_start = (char *) ptr - (char *) minefield_pages;
     i = region_start / PAGESIZE;
     if (i < 0 || i >= minefield_npages ||
-	minefield_admin[i] != region_start % PAGESIZE)
-	minefield_bomb();
+        minefield_admin[i] != region_start % PAGESIZE)
+        minefield_bomb();
     for (j = i; j < minefield_npages && minefield_admin[j] != 0xFFFF; j++) {
-	minefield_admin[j] = 0xFFFF;
+        minefield_admin[j] = 0xFFFF;
     }
 
     VirtualFree(ptr, j * PAGESIZE - region_start, MEM_DECOMMIT);
@@ -442,8 +442,8 @@ static int minefield_get_size(void *ptr)
     region_start = (char *) ptr - (char *) minefield_pages;
     i = region_start / PAGESIZE;
     if (i < 0 || i >= minefield_npages ||
-	minefield_admin[i] != region_start % PAGESIZE)
-	minefield_bomb();
+        minefield_admin[i] != region_start % PAGESIZE)
+        minefield_bomb();
     for (j = i; j < minefield_npages && minefield_admin[j] != 0xFFFF; j++);
 
     minefield_admin_hide(1);
@@ -454,14 +454,14 @@ static int minefield_get_size(void *ptr)
 void *minefield_c_malloc(size_t size)
 {
     if (!minefield_initialised)
-	minefield_init();
+        minefield_init();
     return minefield_alloc(size);
 }
 
 void minefield_c_free(void *p)
 {
     if (!minefield_initialised)
-	minefield_init();
+        minefield_init();
     minefield_free(p);
 }
 
@@ -474,7 +474,7 @@ void *minefield_c_realloc(void *p, size_t size)
     size_t oldsize;
     void *q;
     if (!minefield_initialised)
-	minefield_init();
+        minefield_init();
     q = minefield_alloc(size);
     oldsize = minefield_get_size(p);
     memcpy(q, p, (oldsize < size ? oldsize : size));

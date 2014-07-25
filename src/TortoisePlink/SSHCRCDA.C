@@ -67,9 +67,9 @@ void crcda_free_context(void *handle)
 {
     struct crcda_ctx *ctx = (struct crcda_ctx *)handle;
     if (ctx) {
-	sfree(ctx->h);
-	ctx->h = NULL;
-	sfree(ctx);
+        sfree(ctx->h);
+        ctx->h = NULL;
+        sfree(ctx);
     }
 }
 

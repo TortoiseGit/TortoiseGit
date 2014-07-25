@@ -24,21 +24,21 @@ unsigned long parse_blocksize(const char *bs)
     char *suf;
     unsigned long r = strtoul(bs, &suf, 10);
     if (*suf != '\0') {
-	while (*suf && isspace((unsigned char)*suf)) suf++;
-	switch (*suf) {
-	  case 'k': case 'K':
-	    r *= 1024ul;
-	    break;
-	  case 'm': case 'M':
-	    r *= 1024ul * 1024ul;
-	    break;
-	  case 'g': case 'G':
-	    r *= 1024ul * 1024ul * 1024ul;
-	    break;
-	  case '\0':
-	  default:
-	    break;
-	}
+        while (*suf && isspace((unsigned char)*suf)) suf++;
+        switch (*suf) {
+          case 'k': case 'K':
+            r *= 1024ul;
+            break;
+          case 'm': case 'M':
+            r *= 1024ul * 1024ul;
+            break;
+          case 'g': case 'G':
+            r *= 1024ul * 1024ul * 1024ul;
+            break;
+          case '\0':
+          default:
+            break;
+        }
     }
     return r;
 }
@@ -50,39 +50,39 @@ unsigned long parse_blocksize(const char *bs)
  * The precise current parsing is an oddity inherited from the terminal
  * answerback-string parsing code. All sequences start with ^; all except
  * ^<123> are two characters. The ones that are worth keeping are probably:
- *   ^?		    127
- *   ^@A-Z[\]^_	    0-31
- *   a-z	    1-26
- *   <num>	    specified by number (decimal, 0octal, 0xHEX)
- *   ~		    ^ escape
+ *   ^?              127
+ *   ^@A-Z[\]^_      0-31
+ *   a-z             1-26
+ *   <num>           specified by number (decimal, 0octal, 0xHEX)
+ *   ~               ^ escape
  */
 char ctrlparse(char *s, char **next)
 {
     char c = 0;
     if (*s != '^') {
-	*next = NULL;
+        *next = NULL;
     } else {
-	s++;
-	if (*s == '\0') {
-	    *next = NULL;
-	} else if (*s == '<') {
-	    s++;
-	    c = (char)strtol(s, next, 0);
-	    if ((*next == s) || (**next != '>')) {
-		c = 0;
-		*next = NULL;
-	    } else
-		(*next)++;
-	} else if (*s >= 'a' && *s <= 'z') {
-	    c = (*s - ('a' - 1));
-	    *next = s+1;
-	} else if ((*s >= '@' && *s <= '_') || *s == '?' || (*s & 0x80)) {
-	    c = ('@' ^ *s);
-	    *next = s+1;
-	} else if (*s == '~') {
-	    c = '^';
-	    *next = s+1;
-	}
+        s++;
+        if (*s == '\0') {
+            *next = NULL;
+        } else if (*s == '<') {
+            s++;
+            c = (char)strtol(s, next, 0);
+            if ((*next == s) || (**next != '>')) {
+                c = 0;
+                *next = NULL;
+            } else
+                (*next)++;
+        } else if (*s >= 'a' && *s <= 'z') {
+            c = (*s - ('a' - 1));
+            *next = s+1;
+        } else if ((*s >= '@' && *s <= '_') || *s == '?' || (*s & 0x80)) {
+            c = ('@' ^ *s);
+            *next = s+1;
+        } else if (*s == '~') {
+            c = '^';
+            *next = s+1;
+        }
     }
     return c;
 }
@@ -139,11 +139,11 @@ void free_prompts(prompts_t *p)
 {
     size_t i;
     for (i=0; i < p->n_prompts; i++) {
-	prompt_t *pr = p->prompts[i];
-	smemclr(pr->result, pr->resultsize); /* burn the evidence */
-	sfree(pr->result);
-	sfree(pr->prompt);
-	sfree(pr);
+        prompt_t *pr = p->prompts[i];
+        smemclr(pr->result, pr->resultsize); /* burn the evidence */
+        sfree(pr->result);
+        sfree(pr->prompt);
+        sfree(pr);
     }
     sfree(p->prompts);
     sfree(p->name);
@@ -176,10 +176,10 @@ char *dupcat(const char *s1, ...)
     len = strlen(s1);
     va_start(ap, s1);
     while (1) {
-	sn = va_arg(ap, char *);
-	if (!sn)
-	    break;
-	len += strlen(sn);
+        sn = va_arg(ap, char *);
+        if (!sn)
+            break;
+        len += strlen(sn);
     }
     va_end(ap);
 
@@ -189,11 +189,11 @@ char *dupcat(const char *s1, ...)
 
     va_start(ap, s1);
     while (1) {
-	sn = va_arg(ap, char *);
-	if (!sn)
-	    break;
-	strcpy(q, sn);
-	q += strlen(q);
+        sn = va_arg(ap, char *);
+        if (!sn)
+            break;
+        strcpy(q, sn);
+        q += strlen(q);
     }
     va_end(ap);
 
@@ -288,37 +288,37 @@ char *dupvprintf(const char *fmt, va_list ap)
 #define vsnprintf _vsnprintf
 #endif
 #ifdef va_copy
-	/* Use the `va_copy' macro mandated by C99, if present.
-	 * XXX some environments may have this as __va_copy() */
-	va_list aq;
-	va_copy(aq, ap);
-	len = vsnprintf(buf, size, fmt, aq);
-	va_end(aq);
+        /* Use the `va_copy' macro mandated by C99, if present.
+         * XXX some environments may have this as __va_copy() */
+        va_list aq;
+        va_copy(aq, ap);
+        len = vsnprintf(buf, size, fmt, aq);
+        va_end(aq);
 #else
-	/* Ugh. No va_copy macro, so do something nasty.
-	 * Technically, you can't reuse a va_list like this: it is left
-	 * unspecified whether advancing a va_list pointer modifies its
-	 * value or something it points to, so on some platforms calling
-	 * vsnprintf twice on the same va_list might fail hideously
-	 * (indeed, it has been observed to).
-	 * XXX the autoconf manual suggests that using memcpy() will give
-	 *     "maximum portability". */
-	len = vsnprintf(buf, size, fmt, ap);
+        /* Ugh. No va_copy macro, so do something nasty.
+         * Technically, you can't reuse a va_list like this: it is left
+         * unspecified whether advancing a va_list pointer modifies its
+         * value or something it points to, so on some platforms calling
+         * vsnprintf twice on the same va_list might fail hideously
+         * (indeed, it has been observed to).
+         * XXX the autoconf manual suggests that using memcpy() will give
+         *     "maximum portability". */
+        len = vsnprintf(buf, size, fmt, ap);
 #endif
-	if (len >= 0 && len < size) {
-	    /* This is the C99-specified criterion for snprintf to have
-	     * been completely successful. */
-	    return buf;
-	} else if (len > 0) {
-	    /* This is the C99 error condition: the returned length is
-	     * the required buffer size not counting the NUL. */
-	    size = len + 1;
-	} else {
-	    /* This is the pre-C99 glibc error condition: <0 means the
-	     * buffer wasn't big enough, so we enlarge it a bit and hope. */
-	    size += 512;
-	}
-	buf = sresize(buf, size, char);
+        if (len >= 0 && len < size) {
+            /* This is the C99-specified criterion for snprintf to have
+             * been completely successful. */
+            return buf;
+        } else if (len > 0) {
+            /* This is the C99 error condition: the returned length is
+             * the required buffer size not counting the NUL. */
+            size = len + 1;
+        } else {
+            /* This is the pre-C99 glibc error condition: <0 means the
+             * buffer wasn't big enough, so we enlarge it a bit and hope. */
+            size += 512;
+        }
+        buf = sresize(buf, size, char);
     }
 }
 
@@ -331,15 +331,15 @@ char *fgetline(FILE *fp)
     char *ret = snewn(512, char);
     int size = 512, len = 0;
     while (fgets(ret + len, size - len, fp)) {
-	len += strlen(ret + len);
-	if (ret[len-1] == '\n')
-	    break;		       /* got a newline, we're done */
-	size = len + 512;
-	ret = sresize(ret, size, char);
+        len += strlen(ret + len);
+        if (ret[len-1] == '\n')
+            break;		       /* got a newline, we're done */
+        size = len + 512;
+        ret = sresize(ret, size, char);
     }
     if (len == 0) {		       /* first fgets returned NULL */
-	sfree(ret);
-	return NULL;
+        sfree(ret);
+        return NULL;
     }
     ret[len] = '\0';
     return ret;
@@ -353,25 +353,25 @@ char *fgetline(FILE *fp)
 void base64_encode_atom(unsigned char *data, int n, char *out)
 {
     static const char base64_chars[] =
-	"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
     unsigned word;
 
     word = data[0] << 16;
     if (n > 1)
-	word |= data[1] << 8;
+        word |= data[1] << 8;
     if (n > 2)
-	word |= data[2];
+        word |= data[2];
     out[0] = base64_chars[(word >> 18) & 0x3F];
     out[1] = base64_chars[(word >> 12) & 0x3F];
     if (n > 1)
-	out[2] = base64_chars[(word >> 6) & 0x3F];
+        out[2] = base64_chars[(word >> 6) & 0x3F];
     else
-	out[2] = '=';
+        out[2] = '=';
     if (n > 2)
-	out[3] = base64_chars[word & 0x3F];
+        out[3] = base64_chars[word & 0x3F];
     else
-	out[3] = '=';
+        out[3] = '=';
 }
 
 /* ----------------------------------------------------------------------
@@ -404,9 +404,9 @@ void bufchain_clear(bufchain *ch)
 {
     struct bufchain_granule *b;
     while (ch->head) {
-	b = ch->head;
-	ch->head = ch->head->next;
-	sfree(b);
+        b = ch->head;
+        ch->head = ch->head->next;
+        sfree(b);
     }
     ch->tail = NULL;
     ch->buffersize = 0;
@@ -426,28 +426,28 @@ void bufchain_add(bufchain *ch, const void *data, int len)
     ch->buffersize += len;
 
     while (len > 0) {
-	if (ch->tail && ch->tail->bufend < ch->tail->bufmax) {
-	    int copylen = min(len, ch->tail->bufmax - ch->tail->bufend);
-	    memcpy(ch->tail->bufend, buf, copylen);
-	    buf += copylen;
-	    len -= copylen;
-	    ch->tail->bufend += copylen;
-	}
-	if (len > 0) {
-	    int grainlen =
-		max(sizeof(struct bufchain_granule) + len, BUFFER_MIN_GRANULE);
-	    struct bufchain_granule *newbuf;
-	    newbuf = smalloc(grainlen);
-	    newbuf->bufpos = newbuf->bufend =
-		(char *)newbuf + sizeof(struct bufchain_granule);
-	    newbuf->bufmax = (char *)newbuf + grainlen;
-	    newbuf->next = NULL;
-	    if (ch->tail)
-		ch->tail->next = newbuf;
-	    else
-		ch->head = newbuf;
-	    ch->tail = newbuf;
-	}
+        if (ch->tail && ch->tail->bufend < ch->tail->bufmax) {
+            int copylen = min(len, ch->tail->bufmax - ch->tail->bufend);
+            memcpy(ch->tail->bufend, buf, copylen);
+            buf += copylen;
+            len -= copylen;
+            ch->tail->bufend += copylen;
+        }
+        if (len > 0) {
+            int grainlen =
+            max(sizeof(struct bufchain_granule) + len, BUFFER_MIN_GRANULE);
+            struct bufchain_granule *newbuf;
+            newbuf = smalloc(grainlen);
+            newbuf->bufpos = newbuf->bufend =
+            (char *)newbuf + sizeof(struct bufchain_granule);
+            newbuf->bufmax = (char *)newbuf + grainlen;
+            newbuf->next = NULL;
+            if (ch->tail)
+                ch->tail->next = newbuf;
+            else
+                ch->head = newbuf;
+            ch->tail = newbuf;
+        }
     }
 }
 
@@ -457,19 +457,19 @@ void bufchain_consume(bufchain *ch, int len)
 
     assert(ch->buffersize >= len);
     while (len > 0) {
-	int remlen = len;
-	assert(ch->head != NULL);
-	if (remlen >= ch->head->bufend - ch->head->bufpos) {
-	    remlen = ch->head->bufend - ch->head->bufpos;
-	    tmp = ch->head;
-	    ch->head = tmp->next;
-	    if (!ch->head)
-		ch->tail = NULL;
-	    sfree(tmp);
-	} else
-	    ch->head->bufpos += remlen;
-	ch->buffersize -= remlen;
-	len -= remlen;
+        int remlen = len;
+        assert(ch->head != NULL);
+        if (remlen >= ch->head->bufend - ch->head->bufpos) {
+            remlen = ch->head->bufend - ch->head->bufpos;
+            tmp = ch->head;
+            ch->head = tmp->next;
+            if (!ch->head)
+                ch->tail = NULL;
+            sfree(tmp);
+        } else
+            ch->head->bufpos += remlen;
+        ch->buffersize -= remlen;
+        len -= remlen;
     }
 }
 
@@ -488,16 +488,16 @@ void bufchain_fetch(bufchain *ch, void *data, int len)
 
     assert(ch->buffersize >= len);
     while (len > 0) {
-	int remlen = len;
+        int remlen = len;
 
-	assert(tmp != NULL);
-	if (remlen >= tmp->bufend - tmp->bufpos)
-	    remlen = tmp->bufend - tmp->bufpos;
-	memcpy(data_c, tmp->bufpos, remlen);
+        assert(tmp != NULL);
+        if (remlen >= tmp->bufend - tmp->bufpos)
+            remlen = tmp->bufend - tmp->bufpos;
+        memcpy(data_c, tmp->bufpos, remlen);
 
-	tmp = tmp->next;
-	len -= remlen;
-	data_c += remlen;
+        tmp = tmp->next;
+        len -= remlen;
+        data_c += remlen;
     }
 }
 
@@ -528,11 +528,11 @@ void mlog(char *file, int line)
     mlog_file = file;
     mlog_line = line;
     if (!fp) {
-	fp = fopen("putty_mem.log", "w");
-	setvbuf(fp, NULL, _IONBF, BUFSIZ);
+        fp = fopen("putty_mem.log", "w");
+        setvbuf(fp, NULL, _IONBF, BUFSIZ);
     }
     if (fp)
-	fprintf(fp, "%s:%d: ", file, line);
+        fprintf(fp, "%s:%d: ", file, line);
 }
 #endif
 
@@ -541,32 +541,32 @@ void *safemalloc(size_t n, size_t size)
     void *p;
 
     if (n > INT_MAX / size) {
-	p = NULL;
+        p = NULL;
     } else {
-	size *= n;
-	if (size == 0) size = 1;
+        size *= n;
+        if (size == 0) size = 1;
 #ifdef MINEFIELD
-	p = minefield_c_malloc(size);
+        p = minefield_c_malloc(size);
 #else
-	p = malloc(size);
+        p = malloc(size);
 #endif
     }
 
     if (!p) {
-	char str[200];
+        char str[200];
 #ifdef MALLOC_LOG
-	sprintf(str, "Out of memory! (%s:%d, size=%d)",
-		mlog_file, mlog_line, size);
-	fprintf(fp, "*** %s\n", str);
-	fclose(fp);
+        sprintf(str, "Out of memory! (%s:%d, size=%d)",
+                mlog_file, mlog_line, size);
+        fprintf(fp, "*** %s\n", str);
+        fclose(fp);
 #else
-	strcpy(str, "Out of memory!");
+        strcpy(str, "Out of memory!");
 #endif
-	modalfatalbox(str);
+        modalfatalbox(str);
     }
 #ifdef MALLOC_LOG
     if (fp)
-	fprintf(fp, "malloc(%d) returns %p\n", size, p);
+        fprintf(fp, "malloc(%d) returns %p\n", size, p);
 #endif
     return p;
 }
@@ -576,39 +576,39 @@ void *saferealloc(void *ptr, size_t n, size_t size)
     void *p;
 
     if (n > INT_MAX / size) {
-	p = NULL;
+        p = NULL;
     } else {
-	size *= n;
-	if (!ptr) {
+        size *= n;
+        if (!ptr) {
 #ifdef MINEFIELD
-	    p = minefield_c_malloc(size);
+            p = minefield_c_malloc(size);
 #else
-	    p = malloc(size);
+            p = malloc(size);
 #endif
-	} else {
+        } else {
 #ifdef MINEFIELD
-	    p = minefield_c_realloc(ptr, size);
+            p = minefield_c_realloc(ptr, size);
 #else
-	    p = realloc(ptr, size);
+            p = realloc(ptr, size);
 #endif
-	}
+        }
     }
 
     if (!p) {
-	char str[200];
+        char str[200];
 #ifdef MALLOC_LOG
-	sprintf(str, "Out of memory! (%s:%d, size=%d)",
-		mlog_file, mlog_line, size);
-	fprintf(fp, "*** %s\n", str);
-	fclose(fp);
+        sprintf(str, "Out of memory! (%s:%d, size=%d)",
+                mlog_file, mlog_line, size);
+        fprintf(fp, "*** %s\n", str);
+        fclose(fp);
 #else
-	strcpy(str, "Out of memory!");
+        strcpy(str, "Out of memory!");
 #endif
-	modalfatalbox(str);
+        modalfatalbox(str);
     }
 #ifdef MALLOC_LOG
     if (fp)
-	fprintf(fp, "realloc(%p,%d) returns %p\n", ptr, size, p);
+        fprintf(fp, "realloc(%p,%d) returns %p\n", ptr, size, p);
 #endif
     return p;
 }
@@ -617,18 +617,18 @@ void safefree(void *ptr)
 {
     if (ptr) {
 #ifdef MALLOC_LOG
-	if (fp)
-	    fprintf(fp, "free(%p)\n", ptr);
+        if (fp)
+            fprintf(fp, "free(%p)\n", ptr);
 #endif
 #ifdef MINEFIELD
-	minefield_c_free(ptr);
+        minefield_c_free(ptr);
 #else
-	free(ptr);
+        free(ptr);
 #endif
     }
 #ifdef MALLOC_LOG
     else if (fp)
-	fprintf(fp, "freeing null pointer - no action taken\n");
+        fprintf(fp, "freeing null pointer - no action taken\n");
 #endif
 }
 
@@ -658,36 +658,36 @@ void debug_memdump(void *buf, int len, int L)
     unsigned char *p = buf;
     char foo[17];
     if (L) {
-	int delta;
-	debug_printf("\t%d (0x%x) bytes:\n", len, len);
-	delta = 15 & (unsigned long int) p;
-	p -= delta;
-	len += delta;
+        int delta;
+        debug_printf("\t%d (0x%x) bytes:\n", len, len);
+        delta = 15 & (unsigned long int) p;
+        p -= delta;
+        len += delta;
     }
     for (; 0 < len; p += 16, len -= 16) {
-	dputs("  ");
-	if (L)
-	    debug_printf("%p: ", p);
-	strcpy(foo, "................");	/* sixteen dots */
-	for (i = 0; i < 16 && i < len; ++i) {
-	    if (&p[i] < (unsigned char *) buf) {
-		dputs("   ");	       /* 3 spaces */
-		foo[i] = ' ';
-	    } else {
-		debug_printf("%c%02.2x",
-			&p[i] != (unsigned char *) buf
-			&& i % 4 ? '.' : ' ', p[i]
-		    );
-		if (p[i] >= ' ' && p[i] <= '~')
-		    foo[i] = (char) p[i];
-	    }
-	}
-	foo[i] = '\0';
-	debug_printf("%*s%s\n", (16 - i) * 3 + 2, "", foo);
+        dputs("  ");
+        if (L)
+            debug_printf("%p: ", p);
+        strcpy(foo, "................");	/* sixteen dots */
+        for (i = 0; i < 16 && i < len; ++i) {
+            if (&p[i] < (unsigned char *) buf) {
+                dputs("   ");	       /* 3 spaces */
+                foo[i] = ' ';
+            } else {
+                debug_printf("%c%02.2x",
+                             &p[i] != (unsigned char *) buf
+                             && i % 4 ? '.' : ' ', p[i]
+                        );
+                if (p[i] >= ' ' && p[i] <= '~')
+                    foo[i] = (char) p[i];
+            }
+        }
+        foo[i] = '\0';
+        debug_printf("%*s%s\n", (16 - i) * 3 + 2, "", foo);
     }
 }
 
-#endif				/* def DEBUG */
+#endif                            /* def DEBUG */
 
 /*
  * Determine whether or not a Conf represents a session which can
@@ -696,17 +696,17 @@ void debug_memdump(void *buf, int len, int L)
 int conf_launchable(Conf *conf)
 {
     if (conf_get_int(conf, CONF_protocol) == PROT_SERIAL)
-	return conf_get_str(conf, CONF_serline)[0] != 0;
+        return conf_get_str(conf, CONF_serline)[0] != 0;
     else
-	return conf_get_str(conf, CONF_host)[0] != 0;
+        return conf_get_str(conf, CONF_host)[0] != 0;
 }
 
 char const *conf_dest(Conf *conf)
 {
     if (conf_get_int(conf, CONF_protocol) == PROT_SERIAL)
-	return conf_get_str(conf, CONF_serline);
+        return conf_get_str(conf, CONF_serline);
     else
-	return conf_get_str(conf, CONF_host);
+        return conf_get_str(conf, CONF_host);
 }
 
 #ifndef PLATFORM_HAS_SMEMCLR

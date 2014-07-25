@@ -35,10 +35,10 @@ void noise_get_heavy(void (*func) (void *, int))
     strcat(winpath, "\\*");
     srch = FindFirstFile(winpath, &finddata);
     if (srch != INVALID_HANDLE_VALUE) {
-	do {
-	    func(&finddata, sizeof(finddata));
-	} while (FindNextFile(srch, &finddata));
-	FindClose(srch);
+        do {
+            func(&finddata, sizeof(finddata));
+        } while (FindNextFile(srch, &finddata));
+        FindClose(srch);
     }
 
     pid = GetCurrentProcessId();
@@ -73,9 +73,9 @@ void random_save_seed(void)
     void *data;
 
     if (random_active) {
-	random_get_savedata(&data, &len);
-	write_random_seed(data, len);
-	sfree(data);
+        random_get_savedata(&data, &len);
+        write_random_seed(data, len);
+        sfree(data);
     }
 }
 
@@ -127,10 +127,10 @@ void noise_regular(void)
     random_add_noise(&memstat, sizeof(memstat));
 
     GetThreadTimes(GetCurrentThread(), times, times + 1, times + 2,
-		   times + 3);
+                   times + 3);
     random_add_noise(&times, sizeof(times));
     GetProcessTimes(GetCurrentProcess(), times, times + 1, times + 2,
-		    times + 3);
+                    times + 3);
     random_add_noise(&times, sizeof(times));
 }
 
@@ -151,5 +151,5 @@ void noise_ultralight(unsigned long data)
     random_add_noise(&wintime, sizeof(DWORD));
 
     if (QueryPerformanceCounter(&perftime))
-	random_add_noise(&perftime, sizeof(perftime));
+        random_add_noise(&perftime, sizeof(perftime));
 }
