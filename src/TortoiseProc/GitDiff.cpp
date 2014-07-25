@@ -264,6 +264,11 @@ int CGitDiff::SubmoduleDiff(const CTGitPath * pPath, const CTGitPath * /*pPath2*
 			return -1;
 		}
 
+		if (bytes.size() < 15 + 41 + 40)
+		{
+			CMessageBox::Show(NULL, _T("git diff-tree gives invalid output"), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+			return -1;
+		}
 		g_Git.StringAppend(&oldhash, &bytes[15], CP_UTF8, 40);
 		g_Git.StringAppend(&newhash, &bytes[15+41], CP_UTF8, 40);
 
