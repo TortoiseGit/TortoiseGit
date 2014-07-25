@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2013 - TortoiseSVN
+// Copyright (C) 2003-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -168,7 +168,7 @@ bool CPicture::Load(tstring sFilePathName)
 		// the image format is "icon" or not, we also check the
 		// file extension for ".ico".
 		std::transform(sFilePathName.begin(), sFilePathName.end(), sFilePathName.begin(), ::tolower);
-		bIsIcon = (guid == ImageFormatIcon) || (_tcsstr(sFilePathName.c_str(), _T(".ico")) != NULL);
+		bIsIcon = (guid == ImageFormatIcon) || (wcsstr(sFilePathName.c_str(), L".ico") != NULL) || (wcsstr(sFilePathName.c_str(), L".cur") != NULL);
 		bIsTiff = (guid == ImageFormatTIFF) || (_tcsstr(sFilePathName.c_str(), _T(".tiff")) != NULL);
 		m_Name = sFilePathName;
 

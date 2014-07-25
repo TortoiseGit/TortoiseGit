@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008-2014 - TortoiseGit
-// Copyright (C) 2003-2011, 2013 - TortoiseSVN
+// Copyright (C) 2003-2011, 2013-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -239,7 +239,8 @@ BOOL CAppUtils::StartExtMerge(
 			(ext == _T(".bmp")) || (ext == _T(".gif"))  ||
 			(ext == _T(".png")) || (ext == _T(".ico"))  ||
 			(ext == _T(".tif")) || (ext == _T(".tiff"))  ||
-			(ext == _T(".dib")) || (ext == _T(".emf")))
+			(ext == _T(".dib")) || (ext == _T(".emf"))  ||
+			(ext == _T(".cur")))
 		{
 			com = CPathUtils::GetAppDirectory() + _T("TortoiseGitIDiff.exe");
 			com = _T("\"") + com + _T("\"");
@@ -422,7 +423,8 @@ CString CAppUtils::PickDiffTool(const CTGitPath& file1, const CTGitPath& file2)
 		if ((ext == _T(".jpg")) || (ext == _T(".jpeg")) ||
 			(ext == _T(".bmp")) || (ext == _T(".gif"))  ||
 			(ext == _T(".png")) || (ext == _T(".ico"))  ||
-			(ext == _T(".dib")) || (ext == _T(".emf")))
+			(ext == _T(".dib")) || (ext == _T(".emf"))  ||
+			(ext == _T(".cur")))
 		{
 			return
 				_T("\"") + CPathUtils::GetAppDirectory() + _T("TortoiseGitIDiff.exe") + _T("\"") +
