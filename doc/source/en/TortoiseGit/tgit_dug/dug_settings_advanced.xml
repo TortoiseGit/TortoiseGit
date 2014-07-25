@@ -321,6 +321,16 @@
             </listitem>
         </varlistentry>
         <varlistentry>
+            <term condition="pot">TGitCacheCheckContentMaxSize</term>
+            <listitem>
+                <para>
+                    If TGitCacheCheckContent is enabled, TGitCache checks the content of files by hashing them and comparing the SHA1.
+                    This option allows to restrict this behavior for file which do not exceed a specific size (in KiB).
+                    The default maximum file size is 10 MiB (i.e., 10 * 1024 KiB = <literal>10240</literal> KiB). 
+                </para>
+            </listitem>
+        </varlistentry>
+        <varlistentry>
             <term condition="pot">UseLibgit2</term>
             <listitem>
                 <para>
