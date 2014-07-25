@@ -47,6 +47,7 @@ CGitIndexList::CGitIndexList()
 	this->m_LastModifyTime = 0;
 	m_critRepoSec.Init();
 	m_bCheckContent = !!(CRegDWORD(_T("Software\\TortoiseGit\\TGitCacheCheckContent"), TRUE) == TRUE);
+	m_iMaxCheckSize = (__int64)CRegDWORD(_T("Software\\TortoiseGit\\TGitCacheCheckContentMaxSize"), 100 * 1024) * 1024; // stored in KiB
 }
 
 CGitIndexList::~CGitIndexList()
@@ -161,7 +162,7 @@ int CGitIndexList::GetFileStatus(const CString &gitdir, const CString &pathorg, 
 			{
 				*status = git_wc_status_normal;
 			}
-			else if (m_bCheckContent && repository && filesize < 100 * 1024 * 1024)
+			else if (m_bCheckContent && repository && filesize < m_iMaxCheckSize)
 			{
 				git_oid actual;
 				CStringA fileA = CUnicodeUtils::GetMulti(pathorg, CP_UTF8);
