@@ -94,12 +94,11 @@ HRESULT StringUnescape(const CString& str_in, CString* unescaped_string) {
 		return E_INVALIDARG;
 
 	DWORD buf_len = INTERNET_MAX_URL_LENGTH + 1;
-	BSTR temp = str_in.AllocSysString();
+	ATL::CComBSTR temp(str_in);
 	HRESULT hr = ::UrlUnescape(temp, unescaped_string->GetBufferSetLength(buf_len), &buf_len, 0);
 	if (SUCCEEDED(hr)) {
 		unescaped_string->ReleaseBuffer();
 	}
-	SysFreeString(temp);
 
 	return hr;
 }

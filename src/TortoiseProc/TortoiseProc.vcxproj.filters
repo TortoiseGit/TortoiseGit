@@ -1213,6 +1213,9 @@
     <ClInclude Include="..\Utils\SmartLibgit2Ref.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="BstrSafeVector.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Resources\actionadded.ico">

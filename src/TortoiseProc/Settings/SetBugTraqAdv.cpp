@@ -141,7 +141,8 @@ void CSetBugTraqAdv::OnOK()
 	}
 
 	VARIANT_BOOL valid;
-	if (FAILED(hr = pProvider->ValidateParameters(GetSafeHwnd(), m_sParameters.AllocSysString(), &valid)))
+	ATL::CComBSTR parameters(m_sParameters);
+	if (FAILED(hr = pProvider->ValidateParameters(GetSafeHwnd(), parameters, &valid)))
 	{
 		ShowEditBalloon(IDC_BUGTRAQPARAMETERS, IDS_ERR_PROVIDER_VALIDATE_FAILED, IDS_ERR_ERROR, TTI_ERROR);
 		return;
@@ -222,16 +223,14 @@ void CSetBugTraqAdv::OnBnClickedOptions()
 
 	if (SUCCEEDED(hr))
 	{
-		BSTR temp = NULL;
+		ATL::CComBSTR temp;
 		CString p;
 		GetDlgItemText(IDC_BUGTRAQPARAMETERS, p);
-		BSTR params = p.AllocSysString();
+		ATL::CComBSTR params(p);
 		if (SUCCEEDED(hr = pProvider->ShowOptionsDialog(GetSafeHwnd(), params, &temp)))
 		{
 			SetDlgItemText(IDC_BUGTRAQPARAMETERS, temp);
 		}
-		SysFreeString(temp);
-		SysFreeString(params);
 	}
 }
 

@@ -240,6 +240,7 @@
     <ClInclude Include="..\Utils\SmartLibgit2Ref.h" />
     <ClInclude Include="AddRemoteDlg.h" />
     <ClInclude Include="AutoTextTestDlg.h" />
+    <ClInclude Include="BstrSafeVector.h" />
     <ClInclude Include="BugtraqRegexTestDlg.h" />
     <ClInclude Include="Commands\AutoTextTestCommand.h" />
     <ClInclude Include="Commands\DaemonCommand.h" />
