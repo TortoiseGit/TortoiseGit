@@ -1101,13 +1101,20 @@ void CGitProgressList::OnContextMenu(CWnd* pWnd, CPoint point)
 */
 					if (GetSelectedCount() == 1)
 					{
-						if ((data->action == git_wc_notify_add)||
-							(data->action == git_wc_notify_revert)||
-							(data->action == git_wc_notify_resolved)||
-							(data->action == git_wc_notify_checkout)||
+						if ((data->action == git_wc_notify_add) ||
+							(data->action == git_wc_notify_revert) ||
+							(data->action == git_wc_notify_resolved) ||
+							(data->action == git_wc_notify_checkout) ||
 							(data->action == git_wc_notify_update_ref))
 						{
-							popup.AppendMenuIcon(ID_LOG, IDS_MENULOG,IDI_LOG);
+							popup.AppendMenuIcon(ID_LOG, IDS_MENULOG, IDI_LOG);
+						}
+
+						if ((data->action == git_wc_notify_add) ||
+							(data->action == git_wc_notify_revert) ||
+							(data->action == git_wc_notify_resolved) ||
+							(data->action == git_wc_notify_checkout))
+						{
 							popup.AppendMenu(MF_SEPARATOR, NULL);
 							popup.AppendMenuIcon(ID_OPEN, IDS_LOG_POPUP_OPEN, IDI_OPEN);
 							popup.AppendMenuIcon(ID_OPENWITH, IDS_LOG_POPUP_OPENWITH, IDI_OPEN);
