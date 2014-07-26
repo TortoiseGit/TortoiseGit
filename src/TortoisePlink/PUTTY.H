@@ -54,26 +54,26 @@ typedef struct terminal_tag Terminal;
  * ATTR_INVALID is an illegal colour combination.
  */
 
-#define TATTR_ACTCURS 	    0x40000000UL      /* active cursor (block) */
-#define TATTR_PASCURS 	    0x20000000UL      /* passive cursor (box) */
-#define TATTR_RIGHTCURS	    0x10000000UL      /* cursor-on-RHS */
-#define TATTR_COMBINING	    0x80000000UL      /* combining characters */
+#define TATTR_ACTCURS       0x40000000UL      /* active cursor (block) */
+#define TATTR_PASCURS       0x20000000UL      /* passive cursor (box) */
+#define TATTR_RIGHTCURS     0x10000000UL      /* cursor-on-RHS */
+#define TATTR_COMBINING     0x80000000UL      /* combining characters */
 
-#define DATTR_STARTRUN      0x80000000UL   /* start of redraw run */
+#define DATTR_STARTRUN      0x80000000UL      /* start of redraw run */
 
 #define TDATTR_MASK         0xF0000000UL
 #define TATTR_MASK (TDATTR_MASK)
 #define DATTR_MASK (TDATTR_MASK)
 
-#define LATTR_NORM   0x00000000UL
-#define LATTR_WIDE   0x00000001UL
-#define LATTR_TOP    0x00000002UL
-#define LATTR_BOT    0x00000003UL
-#define LATTR_MODE   0x00000003UL
-#define LATTR_WRAPPED 0x00000010UL     /* this line wraps to next */
+#define LATTR_NORM     0x00000000UL
+#define LATTR_WIDE     0x00000001UL
+#define LATTR_TOP      0x00000002UL
+#define LATTR_BOT      0x00000003UL
+#define LATTR_MODE     0x00000003UL
+#define LATTR_WRAPPED  0x00000010UL    /* this line wraps to next */
 #define LATTR_WRAPPED2 0x00000020UL    /* with WRAPPED: CJK wide character
-					  wrapped to next line, so last
-					  single-width cell is empty */
+                                          wrapped to next line, so last
+                                          single-width cell is empty */
 
 #define ATTR_INVALID 0x03FFFFU
 
@@ -91,7 +91,7 @@ typedef struct terminal_tag Terminal;
 #define DIRECT_CHAR(c) ((c&0xFFFFFC00)==0xD800)
 #define DIRECT_FONT(c) ((c&0xFFFFFE00)==0xF000)
 
-#define UCSERR	     (CSET_LINEDRW|'a')	/* UCS Format error character. */
+#define UCSERR       (CSET_LINEDRW|'a') /* UCS Format error character. */
 /*
  * UCSWIDE is a special value used in the terminal data to signify
  * the character cell containing the right-hand half of a CJK wide
@@ -100,7 +100,7 @@ typedef struct terminal_tag Terminal;
  * to input it via UTF-8 because our UTF-8 decoder correctly
  * rejects surrogates).
  */
-#define UCSWIDE	     0xDFFF
+#define UCSWIDE      0xDFFF
 
 #define ATTR_NARROW  0x800000U
 #define ATTR_WIDE    0x400000U
@@ -140,7 +140,7 @@ typedef struct terminal_tag Terminal;
 struct sesslist {
     int nsessions;
     char **sessions;
-    char *buffer;		       /* so memory can be freed later */
+    char *buffer;              /* so memory can be freed later */
 };
 
 struct unicode_data {
@@ -156,14 +156,14 @@ struct unicode_data {
     unsigned char unitab_ctrl[256];
 };
 
-#define LGXF_OVR  1		       /* existing logfile overwrite */
-#define LGXF_APN  0		       /* existing logfile append */
-#define LGXF_ASK -1		       /* existing logfile ask */
-#define LGTYP_NONE  0		       /* logmode: no logging */
-#define LGTYP_ASCII 1		       /* logmode: pure ascii */
-#define LGTYP_DEBUG 2		       /* logmode: all chars of traffic */
-#define LGTYP_PACKETS 3		       /* logmode: SSH data packets */
-#define LGTYP_SSHRAW 4		       /* logmode: SSH raw data */
+#define LGXF_OVR  1            /* existing logfile overwrite */
+#define LGXF_APN  0            /* existing logfile append */
+#define LGXF_ASK -1            /* existing logfile ask */
+#define LGTYP_NONE  0          /* logmode: no logging */
+#define LGTYP_ASCII 1          /* logmode: pure ascii */
+#define LGTYP_DEBUG 2          /* logmode: all chars of traffic */
+#define LGTYP_PACKETS 3        /* logmode: SSH data packets */
+#define LGTYP_SSHRAW 4         /* logmode: SSH raw data */
 
 typedef enum {
     /* Actual special commands. Originally Telnet, but some codes have
@@ -178,9 +178,9 @@ typedef enum {
     TS_SIGINT,  TS_SIGKILL, TS_SIGPIPE, TS_SIGQUIT, TS_SIGSEGV,
     TS_SIGTERM, TS_SIGUSR1, TS_SIGUSR2,
     /* Pseudo-specials used for constructing the specials menu. */
-    TS_SEP,	    /* Separator */
-    TS_SUBMENU,	    /* Start a new submenu with specified name */
-    TS_EXITMENU	    /* Exit current submenu or end of specials */
+    TS_SEP,         /* Separator */
+    TS_SUBMENU,     /* Start a new submenu with specified name */
+    TS_EXITMENU     /* Exit current submenu or end of specials */
 } Telnet_Special;
 
 struct telnet_special {
@@ -201,32 +201,32 @@ typedef enum {
 
 /* Keyboard modifiers -- keys the user is actually holding down */
 
-#define PKM_SHIFT	0x01
-#define PKM_CONTROL	0x02
-#define PKM_META	0x04
-#define PKM_ALT		0x08
+#define PKM_SHIFT       0x01
+#define PKM_CONTROL     0x02
+#define PKM_META        0x04
+#define PKM_ALT         0x08
 
 /* Keyboard flags that aren't really modifiers */
-#define PKF_CAPSLOCK	0x10
-#define PKF_NUMLOCK	0x20
-#define PKF_REPEAT	0x40
+#define PKF_CAPSLOCK    0x10
+#define PKF_NUMLOCK     0x20
+#define PKF_REPEAT      0x40
 
 /* Stand-alone keysyms for function keys */
 
 typedef enum {
-    PK_NULL,		/* No symbol for this key */
+    PK_NULL,        /* No symbol for this key */
     /* Main keypad keys */
     PK_ESCAPE, PK_TAB, PK_BACKSPACE, PK_RETURN, PK_COMPOSE,
     /* Editing keys */
     PK_HOME, PK_INSERT, PK_DELETE, PK_END, PK_PAGEUP, PK_PAGEDOWN,
     /* Cursor keys */
     PK_UP, PK_DOWN, PK_RIGHT, PK_LEFT, PK_REST,
-    /* Numeric keypad */			/* Real one looks like: */
-    PK_PF1, PK_PF2, PK_PF3, PK_PF4,		/* PF1 PF2 PF3 PF4 */
-    PK_KPCOMMA, PK_KPMINUS, PK_KPDECIMAL,	/*  7   8   9   -  */
-    PK_KP0, PK_KP1, PK_KP2, PK_KP3, PK_KP4,	/*  4   5   6   ,  */
-    PK_KP5, PK_KP6, PK_KP7, PK_KP8, PK_KP9,	/*  1   2   3  en- */
-    PK_KPBIGPLUS, PK_KPENTER,			/*    0     .  ter */
+    /* Numeric keypad */                    /* Real one looks like: */
+    PK_PF1, PK_PF2, PK_PF3, PK_PF4,         /* PF1 PF2 PF3 PF4 */
+    PK_KPCOMMA, PK_KPMINUS, PK_KPDECIMAL,   /*  7   8   9   -  */
+    PK_KP0, PK_KP1, PK_KP2, PK_KP3, PK_KP4, /*  4   5   6   ,  */
+    PK_KP5, PK_KP6, PK_KP7, PK_KP8, PK_KP9, /*  1   2   3  en- */
+    PK_KPBIGPLUS, PK_KPENTER,               /*    0     .  ter */
     /* Top row */
     PK_F1,  PK_F2,  PK_F3,  PK_F4,  PK_F5,
     PK_F6,  PK_F7,  PK_F8,  PK_F9,  PK_F10,
@@ -235,10 +235,10 @@ typedef enum {
     PK_PAUSE
 } Key_Sym;
 
-#define PK_ISEDITING(k)	((k) >= PK_HOME && (k) <= PK_PAGEDOWN)
-#define PK_ISCURSOR(k)	((k) >= PK_UP && (k) <= PK_REST)
-#define PK_ISKEYPAD(k)	((k) >= PK_PF1 && (k) <= PK_KPENTER)
-#define PK_ISFKEY(k)	((k) >= PK_F1 && (k) <= PK_F20)
+#define PK_ISEDITING(k) ((k) >= PK_HOME && (k) <= PK_PAGEDOWN)
+#define PK_ISCURSOR(k)  ((k) >= PK_UP && (k) <= PK_REST)
+#define PK_ISKEYPAD(k)  ((k) >= PK_PF1 && (k) <= PK_KPENTER)
+#define PK_ISFKEY(k)    ((k) >= PK_F1 && (k) <= PK_F20)
 
 enum {
     VT_XWINDOWS, VT_OEMANSI, VT_OEMONLY, VT_POORMAN, VT_UNICODE
@@ -260,13 +260,13 @@ enum {
     /*
      * SSH ciphers (both SSH-1 and SSH-2)
      */
-    CIPHER_WARN,		       /* pseudo 'cipher' */
+    CIPHER_WARN,               /* pseudo 'cipher' */
     CIPHER_3DES,
     CIPHER_BLOWFISH,
-    CIPHER_AES,			       /* (SSH-2 only) */
+    CIPHER_AES,                /* (SSH-2 only) */
     CIPHER_DES,
     CIPHER_ARCFOUR,
-    CIPHER_MAX			       /* no. ciphers (inc warn) */
+    CIPHER_MAX                 /* no. ciphers (inc warn) */
 };
 
 enum {
@@ -294,8 +294,8 @@ enum {
     /*
      * Line discipline options which the backend might try to control.
      */
-    LD_EDIT,			       /* local line editing */
-    LD_ECHO			       /* local echo */
+    LD_EDIT,               /* local line editing */
+    LD_ECHO                /* local echo */
 };
 
 enum {
@@ -415,8 +415,8 @@ enum {
 
 struct backend_tag {
     const char *(*init) (void *frontend_handle, void **backend_handle,
-			 Conf *conf, char *host, int port, char **realhost,
-			 int nodelay, int keepalive);
+                         Conf *conf, char *host, int port, char **realhost,
+                         int nodelay, int keepalive);
     void (*free) (void *handle);
     /* back->reconfig() passes in a replacement configuration. */
     void (*reconfig) (void *handle, Conf *conf);
@@ -504,7 +504,7 @@ GLOBAL int loaded_session;
  */
 GLOBAL char *cmdline_session_name;
 
-struct RSAKey;			       /* be a little careful of scope */
+struct RSAKey;                 /* be a little careful of scope */
 
 /*
  * Mechanism for getting text strings such as usernames and passwords
@@ -548,16 +548,16 @@ typedef struct {
      * sufficient).
      */
     int to_server;
-    char *name;		/* Short description, perhaps for dialog box title */
-    int name_reqd;	/* Display of `name' required or optional? */
-    char *instruction;	/* Long description, maybe with embedded newlines */
-    int instr_reqd;	/* Display of `instruction' required or optional? */
+    char *name;         /* Short description, perhaps for dialog box title */
+    int name_reqd;      /* Display of `name' required or optional? */
+    char *instruction;  /* Long description, maybe with embedded newlines */
+    int instr_reqd;     /* Display of `instruction' required or optional? */
     size_t n_prompts;   /* May be zero (in which case display the foregoing,
                          * if any, and return success) */
     prompt_t **prompts;
     void *frontend;
-    void *data;		/* slot for housekeeping data, managed by
-			 * get_userpass_input(); initially NULL */
+    void *data;         /* slot for housekeeping data, managed by
+                         * get_userpass_input(); initially NULL */
 } prompts_t;
 prompts_t *new_prompts(void *frontend);
 void add_prompt(prompts_t *p, char *promptstr, int echo);
@@ -638,11 +638,11 @@ char *get_window_title(void *frontend, int icon);
 /* Hint from backend to frontend about time-consuming operations.
  * Initial state is assumed to be BUSY_NOT. */
 enum {
-    BUSY_NOT,	    /* Not busy, all user interaction OK */
+    BUSY_NOT,       /* Not busy, all user interaction OK */
     BUSY_WAITING,   /* Waiting for something; local event loops still running
-		       so some local interaction (e.g. menus) OK, but network
-		       stuff is suspended */
-    BUSY_CPU	    /* Locally busy (e.g. crypto); user interaction suspended */
+                       so some local interaction (e.g. menus) OK, but network
+                       stuff is suspended */
+    BUSY_CPU        /* Locally busy (e.g. crypto); user interaction suspended */
 };
 void set_busy_status(void *frontend, int status);
 
@@ -864,7 +864,7 @@ enum config_primary_key { CONFIG_OPTIONS(CONF_ENUM_DEF) N_CONFIG_OPTIONS };
 #define NCFGCOLOURS 22 /* number of colours in CONF_colours above */
 
 /* Functions handling configuration structures. */
-Conf *conf_new(void);		       /* create an empty configuration */
+Conf *conf_new(void);              /* create an empty configuration */
 void conf_free(Conf *conf);
 Conf *conf_copy(Conf *oldconf);
 void conf_copy_into(Conf *dest, Conf *src);
@@ -889,7 +889,7 @@ void conf_set_int(Conf *conf, int key, int value);
 void conf_set_int_int(Conf *conf, int key, int subkey, int value);
 void conf_set_str(Conf *conf, int key, const char *value);
 void conf_set_str_str(Conf *conf, int key,
-		      const char *subkey, const char *val);
+                      const char *subkey, const char *val);
 void conf_del_str_str(Conf *conf, int key, const char *subkey);
 void conf_set_filename(Conf *conf, int key, const Filename *val);
 void conf_set_fontspec(Conf *conf, int key, const FontSpec *val);
@@ -969,9 +969,9 @@ void term_scroll_to_selection(Terminal *, int);
 void term_pwron(Terminal *, int);
 void term_clrsb(Terminal *);
 void term_mouse(Terminal *, Mouse_Button, Mouse_Button, Mouse_Action,
-		int,int,int,int,int);
+                int,int,int,int,int);
 void term_key(Terminal *, Key_Sym, wchar_t *, size_t, unsigned int,
-	      unsigned int);
+              unsigned int);
 void term_deselect(Terminal *);
 void term_update(Terminal *);
 void term_invalidate(Terminal *);
@@ -987,13 +987,13 @@ void term_seen_key_event(Terminal *);
 int term_data(Terminal *, int is_stderr, const char *data, int len);
 int term_data_untrusted(Terminal *, const char *data, int len);
 void term_provide_resize_fn(Terminal *term,
-			    void (*resize_fn)(void *, int, int),
-			    void *resize_ctx);
+                            void (*resize_fn)(void *, int, int),
+                            void *resize_ctx);
 void term_provide_logctx(Terminal *term, void *logctx);
 void term_set_focus(Terminal *term, int has_focus);
 char *term_get_ttymode(Terminal *term, const char *mode);
 int term_get_userpass_input(Terminal *term, prompts_t *p,
-			    unsigned char *in, int inlen);
+                            unsigned char *in, int inlen);
 
 int format_arrow_key(char *buf, Terminal *term, int xkey, int ctrl);
 
@@ -1016,9 +1016,9 @@ struct logblank_t {
     int type;
 };
 void log_packet(void *logctx, int direction, int type,
-		char *texttype, const void *data, int len,
-		int n_blanks, const struct logblank_t *blanks,
-		const unsigned long *sequence);
+                char *texttype, const void *data, int len,
+                int n_blanks, const struct logblank_t *blanks,
+                const unsigned long *sequence);
 
 /*
  * Exports from testback.c
@@ -1098,7 +1098,7 @@ char const *conf_dest(Conf *conf);
  * Exports from sercfg.c.
  */
 void ser_setup_config_box(struct controlbox *b, int midsession,
-			  int parity_mask, int flow_mask);
+                          int parity_mask, int flow_mask);
 
 /*
  * Exports from version.c.
@@ -1114,10 +1114,10 @@ extern char ver[];
 /* void init_ucs(void); -- this is now in platform-specific headers */
 int is_dbcs_leadbyte(int codepage, char byte);
 int mb_to_wc(int codepage, int flags, const char *mbstr, int mblen,
-	     wchar_t *wcstr, int wclen);
+             wchar_t *wcstr, int wclen);
 int wc_to_mb(int codepage, int flags, const wchar_t *wcstr, int wclen,
-	     char *mbstr, int mblen, char *defchr, int *defused,
-	     struct unicode_data *ucsdata);
+             char *mbstr, int mblen, char *defchr, int *defused,
+             struct unicode_data *ucsdata);
 wchar_t xlat_uskbd2cyrllic(int ch);
 int check_compose(int first, int second);
 int decode_codepage(char *cp_name);
@@ -1154,7 +1154,7 @@ void crypto_wrapup();
  * response.
  */
 int agent_query(void *in, int inlen, void **out, int *outlen,
-		void (*callback)(void *, void *, int), void *callback_ctx);
+                void (*callback)(void *, void *, int), void *callback_ctx);
 int agent_exists(void);
 
 /*
@@ -1188,7 +1188,7 @@ int verify_ssh_host_key(void *frontend, char *host, int port, char *keytype,
  * askalg has the same set of return values as verify_ssh_host_key.
  */
 int askalg(void *frontend, const char *algtype, const char *algname,
-	   void (*callback)(void *ctx, int result), void *ctx);
+           void (*callback)(void *ctx, int result), void *ctx);
 /*
  * askappend can return four values:
  * 
@@ -1198,7 +1198,7 @@ int askalg(void *frontend, const char *algtype, const char *algname,
  *  - -1 means please wait.
  */
 int askappend(void *frontend, Filename *filename,
-	      void (*callback)(void *ctx, int result), void *ctx);
+              void (*callback)(void *ctx, int result), void *ctx);
 
 /*
  * Exports from console frontends (wincons.c, uxcons.c)
@@ -1242,18 +1242,18 @@ void cmdline_error(char *, ...);
 struct controlbox;
 union control;
 void conf_radiobutton_handler(union control *ctrl, void *dlg,
-			      void *data, int event);
+                              void *data, int event);
 #define CHECKBOX_INVERT (1<<30)
 void conf_checkbox_handler(union control *ctrl, void *dlg,
-			   void *data, int event);
+                           void *data, int event);
 void conf_editbox_handler(union control *ctrl, void *dlg,
-			  void *data, int event);
+                          void *data, int event);
 void conf_filesel_handler(union control *ctrl, void *dlg,
-			  void *data, int event);
+                          void *data, int event);
 void conf_fontsel_handler(union control *ctrl, void *dlg,
-			  void *data, int event);
+                          void *data, int event);
 void setup_config_box(struct controlbox *b, int midsession,
-		      int protocol, int protcfginfo);
+                      int protocol, int protcfginfo);
 
 /*
  * Exports from minibidi.c.
@@ -1272,7 +1272,7 @@ int is_rtl(int c);
 enum {
     X11_NO_AUTH,
     X11_MIT,                           /* MIT-MAGIC-COOKIE-1 */
-    X11_XDM,			       /* XDM-AUTHORIZATION-1 */
+    X11_XDM,                           /* XDM-AUTHORIZATION-1 */
     X11_NAUTHS
 };
 extern const char *const x11_authnames[];  /* declared in x11fwd.c */
@@ -1291,7 +1291,7 @@ Filename *filename_copy(const Filename *fn);
 void filename_free(Filename *fn);
 int filename_serialise(const Filename *f, void *data);
 Filename *filename_deserialise(void *data, int maxsize, int *used);
-char *get_username(void);	       /* return value needs freeing */
+char *get_username(void);              /* return value needs freeing */
 char *get_random_data(int bytes);      /* used in cmdgen.c */
 
 /*

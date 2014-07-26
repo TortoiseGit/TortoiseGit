@@ -19,9 +19,9 @@ int agent_exists(void)
     HWND hwnd;
     hwnd = FindWindow("Pageant", "Pageant");
     if (!hwnd)
-	return FALSE;
+        return FALSE;
     else
-	return TRUE;
+        return TRUE;
 }
 
 /*
@@ -48,17 +48,17 @@ DWORD WINAPI agent_query_thread(LPVOID param)
     int id, retlen;
 
     id = SendMessage(data->hwnd, WM_COPYDATA, (WPARAM) NULL,
-		     (LPARAM) &data->cds);
+                     (LPARAM) &data->cds);
     ret = NULL;
     if (id > 0) {
-	retlen = 4 + GET_32BIT(data->mapping);
-	ret = snewn(retlen, unsigned char);
-	if (ret) {
-	    memcpy(ret, data->mapping, retlen);
-	}
+        retlen = 4 + GET_32BIT(data->mapping);
+        ret = snewn(retlen, unsigned char);
+        if (ret) {
+            memcpy(ret, data->mapping, retlen);
+        }
     }
     if (!ret)
-	retlen = 0;
+        retlen = 0;
     UnmapViewOfFile(data->mapping);
     CloseHandle(data->handle);
     sfree(data->mapname);
@@ -78,27 +78,27 @@ DWORD WINAPI agent_query_thread(LPVOID param)
 int advapi_initialised = FALSE;
 static HMODULE advapi;
 DECL_WINDOWS_FUNCTION(static, BOOL, OpenProcessToken,
-		      (HANDLE, DWORD, PHANDLE));
+                      (HANDLE, DWORD, PHANDLE));
 DECL_WINDOWS_FUNCTION(static, BOOL, GetTokenInformation,
-		      (HANDLE, TOKEN_INFORMATION_CLASS,
+                      (HANDLE, TOKEN_INFORMATION_CLASS,
                        LPVOID, DWORD, PDWORD));
 DECL_WINDOWS_FUNCTION(static, BOOL, InitializeSecurityDescriptor,
-		      (PSECURITY_DESCRIPTOR, DWORD));
+                      (PSECURITY_DESCRIPTOR, DWORD));
 DECL_WINDOWS_FUNCTION(static, BOOL, SetSecurityDescriptorOwner,
-		      (PSECURITY_DESCRIPTOR, PSID, BOOL));
+                      (PSECURITY_DESCRIPTOR, PSID, BOOL));
 DECL_WINDOWS_FUNCTION(, DWORD, GetSecurityInfo,
-		      (HANDLE, SE_OBJECT_TYPE, SECURITY_INFORMATION,
-		       PSID *, PSID *, PACL *, PACL *,
-		       PSECURITY_DESCRIPTOR *));
+                      (HANDLE, SE_OBJECT_TYPE, SECURITY_INFORMATION,
+                       PSID *, PSID *, PACL *, PACL *,
+                       PSECURITY_DESCRIPTOR *));
 int init_advapi(void)
 {
     advapi = load_system32_dll("advapi32.dll");
     return advapi &&
-	GET_WINDOWS_FUNCTION(advapi, GetSecurityInfo) &&
+        GET_WINDOWS_FUNCTION(advapi, GetSecurityInfo) &&
         GET_WINDOWS_FUNCTION(advapi, OpenProcessToken) &&
-	GET_WINDOWS_FUNCTION(advapi, GetTokenInformation) &&
-	GET_WINDOWS_FUNCTION(advapi, InitializeSecurityDescriptor) &&
-	GET_WINDOWS_FUNCTION(advapi, SetSecurityDescriptorOwner);
+        GET_WINDOWS_FUNCTION(advapi, GetTokenInformation) &&
+        GET_WINDOWS_FUNCTION(advapi, InitializeSecurityDescriptor) &&
+        GET_WINDOWS_FUNCTION(advapi, SetSecurityDescriptorOwner);
 }
 
 PSID get_user_sid(void)
@@ -153,7 +153,7 @@ PSID get_user_sid(void)
 #endif
 
 int agent_query(void *in, int inlen, void **out, int *outlen,
-		void (*callback)(void *, void *, int), void *callback_ctx)
+                void (*callback)(void *, void *, int), void *callback_ctx)
 {
     HWND hwnd;
     char *mapname;
@@ -170,7 +170,7 @@ int agent_query(void *in, int inlen, void **out, int *outlen,
 
     hwnd = FindWindow("Pageant", "Pageant");
     if (!hwnd)
-	return 1;		       /* *out == NULL, so failure */
+        return 1;		       /* *out == NULL, so failure */
     mapname = dupprintf("PageantRequest%08x", (unsigned)GetCurrentThreadId());
 
     psa = NULL;
@@ -208,10 +208,10 @@ int agent_query(void *in, int inlen, void **out, int *outlen,
 #endif /* NO_SECURITY */
 
     filemap = CreateFileMapping(INVALID_HANDLE_VALUE, psa, PAGE_READWRITE,
-				0, AGENT_MAX_MSGLEN, mapname);
+                                0, AGENT_MAX_MSGLEN, mapname);
     if (filemap == NULL || filemap == INVALID_HANDLE_VALUE) {
         sfree(mapname);
-	return 1;		       /* *out == NULL, so failure */
+        return 1;		       /* *out == NULL, so failure */
     }
     p = MapViewOfFile(filemap, FILE_MAP_WRITE, 0, 0, 0);
     memcpy(p, in, inlen);
@@ -220,27 +220,27 @@ int agent_query(void *in, int inlen, void **out, int *outlen,
     cds.lpData = mapname;
 #ifdef WINDOWS_ASYNC_AGENT
     if (callback != NULL && !(flags & FLAG_SYNCAGENT)) {
-	/*
-	 * We need an asynchronous Pageant request. Since I know of
-	 * no way to stop SendMessage from blocking the thread it's
-	 * called in, I see no option but to start a fresh thread.
-	 * When we're done we'll PostMessage the result back to our
-	 * main window, so that the callback is done in the primary
-	 * thread to avoid concurrency.
-	 */
-	struct agent_query_data *data = snew(struct agent_query_data);
-	DWORD threadid;
-	data->mapping = p;
-	data->handle = filemap;
-	data->mapname = mapname;
-	data->callback = callback;
-	data->callback_ctx = callback_ctx;
-	data->cds = cds;	       /* structure copy */
-	data->hwnd = hwnd;
-	if (CreateThread(NULL, 0, agent_query_thread, data, 0, &threadid))
-	    return 0;
-	sfree(mapname);
-	sfree(data);
+        /*
+         * We need an asynchronous Pageant request. Since I know of
+         * no way to stop SendMessage from blocking the thread it's
+         * called in, I see no option but to start a fresh thread.
+         * When we're done we'll PostMessage the result back to our
+         * main window, so that the callback is done in the primary
+         * thread to avoid concurrency.
+         */
+        struct agent_query_data *data = snew(struct agent_query_data);
+        DWORD threadid;
+        data->mapping = p;
+        data->handle = filemap;
+        data->mapname = mapname;
+        data->callback = callback;
+        data->callback_ctx = callback_ctx;
+        data->cds = cds;	       /* structure copy */
+        data->hwnd = hwnd;
+        if (CreateThread(NULL, 0, agent_query_thread, data, 0, &threadid))
+            return 0;
+        sfree(mapname);
+        sfree(data);
     }
 #endif
 
@@ -251,13 +251,13 @@ int agent_query(void *in, int inlen, void **out, int *outlen,
      */
     id = SendMessage(hwnd, WM_COPYDATA, (WPARAM) NULL, (LPARAM) &cds);
     if (id > 0) {
-	retlen = 4 + GET_32BIT(p);
-	ret = snewn(retlen, unsigned char);
-	if (ret) {
-	    memcpy(ret, p, retlen);
-	    *out = ret;
-	    *outlen = retlen;
-	}
+        retlen = 4 + GET_32BIT(p);
+        ret = snewn(retlen, unsigned char);
+        if (ret) {
+            memcpy(ret, p, retlen);
+            *out = ret;
+            *outlen = retlen;
+        }
     }
     UnmapViewOfFile(p);
     CloseHandle(filemap);

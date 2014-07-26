@@ -77,7 +77,7 @@ public:
 	}
 	void ClearAll();
 	int  ParserFromLog(CTGitPath *path =NULL, int count = -1, int infomask = CGit::LOG_INFO_STAT | CGit::LOG_INFO_FILESTATE | CGit::LOG_INFO_SHOW_MERGEDFILE, CString *range = NULL);
-    int  Fill(std::set<CGitHash>& hashes);
+	int  Fill(std::set<CGitHash>& hashes);
 
 	int  FetchShortLog(CTGitPath *path , CString &hash,int count=-1 ,int mask=CGit::LOG_INFO_ONLY_HASH, int showWC=0 );
 	int  ParserShortLog(CTGitPath *path ,CString &hash,int count=-1 ,int mask=CGit::LOG_INFO_ONLY_HASH );

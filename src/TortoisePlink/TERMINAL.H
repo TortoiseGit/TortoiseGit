@@ -57,11 +57,11 @@ struct termchar {
 
 struct termline {
     unsigned short lattr;
-    int cols;			       /* number of real columns on the line */
-    int size;			       /* number of allocated termchars
-					* (cc-lists may make this > cols) */
-    int temporary;		       /* TRUE if decompressed from scrollback */
-    int cc_free;		       /* offset to first cc in free list */
+    int cols;                      /* number of real columns on the line */
+    int size;                      /* number of allocated termchars
+                                    * (cc-lists may make this > cols) */
+    int temporary;                 /* TRUE if decompressed from scrollback */
+    int cc_free;                   /* offset to first cc in free list */
     struct termchar *chars;
 };
 
@@ -75,17 +75,17 @@ struct terminal_tag {
 
     int compatibility_level;
 
-    tree234 *scrollback;	       /* lines scrolled off top of screen */
-    tree234 *screen;		       /* lines on primary screen */
-    tree234 *alt_screen;	       /* lines on alternate screen */
-    int disptop;		       /* distance scrolled back (0 or -ve) */
-    int tempsblines;		       /* number of lines of .scrollback that
-					  can be retrieved onto the terminal
-					  ("temporary scrollback") */
+    tree234 *scrollback;           /* lines scrolled off top of screen */
+    tree234 *screen;               /* lines on primary screen */
+    tree234 *alt_screen;           /* lines on alternate screen */
+    int disptop;                   /* distance scrolled back (0 or -ve) */
+    int tempsblines;               /* number of lines of .scrollback that
+                                      can be retrieved onto the terminal
+                                      ("temporary scrollback") */
 
-    termline **disptext;	       /* buffer of text on real screen */
-    int dispcursx, dispcursy;	       /* location of cursor on real screen */
-    int curstype;		       /* type of cursor on real screen */
+    termline **disptext;           /* buffer of text on real screen */
+    int dispcursx, dispcursy;      /* location of cursor on real screen */
+    int curstype;                  /* type of cursor on real screen */
 
 #define VBELL_TIMEOUT (TICKSPERSEC/10) /* visual bell lasts 1/10 sec */
 
@@ -104,35 +104,35 @@ struct terminal_tag {
     int default_attr, curr_attr, save_attr;
     termchar basic_erase_char, erase_char;
 
-    bufchain inbuf;		       /* terminal input buffer */
-    pos curs;			       /* cursor */
-    pos savecurs;		       /* saved cursor position */
-    int marg_t, marg_b;		       /* scroll margins */
-    int dec_om;			       /* DEC origin mode flag */
-    int wrap, wrapnext;		       /* wrap flags */
-    int insert;			       /* insert-mode flag */
-    int cset;			       /* 0 or 1: which char set */
-    int save_cset, save_csattr;	       /* saved with cursor position */
-    int save_utf, save_wnext;	       /* saved with cursor position */
-    int rvideo;			       /* global reverse video flag */
+    bufchain inbuf;                    /* terminal input buffer */
+    pos curs;                          /* cursor */
+    pos savecurs;                      /* saved cursor position */
+    int marg_t, marg_b;                /* scroll margins */
+    int dec_om;                        /* DEC origin mode flag */
+    int wrap, wrapnext;                /* wrap flags */
+    int insert;                        /* insert-mode flag */
+    int cset;                          /* 0 or 1: which char set */
+    int save_cset, save_csattr;        /* saved with cursor position */
+    int save_utf, save_wnext;          /* saved with cursor position */
+    int rvideo;                        /* global reverse video flag */
     unsigned long rvbell_startpoint;   /* for ESC[?5hESC[?5l vbell */
-    int cursor_on;		       /* cursor enabled flag */
-    int reset_132;		       /* Flag ESC c resets to 80 cols */
-    int use_bce;		       /* Use Background coloured erase */
-    int cblinker;		       /* When blinking is the cursor on ? */
-    int tblinker;		       /* When the blinking text is on */
-    int blink_is_real;		       /* Actually blink blinking text */
-    int term_echoing;		       /* Does terminal want local echo? */
-    int term_editing;		       /* Does terminal want local edit? */
-    int sco_acs, save_sco_acs;	       /* CSI 10,11,12m -> OEM charset */
-    int vt52_bold;		       /* Force bold on non-bold colours */
-    int utf;			       /* Are we in toggleable UTF-8 mode? */
-    int utf_state;		       /* Is there a pending UTF-8 character */
-    int utf_char;		       /* and what is it so far. */
-    int utf_size;		       /* The size of the UTF character. */
+    int cursor_on;                     /* cursor enabled flag */
+    int reset_132;                     /* Flag ESC c resets to 80 cols */
+    int use_bce;                       /* Use Background coloured erase */
+    int cblinker;                      /* When blinking is the cursor on ? */
+    int tblinker;                      /* When the blinking text is on */
+    int blink_is_real;                 /* Actually blink blinking text */
+    int term_echoing;                  /* Does terminal want local echo? */
+    int term_editing;                  /* Does terminal want local edit? */
+    int sco_acs, save_sco_acs;         /* CSI 10,11,12m -> OEM charset */
+    int vt52_bold;                     /* Force bold on non-bold colours */
+    int utf;                           /* Are we in toggleable UTF-8 mode? */
+    int utf_state;                     /* Is there a pending UTF-8 character */
+    int utf_char;                      /* and what is it so far. */
+    int utf_size;                      /* The size of the UTF character. */
     int printing, only_printing;       /* Are we doing ANSI printing? */
-    int print_state;		       /* state of print-end-sequence scan */
-    bufchain printer_buf;	       /* buffered data for printer */
+    int print_state;                   /* state of print-end-sequence scan */
+    bufchain printer_buf;              /* buffered data for printer */
     printer_job *print_job;
 
     /* ESC 7 saved state for the alternate screen */
@@ -151,10 +151,10 @@ struct terminal_tag {
     int seen_disp_event;
     int big_cursor;
 
-    int xterm_mouse;		       /* send mouse messages to host */
+    int xterm_mouse;                   /* send mouse messages to host */
     int xterm_extended_mouse;
     int urxvt_extended_mouse;
-    int mouse_is_down;		       /* used while tracking mouse buttons */
+    int mouse_is_down;                 /* used while tracking mouse buttons */
 
     int bracketed_paste;
 
@@ -169,14 +169,14 @@ struct terminal_tag {
     int alt_which;
     int alt_sblines; /* # of lines on alternate screen that should be used for scrollback. */
 
-#define ARGS_MAX 32		       /* max # of esc sequence arguments */
-#define ARG_DEFAULT 0		       /* if an arg isn't specified */
+#define ARGS_MAX 32                    /* max # of esc sequence arguments */
+#define ARG_DEFAULT 0                  /* if an arg isn't specified */
 #define def(a,d) ( (a) == ARG_DEFAULT ? (d) : (a) )
     int esc_args[ARGS_MAX];
     int esc_nargs;
     int esc_query;
-#define ANSI(x,y)	((x)+((y)<<8))
-#define ANSI_QUE(x)	ANSI(x,TRUE)
+#define ANSI(x,y)        ((x)+((y)<<8))
+#define ANSI_QUE(x)      ANSI(x,TRUE)
 
 #define OSC_STR_MAX 2048
     int osc_strlen;
@@ -188,31 +188,31 @@ struct terminal_tag {
     unsigned char *tabs;
 
     enum {
-	TOPLEVEL,
-	SEEN_ESC,
-	SEEN_CSI,
-	SEEN_OSC,
-	SEEN_OSC_W,
+        TOPLEVEL,
+        SEEN_ESC,
+        SEEN_CSI,
+        SEEN_OSC,
+        SEEN_OSC_W,
 
-	DO_CTRLS,
+        DO_CTRLS,
 
-	SEEN_OSC_P,
-	OSC_STRING, OSC_MAYBE_ST,
-	VT52_ESC,
-	VT52_Y1,
-	VT52_Y2,
-	VT52_FG,
-	VT52_BG
+        SEEN_OSC_P,
+        OSC_STRING, OSC_MAYBE_ST,
+        VT52_ESC,
+        VT52_Y1,
+        VT52_Y2,
+        VT52_FG,
+        VT52_BG
     } termstate;
 
     enum {
-	NO_SELECTION, ABOUT_TO, DRAGGING, SELECTED
+        NO_SELECTION, ABOUT_TO, DRAGGING, SELECTED
     } selstate;
     enum {
-	LEXICOGRAPHIC, RECTANGULAR
+        LEXICOGRAPHIC, RECTANGULAR
     } seltype;
     enum {
-	SM_CHAR, SM_WORD, SM_LINE
+        SM_CHAR, SM_WORD, SM_LINE
     } selmode;
     pos selstart, selend, selanchor;
 

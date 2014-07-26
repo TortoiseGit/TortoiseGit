@@ -848,7 +848,7 @@ static const unsigned short primes[] = {
  *    an adequate no-op.
  */
 Bignum primegen(int bits, int modulus, int residue, Bignum factor,
-		int phase, progfn_t pfn, void *pfnparam, unsigned firstbits)
+                int phase, progfn_t pfn, void *pfnparam, unsigned firstbits)
 {
     int i, k, v, byte, bitsleft, check, checks, fbsize;
     unsigned long delta;
@@ -877,25 +877,25 @@ Bignum primegen(int bits, int modulus, int residue, Bignum factor,
      */
     p = bn_power_2(bits - 1);
     for (i = 0; i < bits; i++) {
-	if (i == 0 || i == bits - 1) {
-	    v = (i != 0 || !factor) ? 1 : 0;
+        if (i == 0 || i == bits - 1) {
+            v = (i != 0 || !factor) ? 1 : 0;
         } else if (i >= bits - fbsize) {
             v = (firstbits >> (i - (bits - fbsize))) & 1;
         } else {
-	    if (bitsleft <= 0)
-		bitsleft = 8, byte = random_byte();
-	    v = byte & 1;
-	    byte >>= 1;
-	    bitsleft--;
-	}
-	bignum_set_bit(p, i, v);
+            if (bitsleft <= 0)
+                bitsleft = 8, byte = random_byte();
+            v = byte & 1;
+            byte >>= 1;
+            bitsleft--;
+        }
+        bignum_set_bit(p, i, v);
     }
     if (factor) {
-	Bignum tmp = p;
-	p = bigmul(tmp, factor);
-	freebn(tmp);
-	assert(bignum_bit(p, 0) == 0);
-	bignum_set_bit(p, 0, 1);
+        Bignum tmp = p;
+        p = bigmul(tmp, factor);
+        freebn(tmp);
+        assert(bignum_bit(p, 0) == 0);
+        bignum_set_bit(p, 0, 1);
     }
 
     /*
@@ -904,43 +904,43 @@ Bignum primegen(int bits, int modulus, int residue, Bignum factor,
      * until it is.
      */
     for (i = 0; i < NPRIMES; i++) {
-	moduli[i] = primes[i];
-	residues[i] = bignum_mod_short(p, primes[i]);
-	if (factor)
-	    multipliers[i] = bignum_mod_short(factor, primes[i]);
-	else
-	    multipliers[i] = 1;
+        moduli[i] = primes[i];
+        residues[i] = bignum_mod_short(p, primes[i]);
+        if (factor)
+            multipliers[i] = bignum_mod_short(factor, primes[i]);
+        else
+            multipliers[i] = 1;
     }
     moduli[NPRIMES] = modulus;
     residues[NPRIMES] = (bignum_mod_short(p, (unsigned short) modulus)
-			 + modulus - residue);
+                         + modulus - residue);
     if (factor)
-	multipliers[NPRIMES] = bignum_mod_short(factor, modulus);
+        multipliers[NPRIMES] = bignum_mod_short(factor, modulus);
     else
-	multipliers[NPRIMES] = 1;
+        multipliers[NPRIMES] = 1;
     delta = 0;
     while (1) {
-	for (i = 0; i < (sizeof(moduli) / sizeof(*moduli)); i++)
-	    if (!((residues[i] + delta * multipliers[i]) % moduli[i]))
-		break;
-	if (i < (sizeof(moduli) / sizeof(*moduli))) {	/* we broke */
-	    delta += 2;
-	    if (delta > 65536) {
-		freebn(p);
-		goto STARTOVER;
-	    }
-	    continue;
-	}
-	break;
+        for (i = 0; i < (sizeof(moduli) / sizeof(*moduli)); i++)
+            if (!((residues[i] + delta * multipliers[i]) % moduli[i]))
+                break;
+        if (i < (sizeof(moduli) / sizeof(*moduli))) {	/* we broke */
+            delta += 2;
+            if (delta > 65536) {
+                freebn(p);
+                goto STARTOVER;
+            }
+            continue;
+        }
+        break;
     }
     q = p;
     if (factor) {
-	Bignum tmp;
-	tmp = bignum_from_long(delta);
-	p = bigmuladd(tmp, factor, q);
-	freebn(tmp);
+        Bignum tmp;
+        tmp = bignum_from_long(delta);
+        p = bigmuladd(tmp, factor, q);
+        freebn(tmp);
     } else {
-	p = bignum_add_long(q, delta);
+        p = bignum_add_long(q, delta);
     }
     freebn(q);
 
@@ -950,33 +950,33 @@ Bignum primegen(int bits, int modulus, int residue, Bignum factor,
      */
     checks = 27;
     if (bits >= 150)
-	checks = 18;
+        checks = 18;
     if (bits >= 200)
-	checks = 15;
+        checks = 15;
     if (bits >= 250)
-	checks = 12;
+        checks = 12;
     if (bits >= 300)
-	checks = 9;
+        checks = 9;
     if (bits >= 350)
-	checks = 8;
+        checks = 8;
     if (bits >= 400)
-	checks = 7;
+        checks = 7;
     if (bits >= 450)
-	checks = 6;
+        checks = 6;
     if (bits >= 550)
-	checks = 5;
+        checks = 5;
     if (bits >= 650)
-	checks = 4;
+        checks = 4;
     if (bits >= 850)
-	checks = 3;
+        checks = 3;
     if (bits >= 1300)
-	checks = 2;
+        checks = 2;
 
     /*
      * Next, write p-1 as q*2^k.
      */
     for (k = 0; bignum_bit(p, k) == !k; k++)
-	continue;	/* find first 1 bit in p-1 */
+        continue;	/* find first 1 bit in p-1 */
     q = bignum_rshift(p, k);
     /* And store p-1 itself, which we'll need. */
     pm1 = copybn(p);
@@ -986,66 +986,66 @@ Bignum primegen(int bits, int modulus, int residue, Bignum factor,
      * Now, for each check ...
      */
     for (check = 0; check < checks; check++) {
-	Bignum w;
+        Bignum w;
 
-	/*
-	 * Invent a random number between 1 and p-1 inclusive.
-	 */
-	while (1) {
-	    w = bn_power_2(bits - 1);
-	    for (i = 0; i < bits; i++) {
-		if (bitsleft <= 0)
-		    bitsleft = 8, byte = random_byte();
-		v = byte & 1;
-		byte >>= 1;
-		bitsleft--;
-		bignum_set_bit(w, i, v);
-	    }
-	    bn_restore_invariant(w);
-	    if (bignum_cmp(w, p) >= 0 || bignum_cmp(w, Zero) == 0) {
-		freebn(w);
-		continue;
-	    }
-	    break;
-	}
+        /*
+         * Invent a random number between 1 and p-1 inclusive.
+         */
+        while (1) {
+            w = bn_power_2(bits - 1);
+            for (i = 0; i < bits; i++) {
+                if (bitsleft <= 0)
+                    bitsleft = 8, byte = random_byte();
+                v = byte & 1;
+                byte >>= 1;
+                bitsleft--;
+                bignum_set_bit(w, i, v);
+            }
+            bn_restore_invariant(w);
+            if (bignum_cmp(w, p) >= 0 || bignum_cmp(w, Zero) == 0) {
+                freebn(w);
+                continue;
+            }
+            break;
+        }
 
-	pfn(pfnparam, PROGFN_PROGRESS, phase, ++progress);
+        pfn(pfnparam, PROGFN_PROGRESS, phase, ++progress);
 
-	/*
-	 * Compute w^q mod p.
-	 */
-	wqp = modpow(w, q, p);
-	freebn(w);
+        /*
+         * Compute w^q mod p.
+         */
+        wqp = modpow(w, q, p);
+        freebn(w);
 
-	/*
-	 * See if this is 1, or if it is -1, or if it becomes -1
-	 * when squared at most k-1 times.
-	 */
-	if (bignum_cmp(wqp, One) == 0 || bignum_cmp(wqp, pm1) == 0) {
-	    freebn(wqp);
-	    continue;
-	}
-	for (i = 0; i < k - 1; i++) {
-	    wqp2 = modmul(wqp, wqp, p);
-	    freebn(wqp);
-	    wqp = wqp2;
-	    if (bignum_cmp(wqp, pm1) == 0)
-		break;
-	}
-	if (i < k - 1) {
-	    freebn(wqp);
-	    continue;
-	}
+        /*
+         * See if this is 1, or if it is -1, or if it becomes -1
+         * when squared at most k-1 times.
+         */
+        if (bignum_cmp(wqp, One) == 0 || bignum_cmp(wqp, pm1) == 0) {
+            freebn(wqp);
+            continue;
+        }
+        for (i = 0; i < k - 1; i++) {
+            wqp2 = modmul(wqp, wqp, p);
+            freebn(wqp);
+            wqp = wqp2;
+            if (bignum_cmp(wqp, pm1) == 0)
+                break;
+        }
+        if (i < k - 1) {
+            freebn(wqp);
+            continue;
+        }
 
-	/*
-	 * It didn't. Therefore, w is a witness for the
-	 * compositeness of p.
-	 */
-	freebn(wqp);
-	freebn(p);
-	freebn(pm1);
-	freebn(q);
-	goto STARTOVER;
+        /*
+         * It didn't. Therefore, w is a witness for the
+         * compositeness of p.
+         */
+        freebn(wqp);
+        freebn(p);
+        freebn(pm1);
+        freebn(q);
+        goto STARTOVER;
     }
 
     /*

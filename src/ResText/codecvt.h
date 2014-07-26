@@ -33,8 +33,8 @@ protected:
 				  const wchar_t* from, const wchar_t* from_end, const wchar_t*& from_next,
 				  char* to, char* to_limit, char*& to_next) const;
 
-    bool do_always_noconv() const throw() { return false; }
-    int  do_encoding() const throw() { return 2; }
+	bool do_always_noconv() const throw() { return false; }
+	int  do_encoding() const throw() { return 2; }
 };
 
 
@@ -52,6 +52,6 @@ protected:
 				  const wchar_t* from, const wchar_t* from_end, const wchar_t*& from_next,
 				  char* to, char* to_limit, char*& to_next) const;
 
-    bool do_always_noconv() const throw() { return false; }
-    int  do_encoding() const throw() { return 2; }
+	bool do_always_noconv() const throw() { return false; }
+	int  do_encoding() const throw() { return 2; }
 };

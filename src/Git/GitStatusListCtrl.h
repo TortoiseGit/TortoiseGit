@@ -60,12 +60,12 @@
 #define GITSLC_SHOWREMOVEDANDPRESENT 0x00000000
 #define GITSLC_SHOWLOCKS		0x00000000
 #define GITSLC_SHOWDIRECTFILES	0x04000000
-#define GITSLC_SHOWDIRECTFOLDER 0x00000000
+#define GITSLC_SHOWDIRECTFOLDER	0x00000000
 #define GITSLC_SHOWEXTERNALFROMDIFFERENTREPO 0x00000000
 #define GITSLC_SHOWSWITCHED		0x00000000
-#define GITSLC_SHOWINCHANGELIST 0x00000000
-#define GITSLC_SHOWASSUMEVALID  CTGitPath::LOGACTIONS_ASSUMEVALID
-#define GITSLC_SHOWSKIPWORKTREE CTGitPath::LOGACTIONS_SKIPWORKTREE
+#define GITSLC_SHOWINCHANGELIST	0x00000000
+#define GITSLC_SHOWASSUMEVALID	CTGitPath::LOGACTIONS_ASSUMEVALID
+#define GITSLC_SHOWSKIPWORKTREE	CTGitPath::LOGACTIONS_SKIPWORKTREE
 
 #define GITSLC_SHOWDIRECTS		(GITSLC_SHOWDIRECTFILES | GITSLC_SHOWDIRECTFOLDER)
 
@@ -126,7 +126,7 @@ GITSLC_SHOWINCOMPLETE|GITSLC_SHOWEXTERNAL|GITSLC_SHOWINEXTERNALS)
 #define GITSLC_IGNORECHANGELIST			_T("ignore-on-commit")
 
 // This gives up to 64 standard properties and menu entries
-#define GITSLC_MAXCOLUMNCOUNT           0xff
+#define GITSLC_MAXCOLUMNCOUNT			0xff
 
 #define OVL_RESTORE			1
 
@@ -165,7 +165,7 @@ public:
 
 	/// read column definitions
 
-	int GetColumnCount() const;                     ///< total number of columns
+	int GetColumnCount() const;						///< total number of columns
 	bool IsVisible (int column) const;
 	int GetInvisibleCount() const;
 	bool IsRelevant (int column) const;
@@ -402,10 +402,10 @@ private:
 
 	struct ColumnInfo
 	{
-		int index;          ///< is a user prop when < GitSLC_USERPROPCOLOFFSET
+		int index;			///< is a user prop when < GitSLC_USERPROPCOLOFFSET
 		int width;
 		bool visible;
-		bool relevant;      ///< set to @a visible, if no *shown* item has that property
+		bool relevant;		///< set to @a visible, if no *shown* item has that property
 	};
 
 	std::vector<ColumnInfo> columns;
@@ -467,22 +467,22 @@ class CGitStatusListCtrl :
 public:
 	enum
 	{
-		IDGITLC_REVERT = 1,
+		IDGITLC_REVERT = 1		,
 		/** Compare with base version. when current version is zero (i.e. working tree changes), compare working tree and HEAD */
-		IDGITLC_COMPARE,
-		IDGITLC_OPEN,
-		IDGITLC_DELETE,
-		IDGITLC_IGNORE,
+		IDGITLC_COMPARE			,
+		IDGITLC_OPEN			,
+		IDGITLC_DELETE			,
+		IDGITLC_IGNORE			,
 		/** Compare with base version and generate unified diff. when current version is zero (i.e. working tree changes), compare working tree and HEAD  */
-		IDGITLC_GNUDIFF1		 ,
-		IDGITLC_LOG              ,
-		IDGITLC_LOGOLDNAME,
-		IDGITLC_LOGSUBMODULE,
-		IDGITLC_EDITCONFLICT     ,
-		IDGITLC_IGNOREMASK	    ,
-		IDGITLC_IGNOREFOLDER    ,
-		IDGITLC_ADD			    ,
-		IDGITLC_RESOLVECONFLICT ,
+		IDGITLC_GNUDIFF1		,
+		IDGITLC_LOG				,
+		IDGITLC_LOGOLDNAME		,
+		IDGITLC_LOGSUBMODULE	,
+		IDGITLC_EDITCONFLICT	,
+		IDGITLC_IGNOREMASK		,
+		IDGITLC_IGNOREFOLDER	,
+		IDGITLC_ADD				,
+		IDGITLC_RESOLVECONFLICT	,
 		IDGITLC_OPENWITH		,
 		IDGITLC_EXPLORE			,
 		IDGITLC_RESOLVETHEIRS	,
@@ -503,7 +503,7 @@ public:
 		IDGITLC_REVERTTOREV		,
 		IDGITLC_REVERTTOPARENT	,
 		IDGITLC_VIEWREV			,
-		IDGITLC_FINDENTRY       ,
+		IDGITLC_FINDENTRY		,
 		/** used in sync dlg, compare in/out file changes; in combination with m_Rev1 and m_Rev2 */
 		IDGITLC_COMPARETWOREVISIONS,
 		/** used in sync dlg, compare in/out file changes; in combination with m_Rev1 and m_Rev2 */
@@ -686,7 +686,7 @@ public:
 		git_depth_t				depth;					///< the depth of this entry
 		friend class CGitStatusListCtrl;
 		friend class CGitStatusListCtrlDropTarget;
-        friend class CSorter;
+		friend class CSorter;
 	};
 #endif
 
@@ -731,8 +731,8 @@ public:
 	 * \return TRUE on success.
 	 */
 	BOOL GetStatus ( const CTGitPathList* pathList=NULL
-                   , bool bUpdate = false
-                   , bool bShowIgnores = false
+				   , bool bUpdate = false
+				   , bool bShowIgnores = false
 				   , bool bShowUnRev = false
 				   , bool bShowLocalChangesIgnored = false);
 
@@ -1041,9 +1041,9 @@ private:
 	afx_msg void OnHdnItemclick(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnLvnItemchanging(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg BOOL OnLvnItemchanged(NMHDR *pNMHDR, LRESULT *pResult);
-    afx_msg void OnColumnResized(NMHDR *pNMHDR, LRESULT *pResult);
-    afx_msg void OnColumnMoved(NMHDR *pNMHDR, LRESULT *pResult);
-    afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
+	afx_msg void OnColumnResized(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnColumnMoved(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 
 	void CreateChangeList(const CString& name);
 
@@ -1066,8 +1066,8 @@ private:
 
 private:
 	bool *						m_pbCanceled;
-	bool					    m_bAscending;		///< sort direction
-	int					        m_nSortedColumn;	///< which column to sort
+	bool						m_bAscending;		///< sort direction
+	int							m_nSortedColumn;	///< which column to sort
 	bool						m_bHasCheckboxes;
 	bool						m_bHasWC;
 	bool						m_bUnversionedLast;
@@ -1080,7 +1080,7 @@ private:
 	//FileEntryVector				m_arStatusArray;
 	std::vector<CTGitPath*>		m_arStatusArray;
 	std::vector<size_t>			m_arListArray;
-	std::map<CString, int>	    m_changelists;
+	std::map<CString, int>		m_changelists;
 	bool						m_bHasIgnoreGroup;
 	//CTGitPathList				m_ConflictFileList;
 	CTGitPathList				m_StatusFileList;
@@ -1140,7 +1140,7 @@ private:
 	bool						m_bCheckChildrenWithParent;
 	CGitStatusListCtrlDropTarget * m_pDropTarget;
 
-    ColumnManager               m_ColumnManager;
+	ColumnManager				m_ColumnManager;
 
 	std::map<CString,bool>		m_mapFilenameToChecked; ///< Remember de-/selected items
 	std::map<CString,bool>		m_mapDirectFiles;

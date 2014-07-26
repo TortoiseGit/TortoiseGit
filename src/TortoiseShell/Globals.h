@@ -84,10 +84,10 @@
  */
 enum FileState
 {
-    FileStateUncontrolled,
-    FileStateVersioned,
-    FileStateModified,
-    FileStateConflict,
+	FileStateUncontrolled,
+	FileStateVersioned,
+	FileStateModified,
+	FileStateConflict,
 	FileStateDeleted,
 	FileStateReadOnly,
 	FileStateLockedOverlay,

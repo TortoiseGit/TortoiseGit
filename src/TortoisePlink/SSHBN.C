@@ -33,8 +33,8 @@ typedef unsigned long long BignumDblInt;
 #define MUL_WORD(w1, w2) ((BignumDblInt)w1 * w2)
 #define DIVMOD_WORD(q, r, hi, lo, w) \
     __asm__("div %2" : \
-	    "=d" (r), "=a" (q) : \
-	    "r" (w), "d" (hi), "a" (lo))
+            "=d" (r), "=a" (q) : \
+            "r" (w), "d" (hi), "a" (lo))
 #elif defined _MSC_VER && defined _M_IX86
 typedef unsigned __int32 BignumInt;
 typedef unsigned __int64 BignumDblInt;
@@ -127,7 +127,7 @@ static Bignum newbn(int length)
 
     b = snewn(length + 1, BignumInt);
     if (!b)
-	abort();		       /* FIXME */
+        abort();		       /* FIXME */
     memset(b, 0, (length + 1) * sizeof(*b));
     b[0] = length;
     return b;
@@ -136,14 +136,14 @@ static Bignum newbn(int length)
 void bn_restore_invariant(Bignum b)
 {
     while (b[0] > 1 && b[b[0]] == 0)
-	b[0]--;
+        b[0]--;
 }
 
 Bignum copybn(Bignum orig)
 {
     Bignum b = snewn(orig[0] + 1, BignumInt);
     if (!b)
-	abort();		       /* FIXME */
+        abort();		       /* FIXME */
     memcpy(b, orig, (orig[0] + 1) * sizeof(*b));
     return b;
 }
@@ -228,7 +228,7 @@ static int mul_compute_scratch(int len)
     return ret;
 }
 static void internal_mul(const BignumInt *a, const BignumInt *b,
-			 BignumInt *c, int len, BignumInt *scratch)
+                         BignumInt *c, int len, BignumInt *scratch)
 {
     if (len > KARATSUBA_THRESHOLD) {
         int i;
@@ -598,7 +598,7 @@ static void monty_reduce(BignumInt *x, const BignumInt *n,
 }
 
 static void internal_add_shifted(BignumInt *number,
-				 unsigned n, int shift)
+                                 unsigned n, int shift)
 {
     int word = 1 + (shift / BIGNUM_INT_BITS);
     int bshift = shift % BIGNUM_INT_BITS;
@@ -608,10 +608,10 @@ static void internal_add_shifted(BignumInt *number,
 
     while (addend) {
         assert(word <= number[0]);
-	addend += number[word];
-	number[word] = (BignumInt) addend & BIGNUM_INT_MASK;
-	addend >>= BIGNUM_INT_BITS;
-	word++;
+        addend += number[word];
+        number[word] = (BignumInt) addend & BIGNUM_INT_MASK;
+        addend >>= BIGNUM_INT_BITS;
+        word++;
     }
 }
 
@@ -626,8 +626,8 @@ static void internal_add_shifted(BignumInt *number,
  * left by `qshift' before adding into quot.
  */
 static void internal_mod(BignumInt *a, int alen,
-			 BignumInt *m, int mlen,
-			 BignumInt *quot, int qshift)
+                         BignumInt *m, int mlen,
+                         BignumInt *quot, int qshift)
 {
     BignumInt m0, m1;
     unsigned int h;
@@ -636,86 +636,86 @@ static void internal_mod(BignumInt *a, int alen,
     m0 = m[0];
     assert(m0 >> (BIGNUM_INT_BITS-1) == 1);
     if (mlen > 1)
-	m1 = m[1];
+        m1 = m[1];
     else
-	m1 = 0;
+        m1 = 0;
 
     for (i = 0; i <= alen - mlen; i++) {
-	BignumDblInt t;
-	unsigned int q, r, c, ai1;
+        BignumDblInt t;
+        unsigned int q, r, c, ai1;
 
-	if (i == 0) {
-	    h = 0;
-	} else {
-	    h = a[i - 1];
-	    a[i - 1] = 0;
-	}
+        if (i == 0) {
+            h = 0;
+        } else {
+            h = a[i - 1];
+            a[i - 1] = 0;
+        }
 
-	if (i == alen - 1)
-	    ai1 = 0;
-	else
-	    ai1 = a[i + 1];
+        if (i == alen - 1)
+            ai1 = 0;
+        else
+            ai1 = a[i + 1];
 
-	/* Find q = h:a[i] / m0 */
-	if (h >= m0) {
-	    /*
-	     * Special case.
-	     * 
-	     * To illustrate it, suppose a BignumInt is 8 bits, and
-	     * we are dividing (say) A1:23:45:67 by A1:B2:C3. Then
-	     * our initial division will be 0xA123 / 0xA1, which
-	     * will give a quotient of 0x100 and a divide overflow.
-	     * However, the invariants in this division algorithm
-	     * are not violated, since the full number A1:23:... is
-	     * _less_ than the quotient prefix A1:B2:... and so the
-	     * following correction loop would have sorted it out.
-	     * 
-	     * In this situation we set q to be the largest
-	     * quotient we _can_ stomach (0xFF, of course).
-	     */
-	    q = BIGNUM_INT_MASK;
-	} else {
-	    /* Macro doesn't want an array subscript expression passed
-	     * into it (see definition), so use a temporary. */
-	    BignumInt tmplo = a[i];
-	    DIVMOD_WORD(q, r, h, tmplo, m0);
+        /* Find q = h:a[i] / m0 */
+        if (h >= m0) {
+            /*
+             * Special case.
+             * 
+             * To illustrate it, suppose a BignumInt is 8 bits, and
+             * we are dividing (say) A1:23:45:67 by A1:B2:C3. Then
+             * our initial division will be 0xA123 / 0xA1, which
+             * will give a quotient of 0x100 and a divide overflow.
+             * However, the invariants in this division algorithm
+             * are not violated, since the full number A1:23:... is
+             * _less_ than the quotient prefix A1:B2:... and so the
+             * following correction loop would have sorted it out.
+             * 
+             * In this situation we set q to be the largest
+             * quotient we _can_ stomach (0xFF, of course).
+             */
+            q = BIGNUM_INT_MASK;
+        } else {
+            /* Macro doesn't want an array subscript expression passed
+             * into it (see definition), so use a temporary. */
+            BignumInt tmplo = a[i];
+            DIVMOD_WORD(q, r, h, tmplo, m0);
 
-	    /* Refine our estimate of q by looking at
-	     h:a[i]:a[i+1] / m0:m1 */
-	    t = MUL_WORD(m1, q);
-	    if (t > ((BignumDblInt) r << BIGNUM_INT_BITS) + ai1) {
-		q--;
-		t -= m1;
-		r = (r + m0) & BIGNUM_INT_MASK;     /* overflow? */
-		if (r >= (BignumDblInt) m0 &&
-		    t > ((BignumDblInt) r << BIGNUM_INT_BITS) + ai1) q--;
-	    }
-	}
+            /* Refine our estimate of q by looking at
+             h:a[i]:a[i+1] / m0:m1 */
+            t = MUL_WORD(m1, q);
+            if (t > ((BignumDblInt) r << BIGNUM_INT_BITS) + ai1) {
+                q--;
+                t -= m1;
+                r = (r + m0) & BIGNUM_INT_MASK;     /* overflow? */
+                if (r >= (BignumDblInt) m0 &&
+                    t > ((BignumDblInt) r << BIGNUM_INT_BITS) + ai1) q--;
+            }
+        }
 
-	/* Subtract q * m from a[i...] */
-	c = 0;
-	for (k = mlen - 1; k >= 0; k--) {
-	    t = MUL_WORD(q, m[k]);
-	    t += c;
-	    c = (unsigned)(t >> BIGNUM_INT_BITS);
-	    if ((BignumInt) t > a[i + k])
-		c++;
-	    a[i + k] -= (BignumInt) t;
-	}
+        /* Subtract q * m from a[i...] */
+        c = 0;
+        for (k = mlen - 1; k >= 0; k--) {
+            t = MUL_WORD(q, m[k]);
+            t += c;
+            c = (unsigned)(t >> BIGNUM_INT_BITS);
+            if ((BignumInt) t > a[i + k])
+                c++;
+            a[i + k] -= (BignumInt) t;
+        }
 
-	/* Add back m in case of borrow */
-	if (c != h) {
-	    t = 0;
-	    for (k = mlen - 1; k >= 0; k--) {
-		t += m[k];
-		t += a[i + k];
-		a[i + k] = (BignumInt) t;
-		t = t >> BIGNUM_INT_BITS;
-	    }
-	    q--;
-	}
-	if (quot)
-	    internal_add_shifted(quot, q, qshift + BIGNUM_INT_BITS * (alen - mlen - i));
+        /* Add back m in case of borrow */
+        if (c != h) {
+            t = 0;
+            for (k = mlen - 1; k >= 0; k--) {
+                t += m[k];
+                t += a[i + k];
+                a[i + k] = (BignumInt) t;
+                t = t >> BIGNUM_INT_BITS;
+            }
+            q--;
+        }
+        if (quot)
+            internal_add_shifted(quot, q, qshift + BIGNUM_INT_BITS * (alen - mlen - i));
     }
 }
 
@@ -746,31 +746,31 @@ Bignum modpow_simple(Bignum base_in, Bignum exp, Bignum mod)
     mlen = mod[0];
     m = snewn(mlen, BignumInt);
     for (j = 0; j < mlen; j++)
-	m[j] = mod[mod[0] - j];
+        m[j] = mod[mod[0] - j];
 
     /* Shift m left to make msb bit set */
     for (mshift = 0; mshift < BIGNUM_INT_BITS-1; mshift++)
-	if ((m[0] << mshift) & BIGNUM_TOP_BIT)
-	    break;
+        if ((m[0] << mshift) & BIGNUM_TOP_BIT)
+            break;
     if (mshift) {
-	for (i = 0; i < mlen - 1; i++)
-	    m[i] = (m[i] << mshift) | (m[i + 1] >> (BIGNUM_INT_BITS - mshift));
-	m[mlen - 1] = m[mlen - 1] << mshift;
+        for (i = 0; i < mlen - 1; i++)
+            m[i] = (m[i] << mshift) | (m[i + 1] >> (BIGNUM_INT_BITS - mshift));
+        m[mlen - 1] = m[mlen - 1] << mshift;
     }
 
     /* Allocate n of size mlen, copy base to n */
     n = snewn(mlen, BignumInt);
     i = mlen - base[0];
     for (j = 0; j < i; j++)
-	n[j] = 0;
+        n[j] = 0;
     for (j = 0; j < (int)base[0]; j++)
-	n[i + j] = base[base[0] - j];
+        n[i + j] = base[base[0] - j];
 
     /* Allocate a and b of size 2*mlen. Set a = 1 */
     a = snewn(2 * mlen, BignumInt);
     b = snewn(2 * mlen, BignumInt);
     for (i = 0; i < 2 * mlen; i++)
-	a[i] = 0;
+        a[i] = 0;
     a[2 * mlen - 1] = 1;
 
     /* Scratch space for multiplies */
@@ -781,49 +781,49 @@ Bignum modpow_simple(Bignum base_in, Bignum exp, Bignum mod)
     i = 0;
     j = BIGNUM_INT_BITS-1;
     while (i < (int)exp[0] && (exp[exp[0] - i] & (1 << j)) == 0) {
-	j--;
-	if (j < 0) {
-	    i++;
-	    j = BIGNUM_INT_BITS-1;
-	}
+        j--;
+        if (j < 0) {
+            i++;
+            j = BIGNUM_INT_BITS-1;
+        }
     }
 
     /* Main computation */
     while (i < (int)exp[0]) {
-	while (j >= 0) {
-	    internal_mul(a + mlen, a + mlen, b, mlen, scratch);
-	    internal_mod(b, mlen * 2, m, mlen, NULL, 0);
-	    if ((exp[exp[0] - i] & (1 << j)) != 0) {
-		internal_mul(b + mlen, n, a, mlen, scratch);
-		internal_mod(a, mlen * 2, m, mlen, NULL, 0);
-	    } else {
-		BignumInt *t;
-		t = a;
-		a = b;
-		b = t;
-	    }
-	    j--;
-	}
-	i++;
-	j = BIGNUM_INT_BITS-1;
+        while (j >= 0) {
+            internal_mul(a + mlen, a + mlen, b, mlen, scratch);
+            internal_mod(b, mlen * 2, m, mlen, NULL, 0);
+            if ((exp[exp[0] - i] & (1 << j)) != 0) {
+                internal_mul(b + mlen, n, a, mlen, scratch);
+                internal_mod(a, mlen * 2, m, mlen, NULL, 0);
+            } else {
+                BignumInt *t;
+                t = a;
+                a = b;
+                b = t;
+            }
+            j--;
+        }
+        i++;
+        j = BIGNUM_INT_BITS-1;
     }
 
     /* Fixup result in case the modulus was shifted */
     if (mshift) {
-	for (i = mlen - 1; i < 2 * mlen - 1; i++)
-	    a[i] = (a[i] << mshift) | (a[i + 1] >> (BIGNUM_INT_BITS - mshift));
-	a[2 * mlen - 1] = a[2 * mlen - 1] << mshift;
-	internal_mod(a, mlen * 2, m, mlen, NULL, 0);
-	for (i = 2 * mlen - 1; i >= mlen; i--)
-	    a[i] = (a[i] >> mshift) | (a[i - 1] << (BIGNUM_INT_BITS - mshift));
+        for (i = mlen - 1; i < 2 * mlen - 1; i++)
+            a[i] = (a[i] << mshift) | (a[i + 1] >> (BIGNUM_INT_BITS - mshift));
+        a[2 * mlen - 1] = a[2 * mlen - 1] << mshift;
+        internal_mod(a, mlen * 2, m, mlen, NULL, 0);
+        for (i = 2 * mlen - 1; i >= mlen; i--)
+            a[i] = (a[i] >> mshift) | (a[i - 1] << (BIGNUM_INT_BITS - mshift));
     }
 
     /* Copy result to buffer */
     result = newbn(mod[0]);
     for (i = 0; i < mlen; i++)
-	result[result[0] - i] = a[i + mlen];
+        result[result[0] - i] = a[i + mlen];
     while (result[0] > 1 && result[result[0]] == 0)
-	result[0]--;
+        result[0]--;
 
     /* Free temporary arrays */
     smemclr(a, 2 * mlen * sizeof(*a));
@@ -900,11 +900,11 @@ Bignum modpow(Bignum base_in, Bignum exp, Bignum mod)
      */
     n = snewn(len, BignumInt);
     for (j = 0; j < len; j++)
-	n[len - 1 - j] = mod[j + 1];
+        n[len - 1 - j] = mod[j + 1];
 
     mninv = snewn(len, BignumInt);
     for (j = 0; j < len; j++)
-	mninv[len - 1 - j] = (j < (int)inv[0] ? inv[j + 1] : 0);
+        mninv[len - 1 - j] = (j < (int)inv[0] ? inv[j + 1] : 0);
     freebn(inv);         /* we don't need this copy of it any more */
     /* Now negate mninv mod r, so it's the inverse of -n rather than +n. */
     x = snewn(len, BignumInt);
@@ -914,13 +914,13 @@ Bignum modpow(Bignum base_in, Bignum exp, Bignum mod)
 
     /* x = snewn(len, BignumInt); */ /* already done above */
     for (j = 0; j < len; j++)
-	x[len - 1 - j] = (j < (int)base[0] ? base[j + 1] : 0);
+        x[len - 1 - j] = (j < (int)base[0] ? base[j + 1] : 0);
     freebn(base);        /* we don't need this copy of it any more */
 
     a = snewn(2*len, BignumInt);
     b = snewn(2*len, BignumInt);
     for (j = 0; j < len; j++)
-	a[2*len - 1 - j] = (j < (int)rn[0] ? rn[j + 1] : 0);
+        a[2*len - 1 - j] = (j < (int)rn[0] ? rn[j + 1] : 0);
     freebn(rn);
 
     /* Scratch space for multiplies */
@@ -931,31 +931,31 @@ Bignum modpow(Bignum base_in, Bignum exp, Bignum mod)
     i = 0;
     j = BIGNUM_INT_BITS-1;
     while (i < (int)exp[0] && (exp[exp[0] - i] & (1 << j)) == 0) {
-	j--;
-	if (j < 0) {
-	    i++;
-	    j = BIGNUM_INT_BITS-1;
-	}
+        j--;
+        if (j < 0) {
+            i++;
+            j = BIGNUM_INT_BITS-1;
+        }
     }
 
     /* Main computation */
     while (i < (int)exp[0]) {
-	while (j >= 0) {
-	    internal_mul(a + len, a + len, b, len, scratch);
+        while (j >= 0) {
+            internal_mul(a + len, a + len, b, len, scratch);
             monty_reduce(b, n, mninv, scratch, len);
-	    if ((exp[exp[0] - i] & (1 << j)) != 0) {
+            if ((exp[exp[0] - i] & (1 << j)) != 0) {
                 internal_mul(b + len, x, a, len,  scratch);
                 monty_reduce(a, n, mninv, scratch, len);
-	    } else {
-		BignumInt *t;
-		t = a;
-		a = b;
-		b = t;
-	    }
-	    j--;
-	}
-	i++;
-	j = BIGNUM_INT_BITS-1;
+            } else {
+                BignumInt *t;
+                t = a;
+                a = b;
+                b = t;
+            }
+            j--;
+        }
+        i++;
+        j = BIGNUM_INT_BITS-1;
     }
 
     /*
@@ -967,9 +967,9 @@ Bignum modpow(Bignum base_in, Bignum exp, Bignum mod)
     /* Copy result to buffer */
     result = newbn(mod[0]);
     for (i = 0; i < len; i++)
-	result[result[0] - i] = a[i + len];
+        result[result[0] - i] = a[i + len];
     while (result[0] > 1 && result[result[0]] == 0)
-	result[0]--;
+        result[0]--;
 
     /* Free temporary arrays */
     smemclr(scratch, scratchlen * sizeof(*scratch));
@@ -1011,16 +1011,16 @@ Bignum modmul(Bignum p, Bignum q, Bignum mod)
     mlen = mod[0];
     m = snewn(mlen, BignumInt);
     for (j = 0; j < mlen; j++)
-	m[j] = mod[mod[0] - j];
+        m[j] = mod[mod[0] - j];
 
     /* Shift m left to make msb bit set */
     for (mshift = 0; mshift < BIGNUM_INT_BITS-1; mshift++)
-	if ((m[0] << mshift) & BIGNUM_TOP_BIT)
-	    break;
+        if ((m[0] << mshift) & BIGNUM_TOP_BIT)
+            break;
     if (mshift) {
-	for (i = 0; i < mlen - 1; i++)
-	    m[i] = (m[i] << mshift) | (m[i + 1] >> (BIGNUM_INT_BITS - mshift));
-	m[mlen - 1] = m[mlen - 1] << mshift;
+        for (i = 0; i < mlen - 1; i++)
+            m[i] = (m[i] << mshift) | (m[i + 1] >> (BIGNUM_INT_BITS - mshift));
+        m[mlen - 1] = m[mlen - 1] << mshift;
     }
 
     pqlen = (p[0] > q[0] ? p[0] : q[0]);
@@ -1036,17 +1036,17 @@ Bignum modmul(Bignum p, Bignum q, Bignum mod)
     n = snewn(pqlen, BignumInt);
     i = pqlen - p[0];
     for (j = 0; j < i; j++)
-	n[j] = 0;
+        n[j] = 0;
     for (j = 0; j < (int)p[0]; j++)
-	n[i + j] = p[p[0] - j];
+        n[i + j] = p[p[0] - j];
 
     /* Allocate o of size pqlen, copy q to o */
     o = snewn(pqlen, BignumInt);
     i = pqlen - q[0];
     for (j = 0; j < i; j++)
-	o[j] = 0;
+        o[j] = 0;
     for (j = 0; j < (int)q[0]; j++)
-	o[i + j] = q[q[0] - j];
+        o[i + j] = q[q[0] - j];
 
     /* Allocate a of size 2*pqlen for result */
     a = snewn(2 * pqlen, BignumInt);
@@ -1061,21 +1061,21 @@ Bignum modmul(Bignum p, Bignum q, Bignum mod)
 
     /* Fixup result in case the modulus was shifted */
     if (mshift) {
-	for (i = 2 * pqlen - mlen - 1; i < 2 * pqlen - 1; i++)
-	    a[i] = (a[i] << mshift) | (a[i + 1] >> (BIGNUM_INT_BITS - mshift));
-	a[2 * pqlen - 1] = a[2 * pqlen - 1] << mshift;
-	internal_mod(a, pqlen * 2, m, mlen, NULL, 0);
-	for (i = 2 * pqlen - 1; i >= 2 * pqlen - mlen; i--)
-	    a[i] = (a[i] >> mshift) | (a[i - 1] << (BIGNUM_INT_BITS - mshift));
+        for (i = 2 * pqlen - mlen - 1; i < 2 * pqlen - 1; i++)
+            a[i] = (a[i] << mshift) | (a[i + 1] >> (BIGNUM_INT_BITS - mshift));
+        a[2 * pqlen - 1] = a[2 * pqlen - 1] << mshift;
+        internal_mod(a, pqlen * 2, m, mlen, NULL, 0);
+        for (i = 2 * pqlen - 1; i >= 2 * pqlen - mlen; i--)
+            a[i] = (a[i] >> mshift) | (a[i - 1] << (BIGNUM_INT_BITS - mshift));
     }
 
     /* Copy result to buffer */
     rlen = (mlen < pqlen * 2 ? mlen : pqlen * 2);
     result = newbn(rlen);
     for (i = 0; i < rlen; i++)
-	result[result[0] - i] = a[i + 2 * pqlen - rlen];
+        result[result[0] - i] = a[i + 2 * pqlen - rlen];
     while (result[0] > 1 && result[result[0]] == 0)
-	result[0]--;
+        result[0]--;
 
     /* Free temporary arrays */
     smemclr(scratch, scratchlen * sizeof(*scratch));
@@ -1116,49 +1116,49 @@ static void bigdivmod(Bignum p, Bignum mod, Bignum result, Bignum quotient)
     mlen = mod[0];
     m = snewn(mlen, BignumInt);
     for (j = 0; j < mlen; j++)
-	m[j] = mod[mod[0] - j];
+        m[j] = mod[mod[0] - j];
 
     /* Shift m left to make msb bit set */
     for (mshift = 0; mshift < BIGNUM_INT_BITS-1; mshift++)
-	if ((m[0] << mshift) & BIGNUM_TOP_BIT)
-	    break;
+        if ((m[0] << mshift) & BIGNUM_TOP_BIT)
+            break;
     if (mshift) {
-	for (i = 0; i < mlen - 1; i++)
-	    m[i] = (m[i] << mshift) | (m[i + 1] >> (BIGNUM_INT_BITS - mshift));
-	m[mlen - 1] = m[mlen - 1] << mshift;
+        for (i = 0; i < mlen - 1; i++)
+            m[i] = (m[i] << mshift) | (m[i + 1] >> (BIGNUM_INT_BITS - mshift));
+        m[mlen - 1] = m[mlen - 1] << mshift;
     }
 
     plen = p[0];
     /* Ensure plen > mlen */
     if (plen <= mlen)
-	plen = mlen + 1;
+        plen = mlen + 1;
 
     /* Allocate n of size plen, copy p to n */
     n = snewn(plen, BignumInt);
     for (j = 0; j < plen; j++)
-	n[j] = 0;
+        n[j] = 0;
     for (j = 1; j <= (int)p[0]; j++)
-	n[plen - j] = p[j];
+        n[plen - j] = p[j];
 
     /* Main computation */
     internal_mod(n, plen, m, mlen, quotient, mshift);
 
     /* Fixup result in case the modulus was shifted */
     if (mshift) {
-	for (i = plen - mlen - 1; i < plen - 1; i++)
-	    n[i] = (n[i] << mshift) | (n[i + 1] >> (BIGNUM_INT_BITS - mshift));
-	n[plen - 1] = n[plen - 1] << mshift;
-	internal_mod(n, plen, m, mlen, quotient, 0);
-	for (i = plen - 1; i >= plen - mlen; i--)
-	    n[i] = (n[i] >> mshift) | (n[i - 1] << (BIGNUM_INT_BITS - mshift));
+        for (i = plen - mlen - 1; i < plen - 1; i++)
+            n[i] = (n[i] << mshift) | (n[i + 1] >> (BIGNUM_INT_BITS - mshift));
+        n[plen - 1] = n[plen - 1] << mshift;
+        internal_mod(n, plen, m, mlen, quotient, 0);
+        for (i = plen - 1; i >= plen - mlen; i--)
+            n[i] = (n[i] >> mshift) | (n[i - 1] << (BIGNUM_INT_BITS - mshift));
     }
 
     /* Copy result to buffer */
     if (result) {
-	for (i = 1; i <= (int)result[0]; i++) {
-	    int j = plen - i;
-	    result[i] = j >= 0 ? n[j] : 0;
-	}
+        for (i = 1; i <= (int)result[0]; i++) {
+            int j = plen - i;
+            result[i] = j >= 0 ? n[j] : 0;
+        }
     }
 
     /* Free temporary arrays */
@@ -1175,7 +1175,7 @@ void decbn(Bignum bn)
 {
     int i = 1;
     while (i < (int)bn[0] && bn[i] == 0)
-	bn[i++] = BIGNUM_INT_MASK;
+        bn[i++] = BIGNUM_INT_MASK;
     bn[i]--;
 }
 
@@ -1190,14 +1190,14 @@ Bignum bignum_from_bytes(const unsigned char *data, int nbytes)
 
     result = newbn(w);
     for (i = 1; i <= w; i++)
-	result[i] = 0;
+        result[i] = 0;
     for (i = nbytes; i--;) {
-	unsigned char byte = *data++;
-	result[1 + i / BIGNUM_INT_BYTES] |= byte << (8*i % BIGNUM_INT_BITS);
+        unsigned char byte = *data++;
+        result[1 + i / BIGNUM_INT_BYTES] |= byte << (8*i % BIGNUM_INT_BITS);
     }
 
     while (result[0] > 1 && result[result[0]] == 0)
-	result[0]--;
+        result[0]--;
     return result;
 }
 
@@ -1212,18 +1212,18 @@ int ssh1_read_bignum(const unsigned char *data, int len, Bignum * result)
     int w, b;
 
     if (len < 2)
-	return -1;
+        return -1;
 
     w = 0;
     for (i = 0; i < 2; i++)
-	w = (w << 8) + *p++;
+        w = (w << 8) + *p++;
     b = (w + 7) / 8;		       /* bits -> bytes */
 
     if (len < b+2)
-	return -1;
+        return -1;
 
     if (!result)		       /* just return length */
-	return b + 2;
+        return b + 2;
 
     *result = bignum_from_bytes(p, b);
 
@@ -1237,7 +1237,7 @@ int bignum_bitcount(Bignum bn)
 {
     int bitcount = bn[0] * BIGNUM_INT_BITS - 1;
     while (bitcount >= 0
-	   && (bn[bitcount / BIGNUM_INT_BITS + 1] >> (bitcount % BIGNUM_INT_BITS)) == 0) bitcount--;
+           && (bn[bitcount / BIGNUM_INT_BITS + 1] >> (bitcount % BIGNUM_INT_BITS)) == 0) bitcount--;
     return bitcount + 1;
 }
 
@@ -1263,10 +1263,10 @@ int ssh2_bignum_length(Bignum bn)
 int bignum_byte(Bignum bn, int i)
 {
     if (i < 0 || i >= (int)(BIGNUM_INT_BYTES * bn[0]))
-	return 0;		       /* beyond the end */
+        return 0;		       /* beyond the end */
     else
-	return (bn[i / BIGNUM_INT_BYTES + 1] >>
-		((i % BIGNUM_INT_BYTES)*8)) & 0xFF;
+        return (bn[i / BIGNUM_INT_BYTES + 1] >>
+                ((i % BIGNUM_INT_BYTES)*8)) & 0xFF;
 }
 
 /*
@@ -1275,9 +1275,9 @@ int bignum_byte(Bignum bn, int i)
 int bignum_bit(Bignum bn, int i)
 {
     if (i < 0 || i >= (int)(BIGNUM_INT_BITS * bn[0]))
-	return 0;		       /* beyond the end */
+        return 0;		       /* beyond the end */
     else
-	return (bn[i / BIGNUM_INT_BITS + 1] >> (i % BIGNUM_INT_BITS)) & 1;
+        return (bn[i / BIGNUM_INT_BITS + 1] >> (i % BIGNUM_INT_BITS)) & 1;
 }
 
 /*
@@ -1286,14 +1286,14 @@ int bignum_bit(Bignum bn, int i)
 void bignum_set_bit(Bignum bn, int bitnum, int value)
 {
     if (bitnum < 0 || bitnum >= (int)(BIGNUM_INT_BITS * bn[0]))
-	abort();		       /* beyond the end */
+        abort();		       /* beyond the end */
     else {
-	int v = bitnum / BIGNUM_INT_BITS + 1;
-	int mask = 1 << (bitnum % BIGNUM_INT_BITS);
-	if (value)
-	    bn[v] |= mask;
-	else
-	    bn[v] &= ~mask;
+        int v = bitnum / BIGNUM_INT_BITS + 1;
+        int mask = 1 << (bitnum % BIGNUM_INT_BITS);
+        if (value)
+            bn[v] |= mask;
+        else
+            bn[v] &= ~mask;
     }
 }
 
@@ -1311,7 +1311,7 @@ int ssh1_write_bignum(void *data, Bignum bn)
     *p++ = (bitc >> 8) & 0xFF;
     *p++ = (bitc) & 0xFF;
     for (i = len - 2; i--;)
-	*p++ = bignum_byte(bn, i);
+        *p++ = bignum_byte(bn, i);
     return len;
 }
 
@@ -1334,13 +1334,13 @@ int bignum_cmp(Bignum a, Bignum b)
 
     i = (amax > bmax ? amax : bmax);
     while (i) {
-	BignumInt aval = (i > amax ? 0 : a[i]);
-	BignumInt bval = (i > bmax ? 0 : b[i]);
-	if (aval < bval)
-	    return -1;
-	if (aval > bval)
-	    return +1;
-	i--;
+        BignumInt aval = (i > amax ? 0 : a[i]);
+        BignumInt bval = (i > bmax ? 0 : b[i]);
+        if (aval < bval)
+            return -1;
+        if (aval > bval)
+            return +1;
+        i--;
     }
     return 0;
 }
@@ -1360,16 +1360,16 @@ Bignum bignum_rshift(Bignum a, int shift)
     ret = newbn((bits + BIGNUM_INT_BITS - 1) / BIGNUM_INT_BITS);
 
     if (ret) {
-	shiftw = shift / BIGNUM_INT_BITS;
-	shiftb = shift % BIGNUM_INT_BITS;
-	shiftbb = BIGNUM_INT_BITS - shiftb;
+        shiftw = shift / BIGNUM_INT_BITS;
+        shiftb = shift % BIGNUM_INT_BITS;
+        shiftbb = BIGNUM_INT_BITS - shiftb;
 
-	ai1 = a[shiftw + 1];
-	for (i = 1; i <= (int)ret[0]; i++) {
-	    ai = ai1;
-	    ai1 = (i + shiftw + 1 <= (int)a[0] ? a[i + shiftw + 1] : 0);
-	    ret[i] = ((ai >> shiftb) | (ai1 << shiftbb)) & BIGNUM_INT_MASK;
-	}
+        ai1 = a[shiftw + 1];
+        for (i = 1; i <= (int)ret[0]; i++) {
+            ai = ai1;
+            ai1 = (i + shiftw + 1 <= (int)a[0] ? a[i + shiftw + 1] : 0);
+            ret[i] = ((ai >> shiftb) | (ai1 << shiftbb)) & BIGNUM_INT_MASK;
+        }
     }
 
     return ret;
@@ -1392,37 +1392,37 @@ Bignum bigmuladd(Bignum a, Bignum b, Bignum addend)
     wslen = mlen * 4 + mul_compute_scratch(mlen);
     workspace = snewn(wslen, BignumInt);
     for (i = 0; i < mlen; i++) {
-	workspace[0 * mlen + i] = (mlen - i <= (int)a[0] ? a[mlen - i] : 0);
-	workspace[1 * mlen + i] = (mlen - i <= (int)b[0] ? b[mlen - i] : 0);
+        workspace[0 * mlen + i] = (mlen - i <= (int)a[0] ? a[mlen - i] : 0);
+        workspace[1 * mlen + i] = (mlen - i <= (int)b[0] ? b[mlen - i] : 0);
     }
 
     internal_mul(workspace + 0 * mlen, workspace + 1 * mlen,
-		 workspace + 2 * mlen, mlen, workspace + 4 * mlen);
+                 workspace + 2 * mlen, mlen, workspace + 4 * mlen);
 
     /* now just copy the result back */
     rlen = alen + blen + 1;
     if (addend && rlen <= (int)addend[0])
-	rlen = addend[0] + 1;
+        rlen = addend[0] + 1;
     ret = newbn(rlen);
     maxspot = 0;
     for (i = 1; i <= (int)ret[0]; i++) {
-	ret[i] = (i <= 2 * mlen ? workspace[4 * mlen - i] : 0);
-	if (ret[i] != 0)
-	    maxspot = i;
+        ret[i] = (i <= 2 * mlen ? workspace[4 * mlen - i] : 0);
+        if (ret[i] != 0)
+            maxspot = i;
     }
     ret[0] = maxspot;
 
     /* now add in the addend, if any */
     if (addend) {
-	BignumDblInt carry = 0;
-	for (i = 1; i <= rlen; i++) {
-	    carry += (i <= (int)ret[0] ? ret[i] : 0);
-	    carry += (i <= (int)addend[0] ? addend[i] : 0);
-	    ret[i] = (BignumInt) carry & BIGNUM_INT_MASK;
-	    carry >>= BIGNUM_INT_BITS;
-	    if (ret[i] != 0 && i > maxspot)
-		maxspot = i;
-	}
+        BignumDblInt carry = 0;
+        for (i = 1; i <= rlen; i++) {
+            carry += (i <= (int)ret[0] ? ret[i] : 0);
+            carry += (i <= (int)addend[0] ? addend[i] : 0);
+            ret[i] = (BignumInt) carry & BIGNUM_INT_MASK;
+            carry >>= BIGNUM_INT_BITS;
+            if (ret[i] != 0 && i > maxspot)
+                maxspot = i;
+        }
     }
     ret[0] = maxspot;
 
@@ -1515,15 +1515,15 @@ Bignum bignum_bitmask(Bignum n)
 
     i = ret[0];
     while (n[i] == 0 && i > 0)
-	i--;
+        i--;
     if (i <= 0)
-	return ret;		       /* input was zero */
+        return ret;		       /* input was zero */
     j = 1;
     while (j < n[i])
-	j = 2 * j + 1;
+        j = 2 * j + 1;
     ret[i] = j;
     while (--i > 0)
-	ret[i] = BIGNUM_INT_MASK;
+        ret[i] = BIGNUM_INT_MASK;
     return ret;
 }
 
@@ -1553,13 +1553,13 @@ Bignum bignum_add_long(Bignum number, unsigned long addendx)
     BignumDblInt carry = 0, addend = addendx;
 
     for (i = 1; i <= (int)ret[0]; i++) {
-	carry += addend & BIGNUM_INT_MASK;
-	carry += (i <= (int)number[0] ? number[i] : 0);
-	addend >>= BIGNUM_INT_BITS;
-	ret[i] = (BignumInt) carry & BIGNUM_INT_MASK;
-	carry >>= BIGNUM_INT_BITS;
-	if (ret[i] != 0)
-	    maxspot = i;
+        carry += addend & BIGNUM_INT_MASK;
+        carry += (i <= (int)number[0] ? number[i] : 0);
+        addend >>= BIGNUM_INT_BITS;
+        ret[i] = (BignumInt) carry & BIGNUM_INT_MASK;
+        carry >>= BIGNUM_INT_BITS;
+        if (ret[i] != 0)
+            maxspot = i;
     }
     ret[0] = maxspot;
     return ret;
@@ -1576,7 +1576,7 @@ unsigned short bignum_mod_short(Bignum number, unsigned short modulus)
     r = 0;
     mod = modulus;
     for (i = number[0]; i > 0; i--)
-	r = (r * (BIGNUM_TOP_BIT % mod) * 2 + number[i] % mod) % mod;
+        r = (r * (BIGNUM_TOP_BIT % mod) * 2 + number[i] % mod) % mod;
     return (unsigned short) r;
 }
 
@@ -1590,16 +1590,16 @@ void diagbn(char *prefix, Bignum md)
 
     nibbles = (3 + bignum_bitcount(md)) / 4;
     if (nibbles < 1)
-	nibbles = 1;
+        nibbles = 1;
     morenibbles = 4 * md[0] - nibbles;
     for (i = 0; i < morenibbles; i++)
-	debug(("-"));
+        debug(("-"));
     for (i = nibbles; i--;)
-	debug(("%c",
-	       hex[(bignum_byte(md, i / 2) >> (4 * (i % 2))) & 0xF]));
+        debug(("%c",
+               hex[(bignum_byte(md, i / 2) >> (4 * (i % 2))) & 0xF]));
 
     if (prefix)
-	debug(("\n"));
+        debug(("\n"));
 }
 #endif
 
@@ -1632,13 +1632,13 @@ Bignum biggcd(Bignum av, Bignum bv)
     Bignum b = copybn(bv);
 
     while (bignum_cmp(b, Zero) != 0) {
-	Bignum t = newbn(b[0]);
-	bigdivmod(a, b, t, NULL);
-	while (t[0] > 1 && t[t[0]] == 0)
-	    t[0]--;
-	freebn(a);
-	a = b;
-	b = t;
+        Bignum t = newbn(b[0]);
+        bigdivmod(a, b, t, NULL);
+        while (t[0] > 1 && t[t[0]] == 0)
+            t[0]--;
+        freebn(a);
+        a = b;
+        b = t;
     }
 
     freebn(b);
@@ -1660,7 +1660,7 @@ Bignum modinv(Bignum number, Bignum modulus)
     assert(modulus[modulus[0]] != 0);
 
     while (bignum_cmp(b, One) != 0) {
-	Bignum t, q;
+        Bignum t, q;
 
         if (bignum_cmp(b, Zero) == 0) {
             /*
@@ -1675,19 +1675,19 @@ Bignum modinv(Bignum number, Bignum modulus)
         }
 
         t = newbn(b[0]);
-	q = newbn(a[0]);
-	bigdivmod(a, b, t, q);
-	while (t[0] > 1 && t[t[0]] == 0)
-	    t[0]--;
-	freebn(a);
-	a = b;
-	b = t;
-	t = xp;
-	xp = x;
-	x = bigmuladd(q, xp, t);
-	sign = -sign;
-	freebn(t);
-	freebn(q);
+        q = newbn(a[0]);
+        bigdivmod(a, b, t, q);
+        while (t[0] > 1 && t[t[0]] == 0)
+            t[0]--;
+        freebn(a);
+        a = b;
+        b = t;
+        t = xp;
+        xp = x;
+        x = bigmuladd(q, xp, t);
+        sign = -sign;
+        freebn(t);
+        freebn(q);
     }
 
     freebn(b);
@@ -1696,24 +1696,24 @@ Bignum modinv(Bignum number, Bignum modulus)
 
     /* now we know that sign * x == 1, and that x < modulus */
     if (sign < 0) {
-	/* set a new x to be modulus - x */
-	Bignum newx = newbn(modulus[0]);
-	BignumInt carry = 0;
-	int maxspot = 1;
-	int i;
+        /* set a new x to be modulus - x */
+        Bignum newx = newbn(modulus[0]);
+        BignumInt carry = 0;
+        int maxspot = 1;
+        int i;
 
-	for (i = 1; i <= (int)newx[0]; i++) {
-	    BignumInt aword = (i <= (int)modulus[0] ? modulus[i] : 0);
-	    BignumInt bword = (i <= (int)x[0] ? x[i] : 0);
-	    newx[i] = aword - bword - carry;
-	    bword = ~bword;
-	    carry = carry ? (newx[i] >= bword) : (newx[i] > bword);
-	    if (newx[i] != 0)
-		maxspot = i;
-	}
-	newx[0] = maxspot;
-	freebn(x);
-	x = newx;
+        for (i = 1; i <= (int)newx[0]; i++) {
+            BignumInt aword = (i <= (int)modulus[0] ? modulus[i] : 0);
+            BignumInt bword = (i <= (int)x[0] ? x[i] : 0);
+            newx[i] = aword - bword - carry;
+            bword = ~bword;
+            carry = carry ? (newx[i] >= bword) : (newx[i] > bword);
+            if (newx[i] != 0)
+                maxspot = i;
+        }
+        newx[0] = maxspot;
+        freebn(x);
+        x = newx;
     }
 
     /* and return. */
@@ -1749,9 +1749,9 @@ char *bignum_decimal(Bignum x)
      */
     i = bignum_bitcount(x);
     if (!i)
-	ndigits = 1;		       /* x = 0 */
+        ndigits = 1;		       /* x = 0 */
     else
-	ndigits = (28 * i + 92) / 93;  /* multiply by 28/93 and round up */
+        ndigits = (28 * i + 92) / 93;  /* multiply by 28/93 and round up */
     ndigits++;			       /* allow for trailing \0 */
     ret = snewn(ndigits, char);
 
@@ -1762,7 +1762,7 @@ char *bignum_decimal(Bignum x)
      */
     workspace = snewn(x[0], BignumInt);
     for (i = 0; i < (int)x[0]; i++)
-	workspace[i] = x[x[0] - i];
+        workspace[i] = x[x[0] - i];
 
     /*
      * Next, write the decimal number starting with the last digit.
@@ -1772,16 +1772,16 @@ char *bignum_decimal(Bignum x)
     ndigit = ndigits - 1;
     ret[ndigit] = '\0';
     do {
-	iszero = 1;
-	carry = 0;
-	for (i = 0; i < (int)x[0]; i++) {
-	    carry = (carry << BIGNUM_INT_BITS) + workspace[i];
-	    workspace[i] = (BignumInt) (carry / 10);
-	    if (workspace[i])
-		iszero = 0;
-	    carry %= 10;
-	}
-	ret[--ndigit] = (char) (carry + '0');
+        iszero = 1;
+        carry = 0;
+        for (i = 0; i < (int)x[0]; i++) {
+            carry = (carry << BIGNUM_INT_BITS) + workspace[i];
+            workspace[i] = (BignumInt) (carry / 10);
+            if (workspace[i])
+                iszero = 0;
+            carry %= 10;
+        }
+        ret[--ndigit] = (char) (carry + '0');
     } while (!iszero);
 
     /*
@@ -1789,7 +1789,7 @@ char *bignum_decimal(Bignum x)
      * string. Correct if so.
      */
     if (ndigit > 0)
-	memmove(ret, ret + ndigit, ndigits - ndigit);
+        memmove(ret, ret + ndigit, ndigits - ndigit);
 
     /*
      * Done.

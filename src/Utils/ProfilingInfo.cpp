@@ -32,8 +32,8 @@
 //////////////////////////////////////////////////////////////////////
 
 CRecordProfileEvent::CRecordProfileEvent (CProfilingRecord* aRecord)
-    : record (aRecord)
-    , start (__rdtsc())
+	: record (aRecord)
+	, start (__rdtsc())
 {
 }
 
@@ -50,15 +50,15 @@ CRecordProfileEvent::~CRecordProfileEvent()
 //////////////////////////////////////////////////////////////////////
 
 CProfilingRecord::CProfilingRecord ( const char* name
-                                   , const char* file
-                                   , int line)
-    : name (name)
-    , file (file)
-    , line (line)
-    , count (0)
-    , sum (0)
-    , minValue (ULLONG_MAX)
-    , maxValue (0)
+								   , const char* file
+								   , int line)
+	: name (name)
+	, file (file)
+	, line (line)
+	, count (0)
+	, sum (0)
+	, minValue (ULLONG_MAX)
+	, maxValue (0)
 {
 }
 
@@ -68,13 +68,13 @@ CProfilingRecord::CProfilingRecord ( const char* name
 
 void CProfilingRecord::Add (unsigned __int64 value)
 {
-    ++count;
-    sum += value;
+	++count;
+	sum += value;
 
-    if (value < minValue)
-        minValue = value;
-    if (value > maxValue)
-        maxValue = value;
+	if (value < minValue)
+		minValue = value;
+	if (value > maxValue)
+		maxValue = value;
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -83,11 +83,11 @@ void CProfilingRecord::Add (unsigned __int64 value)
 
 void CProfilingRecord::Reset()
 {
-    count = 0;
-    sum = 0;
+	count = 0;
+	sum = 0;
 
-    minValue = LLONG_MAX;
-    maxValue = 0;
+	minValue = LLONG_MAX;
+	maxValue = 0;
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -135,8 +135,8 @@ CProfilingInfo::~CProfilingInfo(void)
 
 CProfilingInfo* CProfilingInfo::GetInstance()
 {
-    static CProfilingInfo instance;
-    return &instance;
+	static CProfilingInfo instance;
+	return &instance;
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -157,41 +157,41 @@ static std::string IntToStr (unsigned __int64 value)
 
 std::string CProfilingInfo::GetReport() const
 {
-    enum { LINE_LENGTH = 500 };
+	enum { LINE_LENGTH = 500 };
 
-    char lineBuffer [LINE_LENGTH];
-    const char * const format ="%10s%17s%17s%17s%6s %s\t%s\n";
+	char lineBuffer [LINE_LENGTH];
+	const char * const format ="%10s%17s%17s%17s%6s %s\t%s\n";
 
-    std::string result;
-    result.reserve (LINE_LENGTH * records.size());
-    sprintf_s ( lineBuffer, format
-              , "count", "sum", "min", "max"
-              , "line", "name", "file");
-    result += lineBuffer;
+	std::string result;
+	result.reserve (LINE_LENGTH * records.size());
+	sprintf_s ( lineBuffer, format
+			  , "count", "sum", "min", "max"
+			  , "line", "name", "file");
+	result += lineBuffer;
 
-    for ( TRecords::const_iterator iter = records.begin(), end = records.end()
-        ; iter != end
-        ; ++iter)
-    {
-        unsigned __int64 minValue = (*iter)->GetMinValue();
-        if (minValue == ULLONG_MAX)
-            minValue = 0;
+	for ( TRecords::const_iterator iter = records.begin(), end = records.end()
+		; iter != end
+		; ++iter)
+	{
+		unsigned __int64 minValue = (*iter)->GetMinValue();
+		if (minValue == ULLONG_MAX)
+			minValue = 0;
 
-        sprintf_s ( lineBuffer, format
+		sprintf_s ( lineBuffer, format
 
-                  , IntToStr ((*iter)->GetCount()).c_str()
-                  , IntToStr ((*iter)->GetSum()).c_str()
-                  , IntToStr (minValue).c_str()
-                  , IntToStr ((*iter)->GetMaxValue()).c_str()
+				  , IntToStr ((*iter)->GetCount()).c_str()
+				  , IntToStr ((*iter)->GetSum()).c_str()
+				  , IntToStr (minValue).c_str()
+				  , IntToStr ((*iter)->GetMaxValue()).c_str()
 
-                  , IntToStr ((*iter)->GetLine()).c_str()
-                  , (*iter)->GetName()
-                  , (*iter)->GetFile());
+				  , IntToStr ((*iter)->GetLine()).c_str()
+				  , (*iter)->GetName()
+				  , (*iter)->GetFile());
 
-        result += lineBuffer;
-    }
+		result += lineBuffer;
+	}
 
-    return result;
+	return result;
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -199,12 +199,12 @@ std::string CProfilingInfo::GetReport() const
 //////////////////////////////////////////////////////////////////////
 
 CProfilingRecord* CProfilingInfo::Create ( const char* name
-                                         , const char* file
-                                         , int line)
+										 , const char* file
+										 , int line)
 {
-    CProfilingRecord* record = new CProfilingRecord (name, file, line);
-    records.push_back (record);
+	CProfilingRecord* record = new CProfilingRecord (name, file, line);
+	records.push_back (record);
 
-    return record;
+	return record;
 }
 

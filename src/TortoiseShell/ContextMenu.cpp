@@ -39,8 +39,8 @@ extern MenuInfo menuInfo[];
 static int g_syncSeq = 0;
 
 STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
-                                   LPDATAOBJECT pDataObj,
-                                   HKEY  hRegKey)
+								   LPDATAOBJECT pDataObj,
+								   HKEY  hRegKey)
 {
 	__try
 	{
@@ -53,8 +53,8 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 }
 
 STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
-                                        LPDATAOBJECT pDataObj,
-                                        HKEY /* hRegKey */)
+										LPDATAOBJECT pDataObj,
+										HKEY /* hRegKey */)
 {
 	CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Shell :: Initialize\n");
 	PreserveChdir preserveChdir;
@@ -835,10 +835,10 @@ STDMETHODIMP CShellExt::QueryDropContext(UINT uFlags, UINT idCmdFirst, HMENU hMe
 }
 
 STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu,
-                                         UINT indexMenu,
-                                         UINT idCmdFirst,
-                                         UINT idCmdLast,
-                                         UINT uFlags)
+										 UINT indexMenu,
+										 UINT idCmdFirst,
+										 UINT idCmdLast,
+										 UINT uFlags)
 {
 	__try
 	{
@@ -851,10 +851,10 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu,
 }
 
 STDMETHODIMP CShellExt::QueryContextMenu_Wrap(HMENU hMenu,
-                                              UINT indexMenu,
-                                              UINT idCmdFirst,
-                                              UINT /*idCmdLast*/,
-                                              UINT uFlags)
+											  UINT indexMenu,
+											  UINT idCmdFirst,
+											  UINT /*idCmdLast*/,
+											  UINT uFlags)
 {
 	CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Shell :: QueryContextMenu itemStates=%ld\n", itemStates);
 	PreserveChdir preserveChdir;
@@ -1092,7 +1092,7 @@ STDMETHODIMP CShellExt::QueryContextMenu_Wrap(HMENU hMenu,
 	SecureZeroMemory(&menuiteminfo, sizeof(menuiteminfo));
 	menuiteminfo.cbSize = sizeof(menuiteminfo);
 	menuiteminfo.fType = MFT_STRING;
- 	menuiteminfo.dwTypeData = stringtablebuffer;
+	menuiteminfo.dwTypeData = stringtablebuffer;
 
 	UINT uIcon = bShowIcons ? IDI_APP : 0;
 	if (!folder_.empty())
@@ -1661,10 +1661,10 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 
 // This is for the status bar and things like that:
 STDMETHODIMP CShellExt::GetCommandString(UINT_PTR idCmd,
-                                         UINT uFlags,
-                                         UINT FAR * reserved,
-                                         LPSTR pszName,
-                                         UINT cchMax)
+										 UINT uFlags,
+										 UINT FAR * reserved,
+										 LPSTR pszName,
+										 UINT cchMax)
 {
 	__try
 	{
@@ -1678,10 +1678,10 @@ STDMETHODIMP CShellExt::GetCommandString(UINT_PTR idCmd,
 
 // This is for the status bar and things like that:
 STDMETHODIMP CShellExt::GetCommandString_Wrap(UINT_PTR idCmd,
-                                              UINT uFlags,
-                                              UINT FAR * /*reserved*/,
-                                              LPSTR pszName,
-                                              UINT cchMax)
+											  UINT uFlags,
+											  UINT FAR * /*reserved*/,
+											  LPSTR pszName,
+											  UINT cchMax)
 {
 	PreserveChdir preserveChdir;
 	//do we know the id?

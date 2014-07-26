@@ -45,30 +45,30 @@ void CGradient::SplitRect(const CRect& rSource, CRect& rHalf1, CRect& rHalf2, BO
 
 void CGradient::Draw(CDC * pDC, CRect rect, COLORREF colorStart, COLORREF colorEnd, BOOL bHorz/* = TRUE*/, UINT nSteps/* = 64*/)
 {
-    for (UINT i = 0; i < nSteps; i++)
-    {
-        BYTE bR = (BYTE) ((GetRValue(colorStart) * (nSteps - i) + GetRValue(colorEnd) * i) / nSteps);
-        BYTE bG = (BYTE) ((GetGValue(colorStart) * (nSteps - i) + GetGValue(colorEnd) * i) / nSteps);
-        BYTE bB = (BYTE) ((GetBValue(colorStart) * (nSteps - i) + GetBValue(colorEnd) * i) / nSteps);
+	for (UINT i = 0; i < nSteps; i++)
+	{
+		BYTE bR = (BYTE) ((GetRValue(colorStart) * (nSteps - i) + GetRValue(colorEnd) * i) / nSteps);
+		BYTE bG = (BYTE) ((GetGValue(colorStart) * (nSteps - i) + GetGValue(colorEnd) * i) / nSteps);
+		BYTE bB = (BYTE) ((GetBValue(colorStart) * (nSteps - i) + GetBValue(colorEnd) * i) / nSteps);
 
 		CBrush br (RGB(bR, bG, bB));
 
-        CRect r2 = rect;
-        if (!bHorz)
-        {
-            r2.top = rect.top + ((i * rect.Height()) / nSteps);
-            r2.bottom = rect.top + (((i + 1) * rect.Height()) / nSteps);
-            if (r2.Height() > 0)
-                pDC->FillRect(r2, &br);
-        }
-        else
-        {
-            r2.left = rect.left + ((i * rect.Width()) / nSteps);
-            r2.right = rect.left + (((i + 1) * rect.Width()) / nSteps);
-            if (r2.Width() > 0)
-                pDC->FillRect(r2, &br);
-        }
-    }
+		CRect r2 = rect;
+		if (!bHorz)
+		{
+			r2.top = rect.top + ((i * rect.Height()) / nSteps);
+			r2.bottom = rect.top + (((i + 1) * rect.Height()) / nSteps);
+			if (r2.Height() > 0)
+				pDC->FillRect(r2, &br);
+		}
+		else
+		{
+			r2.left = rect.left + ((i * rect.Width()) / nSteps);
+			r2.right = rect.left + (((i + 1) * rect.Width()) / nSteps);
+			if (r2.Width() > 0)
+				pDC->FillRect(r2, &br);
+		}
+	}
 }
 
 void CGradient::Draw(CDC * pDC, CRect rect, COLORREF colorStart, COLORREF colorMid, COLORREF colorEnd, BOOL bHorz/* = TRUE*/, UINT nSteps/* = 64*/)

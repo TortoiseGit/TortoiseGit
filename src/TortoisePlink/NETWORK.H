@@ -48,7 +48,7 @@ struct socket_function_table {
 
 struct plug_function_table {
     void (*log)(Plug p, int type, SockAddr addr, int port,
-		const char *error_msg, int error_code);
+                const char *error_msg, int error_code);
     /*
      * Passes the client progress reports on the process of setting
      * up the connection.
@@ -93,25 +93,25 @@ struct plug_function_table {
 /* NB, control of 'addr' is passed via new_connection, which takes
  * responsibility for freeing it */
 Socket new_connection(SockAddr addr, char *hostname,
-		      int port, int privport,
-		      int oobinline, int nodelay, int keepalive,
-		      Plug plug, Conf *conf);
+                      int port, int privport,
+                      int oobinline, int nodelay, int keepalive,
+                      Plug plug, Conf *conf);
 Socket new_listener(char *srcaddr, int port, Plug plug, int local_host_only,
-		    Conf *conf, int addressfamily);
+                    Conf *conf, int addressfamily);
 SockAddr name_lookup(char *host, int port, char **canonicalname,
-		     Conf *conf, int addressfamily);
+                     Conf *conf, int addressfamily);
 
 /* platform-dependent callback from new_connection() */
 /* (same caveat about addr as new_connection()) */
 Socket platform_new_connection(SockAddr addr, char *hostname,
-			       int port, int privport,
-			       int oobinline, int nodelay, int keepalive,
-			       Plug plug, Conf *conf);
+                               int port, int privport,
+                               int oobinline, int nodelay, int keepalive,
+                               Plug plug, Conf *conf);
 
 /* socket functions */
 
-void sk_init(void);		       /* called once at program startup */
-void sk_cleanup(void);		       /* called just before program exit */
+void sk_init(void);                      /* called once at program startup */
+void sk_cleanup(void);                   /* called just before program exit */
 
 SockAddr sk_namelookup(const char *host, char **canonicalname, int address_family);
 SockAddr sk_nonamelookup(const char *host);
@@ -132,7 +132,7 @@ SockAddr sk_addr_dup(SockAddr addr);
 /* NB, control of 'addr' is passed via sk_new, which takes responsibility
  * for freeing it, as for new_connection() */
 Socket sk_new(SockAddr addr, int port, int privport, int oobinline,
-	      int nodelay, int keepalive, Plug p);
+              int nodelay, int keepalive, Plug p);
 
 Socket sk_newlistener(char *srcaddr, int port, Plug plug, int local_host_only, int address_family);
 
@@ -243,7 +243,7 @@ struct ssl_client_plug_function_table {
 };
 
 SSL_Client_Socket sk_ssl_client_over(Socket s,	/* pre-existing (tcp) connection */
-				     SSL_Client_Plug p);
+                                     SSL_Client_Plug p);
 
 #define sk_renegotiate(s) (((*s)->renegotiate) (s))
 
