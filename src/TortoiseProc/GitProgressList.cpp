@@ -1627,19 +1627,30 @@ bool CGitProgressList::CmdClone(CString& sWindowTitle, bool& /*localoperation*/)
 		return git_repository_init_ext(out, path, &init_options);
 	};
 
+	struct remote_cb_payload {
+		const char* remoteName;
+		const git_remote_callbacks* callbacks;
+	};
+
 	cloneOpts.remote_cb = [](git_remote** out, git_repository* repo, const char* /*name*/, const char* url, void* payload) -> int {
 		int error;
 
+		remote_cb_payload* data = (remote_cb_payload*)payload;
+
 		CAutoRemote origin;
-		if ((error = git_remote_create(origin.GetPointer(), repo, (const char*)payload, url)) < 0)
+		if ((error = git_remote_create(origin.GetPointer(), repo, data->remoteName, url)) < 0)
+			return error;
+
+		if ((error = git_remote_set_callbacks(origin, data->callbacks)) < 0) // if remote_cb is used, one has to manually set remote_callbacks
 			return error;
 
 		*out = origin.Detach();
 		return 0;
 	};
-	cloneOpts.remote_callbacks = callbacks;
-	CStringA remoteName = m_remote.IsEmpty() ? "origin" : CUnicodeUtils::GetUTF8(m_remote);
-	cloneOpts.remote_cb_payload = (void*)(const char*)remoteName;
+	remote_cb_payload remote_cb_payloadData;
+	remote_cb_payloadData.callbacks = &callbacks;
+	remote_cb_payloadData.remoteName = m_remote.IsEmpty() ? "origin" : CUnicodeUtils::GetUTF8(m_remote);
+	cloneOpts.remote_cb_payload = &remote_cb_payloadData;
 
 	CStringA checkout_branch = CUnicodeUtils::GetUTF8(m_RefSpec);
 	if (!checkout_branch.IsEmpty())
