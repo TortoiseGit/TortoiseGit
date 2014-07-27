@@ -231,8 +231,8 @@ public:
 	// read current branch name from HEAD file, returns 0 on success, -1 on failure, 1 detached (branch name "HEAD" returned)
 	static int GetCurrentBranchFromFile(const CString &sProjectRoot, CString &sBranchOut, bool fallback = false);
 	BOOL CheckCleanWorkTree();
-	int Revert(const CString& commit, const CTGitPathList &list, bool keep=true);
-	int Revert(const CString& commit, const CTGitPath &path);
+	int Revert(const CString& commit, const CTGitPathList &list, CString& err);
+	int Revert(const CString& commit, const CTGitPath &path, CString& err);
 	int DeleteRef(const CString& reference);
 	/**
 	Use this method only if m_IsUseLibGit2 is used for fallbacks.

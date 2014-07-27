@@ -1992,28 +1992,26 @@ BOOL CGit::CheckCleanWorkTree()
 
 	return TRUE;
 }
-int CGit::Revert(const CString& commit, const CTGitPathList &list, bool)
+int CGit::Revert(const CString& commit, const CTGitPathList &list, CString& err)
 {
 	int ret;
 	for (int i = 0; i < list.GetCount(); ++i)
 	{
-		ret = Revert(commit, (CTGitPath&)list[i]);
+		ret = Revert(commit, (CTGitPath&)list[i], err);
 		if(ret)
 			return ret;
 	}
 	return 0;
 }
-int CGit::Revert(const CString& commit, const CTGitPath &path)
+int CGit::Revert(const CString& commit, const CTGitPath &path, CString& err)
 {
-	CString cmd, out;
+	CString cmd;
 
 	if(path.m_Action & CTGitPath::LOGACTIONS_REPLACED && !path.GetGitOldPathString().IsEmpty())
 	{
 		if (CTGitPath(path.GetGitOldPathString()).IsDirectory())
 		{
-			CString err;
 			err.Format(_T("Cannot revert renaming of \"%s\". A directory with the old name \"%s\" exists."), path.GetGitPathString(), path.GetGitOldPathString());
-			::MessageBox(NULL, err, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
 			return -1;
 		}
 		CString force;
@@ -2021,48 +2019,32 @@ int CGit::Revert(const CString& commit, const CTGitPath &path)
 		if (path.GetGitPathString().CompareNoCase(path.GetGitOldPathString()) == 0)
 			force = _T("-f ");
 		cmd.Format(_T("git.exe mv %s-- \"%s\" \"%s\""), force, path.GetGitPathString(), path.GetGitOldPathString());
-		if (Run(cmd, &out, CP_UTF8))
-		{
-			::MessageBox(NULL, out, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
+		if (Run(cmd, &err, CP_UTF8))
 			return -1;
-		}
 
 		cmd.Format(_T("git.exe checkout %s -f -- \"%s\""), commit, path.GetGitOldPathString());
-		if (Run(cmd, &out, CP_UTF8))
-		{
-			::MessageBox(NULL, out, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
+		if (Run(cmd, &err, CP_UTF8))
 			return -1;
-		}
-
 	}
 	else if(path.m_Action & CTGitPath::LOGACTIONS_ADDED)
 	{	//To init git repository, there are not HEAD, so we can use git reset command
 		cmd.Format(_T("git.exe rm -f --cached -- \"%s\""),path.GetGitPathString());
 
-		if (Run(cmd, &out, CP_UTF8))
-		{
-			::MessageBox(NULL, out, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
+		if (Run(cmd, &err, CP_UTF8))
 			return -1;
-		}
 	}
 	else
 	{
 		cmd.Format(_T("git.exe checkout %s -f -- \"%s\""), commit, path.GetGitPathString());
-		if (Run(cmd, &out, CP_UTF8))
-		{
-			::MessageBox(NULL, out, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
+		if (Run(cmd, &err, CP_UTF8))
 			return -1;
-		}
 	}
 
 	if (path.m_Action & CTGitPath::LOGACTIONS_DELETED)
 	{
 		cmd.Format(_T("git.exe add -f -- \"%s\""), path.GetGitPathString());
-		if (Run(cmd, &out, CP_UTF8))
-		{
-			::MessageBox(NULL, out, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
+		if (Run(cmd, &err, CP_UTF8))
 			return -1;
-		}
 	}
 
 	return 0;
