@@ -40,7 +40,7 @@ bool ResolveProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, 
 
 		CAppUtils::RemoveTempMergeFile((CTGitPath &)m_targetPathList[m_itemCount]);
 
-		list->Notify(m_targetPathList[m_itemCount], git_wc_notify_resolved);
+		list->AddNotify(new CGitProgressList::WC_File_NotificationData(m_targetPathList[m_itemCount], CGitProgressList::WC_File_NotificationData::git_wc_notify_resolved));
 	}
 
 	CShellUpdater::Instance().AddPathsForUpdate(m_targetPathList);

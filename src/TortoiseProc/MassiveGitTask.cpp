@@ -27,7 +27,7 @@ CMassiveGitTask::CMassiveGitTask(CString gitParameters, BOOL isPath, bool ignore
 	, m_bIsPath(isPath)
 	, m_bIgnoreErrors(ignoreErrors)
 	, m_NotifyCallbackInstance(NULL)
-	, m_NotifyCallbackAction(git_wc_notify_add)
+	, m_NotifyCallbackAction(CGitProgressList::WC_File_NotificationData::git_wc_notify_add)
 {
 	m_sParams = gitParameters;
 }
@@ -54,7 +54,7 @@ void CMassiveGitTask::AddFile(const CTGitPath &filename)
 		m_itemList.push_back(filename.GetGitPathString());
 }
 
-bool CMassiveGitTask::ExecuteWithNotify(CTGitPathList *pathList, volatile BOOL &cancel, git_wc_notify_action_t action, CGitProgressList * instance)
+bool CMassiveGitTask::ExecuteWithNotify(CTGitPathList* pathList, volatile BOOL& cancel, CGitProgressList::WC_File_NotificationData::git_wc_notify_action_t action, CGitProgressList* instance)
 {
 	assert(m_bUnused);
 	m_bUnused = false;
@@ -101,7 +101,7 @@ bool CMassiveGitTask::ExecuteCommands(volatile BOOL &cancel)
 				if (m_NotifyCallbackInstance)
 					for (int j = firstCombine; j <= i; ++j)
 					{
-						m_NotifyCallbackInstance->Notify(m_pathList[j], m_NotifyCallbackAction);
+						m_NotifyCallbackInstance->AddNotify(new CGitProgressList::WC_File_NotificationData(m_pathList[j], m_NotifyCallbackAction));
 						m_NotifyCallbackInstance->SetItemProgress(j);
 					}
 

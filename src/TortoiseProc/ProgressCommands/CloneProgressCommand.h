@@ -30,7 +30,7 @@ protected:
 		CTGitPath tpath = CUnicodeUtils::GetUnicode(CStringA(path), CP_UTF8);
 		((CGitProgressList*)payload)->m_itemCountTotal = (int)tot;
 		((CGitProgressList*)payload)->m_itemCount = (int)cur;
-		((CGitProgressList*)payload)->Notify(tpath, git_wc_notify_checkout);
+		((CGitProgressList*)payload)->AddNotify(new CGitProgressList::WC_File_NotificationData(tpath, CGitProgressList::WC_File_NotificationData::git_wc_notify_checkout));
 	}
 
 public:

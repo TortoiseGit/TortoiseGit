@@ -57,7 +57,7 @@ bool AddProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, int&
 				list->ReportGitError();
 				return false;
 			}
-			list->Notify(m_targetPathList[m_itemCount], git_wc_notify_add);
+			list->AddNotify(new CGitProgressList::WC_File_NotificationData(m_targetPathList[m_itemCount], CGitProgressList::WC_File_NotificationData::git_wc_notify_add));
 
 			if (list->IsCancelled() == TRUE)
 			{
@@ -75,7 +75,7 @@ bool AddProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, int&
 	else
 	{
 		CMassiveGitTask mgt(L"add -f");
-		if (!mgt.ExecuteWithNotify(&m_targetPathList, list->m_bCancelled, git_wc_notify_add, list))
+		if (!mgt.ExecuteWithNotify(&m_targetPathList, list->m_bCancelled, CGitProgressList::WC_File_NotificationData::git_wc_notify_add, list))
 			return false;
 	}
 

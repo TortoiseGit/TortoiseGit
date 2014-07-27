@@ -32,7 +32,7 @@ public:
 
 	void					AddFile(const CString &filename);
 	void					AddFile(const CTGitPath &filename);
-	bool					ExecuteWithNotify(CTGitPathList *pathList, volatile BOOL &cancel, git_wc_notify_action_t action, CGitProgressList * instance);
+	bool					ExecuteWithNotify(CTGitPathList* pathList, volatile BOOL& cancel, CGitProgressList::WC_File_NotificationData::git_wc_notify_action_t action, CGitProgressList* instance);
 	bool					Execute(BOOL &cancel);
 	int						GetListCount();
 
@@ -46,5 +46,5 @@ private:
 	CTGitPathList			m_pathList;
 	STRING_VECTOR			m_itemList;
 	CGitProgressList *		m_NotifyCallbackInstance;
-	git_wc_notify_action_t	m_NotifyCallbackAction;
+	CGitProgressList::WC_File_NotificationData::git_wc_notify_action_t	m_NotifyCallbackAction;
 };

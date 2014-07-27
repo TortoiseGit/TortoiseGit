@@ -51,7 +51,7 @@ bool RevertProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, i
 			list->ReportError(_T("Revert failed:\n") + err);
 			return false;
 		}
-		list->Notify(m_targetPathList[i], git_wc_notify_revert);
+		list->AddNotify(new CGitProgressList::WC_File_NotificationData(m_targetPathList[i], CGitProgressList::WC_File_NotificationData::git_wc_notify_revert));
 		++m_itemCount;
 
 		if (list->IsCancelled() == TRUE)

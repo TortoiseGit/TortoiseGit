@@ -24,6 +24,10 @@
 #include "Win7.h"
 #include "UnicodeUtils.h"
 #include "resource.h"
+#include "../TortoiseShell/resource.h"
+#include "LoglistCommonResource.h"
+#include "IconMenu.h"
+#include "AppUtils.h"
 /**
  * \ingroup TortoiseProc
  * Options which can be used to configure the way the dialog box works
@@ -34,18 +38,6 @@ typedef enum
 	/// Don't actually do the merge - just practice it
 	ProgOptDryRun = 0x04,
 } ProgressOptions;
-
-typedef enum
-{
-	git_wc_notify_add,
-	git_wc_notify_sendmail,
-	git_wc_notify_resolved,
-	git_wc_notify_revert,
-	git_wc_notify_fetch,
-	git_wc_notify_checkout,
-	git_wc_notify_update_ref,
-
-}git_wc_notify_action_t;
 
 // CGitProgressList
 struct git_transfer_progress;
@@ -87,16 +79,28 @@ public:
 	CWnd			*m_pPostWnd;
 	bool					m_bSetTitle;
 
-private:
+public:
+	typedef std::vector<std::function<void()>> ContextMenuActionList;
+
 	class NotificationData
 	{
 	public:
 		NotificationData()
 		: color(::GetSysColor(COLOR_WINDOWTEXT))
-		, action((git_wc_notify_action_t)-1)
 		, bAuxItem(false)
 		{};
-		git_wc_notify_action_t action;
+
+		NotificationData(const CTGitPath &path, UINT actionTextId)
+		: NotificationData()
+		{
+			this->path = path;
+			sActionColumnText.LoadString(actionTextId);
+		};
+
+		virtual ~NotificationData() {};
+
+		virtual void SetColorCode(CColors& /*colors*/) {};
+		virtual void GetContextMenu(CIconMenu& /*popup*/, ContextMenuActionList& /*actions*/) {};
 
 		// The text we put into the first column (the Git action for normal items, just text for aux items)
 		CString					sActionColumnText;
@@ -104,17 +108,108 @@ private:
 		COLORREF				color;
 		bool					bAuxItem;					// Set if this item is not a true 'Git action'
 		CString					sPathColumnText;
-		CGitHash				m_OldHash;
-		CGitHash				m_NewHash;
 	};
+
+	class WC_File_NotificationData : public NotificationData
+	{
+	public:
+		typedef enum
+		{
+			git_wc_notify_add,
+			git_wc_notify_resolved,
+			git_wc_notify_revert,
+			git_wc_notify_checkout,
+		} git_wc_notify_action_t;
+
+		WC_File_NotificationData(const CTGitPath& path, git_wc_notify_action_t action)
+		: NotificationData()
+		{
+			this->action = action;
+			this->path = path;
+			sPathColumnText = path.GetGitPathString();
+
+			switch (action)
+			{
+			case git_wc_notify_add:
+				sActionColumnText.LoadString(IDS_SVNACTION_ADD);
+				break;
+			case git_wc_notify_resolved:
+				sActionColumnText.LoadString(IDS_SVNACTION_RESOLVE);
+				break;
+			case git_wc_notify_revert:
+				sActionColumnText.LoadString(IDS_SVNACTION_REVERT);
+				break;
+			case git_wc_notify_checkout:
+				sActionColumnText.LoadString(IDS_PROGRS_CMD_CHECKOUT);
+				break;
+			default:
+				break;
+			}
+		};
+		virtual void SetColorCode(CColors& colors)
+		{
+			switch (action)
+			{
+			case git_wc_notify_checkout: // fall-through
+			case git_wc_notify_add:
+				color = colors.GetColor(CColors::Added);
+				break;
+
+			default:
+				break;
+			}
+		};
+
+		git_wc_notify_action_t action;
+
+		virtual void GetContextMenu(CIconMenu& popup, ContextMenuActionList& actions)
+		{
+			if ((action == git_wc_notify_add) ||
+				(action == git_wc_notify_revert) ||
+				(action == git_wc_notify_resolved) ||
+				(action == git_wc_notify_checkout))
+			{
+				actions.push_back([&]()
+				{
+					CString cmd = _T("/command:log");
+					CString sPath = g_Git.CombinePath(path);
+					cmd += _T(" /path:\"") + sPath + _T("\"");
+					CAppUtils::RunTortoiseGitProc(cmd);
+				});
+				popup.AppendMenuIcon(actions.size(), IDS_MENULOG, IDI_LOG);
+
+				popup.AppendMenu(MF_SEPARATOR, NULL);
+				auto open = [&](bool openWith)
+				{
+					int ret = 0;
+					CString sWinPath = g_Git.CombinePath(path);
+					if (!openWith)
+						ret = (int)ShellExecute(nullptr, NULL, (LPCTSTR)sWinPath, NULL, NULL, SW_SHOWNORMAL);
+					if ((ret <= HINSTANCE_ERROR) || openWith)
+					{
+						CString cmd = _T("RUNDLL32 Shell32,OpenAs_RunDLL ");
+						cmd += sWinPath;
+						CAppUtils::LaunchApplication(cmd, NULL, false);
+					}
+				};
+				actions.push_back([open]{ open(false); });
+				popup.AppendMenuIcon(actions.size(), IDS_LOG_POPUP_OPEN, IDI_OPEN);
+				actions.push_back([open]{ open(true); });
+				popup.AppendMenuIcon(actions.size(), IDS_LOG_POPUP_OPENWITH, IDI_OPEN);
+
+				actions.push_back([&]{ CAppUtils::ExploreTo(nullptr, g_Git.CombinePath(path)); });
+				popup.AppendMenuIcon(actions.size(), IDS_STATUSLIST_CONTEXT_EXPLORE, IDI_EXPLORER);
+			}
+		};
+	};
+
+	void AddNotify(NotificationData* data, CColors::Colors color = CColors::COLOR_END);
+	BOOL UpdateProgress(const git_transfer_progress* stat);
+
 protected:
 	DECLARE_MESSAGE_MAP()
 
 public:
-	virtual BOOL Notify(const CTGitPath& path, git_wc_notify_action_t action);
-	virtual BOOL Notify(const git_wc_notify_action_t action, const git_transfer_progress *stat);
-	virtual BOOL Notify(const git_wc_notify_action_t action, CString str, const git_oid *a, const git_oid *b);
-
 	void SetWindowTitle(UINT id, const CString& urlorpath, CString& dialogname);
 
 protected:
@@ -150,7 +245,6 @@ public:
 private:
 	void		AddItemToList();
 	CString		BuildInfoString();
-	CString		GetPathFromColumnText(const CString& sColumnText);
 
 	/**
 	 * Resizes the columns of the progress list so that the headings are visible.

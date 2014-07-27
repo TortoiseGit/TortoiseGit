@@ -18,6 +18,8 @@
 
 #include "stdafx.h"
 #include "GitProgressList.h"
+#include "../TortoiseShell/resource.h"
+#include "AppUtils.h"
 
 class RemoteProgressCommand : public ProgressCommand
 {
@@ -41,9 +43,40 @@ protected:
 	}
 	static int RemoteUpdatetipsCallback(const char* refname, const git_oid* oldOid, const git_oid* newOid, void* data)
 	{
-		((CGitProgressList*)data)->Notify(git_wc_notify_update_ref, CUnicodeUtils::GetUnicode(refname), oldOid, newOid);
+		((CGitProgressList*)data)->AddNotify(new RefUpdateNotificationData(refname, oldOid, newOid));
 		return 0;
 	}
+
+	class RefUpdateNotificationData : public CGitProgressList::NotificationData
+	{
+	public:
+		RefUpdateNotificationData(const char* refname, const git_oid* oldOid, const git_oid* newOid)
+		: NotificationData()
+		{
+			CString str = CUnicodeUtils::GetUnicode(refname);
+			m_NewHash = newOid->id;
+			m_OldHash = oldOid->id;
+			sActionColumnText.LoadString(IDS_GITACTION_UPDATE_REF);
+			sPathColumnText.Format(_T("%s\t %s -> %s"), str, m_OldHash.ToString().Left(g_Git.GetShortHASHLength()), m_NewHash.ToString().Left(g_Git.GetShortHASHLength()));
+		};
+		virtual void GetContextMenu(CIconMenu& popup, CGitProgressList::ContextMenuActionList& actions)
+		{
+			actions.push_back([&]()
+			{
+				CString cmd = _T("/command:log");
+				cmd += _T(" /path:\"") + g_Git.m_CurrentDir + _T("\"");
+				if (!m_OldHash.IsEmpty())
+					cmd += _T(" /startrev:") + m_OldHash.ToString();
+				if (!m_NewHash.IsEmpty())
+					cmd += _T(" /endrev:") + m_NewHash.ToString();
+				CAppUtils::RunTortoiseGitProc(cmd);
+			});
+			popup.AppendMenuIcon(actions.size(), IDS_MENULOG, IDI_LOG);
+		};
+	protected:
+		CGitHash	m_OldHash;
+		CGitHash	m_NewHash;
+	};
 
 public:
 	void SetUrl(const CString& url) { m_url.SetFromUnknown(url); }
