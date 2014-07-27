@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2006 - Stefan Kueng
-// Copyright (C) 2012 - TortoiseGit
+// Copyright (C) 2012, 2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -40,10 +40,13 @@ public:
 	enum { IDD = IDD_REVGRAPHFILTER };
 
 	BOOL m_bCurrentBranch;
+	BOOL m_bLocalBranches;
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 	afx_msg void OnBnClickedResetfilter();
+	afx_msg void OnBnClickedCurrentBranch();
+	afx_msg void OnBnClickedLocalBranches();
 	virtual BOOL OnInitDialog();
 	virtual void OnOK();
 

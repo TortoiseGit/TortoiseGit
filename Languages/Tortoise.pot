@@ -6454,6 +6454,10 @@ msgstr ""
 msgid "Only Current Branch"
 msgstr ""
 
+#. Resource IDs: (1543)
+msgid "Only Local Branches"
+msgstr ""
+
 #. Resource IDs: (1256)
 msgid "Only Merged Files"
 msgstr ""

@@ -1155,6 +1155,7 @@
 #define IDC_BUTTON_REF                  1542
 #define IDC_REGEDT                      1542
 #define IDC_LOCAL_BRANCH                1543
+#define IDC_LOCAL_BRANCHES              1543
 #define IDC_COLOR_LINE5                 1544
 #define IDC_COLOR_LINE6                 1545
 #define IDC_COLOR_LINE1                 1546

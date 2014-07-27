@@ -211,7 +211,8 @@ bool CRevisionGraphWnd::FetchRevisionData
 		range = m_ToRev;
 	else if (!m_FromRev.IsEmpty())
 		range = m_FromRev;
-	this->m_logEntries.ParserFromLog(nullptr, -1, CGit::LOG_INFO_SIMPILFY_BY_DECORATION|(this->m_bCurrentBranch? 0: CGit::LOG_INFO_ALL_BRANCH), &range);
+	int infomask = CGit::LOG_INFO_SIMPILFY_BY_DECORATION | (m_bCurrentBranch ? 0 : m_bLocalBranches ? CGit::LOG_INFO_LOCAL_BRANCHES : CGit::LOG_INFO_ALL_BRANCH);
+	this->m_logEntries.ParserFromLog(nullptr, -1, infomask, &range);
 
 	ReloadHashMap();
 	this->m_Graph.clear();

@@ -152,6 +152,7 @@ public:
 	CGitHash				m_HeadHash;
 
 	BOOL		m_bCurrentBranch;
+	BOOL		m_bLocalBranches;
 	CString		m_FromRev;
 	CString		m_ToRev;
 

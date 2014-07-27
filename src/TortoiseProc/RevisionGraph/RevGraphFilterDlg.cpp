@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2006 - Stefan Kueng
-// Copyright (C) 2012-2013 - TortoiseGit
+// Copyright (C) 2012-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -31,6 +31,7 @@ CRevGraphFilterDlg::CRevGraphFilterDlg(CWnd* pParent /*=NULL*/)
 	, m_sFromRev(_T(""))
 	, m_sToRev(_T(""))
 	, m_bCurrentBranch(FALSE)
+	, m_bLocalBranches(FALSE)
 {
 
 }
@@ -45,6 +46,7 @@ void CRevGraphFilterDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_FROMREV, m_sFromRev);
 	DDX_Text(pDX, IDC_TOREV, m_sToRev);
 	DDX_Check(pDX, IDC_CURRENT_BRANCH, m_bCurrentBranch);
+	DDX_Check(pDX, IDC_LOCAL_BRANCHES, m_bLocalBranches);
 	DDX_Control(pDX, IDC_FROMREV, m_ctrlFromRev);
 	DDX_Control(pDX, IDC_TOREV, m_ctrlToRev);
 }
@@ -53,6 +55,8 @@ BEGIN_MESSAGE_MAP(CRevGraphFilterDlg, CDialog)
 	ON_BN_CLICKED(IDC_REV1BTN1, &CRevGraphFilterDlg::OnBnClickedRev1btn1)
 	ON_BN_CLICKED(IDC_REV1BTN2, &CRevGraphFilterDlg::OnBnClickedRev1btn2)
 	ON_BN_CLICKED(IDC_RESETFILTER, &CRevGraphFilterDlg::OnBnClickedResetfilter)
+	ON_BN_CLICKED(IDC_CURRENT_BRANCH, &CRevGraphFilterDlg::OnBnClickedCurrentBranch)
+	ON_BN_CLICKED(IDC_LOCAL_BRANCHES, &CRevGraphFilterDlg::OnBnClickedLocalBranches)
 END_MESSAGE_MAP()
 
 BOOL CRevGraphFilterDlg::OnInitDialog()
@@ -100,6 +104,9 @@ BOOL CRevGraphFilterDlg::OnInitDialog()
 		}
 	}
 
+	OnBnClickedCurrentBranch();
+	OnBnClickedLocalBranches();
+
 	return TRUE;
 }
 
@@ -144,6 +151,37 @@ void CRevGraphFilterDlg::OnBnClickedResetfilter()
 	m_sFromRev.Empty();
 	m_sToRev.Empty();
 	m_bCurrentBranch = FALSE;
+	m_bLocalBranches = FALSE;
 	UpdateData(FALSE);
 	CDialog::OnOK();
+}
+
+void CRevGraphFilterDlg::OnBnClickedCurrentBranch()
+{
+	UpdateData();
+	if (m_bCurrentBranch)
+	{
+		m_bLocalBranches = FALSE;
+		GetDlgItem(IDC_LOCAL_BRANCHES)->EnableWindow(FALSE);
+		UpdateData(FALSE);
+	}
+	else
+	{
+		GetDlgItem(IDC_LOCAL_BRANCHES)->EnableWindow(TRUE);
+	}
+}
+
+void CRevGraphFilterDlg::OnBnClickedLocalBranches()
+{
+	UpdateData();
+	if (m_bLocalBranches)
+	{
+		m_bCurrentBranch = FALSE;
+		GetDlgItem(IDC_CURRENT_BRANCH)->EnableWindow(FALSE);
+		UpdateData(FALSE);
+	}
+	else
+	{
+		GetDlgItem(IDC_CURRENT_BRANCH)->EnableWindow(TRUE);
+	}
 }

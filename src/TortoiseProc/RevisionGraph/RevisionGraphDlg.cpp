@@ -797,6 +797,7 @@ void CRevisionGraphDlg::OnViewFilter()
 	CRevGraphFilterDlg dlg;
 
 	dlg.m_bCurrentBranch = this->m_Graph.m_bCurrentBranch;
+	dlg.m_bLocalBranches = m_Graph.m_bLocalBranches;
 	dlg.SetRevisionRange(m_Graph.m_FromRev, m_Graph.m_ToRev);
 
 	if (dlg.DoModal()==IDOK)
@@ -809,10 +810,11 @@ void CRevisionGraphDlg::OnViewFilter()
 		// update menu & toolbar
 
 		this->m_Graph.m_bCurrentBranch = dlg.m_bCurrentBranch;
+		m_Graph.m_bLocalBranches = dlg.m_bLocalBranches;
 
 		CMenu * pMenu = GetMenu();
 		int tbstate = m_ToolBar.GetToolBarCtrl().GetState(ID_VIEW_FILTER);
-		if (m_Graph.m_bCurrentBranch || !m_Graph.m_FromRev.IsEmpty() || !m_Graph.m_ToRev.IsEmpty())
+		if (m_Graph.m_bCurrentBranch || m_Graph.m_bLocalBranches || !m_Graph.m_FromRev.IsEmpty() || !m_Graph.m_ToRev.IsEmpty())
 		{
 			if (pMenu != NULL)
 				pMenu->CheckMenuItem(ID_VIEW_FILTER, MF_BYCOMMAND | MF_CHECKED);
