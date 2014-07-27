@@ -1523,8 +1523,7 @@ bool CGitProgressList::CmdResolve(CString& sWindowTitle, bool& localoperation)
 		cmd.Format(_T("git.exe add -f -- \"%s\""),m_targetPathList[m_itemCount].GetGitPathString());
 		if (g_Git.Run(cmd, &out, CP_UTF8))
 		{
-			CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
-			m_bErrorsOccurred=true;
+			ReportError(out);
 			return false;
 		}
 
