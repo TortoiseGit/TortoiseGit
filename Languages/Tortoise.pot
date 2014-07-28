@@ -42,7 +42,7 @@ msgstr ""
 
 #. Resource IDs: (357)
 #, c-format
-msgid "%.2f MBytes transferred"
+msgid "%.2f MiB transferred"
 msgstr ""
 
 #. Resource IDs: (357)
@@ -187,7 +187,7 @@ msgstr ""
 
 #. Resource IDs: (357)
 #, c-format
-msgid "%I64d kBytes transferred"
+msgid "%I64d KiB transferred"
 msgstr ""
 
 #. Resource IDs: (75)

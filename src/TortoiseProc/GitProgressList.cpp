@@ -956,15 +956,15 @@ BOOL CGitProgressList::Notify(const git_wc_notify_action_t /*action*/, const git
 	else if (stat->received_bytes < 1200000)
 		m_sTotalBytesTransferred.Format(IDS_SVN_PROGRESS_TOTALTRANSFERRED, (int64_t)stat->received_bytes / 1024);
 	else
-		m_sTotalBytesTransferred.Format(IDS_SVN_PROGRESS_TOTALMBTRANSFERRED, (double)((double)stat->received_bytes / 1024000.0));
+		m_sTotalBytesTransferred.Format(IDS_SVN_PROGRESS_TOTALMBTRANSFERRED, (double)((double)stat->received_bytes / 1048576.0));
 
 	CString str;
 	if(speed < 1024)
-		str.Format(_T("%fB/s"), speed);
+		str.Format(_T("%.0f B/s"), speed);
 	else if(speed < 1024 * 1024)
-		str.Format(_T("%.2fKB/s"), speed / 1024);
+		str.Format(_T("%.2f KiB/s"), speed / 1024);
 	else
-		str.Format(_T("%.2fMB/s"), speed / 1024000.0);
+		str.Format(_T("%.2f MiB/s"), speed / 1048576.0);
 
 	progText.Format(IDS_SVN_PROGRESS_TOTALANDSPEED, (LPCTSTR)m_sTotalBytesTransferred, (LPCTSTR)str);
 	if (m_pProgressLabelCtrl)
@@ -978,8 +978,7 @@ void CGitProgressList::OnTimer(UINT_PTR nIDEvent)
 	if (nIDEvent == TRANSFERTIMER)
 	{
 		CString progText;
-		CString progSpeed;
-		progSpeed.Format(IDS_SVN_PROGRESS_BYTES_SEC, 0);
+		CString progSpeed = _T("0 B/s");
 		progText.Format(IDS_SVN_PROGRESS_TOTALANDSPEED, (LPCTSTR)m_sTotalBytesTransferred, (LPCTSTR)progSpeed);
 		if (m_pProgressLabelCtrl)
 			m_pProgressLabelCtrl->SetWindowText(progText);
