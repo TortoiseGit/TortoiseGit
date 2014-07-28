@@ -293,6 +293,8 @@ private:
 public:
 	CComPtr<ITaskbarList3>	m_pTaskbarList;
 	void Init();
+
+protected:
 	afx_msg void OnClose();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 };
