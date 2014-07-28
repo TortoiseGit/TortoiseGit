@@ -1201,7 +1201,7 @@ void CRepositoryBrowser::OpenFile(const CString path, eOpenType mode, bool isSub
 		{
 			CTGitPath subPath = CTGitPath(g_Git.m_CurrentDir);
 			subPath.AppendPathString(gitPath.GetWinPathString());
-			CAutoRepository repo(g_Git.GetGitRepository());
+			CAutoRepository repo(subPath.GetGitPathString());
 			CAutoCommit commit;
 			if (!repo || git_commit_lookup(commit.GetPointer(), repo, (const git_oid *)itemHash.m_hash))
 			{
