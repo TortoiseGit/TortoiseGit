@@ -1849,28 +1849,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				break;
 
 			case IDGITLC_EXPLORE:
-				{
-					CString p = g_Git.CombinePath(filepath);
-					if (PathFileExists(p))
-					{
-						ITEMIDLIST __unaligned * pidl = ILCreateFromPath(p);
-						if (pidl)
-						{
-							SHOpenFolderAndSelectItems(pidl, 0, 0, 0);
-							ILFree(pidl);
-						}
-						break;
-					}
-					// if filepath does not exist any more, navigate to closest matching folder
-					do
-					{
-						int pos = p.ReverseFind(_T('\\'));
-						if (pos <= 3)
-							break;
-						p = p.Left(pos);
-					} while (!PathFileExists(p));
-					ShellExecute(GetSafeHwnd(), _T("explore"), p, nullptr, nullptr, SW_SHOW);
-				}
+				CAppUtils::ExploreTo(GetSafeHwnd(), g_Git.CombinePath(filepath));
 				break;
 
 			case IDGITLC_CREATERESTORE:

@@ -20,6 +20,7 @@
 #pragma once
 #include "Command.h"
 #include <ShlObj.h>
+#include "AppUtils.h"
 #include "MessageBox.h"
 
 /**
@@ -40,7 +41,7 @@ public:
 		CMessageBox::Show(hwndExplorer, IDS_PROC_RTFM, IDS_APPNAME, MB_ICONINFORMATION);
 		TCHAR path[MAX_PATH] = {0};
 		SHGetFolderPath(hwndExplorer, CSIDL_PERSONAL, NULL, SHGFP_TYPE_CURRENT, path);
-		ShellExecute(0, _T("explore"), path, NULL, NULL, SW_SHOWNORMAL);
+		CAppUtils::ExploreTo(hwndExplorer, path);
 		return true;
 	}
 };

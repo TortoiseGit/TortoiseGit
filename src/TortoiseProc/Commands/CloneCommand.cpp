@@ -237,7 +237,7 @@ bool CloneCommand::Execute()
 			}
 			if (ret == IDC_PROGRESS_BUTTON1 + 1)
 			{
-				ShellExecute(nullptr, _T("explore"), dlg.m_Directory, nullptr, nullptr, SW_SHOW);
+				CAppUtils::ExploreTo(hWndExplorer, dlg.m_Directory);
 				return TRUE;
 			}
 		}

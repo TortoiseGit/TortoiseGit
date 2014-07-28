@@ -3408,3 +3408,26 @@ int CAppUtils::Git2GetUserPassword(git_cred **out, const char *url, const char *
 	}
 	return -1;
 }
+
+void CAppUtils::ExploreTo(HWND hwnd, CString path)
+{
+	if (PathFileExists(path))
+	{
+		ITEMIDLIST __unaligned * pidl = ILCreateFromPath(path);
+		if (pidl)
+		{
+			SHOpenFolderAndSelectItems(pidl, 0, 0, 0);
+			ILFree(pidl);
+		}
+		return;
+	}
+	// if filepath does not exist any more, navigate to closest matching folder
+	do
+	{
+		int pos = path.ReverseFind(_T('\\'));
+		if (pos <= 3)
+			break;
+		path = path.Left(pos);
+	} while (!PathFileExists(path));
+	ShellExecute(hwnd, _T("explore"), path, nullptr, nullptr, SW_SHOW);
+}
