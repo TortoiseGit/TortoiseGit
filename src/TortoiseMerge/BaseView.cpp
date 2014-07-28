@@ -2002,34 +2002,38 @@ void CBaseView::DrawSingleLine(CDC *pDC, const CRect &rc, int nLineIndex)
 		{
 			switch (*pszChars)
 			{
-			case _T('\t'):
+			case '\t':
 				{
 					xpos += pDC->GetTextExtent(pLastSpace, (int)(pszChars - pLastSpace)).cx;
 					pLastSpace = pszChars + 1;
 					// draw an arrow
 					int nSpaces = GetTabSize() - nChars % GetTabSize();
-					if (xpos + nSpaces * GetCharWidth() >= 0)
+					if (xpos + nSpaces * GetCharWidth() > 0)
 					{
-						CPen * oldPen = pDC->SelectObject(&pen);
-						pDC->MoveTo(xpos + rc.left, y);
-						pDC->LineTo((xpos + nSpaces * GetCharWidth()) + rc.left-2, y);
-						pDC->LineTo((xpos + nSpaces * GetCharWidth()) + rc.left-6, y-4);
-						pDC->MoveTo((xpos + nSpaces * GetCharWidth()) + rc.left-2, y);
-						pDC->LineTo((xpos + nSpaces * GetCharWidth()) + rc.left-6, y+4);
-						pDC->SelectObject(oldPen);
+						int xposreal = max(xpos, 0);
+						if ((xposreal > 0) || (nSpaces > 0))
+						{
+							CPen * oldPen = pDC->SelectObject(&pen);
+							pDC->MoveTo(xposreal + rc.left, y);
+							pDC->LineTo((xpos + nSpaces * GetCharWidth()) + rc.left - 2, y);
+							pDC->LineTo((xpos + nSpaces * GetCharWidth()) + rc.left - 6, y - 4);
+							pDC->MoveTo((xpos + nSpaces * GetCharWidth()) + rc.left - 2, y);
+							pDC->LineTo((xpos + nSpaces * GetCharWidth()) + rc.left - 6, y + 4);
+							pDC->SelectObject(oldPen);
+						}
 					}
 					xpos += nSpaces * GetCharWidth();
 					nChars += nSpaces;
 				}
 				break;
-			case _T(' '):
+			case ' ':
 				{
 					xpos += pDC->GetTextExtent(pLastSpace, (int)(pszChars - pLastSpace)).cx;
 					pLastSpace = pszChars + 1;
 					// draw a small dot
-					CPen * oldPen = pDC->SelectObject(&pen2);
-					if (xpos + GetCharWidth() >= 0)
+					if (xpos >= 0)
 					{
+						CPen * oldPen = pDC->SelectObject(&pen2);
 						pDC->MoveTo(xpos + rc.left + GetCharWidth()/2-1, y);
 						pDC->LineTo(xpos + rc.left + GetCharWidth()/2+1, y);
 						pDC->SelectObject(oldPen);
