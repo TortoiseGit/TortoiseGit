@@ -45,11 +45,6 @@ msgstr ""
 msgid "%.2f MiB transferred"
 msgstr ""
 
-#. Resource IDs: (357)
-#, c-format
-msgid "%.2f kBytes/s"
-msgstr ""
-
 #. Resource IDs: (3868)
 #, c-format
 msgid "%1 contained an unexpected object."
@@ -223,11 +218,6 @@ msgstr ""
 #. Resource IDs: (8)
 #, c-format
 msgid "%i%% alpha\nclick to toggle alpha\ndouble click to automatically toggle alpha"
-msgstr ""
-
-#. Resource IDs: (357)
-#, c-format
-msgid "%ld Bytes/s"
 msgstr ""
 
 #. Resource IDs: (226)
