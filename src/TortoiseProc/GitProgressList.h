@@ -101,6 +101,7 @@ public:
 
 		virtual void SetColorCode(CColors& /*colors*/) {};
 		virtual void GetContextMenu(CIconMenu& /*popup*/, ContextMenuActionList& /*actions*/) {};
+		virtual void HandleDblClick() const {}
 
 		// The text we put into the first column (the Git action for normal items, just text for aux items)
 		CString					sActionColumnText;
@@ -199,6 +200,21 @@ public:
 
 				actions.push_back([&]{ CAppUtils::ExploreTo(nullptr, g_Git.CombinePath(path)); });
 				popup.AppendMenuIcon(actions.size(), IDS_STATUSLIST_CONTEXT_EXPLORE, IDI_EXPLORER);
+			}
+		};
+		virtual void HandleDblClick() const
+		{
+			CString sWinPath = g_Git.CombinePath(path);
+			if (PathIsDirectory(sWinPath))
+			{
+				CAppUtils::ExploreTo(nullptr, sWinPath);
+				return;
+			}
+			if ((int)ShellExecute(nullptr, NULL, (LPCTSTR)sWinPath, NULL, NULL, SW_SHOWNORMAL) <= HINSTANCE_ERROR)
+			{
+				CString cmd = _T("RUNDLL32 Shell32,OpenAs_RunDLL ");
+				cmd += sWinPath;
+				CAppUtils::LaunchApplication(cmd, NULL, false);
 			}
 		};
 	};

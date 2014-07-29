@@ -657,48 +657,20 @@ void CGitProgressList::OnNMCustomdrawSvnprogress(NMHDR *pNMHDR, LRESULT *pResult
 	}
 }
 
-void CGitProgressList::OnNMDblclkSvnprogress(NMHDR * /*pNMHDR*/, LRESULT * /*pResult*/)
+void CGitProgressList::OnNMDblclkSvnprogress(NMHDR* pNMHDR, LRESULT* pResult)
 {
-#if 0
 	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
 	*pResult = 0;
 	if (pNMLV->iItem < 0)
 		return;
-	if (m_options & ProgOptDryRun)
+	if (m_options & ProgOptDryRun || m_bThreadRunning)
 		return;	//don't do anything in a dry-run.
 
-	const NotificationData * data = m_arData[pNMLV->iItem];
-	if (data == NULL)
+	const NotificationData* data = m_arData[pNMLV->iItem];
+	if (!data)
 		return;
 
-	if (data->bConflictedActionItem)
-	{
-		// We've double-clicked on a conflicted item - do a three-way merge on it
-		SVNDiff::StartConflictEditor(data->path);
-	}
-	else if ((data->action == svn_wc_notify_update_update) && ((data->content_state == svn_wc_notify_state_merged)||(GitProgress_Merge == m_Command)) || (data->action == svn_wc_notify_resolved))
-	{
-		// This is a modified file which has been merged on update. Diff it against base
-		CTGitPath temporaryFile;
-		SVNDiff diff(this, this->m_hWnd, true);
-		diff.SetAlternativeTool(!!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
-		svn_revnum_t baseRev = 0;
-		diff.DiffFileAgainstBase(data->path, baseRev);
-	}
-	else if ((!data->bAuxItem)&&(data->path.Exists())&&(!data->path.IsDirectory()))
-	{
-		bool bOpenWith = false;
-		int ret = (int)ShellExecute(m_hWnd, NULL, data->path.GetWinPath(), NULL, NULL, SW_SHOWNORMAL);
-		if (ret <= HINSTANCE_ERROR)
-			bOpenWith = true;
-		if (bOpenWith)
-		{
-			CString cmd = _T("RUNDLL32 Shell32,OpenAs_RunDLL ");
-			cmd += data->path.GetWinPathString() + _T(" ");
-			CAppUtils::LaunchApplication(cmd, NULL, false);
-		}
-	}
-#endif
+	data->HandleDblClick();
 }
 
 void CGitProgressList::OnHdnItemclickSvnprogress(NMHDR *pNMHDR, LRESULT *pResult)
