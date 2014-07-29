@@ -1748,6 +1748,7 @@ bool CGitProgressList::CmdReset(CString& sWindowTitle, bool& /*localoperation*/)
 	int resetTypesResource[] = { IDS_RESET_SOFT, IDS_RESET_MIXED, IDS_RESET_HARD };
 	ReportCmd(CString(MAKEINTRESOURCE(IDS_PROGRS_TITLE_RESET)) + _T(" ") + CString(MAKEINTRESOURCE(resetTypesResource[m_resetType])) + _T(" ") + m_revision);
 
+	ShowProgressBar();
 	CAutoRepository repo(g_Git.GetGitRepository());
 	if (!repo)
 	{
@@ -1755,7 +1756,6 @@ bool CGitProgressList::CmdReset(CString& sWindowTitle, bool& /*localoperation*/)
 		return false;
 	}
 
-	CSmartAnimation animate(m_pAnimate);
 	CAutoObject target;
 	if (git_revparse_single(target.GetPointer(), repo, CUnicodeUtils::GetUTF8(m_revision)))
 		goto error;
@@ -1886,4 +1886,14 @@ void CGitProgressList::SetWindowTitle(UINT id, const CString& urlorpath, CString
 
 	dialogname.LoadString(id);
 	CAppUtils::SetWindowTitle(m_pPostWnd->GetSafeHwnd(), urlorpath, dialogname);
+}
+
+void CGitProgressList::ShowProgressBar()
+{
+	if (m_pProgControl)
+	{
+		m_pProgControl->ShowWindow(SW_SHOW);
+		m_pProgControl->SetPos(0);
+		m_pProgControl->SetRange32(0, 1);
+	}
 }

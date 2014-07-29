@@ -293,6 +293,7 @@ private:
 public:
 	CComPtr<ITaskbarList3>	m_pTaskbarList;
 	void Init();
+	void ShowProgressBar();
 
 protected:
 	afx_msg void OnClose();
