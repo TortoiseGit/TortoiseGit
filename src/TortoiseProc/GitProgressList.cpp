@@ -970,6 +970,8 @@ BOOL CGitProgressList::Notify(const git_wc_notify_action_t /*action*/, const git
 	if (m_pProgressLabelCtrl)
 		m_pProgressLabelCtrl->SetWindowText(progText);
 
+	SetTimer(TRANSFERTIMER, 2000, NULL);
+
 	return TRUE;
 }
 
