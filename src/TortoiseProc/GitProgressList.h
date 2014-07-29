@@ -27,7 +27,6 @@
 #include "../TortoiseShell/resource.h"
 #include "LoglistCommonResource.h"
 #include "IconMenu.h"
-#include "AppUtils.h"
 /**
  * \ingroup TortoiseProc
  * Options which can be used to configure the way the dialog box works
@@ -122,101 +121,13 @@ public:
 			git_wc_notify_checkout,
 		} git_wc_notify_action_t;
 
-		WC_File_NotificationData(const CTGitPath& path, git_wc_notify_action_t action)
-		: NotificationData()
-		{
-			this->action = action;
-			this->path = path;
-			sPathColumnText = path.GetGitPathString();
-
-			switch (action)
-			{
-			case git_wc_notify_add:
-				sActionColumnText.LoadString(IDS_SVNACTION_ADD);
-				break;
-			case git_wc_notify_resolved:
-				sActionColumnText.LoadString(IDS_SVNACTION_RESOLVE);
-				break;
-			case git_wc_notify_revert:
-				sActionColumnText.LoadString(IDS_SVNACTION_REVERT);
-				break;
-			case git_wc_notify_checkout:
-				sActionColumnText.LoadString(IDS_PROGRS_CMD_CHECKOUT);
-				break;
-			default:
-				break;
-			}
-		};
-		virtual void SetColorCode(CColors& colors)
-		{
-			switch (action)
-			{
-			case git_wc_notify_checkout: // fall-through
-			case git_wc_notify_add:
-				color = colors.GetColor(CColors::Added);
-				break;
-
-			default:
-				break;
-			}
-		};
+		WC_File_NotificationData(const CTGitPath& path, git_wc_notify_action_t action);
+		virtual void SetColorCode(CColors& colors);
 
 		git_wc_notify_action_t action;
 
-		virtual void GetContextMenu(CIconMenu& popup, ContextMenuActionList& actions)
-		{
-			if ((action == git_wc_notify_add) ||
-				(action == git_wc_notify_revert) ||
-				(action == git_wc_notify_resolved) ||
-				(action == git_wc_notify_checkout))
-			{
-				actions.push_back([&]()
-				{
-					CString cmd = _T("/command:log");
-					CString sPath = g_Git.CombinePath(path);
-					cmd += _T(" /path:\"") + sPath + _T("\"");
-					CAppUtils::RunTortoiseGitProc(cmd);
-				});
-				popup.AppendMenuIcon(actions.size(), IDS_MENULOG, IDI_LOG);
-
-				popup.AppendMenu(MF_SEPARATOR, NULL);
-				auto open = [&](bool openWith)
-				{
-					int ret = 0;
-					CString sWinPath = g_Git.CombinePath(path);
-					if (!openWith)
-						ret = (int)ShellExecute(nullptr, NULL, (LPCTSTR)sWinPath, NULL, NULL, SW_SHOWNORMAL);
-					if ((ret <= HINSTANCE_ERROR) || openWith)
-					{
-						CString cmd = _T("RUNDLL32 Shell32,OpenAs_RunDLL ");
-						cmd += sWinPath;
-						CAppUtils::LaunchApplication(cmd, NULL, false);
-					}
-				};
-				actions.push_back([open]{ open(false); });
-				popup.AppendMenuIcon(actions.size(), IDS_LOG_POPUP_OPEN, IDI_OPEN);
-				actions.push_back([open]{ open(true); });
-				popup.AppendMenuIcon(actions.size(), IDS_LOG_POPUP_OPENWITH, IDI_OPEN);
-
-				actions.push_back([&]{ CAppUtils::ExploreTo(nullptr, g_Git.CombinePath(path)); });
-				popup.AppendMenuIcon(actions.size(), IDS_STATUSLIST_CONTEXT_EXPLORE, IDI_EXPLORER);
-			}
-		};
-		virtual void HandleDblClick() const
-		{
-			CString sWinPath = g_Git.CombinePath(path);
-			if (PathIsDirectory(sWinPath))
-			{
-				CAppUtils::ExploreTo(nullptr, sWinPath);
-				return;
-			}
-			if ((int)ShellExecute(nullptr, NULL, (LPCTSTR)sWinPath, NULL, NULL, SW_SHOWNORMAL) <= HINSTANCE_ERROR)
-			{
-				CString cmd = _T("RUNDLL32 Shell32,OpenAs_RunDLL ");
-				cmd += sWinPath;
-				CAppUtils::LaunchApplication(cmd, NULL, false);
-			}
-		};
+		virtual void GetContextMenu(CIconMenu& popup, ContextMenuActionList& actions);
+		virtual void HandleDblClick() const;
 	};
 
 	void AddNotify(NotificationData* data, CColors::Colors color = CColors::COLOR_END);

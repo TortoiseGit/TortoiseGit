@@ -65,6 +65,7 @@
     <ClCompile Include="ProgressCommands\AddProgressCommand.cpp" />
     <ClCompile Include="ProgressCommands\CloneProgressCommand.cpp" />
     <ClCompile Include="ProgressCommands\FetchProgressCommand.cpp" />
+    <ClCompile Include="ProgressCommands\RemoteProgressCommand.cpp" />
     <ClCompile Include="ProgressCommands\ResetProgressCommand.cpp" />
     <ClCompile Include="ProgressCommands\ResolveProgressCommand.cpp" />
     <ClCompile Include="ProgressCommands\RevertProgressCommand.cpp" />

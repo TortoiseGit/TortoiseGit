@@ -710,6 +710,9 @@
     <ClCompile Include="ProgressCommands\SendMailProgressCommand.cpp">
       <Filter>Utility Dialogs\ProgressCommands</Filter>
     </ClCompile>
+    <ClCompile Include="ProgressCommands\RemoteProgressCommand.cpp">
+      <Filter>Utility Dialogs\ProgressCommands</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddRemoteDlg.h">
