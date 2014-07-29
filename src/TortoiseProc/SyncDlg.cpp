@@ -1622,6 +1622,7 @@ void CSyncDlg::OnBnClickedLog()
 
 LRESULT CSyncDlg::OnProgCmdFinish(WPARAM /*wParam*/, LPARAM /*lParam*/)
 {
+	RefreshCursor();
 	RunPostAction();
 	return 0;
 }

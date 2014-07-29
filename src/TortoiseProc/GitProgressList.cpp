@@ -568,9 +568,6 @@ UINT CGitProgressList::ProgressThread()
 
 	m_bCancelled = TRUE;
 	InterlockedExchange(&m_bThreadRunning, FALSE);
-#if 0 //need
-	RefreshCursor();
-#endif
 
 	if (m_pPostWnd)
 		m_pPostWnd->PostMessage(WM_PROG_CMD_FINISH, (WPARAM)m_Command, 0L);
