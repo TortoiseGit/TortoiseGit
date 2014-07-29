@@ -5001,6 +5001,7 @@ void CBaseView::SetViewLineEnding( int index, EOL ending )
 
 void CBaseView::SetViewMarked( int index, bool marked )
 {
+	m_pState->markedlines[index] = m_pViewData->GetMarked(index);
 	m_pViewData->SetMarked(index, marked);
 }
 
@@ -5893,7 +5894,7 @@ void CBaseView::UseViewBlock(CBaseView * pwndView, int nFirstViewLine, int nLast
 
 	for (int viewLine = nFirstViewLine; viewLine <= nLastViewLine; viewLine++)
 	{
-		if (skipMarked && GetViewMarked(viewLine))
+		if (skipMarked && (GetViewMarked(viewLine) || GetViewState(viewLine) == DIFFSTATE_EDITED))
 			continue;
 		viewdata line = pwndView->GetViewData(viewLine);
 		if (line.ending != EOL_NOENDING)
@@ -5996,8 +5997,17 @@ void CBaseView::UseViewBlock(CBaseView * pwndView, int nFirstViewLine, int nLast
 
 void CBaseView::MarkBlock(bool marked, int nFirstViewLine, int nLastViewLine)
 {
+	if (!IsWritable())
+		return;
+	CUndo::GetInstance().BeginGrouping();
+
 	for (int viewLine = nFirstViewLine; viewLine <= nLastViewLine; viewLine++)
 		SetViewMarked(viewLine, marked);
+
+	SetModified();
+	SaveUndoStep();
+	CUndo::GetInstance().EndGrouping();
+
 	BuildAllScreen2ViewVector();
 	Invalidate();
 	RefreshViews();

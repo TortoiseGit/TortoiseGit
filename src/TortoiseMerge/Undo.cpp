@@ -41,6 +41,7 @@ void viewstate::Clear()
 	linestates.clear();
 	linelines.clear();
 	linesEOL.clear();
+	markedlines.clear();
 	addedlines.clear();
 
 	removedlines.clear();
@@ -257,6 +258,10 @@ void CUndo::Undo(const viewstate& state, CBaseView * pView, const POINT& pt)
 	for (std::map<int, EOL>::const_iterator it = state.linesEOL.begin(); it != state.linesEOL.end(); ++it)
 	{
 		viewData->SetLineEnding(it->first, (EOL)it->second);
+	}
+	for (std::map<int, bool>::const_iterator it = state.markedlines.begin(); it != state.markedlines.end(); ++it)
+	{
+		viewData->SetMarked(it->first, (EOL)it->second);
 	}
 	for (std::map<int, CString>::const_iterator it = state.difflines.begin(); it != state.difflines.end(); ++it)
 	{
