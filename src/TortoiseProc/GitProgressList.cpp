@@ -783,10 +783,7 @@ BOOL CGitProgressList::UpdateProgress(const git_transfer_progress* stat)
 	progress = stat->received_objects + stat->indexed_objects;
 
 	if ((stat->total_objects > 1000) && m_pProgControl && (!m_pProgControl->IsWindowVisible()))
-	{
-		if (m_pProgControl)
-			m_pProgControl->ShowWindow(SW_SHOW);
-	}
+		m_pProgControl->ShowWindow(SW_SHOW);
 
 	if (m_pProgressLabelCtrl && m_pProgressLabelCtrl->IsWindowVisible())
 		m_pProgressLabelCtrl->ShowWindow(SW_SHOW);
