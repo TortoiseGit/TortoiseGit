@@ -90,7 +90,8 @@ public:
 		{};
 
 		NotificationData(const CTGitPath &path, UINT actionTextId)
-		: NotificationData()
+		: color(::GetSysColor(COLOR_WINDOWTEXT))
+		, bAuxItem(false)
 		{
 			this->path = path;
 			sActionColumnText.LoadString(actionTextId);
