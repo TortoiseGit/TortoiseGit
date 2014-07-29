@@ -1,7 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2014 - TortoiseGit
-// Copyright (C) 2007-2008 - TortoiseSVN
+// Copyright (C) 2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -16,31 +15,20 @@
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-//
-#include "stdafx.h"
-#include "RevertCommand.h"
 
-#include "RevertDlg.h"
-#include "GitProgressDlg.h"
-#include "ProgressCommands/RevertProgressCommand.h"
+#include "GitProgressList.h"
+#include "SendMail.h"
 
-bool RevertCommand::Execute()
+class SendMailProgressCommand : public ProgressCommand
 {
-	CRevertDlg dlg;
-	dlg.m_pathList = pathList;
-	if (dlg.DoModal() == IDOK)
-	{
+private:
+	CSendMail *	m_SendMail;
 
-		CGitProgressDlg progDlg;
-		theApp.m_pMainWnd = &progDlg;
+public:
+	SendMailProgressCommand()
+	: m_SendMail(nullptr)
+	{}
 
-		RevertProgressCommand revertCommand;
-		progDlg.SetCommand(&revertCommand);
-		progDlg.SetItemCount(dlg.m_selectedPathList.GetCount());
-		revertCommand.SetPathList(dlg.m_selectedPathList);
-		progDlg.DoModal();
-
-		return true;
-	}
-	return false;
-}
+	void SetSendMailOption(CSendMail *sendmail) { m_SendMail = sendmail; }
+	virtual bool Run(CGitProgressList* list, CString& sWindowTitle, int& m_itemCountTotal, int& m_itemCount);
+};

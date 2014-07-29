@@ -30,6 +30,7 @@
 #include "AppUtils.h"
 #include "UnicodeUtils.h"
 #include "SysProgressDlg.h"
+#include "ProgressCommands/CloneProgressCommand.h"
 
 static CString GetExistingDirectoryForClone(CString path)
 {
@@ -195,13 +196,16 @@ bool CloneCommand::Execute()
 				CTGitPathList list;
 				g_Git.m_CurrentDir = dir;
 				list.AddPath(CTGitPath(dir));
-				GitDlg.SetCommand(CGitProgressList::GitProgress_Clone);
-				GitDlg.SetUrl(url);
-				GitDlg.SetPathList(list);
-				GitDlg.SetIsBare(!!dlg.m_bBare);
-				GitDlg.SetRefSpec(dlg.m_bBranch ? dlg.m_strBranch : CString());
-				GitDlg.SetRemote(dlg.m_bOrigin ? dlg.m_strOrigin : CString());
-				GitDlg.SetNoCheckout(!!dlg.m_bNoCheckout);
+				CloneProgressCommand cloneProgressCommand;
+				GitDlg.SetCommand(&cloneProgressCommand);
+				cloneProgressCommand.SetUrl(url);
+				cloneProgressCommand.SetPathList(list);
+				cloneProgressCommand.SetIsBare(dlg.m_bBare == TRUE);
+				if (dlg.m_bBranch)
+					cloneProgressCommand.SetRefSpec(dlg.m_strBranch);
+				if (dlg.m_bOrigin)
+					cloneProgressCommand.SetRemote(dlg.m_strOrigin);
+				cloneProgressCommand.SetNoCheckout(dlg.m_bNoCheckout == TRUE);
 				GitDlg.DoModal();
 				return !GitDlg.DidErrorsOccur();
 			}

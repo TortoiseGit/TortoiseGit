@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011,2013 - TortoiseGit
+// Copyright (C) 2011,2013-2014 - TortoiseGit
 // Copyright (C) 2007-2008,2010,2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -24,6 +24,7 @@
 #include "MessageBox.h"
 #include "StringUtils.h"
 #include "DirFileEnum.h"
+#include "ProgressCommands/AddProgressCommand.h"
 
 bool DropCopyAddCommand::Execute()
 {
@@ -149,8 +150,9 @@ bool DropCopyAddCommand::Execute()
 	//now add all the newly copied files to the working copy
 	CGitProgressDlg progDlg;
 	theApp.m_pMainWnd = &progDlg;
-	progDlg.SetCommand(CGitProgressList::GitProgress_Add);
-	progDlg.SetPathList(copiedFiles);
+	AddProgressCommand addCommand;
+	progDlg.SetCommand(&addCommand);
+	addCommand.SetPathList(copiedFiles);
 	progDlg.DoModal();
 	bRet = !progDlg.DidErrorsOccur();
 

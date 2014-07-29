@@ -51,7 +51,7 @@ int CSendMail::SendMail(const CTGitPath &item, CGitProgressList * instance, CStr
 			return -1;
 		}
 
-		instance->Notify(item, git_wc_notify_sendmail);
+		instance->AddNotify(new CGitProgressList::NotificationData(item, IDS_SVNACTION_SENDMAIL_START), CColors::Modified);
 
 		CString error;
 		if (SendMail(FromName, FromMail, To, CC, subject, body, attachments, &error) == 0)
