@@ -1132,3 +1132,9 @@ void CGitProgressList::ShowProgressBar()
 		m_pProgControl->SetRange32(0, 1);
 	}
 }
+
+void CGitProgressList::SetProgressLabelText(const CString& str)
+{
+	if (m_pProgressLabelCtrl)
+		m_pProgressLabelCtrl->SetWindowText(str);
+}

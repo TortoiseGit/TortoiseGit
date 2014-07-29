@@ -30,9 +30,7 @@ protected:
 
 	static int RemoteProgressCallback(const char* str, int len, void* data)
 	{
-		CString progText;
-		progText = CUnicodeUtils::GetUnicode(CStringA(str, len));
-		((CGitProgressList*)data)->SetDlgItemText(IDC_PROGRESSLABEL, progText);
+		((CGitProgressList*)data)->SetProgressLabelText(CUnicodeUtils::GetUnicode(CStringA(str, len)));
 		return 0;
 	}
 	static int RemoteCompletionCallback(git_remote_completion_type /*type*/, void* /*data*/)
