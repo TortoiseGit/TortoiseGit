@@ -1869,11 +1869,10 @@ void CTortoiseGitBlameView::OnEditFind()
 	if (m_TextView.Call(SCI_GETSELECTIONSTART) != m_TextView.Call(SCI_GETSELECTIONEND))
 	{
 		LRESULT bufsize = m_TextView.Call(SCI_GETSELECTIONEND) - m_TextView.Call(SCI_GETSELECTIONSTART);
-		char * linebuf = new char[bufsize + 1];
-		SecureZeroMemory(linebuf, bufsize + 1);
-		SendEditor(SCI_GETSELTEXT, 0, (LPARAM)linebuf);
-		oneline = m_TextView.StringFromControl(linebuf);
-		delete [] linebuf;
+		std::unique_ptr<char> linebuf(new char[bufsize + 1]);
+		SecureZeroMemory(linebuf.get(), bufsize + 1);
+		SendEditor(SCI_GETSELTEXT, 0, (LPARAM)linebuf.get());
+		oneline = m_TextView.StringFromControl(linebuf.get());
 	}
 
 	DWORD flags = FR_DOWN | FR_HIDEWHOLEWORD | FR_HIDEUPDOWN;
