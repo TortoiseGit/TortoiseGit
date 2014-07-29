@@ -18,8 +18,8 @@
 
 #include "stdafx.h"
 #include "ResetProgressCommand.h"
-#include "ShellUpdater.h"
 #include "AppUtils.h"
+#include "../TGitCache/CacheInterface.h"
 
 bool ResetProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, int& /*m_itemCountTotal*/, int& /*m_itemCount*/)
 {
@@ -43,6 +43,7 @@ bool ResetProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, in
 		return false;
 	}
 
+	CBlockCacheForPath block(g_Git.m_CurrentDir);
 	CAutoObject target;
 	if (git_revparse_single(target.GetPointer(), repo, CUnicodeUtils::GetUTF8(m_revision)))
 		goto error;
