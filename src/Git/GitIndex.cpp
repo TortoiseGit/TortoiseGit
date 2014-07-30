@@ -170,7 +170,7 @@ int CGitIndexList::GetFileStatus(const CString &gitdir, const CString &pathorg, 
 		}
 		else
 		{
- 			int index = start;
+			int index = start;
 			if (index >= (int)size())
 				return -1;
 
