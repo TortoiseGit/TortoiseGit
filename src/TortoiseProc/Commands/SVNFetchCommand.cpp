@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -49,7 +49,7 @@ bool SVNFetchCommand::Execute()
 		return false;
 	}
 
-	CGitHash upstreamOldHash, upstreamNewHash;
+	CGitHash upstreamOldHash;
 	if (g_Git.GetHash(upstreamOldHash, out))
 	{
 		MessageBox(hwndExplorer, g_Git.GetGitLastErr(_T("Could not get upstream hash.")), _T("TortoiseGit"), MB_ICONERROR);
@@ -58,44 +58,38 @@ bool SVNFetchCommand::Execute()
 
 	CProgressDlg progress;
 	progress.m_GitCmd=_T("git.exe svn fetch");
-	progress.m_PostCmdList.Add(_T("Fetched Diff"));
-	progress.m_PostCmdList.Add(_T("Fetched Log"));
+
+	progress.m_PostCmdCallback = [&](DWORD status, PostCmdList& postCmdList)
+	{
+		if (status)
+			return;
+
+		CGitHash upstreamNewHash;
+		if (g_Git.GetHash(upstreamNewHash, out))
+		{
+			MessageBox(hwndExplorer, g_Git.GetGitLastErr(_T("Could not get upstream hash after fetching.")), _T("TortoiseGit"), MB_ICONERROR);
+			return;
+		}
+		if (upstreamOldHash == upstreamNewHash)
+			return;
+
+		postCmdList.push_back(PostCmd(_T("Fetched Diff"), [&]
+		{
+			CLogDlg dlg;
+			dlg.SetParams(CTGitPath(_T("")), CTGitPath(_T("")), _T(""), upstreamOldHash.ToString() + _T("..") + upstreamNewHash.ToString(), 0);
+			dlg.DoModal();
+		}));
+
+		postCmdList.push_back(PostCmd(_T("Fetched Log"), [&]
+		{
+			CFileDiffDlg dlg;
+			dlg.SetDiff(NULL, upstreamNewHash.ToString(), upstreamOldHash.ToString());
+			dlg.DoModal();
+		}));
+	};
 
 	INT_PTR userResponse = progress.DoModal();
 	::DeleteFile(g_Git.m_CurrentDir + _T("\\sys$command"));
-	if (g_Git.GetHash(upstreamNewHash, out))
-	{
-		MessageBox(hwndExplorer, g_Git.GetGitLastErr(_T("Could not get upstream hash after fetching.")), _T("TortoiseGit"), MB_ICONERROR);
-		return false;
-	}
-	if (userResponse == IDC_PROGRESS_BUTTON1)
-	{
-		if (upstreamOldHash == upstreamNewHash)
-		{
-			if (progress.m_GitStatus == 0)
-				CMessageBox::Show(NULL, L"No new revisions fetched.", L"TortoiseGit Fetch", MB_OK | MB_ICONINFORMATION);
-			return true;
-		}
 
-		CLogDlg dlg;
-		dlg.SetParams(CTGitPath(_T("")), CTGitPath(_T("")), _T(""), upstreamOldHash.ToString() + _T("..") + upstreamNewHash.ToString(), 0);
-		dlg.DoModal();
-		return true;
-	}
-	else if (userResponse == IDC_PROGRESS_BUTTON1 + 1)
-	{
-		if (upstreamOldHash == upstreamNewHash)
-		{
-			if (progress.m_GitStatus == 0)
-				CMessageBox::Show(NULL, L"No new revisions fetched.", L"TortoiseGit Fetch", MB_OK | MB_ICONINFORMATION);
-			return true;
-		}
-
-		CFileDiffDlg dlg;
-		dlg.SetDiff(NULL, upstreamNewHash.ToString(), upstreamOldHash.ToString());
-		dlg.DoModal();
-		return true;
-	}
-	else
-		return false;
+	return userResponse == IDOK;
 }
