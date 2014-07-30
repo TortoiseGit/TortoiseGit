@@ -45,13 +45,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Utils\DebugOutput.cpp" />
+    <ClCompile Include="..\Utils\ReaderWriterLock.cpp" />
     <ClCompile Include="Git.cpp" />
     <ClCompile Include="GitAdminDir.cpp" />
     <ClCompile Include="GitFolderStatus.cpp" />
     <ClCompile Include="GitIndex.cpp" />
     <ClCompile Include="GitRev.cpp" />
     <ClCompile Include="GitStatus.cpp" />
-    <ClCompile Include="SharedMutex.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
@@ -59,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Utils\DebugOutput.h" />
+    <ClInclude Include="..\Utils\ReaderWriterLock.h" />
     <ClInclude Include="TGitPath.h" />
     <ClInclude Include="Git.h" />
     <ClInclude Include="GitAdminDir.h" />
@@ -68,7 +69,6 @@
     <ClInclude Include="GitRev.h" />
     <ClInclude Include="GitStatus.h" />
     <ClInclude Include="gittype.h" />
-    <ClInclude Include="SharedMutex.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>

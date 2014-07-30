@@ -20,8 +20,8 @@
 #include "GitHash.h"
 #include "gitdll.h"
 #include "GitStatus.h"
-#include "SharedMutex.h"
 #include "UnicodeUtils.h"
+#include "ReaderWriterLock.h"
 
 class CGitIndex
 {
@@ -154,7 +154,7 @@ class CGitHeadFileList:public std::vector<CGitTreeItem>
 {
 private:
 	int GetPackRef(const CString &gitdir);
-	SharedMutex	m_SharedMutex;
+	CReaderWriterLock m_SharedMutex;
 
 	__time64_t  m_LastModifyTimeHead;
 	__time64_t  m_LastModifyTimeRef;
@@ -176,12 +176,6 @@ public:
 		m_LastModifyTimeHead=0;
 		m_LastModifyTimeRef=0;
 		m_LastModifyTimePackRef = 0;
-		m_SharedMutex.Init();
-	}
-
-	~CGitHeadFileList()
-	{
-		m_SharedMutex.Release();
 	}
 
 	int ReadTree();
@@ -239,7 +233,7 @@ public:
 class CGitIgnoreItem
 {
 public:
-	SharedMutex  m_SharedMutex;
+	CReaderWriterLock  m_SharedMutex;
 
 	CGitIgnoreItem()
 	{
@@ -277,7 +271,7 @@ private:
 	std::map<CString, CString> m_CoreExcludesfiles;
 	CString m_sMsysGitBinPath;
 	DWORD m_dMsysGitBinPathLastChecked;
-	SharedMutex	m_coreExcludefilesSharedMutex;
+	CReaderWriterLock	m_coreExcludefilesSharedMutex;
 	// checks if the msysgit path has changed and return true/false
 	// if the path changed, the cache is update
 	// force is only ised in constructor
@@ -286,10 +280,9 @@ private:
 	const CString GetWindowsHome();
 
 public:
-	SharedMutex		m_SharedMutex;
+	CReaderWriterLock		m_SharedMutex;
 
-	CGitIgnoreList(){ m_SharedMutex.Init(); m_coreExcludefilesSharedMutex.Init(); CheckAndUpdateMsysGitBinpath(true); }
-	~CGitIgnoreList() { m_SharedMutex.Release(); m_coreExcludefilesSharedMutex.Release(); }
+	CGitIgnoreList(){ CheckAndUpdateMsysGitBinpath(true); }
 
 	std::map<CString, CGitIgnoreItem> m_Map;
 
