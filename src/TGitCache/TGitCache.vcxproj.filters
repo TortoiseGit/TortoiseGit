@@ -54,9 +54,6 @@
     <ClCompile Include="..\Utils\Registry.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Git\SharedMutex.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ShellUpdater.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
