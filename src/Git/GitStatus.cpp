@@ -23,7 +23,7 @@
 #include "GitStatus.h"
 #include "UnicodeUtils.h"
 #include "Git.h"
-#include "GitIndex.h"
+#include "gitindex.h"
 #include "ShellCache.h"
 
 extern CGitAdminDirMap g_AdminDirMap;
