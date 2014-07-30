@@ -175,6 +175,24 @@ bool CloneCommand::Execute()
 						url,
 						dir);
 
+		auto postCmdCallback = [&](DWORD status, PostCmdList& postCmdList)
+		{
+			if (status)
+				return;
+
+			if (dlg.m_bAutoloadPuttyKeyFile) // do this here, since it might be needed for actions performed in Log
+				StorePuttyKey(dlg.m_Directory, dlg.m_strPuttyKeyFile);
+
+			postCmdList.push_back(PostCmd(IDI_LOG, IDS_MENULOG, [&]
+			{
+				CString cmd = _T("/command:log");
+				cmd += _T(" /path:\"") + dlg.m_Directory + _T("\"");
+				CAppUtils::RunTortoiseGitProc(cmd);
+			}));
+
+			postCmdList.push_back(PostCmd(IDI_EXPLORER, IDS_STATUSLIST_CONTEXT_EXPLORE, [&]{ CAppUtils::ExploreTo(hWndExplorer, dlg.m_Directory); }));
+		};
+
 		// Handle Git SVN-clone
 		if(dlg.m_bSVN)
 		{
@@ -214,6 +232,7 @@ bool CloneCommand::Execute()
 				list.AddPath(CTGitPath(dir));
 				CloneProgressCommand cloneProgressCommand;
 				GitDlg.SetCommand(&cloneProgressCommand);
+				cloneProgressCommand.m_PostCmdCallback = postCmdCallback;
 				cloneProgressCommand.SetUrl(url);
 				cloneProgressCommand.SetPathList(list);
 				cloneProgressCommand.SetIsBare(dlg.m_bBare == TRUE);
@@ -228,23 +247,7 @@ bool CloneCommand::Execute()
 		}
 		CProgressDlg progress;
 		progress.m_GitCmd=cmd;
-		progress.m_PostCmdCallback = [&](DWORD status, PostCmdList& postCmdList)
-		{
-			if (status)
-				return;
-
-			if (dlg.m_bAutoloadPuttyKeyFile) // do this here, since it might be needed for actions performed in Log
-				StorePuttyKey(dlg.m_Directory, dlg.m_strPuttyKeyFile);
-
-			postCmdList.push_back(PostCmd(IDI_LOG, IDS_MENULOG, [&]
-			{
-				CString cmd = _T("/command:log");
-				cmd += _T(" /path:\"") + dlg.m_Directory + _T("\"");
-				CAppUtils::RunTortoiseGitProc(cmd);
-			}));
-
-			postCmdList.push_back(PostCmd(IDI_EXPLORER, IDS_STATUSLIST_CONTEXT_EXPLORE, [&]{ CAppUtils::ExploreTo(hWndExplorer, dlg.m_Directory); }));
-		};
+		progress.m_PostCmdCallback = postCmdCallback;
 		INT_PTR ret = progress.DoModal();
 
 		if (dlg.m_bSVN)

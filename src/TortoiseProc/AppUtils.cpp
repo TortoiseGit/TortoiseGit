@@ -1420,6 +1420,7 @@ static bool Reset(const CString& resetTo, int resetType)
 		CGitProgressDlg gitdlg;
 		ResetProgressCommand resetProgressCommand;
 		gitdlg.SetCommand(&resetProgressCommand);
+		resetProgressCommand.m_PostCmdCallback = progress.m_PostCmdCallback;
 		resetProgressCommand.SetRevision(resetTo);
 		resetProgressCommand.SetResetType(resetType);
 		ret = gitdlg.DoModal();
@@ -2402,6 +2403,7 @@ static bool DoFetch(const CString& url, const bool fetchAllRemotes, const bool l
 		if (!fetchAllRemotes)
 			fetchProgressCommand.SetUrl(url);
 		gitdlg.SetCommand(&fetchProgressCommand);
+		fetchProgressCommand.m_PostCmdCallback = progress.m_PostCmdCallback;
 		fetchProgressCommand.SetAutoTag(fetchTags == 1 ? GIT_REMOTE_DOWNLOAD_TAGS_ALL : fetchTags == 2 ? GIT_REMOTE_DOWNLOAD_TAGS_AUTO : GIT_REMOTE_DOWNLOAD_TAGS_NONE);
 		if (!fetchAllRemotes)
 			fetchProgressCommand.SetRefSpec(remoteBranch);

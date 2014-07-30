@@ -184,8 +184,8 @@ void CGitProgressList::AddItemToList()
 CString CGitProgressList::BuildInfoString()
 {
 	CString infotext;
-	if (m_Command->NeedsCommit())
-		infotext = _T("You need commit your change after resolve conflict");
+	m_Command->ShowInfo(infotext);
+
 #if 0
 
 	CString temp;

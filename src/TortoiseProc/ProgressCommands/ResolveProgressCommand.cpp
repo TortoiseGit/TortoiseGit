@@ -45,5 +45,24 @@ bool ResolveProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, 
 
 	CShellUpdater::Instance().AddPathsForUpdate(m_targetPathList);
 
+	m_PostCmdCallback = [](DWORD status, PostCmdList& postCmdList)
+	{
+		if (status)
+			return;
+
+		postCmdList.push_back(PostCmd(IDI_COMMIT, IDS_MENUCOMMIT, []
+		{
+			CString sCmd;
+			sCmd.Format(_T("/command:commit /path:\"%s\""), g_Git.m_CurrentDir);
+			CAppUtils::RunTortoiseGitProc(sCmd);
+		}));
+	};
+
+	return true;
+}
+
+bool ResolveProgressCommand::ShowInfo(CString& info)
+{
+	info = _T("You need commit your change after resolve conflict");
 	return true;
 }

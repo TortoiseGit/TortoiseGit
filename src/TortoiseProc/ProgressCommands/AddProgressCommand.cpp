@@ -20,6 +20,7 @@
 #include "AddProgressCommand.h"
 #include "ShellUpdater.h"
 #include "MassiveGitTask.h"
+#include "AppUtils.h"
 
 bool AddProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, int& m_itemCountTotal, int& m_itemCount)
 {
@@ -80,6 +81,19 @@ bool AddProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, int&
 	}
 
 	CShellUpdater::Instance().AddPathsForUpdate(m_targetPathList);
+
+	m_PostCmdCallback = [](DWORD status, PostCmdList& postCmdList)
+	{
+		if (status)
+			return;
+
+		postCmdList.push_back(PostCmd(IDI_COMMIT, IDS_MENUCOMMIT, []
+		{
+			CString sCmd;
+			sCmd.Format(_T("/command:commit /path:\"%s\""), g_Git.m_CurrentDir);
+			CAppUtils::RunTortoiseGitProc(sCmd);
+		}));
+	};
 
 	return true;
 }
