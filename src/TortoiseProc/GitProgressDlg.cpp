@@ -239,10 +239,8 @@ HBRUSH CGitProgressDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 	return hbr;
 }
 
-LRESULT	CGitProgressDlg::OnCmdEnd(WPARAM wParam, LPARAM /*lParam*/)
+LRESULT	CGitProgressDlg::OnCmdEnd(WPARAM /*wParam*/, LPARAM /*lParam*/)
 {
-	ATLASSERT(wParam);
-
 	RefreshCursor();
 
 	DialogEnableWindow(IDCANCEL, FALSE);
