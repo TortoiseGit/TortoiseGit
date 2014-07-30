@@ -965,27 +965,27 @@ void CCommitDlg::OnOK()
 		progress.m_bShowCommand = FALSE;	// don't show the commit command
 		progress.m_PreText = out;			// show any output already generated in log window
 
-		int indexPull = -1;
-		int indexReCommit = -1;
-		int indexTag = -1;
-
-		if (!m_bNoPostActions && !m_bAutoClose)
+		progress.m_PostCmdCallback = [&](DWORD status, PostCmdList& postCmdList)
 		{
-			if (IsGitSVN)
-				progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUSVNDCOMMIT)));
-			progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUPUSH)));
-			indexPull = (int)progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUPULL)));
-			indexReCommit = (int)progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_COMMIT_RECOMMIT)));
-			indexTag = (int)progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUTAG)));
-		}
+			if (status || m_bNoPostActions || m_bAutoClose)
+				return;
 
-		INT_PTR userResponse = progress.DoModal();
+			if (IsGitSVN)
+				postCmdList.push_back(PostCmd(IDI_COMMIT, IDS_MENUSVNDCOMMIT, [&]{ m_PostCmd = GIT_POSTCOMMIT_CMD_DCOMMIT; }));
+
+			postCmdList.push_back(PostCmd(IDI_PUSH, IDS_MENUPUSH, [&]{ m_PostCmd = GIT_POSTCOMMIT_CMD_PUSH; }));
+			postCmdList.push_back(PostCmd(IDI_PULL, IDS_MENUPULL, [&]{ m_PostCmd = GIT_POSTCOMMIT_CMD_PULL; }));
+			postCmdList.push_back(PostCmd(IDI_COMMIT, IDS_PROC_COMMIT_RECOMMIT, [&]{ m_PostCmd = GIT_POSTCOMMIT_CMD_RECOMMIT; }));
+			postCmdList.push_back(PostCmd(IDI_TAG, IDS_MENUTAG, [&]{ m_PostCmd = GIT_POSTCOMMIT_CMD_CREATETAG; }));
+		};
 
 		m_PostCmd = GIT_POSTCOMMIT_CMD_NOTHING;
-		if(progress.m_GitStatus || userResponse == (IDC_PROGRESS_BUTTON1 + indexReCommit))
+		progress.DoModal();
+
+		if (progress.m_GitStatus || m_PostCmd == GIT_POSTCOMMIT_CMD_RECOMMIT)
 		{
 			bCloseCommitDlg = false;
-			if (userResponse == IDC_PROGRESS_BUTTON1 + indexReCommit)
+			if (m_PostCmd == GIT_POSTCOMMIT_CMD_RECOMMIT)
 			{
 				if (!m_sLogMessage.IsEmpty())
 				{
@@ -1010,18 +1010,6 @@ void CCommitDlg::OnOK()
 			UpdateData(FALSE);
 			this->Refresh();
 			this->BringWindowToTop();
-		}
-		else if (userResponse == IDC_PROGRESS_BUTTON1 + indexTag)
-			m_PostCmd = GIT_POSTCOMMIT_CMD_CREATETAG;
-		else if (userResponse == IDC_PROGRESS_BUTTON1 + indexPull)
-			m_PostCmd = GIT_POSTCOMMIT_CMD_PULL;
-		else if (userResponse >= IDC_PROGRESS_BUTTON1 && userResponse < IDC_PROGRESS_BUTTON1 + indexPull)
-		{
-			// User pressed 'DCommit' or 'Push' button after successful commit.
-			if (userResponse == IDC_PROGRESS_BUTTON1 && IsGitSVN)
-				m_PostCmd = GIT_POSTCOMMIT_CMD_DCOMMIT;
-			else
-				m_PostCmd = GIT_POSTCOMMIT_CMD_PUSH;
 		}
 
 		::DeleteFile(tempfile);

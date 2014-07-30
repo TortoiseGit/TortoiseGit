@@ -417,27 +417,12 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 		{
 			if (m_PostCmdCallback)	// new handling method using callback
 			{
-				m_PostCmdCallback();
+				m_PostCmdCallback(m_GitStatus, m_PostCmdList);
 
-				if (!m_PostCmdList.IsEmpty())
+				if (!m_PostCmdList.empty())
 				{
-					m_ctrlPostCmd.AddEntries(m_PostCmdList);
-					GetDlgItem(IDC_PROGRESS_BUTTON1)->ShowWindow(SW_SHOW);
-				}
-			}
-			else if (m_GitStatus == 0)	// default old behaviour on success
-			{
-				if (!m_PostCmdList.IsEmpty())
-				{
-					m_ctrlPostCmd.AddEntries(m_PostCmdList);
-					GetDlgItem(IDC_PROGRESS_BUTTON1)->ShowWindow(SW_SHOW);
-				}
-			}
-			else	// simple method to show buttons on failed
-			{
-				if (!m_PostFailCmdList.IsEmpty())
-				{
-					m_ctrlPostCmd.AddEntries(m_PostFailCmdList);
+					for (auto it = m_PostCmdList.cbegin(); it != m_PostCmdList.cend(); ++it)
+						m_ctrlPostCmd.AddEntry((*it).icon, (*it).label);
 					GetDlgItem(IDC_PROGRESS_BUTTON1)->ShowWindow(SW_SHOW);
 				}
 			}
@@ -445,7 +430,7 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 
 		if(wParam == MSG_PROGRESSDLG_END && m_GitStatus == 0)
 		{
-			if (m_AutoClose == AUTOCLOSE_IF_NO_OPTIONS && m_PostCmdList.IsEmpty() || m_AutoClose == AUTOCLOSE_IF_NO_ERRORS)
+			if (m_AutoClose == AUTOCLOSE_IF_NO_OPTIONS && m_PostCmdList.empty() || m_AutoClose == AUTOCLOSE_IF_NO_ERRORS)
 				PostMessage(WM_COMMAND, 1, (LPARAM)GetDlgItem(IDOK)->m_hWnd);
 		}
 	}
@@ -662,8 +647,10 @@ void CProgressDlg::OnBnClickedOk()
 void CProgressDlg::OnBnClickedButton1()
 {
 	WriteLog();
-	this->EndDialog((int)(IDC_PROGRESS_BUTTON1 + this->m_ctrlPostCmd.GetCurrentEntry()));
-}
+	ShowWindow(SW_HIDE);
+	m_PostCmdList.at(m_ctrlPostCmd.GetCurrentEntry()).action();
+	EndDialog(IDOK);
+} 
 
 void CProgressDlg::OnClose()
 {

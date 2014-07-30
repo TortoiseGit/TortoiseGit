@@ -21,9 +21,6 @@
 #include "CloneCommand.h"
 
 #include "GitProgressDlg.h"
-#include "StringUtils.h"
-#include "Hooks.h"
-#include "MessageBox.h"
 
 #include "CloneDlg.h"
 #include "ProgressDlg.h"
@@ -46,6 +43,25 @@ static CString GetExistingDirectoryForClone(CString path)
 	}
 	GetTempPath(path);
 	return path;
+}
+
+static void StorePuttyKey(const CString& repoRoot, const CString& keyFile)
+{
+	CAutoRepository repo(repoRoot);
+	CAutoConfig config;
+	if (!repo)
+		goto error;
+
+	if (git_repository_config(config.GetPointer(), repo))
+		goto error;
+
+	if (git_config_set_string(config, "remote.origin.puttykeyfile", CUnicodeUtils::GetUTF8(keyFile)))
+		goto error;
+
+	return;
+
+error:
+	MessageBox(hWndExplorer, CGit::GetLibGit2LastErr(L"Could not open repository"), _T("TortoiseGit"), MB_ICONERROR);
 }
 
 bool CloneCommand::Execute()
@@ -212,42 +228,29 @@ bool CloneCommand::Execute()
 		}
 		CProgressDlg progress;
 		progress.m_GitCmd=cmd;
-		progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENULOG)));
-		progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_STATUSLIST_CONTEXT_EXPLORE)));
+		progress.m_PostCmdCallback = [&](DWORD status, PostCmdList& postCmdList)
+		{
+			if (status)
+				return;
+
+			if (dlg.m_bAutoloadPuttyKeyFile) // do this here, since it might be needed for actions performed in Log
+				StorePuttyKey(dlg.m_Directory, dlg.m_strPuttyKeyFile);
+
+			postCmdList.push_back(PostCmd(IDI_LOG, IDS_MENULOG, [&]
+			{
+				CString cmd = _T("/command:log");
+				cmd += _T(" /path:\"") + dlg.m_Directory + _T("\"");
+				CAppUtils::RunTortoiseGitProc(cmd);
+			}));
+
+			postCmdList.push_back(PostCmd(IDI_EXPLORER, IDS_STATUSLIST_CONTEXT_EXPLORE, [&]{ CAppUtils::ExploreTo(hWndExplorer, dlg.m_Directory); }));
+		};
 		INT_PTR ret = progress.DoModal();
 
 		if (dlg.m_bSVN)
 			::DeleteFile(g_Git.m_CurrentDir + _T("\\sys$command"));
 
-		if( progress.m_GitStatus == 0)
-		{
-			if(dlg.m_bAutoloadPuttyKeyFile)
-			{
-				g_Git.m_CurrentDir = dlg.m_Directory;
-				SetCurrentDirectory(g_Git.m_CurrentDir);
-
-				if(g_Git.SetConfigValue(_T("remote.origin.puttykeyfile"), dlg.m_strPuttyKeyFile, CONFIG_LOCAL))
-				{
-					CMessageBox::Show(NULL,_T("Fail set config remote.origin.puttykeyfile"),_T("TortoiseGit"),MB_OK|MB_ICONERROR);
-					return FALSE;
-				}
-			}
-			if (ret == IDC_PROGRESS_BUTTON1)
-			{
-				CString cmd = _T("/command:log");
-				cmd += _T(" /path:\"") + dlg.m_Directory + _T("\"");
-				CAppUtils::RunTortoiseGitProc(cmd);
-				return TRUE;
-			}
-			if (ret == IDC_PROGRESS_BUTTON1 + 1)
-			{
-				CAppUtils::ExploreTo(hWndExplorer, dlg.m_Directory);
-				return TRUE;
-			}
-		}
-		if(ret == IDOK)
-			return TRUE;
-
+		return ret == IDOK;
 	}
 	return FALSE;
 }
