@@ -22,5 +22,4 @@ class RevertProgressCommand : public ProgressCommand
 {
 public:
 	virtual bool Run(CGitProgressList* list, CString& sWindowTitle, int& m_itemCountTotal, int& m_itemCount);
-	virtual bool ShowCommitButton() { return true; }
 };

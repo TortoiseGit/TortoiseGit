@@ -99,5 +99,7 @@ bool CloneProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, in
 		return false;
 	}
 
+	// Not setting m_PostCmdCallback here, as clone is only called from CloneCommand.cpp
+
 	return true;
 }

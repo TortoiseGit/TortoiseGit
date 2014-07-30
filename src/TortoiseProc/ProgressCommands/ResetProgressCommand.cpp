@@ -50,6 +50,8 @@ bool ResetProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, in
 	if (git_reset(repo, target, (git_reset_t)(m_resetType + 1), nullptr, nullptr))
 		goto error;
 
+	// Not setting m_PostCmdCallback here, as clone is only called from AppUtils.cpp
+
 	return true;
 
 error:

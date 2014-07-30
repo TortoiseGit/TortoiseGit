@@ -1163,75 +1163,44 @@ bool CAppUtils::PerformSwitch(CString ref, bool bForce /* false */, CString sNew
 		 branch,
 		 g_Git.FixBranchName(ref));
 
-	while (true)
+	CProgressDlg progress;
+	progress.m_GitCmd = cmd;
+
+	progress.m_PostCmdCallback = [&](DWORD status, PostCmdList& postCmdList)
 	{
-		CProgressDlg progress;
-		progress.m_GitCmd = cmd;
-
-		INT_PTR idPull = -1;
-		INT_PTR idSubmoduleUpdate = -1;
-		INT_PTR idMerge = -1;
-
-		CTGitPath gitPath = g_Git.m_CurrentDir;
-		if (gitPath.HasSubmodules())
-			idSubmoduleUpdate = progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_SUBMODULESUPDATE)));
-		CString currentBranch;
-		bool hasBranch = CGit::GetCurrentBranchFromFile(g_Git.m_CurrentDir, currentBranch) == 0;
-		if (hasBranch)
-			idMerge = progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUMERGE)));
-
-		progress.m_PostCmdCallback = [&] ()
+		if (!status)
 		{
-			if (!progress.m_GitStatus)
+			CTGitPath gitPath = g_Git.m_CurrentDir;
+			if (gitPath.HasSubmodules())
 			{
-				CString newBranch;
-				if (!CGit::GetCurrentBranchFromFile(g_Git.m_CurrentDir, newBranch))
-					idPull = progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUPULL)));
+				postCmdList.push_back(PostCmd(IDI_UPDATE, IDS_PROC_SUBMODULESUPDATE, [&]
+				{
+					CString sCmd;
+					sCmd.Format(_T("/command:subupdate /bkpath:\"%s\""), g_Git.m_CurrentDir);
+					RunTortoiseGitProc(sCmd);
+				}));
 			}
-			else
-			{
-				progress.m_PostCmdList.RemoveAll();
-				progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MSGBOX_RETRY)));
-				progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_SWITCH_WITH_MERGE)));
-			}
-		};
+			CString currentBranch;
+			bool hasBranch = CGit::GetCurrentBranchFromFile(g_Git.m_CurrentDir, currentBranch) == 0;
+			if (hasBranch)
+				postCmdList.push_back(PostCmd(IDI_MERGE, IDS_MENUMERGE, [&]{ Merge(&currentBranch); }));
 
-		INT_PTR ret = progress.DoModal();
-		if (progress.m_GitStatus == 0)
-		{
-			if (idSubmoduleUpdate >= 0 && ret == IDC_PROGRESS_BUTTON1 + idSubmoduleUpdate)
-			{
-				CString sCmd;
-				sCmd.Format(_T("/command:subupdate /bkpath:\"%s\""), g_Git.m_CurrentDir);
 
-				RunTortoiseGitProc(sCmd);
-				return TRUE;
-			}
-			else if (ret == IDC_PROGRESS_BUTTON1 + idPull)
-			{
-				Pull();
-				return TRUE;
-			}
-			else if (ret == IDC_PROGRESS_BUTTON1 + idMerge)
-			{
-				Merge(&currentBranch);
-				return TRUE;
-			}
-			else if (ret == IDOK)
-				return TRUE;
+			CString newBranch;
+			if (!CGit::GetCurrentBranchFromFile(g_Git.m_CurrentDir, newBranch))
+				postCmdList.push_back(PostCmd(IDI_PULL, IDS_MENUPULL, [&]{ Pull(); }));
 		}
-		else if (ret == IDC_PROGRESS_BUTTON1)
-			continue;	// retry
-		else if (ret == IDC_PROGRESS_BUTTON1 + 1)
+		else
 		{
-			merge = _T("--merge");
-			cmd.Format(_T("git.exe checkout %s %s %s %s %s --"),
-				force, track, merge, branch, g_Git.FixBranchName(ref));
-			continue;	// retry
+			postCmdList.push_back(PostCmd(IDI_REFRESH, IDS_MSGBOX_RETRY, [&]{ PerformSwitch(ref, bForce, sNewBranch, bBranchOverride, bTrack, bMerge); }));
+			if (!bMerge)
+				postCmdList.push_back(PostCmd(IDI_SWITCH, IDS_SWITCH_WITH_MERGE, [&]{ PerformSwitch(ref, bForce, sNewBranch, bBranchOverride, bTrack, true); }));
 		}
+	};
 
-		return FALSE;
-	}
+	INT_PTR ret = progress.DoModal();
+
+	return ret == IDOK;
 }
 
 class CIgnoreFile : public CStdioFile
@@ -1400,6 +1369,67 @@ bool CAppUtils::IgnoreFile(CTGitPathList &path,bool IsMask)
 	return false;
 }
 
+static bool Reset(const CString& resetTo, int resetType)
+{
+	CString cmd;
+	CString type;
+	switch (resetType)
+	{
+	case 0:
+		type = _T("--soft");
+		break;
+	case 1:
+		type = _T("--mixed");
+		break;
+	case 2:
+		type = _T("--hard");
+		break;
+	default:
+		resetType = 1;
+		type = _T("--mixed");
+		break;
+	}
+	cmd.Format(_T("git.exe reset %s %s --"), type, resetTo);
+
+	CProgressDlg progress;
+	progress.m_GitCmd = cmd;
+
+	progress.m_PostCmdCallback = [&](DWORD status, PostCmdList& postCmdList)
+	{
+		if (status)
+		{
+			postCmdList.push_back(PostCmd(IDI_REFRESH, IDS_MSGBOX_RETRY, [&]{ Reset(resetTo, resetType); }));
+			return;
+		}
+
+		CTGitPath gitPath = g_Git.m_CurrentDir;
+		if (gitPath.HasSubmodules() && resetType == 2)
+		{
+			postCmdList.push_back(PostCmd(IDI_UPDATE, IDS_PROC_SUBMODULESUPDATE, [&]
+			{
+				CString sCmd;
+				sCmd.Format(_T("/command:subupdate /bkpath:\"%s\""), g_Git.m_CurrentDir);
+				CAppUtils::RunTortoiseGitProc(sCmd);
+			}));
+		}
+	};
+
+	INT_PTR ret;
+	if (g_Git.UsingLibGit2(CGit::GIT_CMD_RESET))
+	{
+		CGitProgressDlg gitdlg;
+		ResetProgressCommand resetProgressCommand;
+		gitdlg.SetCommand(&resetProgressCommand);
+		resetProgressCommand.m_PostCmdCallback = progress.m_PostCmdCallback;
+		resetProgressCommand.SetRevision(resetTo);
+		resetProgressCommand.SetResetType(resetType);
+		ret = gitdlg.DoModal();
+	}
+	else
+		ret = progress.DoModal();
+
+	return ret == IDOK;
+}
 
 bool CAppUtils::GitReset(CString *CommitHash,int type)
 {
@@ -1408,68 +1438,9 @@ bool CAppUtils::GitReset(CString *CommitHash,int type)
 	dlg.m_ResetToVersion=*CommitHash;
 	dlg.m_initialRefName = *CommitHash;
 	if (dlg.DoModal() == IDOK)
-	{
-		CString cmd;
-		CString type;
-		switch(dlg.m_ResetType)
-		{
-		case 0:
-			type=_T("--soft");
-			break;
-		case 1:
-			type=_T("--mixed");
-			break;
-		case 2:
-			type=_T("--hard");
-			break;
-		default:
-			dlg.m_ResetType = 1;
-			type=_T("--mixed");
-			break;
-		}
-		cmd.Format(_T("git.exe reset %s %s --"),type, dlg.m_ResetToVersion);
+		return Reset(dlg.m_ResetToVersion, dlg.m_ResetType);
 
-		while (true)
-		{
-			CProgressDlg progress;
-			progress.m_GitCmd=cmd;
-
-			CTGitPath gitPath = g_Git.m_CurrentDir;
-			if (gitPath.HasSubmodules() && dlg.m_ResetType == 2)
-				progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_SUBMODULESUPDATE)));
-
-			progress.m_PostFailCmdList.Add(CString(MAKEINTRESOURCE(IDS_MSGBOX_RETRY)));
-
-			INT_PTR ret;
-			if (g_Git.UsingLibGit2(CGit::GIT_CMD_RESET))
-			{
-				CGitProgressDlg gitdlg;
-				ResetProgressCommand resetProgressCommand;
-				gitdlg.SetCommand(&resetProgressCommand);
-				resetProgressCommand.SetRevision(dlg.m_ResetToVersion);
-				resetProgressCommand.SetResetType(dlg.m_ResetType);
-				ret = gitdlg.DoModal();
-			}
-			else
-				ret = progress.DoModal();
-
-			if (progress.m_GitStatus == 0 && gitPath.HasSubmodules() && dlg.m_ResetType == 2 && ret == IDC_PROGRESS_BUTTON1)
-			{
-				CString sCmd;
-				sCmd.Format(_T("/command:subupdate /bkpath:\"%s\""), g_Git.m_CurrentDir);
-
-				RunTortoiseGitProc(sCmd);
-				return TRUE;
-			}
-			else if (progress.m_GitStatus != 0 && ret == IDC_PROGRESS_BUTTON1)
-				continue;	// retry
-			else if (ret == IDOK)
-				return TRUE;
-			else
-				break;
-		}
-	}
-	return FALSE;
+	return false;
 }
 
 void CAppUtils::DescribeConflictFile(bool mode, bool base,CString &descript)
@@ -2250,12 +2221,45 @@ bool CAppUtils::Pull(bool showPush)
 		cmd.Format(_T("git.exe pull -v %s %s %s %s %s %s %s %s \"%s\" %s"), cmdRebase, noff, ffonly, squash, nocommit, depth, notags, prune, url, dlg.m_RemoteBranchName);
 		CProgressDlg progress;
 		progress.m_GitCmd = cmd;
-		progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_PULL_DIFFS)));
-		progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_PULL_LOG)));
-		INT_PTR pushButton = showPush ? progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUPUSH))) + IDC_PROGRESS_BUTTON1 : -1;
 
-		CTGitPath gitPath = g_Git.m_CurrentDir;
-		INT_PTR smUpdateButton = gitPath.HasSubmodules() ? progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_SUBMODULESUPDATE))) + IDC_PROGRESS_BUTTON1 : -1;
+		progress.m_PostCmdCallback = [&](DWORD status, PostCmdList& postCmdList)
+		{
+			if (status)
+				return;
+
+			CGitHash hashNew;
+			if (g_Git.GetHash(hashNew, _T("HEAD")))
+				MessageBox(nullptr, g_Git.GetGitLastErr(_T("Could not get HEAD hash after pulling.")), _T("TortoiseGit"), MB_ICONERROR);
+			else
+			{
+				postCmdList.push_back(PostCmd(IDI_DIFF, IDS_PROC_PULL_DIFFS, [&]
+				{
+					CFileDiffDlg dlg;
+					dlg.SetDiff(NULL, hashNew.ToString(), hashOld.ToString());
+					dlg.DoModal();
+				}));
+				postCmdList.push_back(PostCmd(IDI_LOG, IDS_PROC_PULL_LOG, [&]
+				{
+					CLogDlg dlg;
+					dlg.SetParams(CTGitPath(_T("")), CTGitPath(_T("")), _T(""), hashOld.ToString() + _T("..") + hashNew.ToString(), 0);
+					dlg.DoModal();
+				}));
+			}
+
+			if (showPush)
+				postCmdList.push_back(PostCmd(IDI_PUSH, IDS_MENUPUSH, []{ Push(_T("")); }));
+
+			CTGitPath gitPath = g_Git.m_CurrentDir;
+			if (gitPath.HasSubmodules())
+			{
+				postCmdList.push_back(PostCmd(IDI_UPDATE, IDS_PROC_SUBMODULESUPDATE, []
+				{
+					CString sCmd;
+					sCmd.Format(_T("/command:subupdate /bkpath:\"%s\""), g_Git.m_CurrentDir);
+					CAppUtils::RunTortoiseGitProc(sCmd);
+				}));
+			}
+		};
 
 		INT_PTR ret = progress.DoModal();
 
@@ -2268,57 +2272,153 @@ bool CAppUtils::Pull(bool showPush)
 			return true;
 		}
 
-		CGitHash hashNew;
-		if (g_Git.GetHash(hashNew, _T("HEAD")))
-		{
-			MessageBox(NULL, g_Git.GetGitLastErr(_T("Could not get HEAD hash after pulling.")), _T("TortoiseGit"), MB_ICONERROR);
-			return FALSE;
-		}
-
-		if( ret == IDC_PROGRESS_BUTTON1)
-		{
-			if(hashOld == hashNew)
-			{
-				if(progress.m_GitStatus == 0)
-					CMessageBox::Show(NULL, IDS_UPTODATE, IDS_APPNAME, MB_OK | MB_ICONINFORMATION);
-				return TRUE;
-			}
-
-			CFileDiffDlg dlg;
-			dlg.SetDiff(NULL, hashNew.ToString(), hashOld.ToString());
-			dlg.DoModal();
-
-			return true;
-		}
-		else if ( ret == IDC_PROGRESS_BUTTON1 +1 )
-		{
-			if(hashOld == hashNew)
-			{
-				if(progress.m_GitStatus == 0)
-					CMessageBox::Show(NULL, IDS_UPTODATE, IDS_APPNAME, MB_OK | MB_ICONINFORMATION);
-				return true;
-			}
-
-			CLogDlg dlg;
-			dlg.SetParams(CTGitPath(_T("")), CTGitPath(_T("")), _T(""), hashOld.ToString() + _T("..") + hashNew.ToString(), 0);
-			dlg.DoModal();
-		}
-		else if (ret == pushButton)
-		{
-			Push(_T(""));
-			return true;
-		}
-		else if (ret == smUpdateButton)
-		{
-			CString sCmd;
-			sCmd.Format(_T("/command:subupdate /bkpath:\"%s\""), g_Git.m_CurrentDir);
-
-			CAppUtils::RunTortoiseGitProc(sCmd);
-			return true;
-		}
+		return ret == IDOK;
 	}
 
-	return true;
+	return false;
+}
+
+static bool RebaseAfterFetch()
+{
+	while (true)
+	{
+		CRebaseDlg dlg;
+		dlg.m_PostButtonTexts.Add(CString(MAKEINTRESOURCE(IDS_MENULOG)));
+		dlg.m_PostButtonTexts.Add(CString(MAKEINTRESOURCE(IDS_MENUDESSENDMAIL)));
+		dlg.m_PostButtonTexts.Add(CString(MAKEINTRESOURCE(IDS_MENUREBASE)));
+		INT_PTR response = dlg.DoModal();
+		if (response == IDOK)
+		{
+			return true;
+		}
+		else if (response == IDC_REBASE_POST_BUTTON)
+		{
+			CString cmd = _T("/command:log");
+			cmd += _T(" /path:\"") + g_Git.m_CurrentDir + _T("\"");
+			CAppUtils::RunTortoiseGitProc(cmd);
+			return true;
+		}
+		else if (response == IDC_REBASE_POST_BUTTON + 1)
+		{
+			CString cmd, out, err;
+			cmd.Format(_T("git.exe format-patch -o \"%s\" %s..%s"),
+				g_Git.m_CurrentDir,
+				g_Git.FixBranchName(dlg.m_Upstream),
+				g_Git.FixBranchName(dlg.m_Branch));
+			if (g_Git.Run(cmd, &out, &err, CP_UTF8))
+			{
+				CMessageBox::Show(NULL, out + L"\n" + err, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+				return false;
+			}
+			CAppUtils::SendPatchMail(cmd, out);
+			return true;
+		}
+		else if (response == IDC_REBASE_POST_BUTTON + 2)
+			continue;
+		else if (response == IDCANCEL)
+			return false;
+		return false;
+	}
+}
+
+static bool DoFetch(const CString& url, const bool fetchAllRemotes, const bool loadPuttyAgent, const int prune, const bool bDepth, const int nDepth, const int fetchTags, const CString& remoteBranch, const boolean runRebase)
+{
+	if (loadPuttyAgent)
+	{
+		if (fetchAllRemotes)
+		{
+			STRING_VECTOR list;
+			g_Git.GetRemoteList(list);
+
+			STRING_VECTOR::const_iterator it = list.begin();
+			while (it != list.end())
+			{
+				CString remote(*it);
+				CAppUtils::LaunchPAgent(NULL, &remote);
+				++it;
+			}
+		}
+		else
+			CAppUtils::LaunchPAgent(NULL, &url);
+	}
+
+	CString cmd, arg;
+	int ver = CAppUtils::GetMsysgitVersion();
+
+	if (bDepth)
+		arg.AppendFormat(_T(" --depth %d"), nDepth);
+
+	if (prune == TRUE)
+		arg += _T(" --prune");
+	else if (prune == FALSE && ver >= 0x01080500)
+		arg += _T(" --no-prune");
+
+	if (fetchTags == 1)
+		arg += _T(" --tags");
+	else if (fetchTags == 0)
+		arg += _T(" --no-tags");
+
+	if (fetchAllRemotes)
+		cmd.Format(_T("git.exe fetch --all -v%s"), arg);
+	else
+		cmd.Format(_T("git.exe fetch -v%s \"%s\" %s"), arg, url, remoteBranch);
+
+	CProgressDlg progress;
+	progress.m_PostCmdCallback = [&](DWORD status, PostCmdList& postCmdList)
+	{
+		if (status)
+		{
+			postCmdList.push_back(PostCmd(IDI_REFRESH, IDS_MSGBOX_RETRY, [&]{ DoFetch(url, fetchAllRemotes, loadPuttyAgent, prune, bDepth, nDepth, fetchTags, remoteBranch, runRebase); }));
+			return;
+		}
+
+		postCmdList.push_back(PostCmd(IDI_LOG, IDS_MENULOG, []
+		{
+			CString cmd = _T("/command:log");
+			cmd += _T(" /path:\"") + g_Git.m_CurrentDir + _T("\"");
+			CAppUtils::RunTortoiseGitProc(cmd);
+		}));
+
+		postCmdList.push_back(PostCmd(IDS_PROC_RESET, []
+		{
+			CString pullRemote, pullBranch;
+			g_Git.GetRemoteTrackedBranchForHEAD(pullRemote, pullBranch);
+			CString defaultUpstream;
+			if (!pullRemote.IsEmpty() && !pullBranch.IsEmpty())
+				defaultUpstream.Format(_T("remotes/%s/%s"), pullRemote, pullBranch);
+			CAppUtils::GitReset(&defaultUpstream, 2);
+		}));
+
+		if (!runRebase && !g_GitAdminDir.IsBareRepo(g_Git.m_CurrentDir))
+			postCmdList.push_back(PostCmd(IDI_REBASE, IDS_MENUREBASE, []{ RebaseAfterFetch(); }));
+	};
+
+	progress.m_GitCmd = cmd;
+	INT_PTR userResponse;
+
+	if (g_Git.UsingLibGit2(CGit::GIT_CMD_FETCH))
+	{
+		CGitProgressDlg gitdlg;
+		FetchProgressCommand fetchProgressCommand;
+		if (!fetchAllRemotes)
+			fetchProgressCommand.SetUrl(url);
+		gitdlg.SetCommand(&fetchProgressCommand);
+		fetchProgressCommand.m_PostCmdCallback = progress.m_PostCmdCallback;
+		fetchProgressCommand.SetAutoTag(fetchTags == 1 ? GIT_REMOTE_DOWNLOAD_TAGS_ALL : fetchTags == 2 ? GIT_REMOTE_DOWNLOAD_TAGS_AUTO : GIT_REMOTE_DOWNLOAD_TAGS_NONE);
+		if (!fetchAllRemotes)
+			fetchProgressCommand.SetRefSpec(remoteBranch);
+		userResponse = gitdlg.DoModal();
+		return userResponse == IDOK;
+	}
+
+	userResponse = progress.DoModal();
+	if (!progress.m_GitStatus)
+	{
+		if (runRebase)
+			return RebaseAfterFetch();
+	}
+
+	return userResponse == IDOK;
 }
 
 bool CAppUtils::Fetch(CString remoteName, bool allowRebase, bool allRemotes)
@@ -2330,164 +2430,9 @@ bool CAppUtils::Fetch(CString remoteName, bool allowRebase, bool allRemotes)
 	dlg.m_bAllRemotes = allRemotes;
 
 	if(dlg.DoModal()==IDOK)
-	{
-		if(dlg.m_bAutoLoad)
-		{
-			if (dlg.m_bAllRemotes)
-			{
-				STRING_VECTOR list;
-				g_Git.GetRemoteList(list);
+		return DoFetch(dlg.m_RemoteURL, dlg.m_bAllRemotes == BST_CHECKED, dlg.m_bAutoLoad == BST_CHECKED, dlg.m_bPrune, dlg.m_bDepth == BST_CHECKED, dlg.m_nDepth, dlg.m_bFetchTags, dlg.m_RemoteBranchName, dlg.m_bRebase == BST_CHECKED);
 
-				STRING_VECTOR::const_iterator it = list.begin();
-				while (it != list.end())
-				{
-					CString remote(*it);
-					CAppUtils::LaunchPAgent(NULL, &remote);
-					++it;
-				}
-			}
-			else
-				CAppUtils::LaunchPAgent(NULL, &dlg.m_RemoteURL);
-		}
-
-		CString url;
-		url=dlg.m_RemoteURL;
-		CString cmd;
-		CString arg;
-
-		int ver = CAppUtils::GetMsysgitVersion();
-
-		if(ver >= 0x01070203) //above 1.7.0.2
-			arg = _T("--progress ");
-
-		if (dlg.m_bDepth)
-			arg.AppendFormat(_T("--depth %d "), dlg.m_nDepth);
-
-		if (dlg.m_bPrune == TRUE)
-			arg += _T("--prune ");
-		else if (dlg.m_bPrune == FALSE && ver >= 0x01080500)
-			arg += _T("--no-prune ");
-
-		if (dlg.m_bFetchTags == 1)
-		{
-			arg += _T("--tags ");
-		}
-		else if (dlg.m_bFetchTags == 0)
-		{
-			arg += _T("--no-tags ");
-		}
-
-		if (dlg.m_bAllRemotes)
-			cmd.Format(_T("git.exe fetch --all -v %s"), arg);
-		else
-			cmd.Format(_T("git.exe fetch -v %s \"%s\" %s"), arg, url, dlg.m_RemoteBranchName);
-
-		while (true)
-		{
-			CProgressDlg progress;
-
-			progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENULOG)));
-			progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_RESET)));
-
-			if (!dlg.m_bRebase && !g_GitAdminDir.IsBareRepo(g_Git.m_CurrentDir))
-				progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUREBASE)));
-
-			progress.m_PostFailCmdList.Add(CString(MAKEINTRESOURCE(IDS_MSGBOX_RETRY)));
-
-			progress.m_GitCmd=cmd;
-			INT_PTR userResponse;
-
-			if (g_Git.UsingLibGit2(CGit::GIT_CMD_FETCH))
-			{
-				CGitProgressDlg gitdlg;
-				FetchProgressCommand fetchProgressCommand;
-				if (!dlg.m_bAllRemotes)
-					fetchProgressCommand.SetUrl(url);
-				gitdlg.SetCommand(&fetchProgressCommand);
-				fetchProgressCommand.SetAutoTag(dlg.m_bFetchTags == 1 ? GIT_REMOTE_DOWNLOAD_TAGS_ALL : dlg.m_bFetchTags == 2 ? GIT_REMOTE_DOWNLOAD_TAGS_AUTO : GIT_REMOTE_DOWNLOAD_TAGS_NONE);
-				if (!dlg.m_bAllRemotes)
-					fetchProgressCommand.SetRefSpec(dlg.m_RemoteBranchName);
-				userResponse = gitdlg.DoModal();
-			}
-			else
-				userResponse = progress.DoModal();
-
-			if (!progress.m_GitStatus)
-			{
-				if (userResponse == IDC_PROGRESS_BUTTON1)
-				{
-					CString cmd = _T("/command:log");
-					cmd += _T(" /path:\"") + g_Git.m_CurrentDir + _T("\"");
-					RunTortoiseGitProc(cmd);
-					return TRUE;
-				}
-				else if (userResponse == IDC_PROGRESS_BUTTON1 + 1)
-				{
-					CString pullRemote, pullBranch;
-					g_Git.GetRemoteTrackedBranchForHEAD(pullRemote, pullBranch);
-
-					CString defaultUpstream;
-					if (!pullRemote.IsEmpty() && !pullBranch.IsEmpty())
-						defaultUpstream.Format(_T("remotes/%s/%s"), pullRemote, pullBranch);
-					GitReset(&defaultUpstream, 2);
-					return TRUE;
-				}
-				else if ((userResponse == IDC_PROGRESS_BUTTON1 + 2) || dlg.m_bRebase)
-				{
-					while(1)
-					{
-						CRebaseDlg dlg;
-						dlg.m_PostButtonTexts.Add(CString(MAKEINTRESOURCE(IDS_MENULOG)));
-						dlg.m_PostButtonTexts.Add(CString(MAKEINTRESOURCE(IDS_MENUDESSENDMAIL)));
-						dlg.m_PostButtonTexts.Add(CString(MAKEINTRESOURCE(IDS_MENUREBASE)));
-						INT_PTR response = dlg.DoModal();
-						if(response == IDOK)
-						{
-							return TRUE;
-						}
-						else if (response == IDC_REBASE_POST_BUTTON)
-						{
-							CString cmd = _T("/command:log");
-							cmd += _T(" /path:\"") + g_Git.m_CurrentDir + _T("\"");
-							RunTortoiseGitProc(cmd);
-							return TRUE;
-						}
-						else if (response == IDC_REBASE_POST_BUTTON + 1)
-						{
-							CString cmd, out, err;
-							cmd.Format(_T("git.exe format-patch -o \"%s\" %s..%s"),
-								g_Git.m_CurrentDir,
-								g_Git.FixBranchName(dlg.m_Upstream),
-								g_Git.FixBranchName(dlg.m_Branch));
-							if (g_Git.Run(cmd, &out, &err, CP_UTF8))
-							{
-								CMessageBox::Show(NULL, out + L"\n" + err, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
-								return FALSE;
-							}
-
-							CAppUtils::SendPatchMail(cmd,out);
-							return TRUE;
-						}
-						else if (response == IDC_REBASE_POST_BUTTON + 2)
-							continue;
-						else if(response == IDCANCEL)
-							return FALSE;
-					}
-					return TRUE;
-				}
-				else if (userResponse != IDCANCEL)
-					return TRUE;
-				return FALSE;
-			}
-			else
-			{
-				if (userResponse == IDC_PROGRESS_BUTTON1)
-					continue;
-				return FALSE;
-			}
-		}
-	}
-	return FALSE;
+	return false;
 }
 
 bool CAppUtils::Push(CString selectLocalBranch)
@@ -2570,77 +2515,40 @@ bool CAppUtils::Push(CString selectLocalBranch)
 			progress.m_GitCmdList.push_back(cmd);
 		}
 
-		progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_REQUESTPULL)));
-		progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUPUSH)));
-		bool rejected = false;
-		progress.m_PostCmdCallback = [&] ()
+		progress.m_PostCmdCallback = [&](DWORD status, PostCmdList& postCmdList)
 		{
-			if (progress.m_GitStatus)
+			// need to execute hooks as those might be needed by post action commands
+			DWORD exitcode = 0xFFFFFFFF;
+			CString error;
+			if (CHooks::Instance().PostPush(g_Git.m_CurrentDir, exitcode, error))
 			{
-				progress.m_PostCmdList.RemoveAll();
-				rejected = progress.GetLogText().Find(_T("! [rejected]")) > 0;
+				if (exitcode)
+				{
+					CString temp;
+					temp.Format(IDS_ERR_HOOKFAILED, (LPCTSTR)error);
+					MessageBox(nullptr, temp, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+				}
+			}
+
+			if (status)
+			{
+				bool rejected = progress.GetLogText().Find(_T("! [rejected]")) > 0;
 				if (rejected)
 				{
-					progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUPULL)));
-					progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUFETCH)));
+					postCmdList.push_back(PostCmd(IDI_PULL, IDS_MENUPULL, []{ Pull(true); }));
+					postCmdList.push_back(PostCmd(IDI_PULL, IDS_MENUFETCH, [&]{ Fetch(dlg.m_bPushAllRemotes ? _T("") : dlg.m_URL, true, !!dlg.m_bPushAllRemotes); }));
 				}
-				progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUPUSH)));
+				postCmdList.push_back(PostCmd(IDI_PUSH, IDS_MENUPUSH, [&]{ Push(selectLocalBranch); }));
+				return;
 			}
+
+			postCmdList.push_back(PostCmd(IDS_PROC_REQUESTPULL, [&]{ RequestPull(dlg.m_BranchRemoteName); }));
+			postCmdList.push_back(PostCmd(IDI_PUSH, IDS_MENUPUSH, [&]{ Push(selectLocalBranch); }));
 		};
 
+
 		INT_PTR ret = progress.DoModal();
-
-		exitcode = 0xFFFFFFFF;
-		error.Empty();
-		if (CHooks::Instance().PostPush(g_Git.m_CurrentDir, exitcode, error))
-		{
-			if (exitcode)
-			{
-				CString temp;
-				temp.Format(IDS_ERR_HOOKFAILED, (LPCTSTR)error);
-				CMessageBox::Show(nullptr, temp, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
-				return false;
-			}
-		}
-
-		if (!progress.m_GitStatus)
-		{
-			if(ret == IDC_PROGRESS_BUTTON1)
-			{
-				RequestPull(dlg.m_BranchRemoteName);
-			}
-			else if(ret == IDC_PROGRESS_BUTTON1 + 1)
-			{
-				Push(selectLocalBranch);
-			}
-			return TRUE;
-		}
-		else
-		{
-			if (rejected)
-			{
-				// failed, pull first
-				if (ret == IDC_PROGRESS_BUTTON1)
-				{
-					Pull(true);
-				}
-				else if (ret == IDC_PROGRESS_BUTTON1 + 1)
-				{
-					Fetch(dlg.m_bPushAllRemotes ? _T("") : dlg.m_URL, true, !!dlg.m_bPushAllRemotes);
-				}
-				else if (ret == IDC_PROGRESS_BUTTON1 + 2)
-				{
-					Push(selectLocalBranch);
-				}
-			}
-			else
-			{
-				if (ret == IDC_PROGRESS_BUTTON1)
-				{
-					Push(selectLocalBranch);
-				}
-			}
-		}
+		return ret == IDOK;
 	}
 	return FALSE;
 }
@@ -3038,78 +2946,59 @@ BOOL CAppUtils::Merge(CString *commit)
 		CProgressDlg Prodlg;
 		Prodlg.m_GitCmd = cmd;
 
-		INT_PTR idCommit = -1;
-		INT_PTR idRemoveBranch = -1;
-		INT_PTR idPush = -1;
-		INT_PTR idSVNDCommit = -1;
-		INT_PTR idResolve = -1;
-		BOOL hasGitSVN = CTGitPath(g_Git.m_CurrentDir).GetAdminDirMask() & ITEMIS_GITSVN;
-		if (dlg.m_bNoCommit)
-			idCommit = Prodlg.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUCOMMIT)));
-		else
+		Prodlg.m_PostCmdCallback = [&](DWORD status, PostCmdList& postCmdList)
 		{
-			if (dlg.m_bIsBranch)
+			if (status)
 			{
-				idRemoveBranch = Prodlg.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_REMOVEBRANCH)));
-				idPush = Prodlg.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUPUSH)));
-			}
-			
-			if (hasGitSVN)
-				idSVNDCommit = Prodlg.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUSVNDCOMMIT)));
-		}
-
-		Prodlg.m_PostCmdCallback = [&] ()
-		{
-			if (Prodlg.m_GitStatus)
-			{
-				Prodlg.m_PostCmdList.RemoveAll();
-
 				CTGitPathList list;
 				if (!g_Git.ListConflictFile(list) && !list.IsEmpty())
 				{
 					// there are conflict files
-					idResolve = Prodlg.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROGRS_CMD_RESOLVE)));
+
+					postCmdList.push_back(PostCmd(IDI_RESOLVE, IDS_PROGRS_CMD_RESOLVE, []
+					{
+						CString sCmd;
+						sCmd.Format(_T("/command:commit /path:\"%s\""), g_Git.m_CurrentDir);
+						CAppUtils::RunTortoiseGitProc(sCmd);
+					}));
 				}
+				return;
 			}
+
+			if (dlg.m_bNoCommit)
+			{
+				postCmdList.push_back(PostCmd(IDI_COMMIT, IDS_MENUCOMMIT, []
+				{
+					CString sCmd;
+					sCmd.Format(_T("/command:commit /path:\"%s\""), g_Git.m_CurrentDir);
+					CAppUtils::RunTortoiseGitProc(sCmd);
+				}));
+				return;
+			}
+
+			if (dlg.m_bIsBranch)
+			{
+				postCmdList.push_back(PostCmd(IDI_DELETE, IDS_PROC_REMOVEBRANCH, [&]
+				{
+					CString msg;
+					msg.Format(IDS_PROC_DELETEBRANCHTAG, dlg.m_VersionName);
+					if (CMessageBox::Show(nullptr, msg, _T("TortoiseGit"), 2, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_DELETEBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 1)
+					{
+						CString cmd, out;
+						cmd.Format(_T("git.exe branch -D -- %s"), dlg.m_VersionName);
+						if (g_Git.Run(cmd, &out, CP_UTF8))
+							MessageBox(nullptr, out, _T("TortoiseGit"), MB_OK);
+					}
+				}));
+				postCmdList.push_back(PostCmd(IDI_PUSH, IDS_MENUPUSH, []{ Push(); }));
+			}
+
+			BOOL hasGitSVN = CTGitPath(g_Git.m_CurrentDir).GetAdminDirMask() & ITEMIS_GITSVN;
+			if (hasGitSVN)
+				postCmdList.push_back(PostCmd(IDI_COMMIT, IDS_MENUSVNDCOMMIT, []{ SVNDCommit(); }));
 		};
 
-		INT_PTR ret = Prodlg.DoModal();
-		if (Prodlg.m_GitStatus && (ret == IDC_PROGRESS_BUTTON1 + idResolve))
-		{
-			CTGitPathList pathlist;
-			CTGitPathList selectedlist;
-			pathlist.AddPath(g_Git.m_CurrentDir);
-			bool bSelectFilesForCommit = !!DWORD(CRegStdDWORD(_T("Software\\TortoiseGit\\SelectFilesForCommit"), TRUE));
-			CString str;
-			CAppUtils::Commit(CString(), false, str, pathlist, selectedlist, bSelectFilesForCommit);
-		}
-		else if (!Prodlg.m_GitStatus)
-		{
-			if (ret == IDC_PROGRESS_BUTTON1 + idCommit)
-			{
-				CString sLogMsg;
-				CTGitPathList pathList;
-				CTGitPathList selectedList;
-				return Commit(_T(""), TRUE, sLogMsg, pathList, selectedList, true);
-			}
-			else if (ret == IDC_PROGRESS_BUTTON1 + idRemoveBranch)
-			{
-				CString msg;
-				msg.Format(IDS_PROC_DELETEBRANCHTAG, dlg.m_VersionName);
-				if (CMessageBox::Show(NULL, msg, _T("TortoiseGit"), 2, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_DELETEBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 1)
-				{
-					CString cmd, out;
-					cmd.Format(_T("git.exe branch -D -- %s"), dlg.m_VersionName);
-					if (g_Git.Run(cmd, &out, CP_UTF8))
-						MessageBox(NULL, out, _T("TortoiseGit"), MB_OK);
-				}
-			}
-			else if (ret == IDC_PROGRESS_BUTTON1 + idPush)
-				CAppUtils::Push();
-			else if (ret == IDC_PROGRESS_BUTTON1 + idSVNDCommit)
-				CAppUtils::SVNDCommit();
-		}
-
+		Prodlg.DoModal();
 		return !Prodlg.m_GitStatus;
 	}
 	return false;
@@ -3119,64 +3008,8 @@ BOOL CAppUtils::MergeAbort()
 {
 	CMergeAbortDlg dlg;
 	if (dlg.DoModal() == IDOK)
-	{
-		CString cmd;
-		CString type;
-		switch (dlg.m_ResetType)
-		{
-		case 0:
-			type = _T("--mixed");
-			break;
-		case 1:
-			type = _T("--hard");
-			break;
-		default:
-			dlg.m_ResetType = 0;
-			type = _T("--mixed");
-			break;
-		}
-		cmd.Format(_T("git.exe reset %s HEAD --"), type);
+		return Reset(_T("HEAD"), dlg.m_ResetType + 1);
 
-		while (true)
-		{
-			CProgressDlg progress;
-			progress.m_GitCmd = cmd;
-
-			CTGitPath gitPath = g_Git.m_CurrentDir;
-			if (gitPath.HasSubmodules() && dlg.m_ResetType == 1)
-				progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_SUBMODULESUPDATE)));
-
-			progress.m_PostFailCmdList.Add(CString(MAKEINTRESOURCE(IDS_MSGBOX_RETRY)));
-
-			INT_PTR ret;
-			if (g_Git.UsingLibGit2(CGit::GIT_CMD_RESET))
-			{
-				CGitProgressDlg gitdlg;
-				ResetProgressCommand resetProgressCommand;
-				gitdlg.SetCommand(&resetProgressCommand);
-				resetProgressCommand.SetRevision(_T("HEAD"));
-				resetProgressCommand.SetResetType(dlg.m_ResetType + 1);
-				ret = gitdlg.DoModal();
-			}
-			else
-				ret = progress.DoModal();
-
-			if (progress.m_GitStatus == 0 && gitPath.HasSubmodules() && dlg.m_ResetType == 1 && ret == IDC_PROGRESS_BUTTON1)
-			{
-				CString sCmd;
-				sCmd.Format(_T("/command:subupdate /bkpath:\"%s\""), g_Git.m_CurrentDir);
-
-				CCommonAppUtils::RunTortoiseGitProc(sCmd);
-				return TRUE;
-			}
-			else if (progress.m_GitStatus != 0 && ret == IDC_PROGRESS_BUTTON1)
-				continue;	// retry
-			else if (ret == IDOK)
-				return TRUE;
-			else
-				break;
-		}
-	}
 	return FALSE;
 }
 
@@ -3376,22 +3209,27 @@ bool CAppUtils::BisectStart(CString lastGood, CString firstBad)
 		progress.m_GitCmdList.push_back(_T("git.exe bisect good ") + bisectStartDlg.m_LastGoodRevision);
 		progress.m_GitCmdList.push_back(_T("git.exe bisect bad ") + bisectStartDlg.m_FirstBadRevision);
 
-		CTGitPath path(g_Git.m_CurrentDir);
+		progress.m_PostCmdCallback = [&](DWORD status, PostCmdList& postCmdList)
+		{
+			if (status)
+				return;
 
-		if (path.HasSubmodules())
-			progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_SUBMODULESUPDATE)));
+			CTGitPath path(g_Git.m_CurrentDir);
+			if (path.HasSubmodules())
+			{
+				postCmdList.push_back(PostCmd(IDI_UPDATE, IDS_PROC_SUBMODULESUPDATE, []
+				{
+					CString sCmd;
+					sCmd.Format(_T("/command:subupdate /bkpath:\"%s\""), g_Git.m_CurrentDir);
+					CAppUtils::RunTortoiseGitProc(sCmd);
+				}));
+			}
+		};
+
+		
 
 		INT_PTR ret = progress.DoModal();
-		if (path.HasSubmodules() && ret == IDC_PROGRESS_BUTTON1)
-		{
-			CString sCmd;
-			sCmd.Format(_T("/command:subupdate /bkpath:\"%s\""), g_Git.m_CurrentDir);
-
-			CAppUtils::RunTortoiseGitProc(sCmd);
-			return true;
-		}
-		else if (ret == IDOK)
-			return true;
+		return ret == IDOK;
 	}
 
 	return false;

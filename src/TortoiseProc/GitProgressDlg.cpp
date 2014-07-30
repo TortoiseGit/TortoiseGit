@@ -43,6 +43,7 @@ void CGitProgressDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_PROGRESSBAR, m_ProgCtrl);
 	DDX_Control(pDX, IDC_INFOTEXT, m_InfoCtrl);
 	DDX_Control(pDX, IDC_PROGRESSLABEL, m_ProgLableCtrl);
+	DDX_Control(pDX, IDC_LOGBUTTON, m_cMenuButton);
 }
 
 BEGIN_MESSAGE_MAP(CGitProgressDlg, CResizableStandAloneDialog)
@@ -121,14 +122,9 @@ LRESULT CGitProgressDlg::OnTaskbarBtnCreated(WPARAM /*wParam*/, LPARAM /*lParam*
 
 void CGitProgressDlg::OnBnClickedLogbutton()
 {
-	if (m_ProgList.m_Command->ShowCommitButton())
-	{
-		CString cmd = _T(" /command:commit");
-		cmd += _T(" /path:\"") + g_Git.m_CurrentDir + _T("\"");
-
-		CAppUtils::RunTortoiseGitProc(cmd);
-		EndDialog(IDOK);
-	}
+	ShowWindow(SW_HIDE);
+	m_PostCmdList.at(m_cMenuButton.GetCurrentEntry()).action();
+	EndDialog(IDOK);
 }
 
 
@@ -252,10 +248,15 @@ LRESULT	CGitProgressDlg::OnCmdEnd(WPARAM wParam, LPARAM /*lParam*/)
 	DialogEnableWindow(IDCANCEL, FALSE);
 	DialogEnableWindow(IDOK, TRUE);
 
-	if (!DidErrorsOccur() && ((ProgressCommand*)wParam)->ShowCommitButton())
+	m_PostCmdList.clear();
+	if (m_ProgList.m_Command->m_PostCmdCallback)
+		m_ProgList.m_Command->m_PostCmdCallback(m_ProgList.DidErrorsOccur() ? 1 : 0, m_PostCmdList);
+
+	if (!m_PostCmdList.empty())
 	{
-		this->GetDlgItem(IDC_LOGBUTTON)->SetWindowText(CString(MAKEINTRESOURCE(IDS_COMMITBUTTON)));
-		this->GetDlgItem(IDC_LOGBUTTON)->ShowWindow(SW_SHOW);
+		for (auto it = m_PostCmdList.cbegin(); it != m_PostCmdList.cend(); ++it)
+			m_cMenuButton.AddEntry((*it).icon, (*it).label);
+		m_cMenuButton.ShowWindow(SW_SHOW);
 	}
 
 	CWnd * pWndOk = GetDlgItem(IDOK);

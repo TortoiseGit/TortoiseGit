@@ -22,5 +22,5 @@ class ResolveProgressCommand : public ProgressCommand
 {
 public:
 	virtual bool Run(CGitProgressList* list, CString& sWindowTitle, int& m_itemCountTotal, int& m_itemCount);
-	virtual bool NeedsCommit() { return true; }
+	virtual bool ShowInfo(CString& info);
 };

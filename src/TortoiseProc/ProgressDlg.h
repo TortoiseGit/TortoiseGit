@@ -21,7 +21,6 @@
 #include "StandAloneDlg.h"
 #include "Git.h"
 #include "MenuButton.h"
-#include <functional>
 
 #define MSG_PROGRESSDLG_UPDATE_UI	(WM_USER+121)
 
@@ -37,12 +36,51 @@ typedef enum {
 	AUTOCLOSE_IF_NO_ERRORS,
 } GitProgressAutoClose;
 
+typedef std::function<void()> PostCmdAction;
+
+class PostCmd
+{
+public:
+	PostCmd(UINT icon, UINT msgId, PostCmdAction action)
+	: icon(icon)
+	, action(action)
+	{
+		label.LoadString(msgId);
+	}
+
+	PostCmd(UINT msgId, PostCmdAction action)
+	: icon(0)
+	, action(action)
+	{
+		label.LoadString(msgId);
+	}
+
+	PostCmd(UINT icon, CString label, PostCmdAction action)
+	: icon(icon)
+	, action(action)
+	, label(label)
+	{
+	}
+
+	PostCmd(CString label, PostCmdAction action)
+	: icon(0)
+	, action(action)
+	, label(label)
+	{
+	}
+
+	UINT			icon;
+	CString			label;
+	PostCmdAction	action;
+};
+
+typedef std::vector<PostCmd> PostCmdList;
+typedef std::function<void(DWORD status, PostCmdList&)> PostCmdCallback;
+
 class CProgressDlg : public CResizableStandAloneDialog
 {
 	DECLARE_DYNAMIC(CProgressDlg)
 public:
-	typedef std::function<void()> PostCmdCallback;
-
 	CProgressDlg(CWnd* pParent = NULL); // standard constructor
 	virtual ~CProgressDlg();
 
@@ -54,8 +92,6 @@ private:
 
 public:
 	CString					m_GitCmd;
-	CStringArray			m_PostCmdList;
-	CStringArray			m_PostFailCmdList;
 	PostCmdCallback			m_PostCmdCallback;
 	std::vector<CString>	m_GitCmdList;
 	STRING_VECTOR			m_GitDirList;
@@ -72,6 +108,7 @@ public:
 	CString					GetLogText() const { CString text; m_Log.GetWindowText(text); return text; }
 
 private:
+	PostCmdList				m_PostCmdList;
 	void					WriteLog() const;
 	CMenuButton				m_ctrlPostCmd;
 

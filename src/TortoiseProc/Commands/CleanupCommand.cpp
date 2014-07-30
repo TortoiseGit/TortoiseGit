@@ -110,256 +110,177 @@ static bool GetSubmodulePathList(SubmodulePayload &payload)
 	return true;
 }
 
+static bool DoCleanUp(const CTGitPathList& pathList, int cleanType, bool bDir, bool bSubmodules, bool bDryRun, bool bNoRecycleBin)
+{
+	CString cmd;
+	cmd.Format(_T("git.exe clean"));
+	if (bDryRun || !bNoRecycleBin)
+		cmd += _T(" -n ");
+	if (bDir)
+		cmd += _T(" -d ");
+	switch (cleanType)
+	{
+	case 0:
+		cmd += _T(" -fx");
+		break;
+	case 1:
+		cmd += _T(" -f");
+		break;
+	case 2:
+		cmd += _T(" -fX");
+		break;
+	}
+
+	STRING_VECTOR submoduleList;
+	SubmodulePayload payload(submoduleList);
+	if (bSubmodules)
+	{
+		payload.basePath = CTGitPath(g_Git.m_CurrentDir).GetGitPathString();
+		if (pathList.GetCount() != 1 || pathList.GetCount() == 1 && !pathList[0].IsEmpty())
+		{
+			for (int i = 0; i < pathList.GetCount(); ++i)
+			{
+				CString path;
+				if (pathList[i].IsDirectory())
+					payload.prefixList.push_back(pathList[i].GetGitPathString());
+				else
+					payload.prefixList.push_back(pathList[i].GetContainingDirectory().GetGitPathString());
+			}
+		}
+		if (!GetSubmodulePathList(payload))
+			return false;
+		std::sort(submoduleList.begin(), submoduleList.end());
+	}
+
+	if (bDryRun || bNoRecycleBin)
+	{
+		CProgressDlg progress;
+		for (int i = 0; i < pathList.GetCount(); ++i)
+		{
+			CString path;
+			if (pathList[i].IsDirectory())
+				path = pathList[i].GetGitPathString();
+			else
+				path = pathList[i].GetContainingDirectory().GetGitPathString();
+
+			progress.m_GitDirList.push_back(g_Git.m_CurrentDir);
+			progress.m_GitCmdList.push_back(cmd + _T(" \"") + path + _T("\""));
+		}
+
+		if (bSubmodules)
+		{
+			for (CString dir : submoduleList)
+			{
+				progress.m_GitDirList.push_back(CTGitPath(dir).GetWinPathString());
+				progress.m_GitCmdList.push_back(cmd);
+			}
+		}
+
+		progress.m_PostCmdCallback = [&](DWORD status, PostCmdList& postCmdList)
+		{
+			if (status && !bDryRun)
+				postCmdList.push_back(PostCmd(IDS_MSGBOX_RETRY, [&]{ DoCleanUp(pathList, cleanType, bDir, bSubmodules, bDryRun, bNoRecycleBin); }));
+
+			if (status)
+				return;
+
+			if (bNoRecycleBin) // recheck, I don't really understand this. why rerun with same options first?
+			{
+				postCmdList.push_back(PostCmd(IDS_CLEAN_NO_RECYCLEBIN, [&]{ DoCleanUp(pathList, cleanType, bDir, bSubmodules, FALSE, TRUE); }));
+				postCmdList.push_back(PostCmd(IDS_CLEAN_TO_RECYCLEBIN, [&]{ DoCleanUp(pathList, cleanType, bDir, bSubmodules, FALSE, FALSE); }));
+			}
+			else
+			{
+				postCmdList.push_back(PostCmd(IDS_CLEAN_TO_RECYCLEBIN, [&]{ DoCleanUp(pathList, cleanType, bDir, bSubmodules, FALSE, FALSE); }));
+				postCmdList.push_back(PostCmd(IDS_CLEAN_NO_RECYCLEBIN, [&]{ DoCleanUp(pathList, cleanType, bDir, bSubmodules, FALSE, TRUE); }));
+			}
+		};
+
+		INT_PTR result = progress.DoModal();
+		return result == IDOK;
+	}
+	else
+	{
+		CSysProgressDlg sysProgressDlg;
+		sysProgressDlg.SetAnimation(IDR_CLEANUPANI);
+		sysProgressDlg.SetTitle(CString(MAKEINTRESOURCE(IDS_APPNAME)));
+		sysProgressDlg.SetLine(1, CString(MAKEINTRESOURCE(IDS_PROC_CLEANUP_INFO1)));
+		sysProgressDlg.SetLine(2, CString(MAKEINTRESOURCE(IDS_PROGRESSWAIT)));
+		sysProgressDlg.SetShowProgressBar(false);
+		sysProgressDlg.ShowModeless((HWND)NULL, true);
+
+		bool quotepath = g_Git.GetConfigValueBool(_T("core.quotepath"));
+
+		CTGitPathList delList;
+		for (size_t i = 0; i <= submoduleList.size(); ++i)
+		{
+			CGit git;
+			CGit *pGit;
+			if (i == 0)
+				pGit = &g_Git;
+			else
+			{
+				git.m_CurrentDir = submoduleList[i - 1];
+				pGit = &git;
+			}
+			CString cmdout, cmdouterr;
+			if (pGit->Run(cmd, &cmdout, &cmdouterr, CP_UTF8))
+			{
+				MessageBox(nullptr, cmdouterr, _T("TortoiseGit"), MB_ICONERROR);
+				return false;
+			}
+
+			if (sysProgressDlg.HasUserCancelled())
+			{
+				CMessageBox::Show(nullptr, IDS_SVN_USERCANCELLED, IDS_APPNAME, MB_OK);
+				return false;
+			}
+
+			int pos = 0;
+			CString token = cmdout.Tokenize(_T("\n"), pos);
+			while (!token.IsEmpty())
+			{
+				if (token.Mid(0, 13) == _T("Would remove "))
+				{
+					CString tempPath = token.Mid(13).TrimRight();
+					if (quotepath)
+					{
+						tempPath = UnescapeQuotePath(tempPath.Trim(_T('"')));
+					}
+					if (i == 0)
+						delList.AddPath(CTGitPath(tempPath));
+					else
+						delList.AddPath(CTGitPath(submoduleList[i - 1] + "/" + tempPath));
+				}
+
+				token = cmdout.Tokenize(_T("\n"), pos);
+			}
+
+			if (sysProgressDlg.HasUserCancelled())
+			{
+				CMessageBox::Show(nullptr, IDS_SVN_USERCANCELLED, IDS_APPNAME, MB_OK);
+				return false;
+			}
+		}
+
+		delList.DeleteAllFiles(true, false);
+
+		sysProgressDlg.Stop();
+	}
+
+	return true;
+}
+
 bool CleanupCommand::Execute()
 {
 	bool bRet = false;
 
 	CCleanTypeDlg dlg;
-	if( dlg.DoModal() == IDOK)
+	if (dlg.DoModal() == IDOK)
 	{
-		bool quotepath = g_Git.GetConfigValueBool(_T("core.quotepath"));
+		bRet = DoCleanUp(pathList, dlg.m_CleanType, dlg.m_bDir, dlg.m_bSubmodules, dlg.m_bDryRun, dlg.m_bNoRecycleBin);
 
-		while (true)
-		{
-			CString cmd;
-			cmd.Format(_T("git.exe clean"));
-			if (dlg.m_bDryRun || !dlg.m_bNoRecycleBin)
-				cmd += _T(" -n ");
-			if (dlg.m_bDir)
-				cmd += _T(" -d ");
-			switch (dlg.m_CleanType)
-			{
-			case 0:
-				cmd += _T(" -fx");
-				break;
-			case 1:
-				cmd += _T(" -f");
-				break;
-			case 2:
-				cmd += _T(" -fX");
-				break;
-			}
-
-			STRING_VECTOR submoduleList;
-			SubmodulePayload payload(submoduleList);
-			if (dlg.m_bSubmodules)
-			{
-				payload.basePath = CTGitPath(g_Git.m_CurrentDir).GetGitPathString();
-				if (pathList.GetCount() != 1 || pathList.GetCount() == 1 && !pathList[0].IsEmpty())
-				{
-					for (int i = 0; i < pathList.GetCount(); ++i)
-					{
-						CString path;
-						if (pathList[i].IsDirectory())
-							payload.prefixList.push_back(pathList[i].GetGitPathString());
-						else
-							payload.prefixList.push_back(pathList[i].GetContainingDirectory().GetGitPathString());
-					}
-				}
-				if (!GetSubmodulePathList(payload))
-					return FALSE;
-				std::sort(submoduleList.begin(), submoduleList.end());
-			}
-
-			if (dlg.m_bDryRun || dlg.m_bNoRecycleBin)
-			{
-				CProgressDlg progress;
-				for (int i = 0; i < this->pathList.GetCount(); ++i)
-				{
-					CString path;
-					if (this->pathList[i].IsDirectory())
-						path = pathList[i].GetGitPathString();
-					else
-						path = pathList[i].GetContainingDirectory().GetGitPathString();
-
-					progress.m_GitDirList.push_back(g_Git.m_CurrentDir);
-					progress.m_GitCmdList.push_back(cmd + _T(" \"") + path + _T("\""));
-				}
-
-				if (dlg.m_bSubmodules)
-				{
-					for (CString dir : submoduleList)
-					{
-						progress.m_GitDirList.push_back(CTGitPath(dir).GetWinPathString());
-						progress.m_GitCmdList.push_back(cmd);
-					}
-				}
-
-				INT_PTR idRetry = -1;
-				INT_PTR idDeleteRecycle = -1;
-				INT_PTR idDeleteNoRecycle = -1;
-				if (!dlg.m_bDryRun)
-					idRetry = progress.m_PostFailCmdList.Add(CString(MAKEINTRESOURCE(IDS_MSGBOX_RETRY)));
-				else
-				{
-					if (dlg.m_bNoRecycleBin)
-					{
-						idDeleteNoRecycle = progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_CLEAN_NO_RECYCLEBIN)));
-						idDeleteRecycle = progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_CLEAN_TO_RECYCLEBIN)));
-					}
-					else
-					{
-						idDeleteRecycle = progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_CLEAN_TO_RECYCLEBIN)));
-						idDeleteNoRecycle = progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_CLEAN_NO_RECYCLEBIN)));
-					}
-				}
-
-				INT_PTR result = progress.DoModal();
-				if (result == IDOK)
-					return TRUE;
-				if (progress.m_GitStatus && result == IDC_PROGRESS_BUTTON1 + idRetry)
-					continue;
-				if (!progress.m_GitStatus && result == IDC_PROGRESS_BUTTON1 + idDeleteRecycle)
-				{
-					dlg.m_bDryRun = FALSE;
-					dlg.m_bNoRecycleBin = FALSE;
-					continue;
-				}
-				if (!progress.m_GitStatus && result == IDC_PROGRESS_BUTTON1 + idDeleteNoRecycle)
-				{
-					dlg.m_bDryRun = FALSE;
-					dlg.m_bNoRecycleBin = TRUE;
-					continue;
-				}
-				break;
-			}
-			else
-			{
-				CSysProgressDlg sysProgressDlg;
-				sysProgressDlg.SetAnimation(IDR_CLEANUPANI);
-				sysProgressDlg.SetTitle(CString(MAKEINTRESOURCE(IDS_APPNAME)));
-				sysProgressDlg.SetLine(1, CString(MAKEINTRESOURCE(IDS_PROC_CLEANUP_INFO1)));
-				sysProgressDlg.SetLine(2, CString(MAKEINTRESOURCE(IDS_PROGRESSWAIT)));
-				sysProgressDlg.SetShowProgressBar(false);
-				sysProgressDlg.ShowModeless((HWND)NULL, true);
-
-				CTGitPathList delList;
-				for (size_t i = 0; i <= submoduleList.size(); ++i)
-				{
-					CGit git;
-					CGit *pGit;
-					if (i == 0)
-						pGit = &g_Git;
-					else
-					{
-						git.m_CurrentDir = submoduleList[i - 1];
-						pGit = &git;
-					}
-					CString cmdout, cmdouterr;
-					if (pGit->Run(cmd, &cmdout, &cmdouterr, CP_UTF8))
-					{
-						MessageBox(nullptr, cmdouterr, _T("TortoiseGit"), MB_ICONERROR);
-						return FALSE;
-					}
-
-					if (sysProgressDlg.HasUserCancelled())
-					{
-						CMessageBox::Show(nullptr, IDS_SVN_USERCANCELLED, IDS_APPNAME, MB_OK);
-						return FALSE;
-					}
-
-					int pos = 0;
-					CString token = cmdout.Tokenize(_T("\n"), pos);
-					while (!token.IsEmpty())
-					{
-						if (token.Mid(0, 13) == _T("Would remove "))
-						{
-							CString tempPath = token.Mid(13).TrimRight();
-							if (quotepath)
-							{
-								tempPath = UnescapeQuotePath(tempPath.Trim(_T('"')));
-							}
-							if (i == 0)
-								delList.AddPath(CTGitPath(tempPath));
-							else
-								delList.AddPath(CTGitPath(submoduleList[i - 1] + "/" + tempPath));
-						}
-
-						token = cmdout.Tokenize(_T("\n"), pos);
-					}
-
-					if (sysProgressDlg.HasUserCancelled())
-					{
-						CMessageBox::Show(nullptr, IDS_SVN_USERCANCELLED, IDS_APPNAME, MB_OK);
-						return FALSE;
-					}
-				}
-
-				delList.DeleteAllFiles(true, false);
-
-				sysProgressDlg.Stop();
-				break;
-			}
-		}
+		CShellUpdater::Instance().Flush();
 	}
-#if 0
-	CProgressDlg progress;
-	progress.SetTitle(IDS_PROC_CLEANUP);
-	progress.SetAnimation(IDR_CLEANUPANI);
-	progress.SetShowProgressBar(false);
-	progress.SetLine(1, CString(MAKEINTRESOURCE(IDS_PROC_CLEANUP_INFO1)));
-	progress.SetLine(2, CString(MAKEINTRESOURCE(IDS_PROC_CLEANUP_INFO2)));
-	progress.ShowModeless(hwndExplorer);
-
-	CString strSuccessfullPaths, strFailedPaths;
-	for (int i=0; i<pathList.GetCount(); ++i)
-	{
-		SVN svn;
-		if (!svn.CleanUp(pathList[i]))
-		{
-			strFailedPaths += _T("- ") + pathList[i].GetWinPathString() + _T("\n");
-			strFailedPaths += svn.GetLastErrorMessage() + _T("\n\n");
-		}
-		else
-		{
-			strSuccessfullPaths += _T("- ") + pathList[i].GetWinPathString() + _T("\n");
-
-			// after the cleanup has finished, crawl the path downwards and send a change
-			// notification for every directory to the shell. This will update the
-			// overlays in the left tree view of the explorer.
-			CDirFileEnum crawler(pathList[i].GetWinPathString());
-			CString sPath;
-			bool bDir = false;
-			CTSVNPathList updateList;
-			while (crawler.NextFile(sPath, &bDir))
-			{
-				if ((bDir) && (!g_SVNAdminDir.IsAdminDirPath(sPath)))
-				{
-					updateList.AddPath(CTSVNPath(sPath));
-				}
-			}
-			updateList.AddPath(pathList[i]);
-			CShellUpdater::Instance().AddPathsForUpdate(updateList);
-			CShellUpdater::Instance().Flush();
-			updateList.SortByPathname(true);
-			for (INT_PTR i=0; i<updateList.GetCount(); ++i)
-			{
-				SHChangeNotify(SHCNE_UPDATEITEM, SHCNF_PATH, updateList[i].GetWinPath(), NULL);
-				CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": notify change for path %s\n"), updateList[i].GetWinPath());
-			}
-		}
-	}
-	progress.Stop();
-
-	CString strMessage;
-	if ( !strSuccessfullPaths.IsEmpty() )
-	{
-		CString tmp;
-		tmp.Format(IDS_PROC_CLEANUPFINISHED, (LPCTSTR)strSuccessfullPaths);
-		strMessage += tmp;
-		bRet = true;
-	}
-	if ( !strFailedPaths.IsEmpty() )
-	{
-		if (!strMessage.IsEmpty())
-			strMessage += _T("\n");
-		CString tmp;
-		tmp.Format(IDS_PROC_CLEANUPFINISHED_FAILED, (LPCTSTR)strFailedPaths);
-		strMessage += tmp;
-		bRet = false;
-	}
-	CMessageBox::Show(hwndExplorer, strMessage, _T("TortoiseGit"), MB_OK | (strFailedPaths.IsEmpty()?MB_ICONINFORMATION:MB_ICONERROR));
-#endif
-	CShellUpdater::Instance().Flush();
 	return bRet;
 }

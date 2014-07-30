@@ -27,6 +27,7 @@
 #include "../TortoiseShell/resource.h"
 #include "LoglistCommonResource.h"
 #include "IconMenu.h"
+#include "ProgressDlg.h"
 /**
  * \ingroup TortoiseProc
  * Options which can be used to configure the way the dialog box works
@@ -232,10 +233,15 @@ protected:
 	CTGitPathList		m_targetPathList;
 
 public:
+	PostCmdCallback	m_PostCmdCallback;
+
+	ProgressCommand()
+	: m_PostCmdCallback(nullptr)
+	{}
+
 	void SetPathList(CTGitPathList& pathList) { m_targetPathList = pathList; }
 	virtual bool Run(CGitProgressList* list, CString& sWindowTitle, int& m_itemCountTotal, int& m_itemCount) = 0;
-	virtual bool ShowCommitButton() { return false; }
-	virtual bool NeedsCommit() { return false; }
+	virtual bool ShowInfo(CString& /*info*/) { return false; }
 	virtual ~ProgressCommand() {}
 };
 

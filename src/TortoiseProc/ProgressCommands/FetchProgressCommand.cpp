@@ -90,6 +90,8 @@ bool FetchProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, in
 
 	git_remote_disconnect(remote);
 
+	// Not setting m_PostCmdCallback here, as clone is only called from AppUtils.cpp
+
 	return true;
 
 error:

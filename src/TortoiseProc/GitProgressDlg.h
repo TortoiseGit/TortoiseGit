@@ -21,8 +21,7 @@
 
 #include "StandAloneDlg.h"
 #include "GitProgressList.h"
-
-typedef int (__cdecl *GENERICCOMPAREFN)(const void * elem1, const void * elem2);
+#include "MenuButton.h"
 
 /**
  * \ingroup TortoiseProc
@@ -86,6 +85,8 @@ private:
 	CGitProgressList		m_ProgList;
 	CEdit					m_InfoCtrl;
 	CStatic					m_ProgLableCtrl;
+	CMenuButton				m_cMenuButton;
+	PostCmdList				m_PostCmdList;
 
 	CBrush					m_background_brush;
 	DWORD					m_dwCloseOnEnd;
