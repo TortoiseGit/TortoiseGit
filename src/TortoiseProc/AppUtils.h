@@ -166,7 +166,7 @@ public:
 
 	static bool LaunchRemoteSetting();
 
-	static bool LaunchPAgent(CString *keyfile=NULL,CString * pRemote=NULL);
+	static bool LaunchPAgent(const CString* keyfile = nullptr, const CString* pRemote = nullptr);
 
 	static CString GetClipboardLink(const CString &skipGitPrefix = _T(""), int paramsCount = 0);
 	static CString ChooseRepository(CString *path);

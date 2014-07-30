@@ -648,7 +648,7 @@ void CAppUtils::CreateFontForLogs(CFont& fontToCreate)
 	VERIFY(fontToCreate.CreateFontIndirect(&logFont));
 }
 
-bool CAppUtils::LaunchPAgent(CString *keyfile,CString * pRemote)
+bool CAppUtils::LaunchPAgent(const CString* keyfile, const CString* pRemote)
 {
 	CString key,remote;
 	CString cmd,out;
