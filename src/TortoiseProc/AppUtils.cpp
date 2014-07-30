@@ -2976,7 +2976,7 @@ BOOL CAppUtils::Merge(CString *commit)
 				return;
 			}
 
-			if (dlg.m_bIsBranch)
+			if (dlg.m_bIsBranch && dlg.m_VersionName.Find(L"remotes/") > 5) // do not ask to remove remote branches
 			{
 				postCmdList.push_back(PostCmd(IDI_DELETE, IDS_PROC_REMOVEBRANCH, [&]
 				{
@@ -2990,8 +2990,9 @@ BOOL CAppUtils::Merge(CString *commit)
 							MessageBox(nullptr, out, _T("TortoiseGit"), MB_OK);
 					}
 				}));
-				postCmdList.push_back(PostCmd(IDI_PUSH, IDS_MENUPUSH, []{ Push(); }));
 			}
+			if (dlg.m_bIsBranch)
+				postCmdList.push_back(PostCmd(IDI_PUSH, IDS_MENUPUSH, []{ Push(); }));
 
 			BOOL hasGitSVN = CTGitPath(g_Git.m_CurrentDir).GetAdminDirMask() & ITEMIS_GITSVN;
 			if (hasGitSVN)
