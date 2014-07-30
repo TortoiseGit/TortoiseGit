@@ -971,12 +971,12 @@ void CCommitDlg::OnOK()
 				return;
 
 			if (IsGitSVN)
-				postCmdList.push_back(PostCmd(IDS_MENUSVNDCOMMIT, [&]{ m_PostCmd = GIT_POSTCOMMIT_CMD_DCOMMIT; }));
+				postCmdList.push_back(PostCmd(IDI_COMMIT, IDS_MENUSVNDCOMMIT, [&]{ m_PostCmd = GIT_POSTCOMMIT_CMD_DCOMMIT; }));
 
-			postCmdList.push_back(PostCmd(IDS_MENUPUSH, [&]{ m_PostCmd = GIT_POSTCOMMIT_CMD_PUSH; }));
-			postCmdList.push_back(PostCmd(IDS_MENUPULL, [&]{ m_PostCmd = GIT_POSTCOMMIT_CMD_PULL; }));
-			postCmdList.push_back(PostCmd(IDS_PROC_COMMIT_RECOMMIT, [&]{ m_PostCmd = GIT_POSTCOMMIT_CMD_RECOMMIT; }));
-			postCmdList.push_back(PostCmd(IDS_MENUTAG, [&]{ m_PostCmd = GIT_POSTCOMMIT_CMD_CREATETAG; }));
+			postCmdList.push_back(PostCmd(IDI_PUSH, IDS_MENUPUSH, [&]{ m_PostCmd = GIT_POSTCOMMIT_CMD_PUSH; }));
+			postCmdList.push_back(PostCmd(IDI_PULL, IDS_MENUPULL, [&]{ m_PostCmd = GIT_POSTCOMMIT_CMD_PULL; }));
+			postCmdList.push_back(PostCmd(IDI_COMMIT, IDS_PROC_COMMIT_RECOMMIT, [&]{ m_PostCmd = GIT_POSTCOMMIT_CMD_RECOMMIT; }));
+			postCmdList.push_back(PostCmd(IDI_TAG, IDS_MENUTAG, [&]{ m_PostCmd = GIT_POSTCOMMIT_CMD_CREATETAG; }));
 		};
 
 		m_PostCmd = GIT_POSTCOMMIT_CMD_NOTHING;

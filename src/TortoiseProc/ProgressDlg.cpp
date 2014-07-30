@@ -422,7 +422,7 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 				if (!m_PostCmdList.empty())
 				{
 					for (auto it = m_PostCmdList.cbegin(); it != m_PostCmdList.cend(); ++it)
-						m_ctrlPostCmd.AddEntry((*it).label);
+						m_ctrlPostCmd.AddEntry((*it).icon, (*it).label);
 					GetDlgItem(IDC_PROGRESS_BUTTON1)->ShowWindow(SW_SHOW);
 				}
 			}

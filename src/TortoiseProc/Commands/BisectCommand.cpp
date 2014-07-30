@@ -65,7 +65,7 @@ bool BisectCommand::Execute()
 
 			if (path.HasSubmodules())
 			{
-				postCmdList.push_back(PostCmd(IDS_PROC_SUBMODULESUPDATE, []
+				postCmdList.push_back(PostCmd(IDI_UPDATE, IDS_PROC_SUBMODULESUPDATE, []
 				{
 					CString sCmd;
 					sCmd.Format(_T("/command:subupdate /bkpath:\"%s\""), g_Git.m_CurrentDir);
