@@ -2544,8 +2544,8 @@ bool CAppUtils::Push(CString selectLocalBranch)
 
 			postCmdList.push_back(PostCmd(IDS_PROC_REQUESTPULL, [&]{ RequestPull(dlg.m_BranchRemoteName); }));
 			postCmdList.push_back(PostCmd(IDI_PUSH, IDS_MENUPUSH, [&]{ Push(selectLocalBranch); }));
+			postCmdList.push_back(PostCmd(IDI_SWITCH, IDS_MENUSWITCH, [&]{ Switch(); }));
 		};
-
 
 		INT_PTR ret = progress.DoModal();
 		return ret == IDOK;
