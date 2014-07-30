@@ -29,36 +29,6 @@
 #include "SmartHandle.h"
 #include "git2/sys/repository.h"
 
-class CAutoReadLock
-{
-	SharedMutex *m_Lock;
-public:
-	CAutoReadLock(SharedMutex * lock)
-	{
-		m_Lock = lock;
-		lock->AcquireShared();
-	}
-	~CAutoReadLock()
-	{
-		m_Lock->ReleaseShared();
-	}
-};
-
-class CAutoWriteLock
-{
-	SharedMutex *m_Lock;
-public:
-	CAutoWriteLock(SharedMutex * lock)
-	{
-		m_Lock = lock;
-		lock->AcquireExclusive();
-	}
-	~CAutoWriteLock()
-	{
-		m_Lock->ReleaseExclusive();
-	}
-};
-
 CGitAdminDirMap g_AdminDirMap;
 
 int CGitIndex::Print()
@@ -545,7 +515,7 @@ int CGitHeadFileList::GetPackRef(const CString &gitdir)
 }
 int CGitHeadFileList::ReadHeadHash(CString gitdir)
 {
-	CAutoWriteLock lock(&this->m_SharedMutex);
+	CAutoWriteLock lock(m_SharedMutex);
 	m_Gitdir = g_AdminDirMap.GetAdminDir(gitdir);
 
 	m_HeadFile = m_Gitdir + _T("HEAD");
@@ -650,7 +620,7 @@ int CGitHeadFileList::ReadHeadHash(CString gitdir)
 
 bool CGitHeadFileList::CheckHeadUpdate()
 {
-	CAutoReadLock lock(&m_SharedMutex);
+	CAutoReadLock lock(m_SharedMutex);
 	if (this->m_HeadFile.IsEmpty())
 		return true;
 
@@ -690,19 +660,19 @@ bool CGitHeadFileList::CheckHeadUpdate()
 
 bool CGitHeadFileList::HeadHashEqualsTreeHash()
 {
-	CAutoReadLock lock(&this->m_SharedMutex);
+	CAutoReadLock lock(m_SharedMutex);
 	return (m_Head == m_TreeHash);
 }
 
 bool CGitHeadFileList::HeadFileIsEmpty()
 {
-	CAutoReadLock lock(&this->m_SharedMutex);
+	CAutoReadLock lock(m_SharedMutex);
 	return m_HeadFile.IsEmpty();
 }
 
 bool CGitHeadFileList::HeadIsEmpty()
 {
-	CAutoReadLock lock(&this->m_SharedMutex);
+	CAutoReadLock lock(m_SharedMutex);
 	return m_Head.IsEmpty();
 }
 
@@ -778,7 +748,7 @@ int ReadTreeRecursive(git_repository &repo, const git_tree * tree, const CString
 // ReadTree is/must only be executed on an empty list
 int CGitHeadFileList::ReadTree()
 {
-	CAutoWriteLock lock(&m_SharedMutex);
+	CAutoWriteLock lock(m_SharedMutex);
 	ATLASSERT(empty());
 
 	CAutoRepository repository(m_Gitdir);
@@ -802,7 +772,7 @@ int CGitHeadFileList::ReadTree()
 }
 int CGitIgnoreItem::FetchIgnoreList(const CString &projectroot, const CString &file, bool isGlobal)
 {
-	CAutoWriteLock lock(&this->m_SharedMutex);
+	CAutoWriteLock lock(m_SharedMutex);
 
 	if (this->m_pExcludeList)
 	{
@@ -894,15 +864,16 @@ bool CGitIgnoreList::CheckFileChanged(const CString &path)
 
 	int ret = g_Git.GetFileModifyTime(path, &time);
 
-	this->m_SharedMutex.AcquireShared();
-	bool cacheExist = (m_Map.find(path) != m_Map.end());
-	this->m_SharedMutex.ReleaseShared();
+	bool cacheExist;
+	{
+		CAutoReadLock lock(m_SharedMutex);
+		cacheExist = (m_Map.find(path) != m_Map.end());
+	}
 
 	if (!cacheExist && ret == 0)
 	{
-		CAutoWriteLock lock(&this->m_SharedMutex);
+		CAutoWriteLock lock(m_SharedMutex);
 		m_Map[path].m_LastModifyTime = 0;
-		m_Map[path].m_SharedMutex.Init();
 	}
 	// both cache and file is not exist
 	if ((ret != 0) && (!cacheExist))
@@ -920,7 +891,7 @@ bool CGitIgnoreList::CheckFileChanged(const CString &path)
 	// file exist and cache exist
 
 	{
-		CAutoReadLock lock(&this->m_SharedMutex);
+		CAutoReadLock lock(m_SharedMutex);
 		if (m_Map[path].m_LastModifyTime == time)
 			return false;
 	}
@@ -992,18 +963,12 @@ int CGitIgnoreList::FetchIgnoreFile(const CString &gitdir, const CString &gitign
 {
 	if (CGit::GitPathFileExists(gitignore)) //if .gitignore remove, we need remote cache
 	{
-		CAutoWriteLock lock(&this->m_SharedMutex);
-		if (m_Map.find(gitignore) == m_Map.end())
-			m_Map[gitignore].m_SharedMutex.Init();
-
+		CAutoWriteLock lock(m_SharedMutex);
 		m_Map[gitignore].FetchIgnoreList(gitdir, gitignore, isGlobal);
 	}
 	else
 	{
-		CAutoWriteLock lock(&this->m_SharedMutex);
-		if (m_Map.find(gitignore) != m_Map.end())
-			m_Map[gitignore].m_SharedMutex.Release();
-
+		CAutoWriteLock lock(m_SharedMutex);
 		m_Map.erase(gitignore);
 	}
 	return 0;
@@ -1049,9 +1014,11 @@ int CGitIgnoreList::LoadAllIgnoreFile(const CString &gitdir, const CString &path
 
 			if (CheckAndUpdateCoreExcludefile(adminDir))
 			{
-				m_SharedMutex.AcquireShared();
-				CString excludesFile = m_CoreExcludesfiles[adminDir];
-				m_SharedMutex.ReleaseShared();
+				CString excludesFile;
+				{
+					CAutoReadLock lock(m_SharedMutex);
+					excludesFile = m_CoreExcludesfiles[adminDir];
+				}
 				if (!excludesFile.IsEmpty())
 					FetchIgnoreFile(gitdir, excludesFile, true);
 			}
@@ -1103,7 +1070,7 @@ bool CGitIgnoreList::CheckAndUpdateCoreExcludefile(const CString &adminDir)
 	CString globalConfig = g_Git.GetGitGlobalConfig();
 	CString globalXDGConfig = g_Git.GetGitGlobalXDGConfig();
 
-	CAutoWriteLock lock(&m_coreExcludefilesSharedMutex);
+	CAutoWriteLock lock(m_coreExcludefilesSharedMutex);
 	bool hasChanged = CheckAndUpdateMsysGitBinpath();
 	CString systemConfig = m_sMsysGitBinPath + _T("\\..\\etc\\gitconfig");
 
@@ -1113,9 +1080,11 @@ bool CGitIgnoreList::CheckAndUpdateCoreExcludefile(const CString &adminDir)
 	if (!m_sMsysGitBinPath.IsEmpty())
 		hasChanged = hasChanged || CheckFileChanged(systemConfig);
 
-	m_SharedMutex.AcquireShared();
-	CString excludesFile = m_CoreExcludesfiles[adminDir];
-	m_SharedMutex.ReleaseShared();
+	CString excludesFile;
+	{
+		CAutoReadLock lock(m_SharedMutex);
+		excludesFile = m_CoreExcludesfiles[adminDir];
+	}
 	if (!excludesFile.IsEmpty())
 		hasChanged = hasChanged || CheckFileChanged(excludesFile);
 
@@ -1134,27 +1103,18 @@ bool CGitIgnoreList::CheckAndUpdateCoreExcludefile(const CString &adminDir)
 	else if (excludesFile.Find(_T("~/")) == 0)
 		excludesFile = GetWindowsHome() + excludesFile.Mid(1);
 
-	CAutoWriteLock lockMap(&m_SharedMutex);
+	CAutoWriteLock lockMap(m_SharedMutex);
 	g_Git.GetFileModifyTime(projectConfig, &m_Map[projectConfig].m_LastModifyTime);
 	g_Git.GetFileModifyTime(globalXDGConfig, &m_Map[globalXDGConfig].m_LastModifyTime);
 	if (m_Map[globalXDGConfig].m_LastModifyTime == 0)
-	{
-		m_Map[globalXDGConfig].m_SharedMutex.Release();
 		m_Map.erase(globalXDGConfig);
-	}
 	g_Git.GetFileModifyTime(globalConfig, &m_Map[globalConfig].m_LastModifyTime);
 	if (m_Map[globalConfig].m_LastModifyTime == 0)
-	{
-		m_Map[globalConfig].m_SharedMutex.Release();
 		m_Map.erase(globalConfig);
-	}
 	if (!m_sMsysGitBinPath.IsEmpty())
 		g_Git.GetFileModifyTime(systemConfig, &m_Map[systemConfig].m_LastModifyTime);
 	if (m_Map[systemConfig].m_LastModifyTime == 0 || m_sMsysGitBinPath.IsEmpty())
-	{
-		m_Map[systemConfig].m_SharedMutex.Release();
 		m_Map.erase(systemConfig);
-	}
 	m_CoreExcludesfiles[adminDir] = excludesFile;
 
 	return true;
@@ -1233,7 +1193,7 @@ int CGitIgnoreList::CheckIgnore(const CString &path, const CString &projectroot,
 
 	int ret = -1;
 
-	CAutoReadLock lock(&this->m_SharedMutex);
+	CAutoReadLock lock(m_SharedMutex);
 	while (!temp.IsEmpty())
 	{
 		CString tempOrig = temp;
@@ -1251,9 +1211,11 @@ int CGitIgnoreList::CheckIgnore(const CString &path, const CString &projectroot,
 			if ((ret = CheckFileAgainstIgnoreList(wcglobalgitignore, patha, base, type)) != -1)
 				break;
 
-			m_SharedMutex.AcquireShared();
-			CString excludesFile = m_CoreExcludesfiles[adminDir];
-			m_SharedMutex.ReleaseShared();
+			CString excludesFile;
+			{
+				CAutoReadLock lock(m_SharedMutex);
+				excludesFile = m_CoreExcludesfiles[adminDir];
+			}
 			if (!excludesFile.IsEmpty())
 				ret = CheckFileAgainstIgnoreList(excludesFile, patha, base, type);
 

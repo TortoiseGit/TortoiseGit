@@ -61,7 +61,6 @@
     <ClCompile Include="..\Utils\PathUtils.cpp" />
     <ClCompile Include="..\Utils\ReaderWriterLock.cpp" />
     <ClCompile Include="..\Utils\Registry.cpp" />
-    <ClCompile Include="..\Git\SharedMutex.cpp" />
     <ClCompile Include="ShellUpdater.cpp" />
     <ClCompile Include="StatusCacheEntry.cpp" />
     <ClCompile Include="stdafx.cpp">
