@@ -155,7 +155,7 @@ public:
 
 	static bool IgnoreFile(CTGitPathList &filelist,bool IsMask);
 	static bool GitReset(CString *CommitHash,int type=1);
-	static bool ConflictEdit(CTGitPath& file, bool bAlternativeTool = false, bool revertTheirMy = false, HWND resolveMsgHwnd = nullptr);
+		static bool ConflictEdit(CTGitPath& file, bool bAlternativeTool = false, bool revertTheirMy = false, HWND resolveMsgHwnd = nullptr);
 
 	static CString GetMergeTempFile(CString str,CTGitPath &merge);
 	static bool	StashSave();
@@ -166,7 +166,7 @@ public:
 
 	static bool LaunchRemoteSetting();
 
-	static bool LaunchPAgent(CString *keyfile=NULL,CString * pRemote=NULL);
+	static bool LaunchPAgent(const CString* keyfile = nullptr, const CString* pRemote = nullptr);
 
 	static CString GetClipboardLink(const CString &skipGitPrefix = _T(""), int paramsCount = 0);
 	static CString ChooseRepository(CString *path);

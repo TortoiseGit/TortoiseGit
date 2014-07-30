@@ -58,29 +58,27 @@ bool BisectCommand::Execute()
 		theApp.m_pMainWnd = &progress;
 		progress.m_GitCmd = cmd;
 
-		if (path.HasSubmodules())
-				progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_SUBMODULESUPDATE)));
+		progress.m_PostCmdCallback = [&](DWORD status, PostCmdList& postCmdList)
+		{
+			if (status)
+				return;
 
-		int reset = -1;
-		if (!this->parser.HasKey(_T("reset")))
-			reset = (int)progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUBISECTRESET)));
+			if (path.HasSubmodules())
+			{
+				postCmdList.push_back(PostCmd(IDS_PROC_SUBMODULESUPDATE, []
+				{
+					CString sCmd;
+					sCmd.Format(_T("/command:subupdate /bkpath:\"%s\""), g_Git.m_CurrentDir);
+					CAppUtils::RunTortoiseGitProc(sCmd);
+				}));
+			}
+
+			if (!this->parser.HasKey(_T("reset")))
+				postCmdList.push_back(PostCmd(IDS_MENUBISECTRESET, []{ CAppUtils::RunTortoiseGitProc(_T("/command:bisect /reset")); }));
+		};
 
 		INT_PTR ret = progress.DoModal();
-		if (path.HasSubmodules() && ret == IDC_PROGRESS_BUTTON1)
-		{
-			CString sCmd;
-			sCmd.Format(_T("/command:subupdate /bkpath:\"%s\""), g_Git.m_CurrentDir);
-
-			CAppUtils::RunTortoiseGitProc(sCmd);
-			return true;
-		}
-		else if (reset >= 0 && ret == IDC_PROGRESS_BUTTON1 + reset)
-		{
-			CAppUtils::RunTortoiseGitProc(_T("/command:bisect /reset"));
-			return true;
-		}
-		else if (ret == IDOK)
-			return true;
+		return ret == IDOK;
 	}
 	else
 	{
