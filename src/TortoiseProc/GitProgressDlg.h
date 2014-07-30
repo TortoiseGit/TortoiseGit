@@ -23,8 +23,6 @@
 #include "GitProgressList.h"
 #include "MenuButton.h"
 
-typedef int (__cdecl *GENERICCOMPAREFN)(const void * elem1, const void * elem2);
-
 /**
  * \ingroup TortoiseProc
  * Handles different git commands and shows the notify messages
