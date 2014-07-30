@@ -30,11 +30,11 @@
   {\
 	nLen += 2;\
 	_ms_lvi.cchTextMax = nLen;\
-    if (__buf)\
+	if (__buf)\
 		delete[] __buf;\
 	__buf = new TCHAR[nLen];\
 	_ms_lvi.pszText = __buf;\
-    nRes  = (int)::SendMessage((hwndLV), LVM_GETITEMTEXT, (WPARAM)(i), (LPARAM)(LV_ITEM *)&_ms_lvi);\
+	nRes  = (int)::SendMessage((hwndLV), LVM_GETITEMTEXT, (WPARAM)(i), (LPARAM)(LV_ITEM *)&_ms_lvi);\
   } while (nRes == nLen-1);\
 }
 #define GetDlgItemTextEx(hwndDlg, _id, __buf) \

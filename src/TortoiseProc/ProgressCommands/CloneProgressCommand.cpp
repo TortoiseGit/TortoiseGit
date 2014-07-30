@@ -61,7 +61,7 @@ bool CloneProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, in
 	};
 
 	struct remote_cb_payload
-{
+	{
 		const char* remoteName;
 		const git_remote_callbacks* callbacks;
 	};

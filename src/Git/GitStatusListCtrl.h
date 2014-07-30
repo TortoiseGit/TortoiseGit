@@ -686,7 +686,7 @@ public:
 		git_depth_t				depth;					///< the depth of this entry
 		friend class CGitStatusListCtrl;
 		friend class CGitStatusListCtrlDropTarget;
-        friend class CSorter;
+		friend class CSorter;
 	};
 #endif
 
@@ -731,8 +731,8 @@ public:
 	 * \return TRUE on success.
 	 */
 	BOOL GetStatus ( const CTGitPathList* pathList=NULL
-                   , bool bUpdate = false
-                   , bool bShowIgnores = false
+				   , bool bUpdate = false
+				   , bool bShowIgnores = false
 				   , bool bShowUnRev = false
 				   , bool bShowLocalChangesIgnored = false);
 
@@ -1041,9 +1041,9 @@ private:
 	afx_msg void OnHdnItemclick(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnLvnItemchanging(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg BOOL OnLvnItemchanged(NMHDR *pNMHDR, LRESULT *pResult);
-    afx_msg void OnColumnResized(NMHDR *pNMHDR, LRESULT *pResult);
-    afx_msg void OnColumnMoved(NMHDR *pNMHDR, LRESULT *pResult);
-    afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
+	afx_msg void OnColumnResized(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnColumnMoved(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 
 	void CreateChangeList(const CString& name);
 
@@ -1140,7 +1140,7 @@ private:
 	bool						m_bCheckChildrenWithParent;
 	CGitStatusListCtrlDropTarget * m_pDropTarget;
 
-    ColumnManager               m_ColumnManager;
+	ColumnManager               m_ColumnManager;
 
 	std::map<CString,bool>		m_mapFilenameToChecked; ///< Remember de-/selected items
 	std::map<CString,bool>		m_mapDirectFiles;
