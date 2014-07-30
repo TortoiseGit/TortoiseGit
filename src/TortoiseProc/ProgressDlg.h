@@ -41,18 +41,35 @@ typedef std::function<void()> PostCmdAction;
 class PostCmd
 {
 public:
-	PostCmd(UINT msgId, PostCmdAction action)
-	: action(action)
+	PostCmd(UINT icon, UINT msgId, PostCmdAction action)
+	: icon(icon)
+	, action(action)
 	{
 		label.LoadString(msgId);
 	}
 
-	PostCmd(CString label, PostCmdAction action)
-	: action(action)
+	PostCmd(UINT msgId, PostCmdAction action)
+	: icon(0)
+	, action(action)
+	{
+		label.LoadString(msgId);
+	}
+
+	PostCmd(UINT icon, CString label, PostCmdAction action)
+	: icon(icon)
+	, action(action)
 	, label(label)
 	{
 	}
 
+	PostCmd(CString label, PostCmdAction action)
+	: icon(0)
+	, action(action)
+	, label(label)
+	{
+	}
+
+	UINT			icon;
 	CString			label;
 	PostCmdAction	action;
 };

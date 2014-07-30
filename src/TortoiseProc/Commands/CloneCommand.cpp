@@ -236,14 +236,14 @@ bool CloneCommand::Execute()
 			if (dlg.m_bAutoloadPuttyKeyFile) // do this here, since it might be needed for actions performed in Log
 				StorePuttyKey(dlg.m_Directory, dlg.m_strPuttyKeyFile);
 
-			postCmdList.push_back(PostCmd(IDS_MENULOG, [&]
+			postCmdList.push_back(PostCmd(IDI_LOG, IDS_MENULOG, [&]
 			{
 				CString cmd = _T("/command:log");
 				cmd += _T(" /path:\"") + dlg.m_Directory + _T("\"");
 				CAppUtils::RunTortoiseGitProc(cmd);
 			}));
 
-			postCmdList.push_back(PostCmd(IDS_STATUSLIST_CONTEXT_EXPLORE, [&]{ CAppUtils::ExploreTo(hWndExplorer, dlg.m_Directory); }));
+			postCmdList.push_back(PostCmd(IDI_EXPLORER, IDS_STATUSLIST_CONTEXT_EXPLORE, [&]{ CAppUtils::ExploreTo(hWndExplorer, dlg.m_Directory); }));
 		};
 		INT_PTR ret = progress.DoModal();
 

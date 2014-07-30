@@ -20,6 +20,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #pragma once
+#include "IconMenu.h"
 
 /**
  * \ingroup Utils
@@ -44,6 +45,7 @@ public:
 	 * returned in GetCurrentEntry().
 	 */
 	INT_PTR AddEntry(const CString& sEntry);
+	INT_PTR AddEntry(UINT iconId, const CString& sEntry);
 
 	/**
 	 * Inserts an array of strings to be shown in the
@@ -86,7 +88,7 @@ protected:
 	afx_msg BOOL OnClicked();
 	afx_msg void OnDestroy();
 
-	CMenu	m_btnMenu;
+	CIconMenu	m_btnMenu;
 	INT_PTR	m_nDefault;
 
 	DECLARE_MESSAGE_MAP()

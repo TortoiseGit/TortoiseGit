@@ -72,10 +72,22 @@ void CMenuButton::RemoveAll()
 	m_bMenuIsActive = TRUE;
 }
 
+INT_PTR CMenuButton::AddEntry(UINT iconId, const CString& sEntry)
+{
+	INT_PTR ret = m_sEntries.Add(sEntry);
+	m_btnMenu.AppendMenuIcon(m_sEntries.GetCount(), sEntry, iconId);
+	if (m_sEntries.GetCount() == 2)
+		m_bMenuIsActive = FALSE;
+
+	if (ret == 0)
+		SetCurrentEntry(ret);
+	return ret;
+}
+
 INT_PTR CMenuButton::AddEntry(const CString& sEntry)
 {
 	INT_PTR ret = m_sEntries.Add(sEntry);
-	m_btnMenu.AppendMenu(MF_STRING | MF_BYCOMMAND, m_sEntries.GetCount(), sEntry);
+	m_btnMenu.AppendMenuIcon(m_sEntries.GetCount(), sEntry);
 	if (m_sEntries.GetCount() == 2)
 		m_bMenuIsActive = FALSE;
 

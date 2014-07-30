@@ -73,14 +73,14 @@ bool SVNFetchCommand::Execute()
 		if (upstreamOldHash == upstreamNewHash)
 			return;
 
-		postCmdList.push_back(PostCmd(_T("Fetched Diff"), [&]
+		postCmdList.push_back(PostCmd(IDI_DIFF, _T("Fetched Diff"), [&]
 		{
 			CLogDlg dlg;
 			dlg.SetParams(CTGitPath(_T("")), CTGitPath(_T("")), _T(""), upstreamOldHash.ToString() + _T("..") + upstreamNewHash.ToString(), 0);
 			dlg.DoModal();
 		}));
 
-		postCmdList.push_back(PostCmd(_T("Fetched Log"), [&]
+		postCmdList.push_back(PostCmd(IDI_LOG, _T("Fetched Log"), [&]
 		{
 			CFileDiffDlg dlg;
 			dlg.SetDiff(NULL, upstreamNewHash.ToString(), upstreamOldHash.ToString());
