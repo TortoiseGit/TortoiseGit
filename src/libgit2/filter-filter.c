@@ -61,6 +61,45 @@ static int filter_check(
 	return 0;
 }
 
+static int expandPerCentF(git_buf *buf, const char *replaceWith)
+{
+	ssize_t foundPercentage = git_buf_find(buf, '%');
+	if (foundPercentage) {
+		git_buf expanded = GIT_BUF_INIT;
+		const char *end = buf->ptr + buf->size;
+		const char *lastPercentage = buf->ptr;
+		const char *idx = buf->ptr + foundPercentage;
+		while (idx < end) {
+			if (*idx == '%') {
+				if (idx + 1 == buf->ptr + buf->size || (idx + 1 < end && *(idx + 1) == '%')) { // one '%' is at the end of the string OR "%%" is in the string
+					git_buf_putc(&expanded, '%');
+					++idx;
+					++idx;
+					lastPercentage = idx;
+					continue;
+				}
+				// now we know, that we're not at the end of the string and that the next char is not '%'
+				git_buf_put(&expanded, lastPercentage, idx - lastPercentage);
+				++idx;
+				if (*idx == 'f')
+					git_buf_printf(&expanded, "\"%s\"", replaceWith);
+
+				++idx;
+				lastPercentage = idx;
+				continue;
+			}
+			++idx;
+		}
+		if (lastPercentage)
+			git_buf_put(&expanded, lastPercentage, idx - lastPercentage);
+		if (git_buf_oom(&expanded))
+			return -1;
+		git_buf_swap(buf, &expanded);
+		git_buf_free(&expanded);
+	}
+	return 0;
+}
+
 static int filter_apply(
 	git_filter				*self,
 	void					**payload, /* may be read and/or set */
@@ -114,7 +153,8 @@ static int filter_apply(
 	if (git_buf_oom(&cmdBuf))
 		return -1;
 
-	// TODO: needs support for expanding %f!
+	if (expandPerCentF(&cmdBuf, git_filter_source_path(src)))
+		return 1;
 
 	wchar_t *wide_cmd;
 	if (git__utf8_to_16_alloc(&wide_cmd, cmdBuf.ptr) < 0)
