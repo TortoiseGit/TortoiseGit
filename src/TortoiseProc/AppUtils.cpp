@@ -2389,6 +2389,8 @@ static bool DoFetch(const CString& url, const bool fetchAllRemotes, const bool l
 			CAppUtils::GitReset(&defaultUpstream, 2);
 		}));
 
+		postCmdList.push_back(PostCmd(IDI_PULL, IDS_MENUFETCH, []{ CAppUtils::Fetch(); }));
+
 		if (!runRebase && !g_GitAdminDir.IsBareRepo(g_Git.m_CurrentDir))
 			postCmdList.push_back(PostCmd(IDI_REBASE, IDS_MENUREBASE, []{ RebaseAfterFetch(); }));
 	};
