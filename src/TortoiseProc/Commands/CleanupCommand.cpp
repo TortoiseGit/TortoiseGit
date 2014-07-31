@@ -278,7 +278,7 @@ bool CleanupCommand::Execute()
 	CCleanTypeDlg dlg;
 	if (dlg.DoModal() == IDOK)
 	{
-		bRet = DoCleanUp(pathList, dlg.m_CleanType, dlg.m_bDir, dlg.m_bSubmodules, dlg.m_bDryRun, dlg.m_bNoRecycleBin);
+		bRet = DoCleanUp(pathList, dlg.m_CleanType, dlg.m_bDir == BST_CHECKED, dlg.m_bSubmodules == BST_CHECKED, dlg.m_bDryRun == BST_CHECKED, dlg.m_bNoRecycleBin == BST_CHECKED);
 
 		CShellUpdater::Instance().Flush();
 	}
