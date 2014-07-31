@@ -1927,12 +1927,14 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 	CString sOldPath = oldpath;
 	free(oldpath);
 
+#if !defined(TGITCACHE) && !defined(TORTOISESHELL)
 	// register filter only once
 	if (!git_filter_lookup("filter"))
 	{
 		if (git_filter_register("filter", git_filter_filter_new(), GIT_FILTER_DRIVER_PRIORITY))
 			return FALSE;
 	}
+#endif
 
 	m_bInitialized = TRUE;
 	return true;
