@@ -40,7 +40,7 @@ CCleanTypeDlg::CCleanTypeDlg(CWnd* pParent /*=NULL*/)
 
 	this->m_bDir = this->m_regDir;
 	this->m_CleanType = this->m_regType;
-	m_bNoRecycleBin = FALSE;
+	m_bNoRecycleBin = !CRegDWORD(_T("Software\\TortoiseGit\\RevertWithRecycleBin"), TRUE);
 	m_bDryRun = FALSE;
 	m_bSubmodules = FALSE;
 }
