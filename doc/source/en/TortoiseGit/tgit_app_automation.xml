@@ -60,27 +60,27 @@
 			<option>/configdir:"path\to\config\directory"</option>.
 			This will override the default path, including any registry setting.
 		</para>
-<!--
 		<para>
-			To close the progress dialog at the end of a command automatically without
+			To close the (git.exe) progress dialog at the end of a command automatically without
 			using the permanent setting you can pass the <option>/closeonend</option>
 			parameter.
 			<itemizedlist>
 				<listitem>
 					<para>
-						<option>/closeonend:0</option> don't close the dialog automatically
+						<option>/closeonend:0</option> Close manually
 					</para>
 				</listitem>
 				<listitem>
 					<para>
-						<option>/closeonend:1</option> auto close if no errors
+						<option>/closeonend:1</option> Auto-close if no further options are available
 					</para>
 				</listitem>
 				<listitem>
 					<para>
-						<option>/closeonend:2</option> auto close if no errors and conflicts
+						<option>/closeonend:2</option> Auto-close if no errors
 					</para>
 				</listitem>
+<!--
 				<listitem>
 					<para>
 						<option>/closeonend:3</option> auto close if no errors, conflicts and merges
@@ -92,9 +92,9 @@
 						for local operations
 					</para>
 				</listitem>
+-->
 			</itemizedlist>
 		</para>
--->
 		<para>
 			The table below lists all the commands which can be accessed
 			using the TortoiseGitProc.exe command line. As described above,
