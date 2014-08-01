@@ -306,7 +306,7 @@ void CSettingsBugtraqConfig::OnBnClickedTestbugtraqregexbutton()
 	}
 	if (dlg.DoModal() == IDOK)
 	{
-		m_Logregex = dlg.m_sBugtraqRegex1 + _T("\n") + dlg.m_sBugtraqRegex2;
+		m_Logregex = dlg.m_sBugtraqRegex2 + _T("\n") + dlg.m_sBugtraqRegex1;
 		m_Logregex.Trim();
 		m_Logregex.Replace(_T("\n"), _T("\r\n"));
 		UpdateData(FALSE);
