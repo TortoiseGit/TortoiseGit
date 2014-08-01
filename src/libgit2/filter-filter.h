@@ -21,6 +21,6 @@
 
 GIT_BEGIN_DECL
 
-GIT_EXTERN(git_filter *) git_filter_filter_new(void);
+GIT_EXTERN(git_filter *) git_filter_filter_new(LPWSTR pEnv);
 
 GIT_END_DECL

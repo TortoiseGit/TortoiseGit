@@ -21,7 +21,7 @@
 #include "netops.h"
 #include "system-call.h"
 
-int command_start(wchar_t *cmd, COMMAND_HANDLE *commandHandle)
+int command_start(wchar_t *cmd, COMMAND_HANDLE *commandHandle, LPWSTR pEnv)
 {
 	SECURITY_ATTRIBUTES sa;
 	HANDLE hReadOut = INVALID_HANDLE_VALUE, hWriteOut = INVALID_HANDLE_VALUE, hReadIn = INVALID_HANDLE_VALUE, hWriteIn = INVALID_HANDLE_VALUE;
@@ -60,7 +60,7 @@ int command_start(wchar_t *cmd, COMMAND_HANDLE *commandHandle)
 	si.wShowWindow = SW_HIDE;
 	si.dwFlags = STARTF_USESTDHANDLES | STARTF_USESHOWWINDOW;
 
-	if (!CreateProcessW(NULL, cmd, NULL, NULL, TRUE, 0, NULL, NULL, &si, &pi)) {
+	if (!CreateProcessW(NULL, cmd, NULL, NULL, TRUE, pEnv ? CREATE_UNICODE_ENVIRONMENT : 0, pEnv, NULL, &si, &pi)) {
 		giterr_set(GITERR_OS, "Could not start external tool");
 		CloseHandle(hReadOut);
 		CloseHandle(hWriteOut);

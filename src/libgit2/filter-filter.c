@@ -34,6 +34,7 @@
 
 struct filter_filter {
 	git_filter	f;
+	LPWSTR		pEnv;
 };
 
 static int filter_check(
@@ -107,7 +108,7 @@ static int filter_apply(
 	const git_buf			*from,
 	const git_filter_source	*src)
 {
-	GIT_UNUSED(self);
+	struct filter_filter *ffs = (struct filter_filter *)self;
 
 	if (!*payload)
 		return GIT_PASSTHROUGH;
@@ -165,7 +166,7 @@ static int filter_apply(
 	git_buf_free(&cmdBuf);
 
 	COMMAND_HANDLE commandHandle = { 0 };
-	if (command_start(wide_cmd, &commandHandle)) {
+	if (command_start(wide_cmd, &commandHandle, ffs->pEnv)) {
 		git__free(wide_cmd);
 		if (isRequired)
 			return -1;
@@ -208,7 +209,7 @@ static void filter_cleanup(
 	git__free(payload);
 }
 
-git_filter *git_filter_filter_new(void)
+git_filter *git_filter_filter_new(LPWSTR pEnv)
 {
 	struct filter_filter *f = git__calloc(1, sizeof(struct filter_filter));
 
@@ -219,6 +220,7 @@ git_filter *git_filter_filter_new(void)
 	f->f.check		= filter_check;
 	f->f.apply		= filter_apply;
 	f->f.cleanup	= filter_cleanup;
+	f->pEnv			= pEnv;
 
 	return (git_filter *)f;
 }
