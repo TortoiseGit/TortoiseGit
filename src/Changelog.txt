@@ -23,6 +23,13 @@ Released: unreleased
  * Fixed issue #2234: Config file mess up if not end with LF
  * Fixed issue #2238: TortoiseGitMerge Default button in "Find" dialog does replace all
  * Fixed issue #2250: bugtraq.logregex Test incorrectly saves the order of the fields
+ * TGitCache now does not check the contents of files with filesize > 10 MiB any more
+   and falls back to checking the timestamp of the files (as if TGitCacheCheckContent
+   is set to "false") according the the git index. This limit can be changed by adjusting
+   TGitCacheCheckContentMaxSize (measured in KiB) in TortoiseGit advanced settings.
+   The reason for this change is that libgit2 reads a file to memory for hashing and,
+   thus, locking the file and the repository for this time span.
+   Fixed issue #2240: TGitCache keeps crashing when I look at my folders or commit
 
 = Release 1.8.9.0 =
 Released: 2014-06-09
