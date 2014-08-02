@@ -47,6 +47,7 @@ CGitIndexList::CGitIndexList()
 	this->m_LastModifyTime = 0;
 	m_critRepoSec.Init();
 	m_bCheckContent = !!(CRegDWORD(_T("Software\\TortoiseGit\\TGitCacheCheckContent"), TRUE) == TRUE);
+	m_iMaxCheckSize = (__int64)CRegDWORD(_T("Software\\TortoiseGit\\TGitCacheCheckContentMaxSize"), 100 * 1024) * 1024; // stored in KiB
 }
 
 CGitIndexList::~CGitIndexList()
@@ -122,7 +123,7 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 	return 0;
 }
 
-int CGitIndexList::GetFileStatus(const CString &gitdir, const CString &pathorg, git_wc_status_kind *status, __int64 time, FILL_STATUS_CALLBACK callback, void *pData, CGitHash *pHash, bool * assumeValid, bool * skipWorktree)
+int CGitIndexList::GetFileStatus(const CString &gitdir, const CString &pathorg, git_wc_status_kind *status, __int64 time, __int64 filesize, FILL_STATUS_CALLBACK callback, void *pData, CGitHash *pHash, bool * assumeValid, bool * skipWorktree)
 {
 	if(status)
 	{
@@ -161,7 +162,7 @@ int CGitIndexList::GetFileStatus(const CString &gitdir, const CString &pathorg, 
 			{
 				*status = git_wc_status_normal;
 			}
-			else if (m_bCheckContent && repository)
+			else if (m_bCheckContent && repository && filesize < m_iMaxCheckSize)
 			{
 				git_oid actual;
 				CStringA fileA = CUnicodeUtils::GetMulti(pathorg, CP_UTF8);
@@ -199,7 +200,7 @@ int CGitIndexList::GetStatus(const CString &gitdir,const CString &pathParam, git
 							 FILL_STATUS_CALLBACK callback, void *pData,
 							 CGitHash *pHash, bool * assumeValid, bool * skipWorktree)
 {
-	__int64 time;
+	__int64 time, filesize;
 	bool isDir = false;
 	CString path = pathParam;
 
@@ -210,7 +211,7 @@ int CGitIndexList::GetStatus(const CString &gitdir,const CString &pathParam, git
 		if (path.IsEmpty())
 			result = g_Git.GetFileModifyTime(gitdir, &time, &isDir);
 		else
-			result = g_Git.GetFileModifyTime(gitdir + _T("\\") + path, &time, &isDir);
+			result = g_Git.GetFileModifyTime(gitdir + _T("\\") + path, &time, &isDir, &filesize);
 
 		if (result)
 		{
@@ -245,7 +246,7 @@ int CGitIndexList::GetStatus(const CString &gitdir,const CString &pathParam, git
 							}
 							else
 							{
-								result = g_Git.GetFileModifyTime(gitdir+_T("\\") + at(i).m_FileName, &time);
+								result = g_Git.GetFileModifyTime(gitdir + _T("\\") + at(i).m_FileName, &time, nullptr, &filesize);
 								if (result)
 									continue;
 
@@ -254,7 +255,7 @@ int CGitIndexList::GetStatus(const CString &gitdir,const CString &pathParam, git
 									*assumeValid = false;
 								if (skipWorktree)
 									*skipWorktree = false;
-								GetFileStatus(gitdir, at(i).m_FileName, status, time, callback, pData, NULL, assumeValid, skipWorktree);
+								GetFileStatus(gitdir, at(i).m_FileName, status, time, filesize, callback, pData, NULL, assumeValid, skipWorktree);
 								// if a file is assumed valid, we need to inform the caller, otherwise the assumevalid flag might not get to the explorer on first open of a repository
 								if (callback && assumeValid && skipWorktree && (*assumeValid || *skipWorktree))
 									callback(gitdir + _T("\\") + path, *status, false, pData, *assumeValid, *skipWorktree);
@@ -291,7 +292,7 @@ int CGitIndexList::GetStatus(const CString &gitdir,const CString &pathParam, git
 		}
 		else
 		{
-			GetFileStatus(gitdir, path, status, time, callback, pData, pHash, assumeValid, skipWorktree);
+			GetFileStatus(gitdir, path, status, time, filesize, callback, pData, pHash, assumeValid, skipWorktree);
 		}
 	}
 	return 0;
