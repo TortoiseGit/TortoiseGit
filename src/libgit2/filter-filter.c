@@ -35,6 +35,7 @@
 struct filter_filter {
 	git_filter	f;
 	LPWSTR		pEnv;
+	LPWSTR		shexepath;
 };
 
 static int filter_check(
@@ -188,6 +189,16 @@ static int filter_apply(
 	if (expandPerCentF(&cmdBuf, git_filter_source_path(src)))
 		return 1;
 
+	if (ffs->shexepath) {
+		// build params for sh.exe
+		git_buf shParams = GIT_BUF_INIT;
+		git_buf_puts(&shParams, " -c \"");
+		git_buf_text_puts_escaped(&shParams, cmdBuf.ptr, "\"\\", "\\");
+		git_buf_puts(&shParams, "\"");
+		git_buf_swap(&shParams, &cmdBuf);
+		git_buf_free(&shParams);
+	}
+
 	wchar_t *wide_cmd;
 	if (git__utf8_to_16_alloc(&wide_cmd, cmdBuf.ptr) < 0)
 	{
@@ -195,6 +206,20 @@ static int filter_apply(
 		return 1;
 	}
 	git_buf_free(&cmdBuf);
+
+	if (ffs->shexepath) {
+		// build cmd, i.e. shexepath + params
+		size_t len = wcslen(ffs->shexepath) + wcslen(wide_cmd) + 1;
+		wchar_t *tmp = git__calloc(len, sizeof(wchar_t));
+		if (!tmp) {
+			git__free(wide_cmd);
+			return -1;
+		}
+		wcscat_s(tmp, len, ffs->shexepath);
+		wcscat_s(tmp, len, wide_cmd);
+		git__free(wide_cmd);
+		wide_cmd = tmp;
+	}
 
 	COMMAND_HANDLE commandHandle = { 0 };
 	if (command_start(wide_cmd, &commandHandle, ffs->pEnv)) {
@@ -251,17 +276,28 @@ static void filter_cleanup(
 	git__free(payload);
 }
 
-git_filter *git_filter_filter_new(LPWSTR pEnv)
+static void filter_free(git_filter *self)
+{
+	struct filter_filter *ffs = (struct filter_filter *)self;
+
+	if (ffs->shexepath)
+		git__free(ffs->shexepath);
+
+	git__free(self);
+}
+
+git_filter *git_filter_filter_new(LPCWSTR shexepath, LPWSTR pEnv)
 {
 	struct filter_filter *f = git__calloc(1, sizeof(struct filter_filter));
 
 	f->f.version	= GIT_FILTER_VERSION;
 	f->f.attributes	= "filter";
 	f->f.initialize	= NULL;
-	f->f.shutdown	= git_filter_free;
+	f->f.shutdown	= filter_free;
 	f->f.check		= filter_check;
 	f->f.apply		= filter_apply;
 	f->f.cleanup	= filter_cleanup;
+	f->shexepath	= wcsdup(shexepath);
 	f->pEnv			= pEnv;
 
 	return (git_filter *)f;

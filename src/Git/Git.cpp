@@ -1931,7 +1931,7 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 	// register filter only once
 	if (!git_filter_lookup("filter"))
 	{
-		if (git_filter_register("filter", git_filter_filter_new(&m_Environment[0]), GIT_FILTER_DRIVER_PRIORITY))
+		if (git_filter_register("filter", git_filter_filter_new(_T("\"") + CGit::ms_LastMsysGitDir + L"\\sh.exe\"", &m_Environment[0]), GIT_FILTER_DRIVER_PRIORITY))
 			return FALSE;
 	}
 #endif
