@@ -101,6 +101,37 @@ static int expandPerCentF(git_buf *buf, const char *replaceWith)
 	return 0;
 }
 
+struct ASYNCREADINGTHREADARGS {
+	COMMAND_HANDLE *commandHandle;
+	git_buf *dest;
+};
+
+static DWORD WINAPI AsyncReadingThread(LPVOID lpParam)
+{
+	struct ASYNCREADINGTHREADARGS* pDataArray = (struct ASYNCREADINGTHREADARGS*)lpParam;
+
+	int ret = command_readall(pDataArray->commandHandle, pDataArray->dest);
+
+	git__free(pDataArray);
+
+	return ret;
+}
+
+static HANDLE start_reading_thread(COMMAND_HANDLE *commandHandle, git_buf *dest)
+{
+	struct ASYNCREADINGTHREADARGS *threadArguments = git__calloc(1, sizeof(struct ASYNCREADINGTHREADARGS));
+	if (!threadArguments)
+		return NULL;
+
+	threadArguments->commandHandle = commandHandle;
+	threadArguments->dest = dest;
+
+	HANDLE thread = CreateThread(NULL, 0, AsyncReadingThread, threadArguments, 0, NULL);
+	if (!thread)
+		git__free(threadArguments);
+	return thread;
+}
+
 static int filter_apply(
 	git_filter				*self,
 	void					**payload, /* may be read and/or set */
@@ -174,22 +205,33 @@ static int filter_apply(
 	}
 	git__free(wide_cmd);
 
+	HANDLE readingThread = start_reading_thread(&commandHandle, to);
+	if (!readingThread) {
+		command_close(&commandHandle);
+		return -1;
+	}
+
 	if (command_write_gitbuf(&commandHandle, from)) {
 		command_close(&commandHandle);
+		CloseHandle(readingThread);
 		if (isRequired)
 			return -1;
 		return GIT_PASSTHROUGH;
 	}
 	command_close_stdin(&commandHandle);
 
-	if (command_readall(&commandHandle, to)) {
+	DWORD exitCode = MAXDWORD;
+	WaitForSingleObject(readingThread, INFINITE);
+	if (!GetExitCodeThread(readingThread, &exitCode) || exitCode) {
 		command_close(&commandHandle);
+		CloseHandle(readingThread);
 		if (isRequired)
 			return -1;
 		return GIT_PASSTHROUGH;
 	}
+	CloseHandle(readingThread);
 
-	DWORD exitCode = command_close(&commandHandle);
+	exitCode = command_close(&commandHandle);
 	if (exitCode) {
 		if (isRequired) {
 			giterr_set(GITERR_FILTER, "External filter application exited non-zero: %ld", exitCode);
