@@ -86,9 +86,33 @@ static HANDLE commmand_start_reading_thread(HANDLE *handle, git_buf *dest)
 	return thread;
 }
 
-HANDLE commmand_start_stdout_reading_thread(COMMAND_HANDLE *commandHandle, git_buf *dest)
+int commmand_start_stdout_reading_thread(COMMAND_HANDLE *commandHandle, git_buf *dest)
 {
-	return commmand_start_reading_thread(&commandHandle->out, dest);
+	HANDLE thread = commmand_start_reading_thread(&commandHandle->out, dest);
+	if (!thread)
+		return -1;
+	commandHandle->asyncReadOutThread = thread;
+	return 0;
+}
+
+static int command_wait_reading_thread(HANDLE *handle)
+{
+	if (*handle == INVALID_HANDLE_VALUE)
+		return -1;
+
+	DWORD exitCode = MAXDWORD;
+	WaitForSingleObject(*handle, INFINITE);
+	if (!GetExitCodeThread(*handle, &exitCode) || exitCode) {
+		safeCloseHandle(handle);
+		return -1;
+	}
+	safeCloseHandle(handle);
+	return 0;
+}
+
+int command_wait_stdout_reading_thread(COMMAND_HANDLE *commandHandle)
+{
+	return command_wait_reading_thread(&commandHandle->asyncReadOutThread);
 }
 
 int command_start(wchar_t *cmd, COMMAND_HANDLE *commandHandle, LPWSTR pEnv)
@@ -227,16 +251,15 @@ DWORD command_close(COMMAND_HANDLE *commandHandle)
 	commandHandle->running = FALSE;
 
 	command_close_stdin(commandHandle);
+	command_wait_stdout_reading_thread(commandHandle);
 	command_close_stdout(commandHandle);
 
 	CloseHandle(commandHandle->pi.hThread);
 
 	WaitForSingleObject(commandHandle->pi.hProcess, INFINITE);
 
-	if (commandHandle->errBuf) {
-		WaitForSingleObject(commandHandle->asyncReadErrorThread, INFINITE);
-		CloseHandle(commandHandle->asyncReadErrorThread);
-	}
+	if (commandHandle->errBuf)
+		command_wait_reading_thread(&commandHandle->asyncReadErrorThread);
 
 	DWORD exitcode = MAXDWORD;
 	GetExitCodeProcess(commandHandle->pi.hProcess, &exitcode);

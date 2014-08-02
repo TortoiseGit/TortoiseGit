@@ -198,7 +198,7 @@ static int filter_apply(
 		wide_cmd = tmp;
 	}
 
-	COMMAND_HANDLE commandHandle = { 0 };
+	COMMAND_HANDLE commandHandle = COMMAND_HANDLE_INIT;
 	git_buf errBuf = GIT_BUF_INIT;
 	commandHandle.errBuf = &errBuf;
 	if (command_start(wide_cmd, &commandHandle, ffs->pEnv)) {
@@ -209,8 +209,7 @@ static int filter_apply(
 	}
 	git__free(wide_cmd);
 
-	HANDLE readingThread = commmand_start_stdout_reading_thread(&commandHandle, to);
-	if (!readingThread) {
+	if (commmand_start_stdout_reading_thread(&commandHandle, to)) {
 		command_close(&commandHandle);
 		return -1;
 	}
@@ -219,7 +218,6 @@ static int filter_apply(
 		DWORD exitCode = command_close(&commandHandle);
 		if (exitCode)
 			setProcessError(exitCode, &errBuf);
-		CloseHandle(readingThread);
 		git_buf_free(&errBuf);
 		if (isRequired)
 			return -1;
@@ -227,21 +225,17 @@ static int filter_apply(
 	}
 	command_close_stdin(&commandHandle);
 
-	DWORD exitCode = MAXDWORD;
-	WaitForSingleObject(readingThread, INFINITE);
-	if (!GetExitCodeThread(readingThread, &exitCode) || exitCode) {
-		exitCode = command_close(&commandHandle);
+	if (command_wait_stdout_reading_thread(&commandHandle)) {
+		DWORD exitCode = command_close(&commandHandle);
 		if (exitCode)
 			setProcessError(exitCode, &errBuf);
-		CloseHandle(readingThread);
 		git_buf_free(&errBuf);
 		if (isRequired)
 			return -1;
 		return GIT_PASSTHROUGH;
 	}
-	CloseHandle(readingThread);
 
-	exitCode = command_close(&commandHandle);
+	DWORD exitCode = command_close(&commandHandle);
 	if (exitCode) {
 		if (isRequired) {
 			setProcessError(exitCode, &errBuf);
