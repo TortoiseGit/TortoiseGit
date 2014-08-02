@@ -23,14 +23,17 @@ typedef struct {
 	PROCESS_INFORMATION pi;
 	HANDLE in;
 	HANDLE out;
+	HANDLE err;
 	bool running;
+	git_buf *errBuf;
+	HANDLE asyncReadErrorThread;
 } COMMAND_HANDLE;
 
 int command_start(wchar_t *cmd, COMMAND_HANDLE *commandHandle, LPWSTR pEnv);
 void command_close_stdout(COMMAND_HANDLE *commandHandle);
 void command_close_stdin(COMMAND_HANDLE *commandHandle);
 DWORD command_close(COMMAND_HANDLE *commandHandle);
-int command_read(COMMAND_HANDLE *commandHandle, char *buffer, size_t buf_size, size_t *bytes_read);
-int command_readall(COMMAND_HANDLE *commandHandle, git_buf *buf);
+int command_read_stdout(COMMAND_HANDLE *commandHandle, char *buffer, size_t buf_size, size_t *bytes_read);
 int command_write(COMMAND_HANDLE *commandHandle, const char *buffer, size_t len);
 int command_write_gitbuf(COMMAND_HANDLE *commandHandle, const git_buf *buf);
+HANDLE commmand_start_stdout_reading_thread(COMMAND_HANDLE *commandHandle, git_buf *dest);

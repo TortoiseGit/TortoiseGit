@@ -102,35 +102,12 @@ static int expandPerCentF(git_buf *buf, const char *replaceWith)
 	return 0;
 }
 
-struct ASYNCREADINGTHREADARGS {
-	COMMAND_HANDLE *commandHandle;
-	git_buf *dest;
-};
-
-static DWORD WINAPI AsyncReadingThread(LPVOID lpParam)
+static void setProcessError(DWORD exitCode, git_buf *errBuf)
 {
-	struct ASYNCREADINGTHREADARGS* pDataArray = (struct ASYNCREADINGTHREADARGS*)lpParam;
-
-	int ret = command_readall(pDataArray->commandHandle, pDataArray->dest);
-
-	git__free(pDataArray);
-
-	return ret;
-}
-
-static HANDLE start_reading_thread(COMMAND_HANDLE *commandHandle, git_buf *dest)
-{
-	struct ASYNCREADINGTHREADARGS *threadArguments = git__calloc(1, sizeof(struct ASYNCREADINGTHREADARGS));
-	if (!threadArguments)
-		return NULL;
-
-	threadArguments->commandHandle = commandHandle;
-	threadArguments->dest = dest;
-
-	HANDLE thread = CreateThread(NULL, 0, AsyncReadingThread, threadArguments, 0, NULL);
-	if (!thread)
-		git__free(threadArguments);
-	return thread;
+	if (!git_buf_oom(errBuf) && git_buf_len(errBuf))
+		giterr_set(GITERR_FILTER, "External filter application exited non-zero (%ld) and reported:\n%s", exitCode, errBuf->ptr);
+	else
+		giterr_set(GITERR_FILTER, "External filter application exited non-zero: %ld", exitCode);
 }
 
 static int filter_apply(
@@ -222,6 +199,8 @@ static int filter_apply(
 	}
 
 	COMMAND_HANDLE commandHandle = { 0 };
+	git_buf errBuf = GIT_BUF_INIT;
+	commandHandle.errBuf = &errBuf;
 	if (command_start(wide_cmd, &commandHandle, ffs->pEnv)) {
 		git__free(wide_cmd);
 		if (isRequired)
@@ -230,15 +209,18 @@ static int filter_apply(
 	}
 	git__free(wide_cmd);
 
-	HANDLE readingThread = start_reading_thread(&commandHandle, to);
+	HANDLE readingThread = commmand_start_stdout_reading_thread(&commandHandle, to);
 	if (!readingThread) {
 		command_close(&commandHandle);
 		return -1;
 	}
 
 	if (command_write_gitbuf(&commandHandle, from)) {
-		command_close(&commandHandle);
+		DWORD exitCode = command_close(&commandHandle);
+		if (exitCode)
+			setProcessError(exitCode, &errBuf);
 		CloseHandle(readingThread);
+		git_buf_free(&errBuf);
 		if (isRequired)
 			return -1;
 		return GIT_PASSTHROUGH;
@@ -248,8 +230,11 @@ static int filter_apply(
 	DWORD exitCode = MAXDWORD;
 	WaitForSingleObject(readingThread, INFINITE);
 	if (!GetExitCodeThread(readingThread, &exitCode) || exitCode) {
-		command_close(&commandHandle);
+		exitCode = command_close(&commandHandle);
+		if (exitCode)
+			setProcessError(exitCode, &errBuf);
 		CloseHandle(readingThread);
+		git_buf_free(&errBuf);
 		if (isRequired)
 			return -1;
 		return GIT_PASSTHROUGH;
@@ -259,11 +244,15 @@ static int filter_apply(
 	exitCode = command_close(&commandHandle);
 	if (exitCode) {
 		if (isRequired) {
-			giterr_set(GITERR_FILTER, "External filter application exited non-zero: %ld", exitCode);
+			setProcessError(exitCode, &errBuf);
+			git_buf_free(&errBuf);
 			return -1;
 		}
+		git_buf_free(&errBuf);
 		return GIT_PASSTHROUGH;
 	}
+
+	git_buf_free(&errBuf);
 
 	return 0;
 }

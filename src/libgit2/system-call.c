@@ -21,10 +21,80 @@
 #include "netops.h"
 #include "system-call.h"
 
+static void safeCloseHandle(HANDLE *handle)
+{
+	if (*handle != INVALID_HANDLE_VALUE) {
+		CloseHandle(*handle);
+		*handle = INVALID_HANDLE_VALUE;
+	}
+}
+
+static int command_read(HANDLE handle, char *buffer, size_t buf_size, size_t *bytes_read)
+{
+	*bytes_read = 0;
+
+	if (!ReadFile(handle, buffer, (DWORD)buf_size, (DWORD*)bytes_read, NULL)) {
+		giterr_set(GITERR_OS, "could not read data from external process");
+		return -1;
+	}
+
+	return 0;
+}
+
+static int command_readall(HANDLE handle, git_buf *buf)
+{
+	size_t bytes_read = 0;
+	do {
+		char buffer[65536];
+		command_read(handle, buffer, sizeof(buffer), &bytes_read);
+		git_buf_put(buf, buffer, bytes_read);
+	} while (bytes_read);
+
+	return 0;
+}
+
+struct ASYNCREADINGTHREADARGS {
+	HANDLE *handle;
+	git_buf *dest;
+};
+
+static DWORD WINAPI AsyncReadingThread(LPVOID lpParam)
+{
+	struct ASYNCREADINGTHREADARGS* pDataArray = (struct ASYNCREADINGTHREADARGS*)lpParam;
+
+	int ret = command_readall(*pDataArray->handle, pDataArray->dest);
+
+	safeCloseHandle(pDataArray->handle);
+
+	git__free(pDataArray);
+
+	return ret;
+}
+
+static HANDLE commmand_start_reading_thread(HANDLE *handle, git_buf *dest)
+{
+	struct ASYNCREADINGTHREADARGS *threadArguments = git__calloc(1, sizeof(struct ASYNCREADINGTHREADARGS));
+	if (!threadArguments)
+		return NULL;
+
+	threadArguments->handle = handle;
+	threadArguments->dest = dest;
+
+	HANDLE thread = CreateThread(NULL, 0, AsyncReadingThread, threadArguments, 0, NULL);
+	if (!thread)
+		git__free(threadArguments);
+	return thread;
+}
+
+HANDLE commmand_start_stdout_reading_thread(COMMAND_HANDLE *commandHandle, git_buf *dest)
+{
+	return commmand_start_reading_thread(&commandHandle->out, dest);
+}
+
 int command_start(wchar_t *cmd, COMMAND_HANDLE *commandHandle, LPWSTR pEnv)
 {
 	SECURITY_ATTRIBUTES sa;
-	HANDLE hReadOut = INVALID_HANDLE_VALUE, hWriteOut = INVALID_HANDLE_VALUE, hReadIn = INVALID_HANDLE_VALUE, hWriteIn = INVALID_HANDLE_VALUE;
+	HANDLE hReadOut = INVALID_HANDLE_VALUE, hWriteOut = INVALID_HANDLE_VALUE, hReadIn = INVALID_HANDLE_VALUE, hWriteIn = INVALID_HANDLE_VALUE, hReadError = INVALID_HANDLE_VALUE, hWriteError = INVALID_HANDLE_VALUE;
 	STARTUPINFOW si = { 0 };
 	PROCESS_INFORMATION pi = { 0 };
 
@@ -43,17 +113,26 @@ int command_start(wchar_t *cmd, COMMAND_HANDLE *commandHandle, LPWSTR pEnv)
 		CloseHandle(hWriteOut);
 		return -1;
 	}
-
-	si.hStdOutput = hWriteOut;
-	si.hStdInput = hReadIn;
-	si.hStdError = INVALID_HANDLE_VALUE;
-
-	// Ensure the read/write handle to the pipe for STDOUT resp. STDIN are not inherited.
-	if (!SetHandleInformation(hReadOut, HANDLE_FLAG_INHERIT, 0) || !SetHandleInformation(hWriteIn, HANDLE_FLAG_INHERIT, 0)) {
+	if (commandHandle->errBuf && !CreatePipe(&hReadError, &hWriteError, &sa, 0)) {
 		CloseHandle(hReadOut);
 		CloseHandle(hWriteOut);
 		CloseHandle(hReadIn);
 		CloseHandle(hWriteIn);
+		return -1;
+	}
+
+	si.hStdOutput = hWriteOut;
+	si.hStdInput = hReadIn;
+	si.hStdError = hWriteError;
+
+	// Ensure the read/write handle to the pipe for STDOUT resp. STDIN are not inherited.
+	if (!SetHandleInformation(hReadOut, HANDLE_FLAG_INHERIT, 0) || !SetHandleInformation(hWriteIn, HANDLE_FLAG_INHERIT, 0) || (commandHandle->errBuf && !SetHandleInformation(hReadError, HANDLE_FLAG_INHERIT, 0))) {
+		CloseHandle(hReadOut);
+		CloseHandle(hWriteOut);
+		CloseHandle(hReadIn);
+		CloseHandle(hWriteIn);
+		safeCloseHandle(&hReadError);
+		safeCloseHandle(&hWriteError);
 		return -1;
 	}
 
@@ -66,6 +145,8 @@ int command_start(wchar_t *cmd, COMMAND_HANDLE *commandHandle, LPWSTR pEnv)
 		CloseHandle(hWriteOut);
 		CloseHandle(hReadIn);
 		CloseHandle(hWriteIn);
+		safeCloseHandle(&hReadError);
+		safeCloseHandle(&hWriteError);
 		return -1;
 	}
 
@@ -74,6 +155,18 @@ int command_start(wchar_t *cmd, COMMAND_HANDLE *commandHandle, LPWSTR pEnv)
 
 	CloseHandle(hReadIn);
 	CloseHandle(hWriteOut);
+	if (commandHandle->errBuf) {
+		CloseHandle(hWriteError);
+		commandHandle->err = hReadError;
+		HANDLE asyncReadErrorThread = commmand_start_reading_thread(&commandHandle->err, commandHandle->errBuf);
+		if (!asyncReadErrorThread) {
+			CloseHandle(hReadOut);
+			CloseHandle(hWriteIn);
+			CloseHandle(hReadError);
+			return -1;
+		}
+		commandHandle->asyncReadErrorThread = asyncReadErrorThread;
+	}
 
 	commandHandle->pi = pi;
 	commandHandle->out = hReadOut;
@@ -82,7 +175,7 @@ int command_start(wchar_t *cmd, COMMAND_HANDLE *commandHandle, LPWSTR pEnv)
 	return 0;
 }
 
-int command_read(COMMAND_HANDLE *commandHandle, char *buffer, size_t buf_size, size_t *bytes_read)
+int command_read_stdout(COMMAND_HANDLE *commandHandle, char *buffer, size_t buf_size, size_t *bytes_read)
 {
 	*bytes_read = 0;
 
@@ -90,18 +183,6 @@ int command_read(COMMAND_HANDLE *commandHandle, char *buffer, size_t buf_size, s
 		giterr_set(GITERR_OS, "could not read data from external process");
 		return -1;
 	}
-
-	return 0;
-}
-
-int command_readall(COMMAND_HANDLE *commandHandle, git_buf *buf)
-{
-	size_t bytes_read = 0;
-	do {
-		char buffer[65536];
-		command_read(commandHandle->out, buffer, sizeof(buffer), &bytes_read);
-		git_buf_put(buf, buffer, bytes_read);
-	} while (bytes_read);
 
 	return 0;
 }
@@ -128,14 +209,6 @@ int command_write_gitbuf(COMMAND_HANDLE *commandHandle, const git_buf *buf)
 	return command_write(commandHandle, buf->ptr, buf->size);
 }
 
-static void safeCloseHandle(HANDLE *handle)
-{
-	if (*handle != INVALID_HANDLE_VALUE) {
-		CloseHandle(*handle);
-		*handle = INVALID_HANDLE_VALUE;
-	}
-}
-
 void command_close_stdin(COMMAND_HANDLE *commandHandle)
 {
 	safeCloseHandle(&commandHandle->in);
@@ -159,6 +232,11 @@ DWORD command_close(COMMAND_HANDLE *commandHandle)
 	CloseHandle(commandHandle->pi.hThread);
 
 	WaitForSingleObject(commandHandle->pi.hProcess, INFINITE);
+
+	if (commandHandle->errBuf) {
+		WaitForSingleObject(commandHandle->asyncReadErrorThread, INFINITE);
+		CloseHandle(commandHandle->asyncReadErrorThread);
+	}
 
 	DWORD exitcode = MAXDWORD;
 	GetExitCodeProcess(commandHandle->pi.hProcess, &exitcode);
