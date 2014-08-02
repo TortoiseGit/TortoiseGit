@@ -3119,41 +3119,49 @@ void CMainFrame::LoadIgnoreCommentData()
 			}
 		}
 	}
-	CStdioFile file;
-	if (file.Open(sPath, CFile::modeRead))
+
+	try
 	{
-		CString sLine;
-		while (file.ReadString(sLine))
+		CStdioFile file;
+		if (file.Open(sPath, CFile::modeRead))
 		{
-			int eqpos = sLine.Find('=');
-			if (eqpos >= 0)
+			CString sLine;
+			while (file.ReadString(sLine))
 			{
-				CString sExts = sLine.Left(eqpos);
-				CString sComments = sLine.Mid(eqpos+1);
-
-				int pos = sComments.Find(',');
-				CString sLineStart = sComments.Left(pos);
-				pos = sComments.Find(',', pos);
-				int pos2 = sComments.Find(',', pos+1);
-				CString sBlockStart = sComments.Mid(pos+1, pos2-pos-1);
-				CString sBlockEnd = sComments.Mid(pos2+1);
-
-				auto commentTuple = std::make_tuple(sLineStart, sBlockStart, sBlockEnd);
-
-				pos = 0;
-				CString temp;
-				for (;;)
+				int eqpos = sLine.Find('=');
+				if (eqpos >= 0)
 				{
-					temp = sExts.Tokenize(_T(","),pos);
-					if (temp.IsEmpty())
+					CString sExts = sLine.Left(eqpos);
+					CString sComments = sLine.Mid(eqpos+1);
+
+					int pos = sComments.Find(',');
+					CString sLineStart = sComments.Left(pos);
+					pos = sComments.Find(',', pos);
+					int pos2 = sComments.Find(',', pos+1);
+					CString sBlockStart = sComments.Mid(pos+1, pos2-pos-1);
+					CString sBlockEnd = sComments.Mid(pos2+1);
+
+					auto commentTuple = std::make_tuple(sLineStart, sBlockStart, sBlockEnd);
+
+					pos = 0;
+					CString temp;
+					for (;;)
 					{
-						break;
+						temp = sExts.Tokenize(_T(","),pos);
+						if (temp.IsEmpty())
+						{
+							break;
+						}
+						ASSERT(m_IgnoreCommentsMap.find(temp) == m_IgnoreCommentsMap.end());
+						m_IgnoreCommentsMap[temp] = commentTuple;
 					}
-					ASSERT(m_IgnoreCommentsMap.find(temp) == m_IgnoreCommentsMap.end());
-					m_IgnoreCommentsMap[temp] = commentTuple;
 				}
 			}
 		}
+	}
+	catch (CFileException* e)
+	{
+		e->Delete();
 	}
 	bLoaded = true;
 }
