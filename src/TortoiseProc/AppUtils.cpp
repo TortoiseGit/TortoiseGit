@@ -2978,7 +2978,7 @@ BOOL CAppUtils::Merge(CString *commit)
 				return;
 			}
 
-			if (dlg.m_bIsBranch && dlg.m_VersionName.Find(L"remotes/") > 5) // do not ask to remove remote branches
+			if (dlg.m_bIsBranch && dlg.m_VersionName.Find(L"remotes/") == -1) // do not ask to remove remote branches
 			{
 				postCmdList.push_back(PostCmd(IDI_DELETE, IDS_PROC_REMOVEBRANCH, [&]
 				{
