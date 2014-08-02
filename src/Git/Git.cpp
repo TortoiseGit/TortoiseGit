@@ -28,6 +28,8 @@
 #include <fstream>
 #include "FormatMessageWrapper.h"
 #include "SmartHandle.h"
+#include "git2/sys/filter.h"
+#include "../libgit2/filter-filter.h"
 
 int CGit::m_LogEncode=CP_UTF8;
 typedef CComCritSecLock<CComCriticalSection> CAutoLocker;
@@ -1924,6 +1926,15 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 
 	CString sOldPath = oldpath;
 	free(oldpath);
+
+#if !defined(TGITCACHE) && !defined(TORTOISESHELL)
+	// register filter only once
+	if (!git_filter_lookup("filter"))
+	{
+		if (git_filter_register("filter", git_filter_filter_new(_T("\"") + CGit::ms_LastMsysGitDir + L"\\sh.exe\"", &m_Environment[0]), GIT_FILTER_DRIVER_PRIORITY))
+			return FALSE;
+	}
+#endif
 
 	m_bInitialized = TRUE;
 	return true;

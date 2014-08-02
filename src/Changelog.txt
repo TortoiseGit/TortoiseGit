@@ -7,6 +7,7 @@ Released: unreleased
  * Fixed issue #2170: Please add interface to "git svn log -v"
  * Fixed issue #1787: auto-complete label when writing commit message
  * Fixed issue #2241: Cleanup: result window of dry run should offer to "really remove"
+ * Fixed issue #1596: Added basic support for clean/smudge filters
 
 == Bug Fixes ==
  * Fixed issue #2216: Add fails with message: libgit2: "failed to parse 'warn' as boolean"
