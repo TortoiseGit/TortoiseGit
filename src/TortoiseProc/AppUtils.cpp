@@ -2225,7 +2225,10 @@ bool CAppUtils::Pull(bool showPush)
 		progress.m_PostCmdCallback = [&](DWORD status, PostCmdList& postCmdList)
 		{
 			if (status)
+			{
+				postCmdList.push_back(PostCmd(IDI_PULL, IDS_MENUPULL, [&]{ Pull(); }));
 				return;
+			}
 
 			CGitHash hashNew;
 			if (g_Git.GetHash(hashNew, _T("HEAD")))
