@@ -74,13 +74,14 @@ static DWORD WINAPI AsyncReadingThread(LPVOID lpParam)
 static HANDLE commmand_start_reading_thread(HANDLE *handle, git_buf *dest)
 {
 	struct ASYNCREADINGTHREADARGS *threadArguments = git__calloc(1, sizeof(struct ASYNCREADINGTHREADARGS));
+	HANDLE thread;
 	if (!threadArguments)
 		return NULL;
 
 	threadArguments->handle = handle;
 	threadArguments->dest = dest;
 
-	HANDLE thread = CreateThread(NULL, 0, AsyncReadingThread, threadArguments, 0, NULL);
+	thread = CreateThread(NULL, 0, AsyncReadingThread, threadArguments, 0, NULL);
 	if (!thread)
 		git__free(threadArguments);
 	return thread;
@@ -97,10 +98,10 @@ int commmand_start_stdout_reading_thread(COMMAND_HANDLE *commandHandle, git_buf 
 
 static int command_wait_reading_thread(HANDLE *handle)
 {
+	DWORD exitCode = MAXDWORD;
 	if (*handle == INVALID_HANDLE_VALUE)
 		return -1;
 
-	DWORD exitCode = MAXDWORD;
 	WaitForSingleObject(*handle, INFINITE);
 	if (!GetExitCodeThread(*handle, &exitCode) || exitCode) {
 		safeCloseHandle(handle);
@@ -180,9 +181,10 @@ int command_start(wchar_t *cmd, COMMAND_HANDLE *commandHandle, LPWSTR pEnv)
 	CloseHandle(hReadIn);
 	CloseHandle(hWriteOut);
 	if (commandHandle->errBuf) {
+		HANDLE asyncReadErrorThread;
 		CloseHandle(hWriteError);
 		commandHandle->err = hReadError;
-		HANDLE asyncReadErrorThread = commmand_start_reading_thread(&commandHandle->err, commandHandle->errBuf);
+		asyncReadErrorThread = commmand_start_reading_thread(&commandHandle->err, commandHandle->errBuf);
 		if (!asyncReadErrorThread) {
 			CloseHandle(hReadOut);
 			CloseHandle(hWriteIn);
@@ -245,6 +247,7 @@ void command_close_stdout(COMMAND_HANDLE *commandHandle)
 
 DWORD command_close(COMMAND_HANDLE *commandHandle)
 {
+	DWORD exitcode = MAXDWORD;
 	if (!commandHandle->running)
 		return 1;
 
@@ -261,7 +264,6 @@ DWORD command_close(COMMAND_HANDLE *commandHandle)
 	if (commandHandle->errBuf)
 		command_wait_reading_thread(&commandHandle->asyncReadErrorThread);
 
-	DWORD exitcode = MAXDWORD;
 	GetExitCodeProcess(commandHandle->pi.hProcess, &exitcode);
 	CloseHandle(commandHandle->pi.hProcess);
 

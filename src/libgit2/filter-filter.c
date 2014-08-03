@@ -118,21 +118,28 @@ static int filter_apply(
 	const git_filter_source	*src)
 {
 	struct filter_filter *ffs = (struct filter_filter *)self;
+	git_config *config;
+	git_buf configKey = GIT_BUF_INIT;
+	int isRequired = FALSE;
+	int error;
+	const char *cmd = NULL;
+	git_buf cmdBuf = GIT_BUF_INIT;
+	wchar_t *wide_cmd;
+	COMMAND_HANDLE commandHandle = COMMAND_HANDLE_INIT;
+	git_buf errBuf = GIT_BUF_INIT;
+	DWORD exitCode;
 
 	if (!*payload)
 		return GIT_PASSTHROUGH;
 
-	git_config *config;
 	if (git_repository_config__weakptr(&config, git_filter_source_repo(src)))
 		return -1;
 
-	git_buf configKey = GIT_BUF_INIT;
 	git_buf_join3(&configKey, '.', "filter", *payload, "required");
 	if (git_buf_oom(&configKey))
 		return -1;
 
-	int isRequired = FALSE;
-	int error = git_config_get_bool(&isRequired, config, configKey.ptr);
+	error = git_config_get_bool(&isRequired, config, configKey.ptr);
 	git_buf_free(&configKey);
 	if (error && error != GIT_ENOTFOUND)
 		return -1;
@@ -146,7 +153,6 @@ static int filter_apply(
 	if (git_buf_oom(&configKey))
 		return -1;
 
-	const char *cmd = NULL;
 	error = git_config_get_string(&cmd, config, configKey.ptr);
 	git_buf_free(&configKey);
 	if (error && error != GIT_ENOTFOUND)
@@ -158,7 +164,6 @@ static int filter_apply(
 		return GIT_PASSTHROUGH;
 	}
 
-	git_buf cmdBuf = GIT_BUF_INIT;
 	git_buf_puts(&cmdBuf, cmd);
 	if (git_buf_oom(&cmdBuf))
 		return -1;
@@ -176,7 +181,6 @@ static int filter_apply(
 		git_buf_free(&shParams);
 	}
 
-	wchar_t *wide_cmd;
 	if (git__utf8_to_16_alloc(&wide_cmd, cmdBuf.ptr) < 0)
 	{
 		git_buf_free(&cmdBuf);
@@ -198,8 +202,6 @@ static int filter_apply(
 		wide_cmd = tmp;
 	}
 
-	COMMAND_HANDLE commandHandle = COMMAND_HANDLE_INIT;
-	git_buf errBuf = GIT_BUF_INIT;
 	commandHandle.errBuf = &errBuf;
 	if (command_start(wide_cmd, &commandHandle, ffs->pEnv)) {
 		git__free(wide_cmd);
@@ -235,7 +237,7 @@ static int filter_apply(
 		return GIT_PASSTHROUGH;
 	}
 
-	DWORD exitCode = command_close(&commandHandle);
+	exitCode = command_close(&commandHandle);
 	if (exitCode) {
 		if (isRequired) {
 			setProcessError(exitCode, &errBuf);
