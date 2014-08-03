@@ -1075,6 +1075,7 @@
 #define IDC_PACK                        1497
 #define IDS_TRACKEDBRANCH               1497
 #define IDS_REBASE_AUTOSKIPPED          1498
+#define IDC_FORCE_WITH_LEASE            1498
 #define IDC_TAGS                        1499
 #define IDS_PROC_REBASE_SELECTALL_SQUASH 1499
 #define IDS_EXPORTFILE_TT               1500
@@ -1128,6 +1129,7 @@
 #define IDS_CLEAN_NO_RECYCLEBIN         1521
 #define IDC_AUTOTEXTSCAN                1522
 #define IDC_GROUP_BASEON                1522
+#define IDS_FORCE_WITH_LEASE_TT         1522
 #define IDC_TESTRESULT                  1523
 #define IDC_CHECK_BRANCHOVERRIDE        1523
 #define IDC_CHECK_SIGN                  1523
@@ -1471,6 +1473,7 @@
 #define IDC_CHECK_INHERIT_BTPARAMS      1793
 #define IDC_EDIT_PUSHURL                1794
 #define IDC_SORTTAGSREVERSED            1795
+#define IDC_STATIC_FORCE                1796
 #define IDS_LOG_FILTER_BY               1850
 #define IDS_LOG_FILTER_PATHS            1851
 #define IDS_LOG_FILTER_AUTHORS          1852
@@ -1918,7 +1921,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        355
 #define _APS_NEXT_COMMAND_VALUE         32867
-#define _APS_NEXT_CONTROL_VALUE         1796
+#define _APS_NEXT_CONTROL_VALUE         1797
 #define _APS_NEXT_SYMED_VALUE           201
 #endif
 #endif

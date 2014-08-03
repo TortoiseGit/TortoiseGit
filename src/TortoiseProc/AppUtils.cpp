@@ -2468,6 +2468,8 @@ bool CAppUtils::Push(CString selectLocalBranch)
 			arg += _T("--tags ");
 		if(dlg.m_bForce)
 			arg += _T("--force ");
+		if (dlg.m_bForceWithLease)
+			arg += _T("--force-with-lease ");
 		if (dlg.m_bSetUpstream)
 			arg += _T("--set-upstream ");
 		if (dlg.m_RecurseSubmodules == 1)

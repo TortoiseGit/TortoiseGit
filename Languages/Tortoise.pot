@@ -678,10 +678,6 @@ msgstr ""
 msgid "&Force"
 msgstr ""
 
-#. Resource IDs: (1480)
-msgid "&Force Overwrite Existing Branch (May discard changes)"
-msgstr ""
-
 #. Resource IDs: (1607)
 msgid "&Force Rebase"
 msgstr ""
@@ -1306,6 +1302,10 @@ msgstr ""
 
 #. Resource IDs: (1657)
 msgid "&ignore space change"
+msgstr ""
+
+#. Resource IDs: (1498)
+msgid "&known changes"
 msgstr ""
 
 #. Resource IDs: (88)
@@ -4513,8 +4513,16 @@ msgstr ""
 msgid "Force creation of branch/tag - even if one with same name already exists."
 msgstr ""
 
+#. Resource IDs: (96)
+msgid "Force push only if the remote branch is expected\n(i.e. same as remote tracking brach)"
+msgstr ""
+
 #. Resource IDs: (603)
 msgid "Force the rebase even if the current branch is a descendant of the commit you are rebasing onto. \r\nNormally the command will exit with the message \"Current branch is up to date\" in such a situation."
+msgstr ""
+
+#. Resource IDs: (1796)
+msgid "Force: May discard"
 msgstr ""
 
 #. Resource IDs: (312)
@@ -10454,6 +10462,10 @@ msgstr ""
 #. Resource IDs: (80, 284)
 #, c-format
 msgid "to %s"
+msgstr ""
+
+#. Resource IDs: (1480)
+msgid "u&nknown changes"
 msgstr ""
 
 #. Resource IDs: (245)
