@@ -40,6 +40,7 @@ CPushDlg::CPushDlg(CWnd* pParent /*=NULL*/)
 	: CHorizontalResizableStandAloneDialog(CPushDlg::IDD, pParent)
 	, m_bPushAllBranches(FALSE)
 	, m_bForce(FALSE)
+	, m_bForceWithLease(FALSE)
 	, m_bPack(FALSE)
 	, m_bTags(FALSE)
 	, m_bAutoLoad(FALSE)
@@ -66,6 +67,7 @@ void CPushDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BUTTON_BROWSE_SOURCE_BRANCH, m_BrowseLocalRef);
 	DDX_Control(pDX, IDC_COMBOBOX_RECURSE_SUBMODULES, m_RecurseSubmodulesCombo);
 	DDX_Check(pDX,IDC_FORCE,this->m_bForce);
+	DDX_Check(pDX, IDC_FORCE_WITH_LEASE, m_bForceWithLease);
 	DDX_Check(pDX,IDC_PUSHALL,this->m_bPushAllBranches);
 	DDX_Check(pDX,IDC_PACK,this->m_bPack);
 	DDX_Check(pDX,IDC_TAGS,this->m_bTags);
@@ -85,6 +87,8 @@ BEGIN_MESSAGE_MAP(CPushDlg, CHorizontalResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_BUTTON_BROWSE_SOURCE_BRANCH, &CPushDlg::OnBnClickedButtonBrowseSourceBranch)
 	ON_BN_CLICKED(IDC_BUTTON_BROWSE_DEST_BRANCH, &CPushDlg::OnBnClickedButtonBrowseDestBranch)
 	ON_BN_CLICKED(IDC_PUSHALL, &CPushDlg::OnBnClickedPushall)
+	ON_BN_CLICKED(IDC_FORCE, &CPushDlg::OnBnClickedForce)
+	ON_BN_CLICKED(IDC_FORCE_WITH_LEASE, &CPushDlg::OnBnClickedForceWithLease)
 	ON_BN_CLICKED(IDC_PROC_PUSH_SET_UPSTREAM, &CPushDlg::OnBnClickedProcPushSetUpstream)
 	ON_BN_CLICKED(IDC_PROC_PUSH_SET_PUSHREMOTE, &CPushDlg::OnBnClickedProcPushSetPushremote)
 	ON_BN_CLICKED(IDC_PROC_PUSH_SET_PUSHBRANCH, &CPushDlg::OnBnClickedProcPushSetPushremote)
@@ -118,6 +122,7 @@ BOOL CPushDlg::OnInitDialog()
 	AddAnchor(IDC_OPTION_GROUP, TOP_LEFT,TOP_RIGHT);
 
 	AddAnchor(IDC_FORCE, TOP_LEFT);
+	AddAnchor(IDC_FORCE_WITH_LEASE, TOP_LEFT);
 	AddAnchor(IDC_PACK, TOP_LEFT);
 	AddAnchor(IDC_TAGS, TOP_LEFT);
 	AddAnchor(IDC_PUTTYKEY_AUTOLOAD,TOP_LEFT);
@@ -136,6 +141,7 @@ BOOL CPushDlg::OnInitDialog()
 	AdjustControlSize(IDC_RD_URL);
 	AdjustControlSize(IDC_PUSHALL);
 	AdjustControlSize(IDC_FORCE);
+	AdjustControlSize(IDC_FORCE_WITH_LEASE);
 	AdjustControlSize(IDC_PACK);
 	AdjustControlSize(IDC_TAGS);
 	AdjustControlSize(IDC_PUTTYKEY_AUTOLOAD);
@@ -184,7 +190,9 @@ BOOL CPushDlg::OnInitDialog()
 	m_tooltips.Create(this);
 	m_tooltips.AddTool(IDC_PROC_PUSH_SET_PUSHBRANCH, IDS_PUSHDLG_PUSHBRANCH_TT);
 	m_tooltips.AddTool(IDC_PROC_PUSH_SET_PUSHREMOTE, IDS_PUSHDLG_PUSHREMOTE_TT);
-	
+	m_tooltips.AddTool(IDC_FORCE, IDS_FORCE_TT);
+	m_tooltips.AddTool(IDC_FORCE_WITH_LEASE, IDS_FORCE_WITH_LEASE_TT);
+
 	m_regRecurseSubmodules = CRegDWORD(
 		CString(_T("Software\\TortoiseGit\\History\\PushRecurseSubmodules\\")) + WorkingDir, m_RecurseSubmodules);
 	m_RecurseSubmodules = m_regRecurseSubmodules;
@@ -192,6 +200,9 @@ BOOL CPushDlg::OnInitDialog()
 	m_RecurseSubmodulesCombo.AddString(CString(MAKEINTRESOURCE(IDS_RECURSE_SUBMODULES_CHECK)));
 	m_RecurseSubmodulesCombo.AddString(CString(MAKEINTRESOURCE(IDS_RECURSE_SUBMODULES_ONDEMAND)));
 	m_RecurseSubmodulesCombo.SetCurSel(m_RecurseSubmodules);
+
+	if (CAppUtils::GetMsysgitVersion() < 0x01080500)
+		GetDlgItem(IDC_FORCE_WITH_LEASE)->EnableWindow(FALSE);
 
 	Refresh();
 
@@ -569,6 +580,19 @@ void CPushDlg::OnBnClickedPushall()
 	this->GetDlgItem(IDC_BUTTON_BROWSE_SOURCE_BRANCH)->EnableWindow(!m_bPushAllBranches);
 	this->GetDlgItem(IDC_BUTTON_BROWSE_DEST_BRANCH)->EnableWindow(!m_bPushAllBranches);
 	EnDisablePushRemoteArchiveBranch();
+}
+
+void CPushDlg::OnBnClickedForce()
+{
+	UpdateData();
+	if (CAppUtils::GetMsysgitVersion() >= 0x01080500)
+		GetDlgItem(IDC_FORCE_WITH_LEASE)->EnableWindow(m_bForce ? FALSE : TRUE);
+}
+
+void CPushDlg::OnBnClickedForceWithLease()
+{
+	UpdateData();
+	GetDlgItem(IDC_FORCE)->EnableWindow(m_bForceWithLease ? FALSE : TRUE);
 }
 
 void CPushDlg::OnBnClickedProcPushSetUpstream()

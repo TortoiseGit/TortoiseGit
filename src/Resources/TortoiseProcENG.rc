@@ -1155,8 +1155,9 @@ BEGIN
     CONTROL         "Arbitrary &URL:",IDC_RD_URL,"Button",BS_AUTORADIOBUTTON,15,113,57,10
     CONTROL         "",IDC_URL,"ComboBoxEx32",CBS_DROPDOWN | CBS_AUTOHSCROLL | CBS_SORT | WS_VSCROLL | WS_TABSTOP,76,111,218,64
     GROUPBOX        "Options",IDC_OPTION_GROUP,7,142,295,111
-    CONTROL         "&Force Overwrite Existing Branch (May discard changes)",IDC_FORCE,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,154,279,10
+    LTEXT           "Force: May discard",IDC_STATIC_FORCE,15,154,91,8
+    CONTROL         "&known changes",IDC_FORCE_WITH_LEASE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,113,153,85,10
+    CONTROL         "u&nknown changes",IDC_FORCE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,205,154,89,10
     CONTROL         "Use Thin &Pack (For slow network connections)",IDC_PACK,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,165,279,10
     CONTROL         "Include &Tags",IDC_TAGS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,178,279,10
@@ -4448,6 +4449,8 @@ STRINGTABLE
 BEGIN
     IDS_CLEAN_TO_RECYCLEBIN "Clean to recycle bin"
     IDS_CLEAN_NO_RECYCLEBIN "Clean permanently"
+    IDS_FORCE_WITH_LEASE_TT "Force push only if the remote reference points to the same commit as the remote tracking branch.\nThis can cause the remote repository to lose commits; use it with care.\nThis option corresponds to the --force-with-lease git option."
+    IDS_FORCE_TT            "Force push to the selected remote reference and override it without any safety checks.\nThis can cause the remote repository to lose unseen commits; use it with care.\nThis option corresponds to the --force git option."
 END
 
 #endif    // English (U.S.) resources

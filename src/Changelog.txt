@@ -8,6 +8,7 @@ Released: unreleased
  * Fixed issue #1787: auto-complete label when writing commit message
  * Fixed issue #2241: Cleanup: result window of dry run should offer to "really remove"
  * Fixed issue #1596: Added basic support for clean/smudge filters
+ * Fixed issue #2167: Support git push --force-with-lease option
 
 == Bug Fixes ==
  * Fixed issue #2216: Add fails with message: libgit2: "failed to parse 'warn' as boolean"
