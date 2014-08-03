@@ -6022,39 +6022,34 @@ int CBaseView::GetIndentCharsForLine(int x, int y)
 {
 	const int maxGuessLine = 100;
 	int nTabMode = -1;
-	const CString& line = GetViewLine(y);
+	CString line = GetViewLine(y);
 	if (m_nTabMode & TABMODE_SMARTINDENT)
 	{
-		// if the line contains one tab, use tabs
-		// we can not test for spaces, since even if tabs are used,
-		// spaces are used in a tabified file for alignment.
-		if (line.Find('\t') >= 0)
-			nTabMode = 0;   // use tabs
-		else if (line.GetLength() > m_nTabSize)
-			nTabMode = 1;   // use spaces
+		// detect left char and right char
+		TCHAR lc = x > 0 ? line[x - 1] : '\0';
+		TCHAR rc = x < line.GetLength() ? line[x] : '\0';
+		if (lc == ' ' && rc != '\t' || rc == ' ' && lc != '\t')
+			nTabMode = 1;
+		if (lc == '\t' && rc != ' ' || rc == '\t' && lc != ' ')
+			nTabMode = 0;
+		if (lc == ' ' && rc == '\t' || rc == ' ' && lc == '\t')
+			nTabMode = m_nTabMode & TABMODE_USESPACES;
 
-		if (m_nTabMode & TABMODE_SMARTINDENT)
+		// detect lines nearby
+		for (int i = y - 1, j = y + 1; nTabMode == -1; --i, ++j)
 		{
-			// detect lines nearby
-			for (int i = y - 1, j = y + 1; nTabMode == -1; --i, ++j)
-			{
-				bool above = i > 0 && i >= y - maxGuessLine;
-				bool below = j < GetViewCount() && j <= y + maxGuessLine;
-				if (!(above || below))
-					break;
-				auto ac = GetViewLine(i);
-				auto bc = GetViewLine(j);
-				if ((ac.Find('\t') >= 0) || (bc.Find('\t') >= 0))
-				{
-					nTabMode = 0;
-					break;
-				}
-				else if ((ac.GetLength() > m_nTabSize) && (bc.GetLength() > m_nTabSize))
-				{
-					nTabMode = 1;
-					break;
-				}
-			}
+			bool above = i > 0 && i >= y - maxGuessLine;
+			bool below = j < GetViewCount() && j <= y + maxGuessLine;
+			if (!(above || below))
+				break;
+			TCHAR ac = above ? GetViewLine(i)[0] : '\0';
+			TCHAR bc = below ? GetViewLine(j)[0] : '\0';
+			if (ac == ' ' && bc != '\t' || bc == ' ' && ac != '\t')
+				nTabMode = 1;
+			else if (ac == '\t' && bc != ' ' || bc == '\t' && ac != ' ')
+				nTabMode = 0;
+			else if (ac == ' ' && bc == '\t' || bc == ' ' && ac == '\t')
+				nTabMode = m_nTabMode & TABMODE_USESPACES;
 		}
 	}
 	else
