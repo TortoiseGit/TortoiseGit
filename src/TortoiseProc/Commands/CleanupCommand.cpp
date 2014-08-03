@@ -178,13 +178,13 @@ static bool DoCleanUp(const CTGitPathList& pathList, int cleanType, bool bDir, b
 
 		progress.m_PostCmdCallback = [&](DWORD status, PostCmdList& postCmdList)
 		{
-			if (status && !bDryRun)
+			if (status)
 				postCmdList.push_back(PostCmd(IDS_MSGBOX_RETRY, [&]{ DoCleanUp(pathList, cleanType, bDir, bSubmodules, bDryRun, bNoRecycleBin); }));
 
-			if (status)
+			if (status || !bDryRun)
 				return;
 
-			if (bNoRecycleBin) // recheck, I don't really understand this. why rerun with same options first?
+			if (bNoRecycleBin)
 			{
 				postCmdList.push_back(PostCmd(IDS_CLEAN_NO_RECYCLEBIN, [&]{ DoCleanUp(pathList, cleanType, bDir, bSubmodules, FALSE, TRUE); }));
 				postCmdList.push_back(PostCmd(IDS_CLEAN_TO_RECYCLEBIN, [&]{ DoCleanUp(pathList, cleanType, bDir, bSubmodules, FALSE, FALSE); }));
