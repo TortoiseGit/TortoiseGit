@@ -31,9 +31,8 @@ typedef struct {
 	HANDLE asyncReadErrorThread;
 } COMMAND_HANDLE;
 
-#define COMMAND_HANDLE_INIT { { 0 }, INVALID_HANDLE_VALUE, INVALID_HANDLE_VALUE, INVALID_HANDLE_VALUE, FALSE, NULL, NULL, INVALID_HANDLE_VALUE, INVALID_HANDLE_VALUE }
-
-int command_start(wchar_t *cmd, COMMAND_HANDLE *commandHandle, LPWSTR pEnv);
+void command_init(COMMAND_HANDLE *commandHandle);
+int command_start(wchar_t *cmd, COMMAND_HANDLE *commandHandle, LPWSTR pEnv, DWORD flags);
 void command_close_stdout(COMMAND_HANDLE *commandHandle);
 void command_close_stdin(COMMAND_HANDLE *commandHandle);
 DWORD command_close(COMMAND_HANDLE *commandHandle);

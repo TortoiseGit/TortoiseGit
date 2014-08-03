@@ -120,7 +120,17 @@ int command_wait_stdout_reading_thread(COMMAND_HANDLE *commandHandle)
 	return command_wait_reading_thread(&commandHandle->asyncReadOutThread);
 }
 
-int command_start(wchar_t *cmd, COMMAND_HANDLE *commandHandle, LPWSTR pEnv)
+void command_init(COMMAND_HANDLE *commandHandle)
+{
+	memset(commandHandle, 0, sizeof(COMMAND_HANDLE));
+	commandHandle->in = INVALID_HANDLE_VALUE;
+	commandHandle->out = INVALID_HANDLE_VALUE;
+	commandHandle->err = INVALID_HANDLE_VALUE;
+	commandHandle->asyncReadErrorThread = INVALID_HANDLE_VALUE;
+	commandHandle->asyncReadOutThread = INVALID_HANDLE_VALUE;
+}
+
+int command_start(wchar_t *cmd, COMMAND_HANDLE *commandHandle, LPWSTR pEnv, DWORD flags)
 {
 	SECURITY_ATTRIBUTES sa;
 	HANDLE hReadOut = INVALID_HANDLE_VALUE, hWriteOut = INVALID_HANDLE_VALUE, hReadIn = INVALID_HANDLE_VALUE, hWriteIn = INVALID_HANDLE_VALUE, hReadError = INVALID_HANDLE_VALUE, hWriteError = INVALID_HANDLE_VALUE;
@@ -170,7 +180,7 @@ int command_start(wchar_t *cmd, COMMAND_HANDLE *commandHandle, LPWSTR pEnv)
 	si.wShowWindow = SW_HIDE;
 	si.dwFlags = STARTF_USESTDHANDLES | STARTF_USESHOWWINDOW;
 
-	if (!CreateProcessW(NULL, cmd, NULL, NULL, TRUE, pEnv ? CREATE_UNICODE_ENVIRONMENT : 0, pEnv, NULL, &si, &pi)) {
+	if (!CreateProcessW(NULL, cmd, NULL, NULL, TRUE, (pEnv ? CREATE_UNICODE_ENVIRONMENT : 0) | flags, pEnv, NULL, &si, &pi)) {
 		giterr_set(GITERR_OS, "Could not start external tool");
 		CloseHandle(hReadOut);
 		CloseHandle(hWriteOut);
@@ -248,7 +258,7 @@ DWORD command_close(COMMAND_HANDLE *commandHandle)
 {
 	DWORD exitcode = MAXDWORD;
 	if (!commandHandle->running)
-		return 1;
+		return exitcode;
 
 	commandHandle->running = FALSE;
 
