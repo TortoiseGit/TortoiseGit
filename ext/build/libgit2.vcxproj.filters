@@ -437,6 +437,9 @@
     <ClCompile Include="..\..\src\libgit2\filter-filter.c">
       <Filter>TGit extensions</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\libgit2\ssh-wintunnel.c">
+      <Filter>TGit extensions</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\libgit2\src\attr.h">
@@ -974,6 +977,9 @@
       <Filter>TGit extensions</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\libgit2\filter-filter.h">
+      <Filter>TGit extensions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\libgit2\ssh-wintunnel.h">
       <Filter>TGit extensions</Filter>
     </ClInclude>
   </ItemGroup>
