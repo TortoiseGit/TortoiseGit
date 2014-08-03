@@ -1163,23 +1163,26 @@ void CGitProgressList::WC_File_NotificationData::GetContextMenu(CIconMenu& popup
 		popup.AppendMenuIcon(actions.size(), IDS_MENULOG, IDI_LOG);
 
 		popup.AppendMenu(MF_SEPARATOR, NULL);
-		auto open = [&](bool openWith)
+		if (!PathIsDirectory(g_Git.CombinePath(path)))
 		{
-			int ret = 0;
-			CString sWinPath = g_Git.CombinePath(path);
-			if (!openWith)
-				ret = (int)ShellExecute(nullptr, NULL, (LPCTSTR)sWinPath, NULL, NULL, SW_SHOWNORMAL);
-			if ((ret <= HINSTANCE_ERROR) || openWith)
+			auto open = [&](bool openWith)
 			{
+				int ret = 0;
+				CString sWinPath = g_Git.CombinePath(path);
+				if (!openWith)
+					ret = (int)ShellExecute(nullptr, NULL, (LPCTSTR)sWinPath, NULL, NULL, SW_SHOWNORMAL);
+				if ((ret <= HINSTANCE_ERROR) || openWith)
+				{
 				CString cmd = _T("RUNDLL32 Shell32,OpenAs_RunDLL ");
 				cmd += sWinPath;
 				CAppUtils::LaunchApplication(cmd, NULL, false);
 			}
 		};
 		actions.push_back([open]{ open(false); });
-		popup.AppendMenuIcon(actions.size(), IDS_LOG_POPUP_OPEN, IDI_OPEN);
-		actions.push_back([open]{ open(true); });
-		popup.AppendMenuIcon(actions.size(), IDS_LOG_POPUP_OPENWITH, IDI_OPEN);
+			popup.AppendMenuIcon(actions.size(), IDS_LOG_POPUP_OPEN, IDI_OPEN);
+			actions.push_back([open]{ open(true); });
+			popup.AppendMenuIcon(actions.size(), IDS_LOG_POPUP_OPENWITH, IDI_OPEN);
+		}
 
 		actions.push_back([&]{ CAppUtils::ExploreTo(nullptr, g_Git.CombinePath(path)); });
 		popup.AppendMenuIcon(actions.size(), IDS_STATUSLIST_CONTEXT_EXPLORE, IDI_EXPLORER);
