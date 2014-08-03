@@ -1559,6 +1559,14 @@ int CRebaseDlg::DoRebase()
 		this->m_SquashMessage += pRev->GetSubject();
 		this->m_SquashMessage += _T("\n");
 		this->m_SquashMessage += pRev->GetBody().TrimRight();
+		if (m_bAddCherryPickedFrom)
+		{
+			if (!pRev->GetBody().IsEmpty())
+				m_SquashMessage += _T("\n");
+			m_SquashMessage += _T("\n(cherry picked from commit ");
+			m_SquashMessage += pRev->m_CommitHash.ToString();
+			m_SquashMessage += _T(")");
+		}
 	}
 	else
 	{
@@ -1844,7 +1852,16 @@ LRESULT CRebaseDlg::OnRebaseUpdateUI(WPARAM,LPARAM)
 		if (m_pTaskbarList)
 			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_PAUSED);
 		this->m_LogMessageCtrl.Call(SCI_SETREADONLY, FALSE);
-		this->m_LogMessageCtrl.SetText(curRev->GetSubject()+_T("\n")+curRev->GetBody());
+		if (m_bAddCherryPickedFrom)
+		{
+			// Since the new commit is done and the HEAD points to it,
+			// just using the new body modified by git self.
+			GitRev headRevision;
+			headRevision.GetCommit(_T("HEAD"));
+			m_LogMessageCtrl.SetText(headRevision.GetSubject() + _T("\n") + headRevision.GetBody());
+		}
+		else
+			m_LogMessageCtrl.SetText(curRev->GetSubject() + _T("\n") + curRev->GetBody());
 		break;
 	case REBASE_SQUASH_EDIT:
 		this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_MESSAGE);
