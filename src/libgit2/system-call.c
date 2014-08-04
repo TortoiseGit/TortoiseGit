@@ -203,14 +203,7 @@ int command_start(wchar_t *cmd, COMMAND_HANDLE *commandHandle, LPWSTR pEnv)
 
 int command_read_stdout(COMMAND_HANDLE *commandHandle, char *buffer, size_t buf_size, size_t *bytes_read)
 {
-	*bytes_read = 0;
-
-	if (!ReadFile(commandHandle->out, buffer, (DWORD)buf_size, (DWORD*)bytes_read, NULL)) {
-		giterr_set(GITERR_OS, "could not read data from external process");
-		return -1;
-	}
-
-	return 0;
+	return command_read(commandHandle->out, buffer, buf_size, bytes_read);
 }
 
 int command_write(COMMAND_HANDLE *commandHandle, const char *buffer, size_t len)
