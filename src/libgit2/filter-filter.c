@@ -73,7 +73,7 @@ static int expandPerCentF(git_buf *buf, const char *replaceWith)
 		const char *idx = buf->ptr + foundPercentage;
 		while (idx < end) {
 			if (*idx == '%') {
-				if (idx + 1 == buf->ptr + buf->size || (idx + 1 < end && *(idx + 1) == '%')) { // one '%' is at the end of the string OR "%%" is in the string
+				if (idx + 1 == end || (idx + 1 < end && *(idx + 1) == '%')) { // one '%' is at the end of the string OR "%%" is in the string
 					git_buf_putc(&expanded, '%');
 					++idx;
 					++idx;
