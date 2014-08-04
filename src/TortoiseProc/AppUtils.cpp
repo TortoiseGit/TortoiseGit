@@ -1167,6 +1167,8 @@ bool CAppUtils::PerformSwitch(CString ref, bool bForce /* false */, CString sNew
 	CProgressDlg progress;
 	progress.m_GitCmd = cmd;
 
+	CString currentBranch;
+	bool hasBranch = CGit::GetCurrentBranchFromFile(g_Git.m_CurrentDir, currentBranch) == 0;
 	progress.m_PostCmdCallback = [&](DWORD status, PostCmdList& postCmdList)
 	{
 		if (!status)
@@ -1181,8 +1183,6 @@ bool CAppUtils::PerformSwitch(CString ref, bool bForce /* false */, CString sNew
 					RunTortoiseGitProc(sCmd);
 				}));
 			}
-			CString currentBranch;
-			bool hasBranch = CGit::GetCurrentBranchFromFile(g_Git.m_CurrentDir, currentBranch) == 0;
 			if (hasBranch)
 				postCmdList.push_back(PostCmd(IDI_MERGE, IDS_MENUMERGE, [&]{ Merge(&currentBranch); }));
 
