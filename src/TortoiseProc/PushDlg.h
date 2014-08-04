@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -53,6 +53,7 @@ public:
 
 	BOOL			m_bTags;
 	BOOL			m_bForce;
+	BOOL			m_bForceWithLease;
 	BOOL			m_bPack;
 	BOOL			m_bAutoLoad;
 	BOOL			m_bPushAllBranches;
@@ -85,6 +86,8 @@ protected:
 	afx_msg void OnBnClickedButtonBrowseSourceBranch();
 	afx_msg void OnBnClickedButtonBrowseDestBranch();
 	afx_msg void OnBnClickedPushall();
+	afx_msg void OnBnClickedForce();
+	afx_msg void OnBnClickedForceWithLease();
 	afx_msg void OnBnClickedProcPushSetUpstream();
 	afx_msg void OnBnClickedProcPushSetPushremote();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
