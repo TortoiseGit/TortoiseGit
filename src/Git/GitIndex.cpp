@@ -773,8 +773,6 @@ int CGitHeadFileList::ReadTree()
 }
 int CGitIgnoreItem::FetchIgnoreList(const CString &projectroot, const CString &file, bool isGlobal)
 {
-	CAutoWriteLock lock(m_SharedMutex);
-
 	if (this->m_pExcludeList)
 	{
 		git_free_exclude_list(m_pExcludeList);
@@ -1212,11 +1210,7 @@ int CGitIgnoreList::CheckIgnore(const CString &path, const CString &projectroot,
 			if ((ret = CheckFileAgainstIgnoreList(wcglobalgitignore, patha, base, type)) != -1)
 				break;
 
-			CString excludesFile;
-			{
-				CAutoReadLock lock(m_SharedMutex);
-				excludesFile = m_CoreExcludesfiles[adminDir];
-			}
+			CString excludesFile = m_CoreExcludesfiles[adminDir];
 			if (!excludesFile.IsEmpty())
 				ret = CheckFileAgainstIgnoreList(excludesFile, patha, base, type);
 

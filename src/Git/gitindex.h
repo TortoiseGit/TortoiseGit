@@ -234,8 +234,6 @@ public:
 class CGitIgnoreItem
 {
 public:
-	CReaderWriterLock  m_SharedMutex;
-
 	CGitIgnoreItem()
 	{
 		m_LastModifyTime =0;
