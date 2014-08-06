@@ -53,7 +53,7 @@ int ProjectProperties::ReadProps()
 		git_config_add_file_ondisk(gitconfig, CGit::GetGitPathStringA(adminDirPath + L"config"), GIT_CONFIG_LEVEL_APP, FALSE); // this needs to have the highest priority in order to override .tgitconfig settings
 
 	if (!g_GitAdminDir.IsBareRepo(g_Git.m_CurrentDir))
-		git_config_add_file_ondisk(gitconfig, CGit::GetGitPathStringA(g_Git.m_CurrentDir + L"\\.tgitconfig"), GIT_CONFIG_LEVEL_LOCAL, FALSE); // this needs to have the second highest priority
+		git_config_add_file_ondisk(gitconfig, CGit::GetGitPathStringA(g_Git.CombinePath(L".tgitconfig")), GIT_CONFIG_LEVEL_LOCAL, FALSE); // this needs to have the second highest priority
 	else
 	{
 		CString tmpFile = GetTempFile();

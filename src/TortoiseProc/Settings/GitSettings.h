@@ -129,7 +129,7 @@ protected:
 		{
 			if (!m_bIsBareRepo)
 			{
-				if (git_config_add_file_ondisk(config, CGit::GetGitPathStringA(g_Git.m_CurrentDir + L"\\.tgitconfig"), GIT_CONFIG_LEVEL_LOCAL, FALSE)) // this needs to have the second highest priority
+				if (git_config_add_file_ondisk(config, CGit::GetGitPathStringA(g_Git.CombinePath(L".tgitconfig")), GIT_CONFIG_LEVEL_LOCAL, FALSE)) // this needs to have the second highest priority
 					MessageBox(nullptr, g_Git.GetLibGit2LastErr(), _T("TortoiseGit"), MB_ICONEXCLAMATION);
 			}
 			else
@@ -196,7 +196,7 @@ protected:
 		{
 			if (!WarnUserSafeToDifferentDestination(IDS_CONFIG_PROJECT))
 				return FALSE;
-			err = git_config_add_file_ondisk(config, CGit::GetGitPathStringA(g_Git.m_CurrentDir + L"\\.tgitconfig"), GIT_CONFIG_LEVEL_APP, FALSE);
+			err = git_config_add_file_ondisk(config, CGit::GetGitPathStringA(g_Git.CombinePath(L".tgitconfig")), GIT_CONFIG_LEVEL_APP, FALSE);
 		}
 		else
 		{

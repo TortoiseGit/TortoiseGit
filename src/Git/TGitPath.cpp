@@ -1127,7 +1127,7 @@ int CTGitPathList::FillBasedOnIndexFlags(unsigned short flag, CTGitPathList* lis
 			one.Empty();
 			g_Git.StringAppend(&one, (BYTE*)e->path, CP_UTF8);
 
-			if (!(!list || (*list)[j].GetWinPathString().IsEmpty() || one == (*list)[j].GetGitPathString() || (PathIsDirectory(g_Git.m_CurrentDir + L"\\" + (*list)[j].GetWinPathString()) && one.Find((*list)[j].GetGitPathString() + _T("/")) == 0)))
+			if (!(!list || (*list)[j].GetWinPathString().IsEmpty() || one == (*list)[j].GetGitPathString() || (PathIsDirectory(g_Git.CombinePath((*list)[j].GetWinPathString())) && one.Find((*list)[j].GetGitPathString() + _T("/")) == 0)))
 				continue;
 
 			//SetFromGit will clear all status

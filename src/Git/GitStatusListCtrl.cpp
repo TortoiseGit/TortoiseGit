@@ -3040,11 +3040,7 @@ void CGitStatusListCtrl::OnLvnGetInfoTip(NMHDR *pNMHDR, LRESULT *pResult)
 	if (entry)
 		if (pGetInfoTip->cchTextMax > entry->GetGitPathString().GetLength() + g_Git.m_CurrentDir.GetLength())
 		{
-			CString str;
-			str += g_Git.m_CurrentDir;
-			str += _T("\\");
-			str += entry->GetWinPathString();
-
+			CString str = g_Git.CombinePath(entry->GetWinPathString());
 			_tcsncpy_s(pGetInfoTip->pszText, pGetInfoTip->cchTextMax, str.GetBuffer(), str.GetLength());
 		}
 }

@@ -1671,9 +1671,7 @@ CString CTortoiseGitBlameView::ResolveCommitFile(const CString& path)
 	}
 	else
 	{
-		CTGitPath tgp(g_Git.m_CurrentDir);
-		tgp.AppendPathString(path);
-		return tgp.GetWinPathString();
+		return g_Git.CombinePath(path);
 	}
 }
 
