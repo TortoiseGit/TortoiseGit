@@ -1995,6 +1995,9 @@ CString CAppUtils::GetClipboardLink(const CString &skipGitPrefix, int paramsCoun
 		if(sClipboardText.Find( _T("ssh://")) == 0)
 			return sClipboardText;
 
+		if (sClipboardText.Find(_T("git@")) == 0)
+			return sClipboardText;
+
 		if(sClipboardText.GetLength()>=2)
 			if( sClipboardText[1] == _T(':') )
 				if( (sClipboardText[0] >= 'A' &&  sClipboardText[0] <= 'Z')
