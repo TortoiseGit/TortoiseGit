@@ -512,7 +512,7 @@ Don't touch these lines:
 						<row>
 							<entry condition="pot">:stashsave</entry>
 							<entry>
-								<option>/path</option>.
+								<option>/path. A prefilled mesage can be achieved by using the <option>/msg</option> parameter.</option>.
 							</entry>
 						</row>
 						<row>

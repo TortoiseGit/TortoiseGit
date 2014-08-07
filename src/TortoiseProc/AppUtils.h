@@ -158,7 +158,7 @@ public:
 	static bool ConflictEdit(CTGitPath& file, bool bAlternativeTool = false, bool revertTheirMy = false, HWND resolveMsgHwnd = nullptr);
 
 	static CString GetMergeTempFile(CString str,CTGitPath &merge);
-	static bool	StashSave();
+	static bool	StashSave(const CString& msg = CString());
 	static bool StashApply(CString ref, bool showChanges = true);
 	static bool	StashPop(bool showChanges = true);
 

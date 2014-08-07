@@ -76,10 +76,10 @@ CAppUtils::~CAppUtils(void)
 {
 }
 
-bool CAppUtils::StashSave()
+bool CAppUtils::StashSave(const CString& msg)
 {
 	CStashSaveDlg dlg;
-
+	dlg.m_sMessage = msg;
 	if (dlg.DoModal() == IDOK)
 	{
 		CString cmd;
