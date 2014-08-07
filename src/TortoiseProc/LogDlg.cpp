@@ -1184,7 +1184,7 @@ void CLogDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 		{
 			// add the 'default' entries
 			sMenuItemText.LoadString(IDS_SCIEDIT_COPY);
-			popup.AppendMenu(MF_STRING | MF_ENABLED, WM_COPY, sMenuItemText);
+			popup.AppendMenuIcon(WM_COPY, sMenuItemText, IDI_COPYCLIP);
 			sMenuItemText.LoadString(IDS_SCIEDIT_SELECTALL);
 			popup.AppendMenu(MF_STRING | MF_ENABLED, EM_SETSEL, sMenuItemText);
 			sMenuItemText.LoadString(IDS_EDIT_NOTES);
