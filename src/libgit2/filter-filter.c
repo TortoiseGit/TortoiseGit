@@ -58,7 +58,10 @@ static int filter_check(
 	
 	*payload = git__strdup(attr_values[0]);
 	if (!*payload)
-		return 1;
+	{
+		giterr_set_oom();
+		return -1;
+	}
 
 	return 0;
 }
@@ -95,7 +98,10 @@ static int expandPerCentF(git_buf *buf, const char *replaceWith)
 		if (lastPercentage)
 			git_buf_put(&expanded, lastPercentage, idx - lastPercentage);
 		if (git_buf_oom(&expanded))
+		{
+			giterr_set_oom();
 			return -1;
+		}
 		git_buf_swap(buf, &expanded);
 		git_buf_free(&expanded);
 	}
@@ -136,8 +142,10 @@ static int filter_apply(
 		return -1;
 
 	git_buf_join3(&configKey, '.', "filter", *payload, "required");
-	if (git_buf_oom(&configKey))
+	if (git_buf_oom(&configKey)) {
+		giterr_set_oom();
 		return -1;
+	}
 
 	error = git_config_get_bool(&isRequired, config, configKey.ptr);
 	git_buf_free(&configKey);
@@ -150,8 +158,10 @@ static int filter_apply(
 	} else {
 		git_buf_puts(&configKey, ".clean");
 	}
-	if (git_buf_oom(&configKey))
+	if (git_buf_oom(&configKey)) {
+		giterr_set_oom();
 		return -1;
+	}
 
 	error = git_config_get_string(&cmd, config, configKey.ptr);
 	git_buf_free(&configKey);
@@ -165,11 +175,13 @@ static int filter_apply(
 	}
 
 	git_buf_puts(&cmdBuf, cmd);
-	if (git_buf_oom(&cmdBuf))
+	if (git_buf_oom(&cmdBuf)) {
+		giterr_set_oom();
 		return -1;
+	}
 
 	if (expandPerCentF(&cmdBuf, git_filter_source_path(src)))
-		return 1;
+		return -1;
 
 	if (ffs->shexepath) {
 		// build params for sh.exe
@@ -177,6 +189,11 @@ static int filter_apply(
 		git_buf_puts(&shParams, " -c \"");
 		git_buf_text_puts_escaped(&shParams, cmdBuf.ptr, "\"\\", "\\");
 		git_buf_puts(&shParams, "\"");
+		if (git_buf_oom(&shParams)) {
+			git_buf_free(&cmdBuf);
+			giterr_set_oom();
+			return -1;
+		}
 		git_buf_swap(&shParams, &cmdBuf);
 		git_buf_free(&shParams);
 	}
@@ -184,7 +201,8 @@ static int filter_apply(
 	if (git__utf8_to_16_alloc(&wide_cmd, cmdBuf.ptr) < 0)
 	{
 		git_buf_free(&cmdBuf);
-		return 1;
+		giterr_set_oom();
+		return -1;
 	}
 	git_buf_free(&cmdBuf);
 
@@ -194,6 +212,7 @@ static int filter_apply(
 		wchar_t *tmp = git__calloc(len, sizeof(wchar_t));
 		if (!tmp) {
 			git__free(wide_cmd);
+			giterr_set_oom();
 			return -1;
 		}
 		wcscat_s(tmp, len, ffs->shexepath);

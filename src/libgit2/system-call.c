@@ -75,15 +75,19 @@ static HANDLE commmand_start_reading_thread(HANDLE *handle, git_buf *dest)
 {
 	struct ASYNCREADINGTHREADARGS *threadArguments = git__calloc(1, sizeof(struct ASYNCREADINGTHREADARGS));
 	HANDLE thread;
-	if (!threadArguments)
+	if (!threadArguments) {
+		giterr_set_oom();
 		return NULL;
+	}
 
 	threadArguments->handle = handle;
 	threadArguments->dest = dest;
 
 	thread = CreateThread(NULL, 0, AsyncReadingThread, threadArguments, 0, NULL);
-	if (!thread)
+	if (!thread) {
 		git__free(threadArguments);
+		giterr_set(GITERR_OS, "Could not create thread");
+	}
 	return thread;
 }
 
@@ -139,6 +143,7 @@ int command_start(wchar_t *cmd, COMMAND_HANDLE *commandHandle, LPWSTR pEnv)
 		return -1;
 	}
 	if (commandHandle->errBuf && !CreatePipe(&hReadError, &hWriteError, &sa, 0)) {
+		giterr_set(GITERR_OS, "Could not create pipe");
 		CloseHandle(hReadOut);
 		CloseHandle(hWriteOut);
 		CloseHandle(hReadIn);
@@ -152,6 +157,7 @@ int command_start(wchar_t *cmd, COMMAND_HANDLE *commandHandle, LPWSTR pEnv)
 
 	// Ensure the read/write handle to the pipe for STDOUT resp. STDIN are not inherited.
 	if (!SetHandleInformation(hReadOut, HANDLE_FLAG_INHERIT, 0) || !SetHandleInformation(hWriteIn, HANDLE_FLAG_INHERIT, 0) || (commandHandle->errBuf && !SetHandleInformation(hReadError, HANDLE_FLAG_INHERIT, 0))) {
+		giterr_set(GITERR_OS, "SetHandleInformation failed");
 		CloseHandle(hReadOut);
 		CloseHandle(hWriteOut);
 		CloseHandle(hReadIn);
