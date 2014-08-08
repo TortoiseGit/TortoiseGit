@@ -39,7 +39,6 @@
 #include "Settings\setmainpage.h"
 #include "Libraries.h"
 #include "TaskbarUUID.h"
-#include "SoundUtils.h"
 #include "ProjectProperties.h"
 
 #define STRUCT_IOVEC_DEFINED
@@ -607,7 +606,6 @@ void CTortoiseProcApp::CheckUpgrade()
 
 	if (lVersion <= 0x01080202)
 	{
-		CSoundUtils::RegisterTGitSounds();
 		// upgrade to 1.8.3: force recreation of all diff scripts.
 		CAppUtils::SetupDiffScripts(true, CString());
 	}

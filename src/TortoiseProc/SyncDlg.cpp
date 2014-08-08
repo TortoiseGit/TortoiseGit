@@ -30,7 +30,6 @@
 #include "RebaseDlg.h"
 #include "hooks.h"
 #include "SmartHandle.h"
-#include "SoundUtils.h"
 #include "ProgressCommands/FetchProgressCommand.h"
 
 // CSyncDlg dialog
@@ -1260,7 +1259,7 @@ LRESULT CSyncDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 			CString err;
 			err.Format(_T("\r\n\r\n%s (%lu ms @ %s)\r\n"), log, tickSpent, strEndTime);
 			CProgressDlg::InsertColorText(this->m_ctrlCmdOut, err, RGB(255,0,0));
-			CSoundUtils::PlayTGitError();
+			PlaySound((LPCTSTR)SND_ALIAS_SYSTEMEXCLAMATION, NULL, SND_ALIAS_ID | SND_ASYNC);
 		}
 		else
 		{

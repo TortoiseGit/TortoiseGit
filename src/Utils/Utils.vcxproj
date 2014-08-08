@@ -67,7 +67,6 @@
     <ClCompile Include="RegHistory.cpp" />
     <ClCompile Include="Registry.cpp" />
     <ClCompile Include="ShellUpdater.cpp" />
-    <ClCompile Include="SoundUtils.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
@@ -113,7 +112,6 @@
     <ClInclude Include="JumpListHelpers.h" />
     <ClInclude Include="MailMsg.h" />
     <ClInclude Include="SmartHandle.h" />
-    <ClInclude Include="SoundUtils.h" />
     <ClInclude Include="SysInfo.h" />
     <ClInclude Include="TaskbarUUID.h" />
     <ClInclude Include="TempFile.h" />

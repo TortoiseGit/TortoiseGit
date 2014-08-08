@@ -84,9 +84,6 @@
     <ClCompile Include="ShellUpdater.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SoundUtils.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -216,9 +213,6 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="SmartHandle.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SoundUtils.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="SysInfo.h">

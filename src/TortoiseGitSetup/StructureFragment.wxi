@@ -847,21 +847,6 @@
 						<Shortcut Id="S__TortoiseMerge" Directory="D_TortoisePrgMenu" Name="TortoiseGitMerge" Advertise="no" Target="[INSTALLDIR]bin\TortoiseGitMerge.exe" Description="View Diff's, Merge Diff's, Resolve Conflicted Files and Apply Patches" Show="normal" />
 					</Component>
 
-					<Component Id="C__Sounds" Guid="$(var.GuidSounds)" Win64="$(var.Win64YesNo)">
-						<File Id="F__sounderror" Name="TortoiseGit_Error.wav" DiskId="1" Source="..\Resources\TortoiseGit_Error.wav" KeyPath="yes" />
-						<File Id="F__soundwarning" Name="TortoiseGit_Warning.wav" DiskId="1" Source="..\Resources\TortoiseGit_Warning.wav" />
-						<File Id="F__soundnotification" Name="TortoiseGit_Notification.wav" DiskId="1" Source="..\Resources\TortoiseGit_Notification.wav" />
-					</Component>
-
-					<Component Id="C__SoundsRegistry" Guid="$(var.GuidSoundsReg)" Win64="$(var.Win64YesNo)">
-						<!-- only used because this component needs a key path! -->
-						<RegistryValue Root="HKCU" Key="Software\TortoiseGit" KeyPath="yes" Name="SoundUtils KeyPath" Value="keypath" Type="string" />
-						<RemoveRegistryKey Action="removeOnUninstall" Root="HKCU" Key="AppEvents\EventLabels\TGit_Error" />
-						<RemoveRegistryKey Action="removeOnUninstall" Root="HKCU" Key="AppEvents\EventLabels\TGit_Warning" />
-						<RemoveRegistryKey Action="removeOnUninstall" Root="HKCU" Key="AppEvents\EventLabels\TGit_Notification" />
-						<RemoveRegistryKey Action="removeOnUninstall" Root="HKCU" Key="AppEvents\Schemes\Apps\TortoiseGitProc" />
-					</Component>
-
 					<Component Id="C__TortoiseBlame" Guid="$(var.GuidTortoiseBlame)" Win64="$(var.Win64YesNo)">
 						<File Id="F__TortoiseBlame" Name="TortoiseGitBlame.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGitBlame.exe" KeyPath="yes" />
 						<File Id="F__SciLexer" Name="SciLexer_tgit.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\SciLexer_tgit.dll" />

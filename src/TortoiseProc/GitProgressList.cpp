@@ -23,7 +23,6 @@
 #include "registry.h"
 #include "AppUtils.h"
 #include "StringUtils.h"
-#include "SoundUtils.h"
 #include "LogFile.h"
 #include "LoglistUtils.h"
 #include "AppUtils.h"
@@ -389,20 +388,20 @@ void CGitProgressList::ReportUserCanceled()
 
 void CGitProgressList::ReportError(const CString& sError)
 {
-	CSoundUtils::PlayTGitError();
+	PlaySound((LPCTSTR)SND_ALIAS_SYSTEMEXCLAMATION, NULL, SND_ALIAS_ID | SND_ASYNC);
 	ReportString(sError, CString(MAKEINTRESOURCE(IDS_ERR_ERROR)), m_Colors.GetColor(CColors::Conflict));
 	m_bErrorsOccurred = true;
 }
 
 void CGitProgressList::ReportWarning(const CString& sWarning)
 {
-	CSoundUtils::PlayTGitWarning();
+	PlaySound((LPCTSTR)SND_ALIAS_SYSTEMDEFAULT, NULL, SND_ALIAS_ID | SND_ASYNC);
 	ReportString(sWarning, CString(MAKEINTRESOURCE(IDS_WARN_WARNING)), m_Colors.GetColor(CColors::Conflict));
 }
 
 void CGitProgressList::ReportNotification(const CString& sNotification)
 {
-	CSoundUtils::PlayTGitNotification();
+	PlaySound((LPCTSTR)SND_ALIAS_SYSTEMDEFAULT, NULL, SND_ALIAS_ID | SND_ASYNC);
 	ReportString(sNotification, CString(MAKEINTRESOURCE(IDS_WARN_NOTE)));
 }
 
