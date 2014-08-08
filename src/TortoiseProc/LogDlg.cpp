@@ -1185,11 +1185,13 @@ void CLogDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 			int start = -1, end = -1;
 			((CEdit *)GetDlgItem(IDC_MSGVIEW))->GetSel(start, end);
 			// add the 'default' entries
-			sMenuItemText.LoadString(IDS_FILEDIFF_POPCLIPBOARD);
-			if (start < end)
-				popup.AppendMenuIcon(WM_COPY, sMenuItemText, IDI_COPYCLIP);
+			popup.AppendMenuIcon(WM_COPY, IDS_SCIEDIT_COPY, IDI_COPYCLIP);
+			if (start >= end)
+				popup.EnableMenuItem(WM_COPY, MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
+			popup.AppendMenu(MF_SEPARATOR);
 			sMenuItemText.LoadString(IDS_SCIEDIT_SELECTALL);
 			popup.AppendMenu(MF_STRING | MF_ENABLED, EM_SETSEL, sMenuItemText);
+			popup.AppendMenu(MF_SEPARATOR, NULL);
 			sMenuItemText.LoadString(IDS_EDIT_NOTES);
 			popup.AppendMenuIcon( CGitLogList::ID_EDITNOTE, sMenuItemText, IDI_EDIT);
 
