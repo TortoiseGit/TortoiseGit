@@ -1182,9 +1182,12 @@ void CLogDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 		CIconMenu popup;
 		if (popup.CreatePopupMenu())
 		{
+			int start = -1, end = -1;
+			((CEdit *)GetDlgItem(IDC_MSGVIEW))->GetSel(start, end);
 			// add the 'default' entries
-			sMenuItemText.LoadString(IDS_SCIEDIT_COPY);
-			popup.AppendMenuIcon(WM_COPY, sMenuItemText, IDI_COPYCLIP);
+			sMenuItemText.LoadString(IDS_FILEDIFF_POPCLIPBOARD);
+			if (start < end)
+				popup.AppendMenuIcon(WM_COPY, sMenuItemText, IDI_COPYCLIP);
 			sMenuItemText.LoadString(IDS_SCIEDIT_SELECTALL);
 			popup.AppendMenu(MF_STRING | MF_ENABLED, EM_SETSEL, sMenuItemText);
 			sMenuItemText.LoadString(IDS_EDIT_NOTES);
