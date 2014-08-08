@@ -635,6 +635,11 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 
 		case ID_CHERRY_PICK:
 			{
+				if (m_bThreadRunning)
+				{
+					MessageBox(_T("This operation cannot be started while the log dialog is still loading commits."), _T("TortoiseGit"), MB_ICONEXCLAMATION);
+					break;
+				}
 				CRebaseDlg dlg;
 				dlg.m_IsCherryPick = TRUE;
 				dlg.m_Upstream = this->m_CurrentBranch;
@@ -655,6 +660,11 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			break;
 		case ID_REBASE_TO_VERSION:
 			{
+				if (m_bThreadRunning)
+				{
+					MessageBox(_T("This operation cannot be started while the log dialog is still loading commits."), _T("TortoiseGit"), MB_ICONEXCLAMATION);
+					break;
+				}
 				CRebaseDlg dlg;
 				auto refList = m_HashMap[pSelLogEntry->m_CommitHash];
 				dlg.m_Upstream = refList.empty() ? pSelLogEntry->m_CommitHash.ToString() : refList.front();
