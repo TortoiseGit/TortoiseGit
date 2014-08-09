@@ -19,10 +19,10 @@
 //
 #include "stdafx.h"
 #include "LoglistCommonResource.h"
-#include "..\PathUtils.h"
-#include "..\UnicodeUtils.h"
+#include "PathUtils.h"
+#include "UnicodeUtils.h"
 #include <string>
-#include "..\registry.h"
+#include "registry.h"
 #include "SciEdit.h"
 #include "SysInfo.h"
 
