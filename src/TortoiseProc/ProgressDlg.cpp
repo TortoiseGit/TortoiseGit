@@ -796,17 +796,32 @@ BOOL CProgressDlg::PreTranslateMessage(MSG* pMsg)
 			CIconMenu popup;
 			if (popup.CreatePopupMenu())
 			{
+				long start = -1, end = -1;
+				auto pEdit = (CRichEditCtrl *)GetDlgItem(IDC_LOG);
+				pEdit->GetSel(start, end);
 				popup.AppendMenuIcon(WM_COPY, IDS_SCIEDIT_COPY, IDI_COPYCLIP);
-				if (m_Log.GetSelText().IsEmpty())
+				if (start >= end)
 					popup.EnableMenuItem(WM_COPY, MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
 				popup.AppendMenu(MF_SEPARATOR);
-				popup.AppendMenuIcon(EM_SETSEL, IDS_SCIEDIT_SELECTALL);
+				popup.AppendMenuIcon(EM_SETSEL, IDS_STATUSLIST_CONTEXT_COPYEXT, IDI_COPYCLIP);
 				int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, pMsg->pt.x, pMsg->pt.y, this);
 				switch (cmd)
 				{
 					case 0: // no command selected
 						break;
 					case EM_SETSEL:
+						{
+							pEdit->SetRedraw(FALSE);
+							int oldLine = pEdit->GetFirstVisibleLine();
+							pEdit->SetSel(0, -1);
+							pEdit->Copy();
+							pEdit->SetSel(start, end);
+							int newLine = pEdit->GetFirstVisibleLine();
+							pEdit->LineScroll(oldLine - newLine);
+							pEdit->SetRedraw(TRUE);
+							pEdit->RedrawWindow();
+						}
+						break;
 					case WM_COPY:
 						::SendMessage(GetDlgItem(IDC_LOG)->GetSafeHwnd(), cmd, 0, -1);
 						break;

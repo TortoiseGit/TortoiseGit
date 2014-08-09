@@ -1182,15 +1182,16 @@ void CLogDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 		CIconMenu popup;
 		if (popup.CreatePopupMenu())
 		{
-			int start = -1, end = -1;
-			((CEdit *)GetDlgItem(IDC_MSGVIEW))->GetSel(start, end);
+			long start = -1, end = -1;
+			auto pEdit = (CRichEditCtrl *)GetDlgItem(IDC_MSGVIEW);
+			pEdit->GetSel(start, end);
 			// add the 'default' entries
 			popup.AppendMenuIcon(WM_COPY, IDS_SCIEDIT_COPY, IDI_COPYCLIP);
 			if (start >= end)
 				popup.EnableMenuItem(WM_COPY, MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
 			popup.AppendMenu(MF_SEPARATOR);
-			sMenuItemText.LoadString(IDS_SCIEDIT_SELECTALL);
-			popup.AppendMenu(MF_STRING | MF_ENABLED, EM_SETSEL, sMenuItemText);
+			sMenuItemText.LoadString(IDS_STATUSLIST_CONTEXT_COPYEXT);
+			popup.AppendMenuIcon(EM_SETSEL, sMenuItemText, IDI_COPYCLIP);
 			popup.AppendMenu(MF_SEPARATOR, NULL);
 			sMenuItemText.LoadString(IDS_EDIT_NOTES);
 			popup.AppendMenuIcon( CGitLogList::ID_EDITNOTE, sMenuItemText, IDI_EDIT);
@@ -1201,6 +1202,18 @@ void CLogDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 			case 0:
 				break;	// no command selected
 			case EM_SETSEL:
+				{
+					pEdit->SetRedraw(FALSE);
+					int oldLine = pEdit->GetFirstVisibleLine();
+					pEdit->SetSel(0, -1);
+					pEdit->Copy();
+					pEdit->SetSel(start, end);
+					int newLine = pEdit->GetFirstVisibleLine();
+					pEdit->LineScroll(oldLine - newLine);
+					pEdit->SetRedraw(TRUE);
+					pEdit->RedrawWindow();
+				}
+				break;
 			case WM_COPY:
 				::SendMessage(GetDlgItem(IDC_MSGVIEW)->GetSafeHwnd(), cmd, 0, -1);
 				break;
