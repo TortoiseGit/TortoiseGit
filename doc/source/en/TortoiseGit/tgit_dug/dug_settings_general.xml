@@ -414,6 +414,16 @@
 				</listitem>
 			</varlistentry>
 			<varlistentry>
+				<term>Sort tag list in reversed order</term>
+				<listitem>
+					<para>
+						When enabled, tag list is sorted in reversed order.
+						It is because newer versions are more useful.
+						e.g. Export Dialog allows to select the latest tag when this option is enabled.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
 				<term>Use auto-completion of file paths and keywords</term>
 				<listitem>
 					<para>

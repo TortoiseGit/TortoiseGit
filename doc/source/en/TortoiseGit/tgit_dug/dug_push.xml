@@ -42,8 +42,20 @@
 	<sect2>
 		<title>Options</title>
 		<para>
-			<guilabel>Force Overwrite Existing Branch(May discard changes)</guilabel>
-			This allows remote repository to accept a non-fast-forward push. This can cause the remote repository to lose commits; use it with care.
+			<guilabel>Force (May discard known changes)</guilabel>
+			This allows remote repository to accept a safer non-fast-forward push. This can cause the remote repository to lose commits; use it with care.
+			This can prevent from losing unknown changes from other people on the remote.
+			It checks if the server branch points to the same commit as the remote-tracking branch (known changes).
+			If yes, a force push will be performed. Otherwise it will be rejected.
+			Since git does not have remote-tracking tags, tags cannot be overwritten using this option.
+			This passes <literal>--force-with-lease</literal> option of <literal>git push</literal> command.
+		</para>
+		<para>
+			<guilabel>Force (May discard unknown changes)</guilabel>
+			This allows remote repository to accept an unsafe non-fast-forward push. This can cause the remote repository to lose commits; use it with care.
+			This does not check any server commits, so it is possible to lose unknown changes on the remote.
+			Use this option with <guilabel>Include Tags</guilabel> to overwrite tags.
+			This passes the traditional <literal>--force</literal> option of <literal>git push</literal> command.
 		</para>
 		<para>
 			<guilabel>Use Thin Pack(For slow network connections)</guilabel>

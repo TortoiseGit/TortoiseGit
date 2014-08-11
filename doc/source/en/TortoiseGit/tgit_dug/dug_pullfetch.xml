@@ -57,6 +57,9 @@
   <para>
     <guilabel>Prune</guilabel> has three states: True to remove remote-tracking branches which no longer exist on the remote, false: not to remove, and third state: use default behavior (based on remote <option>name</option>.prune or fetch.prune setting).
   </para>
+  <para>
+    <guilabel>Depth</guilabel> allows you to do a shallow pull/fetch on a shallow-clone repository with a specified depth.
+  </para>
   <tip>
     <para>You can find more information about PuTTY and using ssh-keys at <xref linkend="tgit-ssh-howto"/>.</para>
   </tip>

@@ -39,6 +39,22 @@
             Default is set.
         </para>
         <para>
+            <guilabel>Use spaces</guilabel>
+            when set, pressing tab key inserts spaces.
+            Default is unset (tab char is used).
+        </para>
+        <para>
+            <guilabel>Smart tab char</guilabel>
+            when set, pressing tab key inserts tab/spaces based on adjacent lines/characters.
+            Default is unset.
+        </para>
+        <para>
+            <guilabel>EditorConfig</guilabel>
+            when set, it will detect <literal>.editorconfig</literal> files.
+            Currently, it supports indent_style(space/tab) and indent_size properties.
+            See <ulink url="http://editorconfig.org/"><citetitle>EditorConfig</citetitle></ulink> website for more details.
+        </para>
+        <para>
             <guilabel>Max line length for inline diffs</guilabel>
             TortoiseGitMerge can get slow when showing inline diffs for
             very long lines. Because of that only lines that are shorter
@@ -54,6 +70,12 @@
             hides changes which are due solely to case changes within the text.
             This can be useful with apps such as Visual Basic, which changes
             case in variables without warning.
+        </para>
+        <para>
+            <guilabel>Context lines for patches</guilabel>
+            specifies how many context lines for patch files generated from TortoiseGitMerge.
+            The default value is -1, which means context lines number is controlled 
+            by git or <literal>diff.context</literal> config.
         </para>
     </sect2>
     <sect2 id="tmerge-dug-settings-color">
