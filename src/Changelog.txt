@@ -1,5 +1,5 @@
 ﻿= Release 1.8.10.0 =
-Released: unreleased
+Released: 2014-08-12
 
 == Features ==
  * Updated shipped libgit2 to version 0.21
@@ -43,6 +43,11 @@ Released: unreleased
  * TortoiseGitMerge: Do not draw EOL mark in line number region
  * TortoiseGitMerge: No need to expand tab to spaces when finding inline diff positions
  * Repository Browser said commit not found in submodule
+
+== Known Issues ==
+ * There seems to be a bug in the MFC library which occurrs when opening the revision graph in the x64
+   version on AMD CPUs, we cannot fix this. Please vote for this on Microsoft Connect:
+   https://connect.microsoft.com/VisualStudio/feedback/details/893171/c000001d-illegal-instruction-on-msvcr120-log-0x2d3-on-x64. 
 
 = Release 1.8.9.0 =
 Released: 2014-06-09
