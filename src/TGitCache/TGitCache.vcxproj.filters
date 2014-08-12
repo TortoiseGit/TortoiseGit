@@ -94,7 +94,7 @@
       <Filter>Source Files\Utils</Filter>
     </ClCompile>
     <ClCompile Include="..\Git\MassiveGitTaskBase.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Git</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -172,6 +172,9 @@
     </ClInclude>
     <ClInclude Include="..\TortoiseShell\ShellCache.h">
       <Filter>Source Files\TortoiseShell</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Git\MassiveGitTaskBase.h">
+      <Filter>Source Files\Git</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

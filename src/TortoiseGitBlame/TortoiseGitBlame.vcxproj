@@ -51,6 +51,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\Git\Git.cpp" />
+    <ClCompile Include="..\Git\GitAdminDir.cpp" />
+    <ClCompile Include="..\Git\GitRev.cpp" />
+    <ClCompile Include="..\Git\MassiveGitTaskBase.cpp" />
+    <ClCompile Include="..\Git\TGitPath.cpp" />
     <ClCompile Include="..\TortoiseProc\Colors.cpp" />
     <ClCompile Include="..\TortoiseProc\GravatarPictureBox.cpp" />
     <ClCompile Include="..\Utils\CmdLineParser.cpp" />
@@ -72,6 +77,7 @@
     <ClCompile Include="..\Utils\SysImageList.cpp" />
     <ClCompile Include="..\Utils\SysInfo.cpp" />
     <ClCompile Include="..\Utils\TaskbarUUID.cpp" />
+    <ClCompile Include="..\Utils\TempFile.cpp" />
     <ClCompile Include="..\Utils\UnicodeUtils.cpp" />
     <ClCompile Include="EditGotoDlg.cpp" />
     <ClCompile Include="..\TortoiseMerge\FileTextLines.cpp" />
@@ -99,6 +105,13 @@
     <ClCompile Include="TortoiseGitBlameView.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Git\Git.h" />
+    <ClInclude Include="..\Git\GitAdminDir.h" />
+    <ClInclude Include="..\Git\GitHash.h" />
+    <ClInclude Include="..\Git\GitRev.h" />
+    <ClInclude Include="..\Git\gittype.h" />
+    <ClInclude Include="..\Git\MassiveGitTaskBase.h" />
+    <ClInclude Include="..\Git\TGitPath.h" />
     <ClInclude Include="..\Utils\CmdLineParser.h" />
     <ClInclude Include="..\Utils\DebugOutput.h" />
     <ClInclude Include="..\Utils\MiscUI\FilterEdit.h" />
@@ -117,6 +130,7 @@
     <ClInclude Include="..\Utils\SysImageList.h" />
     <ClInclude Include="..\Utils\SysInfo.h" />
     <ClInclude Include="..\Utils\TaskbarUUID.h" />
+    <ClInclude Include="..\Utils\TempFile.h" />
     <ClInclude Include="..\Utils\UnicodeUtils.h" />
     <ClInclude Include="BlameDetectMovedOrCopiedLines.h" />
     <ClInclude Include="BlameIndexColors.h" />
@@ -161,6 +175,9 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\ext\build\libgit2.vcxproj">
+      <Project>{2b4f366c-93ba-491e-87af-5ef7b37f75f7}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\ext\build\ScintillaLexer.vcxproj">
       <Project>{a5498556-ce09-4095-8335-08fc8370552d}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
@@ -175,10 +192,6 @@
     </ProjectReference>
     <ProjectReference Include="..\..\ext\ResizableLib\ResizableLib.vcxproj">
       <Project>{4be529fb-c2f2-49f7-a897-054b955564cf}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
-    <ProjectReference Include="..\Git\Git.vcxproj">
-      <Project>{7ca5b1eb-8cc9-40a6-96d8-83649c1a870b}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
   </ItemGroup>

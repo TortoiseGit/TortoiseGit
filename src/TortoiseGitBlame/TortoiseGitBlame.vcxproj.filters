@@ -25,6 +25,9 @@
     <Filter Include="Source Files\TortoiseGitMerge">
       <UniqueIdentifier>{71418e14-7775-42a8-bdfa-f326d4f55c30}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Git">
+      <UniqueIdentifier>{b7150578-0071-4e14-894a-29dfdb7a646e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EditGotoDlg.cpp">
@@ -159,6 +162,24 @@
     <ClCompile Include="..\TortoiseProc\ProjectProperties.cpp">
       <Filter>Source Files\TortoiseGitProc</Filter>
     </ClCompile>
+    <ClCompile Include="..\Utils\TempFile.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Git\Git.cpp">
+      <Filter>Source Files\Git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Git\GitAdminDir.cpp">
+      <Filter>Source Files\Git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Git\GitRev.cpp">
+      <Filter>Source Files\Git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Git\TGitPath.cpp">
+      <Filter>Source Files\Git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Git\MassiveGitTaskBase.cpp">
+      <Filter>Source Files\Git</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EditGotoDlg.h">
@@ -283,6 +304,30 @@
     </ClInclude>
     <ClInclude Include="..\Utils\DebugOutput.h">
       <Filter>Source Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\TempFile.h">
+      <Filter>Source Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Git\Git.h">
+      <Filter>Source Files\Git</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Git\GitAdminDir.h">
+      <Filter>Source Files\Git</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Git\GitHash.h">
+      <Filter>Source Files\Git</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Git\GitRev.h">
+      <Filter>Source Files\Git</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Git\gittype.h">
+      <Filter>Source Files\Git</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Git\TGitPath.h">
+      <Filter>Source Files\Git</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Git\MassiveGitTaskBase.h">
+      <Filter>Source Files\Git</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

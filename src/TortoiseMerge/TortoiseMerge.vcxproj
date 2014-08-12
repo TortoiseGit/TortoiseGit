@@ -51,10 +51,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\Git\Git.cpp" />
+    <ClCompile Include="..\Git\MassiveGitTaskBase.cpp" />
+    <ClCompile Include="..\Git\TGitPath.cpp" />
     <ClCompile Include="..\Utils\accHelper.cpp">
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\Utils\CommonAppUtils.cpp" />
+    <ClCompile Include="..\Utils\DebugOutput.cpp" />
     <ClCompile Include="..\Utils\MiscUI\FileDlgEventHandler.cpp" />
     <ClCompile Include="..\Utils\MiscUI\IconBitmapUtils.cpp" />
     <ClCompile Include="..\Utils\MiscUI\IconMenu.cpp" />
@@ -305,7 +309,12 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Git\Git.h" />
+    <ClInclude Include="..\Git\gittype.h" />
+    <ClInclude Include="..\Git\MassiveGitTaskBase.h" />
+    <ClInclude Include="..\Git\TGitPath.h" />
     <ClInclude Include="..\Utils\CommonAppUtils.h" />
+    <ClInclude Include="..\Utils\DebugOutput.h" />
     <ClInclude Include="..\Utils\MiscUI\FileDlgEventHandler.h" />
     <ClInclude Include="..\Utils\MiscUI\IconBitmapUtils.h" />
     <ClInclude Include="..\Utils\MiscUI\IconMenu.h" />
@@ -422,12 +431,14 @@
       <Project>{ae6aafba-9992-452a-9eb8-dd69402a4ace}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
+    <ProjectReference Include="..\..\ext\build\zlib.vcxproj">
+      <Project>{5c6b6a95-2053-4593-9617-c4f176736d5a}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ext\gitdll\gitdll.vcxproj">
+      <Project>{4f0a55de-dafd-4a0b-a03d-2c14cb77e08f}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\ext\ResizableLib\ResizableLib.vcxproj">
       <Project>{4be529fb-c2f2-49f7-a897-054b955564cf}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
-    <ProjectReference Include="..\Git\Git.vcxproj">
-      <Project>{7ca5b1eb-8cc9-40a6-96d8-83649c1a870b}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
   </ItemGroup>

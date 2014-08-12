@@ -19,8 +19,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CommonLibs", "CommonLibs", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CrashServerSDK", "CrashServerSDK", "{C8F4D789-D86F-4B0C-8C47-4B263027B1A6}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Git", "Git\Git.vcxproj", "{7CA5B1EB-8CC9-40A6-96D8-83649C1A870B}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TortoiseGitProc", "TortoiseProc\TortoiseProc.vcxproj", "{50797F06-39C5-4802-8E2B-7B7A4EF03214}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TortoiseGitUDiff", "TortoiseUDiff\TortoiseUDiff.vcxproj", "{BC5A5F3B-E41A-4C56-B16F-263D2C6D6475}"
@@ -252,14 +250,6 @@ Global
 		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{7CA5B1EB-8CC9-40A6-96D8-83649C1A870B}.Debug|Win32.ActiveCfg = Debug|Win32
-		{7CA5B1EB-8CC9-40A6-96D8-83649C1A870B}.Debug|Win32.Build.0 = Debug|Win32
-		{7CA5B1EB-8CC9-40A6-96D8-83649C1A870B}.Debug|x64.ActiveCfg = Debug|x64
-		{7CA5B1EB-8CC9-40A6-96D8-83649C1A870B}.Debug|x64.Build.0 = Debug|x64
-		{7CA5B1EB-8CC9-40A6-96D8-83649C1A870B}.Release|Win32.ActiveCfg = Release|Win32
-		{7CA5B1EB-8CC9-40A6-96D8-83649C1A870B}.Release|Win32.Build.0 = Release|Win32
-		{7CA5B1EB-8CC9-40A6-96D8-83649C1A870B}.Release|x64.ActiveCfg = Release|x64
-		{7CA5B1EB-8CC9-40A6-96D8-83649C1A870B}.Release|x64.Build.0 = Release|x64
 		{50797F06-39C5-4802-8E2B-7B7A4EF03214}.Debug|Win32.ActiveCfg = Debug|Win32
 		{50797F06-39C5-4802-8E2B-7B7A4EF03214}.Debug|Win32.Build.0 = Debug|Win32
 		{50797F06-39C5-4802-8E2B-7B7A4EF03214}.Debug|x64.ActiveCfg = Debug|x64

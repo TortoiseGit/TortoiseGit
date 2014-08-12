@@ -866,6 +866,30 @@
     <ClCompile Include="..\Utils\TempFile.cpp">
       <Filter>Utils\General</Filter>
     </ClCompile>
+    <ClCompile Include="..\Git\Git.cpp">
+      <Filter>Git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Git\GitAdminDir.cpp">
+      <Filter>Git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Git\GitRev.cpp">
+      <Filter>Git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Git\TGitPath.cpp">
+      <Filter>Git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Git\GitStatus.cpp">
+      <Filter>Git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Git\GitIndex.cpp">
+      <Filter>Git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\ReaderWriterLock.cpp">
+      <Filter>Utils\General</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Git\MassiveGitTaskBase.cpp">
+      <Filter>Git</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddRemoteDlg.h">
@@ -1575,6 +1599,39 @@
     </ClInclude>
     <ClInclude Include="..\Utils\TempFile.h">
       <Filter>Utils\General</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Git\Git.h">
+      <Filter>Git</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Git\GitAdminDir.h">
+      <Filter>Git</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Git\GitForWindows.h">
+      <Filter>Git</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Git\GitHash.h">
+      <Filter>Git</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Git\GitRev.h">
+      <Filter>Git</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Git\gittype.h">
+      <Filter>Git</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Git\TGitPath.h">
+      <Filter>Git</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Git\GitStatus.h">
+      <Filter>Git</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Git\gitindex.h">
+      <Filter>Git</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\ReaderWriterLock.h">
+      <Filter>Utils\General</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Git\MassiveGitTaskBase.h">
+      <Filter>Git</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

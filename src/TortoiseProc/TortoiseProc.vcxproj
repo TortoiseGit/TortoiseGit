@@ -52,6 +52,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\Git\Git.cpp" />
+    <ClCompile Include="..\Git\GitAdminDir.cpp" />
+    <ClCompile Include="..\Git\GitIndex.cpp" />
+    <ClCompile Include="..\Git\GitRev.cpp" />
+    <ClCompile Include="..\Git\GitStatus.cpp" />
+    <ClCompile Include="..\Git\MassiveGitTaskBase.cpp" />
+    <ClCompile Include="..\Git\TGitPath.cpp" />
     <ClCompile Include="..\Utils\ACEdit.cpp" />
     <ClCompile Include="..\Utils\ACListWnd.cpp" />
     <ClCompile Include="..\Utils\BugTraqAssociations.cpp" />
@@ -92,6 +99,7 @@
     <ClCompile Include="..\Utils\PathUtils.cpp" />
     <ClCompile Include="..\Utils\PathWatcher.cpp" />
     <ClCompile Include="..\Utils\PersonalDictionary.cpp" />
+    <ClCompile Include="..\Utils\ReaderWriterLock.cpp" />
     <ClCompile Include="..\Utils\RegHistory.cpp" />
     <ClCompile Include="..\Utils\Registry.cpp" />
     <ClCompile Include="..\Utils\ShellUpdater.cpp" />
@@ -291,6 +299,16 @@
     <ClCompile Include="UserPassword.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Git\Git.h" />
+    <ClInclude Include="..\Git\GitAdminDir.h" />
+    <ClInclude Include="..\Git\GitForWindows.h" />
+    <ClInclude Include="..\Git\GitHash.h" />
+    <ClInclude Include="..\Git\gitindex.h" />
+    <ClInclude Include="..\Git\GitRev.h" />
+    <ClInclude Include="..\Git\GitStatus.h" />
+    <ClInclude Include="..\Git\gittype.h" />
+    <ClInclude Include="..\Git\MassiveGitTaskBase.h" />
+    <ClInclude Include="..\Git\TGitPath.h" />
     <ClInclude Include="..\Utils\ACEdit.h" />
     <ClInclude Include="..\Utils\ACListWnd.h" />
     <ClInclude Include="..\Utils\BugTraqAssociations.h" />
@@ -334,6 +352,7 @@
     <ClInclude Include="..\Utils\PathUtils.h" />
     <ClInclude Include="..\Utils\PathWatcher.h" />
     <ClInclude Include="..\Utils\PersonalDictionary.h" />
+    <ClInclude Include="..\Utils\ReaderWriterLock.h" />
     <ClInclude Include="..\Utils\RegHistory.h" />
     <ClInclude Include="..\Utils\registry.h" />
     <ClInclude Include="..\Utils\ShellUpdater.h" />
@@ -696,10 +715,6 @@
     </ProjectReference>
     <ProjectReference Include="..\AsyncFramework\AsyncFramework.vcxproj">
       <Project>{98e4e6d3-0ef6-4570-a29e-274dacf3b784}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
-    <ProjectReference Include="..\Git\Git.vcxproj">
-      <Project>{7ca5b1eb-8cc9-40a6-96d8-83649c1a870b}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
     <ProjectReference Include="..\IBugTraqProvider\IBugTraqProvider.vcxproj">

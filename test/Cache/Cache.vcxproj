@@ -42,6 +42,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\src\Git\Git.cpp" />
     <ClCompile Include="..\..\src\Utils\DebugOutput.cpp" />
     <ClCompile Include="Cache.cpp" />
     <ClCompile Include="CacheDlg.cpp" />
@@ -60,6 +61,7 @@
     <ClCompile Include="..\..\src\Utils\UnicodeUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\src\Git\Git.h" />
     <ClInclude Include="..\..\src\Utils\DebugOutput.h" />
     <ClInclude Include="Cache.h" />
     <ClInclude Include="CacheDlg.h" />
@@ -86,10 +88,6 @@
     </ProjectReference>
     <ProjectReference Include="..\..\ext\gitdll\gitdll.vcxproj">
       <Project>{4f0a55de-dafd-4a0b-a03d-2c14cb77e08f}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
-    <ProjectReference Include="..\..\src\Git\Git.vcxproj">
-      <Project>{7ca5b1eb-8cc9-40a6-96d8-83649c1a870b}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
   </ItemGroup>

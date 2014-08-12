@@ -25,7 +25,7 @@
 #include "PathUtils.h"
 #include <regex>
 #include "Git.h"
-#include "Globals.h"
+#include "../TortoiseShell/Globals.h"
 #include "StringUtils.h"
 #include "../Resources/LoglistCommonResource.h"
 #include <memory>
