@@ -2526,6 +2526,8 @@ bool CAppUtils::Push(CString selectLocalBranch)
 			progress.m_GitCmdList.push_back(cmd);
 		}
 
+		CString superprojectRoot;
+		g_GitAdminDir.HasAdminDir(g_Git.m_CurrentDir, false, &superprojectRoot);
 		progress.m_PostCmdCallback = [&](DWORD status, PostCmdList& postCmdList)
 		{
 			// need to execute hooks as those might be needed by post action commands
@@ -2556,6 +2558,15 @@ bool CAppUtils::Push(CString selectLocalBranch)
 			postCmdList.push_back(PostCmd(IDS_PROC_REQUESTPULL, [&]{ RequestPull(dlg.m_BranchRemoteName); }));
 			postCmdList.push_back(PostCmd(IDI_PUSH, IDS_MENUPUSH, [&]{ Push(selectLocalBranch); }));
 			postCmdList.push_back(PostCmd(IDI_SWITCH, IDS_MENUSWITCH, [&]{ Switch(); }));
+			if (!superprojectRoot.IsEmpty())
+			{
+				postCmdList.push_back(PostCmd(IDI_COMMIT, IDS_PROC_COMMIT_SUPERPROJECT, [&]
+				{
+					CString sCmd;
+					sCmd.Format(_T("/command:commit /path:\"%s\""), superprojectRoot);
+					RunTortoiseGitProc(sCmd);
+				}));
+			}
 		};
 
 		INT_PTR ret = progress.DoModal();

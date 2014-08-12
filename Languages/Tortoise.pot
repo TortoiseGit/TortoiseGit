@@ -2772,6 +2772,10 @@ msgstr ""
 msgid "Commit Ordering:"
 msgstr ""
 
+#. Resource IDs: (96)
+msgid "Commit super project"
+msgstr ""
+
 #. Resource IDs: (1110)
 msgid "Commit to:"
 msgstr ""

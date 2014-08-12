@@ -4453,6 +4453,7 @@ BEGIN
     IDS_FORCE_TT            "Force push to the selected remote reference and override it without any safety checks.\nThis can cause the remote repository to lose unseen commits; use it with care.\nThis option corresponds to the --force git option."
     IDS_PROC_REBASE_CONTINUE_NOTCLEAN 
                             "The working tree is not clean and contains unstaged changes. This can cause conflicts white rebasing/cherry picking."
+    IDS_PROC_COMMIT_SUPERPROJECT "Commit super project"
 END
 
 #endif    // English (U.S.) resources
