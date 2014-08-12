@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2014-05-31 10:17+0000\n"
+"PO-Revision-Date: 2014-08-03 21:42+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Bulgarian (Bulgaria) (http://www.transifex.com/projects/p/tortoisegit/language/bg_BG/)\n"
 "MIME-Version: 1.0\n"
@@ -47,13 +47,8 @@ msgstr "# автори, показани поотделно:"
 
 #. Resource IDs: (357)
 #, c-format
-msgid "%.2f MBytes transferred"
-msgstr "%.2f мегабайта прехвърлени"
-
-#. Resource IDs: (357)
-#, c-format
-msgid "%.2f kBytes/s"
-msgstr "%.2f килобайта/сек"
+msgid "%.2f MiB transferred"
+msgstr ""
 
 #. Resource IDs: (3868)
 #, c-format
@@ -201,8 +196,8 @@ msgstr "%I64d байта прехвърлени"
 
 #. Resource IDs: (357)
 #, c-format
-msgid "%I64d kBytes transferred"
-msgstr "%I64d килобайта прехвърлени"
+msgid "%I64d KiB transferred"
+msgstr ""
 
 #. Resource IDs: (75)
 #, c-format
@@ -241,11 +236,6 @@ msgid ""
 "click to toggle alpha\n"
 "double click to automatically toggle alpha"
 msgstr "%i%% alpha\nкликни за да включиш алфа\nкликни два пъти за да избереш алфа автоматчно"
-
-#. Resource IDs: (357)
-#, c-format
-msgid "%ld Bytes/s"
-msgstr "%ld байта/с"
 
 #. Resource IDs: (226)
 #, c-format
@@ -1076,6 +1066,10 @@ msgstr "&Премахване"
 msgid "&Remove this file from index"
 msgstr ""
 
+#. Resource IDs: (1511)
+msgid "&Replace"
+msgstr ""
+
 #. Resource IDs: (15)
 msgid "&Repo-browser"
 msgstr "&Разглеждане на хранилища"
@@ -1338,6 +1332,10 @@ msgstr ""
 
 #. Resource IDs: (1657)
 msgid "&ignore space change"
+msgstr ""
+
+#. Resource IDs: (1498)
+msgid "&known changes"
 msgstr ""
 
 #. Resource IDs: (88)
@@ -1953,6 +1951,10 @@ msgstr "Арабски"
 #. Resource IDs: (1495)
 msgid "Arbitrary &URL:"
 msgstr "&URL:"
+
+#. Resource IDs: (1258)
+msgid "Are you sure to reset columns?"
+msgstr ""
 
 #. Resource IDs: (68)
 msgid "Are you sure you want to abort the rebase process?"
@@ -2671,6 +2673,14 @@ msgstr "Изчистване"
 msgid "Clean Type"
 msgstr "Изчистен тип"
 
+#. Resource IDs: (96)
+msgid "Clean permanently"
+msgstr ""
+
+#. Resource IDs: (96)
+msgid "Clean to recycle bin"
+msgstr ""
+
 #. Resource IDs: (76)
 msgid "Clean up stale remote branches"
 msgstr ""
@@ -3083,6 +3093,10 @@ msgstr "Конфликти: %d"
 msgid "Context Menus: "
 msgstr "Контекстни менюта:"
 
+#. Resource IDs: (65535)
+msgid "Context lines for patches"
+msgstr ""
+
 #. Resource IDs: (67, 73, 1564)
 msgid "Continue"
 msgstr "Продължаване"
@@ -3179,8 +3193,8 @@ msgid "Copying..."
 msgstr "Копиране..."
 
 #. Resource IDs: (1001)
-msgid "Copyright (C) 2009-2013 TortoiseGit"
-msgstr "Copyright (C) 2009-2013 TortoiseGit"
+msgid "Copyright (C) 2009-2014 TortoiseGit"
+msgstr ""
 
 #. Resource IDs: (1254)
 msgid "Corrections"
@@ -4164,6 +4178,10 @@ msgstr "Празни"
 msgid "Enable Edit"
 msgstr ""
 
+#. Resource IDs: (1510)
+msgid "Enable EditorConfig"
+msgstr ""
+
 #. Resource IDs: (1766)
 msgid "Enable Gravatar"
 msgstr ""
@@ -4809,10 +4827,28 @@ msgid ""
 "Force creation of branch/tag - even if one with same name already exists."
 msgstr ""
 
+#. Resource IDs: (96)
+msgid ""
+"Force push only if the remote reference points to the same commit as the remote tracking branch.\n"
+"This can cause the remote repository to lose commits; use it with care.\n"
+"This option corresponds to the --force-with-lease git option."
+msgstr ""
+
 #. Resource IDs: (603)
 msgid ""
 "Force the rebase even if the current branch is a descendant of the commit you are rebasing onto. \r\n"
 "Normally the command will exit with the message \"Current branch is up to date\" in such a situation."
+msgstr ""
+
+#. Resource IDs: (1796)
+msgid "Force: May discard"
+msgstr ""
+
+#. Resource IDs: (1796)
+msgid ""
+"Force push to the selected remote reference and override it without any safety checks.\n"
+"This can cause the remote repository to lose unseen commits; use it with care.\n"
+"This option corresponds to the --force git option."
 msgstr ""
 
 #. Resource IDs: (312)
@@ -6215,10 +6251,6 @@ msgid ""
 "switch to"
 msgstr ""
 
-#. Resource IDs: (1432)
-msgid "Merge non-interactive"
-msgstr "Неинтерактивно сливане"
-
 #. Resource IDs: (1252)
 #, c-format
 msgid "Merge to \"%s\"..."
@@ -6859,6 +6891,10 @@ msgstr "Един или повече файлове са в конфликтно
 
 #. Resource IDs: (1542)
 msgid "Only Current Branch"
+msgstr ""
+
+#. Resource IDs: (1543)
+msgid "Only Local Branches"
 msgstr ""
 
 #. Resource IDs: (1256)
@@ -7871,6 +7907,10 @@ msgid ""
 "Repeat"
 msgstr "Повтаря последното действие\nПовторение"
 
+#. Resource IDs: (1512)
+msgid "Replace &All"
+msgstr ""
+
 #. Resource IDs: (3603)
 msgid ""
 "Replace specific text with different text\n"
@@ -7878,7 +7918,16 @@ msgid ""
 msgstr "Замества определен текст с друг текст\nЗаместване"
 
 #. Resource IDs: (65535)
+msgid "Replace with:"
+msgstr ""
+
+#. Resource IDs: (65535)
 msgid "Replace:"
+msgstr ""
+
+#. Resource IDs: (95)
+#, c-format
+msgid "Replaced %d matches"
 msgstr ""
 
 #. Resource IDs: (74)
@@ -8192,6 +8241,10 @@ msgstr ""
 msgid "SVN Rebase"
 msgstr ""
 
+#. Resource IDs: (1256)
+msgid "SVN Rev"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Sa&feCrLf:"
 msgstr "Sa&feCrLf:"
@@ -8389,6 +8442,10 @@ msgstr "Превъртане на дясно"
 #. Resource IDs: (1253)
 msgid "Search &log messages..."
 msgstr "&Търсене в дневника..."
+
+#. Resource IDs: (1074)
+msgid "Search &up"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Search for:"
@@ -9006,6 +9063,10 @@ msgstr ""
 #. Resource IDs: (1126)
 msgid "Sort by commit count"
 msgstr "Подреждане по брой поверявания"
+
+#. Resource IDs: (1795)
+msgid "Sort tag list in reversed order"
+msgstr ""
 
 #. Resource IDs: (196)
 msgid ""
@@ -10663,23 +10724,17 @@ msgid ""
 "dragging folders / files"
 msgstr ""
 
+#. Resource IDs: (95)
+msgid ""
+"When enabled, larger version numbers come first. It is because latest "
+"versions are usually more useful."
+msgstr ""
+
 #. Resource IDs: (197)
 msgid ""
 "When enabled, the versioned items listed in the commit dialog are "
 "automatically selected"
 msgstr "Ако е включено, контролираните обекти, включени в списъка на диалоговия прозорец за поверяване, са маркирани автоматично"
-
-#. Resource IDs: (2062)
-msgid ""
-"When selected, Spaces will be used instead of tab\n"
-"Use spaces"
-msgstr ""
-
-#. Resource IDs: (2062)
-msgid ""
-"When selected, it tries to infer tab / spaces to use\n"
-"Smart tab char"
-msgstr ""
 
 #. Resource IDs: (604)
 msgid ""
@@ -11308,6 +11363,10 @@ msgstr "към %1"
 #, c-format
 msgid "to %s"
 msgstr "към %s"
+
+#. Resource IDs: (1480)
+msgid "u&nknown changes"
+msgstr ""
 
 #. Resource IDs: (245)
 msgid "week"

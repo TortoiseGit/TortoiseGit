@@ -8,6 +8,7 @@
 # ch cooli <ch3cooli@gmail.com>, 2012
 # ch cooli <ch3cooli@gmail.com>, 2012-2014
 # Hydriz Scholz <admin@alphacorp.tk>, 2013
+# Hydriz Scholz <admin@alphacorp.tk>, 2013
 # Sven Strickroth <sstrickroth@googlemail.com>, 2013
 # Yue Lin Ho <yuelinho777@gmail.com>, 2014
 # ch cooli <ch3cooli@gmail.com>, 2012-2013
@@ -16,8 +17,8 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2014-06-08 15:20+0000\n"
-"Last-Translator: ch cooli <ch3cooli@gmail.com>\n"
+"PO-Revision-Date: 2014-08-05 02:10+0000\n"
+"Last-Translator: Yue Lin Ho <yuelinho777@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/tortoisegit/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -49,13 +50,8 @@ msgstr "# 個別顯示作者："
 
 #. Resource IDs: (357)
 #, c-format
-msgid "%.2f MBytes transferred"
-msgstr "傳輸了 %.2f M位元組"
-
-#. Resource IDs: (357)
-#, c-format
-msgid "%.2f kBytes/s"
-msgstr "%.2f k位元組/秒"
+msgid "%.2f MiB transferred"
+msgstr "已傳送 %.2f MiB"
 
 #. Resource IDs: (3868)
 #, c-format
@@ -203,8 +199,8 @@ msgstr "傳輸了 %I64d k位元組"
 
 #. Resource IDs: (357)
 #, c-format
-msgid "%I64d kBytes transferred"
-msgstr "傳輸了 %I64d k位元組"
+msgid "%I64d KiB transferred"
+msgstr "已傳送 %I64d MiB"
 
 #. Resource IDs: (75)
 #, c-format
@@ -243,11 +239,6 @@ msgid ""
 "click to toggle alpha\n"
 "double click to automatically toggle alpha"
 msgstr "%i%% 半透明\n單擊以切換半透明模式\n雙擊以自動切換半透明模式"
-
-#. Resource IDs: (357)
-#, c-format
-msgid "%ld Bytes/s"
-msgstr "%ld 位元組/秒"
 
 #. Resource IDs: (226)
 #, c-format
@@ -1078,6 +1069,10 @@ msgstr "移除(&R)"
 msgid "&Remove this file from index"
 msgstr "從索引中移除此檔案(&R)"
 
+#. Resource IDs: (1511)
+msgid "&Replace"
+msgstr "取代(&R)"
+
 #. Resource IDs: (15)
 msgid "&Repo-browser"
 msgstr "檔案庫瀏覽器(&R)"
@@ -1341,6 +1336,10 @@ msgstr "在檔案之內(&W)"
 #. Resource IDs: (1657)
 msgid "&ignore space change"
 msgstr "忽略空格變更(&i)"
+
+#. Resource IDs: (1498)
+msgid "&known changes"
+msgstr "已知的變更(&k)"
 
 #. Resource IDs: (88)
 msgid "(TortoiseGit default)"
@@ -1956,6 +1955,10 @@ msgstr "阿拉伯"
 msgid "Arbitrary &URL:"
 msgstr "任意 &URL:"
 
+#. Resource IDs: (1258)
+msgid "Are you sure to reset columns?"
+msgstr "確定要重設所有欄位?"
+
 #. Resource IDs: (68)
 msgid "Are you sure you want to abort the rebase process?"
 msgstr "確定要中止變基過程？"
@@ -2464,7 +2467,7 @@ msgstr "現在無法合併提交\r\n請確定你正在檢視當前分支及沒�
 msgid ""
 "Cannot force updating current branch. Use reset command if you want to do "
 "so."
-msgstr "將與目前分支產生同名衝突而無法新建分支. 可使用重置命令移動目前分支來達到相同結果."
+msgstr "將與當前分支產生同名衝突而無法新建分支. 可使用重置命令移動當前分支來達到相同結果."
 
 #. Resource IDs: (1)
 #, c-format
@@ -2672,6 +2675,14 @@ msgstr "清除"
 #. Resource IDs: (1630)
 msgid "Clean Type"
 msgstr "清除類型"
+
+#. Resource IDs: (96)
+msgid "Clean permanently"
+msgstr "永久刪除"
+
+#. Resource IDs: (96)
+msgid "Clean to recycle bin"
+msgstr "移到資源回收筒"
 
 #. Resource IDs: (76)
 msgid "Clean up stale remote branches"
@@ -3085,6 +3096,10 @@ msgstr "衝突: %d"
 msgid "Context Menus: "
 msgstr "快顯式選單:"
 
+#. Resource IDs: (65535)
+msgid "Context lines for patches"
+msgstr "補綴檔上下文行數"
+
 #. Resource IDs: (67, 73, 1564)
 msgid "Continue"
 msgstr "繼續"
@@ -3181,8 +3196,8 @@ msgid "Copying..."
 msgstr "正在複製..."
 
 #. Resource IDs: (1001)
-msgid "Copyright (C) 2009-2013 TortoiseGit"
-msgstr "版權所有 (C) 2009-2013 TortoiseGit"
+msgid "Copyright (C) 2009-2014 TortoiseGit"
+msgstr "版權所有 (C) 2009-2014 TortoiseGit"
 
 #. Resource IDs: (1254)
 msgid "Corrections"
@@ -3459,11 +3474,11 @@ msgstr "目前"
 
 #. Resource IDs: (65535)
 msgid "Current Branch"
-msgstr "現在分支"
+msgstr "當前分支"
 
 #. Resource IDs: (65535)
 msgid "Current Branch:"
-msgstr "現在分支:"
+msgstr "當前分支:"
 
 #. Resource IDs: (603)
 #, c-format
@@ -3471,7 +3486,7 @@ msgid ""
 "Current branch %s is up to date\r\n"
 "\r\n"
 " If you want to force the rebase even if the current branch is a descendant of the commit you are rebasing onto, please check below \"Force Rebase\" checkbox."
-msgstr "現在分支%s已經是最新\n\n如果你想強制變基，請選擇下面“強制變基”選項"
+msgstr "當前分支%s已經是最新\n\n如果你想強制變基，請選擇下面“強制變基”選項"
 
 #. Resource IDs: (1113)
 msgid "Current version is:"
@@ -4166,6 +4181,10 @@ msgstr "空的"
 msgid "Enable Edit"
 msgstr "啟用編輯"
 
+#. Resource IDs: (1510)
+msgid "Enable EditorConfig"
+msgstr "啟用 EditorConfig"
+
 #. Resource IDs: (1766)
 msgid "Enable Gravatar"
 msgstr "啟用 Gravatar"
@@ -4811,11 +4830,29 @@ msgid ""
 "Force creation of branch/tag - even if one with same name already exists."
 msgstr "強制建立分支/標籤，即使已存在"
 
+#. Resource IDs: (96)
+msgid ""
+"Force push only if the remote reference points to the same commit as the remote tracking branch.\n"
+"This can cause the remote repository to lose commits; use it with care.\n"
+"This option corresponds to the --force-with-lease git option."
+msgstr "只在 遠端追蹤分支(origin\\XXX) 與 遠端分支(遠端版本庫裡的XXX分支) 都指向同一個提交時，才強制推送。\n這會導致遠端版本庫丟失提交，小心使用。\n這個選項對應到 git 選項 --force-with-lease。"
+
 #. Resource IDs: (603)
 msgid ""
 "Force the rebase even if the current branch is a descendant of the commit you are rebasing onto. \r\n"
 "Normally the command will exit with the message \"Current branch is up to date\" in such a situation."
-msgstr "儘管現在分支是你想變基到的後裔節點，也要強制變基。\r\n正常情况命令列印「現在分支已經最新(Current branch is up to date)」，然後退出。"
+msgstr "儘管當前分支是你想變基到的後裔節點，也要強制變基。\n正常情况命令列印「現在分支已經最新(Current branch is up to date)」，然後退出。"
+
+#. Resource IDs: (1796)
+msgid "Force: May discard"
+msgstr "強制: 可能丟失"
+
+#. Resource IDs: (1796)
+msgid ""
+"Force push to the selected remote reference and override it without any safety checks.\n"
+"This can cause the remote repository to lose unseen commits; use it with care.\n"
+"This option corresponds to the --force git option."
+msgstr "強制推送選取的遠端參考點並且沒有任何安全檢查地覆蓋它。\n這會導致遠端版本庫丟失沒被注意到的提交，小心使用。\n這個選項對應到 git 選項 --force。"
 
 #. Resource IDs: (312)
 msgid "Format Patch"
@@ -6217,10 +6254,6 @@ msgid ""
 "switch to"
 msgstr "合併原先分支、工作目錄內容及切換至的分支"
 
-#. Resource IDs: (1432)
-msgid "Merge non-interactive"
-msgstr "合併 非互動模式"
-
 #. Resource IDs: (1252)
 #, c-format
 msgid "Merge to \"%s\"..."
@@ -6861,7 +6894,11 @@ msgstr "尚有一個以上的檔案處於衝突狀態."
 
 #. Resource IDs: (1542)
 msgid "Only Current Branch"
-msgstr "只限現在的分支"
+msgstr "只顯示當前分支"
+
+#. Resource IDs: (1543)
+msgid "Only Local Branches"
+msgstr "只顯示本地分支"
 
 #. Resource IDs: (1256)
 msgid "Only Merged Files"
@@ -7418,7 +7455,7 @@ msgstr "拉取"
 
 #. Resource IDs: (75)
 msgid "Pull requires the selected local branch to be the current branch."
-msgstr "拉取要求已選的分支為現在分支"
+msgstr "拉取要求已選的分支為當前分支"
 
 #. Resource IDs: (14)
 msgid "Pull..."
@@ -7873,6 +7910,10 @@ msgid ""
 "Repeat"
 msgstr "重覆上次動作\n重覆"
 
+#. Resource IDs: (1512)
+msgid "Replace &All"
+msgstr "全部取代(&A)"
+
 #. Resource IDs: (3603)
 msgid ""
 "Replace specific text with different text\n"
@@ -7880,8 +7921,17 @@ msgid ""
 msgstr "用指定的文字取代特定文字\n取代"
 
 #. Resource IDs: (65535)
+msgid "Replace with:"
+msgstr "取代為:"
+
+#. Resource IDs: (65535)
 msgid "Replace:"
 msgstr "取代："
+
+#. Resource IDs: (95)
+#, c-format
+msgid "Replaced %d matches"
+msgstr "取代了 %d 符合項目"
 
 #. Resource IDs: (74)
 msgid "Replacing"
@@ -7943,7 +7993,7 @@ msgstr "重設行"
 #. Resource IDs: (64)
 #, c-format
 msgid "Reset current branch \"%s\" to"
-msgstr "重設現在分支 %s 到"
+msgstr "重設當前分支 %s 到"
 
 #. Resource IDs: (77, 207, 229)
 msgid "Resolve"
@@ -8194,6 +8244,10 @@ msgstr "SVN 獲取"
 msgid "SVN Rebase"
 msgstr "SVN 變基"
 
+#. Resource IDs: (1256)
+msgid "SVN Rev"
+msgstr "SVN 版本"
+
 #. Resource IDs: (65535)
 msgid "Sa&feCrLf:"
 msgstr "檢查换行符號(&f)"
@@ -8391,6 +8445,10 @@ msgstr "向右捲動"
 #. Resource IDs: (1253)
 msgid "Search &log messages..."
 msgstr "搜尋記錄訊息(&L)..."
+
+#. Resource IDs: (1074)
+msgid "Search &up"
+msgstr "往上搜尋(&U)"
 
 #. Resource IDs: (65535)
 msgid "Search for:"
@@ -9008,6 +9066,10 @@ msgstr "TortoiseGitMerge 開啟中的檔案有外部變更。\n是否要重新�
 #. Resource IDs: (1126)
 msgid "Sort by commit count"
 msgstr "依提交數排序"
+
+#. Resource IDs: (1795)
+msgid "Sort tag list in reversed order"
+msgstr "反向排序標籤下拉選單的內容"
 
 #. Resource IDs: (196)
 msgid ""
@@ -10364,7 +10426,7 @@ msgstr "使用左視窗中未被標記的內容"
 
 #. Resource IDs: (1762)
 msgid "Use local branch color for current branch"
-msgstr "現時分支用本地分支顏色"
+msgstr "當前分支用本地分支顏色"
 
 #. Resource IDs: (1432)
 msgid "Use recycle bin when reverting"
@@ -10466,7 +10528,7 @@ msgstr "全部使用另一個檔案(&f)"
 
 #. Resource IDs: (119)
 msgid "Used to amend the tip of the current branch."
-msgstr "用於修改現時分支的提示"
+msgstr "用於修改當前分支的提示"
 
 #. Resource IDs: (65535)
 msgid "User Email:"
@@ -10665,23 +10727,17 @@ msgid ""
 "dragging folders / files"
 msgstr "啟用後, 在拖曳資料夾/檔案時, 將顯示 TortoiseGit 快顯功能表移動選項"
 
+#. Resource IDs: (95)
+msgid ""
+"When enabled, larger version numbers come first. It is because latest "
+"versions are usually more useful."
+msgstr "啟用後，較大的版本號在前面，因為新版通常比較有用。"
+
 #. Resource IDs: (197)
 msgid ""
 "When enabled, the versioned items listed in the commit dialog are "
 "automatically selected"
 msgstr "啟用時, 送交視窗中, 有版本控制的項目會自動被選取."
-
-#. Resource IDs: (2062)
-msgid ""
-"When selected, Spaces will be used instead of tab\n"
-"Use spaces"
-msgstr "一律使用空白鍵而不使用 tab\n轉換為空白"
-
-#. Resource IDs: (2062)
-msgid ""
-"When selected, it tries to infer tab / spaces to use\n"
-"Smart tab char"
-msgstr "自動猜測要使用空白或是tab\n智慧 tab"
 
 #. Resource IDs: (604)
 msgid ""
@@ -11310,6 +11366,10 @@ msgstr "至 %1"
 #, c-format
 msgid "to %s"
 msgstr "至 %s"
+
+#. Resource IDs: (1480)
+msgid "u&nknown changes"
+msgstr "未知的變更(&n)"
 
 #. Resource IDs: (245)
 msgid "week"

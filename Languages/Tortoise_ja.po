@@ -7,6 +7,7 @@
 #  Koto <>, 2012
 # Sven Strickroth <sstrickroth@googlemail.com>, 2012-2013
 # Takumi Shotoku <sinsoku.listy@gmail.com>, 2012
+# Tetsuhiko Koto, 2014
 # Tetsuhiko Koto, 2012-2014
 # Tetsuhiko Koto, 2014
 # YANO Tetsu <tetuyano+transi@gmail.com>, 2012-2013
@@ -18,7 +19,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2014-06-02 03:37+0000\n"
+"PO-Revision-Date: 2014-08-08 02:11+0000\n"
 "Last-Translator: Tetsuhiko Koto\n"
 "Language-Team: Japanese (http://www.transifex.com/projects/p/tortoisegit/language/ja/)\n"
 "MIME-Version: 1.0\n"
@@ -51,13 +52,8 @@ msgstr "別個に表示する作者の人数:"
 
 #. Resource IDs: (357)
 #, c-format
-msgid "%.2f MBytes transferred"
-msgstr "%.2f Mバイトを転送しました"
-
-#. Resource IDs: (357)
-#, c-format
-msgid "%.2f kBytes/s"
-msgstr "%.2f kバイト/秒"
+msgid "%.2f MiB transferred"
+msgstr "%.2f MiB 転送しました"
 
 #. Resource IDs: (3868)
 #, c-format
@@ -205,8 +201,8 @@ msgstr "%I64d バイトを転送しました"
 
 #. Resource IDs: (357)
 #, c-format
-msgid "%I64d kBytes transferred"
-msgstr "%I64d Kバイトを転送しました"
+msgid "%I64d KiB transferred"
+msgstr "%I64d KiB 転送しました"
 
 #. Resource IDs: (75)
 #, c-format
@@ -245,11 +241,6 @@ msgid ""
 "click to toggle alpha\n"
 "double click to automatically toggle alpha"
 msgstr "透過率 %i%%\nクリックで透過率を反転します。\nダブルクリックで透過率を自動的に反転します。"
-
-#. Resource IDs: (357)
-#, c-format
-msgid "%ld Bytes/s"
-msgstr "%ld バイト/秒"
 
 #. Resource IDs: (226)
 #, c-format
@@ -532,7 +523,7 @@ msgstr "サブモジュールをコミット(&C)..."
 
 #. Resource IDs: (68)
 msgid "&Commit w/o"
-msgstr "コミット（除外）(&C)"
+msgstr "なしでコミット(&C)"
 
 #. Resource IDs: (8)
 msgid "&Commit..."
@@ -1080,6 +1071,10 @@ msgstr "削除(&R)"
 msgid "&Remove this file from index"
 msgstr "このファイルをインデックスから削除(&R)"
 
+#. Resource IDs: (1511)
+msgid "&Replace"
+msgstr "置換(&R)"
+
 #. Resource IDs: (15)
 msgid "&Repo-browser"
 msgstr "リポジトリブラウザー(&R)"
@@ -1343,6 +1338,10 @@ msgstr "ファイルの中で(&W)"
 #. Resource IDs: (1657)
 msgid "&ignore space change"
 msgstr "空白の変更を無視(&I)"
+
+#. Resource IDs: (1498)
+msgid "&known changes"
+msgstr "既知の変更(&K)"
 
 #. Resource IDs: (88)
 msgid "(TortoiseGit default)"
@@ -1958,9 +1957,13 @@ msgstr "アラビア語"
 msgid "Arbitrary &URL:"
 msgstr "任意の&URL:"
 
+#. Resource IDs: (1258)
+msgid "Are you sure to reset columns?"
+msgstr "カラムをリセットしてよろしいですか？"
+
 #. Resource IDs: (68)
 msgid "Are you sure you want to abort the rebase process?"
-msgstr "リベース処理を中断しても宜しいですか？"
+msgstr "リベース処理を中断してもよろしいですか？"
 
 #. Resource IDs: (145)
 msgid "Are you sure you want to mark the conflicted file(s) as resolved?"
@@ -2675,6 +2678,14 @@ msgstr "クリーン"
 msgid "Clean Type"
 msgstr "クリーンタイプ"
 
+#. Resource IDs: (96)
+msgid "Clean permanently"
+msgstr "完全に削除する"
+
+#. Resource IDs: (96)
+msgid "Clean to recycle bin"
+msgstr "ごみ箱へ入れる"
+
 #. Resource IDs: (76)
 msgid "Clean up stale remote branches"
 msgstr "古いリモートブランチをクリーンナップ"
@@ -3087,6 +3098,10 @@ msgstr "競合: %d"
 msgid "Context Menus: "
 msgstr "コンテキストメニュー: "
 
+#. Resource IDs: (65535)
+msgid "Context lines for patches"
+msgstr "パッチのコンテキスト行数"
+
 #. Resource IDs: (67, 73, 1564)
 msgid "Continue"
 msgstr "続行"
@@ -3183,8 +3198,8 @@ msgid "Copying..."
 msgstr "コピー中..."
 
 #. Resource IDs: (1001)
-msgid "Copyright (C) 2009-2013 TortoiseGit"
-msgstr "Copyright (C) 2009-2013 TortoiseGit"
+msgid "Copyright (C) 2009-2014 TortoiseGit"
+msgstr "Copyright (C) 2009-2014 TortoiseGit"
 
 #. Resource IDs: (1254)
 msgid "Corrections"
@@ -3775,7 +3790,7 @@ msgstr "以下の間の差分"
 
 #. Resource IDs: (1022)
 msgid "Diffing"
-msgstr "差分を計算中"
+msgstr "差分"
 
 #. Resource IDs: (2054)
 msgid "Diffing commits"
@@ -3869,7 +3884,7 @@ msgstr "次のパスではコンテキストメニューを表示しない"
 
 #. Resource IDs: (1730)
 msgid "Do not use recycle bin"
-msgstr "ゴミ箱は使用しない"
+msgstr "ごみ箱は使用しない"
 
 #. Resource IDs: (70)
 #, c-format
@@ -4076,11 +4091,11 @@ msgstr "編集"
 
 #. Resource IDs: (84)
 msgid "Edit &global .gitconfig"
-msgstr "このユーザの設定(&G)"
+msgstr "このユーザの設定を編集(&G)"
 
 #. Resource IDs: (1383)
 msgid "Edit &local .git/config"
-msgstr "ローカルリポジトリの設定(&L)"
+msgstr "ローカルリポジトリ設定を編集(&L)"
 
 #. Resource IDs: (1755)
 msgid "Edit .tgitconfig"
@@ -4112,7 +4127,7 @@ msgstr "拡張子に応じたマージプログラムを編集"
 
 #. Resource IDs: (1382)
 msgid "Edit gl&obal .gitconfig"
-msgstr "このユーザの設定(&O)"
+msgstr "このユーザの設定を編集(&O)"
 
 #. Resource IDs: (1718)
 msgid "Edit global &XDG config"
@@ -4128,7 +4143,7 @@ msgstr "ログメッセージを編集"
 
 #. Resource IDs: (1384)
 msgid "Edit s&ystemwide gitconfig"
-msgstr "全ユーザ共通の設定(&Y)"
+msgstr "全ユーザ共通設定を編集(&Y)"
 
 #. Resource IDs: (1331, 1382)
 msgid "Edit..."
@@ -4167,6 +4182,10 @@ msgstr "空"
 #. Resource IDs: (156)
 msgid "Enable Edit"
 msgstr "編集を 有効化"
+
+#. Resource IDs: (1510)
+msgid "Enable EditorConfig"
+msgstr "EditorConfig を有効化"
 
 #. Resource IDs: (1766)
 msgid "Enable Gravatar"
@@ -4813,11 +4832,29 @@ msgid ""
 "Force creation of branch/tag - even if one with same name already exists."
 msgstr "同じ名前がすでに存在しても、強制的にブランチ/タグを作ります。"
 
+#. Resource IDs: (96)
+msgid ""
+"Force push only if the remote reference points to the same commit as the remote tracking branch.\n"
+"This can cause the remote repository to lose commits; use it with care.\n"
+"This option corresponds to the --force-with-lease git option."
+msgstr "リモートの追跡しているブランチが、このローカルリポジトリが把握しているのと同じコミットにある時に限り、強制的にプッシュします。\nリモートリポジトリのコミットを失う可能性があります。\nこのオプションは、git の --force--with-lease に相当します。"
+
 #. Resource IDs: (603)
 msgid ""
 "Force the rebase even if the current branch is a descendant of the commit you are rebasing onto. \r\n"
 "Normally the command will exit with the message \"Current branch is up to date\" in such a situation."
 msgstr "現在のブランチが、接続しようとしているコミットの子孫であっても、強制的にリベースします。\n通常、そのようなコマンドは、\"現在のブランチは最新です\" のようなメッセージを出力して終了します。"
+
+#. Resource IDs: (1796)
+msgid "Force: May discard"
+msgstr "強制: 以下を失う可能性がある"
+
+#. Resource IDs: (1796)
+msgid ""
+"Force push to the selected remote reference and override it without any safety checks.\n"
+"This can cause the remote repository to lose unseen commits; use it with care.\n"
+"This option corresponds to the --force git option."
+msgstr "安全性のチェックなしに、選択されたリモートの参照へプッシュし、上書きします。\nこれによって、リモートリポジトリの、まだ把握していないコミットが失われるかもしれません。\nこのオプションは、git の --force に相当します。"
 
 #. Resource IDs: (312)
 msgid "Format Patch"
@@ -6167,7 +6204,7 @@ msgstr "マークしたリビジョンは適切です"
 
 #. Resource IDs: (1064, 20084)
 msgid "Match &case"
-msgstr "大文字と小文字を区別する(&C)"
+msgstr "大文字と小文字を区別(&C)"
 
 #. Resource IDs: (1159)
 msgid "Max"
@@ -6218,10 +6255,6 @@ msgid ""
 "Merge between original branch, working tree contents, and the branch to "
 "switch to"
 msgstr "オリジナルのブランチと、作業ツリーの内容と、切り替え先のブランチとをマージする"
-
-#. Resource IDs: (1432)
-msgid "Merge non-interactive"
-msgstr "非対話的なマージ"
 
 #. Resource IDs: (1252)
 #, c-format
@@ -6864,6 +6897,10 @@ msgstr "競合しているファイルがあります。"
 #. Resource IDs: (1542)
 msgid "Only Current Branch"
 msgstr "現在のブランチのみ"
+
+#. Resource IDs: (1543)
+msgid "Only Local Branches"
+msgstr "ローカルブランチのみ"
 
 #. Resource IDs: (1256)
 msgid "Only Merged Files"
@@ -7875,6 +7912,10 @@ msgid ""
 "Repeat"
 msgstr "直前に行った操作を繰り返す\n繰り返し"
 
+#. Resource IDs: (1512)
+msgid "Replace &All"
+msgstr "すべて置換(&A)"
+
 #. Resource IDs: (3603)
 msgid ""
 "Replace specific text with different text\n"
@@ -7882,8 +7923,17 @@ msgid ""
 msgstr "指定された文字列を、他の文字列に置き換える\n置換"
 
 #. Resource IDs: (65535)
+msgid "Replace with:"
+msgstr "置換後の文字列:"
+
+#. Resource IDs: (65535)
 msgid "Replace:"
-msgstr "置き換え:"
+msgstr "置換:"
+
+#. Resource IDs: (95)
+#, c-format
+msgid "Replaced %d matches"
+msgstr "一致した %d 件を置換しました"
 
 #. Resource IDs: (74)
 msgid "Replacing"
@@ -8196,6 +8246,10 @@ msgstr "SVNからフェッチ"
 msgid "SVN Rebase"
 msgstr "SVNリベース(ローカルへ反映)"
 
+#. Resource IDs: (1256)
+msgid "SVN Rev"
+msgstr "SVN Rev"
+
 #. Resource IDs: (65535)
 msgid "Sa&feCrLf:"
 msgstr "Sa&feCrLf:"
@@ -8393,6 +8447,10 @@ msgstr "右へスクロール"
 #. Resource IDs: (1253)
 msgid "Search &log messages..."
 msgstr "ログメッセージを検索(&L)..."
+
+#. Resource IDs: (1074)
+msgid "Search &up"
+msgstr "上へ検索(&U)"
 
 #. Resource IDs: (65535)
 msgid "Search for:"
@@ -9010,6 +9068,10 @@ msgstr "TortoiseGitMerge外でいくつかファイルに変更がありまし�
 #. Resource IDs: (1126)
 msgid "Sort by commit count"
 msgstr "コミット数でソート"
+
+#. Resource IDs: (1795)
+msgid "Sort tag list in reversed order"
+msgstr "タグリストを逆順にソート"
 
 #. Resource IDs: (196)
 msgid ""
@@ -10582,7 +10644,7 @@ msgstr "外部エディターでこのリビジョンを表示"
 
 #. Resource IDs: (1717)
 msgid "View system&wide gitconfig"
-msgstr "全ユーザ共通の設定を表示(&W)"
+msgstr "全ユーザ共通設定を表示(&W)"
 
 #. Resource IDs: (1084)
 msgid "Visit our website"
@@ -10667,23 +10729,17 @@ msgid ""
 "dragging folders / files"
 msgstr "有効にすると、ファイルやフォルダーをドラッグした時のコンテキストメニューを拡張します。"
 
+#. Resource IDs: (95)
+msgid ""
+"When enabled, larger version numbers come first. It is because latest "
+"versions are usually more useful."
+msgstr "有効にすると、バージョン番号が大きい物が最初になるようになります。大抵の場合、最新バージョンがより重要でしょう。"
+
 #. Resource IDs: (197)
 msgid ""
 "When enabled, the versioned items listed in the commit dialog are "
 "automatically selected"
 msgstr "有効にすると、コミットダイアログに表示されるバージョン管理中の項目が自動的に選択されるようになります。"
-
-#. Resource IDs: (2062)
-msgid ""
-"When selected, Spaces will be used instead of tab\n"
-"Use spaces"
-msgstr "選択すると、タブの代わりにスペースを使用します\nスペースを使用"
-
-#. Resource IDs: (2062)
-msgid ""
-"When selected, it tries to infer tab / spaces to use\n"
-"Smart tab char"
-msgstr "選択すると、タブ文字とスペース文字のどちらを使うか推測します\nタブ/スペースを推測"
 
 #. Resource IDs: (604)
 msgid ""
@@ -10848,7 +10904,7 @@ msgstr "古いバージョンの Git for Windows (http://code.google.com/p/msysg
 msgid ""
 "You have checked \"include untracked\".\n"
 "This includes a \"git clean -fd\" call, so ignored files/directories are removed w/o using recycle bin."
-msgstr "あなたは「バージョン管理外のファイルを含む」を有効にしました。これは、「git clean -fd」の呼び出しを含むので、無視ファイルとディレクトリが、ゴミ箱に入ることなく削除されます。"
+msgstr "あなたは「バージョン管理外のファイルを含む」を有効にしました。これは、「git clean -fd」の呼び出しを含むので、無視ファイルとディレクトリが、ごみ箱に入ることなく削除されます。"
 
 #. Resource IDs: (16)
 msgid ""
@@ -11312,6 +11368,10 @@ msgstr "to %1"
 #, c-format
 msgid "to %s"
 msgstr "%s へ"
+
+#. Resource IDs: (1480)
+msgid "u&nknown changes"
+msgstr "未知の変更(&N)"
 
 #. Resource IDs: (245)
 msgid "week"

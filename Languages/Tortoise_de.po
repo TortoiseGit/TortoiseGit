@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2014-05-31 10:17+0000\n"
+"PO-Revision-Date: 2014-08-03 21:48+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: German (http://www.transifex.com/projects/p/tortoisegit/language/de/)\n"
 "MIME-Version: 1.0\n"
@@ -48,13 +48,8 @@ msgstr "Autoren separat auflisten:"
 
 #. Resource IDs: (357)
 #, c-format
-msgid "%.2f MBytes transferred"
-msgstr "%.2f MBytes übertragen"
-
-#. Resource IDs: (357)
-#, c-format
-msgid "%.2f kBytes/s"
-msgstr "%.2f kBytes/s"
+msgid "%.2f MiB transferred"
+msgstr "%.2f MiB übertragen"
 
 #. Resource IDs: (3868)
 #, c-format
@@ -202,8 +197,8 @@ msgstr "%I64d Bytes übertragen"
 
 #. Resource IDs: (357)
 #, c-format
-msgid "%I64d kBytes transferred"
-msgstr "%I64d KBytes übertragen"
+msgid "%I64d KiB transferred"
+msgstr "%I64d kiB übertragen"
 
 #. Resource IDs: (75)
 #, c-format
@@ -242,11 +237,6 @@ msgid ""
 "click to toggle alpha\n"
 "double click to automatically toggle alpha"
 msgstr "%i%% Alpha\\nKlicken Sie, um Alpha umzuschalten\\nDoppelklick, um Alpha automatisch umzuschalten"
-
-#. Resource IDs: (357)
-#, c-format
-msgid "%ld Bytes/s"
-msgstr "%ld Bytes/s"
 
 #. Resource IDs: (226)
 #, c-format
@@ -1077,6 +1067,10 @@ msgstr "Ent&fernen"
 msgid "&Remove this file from index"
 msgstr "&Lösche diese Datei aus dem Index"
 
+#. Resource IDs: (1511)
+msgid "&Replace"
+msgstr "E&rsetzen"
+
 #. Resource IDs: (15)
 msgid "&Repo-browser"
 msgstr "P&rojektarchiv"
@@ -1340,6 +1334,10 @@ msgstr "&Innerhalb der Datei"
 #. Resource IDs: (1657)
 msgid "&ignore space change"
 msgstr "&Ignoriere Änderungen in der Anzahl von Leerzeichen"
+
+#. Resource IDs: (1498)
+msgid "&known changes"
+msgstr "&bekannte Änderungen"
 
 #. Resource IDs: (88)
 msgid "(TortoiseGit default)"
@@ -1954,6 +1952,10 @@ msgstr "Arabisch"
 #. Resource IDs: (1495)
 msgid "Arbitrary &URL:"
 msgstr "Beliebige &URL:"
+
+#. Resource IDs: (1258)
+msgid "Are you sure to reset columns?"
+msgstr "Sind Sie sicher, dass Sie die Spalten zurücksetzen möchten?"
 
 #. Resource IDs: (68)
 msgid "Are you sure you want to abort the rebase process?"
@@ -2672,6 +2674,14 @@ msgstr "Sauber"
 msgid "Clean Type"
 msgstr "Aufräummethode"
 
+#. Resource IDs: (96)
+msgid "Clean permanently"
+msgstr "Säubere ohne Papierkorb"
+
+#. Resource IDs: (96)
+msgid "Clean to recycle bin"
+msgstr "Säubere mit Papierkorb"
+
 #. Resource IDs: (76)
 msgid "Clean up stale remote branches"
 msgstr "Ungültige entfernte Zweige aufräumen"
@@ -3084,6 +3094,10 @@ msgstr "Konflikte: %d"
 msgid "Context Menus: "
 msgstr "Kontextmenüs:"
 
+#. Resource IDs: (65535)
+msgid "Context lines for patches"
+msgstr "Kontext-Zeilen für Patches"
+
 #. Resource IDs: (67, 73, 1564)
 msgid "Continue"
 msgstr "Fortsetzen"
@@ -3180,8 +3194,8 @@ msgid "Copying..."
 msgstr "Kopiere..."
 
 #. Resource IDs: (1001)
-msgid "Copyright (C) 2009-2013 TortoiseGit"
-msgstr "Copyright (C) 2009-2013 TortoiseGit"
+msgid "Copyright (C) 2009-2014 TortoiseGit"
+msgstr "Copyright (C) 2009-2014 TortoiseGit"
 
 #. Resource IDs: (1254)
 msgid "Corrections"
@@ -4165,6 +4179,10 @@ msgstr "Leer"
 msgid "Enable Edit"
 msgstr "Bearbeiten aktivieren"
 
+#. Resource IDs: (1510)
+msgid "Enable EditorConfig"
+msgstr "Aktiviere Editor-Konfiguration"
+
 #. Resource IDs: (1766)
 msgid "Enable Gravatar"
 msgstr "Gravatar-Avatare anzeigen"
@@ -4810,11 +4828,29 @@ msgid ""
 "Force creation of branch/tag - even if one with same name already exists."
 msgstr "Erzwinge die Erstellung des Zweiges/der Markierung - selbst dann, wenn einer mit gleichem Namen existiert."
 
+#. Resource IDs: (96)
+msgid ""
+"Force push only if the remote reference points to the same commit as the remote tracking branch.\n"
+"This can cause the remote repository to lose commits; use it with care.\n"
+"This option corresponds to the --force-with-lease git option."
+msgstr "Erzwinge das Versenden sofern die entfernte Referenz auf die gleiche Eintragung wie der entfernte Zweig zeigt.\nDies kann dazu führen, dass im entfernten Repository Eintragungen verloren gehen; benutzen Sie diese Option mit vorsicht.\nDiese Option entspricht der --force-with-lease Git Option."
+
 #. Resource IDs: (603)
 msgid ""
 "Force the rebase even if the current branch is a descendant of the commit you are rebasing onto. \r\n"
 "Normally the command will exit with the message \"Current branch is up to date\" in such a situation."
 msgstr "Zwinge das neu Aufbauen, selbst wen der aktuelle Zweig ein Nachkomme der Eintragung ist, auf die Sie umsetzen möchten.\nNormalerweise erhält man die Meldung \"Current branch is up to date\" in dieser Situation."
+
+#. Resource IDs: (1796)
+msgid "Force: May discard"
+msgstr "Erzwingen: Mit möglichem Verlust von"
+
+#. Resource IDs: (1796)
+msgid ""
+"Force push to the selected remote reference and override it without any safety checks.\n"
+"This can cause the remote repository to lose unseen commits; use it with care.\n"
+"This option corresponds to the --force git option."
+msgstr "Erzwinge das Versenden zur entfernten Referenz und überschreibe diese ohne weitere Überprüfungen..\nDies kann dazu führen, dass im entfernten Repository ungesehene Eintragungen verloren gehen; benutzen Sie diese Option mit vorsicht.\nDiese Option entspricht der --force Git Option."
 
 #. Resource IDs: (312)
 msgid "Format Patch"
@@ -6216,10 +6252,6 @@ msgid ""
 "switch to"
 msgstr "Zusammenführen der Änderungen des original Zweigs, Arbeitsbaums und dem Zweig zu dem gewechselt werden soll"
 
-#. Resource IDs: (1432)
-msgid "Merge non-interactive"
-msgstr "Nicht interaktiv zusammenführen"
-
 #. Resource IDs: (1252)
 #, c-format
 msgid "Merge to \"%s\"..."
@@ -6861,6 +6893,10 @@ msgstr "Eine oder mehrere Dateien befinden sich in einem Konfliktzustand."
 #. Resource IDs: (1542)
 msgid "Only Current Branch"
 msgstr "Nur aktueller Zweig"
+
+#. Resource IDs: (1543)
+msgid "Only Local Branches"
+msgstr "Nur lokale Zweige"
 
 #. Resource IDs: (1256)
 msgid "Only Merged Files"
@@ -7872,6 +7908,10 @@ msgid ""
 "Repeat"
 msgstr "Letzte Aktion wiederholen\nWiederholen"
 
+#. Resource IDs: (1512)
+msgid "Replace &All"
+msgstr "&Alle ersetzen"
+
 #. Resource IDs: (3603)
 msgid ""
 "Replace specific text with different text\n"
@@ -7879,8 +7919,17 @@ msgid ""
 msgstr "Text ersetzen\nErsetzen"
 
 #. Resource IDs: (65535)
+msgid "Replace with:"
+msgstr "Ersetzen durch:"
+
+#. Resource IDs: (65535)
 msgid "Replace:"
 msgstr "Ersetzen:"
+
+#. Resource IDs: (95)
+#, c-format
+msgid "Replaced %d matches"
+msgstr "%d Übereinstimmungen ersetzt"
 
 #. Resource IDs: (74)
 msgid "Replacing"
@@ -8193,6 +8242,10 @@ msgstr "SVN Aktualisieren"
 msgid "SVN Rebase"
 msgstr "SVN neu aufbauen"
 
+#. Resource IDs: (1256)
+msgid "SVN Rev"
+msgstr "SVN Rev"
+
 #. Resource IDs: (65535)
 msgid "Sa&feCrLf:"
 msgstr "Sa&feCrLf:"
@@ -8390,6 +8443,10 @@ msgstr "Nach rechts rollen"
 #. Resource IDs: (1253)
 msgid "Search &log messages..."
 msgstr "Durchsuche &Logmeldungen..."
+
+#. Resource IDs: (1074)
+msgid "Search &up"
+msgstr "Suche &aufwärts"
 
 #. Resource IDs: (65535)
 msgid "Search for:"
@@ -9007,6 +9064,10 @@ msgstr "Einige Dateien wurden außerhalb von TortoiseMerge geändert.\nWollen Si
 #. Resource IDs: (1126)
 msgid "Sort by commit count"
 msgstr "Nach Anzahl der Eintragungen sortieren"
+
+#. Resource IDs: (1795)
+msgid "Sort tag list in reversed order"
+msgstr "Sortiere Markierungsliste in umgekehrter Reihenfolge"
 
 #. Resource IDs: (196)
 msgid ""
@@ -10664,23 +10725,17 @@ msgid ""
 "dragging folders / files"
 msgstr "Falls aktiviert, fügt TortoiseGit Einträge zum Kontextmenü bei Drag'n'Drop Aktionen hinzu"
 
+#. Resource IDs: (95)
+msgid ""
+"When enabled, larger version numbers come first. It is because latest "
+"versions are usually more useful."
+msgstr "Wenn diese Option aktiviert wird, dann werden größere Versionssnummers zuerest angezeigt. Dies kann nützlich sein, wenn neuere Versionen häufiger genutzt werden."
+
 #. Resource IDs: (197)
 msgid ""
 "When enabled, the versioned items listed in the commit dialog are "
 "automatically selected"
 msgstr "Aktivieren Sie diese Option, damit die versionierten Objekte im Übertragen-Dialog automatisch markiert werden."
-
-#. Resource IDs: (2062)
-msgid ""
-"When selected, Spaces will be used instead of tab\n"
-"Use spaces"
-msgstr "Leerzeichen anstelle von Tabulatoren verwenden\nVerwende Leerzeichen"
-
-#. Resource IDs: (2062)
-msgid ""
-"When selected, it tries to infer tab / spaces to use\n"
-"Smart tab char"
-msgstr "Versuche zu erkennen, ob Leerzeichen oder Tabulatoren\nIntelligenter Tabulatore"
 
 #. Resource IDs: (604)
 msgid ""
@@ -11309,6 +11364,10 @@ msgstr "nach %1"
 #, c-format
 msgid "to %s"
 msgstr "nach %s"
+
+#. Resource IDs: (1480)
+msgid "u&nknown changes"
+msgstr "&unbekannte Änderungen"
 
 #. Resource IDs: (245)
 msgid "week"
