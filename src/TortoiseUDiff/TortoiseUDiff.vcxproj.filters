@@ -13,30 +13,21 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
     </Filter>
+    <Filter Include="Source Files\Utils">
+      <UniqueIdentifier>{a6b57fa2-1326-46ef-b330-531f91deedf8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utils\MiscUI">
+      <UniqueIdentifier>{a6608cc2-443e-4626-9be5-031d268d54e3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Utils\MiscUI\BaseDialog.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Utils\MiscUI\BaseWindow.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Utils\CmdLineParser.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="FindBar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MainWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Utils\Registry.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="stdafx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Utils\StringUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TortoiseUDiff.cpp">
@@ -45,30 +36,33 @@
     <ClCompile Include="..\Utils\UnicodeUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\Utils\CmdLineParser.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\Registry.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
     <ClCompile Include="..\Utils\TaskbarUUID.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\BaseDialog.cpp">
+      <Filter>Source Files\Utils\MiscUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\BaseWindow.cpp">
+      <Filter>Source Files\Utils\MiscUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\StringUtils.cpp">
+      <Filter>Source Files\Utils</Filter>
     </ClCompile>
     <ClCompile Include="..\Utils\SysInfo.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Utils\MiscUI\BaseDialog.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Utils\MiscUI\BaseWindow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Utils\CmdLineParser.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="FindBar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MainWindow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Utils\registry.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
@@ -77,26 +71,38 @@
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Utils\StringUtils.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="TortoiseUDiff.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\BaseDialog.h">
+      <Filter>Source Files\Utils\MiscUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\BaseWindow.h">
+      <Filter>Source Files\Utils\MiscUI</Filter>
+    </ClInclude>
     <ClInclude Include="..\Utils\UnicodeUtils.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Utils\TaskbarUUID.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Utils\CreateProcessHelper.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files\Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\SysInfo.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\StringUtils.h">
+      <Filter>Source Files\Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\MiscUI\ResString.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\registry.h">
+      <Filter>Source Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\CmdLineParser.h">
+      <Filter>Source Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\CreateProcessHelper.h">
+      <Filter>Source Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\TaskbarUUID.h">
+      <Filter>Source Files\Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -19,51 +19,24 @@
     <Filter Include="Source Files\Utils\MiscUI">
       <UniqueIdentifier>{f86a3d47-ea3d-4fa3-a47f-e1b9367a0e3d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\TortoiseGitProc">
+      <UniqueIdentifier>{73ebc93e-2ef5-4409-9010-c503089c8a82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\TortoiseGitMerge">
+      <UniqueIdentifier>{71418e14-7775-42a8-bdfa-f326d4f55c30}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\TortoiseProc\Colors.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="EditGotoDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\TortoiseMerge\FileTextLines.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\TortoiseProc\FindDlg.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\TortoiseProc\GitLogCache.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\TortoiseProc\GitLogListBase.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\TortoiseProc\GitStatusListCtrlHelpers.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\TortoiseProc\lanes.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\TortoiseProc\LogDataVector.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\TortoiseProc\LogDlgHelper.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="LogListBlameAction.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\TortoiseProc\LoglistUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MainFrm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="OutputWnd.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\TortoiseProc\ProjectProperties.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PropertiesWnd.cpp">
@@ -79,9 +52,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TortoiseGitBlameView.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\TortoiseProc\GravatarPictureBox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TortoiseGitBlameData.cpp">
@@ -153,33 +123,45 @@
     <ClCompile Include="..\Utils\MiscUI\StandAloneDlg.cpp">
       <Filter>Source Files\Utils\MiscUI</Filter>
     </ClCompile>
+    <ClCompile Include="..\TortoiseProc\Colors.cpp">
+      <Filter>Source Files\TortoiseGitProc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TortoiseMerge\FileTextLines.cpp">
+      <Filter>Source Files\TortoiseGitMerge</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TortoiseProc\GitLogCache.cpp">
+      <Filter>Source Files\TortoiseGitProc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TortoiseProc\GitLogListBase.cpp">
+      <Filter>Source Files\TortoiseGitProc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TortoiseProc\GitStatusListCtrlHelpers.cpp">
+      <Filter>Source Files\TortoiseGitProc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TortoiseProc\lanes.cpp">
+      <Filter>Source Files\TortoiseGitProc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TortoiseProc\GravatarPictureBox.cpp">
+      <Filter>Source Files\TortoiseGitProc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TortoiseProc\LogDataVector.cpp">
+      <Filter>Source Files\TortoiseGitProc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TortoiseProc\LogDlgHelper.cpp">
+      <Filter>Source Files\TortoiseGitProc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TortoiseProc\LoglistUtils.cpp">
+      <Filter>Source Files\TortoiseGitProc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TortoiseProc\FindDlg.cpp">
+      <Filter>Source Files\TortoiseGitProc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TortoiseProc\ProjectProperties.cpp">
+      <Filter>Source Files\TortoiseGitProc</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GitBlameLogList.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\TortoiseProc\gitlogcache.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\TortoiseProc\GitLogListBase.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\TortoiseProc\lanes.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\TortoiseProc\LogDlgHelper.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Utils\CommonAppUtils.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="EditGotoDlg.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\TortoiseMerge\FileTextLines.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\TortoiseProc\LoglistUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MainFrm.h">
@@ -210,9 +192,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BlameIndexColors.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Utils\DebugOutput.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BlameDetectMovedOrCopiedLines.h">
@@ -276,6 +255,33 @@
       <Filter>Source Files\Utils\MiscUI</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\SysImageList.h">
+      <Filter>Source Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TortoiseProc\gitlogcache.h">
+      <Filter>Source Files\TortoiseGitProc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TortoiseProc\GitLogListBase.h">
+      <Filter>Source Files\TortoiseGitProc</Filter>
+    </ClInclude>
+    <ClInclude Include="GitBlameLogList.h">
+      <Filter>Source Files\TortoiseGitProc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TortoiseProc\lanes.h">
+      <Filter>Source Files\TortoiseGitProc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TortoiseProc\LogDlgHelper.h">
+      <Filter>Source Files\TortoiseGitProc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\CommonAppUtils.h">
+      <Filter>Source Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TortoiseMerge\FileTextLines.h">
+      <Filter>Source Files\TortoiseGitMerge</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TortoiseProc\LoglistUtils.h">
+      <Filter>Source Files\TortoiseGitProc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\DebugOutput.h">
       <Filter>Source Files\Utils</Filter>
     </ClInclude>
   </ItemGroup>

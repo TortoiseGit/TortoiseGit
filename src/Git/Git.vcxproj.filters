@@ -9,6 +9,9 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
+    <Filter Include="Source Files\Utils">
+      <UniqueIdentifier>{b914a8d4-b03a-46d5-ab19-402a169a3dff}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Git.cpp">
@@ -35,11 +38,11 @@
     <ClCompile Include="TGitPath.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Utils\DebugOutput.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\Utils\ReaderWriterLock.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\DebugOutput.cpp">
+      <Filter>Source Files\Utils</Filter>
     </ClCompile>
     <ClCompile Include="MassiveGitTaskBase.cpp">
       <Filter>Source Files</Filter>
@@ -77,10 +80,10 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\DebugOutput.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files\Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\ReaderWriterLock.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files\Utils</Filter>
     </ClInclude>
     <ClInclude Include="MassiveGitTaskBase.h">
       <Filter>Header Files</Filter>

@@ -34,6 +34,12 @@
     <Filter Include="Git\Source Files">
       <UniqueIdentifier>{5a81c7c4-96ff-4357-b8b4-683681fa377d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Utils\Source Files\MiscUI">
+      <UniqueIdentifier>{13080af5-189e-4b35-b7f6-b9e770cb3539}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils\Header Files\MiscUI">
+      <UniqueIdentifier>{e296920c-b196-4024-b06a-372cbfadd579}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AboutDlg.cpp">
@@ -102,16 +108,10 @@
     <ClCompile Include="WorkingFile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Utils\MiscUI\BrowseFolder.cpp">
-      <Filter>Utils\Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\Utils\CmdLineParser.cpp">
       <Filter>Utils\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\Utils\CommonAppUtils.cpp">
-      <Filter>Utils\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Utils\MiscUI\DIB.cpp">
       <Filter>Utils\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\Utils\DirFileEnum.cpp">
@@ -120,25 +120,10 @@
     <ClCompile Include="..\Utils\DragDropImpl.cpp">
       <Filter>Utils\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Utils\MiscUI\FileDropEdit.cpp">
-      <Filter>Utils\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Utils\MiscUI\HistoryCombo.cpp">
-      <Filter>Utils\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Utils\MiscUI\HyperLink.cpp">
-      <Filter>Utils\Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\Utils\PathUtils.cpp">
       <Filter>Utils\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\Utils\Registry.cpp">
-      <Filter>Utils\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Utils\MiscUI\ScrollTool.cpp">
-      <Filter>Utils\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Utils\MiscUI\StandAloneDlg.cpp">
       <Filter>Utils\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\Utils\StringUtils.cpp">
@@ -148,9 +133,6 @@
       <Filter>Utils\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\Utils\UnicodeUtils.cpp">
-      <Filter>Utils\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Utils\MiscUI\WaterEffect.cpp">
       <Filter>Utils\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="XSplitter.cpp">
@@ -163,12 +145,6 @@
       <Filter>Utils\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\Utils\ProfilingInfo.cpp">
-      <Filter>Utils\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Utils\MiscUI\FileDlgEventHandler.cpp">
-      <Filter>Utils\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Utils\MiscUI\IconMenu.cpp">
       <Filter>Utils\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\Utils\TaskbarUUID.cpp">
@@ -255,20 +231,11 @@
     <ClCompile Include="TempFile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Utils\MiscUI\SysProgressDlg.cpp">
-      <Filter>Utils\Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\Git\GitAdminDir.cpp">
       <Filter>Git\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\Git\GitPatch.cpp">
       <Filter>Git\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Utils\MiscUI\HTMLFormatter.cpp">
-      <Filter>Utils\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Utils\MiscUI\MessageBox.cpp">
-      <Filter>Utils\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AppUtils.cpp">
       <Filter>Source Files</Filter>
@@ -327,8 +294,47 @@
     <ClCompile Include="EditorConfigWrapper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\BrowseFolder.cpp">
+      <Filter>Utils\Source Files\MiscUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\DIB.cpp">
+      <Filter>Utils\Source Files\MiscUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\FileDlgEventHandler.cpp">
+      <Filter>Utils\Source Files\MiscUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\FileDropEdit.cpp">
+      <Filter>Utils\Source Files\MiscUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\HistoryCombo.cpp">
+      <Filter>Utils\Source Files\MiscUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\HTMLFormatter.cpp">
+      <Filter>Utils\Source Files\MiscUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\HyperLink.cpp">
+      <Filter>Utils\Source Files\MiscUI</Filter>
+    </ClCompile>
     <ClCompile Include="..\Utils\MiscUI\IconBitmapUtils.cpp">
-      <Filter>Utils\Source Files</Filter>
+      <Filter>Utils\Source Files\MiscUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\IconMenu.cpp">
+      <Filter>Utils\Source Files\MiscUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\MessageBox.cpp">
+      <Filter>Utils\Source Files\MiscUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\StandAloneDlg.cpp">
+      <Filter>Utils\Source Files\MiscUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\WaterEffect.cpp">
+      <Filter>Utils\Source Files\MiscUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\SysProgressDlg.cpp">
+      <Filter>Utils\Source Files\MiscUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\ScrollTool.cpp">
+      <Filter>Utils\Source Files\MiscUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -407,16 +413,10 @@
     <ClInclude Include="WorkingFile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Utils\MiscUI\BrowseFolder.h">
-      <Filter>Utils\Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\Utils\CmdLineParser.h">
       <Filter>Utils\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\CommonAppUtils.h">
-      <Filter>Utils\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Utils\MiscUI\DIB.h">
       <Filter>Utils\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\DirFileEnum.h">
@@ -425,28 +425,10 @@
     <ClInclude Include="..\Utils\DragDropImpl.h">
       <Filter>Utils\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Utils\MiscUI\FileDropEdit.h">
-      <Filter>Utils\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Utils\MiscUI\HistoryCombo.h">
-      <Filter>Utils\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Utils\MiscUI\HTMLFormatter.h">
-      <Filter>Utils\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Utils\MiscUI\HyperLink.h">
-      <Filter>Utils\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Utils\MiscUI\MessageBox.h">
-      <Filter>Utils\Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\Utils\PathUtils.h">
       <Filter>Utils\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\registry.h">
-      <Filter>Utils\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Utils\MiscUI\ScrollTool.h">
       <Filter>Utils\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\StringUtils.h">
@@ -458,28 +440,10 @@
     <ClInclude Include="..\Utils\UnicodeUtils.h">
       <Filter>Utils\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Utils\MiscUI\WaterEffect.h">
-      <Filter>Utils\Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="MovedBlocks.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Utils\MiscUI\StandAloneDlg.h">
-      <Filter>Utils\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Utils\MiscUI\LineColors.h">
-      <Filter>Utils\Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\Utils\ProfilingInfo.h">
-      <Filter>Utils\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Utils\MiscUI\FileDlgEventHandler.h">
-      <Filter>Utils\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Utils\MiscUI\TripleClick.h">
-      <Filter>Utils\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Utils\MiscUI\IconMenu.h">
       <Filter>Utils\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\TaskbarUUID.h">
@@ -496,9 +460,6 @@
     </ClInclude>
     <ClInclude Include="..\Git\GitPatch.h">
       <Filter>Git\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Utils\MiscUI\SysProgressDlg.h">
-      <Filter>Utils\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AppUtils.h">
       <Filter>Header Files</Filter>
@@ -521,11 +482,56 @@
     <ClInclude Include="RegexFilterDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Utils\MiscUI\IconBitmapUtils.h">
-      <Filter>Utils\Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="EditorConfigWrapper.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\BrowseFolder.h">
+      <Filter>Utils\Header Files\MiscUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\DIB.h">
+      <Filter>Utils\Header Files\MiscUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\HyperLink.h">
+      <Filter>Utils\Header Files\MiscUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\HTMLFormatter.h">
+      <Filter>Utils\Header Files\MiscUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\HistoryCombo.h">
+      <Filter>Utils\Header Files\MiscUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\FileDropEdit.h">
+      <Filter>Utils\Header Files\MiscUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\ScrollTool.h">
+      <Filter>Utils\Header Files\MiscUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\TripleClick.h">
+      <Filter>Utils\Header Files\MiscUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\WaterEffect.h">
+      <Filter>Utils\Header Files\MiscUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\SysProgressDlg.h">
+      <Filter>Utils\Header Files\MiscUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\StandAloneDlg.h">
+      <Filter>Utils\Header Files\MiscUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\MessageBox.h">
+      <Filter>Utils\Header Files\MiscUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\IconMenu.h">
+      <Filter>Utils\Header Files\MiscUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\IconBitmapUtils.h">
+      <Filter>Utils\Header Files\MiscUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\LineColors.h">
+      <Filter>Utils\Header Files\MiscUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\FileDlgEventHandler.h">
+      <Filter>Utils\Header Files\MiscUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

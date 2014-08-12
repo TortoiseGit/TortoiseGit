@@ -75,6 +75,7 @@
     <ClCompile Include="..\Utils\UniqueQueue.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Git\Git.h" />
     <ClInclude Include="..\Utils\DebugOutput.h" />
     <ClInclude Include="CachedDirectory.h" />
     <ClInclude Include="CacheInterface.h" />

@@ -13,24 +13,15 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
     </Filter>
+    <Filter Include="Source Files\Utils">
+      <UniqueIdentifier>{ad767875-cfb9-447c-9d74-104cfa38bda6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utils\MiscUI">
+      <UniqueIdentifier>{69e8f8d5-9744-4ff8-af96-ea27de368df9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AboutDlg.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Utils\MiscUI\BaseDialog.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Utils\MiscUI\BaseWindow.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Utils\CmdLineParser.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Utils\MiscUI\hyperlink_base.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Utils\LangDll.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MainWindow.cpp">
@@ -39,63 +30,54 @@
     <ClCompile Include="NiceTrackbar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Utils\MiscUI\Picture.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="PicWindow.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Utils\Registry.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Utils\SysInfo.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="TortoiseIDiff.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\BaseWindow.cpp">
+      <Filter>Source Files\Utils\MiscUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\BaseDialog.cpp">
+      <Filter>Source Files\Utils\MiscUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\CmdLineParser.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\hyperlink_base.cpp">
+      <Filter>Source Files\Utils\MiscUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\LangDll.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\Picture.cpp">
+      <Filter>Source Files\Utils\MiscUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\Registry.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\SysInfo.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
     <ClCompile Include="..\Utils\TaskbarUUID.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AboutDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Utils\MiscUI\BaseDialog.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Utils\MiscUI\BaseWindow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Utils\CmdLineParser.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Utils\MiscUI\hyperlink_base.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Utils\LangDll.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="MainWindow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Utils\MiscUI\MyMemDC.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="NiceTrackbar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Utils\MiscUI\Picture.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="PicWindow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Utils\registry.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
@@ -104,17 +86,41 @@
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Utils\SysInfo.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="TortoiseIDiff.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\BaseDialog.h">
+      <Filter>Source Files\Utils\MiscUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\BaseWindow.h">
+      <Filter>Source Files\Utils\MiscUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\hyperlink_base.h">
+      <Filter>Source Files\Utils\MiscUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\Picture.h">
+      <Filter>Source Files\Utils\MiscUI</Filter>
+    </ClInclude>
     <ClInclude Include="..\Utils\TaskbarUUID.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\SysInfo.h">
+      <Filter>Source Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\registry.h">
+      <Filter>Source Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\MyMemDC.h">
+      <Filter>Source Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\LangDll.h">
+      <Filter>Source Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\CmdLineParser.h">
+      <Filter>Source Files\Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\MiscUI\ResString.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files\Utils\MiscUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
