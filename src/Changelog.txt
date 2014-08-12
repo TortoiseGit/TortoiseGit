@@ -9,6 +9,11 @@ Released: unreleased
  * Fixed issue #2241: Cleanup: result window of dry run should offer to "really remove"
  * Fixed issue #1596: Added basic support for clean/smudge filters
  * Fixed issue #2167: Support git push --force-with-lease option
+ * TortoiseGitMerge: Support EditorConfig indent_style(space/tab) and indent_size
+ * TortoiseGitMerge: Can specify number of context lines or follow diff.context in a patch file
+ * Can sort tags in reversed order
+ * Can shallow pull/fetch a shallow clone repository
+ * Revision Graph: Add filter to walk from Only Local Branches
 
 == Bug Fixes ==
  * Fixed issue #2216: Add fails with message: libgit2: "failed to parse 'warn' as boolean"
@@ -33,6 +38,11 @@ Released: unreleased
    thus, locking the file and the repository for this time span.
    Fixed issue #2240: TGitCache keeps crashing when I look at my folders or commit
  * Fixed issue #2219: "add cherry picked from" is not applied when squashing/editing the commits
+ * TortoiseGitMerge: Fix some crashes when Wrap Long Lines is enabled
+ * TortoiseGitMerge: Use the screen chars of the current view for the scrollbar page value
+ * TortoiseGitMerge: Do not draw EOL mark in line number region
+ * TortoiseGitMerge: No need to expand tab to spaces when finding inline diff positions
+ * Repository Browser said commit not found in submodule
 
 = Release 1.8.9.0 =
 Released: 2014-06-09
