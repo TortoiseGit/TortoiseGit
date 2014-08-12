@@ -13,12 +13,15 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
     </Filter>
+    <Filter Include="Source Files\Utils">
+      <UniqueIdentifier>{3f004a8f-cf17-4a53-9856-3d6f077f875b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utils\MiscUI">
+      <UniqueIdentifier>{f86a3d47-ea3d-4fa3-a47f-e1b9367a0e3d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\TortoiseProc\Colors.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Utils\CommonAppUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="EditGotoDlg.cpp">
@@ -66,12 +69,6 @@
     <ClCompile Include="PropertiesWnd.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Utils\MiscUI\SciEdit.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Utils\MiscUI\StandAloneDlg.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -84,14 +81,77 @@
     <ClCompile Include="TortoiseGitBlameView.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Utils\DebugOutput.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\TortoiseProc\GravatarPictureBox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TortoiseGitBlameData.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\CmdLineParser.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\Registry.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\StringUtils.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\SysInfo.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\TaskbarUUID.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\UnicodeUtils.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\MessageBox.cpp">
+      <Filter>Source Files\Utils\MiscUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\HistoryCombo.cpp">
+      <Filter>Source Files\Utils\MiscUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\Picture.cpp">
+      <Filter>Source Files\Utils\MiscUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\Tooltip.cpp">
+      <Filter>Source Files\Utils\MiscUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\IconMenu.cpp">
+      <Filter>Source Files\Utils\MiscUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\HintListCtrl.cpp">
+      <Filter>Source Files\Utils\MiscUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\FilterEdit.cpp">
+      <Filter>Source Files\Utils\MiscUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\PathUtils.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\IconBitmapUtils.cpp">
+      <Filter>Source Files\Utils\MiscUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\HTMLFormatter.cpp">
+      <Filter>Source Files\Utils\MiscUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\PersonalDictionary.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\SciEdit.cpp">
+      <Filter>Source Files\Utils\MiscUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\SysImageList.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\CommonAppUtils.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\DebugOutput.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\StandAloneDlg.cpp">
+      <Filter>Source Files\Utils\MiscUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -108,9 +168,6 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\TortoiseProc\LogDlgHelper.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Utils\MiscUI\SciEdit.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\CommonAppUtils.h">
@@ -163,6 +220,63 @@
     </ClInclude>
     <ClInclude Include="TortoiseGitBlameData.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\CmdLineParser.h">
+      <Filter>Source Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\registry.h">
+      <Filter>Source Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\StringUtils.h">
+      <Filter>Source Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\SysInfo.h">
+      <Filter>Source Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\TaskbarUUID.h">
+      <Filter>Source Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\UnicodeUtils.h">
+      <Filter>Source Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\MessageBox.h">
+      <Filter>Source Files\Utils\MiscUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\HistoryCombo.h">
+      <Filter>Source Files\Utils\MiscUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\Picture.h">
+      <Filter>Source Files\Utils\MiscUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\Tooltip.h">
+      <Filter>Source Files\Utils\MiscUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\IconMenu.h">
+      <Filter>Source Files\Utils\MiscUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\HintListCtrl.h">
+      <Filter>Source Files\Utils\MiscUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\FilterEdit.h">
+      <Filter>Source Files\Utils\MiscUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\PathUtils.h">
+      <Filter>Source Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\IconBitmapUtils.h">
+      <Filter>Source Files\Utils\MiscUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\HTMLFormatter.h">
+      <Filter>Source Files\Utils\MiscUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\PersonalDictionary.h">
+      <Filter>Source Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\SciEdit.h">
+      <Filter>Source Files\Utils\MiscUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\SysImageList.h">
+      <Filter>Source Files\Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

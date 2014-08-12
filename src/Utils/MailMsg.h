@@ -44,6 +44,7 @@
 #define _MAILMSG_H_
 
 #include "stdafx.h"
+#include <MAPI.h>
 
 typedef std::map<std::string, std::string> TStrStrMap;
 

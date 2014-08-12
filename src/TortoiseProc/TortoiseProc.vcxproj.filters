@@ -156,6 +156,9 @@
     <Filter Include="Utility Dialogs\ProgressCommands">
       <UniqueIdentifier>{7f759aba-0396-4af9-bdbe-45a4a6475536}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Utils\TreePropSheet">
+      <UniqueIdentifier>{e772451b-ebd6-46da-b8e2-f4794840702a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AddRemoteDlg.cpp">
@@ -166,9 +169,6 @@
     </ClCompile>
     <ClCompile Include="FindDlg.cpp">
       <Filter>Utility Dialogs</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Utils\Libraries.cpp">
-      <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="LogFile.cpp">
       <Filter>Utils</Filter>
@@ -185,17 +185,11 @@
     <ClCompile Include="SinglePropSheetDlg.cpp">
       <Filter>Utility Dialogs</Filter>
     </ClCompile>
-    <ClCompile Include="AppUtils.cpp">
-      <Filter>Utils\General</Filter>
-    </ClCompile>
     <ClCompile Include="DeleteConflictDlg.cpp">
       <Filter>Utility Dialogs</Filter>
     </ClCompile>
     <ClCompile Include="HistoryDlg.cpp">
       <Filter>Utility Dialogs</Filter>
-    </ClCompile>
-    <ClCompile Include="Colors.cpp">
-      <Filter>Utils\UI</Filter>
     </ClCompile>
     <ClCompile Include="..\Utils\MiscUI\HorizontalResizableStandAloneDialog.cpp">
       <Filter>Utils\UI</Filter>
@@ -635,9 +629,6 @@
     <ClCompile Include="TortoiseProc.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="..\Utils\Graphviz.cpp">
-      <Filter>Utils\UI</Filter>
-    </ClCompile>
     <ClCompile Include="UserPassword.cpp">
       <Filter>Utility Dialogs</Filter>
     </ClCompile>
@@ -655,9 +646,6 @@
     </ClCompile>
     <ClCompile Include="Commands\DaemonCommand.cpp">
       <Filter>Commands\Daemon</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Utils\DebugOutput.cpp">
-      <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="MergeAbortDlg.cpp">
       <Filter>Commands\merge</Filter>
@@ -712,6 +700,171 @@
     </ClCompile>
     <ClCompile Include="ProgressCommands\RemoteProgressCommand.cpp">
       <Filter>Utility Dialogs\ProgressCommands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\CmdLineParser.cpp">
+      <Filter>Utils\General</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\CommonAppUtils.cpp">
+      <Filter>Utils\General</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\DirFileEnum.cpp">
+      <Filter>Utils\General</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\HwSMTP.cpp">
+      <Filter>Utils\General</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\JumpListHelpers.cpp">
+      <Filter>Utils\General</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\LangDll.cpp">
+      <Filter>Utils\General</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MailMsg.cpp">
+      <Filter>Utils\General</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\PathUtils.cpp">
+      <Filter>Utils\General</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\PersonalDictionary.cpp">
+      <Filter>Utils\General</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\Registry.cpp">
+      <Filter>Utils\General</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\SysInfo.cpp">
+      <Filter>Utils\General</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\TaskbarUUID.cpp">
+      <Filter>Utils\General</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\UnicodeUtils.cpp">
+      <Filter>Utils\General</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\DebugOutput.cpp">
+      <Filter>Utils\General</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\Libraries.cpp">
+      <Filter>Utils\General</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\BrowseFolder.cpp">
+      <Filter>Utils\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\FilterEdit.cpp">
+      <Filter>Utils\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\HintListCtrl.cpp">
+      <Filter>Utils\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\HistoryCombo.cpp">
+      <Filter>Utils\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\HTMLFormatter.cpp">
+      <Filter>Utils\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\HyperLink.cpp">
+      <Filter>Utils\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\IconBitmapUtils.cpp">
+      <Filter>Utils\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\IconMenu.cpp">
+      <Filter>Utils\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\MenuButton.cpp">
+      <Filter>Utils\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\MessageBox.cpp">
+      <Filter>Utils\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\Picture.cpp">
+      <Filter>Utils\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\SplitterControl.cpp">
+      <Filter>Utils\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\SVG.cpp">
+      <Filter>Utils\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\SysProgressDlg.cpp">
+      <Filter>Utils\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\Tooltip.cpp">
+      <Filter>Utils\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\WaterEffect.cpp">
+      <Filter>Utils\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\MyGraph.cpp">
+      <Filter>Utils\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\ShellUpdater.cpp">
+      <Filter>Utils\General</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\Hooks.cpp">
+      <Filter>Utils\General</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\RegHistory.cpp">
+      <Filter>Utils\General</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\PathWatcher.cpp">
+      <Filter>Utils\General</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\DropFiles.cpp">
+      <Filter>Utils\General</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\DIB.cpp">
+      <Filter>Utils\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\BugTraqAssociations.cpp">
+      <Filter>Utils\General</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\ACEdit.cpp">
+      <Filter>Utils\General</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\ACListWnd.cpp">
+      <Filter>Utils\General</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\TreePropSheet\PropPageFrame.cpp">
+      <Filter>Utils\TreePropSheet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\TreePropSheet\PropPageFrameDefault.cpp">
+      <Filter>Utils\TreePropSheet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\TreePropSheet\TreePropSheet.cpp">
+      <Filter>Utils\TreePropSheet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\COMError.cpp">
+      <Filter>Utils\General</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\RegexEdit.cpp">
+      <Filter>Utils\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\BufferDC.cpp">
+      <Filter>Utils\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\SysImageList.cpp">
+      <Filter>Utils\General</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\StringUtils.cpp">
+      <Filter>Utils\General</Filter>
+    </ClCompile>
+    <ClCompile Include="AppUtils.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\FileDropEdit.cpp">
+      <Filter>Utils\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Colors.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\Graphviz.cpp">
+      <Filter>Utils\General</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\DragDropImpl.cpp">
+      <Filter>Utils\General</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\TempFile.cpp">
+      <Filter>Utils\General</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1171,9 +1324,6 @@
     <ClInclude Include="TortoiseProc.h">
       <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="..\Utils\Graphviz.h">
-      <Filter>Utils\UI</Filter>
-    </ClInclude>
     <ClInclude Include="UserPassword.h">
       <Filter>Utility Dialogs</Filter>
     </ClInclude>
@@ -1192,9 +1342,6 @@
     <ClInclude Include="Commands\DaemonCommand.h">
       <Filter>Commands\Daemon</Filter>
     </ClInclude>
-    <ClInclude Include="..\Utils\DebugOutput.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
     <ClInclude Include="MergeAbortDlg.h">
       <Filter>Commands\merge</Filter>
     </ClInclude>
@@ -1212,9 +1359,6 @@
     </ClInclude>
     <ClInclude Include="Settings\SetDialogs3.h">
       <Filter>Commands\setting</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Utils\IInputValidator.h">
-      <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\MiscUI\ControlsBridge.h">
       <Filter>Utils\UI</Filter>
@@ -1236,9 +1380,6 @@
     </ClInclude>
     <ClInclude Include="BugtraqRegexTestDlg.h">
       <Filter>Commands\setting</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Utils\SmartLibgit2Ref.h">
-      <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="BstrSafeVector.h">
       <Filter>Utils</Filter>
@@ -1266,6 +1407,174 @@
     </ClInclude>
     <ClInclude Include="ProgressCommands\RemoteProgressCommand.h">
       <Filter>Utility Dialogs\ProgressCommands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\CmdLineParser.h">
+      <Filter>Utils\General</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\CommonAppUtils.h">
+      <Filter>Utils\General</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\DirFileEnum.h">
+      <Filter>Utils\General</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\HwSMTP.h">
+      <Filter>Utils\General</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\JumpListHelpers.h">
+      <Filter>Utils\General</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\LangDll.h">
+      <Filter>Utils\General</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\Libraries.h">
+      <Filter>Utils\General</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MailMsg.h">
+      <Filter>Utils\General</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\PathUtils.h">
+      <Filter>Utils\General</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\PersonalDictionary.h">
+      <Filter>Utils\General</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\registry.h">
+      <Filter>Utils\General</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\SysInfo.h">
+      <Filter>Utils\General</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\TaskbarUUID.h">
+      <Filter>Utils\General</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\UnicodeUtils.h">
+      <Filter>Utils\General</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\Win7.h">
+      <Filter>Utils\General</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\DebugOutput.h">
+      <Filter>Utils\General</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\IInputValidator.h">
+      <Filter>Utils\General</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\SmartLibgit2Ref.h">
+      <Filter>Utils\General</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\BrowseFolder.h">
+      <Filter>Utils\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\FilterEdit.h">
+      <Filter>Utils\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\HintListCtrl.h">
+      <Filter>Utils\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\HistoryCombo.h">
+      <Filter>Utils\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\HTMLFormatter.h">
+      <Filter>Utils\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\HyperLink.h">
+      <Filter>Utils\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\IconBitmapUtils.h">
+      <Filter>Utils\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\IconMenu.h">
+      <Filter>Utils\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\MenuButton.h">
+      <Filter>Utils\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\MessageBox.h">
+      <Filter>Utils\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\Picture.h">
+      <Filter>Utils\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\SplitterControl.h">
+      <Filter>Utils\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\SVG.h">
+      <Filter>Utils\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\SysProgressDlg.h">
+      <Filter>Utils\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\Tooltip.h">
+      <Filter>Utils\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\WaterEffect.h">
+      <Filter>Utils\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\MyGraph.h">
+      <Filter>Utils\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\ShellUpdater.h">
+      <Filter>Utils\General</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\Hooks.h">
+      <Filter>Utils\General</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\RegHistory.h">
+      <Filter>Utils\General</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\PathWatcher.h">
+      <Filter>Utils\General</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\DropFiles.h">
+      <Filter>Utils\General</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\DIB.h">
+      <Filter>Utils\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\BugTraqAssociations.h">
+      <Filter>Utils\General</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\ACEdit.h">
+      <Filter>Utils\General</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\ACListWnd.h">
+      <Filter>Utils\General</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\TreePropSheet\PropPageFrame.h">
+      <Filter>Utils\TreePropSheet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\TreePropSheet\PropPageFrameDefault.h">
+      <Filter>Utils\TreePropSheet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\TreePropSheet\TreePropSheet.h">
+      <Filter>Utils\TreePropSheet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\COMError.h">
+      <Filter>Utils\General</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\RegexEdit.h">
+      <Filter>Utils\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\BufferDC.h">
+      <Filter>Utils\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\SysImageList.h">
+      <Filter>Utils\General</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\StringUtils.h">
+      <Filter>Utils\General</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\FileDropEdit.h">
+      <Filter>Utils\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\Graphviz.h">
+      <Filter>Utils\General</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\DragDropImpl.h">
+      <Filter>Utils\General</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\TempFile.h">
+      <Filter>Utils\General</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

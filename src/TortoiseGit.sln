@@ -27,8 +27,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TortoiseGitUDiff", "Tortois
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TortoiseShell", "TortoiseShell\TortoiseShell.vcxproj", "{E873DD32-5A31-4DE1-8341-A56A2A5489EA}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Utils", "Utils\Utils.vcxproj", "{A2C38606-3D96-4A2C-B5C5-22CEAC523B37}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "hunspell", "..\ext\hunspell\hunspell.vcxproj", "{12E5B4AE-D7EF-4A57-A22D-6F9F9D8CE1FB}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ResizableLib", "..\ext\ResizableLib\ResizableLib.vcxproj", "{4BE529FB-C2F2-49F7-A897-054B955564CF}"
@@ -286,14 +284,6 @@ Global
 		{E873DD32-5A31-4DE1-8341-A56A2A5489EA}.Release|Win32.Build.0 = Release|Win32
 		{E873DD32-5A31-4DE1-8341-A56A2A5489EA}.Release|x64.ActiveCfg = Release|x64
 		{E873DD32-5A31-4DE1-8341-A56A2A5489EA}.Release|x64.Build.0 = Release|x64
-		{A2C38606-3D96-4A2C-B5C5-22CEAC523B37}.Debug|Win32.ActiveCfg = Debug|Win32
-		{A2C38606-3D96-4A2C-B5C5-22CEAC523B37}.Debug|Win32.Build.0 = Debug|Win32
-		{A2C38606-3D96-4A2C-B5C5-22CEAC523B37}.Debug|x64.ActiveCfg = Debug|x64
-		{A2C38606-3D96-4A2C-B5C5-22CEAC523B37}.Debug|x64.Build.0 = Debug|x64
-		{A2C38606-3D96-4A2C-B5C5-22CEAC523B37}.Release|Win32.ActiveCfg = Release|Win32
-		{A2C38606-3D96-4A2C-B5C5-22CEAC523B37}.Release|Win32.Build.0 = Release|Win32
-		{A2C38606-3D96-4A2C-B5C5-22CEAC523B37}.Release|x64.ActiveCfg = Release|x64
-		{A2C38606-3D96-4A2C-B5C5-22CEAC523B37}.Release|x64.Build.0 = Release|x64
 		{12E5B4AE-D7EF-4A57-A22D-6F9F9D8CE1FB}.Debug|Win32.ActiveCfg = Debug|Win32
 		{12E5B4AE-D7EF-4A57-A22D-6F9F9D8CE1FB}.Debug|Win32.Build.0 = Debug|Win32
 		{12E5B4AE-D7EF-4A57-A22D-6F9F9D8CE1FB}.Debug|x64.ActiveCfg = Debug|x64

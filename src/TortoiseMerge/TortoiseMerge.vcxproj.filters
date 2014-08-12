@@ -324,11 +324,11 @@
     <ClCompile Include="libsvn_diff\spillbuf.c">
       <Filter>Libdiff</Filter>
     </ClCompile>
-    <ClCompile Include="..\Utils\MiscUI\IconBitmapUtils.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
     <ClCompile Include="EditorConfigWrapper.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\IconBitmapUtils.cpp">
+      <Filter>Utils\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
