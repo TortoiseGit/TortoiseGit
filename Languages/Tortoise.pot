@@ -9065,6 +9065,10 @@ msgstr ""
 msgid "The two selected URL's are not created from the same root.\nIt's not possible to show the log messages between them!"
 msgstr ""
 
+#. Resource IDs: (96)
+msgid "The working tree is not clean and contains unstaged changes. This can cause conflicts white rebasing/cherry picking."
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Their file:"
 msgstr ""
