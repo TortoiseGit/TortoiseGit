@@ -3,6 +3,7 @@ Released: unreleased
 
 == Bug Fixes ==
  * Fixed issue #2260: Clicking in blank space in Commit dialog causes all unversioned files to become selected
+ * Fixed issue #2257: Fetching & pushing using ssh.exe not working with TortoiseGit 1.8.10
 
 = Release 1.8.10.0 =
 Released: 2014-08-12
