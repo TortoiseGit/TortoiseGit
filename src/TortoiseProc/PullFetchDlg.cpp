@@ -184,7 +184,9 @@ BOOL CPullFetchDlg::OnInitDialog()
 		this->GetDlgItem(IDC_CHECK_REBASE)->EnableWindow(FALSE);
 
 	CAutoRepository repo(g_Git.GetGitRepository());
-	if (git_repository_is_shallow(repo))
+	if (!repo)
+		MessageBox(CGit::GetLibGit2LastErr(_T("Could not open repository.")), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+	if (repo && git_repository_is_shallow(repo))
 	{
 		m_bDepth = TRUE;
 		UpdateData(FALSE);
