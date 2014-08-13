@@ -60,6 +60,30 @@ static inline BOOL FileExists(LPCTSTR lpszFileName)
 	return _tstat(lpszFileName, &st) == 0;
 }
 
+static bool IsPowerShell(const CString& cmd)
+{
+	int powerShellPos = cmd.Find(_T("powershell"));
+	if (powerShellPos < 0)
+		return false;
+
+	// found the word powershell, check that it is the command and not any parameter
+	int end = cmd.GetLength();
+	if (cmd.Find(_T('"')) == 0)
+	{
+		int secondDoubleQuote = cmd.Find(_T('"'), 1);
+		if (secondDoubleQuote > 0)
+			end = secondDoubleQuote;
+	}
+	else
+	{
+		int firstSpace = cmd.Find(_T(' '));
+		if (firstSpace > 0)
+			end = firstSpace;
+	}
+
+	return (end - 4 - 10 == powerShellPos || end - 10 == powerShellPos); // len(".exe")==4, len("powershell")==10
+}
+
 static BOOL FindGitPath()
 {
 	size_t size;
@@ -258,9 +282,15 @@ int CGit::RunAsync(CString cmd, PROCESS_INFORMATION *piOut, HANDLE *hReadOut, HA
 	LPTSTR pEnv = (!m_Environment.empty()) ? &m_Environment[0]: NULL;
 	DWORD dwFlags = pEnv ? CREATE_UNICODE_ENVIRONMENT : 0;
 
-	// CREATE_NEW_CONSOLE makes ssh recognize that it has no console in order to launch askpass to ask for the password.
-	// DETACHED_PROCESS which was originally used here has the same effect, however, it prevents PowerShell from working (cf. issue #2143)
-	dwFlags |= CREATE_NEW_PROCESS_GROUP | CREATE_NEW_CONSOLE;
+	dwFlags |= CREATE_NEW_PROCESS_GROUP;
+
+	// CREATE_NEW_CONSOLE makes git (but not ssh.exe, see issue #2257) recognize that it has no console in order to launch askpass to ask for the password,
+	// DETACHED_PROCESS which was originally used here has the same effect (but works with git.exe AND ssh.exe), however, it prevents PowerShell from working (cf. issue #2143)
+	// => we keep using DETACHED_PROCESS as the default, but if cmd contains pwershell we use CREATE_NEW_CONSOLE
+	if (IsPowerShell(cmd))
+		dwFlags |= CREATE_NEW_CONSOLE;
+	else
+		dwFlags |= DETACHED_PROCESS;
 
 	memset(&this->m_CurrentGitPi,0,sizeof(PROCESS_INFORMATION));
 	memset(&pi, 0, sizeof(PROCESS_INFORMATION));

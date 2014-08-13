@@ -1,4 +1,10 @@
-﻿= Release 1.8.10.0 =
+﻿= Release 1.8.11.0 =
+Released: unreleased
+
+== Bug Fixes ==
+ * Fixed issue #2257: Fetching & pushing using ssh.exe not working with TortoiseGit 1.8.10
+
+= Release 1.8.10.0 =
 Released: 2014-08-12
 
 == Features ==
