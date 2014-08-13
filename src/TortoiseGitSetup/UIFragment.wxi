@@ -418,7 +418,7 @@
 				<Publish Event="EndDialog" Value="Exit">1</Publish>
 			</Control>
 			<Control Id="Text" Type="Text" X="20" Y="55" Width="330" Height="30">
-				<Text>The following applications are using files that need to be updated by this setup. Close these applications and then click Retry to continue the installation or Cancel to exit it.</Text>
+				<Text>The following applications are using files that need to be updated by this setup. Close these applications and then click Retry or click Ignore to continue the installation or Exit to exit it.</Text>
 			</Control>
 			<Control Id="List" Type="ListBox" X="20" Y="87" Width="330" Height="130" Property="FileInUseProcess" Sunken="yes" TabSkip="yes" />
 			<Control Id="BannerBitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="44" TabSkip="no" Text="[BannerBitmap]" />
