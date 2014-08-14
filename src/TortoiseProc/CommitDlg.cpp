@@ -933,7 +933,11 @@ void CCommitDlg::OnOK()
 
 		CString tempfile=::GetTempFile();
 
-		CAppUtils::SaveCommitUnicodeFile(tempfile,m_sLogMessage);
+		if (CAppUtils::SaveCommitUnicodeFile(tempfile, m_sLogMessage))
+		{
+			CMessageBox::Show(nullptr, _T("Could not save commit message"), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+			return;
+		}
 
 		CTGitPath path=g_Git.m_CurrentDir;
 
