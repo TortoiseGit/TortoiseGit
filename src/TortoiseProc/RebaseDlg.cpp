@@ -1185,7 +1185,11 @@ void CRebaseDlg::OnBnClickedContinue()
 				return;
 			}
 			CString tempfile = ::GetTempFile();
-			CAppUtils::SaveCommitUnicodeFile(tempfile, str);
+			if (CAppUtils::SaveCommitUnicodeFile(tempfile, str))
+			{
+				CMessageBox::Show(nullptr, _T("Could not save commit message"), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+				return;
+			}
 
 			out.Empty();
 			cmd.Format(_T("git.exe commit --amend -F \"%s\""), tempfile);
@@ -1239,7 +1243,11 @@ void CRebaseDlg::OnBnClickedContinue()
 		}
 
 		CString tempfile=::GetTempFile();
-		CAppUtils::SaveCommitUnicodeFile(tempfile, str);
+		if (CAppUtils::SaveCommitUnicodeFile(tempfile, str))
+		{
+			CMessageBox::Show(nullptr, _T("Could not save commit message"), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+			return;
+		}
 
 		CString out,cmd;
 
