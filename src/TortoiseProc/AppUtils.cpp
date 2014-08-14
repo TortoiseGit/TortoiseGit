@@ -1075,9 +1075,9 @@ bool CAppUtils::CreateBranchTag(bool IsTag,CString *CommitHash, bool switch_new_
 				g_Git.FixBranchName(dlg.m_VersionName)
 				);
 
-			CString tempfile=::GetTempFile();
 			if(!dlg.m_Message.Trim().IsEmpty())
 			{
+				CString tempfile = ::GetTempFile();
 				CAppUtils::SaveCommitUnicodeFile(tempfile,dlg.m_Message);
 				cmd += _T(" -F ")+tempfile;
 			}
