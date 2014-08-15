@@ -113,8 +113,6 @@ BOOL CMergeDlg::OnInitDialog()
 	GetWindowText(sWindowTitle);
 	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);
 
-	InitChooseVersion(true);
-
 	m_ProjectProperties.ReadProps();
 
 	m_cLogMessage.Init(m_ProjectProperties);
@@ -147,6 +145,8 @@ BOOL CMergeDlg::OnInitDialog()
 
 	EnableSaveRestore(_T("MergeDlg"));
 	GetDlgItem(IDOK)->SetFocus();
+
+	InitChooseVersion(true);
 
 	return FALSE;
 }
