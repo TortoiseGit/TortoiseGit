@@ -24,7 +24,7 @@
 
 DumpUploaderWebService::DumpUploaderWebService(int responseTimeoutSec)
     : UploaderSoapProxy(SOAP_ENC_MTOM|SOAP_IO_KEEPALIVE|SOAP_C_UTFSTRING/*SOAP_C_MBSTRING*/)
-    , m_serviceUrl("https://www.crash-server.com")
+    , m_serviceUrl("https://drdump.com")
 {
     CRegKey reg;
     if (ERROR_SUCCESS == reg.Open(HKEY_LOCAL_MACHINE, _T("Software\\Idol Software\\DumpUploader"), KEY_READ))

@@ -8,8 +8,8 @@ SOAP_NMAC struct Namespace namespaces[] =
 	{"xsd", "http://www.w3.org/2001/XMLSchema", "http://www.w3.org/*/XMLSchema", NULL},
 	{"xop", "http://www.w3.org/2004/08/xop/include", NULL, NULL},
 	{"ns2", "http://microsoft.com/wsdl/types/", NULL, NULL},
-	{"ns3", "https://www.crash-server.com/UploaderSoap", NULL, NULL},
-	{"ns1", "https://www.crash-server.com/", NULL, NULL},
-	{"ns4", "https://www.crash-server.com/UploaderSoap12", NULL, NULL},
+	{"ns3", "https://drdump.com/UploaderSoap", NULL, NULL},
+	{"ns1", "https://drdump.com/", NULL, NULL},
+	{"ns4", "https://drdump.com/UploaderSoap12", NULL, NULL},
 	{NULL, NULL, NULL, NULL}
 };

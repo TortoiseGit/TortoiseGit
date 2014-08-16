@@ -6,7 +6,7 @@ Upgrade numbers in:
 -# src/version.h
 -# src/TortoiseGitSetup/VersionNumberInclude.wxi
 
-Upload symbols to crash-server.com
+Upload symbols to drdump.com
 
 Upload (signed) msi-files (do not forget to upload debug symbols and language packs for stable releases).
 Naming-convention:

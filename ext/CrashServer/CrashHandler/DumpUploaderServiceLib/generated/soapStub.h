@@ -8,7 +8,7 @@
 #ifndef soapStub_H
 #define soapStub_H
 #include <vector>
-#define SOAP_NAMESPACE_OF_ns1   "https://www.crash-server.com/"
+#define SOAP_NAMESPACE_OF_ns1   "https://drdump.com/"
 #define SOAP_NAMESPACE_OF_ns2   "http://microsoft.com/wsdl/types/"
 #include "stdsoap2.h"
 
