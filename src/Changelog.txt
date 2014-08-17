@@ -1,4 +1,10 @@
-﻿= Release 1.8.10.0 =
+﻿= Release 1.8.11.0 =
+Released: unreleased
+
+== Bug Fixes ==
+ * Fixed issue #2260: Clicking in blank space in Commit dialog causes all unversioned files to become selected
+
+= Release 1.8.10.0 =
 Released: 2014-08-12
 
 == Features ==
