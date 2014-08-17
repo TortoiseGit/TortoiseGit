@@ -2566,57 +2566,7 @@ void CGitStatusListCtrl::OnNMDblclk(NMHDR *pNMHDR, LRESULT *pResult)
 		return;
 
 	if (pNMLV->iItem < 0)
-	{
-		if (!IsGroupViewEnabled())
-			return;
-		POINT pt;
-		DWORD ptW = GetMessagePos();
-		pt.x = GET_X_LPARAM(ptW);
-		pt.y = GET_Y_LPARAM(ptW);
-		ScreenToClient(&pt);
-		int group = GetGroupFromPoint(&pt);
-		if (group < 0)
-			return;
-		// check/uncheck the whole group depending on the check-state
-		// of the first item in the group
-		m_bBlock = true;
-		bool bCheck = false;
-		bool bFirst = false;
-		LVITEM lv;
-		for (int i=0; i<GetItemCount(); ++i)
-		{
-			SecureZeroMemory(&lv, sizeof(LVITEM));
-			lv.mask = LVIF_GROUPID;
-			lv.iItem = i;
-			GetItem(&lv);
-			if (lv.iGroupId == group)
-			{
-				CTGitPath *entry=(CTGitPath*)GetItemData(i);
-
-				if (!bFirst)
-				{
-					bCheck = !GetCheck(i);
-					bFirst = true;
-				}
-				if (entry)
-				{
-					bool bOldCheck = !!GetCheck(i);
-					SetEntryCheck(entry, i, bCheck);
-					if (bCheck != bOldCheck)
-					{
-						if (bCheck)
-							m_nSelected++;
-						else
-							m_nSelected--;
-					}
-				}
-			}
-		}
-		GetStatisticsString();
-		m_bBlock = false;
-		NotifyCheck();
 		return;
-	}
 
 	CTGitPath *file=(CTGitPath*)GetItemData(pNMLV->iItem);
 
