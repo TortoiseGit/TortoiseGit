@@ -1,5 +1,5 @@
 SET DumpUploaderHeader=DumpUploader.h
-SET DumpUploaderUrl=https://drdump.com/crashserver/DumpUploader.asmx?WSDL
+SET DumpUploaderUrl=https://www.crash-server.com/crashserver/DumpUploader.asmx?WSDL
 rem SET DumpUploaderUrl=http://localhost:59175/DumpUploader.asmx?WSDL
 SET DumpUploaderPath=%~dp0\generated
 SET GsoapPath=%~dp0\..\..\external\gsoap-win32-2.8.0

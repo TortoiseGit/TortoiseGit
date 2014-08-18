@@ -102,7 +102,7 @@ BEGIN
     CONTROL         "[AppName] прекратил работу",IDC_HEADER_TEXT,"Static",SS_LEFTNOWORDWRAP | WS_GROUP,5,7,201,25
     LTEXT           "Идёт поиск решения этой проблемы...",IDC_TEXT,5,35,201,8
     CONTROL         "",IDC_PROGRESS,"msctls_progress32",PBS_MARQUEE | WS_BORDER,5,49,201,10
-    LTEXT           "drdump.com",IDC_STATIC,5,76,75,8,WS_DISABLED
+    LTEXT           "www.crash-server.com",IDC_STATIC,5,76,75,8,WS_DISABLED
 END
 
 
@@ -153,7 +153,7 @@ BEGIN
     CONTROL         "[AppName] has stopped working",IDC_HEADER_TEXT,"Static",SS_LEFTNOWORDWRAP | WS_GROUP,5,7,201,25
     LTEXT           "Sending crash data...",IDC_TEXT,5,35,201,8
     CONTROL         "",IDC_PROGRESS,"msctls_progress32",PBS_MARQUEE | WS_BORDER,5,49,201,10
-    LTEXT           "drdump.com",IDC_STATIC,5,76,75,8,WS_DISABLED
+    LTEXT           "www.crash-server.com",IDC_STATIC,5,76,75,8,WS_DISABLED
 END
 
 IDD_SENDFULLDUMPDLG DIALOGEX 0, 0, 211, 101
@@ -193,7 +193,7 @@ BEGIN
     PUSHBUTTON      "No",IDCANCEL,156,73,50,14
     CONTROL         "[AppName] has stopped working",IDC_HEADER_TEXT,"Static",SS_LEFTNOWORDWRAP | WS_GROUP,5,7,201,25
     LTEXT           "Solution to the problem has been found.",IDC_TEXT,5,35,201,8
-    LTEXT           "drdump.com",IDC_STATIC,5,76,75,8,WS_DISABLED
+    LTEXT           "www.crash-server.com",IDC_STATIC,5,76,75,8,WS_DISABLED
     LTEXT           "Static",IDC_QUESTION,5,49,201,8
     PUSHBUTTON      "Yes",IDOK,103,73,50,14
 END
@@ -209,7 +209,7 @@ BEGIN
                     "Static",SS_LEFTNOWORDWRAP | WS_GROUP,5,7,201,25
     LTEXT           "Sending crash data...",IDC_TEXT,5,35,201,8
     CONTROL         "",IDC_PROGRESS,"msctls_progress32",PBS_MARQUEE | WS_BORDER,5,49,201,10
-    LTEXT           "drdump.com",IDC_STATIC,5,76,75,8,WS_DISABLED
+    LTEXT           "www.crash-server.com",IDC_STATIC,5,76,75,8,WS_DISABLED
 END
 
 

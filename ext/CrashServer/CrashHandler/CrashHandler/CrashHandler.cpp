@@ -384,7 +384,7 @@ BOOL InitCrashHandler(ApplicationInfo* applicationInfo, HandlerSettings* handler
     if (IS_EXIST(PrivacyPolicyUrl) && applicationInfo->PrivacyPolicyUrl != NULL)
         g_pConfig->PrivacyPolicyUrl = applicationInfo->PrivacyPolicyUrl;
     else
-        g_pConfig->PrivacyPolicyUrl.Format(L"http://drdump.com/AppPrivacyPolicy.aspx?AppID=%s", (LPCWSTR)g_pConfig->ApplicationGUID);
+        g_pConfig->PrivacyPolicyUrl.Format(L"http://www.crash-server.com/AppPrivacyPolicy.aspx?AppID=%s", (LPCWSTR)g_pConfig->ApplicationGUID);
 #undef IS_EXIST
 
 #define IS_EXIST(field) (handlerSettings != NULL && (FIELD_OFFSET(HandlerSettings, field) < handlerSettings->HandlerSettingsSize))

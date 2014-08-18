@@ -34,9 +34,9 @@ void UploaderSoap12Proxy::UploaderSoap12Proxy_init(soap_mode imode, soap_mode om
     {"xsd", "http://www.w3.org/2001/XMLSchema", "http://www.w3.org/*/XMLSchema", NULL},
     {"xop", "http://www.w3.org/2004/08/xop/include", NULL, NULL},
     {"ns2", "http://microsoft.com/wsdl/types/", NULL, NULL},
-    {"ns3", "https://drdump.com/UploaderSoap", NULL, NULL},
-    {"ns1", "https://drdump.com/", NULL, NULL},
-    {"ns4", "https://drdump.com/UploaderSoap12", NULL, NULL},
+    {"ns3", "https://www.crash-server.com/UploaderSoap", NULL, NULL},
+    {"ns1", "https://www.crash-server.com/", NULL, NULL},
+    {"ns4", "https://www.crash-server.com/UploaderSoap12", NULL, NULL},
     {NULL, NULL, NULL, NULL}
 };
     this->namespaces = namespaces;
@@ -90,7 +90,7 @@ int UploaderSoap12Proxy::Hello(_ns1__Hello *ns1__Hello, _ns1__HelloResponse *ns1
     const char *soap_action = NULL;
     if (!soap_endpoint)
         soap_endpoint = "http://localhost:59175/DumpUploader.asmx";
-    soap_action = "https://drdump.com/Hello";
+    soap_action = "https://www.crash-server.com/Hello";
     soap->encodingStyle = NULL;
     soap_tmp___ns4__Hello.ns1__Hello = ns1__Hello;
     soap_begin(soap);
@@ -142,7 +142,7 @@ int UploaderSoap12Proxy::UploadMiniDump(_ns1__UploadMiniDump *ns1__UploadMiniDum
     const char *soap_action = NULL;
     if (!soap_endpoint)
         soap_endpoint = "http://localhost:59175/DumpUploader.asmx";
-    soap_action = "https://drdump.com/UploadMiniDump";
+    soap_action = "https://www.crash-server.com/UploadMiniDump";
     soap->encodingStyle = NULL;
     soap_tmp___ns4__UploadMiniDump.ns1__UploadMiniDump = ns1__UploadMiniDump;
     soap_begin(soap);
@@ -194,7 +194,7 @@ int UploaderSoap12Proxy::UploadAdditionalInfo(_ns1__UploadAdditionalInfo *ns1__U
     const char *soap_action = NULL;
     if (!soap_endpoint)
         soap_endpoint = "http://localhost:59175/DumpUploader.asmx";
-    soap_action = "https://drdump.com/UploadAdditionalInfo";
+    soap_action = "https://www.crash-server.com/UploadAdditionalInfo";
     soap->encodingStyle = NULL;
     soap_tmp___ns4__UploadAdditionalInfo.ns1__UploadAdditionalInfo = ns1__UploadAdditionalInfo;
     soap_begin(soap);
@@ -246,7 +246,7 @@ int UploaderSoap12Proxy::UploadSymbol(_ns1__UploadSymbol *ns1__UploadSymbol, _ns
     const char *soap_action = NULL;
     if (!soap_endpoint)
         soap_endpoint = "http://localhost:59175/DumpUploader.asmx";
-    soap_action = "https://drdump.com/UploadSymbol";
+    soap_action = "https://www.crash-server.com/UploadSymbol";
     soap->encodingStyle = NULL;
     soap_tmp___ns4__UploadSymbol.ns1__UploadSymbol = ns1__UploadSymbol;
     soap_begin(soap);
