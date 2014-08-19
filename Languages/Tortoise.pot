@@ -7755,7 +7755,7 @@ msgid "Same commit time"
 msgstr ""
 
 #. Resource IDs: (93)
-msgid "Sample log message to test the bugtraq: regex strings.\n\nTesting mentions of issues inside a text: Mention single issue #55. Mention issues #77, #78, and #78. Mention more issues #123, #124 and #125 and some more separate ones: Issue #45, issue #46 and issue #47.\n\n\nUpdate issue #101\nFixes issue #202\nFixed issue #123\nResolves issue #88.\nCloses issue #99.\n"
+msgid "Sample log message to test the bugtraq: regex strings.\n\nTesting mentions of issues inside a text: Mention single issue #55. Mention issues #77, #78, and #79. Mention more issues #123, #124 and #125 and some more separate ones: Issue #45, issue #46 and issue #47.\n\n\nUpdate issue #101\nFixes issue #202\nFixed issue #123\nResolves issue #88.\nCloses issue #99.\n"
 msgstr ""
 
 #. Resource IDs: (1612)
