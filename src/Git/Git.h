@@ -377,7 +377,7 @@ public:
 
 	int GetShortHASHLength() const;
 
-	static BOOL GetShortName(CString ref, CString &shortname, CString prefix)
+	static BOOL GetShortName(const CString &ref, CString &shortname, CString prefix)
 	{
 		//TRACE(_T("%s %s\r\n"),ref,prefix);
 		if (ref.Left(prefix.GetLength()) ==  prefix)
