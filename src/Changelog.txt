@@ -3,6 +3,7 @@ Released: unreleased
 
 == Bug Fixes ==
  * Fixed issue #2257: Fetching & pushing using ssh.exe not working with TortoiseGit 1.8.10
+ * Fixed crashes while opening the revision graph in the x64 version on some AMD CPUs
 
 = Release 1.8.10.0 =
 Released: 2014-08-12
