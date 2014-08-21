@@ -3910,13 +3910,13 @@ LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*
 	if (m_pFindDialog->FindNext() && !bFound)
 	{
 		//read data from dialog
-		CString FindText = m_pFindDialog->GetFindString();
+		CString findText = m_pFindDialog->GetFindString();
 		bool bMatchCase = (m_pFindDialog->MatchCase() == TRUE);
 
 		std::tr1::wregex pat;
 		bool bRegex = false;
 		if (m_pFindDialog->Regex())
-			bRegex = ValidateRegexp(FindText, pat, bMatchCase);
+			bRegex = ValidateRegexp(findText, pat, bMatchCase);
 
 		std::tr1::regex_constants::match_flag_type flags = std::tr1::regex_constants::match_not_null;
 
@@ -4009,7 +4009,7 @@ LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*
 			{
 				if (bMatchCase)
 				{
-					if (str.Find(FindText) >= 0)
+					if (str.Find(findText) >= 0)
 					{
 						bFound = true;
 						break;
@@ -4020,7 +4020,7 @@ LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*
 				{
 					CString msg = str;
 					msg = msg.MakeLower();
-					CString find = FindText.MakeLower();
+					CString find = findText.MakeLower();
 					if (msg.Find(find) >= 0)
 					{
 						bFound = TRUE;
