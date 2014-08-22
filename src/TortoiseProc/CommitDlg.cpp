@@ -1037,7 +1037,7 @@ void CCommitDlg::OnOK()
 					MessageBox(g_Git.GetGitLastErr(_T("Could not get HEAD hash after committing.")), _T("TortoiseGit"), MB_ICONERROR);
 				LONG version = g_Git.Hash2int(hash);
 
-				BSTR temp = NULL;
+				ATL::CComBSTR temp;
 				if (FAILED(hr = pProvider->OnCommitFinished(GetSafeHwnd(),
 					commonRoot,
 					pathList,
