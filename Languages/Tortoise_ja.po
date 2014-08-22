@@ -1289,7 +1289,7 @@ msgstr "&Unified 形式の差分"
 
 #. Resource IDs: (1061)
 msgid "&Unknown drives"
-msgstr "未知のドライブ(&U)"
+msgstr "その他/判定に失敗(&U)"
 
 #. Resource IDs: (1383)
 msgid "&Up"
@@ -1341,7 +1341,7 @@ msgstr "空白の変更を無視(&I)"
 
 #. Resource IDs: (1498)
 msgid "&known changes"
-msgstr "既知の変更(&K)"
+msgstr "把握している変更(&K)"
 
 #. Resource IDs: (88)
 msgid "(TortoiseGit default)"
@@ -1370,7 +1370,7 @@ msgstr "（見つかりません）"
 
 #. Resource IDs: (245)
 msgid "(unknown)"
-msgstr "（未知）"
+msgstr "（把握外）"
 
 #. Resource IDs: (188)
 #, c-format
@@ -1901,17 +1901,17 @@ msgstr "無効なファイルハンドルが %1 に関連付けられていま�
 
 #. Resource IDs: (3843)
 msgid "An unknown error has occurred."
-msgstr "未知のエラーが発生しました。"
+msgstr "把握外のエラーが発生しました。"
 
 #. Resource IDs: (3867, 3868)
 #, c-format
 msgid "An unknown error occurred while accessing %1."
-msgstr "%1 にアクセス中に未知のエラーが発生しました。"
+msgstr "%1 にアクセス中に把握外のエラーが発生しました。"
 
 #. Resource IDs: (63)
 #, c-format
 msgid "An unknown line type was found in line %d !"
-msgstr "未知の改行コードが、%d行目で見つかりました。"
+msgstr "把握外の種類の行が、%d行目で見つかりました。"
 
 #. Resource IDs: (251)
 msgid "Append right block"
@@ -3989,7 +3989,7 @@ msgstr "ドキュメント:"
 #. Resource IDs: (75)
 #, c-format
 msgid "Don't know what will push because unknown branch \"%s\""
-msgstr "ブランチ「%s」が未知なためプッシュできません。"
+msgstr "ブランチ「%s」が把握外のため何をプッシュするか不明です"
 
 #. Resource IDs: (75)
 msgid "Don't know what will push because you enter URL"
@@ -10261,11 +10261,11 @@ msgstr "HEADリビジョン同士のUnified形式の差分(&D)"
 
 #. Resource IDs: (1258)
 msgid "Unknown"
-msgstr "未知"
+msgstr "把握外"
 
 #. Resource IDs: (20)
 msgid "Unknown depth"
-msgstr "未知の深さ"
+msgstr "把握外の深さ"
 
 #. Resource IDs: (252)
 msgid "Unmark this block"
@@ -11371,7 +11371,7 @@ msgstr "%s へ"
 
 #. Resource IDs: (1480)
 msgid "u&nknown changes"
-msgstr "未知の変更(&N)"
+msgstr "把握外の変更(&N)"
 
 #. Resource IDs: (245)
 msgid "week"

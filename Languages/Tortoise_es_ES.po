@@ -1336,7 +1336,7 @@ msgstr "&Ignorar cámbios de espacios"
 
 #. Resource IDs: (1498)
 msgid "&known changes"
-msgstr ""
+msgstr "&cambios conocidos"
 
 #. Resource IDs: (88)
 msgid "(TortoiseGit default)"
@@ -2464,7 +2464,7 @@ msgstr "Ahora no se pueden combinar consignas.\r\nAsegúrese de que estás viend
 msgid ""
 "Cannot force updating current branch. Use reset command if you want to do "
 "so."
-msgstr ""
+msgstr "No se pudo forzar la actualización de la rama actual. Use el comando restablecer si quiere hacerlo así."
 
 #. Resource IDs: (1)
 #, c-format
@@ -4842,7 +4842,7 @@ msgstr "Forzar el integrar, incluso si la rama actual es una descendiente de la 
 
 #. Resource IDs: (1796)
 msgid "Force: May discard"
-msgstr ""
+msgstr "Forzar: Podría descartar"
 
 #. Resource IDs: (1796)
 msgid ""
@@ -7248,7 +7248,7 @@ msgstr ""
 
 #. Resource IDs: (94)
 msgid "Please take a look at the skipped commits"
-msgstr ""
+msgstr "Por favor eche un vistazo a las consignaciones omitidas"
 
 #. Resource IDs: (13)
 msgid "Please wait while cancelling..."
@@ -7300,11 +7300,11 @@ msgstr "Preparando consigna..."
 
 #. Resource IDs: (251)
 msgid "Prepend right block"
-msgstr ""
+msgstr "Anexar el bloque a la derecha"
 
 #. Resource IDs: (251)
 msgid "Prepend this block to left"
-msgstr ""
+msgstr "Anexar este bloque a la izquierda"
 
 #. Resource IDs: (65535)
 msgid "Press &New Shortcut Key:"
@@ -7551,7 +7551,7 @@ msgstr "Posición de inicio aleatoria del Cuadro de Diálogo de Sincronización 
 msgid ""
 "Randomize the startup position of Sync Dialog. This prevents from pressing "
 "the Pull button of same dialog"
-msgstr ""
+msgstr "Aleatorizar el posición de inicio de Cuadro de Diálogo de sincronización. Esto evita que pulse el botón de extracción del mismo diálogo."
 
 #. Resource IDs: (1535)
 msgid "Range"
@@ -7675,7 +7675,7 @@ msgstr "Ref. (Haz clic en él y luego ve)"
 
 #. Resource IDs: (95)
 msgid "Ref List"
-msgstr ""
+msgstr "Lista de referencia"
 
 #. Resource IDs: (69)
 msgid "RefBrowse"
@@ -8239,7 +8239,7 @@ msgstr "Recuperar de SVN"
 
 #. Resource IDs: (21)
 msgid "SVN Rebase"
-msgstr ""
+msgstr "Reasentado de SVN"
 
 #. Resource IDs: (1256)
 msgid "SVN Rev"
@@ -9738,7 +9738,7 @@ msgid ""
 "%s\n"
 "is a special folder and is not supposed to be a repository root!\n"
 "Are you sure you want to initialize a git repository inside that folder?"
-msgstr ""
+msgstr "¡La carpeta objetivo\n%s\nes una carpeta especial y no está pensada para que sea un repositorio raíz!\n¿Está seguro de que quiere inicializar un repositorio git dentro de esa carpeta?"
 
 #. Resource IDs: (88)
 #, c-format
@@ -9753,7 +9753,7 @@ msgstr "La carpeta de destino \n%s\n¡no está vacía!\n¿Seguro que quieres ini
 msgid ""
 "The text is identical, but the files do not match!\r\n"
 "The following differences were found:"
-msgstr ""
+msgstr "El texto es idéntico, ¡pero los ficheros no coinciden!\nSe encontraron las siguientes diferencias:"
 
 #. Resource IDs: (195)
 msgid ""
@@ -9793,7 +9793,7 @@ msgstr "Actualmente hay %d controladores de superposición instalados además de
 msgid ""
 "There are more editable views.\n"
 "What view do you want to save?"
-msgstr ""
+msgstr "Hay más vistas editables.\n¿Qué vista quiere guardar?"
 
 #. Resource IDs: (64)
 msgid "There are no issue-tracker providers available."
@@ -9867,7 +9867,7 @@ msgstr "Esta propiedad sólo está permitida en carpetas, no en archivos."
 msgid ""
 "This remote name collides with fetch refspec of other remotes\n"
 "Please use another name"
-msgstr ""
+msgstr "Este nombre remoto produce colisiona con las especificaciones de referencia (refspec) obtenidas de otros remotos\nPor favor use otro nombre"
 
 #. Resource IDs: (67)
 msgid "This task requires a clean working tree."
@@ -9901,7 +9901,7 @@ msgid ""
 "To avoid fetching wrong tags, if this is not an official remote,\n"
 "you are advised to disable tag fetching for this remote.\n"
 "Disable tag fetching?"
-msgstr ""
+msgstr "Para evitar obtener la etiquetas incorrectas, si este no es un remoto oficial,\nle advertimos que deshabilite la obtención de etiqueta para este remoto.\n¿Deshabilitar la obtención de etiqueta?"
 
 #. Resource IDs: (606)
 msgid ""
@@ -9909,7 +9909,7 @@ msgid ""
 "\n"
 "If you wish to completely clear Gravatar images,\n"
 "you may also need to clear Internet Explorer Temporary Internet Files."
-msgstr ""
+msgstr "Para limpiar los ficheros temporalmente, debe asegurarse de que ningúna otra aplicación TortoiseGit está ejecutándose.\n\nSi desea eliminar completamente la imágenes de Gravatar,\npuede que también necesite limpiar los archivos temporales de Internet de Internet Explorer."
 
 #. Resource IDs: (1201, 65535)
 msgid "To:"
@@ -9923,7 +9923,7 @@ msgstr "Alternar entre mostrar Una/Dos páginas\nAlternar entre mostrar Una/Dos 
 
 #. Resource IDs: (93)
 msgid "Toggle filters"
-msgstr ""
+msgstr "Accionar filtros"
 
 #. Resource IDs: (65535)
 msgid "Toolbar"
@@ -9967,7 +9967,7 @@ msgstr "TortoiseGit %d.%d.%d, Build %d - %s, %s"
 msgid ""
 "TortoiseGit %d.%d.%d.%d %s \r\n"
 "%s \r\n"
-msgstr ""
+msgstr "TortoiseGit %d.%d.%d.%d %s \n%s \n"
 
 #. Resource IDs: (1410)
 #, c-format
@@ -9976,7 +9976,7 @@ msgid ""
 "The commit dialog cannot handle this.\n"
 "\n"
 "Do you want to remove it from the index?"
-msgstr ""
+msgstr "TortoiseGit detectó que el fichero \"%s\" no existe, pero se presenta como \"Añadido\".\nEl cuadro de diálogo de consignación (commit) no puede manejar esto.\n\n¿Quiere eliminarlo del índice?"
 
 #. Resource IDs: (98)
 #, c-format
@@ -9992,7 +9992,7 @@ msgstr "TortoiseGit no mostrará los siguientes superpuestos: %s"
 
 #. Resource IDs: (1096)
 msgid "TortoiseGit&UDiff"
-msgstr ""
+msgstr "TortoiseGit&UDiff"
 
 #. Resource IDs: (1, 244, 1000, 3585)
 msgid "TortoiseGitBlame"
@@ -10059,22 +10059,22 @@ msgid ""
 "libsvn_diff %d.%d.%d, %s\r\n"
 "apr %d.%d.%d\r\n"
 "apr-util %d.%d.%d"
-msgstr ""
+msgstr "TortoiseGitMerge %d.%d.%d.%d - %s, %s\nlibsvn_diff %d.%d.%d, %s\napr %d.%d.%d\napr-util %d.%d.%d"
 
 #. Resource IDs: (7)
 #, c-format
 msgid ""
 "TortoiseGitMerge cannot process this patch file. The filename \"%s\" appears"
 " more than once."
-msgstr ""
+msgstr "TortoiseGitMerge no puede procesar este fichero de parche. El nombre de fichero \"%s\" aparece más de una vez."
 
 #. Resource IDs: (1739)
 msgid "Total changed lines including added/deleted files:"
-msgstr ""
+msgstr "Total de líneas cambiadas incluyendo ficheros añadidos/borrados:"
 
 #. Resource IDs: (1737)
 msgid "Total changed lines not including added/deleted files:"
-msgstr ""
+msgstr "Total de líneas cambiadas sin incluir ficheros añadidos/cambiados:"
 
 #. Resource IDs: (1162)
 msgid "Total commits analyzed:"
@@ -10111,7 +10111,7 @@ msgstr "&Color transparente..."
 
 #. Resource IDs: (501)
 msgid "Trim right"
-msgstr ""
+msgstr "Recortar a la derecha"
 
 #. Resource IDs: (251)
 msgid "Try a 'Cleanup'. If that doesn't work you need to do a fresh checkout."
@@ -10143,7 +10143,7 @@ msgstr "URL"
 
 #. Resource IDs: (71)
 msgid "URL and directory must not be empty."
-msgstr ""
+msgstr "La URL y el directorio no deben estar vacíos."
 
 #. Resource IDs: (1272)
 msgid "URL history"
@@ -10238,7 +10238,7 @@ msgstr "Formato de archivo inesperado."
 
 #. Resource IDs: (93)
 msgid "Unflag as skip-worktree and assume-unchanged"
-msgstr ""
+msgstr "Retirar el distintivo omitir-árbol-de-trabajo y asumir-inalterado"
 
 #. Resource IDs: (1070)
 msgid "Unfold"
@@ -10264,11 +10264,11 @@ msgstr "Profundidad desconocida"
 
 #. Resource IDs: (252)
 msgid "Unmark this block"
-msgstr ""
+msgstr "Desmarcar este bloque"
 
 #. Resource IDs: (315)
 msgid "Unresolved conflicts!"
-msgstr ""
+msgstr "¡Conflictos no resueltos!"
 
 #. Resource IDs: (3841)
 msgid "Untitled"
@@ -10293,11 +10293,11 @@ msgstr "Arriba"
 
 #. Resource IDs: (1710)
 msgid "Update"
-msgstr ""
+msgstr "Actualización"
 
 #. Resource IDs: (607)
 msgid "Update Ref"
-msgstr ""
+msgstr "Referencia de actualización"
 
 #. Resource IDs: (65)
 msgid "Update Submodules"
@@ -10349,15 +10349,15 @@ msgstr "Usar Bloques"
 
 #. Resource IDs: (1761)
 msgid "Use HTTP path component"
-msgstr ""
+msgstr "Usar el componente de ruta HTTP"
 
 #. Resource IDs: (1066)
 msgid "Use Ribbons"
-msgstr ""
+msgstr "Usar cintas (ribbons)"
 
 #. Resource IDs: (1500)
 msgid "Use Task Dialog"
-msgstr ""
+msgstr "Usar cuadro de diálogo de tarea"
 
 #. Resource IDs: (1497)
 msgid "Use Thin &Pack (For slow network connections)"
@@ -10419,7 +10419,7 @@ msgstr "Usar archivo Izqi"
 
 #. Resource IDs: (252)
 msgid "Use left file except marked blocks"
-msgstr ""
+msgstr "Usar el fichero de la izquierda excepto para los bloques marcados"
 
 #. Resource IDs: (1762)
 msgid "Use local branch color for current branch"
@@ -10435,11 +10435,11 @@ msgstr "Usar expresiones regulares"
 
 #. Resource IDs: (251)
 msgid "Use right block"
-msgstr ""
+msgstr "Usar el bloque de la derecha"
 
 #. Resource IDs: (156)
 msgid "Use spaces"
-msgstr ""
+msgstr "Usar espacios"
 
 #. Resource IDs: (1426)
 msgid "Use system locale for date/time"
@@ -10501,7 +10501,7 @@ msgid ""
 "Use the found path.\n"
 "Apply the patch to\n"
 "%s"
-msgstr ""
+msgstr "Usar la ruta encontrada.\nAplicar el parche a\n%s"
 
 #. Resource IDs: (314)
 #, c-format
@@ -10509,7 +10509,7 @@ msgid ""
 "Use the original path.\n"
 "Apply the patch to\n"
 "%s"
-msgstr ""
+msgstr "Usar la ruta original.\nAplicar el parche a\n%s"
 
 #. Resource IDs: (251)
 msgid "Use this &whole file"
@@ -10517,7 +10517,7 @@ msgstr "Usar archivo &completo"
 
 #. Resource IDs: (251)
 msgid "Use this block on left"
-msgstr ""
+msgstr "Usar este bloque a la izquierda"
 
 #. Resource IDs: (251)
 msgid "Use whole other &file"
@@ -10587,7 +10587,7 @@ msgstr "Versión 1"
 
 #. Resource IDs: (72)
 msgid "Version 1 (Newer commit time)"
-msgstr ""
+msgstr "Versión 1 (Hora de consignación (commit) más reciente)"
 
 #. Resource IDs: (72, 1645)
 msgid "Version 2 (Base)"
@@ -10595,7 +10595,7 @@ msgstr "Versión 2 (Base)"
 
 #. Resource IDs: (72)
 msgid "Version 2 (Base) (Newer commit time)"
-msgstr ""
+msgstr "Versión 2 (Base) (Hora de consignación (commit) más reciente)"
 
 #. Resource IDs: (1075)
 msgid "Version Information"
@@ -10619,7 +10619,7 @@ msgstr "Ver"
 
 #. Resource IDs: (90)
 msgid "View .tgitconfig"
-msgstr ""
+msgstr "Ver .tgitconfig"
 
 #. Resource IDs: (328, 603)
 msgid "View Patch"
@@ -10674,7 +10674,7 @@ msgstr "Esperando una entrada"
 
 #. Resource IDs: (1776)
 msgid "Walk Be&haviour"
-msgstr ""
+msgstr "Comportamiento en marcha"
 
 #. Resource IDs: (88)
 msgid "Warning"
@@ -10716,19 +10716,19 @@ msgstr "Aplicando un parche, ignorará los cambios en espacios en blanco en las 
 msgid ""
 "When closing a progress dialog with a running git process, ask for "
 "confirmation before killing it"
-msgstr ""
+msgstr "Al cerrar un cuadro de diálogo de progreso  con una proceso de git en ejecución, pedir confirmación antes de matarlo (kill)."
 
 #. Resource IDs: (94)
 msgid ""
 "When enabled, TortoiseGit move context menu items will be available when "
 "dragging folders / files"
-msgstr ""
+msgstr "Cuando esté habilitado, TortoiseGit los elementos de menú contextual para mover estarán disponibles al arrastrar carpetas / ficheros"
 
 #. Resource IDs: (95)
 msgid ""
 "When enabled, larger version numbers come first. It is because latest "
 "versions are usually more useful."
-msgstr ""
+msgstr "Cuando está hablitado, los números de versión más grandes van primero. Esto es porque las últimas versiones son normalmente más útiles."
 
 #. Resource IDs: (197)
 msgid ""
@@ -10747,17 +10747,17 @@ msgstr "Cuando el parche no se aplica limpiamente, recurrirá a combinar a tres 
 msgid ""
 "When you type the URL, the remote name will be automatically filled with "
 "\"origin\" if the remote name is empty, so you do not have to."
-msgstr ""
+msgstr "Cuando teclea la URL, el nombre remoto se rellenará automáticamente con \"origen\" si el nombre remoto está vacío, así que no tiene que hacerlo."
 
 #. Resource IDs: (1409)
 msgid ""
 "While running daemon, all data of this repository is exposed without "
 "authentication and/or encryption."
-msgstr ""
+msgstr "Mientras se ejecuta el demonio, todos los datos de este repositorio son expuestos sin autentificación y/o  cifrado."
 
 #. Resource IDs: (101)
 msgid "Whitespace changes (tabs, spaces)"
-msgstr ""
+msgstr "Cambios de espacios en blanco (tabulaciones, espacios)"
 
 #. Resource IDs: (65535)
 msgid "Whitespaces"
@@ -10821,11 +10821,11 @@ msgstr "Windows-1258"
 
 #. Resource IDs: (65535)
 msgid "Within a file:"
-msgstr ""
+msgstr "Dentro de un fichero:"
 
 #. Resource IDs: (2054)
 msgid "Within file"
-msgstr ""
+msgstr "Dentro de un fichero"
 
 #. Resource IDs: (20, 158)
 msgid "Working Tree"
@@ -10893,7 +10893,7 @@ msgid ""
 "You have an old version of Git for Windows (http://code.google.com/p/msysgit/) installed.\n"
 "\n"
 "You should consider an upgrade to 1.7.10+ which supports UTF-8 and is compatible to the *nix version of git."
-msgstr ""
+msgstr "Tiene una versión antigua de Git para Windows (http://code.google.com/p/msysgit/) instalada.\n\nDebería considerar una actualización a una 1.7.10+ que soporte UTF-8 y sea compatible con la versión *nix de git."
 
 #. Resource IDs: (86)
 msgid ""
@@ -10913,7 +10913,7 @@ msgid ""
 "You have selected %d items to show the diff for.\n"
 "For every of these items a new instance of the diff viewer will be started.\n"
 "Do you really want to show the diff for so many items at once?"
-msgstr ""
+msgstr "Ha seleccionado %d elementos para los que mostrar las diferencias (diff).\nPara cada uno de estos elementos, se iniciará una nueva instancia del visor de diff.\n¿De verdad quiere mostrar las diff para tantos elementos a la vez?"
 
 #. Resource IDs: (169)
 msgid ""
@@ -11064,14 +11064,14 @@ msgstr "[No asignado]"
 msgid ""
 "\"%s\" contains a git repository. It will not work as a submodule out of the box.\n"
 "Do you want to delete the .git-entry and add all files to the top repository or keep it as a separate repository in a subdirectory?"
-msgstr ""
+msgstr "\"%s\" contiene un repositorio git. No funcionará como un submódulo tal como está.\n¿Quiere borrar la .git-entry y añadir todos los ficheros en el repositorio más alto, o mantenerlo como un repositorio aparte en un subdirectorio?"
 
 #. Resource IDs: (92)
 #, c-format
 msgid ""
 "\"%s\" contains a git submodule. It is likely that this doesn't work any more on the destination after copying.\n"
 "Do you want to delete the .git-entry and add all files to the top repository or ignore this possible issue and keep it?"
-msgstr ""
+msgstr "\"%s\" contiene un submódulo git. Es probable que este no funcione más en el destino después de copiarlo.\n¿Quiere borrar la .git-entry y añadir todos los ficheros en el repositorio más alto, o ignorar este posible problema y mantenerlo?"
 
 #. Resource IDs: (72)
 #, c-format
@@ -11186,7 +11186,7 @@ msgstr "muerto"
 
 #. Resource IDs: (1580)
 msgid "eMail settings"
-msgstr ""
+msgstr "Configuraciones de correo electrónico"
 
 #. Resource IDs: (79)
 #, c-format
@@ -11220,7 +11220,7 @@ msgstr "incompleto"
 
 #. Resource IDs: (1780, 1781, 1782, 1783)
 msgid "inherit"
-msgstr ""
+msgstr "heredar"
 
 #. Resource IDs: (214)
 msgid "item kept locally"
@@ -11228,7 +11228,7 @@ msgstr "objetos mantenidos localmente"
 
 #. Resource IDs: (65535)
 msgid "keep the file lists in English"
-msgstr ""
+msgstr "mantener las listas de ficheros en inglés"
 
 #. Resource IDs: (69)
 #, c-format
@@ -11329,7 +11329,7 @@ msgstr "trimestre"
 
 #. Resource IDs: (65535)
 msgid "renamed"
-msgstr ""
+msgstr "renombrado"
 
 #. Resource IDs: (10)
 msgid "replaced"
@@ -11352,7 +11352,7 @@ msgstr "conmutar a\r\n%s"
 
 #. Resource IDs: (1386)
 msgid "take care of submodule changes"
-msgstr ""
+msgstr "ocúpese de los cambios de submódulos"
 
 #. Resource IDs: (3845)
 #, c-format
@@ -11366,7 +11366,7 @@ msgstr "a %s"
 
 #. Resource IDs: (1480)
 msgid "u&nknown changes"
-msgstr ""
+msgstr "cambios de&sconocidos"
 
 #. Resource IDs: (245)
 msgid "week"
@@ -11374,23 +11374,23 @@ msgstr "semana"
 
 #. Resource IDs: (89)
 msgid "wincred - all Windows users"
-msgstr ""
+msgstr "wincred - todos los usuarios de Windows"
 
 #. Resource IDs: (88)
 msgid "wincred - current Windows user"
-msgstr ""
+msgstr "wincred - usario actual de Windows"
 
 #. Resource IDs: (88)
 msgid "wincred - this repository only"
-msgstr ""
+msgstr "wincred - sólo este repositorio"
 
 #. Resource IDs: (88)
 msgid "winstore - current Windows user"
-msgstr ""
+msgstr "wincred - usuario actual de Windows"
 
 #. Resource IDs: (88)
 msgid "winstore - this repository only"
-msgstr ""
+msgstr "winstore - sólo este repositorio"
 
 #. Resource IDs: (245)
 msgid "year"

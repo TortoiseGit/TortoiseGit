@@ -3103,7 +3103,7 @@ msgstr "Menus Contextuels:"
 
 #. Resource IDs: (65535)
 msgid "Context lines for patches"
-msgstr ""
+msgstr "Lignes de contexte pour le patch"
 
 #. Resource IDs: (67, 73, 1564)
 msgid "Continue"
@@ -4448,7 +4448,7 @@ msgstr "Extension"
 
 #. Resource IDs: (1722)
 msgid "Extension specific programs"
-msgstr ""
+msgstr "Extension des programmes spécifiques"
 
 #. Resource IDs: (65535)
 msgid "Extension:"
@@ -4840,7 +4840,7 @@ msgid ""
 "Force push only if the remote reference points to the same commit as the remote tracking branch.\n"
 "This can cause the remote repository to lose commits; use it with care.\n"
 "This option corresponds to the --force-with-lease git option."
-msgstr ""
+msgstr "Forcer pousser seulement si si la référence distante pointe sur le même commit que la branche distante suivie.\nCela peut entraîner que le référentiel distant perde des commits; à utiliser avec précaution.\nCette option correspond à l'option git --force-with-lease."
 
 #. Resource IDs: (603)
 msgid ""
@@ -4850,7 +4850,7 @@ msgstr "Forcer le rebase même si la branche courante est un descendant de la li
 
 #. Resource IDs: (1796)
 msgid "Force: May discard"
-msgstr ""
+msgstr "Forcer: peut annuler"
 
 #. Resource IDs: (1796)
 msgid ""
@@ -5123,7 +5123,7 @@ msgstr "La liste des révisions Git contient l'historique complet du fichier"
 
 #. Resource IDs: (2049)
 msgid "Git revision list follows file renames"
-msgstr ""
+msgstr "Liste des révisions git en suivant le renommage des fichiers"
 
 #. Resource IDs: (93)
 msgid ""
@@ -6903,7 +6903,7 @@ msgstr "Seulement la branche courante"
 
 #. Resource IDs: (1543)
 msgid "Only Local Branches"
-msgstr ""
+msgstr "Seulement les branches locales"
 
 #. Resource IDs: (1256)
 msgid "Only Merged Files"
@@ -7428,15 +7428,15 @@ msgstr "Fournisseur"
 
 #. Resource IDs: (1586)
 msgid "Provider para&meters:"
-msgstr ""
+msgstr "Para&mètres du fournisseur:"
 
 #. Resource IDs: (1581)
 msgid "Provider uuid win&32:"
-msgstr ""
+msgstr "Uuid win&32 du fournisseur:"
 
 #. Resource IDs: (1583)
 msgid "Provider uuid x6&4:"
-msgstr ""
+msgstr "Uuid win&64 du fournisseur:"
 
 #. Resource IDs: (1475)
 msgid "Provider:"
@@ -7488,7 +7488,7 @@ msgstr "Pousser"
 
 #. Resource IDs: (1786)
 msgid "Push Default"
-msgstr ""
+msgstr "Pousser celui par défaut"
 
 #. Resource IDs: (65535)
 msgid "Push URL:"
@@ -7917,7 +7917,7 @@ msgstr "Répéter la dernière action\nRépéter"
 
 #. Resource IDs: (1512)
 msgid "Replace &All"
-msgstr ""
+msgstr "Rempl&acer Tout"
 
 #. Resource IDs: (3603)
 msgid ""
@@ -7936,7 +7936,7 @@ msgstr "Remplacer :"
 #. Resource IDs: (95)
 #, c-format
 msgid "Replaced %d matches"
-msgstr ""
+msgstr "Correspondances remplacées %d"
 
 #. Resource IDs: (74)
 msgid "Replacing"
@@ -8251,7 +8251,7 @@ msgstr "Rebase SVN"
 
 #. Resource IDs: (1256)
 msgid "SVN Rev"
-msgstr ""
+msgstr "Révision SVN"
 
 #. Resource IDs: (65535)
 msgid "Sa&feCrLf:"
@@ -8453,7 +8453,7 @@ msgstr "Recherche dans le fichier journa&l..."
 
 #. Resource IDs: (1074)
 msgid "Search &up"
-msgstr ""
+msgstr "Rechercher vers le ha&ut"
 
 #. Resource IDs: (65535)
 msgid "Search for:"
@@ -8842,7 +8842,7 @@ msgstr "Voir les fichiers ignorés"
 
 #. Resource IDs: (1265)
 msgid "Show ignore local changes flagged files"
-msgstr ""
+msgstr "Montrer les fichiers dont les changements locaux sont ignorés"
 
 #. Resource IDs: (92)
 msgid "Show la&beled commits only"
@@ -9074,7 +9074,7 @@ msgstr "Trier par nombre de livraisons"
 
 #. Resource IDs: (1795)
 msgid "Sort tag list in reversed order"
-msgstr ""
+msgstr "Ordonner la liste des étiquettes en ordre inverse"
 
 #. Resource IDs: (196)
 msgid ""
@@ -10272,7 +10272,7 @@ msgstr "Profondeur inconnu"
 
 #. Resource IDs: (252)
 msgid "Unmark this block"
-msgstr ""
+msgstr "Enveler la marque de ce bloc"
 
 #. Resource IDs: (315)
 msgid "Unresolved conflicts!"
@@ -11374,7 +11374,7 @@ msgstr "vers %s"
 
 #. Resource IDs: (1480)
 msgid "u&nknown changes"
-msgstr ""
+msgstr "Changements i&nconnus"
 
 #. Resource IDs: (245)
 msgid "week"
