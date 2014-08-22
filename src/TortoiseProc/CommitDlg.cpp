@@ -933,7 +933,11 @@ void CCommitDlg::OnOK()
 
 		CString tempfile=::GetTempFile();
 
-		CAppUtils::SaveCommitUnicodeFile(tempfile,m_sLogMessage);
+		if (CAppUtils::SaveCommitUnicodeFile(tempfile, m_sLogMessage))
+		{
+			CMessageBox::Show(nullptr, _T("Could not save commit message"), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+			return;
+		}
 
 		CTGitPath path=g_Git.m_CurrentDir;
 
@@ -1033,7 +1037,7 @@ void CCommitDlg::OnOK()
 					MessageBox(g_Git.GetGitLastErr(_T("Could not get HEAD hash after committing.")), _T("TortoiseGit"), MB_ICONERROR);
 				LONG version = g_Git.Hash2int(hash);
 
-				BSTR temp = NULL;
+				ATL::CComBSTR temp;
 				if (FAILED(hr = pProvider->OnCommitFinished(GetSafeHwnd(),
 					commonRoot,
 					pathList,

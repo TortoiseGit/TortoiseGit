@@ -1075,10 +1075,14 @@ bool CAppUtils::CreateBranchTag(bool IsTag,CString *CommitHash, bool switch_new_
 				g_Git.FixBranchName(dlg.m_VersionName)
 				);
 
-			CString tempfile=::GetTempFile();
 			if(!dlg.m_Message.Trim().IsEmpty())
 			{
-				CAppUtils::SaveCommitUnicodeFile(tempfile,dlg.m_Message);
+				CString tempfile = ::GetTempFile();
+				if (CAppUtils::SaveCommitUnicodeFile(tempfile, dlg.m_Message))
+				{
+					CMessageBox::Show(nullptr, _T("Could not save tag message"), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+					return FALSE;
+				}
 				cmd += _T(" -F ")+tempfile;
 			}
 		}
@@ -2131,34 +2135,42 @@ int CAppUtils::GetLogOutputEncode(CGit *pGit)
 }
 int CAppUtils::SaveCommitUnicodeFile(CString &filename, CString &message)
 {
-	CFile file(filename,CFile::modeReadWrite|CFile::modeCreate );
-	int cp = CUnicodeUtils::GetCPCode(g_Git.GetConfigValue(_T("i18n.commitencoding")));
-
-	bool stripComments = (CRegDWORD(_T("Software\\TortoiseGit\\StripCommentedLines"), FALSE) == TRUE);
-
-	if (CRegDWORD(_T("Software\\TortoiseGit\\SanitizeCommitMsg"), TRUE) == TRUE)
-		message.TrimRight(L" \r\n");
-
-	int len = message.GetLength();
-	int start = 0;
-	while (start >= 0 && start < len)
+	try
 	{
-		int oldStart = start;
-		start = message.Find(L"\n", oldStart);
-		CString line = message.Mid(oldStart);
-		if (start != -1)
+		CFile file(filename, CFile::modeReadWrite | CFile::modeCreate);
+		int cp = CUnicodeUtils::GetCPCode(g_Git.GetConfigValue(_T("i18n.commitencoding")));
+
+		bool stripComments = (CRegDWORD(_T("Software\\TortoiseGit\\StripCommentedLines"), FALSE) == TRUE);
+
+		if (CRegDWORD(_T("Software\\TortoiseGit\\SanitizeCommitMsg"), TRUE) == TRUE)
+			message.TrimRight(L" \r\n");
+
+		int len = message.GetLength();
+		int start = 0;
+		while (start >= 0 && start < len)
 		{
-			line = line.Left(start - oldStart);
-			++start; // move forward so we don't find the same char again
+			int oldStart = start;
+			start = message.Find(L"\n", oldStart);
+			CString line = message.Mid(oldStart);
+			if (start != -1)
+			{
+				line = line.Left(start - oldStart);
+				++start; // move forward so we don't find the same char again
+			}
+			if (stripComments && (line.GetLength() >= 1 && line.GetAt(0) == '#') || (start < 0 && line.IsEmpty()))
+				continue;
+			line.TrimRight(L" \r");
+			CStringA lineA = CUnicodeUtils::GetMulti(line + L"\n", cp);
+			file.Write(lineA.GetBuffer(), lineA.GetLength());
 		}
-		if (stripComments && (line.GetLength() >= 1 && line.GetAt(0) == '#') || (start < 0 && line.IsEmpty()))
-			continue;
-		line.TrimRight(L" \r");
-		CStringA lineA = CUnicodeUtils::GetMulti(line + L"\n", cp);
-		file.Write(lineA.GetBuffer(), lineA.GetLength());
+		file.Close();
+		return 0;
 	}
-	file.Close();
-	return 0;
+	catch (CFileException *e)
+	{
+		e->Delete();
+		return -1;
+	}
 }
 
 bool CAppUtils::Pull(bool showPush)
@@ -3053,7 +3065,11 @@ void CAppUtils::EditNote(GitRev *rev)
 		cmd=_T("notes add -f -F \"");
 
 		CString tempfile=::GetTempFile();
-		CAppUtils::SaveCommitUnicodeFile(tempfile,dlg.m_sInputText);
+		if (CAppUtils::SaveCommitUnicodeFile(tempfile, dlg.m_sInputText))
+		{
+			CMessageBox::Show(nullptr, IDS_PROC_FAILEDSAVINGNOTES, IDS_APPNAME, MB_OK | MB_ICONERROR);
+			return;
+		}
 		cmd += tempfile;
 		cmd += _T("\" ");
 		cmd += rev->m_CommitHash.ToString();

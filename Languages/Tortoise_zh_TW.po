@@ -3236,7 +3236,7 @@ msgstr "無法判斷最後提交的版本!"
 
 #. Resource IDs: (565)
 msgid "Could not find Super-project"
-msgstr "無法找到 Super-project"
+msgstr "無法找到上層專案"
 
 #. Resource IDs: (81)
 msgid "Could not get the status!"
@@ -5235,7 +5235,7 @@ msgstr "Hard"
 
 #. Resource IDs: (1552)
 msgid "Hard: Reset working tree and index (discard all local changes)"
-msgstr "Hard:重設 工作複本和索引(放棄本地改動)"
+msgstr "Hard: 重設工作目錄和索引(放棄本地改動)"
 
 #. Resource IDs: (65535)
 msgid "Hebrew"
@@ -6158,7 +6158,7 @@ msgstr "主要的"
 
 #. Resource IDs: (1653)
 msgid "Make it Bare (No working directories)"
-msgstr "設為純倉儲(没有工作複本)"
+msgstr "設為純倉儲(没有工作目錄)"
 
 #. Resource IDs: (1382)
 msgid "Mana&ge"
@@ -6332,7 +6332,7 @@ msgstr "混合"
 
 #. Resource IDs: (1551)
 msgid "Mixed: Leave working tree untouched, reset index"
-msgstr "Mixed:保持工作複不變，重設索引"
+msgstr "Mixed: 保持工作目錄不變，重設索引"
 
 #. Resource IDs: (208)
 msgid "Modification date"
@@ -8268,7 +8268,7 @@ msgstr "相同提交時間"
 msgid ""
 "Sample log message to test the bugtraq: regex strings.\n"
 "\n"
-"Testing mentions of issues inside a text: Mention single issue #55. Mention issues #77, #78, and #78. Mention more issues #123, #124 and #125 and some more separate ones: Issue #45, issue #46 and issue #47.\n"
+"Testing mentions of issues inside a text: Mention single issue #55. Mention issues #77, #78, and #79. Mention more issues #123, #124 and #125 and some more separate ones: Issue #45, issue #46 and issue #47.\n"
 "\n"
 "\n"
 "Update issue #101\n"
@@ -8276,7 +8276,7 @@ msgid ""
 "Fixed issue #123\n"
 "Resolves issue #88.\n"
 "Closes issue #99.\n"
-msgstr "用來測試 bugtraq:regex 的記錄訊息範本. \n\n測試在段落中提到問題: Mention single issue #55. Mention issues #77, #78, and #78. Mention more issues #123, #124 and #125 and some more separate ones: Issue #45, issue #46 and issue #47.\n\n\nUpdate issue #101\nFixes issue #202\nFixed issue #123\nResolves issue #88.\nCloses issue #99.\n"
+msgstr "用來測試 bugtraq:regex 的記錄訊息範本. \n\n測試在段落中所提到問題: Mention single issue #55. Mention issues #77, #78, and #79. Mention more issues #123, #124 and #125 and some more separate ones: Issue #45, issue #46 and issue #47.\n\n\nUpdate issue #101\nFixes issue #202\nFixed issue #123\nResolves issue #88.\nCloses issue #99.\n"
 
 #. Resource IDs: (1612)
 msgid "Sample text:"
@@ -8874,7 +8874,7 @@ msgstr "顯示記錄..."
 
 #. Resource IDs: (1382)
 msgid "Show modified files in working tree"
-msgstr "僅顯示路徑中有變更的部分"
+msgstr "僅顯示工作目錄中有變更的部分"
 
 #. Resource IDs: (1270)
 msgid ""
@@ -9049,7 +9049,7 @@ msgstr "Soft"
 
 #. Resource IDs: (1550)
 msgid "Soft: Leave working tree and index untouched"
-msgstr "不改動工作複本和索引"
+msgstr "Soft: 不改動工作目錄和索引"
 
 #. Resource IDs: (314)
 msgid ""
