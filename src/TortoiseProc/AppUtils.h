@@ -18,7 +18,6 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #pragma once
-#include "HistoryCombo.h"
 #include "GitRev.h"
 #include "CommonAppUtils.h"
 

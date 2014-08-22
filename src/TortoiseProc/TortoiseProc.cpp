@@ -40,6 +40,7 @@
 #include "Libraries.h"
 #include "TaskbarUUID.h"
 #include "ProjectProperties.h"
+#include "HistoryCombo.h"
 #include <math.h>
 
 #define STRUCT_IOVEC_DEFINED
