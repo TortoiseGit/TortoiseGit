@@ -234,7 +234,7 @@ void CCloneDlg::OnOK()
 		return;
 	}
 
-	if (m_bOrigin && m_strOrigin.GetLength() == 0)
+	if (m_bOrigin && m_strOrigin.GetLength() == 0 && !m_bSVN)
 	{
 		ShowEditBalloon(IDC_EDIT_ORIGIN, IDS_B_T_NOTEMPTY, IDS_ERR_ERROR, TTI_ERROR);
 		m_bSaving = false;
@@ -402,7 +402,6 @@ void CCloneDlg::OnBnClickedCheckSvn()
 		m_bBare = false;
 		m_bRecursive = false;
 		m_bBranch = FALSE;
-		m_bOrigin = FALSE;
 		this->UpdateData(FALSE);
 		OnBnClickedCheckDepth();
 	}
@@ -411,8 +410,6 @@ void CCloneDlg::OnBnClickedCheckSvn()
 	this->GetDlgItem(IDC_CHECK_RECURSIVE)->EnableWindow(!m_bSVN);
 	this->GetDlgItem(IDC_CHECK_BRANCH)->EnableWindow(!m_bSVN);
 	this->GetDlgItem(IDC_EDIT_BRANCH)->EnableWindow(!m_bSVN);
-	this->GetDlgItem(IDC_CHECK_ORIGIN)->EnableWindow(!m_bSVN);
-	this->GetDlgItem(IDC_EDIT_ORIGIN)->EnableWindow(!m_bSVN);
 	OnBnClickedCheckSvnTrunk();
 	OnBnClickedCheckSvnTag();
 	OnBnClickedCheckSvnBranch();

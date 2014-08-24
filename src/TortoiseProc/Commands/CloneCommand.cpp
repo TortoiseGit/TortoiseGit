@@ -117,7 +117,7 @@ bool CloneCommand::Execute()
 			branchStr = _T("--branch ") + dlg.m_strBranch;
 
 		CString originStr;
-		if (dlg.m_bOrigin)
+		if (dlg.m_bOrigin && !dlg.m_bSVN)
 			originStr = _T("--origin ") + dlg.m_strOrigin;
 
 		if(dlg.m_bAutoloadPuttyKeyFile)
@@ -199,6 +199,16 @@ bool CloneCommand::Execute()
 			//g_Git.m_CurrentDir=dlg.m_Directory;
 			cmd.Format(_T("git.exe svn clone \"%s\"  \"%s\""),
 				url,dlg.m_Directory);
+
+			if (dlg.m_bOrigin)
+			{
+				CString str;
+				if (dlg.m_strOrigin.IsEmpty())
+					str = _T(" --prefix \"\"");
+				else
+					str.Format(_T(" --prefix \"%s/\""), dlg.m_strOrigin);
+				cmd += str;
+			}
 
 			if(dlg.m_bSVNTrunk)
 				cmd+=_T(" -T ")+dlg.m_strSVNTrunk;
