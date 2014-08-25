@@ -3485,6 +3485,10 @@ msgstr ""
 msgid "Delivery:"
 msgstr ""
 
+#. Resource IDs: (1646)
+msgid "Depth"
+msgstr ""
+
 #. Resource IDs: (1002)
 msgid "Description"
 msgstr ""
@@ -10302,10 +10306,6 @@ msgstr ""
 
 #. Resource IDs: (10)
 msgid "deleted"
-msgstr ""
-
-#. Resource IDs: (1646)
-msgid "depth "
 msgstr ""
 
 #. Resource IDs: (58116)
