@@ -63,10 +63,16 @@ CTortoiseGitBlameApp::CTortoiseGitBlameApp()
 	CCrashReport::Instance().AddUserInfoToReport(L"CommandLine", GetCommandLine());
 #endif
 	EnableHtmlHelp();
-
+	git_threads_init();
 	m_nAppLook = 0;
 	m_gdiplusToken = NULL;
 	m_bHiColorIcons = TRUE;
+}
+
+CTortoiseGitBlameApp::~CTortoiseGitBlameApp()
+{
+
+	git_threads_shutdown();
 }
 
 // The one and only CTortoiseGitBlameApp object

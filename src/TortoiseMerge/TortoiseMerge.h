@@ -32,6 +32,7 @@ class CTortoiseMergeApp : public CWinAppEx
 {
 public:
 	CTortoiseMergeApp();
+	~CTortoiseMergeApp();
 
 
 // Overrides

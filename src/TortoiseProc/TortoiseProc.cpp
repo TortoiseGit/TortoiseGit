@@ -67,6 +67,7 @@ CTortoiseProcApp::CTortoiseProcApp()
 	EnableHtmlHelp();
 	SYS_IMAGE_LIST();
 	CHooks::Create();
+	git_threads_init();
 	m_bLoadUserToolbars = FALSE;
 	m_bSaveState = FALSE;
 	retSuccess = false;
@@ -80,6 +81,7 @@ CTortoiseProcApp::~CTortoiseProcApp()
 {
 	CHooks::Destroy();
 	SYS_IMAGE_LIST().Cleanup();
+	git_threads_shutdown();
 }
 
 // The one and only CTortoiseProcApp object
