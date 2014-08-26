@@ -22,5 +22,5 @@
 
 bool SendMailCommand::Execute()
 {
-	return CAppUtils::SendPatchMail(orgPathList);
+	return CAppUtils::SendPatchMail(orgPathList, true);
 }

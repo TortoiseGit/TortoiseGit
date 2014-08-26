@@ -2059,7 +2059,7 @@ CString CAppUtils::ChooseRepository(CString *path)
 	}
 }
 
-bool CAppUtils::SendPatchMail(CTGitPathList& list)
+bool CAppUtils::SendPatchMail(CTGitPathList& list, bool bIsMainWnd)
 {
 	CSendMailDlg dlg;
 
@@ -2071,8 +2071,8 @@ bool CAppUtils::SendPatchMail(CTGitPathList& list)
 			return FALSE;
 
 		CGitProgressDlg progDlg;
-
-		theApp.m_pMainWnd = &progDlg;
+		if (bIsMainWnd)
+			theApp.m_pMainWnd = &progDlg;
 		SendMailProgressCommand sendMailProgressCommand;
 		progDlg.SetCommand(&sendMailProgressCommand);
 
@@ -2089,7 +2089,7 @@ bool CAppUtils::SendPatchMail(CTGitPathList& list)
 	return false;
 }
 
-bool CAppUtils::SendPatchMail(CString &cmd,CString &formatpatchoutput)
+bool CAppUtils::SendPatchMail(CString &cmd, CString &formatpatchoutput, bool bIsMainWnd)
 {
 	CTGitPathList list;
 	CString log=formatpatchoutput;
@@ -2112,7 +2112,7 @@ bool CAppUtils::SendPatchMail(CString &cmd,CString &formatpatchoutput)
 	}
 	if (!list.IsEmpty())
 	{
-		return SendPatchMail(list);
+		return SendPatchMail(list, bIsMainWnd);
 	}
 	else
 	{
@@ -2587,7 +2587,7 @@ bool CAppUtils::Push(CString selectLocalBranch)
 	return FALSE;
 }
 
-bool CAppUtils::RequestPull(CString endrevision, CString repositoryUrl)
+bool CAppUtils::RequestPull(CString endrevision, CString repositoryUrl, bool bIsMainWnd)
 {
 	CRequestPullDlg dlg;
 	dlg.m_RepositoryURL = repositoryUrl;
@@ -2638,8 +2638,8 @@ bool CAppUtils::RequestPull(CString endrevision, CString repositoryUrl)
 					return FALSE;
 
 				CGitProgressDlg progDlg;
-
-				theApp.m_pMainWnd = &progDlg;
+				if (bIsMainWnd)
+					theApp.m_pMainWnd = &progDlg;
 				SendMailProgressCommand sendMailProgressCommand;
 				progDlg.SetCommand(&sendMailProgressCommand);
 
@@ -3205,7 +3205,7 @@ void CAppUtils::SetWindowTitle(HWND hWnd, const CString& urlorpath, const CStrin
 	SetWindowText(hWnd, pathbuf);
 }
 
-bool CAppUtils::BisectStart(CString lastGood, CString firstBad)
+bool CAppUtils::BisectStart(CString lastGood, CString firstBad, bool bIsMainWnd)
 {
 	if (!g_Git.CheckCleanWorkTree())
 	{
@@ -3243,7 +3243,8 @@ bool CAppUtils::BisectStart(CString lastGood, CString firstBad)
 	if (bisectStartDlg.DoModal() == IDOK)
 	{
 		CProgressDlg progress;
-		theApp.m_pMainWnd = &progress;
+		if (bIsMainWnd)
+			theApp.m_pMainWnd = &progress;
 		progress.m_GitCmdList.push_back(_T("git.exe bisect start"));
 		progress.m_GitCmdList.push_back(_T("git.exe bisect good ") + bisectStartDlg.m_LastGoodRevision);
 		progress.m_GitCmdList.push_back(_T("git.exe bisect bad ") + bisectStartDlg.m_FirstBadRevision);

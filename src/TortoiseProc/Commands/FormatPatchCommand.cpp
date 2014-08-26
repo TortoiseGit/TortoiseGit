@@ -83,7 +83,7 @@ bool FormatPatchCommand::Execute()
 		{
 			if(dlg.m_bSendMail)
 			{
-				CAppUtils::SendPatchMail(cmd,progress.m_LogText);
+				CAppUtils::SendPatchMail(cmd, progress.m_LogText, true);
 			}
 		}
 		return !progress.m_GitStatus;

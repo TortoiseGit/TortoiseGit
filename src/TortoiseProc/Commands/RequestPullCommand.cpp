@@ -30,5 +30,5 @@ bool RequestPullCommand::Execute()
 	if (parser.HasVal(_T("url")))
 		reposirotyurl = parser.GetVal(_T("url"));
 
-	return CAppUtils::RequestPull(endrevision, reposirotyurl);
+	return CAppUtils::RequestPull(endrevision, reposirotyurl, true);
 }

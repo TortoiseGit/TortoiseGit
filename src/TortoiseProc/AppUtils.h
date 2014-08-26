@@ -170,8 +170,8 @@ public:
 	static CString GetClipboardLink(const CString &skipGitPrefix = _T(""), int paramsCount = 0);
 	static CString ChooseRepository(CString *path);
 
-	static bool SendPatchMail(CTGitPathList &pathlist);
-	static bool SendPatchMail(CString &cmd,CString &formatpatchoutput);
+	static bool SendPatchMail(CTGitPathList &pathlist, bool bIsMainWnd = false);
+	static bool SendPatchMail(CString &cmd,CString &formatpatchoutput, bool bIsMainWnd = false);
 
 	static int  SaveCommitUnicodeFile(CString &filename, CString &mesage);
 
@@ -180,7 +180,7 @@ public:
 	static bool Pull(bool showPush = false);
 	static bool Fetch(CString remoteName = _T(""), bool allowRebase = false, bool allRemotes = false);
 	static bool Push(CString selectLocalBranch = CString());
-	static bool RequestPull(CString endrevision = _T(""), CString repositoryUrl = _T(""));
+	static bool RequestPull(CString endrevision = _T(""), CString repositoryUrl = _T(""), bool bIsMainWnd = false);
 
 	static bool CreateMultipleDirectory(const CString &dir);
 
@@ -201,7 +201,7 @@ public:
 	static int GetMsysgitVersion();
 	static void MarkWindowAsUnpinnable(HWND hWnd);
 
-	static bool BisectStart(CString lastGood, CString firstBad);
+	static bool BisectStart(CString lastGood, CString firstBad, bool bIsMainWnd = false);
 
 	static int	Git2GetUserPassword(git_cred **out, const char *url, const char *username_from_url, unsigned int allowed_types, void *payload);
 

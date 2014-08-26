@@ -35,7 +35,7 @@ bool BisectCommand::Execute()
 		if (parser.HasKey(_T("bad")))
 			firstBad = parser.GetVal(_T("bad"));
 
-		return CAppUtils::BisectStart(lastGood, firstBad);
+		return CAppUtils::BisectStart(lastGood, firstBad, true);
 	}
 	else if ((this->parser.HasKey(_T("good")) || this->parser.HasKey(_T("bad")) || this->parser.HasKey(_T("reset"))) && path.IsBisectActive())
 	{
