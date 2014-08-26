@@ -2378,10 +2378,18 @@ int CGit::GetDiffPath(CTGitPathList *PathList, CGitHash *hash1, CGitHash *hash2,
 
 	CAutoLocker lock(g_Git.m_critGitDllSec);
 
-	if(arg == NULL)
-		diff = GetGitDiff();
-	else
-		git_open_diff(&diff, arg);
+	try
+	{
+		if(!arg)
+			diff = GetGitDiff();
+		else
+			git_open_diff(&diff, arg);
+	}
+	catch (char* e)
+	{
+		MessageBox(nullptr, _T("Could not get diff.\nlibgit reported:\n") + CString(e), _T("TortoiseGit"), MB_OK);
+		return -1;
+	}
 
 	if(diff ==NULL)
 		return -1;

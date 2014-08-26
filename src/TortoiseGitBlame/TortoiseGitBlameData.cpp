@@ -224,7 +224,16 @@ void CTortoiseGitBlameData::ParseBlameOutput(BYTE_VECTOR &data, CGitHashMap & Ha
 	for (auto it = hashes.begin(), it_end = hashes.end(); it != it_end; ++it)
 	{
 		CGitHash hash = *it;
-		GitRev *pRev = GetRevForHash(HashToRev, hash);
+		GitRev *pRev;
+		try
+		{
+			pRev = GetRevForHash(HashToRev, hash);
+		}
+		catch (char* e)
+		{
+			MessageBox(nullptr, _T("Could not get revision by hash \"") + hash.ToString() + _T("\".\nlibgit reported:\n") + CString(e), _T("TortoiseGit"), MB_OK);
+			return;
+		}
 		if (pRev)
 		{
 			authors.push_back(pRev->GetAuthorName());
