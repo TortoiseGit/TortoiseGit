@@ -1,6 +1,9 @@
 ﻿= Release 1.8.12.0 =
 Released: unreleased
 
+== Features ==
+ * Fixed issue #2272: Export Dialog auto select tag if the revision has tag
+
 == Bug Fixes ==
  * Fixed issue #2260: Clicking in blank space in Commit dialog causes all unversioned files to become selected
 

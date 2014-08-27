@@ -1012,7 +1012,7 @@ bool CAppUtils::Export(CString *BashHash, const CTGitPath *orgPath)
 		// ask from where the export has to be done
 	CExportDlg dlg;
 	if(BashHash)
-		dlg.m_Revision=*BashHash;
+		dlg.m_initialRefName=*BashHash;
 	if (orgPath)
 	{
 		if (PathIsRelative(orgPath->GetWinPath()))

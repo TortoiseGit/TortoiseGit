@@ -394,6 +394,15 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 		case ID_EXPORT:
 			{
 				CString str=pSelLogEntry->m_CommitHash.ToString();
+				// try to get the tag
+				for (size_t i = 0; i < m_HashMap[pSelLogEntry->m_CommitHash].size(); ++i)
+				{
+					if (m_HashMap[pSelLogEntry->m_CommitHash][i].Find(_T("refs/tags/")) == 0)
+					{
+						str = m_HashMap[pSelLogEntry->m_CommitHash][i];
+						break;
+					}
+				}
 				CAppUtils::Export(&str, &m_Path);
 			}
 			break;

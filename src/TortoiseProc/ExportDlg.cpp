@@ -87,15 +87,12 @@ BOOL CExportDlg::OnInitDialog()
 	CHOOSE_VERSION_ADDANCHOR;
 	this->AddOthersToAnchor();
 	InitChooseVersion();
-	if (m_Revision.IsEmpty() || m_Revision == _T("HEAD"))
+	if (m_initialRefName.IsEmpty() || m_initialRefName == _T("HEAD"))
 	{
 		SetDefaultChoose(IDC_RADIO_HEAD);
 	}
-	else
-	{
-		SetDefaultChoose(IDC_RADIO_VERSION);
-		this->GetDlgItem(IDC_COMBOBOXEX_VERSION)->SetWindowTextW(m_Revision);
-	}
+	else if (m_initialRefName.Left(10) == _T("refs/tags/"))
+		SetDefaultChoose(IDC_RADIO_TAGS);
 
 	CWnd* pHead = GetDlgItem(IDC_RADIO_HEAD);
 	CString headText;
