@@ -1230,6 +1230,14 @@ void CRebaseDlg::OnBnClickedContinue()
 		}
 	}
 
+	if (m_RebaseStage == REBASE_EDIT || m_RebaseStage == REBASE_CONTINUE) {
+		while (!g_Git.CheckCleanWorkTree())
+		{
+			if (CMessageBox::Show(nullptr, IDS_PROC_REBASE_CONTINUE_NOTCLEAN, IDS_APPNAME, 1, IDI_ERROR, IDS_MSGBOX_RETRY, IDS_IGNOREBUTTON) == 2)
+				break;
+		}
+	}
+
 	if( m_RebaseStage == REBASE_EDIT ||  m_RebaseStage == REBASE_SQUASH_EDIT )
 	{
 		CString str;
@@ -1742,11 +1750,6 @@ int CRebaseDlg::RebaseThread()
 		}
 		else if( m_RebaseStage == REBASE_CONTINUE )
 		{
-			while (!g_Git.CheckCleanWorkTree())
-			{
-				if (CMessageBox::Show(nullptr, IDS_PROC_REBASE_CONTINUE_NOTCLEAN, IDS_APPNAME, 1, IDI_ERROR, IDS_MSGBOX_RETRY, IDS_IGNOREBUTTON) == 2)
-					break;
-			}
 			this->GoNext();
 			SendMessage(MSG_REBASE_UPDATE_UI);
 			if(IsEnd())
