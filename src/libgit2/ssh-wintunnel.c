@@ -21,6 +21,7 @@
 
 #include "buffer.h"
 #include "netops.h"
+#include "http_parser.h"
 #include "../../ext/libgit2/src/transports/smart.h"
 #include "system-call.h"
 #include "ssh-wintunnel.h"
@@ -228,6 +229,86 @@ static int wcstristr(const wchar_t *heystack, const wchar_t *needle)
 	return 0;
 }
 
+/* based on netops.c code of libgit2, needed by extract_url_parts, see comment there */
+#define hex2c(c) ((c | 32) % 39 - 9)
+static char* unescape(char *str)
+{
+	int x, y;
+	int len = (int)strlen(str);
+
+	for (x = y = 0; str[y]; ++x, ++y) {
+		if ((str[x] = str[y]) == '%') {
+			if (y < len - 2 && isxdigit(str[y + 1]) && isxdigit(str[y + 2])) {
+				str[x] = (hex2c(str[y + 1]) << 4) + hex2c(str[y + 2]);
+				y += 2;
+			}
+		}
+	}
+	str[x] = '\0';
+	return str;
+}
+
+/* based on gitno_extract_url_parts, keep c&p copy here until https://github.com/libgit2/libgit2/pull/2492 gets merged or forever ;)*/
+static int extract_url_parts(
+	char **host,
+	char **port,
+	char **path,
+	char **username,
+	char **password,
+	const char *url,
+	const char *default_port)
+{
+	struct http_parser_url u = { 0 };
+	const char *_host, *_port, *_path, *_userinfo;
+
+	if (http_parser_parse_url(url, strlen(url), false, &u)) {
+		giterr_set(GITERR_NET, "Malformed URL '%s'", url);
+		return GIT_EINVALIDSPEC;
+	}
+
+	_host = url + u.field_data[UF_HOST].off;
+	_port = url + u.field_data[UF_PORT].off;
+	_path = url + u.field_data[UF_PATH].off;
+	_userinfo = url + u.field_data[UF_USERINFO].off;
+
+	if (u.field_set & (1 << UF_HOST)) {
+		*host = git__substrdup(_host, u.field_data[UF_HOST].len);
+		GITERR_CHECK_ALLOC(*host);
+	}
+
+	if (u.field_set & (1 << UF_PORT)) {
+		*port = git__substrdup(_port, u.field_data[UF_PORT].len);
+	} else if (default_port) {
+		*port = git__strdup(default_port);
+		GITERR_CHECK_ALLOC(*port);
+	} else {
+		*port = NULL;
+	}
+
+	if (u.field_set & (1 << UF_PATH)) {
+		*path = git__substrdup(_path, u.field_data[UF_PATH].len);
+		GITERR_CHECK_ALLOC(*path);
+	} else {
+		giterr_set(GITERR_NET, "invalid url, missing path");
+		return GIT_EINVALIDSPEC;
+	}
+
+	if (u.field_set & (1 << UF_USERINFO)) {
+		const char *colon = memchr(_userinfo, ':', u.field_data[UF_USERINFO].len);
+		if (colon) {
+			*username = unescape(git__substrdup(_userinfo, colon - _userinfo));
+			*password = unescape(git__substrdup(colon + 1, u.field_data[UF_USERINFO].len - (colon + 1 - _userinfo)));
+			GITERR_CHECK_ALLOC(*password);
+		} else {
+			*username = git__substrdup(_userinfo, u.field_data[UF_USERINFO].len);
+		}
+		GITERR_CHECK_ALLOC(*username);
+
+	}
+
+	return 0;
+}
+
 static int _git_ssh_setup_tunnel(
 	ssh_subtransport *t,
 	const char *url,
@@ -235,7 +316,6 @@ static int _git_ssh_setup_tunnel(
 	git_smart_subtransport_stream **stream)
 {
 	char *host = NULL, *port = NULL, *path = NULL, *user = NULL, *pass = NULL;
-	const char *default_port = "22";
 	ssh_stream *s;
 	wchar_t *ssh;
 	wchar_t *wideParams = NULL;
@@ -253,17 +333,11 @@ static int _git_ssh_setup_tunnel(
 	s = (ssh_stream *)*stream;
 
 	if (!git__prefixcmp(url, prefix_ssh)) {
-		if (gitno_extract_url_parts(&host, &port, &path, &user, &pass, url, default_port) < 0)
+		if (extract_url_parts(&host, &port, &path, &user, &pass, url, NULL) < 0)
 			goto on_error;
-	}
-	else {
+	} else {
 		if (git_ssh_extract_url_parts(&host, &user, url) < 0)
 			goto on_error;
-		port = git__strdup(default_port);
-		if (!port) {
-			giterr_set_oom();
-			goto on_error;
-		}
 	}
 
 	ssh = _wgetenv(L"GIT_SSH");
