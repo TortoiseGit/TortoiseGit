@@ -33,31 +33,21 @@
 GIT_BEGIN_DECL
 
 /**
- * Create an ssh transport with custom git command paths
- *
- * This is a factory function suitable for setting as the transport
- * callback in a remote (or for a clone in the options).
- *
- * The payload argument must be a strarray pointer with the paths for
- * the `git-upload-pack` and `git-receive-pack` at index 0 and 1.
- *
- * @param out the resulting transport
- * @param owner the owning remote
- * @param payload a strarray with the paths
- * @return 0 or an error code
- */
-GIT_EXTERN(int) git_transport_ssh_wintunnel_with_paths(git_transport **out, git_remote *owner, void *payload);
-
-/**
  * Create an instance of the ssh subtransport.
+ *
+ * Must be called by a wrapper, because this method does not match git_smart_subtransport_cb
  *
  * @param out The newly created subtransport
  * @param owner The smart transport to own this subtransport
+ * @param sshtoolpath the path to the ssh helper tool (plink or ssh)
+ * @param pEnv environment variables to be passed to the ssh helper tool
  * @return 0 or an error code
  */
 GIT_EXTERN(int) git_smart_subtransport_ssh_wintunnel(
 	git_smart_subtransport **out,
-	git_transport* owner);
+	git_transport* owner,
+	LPCWSTR sshtoolpath,
+	LPWSTR pEnv);
 
 /*
  *** End interface for subtransports for the smart transport ***

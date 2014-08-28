@@ -1949,7 +1949,7 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 	SetLibGit2SearchPath(GIT_CONFIG_LEVEL_SYSTEM, msysGitDir);
 	SetLibGit2SearchPath(GIT_CONFIG_LEVEL_GLOBAL, g_Git.GetHomeDirectory());
 	SetLibGit2SearchPath(GIT_CONFIG_LEVEL_XDG, g_Git.GetGitGlobalXDGConfigPath());
-	static git_smart_subtransport_definition ssh_wintunnel_subtransport_definition = { git_smart_subtransport_ssh_wintunnel, 0 };
+	static git_smart_subtransport_definition ssh_wintunnel_subtransport_definition = { [](git_smart_subtransport **out, git_transport* owner) -> int { return git_smart_subtransport_ssh_wintunnel(out, owner, g_Git.m_Environment.GetEnv(_T("GIT_SSH")), &g_Git.m_Environment[0]); }, 0 };
 	git_transport_register("ssh", git_transport_smart, &ssh_wintunnel_subtransport_definition);
 	CString msysGitTemplateDir;
 	PathCanonicalize(msysGitTemplateDir.GetBufferSetLength(MAX_PATH), CGit::ms_LastMsysGitDir + _T("\\..\\share\\git-core\\templates"));
