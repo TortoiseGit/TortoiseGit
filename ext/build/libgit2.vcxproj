@@ -151,6 +151,8 @@
     <ClCompile Include="..\libgit2\src\thread-utils.c" />
     <ClCompile Include="..\libgit2\src\trace.c" />
     <ClCompile Include="..\libgit2\src\transport.c" />
+    <ClCompile Include="..\libgit2\src\transports\auth.c" />
+    <ClCompile Include="..\libgit2\src\transports\auth_negotiate.c" />
     <ClCompile Include="..\libgit2\src\transports\cred.c" />
     <ClCompile Include="..\libgit2\src\transports\cred_helpers.c" />
     <ClCompile Include="..\libgit2\src\transports\ssh.c" />
@@ -221,6 +223,7 @@
     <ClInclude Include="..\libgit2\include\git2\sys\reflog.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\refs.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\repository.h" />
+    <ClInclude Include="..\libgit2\include\git2\sys\transport.h" />
     <ClInclude Include="..\libgit2\include\git2\trace.h" />
     <ClInclude Include="..\libgit2\include\git2\transport.h" />
     <ClInclude Include="..\libgit2\src\array.h" />
@@ -304,6 +307,9 @@
     <ClInclude Include="..\libgit2\src\tag.h" />
     <ClInclude Include="..\libgit2\src\thread-utils.h" />
     <ClInclude Include="..\libgit2\src\trace.h" />
+    <ClInclude Include="..\libgit2\src\transports\auth.h" />
+    <ClInclude Include="..\libgit2\src\transports\auth_negotiate.h" />
+    <ClInclude Include="..\libgit2\src\transports\cred.h" />
     <ClInclude Include="..\libgit2\src\tree-cache.h" />
     <ClInclude Include="..\libgit2\src\tree.h" />
     <ClInclude Include="..\libgit2\src\util.h" />
