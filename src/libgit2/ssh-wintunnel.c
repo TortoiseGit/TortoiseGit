@@ -387,7 +387,7 @@ static int _git_ssh_setup_tunnel(
 	wcscat_s(cmd, length, L"\"");
 	wcscat_s(cmd, length, wideParams);
 
-	if (command_start(cmd, &s->commandHandle, t->pEnv, CREATE_NEW_CONSOLE))
+	if (command_start(cmd, &s->commandHandle, t->pEnv, isPutty ? CREATE_NEW_CONSOLE : DETACHED_PROCESS))
 		goto on_error;
 
 	git__free(wideParams);
