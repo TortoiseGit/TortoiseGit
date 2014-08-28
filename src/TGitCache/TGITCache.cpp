@@ -138,6 +138,7 @@ void HandleRestart()
 int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR lpCmdLine, int /*cmdShow*/)
 {
 	SetDllDirectory(L"");
+	git_threads_init();
 	HandleCommandLine(lpCmdLine);
 	CAutoGeneralHandle hReloadProtection = ::CreateMutex(NULL, FALSE, GetCacheMutexName());
 
@@ -261,7 +262,7 @@ int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR lp
 	Shell_NotifyIcon(NIM_DELETE,&niData);
 	CGitStatusCache::Destroy();
 	HandleRestart();
-
+	git_threads_shutdown();
 	return 0;
 }
 

@@ -37,6 +37,7 @@ class CTortoiseGitBlameApp : public CWinAppEx
 {
 public:
 	CTortoiseGitBlameApp();
+	~CTortoiseGitBlameApp();
 	ULONG_PTR m_gdiplusToken;
 
 // Overrides

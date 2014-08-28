@@ -32,6 +32,7 @@
 #include "FileDlgEventHandler.h"
 #include "TempFile.h"
 #include "TaskbarUUID.h"
+#include "git2.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -69,6 +70,7 @@ CTortoiseMergeApp::CTortoiseMergeApp()
 {
 	EnableHtmlHelp();
 	m_bHiColorIcons = TRUE;
+	git_threads_init();
 }
 
 // The one and only CTortoiseMergeApp object
@@ -518,6 +520,11 @@ BOOL CTortoiseMergeApp::InitInstance()
 	}
 
 	return pFrame->LoadViews(line);
+}
+
+CTortoiseMergeApp::~CTortoiseMergeApp()
+{
+	git_threads_shutdown();
 }
 
 // CTortoiseMergeApp message handlers

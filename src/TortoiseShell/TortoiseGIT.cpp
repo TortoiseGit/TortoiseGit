@@ -155,6 +155,7 @@ STDAPI DllGetClassObject(REFCLSID rclsid, REFIID riid, LPVOID *ppvOut)
 		if (pcf == NULL)
 			return E_OUTOFMEMORY;
 		// refcount currently set to 0
+		git_threads_init();
 		const HRESULT hr = pcf->QueryInterface(riid, ppvOut);
 		if(FAILED(hr))
 			delete pcf;
