@@ -29,6 +29,7 @@
 #include "FormatMessageWrapper.h"
 #include "SmartHandle.h"
 #include "git2/sys/filter.h"
+#include "git2/sys/transport.h"
 #include "../libgit2/filter-filter.h"
 #include "../libgit2/ssh-wintunnel.h"
 
@@ -1949,7 +1950,7 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 	SetLibGit2SearchPath(GIT_CONFIG_LEVEL_GLOBAL, g_Git.GetHomeDirectory());
 	SetLibGit2SearchPath(GIT_CONFIG_LEVEL_XDG, g_Git.GetGitGlobalXDGConfigPath());
 	static git_smart_subtransport_definition ssh_wintunnel_subtransport_definition = { git_smart_subtransport_ssh_wintunnel, 0 };
-	git_transport_register("ssh://", 2, git_transport_smart, &ssh_wintunnel_subtransport_definition);
+	git_transport_register("ssh", git_transport_smart, &ssh_wintunnel_subtransport_definition);
 	CString msysGitTemplateDir;
 	PathCanonicalize(msysGitTemplateDir.GetBufferSetLength(MAX_PATH), CGit::ms_LastMsysGitDir + _T("\\..\\share\\git-core\\templates"));
 	msysGitTemplateDir.ReleaseBuffer();
