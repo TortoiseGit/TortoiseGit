@@ -1839,6 +1839,7 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 		return TRUE;
 	}
 
+	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": CheckMsysGitDir(%d)\n"), bFallback);
 	this->m_Environment.clear();
 	m_Environment.CopyProcessEnvironment();
 
@@ -1891,6 +1892,7 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 	CString str = msysdir;
 	if(str.IsEmpty() || !FileExists(str + _T("\\git.exe")))
 	{
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": git.exe not exists: %s\n"), CGit::ms_LastMsysGitDir);
 		if (!bFallback)
 			return FALSE;
 
@@ -1915,6 +1917,7 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 			// search PATH if git/bin directory is already present
 			if ( FindGitPath() )
 			{
+				CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": FindGitPath() => %s\n"), CGit::ms_LastMsysGitDir);
 				m_bInitialized = TRUE;
 				msysdir = CGit::ms_LastMsysGitDir;
 				msysdir.write();
@@ -1931,8 +1934,12 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 
 	// check for git.exe existance (maybe it was deinstalled in the meantime)
 	if (!FileExists(CGit::ms_LastMsysGitDir + _T("\\git.exe")))
+	{
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": git.exe not exists: %s\n"), CGit::ms_LastMsysGitDir);
 		return FALSE;
+	}
 
+	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": ms_LastMsysGitDir = %s\n"), CGit::ms_LastMsysGitDir);
 	// Configure libgit2 search paths
 	CString msysGitDir;
 	PathCanonicalize(msysGitDir.GetBufferSetLength(MAX_PATH), CGit::ms_LastMsysGitDir + _T("\\..\\etc"));

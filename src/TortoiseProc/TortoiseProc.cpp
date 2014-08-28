@@ -59,6 +59,7 @@ END_MESSAGE_MAP()
 
 CTortoiseProcApp::CTortoiseProcApp()
 {
+	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Constructor\n"));
 	SetDllDirectory(L"");
 	// prevent from inheriting %GIT_DIR% from parent process by resetting it,
 	// use MSVC function instead of Windows API because MSVC runtime caches environment variables
@@ -98,6 +99,7 @@ CCrashReportTGit crasher(L"TortoiseGit " _T(APP_X64_STRING), TGIT_VERMAJOR, TGIT
 
 BOOL CTortoiseProcApp::InitInstance()
 {
+	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": InitInstance\n"));
 	CheckUpgrade();
 	CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerWindows));
 	CMFCButton::EnableWindowsTheming();
@@ -133,6 +135,7 @@ BOOL CTortoiseProcApp::InitInstance()
 		}
 		if (hInst != NULL)
 		{
+			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Load Language DLL %s\n"), langDll);
 			AfxSetResourceHandle(hInst);
 		}
 		else
@@ -194,6 +197,7 @@ BOOL CTortoiseProcApp::InitInstance()
 		else
 			langId = 0;
 	} while (langId);
+	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Set Help Filename %s\n"), m_pszHelpFilePath);
 	setlocale(LC_ALL, "");
 
 	if (!g_Git.CheckMsysGitDir())
@@ -227,12 +231,14 @@ BOOL CTortoiseProcApp::InitInstance()
 	}
 
 	{
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Registering Crash Report ...\n"));
 		CCrashReport::Instance().AddUserInfoToReport(L"msysGitDir", CGit::ms_LastMsysGitDir);
 		CString versionString;
 		versionString.Format(_T("%d"), CGit::ms_LastMsysGitVersion);
 		CCrashReport::Instance().AddUserInfoToReport(L"msysGitVersion", versionString);
 	}
 
+	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Initializing UI components ...\n"));
 	// InitCommonControls() is required on Windows XP if an application
 	// manifest specifies use of ComCtl32.dll version 6 or later to enable
 	// visual styles.  Otherwise, any window creation will fail.
@@ -551,6 +557,7 @@ void CTortoiseProcApp::CheckUpgrade()
 {
 	CRegString regVersion = CRegString(_T("Software\\TortoiseGit\\CurrentVersion"));
 	CString sVersion = regVersion;
+	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Current TGit Version %s\n"), sVersion);
 	if (sVersion.Compare(_T(STRPRODUCTVER))==0)
 		return;
 	// we're starting the first time with a new version!
@@ -653,6 +660,7 @@ void CTortoiseProcApp::CheckUpgrade()
 		CRegStdDWORD(_T("Software\\TortoiseGit\\CheckNewer")).removeValue();
 	}
 
+	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Setting up diff scripts ...\n"));
 	CAppUtils::SetupDiffScripts(false, CString());
 
 	// set the current version so we don't come here again until the next update!
