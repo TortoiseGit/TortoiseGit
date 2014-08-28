@@ -114,6 +114,39 @@ static BOOL FindGitPath()
 	return FALSE;
 }
 
+static CString GetFullPathIfNeeded(CString executable, LPCTSTR env)
+{
+	if (executable.GetLength() < 4 || executable.Find(_T(".exe"), executable.GetLength() - 4) != executable.GetLength() - 4)
+		executable += _T(".exe");
+
+	if (FileExists(executable))
+		return executable;
+
+	TCHAR buf[MAX_PATH] = { 0 };
+
+	// search in all paths defined in PATH
+	while ((env = nextpath(env, buf, MAX_PATH - 1)) != NULL && *buf)
+	{
+		TCHAR *pfin = buf + _tcslen(buf) - 1;
+
+		// ensure trailing slash
+		if (*pfin != _T('/') && *pfin != _T('\\'))
+			_tcscpy_s(++pfin, 2, _T("\\")); // we have enough space left, MAX_PATH-1 is used in nextpath above
+
+		const size_t len = _tcslen(buf);
+
+		if ((len + executable.GetLength()) < MAX_PATH)
+			_tcscpy_s(pfin + 1, MAX_PATH - len, executable);
+		else
+			break;
+
+		if (FileExists(buf))
+			return buf;
+	}
+
+	return executable;
+}
+
 static bool g_bSortLogical;
 static bool g_bSortLocalBranchesFirst;
 static bool g_bSortTagsReversed;
@@ -1949,7 +1982,7 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 	SetLibGit2SearchPath(GIT_CONFIG_LEVEL_SYSTEM, msysGitDir);
 	SetLibGit2SearchPath(GIT_CONFIG_LEVEL_GLOBAL, g_Git.GetHomeDirectory());
 	SetLibGit2SearchPath(GIT_CONFIG_LEVEL_XDG, g_Git.GetGitGlobalXDGConfigPath());
-	static git_smart_subtransport_definition ssh_wintunnel_subtransport_definition = { [](git_smart_subtransport **out, git_transport* owner) -> int { return git_smart_subtransport_ssh_wintunnel(out, owner, g_Git.m_Environment.GetEnv(_T("GIT_SSH")), &g_Git.m_Environment[0]); }, 0 };
+	static git_smart_subtransport_definition ssh_wintunnel_subtransport_definition = { [](git_smart_subtransport **out, git_transport* owner) -> int { return git_smart_subtransport_ssh_wintunnel(out, owner, GetFullPathIfNeeded(g_Git.m_Environment.GetEnv(_T("GIT_SSH")), g_Git.m_Environment.GetEnv(_T("PATH"))), &g_Git.m_Environment[0]); }, 0 };
 	git_transport_register("ssh", git_transport_smart, &ssh_wintunnel_subtransport_definition);
 	CString msysGitTemplateDir;
 	PathCanonicalize(msysGitTemplateDir.GetBufferSetLength(MAX_PATH), CGit::ms_LastMsysGitDir + _T("\\..\\share\\git-core\\templates"));
