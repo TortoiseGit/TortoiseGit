@@ -45,6 +45,8 @@ typedef struct {
 	ssh_stream *current_stream;
 	char *cmd_uploadpack;
 	char *cmd_receivepack;
+	LPWSTR pEnv;
+	LPWSTR sshtoolpath;
 } ssh_subtransport;
 
 /*
@@ -317,7 +319,7 @@ static int _git_ssh_setup_tunnel(
 {
 	char *host = NULL, *port = NULL, *path = NULL, *user = NULL, *pass = NULL;
 	ssh_stream *s;
-	wchar_t *ssh;
+	wchar_t *ssh = t->sshtoolpath;
 	wchar_t *wideParams = NULL;
 	wchar_t *cmd = NULL;
 	git_buf params = GIT_BUF_INIT;
@@ -340,10 +342,9 @@ static int _git_ssh_setup_tunnel(
 			goto on_error;
 	}
 
-	ssh = _wgetenv(L"GIT_SSH");
 	if (!ssh)
 	{
-		giterr_set(GITERR_SSH, "No GIT_SSH environment variable set");
+		giterr_set(GITERR_SSH, "No GIT_SSH tool configured");
 		goto on_error;
 	}
 
@@ -386,7 +387,7 @@ static int _git_ssh_setup_tunnel(
 	wcscat_s(cmd, length, L"\"");
 	wcscat_s(cmd, length, wideParams);
 
-	if (command_start(cmd, &s->commandHandle, NULL, CREATE_NEW_CONSOLE))
+	if (command_start(cmd, &s->commandHandle, t->pEnv, CREATE_NEW_CONSOLE))
 		goto on_error;
 
 	git__free(wideParams);
@@ -523,11 +524,12 @@ static void _ssh_free(git_smart_subtransport *subtransport)
 
 	git__free(t->cmd_uploadpack);
 	git__free(t->cmd_receivepack);
+	git__free(t->sshtoolpath);
 	git__free(t);
 }
 
 int git_smart_subtransport_ssh_wintunnel(
-	git_smart_subtransport **out, git_transport *owner)
+	git_smart_subtransport **out, git_transport *owner, LPCWSTR sshtoolpath, LPWSTR pEnv)
 {
 	ssh_subtransport *t;
 
@@ -539,51 +541,14 @@ int git_smart_subtransport_ssh_wintunnel(
 		return -1;
 	}
 
+	t->sshtoolpath = wcsdup(sshtoolpath);
+	t->pEnv = pEnv;
+
 	t->owner = (transport_smart *)owner;
 	t->parent.action = _ssh_action;
 	t->parent.close = _ssh_close;
 	t->parent.free = _ssh_free;
 
 	*out = (git_smart_subtransport *) t;
-	return 0;
-}
-
-int git_transport_sshwintunnel_with_paths(git_transport **out, git_remote *owner, void *payload)
-{
-	git_strarray *paths = (git_strarray *) payload;
-	git_transport *transport;
-	transport_smart *smart;
-	ssh_subtransport *t;
-	int error;
-	git_smart_subtransport_definition ssh_definition = {
-		git_smart_subtransport_ssh_wintunnel,
-		0, /* no RPC */
-	};
-
-	if (paths->count != 2) {
-		giterr_set(GITERR_SSH, "invalid ssh paths, must be two strings");
-		return GIT_EINVALIDSPEC;
-	}
-
-	if ((error = git_transport_smart(&transport, owner, &ssh_definition)) < 0)
-		return error;
-
-	smart = (transport_smart *) transport;
-	t = (ssh_subtransport *) smart->wrapped;
-
-	t->cmd_uploadpack = git__strdup(paths->strings[0]);
-	if (!t->cmd_uploadpack) {
-		giterr_set_oom();
-		return -1;
-	}
-	t->cmd_receivepack = git__strdup(paths->strings[1]);
-	if (!t->cmd_receivepack)
-	{
-		git__free(t->cmd_uploadpack);
-		giterr_set_oom();
-		return -1;
-	}
-
-	*out = transport;
 	return 0;
 }
