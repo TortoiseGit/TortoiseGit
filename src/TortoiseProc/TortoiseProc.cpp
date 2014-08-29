@@ -121,26 +121,22 @@ BOOL CTortoiseProcApp::InitInstance()
 	CString langDll;
 	CStringA langpath = CStringA(CPathUtils::GetAppParentDirectory());
 	langpath += "Languages";
-	HINSTANCE hInst = NULL;
 	do
 	{
 		langDll.Format(_T("%sLanguages\\TortoiseProc%ld.dll"), (LPCTSTR)CPathUtils::GetAppParentDirectory(), langId);
 
-		hInst = LoadLibrary(langDll);
-
 		CString sVer = _T(STRPRODUCTVER);
 		CString sFileVer = CPathUtils::GetVersionFromFile(langDll);
-		if (sFileVer.Compare(sVer)!=0)
+		if (sFileVer == sVer)
 		{
-			FreeLibrary(hInst);
-			hInst = NULL;
+			HINSTANCE hInst = LoadLibrary(langDll);
+			if (hInst != NULL)
+			{
+				CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Load Language DLL %s\n"), langDll);
+				AfxSetResourceHandle(hInst);
+				break;
+			}
 		}
-		if (hInst != NULL)
-		{
-			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Load Language DLL %s\n"), langDll);
-			AfxSetResourceHandle(hInst);
-		}
-		else
 		{
 			DWORD lid = SUBLANGID(langId);
 			lid--;
@@ -151,7 +147,7 @@ BOOL CTortoiseProcApp::InitInstance()
 			else
 				langId = 0;
 		}
-	} while ((hInst == NULL) && (langId != 0));
+	} while (langId != 0);
 	TCHAR buf[6] = { 0 };
 	_tcscpy_s(buf, _T("en"));
 	langId = loc;
