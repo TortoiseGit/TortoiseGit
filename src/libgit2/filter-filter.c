@@ -131,7 +131,7 @@ static int filter_apply(
 	const char *cmd = NULL;
 	git_buf cmdBuf = GIT_BUF_INIT;
 	wchar_t *wide_cmd;
-	COMMAND_HANDLE commandHandle = COMMAND_HANDLE_INIT;
+	COMMAND_HANDLE commandHandle;
 	git_buf errBuf = GIT_BUF_INIT;
 	DWORD exitCode;
 
@@ -221,8 +221,9 @@ static int filter_apply(
 		wide_cmd = tmp;
 	}
 
+	command_init(&commandHandle);
 	commandHandle.errBuf = &errBuf;
-	if (command_start(wide_cmd, &commandHandle, ffs->pEnv)) {
+	if (command_start(wide_cmd, &commandHandle, ffs->pEnv, 0)) {
 		git__free(wide_cmd);
 		if (isRequired)
 			return -1;
