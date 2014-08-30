@@ -2398,7 +2398,7 @@ static bool DoFetch(const CString& url, const bool fetchAllRemotes, const bool l
 			CAppUtils::RunTortoiseGitProc(cmd);
 		}));
 
-		postCmdList.push_back(PostCmd(IDS_PROC_RESET, []
+		postCmdList.push_back(PostCmd(IDI_REVERT, IDS_PROC_RESET, []
 		{
 			CString pullRemote, pullBranch;
 			g_Git.GetRemoteTrackedBranchForHEAD(pullRemote, pullBranch);
