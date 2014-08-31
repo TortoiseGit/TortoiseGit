@@ -29,19 +29,20 @@
 #include "FormatMessageWrapper.h"
 #include "SmartHandle.h"
 #include "git2/sys/filter.h"
+#include "git2/sys/transport.h"
 #include "../libgit2/filter-filter.h"
+#include "../libgit2/ssh-wintunnel.h"
 
 int CGit::m_LogEncode=CP_UTF8;
 typedef CComCritSecLock<CComCriticalSection> CAutoLocker;
 
-static LPTSTR nextpath(wchar_t *path, wchar_t *buf, size_t buflen)
+static LPCTSTR nextpath(const wchar_t* path, wchar_t* buf, size_t buflen)
 {
-	wchar_t term, *base = path;
-
 	if (path == NULL || buf == NULL || buflen == 0)
 		return NULL;
 
-	term = (*path == L'"') ? *path++ : L';';
+	const wchar_t* base = path;
+	wchar_t term = (*path == L'"') ? *path++ : L';';
 
 	for (buflen--; *path && *path != term && buflen; buflen--)
 		*buf++ = *path++;
@@ -60,25 +61,14 @@ static inline BOOL FileExists(LPCTSTR lpszFileName)
 	return _tstat(lpszFileName, &st) == 0;
 }
 
-static BOOL FindGitPath()
+static CString FindFileOnPath(const CString& filename, LPCTSTR env, bool wantDirectory = false)
 {
-	size_t size;
-	_tgetenv_s(&size, NULL, 0, _T("PATH"));
-
-	if (!size)
-	{
-		return FALSE;
-	}
-
-	TCHAR *env = (TCHAR*)alloca(size * sizeof(TCHAR));
-	_tgetenv_s(&size, env, size, _T("PATH"));
-
-	TCHAR buf[MAX_PATH] = {0};
+	TCHAR buf[MAX_PATH] = { 0 };
 
 	// search in all paths defined in PATH
 	while ((env = nextpath(env, buf, MAX_PATH - 1)) != NULL && *buf)
 	{
-		TCHAR *pfin = buf + _tcslen(buf)-1;
+		TCHAR *pfin = buf + _tcslen(buf) - 1;
 
 		// ensure trailing slash
 		if (*pfin != _T('/') && *pfin != _T('\\'))
@@ -86,30 +76,68 @@ static BOOL FindGitPath()
 
 		const size_t len = _tcslen(buf);
 
-		if ((len + 7) < MAX_PATH)
-			_tcscpy_s(pfin + 1, MAX_PATH - len, _T("git.exe"));
+		if ((len + filename.GetLength()) < MAX_PATH)
+			_tcscpy_s(pfin + 1, MAX_PATH - len, filename);
 		else
 			break;
 
-		if ( FileExists(buf) )
+		if (FileExists(buf))
 		{
-			// dir found
-			pfin[1] = 0;
-			CGit::ms_LastMsysGitDir = buf;
-			CGit::ms_LastMsysGitDir.TrimRight(_T("\\"));
-			if (CGit::ms_LastMsysGitDir.GetLength() > 4)
-			{
-				// often the msysgit\cmd folder is on the %PATH%, but
-				// that git.exe does not work, so try to guess the bin folder
-				CString binDir = CGit::ms_LastMsysGitDir.Mid(0, CGit::ms_LastMsysGitDir.GetLength() - 4) + _T("\\bin\\git.exe");
-				if (FileExists(binDir))
-					CGit::ms_LastMsysGitDir = CGit::ms_LastMsysGitDir.Mid(0, CGit::ms_LastMsysGitDir.GetLength() - 4) + _T("\\bin");
-			}
-			return TRUE;
+			if (wantDirectory)
+				pfin[1] = 0;
+			return buf;
 		}
 	}
 
+	return _T("");
+}
+
+static BOOL FindGitPath()
+{
+	size_t size;
+	_tgetenv_s(&size, NULL, 0, _T("PATH"));
+	if (!size)
+		return FALSE;
+
+	TCHAR* env = (TCHAR*)alloca(size * sizeof(TCHAR));
+	if (!env)
+		return FALSE;
+	_tgetenv_s(&size, env, size, _T("PATH"));
+
+	CString gitExeDirectory = FindFileOnPath(_T("git.exe"), env, true);
+	if (!gitExeDirectory.IsEmpty())
+	{
+		CGit::ms_LastMsysGitDir = gitExeDirectory;
+		CGit::ms_LastMsysGitDir.TrimRight(_T("\\"));
+		if (CGit::ms_LastMsysGitDir.GetLength() > 4)
+		{
+			// often the msysgit\cmd folder is on the %PATH%, but
+			// that git.exe does not work, so try to guess the bin folder
+			CString binDir = CGit::ms_LastMsysGitDir.Mid(0, CGit::ms_LastMsysGitDir.GetLength() - 4) + _T("\\bin\\git.exe");
+			if (FileExists(binDir))
+				CGit::ms_LastMsysGitDir = CGit::ms_LastMsysGitDir.Mid(0, CGit::ms_LastMsysGitDir.GetLength() - 4) + _T("\\bin");
+		}
+		return TRUE;
+	}
+
 	return FALSE;
+}
+
+static CString FindExecutableOnPath(const CString& executable, LPCTSTR env)
+{
+	CString filename = executable;
+
+	if (executable.GetLength() < 4 || executable.Find(_T(".exe"), executable.GetLength() - 4) != executable.GetLength() - 4)
+		filename += _T(".exe");
+
+	if (FileExists(filename))
+		return filename;
+
+	filename = FindFileOnPath(filename, env);
+	if (!filename.IsEmpty())
+		return filename;
+	
+	return executable;
 }
 
 static bool g_bSortLogical;
@@ -1947,6 +1975,8 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 	SetLibGit2SearchPath(GIT_CONFIG_LEVEL_SYSTEM, msysGitDir);
 	SetLibGit2SearchPath(GIT_CONFIG_LEVEL_GLOBAL, g_Git.GetHomeDirectory());
 	SetLibGit2SearchPath(GIT_CONFIG_LEVEL_XDG, g_Git.GetGitGlobalXDGConfigPath());
+	static git_smart_subtransport_definition ssh_wintunnel_subtransport_definition = { [](git_smart_subtransport **out, git_transport* owner) -> int { return git_smart_subtransport_ssh_wintunnel(out, owner, FindExecutableOnPath(g_Git.m_Environment.GetEnv(_T("GIT_SSH")), g_Git.m_Environment.GetEnv(_T("PATH"))), &g_Git.m_Environment[0]); }, 0 };
+	git_transport_register("ssh", git_transport_smart, &ssh_wintunnel_subtransport_definition);
 	CString msysGitTemplateDir;
 	PathCanonicalize(msysGitTemplateDir.GetBufferSetLength(MAX_PATH), CGit::ms_LastMsysGitDir + _T("\\..\\share\\git-core\\templates"));
 	msysGitTemplateDir.ReleaseBuffer();
