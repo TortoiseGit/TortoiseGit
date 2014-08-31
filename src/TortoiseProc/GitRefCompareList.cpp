@@ -121,7 +121,7 @@ int CGitRefCompareList::AddEntry(git_repository *repo, CString ref, CGitHash *ol
 		else
 		{
 			size_t ahead = 0, behind = 0;
-			if (!git_graph_ahead_behind(&ahead, &behind, repo, (const git_oid *)&oldHash->m_hash, (const git_oid *)&newHash->m_hash))
+			if (!git_graph_ahead_behind(&ahead, &behind, repo, (const git_oid *)&newHash->m_hash, (const git_oid *)&oldHash->m_hash))
 			{
 				CString change;
 				if (ahead > 0 && behind == 0)
