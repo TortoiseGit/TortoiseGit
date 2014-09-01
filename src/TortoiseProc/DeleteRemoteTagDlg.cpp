@@ -146,6 +146,72 @@ void CDeleteRemoteTagDlg::OnBnClickedOk()
 			return;
 	}
 
+	if (g_Git.UsingLibGit2(CGit::GIT_CMD_PUSH))
+	{
+		CSysProgressDlg sysProgressDlg;
+		sysProgressDlg.SetTitle(CString(MAKEINTRESOURCE(IDS_APPNAME)));
+		sysProgressDlg.SetLine(1, CString(MAKEINTRESOURCE(IDS_DELETING_REMOTE_REFS)));
+		sysProgressDlg.SetLine(2, CString(MAKEINTRESOURCE(IDS_PROGRESSWAIT)));
+		sysProgressDlg.SetShowProgressBar(false);
+		sysProgressDlg.ShowModal(this, true);
+		CAutoRepository repo(g_Git.GetGitRepository());
+		if (!repo)
+		{
+			CMessageBox::Show(m_hWnd, CGit::GetLibGit2LastErr(_T("Could not open repository.")), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+			return;
+		}
+
+		CStringA remoteA = CUnicodeUtils::GetUTF8(m_sRemote);
+		CAutoRemote remote;
+		if (git_remote_load(remote.GetPointer(), repo, remoteA) < 0)
+		{
+			CMessageBox::Show(m_hWnd, CGit::GetLibGit2LastErr(_T("Could not load remote.")), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+			return;
+		}
+
+		git_remote_callbacks callbacks = GIT_REMOTE_CALLBACKS_INIT;
+		callbacks.credentials = CAppUtils::Git2GetUserPassword;
+		git_remote_set_callbacks(remote, &callbacks);
+		if (git_remote_connect(remote, GIT_DIRECTION_PUSH) < 0)
+		{
+			CMessageBox::Show(m_hWnd, CGit::GetLibGit2LastErr(_T("Could not connect to remote.")), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+			return;
+		}
+
+		git_push *push = nullptr;
+		if (git_push_new(&push, remote) < 0)
+		{
+			CMessageBox::Show(m_hWnd, CGit::GetLibGit2LastErr(_T("Could not prepare to push.")), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+			return;
+		}
+
+		POSITION pos = m_ctrlTags.GetFirstSelectedItemPosition();
+		int index;
+		while ((index = m_ctrlTags.GetNextSelectedItem(pos)) >= 0)
+		{
+			CString refspec = _T(":refs/tags/") + m_taglist[index];
+			if (git_push_add_refspec(push, CUnicodeUtils::GetUTF8(refspec)) < 0)
+			{
+				CMessageBox::Show(m_hWnd, CGit::GetLibGit2LastErr(_T("Could not add push refspec.")), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+				git_push_free(push);
+				return;
+			}
+		}
+
+		if (git_push_finish(push) < 0)
+		{
+			CMessageBox::Show(m_hWnd, CGit::GetLibGit2LastErr(_T("Could not finish a push.")), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+			git_push_free(push);
+			return;
+		}
+
+		git_push_free(push);
+		sysProgressDlg.Stop();
+		BringWindowToTop();
+		Refresh();
+		return;
+	}
+
 	CMassiveGitTask mgtPush(_T("push ") + m_sRemote, FALSE);
 
 	POSITION pos = m_ctrlTags.GetFirstSelectedItemPosition();
