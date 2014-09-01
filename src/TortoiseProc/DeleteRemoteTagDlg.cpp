@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2013 - TortoiseGit
+// Copyright (C) 2012-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -93,7 +93,9 @@ void CDeleteRemoteTagDlg::Refresh()
 	sysProgressDlg.SetLine(2, CString(MAKEINTRESOURCE(IDS_PROGRESSWAIT)));
 	sysProgressDlg.SetShowProgressBar(false);
 	sysProgressDlg.ShowModal(this, true);
-	g_Git.GetRemoteTags(m_sRemote, m_taglist);
+	git_remote_callbacks callbacks = GIT_REMOTE_CALLBACKS_INIT;
+	callbacks.credentials = CAppUtils::Git2GetUserPassword;
+	g_Git.GetRemoteTags(m_sRemote, m_taglist, &callbacks);
 	sysProgressDlg.Stop();
 	BringWindowToTop();
 
