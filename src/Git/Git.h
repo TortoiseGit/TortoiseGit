@@ -29,6 +29,7 @@
 #define REG_MSYSGIT_EXTRA_PATH _T("Software\\TortoiseGit\\MSysGitExtra")
 
 struct git_repository;
+struct git_remote_callbacks;
 
 class CFilterData
 {
@@ -164,6 +165,7 @@ public:
 		GIT_CMD_DELETETAGBRANCH,
 		GIT_CMD_GETONEFILE,
 		GIT_CMD_ADD,
+		GIT_CMD_PUSH,
 	} LIBGIT2_CMD;
 	bool UsingLibGit2(LIBGIT2_CMD cmd) const;
 
@@ -311,7 +313,7 @@ public:
 	int GetRemoteList(STRING_VECTOR &list);
 	int GetBranchList(STRING_VECTOR &list, int *Current,BRANCH_TYPE type=BRANCH_LOCAL);
 	int GetTagList(STRING_VECTOR &list);
-	int GetRemoteTags(const CString& remote, STRING_VECTOR &list);
+	int GetRemoteTags(const CString& remote, STRING_VECTOR &list, git_remote_callbacks *callback = nullptr);
 	int GetMapHashToFriendName(MAP_HASH_NAME &map);
 	static int GetMapHashToFriendName(git_repository* repo, MAP_HASH_NAME &map);
 

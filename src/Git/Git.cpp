@@ -1684,8 +1684,43 @@ int CGit::GetRemoteList(STRING_VECTOR &list)
 	}
 }
 
-int CGit::GetRemoteTags(const CString& remote, STRING_VECTOR &list)
+int CGit::GetRemoteTags(const CString& remote, STRING_VECTOR &list, git_remote_callbacks *callback)
 {
+	if (UsingLibGit2(GIT_CMD_FETCH))
+	{
+		CAutoRepository repo(GetGitRepository());
+		if (!repo)
+			return -1;
+
+		CStringA remoteA = CUnicodeUtils::GetUTF8(remote);
+		CAutoRemote remote;
+		if (git_remote_load(remote.GetPointer(), repo, remoteA) < 0)
+			return -1;
+
+		git_remote_set_callbacks(remote, callback);
+		if (git_remote_connect(remote, GIT_DIRECTION_FETCH) < 0)
+			return -1;
+
+		const git_remote_head **heads = nullptr;
+		size_t size = 0;
+		if (git_remote_ls(&heads, &size, remote) < 0)
+			return -1;
+
+		for (int i = 0; i < size; i++)
+		{
+			CString ref = CUnicodeUtils::GetUnicode(heads[i]->name);
+			CString shortname;
+			if (!GetShortName(ref, shortname, _T("refs/tags/")))
+				continue;
+			// dot not include annotated tags twice; this works, because an annotated tag appears twice (one normal tag and one with ^{} at the end)
+			if (shortname.Find(_T("^{}")) >= 1)
+				continue;
+			list.push_back(shortname);
+		}
+		std::sort(list.begin(), list.end(), g_bSortTagsReversed ? LogicalCompareReversedPredicate : LogicalComparePredicate);
+		return 0;
+	}
+
 	CString cmd, out, err;
 	cmd.Format(_T("git.exe ls-remote -t \"%s\""), remote);
 	if (Run(cmd, &out, &err, CP_UTF8))
