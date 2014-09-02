@@ -50,6 +50,24 @@ BEGIN_MESSAGE_MAP(CAboutDlg, CStandAloneDialog)
 	ON_BN_CLICKED(IDC_UPDATE, OnBnClickedUpdate)
 END_MESSAGE_MAP()
 
+static CString Lf2Crlf(const CString& text)
+{
+	CString s;
+	if (text.GetLength() == 0)
+		return s;
+
+	TCHAR c = '\0';
+	for (int i = 0; i < text.GetLength(); i++)
+	{
+		if (text[i] == '\n' && c != '\r')
+			s += "\r\n";
+		else
+			s += text[i];
+		c = text[i];
+	}
+	return s;
+}
+
 BOOL CAboutDlg::OnInitDialog()
 {
 	CStandAloneDialog::OnInitDialog();
@@ -70,7 +88,7 @@ BOOL CAboutDlg::OnInitDialog()
 	CString tortoisegitprocpath;
 	tortoisegitprocpath.Format(_T("(%s)"), CPathUtils::GetAppDirectory());
 	temp.Format(IDS_ABOUTVERSION, TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD, tortoisegitprocpath, out);
-	SetDlgItemText(IDC_VERSIONABOUT, temp);
+	SetDlgItemText(IDC_VERSIONABOUT, Lf2Crlf(temp));
 
 	this->SetWindowText(_T("TortoiseGit"));
 
