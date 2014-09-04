@@ -340,7 +340,7 @@ public:
 		{
 			if (I->empty())
 				continue;
-			if (I->size() && I->at(I->size()-1)=='*')
+			if (!I->empty() && I->at(I->size()-1)=='*')
 			{
 				stdstring str = I->substr(0, I->size()-1);
 				if (_tcsnicmp(str.c_str(), path, str.size())==0)
