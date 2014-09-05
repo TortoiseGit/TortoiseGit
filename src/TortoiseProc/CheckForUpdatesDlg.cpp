@@ -407,6 +407,15 @@ void CCheckForUpdatesDlg::FillDownloads(CStdioFile &file, CString version)
 		}
 	}
 
+	struct LangPack
+	{
+		CString m_PackName;
+		CString m_LangName;
+		DWORD m_LocaleID;
+		CString m_LangCode;
+		bool m_Installed;
+	};
+	std::vector<LangPack> availableLangs;
 	CString langs;
 	while (file.ReadString(langs) && !langs.IsEmpty())
 	{
@@ -424,14 +433,24 @@ void CCheckForUpdatesDlg::FillDownloads(CStdioFile &file, CString version)
 			sLang2 += _T(")");
 		}
 
-		int pos = m_ctrlFiles.InsertItem(m_ctrlFiles.GetItemCount(), sLang);
-		m_ctrlFiles.SetItemText(pos, 1, sLang2);
+		bool installed = std::find(m_installedLangs.begin(), m_installedLangs.end(), loc) != m_installedLangs.end();
+		LangPack pack = { sLang, sLang2, loc, langs.Mid(5), installed };
+		availableLangs.push_back(pack);
+	}
+	std::sort(availableLangs.begin(), availableLangs.end(), [&](const LangPack& a, const LangPack& b) -> int
+	{
+		return (a.m_Installed && !b.m_Installed) ? 1 : (!a.m_Installed && b.m_Installed) ? 0 : (a.m_PackName.Compare(b.m_PackName) < 0);
+	});
+	for (auto langs : availableLangs)
+	{
+		int pos = m_ctrlFiles.InsertItem(m_ctrlFiles.GetItemCount(), langs.m_PackName);
+		m_ctrlFiles.SetItemText(pos, 1, langs.m_LangName);
 
 		CString filename;
-		filename.Format(_T("TortoiseGit-LanguagePack-%s-%sbit-%s.msi"), version, x86x64, langs.Mid(5));
+		filename.Format(_T("TortoiseGit-LanguagePack-%s-%sbit-%s.msi"), version, x86x64, langs.m_LangCode);
 		m_ctrlFiles.SetItemData(pos, (DWORD_PTR)(new CUpdateListCtrl::Entry(filename, CUpdateListCtrl::STATUS_NONE)));
 
-		if (std::find(m_installedLangs.begin(), m_installedLangs.end(), loc) != m_installedLangs.end())
+		if (langs.m_Installed)
 			m_ctrlFiles.SetCheck(pos , TRUE);
 	}
 	DialogEnableWindow(IDC_BUTTON_UPDATE, TRUE);
