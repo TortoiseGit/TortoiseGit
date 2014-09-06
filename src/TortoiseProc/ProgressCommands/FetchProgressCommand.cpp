@@ -70,25 +70,8 @@ bool FetchProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, in
 	if (!m_RefSpec.IsEmpty() && git_remote_add_fetch(remote, CUnicodeUtils::GetUTF8(m_RefSpec)))
 		goto error;
 
-	// Connect to the remote end specifying that we want to fetch
-	// information from it.
-	if (git_remote_connect(remote, GIT_DIRECTION_FETCH) < 0)
+	if (git_remote_fetch(remote, nullptr, nullptr) < 0)
 		goto error;
-
-	// Download the packfile and index it. This function updates the
-	// amount of received data and the indexer stats which lets you
-	// inform the user about progress.
-	if (git_remote_download(remote) < 0)
-		goto error;
-
-	// Update the references in the remote's namespace to point to the
-	// right commits. This may be needed even if there was no packfile
-	// to download, which can happen e.g. when the branches have been
-	// changed but all the neede objects are available locally.
-	if (git_remote_update_tips(remote, nullptr, nullptr) < 0)
-		goto error;
-
-	git_remote_disconnect(remote);
 
 	// Not setting m_PostCmdCallback here, as clone is only called from AppUtils.cpp
 
