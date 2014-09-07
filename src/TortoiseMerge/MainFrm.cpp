@@ -2993,6 +2993,8 @@ bool CMainFrame::HasConflictsWontKeep()
 	const int nConflictLine = CheckResolved();
 	if (nConflictLine < 0)
 		return false;
+	if (m_pwndBottomView == nullptr)
+		return false;
 
 	CString sTemp;
 	sTemp.Format(IDS_ERR_MAINFRAME_FILEHASCONFLICTS, m_pwndBottomView->m_pViewData->GetLineNumber(nConflictLine)+1);
@@ -3019,8 +3021,7 @@ bool CMainFrame::HasConflictsWontKeep()
 	if (bSave)
 		return false;
 
-	if (m_pwndBottomView)
-		m_pwndBottomView->GoToLine(nConflictLine);
+	m_pwndBottomView->GoToLine(nConflictLine);
 	return true;
 }
 
