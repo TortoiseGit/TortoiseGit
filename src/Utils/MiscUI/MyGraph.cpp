@@ -1131,7 +1131,8 @@ void MyGraph::DrawSeriesBar(CDC& dc) const
 	double maxSeriesPlotSize(0.0);
 
 	if(!m_bStackedGraph){
-		barWidth = seriesSpace / GetMaxNonZeroSeriesSize();
+		int seriessize = GetMaxNonZeroSeriesSize();
+		barWidth = seriessize ? seriesSpace / seriessize : 0;
 		if (1 < GetNonZeroSeriesCount()) {
 			barWidth *= INTERSERIES_PERCENT_USED;
 		}
@@ -1273,7 +1274,7 @@ void MyGraph::DrawSeriesLine(CDC& dc) const
 			int nMaxDataValue(GetMaxDataValue());
 			nMaxDataValue = max(nMaxDataValue, 1);
 			double dLineHeight(pSeries->GetData(nGroup) * m_nYAxisHeight /
-				nMaxDataValue);
+				double(nMaxDataValue));
 
 			ptLoc.y = (int) ((double) m_ptOrigin.y - dLineHeight);
 
