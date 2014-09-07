@@ -164,6 +164,7 @@ static int ssh_stream_alloc(
 
 	s->url = git__strdup(url);
 	if (!s->url) {
+		git__free(errBuf);
 		git__free(s);
 		giterr_set_oom();
 		return -1;
