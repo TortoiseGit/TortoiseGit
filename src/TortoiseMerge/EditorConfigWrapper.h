@@ -33,6 +33,7 @@ public:
 	public:
 		Nullable()
 			: m_bNull(true)
+			, m_Value()
 		{
 		}
 
