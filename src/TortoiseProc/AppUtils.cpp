@@ -3289,7 +3289,8 @@ int CAppUtils::Git2GetUserPassword(git_cred **out, const char *url, const char *
 		password = CUnicodeUtils::GetMulti(dlg.m_Password, CP_UTF8);
 		return git_cred_userpass_plaintext_new(out, username, password);
 	}
-	return -1;
+	giterr_set_str(GITERR_NONE, "User cancelled.");
+	return GIT_EUSER;
 }
 
 void CAppUtils::ExploreTo(HWND hwnd, CString path)
