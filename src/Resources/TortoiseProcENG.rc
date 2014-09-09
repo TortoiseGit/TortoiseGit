@@ -1548,7 +1548,7 @@ BEGIN
     PUSHBUTTON      "Edit &local .git/config",IDC_EDITLOCALGITCONFIG,14,178,90,14
     PUSHBUTTON      "Edit .tgitconfig",IDC_EDITTGITCONFIG,14,196,90,14
     PUSHBUTTON      "Edit gl&obal .gitconfig",IDC_EDITGLOBALGITCONFIG,109,178,90,14
-    PUSHBUTTON      "Edit global &XDG config",IDC_EDITGLOBALXDGGITCONFIG,109,196,90,14,NOT WS_VISIBLE
+    PUSHBUTTON      "Edit global &XDG git/config",IDC_EDITGLOBALXDGGITCONFIG,109,196,90,14,NOT WS_VISIBLE
     PUSHBUTTON      "Edit s&ystemwide gitconfig",IDC_EDITSYSTEMGITCONFIG,203,178,90,14
     PUSHBUTTON      "View system&wide gitconfig",IDC_VIEWSYSTEMGITCONFIG,203,196,90,14,NOT WS_VISIBLE
 END
@@ -4365,7 +4365,7 @@ BEGIN
     IDS_CONFIG_LOCAL        "Local"
     IDS_CONFIG_PROJECT      "Project"
     IDS_CONFIG_GLOBAL       "Global"
-    IDS_CONFIG_GLOBAL_TT    "%HOME%/gitconfig or %XDGHOME%/gitconfig"
+    IDS_CONFIG_GLOBAL_TT    "%HOME%/.gitconfig or %XDGHOME%/git/config"
     IDS_CONFIG_PROJECT_TT   ".tgitconfig in the repository root"
     IDS_CONFIG_LOCAL_TT     ".git/config in the repository root"
     IDS_COMPAREREV_NODIFF   "No differences found!"

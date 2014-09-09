@@ -172,7 +172,7 @@ msgstr ""
 
 #. Resource IDs: (91)
 #, c-format
-msgid "%HOME%/gitconfig or %XDGHOME%/gitconfig"
+msgid "%HOME%/.gitconfig or %XDGHOME%/git/config"
 msgstr ""
 
 #. Resource IDs: (357)
@@ -3886,7 +3886,7 @@ msgid "Edit gl&obal .gitconfig"
 msgstr ""
 
 #. Resource IDs: (1718)
-msgid "Edit global &XDG config"
+msgid "Edit global &XDG git/config"
 msgstr ""
 
 #. Resource IDs: (71)
