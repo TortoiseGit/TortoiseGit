@@ -2238,6 +2238,7 @@ bool CAppUtils::Pull(bool showPush)
 		CProgressDlg progress;
 		progress.m_GitCmd = cmd;
 
+		CGitHash hashNew; // declare outside lambda, because it is captured by reference
 		progress.m_PostCmdCallback = [&](DWORD status, PostCmdList& postCmdList)
 		{
 			if (status)
@@ -2246,7 +2247,6 @@ bool CAppUtils::Pull(bool showPush)
 				return;
 			}
 
-			CGitHash hashNew;
 			if (g_Git.GetHash(hashNew, _T("HEAD")))
 				MessageBox(nullptr, g_Git.GetGitLastErr(_T("Could not get HEAD hash after pulling.")), _T("TortoiseGit"), MB_ICONERROR);
 			else
