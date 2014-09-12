@@ -4201,7 +4201,7 @@ BEGIN
     IDS_PROC_COMMIT_PREPARECOMMIT "Preparing commit..."
     IDS_PROC_COMMIT_UPDATEINDEX "Updating index"
     IDS_PROC_COMMIT_DETACHEDWARNING 
-                            "<ct=0x0000FF>Current HEAD Detached</ct>, you are working on (no branch).\nDo you want to a create branch now?"
+                            "<ct=0x0000FF>Current HEAD Detached</ct>, you are working on (no branch).\nDo you want to create a branch now?"
     IDS_PROC_COMMIT_RESTOREFILES 
                             "You marked some files as ""Restore after commit"".\nDo you want to restore them now? You might lose all changes to this file after marking it."
     IDS_PROC_COMMIT_RESTOREFILES_RESTORE "&Restore old state"

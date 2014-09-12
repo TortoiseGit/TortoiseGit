@@ -1436,7 +1436,7 @@ msgid "<b>Warning:</b> This branch is not fully merged into HEAD."
 msgstr ""
 
 #. Resource IDs: (68)
-msgid "<ct=0x0000FF>Current HEAD Detached</ct>, you are working on (no branch).\nDo you want to a create branch now?"
+msgid "<ct=0x0000FF>Current HEAD Detached</ct>, you are working on (no branch).\nDo you want to create a branch now?"
 msgstr ""
 
 #. Resource IDs: (70)
