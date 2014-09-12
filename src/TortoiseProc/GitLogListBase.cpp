@@ -2194,7 +2194,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					bAddSeparator = true;
 				}
 			}
-			if (m_ContextMenuMask & GetContextMenuBit(ID_PULL) && isHeadCommit && !isMergeActive)
+			if (m_ContextMenuMask & GetContextMenuBit(ID_PULL) && isHeadCommit && !isMergeActive && m_hasWC)
 			{
 				popup.AppendMenuIcon(ID_PULL, IDS_MENUPULL, IDI_PULL);
 				bAddSeparator = true;
