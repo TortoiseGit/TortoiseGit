@@ -172,6 +172,9 @@ int MyGraphSeries::GetAverageDataValue() const
 		nTotal += static_cast<int> (m_dwaValues.GetAt(nGroup));
 	}
 
+	if (m_dwaValues.GetSize() == 0)
+		return 0;
+
 	return nTotal / m_dwaValues.GetSize();
 }
 
@@ -558,6 +561,9 @@ int MyGraph::GetAverageDataValue() const
 		nTotal += pSeries->GetAverageDataValue();
 		++nCount;
 	}
+
+	if (nCount == 0)
+		return 0;
 
 	return nTotal / nCount;
 }
