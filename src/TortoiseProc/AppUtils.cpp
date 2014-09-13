@@ -1029,6 +1029,13 @@ bool CAppUtils::Export(CString *BashHash, const CTGitPath *orgPath)
 
 		CProgressDlg pro;
 		pro.m_GitCmd=cmd;
+		pro.m_PostCmdCallback = [&](DWORD status, PostCmdList& postCmdList)
+		{
+			if (status)
+				return;
+			postCmdList.push_back(PostCmd(IDI_EXPLORER, IDS_STATUSLIST_CONTEXT_EXPLORE, [&]{ CAppUtils::ExploreTo(hWndExplorer, dlg.m_strFile); }));
+		};
+
 		CGit git;
 		if (!dlg.m_bWholeProject && !dlg.m_orgPath.IsEmpty() && PathIsDirectory(dlg.m_orgPath.GetWinPathString()))
 		{
