@@ -24,14 +24,16 @@
 
 enum    /* Public key algorithms */
 {
-	/* we will only use DSA public keys */
+	PUBLIC_KEY_ALGO_RSA = 0x01,
 	PUBLIC_KEY_ALGO_DSA = 0x11
 };
 
 enum    /* Digest algorithms */
 {
-	/* and DSA use SHA-1 digest */
-	DIGEST_ALGO_SHA1    = 0x02
+	DIGEST_ALGO_SHA1    = 0x02,
+	DIGEST_ALGO_SHA256  = 0x08,
+	DIGEST_ALGO_SHA384  = 0x09,
+	DIGEST_ALGO_SHA512  = 0x0A,
 };
 
 enum    /* Packet types */
@@ -59,16 +61,23 @@ enum    /* Signature subpacket types */
 };
 
 struct public_key_packet_t
-{ /* a public key packet (DSA/SHA-1) is 418 bytes */
-
+{
 	uint8_t version;      /* we use only version 4 */
 	uint8_t timestamp[4]; /* creation time of the key */
-	uint8_t algo;         /* we only use DSA */
+	uint8_t algo;         /* we only use DSA or RSA */
 	/* the multi precision integers, with their 2 bytes length header */
-	uint8_t p[2+128];
-	uint8_t q[2+20];
-	uint8_t g[2+128];
-	uint8_t y[2+128];
+	union {
+		struct {
+			uint8_t p[2 + 128];
+			uint8_t q[2 + 20];
+			uint8_t g[2 + 128];
+			uint8_t y[2 + 128];
+		} dsa;
+		struct {
+			uint8_t n[2 + 4096 / 8];
+			uint8_t e[2 + 4096 / 8];
+		} rsa;
+	} sig;
 };
 
 /* used for public key and file signatures */
@@ -77,8 +86,8 @@ struct signature_packet_t
 	uint8_t version; /* 3 or 4 */
 
 	uint8_t type;
-	uint8_t public_key_algo;    /* DSA only */
-	uint8_t digest_algo;        /* SHA-1 only */
+	uint8_t public_key_algo;    /* DSA or RSA */
+	uint8_t digest_algo;
 
 	uint8_t hash_verification[2];
 	uint8_t issuer_longid[8];
@@ -101,15 +110,16 @@ struct signature_packet_t
 
 /* The part below is made of consecutive MPIs, their number and size being
  * public-key-algorithm dependent.
- *
- * Since we use DSA signatures only, there is 2 integers, r & s, made of:
- *      2 bytes for the integer length (scalar number)
- *      160 bits (20 bytes) for the integer itself
- *
- * Note: the integers may be less than 160 significant bits
  */
-	uint8_t r[2+20];
-	uint8_t s[2+20];
+	union {
+		struct {
+			uint8_t r[2 + 20];
+			uint8_t s[2 + 20];
+		} dsa;
+		struct {
+			uint8_t s[2 + 4096 / 8];
+		} rsa;
+	} algo_specific;
 };
 
 typedef struct public_key_packet_t public_key_packet_t;
@@ -136,5 +146,12 @@ typedef struct _DSAKEY
   BYTE g[128]; // the generator parameter
   BYTE y[128]; // (G^X) mod P
 } DSAKEY;
+
+typedef struct _RSAKEY
+{
+	BLOBHEADER blobheader;
+	RSAPUBKEY rsapubkey;
+	BYTE n[4096 / 8];
+} RSAKEY;
 
 int VerifyIntegrity(const CString &filename, const CString &signatureFilename, CUpdateDownloader *updateDownloader);

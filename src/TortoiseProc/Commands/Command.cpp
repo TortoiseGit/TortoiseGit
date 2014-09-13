@@ -405,7 +405,7 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 #endif
 	case cmdPGPFP:
 		{
-			CMessageBox::Show(hWndExplorer, _T("This is the fingerprint of the TortoiseGit Release Signing Key.\nIt can be used to establish a trust path from this release to another one.\n\nTortoiseGit Release Signing Key, 1024-bit DSA:\n078A CFC9 7834 0A4E FB8C  917A 33F7 5DCF 2BC0 D362"), _T("TortoiseGit"), MB_OK);
+			CMessageBox::Show(hWndExplorer, _T("This is the fingerprint of the TortoiseGit Release Signing Key.\nIt can be used to establish a trust path from this release to another one.\n\nTortoiseGit Release Signing Key, 4096-bit RSA:\n74A2 1AE3 01B3 CA5B D807  2F5E F7F1 7B3F 9DD9 539E"), _T("TortoiseGit"), MB_OK);
 			return nullptr;
 		}
 	default:

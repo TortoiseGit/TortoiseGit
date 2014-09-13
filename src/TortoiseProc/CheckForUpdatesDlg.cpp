@@ -34,7 +34,7 @@
 #include "UpdateCrypto.h"
 #include "Win7.h"
 
-#define SIGNATURE_FILE_ENDING _T(".asc")
+#define SIGNATURE_FILE_ENDING _T(".rsa.asc")
 
 #define WM_USER_DISPLAYSTATUS	(WM_USER + 1)
 #define WM_USER_ENDDOWNLOAD		(WM_USER + 2)
