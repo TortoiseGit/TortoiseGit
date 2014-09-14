@@ -52,6 +52,7 @@
     <ClCompile Include="GitIndex.cpp" />
     <ClCompile Include="GitRev.cpp" />
     <ClCompile Include="GitStatus.cpp" />
+    <ClCompile Include="MassiveGitTaskBase.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
@@ -60,6 +61,7 @@
   <ItemGroup>
     <ClInclude Include="..\Utils\DebugOutput.h" />
     <ClInclude Include="..\Utils\ReaderWriterLock.h" />
+    <ClInclude Include="MassiveGitTaskBase.h" />
     <ClInclude Include="TGitPath.h" />
     <ClInclude Include="Git.h" />
     <ClInclude Include="GitAdminDir.h" />

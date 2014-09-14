@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2011-2013 - Sven Strickroth <email@cs-ware.de>
-// Copyright (C) 2013 - TortoiseGit
+// Copyright (C) 2013-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -19,32 +19,21 @@
 //
 
 #pragma once
+#include "MassiveGitTaskBase.h"
 #include "GitProgressList.h"
-#include "TGitPath.h"
 
-#define MAX_COMMANDLINE_LENGTH 30000
-
-class CMassiveGitTask
+class CMassiveGitTask : public CMassiveGitTaskBase
 {
 public:
 	CMassiveGitTask(CString params, BOOL isPath = TRUE, bool ignoreErrors = false);
 	~CMassiveGitTask(void);
 
-	void					AddFile(const CString &filename);
-	void					AddFile(const CTGitPath &filename);
 	bool					ExecuteWithNotify(CTGitPathList* pathList, volatile BOOL& cancel, CGitProgressList::WC_File_NotificationData::git_wc_notify_action_t action, CGitProgressList* instance);
-	bool					Execute(BOOL &cancel);
-	int						GetListCount();
 
 private:
-	bool					ExecuteCommands(volatile BOOL &cancel);
-	CString					GetListItem(int index);
-	bool					m_bUnused;
-	BOOL					m_bIsPath;
-	bool					m_bIgnoreErrors;
-	CString					m_sParams;
-	CTGitPathList			m_pathList;
-	STRING_VECTOR			m_itemList;
+	void					ReportError(const CString& out);
+	void					ReportProgress(const CTGitPath& path, int index);
+	void					ReportUserCanceled();
 	CGitProgressList *		m_NotifyCallbackInstance;
 	CGitProgressList::WC_File_NotificationData::git_wc_notify_action_t	m_NotifyCallbackAction;
 };
