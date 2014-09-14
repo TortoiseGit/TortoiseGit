@@ -10,6 +10,7 @@ Released: unreleased
 == Bug Fixes ==
  * Fixed issue #2260: Clicking in blank space in Commit dialog causes all unversioned files to become selected
  * Fixed issue #2290: "Pulled Log" broken
+ * Fixed issue #2281: TGit 1.8.11 is not using %HOME% correctly
 
 = Release 1.8.11.0 =
 Released: 2014-08-22
