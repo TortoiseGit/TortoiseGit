@@ -317,6 +317,7 @@ public:
 	int GetBranchList(STRING_VECTOR &list, int *Current,BRANCH_TYPE type=BRANCH_LOCAL);
 	int GetTagList(STRING_VECTOR &list);
 	int GetRemoteTags(const CString& remote, STRING_VECTOR& list);
+	int DeleteRemoteRefs(const CString& remote, const STRING_VECTOR& list);
 	int GetMapHashToFriendName(MAP_HASH_NAME &map);
 	static int GetMapHashToFriendName(git_repository* repo, MAP_HASH_NAME &map);
 

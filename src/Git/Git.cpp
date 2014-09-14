@@ -28,6 +28,7 @@
 #include <fstream>
 #include "FormatMessageWrapper.h"
 #include "SmartHandle.h"
+#include "MassiveGitTaskBase.h"
 #include "git2/sys/filter.h"
 #include "git2/sys/transport.h"
 #include "../libgit2/filter-filter.h"
@@ -1743,6 +1744,58 @@ int CGit::GetRemoteTags(const CString& remote, STRING_VECTOR& list)
 			list.push_back(one);
 	}
 	std::sort(list.begin(), list.end(), g_bSortTagsReversed ? LogicalCompareReversedPredicate : LogicalComparePredicate);
+	return 0;
+}
+
+int CGit::DeleteRemoteRefs(const CString& sRemote, const STRING_VECTOR& list)
+{
+	if (UsingLibGit2(GIT_CMD_PUSH))
+	{
+		CAutoRepository repo(GetGitRepository());
+		if (!repo)
+			return -1;
+
+		CStringA remoteA = CUnicodeUtils::GetUTF8(sRemote);
+		CAutoRemote remote;
+		if (git_remote_load(remote.GetPointer(), repo, remoteA) < 0)
+			return -1;
+
+		git_remote_callbacks callbacks = GIT_REMOTE_CALLBACKS_INIT;
+		callbacks.credentials = g_Git2CredCallback;
+		git_remote_set_callbacks(remote, &callbacks);
+		if (git_remote_connect(remote, GIT_DIRECTION_PUSH) < 0)
+			return -1;
+
+		CAutoPush push;
+		if (git_push_new(push.GetPointer(), remote) < 0)
+			return -1;
+
+		for (auto ref : list)
+		{
+			CString refspec = _T(":") + ref;
+			if (git_push_add_refspec(push, CUnicodeUtils::GetUTF8(refspec)) < 0)
+				return -1;
+		}
+
+		if (git_push_finish(push) < 0)
+			return -1;
+
+		if (git_push_update_tips(push, nullptr, nullptr) < 0)
+			return -1;
+	}
+	else
+	{
+		CMassiveGitTaskBase mgtPush(_T("push ") + sRemote, FALSE);
+		for (auto ref : list)
+		{
+			CString refspec = _T(":") + ref;
+			mgtPush.AddFile(refspec);
+		}
+
+		BOOL cancel = FALSE;
+		mgtPush.Execute(cancel);
+	}
+
 	return 0;
 }
 
