@@ -93,9 +93,7 @@ void CDeleteRemoteTagDlg::Refresh()
 	sysProgressDlg.SetLine(2, CString(MAKEINTRESOURCE(IDS_PROGRESSWAIT)));
 	sysProgressDlg.SetShowProgressBar(false);
 	sysProgressDlg.ShowModal(this, true);
-	git_remote_callbacks callbacks = GIT_REMOTE_CALLBACKS_INIT;
-	callbacks.credentials = CAppUtils::Git2GetUserPassword;
-	g_Git.GetRemoteTags(m_sRemote, m_taglist, &callbacks);
+	g_Git.GetRemoteTags(m_sRemote, m_taglist);
 	sysProgressDlg.Stop();
 	BringWindowToTop();
 

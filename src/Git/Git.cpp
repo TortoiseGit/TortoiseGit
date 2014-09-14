@@ -143,6 +143,7 @@ static CString FindExecutableOnPath(const CString& executable, LPCTSTR env)
 static bool g_bSortLogical;
 static bool g_bSortLocalBranchesFirst;
 static bool g_bSortTagsReversed;
+static git_cred_acquire_cb g_Git2CredCallback;
 
 static void GetSortOptions()
 {
@@ -1684,7 +1685,7 @@ int CGit::GetRemoteList(STRING_VECTOR &list)
 	}
 }
 
-int CGit::GetRemoteTags(const CString& remote, STRING_VECTOR &list, git_remote_callbacks* callback)
+int CGit::GetRemoteTags(const CString& remote, STRING_VECTOR& list)
 {
 	if (UsingLibGit2(GIT_CMD_FETCH))
 	{
@@ -1697,7 +1698,9 @@ int CGit::GetRemoteTags(const CString& remote, STRING_VECTOR &list, git_remote_c
 		if (git_remote_load(remote.GetPointer(), repo, remoteA) < 0)
 			return -1;
 
-		git_remote_set_callbacks(remote, callback);
+		git_remote_callbacks callbacks = GIT_REMOTE_CALLBACKS_INIT;
+		callbacks.credentials = g_Git2CredCallback;
+		git_remote_set_callbacks(remote, &callbacks);
 		if (git_remote_connect(remote, GIT_DIRECTION_FETCH) < 0)
 			return -1;
 
@@ -2591,6 +2594,11 @@ CString CGit::GetShortName(const CString& ref, REF_TYPE *out_type)
 bool CGit::UsingLibGit2(LIBGIT2_CMD cmd) const
 {
 	return m_IsUseLibGit2 && ((1 << cmd) & m_IsUseLibGit2_mask) ? true : false;
+}
+
+void CGit::SetGit2CredentialCallback(void* callback)
+{
+	g_Git2CredCallback = (git_cred_acquire_cb)callback;
 }
 
 CString CGit::GetUnifiedDiffCmd(const CTGitPath& path, const git_revnum_t& rev1, const git_revnum_t& rev2, bool bMerge, bool bCombine, int diffContext)
