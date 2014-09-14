@@ -28,6 +28,7 @@
 #include <fstream>
 #include "FormatMessageWrapper.h"
 #include "SmartHandle.h"
+#include "MassiveGitTaskBase.h"
 #include "git2/sys/filter.h"
 #include "git2/sys/transport.h"
 #include "../libgit2/filter-filter.h"
@@ -143,6 +144,7 @@ static CString FindExecutableOnPath(const CString& executable, LPCTSTR env)
 static bool g_bSortLogical;
 static bool g_bSortLocalBranchesFirst;
 static bool g_bSortTagsReversed;
+static git_cred_acquire_cb g_Git2CredCallback;
 
 static void GetSortOptions()
 {
@@ -1684,7 +1686,7 @@ int CGit::GetRemoteList(STRING_VECTOR &list)
 	}
 }
 
-int CGit::GetRemoteTags(const CString& remote, STRING_VECTOR &list, git_remote_callbacks* callback)
+int CGit::GetRemoteTags(const CString& remote, STRING_VECTOR& list)
 {
 	if (UsingLibGit2(GIT_CMD_FETCH))
 	{
@@ -1697,7 +1699,9 @@ int CGit::GetRemoteTags(const CString& remote, STRING_VECTOR &list, git_remote_c
 		if (git_remote_load(remote.GetPointer(), repo, remoteA) < 0)
 			return -1;
 
-		git_remote_set_callbacks(remote, callback);
+		git_remote_callbacks callbacks = GIT_REMOTE_CALLBACKS_INIT;
+		callbacks.credentials = g_Git2CredCallback;
+		git_remote_set_callbacks(remote, &callbacks);
 		if (git_remote_connect(remote, GIT_DIRECTION_FETCH) < 0)
 			return -1;
 
@@ -1740,6 +1744,58 @@ int CGit::GetRemoteTags(const CString& remote, STRING_VECTOR &list, git_remote_c
 			list.push_back(one);
 	}
 	std::sort(list.begin(), list.end(), g_bSortTagsReversed ? LogicalCompareReversedPredicate : LogicalComparePredicate);
+	return 0;
+}
+
+int CGit::DeleteRemoteRefs(const CString& sRemote, const STRING_VECTOR& list)
+{
+	if (UsingLibGit2(GIT_CMD_PUSH))
+	{
+		CAutoRepository repo(GetGitRepository());
+		if (!repo)
+			return -1;
+
+		CStringA remoteA = CUnicodeUtils::GetUTF8(sRemote);
+		CAutoRemote remote;
+		if (git_remote_load(remote.GetPointer(), repo, remoteA) < 0)
+			return -1;
+
+		git_remote_callbacks callbacks = GIT_REMOTE_CALLBACKS_INIT;
+		callbacks.credentials = g_Git2CredCallback;
+		git_remote_set_callbacks(remote, &callbacks);
+		if (git_remote_connect(remote, GIT_DIRECTION_PUSH) < 0)
+			return -1;
+
+		CAutoPush push;
+		if (git_push_new(push.GetPointer(), remote) < 0)
+			return -1;
+
+		for (auto ref : list)
+		{
+			CString refspec = _T(":") + ref;
+			if (git_push_add_refspec(push, CUnicodeUtils::GetUTF8(refspec)) < 0)
+				return -1;
+		}
+
+		if (git_push_finish(push) < 0)
+			return -1;
+
+		if (git_push_update_tips(push, nullptr, nullptr) < 0)
+			return -1;
+	}
+	else
+	{
+		CMassiveGitTaskBase mgtPush(_T("push ") + sRemote, FALSE);
+		for (auto ref : list)
+		{
+			CString refspec = _T(":") + ref;
+			mgtPush.AddFile(refspec);
+		}
+
+		BOOL cancel = FALSE;
+		mgtPush.Execute(cancel);
+	}
+
 	return 0;
 }
 
@@ -2591,6 +2647,11 @@ CString CGit::GetShortName(const CString& ref, REF_TYPE *out_type)
 bool CGit::UsingLibGit2(LIBGIT2_CMD cmd) const
 {
 	return m_IsUseLibGit2 && ((1 << cmd) & m_IsUseLibGit2_mask) ? true : false;
+}
+
+void CGit::SetGit2CredentialCallback(void* callback)
+{
+	g_Git2CredCallback = (git_cred_acquire_cb)callback;
 }
 
 CString CGit::GetUnifiedDiffCmd(const CTGitPath& path, const git_revnum_t& rev1, const git_revnum_t& rev2, bool bMerge, bool bCombine, int diffContext)

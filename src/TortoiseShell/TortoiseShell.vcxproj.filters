@@ -102,6 +102,9 @@
     <ClCompile Include="..\Utils\ReaderWriterLock.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\Git\MassiveGitTaskBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="ShellExt.def">

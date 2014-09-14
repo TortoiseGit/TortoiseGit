@@ -385,6 +385,21 @@ protected:
 	}
 };
 
+class CAutoPush : public CSmartLibgit2Ref<git_push>
+{
+public:
+	~CAutoPush()
+	{
+		CleanUp();
+	}
+
+protected:
+	virtual void FreeRef()
+	{
+		git_push_free(m_Ref);
+	}
+};
+
 class CAutoReflog : public CSmartLibgit2Ref<git_reflog>
 {
 public:

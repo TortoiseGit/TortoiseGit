@@ -774,15 +774,12 @@ bool CBrowseRefsDlg::DoDeleteRef(CString completeRefName)
 	if (bIsRemoteBranch)
 	{
 		CString branchToDelete = completeRefName.Mid(13);
-		CString cmd;
 		CString remoteName, remoteBranchToDelete;
 		if (SplitRemoteBranchName(branchToDelete, remoteName, remoteBranchToDelete))
 			return false;
 
 		if (CAppUtils::IsSSHPutty())
 			CAppUtils::LaunchPAgent(NULL, &remoteName);
-
-		cmd.Format(L"git.exe push \"%s\" :refs/heads/%s", remoteName, remoteBranchToDelete);
 
 		CSysProgressDlg sysProgressDlg;
 		sysProgressDlg.SetTitle(CString(MAKEINTRESOURCE(IDS_APPNAME)));
@@ -791,10 +788,11 @@ bool CBrowseRefsDlg::DoDeleteRef(CString completeRefName)
 		sysProgressDlg.SetShowProgressBar(false);
 		sysProgressDlg.ShowModal(this, true);
 
-		CString errorMsg;
-		if (g_Git.Run(cmd, &errorMsg, CP_UTF8) != 0)
+		STRING_VECTOR list;
+		list.push_back(_T("refs/heads/") + remoteBranchToDelete);
+		if (g_Git.DeleteRemoteRefs(remoteName, list))
 		{
-			CMessageBox::Show(m_hWnd, errorMsg, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+			CMessageBox::Show(m_hWnd, g_Git.GetGitLastErr(_T("Could not delete remote ref."), CGit::GIT_CMD_PUSH), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 			sysProgressDlg.Stop();
 			BringWindowToTop();
 			return false;
