@@ -851,7 +851,6 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			break;
 		case ID_DELETE:
 			{
-				bool showProgress = false;
 				CString *branch = (CString*)((CIconMenu*)popmenu)->GetMenuItemData(cmd);
 				if (!branch)
 				{
@@ -859,7 +858,6 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 					return;
 				}
 				CString shortname;
-				CString cmd;
 				if (CGit::GetShortName(*branch, shortname, _T("refs/remotes/")))
 				{
 					CString msg;
@@ -872,8 +870,17 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 						if(CAppUtils::IsSSHPutty())
 							CAppUtils::LaunchPAgent(NULL, &remoteName);
 
-						cmd.Format(L"git.exe push \"%s\" :refs/heads/%s", remoteName, shortname);
-						showProgress = true;
+						CSysProgressDlg sysProgressDlg;
+						sysProgressDlg.SetTitle(CString(MAKEINTRESOURCE(IDS_APPNAME)));
+						sysProgressDlg.SetLine(1, CString(MAKEINTRESOURCE(IDS_DELETING_REMOTE_REFS)));
+						sysProgressDlg.SetLine(2, CString(MAKEINTRESOURCE(IDS_PROGRESSWAIT)));
+						sysProgressDlg.SetShowProgressBar(false);
+						sysProgressDlg.ShowModal(this, true);
+						STRING_VECTOR list;
+						list.push_back(_T("refs/heads/") + shortname);
+						if (g_Git.DeleteRemoteRefs(remoteName, list))
+							CMessageBox::Show(NULL, g_Git.GetGitLastErr(_T("Could not delete remote ref."), CGit::GIT_CMD_PUSH), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+						sysProgressDlg.Stop();
 					}
 					else if (result == 2)
 					{
@@ -889,7 +896,13 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				else if (CGit::GetShortName(*branch, shortname, _T("refs/stash")))
 				{
 					if (CMessageBox::Show(NULL, IDS_PROC_DELETEALLSTASH, IDS_APPNAME, 2, IDI_QUESTION, IDS_DELETEBUTTON, IDS_ABORTBUTTON) == 1)
+					{
+						CString cmd;
 						cmd.Format(_T("git.exe stash clear"));
+						CString out;
+						if (g_Git.Run(cmd, &out, CP_UTF8))
+							CMessageBox::Show(NULL, out, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+					}
 					else
 						return;
 				}
@@ -905,25 +918,6 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 							return;
 						}
 					}
-				}
-				if (!cmd.IsEmpty())
-				{
-					CSysProgressDlg sysProgressDlg;
-					if (showProgress)
-					{
-						sysProgressDlg.SetTitle(CString(MAKEINTRESOURCE(IDS_APPNAME)));
-						sysProgressDlg.SetLine(1, CString(MAKEINTRESOURCE(IDS_DELETING_REMOTE_REFS)));
-						sysProgressDlg.SetLine(2, CString(MAKEINTRESOURCE(IDS_PROGRESSWAIT)));
-						sysProgressDlg.SetShowProgressBar(false);
-						sysProgressDlg.ShowModal(this, true);
-					}
-					CString out;
-					if(g_Git.Run(cmd,&out,CP_UTF8))
-					{
-						CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
-					}
-					if (showProgress)
-						sysProgressDlg.Stop();
 				}
 				this->ReloadHashMap();
 				CRect rect;
