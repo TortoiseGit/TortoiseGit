@@ -191,6 +191,7 @@ BEGIN_MESSAGE_MAP(CBrowseRefsDlg, CResizableStandAloneDialog)
 	ON_NOTIFY(LVN_BEGINLABELEDIT, IDC_LIST_REF_LEAFS, &CBrowseRefsDlg::OnLvnBeginlabeleditListRefLeafs)
 	ON_EN_CHANGE(IDC_BROWSEREFS_EDIT_FILTER, &CBrowseRefsDlg::OnEnChangeEditFilter)
 	ON_MESSAGE(WM_FILTEREDIT_INFOCLICKED, OnClickedInfoIcon)
+	ON_MESSAGE(WM_FILTEREDIT_CANCELCLICKED, OnClickedCancelFilter)
 	ON_WM_TIMER()
 	ON_BN_CLICKED(IDC_CURRENTBRANCH, OnBnClickedCurrentbranch)
 END_MESSAGE_MAP()
@@ -1529,6 +1530,14 @@ LRESULT CBrowseRefsDlg::OnClickedInfoIcon(WPARAM /*wParam*/, LPARAM lParam)
 			SetTimer(IDT_FILTER, 1000, NULL);
 		}
 	}
+	return 0L;
+}
+
+LRESULT CBrowseRefsDlg::OnClickedCancelFilter(WPARAM /*wParam*/, LPARAM /*lParam*/)
+{
+	KillTimer(LOGFILTER_TIMER);
+	m_ctrlFilter.SetWindowText(_T(""));
+	FillListCtrlForTreeNode(m_RefTreeCtrl.GetSelectedItem());
 	return 0L;
 }
 
