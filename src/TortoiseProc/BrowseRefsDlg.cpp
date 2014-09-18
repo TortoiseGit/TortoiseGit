@@ -1522,10 +1522,16 @@ LRESULT CBrowseRefsDlg::OnClickedInfoIcon(WPARAM /*wParam*/, LPARAM lParam)
 		temp.LoadString(IDS_LOG_FILTER_REVS);
 		popup.AppendMenu(LOGMENUFLAGS(LOGFILTER_REVS), LOGFILTER_REVS, temp);
 
+		temp.LoadString(IDS_LOG_FILTER_TOGGLE);
+		popup.AppendMenu(MF_STRING | MF_ENABLED, LOGFILTER_TOGGLE, temp);
+
 		int selection = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this, 0);
 		if (selection != 0)
 		{
-			m_SelectedFilters ^= selection;
+			if (selection == LOGFILTER_TOGGLE)
+				m_SelectedFilters = (~m_SelectedFilters) & LOGFILTER_ALL;
+			else
+				m_SelectedFilters ^= selection;
 			SetFilterCueText();
 			SetTimer(IDT_FILTER, 1000, NULL);
 		}
