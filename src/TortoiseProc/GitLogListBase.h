@@ -103,7 +103,7 @@ public:
 	}
 	BOOL GoBack(CGitHash& historyEntry)
 	{
-		if (location <= 1)
+		if (location < 1)
 			return -1;
 
 		historyEntry = lastselected[--location];
