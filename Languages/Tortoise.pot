@@ -8033,6 +8033,10 @@ msgstr ""
 msgid "Select/deselect &all"
 msgstr ""
 
+#. Resource IDs: (96)
+msgid "Selection History"
+msgstr ""
+
 #. Resource IDs: (1)
 msgid "Send"
 msgstr ""

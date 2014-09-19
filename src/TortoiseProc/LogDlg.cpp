@@ -192,6 +192,7 @@ enum JumpType
 	JumpType_TagFF,
 	JumpType_Branch,
 	JumpType_BranchFF,
+	JumpType_History,
 };
 
 void CLogDlg::SetParams(const CTGitPath& orgPath, const CTGitPath& path, CString hightlightRevision, CString range, int limit)
@@ -353,6 +354,7 @@ BOOL CLogDlg::OnInitDialog()
 	m_JumpType.AddString(CString(MAKEINTRESOURCE(IDS_PROC_TAG_FF)));
 	m_JumpType.AddString(CString(MAKEINTRESOURCE(IDS_PROC_BRANCH)));
 	m_JumpType.AddString(CString(MAKEINTRESOURCE(IDS_PROC_BRANCH_FF)));
+	m_JumpType.AddString(CString(MAKEINTRESOURCE(IDS_PROC_SELECTION_HISTORY)));
 	m_JumpType.SetCurSel(0);
 	m_JumpUp.SetIcon((HICON)::LoadImage(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_JUMPUP), IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR));
 	m_JumpDown.SetIcon((HICON)::LoadImage(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_JUMPDOWN), IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR));
@@ -2081,6 +2083,12 @@ void CLogDlg::OnBnClickedJumpUp()
 	if (sel < 0) return;
 	JumpType jumpType = (JumpType)sel;
 
+	if (jumpType == JumpType_History)
+	{
+		GoBack();
+		return;
+	}
+
 	CString strValue;
 	CGitHash hashValue;
 	int index = -1;
@@ -2183,6 +2191,12 @@ void CLogDlg::OnBnClickedJumpDown()
 {
 	int jumpType = m_JumpType.GetCurSel();
 	if (jumpType < 0) return;
+
+	if (jumpType == JumpType_History)
+	{
+		GoForward();
+		return;
+	}
 
 	CString strValue;
 	CGitHash hashValue;
