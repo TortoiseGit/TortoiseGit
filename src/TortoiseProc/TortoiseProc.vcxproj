@@ -116,6 +116,7 @@
     <ClCompile Include="..\TGitCache\CacheInterface.cpp" />
     <ClCompile Include="AutoTextTestDlg.cpp" />
     <ClCompile Include="BugtraqRegexTestDlg.cpp" />
+    <ClCompile Include="CheckCertificateDlg.cpp" />
     <ClCompile Include="Commands\DaemonCommand.cpp" />
     <ClCompile Include="GravatarPictureBox.cpp" />
     <ClCompile Include="MergeAbortDlg.cpp" />
@@ -312,6 +313,7 @@
     <ClInclude Include="..\Utils\ACEdit.h" />
     <ClInclude Include="..\Utils\ACListWnd.h" />
     <ClInclude Include="..\Utils\BugTraqAssociations.h" />
+    <ClInclude Include="..\Utils\CertificateValidationHelper.h" />
     <ClInclude Include="..\Utils\CmdLineParser.h" />
     <ClInclude Include="..\Utils\COMError.h" />
     <ClInclude Include="..\Utils\CommonAppUtils.h" />
@@ -371,6 +373,7 @@
     <ClInclude Include="AutoTextTestDlg.h" />
     <ClInclude Include="BstrSafeVector.h" />
     <ClInclude Include="BugtraqRegexTestDlg.h" />
+    <ClInclude Include="CheckCertificateDlg.h" />
     <ClInclude Include="Commands\AutoTextTestCommand.h" />
     <ClInclude Include="Commands\DaemonCommand.h" />
     <ClInclude Include="GravatarPictureBox.h" />
@@ -559,6 +562,7 @@
     <Image Include="..\Resources\CacheList.ico" />
     <Image Include="..\Resources\cancel-normal.ico" />
     <Image Include="..\Resources\cancel-pressed.ico" />
+    <Image Include="..\Resources\certcheck.ico" />
     <Image Include="..\Resources\CFMBackground.ico" />
     <Image Include="..\Resources\checkout.ico" />
     <Image Include="..\Resources\clippaste.ico" />

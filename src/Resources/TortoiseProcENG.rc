@@ -105,6 +105,7 @@ IDI_SPELL               ICON                    "spell.ico"
 IDI_FILE                ICON                    "file.ico"
 IDI_CODE                ICON                    "code.ico"
 IDI_SNIPPET             ICON                    "snippet.ico"
+IDI_CERTCHECK           ICON                    "certcheck.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -2001,6 +2002,29 @@ BEGIN
     PUSHBUTTON      "Cancel",IDCANCEL,260,167,50,14
 END
 
+IDD_CERTCHECK DIALOGEX 0, 0, 313, 201
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "TortoiseGit"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    ICON            IDI_CERTCHECK,IDC_STATIC,14,13,21,20
+    LTEXT           "Certificate verification failed!",IDC_STATIC,51,16,127,17
+    LTEXT           "",IDC_ERRORDESC,15,38,284,20
+    LTEXT           "",IDC_ERROR,15,62,283,20
+    LTEXT           "Common Name:",IDC_STATIC,14,88,100,8
+    EDITTEXT        IDC_COMMONNAME,119,86,181,14,ES_AUTOHSCROLL | ES_READONLY
+    LTEXT           "Issuer:",IDC_STATIC,14,105,105,8
+    EDITTEXT        IDC_ISSUER,119,102,181,14,ES_AUTOHSCROLL | ES_READONLY
+    GROUPBOX        "Fingerprints",IDC_STATIC,7,118,299,57
+    LTEXT           "SHA-1:",IDC_STATIC,14,132,57,8
+    EDITTEXT        IDC_SHA1,79,129,221,14,ES_AUTOHSCROLL | ES_READONLY
+    LTEXT           "SHA-256:",IDC_STATIC,14,148,57,8
+    EDITTEXT        IDC_SHA256,79,146,221,23,ES_MULTILINE | ES_AUTOHSCROLL | ES_READONLY
+    PUSHBUTTON      "Open certificate",IDC_OPENCERT,7,180,70,14
+    PUSHBUTTON      "Accept certificate",IDOK,151,180,92,14
+    DEFPUSHBUTTON   "Cancel",IDCANCEL,256,180,50,14
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -2876,6 +2900,14 @@ BEGIN
         VERTGUIDE, 88
         TOPMARGIN, 7
         BOTTOMMARGIN, 181
+    END
+
+    IDD_CERTCHECK, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 306
+        TOPMARGIN, 6
+        BOTTOMMARGIN, 194
     END
 END
 #endif    // APSTUDIO_INVOKED
@@ -4464,6 +4496,7 @@ BEGIN
     IDS_PROC_COMMIT_SUPERPROJECT "Commit super project"
     IDS_LOG_NOT_VISIBLE     "Commit %s is NOT visible right now."
     IDS_PROC_SELECTION_HISTORY "Selection History"
+    IDS_ERR_SSL_VALIDATE    "Error validating server certificate for ""%s"":"
 END
 
 #endif    // English (U.S.) resources

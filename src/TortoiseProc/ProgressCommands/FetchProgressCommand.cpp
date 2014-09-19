@@ -62,6 +62,7 @@ bool FetchProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, in
 	callbacks.transfer_progress = FetchCallback;
 	callbacks.completion = RemoteCompletionCallback;
 	callbacks.credentials = CAppUtils::Git2GetUserPassword;
+	callbacks.certificate_check = CAppUtils::Git2CertificateCheck;
 	CGitProgressList::Payload cbpayload = { list, repo };
 	callbacks.payload = &cbpayload;
 

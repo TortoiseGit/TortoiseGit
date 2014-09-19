@@ -145,6 +145,7 @@ static bool g_bSortLogical;
 static bool g_bSortLocalBranchesFirst;
 static bool g_bSortTagsReversed;
 static git_cred_acquire_cb g_Git2CredCallback;
+static git_transport_certificate_check_cb g_Git2CheckCertificateCallback;
 
 static void GetSortOptions()
 {
@@ -1701,6 +1702,7 @@ int CGit::GetRemoteTags(const CString& remote, STRING_VECTOR& list)
 
 		git_remote_callbacks callbacks = GIT_REMOTE_CALLBACKS_INIT;
 		callbacks.credentials = g_Git2CredCallback;
+		callbacks.certificate_check = g_Git2CheckCertificateCallback;
 		git_remote_set_callbacks(remote, &callbacks);
 		if (git_remote_connect(remote, GIT_DIRECTION_FETCH) < 0)
 			return -1;
@@ -1762,6 +1764,7 @@ int CGit::DeleteRemoteRefs(const CString& sRemote, const STRING_VECTOR& list)
 
 		git_remote_callbacks callbacks = GIT_REMOTE_CALLBACKS_INIT;
 		callbacks.credentials = g_Git2CredCallback;
+		callbacks.certificate_check = g_Git2CheckCertificateCallback;
 		git_remote_set_callbacks(remote, &callbacks);
 		if (git_remote_connect(remote, GIT_DIRECTION_PUSH) < 0)
 			return -1;
@@ -2652,6 +2655,11 @@ bool CGit::UsingLibGit2(LIBGIT2_CMD cmd) const
 void CGit::SetGit2CredentialCallback(void* callback)
 {
 	g_Git2CredCallback = (git_cred_acquire_cb)callback;
+}
+
+void CGit::SetGit2CertificateCheckCertificate(void* callback)
+{
+	g_Git2CheckCertificateCallback = (git_transport_certificate_check_cb)callback;
 }
 
 CString CGit::GetUnifiedDiffCmd(const CTGitPath& path, const git_revnum_t& rev1, const git_revnum_t& rev2, bool bMerge, bool bCombine, int diffContext)

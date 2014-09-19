@@ -71,6 +71,7 @@ CTortoiseProcApp::CTortoiseProcApp()
 	CHooks::Create();
 	git_threads_init();
 	CGit::SetGit2CredentialCallback(CAppUtils::Git2GetUserPassword);
+	CGit::SetGit2CertificateCheckCertificate(CAppUtils::Git2CertificateCheck);
 	m_bLoadUserToolbars = FALSE;
 	m_bSaveState = FALSE;
 	retSuccess = false;

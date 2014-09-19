@@ -206,6 +206,8 @@ public:
 
 	static int	Git2GetUserPassword(git_cred **out, const char *url, const char *username_from_url, unsigned int allowed_types, void *payload);
 
+	static int Git2CertificateCheck(git_cert *cert, int valid, const char* host, void *payload);
+
 	static void ExploreTo(HWND hwnd, CString path);
 
 private:

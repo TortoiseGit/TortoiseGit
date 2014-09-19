@@ -12,6 +12,7 @@
 #include <Afxmt.h>
 #include "FormatMessageWrapper.h"
 #include <atlenc.h>
+#include "CertificateValidationHelper.h"
 
 #define IO_BUFFER_SIZE 0x10000
 
@@ -459,73 +460,6 @@ static SECURITY_STATUS CreateCredentials(PCredHandle phCreds)
 												 nullptr,              // Value to pass to GetKey()
 												 phCreds,              // (out) Cred Handle
 												 &tsExpiry );          // (out) Lifetime (optional)
-
-	return Status;
-}
-
-static DWORD VerifyServerCertificate(PCCERT_CONTEXT pServerCert, PTSTR pwszServerName, DWORD dwCertFlags)
-{
-	HTTPSPolicyCallbackData polHttps;
-	CERT_CHAIN_POLICY_PARA PolicyPara;
-	CERT_CHAIN_POLICY_STATUS PolicyStatus;
-	CERT_CHAIN_PARA ChainPara;
-	PCCERT_CHAIN_CONTEXT pChainContext = nullptr;
-	DWORD Status;
-	LPSTR rgszUsages[] = { szOID_PKIX_KP_SERVER_AUTH, szOID_SERVER_GATED_CRYPTO, szOID_SGC_NETSCAPE };
-
-	DWORD cUsages = sizeof(rgszUsages) / sizeof(LPSTR);
-
-	if (pServerCert == nullptr || pwszServerName == nullptr)
-	{
-		Status = (DWORD)SEC_E_WRONG_PRINCIPAL;
-		goto cleanup;
-	}
-
-	// Build certificate chain.
-	SecureZeroMemory(&ChainPara, sizeof(ChainPara));
-	ChainPara.cbSize = sizeof(ChainPara);
-	ChainPara.RequestedUsage.dwType = USAGE_MATCH_TYPE_OR;
-	ChainPara.RequestedUsage.Usage.cUsageIdentifier = cUsages;
-	ChainPara.RequestedUsage.Usage.rgpszUsageIdentifier = rgszUsages;
-
-	if (!CertGetCertificateChain(nullptr, pServerCert, nullptr, pServerCert->hCertStore, &ChainPara, 0, nullptr, &pChainContext))
-	{
-		Status = GetLastError();
-		// printf("Error 0x%x returned by CertGetCertificateChain!\n", Status);
-		goto cleanup;
-	}
-
-	// Validate certificate chain.
-	SecureZeroMemory(&polHttps, sizeof(HTTPSPolicyCallbackData));
-	polHttps.cbStruct = sizeof(HTTPSPolicyCallbackData);
-	polHttps.dwAuthType = AUTHTYPE_SERVER;
-	polHttps.fdwChecks = dwCertFlags;
-	polHttps.pwszServerName = pwszServerName;
-
-	SecureZeroMemory(&PolicyPara, sizeof(PolicyPara));
-	PolicyPara.cbSize = sizeof(PolicyPara);
-	PolicyPara.pvExtraPolicyPara = &polHttps;
-
-	SecureZeroMemory(&PolicyStatus, sizeof(PolicyStatus));
-	PolicyStatus.cbSize = sizeof(PolicyStatus);
-
-	if (!CertVerifyCertificateChainPolicy(CERT_CHAIN_POLICY_SSL, pChainContext, &PolicyPara, &PolicyStatus))
-	{
-		Status = GetLastError();
-		goto cleanup;
-	}
-
-	if (PolicyStatus.dwError)
-	{
-		Status = PolicyStatus.dwError;
-		goto cleanup;
-	}
-
-	Status = SEC_E_OK;
-
-cleanup:
-	if (pChainContext)
-		CertFreeCertificateChain(pChainContext);
 
 	return Status;
 }

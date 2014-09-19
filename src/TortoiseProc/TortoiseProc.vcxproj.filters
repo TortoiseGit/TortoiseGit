@@ -890,6 +890,9 @@
     <ClCompile Include="..\Git\MassiveGitTaskBase.cpp">
       <Filter>Git</Filter>
     </ClCompile>
+    <ClCompile Include="CheckCertificateDlg.cpp">
+      <Filter>Utility Dialogs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddRemoteDlg.h">
@@ -1633,6 +1636,12 @@
     <ClInclude Include="..\Git\MassiveGitTaskBase.h">
       <Filter>Git</Filter>
     </ClInclude>
+    <ClInclude Include="CheckCertificateDlg.h">
+      <Filter>Utility Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\CertificateValidationHelper.h">
+      <Filter>Utils\General</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Resources\actionadded.ico">
@@ -2014,6 +2023,9 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="..\Resources\snippet.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\certcheck.ico">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
