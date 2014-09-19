@@ -1140,6 +1140,7 @@
 #define IDC_CHECK_SWITCH                1525
 #define IDS_PROC_COMMIT_SUPERPROJECT    1525
 #define IDC_CHECK_MERGE                 1526
+#define IDS_PROC_SELECTION_HISTORY      1526
 #define IDC_CHECK_BRANCH                1527
 #define IDC_EDIT_BRANCH                 1528
 #define IDC_SHOWLOCKEDOVERLAY           1529
