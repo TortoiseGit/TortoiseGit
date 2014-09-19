@@ -607,6 +607,7 @@ protected:
 
 	HFONT				m_boldFont;
 	HFONT				m_FontItalics;
+	HFONT				m_boldItalicsFont;
 
 	CRegDWORD			m_regMaxBugIDColWidth;
 
