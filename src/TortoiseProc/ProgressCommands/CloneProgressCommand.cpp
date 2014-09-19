@@ -47,6 +47,7 @@ bool CloneProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, in
 	callbacks.completion = RemoteCompletionCallback;
 	callbacks.transfer_progress = FetchCallback;
 	callbacks.credentials = CAppUtils::Git2GetUserPassword;
+	callbacks.certificate_check = CAppUtils::Git2CertificateCheck;
 	CGitProgressList::Payload cbpayload = { list };
 	callbacks.payload = &cbpayload;
 

@@ -171,6 +171,7 @@ public:
 	 * callback type should be git_cred_acquire_cb
 	 */
 	static void SetGit2CredentialCallback(void* callback);
+	static void SetGit2CertificateCheckCertificate(void* callback);
 
 	CString GetHomeDirectory() const;
 	CString GetGitLocalConfig() const;
