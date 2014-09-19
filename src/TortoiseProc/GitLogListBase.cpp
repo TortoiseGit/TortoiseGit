@@ -281,6 +281,9 @@ CGitLogListBase::~CGitLogListBase()
 	if (m_boldFont)
 		DeleteObject(m_boldFont);
 
+	if (m_FontItalics)
+		DeleteObject(m_FontItalics);
+
 	if ( m_pStoreSelection )
 	{
 		delete m_pStoreSelection;
