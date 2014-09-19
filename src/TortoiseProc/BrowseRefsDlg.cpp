@@ -611,8 +611,11 @@ void CBrowseRefsDlg::FillListCtrlForShadowTree(CShadowTree* pTree, CString refNa
 		CString filter;
 		m_ctrlFilter.GetWindowText(filter);
 		filter.MakeLower();
+		bool positive = filter[0] != '!';
+		if (!positive)
+			filter = filter.Mid(1);
 		CString ref = refNamePrefix + pTree->m_csRefName;
-		if (!(pTree->m_csRefName.IsEmpty() || pTree->m_csRefName == "refs" && pTree->m_pParent == NULL) && IsMatchFilter(pTree, ref, filter))
+		if (!(pTree->m_csRefName.IsEmpty() || pTree->m_csRefName == "refs" && pTree->m_pParent == NULL) && IsMatchFilter(pTree, ref, filter, positive))
 		{
 			int indexItem = m_ListRefLeafs.InsertItem(m_ListRefLeafs.GetItemCount(), L"");
 
@@ -649,7 +652,7 @@ void CBrowseRefsDlg::FillListCtrlForShadowTree(CShadowTree* pTree, CString refNa
 	}
 }
 
-bool CBrowseRefsDlg::IsMatchFilter(const CShadowTree* pTree, const CString &ref, const CString &filter)
+bool CBrowseRefsDlg::IsMatchFilter(const CShadowTree* pTree, const CString &ref, const CString &filter, bool positive)
 {
 	if (m_SelectedFilters & LOGFILTER_REFNAME)
 	{
@@ -657,7 +660,7 @@ bool CBrowseRefsDlg::IsMatchFilter(const CShadowTree* pTree, const CString &ref,
 		msg = msg.MakeLower();
 
 		if (msg.Find(filter) >= 0)
-			return true;
+			return positive;
 	}
 
 	if (m_SelectedFilters & LOGFILTER_SUBJECT)
@@ -666,7 +669,7 @@ bool CBrowseRefsDlg::IsMatchFilter(const CShadowTree* pTree, const CString &ref,
 		msg = msg.MakeLower();
 
 		if (msg.Find(filter) >= 0)
-			return true;
+			return positive;
 	}
 
 	if (m_SelectedFilters & LOGFILTER_AUTHORS)
@@ -675,7 +678,7 @@ bool CBrowseRefsDlg::IsMatchFilter(const CShadowTree* pTree, const CString &ref,
 		msg = msg.MakeLower();
 
 		if (msg.Find(filter) >= 0)
-			return true;
+			return positive;
 	}
 
 	if (m_SelectedFilters & LOGFILTER_REVS)
@@ -684,9 +687,9 @@ bool CBrowseRefsDlg::IsMatchFilter(const CShadowTree* pTree, const CString &ref,
 		msg = msg.MakeLower();
 
 		if (msg.Find(filter) >= 0)
-			return true;
+			return positive;
 	}
-	return false;
+	return !positive;
 }
 
 bool CBrowseRefsDlg::ConfirmDeleteRef(VectorPShadowTree& leafs)

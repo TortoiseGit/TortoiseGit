@@ -163,7 +163,7 @@ private:
 	void			SetFilterCueText();
 	afx_msg LRESULT OnClickedInfoIcon(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnClickedCancelFilter(WPARAM wParam, LPARAM lParam);
-	bool			IsMatchFilter(const CShadowTree* pTree, const CString &ref, const CString &filter);
+	bool			IsMatchFilter(const CShadowTree* pTree, const CString &ref, const CString &filter, bool positive);
 
 	int				m_currSortCol;
 	bool			m_currSortDesc;
