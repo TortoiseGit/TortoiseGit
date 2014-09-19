@@ -3274,6 +3274,10 @@ msgid "Current Branch"
 msgstr ""
 
 #. Resource IDs: (65535)
+msgid "Current Branch / Highlight"
+msgstr ""
+
+#. Resource IDs: (65535)
 msgid "Current Branch:"
 msgstr ""
 
