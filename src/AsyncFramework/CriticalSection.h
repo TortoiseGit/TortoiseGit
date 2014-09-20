@@ -77,8 +77,8 @@ private:
 
     CCriticalSection& section;
 
-    // dummy assignement operator to silence the C4512 compiler warning
-    // not implemented assigment operator (even is dummy and private) to 
+    // dummy assignment operator to silence the C4512 compiler warning
+    // not implemented assignment operator (even is dummy and private) to 
     // get rid of cppcheck error as well as accidental use
     CCriticalSectionLock & operator=( const CCriticalSectionLock & ) /*{ section = ; return * this; }*/; 
 public:
