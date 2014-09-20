@@ -2173,7 +2173,7 @@ BOOL CMainFrame::ReadWindowPlacement(WINDOWPLACEMENT * pwp)
 
 void CMainFrame::WriteWindowPlacement(WINDOWPLACEMENT * pwp)
 {
-	CRegString placement = CRegString(_T("Software\\TortoiseGitMerge\\WindowPos"));
+	CRegString placement(L"Software\\TortoiseGitMerge\\WindowPos");
 	TCHAR szBuffer[_countof("-32767")*8 + sizeof("65535")*2];
 
 	_stprintf_s(szBuffer, _T("%u,%u,%d,%d,%d,%d,%d,%d,%d,%d"),
@@ -2926,14 +2926,14 @@ void CMainFrame::OnViewComparewhitespaces()
 {
 	if (CheckForSave(CHFSR_OPTIONS)==IDCANCEL)
 		return;
-	CRegDWORD regIgnoreWS = CRegDWORD(_T("Software\\TortoiseGitMerge\\IgnoreWS"));
+	CRegDWORD regIgnoreWS(L"Software\\TortoiseGitMerge\\IgnoreWS");
 	regIgnoreWS = 0;
 	LoadViews(-1);
 }
 
 void CMainFrame::OnUpdateViewComparewhitespaces(CCmdUI *pCmdUI)
 {
-	CRegDWORD regIgnoreWS = CRegDWORD(_T("Software\\TortoiseGitMerge\\IgnoreWS"));
+	CRegDWORD regIgnoreWS(L"Software\\TortoiseGitMerge\\IgnoreWS");
 	DWORD dwIgnoreWS = regIgnoreWS;
 	pCmdUI->SetCheck(dwIgnoreWS == 0);
 }
@@ -2942,14 +2942,14 @@ void CMainFrame::OnViewIgnorewhitespacechanges()
 {
 	if (CheckForSave(CHFSR_OPTIONS)==IDCANCEL)
 		return;
-	CRegDWORD regIgnoreWS = CRegDWORD(_T("Software\\TortoiseGitMerge\\IgnoreWS"));
+	CRegDWORD regIgnoreWS(L"Software\\TortoiseGitMerge\\IgnoreWS");
 	regIgnoreWS = 2;
 	LoadViews(-1);
 }
 
 void CMainFrame::OnUpdateViewIgnorewhitespacechanges(CCmdUI *pCmdUI)
 {
-	CRegDWORD regIgnoreWS = CRegDWORD(_T("Software\\TortoiseGitMerge\\IgnoreWS"));
+	CRegDWORD regIgnoreWS(L"Software\\TortoiseGitMerge\\IgnoreWS");
 	DWORD dwIgnoreWS = regIgnoreWS;
 	pCmdUI->SetCheck(dwIgnoreWS == 2);
 }
@@ -2958,14 +2958,14 @@ void CMainFrame::OnViewIgnoreallwhitespacechanges()
 {
 	if (CheckForSave(CHFSR_OPTIONS)==IDCANCEL)
 		return;
-	CRegDWORD regIgnoreWS = CRegDWORD(_T("Software\\TortoiseGitMerge\\IgnoreWS"));
+	CRegDWORD regIgnoreWS(L"Software\\TortoiseGitMerge\\IgnoreWS");
 	regIgnoreWS = 1;
 	LoadViews(-1);
 }
 
 void CMainFrame::OnUpdateViewIgnoreallwhitespacechanges(CCmdUI *pCmdUI)
 {
-	CRegDWORD regIgnoreWS = CRegDWORD(_T("Software\\TortoiseGitMerge\\IgnoreWS"));
+	CRegDWORD regIgnoreWS(L"Software\\TortoiseGitMerge\\IgnoreWS");
 	DWORD dwIgnoreWS = regIgnoreWS;
 	pCmdUI->SetCheck(dwIgnoreWS == 1);
 }

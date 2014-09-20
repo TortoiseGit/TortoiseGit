@@ -271,7 +271,7 @@ void CHistoryCombo::SaveHistory()
 	{
 		CString sKey;
 		sKey.Format(_T("%s\\%s%d"), (LPCTSTR)m_sSection, (LPCTSTR)m_sKeyPrefix, n);
-		CRegString regkey = CRegString(sKey);
+		CRegString regkey(sKey);
 		regkey = m_arEntries.GetAt(n);
 	}
 	//remove items exceeding the max number of history items
@@ -279,7 +279,7 @@ void CHistoryCombo::SaveHistory()
 	{
 		CString sKey;
 		sKey.Format(_T("%s\\%s%d"), (LPCTSTR)m_sSection, (LPCTSTR)m_sKeyPrefix, n);
-		CRegString regkey = CRegString(sKey);
+		CRegString regkey(sKey);
 		CString sText = regkey;
 		if (sText.IsEmpty())
 			break;
@@ -297,7 +297,7 @@ void CHistoryCombo::ClearHistory(BOOL bDeleteRegistryEntries/*=TRUE*/)
 		for (int n = 0; ; n++)
 		{
 			sKey.Format(_T("%s\\%s%d"), (LPCTSTR)m_sSection, (LPCTSTR)m_sKeyPrefix, n);
-			CRegString regkey = CRegString(sKey);
+			CRegString regkey(sKey);
 			CString sText = regkey;
 			if (sText.IsEmpty())
 				break;
@@ -317,7 +317,7 @@ void CHistoryCombo::RemoveEntryFromHistory(LPCTSTR lpszSection, LPCTSTR lpszKeyP
 	{
 		CString sKey;
 		sKey.Format(_T("%s\\%s%d"), lpszSection, lpszKeyPrefix, ++n);
-		CRegString regkey = CRegString(sKey);
+		CRegString regkey(sKey);
 		sText = regkey;
 		if (sText == entryToRemove)
 		{
@@ -333,13 +333,13 @@ void CHistoryCombo::RemoveEntryFromHistory(LPCTSTR lpszSection, LPCTSTR lpszKeyP
 	{
 		CString sKey;
 		sKey.Format(_T("%s\\%s%d"), lpszSection, lpszKeyPrefix, n);
-		CRegString regkey = CRegString(sKey);
+		CRegString regkey(sKey);
 		sText = regkey;
 		if (!sText.IsEmpty())
 		{
 			CString sKeyNew;
 			sKeyNew.Format(_T("%s\\%s%d"), lpszSection, lpszKeyPrefix, n - 1);
-			CRegString regkeyNew = CRegString(sKeyNew);
+			CRegString regkeyNew(sKeyNew);
 			regkeyNew = sText;
 			regkey.removeValue();
 			continue;

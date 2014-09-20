@@ -1000,8 +1000,8 @@ void CLogDlg::SaveSplitterPos()
 {
 	if (!IsIconic())
 	{
-		CRegDWORD regPos1 = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\ResizableState\\LogDlgSizer1"));
-		CRegDWORD regPos2 = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\ResizableState\\LogDlgSizer2"));
+		CRegDWORD regPos1(_T("Software\\TortoiseGit\\TortoiseProc\\ResizableState\\LogDlgSizer1"));
+		CRegDWORD regPos2(_T("Software\\TortoiseGit\\TortoiseProc\\ResizableState\\LogDlgSizer2"));
 		RECT rectSplitter;
 		m_wndSplitter1.GetWindowRect(&rectSplitter);
 		ScreenToClient(&rectSplitter);
@@ -1340,7 +1340,7 @@ void CLogDlg::OnOK()
 		}
 	}
 	UpdateData();
-	CRegDWORD reg = CRegDWORD(_T("Software\\TortoiseGit\\ShowAllEntry"));
+	CRegDWORD reg(_T("Software\\TortoiseGit\\ShowAllEntry"));
 	SaveSplitterPos();
 #endif
 }
@@ -1756,7 +1756,7 @@ LRESULT CLogDlg::OnClickedInfoIcon(WPARAM /*wParam*/, LPARAM lParam)
 			if (selection == LOGFILTER_REGEX)
 			{
 				m_bFilterWithRegex = !m_bFilterWithRegex;
-				CRegDWORD b = CRegDWORD(_T("Software\\TortoiseGit\\UseRegexFilter"), TRUE);
+				CRegDWORD b(_T("Software\\TortoiseGit\\UseRegexFilter"), TRUE);
 				b = m_bFilterWithRegex;
 				m_LogList.m_bFilterWithRegex = m_bFilterWithRegex;
 				SetFilterCueText();

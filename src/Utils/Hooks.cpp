@@ -38,7 +38,7 @@ bool CHooks::Create()
 {
 	if (m_pInstance == NULL)
 		m_pInstance = new CHooks();
-	CRegString reghooks = CRegString(_T("Software\\TortoiseGit\\hooks"));
+	CRegString reghooks(_T("Software\\TortoiseGit\\hooks"));
 	CString strhooks = reghooks;
 	// now fill the map with all the hooks defined in the string
 	// the string consists of multiple lines, where one hook script is defined
@@ -131,7 +131,7 @@ bool CHooks::Save()
 		strhooks += (it->second.bShow ? _T("show") : _T("hide"));
 		strhooks += '\n';
 	}
-	CRegString reghooks = CRegString(_T("Software\\TortoiseGit\\hooks"));
+	CRegString reghooks(_T("Software\\TortoiseGit\\hooks"));
 	reghooks = strhooks;
 	if (reghooks.GetLastError())
 		return false;

@@ -250,7 +250,7 @@ BOOL CRevisionGraphDlg::OnInitDialog()
 	CMenu * pMenu = GetMenu();
 	if (pMenu)
 	{
-		CRegDWORD reg = CRegDWORD(_T("Software\\TortoiseGit\\ShowRevGraphOverview"), FALSE);
+		CRegDWORD reg(_T("Software\\TortoiseGit\\ShowRevGraphOverview"), FALSE);
 		m_Graph.SetShowOverview ((DWORD)reg != FALSE);
 		pMenu->CheckMenuItem(ID_VIEW_SHOWOVERVIEW, MF_BYCOMMAND | (DWORD(reg) ? MF_CHECKED : 0));
 		int tbstate = m_ToolBar.GetToolBarCtrl().GetState(ID_VIEW_SHOWOVERVIEW);
@@ -855,7 +855,7 @@ void CRevisionGraphDlg::OnViewShowoverview()
 		m_Graph.SetShowOverview (true);
 	}
 
-	CRegDWORD reg = CRegDWORD(_T("Software\\TortoiseGit\\ShowRevGraphOverview"), FALSE);
+	CRegDWORD reg(_T("Software\\TortoiseGit\\ShowRevGraphOverview"), FALSE);
 	reg = m_Graph.GetShowOverview();
 	m_Graph.Invalidate(FALSE);
 }

@@ -267,7 +267,7 @@ BOOL CStatGraphDlg::OnInitDialog()
 	SetSkipper (true);
 
 	// we use a stats page encoding here, 0 stands for the statistics dialog
-	CRegDWORD lastStatsPage = CRegDWORD(_T("Software\\TortoiseGit\\LastViewedStatsPage"), 0);
+	CRegDWORD lastStatsPage(_T("Software\\TortoiseGit\\LastViewedStatsPage"), 0);
 
 	// open last viewed statistics page as first page
 	int graphtype = lastStatsPage / 10;
@@ -1836,13 +1836,13 @@ void CStatGraphDlg::StoreCurrentGraphType()
 	}
 
 	// store current chart type in registry
-	CRegDWORD lastStatsPage = CRegDWORD(_T("Software\\TortoiseGit\\LastViewedStatsPage"), 0);
+	CRegDWORD lastStatsPage(_T("Software\\TortoiseGit\\LastViewedStatsPage"), 0);
 	lastStatsPage = statspage;
 
-	CRegDWORD regAuthors = CRegDWORD(_T("Software\\TortoiseGit\\StatAuthorsCaseSensitive"));
+	CRegDWORD regAuthors(_T("Software\\TortoiseGit\\StatAuthorsCaseSensitive"));
 	regAuthors = m_bAuthorsCaseSensitive;
 
-	CRegDWORD regSort = CRegDWORD(_T("Software\\TortoiseGit\\StatSortByCommitCount"));
+	CRegDWORD regSort(_T("Software\\TortoiseGit\\StatSortByCommitCount"));
 	regSort = m_bSortByCommitCount;
 }
 

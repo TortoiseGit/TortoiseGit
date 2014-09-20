@@ -916,7 +916,7 @@ void CRepositoryBrowser::SaveDividerPosition()
 {
 	RECT rc;
 	GetDlgItem(IDC_REPOTREE)->GetClientRect(&rc);
-	CRegDWORD xPos = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\ResizableState\\RepobrowserDivider"));
+	CRegDWORD xPos(_T("Software\\TortoiseGit\\TortoiseProc\\ResizableState\\RepobrowserDivider"));
 	xPos = rc.right - rc.left;
 }
 
