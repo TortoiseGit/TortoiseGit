@@ -62,7 +62,8 @@ bool FetchProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, in
 	callbacks.transfer_progress = FetchCallback;
 	callbacks.completion = RemoteCompletionCallback;
 	callbacks.credentials = CAppUtils::Git2GetUserPassword;
-	callbacks.payload = list;
+	CGitProgressList::Payload cbpayload = { list, repo };
+	callbacks.payload = &cbpayload;
 
 	git_remote_set_callbacks(remote, &callbacks);
 	git_remote_set_autotag(remote, (git_remote_autotag_option_t)m_AutoTag);

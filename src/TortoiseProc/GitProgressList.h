@@ -81,6 +81,11 @@ public:
 
 public:
 	typedef std::vector<std::function<void()>> ContextMenuActionList;
+	struct Payload
+	{
+		CGitProgressList* list;
+		git_repository* repo;
+	};
 
 	class NotificationData
 	{

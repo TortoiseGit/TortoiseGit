@@ -23,7 +23,7 @@
 
 int RemoteProgressCommand::RemoteProgressCallback(const char* str, int len, void* data)
 {
-	((CGitProgressList*)data)->SetProgressLabelText(CUnicodeUtils::GetUnicode(CStringA(str, len)));
+	((CGitProgressList::Payload*)data)->list->SetProgressLabelText(CUnicodeUtils::GetUnicode(CStringA(str, len)));
 	return 0;
 }
 
@@ -36,7 +36,7 @@ int RemoteProgressCommand::RemoteCompletionCallback(git_remote_completion_type /
 
 int RemoteProgressCommand::RemoteUpdatetipsCallback(const char* refname, const git_oid* oldOid, const git_oid* newOid, void* data)
 {
-	((CGitProgressList*)data)->AddNotify(new RefUpdateNotificationData(refname, oldOid, newOid));
+	((CGitProgressList::Payload*)data)->list->AddNotify(new RefUpdateNotificationData(refname, oldOid, newOid));
 	return 0;
 }
 

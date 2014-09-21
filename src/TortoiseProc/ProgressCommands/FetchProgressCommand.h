@@ -26,7 +26,7 @@ protected:
 
 	static int FetchCallback(const git_transfer_progress *stats, void *payload)
 	{
-		return !((CGitProgressList*)payload)->UpdateProgress(stats);
+		return !((CGitProgressList::Payload*)payload)->list->UpdateProgress(stats);
 	}
 
 public:

@@ -46,7 +46,8 @@ bool CloneProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, in
 	callbacks.completion = RemoteCompletionCallback;
 	callbacks.transfer_progress = FetchCallback;
 	callbacks.credentials = CAppUtils::Git2GetUserPassword;
-	callbacks.payload = list;
+	CGitProgressList::Payload cbpayload = { list };
+	callbacks.payload = &cbpayload;
 
 	CSmartAnimation animate(list->m_pAnimate);
 	git_clone_options cloneOpts = GIT_CLONE_OPTIONS_INIT;
@@ -76,6 +77,8 @@ bool CloneProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, in
 		if ((error = git_remote_create(origin.GetPointer(), repo, data->remoteName, url)) < 0)
 			return error;
 
+		auto remotePayload = (CGitProgressList::Payload*)data->callbacks->payload;
+		remotePayload->repo = repo;
 		if ((error = git_remote_set_callbacks(origin, data->callbacks)) < 0) // if remote_cb is used, one has to manually set remote_callbacks
 			return error;
 
