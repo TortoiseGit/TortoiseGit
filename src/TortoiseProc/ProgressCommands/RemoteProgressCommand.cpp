@@ -36,18 +36,71 @@ int RemoteProgressCommand::RemoteCompletionCallback(git_remote_completion_type /
 
 int RemoteProgressCommand::RemoteUpdatetipsCallback(const char* refname, const git_oid* oldOid, const git_oid* newOid, void* data)
 {
-	((CGitProgressList::Payload*)data)->list->AddNotify(new RefUpdateNotificationData(refname, oldOid, newOid));
+	auto ptr = (CGitProgressList::Payload*)data;
+	bool nonff = false;
+	if (!git_oid_iszero(oldOid) && !git_oid_iszero(newOid))
+	{
+		git_oid baseOid = { 0 };
+		if (!git_merge_base(&baseOid, ptr->repo, newOid, oldOid))
+			if (!git_oid_equal(oldOid, &baseOid))
+				nonff = true;
+	}
+
+	CString change;
+	if (!git_oid_iszero(oldOid) && !git_oid_iszero(newOid))
+	{
+		if (git_oid_equal(oldOid, newOid))
+		{
+			change = CString(MAKEINTRESOURCE(IDS_SAME));
+		}
+		else
+		{
+			size_t ahead = 0, behind = 0;
+			if (!git_graph_ahead_behind(&ahead, &behind, ptr->repo, newOid, oldOid))
+			{
+				if (ahead > 0 && behind == 0)
+				{
+					change.Format(IDS_FORWARDN, ahead);
+				}
+				else if (ahead == 0 && behind > 0)
+				{
+					change.Format(IDS_REWINDN, behind);
+				}
+				else
+				{
+					git_commit* oldCommit, * newCommit;
+					git_time_t oldTime = 0, newTime = 0;
+					if (!git_commit_lookup(&oldCommit, ptr->repo, oldOid))
+						oldTime = git_commit_committer(oldCommit)->when.time;
+					if (!git_commit_lookup(&newCommit, ptr->repo, newOid))
+						newTime = git_commit_committer(newCommit)->when.time;
+					if (oldTime < newTime)
+						change = CString(MAKEINTRESOURCE(IDS_SUBMODULEDIFF_NEWERTIME));
+					else if (oldTime > newTime)
+						change = CString(MAKEINTRESOURCE(IDS_SUBMODULEDIFF_OLDERTIME));
+					else
+						change = CString(MAKEINTRESOURCE(IDS_SUBMODULEDIFF_SAMETIME));
+				}
+			}
+		}
+	}
+	else if (!git_oid_iszero(oldOid))
+		change = CString(MAKEINTRESOURCE(IDS_DELETED));
+	else if (!git_oid_iszero(newOid))
+		change = CString(MAKEINTRESOURCE(IDS_NEW));
+
+	ptr->list->AddNotify(new RefUpdateNotificationData(refname, oldOid, newOid, change));
 	return 0;
 }
 
-RemoteProgressCommand::RefUpdateNotificationData::RefUpdateNotificationData(const char* refname, const git_oid* oldOid, const git_oid* newOid)
+RemoteProgressCommand::RefUpdateNotificationData::RefUpdateNotificationData(const char* refname, const git_oid* oldOid, const git_oid* newOid, const CString& change)
 	: NotificationData()
 {
 	CString str = CUnicodeUtils::GetUnicode(refname);
 	m_NewHash = newOid->id;
 	m_OldHash = oldOid->id;
 	sActionColumnText.LoadString(IDS_GITACTION_UPDATE_REF);
-	sPathColumnText.Format(_T("%s\t %s -> %s"), str, m_OldHash.ToString().Left(g_Git.GetShortHASHLength()), m_NewHash.ToString().Left(g_Git.GetShortHASHLength()));
+	sPathColumnText.Format(_T("%s\t %s -> %s (%s)"), str, m_OldHash.ToString().Left(g_Git.GetShortHASHLength()), m_NewHash.ToString().Left(g_Git.GetShortHASHLength()), change);
 }
 
 void RemoteProgressCommand::RefUpdateNotificationData::GetContextMenu(CIconMenu& popup, CGitProgressList::ContextMenuActionList& actions)

@@ -33,7 +33,7 @@ protected:
 	class RefUpdateNotificationData : public CGitProgressList::NotificationData
 	{
 	public:
-		RefUpdateNotificationData(const char* refname, const git_oid* oldOid, const git_oid* newOid);
+		RefUpdateNotificationData(const char* refname, const git_oid* oldOid, const git_oid* newOid, const CString& change);
 		virtual void GetContextMenu(CIconMenu& popup, CGitProgressList::ContextMenuActionList& actions);
 	protected:
 		CGitHash	m_OldHash;
