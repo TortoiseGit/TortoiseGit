@@ -1076,9 +1076,9 @@ BEGIN
     ID_VIEW_IGNOREALLWHITESPACECHANGES 
                             "Ignores all whitespace changes when diffing\nIgnore all whitespace changes"
     ID_NAVIGATE_NEXTINLINEDIFF 
-                            "Go to the previous inline difference\nPrevious inline difference"
-    ID_NAVIGATE_PREVINLINEDIFF 
                             "Go to the next inline difference\nNext inline difference"
+    ID_NAVIGATE_PREVINLINEDIFF 
+                            "Go to the previous inline difference\nPrevious inline difference"
 END
 
 STRINGTABLE
