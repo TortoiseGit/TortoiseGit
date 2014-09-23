@@ -563,6 +563,7 @@ BEGIN
         MENUITEM "Compare whitespaces",         ID_VIEW_COMPAREWHITESPACES
         MENUITEM "Ignore whitespace changes",   ID_VIEW_IGNOREWHITESPACECHANGES
         MENUITEM "Ignore all whitespace changes", ID_VIEW_IGNOREALLWHITESPACECHANGES
+        MENUITEM "Ignore Comments",             ID_VIEW_IGNORECOMMENTS
         MENUITEM SEPARATOR
         MENUITEM "Show Whitespaces",            ID_VIEW_WHITESPACES
         MENUITEM "Switch between single and double pane view", ID_VIEW_ONEWAYDIFF
