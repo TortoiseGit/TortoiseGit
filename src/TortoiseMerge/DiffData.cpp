@@ -225,13 +225,6 @@ BOOL CDiffData::Load()
 	bool bTheirIsUtf8 = false;
 	bool bYourIsUtf8  = false;
 
-	// in case at least one of the files got converted or is UTF8
-	// we have to convert all non UTF8 (ASCII) files
-	// otherwise one file might be in ANSI and the other in UTF8 and we'll end up
-	// with lines marked as different throughout the files even though the lines
-	// would show no change at all in the viewer.
-	bool bIsNotUtf8 = false; // Any non UTF8 file ?
-
 	if (IsBaseFileInUse())
 	{
 		if (!m_arBaseFile.Load(m_baseFile.GetFilename()))
@@ -241,7 +234,6 @@ BOOL CDiffData::Load()
 		}
 		bBaseNeedConvert = bIgnoreCase || bIgnoreComments || (m_arBaseFile.NeedsConversion()) || !m_rx._Empty();
 		bBaseIsUtf8 = (m_arBaseFile.GetUnicodeType()!=CFileTextLines::ASCII) || bBaseNeedConvert;
-		bIsNotUtf8 |= !bBaseIsUtf8;
 	}
 
 	if (IsTheirFileInUse())
@@ -255,7 +247,6 @@ BOOL CDiffData::Load()
 		}
 		bTheirNeedConvert = bIgnoreCase || bIgnoreComments || (m_arTheirFile.NeedsConversion()) || !m_rx._Empty();
 		bTheirIsUtf8 = (m_arTheirFile.GetUnicodeType()!=CFileTextLines::ASCII) || bTheirNeedConvert;
-		bIsNotUtf8 |= !bTheirIsUtf8;
 	}
 
 	if (IsYourFileInUse())
@@ -269,8 +260,13 @@ BOOL CDiffData::Load()
 		}
 		bYourNeedConvert = bIgnoreCase || bIgnoreComments || (m_arYourFile.NeedsConversion()) || !m_rx._Empty();
 		bYourIsUtf8 = (m_arYourFile.GetUnicodeType()!=CFileTextLines::ASCII) || bYourNeedConvert;
-		bIsNotUtf8 |= !bYourIsUtf8;
 	}
+
+	// in case at least one of the files got converted or is UTF8
+	// we have to convert all non UTF8 (ASCII) files
+	// otherwise one file might be in ANSI and the other in UTF8 and we'll end up
+	// with lines marked as different throughout the files even though the lines
+	// would show no change at all in the viewer.
 
 	// convert all files we need to
 	bool bIsUtf8 = bBaseIsUtf8 || bTheirIsUtf8 || bYourIsUtf8; // any file end as UTF8
