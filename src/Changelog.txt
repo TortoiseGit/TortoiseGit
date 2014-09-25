@@ -14,6 +14,7 @@ Released: unreleased
  * Fixed issue #2306: TortoiseGitMerge ToolTip messages for Previous/next inline difference mixed up
  * Fixed issue #2308: Pressing ESC in the skip-worktree confirmation dialog box selects 'yes'
  * Fixed issue #2309: [Show log of aaaa..bbbb] on sub directory shows logs on root directory
+ * Fixed issue #2126: Rebase: Squash after conflict causes additional commit
 
 = Release 1.8.11.0 =
 Released: 2014-08-22
