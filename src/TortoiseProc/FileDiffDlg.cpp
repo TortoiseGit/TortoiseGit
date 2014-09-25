@@ -22,7 +22,6 @@
 #include "UnicodeUtils.h"
 #include "MessageBox.h"
 #include "AppUtils.h"
-#include "TempFile.h"
 #include "SysImageList.h"
 #include "IconMenu.h"
 #include "StringUtils.h"
