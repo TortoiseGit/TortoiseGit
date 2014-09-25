@@ -13,17 +13,17 @@
       <UniqueIdentifier>{2d65adcd-634d-4948-9ece-1c3e524717e1}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;jpg;jpeg;jpe;manifest</Extensions>
     </Filter>
-    <Filter Include="Source Files\Utils">
+    <Filter Include="Utils">
       <UniqueIdentifier>{bb7d39c7-8875-46d6-b869-c4b7c19d17c8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Git">
+    <Filter Include="Utils\MiscUI">
+      <UniqueIdentifier>{47668c56-a66c-4f37-aa34-40a0426a5681}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Git">
       <UniqueIdentifier>{ed42a798-888c-441e-aaa1-ebd1d2d3997f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\TGitCache">
+    <Filter Include="TGitCache">
       <UniqueIdentifier>{df83ce5c-babd-4e14-8d91-36e2910a1323}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utils\MiscUI">
-      <UniqueIdentifier>{47668c56-a66c-4f37-aa34-40a0426a5681}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -67,55 +67,55 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\Git\GitIndex.cpp">
-      <Filter>Source Files\Git</Filter>
+      <Filter>Git</Filter>
     </ClCompile>
     <ClCompile Include="..\Git\GitFolderStatus.cpp">
-      <Filter>Source Files\Git</Filter>
+      <Filter>Git</Filter>
     </ClCompile>
     <ClCompile Include="..\Git\GitAdminDir.cpp">
-      <Filter>Source Files\Git</Filter>
+      <Filter>Git</Filter>
     </ClCompile>
     <ClCompile Include="..\Git\Git.cpp">
-      <Filter>Source Files\Git</Filter>
+      <Filter>Git</Filter>
     </ClCompile>
     <ClCompile Include="..\Utils\DebugOutput.cpp">
-      <Filter>Source Files\Utils</Filter>
+      <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="..\TGitCache\CacheInterface.cpp">
-      <Filter>Source Files\TGitCache</Filter>
+      <Filter>TGitCache</Filter>
     </ClCompile>
     <ClCompile Include="..\Git\GitRev.cpp">
-      <Filter>Source Files\Git</Filter>
+      <Filter>Git</Filter>
     </ClCompile>
     <ClCompile Include="..\Git\GitStatus.cpp">
-      <Filter>Source Files\Git</Filter>
+      <Filter>Git</Filter>
     </ClCompile>
     <ClCompile Include="..\Utils\ReaderWriterLock.cpp">
-      <Filter>Source Files\Utils</Filter>
+      <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="..\Utils\UnicodeUtils.cpp">
-      <Filter>Source Files\Utils</Filter>
+      <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="..\Utils\SysInfo.cpp">
-      <Filter>Source Files\Utils</Filter>
+      <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="..\Utils\StringUtils.cpp">
-      <Filter>Source Files\Utils</Filter>
+      <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="..\Utils\Registry.cpp">
-      <Filter>Source Files\Utils</Filter>
+      <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="..\Git\TGitPath.cpp">
-      <Filter>Source Files\Git</Filter>
+      <Filter>Git</Filter>
     </ClCompile>
     <ClCompile Include="..\Utils\PathUtils.cpp">
-      <Filter>Source Files\Utils</Filter>
+      <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="..\Utils\MiscUI\IconBitmapUtils.cpp">
-      <Filter>Source Files\Utils\MiscUI</Filter>
+      <Filter>Utils\MiscUI</Filter>
     </ClCompile>
     <ClCompile Include="..\Git\MassiveGitTaskBase.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Git</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -167,28 +167,28 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\DebugOutput.h">
-      <Filter>Source Files\Utils</Filter>
+      <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\UnicodeUtils.h">
-      <Filter>Source Files\Utils</Filter>
+      <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\SysInfo.h">
-      <Filter>Source Files\Utils</Filter>
+      <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\StringUtils.h">
-      <Filter>Source Files\Utils</Filter>
+      <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\ReaderWriterLock.h">
-      <Filter>Source Files\Utils</Filter>
+      <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\registry.h">
-      <Filter>Source Files\Utils</Filter>
+      <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\PathUtils.h">
-      <Filter>Source Files\Utils</Filter>
+      <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\MiscUI\IconBitmapUtils.h">
-      <Filter>Source Files\Utils\MiscUI</Filter>
+      <Filter>Utils\MiscUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

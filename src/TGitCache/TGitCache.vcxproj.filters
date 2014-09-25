@@ -13,14 +13,14 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx</Extensions>
     </Filter>
-    <Filter Include="Source Files\Utils">
-      <UniqueIdentifier>{7aaec4db-1ca7-4bf3-960e-bb06221a89f8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Git">
+    <Filter Include="Git">
       <UniqueIdentifier>{f285fcaa-ea4e-4c23-8fcf-c49524128783}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\TortoiseShell">
+    <Filter Include="TortoiseShell">
       <UniqueIdentifier>{4877d869-2e7c-46d6-9aff-cc82b4b3b662}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils">
+      <UniqueIdentifier>{7aaec4db-1ca7-4bf3-960e-bb06221a89f8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -52,49 +52,49 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\Git\Git.cpp">
-      <Filter>Source Files\Git</Filter>
+      <Filter>Git</Filter>
     </ClCompile>
     <ClCompile Include="..\Git\GitAdminDir.cpp">
-      <Filter>Source Files\Git</Filter>
+      <Filter>Git</Filter>
     </ClCompile>
     <ClCompile Include="..\Git\GitIndex.cpp">
-      <Filter>Source Files\Git</Filter>
+      <Filter>Git</Filter>
     </ClCompile>
     <ClCompile Include="..\Git\GitRev.cpp">
-      <Filter>Source Files\Git</Filter>
+      <Filter>Git</Filter>
     </ClCompile>
     <ClCompile Include="..\Git\GitStatus.cpp">
-      <Filter>Source Files\Git</Filter>
+      <Filter>Git</Filter>
     </ClCompile>
     <ClCompile Include="..\Utils\SysInfo.cpp">
-      <Filter>Source Files\Utils</Filter>
+      <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="..\Utils\StringUtils.cpp">
-      <Filter>Source Files\Utils</Filter>
+      <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="..\Utils\UnicodeUtils.cpp">
-      <Filter>Source Files\Utils</Filter>
+      <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="..\Utils\UniqueQueue.cpp">
-      <Filter>Source Files\Utils</Filter>
+      <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="..\Git\TGitPath.cpp">
-      <Filter>Source Files\Git</Filter>
+      <Filter>Git</Filter>
     </ClCompile>
     <ClCompile Include="..\Utils\DebugOutput.cpp">
-      <Filter>Source Files\Utils</Filter>
+      <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="..\Utils\PathUtils.cpp">
-      <Filter>Source Files\Utils</Filter>
+      <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="..\Utils\ReaderWriterLock.cpp">
-      <Filter>Source Files\Utils</Filter>
+      <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="..\Utils\Registry.cpp">
-      <Filter>Source Files\Utils</Filter>
+      <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="..\Git\MassiveGitTaskBase.cpp">
-      <Filter>Source Files\Git</Filter>
+      <Filter>Git</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -129,52 +129,52 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\DebugOutput.h">
-      <Filter>Source Files\Utils</Filter>
+      <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\Git\TGitPath.h">
-      <Filter>Source Files\Git</Filter>
+      <Filter>Git</Filter>
     </ClInclude>
     <ClInclude Include="..\Git\GitStatus.h">
-      <Filter>Source Files\Git</Filter>
+      <Filter>Git</Filter>
     </ClInclude>
     <ClInclude Include="..\Git\gitindex.h">
-      <Filter>Source Files\Git</Filter>
+      <Filter>Git</Filter>
     </ClInclude>
     <ClInclude Include="..\Git\GitAdminDir.h">
-      <Filter>Source Files\Git</Filter>
+      <Filter>Git</Filter>
     </ClInclude>
     <ClInclude Include="..\Git\Git.h">
-      <Filter>Source Files\Git</Filter>
+      <Filter>Git</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\PathUtils.h">
-      <Filter>Source Files\Utils</Filter>
+      <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\registry.h">
-      <Filter>Source Files\Utils</Filter>
+      <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\SmartHandle.h">
-      <Filter>Source Files\Utils</Filter>
+      <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\UniqueQueue.h">
-      <Filter>Source Files\Utils</Filter>
+      <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\UnicodeUtils.h">
-      <Filter>Source Files\Utils</Filter>
+      <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\SysInfo.h">
-      <Filter>Source Files\Utils</Filter>
+      <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\StringUtils.h">
-      <Filter>Source Files\Utils</Filter>
+      <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\ReaderWriterLock.h">
-      <Filter>Source Files\Utils</Filter>
+      <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\TortoiseShell\ShellCache.h">
-      <Filter>Source Files\TortoiseShell</Filter>
+      <Filter>TortoiseShell</Filter>
     </ClInclude>
     <ClInclude Include="..\Git\MassiveGitTaskBase.h">
-      <Filter>Source Files\Git</Filter>
+      <Filter>Git</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

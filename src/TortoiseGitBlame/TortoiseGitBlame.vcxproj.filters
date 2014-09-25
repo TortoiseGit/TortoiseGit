@@ -13,20 +13,20 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
     </Filter>
-    <Filter Include="Source Files\Utils">
-      <UniqueIdentifier>{3f004a8f-cf17-4a53-9856-3d6f077f875b}</UniqueIdentifier>
+    <Filter Include="Git">
+      <UniqueIdentifier>{b7150578-0071-4e14-894a-29dfdb7a646e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Utils\MiscUI">
-      <UniqueIdentifier>{f86a3d47-ea3d-4fa3-a47f-e1b9367a0e3d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\TortoiseGitProc">
-      <UniqueIdentifier>{73ebc93e-2ef5-4409-9010-c503089c8a82}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\TortoiseGitMerge">
+    <Filter Include="TortoiseGitMerge">
       <UniqueIdentifier>{71418e14-7775-42a8-bdfa-f326d4f55c30}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Git">
-      <UniqueIdentifier>{b7150578-0071-4e14-894a-29dfdb7a646e}</UniqueIdentifier>
+    <Filter Include="TortoiseGitProc">
+      <UniqueIdentifier>{73ebc93e-2ef5-4409-9010-c503089c8a82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils">
+      <UniqueIdentifier>{3f004a8f-cf17-4a53-9856-3d6f077f875b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils\MiscUI">
+      <UniqueIdentifier>{f86a3d47-ea3d-4fa3-a47f-e1b9367a0e3d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -61,124 +61,124 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\Utils\CmdLineParser.cpp">
-      <Filter>Source Files\Utils</Filter>
+      <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="..\Utils\Registry.cpp">
-      <Filter>Source Files\Utils</Filter>
+      <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="..\Utils\StringUtils.cpp">
-      <Filter>Source Files\Utils</Filter>
+      <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="..\Utils\SysInfo.cpp">
-      <Filter>Source Files\Utils</Filter>
+      <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="..\Utils\TaskbarUUID.cpp">
-      <Filter>Source Files\Utils</Filter>
+      <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="..\Utils\UnicodeUtils.cpp">
-      <Filter>Source Files\Utils</Filter>
+      <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="..\Utils\MiscUI\MessageBox.cpp">
-      <Filter>Source Files\Utils\MiscUI</Filter>
+      <Filter>Utils\MiscUI</Filter>
     </ClCompile>
     <ClCompile Include="..\Utils\MiscUI\HistoryCombo.cpp">
-      <Filter>Source Files\Utils\MiscUI</Filter>
+      <Filter>Utils\MiscUI</Filter>
     </ClCompile>
     <ClCompile Include="..\Utils\MiscUI\Picture.cpp">
-      <Filter>Source Files\Utils\MiscUI</Filter>
+      <Filter>Utils\MiscUI</Filter>
     </ClCompile>
     <ClCompile Include="..\Utils\MiscUI\Tooltip.cpp">
-      <Filter>Source Files\Utils\MiscUI</Filter>
+      <Filter>Utils\MiscUI</Filter>
     </ClCompile>
     <ClCompile Include="..\Utils\MiscUI\IconMenu.cpp">
-      <Filter>Source Files\Utils\MiscUI</Filter>
+      <Filter>Utils\MiscUI</Filter>
     </ClCompile>
     <ClCompile Include="..\Utils\MiscUI\HintListCtrl.cpp">
-      <Filter>Source Files\Utils\MiscUI</Filter>
+      <Filter>Utils\MiscUI</Filter>
     </ClCompile>
     <ClCompile Include="..\Utils\MiscUI\FilterEdit.cpp">
-      <Filter>Source Files\Utils\MiscUI</Filter>
+      <Filter>Utils\MiscUI</Filter>
     </ClCompile>
     <ClCompile Include="..\Utils\PathUtils.cpp">
-      <Filter>Source Files\Utils</Filter>
+      <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="..\Utils\MiscUI\IconBitmapUtils.cpp">
-      <Filter>Source Files\Utils\MiscUI</Filter>
+      <Filter>Utils\MiscUI</Filter>
     </ClCompile>
     <ClCompile Include="..\Utils\MiscUI\HTMLFormatter.cpp">
-      <Filter>Source Files\Utils\MiscUI</Filter>
+      <Filter>Utils\MiscUI</Filter>
     </ClCompile>
     <ClCompile Include="..\Utils\PersonalDictionary.cpp">
-      <Filter>Source Files\Utils</Filter>
+      <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="..\Utils\MiscUI\SciEdit.cpp">
-      <Filter>Source Files\Utils\MiscUI</Filter>
+      <Filter>Utils\MiscUI</Filter>
     </ClCompile>
     <ClCompile Include="..\Utils\SysImageList.cpp">
-      <Filter>Source Files\Utils</Filter>
+      <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="..\Utils\CommonAppUtils.cpp">
-      <Filter>Source Files\Utils</Filter>
+      <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="..\Utils\DebugOutput.cpp">
-      <Filter>Source Files\Utils</Filter>
+      <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="..\Utils\MiscUI\StandAloneDlg.cpp">
-      <Filter>Source Files\Utils\MiscUI</Filter>
+      <Filter>Utils\MiscUI</Filter>
     </ClCompile>
     <ClCompile Include="..\TortoiseProc\Colors.cpp">
-      <Filter>Source Files\TortoiseGitProc</Filter>
+      <Filter>TortoiseGitProc</Filter>
     </ClCompile>
     <ClCompile Include="..\TortoiseMerge\FileTextLines.cpp">
-      <Filter>Source Files\TortoiseGitMerge</Filter>
+      <Filter>TortoiseGitMerge</Filter>
     </ClCompile>
     <ClCompile Include="..\TortoiseProc\GitLogCache.cpp">
-      <Filter>Source Files\TortoiseGitProc</Filter>
+      <Filter>TortoiseGitProc</Filter>
     </ClCompile>
     <ClCompile Include="..\TortoiseProc\GitLogListBase.cpp">
-      <Filter>Source Files\TortoiseGitProc</Filter>
+      <Filter>TortoiseGitProc</Filter>
     </ClCompile>
     <ClCompile Include="..\TortoiseProc\GitStatusListCtrlHelpers.cpp">
-      <Filter>Source Files\TortoiseGitProc</Filter>
+      <Filter>TortoiseGitProc</Filter>
     </ClCompile>
     <ClCompile Include="..\TortoiseProc\lanes.cpp">
-      <Filter>Source Files\TortoiseGitProc</Filter>
+      <Filter>TortoiseGitProc</Filter>
     </ClCompile>
     <ClCompile Include="..\TortoiseProc\GravatarPictureBox.cpp">
-      <Filter>Source Files\TortoiseGitProc</Filter>
+      <Filter>TortoiseGitProc</Filter>
     </ClCompile>
     <ClCompile Include="..\TortoiseProc\LogDataVector.cpp">
-      <Filter>Source Files\TortoiseGitProc</Filter>
+      <Filter>TortoiseGitProc</Filter>
     </ClCompile>
     <ClCompile Include="..\TortoiseProc\LogDlgHelper.cpp">
-      <Filter>Source Files\TortoiseGitProc</Filter>
+      <Filter>TortoiseGitProc</Filter>
     </ClCompile>
     <ClCompile Include="..\TortoiseProc\LoglistUtils.cpp">
-      <Filter>Source Files\TortoiseGitProc</Filter>
+      <Filter>TortoiseGitProc</Filter>
     </ClCompile>
     <ClCompile Include="..\TortoiseProc\FindDlg.cpp">
-      <Filter>Source Files\TortoiseGitProc</Filter>
+      <Filter>TortoiseGitProc</Filter>
     </ClCompile>
     <ClCompile Include="..\TortoiseProc\ProjectProperties.cpp">
-      <Filter>Source Files\TortoiseGitProc</Filter>
+      <Filter>TortoiseGitProc</Filter>
     </ClCompile>
     <ClCompile Include="..\Utils\TempFile.cpp">
-      <Filter>Source Files\Utils</Filter>
+      <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="..\Git\Git.cpp">
-      <Filter>Source Files\Git</Filter>
+      <Filter>Git</Filter>
     </ClCompile>
     <ClCompile Include="..\Git\GitAdminDir.cpp">
-      <Filter>Source Files\Git</Filter>
+      <Filter>Git</Filter>
     </ClCompile>
     <ClCompile Include="..\Git\GitRev.cpp">
-      <Filter>Source Files\Git</Filter>
+      <Filter>Git</Filter>
     </ClCompile>
     <ClCompile Include="..\Git\TGitPath.cpp">
-      <Filter>Source Files\Git</Filter>
+      <Filter>Git</Filter>
     </ClCompile>
     <ClCompile Include="..\Git\MassiveGitTaskBase.cpp">
-      <Filter>Source Files\Git</Filter>
+      <Filter>Git</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -222,112 +222,112 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\CmdLineParser.h">
-      <Filter>Source Files\Utils</Filter>
+      <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\registry.h">
-      <Filter>Source Files\Utils</Filter>
+      <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\StringUtils.h">
-      <Filter>Source Files\Utils</Filter>
+      <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\SysInfo.h">
-      <Filter>Source Files\Utils</Filter>
+      <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\TaskbarUUID.h">
-      <Filter>Source Files\Utils</Filter>
+      <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\UnicodeUtils.h">
-      <Filter>Source Files\Utils</Filter>
+      <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\MiscUI\MessageBox.h">
-      <Filter>Source Files\Utils\MiscUI</Filter>
+      <Filter>Utils\MiscUI</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\MiscUI\HistoryCombo.h">
-      <Filter>Source Files\Utils\MiscUI</Filter>
+      <Filter>Utils\MiscUI</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\MiscUI\Picture.h">
-      <Filter>Source Files\Utils\MiscUI</Filter>
+      <Filter>Utils\MiscUI</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\MiscUI\Tooltip.h">
-      <Filter>Source Files\Utils\MiscUI</Filter>
+      <Filter>Utils\MiscUI</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\MiscUI\IconMenu.h">
-      <Filter>Source Files\Utils\MiscUI</Filter>
+      <Filter>Utils\MiscUI</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\MiscUI\HintListCtrl.h">
-      <Filter>Source Files\Utils\MiscUI</Filter>
+      <Filter>Utils\MiscUI</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\MiscUI\FilterEdit.h">
-      <Filter>Source Files\Utils\MiscUI</Filter>
+      <Filter>Utils\MiscUI</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\PathUtils.h">
-      <Filter>Source Files\Utils</Filter>
+      <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\MiscUI\IconBitmapUtils.h">
-      <Filter>Source Files\Utils\MiscUI</Filter>
+      <Filter>Utils\MiscUI</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\MiscUI\HTMLFormatter.h">
-      <Filter>Source Files\Utils\MiscUI</Filter>
+      <Filter>Utils\MiscUI</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\PersonalDictionary.h">
-      <Filter>Source Files\Utils</Filter>
+      <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\MiscUI\SciEdit.h">
-      <Filter>Source Files\Utils\MiscUI</Filter>
+      <Filter>Utils\MiscUI</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\SysImageList.h">
-      <Filter>Source Files\Utils</Filter>
+      <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\TortoiseProc\gitlogcache.h">
-      <Filter>Source Files\TortoiseGitProc</Filter>
+      <Filter>TortoiseGitProc</Filter>
     </ClInclude>
     <ClInclude Include="..\TortoiseProc\GitLogListBase.h">
-      <Filter>Source Files\TortoiseGitProc</Filter>
+      <Filter>TortoiseGitProc</Filter>
     </ClInclude>
     <ClInclude Include="GitBlameLogList.h">
-      <Filter>Source Files\TortoiseGitProc</Filter>
+      <Filter>TortoiseGitProc</Filter>
     </ClInclude>
     <ClInclude Include="..\TortoiseProc\lanes.h">
-      <Filter>Source Files\TortoiseGitProc</Filter>
+      <Filter>TortoiseGitProc</Filter>
     </ClInclude>
     <ClInclude Include="..\TortoiseProc\LogDlgHelper.h">
-      <Filter>Source Files\TortoiseGitProc</Filter>
+      <Filter>TortoiseGitProc</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\CommonAppUtils.h">
-      <Filter>Source Files\Utils</Filter>
+      <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\TortoiseMerge\FileTextLines.h">
-      <Filter>Source Files\TortoiseGitMerge</Filter>
+      <Filter>TortoiseGitMerge</Filter>
     </ClInclude>
     <ClInclude Include="..\TortoiseProc\LoglistUtils.h">
-      <Filter>Source Files\TortoiseGitProc</Filter>
+      <Filter>TortoiseGitProc</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\DebugOutput.h">
-      <Filter>Source Files\Utils</Filter>
+      <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\TempFile.h">
-      <Filter>Source Files\Utils</Filter>
+      <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\Git\Git.h">
-      <Filter>Source Files\Git</Filter>
+      <Filter>Git</Filter>
     </ClInclude>
     <ClInclude Include="..\Git\GitAdminDir.h">
-      <Filter>Source Files\Git</Filter>
+      <Filter>Git</Filter>
     </ClInclude>
     <ClInclude Include="..\Git\GitHash.h">
-      <Filter>Source Files\Git</Filter>
+      <Filter>Git</Filter>
     </ClInclude>
     <ClInclude Include="..\Git\GitRev.h">
-      <Filter>Source Files\Git</Filter>
+      <Filter>Git</Filter>
     </ClInclude>
     <ClInclude Include="..\Git\gittype.h">
-      <Filter>Source Files\Git</Filter>
+      <Filter>Git</Filter>
     </ClInclude>
     <ClInclude Include="..\Git\TGitPath.h">
-      <Filter>Source Files\Git</Filter>
+      <Filter>Git</Filter>
     </ClInclude>
     <ClInclude Include="..\Git\MassiveGitTaskBase.h">
-      <Filter>Source Files\Git</Filter>
+      <Filter>Git</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

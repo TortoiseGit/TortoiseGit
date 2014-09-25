@@ -13,6 +13,15 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx</Extensions>
     </Filter>
+    <Filter Include="Git">
+      <UniqueIdentifier>{08999084-cd3b-4974-8456-cc00efb1fdbb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils">
+      <UniqueIdentifier>{5b643556-e958-4452-ad6d-a0d96ff3edbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TGitCache">
+      <UniqueIdentifier>{135071a7-acce-4323-a410-03b75e08a592}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cache.cpp">
@@ -21,44 +30,44 @@
     <ClCompile Include="CacheDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\TGitCache\CacheInterface.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\Utils\DirFileEnum.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\Git\GitAdminDir.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\Utils\MiscUI\HTMLFormatter.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\Utils\MiscUI\MessageBox.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\Utils\PathUtils.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\Utils\Registry.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Utils\StringUtils.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\..\src\Git\Git.cpp">
+      <Filter>Git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Git\GitAdminDir.cpp">
+      <Filter>Git</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\Git\TGitPath.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\Utils\UnicodeUtils.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Git</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\Utils\DebugOutput.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Git\Git.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\..\src\Utils\DirFileEnum.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Utils\MiscUI\HTMLFormatter.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Utils\MiscUI\MessageBox.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Utils\PathUtils.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Utils\Registry.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Utils\StringUtils.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Utils\UnicodeUtils.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\TGitCache\CacheInterface.cpp">
+      <Filter>TGitCache</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -68,32 +77,32 @@
     <ClInclude Include="CacheDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\Utils\DirFileEnum.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\Utils\PathUtils.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\Utils\registry.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\Utils\StringUtils.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\Utils\UnicodeUtils.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\..\src\Git\Git.h">
+      <Filter>Git</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\Utils\DebugOutput.h">
-      <Filter>Header Files</Filter>
+      <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\Git\Git.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\..\src\Utils\DirFileEnum.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Utils\PathUtils.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Utils\registry.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Utils\StringUtils.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Utils\UnicodeUtils.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
