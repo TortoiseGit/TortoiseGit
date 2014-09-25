@@ -418,12 +418,12 @@ void CPushDlg::OnBnClickedOk()
 
 		if (m_BranchSourceName.IsEmpty() && m_BranchRemoteName.IsEmpty())
 		{
-			if (CMessageBox::Show(NULL, IDS_B_T_BOTHEMPTY, IDS_APPNAME, MB_ICONQUESTION | MB_YESNO) == IDNO)
+			if (CMessageBox::Show(NULL, IDS_B_T_BOTHEMPTY, IDS_APPNAME, MB_ICONQUESTION | MB_YESNO) != IDYES)
 				return;
 		}
 		if (m_BranchSourceName.IsEmpty() && !m_BranchRemoteName.IsEmpty())
 		{
-			if (CMessageBox::Show(NULL, IDS_B_T_LOCALEMPTY, IDS_APPNAME, MB_ICONEXCLAMATION | MB_YESNO) == IDNO)
+			if (CMessageBox::Show(NULL, IDS_B_T_LOCALEMPTY, IDS_APPNAME, MB_ICONEXCLAMATION | MB_YESNO) != IDYES)
 				return;
 		}
 		else if (!m_BranchRemoteName.IsEmpty() && !g_Git.IsBranchNameValid(this->m_BranchRemoteName))
