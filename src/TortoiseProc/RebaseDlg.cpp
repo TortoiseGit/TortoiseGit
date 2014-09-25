@@ -1275,7 +1275,10 @@ void CRebaseDlg::OnBnClickedContinue()
 
 		::DeleteFile(tempfile);
 		AddLogString(out);
-		m_SquashMessage.Empty();
+		if (CheckNextCommitIsSquash() == 0 && m_RebaseStage != REBASE_SQUASH_EDIT) // remember commit msg after edit if next commit if squash; but don't do this if ...->squash(reset here)->pick->squash
+			m_SquashMessage = str;
+		else
+			m_SquashMessage.Empty();
 		this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_LOG);
 		m_RebaseStage=REBASE_CONTINUE;
 		curRev->GetRebaseAction() |= CGitLogListBase::LOGACTIONS_REBASE_DONE;
