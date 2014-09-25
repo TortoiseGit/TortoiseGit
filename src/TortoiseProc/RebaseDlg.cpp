@@ -1590,8 +1590,8 @@ int CRebaseDlg::DoRebase()
 		m_SquashFirstMetaData.Empty();
 	}
 
-	if (nextCommitIsSquash || mode == CGitLogListBase::LOGACTIONS_REBASE_SQUASH)
-	{ // next or this commit is squash
+	if ((nextCommitIsSquash && mode != CGitLogListBase::LOGACTIONS_REBASE_EDIT) || mode == CGitLogListBase::LOGACTIONS_REBASE_SQUASH)
+	{ // next or this commit is squash (don't do this on edit->squash sequence)
 		nocommit=_T(" --no-commit ");
 	}
 
