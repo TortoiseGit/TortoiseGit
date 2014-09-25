@@ -329,6 +329,9 @@
     <ClInclude Include="..\Git\MassiveGitTaskBase.h">
       <Filter>Git</Filter>
     </ClInclude>
+    <ClInclude Include="..\Git\GitForWindows.h">
+      <Filter>Git</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Resources\blameres\output_wnd.ico">

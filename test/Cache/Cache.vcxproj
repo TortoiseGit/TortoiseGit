@@ -62,6 +62,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\Git\Git.h" />
+    <ClInclude Include="..\..\src\Git\GitAdminDir.h" />
+    <ClInclude Include="..\..\src\Git\GitHash.h" />
+    <ClInclude Include="..\..\src\Git\TGitPath.h" />
     <ClInclude Include="..\..\src\Utils\DebugOutput.h" />
     <ClInclude Include="Cache.h" />
     <ClInclude Include="CacheDlg.h" />

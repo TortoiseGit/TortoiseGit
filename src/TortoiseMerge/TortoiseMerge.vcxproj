@@ -310,6 +310,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Git\Git.h" />
+    <ClInclude Include="..\Git\GitForWindows.h" />
     <ClInclude Include="..\Git\gittype.h" />
     <ClInclude Include="..\Git\MassiveGitTaskBase.h" />
     <ClInclude Include="..\Git\TGitPath.h" />

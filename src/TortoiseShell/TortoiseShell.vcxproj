@@ -144,6 +144,18 @@
     <None Include="resourceshell.rc2" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Git\Git.h" />
+    <ClInclude Include="..\Git\GitAdminDir.h" />
+    <ClInclude Include="..\Git\GitFolderStatus.h" />
+    <ClInclude Include="..\Git\GitForWindows.h" />
+    <ClInclude Include="..\Git\GitHash.h" />
+    <ClInclude Include="..\Git\gitindex.h" />
+    <ClInclude Include="..\Git\GitRev.h" />
+    <ClInclude Include="..\Git\GitStatus.h" />
+    <ClInclude Include="..\Git\gittype.h" />
+    <ClInclude Include="..\Git\MassiveGitTaskBase.h" />
+    <ClInclude Include="..\Git\TGitPath.h" />
+    <ClInclude Include="..\TGitCache\CacheInterface.h" />
     <ClInclude Include="..\Utils\DebugOutput.h" />
     <ClInclude Include="..\Utils\MiscUI\IconBitmapUtils.h" />
     <ClInclude Include="..\Utils\ReaderWriterLock.h" />

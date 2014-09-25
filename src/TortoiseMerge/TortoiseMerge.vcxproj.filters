@@ -545,6 +545,9 @@
     <ClInclude Include="..\Utils\TaskbarUUID.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="..\Git\GitForWindows.h">
+      <Filter>Git</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resources\download.avi">

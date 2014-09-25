@@ -107,6 +107,7 @@
   <ItemGroup>
     <ClInclude Include="..\Git\Git.h" />
     <ClInclude Include="..\Git\GitAdminDir.h" />
+    <ClInclude Include="..\Git\GitForWindows.h" />
     <ClInclude Include="..\Git\GitHash.h" />
     <ClInclude Include="..\Git\GitRev.h" />
     <ClInclude Include="..\Git\gittype.h" />
