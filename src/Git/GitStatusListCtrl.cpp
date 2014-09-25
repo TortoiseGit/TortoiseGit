@@ -2481,7 +2481,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 
 void CGitStatusListCtrl::SetGitIndexFlagsForSelectedFiles(UINT message, BOOL assumevalid, BOOL skipworktree)
 {
-	if (CMessageBox::Show(GetSafeHwnd(), message, IDS_APPNAME, MB_YESNO | MB_DEFBUTTON2 | MB_ICONQUESTION) == IDNO)
+	if (CMessageBox::Show(GetSafeHwnd(), message, IDS_APPNAME, MB_YESNO | MB_DEFBUTTON2 | MB_ICONQUESTION) != IDYES)
 		return;
 
 	CAutoRepository repository(g_Git.GetGitRepository());
