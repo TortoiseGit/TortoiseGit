@@ -370,7 +370,10 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				if ((cmd & 0xFFFF) == ID_LOG_VIEWRANGE_REACHABLEFROMONLYONE)
 					sep = _T("...");
 
-				CAppUtils::RunTortoiseGitProc(_T("/command:log /range:\"") + pLastEntry->m_CommitHash.ToString() + sep + pSelLogEntry->m_CommitHash.ToString() + _T("\""));
+				CString cmdline;
+				cmdline.Format(_T("/command:log /path:\"%s\" /range:\"%s%s%s\""),
+					g_Git.CombinePath(m_Path), pLastEntry->m_CommitHash.ToString(), sep, pSelLogEntry->m_CommitHash.ToString());
+				CAppUtils::RunTortoiseGitProc(cmdline);
 			}
 			break;
 		case ID_COPYCLIPBOARD:
