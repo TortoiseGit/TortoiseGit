@@ -136,15 +136,7 @@ BOOL CPullFetchDlg::OnInitDialog()
 	if(!CAppUtils::IsSSHPutty())
 		m_bAutoLoad = false;
 
-	if(m_bAllowRebase)
-	{
-		this->m_bRebase = m_regRebase;
-	}
-	else
-	{
-		GetDlgItem(IDC_CHECK_REBASE)->ShowWindow(SW_HIDE);
-		this->m_bRebase = FALSE;
-	}
+	m_bRebase = m_bAllowRebase && m_regRebase;
 
 	this->UpdateData(FALSE);
 
@@ -163,7 +155,6 @@ BOOL CPullFetchDlg::OnInitDialog()
 
 	if(m_IsPull)
 	{
-		GetDlgItem(IDC_CHECK_REBASE)->ShowWindow(SW_HIDE);
 		// check tags checkbox and make it a normal checkbox
 		m_bFetchTags = 1;
 		m_bFFonly = m_regFFonly;
