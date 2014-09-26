@@ -22,7 +22,6 @@
 #include "DirFileEnum.h"
 #include "MessageBox.h"
 #include "SetOverlayIcons.h"
-#include "GitStatus.h"
 #include "AppUtils.h"
 #include "PathUtils.h"
 
@@ -106,22 +105,13 @@ BOOL CSetOverlayIcons::OnInitDialog()
 			m_cIconSet.SetCurSel(i);
 	}
 
-	WORD langID = (WORD)(DWORD)CRegStdDWORD(_T("Software\\TortoiseGit\\LanguageID"), GetUserDefaultLangID());
-	TCHAR statustext[MAX_STATUS_STRING_LENGTH] = { 0 };
-	GitStatus::GetStatusString(AfxGetResourceHandle(), git_wc_status_normal, statustext, _countof(statustext), langID);
-	m_sNormal = statustext;
-	GitStatus::GetStatusString(AfxGetResourceHandle(), git_wc_status_modified, statustext, _countof(statustext), langID);
-	m_sModified = statustext;
-	GitStatus::GetStatusString(AfxGetResourceHandle(), git_wc_status_conflicted, statustext, _countof(statustext), langID);
-	m_sConflicted = statustext;
-	GitStatus::GetStatusString(AfxGetResourceHandle(), git_wc_status_deleted, statustext, _countof(statustext), langID);
-	m_sDeleted = statustext;
-	GitStatus::GetStatusString(AfxGetResourceHandle(), git_wc_status_added, statustext, _countof(statustext), langID);
-	m_sAdded = statustext;
-	GitStatus::GetStatusString(AfxGetResourceHandle(), git_wc_status_ignored, statustext, _countof(statustext), langID);
-	m_sIgnored = statustext;
-	GitStatus::GetStatusString(AfxGetResourceHandle(), git_wc_status_unversioned, statustext, _countof(statustext), langID);
-	m_sUnversioned = statustext;
+	m_sNormal = CString(MAKEINTRESOURCE(IDS_STATUSNORMAL));
+	m_sModified = CString(MAKEINTRESOURCE(IDS_STATUSMODIFIED));
+	m_sConflicted = CString(MAKEINTRESOURCE(IDS_STATUSCONFLICTED));
+	m_sDeleted = CString(MAKEINTRESOURCE(IDS_STATUSDELETED));
+	m_sAdded = CString(MAKEINTRESOURCE(IDS_STATUSADDED));
+	m_sIgnored = CString(MAKEINTRESOURCE(IDS_STATUSIGNORED));
+	m_sUnversioned = CString(MAKEINTRESOURCE(IDS_STATUSUNVERSIONED));
 
 	m_sReadOnly.LoadString(IDS_SETTINGS_READONLYNAME);
 	m_sLocked.LoadString(IDS_SETTINGS_LOCKEDNAME);

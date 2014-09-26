@@ -161,7 +161,6 @@ public:
 	 * \param string a string representation
 	 */
 	static void GetStatusString(git_wc_status_kind status, size_t buflen, TCHAR * string);
-	static void GetStatusString(HINSTANCE hInst, git_wc_status_kind status, TCHAR * string, int size, WORD lang);
 
 	/**
 	 * This member variable hold the status of the last call to GetStatus().

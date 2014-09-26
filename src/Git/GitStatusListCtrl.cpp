@@ -37,7 +37,6 @@
 #include "SysImageList.h"
 #include "TGitPath.h"
 #include "registry.h"
-#include "GitStatus.h"
 #include "InputDlg.h"
 #include "ShellUpdater.h"
 #include "GitAdminDir.h"
@@ -2802,24 +2801,13 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 
 CString CGitStatusListCtrl::GetStatisticsString(bool simple)
 {
-
-	CString sNormal, sAdded, sDeleted, sModified, sConflicted, sUnversioned, sRenamed;
-	WORD langID = (WORD)(DWORD)CRegStdDWORD(_T("Software\\TortoiseGit\\LanguageID"), GetUserDefaultLangID());
-	TCHAR buf[MAX_STATUS_STRING_LENGTH] = { 0 };
-	GitStatus::GetStatusString(AfxGetResourceHandle(), git_wc_status_normal, buf, _countof(buf), langID);
-	sNormal = buf;
-	GitStatus::GetStatusString(AfxGetResourceHandle(), git_wc_status_added, buf, _countof(buf), langID);
-	sAdded = buf;
-	GitStatus::GetStatusString(AfxGetResourceHandle(), git_wc_status_deleted, buf, _countof(buf), langID);
-	sDeleted = buf;
-	GitStatus::GetStatusString(AfxGetResourceHandle(), git_wc_status_modified, buf, _countof(buf), langID);
-	sModified = buf;
-	GitStatus::GetStatusString(AfxGetResourceHandle(), git_wc_status_conflicted, buf, _countof(buf), langID);
-	sConflicted = buf;
-	GitStatus::GetStatusString(AfxGetResourceHandle(), git_wc_status_unversioned, buf, _countof(buf), langID);
-	sUnversioned = buf;
-	GitStatus::GetStatusString(AfxGetResourceHandle(), git_wc_status_replaced, buf, _countof(buf), langID);
-	sRenamed = buf;
+	CString sNormal = CString(MAKEINTRESOURCE(IDS_STATUSNORMAL));
+	CString sAdded = CString(MAKEINTRESOURCE(IDS_STATUSADDED));
+	CString sDeleted = CString(MAKEINTRESOURCE(IDS_STATUSDELETED));
+	CString sModified = CString(MAKEINTRESOURCE(IDS_STATUSMODIFIED));
+	CString sConflicted = CString(MAKEINTRESOURCE(IDS_STATUSCONFLICTED));
+	CString sUnversioned = CString(MAKEINTRESOURCE(IDS_STATUSUNVERSIONED));
+	CString sRenamed = CString(MAKEINTRESOURCE(IDS_STATUSREPLACED));
 	CString sToolTip;
 	if(simple)
 	{
