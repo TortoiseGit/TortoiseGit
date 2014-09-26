@@ -1227,6 +1227,11 @@ void CRebaseDlg::OnBnClickedContinue()
 			m_RebaseStage=REBASE_CONTINUE;
 			curRev->GetRebaseAction() |= CGitLogListBase::LOGACTIONS_REBASE_DONE;
 			this->UpdateCurrentStatus();
+
+			if (CheckNextCommitIsSquash() == 0) // remember commit msg after edit if next commit if squash
+				ResetParentForSquash(str);
+			else
+				m_SquashMessage.Empty();
 		}
 	}
 
@@ -1278,24 +1283,7 @@ void CRebaseDlg::OnBnClickedContinue()
 		AddLogString(out);
 		if (CheckNextCommitIsSquash() == 0 && m_RebaseStage != REBASE_SQUASH_EDIT) // remember commit msg after edit if next commit if squash; but don't do this if ...->squash(reset here)->pick->squash
 		{
-			m_SquashMessage = str;
-			// reset parent so that we can do "git cherry-pick --no-commit" w/o introducing an unwanted commit
-			cmd = _T("git.exe reset --soft HEAD~1");
-			m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_LOG);
-			while (true)
-			{
-				out.Empty();
-				if (g_Git.Run(cmd, &out, CP_UTF8))
-				{
-					AddLogString(cmd);
-					AddLogString(CString(MAKEINTRESOURCE(IDS_FAIL)));
-					AddLogString(out);
-					if (CMessageBox::Show(m_hWnd, out + _T("\nRetry?"), _T("TortoiseGit"), MB_YESNO | MB_ICONERROR) != IDYES)
-						return;
-				}
-				else
-					break;
-			}
+			ResetParentForSquash(str);
 		}
 		else
 			m_SquashMessage.Empty();
@@ -1314,6 +1302,27 @@ void CRebaseDlg::OnBnClickedContinue()
 		InterlockedExchange(&m_bThreadRunning, FALSE);
 		CMessageBox::Show(NULL, _T("Create Rebase Thread Fail"), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 		SetControlEnable();
+	}
+}
+void CRebaseDlg::ResetParentForSquash(const CString& commitMessage)
+{
+	m_SquashMessage = commitMessage;
+	// reset parent so that we can do "git cherry-pick --no-commit" w/o introducing an unwanted commit
+	CString cmd = _T("git.exe reset --soft HEAD~1");
+	m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_LOG);
+	while (true)
+	{
+		CString out;
+		if (g_Git.Run(cmd, &out, CP_UTF8))
+		{
+			AddLogString(cmd);
+			AddLogString(CString(MAKEINTRESOURCE(IDS_FAIL)));
+			AddLogString(out);
+			if (CMessageBox::Show(m_hWnd, out + _T("\nRetry?"), _T("TortoiseGit"), MB_YESNO | MB_ICONERROR) != IDYES)
+				return;
+		}
+		else
+			break;
 	}
 }
 int CRebaseDlg::CheckNextCommitIsSquash()

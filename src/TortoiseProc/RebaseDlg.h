@@ -178,6 +178,7 @@ protected:
 	int m_CurrentRebaseIndex;
 	int StateAction();
 	int GoNext();
+	void ResetParentForSquash(const CString& commitMessage);
 	afx_msg void OnBnClickedButtonReverse();
 	afx_msg void OnBnClickedButtonBrowse();
 	afx_msg void OnBnClickedRebaseCheckForce();
