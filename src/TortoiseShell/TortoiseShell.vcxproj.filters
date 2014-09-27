@@ -13,33 +13,24 @@
       <UniqueIdentifier>{2d65adcd-634d-4948-9ece-1c3e524717e1}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;jpg;jpeg;jpe;manifest</Extensions>
     </Filter>
+    <Filter Include="Utils">
+      <UniqueIdentifier>{bb7d39c7-8875-46d6-b869-c4b7c19d17c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils\MiscUI">
+      <UniqueIdentifier>{47668c56-a66c-4f37-aa34-40a0426a5681}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Git">
+      <UniqueIdentifier>{ed42a798-888c-441e-aaa1-ebd1d2d3997f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TGitCache">
+      <UniqueIdentifier>{df83ce5c-babd-4e14-8d91-36e2910a1323}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\TGitCache\CacheInterface.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ContextMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Git\Git.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Git\GitAdminDir.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Git\GitFolderStatus.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Git\GitIndex.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GITPropertyPage.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Git\GitRev.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Git\GitStatus.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="IconOverlay.cpp">
@@ -51,16 +42,10 @@
     <ClCompile Include="MenuInfo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Utils\PathUtils.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="PIDL.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PreserveChdir.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Utils\Registry.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RemoteCacheLink.cpp">
@@ -78,32 +63,59 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Utils\StringUtils.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Utils\SysInfo.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Git\TGitPath.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="TortoiseGIT.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Utils\UnicodeUtils.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\Git\GitIndex.cpp">
+      <Filter>Git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Git\GitFolderStatus.cpp">
+      <Filter>Git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Git\GitAdminDir.cpp">
+      <Filter>Git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Git\Git.cpp">
+      <Filter>Git</Filter>
     </ClCompile>
     <ClCompile Include="..\Utils\DebugOutput.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="..\Utils\MiscUI\IconBitmapUtils.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\TGitCache\CacheInterface.cpp">
+      <Filter>TGitCache</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Git\GitRev.cpp">
+      <Filter>Git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Git\GitStatus.cpp">
+      <Filter>Git</Filter>
     </ClCompile>
     <ClCompile Include="..\Utils\ReaderWriterLock.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\UnicodeUtils.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\SysInfo.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\StringUtils.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\Registry.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Git\TGitPath.cpp">
+      <Filter>Git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\PathUtils.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\IconBitmapUtils.cpp">
+      <Filter>Utils\MiscUI</Filter>
     </ClCompile>
     <ClCompile Include="..\Git\MassiveGitTaskBase.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Git</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -127,16 +139,10 @@
     <ClInclude Include="ItemIDList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Utils\PathUtils.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="PIDL.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PreserveChdir.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Utils\registry.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RemoteCacheLink.h">
@@ -160,23 +166,65 @@
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Utils\StringUtils.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Utils\SysInfo.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\Utils\DebugOutput.h">
+      <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\UnicodeUtils.h">
-      <Filter>Header Files</Filter>
+      <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="..\Utils\DebugOutput.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\Utils\SysInfo.h">
+      <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="..\Utils\MiscUI\IconBitmapUtils.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\Utils\StringUtils.h">
+      <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\ReaderWriterLock.h">
-      <Filter>Header Files</Filter>
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\registry.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\PathUtils.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\IconBitmapUtils.h">
+      <Filter>Utils\MiscUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Git\Git.h">
+      <Filter>Git</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Git\GitAdminDir.h">
+      <Filter>Git</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Git\GitFolderStatus.h">
+      <Filter>Git</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Git\GitForWindows.h">
+      <Filter>Git</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Git\GitHash.h">
+      <Filter>Git</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Git\gitindex.h">
+      <Filter>Git</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Git\GitRev.h">
+      <Filter>Git</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Git\GitStatus.h">
+      <Filter>Git</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Git\TGitPath.h">
+      <Filter>Git</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Git\gittype.h">
+      <Filter>Git</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Git\MassiveGitTaskBase.h">
+      <Filter>Git</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TGitCache\CacheInterface.h">
+      <Filter>TGitCache</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

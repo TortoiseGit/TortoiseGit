@@ -53,6 +53,13 @@
 #include "svn_error_codes.h"
 #pragma warning(pop)
 
+#include "DebugOutput.h"
+
+#pragma warning(push)
+#include "git2.h"
+#pragma warning(pop)
+#include "SmartLibgit2Ref.h"
+
 #define USE_GDI_GRADIENT
 
 #define XMESSAGEBOX_APPREGPATH "Software\\TortoiseGitMerge\\"
