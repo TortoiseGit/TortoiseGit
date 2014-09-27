@@ -41,6 +41,7 @@
 #include "TaskbarUUID.h"
 #include "ProjectProperties.h"
 #include "HistoryCombo.h"
+#include "gitindex.h"
 #include <math.h>
 
 #define STRUCT_IOVEC_DEFINED
@@ -93,6 +94,7 @@ CString g_sGroupingUUID;
 CString g_sGroupingIcon;
 bool g_bGroupingRemoveIcon = false;
 HWND hWndExplorer;
+CGitIndexFileMap g_IndexFileMap;
 
 #if ENABLE_CRASHHANLDER
 CCrashReportTGit crasher(L"TortoiseGit " _T(APP_X64_STRING), TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD, TGIT_VERDATE);

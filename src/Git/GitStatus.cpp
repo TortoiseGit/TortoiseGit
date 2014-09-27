@@ -27,7 +27,7 @@
 #include "ShellCache.h"
 
 extern CGitAdminDirMap g_AdminDirMap;
-CGitIndexFileMap g_IndexFileMap;
+extern CGitIndexFileMap g_IndexFileMap;
 CGitHeadFileMap g_HeadFileMap;
 CGitIgnoreList  g_IgnoreList;
 

@@ -34,6 +34,7 @@
 #include "SmartHandle.h"
 #include "DllVersion.h"
 #include "CreateProcessHelper.h"
+#include "gitindex.h"
 
 #ifndef GET_X_LPARAM
 #define GET_X_LPARAM(lp)                        ((int)(short)LOWORD(lp))
@@ -62,6 +63,7 @@ HWND				hTrayWnd;
 TCHAR				szCurrentCrawledPath[MAX_CRAWLEDPATHS][MAX_CRAWLEDPATHSLEN];
 int					nCurrentCrawledpathIndex = 0;
 CComAutoCriticalSection critSec;
+CGitIndexFileMap g_IndexFileMap;
 
 volatile LONG		nThreadCount = 0;
 
