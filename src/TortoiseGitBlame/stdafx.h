@@ -54,7 +54,8 @@
 #include <set>
 #include <algorithm>
 
-
+#define USE_GDI_GRADIENT
+#define HISTORYCOMBO_WITH_SYSIMAGELIST
 
 #ifdef _UNICODE
 #if defined _M_IX86

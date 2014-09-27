@@ -514,7 +514,7 @@ void CACEdit::ReadDirectory(CString m_Dir)
 	// vorheriges Verzeichnis einlesen.
 	if (m_Dir.Right(1) != _T('\\'))
 	{
-		_tsplitpath(m_Dir, m_szDrive, m_szDir, m_szFname, m_szExt);
+		_tsplitpath_s(m_Dir, m_szDrive, m_szDir, m_szFname, m_szExt);
 		m_Dir.Format(_T("%s%s"),m_szDrive, m_szDir);
 	}
 

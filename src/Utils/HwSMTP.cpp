@@ -1437,7 +1437,7 @@ CMultiByteString::CMultiByteString( LPCTSTR lpszOrg, int nOrgStringEncodeType/*=
 	else
 	{
 		m_nCharactersNumber = __min ( m_nCharactersNumber, (int)(m_nDataSize/sizeof(char)-1) );
-		strncpy ( m_pszData, (const char*)lpszOrg, m_nCharactersNumber );
+		strncpy_s(m_pszData, m_nCharactersNumber, (const char*)lpszOrg, m_nCharactersNumber);
 		m_nCharactersNumber = (int)strlen ( m_pszData );
 	}
 	m_nDataSize = ( m_nCharactersNumber + 1 ) * sizeof(char);
@@ -1572,7 +1572,7 @@ CString FormatString ( LPCTSTR lpszStr, ... )
 
 		va_list  va;
 		va_start (va, lpszStr);
-		int nLen = _vsnprintf_hw ((TCHAR*)buf, nBufCount-sizeof(TCHAR), lpszStr, va);
+		int nLen = _vsnprintf_hw((TCHAR*)buf, nBufCount, _TRUNCATE, lpszStr, va);
 		va_end(va);
 		if ( nLen <= (int)(nBufCount-sizeof(TCHAR)) )
 			break;

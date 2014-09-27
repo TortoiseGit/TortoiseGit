@@ -6,9 +6,9 @@
 // _vsnprintf º¯Êý
 #ifndef _vsnprintf_hw
 #ifdef UNICODE
-#define _vsnprintf_hw _vsnwprintf
+#define _vsnprintf_hw _vsnwprintf_s
 #else
-#define _vsnprintf_hw _vsnprintf
+#define _vsnprintf_hw _vsnprintf_s
 #endif
 #endif
 #define HANDLE_IS_VALID(h) ( (HANDLE)(h)!=NULL && (HANDLE)(h)!=INVALID_HANDLE_VALUE )
