@@ -842,6 +842,20 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 					Refresh();
 			}
 			break;
+		case ID_CLEANUP:
+			{
+				CString sCmd;
+				sCmd.Format(_T("/command:cleanup /path:\"%s\""), g_Git.m_CurrentDir);
+				CAppUtils::RunTortoiseGitProc(sCmd);
+			}
+			break;
+		case ID_SUBMODULE_UPDATE:
+			{
+				CString sCmd;
+				sCmd.Format(_T("/command:subupdate /bkpath:\"%s\""), g_Git.m_CurrentDir);
+				CAppUtils::RunTortoiseGitProc(sCmd);
+			}
+			break;
 		case ID_SHOWBRANCHES:
 			{
 				CString cmd;
