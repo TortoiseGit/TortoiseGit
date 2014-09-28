@@ -114,7 +114,7 @@ static bool GetFilesToCleanUp(CTGitPathList& delList, const CString& baseCmd, CG
 {
 	CString cmd(baseCmd);
 	if (!path.IsEmpty())
-		cmd += _T(" \"") + path + _T("\"");
+		cmd += _T(" -- \"") + path + _T("\"");
 
 	CString cmdout, cmdouterr;
 	if (pGit->Run(cmd, &cmdout, &cmdouterr, CP_UTF8))
@@ -207,7 +207,7 @@ static bool DoCleanUp(const CTGitPathList& pathList, int cleanType, bool bDir, b
 				path = pathList[i].GetContainingDirectory().GetGitPathString();
 
 			progress.m_GitDirList.push_back(g_Git.m_CurrentDir);
-			progress.m_GitCmdList.push_back(cmd + _T(" \"") + path + _T("\""));
+			progress.m_GitCmdList.push_back(cmd + _T(" -- \"") + path + _T("\""));
 		}
 
 		for (CString dir : submoduleList)
