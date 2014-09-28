@@ -110,6 +110,49 @@ static bool GetSubmodulePathList(SubmodulePayload &payload)
 	return true;
 }
 
+static bool GetFilesToCleanUp(CTGitPathList& delList, const CString& baseCmd, CGit *pGit, const CString& path, const boolean quotepath, CSysProgressDlg& sysProgressDlg)
+{
+	CString cmd(baseCmd);
+	if (!path.IsEmpty())
+		cmd += _T(" \"") + path + _T("\"");
+
+	CString cmdout, cmdouterr;
+	if (pGit->Run(cmd, &cmdout, &cmdouterr, CP_UTF8))
+	{
+		MessageBox(nullptr, cmdouterr, _T("TortoiseGit"), MB_ICONERROR);
+		return false;
+	}
+
+	if (sysProgressDlg.HasUserCancelled())
+	{
+		CMessageBox::Show(nullptr, IDS_SVN_USERCANCELLED, IDS_APPNAME, MB_OK);
+		return false;
+	}
+
+	int pos = 0;
+	CString token = cmdout.Tokenize(_T("\n"), pos);
+	while (!token.IsEmpty())
+	{
+		if (token.Mid(0, 13) == _T("Would remove "))
+		{
+			CString tempPath = token.Mid(13).TrimRight();
+			if (quotepath)
+				tempPath = UnescapeQuotePath(tempPath.Trim(_T('"')));
+			delList.AddPath(pGit->CombinePath(tempPath));
+		}
+
+		token = cmdout.Tokenize(_T("\n"), pos);
+	}
+
+	if (sysProgressDlg.HasUserCancelled())
+	{
+		CMessageBox::Show(nullptr, IDS_SVN_USERCANCELLED, IDS_APPNAME, MB_OK);
+		return false;
+	}
+
+	return true;
+}
+
 static bool DoCleanUp(const CTGitPathList& pathList, int cleanType, bool bDir, bool bSubmodules, bool bDryRun, bool bNoRecycleBin)
 {
 	CString cmd;
@@ -212,55 +255,24 @@ static bool DoCleanUp(const CTGitPathList& pathList, int cleanType, bool bDir, b
 		bool quotepath = g_Git.GetConfigValueBool(_T("core.quotepath"));
 
 		CTGitPathList delList;
-		for (size_t i = 0; i <= submoduleList.size(); ++i)
+		for (int i = 0; i < pathList.GetCount(); ++i)
+		{
+			CString path;
+			if (pathList[i].IsDirectory())
+				path = pathList[i].GetGitPathString();
+			else
+				path = pathList[i].GetContainingDirectory().GetGitPathString();
+
+			if (!GetFilesToCleanUp(delList, cmd, &g_Git, path, quotepath, sysProgressDlg))
+				return false;
+		}
+
+		for (CString dir : submoduleList)
 		{
 			CGit git;
-			CGit *pGit;
-			if (i == 0)
-				pGit = &g_Git;
-			else
-			{
-				git.m_CurrentDir = submoduleList[i - 1];
-				pGit = &git;
-			}
-			CString cmdout, cmdouterr;
-			if (pGit->Run(cmd, &cmdout, &cmdouterr, CP_UTF8))
-			{
-				MessageBox(nullptr, cmdouterr, _T("TortoiseGit"), MB_ICONERROR);
+			git.m_CurrentDir = dir;
+			if (!GetFilesToCleanUp(delList, cmd, &git, _T(""), quotepath, sysProgressDlg))
 				return false;
-			}
-
-			if (sysProgressDlg.HasUserCancelled())
-			{
-				CMessageBox::Show(nullptr, IDS_SVN_USERCANCELLED, IDS_APPNAME, MB_OK);
-				return false;
-			}
-
-			int pos = 0;
-			CString token = cmdout.Tokenize(_T("\n"), pos);
-			while (!token.IsEmpty())
-			{
-				if (token.Mid(0, 13) == _T("Would remove "))
-				{
-					CString tempPath = token.Mid(13).TrimRight();
-					if (quotepath)
-					{
-						tempPath = UnescapeQuotePath(tempPath.Trim(_T('"')));
-					}
-					if (i == 0)
-						delList.AddPath(CTGitPath(tempPath));
-					else
-						delList.AddPath(CTGitPath(submoduleList[i - 1] + "/" + tempPath));
-				}
-
-				token = cmdout.Tokenize(_T("\n"), pos);
-			}
-
-			if (sysProgressDlg.HasUserCancelled())
-			{
-				CMessageBox::Show(nullptr, IDS_SVN_USERCANCELLED, IDS_APPNAME, MB_OK);
-				return false;
-			}
 		}
 
 		delList.DeleteAllFiles(true, false);
