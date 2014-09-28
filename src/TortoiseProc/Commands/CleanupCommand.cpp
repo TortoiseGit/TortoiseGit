@@ -175,9 +175,9 @@ static bool DoCleanUp(const CTGitPathList& pathList, int cleanType, bool bDir, b
 	}
 
 	STRING_VECTOR submoduleList;
-	SubmodulePayload payload(submoduleList);
 	if (bSubmodules)
 	{
+		SubmodulePayload payload(submoduleList);
 		payload.basePath = CTGitPath(g_Git.m_CurrentDir).GetGitPathString();
 		if (pathList.GetCount() != 1 || pathList.GetCount() == 1 && !pathList[0].IsEmpty())
 		{
@@ -210,13 +210,10 @@ static bool DoCleanUp(const CTGitPathList& pathList, int cleanType, bool bDir, b
 			progress.m_GitCmdList.push_back(cmd + _T(" \"") + path + _T("\""));
 		}
 
-		if (bSubmodules)
+		for (CString dir : submoduleList)
 		{
-			for (CString dir : submoduleList)
-			{
-				progress.m_GitDirList.push_back(CTGitPath(dir).GetWinPathString());
-				progress.m_GitCmdList.push_back(cmd);
-			}
+			progress.m_GitDirList.push_back(CTGitPath(dir).GetWinPathString());
+			progress.m_GitCmdList.push_back(cmd);
 		}
 
 		progress.m_PostCmdCallback = [&](DWORD status, PostCmdList& postCmdList)
