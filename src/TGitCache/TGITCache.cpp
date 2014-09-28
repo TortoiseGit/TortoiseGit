@@ -63,6 +63,18 @@ HWND				hTrayWnd;
 TCHAR				szCurrentCrawledPath[MAX_CRAWLEDPATHS][MAX_CRAWLEDPATHSLEN];
 int					nCurrentCrawledpathIndex = 0;
 CComAutoCriticalSection critSec;
+
+// must put this before any global variables that auto free git objects,
+// so this destructor is called after freeing git objects
+class CGit2InitClass
+{
+public:
+	~CGit2InitClass()
+	{
+		git_threads_shutdown();
+	}
+} git2init;
+
 CGitIndexFileMap g_IndexFileMap;
 
 volatile LONG		nThreadCount = 0;
@@ -264,7 +276,6 @@ int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR lp
 	Shell_NotifyIcon(NIM_DELETE,&niData);
 	CGitStatusCache::Destroy();
 	HandleRestart();
-	git_threads_shutdown();
 	return 0;
 }
 
