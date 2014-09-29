@@ -984,33 +984,31 @@ void CLogDlg::GoBack()
 {
 	m_LogList.m_highlight.Empty();
 	CGitHash gotoHash;
-	if (!m_LogList.m_selectionHistory.GoBack(gotoHash))
+	BOOL reachFirstOne = m_LogList.m_selectionHistory.GoBack(gotoHash);
+	int i;
+	for (i = 0; i < m_LogList.m_arShownList.GetCount(); ++i)
 	{
-		int i;
-		for (i = 0; i < m_LogList.m_arShownList.GetCount(); ++i)
+		GitRev *rev = (GitRev *)m_LogList.m_arShownList.SafeGetAt(i);
+		if (!rev) continue;
+		if (rev->m_CommitHash == gotoHash)
 		{
-			GitRev *rev = (GitRev *)m_LogList.m_arShownList.SafeGetAt(i);
-			if (!rev) continue;
-			if (rev->m_CommitHash == gotoHash)
-			{
-				m_LogList.m_highlight = gotoHash;
-				m_LogList.EnsureVisible(i, FALSE);
-				m_LogList.Invalidate();
-				return;
-			}
+			m_LogList.m_highlight = gotoHash;
+			m_LogList.EnsureVisible(i, FALSE);
+			m_LogList.Invalidate();
+			break;
 		}
-		if (i == m_LogList.m_arShownList.GetCount())
-			MessageBox(gotoHash.ToString() + L"is NOT visiable!", _T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
 	}
-	m_LogList.Invalidate();
-	PlaySound((LPCTSTR)SND_ALIAS_SYSTEMASTERISK, nullptr, SND_ASYNC | SND_ALIAS_ID);
+	if (i == m_LogList.m_arShownList.GetCount())
+		MessageBox(gotoHash.ToString() + L"is NOT visiable!", _T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
+	if (reachFirstOne)
+		PlaySound((LPCTSTR)SND_ALIAS_SYSTEMASTERISK, nullptr, SND_ASYNC | SND_ALIAS_ID);
 }
 
 void CLogDlg::GoForward()
 {
 	m_LogList.m_highlight.Empty();
 	CGitHash gotoHash;
-	if (!m_LogList.m_selectionHistory.GoForward(gotoHash))
+	if (m_LogList.m_selectionHistory.GoForward(gotoHash))
 	{
 		int i;
 		for (i = 0; i < m_LogList.m_arShownList.GetCount(); ++i)

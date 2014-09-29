@@ -85,49 +85,63 @@ public:
 		ATLTRACE(L"Add Hash:" + hash.ToString() + L" for selected hisgory\n");
 		if (hash.IsEmpty())
 			return;
-		if (location > 0 && lastselected[location - 1] == hash)
-			return;
-		if (location != lastselected.size() && hash == lastselected[location - 1])
+
+		size_t size = lastselected.size();
+
+		// re-select last selected commit
+		if (size > 0 && hash == lastselected[size - 1])
 		{
-			++location;
+			// reset location
+			if (location != size - 1)
+				location = size - 1;
 			return;
 		}
-		while (location < lastselected.size())
+
+		// go back to some commit and re-select it, so discard the tail
+		if (size > 0 && location >= 0 && location != size - 1 && hash == lastselected[location])
 		{
-			lastselected.pop_back();
+			while (lastselected.size() - 1 > location)
+				lastselected.pop_back();
+			return;
 		}
-		lastselected.push_back(hash);
-		++location;
+
+		// check if list is full
 		if (lastselected.size() >= HISTORYLENGTH)
 			lastselected.erase(lastselected.cbegin());
+
+		// add new one
+		lastselected.push_back(hash);
+
+		// reset location
+		location = lastselected.size() - 1;
 	}
 	BOOL GoBack(CGitHash& historyEntry)
 	{
-		if (location < 1)
-			return -1;
+		if (location >= 1)
+			--location;
 
-		historyEntry = lastselected[--location];
+		historyEntry = lastselected[location];
 
 		size_t i;
 		ATLTRACE(L"GoBack - dump history:\n");
 		for (i = 0; i < lastselected.size(); ++i)
 			ATLTRACE(lastselected[i].ToString() + (i == location ? L"*\n" : L"\n"));
 
-		return 0;
+		return location == 0;
 	}
 	BOOL GoForward(CGitHash& historyEntry)
 	{
-		if (location >= lastselected.size())
-			return -1;
+		if (location >= lastselected.size() - 1)
+			return FALSE;
 
-		historyEntry = lastselected[location++];
+		historyEntry = lastselected[++location];
 
 		size_t i;
 		ATLTRACE(L"GoForward - dump history:\n");
 		for (i = 0; i < lastselected.size(); ++i)
 			ATLTRACE(lastselected[i].ToString() + (i == location ? L"*\n" : L"\n"));
 
-		return 0;
+		return TRUE;
 	}
 private:
 	std::vector<CGitHash> lastselected;
