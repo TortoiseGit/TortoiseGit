@@ -1042,7 +1042,7 @@ CSimpleIniTempl<SI_CHAR,SI_STRLESS,SI_CONVERTER>::IsMultiLineData(
 
     // embedded newlines
     while (*a_pData) {
-        if (IsNewLineChar(*a_pData)) {
+        if (IsNewLineChar(*++a_pData)) {
             return true;
         }
     }
