@@ -1544,8 +1544,11 @@ void CLogDlg::OnLvnItemchangedLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 		}
 		if (pNMLV->uChanged & LVIF_STATE)
 		{
-			m_LogList.m_selectionHistory.Add(m_LogList.m_lastSelectedHash);
-			m_LogList.m_lastSelectedHash = pLogEntry->m_CommitHash;
+			if (pNMLV->uNewState & LVIS_SELECTED)
+			{
+				m_LogList.m_selectionHistory.Add(m_LogList.m_lastSelectedHash);
+				m_LogList.m_lastSelectedHash = pLogEntry->m_CommitHash;
+			}
 			FillLogMessageCtrl();
 			UpdateData(FALSE);
 		}
