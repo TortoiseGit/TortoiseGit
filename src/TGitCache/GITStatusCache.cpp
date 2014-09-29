@@ -43,6 +43,10 @@ void CGitStatusCache::Create()
 	m_pInstance = new CGitStatusCache;
 
 	m_pInstance->watcher.SetFolderCrawler(&m_pInstance->m_folderCrawler);
+
+	if (!CRegStdDWORD(_T("Software\\TortoiseGit\\CacheSave"), TRUE))
+		return;
+
 #define LOADVALUEFROMFILE(x) if (fread(&x, sizeof(x), 1, pFile)!=1) goto exit;
 #define LOADVALUEFROMFILE2(x) if (fread(&x, sizeof(x), 1, pFile)!=1) goto error;
 	unsigned int value = (unsigned int)-1;
@@ -145,6 +149,9 @@ error:
 
 bool CGitStatusCache::SaveCache()
 {
+	if (!CRegStdDWORD(_T("Software\\TortoiseGit\\CacheSave"), TRUE))
+		return false;
+
 #define WRITEVALUETOFILE(x) if (fwrite(&x, sizeof(x), 1, pFile)!=1) goto error;
 	unsigned int value = 0;
 	// save the cache to disk
