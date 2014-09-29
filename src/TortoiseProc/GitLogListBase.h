@@ -77,6 +77,7 @@ class SelectionHistory
 public:
 	SelectionHistory(void)
 	: location(0)
+	, willDiscardForward(FALSE)
 	{
 		lastselected.reserve(HISTORYLENGTH);
 	}
@@ -97,12 +98,19 @@ public:
 			return;
 		}
 
-		// go back to some commit and re-select it, so discard the tail
+		// go back to some commit and re-select it, it may be a forked point.
 		if (size > 0 && location >= 0 && location != size - 1 && hash == lastselected[location])
 		{
+			willDiscardForward = TRUE;
+			return;
+		}
+
+		// a new forked entry is really coming
+		if (willDiscardForward)
+		{
+			willDiscardForward = FALSE;
 			while (lastselected.size() - 1 > location)
 				lastselected.pop_back();
-			return;
 		}
 
 		// check if list is full
@@ -146,6 +154,7 @@ public:
 private:
 	std::vector<CGitHash> lastselected;
 	size_t location;
+	BOOL willDiscardForward;
 };
 
 class CThreadSafePtrArray: public CPtrArray
