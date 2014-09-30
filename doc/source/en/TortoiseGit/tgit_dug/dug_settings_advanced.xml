@@ -58,6 +58,18 @@
             </listitem>
         </varlistentry>
         <varlistentry>
+            <term condition="pot">CacheSave</term>
+            <listitem>
+                <para>
+                    To disable loading and saving cache for the TGitCache program, set
+                    this value to <literal>false</literal>.
+                    This is useful if you do not want to write the cache to disk,
+                    which can be a large file.
+                    The default is <literal>true</literal>.
+                </para>
+            </listitem>
+        </varlistentry>
+        <varlistentry>
             <term condition="pot">Debug</term>
             <listitem>
                 <para>
