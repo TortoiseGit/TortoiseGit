@@ -620,6 +620,18 @@ TortoiseGitProc.exe /command:log /path:"c:\git_wc\file1.txt"
                  /startrev:master~100 /endrev:master
 </screen>
 		</para>
+		<para>
+			<tip>
+				<para>
+					When calling TortoiseGit from within the msys environment, you can also use more *nix style command line parameters:
+					<screen>
+TortoiseGitProc.exe -command commit
+                    -path "d:\git_wc\file1.txt*c:\git_wc\file2.txt"
+                    -logmsg "test log message" -closeonend 2
+					</screen>
+				</para>
+			</tip>
+		</para>
 	</sect1>
 
 	<sect1 id="tgit-automation-idiff">
