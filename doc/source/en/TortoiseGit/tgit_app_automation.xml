@@ -56,11 +56,6 @@
 			from your batch file.
 		</para>
 		<para>
-			To specify a different location of the configuration file, use the parameter
-			<option>/configdir:"path\to\config\directory"</option>.
-			This will override the default path, including any registry setting.
-		</para>
-		<para>
 			To close the (git.exe) progress dialog at the end of a command automatically without
 			using the permanent setting you can pass the <option>/closeonend</option>
 			parameter.
