@@ -43,6 +43,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\Git\Git.cpp" />
+    <ClCompile Include="..\..\src\Git\MassiveGitTaskBase.cpp" />
     <ClCompile Include="..\..\src\Utils\DebugOutput.cpp" />
     <ClCompile Include="Cache.cpp" />
     <ClCompile Include="CacheDlg.cpp" />
@@ -64,6 +65,7 @@
     <ClInclude Include="..\..\src\Git\Git.h" />
     <ClInclude Include="..\..\src\Git\GitAdminDir.h" />
     <ClInclude Include="..\..\src\Git\GitHash.h" />
+    <ClInclude Include="..\..\src\Git\MassiveGitTaskBase.h" />
     <ClInclude Include="..\..\src\Git\TGitPath.h" />
     <ClInclude Include="..\..\src\Utils\DebugOutput.h" />
     <ClInclude Include="Cache.h" />
