@@ -178,6 +178,7 @@ public:
 	static int  GetLogOutputEncode(CGit *pGit=&g_Git);
 
 	static bool Pull(bool showPush = false);
+	static bool RebaseAfterFetch(const CString& upstream = _T(""));
 	static bool Fetch(CString remoteName = _T(""), bool allowRebase = false, bool allRemotes = false);
 	static bool Push(CString selectLocalBranch = CString());
 	static bool RequestPull(CString endrevision = _T(""), CString repositoryUrl = _T(""), bool bIsMainWnd = false);
