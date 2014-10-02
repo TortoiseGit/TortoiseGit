@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0"?>
 <Include>
 	<UI>
 		<!-- Add/Remove Programs (ARP) related properties ................................ -->
@@ -117,12 +117,12 @@
 		</Dialog>
 
 		<Dialog Id="AdminInstallPointDlg" Width="370" Height="270" Title="[ProductName] [Setup]" NoMinimize="yes">
-			<Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Text="[ButtonText_Back]">
-				<Publish Event="NewDialog" Value="AdminWelcomeDlg">1</Publish>
-			</Control>
 			<Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Text="[ButtonText_Next]">
 				<Publish Event="SetTargetPath" Value="TARGETDIR">1</Publish>
 				<Publish Event="NewDialog" Value="VerifyReadyDlg">1</Publish>
+			</Control>
+			<Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Text="[ButtonText_Back]">
+				<Publish Event="NewDialog" Value="AdminWelcomeDlg">1</Publish>
 			</Control>
 			<Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="[ButtonText_Cancel]">
 				<Publish Event="SpawnDialog" Value="CancelPopup">1</Publish>
@@ -148,12 +148,12 @@
 		</Dialog>
 
 		<Dialog Id="AdminWelcomeDlg" Width="370" Height="270" Title="[ProductName] [Setup]" NoMinimize="yes">
-			<Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Disabled="yes" Text="[ButtonText_Back]" />
 			<Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Text="[ButtonText_Next]">
 				<Publish Property="InstallMode" Value="Server Image">1</Publish>
 				<Publish Event="ValidateProductID" Value="0">0</Publish>
 				<Publish Event="NewDialog" Value="AdminInstallPointDlg">1</Publish>
 			</Control>
+			<Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Disabled="yes" Text="[ButtonText_Back]" />
 			<Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="[ButtonText_Cancel]">
 				<Publish Event="SpawnDialog" Value="CancelPopup">1</Publish>
 			</Control>
@@ -168,14 +168,14 @@
 		</Dialog>
 
 		<Dialog Id="SSHClient" Width="370" Height="270" Title="[ProductName] [Setup]" NoMinimize="yes">
-			<Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Text="[ButtonText_Back]">
-				<Publish Event="NewDialog" Value="MaintenanceTypeDlg">InstallMode = "Repair" OR InstallMode = "Change"</Publish>
-				<Publish Event="NewDialog" Value="LicenseAgreementDlg">NOT (InstallMode = "Repair" OR InstallMode = "Change")</Publish>
-			</Control>
 			<Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Text="[ButtonText_Next]">
 				<Publish Event="SpawnWaitDialog" Value="WaitForCostingPopup">CostingComplete = 1</Publish>
 				<Publish Event="ValidateProductID" Value="0">0</Publish>
 				<Publish Event="NewDialog" Value="CustomizeDlg">"Yes"</Publish>
+			</Control>
+			<Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Text="[ButtonText_Back]">
+				<Publish Event="NewDialog" Value="MaintenanceTypeDlg">InstallMode = "Repair" OR InstallMode = "Change"</Publish>
+				<Publish Event="NewDialog" Value="LicenseAgreementDlg">NOT (InstallMode = "Repair" OR InstallMode = "Change")</Publish>
 			</Control>
 			<Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="[ButtonText_Cancel]">
 				<Publish Event="SpawnDialog" Value="CancelPopup">1</Publish>
@@ -246,14 +246,14 @@
 		</Dialog>
 
 		<Dialog Id="CustomizeDlg" Width="370" Height="270" Title="[ProductName] [Setup]" NoMinimize="yes" TrackDiskSpace="yes">
+			<Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Text="[ButtonText_Next]">
+				<Publish Event="NewDialog" Value="VerifyReadyDlg">1</Publish>
+				<Subscribe Event="SelectionNoItems" Attribute="Enabled" />
+			</Control>
 			<Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Text="[ButtonText_Back]">
 				<Publish Event="NewDialog" Value="MaintenanceTypeDlg"><![CDATA[InstallMode = "Change" AND NOT OLDSSH = ""]]></Publish>
 				<Publish Event="NewDialog" Value="SSHClient"><![CDATA[OLDSSH = ""]]></Publish>
 				<Publish Event="NewDialog" Value="LicenseAgreementDlg">NOT OLDSSH = "" AND NOT InstallMode = "Change"</Publish>
-			</Control>
-			<Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Text="[ButtonText_Next]">
-				<Publish Event="NewDialog" Value="VerifyReadyDlg">1</Publish>
-				<Subscribe Event="SelectionNoItems" Attribute="Enabled" />
 			</Control>
 			<Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="[ButtonText_Cancel]">
 				<Publish Event="SpawnDialog" Value="CancelPopup">1</Publish>
@@ -354,11 +354,11 @@
 		</Dialog>
 
 		<Dialog Id="ExitDlg" Width="370" Height="270" Title="[ProductName] [Setup]" NoMinimize="yes">
-			<Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Disabled="yes" Text="[ButtonText_Back]" />
 			<Control Id="Finish" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Cancel="yes" Text="[ButtonText_Finish]">
 				<Publish Event="DoAction" Value="ShowChangelogAction">(NOT Installed) AND (ShowChangelogCheck = 1)</Publish>
 				<Publish Event="EndDialog" Value="Return">1</Publish>
 			</Control>
+			<Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Disabled="yes" Text="[ButtonText_Back]" />
 			<Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Disabled="yes" Text="[ButtonText_Cancel]" />
 			<Control Id="BackgroundBitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="234" TabSkip="no" Text="[DialogBitmap]" />
 			<Control Id="Title" Type="Text" X="135" Y="20" Width="220" Height="60" Transparent="yes" NoPrefix="yes">
@@ -386,10 +386,10 @@
 		</Dialog>
 
 		<Dialog Id="FatalErrorDlg" Width="370" Height="270" Title="[ProductName] [Setup]" NoMinimize="yes">
-			<Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Disabled="yes" Text="[ButtonText_Back]" />
 			<Control Id="Finish" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Cancel="yes" Text="[ButtonText_Finish]">
 				<Publish Event="EndDialog" Value="Exit">1</Publish>
 			</Control>
+			<Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Disabled="yes" Text="[ButtonText_Back]" />
 			<Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Disabled="yes" Text="[ButtonText_Cancel]" />
 			<Control Id="Description1" Type="Text" X="135" Y="70" Width="220" Height="40" Transparent="yes" NoPrefix="yes">
 				<Text>[ProductName] setup ended prematurely because of an error. Your system has not been modified. To install this program at a later time, please run the installation again.</Text>
@@ -457,12 +457,12 @@
 		</Dialog>
 
 		<Dialog Id="LicenseAgreementDlg" Width="370" Height="270" Title="[ProductName] [Setup]" NoMinimize="yes">
-			<Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Text="[ButtonText_Back]">
-				<Publish Event="NewDialog" Value="WelcomeDlg">1</Publish>
-			</Control>
 			<Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Text="[ButtonText_Next]">
 				<Publish Event="NewDialog" Value="SSHClient">OLDSSH = ""</Publish>
 				<Publish Event="NewDialog" Value="CustomizeDlg">NOT OLDSSH = ""</Publish>
+			</Control>
+			<Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Text="[ButtonText_Back]">
+				<Publish Event="NewDialog" Value="WelcomeDlg">1</Publish>
 			</Control>
 			<Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="[ButtonText_Cancel]">
 				<Publish Event="SpawnDialog" Value="CancelPopup">1</Publish>
@@ -482,10 +482,10 @@
 		</Dialog>
 
 		<Dialog Id="MaintenanceTypeDlg" Width="370" Height="270" Title="[ProductName] [Setup]" NoMinimize="yes">
+			<Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Disabled="yes" Text="[ButtonText_Next]" />
 			<Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Text="[ButtonText_Back]">
 				<Publish Event="NewDialog" Value="MaintenanceWelcomeDlg">1</Publish>
 			</Control>
-			<Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Disabled="yes" Text="[ButtonText_Next]" />
 			<Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="[ButtonText_Cancel]">
 				<Publish Event="SpawnDialog" Value="CancelPopup">1</Publish>
 			</Control>
@@ -539,11 +539,11 @@
 		</Dialog>
 
 		<Dialog Id="MaintenanceWelcomeDlg" Width="370" Height="270" Title="[ProductName] [Setup]" NoMinimize="yes">
-			<Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Disabled="yes" Text="[ButtonText_Back]" />
 			<Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Text="[ButtonText_Next]">
 				<Publish Event="SpawnWaitDialog" Value="WaitForCostingPopup">CostingComplete = 1</Publish>
 				<Publish Event="NewDialog" Value="MaintenanceTypeDlg">1</Publish>
 			</Control>
+			<Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Disabled="yes" Text="[ButtonText_Back]" />
 			<Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="[ButtonText_Cancel]">
 				<Publish Event="SpawnDialog" Value="CancelPopup">1</Publish>
 			</Control>
@@ -607,8 +607,8 @@
 		</Dialog>
 
 		<Dialog Id="PrepareDlg" Width="370" Height="270" Title="[ProductName] [Setup]" Modeless="yes">
-			<Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Disabled="yes" TabSkip="yes" Text="[ButtonText_Back]" />
 			<Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Disabled="yes" TabSkip="yes" Text="[ButtonText_Next]" />
+			<Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Disabled="yes" TabSkip="yes" Text="[ButtonText_Back]" />
 			<Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Default="yes" Cancel="yes" Text="[ButtonText_Cancel]">
 				<Publish Event="SpawnDialog" Value="CancelPopup">1</Publish>
 			</Control>
@@ -629,8 +629,8 @@
 		</Dialog>
 
 		<Dialog Id="ProgressDlg" Width="370" Height="270" Title="[ProductName] [Setup]" Modeless="yes">
-			<Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Disabled="yes" Text="[ButtonText_Back]" />
 			<Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Disabled="yes" Text="[ButtonText_Next]" />
+			<Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Disabled="yes" Text="[ButtonText_Back]" />
 			<Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Default="yes" Cancel="yes" Text="[ButtonText_Cancel]">
 				<Publish Event="SpawnDialog" Value="CancelPopup">1</Publish>
 			</Control>
@@ -659,7 +659,6 @@
 		</Dialog>
 
 		<Dialog Id="ResumeDlg" Width="370" Height="270" Title="[ProductName] [Setup]" NoMinimize="yes">
-			<Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Disabled="yes" Text="[ButtonText_Back]" />
 			<Control Id="Install" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Text="[ButtonText_Install]" ElevationShield="yes">
 				<Publish Event="SpawnWaitDialog" Value="WaitForCostingPopup">CostingComplete = 1</Publish>
 				<Publish Event="EndDialog" Value="Return"><![CDATA[OutOfDiskSpace <> 1]]></Publish>
@@ -668,6 +667,7 @@
 				<Publish Event="EnableRollback" Value="False"><![CDATA[OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 0 AND PROMPTROLLBACKCOST="D"]]></Publish>
 				<Publish Event="SpawnDialog" Value="OutOfDiskDlg"><![CDATA[(OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 1) OR (OutOfDiskSpace = 1 AND PROMPTROLLBACKCOST="F")]]></Publish>
 			</Control>
+			<Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Disabled="yes" Text="[ButtonText_Back]" />
 			<Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="[ButtonText_Cancel]">
 				<Publish Event="SpawnDialog" Value="CancelPopup">1</Publish>
 			</Control>
@@ -682,10 +682,10 @@
 		</Dialog>
 
 		<Dialog Id="UserExit" Width="370" Height="270" Title="[ProductName] [Setup]" NoMinimize="yes">
-			<Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Disabled="yes" Text="[ButtonText_Back]" />
 			<Control Id="Finish" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Cancel="yes" Text="[ButtonText_Finish]">
 				<Publish Event="EndDialog" Value="Exit">1</Publish>
 			</Control>
+			<Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Disabled="yes" Text="[ButtonText_Back]" />
 			<Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Disabled="yes" Text="[ButtonText_Cancel]" />
 			<Control Id="Description1" Type="Text" X="135" Y="70" Width="220" Height="40" Transparent="yes" NoPrefix="yes">
 				<Text>[ProductName] setup was interrupted. Your system has not been modified. To install this program at a later time, please run the installation again.</Text>
@@ -701,17 +701,17 @@
 		</Dialog>
 
 		<Dialog Id="VerifyReadyDlg" Width="370" Height="270" Title="[ProductName] [Setup]" NoMinimize="yes" TrackDiskSpace="yes">
-			<Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Text="[ButtonText_Back]">
-				<Publish Event="NewDialog" Value="AdminInstallPointDlg"><![CDATA[InstallMode = "Server Image"]]></Publish>
-				<Publish Event="NewDialog" Value="CustomizeDlg"><![CDATA[InstallMode = "Custom" OR InstallMode = "Change" OR InstallMode = "Complete"]]></Publish>
-				<Publish Event="NewDialog" Value="MaintenanceTypeDlg"><![CDATA[InstallMode = "Repair"]]></Publish>
-			</Control>
 			<Control Id="Install" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Text="[ButtonText_Install]" ElevationShield="yes">
 				<Publish Event="EndDialog" Value="Return"><![CDATA[OutOfDiskSpace <> 1]]></Publish>
 				<Publish Event="SpawnDialog" Value="OutOfRbDiskDlg"><![CDATA[OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 0 AND (PROMPTROLLBACKCOST="P" OR NOT PROMPTROLLBACKCOST)]]></Publish>
 				<Publish Event="EndDialog" Value="Return"><![CDATA[OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 0 AND PROMPTROLLBACKCOST="D"]]></Publish>
 				<Publish Event="EnableRollback" Value="False"><![CDATA[OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 0 AND PROMPTROLLBACKCOST="D"]]></Publish>
 				<Publish Event="SpawnDialog" Value="OutOfDiskDlg"><![CDATA[(OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 1) OR (OutOfDiskSpace = 1 AND PROMPTROLLBACKCOST="F")]]></Publish>
+			</Control>
+			<Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Text="[ButtonText_Back]">
+				<Publish Event="NewDialog" Value="AdminInstallPointDlg"><![CDATA[InstallMode = "Server Image"]]></Publish>
+				<Publish Event="NewDialog" Value="CustomizeDlg"><![CDATA[InstallMode = "Custom" OR InstallMode = "Change" OR InstallMode = "Complete"]]></Publish>
+				<Publish Event="NewDialog" Value="MaintenanceTypeDlg"><![CDATA[InstallMode = "Repair"]]></Publish>
 			</Control>
 			<Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="[ButtonText_Cancel]">
 				<Publish Event="SpawnDialog" Value="CancelPopup">1</Publish>
@@ -731,9 +731,6 @@
 		</Dialog>
 
 		<Dialog Id="VerifyRemoveDlg" Width="370" Height="270" Title="[ProductName] [Setup]" NoMinimize="yes" TrackDiskSpace="yes">
-			<Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Default="yes" Text="[ButtonText_Back]">
-				<Publish Event="NewDialog" Value="MaintenanceTypeDlg">1</Publish>
-			</Control>
 			<Control Id="Remove" Type="PushButton" X="236" Y="243" Width="56" Height="17" Text="[ButtonText_Remove]">
 				<Publish Event="Remove" Value="All"><![CDATA[OutOfDiskSpace <> 1]]></Publish>
 				<Publish Event="EndDialog" Value="Return"><![CDATA[OutOfDiskSpace <> 1]]></Publish>
@@ -741,6 +738,9 @@
 				<Publish Event="EndDialog" Value="Return"><![CDATA[OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 0 AND PROMPTROLLBACKCOST="D"]]></Publish>
 				<Publish Event="EnableRollback" Value="False"><![CDATA[OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 0 AND PROMPTROLLBACKCOST="D"]]></Publish>
 				<Publish Event="SpawnDialog" Value="OutOfDiskDlg"><![CDATA[(OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 1) OR (OutOfDiskSpace = 1 AND PROMPTROLLBACKCOST="F")]]></Publish>
+			</Control>
+			<Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Default="yes" Text="[ButtonText_Back]">
+				<Publish Event="NewDialog" Value="MaintenanceTypeDlg">1</Publish>
 			</Control>
 			<Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="[ButtonText_Cancel]">
 				<Publish Event="SpawnDialog" Value="CancelPopup">1</Publish>
@@ -760,9 +760,6 @@
 		</Dialog>
 
 		<Dialog Id="VerifyRepairDlg" Width="370" Height="270" Title="[ProductName] [Setup]" NoMinimize="yes" TrackDiskSpace="yes">
-			<Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Text="[ButtonText_Back]">
-				<Publish Event="NewDialog" Value="MaintenanceTypeDlg">1</Publish>
-			</Control>
 			<Control Id="Repair" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Text="[ButtonText_Repair]">
 				<Publish Event="ReinstallMode" Value="ecmus"><![CDATA[OutOfDiskSpace <> 1]]></Publish>
 				<Publish Event="Reinstall" Value="All"><![CDATA[OutOfDiskSpace <> 1]]></Publish>
@@ -771,6 +768,9 @@
 				<Publish Event="EndDialog" Value="Return"><![CDATA[OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 0 AND PROMPTROLLBACKCOST="D"]]></Publish>
 				<Publish Event="EnableRollback" Value="False"><![CDATA[OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 0 AND PROMPTROLLBACKCOST="D"]]></Publish>
 				<Publish Event="SpawnDialog" Value="OutOfDiskDlg"><![CDATA[(OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 1) OR (OutOfDiskSpace = 1 AND PROMPTROLLBACKCOST="F")]]></Publish>
+			</Control>
+			<Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Text="[ButtonText_Back]">
+				<Publish Event="NewDialog" Value="MaintenanceTypeDlg">1</Publish>
 			</Control>
 			<Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="[ButtonText_Cancel]">
 				<Publish Event="SpawnDialog" Value="CancelPopup">1</Publish>
@@ -800,10 +800,10 @@
 		</Dialog>
 
 		<Dialog Id="WelcomeDlg" Width="370" Height="270" Title="[ProductName] [Setup]" NoMinimize="yes">
-			<Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Disabled="yes" Text="[ButtonText_Back]" />
 			<Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Text="[ButtonText_Next]">
 				<Publish Event="NewDialog" Value="LicenseAgreementDlg">1</Publish>
 			</Control>
+			<Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Disabled="yes" Text="[ButtonText_Back]" />
 			<Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="[ButtonText_Cancel]">
 				<Publish Event="SpawnDialog" Value="CancelPopup">1</Publish>
 			</Control>
