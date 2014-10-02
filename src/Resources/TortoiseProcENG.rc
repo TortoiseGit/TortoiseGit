@@ -337,9 +337,7 @@ BEGIN
     CONTROL         "Automatically check for &newer versions every week",IDC_CHECKNEWERVERSION,
                     "Button",BS_AUTOCHECKBOX | BS_VCENTER | BS_MULTILINE | WS_TABSTOP,14,34,195,26
     PUSHBUTTON      "C&heck now",IDC_CHECKNEWERBUTTON,212,38,72,14
-    LTEXT           "System &sounds",IDC_SOUNDS_TEXT,14,62,192,8
-    PUSHBUTTON      "&Configure",IDC_SOUNDS,212,59,72,14
-    PUSHBUTTON      "Create &Library",IDC_CREATELIB,212,79,72,14
+    PUSHBUTTON      "Create &Library",IDC_CREATELIB,212,59,72,14
     GROUPBOX        "Git for Windows",IDC_STATIC,7,113,286,98
     LTEXT           "Git.exe Path:",IDC_STATIC,16,132,58,8
     EDITTEXT        IDC_MSYSGIT_PATH,78,129,178,14,ES_AUTOHSCROLL

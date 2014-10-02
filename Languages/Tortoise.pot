@@ -506,10 +506,6 @@ msgstr ""
 msgid "&Compressed Graph"
 msgstr ""
 
-#. Resource IDs: (1239)
-msgid "&Configure"
-msgstr ""
-
 #. Resource IDs: (501, 1367, 1471, 57634)
 msgid "&Copy"
 msgstr ""
@@ -8780,10 +8776,6 @@ msgstr ""
 
 #. Resource IDs: (89)
 msgid "System"
-msgstr ""
-
-#. Resource IDs: (1556)
-msgid "System &sounds"
 msgstr ""
 
 #. Resource IDs: (93)
