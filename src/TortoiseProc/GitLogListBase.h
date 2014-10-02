@@ -82,7 +82,7 @@ public:
 	}
 	void Add(CGitHash &hash)
 	{
-		ATLTRACE(hash.ToString() + L"\n");
+		ATLTRACE(L"Add Hash:" + hash.ToString() + L" for selected hisgory\n");
 		if (hash.IsEmpty())
 			return;
 		if (location > 0 && lastselected[location - 1] == hash)
@@ -107,6 +107,12 @@ public:
 			return -1;
 
 		historyEntry = lastselected[--location];
+
+		size_t i;
+		ATLTRACE(L"GoBack - dump history:\n");
+		for (i = 0; i < lastselected.size(); ++i)
+			ATLTRACE(lastselected[i].ToString() + (i == location ? L"*\n" : L"\n"));
+
 		return 0;
 	}
 	BOOL GoForward(CGitHash& historyEntry)
@@ -115,6 +121,12 @@ public:
 			return -1;
 
 		historyEntry = lastselected[location++];
+
+		size_t i;
+		ATLTRACE(L"GoForward - dump history:\n");
+		for (i = 0; i < lastselected.size(); ++i)
+			ATLTRACE(lastselected[i].ToString() + (i == location ? L"*\n" : L"\n"));
+
 		return 0;
 	}
 private:
