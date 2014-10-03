@@ -376,14 +376,13 @@ static int TreewalkCB_FindFileRecentCommit(const char *root, const git_tree_entr
 
 static git_commit * FindFileRecentCommit(git_repository *repository, CString path)
 {
-	if (path.GetLength() >= MAX_PATH)
-		return nullptr;
-
 	CAutoRevwalk walk;
 	if (git_revwalk_new(walk.GetPointer(), repository))
 		return nullptr;
 
 	CStringA pathA = CUnicodeUtils::GetUTF8(path);
+	if (pathA.GetLength() >= MAX_PATH)
+		return nullptr;
 	const char *pathC = pathA;
 	char folder[MAX_PATH] = {0}, file[MAX_PATH] = {0};
 	const char *slash = strrchr(pathC, '/');
