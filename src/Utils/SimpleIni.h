@@ -1072,7 +1072,10 @@ CSimpleIniTempl<SI_CHAR,SI_STRLESS,SI_CONVERTER>::FindMultiLine(
 {
     // skip the "<<<" to get the tag that will end the multiline
     const SI_CHAR * pTagName = a_pVal + 3;
-    a_pVal = a_pData; // real value starts on next line
+#ifdef _WIN32
+	a_pData += 1; // skip the \n of the \r\n
+#endif
+	a_pVal = a_pData; // real value starts on next line
 
     // find the end tag. This tag must start in column 1 and be
     // followed by a newline. No whitespace removal is done while
