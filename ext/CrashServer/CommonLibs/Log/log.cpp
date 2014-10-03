@@ -24,6 +24,10 @@
 #include <crtdbg.h>
 #include "log_media.h"
 
+#ifndef WINAPI_FAMILY_PARTITION
+#define WINAPI_FAMILY_PARTITION(Partition) 0
+#endif
+
 #if WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP)
 #include <VersionHelpers.h>
 #endif
