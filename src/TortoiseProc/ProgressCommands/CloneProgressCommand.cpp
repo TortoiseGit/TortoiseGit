@@ -19,6 +19,7 @@
 #include "stdafx.h"
 #include "CloneProgressCommand.h"
 #include "AppUtils.h"
+#include "../TGitCache/CacheInterface.h"
 
 bool CloneProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, int& /*m_itemCountTotal*/, int& /*m_itemCount*/)
 {
@@ -95,6 +96,7 @@ bool CloneProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, in
 		cloneOpts.checkout_branch = checkout_branch;
 	cloneOpts.checkout_opts = checkout_opts;
 
+	CBlockCacheForPath block(m_targetPathList[0].GetWinPathString());
 	CAutoRepository cloned_repo;
 	if (git_clone(cloned_repo.GetPointer(), CUnicodeUtils::GetUTF8(m_url.GetGitPathString()), CUnicodeUtils::GetUTF8(m_targetPathList[0].GetWinPathString()), &cloneOpts) < 0)
 	{
