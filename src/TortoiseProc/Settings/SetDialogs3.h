@@ -56,11 +56,12 @@ protected:
 	GITSETTINGS_RADIO_EVENT_HANDLE;
 
 	static BOOL CALLBACK EnumLocalesProc(LPTSTR lpLocaleString);
+	void AddLangToCombo(DWORD langID);
 
 private:
 	bool				m_bNeedSave;
 	CToolTips			m_tooltips;
-	static CComboBox	m_langCombo;
+	CComboBox			m_langCombo;
 	CString				m_LogMinSize;
 	BOOL				m_bInheritLogMinSize;
 	CString				m_Border;

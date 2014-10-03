@@ -22,7 +22,7 @@
 #include "ProjectProperties.h"
 #include "SetDialogs3.h"
 
-CComboBox	CSetDialogs3::m_langCombo;
+static std::vector<DWORD> g_langs;
 
 IMPLEMENT_DYNAMIC(CSetDialogs3, ISettingsPropPage)
 CSetDialogs3::CSetDialogs3()
@@ -79,7 +79,10 @@ BOOL CSetDialogs3::OnInitDialog()
 	m_langCombo.AddString(_T("(disable)")); // do not translate, the order matters!
 	m_langCombo.SetItemData(2, (DWORD_PTR)-1);
 	// fill the combo box with all available languages
+	g_langs.clear();
 	EnumSystemLocales(EnumLocalesProc, LCID_SUPPORTED);
+	for (DWORD langID : g_langs)
+		AddLangToCombo(langID);
 
 	m_tooltips.Create(this);
 
@@ -278,7 +281,12 @@ BOOL CSetDialogs3::OnApply()
 BOOL CSetDialogs3::EnumLocalesProc(LPTSTR lpLocaleString)
 {
 	DWORD langID = _tcstol(lpLocaleString, NULL, 16);
+	g_langs.push_back(langID);
+	return TRUE;
+}
 
+void CSetDialogs3::AddLangToCombo(DWORD langID)
+{
 	TCHAR buf[MAX_PATH] = {0};
 	GetLocaleInfo(langID, LOCALE_SNATIVELANGNAME, buf, _countof(buf));
 	CString sLang = buf;
@@ -292,6 +300,4 @@ BOOL CSetDialogs3::EnumLocalesProc(LPTSTR lpLocaleString)
 
 	int index = m_langCombo.AddString(sLang);
 	m_langCombo.SetItemData(index, langID);
-
-	return TRUE;
 }
