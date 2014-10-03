@@ -40,19 +40,34 @@ END
 
 3 TEXTINCLUDE 
 BEGIN
-    "\0"
+    "#if defined(WITH_SENDRPT_INSIDE)\r\n"
+    "  #if defined(USE64)\r\n"
+    "    IDR_SENDRPT             RCDATA                  ""sendrpt.exe""\r\n"
+    "  #else\r\n"
+    "    IDR_SENDRPT             RCDATA                  ""sendrpt.exe""\r\n"
+    "  #endif\r\n"
+    "#endif\0"
 END
 
 #endif    // APSTUDIO_INVOKED
 
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// RCDATA
-//
-
-IDR_SENDRPT             RCDATA                  "sendrpt.exe"
 #endif    // Russian (Russia) resources
 /////////////////////////////////////////////////////////////////////////////
 
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#if defined(WITH_SENDRPT_INSIDE)
+  #if defined(USE64)
+    IDR_SENDRPT             RCDATA                  "sendrpt.exe"
+  #else
+    IDR_SENDRPT             RCDATA                  "sendrpt.exe"
+  #endif
+#endif
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
 

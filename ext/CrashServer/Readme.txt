@@ -1,3 +1,3 @@
 This is the crash report library code from
-http://drdump.com
+https://drdump.com
 Licensed under LGPL

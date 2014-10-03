@@ -1,8 +1,8 @@
-// Copyright 2012 Idol Software, Inc.
+// Copyright 2014 Idol Software, Inc.
 //
-// This file is part of CrashHandler library.
+// This file is part of Doctor Dump SDK.
 //
-// CrashHandler library is free software: you can redistribute it and/or modify
+// Doctor Dump SDK is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
@@ -18,10 +18,13 @@
 #pragma once
 
 #include <dbghelp.h>
+#include <atlstr.h>
+#include <vector>
+#include <map>
 
 struct Config
 {
-    CStringA Prefix;
+    CStringW Prefix;
     CStringW AppName;
     CStringW Company;
     CStringW PrivacyPolicyUrl;
@@ -33,9 +36,28 @@ struct Config
     BOOL     OpenProblemInBrowser;
     BOOL     UseWER;
     DWORD    SubmitterID;
+    BOOL     SendAdditionalDataWithoutApproval;
+    DWORD    FullDumpType;
+    CStringW LangFilePath;
+    CStringW SendRptPath;
+    CStringW DbgHelpPath;
     CStringW ProcessName;
     std::vector<std::pair<CStringW, CStringW> > FilesToAttach;
-    std::vector<std::pair<CStringW, CStringW> > UserInfo;
+    std::map<CStringW, CStringW> UserInfo;
+    CStringW CustomInfo;
+
+    Config()
+    {
+        V[0] = V[1] = V[2] = V[3] = 0;
+        Hotfix = 0;
+        ServiceMode = FALSE;
+        LeaveDumpFilesInTempFolder = FALSE;
+        OpenProblemInBrowser = TRUE;
+        UseWER = FALSE;
+        SubmitterID = 0;
+        SendAdditionalDataWithoutApproval = FALSE;
+        FullDumpType = 0;
+    }
 };
 
 struct Params
@@ -45,4 +67,5 @@ struct Params
     MINIDUMP_EXCEPTION_INFORMATION ExceptInfo;
     BOOL   WasAssert;
     HANDLE ReportReady;
+    CStringA Group;
 };

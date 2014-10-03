@@ -1,8 +1,8 @@
-// Copyright 2012 Idol Software, Inc.
+// Copyright 2014 Idol Software, Inc.
 //
-// This file is part of CrashHandler library.
+// This file is part of Doctor Dump SDK.
 //
-// CrashHandler library is free software: you can redistribute it and/or modify
+// Doctor Dump SDK is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
@@ -20,9 +20,10 @@
 #include "resource.h"       // main symbols
 
 #include <atlhost.h>
-#include <atlapp.h>
-#include <atlctrls.h>
-#include <atlctrlx.h>
+#include "atlapp.h"
+#include "atlctrls.h"
+#include "atlctrlx.h"
+#include "Translator.h"
 
 
 class CStaticEx: public CWindowImpl<CStatic>
@@ -43,16 +44,16 @@ template <DWORD T>
 class CBaseDlgT :
     public CAxDialogImpl<CBaseDlgT<T> >
 {
-    CString m_AppName, m_Company;
     HFONT m_Big;
     CStaticEx m_Header;
 protected:
     typedef CBaseDlgT<T> Base;
     CStaticEx m_Text;
     CProgressBarCtrl m_Progress;
+    Translator& m_translator;
 public:
-    CBaseDlgT(const wchar_t* pszAppName, const wchar_t* pszCompany)
-        : m_AppName(pszAppName), m_Company(pszCompany)
+    CBaseDlgT(Translator& translator)
+        : m_translator(translator)
     {
     }
 
@@ -70,19 +71,19 @@ public:
     //  LRESULT CommandHandler(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
     //  LRESULT NotifyHandler(int idCtrl, LPNMHDR pnmh, BOOL& bHandled);
 
-    CString SubstituteText(const CString& text)
-    {
-        CString res = text;
-        res.Replace(_T("[AppName]"), m_AppName);
-        res.Replace(_T("[Company]"), m_Company);
-        return res;
-    }
-
-    void SubstituteText(CWindow& window)
+    void TranslateWindow(CWindow& window)
     {
         CString text;
         window.GetWindowText(text);
-        window.SetWindowText(SubstituteText(text));
+        if (text.Left(1) == L"@")
+            window.SetWindowText(m_translator.GetString(text.Mid(1)));
+    }
+
+    static BOOL CALLBACK TranslateWindows(HWND hwnd, LPARAM lParam)
+    {
+        CBaseDlgT* self = (CBaseDlgT*)lParam;
+        self->TranslateWindow(CWindow(hwnd));
+        return TRUE;
     }
 
     virtual LRESULT OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
@@ -98,9 +99,8 @@ public:
         lf.lfHeight = 20;
         m_Big = CreateFontIndirect(&lf);
 
-        SubstituteText(*this);
-        SubstituteText(GetDlgItem(IDC_HEADER_TEXT));
-        SubstituteText(GetDlgItem(IDC_TEXT));
+        TranslateWindow(*this);
+        EnumChildWindows(*this, TranslateWindows, (LPARAM)this);
 
         GetDlgItem(IDC_HEADER_TEXT).SetFont(m_Big);
         m_Header.SubclassWindow(GetDlgItem(IDC_HEADER_TEXT));
@@ -129,8 +129,8 @@ public:
 class CSendReportDlg : public CBaseDlgT<IDD_SENDREPORTDLG>
 {
 public:
-    CSendReportDlg(const wchar_t* pszAppName, const wchar_t* pszCompany)
-        : CBaseDlgT(pszAppName, pszCompany)
+    CSendReportDlg(Translator& translator)
+        : CBaseDlgT(translator)
     {
     }
 };
@@ -140,8 +140,8 @@ public:
 class CSendAssertReportDlg : public CBaseDlgT<IDD_SENDASSERTREPORTDLG>
 {
 public:
-    CSendAssertReportDlg(const wchar_t* pszAppName, const wchar_t* pszCompany)
-        : CBaseDlgT(pszAppName, pszCompany)
+    CSendAssertReportDlg(Translator& translator)
+        : CBaseDlgT(translator)
     {
     }
 };
@@ -152,8 +152,8 @@ class CSendFullDumpDlg : public CBaseDlgT<IDD_SENDFULLDUMPDLG>
 {
     bool m_progressBegan;
 public:
-    CSendFullDumpDlg(const wchar_t* pszAppName, const wchar_t* pszCompany)
-        : CBaseDlgT(pszAppName, pszCompany), m_progressBegan(false)
+    CSendFullDumpDlg(Translator& translator)
+        : CBaseDlgT(translator), m_progressBegan(false)
     {
     }
 
@@ -172,8 +172,9 @@ class CSolutionDlg : public CBaseDlgT<IDD_SOLUTIONDLG>
     CStaticEx m_Quest;
     CString m_question;
 public:
-    CSolutionDlg(const wchar_t* pszAppName, const wchar_t* pszCompany, DWORD question)
-        : CBaseDlgT(pszAppName, pszCompany), m_question(MAKEINTRESOURCE(question))
+    enum Type { Read, Install };
+    CSolutionDlg(Translator& translator, Type type)
+        : CBaseDlgT(translator), m_question(m_translator.GetString(type == Read ? L"DoYouWantToReadIt" : L"DoYouWantToInstallIt"))
     {
     }
 
@@ -188,8 +189,8 @@ class CAskSendFullDumpDlg : public CBaseDlgT<IDD_ASKSENDFULLDUMPDLG>
     CRichEditCtrl m_Details;
     CString m_url;
 public:
-    CAskSendFullDumpDlg(const wchar_t* pszAppName, const wchar_t* pszCompany, const wchar_t* pszUrl)
-        : CBaseDlgT(pszAppName, pszCompany), m_url(pszUrl)
+    CAskSendFullDumpDlg(Translator& translator, const wchar_t* pszUrl)
+        : CBaseDlgT(translator), m_url(pszUrl)
     {
     }
 

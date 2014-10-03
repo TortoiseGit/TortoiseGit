@@ -1,8 +1,8 @@
-// Copyright 2012 Idol Software, Inc.
+// Copyright 2014 Idol Software, Inc.
 //
-// This file is part of CrashHandler library.
+// This file is part of Doctor Dump SDK.
 //
-// CrashHandler library is free software: you can redistribute it and/or modify
+// Doctor Dump SDK is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
@@ -20,6 +20,7 @@
 #include "CrashHandlerExport.h"
 #include "..\SendRpt\Config.h"
 #include "..\SendRpt\Serializer.h"
+#include "..\..\CommonLibs\Log\synchro.h"
 #include <signal.h>
 #include <algorithm>
 
@@ -32,60 +33,46 @@ LPTOP_LEVEL_EXCEPTION_FILTER g_prevTopLevelExceptionFilter = NULL;
 // It should not be destroyed on PROCESS_DETACH, because it may be used later if someone will crash on deinitialization
 // so it is on heap, but not static (runtime destroy static objects on PROCESS_DETACH)
 Config* g_pConfig = new Config();
+CriticalSection g_configCS;
 
 DWORD  g_tlsPrevTerminatePtr = TLS_OUT_OF_INDEXES;
 typedef terminate_function (__cdecl *pfn_set_terminate)(terminate_function);
 pfn_set_terminate g_set_terminate = NULL;
 
-enum CrashServerCustomExceptionCodes
+enum DoctorDumpCustomExceptionCodes
 {
-    CRASHSERVER_EXCEPTION_ASSERTION_VIOLATED = CrashHandler::ExceptionAssertionViolated, // 0xCCE17000
-    CRASHSERVER_EXCEPTION_CPP_TERMINATE = 0xCCE17001,
-    CRASHSERVER_EXCEPTION_CPP_PURE_CALL = 0xCCE17002,
-    CRASHSERVER_EXCEPTION_CPP_INVALID_PARAMETER = 0xCCE17003,
+    DOCTORDUMP_EXCEPTION_ASSERTION_VIOLATED = CrashHandler::ExceptionAssertionViolated, // 0xCCE17000
+    DOCTORDUMP_EXCEPTION_CPP_TERMINATE  = 0xCCE17001,
+    DOCTORDUMP_EXCEPTION_CPP_PURE_CALL  = 0xCCE17002,
+    DOCTORDUMP_EXCEPTION_CPP_INVALID_PARAMETER = 0xCCE17003,
 };
 
-void ExtractFileFromResource(HMODULE hModule, DWORD resId, LPCTSTR path)
+class Error: public std::exception
 {
-    HRSRC hDbghelpRes = FindResource(hModule, MAKEINTRESOURCE(resId), RT_RCDATA);
-    if (!hDbghelpRes)
-        throw runtime_error("failed to find file in resources");
+public:
+    Error(const char* format, ...)
+    {
+        va_list ap;
+        va_start(ap, format);
+        m_description.FormatV(format, ap);
+        va_end(ap);
+    }
 
-    HGLOBAL hDbghelpGlobal = LoadResource(hModule, hDbghelpRes);
-    if (!hDbghelpGlobal)
-        throw runtime_error("failed to load file from resources");
+    const char* what() const { return m_description; }
 
-    CAtlFile hFile(CreateFile(path, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL));
-    if (hFile == INVALID_HANDLE_VALUE)
-        throw runtime_error("failed to create file");
-
-    if (FAILED(hFile.Write(LockResource(hDbghelpGlobal), SizeofResource(hModule, hDbghelpRes))))
-        throw runtime_error("failed to write file");
-}
+private:
+    CStringA m_description;
+};
 
 DWORD WINAPI SendReportThread(LPVOID lpParameter)
 {
     InterlockedIncrement(&g_insideCrashHandler);
 
-    //::MessageBoxA(0, "SendReportThread", "SendReportThread", 0);
     MINIDUMP_EXCEPTION_INFORMATION* pExceptInfo = (MINIDUMP_EXCEPTION_INFORMATION*)lpParameter;
     try
     {
-        WCHAR sendRptExe[MAX_PATH], drive[4], dir[MAX_PATH], fname[MAX_PATH], ext[MAX_PATH];
-        GetModuleFileNameW(NULL, sendRptExe, _countof(sendRptExe));
-        _wsplitpath_s(sendRptExe, drive, dir, fname, ext);
-        _wmakepath_s(sendRptExe, drive, dir, L"SendRpt", L".exe");
-        bool localSendRpt = 0 == _waccess_s(sendRptExe, 00/* Existence only */);
-        if (!localSendRpt)
-        {
-            GetTempPathW(_countof(sendRptExe), sendRptExe);
-            wcscat_s(sendRptExe, L"SendRpt.exe");
-
-            ExtractFileFromResource(g_hThisDLL, IDR_SENDRPT, sendRptExe);
-        }
-
-        CString cmd;
-        cmd.Format(_T("\"%s\" "), sendRptExe);
+        CStringW cmd;
+        cmd.Format(L"\"%ls\" ", (LPCWSTR)g_pConfig->SendRptPath);
 
         CHandle hProcess;
         DuplicateHandle(GetCurrentProcess(), GetCurrentProcess(), GetCurrentProcess(), &hProcess.m_h, PROCESS_QUERY_INFORMATION | PROCESS_VM_READ | THREAD_ALL_ACCESS, TRUE, 0);
@@ -93,20 +80,28 @@ DWORD WINAPI SendReportThread(LPVOID lpParameter)
         CHandle hReportReady(CreateEvent(NULL, TRUE, FALSE, NULL));
         SetHandleInformation(hReportReady, HANDLE_FLAG_INHERIT, HANDLE_FLAG_INHERIT);
 
+        auto er = pExceptInfo->ExceptionPointers->ExceptionRecord;
+
         Params param;
         param.Process = hProcess;
         param.ProcessId = GetCurrentProcessId();
         param.ExceptInfo = *pExceptInfo;
-        param.WasAssert = pExceptInfo->ExceptionPointers->ExceptionRecord->ExceptionCode == CRASHSERVER_EXCEPTION_ASSERTION_VIOLATED;
+        param.WasAssert = er->ExceptionCode == DOCTORDUMP_EXCEPTION_ASSERTION_VIOLATED;
         param.ReportReady = hReportReady;
+        if (param.WasAssert && er->NumberParameters == 1 && er->ExceptionInformation[0])
+            param.Group = reinterpret_cast<LPCSTR>(er->ExceptionInformation[0]);
 
         Serializer ser;
-        ser << param << *g_pConfig;
+        ser << param;
+        {
+            CriticalSection::SyncLock lock(g_configCS);
+            ser << *g_pConfig;
+        }
         cmd.Append(ser.GetHex());
 
         STARTUPINFO si = {sizeof(si)};
         PROCESS_INFORMATION pi;
-        if (!CreateProcess(NULL, cmd.GetBuffer(), NULL, NULL, TRUE, 0, NULL, NULL, &si, &pi))
+        if (!CreateProcessW(NULL, cmd.GetBuffer(), NULL, NULL, TRUE, 0, NULL, NULL, &si, &pi))
             throw std::runtime_error("failed to start SendRpt");
         CloseHandle(pi.hThread);
 
@@ -114,10 +109,6 @@ DWORD WINAPI SendReportThread(LPVOID lpParameter)
         DWORD res = WaitForMultipleObjects(_countof(handles), handles, FALSE, INFINITE);
 
         CloseHandle(pi.hProcess);
-
-        // if hReportReady event signaled, SendRpt is still working, so delete only when SendRpt has finished.
-        if (!localSendRpt && handles[res - WAIT_OBJECT_0] == pi.hProcess)
-            DeleteFileW(sendRptExe);
 
         InterlockedDecrement(&g_insideCrashHandler);
 
@@ -160,7 +151,7 @@ LONG SendReport(EXCEPTION_POINTERS* pExceptionPointers)
         SendReportThread(&exceptInfo);
     }
 
-    if (pExceptionPointers->ExceptionRecord->ExceptionCode == CRASHSERVER_EXCEPTION_ASSERTION_VIOLATED)
+    if (pExceptionPointers->ExceptionRecord->ExceptionCode == DOCTORDUMP_EXCEPTION_ASSERTION_VIOLATED)
         return EXCEPTION_CONTINUE_EXECUTION;
 
     return g_pConfig->UseWER ? EXCEPTION_CONTINUE_SEARCH : EXCEPTION_EXECUTE_HANDLER;
@@ -174,6 +165,8 @@ LONG WINAPI TopLevelExceptionFilter(EXCEPTION_POINTERS* pExceptionPointers)
         // This crash has been processed in VectoredExceptionHandler and if we here we want WinQual
         return EXCEPTION_CONTINUE_SEARCH;
     }
+
+    DisableProcessWindowsGhosting();
 
     return SendReport(pExceptionPointers);
 }
@@ -192,7 +185,7 @@ LONG CALLBACK VectoredExceptionHandler(EXCEPTION_POINTERS* pExceptionPointers)
     // Asserts should be handled in VectoredExceptionHandler since EXCEPTION_CONTINUE_EXECUTION is used
     // and __try { ... } __except(EXCEPTION_EXECUTE_HANDLER) { ... } in the way to TopLevelExceptionFilter
     // may break this logic.
-    if (pExceptionPointers->ExceptionRecord->ExceptionCode == CRASHSERVER_EXCEPTION_ASSERTION_VIOLATED)
+    if (pExceptionPointers->ExceptionRecord->ExceptionCode == DOCTORDUMP_EXCEPTION_ASSERTION_VIOLATED)
         return SendReport(pExceptionPointers);
 
     return EXCEPTION_CONTINUE_SEARCH;
@@ -273,14 +266,9 @@ void ReenableSetUnhandledExceptionFilter()
 // This code should be inplace, so it is a macro
 #define SendReportWithCode(code) __try { RaiseException(code, EXCEPTION_NONCONTINUABLE, 0, NULL); } __except(TopLevelExceptionFilter(GetExceptionInformation())) {}
 
-void CrashServer_SendAssertionViolated()
+void SkipDoctorDump_TerminateHandler()
 {
-    RaiseException(CRASHSERVER_EXCEPTION_ASSERTION_VIOLATED, 0, 0, NULL);
-}
-
-void CrashServer_TerminateHandler()
-{
-    SendReportWithCode(CRASHSERVER_EXCEPTION_CPP_TERMINATE);
+    SendReportWithCode(DOCTORDUMP_EXCEPTION_CPP_TERMINATE);
 
     if (g_tlsPrevTerminatePtr != TLS_OUT_OF_INDEXES)
     {
@@ -293,28 +281,28 @@ void CrashServer_TerminateHandler()
         ExitProcess(0);
 }
 
-void CrashServer_PureCallHandler()
+void SkipDoctorDump_PureCallHandler()
 {
-    SendReportWithCode(CRASHSERVER_EXCEPTION_CPP_PURE_CALL);
+    SendReportWithCode(DOCTORDUMP_EXCEPTION_CPP_PURE_CALL);
     ExitProcess(0);
 }
 
-void CrashServer_InvalidParameterHandler(const wchar_t *, const wchar_t *, const wchar_t *, unsigned int, uintptr_t)
+void SkipDoctorDump_InvalidParameterHandler(const wchar_t *, const wchar_t *, const wchar_t *, unsigned int, uintptr_t)
 {
-    SendReportWithCode(CRASHSERVER_EXCEPTION_CPP_INVALID_PARAMETER);
+    SendReportWithCode(DOCTORDUMP_EXCEPTION_CPP_INVALID_PARAMETER);
     ExitProcess(0);
 }
 
-void CrashServer_SigAbrtHandler(int)
+void SkipDoctorDump_SigAbrtHandler(int)
 {
-    SendReportWithCode(CRASHSERVER_EXCEPTION_CPP_TERMINATE);
+    SendReportWithCode(DOCTORDUMP_EXCEPTION_CPP_TERMINATE);
     ExitProcess(0);
 }
 
 void MakePerThreadInitialization()
 {
     if (g_tlsPrevTerminatePtr != TLS_OUT_OF_INDEXES && g_set_terminate)
-        TlsSetValue(g_tlsPrevTerminatePtr, g_set_terminate(CrashServer_TerminateHandler));
+        TlsSetValue(g_tlsPrevTerminatePtr, g_set_terminate(SkipDoctorDump_TerminateHandler));
 }
 
 void InitCrtErrorHandlers()
@@ -327,6 +315,7 @@ void InitCrtErrorHandlers()
         _T("msvcr100"), _T("msvcr100d"),
         _T("msvcr110"), _T("msvcr110d"),
         _T("msvcr120"), _T("msvcr120d"),
+        _T("msvcr130"), _T("msvcr130d"),
     };
 
     HMODULE hMsvcrDll = NULL;
@@ -341,132 +330,227 @@ void InitCrtErrorHandlers()
     typedef _purecall_handler (__cdecl *pfn_set_purecall_handler)(_purecall_handler);
     pfn_set_purecall_handler l_set_purecall_handler = (pfn_set_purecall_handler) GetProcAddress(hMsvcrDll, "_set_purecall_handler");
     if (l_set_purecall_handler)
-        l_set_purecall_handler(CrashServer_PureCallHandler);
+        l_set_purecall_handler(SkipDoctorDump_PureCallHandler);
 
     typedef _invalid_parameter_handler (__cdecl *pfn_set_invalid_parameter_handler)(_invalid_parameter_handler);
     pfn_set_invalid_parameter_handler l_set_invalid_parameter_handler = (pfn_set_invalid_parameter_handler) GetProcAddress(hMsvcrDll, "_set_invalid_parameter_handler");
     if (l_set_invalid_parameter_handler)
-        l_set_invalid_parameter_handler(CrashServer_InvalidParameterHandler);
+        l_set_invalid_parameter_handler(SkipDoctorDump_InvalidParameterHandler);
 
     typedef void (__cdecl *pfn_signal)(int sig, void (__cdecl *func)(int));
     pfn_signal l_signal = (pfn_signal) GetProcAddress(hMsvcrDll, "signal");
     if (l_signal)
-        l_signal(SIGABRT, CrashServer_SigAbrtHandler);
+        l_signal(SIGABRT, SkipDoctorDump_SigAbrtHandler);
+}
+
+CStringW GetProcessName()
+{
+    WCHAR path[MAX_PATH], drive[MAX_PATH], dir[MAX_PATH], fname[MAX_PATH], ext[MAX_PATH];
+    GetModuleFileNameW(NULL, path, _countof(path));
+    _wsplitpath_s(path, drive, dir, fname, ext);
+    CStringW processName = CStringW(fname) + ext;
+    processName.MakeLower();
+    return processName;
 }
 
 BOOL InitCrashHandler(ApplicationInfo* applicationInfo, HandlerSettings* handlerSettings, BOOL ownProcess)
 {
-#define IS_EXIST(field) (FIELD_OFFSET(ApplicationInfo, field) < applicationInfo->ApplicationInfoSize)
-    if (applicationInfo == NULL
-        || applicationInfo->ApplicationInfoSize == 0
-        || applicationInfo->ApplicationInfoSize > sizeof(ApplicationInfo)
-        || !IS_EXIST(ApplicationGUID) || applicationInfo->ApplicationGUID == NULL
-        || !IS_EXIST(Prefix)  || applicationInfo->Prefix == NULL
-        || !IS_EXIST(AppName) || applicationInfo->AppName == NULL
-        || !IS_EXIST(Company) || applicationInfo->Company == NULL)
+    try
     {
-        SetLastError(ERROR_INVALID_PARAMETER);
-        return FALSE;
-    }
+        CriticalSection::SyncLock lock(g_configCS);
 
-    g_pConfig->ApplicationGUID = applicationInfo->ApplicationGUID;
-    g_pConfig->Prefix = applicationInfo->Prefix;
-    g_pConfig->AppName = applicationInfo->AppName;
-    g_pConfig->Company = applicationInfo->Company;
-    if (IS_EXIST(V))
-        memcpy(g_pConfig->V, applicationInfo->V, sizeof(applicationInfo->V));
-    else
-        memset(g_pConfig->V, 0, sizeof(g_pConfig->V));
-    if (IS_EXIST(Hotfix))
-        g_pConfig->Hotfix = applicationInfo->Hotfix;
-    else
-        g_pConfig->Hotfix = 0;
-    if (IS_EXIST(PrivacyPolicyUrl) && applicationInfo->PrivacyPolicyUrl != NULL)
-        g_pConfig->PrivacyPolicyUrl = applicationInfo->PrivacyPolicyUrl;
-    else
-        g_pConfig->PrivacyPolicyUrl.Format(L"http://www.crash-server.com/AppPrivacyPolicy.aspx?AppID=%s", (LPCWSTR)g_pConfig->ApplicationGUID);
+        CStringW processName = GetProcessName();
+
+#define IS_EXIST(field) (FIELD_OFFSET(ApplicationInfo, field) < applicationInfo->ApplicationInfoSize)
+        if (applicationInfo == NULL || applicationInfo->ApplicationInfoSize == 0)
+        {
+            throw Error("Wrong ApplicationInfo size.");
+        }
+
+        if (applicationInfo->ApplicationInfoSize > sizeof(ApplicationInfo))
+        {
+            throw Error("Wrong ApplicationInfo size, should be no more than %d bytes.", sizeof(ApplicationInfo));
+        }
+
+        if (!IS_EXIST(ApplicationGUID) || applicationInfo->ApplicationGUID == NULL
+            || !IS_EXIST(AppName) || applicationInfo->AppName == NULL
+            || !IS_EXIST(Company) || applicationInfo->Company == NULL)
+        {
+            throw Error("Some parameters missing in ApplicationInfo.");
+        }
+
+        g_pConfig->ApplicationGUID = applicationInfo->ApplicationGUID;
+        g_pConfig->Prefix = applicationInfo->Prefix ? CStringW(CA2W(applicationInfo->Prefix)) : processName;
+        g_pConfig->AppName = applicationInfo->AppName;
+        g_pConfig->Company = applicationInfo->Company;
+
+        if (g_pConfig->ApplicationGUID == "00000000-0000-0000-0000-000000000000")
+            throw Error("Generate new GUID for ApplicationGUID.");
+        if (g_pConfig->AppName == "{AppName}")
+            throw Error("Set correct application name.");
+        if (g_pConfig->Company == "{Company}")
+            throw Error("Set correct company name.");
+
+        if (IS_EXIST(V))
+            memcpy(g_pConfig->V, applicationInfo->V, sizeof(applicationInfo->V));
+        else
+            memset(g_pConfig->V, 0, sizeof(g_pConfig->V));
+        if (IS_EXIST(Hotfix))
+            g_pConfig->Hotfix = applicationInfo->Hotfix;
+        else
+            g_pConfig->Hotfix = 0;
+        if (IS_EXIST(PrivacyPolicyUrl) && applicationInfo->PrivacyPolicyUrl != NULL)
+            g_pConfig->PrivacyPolicyUrl = applicationInfo->PrivacyPolicyUrl;
+        else
+            g_pConfig->PrivacyPolicyUrl.Format(L"http://www.drdump.com/AppPrivacyPolicy.aspx?AppID=%s", (LPCWSTR)g_pConfig->ApplicationGUID);
 #undef IS_EXIST
 
 #define IS_EXIST(field) (handlerSettings != NULL && (FIELD_OFFSET(HandlerSettings, field) < handlerSettings->HandlerSettingsSize))
+        if (handlerSettings != NULL && handlerSettings->HandlerSettingsSize > sizeof(HandlerSettings))
+        {
+            throw Error("Wrong HandlerSettings size, should be no more than %d.", sizeof(HandlerSettings));
+        }
 
-    if (handlerSettings != NULL
-        && (handlerSettings->HandlerSettingsSize == 0 || handlerSettings->HandlerSettingsSize > sizeof(HandlerSettings)))
+        if (IS_EXIST(LeaveDumpFilesInTempFolder))
+        {
+            g_pConfig->ServiceMode = handlerSettings->LeaveDumpFilesInTempFolder == 2; // hidden behavior (used for dumpparser)
+            g_pConfig->LeaveDumpFilesInTempFolder = handlerSettings->LeaveDumpFilesInTempFolder != FALSE;
+        }
+        else
+        {
+            g_pConfig->ServiceMode = 0;
+            g_pConfig->LeaveDumpFilesInTempFolder = FALSE;
+        }
+        if (IS_EXIST(OpenProblemInBrowser))
+            g_pConfig->OpenProblemInBrowser = handlerSettings->OpenProblemInBrowser;
+        else
+            g_pConfig->OpenProblemInBrowser = FALSE;
+        if (IS_EXIST(UseWER))
+            g_pConfig->UseWER = handlerSettings->UseWER;
+        else
+            g_pConfig->UseWER = FALSE;
+        if (IS_EXIST(SubmitterID))
+            g_pConfig->SubmitterID = handlerSettings->SubmitterID;
+        else
+            g_pConfig->SubmitterID = 0;
+        if (IS_EXIST(SendAdditionalDataWithoutApproval))
+            g_pConfig->SendAdditionalDataWithoutApproval = handlerSettings->SendAdditionalDataWithoutApproval;
+        else
+            g_pConfig->SendAdditionalDataWithoutApproval = FALSE;
+        if (IS_EXIST(OverrideDefaultFullDumpType) && IS_EXIST(FullDumpType) && handlerSettings->OverrideDefaultFullDumpType)
+            g_pConfig->FullDumpType = handlerSettings->FullDumpType;
+        else
+            g_pConfig->FullDumpType = MiniDumpWithFullMemory;
+        if (IS_EXIST(LangFilePath))
+            g_pConfig->LangFilePath = handlerSettings->LangFilePath;
+        else
+            g_pConfig->LangFilePath = L"";
+        if (IS_EXIST(SendRptPath))
+            g_pConfig->SendRptPath = handlerSettings->SendRptPath;
+        else
+            g_pConfig->SendRptPath = L"";
+        if (IS_EXIST(DbgHelpPath))
+            g_pConfig->DbgHelpPath = handlerSettings->DbgHelpPath;
+        else
+            g_pConfig->DbgHelpPath = L"";
+#undef IS_EXIST
+
+        g_pConfig->ProcessName = processName;
+
+        WCHAR path[MAX_PATH], drive[MAX_PATH], dir[MAX_PATH], fname[MAX_PATH], ext[MAX_PATH];
+        GetModuleFileNameW(g_hThisDLL, path, _countof(path));
+        _wsplitpath_s(path, drive, dir, fname, ext);
+
+        if (g_pConfig->SendRptPath.IsEmpty())
+        {
+            WCHAR sendRptExe[MAX_PATH];
+            _wmakepath_s(sendRptExe, drive, dir, L"SendRpt", L".exe");
+            g_pConfig->SendRptPath = sendRptExe;
+        }
+
+        if (g_pConfig->DbgHelpPath.IsEmpty())
+        {
+            WCHAR dbgHelpDll[MAX_PATH];
+            _wmakepath_s(dbgHelpDll, drive, dir, L"dbghelp", L".dll");
+            g_pConfig->DbgHelpPath = dbgHelpDll;
+        }
+        if (0 != _waccess_s(g_pConfig->DbgHelpPath, 00/* Existence only */))
+        {
+            throw Error("%ls not found.", (LPCWSTR)g_pConfig->SendRptPath);
+        }
+
+        g_ownProcess = ownProcess != FALSE;
+
+        static bool inited = false;
+        if (!inited)
+        {
+            if (g_ownProcess)
+            {
+                // Application verifier sets its own VectoredExceptionHandler
+                // and Application verifier breaks redirected to WinQual.
+                // After that TopLevelExceptionFilter works.
+                // This behavior looks bad and anyway we don't need WinQual.
+                // So we set our VectoredExceptionHandler before AppVerifier and
+                // catch problems first.
+                g_applicationVerifierPresent = GetModuleHandle(_T("verifier.dll")) != NULL;
+                if (g_applicationVerifierPresent)
+                    AddVectoredExceptionHandler(TRUE, VectoredExceptionHandler);
+
+                g_prevTopLevelExceptionFilter = SetUnhandledExceptionFilter(TopLevelExceptionFilter);
+                // There is a lot of libraries that want to set their own wrong UnhandledExceptionFilter in our application.
+                // One of these is MSVCRT with __report_gsfailure and _call_reportfault leading to many
+                // of MSVCRT error reports to be redirected to Dr. Watson.
+                DisableSetUnhandledExceptionFilter();
+
+                InitCrtErrorHandlers();
+                MakePerThreadInitialization();
+            }
+
+            // Need to lock library in process.
+            // Since some crashes appears on process deinitialization and we should be ready to handle it.
+            WCHAR pathToSelf[MAX_PATH];
+            if (0 != GetModuleFileNameW(g_hThisDLL, pathToSelf, _countof(pathToSelf)))
+                LoadLibraryW(pathToSelf);
+
+            inited = true;
+        }
+
+        return TRUE;
+    }
+    catch (std::exception& ex)
     {
+        OutputDebugStringA(ex.what());
+        ::MessageBoxA(0, ex.what(), "CrashHandler initialization error", MB_ICONERROR);
         SetLastError(ERROR_INVALID_PARAMETER);
         return FALSE;
     }
+}
 
-    if (IS_EXIST(LeaveDumpFilesInTempFolder))
-    {
-        g_pConfig->ServiceMode = handlerSettings->LeaveDumpFilesInTempFolder == 2; // hidden behavior (used for dumpparser)
-        g_pConfig->LeaveDumpFilesInTempFolder = handlerSettings->LeaveDumpFilesInTempFolder != FALSE;
-    }
-    else
-    {
-        g_pConfig->ServiceMode = 0;
-        g_pConfig->LeaveDumpFilesInTempFolder = FALSE;
-    }
-    if (IS_EXIST(OpenProblemInBrowser))
-        g_pConfig->OpenProblemInBrowser = handlerSettings->OpenProblemInBrowser;
-    else
-        g_pConfig->OpenProblemInBrowser = FALSE;
-    if (IS_EXIST(UseWER))
-        g_pConfig->UseWER = handlerSettings->UseWER;
-    else
-        g_pConfig->UseWER = FALSE;
-    if (IS_EXIST(SubmitterID))
-        g_pConfig->SubmitterID = handlerSettings->SubmitterID;
-    else
-        g_pConfig->SubmitterID = 0;
-#undef IS_EXIST
-
-    WCHAR path[MAX_PATH], drive[MAX_PATH], dir[MAX_PATH], fname[MAX_PATH], ext[MAX_PATH];
-    GetModuleFileNameW(NULL, path, _countof(path));
-    _wsplitpath_s(path, drive, dir, fname, ext);
-    g_pConfig->ProcessName = CStringW(fname) + ext;
-    g_pConfig->ProcessName.MakeLower();
-
-    g_ownProcess = ownProcess != FALSE;
-
-    static bool inited = false;
-    if (!inited)
-    {
-        if (g_ownProcess)
-        {
-            // Application verifier sets its own VectoredExceptionHandler
-            // and Application verifier breaks redirected to WinQual.
-            // After that TopLevelExceptionFilter works.
-            // This behavior looks bad and anyway we don't need WinQual.
-            // So we set our VectoredExceptionHandler before AppVerifier and
-            // catch problems first.
-            g_applicationVerifierPresent = GetModuleHandle(_T("verifier.dll")) != NULL;
-            if (g_applicationVerifierPresent)
-                AddVectoredExceptionHandler(TRUE, VectoredExceptionHandler);
-
-            g_prevTopLevelExceptionFilter = SetUnhandledExceptionFilter(TopLevelExceptionFilter);
-            // There is a lot of libraries that want to set their own wrong UnhandledExceptionFilter in our application.
-            // One of these is MSVCRT with __report_gsfailure and _call_reportfault leading to many
-            // of MSVCRT error reports to be redirected to Dr. Watson.
-            DisableSetUnhandledExceptionFilter();
-
-            InitCrtErrorHandlers();
-            MakePerThreadInitialization();
-        }
-
-        // Need to lock library in process.
-        // Since some crashes appears on process deinitialization and we should be ready to handle it.
-        LoadLibrary(_T("crshhndl.dll"));
-        inited = true;
-    }
-
-    return TRUE;
+void SetCustomInfo(LPCWSTR text)
+{
+    if (!g_pConfig)
+        return;
+    CriticalSection::SyncLock lock(g_configCS);
+    g_pConfig->CustomInfo = text;
+    const int Limit = 100;
+    if (g_pConfig->CustomInfo.GetLength() > Limit)
+        g_pConfig->CustomInfo = g_pConfig->CustomInfo.Left(Limit);
 }
 
 void AddUserInfoToReport(LPCWSTR key, LPCWSTR value)
 {
     if (!g_pConfig)
         return;
-    g_pConfig->UserInfo.push_back(make_pair(CStringW(key), value));
+    CriticalSection::SyncLock lock(g_configCS);
+    g_pConfig->UserInfo[key] = value;
+}
+
+void RemoveUserInfoFromReport(LPCWSTR key)
+{
+    if (!g_pConfig)
+        return;
+    CriticalSection::SyncLock lock(g_configCS);
+    g_pConfig->UserInfo.erase(key);
 }
 
 void AddFileToReport(LPCWSTR path, LPCWSTR reportFileName)
@@ -484,6 +568,7 @@ void AddFileToReport(LPCWSTR path, LPCWSTR reportFileName)
     {
         fileName = reportFileName;
     }
+    CriticalSection::SyncLock lock(g_configCS);
     g_pConfig->FilesToAttach.push_back(make_pair(CStringW(path), fileName));
 }
 
@@ -491,13 +576,11 @@ void RemoveFileFromReport(LPCWSTR path)
 {
     if (!g_pConfig)
         return;
-/* TODO: needs to be converted to work with VS2008, but atm it's never called */
-#if _MSC_VER >= 1600
+    CriticalSection::SyncLock lock(g_configCS);
     auto it = std::find_if(g_pConfig->FilesToAttach.begin(), g_pConfig->FilesToAttach.end(),
         [path](std::pair<CStringW, CStringW>& x){ return x.first == path; });
     if (it != g_pConfig->FilesToAttach.end())
         g_pConfig->FilesToAttach.erase(it);
-#endif
 }
 
 BOOL GetVersionFromFile(LPCWSTR path, ApplicationInfo* appInfo)

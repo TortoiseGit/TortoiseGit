@@ -1,8 +1,8 @@
-// Copyright 2012 Idol Software, Inc.
+// Copyright 2014 Idol Software, Inc.
 //
-// This file is part of CrashHandler library.
+// This file is part of Doctor Dump SDK.
 //
-// CrashHandler library is free software: you can redistribute it and/or modify
+// Doctor Dump SDK is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
@@ -16,15 +16,16 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "DumpUploaderWebService.h"
-#include "generated\UploaderSoap.nsmap"
+#include "generated/CustomBinding_DumpUploadService3_Uploader.nsmap"
 #include "gsoapWinInet.h"
 #include <sstream>
 #include <atlbase.h>
 #include <atlstr.h>
 
 DumpUploaderWebService::DumpUploaderWebService(int responseTimeoutSec)
-    : UploaderSoapProxy(SOAP_ENC_MTOM|SOAP_IO_KEEPALIVE|SOAP_C_UTFSTRING/*SOAP_C_MBSTRING*/)
-    , m_serviceUrl("https://www.crash-server.com")
+    : Base(SOAP_ENC_MTOM|SOAP_IO_KEEPALIVE|SOAP_C_UTFSTRING/*SOAP_C_MBSTRING*/)
+    , m_testMode(false)
+    , m_serviceUrl("https://www.drdump.com")
 {
     CRegKey reg;
     if (ERROR_SUCCESS == reg.Open(HKEY_LOCAL_MACHINE, _T("Software\\Idol Software\\DumpUploader"), KEY_READ))
@@ -40,6 +41,10 @@ DumpUploaderWebService::DumpUploaderWebService(int responseTimeoutSec)
         DWORD cfgResponseTimeoutSec = 0;
         if (ERROR_SUCCESS == reg.QueryDWORDValue(_T("ResponseTimeoutSec"), cfgResponseTimeoutSec) && cfgResponseTimeoutSec != 0)
             responseTimeoutSec = static_cast<int>(cfgResponseTimeoutSec);
+
+        DWORD testMode = 0;
+        if (ERROR_SUCCESS == reg.QueryDWORDValue(_T("TestMode"), testMode))
+            m_testMode = testMode != 0;
 
 #ifdef _DEBUG // soap_set_*_logfile defined only in DEBUG build of GSOAP
         DWORD traceEnable = FALSE;
@@ -57,7 +62,7 @@ DumpUploaderWebService::DumpUploaderWebService(int responseTimeoutSec)
 #endif
     }
 
-    m_serviceUrl += "/DumpUploader.asmx";
+    m_serviceUrl += "/Service/DumpUploader3.svc";
 
     soap_endpoint = m_serviceUrl.c_str();
     recv_timeout = responseTimeoutSec;
@@ -77,4 +82,27 @@ std::wstring DumpUploaderWebService::GetErrorText()
 void DumpUploaderWebService::SetProgressCallback(pfnProgressCallback progressCallback, LPVOID context)
 {
     wininet_set_progress_callback(this, progressCallback, context);
+}
+
+int DumpUploaderWebService::Hello(_ns1__Hello *ns1__Hello, _ns1__HelloResponse *ns1__HelloResponse)
+{
+    if (!m_testMode)
+        return Base::Hello(ns1__Hello, ns1__HelloResponse);
+
+    return Base::Hello(ns1__Hello, ns1__HelloResponse);
+}
+
+int DumpUploaderWebService::UploadMiniDump(_ns1__UploadMiniDump *ns1__UploadMiniDump, _ns1__UploadMiniDumpResponse *ns1__UploadMiniDumpResponse)
+{
+    return Base::UploadMiniDump(ns1__UploadMiniDump, ns1__UploadMiniDumpResponse);
+}
+
+int DumpUploaderWebService::UploadAdditionalInfo(_ns1__UploadAdditionalInfo *ns1__UploadAdditionalInfo, _ns1__UploadAdditionalInfoResponse *ns1__UploadAdditionalInfoResponse)
+{
+    return Base::UploadAdditionalInfo(ns1__UploadAdditionalInfo, ns1__UploadAdditionalInfoResponse);
+}
+
+int DumpUploaderWebService::UploadSymbol(_ns1__UploadSymbol *ns1__UploadSymbol, _ns1__UploadSymbolResponse *ns1__UploadSymbolResponse)
+{
+    return Base::UploadSymbol(ns1__UploadSymbol, ns1__UploadSymbolResponse);
 }

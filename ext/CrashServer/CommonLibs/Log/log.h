@@ -1,8 +1,8 @@
-// Copyright 2012 Idol Software, Inc.
+// Copyright 2014 Idol Software, Inc.
 //
-// This file is part of CrashHandler library.
+// This file is part of Doctor Dump SDK.
 //
-// CrashHandler library is free software: you can redistribute it and/or modify
+// Doctor Dump SDK is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
@@ -32,20 +32,20 @@ void InitializeLog();
 void FreeLogThreadName();
 void SetLogThreadName(LPCTSTR pszThreadName);
 
-//! Типы сообщений.
+//! РўРёРїС‹ СЃРѕРѕР±С‰РµРЅРёР№.
 enum ELogMessageType
 {
-    eLM_Error,      //!< "Ошибка" - произошёл сбой в работе, дальнейшее выполнение текущего действия невозможно.
-    eLM_Warning,    //!< "Предупреждение" - произошёл сбой в работе, который удалось исправить.
-    eLM_Info,       //!< "Информация" - сообщение о выполнении некоторого действия программой.
-    eLM_Debug,      //!< "Отладка" - сообщение, содержащее отладочную информацию.
-    eLM_DirectOutput //!< Перенаправление в лог вывода внешнего консольного приложения
+    eLM_Error,      //!< "РћС€РёР±РєР°" - РїСЂРѕРёР·РѕС€С‘Р» СЃР±РѕР№ РІ СЂР°Р±РѕС‚Рµ, РґР°Р»СЊРЅРµР№С€РµРµ РІС‹РїРѕР»РЅРµРЅРёРµ С‚РµРєСѓС‰РµРіРѕ РґРµР№СЃС‚РІРёСЏ РЅРµРІРѕР·РјРѕР¶РЅРѕ.
+    eLM_Warning,    //!< "РџСЂРµРґСѓРїСЂРµР¶РґРµРЅРёРµ" - РїСЂРѕРёР·РѕС€С‘Р» СЃР±РѕР№ РІ СЂР°Р±РѕС‚Рµ, РєРѕС‚РѕСЂС‹Р№ СѓРґР°Р»РѕСЃСЊ РёСЃРїСЂР°РІРёС‚СЊ.
+    eLM_Info,       //!< "РРЅС„РѕСЂРјР°С†РёСЏ" - СЃРѕРѕР±С‰РµРЅРёРµ Рѕ РІС‹РїРѕР»РЅРµРЅРёРё РЅРµРєРѕС‚РѕСЂРѕРіРѕ РґРµР№СЃС‚РІРёСЏ РїСЂРѕРіСЂР°РјРјРѕР№.
+    eLM_Debug,      //!< "РћС‚Р»Р°РґРєР°" - СЃРѕРѕР±С‰РµРЅРёРµ, СЃРѕРґРµСЂР¶Р°С‰РµРµ РѕС‚Р»Р°РґРѕС‡РЅСѓСЋ РёРЅС„РѕСЂРјР°С†РёСЋ.
+    eLM_DirectOutput //!< РџРµСЂРµРЅР°РїСЂР°РІР»РµРЅРёРµ РІ Р»РѕРі РІС‹РІРѕРґР° РІРЅРµС€РЅРµРіРѕ РєРѕРЅСЃРѕР»СЊРЅРѕРіРѕ РїСЂРёР»РѕР¶РµРЅРёСЏ
 };
 
-//! Уровень важности сообщений.
+//! РЈСЂРѕРІРµРЅСЊ РІР°Р¶РЅРѕСЃС‚Рё СЃРѕРѕР±С‰РµРЅРёР№.
 enum ELogMessageLevel
 {
-    L0 = 0, //!< Наиболее важный.
+    L0 = 0, //!< РќР°РёР±РѕР»РµРµ РІР°Р¶РЅС‹Р№.
     L1 = 1,
     L2 = 2,
     L3 = 3,
@@ -54,41 +54,41 @@ enum ELogMessageLevel
     LMAX = 255
 };
 
-//! Интерфейс "физического" лога. Осуществляет запись на носитель.
+//! РРЅС‚РµСЂС„РµР№СЃ "С„РёР·РёС‡РµСЃРєРѕРіРѕ" Р»РѕРіР°. РћСЃСѓС‰РµСЃС‚РІР»СЏРµС‚ Р·Р°РїРёСЃСЊ РЅР° РЅРѕСЃРёС‚РµР»СЊ.
 class ILogMedia
 {
 public:
     virtual ~ILogMedia() {}
-    //! Записывает сообщение.
+    //! Р—Р°РїРёСЃС‹РІР°РµС‚ СЃРѕРѕР±С‰РµРЅРёРµ.
     virtual void Write(
-        ELogMessageType type,   //!< [in] Тип сообщения.
-        ELogMessageLevel nLevel,//!< [in] Уровень важности (L0 - наиболее важный).
-        LPCTSTR pszDate,        //!< [in] Дата записи сообщения.
-        LPCTSTR pszTime,        //!< [in] Время записи сообщения.
-        LPCTSTR pszThreadId,    //!< [in] Идентификатор потока, из которого записано сообщение.
-        LPCTSTR pszThreadName,  //!< [in] Имя потока, из которого записано сообщение.
-        LPCTSTR pszModule,      //!< [in] Модуль, из которого записано сообщение.
-        LPCTSTR pszMessage      //!< [in] Сообщение.
+        ELogMessageType type,   //!< [in] РўРёРї СЃРѕРѕР±С‰РµРЅРёСЏ.
+        ELogMessageLevel nLevel,//!< [in] РЈСЂРѕРІРµРЅСЊ РІР°Р¶РЅРѕСЃС‚Рё (L0 - РЅР°РёР±РѕР»РµРµ РІР°Р¶РЅС‹Р№).
+        LPCTSTR pszDate,        //!< [in] Р”Р°С‚Р° Р·Р°РїРёСЃРё СЃРѕРѕР±С‰РµРЅРёСЏ.
+        LPCTSTR pszTime,        //!< [in] Р’СЂРµРјСЏ Р·Р°РїРёСЃРё СЃРѕРѕР±С‰РµРЅРёСЏ.
+        LPCTSTR pszThreadId,    //!< [in] РРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РїРѕС‚РѕРєР°, РёР· РєРѕС‚РѕСЂРѕРіРѕ Р·Р°РїРёСЃР°РЅРѕ СЃРѕРѕР±С‰РµРЅРёРµ.
+        LPCTSTR pszThreadName,  //!< [in] РРјСЏ РїРѕС‚РѕРєР°, РёР· РєРѕС‚РѕСЂРѕРіРѕ Р·Р°РїРёСЃР°РЅРѕ СЃРѕРѕР±С‰РµРЅРёРµ.
+        LPCTSTR pszModule,      //!< [in] РњРѕРґСѓР»СЊ, РёР· РєРѕС‚РѕСЂРѕРіРѕ Р·Р°РїРёСЃР°РЅРѕ СЃРѕРѕР±С‰РµРЅРёРµ.
+        LPCTSTR pszMessage      //!< [in] РЎРѕРѕР±С‰РµРЅРёРµ.
         ) = 0;
-    //! Разрешает, исключает или модифицирует сообщение.
-    //!   \return false - Сообщение игнорируется.
+    //! Р Р°Р·СЂРµС€Р°РµС‚, РёСЃРєР»СЋС‡Р°РµС‚ РёР»Рё РјРѕРґРёС„РёС†РёСЂСѓРµС‚ СЃРѕРѕР±С‰РµРЅРёРµ.
+    //!   \return false - РЎРѕРѕР±С‰РµРЅРёРµ РёРіРЅРѕСЂРёСЂСѓРµС‚СЃСЏ.
     virtual bool Check(
-        ELogMessageType type,   //!< [in] Тип сообщения.
-        ELogMessageLevel nLevel,//!< [in] Уровень важности (L0 - наиболее важный).
-        LPCTSTR pszModule       //!< [in] Модуль, из которого записано сообщения.
+        ELogMessageType type,   //!< [in] РўРёРї СЃРѕРѕР±С‰РµРЅРёСЏ.
+        ELogMessageLevel nLevel,//!< [in] РЈСЂРѕРІРµРЅСЊ РІР°Р¶РЅРѕСЃС‚Рё (L0 - РЅР°РёР±РѕР»РµРµ РІР°Р¶РЅС‹Р№).
+        LPCTSTR pszModule       //!< [in] РњРѕРґСѓР»СЊ, РёР· РєРѕС‚РѕСЂРѕРіРѕ Р·Р°РїРёСЃР°РЅРѕ СЃРѕРѕР±С‰РµРЅРёСЏ.
         )
     {
         type; nLevel; pszModule;
         return true;
     };
-    //! Возвращает, работает ли лог.
-    //! Если лог был неудачно создан (например, кривое имя файла), узнать об этом можно здесь.
+    //! Р’РѕР·РІСЂР°С‰Р°РµС‚, СЂР°Р±РѕС‚Р°РµС‚ Р»Рё Р»РѕРі.
+    //! Р•СЃР»Рё Р»РѕРі Р±С‹Р» РЅРµСѓРґР°С‡РЅРѕ СЃРѕР·РґР°РЅ (РЅР°РїСЂРёРјРµСЂ, РєСЂРёРІРѕРµ РёРјСЏ С„Р°Р№Р»Р°), СѓР·РЅР°С‚СЊ РѕР± СЌС‚РѕРј РјРѕР¶РЅРѕ Р·РґРµСЃСЊ.
     virtual bool IsWorking() const { return true; }
 };
 
-typedef std::tr1::shared_ptr<ILogMedia> LogMediaPtr;
+typedef std::shared_ptr<ILogMedia> LogMediaPtr;
 
-//! Лог-заглушка.
+//! Р›РѕРі-Р·Р°РіР»СѓС€РєР°.
 class LogMediaProxy: public ILogMedia
 {
 public:
@@ -102,7 +102,7 @@ private:
     CriticalSection m_cs;
 };
 
-//! Компоновщик "физических" логов.
+//! РљРѕРјРїРѕРЅРѕРІС‰РёРє "С„РёР·РёС‡РµСЃРєРёС…" Р»РѕРіРѕРІ.
 class LogMediaColl: public ILogMedia
 {
     typedef std::vector<LogMediaPtr> MediaColl;
@@ -117,33 +117,33 @@ private:
     CriticalSection m_cs;
 };
 
-//! Интерфейс фильтрации сообщений лога.
+//! РРЅС‚РµСЂС„РµР№СЃ С„РёР»СЊС‚СЂР°С†РёРё СЃРѕРѕР±С‰РµРЅРёР№ Р»РѕРіР°.
 class IFilter
 {
 public:
     virtual ~IFilter() {}
-    //! Разрешает, исключает или модифицирует сообщение.
-    //!   \return false - Сообщение игнорируется.
+    //! Р Р°Р·СЂРµС€Р°РµС‚, РёСЃРєР»СЋС‡Р°РµС‚ РёР»Рё РјРѕРґРёС„РёС†РёСЂСѓРµС‚ СЃРѕРѕР±С‰РµРЅРёРµ.
+    //!   \return false - РЎРѕРѕР±С‰РµРЅРёРµ РёРіРЅРѕСЂРёСЂСѓРµС‚СЃСЏ.
     virtual bool Check(
-        ELogMessageType& type,      //!< [in/out] Тип сообщения.
-        ELogMessageLevel& nLevel,   //!< [in/out] Уровень важности (L0 - наиболее важный).
-        LPCTSTR pszModule           //!< [in] Модуль, из которого записано сообщения.
+        ELogMessageType& type,      //!< [in/out] РўРёРї СЃРѕРѕР±С‰РµРЅРёСЏ.
+        ELogMessageLevel& nLevel,   //!< [in/out] РЈСЂРѕРІРµРЅСЊ РІР°Р¶РЅРѕСЃС‚Рё (L0 - РЅР°РёР±РѕР»РµРµ РІР°Р¶РЅС‹Р№).
+        LPCTSTR pszModule           //!< [in] РњРѕРґСѓР»СЊ, РёР· РєРѕС‚РѕСЂРѕРіРѕ Р·Р°РїРёСЃР°РЅРѕ СЃРѕРѕР±С‰РµРЅРёСЏ.
         ) = 0;
 };
 
-typedef std::tr1::shared_ptr<IFilter> FilterPtr;
+typedef std::shared_ptr<IFilter> FilterPtr;
 
-//! Фильтр по типу и уровню сообщения.
-//! Разрешает сообщения более приоритетного типа и сообщения указанного типа с важностью не ниже указанной.
+//! Р¤РёР»СЊС‚СЂ РїРѕ С‚РёРїСѓ Рё СѓСЂРѕРІРЅСЋ СЃРѕРѕР±С‰РµРЅРёСЏ.
+//! Р Р°Р·СЂРµС€Р°РµС‚ СЃРѕРѕР±С‰РµРЅРёСЏ Р±РѕР»РµРµ РїСЂРёРѕСЂРёС‚РµС‚РЅРѕРіРѕ С‚РёРїР° Рё СЃРѕРѕР±С‰РµРЅРёСЏ СѓРєР°Р·Р°РЅРЅРѕРіРѕ С‚РёРїР° СЃ РІР°Р¶РЅРѕСЃС‚СЊСЋ РЅРµ РЅРёР¶Рµ СѓРєР°Р·Р°РЅРЅРѕР№.
 class TypeLevelFilter: public IFilter
 {
     ELogMessageType m_type;
     ELogMessageLevel m_nLevel;
 public:
-    //! Конструктор.
+    //! РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ.
     TypeLevelFilter(
-        ELogMessageType type = eLM_Info,    //!< [in] Разрешает сообщения приоритетнee type.
-        ELogMessageLevel nLevel = LMAX  //!< [in] Разрешает типа type с важностью не ниже nLevel.
+        ELogMessageType type = eLM_Info,    //!< [in] Р Р°Р·СЂРµС€Р°РµС‚ СЃРѕРѕР±С‰РµРЅРёСЏ РїСЂРёРѕСЂРёС‚РµС‚РЅee type.
+        ELogMessageLevel nLevel = LMAX  //!< [in] Р Р°Р·СЂРµС€Р°РµС‚ С‚РёРїР° type СЃ РІР°Р¶РЅРѕСЃС‚СЊСЋ РЅРµ РЅРёР¶Рµ nLevel.
         ): m_type(type), m_nLevel(nLevel) {}
     virtual bool Check(ELogMessageType& type, ELogMessageLevel& nLevel, LPCTSTR)
     {
@@ -151,19 +151,19 @@ public:
     }
 };
 
-//! Фильтрующий лог.
+//! Р¤РёР»СЊС‚СЂСѓСЋС‰РёР№ Р»РѕРі.
 class FilterLogMedia: public ILogMedia
 {
     typedef std::vector<FilterPtr> FilterColl;
 public:
-    //! Конструктор.
+    //! РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ.
     FilterLogMedia(
-        const LogMediaPtr& pMedia   //!< [in] Лог, на который накладывается фильтр.
+        const LogMediaPtr& pMedia   //!< [in] Р›РѕРі, РЅР° РєРѕС‚РѕСЂС‹Р№ РЅР°РєР»Р°РґС‹РІР°РµС‚СЃСЏ С„РёР»СЊС‚СЂ.
         );
     virtual ~FilterLogMedia();
-    //! Добавляет фильтр.
+    //! Р”РѕР±Р°РІР»СЏРµС‚ С„РёР»СЊС‚СЂ.
     void AddFilter(
-        FilterPtr pFilter   //!< [in] Фильтр.
+        FilterPtr pFilter   //!< [in] Р¤РёР»СЊС‚СЂ.
         );
     virtual void Write(ELogMessageType type, ELogMessageLevel nLevel, LPCTSTR pszDate, LPCTSTR pszTime, LPCTSTR pszThreadId, LPCTSTR pszThreadName, LPCTSTR pszModule, LPCTSTR pszMessage);
     virtual bool Check(ELogMessageType type, ELogMessageLevel nLevel, LPCTSTR pszModule);
@@ -174,7 +174,7 @@ private:
     CriticalSection m_cs;
 };
 
-//! Параметры создания лога.
+//! РџР°СЂР°РјРµС‚СЂС‹ СЃРѕР·РґР°РЅРёСЏ Р»РѕРіР°.
 struct LogParam
 {
     LogParam(
@@ -185,19 +185,19 @@ struct LogParam
     LPCTSTR m_pszModule;
 };
 
-//! "Логический" лог.
+//! "Р›РѕРіРёС‡РµСЃРєРёР№" Р»РѕРі.
 class LogBase
 {
 public:
     virtual ~LogBase();
-    //! Возврашает "физический" лог данного лога.
+    //! Р’РѕР·РІСЂР°С€Р°РµС‚ "С„РёР·РёС‡РµСЃРєРёР№" Р»РѕРі РґР°РЅРЅРѕРіРѕ Р»РѕРіР°.
     LogMediaPtr GetMedia() const throw() { return m_pMedia; }
 
-    //! Записывает форматированное сообщение.
+    //! Р—Р°РїРёСЃС‹РІР°РµС‚ С„РѕСЂРјР°С‚РёСЂРѕРІР°РЅРЅРѕРµ СЃРѕРѕР±С‰РµРЅРёРµ.
     void Write(
-        ELogMessageType type,   //!< [in] Тип сообщения.
-        ELogMessageLevel nLevel,//!< [in] Уровень важности (L0 - наиболее важный).
-        LPCTSTR pszMessage,     //!< [in] Сообщение.
+        ELogMessageType type,   //!< [in] РўРёРї СЃРѕРѕР±С‰РµРЅРёСЏ.
+        ELogMessageLevel nLevel,//!< [in] РЈСЂРѕРІРµРЅСЊ РІР°Р¶РЅРѕСЃС‚Рё (L0 - РЅР°РёР±РѕР»РµРµ РІР°Р¶РЅС‹Р№).
+        LPCTSTR pszMessage,     //!< [in] РЎРѕРѕР±С‰РµРЅРёРµ.
         ...
         ) throw()
     {
@@ -207,12 +207,12 @@ public:
         va_end(ap);
     }
 
-    //! Записывает форматированное Unicode-сообщение.
+    //! Р—Р°РїРёСЃС‹РІР°РµС‚ С„РѕСЂРјР°С‚РёСЂРѕРІР°РЅРЅРѕРµ Unicode-СЃРѕРѕР±С‰РµРЅРёРµ.
     void WriteW(
-        ELogMessageType type,   //!< [in] Тип сообщения.
-        ELogMessageLevel nLevel,//!< [in] Уровень важности (L0 - наиболее важный).
-        LPCWSTR pszModule,      //!< [in] Имя модуля. (NULL - имя по умолчанию)
-        LPCWSTR pszMessage,     //!< [in] Сообщение.
+        ELogMessageType type,   //!< [in] РўРёРї СЃРѕРѕР±С‰РµРЅРёСЏ.
+        ELogMessageLevel nLevel,//!< [in] РЈСЂРѕРІРµРЅСЊ РІР°Р¶РЅРѕСЃС‚Рё (L0 - РЅР°РёР±РѕР»РµРµ РІР°Р¶РЅС‹Р№).
+        LPCWSTR pszModule,      //!< [in] РРјСЏ РјРѕРґСѓР»СЏ. (NULL - РёРјСЏ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ)
+        LPCWSTR pszMessage,     //!< [in] РЎРѕРѕР±С‰РµРЅРёРµ.
         ...
         ) throw()
     {
@@ -222,21 +222,21 @@ public:
         va_end(ap);
     }
 
-    //! Записывает форматированное сообщение.
+    //! Р—Р°РїРёСЃС‹РІР°РµС‚ С„РѕСЂРјР°С‚РёСЂРѕРІР°РЅРЅРѕРµ СЃРѕРѕР±С‰РµРЅРёРµ.
     virtual void WriteVA(
-        ELogMessageType type,   //!< [in] Тип сообщения.
-        ELogMessageLevel nLevel,//!< [in] Уровень важности (L0 - наиболее важный).
-        LPCTSTR pszModule,      //!< [in] Имя модуля. (NULL - имя по умолчанию)
-        LPCTSTR pszMessage,     //!< [in] Сообщение.
+        ELogMessageType type,   //!< [in] РўРёРї СЃРѕРѕР±С‰РµРЅРёСЏ.
+        ELogMessageLevel nLevel,//!< [in] РЈСЂРѕРІРµРЅСЊ РІР°Р¶РЅРѕСЃС‚Рё (L0 - РЅР°РёР±РѕР»РµРµ РІР°Р¶РЅС‹Р№).
+        LPCTSTR pszModule,      //!< [in] РРјСЏ РјРѕРґСѓР»СЏ. (NULL - РёРјСЏ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ)
+        LPCTSTR pszMessage,     //!< [in] РЎРѕРѕР±С‰РµРЅРёРµ.
         va_list args
         ) throw();
 
-    //! Записывает форматированное Unicode-сообщение.
+    //! Р—Р°РїРёСЃС‹РІР°РµС‚ С„РѕСЂРјР°С‚РёСЂРѕРІР°РЅРЅРѕРµ Unicode-СЃРѕРѕР±С‰РµРЅРёРµ.
     virtual void WriteVAW(
-        ELogMessageType type,   //!< [in] Тип сообщения.
-        ELogMessageLevel nLevel,//!< [in] Уровень важности (L0 - наиболее важный).
-        LPCWSTR pszModule,      //!< [in] Имя модуля. (NULL - имя по умолчанию)
-        LPCWSTR pszMessage,     //!< [in] Сообщение.
+        ELogMessageType type,   //!< [in] РўРёРї СЃРѕРѕР±С‰РµРЅРёСЏ.
+        ELogMessageLevel nLevel,//!< [in] РЈСЂРѕРІРµРЅСЊ РІР°Р¶РЅРѕСЃС‚Рё (L0 - РЅР°РёР±РѕР»РµРµ РІР°Р¶РЅС‹Р№).
+        LPCWSTR pszModule,      //!< [in] РРјСЏ РјРѕРґСѓР»СЏ. (NULL - РёРјСЏ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ)
+        LPCWSTR pszMessage,     //!< [in] РЎРѕРѕР±С‰РµРЅРёРµ.
         va_list args
         ) throw();
 
@@ -252,83 +252,83 @@ public:
     void Error(LPCTSTR pszMessage, ...) throw() { va_list ap; va_start(ap, pszMessage); WriteVA(eLM_Error, L0, NULL, pszMessage, ap); va_end(ap); }
     void Error(ELogMessageLevel nLevel, LPCTSTR pszMessage, ...) throw() { va_list ap; va_start(ap, pszMessage); WriteVA(eLM_Error, nLevel, NULL, pszMessage, ap); va_end(ap); }
 
-    //! Проверяет, попадёт ли это сообщение в лог.
+    //! РџСЂРѕРІРµСЂСЏРµС‚, РїРѕРїР°РґС‘С‚ Р»Рё СЌС‚Рѕ СЃРѕРѕР±С‰РµРЅРёРµ РІ Р»РѕРі.
     bool IsFiltered(ELogMessageType type, ELogMessageLevel nLevel);
 
-    //! Устанавливает название потока.
+    //! РЈСЃС‚Р°РЅР°РІР»РёРІР°РµС‚ РЅР°Р·РІР°РЅРёРµ РїРѕС‚РѕРєР°.
     static void SetThreadName(
-        LPCTSTR pszThreadName   //!< [in] Имя потока. Указатель должен быть валидным в течении работы потока.
+        LPCTSTR pszThreadName   //!< [in] РРјСЏ РїРѕС‚РѕРєР°. РЈРєР°Р·Р°С‚РµР»СЊ РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ РІР°Р»РёРґРЅС‹Рј РІ С‚РµС‡РµРЅРёРё СЂР°Р±РѕС‚С‹ РїРѕС‚РѕРєР°.
         );
 
-    //! Возращает устанавленное название потока.
+    //! Р’РѕР·СЂР°С‰Р°РµС‚ СѓСЃС‚Р°РЅР°РІР»РµРЅРЅРѕРµ РЅР°Р·РІР°РЅРёРµ РїРѕС‚РѕРєР°.
     static LPCTSTR GetThreadName();
 
-    //! Возвращает "физический" лог приложения. (Представляет собой LogMediaProxy)
+    //! Р’РѕР·РІСЂР°С‰Р°РµС‚ "С„РёР·РёС‡РµСЃРєРёР№" Р»РѕРі РїСЂРёР»РѕР¶РµРЅРёСЏ. (РџСЂРµРґСЃС‚Р°РІР»СЏРµС‚ СЃРѕР±РѕР№ LogMediaProxy)
     static LogMediaPtr GetAppLogMedia();
 
-    //! Устанавливает "физический" лог приложения.
+    //! РЈСЃС‚Р°РЅР°РІР»РёРІР°РµС‚ "С„РёР·РёС‡РµСЃРєРёР№" Р»РѕРі РїСЂРёР»РѕР¶РµРЅРёСЏ.
     static void SetAppLogMedia(LogMediaPtr pLog);
 
     static LogMediaPtr CreateConsoleMedia();
 
     static LogMediaPtr CreateFileMedia(
-        LPCTSTR pszFilename,    //!< [in] Имя файла.
-        bool bAppend,   //!< [in] Флаг добавления в конец.
-        bool bFlush = false,    //!< [in] Флаг сброса на диск после каждого Write.
+        LPCTSTR pszFilename,    //!< [in] РРјСЏ С„Р°Р№Р»Р°.
+        bool bAppend,   //!< [in] Р¤Р»Р°Рі РґРѕР±Р°РІР»РµРЅРёСЏ РІ РєРѕРЅРµС†.
+        bool bFlush = false,    //!< [in] Р¤Р»Р°Рі СЃР±СЂРѕСЃР° РЅР° РґРёСЃРє РїРѕСЃР»Рµ РєР°Р¶РґРѕРіРѕ Write.
         bool bNewFileDaily = false
         );
 
     enum EDebugMediaStartParams
     {
         DEBUGMEDIA_NORMAL = 0x1,
-        DEBUGMEDIA_FORCE = 0x2,         //!< Создать даже если нет отладчика.
-        DEBUGMEDIA_REPORTERRORS = 0x4,  //!< Выводить ошибки через _CrtDbgReport.
+        DEBUGMEDIA_FORCE = 0x2,         //!< РЎРѕР·РґР°С‚СЊ РґР°Р¶Рµ РµСЃР»Рё РЅРµС‚ РѕС‚Р»Р°РґС‡РёРєР°.
+        DEBUGMEDIA_REPORTERRORS = 0x4,  //!< Р’С‹РІРѕРґРёС‚СЊ РѕС€РёР±РєРё С‡РµСЂРµР· _CrtDbgReport.
     };
     static LogMediaPtr CreateDebugMedia(
-        DWORD dwParam = DEBUGMEDIA_NORMAL   //!< [in] Создать даже если нет отладчика.
+        DWORD dwParam = DEBUGMEDIA_NORMAL   //!< [in] РЎРѕР·РґР°С‚СЊ РґР°Р¶Рµ РµСЃР»Рё РЅРµС‚ РѕС‚Р»Р°РґС‡РёРєР°.
         );
 
-    /*! Создаёт лог из описания в реестре.
-    В указанном ключе могут находится следующие переменные:
-      REG_SZ    "TraceHeader" - Первой строкой в лог будет добавлен этот текст
-      REG_SZ    "TraceFile" - лог будет подключен к файлу, указанному в значении переменной
-      REG_DWORD "TraceFileAppend" (def: 1) - флаг дописывать в конец файла
-      REG_DWORD "TraceFileFlush" (def: 0) - флаг сброса на диск после каждой записи
-      REG_DWORD "TraceToApp" = 1 - лог будет подключен к логу приложения.
-      REG_DWORD "TraceToConsole" = 1 - лог будет подключен к окну консоли
-      REG_DWORD "TraceToDebug" = 1 - лог будет подключен к логу отладчика (Debug Output).
-      На все эти логи можно наложить фильтр.
-        Возможны следующие фильтры:
-            REG_SZ      "TraceType" = ["debug"|"info"|"warning"|"error"] - тип, сообщения ниже которого отображаться не будут.
-            REG_DWORD   "TraceLevel" = [0|1|2|...] - уровень типа TraceType, сообщения ниже которого отображаться не будут.
-      Если необходимо накладывать фильтры индивидуально для каждого лога, или необходимо
-      несколько логов одного типа (например, писать в два файла), то в указанном ключе
-      можно завести подключи "Trace1" "Trace2" и т.д. (должны идти последовательно начиная с 1)
-      в которых можно указать дополнительные логи и фильтры.
-      Фильтры в ключе влияют и на подключи тоже!
-      Пример:
+    /*! РЎРѕР·РґР°С‘С‚ Р»РѕРі РёР· РѕРїРёСЃР°РЅРёСЏ РІ СЂРµРµСЃС‚СЂРµ.
+    Р’ СѓРєР°Р·Р°РЅРЅРѕРј РєР»СЋС‡Рµ РјРѕРіСѓС‚ РЅР°С…РѕРґРёС‚СЃСЏ СЃР»РµРґСѓСЋС‰РёРµ РїРµСЂРµРјРµРЅРЅС‹Рµ:
+      REG_SZ    "TraceHeader" - РџРµСЂРІРѕР№ СЃС‚СЂРѕРєРѕР№ РІ Р»РѕРі Р±СѓРґРµС‚ РґРѕР±Р°РІР»РµРЅ СЌС‚РѕС‚ С‚РµРєСЃС‚
+      REG_SZ    "TraceFile" - Р»РѕРі Р±СѓРґРµС‚ РїРѕРґРєР»СЋС‡РµРЅ Рє С„Р°Р№Р»Сѓ, СѓРєР°Р·Р°РЅРЅРѕРјСѓ РІ Р·РЅР°С‡РµРЅРёРё РїРµСЂРµРјРµРЅРЅРѕР№
+      REG_DWORD "TraceFileAppend" (def: 1) - С„Р»Р°Рі РґРѕРїРёСЃС‹РІР°С‚СЊ РІ РєРѕРЅРµС† С„Р°Р№Р»Р°
+      REG_DWORD "TraceFileFlush" (def: 0) - С„Р»Р°Рі СЃР±СЂРѕСЃР° РЅР° РґРёСЃРє РїРѕСЃР»Рµ РєР°Р¶РґРѕР№ Р·Р°РїРёСЃРё
+      REG_DWORD "TraceToApp" = 1 - Р»РѕРі Р±СѓРґРµС‚ РїРѕРґРєР»СЋС‡РµРЅ Рє Р»РѕРіСѓ РїСЂРёР»РѕР¶РµРЅРёСЏ.
+      REG_DWORD "TraceToConsole" = 1 - Р»РѕРі Р±СѓРґРµС‚ РїРѕРґРєР»СЋС‡РµРЅ Рє РѕРєРЅСѓ РєРѕРЅСЃРѕР»Рё
+      REG_DWORD "TraceToDebug" = 1 - Р»РѕРі Р±СѓРґРµС‚ РїРѕРґРєР»СЋС‡РµРЅ Рє Р»РѕРіСѓ РѕС‚Р»Р°РґС‡РёРєР° (Debug Output).
+      РќР° РІСЃРµ СЌС‚Рё Р»РѕРіРё РјРѕР¶РЅРѕ РЅР°Р»РѕР¶РёС‚СЊ С„РёР»СЊС‚СЂ.
+        Р’РѕР·РјРѕР¶РЅС‹ СЃР»РµРґСѓСЋС‰РёРµ С„РёР»СЊС‚СЂС‹:
+            REG_SZ      "TraceType" = ["debug"|"info"|"warning"|"error"] - С‚РёРї, СЃРѕРѕР±С‰РµРЅРёСЏ РЅРёР¶Рµ РєРѕС‚РѕСЂРѕРіРѕ РѕС‚РѕР±СЂР°Р¶Р°С‚СЊСЃСЏ РЅРµ Р±СѓРґСѓС‚.
+            REG_DWORD   "TraceLevel" = [0|1|2|...] - СѓСЂРѕРІРµРЅСЊ С‚РёРїР° TraceType, СЃРѕРѕР±С‰РµРЅРёСЏ РЅРёР¶Рµ РєРѕС‚РѕСЂРѕРіРѕ РѕС‚РѕР±СЂР°Р¶Р°С‚СЊСЃСЏ РЅРµ Р±СѓРґСѓС‚.
+      Р•СЃР»Рё РЅРµРѕР±С…РѕРґРёРјРѕ РЅР°РєР»Р°РґС‹РІР°С‚СЊ С„РёР»СЊС‚СЂС‹ РёРЅРґРёРІРёРґСѓР°Р»СЊРЅРѕ РґР»СЏ РєР°Р¶РґРѕРіРѕ Р»РѕРіР°, РёР»Рё РЅРµРѕР±С…РѕРґРёРјРѕ
+      РЅРµСЃРєРѕР»СЊРєРѕ Р»РѕРіРѕРІ РѕРґРЅРѕРіРѕ С‚РёРїР° (РЅР°РїСЂРёРјРµСЂ, РїРёСЃР°С‚СЊ РІ РґРІР° С„Р°Р№Р»Р°), С‚Рѕ РІ СѓРєР°Р·Р°РЅРЅРѕРј РєР»СЋС‡Рµ
+      РјРѕР¶РЅРѕ Р·Р°РІРµСЃС‚Рё РїРѕРґРєР»СЋС‡Рё "Trace1" "Trace2" Рё С‚.Рґ. (РґРѕР»Р¶РЅС‹ РёРґС‚Рё РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕ РЅР°С‡РёРЅР°СЏ СЃ 1)
+      РІ РєРѕС‚РѕСЂС‹С… РјРѕР¶РЅРѕ СѓРєР°Р·Р°С‚СЊ РґРѕРїРѕР»РЅРёС‚РµР»СЊРЅС‹Рµ Р»РѕРіРё Рё С„РёР»СЊС‚СЂС‹.
+      Р¤РёР»СЊС‚СЂС‹ РІ РєР»СЋС‡Рµ РІР»РёСЏСЋС‚ Рё РЅР° РїРѕРґРєР»СЋС‡Рё С‚РѕР¶Рµ!
+      РџСЂРёРјРµСЂ:
         HLKM\....\SomeComp
             REG_SZ      "TraceFile" = "c:\my.log"
         HLKM\....\SomeComp\Trace1
             REG_DWORD   "TraceToDebug" = 1
             REG_SZ      "TraceType" = "warning"
             REG_DWORD   "TraceLevel" = 5
-        Означает: писать в файл всё, в дебаг все ошибки и предупреждения уровня 5 и ниже.
+        РћР·РЅР°С‡Р°РµС‚: РїРёСЃР°С‚СЊ РІ С„Р°Р№Р» РІСЃС‘, РІ РґРµР±Р°Рі РІСЃРµ РѕС€РёР±РєРё Рё РїСЂРµРґСѓРїСЂРµР¶РґРµРЅРёСЏ СѓСЂРѕРІРЅСЏ 5 Рё РЅРёР¶Рµ.
 
 
-       \return Лог, который можно передать в Log.
+       \return Р›РѕРі, РєРѕС‚РѕСЂС‹Р№ РјРѕР¶РЅРѕ РїРµСЂРµРґР°С‚СЊ РІ Log.
     */
     static LogMediaPtr CreateMediaFromRegistry(
-        HKEY hRoot,             //!< [in] Корневой элемент реестра.
-        LPCTSTR pszPath,        //!< [in] Путь от корневого элемента, до раздела, содержащего описание лога.
-        bool bAppLog = false    //!< [in] Для лога приложения должен быть true. Также устанавливает лог приложения (SetAppLogMedia()).
+        HKEY hRoot,             //!< [in] РљРѕСЂРЅРµРІРѕР№ СЌР»РµРјРµРЅС‚ СЂРµРµСЃС‚СЂР°.
+        LPCTSTR pszPath,        //!< [in] РџСѓС‚СЊ РѕС‚ РєРѕСЂРЅРµРІРѕРіРѕ СЌР»РµРјРµРЅС‚Р°, РґРѕ СЂР°Р·РґРµР»Р°, СЃРѕРґРµСЂР¶Р°С‰РµРіРѕ РѕРїРёСЃР°РЅРёРµ Р»РѕРіР°.
+        bool bAppLog = false    //!< [in] Р”Р»СЏ Р»РѕРіР° РїСЂРёР»РѕР¶РµРЅРёСЏ РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ true. РўР°РєР¶Рµ СѓСЃС‚Р°РЅР°РІР»РёРІР°РµС‚ Р»РѕРі РїСЂРёР»РѕР¶РµРЅРёСЏ (SetAppLogMedia()).
         );
 
 protected:
-    //! Конструктор.
+    //! РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ.
     LogBase(
-        LogMediaPtr pMedia, //!< [in] Лог.
-        LPCTSTR pszModule       //!< [in] Имя модуля.
+        LogMediaPtr pMedia, //!< [in] Р›РѕРі.
+        LPCTSTR pszModule       //!< [in] РРјСЏ РјРѕРґСѓР»СЏ.
         );
     LogMediaPtr m_pMedia;
     std::basic_string<TCHAR> m_szModule;
@@ -337,20 +337,20 @@ protected:
 class LocalLog: public LogBase
 {
 public:
-    //! Конструктор для под-компонента.
+    //! РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РґР»СЏ РїРѕРґ-РєРѕРјРїРѕРЅРµРЅС‚Р°.
     LocalLog(
-        const LogParam& param,  //!< [in] Параметры создания лога.
-        LPCTSTR pszModule       //!< [in] Имя модуля по умолчанию.
+        const LogParam& param,  //!< [in] РџР°СЂР°РјРµС‚СЂС‹ СЃРѕР·РґР°РЅРёСЏ Р»РѕРіР°.
+        LPCTSTR pszModule       //!< [in] РРјСЏ РјРѕРґСѓР»СЏ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ.
         );
-    //! Конструктор.
+    //! РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ.
     LocalLog(
-        LogMediaPtr pMedia, //!< [in] Лог.
-        LPCTSTR pszModule       //!< [in] Имя модуля.
+        LogMediaPtr pMedia, //!< [in] Р›РѕРі.
+        LPCTSTR pszModule       //!< [in] РРјСЏ РјРѕРґСѓР»СЏ.
         );
-    //! Конструктор.
+    //! РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ.
     LocalLog(
-        const LogBase& log, //!< [in] Лог.
-        LPCTSTR pszModule       //!< [in] Имя модуля.
+        const LogBase& log, //!< [in] Р›РѕРі.
+        LPCTSTR pszModule       //!< [in] РРјСЏ РјРѕРґСѓР»СЏ.
         );
     virtual ~LocalLog();
 };
@@ -358,40 +358,40 @@ public:
 class Log: public LogBase
 {
 public:
-    //! Конструктор для под-компонента.
+    //! РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РґР»СЏ РїРѕРґ-РєРѕРјРїРѕРЅРµРЅС‚Р°.
     Log(
-        const LogParam& param,  //!< [in] Параметры создания лога.
-        LPCTSTR pszModule       //!< [in] Имя модуля по умолчанию.
+        const LogParam& param,  //!< [in] РџР°СЂР°РјРµС‚СЂС‹ СЃРѕР·РґР°РЅРёСЏ Р»РѕРіР°.
+        LPCTSTR pszModule       //!< [in] РРјСЏ РјРѕРґСѓР»СЏ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ.
         );
-    //! Конструктор для главного лога приложения или компонента.
+    //! РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РґР»СЏ РіР»Р°РІРЅРѕРіРѕ Р»РѕРіР° РїСЂРёР»РѕР¶РµРЅРёСЏ РёР»Рё РєРѕРјРїРѕРЅРµРЅС‚Р°.
     Log(
-        LogMediaPtr pMedia, //!< [in] Лог.
-        LPCTSTR pszModule       //!< [in] Имя модуля.
+        LogMediaPtr pMedia, //!< [in] Р›РѕРі.
+        LPCTSTR pszModule       //!< [in] РРјСЏ РјРѕРґСѓР»СЏ.
         );
-    //! Конструктор для под-компонента.
+    //! РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РґР»СЏ РїРѕРґ-РєРѕРјРїРѕРЅРµРЅС‚Р°.
     Log(
-        const LogBase& log, //!< [in] Лог.
-        LPCTSTR pszModule       //!< [in] Имя модуля.
+        const LogBase& log, //!< [in] Р›РѕРі.
+        LPCTSTR pszModule       //!< [in] РРјСЏ РјРѕРґСѓР»СЏ.
         );
     virtual ~Log();
     void SetParams(
-        LogMediaPtr pMedia,     //!< [in] Новый лог.
-        LPCTSTR pszModule = NULL    //!< [in] Новое имя модуля. Может быть NULL.
+        LogMediaPtr pMedia,     //!< [in] РќРѕРІС‹Р№ Р»РѕРі.
+        LPCTSTR pszModule = NULL    //!< [in] РќРѕРІРѕРµ РёРјСЏ РјРѕРґСѓР»СЏ. РњРѕР¶РµС‚ Р±С‹С‚СЊ NULL.
         );
-    //! Записывает форматированное сообщение.
+    //! Р—Р°РїРёСЃС‹РІР°РµС‚ С„РѕСЂРјР°С‚РёСЂРѕРІР°РЅРЅРѕРµ СЃРѕРѕР±С‰РµРЅРёРµ.
     virtual void WriteVA(
-        ELogMessageType type,   //!< [in] Тип сообщения.
-        ELogMessageLevel nLevel,//!< [in] Уровень важности (L0 - наиболее важный).
-        LPCTSTR pszModule,      //!< [in] Имя модуля.
-        LPCTSTR pszMessage,     //!< [in] Сообщение.
+        ELogMessageType type,   //!< [in] РўРёРї СЃРѕРѕР±С‰РµРЅРёСЏ.
+        ELogMessageLevel nLevel,//!< [in] РЈСЂРѕРІРµРЅСЊ РІР°Р¶РЅРѕСЃС‚Рё (L0 - РЅР°РёР±РѕР»РµРµ РІР°Р¶РЅС‹Р№).
+        LPCTSTR pszModule,      //!< [in] РРјСЏ РјРѕРґСѓР»СЏ.
+        LPCTSTR pszMessage,     //!< [in] РЎРѕРѕР±С‰РµРЅРёРµ.
         va_list args
         ) throw();
-    //! Записывает форматированное Unicode-сообщение.
+    //! Р—Р°РїРёСЃС‹РІР°РµС‚ С„РѕСЂРјР°С‚РёСЂРѕРІР°РЅРЅРѕРµ Unicode-СЃРѕРѕР±С‰РµРЅРёРµ.
     virtual void WriteVAW(
-        ELogMessageType type,   //!< [in] Тип сообщения.
-        ELogMessageLevel nLevel,//!< [in] Уровень важности (L0 - наиболее важный).
-        LPCWSTR pszModule,      //!< [in] Имя модуля.
-        LPCWSTR pszMessage,     //!< [in] Сообщение.
+        ELogMessageType type,   //!< [in] РўРёРї СЃРѕРѕР±С‰РµРЅРёСЏ.
+        ELogMessageLevel nLevel,//!< [in] РЈСЂРѕРІРµРЅСЊ РІР°Р¶РЅРѕСЃС‚Рё (L0 - РЅР°РёР±РѕР»РµРµ РІР°Р¶РЅС‹Р№).
+        LPCWSTR pszModule,      //!< [in] РРјСЏ РјРѕРґСѓР»СЏ.
+        LPCWSTR pszMessage,     //!< [in] РЎРѕРѕР±С‰РµРЅРёРµ.
         va_list args
         ) throw();
 private:
@@ -399,11 +399,11 @@ private:
 };
 
 
-//! "Логический" лог с фильтрацией.
+//! "Р›РѕРіРёС‡РµСЃРєРёР№" Р»РѕРі СЃ С„РёР»СЊС‚СЂР°С†РёРµР№.
 class FilterLog: public Log
 {
-    typedef std::tr1::shared_ptr<FilterLogMedia> TFilterLogMediaPtr;
-    TFilterLogMediaPtr GetFilterLogMedia() { return std::tr1::static_pointer_cast<FilterLogMedia>(GetMedia()); }
+    typedef std::shared_ptr<FilterLogMedia> TFilterLogMediaPtr;
+    TFilterLogMediaPtr GetFilterLogMedia() { return std::static_pointer_cast<FilterLogMedia>(GetMedia()); }
 public:
     FilterLog(const LogParam& param, LPCTSTR pszModule): Log(param, pszModule)
     {

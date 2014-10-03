@@ -1,8 +1,8 @@
-// Copyright 2012 Idol Software, Inc.
+// Copyright 2014 Idol Software, Inc.
 //
-// This file is part of CrashHandler library.
+// This file is part of Doctor Dump SDK.
 //
-// CrashHandler library is free software: you can redistribute it and/or modify
+// Doctor Dump SDK is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
@@ -21,6 +21,6 @@
 #define VERSION_INTERNALNAME_STR        "sendrpt"
 #define VERSION_FILEDESCRIPTION_STR     "Report sending utility"
 
-#include <../solutioninfo.h>
+#include "../solutioninfo.h"
 
 #endif// __PROJECTINFO_H
