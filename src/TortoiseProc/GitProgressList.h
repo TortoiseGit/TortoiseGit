@@ -138,7 +138,7 @@ public:
 	};
 
 	void AddNotify(NotificationData* data, CColors::Colors color = CColors::COLOR_END);
-	BOOL UpdateProgress(const git_transfer_progress* stat);
+	int UpdateProgress(const git_transfer_progress* stat);
 
 	void SetProgressLabelText(const CString& str);
 

@@ -730,14 +730,17 @@ void CGitProgressList::AddNotify(NotificationData* data, CColors::Colors color)
 		m_pAnimate->ShowWindow(SW_HIDE);
 }
 
-BOOL CGitProgressList::UpdateProgress(const git_transfer_progress* stat)
+int CGitProgressList::UpdateProgress(const git_transfer_progress* stat)
 {
 	static unsigned int start = 0;
 	unsigned int dt = GetCurrentTime() - start;
 	double speed = 0;
 	
 	if (m_bCancelled)
-		return FALSE;
+	{
+		giterr_set_str(GITERR_NONE, "User cancelled.");
+		return GIT_EUSER;
+	}
 
 	if (dt > 100)
 	{
@@ -747,9 +750,7 @@ BOOL CGitProgressList::UpdateProgress(const git_transfer_progress* stat)
 		m_TotalBytesTransferred = stat->received_bytes;
 	}
 	else
-	{
-		return TRUE;
-	}
+		return 0;
 
 	int progress;
 	progress = stat->received_objects + stat->indexed_objects;
@@ -793,7 +794,7 @@ BOOL CGitProgressList::UpdateProgress(const git_transfer_progress* stat)
 
 	SetTimer(TRANSFERTIMER, 2000, NULL);
 
-	return TRUE;
+	return 0;
 }
 
 void CGitProgressList::OnTimer(UINT_PTR nIDEvent)

@@ -24,6 +24,11 @@
 int RemoteProgressCommand::RemoteProgressCallback(const char* str, int len, void* data)
 {
 	((CGitProgressList::Payload*)data)->list->SetProgressLabelText(CUnicodeUtils::GetUnicode(CStringA(str, len)));
+	if (((CGitProgressList::Payload*)data)->list->m_bCancelled)
+	{
+		giterr_set_str(GITERR_NONE, "User cancelled.");
+		return GIT_EUSER;
+	}
 	return 0;
 }
 
