@@ -28,6 +28,8 @@
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseOfAtl>Static</UseOfAtl>
     <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Release'" Label="Configuration">
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -41,29 +43,19 @@
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>..\$(GsoapDir);..\$(ZlibDir);..\wtl\include;..\;..\..\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\$(GsoapDir);..\$(ZlibDir);..\wtl\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies>version.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>CrashHandler.def</ModuleDefinitionFile>
-      <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="CrashHandler.cpp" />
-    <ClCompile Include="..\SendRpt\Serializer.cpp" />
-    <ClCompile Include="stdafx.cpp">
-      <PrecompiledHeader>Create</PrecompiledHeader>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="CrashHandler.def" />
-    <None Include="SentRpt.exe" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="CrashHandler.h" />
+    <ClInclude Include="..\SendRpt\Serializer.h" />
+    <ClInclude Include="..\SendRpt\Config.h" />
     <ClInclude Include="CrashHandlerExport.h" />
     <ClInclude Include="projectinfo.h" />
+    <ClInclude Include="CrashHandler.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -74,10 +66,15 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SendRpt\SendRpt.vcxproj">
-      <Project>{bc62fb83-cfbb-4ae3-a60d-d73155aa33fa}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
+    <ClCompile Include="CrashHandler.cpp" />
+    <ClCompile Include="..\SendRpt\Serializer.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="CrashHandler.def" />
+    <None Include="sendrpt.exe" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

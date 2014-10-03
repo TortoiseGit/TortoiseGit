@@ -9,13 +9,6 @@
 //
 #define _WIN32_WINNT 0x0501
 #include "afxres.h"
-#if !defined(NO_DBGHELP)
-#if defined(USE64)
-#define _DBGHELP64
-#else
-#define _DBGHELP32
-#endif
-#endif
 #include "projectinfo.h"
 /////////////////////////////////////////////////////////////////////////////
 #undef APSTUDIO_READONLY_SYMBOLS
@@ -32,8 +25,7 @@ LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
 // RCDATA
 //
 
-IDR_DBGHELP             RCDATA                  "dbghelp_x86.dll"
-IDR_DBGHELPX64          RCDATA                  "dbghelp_x64.dll"
+IDR_TRANSLATE_INI       RCDATA                  "translate.ini"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -43,16 +35,151 @@ IDR_DBGHELPX64          RCDATA                  "dbghelp_x64.dll"
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
 IDI_SENDRPT             ICON                    "SendRpt.ico"
-#endif    // Neutral resources
-/////////////////////////////////////////////////////////////////////////////
-
 
 /////////////////////////////////////////////////////////////////////////////
-// Russian (Russia) resources
+//
+// Dialog
+//
 
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_RUS)
-LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
-#pragma code_page(1251)
+IDD_SENDREPORTDLG DIALOGEX 0, 0, 220, 93
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "@Title"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_STATIC,"Static",SS_WHITERECT,-4,0,226,67
+    PUSHBUTTON      "@Cancel",IDCANCEL,165,74,50,14
+    CONTROL         "@AppHasStoppedWorking",IDC_HEADER_TEXT,"Static",SS_LEFTNOWORDWRAP | SS_NOPREFIX | WS_GROUP,5,7,210,25
+    LTEXT           "@CheckingForSolution",IDC_TEXT,5,35,210,8,SS_NOPREFIX
+    CONTROL         "",IDC_PROGRESS,"msctls_progress32",PBS_MARQUEE | WS_BORDER,5,49,210,10
+    LTEXT           "www.drdump.com",IDC_STATIC,5,76,75,8,WS_DISABLED
+END
+
+IDD_SENDFULLDUMPDLG DIALOGEX 0, 0, 220, 101
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "@Title"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_STATIC,"Static",SS_WHITERECT,-4,0,226,76
+    PUSHBUTTON      "@Cancel",IDCANCEL,164,82,50,14
+    CONTROL         "@AppHasStoppedWorking",IDC_HEADER_TEXT,"Static",SS_LEFTNOWORDWRAP | SS_NOPREFIX | WS_GROUP,5,7,209,25
+    LTEXT           "@CollectingMoreInfo",IDC_TEXT,5,35,209,23,SS_NOPREFIX
+    CONTROL         "",IDC_PROGRESS,"msctls_progress32",PBS_MARQUEE | WS_BORDER,5,58,209,10
+    LTEXT           "www.drdump.com",IDC_STATIC,5,84,75,8,WS_DISABLED
+END
+
+IDD_ASKSENDFULLDUMPDLG DIALOGEX 0, 0, 221, 176
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_TOPMOST
+CAPTION "@Title"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "@SendInformation",IDOK,96,74,65,14
+    PUSHBUTTON      "@Cancel",IDCANCEL,166,74,50,14
+    CONTROL         "",IDC_STATIC,"Static",SS_WHITERECT,-4,0,226,67
+    CONTROL         "@SendMoreInfoQuestion",IDC_HEADER_TEXT,"Static",SS_LEFTNOWORDWRAP | SS_NOPREFIX | WS_GROUP,5,7,211,25
+    LTEXT           "@SendMotivation",IDC_TEXT,5,37,211,27,SS_NOPREFIX
+    CONTROL         "",IDC_DETAILS_TEXT,"RichEdit20W",ES_MULTILINE | ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_NOHIDESEL | ES_READONLY | WS_BORDER | WS_VSCROLL | WS_TABSTOP,5,96,211,75
+    PUSHBUTTON      "@Details",IDC_DETAILS,5,74,60,14
+END
+
+IDD_SOLUTIONDLG DIALOGEX 0, 0, 220, 93
+STYLE DS_SYSMODAL | DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "@Title"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_STATIC,"Static",SS_WHITERECT,-4,0,226,67
+    PUSHBUTTON      "@No",IDCANCEL,165,74,50,14
+    CONTROL         "@AppHasStoppedWorking",IDC_HEADER_TEXT,"Static",SS_LEFTNOWORDWRAP | SS_NOPREFIX | WS_GROUP,5,7,210,25
+    LTEXT           "@SolutionFound",IDC_TEXT,5,35,210,8,SS_NOPREFIX
+    LTEXT           "www.drdump.com",IDC_STATIC,5,76,75,8,WS_DISABLED
+    LTEXT           "@DoYouWantToReadIt",IDC_QUESTION,5,49,210,8,SS_NOPREFIX
+    PUSHBUTTON      "@Yes",IDOK,110,74,50,14
+END
+
+IDD_SENDASSERTREPORTDLG DIALOGEX 0, 0, 220, 93
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "@Title"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_STATIC,"Static",SS_WHITERECT,-4,0,226,67
+    PUSHBUTTON      "@Cancel",IDCANCEL,165,74,50,14
+    CONTROL         "@AppHasEncounteredProblem",IDC_HEADER_TEXT,"Static",SS_LEFTNOWORDWRAP | SS_NOPREFIX | WS_GROUP,5,7,210,25
+    LTEXT           "@CheckingForSolution",IDC_TEXT,5,35,210,8,SS_NOPREFIX
+    CONTROL         "",IDC_PROGRESS,"msctls_progress32",PBS_MARQUEE | WS_BORDER,5,49,210,10
+    LTEXT           "www.drdump.com",IDC_STATIC,5,76,75,8,WS_DISABLED
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_SENDREPORTDLG, DIALOG
+    BEGIN
+        RIGHTMARGIN, 211
+        VERTGUIDE, 5
+        VERTGUIDE, 215
+        BOTTOMMARGIN, 88
+        HORZGUIDE, 7
+        HORZGUIDE, 35
+        HORZGUIDE, 49
+        HORZGUIDE, 80
+    END
+
+    IDD_SENDFULLDUMPDLG, DIALOG
+    BEGIN
+        RIGHTMARGIN, 211
+        VERTGUIDE, 5
+        VERTGUIDE, 214
+        BOTTOMMARGIN, 96
+        HORZGUIDE, 7
+        HORZGUIDE, 35
+        HORZGUIDE, 58
+        HORZGUIDE, 88
+    END
+
+    IDD_ASKSENDFULLDUMPDLG, DIALOG
+    BEGIN
+        RIGHTMARGIN, 211
+        VERTGUIDE, 5
+        VERTGUIDE, 216
+        BOTTOMMARGIN, 171
+        HORZGUIDE, 7
+        HORZGUIDE, 37
+        HORZGUIDE, 74
+        HORZGUIDE, 96
+    END
+
+    IDD_SOLUTIONDLG, DIALOG
+    BEGIN
+        RIGHTMARGIN, 211
+        VERTGUIDE, 5
+        VERTGUIDE, 215
+        BOTTOMMARGIN, 88
+        HORZGUIDE, 7
+        HORZGUIDE, 35
+        HORZGUIDE, 49
+        HORZGUIDE, 80
+    END
+
+    IDD_SENDASSERTREPORTDLG, DIALOG
+    BEGIN
+        RIGHTMARGIN, 211
+        VERTGUIDE, 5
+        VERTGUIDE, 215
+        BOTTOMMARGIN, 88
+        HORZGUIDE, 7
+        HORZGUIDE, 35
+        HORZGUIDE, 49
+        HORZGUIDE, 80
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
@@ -69,231 +196,39 @@ END
 BEGIN
     "#define _WIN32_WINNT 0x0501\r\n"
     "#include ""afxres.h""\r\n"
-    "#if !defined(NO_DBGHELP)\r\n"
-    "#if defined(USE64)\r\n"
-    "#define _DBGHELP64\r\n"
-    "#else\r\n"
-    "#define _DBGHELP32\r\n"
-    "#endif\r\n"
-    "#endif\r\n"
     "#include ""projectinfo.h""\0"
 END
 
 3 TEXTINCLUDE 
 BEGIN
-    "\0"
+    "#if !defined(NO_DBGHELP)\r\n"
+    "#  if defined(USE64)\r\n"
+    "IDR_DBGHELP             RCDATA                  ""dbghelp\\x64\\dbghelp.dll""\r\n"
+    "#  else\r\n"
+    "IDR_DBGHELP             RCDATA                  ""dbghelp\\x86\\dbghelp.dll""\r\n"
+    "#  endif\r\n"
+    "#endif\0"
 END
 
 #endif    // APSTUDIO_INVOKED
 
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// Dialog
-//
-
-IDD_SENDREPORTDLG DIALOGEX 0, 0, 211, 92
-STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "[AppName]"
-FONT 8, "MS Shell Dlg", 400, 0, 0x1
-BEGIN
-    CONTROL         "",IDC_STATIC,"Static",SS_WHITERECT,-4,0,214,67
-    PUSHBUTTON      "Отмена",IDCANCEL,156,73,50,14
-    CONTROL         "[AppName] прекратил работу",IDC_HEADER_TEXT,"Static",SS_LEFTNOWORDWRAP | WS_GROUP,5,7,201,25
-    LTEXT           "Идёт поиск решения этой проблемы...",IDC_TEXT,5,35,201,8
-    CONTROL         "",IDC_PROGRESS,"msctls_progress32",PBS_MARQUEE | WS_BORDER,5,49,201,10
-    LTEXT           "www.crash-server.com",IDC_STATIC,5,76,75,8,WS_DISABLED
-END
-
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// DESIGNINFO
-//
-
-#ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO
-BEGIN
-    IDD_SENDREPORTDLG, DIALOG
-    BEGIN
-        VERTGUIDE, 5
-        VERTGUIDE, 206
-        BOTTOMMARGIN, 87
-        HORZGUIDE, 7
-        HORZGUIDE, 35
-        HORZGUIDE, 49
-        HORZGUIDE, 80
-    END
-END
-#endif    // APSTUDIO_INVOKED
-
-#endif    // Russian (Russia) resources
+#endif    // Neutral resources
 /////////////////////////////////////////////////////////////////////////////
 
 
-/////////////////////////////////////////////////////////////////////////////
-// English resources
 
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
-LANGUAGE LANG_ENGLISH, SUBLANG_NEUTRAL
-#pragma code_page(1252)
-
+#ifndef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
 //
-// Dialog
+// Generated from the TEXTINCLUDE 3 resource.
 //
-
-IDD_SENDREPORTDLG DIALOGEX 0, 0, 211, 92
-STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "[AppName]"
-FONT 8, "MS Shell Dlg", 400, 0, 0x1
-BEGIN
-    CONTROL         "",IDC_STATIC,"Static",SS_WHITERECT,-4,0,214,67
-    PUSHBUTTON      "Cancel",IDCANCEL,156,73,50,14
-    CONTROL         "[AppName] has stopped working",IDC_HEADER_TEXT,"Static",SS_LEFTNOWORDWRAP | WS_GROUP,5,7,201,25
-    LTEXT           "Sending crash data...",IDC_TEXT,5,35,201,8
-    CONTROL         "",IDC_PROGRESS,"msctls_progress32",PBS_MARQUEE | WS_BORDER,5,49,201,10
-    LTEXT           "www.crash-server.com",IDC_STATIC,5,76,75,8,WS_DISABLED
-END
-
-IDD_SENDFULLDUMPDLG DIALOGEX 0, 0, 211, 101
-STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "[AppName]"
-FONT 8, "MS Shell Dlg", 400, 0, 0x1
-BEGIN
-    CONTROL         "",IDC_STATIC,"Static",SS_WHITERECT,-4,0,214,76
-    PUSHBUTTON      "Cancel",IDCANCEL,156,82,50,14
-    CONTROL         "[AppName] has stopped working",IDC_HEADER_TEXT,"Static",SS_LEFTNOWORDWRAP | WS_GROUP,5,7,201,25
-    LTEXT           "Collecting more information about the problem.\nThis might take several minutes...",IDC_TEXT,5,35,201,23
-    CONTROL         "",IDC_PROGRESS,"msctls_progress32",PBS_MARQUEE | WS_BORDER,5,58,201,10
-END
-
-IDD_ASKSENDFULLDUMPDLG DIALOGEX 0, 0, 211, 176
-STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
-EXSTYLE WS_EX_TOPMOST
-CAPTION "[AppName]"
-FONT 8, "MS Shell Dlg", 400, 0, 0x1
-BEGIN
-    DEFPUSHBUTTON   "Send information",IDOK,87,74,65,14
-    PUSHBUTTON      "Cancel",IDCANCEL,156,74,50,14
-    CONTROL         "",IDC_STATIC,"Static",SS_WHITERECT,-4,0,214,67
-    CONTROL         "Do you want to send more information about the problem?",IDC_HEADER_TEXT,
-                    "Static",SS_LEFTNOWORDWRAP | WS_GROUP,5,7,201,25
-    LTEXT           "Additional details about what went wrong can help [Company] create a solution.",IDC_TEXT,5,37,201,27
-    CONTROL         "",IDC_DETAILS_TEXT,"RichEdit20W",ES_MULTILINE | ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_NOHIDESEL | ES_READONLY | WS_BORDER | WS_VSCROLL | WS_TABSTOP,5,96,201,75
-    PUSHBUTTON      "Details >>",IDC_DETAILS,5,74,50,14
-END
-
-IDD_SOLUTIONDLG DIALOGEX 0, 0, 211, 92
-STYLE DS_SYSMODAL | DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "[AppName]"
-FONT 8, "MS Shell Dlg", 400, 0, 0x1
-BEGIN
-    CONTROL         "",IDC_STATIC,"Static",SS_WHITERECT,-4,0,214,67
-    PUSHBUTTON      "No",IDCANCEL,156,73,50,14
-    CONTROL         "[AppName] has stopped working",IDC_HEADER_TEXT,"Static",SS_LEFTNOWORDWRAP | WS_GROUP,5,7,201,25
-    LTEXT           "Solution to the problem has been found.",IDC_TEXT,5,35,201,8
-    LTEXT           "www.crash-server.com",IDC_STATIC,5,76,75,8,WS_DISABLED
-    LTEXT           "Static",IDC_QUESTION,5,49,201,8
-    PUSHBUTTON      "Yes",IDOK,103,73,50,14
-END
-
-IDD_SENDASSERTREPORTDLG DIALOGEX 0, 0, 211, 92
-STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "[AppName]"
-FONT 8, "MS Shell Dlg", 400, 0, 0x1
-BEGIN
-    CONTROL         "",IDC_STATIC,"Static",SS_WHITERECT,-4,0,214,67
-    PUSHBUTTON      "Cancel",IDCANCEL,156,73,50,14
-    CONTROL         "[AppName] has encountered a problem",IDC_HEADER_TEXT,
-                    "Static",SS_LEFTNOWORDWRAP | WS_GROUP,5,7,201,25
-    LTEXT           "Sending crash data...",IDC_TEXT,5,35,201,8
-    CONTROL         "",IDC_PROGRESS,"msctls_progress32",PBS_MARQUEE | WS_BORDER,5,49,201,10
-    LTEXT           "www.crash-server.com",IDC_STATIC,5,76,75,8,WS_DISABLED
-END
-
-
+#if !defined(NO_DBGHELP)
+#  if defined(USE64)
+IDR_DBGHELP             RCDATA                  "dbghelp\x64\dbghelp.dll"
+#  else
+IDR_DBGHELP             RCDATA                  "dbghelp\x86\dbghelp.dll"
+#  endif
+#endif
 /////////////////////////////////////////////////////////////////////////////
-//
-// DESIGNINFO
-//
-
-#ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO
-BEGIN
-    IDD_SENDREPORTDLG, DIALOG
-    BEGIN
-        VERTGUIDE, 5
-        VERTGUIDE, 206
-        BOTTOMMARGIN, 87
-        HORZGUIDE, 7
-        HORZGUIDE, 35
-        HORZGUIDE, 49
-        HORZGUIDE, 80
-    END
-
-    IDD_SENDFULLDUMPDLG, DIALOG
-    BEGIN
-        VERTGUIDE, 5
-        VERTGUIDE, 206
-        BOTTOMMARGIN, 96
-        HORZGUIDE, 7
-        HORZGUIDE, 35
-        HORZGUIDE, 58
-    END
-
-    IDD_ASKSENDFULLDUMPDLG, DIALOG
-    BEGIN
-        VERTGUIDE, 5
-        VERTGUIDE, 206
-        BOTTOMMARGIN, 171
-        HORZGUIDE, 7
-        HORZGUIDE, 37
-        HORZGUIDE, 74
-        HORZGUIDE, 96
-    END
-
-    IDD_SOLUTIONDLG, DIALOG
-    BEGIN
-        VERTGUIDE, 5
-        VERTGUIDE, 206
-        BOTTOMMARGIN, 87
-        HORZGUIDE, 7
-        HORZGUIDE, 35
-        HORZGUIDE, 49
-        HORZGUIDE, 80
-    END
-
-    IDD_SENDASSERTREPORTDLG, DIALOG
-    BEGIN
-        VERTGUIDE, 5
-        VERTGUIDE, 206
-        BOTTOMMARGIN, 87
-        HORZGUIDE, 7
-        HORZGUIDE, 35
-        HORZGUIDE, 49
-        HORZGUIDE, 80
-    END
-END
-#endif    // APSTUDIO_INVOKED
-
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// String Table
-//
-
-STRINGTABLE
-BEGIN
-    IDS_PRIVATE_INFO_TEXT   "<a>Read our privacy statement</a>\n\nReport contains application state at the moment of failure\nincluding all memory. Report may unintentionally contain\npersonal information, but this information is not used to\nidentify you or contact you. For example, a report may\ninclude your name, part of a document you were working\non, or data that you recently submitted to a website. If\nyou are concerned that a report may contain personal or\nconfidential information, you should not send the report."
-    IDS_SOLUTION_URL        "Do you want to read it?"
-    IDS_SOLUTION_EXE        "Do you want to install it?"
-    IDS_MOTIVATE_TO_SEND_FULL 
-                            "This problem occurs first time and [Company] really need this report to fix the problem in a future version of [AppName].\nAre you sure you don't want to send it?"
-    IDS_SENDING_DATA        "Sending collected information to the [Company].\nThis might take several minutes..."
-END
-
-#endif    // English resources
-/////////////////////////////////////////////////////////////////////////////
-
+#endif    // not APSTUDIO_INVOKED
 

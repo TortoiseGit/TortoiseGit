@@ -28,7 +28,9 @@
   <PropertyGroup Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <CharacterSet>MultiByte</CharacterSet>
-    <WholeProgramOptimization>false</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Release'" Label="Configuration">
+    <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -39,7 +41,7 @@
   <ItemDefinitionGroup>
     <ClCompile>
       <AdditionalIncludeDirectories>$(ProjectDir)..\..\external\zlib123;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NOCRYPT;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
   </ItemDefinitionGroup>
@@ -53,36 +55,35 @@
     <ClCompile Include="..\..\external\zlib123\inffast.c" />
     <ClCompile Include="..\..\external\zlib123\inflate.c" />
     <ClCompile Include="..\..\external\zlib123\inftrees.c" />
+    <ClCompile Include="..\..\external\zlib123\trees.c" />
+    <ClCompile Include="..\..\external\zlib123\uncompr.c" />
+    <ClCompile Include="..\..\external\zlib123\zutil.c" />
     <ClCompile Include="..\..\external\zlib123\contrib\minizip\ioapi.c" />
     <ClCompile Include="..\..\external\zlib123\contrib\minizip\iowin32.c" />
     <ClCompile Include="..\..\external\zlib123\contrib\minizip\mztools.c" />
-    <ClCompile Include="..\..\external\zlib123\trees.c" />
-    <ClCompile Include="..\..\external\zlib123\uncompr.c" />
     <ClCompile Include="..\..\external\zlib123\contrib\minizip\unzip.c" />
     <ClCompile Include="..\..\external\zlib123\contrib\minizip\zip.c" />
     <ClCompile Include="ZipUnzip.cpp" />
-    <ClCompile Include="..\..\external\zlib123\zutil.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\external\zlib123\crc32.h" />
-    <ClInclude Include="..\..\external\zlib123\contrib\minizip\crypt.h" />
     <ClInclude Include="..\..\external\zlib123\deflate.h" />
     <ClInclude Include="..\..\external\zlib123\inffast.h" />
     <ClInclude Include="..\..\external\zlib123\inffixed.h" />
     <ClInclude Include="..\..\external\zlib123\inflate.h" />
     <ClInclude Include="..\..\external\zlib123\inftrees.h" />
-    <ClInclude Include="..\..\external\zlib123\contrib\minizip\ioapi.h" />
-    <ClInclude Include="..\..\external\zlib123\contrib\minizip\iowin32.h" />
     <ClInclude Include="..\..\external\zlib123\trees.h" />
-    <ClInclude Include="..\..\external\zlib123\contrib\minizip\unzip.h" />
     <ClInclude Include="..\..\external\zlib123\zconf.h" />
-    <ClInclude Include="..\..\external\zlib123\contrib\minizip\zip.h" />
-    <ClInclude Include="ZipUnzip.h" />
+    <ClInclude Include="..\..\external\zlib123\zconf.in.h" />
     <ClInclude Include="..\..\external\zlib123\zlib.h" />
     <ClInclude Include="..\..\external\zlib123\zutil.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\external\zlib123\README" />
+    <ClInclude Include="..\..\external\zlib123\contrib\minizip\crypt.h" />
+    <ClInclude Include="..\..\external\zlib123\contrib\minizip\ioapi.h" />
+    <ClInclude Include="..\..\external\zlib123\contrib\minizip\iowin32.h" />
+    <ClInclude Include="..\..\external\zlib123\contrib\minizip\mztools.h" />
+    <ClInclude Include="..\..\external\zlib123\contrib\minizip\unzip.h" />
+    <ClInclude Include="..\..\external\zlib123\contrib\minizip\zip.h" />
+    <ClInclude Include="ZipUnzip.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

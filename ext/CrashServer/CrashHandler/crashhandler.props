@@ -3,27 +3,22 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros">
     <ZlibDir>zlib123</ZlibDir>
-    <GsoapDir>gsoap-win32-2.8.0</GsoapDir>
-  </PropertyGroup>
-  <PropertyGroup>
-    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <GsoapDir>..\CrashHandler\DumpUploaderServiceLib</GsoapDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
     <ClCompile>
       <Optimization>MinSpace</Optimization>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <OmitFramePointers>true</OmitFramePointers>
-    </ClCompile>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
-    <ClCompile>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup>
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
     </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Platform)'=='x64'">
+    <ResourceCompile>
+      <PreprocessorDefinitions>USE64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
   </ItemDefinitionGroup>
 </Project>

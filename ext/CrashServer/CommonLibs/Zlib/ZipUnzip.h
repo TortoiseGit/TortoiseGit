@@ -1,8 +1,8 @@
-// Copyright 2012 Idol Software, Inc.
+// Copyright 2014 Idol Software, Inc.
 //
-// This file is part of CrashHandler library.
+// This file is part of Doctor Dump SDK.
 //
-// CrashHandler library is free software: you can redistribute it and/or modify
+// Doctor Dump SDK is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
@@ -19,6 +19,7 @@
 
 #include <wtypes.h>
 #include <vector>
+#include <functional>
 
 typedef void* zipFile;
 typedef void* unzFile;
@@ -29,7 +30,7 @@ public:
     Zip(LPCWSTR pszFilename, bool append = false);
     ~Zip();
 
-    void AddFile(LPCWSTR pszFilename, LPCWSTR pszFilenameInZip);
+    void AddFile(LPCWSTR pszFilename, LPCWSTR pszFilenameInZip = nullptr, bool* cancel = nullptr);
 
 private:
     zipFile m_zf;
@@ -38,14 +39,9 @@ private:
 class Unzip
 {
 public:
-    Unzip();
-    ~Unzip();
-
-    void Open(LPCWSTR pszFilename);
-    void Extract(LPCWSTR pszFolder);
-
-    std::vector<CStringW> m_files;
-
-private:
-    unzFile m_uf;
+    static std::vector<CStringW> Extract(LPCWSTR pszFilename, LPCWSTR pszFolder, std::function<bool(LPCWSTR filePath, DWORD& flagsAndAttributes)> predicate);
+    static std::vector<CStringW> Extract(LPCWSTR pszFilename, LPCWSTR pszFolder);
 };
+
+bool DeflateBuffer(const BYTE* buffer, size_t bufferLen, std::vector<BYTE>& outBuffer, const char* dictionary);
+bool InflateBuffer(const BYTE* buffer, size_t bufferLen, std::vector<BYTE>& outBuffer, const char* dictionary);

@@ -3,9 +3,10 @@ EXPORTS
 	InitCrashHandler					@1
 	GetVersionFromApp					@2
 	GetVersionFromFile					@3
-	CrashServer_SendAssertionViolated	@4
 	AddFileToReport						@5
 	RemoveFileFromReport				@6
 	IsReadyToExit						@7
 	SendReport							@8
 	AddUserInfoToReport					@9
+	SetCustomInfo						@10
+	RemoveUserInfoFromReport			@11

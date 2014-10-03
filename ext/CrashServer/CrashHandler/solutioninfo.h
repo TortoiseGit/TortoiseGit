@@ -1,8 +1,8 @@
-// Copyright 2012 Idol Software, Inc.
+// Copyright 2014 Idol Software, Inc.
 //
-// This file is part of CrashHandler library.
+// This file is part of Doctor Dump SDK.
 //
-// CrashHandler library is free software: you can redistribute it and/or modify
+// Doctor Dump SDK is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
@@ -18,10 +18,10 @@
 #ifndef __SOLUTIONINFO_H
 #define __SOLUTIONINFO_H
 
-#define VERSION_PRODUCTNAME_STR                 "Crash Server"
+#define VERSION_PRODUCTNAME_STR                 "Doctor Dump"
 #define VERSION_PRODUCTVERSION_HIGH             1
 #define VERSION_PRODUCTVERSION_LOW              0
-#define VERSION_PRODUCTVERSION_BUILD            10
+#define VERSION_PRODUCTVERSION_BUILD            15
 #define VERSION_PRODUCTVERSION_COMPILATION      0
 
 #include "..\CommonLibs\Version\version.h"

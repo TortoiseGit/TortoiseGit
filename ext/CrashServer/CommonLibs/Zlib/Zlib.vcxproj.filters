@@ -9,8 +9,24 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="MiniZip Header Files">
+      <UniqueIdentifier>{3dc059d6-bb27-400a-98a5-7dd2571380c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MiniZip Source Files">
+      <UniqueIdentifier>{5fdbc241-eaa2-4a6e-858f-56e0ef87e1ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="My">
+      <UniqueIdentifier>{b111a0de-3137-481f-a49e-a34a34b797f0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ZipUnzip.cpp">
+      <Filter>My</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\external\zlib123\adler32.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -38,6 +54,15 @@
     <ClCompile Include="..\..\external\zlib123\inftrees.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\external\zlib123\trees.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\external\zlib123\uncompr.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\external\zlib123\zutil.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\external\zlib123\contrib\minizip\ioapi.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -47,30 +72,18 @@
     <ClCompile Include="..\..\external\zlib123\contrib\minizip\mztools.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\external\zlib123\trees.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\external\zlib123\uncompr.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\external\zlib123\contrib\minizip\unzip.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\external\zlib123\contrib\minizip\zip.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ZipUnzip.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\external\zlib123\zutil.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\external\zlib123\crc32.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="ZipUnzip.h">
+      <Filter>My</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\external\zlib123\contrib\minizip\crypt.h">
+    <ClInclude Include="..\..\external\zlib123\crc32.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\external\zlib123\deflate.h">
@@ -88,25 +101,13 @@
     <ClInclude Include="..\..\external\zlib123\inftrees.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\external\zlib123\contrib\minizip\ioapi.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\external\zlib123\contrib\minizip\iowin32.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\external\zlib123\trees.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\external\zlib123\contrib\minizip\unzip.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\external\zlib123\zconf.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\external\zlib123\contrib\minizip\zip.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ZipUnzip.h">
+    <ClInclude Include="..\..\external\zlib123\zconf.in.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\external\zlib123\zlib.h">
@@ -115,8 +116,23 @@
     <ClInclude Include="..\..\external\zlib123\zutil.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\external\zlib123\README" />
+    <ClInclude Include="..\..\external\zlib123\contrib\minizip\crypt.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\external\zlib123\contrib\minizip\ioapi.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\external\zlib123\contrib\minizip\iowin32.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\external\zlib123\contrib\minizip\mztools.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\external\zlib123\contrib\minizip\unzip.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\external\zlib123\contrib\minizip\zip.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -29,8 +29,6 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -40,11 +38,16 @@
   <PropertyGroup Label="UserMacros" />
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>..\..\external\$(GsoapDir);..\..\external\wtl\include;..\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(GsoapDir);../../external/WTL/Include/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NO_DBGHELP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
       <AdditionalDependencies>version.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NO_DBGHELP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
     <Link>
@@ -57,50 +60,63 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\CommonLibs\Zlib\Zlib.vcxproj">
-      <Project>{d0d57ca2-a972-47fe-92c8-63a3caaf0e93}</Project>
-      <CopyLocalSatelliteAssemblies>false</CopyLocalSatelliteAssemblies>
-      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
-    </ProjectReference>
-    <ProjectReference Include="..\DumpUploaderServiceLib\DumpUploaderServiceLib.vcxproj">
-      <Project>{1912dda2-e7b9-437f-ba8e-da2c1c2d79fa}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="CrashInfo.cpp" />
-    <ClCompile Include="CrashProcessor.cpp" />
-    <ClCompile Include="DumpWriter.cpp" />
     <ClCompile Include="..\..\CommonLibs\Log\log.cpp">
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="..\..\CommonLibs\Stat\stat.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="CrashInfo.cpp" />
+    <ClCompile Include="CrashProcessor.cpp" />
+    <ClCompile Include="DoctorDump.cpp" />
+    <ClCompile Include="DumpWriter.cpp" />
+    <ClCompile Include="IniFile.cpp" />
     <ClCompile Include="SendReportDlg.cpp" />
-    <ClCompile Include="SendRpt.cpp" />
-    <ClCompile Include="Serializer.cpp" />
-    <ClCompile Include="stdafx.cpp">
+    <ClCompile Include="SendRpt.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Serializer.cpp" />
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="Translator.cpp" />
+    <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\CommonLibs\Log\log.h" />
+    <ClInclude Include="..\..\CommonLibs\Log\log_media.h" />
+    <ClInclude Include="..\..\CommonLibs\Log\synchro.h" />
+    <ClInclude Include="..\..\CommonLibs\Stat\stat.h" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="CrashInfo.h" />
+    <ClInclude Include="DoctorDump.h" />
+    <ClInclude Include="DumpUploader.h" />
     <ClInclude Include="DumpWriter.h" />
+    <ClInclude Include="IniFile.h" />
     <ClInclude Include="projectinfo.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="SendReportDlg.h" />
     <ClInclude Include="Serializer.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="Translator.h" />
+    <ClInclude Include="utils.h" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="SendRpt.ico" />
+    <None Include="SendRpt.ico" />
+    <None Include="translate.ini" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="SendRpt.rc" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="dbghelp_x64.dll" />
-    <None Include="dbghelp_x86.dll" />
+    <ProjectReference Include="..\..\CommonLibs\Zlib\Zlib.vcxproj">
+      <Project>{d0d57ca2-a972-47fe-92c8-63a3caaf0e93}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\DumpUploaderServiceLib\DumpUploaderServiceLib.vcxproj">
+      <Project>{1912dda2-e7b9-437f-ba8e-da2c1c2d79fa}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="SendRpt.manifest" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
