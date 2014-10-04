@@ -59,12 +59,12 @@ bool SVNFetchCommand::Execute()
 	CProgressDlg progress;
 	progress.m_GitCmd=_T("git.exe svn fetch");
 
+	CGitHash upstreamNewHash; // declare outside lambda, because it is captured by reference
 	progress.m_PostCmdCallback = [&](DWORD status, PostCmdList& postCmdList)
 	{
 		if (status)
 			return;
 
-		CGitHash upstreamNewHash;
 		if (g_Git.GetHash(upstreamNewHash, out))
 		{
 			MessageBox(hwndExplorer, g_Git.GetGitLastErr(_T("Could not get upstream hash after fetching.")), _T("TortoiseGit"), MB_ICONERROR);
