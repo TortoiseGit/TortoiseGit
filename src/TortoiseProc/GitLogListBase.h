@@ -77,7 +77,6 @@ class SelectionHistory
 public:
 	SelectionHistory(void)
 	: location(0)
-	, willDiscardForward(FALSE)
 	{
 		lastselected.reserve(HISTORYLENGTH);
 	}
@@ -98,29 +97,27 @@ public:
 			return;
 		}
 
-		// go back to some commit and re-select it, it may be a forked point.
-		if (size > 0 && location >= 0 && location != size - 1 && hash == lastselected[location])
+		// go back and some commit was highlight
+		if (size > 0 && location >= 0 && location != size - 1)
 		{
-			willDiscardForward = TRUE;
-			return;
-		}
+			// Re-select current one, it may be a forked point.
+			if (hash == lastselected[location])
+				// Discard it later.
+				// That is that discarding forward history when a forked entry is really coming.
+				// And user has the chance to Go Forward again in this situation.
+				// IOW, (hash != lastselected[location]) means user wants a forked history,
+				// and this change saves one step from old behavior.
+				return;
 
-		// a new forked entry is really coming
-		if (willDiscardForward)
-		{
-			willDiscardForward = FALSE;
+			// Discard forward history if any
 			while (lastselected.size() - 1 > location)
 				lastselected.pop_back();
 		}
 
-		// check if list is full
 		if (lastselected.size() >= HISTORYLENGTH)
 			lastselected.erase(lastselected.cbegin());
 
-		// add new one
 		lastselected.push_back(hash);
-
-		// reset location
 		location = lastselected.size() - 1;
 	}
 	BOOL GoBack(CGitHash& historyEntry)
@@ -154,7 +151,6 @@ public:
 private:
 	std::vector<CGitHash> lastselected;
 	size_t location;
-	BOOL willDiscardForward;
 };
 
 class CThreadSafePtrArray: public CPtrArray
