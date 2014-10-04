@@ -274,15 +274,15 @@ static D2D1_TEXT_ANTIALIAS_MODE DWriteMapFontQuality(int extraFontFlag) {
 }
 #endif
 
-static void SetLogFont(LOGFONTW &lf, const char *faceName, int characterSet, float size, int weight, bool italic, int extraFontFlag) {
-	lf = LOGFONTW();
+static void SetLogFont(LOGFONTA &lf, const char *faceName, int characterSet, float size, int weight, bool italic, int extraFontFlag) {
+	lf = LOGFONTA();
 	// The negative is to allow for leading
 	lf.lfHeight = -(abs(static_cast<int>(size + 0.5)));
 	lf.lfWeight = weight;
 	lf.lfItalic = static_cast<BYTE>(italic ? 1 : 0);
 	lf.lfCharSet = static_cast<BYTE>(characterSet);
 	lf.lfQuality = Win32MapFontQuality(extraFontFlag);
-	UTF16FromUTF8(faceName, strlen(faceName)+1, lf.lfFaceName, LF_FACESIZE);
+	StringCopy(lf.lfFaceName, faceName);
 }
 
 /**
@@ -305,7 +305,7 @@ class FontCached : Font {
 	FontCached *next;
 	int usage;
 	float size;
-	LOGFONTW lf;
+	LOGFONTA lf;
 	int technology;
 	int hash;
 	explicit FontCached(const FontParameters &fp);
@@ -328,7 +328,7 @@ FontCached::FontCached(const FontParameters &fp) :
 	hash = HashFont(fp);
 	fid = 0;
 	if (technology == SCWIN_TECH_GDI) {
-		HFONT hfont = ::CreateFontIndirectW(&lf);
+		HFONT hfont = ::CreateFontIndirectA(&lf);
 		fid = reinterpret_cast<void *>(new FormatAndMetrics(hfont, fp.extraFontFlag, fp.characterSet));
 	} else {
 #if defined(USE_D2D)
@@ -377,18 +377,14 @@ FontCached::FontCached(const FontParameters &fp) :
 }
 
 bool FontCached::SameAs(const FontParameters &fp) {
-	if (
+	return
 		(size == fp.size) &&
 		(lf.lfWeight == fp.weight) &&
 		(lf.lfItalic == static_cast<BYTE>(fp.italic ? 1 : 0)) &&
 		(lf.lfCharSet == fp.characterSet) &&
 		(lf.lfQuality == Win32MapFontQuality(fp.extraFontFlag)) &&
-		(technology == fp.technology)) {
-		wchar_t wszFace[LF_FACESIZE];
-		UTF16FromUTF8(fp.faceName, strlen(fp.faceName)+1, wszFace, LF_FACESIZE);
-		return 0 == wcscmp(lf.lfFaceName,wszFace);
-	}
-	return false;
+		(technology == fp.technology) &&
+		0 == strcmp(lf.lfFaceName,fp.faceName);
 }
 
 void FontCached::Release() {
@@ -1551,9 +1547,9 @@ void SurfaceD2D::DrawRGBAImage(PRectangle rc, int width, int height, const unsig
 		rc.bottom = rc.top + height;
 
 		std::vector<unsigned char> image(height * width * 4);
-		for (int y=0; y<height; y++) {
-			for (int x=0; x<width; x++) {
-				unsigned char *pixel = &image[0] + (y*width+x) * 4;
+		for (int yPixel=0; yPixel<height; yPixel++) {
+			for (int xPixel = 0; xPixel<width; xPixel++) {
+				unsigned char *pixel = &image[0] + (yPixel*width + xPixel) * 4;
 				unsigned char alpha = pixelsImage[3];
 				// Input is RGBA, output is BGRA with premultiplied alpha
 				pixel[2] = (*pixelsImage++) * alpha / 255;
@@ -2184,7 +2180,7 @@ public:
 		}
 	}
 	virtual void SetFont(Font &font);
-	virtual void Create(Window &parent, int ctrlID, Point location_, int lineHeight_, bool unicodeMode_, int technology_);
+	virtual void Create(Window &parent_, int ctrlID_, Point location_, int lineHeight_, bool unicodeMode_, int technology_);
 	virtual void SetAverageCharWidth(int width);
 	virtual void SetVisibleRows(int rows);
 	virtual int GetVisibleRows() const;

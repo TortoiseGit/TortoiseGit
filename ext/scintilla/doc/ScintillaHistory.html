@@ -111,7 +111,7 @@
 	<td>David Clain</td>
 	<td>Brendon Yenson</td>
       </tr><tr>
-	<td><a href="http://www.baanboard.com">Vamsi Potluru</td>
+	<td><a href="http://www.baanboard.com">Vamsi Potluru</a></td>
 	<td>Praveen Ambekar</td>
 	<td>Alan Knowles</td>
 	<td>Kengo Jinno</td>
@@ -448,6 +448,17 @@
       </tr><tr>
 	<td>nkmathew</td>
 	<td>Andreas Tscharner</td>
+	<td>Lee Wilmott</td>
+	<td>johnsonj</td>
+      </tr><tr>
+	<td>Vicente</td>
+	<td>Nick Gravgaard</td>
+	<td>Ian Goldby</td>
+	<td>Holger Stenger</td>
+      </tr><tr>
+	<td>danselmi</td>
+	<td>Mat Berchtold</td>
+	<td>Michael Staszewski</td>
     </tr>
     </table>
     <p>
@@ -460,6 +471,163 @@
       </li>
     </ul>
     <h3>
+       <a href="http://prdownloads.sourceforge.net/scintilla/scite351.zip?download">Release 3.5.1</a>
+    </h3>
+    <ul>
+	<li>
+	Released 30 September 2014.
+	</li>
+	<li>
+	BibTeX lexer added.
+	<a href="http://sourceforge.net/p/scintilla/feature-requests/1071/">Feature #1071.</a>
+	</li>
+	<li>
+	SQL lexer supports the q-quote operator as SCE_SQL_QOPERATOR(24).
+	</li>
+	<li>
+	VHDL lexer supports block comments.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1527/">Bug #1527</a>.
+	</li>
+	<li>
+	VHDL folder fixes case where "component" used before name.
+	<a href="http://sourceforge.net/p/scintilla/bugs/613/">Bug #613</a>.
+	</li>
+	<li>
+	Restore fractional pixel tab positioning which was truncated to whole pixels in 3.5.0.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1652/">Bug #1652</a>.
+	</li>
+	<li>
+	Allow choice between windowed and inline IME on some platforms.
+	</li>
+	<li>
+	On GTK+ cache autocomplete window to avoid platform bug where windows
+	were sometimes lost.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1649/">Bug #1649</a>.
+	</li>
+	<li>
+	On GTK+ size autocomplete window more accurately.
+	</li>
+	<li>
+	On Windows only unregister windows classes registered.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1639/">Bug #1639</a>.
+	</li>
+	<li>
+	On Windows another DirectWrite mode SC_TECHNOLOGY_DIRECTWRITERETAIN added
+	which may avoid drawing failures on some cards and drivers.
+	This feature is provisional and may be changed or removed if a better solution is found.
+	</li>
+	<li>
+	On Windows support the Visual Studio 2010+ clipboard format that indicates a line copy.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1636/">Bug #1636</a>.
+	</li>
+	<li>
+	SciTE session files remember the scroll position.
+	</li>
+    </ul>
+    <h3>
+       <a href="http://prdownloads.sourceforge.net/scintilla/scite350.zip?download">Release 3.5.0</a>
+    </h3>
+    <ul>
+	<li>
+	Released 13 August 2014.
+	</li>
+	<li>
+	Text may share space vertically so that extreme ascenders and descenders are
+	not cut off by calling SCI_SETPHASESDRAW(SC_PHASES_MULTIPLE).
+	</li>
+	<li>
+	Separate timers are used for each type of periodic activity and they are turned on and off
+	as required. This saves power as there are fewer wake ups.
+	On recent releases of OS X Cocoa and Windows, coalescing timers are used to further
+	save power.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1086/">Bug #1086</a>.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1532/">Bug #1532</a>.
+	</li>
+	<li>
+	Explicit tab stops may be set for each line.
+	</li>
+	<li>
+	On Windows and GTK+, when using Korean input methods, IME composition is moved from a
+	separate window into the Scintilla window.
+	</li>
+	<li>
+	SciTE adds a "Clean" command to the "Tools" menu which is meant to be bound to a command like
+	"make clean".
+	</li>
+	<li>
+	Lexer added for Windows registry files.
+	</li>
+	<li>
+	HTML lexer fixes a crash with SGML after a Mako comment.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1622/">Bug #1622</a>.
+	</li>
+	<li>
+	KiXtart lexer adds a block comment state.
+	<a href="http://sourceforge.net/p/scintilla/feature-requests/1053/">Feature #1053.</a>
+	</li>
+	<li>
+	Matlab lexer fixes transpose operations like "X{1}'".
+	<a href="http://sourceforge.net/p/scintilla/bugs/1629/">Bug #1629</a>.
+	</li>
+	<li>
+	Ruby lexer fixes bugs with the syntax of symbols including allowing a symbol to end with '?'.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1627/">Bug #1627</a>.
+	</li>
+	<li>
+	Rust lexer supports byte string literals, naked CR can be escaped in strings, and files starting with
+	"#![" are not treated as starting with a hashbang comment.
+	<a href="http://sourceforge.net/p/scintilla/feature-requests/1063/">Feature #1063.</a>
+	</li>
+	<li>
+	Bug fixed where style data was stale when deleting a rectangular selection.
+	</li>
+	<li>
+	Bug fixed where annotations disappeared when SCI_CLEARDOCUMENTSTYLE called.
+	</li>
+	<li>
+	Bug fixed where selection not redrawn after SCI_DELWORDRIGHT.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1633/">Bug #1633</a>.
+	</li>
+	<li>
+	Change the function prototypes to be complete for functions exported as "C".
+	<a href="http://sourceforge.net/p/scintilla/bugs/1618/">Bug #1618</a>.
+	</li>
+	<li>
+	Fix a memory leak on GTK+ with autocompletion lists.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1638/">Bug #1638</a>.
+	</li>
+	<li>
+	On GTK+, use the full character width for the overstrike caret for multibyte characters.
+	</li>
+	<li>
+	On Qt, set list icon size to largest icon. Add padding on OS X.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1634/">Bug #1634</a>.
+	</li>
+	<li>
+	On Qt, fix building on FreeBSD 9.2.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1635/">Bug #1635</a>.
+	</li>
+	<li>
+	On Qt, add a get_character method on the document.
+	<a href="http://sourceforge.net/p/scintilla/feature-requests/1064/">Feature #1064.</a>
+	</li>
+	<li>
+	On Qt, add SCI_* for methods to ScintillaConstants.py.
+	<a href="http://sourceforge.net/p/scintilla/feature-requests/1065/">Feature #1065.</a>
+	</li>
+	<li>
+	SciTE on GTK+ crash fixed with Insert Abbreviation command.
+	</li>
+	<li>
+	For SciTE with read-only files and are.you.sure=0 reenable choice to save to another
+	location when using Save or Close commands.
+	</li>
+	<li>
+	Fix SciTE bug where toggle bookmark did not work after multiple lines with bookmarks merged.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1617/">Bug #1617</a>.
+	</li>
+    </ul>
+    <h3>
        <a href="http://prdownloads.sourceforge.net/scintilla/scite344.zip?download">Release 3.4.4</a>
     </h3>
     <ul>
@@ -468,6 +636,8 @@
 	</li>
 	<li>
 	Style byte indicators removed. They were deprecated in 2007. Standard indicators should be used instead.
+	Some elements used by lexers no longer take number of bits or mask arguments so lexers may need to be
+	updated for LexAccessor::StartAt,  LexAccessor::SetFlags (removed),  LexerModule::LexerModule.
 	</li>
 	<li>
 	When multiple selections are active, autocompletion text may be inserted at each selection with new
