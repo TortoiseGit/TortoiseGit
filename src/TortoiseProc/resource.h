@@ -1140,7 +1140,9 @@
 #define IDC_CHECK_SWITCH                1525
 #define IDS_PROC_COMMIT_SUPERPROJECT    1525
 #define IDC_CHECK_MERGE                 1526
+#define IDS_LOG_NOT_VISIBLE             1526
 #define IDC_CHECK_BRANCH                1527
+#define IDS_PROC_SELECTION_HISTORY      1527
 #define IDC_EDIT_BRANCH                 1528
 #define IDC_SHOWLOCKEDOVERLAY           1529
 #define IDC_EDIT_ORIGIN                 1530
@@ -1917,13 +1919,15 @@
 #define IDC_SHOWCOMPLETELOG             32864
 #define IDC_DETECT_MOVED_OR_COPIED_LINES_NUM_CHARACTERS_WITHIN_FILE 32865
 #define IDC_DETECT_MOVED_OR_COPIED_LINES_NUM_CHARACTERS_FROM_FILES 32866
+#define ID_GO_FORWARD                   32867
+#define ID_GO_BACKWARD                  32868
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        355
-#define _APS_NEXT_COMMAND_VALUE         32867
+#define _APS_NEXT_COMMAND_VALUE         32869
 #define _APS_NEXT_CONTROL_VALUE         1797
 #define _APS_NEXT_SYMED_VALUE           201
 #endif

@@ -71,6 +71,77 @@
 #define MSG_REFLOG_CHANGED		(WM_USER+112)
 #define MSG_FETCHED_DIFF		(WM_USER+113)
 
+class SelectionHistory
+{
+#define HISTORYLENGTH 50
+public:
+	SelectionHistory(void)
+	: location(0)
+	{
+		lastselected.reserve(HISTORYLENGTH);
+	}
+	void Add(CGitHash &hash)
+	{
+		if (hash.IsEmpty())
+			return;
+
+		size_t size = lastselected.size();
+
+		// re-select last selected commit
+		if (size > 0 && hash == lastselected[size - 1])
+		{
+			// reset location
+			if (location != size - 1)
+				location = size - 1;
+			return;
+		}
+
+		// go back and some commit was highlight
+		if (size > 0 && location >= 0 && location != size - 1)
+		{
+			// Re-select current one, it may be a forked point.
+			if (hash == lastselected[location])
+				// Discard it later.
+				// That is that discarding forward history when a forked entry is really coming.
+				// And user has the chance to Go Forward again in this situation.
+				// IOW, (hash != lastselected[location]) means user wants a forked history,
+				// and this change saves one step from old behavior.
+				return;
+
+			// Discard forward history if any
+			while (lastselected.size() - 1 > location)
+				lastselected.pop_back();
+		}
+
+		if (lastselected.size() >= HISTORYLENGTH)
+			lastselected.erase(lastselected.cbegin());
+
+		lastselected.push_back(hash);
+		location = lastselected.size() - 1;
+	}
+	BOOL GoBack(CGitHash& historyEntry)
+	{
+		if (location >= 1)
+			--location;
+
+		historyEntry = lastselected[location];
+
+		return location == 0;
+	}
+	BOOL GoForward(CGitHash& historyEntry)
+	{
+		if (location >= lastselected.size() - 1)
+			return FALSE;
+
+		historyEntry = lastselected[++location];
+
+		return TRUE;
+	}
+private:
+	std::vector<CGitHash> lastselected;
+	size_t location;
+};
+
 class CThreadSafePtrArray: public CPtrArray
 {
 	CComCriticalSection *m_critSec;
@@ -338,6 +409,8 @@ public:
 	CTGitPath			m_Path;
 	int					m_ShowMask;
 	CGitHash			m_lastSelectedHash;
+	SelectionHistory	m_selectionHistory;
+	CGitHash			m_highlight;
 	int					m_ShowRefMask;
 
 	void				GetTimeRange(CTime &oldest,CTime &latest);
@@ -541,6 +614,8 @@ protected:
 	HICON				m_hFetchIcon;
 
 	HFONT				m_boldFont;
+	HFONT				m_FontItalics;
+	HFONT				m_boldItalicsFont;
 
 	CRegDWORD			m_regMaxBugIDColWidth;
 
