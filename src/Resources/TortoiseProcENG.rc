@@ -2960,6 +2960,8 @@ IDR_ACC_LOGDLG ACCELERATORS
 BEGIN
     "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
     VK_INSERT,      ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
+    VK_LEFT,        ID_GO_BACKWARD,         VIRTKEY, ALT, NOINVERT
+    VK_RIGHT,       ID_GO_FORWARD,          VIRTKEY, ALT, NOINVERT
     "F",            ID_LOGDLG_FIND,         VIRTKEY, CONTROL, NOINVERT
     VK_F3,          ID_LOGDLG_FIND,         VIRTKEY, NOINVERT
     "D",            ID_LOGDLG_FOCUSFILTER,  VIRTKEY, ALT, NOINVERT
@@ -2967,9 +2969,8 @@ BEGIN
     VK_F5,          ID_LOGDLG_REFRESH,      VIRTKEY, NOINVERT
     VK_F5,          ID_LOGDLG_REFRESH,      VIRTKEY, CONTROL, NOINVERT
     VK_F5,          ID_LOGDLG_REFRESH,      VIRTKEY, SHIFT, NOINVERT
-    VK_RIGHT,       ID_GO_FORWARD,          VIRTKEY, ALT, NOINVERT
-    VK_LEFT,        ID_GO_BACKWARD,         VIRTKEY, ALT, NOINVERT
-    VK_BROWSER_BACK, ID_GO_BACKWARD,        VIRTKEY, NOINVERT
+    VK_BACK,        ID_GO_BACKWARD,         VIRTKEY, NOINVERT
+    VK_BACK,        ID_GO_FORWARD,          VIRTKEY, SHIFT, NOINVERT
 END
 
 IDR_ACC_COMMITDLG ACCELERATORS
@@ -4458,12 +4459,12 @@ BEGIN
     IDS_PROC_SELECTION_HISTORY "Selection History"
 END
 
-#endif    // English (U.S.) resources
+#endif    // 英文 (美國) resources
 /////////////////////////////////////////////////////////////////////////////
 
 
 /////////////////////////////////////////////////////////////////////////////
-// German (Switzerland) resources
+// 德文 (瑞士) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DES)
 LANGUAGE LANG_GERMAN, SUBLANG_GERMAN_SWISS
@@ -4507,7 +4508,7 @@ END
 
 #endif    // APSTUDIO_INVOKED
 
-#endif    // German (Switzerland) resources
+#endif    // 德文 (瑞士) resources
 /////////////////////////////////////////////////////////////////////////////
 
 
