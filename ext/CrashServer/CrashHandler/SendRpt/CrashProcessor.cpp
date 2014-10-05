@@ -446,6 +446,7 @@ public:
     void PrepareAdditionalInfo(const doctor_dump::NeedMoreInfoResponse& response, HANDLE process, DWORD processId)
     {
         m_log.Info(_T("Prepare additional info..."));
+#ifdef REMOTE_CODE_DOWNLOAD_AND_EXECUTION
         HMODULE hInfoDll = NULL;
         try
         {
@@ -477,6 +478,7 @@ public:
             DeleteFile(m_infoDll);
             throw;
         }
+#endif
     }
 
     void ProcessSolution(UI& ui, const doctor_dump::HaveSolutionResponse& solution)
@@ -492,9 +494,11 @@ public:
                 url.Replace(L"{ProblemID}", ToString(solution.problemID));
                 url.Replace(L"{DumpGroupID}", ToString(solution.dumpGroupID));
                 url.Replace(L"{DumpID}", ToString(solution.dumpID));
-                ShellExecute(NULL, _T("open"), CW2CT(url), NULL, NULL, SW_SHOWNORMAL);
+                if (url.Find(L"http://") == 0 || url.Find(L"https://") == 0)
+                    ShellExecute(NULL, _T("open"), CW2CT(url), NULL, NULL, SW_SHOWNORMAL);
             }
             break;
+#ifdef REMOTE_CODE_DOWNLOAD_AND_EXECUTION
         case ns4__HaveSolutionResponse_SolutionType__Exe:
             if (!solution.askConfirmation || ui.AskGetSolution(CSolutionDlg::Install))
             {
@@ -514,6 +518,7 @@ public:
                 CloseHandle(pi.hProcess);
             }
             break;
+#endif
         default:
             throw runtime_error("Unknown SolutionType");
         }
@@ -620,7 +625,11 @@ public:
         }
 finish:
         if (!m_config.ServiceMode && !response->urlToProblem.empty() && m_config.OpenProblemInBrowser)
-            ShellExecuteW(NULL, L"open", response->urlToProblem.c_str(), NULL, NULL, SW_SHOWNORMAL);
+        {
+            CAtlStringW url = response->urlToProblem.c_str();
+            if (url.Find(L"http://") == 0 || url.Find(L"https://") == 0)
+                ShellExecuteW(NULL, _T("open"), url, NULL, NULL, SW_SHOWNORMAL);
+        }
 
         return true;
     }
