@@ -33,7 +33,6 @@
 #include "BrowseRefsDlg.h"
 #include "SmartHandle.h"
 #include "LogOrdering.h"
-#include <MMSystem.h>
 
 #define WM_TGIT_REFRESH_SELECTION   (WM_APP + 1)
 
