@@ -6,6 +6,7 @@ Released: unreleased
  * We now use a 4096-bit RSA key with SHA2-512 for signing and verifying our releases instead of a 1024-bit DSA key with SHA1
    The new key is signed by the old key. You can get the fingerprint from a trusted TortoiseGit installation by issuing
    "TortoiseGitProc.exe /command:pgpfp"
+ * Fixed issue #1928: Hotkeys in "Show log" dialog for navigating back / forward
 
 == Bug Fixes ==
  * Fixed issue #2260: Clicking in blank space in Commit dialog causes all unversioned files to become selected

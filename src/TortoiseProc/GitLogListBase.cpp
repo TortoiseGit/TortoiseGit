@@ -76,6 +76,11 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	GetObject(hFont, sizeof(LOGFONT), &lf);
 	lf.lfWeight = FW_BOLD;
 	m_boldFont = CreateFontIndirect(&lf);
+	lf.lfWeight = 0;
+	lf.lfItalic = TRUE;
+	m_FontItalics = CreateFontIndirect(&lf);
+	lf.lfWeight = FW_BOLD;
+	m_boldItalicsFont = CreateFontIndirect(&lf);
 
 	m_bShowBugtraqColumn=false;
 
@@ -277,6 +282,12 @@ CGitLogListBase::~CGitLogListBase()
 
 	if (m_boldFont)
 		DeleteObject(m_boldFont);
+
+	if (m_FontItalics)
+		DeleteObject(m_FontItalics);
+
+	if (m_boldItalicsFont)
+		DeleteObject(m_boldItalicsFont);
 
 	if ( m_pStoreSelection )
 	{
@@ -575,6 +586,7 @@ void DrawUpTriangle(HDC hdc, CRect rect, COLORREF color, int bold)
 void CGitLogListBase::DrawTagBranchMessage(HDC hdc, CRect &rect, INT_PTR index, std::vector<REFLABEL> &refList)
 {
 	GitRev* data = (GitRev*)m_arShownList.SafeGetAt(index);
+	BOOL isHighlight = data->m_CommitHash == m_highlight && !m_highlight.IsEmpty();
 	CRect rt=rect;
 	LVITEM rItem;
 	SecureZeroMemory(&rItem, sizeof(LVITEM));
@@ -605,7 +617,7 @@ void CGitLogListBase::DrawTagBranchMessage(HDC hdc, CRect &rect, INT_PTR index, 
 		rt.left += oneSpaceSize.cx;
 	}
 
-	if (IsAppThemed() && SysInfo::Instance().IsVistaOrLater())
+	if (IsAppThemed() && SysInfo::Instance().IsVistaOrLater() && !isHighlight)
 	{
 		int txtState = LISS_NORMAL;
 		if (rItem.state & LVIS_SELECTED)
@@ -615,16 +627,24 @@ void CGitLogListBase::DrawTagBranchMessage(HDC hdc, CRect &rect, INT_PTR index, 
 	}
 	else
 	{
-		if (rItem.state & LVIS_SELECTED)
+		COLORREF clrOld = ::GetTextColor(hdc);
+		COLORREF clrNew;
+
+		if (isHighlight)
 		{
-			COLORREF clrOld = ::SetTextColor(hdc,::GetSysColor(COLOR_HIGHLIGHTTEXT));
-			::DrawText(hdc,data->GetSubject(), data->GetSubject().GetLength(), &rt, DT_NOPREFIX | DT_LEFT | DT_SINGLELINE | DT_VCENTER | DT_END_ELLIPSIS);
-			::SetTextColor(hdc, clrOld);
+			CColors clr;
+			clrNew = clr.GetColor(CColors::CurrentBranch);
 		}
+		else if (rItem.state & LVIS_SELECTED)
+			clrNew = ::GetSysColor(COLOR_HIGHLIGHTTEXT);
 		else
-		{
-			::DrawText(hdc, data->GetSubject(), data->GetSubject().GetLength(), &rt, DT_NOPREFIX | DT_LEFT | DT_SINGLELINE | DT_VCENTER | DT_END_ELLIPSIS);
-		}
+			clrNew = clrOld;
+
+		if (clrOld != clrNew)
+			::SetTextColor(hdc, clrNew);
+		::DrawText(hdc, data->GetSubject(), data->GetSubject().GetLength(), &rt, DT_NOPREFIX | DT_LEFT | DT_SINGLELINE | DT_VCENTER | DT_END_ELLIPSIS);
+		if (clrOld != clrNew)
+			::SetTextColor(hdc, clrOld);
 	}
 
 	if (m_bTagsBranchesOnRightSide)
@@ -1170,6 +1190,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 				GitRev* data = (GitRev*)m_arShownList.SafeGetAt(pLVCD->nmcd.dwItemSpec);
 				if (data)
 				{
+					HGDIOBJ hGdiObj = nullptr;
 					int action = data->GetRebaseAction();
 					if (action & (LOGACTIONS_REBASE_DONE | LOGACTIONS_REBASE_SKIP))
 						crText = RGB(128,128,128);
@@ -1182,14 +1203,26 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 						pLVCD->clrTextBk  = ::GetSysColor(COLOR_WINDOW);
 
 					if (action & LOGACTIONS_REBASE_CURRENT)
+						hGdiObj = m_boldFont;
+
+					BOOL isHeadHash = data->m_CommitHash == m_HeadHash && m_bNoHightlightHead == FALSE;
+					BOOL isHighlight = data->m_CommitHash == m_highlight && !m_highlight.IsEmpty();
+					if (isHeadHash && isHighlight)
+						hGdiObj = m_boldItalicsFont;
+					else if (isHeadHash)
+						hGdiObj = m_boldFont;
+					else if (isHighlight)
+						hGdiObj = m_FontItalics;
+
+					if (isHighlight)
 					{
-						SelectObject(pLVCD->nmcd.hdc, m_boldFont);
-						*pResult = CDRF_NOTIFYSUBITEMDRAW | CDRF_NEWFONT;
+						CColors clr;
+						crText = clr.GetColor(CColors::CurrentBranch);
 					}
 
-					if (data->m_CommitHash == m_HeadHash && m_bNoHightlightHead == FALSE)
+					if (hGdiObj)
 					{
-						SelectObject(pLVCD->nmcd.hdc, m_boldFont);
+						SelectObject(pLVCD->nmcd.hdc, hGdiObj);
 						*pResult = CDRF_NOTIFYSUBITEMDRAW | CDRF_NEWFONT;
 					}
 

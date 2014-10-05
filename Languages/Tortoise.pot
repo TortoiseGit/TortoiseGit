@@ -3274,6 +3274,10 @@ msgid "Current Branch"
 msgstr ""
 
 #. Resource IDs: (65535)
+msgid "Current Branch / Highlight"
+msgstr ""
+
+#. Resource IDs: (65535)
 msgid "Current Branch:"
 msgstr ""
 
@@ -4521,7 +4525,7 @@ msgstr ""
 msgid "Force push only if the remote reference points to the same commit as the remote tracking branch.\nThis can cause the remote repository to lose commits; use it with care.\nThis option corresponds to the --force-with-lease git option."
 msgstr ""
 
-#. Resource IDs: (1796)
+#. Resource IDs: (96)
 msgid "Force push to the selected remote reference and override it without any safety checks.\nThis can cause the remote repository to lose unseen commits; use it with care.\nThis option corresponds to the --force git option."
 msgstr ""
 
@@ -8026,6 +8030,10 @@ msgstr ""
 
 #. Resource IDs: (1067)
 msgid "Select/deselect &all"
+msgstr ""
+
+#. Resource IDs: (96)
+msgid "Selection History"
 msgstr ""
 
 #. Resource IDs: (1)

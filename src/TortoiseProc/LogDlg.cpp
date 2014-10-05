@@ -33,6 +33,7 @@
 #include "BrowseRefsDlg.h"
 #include "SmartHandle.h"
 #include "LogOrdering.h"
+#include <MMSystem.h>
 
 #define WM_TGIT_REFRESH_SELECTION   (WM_APP + 1)
 
@@ -166,6 +167,8 @@ BEGIN_MESSAGE_MAP(CLogDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_REFRESH, &CLogDlg::OnBnClickedRefresh)
 	ON_STN_CLICKED(IDC_STATIC_REF, &CLogDlg::OnBnClickedBrowseRef)
 	ON_COMMAND(ID_LOGDLG_REFRESH, &CLogDlg::OnBnClickedRefresh)
+	ON_COMMAND(ID_GO_BACKWARD, &CLogDlg::GoBack)
+	ON_COMMAND(ID_GO_FORWARD, &CLogDlg::GoForward)
 	ON_COMMAND(ID_LOGDLG_FIND, &CLogDlg::OnFind)
 	ON_COMMAND(ID_LOGDLG_FOCUSFILTER, &CLogDlg::OnFocusFilter)
 	ON_COMMAND(ID_EDIT_COPY, &CLogDlg::OnEditCopy)
@@ -189,6 +192,7 @@ enum JumpType
 	JumpType_TagFF,
 	JumpType_Branch,
 	JumpType_BranchFF,
+	JumpType_History,
 };
 
 void CLogDlg::SetParams(const CTGitPath& orgPath, const CTGitPath& path, CString hightlightRevision, CString range, int limit)
@@ -350,6 +354,7 @@ BOOL CLogDlg::OnInitDialog()
 	m_JumpType.AddString(CString(MAKEINTRESOURCE(IDS_PROC_TAG_FF)));
 	m_JumpType.AddString(CString(MAKEINTRESOURCE(IDS_PROC_BRANCH)));
 	m_JumpType.AddString(CString(MAKEINTRESOURCE(IDS_PROC_BRANCH_FF)));
+	m_JumpType.AddString(CString(MAKEINTRESOURCE(IDS_PROC_SELECTION_HISTORY)));
 	m_JumpType.SetCurSel(0);
 	m_JumpUp.SetIcon((HICON)::LoadImage(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_JUMPUP), IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR));
 	m_JumpDown.SetIcon((HICON)::LoadImage(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_JUMPDOWN), IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR));
@@ -975,6 +980,56 @@ void CLogDlg::OnSizing(UINT fwSide, LPRECT pRect)
 	m_patchViewdlg.MoveWindow(patchrect);
 }
 
+void CLogDlg::GoBack()
+{
+	m_LogList.m_highlight.Empty();
+	CGitHash gotoHash;
+	BOOL reachFirstOne = m_LogList.m_selectionHistory.GoBack(gotoHash);
+	int i;
+	for (i = 0; i < m_LogList.m_arShownList.GetCount(); ++i)
+	{
+		GitRev *rev = (GitRev *)m_LogList.m_arShownList.SafeGetAt(i);
+		if (!rev) continue;
+		if (rev->m_CommitHash == gotoHash)
+		{
+			m_LogList.m_highlight = gotoHash;
+			m_LogList.EnsureVisible(i, FALSE);
+			m_LogList.Invalidate();
+			break;
+		}
+	}
+	if (i == m_LogList.m_arShownList.GetCount())
+		MessageBox(gotoHash.ToString() + L"is NOT visiable!", _T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
+	if (reachFirstOne)
+		PlaySound((LPCTSTR)SND_ALIAS_SYSTEMASTERISK, nullptr, SND_ASYNC | SND_ALIAS_ID);
+}
+
+void CLogDlg::GoForward()
+{
+	m_LogList.m_highlight.Empty();
+	CGitHash gotoHash;
+	if (m_LogList.m_selectionHistory.GoForward(gotoHash))
+	{
+		int i;
+		for (i = 0; i < m_LogList.m_arShownList.GetCount(); ++i)
+		{
+			GitRev *rev = (GitRev *)m_LogList.m_arShownList.SafeGetAt(i);
+			if (!rev) continue;
+			if (rev->m_CommitHash == gotoHash)
+			{
+				m_LogList.m_highlight = gotoHash;
+				m_LogList.EnsureVisible(i, FALSE);
+				m_LogList.Invalidate();
+				return;
+			}
+		}
+		if (i == m_LogList.m_arShownList.GetCount())
+			MessageBox(gotoHash.ToString() + L"is NOT visiable!", _T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
+	}
+	m_LogList.Invalidate();
+	PlaySound((LPCTSTR)SND_ALIAS_SYSTEMASTERISK, nullptr, SND_ASYNC | SND_ALIAS_ID);
+}
+
 void CLogDlg::OnBnClickedRefresh()
 {
 	Refresh (true);
@@ -1468,6 +1523,11 @@ void CLogDlg::OnLvnItemchangedLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 		return;
 	if (pNMLV->iItem >= 0)
 	{
+		if (!m_LogList.m_highlight.IsEmpty())
+		{
+			m_LogList.m_highlight.Empty();
+			m_LogList.Invalidate();
+		}
 		this->m_LogList.m_nSearchIndex = pNMLV->iItem;
 		GitRev* pLogEntry = reinterpret_cast<GitRev *>(m_LogList.m_arShownList.SafeGetAt(pNMLV->iItem));
 		if (pLogEntry == nullptr)
@@ -1489,6 +1549,11 @@ void CLogDlg::OnLvnItemchangedLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 		}
 		if (pNMLV->uChanged & LVIF_STATE)
 		{
+			if (pNMLV->uNewState & LVIS_SELECTED)
+			{
+				m_LogList.m_selectionHistory.Add(m_LogList.m_lastSelectedHash);
+				m_LogList.m_lastSelectedHash = pLogEntry->m_CommitHash;
+			}
 			FillLogMessageCtrl();
 			UpdateData(FALSE);
 		}
@@ -2010,6 +2075,12 @@ void CLogDlg::OnBnClickedJumpUp()
 	if (sel < 0) return;
 	JumpType jumpType = (JumpType)sel;
 
+	if (jumpType == JumpType_History)
+	{
+		GoBack();
+		return;
+	}
+
 	CString strValue;
 	CGitHash hashValue;
 	int index = -1;
@@ -2112,6 +2183,12 @@ void CLogDlg::OnBnClickedJumpDown()
 {
 	int jumpType = m_JumpType.GetCurSel();
 	if (jumpType < 0) return;
+
+	if (jumpType == JumpType_History)
+	{
+		GoForward();
+		return;
+	}
 
 	CString strValue;
 	CGitHash hashValue;
