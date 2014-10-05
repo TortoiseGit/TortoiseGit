@@ -1012,7 +1012,7 @@ void CLogDlg::GoBackForward(bool bForward)
 		if (i == m_LogList.m_arShownList.GetCount())
 		{
 			CString msg;
-			msg.FormatMessage(IDS_LOG_NOT_VISIBLE, gotoHash.ToString());
+			msg.Format(IDS_LOG_NOT_VISIBLE, gotoHash.ToString());
 			MessageBox(msg, _T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
 		}
 	}
