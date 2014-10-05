@@ -982,37 +982,19 @@ void CLogDlg::OnSizing(UINT fwSide, LPRECT pRect)
 
 void CLogDlg::GoBack()
 {
-	m_LogList.m_highlight.Empty();
-	CGitHash gotoHash;
-	BOOL reachFirstOne = m_LogList.m_selectionHistory.GoBack(gotoHash);
-	int i;
-	for (i = 0; i < m_LogList.m_arShownList.GetCount(); ++i)
-	{
-		GitRev *rev = (GitRev *)m_LogList.m_arShownList.SafeGetAt(i);
-		if (!rev) continue;
-		if (rev->m_CommitHash == gotoHash)
-		{
-			m_LogList.m_highlight = gotoHash;
-			m_LogList.EnsureVisible(i, FALSE);
-			m_LogList.Invalidate();
-			break;
-		}
-	}
-	if (i == m_LogList.m_arShownList.GetCount())
-	{
-		CString msg;
-		msg.FormatMessage(IDS_LOG_NOT_VISIBLE, gotoHash.ToString());
-		MessageBox(msg, _T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
-	}
-	if (reachFirstOne)
-		PlaySound((LPCTSTR)SND_ALIAS_SYSTEMASTERISK, nullptr, SND_ASYNC | SND_ALIAS_ID);
+	GoBackForward(false);
 }
 
 void CLogDlg::GoForward()
 {
+	GoBackForward(true);
+}
+
+void CLogDlg::GoBackForward(bool bForward)
+{
 	m_LogList.m_highlight.Empty();
 	CGitHash gotoHash;
-	if (m_LogList.m_selectionHistory.GoForward(gotoHash))
+	if (bForward ? m_LogList.m_selectionHistory.GoForward(gotoHash) : m_LogList.m_selectionHistory.GoBack(gotoHash))
 	{
 		int i;
 		for (i = 0; i < m_LogList.m_arShownList.GetCount(); ++i)
@@ -1034,7 +1016,6 @@ void CLogDlg::GoForward()
 			MessageBox(msg, _T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
 		}
 	}
-	m_LogList.Invalidate();
 	PlaySound((LPCTSTR)SND_ALIAS_SYSTEMASTERISK, nullptr, SND_ASYNC | SND_ALIAS_ID);
 }
 

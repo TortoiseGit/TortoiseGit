@@ -121,12 +121,12 @@ public:
 	}
 	BOOL GoBack(CGitHash& historyEntry)
 	{
-		if (location >= 1)
-			--location;
+		if (location < 1)
+			return FALSE;
 
-		historyEntry = lastselected[location];
+		historyEntry = lastselected[--location];
 
-		return location == 0;
+		return TRUE;
 	}
 	BOOL GoForward(CGitHash& historyEntry)
 	{

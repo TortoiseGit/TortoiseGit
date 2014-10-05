@@ -131,6 +131,7 @@ protected:
 
 	afx_msg void GoBack();
 	afx_msg void GoForward();
+	void GoBackForward(bool bForward);
 
 	afx_msg void OnDtnDropdownDatefrom(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnDtnDropdownDateto(NMHDR *pNMHDR, LRESULT *pResult);
