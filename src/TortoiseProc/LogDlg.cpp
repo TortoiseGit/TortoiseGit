@@ -1014,6 +1014,7 @@ void CLogDlg::GoBackForward(bool bForward)
 			CString msg;
 			msg.Format(IDS_LOG_NOT_VISIBLE, gotoHash.ToString());
 			MessageBox(msg, _T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
+			return;
 		}
 	}
 	PlaySound((LPCTSTR)SND_ALIAS_SYSTEMASTERISK, nullptr, SND_ASYNC | SND_ALIAS_ID);
