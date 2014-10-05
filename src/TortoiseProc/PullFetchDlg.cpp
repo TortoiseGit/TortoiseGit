@@ -136,15 +136,40 @@ BOOL CPullFetchDlg::OnInitDialog()
 	if(!CAppUtils::IsSSHPutty())
 		m_bAutoLoad = false;
 
-	if(m_bAllowRebase)
+	m_bRebase = m_bAllowRebase && m_regRebase;
+
+	CAutoRepository repo(g_Git.GetGitRepository());
+	if (!repo)
+		MessageBox(CGit::GetLibGit2LastErr(_T("Could not open repository.")), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+
+	// Check config branch.<name>.rebase and pull.reabse
+	do
 	{
-		this->m_bRebase = m_regRebase;
-	}
-	else
-	{
-		GetDlgItem(IDC_CHECK_REBASE)->ShowWindow(SW_HIDE);
-		this->m_bRebase = FALSE;
-	}
+		if (!m_IsPull)
+			break;
+		if (!repo)
+			break;
+
+		CAutoConfig config(true);
+		if (git_repository_config(config.GetPointer(), repo))
+			break;
+		if (git_repository_head_detached(repo) == 1)
+			break;
+		BOOL rebase = FALSE;
+		// branch.<name>.rebase overrides pull.rebase
+		if (config.GetBOOL(_T("branch.") + g_Git.GetCurrentBranch() + _T(".rebase"), rebase) == GIT_ENOTFOUND)
+		{
+			if (config.GetBOOL(_T("pull.rebase"), rebase) == GIT_ENOTFOUND)
+				break;
+		}
+		if (!rebase)
+			break;
+
+		// Since rebase = true in config, means that "git.exe pull" will ALWAYS rebase without "--rebase".
+		// So, lock it, then let Fetch Rebase do the rest things.
+		GetDlgItem(IDC_CHECK_REBASE)->EnableWindow(FALSE);
+		m_bRebase = TRUE;
+	} while (0);
 
 	this->UpdateData(FALSE);
 
@@ -163,7 +188,6 @@ BOOL CPullFetchDlg::OnInitDialog()
 
 	if(m_IsPull)
 	{
-		GetDlgItem(IDC_CHECK_REBASE)->ShowWindow(SW_HIDE);
 		// check tags checkbox and make it a normal checkbox
 		m_bFetchTags = 1;
 		m_bFFonly = m_regFFonly;
@@ -183,9 +207,6 @@ BOOL CPullFetchDlg::OnInitDialog()
 	if (g_GitAdminDir.IsBareRepo(g_Git.m_CurrentDir))
 		this->GetDlgItem(IDC_CHECK_REBASE)->EnableWindow(FALSE);
 
-	CAutoRepository repo(g_Git.GetGitRepository());
-	if (!repo)
-		MessageBox(CGit::GetLibGit2LastErr(_T("Could not open repository.")), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 	if (repo && git_repository_is_shallow(repo))
 	{
 		m_bDepth = TRUE;
