@@ -185,8 +185,8 @@ public:
 
 	//! Sends assertion violation report from this point and continue execution.
 	//! \sa ExceptionAssertionViolated
-	//! \note Functions prefixed with "CrashServer_" will be ignored in stack parsing.
-	void CrashServer_SendAssertionViolated() const
+	//! \note Functions prefixed with "SkipDoctorDump_" will be ignored in stack parsing.
+	void SkipDoctorDump_SendAssertionViolated() const
 	{
 		if (!m_InitCrashHandler)
 			return;
