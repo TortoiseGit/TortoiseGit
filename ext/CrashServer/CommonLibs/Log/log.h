@@ -1,4 +1,4 @@
-// Copyright 2014 Idol Software, Inc.
+﻿// Copyright 2014 Idol Software, Inc.
 //
 // This file is part of Doctor Dump SDK.
 //
