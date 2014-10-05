@@ -1,4 +1,4 @@
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
@@ -61,8 +61,4 @@
     <Content Include="UIFragment.wxi" />
     <Content Include="VersionNumberInclude.wxi" />
   </ItemGroup>
-  <PropertyGroup>
-    <PostBuildEvent>if exist "$(SolutionDir)..\sign-$(PlatformName).bat" "$(SolutionDir)..\sign-$(PlatformName).bat" msi</PostBuildEvent>
-    <PreBuildEvent>if exist "$(SolutionDir)..\sign-$(PlatformName).bat" "$(SolutionDir)..\sign-$(PlatformName).bat"</PreBuildEvent>
-  </PropertyGroup>
 </Project>
