@@ -68,6 +68,8 @@
 #include "ProgressCommands/FetchProgressCommand.h"
 #include "ProgressCommands/SendMailProgressCommand.h"
 
+static bool DoFetch(const CString& url, const bool fetchAllRemotes, const bool loadPuttyAgent, const int prune, const bool bDepth, const int nDepth, const int fetchTags, const CString& remoteBranch, const boolean runRebase);
+
 CAppUtils::CAppUtils(void)
 {
 }
@@ -2186,6 +2188,18 @@ bool CAppUtils::Pull(bool showPush)
 	dlg.m_IsPull = TRUE;
 	if (dlg.DoModal() == IDOK)
 	{
+		// "git.exe pull --rebase" is not supported, never and ever. So, adapting it to Fetch & Rebase.
+		if (dlg.m_bRebase)
+			return DoFetch(dlg.m_RemoteURL,
+							FALSE, // Fetch all remotes
+							dlg.m_bAutoLoad == BST_CHECKED,
+							dlg.m_bPrune,
+							dlg.m_bDepth == BST_CHECKED,
+							dlg.m_nDepth,
+							dlg.m_bFetchTags,
+							dlg.m_RemoteBranchName,
+							TRUE); // Rebase after fetching
+
 		CString url = dlg.m_RemoteURL;
 
 		if (dlg.m_bAutoLoad)
@@ -2209,9 +2223,6 @@ bool CAppUtils::Pull(bool showPush)
 		CString depth;
 		CString notags;
 		CString prune;
-
-		if (dlg.m_bRebase)
-			cmdRebase = "--rebase ";
 
 		if (!dlg.m_bFetchTags)
 			notags = _T("--no-tags");
@@ -2304,11 +2315,13 @@ bool CAppUtils::Pull(bool showPush)
 	return false;
 }
 
-static bool RebaseAfterFetch()
+bool CAppUtils::RebaseAfterFetch(const CString& upstream)
 {
 	while (true)
 	{
 		CRebaseDlg dlg;
+		if (!upstream.IsEmpty())
+			dlg.m_Upstream = upstream;
 		dlg.m_PostButtonTexts.Add(CString(MAKEINTRESOURCE(IDS_MENULOG)));
 		dlg.m_PostButtonTexts.Add(CString(MAKEINTRESOURCE(IDS_MENUDESSENDMAIL)));
 		dlg.m_PostButtonTexts.Add(CString(MAKEINTRESOURCE(IDS_MENUREBASE)));
@@ -2418,7 +2431,7 @@ static bool DoFetch(const CString& url, const bool fetchAllRemotes, const bool l
 		postCmdList.push_back(PostCmd(IDI_PULL, IDS_MENUFETCH, []{ CAppUtils::Fetch(); }));
 
 		if (!runRebase && !g_GitAdminDir.IsBareRepo(g_Git.m_CurrentDir))
-			postCmdList.push_back(PostCmd(IDI_REBASE, IDS_MENUREBASE, []{ RebaseAfterFetch(); }));
+			postCmdList.push_back(PostCmd(IDI_REBASE, IDS_MENUREBASE, []{ CAppUtils::RebaseAfterFetch(); }));
 	};
 
 	progress.m_GitCmd = cmd;
@@ -2443,7 +2456,7 @@ static bool DoFetch(const CString& url, const bool fetchAllRemotes, const bool l
 	if (!progress.m_GitStatus)
 	{
 		if (runRebase)
-			return RebaseAfterFetch();
+			return CAppUtils::RebaseAfterFetch();
 	}
 
 	return userResponse == IDOK;

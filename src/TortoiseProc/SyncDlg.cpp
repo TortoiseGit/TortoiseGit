@@ -412,51 +412,29 @@ void CSyncDlg::FetchComplete()
 		ShowTab(IDC_CMD_GIT_PROG);
 	else
 		ShowTab(IDC_REFLIST);
-	if( (!this->m_GitCmdStatus) && this->m_CurrentCmd == GIT_COMMAND_FETCHANDREBASE)
+
+	if (m_GitCmdStatus)
+		return;
+
+	if (m_CurrentCmd != GIT_COMMAND_FETCHANDREBASE)
+		return;
+
+	CString remote;
+	CString remotebranch;
+	CString upstream;
+	m_ctrlURL.GetWindowText(remote);
+	if (!remote.IsEmpty())
 	{
-		CRebaseDlg dlg;
-		CString remote, remotebranch;
-		m_ctrlURL.GetWindowText(remote);
-		if (!remote.IsEmpty())
-		{
-			STRING_VECTOR remotes;
-			g_Git.GetRemoteList(remotes);
-			if (std::find(remotes.begin(), remotes.end(), remote) == remotes.end())
-				remote.Empty();
-		}
-		m_ctrlRemoteBranch.GetWindowText(remotebranch);
-		if (!remote.IsEmpty() && !remotebranch.IsEmpty())
-			dlg.m_Upstream = _T("remotes/") + remote + _T("/") + remotebranch;
-		dlg.m_PostButtonTexts.Add(CString(MAKEINTRESOURCE(IDS_MENULOG)));
-		dlg.m_PostButtonTexts.Add(_T("Email &Patch..."));
-		INT_PTR response = dlg.DoModal();
-		if(response == IDOK)
-		{
-			return ;
-		}
-
-		if (response == IDC_REBASE_POST_BUTTON)
-		{
-			CString cmd = _T("/command:log");
-			cmd += _T(" /path:\"") + g_Git.m_CurrentDir + _T("\"");
-			CAppUtils::RunTortoiseGitProc(cmd);
-		}
-		if(response == IDC_REBASE_POST_BUTTON + 1)
-		{
-			CString cmd, out, err;
-			cmd.Format(_T("git.exe format-patch -o \"%s\" %s..%s"),
-					g_Git.m_CurrentDir,
-					g_Git.FixBranchName(dlg.m_Upstream),
-					g_Git.FixBranchName(dlg.m_Branch));
-			if (g_Git.Run(cmd, &out, &err, CP_UTF8))
-			{
-				CMessageBox::Show(NULL, out + L"\n" + err, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
-				return ;
-			}
-
-			CAppUtils::SendPatchMail(cmd,out);
-		}
+		STRING_VECTOR remotes;
+		g_Git.GetRemoteList(remotes);
+		if (std::find(remotes.begin(), remotes.end(), remote) == remotes.end())
+			remote.Empty();
 	}
+	m_ctrlRemoteBranch.GetWindowText(remotebranch);
+	if (!remote.IsEmpty() && !remotebranch.IsEmpty())
+		upstream = _T("remotes/") + remote + _T("/") + remotebranch;
+
+	CAppUtils::RebaseAfterFetch(upstream);
 }
 
 void CSyncDlg::StashComplete()
