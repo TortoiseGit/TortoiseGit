@@ -22,6 +22,7 @@
 #include <time.h>
 #include <string>
 #include <tchar.h>
+#include <DbgHelp.h>
 
 // dummy define, needed only when we use crashrpt instead of this.
 #define CR_AF_MAKE_FILE_COPY 0
@@ -280,36 +281,35 @@ public:
 		__time64_t now;
 		_time64(&now);
 
+		ApplicationInfo appInfo = { 0 };
+		appInfo.ApplicationInfoSize = sizeof(ApplicationInfo);
+		appInfo.ApplicationGUID = "7fbde3fc-94e9-408b-b5c8-62bd4e203570";
+		appInfo.Prefix = "tgit";
+		appInfo.AppName = appname;
+		appInfo.Company = L"TortoiseGit";
+
+		appInfo.Hotfix = 0;
+		appInfo.V[0] = versionMajor;
+		appInfo.V[1] = versionMinor;
+		appInfo.V[2] = versionMicro;
+		appInfo.V[3] = versionBuild;
+
+		HandlerSettings handlerSettings = { 0 };
+		handlerSettings.HandlerSettingsSize = sizeof(handlerSettings);
+		handlerSettings.LeaveDumpFilesInTempFolder = FALSE;
+		handlerSettings.UseWER = FALSE;
+		handlerSettings.OpenProblemInBrowser = TRUE;
 #if PREVIEW
-		if ((now - compiletime) < (60 * 60 * 24 * 7 * 5))
+		if ((now - compiletime) > (60 * 60 * 24 * 7 * 5))
 #else
-		if ((now - compiletime) < (60 * 60 * 24 * 7 * 10))
+		if ((now - compiletime) > (60 * 60 * 24 * 7 * 10))
 #endif
 		{
-			ApplicationInfo appInfo;
-			memset(&appInfo, 0, sizeof(appInfo));
-			appInfo.ApplicationInfoSize = sizeof(ApplicationInfo);
-			appInfo.ApplicationGUID = "7fbde3fc-94e9-408b-b5c8-62bd4e203570";
-			appInfo.Prefix = "tgit";
-			appInfo.AppName = appname;
-			appInfo.Company = L"TortoiseGit";
-
-			appInfo.Hotfix = 0;
-			appInfo.V[0] = versionMajor;
-			appInfo.V[1] = versionMinor;
-			appInfo.V[2] = versionMicro;
-			appInfo.V[3] = versionBuild;
-
-			HandlerSettings handlerSettings;
-			memset(&handlerSettings, 0, sizeof(handlerSettings));
-			handlerSettings.HandlerSettingsSize = sizeof(handlerSettings);
-			handlerSettings.LeaveDumpFilesInTempFolder = FALSE;
-			handlerSettings.UseWER = FALSE;
-			handlerSettings.OpenProblemInBrowser = TRUE;
-			handlerSettings.SubmitterID = 0;
-
-			CCrashReport::Instance().InitCrashHandler(&appInfo, &handlerSettings, bOwnProcess);
+			handlerSettings.OverrideDefaultFullDumpType = TRUE;
+			handlerSettings.FullDumpType = MiniDumpFilterMemory;
 		}
+
+		CCrashReport::Instance().InitCrashHandler(&appInfo, &handlerSettings, bOwnProcess);
 	}
 
 
