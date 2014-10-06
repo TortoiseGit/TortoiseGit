@@ -97,7 +97,7 @@ public:
 		}
 
 		// go back and some commit was highlight
-		if (size > 0 && location >= 0 && location != size - 1)
+		if (size > 0 && location != size - 1)
 		{
 			// Re-select current one, it may be a forked point.
 			if (hash == lastselected[location])
