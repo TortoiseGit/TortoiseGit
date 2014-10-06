@@ -340,7 +340,7 @@ void CGitProgressList::ResizeColumns()
 		for (int col = 0; col <= maxcol; ++col)
 		{
 			// find the longest width of all items
-			int count = GetItemCount();
+			int count = min(m_arData.size(), GetItemCount());
 			HDITEM hdi = {0};
 			hdi.mask = HDI_TEXT;
 			hdi.pszText = textbuf;
