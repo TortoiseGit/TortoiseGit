@@ -168,6 +168,8 @@ BEGIN_MESSAGE_MAP(CLogDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_REFRESH, &CLogDlg::OnBnClickedRefresh)
 	ON_STN_CLICKED(IDC_STATIC_REF, &CLogDlg::OnBnClickedBrowseRef)
 	ON_COMMAND(ID_LOGDLG_REFRESH, &CLogDlg::OnBnClickedRefresh)
+	ON_COMMAND(ID_GO_BACKWARD_SELECT, &CLogDlg::GoBackAndSelect)
+	ON_COMMAND(ID_GO_FORWARD_SELECT, &CLogDlg::GoForwardAndSelect)
 	ON_COMMAND(ID_GO_BACKWARD, &CLogDlg::GoBack)
 	ON_COMMAND(ID_GO_FORWARD, &CLogDlg::GoForward)
 	ON_COMMAND(ID_LOGDLG_FIND, &CLogDlg::OnFind)
@@ -983,15 +985,25 @@ void CLogDlg::OnSizing(UINT fwSide, LPRECT pRect)
 
 void CLogDlg::GoBack()
 {
-	GoBackForward(false);
+	GoBackForward(false, false);
 }
 
 void CLogDlg::GoForward()
 {
-	GoBackForward(true);
+	GoBackForward(false, true);
 }
 
-void CLogDlg::GoBackForward(bool bForward)
+void CLogDlg::GoBackAndSelect()
+{
+	GoBackForward(true, false);
+}
+
+void CLogDlg::GoForwardAndSelect()
+{
+	GoBackForward(true, true);
+}
+
+void CLogDlg::GoBackForward(bool select, bool bForward)
 {
 	m_LogList.m_highlight.Empty();
 	CGitHash gotoHash;
@@ -1004,8 +1016,16 @@ void CLogDlg::GoBackForward(bool bForward)
 			if (!rev) continue;
 			if (rev->m_CommitHash == gotoHash)
 			{
-				m_LogList.m_highlight = gotoHash;
 				m_LogList.EnsureVisible(i, FALSE);
+				if (select)
+				{
+					m_LogList.m_highlight.Empty();
+					m_LogList.SetItemState(m_LogList.GetSelectionMark(), 0, LVIS_SELECTED);
+					m_LogList.SetItemState(i, LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
+					m_LogList.SetSelectionMark(i);
+				}
+				else
+					m_LogList.m_highlight = gotoHash;
 				m_LogList.Invalidate();
 				return;
 			}
@@ -1467,6 +1487,16 @@ BOOL CLogDlg::PreTranslateMessage(MSG* pMsg)
 			m_LogList.Refresh(FALSE);
 			FillLogMessageCtrl(false);
 		}
+	}
+	else if (pMsg->message == WM_XBUTTONUP)
+	{
+		bool select = (pMsg->wParam & MK_SHIFT) == 0;
+		if (HIWORD(pMsg->wParam) & XBUTTON1)
+			GoBackForward(select, false);
+		if (HIWORD(pMsg->wParam) & XBUTTON2)
+			GoBackForward(select, true);
+		if (HIWORD(pMsg->wParam) & (XBUTTON1 | XBUTTON2))
+			return TRUE;
 	}
 	if (m_hAccel && !bSkipAccelerator)
 	{
