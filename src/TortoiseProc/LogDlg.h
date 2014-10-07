@@ -230,6 +230,7 @@ private:
 	bool				m_bNoMerges;
 	int					m_iCompressedGraph;
 	BOOL				m_bWalkBehavior;
+	bool				m_bNavigatingWithSelect;
 
 	CTGitPathList	*   m_currentChangedArray;
 	LogChangedPathArray m_CurrentFilteredChangedArray;

@@ -66,6 +66,7 @@ CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
 
 	, m_limit(0)
 	, m_hAccel(NULL)
+	, m_bNavigatingWithSelect(false)
 {
 	m_bFilterWithRegex = !!CRegDWORD(_T("Software\\TortoiseGit\\UseRegexFilter"), TRUE);
 
@@ -1021,8 +1022,10 @@ void CLogDlg::GoBackForward(bool select, bool bForward)
 				{
 					m_LogList.m_highlight.Empty();
 					m_LogList.SetItemState(m_LogList.GetSelectionMark(), 0, LVIS_SELECTED);
+					m_bNavigatingWithSelect = true;
 					m_LogList.SetItemState(i, LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
 					m_LogList.SetSelectionMark(i);
+					m_bNavigatingWithSelect = false;
 				}
 				else
 					m_LogList.m_highlight = gotoHash;
@@ -1570,7 +1573,7 @@ void CLogDlg::OnLvnItemchangedLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 		}
 		if (pNMLV->uChanged & LVIF_STATE)
 		{
-			if (pNMLV->uNewState & LVIS_SELECTED)
+			if ((pNMLV->uNewState & LVIS_SELECTED) && !m_bNavigatingWithSelect)
 			{
 				m_LogList.m_selectionHistory.Add(m_LogList.m_lastSelectedHash);
 				m_LogList.m_lastSelectedHash = pLogEntry->m_CommitHash;
