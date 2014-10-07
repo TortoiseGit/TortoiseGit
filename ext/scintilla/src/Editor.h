@@ -560,6 +560,7 @@ protected:	// ScintillaBase subclass needs access to much of Editor
 	static sptr_t BytesResult(sptr_t lParam, const unsigned char *val, size_t len);
 
 public:
+	virtual void NotifyParent(SCNotification * scn) = 0;
 	// Public so the COM thunks can access it.
 	bool IsUnicodeMode() const;
 	// Public so scintilla_send_message can use it.
