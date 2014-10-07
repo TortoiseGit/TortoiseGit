@@ -1918,7 +1918,7 @@ void CLogDlg::SetFilterCueText()
 		temp += CString(MAKEINTRESOURCE(IDS_LOG_FILTER_REFNAME));
 	}
 
-	if (m_LogList.m_SelectedFilters & LOGFILTER_BUGID)
+	if (m_LogList.m_bShowBugtraqColumn && m_LogList.m_SelectedFilters & LOGFILTER_BUGID)
 	{
 		if (temp.ReverseFind(_T(' ')) != temp.GetLength() - 1)
 			temp += _T(", ");
