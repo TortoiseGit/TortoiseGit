@@ -63,10 +63,13 @@ BASEOBJS = \
 	ContractionState.o \
 	Decoration.o \
 	Document.o \
+	EditModel.o \
 	Editor.o \
+	EditView.o \
 	KeyMap.o \
 	Indicator.o \
 	LineMarker.o \
+	MarginView.o \
 	PerLine.o \
 	PlatWin.o \
 	PositionCache.o \
@@ -117,7 +120,7 @@ ScintillaBaseL.o: ScintillaBase.cxx Platform.h \
  KeyMap.h Indicator.h XPM.h LineMarker.h \
  Style.h ViewStyle.h AutoComplete.h \
  CharClassify.h Decoration.h Document.h \
- Selection.h PositionCache.h Editor.h \
+ Selection.h PositionCache.h EditModel.h Editor.h EditView.h \
  ScintillaBase.h LexAccessor.h Accessor.h \
  LexerModule.h Catalogue.h CaseFolder.h
 
@@ -128,7 +131,7 @@ ScintillaWinL.o: ScintillaWin.cxx Platform.h \
  XPM.h LineMarker.h Style.h AutoComplete.h \
  ViewStyle.h CharClassify.h Decoration.h \
  Document.h Selection.h PositionCache.h \
- Editor.h ScintillaBase.h UniConversion.h \
+ EditModel.h Editor.h EditView.h ScintillaBase.h UniConversion.h \
  LexAccessor.h Accessor.h \
  LexerModule.h Catalogue.h CaseConvert.h \
  CaseFolder.h
@@ -140,7 +143,7 @@ ScintillaWinS.o: ScintillaWin.cxx Platform.h \
  XPM.h LineMarker.h Style.h AutoComplete.h \
  ViewStyle.h CharClassify.h Decoration.h \
  Document.h Selection.h PositionCache.h \
- Editor.h ScintillaBase.h UniConversion.h \
+ EditModel.h Editor.h EditView.h ScintillaBase.h UniConversion.h \
  CaseConvert.h CaseFolder.h
 
 ScintillaBaseL.o:

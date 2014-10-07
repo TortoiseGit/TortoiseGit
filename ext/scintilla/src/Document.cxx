@@ -209,6 +209,65 @@ void Document::SetSavePoint() {
 	NotifySavePoint(true);
 }
 
+void Document::TentativeUndo() {
+	CheckReadOnly();
+	if (enteredModification == 0) {
+		enteredModification++;
+		if (!cb.IsReadOnly()) {
+			bool startSavePoint = cb.IsSavePoint();
+			bool multiLine = false;
+			int steps = cb.TentativeSteps();
+			//Platform::DebugPrintf("Steps=%d\n", steps);
+			for (int step = 0; step < steps; step++) {
+				const int prevLinesTotal = LinesTotal();
+				const Action &action = cb.GetUndoStep();
+				if (action.at == removeAction) {
+					NotifyModified(DocModification(
+									SC_MOD_BEFOREINSERT | SC_PERFORMED_UNDO, action));
+				} else if (action.at == containerAction) {
+					DocModification dm(SC_MOD_CONTAINER | SC_PERFORMED_UNDO);
+					dm.token = action.position;
+					NotifyModified(dm);
+				} else {
+					NotifyModified(DocModification(
+									SC_MOD_BEFOREDELETE | SC_PERFORMED_UNDO, action));
+				}
+				cb.PerformUndoStep();
+				if (action.at != containerAction) {
+					ModifiedAt(action.position);
+				}
+
+				int modFlags = SC_PERFORMED_UNDO;
+				// With undo, an insertion action becomes a deletion notification
+				if (action.at == removeAction) {
+					modFlags |= SC_MOD_INSERTTEXT;
+				} else if (action.at == insertAction) {
+					modFlags |= SC_MOD_DELETETEXT;
+				}
+				if (steps > 1)
+					modFlags |= SC_MULTISTEPUNDOREDO;
+				const int linesAdded = LinesTotal() - prevLinesTotal;
+				if (linesAdded != 0)
+					multiLine = true;
+				if (step == steps - 1) {
+					modFlags |= SC_LASTSTEPINUNDOREDO;
+					if (multiLine)
+						modFlags |= SC_MULTILINEUNDOREDO;
+				}
+				NotifyModified(DocModification(modFlags, action.position, action.lenData,
+											   linesAdded, action.data));
+			}
+
+			bool endSavePoint = cb.IsSavePoint();
+			if (startSavePoint != endSavePoint)
+				NotifySavePoint(endSavePoint);
+				
+			cb.TentativeCommit();
+		}
+		enteredModification--;
+	}
+}
+
 int Document::GetMark(int line) {
 	return static_cast<LineMarkers *>(perLineData[ldMarkers])->MarkValue(line);
 }
@@ -878,6 +937,8 @@ void Document::CheckReadOnly() {
 // SetStyleAt does not change the persistent state of a document
 
 bool Document::DeleteChars(int pos, int len) {
+	if (pos < 0)
+		return false;
 	if (len <= 0)
 		return false;
 	if ((pos + len) > Length())
@@ -2139,8 +2200,8 @@ public:
 long BuiltinRegex::FindText(Document *doc, int minPos, int maxPos, const char *s,
                         bool caseSensitive, bool, bool, int flags,
                         int *length) {
-	bool posix = (flags & SCFIND_POSIX) != 0;
-	int increment = (minPos <= maxPos) ? 1 : -1;
+	const bool posix = (flags & SCFIND_POSIX) != 0;
+	const int increment = (minPos <= maxPos) ? 1 : -1;
 
 	int startPos = minPos;
 	int endPos = maxPos;
@@ -2158,7 +2219,7 @@ long BuiltinRegex::FindText(Document *doc, int minPos, int maxPos, const char *s
 	//     Search: \$(\([A-Za-z0-9_-]+\)\.\([A-Za-z0-9_.]+\))
 	//     Replace: $(\1-\2)
 	int lineRangeStart = doc->LineFromPosition(startPos);
-	int lineRangeEnd = doc->LineFromPosition(endPos);
+	const int lineRangeEnd = doc->LineFromPosition(endPos);
 	if ((increment == 1) &&
 		(startPos >= doc->LineEnd(lineRangeStart)) &&
 		(lineRangeStart < lineRangeEnd)) {
@@ -2174,9 +2235,9 @@ long BuiltinRegex::FindText(Document *doc, int minPos, int maxPos, const char *s
 	}
 	int pos = -1;
 	int lenRet = 0;
-	char searchEnd = s[*length - 1];
-	char searchEndPrev = (*length > 1) ? s[*length - 2] : '\0';
-	int lineRangeBreak = lineRangeEnd + increment;
+	const char searchEnd = s[*length - 1];
+	const char searchEndPrev = (*length > 1) ? s[*length - 2] : '\0';
+	const int lineRangeBreak = lineRangeEnd + increment;
 	for (int line = lineRangeStart; line != lineRangeBreak; line += increment) {
 		int startOfLine = doc->LineStart(line);
 		int endOfLine = doc->LineEnd(line);

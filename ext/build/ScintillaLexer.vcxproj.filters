@@ -415,6 +415,21 @@
     <ClCompile Include="..\scintilla\lexers\LexDMIS.cxx">
       <Filter>lexers</Filter>
     </ClCompile>
+    <ClCompile Include="..\scintilla\lexers\LexBibTeX.cxx">
+      <Filter>lexers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scintilla\lexers\LexRegistry.cxx">
+      <Filter>lexers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scintilla\src\EditModel.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scintilla\src\EditView.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scintilla\src\MarginView.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\scintilla\src\AutoComplete.h">
@@ -544,6 +559,15 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\scintilla\src\UnicodeFromUTF8.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scintilla\src\EditModel.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scintilla\src\EditView.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scintilla\src\MarginView.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

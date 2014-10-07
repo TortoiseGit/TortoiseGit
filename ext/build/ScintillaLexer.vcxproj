@@ -52,10 +52,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\scintilla\lexers\LexBibTeX.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexDMAP.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexDMIS.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexKVIrc.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexLaTeX.cxx" />
+    <ClCompile Include="..\scintilla\lexers\LexRegistry.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexRust.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexSTTXT.cxx" />
     <ClCompile Include="..\scintilla\lexlib\CharacterCategory.cxx" />
@@ -69,11 +71,14 @@
     <ClCompile Include="..\scintilla\src\ContractionState.cxx" />
     <ClCompile Include="..\scintilla\src\Decoration.cxx" />
     <ClCompile Include="..\scintilla\src\Document.cxx" />
+    <ClCompile Include="..\scintilla\src\EditModel.cxx" />
     <ClCompile Include="..\scintilla\src\Editor.cxx" />
+    <ClCompile Include="..\scintilla\src\EditView.cxx" />
     <ClCompile Include="..\scintilla\src\ExternalLexer.cxx" />
     <ClCompile Include="..\scintilla\src\Indicator.cxx" />
     <ClCompile Include="..\scintilla\src\KeyMap.cxx" />
     <ClCompile Include="..\scintilla\src\LineMarker.cxx" />
+    <ClCompile Include="..\scintilla\src\MarginView.cxx" />
     <ClCompile Include="..\scintilla\src\PerLine.cxx" />
     <ClCompile Include="..\scintilla\src\PositionCache.cxx" />
     <ClCompile Include="..\scintilla\src\RESearch.cxx" />
@@ -196,12 +201,15 @@
     <ClInclude Include="..\scintilla\src\ContractionState.h" />
     <ClInclude Include="..\scintilla\src\Decoration.h" />
     <ClInclude Include="..\scintilla\src\Document.h" />
+    <ClInclude Include="..\scintilla\src\EditModel.h" />
     <ClInclude Include="..\scintilla\src\Editor.h" />
+    <ClInclude Include="..\scintilla\src\EditView.h" />
     <ClInclude Include="..\scintilla\src\ExternalLexer.h" />
     <ClInclude Include="..\scintilla\src\FontQuality.h" />
     <ClInclude Include="..\scintilla\src\Indicator.h" />
     <ClInclude Include="..\scintilla\src\KeyMap.h" />
     <ClInclude Include="..\scintilla\src\LineMarker.h" />
+    <ClInclude Include="..\scintilla\src\MarginView.h" />
     <ClInclude Include="..\scintilla\src\Partitioning.h" />
     <ClInclude Include="..\scintilla\src\PerLine.h" />
     <ClInclude Include="..\scintilla\src\PositionCache.h" />

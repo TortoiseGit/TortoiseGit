@@ -1551,9 +1551,9 @@ void SurfaceD2D::DrawRGBAImage(PRectangle rc, int width, int height, const unsig
 		rc.bottom = rc.top + height;
 
 		std::vector<unsigned char> image(height * width * 4);
-		for (int y=0; y<height; y++) {
-			for (int x=0; x<width; x++) {
-				unsigned char *pixel = &image[0] + (y*width+x) * 4;
+		for (int yPixel=0; yPixel<height; yPixel++) {
+			for (int xPixel = 0; xPixel<width; xPixel++) {
+				unsigned char *pixel = &image[0] + (yPixel*width + xPixel) * 4;
 				unsigned char alpha = pixelsImage[3];
 				// Input is RGBA, output is BGRA with premultiplied alpha
 				pixel[2] = (*pixelsImage++) * alpha / 255;
@@ -2184,7 +2184,7 @@ public:
 		}
 	}
 	virtual void SetFont(Font &font);
-	virtual void Create(Window &parent, int ctrlID, Point location_, int lineHeight_, bool unicodeMode_, int technology_);
+	virtual void Create(Window &parent_, int ctrlID_, Point location_, int lineHeight_, bool unicodeMode_, int technology_);
 	virtual void SetAverageCharWidth(int width);
 	virtual void SetVisibleRows(int rows);
 	virtual int GetVisibleRows() const;

@@ -82,7 +82,7 @@
 
     <h1>Scintilla Documentation</h1>
 
-    <p>Last edited 24 May 2014 NH</p>
+    <p>Last edited 25 September 2014 NH</p>
 
     <p>There is <a class="jump" href="Design.html">an overview of the internal design of
     Scintilla</a>.<br />
@@ -117,7 +117,7 @@
     <p>The GTK+ version also uses messages in a similar way to the Windows version. This is
     different to normal GTK+ practice but made it easier to implement rapidly.</p>
 
-    <p>Scintilla also builds with Cocoa on OS X and with Qt, and follows the conventions of 
+    <p>Scintilla also builds with Cocoa on OS X and with Qt, and follows the conventions of
     those platforms.</p>
 
     <p>Scintilla does not properly support right-to-left languages like Arabic and Hebrew.
@@ -256,7 +256,7 @@
 
         <tr>
           <td>o <a class="toc" href="#CaretAndSelectionStyles">Caret, selection, and hotspot styles</a></td>
-          
+
           <td>o <a class="toc" href="#CharacterRepresentations">Character representations</a></td>
 
           <td>o <a class="toc" href="#Margins">Margins</a></td>
@@ -1737,7 +1737,7 @@ struct Sci_TextToFind {
      effect until <a class="message" href="#SCI_SETSELFORE"><code>SCI_SETSELFORE</code></a>
      and <a class="message" href="#SCI_SETSELBACK"><code>SCI_SETSELBACK</code></a> are
      called with useSelection*Colour value set to true. Subsequent calls to
-     <a class="message" href="#SCI_SETSELFORE"><code>SCI_SETSELFORE</code></a>, 
+     <a class="message" href="#SCI_SETSELFORE"><code>SCI_SETSELFORE</code></a>,
      and <a class="message" href="#SCI_SETSELBACK"><code>SCI_SETSELBACK</code></a> will
      overwrite the values set by <code>SCI_SETADDITIONALSEL*</code> functions.</p>
     <p>
@@ -3161,6 +3161,8 @@ struct Sci_TextToFind {
     <h2 id="OtherSettings">Other settings</h2>
      <a class="message" href="#SCI_SETBUFFEREDDRAW">SCI_SETBUFFEREDDRAW(bool isBuffered)</a><br />
      <a class="message" href="#SCI_GETBUFFEREDDRAW">SCI_GETBUFFEREDDRAW</a><br />
+     <a class="message" href="#SCI_SETPHASESDRAW">SCI_SETPHASESDRAW(int phases)</a><br />
+     <a class="message" href="#SCI_GETPHASESDRAW">SCI_GETPHASESDRAW</a><br />
      <a class="message" href="#SCI_SETTWOPHASEDRAW">SCI_SETTWOPHASEDRAW(bool twoPhase)</a><br />
      <a class="message" href="#SCI_GETTWOPHASEDRAW">SCI_GETTWOPHASEDRAW</a><br />
      <a class="message" href="#SCI_SETTECHNOLOGY">SCI_SETTECHNOLOGY(int technology)</a><br />
@@ -3169,6 +3171,8 @@ struct Sci_TextToFind {
      <a class="message" href="#SCI_GETFONTQUALITY">SCI_GETFONTQUALITY</a><br />
      <a class="message" href="#SCI_SETCODEPAGE">SCI_SETCODEPAGE(int codePage)</a><br />
      <a class="message" href="#SCI_GETCODEPAGE">SCI_GETCODEPAGE</a><br />
+     <a class="message" href="#SCI_SETIMEINTERACTION">SCI_SETIMEINTERACTION(int imeInteraction)</a><br />
+     <a class="message" href="#SCI_GETIMEINTERACTION">SCI_GETIMEINTERACTION</a><br />
      <a class="message" href="#SCI_SETKEYSUNICODE">SCI_SETKEYSUNICODE(bool keysUnicode)</a><br />
      <a class="message" href="#SCI_GETKEYSUNICODE">SCI_GETKEYSUNICODE</a><br />
      <a class="message" href="#SCI_SETWORDCHARS">SCI_SETWORDCHARS(&lt;unused&gt;, const char *characters)</a><br />
@@ -3199,26 +3203,55 @@ struct Sci_TextToFind {
     bitmap to the screen. This avoids flickering although it does take longer. The default is for
     drawing to be buffered.</p>
 
-    <p><b id="SCI_SETTWOPHASEDRAW">SCI_SETTWOPHASEDRAW(bool twoPhase)</b><br />
-     <b id="SCI_GETTWOPHASEDRAW">SCI_GETTWOPHASEDRAW</b><br />
-     Two phase drawing is a better but slower way of drawing text.
-     In single phase drawing each run of characters in one style is drawn along with its background.
+    <p><b id="SCI_SETPHASESDRAW">SCI_SETPHASESDRAW(int phases)</b><br />
+     <b id="SCI_GETPHASESDRAW">SCI_GETPHASESDRAW</b><br />
+     There are several orders in which the text area may be drawn offering a trade-off between speed
+     and allowing all pixels of text to be seen even when they overlap other elements.</p>
+     <p>In single phase drawing (<code>SC_PHASES_ONE</code>) each
+     run of characters in one style is drawn along with its background.
      If a character overhangs the end of a run, such as in "<i>V</i>_" where the
      "<i>V</i>" is in a different style from the "_", then this can cause the right hand
      side of the "<i>V</i>" to be overdrawn by the background of the "_" which
-     cuts it off. Two phase drawing
-     fixes this by drawing all the backgrounds first and then drawing the text in
-     transparent mode. Two phase drawing may flicker more than single phase
-     unless buffered drawing is on. The default is for drawing to be two phase.</p>
+     cuts it off.</p>
+     <p>Two phase drawing (<code>SC_PHASES_TWO</code>)
+     fixes this by drawing all the backgrounds of a line first and then drawing the text
+     in transparent mode. Lines are drawn separately and no line will overlap another
+     so any pixels that overlap into another line such as extreme ascenders and
+     descenders on characters will be cut off.
+     Two phase drawing may flicker more than single phase
+     unless buffered drawing is on or the platform is naturally buffered.
+     The default is for drawing to be two phase.</p>
+     <p>Multiple phase drawing (<code>SC_PHASES_MULTIPLE</code>)
+     draws the whole area multiple times, once for each feature, building up the
+     the appearance in layers or phases. The coloured backgrounds for all lines are
+     drawn before any text and then all the text is drawn in transparent mode over this
+     combined background without clipping text to the line boundaries. This allows
+     extreme ascenders and decenders to overflow into the adjacent lines.
+     This mode is incompatible with buffered drawing and will act as <code>SC_PHASES_TWO</code>
+     if buffered drawing is turned on.
+     Multiple phase drawing is slower than two phase drawing.
+     Setting the layout cache to <a class="message" href="#SCI_SETLAYOUTCACHE">SC_CACHE_PAGE</a>
+     or higher can ensure that multiple phase drawing is not significantly slower.</p>
+
+    <p><b id="SCI_SETTWOPHASEDRAW">SCI_SETTWOPHASEDRAW(bool twoPhase)</b><br />
+     <b id="SCI_GETTWOPHASEDRAW">SCI_GETTWOPHASEDRAW</b><br />
+     This property has been replaced with the preceding PHASESDRAW property which is more general,
+     allowing multiple phase drawing as well as one and two phase drawing.</p>
 
     <p><b id="SCI_SETTECHNOLOGY">SCI_SETTECHNOLOGY(int technology)</b><br />
      <b id="SCI_GETTECHNOLOGY">SCI_GETTECHNOLOGY</b><br />
     The technology property allows choosing between different drawing APIs and options.
     On most platforms, the only choice is <code>SC_TECHNOLOGY_DEFAULT</code> (0).
-    On Windows Vista or later, <code>SC_TECHNOLOGY_DIRECTWRITE</code> (1)
+    On Windows Vista or later, <code>SC_TECHNOLOGY_DIRECTWRITE</code> (1) or
+    <code class="provisional">SC_TECHNOLOGY_DIRECTWRITERETAIN</code> (2)
     can be chosen to use the Direct2D and DirectWrite APIs for higher quality antialiased drawing.
+    <code class="provisional">SC_TECHNOLOGY_DIRECTWRITERETAIN</code> differs from
+    <code>SC_TECHNOLOGY_DIRECTWRITE</code> by requesting that the frame
+    is retained after being presented which may prevent drawing failures on some cards and drivers.
     Since Direct2D buffers drawing, Scintilla's buffering can be turned off with
-    <code>SCI_SETBUFFEREDDRAW(0)</code>.</p>
+    <code>SCI_SETBUFFEREDDRAW(0)</code>.
+    <span class="provisional">Since <code>SC_TECHNOLOGY_DIRECTWRITERETAIN</code>
+    is provisional, it may be changed or removed in a future release if a better solution is found.</span></p>
 
     <p><b id="SCI_SETFONTQUALITY">SCI_SETFONTQUALITY(int fontQuality)</b><br />
      <b id="SCI_GETFONTQUALITY">SCI_GETFONTQUALITY</b><br />
@@ -3251,6 +3284,19 @@ struct Sci_TextToFind {
     <p>Code page can be set to 932 (Japanese Shift-JIS), 936 (Simplified Chinese GBK),
     949 (Korean Unified Hangul Code), 950 (Traditional Chinese Big5), or 1361 (Korean Johab)
     although these may require installation of language specific support.</p>
+
+    <p><b id="SCI_SETIMEINTERACTION">SCI_SETIMEINTERACTION(int imeInteraction)</b><br />
+     <b id="SCI_GETIMEINTERACTION">SCI_GETIMEINTERACTION</b><br />
+     When entering text in Chinese, Japanese, or Korean an Input Method Editor (IME) may be displayed.
+     The IME may be an extra window appearing above Scintilla or may be displayed by Scintilla itself
+     as text. On some platforms there is a choice between the two techniques.
+     A windowed IME <code>SC_IME_WINDOWED</code> (0) may be more similar in appearance and
+     behaviour to the IME in other applications.
+     An inline IME <code>SC_IME_INLINE</code> (1) may work better with some Scintilla features such as
+     rectangular and multiple selection.</p>
+     <p>The windowed behaviour can be chosen with <code>SCI_SETIMEINTERACTION(SC_IME_WINDOWED)</code>
+     and the inline behaviour with <code>SCI_SETIMEINTERACTION(SC_IME_INLINE)</code>.
+     Scintilla may ignore this call in some cases. For example, the inline behaviour might only be supported for some languages.</p>
 
     <p><b id="SCI_SETKEYSUNICODE">SCI_SETKEYSUNICODE(bool keysUnicode)</b><br />
      <b id="SCI_GETKEYSUNICODE">SCI_GETKEYSUNICODE</b><br />
@@ -3355,6 +3401,10 @@ struct Sci_TextToFind {
     syntax. Tabs are normally used in editors to insert a tab character or to pad text with spaces
     up to the next tab.</p>
 
+    <p>When Scintilla is laying out a section of text, text after a tab character will usually be
+    displayed at the next multiple of TABWIDTH columns from the left. However, it is also possible
+    to explicitly set tabstops in pixels for each line.</p>
+
     <p>Scintilla can be set to treat tab and backspace in the white space at the start of a line in
     a special way: inserting a tab indents the line to the next indent position rather than just
     inserting a tab at the current character position and backspace unindents the line rather than
@@ -3362,6 +3412,9 @@ struct Sci_TextToFind {
     you to generate code.</p>
     <code><a class="message" href="#SCI_SETTABWIDTH">SCI_SETTABWIDTH(int widthInChars)</a><br />
      <a class="message" href="#SCI_GETTABWIDTH">SCI_GETTABWIDTH</a><br />
+     <a class="message" href="#SCI_CLEARTABSTOPS">SCI_CLEARTABSTOPS(int line)</a><br />
+     <a class="message" href="#SCI_ADDTABSTOP">SCI_ADDTABSTOP(int line, int x)</a><br />
+     <a class="message" href="#SCI_GETNEXTTABSTOP">SCI_GETNEXTTABSTOP(int line, int x)</a><br />
      <a class="message" href="#SCI_SETUSETABS">SCI_SETUSETABS(bool useTabs)</a><br />
      <a class="message" href="#SCI_GETUSETABS">SCI_GETUSETABS</a><br />
      <a class="message" href="#SCI_SETINDENT">SCI_SETINDENT(int widthInChars)</a><br />
@@ -3387,6 +3440,16 @@ struct Sci_TextToFind {
      <code>SCI_SETTABWIDTH</code> sets the size of a tab as a multiple of the size of a space
     character in <code>STYLE_DEFAULT</code>. The default tab width is 8 characters. There are no
     limits on tab sizes, but values less than 1 or large values may have undesirable effects.</p>
+
+    <p><b id="SCI_CLEARTABSTOPS">SCI_CLEARTABSTOPS(int line)</b><br />
+     <b id="SCI_ADDTABSTOP">SCI_ADDTABSTOP(int line, int x)</b><br />
+     <b id="SCI_GETNEXTTABSTOP">SCI_GETNEXTTABSTOP(int line, int x)</b><br />
+     <code>SCI_CLEARTABSTOPS</code> clears explicit tabstops on a line. <code>SCI_ADDTABSTOP</code>
+    adds an explicit tabstop at the specified distance from the left (in pixels), and
+    <code>SCI_GETNEXTTABSTOP</code> gets the next explicit tabstop position set after the given x position,
+    or zero if there aren't any.
+    Changing tab stops produces a <a class="message" href="#SC_MOD_CHANGETABSTOPS">SC_MOD_CHANGETABSTOPS</a> notification.
+    </p>
 
     <p><b id="SCI_SETUSETABS">SCI_SETUSETABS(bool useTabs)</b><br />
      <b id="SCI_GETUSETABS">SCI_GETUSETABS</b><br />
@@ -3545,7 +3608,7 @@ struct Sci_TextToFind {
     <code>SC_MARK_BACKGROUND</code>,
     <code>SC_MARK_LEFTRECT</code>,
     <code>SC_MARK_FULLRECT</code>,
-    <code>SC_MARK_BOOKMARK</code>, and 
+    <code>SC_MARK_BOOKMARK</code>, and
     <code>SC_MARK_UNDERLINE</code>.
     </p>
 
@@ -6884,6 +6947,17 @@ href="#SCI_POSITIONFROMLINE">SCI_POSITIONFROMLINE</a>(lineNumber);
         </tr>
 
         <tr>
+          <td align="left"><code id="SC_MOD_CHANGETABSTOPS">SC_MOD_CHANGETABSTOPS</code></td>
+
+          <td align="right">0x200000</td>
+
+          <td>The explicit tab stops on a line have changed because <a class="message" href="#SCI_CLEARTABSTOPS">SCI_CLEARTABSTOPS</a> or
+          <a class="message" href="#SCI_ADDTABSTOP">SCI_ADDTABSTOP</a> was called.</td>
+
+          <td><code>line</code></td>
+        </tr>
+
+        <tr>
           <td align="left"><code id="SC_MOD_LEXERSTATE">SC_MOD_LEXERSTATE</code></td>
 
           <td align="right">0x80000</td>
@@ -7355,7 +7429,9 @@ for line = lineStart to lineEnd do SCI_ENSUREVISIBLE(line) next
 
     <p>Provisional features are displayed in this document with <span class="provisional">a distinctive background colour</span>.</p>
 
-    <p>There are currently no provisional features.</p>
+    <p>There are currently no provisional messages.
+    The <code class="provisional">SC_TECHNOLOGY_DIRECTWRITERETAIN</code> value for
+    <a class="message" href="#SCI_SETTECHNOLOGY">SCI_SETTECHNOLOGY</a> is provisional.</p>
 
     <p>Some developers may want to only use features that are stable and have graduated from
     provisional status. To avoid using provisional messages compile with the symbol
@@ -7422,7 +7498,7 @@ EM_FORMATRANGE
     <b id="SCI_GETUSEPALETTE">SCI_GETUSEPALETTE</b> Deprecated<br />
      Scintilla no longer supports palette mode. The last version to support palettes was 2.29.
      Any calls to these methods should be removed.</p>
-     
+
     <p>The following are features that should be removed from calling code but are still
     defined to avoid breaking callers.</p>
 
