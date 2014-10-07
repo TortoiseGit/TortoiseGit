@@ -1488,6 +1488,16 @@ BOOL CLogDlg::PreTranslateMessage(MSG* pMsg)
 			FillLogMessageCtrl(false);
 		}
 	}
+	else if (pMsg->message == WM_XBUTTONUP)
+	{
+		bool select = (pMsg->wParam & MK_SHIFT) == 0;
+		if (HIWORD(pMsg->wParam) & XBUTTON1)
+			GoBackForward(select, false);
+		if (HIWORD(pMsg->wParam) & XBUTTON2)
+			GoBackForward(select, true);
+		if (HIWORD(pMsg->wParam) & (XBUTTON1 | XBUTTON2))
+			return TRUE;
+	}
 	if (m_hAccel && !bSkipAccelerator)
 	{
 		int ret = TranslateAccelerator(m_hWnd, m_hAccel, pMsg);
