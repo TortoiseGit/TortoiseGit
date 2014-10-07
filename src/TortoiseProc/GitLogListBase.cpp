@@ -4061,9 +4061,19 @@ LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*
 	{
 		m_nSearchIndex = i;
 		EnsureVisible(i, FALSE);
-		SetItemState(GetSelectionMark(), 0, LVIS_SELECTED);
-		SetItemState(i, LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
-		SetSelectionMark(i);
+		if ((GetAsyncKeyState(VK_SHIFT) & 0x8000) == 0)
+		{
+			SetItemState(GetSelectionMark(), 0, LVIS_SELECTED);
+			SetItemState(i, LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
+			SetSelectionMark(i);
+		}
+		else
+		{
+			GitRev* pLogEntry = (GitRev*)m_arShownList.SafeGetAt(i);
+			if (pLogEntry)
+				m_highlight = pLogEntry->m_CommitHash;
+		}
+		Invalidate();
 		//FillLogMessageCtrl();
 		UpdateData(FALSE);
 	}
