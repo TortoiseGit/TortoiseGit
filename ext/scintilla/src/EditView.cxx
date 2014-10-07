@@ -46,6 +46,7 @@
 #include "EditModel.h"
 #include "MarginView.h"
 #include "EditView.h"
+#include "Editor.h"
 
 #ifdef SCI_NAMESPACE
 using namespace Scintilla;
@@ -185,6 +186,7 @@ EditView::EditView() {
 	pixmapIndentGuideHighlight = 0;
 	llc.SetLevel(LineLayoutCache::llcCaret);
 	posCache.SetSize(0x400);
+	editor = NULL;
 }
 
 EditView::~EditView() {
@@ -1623,7 +1625,17 @@ void EditView::DrawLine(Surface *surface, const EditModel &model, const ViewStyl
 	}
 
 	// See if something overrides the line background color.
-	const ColourOptional background = vsDraw.Background(model.pdoc->GetMark(line), model.caret.active, ll->containsCaret);
+	ColourOptional background = vsDraw.Background(model.pdoc->GetMark(line), model.caret.active, ll->containsCaret);
+	SCNotification scn = { 0 };
+	scn.nmhdr.code = SCN_GETBKCOLOR;
+	scn.line = line;
+	scn.lParam = -1;
+	if (editor)
+		((Editor*)editor)->NotifyParent(&scn);
+	if (scn.lParam != -1) {
+		background.Set(scn.lParam);
+		background.isSet = true;
+	}
 
 	const int posLineStart = model.pdoc->LineStart(line);
 
