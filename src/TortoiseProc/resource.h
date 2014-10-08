@@ -1923,13 +1923,15 @@
 #define ID_GO_BACKWARD                  32868
 #define ID_GO_UP                        32869
 #define ID_GO_DOWN                      32870
+#define ID_GO_BACKWARD_SELECT           32871
+#define ID_GO_FORWARD_SELECT            32872
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        355
-#define _APS_NEXT_COMMAND_VALUE         32871
+#define _APS_NEXT_COMMAND_VALUE         32873
 #define _APS_NEXT_CONTROL_VALUE         1797
 #define _APS_NEXT_SYMED_VALUE           201
 #endif
