@@ -67,7 +67,7 @@ CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
 	, m_limit(0)
 	, m_hAccel(NULL)
 {
-	m_bFilterWithRegex = !!CRegDWORD(_T("Software\\TortoiseGit\\UseRegexFilter"), TRUE);
+	m_bFilterWithRegex = !!CRegDWORD(_T("Software\\TortoiseGit\\UseRegexFilter"), FALSE);
 
 	CString str;
 	str=g_Git.m_CurrentDir;
@@ -1812,7 +1812,7 @@ LRESULT CLogDlg::OnClickedInfoIcon(WPARAM /*wParam*/, LPARAM lParam)
 			if (selection == LOGFILTER_REGEX)
 			{
 				m_bFilterWithRegex = !m_bFilterWithRegex;
-				CRegDWORD b(_T("Software\\TortoiseGit\\UseRegexFilter"), TRUE);
+				CRegDWORD b(_T("Software\\TortoiseGit\\UseRegexFilter"), FALSE);
 				b = m_bFilterWithRegex;
 				m_LogList.m_bFilterWithRegex = m_bFilterWithRegex;
 				SetFilterCueText();

@@ -101,7 +101,7 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	m_hDeletedIcon	= (HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_ACTIONDELETED), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE);
 	m_hFetchIcon	= (HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_ACTIONFETCHING), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE);
 
-	m_bFilterWithRegex = !!CRegDWORD(_T("Software\\TortoiseGit\\UseRegexFilter"), TRUE);
+	m_bFilterWithRegex = !!CRegDWORD(_T("Software\\TortoiseGit\\UseRegexFilter"), FALSE);
 
 	m_From = -1;
 	m_To = -1;
