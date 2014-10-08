@@ -294,6 +294,9 @@
 							<para>
 								This allows you to easily search for refs (tags and branches).
 							</para>
+							<para>
+								If you press <keycap>SHIFT</keycap> while clicking on a ref or on <guibutton>Find</guibutton> you can navigate to the commit w/o selecting it.
+							</para>
 						</tip>
 					</listitem>
 				</varlistentry>
@@ -414,6 +417,12 @@
 					</listitem>
 				</varlistentry>
 			</variablelist>
+		</para>
+
+		<para>
+			By pressing <keycap>ALT</keycap>+<keycap>LEFT</keycap> and <keycap>ALT</keycap>+<keycap>RIGHT</keycap>
+			you can navigate through the commits you selected in the past (i.e., you can navigate through the selection history).
+			If you also press <keycap>SHIFT</keycap> you can navigate through the selection history without selecting the last commits (i.e., just scrolling to and highlighting them).
 		</para>
 
 		<para>
