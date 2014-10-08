@@ -131,7 +131,9 @@ protected:
 
 	afx_msg void GoBack();
 	afx_msg void GoForward();
-	void GoBackForward(bool bForward);
+	afx_msg void GoBackAndSelect();
+	afx_msg void GoForwardAndSelect();
+	void GoBackForward(bool select, bool bForward);
 
 	afx_msg void OnDtnDropdownDatefrom(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnDtnDropdownDateto(NMHDR *pNMHDR, LRESULT *pResult);
@@ -228,6 +230,7 @@ private:
 	bool				m_bNoMerges;
 	int					m_iCompressedGraph;
 	BOOL				m_bWalkBehavior;
+	bool				m_bNavigatingWithSelect;
 
 	CTGitPathList	*   m_currentChangedArray;
 	LogChangedPathArray m_CurrentFilteredChangedArray;
