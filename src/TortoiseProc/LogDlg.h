@@ -40,6 +40,8 @@
 #include "GravatarPictureBox.h"
 #include "PatchViewDlg.h"
 
+#define WM_TGIT_REFRESH_SELECTION   (WM_APP + 1)
+
 #define LOGFILTER_TIMER	101
 #define LOGFTIME_TIMER	102
 #define LOG_FILLPATCHVTIMER	103
@@ -74,6 +76,7 @@ public:
 	 * Empty if none
 	**/
 	CString GetSelectedHash(){ return m_sSelectedHash; }
+	static bool LooksLikeGitHash(const CString& msg, int &pos);
 
 // Dialog Data
 	enum { IDD = IDD_LOGMESSAGE };

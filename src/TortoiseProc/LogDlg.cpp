@@ -34,8 +34,6 @@
 #include "SmartHandle.h"
 #include "LogOrdering.h"
 
-#define WM_TGIT_REFRESH_SELECTION   (WM_APP + 1)
-
 IMPLEMENT_DYNAMIC(CLogDlg, CResizableStandAloneDialog)
 CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
 	: CResizableStandAloneDialog(CLogDlg::IDD, pParent)
@@ -572,7 +570,7 @@ void CLogDlg::EnableOKButton()
 		DialogEnableWindow(IDOK, TRUE);
 }
 
-bool LookLikeGitHash(const CString& msg, int &pos)
+bool CLogDlg::LooksLikeGitHash(const CString& msg, int &pos)
 {
 	int c = 0;
 	for (; pos < msg.GetLength(); ++pos)
@@ -629,7 +627,7 @@ std::vector<CHARRANGE> FindGitHashPositions(const CString& msg, int offset)
 				++old;
 				++offset;
 			}
-			if (LookLikeGitHash(msg, offset))
+			if (CLogDlg::LooksLikeGitHash(msg, offset))
 			{
 				TCHAR d = offset < msg.GetLength() ? msg[offset] : '\0';
 				if (!((d >= 'A' && d <= 'Z') || (d >= 'a' && d <= 'z') || (d >= '0' && d <= '9')))
@@ -1472,23 +1470,35 @@ void CLogDlg::DoDiffFromLog(INT_PTR selIndex, GitRev* rev1, GitRev* rev2, bool /
 BOOL CLogDlg::PreTranslateMessage(MSG* pMsg)
 {
 	// Skip Ctrl-C when copying text out of the log message or search filter
-	bool bSkipAccelerator = (pMsg->message == WM_KEYDOWN && (pMsg->wParam == 'C' || pMsg->wParam == VK_INSERT) && (GetFocus() == GetDlgItem(IDC_MSGVIEW) || GetFocus() == GetDlgItem(IDC_SEARCHEDIT)) && GetKeyState(VK_CONTROL) & 0x8000);
-	if (pMsg->message == WM_KEYDOWN && pMsg->wParam=='\r')
+	bool bSkipAccelerator = (pMsg->message == WM_KEYDOWN && (pMsg->wParam == 'C' || pMsg->wParam == VK_INSERT) && (GetFocus() == GetDlgItem(IDC_MSGVIEW) || GetFocus() == GetDlgItem(IDC_SEARCHEDIT)) && GetKeyState(VK_CONTROL)<0);
+	if (pMsg->message == WM_KEYDOWN)
 	{
-		if (GetFocus()==GetDlgItem(IDC_LOGLIST))
+		if (pMsg->wParam=='\r')
 		{
-			if (CRegDWORD(_T("Software\\TortoiseGit\\DiffByDoubleClickInLog"), FALSE))
+			if (GetFocus()==GetDlgItem(IDC_LOGLIST))
 			{
-				m_LogList.DiffSelectedRevWithPrevious();
-				return TRUE;
+				if (CRegDWORD(_T("Software\\TortoiseGit\\DiffByDoubleClickInLog"), FALSE))
+				{
+					m_LogList.DiffSelectedRevWithPrevious();
+					return TRUE;
+				}
+			}
+			if (GetFocus() == GetDlgItem(IDC_SEARCHEDIT))
+			{
+				KillTimer(LOGFILTER_TIMER);
+				m_limit = 0;
+				m_LogList.Refresh(FALSE);
+				FillLogMessageCtrl(false);
 			}
 		}
-		if (GetFocus() == GetDlgItem(IDC_SEARCHEDIT))
+		else if ((pMsg->wParam=='V'       && GetKeyState(VK_CONTROL)<0 ||
+		          pMsg->wParam==VK_INSERT && GetKeyState(VK_SHIFT  )<0 && GetKeyState(VK_CONTROL)>=0) && GetKeyState(VK_MENU)>=0)
 		{
-			KillTimer(LOGFILTER_TIMER);
-			m_limit = 0;
-			m_LogList.Refresh(FALSE);
-			FillLogMessageCtrl(false);
+			if (GetFocus() != GetDlgItem(IDC_SEARCHEDIT))
+			{
+				m_LogList.OnPasteGitHash();
+				return TRUE;
+			}
 		}
 	}
 	else if (pMsg->message == WM_XBUTTONUP)
@@ -1619,34 +1629,8 @@ void CLogDlg::OnEnLinkMsgview(NMHDR *pNMHDR, LRESULT *pResult)
 		else
 		{
 			int pos = 0;
-			if (LookLikeGitHash(url, pos))
-			{
-				bool found = false;
-				for (int i = 0; i < m_LogList.m_arShownList.GetCount(); ++i)
-				{
-					GitRev *rev = (GitRev *)m_LogList.m_arShownList.SafeGetAt(i);
-					if (!rev) continue;
-					if (rev->m_CommitHash.ToString().Left(url.GetLength()) == url)
-					{
-						POSITION pos = m_LogList.GetFirstSelectedItemPosition();
-						if (pos)
-						{
-							int index = m_LogList.GetNextSelectedItem(pos);
-							if (index > 0)
-								m_LogList.SetItemState(index, 0, LVIS_SELECTED);
-						}
-						m_LogList.SetItemState(i, LVIS_SELECTED, LVIS_SELECTED);
-						m_LogList.EnsureVisible(i, FALSE);
-						m_LogList.SetSelectionMark(i);
-						found = true;
-						PostMessage(WM_TGIT_REFRESH_SELECTION, 0, 0);
-						break;
-					}
-				}
-
-				if (!found)
-					CMessageBox::ShowCheck(GetSafeHwnd(), IDS_PROC_LOG_JUMPNOTFOUND, IDS_APPNAME, 1, IDI_INFORMATION, IDS_OKBUTTON, 0, 0, _T("NoJumpNotFoundWarning"), IDS_MSGBOX_DONOTSHOWAGAIN);
-			}
+			if (LooksLikeGitHash(url, pos))
+				m_LogList.JumpToGitHash(url);
 		}
 	}
 	*pResult = 0;

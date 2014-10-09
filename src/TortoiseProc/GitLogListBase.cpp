@@ -3859,6 +3859,70 @@ void CGitLogListBase::OnFind()
 		m_pFindDialog->Create(this);
 	}
 }
+void CGitLogListBase::JumpToGitHash(CString &hash, bool bClearFullSelection)
+{
+	for (int i = 0; i < m_arShownList.GetCount(); ++i)
+	{
+		GitRev *rev = (GitRev *)m_arShownList.SafeGetAt(i);
+		if (!rev) continue;
+		if (rev->m_CommitHash.ToString().Left(hash.GetLength()) == hash)
+		{
+			int iPreviousFocus = -1;
+			if (bClearFullSelection)
+			{
+				// work around bug in which the previously focused item, if not selected, would not be redrawn to erase its focus rectangle
+				int iTop = GetTopIndex(), iBottom = iTop + GetCountPerPage();
+				for (int index = iTop; index < iBottom; index++)
+				{
+					if (UINT state = GetItemState(index, LVIS_FOCUSED))
+					{
+						iPreviousFocus = index;
+						break;
+					}
+				}
+			}
+			POSITION pos = GetFirstSelectedItemPosition();
+			while (pos)
+			{
+				int index = GetNextSelectedItem(pos);
+				if (index >= 0)
+					SetItemState(index, 0, LVIS_SELECTED);
+				if (!bClearFullSelection)
+					break;
+			}
+			EnsureVisible(i, FALSE);
+			SetSelectionMark(i);
+			SetItemState(i, LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
+			if (iPreviousFocus >= 0)
+				RedrawItems(iPreviousFocus, iPreviousFocus);
+			// refresh of selection needs to be queued instead of done immediately, to ensure hyperlinks in target selection are created
+			this->GetParent()->PostMessage(WM_TGIT_REFRESH_SELECTION, 0, 0);
+			return;
+		}
+	}
+	CMessageBox::ShowCheck(GetSafeHwnd(), IDS_PROC_LOG_JUMPNOTFOUND, IDS_APPNAME, 1, IDI_INFORMATION, IDS_OKBUTTON, 0, 0, _T("NoJumpNotFoundWarning"), IDS_MSGBOX_DONOTSHOWAGAIN);
+}
+void CGitLogListBase::OnPasteGitHash()
+{
+	if (IsClipboardFormatAvailable(CF_TEXT))
+	{
+		if (!OpenClipboard()) return;
+		HGLOBAL hClipboardData = GetClipboardData(CF_TEXT);
+		if (hClipboardData)
+		{
+			CHAR *pStr = (CHAR*)GlobalLock(hClipboardData);
+			if (pStr)
+			{
+				CString str(pStr);
+				int pos = 0;
+				if (CLogDlg::LooksLikeGitHash(str, pos))
+					JumpToGitHash(str, true);
+				GlobalUnlock(hClipboardData);
+			}
+		}
+		CloseClipboard();
+	}
+}
 void CGitLogListBase::OnHdnBegintrack(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	m_ColumnManager.OnHdnBegintrack(pNMHDR, pResult);
