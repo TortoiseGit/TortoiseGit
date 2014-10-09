@@ -71,7 +71,7 @@ bool FetchProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, in
 	if (!m_RefSpec.IsEmpty() && git_remote_add_fetch(remote, CUnicodeUtils::GetUTF8(m_RefSpec)))
 		goto error;
 
-	if (git_remote_fetch(remote, nullptr, nullptr) < 0)
+	if (git_remote_fetch(remote, nullptr, nullptr, nullptr) < 0)
 		goto error;
 
 	// Not setting m_PostCmdCallback here, as clone is only called from AppUtils.cpp

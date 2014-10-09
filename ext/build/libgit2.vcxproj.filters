@@ -449,6 +449,9 @@
     <ClCompile Include="..\libgit2\src\oidarray.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\libgit2\src\transaction.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\libgit2\src\attr.h">
@@ -781,9 +784,6 @@
     <ClInclude Include="..\libgit2\src\attrcache.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\libgit2\src\hashsig.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\libgit2\src\refdb.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -1005,6 +1005,12 @@
     </ClInclude>
     <ClInclude Include="..\libgit2\src\oidarray.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\include\git2\sys\hashsig.h">
+      <Filter>Public Header Files\sys</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\include\git2\transaction.h">
+      <Filter>Public Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

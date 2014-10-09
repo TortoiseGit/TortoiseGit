@@ -18,6 +18,7 @@ Released: unreleased
  * Fixed issue #2126: Rebase: Squash after conflict causes additional commit
  * Fixed issue #2313: [Clean to recycle bin] after Clean-up dry run removes unexpected files
  * Fixed issue #874: Add --rebase option to pull dialog
+ * Fixed issue #2316: Error on comparing files when git config core.autocrlf ends with 2+ spaces and then a comment
 
 = Release 1.8.11.0 =
 Released: 2014-08-22
