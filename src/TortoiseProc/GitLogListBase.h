@@ -56,6 +56,7 @@
 #define LOGFILTER_SUBJECT		0x0040
 #define LOGFILTER_REFNAME		0x0080
 #define LOGFILTER_EMAILS		0x0100
+#define LOGFILTER_CASE			0x0200
 
 #define LOGLIST_SHOWNOTHING				0x0000
 #define LOGLIST_SHOWLOCALBRANCHES		0x0001
@@ -397,6 +398,7 @@ public:
 	DWORD				m_SelectedFilters;
 	FilterShow			m_ShowFilter;
 	bool				m_bFilterWithRegex;
+	bool				m_bFilterCaseSensitively;
 	CLogDataVector		m_logEntries;
 	void RemoveFilter();
 	void StartFilter();

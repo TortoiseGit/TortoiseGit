@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2008 - TortoiseSVN
+// Copyright (C) 2003-2009 - TortoiseSVN
 // Copyright (C) 2008-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
@@ -237,6 +237,7 @@ private:
 	CTGitPathList		m_currentChangedPathList;
 
 	bool				m_bFilterWithRegex;
+	bool				m_bFilterCaseSensitively;
 
 	CFont				m_logFont;
 	CSplitterControl	m_wndSplitter1;

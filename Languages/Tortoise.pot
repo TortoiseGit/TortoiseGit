@@ -2356,6 +2356,10 @@ msgstr ""
 msgid "Cascaded context menu"
 msgstr ""
 
+#. Resource IDs: (117)
+msgid "Case-sensitive"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Cate&gories:"
 msgstr ""

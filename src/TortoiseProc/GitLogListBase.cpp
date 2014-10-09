@@ -102,6 +102,7 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	m_hFetchIcon	= (HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_ACTIONFETCHING), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE);
 
 	m_bFilterWithRegex = !!CRegDWORD(_T("Software\\TortoiseGit\\UseRegexFilter"), FALSE);
+	m_bFilterCaseSensitively = !!CRegDWORD(_T("Software\\TortoiseGit\\FilterCaseSensitively"), FALSE);
 
 	m_From = -1;
 	m_To = -1;
@@ -3251,7 +3252,8 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, std::tr1::wregex 
 	else
 	{
 		CString find = m_sFilterText;
-		find.MakeLower();
+		if (!m_bFilterCaseSensitively)
+			find.MakeLower();
 		result = find[0] == '!' ? FALSE : TRUE;
 		if (!result)
 			find = find.Mid(1);
@@ -3262,7 +3264,8 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, std::tr1::wregex 
 			{
 				CString sBugIds = m_ProjectProperties.FindBugID(pRev->GetSubject() + _T("\r\n\r\n") + pRev->GetBody());
 
-				sBugIds.MakeLower();
+				if (!m_bFilterCaseSensitively)
+					sBugIds.MakeLower();
 				if ((sBugIds.Find(find) >= 0))
 				{
 					return result;
@@ -3274,7 +3277,8 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, std::tr1::wregex 
 		{
 			CString msg = pRev->GetSubject();
 
-			msg = msg.MakeLower();
+			if (!m_bFilterCaseSensitively)
+				msg = msg.MakeLower();
 			if ((msg.Find(find) >= 0))
 			{
 				return result;
@@ -3285,7 +3289,8 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, std::tr1::wregex 
 		{
 			CString msg = pRev->GetBody();
 
-			msg = msg.MakeLower();
+			if (!m_bFilterCaseSensitively)
+				msg = msg.MakeLower();
 			if ((msg.Find(find) >= 0))
 			{
 				return result;
@@ -3295,7 +3300,8 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, std::tr1::wregex 
 		if (m_SelectedFilters & LOGFILTER_AUTHORS)
 		{
 			CString msg = pRev->GetAuthorName();
-			msg = msg.MakeLower();
+			if (!m_bFilterCaseSensitively)
+				msg = msg.MakeLower();
 			if ((msg.Find(find) >= 0))
 			{
 				return result;
@@ -3305,7 +3311,8 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, std::tr1::wregex 
 		if (m_SelectedFilters & LOGFILTER_EMAILS)
 		{
 			CString msg = pRev->GetAuthorEmail();
-			msg = msg.MakeLower();
+			if (!m_bFilterCaseSensitively)
+				msg = msg.MakeLower();
 			if ((msg.Find(find) >= 0))
 			{
 				return result;
@@ -3348,13 +3355,15 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, std::tr1::wregex 
 				{
 					CTGitPath *cpath = &pathList->m_paths.at(cpPathIndex);
 					CString path = cpath->GetGitOldPathString();
-					path.MakeLower();
+					if (!m_bFilterCaseSensitively)
+						path.MakeLower();
 					if ((path.Find(find)>=0))
 					{
 						return result;
 					}
 					path = cpath->GetGitPathString();
-					path.MakeLower();
+					if (!m_bFilterCaseSensitively)
+						path.MakeLower();
 					if ((path.Find(find)>=0))
 					{
 						return result;
@@ -3364,7 +3373,8 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, std::tr1::wregex 
 			for (size_t i = 0; i < pRev->m_SimpleFileList.size(); ++i)
 			{
 				CString path = pRev->m_SimpleFileList[i];
-				path.MakeLower();
+				if (!m_bFilterCaseSensitively)
+					path.MakeLower();
 				if ((path.Find(find)>=0))
 				{
 					return result;
@@ -3589,13 +3599,15 @@ void CGitLogListBase::RecalculateShownList(CThreadSafePtrArray * pShownlist)
 		else
 		{
 			CString find = m_sFilterText;
-			find.MakeLower();
+			if (!m_bFilterCaseSensitively)
+				find.MakeLower();
 #if 0
 			if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_BUGID))
 			{
 				CString sBugIDs = m_logEntries[i]->sBugIDs;
 
-				sBugIDs = sBugIDs.MakeLower();
+				if (!m_bFilterCaseSensitively)
+					sBugIDs = sBugIDs.MakeLower();
 				if ((sBugIDs.Find(find) >= 0)&&(IsEntryInDateRange(i)))
 				{
 					pShownlist->SafeAdd(m_logEntries[i]);
@@ -3607,7 +3619,8 @@ void CGitLogListBase::RecalculateShownList(CThreadSafePtrArray * pShownlist)
 			{
 				CString msg = m_logEntries.GetGitRevAt(i).GetSubject();
 
-				msg = msg.MakeLower();
+				if (!m_bFilterCaseSensitively)
+					msg = msg.MakeLower();
 				if ((msg.Find(find) >= 0)&&(IsEntryInDateRange(i)))
 				{
 					pShownlist->SafeAdd(&m_logEntries.GetGitRevAt(i));
@@ -3618,7 +3631,8 @@ void CGitLogListBase::RecalculateShownList(CThreadSafePtrArray * pShownlist)
 			{
 				CString msg = m_logEntries.GetGitRevAt(i).GetBody();
 
-				msg = msg.MakeLower();
+				if (!m_bFilterCaseSensitively)
+					msg = msg.MakeLower();
 				if ((msg.Find(find) >= 0)&&(IsEntryInDateRange(i)))
 				{
 					pShownlist->SafeAdd(&m_logEntries.GetGitRevAt(i));
@@ -3634,7 +3648,8 @@ void CGitLogListBase::RecalculateShownList(CThreadSafePtrArray * pShownlist)
 				{
 					CTGitPath cpath = pathList[cpPathIndex];
 					CString path = cpath.GetGitOldPathString();
-					path.MakeLower();
+					if (!m_bFilterCaseSensitively)
+						path.MakeLower();
 					if ((path.Find(find)>=0)&&(IsEntryInDateRange(i)))
 					{
 						pShownlist->SafeAdd(&m_logEntries.GetGitRevAt(i));
@@ -3642,7 +3657,8 @@ void CGitLogListBase::RecalculateShownList(CThreadSafePtrArray * pShownlist)
 						continue;
 					}
 					path = cpath.GetGitPathString();
-					path.MakeLower();
+					if (!m_bFilterCaseSensitively)
+						path.MakeLower();
 					if ((path.Find(find)>=0)&&(IsEntryInDateRange(i)))
 					{
 						pShownlist->SafeAdd(&m_logEntries.GetGitRevAt(i));
@@ -3650,7 +3666,8 @@ void CGitLogListBase::RecalculateShownList(CThreadSafePtrArray * pShownlist)
 						continue;
 					}
 					path = cpath.GetActionName();
-					path.MakeLower();
+					if (!m_bFilterCaseSensitively)
+						path.MakeLower();
 					if ((path.Find(find)>=0)&&(IsEntryInDateRange(i)))
 					{
 						pShownlist->SafeAdd(&m_logEntries.GetGitRevAt(i));
@@ -3662,7 +3679,8 @@ void CGitLogListBase::RecalculateShownList(CThreadSafePtrArray * pShownlist)
 			if (m_SelectedFilters & LOGFILTER_AUTHORS)
 			{
 				CString msg = m_logEntries.GetGitRevAt(i).GetAuthorName();
-				msg = msg.MakeLower();
+				if (!m_bFilterCaseSensitively)
+					msg = msg.MakeLower();
 				if ((msg.Find(find) >= 0)&&(IsEntryInDateRange(i)))
 				{
 					pShownlist->SafeAdd(&m_logEntries.GetGitRevAt(i));
@@ -3672,7 +3690,8 @@ void CGitLogListBase::RecalculateShownList(CThreadSafePtrArray * pShownlist)
 			if (m_SelectedFilters & LOGFILTER_EMAILS)
 			{
 				CString msg = m_logEntries.GetGitRevAt(i).GetAuthorEmail();
-				msg = msg.MakeLower();
+				if (!m_bFilterCaseSensitively)
+					msg = msg.MakeLower();
 				if ((msg.Find(find) >= 0) && (IsEntryInDateRange(i)))
 				{
 					pShownlist->SafeAdd(&m_logEntries.GetGitRevAt(i));

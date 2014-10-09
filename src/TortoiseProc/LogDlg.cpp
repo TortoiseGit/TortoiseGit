@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2008 - TortoiseSVN
+// Copyright (C) 2003-2009 - TortoiseSVN
 // Copyright (C) 2008-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
@@ -69,6 +69,7 @@ CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
 	, m_bNavigatingWithSelect(false)
 {
 	m_bFilterWithRegex = !!CRegDWORD(_T("Software\\TortoiseGit\\UseRegexFilter"), FALSE);
+	m_bFilterCaseSensitively = !!CRegDWORD(L"Software\\TortoiseGit\\FilterCaseSensitively", FALSE);
 
 	CString str;
 	str=g_Git.m_CurrentDir;
@@ -1837,6 +1838,9 @@ LRESULT CLogDlg::OnClickedInfoIcon(WPARAM /*wParam*/, LPARAM lParam)
 		temp.LoadString(IDS_LOG_FILTER_REGEX);
 		popup.AppendMenu(MF_STRING | MF_ENABLED | (m_bFilterWithRegex ? MF_CHECKED : MF_UNCHECKED), LOGFILTER_REGEX, temp);
 
+		temp.LoadString(IDS_LOG_FILTER_CASESENSITIVE);
+		popup.AppendMenu(MF_STRING | MF_ENABLED | (m_bFilterCaseSensitively ? MF_CHECKED : MF_UNCHECKED), LOGFILTER_CASE, temp);
+
 		m_tooltips.Pop();
 		int selection = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this, 0);
 		if (selection != 0)
@@ -1850,6 +1854,13 @@ LRESULT CLogDlg::OnClickedInfoIcon(WPARAM /*wParam*/, LPARAM lParam)
 				m_LogList.m_bFilterWithRegex = m_bFilterWithRegex;
 				SetFilterCueText();
 				CheckRegexpTooltip();
+			}
+			else if (selection == LOGFILTER_CASE)
+			{
+				m_bFilterCaseSensitively = !m_bFilterCaseSensitively;
+				CRegDWORD b(_T("Software\\TortoiseGit\\FilterCaseSensitively"), FALSE);
+				b = m_bFilterCaseSensitively;
+				m_LogList.m_bFilterCaseSensitively = m_bFilterCaseSensitively;
 			}
 			else if (selection == LOGFILTER_TOGGLE)
 			{
