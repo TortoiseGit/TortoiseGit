@@ -32,6 +32,7 @@
 #include "BrowseRefsDlg.h"
 #include "SmartHandle.h"
 #include "LogOrdering.h"
+#include "ClipboardHelper.h"
 
 #define WM_TGIT_REFRESH_SELECTION   (WM_APP + 1)
 
@@ -1524,6 +1525,58 @@ void CLogDlg::DoDiffFromLog(INT_PTR selIndex, GitRev* rev1, GitRev* rev2, bool /
 	EnableOKButton();
 }
 
+void CLogDlg::OnPasteGitHash()
+{
+	if (!IsClipboardFormatAvailable(CF_TEXT))
+		return;
+
+	CClipboardHelper clipboardHelper;
+	if (!clipboardHelper.Open(GetSafeHwnd()))
+		return;
+
+	HGLOBAL hClipboardData = GetClipboardData(CF_TEXT);
+	if (!hClipboardData)
+		return;
+
+	char* pStr = (char*)GlobalLock(hClipboardData);
+	CString str(pStr);
+	GlobalUnlock(hClipboardData);
+	if (str.IsEmpty())
+		return;
+
+	int pos = 0;
+	if (LookLikeGitHash(str, pos))
+		JumpToGitHash(str);
+}
+
+void CLogDlg::JumpToGitHash(CString& hash)
+{
+	for (int i = 0; i < m_LogList.m_arShownList.GetCount(); ++i)
+	{
+		GitRev* rev = (GitRev*)m_LogList.m_arShownList.SafeGetAt(i);
+		if (!rev) continue;
+		if (rev->m_CommitHash.ToString().Left(hash.GetLength()) != hash)
+			continue;
+
+		m_LogList.SetItemState(m_LogList.GetSelectionMark(), 0, LVIS_SELECTED | LVIS_FOCUSED);
+		POSITION pos = m_LogList.GetFirstSelectedItemPosition();
+		while (pos)
+		{
+			int index = m_LogList.GetNextSelectedItem(pos);
+			if (index >= 0)
+				m_LogList.SetItemState(index, 0, LVIS_SELECTED);
+		}
+		m_LogList.EnsureVisible(i, FALSE);
+		m_LogList.SetSelectionMark(i);
+		m_LogList.SetItemState(i, LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
+		// refresh of selection needs to be queued instead of done immediately, to ensure hyperlinks in target selection are created
+		PostMessage(WM_TGIT_REFRESH_SELECTION, 0, 0);
+		return;
+	}
+
+	CMessageBox::ShowCheck(GetSafeHwnd(), IDS_PROC_LOG_JUMPNOTFOUND, IDS_APPNAME, 1, IDI_INFORMATION, IDS_OKBUTTON, 0, 0, _T("NoJumpNotFoundWarning"), IDS_MSGBOX_DONOTSHOWAGAIN);
+}
+
 BOOL CLogDlg::PreTranslateMessage(MSG* pMsg)
 {
 	// Skip Ctrl-C when copying text out of the log message or search filter
@@ -1549,6 +1602,14 @@ BOOL CLogDlg::PreTranslateMessage(MSG* pMsg)
 		{
 			KillTimer(FILEFILTER_TIMER);
 			FillLogMessageCtrl();
+			return TRUE;
+		}
+	}
+	else if (pMsg->message == WM_KEYDOWN && ((pMsg->wParam == 'V' && GetKeyState(VK_CONTROL) < 0) || (pMsg->wParam == VK_INSERT && GetKeyState(VK_SHIFT) < 0 && GetKeyState(VK_CONTROL) >= 0)) && GetKeyState(VK_MENU) >= 0)
+	{
+		if (GetFocus() != GetDlgItem(IDC_SEARCHEDIT))
+		{
+			OnPasteGitHash();
 			return TRUE;
 		}
 	}
@@ -1704,33 +1765,7 @@ void CLogDlg::OnEnLinkMsgview(NMHDR *pNMHDR, LRESULT *pResult)
 		{
 			int pos = 0;
 			if (LookLikeGitHash(url, pos))
-			{
-				bool found = false;
-				for (int i = 0; i < m_LogList.m_arShownList.GetCount(); ++i)
-				{
-					GitRev *rev = (GitRev *)m_LogList.m_arShownList.SafeGetAt(i);
-					if (!rev) continue;
-					if (rev->m_CommitHash.ToString().Left(url.GetLength()) == url)
-					{
-						POSITION pos2 = m_LogList.GetFirstSelectedItemPosition();
-						if (pos2)
-						{
-							int index = m_LogList.GetNextSelectedItem(pos2);
-							if (index >= 0)
-								m_LogList.SetItemState(index, 0, LVIS_SELECTED);
-						}
-						m_LogList.SetItemState(i, LVIS_SELECTED, LVIS_SELECTED);
-						m_LogList.EnsureVisible(i, FALSE);
-						m_LogList.SetSelectionMark(i);
-						found = true;
-						PostMessage(WM_TGIT_REFRESH_SELECTION, 0, 0);
-						break;
-					}
-				}
-
-				if (!found)
-					CMessageBox::ShowCheck(GetSafeHwnd(), IDS_PROC_LOG_JUMPNOTFOUND, IDS_APPNAME, 1, IDI_INFORMATION, IDS_OKBUTTON, 0, 0, _T("NoJumpNotFoundWarning"), IDS_MSGBOX_DONOTSHOWAGAIN);
-			}
+				JumpToGitHash(url);
 		}
 	}
 	*pResult = 0;

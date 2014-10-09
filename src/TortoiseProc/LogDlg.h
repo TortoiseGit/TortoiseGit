@@ -153,6 +153,9 @@ protected:
 
 	void	DoDiffFromLog(INT_PTR selIndex, GitRev *rev1, GitRev *rev2, bool blame, bool unified);
 
+	void OnPasteGitHash();
+	void JumpToGitHash(CString& hash);
+
 	DECLARE_MESSAGE_MAP()
 
 private:

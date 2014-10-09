@@ -38,6 +38,7 @@ Released: 2015-04-08
  * Allow to compare file with deleted file in CommitDlg (e.g., useful for renames)
  * Allow to use Explorer context menu options from TortoiseGit context menu
  * Sort remotes logically/case-insensitively
+ * Fixed issue #1930: Navigate directly to a commit in "Show log" by pasting its hash
 
 == Bug Fixes ==
  * Fixed issue #2427: "Submodule of Project: " cannot be localized

@@ -839,4 +839,14 @@
 			you can simply refresh the view using <keycap>F5</keycap>.
 		</para>
 	</sect2>
+	<sect2 id="tgit-dug-showlog-pastehash">
+		<title>Jumping to a Commit by its Hash</title>
+		<para>
+			If you want to jump to a commit with a particular hash, you may
+			do so by pressing <keycap>Ctrl+V</keycap> or <keycap>Shift+Insert</keycap>
+			(into any log dialog element other than the search box) to paste the hash
+			from the clipboard. If it has the form of a valid commit hash, the log
+			dialog will attempt to jump to it.
+		</para>
+	</sect2>
 </sect1>
