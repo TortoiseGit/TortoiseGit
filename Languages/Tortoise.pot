@@ -1583,6 +1583,10 @@ msgstr ""
 msgid "About TortoiseGitMerge"
 msgstr ""
 
+#. Resource IDs: (1)
+msgid "Accept certificate"
+msgstr ""
+
 #. Resource IDs: (3867)
 #, c-format
 msgid "Access to %1 was denied."
@@ -2372,6 +2376,10 @@ msgstr ""
 msgid "Central European"
 msgstr ""
 
+#. Resource IDs: (65535)
+msgid "Certificate verification failed!"
+msgstr ""
+
 #. Resource IDs: (1697)
 msgid "Change log"
 msgstr ""
@@ -2816,6 +2824,10 @@ msgstr ""
 
 #. Resource IDs: (170)
 msgid "Committing an unversioned folder will not recursively add its child items!\nYou might want to add these folders recursively by using the 'Add...' context menu item.\n\nAre you sure that you want to continue the commit?"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Common Name:"
 msgstr ""
 
 #. Resource IDs: (2054)
@@ -4114,6 +4126,11 @@ msgstr ""
 msgid "Error rebuilding Shell Icon Cache!"
 msgstr ""
 
+#. Resource IDs: (96)
+#, c-format
+msgid "Error validating server certificate for \"%s\":"
+msgstr ""
+
 #. Resource IDs: (70)
 #, c-format
 msgid "Error while reading/writing the registry key %s\n%s"
@@ -4460,6 +4477,10 @@ msgstr ""
 
 #. Resource IDs: (95)
 msgid "Find: First occurrence from the top found. End of document reached."
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Fingerprints"
 msgstr ""
 
 #. Resource IDs: (67)
@@ -5457,6 +5478,10 @@ msgstr ""
 
 #. Resource IDs: (82)
 msgid "Invalid revision number!"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Issuer:"
 msgstr ""
 
 #. Resource IDs: (145)
@@ -6495,6 +6520,10 @@ msgstr ""
 
 #. Resource IDs: (3601)
 msgid "Open an existing document\nOpen"
+msgstr ""
+
+#. Resource IDs: (1797)
+msgid "Open certificate"
 msgstr ""
 
 #. Resource IDs: (3601)
@@ -7709,6 +7738,14 @@ msgstr ""
 
 #. Resource IDs: (604, 1251)
 msgid "SHA-1"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "SHA-1:"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "SHA-256:"
 msgstr ""
 
 #. Resource IDs: (1585)
