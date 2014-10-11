@@ -43,11 +43,22 @@ bool ResetProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, in
 		return false;
 	}
 
+	CGitProgressList::Payload cbpayload = { list, repo };
+	git_checkout_options checkout_options = GIT_CHECKOUT_OPTIONS_INIT;
+
 	CBlockCacheForPath block(g_Git.m_CurrentDir);
 	CAutoObject target;
 	if (git_revparse_single(target.GetPointer(), repo, CUnicodeUtils::GetUTF8(m_revision)))
 		goto error;
-	if (git_reset(repo, target, (git_reset_t)(m_resetType + 1), nullptr, nullptr, nullptr))
+	checkout_options.progress_payload = &cbpayload;
+	checkout_options.progress_cb = [](const char* path, size_t completed_steps, size_t total_steps, void* payload)
+	{
+		CGitProgressList::Payload* cbpayload = (CGitProgressList::Payload*)payload;
+		cbpayload->list->m_itemCountTotal = total_steps;
+		cbpayload->list->m_itemCount = completed_steps;
+		cbpayload->list->AddNotify(new CGitProgressList::WC_File_NotificationData(CUnicodeUtils::GetUnicode(path), CGitProgressList::WC_File_NotificationData::git_wc_notify_checkout));
+	};
+	if (git_reset(repo, target, (git_reset_t)(m_resetType + 1), &checkout_options, nullptr, nullptr))
 		goto error;
 
 	// Not setting m_PostCmdCallback here, as clone is only called from AppUtils.cpp
