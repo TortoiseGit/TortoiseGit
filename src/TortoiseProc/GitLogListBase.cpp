@@ -3092,6 +3092,8 @@ void CGitLogListBase::Refresh(BOOL IsCleanFilter)
 
 	//Update branch and Tag info
 	ReloadHashMap();
+	if (m_pFindDialog)
+		m_pFindDialog->RefreshList();
 	//Assume Thread have exited
 	//if(!m_bThreadRunning)
 	{

@@ -147,10 +147,16 @@ BOOL CFindDlg::OnInitDialog()
 	m_ctrlRefList.GetClientRect(&rect);
 
 	this->m_ctrlRefList.InsertColumn(0,_T("Ref"),0, rect.Width()-50);
+	RefreshList();
+	return FALSE;
+}
+
+void CFindDlg::RefreshList()
+{
+	m_RefList.clear();
 	if (g_Git.GetRefList(m_RefList))
 		MessageBox(g_Git.GetGitLastErr(_T("Could not get all refs.")), _T("TortoiseGit"), MB_ICONERROR);
 	AddToList();
-	return FALSE;
 }
 
 void CFindDlg::OnCbnEditchangeFindcombo()

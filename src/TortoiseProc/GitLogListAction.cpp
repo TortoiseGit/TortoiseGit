@@ -424,6 +424,8 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				}
 				CAppUtils::CreateBranchTag((cmd&0xFFFF) == ID_CREATE_TAG, &str);
 				ReloadHashMap();
+				if (m_pFindDialog)
+					m_pFindDialog->RefreshList();
 				Invalidate();
 				::PostMessage(this->GetParent()->m_hWnd,MSG_REFLOG_CHANGED,0,0);
 			}
@@ -937,6 +939,8 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 					}
 				}
 				this->ReloadHashMap();
+				if (m_pFindDialog)
+					m_pFindDialog->RefreshList();
 				CRect rect;
 				this->GetItemRect(FirstSelect,&rect,LVIR_BOUNDS);
 				this->InvalidateRect(rect);

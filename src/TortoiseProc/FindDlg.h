@@ -47,6 +47,7 @@ public:
 	bool IsRef()	{return !!m_bIsRef;}
 	CString GetFindString() {return m_FindString;}
 	void SetFindString(const CString& str) { if (!str.IsEmpty()) { m_FindCombo.SetWindowText(str); } }
+	void RefreshList();
 
 // Dialog Data
 	enum { IDD = IDD_FIND };
