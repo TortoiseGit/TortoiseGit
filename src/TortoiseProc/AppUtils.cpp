@@ -67,6 +67,39 @@
 #include "ProgressCommands/ResetProgressCommand.h"
 #include "ProgressCommands/FetchProgressCommand.h"
 #include "ProgressCommands/SendMailProgressCommand.h"
+#include "CertificateValidationHelper.h"
+#include "CheckCertificateDlg.h"
+
+static struct last_accepted_cert {
+	BYTE*		data;
+	size_t		len;
+
+	last_accepted_cert()
+		: data(nullptr)
+		, len(0)
+	{
+	}
+	~last_accepted_cert()
+	{
+		free(data);
+	};
+	boolean cmp(git_cert_x509* cert)
+	{
+		return len > 0 && len == cert->len && memcmp(data, cert->data, len) == 0;
+	}
+	void set(git_cert_x509* cert)
+	{
+		free(data);
+		len = cert->len;
+		if (len == 0)
+		{
+			data = nullptr;
+			return;
+		}
+		data = new BYTE[len];
+		memcpy(data, cert->data, len);
+	}
+} last_accepted_cert;
 
 static bool DoFetch(const CString& url, const bool fetchAllRemotes, const bool loadPuttyAgent, const int prune, const bool bDepth, const int nDepth, const int fetchTags, const CString& remoteBranch, const boolean runRebase);
 
@@ -3311,6 +3344,50 @@ int CAppUtils::Git2GetUserPassword(git_cred **out, const char *url, const char *
 	}
 	giterr_set_str(GITERR_NONE, "User cancelled.");
 	return GIT_EUSER;
+}
+
+int CAppUtils::Git2CertificateCheck(git_cert* base_cert, int /*valid*/, const char* host, void* /*payload*/)
+{
+	if (base_cert->cert_type == GIT_CERT_X509)
+	{
+		git_cert_x509* cert = (git_cert_x509*)base_cert;
+
+		if (last_accepted_cert.cmp(cert))
+			return 0;
+
+		PCCERT_CONTEXT pServerCert = CertCreateCertificateContext(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, (BYTE*)cert->data, (DWORD)cert->len);
+
+		DWORD verificationError = VerifyServerCertificate(pServerCert, CUnicodeUtils::GetUnicode(host).GetBuffer(), 0);
+		if (!verificationError)
+		{
+			last_accepted_cert.set(cert);
+			CertFreeCertificateContext(pServerCert);
+			return 0;
+		}
+
+		CString servernameInCert;
+		CertGetNameString(pServerCert, CERT_NAME_SIMPLE_DISPLAY_TYPE, 0, nullptr, servernameInCert.GetBuffer(128), 128);
+		servernameInCert.ReleaseBuffer();
+
+		CString issuer;
+		CertGetNameString(pServerCert, CERT_NAME_SIMPLE_DISPLAY_TYPE, CERT_NAME_ISSUER_FLAG, nullptr, issuer.GetBuffer(128), 128);
+		issuer.ReleaseBuffer();
+
+		CertFreeCertificateContext(pServerCert);
+
+		CCheckCertificateDlg dlg;
+		dlg.cert = cert;
+		dlg.m_sCertificateCN = servernameInCert;
+		dlg.m_sCertificateIssuer = issuer;
+		dlg.m_sHostname = CUnicodeUtils::GetUnicode(host);
+		dlg.m_sError = CFormatMessageWrapper(verificationError);
+		if (dlg.DoModal() == IDOK)
+		{
+			last_accepted_cert.set(cert);
+			return 0;
+		}
+	}
+	return GIT_ECERTIFICATE;
 }
 
 void CAppUtils::ExploreTo(HWND hwnd, CString path)

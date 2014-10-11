@@ -47,7 +47,7 @@ bool ResetProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, in
 	CAutoObject target;
 	if (git_revparse_single(target.GetPointer(), repo, CUnicodeUtils::GetUTF8(m_revision)))
 		goto error;
-	if (git_reset(repo, target, (git_reset_t)(m_resetType + 1), nullptr, nullptr))
+	if (git_reset(repo, target, (git_reset_t)(m_resetType + 1), nullptr, nullptr, nullptr))
 		goto error;
 
 	// Not setting m_PostCmdCallback here, as clone is only called from AppUtils.cpp

@@ -167,6 +167,7 @@
 #define IDI_FILE                        352
 #define IDI_CODE                        353
 #define IDI_SNIPPET                     354
+#define IDI_CERTCHECK                   355
 #define IDS_CHSTAT_FILECOL              1000
 #define IDS_CHSTAT_WCCOL                1001
 #define IDS_CHSTAT_REPOCOL              1002
@@ -1144,6 +1145,7 @@
 #define IDC_CHECK_BRANCH                1527
 #define IDS_PROC_SELECTION_HISTORY      1527
 #define IDC_EDIT_BRANCH                 1528
+#define IDS_ERR_SSL_VALIDATE            1528
 #define IDC_SHOWLOCKEDOVERLAY           1529
 #define IDC_EDIT_ORIGIN                 1530
 #define IDC_CHECK_ORIGIN                1531
@@ -1479,6 +1481,13 @@
 #define IDC_EDIT_PUSHURL                1794
 #define IDC_SORTTAGSREVERSED            1795
 #define IDC_STATIC_FORCE                1796
+#define IDC_OPENCERT                    1797
+#define IDC_ERRORDESC                   1798
+#define IDC_ERROR                       1799
+#define IDC_SHA1                        1800
+#define IDC_SHA256                      1801
+#define IDC_ISSUER                      1802
+#define IDC_COMMONNAME                  1803
 #define IDS_LOG_FILTER_BY               1850
 #define IDS_LOG_FILTER_PATHS            1851
 #define IDS_LOG_FILTER_AUTHORS          1852
@@ -1758,6 +1767,7 @@
 #define IDD_SETTINGSCREDENTIAL          4591
 #define IDD_MERGEABORT                  4592
 #define IDD_SETTINGSDIALOGS3            4593
+#define IDD_CERTCHECK                   4594
 #define IDC_COMBOBOXEX_LOCAL_BRANCH     5000
 #define IDC_COMBOBOXEX_REMOTE_BRANCH    5001
 #define IDC_COMBOBOXEX_BAD              5001
@@ -1931,9 +1941,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        355
+#define _APS_NEXT_RESOURCE_VALUE        356
 #define _APS_NEXT_COMMAND_VALUE         32873
-#define _APS_NEXT_CONTROL_VALUE         1797
+#define _APS_NEXT_CONTROL_VALUE         1804
 #define _APS_NEXT_SYMED_VALUE           201
 #endif
 #endif
