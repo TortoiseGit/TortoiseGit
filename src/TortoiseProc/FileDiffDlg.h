@@ -158,7 +158,6 @@ private:
 	std::vector<CTGitPath*> m_arFilteredList;
 
 	CString				m_strExportDir;
-	CProgressDlg *		m_pProgDlg;
 
 	int					m_nIconFolder;
 
