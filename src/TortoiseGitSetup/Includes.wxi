@@ -17,22 +17,35 @@
 
 	<?if $(var.Platform) = "x64" ?>
 	<?define Win64YesNo="yes" ?>
-	<?define ReleasePath="Release64" ?>
-	<?define ReleasePath32="Release" ?>
+	<?define ReleasePath="$(var.BuildConfiguration)64" ?>
+	<?define ReleasePath32="$(var.BuildConfiguration)" ?>
 	<?define PlatformPathExtension="x64" ?>
 	<?define PlatformPath32Extension="win32" ?>
 	<?define PackagePlatforms="x64" ?>
-	<?define PlatformUserVisible="(64 bit)" ?>
+    <?if $(var.BuildConfiguration) = "Debug" ?>
+	    <?define PlatformUserVisible="(64 bit) $(var.BuildConfiguration)" ?>
+    <?else?>
+        <?define PlatformUserVisible="(64 bit)" ?>
+    <?endif?>
 	<?else?>
 	<?define Win64YesNo="no" ?>
-	<?define ReleasePath="Release" ?>
-	<?define ReleasePath32="Release" ?>
+	<?define ReleasePath="$(var.BuildConfiguration)" ?>
+	<?define ReleasePath32="$(var.BuildConfiguration)" ?>
 	<?define PlatformPathExtension="win32" ?>
 	<?define PlatformPath32Extension="win32" ?>
-	<?define PackagePlatforms="x86" ?>
-	<?define PlatformUserVisible="(32 bit)" ?>
-	<?endif?>
+	<?define PackagePlatforms="x86" ?>	
+    <?if $(var.BuildConfiguration) = "Debug" ?>
+        <?define PlatformUserVisible="(32 bit) $(var.BuildConfiguration)" ?>
+    <?else?>
+        <?define PlatformUserVisible="(32 bit)" ?>
+    <?endif?>
+    <?endif?>
 
+    <?if $(var.BuildConfiguration) = "Debug" ?>
+        <?define IncludeHelpChm=0 ?>
+    <?else?>
+        <?define IncludeHelpChm=1 ?>    
+    <?endif?>    
 	<!-- GUIDs ....................................................................... -->
 
 	<?if $(var.Platform) = "x64" ?>
