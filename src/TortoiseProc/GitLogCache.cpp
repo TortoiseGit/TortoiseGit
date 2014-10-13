@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -22,7 +22,7 @@
 
 int static Compare(const void *p1, const void*p2)
 {
-	return memcmp(p1,p2,20);
+	return memcmp(p1, p2, GIT_HASH_SIZE);
 }
 
 CLogCache::CLogCache()
