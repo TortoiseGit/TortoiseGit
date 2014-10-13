@@ -82,6 +82,7 @@ BEGIN_MESSAGE_MAP(CPullFetchDlg, CHorizontalResizableStandAloneDialog)
 	ON_STN_CLICKED(IDC_REMOTE_MANAGE, &CPullFetchDlg::OnStnClickedRemoteManage)
 	ON_BN_CLICKED(IDC_BUTTON_BROWSE_REF, &CPullFetchDlg::OnBnClickedButtonBrowseRef)
 	ON_BN_CLICKED(IDC_CHECK_DEPTH, OnBnClickedCheckDepth)
+	ON_BN_CLICKED(IDC_CHECK_FETCHTAGS, OnBnClickedCheckFetchtags)
 	ON_BN_CLICKED(IDC_CHECK_FFONLY, OnBnClickedCheckFfonly)
 	ON_BN_CLICKED(IDC_CHECK_NOFF, OnBnClickedCheckFfonly)
 END_MESSAGE_MAP()
@@ -190,11 +191,8 @@ BOOL CPullFetchDlg::OnInitDialog()
 
 	if(m_IsPull)
 	{
-		// check tags checkbox and make it a normal checkbox
-		m_bFetchTags = 1;
 		m_bFFonly = m_regFFonly;
 		UpdateData(FALSE);
-		::SendMessage(GetDlgItem(IDC_CHECK_FETCHTAGS)->GetSafeHwnd(), BM_SETSTYLE, GetDlgItem(IDC_CHECK_FETCHTAGS)->GetStyle() & ~BS_AUTO3STATE | BS_AUTOCHECKBOX, 0);
 		OnBnClickedCheckFfonly();
 	}
 	else
@@ -426,6 +424,17 @@ void CPullFetchDlg::OnBnClickedCheckDepth()
 {
 	UpdateData(TRUE);
 	GetDlgItem(IDC_EDIT_DEPTH)->EnableWindow(m_bDepth);
+}
+
+void CPullFetchDlg::OnBnClickedCheckFetchtags()
+{
+	if (CAppUtils::GetMsysgitVersion() < 0x01090000)
+	{
+		UpdateData();
+		if (m_bFetchTags == TRUE)
+			m_bFetchTags = 2;
+		UpdateData(FALSE);
+	}
 }
 
 void CPullFetchDlg::OnBnClickedCheckFfonly()

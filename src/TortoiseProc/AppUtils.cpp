@@ -2260,6 +2260,9 @@ bool CAppUtils::Pull(bool showPush)
 		if (!dlg.m_bFetchTags)
 			notags = _T("--no-tags");
 
+		if (dlg.m_bFetchTags == TRUE)
+			notags = _T("--tags");
+
 		if (dlg.m_bNoFF)
 			noff=_T("--no-ff");
 
