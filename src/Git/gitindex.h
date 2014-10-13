@@ -244,8 +244,7 @@ public:
 	{
 		if(m_pExcludeList)
 			git_free_exclude_list(m_pExcludeList);
-		if (m_buffer)
-			free(m_buffer);
+		free(m_buffer);
 		m_pExcludeList=NULL;
 		m_buffer = NULL;
 	}

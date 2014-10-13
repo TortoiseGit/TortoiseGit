@@ -778,11 +778,8 @@ int CGitIgnoreItem::FetchIgnoreList(const CString &projectroot, const CString &f
 		git_free_exclude_list(m_pExcludeList);
 		m_pExcludeList=NULL;
 	}
-	if (m_buffer)
-	{
-		free(m_buffer);
-		m_buffer = NULL;
-	}
+	free(m_buffer);
+	m_buffer = nullptr;
 
 	this->m_BaseDir.Empty();
 	if (!isGlobal)

@@ -523,8 +523,7 @@ int CLogCache::SaveCache()
 	this->CloseDataHandles();
 	this->CloseIndexHandles();
 
-	if(pIndex)
-		free(pIndex);
+	free(pIndex);
 	return ret;
 }
 
