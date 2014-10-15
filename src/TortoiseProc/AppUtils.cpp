@@ -1236,6 +1236,14 @@ bool CAppUtils::PerformSwitch(CString ref, bool bForce /* false */, CString sNew
 			CString newBranch;
 			if (!CGit::GetCurrentBranchFromFile(g_Git.m_CurrentDir, newBranch))
 				postCmdList.push_back(PostCmd(IDI_PULL, IDS_MENUPULL, [&]{ Pull(); }));
+
+			postCmdList.push_back(PostCmd(IDI_COMMIT, IDS_MENUCOMMIT, []{
+				CTGitPathList pathlist;
+				CTGitPathList selectedlist;
+				bool bSelectFilesForCommit = !!DWORD(CRegStdDWORD(_T("Software\\TortoiseGit\\SelectFilesForCommit"), TRUE));
+				CString str;
+				Commit(CString(), false, str, pathlist, selectedlist, bSelectFilesForCommit);
+			}));
 		}
 		else
 		{
