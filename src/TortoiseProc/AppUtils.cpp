@@ -2266,22 +2266,22 @@ bool CAppUtils::Pull(bool showPush)
 		CString prune;
 
 		if (!dlg.m_bFetchTags)
-			notags = _T("--no-tags");
+			notags = _T("--no-tags ");
 
 		if (dlg.m_bFetchTags == TRUE)
-			notags = _T("--tags");
+			notags = _T("--tags ");
 
 		if (dlg.m_bNoFF)
-			noff=_T("--no-ff");
+			noff=_T("--no-ff ");
 
 		if (dlg.m_bFFonly)
-			ffonly = _T("--ff-only");
+			ffonly = _T("--ff-only ");
 
 		if (dlg.m_bSquash)
-			squash = _T("--squash");
+			squash = _T("--squash ");
 
 		if (dlg.m_bNoCommit)
-			nocommit = _T("--no-commit");
+			nocommit = _T("--no-commit ");
 
 		if (dlg.m_bDepth)
 			depth.Format(_T("--depth %d "), dlg.m_nDepth);
@@ -2296,7 +2296,7 @@ bool CAppUtils::Pull(bool showPush)
 		if(ver >= 0x01070203) //above 1.7.0.2
 			cmdRebase += _T("--progress ");
 
-		cmd.Format(_T("git.exe pull -v %s %s %s %s %s %s %s %s \"%s\" %s"), cmdRebase, noff, ffonly, squash, nocommit, depth, notags, prune, url, dlg.m_RemoteBranchName);
+		cmd.Format(_T("git.exe pull -v %s%s%s%s%s%s%s%s\"%s\" %s"), cmdRebase, noff, ffonly, squash, nocommit, depth, notags, prune, url, dlg.m_RemoteBranchName);
 		CProgressDlg progress;
 		progress.m_GitCmd = cmd;
 
