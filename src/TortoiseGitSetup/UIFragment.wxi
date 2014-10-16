@@ -6,8 +6,6 @@
 		<Property Id="ARPCONTACT">$(var.PackageManufacturer)</Property>
 		<Property Id="ARPHELPLINK">$(var.TortoiseGitOrg)</Property>
 		<Property Id="ARPPRODUCTICON">TGITIcon</Property>
-		<Property Id="ARPNOMODIFY">1</Property>
-		<Property Id="ARPNOREPAIR">1</Property>
 		<Property Id="ARPURLINFOABOUT">$(var.TortoiseGitOrg)</Property>
 
 		<!-- UI Button Texts ............................................................. -->
