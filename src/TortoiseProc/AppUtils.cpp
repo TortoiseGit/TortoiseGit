@@ -2427,6 +2427,8 @@ static bool DoFetch(const CString& url, const bool fetchAllRemotes, const bool l
 
 	CString cmd, arg;
 	int ver = CAppUtils::GetMsysgitVersion();
+	if (ver >= 0x01070203) //above 1.7.0.2
+		arg += _T(" --progress");
 
 	if (bDepth)
 		arg.AppendFormat(_T(" --depth %d"), nDepth);
