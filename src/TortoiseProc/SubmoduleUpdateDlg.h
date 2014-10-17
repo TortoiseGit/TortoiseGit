@@ -62,6 +62,13 @@ public:
 	STRING_VECTOR m_PathList;
 
 protected:
+	CRegDWORD		m_regInit;
+	CRegDWORD		m_regRecursive;
+	CRegDWORD		m_regForce;
+	CRegDWORD		m_regNoFetch;
+	CRegDWORD		m_regMerge;
+	CRegDWORD		m_regRebase;
+	CRegDWORD		m_regRemote;
 	CRegDWORD		m_regShowWholeProject;
 	CListBox	m_PathListBox;
 	CRegString		m_regPath;

@@ -30,7 +30,7 @@ bool CSubmoduleUpdateDlg::s_bSortLogical = true;
 
 CSubmoduleUpdateDlg::CSubmoduleUpdateDlg(CWnd* pParent /*=NULL*/)
 	: CStandAloneDialog(CSubmoduleUpdateDlg::IDD, pParent)
-	, m_bInit(true)
+	, m_bInit(TRUE)
 	, m_bRecursive(FALSE)
 	, m_bForce(FALSE)
 	, m_bNoFetch(FALSE)
@@ -128,6 +128,21 @@ BOOL CSubmoduleUpdateDlg::OnInitDialog()
 	m_regShowWholeProject = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\ShowWholeProject\\") + str, FALSE);
 	m_bWholeProject = m_regShowWholeProject;
 
+	m_regInit = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\SubmoduleUpdate\\") + str + _T("\\init"), TRUE);
+	m_bInit = m_regInit;
+	m_regRecursive = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\SubmoduleUpdate\\") + str + _T("\\recursive"), FALSE);
+	m_bRecursive = m_regRecursive;
+	m_regForce = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\SubmoduleUpdate\\") + str + _T("\\force"), FALSE);
+	m_bForce = m_regForce;
+	m_regRemote = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\SubmoduleUpdate\\") + str + _T("\\remote"), FALSE);
+	m_bRemote = m_regRemote;
+	m_regNoFetch = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\SubmoduleUpdate\\") + str + _T("\\nofetch"), FALSE);
+	m_bNoFetch = m_regNoFetch;
+	m_regMerge = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\SubmoduleUpdate\\") + str + _T("\\merge"), FALSE);
+	m_bMerge = m_regMerge;
+	m_regRebase = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\SubmoduleUpdate\\") + str + _T("\\rebase"), FALSE);
+	m_bRebase = m_regRebase;
+
 	DialogEnableWindow(IDC_SHOWWHOLEPROJECT, !(m_PathFilterList.empty() || (m_PathFilterList.size() == 1 && m_PathFilterList[0].IsEmpty())));
 
 	SetDlgTitle();
@@ -185,6 +200,14 @@ void CSubmoduleUpdateDlg::OnBnClickedOk()
 		}
 	}
 	m_regPath = selected;
+
+	m_regInit = m_bInit;
+	m_regRecursive = m_bRecursive;
+	m_regForce = m_bForce;
+	m_regRemote = m_bRemote;
+	m_regNoFetch = m_bNoFetch;
+	m_regMerge = m_bMerge;
+	m_regRebase = m_bRebase;
 
 	CStandAloneDialog::OnOK();
 }
