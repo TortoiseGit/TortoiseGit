@@ -7,6 +7,7 @@ Released: unreleased
    The new key is signed by the old key. You can get the fingerprint from a trusted TortoiseGit installation by issuing
    "TortoiseGitProc.exe /command:pgpfp"
  * Fixed issue #1928: Hotkeys in "Show log" dialog for navigating back / forward
+ * Fixed issue #1930: Navigate directly to a commit in "Show log" by pasting its hash
 
 == Bug Fixes ==
  * Fixed issue #2260: Clicking in blank space in Commit dialog causes all unversioned files to become selected

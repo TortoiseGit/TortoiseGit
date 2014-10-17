@@ -385,6 +385,9 @@ public:
 	static const UINT	m_FindDialogMessage;
 	void OnFind();
 
+	void JumpToGitHash(CString &hash, bool bClearFullSelection=false);
+	void OnPasteGitHash();
+
 	static const UINT	m_ScrollToMessage;
 	static const UINT	m_RebaseActionMessage;
 
