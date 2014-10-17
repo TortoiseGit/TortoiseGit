@@ -476,7 +476,7 @@ BOOL InitCrashHandler(ApplicationInfo* applicationInfo, HandlerSettings* handler
         }
         if (0 != _waccess_s(g_pConfig->DbgHelpPath, 00/* Existence only */))
         {
-            throw Error("%ls not found.", (LPCWSTR)g_pConfig->SendRptPath);
+            throw Error("%ls not found.", (LPCWSTR)g_pConfig->DbgHelpPath);
         }
 
         g_ownProcess = ownProcess != FALSE;
