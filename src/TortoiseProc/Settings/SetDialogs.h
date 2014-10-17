@@ -82,4 +82,13 @@ private:
 	CHistoryCombo		m_cGravatarUrl;
 	BOOL				m_bDrawBranchesTagsOnRightSide;
 	CRegDWORD			m_regDrawBranchesTagsOnRightSide;
+	BOOL				m_bShowDescribe;
+	CRegDWORD			m_regShowDescribe;
+	int					m_DescribeStrategy;
+	CComboBox			m_cDescribeStrategy;
+	CRegDWORD			m_regDescribeStrategy;
+	DWORD				m_DescribeAbbreviatedSize;
+	CRegDWORD			m_regDescribeAbbreviatedSize;
+	BOOL				m_bDescribeAlwaysLong;
+	CRegDWORD			m_regDescribeAlwaysLong;
 };
