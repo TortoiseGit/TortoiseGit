@@ -12,7 +12,7 @@
 #include <Afxmt.h>
 #include "FormatMessageWrapper.h"
 #include <atlenc.h>
-#include "CertificateValidationHelper.h"
+#include "AppUtils.h"
 
 #define IO_BUFFER_SIZE 0x10000
 
@@ -851,10 +851,14 @@ BOOL CHwSMTP::SendEmail (
 			goto cleanup;
 		}
 
-		Status = VerifyServerCertificate( pRemoteCertContext, m_csSmtpSrvHost.GetBuffer(), 0 );
-		if (Status)
+		git_cert_x509 cert;
+		cert.cert_type = GIT_CERT_X509;
+		cert.data = pRemoteCertContext->pbCertEncoded;
+		cert.len = pRemoteCertContext->cbCertEncoded;
+		if (CAppUtils::Git2CertificateCheck((git_cert*)&cert, 0, CUnicodeUtils::GetUTF8(m_csSmtpSrvHost), nullptr))
 		{
-			m_csLastError = CFormatMessageWrapper(Status);
+			CertFreeCertificateContext(pRemoteCertContext);
+			m_csLastError = _T("Invalid certificate.");
 			goto cleanup;
 		}
 
