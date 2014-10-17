@@ -708,6 +708,13 @@ BEGIN
     CONTROL         "",IDC_GRAVATARURL,"ComboBoxEx32",CBS_DROPDOWN | CBS_AUTOHSCROLL | CBS_SORT | WS_VSCROLL | WS_TABSTOP,95,115,200,80
     CONTROL         "Draw tag/branch labels on right side",IDC_RIGHTSIDEBRANCHESTAGS,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,130,279,10
+    GROUPBOX        "Describe",IDC_STATIC,14,143,272,73
+    CONTROL         "Show describe in log",IDC_SHOWDESCRIBE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,19,154,253,10
+    LTEXT           "Describe Strategy",IDC_STATIC,19,169,84,8
+    COMBOBOX        IDC_DESCRIBESTRATEGY,103,169,115,30,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Abbreviated size",IDC_STATIC,19,187,84,8
+    EDITTEXT        IDC_DESCRIBEABBREVIATEDSIZE,105,185,40,14,ES_AUTOHSCROLL,WS_EX_RIGHT
+    CONTROL         "Always show long format",IDC_DESCRIBEALWAYSLONG,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,164,186,120,10
 END
 
 IDD_SETTINGSDIALOGS2 DIALOGEX 0, 0, 301, 231
@@ -4497,6 +4504,16 @@ BEGIN
     IDS_LOG_NOT_VISIBLE     "Commit %s is NOT visible right now."
     IDS_PROC_SELECTION_HISTORY "Selection History"
     IDS_ERR_SSL_VALIDATE    "Error validating server certificate for ""%s"":"
+    IDS_ANNOTATEDTAGS       "Annotated tags"
+    IDS_ALLTAGS             "All tags"
+    IDS_ALLREFS             "All refs"
+    IDS_SETTINGS_SHOWDESCRIBE_TT "Show describe in log dialog"
+    IDS_SETTINGS_DESCRIBESTRATEGY_TT 
+                            "Whether to reference only annotated tags, all tags or all refs"
+    IDS_SETTINGS_DESCRIBEABBREVIATEDSIZE_TT 
+                            "Number of characters to show in the abbreviated hash part"
+    IDS_SETTINGS_DESCRIBEALWAYSLONG_TT 
+                            "Show long format even if a tag is exactly on that commit"
 END
 
 #endif    // English (U.S.) resources

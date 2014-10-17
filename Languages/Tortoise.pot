@@ -1551,6 +1551,10 @@ msgstr ""
 msgid "Abbreviate renamings"
 msgstr ""
 
+#. Resource IDs: (65535)
+msgid "Abbreviated size"
+msgstr ""
+
 #. Resource IDs: (2, 73, 1565)
 msgid "Abort"
 msgstr ""
@@ -1731,6 +1735,14 @@ msgstr ""
 msgid "All local branches"
 msgstr ""
 
+#. Resource IDs: (96)
+msgid "All refs"
+msgstr ""
+
+#. Resource IDs: (96)
+msgid "All tags"
+msgstr ""
+
 #. Resource IDs: (9690)
 msgid "All tags only"
 msgstr ""
@@ -1771,6 +1783,10 @@ msgstr ""
 
 #. Resource IDs: (1485)
 msgid "Always push to the selected remote branch for this local branch"
+msgstr ""
+
+#. Resource IDs: (1805)
+msgid "Always show long format"
 msgstr ""
 
 #. Resource IDs: (197)
@@ -1816,6 +1832,10 @@ msgstr ""
 #. Resource IDs: (63)
 #, c-format
 msgid "An unknown line type was found in line %d !"
+msgstr ""
+
+#. Resource IDs: (96)
+msgid "Annotated tags"
 msgstr ""
 
 #. Resource IDs: (251)
@@ -3504,6 +3524,14 @@ msgstr ""
 
 #. Resource IDs: (1646)
 msgid "Depth"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Describe"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Describe Strategy"
 msgstr ""
 
 #. Resource IDs: (1002)
@@ -6370,6 +6398,10 @@ msgstr ""
 msgid "Number of characters required for moved or copied line detection:"
 msgstr ""
 
+#. Resource IDs: (96)
+msgid "Number of characters to show in the abbreviated hash part"
+msgstr ""
+
 #. Resource IDs: (1160)
 msgid "Number of weeks:"
 msgstr ""
@@ -8290,6 +8322,14 @@ msgstr ""
 msgid "Show date"
 msgstr ""
 
+#. Resource IDs: (1804)
+msgid "Show describe in log"
+msgstr ""
+
+#. Resource IDs: (96)
+msgid "Show describe in log dialog"
+msgstr ""
+
 #. Resource IDs: (83)
 msgid "Show destination folder"
 msgstr ""
@@ -8357,6 +8397,10 @@ msgstr ""
 
 #. Resource IDs: (1256)
 msgid "Show log..."
+msgstr ""
+
+#. Resource IDs: (96)
+msgid "Show long format even if a tag is exactly on that commit"
 msgstr ""
 
 #. Resource IDs: (1382)
@@ -9964,6 +10008,10 @@ msgstr ""
 
 #. Resource IDs: (92)
 msgid "When you type the URL, the remote name will be automatically filled with \"origin\" if the remote name is empty, so you do not have to."
+msgstr ""
+
+#. Resource IDs: (96)
+msgid "Whether to reference only annotated tags, all tags or all refs"
 msgstr ""
 
 #. Resource IDs: (1409)

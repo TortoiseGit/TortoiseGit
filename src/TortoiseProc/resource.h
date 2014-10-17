@@ -1147,12 +1147,19 @@
 #define IDC_EDIT_BRANCH                 1528
 #define IDS_ERR_SSL_VALIDATE            1528
 #define IDC_SHOWLOCKEDOVERLAY           1529
+#define IDS_ANNOTATEDTAGS               1529
 #define IDC_EDIT_ORIGIN                 1530
+#define IDS_ALLTAGS                     1530
 #define IDC_CHECK_ORIGIN                1531
+#define IDS_ALLREFS                     1531
 #define IDC_RADIO_SINCE                 1532
+#define IDS_SETTINGS_SHOWDESCRIBE_TT    1532
 #define IDC_COMBOBOXEX_SINCE            1533
+#define IDS_SETTINGS_DESCRIBESTRATEGY_TT 1533
 #define IDC_RADIO_NUM                   1534
+#define IDS_SETTINGS_DESCRIBEABBREVIATEDSIZE_TT 1534
 #define IDC_RADIO_RANGE                 1535
+#define IDS_SETTINGS_DESCRIBEALWAYSLONG_TT 1535
 #define IDC_SPIN_NUM                    1536
 #define IDC_COMBOBOXEX_DIR              1537
 #define IDC_GROUP_DIR                   1538
@@ -1488,6 +1495,10 @@
 #define IDC_SHA256                      1801
 #define IDC_ISSUER                      1802
 #define IDC_COMMONNAME                  1803
+#define IDC_SHOWDESCRIBE                1804
+#define IDC_DESCRIBEALWAYSLONG          1805
+#define IDC_DESCRIBESTRATEGY            1806
+#define IDC_DESCRIBEABBREVIATEDSIZE     1807
 #define IDS_LOG_FILTER_BY               1850
 #define IDS_LOG_FILTER_PATHS            1851
 #define IDS_LOG_FILTER_AUTHORS          1852
@@ -1943,7 +1954,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        356
 #define _APS_NEXT_COMMAND_VALUE         32873
-#define _APS_NEXT_CONTROL_VALUE         1804
+#define _APS_NEXT_CONTROL_VALUE         1808
 #define _APS_NEXT_SYMED_VALUE           201
 #endif
 #endif
