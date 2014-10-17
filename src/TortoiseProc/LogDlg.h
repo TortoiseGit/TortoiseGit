@@ -227,6 +227,7 @@ private:
 	bool				m_bShowLocalBranches;
 	bool				m_bShowRemoteBranches;
 	bool				m_bShowGravatar;
+	bool				m_bShowDescribe;
 	bool				m_bNoMerges;
 	int					m_iCompressedGraph;
 	BOOL				m_bWalkBehavior;

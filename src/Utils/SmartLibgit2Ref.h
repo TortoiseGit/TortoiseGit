@@ -445,6 +445,21 @@ protected:
 	}
 };
 
+class CAutoDescribeResult : public CSmartLibgit2Ref<git_describe_result>
+{
+public:
+	~CAutoDescribeResult()
+	{
+		CleanUp();
+	}
+
+protected:
+	virtual void FreeRef()
+	{
+		git_describe_result_free(m_Ref);
+	}
+};
+
 template <typename HandleType, class FreeFunction>
 class CSmartBuffer : public FreeFunction
 {
