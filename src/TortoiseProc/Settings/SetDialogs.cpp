@@ -51,6 +51,10 @@ CSetDialogs::CSetDialogs()
 	m_regEnableGravatar = CRegDWORD(_T("Software\\TortoiseGit\\EnableGravatar"), FALSE);
 	m_regGravatarUrl = CRegString(_T("Software\\TortoiseGit\\GravatarUrl"), _T("http://www.gravatar.com/avatar/%HASH%?d=identicon"));
 	m_regDrawBranchesTagsOnRightSide = CRegDWORD(_T("Software\\TortoiseGit\\DrawTagsBranchesOnRightSide"), FALSE);
+	m_regShowDescribe = CRegDWORD(_T("Software\\TortoiseGit\\ShowDescribe"), FALSE);
+	m_regDescribeStrategy = CRegDWORD(_T("Software\\TortoiseGit\\DescribeStrategy"), GIT_DESCRIBE_DEFAULT);
+	m_regDescribeAbbreviatedSize = CRegDWORD(_T("Software\\TortoiseGit\\DescribeAbbreviatedSize"), GIT_DESCRIBE_DEFAULT_ABBREVIATED_SIZE);
+	m_regDescribeAlwaysLong = CRegDWORD(_T("Software\\TortoiseGit\\DescribeAlwaysLong"), FALSE);
 }
 
 CSetDialogs::~CSetDialogs()
@@ -80,6 +84,11 @@ void CSetDialogs::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_GRAVATARURL, m_GravatarUrl);
 	DDX_Control(pDX, IDC_GRAVATARURL, m_cGravatarUrl);
 	DDX_Check(pDX, IDC_RIGHTSIDEBRANCHESTAGS, m_bDrawBranchesTagsOnRightSide);
+	DDX_Check(pDX, IDC_SHOWDESCRIBE, m_bShowDescribe);
+	DDX_CBIndex(pDX, IDC_DESCRIBESTRATEGY, m_DescribeStrategy);
+	DDX_Control(pDX, IDC_DESCRIBESTRATEGY, m_cDescribeStrategy);
+	DDX_Text(pDX, IDC_DESCRIBEABBREVIATEDSIZE, m_DescribeAbbreviatedSize);
+	DDX_Check(pDX, IDC_DESCRIBEALWAYSLONG, m_bDescribeAlwaysLong);
 }
 
 BEGIN_MESSAGE_MAP(CSetDialogs, ISettingsPropPage)
@@ -95,6 +104,10 @@ BEGIN_MESSAGE_MAP(CSetDialogs, ISettingsPropPage)
 	ON_BN_CLICKED(IDC_ENABLEGRAVATAR, OnChange)
 	ON_EN_CHANGE(IDC_GRAVATARURL, OnChange)
 	ON_BN_CLICKED(IDC_RIGHTSIDEBRANCHESTAGS, OnChange)
+	ON_BN_CLICKED(IDC_SHOWDESCRIBE, OnChange)
+	ON_CBN_SELCHANGE(IDC_DESCRIBESTRATEGY, OnChange)
+	ON_EN_CHANGE(IDC_DESCRIBEABBREVIATEDSIZE, OnChange)
+	ON_BN_CLICKED(IDC_DESCRIBEALWAYSLONG, OnChange)
 END_MESSAGE_MAP()
 
 // CSetDialogs message handlers
@@ -118,6 +131,10 @@ BOOL CSetDialogs::OnInitDialog()
 	m_bEnableGravatar = m_regEnableGravatar;
 	m_GravatarUrl = m_regGravatarUrl;
 	m_bDrawBranchesTagsOnRightSide = m_regDrawBranchesTagsOnRightSide;
+	m_bShowDescribe = m_regShowDescribe;
+	m_DescribeStrategy = m_regDescribeStrategy;
+	m_DescribeAbbreviatedSize = m_regDescribeAbbreviatedSize;
+	m_bDescribeAlwaysLong = m_regDescribeAlwaysLong;
 
 	CString temp;
 
@@ -131,6 +148,10 @@ BOOL CSetDialogs::OnInitDialog()
 	m_tooltips.AddTool(IDC_ENABLELOGCACHE, IDS_SETTINGS_ENABLELOGCACHE_TT);
 	m_tooltips.AddTool(IDC_ENABLEGRAVATAR, IDS_SETTINGS_ENABLEGRAVATAR_TT);
 	m_tooltips.AddTool(IDC_GRAVATARURL, IDS_SETTINGS_GRAVATARURL_TT);
+	m_tooltips.AddTool(IDC_SHOWDESCRIBE, IDS_SETTINGS_SHOWDESCRIBE_TT);
+	m_tooltips.AddTool(IDC_DESCRIBESTRATEGY, IDS_SETTINGS_DESCRIBESTRATEGY_TT);
+	m_tooltips.AddTool(IDC_DESCRIBEABBREVIATEDSIZE, IDS_SETTINGS_DESCRIBEABBREVIATEDSIZE_TT);
+	m_tooltips.AddTool(IDC_DESCRIBEALWAYSLONG, IDS_SETTINGS_DESCRIBEALWAYSLONG_TT);
 
 	int count = 0;
 	for (int i=6; i<32; i=i+2)
@@ -164,6 +185,10 @@ BOOL CSetDialogs::OnInitDialog()
 	m_cGravatarUrl.AddString(_T("http://www.gravatar.com/avatar/%HASH%?d=wavatar"));
 	m_cGravatarUrl.AddString(_T("http://www.gravatar.com/avatar/%HASH%?d=retro"));
 	m_cGravatarUrl.AddString(_T("http://www.gravatar.com/avatar/%HASH%?d=blank"));;
+
+	m_cDescribeStrategy.AddString(CString(MAKEINTRESOURCE(IDS_ANNOTATEDTAGS)));
+	m_cDescribeStrategy.AddString(CString(MAKEINTRESOURCE(IDS_ALLTAGS)));
+	m_cDescribeStrategy.AddString(CString(MAKEINTRESOURCE(IDS_ALLREFS)));
 
 	UpdateData(FALSE);
 	return TRUE;
@@ -201,6 +226,10 @@ BOOL CSetDialogs::OnApply()
 	Store (m_bEnableGravatar, m_regEnableGravatar);
 	Store (m_GravatarUrl, m_regGravatarUrl);
 	Store (m_bDrawBranchesTagsOnRightSide, m_regDrawBranchesTagsOnRightSide);
+	Store (m_bShowDescribe, m_regShowDescribe);
+	Store (m_DescribeStrategy, m_regDescribeStrategy);
+	Store (m_DescribeAbbreviatedSize, m_regDescribeAbbreviatedSize);
+	Store (m_bDescribeAlwaysLong, m_regDescribeAlwaysLong);
 
     SetModified(FALSE);
 	return ISettingsPropPage::OnApply();
