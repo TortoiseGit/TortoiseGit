@@ -96,6 +96,7 @@ CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
 	m_bShowGravatar = !!CRegDWORD(_T("Software\\TortoiseGit\\EnableGravatar"), FALSE);
 	m_regbShowGravatar = CRegDWORD(_T("Software\\TortoiseGit\\LogDialog\\ShowGravatar\\") + str, m_bShowGravatar);
 	m_bShowGravatar = !!m_regbShowGravatar;
+	m_bShowDescribe = !!CRegDWORD(_T("Software\\TortoiseGit\\ShowDescribe"));
 }
 
 CLogDlg::~CLogDlg()
@@ -658,6 +659,32 @@ BOOL FindGitHash(const CString& msg, int offset, CWnd *pWnd)
 	return positions.empty() ? FALSE : TRUE;
 }
 
+static int DescribeCommit(CGitHash& hash, CString& result)
+{
+	CAutoRepository repo(g_Git.GetGitRepository());
+	if (!repo)
+		return -1;
+	CAutoObject commit;
+	if (git_object_lookup(commit.GetPointer(), repo, (const git_oid *)hash.m_hash, GIT_OBJ_COMMIT))
+		return -1;
+
+	CAutoDescribeResult describe;
+	git_describe_options describe_options = GIT_DESCRIBE_OPTIONS_INIT;
+	describe_options.describe_strategy = CRegDWORD(_T("Software\\TortoiseGit\\DescribeStrategy"), GIT_DESCRIBE_DEFAULT);
+	if (git_describe_commit(describe.GetPointer(), (git_object *)commit, &describe_options))
+		return -1;
+
+	CAutoBuf describe_buf;
+	git_describe_format_options format_options = GIT_DESCRIBE_FORMAT_OPTIONS_INIT;
+	format_options.abbreviated_size = CRegDWORD(_T("Software\\TortoiseGit\\DescribeAbbreviatedSize"), GIT_DESCRIBE_DEFAULT_ABBREVIATED_SIZE);
+	format_options.always_use_long_format = CRegDWORD(_T("Software\\TortoiseGit\\DescribeAlwaysLong"));
+	if (git_describe_format(describe_buf, describe, &format_options))
+		return -1;
+
+	result = CUnicodeUtils::GetUnicode(describe_buf->ptr);
+	return 0;
+}
+
 void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 {
 	// we fill here the log message rich edit control,
@@ -715,8 +742,16 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 		GitRev* pLogEntry = reinterpret_cast<GitRev *>(m_LogList.m_arShownList.SafeGetAt(selIndex));
 
 		{
+			CString out_describe;
+			if (m_bShowDescribe)
+			{
+				CString result;
+				if (!DescribeCommit(pLogEntry->m_CommitHash, result))
+					out_describe = _T("Describe: ") + result + _T("\r\n");
+			}
+
 			// set the log message text
-			pMsgView->SetWindowText(CString(MAKEINTRESOURCE(IDS_HASH)) + _T(": ") + pLogEntry->m_CommitHash.ToString() + _T("\r\n\r\n"));
+			pMsgView->SetWindowText(CString(MAKEINTRESOURCE(IDS_HASH)) + _T(": ") + pLogEntry->m_CommitHash.ToString() + _T("\r\n") + out_describe + _T("\r\n"));
 			// turn bug ID's into links if the bugtraq: properties have been set
 			// and we can find a match of those in the log message
 
