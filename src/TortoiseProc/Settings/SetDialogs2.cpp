@@ -106,6 +106,16 @@ BOOL CSetDialogs2::OnInitDialog()
 {
 	ISettingsPropPage::OnInitDialog();
 
+	AdjustControlSize(IDC_USERECYCLEBIN);
+	AdjustControlSize(IDC_CONFIRMKILLPROCESS);
+	AdjustControlSize(IDC_SYNCDIALOGRANDOMPOS);
+	AdjustControlSize(IDC_REFCOMPAREHIDEUNCHANGED);
+	AdjustControlSize(IDC_SORTTAGSREVERSED);
+	AdjustControlSize(IDC_AUTOCOMPLETION);
+	AdjustControlSize(IDC_SELECTFILESONCOMMIT);
+	AdjustControlSize(IDC_STRIPCOMMENTEDLINES);
+	AdjustControlSize(IDC_PROGRESSDLG_SHOW_TIMES);
+
 	EnableToolTips();
 
 	int ind = m_cAutoCloseGitProgress.AddString(CString(MAKEINTRESOURCE(IDS_PROGRS_CLOSE_MANUAL)));

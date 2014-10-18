@@ -70,6 +70,11 @@ BOOL CSetDialogs3::OnInitDialog()
 {
 	ISettingsPropPage::OnInitDialog();
 
+	AdjustControlSize(IDC_CHECK_INHERIT_LIMIT);
+	AdjustControlSize(IDC_CHECK_INHERIT_BORDER);
+	AdjustControlSize(IDC_CHECK_INHERIT_KEYID);
+	GITSETTINGS_ADJUSTCONTROLSIZE
+
 	AddTrueFalseToComboBox(m_cWarnNoSignedOffBy);
 
 	m_langCombo.AddString(_T(""));

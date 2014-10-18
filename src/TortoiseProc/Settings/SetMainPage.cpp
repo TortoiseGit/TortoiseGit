@@ -88,7 +88,7 @@ BOOL CSetMainPage::OnInitDialog()
 	ISettingsPropPage::OnInitDialog();
 
 	EnableToolTips();
-
+	AdjustControlSize(IDC_CHECKNEWERVERSION);
 
 	m_dwLanguage = m_regLanguage;
 	m_bCheckNewer = m_regCheckNewer;

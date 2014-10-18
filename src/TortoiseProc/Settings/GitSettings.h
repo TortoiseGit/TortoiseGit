@@ -247,6 +247,13 @@ protected:
 	ON_BN_CLICKED(IDC_RADIO_SETTINGS_GLOBAL, &OnBnClickedChangedConfigSource) \
 	ON_BN_CLICKED(IDC_RADIO_SETTINGS_SYSTEM, &OnBnClickedChangedConfigSource)
 
+#define GITSETTINGS_ADJUSTCONTROLSIZE \
+	AdjustControlSize(IDC_RADIO_SETTINGS_EFFECTIVE); \
+	AdjustControlSize(IDC_RADIO_SETTINGS_LOCAL); \
+	AdjustControlSize(IDC_RADIO_SETTINGS_PROJECT); \
+	AdjustControlSize(IDC_RADIO_SETTINGS_GLOBAL); \
+	AdjustControlSize(IDC_RADIO_SETTINGS_SYSTEM);
+
 #define GITSETTINGS_RADIO_EVENT_HANDLE \
 	afx_msg void OnBnClickedChangedConfigSource() \
 	{ \

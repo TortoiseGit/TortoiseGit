@@ -62,6 +62,8 @@ BOOL CSettingsProgsMerge::OnInitDialog()
 {
 	ISettingsPropPage::OnInitDialog();
 
+	AdjustControlSize(IDC_EXTMERGE_OFF);
+	AdjustControlSize(IDC_EXTMERGE_ON);
 	EnableToolTips();
 
 	m_sMergePath = m_regMergePath;

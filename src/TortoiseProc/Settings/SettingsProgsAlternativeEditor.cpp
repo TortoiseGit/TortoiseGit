@@ -1,8 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2007 - TortoiseSVN
-// Copyright (C) 2011,2013 - TortoiseGit
-// Copyright (C) 2011,2013 - Sven Strickroth <email@cs-ware.de>
+// Copyright (C) 2011,2013-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -93,6 +92,9 @@ void CSettingsProgsAlternativeEditor::OnBnClickedAlternativeEditorBrowse()
 BOOL CSettingsProgsAlternativeEditor::OnInitDialog()
 {
 	ISettingsPropPage::OnInitDialog();
+
+	AdjustControlSize(IDC_ALTERNATIVEEDITOR_OFF);
+	AdjustControlSize(IDC_ALTERNATIVEEDITOR_ON);
 
 	EnableToolTips();
 

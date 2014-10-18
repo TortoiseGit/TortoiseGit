@@ -75,6 +75,13 @@ BOOL CSetOverlayHandlers::OnInitDialog()
 {
 	ISettingsPropPage::OnInitDialog();
 
+	AdjustControlSize(IDC_SHOWIGNOREDOVERLAY);
+	AdjustControlSize(IDC_SHOWUNVERSIONEDOVERLAY);
+	AdjustControlSize(IDC_SHOWADDEDOVERLAY);
+	AdjustControlSize(IDC_SHOWLOCKEDOVERLAY);
+	AdjustControlSize(IDC_SHOWREADONLYOVERLAY);
+	AdjustControlSize(IDC_SHOWDELETEDOVERLAY);
+
 	UpdateInfoLabel();
 
 	UpdateData(FALSE);

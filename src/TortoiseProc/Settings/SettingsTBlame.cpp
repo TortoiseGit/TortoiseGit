@@ -110,6 +110,10 @@ BOOL CSettingsTBlame::OnInitDialog()
 
 	ISettingsPropPage::OnInitDialog();
 
+	AdjustControlSize(IDC_IGNORE_WHITESPACE);
+	AdjustControlSize(IDC_SHOWCOMPLETELOG);
+	AdjustControlSize(IDC_FOLLOWRENAMES);
+
 	m_cNewLinesColor.SetColor((DWORD)m_regNewLinesColor);
 	m_cOldLinesColor.SetColor((DWORD)m_regOldLinesColor);
 

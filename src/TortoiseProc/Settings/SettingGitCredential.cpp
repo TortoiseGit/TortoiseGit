@@ -170,6 +170,8 @@ BOOL CSettingGitCredential::OnInitDialog()
 {
 	ISettingsPropPage::OnInitDialog();
 
+	AdjustControlSize(IDC_CHECK_USEHTTPPATH);
+
 	CString proj;
 	bool hasLocal = g_GitAdminDir.HasAdminDir(m_cmdPath, &proj);
 	if (hasLocal)

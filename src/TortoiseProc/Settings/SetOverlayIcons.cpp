@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011,2013 - TortoiseGit
+// Copyright (C) 2008-2011,2013-2014 - TortoiseGit
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -62,6 +62,9 @@ END_MESSAGE_MAP()
 BOOL CSetOverlayIcons::OnInitDialog()
 {
 	ISettingsPropPage::OnInitDialog();
+
+	AdjustControlSize(IDC_LISTRADIO);
+	AdjustControlSize(IDC_SYMBOLRADIO);
 
 	m_cIconList.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_DOUBLEBUFFER | LVS_EX_INFOTIP | LVS_EX_SUBITEMIMAGES);
 	// get the path to our icon sets

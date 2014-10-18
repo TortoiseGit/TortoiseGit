@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -116,6 +116,19 @@ BOOL CSetDialogs::OnInitDialog()
 	CMFCFontComboBox::m_bDrawUsingFont = true;
 
 	ISettingsPropPage::OnInitDialog();
+
+	AdjustControlSize(IDC_SHORTDATEFORMAT);
+	AdjustControlSize(IDC_SHORTDATEFORMAT);
+	AdjustControlSize(IDC_RELATIVETIMES);
+	AdjustControlSize(IDC_DIFFBYDOUBLECLICK);
+	AdjustControlSize(IDC_SYSTEMLOCALEFORDATES);
+	AdjustControlSize(IDC_ABBREVIATERENAMINGS);
+	AdjustControlSize(IDC_SYMBOLIZEREFNAMES);
+	AdjustControlSize(IDC_ENABLELOGCACHE);
+	AdjustControlSize(IDC_ENABLEGRAVATAR);
+	AdjustControlSize(IDC_RIGHTSIDEBRANCHESTAGS);
+	AdjustControlSize(IDC_SHOWDESCRIBE);
+	AdjustControlSize(IDC_DESCRIBEALWAYSLONG);
 
 	EnableToolTips();
 

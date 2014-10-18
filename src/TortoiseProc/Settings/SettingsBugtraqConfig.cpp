@@ -98,6 +98,15 @@ BOOL CSettingsBugtraqConfig::OnInitDialog()
 {
 	ISettingsPropPage::OnInitDialog();
 
+	AdjustControlSize(IDC_CHECK_INHERIT_BTURL);
+	AdjustControlSize(IDC_CHECK_INHERIT_BTMSG);
+	AdjustControlSize(IDC_CHECK_INHERIT_BTLABEL);
+	AdjustControlSize(IDC_CHECK_INHERIT_BTREGEXP);
+	AdjustControlSize(IDC_CHECK_INHERIT_BTUUID32);
+	AdjustControlSize(IDC_CHECK_INHERIT_BTUUID64);
+	AdjustControlSize(IDC_CHECK_INHERIT_BTPARAMS);
+	GITSETTINGS_ADJUSTCONTROLSIZE
+
 	AddTrueFalseToComboBox(m_cWarningifnoissue);
 	AddTrueFalseToComboBox(m_cAppend);
 	AddTrueFalseToComboBox(m_cNumber);

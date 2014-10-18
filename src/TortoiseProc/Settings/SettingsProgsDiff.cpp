@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011,2013 - TortoiseGit
+// Copyright (C) 2008-2011,2013-2014 - TortoiseGit
 // Copyright (C) 2003-2007,2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -74,6 +74,10 @@ END_MESSAGE_MAP()
 BOOL CSettingsProgsDiff::OnInitDialog()
 {
 	EnableToolTips();
+	AdjustControlSize(IDC_EXTDIFF_OFF);
+	AdjustControlSize(IDC_EXTDIFF_ON);
+	AdjustControlSize(IDC_DIFFVIEWER_OFF);
+	AdjustControlSize(IDC_DIFFVIEWER_ON);
 
 	m_sDiffPath = m_regDiffPath;
 	m_iExtDiff = IsExternal(m_sDiffPath);

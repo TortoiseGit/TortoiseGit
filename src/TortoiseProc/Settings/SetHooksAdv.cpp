@@ -57,6 +57,9 @@ BOOL CSetHooksAdv::OnInitDialog()
 {
 	CResizableStandAloneDialog::OnInitDialog();
 
+	AdjustControlSize(IDC_WAITCHECK);
+	AdjustControlSize(IDC_HIDECHECK);
+
 	// initialize the combo box with all the hook types we have
 	int index;
 	index = m_cHookTypeCombo.AddString(CString(MAKEINTRESOURCE(IDS_HOOKTYPE_STARTCOMMIT)));

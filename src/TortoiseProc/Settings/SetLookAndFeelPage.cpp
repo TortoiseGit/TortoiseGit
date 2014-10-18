@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2013 - TortoiseGit
+// Copyright (C) 2011-2014 - TortoiseGit
 // Copyright (C) 2003-2008, 2011, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -185,6 +185,10 @@ BOOL CSetLookAndFeelPage::OnInitDialog()
 {
 	ISettingsPropPage::OnInitDialog();
 
+	AdjustControlSize(IDC_SELECTALL);
+	AdjustControlSize(IDC_HIDEMENUS);
+	AdjustControlSize(IDC_ENABLEDRAGCONTEXTMENU);
+
 	m_tooltips.Create(this);
 	m_tooltips.AddTool(IDC_MENULIST, IDS_SETTINGS_MENULAYOUT_TT);
 	m_tooltips.AddTool(IDC_HIDEMENUS, IDS_SETTINGS_HIDEMENUS_TT);
@@ -339,6 +343,8 @@ END_MESSAGE_MAP()
 BOOL CSetExtMenu::OnInitDialog()
 {
 	ISettingsPropPage::OnInitDialog();
+
+	AdjustControlSize(IDC_SELECTALL);
 
 	m_tooltips.Create(this);
 	m_tooltips.AddTool(IDC_MENULIST, IDS_SETTINGS_EXTMENULAYOUT_TT);

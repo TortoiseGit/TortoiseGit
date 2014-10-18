@@ -102,6 +102,10 @@ BOOL CSettingGitRemote::OnInitDialog()
 {
 	ISettingsPropPage::OnInitDialog();
 
+	AdjustControlSize(IDC_CHECK_PRUNE);
+	AdjustControlSize(IDC_CHECK_PRUNEALL);
+	AdjustControlSize(IDC_CHECK_PUSHDEFAULT);
+
 	//CString str=((CSettings*)GetParent())->m_CmdPath.GetWinPath();
 	CString proj;
 	if(	g_GitAdminDir.HasAdminDir(m_cmdPath,&proj) )

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2009,2011,2013 - TortoiseGit
+// Copyright (C) 2008-2009,2011,2013-2014 - TortoiseGit
 // Copyright (C) 2003-2008,2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -116,6 +116,20 @@ END_MESSAGE_MAP()
 BOOL CSetOverlayPage::OnInitDialog()
 {
 	ISettingsPropPage::OnInitDialog();
+
+	AdjustControlSize(IDC_REMOVABLE);
+	AdjustControlSize(IDC_NETWORK);
+	AdjustControlSize(IDC_FIXED);
+	AdjustControlSize(IDC_CDROM);
+	AdjustControlSize(IDC_RAM);
+	AdjustControlSize(IDC_UNKNOWN);
+	AdjustControlSize(IDC_ONLYEXPLORER);
+	AdjustControlSize(IDC_UNVERSIONEDASMODIFIED);
+	AdjustControlSize(IDC_FLOPPY);
+	AdjustControlSize(IDC_CACHEDEFAULT);
+	AdjustControlSize(IDC_CACHENONE);
+	AdjustControlSize(IDC_CACHESHELL);
+	AdjustControlSize(IDC_CACHESHELL2);
 
 	switch (m_dwCacheType)
 	{

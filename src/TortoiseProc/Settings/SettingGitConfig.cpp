@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -90,6 +90,13 @@ BOOL CSettingGitConfig::OnInitDialog()
 	m_cSafeCrLf.AddString(_T("false"));
 	m_cSafeCrLf.AddString(_T("true"));
 	m_cSafeCrLf.AddString(_T("warn"));
+
+	AdjustControlSize(IDC_CHECK_AUTOCRLF);
+	AdjustControlSize(IDC_CHECK_QUOTEPATH);
+	AdjustControlSize(IDC_CHECK_INHERIT_NAME);
+	AdjustControlSize(IDC_CHECK_INHERIT_EMAIL);
+	AdjustControlSize(IDC_CHECK_INHERIT_KEYID);
+	GITSETTINGS_ADJUSTCONTROLSIZE
 
 	m_tooltips.Create(this);
 
