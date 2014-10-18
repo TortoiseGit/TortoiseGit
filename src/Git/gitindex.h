@@ -30,6 +30,7 @@ public:
 	__time64_t	m_ModifyTime;
 	unsigned short m_Flags;
 	CGitHash	m_IndexHash;
+	size_t		m_Size;
 
 	int Print();
 };
