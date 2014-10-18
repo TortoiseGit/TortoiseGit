@@ -429,7 +429,6 @@ void CRebaseDlg::LoadBranchInfo()
 	m_UpstreamCtrl.SetList(list);
 
 	AddBranchToolTips(&m_BranchCtrl);
-	AddBranchToolTips(&m_UpstreamCtrl);
 
 	if(!m_Upstream.IsEmpty())
 	{
@@ -449,6 +448,7 @@ void CRebaseDlg::LoadBranchInfo()
 		else
 			m_UpstreamCtrl.SetCurSel(-1);
 	}
+	AddBranchToolTips(&m_UpstreamCtrl);
 }
 
 void CRebaseDlg::OnCbnSelchangeBranch()
