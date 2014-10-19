@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2014 - TortoiseGit
-// Copyright (C) 2008,2010 - TortoiseSVN
+// Copyright (C) 2008,2010,2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -142,7 +142,8 @@ void CSetBugTraqAdv::OnOK()
 
 	VARIANT_BOOL valid;
 	ATL::CComBSTR parameters(m_sParameters);
-	if (FAILED(hr = pProvider->ValidateParameters(GetSafeHwnd(), parameters, &valid)))
+	hr = pProvider->ValidateParameters(GetSafeHwnd(), parameters, &valid);
+	if (FAILED(hr))
 	{
 		ShowEditBalloon(IDC_BUGTRAQPARAMETERS, IDS_ERR_PROVIDER_VALIDATE_FAILED, IDS_ERR_ERROR, TTI_ERROR);
 		return;
