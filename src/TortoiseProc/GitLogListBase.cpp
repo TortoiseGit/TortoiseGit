@@ -1959,11 +1959,13 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					if(m_ContextMenuMask&GetContextMenuBit(ID_FETCH))
 						popup.AppendMenuIcon(ID_FETCH, IDS_MENUFETCH, IDI_PULL);
 
-					if (m_ContextMenuMask & GetContextMenuBit(ID_CLEANUP))
-						popup.AppendMenuIcon(ID_CLEANUP, IDS_MENUCLEANUP, IDI_CLEANUP);
-
 					if (CTGitPath(g_Git.m_CurrentDir).HasSubmodules() && m_ContextMenuMask & GetContextMenuBit(ID_SUBMODULE_UPDATE))
 						popup.AppendMenuIcon(ID_SUBMODULE_UPDATE, IDS_PROC_SYNC_SUBKODULEUPDATE, IDI_UPDATE);
+
+					popup.AppendMenu(MF_SEPARATOR, NULL);
+
+					if (m_ContextMenuMask & GetContextMenuBit(ID_CLEANUP))
+						popup.AppendMenuIcon(ID_CLEANUP, IDS_MENUCLEANUP, IDI_CLEANUP);
 
 					popup.AppendMenu(MF_SEPARATOR, NULL);
 				}
