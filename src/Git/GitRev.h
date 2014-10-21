@@ -211,7 +211,6 @@ public:
 
 	void Clear();
 	//int ParserFromLog(BYTE_VECTOR &log,int start=0);
-	CTime ConverFromString(CString input);
 	inline int ParentsCount(){ return (int)m_ParentHash.size(); }
 
 	//Show version tree Graphic
@@ -242,5 +241,4 @@ public:
 	int	AddMergeFiles();
 private:
 	int GetCommitFromHash_withoutLock(CGitHash &hash);
-	TIME_ZONE_INFORMATION m_TimeZone;
 };
