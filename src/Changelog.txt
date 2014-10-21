@@ -22,6 +22,7 @@ Released: unreleased
  * Fixed issue #874: Add --rebase option to pull dialog
  * Fixed issue #2316: Error on comparing files when git config core.autocrlf ends with 2+ spaces and then a comment
  * Fixed issue #2323: TortoiseGit does not pull --tags despite checking Tags
+ * Fixed issue #2327: Help button is broken in "SVN Commit Type" dialog
 
 = Release 1.8.11.0 =
 Released: 2014-08-22

@@ -1,9 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2013 Sven Strickroth, <email@cs-ware.de>
-//
-// Based on PushDlg.cpp
-// Copyright (C) 2003-2008 - TortoiseGit
+// Copyright (C) 2012-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -48,6 +45,7 @@ void CSVNDCommitDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CSVNDCommitDlg, CStandAloneDialog)
 	ON_BN_CLICKED(IDOK, &CSVNDCommitDlg::OnBnClickedOk)
+	ON_BN_CLICKED(IDHELP, OnHelp)
 END_MESSAGE_MAP()
 
 BOOL CSVNDCommitDlg::OnInitDialog()
