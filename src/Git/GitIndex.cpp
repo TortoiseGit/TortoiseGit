@@ -113,6 +113,7 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 		this->at(i).m_ModifyTime = e->mtime.seconds;
 		this->at(i).m_Flags = e->flags | e->flags_extended;
 		this->at(i).m_IndexHash = e->id.id;
+		this->at(i).m_Size = e->file_size;
 	}
 
 	g_Git.GetFileModifyTime(dgitdir + _T("index"), &this->m_LastModifyTime);
@@ -158,6 +159,8 @@ int CGitIndexList::GetFileStatus(const CString &gitdir, const CString &pathorg, 
 				if (assumeValid)
 					*assumeValid = true;
 			}
+			else if (filesize != (__int64)at(index).m_Size)
+				*status = git_wc_status_modified;
 			else if (time == at(index).m_ModifyTime)
 			{
 				*status = git_wc_status_normal;
