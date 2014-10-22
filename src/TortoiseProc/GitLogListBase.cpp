@@ -623,7 +623,11 @@ void CGitLogListBase::DrawTagBranchMessage(HDC hdc, CRect &rect, INT_PTR index, 
 		if (rItem.state & LVIS_SELECTED)
 			txtState = LISS_SELECTED;
 
-		DrawThemeText(hTheme, hdc, LVP_LISTITEM, txtState, data->GetSubject(), -1, DT_NOPREFIX | DT_LEFT | DT_SINGLELINE | DT_VCENTER | DT_END_ELLIPSIS, 0, &rt);
+		DTTOPTS opts = { 0 };
+		opts.dwSize = sizeof(opts);
+		opts.crText = ::GetSysColor(COLOR_WINDOWTEXT);
+		opts.dwFlags = DTT_TEXTCOLOR;
+		DrawThemeTextEx(hTheme, hdc, LVP_LISTITEM, txtState, data->GetSubject(), -1, DT_NOPREFIX | DT_LEFT | DT_SINGLELINE | DT_VCENTER | DT_END_ELLIPSIS, &rt, &opts);
 	}
 	else
 	{
@@ -635,7 +639,9 @@ void CGitLogListBase::DrawTagBranchMessage(HDC hdc, CRect &rect, INT_PTR index, 
 		}
 		else
 		{
+			COLORREF clrOld = ::SetTextColor(hdc, ::GetSysColor(COLOR_WINDOWTEXT));
 			::DrawText(hdc, data->GetSubject(), data->GetSubject().GetLength(), &rt, DT_NOPREFIX | DT_LEFT | DT_SINGLELINE | DT_VCENTER | DT_END_ELLIPSIS);
+			::SetTextColor(hdc, clrOld);
 		}
 	}
 
@@ -754,7 +760,11 @@ void CGitLogListBase::DrawTagBranch(HDC hdc, CDC &W_Dc, HTHEME hTheme, CRect &re
 				if (rItem.state & LVIS_SELECTED)
 					txtState = LISS_SELECTED;
 
-				DrawThemeText(hTheme, hdc, LVP_LISTITEM, txtState, shortname, -1, textpos | DT_SINGLELINE | DT_VCENTER, 0, &textRect);
+				DTTOPTS opts = { 0 };
+				opts.dwSize = sizeof(opts);
+				opts.crText = ::GetSysColor(COLOR_WINDOWTEXT);
+				opts.dwFlags = DTT_TEXTCOLOR;
+				DrawThemeTextEx(hTheme, hdc, LVP_LISTITEM, txtState, shortname, -1, textpos | DT_SINGLELINE | DT_VCENTER, &textRect, &opts);
 			}
 			else
 			{
@@ -768,7 +778,9 @@ void CGitLogListBase::DrawTagBranch(HDC hdc, CDC &W_Dc, HTHEME hTheme, CRect &re
 				}
 				else
 				{
+					COLORREF clrOld = ::SetTextColor(hdc, ::GetSysColor(COLOR_WINDOWTEXT));
 					::DrawText(hdc, shortname, shortname.GetLength(), &textRect, textpos | DT_SINGLELINE | DT_VCENTER);
+					::SetTextColor(hdc, clrOld);
 				}
 			}
 
