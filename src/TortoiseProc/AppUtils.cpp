@@ -2654,7 +2654,59 @@ static bool DoFetch(const CString& url, const bool fetchAllRemotes, const bool l
 	if (!progress.m_GitStatus)
 	{
 		if (runRebase)
-			return CAppUtils::RebaseAfterFetch();
+		{
+			bool isDefinedRemote = false;
+			STRING_VECTOR list;
+			g_Git.GetRemoteList(list);
+			auto it = list.cbegin();
+			while (it != list.cend())
+			{
+				if (url == *it)
+				{
+					isDefinedRemote = true;
+					break;
+				}
+				++it;
+			}
+
+			CString upstream;
+			if (isDefinedRemote)
+			{
+				CString remote, trackedBranch;
+				g_Git.GetRemoteTrackedBranchForHEAD(remote, trackedBranch);
+				if (!remote.IsEmpty() && !trackedBranch.IsEmpty())
+					upstream = remote + _T("/") + trackedBranch;
+			}
+			else
+				upstream = _T("FETCH_HEAD");
+
+			if (!upstream.IsEmpty() && g_Git.IsFastForward(_T("HEAD"), upstream))
+			{
+				CProgressDlg mergeProgress;
+				mergeProgress.m_GitCmd = _T("git.exe merge --ff-only ") + upstream;
+				mergeProgress.m_AutoClose = AUTOCLOSE_IF_NO_ERRORS;
+				mergeProgress.m_PostCmdCallback = [](DWORD status, PostCmdList& postCmdList)
+				{
+					if (status)
+					{
+						CTGitPathList list;
+						if (!g_Git.ListConflictFile(list) && !list.IsEmpty())
+						{
+							// there are conflict files
+
+							postCmdList.push_back(PostCmd(IDI_RESOLVE, IDS_PROGRS_CMD_RESOLVE, []
+							{
+								CString sCmd;
+								sCmd.Format(_T("/command:commit /path:\"%s\""), g_Git.m_CurrentDir);
+								CAppUtils::RunTortoiseGitProc(sCmd);
+							}));
+						}
+					}
+				};
+				return mergeProgress.DoModal() == IDOK;
+			}
+			return CAppUtils::RebaseAfterFetch(upstream);
+		}
 	}
 
 	return userResponse == IDOK;

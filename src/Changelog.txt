@@ -14,6 +14,7 @@ Released: unreleased
    Please note that Msys2 Git is not officially supported by TortoiseGit as the developers only
    use Git for Windows. Bug reports, however, are welcome.
  * Fixed issue #1003: Show Log does not remember the from-date
+ * Fixed issue #1886: Fetch&Rebase should allow automatic branch update if FF
 
 == Bug Fixes ==
  * Fixed issue #2495: "Show Reflog" dialog shows empty action for "push" entries
