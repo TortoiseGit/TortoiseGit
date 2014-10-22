@@ -427,9 +427,7 @@ BOOL CLogDlg::OnInitDialog()
 	//m_tFrom = (DWORD)-1;
 
 	// scroll to user selected or current revision
-	if (!m_hightlightRevision.IsEmpty() && m_hightlightRevision.GetLength() >= GIT_HASH_SIZE)
-		m_LogList.m_lastSelectedHash = m_hightlightRevision;
-	else
+	if (m_hightlightRevision.IsEmpty() || g_Git.GetHash(m_LogList.m_lastSelectedHash, m_hightlightRevision))
 	{
 		if (g_Git.GetHash(m_LogList.m_lastSelectedHash, _T("HEAD")))
 			MessageBox(g_Git.GetGitLastErr(_T("Could not get HEAD hash.")), _T("TortoiseGit"), MB_ICONERROR);
