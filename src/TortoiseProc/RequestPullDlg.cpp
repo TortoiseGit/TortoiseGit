@@ -144,6 +144,9 @@ void CRequestPullDlg::OnBnClickedButtonLocalBranch()
 {
 	// use the git log to allow selection of a version
 	CLogDlg dlg;
+	CString revision;
+	m_cStartRevision.GetWindowText(revision);
+	dlg.SetParams(CTGitPath(), CTGitPath(), revision, revision, 0);
 	// tell the dialog to use mode for selecting revisions
 	dlg.SetSelect(true);
 	// only one revision must be selected however

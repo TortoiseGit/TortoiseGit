@@ -1066,6 +1066,9 @@ void CFileDiffDlg::ClickRevButton(CMenuButton *button, GitRev *rev, CACEdit *edi
 	if(entry == 1) /*Log*/
 	{
 		CLogDlg dlg;
+		CString revision;
+		edit->GetWindowText(revision);
+		dlg.SetParams(CTGitPath(), CTGitPath(), revision, revision, 0);
 		dlg.SetSelect(true);
 		if(dlg.DoModal() == IDOK)
 		{

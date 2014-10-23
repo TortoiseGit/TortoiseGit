@@ -168,6 +168,9 @@ void CFormatPatchDlg::OnBnClickedButtonDir()
 void CFormatPatchDlg::OnBnClickedButtonFrom()
 {
 	CLogDlg dlg;
+	CString revision;
+	m_cFrom.GetWindowText(revision);
+	dlg.SetParams(CTGitPath(), CTGitPath(), revision, revision, 0);
 	// tell the dialog to use mode for selecting revisions
 	dlg.SetSelect(true);
 	// only one revision must be selected however
@@ -186,6 +189,9 @@ void CFormatPatchDlg::OnBnClickedButtonFrom()
 void CFormatPatchDlg::OnBnClickedButtonTo()
 {
 	CLogDlg dlg;
+	CString revision;
+	m_cTo.GetWindowText(revision);
+	dlg.SetParams(CTGitPath(), CTGitPath(), revision, revision, 0);
 	// tell the dialog to use mode for selecting revisions
 	dlg.SetSelect(true);
 	// only one revision must be selected however

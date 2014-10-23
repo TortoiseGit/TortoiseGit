@@ -504,6 +504,9 @@ void CPushDlg::OnBnClickedButtonBrowseSourceBranch()
 	case 1: /* Log */
 		{
 			CLogDlg dlg;
+			CString revision;
+			m_BranchSource.GetWindowText(revision);
+			dlg.SetParams(CTGitPath(), CTGitPath(), revision, revision, 0);
 			dlg.SetSelect(true);
 			if(dlg.DoModal() == IDOK)
 			{
