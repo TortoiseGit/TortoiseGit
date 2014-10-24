@@ -59,7 +59,6 @@ BOOL CPatchViewDlg::OnInitDialog()
 	CDialog::OnInitDialog();
 
 	m_ctrlPatchView.Init(*m_pProjectProperties);
-	m_ctrlPatchView.SetFont((CString)CRegString(_T("Software\\TortoiseGit\\LogFontName"), _T("Courier New")), (DWORD)CRegDWORD(_T("Software\\TortoiseGit\\LogFontSize"), 8));
 
 	m_ctrlPatchView.SetUDiffStyle();
 

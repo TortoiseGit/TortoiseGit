@@ -141,6 +141,7 @@
     <ClCompile Include="Settings\SetDialogs2.cpp" />
     <ClCompile Include="Settings\SetDialogs3.cpp" />
     <ClCompile Include="Settings\SettingGitCredential.cpp" />
+    <ClCompile Include="Settings\SettingsTUDiff.cpp" />
     <ClCompile Include="SinglePropSheetDlg.cpp" />
     <ClCompile Include="AppUtils.cpp" />
     <ClCompile Include="DeleteConflictDlg.cpp" />
@@ -400,6 +401,7 @@
     <ClInclude Include="Settings\SetDialogs2.h" />
     <ClInclude Include="Settings\SetDialogs3.h" />
     <ClInclude Include="Settings\SettingGitCredential.h" />
+    <ClInclude Include="Settings\SettingsTUDiff.h" />
     <ClInclude Include="SinglePropSheetDlg.h" />
     <ClInclude Include="DeleteConflictDlg.h" />
     <ClInclude Include="HistoryDlg.h" />
@@ -679,6 +681,7 @@
     <Image Include="..\Resources\up.ico" />
     <Image Include="..\Resources\update1.ico" />
     <Image Include="..\Resources\warning-general.ico" />
+    <Image Include="..\TortoiseUDiff\TortoiseUDiff.ico" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resources\bin167.avi" />

@@ -70,6 +70,7 @@ void CSettings::AddPropPages()
 	m_pGitRemote = new CSettingGitRemote(m_CmdPath.GetWinPath());
 	m_pGitCredential = new CSettingGitCredential(m_CmdPath.GetWinPath());
 	m_pBugtraqConfig = new CSettingsBugtraqConfig(m_CmdPath.GetWinPath());
+	m_pUDiffPage = new CSettingsUDiff();
 	m_pAdvanced = new CSettingsAdvanced();
 
 	SetPageIcon(m_pExtMenu,m_pExtMenu->GetIconID());
@@ -100,6 +101,7 @@ void CSettings::AddPropPages()
 	SetPageIcon(m_pBugTraqPage, m_pBugTraqPage->GetIconID());
 	SetPageIcon(m_pBugtraqConfig, m_pBugtraqConfig->GetIconID());
 	SetPageIcon(m_pTBlamePage, m_pTBlamePage->GetIconID());
+	SetPageIcon(m_pUDiffPage, m_pUDiffPage->GetIconID());
 	SetPageIcon(m_pAdvanced, m_pAdvanced->GetIconID());
 
 	AddPage(m_pMainPage);
@@ -136,6 +138,7 @@ void CSettings::AddPropPages()
 		AddPage(m_pBugtraqConfig);
 	}
 	AddPage(m_pTBlamePage);
+	AddPage(m_pUDiffPage);
 	AddPage(m_pAdvanced);
 }
 
@@ -161,7 +164,7 @@ void CSettings::RemovePropPages()
 	delete m_pHooksPage;
 	delete m_pBugTraqPage;
 	delete m_pTBlamePage;
-
+	delete m_pUDiffPage;
 	delete m_pGitConfig;
 	delete m_pGitRemote;
 	delete m_pGitCredential;
@@ -194,7 +197,7 @@ void CSettings::HandleRestart()
 	restart |= m_pHooksPage->GetRestart();
 	restart |= m_pBugTraqPage->GetRestart();
 	restart |= m_pTBlamePage->GetRestart();
-
+	restart |= m_pUDiffPage->GetRestart();
 	restart |= m_pGitConfig->GetRestart();
 	restart |= m_pGitRemote->GetRestart();
 	restart |= m_pGitCredential->GetRestart();
@@ -389,6 +392,10 @@ BOOL CSettings::OnInitDialog()
 	else if (this->m_DefaultPage == _T("blame"))
 	{
 		this->SetActivePage(this->m_pTBlamePage);
+	}
+	else if (this->m_DefaultPage == _T("udiff"))
+	{
+		this->SetActivePage(this->m_pUDiffPage);
 	}
 	else if (g_GitAdminDir.HasAdminDir(this->m_CmdPath.GetWinPath()) || g_GitAdminDir.IsBareRepo(this->m_CmdPath.GetWinPath()))
 	{

@@ -106,6 +106,7 @@ IDI_FILE                ICON                    "file.ico"
 IDI_CODE                ICON                    "code.ico"
 IDI_SNIPPET             ICON                    "snippet.ico"
 IDI_CERTCHECK           ICON                    "certcheck.ico"
+IDI_TORTOISEUDIFF       ICON                    "..\\TortoiseUDiff\\TortoiseUDiff.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -2032,6 +2033,42 @@ BEGIN
     DEFPUSHBUTTON   "Cancel",IDCANCEL,256,180,50,14
 END
 
+IDD_SETTINGSUDIFF DIALOGEX 0, 0, 301, 216
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "TortoiseGitUDiff"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    GROUPBOX        "Colors",IDC_STATIC,7,7,286,140
+    LTEXT           "Foreground",IDC_STATIC,126,15,76,8
+    LTEXT           "Background",IDC_STATIC,209,14,75,8
+    LTEXT           "Diff command",IDC_STATIC,14,32,112,8
+    PUSHBUTTON      "",IDC_FORECOMMANDCOLOR,126,28,76,14
+    PUSHBUTTON      "",IDC_BACKCOMMANDCOLOR,208,29,76,14
+    LTEXT           "Diff position",IDC_STATIC,14,48,112,8
+    PUSHBUTTON      "",IDC_FOREPOSITIONCOLOR,126,45,76,14
+    PUSHBUTTON      "",IDC_BACKPOSITIONCOLOR,208,45,76,14
+    LTEXT           "Diff header",IDC_STATIC,14,64,112,8
+    PUSHBUTTON      "",IDC_FOREHEADERCOLOR,126,61,76,14
+    PUSHBUTTON      "",IDC_BACKHEADERCOLOR,208,61,76,14
+    LTEXT           "Diff comment",IDC_STATIC,14,80,112,8
+    PUSHBUTTON      "",IDC_FORECOMMENTCOLOR,126,77,76,14
+    PUSHBUTTON      "",IDC_BACKCOMMENTCOLOR,208,77,76,14
+    LTEXT           "Diff added lines",IDC_STATIC,14,96,112,8
+    PUSHBUTTON      "",IDC_FOREADDEDCOLOR,126,93,76,14
+    PUSHBUTTON      "",IDC_BACKADDEDCOLOR,208,93,76,14
+    LTEXT           "Diff removed lines",IDC_STATIC,14,112,112,8
+    PUSHBUTTON      "",IDC_FOREREMOVEDCOLOR,126,109,76,14
+    PUSHBUTTON      "",IDC_BACKREMOVEDCOLOR,208,109,76,14
+    PUSHBUTTON      "Restore Default",IDC_RESTORE,208,129,76,14
+    GROUPBOX        "Font",IDC_STATIC,7,148,286,40
+    LTEXT           "&Font:",IDC_STATIC,14,156,92,14,SS_CENTERIMAGE
+    COMBOBOX        IDC_FONTNAMES,107,156,138,90,CBS_DROPDOWNLIST | CBS_OWNERDRAWVARIABLE | CBS_SORT | CBS_HASSTRINGS | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_FONTSIZES,252,156,32,47,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Tab size:",IDC_STATIC,14,174,92,8
+    EDITTEXT        IDC_TABSIZE,252,172,32,12,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "Note: These settings also apply to the Patch Viewer dialog.",IDC_STATIC,14,193,270,8
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -2915,6 +2952,19 @@ BEGIN
         RIGHTMARGIN, 306
         TOPMARGIN, 6
         BOTTOMMARGIN, 194
+    END
+
+    IDD_SETTINGSUDIFF, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 294
+        VERTGUIDE, 14
+        VERTGUIDE, 126
+        VERTGUIDE, 202
+        VERTGUIDE, 209
+        VERTGUIDE, 284
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 209
     END
 END
 #endif    // APSTUDIO_INVOKED

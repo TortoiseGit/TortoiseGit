@@ -77,6 +77,7 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="TortoiseUDiff.h" />
+    <ClInclude Include="UDiffColors.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resources\cancel-normal.ico" />

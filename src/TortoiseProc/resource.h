@@ -168,6 +168,8 @@
 #define IDI_CODE                        353
 #define IDI_SNIPPET                     354
 #define IDI_CERTCHECK                   355
+#define IDI_TORTOISEUDIFF               356
+#define IDD_SETTINGSUDIFF               357
 #define IDS_CHSTAT_FILECOL              1000
 #define IDS_CHSTAT_WCCOL                1001
 #define IDS_CHSTAT_REPOCOL              1002
@@ -1499,6 +1501,18 @@
 #define IDC_DESCRIBEALWAYSLONG          1805
 #define IDC_DESCRIBESTRATEGY            1806
 #define IDC_DESCRIBEABBREVIATEDSIZE     1807
+#define IDC_FORECOMMANDCOLOR            1808
+#define IDC_BACKCOMMANDCOLOR            1809
+#define IDC_FOREPOSITIONCOLOR           1810
+#define IDC_BACKPOSITIONCOLOR           1811
+#define IDC_FOREHEADERCOLOR             1812
+#define IDC_BACKHEADERCOLOR             1813
+#define IDC_FORECOMMENTCOLOR            1814
+#define IDC_BACKCOMMENTCOLOR            1815
+#define IDC_FOREADDEDCOLOR              1816
+#define IDC_BACKADDEDCOLOR              1817
+#define IDC_FOREREMOVEDCOLOR            1818
+#define IDC_BACKREMOVEDCOLOR            1819
 #define IDS_LOG_FILTER_BY               1850
 #define IDS_LOG_FILTER_PATHS            1851
 #define IDS_LOG_FILTER_AUTHORS          1852
@@ -1952,9 +1966,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        356
+#define _APS_NEXT_RESOURCE_VALUE        358
 #define _APS_NEXT_COMMAND_VALUE         32873
-#define _APS_NEXT_CONTROL_VALUE         1808
+#define _APS_NEXT_CONTROL_VALUE         1820
 #define _APS_NEXT_SYMED_VALUE           201
 #endif
 #endif

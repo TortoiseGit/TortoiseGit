@@ -25,7 +25,7 @@
 #include "registry.h"
 #include "SciEdit.h"
 #include "SysInfo.h"
-
+#include "../../TortoiseUDiff/UDiffColors.h"
 
 void CSciEditContextMenuInterface::InsertMenuItems(CMenu&, int&) {return;}
 bool CSciEditContextMenuInterface::HandleMenuItemClick(int, CSciEdit *) {return false;}
@@ -1519,11 +1519,9 @@ void CSciEdit::SetAStyle(int style, COLORREF fore, COLORREF back, int size, cons
 void CSciEdit::SetUDiffStyle()
 {
 	SetAStyle(STYLE_DEFAULT, ::GetSysColor(COLOR_WINDOWTEXT), ::GetSysColor(COLOR_WINDOW),
-		// Reusing TortoiseBlame's setting which already have an user friendly
-		// pane in TortoiseSVN's Settings dialog, while there is no such
-		// pane for TortoiseUDiff.
-		CRegStdDWORD(_T("Software\\TortoiseGit\\BlameFontSize"), 10),
-		WideToMultibyte(CRegStdString(_T("Software\\TortoiseGit\\BlameFontName"), _T("Courier New"))).c_str());
+		CRegStdDWORD(L"Software\\TortoiseGit\\UDiffFontSize", 10),
+		CUnicodeUtils::StdGetUTF8(CRegStdString(L"Software\\TortoiseGit\\UDiffFontName", L"Courier New")).c_str());
+	Call(SCI_SETTABWIDTH, CRegStdDWORD(L"Software\\TortoiseGit\\UDiffTabSize", 4));
 
 	Call(SCI_SETTABWIDTH, 4);
 	Call(SCI_SETREADONLY, TRUE);
@@ -1557,13 +1555,25 @@ void CSciEdit::SetUDiffStyle()
 	Call(SCI_SETSTYLEBITS, 5, 0);
 
 	//SetAStyle(SCE_DIFF_DEFAULT, RGB(0, 0, 0));
-	SetAStyle(SCE_DIFF_COMMAND, RGB(0x0A, 0x24, 0x36));
-	SetAStyle(SCE_DIFF_POSITION, RGB(0xFF, 0, 0));
-	SetAStyle(SCE_DIFF_HEADER, RGB(0x80, 0, 0), RGB(0xFF, 0xFF, 0x80));
-	SetAStyle(SCE_DIFF_COMMENT, RGB(0, 0x80, 0));
+	SetAStyle(SCE_DIFF_COMMAND,
+		CRegStdDWORD(L"Software\\TortoiseGit\\UDiffForeCommandColor", UDIFF_COLORFORECOMMAND),
+		CRegStdDWORD(L"Software\\TortoiseGit\\UDiffBackCommandColor", UDIFF_COLORBACKCOMMAND));
+	SetAStyle(SCE_DIFF_POSITION,
+		CRegStdDWORD(L"Software\\TortoiseGit\\UDiffForePositionColor", UDIFF_COLORFOREPOSITION),
+		CRegStdDWORD(L"Software\\TortoiseGit\\UDiffBackPositionColor", UDIFF_COLORBACKPOSITION));
+	SetAStyle(SCE_DIFF_HEADER,
+		CRegStdDWORD(L"Software\\TortoiseGit\\UDiffForeHeaderColor", UDIFF_COLORFOREHEADER),
+		CRegStdDWORD(L"Software\\TortoiseGit\\UDiffBackHeaderColor", UDIFF_COLORBACKHEADER));
+	SetAStyle(SCE_DIFF_COMMENT,
+		CRegStdDWORD(L"Software\\TortoiseGit\\UDiffForeCommentColor", UDIFF_COLORFORECOMMENT),
+		CRegStdDWORD(L"Software\\TortoiseGit\\UDiffBackCommentColor", UDIFF_COLORBACKCOMMENT));
 	Call(SCI_STYLESETBOLD, SCE_DIFF_COMMENT, TRUE);
-	SetAStyle(SCE_DIFF_DELETED, ::GetSysColor(COLOR_WINDOWTEXT), RGB(0xFF, 0x80, 0x80));
-	SetAStyle(SCE_DIFF_ADDED, ::GetSysColor(COLOR_WINDOWTEXT), RGB(0x80, 0xFF, 0x80));
+	SetAStyle(SCE_DIFF_ADDED,
+		CRegStdDWORD(L"Software\\TortoiseGit\\UDiffForeAddedColor", UDIFF_COLORFOREADDED),
+		CRegStdDWORD(L"Software\\TortoiseGit\\UDiffBackAddedColor", UDIFF_COLORBACKADDED));
+	SetAStyle(SCE_DIFF_DELETED,
+		CRegStdDWORD(L"Software\\TortoiseGit\\UDiffForeRemovedColor", UDIFF_COLORFOREREMOVED),
+		CRegStdDWORD(L"Software\\TortoiseGit\\UDiffBackRemovedColor", UDIFF_COLORBACKREMOVED));
 
 	Call(SCI_SETLEXER, SCLEX_DIFF);
 	Call(SCI_SETKEYWORDS, 0, (LPARAM)"revision");

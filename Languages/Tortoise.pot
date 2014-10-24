@@ -2078,6 +2078,10 @@ msgid "Back"
 msgstr ""
 
 #. Resource IDs: (65535)
+msgid "Background"
+msgstr ""
+
+#. Resource IDs: (65535)
 msgid "Baltic"
 msgstr ""
 
@@ -3603,11 +3607,35 @@ msgid "Diff Viewer::Merge Tool"
 msgstr ""
 
 #. Resource IDs: (65535)
+msgid "Diff added lines"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Diff command"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Diff comment"
+msgstr ""
+
+#. Resource IDs: (65535)
 msgid "Diff file:"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Diff header"
 msgstr ""
 
 #. Resource IDs: (15)
 msgid "Diff later"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Diff position"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Diff removed lines"
 msgstr ""
 
 #. Resource IDs: (15)
@@ -4589,6 +4617,10 @@ msgstr ""
 
 #. Resource IDs: (1796)
 msgid "Force: May discard"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Foreground"
 msgstr ""
 
 #. Resource IDs: (312)
@@ -6346,6 +6378,10 @@ msgstr ""
 
 #. Resource IDs: (3887)
 msgid "Note that if you choose to recover the auto-saved documents, you must explicitly save them to overwrite the original documents.  If you choose to not recover the auto-saved versions, they will be deleted."
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Note: These settings also apply to the Patch Viewer dialog."
 msgstr ""
 
 #. Resource IDs: (1481)
@@ -9391,6 +9427,10 @@ msgstr ""
 #. Resource IDs: (7)
 #, c-format
 msgid "TortoiseGitMerge cannot process this patch file. The filename \"%s\" appears more than once."
+msgstr ""
+
+#. Resource IDs: (357)
+msgid "TortoiseGitUDiff"
 msgstr ""
 
 #. Resource IDs: (1739)

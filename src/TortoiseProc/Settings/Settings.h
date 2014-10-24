@@ -47,6 +47,7 @@
 #include "SetExtMenu.h"
 #include "SettingsAdvanced.h"
 #include "SettingSMTP.h"
+#include "SettingsTUDiff.h"
 
 using namespace TreePropSheet;
 
@@ -98,6 +99,7 @@ private:
 	CSettingGitRemote *					m_pGitRemote;
 	CSettingGitCredential *				m_pGitCredential;
 	CSettingsBugtraqConfig *			m_pBugtraqConfig;
+	CSettingsUDiff*						m_pUDiffPage;
 
 	CSetExtMenu	*						m_pExtMenu;
 	CSettingsAdvanced *					m_pAdvanced;
