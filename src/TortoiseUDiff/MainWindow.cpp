@@ -528,7 +528,7 @@ std::wstring CMainWindow::GetAppDirectory()
 		bufferlen += MAX_PATH;		// MAX_PATH is not the limit here!
 		std::unique_ptr<TCHAR[]> pBuf(new TCHAR[bufferlen]);
 		len = GetModuleFileName(NULL, pBuf.get(), bufferlen);
-		path = pBuf.get();
+		path = std::wstring(pBuf.get(), len);
 	} while(len == bufferlen);
 	path = path.substr(0, path.rfind('\\') + 1);
 
