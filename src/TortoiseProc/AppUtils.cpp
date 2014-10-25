@@ -103,7 +103,7 @@ static struct last_accepted_cert {
 	}
 } last_accepted_cert;
 
-static bool DoFetch(const CString& url, const bool fetchAllRemotes, const bool loadPuttyAgent, const int prune, const bool bDepth, const int nDepth, const int fetchTags, const CString& remoteBranch, const boolean runRebase);
+static bool DoFetch(const CString& url, const bool fetchAllRemotes, const bool loadPuttyAgent, const int prune, const bool bDepth, const int nDepth, const int fetchTags, const CString& remoteBranch, boolean runRebase);
 
 CAppUtils::CAppUtils(void)
 {
@@ -2461,7 +2461,7 @@ bool CAppUtils::RebaseAfterFetch(const CString& upstream)
 	}
 }
 
-static bool DoFetch(const CString& url, const bool fetchAllRemotes, const bool loadPuttyAgent, const int prune, const bool bDepth, const int nDepth, const int fetchTags, const CString& remoteBranch, const boolean runRebase)
+static bool DoFetch(const CString& url, const bool fetchAllRemotes, const bool loadPuttyAgent, const int prune, const bool bDepth, const int nDepth, const int fetchTags, const CString& remoteBranch, boolean runRebase)
 {
 	if (loadPuttyAgent)
 	{
@@ -2534,7 +2534,7 @@ static bool DoFetch(const CString& url, const bool fetchAllRemotes, const bool l
 		postCmdList.push_back(PostCmd(IDI_PULL, IDS_MENUFETCH, []{ CAppUtils::Fetch(); }));
 
 		if (!runRebase && !g_GitAdminDir.IsBareRepo(g_Git.m_CurrentDir))
-			postCmdList.push_back(PostCmd(IDI_REBASE, IDS_MENUREBASE, []{ CAppUtils::RebaseAfterFetch(); }));
+			postCmdList.push_back(PostCmd(IDI_REBASE, IDS_MENUREBASE, [&]{ runRebase = false; CAppUtils::RebaseAfterFetch(); }));
 	};
 
 	progress.m_GitCmd = cmd;
