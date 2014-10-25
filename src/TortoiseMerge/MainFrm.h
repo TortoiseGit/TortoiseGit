@@ -216,6 +216,7 @@ protected:
 	/// If the user wanted to save the modifications, this method does the saving
 	/// itself.
 	int				CheckForSave(ECheckForSaveReason eReason/* = CHFSR_SWITCH*/);
+	void			DeleteBaseTheirsMineOnClose();
 	void			OnViewLineUpDown(int direction);
 	void			OnViewLineLeftRight(int direction);
 	static void		OnTabMode(CBaseView *view, int cmd);
@@ -286,6 +287,7 @@ public:
 	bool			m_bWrapLines;
 	bool			m_bSaveRequired;
 	bool			m_bSaveRequiredOnConflicts;
+	bool			m_bDeleteBaseTheirsMineOnClose;
 	HWND			resolveMsgWnd;
 	WPARAM			resolveMsgWParam;
 	LPARAM			resolveMsgLParam;
