@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2012,2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -24,10 +24,10 @@
 
 // CSVNIgnoreTypeDlg dialog
 
-IMPLEMENT_DYNAMIC(CSVNIgnoreTypeDlg, CResizableStandAloneDialog)
+IMPLEMENT_DYNAMIC(CSVNIgnoreTypeDlg, CStandAloneDialog)
 
 CSVNIgnoreTypeDlg::CSVNIgnoreTypeDlg(CWnd* pParent /*=NULL*/)
-	: CResizableStandAloneDialog(CSVNIgnoreTypeDlg::IDD, pParent)
+: CStandAloneDialog(CSVNIgnoreTypeDlg::IDD, pParent)
 	, m_SVNIgnoreType(0)
 {
 
@@ -44,7 +44,7 @@ void CSVNIgnoreTypeDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 
-BEGIN_MESSAGE_MAP(CSVNIgnoreTypeDlg, CResizableStandAloneDialog)
+BEGIN_MESSAGE_MAP(CSVNIgnoreTypeDlg, CStandAloneDialog)
 END_MESSAGE_MAP()
 
 
@@ -52,15 +52,8 @@ END_MESSAGE_MAP()
 
 BOOL CSVNIgnoreTypeDlg::OnInitDialog()
 {
-	CResizableStandAloneDialog::OnInitDialog();
+	CStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
-
-	AddAnchor(IDC_RADIO_EXCLUDE,  TOP_LEFT);
-	AddAnchor(IDC_RADIO_GITIGNORE,TOP_LEFT);
-	AddAnchor(IDC_GROUP_TYPE,TOP_LEFT, BOTTOM_RIGHT);
-
-	AddAnchor(IDOK,BOTTOM_RIGHT);
-	AddAnchor(IDCANCEL,BOTTOM_RIGHT);
 
 	AdjustControlSize(IDC_RADIO_EXCLUDE);
 	AdjustControlSize(IDC_RADIO_GITIGNORE);

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2011,2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -22,7 +22,7 @@
 
 // CSVNIgnoreTypeDlg dialog
 
-class CSVNIgnoreTypeDlg : public CResizableStandAloneDialog
+class CSVNIgnoreTypeDlg : public CStandAloneDialog
 {
 	DECLARE_DYNAMIC(CSVNIgnoreTypeDlg)
 
