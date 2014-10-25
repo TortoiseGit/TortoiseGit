@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2007-2008,2012 - TortoiseGit
+// Copyright (C) 2007-2008,2012,2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -52,18 +52,13 @@ bool SVNIgnoreCommand::Execute()
 		default:
 			CMessageBox::Show(NULL,_T("Unkown SVN Ignore Type"),_T("TortoiseGit"),MB_OK|MB_ICONERROR);
 			return FALSE;
-
 		}
-	}
 
-	if(progress.DoModal()==IDOK)
-	{
-		::DeleteFile(g_Git.m_CurrentDir + _T("\\sys$command"));
-		if( dlg.m_SVNIgnoreType == 0 )
+		if (progress.DoModal() == IDOK)
 		{
-
+			::DeleteFile(g_Git.m_CurrentDir + _T("\\sys$command"));
+			return progress.m_GitStatus == 0;
 		}
-		return progress.m_GitStatus == 0;
 	}
 	::DeleteFile(g_Git.m_CurrentDir + _T("\\sys$command"));
 	return false;
