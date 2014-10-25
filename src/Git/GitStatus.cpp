@@ -193,60 +193,6 @@ void GitStatus::GetStatus(const CTGitPath& path, bool /*update*/ /* = false */, 
 	status = &m_status;
 }
 
-void GitStatus::GetStatusString(git_wc_status_kind status, size_t buflen, TCHAR * string)
-{
-	TCHAR * buf;
-	switch (status)
-	{
-		case git_wc_status_none:
-			buf = _T("none\0");
-			break;
-		case git_wc_status_unversioned:
-			buf = _T("unversioned\0");
-			break;
-		case git_wc_status_normal:
-			buf = _T("normal\0");
-			break;
-		case git_wc_status_added:
-			buf = _T("added\0");
-			break;
-		case git_wc_status_missing:
-			buf = _T("missing\0");
-			break;
-		case git_wc_status_deleted:
-			buf = _T("deleted\0");
-			break;
-		case git_wc_status_replaced:
-			buf = _T("replaced\0");
-			break;
-		case git_wc_status_modified:
-			buf = _T("modified\0");
-			break;
-		case git_wc_status_merged:
-			buf = _T("merged\0");
-			break;
-		case git_wc_status_conflicted:
-			buf = _T("conflicted\0");
-			break;
-		case git_wc_status_obstructed:
-			buf = _T("obstructed\0");
-			break;
-		case git_wc_status_ignored:
-			buf = _T("ignored");
-			break;
-		case git_wc_status_external:
-			buf = _T("external");
-			break;
-		case git_wc_status_incomplete:
-			buf = _T("incomplete\0");
-			break;
-		default:
-			buf = _T("\0");
-			break;
-	}
-	_stprintf_s(string, buflen, _T("%s"), buf);
-}
-
 typedef CComCritSecLock<CComCriticalSection> CAutoLocker;
 
 int GitStatus::GetFileStatus(const CString &gitdir, const CString &pathParam, git_wc_status_kind * status,BOOL IsFull, BOOL /*IsRecursive*/,BOOL IsIgnore, FILL_STATUS_CALLBACK callback, void *pData, bool * assumeValid, bool * skipWorktree)

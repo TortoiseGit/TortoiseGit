@@ -156,26 +156,9 @@ public:
 	void GetStatus(const CTGitPath& path, bool update = false, bool noignore = false, bool noexternals = false);
 
 	/**
-	 * Returns a string representation of a git status.
-	 * \param status the status enum
-	 * \param string a string representation
-	 */
-	static void GetStatusString(git_wc_status_kind status, size_t buflen, TCHAR * string);
-
-	/**
 	 * This member variable hold the status of the last call to GetStatus().
 	 */
 	git_wc_status2_t *			status;				///< the status result of GetStatus()
-
-#ifdef _MFC_VER
-friend class Git;	// So that Git can get to our m_err
-	/**
-	 * Set a list of paths which will be considered when calling GetFirstFileStatus.
-	 * If a filter is set, then GetFirstFileStatus/GetNextFileStatus will only return items which are in the filter list
-	 */
-	void SetFilter(const CTGitPathList& fileList);
-	void ClearFilter();
-#endif
 
 private:
 	git_wc_status_kind			m_allstatus;	///< used by GetAllStatus and GetAllStatusRecursive
@@ -187,16 +170,4 @@ private:
 	 * A higher number indicates a more important status.
 	 */
 	static int GetStatusRanking(git_wc_status_kind status);
-
-#pragma warning(push)
-#pragma warning(disable: 4200)
-	struct STRINGRESOURCEIMAGE
-	{
-		WORD nLength;
-		WCHAR achString[];
-	};
-#pragma warning(pop)	// C4200
-
-	static int LoadStringEx(HINSTANCE hInstance, UINT uID, LPTSTR lpBuffer, int nBufferMax, WORD wLanguage);
 };
-
