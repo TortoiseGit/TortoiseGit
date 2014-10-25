@@ -60,7 +60,7 @@ public:
 	static BOOL StartExtMerge(
 		const CTGitPath& basefile, const CTGitPath& theirfile, const CTGitPath& yourfile, const CTGitPath& mergedfile,
 		const CString& basename = CString(), const CString& theirname = CString(), const CString& yourname = CString(),
-		const CString& mergedname = CString(), bool bReadOnly = false, HWND resolveMsgHwnd = nullptr);
+		const CString& mergedname = CString(), bool bReadOnly = false, HWND resolveMsgHwnd = nullptr, bool bDeleteBaseTheirsMineOnClose = false);
 
 	/**
 	 * Starts the external patch program (currently always TortoiseGitMerge)

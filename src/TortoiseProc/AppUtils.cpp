@@ -246,7 +246,7 @@ bool CAppUtils::StashPop(bool showChanges /* true */)
 BOOL CAppUtils::StartExtMerge(
 	const CTGitPath& basefile, const CTGitPath& theirfile, const CTGitPath& yourfile, const CTGitPath& mergedfile,
 	const CString& basename, const CString& theirname, const CString& yourname, const CString& mergedname, bool bReadOnly,
-	HWND resolveMsgHwnd)
+	HWND resolveMsgHwnd, bool bDeleteBaseTheirsMineOnClose)
 {
 
 	CRegString regCom = CRegString(_T("Software\\TortoiseGit\\Merge"));
@@ -300,6 +300,8 @@ BOOL CAppUtils::StartExtMerge(
 				s.Format(L" /resolvemsghwnd:%I64d", (__int64)resolveMsgHwnd);
 				com += s;
 			}
+			if (bDeleteBaseTheirsMineOnClose)
+				com += _T(" /deletebasetheirsmineonclose");
 		}
 		if (!g_sGroupingUUID.IsEmpty())
 		{
@@ -1688,9 +1690,9 @@ bool CAppUtils::ConflictEdit(const CTGitPath& path, bool /*bAlternativeTool = fa
 	{
 		merge.SetFromWin(g_Git.CombinePath(merge));
 		if( revertTheirMy )
-			bRet = !!CAppUtils::StartExtMerge(base, mine, theirs, merge, _T("BASE"), _T("REMOTE"), _T("LOCAL"), CString(), false, resolveMsgHwnd);
+			bRet = !!CAppUtils::StartExtMerge(base, mine, theirs, merge, _T("BASE"), _T("REMOTE"), _T("LOCAL"), CString(), false, resolveMsgHwnd, true);
 		else
-			bRet = !!CAppUtils::StartExtMerge(base, theirs, mine, merge, _T("BASE"), _T("REMOTE"), _T("LOCAL"), CString(), false, resolveMsgHwnd);
+			bRet = !!CAppUtils::StartExtMerge(base, theirs, mine, merge, _T("BASE"), _T("REMOTE"), _T("LOCAL"), CString(), false, resolveMsgHwnd, true);
 
 	}
 	else

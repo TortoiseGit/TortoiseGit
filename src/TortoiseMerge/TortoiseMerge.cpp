@@ -280,6 +280,8 @@ BOOL CTortoiseMergeApp::InitInstance()
 		pFrame->m_bSaveRequired = true;
 	if (parser.HasKey(_T("saverequiredonconflicts")))
 		pFrame->m_bSaveRequiredOnConflicts = true;
+	if (parser.HasKey(_T("deletebasetheirsmineonclose")))
+		pFrame->m_bDeleteBaseTheirsMineOnClose = true;
 	if (pFrame->m_Data.IsBaseFileInUse() && !pFrame->m_Data.IsYourFileInUse() && pFrame->m_Data.IsTheirFileInUse())
 	{
 		pFrame->m_Data.m_yourFile.TransferDetailsFrom(pFrame->m_Data.m_theirFile);
