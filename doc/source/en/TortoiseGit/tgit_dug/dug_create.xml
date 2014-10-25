@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
 <sect1 id="tgit-dug-create">
+	<?dbhh topicname="HIDD_CREATEREPO"?>
   <title>Create Repository</title>
   <indexterm>
     <primary>Create Repository</primary>

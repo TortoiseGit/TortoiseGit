@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2010-2013 - TortoiseGit
+// Copyright (C) 2010-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -70,6 +70,7 @@ BOOL CCreateRepoDlg::OnInitDialog()
 
 BEGIN_MESSAGE_MAP(CCreateRepoDlg, CStandAloneDialog)
 	ON_BN_CLICKED(IDC_CHECK_BARE, &CCreateRepoDlg::OnBnClickedCheckBare)
+	ON_BN_CLICKED(IDHELP, OnHelp)
 END_MESSAGE_MAP()
 
 // CCloneDlg message handlers
