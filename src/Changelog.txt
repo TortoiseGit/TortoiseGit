@@ -10,6 +10,7 @@ Released: unreleased
  * Fixed issue #1316: Add git describe
  * Fixed issue #2294: Submodule Update dialog doesn't save its state
  * Fixed issue #2176: Color config for "View Patch" Window & Tortoise(Git)UDiff
+ * Fixed issue #2157: TortoiseGitMerge does not delete temporary files on close (marking as "resolved" in TGit was necessary)
 
 == Bug Fixes ==
  * Fixed issue #2260: Clicking in blank space in Commit dialog causes all unversioned files to become selected
