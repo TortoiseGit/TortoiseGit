@@ -15,6 +15,12 @@
 		through your company's firewall.
 	</para>
 	<para>
+		The proxy server settings here do only affect Git for Windows (i.e., http and https protocols).
+		If you are using OpenSSH/PuTTY/Tortoise(Git)PLink you have to set up the proxy server settings there separately.
+		In order to do this, you need the main PuTTY tool, which is not shipped with TortoiseGit. Preferably you
+		store the proxy settings to the "Default Settings" configuration there, so that it is applied by default.
+	</para>
+	<para>
 		If you need to set up per-repository proxy settings, you will
 		need to use the Git <filename>config</filename> file to
 		configure this. Consult <xref linkend="git-config(1)"/> for more details.
