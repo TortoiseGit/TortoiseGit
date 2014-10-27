@@ -78,7 +78,7 @@ int CGitDiff::SubmoduleDiffNull(const CTGitPath * pPath, const git_revnum_t &rev
 		}
 
 		CSubmoduleDiffDlg submoduleDiffDlg;
-		submoduleDiffDlg.SetDiff(pPath->GetWinPath(), false, oldhash, oldsub, true, newhash, newsub, toOK, dirty, CSubmoduleDiffDlg::NewSubmodule);
+		submoduleDiffDlg.SetDiff(pPath->GetWinPath(), false, oldhash, oldsub, true, newhash, newsub, toOK, dirty, NewSubmodule);
 		submoduleDiffDlg.DoModal();
 		if (submoduleDiffDlg.IsRefresh())
 			return 1;
@@ -280,78 +280,10 @@ int CGitDiff::SubmoduleDiff(const CTGitPath * pPath, const CTGitPath * /*pPath2*
 
 	CGit subgit;
 	subgit.m_CurrentDir = g_Git.CombinePath(pPath);
-	CSubmoduleDiffDlg::ChangeType changeType = CSubmoduleDiffDlg::Unknown;
+	ChangeType changeType = Unknown;
 
-	if(pPath->HasAdminDir())
-	{
-		int encode=CAppUtils::GetLogOutputEncode(&subgit);
-		int oldTime = 0, newTime = 0;
-
-		if(oldhash != GIT_REV_ZERO)
-		{
-			CString cmdout, cmderr;
-			cmd.Format(_T("git.exe log -n1 --pretty=format:\"%%ct %%s\" %s --"), oldhash);
-			oldOK = !subgit.Run(cmd, &cmdout, &cmderr, encode);
-			if (oldOK)
-			{
-				int pos = cmdout.Find(_T(" "));
-				oldTime = _ttoi(cmdout.Left(pos));
-				oldsub = cmdout.Mid(pos + 1);
-			}
-			else
-				oldsub = cmderr;
-		}
-		if (newhash != GIT_REV_ZERO)
-		{
-			CString cmdout, cmderr;
-			cmd.Format(_T("git.exe log -n1 --pretty=format:\"%%ct %%s\" %s --"), newhash);
-			newOK = !subgit.Run(cmd, &cmdout, &cmderr, encode);
-			if (newOK)
-			{
-				int pos = cmdout.Find(_T(" "));
-				newTime = _ttoi(cmdout.Left(pos));
-				newsub = cmdout.Mid(pos + 1);
-			}
-			else
-				newsub = cmderr;
-		}
-
-		if (oldhash == GIT_REV_ZERO)
-		{
-			oldOK = true;
-			changeType = CSubmoduleDiffDlg::NewSubmodule;
-		}
-		else if (newhash == GIT_REV_ZERO)
-		{
-			newOK = true;
-			changeType = CSubmoduleDiffDlg::DeleteSubmodule;
-		}
-		else if (oldhash != newhash)
-		{
-			bool ffNewer = false, ffOlder = false;
-			ffNewer = subgit.IsFastForward(oldhash, newhash);
-			if (!ffNewer)
-			{
-				ffOlder = subgit.IsFastForward(newhash, oldhash);
-				if (!ffOlder)
-				{
-					if (newTime > oldTime)
-						changeType = CSubmoduleDiffDlg::NewerTime;
-					else if (newTime < oldTime)
-						changeType = CSubmoduleDiffDlg::OlderTime;
-					else
-						changeType = CSubmoduleDiffDlg::SameTime;
-				}
-				else
-					changeType = CSubmoduleDiffDlg::Rewind;
-			}
-			else
-				changeType = CSubmoduleDiffDlg::FastForward;
-		}
-	}
-
-	if (!oldOK || !newOK)
-		changeType = CSubmoduleDiffDlg::Unknown;
+	if (pPath->HasAdminDir())
+		GetSubmoduleChangeType(subgit, oldhash, newhash, oldOK, newOK, changeType, oldsub, newsub);
 
 	CSubmoduleDiffDlg submoduleDiffDlg;
 	submoduleDiffDlg.SetDiff(pPath->GetWinPath(), isWorkingCopy, oldhash, oldsub, oldOK, newhash, newsub, newOK, dirty, changeType);
@@ -360,6 +292,78 @@ int CGitDiff::SubmoduleDiff(const CTGitPath * pPath, const CTGitPath * /*pPath2*
 		return 1;
 
 	return 0;
+}
+
+void CGitDiff::GetSubmoduleChangeType(CGit& subgit, const CString& oldhash, const CString& newhash, bool& oldOK, bool& newOK, ChangeType& changeType, CString& oldsub, CString& newsub)
+{
+	CString cmd;
+	int encode = CAppUtils::GetLogOutputEncode(&subgit);
+	int oldTime = 0, newTime = 0;
+
+	if (oldhash != GIT_REV_ZERO)
+	{
+		CString cmdout, cmderr;
+		cmd.Format(_T("git.exe log -n1 --pretty=format:\"%%ct %%s\" %s --"), oldhash);
+		oldOK = !subgit.Run(cmd, &cmdout, &cmderr, encode);
+		if (oldOK)
+		{
+			int pos = cmdout.Find(_T(" "));
+			oldTime = _ttoi(cmdout.Left(pos));
+			oldsub = cmdout.Mid(pos + 1);
+		}
+		else
+			oldsub = cmderr;
+	}
+	if (newhash != GIT_REV_ZERO)
+	{
+		CString cmdout, cmderr;
+		cmd.Format(_T("git.exe log -n1 --pretty=format:\"%%ct %%s\" %s --"), newhash);
+		newOK = !subgit.Run(cmd, &cmdout, &cmderr, encode);
+		if (newOK)
+		{
+			int pos = cmdout.Find(_T(" "));
+			newTime = _ttoi(cmdout.Left(pos));
+			newsub = cmdout.Mid(pos + 1);
+		}
+		else
+			newsub = cmderr;
+	}
+
+	if (oldhash == GIT_REV_ZERO)
+	{
+		oldOK = true;
+		changeType = NewSubmodule;
+	}
+	else if (newhash == GIT_REV_ZERO)
+	{
+		newOK = true;
+		changeType = DeleteSubmodule;
+	}
+	else if (oldhash != newhash)
+	{
+		bool ffNewer = false, ffOlder = false;
+		ffNewer = subgit.IsFastForward(oldhash, newhash);
+		if (!ffNewer)
+		{
+			ffOlder = subgit.IsFastForward(newhash, oldhash);
+			if (!ffOlder)
+			{
+				if (newTime > oldTime)
+					changeType = NewerTime;
+				else if (newTime < oldTime)
+					changeType = OlderTime;
+				else
+					changeType = SameTime;
+			}
+			else
+				changeType = Rewind;
+		}
+		else
+			changeType = FastForward;
+	}
+
+	if (!oldOK || !newOK)
+		changeType = Unknown;
 }
 
 int CGitDiff::Diff(const CTGitPath * pPath, const CTGitPath * pPath2, git_revnum_t rev1, git_revnum_t rev2, bool /*blame*/, bool /*unified*/, int jumpToLine)

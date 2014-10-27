@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012 - TortoiseGit
+// Copyright (C) 2012, 2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -20,6 +20,7 @@
 #include "HorizontalResizableStandAloneDialog.h"
 #include "resource.h"
 #include "MenuButton.h"
+#include "GitDiff.h"
 
 class CSubmoduleDiffDlg : public CHorizontalResizableStandAloneDialog
 {
@@ -31,20 +32,11 @@ public:
 
 	enum { IDD = IDD_DIFFSUBMODULE };
 
-	enum ChangeType
-	{
-		Unknown,
-		NewSubmodule,
-		DeleteSubmodule,
-		FastForward,
-		Rewind,
-		NewerTime,
-		OlderTime,
-		SameTime
-	};
-
-	void SetDiff(CString path, bool toIsWorkingCopy, CString fromHash, CString fromSubject, bool fromOK, CString toHash, CString toSubject, bool toOK, bool dirty, ChangeType changeType);
+	void SetDiff(CString path, bool toIsWorkingCopy, CString fromHash, CString fromSubject, bool fromOK, CString toHash, CString toSubject, bool toOK, bool dirty, CGitDiff::ChangeType changeType);
 	bool IsRefresh() { return m_bRefresh; }
+
+	static HBRUSH GetInvalidBrush(CDC* pDC);
+	static HBRUSH GetChangeTypeBrush(CDC* pDC, const CGitDiff::ChangeType& changeType);
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
@@ -71,6 +63,6 @@ protected:
 	CString	m_sToSubject;
 	bool	m_bToOK;
 	bool	m_bDirty;
-	ChangeType m_nChangeType;
+	CGitDiff::ChangeType m_nChangeType;
 	bool	m_bRefresh;
 };
