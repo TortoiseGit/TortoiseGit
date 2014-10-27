@@ -6389,10 +6389,6 @@ msgid "Note: the folder contains unversioned items"
 msgstr ""
 
 #. Resource IDs: (65535)
-msgid "Note: the font settings also affect the TortoiseGitUDiff viewer"
-msgstr ""
-
-#. Resource IDs: (65535)
 msgid "Note: this affects all Tortoise clients, not just TortoiseGit!"
 msgstr ""
 
