@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
+<sect2 id="tsvn-dug-settings-tortoiseudiff">
+  <?dbhh topicname="HIDD_SETTINGSUDIFF"?>
+  <title>TortoiseGitUDiff Settings</title>
+  <para>
+    <figure id="tsvn-dug-settings-dia-udiff">
+      <title>The Settings Dialog, TortoiseGitUDiff Page</title>
+      <graphic fileref="../images/SettingsUDiff.png"/>
+    </figure>
+    The settings used by TortoiseGitUDiff are controlled from the
+    main context menu, not directly with TortoiseGitUDiff itself.
+  </para>
+  <variablelist>
+    <varlistentry>
+      <term>Colors</term>
+      <listitem>
+        <para>
+          The default colors used by TortoiseGitUDiff are usually ok, but
+          you can configure them here.
+        </para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>Font</term>
+      <listitem>
+        <para>
+          You can select the font used to display the text, and the point
+          size to use.
+        </para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>Tabs</term>
+      <listitem>
+        <para>
+          Defines how many spaces to use for expansion when a tab character
+          is found in the file diff.
+        </para>
+      </listitem>
+    </varlistentry>
+  </variablelist>
+</sect2>
