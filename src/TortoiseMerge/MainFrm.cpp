@@ -205,6 +205,7 @@ CMainFrame::CMainFrame()
 	, m_bCheckReload(false)
 	, m_bSaveRequired(false)
 	, m_bSaveRequiredOnConflicts(false)
+	, m_bDeleteBaseTheirsMineOnClose(false)
 	, resolveMsgWnd(0)
 	, resolveMsgWParam(0)
 	, resolveMsgLParam(0)
@@ -2672,6 +2673,8 @@ int CMainFrame::CheckForSave(ECheckForSaveReason eReason)
 					m_pwndRightView->SaveFile();
 					break;
 				}
+				if (ret != IDCANCEL && (eReason == CHFSR_CLOSE || eReason == CHFSR_OPEN))
+					DeleteBaseTheirsMineOnClose();
 				return ret;
 			}
 			else
@@ -2691,6 +2694,8 @@ int CMainFrame::CheckForSave(ECheckForSaveReason eReason)
 					}
 				}
 				// right file is handled old way
+				if (eReason == CHFSR_CLOSE || eReason == CHFSR_OPEN)
+					DeleteBaseTheirsMineOnClose();
 			}
 		}
 		else
@@ -2737,10 +2742,14 @@ int CMainFrame::CheckForSave(ECheckForSaveReason eReason)
 					return IDCANCEL;
 			}
 		}
+		if (eReason == CHFSR_CLOSE || eReason == CHFSR_OPEN)
+			DeleteBaseTheirsMineOnClose();
 		return IDNO;
 	}
 	else
 	{
+		if (eReason == CHFSR_CLOSE || eReason == CHFSR_OPEN)
+			DeleteBaseTheirsMineOnClose();
 		return IDNO; // nothing to save
 	}
 
@@ -2779,7 +2788,21 @@ int CMainFrame::CheckForSave(ECheckForSaveReason eReason)
 				ret = IDCANCEL;
 		}
 	}
+
+	if (ret != IDCANCEL && (eReason == CHFSR_CLOSE || eReason == CHFSR_OPEN))
+		DeleteBaseTheirsMineOnClose();
+
 	return ret;
+}
+
+void CMainFrame::DeleteBaseTheirsMineOnClose()
+{
+	if (!m_bDeleteBaseTheirsMineOnClose)
+		return;
+
+	DeleteFile(m_Data.m_baseFile.GetFilename());
+	DeleteFile(m_Data.m_theirFile.GetFilename());
+	DeleteFile(m_Data.m_yourFile.GetFilename());
 }
 
 bool CMainFrame::HasUnsavedEdits() const
