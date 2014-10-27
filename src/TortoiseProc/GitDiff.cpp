@@ -361,6 +361,8 @@ void CGitDiff::GetSubmoduleChangeType(CGit& subgit, const CString& oldhash, cons
 		else
 			changeType = FastForward;
 	}
+	else if (oldhash == newhash)
+		changeType = Identical;
 
 	if (!oldOK || !newOK)
 		changeType = Unknown;

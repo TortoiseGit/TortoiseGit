@@ -896,6 +896,9 @@
     <ClCompile Include="Settings\SettingsTUDiff.cpp">
       <Filter>Commands\setting</Filter>
     </ClCompile>
+    <ClCompile Include="SubmoduleResolveConflictDlg.cpp">
+      <Filter>Utility Dialogs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddRemoteDlg.h">
@@ -1647,6 +1650,9 @@
     </ClInclude>
     <ClInclude Include="Settings\SettingsTUDiff.h">
       <Filter>Commands\setting</Filter>
+    </ClInclude>
+    <ClInclude Include="SubmoduleResolveConflictDlg.h">
+      <Filter>Utility Dialogs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

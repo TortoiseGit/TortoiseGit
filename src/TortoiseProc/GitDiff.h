@@ -28,9 +28,11 @@ public:
 	CGitDiff(void);
 	~CGitDiff(void);
 
+	// if you change something here, also update SubmoduleDiffDlg.cpp and SubmoduleResolveConflictDlg.cpp!
 	enum ChangeType
 	{
 		Unknown,
+		Identical,
 		NewSubmodule,
 		DeleteSubmodule,
 		FastForward,

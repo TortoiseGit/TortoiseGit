@@ -69,6 +69,8 @@
 #include "ProgressCommands/SendMailProgressCommand.h"
 #include "CertificateValidationHelper.h"
 #include "CheckCertificateDlg.h"
+#include "SubmoduleResolveConflictDlg.h"
+#include "GitDiff.h"
 
 static struct last_accepted_cert {
 	BYTE*		data;
@@ -1593,13 +1595,61 @@ bool CAppUtils::ConflictEdit(const CTGitPath& path, bool /*bAlternativeTool = fa
 
 	if (merge.IsDirectory())
 	{
-		CString baseHash, localHash, remoteHash;
-		if (!ParseHashesFromLsFile(vector, baseHash, localHash, remoteHash))
+		CString baseHash, realBaseHash(GIT_REV_ZERO), localHash(GIT_REV_ZERO), remoteHash(GIT_REV_ZERO);
+		if (merge.HasAdminDir()) {
+			CGit subgit;
+			subgit.m_CurrentDir = g_Git.CombinePath(merge);
+			CGitHash hash;
+			subgit.GetHash(hash, _T("HEAD"));
+			baseHash = hash;
+		}
+		if (ParseHashesFromLsFile(vector, realBaseHash, localHash, remoteHash)) // in base no submodule, but in remote submodule
+			baseHash = realBaseHash;
+
+		CGitDiff::ChangeType changeTypeMine = CGitDiff::Unknown;
+		CGitDiff::ChangeType changeTypeTheirs = CGitDiff::Unknown;
+
+		bool baseOK = false, mineOK = false, theirsOK = false;
+		CString baseSubject, mineSubject, theirsSubject;
+		if (merge.HasAdminDir())
+		{
+			CGit subgit;
+			subgit.m_CurrentDir = g_Git.CombinePath(merge);
+			CGitDiff::GetSubmoduleChangeType(subgit, baseHash, localHash, baseOK, mineOK, changeTypeMine, baseSubject, mineSubject);
+			CGitDiff::GetSubmoduleChangeType(subgit, baseHash, remoteHash, baseOK, theirsOK, changeTypeTheirs, baseSubject, theirsSubject);
+		}
+		else if (baseHash == GIT_REV_ZERO && localHash == GIT_REV_ZERO && remoteHash != GIT_REV_ZERO) // merge conflict with no submodule, but submodule in merged revision (not initialized) 
+		{
+			changeTypeMine = CGitDiff::Identical;
+			changeTypeTheirs = CGitDiff::NewSubmodule;
+			baseSubject = _T("no submodule");
+			mineSubject = baseSubject;
+			theirsSubject = _T("not initialized");
+		}
+		else if (baseHash.IsEmpty() && localHash != GIT_REV_ZERO && remoteHash == GIT_REV_ZERO) // merge conflict with no submodule initialized, but submodule exists in base and folder with no submodule is merged
+		{
+			baseHash = localHash;
+			baseSubject = _T("not initialized");
+			mineSubject = baseSubject;
+			theirsSubject = _T("not initialized");
+			changeTypeMine = CGitDiff::Identical;
+			changeTypeTheirs = CGitDiff::DeleteSubmodule;
+		}
+		else if (baseHash != GIT_REV_ZERO && localHash != GIT_REV_ZERO && remoteHash != GIT_REV_ZERO) // base has submodule, mine has submodule and theirs also, but not initialized
+		{
+			baseSubject = _T("not initialized");
+			mineSubject = baseSubject;
+			theirsSubject = baseSubject;
+			if (baseHash == localHash)
+				changeTypeMine = CGitDiff::Identical;
+		}
+		else
 			return FALSE;
 
-		CString msg;
-		msg.Format(_T("BASE: %s\nLOCAL: %s\nREMOTE: %s"), baseHash, localHash, remoteHash);
-		CMessageBox::Show(NULL, msg, _T("TortoiseGit"), MB_OK);
+		CSubmoduleResolveConflictDlg resolveSubmoduleConflictDialog;
+		resolveSubmoduleConflictDialog.SetDiff(merge.GetGitPathString(), revertTheirMy, baseHash, baseSubject, baseOK, localHash, mineSubject, mineOK, changeTypeMine, remoteHash, theirsSubject, theirsOK, changeTypeTheirs);
+		resolveSubmoduleConflictDialog.DoModal();
+
 		return TRUE;
 	}
 

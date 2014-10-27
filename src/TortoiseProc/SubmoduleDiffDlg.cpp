@@ -107,6 +107,7 @@ BOOL CSubmoduleDiffDlg::OnInitDialog()
 	CString changeTypeTable[] =
 	{
 		CString(MAKEINTRESOURCE(IDS_SUBMODULEDIFF_UNKNOWN)),
+		CString(MAKEINTRESOURCE(IDS_SUBMODULEDIFF_IDENTICAL)),
 		CString(MAKEINTRESOURCE(IDS_SUBMODULEDIFF_NEWSUBMODULE)),
 		CString(MAKEINTRESOURCE(IDS_SUBMODULEDIFF_DELETESUBMODULE)),
 		CString(MAKEINTRESOURCE(IDS_SUBMODULEDIFF_FASTFORWARD)),
@@ -191,7 +192,7 @@ HBRUSH CSubmoduleDiffDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 			return CreateSolidBrush(RGB(255, 255, 0));
 		}
 
-		if (pWnd->GetDlgCtrlID() == IDC_CHANGETYPE)
+		if (pWnd->GetDlgCtrlID() == IDC_CHANGETYPE && m_nChangeType != CGitDiff::Identical)
 			return GetChangeTypeBrush(pDC, m_nChangeType);
 	}
 
