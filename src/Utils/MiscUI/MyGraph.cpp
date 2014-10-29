@@ -90,11 +90,11 @@ void MyGraphSeries::SetTipRegion(int nGroup, const CRect& rc)
 {
 	VALIDATE;
 
-	CRgn* prgnNew = new CRgn;
-	ASSERT_VALID(prgnNew);
+	std::unique_ptr<CRgn> prgnNew (new CRgn);
+	ASSERT_VALID(prgnNew.get());
 
 	VERIFY(prgnNew->CreateRectRgnIndirect(rc));
-	SetTipRegion(nGroup, prgnNew);
+	SetTipRegion(nGroup, prgnNew.release());
 }
 
 //
@@ -113,10 +113,8 @@ void MyGraphSeries::SetTipRegion(int nGroup, CRgn* prgn)
 		ASSERT_NULL_OR_POINTER(prgnOld, CRgn);
 	}
 
-	if (prgnOld) {
-		delete prgnOld;
-		prgnOld = NULL;
-	}
+	delete prgnOld;
+	prgnOld = NULL;
 
 	// Add the new region.
 	m_oaRegions.SetAtGrow(nGroup, prgn);
@@ -1547,9 +1545,9 @@ void MyGraph::DrawSeriesPie(CDC& dc) const
 						VERIFY(dc.BeginPath());
 						VERIFY(dc.Pie(rcPie, ptStart, ptEnd));
 						VERIFY(dc.EndPath());
-						CRgn * prgnWedge = new CRgn;
+						std::unique_ptr<CRgn> prgnWedge (new CRgn);
 						VERIFY(prgnWedge->CreateFromPath(&dc));
-						pSeries->SetTipRegion(nGroup, prgnWedge);
+						pSeries->SetTipRegion(nGroup, prgnWedge.release());
 
 						// Cleanup.
 						dc.SelectObject(pBrushOld);
@@ -1703,10 +1701,6 @@ CPoint MyGraph::WedgeEndFromDegrees(double degrees, const CPoint& ptCenter,
 /* static */ WORD MyGraph::HueToRGB(WORD w1, WORD w2, WORD wH)
 {
 	// Range check: note values passed add/subtract thirds of range.
-	if (wH < 0) {
-		wH += HLSMAX;
-	}
-
 	if (wH > HLSMAX) {
 		wH -= HLSMAX;
 	}
