@@ -8330,6 +8330,14 @@ msgstr ""
 msgid "Show an overview of the whole graph"
 msgstr ""
 
+#. Resource IDs: (1074)
+msgid "Show asterisk log prefix"
+msgstr ""
+
+#. Resource IDs: (97)
+msgid "Show asterisk log prefix in log dialog"
+msgstr ""
+
 #. Resource IDs: (32775)
 msgid "Show author"
 msgstr ""

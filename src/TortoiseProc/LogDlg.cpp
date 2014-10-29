@@ -70,6 +70,7 @@ CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
 {
 	m_bFilterWithRegex = !!CRegDWORD(_T("Software\\TortoiseGit\\UseRegexFilter"), FALSE);
 	m_bFilterCaseSensitively = !!CRegDWORD(L"Software\\TortoiseGit\\FilterCaseSensitively", FALSE);
+	m_bAsteriskLogPrefix = !!CRegDWORD(L"Software\\TortoiseGit\\AsteriskLogPrefix", TRUE);
 
 	CString str;
 	str=g_Git.m_CurrentDir;
@@ -761,7 +762,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 			format.dwEffects = CFE_BOLD;
 			pMsgView->SendMessage(EM_SETCHARFORMAT, SCF_SELECTION, (LPARAM)&format);
 
-			CString msg=_T("* ");
+			CString msg = m_bAsteriskLogPrefix ? _T("* ") : _T("");
 			msg+=pLogEntry->GetSubject();
 			pMsgView->ReplaceSel(msg);
 

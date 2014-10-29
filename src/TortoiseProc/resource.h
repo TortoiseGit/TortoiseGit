@@ -304,6 +304,7 @@
 #define IDC_RIGHTSIDEBRANCHESTAGS       1073
 #define IDC_EXPORTFILE_LABEL            1074
 #define IDS_PROC_REBASE_EMPTYCOMMITMSG  1074
+#define IDC_ASTERISKLOGPREFIX           1074
 #define IDC_VERSIONBOX                  1075
 #define IDS_PROC_REBASE_ABORT           1075
 #define IDC_LABEL                       1076
@@ -1163,6 +1164,7 @@
 #define IDC_RADIO_RANGE                 1535
 #define IDS_SETTINGS_DESCRIBEALWAYSLONG_TT 1535
 #define IDC_SPIN_NUM                    1536
+#define IDS_SETTINGS_ASTERISKLOGPREFIX_TT 1536
 #define IDC_COMBOBOXEX_DIR              1537
 #define IDC_GROUP_DIR                   1538
 #define IDC_GROUP_VERSION               1539

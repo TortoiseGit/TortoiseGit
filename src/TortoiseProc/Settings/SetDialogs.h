@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2013 - TortoiseGit
+// Copyright (C) 2011-2014 - TortoiseGit
 // Copyright (C) 2003-2008, 2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -59,6 +59,8 @@ private:
 	BOOL				m_bRelativeTimes;
 	CRegDWORD			m_regShortDateFormat;
 	CRegDWORD			m_regRelativeTimes;
+	BOOL				m_bAsteriskLogPrefix;
+	CRegDWORD			m_regAsteriskLogPrefix;
 	BOOL				m_bUseSystemLocaleForDates;
 	CRegDWORD			m_regUseSystemLocaleForDates;
 	CMFCFontComboBox	m_cFontNames;
