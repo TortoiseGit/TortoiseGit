@@ -232,6 +232,7 @@ private:
 	int					m_iCompressedGraph;
 	BOOL				m_bWalkBehavior;
 	bool				m_bNavigatingWithSelect;
+	bool				m_bAsteriskLogPrefix;
 
 	CTGitPathList	*   m_currentChangedArray;
 	LogChangedPathArray m_CurrentFilteredChangedArray;

@@ -29,6 +29,7 @@ CSetDialogs::CSetDialogs()
 	: ISettingsPropPage(CSetDialogs::IDD)
 	, m_bShortDateFormat(FALSE)
 	, m_bRelativeTimes(FALSE)
+	, m_bAsteriskLogPrefix(TRUE)
 	, m_dwFontSize(0)
 	, m_sFontName(_T(""))
 	, m_bDiffByDoubleClick(FALSE)
@@ -45,6 +46,7 @@ CSetDialogs::CSetDialogs()
 {
 	m_regShortDateFormat = CRegDWORD(_T("Software\\TortoiseGit\\LogDateFormat"), TRUE);
 	m_regRelativeTimes = CRegDWORD(_T("Software\\TortoiseGit\\RelativeTimes"), FALSE);
+	m_regAsteriskLogPrefix = CRegDWORD(_T("Software\\TortoiseGit\\AsteriskLogPrefix"), TRUE);
 	m_regUseSystemLocaleForDates = CRegDWORD(_T("Software\\TortoiseGit\\UseSystemLocaleForDates"), TRUE);
 	m_regFontName = CRegString(_T("Software\\TortoiseGit\\LogFontName"), _T("Courier New"));
 	m_regFontSize = CRegDWORD(_T("Software\\TortoiseGit\\LogFontSize"), 8);
@@ -79,6 +81,7 @@ void CSetDialogs::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_FONTNAMES, m_cFontNames);
 	DDX_Check(pDX, IDC_SHORTDATEFORMAT, m_bShortDateFormat);
 	DDX_Check(pDX, IDC_RELATIVETIMES, m_bRelativeTimes);
+	DDX_Check(pDX, IDC_ASTERISKLOGPREFIX, m_bAsteriskLogPrefix);
 	DDX_Check(pDX, IDC_DIFFBYDOUBLECLICK, m_bDiffByDoubleClick);
 	DDX_Check(pDX, IDC_SYSTEMLOCALEFORDATES, m_bUseSystemLocaleForDates);
 	DDX_Check(pDX, IDC_ABBREVIATERENAMINGS, m_bAbbreviateRenamings);
@@ -98,6 +101,7 @@ void CSetDialogs::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CSetDialogs, ISettingsPropPage)
 	ON_BN_CLICKED(IDC_SHORTDATEFORMAT, OnChange)
 	ON_BN_CLICKED(IDC_RELATIVETIMES, OnChange)
+	ON_BN_CLICKED(IDC_ASTERISKLOGPREFIX, OnChange)
 	ON_BN_CLICKED(IDC_SYSTEMLOCALEFORDATES, OnChange)
 	ON_CBN_SELCHANGE(IDC_FONTSIZES, OnChange)
 	ON_CBN_SELCHANGE(IDC_FONTNAMES, OnChange)
@@ -124,6 +128,7 @@ BOOL CSetDialogs::OnInitDialog()
 	AdjustControlSize(IDC_SHORTDATEFORMAT);
 	AdjustControlSize(IDC_SHORTDATEFORMAT);
 	AdjustControlSize(IDC_RELATIVETIMES);
+	AdjustControlSize(IDC_ASTERISKLOGPREFIX);
 	AdjustControlSize(IDC_DIFFBYDOUBLECLICK);
 	AdjustControlSize(IDC_SYSTEMLOCALEFORDATES);
 	AdjustControlSize(IDC_ABBREVIATERENAMINGS);
@@ -138,6 +143,7 @@ BOOL CSetDialogs::OnInitDialog()
 
 	m_bShortDateFormat = m_regShortDateFormat;
 	m_bRelativeTimes = m_regRelativeTimes;
+	m_bAsteriskLogPrefix = m_regAsteriskLogPrefix;
 	m_bUseSystemLocaleForDates = m_regUseSystemLocaleForDates;
 	m_sFontName = m_regFontName;
 	m_dwFontSize = m_regFontSize;
@@ -158,6 +164,7 @@ BOOL CSetDialogs::OnInitDialog()
 	m_tooltips.Create(this);
 	m_tooltips.AddTool(IDC_SHORTDATEFORMAT, IDS_SETTINGS_SHORTDATEFORMAT_TT);
 	m_tooltips.AddTool(IDC_RELATIVETIMES, IDS_SETTINGS_RELATIVETIMES_TT);
+	m_tooltips.AddTool(IDC_ASTERISKLOGPREFIX, IDS_SETTINGS_ASTERISKLOGPREFIX_TT);
 	m_tooltips.AddTool(IDC_SYSTEMLOCALEFORDATES, IDS_SETTINGS_USESYSTEMLOCALEFORDATES_TT);
 	m_tooltips.AddTool(IDC_DIFFBYDOUBLECLICK, IDS_SETTINGS_DIFFBYDOUBLECLICK_TT);
 	m_tooltips.AddTool(IDC_ABBREVIATERENAMINGS, IDS_SETTINGS_ABBREVIATERENAMINGS_TT);
@@ -232,6 +239,7 @@ BOOL CSetDialogs::OnApply()
 
 	Store (m_bShortDateFormat, m_regShortDateFormat);
 	Store (m_bRelativeTimes, m_regRelativeTimes);
+	Store (m_bAsteriskLogPrefix, m_regAsteriskLogPrefix);
     Store (m_bUseSystemLocaleForDates, m_regUseSystemLocaleForDates);
 
     Store (m_sFontName, m_regFontName);

@@ -698,6 +698,7 @@ BEGIN
     CONTROL         "Short &date/time format in log messages",IDC_SHORTDATEFORMAT,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,38,191,10
     CONTROL         "Relative Times in log",IDC_RELATIVETIMES,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,51,120,10
+    CONTROL         "Show asterisk log prefix",IDC_ASTERISKLOGPREFIX,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,148,52,136,10
     CONTROL         "Use system locale for date/time",IDC_SYSTEMLOCALEFORDATES,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,64,150,10
     CONTROL         "Can double-click in log list to compare with previous revision",IDC_DIFFBYDOUBLECLICK,
@@ -3602,6 +3603,7 @@ END
 
 STRINGTABLE
 BEGIN
+    IDS_SETTINGS_ASTERISKLOGPREFIX_TT "Show asterisk log prefix in log dialog"
     IDS_PROC_RENAME         "Rename %s"
     IDS_PROC_NEWNAME        "New name for %s"
 END
