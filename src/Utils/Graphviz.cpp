@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013 - TortoiseGit
+// Copyright (C) 2013-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -61,8 +61,6 @@ void Graphviz::BeginDrawTableNode(CString id, CString fontName, int fontSize, in
 	bool hasAttr = false;
 	if (m_defaultFontName != fontName)
 	{
-		if (hasAttr)
-			content.Append(_T(", "));
 		format.Format(_T("fontname=\"%s\""), fontName);
 		content.Append(format);
 		hasAttr = true;
