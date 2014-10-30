@@ -89,7 +89,7 @@ protected:
 		// find the rectangle the control text needs to be displayed
 		CFont* font = pwndDlgItem->GetFont();
 		CFont* pOldFont = pDC->SelectObject(font);
-		if (pDC->DrawText(sControlText, -1, &ctrlRect, DT_WORDBREAK | DT_EDITCONTROL | DT_EXPANDTABS | DT_LEFT | DT_CALCRECT))
+		if (pDC->DrawText(sControlText, -1, &ctrlRect, DT_EDITCONTROL | DT_EXPANDTABS | DT_LEFT | DT_CALCRECT))
 		{
 			// now we have the rectangle the control really needs
 			if (ctrlRectOrig.Width() < ctrlRect.Width())
