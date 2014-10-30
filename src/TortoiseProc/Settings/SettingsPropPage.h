@@ -106,7 +106,6 @@ protected:
 			pDC->SelectObject(pOldFont);
 			ReleaseDC(pDC);
 		}
-		return;
 	}
 
     /**

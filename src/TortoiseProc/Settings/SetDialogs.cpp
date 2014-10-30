@@ -126,7 +126,6 @@ BOOL CSetDialogs::OnInitDialog()
 	ISettingsPropPage::OnInitDialog();
 
 	AdjustControlSize(IDC_SHORTDATEFORMAT);
-	AdjustControlSize(IDC_SHORTDATEFORMAT);
 	AdjustControlSize(IDC_RELATIVETIMES);
 	AdjustControlSize(IDC_ASTERISKLOGPREFIX);
 	AdjustControlSize(IDC_DIFFBYDOUBLECLICK);
