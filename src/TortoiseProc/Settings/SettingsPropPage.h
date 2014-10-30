@@ -92,7 +92,7 @@ protected:
 		if (pDC->DrawText(sControlText, -1, &ctrlRect, DT_WORDBREAK | DT_EDITCONTROL | DT_EXPANDTABS | DT_LEFT | DT_CALCRECT))
 		{
 			// now we have the rectangle the control really needs
-			if (ctrlRectOrig.Width() > ctrlRect.Width())
+			if (ctrlRectOrig.Width() < ctrlRect.Width())
 			{
 				// we're dealing with radio buttons and check boxes,
 				// which means we have to add a little space for the checkbox
