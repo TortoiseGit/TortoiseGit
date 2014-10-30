@@ -333,10 +333,10 @@ BOOL CLogDlg::OnInitDialog()
 	AddAnchor(IDC_WALKBEHAVIOUR, BOTTOM_LEFT);
 	AddAnchor(IDC_VIEW, BOTTOM_LEFT);
 	AddAnchor(IDC_LOG_ALLBRANCH,BOTTOM_LEFT);
-	AddAnchor(IDC_FILTER, BOTTOM_LEFT);
+	AddAnchor(IDC_FILTER, BOTTOM_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDC_SHOWWHOLEPROJECT, BOTTOM_LEFT);
 	AddAnchor(IDC_REFRESH, BOTTOM_LEFT);
-	AddAnchor(IDC_STATBUTTON, BOTTOM_RIGHT);
+	AddAnchor(IDC_STATBUTTON, BOTTOM_LEFT);
 	AddAnchor(IDC_PROGRESS, BOTTOM_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDOK, BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL, BOTTOM_RIGHT);
@@ -482,6 +482,9 @@ LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM /*lParam*/)
 			m_pTaskbarList->SetProgressValue(m_hWnd, 0, 100);
 		}
 
+		GetDlgItem(IDC_WALKBEHAVIOUR)->ShowWindow(SW_HIDE);
+		GetDlgItem(IDC_VIEW)->ShowWindow(SW_HIDE);
+		GetDlgItem(IDC_STATBUTTON)->ShowWindow(SW_HIDE);
 		GetDlgItem(IDC_PROGRESS)->ShowWindow(TRUE);
 
 		DialogEnableWindow(IDC_WALKBEHAVIOUR, FALSE);
@@ -508,6 +511,9 @@ LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM /*lParam*/)
 		DialogEnableWindow(IDC_VIEW, TRUE);
 		DialogEnableWindow(IDC_WALKBEHAVIOUR, TRUE);
 //		PostMessage(WM_TIMER, LOGFILTER_TIMER);
+		GetDlgItem(IDC_WALKBEHAVIOUR)->ShowWindow(SW_SHOW);
+		GetDlgItem(IDC_VIEW)->ShowWindow(SW_SHOW);
+		GetDlgItem(IDC_STATBUTTON)->ShowWindow(SW_SHOW);
 		GetDlgItem(IDC_PROGRESS)->ShowWindow(FALSE);
 		//CTime time=m_LogList.GetOldestTime();
 		CTime begin,end;
