@@ -3477,3 +3477,82 @@ void CAppUtils::ExploreTo(HWND hwnd, CString path)
 	} while (!PathFileExists(path));
 	ShellExecute(hwnd, _T("explore"), path, nullptr, nullptr, SW_SHOW);
 }
+
+int CAppUtils::ResolveConflict(CTGitPath& path, resolve_with resolveWith)
+{
+	bool b_local = false, b_remote = false;
+	{
+		BYTE_VECTOR vector;
+		CString cmd;
+		cmd.Format(_T("git.exe ls-files -u -t -z -- \"%s\""), path.GetGitPathString());
+		if (g_Git.Run(cmd, &vector))
+		{
+			CMessageBox::Show(nullptr, _T("git ls-files failed!"), _T("TortoiseGit"), MB_OK);
+			return -1;
+		}
+
+		CTGitPathList list;
+		if (list.ParserFromLsFile(vector))
+		{
+			CMessageBox::Show(nullptr, _T("Parse ls-files failed!"), _T("TortoiseGit"), MB_OK);
+			return -1;
+		}
+
+		if (list.IsEmpty())
+			return 0;
+		for (int i = 0; i < list.GetCount(); ++i)
+		{
+			if (list[i].m_Stage == 2)
+				b_local = true;
+			if (list[i].m_Stage == 3)
+				b_remote = true;
+		}
+	}
+
+	if (resolveWith == RESOLVE_WITH_THEIRS)
+	{
+		CString gitcmd, output;
+		if (b_local && b_remote)
+			gitcmd.Format(_T("git.exe checkout-index -f --stage=3 -- \"%s\""), path.GetGitPathString());
+		else if (b_remote)
+			gitcmd.Format(_T("git.exe add -f -- \"%s\""), path.GetGitPathString());
+		else if (b_local)
+			gitcmd.Format(_T("git.exe rm -f -- \"%s\""), path.GetGitPathString());
+		if (g_Git.Run(gitcmd, &output, CP_UTF8))
+		{
+			CMessageBox::Show(nullptr, output, _T("TortoiseGit"), MB_ICONERROR);
+			return -1;
+		}
+	}
+	else if (resolveWith == RESOLVE_WITH_MINE)
+	{
+		CString gitcmd, output;
+		if (b_local && b_remote)
+			gitcmd.Format(_T("git.exe checkout-index -f --stage=2 -- \"%s\""), path.GetGitPathString());
+		else if (b_local)
+			gitcmd.Format(_T("git.exe add -f -- \"%s\""), path.GetGitPathString());
+		else if (b_remote)
+			gitcmd.Format(_T("git.exe rm -f -- \"%s\""), path.GetGitPathString());
+		if (g_Git.Run(gitcmd, &output, CP_UTF8))
+		{
+			CMessageBox::Show(nullptr, output, _T("TortoiseGit"), MB_ICONERROR);
+			return -1;
+		}
+	}
+
+	if (b_local && b_remote && path.m_Action & CTGitPath::LOGACTIONS_UNMERGED)
+	{
+		CString gitcmd, output;
+		gitcmd.Format(_T("git.exe add -f -- \"%s\""), path.GetGitPathString());
+		if (g_Git.Run(gitcmd, &output, CP_UTF8))
+			CMessageBox::Show(nullptr, output, _T("TortoiseGit"), MB_ICONERROR);
+		else
+		{
+			path.m_Action |= CTGitPath::LOGACTIONS_MODIFIED;
+			path.m_Action &= ~CTGitPath::LOGACTIONS_UNMERGED;
+		}
+	}
+
+	RemoveTempMergeFile(path);
+	return 0;
+}

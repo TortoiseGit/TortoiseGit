@@ -214,16 +214,9 @@ static void Resolve(const CString& path, bool useMine)
 {
 	if (CMessageBox::Show(nullptr, IDS_PROC_RESOLVE, IDS_APPNAME, MB_ICONQUESTION | MB_YESNO) != IDYES)
 		return;
-	CString gitcmd, output;
-	gitcmd.Format(_T("git.exe checkout --%s -- \"%s\""), useMine ? _T("ours") : _T("theirs"), path);
-	if (g_Git.Run(gitcmd, &output, CP_UTF8))
-	{
-		MessageBox(nullptr, output, _T("TortoiseGit"), MB_ICONERROR);
-		return;
-	}
-	gitcmd.Format(_T("git.exe add -f -- \"%s\""), path);
-	if (g_Git.Run(gitcmd, &output, CP_UTF8))
-		MessageBox(nullptr, output, _T("TortoiseGit"), MB_ICONERROR);
+
+	CTGitPath gitpath(path);
+	CAppUtils::ResolveConflict(gitpath, useMine ? CAppUtils::RESOLVE_WITH_MINE : CAppUtils::RESOLVE_WITH_THEIRS);
 }
 
 void CSubmoduleResolveConflictDlg::OnBnClickedButtonUpdate2()

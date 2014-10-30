@@ -210,6 +210,14 @@ public:
 
 	static void ExploreTo(HWND hwnd, CString path);
 
+	enum resolve_with {
+		RESOLVE_WITH_CURRENT,
+		RESOLVE_WITH_MINE,
+		RESOLVE_WITH_THEIRS,
+	};
+
+	static int ResolveConflict(CTGitPath& path, resolve_with resolveWith);
+
 private:
 	static CString PickDiffTool(const CTGitPath& file1, const CTGitPath& file2);
 
