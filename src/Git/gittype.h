@@ -34,14 +34,14 @@ public:
 	CGitByteArray(){ m_critSec.Init(); }
 	CComCriticalSection			m_critSec;
 
-	int find(BYTE data,int start=0)
+	int find(BYTE data, int start = 0) const
 	{
 		for (unsigned int i = start; i < size(); ++i)
 			if( at(i) == data )
 				return i;
 		return -1;
 	}
-	int RevertFind(BYTE data, int start=-1)
+	int RevertFind(BYTE data, int start = -1) const
 	{
 		if(start == -1)
 			start = (int)size() - 1;
@@ -54,7 +54,7 @@ public:
 				return i;
 		return -1;
 	}
-	int findNextString(int start=0)
+	int findNextString(int start = 0) const
 	{
 		int pos=start;
 		do
@@ -72,7 +72,7 @@ public:
 
 		return pos;
 	}
-	int findData(const BYTE* dataToFind, size_t dataSize, int start=0)
+	int findData(const BYTE* dataToFind, size_t dataSize, int start = 0) const
 	{
 		//Pre checks
 		if(empty())

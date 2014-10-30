@@ -113,7 +113,7 @@ public:
 	* Launch the external blame viewer
 	*/
 	static bool LaunchTortoiseBlame(
-		const CString& sBlameFile, CString Rev, const CString& sParams = CString());
+		const CString& sBlameFile, const CString& Rev, const CString& sParams = CString());
 
 	/**
 	* Launch alternative editor
@@ -147,16 +147,16 @@ public:
 												bool bMerge = false,
 												bool bCompact = false);
 
-	static bool Export(CString *BashHash = nullptr, const CTGitPath *orgPath = nullptr);
-	static bool CreateBranchTag(bool IsTag=TRUE,CString *CommitHash=NULL, bool switch_new_brach=false);
-	static bool Switch(CString initialRefName = CString());
-	static bool PerformSwitch(CString ref, bool bForce = false, CString sNewBranch = CString(), bool bBranchOverride = false, BOOL bTrack = 2, bool bMerge = false);
+	static bool Export(const CString* BashHash = nullptr, const CTGitPath* orgPath = nullptr);
+	static bool CreateBranchTag(bool IsTag = TRUE, const CString* CommitHash = nullptr, bool switch_new_brach = false);
+	static bool Switch(const CString& initialRefName = CString());
+	static bool PerformSwitch(const CString& ref, bool bForce = false, const CString& sNewBranch = CString(), bool bBranchOverride = false, BOOL bTrack = 2, bool bMerge = false);
 
-	static bool IgnoreFile(CTGitPathList &filelist,bool IsMask);
-	static bool GitReset(CString *CommitHash,int type=1);
-	static bool ConflictEdit(CTGitPath& file, bool bAlternativeTool = false, bool revertTheirMy = false, HWND resolveMsgHwnd = nullptr);
+	static bool IgnoreFile(const CTGitPathList& filelist, bool IsMask);
+	static bool GitReset(const CString* CommitHash, int type = 1);
+	static bool ConflictEdit(const CTGitPath& file, bool bAlternativeTool = false, bool revertTheirMy = false, HWND resolveMsgHwnd = nullptr);
 
-	static CString GetMergeTempFile(CString str,CTGitPath &merge);
+	static CString GetMergeTempFile(const CString& str, const CTGitPath& merge);
 	static bool	StashSave(const CString& msg = CString());
 	static bool StashApply(CString ref, bool showChanges = true);
 	static bool	StashPop(bool showChanges = true);
@@ -168,20 +168,20 @@ public:
 	static bool LaunchPAgent(const CString* keyfile = nullptr, const CString* pRemote = nullptr);
 
 	static CString GetClipboardLink(const CString &skipGitPrefix = _T(""), int paramsCount = 0);
-	static CString ChooseRepository(CString *path);
+	static CString ChooseRepository(const CString* path);
 
-	static bool SendPatchMail(CTGitPathList &pathlist, bool bIsMainWnd = false);
-	static bool SendPatchMail(CString &cmd,CString &formatpatchoutput, bool bIsMainWnd = false);
+	static bool SendPatchMail(CTGitPathList& pathlist, bool bIsMainWnd = false);
+	static bool SendPatchMail(const CString& cmd, const CString& formatpatchoutput, bool bIsMainWnd = false);
 
-	static int  SaveCommitUnicodeFile(CString &filename, CString &mesage);
+	static int  SaveCommitUnicodeFile(const CString& filename, CString& mesage);
 
 	static int  GetLogOutputEncode(CGit *pGit=&g_Git);
 
 	static bool Pull(bool showPush = false);
 	static bool RebaseAfterFetch(const CString& upstream = _T(""));
-	static bool Fetch(CString remoteName = _T(""), bool allowRebase = false, bool allRemotes = false);
-	static bool Push(CString selectLocalBranch = CString());
-	static bool RequestPull(CString endrevision = _T(""), CString repositoryUrl = _T(""), bool bIsMainWnd = false);
+	static bool Fetch(const CString& remoteName = _T(""), bool allowRebase = false, bool allRemotes = false);
+	static bool Push(const CString& selectLocalBranch = CString());
+	static bool RequestPull(const CString& endrevision = _T(""), const CString& repositoryUrl = _T(""), bool bIsMainWnd = false);
 
 	static bool CreateMultipleDirectory(const CString &dir);
 
@@ -189,20 +189,20 @@ public:
 
 	static bool CheckUserData();
 
-	static BOOL Commit(CString bugid,BOOL bWholeProject,CString &sLogMsg,
+	static BOOL Commit(const CString& bugid, BOOL bWholeProject, CString &sLogMsg,
 					CTGitPathList &pathList,
 					CTGitPathList &selectedList,
 					bool bSelectFilesForCommit);
 
 	static BOOL SVNDCommit();
-	static BOOL Merge(CString *commit =NULL);
+	static BOOL Merge(const CString* commit = nullptr);
 	static BOOL MergeAbort();
-	static void RemoveTempMergeFile(CTGitPath &path);
+	static void RemoveTempMergeFile(const CTGitPath& path);
 	static void EditNote(GitRev *hash);
 	static int GetMsysgitVersion();
 	static void MarkWindowAsUnpinnable(HWND hWnd);
 
-	static bool BisectStart(CString lastGood, CString firstBad, bool bIsMainWnd = false);
+	static bool BisectStart(const CString& lastGood, const CString& firstBad, bool bIsMainWnd = false);
 
 	static int	Git2GetUserPassword(git_cred **out, const char *url, const char *username_from_url, unsigned int allowed_types, void *payload);
 

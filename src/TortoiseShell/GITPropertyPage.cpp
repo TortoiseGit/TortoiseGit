@@ -374,7 +374,7 @@ static int TreewalkCB_FindFileRecentCommit(const char *root, const git_tree_entr
 	return 1;
 }
 
-static git_commit * FindFileRecentCommit(git_repository *repository, CString path)
+static git_commit* FindFileRecentCommit(git_repository* repository, const CString& path)
 {
 	CAutoRevwalk walk;
 	if (git_revwalk_new(walk.GetPointer(), repository))
@@ -458,7 +458,7 @@ static git_commit * FindFileRecentCommit(git_repository *repository, CString pat
 	return commit.Detach();
 }
 
-void CGitPropertyPage::DisplayCommit(git_commit * commit, UINT hashLabel, UINT subjectLabel, UINT authorLabel, UINT dateLabel)
+void CGitPropertyPage::DisplayCommit(const git_commit* commit, UINT hashLabel, UINT subjectLabel, UINT authorLabel, UINT dateLabel)
 {
 	if (commit == NULL)
 	{

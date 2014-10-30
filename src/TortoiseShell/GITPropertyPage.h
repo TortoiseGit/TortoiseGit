@@ -49,7 +49,7 @@ protected:
 	 * Initializes the property page.
 	 */
 	virtual void InitWorkfileView();
-	void DisplayCommit(git_commit * commit, UINT hashLabel, UINT subjectLabel, UINT authorLabel, UINT dateLabel);
+	void DisplayCommit(const git_commit* commit, UINT hashLabel, UINT subjectLabel, UINT authorLabel, UINT dateLabel);
 	static void LogThreadEntry(void *param);
 	int LogThread();
 	void Time64ToTimeString(__time64_t time, TCHAR * buf, size_t buflen) const;

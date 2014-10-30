@@ -771,7 +771,7 @@ bool CAppUtils::LaunchRemoteSetting()
 /**
 * Launch the external blame viewer
 */
-bool CAppUtils::LaunchTortoiseBlame(const CString& sBlameFile,CString Rev,const CString& sParams)
+bool CAppUtils::LaunchTortoiseBlame(const CString& sBlameFile, const CString& Rev, const CString& sParams)
 {
 	CString viewer = _T("\"") + CPathUtils::GetAppDirectory();
 	viewer += _T("TortoiseGitBlame.exe");
@@ -1042,7 +1042,7 @@ bool CAppUtils::SetupDiffScripts(bool force, const CString& type)
 	return true;
 }
 
-bool CAppUtils::Export(CString *BashHash, const CTGitPath *orgPath)
+bool CAppUtils::Export(const CString* BashHash, const CTGitPath* orgPath)
 {
 		// ask from where the export has to be done
 	CExportDlg dlg;
@@ -1082,7 +1082,7 @@ bool CAppUtils::Export(CString *BashHash, const CTGitPath *orgPath)
 	return false;
 }
 
-bool CAppUtils::CreateBranchTag(bool IsTag,CString *CommitHash, bool switch_new_brach)
+bool CAppUtils::CreateBranchTag(bool IsTag, const CString* CommitHash, bool switch_new_brach)
 {
 	CCreateBranchTagDlg dlg;
 	dlg.m_bIsTag=IsTag;
@@ -1154,7 +1154,7 @@ bool CAppUtils::CreateBranchTag(bool IsTag,CString *CommitHash, bool switch_new_
 	return FALSE;
 }
 
-bool CAppUtils::Switch(CString initialRefName)
+bool CAppUtils::Switch(const CString& initialRefName)
 {
 	CGitSwitchDlg dlg;
 	if(!initialRefName.IsEmpty())
@@ -1176,7 +1176,7 @@ bool CAppUtils::Switch(CString initialRefName)
 	return FALSE;
 }
 
-bool CAppUtils::PerformSwitch(CString ref, bool bForce /* false */, CString sNewBranch /* CString() */, bool bBranchOverride /* false */, BOOL bTrack /* 2 */, bool bMerge /* false */)
+bool CAppUtils::PerformSwitch(const CString& ref, bool bForce /* false */, const CString& sNewBranch /* CString() */, bool bBranchOverride /* false */, BOOL bTrack /* 2 */, bool bMerge /* false */)
 {
 	CString cmd;
 	CString track;
@@ -1334,7 +1334,7 @@ bool CAppUtils::OpenIgnoreFile(CIgnoreFile &file, const CString& filename)
 	return true;
 }
 
-bool CAppUtils::IgnoreFile(CTGitPathList &path,bool IsMask)
+bool CAppUtils::IgnoreFile(const CTGitPathList& path,bool IsMask)
 {
 	CIgnoreDlg ignoreDlg;
 	if (ignoreDlg.DoModal() == IDOK)
@@ -1486,7 +1486,7 @@ static bool Reset(const CString& resetTo, int resetType)
 	return ret == IDOK;
 }
 
-bool CAppUtils::GitReset(CString *CommitHash,int type)
+bool CAppUtils::GitReset(const CString* CommitHash, int type)
 {
 	CResetDlg dlg;
 	dlg.m_ResetType=type;
@@ -1514,13 +1514,13 @@ void CAppUtils::DescribeConflictFile(bool mode, bool base,CString &descript)
 	return;
 }
 
-void CAppUtils::RemoveTempMergeFile(CTGitPath &path)
+void CAppUtils::RemoveTempMergeFile(const CTGitPath& path)
 {
 	::DeleteFile(CAppUtils::GetMergeTempFile(_T("LOCAL"), path));
 	::DeleteFile(CAppUtils::GetMergeTempFile(_T("REMOTE"), path));
 	::DeleteFile(CAppUtils::GetMergeTempFile(_T("BASE"), path));
 }
-CString CAppUtils::GetMergeTempFile(CString type,CTGitPath &merge)
+CString CAppUtils::GetMergeTempFile(const CString& type, const CTGitPath &merge)
 {
 	CString file;
 	file = g_Git.CombinePath(merge.GetWinPathString() + _T(".") + type + merge.GetFileExtension());
@@ -1528,7 +1528,7 @@ CString CAppUtils::GetMergeTempFile(CString type,CTGitPath &merge)
 	return file;
 }
 
-bool ParseHashesFromLsFile(BYTE_VECTOR &out, CString &hash1, CString &hash2, CString &hash3)
+bool ParseHashesFromLsFile(const BYTE_VECTOR& out, CString& hash1, CString& hash2, CString& hash3)
 {
 	int pos = 0;
 	CString one;
@@ -1565,7 +1565,7 @@ bool ParseHashesFromLsFile(BYTE_VECTOR &out, CString &hash1, CString &hash2, CSt
 	return false;
 }
 
-bool CAppUtils::ConflictEdit(CTGitPath& path, bool /*bAlternativeTool = false*/, bool revertTheirMy /*= false*/, HWND resolveMsgHwnd /*= nullptr*/)
+bool CAppUtils::ConflictEdit(const CTGitPath& path, bool /*bAlternativeTool = false*/, bool revertTheirMy /*= false*/, HWND resolveMsgHwnd /*= nullptr*/)
 {
 	bool bRet = false;
 
@@ -2079,7 +2079,7 @@ CString CAppUtils::GetClipboardLink(const CString &skipGitPrefix, int paramsCoun
 	return CString(_T(""));
 }
 
-CString CAppUtils::ChooseRepository(CString *path)
+CString CAppUtils::ChooseRepository(const CString* path)
 {
 	CBrowseFolder browseFolder;
 	CRegString  regLastResopitory = CRegString(_T("Software\\TortoiseGit\\TortoiseProc\\LastRepo"),_T(""));
@@ -2139,7 +2139,7 @@ bool CAppUtils::SendPatchMail(CTGitPathList& list, bool bIsMainWnd)
 	return false;
 }
 
-bool CAppUtils::SendPatchMail(CString &cmd, CString &formatpatchoutput, bool bIsMainWnd)
+bool CAppUtils::SendPatchMail(const CString& cmd, const CString& formatpatchoutput, bool bIsMainWnd)
 {
 	CTGitPathList list;
 	CString log=formatpatchoutput;
@@ -2183,7 +2183,7 @@ int CAppUtils::GetLogOutputEncode(CGit *pGit)
 		return CUnicodeUtils::GetCPCode(output);
 	}
 }
-int CAppUtils::SaveCommitUnicodeFile(CString &filename, CString &message)
+int CAppUtils::SaveCommitUnicodeFile(const CString& filename, CString &message)
 {
 	try
 	{
@@ -2508,7 +2508,7 @@ static bool DoFetch(const CString& url, const bool fetchAllRemotes, const bool l
 	return userResponse == IDOK;
 }
 
-bool CAppUtils::Fetch(CString remoteName, bool allowRebase, bool allRemotes)
+bool CAppUtils::Fetch(const CString& remoteName, bool allowRebase, bool allRemotes)
 {
 	CPullFetchDlg dlg;
 	dlg.m_PreSelectRemote = remoteName;
@@ -2522,7 +2522,7 @@ bool CAppUtils::Fetch(CString remoteName, bool allowRebase, bool allRemotes)
 	return false;
 }
 
-bool CAppUtils::Push(CString selectLocalBranch)
+bool CAppUtils::Push(const CString& selectLocalBranch)
 {
 	CPushDlg dlg;
 	dlg.m_BranchSourceName = selectLocalBranch;
@@ -2653,7 +2653,7 @@ bool CAppUtils::Push(CString selectLocalBranch)
 	return FALSE;
 }
 
-bool CAppUtils::RequestPull(CString endrevision, CString repositoryUrl, bool bIsMainWnd)
+bool CAppUtils::RequestPull(const CString& endrevision, const CString& repositoryUrl, bool bIsMainWnd)
 {
 	CRequestPullDlg dlg;
 	dlg.m_RepositoryURL = repositoryUrl;
@@ -2805,7 +2805,7 @@ bool CAppUtils::CheckUserData()
 	return true;
 }
 
-BOOL CAppUtils::Commit(CString bugid,BOOL bWholeProject,CString &sLogMsg,
+BOOL CAppUtils::Commit(const CString& bugid, BOOL bWholeProject, CString &sLogMsg,
 					CTGitPathList &pathList,
 					CTGitPathList &selectedList,
 					bool bSelectFilesForCommit)
@@ -2994,7 +2994,7 @@ BOOL CAppUtils::SVNDCommit()
 	return FALSE;
 }
 
-BOOL CAppUtils::Merge(CString *commit)
+BOOL CAppUtils::Merge(const CString* commit)
 {
 	if (!CheckUserData())
 		return FALSE;
@@ -3271,7 +3271,7 @@ void CAppUtils::SetWindowTitle(HWND hWnd, const CString& urlorpath, const CStrin
 	SetWindowText(hWnd, pathbuf);
 }
 
-bool CAppUtils::BisectStart(CString lastGood, CString firstBad, bool bIsMainWnd)
+bool CAppUtils::BisectStart(const CString& lastGood, const CString& firstBad, bool bIsMainWnd)
 {
 	if (!g_Git.CheckCleanWorkTree())
 	{
