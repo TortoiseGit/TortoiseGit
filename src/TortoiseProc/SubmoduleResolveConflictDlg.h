@@ -33,10 +33,14 @@ public:
 
 	void SetDiff(const CString& path, bool revertTheirMy, const CString& baseHash, const CString& baseSubject, bool baseOK, const CString& mineHash, const CString& mineSubject, bool mineOK, CGitDiff::ChangeType mineChangeType, const CString& theirsHash, const CString& theirsSubject, bool theirsOK, CGitDiff::ChangeType theirsChangeType);
 
+	bool m_bResolved;
+
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	virtual BOOL OnInitDialog();
 	virtual HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
+
+	void Resolve(const CString& path, bool useMine);
 
 	afx_msg void OnBnClickedLog();
 	afx_msg void OnBnClickedLog2();

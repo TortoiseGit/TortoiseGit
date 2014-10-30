@@ -33,6 +33,7 @@ CSubmoduleResolveConflictDlg::CSubmoduleResolveConflictDlg(CWnd* pParent /*=NULL
 	, m_nChangeTypeMine(CGitDiff::Unknown)
 	, m_nChangeTypeTheirs(CGitDiff::Unknown)
 	, m_bRevertTheirMy(false)
+	, m_bResolved(false)
 {
 }
 
@@ -210,13 +211,18 @@ void CSubmoduleResolveConflictDlg::OnBnClickedLog3()
 	ShowLog(m_sTheirsHash);
 }
 
-static void Resolve(const CString& path, bool useMine)
+void CSubmoduleResolveConflictDlg::Resolve(const CString& path, bool useMine)
 {
-	if (CMessageBox::Show(nullptr, IDS_PROC_RESOLVE, IDS_APPNAME, MB_ICONQUESTION | MB_YESNO) != IDYES)
+	if (CMessageBox::Show(GetSafeHwnd(), IDS_PROC_RESOLVE, IDS_APPNAME, MB_ICONQUESTION | MB_YESNO) != IDYES)
 		return;
 
 	CTGitPath gitpath(path);
-	CAppUtils::ResolveConflict(gitpath, useMine ? CAppUtils::RESOLVE_WITH_MINE : CAppUtils::RESOLVE_WITH_THEIRS);
+	gitpath.m_Action = CTGitPath::LOGACTIONS_UNMERGED;
+	if (CAppUtils::ResolveConflict(gitpath, useMine ? CAppUtils::RESOLVE_WITH_MINE : CAppUtils::RESOLVE_WITH_THEIRS) == 0)
+	{
+		m_bResolved = true;
+		EndDialog(0);
+	}
 }
 
 void CSubmoduleResolveConflictDlg::OnBnClickedButtonUpdate2()

@@ -1649,6 +1649,11 @@ bool CAppUtils::ConflictEdit(const CTGitPath& path, bool /*bAlternativeTool = fa
 		CSubmoduleResolveConflictDlg resolveSubmoduleConflictDialog;
 		resolveSubmoduleConflictDialog.SetDiff(merge.GetGitPathString(), revertTheirMy, baseHash, baseSubject, baseOK, localHash, mineSubject, mineOK, changeTypeMine, remoteHash, theirsSubject, theirsOK, changeTypeTheirs);
 		resolveSubmoduleConflictDialog.DoModal();
+		if (resolveSubmoduleConflictDialog.m_bResolved && resolveMsgHwnd)
+		{
+			static UINT WM_REVERTMSG = RegisterWindowMessage(_T("GITSLNM_NEEDSREFRESH"));
+			::PostMessage(resolveMsgHwnd, WM_REVERTMSG, NULL, NULL);
+		}
 
 		return TRUE;
 	}
@@ -3481,8 +3486,8 @@ void CAppUtils::ExploreTo(HWND hwnd, CString path)
 int CAppUtils::ResolveConflict(CTGitPath& path, resolve_with resolveWith)
 {
 	bool b_local = false, b_remote = false;
+	BYTE_VECTOR vector;
 	{
-		BYTE_VECTOR vector;
 		CString cmd;
 		cmd.Format(_T("git.exe ls-files -u -t -z -- \"%s\""), path.GetGitPathString());
 		if (g_Git.Run(cmd, &vector))
@@ -3509,6 +3514,57 @@ int CAppUtils::ResolveConflict(CTGitPath& path, resolve_with resolveWith)
 		}
 	}
 
+	if (path.IsDirectory()) // is submodule conflict
+	{
+		CString err = _T("We're sorry, but you hit a very rare conflict condition with a submodule which cannot be resolved by TortoiseGit. You have to use the command line git for this.");
+		if (b_local && b_remote)
+		{
+			if (!path.HasAdminDir()) // check if submodule is initialized
+			{
+				err += _T("\n\nYou have to checkout the submodule manually into \"") + path.GetGitPathString() + _T("\" and then reset HEAD to the right commit (see resolve submodule conflict dialog for this).");
+				MessageBox(nullptr, err, _T("TortoiseGit"), MB_ICONERROR);
+				return -1;
+			}
+			CGit subgit;
+			subgit.m_CurrentDir = g_Git.CombinePath(path);
+			CGitHash submoduleHead;
+			if (subgit.GetHash(submoduleHead, _T("HEAD")))
+			{
+				MessageBox(nullptr, err, _T("TortoiseGit"), MB_ICONERROR);
+				return -1;
+			}
+			CString baseHash, localHash, remoteHash;
+			ParseHashesFromLsFile(vector, baseHash, localHash, remoteHash);
+			if (resolveWith == RESOLVE_WITH_THEIRS && submoduleHead.ToString() != remoteHash)
+			{
+				CString origPath = g_Git.m_CurrentDir;
+				g_Git.m_CurrentDir = g_Git.CombinePath(path);
+				if (!GitReset(&remoteHash))
+				{
+					g_Git.m_CurrentDir = origPath;
+					return -1;
+				}
+				g_Git.m_CurrentDir = origPath;
+			}
+			else if (resolveWith == RESOLVE_WITH_MINE && submoduleHead.ToString() != localHash)
+			{
+				CString origPath = g_Git.m_CurrentDir;
+				g_Git.m_CurrentDir = g_Git.CombinePath(path);
+				if (!GitReset(&localHash))
+				{
+					g_Git.m_CurrentDir = origPath;
+					return -1;
+				}
+				g_Git.m_CurrentDir = origPath;
+			}
+		}
+		else
+		{
+			MessageBox(nullptr, err, _T("TortoiseGit"), MB_ICONERROR);
+			return -1;
+		}
+	}
+
 	if (resolveWith == RESOLVE_WITH_THEIRS)
 	{
 		CString gitcmd, output;
@@ -3524,7 +3580,7 @@ int CAppUtils::ResolveConflict(CTGitPath& path, resolve_with resolveWith)
 			return -1;
 		}
 	}
-	else if (resolveWith == RESOLVE_WITH_MINE)
+	else if (resolveWith == RESOLVE_WITH_THEIRS)
 	{
 		CString gitcmd, output;
 		if (b_local && b_remote)
