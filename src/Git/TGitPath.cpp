@@ -990,13 +990,13 @@ CTGitPathList::CTGitPathList(const CTGitPath& firstEntry)
 }
 int CTGitPathList::ParserFromLsFile(BYTE_VECTOR &out,bool /*staged*/)
 {
-	unsigned int pos=0;
+	int pos=0;
 	CString one;
 	CTGitPath path;
 	CString part;
 	this->Clear();
 
-	while(pos>=0 && pos<out.size())
+	while (pos >= 0 && pos < (int)out.size())
 	{
 		one.Empty();
 		path.Reset();
