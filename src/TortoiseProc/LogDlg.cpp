@@ -793,7 +793,10 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 			// to be exact: CRLF is treated as one char.
 			text.Remove('\r');
 
-			FindGitHash(text, text.Find('\n'), pMsgView);
+			int findHashStart = text.Find('\n');
+			if (!out_describe.IsEmpty())
+				findHashStart = text.Find('\n', findHashStart + 1);
+			FindGitHash(text, findHashStart, pMsgView);
 			m_LogList.m_ProjectProperties.FindBugID(text, pMsgView);
 			if (((DWORD)CRegStdDWORD(_T("Software\\TortoiseGit\\StyleCommitMessages"), TRUE)) == TRUE)
 				CAppUtils::FormatTextInRichEditControl(pMsgView);
