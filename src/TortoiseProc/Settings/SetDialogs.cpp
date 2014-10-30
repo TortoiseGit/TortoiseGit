@@ -126,11 +126,10 @@ BOOL CSetDialogs::OnInitDialog()
 	ISettingsPropPage::OnInitDialog();
 
 	AdjustControlSize(IDC_SHORTDATEFORMAT);
-	AdjustControlSize(IDC_SHORTDATEFORMAT);
 	AdjustControlSize(IDC_RELATIVETIMES);
 	AdjustControlSize(IDC_ASTERISKLOGPREFIX);
-	AdjustControlSize(IDC_DIFFBYDOUBLECLICK);
 	AdjustControlSize(IDC_SYSTEMLOCALEFORDATES);
+	AdjustControlSize(IDC_DIFFBYDOUBLECLICK);
 	AdjustControlSize(IDC_ABBREVIATERENAMINGS);
 	AdjustControlSize(IDC_SYMBOLIZEREFNAMES);
 	AdjustControlSize(IDC_ENABLELOGCACHE);
