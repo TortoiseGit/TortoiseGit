@@ -785,15 +785,22 @@ STDMETHODIMP CShellExt::QueryDropContext(UINT uFlags, UINT idCmdFirst, HMENU hMe
 	//if they are versioned, they also can be exported to an unversioned location
 	UINT idCmd = idCmdFirst;
 
+	bool moveAvailable = false;
 	// Git move here
 	// available if source is versioned but not added, target is versioned, source and target from same repository or target folder is added
-	if ((bSourceAndTargetFromSameRepository||(itemStatesFolder & ITEMIS_ADDED))&&(itemStatesFolder & ITEMIS_FOLDERINGIT)&&((itemStates & ITEMIS_INGIT)&&((~itemStates) & ITEMIS_ADDED)))
+	if ((bSourceAndTargetFromSameRepository || (itemStatesFolder & ITEMIS_ADDED)) && (itemStatesFolder & ITEMIS_FOLDERINGIT) && ((itemStates & (ITEMIS_NORMAL | ITEMIS_INGIT | ITEMIS_FOLDERINGIT)) && ((~itemStates) & ITEMIS_ADDED)))
+	{
 		InsertGitMenu(FALSE, hMenu, indexMenu++, idCmd++, IDS_DROPMOVEMENU, 0, idCmdFirst, ShellMenuDropMove, uFlags);
+		moveAvailable = true;
+	}
 
 	// Git move and rename here
 	// available if source is a single, versioned but not added item, target is versioned, source and target from same repository or target folder is added
-	if ((bSourceAndTargetFromSameRepository||(itemStatesFolder & ITEMIS_ADDED))&&(itemStatesFolder & ITEMIS_FOLDERINGIT)&&(itemStates & ITEMIS_INGIT)&&(itemStates & ITEMIS_ONLYONE)&&((~itemStates) & ITEMIS_ADDED))
+	if ((bSourceAndTargetFromSameRepository || (itemStatesFolder & ITEMIS_ADDED)) && (itemStatesFolder & ITEMIS_FOLDERINGIT) && (itemStates & (ITEMIS_NORMAL | ITEMIS_INGIT | ITEMIS_FOLDERINGIT)) && (itemStates & ITEMIS_ONLYONE) && ((~itemStates) & ITEMIS_ADDED))
+	{
 		InsertGitMenu(FALSE, hMenu, indexMenu++, idCmd++, IDS_DROPMOVERENAMEMENU, 0, idCmdFirst, ShellMenuDropMoveRename, uFlags);
+		moveAvailable = true;
+	}
 
 	// Git copy here
 	// available if source is versioned but not added, target is versioned, source and target from same repository or target folder is added
@@ -807,7 +814,7 @@ STDMETHODIMP CShellExt::QueryDropContext(UINT uFlags, UINT idCmdFirst, HMENU hMe
 
 	// Git add here
 	// available if target is versioned and source is either unversioned or from another repository
-	if ((itemStatesFolder & ITEMIS_FOLDERINGIT)&&(((~itemStates) & ITEMIS_INGIT)||!bSourceAndTargetFromSameRepository))
+	if ((itemStatesFolder & ITEMIS_FOLDERINGIT) && (((~itemStates) & ITEMIS_INGIT) || !bSourceAndTargetFromSameRepository) && !moveAvailable)
 		InsertGitMenu(FALSE, hMenu, indexMenu++, idCmd++, IDS_DROPCOPYADDMENU, 0, idCmdFirst, ShellMenuDropCopyAdd, uFlags);
 
 	// Git export here
