@@ -73,40 +73,38 @@ protected:
 		CWnd* pwndDlgItem = GetDlgItem(nID);
 		if (!pwndDlgItem)
 			return;
-		// adjust the size of the control to fit its content
+		CDC* pDC = pwndDlgItem->GetWindowDC();
+		if (!pDC)
+			return;
+
 		CString sControlText;
 		pwndDlgItem->GetWindowText(sControlText);
-		// next step: find the rectangle the control text needs to
-		// be displayed
 
-		CDC* pDC = pwndDlgItem->GetWindowDC();
-		RECT controlrect;
-		RECT controlrectorig;
-		pwndDlgItem->GetWindowRect(&controlrect);
-		::MapWindowPoints(nullptr, GetSafeHwnd(), (LPPOINT)&controlrect, 2);
-		controlrectorig = controlrect;
-		if (pDC)
+		CRect ctrlRect;
+		CRect ctrlRectOrig;
+		pwndDlgItem->GetWindowRect(&ctrlRect);
+		::MapWindowPoints(nullptr, GetSafeHwnd(), (LPPOINT)&ctrlRect, 2);
+		ctrlRectOrig = ctrlRect;
+
+		// find the rectangle the control text needs to be displayed
+		CFont* font = pwndDlgItem->GetFont();
+		CFont* pOldFont = pDC->SelectObject(font);
+		if (pDC->DrawText(sControlText, -1, &ctrlRect, DT_WORDBREAK | DT_EDITCONTROL | DT_EXPANDTABS | DT_LEFT | DT_CALCRECT))
 		{
-			CFont* font = pwndDlgItem->GetFont();
-			CFont* pOldFont = pDC->SelectObject(font);
-			if (pDC->DrawText(sControlText, -1, &controlrect, DT_WORDBREAK | DT_EDITCONTROL | DT_EXPANDTABS | DT_LEFT | DT_CALCRECT))
+			// now we have the rectangle the control really needs
+			if (ctrlRectOrig.Width() > ctrlRect.Width())
 			{
-				// now we have the rectangle the control really needs
-				if ((controlrectorig.right - controlrectorig.left) > (controlrect.right - controlrect.left))
-				{
-					// we're dealing with radio buttons and check boxes,
-					// which means we have to add a little space for the checkbox
-					// the value of 3 pixels added here is necessary in case certain visual styles have
-					// been disabled. Without this, the width is calculated too short.
-					const int checkWidth = GetSystemMetrics(SM_CXMENUCHECK) + 2 * GetSystemMetrics(SM_CXEDGE) + 3;
-					controlrectorig.right = controlrectorig.left + (controlrect.right - controlrect.left) + checkWidth;
-					pwndDlgItem->MoveWindow(&controlrectorig);
-				}
+				// we're dealing with radio buttons and check boxes,
+				// which means we have to add a little space for the checkbox
+				// the value of 3 pixels added here is necessary in case certain visual styles have
+				// been disabled. Without this, the width is calculated too short.
+				const int checkWidth = GetSystemMetrics(SM_CXMENUCHECK) + 2 * GetSystemMetrics(SM_CXEDGE) + 3;
+				ctrlRectOrig.right = ctrlRectOrig.left + ctrlRect.Width() + checkWidth;
+				pwndDlgItem->MoveWindow(&ctrlRectOrig);
 			}
-			pDC->SelectObject(pOldFont);
-			ReleaseDC(pDC);
 		}
-		return;
+		pDC->SelectObject(pOldFont);
+		ReleaseDC(pDC);
 	}
 
     /**
