@@ -1212,6 +1212,10 @@ void CLogDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 		popup.AppendMenuIcon(++cnt, IDS_MENUREFBROWSE);
 		popup.SetDefaultItem(cnt);
 		popup.AppendMenuIcon(++cnt, _T("HEAD"));
+		CGitHash fetchHead;
+		g_Git.GetHash(fetchHead, g_Git.FixBranchName(_T("FETCH_HEAD")));
+		popup.AppendMenuIcon(++cnt, _T("FETCH_HEAD"));
+		popup.EnableMenuItem(cnt, fetchHead.IsEmpty());
 		popup.AppendMenuIcon(++cnt, IDS_ALL);
 		popup.EnableMenuItem(cnt, m_bFollowRenames);
 		popup.AppendMenuIcon(++cnt, IDS_PROC_LOG_SELECT_LOCAL_BRANCHES);
@@ -1246,10 +1250,14 @@ void CLogDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 		}
 		else if (cmd == 3)
 		{
+			SetRange(fetchHead.ToString());
+		}
+		else if (cmd == 4)
+		{
 			m_bAllBranch = BST_CHECKED;
 			m_LogList.m_ShowMask |= CGit::LOG_INFO_ALL_BRANCH;
 		}
-		else if (cmd == 4)
+		else if (cmd == 5)
 		{
 			m_bAllBranch = BST_INDETERMINATE;
 			m_LogList.m_ShowMask |= CGit::LOG_INFO_LOCAL_BRANCHES;
