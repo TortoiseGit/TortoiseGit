@@ -199,7 +199,7 @@ void CSyncDlg::OnBnClickedButtonPull()
 		if(m_Gitverion >= 0x01070203) //above 1.7.0.2
 			force += _T("--progress ");
 
-		cmd.Format(_T("git.exe pull -v %s \"%s\" %s"),
+		cmd.Format(_T("git.exe pull -v --no-rebase %s \"%s\" %s"),
 				force,
 				m_strURL,
 				remotebranch);

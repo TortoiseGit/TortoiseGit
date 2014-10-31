@@ -2296,7 +2296,7 @@ bool CAppUtils::Pull(bool showPush)
 		if(ver >= 0x01070203) //above 1.7.0.2
 			cmdRebase += _T("--progress ");
 
-		cmd.Format(_T("git.exe pull -v %s%s%s%s%s%s%s%s\"%s\" %s"), cmdRebase, noff, ffonly, squash, nocommit, depth, notags, prune, url, dlg.m_RemoteBranchName);
+		cmd.Format(_T("git.exe pull -v --no-rebase %s%s%s%s%s%s%s%s\"%s\" %s"), cmdRebase, noff, ffonly, squash, nocommit, depth, notags, prune, url, dlg.m_RemoteBranchName);
 		CProgressDlg progress;
 		progress.m_GitCmd = cmd;
 
