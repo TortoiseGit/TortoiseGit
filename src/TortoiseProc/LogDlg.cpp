@@ -134,6 +134,7 @@ void CLogDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_SEARCHEDIT, m_cFilter);
 	DDX_Control(pDX, IDC_STATIC_REF, m_staticRef);
 	DDX_Control(pDX, IDC_PIC_AUTHOR, m_gravatar);
+	DDX_Control(pDX, IDC_FILTER, m_cFileFilter);
 }
 
 BEGIN_MESSAGE_MAP(CLogDlg, CResizableStandAloneDialog)
@@ -165,6 +166,7 @@ BEGIN_MESSAGE_MAP(CLogDlg, CResizableStandAloneDialog)
 	ON_NOTIFY(LVN_COLUMNCLICK,IDC_LOGLIST, OnLvnColumnclick)
 	ON_COMMAND(MSG_FETCHED_DIFF, OnBnClickedHidepaths)
 	ON_BN_CLICKED(IDC_LOG_ALLBRANCH, OnBnClickedAllBranch)
+	ON_EN_CHANGE(IDC_FILTER, OnEnChangeFileFilter)
 
 	ON_NOTIFY(DTN_DROPDOWN, IDC_DATEFROM, &CLogDlg::OnDtnDropdownDatefrom)
 	ON_NOTIFY(DTN_DROPDOWN, IDC_DATETO, &CLogDlg::OnDtnDropdownDateto)
@@ -331,6 +333,7 @@ BOOL CLogDlg::OnInitDialog()
 	AddAnchor(IDC_WALKBEHAVIOUR, BOTTOM_LEFT);
 	AddAnchor(IDC_VIEW, BOTTOM_LEFT);
 	AddAnchor(IDC_LOG_ALLBRANCH,BOTTOM_LEFT);
+	AddAnchor(IDC_FILTER, BOTTOM_LEFT);
 	AddAnchor(IDC_SHOWWHOLEPROJECT, BOTTOM_LEFT);
 	AddAnchor(IDC_REFRESH, BOTTOM_LEFT);
 	AddAnchor(IDC_STATBUTTON, BOTTOM_RIGHT);
@@ -440,6 +443,12 @@ BOOL CLogDlg::OnInitDialog()
 	m_LogList.FetchLogAsync(this);
 	ShowGravatar();
 	m_gravatar.Init();
+
+	m_cFileFilter.SetCancelBitmaps(IDI_CANCELNORMAL, IDI_CANCELPRESSED);
+	m_cFileFilter.SetInfoIcon(IDI_FILTEREDIT);
+	temp.LoadString(IDS_FILEDIFF_FILTERCUE);
+	temp = _T("   ") + temp;
+	m_cFileFilter.SetCueBanner(temp);
 
 	GetDlgItem(IDC_LOGLIST)->SetFocus();
 
@@ -808,6 +817,8 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 
 			CString matchpath=this->m_path.GetGitPathString();
 
+			bool mightNeedReset = true;
+
 			int count = pLogEntry->GetFiles(&m_LogList).GetCount();
 			for (int i = 0 ; i < count && (!matchpath.IsEmpty()); ++i)
 			{
@@ -815,6 +826,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 					break;
 
 				((CTGitPath&)pLogEntry->GetFiles(&m_LogList)[i]).m_Action &= ~(CTGitPath::LOGACTIONS_HIDE|CTGitPath::LOGACTIONS_GRAY);
+				mightNeedReset = false;
 
 				if(pLogEntry->GetFiles(&m_LogList)[i].GetGitPathString().Left(matchpath.GetLength()) != matchpath && pLogEntry->GetFiles(&m_LogList)[i].GetGitOldPathString().Left(matchpath.GetLength()) != matchpath)
 				{
@@ -823,6 +835,23 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 					else if (m_iHidePaths == 2)
 						((CTGitPath&)pLogEntry->GetFiles(&m_LogList)[i]).m_Action |= CTGitPath::LOGACTIONS_GRAY;
 				}
+			}
+
+			if (mightNeedReset)
+			{
+				for (int i = 0 ; i < count; ++i)
+					((CTGitPath&)pLogEntry->GetFiles(&m_LogList)[i]).m_Action &= ~CTGitPath::LOGACTIONS_HIDE;
+			}
+
+			CString fileFilter;
+			m_cFileFilter.GetWindowText(fileFilter);
+			fileFilter.MakeLower();
+			for (int i = 0; i < count && (!fileFilter.IsEmpty()); ++i)
+			{
+				CString sPath = pLogEntry->GetFiles(&m_LogList)[i].GetGitPathString();
+				sPath.MakeLower();
+				if (sPath.Find(fileFilter) < 0)
+					((CTGitPath&)pLogEntry->GetFiles(&m_LogList)[i]).m_Action |= CTGitPath::LOGACTIONS_HIDE;
 			}
 
 			m_ChangedFileListCtrl.UpdateWithGitPathList(pLogEntry->GetFiles(&m_LogList));
@@ -1518,7 +1547,7 @@ void CLogDlg::DoDiffFromLog(INT_PTR selIndex, GitRev* rev1, GitRev* rev2, bool /
 BOOL CLogDlg::PreTranslateMessage(MSG* pMsg)
 {
 	// Skip Ctrl-C when copying text out of the log message or search filter
-	bool bSkipAccelerator = (pMsg->message == WM_KEYDOWN && (pMsg->wParam == 'C' || pMsg->wParam == VK_INSERT) && (GetFocus() == GetDlgItem(IDC_MSGVIEW) || GetFocus() == GetDlgItem(IDC_SEARCHEDIT)) && GetKeyState(VK_CONTROL) & 0x8000);
+	bool bSkipAccelerator = (pMsg->message == WM_KEYDOWN && (pMsg->wParam == 'C' || pMsg->wParam == VK_INSERT) && (GetFocus() == GetDlgItem(IDC_MSGVIEW) || GetFocus() == GetDlgItem(IDC_SEARCHEDIT) || GetFocus() == GetDlgItem(IDC_FILTER)) && GetKeyState(VK_CONTROL) & 0x8000);
 	if (pMsg->message == WM_KEYDOWN && pMsg->wParam=='\r')
 	{
 		if (GetFocus()==GetDlgItem(IDC_LOGLIST))
@@ -1535,6 +1564,12 @@ BOOL CLogDlg::PreTranslateMessage(MSG* pMsg)
 			m_limit = 0;
 			m_LogList.Refresh(FALSE);
 			FillLogMessageCtrl(false);
+		}
+		if (GetFocus() == GetDlgItem(IDC_FILTER))
+		{
+			KillTimer(FILEFILTER_TIMER);
+			FillLogMessageCtrl();
+			return TRUE;
 		}
 	}
 	else if (pMsg->message == WM_XBUTTONUP)
@@ -1835,8 +1870,11 @@ void CLogDlg::SetSplitterRange()
 	}
 }
 
-LRESULT CLogDlg::OnClickedInfoIcon(WPARAM /*wParam*/, LPARAM lParam)
+LRESULT CLogDlg::OnClickedInfoIcon(WPARAM wParam, LPARAM lParam)
 {
+	if ((HWND)wParam == m_cFileFilter.GetSafeHwnd())
+		return 0;
+
 	// FIXME: x64 version would get this function called with unexpected parameters.
 	if (!lParam)
 		return 0;
@@ -1925,8 +1963,15 @@ LRESULT CLogDlg::OnClickedInfoIcon(WPARAM /*wParam*/, LPARAM lParam)
 	return 0L;
 }
 
-LRESULT CLogDlg::OnClickedCancelFilter(WPARAM /*wParam*/, LPARAM /*lParam*/)
+LRESULT CLogDlg::OnClickedCancelFilter(WPARAM wParam, LPARAM /*lParam*/)
 {
+	if ((HWND)wParam == m_cFileFilter.GetSafeHwnd())
+	{
+		KillTimer(FILEFILTER_TIMER);
+
+		FillLogMessageCtrl();
+		return 0L;
+	}
 
 	KillTimer(LOGFILTER_TIMER);
 
@@ -2027,6 +2072,10 @@ bool CLogDlg::Validate(LPCTSTR string)
 	return m_LogList.ValidateRegexp(string, pat, false);
 }
 
+void CLogDlg::OnEnChangeFileFilter()
+{
+	SetTimer(FILEFILTER_TIMER, 1000, NULL);
+}
 
 void CLogDlg::OnTimer(UINT_PTR nIDEvent)
 {
@@ -2094,6 +2143,11 @@ void CLogDlg::OnTimer(UINT_PTR nIDEvent)
 		CLogOrdering orderDlg;
 		if (orderDlg.DoModal() == IDOK)
 			Refresh();
+	}
+	else if (nIDEvent == FILEFILTER_TIMER)
+	{
+		KillTimer(FILEFILTER_TIMER);
+		FillLogMessageCtrl();
 	}
 	DialogEnableWindow(IDC_STATBUTTON, !(((this->IsThreadRunning())||(m_LogList.m_arShownList.IsEmpty() || m_LogList.m_arShownList.GetCount() == 1 && m_LogList.m_bShowWC))));
 	__super::OnTimer(nIDEvent);
