@@ -2565,11 +2565,10 @@ static bool DoFetch(const CString& url, const bool fetchAllRemotes, const bool l
 	return userResponse == IDOK;
 }
 
-bool CAppUtils::Fetch(const CString& remoteName, bool allowRebase, bool allRemotes)
+bool CAppUtils::Fetch(const CString& remoteName, bool allRemotes)
 {
 	CPullFetchDlg dlg;
 	dlg.m_PreSelectRemote = remoteName;
-	dlg.m_bAllowRebase = allowRebase;
 	dlg.m_IsPull=FALSE;
 	dlg.m_bAllRemotes = allRemotes;
 
@@ -2684,7 +2683,7 @@ bool CAppUtils::Push(const CString& selectLocalBranch)
 				if (rejected)
 				{
 					postCmdList.push_back(PostCmd(IDI_PULL, IDS_MENUPULL, []{ Pull(true); }));
-					postCmdList.push_back(PostCmd(IDI_PULL, IDS_MENUFETCH, [&]{ Fetch(dlg.m_bPushAllRemotes ? _T("") : dlg.m_URL, true, !!dlg.m_bPushAllRemotes); }));
+					postCmdList.push_back(PostCmd(IDI_PULL, IDS_MENUFETCH, [&]{ Fetch(dlg.m_bPushAllRemotes ? _T("") : dlg.m_URL, !!dlg.m_bPushAllRemotes); }));
 				}
 				postCmdList.push_back(PostCmd(IDI_PUSH, IDS_MENUPUSH, [&]{ Push(selectLocalBranch); }));
 				return;
