@@ -71,6 +71,8 @@ protected:
 	CString		m_configPullRemote;
 	CString		m_configPullBranch;
 
+	bool		m_bRebaseActivatedInConfigForPull;
+
 	CHyperLink	m_RemoteManage;
 
 	afx_msg void OnCbnSelchangeRemote();
