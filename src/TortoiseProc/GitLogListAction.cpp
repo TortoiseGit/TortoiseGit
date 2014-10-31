@@ -840,7 +840,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			break;
 		case ID_FETCH:
 			{
-				if (CAppUtils::Fetch(_T(""), true))
+				if (CAppUtils::Fetch())
 					Refresh();
 			}
 			break;

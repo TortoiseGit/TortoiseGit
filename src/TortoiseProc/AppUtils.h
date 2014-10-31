@@ -179,7 +179,7 @@ public:
 
 	static bool Pull(bool showPush = false);
 	static bool RebaseAfterFetch(const CString& upstream = _T(""));
-	static bool Fetch(const CString& remoteName = _T(""), bool allowRebase = false, bool allRemotes = false);
+	static bool Fetch(const CString& remoteName = _T(""), bool allRemotes = false);
 	static bool Push(const CString& selectLocalBranch = CString());
 	static bool RequestPull(const CString& endrevision = _T(""), const CString& repositoryUrl = _T(""), bool bIsMainWnd = false);
 

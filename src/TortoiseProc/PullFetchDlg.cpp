@@ -34,7 +34,6 @@ CPullFetchDlg::CPullFetchDlg(CWnd* pParent /*=NULL*/)
 	: CHorizontalResizableStandAloneDialog(CPullFetchDlg::IDD, pParent)
 {
 	m_IsPull=TRUE;
-	m_bAllowRebase = false;
 	m_bAutoLoad = CAppUtils::IsSSHPutty();
 	m_bAutoLoadEnable=CAppUtils::IsSSHPutty();;
 	m_regRebase = false;
@@ -137,7 +136,7 @@ BOOL CPullFetchDlg::OnInitDialog()
 	if(!CAppUtils::IsSSHPutty())
 		m_bAutoLoad = false;
 
-	m_bRebase = m_bAllowRebase && m_regRebase;
+	m_bRebase = m_regRebase;
 
 	CAutoRepository repo(g_Git.GetGitRepository());
 	if (!repo)

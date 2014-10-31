@@ -50,7 +50,6 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	BOOL		m_IsPull;
-	bool		m_bAllowRebase;
 	BOOL		m_bAutoLoad;
 	BOOL		m_bRebase;
 	BOOL		m_bPrune;

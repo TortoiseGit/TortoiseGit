@@ -28,5 +28,5 @@ bool FetchCommand::Execute()
 		return false;
 	}
 
-	return CAppUtils::Fetch(parser.GetVal(_T("remote")), true);
+	return CAppUtils::Fetch(parser.GetVal(_T("remote")));
 }
