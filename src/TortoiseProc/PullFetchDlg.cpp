@@ -34,6 +34,7 @@ CPullFetchDlg::CPullFetchDlg(CWnd* pParent /*=NULL*/)
 	: CHorizontalResizableStandAloneDialog(CPullFetchDlg::IDD, pParent)
 {
 	m_IsPull=TRUE;
+	m_bRebaseActivatedInConfigForPull = false;
 	m_bAutoLoad = CAppUtils::IsSSHPutty();
 	m_bAutoLoadEnable=CAppUtils::IsSSHPutty();;
 	m_regRebase = false;
@@ -169,8 +170,8 @@ BOOL CPullFetchDlg::OnInitDialog()
 
 		// Since rebase = true in config, means that "git.exe pull" will ALWAYS rebase without "--rebase".
 		// So, lock it, then let Fetch Rebase do the rest things.
-		GetDlgItem(IDC_CHECK_REBASE)->EnableWindow(FALSE);
 		m_bRebase = TRUE;
+		m_bRebaseActivatedInConfigForPull = true;
 	} while (0);
 
 	this->UpdateData(FALSE);
@@ -330,6 +331,9 @@ void CPullFetchDlg::OnBnClickedRd()
 	{
 		m_Remote.EnableWindow(TRUE);
 		m_Other.EnableWindow(FALSE);
+		DialogEnableWindow(IDC_CHECK_REBASE, TRUE);
+		m_bRebase = m_bRebaseActivatedInConfigForPull;
+		UpdateData(FALSE);
 		if(!m_IsPull)
 			m_RemoteBranch.EnableWindow(FALSE);
 	}
@@ -351,6 +355,9 @@ void CPullFetchDlg::OnBnClickedRd()
 		}
 		m_Remote.EnableWindow(FALSE);
 		m_Other.EnableWindow(TRUE);;
+		DialogEnableWindow(IDC_CHECK_REBASE, FALSE);
+		m_bRebase = FALSE;
+		UpdateData(FALSE);
 		if(!m_IsPull)
 			m_RemoteBranch.EnableWindow(TRUE);
 	}
