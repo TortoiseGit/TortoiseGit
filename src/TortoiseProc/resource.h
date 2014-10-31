@@ -1166,6 +1166,7 @@
 #define IDC_SPIN_NUM                    1536
 #define IDS_SETTINGS_ASTERISKLOGPREFIX_TT 1536
 #define IDC_COMBOBOXEX_DIR              1537
+#define IDS_SUBMODULEDIFF_IDENTICAL     1537
 #define IDC_GROUP_DIR                   1538
 #define IDC_GROUP_VERSION               1539
 #define IDC_EDIT_NUM                    1540
@@ -1352,8 +1353,11 @@
 #define IDC_TOHASH                      1679
 #define IDC_TOSUBJECT                   1680
 #define IDC_CHECK_NEWBRANCH             1681
+#define IDC_TOGROUP2                    1681
 #define IDC_CHECK_CHERRYPICKED_FROM     1682
+#define IDC_THEIRSHASH                  1682
 #define IDC_CREATELIB                   1683
+#define IDC_THEIRSSUBJECT               1683
 #define IDC_BUTTON_REVISION             1684
 #define IDC_REPOBROWSER_URL             1685
 #define IDC_REFLOG_BUTTONCLEARSTASH     1686
@@ -1371,6 +1375,7 @@
 #define IDC_SHOW_DIFF                   1696
 #define IDC_GROUP_CHANGELOG             1697
 #define IDC_GROUP_DOWNLOADS             1698
+#define IDC_LOG3                        1698
 #define IDC_SELECTLABEL                 1700
 #define IDS_ABOUTVERSION                1700
 #define IDC_CHECKALL                    1701
@@ -1390,13 +1395,17 @@
 #define IDC_STATIC_SUBJECT              1714
 #define IDC_STATIC_SUBJECT2             1715
 #define IDC_CHECK_NOCHECKOUT            1716
+#define IDC_STATIC_REVISION3            1716
 #define IDC_VIEWSYSTEMGITCONFIG         1717
+#define IDC_STATIC_SUBJECT3             1717
 #define IDC_EDITGLOBALXDGGITCONFIG      1718
 #define IDC_COMMIT_MESSAGEONLY          1719
 #define IDC_STATIC_CHANGETYPE           1720
 #define IDC_CHANGETYPE                  1721
 #define IDC_GROUP                       1722
+#define IDC_STATIC_CHANGETYPE2          1722
 #define IDC_LOG_JUMPTYPE                1723
+#define IDC_THEIRSCHANGETYPE            1723
 #define IDC_LOG_JUMPUP                  1724
 #define IDC_LOG_JUMPDOWN                1725
 #define IDC_TEMPFILESCLEAR              1726
@@ -1515,6 +1524,13 @@
 #define IDC_BACKADDEDCOLOR              1817
 #define IDC_FOREREMOVEDCOLOR            1818
 #define IDC_BACKREMOVEDCOLOR            1819
+#define IDC_BASEHASH                    1820
+#define IDC_BASESUBJECT                 1821
+#define IDC_MINECHANGETYPE              1822
+#define IDC_MINEHASH                    1823
+#define IDC_MINESUBJECT                 1824
+#define IDC_BUTTON_UPDATE2              1825
+#define IDC_BUTTON_UPDATE3              1826
 #define IDS_LOG_FILTER_BY               1850
 #define IDS_LOG_FILTER_PATHS            1851
 #define IDS_LOG_FILTER_AUTHORS          1852
@@ -1795,6 +1811,7 @@
 #define IDD_MERGEABORT                  4592
 #define IDD_SETTINGSDIALOGS3            4593
 #define IDD_CERTCHECK                   4594
+#define IDD_RESOLVESUBMODULECONFLICT    4595
 #define IDC_COMBOBOXEX_LOCAL_BRANCH     5000
 #define IDC_COMBOBOXEX_REMOTE_BRANCH    5001
 #define IDC_COMBOBOXEX_BAD              5001
@@ -1970,7 +1987,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        358
 #define _APS_NEXT_COMMAND_VALUE         32873
-#define _APS_NEXT_CONTROL_VALUE         1820
+#define _APS_NEXT_CONTROL_VALUE         1827
 #define _APS_NEXT_SYMED_VALUE           201
 #endif
 #endif

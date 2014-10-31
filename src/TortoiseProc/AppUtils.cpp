@@ -69,6 +69,8 @@
 #include "ProgressCommands/SendMailProgressCommand.h"
 #include "CertificateValidationHelper.h"
 #include "CheckCertificateDlg.h"
+#include "SubmoduleResolveConflictDlg.h"
+#include "GitDiff.h"
 
 static struct last_accepted_cert {
 	BYTE*		data;
@@ -1593,13 +1595,66 @@ bool CAppUtils::ConflictEdit(const CTGitPath& path, bool /*bAlternativeTool = fa
 
 	if (merge.IsDirectory())
 	{
-		CString baseHash, localHash, remoteHash;
-		if (!ParseHashesFromLsFile(vector, baseHash, localHash, remoteHash))
+		CString baseHash, realBaseHash(GIT_REV_ZERO), localHash(GIT_REV_ZERO), remoteHash(GIT_REV_ZERO);
+		if (merge.HasAdminDir()) {
+			CGit subgit;
+			subgit.m_CurrentDir = g_Git.CombinePath(merge);
+			CGitHash hash;
+			subgit.GetHash(hash, _T("HEAD"));
+			baseHash = hash;
+		}
+		if (ParseHashesFromLsFile(vector, realBaseHash, localHash, remoteHash)) // in base no submodule, but in remote submodule
+			baseHash = realBaseHash;
+
+		CGitDiff::ChangeType changeTypeMine = CGitDiff::Unknown;
+		CGitDiff::ChangeType changeTypeTheirs = CGitDiff::Unknown;
+
+		bool baseOK = false, mineOK = false, theirsOK = false;
+		CString baseSubject, mineSubject, theirsSubject;
+		if (merge.HasAdminDir())
+		{
+			CGit subgit;
+			subgit.m_CurrentDir = g_Git.CombinePath(merge);
+			CGitDiff::GetSubmoduleChangeType(subgit, baseHash, localHash, baseOK, mineOK, changeTypeMine, baseSubject, mineSubject);
+			CGitDiff::GetSubmoduleChangeType(subgit, baseHash, remoteHash, baseOK, theirsOK, changeTypeTheirs, baseSubject, theirsSubject);
+		}
+		else if (baseHash == GIT_REV_ZERO && localHash == GIT_REV_ZERO && remoteHash != GIT_REV_ZERO) // merge conflict with no submodule, but submodule in merged revision (not initialized) 
+		{
+			changeTypeMine = CGitDiff::Identical;
+			changeTypeTheirs = CGitDiff::NewSubmodule;
+			baseSubject = _T("no submodule");
+			mineSubject = baseSubject;
+			theirsSubject = _T("not initialized");
+		}
+		else if (baseHash.IsEmpty() && localHash != GIT_REV_ZERO && remoteHash == GIT_REV_ZERO) // merge conflict with no submodule initialized, but submodule exists in base and folder with no submodule is merged
+		{
+			baseHash = localHash;
+			baseSubject = _T("not initialized");
+			mineSubject = baseSubject;
+			theirsSubject = _T("not initialized");
+			changeTypeMine = CGitDiff::Identical;
+			changeTypeTheirs = CGitDiff::DeleteSubmodule;
+		}
+		else if (baseHash != GIT_REV_ZERO && localHash != GIT_REV_ZERO && remoteHash != GIT_REV_ZERO) // base has submodule, mine has submodule and theirs also, but not initialized
+		{
+			baseSubject = _T("not initialized");
+			mineSubject = baseSubject;
+			theirsSubject = baseSubject;
+			if (baseHash == localHash)
+				changeTypeMine = CGitDiff::Identical;
+		}
+		else
 			return FALSE;
 
-		CString msg;
-		msg.Format(_T("BASE: %s\nLOCAL: %s\nREMOTE: %s"), baseHash, localHash, remoteHash);
-		CMessageBox::Show(NULL, msg, _T("TortoiseGit"), MB_OK);
+		CSubmoduleResolveConflictDlg resolveSubmoduleConflictDialog;
+		resolveSubmoduleConflictDialog.SetDiff(merge.GetGitPathString(), revertTheirMy, baseHash, baseSubject, baseOK, localHash, mineSubject, mineOK, changeTypeMine, remoteHash, theirsSubject, theirsOK, changeTypeTheirs);
+		resolveSubmoduleConflictDialog.DoModal();
+		if (resolveSubmoduleConflictDialog.m_bResolved && resolveMsgHwnd)
+		{
+			static UINT WM_REVERTMSG = RegisterWindowMessage(_T("GITSLNM_NEEDSREFRESH"));
+			::PostMessage(resolveMsgHwnd, WM_REVERTMSG, NULL, NULL);
+		}
+
 		return TRUE;
 	}
 
@@ -3426,4 +3481,134 @@ void CAppUtils::ExploreTo(HWND hwnd, CString path)
 		path = path.Left(pos);
 	} while (!PathFileExists(path));
 	ShellExecute(hwnd, _T("explore"), path, nullptr, nullptr, SW_SHOW);
+}
+
+int CAppUtils::ResolveConflict(CTGitPath& path, resolve_with resolveWith)
+{
+	bool b_local = false, b_remote = false;
+	BYTE_VECTOR vector;
+	{
+		CString cmd;
+		cmd.Format(_T("git.exe ls-files -u -t -z -- \"%s\""), path.GetGitPathString());
+		if (g_Git.Run(cmd, &vector))
+		{
+			CMessageBox::Show(nullptr, _T("git ls-files failed!"), _T("TortoiseGit"), MB_OK);
+			return -1;
+		}
+
+		CTGitPathList list;
+		if (list.ParserFromLsFile(vector))
+		{
+			CMessageBox::Show(nullptr, _T("Parse ls-files failed!"), _T("TortoiseGit"), MB_OK);
+			return -1;
+		}
+
+		if (list.IsEmpty())
+			return 0;
+		for (int i = 0; i < list.GetCount(); ++i)
+		{
+			if (list[i].m_Stage == 2)
+				b_local = true;
+			if (list[i].m_Stage == 3)
+				b_remote = true;
+		}
+	}
+
+	if (path.IsDirectory()) // is submodule conflict
+	{
+		CString err = _T("We're sorry, but you hit a very rare conflict condition with a submodule which cannot be resolved by TortoiseGit. You have to use the command line git for this.");
+		if (b_local && b_remote)
+		{
+			if (!path.HasAdminDir()) // check if submodule is initialized
+			{
+				err += _T("\n\nYou have to checkout the submodule manually into \"") + path.GetGitPathString() + _T("\" and then reset HEAD to the right commit (see resolve submodule conflict dialog for this).");
+				MessageBox(nullptr, err, _T("TortoiseGit"), MB_ICONERROR);
+				return -1;
+			}
+			CGit subgit;
+			subgit.m_CurrentDir = g_Git.CombinePath(path);
+			CGitHash submoduleHead;
+			if (subgit.GetHash(submoduleHead, _T("HEAD")))
+			{
+				MessageBox(nullptr, err, _T("TortoiseGit"), MB_ICONERROR);
+				return -1;
+			}
+			CString baseHash, localHash, remoteHash;
+			ParseHashesFromLsFile(vector, baseHash, localHash, remoteHash);
+			if (resolveWith == RESOLVE_WITH_THEIRS && submoduleHead.ToString() != remoteHash)
+			{
+				CString origPath = g_Git.m_CurrentDir;
+				g_Git.m_CurrentDir = g_Git.CombinePath(path);
+				if (!GitReset(&remoteHash))
+				{
+					g_Git.m_CurrentDir = origPath;
+					return -1;
+				}
+				g_Git.m_CurrentDir = origPath;
+			}
+			else if (resolveWith == RESOLVE_WITH_MINE && submoduleHead.ToString() != localHash)
+			{
+				CString origPath = g_Git.m_CurrentDir;
+				g_Git.m_CurrentDir = g_Git.CombinePath(path);
+				if (!GitReset(&localHash))
+				{
+					g_Git.m_CurrentDir = origPath;
+					return -1;
+				}
+				g_Git.m_CurrentDir = origPath;
+			}
+		}
+		else
+		{
+			MessageBox(nullptr, err, _T("TortoiseGit"), MB_ICONERROR);
+			return -1;
+		}
+	}
+
+	if (resolveWith == RESOLVE_WITH_THEIRS)
+	{
+		CString gitcmd, output;
+		if (b_local && b_remote)
+			gitcmd.Format(_T("git.exe checkout-index -f --stage=3 -- \"%s\""), path.GetGitPathString());
+		else if (b_remote)
+			gitcmd.Format(_T("git.exe add -f -- \"%s\""), path.GetGitPathString());
+		else if (b_local)
+			gitcmd.Format(_T("git.exe rm -f -- \"%s\""), path.GetGitPathString());
+		if (g_Git.Run(gitcmd, &output, CP_UTF8))
+		{
+			CMessageBox::Show(nullptr, output, _T("TortoiseGit"), MB_ICONERROR);
+			return -1;
+		}
+	}
+	else if (resolveWith == RESOLVE_WITH_THEIRS)
+	{
+		CString gitcmd, output;
+		if (b_local && b_remote)
+			gitcmd.Format(_T("git.exe checkout-index -f --stage=2 -- \"%s\""), path.GetGitPathString());
+		else if (b_local)
+			gitcmd.Format(_T("git.exe add -f -- \"%s\""), path.GetGitPathString());
+		else if (b_remote)
+			gitcmd.Format(_T("git.exe rm -f -- \"%s\""), path.GetGitPathString());
+		if (g_Git.Run(gitcmd, &output, CP_UTF8))
+		{
+			CMessageBox::Show(nullptr, output, _T("TortoiseGit"), MB_ICONERROR);
+			return -1;
+		}
+	}
+
+	if (b_local && b_remote && path.m_Action & CTGitPath::LOGACTIONS_UNMERGED)
+	{
+		CString gitcmd, output;
+		gitcmd.Format(_T("git.exe add -f -- \"%s\""), path.GetGitPathString());
+		if (g_Git.Run(gitcmd, &output, CP_UTF8))
+			CMessageBox::Show(nullptr, output, _T("TortoiseGit"), MB_ICONERROR);
+		else
+		{
+			path.m_Action |= CTGitPath::LOGACTIONS_MODIFIED;
+			path.m_Action &= ~CTGitPath::LOGACTIONS_UNMERGED;
+		}
+	}
+
+	RemoveTempMergeFile(path);
+	return 0;
 }

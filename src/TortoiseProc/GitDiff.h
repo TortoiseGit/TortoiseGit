@@ -28,6 +28,21 @@ public:
 	CGitDiff(void);
 	~CGitDiff(void);
 
+	// if you change something here, also update SubmoduleDiffDlg.cpp and SubmoduleResolveConflictDlg.cpp!
+	enum ChangeType
+	{
+		Unknown,
+		Identical,
+		NewSubmodule,
+		DeleteSubmodule,
+		FastForward,
+		Rewind,
+		NewerTime,
+		OlderTime,
+		SameTime
+	};
+	static void GetSubmoduleChangeType(CGit& subgit, const CString& oldhash, const CString& newhash, bool& oldOK, bool& newOK, ChangeType& changeType, CString& oldsub, CString& newsub);
+
 	// Use two path to handle rename cases
 	static int Diff(const CTGitPath * pPath1, const CTGitPath *pPath2, git_revnum_t rev1, git_revnum_t rev2, bool blame = false, bool unified = false, int jumpToLine = 0);
 	static int SubmoduleDiff(const CTGitPath * pPath1, const CTGitPath *pPath2, const git_revnum_t &rev1, const git_revnum_t &rev2, bool blame = false, bool unified = false);

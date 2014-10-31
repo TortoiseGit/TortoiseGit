@@ -19,50 +19,50 @@
 #pragma once
 #include "HorizontalResizableStandAloneDialog.h"
 #include "resource.h"
-#include "MenuButton.h"
 #include "GitDiff.h"
 
-class CSubmoduleDiffDlg : public CHorizontalResizableStandAloneDialog
+class CSubmoduleResolveConflictDlg : public CHorizontalResizableStandAloneDialog
 {
-	DECLARE_DYNAMIC(CSubmoduleDiffDlg)
+	DECLARE_DYNAMIC(CSubmoduleResolveConflictDlg)
 
 public:
-	CSubmoduleDiffDlg(CWnd* pParent = NULL);
-	virtual ~CSubmoduleDiffDlg();
+	CSubmoduleResolveConflictDlg(CWnd* pParent = NULL);
+	virtual ~CSubmoduleResolveConflictDlg();
 
-	enum { IDD = IDD_DIFFSUBMODULE };
+	enum { IDD = IDD_RESOLVESUBMODULECONFLICT };
 
-	void SetDiff(CString path, bool toIsWorkingCopy, CString fromHash, CString fromSubject, bool fromOK, CString toHash, CString toSubject, bool toOK, bool dirty, CGitDiff::ChangeType changeType);
-	bool IsRefresh() { return m_bRefresh; }
+	void SetDiff(const CString& path, bool revertTheirMy, const CString& baseHash, const CString& baseSubject, bool baseOK, const CString& mineHash, const CString& mineSubject, bool mineOK, CGitDiff::ChangeType mineChangeType, const CString& theirsHash, const CString& theirsSubject, bool theirsOK, CGitDiff::ChangeType theirsChangeType);
 
-	static HBRUSH GetInvalidBrush(CDC* pDC);
-	static HBRUSH GetChangeTypeBrush(CDC* pDC, const CGitDiff::ChangeType& changeType);
+	bool m_bResolved;
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	virtual BOOL OnInitDialog();
 	virtual HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
-	virtual BOOL PreTranslateMessage(MSG* pMsg);
+
+	void Resolve(const CString& path, bool useMine);
 
 	afx_msg void OnBnClickedLog();
 	afx_msg void OnBnClickedLog2();
-	afx_msg void OnBnClickedShowDiff();
-	afx_msg void OnBnClickedButtonUpdate();
+	afx_msg void OnBnClickedLog3();
 	void ShowLog(CString hash);
-	CMenuButton	m_ctrlShowDiffBtn;
+	afx_msg void OnBnClickedButtonUpdate2();
+	afx_msg void OnBnClickedButtonUpdate3();
 
 	DECLARE_MESSAGE_MAP()
 
-	bool	m_bToIsWorkingCopy;
 	CString	m_sPath;
 
-	CString	m_sFromHash;
-	CString	m_sFromSubject;
-	bool	m_bFromOK;
-	CString	m_sToHash;
-	CString	m_sToSubject;
-	bool	m_bToOK;
-	bool	m_bDirty;
-	CGitDiff::ChangeType m_nChangeType;
-	bool	m_bRefresh;
+	CString	m_sBaseHash;
+	CString	m_sBaseSubject;
+	bool	m_bBaseOK;
+	CString	m_sMineHash;
+	CString	m_sMineSubject;
+	bool	m_bMineOK;
+	CString	m_sTheirsHash;
+	CString	m_sTheirsSubject;
+	bool	m_bTheirsOK;
+	CGitDiff::ChangeType m_nChangeTypeMine;
+	CGitDiff::ChangeType m_nChangeTypeTheirs;
+	bool	m_bRevertTheirMy;
 };

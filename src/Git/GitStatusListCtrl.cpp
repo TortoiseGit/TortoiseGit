@@ -2087,87 +2087,12 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 							if(fentry == NULL)
 								continue;
 
-							bool b_local = false, b_remote = false;
-							{
-								BYTE_VECTOR vector;
-								CString cmd;
-								cmd.Format(_T("git.exe ls-files -u -t -z -- \"%s\""), fentry->GetGitPathString());
-								if (g_Git.Run(cmd, &vector))
-								{
-									CMessageBox::Show(NULL, _T("git ls-files failed!"), _T("TortoiseGit"), MB_OK);								
-									continue;
-								}
-
-								CTGitPathList list;
-								if (list.ParserFromLsFile(vector))
-								{
-									CMessageBox::Show(NULL, _T("Parse ls-files failed!"), _T("TortoiseGit"), MB_OK);
-									continue;
-								}
-
-								if (list.IsEmpty())
-									continue;
-								for (int i = 0; i < list.GetCount(); ++i)
-								{
-									if (list[i].m_Stage == 2)
-										b_local = true;
-									if (list[i].m_Stage == 3)
-										b_remote = true;
-								}
-							}
-
-							CString gitcmd,output;
-							output.Empty();
-
-							if ( ((!this->m_bIsRevertTheirMy)&&cmd == IDGITLC_RESOLVETHEIRS) ||
-								 ((this->m_bIsRevertTheirMy)&&cmd == IDGITLC_RESOLVEMINE) )
-							{
-								if (b_local && b_remote)
-									gitcmd.Format(_T("git.exe checkout-index -f --stage=3 -- \"%s\""), fentry->GetGitPathString());
-								else if (b_remote)
-									gitcmd.Format(_T("git.exe add -f -- \"%s\""), fentry->GetGitPathString());
-								else if (b_local)
-									gitcmd.Format(_T("git.exe rm -f -- \"%s\""), fentry->GetGitPathString());
-								if (g_Git.Run(gitcmd, &output,CP_UTF8))
-								{
-									CMessageBox::Show(m_hWnd, output, _T("TortoiseGit"), MB_ICONERROR);
-									continue;
-								}
-							}
-							output.Empty();
-							if ( ((!this->m_bIsRevertTheirMy)&&cmd == IDGITLC_RESOLVEMINE) ||
-								 ((this->m_bIsRevertTheirMy)&&cmd == IDGITLC_RESOLVETHEIRS) )
-							{
-								if (b_local && b_remote)
-									gitcmd.Format(_T("git.exe checkout-index -f --stage=2 -- \"%s\""),fentry->GetGitPathString());
-								else if (b_local)
-									gitcmd.Format(_T("git.exe add -f -- \"%s\""), fentry->GetGitPathString());
-								else if (b_remote)
-									gitcmd.Format(_T("git.exe rm -f -- \"%s\""), fentry->GetGitPathString());
-								if (g_Git.Run(gitcmd, &output,CP_UTF8))
-								{
-									CMessageBox::Show(m_hWnd, output, _T("TortoiseGit"), MB_ICONERROR);
-									continue;
-								}
-
-							}
-							output.Empty();
-							if (b_local && b_remote && fentry->m_Action & CTGitPath::LOGACTIONS_UNMERGED)
-							{
-								gitcmd.Format(_T("git.exe add -f -- \"%s\""),fentry->GetGitPathString());
-								if (g_Git.Run(gitcmd, &output,CP_UTF8))
-								{
-									CMessageBox::Show(m_hWnd, output, _T("TortoiseGit"), MB_ICONERROR);
-								}
-								else
-								{
-									fentry->m_Action |= CTGitPath::LOGACTIONS_MODIFIED;
-									fentry->m_Action &=~CTGitPath::LOGACTIONS_UNMERGED;
-								}
-							}
-
-							CAppUtils::RemoveTempMergeFile(*fentry);
-
+							CAppUtils::resolve_with resolveWith = CAppUtils::RESOLVE_WITH_CURRENT;
+							if (((!this->m_bIsRevertTheirMy) && cmd == IDGITLC_RESOLVETHEIRS) || ((this->m_bIsRevertTheirMy) && cmd == IDGITLC_RESOLVEMINE))
+								resolveWith = CAppUtils::RESOLVE_WITH_THEIRS;
+							else if (((!this->m_bIsRevertTheirMy) && cmd == IDGITLC_RESOLVEMINE) || ((this->m_bIsRevertTheirMy) && cmd == IDGITLC_RESOLVETHEIRS))
+								resolveWith = CAppUtils::RESOLVE_WITH_MINE;
+							CAppUtils::ResolveConflict(*fentry, resolveWith);
 						}
 						Show(m_dwShow, 0, m_bShowFolders,0,true);
 					}

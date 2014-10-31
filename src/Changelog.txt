@@ -13,6 +13,7 @@ Released: unreleased
  * Fixed issue #2331: Show prefix log asterisk in Log Dialog
  * Fixed issue #2157: TortoiseGitMerge does not delete temporary files on close (marking as "resolved" in TGit was necessary)
  * Fixed issue #1950: Log Dialog: File list filter
+ * Fixed issue #2330: Optimize submodule conflict resolution
 
 == Bug Fixes ==
  * Fixed issue #2260: Clicking in blank space in Commit dialog causes all unversioned files to become selected

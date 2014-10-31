@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012 - TortoiseGit
+// Copyright (C) 2012, 2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -29,7 +29,7 @@ CSubmoduleDiffDlg::CSubmoduleDiffDlg(CWnd* pParent /*=NULL*/)
 	, m_bFromOK(false)
 	, m_bToOK(false)
 	, m_bDirty(false)
-	, m_nChangeType(Unknown)
+	, m_nChangeType(CGitDiff::Unknown)
 	, m_bRefresh(false)
 {
 }
@@ -107,6 +107,7 @@ BOOL CSubmoduleDiffDlg::OnInitDialog()
 	CString changeTypeTable[] =
 	{
 		CString(MAKEINTRESOURCE(IDS_SUBMODULEDIFF_UNKNOWN)),
+		CString(MAKEINTRESOURCE(IDS_SUBMODULEDIFF_IDENTICAL)),
 		CString(MAKEINTRESOURCE(IDS_SUBMODULEDIFF_NEWSUBMODULE)),
 		CString(MAKEINTRESOURCE(IDS_SUBMODULEDIFF_DELETESUBMODULE)),
 		CString(MAKEINTRESOURCE(IDS_SUBMODULEDIFF_FASTFORWARD)),
@@ -118,7 +119,7 @@ BOOL CSubmoduleDiffDlg::OnInitDialog()
 	GetDlgItem(IDC_CHANGETYPE)->SetWindowText(changeTypeTable[m_nChangeType]);
 
 	DialogEnableWindow(IDC_SHOW_DIFF, m_bFromOK && m_bToOK);
-	if (m_bDirty && m_nChangeType != Unknown)
+	if (m_bDirty && m_nChangeType != CGitDiff::Unknown)
 	{
 		m_ctrlShowDiffBtn.AddEntry(MAKEINTRESOURCE(IDS_PROC_SHOWDIFF));
 		m_ctrlShowDiffBtn.AddEntry(MAKEINTRESOURCE(IDS_LOG_POPUP_COMPARE));
@@ -129,66 +130,70 @@ BOOL CSubmoduleDiffDlg::OnInitDialog()
 	return FALSE;
 }
 
+
+HBRUSH CSubmoduleDiffDlg::GetInvalidBrush(CDC* pDC)
+{
+	pDC->SetBkColor(RGB(255, 0, 0));
+	pDC->SetTextColor(RGB(255, 255, 255));
+	return CreateSolidBrush(RGB(255, 0, 0));
+}
+
+HBRUSH CSubmoduleDiffDlg::GetChangeTypeBrush(CDC* pDC, const CGitDiff::ChangeType& changeType)
+{
+	if (changeType == CGitDiff::FastForward)
+	{
+		// light green
+		pDC->SetBkColor(RGB(211, 249, 154));
+		pDC->SetTextColor(RGB(0, 0, 0));
+		return CreateSolidBrush(RGB(211, 249, 154));
+	}
+	if (changeType == CGitDiff::Rewind)
+	{
+		// pink
+		pDC->SetBkColor(RGB(249, 199, 229));
+		pDC->SetTextColor(RGB(0, 0, 0));
+		return CreateSolidBrush(RGB(249, 199, 229));
+	}
+	if (changeType == CGitDiff::NewerTime)
+	{
+		// light blue
+		pDC->SetBkColor(RGB(176, 223, 244));
+		pDC->SetTextColor(RGB(0, 0, 0));
+		return CreateSolidBrush(RGB(176, 223, 244));
+	}
+	if (changeType == CGitDiff::OlderTime)
+	{
+		// light orange
+		pDC->SetBkColor(RGB(244, 207, 159));
+		pDC->SetTextColor(RGB(0, 0, 0));
+		return CreateSolidBrush(RGB(244, 207, 159));
+	}
+
+	// light gray
+	pDC->SetBkColor(RGB(222, 222, 222));
+	pDC->SetTextColor(RGB(0, 0, 0));
+	return CreateSolidBrush(RGB(222, 222, 222));
+}
+
 HBRUSH CSubmoduleDiffDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 {
-	if (pWnd->GetDlgCtrlID() == IDC_FROMSUBJECT && nCtlColor == CTLCOLOR_STATIC && !m_bFromOK)
+	if (nCtlColor == CTLCOLOR_STATIC)
 	{
-		pDC->SetBkColor(RGB(255, 0, 0));
-		pDC->SetTextColor(RGB(255, 255, 255));
-		return CreateSolidBrush(RGB(255, 0, 0));
-	}
+		if (pWnd->GetDlgCtrlID() == IDC_FROMSUBJECT && !m_bFromOK)
+			return GetInvalidBrush(pDC);
 
-	if (pWnd->GetDlgCtrlID() == IDC_TOSUBJECT && nCtlColor == CTLCOLOR_STATIC && !m_bToOK)
-	{
-		pDC->SetBkColor(RGB(255, 0, 0));
-		pDC->SetTextColor(RGB(255, 255, 255));
-		return CreateSolidBrush(RGB(255, 0, 0));
-	}
+		if (pWnd->GetDlgCtrlID() == IDC_TOSUBJECT && !m_bToOK)
+			return GetInvalidBrush(pDC);
 
-	if (pWnd->GetDlgCtrlID() == IDC_TOHASH && nCtlColor == CTLCOLOR_STATIC && m_bDirty)
-	{
-		pDC->SetBkColor(RGB(255, 255, 0));
-		pDC->SetTextColor(RGB(255, 0, 0));
-		return CreateSolidBrush(RGB(255, 255, 0));
-	}
+		if (pWnd->GetDlgCtrlID() == IDC_TOHASH && m_bDirty)
+		{
+			pDC->SetBkColor(RGB(255, 255, 0));
+			pDC->SetTextColor(RGB(255, 0, 0));
+			return CreateSolidBrush(RGB(255, 255, 0));
+		}
 
-	if (pWnd->GetDlgCtrlID() == IDC_CHANGETYPE && nCtlColor == CTLCOLOR_STATIC)
-	{
-		if (m_nChangeType == FastForward)
-		{
-			// light green
-			pDC->SetBkColor(RGB(211, 249, 154));
-			pDC->SetTextColor(RGB(0, 0, 0));
-			return CreateSolidBrush(RGB(211, 249, 154));
-		}
-		else if (m_nChangeType == Rewind)
-		{
-			// pink
-			pDC->SetBkColor(RGB(249, 199, 229));
-			pDC->SetTextColor(RGB(0, 0, 0));
-			return CreateSolidBrush(RGB(249, 199, 229));
-		}
-		else if (m_nChangeType == NewerTime)
-		{
-			// light blue
-			pDC->SetBkColor(RGB(176, 223, 244));
-			pDC->SetTextColor(RGB(0, 0, 0));
-			return CreateSolidBrush(RGB(176, 223, 244));
-		}
-		else if (m_nChangeType == OlderTime)
-		{
-			// light orange
-			pDC->SetBkColor(RGB(244, 207, 159));
-			pDC->SetTextColor(RGB(0, 0, 0));
-			return CreateSolidBrush(RGB(244, 207, 159));
-		}
-		else
-		{
-			// light gray
-			pDC->SetBkColor(RGB(222, 222, 222));
-			pDC->SetTextColor(RGB(0, 0, 0));
-			return CreateSolidBrush(RGB(222, 222, 222));
-		}
+		if (pWnd->GetDlgCtrlID() == IDC_CHANGETYPE && m_nChangeType != CGitDiff::Identical)
+			return GetChangeTypeBrush(pDC, m_nChangeType);
 	}
 
 	return CHorizontalResizableStandAloneDialog::OnCtlColor(pDC, pWnd, nCtlColor);
@@ -205,7 +210,7 @@ BOOL CSubmoduleDiffDlg::PreTranslateMessage(MSG* pMsg)
 	return CResizableStandAloneDialog::PreTranslateMessage(pMsg);
 }
 
-void CSubmoduleDiffDlg::SetDiff(CString path, bool toIsWorkingCopy, CString fromHash, CString fromSubject, bool fromOK, CString toHash, CString toSubject, bool toOK, bool dirty, ChangeType changeType)
+void CSubmoduleDiffDlg::SetDiff(CString path, bool toIsWorkingCopy, CString fromHash, CString fromSubject, bool fromOK, CString toHash, CString toSubject, bool toOK, bool dirty, CGitDiff::ChangeType changeType)
 {
 	m_bToIsWorkingCopy = toIsWorkingCopy;
 
@@ -241,7 +246,7 @@ void CSubmoduleDiffDlg::OnBnClickedLog2()
 void CSubmoduleDiffDlg::OnBnClickedShowDiff()
 {
 	CString sCmd;
-	sCmd.Format(_T("/command:showcompare /path:\"%s\" /revision1:%s /revision2:%s"), g_Git.CombinePath(m_sPath), m_sFromHash, ((m_bDirty && m_nChangeType == Unknown) || m_ctrlShowDiffBtn.GetCurrentEntry() == 1) ? GIT_REV_ZERO : m_sToHash);
+	sCmd.Format(_T("/command:showcompare /path:\"%s\" /revision1:%s /revision2:%s"), g_Git.CombinePath(m_sPath), m_sFromHash, ((m_bDirty && m_nChangeType == CGitDiff::Unknown) || m_ctrlShowDiffBtn.GetCurrentEntry() == 1) ? GIT_REV_ZERO : m_sToHash);
 	CAppUtils::RunTortoiseGitProc(sCmd, false, false);
 }
 

@@ -173,6 +173,7 @@
     <ClCompile Include="RefLoglist.cpp" />
     <ClCompile Include="SubmoduleAddDlg.cpp" />
     <ClCompile Include="Commands\SubmoduleCommand.cpp" />
+    <ClCompile Include="SubmoduleResolveConflictDlg.cpp" />
     <ClCompile Include="SubmoduleUpdateDlg.cpp" />
     <ClCompile Include="Commands\DropMoveCommand.cpp" />
     <ClCompile Include="Commands\RenameCommand.cpp" />
@@ -430,6 +431,7 @@
     <ClInclude Include="RefLoglist.h" />
     <ClInclude Include="SubmoduleAddDlg.h" />
     <ClInclude Include="Commands\SubmoduleCommand.h" />
+    <ClInclude Include="SubmoduleResolveConflictDlg.h" />
     <ClInclude Include="SubmoduleUpdateDlg.h" />
     <ClInclude Include="Commands\DropMoveCommand.h" />
     <ClInclude Include="Commands\RenameCommand.h" />

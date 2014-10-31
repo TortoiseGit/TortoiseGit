@@ -2089,6 +2089,10 @@ msgstr ""
 msgid "Bar Graph"
 msgstr ""
 
+#. Resource IDs: (1385)
+msgid "Base"
+msgstr ""
+
 #. Resource IDs: (1522)
 msgid "Base On"
 msgstr ""
@@ -5300,6 +5304,10 @@ msgstr ""
 msgid "Icons/Design/Code:\t\tLuebbe Onken"
 msgstr ""
 
+#. Resource IDs: (97)
+msgid "Identical"
+msgstr ""
+
 #. Resource IDs: (194)
 msgid "If activated, prevents the overlays and the context menu from showing in 'save as...' or 'open' dialogs"
 msgstr ""
@@ -7596,6 +7604,10 @@ msgstr ""
 msgid "Resolve"
 msgstr ""
 
+#. Resource IDs: (4595)
+msgid "Resolve Submodule Conflict"
+msgstr ""
+
 #. Resource IDs: (282)
 msgid "Resolve conflict using 'mine'"
 msgstr ""
@@ -9846,6 +9858,10 @@ msgstr ""
 #. Resource IDs: (314)
 #, c-format
 msgid "Use the original path.\nApply the patch to\n%s"
+msgstr ""
+
+#. Resource IDs: (1825, 1826)
+msgid "Use this"
 msgstr ""
 
 #. Resource IDs: (251)
