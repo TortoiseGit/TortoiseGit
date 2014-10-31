@@ -146,6 +146,8 @@ protected:
 	BOOL				m_bAddCherryPickedFrom;
 	BOOL				m_bAutoSkipFailedCommit;
 
+	CButton				m_PickModeCtrl;
+
 public:
 	CStringArray		m_PostButtonTexts;
 	CGitLogList			m_CommitList;
