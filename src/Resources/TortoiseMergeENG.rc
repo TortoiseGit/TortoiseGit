@@ -511,6 +511,9 @@ BEGIN
         MENUITEM "Open",                        ID_FILE_OPEN
         MENUITEM "Save",                        ID_FILE_SAVE
         MENUITEM "Save &as...",                 ID_FILE_SAVE_AS
+        MENUITEM "Mark as resolved",            ID_EDIT_MARKASRESOLVED
+        MENUITEM SEPARATOR
+        MENUITEM "Create patch file",           ID_EDIT_CREATEUNIFIEDDIFFFILE
         MENUITEM SEPARATOR
         MENUITEM "Reload",                      ID_FILE_RELOAD
         MENUITEM "&Enable edit",                ID_EDIT_ENABLE
@@ -536,9 +539,6 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "Find",                        ID_EDIT_FIND
         MENUITEM "Goto Line",                   ID_EDIT_GOTOLINE
-        MENUITEM "Mark as resolved",            ID_EDIT_MARKASRESOLVED
-        MENUITEM SEPARATOR
-        MENUITEM "Create patch file",           ID_EDIT_CREATEUNIFIEDDIFFFILE
     END
     POPUP "&Navigate"
     BEGIN

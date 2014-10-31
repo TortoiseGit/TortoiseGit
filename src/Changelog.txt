@@ -14,6 +14,7 @@ Released: unreleased
  * Fixed issue #2157: TortoiseGitMerge does not delete temporary files on close (marking as "resolved" in TGit was necessary)
  * Fixed issue #1950: Log Dialog: File list filter
  * Fixed issue #2330: Optimize submodule conflict resolution
+ * Fixed issue #2332: TortoiseGitMerge: Move "Create patch file" to the File menu
 
 == Bug Fixes ==
  * Fixed issue #2260: Clicking in blank space in Commit dialog causes all unversioned files to become selected
