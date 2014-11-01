@@ -418,13 +418,6 @@
 				</varlistentry>
 			</variablelist>
 		</para>
-
-		<para>
-			By pressing <keycap>ALT</keycap>+<keycap>LEFT</keycap> and <keycap>ALT</keycap>+<keycap>RIGHT</keycap>
-			you can navigate through the commits you selected in the past (i.e., you can navigate through the selection history).
-			If you also press <keycap>SHIFT</keycap> you can navigate through the selection history without selecting the last commits (i.e., just scrolling to and highlighting them).
-		</para>
-
 		<para>
 			If you select two or more revisions (using the usual
 			<keycap>Ctrl</keycap> or <keycap>Shift</keycap> modifiers),
@@ -693,6 +686,50 @@
 				<guimenuitem>Show labelled commits only</guimenuitem>
 			</menuchoice>
 			The log graph is simplified to include commits with references only.
+		</para>
+	</sect2>
+	<sect2 id="tgit-dug-showlog-navigation">
+		<title>Navigation</title>
+		<indexterm>
+			<primary>log navigation</primary>
+		</indexterm>
+		<para>
+			You can use the dropdown control to select a navigation type
+			(e.g., Author Email, Parent 1, Selection history.),
+			then use the <guibutton>Up</guibutton> 
+			and <guibutton>Down</guibutton> green buttons
+			to navigate through the commits which match the navigation type
+			to relative current selected one.
+		</para>
+		<para>
+			Alternative to the <guibutton>Up</guibutton>
+			and <guibutton>Down</guibutton> green buttons, 
+			hotkeys <keycap>ALT</keycap>+<keycap>UP</keycap>
+			and <keycap>ALT</keycap>+<keycap>DOWN</keycap>
+			are also available.
+		</para>
+		<para>
+			About the navigation type of Selection History,
+			TortoiseGit can also memorize the history of selected commits,
+			so that you can navigate through those commits
+			you selected in the past.
+			You can also navigate it by pressing
+			<keycap>ALT</keycap>+<keycap>LEFT</keycap>,
+			<keycap>ALT</keycap>+<keycap>RIGHT</keycap>,
+			<keycap>Browse Back</keycap>,
+			and <keycap>Browse Forward</keycap>.
+			<keycap>Back</keycap> and <keycap>Forward</keycap> buttons
+			on mouse are also available.
+		</para>
+		<para>
+			If you also press <keycap>SHIFT</keycap> 
+			you can navigate through the selection history 
+			without selecting the last commits
+			(i.e., just scrolling to and highlighting them).
+			This helps you to navigate through commits 
+			and then select the commit(s) you really want to select.
+			(e.g. By this way, you can compare the current selected commit
+			with the one you ever selected but far far away.)
 		</para>
 	</sect2>
 	<sect2 id="tgit-dug-showlog-5">
