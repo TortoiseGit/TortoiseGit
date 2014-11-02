@@ -50,7 +50,6 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	BOOL		m_IsPull;
-	bool		m_bAllowRebase;
 	BOOL		m_bAutoLoad;
 	BOOL		m_bRebase;
 	BOOL		m_bPrune;
@@ -71,6 +70,8 @@ public:
 protected:
 	CString		m_configPullRemote;
 	CString		m_configPullBranch;
+
+	bool		m_bRebaseActivatedInConfigForPull;
 
 	CHyperLink	m_RemoteManage;
 
