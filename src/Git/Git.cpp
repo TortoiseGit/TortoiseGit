@@ -2456,6 +2456,8 @@ void CEnvironment::SetEnv(const TCHAR *name, const TCHAR* value)
 
 	if(i == size())
 	{
+		if (!value) // as we haven't found the variable we want to remove, just return
+			return;
 		i -= 1; // roll back terminate \0\0
 		this->push_back(_T('\0'));
 	}
@@ -2472,7 +2474,10 @@ void CEnvironment::SetEnv(const TCHAR *name, const TCHAR* value)
 	}
 
 	if (value == nullptr) // remove the variable
+	{
+		this->erase(it);
 		return;
+	}
 
 	while(*name)
 	{
