@@ -1012,7 +1012,7 @@ void CRebaseDlg::OnBnClickedContinue()
 
 		if (IsLocalBranch(m_BranchCtrl.GetString()))
 		{
-			cmd.Format(_T("git.exe checkout -f -B --no-track %s %s --"), m_BranchCtrl.GetString(), m_UpstreamCtrl.GetString());
+			cmd.Format(_T("git.exe checkout --no-track -f -B %s %s --"), m_BranchCtrl.GetString(), m_UpstreamCtrl.GetString());
 			AddLogString(cmd);
 			while (true)
 			{
