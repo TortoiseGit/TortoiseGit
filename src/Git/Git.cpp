@@ -1964,6 +1964,7 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": CheckMsysGitDir(%d)\n"), bFallback);
 	this->m_Environment.clear();
 	m_Environment.CopyProcessEnvironment();
+	m_Environment.SetEnv(_T("GIT_DIR"), nullptr); // Remove %GIT_DIR% before executing git.exe
 
 	TCHAR *oldpath;
 	size_t homesize,size;
@@ -2469,6 +2470,9 @@ void CEnvironment::SetEnv(const TCHAR *name, const TCHAR* value)
 		it=this->begin();
 		it += i;
 	}
+
+	if (value == nullptr) // remove the variable
+		return;
 
 	while(*name)
 	{
