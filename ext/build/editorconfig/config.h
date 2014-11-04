@@ -54,6 +54,8 @@
 /* #undef CMAKE_COMPILER_IS_GNUCC */
 #define MSVC
 
+#define PCRE_STATIC
+
 /* For gcc, we define _GNU_SOURCE to use gcc extensions */
 #ifdef CMAKE_COMPILER_IS_GNUCC
 # ifndef _GNU_SOURCE
@@ -72,9 +74,9 @@
 #endif
 
 #define editorconfig_VERSION_MAJOR 0
-#define editorconfig_VERSION_MINOR 11
-#define editorconfig_VERSION_SUBMINOR 5
-#define editorconfig_VERSION_SUFFIX ""
+#define editorconfig_VERSION_MINOR 12
+#define editorconfig_VERSION_PATCH 1
+#define editorconfig_VERSION_SUFFIX "-development"
 
 
 #endif /* !__CONFIG_H__ */

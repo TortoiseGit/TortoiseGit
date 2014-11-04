@@ -14,9 +14,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\editorconfig\src\lib\ec_fnmatch.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\editorconfig\src\lib\editorconfig.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -29,11 +26,11 @@
     <ClCompile Include="..\editorconfig\src\lib\misc.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\editorconfig\src\lib\ec_glob.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\editorconfig\src\lib\ec_fnmatch.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\editorconfig\src\lib\editorconfig.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -54,6 +51,12 @@
     </ClInclude>
     <ClInclude Include="..\editorconfig\include\editorconfig\editorconfig_handle.h">
       <Filter>Public Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editorconfig\src\lib\ec_glob.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editorconfig\src\lib\utarray.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

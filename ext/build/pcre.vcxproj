@@ -19,8 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{DA843306-3D6D-4198-890E-25E6177E01C3}</ProjectGuid>
-    <RootNamespace>editorconfig</RootNamespace>
+    <ProjectGuid>{876C52CE-EF66-495D-820D-4D9C98E9F55C}</ProjectGuid>
+    <RootNamespace>pcre</RootNamespace>
     <Keyword>Win32Proj</Keyword>
   </PropertyGroup>
   <Import Project="$(SolutionDir)TortoiseGit.toolset.props" />
@@ -39,34 +39,38 @@
   <PropertyGroup Label="UserMacros" />
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>editorconfig;..\editorconfig\include;pcre;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>pcre;..\pcre;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsC</CompileAs>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <AdditionalOptions>/J %(AdditionalOptions)</AdditionalOptions>
+      <PreprocessorDefinitions>PCRE_STATIC;HAVE_CONFIG_H;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\editorconfig\src\lib\ec_glob.c" />
-    <ClCompile Include="..\editorconfig\src\lib\editorconfig.c" />
-    <ClCompile Include="..\editorconfig\src\lib\editorconfig_handle.c" />
-    <ClCompile Include="..\editorconfig\src\lib\ini.c" />
-    <ClCompile Include="..\editorconfig\src\lib\misc.c" />
+    <ClCompile Include="pcre\pcre_chartables.c"  />
+    <ClCompile Include="..\pcre\pcre_byte_order.c"  />
+    <ClCompile Include="..\pcre\pcre_compile.c"  />
+    <ClCompile Include="..\pcre\pcre_config.c"  />
+    <ClCompile Include="..\pcre\pcre_dfa_exec.c"  />
+    <ClCompile Include="..\pcre\pcre_exec.c"  />
+    <ClCompile Include="..\pcre\pcre_fullinfo.c"  />
+    <ClCompile Include="..\pcre\pcre_get.c"  />
+    <ClCompile Include="..\pcre\pcre_globals.c"  />
+    <ClCompile Include="..\pcre\pcre_jit_compile.c"  />
+    <ClCompile Include="..\pcre\pcre_maketables.c"  />
+    <ClCompile Include="..\pcre\pcre_newline.c"  />
+    <ClCompile Include="..\pcre\pcre_ord2utf8.c"  />
+    <ClCompile Include="..\pcre\pcre_refcount.c"  />
+    <ClCompile Include="..\pcre\pcre_string_utils.c"  />
+    <ClCompile Include="..\pcre\pcre_study.c"  />
+    <ClCompile Include="..\pcre\pcre_tables.c"  />
+    <ClCompile Include="..\pcre\pcre_ucd.c"  />
+    <ClCompile Include="..\pcre\pcre_valid_utf8.c"  />
+    <ClCompile Include="..\pcre\pcre_version.c"  />
+    <ClCompile Include="..\pcre\pcre_xclass.c"  />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\editorconfig\include\editorconfig\editorconfig.h" />
-    <ClInclude Include="..\editorconfig\include\editorconfig\editorconfig_handle.h" />
-    <ClInclude Include="..\editorconfig\src\lib\ec_glob.h" />
-    <ClInclude Include="..\editorconfig\src\lib\editorconfig.h" />
-    <ClInclude Include="..\editorconfig\src\lib\editorconfig_handle.h" />
-    <ClInclude Include="..\editorconfig\src\lib\global.h" />
-    <ClInclude Include="..\editorconfig\src\lib\ini.h" />
-    <ClInclude Include="..\editorconfig\src\lib\misc.h" />
-    <ClInclude Include="..\editorconfig\src\lib\utarray.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="pcre.vcxproj">
-      <Project>{876c52ce-ef66-495d-820d-4d9c98e9f55c}</Project>
-    </ProjectReference>
+    <ClInclude Include="pcre\pcre.h" />
+    <ClInclude Include="pcre\config.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

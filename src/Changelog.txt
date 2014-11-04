@@ -15,6 +15,7 @@ Released: unreleased
  * Fixed issue #1950: Log Dialog: File list filter
  * Fixed issue #2330: Optimize submodule conflict resolution
  * Fixed issue #2332: TortoiseGitMerge: Move "Create patch file" to the File menu
+ * TortoiseGitMerge: Updated EditorConfig version to 0.12
 
 == Bug Fixes ==
  * Fixed issue #2260: Clicking in blank space in Commit dialog causes all unversioned files to become selected

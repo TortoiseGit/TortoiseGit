@@ -19,3 +19,6 @@
 [submodule "ext/editorconfig"]
 	path = ext/editorconfig
 	url = https://github.com/editorconfig/editorconfig-core-c.git
+[submodule "ext/pcre"]
+	path = ext/pcre
+	url = https://gitorious.org/pcre/pcre.git
