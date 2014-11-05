@@ -154,6 +154,10 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	m_AsyncDiffEvent = ::CreateEvent(NULL,FALSE,TRUE,NULL);
 	m_AsynDiffListLock.Init();
 
+	hUxTheme = AtlLoadSystemLibraryUsingFullPath(_T("UXTHEME.DLL"));
+	if (hUxTheme)
+		pfnDrawThemeTextEx = (FNDRAWTHEMETEXTEX)::GetProcAddress(hUxTheme, "DrawThemeTextEx");
+
 	m_DiffingThread = AfxBeginThread(AsyncThread, this, THREAD_PRIORITY_BELOW_NORMAL);
 	if (m_DiffingThread ==NULL)
 	{
@@ -301,6 +305,9 @@ CGitLogListBase::~CGitLogListBase()
 
 	if(m_AsyncDiffEvent)
 		CloseHandle(m_AsyncDiffEvent);
+
+	if (hUxTheme)
+		FreeLibrary(hUxTheme);
 }
 
 
@@ -617,7 +624,7 @@ void CGitLogListBase::DrawTagBranchMessage(HDC hdc, CRect &rect, INT_PTR index, 
 		rt.left += oneSpaceSize.cx;
 	}
 
-	if (IsAppThemed() && SysInfo::Instance().IsVistaOrLater())
+	if (IsAppThemed() && pfnDrawThemeTextEx)
 	{
 		int txtState = LISS_NORMAL;
 		if (rItem.state & LVIS_SELECTED)
@@ -627,7 +634,7 @@ void CGitLogListBase::DrawTagBranchMessage(HDC hdc, CRect &rect, INT_PTR index, 
 		opts.dwSize = sizeof(opts);
 		opts.crText = ::GetSysColor(COLOR_WINDOWTEXT);
 		opts.dwFlags = DTT_TEXTCOLOR;
-		DrawThemeTextEx(hTheme, hdc, LVP_LISTITEM, txtState, data->GetSubject(), -1, DT_NOPREFIX | DT_LEFT | DT_SINGLELINE | DT_VCENTER | DT_END_ELLIPSIS, &rt, &opts);
+		pfnDrawThemeTextEx(hTheme, hdc, LVP_LISTITEM, txtState, data->GetSubject(), -1, DT_NOPREFIX | DT_LEFT | DT_SINGLELINE | DT_VCENTER | DT_END_ELLIPSIS, &rt, &opts);
 	}
 	else
 	{
@@ -754,7 +761,7 @@ void CGitLogListBase::DrawTagBranch(HDC hdc, CDC &W_Dc, HTHEME hTheme, CRect &re
 
 			//Draw text inside label
 			bool customColor = (colRef & 0xff) * 30 + ((colRef >> 8) & 0xff) * 59 + ((colRef >> 16) & 0xff) * 11 <= 12800;	// check if dark background
-			if (!customColor && IsAppThemed() && SysInfo::Instance().IsVistaOrLater())
+			if (!customColor && IsAppThemed() && pfnDrawThemeTextEx)
 			{
 				int txtState = LISS_NORMAL;
 				if (rItem.state & LVIS_SELECTED)
@@ -764,7 +771,7 @@ void CGitLogListBase::DrawTagBranch(HDC hdc, CDC &W_Dc, HTHEME hTheme, CRect &re
 				opts.dwSize = sizeof(opts);
 				opts.crText = ::GetSysColor(COLOR_WINDOWTEXT);
 				opts.dwFlags = DTT_TEXTCOLOR;
-				DrawThemeTextEx(hTheme, hdc, LVP_LISTITEM, txtState, shortname, -1, textpos | DT_SINGLELINE | DT_VCENTER, &textRect, &opts);
+				pfnDrawThemeTextEx(hTheme, hdc, LVP_LISTITEM, txtState, shortname, -1, textpos | DT_SINGLELINE | DT_VCENTER, &textRect, &opts);
 			}
 			else
 			{
