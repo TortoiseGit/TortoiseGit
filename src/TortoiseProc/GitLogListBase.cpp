@@ -1552,7 +1552,7 @@ CString FindSVNRev(const CString& msg)
 				return std::wstring(match[2]).c_str();
 			}
 		}
-		for (std::tr1::wsregex_iterator it(s.begin(), s.end(), std::tr1::wregex(_T("^\\s*git-svn-id:\\s(\\d+)\\@([a-f\\d\\-]+"))); it != end; ++it)
+		for (std::tr1::wsregex_iterator it(s.begin(), s.end(), std::tr1::wregex(_T("^\\s*git-svn-id:\\s(\\d+)\\@([a-f\\d\\-]+)$"))); it != end; ++it)
 		{
 			const std::tr1::wsmatch match = *it;
 			if (match.size() == 3)
