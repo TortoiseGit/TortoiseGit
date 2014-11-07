@@ -109,6 +109,7 @@ protected:
 	afx_msg void OnLvnItemchangedLogmsg(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnEnLinkMsgview(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnBnClickedStatbutton();
+	afx_msg void OnSelectSearchField();
 
 	afx_msg void OnNMCustomdrawChangedFileList(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnLvnGetdispinfoChangedFileList(NMHDR *pNMHDR, LRESULT *pResult);

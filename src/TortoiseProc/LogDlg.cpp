@@ -178,6 +178,7 @@ BEGIN_MESSAGE_MAP(CLogDlg, CResizableStandAloneDialog)
 	ON_COMMAND(ID_GO_FORWARD_SELECT, &CLogDlg::GoForwardAndSelect)
 	ON_COMMAND(ID_GO_BACKWARD, &CLogDlg::GoBack)
 	ON_COMMAND(ID_GO_FORWARD, &CLogDlg::GoForward)
+	ON_COMMAND(ID_SELECT_SEARCHFIELD, &CLogDlg::OnSelectSearchField)
 	ON_COMMAND(ID_LOGDLG_FIND, &CLogDlg::OnFind)
 	ON_COMMAND(ID_LOGDLG_FOCUSFILTER, &CLogDlg::OnFocusFilter)
 	ON_COMMAND(ID_EDIT_COPY, &CLogDlg::OnEditCopy)
@@ -1055,6 +1056,12 @@ void CLogDlg::OnSizing(UINT fwSide, LPRECT pRect)
 	if (patchrect.top == thisrect.top)
 		patchrect.top -= thisrect.top - pRect->top;
 	m_patchViewdlg.MoveWindow(patchrect);
+}
+
+void CLogDlg::OnSelectSearchField()
+{
+	m_cFilter.SetSel(0, -1, FALSE);
+	m_cFilter.SetFocus();
 }
 
 void CLogDlg::GoBack()

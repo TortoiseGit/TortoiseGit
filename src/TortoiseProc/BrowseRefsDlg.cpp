@@ -1309,6 +1309,16 @@ BOOL CBrowseRefsDlg::PreTranslateMessage(MSG* pMsg)
 				Refresh();
 			}
 			break;
+		case L'E':
+			{
+				if (GetAsyncKeyState(VK_CONTROL) & 0x8000)
+				{
+					m_ctrlFilter.SetSel(0, -1, FALSE);
+					m_ctrlFilter.SetFocus();
+					return TRUE;
+				}
+			}
+			break;
 		}
 	}
 
