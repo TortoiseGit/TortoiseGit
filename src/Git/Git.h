@@ -236,7 +236,7 @@ public:
 	void GetRemoteTrackedBranchForHEAD(CString& remote, CString& branch);
 	// read current branch name from HEAD file, returns 0 on success, -1 on failure, 1 detached (branch name "HEAD" returned)
 	static int GetCurrentBranchFromFile(const CString &sProjectRoot, CString &sBranchOut, bool fallback = false);
-	BOOL CheckCleanWorkTree();
+	BOOL CheckCleanWorkTree(bool stagedOk = false);
 	int Revert(const CString& commit, const CTGitPathList &list, CString& err);
 	int Revert(const CString& commit, const CTGitPath &path, CString& err);
 	int DeleteRef(const CString& reference);

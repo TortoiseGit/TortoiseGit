@@ -1237,7 +1237,7 @@ void CRebaseDlg::OnBnClickedContinue()
 
 	if ((m_RebaseStage == REBASE_EDIT || m_RebaseStage == REBASE_CONTINUE) && CheckNextCommitIsSquash())
 	{
-		while (!g_Git.CheckCleanWorkTree())
+		while (!g_Git.CheckCleanWorkTree(true))
 		{
 			if (CMessageBox::Show(nullptr, IDS_PROC_REBASE_CONTINUE_NOTCLEAN, IDS_APPNAME, 1, IDI_ERROR, IDS_MSGBOX_RETRY, IDS_IGNOREBUTTON) == 2)
 				break;

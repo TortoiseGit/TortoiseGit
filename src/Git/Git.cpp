@@ -2143,7 +2143,7 @@ CString CGit::GetGitSystemConfig() const
 	return CString(systemConfig, (int)wcslen(systemConfig));
 }
 
-BOOL CGit::CheckCleanWorkTree()
+BOOL CGit::CheckCleanWorkTree(bool stagedOk /* false */)
 {
 	CString out;
 	CString cmd;
@@ -2161,7 +2161,7 @@ BOOL CGit::CheckCleanWorkTree()
 		return FALSE;
 
 	cmd = _T("git.exe diff-index --cached --quiet HEAD --ignore-submodules --");
-	if(Run(cmd,&out,CP_UTF8))
+	if (!stagedOk && Run(cmd, &out, CP_UTF8))
 		return FALSE;
 
 	return TRUE;
