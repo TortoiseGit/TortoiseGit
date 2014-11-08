@@ -495,6 +495,13 @@ void CRebaseDlg::FetchLogList()
 		return;
 	}
 
+	if (!IsLocalBranch(m_BranchCtrl.GetString()))
+	{
+		m_CommitList.ShowText(L"please choose a local branch in the list of Branch control.");
+		GetDlgItem(IDC_REBASE_CONTINUE)->EnableWindow(false);
+		return;
+	}
+
 	if (m_UpstreamCtrl.GetString().IsEmpty())
 	{
 		m_CommitList.ShowText(CString(MAKEINTRESOURCE(IDS_SELECTUPSTREAM)));
