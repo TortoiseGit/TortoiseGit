@@ -89,6 +89,7 @@ BEGIN_MESSAGE_MAP(CRebaseDlg, CResizableStandAloneDialog)
 	ON_WM_SIZE()
 	ON_CBN_SELCHANGE(IDC_REBASE_COMBOXEX_BRANCH,   &CRebaseDlg::OnCbnSelchangeBranch)
 	ON_CBN_SELCHANGE(IDC_REBASE_COMBOXEX_UPSTREAM, &CRebaseDlg::OnCbnSelchangeUpstream)
+	ON_BN_CLICKED(IDC_PICK_MODE, &CRebaseDlg::OnBnClickedPickMode)
 	ON_MESSAGE(MSG_REBASE_UPDATE_UI, OnRebaseUpdateUI)
 	ON_REGISTERED_MESSAGE(CGitStatusListCtrl::GITSLNM_NEEDSREFRESH, OnGitStatusListCtrlNeedsRefresh)
 	ON_BN_CLICKED(IDC_BUTTON_REVERSE, OnBnClickedButtonReverse)
@@ -469,6 +470,12 @@ void CRebaseDlg::OnCbnSelchangeUpstream()
 	FetchLogList();
 }
 
+void CRebaseDlg::OnBnClickedPickMode()
+{
+	m_IsCherryPick = TRUE;
+	FetchLogList();
+}
+
 void CRebaseDlg::FetchLogList()
 {
 	CGitHash base,hash,upstream;
@@ -551,7 +558,10 @@ void CRebaseDlg::FetchLogList()
 	CString refFrom = g_Git.FixBranchName(m_UpstreamCtrl.GetString());
 	CString refTo   = g_Git.FixBranchName(m_BranchCtrl.GetString());
 	CString range;
-	range.Format(_T("%s..%s"), refFrom, refTo);
+	if (m_PickModeCtrl.GetCheck())
+		range.Format(_T("%s..%s"), refTo, refFrom);
+	else
+		range.Format(_T("%s..%s"), refFrom, refTo);
 	this->m_CommitList.FillGitLog(nullptr, &range, 0);
 
 	if( m_CommitList.GetItemCount() == 0 )
