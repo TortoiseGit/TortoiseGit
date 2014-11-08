@@ -151,6 +151,7 @@ public:
 	GIT_POSTCOMMIT_CMD	m_PostCmd;
 	BOOL				m_bAmendDiffToLastCommit;
 	BOOL				m_bCommitMessageOnly;
+	bool				m_bWarnDetachedHead;
 
 protected:
 	CTGitPathList		m_selectedPathList;

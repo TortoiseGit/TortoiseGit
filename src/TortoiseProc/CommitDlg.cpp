@@ -81,6 +81,7 @@ CCommitDlg::CCommitDlg(CWnd* pParent /*=NULL*/)
 	, m_nPopupPickCommitHash(0)
 	, m_nPopupPickCommitMessage(0)
 	, m_hAccel(nullptr)
+	, m_bWarnDetachedHead(true)
 {
 	this->m_bCommitAmend=FALSE;
 }
@@ -873,7 +874,7 @@ void CCommitDlg::OnOK()
 		}
 	}
 
-	if (bAddSuccess && CheckHeadDetach())
+	if (bAddSuccess && m_bWarnDetachedHead && CheckHeadDetach())
 		bAddSuccess = false;
 
 	m_sBugID.Trim();

@@ -33,6 +33,7 @@
 #include "../TGitCache/CacheInterface.h"
 #include "Settings\Settings.h"
 #include "MassiveGitTask.h"
+#include "CommitDlg.h"
 
 // CRebaseDlg dialog
 
@@ -1235,13 +1236,35 @@ void CRebaseDlg::OnBnClickedContinue()
 		}
 	}
 
-	if ((m_RebaseStage == REBASE_EDIT || m_RebaseStage == REBASE_CONTINUE) && CheckNextCommitIsSquash())
+	if ((m_RebaseStage == REBASE_EDIT || m_RebaseStage == REBASE_CONTINUE) && CheckNextCommitIsSquash() && !g_Git.CheckCleanWorkTree(true))
 	{
-		while (!g_Git.CheckCleanWorkTree(true))
+		CCommitDlg dlg;
+		dlg.m_sLogMessage = m_LogMessageCtrl.GetText();
+		dlg.m_bWholeProject = true;
+		dlg.m_bSelectFilesForCommit = true;
+		dlg.m_bForceCommitAmend = true;
+		CTGitPathList gpl;
+		gpl.AddPath(CTGitPath(g_Git.m_CurrentDir));
+		dlg.m_pathList = gpl;
+		dlg.m_bAmendDiffToLastCommit = TRUE;
+		dlg.m_bNoPostActions = true;
+		dlg.m_AmendStr = dlg.m_sLogMessage;
+		dlg.m_bWarnDetachedHead = false;
+
+		if (dlg.DoModal() == IDOK)
 		{
-			if (CMessageBox::Show(nullptr, IDS_PROC_REBASE_CONTINUE_NOTCLEAN, IDS_APPNAME, 1, IDI_ERROR, IDS_MSGBOX_RETRY, IDS_IGNOREBUTTON) == 2)
-				break;
+			if (CheckNextCommitIsSquash() == 0) // remember commit msg after edit if next commit if squash
+				ResetParentForSquash(dlg.m_sLogMessage);
+			else
+				m_SquashMessage.Empty();
+			this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_LOG);
+			m_RebaseStage = REBASE_CONTINUE;
+			GitRev* curRev = (GitRev*)m_CommitList.m_arShownList[m_CurrentRebaseIndex];
+			curRev->GetRebaseAction() |= CGitLogListBase::LOGACTIONS_REBASE_DONE;
+			this->UpdateCurrentStatus();
 		}
+		else
+			return;
 	}
 
 	if( m_RebaseStage == REBASE_EDIT ||  m_RebaseStage == REBASE_SQUASH_EDIT )
