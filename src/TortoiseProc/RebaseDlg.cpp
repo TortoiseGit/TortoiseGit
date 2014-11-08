@@ -34,6 +34,13 @@
 #include "Settings\Settings.h"
 #include "MassiveGitTask.h"
 
+static bool IsLocalBranch(CString ref)
+{
+	STRING_VECTOR list;
+	g_Git.GetBranchList(list, nullptr, CGit::BRANCH_LOCAL);
+	return std::find(list.begin(), list.end(), ref) != list.end();
+}
+
 // CRebaseDlg dialog
 
 IMPLEMENT_DYNAMIC(CRebaseDlg, CResizableStandAloneDialog)
@@ -899,13 +906,6 @@ int CRebaseDlg::VerifyNoConflict()
 	}
 	return 0;
 
-}
-
-static bool IsLocalBranch(CString ref)
-{
-	STRING_VECTOR list;
-	g_Git.GetBranchList(list, nullptr, CGit::BRANCH_LOCAL);
-	return std::find(list.begin(), list.end(), ref) != list.end();
 }
 
 int CRebaseDlg::FinishRebase()
