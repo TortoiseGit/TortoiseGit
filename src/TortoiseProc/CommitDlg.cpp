@@ -428,6 +428,9 @@ BOOL CCommitDlg::OnInitDialog()
 
 	SetSplitterRange();
 
+	if (m_bForceCommitAmend || m_bCommitAmend)
+		GetDlgItem(IDC_COMMIT_AMENDDIFF)->ShowWindow(SW_SHOW);
+
 	// add all directories to the watcher
 	/*
 	for (int i=0; i<m_pathList.GetCount(); ++i)
@@ -1254,7 +1257,6 @@ UINT CCommitDlg::StatusThread()
 		{
 			if (m_bForceCommitAmend)
 			{
-				GetDlgItem(IDC_COMMIT_AMENDDIFF)->ShowWindow(SW_SHOW);
 				m_bCommitAmend = TRUE;
 				SendMessage(WM_UPDATEDATAFALSE);
 			}

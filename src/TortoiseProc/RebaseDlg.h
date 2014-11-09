@@ -166,6 +166,8 @@ protected:
 
 	CMenuButton			m_SplitAllOptions;
 
+	BOOL				m_bSplitCommit;
+
 	REBASE_STAGE		m_RebaseStage;
 	bool				m_bFinishedRebase;
 	bool				m_bStashed;
@@ -192,4 +194,5 @@ protected:
 	CComPtr<ITaskbarList3>	m_pTaskbarList;
 
 	afx_msg LRESULT OnRebaseActionMessage(WPARAM wParam, LPARAM lParam);
+	afx_msg void OnBnClickedRebaseSplitCommit();
 };
