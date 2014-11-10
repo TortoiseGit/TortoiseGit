@@ -107,6 +107,8 @@ protected:
 	static UINT RebaseThreadEntry(LPVOID pVoid){return ((CRebaseDlg *)pVoid)->RebaseThread();};
 	BOOL IsEnd();
 
+	int IsCommitEmpty(const CGitHash& hash);
+
 	BOOL m_IsFastForward;
 
 	CGitHash m_OrigBranchHash;

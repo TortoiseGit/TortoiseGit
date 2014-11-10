@@ -1291,7 +1291,15 @@ void CRebaseDlg::OnBnClickedContinue()
 		if(  m_RebaseStage == REBASE_SQUASH_EDIT )
 			cmd.Format(_T("git.exe commit %s-F \"%s\""), m_SquashFirstMetaData, tempfile);
 		else
-			cmd.Format(_T("git.exe commit --amend -F \"%s\""), tempfile);
+		{
+			CString options;
+			int isEmpty = IsCommitEmpty(curRev->m_CommitHash);
+			if (isEmpty == 1)
+				options = _T("--allow-empty ");
+			else if (isEmpty < 0)
+				return;
+			cmd.Format(_T("git.exe commit --amend %s-F \"%s\""), options, tempfile);
+		}
 
 		if(g_Git.Run(cmd,&out,CP_UTF8))
 		{
@@ -1604,6 +1612,22 @@ int CRebaseDlg::GetCurrentCommitID()
 	}
 }
 
+int CRebaseDlg::IsCommitEmpty(const CGitHash& hash)
+{
+	CString cmd, tree, ptree;
+	cmd.Format(L"git.exe rev-parse -q --verify %s^{tree}", hash.ToString());
+	if (g_Git.Run(cmd, &tree, CP_UTF8))
+	{
+		AddLogString(cmd);
+		AddLogString(tree);
+		return -1;
+	}
+	cmd.Format(L"git.exe rev-parse -q --verify %s^^{tree}", hash.ToString());
+	if (g_Git.Run(cmd, &ptree, CP_UTF8))
+		ptree = L"4b825dc642cb6eb9a060e54bf8d69288fbee4904";
+	return tree == ptree;
+}
+
 int CRebaseDlg::DoRebase()
 {
 	CString cmd,out;
@@ -1668,6 +1692,12 @@ int CRebaseDlg::DoRebase()
 		cherryPickedFrom = _T("-x ");
 	else if (!m_IsCherryPick && nocommit.IsEmpty())
 		cherryPickedFrom = _T("--ff "); // for issue #1833: "If the current HEAD is the same as the parent of the cherry-pick’ed commit, then a fast forward to this commit will be performed."
+
+	int isEmpty = IsCommitEmpty(pRev->m_CommitHash);
+	if (isEmpty == 1)
+		cherryPickedFrom += _T("--allow-empty ");
+	else if (isEmpty < 0)
+		return -1;
 
 	while (true)
 	{
