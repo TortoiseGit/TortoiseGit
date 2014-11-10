@@ -1162,6 +1162,15 @@ UINT CCommitDlg::StatusThread()
 		m_History.Load(reg, _T("logmsgs"));
 	}
 
+	CString dotGitPath;
+	g_GitAdminDir.GetAdminDirPath(g_Git.m_CurrentDir, dotGitPath);
+	if (PathFileExists(dotGitPath + _T("CHERRY_PICK_HEAD")))
+	{
+		GetDlgItem(IDC_COMMIT_AMENDDIFF)->ShowWindow(SW_HIDE);
+		m_bCommitAmend = FALSE;
+		SendMessage(WM_UPDATEDATAFALSE);
+	}
+
 	// Initialise the list control with the status of the files/folders below us
 	m_ListCtrl.Clear();
 	BOOL success;
@@ -1212,8 +1221,6 @@ UINT CCommitDlg::StatusThread()
 		m_ListCtrl.Show(dwShow);
 	}
 
-	CString dotGitPath;
-	g_GitAdminDir.GetAdminDirPath(g_Git.m_CurrentDir, dotGitPath);
 	if ((m_ListCtrl.GetItemCount()==0)&&(m_ListCtrl.HasUnversionedItems())
 		 && !PathFileExists(dotGitPath + _T("MERGE_HEAD")))
 	{
@@ -1265,7 +1272,7 @@ UINT CCommitDlg::StatusThread()
 				SendMessage(WM_UPDATEDATAFALSE);
 			}
 			else
-				GetDlgItem(IDC_COMMIT_AMEND)->EnableWindow(TRUE);
+				GetDlgItem(IDC_COMMIT_AMEND)->EnableWindow(!PathFileExists(dotGitPath + _T("CHERRY_PICK_HEAD")));
 
 			CGitHash hash;
 			if (g_Git.GetHash(hash, _T("HEAD")))
