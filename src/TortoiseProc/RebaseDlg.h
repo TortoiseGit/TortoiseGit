@@ -133,6 +133,7 @@ protected:
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnCbnSelchangeBranch();
 	afx_msg void OnCbnSelchangeUpstream();
+	afx_msg void OnBnClickedPickMode();
 	afx_msg void OnBnClickedContinue();
 	afx_msg void OnBnClickedAbort();
 	afx_msg void OnLvnItemchangedLoglist(NMHDR *pNMHDR, LRESULT *pResult);
@@ -145,6 +146,8 @@ protected:
 	BOOL				m_bForce;
 	BOOL				m_bAddCherryPickedFrom;
 	BOOL				m_bAutoSkipFailedCommit;
+
+	CButton				m_PickModeCtrl;
 
 public:
 	CStringArray		m_PostButtonTexts;

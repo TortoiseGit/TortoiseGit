@@ -6847,6 +6847,10 @@ msgstr ""
 msgid "Pick"
 msgstr ""
 
+#. Resource IDs: (1827)
+msgid "Pick Mode"
+msgstr ""
+
 #. Resource IDs: (90)
 msgid "Pick commit hash"
 msgstr ""

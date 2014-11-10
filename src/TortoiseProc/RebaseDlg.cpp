@@ -35,6 +35,13 @@
 #include "MassiveGitTask.h"
 #include "CommitDlg.h"
 
+static bool IsLocalBranch(CString ref)
+{
+	STRING_VECTOR list;
+	g_Git.GetBranchList(list, nullptr, CGit::BRANCH_LOCAL);
+	return std::find(list.begin(), list.end(), ref) != list.end();
+}
+
 // CRebaseDlg dialog
 
 IMPLEMENT_DYNAMIC(CRebaseDlg, CResizableStandAloneDialog)
@@ -68,6 +75,7 @@ void CRebaseDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX,IDC_COMMIT_LIST,m_CommitList);
 	DDX_Control(pDX,IDC_REBASE_COMBOXEX_BRANCH, this->m_BranchCtrl);
 	DDX_Control(pDX,IDC_REBASE_COMBOXEX_UPSTREAM,   this->m_UpstreamCtrl);
+	DDX_Control(pDX, IDC_PICK_MODE, m_PickModeCtrl);
 	DDX_Check(pDX, IDC_REBASE_CHECK_FORCE,m_bForce);
 	DDX_Check(pDX, IDC_CHECK_CHERRYPICKED_FROM, m_bAddCherryPickedFrom);
 	DDX_Control(pDX,IDC_REBASE_POST_BUTTON,m_PostButton);
@@ -82,6 +90,7 @@ BEGIN_MESSAGE_MAP(CRebaseDlg, CResizableStandAloneDialog)
 	ON_WM_SIZE()
 	ON_CBN_SELCHANGE(IDC_REBASE_COMBOXEX_BRANCH,   &CRebaseDlg::OnCbnSelchangeBranch)
 	ON_CBN_SELCHANGE(IDC_REBASE_COMBOXEX_UPSTREAM, &CRebaseDlg::OnCbnSelchangeUpstream)
+	ON_BN_CLICKED(IDC_PICK_MODE, &CRebaseDlg::OnBnClickedPickMode)
 	ON_MESSAGE(MSG_REBASE_UPDATE_UI, OnRebaseUpdateUI)
 	ON_REGISTERED_MESSAGE(CGitStatusListCtrl::GITSLNM_NEEDSREFRESH, OnGitStatusListCtrlNeedsRefresh)
 	ON_BN_CLICKED(IDC_BUTTON_REVERSE, OnBnClickedButtonReverse)
@@ -462,6 +471,12 @@ void CRebaseDlg::OnCbnSelchangeUpstream()
 	FetchLogList();
 }
 
+void CRebaseDlg::OnBnClickedPickMode()
+{
+	m_IsCherryPick = TRUE;
+	FetchLogList();
+}
+
 void CRebaseDlg::FetchLogList()
 {
 	CGitHash base,hash,upstream;
@@ -478,6 +493,13 @@ void CRebaseDlg::FetchLogList()
 	{
 		m_CommitList.ShowText(g_Git.GetGitLastErr(_T("Could not get hash of \"") + m_BranchCtrl.GetString() + _T("\".")));
 		this->GetDlgItem(IDC_REBASE_CONTINUE)->EnableWindow(false);
+		return;
+	}
+
+	if (!IsLocalBranch(m_BranchCtrl.GetString()))
+	{
+		m_CommitList.ShowText(L"please choose a local branch in the list of Branch control.");
+		GetDlgItem(IDC_REBASE_CONTINUE)->EnableWindow(false);
 		return;
 	}
 
@@ -544,7 +566,10 @@ void CRebaseDlg::FetchLogList()
 	CString refFrom = g_Git.FixBranchName(m_UpstreamCtrl.GetString());
 	CString refTo   = g_Git.FixBranchName(m_BranchCtrl.GetString());
 	CString range;
-	range.Format(_T("%s..%s"), refFrom, refTo);
+	if (m_PickModeCtrl.GetCheck())
+		range.Format(_T("%s..%s"), refTo, refFrom);
+	else
+		range.Format(_T("%s..%s"), refFrom, refTo);
 	this->m_CommitList.FillGitLog(nullptr, &range, 0);
 
 	if( m_CommitList.GetItemCount() == 0 )
@@ -899,13 +924,6 @@ int CRebaseDlg::VerifyNoConflict()
 	}
 	return 0;
 
-}
-
-static bool IsLocalBranch(CString ref)
-{
-	STRING_VECTOR list;
-	g_Git.GetBranchList(list, nullptr, CGit::BRANCH_LOCAL);
-	return std::find(list.begin(), list.end(), ref) != list.end();
 }
 
 int CRebaseDlg::FinishRebase()
