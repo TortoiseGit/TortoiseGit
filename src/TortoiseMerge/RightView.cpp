@@ -207,6 +207,16 @@ void CRightView::LeaveOnlyMarkedBlocks()
 	CBaseView::LeaveOnlyMarkedBlocks(m_pwndLeft);
 }
 
+void CRightView::UseViewFileOfMarked()
+{
+	CBaseView::UseViewFileOfMarked(m_pwndLeft);
+}
+
+void CRightView::UseViewFileExceptEdited()
+{
+	CBaseView::UseViewFileExceptEdited(m_pwndLeft);
+}
+
 void CRightView::AddContextItems(CIconMenu& popup, DiffStates state)
 {
 	const bool bShow = HasSelection() && (state != DIFFSTATE_UNKNOWN);

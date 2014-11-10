@@ -133,6 +133,7 @@ public: // methods
 	inline void		SetHidden(BOOL bHidden) {m_bIsHidden = bHidden;}
 	inline bool		IsModified() const  {return m_bModified;}
 	void			SetModified(bool bModified = true) { m_bModified = bModified; m_pState->modifies |= bModified; Invalidate(); }
+	bool			HasMarkedBlocks() const { return m_pViewData->HasMarkedBlocks(); }
 	void			ClearStepModifiedMark() { m_pState->modifies = false; }
 	void			SetInlineWordDiff(bool bWord) {m_bInlineWordDiff = bWord;}
 	void			SetInlineDiff(bool bDiff) {m_bShowInlineDiff = bDiff;}
@@ -188,6 +189,8 @@ public: // methods
 	virtual void	UseRightBlock() {return UseViewBlock(m_pwndRight); }
 	virtual void	UseRightFile() {return UseViewFile(m_pwndRight); }
 	virtual void	LeaveOnlyMarkedBlocks() { return LeaveOnlyMarkedBlocks(m_pwndLeft); }
+	virtual void	UseViewFileOfMarked() { UseViewFileOfMarked(m_pwndLeft); }
+	virtual void	UseViewFileExceptEdited() { UseViewFileExceptEdited(m_pwndLeft); }
 
 	// ViewData methods
 	void			InsertViewData(int index, const CString& sLine, DiffStates state, int linenumber, EOL ending, HIDESTATE hide, int movedline);
@@ -444,11 +447,13 @@ protected:  // methods
 
 	virtual void	UseBothBlocks(CBaseView * /*pwndFirst*/, CBaseView * /*pwndLast*/) {};
 	virtual void	UseViewBlock(CBaseView * /*pwndView*/) {}
-	void			UseViewBlock(CBaseView * pwndView, int nFirstViewLine, int nLastViewLine, bool skipMarked = false);
+	void			UseViewBlock(CBaseView * pwndView, int nFirstViewLine, int nLastViewLine, std::function<bool(int)> fnSkip = [] (int) -> bool { return false; });
 	virtual void	UseViewFile(CBaseView * /*pwndView*/) {}
 	virtual void	MarkBlock(bool /*marked*/) {}
 	void			MarkBlock(bool marked, int nFirstViewLine, int nLastViewLine);
 	void			LeaveOnlyMarkedBlocks(CBaseView *pwndView);
+	void			UseViewFileOfMarked(CBaseView *pwndView);
+	void			UseViewFileExceptEdited(CBaseView *pwndView);
 
 	virtual void	AddContextItems(CIconMenu& popup, DiffStates state);
 	void			AddCutCopyAndPaste(CIconMenu& popup);

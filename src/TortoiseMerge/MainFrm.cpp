@@ -1600,6 +1600,55 @@ void CMainFrame::PatchSave()
 
 bool CMainFrame::FileSave(bool bCheckResolved /*=true*/)
 {
+	if (HasMarkedBlocks())
+	{
+		if (m_bUseTaskDialog)
+		{
+			CString sTitle(MAKEINTRESOURCE(IDS_WARNMARKEDBLOCKS));
+			CString sSubTitle(MAKEINTRESOURCE(IDS_ASKFORSAVE_MARKEDBLOCKS));
+			CString sAppName(MAKEINTRESOURCE(IDS_APPNAME));
+			CTaskDialog taskdlg(sTitle,
+								sSubTitle,
+								sAppName,
+								0,
+								TDF_ENABLE_HYPERLINKS|TDF_USE_COMMAND_LINKS|TDF_ALLOW_DIALOG_CANCELLATION|TDF_POSITION_RELATIVE_TO_WINDOW);
+			taskdlg.AddCommandControl(10, CString(MAKEINTRESOURCE(IDS_MARKEDBLOCKSSAVEINCLUDE)));
+			taskdlg.AddCommandControl(11, CString(MAKEINTRESOURCE(IDS_MARKEDBLOCKSSAVEEXCLUDE)));
+			taskdlg.AddCommandControl(12, CString(MAKEINTRESOURCE(IDS_MARKEDBLCOKSSAVEIGNORE)));
+			taskdlg.AddCommandControl(IDCANCEL, CString(MAKEINTRESOURCE(IDS_ASKFORSAVE_CANCEL_OPEN)));
+			taskdlg.SetCommonButtons(TDCBF_CANCEL_BUTTON);
+			taskdlg.SetDefaultCommandControl(10);
+			taskdlg.SetMainIcon(TD_WARNING_ICON);
+			UINT ret = (UINT)taskdlg.DoModal(m_hWnd);
+			if (ret == 10)
+				m_pwndRightView->LeaveOnlyMarkedBlocks();
+			else if (ret == 11)
+				m_pwndRightView->UseViewFileOfMarked();
+			else if (ret == 12)
+				m_pwndRightView->UseViewFileExceptEdited();
+			else
+				return false;
+		}
+		else
+		{
+			CString sTitle(MAKEINTRESOURCE(IDS_ASKFORSAVE_MARKEDBLOCKS));
+			CString msg(MAKEINTRESOURCE(IDS_WARNMARKEDBLOCKS));
+			msg += _T("\r\n\r\n") + CString(MAKEINTRESOURCE(IDS_MSGBOX_YES)) + _T(": ");
+			msg += CString(MAKEINTRESOURCE(IDS_MARKEDBLOCKSSAVEINCLUDE));
+			msg += _T("\r\n\r\n") + CString(MAKEINTRESOURCE(IDS_MSGBOX_NO)) + _T(": ");
+			msg += CString(MAKEINTRESOURCE(IDS_MARKEDBLOCKSSAVEEXCLUDE));
+			msg += _T("\r\n\r\n") + CString(MAKEINTRESOURCE(IDS_MSGBOX_CANCEL)) + _T(": ");
+			msg += CString(MAKEINTRESOURCE(IDS_ASKFORSAVE_CANCEL_OPEN));
+			int ret = CMessageBox::Show(m_hWnd, msg, sTitle, MB_YESNOCANCEL | MB_ICONQUESTION);
+			if (ret == IDYES)
+				m_pwndRightView->LeaveOnlyMarkedBlocks();
+			else if (ret == IDNO)
+				m_pwndRightView->UseViewFileOfMarked();
+			else
+				return false;
+		}
+	}
+
 	if (!m_Data.m_mergedFile.InUse())
 		return FileSaveAs(bCheckResolved);
 	// check if the file has the readonly attribute set
@@ -2817,6 +2866,11 @@ bool CMainFrame::HasUnsavedEdits(const CBaseView* view)
 	if (!CBaseView::IsViewGood(view))
 		return false;
 	return view->IsModified();
+}
+
+bool CMainFrame::HasMarkedBlocks() const
+{
+	return CBaseView::IsViewGood(m_pwndRightView) && m_pwndRightView->HasMarkedBlocks();
 }
 
 bool CMainFrame::IsViewGood(const CBaseView* view)

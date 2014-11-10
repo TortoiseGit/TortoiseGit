@@ -703,6 +703,17 @@ BEGIN
     IDR_MAINFRAME           "TortoiseGitMerge"
     IDS_TITLE_REJECTEDHUNKS "Rejected patch hunks for '%s'"
     IDS_CONFIGUREREGEXES    "Configure Filter Regexes"
+    IDS_ASKFORSAVE_MARKEDBLOCKS "Marked Blocks"
+    IDS_WARNMARKEDBLOCKS    "You have marked changed blocks. How should those blocks be saved?"
+    IDS_MARKEDBLOCKSSAVEINCLUDE 
+                            "Save and include\nYour changes are saved and the marked blocks are included"
+    IDS_MARKEDBLOCKSSAVEEXCLUDE 
+                            "Save and exclude\nYour changes are saved and the original content is used"
+    IDS_MARKEDBLCOKSSAVEIGNORE 
+                            "Save and ignore marked blocks\nOnly your manual edits are saved, marked blocks are left as they are"
+    IDS_MSGBOX_YES          "Yes"
+    IDS_MSGBOX_NO           "No"
+    IDS_MSGBOX_CANCEL       "Cancel"
 END
 
 STRINGTABLE

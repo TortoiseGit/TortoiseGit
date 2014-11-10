@@ -5884,7 +5884,7 @@ void CBaseView::AskUserForNewLineEndingsAndTextType(int nTextId)
 /**
 	Replaces lines from source view to this
 */
-void CBaseView::UseViewBlock(CBaseView * pwndView, int nFirstViewLine, int nLastViewLine, bool skipMarked)
+void CBaseView::UseViewBlock(CBaseView * pwndView, int nFirstViewLine, int nLastViewLine, std::function<bool(int)> fnSkip)
 {
 	if (!IsViewGood(pwndView))
 		return;
@@ -5894,8 +5894,13 @@ void CBaseView::UseViewBlock(CBaseView * pwndView, int nFirstViewLine, int nLast
 
 	for (int viewLine = nFirstViewLine; viewLine <= nLastViewLine; viewLine++)
 	{
-		if (skipMarked && (GetViewMarked(viewLine) || GetViewState(viewLine) == DIFFSTATE_EDITED))
+		bool skip = fnSkip(viewLine);
+		if (skip)
+		{
+			if (GetViewMarked(viewLine))
+				SetViewMarked(viewLine, false);
 			continue;
+		}
 		viewdata line = pwndView->GetViewData(viewLine);
 		if (line.ending != EOL_NOENDING)
 			line.ending = m_lineendings;
@@ -5924,7 +5929,10 @@ void CBaseView::UseViewBlock(CBaseView * pwndView, int nFirstViewLine, int nLast
 		default:
 			break;
 		}
+		bool marked = GetViewMarked(viewLine);
 		SetViewData(viewLine, line);
+		if (marked)
+			SetViewMarked(viewLine, false);
 		if ((m_texttype == UnicodeType::ASCII) && (pwndView->GetTextType() != UnicodeType::ASCII))
 		{
 			// if this view is in ASCII and the other is not, we have to make sure that
@@ -6015,7 +6023,20 @@ void CBaseView::MarkBlock(bool marked, int nFirstViewLine, int nLastViewLine)
 
 void CBaseView::LeaveOnlyMarkedBlocks(CBaseView *pwndView)
 {
-	UseViewBlock(pwndView, 0, GetViewCount() - 1, true);
+	auto fn = [this](int viewLine) -> bool { return GetViewMarked(viewLine) || GetViewState(viewLine) == DIFFSTATE_EDITED; };
+	UseViewBlock(pwndView, 0, GetViewCount() - 1, fn);
+}
+
+void CBaseView::UseViewFileOfMarked(CBaseView *pwndView)
+{
+	auto fn = [this](int viewLine) -> bool { return !GetViewMarked(viewLine) || GetViewState(viewLine) == DIFFSTATE_EDITED; };
+	UseViewBlock(pwndView, 0, GetViewCount() - 1, fn);
+}
+
+void CBaseView::UseViewFileExceptEdited(CBaseView *pwndView)
+{
+	auto fn = [this](int viewLine) -> bool { return GetViewState(viewLine) == DIFFSTATE_EDITED; };
+	UseViewBlock(pwndView, 0, GetViewCount() - 1, fn);
 }
 
 int CBaseView::GetIndentCharsForLine(int x, int y)

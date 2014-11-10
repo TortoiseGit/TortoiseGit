@@ -37,6 +37,8 @@ public:
 	void	UseLeftFile() override; ///< Use File from Left
 	void	MarkBlock(bool marked) override;
 	void	LeaveOnlyMarkedBlocks();
+	void	UseViewFileOfMarked();
+	void	UseViewFileExceptEdited();
 
 protected:
 	void	AddContextItems(CIconMenu& popup, DiffStates state) override;

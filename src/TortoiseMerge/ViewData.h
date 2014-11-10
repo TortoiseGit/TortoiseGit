@@ -106,18 +106,37 @@ public:
 
 	int				GetCount() const { return (int)m_data.size();}
 
-	void			SetData(int index, const viewdata& data) {m_data[index] = data;};
+	void			SetData(int index, const viewdata& data)
+	{
+		bool oldmarked = m_data[index].marked;
+		bool marked = data.marked;
+		if (oldmarked && !marked && m_nMarkedBlocks > 0)
+			m_nMarkedBlocks--;
+		else if (!oldmarked && marked)
+			m_nMarkedBlocks++;
+		m_data[index] = data;
+	}
 	void			SetState(int index, DiffStates state) {m_data[index].state = state;}
 	void			SetLine(int index, const CString& sLine) {m_data[index].sLine = sLine;}
 	void			SetLineNumber(int index, int linenumber) {m_data[index].linenumber = linenumber;}
 	void			SetLineEnding(int index, EOL ending) {m_data[index].ending = ending;}
 	void			SetMovedIndex(int index, int movedIndex, bool movedFrom) {m_data[index].movedIndex = movedIndex; m_data[index].movedFrom = movedFrom;}
 	void			SetLineHideState(int index, HIDESTATE state) {m_data[index].hidestate = state;}
-	void			SetMarked(int index, bool marked) {m_data[index].marked = marked;}
+	void			SetMarked(int index, bool marked)
+	{
+		bool oldmarked = m_data[index].marked;
+		if (oldmarked && !marked && m_nMarkedBlocks > 0)
+			m_nMarkedBlocks--;
+		else if (!oldmarked && marked)
+			m_nMarkedBlocks++;
+		m_data[index].marked = marked;
+	}
+	bool			HasMarkedBlocks() { return m_nMarkedBlocks > 0; }
 
-	void			Clear() {m_data.clear();}
+	void			Clear() { m_data.clear(); m_nMarkedBlocks = 0; }
 	void			Reserve(int length) {m_data.reserve(length);}
 
 protected:
 	std::vector<viewdata>		m_data;
+	int							m_nMarkedBlocks;
 };
