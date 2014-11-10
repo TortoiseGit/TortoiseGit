@@ -182,6 +182,9 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 			break;
 		}
 
+		if (theApp.GetInt(_T("IgnoreWhitespace"), 0) == 1)
+			option += _T(" -w");
+
 		cmd.Format(_T("git.exe blame -p %s %s -- \"%s\""), option, Rev, path.GetGitPathString());
 		m_BlameData.clear();
 		BYTE_VECTOR err;

@@ -34,6 +34,7 @@ Released: unreleased
  * TGitCache now checks file sizes before checking file contents. This should mitigate possible "file is locked" problems.
  * Fixed issue #2329: Changes track remote branch when fast forward is used
  * Fixed issue #1872: Rebase edit doesn't amend files but only the commit message
+ * Fixed issue #2342: Ignore whitespace blame option not work
 
 = Release 1.8.11.0 =
 Released: 2014-08-22
