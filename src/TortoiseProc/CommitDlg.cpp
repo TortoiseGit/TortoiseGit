@@ -428,6 +428,9 @@ BOOL CCommitDlg::OnInitDialog()
 
 	SetSplitterRange();
 
+	if (m_bForceCommitAmend || m_bCommitAmend)
+		GetDlgItem(IDC_COMMIT_AMENDDIFF)->ShowWindow(SW_SHOW);
+
 	// add all directories to the watcher
 	/*
 	for (int i=0; i<m_pathList.GetCount(); ++i)
@@ -1009,9 +1012,12 @@ void CCommitDlg::OnOK()
 				}
 				m_bCreateNewBranch = FALSE;
 			}
-
-			m_AmendStr.Empty();
-			m_bCommitAmend = FALSE;
+			
+			if (!progress.m_GitStatus)
+			{
+				m_AmendStr.Empty();
+				m_bCommitAmend = FALSE;
+			}
 			UpdateData(FALSE);
 			this->Refresh();
 			this->BringWindowToTop();
@@ -1155,6 +1161,15 @@ UINT CCommitDlg::StatusThread()
 		m_History.Load(reg, _T("logmsgs"));
 	}
 
+	CString dotGitPath;
+	g_GitAdminDir.GetAdminDirPath(g_Git.m_CurrentDir, dotGitPath);
+	if (PathFileExists(dotGitPath + _T("CHERRY_PICK_HEAD")))
+	{
+		GetDlgItem(IDC_COMMIT_AMENDDIFF)->ShowWindow(SW_HIDE);
+		m_bCommitAmend = FALSE;
+		SendMessage(WM_UPDATEDATAFALSE);
+	}
+
 	// Initialise the list control with the status of the files/folders below us
 	m_ListCtrl.Clear();
 	BOOL success;
@@ -1205,8 +1220,6 @@ UINT CCommitDlg::StatusThread()
 		m_ListCtrl.Show(dwShow);
 	}
 
-	CString dotGitPath;
-	g_GitAdminDir.GetAdminDirPath(g_Git.m_CurrentDir, dotGitPath);
 	if ((m_ListCtrl.GetItemCount()==0)&&(m_ListCtrl.HasUnversionedItems())
 		 && !PathFileExists(dotGitPath + _T("MERGE_HEAD")))
 	{
@@ -1254,12 +1267,11 @@ UINT CCommitDlg::StatusThread()
 		{
 			if (m_bForceCommitAmend)
 			{
-				GetDlgItem(IDC_COMMIT_AMENDDIFF)->ShowWindow(SW_SHOW);
 				m_bCommitAmend = TRUE;
 				SendMessage(WM_UPDATEDATAFALSE);
 			}
 			else
-				GetDlgItem(IDC_COMMIT_AMEND)->EnableWindow(TRUE);
+				GetDlgItem(IDC_COMMIT_AMEND)->EnableWindow(!PathFileExists(dotGitPath + _T("CHERRY_PICK_HEAD")));
 
 			CGitHash hash;
 			if (g_Git.GetHash(hash, _T("HEAD")))

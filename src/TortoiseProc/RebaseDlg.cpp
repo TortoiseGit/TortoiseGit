@@ -46,6 +46,7 @@ CRebaseDlg::CRebaseDlg(CWnd* pParent /*=NULL*/)
 	, m_bAutoSkipFailedCommit(FALSE)
 	, m_bFinishedRebase(false)
 	, m_bStashed(false)
+	, m_bSplitCommit(FALSE)
 {
 	m_RebaseStage=CHOOSE_BRANCH;
 	m_CurrentRebaseIndex=-1;
@@ -72,6 +73,7 @@ void CRebaseDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_CHECK_CHERRYPICKED_FROM, m_bAddCherryPickedFrom);
 	DDX_Control(pDX,IDC_REBASE_POST_BUTTON,m_PostButton);
 	DDX_Control(pDX, IDC_SPLITALLOPTIONS, m_SplitAllOptions);
+	DDX_Check(pDX, IDC_REBASE_SPLIT_COMMIT, m_bSplitCommit);
 }
 
 
@@ -96,6 +98,7 @@ BEGIN_MESSAGE_MAP(CRebaseDlg, CResizableStandAloneDialog)
 	ON_REGISTERED_MESSAGE(CGitLogListBase::m_RebaseActionMessage, OnRebaseActionMessage)
 	ON_WM_CTLCOLOR()
 	ON_BN_CLICKED(IDC_SPLITALLOPTIONS, &CRebaseDlg::OnBnClickedSplitAllOptions)
+	ON_BN_CLICKED(IDC_REBASE_SPLIT_COMMIT, &CRebaseDlg::OnBnClickedRebaseSplitCommit)
 END_MESSAGE_MAP()
 
 void CRebaseDlg::AddRebaseAnchor()
@@ -117,6 +120,7 @@ void CRebaseDlg::AddRebaseAnchor()
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
 	AddAnchor(IDC_REBASE_CHECK_FORCE,TOP_RIGHT);
 	AddAnchor(IDC_CHECK_CHERRYPICKED_FROM, TOP_RIGHT);
+	AddAnchor(IDC_REBASE_SPLIT_COMMIT, BOTTOM_RIGHT);
 	AddAnchor(IDC_REBASE_POST_BUTTON,BOTTOM_LEFT);
 
 	this->AddOthersToAnchor();
@@ -213,6 +217,7 @@ BOOL CRebaseDlg::OnInitDialog()
 	AddRebaseAnchor();
 
 	AdjustControlSize(IDC_CHECK_CHERRYPICKED_FROM);
+	AdjustControlSize(IDC_REBASE_SPLIT_COMMIT);
 
 	CString sWindowTitle;
 	GetWindowText(sWindowTitle);
@@ -1236,35 +1241,44 @@ void CRebaseDlg::OnBnClickedContinue()
 		}
 	}
 
-	if ((m_RebaseStage == REBASE_EDIT || m_RebaseStage == REBASE_CONTINUE) && CheckNextCommitIsSquash() && !g_Git.CheckCleanWorkTree(true))
+	if ((m_RebaseStage == REBASE_EDIT || m_RebaseStage == REBASE_CONTINUE || m_bSplitCommit) && CheckNextCommitIsSquash() && (m_bSplitCommit || !g_Git.CheckCleanWorkTree(true)))
 	{
-		CCommitDlg dlg;
-		dlg.m_sLogMessage = m_LogMessageCtrl.GetText();
-		dlg.m_bWholeProject = true;
-		dlg.m_bSelectFilesForCommit = true;
-		dlg.m_bForceCommitAmend = true;
-		CTGitPathList gpl;
-		gpl.AddPath(CTGitPath(g_Git.m_CurrentDir));
-		dlg.m_pathList = gpl;
-		dlg.m_bAmendDiffToLastCommit = TRUE;
-		dlg.m_bNoPostActions = true;
-		dlg.m_AmendStr = dlg.m_sLogMessage;
-		dlg.m_bWarnDetachedHead = false;
-
-		if (dlg.DoModal() == IDOK)
-		{
-			if (CheckNextCommitIsSquash() == 0) // remember commit msg after edit if next commit if squash
-				ResetParentForSquash(dlg.m_sLogMessage);
-			else
-				m_SquashMessage.Empty();
-			this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_LOG);
-			m_RebaseStage = REBASE_CONTINUE;
-			GitRev* curRev = (GitRev*)m_CommitList.m_arShownList[m_CurrentRebaseIndex];
-			curRev->GetRebaseAction() |= CGitLogListBase::LOGACTIONS_REBASE_DONE;
-			this->UpdateCurrentStatus();
-		}
-		else
+		if (!m_bSplitCommit && CMessageBox::Show(nullptr, IDS_PROC_REBASE_CONTINUE_NOTCLEAN, IDS_APPNAME, 1, IDI_ERROR, IDS_MSGBOX_OK, IDS_ABORTBUTTON) == 2)
 			return;
+		BOOL isFirst = TRUE;
+		do
+		{
+			CCommitDlg dlg;
+			if (isFirst)
+				dlg.m_sLogMessage = m_LogMessageCtrl.GetText();
+			dlg.m_bWholeProject = true;
+			dlg.m_bSelectFilesForCommit = true;
+			dlg.m_bCommitAmend = isFirst && (m_RebaseStage != REBASE_SQUASH_EDIT); //  do not amend on squash_edit stage, we need a normal commit there
+			CTGitPathList gpl;
+			gpl.AddPath(CTGitPath(g_Git.m_CurrentDir));
+			dlg.m_pathList = gpl;
+			dlg.m_bAmendDiffToLastCommit = !m_bSplitCommit;
+			dlg.m_bNoPostActions = true;
+			if (dlg.m_bCommitAmend)
+				dlg.m_AmendStr = dlg.m_sLogMessage;
+			dlg.m_bWarnDetachedHead = false;
+
+			if (dlg.DoModal() != IDOK)
+				return;
+
+			isFirst = !m_bSplitCommit; // only select amend on second+ runs if not in split commit mode
+
+			m_SquashMessage.Empty();
+		} while (!g_Git.CheckCleanWorkTree() || (m_bSplitCommit && MessageBox(_T("Add another commit?"), _T("TortoiseGit"), MB_YESNO | MB_ICONQUESTION) == IDYES));
+
+		m_bSplitCommit = FALSE;
+		UpdateData(FALSE);
+
+		this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_LOG);
+		m_RebaseStage = REBASE_CONTINUE;
+		GitRev* curRev = (GitRev*)m_CommitList.m_arShownList[m_CurrentRebaseIndex];
+		curRev->GetRebaseAction() |= CGitLogListBase::LOGACTIONS_REBASE_DONE;
+		this->UpdateCurrentStatus();
 	}
 
 	if( m_RebaseStage == REBASE_EDIT ||  m_RebaseStage == REBASE_SQUASH_EDIT )
@@ -1501,6 +1515,8 @@ void CRebaseDlg::SetControlEnable()
 		}
 		break;
 	}
+
+	GetDlgItem(IDC_REBASE_SPLIT_COMMIT)->ShowWindow((m_RebaseStage == REBASE_EDIT || m_RebaseStage == REBASE_SQUASH_EDIT) ? SW_SHOW : SW_HIDE);
 
 	if(m_bThreadRunning)
 	{
@@ -2335,4 +2351,9 @@ void CRebaseDlg::OnBnClickedSplitAllOptions()
 	default:
 		ATLASSERT(false);
 	}
+}
+
+void CRebaseDlg::OnBnClickedRebaseSplitCommit()
+{
+	UpdateData();
 }
