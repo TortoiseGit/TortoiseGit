@@ -5162,6 +5162,10 @@ msgstr ""
 msgid "ID:32870:V C +L"
 msgstr ""
 
+#. Accelerator Entry for Menu ID:32873; ''
+msgid "ID:32873:V C +E"
+msgstr ""
+
 #. Accelerator Entry for Menu ID:32881; ''
 msgid "ID:32881:V C +P"
 msgstr ""
@@ -8638,6 +8642,10 @@ msgstr ""
 msgid "Spin1"
 msgstr ""
 
+#. Resource IDs: (1827)
+msgid "Split commit"
+msgstr ""
+
 #. Resource IDs: (1253)
 msgid "Split lines"
 msgstr ""
@@ -9212,7 +9220,7 @@ msgid "The two selected URL's are not created from the same root.\nIt's not poss
 msgstr ""
 
 #. Resource IDs: (96)
-msgid "The working tree is not clean and contains unstaged changes. This can cause conflicts while rebasing/cherry picking."
+msgid "The working tree is not clean and contains unstaged changes.\nReview and commit the changes?"
 msgstr ""
 
 #. Resource IDs: (65535)

@@ -1461,6 +1461,7 @@ BEGIN
     PUSHBUTTON      "Dumy Group For locat TabCtr",IDC_REBASE_DUMY_TAB,7,137,402,64,NOT WS_VISIBLE
     CONTROL         "",IDC_REBASE_PROGRESS,"msctls_progress32",WS_BORDER,7,204,402,7
     LTEXT           "",IDC_STATUS_STATIC,7,215,201,8
+    CONTROL         "Split commit",IDC_REBASE_SPLIT_COMMIT,"Button",BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,122,219,91,10
     DEFPUSHBUTTON   "Continue",IDC_REBASE_CONTINUE,213,217,63,14
     PUSHBUTTON      "Abort",IDC_REBASE_ABORT,285,217,57,14
     PUSHBUTTON      "Help",IDHELP,351,217,58,14
@@ -4595,7 +4596,7 @@ BEGIN
     IDS_FORCE_WITH_LEASE_TT "Force push only if the remote reference points to the same commit as the remote tracking branch.\nThis can cause the remote repository to lose commits; use it with care.\nThis option corresponds to the --force-with-lease git option."
     IDS_FORCE_TT            "Force push to the selected remote reference and override it without any safety checks.\nThis can cause the remote repository to lose unseen commits; use it with care.\nThis option corresponds to the --force git option."
     IDS_PROC_REBASE_CONTINUE_NOTCLEAN 
-                            "The working tree is not clean and contains unstaged changes. This can cause conflicts while rebasing/cherry picking."
+                            "The working tree is not clean and contains unstaged changes.\nReview and commit the changes?"
     IDS_PROC_COMMIT_SUPERPROJECT "Commit super project"
     IDS_LOG_NOT_VISIBLE     "Commit %s is NOT visible right now."
     IDS_PROC_SELECTION_HISTORY "Selection History"
