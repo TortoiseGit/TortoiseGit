@@ -889,8 +889,8 @@ BEGIN
     IDS_VIEWCONTEXTMENU_ENCODING "File Encoding"
     IDS_VIEWCONTEXTMENU_MARKBLOCK "Mark this block"
     IDS_VIEWCONTEXTMENU_UNMARKBLOCK "Unmark this block"
-    IDS_VIEWCONTEXTMENU_USELEFTFILEEXCEPTMARKED 
-                            "Use left file except marked blocks"
+    IDS_VIEWCONTEXTMENU_LEAVEONLYMARKEDBLOCKS 
+                            "Leave only marked blocks"
 END
 
 STRINGTABLE

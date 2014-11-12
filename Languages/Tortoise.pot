@@ -5676,6 +5676,10 @@ msgstr ""
 msgid "Leave as conflicted\nThe conflict status of the file is kept"
 msgstr ""
 
+#. Resource IDs: (252)
+msgid "Leave only marked blocks"
+msgstr ""
+
 #. Resource IDs: (188)
 msgid "Left View: "
 msgstr ""
@@ -9788,10 +9792,6 @@ msgstr ""
 
 #. Resource IDs: (32856)
 msgid "Use left file"
-msgstr ""
-
-#. Resource IDs: (252)
-msgid "Use left file except marked blocks"
 msgstr ""
 
 #. Resource IDs: (1762)

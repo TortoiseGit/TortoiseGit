@@ -2448,8 +2448,8 @@ void CBaseView::OnContextMenu(CPoint point, DiffStates state)
 	case POPUPCOMMAND_UNMARKBLOCK:
 		m_pwndRight->MarkBlock(false);
 		break;
-	case POPUPCOMMAND_USELEFTFILEEXCEPTMARKED:
-		m_pwndRight->UseLeftFileExceptMarked();
+	case POPUPCOMMAND_LEAVEONLYMARKEDBLOCKS:
+		m_pwndRight->LeaveOnlyMarkedBlocks();
 		break;
 	// 2-pane view multiedit commands; target is left view
 	case POPUPCOMMAND_PREPENDFROMRIGHT:
@@ -6013,7 +6013,7 @@ void CBaseView::MarkBlock(bool marked, int nFirstViewLine, int nLastViewLine)
 	RefreshViews();
 }
 
-void CBaseView::UseViewFileExceptMarked(CBaseView *pwndView)
+void CBaseView::LeaveOnlyMarkedBlocks(CBaseView *pwndView)
 {
 	UseViewBlock(pwndView, 0, GetViewCount() - 1, true);
 }

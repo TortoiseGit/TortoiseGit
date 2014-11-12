@@ -202,9 +202,9 @@ void CRightView::MarkBlock(bool marked)
 	CBaseView::MarkBlock(marked, nFirstViewLine, nLastViewLine);
 }
 
-void CRightView::UseViewFileExceptMarked()
+void CRightView::LeaveOnlyMarkedBlocks()
 {
-	CBaseView::UseViewFileExceptMarked(m_pwndLeft);
+	CBaseView::LeaveOnlyMarkedBlocks(m_pwndLeft);
 }
 
 void CRightView::AddContextItems(CIconMenu& popup, DiffStates state)
@@ -255,7 +255,7 @@ void CRightView::AddContextItems(CIconMenu& popup, DiffStates state)
 			if (showUnmark)
 				popup.AppendMenuIcon(POPUPCOMMAND_UNMARKBLOCK, IDS_VIEWCONTEXTMENU_UNMARKBLOCK);
 		}
-		popup.AppendMenuIcon(POPUPCOMMAND_USELEFTFILEEXCEPTMARKED, IDS_VIEWCONTEXTMENU_USELEFTFILEEXCEPTMARKED);
+		popup.AppendMenuIcon(POPUPCOMMAND_LEAVEONLYMARKEDBLOCKS, IDS_VIEWCONTEXTMENU_LEAVEONLYMARKEDBLOCKS);
 		popup.AppendMenuIcon(POPUPCOMMAND_USELEFTFILE, IDS_VIEWCONTEXTMENU_USEOTHERFILE);
 		if (IsLeftViewGood() && !m_pwndLeft->IsReadonly())
 		{
