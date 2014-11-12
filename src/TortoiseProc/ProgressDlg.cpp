@@ -49,6 +49,7 @@ CProgressDlg::CProgressDlg(CWnd* pParent /*=NULL*/)
 	, m_startTick(GetTickCount())
 	, m_BufStart(0)
 	, m_Git(&g_Git)
+	, m_ProgressCallback(nullptr)
 {
 	m_pThread = NULL;
 	m_bBufferAll=false;
@@ -90,6 +91,7 @@ void CProgressDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CProgressDlg, CResizableStandAloneDialog)
+	ON_WM_TIMER()
 	ON_WM_CLOSE()
 	ON_MESSAGE(MSG_PROGRESSDLG_UPDATE_UI, OnProgressUpdateUI)
 	ON_BN_CLICKED(IDOK, &CProgressDlg::OnBnClickedOk)
@@ -172,7 +174,32 @@ BOOL CProgressDlg::OnInitDialog()
 	// Make sure this dialog is shown in foreground (see issue #1536)
 	SetForegroundWindow();
 
+	if (m_ProgressCallback)
+		SetTimer(1, 100, nullptr);
+
 	return TRUE;
+}
+
+void CProgressDlg::OnTimer(UINT_PTR nIDEvent)
+{
+	while (m_ProgressCallback)
+	{
+		int percentage = m_Progress.GetPos();
+		if (!m_ProgressCallback(percentage, m_CurrentWork))
+			break;
+		if (percentage < 0 || percentage > 100)
+			break;
+		if (m_Progress.GetPos() == percentage)
+			break;
+		m_Progress.SetPos(percentage);
+		if (m_pTaskbarList)
+		{
+			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NORMAL);
+			m_pTaskbarList->SetProgressValue(m_hWnd, percentage, 100);
+		}
+		break;
+	};
+	__super::OnTimer(nIDEvent);
 }
 
 static void EnsurePostMessage(CWnd *pWnd, UINT Msg, WPARAM wParam, LPARAM lParam)

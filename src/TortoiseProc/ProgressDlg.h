@@ -76,6 +76,7 @@ public:
 
 typedef std::vector<PostCmd> PostCmdList;
 typedef std::function<void(DWORD status, PostCmdList&)> PostCmdCallback;
+typedef std::function<bool(int& percentage, CWnd& currentWorkCtrl)> ProgressCallback;
 
 class CProgressDlg : public CResizableStandAloneDialog
 {
@@ -107,6 +108,8 @@ public:
 
 	CString					GetLogText() const { CString text; m_Log.GetWindowText(text); return text; }
 
+	ProgressCallback		m_ProgressCallback;
+
 private:
 	PostCmdList				m_PostCmdList;
 	void					WriteLog() const;
@@ -136,6 +139,8 @@ private:
 
 	afx_msg LRESULT			OnTaskbarBtnCreated(WPARAM wParam, LPARAM lParam);
 	CComPtr<ITaskbarList3>	m_pTaskbarList;
+
+	afx_msg void			OnTimer(UINT_PTR nIDEvent);
 
 	void					OnCancel();
 	afx_msg void			OnClose();
