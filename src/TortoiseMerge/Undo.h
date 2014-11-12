@@ -43,7 +43,7 @@ typedef struct viewstate
 
 	void	AddViewLineFromView(CBaseView *pView, int nViewLine, bool bAddEmptyLine);
 	void	Clear();
-	bool	IsEmpty() const { return difflines.empty() && linestates.empty() && linelines.empty() && linesEOL.empty() && addedlines.empty() && removedlines.empty() && replacedlines.empty(); }
+	bool	IsEmpty() const { return difflines.empty() && linestates.empty() && linelines.empty() && linesEOL.empty() && markedlines.empty() && addedlines.empty() && removedlines.empty() && replacedlines.empty(); }
 } viewstate;
 
 /**

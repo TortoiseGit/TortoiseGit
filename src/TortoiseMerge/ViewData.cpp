@@ -20,6 +20,7 @@
 #include "ViewData.h"
 
 CViewData::CViewData(void)
+	: m_nMarkedBlocks(0)
 {
 }
 

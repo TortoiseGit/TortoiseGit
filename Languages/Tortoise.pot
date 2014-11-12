@@ -5676,6 +5676,10 @@ msgstr ""
 msgid "Leave as conflicted\nThe conflict status of the file is kept"
 msgstr ""
 
+#. Resource IDs: (252)
+msgid "Leave only marked blocks"
+msgstr ""
+
 #. Resource IDs: (188)
 msgid "Left View: "
 msgstr ""
@@ -5891,6 +5895,10 @@ msgstr ""
 
 #. Resource IDs: (252)
 msgid "Mark this block"
+msgstr ""
+
+#. Resource IDs: (7)
+msgid "Marked Blocks"
 msgstr ""
 
 #. Resource IDs: (2051)
@@ -7930,6 +7938,18 @@ msgstr ""
 msgid "Save all\nBoth Files are saved"
 msgstr ""
 
+#. Resource IDs: (7)
+msgid "Save and exclude\nYour changes are saved and the original content is used"
+msgstr ""
+
+#. Resource IDs: (7)
+msgid "Save and ignore marked blocks\nOnly your manual edits are saved, marked blocks are left as they are"
+msgstr ""
+
+#. Resource IDs: (7)
+msgid "Save and include\nYour changes are saved and the marked blocks are included"
+msgstr ""
+
 #. Resource IDs: (156)
 msgid "Save as"
 msgstr ""
@@ -9790,10 +9810,6 @@ msgstr ""
 msgid "Use left file"
 msgstr ""
 
-#. Resource IDs: (252)
-msgid "Use left file except marked blocks"
-msgstr ""
-
 #. Resource IDs: (1762)
 msgid "Use local branch color for current branch"
 msgstr ""
@@ -10218,6 +10234,10 @@ msgstr ""
 
 #. Resource IDs: (86)
 msgid "You have checked \"include untracked\".\nThis includes a \"git clean -fd\" call, so ignored files/directories are removed w/o using recycle bin."
+msgstr ""
+
+#. Resource IDs: (7)
+msgid "You have marked changed blocks. How should those blocks be saved?"
 msgstr ""
 
 #. Resource IDs: (16)

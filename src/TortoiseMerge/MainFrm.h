@@ -228,6 +228,7 @@ protected:
 	void			OnViewTextFoldUnfold(CBaseView* view);
 	bool			HasUnsavedEdits() const;
 	static bool		HasUnsavedEdits(const CBaseView* view);
+	bool			HasMarkedBlocks() const;
 	static bool		IsViewGood(const CBaseView* view);
 	static bool		HasPrevConflict(CBaseView* view);
 	static bool		HasNextConflict(CBaseView* view);
