@@ -74,13 +74,11 @@
     <ClInclude Include="..\..\external\zlib123\inftrees.h" />
     <ClInclude Include="..\..\external\zlib123\trees.h" />
     <ClInclude Include="..\..\external\zlib123\zconf.h" />
-    <ClInclude Include="..\..\external\zlib123\zconf.in.h" />
     <ClInclude Include="..\..\external\zlib123\zlib.h" />
     <ClInclude Include="..\..\external\zlib123\zutil.h" />
     <ClInclude Include="..\..\external\zlib123\contrib\minizip\crypt.h" />
     <ClInclude Include="..\..\external\zlib123\contrib\minizip\ioapi.h" />
     <ClInclude Include="..\..\external\zlib123\contrib\minizip\iowin32.h" />
-    <ClInclude Include="..\..\external\zlib123\contrib\minizip\mztools.h" />
     <ClInclude Include="..\..\external\zlib123\contrib\minizip\unzip.h" />
     <ClInclude Include="..\..\external\zlib123\contrib\minizip\zip.h" />
     <ClInclude Include="ZipUnzip.h" />
