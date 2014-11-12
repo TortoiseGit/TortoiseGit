@@ -1180,6 +1180,23 @@ bool CAppUtils::Export(const CString* BashHash, const CTGitPath* orgPath)
 	return false;
 }
 
+int CAppUtils::CheckHeadDetach()
+{
+	CString output;
+	if (CGit::GetCurrentBranchFromFile(g_Git.m_CurrentDir, output))
+	{
+		int retval = CMessageBox::Show(NULL, IDS_PROC_COMMIT_DETACHEDWARNING, IDS_APPNAME, MB_YESNOCANCEL | MB_ICONWARNING);
+		if (retval == IDYES)
+		{
+			if (CreateBranchTag(FALSE, NULL, true) == FALSE)
+				return true;
+		}
+		else if (retval == IDCANCEL)
+			return true;
+	}
+	return false;
+}
+
 bool CAppUtils::CreateBranchTag(bool IsTag, const CString* CommitHash, bool switch_new_brach)
 {
 	CCreateBranchTagDlg dlg;
