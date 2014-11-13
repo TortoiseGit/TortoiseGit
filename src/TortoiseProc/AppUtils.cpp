@@ -1180,7 +1180,7 @@ bool CAppUtils::Export(const CString* BashHash, const CTGitPath* orgPath)
 	return false;
 }
 
-int CAppUtils::CheckHeadDetach()
+int CAppUtils::CheckHeadDetach(const CString& defaultBranchName/*L""*/)
 {
 	CString output;
 	if (CGit::GetCurrentBranchFromFile(g_Git.m_CurrentDir, output))
@@ -1188,7 +1188,7 @@ int CAppUtils::CheckHeadDetach()
 		int retval = CMessageBox::Show(NULL, IDS_PROC_COMMIT_DETACHEDWARNING, IDS_APPNAME, MB_YESNOCANCEL | MB_ICONWARNING);
 		if (retval == IDYES)
 		{
-			if (CreateBranchTag(FALSE, NULL, true) == FALSE)
+			if (!CreateBranchTag(false, nullptr, true, defaultBranchName))
 				return true;
 		}
 		else if (retval == IDCANCEL)
@@ -1197,7 +1197,7 @@ int CAppUtils::CheckHeadDetach()
 	return false;
 }
 
-bool CAppUtils::CreateBranchTag(bool IsTag, const CString* CommitHash, bool switch_new_brach)
+bool CAppUtils::CreateBranchTag(bool IsTag, const CString* CommitHash, bool switch_new_brach, const CString& defaultBranchName)
 {
 	CCreateBranchTagDlg dlg;
 	dlg.m_bIsTag=IsTag;
@@ -1205,6 +1205,8 @@ bool CAppUtils::CreateBranchTag(bool IsTag, const CString* CommitHash, bool swit
 
 	if(CommitHash)
 		dlg.m_initialRefName = *CommitHash;
+
+	dlg.m_BranchTagName = defaultBranchName;
 
 	if(dlg.DoModal()==IDOK)
 	{

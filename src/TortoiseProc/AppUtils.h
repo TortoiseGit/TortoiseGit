@@ -155,8 +155,8 @@ public:
 												bool bCompact = false);
 
 	static bool Export(const CString* BashHash = nullptr, const CTGitPath* orgPath = nullptr);
-	static int  CheckHeadDetach();
-	static bool CreateBranchTag(bool IsTag = TRUE, const CString* CommitHash = nullptr, bool switch_new_brach = false);
+	static int  CheckHeadDetach(const CString& defaultBranchNames = L"");
+	static bool CreateBranchTag(bool IsTag = TRUE, const CString* CommitHash = nullptr, bool switch_new_brach = false, const CString& defaultBranchName = L"");
 	static bool Switch(const CString& initialRefName = CString());
 	static bool PerformSwitch(const CString& ref, bool bForce = false, const CString& sNewBranch = CString(), bool bBranchOverride = false, BOOL bTrack = 2, bool bMerge = false);
 
