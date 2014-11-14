@@ -438,6 +438,13 @@ int CCachedDirectory::EnumFiles(const CTGitPath &path , bool IsFull)
 		bool assumeValid = false;
 		bool skipWorktree = false;
 		pStatus->GetFileStatus(sProjectRoot, sSubPath, &status, IsFull, false, true, GetStatusCallback, this, &assumeValid, &skipWorktree);
+		if (status < m_mostImportantFileStatus)
+		{
+			m_mostImportantFileStatus = git_wc_status_none;
+			m_ownStatus = git_wc_status_none;
+			RefreshMostImportant();
+			UpdateCurrentStatus();
+		}
 	}
 	else
 	{
@@ -868,6 +875,9 @@ void CCachedDirectory::RefreshMostImportant()
 				newStatus = GitStatus::GetMoreImportant(newStatus, git_wc_status_modified);
 		}
 	}
+	// if just a file in a folder is deleted or added report back that the folder is modified and not deleted or added
+	if (newStatus == git_wc_status_deleted || newStatus == git_wc_status_added)
+		newStatus = git_wc_status_modified;
 	if (newStatus != m_mostImportantFileStatus)
 	{
 		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": status change of path %s\n"), m_directoryPath.GetWinPath());
