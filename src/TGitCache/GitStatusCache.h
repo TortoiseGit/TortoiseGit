@@ -89,6 +89,7 @@ public:
 
 	bool IsPathAllowed(const CTGitPath& path) {return !!m_shellCache.IsPathAllowed(path.GetWinPath());}
 	bool IsUnversionedAsModified() {return !!m_shellCache.IsUnversionedAsModified();}
+	bool IsRecurseSubmodules() { return !!m_shellCache.IsRecurseSubmodules(); }
 	bool IsPathGood(const CTGitPath& path);
 	bool IsPathWatched(const CTGitPath& path) {return watcher.IsPathWatched(path);}
 	bool AddPathToWatch(const CTGitPath& path) {return watcher.AddPath(path);}
