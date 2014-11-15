@@ -730,7 +730,7 @@ void CCachedDirectory::UpdateCurrentStatus()
 		// We have a parent
 		// just version controled directory need to cache.
 		CString root1, root2;
-		if(parentPath.HasAdminDir(&root1) && m_directoryPath.HasAdminDir(&root2) && root1 == root2)
+		if (parentPath.HasAdminDir(&root1) && (CGitStatusCache::Instance().IsRecurseSubmodules() || m_directoryPath.HasAdminDir(&root2) && root1 == root2))
 		{
 			CCachedDirectory * cachedDir = CGitStatusCache::Instance().GetDirectoryCacheEntry(parentPath);
 			if (cachedDir)

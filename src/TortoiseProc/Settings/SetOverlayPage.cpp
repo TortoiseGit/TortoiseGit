@@ -39,6 +39,7 @@ CSetOverlayPage::CSetOverlayPage()
 	, m_sExcludePaths(_T(""))
 	, m_sIncludePaths(_T(""))
 	, m_bUnversionedAsModified(FALSE)
+	, m_bRecurseSubmodules(FALSE)
 	, m_bFloppy(FALSE)
 	, m_bShowExcludedAsNormal(TRUE)
 {
@@ -54,6 +55,7 @@ CSetOverlayPage::CSetOverlayPage()
 	m_regIncludePaths = CRegString(_T("Software\\TortoiseGit\\OverlayIncludeList"));
 	m_regCacheType = CRegDWORD(_T("Software\\TortoiseGit\\CacheType"), GetSystemMetrics(SM_REMOTESESSION) ? 2 : 1);
 	m_regUnversionedAsModified = CRegDWORD(_T("Software\\TortoiseGit\\UnversionedAsModified"), FALSE);
+	m_regRecurseSubmodules = CRegDWORD(_T("Software\\TortoiseGit\\TGitCacheRecurseSubmodules"), FALSE);
 	m_regShowExcludedAsNormal = CRegDWORD(_T("Software\\TortoiseGit\\ShowExcludedAsNormal"), TRUE);
 
 	m_bOnlyExplorer = m_regOnlyExplorer;
@@ -65,6 +67,7 @@ CSetOverlayPage::CSetOverlayPage()
 	m_bRAM = m_regDriveMaskRAM;
 	m_bUnknown = m_regDriveMaskUnknown;
 	m_bUnversionedAsModified = m_regUnversionedAsModified;
+	m_bRecurseSubmodules = m_regRecurseSubmodules;
 	m_bShowExcludedAsNormal = m_regShowExcludedAsNormal;
 	m_sExcludePaths = m_regExcludePaths;
 	m_sExcludePaths.Replace(_T("\n"), _T("\r\n"));
@@ -90,6 +93,7 @@ void CSetOverlayPage::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EXCLUDEPATHS, m_sExcludePaths);
 	DDX_Text(pDX, IDC_INCLUDEPATHS, m_sIncludePaths);
 	DDX_Check(pDX, IDC_UNVERSIONEDASMODIFIED, m_bUnversionedAsModified);
+	DDX_Check(pDX, IDC_RECURSIVESUBMODULES, m_bRecurseSubmodules);
 	DDX_Check(pDX, IDC_FLOPPY, m_bFloppy);
 	DDX_Check(pDX, IDC_SHOWEXCLUDEDASNORMAL, m_bShowExcludedAsNormal);
 }
@@ -110,6 +114,7 @@ BEGIN_MESSAGE_MAP(CSetOverlayPage, ISettingsPropPage)
 	ON_BN_CLICKED(IDC_CACHESHELL2, &CSetOverlayPage::OnChange)
 	ON_BN_CLICKED(IDC_CACHENONE, &CSetOverlayPage::OnChange)
 	ON_BN_CLICKED(IDC_UNVERSIONEDASMODIFIED, &CSetOverlayPage::OnChange)
+	ON_BN_CLICKED(IDC_RECURSIVESUBMODULES, &CSetOverlayPage::OnChange)
 	ON_BN_CLICKED(IDC_SHOWEXCLUDEDASNORMAL, &CSetOverlayPage::OnChange)
 END_MESSAGE_MAP()
 
@@ -125,6 +130,7 @@ BOOL CSetOverlayPage::OnInitDialog()
 	AdjustControlSize(IDC_UNKNOWN);
 	AdjustControlSize(IDC_ONLYEXPLORER);
 	AdjustControlSize(IDC_UNVERSIONEDASMODIFIED);
+	AdjustControlSize(IDC_RECURSIVESUBMODULES);
 	AdjustControlSize(IDC_FLOPPY);
 	AdjustControlSize(IDC_CACHEDEFAULT);
 	AdjustControlSize(IDC_CACHENONE);
@@ -148,6 +154,7 @@ BOOL CSetOverlayPage::OnInitDialog()
 		break;
 	}
 	GetDlgItem(IDC_UNVERSIONEDASMODIFIED)->EnableWindow(m_dwCacheType == 1);
+	GetDlgItem(IDC_RECURSIVESUBMODULES)->EnableWindow(m_dwCacheType == 1);
 	GetDlgItem(IDC_FLOPPY)->EnableWindow(m_bRemovable);
 
 	m_tooltips.Create(this);
@@ -193,6 +200,7 @@ void CSetOverlayPage::OnChange()
 		break;
 	}
 	GetDlgItem(IDC_UNVERSIONEDASMODIFIED)->EnableWindow(m_dwCacheType == 1);
+	GetDlgItem(IDC_RECURSIVESUBMODULES)->EnableWindow(m_dwCacheType == 1);
 	GetDlgItem(IDC_FLOPPY)->EnableWindow(m_bRemovable);
 	SetModified();
 }
@@ -247,6 +255,9 @@ BOOL CSetOverlayPage::OnApply()
 	if (DWORD(m_regUnversionedAsModified) != DWORD(m_bUnversionedAsModified))
 		m_restart = Restart_Cache;
 	Store (m_bUnversionedAsModified, m_regUnversionedAsModified);
+	if (DWORD(m_regRecurseSubmodules) != DWORD(m_bRecurseSubmodules))
+		m_restart = Restart_Cache;
+	Store(m_bRecurseSubmodules, m_regRecurseSubmodules);
 	if (DWORD(m_regShowExcludedAsNormal) != DWORD(m_bShowExcludedAsNormal))
 		m_restart = Restart_Cache;
 	Store (m_bShowExcludedAsNormal, m_regShowExcludedAsNormal);

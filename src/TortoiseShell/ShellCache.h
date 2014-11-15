@@ -66,6 +66,7 @@ public:
 		includelist = CRegStdString(_T("Software\\TortoiseGit\\OverlayIncludeList"));
 		simplecontext = CRegStdDWORD(_T("Software\\TortoiseGit\\SimpleContext"), FALSE);
 		unversionedasmodified = CRegStdDWORD(_T("Software\\TortoiseGit\\UnversionedAsModified"), FALSE);
+		recursesubmodules = CRegStdDWORD(_T("Software\\TortoiseGit\\TGitCacheRecurseSubmodules"), FALSE);
 		hidemenusforunversioneditems = CRegStdDWORD(_T("Software\\TortoiseGit\\HideMenusForUnversionedItems"), FALSE);
 		showunversionedoverlay = CRegStdDWORD(_T("Software\\TortoiseGit\\ShowUnversionedOverlay"), TRUE);
 		showignoredoverlay = CRegStdDWORD(_T("Software\\TortoiseGit\\ShowIgnoredOverlay"), TRUE);
@@ -82,6 +83,7 @@ public:
 		simplecontextticker = cachetypeticker;
 		shellmenuacceleratorsticker = cachetypeticker;
 		unversionedasmodifiedticker = cachetypeticker;
+		recursesubmodulesticker = cachetypeticker;
 		showunversionedoverlayticker = cachetypeticker;
 		showignoredoverlayticker = cachetypeticker;
 		admindirticker = cachetypeticker;
@@ -137,6 +139,7 @@ public:
 		simplecontext.read();
 		shellmenuaccelerators.read();
 		unversionedasmodified.read();
+		recursesubmodules.read();
 		showunversionedoverlay.read();
 		showignoredoverlay.read();
 		excludedasnormal.read();
@@ -256,6 +259,15 @@ public:
 			unversionedasmodified.read();
 		}
 		return (unversionedasmodified);
+	}
+	BOOL IsRecurseSubmodules()
+	{
+		if ((GetTickCount() - REGISTRYTIMEOUT) > recursesubmodulesticker)
+		{
+			recursesubmodulesticker = GetTickCount();
+			recursesubmodules.read();
+		}
+		return (recursesubmodules);
 	}
 	BOOL ShowUnversionedOverlay()
 	{
@@ -623,6 +635,7 @@ public:
 	CRegStdDWORD menumasklow_cu;
 	CRegStdDWORD menumaskhigh_cu;
 	CRegStdDWORD unversionedasmodified;
+	CRegStdDWORD recursesubmodules;
 	CRegStdDWORD showunversionedoverlay;
 	CRegStdDWORD showignoredoverlay;
 	CRegStdDWORD excludedasnormal;
@@ -649,6 +662,7 @@ public:
 	DWORD simplecontextticker;
 	DWORD shellmenuacceleratorsticker;
 	DWORD unversionedasmodifiedticker;
+	DWORD recursesubmodulesticker;
 	DWORD showunversionedoverlayticker;
 	DWORD showignoredoverlayticker;
 	DWORD excludedasnormalticker;
