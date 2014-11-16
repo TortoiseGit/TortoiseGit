@@ -307,8 +307,11 @@ CStatusCacheEntry CCachedDirectory::GetStatusFromGit(const CTGitPath &path, CStr
 					status2.text_status = status2.prop_status =
 						(isignore? git_wc_status_ignored:git_wc_status_unversioned);
 
+					// we do not know anything about files here, all we know is that there are not versioned files in this dir
+					dirEntry->m_mostImportantFileStatus = git_wc_status_none;
 					dirEntry->m_ownStatus.SetKind(git_node_dir);
 					dirEntry->m_ownStatus.SetStatus(&status2);
+					dirEntry->m_currentFullStatus = status2.text_status;
 				}
 				return dirEntry->m_ownStatus;
 			}
