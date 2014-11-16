@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Include>
-	<Feature Id="DefaultFeature" Level="1" ConfigurableDirectory="INSTALLDIR" Title="TortoiseGit" Absent="disallow" TypicalDefault="install" Description="The TortoiseGit package and dependencies." Display="expand" InstallDefault="local">
+	<Feature Id="DefaultFeature" Level="1" ConfigurableDirectory="INSTALLDIR" Title="TortoiseGit" Absent="disallow" TypicalDefault="install" Description="The TortoiseGit package and dependencies." Display="expand" InstallDefault="local" AllowAdvertise="no">
 		<ComponentRef Id="C__infofiles" />
 		<ComponentRef Id="C__apr" />
 
@@ -51,7 +51,7 @@
 		</Feature>
 
 		<?if $(var.Platform) = "x64" ?>
-		<Feature Id="F_TSHELL32" Level="1" Title="32-bit TortoiseGit Shell-Extension" Description="The TortoiseGit Shell-Extension for 32-bit applications." TypicalDefault="install" Absent="allow">
+		<Feature Id="F_TSHELL32" Level="1" Title="32-bit TortoiseGit Shell-Extension" Description="The TortoiseGit Shell-Extension for 32-bit applications." TypicalDefault="install" Absent="allow" AllowAdvertise="no">
 			<ComponentRef Id="C__gitlibs32" />
 			<ComponentRef Id="C__TortoiseShell32" />
 			<ComponentRef Id="C__shellregistry32" />
@@ -68,7 +68,7 @@
 		</Feature>
 		<?endif ?>
 
-		<Feature Id="MoreIcons" Level="1" Title="Additional icon sets" Description="Additional sets of icon overlays in different styles" TypicalDefault="install" Absent="allow">
+		<Feature Id="MoreIcons" Level="1" Title="Additional icon sets" Description="Additional sets of icon overlays in different styles" TypicalDefault="install" Absent="allow" AllowAdvertise="no">
 			<ComponentRef Id="C__iconscvsclassic" />
 			<ComponentRef Id="C__iconsmodern" />
 			<ComponentRef Id="C__iconsmarkphippard" />
@@ -82,34 +82,34 @@
 		</Feature>
 
 		<?if $(var.IncludeCrashReportDll) = 1 ?>
-		<Feature Id="CrashReporter" Level="1" Title="Crash Reporter" Description="Sends crash dumps to the developers." TypicalDefault="install" InstallDefault="followParent" Absent="allow">
+		<Feature Id="CrashReporter" Level="1" Title="Crash Reporter" Description="Sends crash dumps to the developers." TypicalDefault="install" InstallDefault="followParent" Absent="allow" AllowAdvertise="no">
 			<ComponentRef Id="C__crash" />
 		</Feature>
 		<?endif ?>
 
-		<Feature Id="UDiffAssoc" Level="1" Title="Register diff/patch files" Description="Associate .diff and .patch files with TortoiseUDiff" TypicalDefault="install" Absent="allow">
+		<Feature Id="UDiffAssoc" Level="1" Title="Register diff/patch files" Description="Associate .diff and .patch files with TortoiseUDiff" TypicalDefault="install" Absent="allow" AllowAdvertise="no">
 			<ComponentRef Id="C__TortoiseUDiffAssoc" />
 		</Feature>
 
-		<Feature Id="ProtocolAssoc" Level="1" Title="Register link handlers" Description="Select which protocol-links to associate with TortoiseGit clone command" TypicalDefault="install" Absent="allow" Display="expand">
-			<Feature Id="ProtocolAssocGit" Level="1" Title="Register git://-link handler" Description="Associate git://-links with TortoiseGit clone command" TypicalDefault="install" Absent="allow">
+		<Feature Id="ProtocolAssoc" Level="1" Title="Register link handlers" Description="Select which protocol-links to associate with TortoiseGit clone command" TypicalDefault="install" Absent="allow" Display="expand" AllowAdvertise="no">
+			<Feature Id="ProtocolAssocGit" Level="1" Title="Register git://-link handler" Description="Associate git://-links with TortoiseGit clone command" TypicalDefault="install" Absent="allow" AllowAdvertise="no">
 				<ComponentRef Id="ProtocolGit"/>
 			</Feature>
-			<Feature Id="ProtocolAssocGithub" Level="4" Title="Register github-windows://-link handler" Description="Associate github-windows://-links with TortoiseGit clone command" TypicalDefault="install" Absent="allow">
+			<Feature Id="ProtocolAssocGithub" Level="4" Title="Register github-windows://-link handler" Description="Associate github-windows://-links with TortoiseGit clone command" TypicalDefault="install" Absent="allow" AllowAdvertise="no">
 				<ComponentRef Id="ProtocolGithub"/>
 			</Feature>
-			<Feature Id="ProtocolAssocSmartgit" Level="4" Title="Register smartgit://-link handler" Description="Associate smartgit://-links with TortoiseGit clone command" TypicalDefault="install" Absent="allow">
+			<Feature Id="ProtocolAssocSmartgit" Level="4" Title="Register smartgit://-link handler" Description="Associate smartgit://-links with TortoiseGit clone command" TypicalDefault="install" Absent="allow" AllowAdvertise="no">
 				<ComponentRef Id="ProtocolSmartgit"/>
 			</Feature>
 		</Feature>
 
 		<?if $(var.DictionaryENGB) = 1 ?>
-		<Feature Id="DictionaryENGB" Level="1" Title="English (GB) dictionary" Description="English (GB) spell checker dictionary" TypicalDefault="install" Absent="allow">
+		<Feature Id="DictionaryENGB" Level="1" Title="English (GB) dictionary" Description="English (GB) spell checker dictionary" TypicalDefault="install" Absent="allow" AllowAdvertise="no">
 			<ComponentRef Id="C__DictionaryENGB" />
 		</Feature>
 		<?endif ?>
 		<?if $(var.DictionaryENUS) = 1 ?>
-		<Feature Id="DictionaryENUS" Level="1" Title="English (US) dictionary" Description="English (US) spell checker dictionary" TypicalDefault="install" Absent="allow">
+		<Feature Id="DictionaryENUS" Level="1" Title="English (US) dictionary" Description="English (US) spell checker dictionary" TypicalDefault="install" Absent="allow" AllowAdvertise="no">
 			<ComponentRef Id="C__DictionaryENUS" />
 		</Feature>
 		<?endif ?>
