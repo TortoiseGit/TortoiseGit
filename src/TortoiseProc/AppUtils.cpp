@@ -3579,7 +3579,7 @@ int CAppUtils::ResolveConflict(CTGitPath& path, resolve_with resolveWith)
 			return -1;
 		}
 	}
-	else if (resolveWith == RESOLVE_WITH_THEIRS)
+	else if (resolveWith == RESOLVE_WITH_MINE)
 	{
 		CString gitcmd, output;
 		if (b_local && b_remote)
