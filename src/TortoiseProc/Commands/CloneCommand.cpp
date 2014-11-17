@@ -258,6 +258,23 @@ bool CloneCommand::Execute()
 		CProgressDlg progress;
 		progress.m_GitCmd=cmd;
 		progress.m_PostCmdCallback = postCmdCallback;
+		progress.m_ProgressCallback = [&](int& percentage, CWnd& currentWorkCtrl)
+		{
+			CString str;
+			currentWorkCtrl.GetWindowText(str);
+			if (!str.IsEmpty())
+				return false;
+			CString filePathName = dlg.m_Directory + L"\\.git\\objects\\*";
+			CFileFind find;
+			if (!find.FindFile(filePathName))
+				return false;
+			int dirNum = 1;
+			while (find.FindNextFile())
+				dirNum++;
+			percentage = 10 * dirNum / 26; // There are 260 directories maximum (includeing "." and ".."), when the repo is not packed.
+			ATLTRACE(L"Percentage: %d\n", percentage);
+			return true;
+		};
 		INT_PTR ret = progress.DoModal();
 
 		if (dlg.m_bSVN)
