@@ -338,6 +338,8 @@ CStatusCacheEntry CCachedDirectory::GetStatusFromGit(const CTGitPath &path, CStr
 	{
 		EnumFiles(path, TRUE);
 		UpdateCurrentStatus();
+		if (!path.IsDirectory())
+			return GetCacheStatusForMember(path);
 		return CStatusCacheEntry(m_ownStatus);
 	}
 
