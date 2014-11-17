@@ -37,6 +37,7 @@ Released: unreleased
  * Fixed issue #2342: Ignore whitespace blame option not work
  * Fixed issue #2311: Empty commits cannot be rebased
  * Fixed issue #2312: Fix UTF-8 AutoCRLF issues with libgit2
+ * Fixed issue #2345: The Show Log dialog's View Patch side window is empty when the Working dir changes line is selected and no file is selected
 
 = Release 1.8.11.0 =
 Released: 2014-08-22
