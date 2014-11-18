@@ -2703,6 +2703,13 @@ CString CGit::GetUnifiedDiffCmd(const CTGitPath& path, const git_revnum_t& rev1,
 	return cmd;
 }
 
+static void UnifiedDiffStatToFile(const git_buf* text, void* payload)
+{
+	ATLASSERT(payload && text);
+	fwrite(text->ptr, 1, text->size, (FILE *)payload);
+	fwrite("\n", 1, 1, (FILE *)payload);
+}
+
 static int UnifiedDiffToFile(const git_diff_delta * /* delta */, const git_diff_hunk * /* hunk */, const git_diff_line * line, void *payload)
 {
 	ATLASSERT(payload && line);
@@ -2741,7 +2748,7 @@ static int resolve_to_tree(git_repository *repo, const char *identifier, git_tre
 }
 
 /* use libgit2 get unified diff */
-static int GetUnifiedDiffLibGit2(const CTGitPath& path, const git_revnum_t& revOld, const git_revnum_t& revNew, git_diff_line_cb callback, void *data, bool /* bMerge */)
+static int GetUnifiedDiffLibGit2(const CTGitPath& path, const git_revnum_t& revOld, const git_revnum_t& revNew, std::function<void(const git_buf*, void*)> statCallback, git_diff_line_cb callback, void *data, bool /* bMerge */)
 {
 	CStringA tree1 = CUnicodeUtils::GetMulti(revNew, CP_UTF8);
 	CStringA tree2 = CUnicodeUtils::GetMulti(revOld, CP_UTF8);
@@ -2813,6 +2820,14 @@ static int GetUnifiedDiffLibGit2(const CTGitPath& path, const git_revnum_t& revO
 			return -1;
 	}
 
+	CAutoDiffStats stats;
+	if (git_diff_get_stats(stats.GetPointer(), diff))
+		return -1;
+	CAutoBuf statBuf;
+	if (git_diff_stats_to_buf(statBuf, stats, GIT_DIFF_STATS_FULL, 0))
+		return -1;
+	statCallback(statBuf, data);
+
 	for (size_t i = 0; i < git_diff_num_deltas(diff); ++i)
 	{
 		CAutoPatch patch;
@@ -2836,7 +2851,7 @@ int CGit::GetUnifiedDiff(const CTGitPath& path, const git_revnum_t& rev1, const 
 		_tfopen_s(&file, patchfile, _T("w"));
 		if (file == nullptr)
 			return -1;
-		int ret = GetUnifiedDiffLibGit2(path, rev1, rev2, UnifiedDiffToFile, file, bMerge);
+		int ret = GetUnifiedDiffLibGit2(path, rev1, rev2, UnifiedDiffStatToFile, UnifiedDiffToFile, file, bMerge);
 		fclose(file);
 		return ret;
 	}
@@ -2846,6 +2861,14 @@ int CGit::GetUnifiedDiff(const CTGitPath& path, const git_revnum_t& rev1, const 
 		cmd = GetUnifiedDiffCmd(path, rev1, rev2, bMerge, bCombine, diffContext);
 		return RunLogFile(cmd, patchfile, &gitLastErr);
 	}
+}
+
+static void UnifiedDiffStatToStringA(const git_buf* text, void* payload)
+{
+	ATLASSERT(payload && text);
+	CStringA *str = (CStringA*) payload;
+	str->Append(text->ptr, (int)text->size);
+	str->AppendChar('\n');
 }
 
 static int UnifiedDiffToStringA(const git_diff_delta * /*delta*/, const git_diff_hunk * /*hunk*/, const git_diff_line *line, void *payload)
@@ -2861,7 +2884,7 @@ static int UnifiedDiffToStringA(const git_diff_delta * /*delta*/, const git_diff
 int CGit::GetUnifiedDiff(const CTGitPath& path, const git_revnum_t& rev1, const git_revnum_t& rev2, CStringA * buffer, bool bMerge, bool bCombine, int diffContext)
 {
 	if (UsingLibGit2(GIT_CMD_DIFF))
-		return GetUnifiedDiffLibGit2(path, rev1, rev2, UnifiedDiffToStringA, buffer, bMerge);
+		return GetUnifiedDiffLibGit2(path, rev1, rev2, UnifiedDiffStatToStringA, UnifiedDiffToStringA, buffer, bMerge);
 	else
 	{
 		CString cmd;

@@ -353,6 +353,21 @@ protected:
 	}
 };
 
+class CAutoDiffStats : public CSmartLibgit2Ref<git_diff_stats>
+{
+public:
+	~CAutoDiffStats()
+	{
+		CleanUp();
+	}
+
+protected:
+	virtual void FreeRef()
+	{
+		git_diff_stats_free(m_Ref);
+	}
+};
+
 class CAutoIndex : public CSmartLibgit2Ref<git_index>
 {
 public:
