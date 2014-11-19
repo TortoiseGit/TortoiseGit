@@ -1955,11 +1955,16 @@ LRESULT CRebaseDlg::OnRebaseUpdateUI(WPARAM,LPARAM)
 		if (m_pTaskbarList)
 			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_ERROR);
 		this->m_LogMessageCtrl.Call(SCI_SETREADONLY, FALSE);
-		CString dotGitPath;
-		g_GitAdminDir.GetAdminDirPath(g_Git.m_CurrentDir, dotGitPath);
 		CString logMessage;
-		bool loadedMsg = CGit::LoadTextFile(dotGitPath + _T("MERGE_MSG"), logMessage);
-		if (!loadedMsg)
+		if (m_IsCherryPick)
+		{
+			CString dotGitPath;
+			g_GitAdminDir.GetAdminDirPath(g_Git.m_CurrentDir, dotGitPath);
+			// vanilla git also re-uses MERGE_MSG on conflict (listing all conflicted files)
+			// and it's also needed for cherry-pick in order to get cherry-picked-from included on conflicts
+			CGit::LoadTextFile(dotGitPath + _T("MERGE_MSG"), logMessage);
+		}
+		if (logMessage.IsEmpty())
 			logMessage = curRev->GetSubject() + _T("\n") + curRev->GetBody();
 		this->m_LogMessageCtrl.SetText(logMessage);
 		break;
