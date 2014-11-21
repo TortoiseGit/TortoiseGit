@@ -80,7 +80,9 @@ BOOL CDeleteConflictDlg::OnInitDialog()
 
 	GetDlgItem(IDC_INFOLABEL)->SetWindowText(m_File);
 
-	return TRUE;
+	GetDlgItem(IDCANCEL)->SetFocus();
+
+	return FALSE;
 }
 // CDeleteConflictDlg message handlers
 
