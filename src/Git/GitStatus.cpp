@@ -489,6 +489,8 @@ int GitStatus::EnumDirStatus(const CString &gitdir, const CString &subpath, git_
 				else if(pos >=0 && posintree <0) /* Check if file added */
 				{
 					*status = git_wc_status_added;
+					if (indexptr->at(pos).m_Flags & GIT_IDXENTRY_STAGEMASK)
+						*status = git_wc_status_conflicted;
 					if(callback)
 						callback(gitdir + _T("/") + casepath, *status, bIsDir, pData, false, false);
 				}
