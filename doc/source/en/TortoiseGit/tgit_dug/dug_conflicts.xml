@@ -116,4 +116,47 @@
 			<graphic fileref="../images/ResolveConflict.png"/>
 		</figure>
 	</para>
+	<important>
+		<para>
+			In Git (unlike SVN) you have to <link linkend="tgit-dug-commit">commit</link> after resolving conflicts.
+		</para>
+	</important>
+	<sect2 id="tgit-dug-conflicts-special">
+		<title>Special conflict cases</title>
+		<sect3 id="tgit-dug-conflicts-special-delete-modify">
+			<title>Delete-modify conflicts</title>
+			<?dbhh topicname="HIDD_RESOLVE_CONFLICT"?>
+			<para>
+				A special conflict case is a delete-modify conflict. Here, a file is deleted on one branch and the same file is modified on another branch.
+				In order to resolve this conflict the user has to decide whether to keep the modified version or delete the file from the working tree.
+			</para>
+			<para>
+				<figure id="tgit-dug-conflicts-special-delete-modify-dialog">
+					<title>Resolve delete-modify conflict Dialog</title>
+					<graphic fileref="../images/resolve-delete-modify-conflict.png"/>
+				</figure>
+			</para>
+		</sect3>
+		<sect3 id="tgit-dug-conflicts-special-submodule">
+			<title>Submodule conflicts</title>
+			<?dbhh topicname="HIDD_RESOLVESUBMODULECONFLICT"?>
+			<para>
+				Another special conflict case is a conflict involving a submodule. Here, a submodule is changed in different (conflicting) ways on two branches.
+			</para>
+			<para>
+				The resolve submodule conflict dialog shows the base, the local and the remote commit of the conflicting submodule as well as the commit type (rewind, fast-forward, ...).
+				<figure id="tgit-dug-conflicts-special-submodule-dialog">
+					<title>Resolve submodule conflict Dialog</title>
+					<graphic fileref="../images/resolve-submodule-conflict.png"/>
+				</figure>
+			</para>
+			<important>
+				<title>Uninitialized submodules</title>
+				<para>
+					If the submodule is not yet initialized the resolve submodule conflict dialog only shows the commit IDs (SHA-1). Also, the conflict cannot be resolved automatically:
+					First, you have to manually clone the submodule into the right folder. Then, you can resolve the conflict using TortoiseGit or git (by checking out the right commit in the submodule and commiting the parent working tree).
+				</para>
+			</important>
+		</sect3>
+	</sect2>
 </sect1>

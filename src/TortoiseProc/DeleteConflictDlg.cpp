@@ -58,6 +58,7 @@ BEGIN_MESSAGE_MAP(CDeleteConflictDlg, CStandAloneDialog)
 	ON_BN_CLICKED(IDC_LOG2, OnBnClickedLog2)
 	ON_BN_CLICKED(IDC_DELETE, &CDeleteConflictDlg::OnBnClickedDelete)
 	ON_BN_CLICKED(IDC_MODIFY, &CDeleteConflictDlg::OnBnClickedModify)
+	ON_BN_CLICKED(IDHELP, &OnHelp)
 END_MESSAGE_MAP()
 
 
