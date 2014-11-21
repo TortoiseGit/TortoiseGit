@@ -46,34 +46,6 @@
 			</listitem>
 		</varlistentry>
 		<varlistentry>
-			<term>System sounds</term>
-			<listitem>
-				<para>
-					TortoiseGit has three custom sounds which are installed by default.
-					<itemizedlist>
-						<listitem>
-							<para>
-							Error
-							</para>
-							</listitem>
-						<listitem>
-							<para>
-							Notice
-							</para>
-						</listitem>
-						<listitem>
-							<para>
-							Warning
-							</para>
-						</listitem>
-					</itemizedlist>
-					You can select different sounds (or turn these sounds
-					off completely) using the Windows Control Panel.
-					<guibutton>Configure</guibutton> is a shortcut to the Control Panel.
-				</para>
-			</listitem>
-		</varlistentry>
-		<varlistentry>
 			<term>Create Library</term>
 			<listitem>
 				<para>
@@ -216,6 +188,14 @@
 				</listitem>
 			</varlistentry>
 			<varlistentry>
+				<term>Show asterisk log prefix</term>
+				<listitem>
+					<para>
+						An asterisk is inserted as the prefix of log message in Log dialog.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
 				<term>apply --topo-order</term>
 				<listitem>
 					<para>
@@ -297,6 +277,48 @@
 				<listitem>
 					<para>
 						Shows tag/branch labels after the commit message.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Show describe in log</term>
+				<listitem>
+					<para>
+						Shows describe above commit message in in Log dialog.
+						For example, <literal>v0.21.0-589-gdeadc43</literal> refers to the commit
+						<literal>deadc43</literal> that is 589 commits ahead the tag <literal>v0.21.0</literal>.
+						Note: Describe may take longer to run if the commit
+						is far ahead away from a tag.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Describe strategy</term>
+				<listitem>
+					<para>
+						Determine reference lookup strategy:
+						Available options: Annotated tags, All tags, All refs.
+						Default strategy is annotated tags only.
+						If your repository uses lightweight tags to mark releases, choose All tags.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Describe Abbreviated size</term>
+				<listitem>
+					<para>
+						Number of chars of the abbreviated commit id to show in describe.
+						Default is 7.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Describe Always show long format</term>
+				<listitem>
+					<para>
+						Whether to use the long format even when a shorter name could be used.
+						For example, when the commit <literal>g28f087c</literal> has tag <literal>v0.21.0</literal>, 
+						it still shows long format <literal>v0.21.0-0-g28f087c</literal> instead of just <literal>v0.21.0</literal>.
 					</para>
 				</listitem>
 			</varlistentry>
