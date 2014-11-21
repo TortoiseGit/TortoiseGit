@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2012 - TortoiseGit
+// Copyright (C) 2009-2012, 2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -78,7 +78,11 @@ BOOL CDeleteConflictDlg::OnInitDialog()
 	GetWindowText(sWindowTitle);
 	CAppUtils::SetWindowTitle(m_hWnd, this->m_File, sWindowTitle);
 
-	return TRUE;
+	GetDlgItem(IDC_INFOLABEL)->SetWindowText(m_File);
+
+	GetDlgItem(IDCANCEL)->SetFocus();
+
+	return FALSE;
 }
 // CDeleteConflictDlg message handlers
 

@@ -71,6 +71,7 @@
 #include "CheckCertificateDlg.h"
 #include "SubmoduleResolveConflictDlg.h"
 #include "GitDiff.h"
+#include "../TGitCache/CacheInterface.h"
 
 static struct last_accepted_cert {
 	BYTE*		data;
@@ -3513,6 +3514,7 @@ int CAppUtils::ResolveConflict(CTGitPath& path, resolve_with resolveWith)
 		}
 	}
 
+	CBlockCacheForPath block(g_Git.m_CurrentDir);
 	if (path.IsDirectory()) // is submodule conflict
 	{
 		CString err = _T("We're sorry, but you hit a very rare conflict condition with a submodule which cannot be resolved by TortoiseGit. You have to use the command line git for this.");
