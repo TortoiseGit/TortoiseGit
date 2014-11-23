@@ -4246,7 +4246,10 @@ int CGitStatusListCtrl::RevertSelectedItemToVersion(bool parent)
 		else
 			version = m_CurrentVersion;
 
-		cmd.Format(_T("git.exe checkout %s -- \"%s\""), version, fentry->GetGitPathString());
+		CString filename = fentry->GetGitPathString();
+		if (!fentry->GetGitOldPathString().IsEmpty())
+			filename = fentry->GetGitOldPathString();
+		cmd.Format(_T("git.exe checkout %s -- \"%s\""), version, filename);
 		out.Empty();
 		if (g_Git.Run(cmd, &out, CP_UTF8))
 		{
@@ -4264,7 +4267,8 @@ int CGitStatusListCtrl::RevertSelectedItemToVersion(bool parent)
 		versionEntry.Format(IDS_STATUSLIST_FILESREVERTED, it->second, it->first);
 		out += versionEntry + _T("\r\n");
 	}
-	CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
+	if (!out.IsEmpty())
+		CMessageBox::Show(nullptr, out, _T("TortoiseGit"), MB_OK);
 	return 0;
 }
 
