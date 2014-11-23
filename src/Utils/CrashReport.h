@@ -384,25 +384,9 @@ class CCrashReportTGit
 public:
 
 	//! Installs exception handlers to the caller process
-	CCrashReportTGit(LPCTSTR appname, USHORT versionMajor, USHORT versionMinor, USHORT versionMicro, USHORT versionBuild, const char * buildDate, bool bOwnProcess = true)
+	CCrashReportTGit(LPCTSTR appname, USHORT versionMajor, USHORT versionMinor, USHORT versionMicro, USHORT versionBuild, const char* /*buildDate*/, bool bOwnProcess = true)
 	: m_nInstallStatus(0)
 	{
-		char s_month[6] = {0};
-		int month, day, year;
-		struct tm t = {0};
-		static const char month_names[] = "JanFebMarAprMayJunJulAugSepOctNovDec";
-		sscanf_s(buildDate, "%s %d %d", s_month, (unsigned int)_countof(s_month) - 1, &day, &year);
-		month = (int)((strstr(month_names, s_month)-month_names))/3;
-
-		t.tm_mon = month;
-		t.tm_mday = day;
-		t.tm_year = year - 1900;
-		t.tm_isdst = -1;
-		__time64_t compiletime = _mktime64(&t);
-
-		__time64_t now;
-		_time64(&now);
-
 		ApplicationInfo appInfo = { 0 };
 		appInfo.ApplicationInfoSize = sizeof(ApplicationInfo);
 		appInfo.ApplicationGUID = "7fbde3fc-94e9-408b-b5c8-62bd4e203570";
@@ -421,15 +405,6 @@ public:
 		handlerSettings.LeaveDumpFilesInTempFolder = FALSE;
 		handlerSettings.UseWER = FALSE;
 		handlerSettings.OpenProblemInBrowser = TRUE;
-#if PREVIEW
-		if ((now - compiletime) > (60 * 60 * 24 * 7 * 5))
-#else
-		if ((now - compiletime) > (60 * 60 * 24 * 7 * 10))
-#endif
-		{
-			handlerSettings.OverrideDefaultFullDumpType = TRUE;
-			handlerSettings.FullDumpType = MiniDumpFilterMemory;
-		}
 
 		CCrashReport::Instance().InitCrashHandler(&appInfo, &handlerSettings, bOwnProcess);
 	}
