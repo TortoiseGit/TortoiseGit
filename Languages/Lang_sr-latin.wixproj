@@ -24,7 +24,7 @@
     <DefineConstants>TSVNHelpFile=0;TMergeHelpFile=0;TSVNMoFile=0;COUNTRYID=2074;LANGNATIVE=Serbian latin;SPELL=1;</DefineConstants>
     <LinkerAdditionalOptions>-ext WixUIExtension</LinkerAdditionalOptions>
     <SuppressIces>ICE61;ICE82</SuppressIces>
-    <Cultures>en-US</Cultures>
+    <Cultures>sr-Latn-CS</Cultures>
     <SuppressSpecificWarnings>1008</SuppressSpecificWarnings>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
@@ -40,7 +40,7 @@
     <DefineConstants>TSVNHelpFile=0;TMergeHelpFile=0;TSVNMoFile=0;COUNTRYID=2074;LANGNATIVE=Serbian latin;SPELL=1;</DefineConstants>
     <LinkerAdditionalOptions>-ext WixUIExtension</LinkerAdditionalOptions>
     <SuppressIces>ICE61;ICE82</SuppressIces>
-    <Cultures>en-US</Cultures>
+    <Cultures>sr-Latn-CS</Cultures>
     <SuppressSpecificWarnings>1008</SuppressSpecificWarnings>
   </PropertyGroup>
   <ItemGroup>
