@@ -278,6 +278,7 @@ BOOL CSciEdit::LoadDictionaries(LONG lLanguageID)
 	TCHAR buf[6] = { 0 };
 	CString sFolder = CPathUtils::GetAppDirectory();
 	CString sFolderUp = CPathUtils::GetAppParentDirectory();
+	CString sFolderAppData = CPathUtils::GetAppDataDirectory();
 	CString sFile;
 
 	GetLocaleInfo(MAKELCID(lLanguageID, SORT_DEFAULT), LOCALE_SISO639LANGNAME, buf, _countof(buf));
@@ -289,7 +290,12 @@ BOOL CSciEdit::LoadDictionaries(LONG lLanguageID)
 	sFile += buf;
 	if (pChecker==NULL)
 	{
-		if ((PathFileExists(sFolder + sFile + _T(".aff"))) &&
+		if ((PathFileExists(sFolderAppData + _T("dic\\") + sFile + _T(".aff"))) &&
+			(PathFileExists(sFolderAppData + _T("dic\\") + sFile + _T(".dic"))))
+		{
+			pChecker = new Hunspell(CStringA(sFolderAppData + _T("dic\\") + sFile + _T(".aff")), CStringA(sFolderAppData + _T("dic\\") + sFile + _T(".dic")));
+		}
+		else if ((PathFileExists(sFolder + sFile + _T(".aff"))) &&
 			(PathFileExists(sFolder + sFile + _T(".dic"))))
 		{
 			pChecker = new Hunspell(CStringA(sFolder + sFile + _T(".aff")), CStringA(sFolder + sFile + _T(".dic")));
@@ -318,7 +324,12 @@ BOOL CSciEdit::LoadDictionaries(LONG lLanguageID)
 #if THESAURUS
 	if (pThesaur==NULL)
 	{
-		if ((PathFileExists(sFolder + _T("th_") + sFile + _T("_v2.idx"))) &&
+		if ((PathFileExists(sFolderAppData + _T("th_") + sFile + _T("_v2.idx"))) &&
+			(PathFileExists(sFolderAppData + _T("th_") + sFile + _T("_v2.dat"))))
+		{
+			pThesaur = new MyThes(CStringA(sFolderAppData + sFile + _T("_v2.idx")), CStringA(sFolderAppData + sFile + _T("_v2.dat")));
+		}
+		else if ((PathFileExists(sFolder + _T("th_") + sFile + _T("_v2.idx"))) &&
 			(PathFileExists(sFolder + _T("th_") + sFile + _T("_v2.dat"))))
 		{
 			pThesaur = new MyThes(CStringA(sFolder + sFile + _T("_v2.idx")), CStringA(sFolder + sFile + _T("_v2.dat")));

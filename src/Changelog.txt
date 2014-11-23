@@ -17,6 +17,9 @@ Released: unreleased
  * Fixed issue #2332: TortoiseGitMerge: Move "Create patch file" to the File menu
  * TortoiseGitMerge: Updated EditorConfig version to 0.12
  * Fixed issue #2341: Jump to search box when pressing CTRL+E
+ * Custom dictionaries for the spell checker can now be put into the %APPDATA%\TortoiseGit\dic folder (w/o administrator privileges).
+   All other locations within the TortoiseGit installation folder (e.g. bin, dic, ...) except Languages are now deprecated.
+   See the manual for more information.
 
 == Bug Fixes ==
  * Fixed issue #2260: Clicking in blank space in Commit dialog causes all unversioned files to become selected

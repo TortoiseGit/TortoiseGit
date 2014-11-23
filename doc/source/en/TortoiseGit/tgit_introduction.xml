@@ -311,7 +311,7 @@
 				</ulink>.
 			</para>
 			<para>
-				The installer automatically adds the US and UK English dictionaries.
+				The installer automatically adds the US English dictionary.
 				If you want other languages, the easiest option is simply to
 				install one of TortoiseGit's language packs. This will install
 				the appropriate dictionary files as well as the TortoiseGit local
@@ -348,13 +348,12 @@
 						</para>
 					</listitem>
 				</itemizedlist>
-				Then just copy them to the <filename>bin</filename> sub-folder of
-				the TortoiseGit installation folder. Normally this will be
-				<filename>C:\Program Files\TortoiseGit\bin</filename>.
-				If you don't want to litter the <filename>bin</filename> sub-folder,
-				you can instead place your spell checker files in
-				<filename>C:\Program Files\TortoiseGit\Languages</filename>. If that folder isn't
+				Then just copy them into the <filename>%APPDATA%\TortoiseGit\dic</filename> folder. If that folder isn't
 				there, you have to create it first.
+				TortoiseGit will also search the <filename>Languages</filename> sub-folder of
+				the TortoiseGit installation folder (normally this will be <filename>C:\Program Files\TortoiseGit\Languages</filename>);
+				this is the place where the language packs put their files.
+				However, the %APPDATA%-folder doesn't require administrator privileges and, thus, has higher priority.
 				The next time you start TortoiseGit, the spell checker will be available.
 			</para>
 			<para>
