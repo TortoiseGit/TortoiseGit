@@ -282,6 +282,8 @@ BOOL CSciEdit::LoadDictionaries(LONG lLanguageID)
 
 	GetLocaleInfo(MAKELCID(lLanguageID, SORT_DEFAULT), LOCALE_SISO639LANGNAME, buf, _countof(buf));
 	sFile = buf;
+	if (lLanguageID == 2074)
+		sFile += _T("-Latn");
 	sFile += _T("_");
 	GetLocaleInfo(MAKELCID(lLanguageID, SORT_DEFAULT), LOCALE_SISO3166CTRYNAME, buf, _countof(buf));
 	sFile += buf;
