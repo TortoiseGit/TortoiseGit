@@ -1,2 +1,6 @@
-# sample snippet
-tortoisegit=Prepare release and bump version numbers to 
+# sample snippets: remove the leading # sign to enable that snippet
+# you may also add entries to %APPDATA%\TortoiseGit\snippet.txt which does not require admin rights
+#fixed=Fixed issue #: 
+#tidy=Tidy up source code
+#drop=Drop unused code
+#regression=Regression of commit 
