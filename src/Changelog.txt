@@ -1,5 +1,5 @@
 ﻿= Release 1.8.12.0 =
-Released: unreleased
+Released: 2014-11-25
 
 == Features ==
  * Fixed issue #2272: Export Dialog auto select tag if the revision has tag
@@ -20,6 +20,7 @@ Released: unreleased
  * Custom dictionaries for the spell checker can now be put into the %APPDATA%\TortoiseGit\dic folder (w/o administrator privileges).
    All other locations within the TortoiseGit installation folder (e.g. bin, dic, ...) except Languages are now deprecated.
    See the manual for more information.
+ * TGitCache: Overlay update improvements and speedups
 
 == Bug Fixes ==
  * Fixed issue #2260: Clicking in blank space in Commit dialog causes all unversioned files to become selected
