@@ -27,7 +27,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2014-08-12 07:40+0000\n"
+"PO-Revision-Date: 2014-11-24 11:27+0000\n"
 "Last-Translator: Alexander Shchekaturov <shcham@gmail.com>\n"
 "Language-Team: Russian (http://www.transifex.com/projects/p/tortoisegit/language/ru/)\n"
 "MIME-Version: 1.0\n"
@@ -56,7 +56,7 @@ msgstr "! %d"
 
 #. Resource IDs: (1262)
 msgid "# authors shown individually:"
-msgstr "# отдельных авторов:"
+msgstr "# авторов отображаемых индивидуально:"
 
 #. Resource IDs: (357)
 #, c-format
@@ -199,8 +199,8 @@ msgstr "%1\nЭтот файл не найден.\nПроверьте корре�
 
 #. Resource IDs: (91)
 #, c-format
-msgid "%HOME%/gitconfig or %XDGHOME%/gitconfig"
-msgstr "%HOME%/gitconfig или %XDGHOME%/gitconfig"
+msgid "%HOME%/.gitconfig or %XDGHOME%/git/config"
+msgstr "%HOME%/.gitconfig или %XDGHOME%/git/config"
 
 #. Resource IDs: (357)
 #, c-format
@@ -225,7 +225,7 @@ msgstr "%d файлов изменено"
 #. Resource IDs: (65)
 #, c-format
 msgid "%d files removed."
-msgstr "%d файлов удалено"
+msgstr "%d файлов удалено."
 
 #. Resource IDs: (69)
 #, c-format
@@ -363,7 +363,7 @@ msgstr "&Добавить Фильтр"
 
 #. Resource IDs: (1382)
 msgid "&Add New/Save"
-msgstr "&Добавить/Сохранить"
+msgstr "&Добавить Новое/Сохранить"
 
 #. Resource IDs: (68)
 msgid "&Add it"
@@ -545,10 +545,6 @@ msgstr "&Сравнить ревизии"
 msgid "&Compressed Graph"
 msgstr "Сжатый граф"
 
-#. Resource IDs: (1239)
-msgid "&Configure"
-msgstr "&Настроить"
-
 #. Resource IDs: (501, 1367, 1471, 57634)
 msgid "&Copy"
 msgstr "Копи&ровать"
@@ -716,10 +712,6 @@ msgstr "&Шрифт:"
 #. Resource IDs: (1521)
 msgid "&Force"
 msgstr "&Принудительно"
-
-#. Resource IDs: (1480)
-msgid "&Force Overwrite Existing Branch (May discard changes)"
-msgstr "Принудительно перезаписать (может привести к потере изменений)"
 
 #. Resource IDs: (1607)
 msgid "&Force Rebase"
@@ -1490,8 +1482,8 @@ msgstr "<b>Предупреждение:</b> Эта ветвь не полнос
 #. Resource IDs: (68)
 msgid ""
 "<ct=0x0000FF>Current HEAD Detached</ct>, you are working on (no branch).\n"
-"Do you want to a create branch now?"
-msgstr "<ct=0x0000FF>Текущая ГОЛОВНАЯ ветвь отсоединена</ct>, с которой вы работаете (нет ветви).⏎\nВы хотиет создать ветвь сейчас?"
+"Do you want to create a branch now?"
+msgstr "<ct=0x0000FF>Текущая ГОЛОВНАЯ ветвь отсоединена</ct>, с которой вы работаете (нет ветви).\nВы хотите создать ветвь сейчас?"
 
 #. Resource IDs: (70)
 msgid "<ct=0x0000FF>Do you really want to delete <b>ALL</b> stash?</ct>"
@@ -1628,6 +1620,10 @@ msgstr "П&рименить"
 msgid "Abbreviate renamings"
 msgstr "Сокращать переименования"
 
+#. Resource IDs: (65535)
+msgid "Abbreviated size"
+msgstr "Размер сокращений"
+
 #. Resource IDs: (2, 73, 1565)
 msgid "Abort"
 msgstr "Прервать"
@@ -1659,6 +1655,10 @@ msgstr "О TortoiseGitBlame"
 #. Resource IDs: (136)
 msgid "About TortoiseGitMerge"
 msgstr "О TortoiseGitMerge"
+
+#. Resource IDs: (1)
+msgid "Accept certificate"
+msgstr "Принять сертификат"
 
 #. Resource IDs: (3867)
 #, c-format
@@ -1707,7 +1707,7 @@ msgstr "Добавить '%s' в словарь"
 
 #. Resource IDs: (323)
 msgid "Add Remote"
-msgstr "Добавить отдалённый"
+msgstr "Добавить Отдалённый"
 
 #. Resource IDs: (1482)
 msgid "Add \"&Signed-off-by\""
@@ -1759,7 +1759,7 @@ msgstr "Добавление"
 
 #. Resource IDs: (9)
 msgid "Adds file(s) to Git control"
-msgstr "Вносит файл(ы) под управление Git"
+msgstr "Добавляет файл(ы) к управлению Git"
 
 #. Resource IDs: (13)
 msgid "Adds the selected file(s) or the filemask to the 'ignore' list"
@@ -1811,6 +1811,14 @@ msgstr "Все предки"
 msgid "All local branches"
 msgstr "Все локальные ветви"
 
+#. Resource IDs: (96)
+msgid "All refs"
+msgstr "Все ссылки"
+
+#. Resource IDs: (96)
+msgid "All tags"
+msgstr "Все метки"
+
 #. Resource IDs: (9690)
 msgid "All tags only"
 msgstr "Только все метки"
@@ -1860,6 +1868,10 @@ msgstr "Всегда отправлять в выбранное отдалённ
 #. Resource IDs: (1485)
 msgid "Always push to the selected remote branch for this local branch"
 msgstr "Всегда отправлять в выбранное отдалённое хранилище ветвь для этой локальной ветви"
+
+#. Resource IDs: (1805)
+msgid "Always show long format"
+msgstr "Всегда показывать длинный формат"
 
 #. Resource IDs: (197)
 msgid "Always use the system locale settings to show times and dates"
@@ -1920,6 +1932,10 @@ msgstr "Произошла неизвестная ошибка при обращ
 #, c-format
 msgid "An unknown line type was found in line %d !"
 msgstr "Неизвестный тип строки в строке номер %d !"
+
+#. Resource IDs: (96)
+msgid "Annotated tags"
+msgstr "Аннотированные метки"
 
 #. Resource IDs: (251)
 msgid "Append right block"
@@ -2126,7 +2142,7 @@ msgstr "Авто-закрыть если более недоступно ник�
 
 #. Resource IDs: (222)
 msgid "Auto-close if no merges, adds or deletes"
-msgstr "Автозакрытие: не было слияний, добавлений или удалений"
+msgstr "Автозакрытие если не было слияний, добавлений или удалений"
 
 #. Resource IDs: (195)
 msgid ""
@@ -2167,12 +2183,20 @@ msgid "Back"
 msgstr "Назад"
 
 #. Resource IDs: (65535)
+msgid "Background"
+msgstr "Фон"
+
+#. Resource IDs: (65535)
 msgid "Baltic"
 msgstr "Балтийский"
 
 #. Resource IDs: (246)
 msgid "Bar Graph"
 msgstr "Гистограмма"
+
+#. Resource IDs: (1385)
+msgid "Base"
+msgstr "Основа"
 
 #. Resource IDs: (1522)
 msgid "Base On"
@@ -2496,6 +2520,10 @@ msgstr "Каска&дом"
 msgid "Cascaded context menu"
 msgstr "Вложенное контекстное меню"
 
+#. Resource IDs: (117)
+msgid "Case-sensitive"
+msgstr "С учётом регистра"
+
 #. Resource IDs: (65535)
 msgid "Cate&gories:"
 msgstr "Кате&гории:"
@@ -2507,6 +2535,10 @@ msgstr "Кельтский"
 #. Resource IDs: (65535)
 msgid "Central European"
 msgstr "Центральная Европа"
+
+#. Resource IDs: (65535)
+msgid "Certificate verification failed!"
+msgstr "Верификация сертификата завершена неудачно!"
 
 #. Resource IDs: (1697)
 msgid "Change log"
@@ -2908,6 +2940,11 @@ msgstr "Команды"
 msgid "Commit"
 msgstr "Фиксация"
 
+#. Resource IDs: (96)
+#, c-format
+msgid "Commit %s is NOT visible right now."
+msgstr "Фиксация %s НЕ видна сейчас."
+
 #. Resource IDs: (94)
 #, c-format
 msgid "Commit %s not found in \"%s\". Update submodule now?"
@@ -2940,6 +2977,10 @@ msgstr "Название фиксации"
 #. Resource IDs: (1750)
 msgid "Commit Ordering:"
 msgstr "Порядок фиксаций:"
+
+#. Resource IDs: (96)
+msgid "Commit super project"
+msgstr "Фиксировать супер проект"
 
 #. Resource IDs: (1110)
 msgid "Commit to:"
@@ -2981,6 +3022,10 @@ msgid ""
 "\n"
 "Are you sure that you want to continue the commit?"
 msgstr "Фиксация неверсированной папки не добавляет рекурсивно её дочерние элементы!\nВы можете добавить эти папки рекурсивно при помощи команды 'Добавить...'\nиз контекстного меню.\n\nВы действительно желаете продолжить фиксацию?"
+
+#. Resource IDs: (65535)
+msgid "Common Name:"
+msgstr "Общее имя:"
 
 #. Resource IDs: (2054)
 msgid "Compare &HEAD revisions"
@@ -3702,6 +3747,18 @@ msgstr "Удаляются отдалённые ссылки..."
 msgid "Delivery:"
 msgstr "Доставка:"
 
+#. Resource IDs: (1646)
+msgid "Depth"
+msgstr "Глубина"
+
+#. Resource IDs: (65535)
+msgid "Describe"
+msgstr "Описать"
+
+#. Resource IDs: (65535)
+msgid "Describe Strategy"
+msgstr "Описать стратегию"
+
 #. Resource IDs: (1002)
 msgid "Description"
 msgstr "Описание"
@@ -3775,12 +3832,36 @@ msgid "Diff Viewer::Merge Tool"
 msgstr "Просмотр различий::Инструмент для слияния"
 
 #. Resource IDs: (65535)
+msgid "Diff added lines"
+msgstr "Сравнить добавленные линии"
+
+#. Resource IDs: (65535)
+msgid "Diff command"
+msgstr "Команда сравнения"
+
+#. Resource IDs: (65535)
+msgid "Diff comment"
+msgstr "Комментарий сравнения"
+
+#. Resource IDs: (65535)
 msgid "Diff file:"
 msgstr "Файл различий:"
+
+#. Resource IDs: (65535)
+msgid "Diff header"
+msgstr "Заголовок сравнения"
 
 #. Resource IDs: (15)
 msgid "Diff later"
 msgstr "Различия позже"
+
+#. Resource IDs: (65535)
+msgid "Diff position"
+msgstr "Позиция сравнения"
+
+#. Resource IDs: (65535)
+msgid "Diff removed lines"
+msgstr "Сравнить удалённые линии"
 
 #. Resource IDs: (15)
 #, c-format
@@ -4138,8 +4219,8 @@ msgid "Edit gl&obal .gitconfig"
 msgstr "Глобальный конфиг"
 
 #. Resource IDs: (1718)
-msgid "Edit global &XDG config"
-msgstr "Редактировать глобальный &XDG конфигурационный файл"
+msgid "Edit global &XDG git/config"
+msgstr "Редактировать глобальный &XDG git/config"
 
 #. Resource IDs: (71)
 msgid "Edit local git config"
@@ -4367,6 +4448,11 @@ msgstr "Ошибка"
 #. Resource IDs: (145)
 msgid "Error rebuilding Shell Icon Cache!"
 msgstr "Ошибка при восстановлении кэша значков оболочки!"
+
+#. Resource IDs: (96)
+#, c-format
+msgid "Error validating server certificate for \"%s\":"
+msgstr "Ошибка проверки сертификата сервера для \"%s\":"
 
 #. Resource IDs: (70)
 #, c-format
@@ -4775,6 +4861,10 @@ msgstr "Найти: Первое вхождение снизу найдено. �
 msgid "Find: First occurrence from the top found. End of document reached."
 msgstr "Найти: Первое вхождение сверху найдено. Достигнут конец документа."
 
+#. Resource IDs: (65535)
+msgid "Fingerprints"
+msgstr "Отпечатки пальцев"
+
 #. Resource IDs: (67)
 msgid "Finish"
 msgstr "Завершить"
@@ -4847,6 +4937,13 @@ msgid ""
 "This option corresponds to the --force-with-lease git option."
 msgstr "Принудительно отправить возможно только если отдаленная ссылка указывает на ту же фиксацию как и в отдаленно отслеживаемой ветви.\nЭто может вызвать потерю коммитов в отдаленном хранилище; используйте с осторожностью.\nЭта опция соответствует опции git --force-with-lease."
 
+#. Resource IDs: (1796)
+msgid ""
+"Force push to the selected remote reference and override it without any safety checks.\n"
+"This can cause the remote repository to lose unseen commits; use it with care.\n"
+"This option corresponds to the --force git option."
+msgstr "Принудительно отправить к выбранной отдалённой ссылке и перезаписать ее без каких-либо проверок безопасности.\nЭто может вызвать потерю непросмотренных коммитов в отдаленном хранилище; используйте с осторожностью.\nЭта опция соответствует опции git --force."
+
 #. Resource IDs: (603)
 msgid ""
 "Force the rebase even if the current branch is a descendant of the commit you are rebasing onto. \r\n"
@@ -4857,12 +4954,9 @@ msgstr "Принудительно переместить, даже если т�
 msgid "Force: May discard"
 msgstr "Принудительно: можно потерять изменения"
 
-#. Resource IDs: (1796)
-msgid ""
-"Force push to the selected remote reference and override it without any safety checks.\n"
-"This can cause the remote repository to lose unseen commits; use it with care.\n"
-"This option corresponds to the --force git option."
-msgstr "Принудительно отправить к выбранной отдалённой ссылке и перезаписать ее без каких-либо проверок безопасности.\nЭто может вызвать потерю непросмотренных коммитов в отдаленном хранилище; используйте с осторожностью.\nЭта опция соответствует опции git --force."
+#. Resource IDs: (65535)
+msgid "Foreground"
+msgstr "Передний план"
 
 #. Resource IDs: (312)
 msgid "Format Patch"
@@ -5423,6 +5517,10 @@ msgstr "ID:32857:VA +F"
 msgid "ID:32870:V C +L"
 msgstr "ID:32870:V C +L"
 
+#. Accelerator Entry for Menu ID:32873; ''
+msgid "ID:32873:V C +E"
+msgstr "ID:32873:V C +E"
+
 #. Accelerator Entry for Menu ID:32881; ''
 msgid "ID:32881:V C +P"
 msgstr "ID:32881:V C +P"
@@ -5566,6 +5664,10 @@ msgstr "Картинки (*.ico, *.jpg, *.png, *.bmp, *.gif)|*.ico;*.jpg;*.jpeg;
 #. Resource IDs: (65535)
 msgid "Icons/Design/Code:\t\tLuebbe Onken"
 msgstr "Значки/Дизайн/Код:\t\tLuebbe Onken"
+
+#. Resource IDs: (97)
+msgid "Identical"
+msgstr "Идентичный"
 
 #. Resource IDs: (194)
 msgid ""
@@ -5834,6 +5936,10 @@ msgstr "Неправильное денежное значение."
 msgid "Invalid revision number!"
 msgstr "Неверный номер ревизии!"
 
+#. Resource IDs: (65535)
+msgid "Issuer:"
+msgstr "Издатель:"
+
 #. Resource IDs: (145)
 msgid ""
 "It is not possible to rename a file by changing the case of its name alone.\n"
@@ -5960,6 +6066,10 @@ msgid ""
 "Leave as conflicted\n"
 "The conflict status of the file is kept"
 msgstr "Оставить конфликтующим⏎\nФайл сохраняется в статусе конфликта"
+
+#. Resource IDs: (252)
+msgid "Leave only marked blocks"
+msgstr "Оставить только помеченные блоки"
 
 #. Resource IDs: (188)
 msgid "Left View: "
@@ -6195,6 +6305,10 @@ msgstr "Отметить как улаженный⏎\nСтатус файла �
 #. Resource IDs: (252)
 msgid "Mark this block"
 msgstr "Пометить этот блок"
+
+#. Resource IDs: (7)
+msgid "Marked Blocks"
+msgstr "Помеченные блоки"
 
 #. Resource IDs: (2051)
 msgid ""
@@ -6650,7 +6764,7 @@ msgstr "Нет предыдущей версии."
 
 #. Resource IDs: (603)
 msgid "No reference found"
-msgstr "Ссылок не найдено"
+msgstr "Ссылки не найдено"
 
 #. Resource IDs: (1254)
 msgid "No spell corrections"
@@ -6728,13 +6842,13 @@ msgid ""
 "not recover the auto-saved versions, they will be deleted."
 msgstr "Заметьте, если вы решите восстановить авто-сохранённые документы, то вы должны сохранять их поверх оригинального документа. Если вы решили не восстанавливать авто-сохранённые версии, они будут удалены."
 
+#. Resource IDs: (65535)
+msgid "Note: These settings also apply to the Patch Viewer dialog."
+msgstr "Обратите внимание: эти настройки распространяются также и на диалог просмотра заплаток."
+
 #. Resource IDs: (1481)
 msgid "Note: the folder contains unversioned items"
 msgstr "Внимание: папка содержит неверсированные элементы"
-
-#. Resource IDs: (65535)
-msgid "Note: the font settings also affect the TortoiseGitUDiff viewer"
-msgstr "Обратите внимание: настройки шрифта распространяются также и на TortoiseUDiff"
 
 #. Resource IDs: (65535)
 msgid "Note: this affects all Tortoise clients, not just TortoiseGit!"
@@ -6753,7 +6867,7 @@ msgstr "Нет необходимости в переносе\n%s эквивал
 
 #. Resource IDs: (67)
 msgid "Nothing to Rebase"
-msgstr "Нечего перемещать"
+msgstr "Нечего перебазировать"
 
 #. Resource IDs: (603)
 msgid "Nothing to commit"
@@ -6779,6 +6893,10 @@ msgstr "Количество авторов:"
 #. Resource IDs: (65535)
 msgid "Number of characters required for moved or copied line detection:"
 msgstr "Число символов, используемое для поиска перемещённых/копированных строк:"
+
+#. Resource IDs: (96)
+msgid "Number of characters to show in the abbreviated hash part"
+msgstr "Количество отображаемых символов в аббревиатуре хэша"
 
 #. Resource IDs: (1160)
 msgid "Number of weeks:"
@@ -6938,6 +7056,10 @@ msgid ""
 "Open"
 msgstr "Открыть существующий документ\nОткрыть"
 
+#. Resource IDs: (1797)
+msgid "Open certificate"
+msgstr "Открыть сертификат"
+
 #. Resource IDs: (3601)
 msgid ""
 "Open files for diff or to apply a patch\n"
@@ -6972,7 +7094,7 @@ msgstr "Отрывает справку\nРазделы справки"
 
 #. Resource IDs: (21)
 msgid "Opens the Reference Browser dialog."
-msgstr "Открывает обозреватель ссылок"
+msgstr "Открывает диалог обозревателя ссылок."
 
 #. Resource IDs: (15)
 msgid "Opens the repository browser"
@@ -7612,7 +7734,7 @@ msgstr "Прочитайте 'Руководство по ежедневному
 
 #. Resource IDs: (318)
 msgid "Rebase"
-msgstr "Переместить"
+msgstr "Перебазировать"
 
 #. Resource IDs: (1254)
 #, c-format
@@ -7621,7 +7743,7 @@ msgstr "Перебазировать \"%s\" на эту..."
 
 #. Resource IDs: (20)
 msgid "Rebase..."
-msgstr "Переместить..."
+msgstr "Перебазировать..."
 
 #. Resource IDs: (67)
 #, c-format
@@ -8009,6 +8131,10 @@ msgstr "Восстановить текущую ветвь \"%s\" к"
 msgid "Resolve"
 msgstr "Улаживание"
 
+#. Resource IDs: (4595)
+msgid "Resolve Submodule Conflict"
+msgstr "Уладить конфликт подмодуля"
+
 #. Resource IDs: (282)
 msgid "Resolve conflict using 'mine'"
 msgstr "Уладить конфликт, используя 'мой' файл"
@@ -8034,7 +8160,7 @@ msgstr "Улаживает файлы с конфликтами"
 
 #. Resource IDs: (66)
 msgid "Restart rebase"
-msgstr "Перезапустить перемещение"
+msgstr "Перезапустить перебазирование"
 
 #. Resource IDs: (64)
 msgid "Restore"
@@ -8222,6 +8348,14 @@ msgstr "Перекл&ючить..."
 msgid "SHA-1"
 msgstr "SHA-1"
 
+#. Resource IDs: (65535)
+msgid "SHA-1:"
+msgstr "SHA-1:"
+
+#. Resource IDs: (65535)
+msgid "SHA-256:"
+msgstr "SHA-256:"
+
 #. Resource IDs: (1585)
 msgid "SMTP Server requires authentication"
 msgstr "SMTP Сервер требует авторизации пользователя"
@@ -8278,7 +8412,7 @@ msgstr "Совпадающее время фиксации"
 msgid ""
 "Sample log message to test the bugtraq: regex strings.\n"
 "\n"
-"Testing mentions of issues inside a text: Mention single issue #55. Mention issues #77, #78, and #78. Mention more issues #123, #124 and #125 and some more separate ones: Issue #45, issue #46 and issue #47.\n"
+"Testing mentions of issues inside a text: Mention single issue #55. Mention issues #77, #78, and #79. Mention more issues #123, #124 and #125 and some more separate ones: Issue #45, issue #46 and issue #47.\n"
 "\n"
 "\n"
 "Update issue #101\n"
@@ -8286,7 +8420,7 @@ msgid ""
 "Fixed issue #123\n"
 "Resolves issue #88.\n"
 "Closes issue #99.\n"
-msgstr "Пример сообщения журнала для тестирования bugtraq: строки c регулярными выражениями.\n\nТестирование пометок проблем внутри текста: пометка одиночной проблемы #55. Помечены проблемы #77, #78 и #78. Помечены ещё проблемы #123, #124 и #125 и еще несколько одиночных: проблема #45, проблема #46 и проблема #47.\n\nОбновлена проблема #101\nРешена проблема #202\nРешена проблема #123\nРешена проблема #202\nРазрешена проблема #88.\nЗакрыта проблема #99.\n\n"
+msgstr "Пример сообщения журнала для тестирования bugtraq: строки c регулярными выражениями.\n\nТестирование пометок проблем внутри текста: пометка одиночной проблемы #55. Помечены проблемы #77, #78 и #79. Помечены ещё проблемы #123, #124 и #125 и еще несколько одиночных: проблема #45, проблема #46 и проблема #47.\n\nОбновлена проблема #101\nРешена проблема #202\nРешена проблема #123\nРазрешена проблема #88.\nЗакрыта проблема #99.\n\n"
 
 #. Resource IDs: (1612)
 msgid "Sample text:"
@@ -8347,6 +8481,24 @@ msgid ""
 "Save all\n"
 "Both Files are saved"
 msgstr "Сохранить всё⏎\nОба файла сохранены"
+
+#. Resource IDs: (7)
+msgid ""
+"Save and exclude\n"
+"Your changes are saved and the original content is used"
+msgstr "Сохранить и исключить\nВаши изменения сохранены и оригинальное содержимое будет использовано"
+
+#. Resource IDs: (7)
+msgid ""
+"Save and ignore marked blocks\n"
+"Only your manual edits are saved, marked blocks are left as they are"
+msgstr "Сохранить и игнорировать выбранные блоки\nТолько ваши ручные правки будут сохранены, помеченные блоки останутся как есть"
+
+#. Resource IDs: (7)
+msgid ""
+"Save and include\n"
+"Your changes are saved and the marked blocks are included"
+msgstr "Сохранить и включить\nВаши изменения сохранены и помеченные блоки будут включены"
 
 #. Resource IDs: (156)
 msgid "Save as"
@@ -8596,6 +8748,10 @@ msgstr "Выберите файл, который вы хотите сохран
 msgid "Select/deselect &all"
 msgstr "Выбрать/снять &все"
 
+#. Resource IDs: (96)
+msgid "Selection History"
+msgstr "Предыдущий выбор"
+
 #. Resource IDs: (1)
 msgid "Send"
 msgstr "Отправить"
@@ -8789,6 +8945,14 @@ msgstr "Показать непечатаемые знаки"
 msgid "Show an overview of the whole graph"
 msgstr "Показать окно с изображением всего графа"
 
+#. Resource IDs: (1074)
+msgid "Show asterisk log prefix"
+msgstr "Отображать префикс-звёздочку журнала"
+
+#. Resource IDs: (97)
+msgid "Show asterisk log prefix in log dialog"
+msgstr "Отображать префикс-звёздочку в диалоге журнала"
+
 #. Resource IDs: (32775)
 msgid "Show author"
 msgstr "Показать автора"
@@ -8812,6 +8976,14 @@ msgstr "Показать полный журнал"
 #. Resource IDs: (32784)
 msgid "Show date"
 msgstr "Показать дату"
+
+#. Resource IDs: (1804)
+msgid "Show describe in log"
+msgstr "Показывать описание в журнале"
+
+#. Resource IDs: (96)
+msgid "Show describe in log dialog"
+msgstr "Показывать описание в диалоге журнала"
 
 #. Resource IDs: (83)
 msgid "Show destination folder"
@@ -8881,6 +9053,10 @@ msgstr "Показать журнал этой папки"
 #. Resource IDs: (1256)
 msgid "Show log..."
 msgstr "Показать журнал..."
+
+#. Resource IDs: (96)
+msgid "Show long format even if a tag is exactly on that commit"
+msgstr "Показывать длинный формат даже если метка стоит именно на этой фиксации"
 
 #. Resource IDs: (1382)
 msgid "Show modified files in working tree"
@@ -9091,9 +9267,13 @@ msgstr "Задаёт количество недавно введённых со
 msgid "Spin1"
 msgstr "Счётчик1"
 
+#. Resource IDs: (1827)
+msgid "Split commit"
+msgstr "Разделить фиксацию"
+
 #. Resource IDs: (1253)
 msgid "Split lines"
-msgstr "Разбить на строки"
+msgstr "Разделить на строки"
 
 #. Resource IDs: (3604)
 msgid ""
@@ -9131,7 +9311,7 @@ msgstr "Хук начало-фиксации"
 
 #. Resource IDs: (67, 68)
 msgid "Start Rebase"
-msgstr "Начать"
+msgstr "Начать перебазирование"
 
 #. Resource IDs: (12)
 msgid "Start bisect mode..."
@@ -9397,10 +9577,6 @@ msgstr "Синхронизировать..."
 msgid "System"
 msgstr "Системное"
 
-#. Resource IDs: (1556)
-msgid "System &sounds"
-msgstr "Системные &звуки"
-
 #. Resource IDs: (93)
 msgid "System in offline mode. Check Internet Explorer."
 msgstr "Система в режиме офф-лайн. Проверьте Internet Explorer."
@@ -9523,7 +9699,7 @@ msgstr "Удостоверяющий центр был изменён.\nСохр
 msgid ""
 "The current working tree is not clean.\n"
 "Do you want to stash the changes?"
-msgstr "Текущая рабочая копия не чиста.\nВы хотите поместить в копилку изменения?"
+msgstr "Текущая рабочая копия не очищена.\nВы хотите поместить в копилку изменения?"
 
 #. Resource IDs: (68)
 #, c-format
@@ -9780,6 +9956,12 @@ msgid ""
 "The two selected URL's are not created from the same root.\n"
 "It's not possible to show the log messages between them!"
 msgstr "Выбранные URL не были созданы из общей основы.\nНевозможно показать сообщения журнала между ними!"
+
+#. Resource IDs: (96)
+msgid ""
+"The working tree is not clean and contains unstaged changes.\n"
+"Review and commit the changes?"
+msgstr "Рабочая копия не очищена и содержит неподготовленные изменения.\nПросмотреть и зафиксировать изменения?"
 
 #. Resource IDs: (65535)
 msgid "Their file:"
@@ -10080,6 +10262,10 @@ msgid ""
 "TortoiseGitMerge cannot process this patch file. The filename \"%s\" appears"
 " more than once."
 msgstr "TortoiseGitMerge не может обработать этот файл заплатки. Имя файла \"%s\" используется более одного раза."
+
+#. Resource IDs: (357)
+msgid "TortoiseGitUDiff"
+msgstr "TortoiseGitUDiff"
 
 #. Resource IDs: (1739)
 msgid "Total changed lines including added/deleted files:"
@@ -10430,10 +10616,6 @@ msgstr "Использовать левый блок"
 msgid "Use left file"
 msgstr "Использовать левый файл"
 
-#. Resource IDs: (252)
-msgid "Use left file except marked blocks"
-msgstr "Использовать файл слева кроме выделенных блоков"
-
 #. Resource IDs: (1762)
 msgid "Use local branch color for current branch"
 msgstr "Использовать цвет локальной ветви для текущей ветви"
@@ -10523,6 +10705,10 @@ msgid ""
 "Apply the patch to\n"
 "%s"
 msgstr "Использовать исходный путь.⏎\nПрименить заплатку к⏎\n%s"
+
+#. Resource IDs: (1825, 1826)
+msgid "Use this"
+msgstr "Использовать это"
 
 #. Resource IDs: (251)
 msgid "Use this &whole file"
@@ -10762,6 +10948,10 @@ msgid ""
 "\"origin\" if the remote name is empty, so you do not have to."
 msgstr "При вводе URL, если вы не указали хранилище, то автоматически будет подставляться \"origin\", так что можете не заполнять."
 
+#. Resource IDs: (96)
+msgid "Whether to reference only annotated tags, all tags or all refs"
+msgstr "Ссылаться ли только на аннотированные метки, все метки или все ссылки"
+
 #. Resource IDs: (1409)
 msgid ""
 "While running daemon, all data of this repository is exposed without "
@@ -10846,7 +11036,7 @@ msgstr "Рабочая копия"
 
 #. Resource IDs: (1335, 1472)
 msgid "Working Tree Path:"
-msgstr "Путь в рабочей копии:"
+msgstr "Путь к рабочей копии:"
 
 #. Resource IDs: (1253)
 msgid "Working dir changes"
@@ -10913,6 +11103,10 @@ msgid ""
 "You have checked \"include untracked\".\n"
 "This includes a \"git clean -fd\" call, so ignored files/directories are removed w/o using recycle bin."
 msgstr "Вы отметили \"включая неверсированные\".\nЭто подразумевает выполнение команды \"git clean -fd\", при которой игнорируемые файлы и директории будут удалены без помещения их в корзину."
+
+#. Resource IDs: (7)
+msgid "You have marked changed blocks. How should those blocks be saved?"
+msgstr "Вы отметили изменённые блоки. Как эти блоки следует сохранить?"
 
 #. Resource IDs: (16)
 msgid ""
@@ -11116,7 +11310,7 @@ msgstr "добавлен"
 
 #. Resource IDs: (65535)
 msgid "added files"
-msgstr "Добавленные файлы"
+msgstr "добавленные файлы"
 
 #. Resource IDs: (3841)
 msgid "an unnamed file"
@@ -11188,10 +11382,6 @@ msgstr "день"
 #. Resource IDs: (10)
 msgid "deleted"
 msgstr "удалён"
-
-#. Resource IDs: (1646)
-msgid "depth "
-msgstr "глубина"
 
 #. Resource IDs: (58116)
 msgid "dummy"

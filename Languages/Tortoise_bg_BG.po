@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2014-08-03 21:42+0000\n"
+"PO-Revision-Date: 2014-11-13 16:50+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Bulgarian (Bulgaria) (http://www.transifex.com/projects/p/tortoisegit/language/bg_BG/)\n"
 "MIME-Version: 1.0\n"
@@ -186,7 +186,7 @@ msgstr "%1\nНе може да бъде открит този файл.\nПро�
 
 #. Resource IDs: (91)
 #, c-format
-msgid "%HOME%/gitconfig or %XDGHOME%/gitconfig"
+msgid "%HOME%/.gitconfig or %XDGHOME%/git/config"
 msgstr ""
 
 #. Resource IDs: (357)
@@ -532,10 +532,6 @@ msgstr "&Сравняване на редакции"
 msgid "&Compressed Graph"
 msgstr ""
 
-#. Resource IDs: (1239)
-msgid "&Configure"
-msgstr "&Настройка"
-
 #. Resource IDs: (501, 1367, 1471, 57634)
 msgid "&Copy"
 msgstr "&Копиране"
@@ -702,10 +698,6 @@ msgstr "&Шрифт:"
 
 #. Resource IDs: (1521)
 msgid "&Force"
-msgstr ""
-
-#. Resource IDs: (1480)
-msgid "&Force Overwrite Existing Branch (May discard changes)"
 msgstr ""
 
 #. Resource IDs: (1607)
@@ -1477,7 +1469,7 @@ msgstr ""
 #. Resource IDs: (68)
 msgid ""
 "<ct=0x0000FF>Current HEAD Detached</ct>, you are working on (no branch).\n"
-"Do you want to a create branch now?"
+"Do you want to create a branch now?"
 msgstr ""
 
 #. Resource IDs: (70)
@@ -1615,6 +1607,10 @@ msgstr ""
 msgid "Abbreviate renamings"
 msgstr ""
 
+#. Resource IDs: (65535)
+msgid "Abbreviated size"
+msgstr ""
+
 #. Resource IDs: (2, 73, 1565)
 msgid "Abort"
 msgstr "Прекъсване"
@@ -1646,6 +1642,10 @@ msgstr ""
 #. Resource IDs: (136)
 msgid "About TortoiseGitMerge"
 msgstr "Относно TortoiseGitMerge"
+
+#. Resource IDs: (1)
+msgid "Accept certificate"
+msgstr ""
 
 #. Resource IDs: (3867)
 #, c-format
@@ -1798,6 +1798,14 @@ msgstr "Всички основни"
 msgid "All local branches"
 msgstr ""
 
+#. Resource IDs: (96)
+msgid "All refs"
+msgstr ""
+
+#. Resource IDs: (96)
+msgid "All tags"
+msgstr ""
+
 #. Resource IDs: (9690)
 msgid "All tags only"
 msgstr "Всички тагове само"
@@ -1846,6 +1854,10 @@ msgstr ""
 
 #. Resource IDs: (1485)
 msgid "Always push to the selected remote branch for this local branch"
+msgstr ""
+
+#. Resource IDs: (1805)
+msgid "Always show long format"
 msgstr ""
 
 #. Resource IDs: (197)
@@ -1907,6 +1919,10 @@ msgstr "Неизвестна грешка при достъп до %1."
 #, c-format
 msgid "An unknown line type was found in line %d !"
 msgstr "Неизвестен тип на ред бе открит на ред %d !"
+
+#. Resource IDs: (96)
+msgid "Annotated tags"
+msgstr ""
 
 #. Resource IDs: (251)
 msgid "Append right block"
@@ -2154,12 +2170,20 @@ msgid "Back"
 msgstr "Назад"
 
 #. Resource IDs: (65535)
+msgid "Background"
+msgstr ""
+
+#. Resource IDs: (65535)
 msgid "Baltic"
 msgstr "Балтийски"
 
 #. Resource IDs: (246)
 msgid "Bar Graph"
 msgstr "Лентова диаграма"
+
+#. Resource IDs: (1385)
+msgid "Base"
+msgstr ""
 
 #. Resource IDs: (1522)
 msgid "Base On"
@@ -2483,6 +2507,10 @@ msgstr "&Каскада"
 msgid "Cascaded context menu"
 msgstr "Падащо контекстно меню"
 
+#. Resource IDs: (117)
+msgid "Case-sensitive"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Cate&gories:"
 msgstr "&Категории:"
@@ -2494,6 +2522,10 @@ msgstr "Келтски"
 #. Resource IDs: (65535)
 msgid "Central European"
 msgstr "Централно европейски"
+
+#. Resource IDs: (65535)
+msgid "Certificate verification failed!"
+msgstr ""
 
 #. Resource IDs: (1697)
 msgid "Change log"
@@ -2895,6 +2927,11 @@ msgstr "Команди"
 msgid "Commit"
 msgstr "Поверяване"
 
+#. Resource IDs: (96)
+#, c-format
+msgid "Commit %s is NOT visible right now."
+msgstr ""
+
 #. Resource IDs: (94)
 #, c-format
 msgid "Commit %s not found in \"%s\". Update submodule now?"
@@ -2926,6 +2963,10 @@ msgstr "Име на поверяване"
 
 #. Resource IDs: (1750)
 msgid "Commit Ordering:"
+msgstr ""
+
+#. Resource IDs: (96)
+msgid "Commit super project"
 msgstr ""
 
 #. Resource IDs: (1110)
@@ -2968,6 +3009,10 @@ msgid ""
 "\n"
 "Are you sure that you want to continue the commit?"
 msgstr "Поверяването на неконтролирана папка няма да добави рекурсивно децата й!\nВероятно бихте искали да добавите тези подпапки рекурсивно чрез контекстното менюто 'Добавяне...'.\n\nСигурни ли сте, че желаете да продължите с поверяването?"
+
+#. Resource IDs: (65535)
+msgid "Common Name:"
+msgstr ""
 
 #. Resource IDs: (2054)
 msgid "Compare &HEAD revisions"
@@ -3689,6 +3734,18 @@ msgstr ""
 msgid "Delivery:"
 msgstr ""
 
+#. Resource IDs: (1646)
+msgid "Depth"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Describe"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Describe Strategy"
+msgstr ""
+
 #. Resource IDs: (1002)
 msgid "Description"
 msgstr "Описание"
@@ -3762,11 +3819,35 @@ msgid "Diff Viewer::Merge Tool"
 msgstr ""
 
 #. Resource IDs: (65535)
+msgid "Diff added lines"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Diff command"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Diff comment"
+msgstr ""
+
+#. Resource IDs: (65535)
 msgid "Diff file:"
 msgstr "Файл с разлики:"
 
+#. Resource IDs: (65535)
+msgid "Diff header"
+msgstr ""
+
 #. Resource IDs: (15)
 msgid "Diff later"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Diff position"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Diff removed lines"
 msgstr ""
 
 #. Resource IDs: (15)
@@ -4125,7 +4206,7 @@ msgid "Edit gl&obal .gitconfig"
 msgstr ""
 
 #. Resource IDs: (1718)
-msgid "Edit global &XDG config"
+msgid "Edit global &XDG git/config"
 msgstr ""
 
 #. Resource IDs: (71)
@@ -4354,6 +4435,11 @@ msgstr "Грешка"
 #. Resource IDs: (145)
 msgid "Error rebuilding Shell Icon Cache!"
 msgstr "Грешка при възобновяването на системната кеш-памет за иконки!"
+
+#. Resource IDs: (96)
+#, c-format
+msgid "Error validating server certificate for \"%s\":"
+msgstr ""
 
 #. Resource IDs: (70)
 #, c-format
@@ -4762,6 +4848,10 @@ msgstr ""
 msgid "Find: First occurrence from the top found. End of document reached."
 msgstr ""
 
+#. Resource IDs: (65535)
+msgid "Fingerprints"
+msgstr ""
+
 #. Resource IDs: (67)
 msgid "Finish"
 msgstr ""
@@ -4834,6 +4924,13 @@ msgid ""
 "This option corresponds to the --force-with-lease git option."
 msgstr ""
 
+#. Resource IDs: (1796)
+msgid ""
+"Force push to the selected remote reference and override it without any safety checks.\n"
+"This can cause the remote repository to lose unseen commits; use it with care.\n"
+"This option corresponds to the --force git option."
+msgstr ""
+
 #. Resource IDs: (603)
 msgid ""
 "Force the rebase even if the current branch is a descendant of the commit you are rebasing onto. \r\n"
@@ -4844,11 +4941,8 @@ msgstr ""
 msgid "Force: May discard"
 msgstr ""
 
-#. Resource IDs: (1796)
-msgid ""
-"Force push to the selected remote reference and override it without any safety checks.\n"
-"This can cause the remote repository to lose unseen commits; use it with care.\n"
-"This option corresponds to the --force git option."
+#. Resource IDs: (65535)
+msgid "Foreground"
 msgstr ""
 
 #. Resource IDs: (312)
@@ -5410,6 +5504,10 @@ msgstr ""
 msgid "ID:32870:V C +L"
 msgstr "ID:32870:V C +L"
 
+#. Accelerator Entry for Menu ID:32873; ''
+msgid "ID:32873:V C +E"
+msgstr ""
+
 #. Accelerator Entry for Menu ID:32881; ''
 msgid "ID:32881:V C +P"
 msgstr "ID:32881:V C +P"
@@ -5553,6 +5651,10 @@ msgstr ""
 #. Resource IDs: (65535)
 msgid "Icons/Design/Code:\t\tLuebbe Onken"
 msgstr "Иконки/дизайн/програмиране:\t\tLuebbe Onken"
+
+#. Resource IDs: (97)
+msgid "Identical"
+msgstr ""
 
 #. Resource IDs: (194)
 msgid ""
@@ -5821,6 +5923,10 @@ msgstr "Невалидна валута."
 msgid "Invalid revision number!"
 msgstr ""
 
+#. Resource IDs: (65535)
+msgid "Issuer:"
+msgstr ""
+
 #. Resource IDs: (145)
 msgid ""
 "It is not possible to rename a file by changing the case of its name alone.\n"
@@ -5946,6 +6052,10 @@ msgstr "Най-малко активен автор:"
 msgid ""
 "Leave as conflicted\n"
 "The conflict status of the file is kept"
+msgstr ""
+
+#. Resource IDs: (252)
+msgid "Leave only marked blocks"
 msgstr ""
 
 #. Resource IDs: (188)
@@ -6181,6 +6291,10 @@ msgstr ""
 
 #. Resource IDs: (252)
 msgid "Mark this block"
+msgstr ""
+
+#. Resource IDs: (7)
+msgid "Marked Blocks"
 msgstr ""
 
 #. Resource IDs: (2051)
@@ -6715,13 +6829,13 @@ msgid ""
 "not recover the auto-saved versions, they will be deleted."
 msgstr "Имайте предвид, че, ако решите да възстановите автоматично запазените документи, трябва изрично да го потвърдите защото те ще заменят оригиналните. Ако решите да не ги възстановите те ще бъдат изтрити."
 
+#. Resource IDs: (65535)
+msgid "Note: These settings also apply to the Patch Viewer dialog."
+msgstr ""
+
 #. Resource IDs: (1481)
 msgid "Note: the folder contains unversioned items"
 msgstr "Забележка: папката съдържа неконтролирани обекти"
-
-#. Resource IDs: (65535)
-msgid "Note: the font settings also affect the TortoiseGitUDiff viewer"
-msgstr "Забележка: настройките на шрифта се отразяват и на TortoiseGitUDiff"
 
 #. Resource IDs: (65535)
 msgid "Note: this affects all Tortoise clients, not just TortoiseGit!"
@@ -6765,6 +6879,10 @@ msgstr "Брой автори:"
 
 #. Resource IDs: (65535)
 msgid "Number of characters required for moved or copied line detection:"
+msgstr ""
+
+#. Resource IDs: (96)
+msgid "Number of characters to show in the abbreviated hash part"
 msgstr ""
 
 #. Resource IDs: (1160)
@@ -6923,6 +7041,10 @@ msgstr "Отваряне"
 msgid ""
 "Open an existing document\n"
 "Open"
+msgstr ""
+
+#. Resource IDs: (1797)
+msgid "Open certificate"
 msgstr ""
 
 #. Resource IDs: (3601)
@@ -7996,6 +8118,10 @@ msgstr ""
 msgid "Resolve"
 msgstr "Разрешаване"
 
+#. Resource IDs: (4595)
+msgid "Resolve Submodule Conflict"
+msgstr ""
+
 #. Resource IDs: (282)
 msgid "Resolve conflict using 'mine'"
 msgstr "Разрешаване на конфликт, използвайки 'моя'"
@@ -8209,6 +8335,14 @@ msgstr ""
 msgid "SHA-1"
 msgstr "SHA-1"
 
+#. Resource IDs: (65535)
+msgid "SHA-1:"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "SHA-256:"
+msgstr ""
+
 #. Resource IDs: (1585)
 msgid "SMTP Server requires authentication"
 msgstr ""
@@ -8265,7 +8399,7 @@ msgstr ""
 msgid ""
 "Sample log message to test the bugtraq: regex strings.\n"
 "\n"
-"Testing mentions of issues inside a text: Mention single issue #55. Mention issues #77, #78, and #78. Mention more issues #123, #124 and #125 and some more separate ones: Issue #45, issue #46 and issue #47.\n"
+"Testing mentions of issues inside a text: Mention single issue #55. Mention issues #77, #78, and #79. Mention more issues #123, #124 and #125 and some more separate ones: Issue #45, issue #46 and issue #47.\n"
 "\n"
 "\n"
 "Update issue #101\n"
@@ -8333,6 +8467,24 @@ msgstr ""
 msgid ""
 "Save all\n"
 "Both Files are saved"
+msgstr ""
+
+#. Resource IDs: (7)
+msgid ""
+"Save and exclude\n"
+"Your changes are saved and the original content is used"
+msgstr ""
+
+#. Resource IDs: (7)
+msgid ""
+"Save and ignore marked blocks\n"
+"Only your manual edits are saved, marked blocks are left as they are"
+msgstr ""
+
+#. Resource IDs: (7)
+msgid ""
+"Save and include\n"
+"Your changes are saved and the marked blocks are included"
 msgstr ""
 
 #. Resource IDs: (156)
@@ -8583,6 +8735,10 @@ msgstr ""
 msgid "Select/deselect &all"
 msgstr ""
 
+#. Resource IDs: (96)
+msgid "Selection History"
+msgstr ""
+
 #. Resource IDs: (1)
 msgid "Send"
 msgstr "Изпращане"
@@ -8776,6 +8932,14 @@ msgstr ""
 msgid "Show an overview of the whole graph"
 msgstr "Преглед на цялата диаграма"
 
+#. Resource IDs: (1074)
+msgid "Show asterisk log prefix"
+msgstr ""
+
+#. Resource IDs: (97)
+msgid "Show asterisk log prefix in log dialog"
+msgstr ""
+
 #. Resource IDs: (32775)
 msgid "Show author"
 msgstr ""
@@ -8798,6 +8962,14 @@ msgstr ""
 
 #. Resource IDs: (32784)
 msgid "Show date"
+msgstr ""
+
+#. Resource IDs: (1804)
+msgid "Show describe in log"
+msgstr ""
+
+#. Resource IDs: (96)
+msgid "Show describe in log dialog"
 msgstr ""
 
 #. Resource IDs: (83)
@@ -8868,6 +9040,10 @@ msgstr ""
 #. Resource IDs: (1256)
 msgid "Show log..."
 msgstr "Показва дневник..."
+
+#. Resource IDs: (96)
+msgid "Show long format even if a tag is exactly on that commit"
+msgstr ""
 
 #. Resource IDs: (1382)
 msgid "Show modified files in working tree"
@@ -9077,6 +9253,10 @@ msgstr "Указва максималния брой съобщения, кои�
 #. Resource IDs: (16976, 16977, 16978, 16979, 16980, 16981)
 msgid "Spin1"
 msgstr "Spin1"
+
+#. Resource IDs: (1827)
+msgid "Split commit"
+msgstr ""
 
 #. Resource IDs: (1253)
 msgid "Split lines"
@@ -9383,10 +9563,6 @@ msgstr "Синхронизиране..."
 #. Resource IDs: (89)
 msgid "System"
 msgstr ""
-
-#. Resource IDs: (1556)
-msgid "System &sounds"
-msgstr "Системни &звуци"
 
 #. Resource IDs: (93)
 msgid "System in offline mode. Check Internet Explorer."
@@ -9768,6 +9944,12 @@ msgid ""
 "It's not possible to show the log messages between them!"
 msgstr "Двата избрани URL-а не са създадени от един и същ корен.\nНевъзможно е да бъдат показани съобщения от дневника между тях!"
 
+#. Resource IDs: (96)
+msgid ""
+"The working tree is not clean and contains unstaged changes.\n"
+"Review and commit the changes?"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Their file:"
 msgstr "Техният файл:"
@@ -10066,6 +10248,10 @@ msgstr ""
 msgid ""
 "TortoiseGitMerge cannot process this patch file. The filename \"%s\" appears"
 " more than once."
+msgstr ""
+
+#. Resource IDs: (357)
+msgid "TortoiseGitUDiff"
 msgstr ""
 
 #. Resource IDs: (1739)
@@ -10417,10 +10603,6 @@ msgstr ""
 msgid "Use left file"
 msgstr "Използване на левият файл"
 
-#. Resource IDs: (252)
-msgid "Use left file except marked blocks"
-msgstr ""
-
 #. Resource IDs: (1762)
 msgid "Use local branch color for current branch"
 msgstr ""
@@ -10509,6 +10691,10 @@ msgid ""
 "Use the original path.\n"
 "Apply the patch to\n"
 "%s"
+msgstr ""
+
+#. Resource IDs: (1825, 1826)
+msgid "Use this"
 msgstr ""
 
 #. Resource IDs: (251)
@@ -10749,6 +10935,10 @@ msgid ""
 "\"origin\" if the remote name is empty, so you do not have to."
 msgstr ""
 
+#. Resource IDs: (96)
+msgid "Whether to reference only annotated tags, all tags or all refs"
+msgstr ""
+
 #. Resource IDs: (1409)
 msgid ""
 "While running daemon, all data of this repository is exposed without "
@@ -10899,6 +11089,10 @@ msgstr ""
 msgid ""
 "You have checked \"include untracked\".\n"
 "This includes a \"git clean -fd\" call, so ignored files/directories are removed w/o using recycle bin."
+msgstr ""
+
+#. Resource IDs: (7)
+msgid "You have marked changed blocks. How should those blocks be saved?"
 msgstr ""
 
 #. Resource IDs: (16)
@@ -11175,10 +11369,6 @@ msgstr "ден"
 #. Resource IDs: (10)
 msgid "deleted"
 msgstr "изтрит"
-
-#. Resource IDs: (1646)
-msgid "depth "
-msgstr "дълбочина"
 
 #. Resource IDs: (58116)
 msgid "dummy"

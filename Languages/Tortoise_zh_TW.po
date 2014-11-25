@@ -17,8 +17,8 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2014-08-05 02:10+0000\n"
-"Last-Translator: Yue Lin Ho <yuelinho777@gmail.com>\n"
+"PO-Revision-Date: 2014-11-23 15:59+0000\n"
+"Last-Translator: ch cooli <ch3cooli@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/tortoisegit/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -189,8 +189,8 @@ msgstr "%1\n找不到這個檔案。\n請確定輸入了正確的路徑和檔案
 
 #. Resource IDs: (91)
 #, c-format
-msgid "%HOME%/gitconfig or %XDGHOME%/gitconfig"
-msgstr "%HOME%/gitconfig 或 %XDGHOME%/gitconfig"
+msgid "%HOME%/.gitconfig or %XDGHOME%/git/config"
+msgstr "%HOME%/.gitconfig 或 %XDGHOME%/git/config"
 
 #. Resource IDs: (357)
 #, c-format
@@ -535,10 +535,6 @@ msgstr "比對版本差異(&C)"
 msgid "&Compressed Graph"
 msgstr "壓縮圖型(&C)"
 
-#. Resource IDs: (1239)
-msgid "&Configure"
-msgstr "設定(&C)"
-
 #. Resource IDs: (501, 1367, 1471, 57634)
 msgid "&Copy"
 msgstr "複製(&C)"
@@ -707,10 +703,6 @@ msgstr "字型(&F)："
 msgid "&Force"
 msgstr "強制(&F)"
 
-#. Resource IDs: (1480)
-msgid "&Force Overwrite Existing Branch (May discard changes)"
-msgstr "強制覆蓋已存在的分支(可能失去改動) (&F)"
-
 #. Resource IDs: (1607)
 msgid "&Force Rebase"
 msgstr "強制變基(rebase)(&F)"
@@ -851,7 +843,7 @@ msgstr "清單檢視(&L)"
 
 #. Resource IDs: (1616)
 msgid "&Local Branch:"
-msgstr "本地分支(&L)"
+msgstr "本地分支(&L)："
 
 #. Resource IDs: (92)
 msgid "&Local branches"
@@ -1051,7 +1043,7 @@ msgstr "正規表示式(&R)"
 
 #. Resource IDs: (1617)
 msgid "&Remote Branch:"
-msgstr "遠端分支(&R)"
+msgstr "遠端分支(&R)："
 
 #. Resource IDs: (92)
 msgid "&Remote branches"
@@ -1059,7 +1051,7 @@ msgstr "遠端分支(&R)"
 
 #. Resource IDs: (1490, 1503)
 msgid "&Remote:"
-msgstr "遠端(&R)"
+msgstr "遠端(&R)："
 
 #. Resource IDs: (1100, 1385, 16646)
 msgid "&Remove"
@@ -1339,7 +1331,7 @@ msgstr "忽略空格變更(&i)"
 
 #. Resource IDs: (1498)
 msgid "&known changes"
-msgstr "已知的變更(&k)"
+msgstr "已知的變更(&K)"
 
 #. Resource IDs: (88)
 msgid "(TortoiseGit default)"
@@ -1480,7 +1472,7 @@ msgstr "<b>警告:</b> 這分支未完全合併進 HEAD"
 #. Resource IDs: (68)
 msgid ""
 "<ct=0x0000FF>Current HEAD Detached</ct>, you are working on (no branch).\n"
-"Do you want to a create branch now?"
+"Do you want to create a branch now?"
 msgstr "<ct=0x0000FF>現在的 HEAD 脫離了</ct>，你正在 (沒有分支)工作。\n要現在建立分支嗎？"
 
 #. Resource IDs: (70)
@@ -1618,6 +1610,10 @@ msgstr "套用(&p)"
 msgid "Abbreviate renamings"
 msgstr "縮寫重新命名"
 
+#. Resource IDs: (65535)
+msgid "Abbreviated size"
+msgstr "縮寫長度"
+
 #. Resource IDs: (2, 73, 1565)
 msgid "Abort"
 msgstr "放棄"
@@ -1649,6 +1645,10 @@ msgstr "關於 TortoiseGitBlame"
 #. Resource IDs: (136)
 msgid "About TortoiseGitMerge"
 msgstr "關於 TortoiseGitMerge"
+
+#. Resource IDs: (1)
+msgid "Accept certificate"
+msgstr "接受憑證"
 
 #. Resource IDs: (3867)
 #, c-format
@@ -1801,6 +1801,14 @@ msgstr "所有父版本"
 msgid "All local branches"
 msgstr "所有本地分支"
 
+#. Resource IDs: (96)
+msgid "All refs"
+msgstr "所有參考點"
+
+#. Resource IDs: (96)
+msgid "All tags"
+msgstr "所有標籤"
+
 #. Resource IDs: (9690)
 msgid "All tags only"
 msgstr "只包括全部標籤"
@@ -1850,6 +1858,10 @@ msgstr "永遠推送這本地分支到已選遠端保存"
 #. Resource IDs: (1485)
 msgid "Always push to the selected remote branch for this local branch"
 msgstr "永遠推送這本地分支到已選遠端分支"
+
+#. Resource IDs: (1805)
+msgid "Always show long format"
+msgstr "永遠顯示長格式"
 
 #. Resource IDs: (197)
 msgid "Always use the system locale settings to show times and dates"
@@ -1910,6 +1922,10 @@ msgstr "存取 %1 時發生不明錯誤."
 #, c-format
 msgid "An unknown line type was found in line %d !"
 msgstr "在第 %d 行發現不明型態資料!"
+
+#. Resource IDs: (96)
+msgid "Annotated tags"
+msgstr "含附註的標籤"
 
 #. Resource IDs: (251)
 msgid "Append right block"
@@ -2157,12 +2173,20 @@ msgid "Back"
 msgstr "上一步"
 
 #. Resource IDs: (65535)
+msgid "Background"
+msgstr "背景色"
+
+#. Resource IDs: (65535)
 msgid "Baltic"
 msgstr "波羅的海"
 
 #. Resource IDs: (246)
 msgid "Bar Graph"
 msgstr "長條圖"
+
+#. Resource IDs: (1385)
+msgid "Base"
+msgstr "基底"
 
 #. Resource IDs: (1522)
 msgid "Base On"
@@ -2486,6 +2510,10 @@ msgstr "顯層式顯示 (&D)"
 msgid "Cascaded context menu"
 msgstr "階層式快顯功能表"
 
+#. Resource IDs: (117)
+msgid "Case-sensitive"
+msgstr "區分大小寫"
+
 #. Resource IDs: (65535)
 msgid "Cate&gories:"
 msgstr "類別(&G):"
@@ -2497,6 +2525,10 @@ msgstr "塞爾特語"
 #. Resource IDs: (65535)
 msgid "Central European"
 msgstr "中歐"
+
+#. Resource IDs: (65535)
+msgid "Certificate verification failed!"
+msgstr "憑證驗證失敗!"
 
 #. Resource IDs: (1697)
 msgid "Change log"
@@ -2898,6 +2930,11 @@ msgstr "命令"
 msgid "Commit"
 msgstr "提交"
 
+#. Resource IDs: (96)
+#, c-format
+msgid "Commit %s is NOT visible right now."
+msgstr "現在看不到提交 %s"
+
 #. Resource IDs: (94)
 #, c-format
 msgid "Commit %s not found in \"%s\". Update submodule now?"
@@ -2930,6 +2967,10 @@ msgstr "提交者名字"
 #. Resource IDs: (1750)
 msgid "Commit Ordering:"
 msgstr "提交排列："
+
+#. Resource IDs: (96)
+msgid "Commit super project"
+msgstr "提交上層專案"
 
 #. Resource IDs: (1110)
 msgid "Commit to:"
@@ -2971,6 +3012,10 @@ msgid ""
 "\n"
 "Are you sure that you want to continue the commit?"
 msgstr "提交無版本控制的資料夾並不會自動加入底下的子項目!\n使用 '加入...' 選項可以加入底下全部的子資料夾和檔案.\n\n確定要進行送交嗎?"
+
+#. Resource IDs: (65535)
+msgid "Common Name:"
+msgstr "憑證名稱:"
 
 #. Resource IDs: (2054)
 msgid "Compare &HEAD revisions"
@@ -3692,6 +3737,18 @@ msgstr "正在刪除遠端參考點 ..."
 msgid "Delivery:"
 msgstr "傳遞方式："
 
+#. Resource IDs: (1646)
+msgid "Depth"
+msgstr "深度"
+
+#. Resource IDs: (65535)
+msgid "Describe"
+msgstr "Describe"
+
+#. Resource IDs: (65535)
+msgid "Describe Strategy"
+msgstr "Describe 搜尋策略"
+
 #. Resource IDs: (1002)
 msgid "Description"
 msgstr "描述"
@@ -3762,15 +3819,39 @@ msgstr "差異檢視器"
 
 #. Resource IDs: (193)
 msgid "Diff Viewer::Merge Tool"
-msgstr "差異檢視::合併工具"
+msgstr "差異檢視器::合併工具"
+
+#. Resource IDs: (65535)
+msgid "Diff added lines"
+msgstr "差異-新增行"
+
+#. Resource IDs: (65535)
+msgid "Diff command"
+msgstr "差異-命令"
+
+#. Resource IDs: (65535)
+msgid "Diff comment"
+msgstr "差異-註解"
 
 #. Resource IDs: (65535)
 msgid "Diff file:"
 msgstr "差異檔:"
 
+#. Resource IDs: (65535)
+msgid "Diff header"
+msgstr "差異-標頭"
+
 #. Resource IDs: (15)
 msgid "Diff later"
 msgstr "稍後比對差異"
+
+#. Resource IDs: (65535)
+msgid "Diff position"
+msgstr "差異-位置"
+
+#. Resource IDs: (65535)
+msgid "Diff removed lines"
+msgstr "差異-移除行"
 
 #. Resource IDs: (15)
 #, c-format
@@ -4089,7 +4170,7 @@ msgstr "編輯"
 
 #. Resource IDs: (84)
 msgid "Edit &global .gitconfig"
-msgstr "編輯全域 .git/config(&G)"
+msgstr "編輯全域 .gitconfig (&G)"
 
 #. Resource IDs: (1383)
 msgid "Edit &local .git/config"
@@ -4125,11 +4206,11 @@ msgstr "編輯根據副檔名的合併程式"
 
 #. Resource IDs: (1382)
 msgid "Edit gl&obal .gitconfig"
-msgstr "編輯全域 .git/config(&O)"
+msgstr "編輯全域 .gitconfig (&O)"
 
 #. Resource IDs: (1718)
-msgid "Edit global &XDG config"
-msgstr "編輯全域 &XDG config"
+msgid "Edit global &XDG git/config"
+msgstr "編輯全域 &XDG git/config"
 
 #. Resource IDs: (71)
 msgid "Edit local git config"
@@ -4141,7 +4222,7 @@ msgstr "編輯記錄訊息"
 
 #. Resource IDs: (1384)
 msgid "Edit s&ystemwide gitconfig"
-msgstr "編輯系統 .git/config(&Y)"
+msgstr "編輯系統 gitconfig (&Y)"
 
 #. Resource IDs: (1331, 1382)
 msgid "Edit..."
@@ -4357,6 +4438,11 @@ msgstr "錯誤"
 #. Resource IDs: (145)
 msgid "Error rebuilding Shell Icon Cache!"
 msgstr "建立圖示快取失敗！"
+
+#. Resource IDs: (96)
+#, c-format
+msgid "Error validating server certificate for \"%s\":"
+msgstr "\"%s\" 憑證錯誤訊息:"
 
 #. Resource IDs: (70)
 #, c-format
@@ -4765,6 +4851,10 @@ msgstr "搜尋: 找到自文件結尾算起的第一筆. 已抵達文件開始."
 msgid "Find: First occurrence from the top found. End of document reached."
 msgstr "搜尋: 找到自文件開始的第一筆. 已抵達文件結尾"
 
+#. Resource IDs: (65535)
+msgid "Fingerprints"
+msgstr "指紋"
+
 #. Resource IDs: (67)
 msgid "Finish"
 msgstr "完成"
@@ -4787,7 +4877,7 @@ msgstr "只限第一個父節點"
 
 #. Resource IDs: (1617)
 msgid "First known &bad:"
-msgstr "一個已知壞的版本(&b):"
+msgstr "首個已知壞的版本(&B):"
 
 #. Resource IDs: (32818)
 msgid "Fit image &heights"
@@ -4837,6 +4927,13 @@ msgid ""
 "This option corresponds to the --force-with-lease git option."
 msgstr "只在 遠端追蹤分支(origin\\XXX) 與 遠端分支(遠端版本庫裡的XXX分支) 都指向同一個提交時，才強制推送。\n這會導致遠端版本庫丟失提交，小心使用。\n這個選項對應到 git 選項 --force-with-lease。"
 
+#. Resource IDs: (1796)
+msgid ""
+"Force push to the selected remote reference and override it without any safety checks.\n"
+"This can cause the remote repository to lose unseen commits; use it with care.\n"
+"This option corresponds to the --force git option."
+msgstr "強制推送選取的遠端參考點並且沒有任何安全檢查地覆蓋它。\n這會導致遠端版本庫丟失沒被注意到的提交，小心使用。\n這個選項對應到 git 選項 --force。"
+
 #. Resource IDs: (603)
 msgid ""
 "Force the rebase even if the current branch is a descendant of the commit you are rebasing onto. \r\n"
@@ -4847,12 +4944,9 @@ msgstr "儘管當前分支是你想變基到的後裔節點，也要強制變基
 msgid "Force: May discard"
 msgstr "強制: 可能丟失"
 
-#. Resource IDs: (1796)
-msgid ""
-"Force push to the selected remote reference and override it without any safety checks.\n"
-"This can cause the remote repository to lose unseen commits; use it with care.\n"
-"This option corresponds to the --force git option."
-msgstr "強制推送選取的遠端參考點並且沒有任何安全檢查地覆蓋它。\n這會導致遠端版本庫丟失沒被注意到的提交，小心使用。\n這個選項對應到 git 選項 --force。"
+#. Resource IDs: (65535)
+msgid "Foreground"
+msgstr "前景色"
 
 #. Resource IDs: (312)
 msgid "Format Patch"
@@ -4960,7 +5054,7 @@ msgstr "正在採集統計資料"
 
 #. Resource IDs: (107, 143)
 msgid "General"
-msgstr "一般設定"
+msgstr "一般"
 
 #. Resource IDs: (333)
 msgid "General::Alternative editor"
@@ -4976,7 +5070,7 @@ msgstr "一般::顏色2"
 
 #. Resource IDs: (316)
 msgid "General::Colors 3"
-msgstr "一般::顏色 3"
+msgstr "一般::顏色3"
 
 #. Resource IDs: (195)
 msgid "General::Context Menu"
@@ -4992,7 +5086,7 @@ msgstr "一般::對話視窗2"
 
 #. Resource IDs: (4593)
 msgid "General::Dialogs 3"
-msgstr "一般::對話視窗 3"
+msgstr "一般::對話視窗3"
 
 #. Resource IDs: (4573)
 msgid "General::Set Extend Menu Item"
@@ -5413,6 +5507,10 @@ msgstr "ID:32857:VA  +F"
 msgid "ID:32870:V C +L"
 msgstr "ID:32870:V C +L"
 
+#. Accelerator Entry for Menu ID:32873; ''
+msgid "ID:32873:V C +E"
+msgstr "ID:32873:V C +E"
+
 #. Accelerator Entry for Menu ID:32881; ''
 msgid "ID:32881:V C +P"
 msgstr "ID:32881:V C +P"
@@ -5556,6 +5654,10 @@ msgstr "圖示 (*.ico, *.jpg, *.png, *.bmp, *.gif)|*.ico;*.jpg;*.jpeg;*.png;*.bm
 #. Resource IDs: (65535)
 msgid "Icons/Design/Code:\t\tLuebbe Onken"
 msgstr "圖示/設計/程式:\\t\\tLuebbe Onken"
+
+#. Resource IDs: (97)
+msgid "Identical"
+msgstr "一致的"
 
 #. Resource IDs: (194)
 msgid ""
@@ -5824,6 +5926,10 @@ msgstr "不正確的貨幣."
 msgid "Invalid revision number!"
 msgstr "錯誤的版本編號!"
 
+#. Resource IDs: (65535)
+msgid "Issuer:"
+msgstr "發送者"
+
 #. Resource IDs: (145)
 msgid ""
 "It is not possible to rename a file by changing the case of its name alone.\n"
@@ -5935,7 +6041,7 @@ msgstr "上次修改:"
 
 #. Resource IDs: (1616)
 msgid "Last known &good:"
-msgstr "最後已知好的版本:"
+msgstr "最後已知好的版本(&G):"
 
 #. Resource IDs: (12)
 msgid "Launches the external diff/merge program to solve the conflicts"
@@ -5950,6 +6056,10 @@ msgid ""
 "Leave as conflicted\n"
 "The conflict status of the file is kept"
 msgstr "保留衝突狀態\n保留檔案的衝突狀態"
+
+#. Resource IDs: (252)
+msgid "Leave only marked blocks"
+msgstr "只保留已標記區塊"
 
 #. Resource IDs: (188)
 msgid "Left View: "
@@ -6185,6 +6295,10 @@ msgstr "標記為已解決\n清除衝突狀態並標示為已更改"
 #. Resource IDs: (252)
 msgid "Mark this block"
 msgstr "標記這個區塊"
+
+#. Resource IDs: (7)
+msgid "Marked Blocks"
+msgstr "已標記區塊"
 
 #. Resource IDs: (2051)
 msgid ""
@@ -6718,13 +6832,13 @@ msgid ""
 "not recover the auto-saved versions, they will be deleted."
 msgstr "請注意：如果您選擇回復自動儲存的文件，您必須要手動再儲存一次才能保留下來。如果您不回復自動儲存的文件，它們會被刪除。"
 
+#. Resource IDs: (65535)
+msgid "Note: These settings also apply to the Patch Viewer dialog."
+msgstr "注意: 這些設定值也會套用在補綴瀏覽視窗"
+
 #. Resource IDs: (1481)
 msgid "Note: the folder contains unversioned items"
 msgstr "注意: 資料夾含有無版本控制的檔案"
-
-#. Resource IDs: (65535)
-msgid "Note: the font settings also affect the TortoiseGitUDiff viewer"
-msgstr "注意: 字型設定也會影響 TortoiseGitDiff"
 
 #. Resource IDs: (65535)
 msgid "Note: this affects all Tortoise clients, not just TortoiseGit!"
@@ -6769,6 +6883,10 @@ msgstr "作者數:"
 #. Resource IDs: (65535)
 msgid "Number of characters required for moved or copied line detection:"
 msgstr "偵測 移動行 或 複製行 所需的字元數"
+
+#. Resource IDs: (96)
+msgid "Number of characters to show in the abbreviated hash part"
+msgstr "縮寫中雜湊值顯示的位數"
 
 #. Resource IDs: (1160)
 msgid "Number of weeks:"
@@ -6927,6 +7045,10 @@ msgid ""
 "Open an existing document\n"
 "Open"
 msgstr "開啟現有文件\n開啟"
+
+#. Resource IDs: (1797)
+msgid "Open certificate"
+msgstr "開啟憑證"
 
 #. Resource IDs: (3601)
 msgid ""
@@ -7566,7 +7688,7 @@ msgstr "變基 (&B)"
 
 #. Resource IDs: (1494)
 msgid "Re&mote:"
-msgstr "遠端(&m)"
+msgstr "遠端(&M)："
 
 #. Resource IDs: (1048)
 msgid "Re&movable drives"
@@ -7999,6 +8121,10 @@ msgstr "重設當前分支 %s 到"
 msgid "Resolve"
 msgstr "解決"
 
+#. Resource IDs: (4595)
+msgid "Resolve Submodule Conflict"
+msgstr "解決子模組衝突"
+
 #. Resource IDs: (282)
 msgid "Resolve conflict using 'mine'"
 msgstr "使用本地端解決衝突"
@@ -8212,6 +8338,14 @@ msgstr "切換(&W)/取出..."
 msgid "SHA-1"
 msgstr "SHA-1"
 
+#. Resource IDs: (65535)
+msgid "SHA-1:"
+msgstr "SHA-1:"
+
+#. Resource IDs: (65535)
+msgid "SHA-256:"
+msgstr "SHA-256:"
+
 #. Resource IDs: (1585)
 msgid "SMTP Server requires authentication"
 msgstr "SMTP伺服器要求授權"
@@ -8337,6 +8471,24 @@ msgid ""
 "Save all\n"
 "Both Files are saved"
 msgstr "全部儲存\n儲存左右兩側檔案"
+
+#. Resource IDs: (7)
+msgid ""
+"Save and exclude\n"
+"Your changes are saved and the original content is used"
+msgstr "儲存及排除\n儲存變更及但被標記的方塊會變回原本的內容"
+
+#. Resource IDs: (7)
+msgid ""
+"Save and ignore marked blocks\n"
+"Only your manual edits are saved, marked blocks are left as they are"
+msgstr "儲存及忽略\n儲存變更及但忽略被標記的方塊"
+
+#. Resource IDs: (7)
+msgid ""
+"Save and include\n"
+"Your changes are saved and the marked blocks are included"
+msgstr "儲存及包含\n儲存變更及包含被標記的方塊"
 
 #. Resource IDs: (156)
 msgid "Save as"
@@ -8586,6 +8738,10 @@ msgstr "請選擇你要另存的檔案\n注意： 尚有未解決的衝突！"
 msgid "Select/deselect &all"
 msgstr "全部選擇或取消(&A)"
 
+#. Resource IDs: (96)
+msgid "Selection History"
+msgstr "瀏覽記錄"
+
 #. Resource IDs: (1)
 msgid "Send"
 msgstr "傳送"
@@ -8640,7 +8796,7 @@ msgstr "設定作者(&T)"
 
 #. Resource IDs: (1557)
 msgid "Set author &date"
-msgstr "設定作者日期(&d)"
+msgstr "設定作者日期(&D)"
 
 #. Resource IDs: (86)
 msgid "Sets the remote as the \"pushremote\" for the selected local branch."
@@ -8779,6 +8935,14 @@ msgstr "顯示空白字元"
 msgid "Show an overview of the whole graph"
 msgstr "顯示鳥瞰圖"
 
+#. Resource IDs: (1074)
+msgid "Show asterisk log prefix"
+msgstr "Subject 開頭加註星號"
+
+#. Resource IDs: (97)
+msgid "Show asterisk log prefix in log dialog"
+msgstr "在記錄視窗中的訊息的 Subject 開頭加註星號"
+
 #. Resource IDs: (32775)
 msgid "Show author"
 msgstr "顯示作者"
@@ -8802,6 +8966,14 @@ msgstr "顯示完整記錄"
 #. Resource IDs: (32784)
 msgid "Show date"
 msgstr "顯示日期"
+
+#. Resource IDs: (1804)
+msgid "Show describe in log"
+msgstr "在記錄訊息中顯示 describe"
+
+#. Resource IDs: (96)
+msgid "Show describe in log dialog"
+msgstr "在記錄視窗中顯示 describe"
 
 #. Resource IDs: (83)
 msgid "Show destination folder"
@@ -8871,6 +9043,10 @@ msgstr "顯示資料夾記錄"
 #. Resource IDs: (1256)
 msgid "Show log..."
 msgstr "顯示記錄..."
+
+#. Resource IDs: (96)
+msgid "Show long format even if a tag is exactly on that commit"
+msgstr "即使標籤已位於該提交上, 仍然顯示長格式"
 
 #. Resource IDs: (1382)
 msgid "Show modified files in working tree"
@@ -9080,6 +9256,10 @@ msgstr "指定最近訊息紀錄要保留幾筆資料."
 #. Resource IDs: (16976, 16977, 16978, 16979, 16980, 16981)
 msgid "Spin1"
 msgstr "Spin1"
+
+#. Resource IDs: (1827)
+msgid "Split commit"
+msgstr "拆分提交"
 
 #. Resource IDs: (1253)
 msgid "Split lines"
@@ -9381,15 +9561,11 @@ msgstr "同步遠端倉儲,包括拉取,推送,電郵補綴等等"
 
 #. Resource IDs: (22)
 msgid "Sync..."
-msgstr "同步.."
+msgstr "同步..."
 
 #. Resource IDs: (89)
 msgid "System"
 msgstr "系統"
-
-#. Resource IDs: (1556)
-msgid "System &sounds"
-msgstr "系統音效(&S)"
 
 #. Resource IDs: (93)
 msgid "System in offline mode. Check Internet Explorer."
@@ -9771,6 +9947,12 @@ msgid ""
 "It's not possible to show the log messages between them!"
 msgstr "選擇的兩個 URL 不是由同樣的來源建立的.\n無法顯示兩者之間的紀錄訊息."
 
+#. Resource IDs: (96)
+msgid ""
+"The working tree is not clean and contains unstaged changes.\n"
+"Review and commit the changes?"
+msgstr "工作目錄不乾淨且包含未準備好提交的變更內容。檢視並提交變更內容？"
+
 #. Resource IDs: (65535)
 msgid "Their file:"
 msgstr "遠端檔案:"
@@ -10070,6 +10252,10 @@ msgid ""
 "TortoiseGitMerge cannot process this patch file. The filename \"%s\" appears"
 " more than once."
 msgstr "TortoiseGitMerge 無法處理這補綴檔，檔名 %s 出現多於一次"
+
+#. Resource IDs: (357)
+msgid "TortoiseGitUDiff"
+msgstr "TortoiseGitUDiff"
 
 #. Resource IDs: (1739)
 msgid "Total changed lines including added/deleted files:"
@@ -10420,10 +10606,6 @@ msgstr "使用左方區塊"
 msgid "Use left file"
 msgstr "使用左方檔案"
 
-#. Resource IDs: (252)
-msgid "Use left file except marked blocks"
-msgstr "使用左視窗中未被標記的內容"
-
 #. Resource IDs: (1762)
 msgid "Use local branch color for current branch"
 msgstr "當前分支用本地分支顏色"
@@ -10513,6 +10695,10 @@ msgid ""
 "Apply the patch to\n"
 "%s"
 msgstr "使用原先的路徑\n套用補綴至\n%s"
+
+#. Resource IDs: (1825, 1826)
+msgid "Use this"
+msgstr "用這個"
 
 #. Resource IDs: (251)
 msgid "Use this &whole file"
@@ -10752,6 +10938,10 @@ msgid ""
 "\"origin\" if the remote name is empty, so you do not have to."
 msgstr "如果遠端名稱為空，當你鍵入的URL時遠端名稱將被自動填充為“origin”，所以你不必填。"
 
+#. Resource IDs: (96)
+msgid "Whether to reference only annotated tags, all tags or all refs"
+msgstr "搜尋參考點的依據可以是 (1)只有含附註的標籤, (2)所有標籤, 或是 (3)所有參考點"
+
 #. Resource IDs: (1409)
 msgid ""
 "While running daemon, all data of this repository is exposed without "
@@ -10903,6 +11093,10 @@ msgid ""
 "You have checked \"include untracked\".\n"
 "This includes a \"git clean -fd\" call, so ignored files/directories are removed w/o using recycle bin."
 msgstr "你選擇了 「包含未追蹤的檔案」，這包含一個 \"git clean -fd\" 命令，因以不會使用資源回收筒來移除這些檔案/目錄。"
+
+#. Resource IDs: (7)
+msgid "You have marked changed blocks. How should those blocks be saved?"
+msgstr "有被標記的內容，要怎樣儲存？"
 
 #. Resource IDs: (16)
 msgid ""
@@ -11179,10 +11373,6 @@ msgstr "日"
 msgid "deleted"
 msgstr "刪除"
 
-#. Resource IDs: (1646)
-msgid "depth "
-msgstr "深度"
-
 #. Resource IDs: (58116)
 msgid "dummy"
 msgstr "dummy"
@@ -11223,7 +11413,7 @@ msgstr "未完成"
 
 #. Resource IDs: (1780, 1781, 1782, 1783)
 msgid "inherit"
-msgstr "繼"
+msgstr "繼承"
 
 #. Resource IDs: (214)
 msgid "item kept locally"
@@ -11369,7 +11559,7 @@ msgstr "至 %s"
 
 #. Resource IDs: (1480)
 msgid "u&nknown changes"
-msgstr "未知的變更(&n)"
+msgstr "未知的變更(&N)"
 
 #. Resource IDs: (245)
 msgid "week"

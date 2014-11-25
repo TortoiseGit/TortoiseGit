@@ -16,12 +16,14 @@
 # Pablos <pawel.patyk@pabloart.pl>, 2012
 # Pablos <pawel.patyk@pabloart.pl>, 2012
 # Sven Strickroth <sstrickroth@googlemail.com>, 2012-2013
+# taksun <taksun@o2.pl>, 2014
+# taksun <taksun@o2.pl>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2014-08-03 21:42+0000\n"
+"PO-Revision-Date: 2014-11-13 16:50+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Polish (Poland) (http://www.transifex.com/projects/p/tortoisegit/language/pl_PL/)\n"
 "MIME-Version: 1.0\n"
@@ -55,7 +57,7 @@ msgstr "Liczba autorów do pokazania osobno: #"
 #. Resource IDs: (357)
 #, c-format
 msgid "%.2f MiB transferred"
-msgstr ""
+msgstr "%.2f MiB przesłanych"
 
 #. Resource IDs: (3868)
 #, c-format
@@ -150,7 +152,7 @@ msgstr "%1!d! lat temu"
 #. Resource IDs: (90)
 #, c-format
 msgid "%1!d! items selected"
-msgstr ""
+msgstr "Zaznaczono %1!d! pozycji"
 
 #. Resource IDs: (602)
 #, c-format
@@ -174,7 +176,7 @@ msgstr ""
 msgid ""
 "%1!s!\r\n"
 "Size %2!s!"
-msgstr ""
+msgstr "%1!s!\nRozmiar %2!s!"
 
 #. Resource IDs: (3860)
 #, c-format
@@ -193,7 +195,7 @@ msgstr "%1\nNie można odnaleźć tego pliku.\nProszę sprawdzić poprawność �
 
 #. Resource IDs: (91)
 #, c-format
-msgid "%HOME%/gitconfig or %XDGHOME%/gitconfig"
+msgid "%HOME%/.gitconfig or %XDGHOME%/git/config"
 msgstr ""
 
 #. Resource IDs: (357)
@@ -204,7 +206,7 @@ msgstr "%I64d Bajtów przesłanych"
 #. Resource IDs: (357)
 #, c-format
 msgid "%I64d KiB transferred"
-msgstr ""
+msgstr "%I64d KiB przesłanych"
 
 #. Resource IDs: (75)
 #, c-format
@@ -272,7 +274,7 @@ msgstr "%s w %s"
 #. Resource IDs: (87)
 #, c-format
 msgid "%s requires Git >= %s"
-msgstr ""
+msgstr "%s wymaga Git >= %s"
 
 #. Resource IDs: (357)
 #, c-format
@@ -306,7 +308,7 @@ msgstr "%s\\n %s"
 msgid ""
 "%s\n"
 "Could not be cleanly patched."
-msgstr ""
+msgstr "%s\nNie może być prawidłowo poprawione."
 
 #. Resource IDs: (145)
 #, c-format
@@ -353,7 +355,7 @@ msgstr "&Dodaj >>"
 
 #. Resource IDs: (1505)
 msgid "&Add Filter"
-msgstr ""
+msgstr "&Dodaj filtr"
 
 #. Resource IDs: (1382)
 msgid "&Add New/Save"
@@ -441,7 +443,7 @@ msgstr "&Niebieski:"
 
 #. Resource IDs: (65535)
 msgid "&Border:"
-msgstr ""
+msgstr "&Obramowanie:"
 
 #. Resource IDs: (1512)
 msgid "&Branch"
@@ -539,10 +541,6 @@ msgstr "&Porównaj wersje"
 msgid "&Compressed Graph"
 msgstr ""
 
-#. Resource IDs: (1239)
-msgid "&Configure"
-msgstr "&Konfiguruj"
-
 #. Resource IDs: (501, 1367, 1471, 57634)
 msgid "&Copy"
 msgstr "&Kopiuj"
@@ -573,7 +571,7 @@ msgstr "&Usuń (zachowaj lokalnie)"
 
 #. Resource IDs: (1507)
 msgid "&Delete Filter"
-msgstr ""
+msgstr "&Usuń filtr"
 
 #. Resource IDs: (70)
 msgid "&Delete remote && local"
@@ -601,7 +599,7 @@ msgstr "Katalog:"
 
 #. Resource IDs: (32789)
 msgid "&Disabled"
-msgstr ""
+msgstr "&Zablokuj"
 
 #. Resource IDs: (71)
 msgid "&Discard"
@@ -637,7 +635,7 @@ msgstr "&Edytuj wszystko"
 
 #. Resource IDs: (1506)
 msgid "&Edit Filter"
-msgstr ""
+msgstr "&Edytuj filtr"
 
 #. Resource IDs: (12)
 msgid "&Edit conflicts"
@@ -710,10 +708,6 @@ msgstr "&Czcionka:"
 #. Resource IDs: (1521)
 msgid "&Force"
 msgstr "&Wymuś"
-
-#. Resource IDs: (1480)
-msgid "&Force Overwrite Existing Branch (May discard changes)"
-msgstr "&Wymusić nadpisanie istniejącej gałęzi (zmiany mogą zostać odrzucone)"
 
 #. Resource IDs: (1607)
 msgid "&Force Rebase"
@@ -967,7 +961,7 @@ msgstr "&Otwórz"
 
 #. Resource IDs: (84)
 msgid "&Open Git for Windows WebSite"
-msgstr ""
+msgstr "&Otwórz stronę Git dla Windows"
 
 #. Resource IDs: (57601)
 msgid "&Open...\tCtrl+O"
@@ -1051,7 +1045,7 @@ msgstr "&Odśwież"
 
 #. Resource IDs: (20093)
 msgid "&Regular Expression"
-msgstr ""
+msgstr "&Wyrażenia regularne"
 
 #. Resource IDs: (1617)
 msgid "&Remote Branch:"
@@ -1071,11 +1065,11 @@ msgstr "&Usuń"
 
 #. Resource IDs: (1411)
 msgid "&Remove this file from index"
-msgstr ""
+msgstr "&Usuń plik z indeksu"
 
 #. Resource IDs: (1511)
 msgid "&Replace"
-msgstr ""
+msgstr "&Zastąp"
 
 #. Resource IDs: (15)
 msgid "&Repo-browser"
@@ -1103,7 +1097,7 @@ msgstr "&Przywróć wartości domyślne"
 
 #. Resource IDs: (66)
 msgid "&Resolved"
-msgstr ""
+msgstr "&Rozwiązany"
 
 #. Resource IDs: (69)
 msgid "&Restore"
@@ -1484,7 +1478,7 @@ msgstr "<b>Uwaga:</b> Ta gałąź nie została w pełni scalona w HEAD."
 #. Resource IDs: (68)
 msgid ""
 "<ct=0x0000FF>Current HEAD Detached</ct>, you are working on (no branch).\n"
-"Do you want to a create branch now?"
+"Do you want to create a branch now?"
 msgstr ""
 
 #. Resource IDs: (70)
@@ -1622,6 +1616,10 @@ msgstr "Z&astosuj"
 msgid "Abbreviate renamings"
 msgstr "Skracaj zmiany nazw"
 
+#. Resource IDs: (65535)
+msgid "Abbreviated size"
+msgstr ""
+
 #. Resource IDs: (2, 73, 1565)
 msgid "Abort"
 msgstr "Przerwij"
@@ -1653,6 +1651,10 @@ msgstr "O TortoiseGitBlame"
 #. Resource IDs: (136)
 msgid "About TortoiseGitMerge"
 msgstr "O programie TortoiseGitMerge"
+
+#. Resource IDs: (1)
+msgid "Accept certificate"
+msgstr ""
 
 #. Resource IDs: (3867)
 #, c-format
@@ -1805,6 +1807,14 @@ msgstr "Każdy rodzic"
 msgid "All local branches"
 msgstr ""
 
+#. Resource IDs: (96)
+msgid "All refs"
+msgstr ""
+
+#. Resource IDs: (96)
+msgid "All tags"
+msgstr ""
+
 #. Resource IDs: (9690)
 msgid "All tags only"
 msgstr ""
@@ -1853,6 +1863,10 @@ msgstr ""
 
 #. Resource IDs: (1485)
 msgid "Always push to the selected remote branch for this local branch"
+msgstr ""
+
+#. Resource IDs: (1805)
+msgid "Always show long format"
 msgstr ""
 
 #. Resource IDs: (197)
@@ -1914,6 +1928,10 @@ msgstr "Wystąpił nieoczekiwany błąd podczas dostępu do %1."
 #, c-format
 msgid "An unknown line type was found in line %d !"
 msgstr "W linii %d wystąpił nieznany typ linii!"
+
+#. Resource IDs: (96)
+msgid "Annotated tags"
+msgstr ""
 
 #. Resource IDs: (251)
 msgid "Append right block"
@@ -2161,12 +2179,20 @@ msgid "Back"
 msgstr "Wstecz"
 
 #. Resource IDs: (65535)
+msgid "Background"
+msgstr ""
+
+#. Resource IDs: (65535)
 msgid "Baltic"
 msgstr "Bałtycki"
 
 #. Resource IDs: (246)
 msgid "Bar Graph"
 msgstr "Wykres kolumnowy"
+
+#. Resource IDs: (1385)
+msgid "Base"
+msgstr ""
 
 #. Resource IDs: (1522)
 msgid "Base On"
@@ -2490,6 +2516,10 @@ msgstr "Kaska&dowo"
 msgid "Cascaded context menu"
 msgstr "Kaskadowe menu kontekstowe"
 
+#. Resource IDs: (117)
+msgid "Case-sensitive"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Cate&gories:"
 msgstr "Kate&gorie:"
@@ -2501,6 +2531,10 @@ msgstr "celtycki"
 #. Resource IDs: (65535)
 msgid "Central European"
 msgstr "środkowoeuropejski"
+
+#. Resource IDs: (65535)
+msgid "Certificate verification failed!"
+msgstr ""
 
 #. Resource IDs: (1697)
 msgid "Change log"
@@ -2902,6 +2936,11 @@ msgstr "Polecenia"
 msgid "Commit"
 msgstr "Zatwierdź zmiany"
 
+#. Resource IDs: (96)
+#, c-format
+msgid "Commit %s is NOT visible right now."
+msgstr ""
+
 #. Resource IDs: (94)
 #, c-format
 msgid "Commit %s not found in \"%s\". Update submodule now?"
@@ -2933,6 +2972,10 @@ msgstr "Nazwa zatwierdzenia"
 
 #. Resource IDs: (1750)
 msgid "Commit Ordering:"
+msgstr ""
+
+#. Resource IDs: (96)
+msgid "Commit super project"
 msgstr ""
 
 #. Resource IDs: (1110)
@@ -2975,6 +3018,10 @@ msgid ""
 "\n"
 "Are you sure that you want to continue the commit?"
 msgstr "Zatwierdzenie folderu, który nie jest poddany kontroli wersji nie doda do repozytorium rekursywnie jego elementów. Możesz tego dokonać używając pozycji 'Dodaj...' w menu kontekstowym.\n\nNa pewno chcesz kontynuować zatwierdzanie zmian?"
+
+#. Resource IDs: (65535)
+msgid "Common Name:"
+msgstr ""
 
 #. Resource IDs: (2054)
 msgid "Compare &HEAD revisions"
@@ -3696,6 +3743,18 @@ msgstr ""
 msgid "Delivery:"
 msgstr ""
 
+#. Resource IDs: (1646)
+msgid "Depth"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Describe"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Describe Strategy"
+msgstr ""
+
 #. Resource IDs: (1002)
 msgid "Description"
 msgstr "Opis"
@@ -3769,11 +3828,35 @@ msgid "Diff Viewer::Merge Tool"
 msgstr "Przeglądarka różnic::Narzędzie scalania"
 
 #. Resource IDs: (65535)
+msgid "Diff added lines"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Diff command"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Diff comment"
+msgstr ""
+
+#. Resource IDs: (65535)
 msgid "Diff file:"
 msgstr "Plik różnicowy:"
 
+#. Resource IDs: (65535)
+msgid "Diff header"
+msgstr ""
+
 #. Resource IDs: (15)
 msgid "Diff later"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Diff position"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Diff removed lines"
 msgstr ""
 
 #. Resource IDs: (15)
@@ -4132,7 +4215,7 @@ msgid "Edit gl&obal .gitconfig"
 msgstr "Edytuj gl&obalny .gitconfig"
 
 #. Resource IDs: (1718)
-msgid "Edit global &XDG config"
+msgid "Edit global &XDG git/config"
 msgstr ""
 
 #. Resource IDs: (71)
@@ -4361,6 +4444,11 @@ msgstr "Błąd"
 #. Resource IDs: (145)
 msgid "Error rebuilding Shell Icon Cache!"
 msgstr "Błąd przy przebudowywaniu pamięci podręcznej ikon systemowych!"
+
+#. Resource IDs: (96)
+#, c-format
+msgid "Error validating server certificate for \"%s\":"
+msgstr ""
 
 #. Resource IDs: (70)
 #, c-format
@@ -4769,6 +4857,10 @@ msgstr ""
 msgid "Find: First occurrence from the top found. End of document reached."
 msgstr ""
 
+#. Resource IDs: (65535)
+msgid "Fingerprints"
+msgstr ""
+
 #. Resource IDs: (67)
 msgid "Finish"
 msgstr "Zakończ"
@@ -4841,6 +4933,13 @@ msgid ""
 "This option corresponds to the --force-with-lease git option."
 msgstr ""
 
+#. Resource IDs: (1796)
+msgid ""
+"Force push to the selected remote reference and override it without any safety checks.\n"
+"This can cause the remote repository to lose unseen commits; use it with care.\n"
+"This option corresponds to the --force git option."
+msgstr ""
+
 #. Resource IDs: (603)
 msgid ""
 "Force the rebase even if the current branch is a descendant of the commit you are rebasing onto. \r\n"
@@ -4851,11 +4950,8 @@ msgstr ""
 msgid "Force: May discard"
 msgstr ""
 
-#. Resource IDs: (1796)
-msgid ""
-"Force push to the selected remote reference and override it without any safety checks.\n"
-"This can cause the remote repository to lose unseen commits; use it with care.\n"
-"This option corresponds to the --force git option."
+#. Resource IDs: (65535)
+msgid "Foreground"
 msgstr ""
 
 #. Resource IDs: (312)
@@ -5417,6 +5513,10 @@ msgstr ""
 msgid "ID:32870:V C +L"
 msgstr "ID:32870:V C +L"
 
+#. Accelerator Entry for Menu ID:32873; ''
+msgid "ID:32873:V C +E"
+msgstr ""
+
 #. Accelerator Entry for Menu ID:32881; ''
 msgid "ID:32881:V C +P"
 msgstr "ID:32881:V C +P"
@@ -5560,6 +5660,10 @@ msgstr ""
 #. Resource IDs: (65535)
 msgid "Icons/Design/Code:\t\tLuebbe Onken"
 msgstr "Ikony/Wygląd/Kod:\t\tLuebbe Onken"
+
+#. Resource IDs: (97)
+msgid "Identical"
+msgstr ""
 
 #. Resource IDs: (194)
 msgid ""
@@ -5828,6 +5932,10 @@ msgstr "Niewłaściwa waluta."
 msgid "Invalid revision number!"
 msgstr "Błędny numer wersji!"
 
+#. Resource IDs: (65535)
+msgid "Issuer:"
+msgstr ""
+
 #. Resource IDs: (145)
 msgid ""
 "It is not possible to rename a file by changing the case of its name alone.\n"
@@ -5954,6 +6062,10 @@ msgid ""
 "Leave as conflicted\n"
 "The conflict status of the file is kept"
 msgstr "Pozostaw w stanie konfliktu\nStatus konfliktu pliku zostanie zachowany"
+
+#. Resource IDs: (252)
+msgid "Leave only marked blocks"
+msgstr ""
 
 #. Resource IDs: (188)
 msgid "Left View: "
@@ -6188,6 +6300,10 @@ msgstr "Zaznacz jako rozwiązane.\nPlik zostanie oznaczony jako zmieniony."
 
 #. Resource IDs: (252)
 msgid "Mark this block"
+msgstr ""
+
+#. Resource IDs: (7)
+msgid "Marked Blocks"
 msgstr ""
 
 #. Resource IDs: (2051)
@@ -6472,7 +6588,7 @@ msgstr "Sieć"
 
 #. Resource IDs: (321)
 msgid "Network::Email"
-msgstr "Sieć:E-mail"
+msgstr "Sieć::E-mail"
 
 #. Resource IDs: (1002, 30721, 65535)
 msgid "New"
@@ -6722,13 +6838,13 @@ msgid ""
 "not recover the auto-saved versions, they will be deleted."
 msgstr "Uwaga, jeśli wybierzesz, żeby automatycznie zapisane dokumenty zostały odzyskane, będziesz musiał je jawnie zapisać, aby nadpisać oryginalne dokumenty.  Jeśli wybierzesz brak przywrócenia automatycznie zapisanych dokumentów, to zostaną one usunięte."
 
+#. Resource IDs: (65535)
+msgid "Note: These settings also apply to the Patch Viewer dialog."
+msgstr ""
+
 #. Resource IDs: (1481)
 msgid "Note: the folder contains unversioned items"
 msgstr "Uwaga: folder zawiera niewersjonowane elementy"
-
-#. Resource IDs: (65535)
-msgid "Note: the font settings also affect the TortoiseGitUDiff viewer"
-msgstr "Uwaga: ustawienia czcionek dotyczą również przeglądarki TortoiseGitUDiff"
 
 #. Resource IDs: (65535)
 msgid "Note: this affects all Tortoise clients, not just TortoiseGit!"
@@ -6772,6 +6888,10 @@ msgstr "Liczba użytkowników:"
 
 #. Resource IDs: (65535)
 msgid "Number of characters required for moved or copied line detection:"
+msgstr ""
+
+#. Resource IDs: (96)
+msgid "Number of characters to show in the abbreviated hash part"
 msgstr ""
 
 #. Resource IDs: (1160)
@@ -6931,6 +7051,10 @@ msgid ""
 "Open an existing document\n"
 "Open"
 msgstr "Otwórz istniejący dokument\nOtwórz"
+
+#. Resource IDs: (1797)
+msgid "Open certificate"
+msgstr ""
 
 #. Resource IDs: (3601)
 msgid ""
@@ -8003,6 +8127,10 @@ msgstr ""
 msgid "Resolve"
 msgstr "Rozwiąż konflikt"
 
+#. Resource IDs: (4595)
+msgid "Resolve Submodule Conflict"
+msgstr ""
+
 #. Resource IDs: (282)
 msgid "Resolve conflict using 'mine'"
 msgstr "Rozwiąż konflikt używając 'moje'"
@@ -8216,6 +8344,14 @@ msgstr "&Przełącz/pobierz..."
 msgid "SHA-1"
 msgstr "SHA-1"
 
+#. Resource IDs: (65535)
+msgid "SHA-1:"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "SHA-256:"
+msgstr ""
+
 #. Resource IDs: (1585)
 msgid "SMTP Server requires authentication"
 msgstr "Parametry uwierzytelnienia serwera SMTP"
@@ -8272,7 +8408,7 @@ msgstr ""
 msgid ""
 "Sample log message to test the bugtraq: regex strings.\n"
 "\n"
-"Testing mentions of issues inside a text: Mention single issue #55. Mention issues #77, #78, and #78. Mention more issues #123, #124 and #125 and some more separate ones: Issue #45, issue #46 and issue #47.\n"
+"Testing mentions of issues inside a text: Mention single issue #55. Mention issues #77, #78, and #79. Mention more issues #123, #124 and #125 and some more separate ones: Issue #45, issue #46 and issue #47.\n"
 "\n"
 "\n"
 "Update issue #101\n"
@@ -8341,6 +8477,24 @@ msgid ""
 "Save all\n"
 "Both Files are saved"
 msgstr "Zapisz wszystko\nZostaną zapisane oba pliki"
+
+#. Resource IDs: (7)
+msgid ""
+"Save and exclude\n"
+"Your changes are saved and the original content is used"
+msgstr ""
+
+#. Resource IDs: (7)
+msgid ""
+"Save and ignore marked blocks\n"
+"Only your manual edits are saved, marked blocks are left as they are"
+msgstr ""
+
+#. Resource IDs: (7)
+msgid ""
+"Save and include\n"
+"Your changes are saved and the marked blocks are included"
+msgstr ""
 
 #. Resource IDs: (156)
 msgid "Save as"
@@ -8590,6 +8744,10 @@ msgstr "Wybierz, który plik chcesz zapisać pod inną nazwą\nUwaga: Występuje
 msgid "Select/deselect &all"
 msgstr "Zaznacz/odznacz &wszystko"
 
+#. Resource IDs: (96)
+msgid "Selection History"
+msgstr ""
+
 #. Resource IDs: (1)
 msgid "Send"
 msgstr "Wyślij"
@@ -8783,6 +8941,14 @@ msgstr "Pokaż białe znaki"
 msgid "Show an overview of the whole graph"
 msgstr "Pokaż przegląd całego wykresu"
 
+#. Resource IDs: (1074)
+msgid "Show asterisk log prefix"
+msgstr ""
+
+#. Resource IDs: (97)
+msgid "Show asterisk log prefix in log dialog"
+msgstr ""
+
 #. Resource IDs: (32775)
 msgid "Show author"
 msgstr "Pokaż autora"
@@ -8806,6 +8972,14 @@ msgstr ""
 #. Resource IDs: (32784)
 msgid "Show date"
 msgstr "Pokaż datę"
+
+#. Resource IDs: (1804)
+msgid "Show describe in log"
+msgstr ""
+
+#. Resource IDs: (96)
+msgid "Show describe in log dialog"
+msgstr ""
 
 #. Resource IDs: (83)
 msgid "Show destination folder"
@@ -8875,6 +9049,10 @@ msgstr "Pokaż log tego folderu"
 #. Resource IDs: (1256)
 msgid "Show log..."
 msgstr "Pokaż log..."
+
+#. Resource IDs: (96)
+msgid "Show long format even if a tag is exactly on that commit"
+msgstr ""
 
 #. Resource IDs: (1382)
 msgid "Show modified files in working tree"
@@ -9084,6 +9262,10 @@ msgstr "Określa, jak wiele elementów chcesz pokazywać w oknie z ostatnimi opi
 #. Resource IDs: (16976, 16977, 16978, 16979, 16980, 16981)
 msgid "Spin1"
 msgstr "Spin1"
+
+#. Resource IDs: (1827)
+msgid "Split commit"
+msgstr ""
 
 #. Resource IDs: (1253)
 msgid "Split lines"
@@ -9390,10 +9572,6 @@ msgstr "Synchronizacja..."
 #. Resource IDs: (89)
 msgid "System"
 msgstr ""
-
-#. Resource IDs: (1556)
-msgid "System &sounds"
-msgstr "&Dźwięki systemowe"
 
 #. Resource IDs: (93)
 msgid "System in offline mode. Check Internet Explorer."
@@ -9775,6 +9953,12 @@ msgid ""
 "It's not possible to show the log messages between them!"
 msgstr "Dwa wybrane adresy URL nie zostały utworzone ze wspólnego pnia.\nNie jest możliwe pokazanie opisów zmian pomiędzy nimi!"
 
+#. Resource IDs: (96)
+msgid ""
+"The working tree is not clean and contains unstaged changes.\n"
+"Review and commit the changes?"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Their file:"
 msgstr "Ich plik:"
@@ -10074,6 +10258,10 @@ msgid ""
 "TortoiseGitMerge cannot process this patch file. The filename \"%s\" appears"
 " more than once."
 msgstr "TortoiseGitMerge nie może przetworzyć pliku poprawki. Nazwa pliku \"%s\" pojawia się więcej niż jeden raz."
+
+#. Resource IDs: (357)
+msgid "TortoiseGitUDiff"
+msgstr ""
 
 #. Resource IDs: (1739)
 msgid "Total changed lines including added/deleted files:"
@@ -10424,10 +10612,6 @@ msgstr "Użyj lewego bloku"
 msgid "Use left file"
 msgstr "Użyj pliku po lewej"
 
-#. Resource IDs: (252)
-msgid "Use left file except marked blocks"
-msgstr ""
-
 #. Resource IDs: (1762)
 msgid "Use local branch color for current branch"
 msgstr ""
@@ -10516,6 +10700,10 @@ msgid ""
 "Use the original path.\n"
 "Apply the patch to\n"
 "%s"
+msgstr ""
+
+#. Resource IDs: (1825, 1826)
+msgid "Use this"
 msgstr ""
 
 #. Resource IDs: (251)
@@ -10756,6 +10944,10 @@ msgid ""
 "\"origin\" if the remote name is empty, so you do not have to."
 msgstr ""
 
+#. Resource IDs: (96)
+msgid "Whether to reference only annotated tags, all tags or all refs"
+msgstr ""
+
 #. Resource IDs: (1409)
 msgid ""
 "While running daemon, all data of this repository is exposed without "
@@ -10906,6 +11098,10 @@ msgstr ""
 msgid ""
 "You have checked \"include untracked\".\n"
 "This includes a \"git clean -fd\" call, so ignored files/directories are removed w/o using recycle bin."
+msgstr ""
+
+#. Resource IDs: (7)
+msgid "You have marked changed blocks. How should those blocks be saved?"
 msgstr ""
 
 #. Resource IDs: (16)
@@ -11183,17 +11379,13 @@ msgstr "dzień"
 msgid "deleted"
 msgstr "usunięte"
 
-#. Resource IDs: (1646)
-msgid "depth "
-msgstr "głębokość"
-
 #. Resource IDs: (58116)
 msgid "dummy"
 msgstr "pusty"
 
 #. Resource IDs: (1580)
 msgid "eMail settings"
-msgstr ""
+msgstr "Ustawienia email"
 
 #. Resource IDs: (79)
 #, c-format
@@ -11336,7 +11528,7 @@ msgstr "kwartał roku"
 
 #. Resource IDs: (65535)
 msgid "renamed"
-msgstr ""
+msgstr "zmień nazwę"
 
 #. Resource IDs: (10)
 msgid "replaced"
@@ -11381,23 +11573,23 @@ msgstr "tydzień"
 
 #. Resource IDs: (89)
 msgid "wincred - all Windows users"
-msgstr ""
+msgstr "wincred - wszyszy użytkownicy Windows"
 
 #. Resource IDs: (88)
 msgid "wincred - current Windows user"
-msgstr ""
+msgstr "wincred - bieżący użytkownik Windows"
 
 #. Resource IDs: (88)
 msgid "wincred - this repository only"
-msgstr ""
+msgstr "wincred - wyłącznie bieżące repozytorium"
 
 #. Resource IDs: (88)
 msgid "winstore - current Windows user"
-msgstr ""
+msgstr "winstore - bieżący użytkownik Windows"
 
 #. Resource IDs: (88)
 msgid "winstore - this repository only"
-msgstr ""
+msgstr "winstore - wyłącznie bieżące repozytorium"
 
 #. Resource IDs: (245)
 msgid "year"

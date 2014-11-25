@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2014-08-03 21:42+0000\n"
+"PO-Revision-Date: 2014-11-13 16:50+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Slovak (http://www.transifex.com/projects/p/tortoisegit/language/sk/)\n"
 "MIME-Version: 1.0\n"
@@ -45,7 +45,7 @@ msgstr "počet samostatne zobrazených autorov:"
 #. Resource IDs: (357)
 #, c-format
 msgid "%.2f MiB transferred"
-msgstr ""
+msgstr "Prenesené dáta: %.2f MiB"
 
 #. Resource IDs: (3868)
 #, c-format
@@ -183,7 +183,7 @@ msgstr "%1\nTento súbor nemožno nájsť.\nSkontrolujte, či je zadaná správn
 
 #. Resource IDs: (91)
 #, c-format
-msgid "%HOME%/gitconfig or %XDGHOME%/gitconfig"
+msgid "%HOME%/.gitconfig or %XDGHOME%/git/config"
 msgstr ""
 
 #. Resource IDs: (357)
@@ -204,12 +204,12 @@ msgstr ""
 #. Resource IDs: (1256)
 #, c-format
 msgid "%d files changed"
-msgstr ""
+msgstr "%d zmenených súborov"
 
 #. Resource IDs: (65)
 #, c-format
 msgid "%d files removed."
-msgstr ""
+msgstr "%d odstránených súborov."
 
 #. Resource IDs: (69)
 #, c-format
@@ -335,7 +335,7 @@ msgstr "&Aktivovať"
 
 #. Resource IDs: (1382)
 msgid "&Add"
-msgstr "Prid&ať"
+msgstr "&Pridať"
 
 #. Resource IDs: (17075)
 msgid "&Add >>"
@@ -411,7 +411,7 @@ msgstr ""
 
 #. Resource IDs: (1015)
 msgid "&Backup original file"
-msgstr "&Archivuj pôvodný súbor"
+msgstr "&Zálohuj pôvodný súbor"
 
 #. Resource IDs: (13)
 msgid "&Blame"
@@ -483,7 +483,7 @@ msgstr "&Vybrať príkazy z:"
 
 #. Resource IDs: (8)
 msgid "&Clean up..."
-msgstr "&Vyčisť..."
+msgstr "&Vyčistiť..."
 
 #. Resource IDs: (57632)
 msgid "&Clear"
@@ -529,10 +529,6 @@ msgstr "&Porovnať revízie"
 msgid "&Compressed Graph"
 msgstr ""
 
-#. Resource IDs: (1239)
-msgid "&Configure"
-msgstr "&Nastavenia"
-
 #. Resource IDs: (501, 1367, 1471, 57634)
 msgid "&Copy"
 msgstr "&Kopírovať"
@@ -543,7 +539,7 @@ msgstr "&Kopírovať obrázok tlačidla"
 
 #. Resource IDs: (57634)
 msgid "&Copy\tCtrl+C"
-msgstr "&Kopírovať⇥Ctrl+C"
+msgstr "&Kopírovať\tCtrl+C"
 
 #. Resource IDs: (1662)
 msgid "&Custom"
@@ -563,7 +559,7 @@ msgstr "&Odstrániť (zachovať lokálne)"
 
 #. Resource IDs: (1507)
 msgid "&Delete Filter"
-msgstr "&Odstrániť filter"
+msgstr "&Zrušiť filter"
 
 #. Resource IDs: (70)
 msgid "&Delete remote && local"
@@ -611,7 +607,7 @@ msgstr "&Dole"
 
 #. Resource IDs: (78, 1710)
 msgid "&Download"
-msgstr "&Stiahnúť"
+msgstr "&Stiahnuť"
 
 #. Resource IDs: (65535)
 msgid "&Edit"
@@ -651,7 +647,7 @@ msgstr "&Povoliť Proxy Server"
 
 #. Resource IDs: (32976)
 msgid "&Enable edit"
-msgstr "Povoliť &úpravy"
+msgstr "&Povoliť úpravy"
 
 #. Resource IDs: (323)
 msgid "&Export selection to..."
@@ -667,11 +663,11 @@ msgstr "&Súbor"
 
 #. Resource IDs: (1, 57636)
 msgid "&Find"
-msgstr "&Nájsť"
+msgstr "&Hľadať"
 
 #. Resource IDs: (57636)
 msgid "&Find\tCtrl+F"
-msgstr "&Hľadať⇥Ctrl+F"
+msgstr "&Hľadať\tCtrl+F"
 
 #. Resource IDs: (32778)
 msgid "&Fit images in window"
@@ -701,17 +697,13 @@ msgstr "&Písmo:"
 msgid "&Force"
 msgstr ""
 
-#. Resource IDs: (1480)
-msgid "&Force Overwrite Existing Branch (May discard changes)"
-msgstr ""
-
 #. Resource IDs: (1607)
 msgid "&Force Rebase"
 msgstr ""
 
 #. Resource IDs: (1608)
 msgid "&From:"
-msgstr ""
+msgstr "&Od:"
 
 #. Resource IDs: (2153)
 msgid "&Git Style Commit (--rmdir)"
@@ -719,7 +711,7 @@ msgstr ""
 
 #. Resource IDs: (220)
 msgid "&Go to\tCtrl+G"
-msgstr "&Ísť na⇥Ctrl+G"
+msgstr "&Ísť na\tCtrl+G"
 
 #. Resource IDs: (91)
 msgid "&Gray Unrelated Changed Paths"
@@ -804,7 +796,7 @@ msgstr ""
 
 #. Resource IDs: (92)
 msgid "&Labels"
-msgstr ""
+msgstr "&Značky"
 
 #. Resource IDs: (65535)
 msgid "&Language:"
@@ -828,7 +820,7 @@ msgstr "&Limit:"
 
 #. Resource IDs: (1078)
 msgid "&Line number"
-msgstr "Číslo &riadka"
+msgstr "&Číslo riadka"
 
 #. Resource IDs: (88)
 #, c-format
@@ -845,11 +837,11 @@ msgstr "&Zoznam"
 
 #. Resource IDs: (1616)
 msgid "&Local Branch:"
-msgstr ""
+msgstr "&Lokálna vetva:"
 
 #. Resource IDs: (92)
 msgid "&Local branches"
-msgstr ""
+msgstr "&Lokálne vetvy"
 
 #. Resource IDs: (1504)
 msgid "&Local:"
@@ -901,11 +893,11 @@ msgstr "&Presunuté bloky"
 
 #. Resource IDs: (1515)
 msgid "&Name"
-msgstr ""
+msgstr "&Meno"
 
 #. Resource IDs: (65535)
 msgid "&Name:"
-msgstr ""
+msgstr "&Meno:"
 
 #. Resource IDs: (65535)
 msgid "&Navigate"
@@ -961,7 +953,7 @@ msgstr ""
 
 #. Resource IDs: (57601)
 msgid "&Open...\tCtrl+O"
-msgstr "&Otvoriť...⇥Ctrl+O"
+msgstr "&Otvoriť...\tCtrl+O"
 
 #. Resource IDs: (1382)
 msgid "&Options"
@@ -1045,11 +1037,11 @@ msgstr ""
 
 #. Resource IDs: (1617)
 msgid "&Remote Branch:"
-msgstr ""
+msgstr "&Vzdialená vetva:"
 
 #. Resource IDs: (92)
 msgid "&Remote branches"
-msgstr ""
+msgstr "&Vzdialené vetvy:"
 
 #. Resource IDs: (1490, 1503)
 msgid "&Remote:"
@@ -1065,7 +1057,7 @@ msgstr ""
 
 #. Resource IDs: (1511)
 msgid "&Replace"
-msgstr ""
+msgstr "&Nahradiť"
 
 #. Resource IDs: (15)
 msgid "&Repo-browser"
@@ -1093,11 +1085,11 @@ msgstr "&Vrátiť štandardné"
 
 #. Resource IDs: (66)
 msgid "&Resolved"
-msgstr "&Vyriešiť"
+msgstr "&Vyriešené"
 
 #. Resource IDs: (69)
 msgid "&Restore"
-msgstr ""
+msgstr "&Obnoviť"
 
 #. Resource IDs: (68)
 msgid "&Restore old state"
@@ -1185,7 +1177,7 @@ msgstr "&Začať skupinu"
 
 #. Resource IDs: (86)
 msgid "&Stash"
-msgstr ""
+msgstr "&Odložiť"
 
 #. Resource IDs: (59393)
 msgid "&Status Bar"
@@ -1342,7 +1334,7 @@ msgstr ""
 #. Resource IDs: (85)
 #, c-format
 msgid "(from %s)"
-msgstr ""
+msgstr "(od %s)"
 
 #. Resource IDs: (213)
 msgid "(no changelist)"
@@ -1398,7 +1390,7 @@ msgstr "....."
 
 #. Resource IDs: (91)
 msgid ".git/config in the repository root"
-msgstr ""
+msgstr ".git/config v koreňovom adresári repozitára"
 
 #. Resource IDs: (1691)
 msgid ".git/info/exclude"
@@ -1410,11 +1402,11 @@ msgstr ""
 
 #. Resource IDs: (1689)
 msgid ".gitignore in the repository root"
-msgstr ""
+msgstr ".gitignore v koreňovom adresári repozitára"
 
 #. Resource IDs: (91)
 msgid ".tgitconfig in the repository root"
-msgstr ""
+msgstr ".tgitconfig v koreňovom adresári repozitára"
 
 #. Resource IDs: (16506)
 msgid "<.....>"
@@ -1426,7 +1418,7 @@ msgstr "<<"
 
 #. Resource IDs: (76)
 msgid "<All Branches>"
-msgstr ""
+msgstr "<Všetky vetvy>"
 
 #. Resource IDs: (65)
 msgid "<Auto Generated by Git>"
@@ -1434,11 +1426,11 @@ msgstr ""
 
 #. Resource IDs: (93)
 msgid "<Local Branches>"
-msgstr ""
+msgstr "<Lokálne vetvy>"
 
 #. Resource IDs: (76)
 msgid "<No branch>"
-msgstr ""
+msgstr "<Žiadna vetva>"
 
 #. Resource IDs: (1069)
 msgid "<Separator>"
@@ -1474,7 +1466,7 @@ msgstr ""
 #. Resource IDs: (68)
 msgid ""
 "<ct=0x0000FF>Current HEAD Detached</ct>, you are working on (no branch).\n"
-"Do you want to a create branch now?"
+"Do you want to create a branch now?"
 msgstr ""
 
 #. Resource IDs: (70)
@@ -1612,6 +1604,10 @@ msgstr ""
 msgid "Abbreviate renamings"
 msgstr ""
 
+#. Resource IDs: (65535)
+msgid "Abbreviated size"
+msgstr ""
+
 #. Resource IDs: (2, 73, 1565)
 msgid "Abort"
 msgstr "Prerušiť"
@@ -1643,6 +1639,10 @@ msgstr "O TortoiseGitBlame"
 #. Resource IDs: (136)
 msgid "About TortoiseGitMerge"
 msgstr ""
+
+#. Resource IDs: (1)
+msgid "Accept certificate"
+msgstr "Akceptovať certifikát"
 
 #. Resource IDs: (3867)
 #, c-format
@@ -1795,6 +1795,14 @@ msgstr ""
 msgid "All local branches"
 msgstr ""
 
+#. Resource IDs: (96)
+msgid "All refs"
+msgstr ""
+
+#. Resource IDs: (96)
+msgid "All tags"
+msgstr ""
+
 #. Resource IDs: (9690)
 msgid "All tags only"
 msgstr ""
@@ -1843,6 +1851,10 @@ msgstr ""
 
 #. Resource IDs: (1485)
 msgid "Always push to the selected remote branch for this local branch"
+msgstr ""
+
+#. Resource IDs: (1805)
+msgid "Always show long format"
 msgstr ""
 
 #. Resource IDs: (197)
@@ -1904,6 +1916,10 @@ msgstr "Počas prístupu k %1 nastala neznáma chyba."
 #, c-format
 msgid "An unknown line type was found in line %d !"
 msgstr "Bol nájdený neznámy typ riadku %d !"
+
+#. Resource IDs: (96)
+msgid "Annotated tags"
+msgstr ""
 
 #. Resource IDs: (251)
 msgid "Append right block"
@@ -2151,12 +2167,20 @@ msgid "Back"
 msgstr "Späť"
 
 #. Resource IDs: (65535)
+msgid "Background"
+msgstr ""
+
+#. Resource IDs: (65535)
 msgid "Baltic"
 msgstr "Baltické"
 
 #. Resource IDs: (246)
 msgid "Bar Graph"
 msgstr "Stĺpcový graf"
+
+#. Resource IDs: (1385)
+msgid "Base"
+msgstr ""
 
 #. Resource IDs: (1522)
 msgid "Base On"
@@ -2480,6 +2504,10 @@ msgstr "Kaská&da"
 msgid "Cascaded context menu"
 msgstr "Kaskádová kontextová ponuka"
 
+#. Resource IDs: (117)
+msgid "Case-sensitive"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Cate&gories:"
 msgstr "Kate&górie:"
@@ -2491,6 +2519,10 @@ msgstr "Keltské"
 #. Resource IDs: (65535)
 msgid "Central European"
 msgstr "Stredoeurópske"
+
+#. Resource IDs: (65535)
+msgid "Certificate verification failed!"
+msgstr ""
 
 #. Resource IDs: (1697)
 msgid "Change log"
@@ -2892,6 +2924,11 @@ msgstr "Príkazy"
 msgid "Commit"
 msgstr "Odovzdať"
 
+#. Resource IDs: (96)
+#, c-format
+msgid "Commit %s is NOT visible right now."
+msgstr ""
+
 #. Resource IDs: (94)
 #, c-format
 msgid "Commit %s not found in \"%s\". Update submodule now?"
@@ -2923,6 +2960,10 @@ msgstr ""
 
 #. Resource IDs: (1750)
 msgid "Commit Ordering:"
+msgstr ""
+
+#. Resource IDs: (96)
+msgid "Commit super project"
 msgstr ""
 
 #. Resource IDs: (1110)
@@ -2964,6 +3005,10 @@ msgid ""
 "You might want to add these folders recursively by using the 'Add...' context menu item.\n"
 "\n"
 "Are you sure that you want to continue the commit?"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Common Name:"
 msgstr ""
 
 #. Resource IDs: (2054)
@@ -3686,6 +3731,18 @@ msgstr ""
 msgid "Delivery:"
 msgstr ""
 
+#. Resource IDs: (1646)
+msgid "Depth"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Describe"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Describe Strategy"
+msgstr ""
+
 #. Resource IDs: (1002)
 msgid "Description"
 msgstr "Popis"
@@ -3759,12 +3816,36 @@ msgid "Diff Viewer::Merge Tool"
 msgstr "Prezerač rozdielov::Zlučovač"
 
 #. Resource IDs: (65535)
+msgid "Diff added lines"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Diff command"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Diff comment"
+msgstr ""
+
+#. Resource IDs: (65535)
 msgid "Diff file:"
 msgstr "Súbor porovnania:"
+
+#. Resource IDs: (65535)
+msgid "Diff header"
+msgstr ""
 
 #. Resource IDs: (15)
 msgid "Diff later"
 msgstr "Porovnať neskôr"
+
+#. Resource IDs: (65535)
+msgid "Diff position"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Diff removed lines"
+msgstr ""
 
 #. Resource IDs: (15)
 #, c-format
@@ -4122,7 +4203,7 @@ msgid "Edit gl&obal .gitconfig"
 msgstr ""
 
 #. Resource IDs: (1718)
-msgid "Edit global &XDG config"
+msgid "Edit global &XDG git/config"
 msgstr ""
 
 #. Resource IDs: (71)
@@ -4351,6 +4432,11 @@ msgstr "Chyba"
 #. Resource IDs: (145)
 msgid "Error rebuilding Shell Icon Cache!"
 msgstr "Prebuduj zásobu ikoniek pre šel."
+
+#. Resource IDs: (96)
+#, c-format
+msgid "Error validating server certificate for \"%s\":"
+msgstr ""
 
 #. Resource IDs: (70)
 #, c-format
@@ -4759,6 +4845,10 @@ msgstr ""
 msgid "Find: First occurrence from the top found. End of document reached."
 msgstr ""
 
+#. Resource IDs: (65535)
+msgid "Fingerprints"
+msgstr ""
+
 #. Resource IDs: (67)
 msgid "Finish"
 msgstr ""
@@ -4831,6 +4921,13 @@ msgid ""
 "This option corresponds to the --force-with-lease git option."
 msgstr ""
 
+#. Resource IDs: (1796)
+msgid ""
+"Force push to the selected remote reference and override it without any safety checks.\n"
+"This can cause the remote repository to lose unseen commits; use it with care.\n"
+"This option corresponds to the --force git option."
+msgstr ""
+
 #. Resource IDs: (603)
 msgid ""
 "Force the rebase even if the current branch is a descendant of the commit you are rebasing onto. \r\n"
@@ -4841,11 +4938,8 @@ msgstr ""
 msgid "Force: May discard"
 msgstr ""
 
-#. Resource IDs: (1796)
-msgid ""
-"Force push to the selected remote reference and override it without any safety checks.\n"
-"This can cause the remote repository to lose unseen commits; use it with care.\n"
-"This option corresponds to the --force git option."
+#. Resource IDs: (65535)
+msgid "Foreground"
 msgstr ""
 
 #. Resource IDs: (312)
@@ -5407,6 +5501,10 @@ msgstr "ID:32857:VA  +F"
 msgid "ID:32870:V C +L"
 msgstr "ID:32870:V C +L"
 
+#. Accelerator Entry for Menu ID:32873; ''
+msgid "ID:32873:V C +E"
+msgstr ""
+
 #. Accelerator Entry for Menu ID:32881; ''
 msgid "ID:32881:V C +P"
 msgstr "ID:32881:V C +P"
@@ -5550,6 +5648,10 @@ msgstr ""
 #. Resource IDs: (65535)
 msgid "Icons/Design/Code:\t\tLuebbe Onken"
 msgstr "Ikony/Design/Kód:\t\tLuebbe ONKEN"
+
+#. Resource IDs: (97)
+msgid "Identical"
+msgstr ""
 
 #. Resource IDs: (194)
 msgid ""
@@ -5818,6 +5920,10 @@ msgstr "Chybná mena."
 msgid "Invalid revision number!"
 msgstr ""
 
+#. Resource IDs: (65535)
+msgid "Issuer:"
+msgstr ""
+
 #. Resource IDs: (145)
 msgid ""
 "It is not possible to rename a file by changing the case of its name alone.\n"
@@ -5944,6 +6050,10 @@ msgid ""
 "Leave as conflicted\n"
 "The conflict status of the file is kept"
 msgstr "Ponechať v konflikte\nStav konfliktu bude ponechaný"
+
+#. Resource IDs: (252)
+msgid "Leave only marked blocks"
+msgstr ""
 
 #. Resource IDs: (188)
 msgid "Left View: "
@@ -6178,6 +6288,10 @@ msgstr "Označiť za vyriešný\nZmení stav súboru na vyriešený"
 
 #. Resource IDs: (252)
 msgid "Mark this block"
+msgstr ""
+
+#. Resource IDs: (7)
+msgid "Marked Blocks"
 msgstr ""
 
 #. Resource IDs: (2051)
@@ -6712,13 +6826,13 @@ msgid ""
 "not recover the auto-saved versions, they will be deleted."
 msgstr "Poznámka: pokiaľ vyberiete obnoviť automaticky uložené súbory, musíte ich uložiť, aby prepísali pôvodné dokumenty.  Ak vyberiete neobnovovanie automaticky uložených verzii, budú vymazané."
 
+#. Resource IDs: (65535)
+msgid "Note: These settings also apply to the Patch Viewer dialog."
+msgstr ""
+
 #. Resource IDs: (1481)
 msgid "Note: the folder contains unversioned items"
 msgstr "Poznámka: adresár obsahuje neverziované objekty"
-
-#. Resource IDs: (65535)
-msgid "Note: the font settings also affect the TortoiseGitUDiff viewer"
-msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Note: this affects all Tortoise clients, not just TortoiseGit!"
@@ -6762,6 +6876,10 @@ msgstr "Počet autorov:"
 
 #. Resource IDs: (65535)
 msgid "Number of characters required for moved or copied line detection:"
+msgstr ""
+
+#. Resource IDs: (96)
+msgid "Number of characters to show in the abbreviated hash part"
 msgstr ""
 
 #. Resource IDs: (1160)
@@ -6921,6 +7039,10 @@ msgid ""
 "Open an existing document\n"
 "Open"
 msgstr "Otvoriť existujúci dokument\nOtvoriť"
+
+#. Resource IDs: (1797)
+msgid "Open certificate"
+msgstr ""
 
 #. Resource IDs: (3601)
 msgid ""
@@ -7993,6 +8115,10 @@ msgstr ""
 msgid "Resolve"
 msgstr "Vyriešiť"
 
+#. Resource IDs: (4595)
+msgid "Resolve Submodule Conflict"
+msgstr ""
+
 #. Resource IDs: (282)
 msgid "Resolve conflict using 'mine'"
 msgstr "Vyriešiť konflikt použitím \"Moje\""
@@ -8206,6 +8332,14 @@ msgstr ""
 msgid "SHA-1"
 msgstr "SHA-1"
 
+#. Resource IDs: (65535)
+msgid "SHA-1:"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "SHA-256:"
+msgstr ""
+
 #. Resource IDs: (1585)
 msgid "SMTP Server requires authentication"
 msgstr ""
@@ -8262,7 +8396,7 @@ msgstr ""
 msgid ""
 "Sample log message to test the bugtraq: regex strings.\n"
 "\n"
-"Testing mentions of issues inside a text: Mention single issue #55. Mention issues #77, #78, and #78. Mention more issues #123, #124 and #125 and some more separate ones: Issue #45, issue #46 and issue #47.\n"
+"Testing mentions of issues inside a text: Mention single issue #55. Mention issues #77, #78, and #79. Mention more issues #123, #124 and #125 and some more separate ones: Issue #45, issue #46 and issue #47.\n"
 "\n"
 "\n"
 "Update issue #101\n"
@@ -8331,6 +8465,24 @@ msgid ""
 "Save all\n"
 "Both Files are saved"
 msgstr "Uložiť všetko\nBudú uložené oba súbory"
+
+#. Resource IDs: (7)
+msgid ""
+"Save and exclude\n"
+"Your changes are saved and the original content is used"
+msgstr ""
+
+#. Resource IDs: (7)
+msgid ""
+"Save and ignore marked blocks\n"
+"Only your manual edits are saved, marked blocks are left as they are"
+msgstr ""
+
+#. Resource IDs: (7)
+msgid ""
+"Save and include\n"
+"Your changes are saved and the marked blocks are included"
+msgstr ""
 
 #. Resource IDs: (156)
 msgid "Save as"
@@ -8580,6 +8732,10 @@ msgstr "Vyberte ktorý súbor chcete uložiť ako\nPoznámka: Niektoré konfklit
 msgid "Select/deselect &all"
 msgstr ""
 
+#. Resource IDs: (96)
+msgid "Selection History"
+msgstr ""
+
 #. Resource IDs: (1)
 msgid "Send"
 msgstr "Odoslať"
@@ -8773,6 +8929,14 @@ msgstr "Zobraziť biele znaky"
 msgid "Show an overview of the whole graph"
 msgstr "Zobrazí náhľad na celý graf"
 
+#. Resource IDs: (1074)
+msgid "Show asterisk log prefix"
+msgstr ""
+
+#. Resource IDs: (97)
+msgid "Show asterisk log prefix in log dialog"
+msgstr ""
+
 #. Resource IDs: (32775)
 msgid "Show author"
 msgstr "Zobraziť autora"
@@ -8796,6 +8960,14 @@ msgstr ""
 #. Resource IDs: (32784)
 msgid "Show date"
 msgstr "Zobraziť dátum"
+
+#. Resource IDs: (1804)
+msgid "Show describe in log"
+msgstr ""
+
+#. Resource IDs: (96)
+msgid "Show describe in log dialog"
+msgstr ""
 
 #. Resource IDs: (83)
 msgid "Show destination folder"
@@ -8864,6 +9036,10 @@ msgstr ""
 
 #. Resource IDs: (1256)
 msgid "Show log..."
+msgstr ""
+
+#. Resource IDs: (96)
+msgid "Show long format even if a tag is exactly on that commit"
 msgstr ""
 
 #. Resource IDs: (1382)
@@ -9075,6 +9251,10 @@ msgstr "Určuje koľko záznamov sa ma pamätať v histórií správ denníka."
 msgid "Spin1"
 msgstr "Spin1"
 
+#. Resource IDs: (1827)
+msgid "Split commit"
+msgstr ""
+
 #. Resource IDs: (1253)
 msgid "Split lines"
 msgstr "Rozdeliť riadky"
@@ -9131,7 +9311,7 @@ msgstr ""
 
 #. Resource IDs: (1384, 4575)
 msgid "Stash"
-msgstr ""
+msgstr "Odložené"
 
 #. Resource IDs: (1673)
 msgid "Stash &Message"
@@ -9143,15 +9323,15 @@ msgstr ""
 
 #. Resource IDs: (20)
 msgid "Stash List"
-msgstr ""
+msgstr "Zoznam odložených"
 
 #. Resource IDs: (22)
 msgid "Stash Pop"
-msgstr ""
+msgstr "Vybrať posledné z odložených"
 
 #. Resource IDs: (20)
 msgid "Stash Save"
-msgstr ""
+msgstr "Uložiť odložené"
 
 #. Resource IDs: (80)
 msgid "Stash operation running..."
@@ -9228,43 +9408,43 @@ msgstr "Predmet:"
 
 #. Resource IDs: (1639)
 msgid "Submodule"
-msgstr ""
+msgstr "Podmodul"
 
 #. Resource IDs: (11)
 msgid "Submodule &Update..."
-msgstr ""
+msgstr "Podmodul &Aktualizovať..."
 
 #. Resource IDs: (1589)
 msgid "Submodule Add"
-msgstr ""
+msgstr "Pridať podmodul"
 
 #. Resource IDs: (20)
 msgid "Submodule Add..."
-msgstr ""
+msgstr "Pridať podmodul..."
 
 #. Resource IDs: (4576)
 msgid "Submodule Diff"
-msgstr ""
+msgstr "Rozdiel podmodulu"
 
 #. Resource IDs: (1585)
 msgid "Submodule Info"
-msgstr ""
+msgstr "Informácie o podmodule"
 
 #. Resource IDs: (76)
 msgid "Submodule Init"
-msgstr ""
+msgstr "Inicializácia podmodulu"
 
 #. Resource IDs: (20, 77)
 msgid "Submodule Sync"
-msgstr ""
+msgstr "Synchronizácia podmodulu"
 
 #. Resource IDs: (76)
 msgid "Submodule Update"
-msgstr ""
+msgstr "Aktualizácia podmodulu"
 
 #. Resource IDs: (1624)
 msgid "Submodule Update Options"
-msgstr ""
+msgstr "Nastavenia aktualizácie podmodulu"
 
 #. Resource IDs: (90)
 #, c-format
@@ -9275,11 +9455,11 @@ msgstr ""
 
 #. Resource IDs: (1708)
 msgid "Submodules"
-msgstr ""
+msgstr "Podmoduly"
 
 #. Resource IDs: (65)
 msgid "Success"
-msgstr ""
+msgstr "Úspešné"
 
 #. Resource IDs: (65535)
 msgid ""
@@ -9299,7 +9479,7 @@ msgstr ""
 
 #. Resource IDs: (1522)
 msgid "Switch To"
-msgstr ""
+msgstr "Prepnúť do"
 
 #. Resource IDs: (3606)
 msgid ""
@@ -9375,15 +9555,11 @@ msgstr ""
 
 #. Resource IDs: (22)
 msgid "Sync..."
-msgstr ""
+msgstr "Synchronizácia..."
 
 #. Resource IDs: (89)
 msgid "System"
 msgstr ""
-
-#. Resource IDs: (1556)
-msgid "System &sounds"
-msgstr "Systémové &zvuky"
 
 #. Resource IDs: (93)
 msgid "System in offline mode. Check Internet Explorer."
@@ -9425,7 +9601,7 @@ msgstr ""
 
 #. Resource IDs: (82)
 msgid "Tag Info"
-msgstr ""
+msgstr "Informácie o značke"
 
 #. Resource IDs: (79)
 #, c-format
@@ -9765,6 +9941,12 @@ msgid ""
 "It's not possible to show the log messages between them!"
 msgstr "Vybrané URL adresy neboli vytvorené z jedného kmeňového adresára.\nNie je možné zobraziť správy denníka medzi nimi!"
 
+#. Resource IDs: (96)
+msgid ""
+"The working tree is not clean and contains unstaged changes.\n"
+"Review and commit the changes?"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Their file:"
 msgstr "Ich súbor:"
@@ -9891,7 +10073,7 @@ msgstr "Usporiadať &vodorovne"
 
 #. Resource IDs: (1676)
 msgid "To"
-msgstr ""
+msgstr "Do"
 
 #. Resource IDs: (1422)
 msgid ""
@@ -9920,7 +10102,7 @@ msgstr "Prepnúť medzi jedno/dvoj stranovým zobrazením\nJedna/dvoj stranové 
 
 #. Resource IDs: (93)
 msgid "Toggle filters"
-msgstr ""
+msgstr "Ponechať filtre"
 
 #. Resource IDs: (65535)
 msgid "Toolbar"
@@ -9989,7 +10171,7 @@ msgstr ""
 
 #. Resource IDs: (1096)
 msgid "TortoiseGit&UDiff"
-msgstr ""
+msgstr "TortoiseGit&UDiff"
 
 #. Resource IDs: (1, 244, 1000, 3585)
 msgid "TortoiseGitBlame"
@@ -10024,7 +10206,7 @@ msgstr "TortoiseGitIDiff"
 
 #. Resource IDs: (65535)
 msgid "TortoiseGitIDiff - An image diff tool, part of TortoiseGit"
-msgstr ""
+msgstr "TortoiseGitIDiff - Nástroj pre rozdiely obrázkov, časť programu TortoiseGit"
 
 #. Resource IDs: (7)
 msgid ""
@@ -10065,13 +10247,17 @@ msgid ""
 " more than once."
 msgstr ""
 
+#. Resource IDs: (357)
+msgid "TortoiseGitUDiff"
+msgstr "TortoiseGitUDiff"
+
 #. Resource IDs: (1739)
 msgid "Total changed lines including added/deleted files:"
-msgstr ""
+msgstr "Celkový počet zmenených riadky vrátane pridaných/zmazaných súborov:"
 
 #. Resource IDs: (1737)
 msgid "Total changed lines not including added/deleted files:"
-msgstr ""
+msgstr "Celkový počet zmenených riadky okrem pridaných/zmazaných súborov:"
 
 #. Resource IDs: (1162)
 msgid "Total commits analyzed:"
@@ -10253,7 +10439,7 @@ msgstr "Unifikovaný \"&diff\" HEAD (hlavnej) revízie"
 
 #. Resource IDs: (1258)
 msgid "Unknown"
-msgstr ""
+msgstr "Neznáme"
 
 #. Resource IDs: (20)
 msgid "Unknown depth"
@@ -10414,10 +10600,6 @@ msgstr "Použiť ľavý blok"
 msgid "Use left file"
 msgstr "Použiť"
 
-#. Resource IDs: (252)
-msgid "Use left file except marked blocks"
-msgstr ""
-
 #. Resource IDs: (1762)
 msgid "Use local branch color for current branch"
 msgstr ""
@@ -10507,6 +10689,10 @@ msgid ""
 "Apply the patch to\n"
 "%s"
 msgstr "Použiť pôvodnú cestu.\nPoužiť záplatu na\n%s"
+
+#. Resource IDs: (1825, 1826)
+msgid "Use this"
+msgstr ""
 
 #. Resource IDs: (251)
 msgid "Use this &whole file"
@@ -10746,6 +10932,10 @@ msgid ""
 "\"origin\" if the remote name is empty, so you do not have to."
 msgstr ""
 
+#. Resource IDs: (96)
+msgid "Whether to reference only annotated tags, all tags or all refs"
+msgstr ""
+
 #. Resource IDs: (1409)
 msgid ""
 "While running daemon, all data of this repository is exposed without "
@@ -10896,6 +11086,10 @@ msgstr ""
 msgid ""
 "You have checked \"include untracked\".\n"
 "This includes a \"git clean -fd\" call, so ignored files/directories are removed w/o using recycle bin."
+msgstr ""
+
+#. Resource IDs: (7)
+msgid "You have marked changed blocks. How should those blocks be saved?"
 msgstr ""
 
 #. Resource IDs: (16)
@@ -11172,10 +11366,6 @@ msgstr "dní"
 #. Resource IDs: (10)
 msgid "deleted"
 msgstr "vymazané"
-
-#. Resource IDs: (1646)
-msgid "depth "
-msgstr "hĺbka"
 
 #. Resource IDs: (58116)
 msgid "dummy"

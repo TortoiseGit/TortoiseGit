@@ -21,8 +21,8 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2014-08-10 20:41+0000\n"
-"Last-Translator: Johan Jacobsson <johan.jacobsson@telia.com>\n"
+"PO-Revision-Date: 2014-11-13 16:50+0000\n"
+"Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Swedish (http://www.transifex.com/projects/p/tortoisegit/language/sv/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -193,8 +193,8 @@ msgstr "%1\nHittar inte den här filen.\nKontrollera att sökvägen och filnamne
 
 #. Resource IDs: (91)
 #, c-format
-msgid "%HOME%/gitconfig or %XDGHOME%/gitconfig"
-msgstr "%HOME%/gitconfig eller %XDGHOME%/gitconfig"
+msgid "%HOME%/.gitconfig or %XDGHOME%/git/config"
+msgstr "%HOME%/.gitconfig eller %XDGHOME%/git/config"
 
 #. Resource IDs: (357)
 #, c-format
@@ -539,10 +539,6 @@ msgstr "&Jämför revisioner"
 msgid "&Compressed Graph"
 msgstr "&Komprimerat diagram"
 
-#. Resource IDs: (1239)
-msgid "&Configure"
-msgstr "&Konfigurera"
-
 #. Resource IDs: (501, 1367, 1471, 57634)
 msgid "&Copy"
 msgstr "K&opiera"
@@ -710,10 +706,6 @@ msgstr "&Font:"
 #. Resource IDs: (1521)
 msgid "&Force"
 msgstr "&Tvinga"
-
-#. Resource IDs: (1480)
-msgid "&Force Overwrite Existing Branch (May discard changes)"
-msgstr ""
 
 #. Resource IDs: (1607)
 msgid "&Force Rebase"
@@ -1484,7 +1476,7 @@ msgstr "<b>Varning:</b> Denna gren är inte helt förenad med HEAD."
 #. Resource IDs: (68)
 msgid ""
 "<ct=0x0000FF>Current HEAD Detached</ct>, you are working on (no branch).\n"
-"Do you want to a create branch now?"
+"Do you want to create a branch now?"
 msgstr "<ct=0x0000FF>Nuvarande HEAD är avskuret</ct>, du jobbar nu i (ingen gren).\nVill du skapa en gren nu?"
 
 #. Resource IDs: (70)
@@ -1622,6 +1614,10 @@ msgstr "&Verkställ"
 msgid "Abbreviate renamings"
 msgstr "Förkorta namnändringar"
 
+#. Resource IDs: (65535)
+msgid "Abbreviated size"
+msgstr "Förkortad storlek"
+
 #. Resource IDs: (2, 73, 1565)
 msgid "Abort"
 msgstr "Avbryt"
@@ -1653,6 +1649,10 @@ msgstr "Om TortoiseGitBlame"
 #. Resource IDs: (136)
 msgid "About TortoiseGitMerge"
 msgstr "Om TortoiseGitMerge"
+
+#. Resource IDs: (1)
+msgid "Accept certificate"
+msgstr "Acceptera certifikat"
 
 #. Resource IDs: (3867)
 #, c-format
@@ -1805,6 +1805,14 @@ msgstr "Alla föräldrar"
 msgid "All local branches"
 msgstr "Alla lokala Grenar"
 
+#. Resource IDs: (96)
+msgid "All refs"
+msgstr "Alla refs"
+
+#. Resource IDs: (96)
+msgid "All tags"
+msgstr "Alla märken"
+
 #. Resource IDs: (9690)
 msgid "All tags only"
 msgstr "Enbart alla märken"
@@ -1855,6 +1863,10 @@ msgstr "Pusha alltid till det valda fjärrarkivet för denna lokala gren"
 msgid "Always push to the selected remote branch for this local branch"
 msgstr "Pusha alltid till den valda fjärrgrenen för denna lokala gren"
 
+#. Resource IDs: (1805)
+msgid "Always show long format"
+msgstr "Visa alltid i långt format"
+
 #. Resource IDs: (197)
 msgid "Always use the system locale settings to show times and dates"
 msgstr "Använd alltid datorns inställning för visning av datum och tid"
@@ -1894,7 +1906,7 @@ msgid ""
 "%theirs: the file as it is in the repository\r\n"
 "%mine: your own file, with your changes\r\n"
 "%base: the original file without your changes"
-msgstr ""
+msgstr "Ett eget sammanfogningsprogram\natt använda för att lösa konfilkter i filer.\n\nDu kan ange följande parametrar till programmet:\n%merged: filen med konflikter, var resultatet sparas\n%theirs: filen som den ser ut i arkivet\n%mine: din egen fil med dina ändringar\n%base: orginalfilen utan dina ändringar"
 
 #. Resource IDs: (3867)
 #, c-format
@@ -1914,6 +1926,10 @@ msgstr "Ett okänt fel inträffade vid åtkomst av %1."
 #, c-format
 msgid "An unknown line type was found in line %d !"
 msgstr "Okänd radtyp hittades på rad %d!"
+
+#. Resource IDs: (96)
+msgid "Annotated tags"
+msgstr "Annoterade märken"
 
 #. Resource IDs: (251)
 msgid "Append right block"
@@ -1969,7 +1985,7 @@ msgstr "Är du säker på att du vill avbryta Ombaseringen (Rebase)?"
 
 #. Resource IDs: (145)
 msgid "Are you sure you want to mark the conflicted file(s) as resolved?"
-msgstr "Är du säker på att du vill markera alla konflikter som lösta?"
+msgstr "Är du säker på att du vill markera konflikterna i filen/filerna som lösta?"
 
 #. Resource IDs: (79)
 #, c-format
@@ -2146,7 +2162,7 @@ msgstr "Kolla automatiskt efter &nyare versioner varje vecka"
 
 #. Resource IDs: (306)
 msgid "Autotext Tester"
-msgstr ""
+msgstr "Autotext Testare"
 
 #. Resource IDs: (1157)
 msgid "Average"
@@ -2161,12 +2177,20 @@ msgid "Back"
 msgstr "Tillbaka"
 
 #. Resource IDs: (65535)
+msgid "Background"
+msgstr ""
+
+#. Resource IDs: (65535)
 msgid "Baltic"
 msgstr "Baltisk"
 
 #. Resource IDs: (246)
 msgid "Bar Graph"
 msgstr "Stapeldiagram"
+
+#. Resource IDs: (1385)
+msgid "Base"
+msgstr ""
 
 #. Resource IDs: (1522)
 msgid "Base On"
@@ -2236,7 +2260,7 @@ msgstr "Visar ändringar per rad i en fil, med revision och av vem"
 
 #. Resource IDs: (32812)
 msgid "Blend alpha"
-msgstr ""
+msgstr "Blend alpha"
 
 #. Resource IDs: (156, 626)
 msgid "Blue Style"
@@ -2465,7 +2489,7 @@ msgstr "Avbryt\nBehåll nuvarande inställningar"
 msgid ""
 "Cannot combine commits now.\r\n"
 "Make sure you are viewing the log of your current branch and no filters are applied."
-msgstr ""
+msgstr "Kan inte sammanfoga arkiveringar nu:\nKontrollera att du visar loggen från din nuvarande gren och att inga filter används."
 
 #. Resource IDs: (94)
 msgid ""
@@ -2490,6 +2514,10 @@ msgstr "&Fäll ner"
 msgid "Cascaded context menu"
 msgstr "Snabbmeny"
 
+#. Resource IDs: (117)
+msgid "Case-sensitive"
+msgstr "Skiftlägeskänsligt"
+
 #. Resource IDs: (65535)
 msgid "Cate&gories:"
 msgstr "Kate&gorier"
@@ -2501,6 +2529,10 @@ msgstr "Keltiska"
 #. Resource IDs: (65535)
 msgid "Central European"
 msgstr "Central-europeiska"
+
+#. Resource IDs: (65535)
+msgid "Certificate verification failed!"
+msgstr "Certifikatsvalideringen misslyckades!"
 
 #. Resource IDs: (1697)
 msgid "Change log"
@@ -2780,7 +2812,7 @@ msgstr "Klicka på \"Avancerat...\" för att ange olika föreningsprogram basera
 msgid ""
 "Click to see commands to move blocks of text\n"
 "Use text blocks"
-msgstr ""
+msgstr "Klicka för att se kommandon för att flytta textblock\nAnvänd textblock"
 
 #. Resource IDs: (257)
 msgid "Clipboard"
@@ -2902,6 +2934,11 @@ msgstr "Kommandon"
 msgid "Commit"
 msgstr "Arkivering"
 
+#. Resource IDs: (96)
+#, c-format
+msgid "Commit %s is NOT visible right now."
+msgstr "Arkiveringen %s är INTE synlig just nu."
+
 #. Resource IDs: (94)
 #, c-format
 msgid "Commit %s not found in \"%s\". Update submodule now?"
@@ -2980,6 +3017,10 @@ msgid ""
 "Are you sure that you want to continue the commit?"
 msgstr "Om en mapp som inte är versionshanterad arkiveras så läggs dess barn inte till automatiskt!\nFör att lägga till mappar rekursivt använd \"Lägg till..\" från snabbmenyn.\n\nÄr du säker på att du vill fortsätta arkiveringen?"
 
+#. Resource IDs: (65535)
+msgid "Common Name:"
+msgstr ""
+
 #. Resource IDs: (2054)
 msgid "Compare &HEAD revisions"
 msgstr "Jämför &HEAD revisioner"
@@ -3031,7 +3072,7 @@ msgstr "Klar"
 
 #. Resource IDs: (65535)
 msgid "Config"
-msgstr ""
+msgstr "Konfiguration"
 
 #. Resource IDs: (65535)
 msgid "Config source"
@@ -3039,11 +3080,11 @@ msgstr "Konfigurationskälla"
 
 #. Resource IDs: (65535)
 msgid "Config type:"
-msgstr ""
+msgstr "Konfigurationstyp:"
 
 #. Resource IDs: (7)
 msgid "Configure Filter Regexes"
-msgstr ""
+msgstr "Konfigurera filteruttryck (Regexp)"
 
 #. Resource IDs: (236)
 msgid "Configure Hook Scripts"
@@ -3412,7 +3453,7 @@ msgid ""
 "clone or fetch from it, nor push from nor into it), but is adequate if you "
 "are only interested in the recent history of a large project with a long "
 "history, and would want to send in fixes as patches."
-msgstr ""
+msgstr "Skapa en grund klon som har historiken trunkerad efter ett visst antal revisioner. Ett grunt arkiv har ett antal begränsningar (du kan inte klona eller hämta från det, inte heller pusha till eller från det), men är fullt användbart om du bara är intresserad av den senaste historiken för ett stort projekt med lång historik och du bara vill kunna skicka in rättningar som patchar."
 
 #. Resource IDs: (156)
 msgid "Create patch file"
@@ -3458,11 +3499,11 @@ msgstr "Skapar Pull-begäran"
 
 #. Resource IDs: (89)
 msgid "Credential helper must not be empty."
-msgstr ""
+msgstr "Inloggningshanterare får inte lämnas tom."
 
 #. Resource IDs: (65535)
 msgid "Credential helper:"
-msgstr ""
+msgstr "Inloggningshanterare:"
 
 #. Resource IDs: (65535)
 msgid "Credentials"
@@ -3545,7 +3586,7 @@ msgstr "Kyrilliska"
 
 #. Resource IDs: (1624)
 msgid "DCommit Type"
-msgstr ""
+msgstr "DCommit Typ"
 
 #. Resource IDs: (14)
 msgid "Daemon"
@@ -3613,7 +3654,7 @@ msgstr "Radera och &Ignorera %d objekt efter namn"
 
 #. Resource IDs: (23)
 msgid "Delete and add to &ignore list"
-msgstr "Ta bort och lägg till i &ignoreringslistan"
+msgstr "Radera och lägg till i &ignoreringslistan"
 
 #. Resource IDs: (23)
 #, c-format
@@ -3700,6 +3741,18 @@ msgstr "Tar bort fjärr-refs..."
 msgid "Delivery:"
 msgstr "Leverera via:"
 
+#. Resource IDs: (1646)
+msgid "Depth"
+msgstr "Djup"
+
+#. Resource IDs: (65535)
+msgid "Describe"
+msgstr "Beskriv"
+
+#. Resource IDs: (65535)
+msgid "Describe Strategy"
+msgstr "Beskrivningsstrategi"
+
 #. Resource IDs: (1002)
 msgid "Description"
 msgstr "Beskrivning"
@@ -3773,12 +3826,36 @@ msgid "Diff Viewer::Merge Tool"
 msgstr "Diff Viewer::Merge Tool"
 
 #. Resource IDs: (65535)
+msgid "Diff added lines"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Diff command"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Diff comment"
+msgstr ""
+
+#. Resource IDs: (65535)
 msgid "Diff file:"
 msgstr "Patchfil:"
+
+#. Resource IDs: (65535)
+msgid "Diff header"
+msgstr ""
 
 #. Resource IDs: (15)
 msgid "Diff later"
 msgstr "Jämför senare"
+
+#. Resource IDs: (65535)
+msgid "Diff position"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Diff removed lines"
+msgstr ""
 
 #. Resource IDs: (15)
 #, c-format
@@ -3904,11 +3981,11 @@ msgstr "Vill du verkligen ta bort verktygsraden '%s'?"
 
 #. Resource IDs: (88)
 msgid "Do you really want to mark the selected file(s) as assume-valid?"
-msgstr ""
+msgstr "Vill du verkligen markera de valda filen/filerna som \"assume-vaild\"?"
 
 #. Resource IDs: (88)
 msgid "Do you really want to mark the selected file(s) as skip-worktree?"
-msgstr ""
+msgstr "Vill du verkligen markera filen/filerna som \"skip-worktree\"?"
 
 #. Resource IDs: (145)
 msgid "Do you really want to move this file or folder?"
@@ -3930,7 +4007,7 @@ msgstr "Vill du verkligen ta bort \"%s\"?"
 msgid ""
 "Do you really want to restore the copy? You will lose all changes that you "
 "have done after creating the copy."
-msgstr ""
+msgstr "Vill du verkligen återställa kopian? Du kommer att förlora alla ändringar som du har gjort efter att du skapade kopian."
 
 #. Resource IDs: (119)
 #, c-format
@@ -3952,7 +4029,7 @@ msgstr "Vill du verkilgen återställa/ångra alla ändringar gjorda i\n%s? Änd
 msgid ""
 "Do you really want to unflag the selected file(s) as skip-worktree or "
 "assume-unchanged?"
-msgstr ""
+msgstr "Vill du verkligen avmarkera filen/filerna som \"skip-worktree\" eller \"assume-unchanged\"?"
 
 #. Resource IDs: (86)
 msgid "Do you want to fetch remote branches from the newly added remote?"
@@ -4136,8 +4213,8 @@ msgid "Edit gl&obal .gitconfig"
 msgstr "Redigera gl&obala .gitconfig"
 
 #. Resource IDs: (1718)
-msgid "Edit global &XDG config"
-msgstr "Redigera global &XDG konfiguration"
+msgid "Edit global &XDG git/config"
+msgstr "Editera global &XDG git/config"
 
 #. Resource IDs: (71)
 msgid "Edit local git config"
@@ -4199,7 +4276,7 @@ msgstr "Aktivera Gravatar"
 
 #. Resource IDs: (1788)
 msgid "Enable drag context menu"
-msgstr "Tillåt flytt av kontextmenyn"
+msgstr "Visa kontextmenyn när objekt flyttas"
 
 #. Resource IDs: (87)
 msgid ""
@@ -4365,6 +4442,11 @@ msgstr "Fel"
 #. Resource IDs: (145)
 msgid "Error rebuilding Shell Icon Cache!"
 msgstr "Ett fel upspstod när ikoncachen reparerades!"
+
+#. Resource IDs: (96)
+#, c-format
+msgid "Error validating server certificate for \"%s\":"
+msgstr "Valideringsfel för server-certifikat \"%s\":"
 
 #. Resource IDs: (70)
 #, c-format
@@ -4773,6 +4855,10 @@ msgstr "Sök: Första förekomsten nerifrån hittad. Har kommit till början av 
 msgid "Find: First occurrence from the top found. End of document reached."
 msgstr "Sök: Första förekomsten uppifrån hittad. Har kommit till slutet av dokumentet."
 
+#. Resource IDs: (65535)
+msgid "Fingerprints"
+msgstr ""
+
 #. Resource IDs: (67)
 msgid "Finish"
 msgstr "Avsluta"
@@ -4843,7 +4929,14 @@ msgid ""
 "Force push only if the remote reference points to the same commit as the remote tracking branch.\n"
 "This can cause the remote repository to lose commits; use it with care.\n"
 "This option corresponds to the --force-with-lease git option."
-msgstr ""
+msgstr "Tvinga endast Push om fjärreferensen pekar på samma arkivering som fjärrgrenen som följs.\nDetta kan resultera i att fjärrarkivet förlorar arkiveringar; använd med försiktighet.\nDetta motsvarar git-optionen \"--force-with-lease\"."
+
+#. Resource IDs: (1796)
+msgid ""
+"Force push to the selected remote reference and override it without any safety checks.\n"
+"This can cause the remote repository to lose unseen commits; use it with care.\n"
+"This option corresponds to the --force git option."
+msgstr "Tvinga Push till den valda fjärreferensen och skriv över den utan några säkerhetkollar.\nDetta kan resultera i att fjärrarkivet förlorar icke synliga arkiveringar; använd med försiktighet.\nDetta motsvarar git-optionen \"--force\"."
 
 #. Resource IDs: (603)
 msgid ""
@@ -4855,11 +4948,8 @@ msgstr "Tvinga en ombasering (rebase) även om nuvarande gren är en ättling ti
 msgid "Force: May discard"
 msgstr "Tvinga: Kan överge"
 
-#. Resource IDs: (1796)
-msgid ""
-"Force push to the selected remote reference and override it without any safety checks.\n"
-"This can cause the remote repository to lose unseen commits; use it with care.\n"
-"This option corresponds to the --force git option."
+#. Resource IDs: (65535)
+msgid "Foreground"
 msgstr ""
 
 #. Resource IDs: (312)
@@ -4887,7 +4977,7 @@ msgstr "Hittade ett tomt arkiveringsmeddelande. Du måste ange ett annars kan in
 
 #. Resource IDs: (65535)
 msgid "Found auto words:"
-msgstr ""
+msgstr "Hittade auto-ord:"
 
 #. Resource IDs: (65535)
 msgid "Frank Li (lznuaa@gmail.com), Sven Strickroth <email@cs-ware.de>"
@@ -5038,27 +5128,27 @@ msgstr "Git"
 
 #. Resource IDs: (300)
 msgid "Git Command Progress"
-msgstr ""
+msgstr "Git Kommandoförlopp"
 
 #. Resource IDs: (12)
 msgid "Git Copy and add files to this WC"
-msgstr ""
+msgstr "Git Kopiera och lägg till filerna till denna WC"
 
 #. Resource IDs: (16)
 msgid "Git Copy and rename versioned item here"
-msgstr ""
+msgstr "Git Kopiera och döp om versionshanterade objekt här"
 
 #. Resource IDs: (13)
 msgid "Git Copy versioned item(s) here"
-msgstr ""
+msgstr "Git Kopiera versionshanterade objekt här"
 
 #. Resource IDs: (14)
 msgid "Git Export all items here"
-msgstr ""
+msgstr "Git Exportera alla objekt här"
 
 #. Resource IDs: (14)
 msgid "Git Export versioned items here"
-msgstr ""
+msgstr "Git Exportera versionshanterade objekt här"
 
 #. Resource IDs: (330)
 msgid "Git Init"
@@ -5074,19 +5164,19 @@ msgstr "Git Logg"
 
 #. Resource IDs: (17)
 msgid "Git Move and rename versioned item here"
-msgstr ""
+msgstr "Git Flytta och döp om versionshanterade objekt här"
 
 #. Resource IDs: (12)
 msgid "Git Move versioned item(s) here"
-msgstr ""
+msgstr "Git Flytta versionshanterade objekt här"
 
 #. Resource IDs: (84)
 msgid "Git Remote Settings"
-msgstr ""
+msgstr "Git Fjärrinställningar"
 
 #. Resource IDs: (1260)
 msgid "Git Revision List"
-msgstr ""
+msgstr "Git Revisionslista"
 
 #. Resource IDs: (22)
 msgid "Git SVN DCommit"
@@ -5098,7 +5188,7 @@ msgstr "Git SVN Rebase"
 
 #. Resource IDs: (326)
 msgid "Git Synchronization"
-msgstr ""
+msgstr "Git Synkronisera"
 
 #. Resource IDs: (297)
 msgid "Git clone - TortoiseGit"
@@ -5106,7 +5196,7 @@ msgstr "Git kloning - TortoiseGit"
 
 #. Resource IDs: (71)
 msgid "Git directory not set (see \"General\" settings page)."
-msgstr ""
+msgstr "Git-biblioteket inte satt (se \"Generella inställningar\")."
 
 #. Resource IDs: (65535)
 msgid "Git for Windows"
@@ -5122,11 +5212,11 @@ msgstr "Git rapporterade ett fel när ett arkiv skapades!\n"
 
 #. Resource IDs: (2050)
 msgid "Git revision list contains the complete file history"
-msgstr ""
+msgstr "Git's revisionslista innehåller den kompletta filhistoriken"
 
 #. Resource IDs: (2049)
 msgid "Git revision list follows file renames"
-msgstr ""
+msgstr "Git's revisionslista följer omdöpningar av filer"
 
 #. Resource IDs: (93)
 msgid ""
@@ -5143,7 +5233,7 @@ msgstr "Sökväg till Git.exe:"
 
 #. Resource IDs: (4591)
 msgid "Git::Credential"
-msgstr ""
+msgstr "Git::Inloggningshanterare"
 
 #. Resource IDs: (4570)
 msgid "Git::Remote"
@@ -5259,11 +5349,11 @@ msgstr "Hjälp för tangentbord"
 
 #. Resource IDs: (65535)
 msgid "Helper:"
-msgstr ""
+msgstr "Hjälpreda:"
 
 #. Resource IDs: (65535)
 msgid "Helpers:"
-msgstr ""
+msgstr "Hjälpredor:"
 
 #. Resource IDs: (16974)
 msgid "Hex"
@@ -5291,7 +5381,7 @@ msgstr "Dölj oförändrade"
 
 #. Resource IDs: (95, 1781)
 msgid "Hide unchanged refs in Ref Compare List"
-msgstr ""
+msgstr "Göm oförändrade refs i Ref Compare List"
 
 #. Resource IDs: (156)
 msgid "Hide/Show the patch file list"
@@ -5420,6 +5510,10 @@ msgstr "ID:32857:VA  +F"
 #. Accelerator Entry for Menu ID:32870; ''
 msgid "ID:32870:V C +L"
 msgstr "ID:32870:V C +L"
+
+#. Accelerator Entry for Menu ID:32873; ''
+msgid "ID:32873:V C +E"
+msgstr ""
 
 #. Accelerator Entry for Menu ID:32881; ''
 msgid "ID:32881:V C +P"
@@ -5565,6 +5659,10 @@ msgstr "Ikoner (*.ico, *.jpg, *.png, *.bmp, *.gif)|*.ico;*.jpg;*.jpeg;*.png;*.bm
 msgid "Icons/Design/Code:\t\tLuebbe Onken"
 msgstr "Ikoner/Design/Kodning: \t\tLuebbe Onken"
 
+#. Resource IDs: (97)
+msgid "Identical"
+msgstr ""
+
 #. Resource IDs: (194)
 msgid ""
 "If activated, prevents the overlays and the context menu from showing in "
@@ -5575,7 +5673,7 @@ msgstr "Förhindra att statusikoner och snabbmenyn visas i \"spara som...\" och 
 msgid ""
 "If checked --track is passed to git, if unchecked --no-track is passed to "
 "git, else neither --track nor --no-track is passed to git (see help)."
-msgstr ""
+msgstr "Om vald så skickas optionen \"--track\" till git, om inte vald så skickas optionen \"--no-track\" till git, annars skickas vare sig \"--track\" eller \"--no-track\" till git (se hjälpen)."
 
 #. Resource IDs: (197)
 msgid ""
@@ -5664,7 +5762,7 @@ msgstr "Ignorera ändringar\nIgnorera dom externa ändringarna."
 
 #. Resource IDs: (1687)
 msgid "Ignore item(s) only in the containing folder(s)"
-msgstr ""
+msgstr "Ignorera objekt endast i omgivande mapp(ar)"
 
 #. Resource IDs: (1688)
 msgid "Ignore item(s) recursively"
@@ -5832,6 +5930,10 @@ msgstr "Ogiltig valuta. "
 msgid "Invalid revision number!"
 msgstr "Ogiltigt revisionsnummer!"
 
+#. Resource IDs: (65535)
+msgid "Issuer:"
+msgstr ""
+
 #. Resource IDs: (145)
 msgid ""
 "It is not possible to rename a file by changing the case of its name alone.\n"
@@ -5958,6 +6060,10 @@ msgid ""
 "Leave as conflicted\n"
 "The conflict status of the file is kept"
 msgstr "Lämna som konflikt\nKonfliktstatus för filen behålls"
+
+#. Resource IDs: (252)
+msgid "Leave only marked blocks"
+msgstr ""
 
 #. Resource IDs: (188)
 msgid "Left View: "
@@ -6193,6 +6299,10 @@ msgstr "Markera som löst\nFilens status ändras till \"modifierad\""
 #. Resource IDs: (252)
 msgid "Mark this block"
 msgstr "Markera blocket"
+
+#. Resource IDs: (7)
+msgid "Marked Blocks"
+msgstr ""
 
 #. Resource IDs: (2051)
 msgid ""
@@ -6726,13 +6836,13 @@ msgid ""
 "not recover the auto-saved versions, they will be deleted."
 msgstr "Notera att om du väljer att återställa automatiskt sparade doument så måste du uttrycklingen spara dom igen för att skriva över orginaldokumenten. Om du väljer att inte återställa dokumenten så raderas dom."
 
+#. Resource IDs: (65535)
+msgid "Note: These settings also apply to the Patch Viewer dialog."
+msgstr ""
+
 #. Resource IDs: (1481)
 msgid "Note: the folder contains unversioned items"
 msgstr "Notera: Katalogen innehåller icke versionshanterade objekt"
-
-#. Resource IDs: (65535)
-msgid "Note: the font settings also affect the TortoiseGitUDiff viewer"
-msgstr "Notera: Font-inställningen påverkar också TortoiseGitUDiff"
 
 #. Resource IDs: (65535)
 msgid "Note: this affects all Tortoise clients, not just TortoiseGit!"
@@ -6777,6 +6887,10 @@ msgstr "Antal användare:"
 #. Resource IDs: (65535)
 msgid "Number of characters required for moved or copied line detection:"
 msgstr "Antal tecken som krävs för att upptäcka flyttad/kopierad rad:"
+
+#. Resource IDs: (96)
+msgid "Number of characters to show in the abbreviated hash part"
+msgstr ""
 
 #. Resource IDs: (1160)
 msgid "Number of weeks:"
@@ -6935,6 +7049,10 @@ msgid ""
 "Open an existing document\n"
 "Open"
 msgstr "Öppna ett befintligt dokument\nÖppna"
+
+#. Resource IDs: (1797)
+msgid "Open certificate"
+msgstr "Öppna certifikat"
 
 #. Resource IDs: (3601)
 msgid ""
@@ -7311,11 +7429,11 @@ msgstr "Förbereder arkivering..."
 
 #. Resource IDs: (251)
 msgid "Prepend right block"
-msgstr ""
+msgstr "Addera högra blocket till början"
 
 #. Resource IDs: (251)
 msgid "Prepend this block to left"
-msgstr ""
+msgstr "Addera detta block till början av vänstra"
 
 #. Resource IDs: (65535)
 msgid "Press &New Shortcut Key:"
@@ -7459,7 +7577,7 @@ msgstr "Prune (Alla fjärrarkiv)"
 
 #. Resource IDs: (22, 66, 1611)
 msgid "Pull"
-msgstr ""
+msgstr "Pull"
 
 #. Resource IDs: (75)
 msgid "Pull requires the selected local branch to be the current branch."
@@ -7467,7 +7585,7 @@ msgstr "Pull kräver att den valda lokala grenen också är den aktiva."
 
 #. Resource IDs: (14)
 msgid "Pull..."
-msgstr ""
+msgstr "Pull..."
 
 #. Resource IDs: (302)
 msgid "Pull/Fetch"
@@ -7678,7 +7796,7 @@ msgstr "Minimera fönstret till en ikon"
 
 #. Resource IDs: (604, 1579)
 msgid "Ref"
-msgstr ""
+msgstr "Ref"
 
 #. Resource IDs: (20087)
 msgid "Ref (Click it then go to)"
@@ -7686,15 +7804,15 @@ msgstr ""
 
 #. Resource IDs: (95)
 msgid "Ref List"
-msgstr ""
+msgstr "Ref List"
 
 #. Resource IDs: (69)
 msgid "RefBrowse"
-msgstr ""
+msgstr "RefBrowse"
 
 #. Resource IDs: (69, 1588)
 msgid "RefLog"
-msgstr ""
+msgstr "RefLog"
 
 #. Resource IDs: (83)
 msgid "Refname"
@@ -7710,11 +7828,11 @@ msgstr "Uppdaterar..."
 
 #. Resource IDs: (32, 156, 165)
 msgid "Regex Filter"
-msgstr ""
+msgstr "Regex Filter"
 
 #. Resource IDs: (164)
 msgid "Regex Filters"
-msgstr ""
+msgstr "Regex Filters"
 
 #. Resource IDs: (65535)
 msgid "Regex:"
@@ -7822,7 +7940,7 @@ msgstr "Ta bort %s"
 
 #. Resource IDs: (1627)
 msgid "Remove &all untracked files (-fx)"
-msgstr ""
+msgstr "Ta bort &alla oföljda filer (-fx)"
 
 #. Resource IDs: (75)
 msgid "Remove &branch"
@@ -7830,13 +7948,13 @@ msgstr "Ta bort gren"
 
 #. Resource IDs: (1628)
 msgid "Remove &non-ignored untracked files (-f)"
-msgstr ""
+msgstr "Ta bort icke-ig&norerade, oföljda filer (-f)"
 
 #. Resource IDs: (2057)
 msgid ""
 "Remove all comments before doing the diff so changes inside comments don't "
 "show as different"
-msgstr ""
+msgstr "Tar bort alla kommentarer innan jämförelsen utförs så att ändringar i kommentarer inte visas som en ändring"
 
 #. Resource IDs: (15)
 msgid "Remove from &ignore list"
@@ -7856,11 +7974,11 @@ msgstr "Ta bort ignorerade filer (-fX)"
 
 #. Resource IDs: (1626)
 msgid "Remove untracked directories (-d)"
-msgstr ""
+msgstr "Ta bort oföljda bibliotek (-d)"
 
 #. Resource IDs: (9)
 msgid "Remove untracked files from the working tree, ..."
-msgstr ""
+msgstr "Ta bort oföljda filer från arbetsträdet, ..."
 
 #. Resource IDs: (65535)
 msgid "Removed"
@@ -8006,6 +8124,10 @@ msgstr "Återställ nuvarande gren \"%s\" till"
 #. Resource IDs: (77, 207, 229)
 msgid "Resolve"
 msgstr "Markera konflikt som löst"
+
+#. Resource IDs: (4595)
+msgid "Resolve Submodule Conflict"
+msgstr ""
 
 #. Resource IDs: (282)
 msgid "Resolve conflict using 'mine'"
@@ -8220,6 +8342,14 @@ msgstr "Växla/Checka ut..."
 msgid "SHA-1"
 msgstr "SHA-1"
 
+#. Resource IDs: (65535)
+msgid "SHA-1:"
+msgstr "SHA-1:"
+
+#. Resource IDs: (65535)
+msgid "SHA-256:"
+msgstr "SHA-256:"
+
 #. Resource IDs: (1585)
 msgid "SMTP Server requires authentication"
 msgstr "SMTP-servern kräver inloggning"
@@ -8276,7 +8406,7 @@ msgstr "Samma arkiveringstid"
 msgid ""
 "Sample log message to test the bugtraq: regex strings.\n"
 "\n"
-"Testing mentions of issues inside a text: Mention single issue #55. Mention issues #77, #78, and #78. Mention more issues #123, #124 and #125 and some more separate ones: Issue #45, issue #46 and issue #47.\n"
+"Testing mentions of issues inside a text: Mention single issue #55. Mention issues #77, #78, and #79. Mention more issues #123, #124 and #125 and some more separate ones: Issue #45, issue #46 and issue #47.\n"
 "\n"
 "\n"
 "Update issue #101\n"
@@ -8284,7 +8414,7 @@ msgid ""
 "Fixed issue #123\n"
 "Resolves issue #88.\n"
 "Closes issue #99.\n"
-msgstr ""
+msgstr "Exampelmeddelande för att testa bugtraq: regex strings.\n\nTesting mentions of issues inside a text: Mention single issue #55. Mention issues #77, #78, and #79. Mention more issues #123, #124 and #125 and some more separate ones: Issue #45, issue #46 and issue #47.\n\n\nUpdate issue #101\nFixes issue #202\nFixed issue #123\nResolves issue #88.\nCloses issue #99.\n"
 
 #. Resource IDs: (1612)
 msgid "Sample text:"
@@ -8346,6 +8476,24 @@ msgid ""
 "Both Files are saved"
 msgstr "Spara alla\nBåda filerna sparas"
 
+#. Resource IDs: (7)
+msgid ""
+"Save and exclude\n"
+"Your changes are saved and the original content is used"
+msgstr ""
+
+#. Resource IDs: (7)
+msgid ""
+"Save and ignore marked blocks\n"
+"Only your manual edits are saved, marked blocks are left as they are"
+msgstr ""
+
+#. Resource IDs: (7)
+msgid ""
+"Save and include\n"
+"Your changes are saved and the marked blocks are included"
+msgstr ""
+
 #. Resource IDs: (156)
 msgid "Save as"
 msgstr "Spara som"
@@ -8401,11 +8549,11 @@ msgstr "Spara till:"
 
 #. Resource IDs: (1385)
 msgid "Save unified diff"
-msgstr "Spara ändringar som en \"Unified Diff\""
+msgstr "Spara ändringar som \"Unified Diff\""
 
 #. Resource IDs: (1385)
 msgid "Save unified diff since HEAD"
-msgstr "Spara ändringar sedan HEAD som en \"Unified Diff\""
+msgstr "Spara ändringar sedan HEAD som \"Unified Diff\""
 
 #. Resource IDs: (315)
 msgid ""
@@ -8593,6 +8741,10 @@ msgstr "Välj vilken fil du vill spara som\nNotera: Det finns olösta konflikter
 #. Resource IDs: (1067)
 msgid "Select/deselect &all"
 msgstr "Markera/Avmarkera &alla"
+
+#. Resource IDs: (96)
+msgid "Selection History"
+msgstr ""
 
 #. Resource IDs: (1)
 msgid "Send"
@@ -8787,6 +8939,14 @@ msgstr "Visa tomrum"
 msgid "Show an overview of the whole graph"
 msgstr "Visa en översikt av hela grafen"
 
+#. Resource IDs: (1074)
+msgid "Show asterisk log prefix"
+msgstr ""
+
+#. Resource IDs: (97)
+msgid "Show asterisk log prefix in log dialog"
+msgstr ""
+
 #. Resource IDs: (32775)
 msgid "Show author"
 msgstr "Visa författare"
@@ -8810,6 +8970,14 @@ msgstr "Visa komplett historik"
 #. Resource IDs: (32784)
 msgid "Show date"
 msgstr "Visa datum"
+
+#. Resource IDs: (1804)
+msgid "Show describe in log"
+msgstr ""
+
+#. Resource IDs: (96)
+msgid "Show describe in log dialog"
+msgstr ""
 
 #. Resource IDs: (83)
 msgid "Show destination folder"
@@ -8837,7 +9005,7 @@ msgstr "Visa filnamn"
 
 #. Resource IDs: (1782)
 msgid "Show git.exe execution timings and timestamp"
-msgstr ""
+msgstr "Visa exekveringstid och tidsstämplar för git.exe"
 
 #. Resource IDs: (1264)
 msgid "Show i&gnored files"
@@ -8879,6 +9047,10 @@ msgstr "Visa historik för denna mapp"
 #. Resource IDs: (1256)
 msgid "Show log..."
 msgstr "Visa historik..."
+
+#. Resource IDs: (96)
+msgid "Show long format even if a tag is exactly on that commit"
+msgstr ""
 
 #. Resource IDs: (1382)
 msgid "Show modified files in working tree"
@@ -9088,6 +9260,10 @@ msgstr "Specificerar hur många gamla loggmeddelanden som ska sparas i loggmedde
 #. Resource IDs: (16976, 16977, 16978, 16979, 16980, 16981)
 msgid "Spin1"
 msgstr "Spin1"
+
+#. Resource IDs: (1827)
+msgid "Split commit"
+msgstr ""
 
 #. Resource IDs: (1253)
 msgid "Split lines"
@@ -9394,10 +9570,6 @@ msgstr "Synka..."
 #. Resource IDs: (89)
 msgid "System"
 msgstr "System"
-
-#. Resource IDs: (1556)
-msgid "System &sounds"
-msgstr "System&ljud"
 
 #. Resource IDs: (93)
 msgid "System in offline mode. Check Internet Explorer."
@@ -9779,6 +9951,12 @@ msgid ""
 "It's not possible to show the log messages between them!"
 msgstr "De två valda URL:erna är inte skapade från samma rot.\nDet går inte att visa loggmeddelandena mellan dem."
 
+#. Resource IDs: (96)
+msgid ""
+"The working tree is not clean and contains unstaged changes.\n"
+"Review and commit the changes?"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Their file:"
 msgstr "Deras fil:"
@@ -9934,7 +10112,7 @@ msgstr "Växla mellan visning av en eller två sidor\nVäxla mellan visning av e
 
 #. Resource IDs: (93)
 msgid "Toggle filters"
-msgstr ""
+msgstr "Växla filter"
 
 #. Resource IDs: (65535)
 msgid "Toolbar"
@@ -10078,6 +10256,10 @@ msgid ""
 "TortoiseGitMerge cannot process this patch file. The filename \"%s\" appears"
 " more than once."
 msgstr "TortoiseGitMerge kan inte processa den här patch-filen. Filnamnet \"%s\" förekommer mer än en gång."
+
+#. Resource IDs: (357)
+msgid "TortoiseGitUDiff"
+msgstr ""
 
 #. Resource IDs: (1739)
 msgid "Total changed lines including added/deleted files:"
@@ -10249,7 +10431,7 @@ msgstr "Oväntat filformat."
 
 #. Resource IDs: (93)
 msgid "Unflag as skip-worktree and assume-unchanged"
-msgstr ""
+msgstr "Avmarkera som \"skip-worktree\" och \"assume-unchanged\""
 
 #. Resource IDs: (1070)
 msgid "Unfold"
@@ -10360,7 +10542,7 @@ msgstr "Använd Block"
 
 #. Resource IDs: (1761)
 msgid "Use HTTP path component"
-msgstr ""
+msgstr "Använd HTTP sökvägskomponent"
 
 #. Resource IDs: (1066)
 msgid "Use Ribbons"
@@ -10427,10 +10609,6 @@ msgstr "Använd vänster block"
 #. Resource IDs: (32856)
 msgid "Use left file"
 msgstr "Använd den vänstra filen"
-
-#. Resource IDs: (252)
-msgid "Use left file except marked blocks"
-msgstr "Använd vänster fil förutom de markerade blocken"
 
 #. Resource IDs: (1762)
 msgid "Use local branch color for current branch"
@@ -10521,6 +10699,10 @@ msgid ""
 "Apply the patch to\n"
 "%s"
 msgstr "Använd ursprungliga sökvägen.\nApplicera patchen på\n%s"
+
+#. Resource IDs: (1825, 1826)
+msgid "Use this"
+msgstr ""
 
 #. Resource IDs: (251)
 msgid "Use this &whole file"
@@ -10727,13 +10909,13 @@ msgstr "När en patch appliceras, ignorera tomrumsändringar i omgivande rader, 
 msgid ""
 "When closing a progress dialog with a running git process, ask for "
 "confirmation before killing it"
-msgstr ""
+msgstr "När en förloppsdialog med en körande git-process stängs, visa en dialog innan processen dödas"
 
 #. Resource IDs: (94)
 msgid ""
 "When enabled, TortoiseGit move context menu items will be available when "
 "dragging folders / files"
-msgstr ""
+msgstr "Om vald så kommer TortoiseGit's kontextmeny vara tillgänglig när objekt flyttas."
 
 #. Resource IDs: (95)
 msgid ""
@@ -10758,6 +10940,10 @@ msgstr ""
 msgid ""
 "When you type the URL, the remote name will be automatically filled with "
 "\"origin\" if the remote name is empty, so you do not have to."
+msgstr "När du skriver in en URL så kommer fjärrnamnet automatiskt att sättas till \"origin\" om fjärrnamnet lämnas tomt, för att du ska slippa."
+
+#. Resource IDs: (96)
+msgid "Whether to reference only annotated tags, all tags or all refs"
 msgstr ""
 
 #. Resource IDs: (1409)
@@ -10897,7 +11083,7 @@ msgstr "Den här egenskapen går bara att sätta på filer, inte på mappar!\nKr
 
 #. Resource IDs: (84)
 msgid "You cannot change the type of this ref with a rename."
-msgstr ""
+msgstr "Du kan inte ändra typen för denna referens genom ett namnbyte."
 
 #. Resource IDs: (84)
 msgid ""
@@ -10910,6 +11096,10 @@ msgstr "Du har en gammal version av Git för Windows (http://code.google.com/p/m
 msgid ""
 "You have checked \"include untracked\".\n"
 "This includes a \"git clean -fd\" call, so ignored files/directories are removed w/o using recycle bin."
+msgstr ""
+
+#. Resource IDs: (7)
+msgid "You have marked changed blocks. How should those blocks be saved?"
 msgstr ""
 
 #. Resource IDs: (16)
@@ -11126,7 +11316,7 @@ msgstr "och stöd utvecklarna"
 
 #. Resource IDs: (195)
 msgid "assume-valid"
-msgstr ""
+msgstr "assume-valid"
 
 #. Resource IDs: (245)
 msgid "author"
@@ -11187,10 +11377,6 @@ msgstr "dag"
 msgid "deleted"
 msgstr "borttagen"
 
-#. Resource IDs: (1646)
-msgid "depth "
-msgstr "djup"
-
 #. Resource IDs: (58116)
 msgid "dummy"
 msgstr "dummy"
@@ -11223,7 +11409,7 @@ msgstr "ignorerad"
 
 #. Resource IDs: (1130)
 msgid "include &untracked"
-msgstr ""
+msgstr "inkludera &oföljda"
 
 #. Resource IDs: (13)
 msgid "incomplete"
@@ -11352,7 +11538,7 @@ msgstr "scannar sökväg:"
 
 #. Resource IDs: (195)
 msgid "skip-worktree"
-msgstr ""
+msgstr "skip-worktree"
 
 #. Resource IDs: (208)
 #, c-format

@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2014-08-03 21:42+0000\n"
+"PO-Revision-Date: 2014-11-13 16:50+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Catalan (http://www.transifex.com/projects/p/tortoisegit/language/ca/)\n"
 "MIME-Version: 1.0\n"
@@ -187,7 +187,7 @@ msgstr "%1\nNo es troba el fitxer.\nSi us plau verifiqueu que el camí i el nom 
 
 #. Resource IDs: (91)
 #, c-format
-msgid "%HOME%/gitconfig or %XDGHOME%/gitconfig"
+msgid "%HOME%/.gitconfig or %XDGHOME%/git/config"
 msgstr ""
 
 #. Resource IDs: (357)
@@ -533,10 +533,6 @@ msgstr "&Compara revisions"
 msgid "&Compressed Graph"
 msgstr ""
 
-#. Resource IDs: (1239)
-msgid "&Configure"
-msgstr "&Configura"
-
 #. Resource IDs: (501, 1367, 1471, 57634)
 msgid "&Copy"
 msgstr "&Copia"
@@ -704,10 +700,6 @@ msgstr "&Font:"
 #. Resource IDs: (1521)
 msgid "&Force"
 msgstr "Força"
-
-#. Resource IDs: (1480)
-msgid "&Force Overwrite Existing Branch (May discard changes)"
-msgstr "Imposa sobre-escriptura de la branca existent (pot ser que es perdin alguns canvis)"
 
 #. Resource IDs: (1607)
 msgid "&Force Rebase"
@@ -1478,8 +1470,8 @@ msgstr "<b>Avís:</b> Aquesta branca no està completament fusionada amb HEAD."
 #. Resource IDs: (68)
 msgid ""
 "<ct=0x0000FF>Current HEAD Detached</ct>, you are working on (no branch).\n"
-"Do you want to a create branch now?"
-msgstr "<ct=0x0000FF>El HEAD està desconnectat</ct>, esteu treballant en (cap branca).\nVoleu crear una branca nova ara?"
+"Do you want to create a branch now?"
+msgstr ""
 
 #. Resource IDs: (70)
 msgid "<ct=0x0000FF>Do you really want to delete <b>ALL</b> stash?</ct>"
@@ -1616,6 +1608,10 @@ msgstr "Aplica"
 msgid "Abbreviate renamings"
 msgstr "Abrevia canvis de nom"
 
+#. Resource IDs: (65535)
+msgid "Abbreviated size"
+msgstr ""
+
 #. Resource IDs: (2, 73, 1565)
 msgid "Abort"
 msgstr "Interromp"
@@ -1647,6 +1643,10 @@ msgstr "Quant al TortoiseGitBlame"
 #. Resource IDs: (136)
 msgid "About TortoiseGitMerge"
 msgstr "Quant al TortoiseGitMerge"
+
+#. Resource IDs: (1)
+msgid "Accept certificate"
+msgstr ""
 
 #. Resource IDs: (3867)
 #, c-format
@@ -1799,6 +1799,14 @@ msgstr "Tots els pares"
 msgid "All local branches"
 msgstr ""
 
+#. Resource IDs: (96)
+msgid "All refs"
+msgstr ""
+
+#. Resource IDs: (96)
+msgid "All tags"
+msgstr ""
+
 #. Resource IDs: (9690)
 msgid "All tags only"
 msgstr "Només totes les etiquetes"
@@ -1848,6 +1856,10 @@ msgstr "Empeny sempre aquesta branca local a l'arxiu remot seleccionat"
 #. Resource IDs: (1485)
 msgid "Always push to the selected remote branch for this local branch"
 msgstr "Empeny sempre aquesta branca local a la branca remota seleccionat"
+
+#. Resource IDs: (1805)
+msgid "Always show long format"
+msgstr ""
 
 #. Resource IDs: (197)
 msgid "Always use the system locale settings to show times and dates"
@@ -1908,6 +1920,10 @@ msgstr "S'ha produït un error desconegut mentre s'accedia a %1."
 #, c-format
 msgid "An unknown line type was found in line %d !"
 msgstr "Un tipus de línia desconegut s´ha trobat a la línia %d !"
+
+#. Resource IDs: (96)
+msgid "Annotated tags"
+msgstr ""
 
 #. Resource IDs: (251)
 msgid "Append right block"
@@ -2155,12 +2171,20 @@ msgid "Back"
 msgstr "Enrere"
 
 #. Resource IDs: (65535)
+msgid "Background"
+msgstr ""
+
+#. Resource IDs: (65535)
 msgid "Baltic"
 msgstr "Baltic"
 
 #. Resource IDs: (246)
 msgid "Bar Graph"
 msgstr "Gràfic de barres"
+
+#. Resource IDs: (1385)
+msgid "Base"
+msgstr ""
 
 #. Resource IDs: (1522)
 msgid "Base On"
@@ -2484,6 +2508,10 @@ msgstr "En cascada"
 msgid "Cascaded context menu"
 msgstr "Menú de contexte en cascada"
 
+#. Resource IDs: (117)
+msgid "Case-sensitive"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Cate&gories:"
 msgstr "Cate&gories:"
@@ -2495,6 +2523,10 @@ msgstr "Celtic"
 #. Resource IDs: (65535)
 msgid "Central European"
 msgstr "Central European"
+
+#. Resource IDs: (65535)
+msgid "Certificate verification failed!"
+msgstr ""
 
 #. Resource IDs: (1697)
 msgid "Change log"
@@ -2896,6 +2928,11 @@ msgstr "Comandes"
 msgid "Commit"
 msgstr "Entrega"
 
+#. Resource IDs: (96)
+#, c-format
+msgid "Commit %s is NOT visible right now."
+msgstr ""
+
 #. Resource IDs: (94)
 #, c-format
 msgid "Commit %s not found in \"%s\". Update submodule now?"
@@ -2928,6 +2965,10 @@ msgstr "Nom de l'entrega"
 #. Resource IDs: (1750)
 msgid "Commit Ordering:"
 msgstr "Ordre de les entregues:"
+
+#. Resource IDs: (96)
+msgid "Commit super project"
+msgstr ""
 
 #. Resource IDs: (1110)
 msgid "Commit to:"
@@ -2969,6 +3010,10 @@ msgid ""
 "\n"
 "Are you sure that you want to continue the commit?"
 msgstr "Entregar una carpeta sense versionar no afegeix recursivament el seu contingut!\nPodeu afegir aquestes carpetes recursivament utilitzant l'ordre 'Afegeix...' del menú.\n\nEsteu segur de voler continuar amb l'entrega?"
+
+#. Resource IDs: (65535)
+msgid "Common Name:"
+msgstr ""
 
 #. Resource IDs: (2054)
 msgid "Compare &HEAD revisions"
@@ -3690,6 +3735,18 @@ msgstr "Eliminant refs remots..."
 msgid "Delivery:"
 msgstr "Lliurament:"
 
+#. Resource IDs: (1646)
+msgid "Depth"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Describe"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Describe Strategy"
+msgstr ""
+
 #. Resource IDs: (1002)
 msgid "Description"
 msgstr "Descripció"
@@ -3763,11 +3820,35 @@ msgid "Diff Viewer::Merge Tool"
 msgstr "Visor de Diffs::Eina de fusió"
 
 #. Resource IDs: (65535)
+msgid "Diff added lines"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Diff command"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Diff comment"
+msgstr ""
+
+#. Resource IDs: (65535)
 msgid "Diff file:"
 msgstr "Fitxer Diff:"
 
+#. Resource IDs: (65535)
+msgid "Diff header"
+msgstr ""
+
 #. Resource IDs: (15)
 msgid "Diff later"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Diff position"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Diff removed lines"
 msgstr ""
 
 #. Resource IDs: (15)
@@ -4126,8 +4207,8 @@ msgid "Edit gl&obal .gitconfig"
 msgstr "Edita gitconfig per tot el sistema"
 
 #. Resource IDs: (1718)
-msgid "Edit global &XDG config"
-msgstr "Edita configuració global &XDG"
+msgid "Edit global &XDG git/config"
+msgstr ""
 
 #. Resource IDs: (71)
 msgid "Edit local git config"
@@ -4355,6 +4436,11 @@ msgstr "Error"
 #. Resource IDs: (145)
 msgid "Error rebuilding Shell Icon Cache!"
 msgstr "Error durant la reconstrucció de Cache d'Icones Shell!"
+
+#. Resource IDs: (96)
+#, c-format
+msgid "Error validating server certificate for \"%s\":"
+msgstr ""
 
 #. Resource IDs: (70)
 #, c-format
@@ -4763,6 +4849,10 @@ msgstr ""
 msgid "Find: First occurrence from the top found. End of document reached."
 msgstr ""
 
+#. Resource IDs: (65535)
+msgid "Fingerprints"
+msgstr ""
+
 #. Resource IDs: (67)
 msgid "Finish"
 msgstr "Finalitza"
@@ -4835,6 +4925,13 @@ msgid ""
 "This option corresponds to the --force-with-lease git option."
 msgstr ""
 
+#. Resource IDs: (1796)
+msgid ""
+"Force push to the selected remote reference and override it without any safety checks.\n"
+"This can cause the remote repository to lose unseen commits; use it with care.\n"
+"This option corresponds to the --force git option."
+msgstr ""
+
 #. Resource IDs: (603)
 msgid ""
 "Force the rebase even if the current branch is a descendant of the commit you are rebasing onto. \r\n"
@@ -4845,11 +4942,8 @@ msgstr "Força el rebase fins i tot si la branca actual és descendent de l'entr
 msgid "Force: May discard"
 msgstr ""
 
-#. Resource IDs: (1796)
-msgid ""
-"Force push to the selected remote reference and override it without any safety checks.\n"
-"This can cause the remote repository to lose unseen commits; use it with care.\n"
-"This option corresponds to the --force git option."
+#. Resource IDs: (65535)
+msgid "Foreground"
 msgstr ""
 
 #. Resource IDs: (312)
@@ -5411,6 +5505,10 @@ msgstr ""
 msgid "ID:32870:V C +L"
 msgstr "ID:32870:V C +L"
 
+#. Accelerator Entry for Menu ID:32873; ''
+msgid "ID:32873:V C +E"
+msgstr ""
+
 #. Accelerator Entry for Menu ID:32881; ''
 msgid "ID:32881:V C +P"
 msgstr "ID:32881:V C +P"
@@ -5554,6 +5652,10 @@ msgstr ""
 #. Resource IDs: (65535)
 msgid "Icons/Design/Code:\t\tLuebbe Onken"
 msgstr "Icons/Design/Code:\t\tLuebbe Onken"
+
+#. Resource IDs: (97)
+msgid "Identical"
+msgstr ""
 
 #. Resource IDs: (194)
 msgid ""
@@ -5822,6 +5924,10 @@ msgstr "Valor Monetari Incorrecte."
 msgid "Invalid revision number!"
 msgstr "El número de revisió no és vàlid!"
 
+#. Resource IDs: (65535)
+msgid "Issuer:"
+msgstr ""
+
 #. Resource IDs: (145)
 msgid ""
 "It is not possible to rename a file by changing the case of its name alone.\n"
@@ -5948,6 +6054,10 @@ msgid ""
 "Leave as conflicted\n"
 "The conflict status of the file is kept"
 msgstr "Deixa com si no tingués conflictes\nL'estatus de conflicte de l'arxiu es mantindrà"
+
+#. Resource IDs: (252)
+msgid "Leave only marked blocks"
+msgstr ""
 
 #. Resource IDs: (188)
 msgid "Left View: "
@@ -6182,6 +6292,10 @@ msgstr "Marca com a resolt.\nL'estatus de l'arxiu s'ha canviat a modificat"
 
 #. Resource IDs: (252)
 msgid "Mark this block"
+msgstr ""
+
+#. Resource IDs: (7)
+msgid "Marked Blocks"
 msgstr ""
 
 #. Resource IDs: (2051)
@@ -6716,13 +6830,13 @@ msgid ""
 "not recover the auto-saved versions, they will be deleted."
 msgstr "Avis: Si escull recuperar els documents auto-desats, heu de desar-los explícitament per tal de sobreescriure els documents originals. Si escolliu no recuperar-los, seran eliminats."
 
+#. Resource IDs: (65535)
+msgid "Note: These settings also apply to the Patch Viewer dialog."
+msgstr ""
+
 #. Resource IDs: (1481)
 msgid "Note: the folder contains unversioned items"
 msgstr "Nota: el directori conté elements sense versionar"
-
-#. Resource IDs: (65535)
-msgid "Note: the font settings also affect the TortoiseGitUDiff viewer"
-msgstr "Nota: la configuració de fonts també afecta el visor de TortoiseGitUDiff"
 
 #. Resource IDs: (65535)
 msgid "Note: this affects all Tortoise clients, not just TortoiseGit!"
@@ -6766,6 +6880,10 @@ msgstr "Nombre d'autors"
 
 #. Resource IDs: (65535)
 msgid "Number of characters required for moved or copied line detection:"
+msgstr ""
+
+#. Resource IDs: (96)
+msgid "Number of characters to show in the abbreviated hash part"
 msgstr ""
 
 #. Resource IDs: (1160)
@@ -6925,6 +7043,10 @@ msgid ""
 "Open an existing document\n"
 "Open"
 msgstr "Obre un document existent\nObre"
+
+#. Resource IDs: (1797)
+msgid "Open certificate"
+msgstr ""
 
 #. Resource IDs: (3601)
 msgid ""
@@ -7997,6 +8119,10 @@ msgstr "Reinicialitza la branca actual \"%s\" a"
 msgid "Resolve"
 msgstr "Resol"
 
+#. Resource IDs: (4595)
+msgid "Resolve Submodule Conflict"
+msgstr ""
+
 #. Resource IDs: (282)
 msgid "Resolve conflict using 'mine'"
 msgstr "Resoldre conflicte utilitzant 'el meu'"
@@ -8210,6 +8336,14 @@ msgstr "Canvia a/Extreu"
 msgid "SHA-1"
 msgstr "SHA-1"
 
+#. Resource IDs: (65535)
+msgid "SHA-1:"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "SHA-256:"
+msgstr ""
+
 #. Resource IDs: (1585)
 msgid "SMTP Server requires authentication"
 msgstr "El servidor SMTP necessita autenticació"
@@ -8266,7 +8400,7 @@ msgstr "Mateixa hora d'entrega"
 msgid ""
 "Sample log message to test the bugtraq: regex strings.\n"
 "\n"
-"Testing mentions of issues inside a text: Mention single issue #55. Mention issues #77, #78, and #78. Mention more issues #123, #124 and #125 and some more separate ones: Issue #45, issue #46 and issue #47.\n"
+"Testing mentions of issues inside a text: Mention single issue #55. Mention issues #77, #78, and #79. Mention more issues #123, #124 and #125 and some more separate ones: Issue #45, issue #46 and issue #47.\n"
 "\n"
 "\n"
 "Update issue #101\n"
@@ -8335,6 +8469,24 @@ msgid ""
 "Save all\n"
 "Both Files are saved"
 msgstr "Desa'ls tots\nAmbdós arxius seran desats"
+
+#. Resource IDs: (7)
+msgid ""
+"Save and exclude\n"
+"Your changes are saved and the original content is used"
+msgstr ""
+
+#. Resource IDs: (7)
+msgid ""
+"Save and ignore marked blocks\n"
+"Only your manual edits are saved, marked blocks are left as they are"
+msgstr ""
+
+#. Resource IDs: (7)
+msgid ""
+"Save and include\n"
+"Your changes are saved and the marked blocks are included"
+msgstr ""
 
 #. Resource IDs: (156)
 msgid "Save as"
@@ -8584,6 +8736,10 @@ msgstr "Seleccioni l'arxiu que voleu anomenar i desar\nNota: Hi ha un conflicte 
 msgid "Select/deselect &all"
 msgstr "Selecciona/Desselecciona tots"
 
+#. Resource IDs: (96)
+msgid "Selection History"
+msgstr ""
+
 #. Resource IDs: (1)
 msgid "Send"
 msgstr "Envia"
@@ -8777,6 +8933,14 @@ msgstr "Mostra espais en blanc"
 msgid "Show an overview of the whole graph"
 msgstr "Mostra una visió general del gràfic complert"
 
+#. Resource IDs: (1074)
+msgid "Show asterisk log prefix"
+msgstr ""
+
+#. Resource IDs: (97)
+msgid "Show asterisk log prefix in log dialog"
+msgstr ""
+
 #. Resource IDs: (32775)
 msgid "Show author"
 msgstr "Mostra l'autor"
@@ -8800,6 +8964,14 @@ msgstr ""
 #. Resource IDs: (32784)
 msgid "Show date"
 msgstr "Mostra data"
+
+#. Resource IDs: (1804)
+msgid "Show describe in log"
+msgstr ""
+
+#. Resource IDs: (96)
+msgid "Show describe in log dialog"
+msgstr ""
 
 #. Resource IDs: (83)
 msgid "Show destination folder"
@@ -8869,6 +9041,10 @@ msgstr "Mostra el registre d'aquesta carpeta"
 #. Resource IDs: (1256)
 msgid "Show log..."
 msgstr "Mostra el registre..."
+
+#. Resource IDs: (96)
+msgid "Show long format even if a tag is exactly on that commit"
+msgstr ""
 
 #. Resource IDs: (1382)
 msgid "Show modified files in working tree"
@@ -9078,6 +9254,10 @@ msgstr "Especifica quants elements es volen mantenir en el diàleg de missatges 
 #. Resource IDs: (16976, 16977, 16978, 16979, 16980, 16981)
 msgid "Spin1"
 msgstr "Spin1"
+
+#. Resource IDs: (1827)
+msgid "Split commit"
+msgstr ""
 
 #. Resource IDs: (1253)
 msgid "Split lines"
@@ -9384,10 +9564,6 @@ msgstr "Sincronitza..."
 #. Resource IDs: (89)
 msgid "System"
 msgstr "Sistema"
-
-#. Resource IDs: (1556)
-msgid "System &sounds"
-msgstr "&Sons del sistema"
 
 #. Resource IDs: (93)
 msgid "System in offline mode. Check Internet Explorer."
@@ -9769,6 +9945,12 @@ msgid ""
 "It's not possible to show the log messages between them!"
 msgstr "Les dues URL's seleccionades no s'han creat des de la mateixa arrel.\nNo és possible mostrar els missatges de log entre elles!"
 
+#. Resource IDs: (96)
+msgid ""
+"The working tree is not clean and contains unstaged changes.\n"
+"Review and commit the changes?"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Their file:"
 msgstr "El seu fitxer:"
@@ -10068,6 +10250,10 @@ msgid ""
 "TortoiseGitMerge cannot process this patch file. The filename \"%s\" appears"
 " more than once."
 msgstr "TortoiseGitMerge no pot processar aquest arxiu de pedaç. L'arxiu \"%s\" apareix més d'una vegada."
+
+#. Resource IDs: (357)
+msgid "TortoiseGitUDiff"
+msgstr ""
 
 #. Resource IDs: (1739)
 msgid "Total changed lines including added/deleted files:"
@@ -10418,10 +10604,6 @@ msgstr "Utilitza el bloc de l'esquerra"
 msgid "Use left file"
 msgstr "Utilitza fitxer esquerra"
 
-#. Resource IDs: (252)
-msgid "Use left file except marked blocks"
-msgstr ""
-
 #. Resource IDs: (1762)
 msgid "Use local branch color for current branch"
 msgstr "Utilitza el color de la branca local per la branca actual"
@@ -10511,6 +10693,10 @@ msgid ""
 "Apply the patch to\n"
 "%s"
 msgstr "Utilitza el pedaç original\nAplica el pedaç a\n%s"
+
+#. Resource IDs: (1825, 1826)
+msgid "Use this"
+msgstr ""
 
 #. Resource IDs: (251)
 msgid "Use this &whole file"
@@ -10750,6 +10936,10 @@ msgid ""
 "\"origin\" if the remote name is empty, so you do not have to."
 msgstr ""
 
+#. Resource IDs: (96)
+msgid "Whether to reference only annotated tags, all tags or all refs"
+msgstr ""
+
 #. Resource IDs: (1409)
 msgid ""
 "While running daemon, all data of this repository is exposed without "
@@ -10901,6 +11091,10 @@ msgid ""
 "You have checked \"include untracked\".\n"
 "This includes a \"git clean -fd\" call, so ignored files/directories are removed w/o using recycle bin."
 msgstr "Heu activat la casella \"Inclou arxius no rastrejats\".\nAixò requereix executar \"git clean -fd\", per tal de treure els arxius/directoris sense fer servir la paperera de reciclatge."
+
+#. Resource IDs: (7)
+msgid "You have marked changed blocks. How should those blocks be saved?"
+msgstr ""
 
 #. Resource IDs: (16)
 msgid ""
@@ -11176,10 +11370,6 @@ msgstr "dia"
 #. Resource IDs: (10)
 msgid "deleted"
 msgstr "suprimit"
-
-#. Resource IDs: (1646)
-msgid "depth "
-msgstr "profunditat"
 
 #. Resource IDs: (58116)
 msgid "dummy"
