@@ -1,4 +1,10 @@
-﻿= Release 1.8.12.0 =
+﻿= Release 1.8.13.0 =
+Released: unreleased
+
+== Bug Fixes ==
+ * Fixed issue #2359: Selected files counter not updated after revert
+
+= Release 1.8.12.0 =
 Released: 2014-11-25
 
 == Features ==

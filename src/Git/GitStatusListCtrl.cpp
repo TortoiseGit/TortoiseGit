@@ -2257,6 +2257,8 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 										}
 										else
 										{
+											if (GetCheck(index))
+												m_nSelected--;
 											RemoveListEntry(nItem);
 										}
 										break;
