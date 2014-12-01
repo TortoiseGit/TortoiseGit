@@ -294,10 +294,9 @@ int CGit::RunAsync(CString cmd, PROCESS_INFORMATION *piOut, HANDLE *hReadOut, HA
 								&sa,CREATE_ALWAYS,FILE_ATTRIBUTE_NORMAL,NULL);
 	}
 
-	STARTUPINFO si;
+	STARTUPINFO si = { 0 };
 	PROCESS_INFORMATION pi;
 	si.cb=sizeof(STARTUPINFO);
-	GetStartupInfo(&si);
 
 	if (hErrReadOut)
 		si.hStdError = hWriteErr;
