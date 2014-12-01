@@ -194,11 +194,11 @@ UINT CCheckForUpdatesDlg::CheckThread()
 #endif
 			if (checkPreview)
 			{
-				sCheckURL = _T("http://version.tortoisegit.googlecode.com/git/version-preview.txt");
+				sCheckURL = _T("http://versioncheck.tortoisegit.org/version-preview.txt");
 				SetDlgItemText(IDC_SOURCE, _T("Using preview release channel"));
 			}
 			else
-				sCheckURL = _T("http://version.tortoisegit.googlecode.com/git/version.txt");
+				sCheckURL = _T("http://versioncheck.tortoisegit.org/version.txt");
 		}
 	}
 
@@ -460,7 +460,7 @@ void CCheckForUpdatesDlg::FillChangelog(CStdioFile &file)
 {
 	CString sChangelogURL;
 	if (!file.ReadString(sChangelogURL) || sChangelogURL.IsEmpty())
-		sChangelogURL = _T("http://tortoisegit.googlecode.com/git/src/Changelog.txt");
+		sChangelogURL = _T("http://versioncheck.tortoisegit.org/changelog.txt");
 
 	CString tempchangelogfile = CTempFiles::Instance().GetTempFilePath(true).GetWinPathString();
 	if (!m_updateDownloader->DownloadFile(sChangelogURL, tempchangelogfile, false))

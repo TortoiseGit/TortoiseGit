@@ -90,8 +90,8 @@
 			TortoiseGit allow you to redirect that upgrade
 			check to your intranet server. You can set the registry key
 			<filename>HKCU\Software\TortoiseGit\UpdateCheckURL</filename> OR <filename>HKLM\Software\TortoiseGit\UpdateCheckURL</filename> (string value, HKCU overrides HKLM)
-			to an URL pointing to a text file in your intranet (default is <ulink url="http://version.tortoisegit.googlecode.com/git/version.txt">http://version.tortoisegit.googlecode.com/git/version.txt</ulink>).
-			When the default version.txt file is used, it is checked by verifying a digital signature (<ulink url="http://version.tortoisegit.googlecode.com/git/version.txt.asc">http://version.tortoisegit.googlecode.com/git/version.txt.asc</ulink>) that it has not been altered (since TortoiseGit 1.8.5).
+			to an URL pointing to a text file in your intranet (default is <ulink url="http://versioncheck.tortoisegit.org/version.txt">http://versioncheck.tortoisegit.org/version.txt</ulink>).
+			When the default version.txt file is used, it is checked by verifying a digital signature (<ulink url="http://versioncheck.tortoisegit.org/version.txt.rsa.asc">http://versioncheck.tortoisegit.org/version.txt.rsa.asc</ulink>) that it has not been altered (since TortoiseGit 1.8.5).
 			The check for the digital signature of the version.txt file is omitted if the location is overridden in registry.
 			That text file must have the following format:
 <screen>
@@ -112,8 +112,8 @@ http://192.168.2.1/downloads/TortoiseGit/
 			when the user clicks on the (custom) message label in the upgrade dialog.
 			The URL is opened with the default web browser, so if you specify a web page,
 			that page is opened and shown to the user.
-			The fourth line contains the URL to the Changelog or release notes which are displayed in the upgrade dialog (if empty it defaults to <ulink url="http://tortoisegit.googlecode.com/git/src/Changelog.txt">http://tortoisegit.googlecode.com/git/src/Changelog.txt</ulink>)
-			The fifth line is used to override the base path to the installation packages (if empty it defaults to http://tortoisegit.googlecode.com/files/).
+			The fourth line contains the URL to the Changelog or release notes which are displayed in the upgrade dialog (if empty it defaults to <ulink url="http://versioncheck.tortoisegit.org/changelog.txt">http://versioncheck.tortoisegit.org/changelog.txt</ulink>)
+			The fifth line is used to override the base path to the installation packages (if empty it defaults to http://updater.download.tortoisegit.org/tgit/X.X.X.X/).
 			The filenames are generated as follows: TortoiseGit-(version)-(32|64)bit.msi for the main installer
 			and TortoiseGit-LanguagePack-(version)-(32|64)bit-(cs|de|...).msi for the language packs.
 			Starting from this line, one can advertise language packs (one per line: Four digit country code;ISO Country code).
