@@ -19,6 +19,7 @@
 #include "stdafx.h"
 #include "UpdateDownloader.h"
 #include "..\version.h"
+#include "SysInfo.h"
 
 CUpdateDownloader::CUpdateDownloader(HWND hwnd, bool force, UINT msg, CEvent *eventStop)
 : m_hWnd(hwnd)
@@ -74,6 +75,9 @@ BOOL CUpdateDownloader::DownloadFile(const CString& url, const CString& dest, bo
 	if (m_bForce)
 		DeleteUrlCacheEntry(url);
 
+	BOOL bTrue = TRUE;
+	InternetSetOption(hOpenHandle, INTERNET_OPTION_HTTP_DECODING, &bTrue, sizeof(bTrue));
+
 	bool isHttps = urlComponents.nScheme == INTERNET_SCHEME_HTTPS;
 	HINTERNET hConnectHandle = InternetConnect(hOpenHandle, hostname, urlComponents.nPort, nullptr, nullptr, isHttps ? INTERNET_SCHEME_HTTP : urlComponents.nScheme, 0, 0);
 	if (!hConnectHandle)
@@ -90,6 +94,9 @@ BOOL CUpdateDownloader::DownloadFile(const CString& url, const CString& dest, bo
 		InternetCloseHandle(hConnectHandle);
 		return err;
 	}
+
+	if (SysInfo::Instance().IsVistaOrLater())
+		HttpAddRequestHeaders(hResourceHandle, L"Accept-Encoding: gzip, deflate\r\n", (DWORD)-1, HTTP_ADDREQ_FLAG_ADD);
 
 	{
 resend:
