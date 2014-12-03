@@ -166,30 +166,66 @@
 			Use the <guimenuitem>Rename...</guimenuitem> command in the TortoiseGit submenu.
 		</para>
 	</sect2>
-	<!--
 	<sect2 id="tgit-dug-rename-case-conflict">
 		<title>Dealing with filename case conflicts</title>
 		<para>
 			If the repository already contains two files with the same name
 			but differing only in case (e.g. <filename>TEST.TXT</filename>
 			and <filename>test.txt</filename>), you
-			will not be able to commit or checkout the parent directory
-			on a Windows client. Whilst Git supports case-sensitive
+			will not be able to commit, and only one of them can be checkout
+			on a Windows client. Whilst Git (in general) supports case-sensitive
 			filenames, Windows does not.
 		</para>
 		<para>
-			This sometimes happens when two people commit, from separate
-			working trees, files which happen to have
-			the same name, but with a case difference. It can also happen
+			This sometimes happens
 			when files are committed from a system with a case-sensitive
-			file system, like Linux.
+			file system, like Linux, or when the setting core.ignorecase is set to false (cf. <xref linkend="git-config(1)"/>).
 		</para>
 		<para>
 			In that case, you have to decide which one of them you want to 
-			keep and delete (or rename) the other one from the repository.
+			keep and delete the other(s) from the repository (or rename the other(s)).
+			Easiest way is to do that on a case-sensitive file system, followed by commiting and pushing the changes.
+			Doing it on Windows requires several steps (and two commits):
+		</para>
+		<para>
+			Solution
+			<orderedlist>
+				<listitem>
+					<para>
+						Delete the file in explorer.
+						<caution>
+							<para>
+								Do NOT use the <guimenuitem>Delete</guimenuitem>
+								or the <guimenuitem>Delete (keep local)</guimenuitem> command 
+								in the TortoiseGit submenu!
+							</para>
+						</caution>
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Open the Commit dialog.
+						(All the checked items are of <literal>Deleted</literal> status.)
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Un-check only one item you want to keep.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Commit the changes.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Revert deletion of the wanted file in order to get it back. If you want to keep both or more files which had the "same" name, but with a different new name, do this for all files in question and rename them before proceeding with the next file.
+					</para>
+				</listitem>
+			</orderedlist>
 		</para>
 	</sect2>
-	-->
 	<sect2 id="tgit-dug-rename-del-unversioned">
 		<title>Deleting Unversioned Files</title>
 		<para>
