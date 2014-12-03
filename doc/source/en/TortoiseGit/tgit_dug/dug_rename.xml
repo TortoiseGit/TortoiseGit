@@ -166,15 +166,14 @@
 			Use the <guimenuitem>Rename...</guimenuitem> command in the TortoiseGit submenu.
 		</para>
 	</sect2>
-	<!--
 	<sect2 id="tgit-dug-rename-case-conflict">
 		<title>Dealing with filename case conflicts</title>
 		<para>
 			If the repository already contains two files with the same name
 			but differing only in case (e.g. <filename>TEST.TXT</filename>
 			and <filename>test.txt</filename>), you
-			will not be able to commit or checkout the parent directory
-			on a Windows client. Whilst Git supports case-sensitive
+			will not be able to commit, and only one of them can be checkout
+			on a Windows client. Whilst Git (in general) supports case-sensitive
 			filenames, Windows does not.
 		</para>
 		<para>
@@ -182,14 +181,51 @@
 			working trees, files which happen to have
 			the same name, but with a case difference. It can also happen
 			when files are committed from a system with a case-sensitive
-			file system, like Linux.
+			file system, like Linux, or when just setting core.ignorecase to false (cf. <xref linkend="git-config(1)"/>).
 		</para>
 		<para>
 			In that case, you have to decide which one of them you want to 
-			keep and delete (or rename) the other one from the repository.
+			keep and delete the others from the repository.
+		</para>
+		<para>
+			Solution
+			<orderedlist>
+				<listitem>
+					<para>
+						Delete the file in explorer.
+						<caution>
+							<para>
+								Do NOT use the <guimenuitem>Delete</guimenuitem>
+								or the <guimenuitem>Delete (keep local)</guimenuitem> command 
+								in the TortoiseGit submenu!
+							</para>
+						</caution>
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Open the Commit dialog.
+						(All the checked items are of <literal>Deleted</literal> status.)
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Un-check only one item you want to keep.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Commit the changes.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Revert that wanted file.
+					</para>
+				</listitem>
+			</orderedlist>
 		</para>
 	</sect2>
-	-->
 	<sect2 id="tgit-dug-rename-del-unversioned">
 		<title>Deleting Unversioned Files</title>
 		<para>
