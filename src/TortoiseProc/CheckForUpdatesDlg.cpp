@@ -331,7 +331,7 @@ UINT CCheckForUpdatesDlg::CheckThread()
 					GetDlgItem(IDC_GROUP_DOWNLOADS)->ShowWindow(SW_SHOW);
 					CenterWindow();
 				}
-				else
+				else if(m_bShowInfo)
 				{
 					temp.LoadString(IDS_CHECKNEWER_YOURUPTODATE);
 					SetDlgItemText(IDC_CHECKRESULT, temp);
