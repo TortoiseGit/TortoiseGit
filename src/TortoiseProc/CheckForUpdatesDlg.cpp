@@ -194,11 +194,15 @@ UINT CCheckForUpdatesDlg::CheckThread()
 #endif
 			if (checkPreview)
 			{
-				sCheckURL = _T("http://versioncheck.tortoisegit.org/version-preview.txt");
+				sCheckURL = _T("://versioncheck.tortoisegit.org/version-preview.txt");
 				SetDlgItemText(IDC_SOURCE, _T("Using preview release channel"));
 			}
 			else
-				sCheckURL = _T("http://versioncheck.tortoisegit.org/version.txt");
+				sCheckURL = _T("://versioncheck.tortoisegit.org/version.txt");
+			if (SysInfo::Instance().IsVistaOrLater()) // we need SNI support
+				sCheckURL = _T("https") + sCheckURL;
+			else
+				sCheckURL = _T("http") + sCheckURL;
 		}
 	}
 
@@ -460,7 +464,7 @@ void CCheckForUpdatesDlg::FillChangelog(CStdioFile &file)
 {
 	CString sChangelogURL;
 	if (!file.ReadString(sChangelogURL) || sChangelogURL.IsEmpty())
-		sChangelogURL = _T("http://versioncheck.tortoisegit.org/changelog.txt");
+		sChangelogURL = _T("https://versioncheck.tortoisegit.org/changelog.txt");
 
 	CString tempchangelogfile = CTempFiles::Instance().GetTempFilePath(true).GetWinPathString();
 	if (!m_updateDownloader->DownloadFile(sChangelogURL, tempchangelogfile, false))
