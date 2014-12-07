@@ -12,6 +12,7 @@
 #include <ctype.h>
 #include <limits.h>
 
+#include <stdexcept>
 #include <new>
 #include <string>
 #include <vector>
@@ -209,7 +210,7 @@ class ScintillaWin :
 	static ATOM callClassAtom;
 
 #if defined(USE_D2D)
-	ID2D1HwndRenderTarget *pRenderTarget;
+	ID2D1RenderTarget *pRenderTarget;
 	bool renderTargetValid;
 #endif
 
@@ -221,7 +222,7 @@ class ScintillaWin :
 	virtual void Initialise();
 	virtual void Finalise();
 #if defined(USE_D2D)
-	void EnsureRenderTarget();
+	void EnsureRenderTarget(HDC hdc);
 	void DropRenderTarget();
 #endif
 	HWND MainHWND();
@@ -441,7 +442,7 @@ void ScintillaWin::Finalise() {
 
 #if defined(USE_D2D)
 
-void ScintillaWin::EnsureRenderTarget() {
+void ScintillaWin::EnsureRenderTarget(HDC hdc) {
 	if (!renderTargetValid) {
 		DropRenderTarget();
 		renderTargetValid = true;
@@ -455,12 +456,6 @@ void ScintillaWin::EnsureRenderTarget() {
 
 		// Create a Direct2D render target.
 #if 1
-		D2D1_HWND_RENDER_TARGET_PROPERTIES dhrtp;
-		dhrtp.hwnd = hw;
-		dhrtp.pixelSize = size;
-		dhrtp.presentOptions = (technology == SC_TECHNOLOGY_DIRECTWRITERETAIN) ?
-			D2D1_PRESENT_OPTIONS_RETAIN_CONTENTS : D2D1_PRESENT_OPTIONS_NONE;
-
 		D2D1_RENDER_TARGET_PROPERTIES drtp;
 		drtp.type = D2D1_RENDER_TARGET_TYPE_DEFAULT;
 		drtp.pixelFormat.format = DXGI_FORMAT_UNKNOWN;
@@ -470,7 +465,32 @@ void ScintillaWin::EnsureRenderTarget() {
 		drtp.usage = D2D1_RENDER_TARGET_USAGE_NONE;
 		drtp.minLevel = D2D1_FEATURE_LEVEL_DEFAULT;
 
-		pD2DFactory->CreateHwndRenderTarget(drtp, dhrtp, &pRenderTarget);
+		if (technology == SC_TECHNOLOGY_DIRECTWRITEDC) {
+			// Explicit pixel format needed.
+			drtp.pixelFormat = D2D1::PixelFormat(DXGI_FORMAT_B8G8R8A8_UNORM,
+				D2D1_ALPHA_MODE_IGNORE);
+
+			ID2D1DCRenderTarget *pDCRT = NULL;
+			HRESULT hr = pD2DFactory->CreateDCRenderTarget(&drtp, &pDCRT);
+			if (FAILED(hr)) {
+				Platform::DebugPrintf("Failed CreateDCRenderTarget 0x%x\n", hr);
+			}
+			pRenderTarget = pDCRT;
+
+		} else {
+			D2D1_HWND_RENDER_TARGET_PROPERTIES dhrtp;
+			dhrtp.hwnd = hw;
+			dhrtp.pixelSize = size;
+			dhrtp.presentOptions = (technology == SC_TECHNOLOGY_DIRECTWRITERETAIN) ?
+			D2D1_PRESENT_OPTIONS_RETAIN_CONTENTS : D2D1_PRESENT_OPTIONS_NONE;
+
+			ID2D1HwndRenderTarget *pHwndRenderTarget = NULL;
+			HRESULT hr = pD2DFactory->CreateHwndRenderTarget(drtp, dhrtp, &pHwndRenderTarget);
+			if (FAILED(hr)) {
+				Platform::DebugPrintf("Failed CreateHwndRenderTarget 0x%x\n", hr);
+			}
+			pRenderTarget = pHwndRenderTarget;
+		}
 #else
 		pD2DFactory->CreateHwndRenderTarget(
 			D2D1::RenderTargetProperties(
@@ -483,6 +503,16 @@ void ScintillaWin::EnsureRenderTarget() {
 		// Pixmaps were created to be compatible with previous render target so
 		// need to be recreated.
 		DropGraphics(false);
+	}
+
+	if (technology == SC_TECHNOLOGY_DIRECTWRITEDC) {
+		RECT rcWindow;
+		GetClientRect(MainHWND(), &rcWindow);
+		HRESULT hr = static_cast<ID2D1DCRenderTarget*>(pRenderTarget)->BindDC(hdc, &rcWindow);
+		if (FAILED(hr)) {
+			Platform::DebugPrintf("BindDC failed 0x%x\n", hr);
+			DropRenderTarget();
+		}
 	}
 }
 
@@ -638,7 +668,7 @@ LRESULT ScintillaWin::WndPaint(uptr_t wParam) {
 		}
 	} else {
 #if defined(USE_D2D)
-		EnsureRenderTarget();
+		EnsureRenderTarget(pps->hdc);
 		AutoSurface surfaceWindow(pRenderTarget, this);
 		if (surfaceWindow) {
 			pRenderTarget->BeginDraw();
@@ -1082,12 +1112,19 @@ sptr_t ScintillaWin::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam
 			}
 			break;
 
-		case WM_MOUSEMOVE:
-			SetTrackMouseLeaveEvent(true);
-			ButtonMoveWithModifiers(Point::FromLong(static_cast<long>(lParam)),
-				((wParam & MK_SHIFT) != 0 ? SCI_SHIFT : 0) |
-				((wParam & MK_CONTROL) != 0 ? SCI_CTRL : 0) |
-				(Platform::IsKeyDown(VK_MENU) ? SCI_ALT : 0));
+		case WM_MOUSEMOVE: {
+				const Point pt = Point::FromLong(static_cast<long>(lParam));
+
+				// Windows might send WM_MOUSEMOVE even though the mouse has not been moved:
+				// http://blogs.msdn.com/b/oldnewthing/archive/2003/10/01/55108.aspx
+				if (ptMouseLast.x != pt.x || ptMouseLast.y != pt.y) {
+					SetTrackMouseLeaveEvent(true);
+					ButtonMoveWithModifiers(pt,
+					                        ((wParam & MK_SHIFT) != 0 ? SCI_SHIFT : 0) |
+					                        ((wParam & MK_CONTROL) != 0 ? SCI_CTRL : 0) |
+					                        (Platform::IsKeyDown(VK_MENU) ? SCI_ALT : 0));
+				}
+			}
 			break;
 
 		case WM_MOUSELEAVE:
@@ -1406,6 +1443,7 @@ sptr_t ScintillaWin::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam
 		case SCI_SETTECHNOLOGY:
 			if ((wParam == SC_TECHNOLOGY_DEFAULT) || 
 				(wParam == SC_TECHNOLOGY_DIRECTWRITERETAIN) ||
+				(wParam == SC_TECHNOLOGY_DIRECTWRITEDC) ||
 				(wParam == SC_TECHNOLOGY_DIRECTWRITE)) {
 				if (technology != static_cast<int>(wParam)) {
 					if (static_cast<int>(wParam) > SC_TECHNOLOGY_DEFAULT) {
@@ -1417,6 +1455,9 @@ sptr_t ScintillaWin::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam
 						return 0;
 #endif
 					}
+#if defined(USE_D2D)
+					DropRenderTarget();
+#endif
 					technology = static_cast<int>(wParam);
 					// Invalidate all cached information including layout.
 					DropGraphics(true);
@@ -2550,7 +2591,7 @@ void ScintillaWin::HorizontalScrollMessage(WPARAM wParam) {
  * This paint will not be abandoned.
  */
 void ScintillaWin::FullPaint() {
-	if (technology == SC_TECHNOLOGY_DEFAULT) {
+	if ((technology == SC_TECHNOLOGY_DEFAULT) || (technology == SC_TECHNOLOGY_DIRECTWRITEDC)) {
 		HDC hdc = ::GetDC(MainHWND());
 		FullPaintDC(hdc);
 		::ReleaseDC(MainHWND(), hdc);
@@ -2575,7 +2616,7 @@ void ScintillaWin::FullPaintDC(HDC hdc) {
 		}
 	} else {
 #if defined(USE_D2D)
-		EnsureRenderTarget();
+		EnsureRenderTarget(hdc);
 		AutoSurface surfaceWindow(pRenderTarget, this);
 		if (surfaceWindow) {
 			pRenderTarget->BeginDraw();
@@ -2921,7 +2962,10 @@ BOOL ScintillaWin::CreateSystemCaret() {
 	BOOL retval = ::CreateCaret(
 		MainHWND(), sysCaretBitmap,
 		sysCaretWidth, sysCaretHeight);
-	::ShowCaret(MainHWND());
+	if (technology == SC_TECHNOLOGY_DEFAULT) {
+		// System caret interferes with Direct2D drawing so only show it for GDI.
+		::ShowCaret(MainHWND());
+	}
 	return retval;
 }
 

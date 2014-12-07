@@ -668,7 +668,7 @@ void CTortoiseGitBlameView::InitialiseEditor()
 	CRegStdDWORD used2d(L"Software\\TortoiseGit\\ScintillaDirect2D", FALSE);
 	if (SysInfo::Instance().IsWin7OrLater() && DWORD(used2d))
 	{
-		SendEditor(SCI_SETTECHNOLOGY, SC_TECHNOLOGY_DIRECTWRITE);
+		SendEditor(SCI_SETTECHNOLOGY, SC_TECHNOLOGY_DIRECTWRITERETAIN);
 		SendEditor(SCI_SETBUFFEREDDRAW, 0);
 	}
 

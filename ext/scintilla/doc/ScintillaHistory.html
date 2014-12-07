@@ -459,6 +459,10 @@
 	<td>danselmi</td>
 	<td>Mat Berchtold</td>
 	<td>Michael Staszewski</td>
+	<td>Baurzhan Muftakhidinov</td>
+      </tr><tr>
+	<td>Erik Angelin</td>
+	<td>Yusuf Ramazan Karagöz</td>
     </tr>
     </table>
     <p>
@@ -469,6 +473,78 @@
         <a href="http://sourceforge.net/projects/icon-collection/">
         Icons</a> Copyright(C) 1998 by Dean S. Jones<br />
       </li>
+    </ul>
+    <h3>
+       <a href="http://prdownloads.sourceforge.net/scintilla/scite352.zip?download">Release 3.5.2</a>
+    </h3>
+    <ul>
+	<li>
+	Released 2 December 2014.
+	</li>
+	<li>
+	For OS X Cocoa switch C++ runtime to libc++ to enable use of features that will never
+	be added to libstdc++ including those part of C++11.
+	Scintilla will now run only on OS X 10.7 or later and only in 64-bit mode.
+	</li>
+	<li>
+	Include support for using C++11 &lt;regex&gt; for regular expression searches.
+	Enabling this requires rebuilding Scintilla with a non-default option.
+	This is a provisional feature and may change API before being made permanent.
+	</li>
+	<li>
+	Allocate indicators used for Input Method Editors after 31 which was the previous limit of indicators to
+	ensure no clash between the use of indicators for IME and for the application.
+	</li>
+	<li>
+	ANNOTATION_INDENTED added which is similar to ANNOTATION_BOXED in terms of positioning
+	but does not show a border.
+	</li>
+	<li>
+	Allow platform overrides for drawing tab arrows, wrap markers, and line markers.
+	Size of double click detection area is a variable.
+	These enable better visuals and behaviour for PLAT_CURSES as it is character cell based.
+	</li>
+	<li>
+	CoffeeScript lexer fixes "/*" to not be a comment.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1420/">Bug #1420</a>.
+	</li>
+	<li>
+	VHDL folder fixes "block" keyword.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1664/">Bug #1664</a>.
+	</li>
+	<li>
+	Prevent caret blinking when holding down Delete key.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1657/">Bug #1657</a>.
+	</li>
+	<li>
+	On Windows, allow right click selection in popup menu.
+	<a href="http://sourceforge.net/p/scintilla/feature-requests/1080/">Feature #1080.</a>
+	</li>
+	<li>
+	On Windows, only call ShowCaret in GDI mode as it interferes with caret drawing when using Direct2D.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1643/">Bug #1643</a>.
+	</li>
+	<li>
+	On Windows, another DirectWrite mode SC_TECHNOLOGY_DIRECTWRITEDC added
+	which may avoid drawing failures in some circumstances by drawing into a GDI DC.
+	This feature is provisional and may be changed or removed if a better solution is found.
+	</li>
+	<li>
+	On Windows, avoid processing mouse move events where the mouse has not moved as these can
+	cause unexpected dwell start notifications.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1670/">Bug #1670</a>.
+	</li>
+	<li>
+	For GTK+ on Windows, avoid extra space when pasting from external application.
+	</li>
+	<li>
+	On GTK+ 2.x allow Scintilla to be used inside tool tips by changing when preedit window created.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1662/">Bug #1662</a>.
+	</li>
+	<li>
+	Support MinGW compilation under Linux.
+	<a href="http://sourceforge.net/p/scintilla/feature-requests/1077/">Feature #1077.</a>
+	</li>
     </ul>
     <h3>
        <a href="http://prdownloads.sourceforge.net/scintilla/scite351.zip?download">Release 3.5.1</a>
