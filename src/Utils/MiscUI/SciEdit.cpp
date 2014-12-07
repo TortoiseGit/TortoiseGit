@@ -233,7 +233,7 @@ void CSciEdit::Init(LONG lLanguage, BOOL bLoadSpellCheck)
 	CRegStdDWORD used2d(L"Software\\TortoiseGit\\ScintillaDirect2D", FALSE);
 	if (SysInfo::Instance().IsWin7OrLater() && DWORD(used2d))
 	{
-		Call(SCI_SETTECHNOLOGY, SC_TECHNOLOGY_DIRECTWRITE);
+		Call(SCI_SETTECHNOLOGY, SC_TECHNOLOGY_DIRECTWRITERETAIN);
 		Call(SCI_SETBUFFEREDDRAW, 0);
 	}
 }
