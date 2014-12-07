@@ -12,6 +12,7 @@
 #include <assert.h>
 #include <ctype.h>
 
+#include <stdexcept>
 #include <string>
 #include <vector>
 #include <map>
@@ -46,7 +47,6 @@
 #include "EditModel.h"
 #include "MarginView.h"
 #include "EditView.h"
-#include "Editor.h"
 
 #ifdef SCI_NAMESPACE
 using namespace Scintilla;
@@ -186,7 +186,9 @@ EditView::EditView() {
 	pixmapIndentGuideHighlight = 0;
 	llc.SetLevel(LineLayoutCache::llcCaret);
 	posCache.SetSize(0x400);
-	editor = NULL;
+	tabArrowHeight = 4;
+	customDrawTabArrow = NULL;
+	customDrawWrapMarker = NULL;
 }
 
 EditView::~EditView() {
@@ -929,7 +931,11 @@ void EditView::DrawEOL(Surface *surface, const EditModel &model, const ViewStyle
 			rcPlace.right = rcLine.right;
 			rcPlace.left = rcPlace.right - vsDraw.aveCharWidth;
 		}
-		DrawWrapMarker(surface, rcPlace, true, vsDraw.WrapColour());
+		if (customDrawWrapMarker == NULL) {
+			DrawWrapMarker(surface, rcPlace, true, vsDraw.WrapColour());
+		} else {
+			customDrawWrapMarker(surface, rcPlace, true, vsDraw.WrapColour());
+		}
 	}
 }
 
@@ -993,6 +999,10 @@ static void DrawIndicators(Surface *surface, const EditModel &model, const ViewS
 	}
 }
 
+static bool AnnotationBoxedOrIndented(int annotationVisible) {
+	return annotationVisible == ANNOTATION_BOXED || annotationVisible == ANNOTATION_INDENTED;
+}
+
 void EditView::DrawAnnotation(Surface *surface, const EditModel &model, const ViewStyle &vsDraw, const LineLayout *ll,
 	int line, int xStart, PRectangle rcLine, int subLine, DrawPhase phase) {
 	int indent = static_cast<int>(model.pdoc->GetLineIndentation(line) * vsDraw.spaceWidth);
@@ -1004,18 +1014,16 @@ void EditView::DrawAnnotation(Surface *surface, const EditModel &model, const Vi
 			surface->FillRectangle(rcSegment, vsDraw.styles[0].back);
 		}
 		rcSegment.left = static_cast<XYPOSITION>(xStart);
-		if (model.trackLineWidth || (vsDraw.annotationVisible == ANNOTATION_BOXED)) {
-			// Only care about calculating width if tracking or need to draw box
+		if (model.trackLineWidth || AnnotationBoxedOrIndented(vsDraw.annotationVisible)) {
+			// Only care about calculating width if tracking or need to draw indented box
 			int widthAnnotation = WidestLineWidth(surface, vsDraw, vsDraw.annotationStyleOffset, stAnnotation);
-			if (vsDraw.annotationVisible == ANNOTATION_BOXED) {
+			if (AnnotationBoxedOrIndented(vsDraw.annotationVisible)) {
 				widthAnnotation += static_cast<int>(vsDraw.spaceWidth * 2); // Margins
-			}
-			if (widthAnnotation > lineWidthMaxSeen)
-				lineWidthMaxSeen = widthAnnotation;
-			if (vsDraw.annotationVisible == ANNOTATION_BOXED) {
 				rcSegment.left = static_cast<XYPOSITION>(xStart + indent);
 				rcSegment.right = rcSegment.left + widthAnnotation;
 			}
+			if (widthAnnotation > lineWidthMaxSeen)
+				lineWidthMaxSeen = widthAnnotation;
 		}
 		const int annotationLines = model.pdoc->AnnotationLines(line);
 		size_t start = 0;
@@ -1027,7 +1035,7 @@ void EditView::DrawAnnotation(Surface *surface, const EditModel &model, const Vi
 			lineInAnnotation++;
 		}
 		PRectangle rcText = rcSegment;
-		if ((phase & drawBack) && (vsDraw.annotationVisible == ANNOTATION_BOXED)) {
+		if ((phase & drawBack) && AnnotationBoxedOrIndented(vsDraw.annotationVisible)) {
 			surface->FillRectangle(rcText,
 				vsDraw.styles[stAnnotation.StyleAt(start) + vsDraw.annotationStyleOffset].back);
 			rcText.left += vsDraw.spaceWidth;
@@ -1203,7 +1211,7 @@ void EditView::DrawCarets(Surface *surface, const EditModel &model, const ViewSt
 }
 
 static void DrawWrapIndentAndMarker(Surface *surface, const ViewStyle &vsDraw, const LineLayout *ll,
-	int xStart, PRectangle rcLine, ColourOptional background) {
+	int xStart, PRectangle rcLine, ColourOptional background, DrawWrapMarkerFn customDrawWrapMarker) {
 	// default bgnd here..
 	surface->FillRectangle(rcLine, background.isSet ? background :
 		vsDraw.styles[STYLE_DEFAULT].back);
@@ -1221,7 +1229,11 @@ static void DrawWrapIndentAndMarker(Surface *surface, const ViewStyle &vsDraw, c
 		else
 			rcPlace.right = rcPlace.left + vsDraw.aveCharWidth;
 
-		DrawWrapMarker(surface, rcPlace, false, vsDraw.WrapColour());
+		if (customDrawWrapMarker == NULL) {
+			DrawWrapMarker(surface, rcPlace, false, vsDraw.WrapColour());
+		} else {
+			customDrawWrapMarker(surface, rcPlace, false, vsDraw.WrapColour());
+		}
 	}
 }
 
@@ -1465,9 +1477,12 @@ void EditView::DrawForeground(Surface *surface, const EditModel &model, const Vi
 							if (vsDraw.whitespaceColours.fore.isSet)
 								textFore = vsDraw.whitespaceColours.fore;
 							surface->PenColour(textFore);
-							PRectangle rcTab(rcSegment.left + 1, rcSegment.top + 4,
+							PRectangle rcTab(rcSegment.left + 1, rcSegment.top + tabArrowHeight,
 								rcSegment.right - 1, rcSegment.bottom - vsDraw.maxDescent);
-							DrawTabArrow(surface, rcTab, static_cast<int>(rcSegment.top + vsDraw.lineHeight / 2));
+							if (customDrawTabArrow == NULL)
+								DrawTabArrow(surface, rcTab, static_cast<int>(rcSegment.top + vsDraw.lineHeight / 2));
+							else
+								customDrawTabArrow(surface, rcTab, static_cast<int>(rcSegment.top + vsDraw.lineHeight / 2));
 						}
 					}
 				} else {
@@ -1625,17 +1640,7 @@ void EditView::DrawLine(Surface *surface, const EditModel &model, const ViewStyl
 	}
 
 	// See if something overrides the line background color.
-	ColourOptional background = vsDraw.Background(model.pdoc->GetMark(line), model.caret.active, ll->containsCaret);
-	SCNotification scn = { 0 };
-	scn.nmhdr.code = SCN_GETBKCOLOR;
-	scn.line = line;
-	scn.lParam = -1;
-	if (editor)
-		((Editor*)editor)->NotifyParent(&scn);
-	if (scn.lParam != -1) {
-		background.Set(scn.lParam);
-		background.isSet = true;
-	}
+	const ColourOptional background = vsDraw.Background(model.pdoc->GetMark(line), model.caret.active, ll->containsCaret);
 
 	const int posLineStart = model.pdoc->LineStart(line);
 
@@ -1644,7 +1649,7 @@ void EditView::DrawLine(Surface *surface, const EditModel &model, const ViewStyl
 
 	if ((ll->wrapIndent != 0) && (subLine > 0)) {
 		if (phase & drawBack) {
-			DrawWrapIndentAndMarker(surface, vsDraw, ll, xStart, rcLine, background);
+			DrawWrapIndentAndMarker(surface, vsDraw, ll, xStart, rcLine, background, customDrawWrapMarker);
 		}
 		xStart += static_cast<int>(ll->wrapIndent);
 	}
