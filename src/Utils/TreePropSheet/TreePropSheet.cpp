@@ -983,6 +983,14 @@ LRESULT CTreePropSheet::OnIsDialogMessage(WPARAM wParam, LPARAM lParam)
 		return TRUE;
 	}
 
+	if (pMsg->message == WM_KEYDOWN && GetKeyState(VK_CONTROL) & 0x8000 && ((pMsg->wParam == VK_PRIOR) || pMsg->wParam == VK_NEXT))
+	{
+		if (pMsg->wParam == VK_PRIOR)
+			ActivatePreviousPage();
+		else
+			ActivateNextPage();
+		return TRUE;
+	}
 
 	return CPropertySheet::DefWindowProc(PSM_ISDIALOGMESSAGE, wParam, lParam);
 }
