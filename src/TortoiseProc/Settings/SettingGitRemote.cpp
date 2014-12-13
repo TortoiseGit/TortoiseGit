@@ -339,8 +339,6 @@ void CSettingGitRemote::OnEnChangeEditRemote()
 		ShowEditBalloon(m_hWnd, IDC_EDIT_REMOTE, IDS_B_T_REMOTE_NAME_COLLIDE, IDS_HINT, TTI_WARNING);
 	if( (!this->m_strRemote.IsEmpty())&&(!this->m_strUrl.IsEmpty()) )
 		this->SetModified();
-	else
-		this->SetModified(0);
 }
 
 void CSettingGitRemote::OnEnChangeEditUrl()
@@ -357,8 +355,6 @@ void CSettingGitRemote::OnEnChangeEditUrl()
 
 	if( (!this->m_strRemote.IsEmpty())&&(!this->m_strUrl.IsEmpty()) )
 		this->SetModified();
-	else
-		this->SetModified(0);
 }
 
 void CSettingGitRemote::OnEnChangeEditPushUrl()
@@ -367,10 +363,8 @@ void CSettingGitRemote::OnEnChangeEditPushUrl()
 
 	this->UpdateData();
 
-	if ((!this->m_strRemote.IsEmpty()) && (!this->m_strPushUrl.IsEmpty()))
+	if (!this->m_strRemote.IsEmpty())
 		this->SetModified();
-	else
-		this->SetModified(0);
 }
 
 void CSettingGitRemote::OnEnChangeEditPuttyKey()
@@ -378,10 +372,8 @@ void CSettingGitRemote::OnEnChangeEditPuttyKey()
 	m_ChangedMask|=REMOTE_PUTTYKEY;
 
 	this->UpdateData();
-	if( (!this->m_strRemote.IsEmpty())&&(!this->m_strUrl.IsEmpty()) )
+	if (!this->m_strUrl.IsEmpty())
 		this->SetModified();
-	else
-		this->SetModified(0);
 }
 
 void CSettingGitRemote::OnCbnSelchangeComboTagOpt()
@@ -389,10 +381,7 @@ void CSettingGitRemote::OnCbnSelchangeComboTagOpt()
 	m_ChangedMask |= REMOTE_TAGOPT;
 
 	this->UpdateData();
-	if (this->m_ctrlTagOpt.GetCurSel() > 0)
-		this->SetModified();
-	else
-		this->SetModified(0);
+	this->SetModified();
 }
 
 void CSettingGitRemote::OnBnClickedCheckprune()
@@ -400,10 +389,7 @@ void CSettingGitRemote::OnBnClickedCheckprune()
 	m_ChangedMask |= REMOTE_PRUNE;
 
 	this->UpdateData();
-	if (m_bPrune != 2)
-		this->SetModified();
-	else
-		this->SetModified(0);
+	this->SetModified();
 }
 
 void CSettingGitRemote::OnBnClickedCheckpruneall()
