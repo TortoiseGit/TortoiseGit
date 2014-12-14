@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2014 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -295,7 +295,7 @@ BOOL CSettings::OnInitDialog()
 
 	SetIcon(m_hIcon, TRUE);			// Set big icon
 	SetIcon(m_hIcon, FALSE);		// Set small icon
-	if (g_GitAdminDir.HasAdminDir(this->m_CmdPath.GetWinPath()) || g_GitAdminDir.IsBareRepo(this->m_CmdPath.GetWinPath()))
+	if (g_GitAdminDir.HasAdminDir(g_Git.m_CurrentDir) || g_GitAdminDir.IsBareRepo(g_Git.m_CurrentDir))
 	{
 		CString title;
 		GetWindowText(title);
@@ -397,7 +397,7 @@ BOOL CSettings::OnInitDialog()
 	{
 		this->SetActivePage(this->m_pUDiffPage);
 	}
-	else if (g_GitAdminDir.HasAdminDir(this->m_CmdPath.GetWinPath()) || g_GitAdminDir.IsBareRepo(this->m_CmdPath.GetWinPath()))
+	else if (g_GitAdminDir.HasAdminDir(g_Git.m_CurrentDir) || g_GitAdminDir.IsBareRepo(g_Git.m_CurrentDir))
 	{
 		this->SetActivePage(this->m_pGitConfig);
 	}
