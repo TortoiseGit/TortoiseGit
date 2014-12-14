@@ -31,7 +31,7 @@
 
 IMPLEMENT_DYNAMIC(CSettingsBugtraqConfig, ISettingsPropPage)
 
-CSettingsBugtraqConfig::CSettingsBugtraqConfig(CString cmdPath)
+CSettingsBugtraqConfig::CSettingsBugtraqConfig()
 : ISettingsPropPage(CSettingsBugtraqConfig::IDD)
 , m_bNeedSave(false)
 , m_bInheritURL(FALSE)

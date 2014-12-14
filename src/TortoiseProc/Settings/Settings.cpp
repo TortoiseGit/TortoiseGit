@@ -26,12 +26,9 @@
 #include "AppUtils.h"
 
 IMPLEMENT_DYNAMIC(CSettings, CTreePropSheet)
-CSettings::CSettings(UINT nIDCaption,CTGitPath *cmdPath, CWnd* pParentWnd, UINT iSelectPage)
+CSettings::CSettings(UINT nIDCaption, CTGitPath * /*cmdPath*/, CWnd* pParentWnd, UINT iSelectPage)
 	:CTreePropSheet(nIDCaption, pParentWnd, iSelectPage)
 {
-	if(cmdPath)
-		this->m_CmdPath=*cmdPath;
-
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 	AddPropPages();
 }
@@ -67,9 +64,9 @@ void CSettings::AddPropPages()
 	m_pBugTraqPage = new CSetBugTraq();
 	m_pTBlamePage = new CSettingsTBlame();
 	m_pGitConfig = new CSettingGitConfig();
-	m_pGitRemote = new CSettingGitRemote(m_CmdPath.GetWinPath());
-	m_pGitCredential = new CSettingGitCredential(m_CmdPath.GetWinPath());
-	m_pBugtraqConfig = new CSettingsBugtraqConfig(m_CmdPath.GetWinPath());
+	m_pGitRemote = new CSettingGitRemote();
+	m_pGitCredential = new CSettingGitCredential();
+	m_pBugtraqConfig = new CSettingsBugtraqConfig();
 	m_pUDiffPage = new CSettingsUDiff();
 	m_pAdvanced = new CSettingsAdvanced();
 

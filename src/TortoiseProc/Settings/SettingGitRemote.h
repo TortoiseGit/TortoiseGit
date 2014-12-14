@@ -39,7 +39,7 @@ public:
 		REMOTE_PUSHDEFAULT	= 0x40,
 		REMOTE_PUSHURL	=0x80,
 	};
-	CSettingGitRemote(CString cmdPath);
+	CSettingGitRemote();
 	virtual ~CSettingGitRemote();
 	UINT GetIconID() {return IDI_GITREMOTE;}
 // Dialog Data
@@ -77,8 +77,6 @@ protected:
 	BOOL SaveGeneral(CString key, CString value);
 
 	int			m_ChangedMask;
-
-	CString		m_cmdPath;
 
 	CListBox	m_ctrlRemoteList;
 	CString		m_strRemote;

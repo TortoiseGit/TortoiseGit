@@ -109,7 +109,6 @@ private:
 public:
 	CSettings(UINT nIDCaption,CTGitPath *CmdPath=NULL, CWnd* pParentWnd = NULL, UINT iSelectPage = 0);
 	virtual ~CSettings();
-	CTGitPath	m_CmdPath;
 	CString		m_DefaultPage;
 	/**
 	 * Calls the SaveData()-methods of each of the settings pages.

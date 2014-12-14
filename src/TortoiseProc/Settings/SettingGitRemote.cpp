@@ -33,12 +33,11 @@
 
 IMPLEMENT_DYNAMIC(CSettingGitRemote, ISettingsPropPage)
 
-CSettingGitRemote::CSettingGitRemote(CString cmdPath)
+CSettingGitRemote::CSettingGitRemote()
 	: ISettingsPropPage(CSettingGitRemote::IDD)
 	, m_strRemote(_T(""))
 	, m_strUrl(_T(""))
 	, m_strPuttyKeyfile(_T(""))
-	, m_cmdPath(cmdPath)
 	, m_bNoFetch(false)
 	, m_bPrune(2)
 	, m_bPruneAll(FALSE)
@@ -105,15 +104,6 @@ BOOL CSettingGitRemote::OnInitDialog()
 	AdjustControlSize(IDC_CHECK_PRUNE);
 	AdjustControlSize(IDC_CHECK_PRUNEALL);
 	AdjustControlSize(IDC_CHECK_PUSHDEFAULT);
-
-	//CString str=((CSettings*)GetParent())->m_CmdPath.GetWinPath();
-	CString proj;
-	if(	g_GitAdminDir.HasAdminDir(m_cmdPath,&proj) )
-	{
-		CString title;
-		this->GetWindowText(title);
-		this->SetWindowText(title + _T(" - ") + proj);
-	}
 
 	STRING_VECTOR remotes;
 	g_Git.GetRemoteList(remotes);

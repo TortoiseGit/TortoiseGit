@@ -69,13 +69,12 @@ namespace ConfigType
 
 IMPLEMENT_DYNAMIC(CSettingGitCredential, ISettingsPropPage)
 
-CSettingGitCredential::CSettingGitCredential(CString cmdPath)
+CSettingGitCredential::CSettingGitCredential()
 	: ISettingsPropPage(CSettingGitCredential::IDD)
 	, m_strUrl(_T(""))
 	, m_strHelper(_T(""))
 	, m_strUsername(_T(""))
 	, m_bUseHttpPath(FALSE)
-	, m_cmdPath(cmdPath)
 {
 
 	m_ChangedMask = 0;
@@ -172,14 +171,7 @@ BOOL CSettingGitCredential::OnInitDialog()
 
 	AdjustControlSize(IDC_CHECK_USEHTTPPATH);
 
-	CString proj;
-	bool hasLocal = g_GitAdminDir.HasAdminDir(m_cmdPath, &proj);
-	if (hasLocal)
-	{
-		CString title;
-		this->GetWindowText(title);
-		this->SetWindowText(title + _T(" - ") + proj);
-	}
+	bool hasLocal = g_GitAdminDir.HasAdminDir(g_Git.m_CurrentDir);
 
 	m_ctrlUrlList.ResetContent();
 

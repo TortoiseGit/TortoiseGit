@@ -35,7 +35,7 @@ public:
 		CREDENTIAL_USERNAME		= 0x4,
 		CREDENTIAL_USEHTTPPATH	= 0x8,
 	};
-	CSettingGitCredential(CString cmdPath);
+	CSettingGitCredential();
 	virtual ~CSettingGitCredential();
 	UINT GetIconID() { return IDI_GITCREDENTIAL; }
 // Dialog Data
@@ -69,8 +69,6 @@ protected:
 	void Save(CString key, CString value);
 
 	int			m_ChangedMask;
-
-	CString		m_cmdPath;
 
 	CComboBox	m_ctrlSimpleCredential;
 	CListBox	m_ctrlUrlList;

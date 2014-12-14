@@ -28,7 +28,7 @@ class CSettingsBugtraqConfig : public ISettingsPropPage, public CGitSettings
 	DECLARE_DYNAMIC(CSettingsBugtraqConfig)
 
 public:
-	CSettingsBugtraqConfig(CString cmdPath);
+	CSettingsBugtraqConfig();
 	virtual ~CSettingsBugtraqConfig();
 
 // Dialog Data

@@ -1195,7 +1195,7 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 		break;
 	case eCmd_ManageRemotes:
 		{
-			CSinglePropSheetDlg(CString(MAKEINTRESOURCE(IDS_PROCS_TITLE_GITREMOTESETTINGS)), new CSettingGitRemote(g_Git.m_CurrentDir), this).DoModal();
+			CSinglePropSheetDlg(CString(MAKEINTRESOURCE(IDS_PROCS_TITLE_GITREMOTESETTINGS)), new CSettingGitRemote(), this).DoModal();
 //			CSettingGitRemote W_Remotes(m_cmdPath);
 //			W_Remotes.DoModal();
 			Refresh();
