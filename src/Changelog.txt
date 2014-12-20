@@ -5,6 +5,9 @@ Released: unreleased
  * Fixed issue #2359: Selected files counter not updated after revert
  * Fixed issue #2362: git.exe get stuck on Win XP
  * Fixed issue #2372: Remote Config Tags Dropdown doesn't enable Apply-Button when switching to Reachable
+ * Updated libgit2 in order to fix CVE-2014-9390.
+   TortoiseGit is not affected in its default configuration (libgit2 has to be manually enabled for cloning).
+   Git for Windows and mSysGit < 1.9.5 are affected, so an update highly recommended.
 
 = Release 1.8.12.0 =
 Released: 2014-11-25

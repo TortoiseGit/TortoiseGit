@@ -70,12 +70,12 @@ CTortoiseMergeApp::CTortoiseMergeApp()
 {
 	EnableHtmlHelp();
 	m_bHiColorIcons = TRUE;
-	git_threads_init();
+	git_libgit2_init();
 }
 
 CTortoiseMergeApp::~CTortoiseMergeApp()
 {
-	git_threads_shutdown();
+	git_libgit2_shutdown();
 }
 
 // The one and only CTortoiseMergeApp object

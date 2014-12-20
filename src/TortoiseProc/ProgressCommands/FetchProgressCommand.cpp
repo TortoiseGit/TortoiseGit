@@ -46,7 +46,7 @@ bool FetchProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, in
 
 	CAutoRemote remote;
 	// first try with a named remote (e.g. "origin")
-	if (git_remote_load(remote.GetPointer(), repo, url) < 0)
+	if (git_remote_lookup(remote.GetPointer(), repo, url) < 0)
 	{
 		// retry with repository located at a specific url
 		if (git_remote_create_anonymous(remote.GetPointer(), repo, url, nullptr) < 0)

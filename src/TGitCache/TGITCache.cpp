@@ -71,7 +71,7 @@ class CGit2InitClass
 public:
 	~CGit2InitClass()
 	{
-		git_threads_shutdown();
+		git_libgit2_shutdown();
 	}
 } git2init;
 
@@ -152,7 +152,7 @@ void HandleRestart()
 int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR lpCmdLine, int /*cmdShow*/)
 {
 	SetDllDirectory(L"");
-	git_threads_init();
+	git_libgit2_init();
 	HandleCommandLine(lpCmdLine);
 	CAutoGeneralHandle hReloadProtection = ::CreateMutex(NULL, FALSE, GetCacheMutexName());
 

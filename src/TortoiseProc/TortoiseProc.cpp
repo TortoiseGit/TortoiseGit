@@ -69,7 +69,7 @@ CTortoiseProcApp::CTortoiseProcApp()
 	EnableHtmlHelp();
 	SYS_IMAGE_LIST();
 	CHooks::Create();
-	git_threads_init();
+	git_libgit2_init();
 	CGit::SetGit2CredentialCallback(CAppUtils::Git2GetUserPassword);
 	CGit::SetGit2CertificateCheckCertificate(CAppUtils::Git2CertificateCheck);
 	m_bLoadUserToolbars = FALSE;
@@ -85,7 +85,7 @@ CTortoiseProcApp::~CTortoiseProcApp()
 {
 	CHooks::Destroy();
 	SYS_IMAGE_LIST().Cleanup();
-	git_threads_shutdown();
+	git_libgit2_shutdown();
 }
 
 // The one and only CTortoiseProcApp object

@@ -1696,7 +1696,7 @@ int CGit::GetRemoteTags(const CString& remote, STRING_VECTOR& list)
 
 		CStringA remoteA = CUnicodeUtils::GetUTF8(remote);
 		CAutoRemote remote;
-		if (git_remote_load(remote.GetPointer(), repo, remoteA) < 0)
+		if (git_remote_lookup(remote.GetPointer(), repo, remoteA) < 0)
 			return -1;
 
 		git_remote_callbacks callbacks = GIT_REMOTE_CALLBACKS_INIT;
@@ -1758,7 +1758,7 @@ int CGit::DeleteRemoteRefs(const CString& sRemote, const STRING_VECTOR& list)
 
 		CStringA remoteA = CUnicodeUtils::GetUTF8(sRemote);
 		CAutoRemote remote;
-		if (git_remote_load(remote.GetPointer(), repo, remoteA) < 0)
+		if (git_remote_lookup(remote.GetPointer(), repo, remoteA) < 0)
 			return -1;
 
 		git_remote_callbacks callbacks = GIT_REMOTE_CALLBACKS_INIT;
