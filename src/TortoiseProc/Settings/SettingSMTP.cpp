@@ -86,16 +86,16 @@ BOOL CSettingSMTP::OnInitDialog()
 	CMailMsg::DetectMailClient(mailCient);
 	if (!mailCient.IsEmpty())
 		m_SMTPDeliveryTypeCombo.AddString(CString(MAKEINTRESOURCE(IDS_SMTP_MAPI)));
-	m_SMTPDeliveryTypeCombo.AddString(_T("Use configured server"));
+	m_SMTPDeliveryTypeCombo.AddString(CString(MAKEINTRESOURCE(IDS_SMTP_CONFIGURED)));
 
 	if ((int)m_dwDeliveryType >= m_SMTPDeliveryTypeCombo.GetCount())
 		m_dwDeliveryType = 0;
 
 	m_SMTPDeliveryTypeCombo.SetCurSel(m_dwDeliveryType);
 
-	m_SMTPEncryptionCombo.AddString(_T("none"));
-	m_SMTPEncryptionCombo.AddString(_T("STARTTLS"));
-	m_SMTPEncryptionCombo.AddString(_T("SSL"));
+	m_SMTPEncryptionCombo.AddString(CString(MAKEINTRESOURCE(IDS_ENCRYPT_NONE)));
+	m_SMTPEncryptionCombo.AddString(CString(MAKEINTRESOURCE(IDS_ENCRYPT_STARTTLS)));
+	m_SMTPEncryptionCombo.AddString(CString(MAKEINTRESOURCE(IDS_ENCRYPT_SSL)));
 
 	if ((int)m_dwSMTPEnrcyption >= m_SMTPEncryptionCombo.GetCount())
 		m_dwSMTPEnrcyption = 0;

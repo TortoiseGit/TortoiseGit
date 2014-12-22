@@ -1168,9 +1168,13 @@
 #define IDC_COMBOBOXEX_DIR              1537
 #define IDS_SUBMODULEDIFF_IDENTICAL     1537
 #define IDC_GROUP_DIR                   1538
+#define IDS_SMTP_CONFIGURED             1538
 #define IDC_GROUP_VERSION               1539
+#define IDS_ENCRYPT_NONE                1539
 #define IDC_EDIT_NUM                    1540
+#define IDS_ENCRYPT_STARTTLS            1540
 #define IDC_BUTTON_FROM                 1541
+#define IDS_ENCRYPT_SSL                 1541
 #define IDC_CURRENT_BRANCH              1542
 #define IDC_BUTTON_FROM2                1542
 #define IDC_BUTTON_REF                  1542

@@ -3655,6 +3655,10 @@ STRINGTABLE
 BEGIN
     IDS_SETTINGS_ASTERISKLOGPREFIX_TT "Show asterisk log prefix in log dialog"
     IDS_SUBMODULEDIFF_IDENTICAL "Identical"
+    IDS_SMTP_CONFIGURED     "Use configured server"
+    IDS_ENCRYPT_NONE        "none"
+    IDS_ENCRYPT_STARTTLS    "STARTTLS"
+    IDS_ENCRYPT_SSL         "SSL"
     IDS_PROC_RENAME         "Rename %s"
     IDS_PROC_NEWNAME        "New name for %s"
 END

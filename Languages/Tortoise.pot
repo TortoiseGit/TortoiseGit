@@ -7852,6 +7852,14 @@ msgstr ""
 msgid "SSH"
 msgstr ""
 
+#. Resource IDs: (97)
+msgid "SSL"
+msgstr ""
+
+#. Resource IDs: (97)
+msgid "STARTTLS"
+msgstr ""
+
 #. Resource IDs: (331)
 msgid "SVN Commit Type"
 msgstr ""
@@ -9802,6 +9810,10 @@ msgstr ""
 msgid "Use both text blocks (this one last)"
 msgstr ""
 
+#. Resource IDs: (97)
+msgid "Use configured server"
+msgstr ""
+
 #. Resource IDs: (156)
 msgid "Use left block"
 msgstr ""
@@ -10584,6 +10596,10 @@ msgstr ""
 
 #. Resource IDs: (10)
 msgid "non-versioned"
+msgstr ""
+
+#. Resource IDs: (97)
+msgid "none"
 msgstr ""
 
 #. Resource IDs: (10)
