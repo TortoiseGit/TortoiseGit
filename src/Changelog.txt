@@ -8,6 +8,7 @@ Released: unreleased
  * Updated libgit2 in order to fix CVE-2014-9390.
    TortoiseGit is not affected in its default configuration (libgit2 has to be manually enabled for cloning).
    Git for Windows and mSysGit < 1.9.5 are affected, so an update highly recommended.
+ * Fixed issue #2385: 'Mail' - 'Use configured server' & 'none'... seems can not be localized
 
 = Release 1.8.12.0 =
 Released: 2014-11-25
