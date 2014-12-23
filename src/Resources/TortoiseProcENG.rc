@@ -4422,7 +4422,7 @@ BEGIN
     IDS_PROC_NOMSYSGIT      "Git for Windows (http://code.google.com/p/msysgit/) not found."
     IDS_PROC_SETMSYSGITPATH "&Set Git path"
     IDS_PROC_GOTOMSYSGITWEBSITE "&Open Git for Windows WebSite"
-    IDS_PROC_OLDMSYSGIT     "You have an old version of Git for Windows (http://code.google.com/p/msysgit/) installed.\n\nYou should consider an upgrade to 1.7.10+ which supports UTF-8 and is compatible to the *nix version of git."
+    IDS_PROC_OLDMSYSGIT     "You have an old version of Git for Windows (http://code.google.com/p/msysgit/) installed which contains security issues.\n\nYou should consider an upgrade to 1.9.5+."
     IDS_PROC_NOTSHOWAGAINIGNORE 
                             "Do &not show me this warning again (if Ignore is selected)"
     IDS_PROC_EDITLOCALGITCONFIG "&Edit .git/config"

@@ -10241,7 +10241,7 @@ msgid "You cannot change the type of this ref with a rename."
 msgstr ""
 
 #. Resource IDs: (84)
-msgid "You have an old version of Git for Windows (http://code.google.com/p/msysgit/) installed.\n\nYou should consider an upgrade to 1.7.10+ which supports UTF-8 and is compatible to the *nix version of git."
+msgid "You have an old version of Git for Windows (http://code.google.com/p/msysgit/) installed which contains security issues.\n\nYou should consider an upgrade to 1.9.5+."
 msgstr ""
 
 #. Resource IDs: (86)
