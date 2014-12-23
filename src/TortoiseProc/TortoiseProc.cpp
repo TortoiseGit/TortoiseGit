@@ -598,6 +598,10 @@ void CTortoiseProcApp::CheckUpgrade()
 			CRegStdDWORD(_T("Software\\TortoiseGit\\UseLibgit2_mask")).removeValue();
 	}
 
+	srand((unsigned)time(0));
+	CRegDWORD checkNewerWeekDay = CRegDWORD(_T("Software\\TortoiseGit\\CheckNewerWeekDay"), 0);
+	checkNewerWeekDay = rand() % 7;
+
 	// version specific updates
 	if (lVersion <= 0x01080802)
 	{
@@ -761,7 +765,7 @@ void CTortoiseProcApp::CheckForNewerVersion()
 			// we don't calculate the real 'week of the year' here
 			// because just to decide if we should check for an update
 			// that's not needed.
-			week = ptm.tm_yday / 7;
+			week = (ptm.tm_yday + CRegDWORD(_T("Software\\TortoiseGit\\CheckNewerWeekDay"), 0)) / 7;
 
 			CRegDWORD oldweek = CRegDWORD(_T("Software\\TortoiseGit\\CheckNewerWeek"), (DWORD)-1);
 			if (((DWORD)oldweek) == -1)
