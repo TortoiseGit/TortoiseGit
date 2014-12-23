@@ -4875,7 +4875,7 @@ msgid "Git for Windows"
 msgstr ""
 
 #. Resource IDs: (84)
-msgid "Git for Windows (http://code.google.com/p/msysgit/) not found."
+msgid "Git for Windows (https://msysgit.github.io/) not found."
 msgstr ""
 
 #. Resource IDs: (79)
@@ -10241,7 +10241,7 @@ msgid "You cannot change the type of this ref with a rename."
 msgstr ""
 
 #. Resource IDs: (84)
-msgid "You have an old version of Git for Windows (http://code.google.com/p/msysgit/) installed which contains security issues.\n\nYou should consider an upgrade to 1.9.5+."
+msgid "You have an old version of Git for Windows (http://msysgit.github.io/) installed which contains security issues.\n\nYou should consider an upgrade to 1.9.5+."
 msgstr ""
 
 #. Resource IDs: (86)
