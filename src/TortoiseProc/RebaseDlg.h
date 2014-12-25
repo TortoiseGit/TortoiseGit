@@ -29,6 +29,7 @@
 #include "MenuButton.h"
 #include "Win7.h"
 #include "Tooltip.h"
+#include "ProjectProperties.h"
 
 // CRebaseDlg dialog
 #define IDC_REBASE_TAB 0x1000000
@@ -115,6 +116,8 @@ protected:
 	CGitHash m_OrigUpstreamHash;
 	CString m_OrigHEADBranch;
 	CGitHash m_OrigHEADHash;
+
+	ProjectProperties m_ProjectProperties;
 
 	int VerifyNoConflict();
 	CString GetRebaseModeName(int rebasemode);

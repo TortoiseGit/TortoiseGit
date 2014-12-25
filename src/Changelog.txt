@@ -9,6 +9,7 @@ Released: unreleased
    TortoiseGit is not affected in its default configuration (libgit2 has to be manually enabled for cloning).
    Git for Windows and mSysGit < 1.9.5 are affected, so an update highly recommended.
  * Fixed issue #2385: 'Mail' - 'Use configured server' & 'none'... seems can not be localized
+ * Fixed issue #2356: Rebase dialog should also auto-link to issue tracker
 
 = Release 1.8.12.0 =
 Released: 2014-11-25

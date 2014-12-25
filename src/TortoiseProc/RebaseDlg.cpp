@@ -182,7 +182,9 @@ BOOL CRebaseDlg::OnInitDialog()
 		TRACE0("Failed to create log message control");
 		return FALSE;
 	}
-	m_LogMessageCtrl.Init(0);
+	m_ProjectProperties.ReadProps();
+	m_LogMessageCtrl.Init(m_ProjectProperties);
+	m_LogMessageCtrl.SetFont((CString)CRegString(_T("Software\\TortoiseGit\\LogFontName"), _T("Courier New")), (DWORD)CRegDWORD(_T("Software\\TortoiseGit\\LogFontSize"), 8));
 	m_LogMessageCtrl.Call(SCI_SETREADONLY, TRUE);
 
 	dwStyle = LBS_NOINTEGRALHEIGHT | WS_CHILD | WS_VISIBLE | WS_HSCROLL | WS_VSCROLL;
