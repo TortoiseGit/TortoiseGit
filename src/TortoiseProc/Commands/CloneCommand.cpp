@@ -98,27 +98,27 @@ bool CloneCommand::Execute()
 	{
 		CString recursiveStr;
 		if(dlg.m_bRecursive)
-			recursiveStr = _T("--recursive");
+			recursiveStr = _T(" --recursive");
 		else
 			recursiveStr = _T("");
 
 		CString bareStr;
 		if(dlg.m_bBare)
-			bareStr = _T("--bare");
+			bareStr = _T(" --bare");
 		else
 			bareStr = _T("");
 
 		CString nocheckoutStr;
 		if (dlg.m_bNoCheckout)
-			nocheckoutStr = _T("--no-checkout");
+			nocheckoutStr = _T(" --no-checkout");
 
 		CString branchStr;
 		if (dlg.m_bBranch)
-			branchStr = _T("--branch ") + dlg.m_strBranch;
+			branchStr = _T(" --branch ") + dlg.m_strBranch;
 
 		CString originStr;
 		if (dlg.m_bOrigin && !dlg.m_bSVN)
-			originStr = _T("--origin ") + dlg.m_strOrigin;
+			originStr = _T(" --origin ") + dlg.m_strOrigin;
 
 		if(dlg.m_bAutoloadPuttyKeyFile)
 		{
@@ -160,9 +160,9 @@ bool CloneCommand::Execute()
 		int ver = CAppUtils::GetMsysgitVersion();
 
 		if(ver >= 0x01070002) //above 1.7.0.2
-			progressarg = _T("--progress");
+			progressarg = _T(" --progress");
 
-		cmd.Format(_T("git.exe clone %s %s %s %s %s %s -v %s \"%s\" \"%s\""),
+		cmd.Format(_T("git.exe clone%s%s%s%s%s%s -v%s \"%s\" \"%s\""),
 						nocheckoutStr,
 						recursiveStr,
 						bareStr,
