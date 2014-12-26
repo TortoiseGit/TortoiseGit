@@ -98,27 +98,27 @@ bool CloneCommand::Execute()
 	{
 		CString recursiveStr;
 		if(dlg.m_bRecursive)
-			recursiveStr = _T("--recursive");
+			recursiveStr = _T(" --recursive");
 		else
 			recursiveStr = _T("");
 
 		CString bareStr;
 		if(dlg.m_bBare)
-			bareStr = _T("--bare");
+			bareStr = _T(" --bare");
 		else
 			bareStr = _T("");
 
 		CString nocheckoutStr;
 		if (dlg.m_bNoCheckout)
-			nocheckoutStr = _T("--no-checkout");
+			nocheckoutStr = _T(" --no-checkout");
 
 		CString branchStr;
 		if (dlg.m_bBranch)
-			branchStr = _T("--branch ") + dlg.m_strBranch;
+			branchStr = _T(" --branch ") + dlg.m_strBranch;
 
 		CString originStr;
 		if (dlg.m_bOrigin && !dlg.m_bSVN)
-			originStr = _T("--origin ") + dlg.m_strOrigin;
+			originStr = _T(" --origin ") + dlg.m_strOrigin;
 
 		if(dlg.m_bAutoloadPuttyKeyFile)
 		{
@@ -154,17 +154,15 @@ bool CloneCommand::Execute()
 			depth.Format(_T(" --depth %d"),dlg.m_nDepth);
 		}
 
-		g_Git.m_CurrentDir = GetExistingDirectoryForClone(dlg.m_Directory);
-
 		CString cmd;
 		CString progressarg;
 
 		int ver = CAppUtils::GetMsysgitVersion();
 
 		if(ver >= 0x01070002) //above 1.7.0.2
-			progressarg = _T("--progress");
+			progressarg = _T(" --progress");
 
-		cmd.Format(_T("git.exe clone %s %s %s %s %s %s -v %s \"%s\" \"%s\""),
+		cmd.Format(_T("git.exe clone%s%s%s%s%s%s -v%s \"%s\" \"%s\""),
 						nocheckoutStr,
 						recursiveStr,
 						bareStr,
@@ -175,11 +173,17 @@ bool CloneCommand::Execute()
 						url,
 						dir);
 
+		bool retry = false;
 		auto postCmdCallback = [&](DWORD status, PostCmdList& postCmdList)
 		{
 			if (status)
+			{
+				postCmdList.push_back(PostCmd(IDI_REFRESH, IDS_MSGBOX_RETRY, [&] { retry = true; }));
 				return;
+			}
 
+			// After cloning, change current directory to the cloned directory
+			g_Git.m_CurrentDir = dlg.m_Directory;
 			if (dlg.m_bAutoloadPuttyKeyFile) // do this here, since it might be needed for actions performed in Log
 				StorePuttyKey(dlg.m_Directory, dlg.m_strPuttyKeyFile);
 
@@ -236,34 +240,46 @@ bool CloneCommand::Execute()
 		{
 			if (g_Git.UsingLibGit2(CGit::GIT_CMD_CLONE))
 			{
-				CGitProgressDlg GitDlg;
-				CTGitPathList list;
-				g_Git.m_CurrentDir = dir;
-				list.AddPath(CTGitPath(dir));
-				CloneProgressCommand cloneProgressCommand;
-				GitDlg.SetCommand(&cloneProgressCommand);
-				cloneProgressCommand.m_PostCmdCallback = postCmdCallback;
-				cloneProgressCommand.SetUrl(url);
-				cloneProgressCommand.SetPathList(list);
-				cloneProgressCommand.SetIsBare(dlg.m_bBare == TRUE);
-				if (dlg.m_bBranch)
-					cloneProgressCommand.SetRefSpec(dlg.m_strBranch);
-				if (dlg.m_bOrigin)
-					cloneProgressCommand.SetRemote(dlg.m_strOrigin);
-				cloneProgressCommand.SetNoCheckout(dlg.m_bNoCheckout == TRUE);
-				GitDlg.DoModal();
-				return !GitDlg.DidErrorsOccur();
+				while (true)
+				{
+					retry = false;
+					CGitProgressDlg GitDlg;
+					CTGitPathList list;
+					g_Git.m_CurrentDir = GetExistingDirectoryForClone(dlg.m_Directory);
+					list.AddPath(CTGitPath(dir));
+					CloneProgressCommand cloneProgressCommand;
+					GitDlg.SetCommand(&cloneProgressCommand);
+					cloneProgressCommand.m_PostCmdCallback = postCmdCallback;
+					cloneProgressCommand.SetUrl(url);
+					cloneProgressCommand.SetPathList(list);
+					cloneProgressCommand.SetIsBare(dlg.m_bBare == TRUE);
+					if (dlg.m_bBranch)
+						cloneProgressCommand.SetRefSpec(dlg.m_strBranch);
+					if (dlg.m_bOrigin)
+						cloneProgressCommand.SetRemote(dlg.m_strOrigin);
+					cloneProgressCommand.SetNoCheckout(dlg.m_bNoCheckout == TRUE);
+					GitDlg.DoModal();
+					if (!retry)
+						return !GitDlg.DidErrorsOccur();
+				}
 			}
 		}
-		CProgressDlg progress;
-		progress.m_GitCmd=cmd;
-		progress.m_PostCmdCallback = postCmdCallback;
-		INT_PTR ret = progress.DoModal();
 
-		if (dlg.m_bSVN)
-			::DeleteFile(g_Git.m_CurrentDir + _T("\\sys$command"));
+		while (true)
+		{
+			retry = false;
+			g_Git.m_CurrentDir = GetExistingDirectoryForClone(dlg.m_Directory);
+			CProgressDlg progress;
+			progress.m_GitCmd=cmd;
+			progress.m_PostCmdCallback = postCmdCallback;
+			INT_PTR ret = progress.DoModal();
 
-		return ret == IDOK;
+			if (dlg.m_bSVN)
+				::DeleteFile(g_Git.m_CurrentDir + _T("\\sys$command"));
+
+			if (!retry)
+				return ret == IDOK;
+		}
 	}
 	return FALSE;
 }
