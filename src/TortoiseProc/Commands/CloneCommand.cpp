@@ -154,8 +154,6 @@ bool CloneCommand::Execute()
 			depth.Format(_T(" --depth %d"),dlg.m_nDepth);
 		}
 
-		g_Git.m_CurrentDir = GetExistingDirectoryForClone(dlg.m_Directory);
-
 		CString cmd;
 		CString progressarg;
 
@@ -184,6 +182,8 @@ bool CloneCommand::Execute()
 				return;
 			}
 
+			// After cloning, change current directory to the cloned directory
+			g_Git.m_CurrentDir = dlg.m_Directory;
 			if (dlg.m_bAutoloadPuttyKeyFile) // do this here, since it might be needed for actions performed in Log
 				StorePuttyKey(dlg.m_Directory, dlg.m_strPuttyKeyFile);
 
@@ -245,7 +245,7 @@ bool CloneCommand::Execute()
 					retry = false;
 					CGitProgressDlg GitDlg;
 					CTGitPathList list;
-					g_Git.m_CurrentDir = dir;
+					g_Git.m_CurrentDir = GetExistingDirectoryForClone(dlg.m_Directory);
 					list.AddPath(CTGitPath(dir));
 					CloneProgressCommand cloneProgressCommand;
 					GitDlg.SetCommand(&cloneProgressCommand);
@@ -268,6 +268,7 @@ bool CloneCommand::Execute()
 		while (true)
 		{
 			retry = false;
+			g_Git.m_CurrentDir = GetExistingDirectoryForClone(dlg.m_Directory);
 			CProgressDlg progress;
 			progress.m_GitCmd=cmd;
 			progress.m_PostCmdCallback = postCmdCallback;
