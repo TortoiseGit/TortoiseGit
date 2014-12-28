@@ -92,4 +92,6 @@ private:
 	void		FillDownloads(CAutoConfig& versionfile, const CString version);
 	CSciEdit	m_cLogMessage;
 	void		FillChangelog(CAutoConfig& versionfile, bool official);
+	static CString GetWinINetError(DWORD err);
+	CString		m_sErrors;
 };

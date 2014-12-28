@@ -3090,7 +3090,7 @@ msgstr ""
 
 #. Resource IDs: (93)
 #, c-format
-msgid "Could not check for a newer version! (Error code: 0x%08X)"
+msgid "Could not check for a newer version! %s (Error code: 0x%08X)"
 msgstr ""
 
 #. Resource IDs: (81)

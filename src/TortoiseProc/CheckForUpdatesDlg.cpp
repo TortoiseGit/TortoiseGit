@@ -207,14 +207,17 @@ UINT CCheckForUpdatesDlg::CheckThread()
 	CString ver;
 	CAutoConfig versioncheck(true);
 	CString errorText;
-	BOOL ret = m_updateDownloader->DownloadFile(sCheckURL, tempfile, false);
+	DWORD ret = m_updateDownloader->DownloadFile(sCheckURL, tempfile, false);
 	if (!ret && official)
 	{
 		CString signatureTempfile = CTempFiles::Instance().GetTempFilePath(true).GetWinPathString();
 		ret = m_updateDownloader->DownloadFile(sCheckURL + SIGNATURE_FILE_ENDING, signatureTempfile, false);
-		if (!ret && VerifyIntegrity(tempfile, signatureTempfile, m_updateDownloader))
+		if (ret || VerifyIntegrity(tempfile, signatureTempfile, m_updateDownloader))
 		{
-			SetDlgItemText(IDC_CHECKRESULT, _T("Could not verify digital signature."));
+			CString error = _T("Could not verify digital signature.");
+			if (ret)
+				error += _T("\r\nError: ") + GetWinINetError(ret) + _T(" (on ") + sCheckURL + SIGNATURE_FILE_ENDING + _T(")");
+			SetDlgItemText(IDC_CHECKRESULT, error);
 			DeleteUrlCacheEntry(sCheckURL);
 			DeleteUrlCacheEntry(sCheckURL + SIGNATURE_FILE_ENDING);
 			goto finish;
@@ -226,7 +229,7 @@ UINT CCheckForUpdatesDlg::CheckThread()
 		if (CRegDWORD(_T("Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings\\GlobalUserOffline"), 0))
 			errorText.LoadString(IDS_OFFLINEMODE); // offline mode enabled
 		else
-			errorText.Format(IDS_CHECKNEWER_NETERROR_FORMAT, ret);
+			errorText.Format(IDS_CHECKNEWER_NETERROR_FORMAT, GetWinINetError(ret) + _T(" URL: ") + sCheckURL, ret);
 		SetDlgItemText(IDC_CHECKRESULT, errorText);
 		goto finish;
 	}
@@ -484,17 +487,22 @@ void CCheckForUpdatesDlg::FillChangelog(CAutoConfig& versioncheck, bool official
 	}
 
 	CString tempchangelogfile = CTempFiles::Instance().GetTempFilePath(true).GetWinPathString();
-	if (m_updateDownloader->DownloadFile(sChangelogURL, tempchangelogfile, false))
+	DWORD err;
+	if ((err = m_updateDownloader->DownloadFile(sChangelogURL, tempchangelogfile, false)) != ERROR_SUCCESS)
 	{
-		::SendMessage(m_hWnd, WM_USER_FILLCHANGELOG, 0, reinterpret_cast<LPARAM>(_T("Could not load changelog.")));
+		CString msg = _T("Could not load changelog.\r\nError: ") + GetWinINetError(err) + _T(" (on ") + sChangelogURL + _T(")");
+		::SendMessage(m_hWnd, WM_USER_FILLCHANGELOG, 0, reinterpret_cast<LPARAM>((LPCTSTR)msg));
 		return;
 	}
 	if (official)
 	{
 		CString signatureTempfile = CTempFiles::Instance().GetTempFilePath(true).GetWinPathString();
-		if (m_updateDownloader->DownloadFile(sChangelogURL + SIGNATURE_FILE_ENDING, signatureTempfile, false) || VerifyIntegrity(tempchangelogfile, signatureTempfile, m_updateDownloader))
+		if ((err = m_updateDownloader->DownloadFile(sChangelogURL + SIGNATURE_FILE_ENDING, signatureTempfile, false)) != ERROR_SUCCESS || VerifyIntegrity(tempchangelogfile, signatureTempfile, m_updateDownloader))
 		{
-			::SendMessage(m_hWnd, WM_USER_FILLCHANGELOG, 0, reinterpret_cast<LPARAM>(_T("Could not verify digital signature.")));
+			CString error = _T("Could not verify digital signature.");
+			if (err)
+				error += _T("\r\nError: ") + GetWinINetError(err) + _T(" (on ") + sChangelogURL + SIGNATURE_FILE_ENDING + _T(")");
+			::SendMessage(m_hWnd, WM_USER_FILLCHANGELOG, 0, reinterpret_cast<LPARAM>((LPCTSTR)error));
 			DeleteUrlCacheEntry(sChangelogURL);
 			DeleteUrlCacheEntry(sChangelogURL + SIGNATURE_FILE_ENDING);
 			return;
@@ -510,6 +518,8 @@ void CCheckForUpdatesDlg::FillChangelog(CAutoConfig& versioncheck, bool official
 		bool skipBom = read >= 3 && buf[0] == 0xEF && buf[1] == 0xBB && buf[2] == 0xBF;
 		g_Git.StringAppend(&temp, buf.get() + (skipBom ? 3 : 0), CP_UTF8, read - (skipBom ? 3 : 0));
 	}
+	else
+		temp = _T("Could not open downloaded changelog file.");
 	::SendMessage(m_hWnd, WM_USER_FILLCHANGELOG, 0, reinterpret_cast<LPARAM>((LPCTSTR)temp));
 }
 
@@ -640,10 +650,12 @@ bool CCheckForUpdatesDlg::Download(CString filename)
 
 	CString tempfile = CTempFiles::Instance().GetTempFilePath(true).GetWinPathString();
 	CString signatureTempfile = CTempFiles::Instance().GetTempFilePath(true).GetWinPathString();
-	BOOL ret = m_updateDownloader->DownloadFile(url, tempfile, true);
+	DWORD ret = m_updateDownloader->DownloadFile(url, tempfile, true);
 	if (!ret)
 	{
 		ret = m_updateDownloader->DownloadFile(url + SIGNATURE_FILE_ENDING, signatureTempfile, true);
+		if (ret)
+			m_sErrors += url + SIGNATURE_FILE_ENDING + _T(": ") + GetWinINetError(ret) + _T("\r\n");
 		m_progress.SetPos(m_progress.GetPos() + 1);
 		if (m_pTaskbarList)
 		{
@@ -653,6 +665,8 @@ bool CCheckForUpdatesDlg::Download(CString filename)
 			m_pTaskbarList->SetProgressValue(m_hWnd, m_progress.GetPos(), maxValue);
 		}
 	}
+	else
+		m_sErrors += url + _T(": ") + GetWinINetError(ret) + _T("\r\n");
 	if (!ret)
 	{
 		if (VerifyIntegrity(tempfile, signatureTempfile, m_updateDownloader) == 0)
@@ -663,6 +677,7 @@ bool CCheckForUpdatesDlg::Download(CString filename)
 			MoveFile(signatureTempfile, destFilename + SIGNATURE_FILE_ENDING);
 			return true;
 		}
+		m_sErrors += url + SIGNATURE_FILE_ENDING + _T(": Broken digital signature.\r\n");
 		DeleteUrlCacheEntry(url);
 		DeleteUrlCacheEntry(url + SIGNATURE_FILE_ENDING);
 	}
@@ -672,7 +687,7 @@ bool CCheckForUpdatesDlg::Download(CString filename)
 UINT CCheckForUpdatesDlg::DownloadThread()
 {
 	m_ctrlFiles.SetExtendedStyle(m_ctrlFiles.GetExtendedStyle() & ~LVS_EX_CHECKBOXES);
-
+	m_sErrors.Empty();
 	BOOL result = TRUE;
 	for (int i = 0; i < (int)m_ctrlFiles.GetItemCount(); ++i)
 	{
@@ -732,7 +747,11 @@ LRESULT CCheckForUpdatesDlg::OnEndDownload(WPARAM, LPARAM)
 		m_ctrlUpdate.SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_DOWNLOAD)));
 		if (m_pTaskbarList)
 			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_ERROR);
-		CMessageBox::Show(NULL, IDS_ERR_FAILEDUPDATEDOWNLOAD, IDS_APPNAME, MB_ICONERROR);
+		CString tmp;
+		tmp.LoadString(IDS_ERR_FAILEDUPDATEDOWNLOAD);
+		if (!m_sErrors.IsEmpty())
+			tmp += _T("\r\n\r\nErrors:\r\n") + m_sErrors;
+		CMessageBox::Show(NULL, tmp, _T("TortoiseGit"), MB_ICONERROR);
 		if (m_pTaskbarList)
 			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NOPROGRESS);
 	}
@@ -812,4 +831,23 @@ LRESULT CCheckForUpdatesDlg::OnTaskbarBtnCreated(WPARAM /*wParam*/, LPARAM /*lPa
 	m_pTaskbarList.Release();
 	m_pTaskbarList.CoCreateInstance(CLSID_TaskbarList);
 	return 0;
+}
+
+CString CCheckForUpdatesDlg::GetWinINetError(DWORD err)
+{
+	CString readableError = CFormatMessageWrapper(err);
+	if (readableError.IsEmpty())
+	{
+		CString modules[] = { _T("wininet.dll"), _T("urlmon.dll") };
+		for (auto module : modules)
+		{
+			LPTSTR buffer;
+			FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_IGNORE_INSERTS | FORMAT_MESSAGE_FROM_HMODULE, GetModuleHandle(module), err, 0, (LPTSTR)&buffer, 0, NULL);
+			readableError = buffer;
+			LocalFree(buffer);
+			if (!readableError.IsEmpty())
+				break;
+		}
+	}
+	return readableError.Trim();
 }

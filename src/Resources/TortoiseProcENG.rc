@@ -4560,7 +4560,7 @@ BEGIN
     IDS_HIERARCHICALCONFIG  "Git uses the concept of a hierarchical configuration.\nI.e. there are multiple levels; settings in higher levels override values in lower levels.\nThe ""Effective"" tab shows you the effective values for the current scope (read-only).\nSelect any level to see the values stored there.\nIn order to change settings select a level, enter the values and select where to store to."
     IDS_OFFLINEMODE         "System in offline mode. Check Internet Explorer."
     IDS_CHECKNEWER_NETERROR_FORMAT 
-                            "Could not check for a newer version! (Error code: 0x%08X)"
+                            "Could not check for a newer version! %s (Error code: 0x%08X)"
     IDS_PROC_BRANCH_FF      "Branch (FF)"
     IDS_PROC_LOG_LOCAL_BRANCHES "<Local Branches>"
     IDS_PROC_LOG_SELECT_LOCAL_BRANCHES "All local branches"

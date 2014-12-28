@@ -57,7 +57,7 @@ void CUpdateDownloader::BruteforceGetWindowsVersionNumber(OSVERSIONINFOEX& osVer
 		++osVersionInfo.dwMinorVersion;
 }
 
-BOOL CUpdateDownloader::DownloadFile(const CString& url, const CString& dest, bool showProgress) const
+DWORD CUpdateDownloader::DownloadFile(const CString& url, const CString& dest, bool showProgress) const
 {
 	CString hostname;
 	CString urlpath;
@@ -133,7 +133,7 @@ resend:
 				return ERROR_FILE_NOT_FOUND;
 			else if (statusCode == 403)
 				return ERROR_ACCESS_DENIED;
-			return INET_E_DOWNLOAD_FAILURE;
+			return (DWORD)INET_E_DOWNLOAD_FAILURE;
 		}
 	}
 
@@ -203,7 +203,7 @@ resend:
 		{
 			InternetCloseHandle(hResourceHandle);
 			InternetCloseHandle(hConnectHandle);
-			return E_ABORT; // canceled by the user
+			return (DWORD)E_ABORT; // canceled by the user
 		}
 	}
 	while (true);
@@ -213,7 +213,7 @@ resend:
 	if (downloadedSum == 0)
 	{
 		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Download size of %s was zero.\n"), url);
-		return INET_E_DOWNLOAD_FAILURE;
+		return (DWORD)INET_E_DOWNLOAD_FAILURE;
 	}
-	return 0;
+	return ERROR_SUCCESS;
 }
