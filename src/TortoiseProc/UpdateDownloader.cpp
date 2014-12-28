@@ -76,7 +76,7 @@ BOOL CUpdateDownloader::DownloadFile(const CString& url, const CString& dest, bo
 		DeleteUrlCacheEntry(url);
 
 	BOOL bTrue = TRUE;
-	InternetSetOption(hOpenHandle, INTERNET_OPTION_HTTP_DECODING, &bTrue, sizeof(bTrue));
+	BOOL enableDecoding = InternetSetOption(hOpenHandle, INTERNET_OPTION_HTTP_DECODING, &bTrue, sizeof(bTrue));
 
 	bool isHttps = urlComponents.nScheme == INTERNET_SCHEME_HTTPS;
 	HINTERNET hConnectHandle = InternetConnect(hOpenHandle, hostname, urlComponents.nPort, nullptr, nullptr, isHttps ? INTERNET_SCHEME_HTTP : urlComponents.nScheme, 0, 0);
@@ -95,7 +95,7 @@ BOOL CUpdateDownloader::DownloadFile(const CString& url, const CString& dest, bo
 		return err;
 	}
 
-	if (SysInfo::Instance().IsVistaOrLater())
+	if (enableDecoding && SysInfo::Instance().IsVistaOrLater())
 		HttpAddRequestHeaders(hResourceHandle, L"Accept-Encoding: gzip, deflate\r\n", (DWORD)-1, HTTP_ADDREQ_FLAG_ADD);
 
 	{
