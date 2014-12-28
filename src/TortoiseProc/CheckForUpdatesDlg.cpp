@@ -441,7 +441,7 @@ void CCheckForUpdatesDlg::FillDownloads(CStdioFile &file, CString version)
 		LangPack pack = { sLang, sLang2, loc, langs.Mid(5), installed };
 		availableLangs.push_back(pack);
 	}
-	std::sort(availableLangs.begin(), availableLangs.end(), [&](const LangPack& a, const LangPack& b) -> int
+	std::stable_sort(availableLangs.begin(), availableLangs.end(), [&](const LangPack& a, const LangPack& b) -> int
 	{
 		return (a.m_Installed && !b.m_Installed) ? 1 : (!a.m_Installed && b.m_Installed) ? 0 : (a.m_PackName.Compare(b.m_PackName) < 0);
 	});
