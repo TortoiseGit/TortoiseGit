@@ -115,12 +115,7 @@ BOOL CCheckForUpdatesDlg::OnInitDialog()
 	m_ctrlFiles.SetColumnWidth(0, 350);
 	m_ctrlFiles.SetColumnWidth(1, 200);
 
-	ProjectProperties pp;
-	pp.SetCheckRe(_T("[Ii]ssues?:?(\\s*(,|and)?\\s*#?\\d+)+"));
-	pp.SetBugIDRe(_T("(\\d+)"));
-	pp.lProjectLanguage = -1;
-	pp.sUrl = _T("https://code.google.com/p/tortoisegit/issues/detail?id=%BUGID%");
-	m_cLogMessage.Init(pp);
+	m_cLogMessage.Init(-1);
 	m_cLogMessage.SetFont((CString)CRegString(_T("Software\\TortoiseGit\\LogFontName"), _T("Courier New")), (DWORD)CRegDWORD(_T("Software\\TortoiseGit\\LogFontSize"), 8));
 	m_cLogMessage.Call(SCI_SETREADONLY, TRUE);
 
@@ -368,9 +363,12 @@ void CCheckForUpdatesDlg::FillDownloads(CAutoConfig& versioncheck, const CString
 		m_sFilesURL.Format(_T("http://updater.download.tortoisegit.org/tgit/%s/"), version);
 
 	m_ctrlFiles.InsertItem(0, _T("TortoiseGit"));
-	CString filename;
-	filename.Format(_T("TortoiseGit-%s-%sbit.msi"), version, x86x64);
-	m_ctrlFiles.SetItemData(0, (DWORD_PTR)(new CUpdateListCtrl::Entry(filename, CUpdateListCtrl::STATUS_NONE)));
+	CString filenameMain, filenamePattern;
+	versioncheck.GetString(_T("tortoisegit.mainfilename"), filenamePattern);
+	if (filenamePattern.IsEmpty())
+		filenamePattern = _T("TortoiseGit-%1!s!-%2!s!bit.msi");
+	filenameMain.FormatMessage(filenamePattern, version, x86x64);
+	m_ctrlFiles.SetItemData(0, (DWORD_PTR)(new CUpdateListCtrl::Entry(filenameMain, CUpdateListCtrl::STATUS_NONE)));
 	m_ctrlFiles.SetCheck(0 , TRUE);
 
 	struct LangPack
@@ -443,13 +441,17 @@ void CCheckForUpdatesDlg::FillDownloads(CAutoConfig& versioncheck, const CString
 	{
 		return (a.m_Installed && !b.m_Installed) ? 1 : (!a.m_Installed && b.m_Installed) ? 0 : (a.m_PackName.Compare(b.m_PackName) < 0);
 	});
+	filenamePattern.Empty();
+	versioncheck.GetString(_T("tortoisegit.languagepackfilename"), filenamePattern);
+	if (filenamePattern.IsEmpty())
+		filenamePattern = _T("TortoiseGit-LanguagePack-%1!s!-%2!s!bit-%3!s!.msi");
 	for (auto langs : languagePacks.availableLangs)
 	{
 		int pos = m_ctrlFiles.InsertItem(m_ctrlFiles.GetItemCount(), langs.m_PackName);
 		m_ctrlFiles.SetItemText(pos, 1, langs.m_LangName);
 
 		CString filename;
-		filename.Format(_T("TortoiseGit-LanguagePack-%s-%sbit-%s.msi"), version, x86x64, langs.m_LangCode);
+		filename.FormatMessage(filenamePattern, version, x86x64, langs.m_LangCode, langs.m_LocaleID);
 		m_ctrlFiles.SetItemData(pos, (DWORD_PTR)(new CUpdateListCtrl::Entry(filename, CUpdateListCtrl::STATUS_NONE)));
 
 		if (langs.m_Installed)
@@ -460,10 +462,26 @@ void CCheckForUpdatesDlg::FillDownloads(CAutoConfig& versioncheck, const CString
 
 void CCheckForUpdatesDlg::FillChangelog(CAutoConfig& versioncheck, bool official)
 {
+	ProjectProperties pp;
+	pp.lProjectLanguage = -1;
+	if (versioncheck.GetString(_T("tortoisegit.issuesurl"), pp.sUrl))
+		pp.sUrl = _T("https://code.google.com/p/tortoisegit/issues/detail?id=%BUGID%");
+	if (!pp.sUrl.IsEmpty())
+	{
+		pp.SetCheckRe(_T("[Ii]ssues?:?(\\s*(,|and)?\\s*#?\\d+)+"));
+		pp.SetBugIDRe(_T("(\\d+)"));
+	}
+	m_cLogMessage.Init(pp);
+
 	CString sChangelogURL;
 	versioncheck.GetString(_T("TortoiseGit.changelogurl"), sChangelogURL);
 	if (sChangelogURL.IsEmpty())
 		sChangelogURL = _T("https://versioncheck.tortoisegit.org/changelog.txt");
+	else
+	{
+		CString tmp(sChangelogURL);
+		sChangelogURL.FormatMessage(tmp, TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO);
+	}
 
 	CString tempchangelogfile = CTempFiles::Instance().GetTempFilePath(true).GetWinPathString();
 	if (m_updateDownloader->DownloadFile(sChangelogURL, tempchangelogfile, false))
