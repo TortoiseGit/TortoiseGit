@@ -30,12 +30,51 @@
         lines added and deleted in <literal>Theirs</literal> and
         <literal>Mine</literal>, and the number of unresolved
         conflicts remaining.
-        You can also see which line-ending style is in use, what
-        encoding (ASCII, UTF-8, etc) is assumed by TortoiseGitMerge, and whether
-        there is a byte-order-mark (BOM) present in UTF-8 files.
-        You can change line-ending style and encoding by double-clicking the corresponding column of that view.
-        A dialog box will be displayed.
-        The left side of the status bar is used to display hints when you
-        hover the mouse over a control.
+    </para>
+    <para>
+        The status bar also contains combo box controls which indicate how the
+        files are handled and treated:
+        <variablelist>
+            <varlistentry>
+                <term>Encoding</term>
+                <listitem>
+                    <para>
+                        The encoding specifies how the characters in the views are
+                        loaded/saved and shown. The most common encoding in English is
+                        ASCII (which means the local encoding of the OS language), but
+                        you can change this to be UTF8, UTF16LE, UTF16BE, UTF32LE and
+                        UTF32BE, both with or without a byte order mark (BOM).
+                    </para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>Line Endings</term>
+                <listitem>
+                    <para>
+                        The most common line endings on Windows is CRLF, but you can
+                        change the line endings to whatever you like. Note that if you
+                        change the line endings, then <emphasis>all</emphasis> line
+                        endings in the whole file will change, even if when loaded the
+                        line endings were not all the same.
+                    </para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>Tabs</term>
+                <listitem>
+                    <para>
+                        The option at the top of the combo box menu indicates whether
+                        tabs or spaces are inserted when you press the tab key.
+                        The <emphasis>smart tab char</emphasis> option if enabled uses
+                        an algorithm to determine whether one or the other is best used.
+                    </para>
+                    <para>
+                        The tab size specifies how many space chars are inserted when
+                        editing and pressing the tab char, or how many chars the next
+                        word is indented when a tab char is encountered.
+                    </para>
+                </listitem>
+            </varlistentry>
+        </variablelist>
     </para>
 </sect1>

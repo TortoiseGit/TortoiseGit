@@ -85,6 +85,12 @@ Don't touch these lines:
                             </entry>
                         </row>
                         <row>
+                            <entry condition="pot">/basereflectedname</entry>
+                            <entry>
+                                The name to use for editorconfig templates.
+                            </entry>
+                        </row>
+                        <row>
                             <entry condition="pot">/theirs</entry>
                             <entry>
                                 Specifies the <emphasis>theirs</emphasis> file used
@@ -96,6 +102,12 @@ Don't touch these lines:
                             <entry>
                                 The name of the theirs file. This is shown in the
                                 view title instead of the file path.
+                            </entry>
+                        </row>
+                        <row>
+                            <entry condition="pot">/theirsreflectedname</entry>
+                            <entry>
+                                The name to use for editorconfig templates.
                             </entry>
                         </row>
                         <row>
@@ -111,6 +123,12 @@ Don't touch these lines:
                             <entry>
                                 The name of the mine file. This is shown in the
                                 view title instead of the file path.
+                            </entry>
+                        </row>
+                        <row>
+                            <entry condition="pot">/minereflectedname</entry>
+                            <entry>
+                                The name to use for editorconfig templates.
                             </entry>
                         </row>
                         <row>
@@ -131,12 +149,33 @@ Don't touch these lines:
                             </entry>
                         </row>
                         <row>
+                            <entry condition="pot">/mergedreflectedname</entry>
+                            <entry>
+                                The name to use for editorconfig templates.
+                            </entry>
+                        </row>
+                        <row>
                             <entry condition="pot">/patchpath</entry>
                             <entry>
                                 The path where a patch should be applied to. If you don't
                                 set this path, then TortoiseGitMerge will try to find the path
                                 itself to match the paths in the patch file, but that can take
                                 <emphasis>very long</emphasis>.
+                            </entry>
+                        </row>
+                        <row>
+                            <entry condition="pot">/saverequired</entry>
+                            <entry>
+                                If specified, forces TortoiseMerge to ask to save the file
+                                before exiting, even if the user does not modify the files.
+                            </entry>
+                        </row>
+                        <row>
+                            <entry condition="pot">/saverequiredonconflicts</entry>
+                            <entry>
+                                If specified, forces TortoiseMerge to ask to save the file
+                                before exiting if there are conflicts found, even if the user
+                                does not modify the files.
                             </entry>
                         </row>
                         <row>
