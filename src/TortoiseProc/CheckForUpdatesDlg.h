@@ -91,5 +91,5 @@ private:
 	BOOL		VerifySignature(CString fileName);
 	void		FillDownloads(CStdioFile &file, CString version);
 	CSciEdit	m_cLogMessage;
-	void		FillChangelog(CStdioFile &file);
+	void		FillChangelog(CStdioFile &file, bool official);
 };

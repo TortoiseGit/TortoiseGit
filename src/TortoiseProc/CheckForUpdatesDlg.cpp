@@ -316,7 +316,7 @@ UINT CCheckForUpdatesDlg::CheckThread()
 					SetDlgItemText(IDC_CHECKRESULT, temp);
 					m_bShowInfo = TRUE;
 
-					FillChangelog(file);
+					FillChangelog(file, official);
 					FillDownloads(file, ver);
 
 					// Show download controls
@@ -341,7 +341,7 @@ UINT CCheckForUpdatesDlg::CheckThread()
 					SetDlgItemText(IDC_CHECKRESULT, temp);
 					file.ReadString(temp);
 					file.ReadString(temp);
-					FillChangelog(file);
+					FillChangelog(file, official);
 				}
 			}
 		}
@@ -460,28 +460,40 @@ void CCheckForUpdatesDlg::FillDownloads(CStdioFile &file, CString version)
 	DialogEnableWindow(IDC_BUTTON_UPDATE, TRUE);
 }
 
-void CCheckForUpdatesDlg::FillChangelog(CStdioFile &file)
+void CCheckForUpdatesDlg::FillChangelog(CStdioFile &file, bool official)
 {
 	CString sChangelogURL;
 	if (!file.ReadString(sChangelogURL) || sChangelogURL.IsEmpty())
 		sChangelogURL = _T("https://versioncheck.tortoisegit.org/changelog.txt");
 
 	CString tempchangelogfile = CTempFiles::Instance().GetTempFilePath(true).GetWinPathString();
-	if (!m_updateDownloader->DownloadFile(sChangelogURL, tempchangelogfile, false))
+	if (m_updateDownloader->DownloadFile(sChangelogURL, tempchangelogfile, false))
 	{
-		CString temp;
-		CStdioFile file;
-		if (file.Open(tempchangelogfile, CFile::modeRead | CFile::typeBinary))
-		{
-			std::unique_ptr<BYTE[]> buf(new BYTE[(UINT)file.GetLength()]);
-			UINT read = file.Read(buf.get(), (UINT)file.GetLength());
-			bool skipBom = read >= 3 && buf[0] == 0xEF && buf[1] == 0xBB && buf[2] == 0xBF;
-			g_Git.StringAppend(&temp, buf.get() + (skipBom ? 3 : 0), CP_UTF8, read - (skipBom ? 3 : 0));
-		}
-		::SendMessage(m_hWnd, WM_USER_FILLCHANGELOG, 0, reinterpret_cast<LPARAM>((LPCTSTR)temp));
-	}
-	else
 		::SendMessage(m_hWnd, WM_USER_FILLCHANGELOG, 0, reinterpret_cast<LPARAM>(_T("Could not load changelog.")));
+		return;
+	}
+	if (official)
+	{
+		CString signatureTempfile = CTempFiles::Instance().GetTempFilePath(true).GetWinPathString();
+		if (m_updateDownloader->DownloadFile(sChangelogURL + SIGNATURE_FILE_ENDING, signatureTempfile, false) || VerifyIntegrity(tempchangelogfile, signatureTempfile, m_updateDownloader))
+		{
+			::SendMessage(m_hWnd, WM_USER_FILLCHANGELOG, 0, reinterpret_cast<LPARAM>(_T("Could not verify digital signature.")));
+			DeleteUrlCacheEntry(sChangelogURL);
+			DeleteUrlCacheEntry(sChangelogURL + SIGNATURE_FILE_ENDING);
+			return;
+		}
+	}
+
+	CString temp;
+	CStdioFile file;
+	if (file.Open(tempchangelogfile, CFile::modeRead | CFile::typeBinary))
+	{
+		std::unique_ptr<BYTE[]> buf(new BYTE[(UINT)file.GetLength()]);
+		UINT read = file.Read(buf.get(), (UINT)file.GetLength());
+		bool skipBom = read >= 3 && buf[0] == 0xEF && buf[1] == 0xBB && buf[2] == 0xBF;
+		g_Git.StringAppend(&temp, buf.get() + (skipBom ? 3 : 0), CP_UTF8, read - (skipBom ? 3 : 0));
+	}
+	::SendMessage(m_hWnd, WM_USER_FILLCHANGELOG, 0, reinterpret_cast<LPARAM>((LPCTSTR)temp));
 }
 
 void CCheckForUpdatesDlg::OnTimer(UINT_PTR nIDEvent)
