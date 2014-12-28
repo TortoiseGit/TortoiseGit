@@ -82,6 +82,11 @@ bool LogCommand::Execute()
 	theApp.m_pMainWnd = &dlg;
 	dlg.SetParams(orgCmdLinePath, cmdLinePath, rev, range, limit);
 	dlg.SetFilter(findStr, findType, findRegex);
+	if (parser.HasVal(_T("outfile")))
+	{
+		dlg.SetSelect(true);
+		dlg.SingleSelection(true);
+	}
 	dlg.DoModal();
 	if (parser.HasVal(_T("outfile")))
 	{
