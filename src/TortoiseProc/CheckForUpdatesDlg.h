@@ -89,7 +89,7 @@ private:
 	CString		GetDownloadsDirectory();
 	CMenuButton	m_ctrlUpdate;
 	BOOL		VerifySignature(CString fileName);
-	void		FillDownloads(CStdioFile &file, CString version);
+	void		FillDownloads(CAutoConfig& versionfile, const CString version);
 	CSciEdit	m_cLogMessage;
-	void		FillChangelog(CStdioFile &file, bool official);
+	void		FillChangelog(CAutoConfig& versionfile, bool official);
 };
