@@ -77,6 +77,7 @@ BEGIN_MESSAGE_MAP(CCheckForUpdatesDlg, CStandAloneDialog)
 	ON_MESSAGE(WM_USER_ENDDOWNLOAD, OnEndDownload)
 	ON_MESSAGE(WM_USER_FILLCHANGELOG, OnFillChangelog)
 	ON_REGISTERED_MESSAGE(WM_TASKBARBTNCREATED, OnTaskbarBtnCreated)
+	ON_BN_CLICKED(IDC_DONOTASKAGAIN, &CCheckForUpdatesDlg::OnBnClickedDonotaskagain)
 END_MESSAGE_MAP()
 
 BOOL CCheckForUpdatesDlg::OnInitDialog()
@@ -328,6 +329,15 @@ UINT CCheckForUpdatesDlg::CheckThread()
 			rectWindow.bottom = rectOKButton.bottom + bottomDistance;
 			MoveWindow(&rectWindow);
 			::MapWindowPoints(NULL, GetSafeHwnd(), (LPPOINT)&rectOKButton, 2);
+			if (CRegDWORD(_T("Software\\TortoiseGit\\VersionCheck"), TRUE) != FALSE && !m_bForce && !m_bShowInfo)
+			{
+				GetDlgItem(IDC_DONOTASKAGAIN)->ShowWindow(SW_SHOW);
+				rectOKButton.left += 60;
+				CString temp;
+				temp.LoadString(IDS_REMINDMELATER);
+				GetDlgItem(IDOK)->SetWindowText(temp);
+				rectOKButton.right += 160;
+			}
 			GetDlgItem(IDOK)->MoveWindow(&rectOKButton);
 			m_ctrlFiles.ShowWindow(SW_SHOW);
 			GetDlgItem(IDC_GROUP_DOWNLOADS)->ShowWindow(SW_SHOW);
@@ -850,4 +860,13 @@ CString CCheckForUpdatesDlg::GetWinINetError(DWORD err)
 		}
 	}
 	return readableError.Trim();
+}
+
+void CCheckForUpdatesDlg::OnBnClickedDonotaskagain()
+{
+	if (CMessageBox::Show(GetSafeHwnd(), IDS_DISABLEUPDATECHECKS, IDS_APPNAME, 2, IDI_QUESTION, IDS_DISABLEUPDATECHECKSBUTTON, IDS_ABORTBUTTON) == 1)
+	{
+		CRegDWORD(_T("Software\\TortoiseGit\\VersionCheck")) = FALSE;
+		OnOK();
+	}
 }

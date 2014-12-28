@@ -46,6 +46,7 @@ protected:
 	afx_msg void OnWindowPosChanging(WINDOWPOS* lpwndpos);
 	afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
 	afx_msg void OnBnClickedButtonUpdate();
+	afx_msg void OnBnClickedDonotaskagain();
 	afx_msg LRESULT OnDisplayStatus(WPARAM, LPARAM lParam);
 	afx_msg LRESULT OnEndDownload(WPARAM, LPARAM lParam);
 	afx_msg LRESULT OnFillChangelog(WPARAM, LPARAM lParam);
