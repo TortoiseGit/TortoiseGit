@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008, 2013 - TortoiseGit
+// Copyright (C) 2008, 2013-2014 - TortoiseGit
 // Copyright (C) 2007 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -35,7 +35,7 @@ bool CLogFile::Open()
 {
 	if (m_maxlines == 0)
 		return false;
-	CTGitPath logfile = CTGitPath(CPathUtils::GetAppDataDirectory() + _T("\\logfile.txt"));
+	CTGitPath logfile = CTGitPath(CPathUtils::GetLocalAppDataDirectory() + _T("logfile.txt"));
 	return Open(logfile);
 }
 

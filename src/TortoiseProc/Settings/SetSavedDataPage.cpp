@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2013 - TortoiseGit
+// Copyright (C) 2012-2013-2014 - TortoiseGit
 // Copyright (C) 2003-2008,2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -138,7 +138,7 @@ BOOL CSetSavedDataPage::OnInitDialog()
 	// the "Repositories.dat" is not a cache file
 	nLogHistRepo--;
 
-	BOOL bActionLog = PathFileExists(CPathUtils::GetAppDataDirectory() + _T("logfile.txt"));
+	BOOL bActionLog = PathFileExists(CPathUtils::GetLocalAppDataDirectory() + _T("logfile.txt"));
 
 	m_btnLogHistClear.EnableWindow(nLogHistMsg || nLogHistWC);
 	m_btnUrlHistClear.EnableWindow(nUrlHistItems || nUrlHistWC);
@@ -263,13 +263,13 @@ void CSetSavedDataPage::OnBnClickedRepologclear()
 
 void CSetSavedDataPage::OnBnClickedActionlogshow()
 {
-	CString logfile = CPathUtils::GetAppDataDirectory() + _T("logfile.txt");
+	CString logfile = CPathUtils::GetLocalAppDataDirectory() + _T("logfile.txt");
 	CAppUtils::StartTextViewer(logfile);
 }
 
 void CSetSavedDataPage::OnBnClickedActionlogclear()
 {
-	CString logfile = CPathUtils::GetAppDataDirectory() + _T("logfile.txt");
+	CString logfile = CPathUtils::GetLocalAppDataDirectory() + _T("logfile.txt");
 	DeleteFile(logfile);
 	m_btnActionLogClear.EnableWindow(FALSE);
 	m_btnActionLogShow.EnableWindow(FALSE);
