@@ -167,6 +167,7 @@ public:
 
 	static bool LaunchPAgent(const CString* keyfile = nullptr, const CString* pRemote = nullptr);
 
+	static bool ShellOpen(const CString& file, HWND hwnd = nullptr);
 	static bool ShowOpenWithDialog(const CString& file, HWND hwnd = nullptr);
 
 	static CString GetClipboardLink(const CString &skipGitPrefix = _T(""), int paramsCount = 0);

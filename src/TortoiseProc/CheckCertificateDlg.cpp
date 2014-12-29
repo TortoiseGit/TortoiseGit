@@ -134,8 +134,5 @@ void CCheckCertificateDlg::OnBnClickedOpencert()
 		return;
 	}
 
-	if ((int)ShellExecute(this->m_hWnd, NULL, tempFile.GetWinPathString(), NULL, NULL, SW_SHOW) > HINSTANCE_ERROR)
-		return;
-
-	CAppUtils::ShowOpenWithDialog(tempFile.GetWinPathString(), GetSafeHwnd());
+	CAppUtils::ShellOpen(tempFile.GetWinPathString(), GetSafeHwnd());
 }

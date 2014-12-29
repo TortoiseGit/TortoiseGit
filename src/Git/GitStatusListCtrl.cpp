@@ -4309,19 +4309,11 @@ void CGitStatusListCtrl::OpenFile(CTGitPath*filepath,int mode)
 		CAppUtils::LaunchAlternativeEditor(file);
 		return;
 	}
-	int ret = HINSTANCE_ERROR;
 
-	if(mode == OPEN )
-	{
-		ret = (int)ShellExecute(this->m_hWnd, NULL,file, NULL, NULL, SW_SHOW);
-
-		if (ret > HINSTANCE_ERROR)
-		{
-			return;
-		}
-	}
-
-	CAppUtils::ShowOpenWithDialog(file, GetSafeHwnd());
+	if (mode == OPEN)
+		CAppUtils::ShellOpen(file, GetSafeHwnd());
+	else
+		CAppUtils::ShowOpenWithDialog(file, GetSafeHwnd());
 }
 
 void CGitStatusListCtrl::DeleteSelectedFiles()

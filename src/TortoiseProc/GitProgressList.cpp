@@ -1165,18 +1165,9 @@ void CGitProgressList::WC_File_NotificationData::GetContextMenu(CIconMenu& popup
 		popup.AppendMenu(MF_SEPARATOR, NULL);
 		if (!PathIsDirectory(g_Git.CombinePath(path)))
 		{
-			auto open = [&](bool openWith)
-			{
-				int ret = 0;
-				CString sWinPath = g_Git.CombinePath(path);
-				if (!openWith)
-					ret = (int)ShellExecute(nullptr, NULL, (LPCTSTR)sWinPath, NULL, NULL, SW_SHOWNORMAL);
-				if ((ret <= HINSTANCE_ERROR) || openWith)
-					CAppUtils::ShowOpenWithDialog(sWinPath);
-		};
-		actions.push_back([open]{ open(false); });
+			actions.push_back([&]{ CAppUtils::ShellOpen(g_Git.CombinePath(path)); });
 			popup.AppendMenuIcon(actions.size(), IDS_LOG_POPUP_OPEN, IDI_OPEN);
-			actions.push_back([open]{ open(true); });
+			actions.push_back([&]{ CAppUtils::ShowOpenWithDialog(g_Git.CombinePath(path)); });
 			popup.AppendMenuIcon(actions.size(), IDS_LOG_POPUP_OPENWITH, IDI_OPEN);
 		}
 
@@ -1193,6 +1184,5 @@ void CGitProgressList::WC_File_NotificationData::HandleDblClick() const
 		CAppUtils::ExploreTo(nullptr, sWinPath);
 		return;
 	}
-	if ((int)ShellExecute(nullptr, NULL, (LPCTSTR)sWinPath, NULL, NULL, SW_SHOWNORMAL) <= HINSTANCE_ERROR)
-		CAppUtils::ShowOpenWithDialog(sWinPath);
+	CAppUtils::ShellOpen(sWinPath);
 }

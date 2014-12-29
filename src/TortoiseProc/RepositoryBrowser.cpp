@@ -1243,11 +1243,8 @@ void CRepositoryBrowser::OpenFile(const CString path, eOpenType mode, bool isSub
 	}
 	else if (mode == OPEN)
 	{
-		int ret = HINSTANCE_ERROR;
-		ret = (int)ShellExecute(this->m_hWnd, NULL, file, NULL, NULL, SW_SHOW);
-
-		if (ret > HINSTANCE_ERROR)
-			return;
+		CAppUtils::ShellOpen(file);
+		return;
 	}
 
 	CAppUtils::ShowOpenWithDialog(file);

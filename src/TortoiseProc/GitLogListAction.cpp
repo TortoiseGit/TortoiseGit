@@ -1078,13 +1078,10 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 					progDlg.Stop();
 					SetAndClearProgressInfo((HWND)NULL);
 					SetFileAttributes(tempfile.GetWinPath(), FILE_ATTRIBUTE_READONLY);
-					int ret = 0;
 					if (!bOpenWith)
-						ret = (int)ShellExecute(this->m_hWnd, NULL, tempfile.GetWinPath(), NULL, NULL, SW_SHOWNORMAL);
-					if ((ret <= HINSTANCE_ERROR)||bOpenWith)
-					{
+						CAppUtils::ShellOpen(tempfile.GetWinPath(), GetSafeHwnd());
+					else
 						CAppUtils::ShowOpenWithDialog(tempfile.GetWinPathString(), GetSafeHwnd());
-					}
 				}
 			}
 			break;

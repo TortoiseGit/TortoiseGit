@@ -3614,6 +3614,14 @@ int CAppUtils::ResolveConflict(CTGitPath& path, resolve_with resolveWith)
 	return 0;
 }
 
+bool CAppUtils::ShellOpen(const CString& file, HWND hwnd /*= nullptr */)
+{
+	if ((int)ShellExecute(hwnd, NULL, file, NULL, NULL, SW_SHOW) > HINSTANCE_ERROR)
+		return true;
+
+	return ShowOpenWithDialog(file, hwnd);
+}
+
 bool CAppUtils::ShowOpenWithDialog(const CString& file, HWND hwnd /*= nullptr */)
 {
 	CAutoLibrary hShell = AtlLoadSystemLibraryUsingFullPath(_T("shell32.dll"));
