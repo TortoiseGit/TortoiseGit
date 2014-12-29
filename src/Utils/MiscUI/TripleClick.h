@@ -44,7 +44,7 @@ public:
 			 (pMsg->message == WM_RBUTTONDBLCLK))
 		{
 			m_LastDblClickMsg = pMsg->message;
-			m_LastDblClickTime = GetTickCount();
+			m_LastDblClickTime = GetTickCount64();
 		}
 		else if (
 					((pMsg->message == WM_LBUTTONDOWN)&&(m_LastDblClickMsg == WM_LBUTTONDBLCLK)) ||
@@ -52,7 +52,7 @@ public:
 					((pMsg->message == WM_RBUTTONDOWN)&&(m_LastDblClickMsg == WM_RBUTTONDBLCLK))
 				)
 		{
-			if ((GetTickCount() - GetDoubleClickTime()) < m_LastDblClickTime)
+			if ((GetTickCount64() - GetDoubleClickTime()) < m_LastDblClickTime)
 			{
 				m_LastDblClickTime = 0;
 				m_LastDblClickMsg = 0;
@@ -77,6 +77,6 @@ public:
 		return FALSE;
 	}
 private:
-	UINT	m_LastDblClickMsg;
-	DWORD	m_LastDblClickTime;
+	UINT		m_LastDblClickMsg;
+	ULONGLONG	m_LastDblClickTime;
 };

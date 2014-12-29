@@ -126,7 +126,7 @@ void CDirectoryWatcher::BlockPath(const CTGitPath& path)
 {
 	blockedPath = path;
 	// block the path from being watched for 4 seconds
-	blockTickCount = GetTickCount()+4000;
+	blockTickCount = GetTickCount64() + 4000;
 	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Blocking path: %s\n"), path.GetWinPath());
 }
 
@@ -136,7 +136,7 @@ bool CDirectoryWatcher::AddPath(const CTGitPath& path, bool bCloseInfoMap)
 		return false;
 	if ((!blockedPath.IsEmpty())&&(blockedPath.IsAncestorOf(path)))
 	{
-		if (GetTickCount() < blockTickCount)
+		if (GetTickCount64() < blockTickCount)
 		{
 			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Path %s prevented from being watched\n"), path.GetWinPath());
 			return false;

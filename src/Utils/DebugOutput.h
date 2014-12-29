@@ -62,7 +62,7 @@ public:
 private:
 	CTraceToOutputDebugString()
 	{
-		m_LastTick = GetTickCount();
+		m_LastTick = GetTickCount64();
 		m_bActive = !!CRegStdDWORD(_T("Software\\TortoiseGit\\DebugOutputString"), FALSE);
 	}
 	~CTraceToOutputDebugString()
@@ -73,7 +73,7 @@ private:
 	CTraceToOutputDebugString(const CTraceToOutputDebugString&);
 	CTraceToOutputDebugString& operator=(const CTraceToOutputDebugString&);
 
-	DWORD m_LastTick;
+	ULONGLONG m_LastTick;
 	bool    m_bActive;
 	static CTraceToOutputDebugString * m_pInstance;
 
@@ -99,9 +99,9 @@ private:
 #ifdef DEBUG
 		return true;
 #else
-		if (GetTickCount() - m_LastTick > 10000)
+		if (GetTickCount64() - m_LastTick > 10000UL)
 		{
-			m_LastTick = GetTickCount();
+			m_LastTick = GetTickCount64();
 			m_bActive = !!CRegStdDWORD(_T("Software\\TortoiseGit\\DebugOutputString"), FALSE);
 		}
 		return m_bActive;

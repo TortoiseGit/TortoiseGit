@@ -739,7 +739,7 @@ int CStatGraphDlg::GatherData(BOOL fetchdiff, BOOL keepFetchedData)
 	}
 
 	// create arrays which are aware of the current filter
-	DWORD  starttime = GetTickCount();
+	ULONGLONG starttime = GetTickCount64();
 
 	GIT_MAILMAP mailmap = nullptr;
 	git_read_mailmap(&mailmap);
@@ -806,11 +806,11 @@ int CStatGraphDlg::GatherData(BOOL fetchdiff, BOOL keepFetchedData)
 			m_lineNew.Add(incnewfile);
 		}
 
-		if (progress.IsVisible() && (GetTickCount() - starttime > 100))
+		if (progress.IsVisible() && (GetTickCount64() - starttime > 100UL))
 		{
 			progress.FormatNonPathLine(2, _T("%s: %s"), (LPCTSTR)pLogEntry->m_CommitHash.ToString().Left(g_Git.GetShortHASHLength()), (LPCTSTR)pLogEntry->GetSubject());
 			progress.SetProgress64(i, m_ShowList.GetCount());
-			starttime = GetTickCount();
+			starttime = GetTickCount64();
 		}
 		
 	}

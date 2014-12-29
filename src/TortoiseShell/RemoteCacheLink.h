@@ -61,6 +61,6 @@ private:
 
 	CComCriticalSection m_critSec;
 	git_wc_status2_t m_dummyStatus;
-	long m_lastTimeout;
+	LONGLONG m_lastTimeout;
 
 };

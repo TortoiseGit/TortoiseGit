@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2012-2013, 2015 - TortoiseGit
-// Copyright (C) 2003-2008,2011 - TortoiseSVN
+// Copyright (C) 2003-2008,2011,2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -81,7 +81,7 @@ void CShellUpdater::Flush()
 void CShellUpdater::UpdateShell()
 {
 	// Tell the shell extension to purge its cache
-	CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Setting cache invalidation event %d\n", GetTickCount());
+	CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Setting cache invalidation event %I64u\n", GetTickCount64());
 	SetEvent(m_hInvalidationEvent);
 
 	// We use the SVN 'notify' call-back to add items to the list
@@ -123,7 +123,7 @@ void CShellUpdater::UpdateShell()
 	for (int nPath = 0; nPath < m_pathsForUpdating.GetCount(); ++nPath)
 	{
 		path.SetFromWin(g_Git.CombinePath(m_pathsForUpdating[nPath]));
-		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Cache Item Update for %s (%d)\n"), (LPCTSTR)path.GetWinPathString(), GetTickCount());
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Cache Item Update for %s (%I64u)\n"), (LPCTSTR)path.GetWinPathString(), GetTickCount64());
 		if (!path.IsDirectory())
 		{
 			// send notifications to the shell for changed files - folders are updated by the cache itself.

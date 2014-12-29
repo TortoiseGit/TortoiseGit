@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// External Cache Copyright (C) 2005-2006,2008 - TortoiseSVN
-// Copyright (C) 2008-2013 - TortoiseGit
+// External Cache Copyright (C) 2005-2006,2008,2014 - TortoiseSVN
+// Copyright (C) 2008-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -25,7 +25,7 @@
 
 #define CACHEVERION 7
 
-DWORD cachetimeout = (DWORD)CRegStdDWORD(_T("Software\\TortoiseGit\\Cachetimeout"), CACHETIMEOUT);
+ULONGLONG cachetimeout = (ULONGLONG)CRegStdDWORD(_T("Software\\TortoiseGit\\Cachetimeout"), LONG_MAX);
 
 CStatusCacheEntry::CStatusCacheEntry()
 	: m_bSet(false)
@@ -47,10 +47,10 @@ CStatusCacheEntry::CStatusCacheEntry(const git_wc_status_kind status)
 {
 	m_GitStatus.prop_status=m_GitStatus.text_status = status;
 	m_GitStatus.assumeValid = m_GitStatus.skipWorktree = false;
-	m_discardAtTime = GetTickCount()+cachetimeout;
+	m_discardAtTime = GetTickCount64() + cachetimeout;
 }
 
-CStatusCacheEntry::CStatusCacheEntry(const git_wc_status2_t* pGitStatus, __int64 lastWriteTime, bool /*bReadOnly*/, DWORD validuntil /* = 0*/)
+CStatusCacheEntry::CStatusCacheEntry(const git_wc_status2_t* pGitStatus, __int64 lastWriteTime, bool /*bReadOnly*/, LONGLONG validuntil /* = 0*/)
 	: m_bSet(false)
 	, m_kind(git_node_unknown)
 	, m_highestPriorityLocalStatus(git_wc_status_none)
@@ -60,7 +60,7 @@ CStatusCacheEntry::CStatusCacheEntry(const git_wc_status2_t* pGitStatus, __int64
 	if (validuntil)
 		m_discardAtTime = validuntil;
 	else
-		m_discardAtTime = GetTickCount()+cachetimeout;
+		m_discardAtTime = GetTickCount64() + cachetimeout;
 }
 
 bool CStatusCacheEntry::SaveToDisk(FILE* pFile) const
@@ -106,7 +106,7 @@ bool CStatusCacheEntry::LoadFromDisk(FILE * pFile)
 		LOADVALUEFROMFILE(m_GitStatus.assumeValid);
 		LOADVALUEFROMFILE(m_GitStatus.skipWorktree);
 //		m_GitStatus.entry = NULL;
-		m_discardAtTime = GetTickCount()+cachetimeout;
+		m_discardAtTime = GetTickCount64() + cachetimeout;
 	}
 	catch ( CAtlException )
 	{
@@ -131,7 +131,7 @@ void CStatusCacheEntry::SetStatus(const git_wc_status2_t* pGitStatus)
 			m_bSkipWorktree = pGitStatus->skipWorktree;
 		}
 	}
-	m_discardAtTime = GetTickCount()+cachetimeout;
+	m_discardAtTime = GetTickCount64() + cachetimeout;
 	m_bSet = true;
 }
 
@@ -139,7 +139,7 @@ void CStatusCacheEntry::SetStatus(const git_wc_status2_t* pGitStatus)
 void CStatusCacheEntry::SetAsUnversioned()
 {
 	SecureZeroMemory(&m_GitStatus, sizeof(m_GitStatus));
-	m_discardAtTime = GetTickCount()+cachetimeout;
+	m_discardAtTime = GetTickCount64() + cachetimeout;
 	git_wc_status_kind status = git_wc_status_none;
 	if (m_highestPriorityLocalStatus == git_wc_status_missing)
 		status = git_wc_status_missing;
@@ -152,7 +152,7 @@ void CStatusCacheEntry::SetAsUnversioned()
 	m_bAssumeValid = false;
 }
 
-bool CStatusCacheEntry::HasExpired(long now) const
+bool CStatusCacheEntry::HasExpired(LONGLONG now) const
 {
 	return m_discardAtTime != 0 && (now - m_discardAtTime) >= 0;
 }
@@ -193,7 +193,7 @@ bool CStatusCacheEntry::ForceStatus(git_wc_status_kind forcedStatus)
 		m_highestPriorityLocalStatus = newStatus;
 		m_GitStatus.text_status = newStatus;
 		m_GitStatus.prop_status = newStatus;
-		m_discardAtTime = GetTickCount()+cachetimeout;
+		m_discardAtTime = GetTickCount64() + cachetimeout;
 		return true;
 	}
 	return false;

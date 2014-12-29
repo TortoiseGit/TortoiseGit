@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2013 - TortoiseGit
+// Copyright (C) 2009-2014 - TortoiseGit
 // Copyright (C) 2003-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -164,7 +164,7 @@ bool CRemoteCacheLink::GetStatusFromRemoteCache(const CTGitPath& Path, TGITCache
 		// in between, the explorer is rendered unusable!
 		// Failing to start the cache can have different reasons: missing exe,
 		// missing registry key, corrupt exe, ...
-		if (((long)GetTickCount() - m_lastTimeout) < 0)
+		if (((LONGLONG)GetTickCount64() - m_lastTimeout) < 0)
 			return false;
 		// if we're in protected mode, don't try to start the cache: since we're
 		// here, we know we can't access it anyway and starting a new process will
@@ -176,16 +176,16 @@ bool CRemoteCacheLink::GetStatusFromRemoteCache(const CTGitPath& Path, TGITCache
 			return false;
 
 		// Wait for the cache to open
-		long endTime = (long)GetTickCount()+1000;
+		LONGLONG endTime = (LONGLONG)GetTickCount64() + 1000;
 		while(!EnsurePipeOpen())
 		{
-			if(((long)GetTickCount() - endTime) > 0)
+			if (((LONGLONG)GetTickCount64() - endTime) > 0)
 			{
-				m_lastTimeout = (long)GetTickCount()+10000;
+				m_lastTimeout = (LONGLONG)GetTickCount64() + 10000;
 				return false;
 			}
 		}
-		m_lastTimeout = (long)GetTickCount()+10000;
+		m_lastTimeout = (LONGLONG)GetTickCount64() + 10000;
 	}
 
 	AutoLocker lock(m_critSec);

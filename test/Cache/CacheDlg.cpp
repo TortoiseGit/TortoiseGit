@@ -125,10 +125,10 @@ UINT CCacheDlg::TestThread()
 	CTime starttime = CTime::GetCurrentTime();
 	GetDlgItem(IDC_STARTTIME)->SetWindowText(starttime.Format(_T("%H:%M:%S")));
 
-	DWORD startticks = GetTickCount();
+	ULONGLONG startticks = GetTickCount64();
 
 	CString sNumber;
-	srand(GetTickCount());
+	srand(GetTickCount64());
 	for (int i=0; i < 1; ++i)
 	{
 		CString filepath;
@@ -139,7 +139,7 @@ UINT CCacheDlg::TestThread()
 		GetStatusFromRemoteCache(CTGitPath(filepath), true);
 		sNumber.Format(_T("%d"), i);
 		GetDlgItem(IDC_DONE)->SetWindowText(sNumber);
-		if ((GetTickCount()%10)==1)
+		if ((GetTickCount64()%10)==1)
 			Sleep(10);
 		if ((rand()%10)==3)
 			RemoveFromCache(filepath);
@@ -147,10 +147,10 @@ UINT CCacheDlg::TestThread()
 	CTime endtime = CTime::GetCurrentTime();
 	CString sEnd = endtime.Format(_T("%H:%M:%S"));
 
-	DWORD endticks = GetTickCount();
+	ULONGLONG endticks = GetTickCount64();
 
 	CString sEndText;
-	sEndText.Format(_T("%s  - %ld ms"), sEnd, endticks-startticks);
+	sEndText.Format(_T("%s  - %I64u ms"), sEnd, endticks - startticks);
 
 	GetDlgItem(IDC_ENDTIME)->SetWindowText(sEndText);
 
@@ -257,10 +257,10 @@ bool CCacheDlg::GetStatusFromRemoteCache(const CTGitPath& Path, bool bRecursive)
 		sCachePath.ReleaseBuffer();
 
 		// Wait for the cache to open
-		long endTime = (long)GetTickCount()+1000;
+		ULONGLONG endTime = GetTickCount64()+1000;
 		while(!EnsurePipeOpen())
 		{
-			if(((long)GetTickCount() - endTime) > 0)
+			if((GetTickCount64() - endTime) > 0)
 			{
 				return false;
 			}
@@ -412,10 +412,10 @@ UINT CCacheDlg::WatchTestThread()
 	CTime starttime = CTime::GetCurrentTime();
 	GetDlgItem(IDC_STARTTIME)->SetWindowText(starttime.Format(_T("%H:%M:%S")));
 
-	DWORD startticks = GetTickCount();
+	ULONGLONG startticks = GetTickCount64();
 
 	CString sNumber;
-	srand(GetTickCount());
+	srand(GetTickCount64());
 	filepath = m_filelist.GetAt(rand() % m_filelist.GetCount());
 	GetStatusFromRemoteCache(CTGitPath(m_sRootPath), false);
 	for (int i=0; i < 10000; ++i)
@@ -453,10 +453,10 @@ UINT CCacheDlg::WatchTestThread()
 	CTime endtime = CTime::GetCurrentTime();
 	CString sEnd = endtime.Format(_T("%H:%M:%S"));
 
-	DWORD endticks = GetTickCount();
+	ULONGLONG endticks = GetTickCount64();
 
 	CString sEndText;
-	sEndText.Format(_T("%s  - %ld ms"), sEnd, endticks-startticks);
+	sEndText.Format(_T("%s  - %I64u ms"), sEnd, endticks - startticks);
 
 	GetDlgItem(IDC_ENDTIME)->SetWindowText(sEndText);
 

@@ -72,7 +72,7 @@ public:
 		showignoredoverlay = CRegStdDWORD(_T("Software\\TortoiseGit\\ShowIgnoredOverlay"), TRUE);
 		getlocktop = CRegStdDWORD(_T("Software\\TortoiseGit\\GetLockTop"), TRUE);
 		excludedasnormal = CRegStdDWORD(_T("Software\\TortoiseGit\\ShowExcludedAsNormal"), TRUE);
-		cachetypeticker = GetTickCount();
+		cachetypeticker = GetTickCount64();
 		recursiveticker = cachetypeticker;
 		folderoverlayticker = cachetypeticker;
 		driveticker = cachetypeticker;
@@ -157,27 +157,27 @@ public:
 	}
 	CacheType GetCacheType()
 	{
-		if ((GetTickCount() - REGISTRYTIMEOUT) > cachetypeticker)
+		if ((GetTickCount64() - REGISTRYTIMEOUT) > cachetypeticker)
 		{
-			cachetypeticker = GetTickCount();
+			cachetypeticker = GetTickCount64();
 			cachetype.read();
 		}
 		return CacheType(DWORD((cachetype)));
 	}
 	DWORD BlockStatus()
 	{
-		if ((GetTickCount() - REGISTRYTIMEOUT) > blockstatusticker)
+		if ((GetTickCount64() - REGISTRYTIMEOUT) > blockstatusticker)
 		{
-			blockstatusticker = GetTickCount();
+			blockstatusticker = GetTickCount64();
 			blockstatus.read();
 		}
 		return (blockstatus);
 	}
 	unsigned __int64 GetMenuLayout()
 	{
-		if ((GetTickCount() - REGISTRYTIMEOUT) > layoutticker)
+		if ((GetTickCount64() - REGISTRYTIMEOUT) > layoutticker)
 		{
-			layoutticker = GetTickCount();
+			layoutticker = GetTickCount64();
 			menulayoutlow.read();
 			menulayouthigh.read();
 		}
@@ -188,9 +188,9 @@ public:
 
 	unsigned __int64 GetMenuExt()
 	{
-		if ((GetTickCount() - REGISTRYTIMEOUT) > exticker)
+		if ((GetTickCount64() - REGISTRYTIMEOUT) > exticker)
 		{
-			exticker = GetTickCount();
+			exticker = GetTickCount64();
 			menuextlow.read();
 			menuexthigh.read();
 		}
@@ -201,9 +201,9 @@ public:
 
 	unsigned __int64 GetMenuMask()
 	{
-		if ((GetTickCount() - REGISTRYTIMEOUT) > menumaskticker)
+		if ((GetTickCount64() - REGISTRYTIMEOUT) > menumaskticker)
 		{
-			menumaskticker = GetTickCount();
+			menumaskticker = GetTickCount64();
 			menumasklow_lm.read();
 			menumaskhigh_lm.read();
 			menumasklow_cu.read();
@@ -217,99 +217,99 @@ public:
 	}
 	BOOL IsRecursive()
 	{
-		if ((GetTickCount() - REGISTRYTIMEOUT)>recursiveticker)
+		if ((GetTickCount64() - REGISTRYTIMEOUT) > recursiveticker)
 		{
-			recursiveticker = GetTickCount();
+			recursiveticker = GetTickCount64();
 			showrecursive.read();
 		}
 		return (showrecursive);
 	}
 	BOOL IsFolderOverlay()
 	{
-		if ((GetTickCount() - REGISTRYTIMEOUT)>folderoverlayticker)
+		if ((GetTickCount64() - REGISTRYTIMEOUT) > folderoverlayticker)
 		{
-			folderoverlayticker = GetTickCount();
+			folderoverlayticker = GetTickCount64();
 			folderoverlay.read();
 		}
 		return (folderoverlay);
 	}
 	BOOL IsSimpleContext()
 	{
-		if ((GetTickCount() - REGISTRYTIMEOUT)>simplecontextticker)
+		if ((GetTickCount64() - REGISTRYTIMEOUT) > simplecontextticker)
 		{
-			simplecontextticker = GetTickCount();
+			simplecontextticker = GetTickCount64();
 			simplecontext.read();
 		}
 		return (simplecontext!=0);
 	}
 	BOOL HasShellMenuAccelerators()
 	{
-		if ((GetTickCount() - shellmenuacceleratorsticker)>REGISTRYTIMEOUT)
+		if ((GetTickCount64() - shellmenuacceleratorsticker) > REGISTRYTIMEOUT)
 		{
-			shellmenuacceleratorsticker = GetTickCount();
+			shellmenuacceleratorsticker = GetTickCount64();
 			shellmenuaccelerators.read();
 		}
 		return (shellmenuaccelerators!=0);
 	}
 	BOOL IsUnversionedAsModified()
 	{
-		if ((GetTickCount() - REGISTRYTIMEOUT)>unversionedasmodifiedticker)
+		if ((GetTickCount64() - REGISTRYTIMEOUT) > unversionedasmodifiedticker)
 		{
-			unversionedasmodifiedticker = GetTickCount();
+			unversionedasmodifiedticker = GetTickCount64();
 			unversionedasmodified.read();
 		}
 		return (unversionedasmodified);
 	}
 	BOOL IsRecurseSubmodules()
 	{
-		if ((GetTickCount() - REGISTRYTIMEOUT) > recursesubmodulesticker)
+		if ((GetTickCount64() - REGISTRYTIMEOUT) > recursesubmodulesticker)
 		{
-			recursesubmodulesticker = GetTickCount();
+			recursesubmodulesticker = GetTickCount64();
 			recursesubmodules.read();
 		}
 		return (recursesubmodules);
 	}
 	BOOL ShowUnversionedOverlay()
 	{
-		if ((GetTickCount() - REGISTRYTIMEOUT)>showunversionedoverlayticker)
+		if ((GetTickCount64() - REGISTRYTIMEOUT) > showunversionedoverlayticker)
 		{
-			showunversionedoverlayticker = GetTickCount();
+			showunversionedoverlayticker = GetTickCount64();
 			showunversionedoverlay.read();
 		}
 		return (showunversionedoverlay);
 	}
 	BOOL ShowIgnoredOverlay()
 	{
-		if ((GetTickCount() - REGISTRYTIMEOUT)>showignoredoverlayticker)
+		if ((GetTickCount64() - REGISTRYTIMEOUT) > showignoredoverlayticker)
 		{
-			showignoredoverlayticker = GetTickCount();
+			showignoredoverlayticker = GetTickCount64();
 			showignoredoverlay.read();
 		}
 		return (showignoredoverlay);
 	}
 	BOOL IsGetLockTop()
 	{
-		if ((GetTickCount() - REGISTRYTIMEOUT)>getlocktopticker)
+		if ((GetTickCount64() - REGISTRYTIMEOUT) > getlocktopticker)
 		{
-			getlocktopticker = GetTickCount();
+			getlocktopticker = GetTickCount64();
 			getlocktop.read();
 		}
 		return (getlocktop);
 	}
 	BOOL ShowExcludedAsNormal()
 	{
-		if ((GetTickCount() - REGISTRYTIMEOUT)>excludedasnormalticker)
+		if ((GetTickCount64() - REGISTRYTIMEOUT) > excludedasnormalticker)
 		{
-			excludedasnormalticker = GetTickCount();
+			excludedasnormalticker = GetTickCount64();
 			excludedasnormal.read();
 		}
 		return (excludedasnormal);
 	}
 	BOOL HideMenusForUnversionedItems()
 	{
-	if ((GetTickCount() - hidemenusforunversioneditemsticker)>REGISTRYTIMEOUT)
+	if ((GetTickCount64() - hidemenusforunversioneditemsticker) > REGISTRYTIMEOUT)
 		{
-			hidemenusforunversioneditemsticker = GetTickCount();
+			hidemenusforunversioneditemsticker = GetTickCount64();
 			hidemenusforunversioneditems.read();
 		}
 		return (hidemenusforunversioneditems);
@@ -391,13 +391,13 @@ public:
 		if ((drivenumber >=0)&&(drivenumber < 25))
 		{
 			drivetype = drivetypecache[drivenumber];
-			if ((drivetype == -1)||((GetTickCount() - DRIVETYPETIMEOUT)>drivetypeticker))
+			if ((drivetype == -1)|| ((GetTickCount64() - DRIVETYPETIMEOUT) > drivetypeticker))
 			{
 				if ((drivenumber == 0)||(drivenumber == 1))
 					drivetypecache[drivenumber] = DRIVE_REMOVABLE;
 				else
 				{
-					drivetypeticker = GetTickCount();
+					drivetypeticker = GetTickCount64();
 					TCHAR pathbuf[MAX_PATH+4] = {0};		// MAX_PATH ok here. PathStripToRoot works with partial paths too.
 					_tcsncpy_s(pathbuf, MAX_PATH+4, path, MAX_PATH+3);
 					PathStripToRoot(pathbuf);
@@ -462,9 +462,9 @@ public:
 	}
 	DWORD GetLangID()
 	{
-		if ((GetTickCount() - REGISTRYTIMEOUT) > langticker)
+		if ((GetTickCount64() - REGISTRYTIMEOUT) > langticker)
 		{
-			langticker = GetTickCount();
+			langticker = GetTickCount64();
 			langid.read();
 		}
 		return (langid);
@@ -482,7 +482,7 @@ public:
 				*ptr = 0;
 			}
 		}
-		if ((GetTickCount() - ADMINDIRTIMEOUT) < admindirticker)
+		if ((GetTickCount64() - ADMINDIRTIMEOUT) < admindirticker)
 		{
 			std::map<stdstring, AdminDir_s>::iterator iter;
 			sAdminDirCacheKey.assign(buf.get());
@@ -495,7 +495,7 @@ public:
 		}
 		CString sProjectRoot;
 		BOOL hasAdminDir = GitAdminDir::HasAdminDir(buf.get(), true, &sProjectRoot);
-		admindirticker = GetTickCount();
+		admindirticker = GetTickCount64();
 		Locker lock(m_critSec);
 
 		AdminDir_s &ad = admindircache[buf.get()];
@@ -513,9 +513,9 @@ public:
 private:
 	void DriveValid()
 	{
-		if ((GetTickCount() - REGISTRYTIMEOUT)>driveticker)
+		if ((GetTickCount64() - REGISTRYTIMEOUT) > driveticker)
 		{
-			driveticker = GetTickCount();
+			driveticker = GetTickCount64();
 			driveremote.read();
 			drivefixed.read();
 			drivecdrom.read();
@@ -525,10 +525,10 @@ private:
 	}
 	void ExcludeContextValid()
 	{
-		if ((GetTickCount() - EXCLUDELISTTIMEOUT)>excontextticker)
+		if ((GetTickCount64() - EXCLUDELISTTIMEOUT) > excontextticker)
 		{
 			Locker lock(m_critSec);
-			excontextticker = GetTickCount();
+			excontextticker = GetTickCount64();
 			nocontextpaths.read();
 			if (excludecontextstr.compare((stdstring)nocontextpaths)==0)
 				return;
@@ -552,10 +552,10 @@ private:
 	}
 	void ExcludeListValid()
 	{
-		if ((GetTickCount() - EXCLUDELISTTIMEOUT)>excludelistticker)
+		if ((GetTickCount64() - EXCLUDELISTTIMEOUT) > excludelistticker)
 		{
 			Locker lock(m_critSec);
-			excludelistticker = GetTickCount();
+			excludelistticker = GetTickCount64();
 			excludelist.read();
 			if (excludeliststr.compare((stdstring)excludelist)==0)
 				return;
@@ -579,10 +579,10 @@ private:
 	}
 	void IncludeListValid()
 	{
-		if ((GetTickCount() - EXCLUDELISTTIMEOUT)>includelistticker)
+		if ((GetTickCount64() - EXCLUDELISTTIMEOUT) > includelistticker)
 		{
 			Locker lock(m_critSec);
-			includelistticker = GetTickCount();
+			includelistticker = GetTickCount64();
 			includelist.read();
 			if (includeliststr.compare((stdstring)includelist)==0)
 				return;
@@ -646,27 +646,27 @@ public:
 	CRegStdString includelist;
 	stdstring includeliststr;
 	std::vector<stdstring> invector;
-	DWORD cachetypeticker;
-	DWORD recursiveticker;
-	DWORD folderoverlayticker;
-	DWORD getlocktopticker;
-	DWORD driveticker;
-	DWORD drivetypeticker;
-	DWORD layoutticker;
-	DWORD exticker;
-	DWORD menumaskticker;
-	DWORD langticker;
-	DWORD blockstatusticker;
-	DWORD excludelistticker;
-	DWORD includelistticker;
-	DWORD simplecontextticker;
-	DWORD shellmenuacceleratorsticker;
-	DWORD unversionedasmodifiedticker;
-	DWORD recursesubmodulesticker;
-	DWORD showunversionedoverlayticker;
-	DWORD showignoredoverlayticker;
-	DWORD excludedasnormalticker;
-	DWORD hidemenusforunversioneditemsticker;
+	ULONGLONG cachetypeticker;
+	ULONGLONG recursiveticker;
+	ULONGLONG folderoverlayticker;
+	ULONGLONG getlocktopticker;
+	ULONGLONG driveticker;
+	ULONGLONG drivetypeticker;
+	ULONGLONG layoutticker;
+	ULONGLONG exticker;
+	ULONGLONG menumaskticker;
+	ULONGLONG langticker;
+	ULONGLONG blockstatusticker;
+	ULONGLONG excludelistticker;
+	ULONGLONG includelistticker;
+	ULONGLONG simplecontextticker;
+	ULONGLONG shellmenuacceleratorsticker;
+	ULONGLONG unversionedasmodifiedticker;
+	ULONGLONG recursesubmodulesticker;
+	ULONGLONG showunversionedoverlayticker;
+	ULONGLONG showignoredoverlayticker;
+	ULONGLONG excludedasnormalticker;
+	ULONGLONG hidemenusforunversioneditemsticker;
 	UINT  drivetypecache[27];
 	TCHAR drivetypepathcache[MAX_PATH];		// MAX_PATH ok.
 	TCHAR szDecSep[5];
@@ -676,7 +676,7 @@ public:
 	CRegStdString nocontextpaths;
 	stdstring excludecontextstr;
 	std::vector<stdstring> excontextvector;
-	DWORD excontextticker;
-	DWORD admindirticker;
+	ULONGLONG excontextticker;
+	ULONGLONG admindirticker;
 	CComCriticalSection m_critSec;
 };

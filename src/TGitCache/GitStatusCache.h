@@ -93,7 +93,7 @@ public:
 	bool IsPathGood(const CTGitPath& path);
 	bool IsPathWatched(const CTGitPath& path) {return watcher.IsPathWatched(path);}
 	bool AddPathToWatch(const CTGitPath& path) {return watcher.AddPath(path);}
-	bool BlockPath(const CTGitPath& path, DWORD timeout = 0);
+	bool BlockPath(const CTGitPath& path, ULONGLONG timeout = 0);
 	bool UnBlockPath(const CTGitPath& path);
 	bool RemoveTimedoutBlocks();
 
@@ -106,7 +106,7 @@ private:
 	CAtlList<CString> m_askedList;
 	CCachedDirectory::CachedDirMap m_directoryCache;
 	CComAutoCriticalSection m_NoWatchPathCritSec;
-	std::map<CTGitPath, DWORD> m_NoWatchPaths;	///< paths to block from getting crawled, and the time in ms until they're unblocked
+	std::map<CTGitPath, ULONGLONG> m_NoWatchPaths;	///< paths to block from getting crawled, and the time in ms until they're unblocked
 //	SVNHelper m_svnHelp;
 	ShellCache	m_shellCache;
 
@@ -118,7 +118,7 @@ private:
 	CComAutoCriticalSection m_critSec;
 	CTGitPath m_mostRecentPath;
 	CStatusCacheEntry m_mostRecentStatus;
-	long m_mostRecentExpiresAt;
+	LONGLONG m_mostRecentExpiresAt;
 
 	CDirectoryWatcher watcher;
 

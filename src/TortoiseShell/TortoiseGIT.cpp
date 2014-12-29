@@ -28,7 +28,7 @@ volatile LONG		g_cRefThisDll = 0;				///< reference count of this DLL.
 HINSTANCE			g_hmodThisDll = NULL;			///< handle to this DLL itself.
 ShellCache			g_ShellCache;					///< caching of registry entries, ...
 DWORD				g_langid;
-DWORD				g_langTimeout = 0;
+ULONGLONG			g_langTimeout = 0;
 HINSTANCE			g_hResInst = NULL;
 stdstring			g_filepath;
 git_wc_status_kind	g_filestatus = git_wc_status_none;	///< holds the corresponding status to the file/dir above

@@ -126,7 +126,7 @@ TEST(CGit, GetFileModifyTime)
 	__int64 time2 = -1;
 	isDir = false;
 	size = -1;
-	LONG ticks = GetTickCount();
+	ULONGLONG ticks = GetTickCount64();
 	EXPECT_EQ(0, CGit::GetFileModifyTime(testFile, &time2, &isDir, &size));
 	EXPECT_EQ(time, time2);
 	EXPECT_FALSE(isDir);
@@ -142,7 +142,7 @@ TEST(CGit, GetFileModifyTime)
 	EXPECT_FALSE(isDir);
 	EXPECT_EQ(25, size);
 	EXPECT_TRUE(time3 >= time);
-	EXPECT_TRUE(time3 - time <= 1 + (GetTickCount() - ticks) / 1000);
+	EXPECT_TRUE(time3 - time <= 1 + (GetTickCount64() - ticks) / 1000);
 }
 
 TEST(CGit, LoadTextFile)

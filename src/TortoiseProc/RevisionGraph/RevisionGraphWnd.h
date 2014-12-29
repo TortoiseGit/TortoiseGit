@@ -199,7 +199,7 @@ public:
 	void			BuildPreview();
 
 protected:
-	DWORD			m_dwTicks;
+	ULONGLONG		m_ullTicks;
 	CRect			m_OverviewPosRect;
 	CRect			m_OverviewRect;
 

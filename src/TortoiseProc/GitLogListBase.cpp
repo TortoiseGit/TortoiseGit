@@ -2943,7 +2943,7 @@ UINT CGitLogListBase::LogThread()
 		g_Git.m_critGitDllSec.Unlock();
 
 		GIT_COMMIT commit;
-		t2=t1=GetTickCount();
+		t2 = t1 = GetTickCount64();
 		int oldprecentage = 0;
 		size_t oldsize = m_logEntries.size();
 		std::map<CGitHash, std::set<CGitHash>> commitChildren;
@@ -3053,9 +3053,9 @@ UINT CGitLogListBase::LogThread()
 			if (lastSelectedHashNItem == -1 && hash == m_lastSelectedHash)
 				lastSelectedHashNItem = (int)m_arShownList.GetCount() - 1;
 
-			t2=GetTickCount();
+			t2 = GetTickCount64();
 
-			if(t2-t1>500 || (m_logEntries.size()-oldsize >100))
+			if (t2 - t1 > 500UL || (m_logEntries.size() - oldsize > 100))
 			{
 				//update UI
 				int percent = (int)m_logEntries.size() * 100 / total + GITLOG_START + 1;
