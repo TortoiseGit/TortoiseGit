@@ -24,6 +24,7 @@
 #include "Git.h"
 #include "LoglistCommonResource.h"
 #include "resource.h"
+#include <WinCrypt.h>
 
 static CString CalcMD5(CString text)
 {
