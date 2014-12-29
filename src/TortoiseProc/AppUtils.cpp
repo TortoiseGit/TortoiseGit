@@ -631,7 +631,7 @@ BOOL CAppUtils::StartTextViewer(CString file)
 	file = _T("\"")+file+_T("\"");
 	if (viewer.IsEmpty())
 	{
-		viewer = _T("RUNDLL32 Shell32,OpenAs_RunDLL");
+		return CAppUtils::ShowOpenWithDialog(file) ? TRUE : FALSE;
 	}
 	if (viewer.Find(_T("\"%1\"")) >= 0)
 	{
@@ -3612,4 +3612,11 @@ int CAppUtils::ResolveConflict(CTGitPath& path, resolve_with resolveWith)
 
 	RemoveTempMergeFile(path);
 	return 0;
+}
+
+bool CAppUtils::ShowOpenWithDialog(const CString& file, HWND /*hwnd = nullptr */)
+{
+	CString cmd = _T("RUNDLL32 Shell32,OpenAs_RunDLL ");
+	cmd += file;
+	return CAppUtils::LaunchApplication(cmd, NULL, false);
 }

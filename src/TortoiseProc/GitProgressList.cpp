@@ -1172,11 +1172,7 @@ void CGitProgressList::WC_File_NotificationData::GetContextMenu(CIconMenu& popup
 				if (!openWith)
 					ret = (int)ShellExecute(nullptr, NULL, (LPCTSTR)sWinPath, NULL, NULL, SW_SHOWNORMAL);
 				if ((ret <= HINSTANCE_ERROR) || openWith)
-				{
-				CString cmd = _T("RUNDLL32 Shell32,OpenAs_RunDLL ");
-				cmd += sWinPath;
-				CAppUtils::LaunchApplication(cmd, NULL, false);
-			}
+					CAppUtils::ShowOpenWithDialog(sWinPath);
 		};
 		actions.push_back([open]{ open(false); });
 			popup.AppendMenuIcon(actions.size(), IDS_LOG_POPUP_OPEN, IDI_OPEN);
@@ -1198,9 +1194,5 @@ void CGitProgressList::WC_File_NotificationData::HandleDblClick() const
 		return;
 	}
 	if ((int)ShellExecute(nullptr, NULL, (LPCTSTR)sWinPath, NULL, NULL, SW_SHOWNORMAL) <= HINSTANCE_ERROR)
-	{
-		CString cmd = _T("RUNDLL32 Shell32,OpenAs_RunDLL ");
-		cmd += sWinPath;
-		CAppUtils::LaunchApplication(cmd, NULL, false);
-	}
+		CAppUtils::ShowOpenWithDialog(sWinPath);
 }

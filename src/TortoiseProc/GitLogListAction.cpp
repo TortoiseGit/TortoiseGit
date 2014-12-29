@@ -1083,9 +1083,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 						ret = (int)ShellExecute(this->m_hWnd, NULL, tempfile.GetWinPath(), NULL, NULL, SW_SHOWNORMAL);
 					if ((ret <= HINSTANCE_ERROR)||bOpenWith)
 					{
-						CString cmd = _T("RUNDLL32 Shell32,OpenAs_RunDLL ");
-						cmd += tempfile.GetWinPathString() + _T(" ");
-						CAppUtils::LaunchApplication(cmd, NULL, false);
+						CAppUtils::ShowOpenWithDialog(tempfile.GetWinPathString(), GetSafeHwnd());
 					}
 				}
 			}

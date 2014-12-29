@@ -1250,8 +1250,7 @@ void CRepositoryBrowser::OpenFile(const CString path, eOpenType mode, bool isSub
 			return;
 	}
 
-	CString cmd = _T("RUNDLL32 Shell32,OpenAs_RunDLL ") + file;
-	CAppUtils::LaunchApplication(cmd, NULL, false);
+	CAppUtils::ShowOpenWithDialog(file);
 }
 bool CRepositoryBrowser::RevertItemToVersion(const CString &path)
 {

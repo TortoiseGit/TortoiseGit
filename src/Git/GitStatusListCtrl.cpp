@@ -4321,11 +4321,7 @@ void CGitStatusListCtrl::OpenFile(CTGitPath*filepath,int mode)
 		}
 	}
 
-	{
-		CString cmd = _T("RUNDLL32 Shell32,OpenAs_RunDLL ");
-		cmd += file;
-		CAppUtils::LaunchApplication(cmd, NULL, false);
-	}
+	CAppUtils::ShowOpenWithDialog(file, GetSafeHwnd());
 }
 
 void CGitStatusListCtrl::DeleteSelectedFiles()
