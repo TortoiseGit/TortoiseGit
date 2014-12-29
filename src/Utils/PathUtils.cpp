@@ -361,6 +361,18 @@ CString CPathUtils::GetAppDataDirectory()
 	return CString (path) + _T('\\');
 }
 
+CString CPathUtils::GetLocalAppDataDirectory()
+{
+	TCHAR path[MAX_PATH] = { 0 };		//MAX_PATH ok here.
+	if (SHGetFolderPath(NULL, CSIDL_LOCAL_APPDATA, NULL, SHGFP_TYPE_CURRENT, path) != S_OK)
+		return CString();
+
+	_tcscat_s(path, MAX_PATH, _T("\\TortoiseGit"));
+	if (!PathIsDirectory(path))
+		CreateDirectory(path, NULL);
+
+	return CString(path) + _T('\\');
+}
 
 CStringA CPathUtils::PathUnescape(const CStringA& path)
 {

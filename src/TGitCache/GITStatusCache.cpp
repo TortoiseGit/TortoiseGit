@@ -23,6 +23,8 @@
 #include "GitStatusCache.h"
 #include "CacheInterface.h"
 #include <ShlObj.h>
+#include "SysInfo.h"
+#include "PathUtils.h"
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -32,9 +34,9 @@
 #define CACHEDISKVERSION 2
 
 #ifdef _WIN64
-#define STATUSCACHEFILENAME L"\\cache64"
+#define STATUSCACHEFILENAME L"cache64"
 #else
-#define STATUSCACHEFILENAME L"\\cache"
+#define STATUSCACHEFILENAME L"cache"
 #endif
 
 CGitStatusCache* CGitStatusCache::m_pInstance;
@@ -60,25 +62,19 @@ void CGitStatusCache::Create()
 	unsigned int value = (unsigned int)-1;
 	FILE * pFile = NULL;
 	// find the location of the cache
-	TCHAR path[MAX_PATH] = { 0 };		//MAX_PATH ok here.
-	TCHAR path2[MAX_PATH] = { 0 };
-	if (SHGetFolderPath(NULL, CSIDL_LOCAL_APPDATA, NULL, SHGFP_TYPE_CURRENT, path)==S_OK)
+	CString path = CPathUtils::GetLocalAppDataDirectory();
+	CString path2;
+	if (!path.IsEmpty())
 	{
-		_tcscat_s(path, MAX_PATH, _T("\\TGitCache"));
-		if (!PathIsDirectory(path))
-		{
-			if (CreateDirectory(path, NULL)==0)
-				goto error;
-		}
-		_tcscat_s(path, MAX_PATH, STATUSCACHEFILENAME);
+		path += STATUSCACHEFILENAME;
 		// in case the cache file is corrupt, we could crash while
 		// reading it! To prevent crashing every time once that happens,
 		// we make a copy of the cache file and use that copy to read from.
 		// if that copy is corrupt, the original file won't exist anymore
 		// and the second time we start up and try to read the file,
 		// it's not there anymore and we start from scratch without a crash.
-		_tcscpy_s(path2, MAX_PATH, path);
-		_tcscat_s(path2, MAX_PATH, _T("2"));
+		path2 = path;
+		path2 += _T("2");
 		DeleteFile(path2);
 		CopyFile(path, path2, FALSE);
 		DeleteFile(path);
@@ -165,13 +161,10 @@ bool CGitStatusCache::SaveCache()
 	// save the cache to disk
 	FILE * pFile = NULL;
 	// find a location to write the cache to
-	TCHAR path[MAX_PATH] = { 0 };		//MAX_PATH ok here.
-	if (SHGetFolderPath(NULL, CSIDL_LOCAL_APPDATA, NULL, SHGFP_TYPE_CURRENT, path)==S_OK)
+	CString path = CPathUtils::GetLocalAppDataDirectory();
+	if (!path.IsEmpty())
 	{
-		_tcscat_s(path, MAX_PATH, _T("\\TGitCache"));
-		if (!PathIsDirectory(path))
-			CreateDirectory(path, NULL);
-		_tcscat_s(path, MAX_PATH, STATUSCACHEFILENAME);
+		path += STATUSCACHEFILENAME;
 		_tfopen_s(&pFile, path, _T("wb"));
 		if (pFile)
 		{
