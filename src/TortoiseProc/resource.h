@@ -1183,8 +1183,10 @@
 #define IDC_LOCAL_BRANCHES              1543
 #define IDC_COLOR_LINE5                 1544
 #define IDC_COLOR_LINE6                 1545
+#define IDS_SETTINGS_DELFILE            1545
 #define IDC_COLOR_LINE1                 1546
 #define IDC_COLOR_LINE2                 1547
+#define IDS_SETTINGS_DELCACHE           1547
 #define IDC_COLOR_LINE3                 1548
 #define IDC_LOGMINSIZE                  1548
 #define IDC_COLOR_LINE4                 1549

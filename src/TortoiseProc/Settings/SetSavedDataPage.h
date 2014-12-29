@@ -56,6 +56,7 @@ protected:
 	virtual BOOL OnInitDialog();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	virtual BOOL OnApply();
+	void DeleteViaShell(LPCTSTR path, UINT progressText);
 
 private:
 	CToolTips		m_tooltips;

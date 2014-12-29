@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2012-2013 - TortoiseGit
-// Copyright (C) 2003-2008 - TortoiseSVN
+// Copyright (C) 2003-2008,2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -25,6 +25,7 @@
 #include "DirFileEnum.h"
 #include "SetSavedDataPage.h"
 #include "MessageBox.h"
+#include "StringUtils.h"
 
 IMPLEMENT_DYNAMIC(CSetSavedDataPage, ISettingsPropPage)
 
@@ -240,15 +241,7 @@ void CSetSavedDataPage::OnBnClickedAuthhistclear()
 	if (SHGetFolderPath(NULL, CSIDL_APPDATA, NULL, SHGFP_TYPE_CURRENT, pathbuf)==S_OK)
 	{
 		_tcscat_s(pathbuf, MAX_PATH, _T("\\Subversion\\auth"));
-		pathbuf[_tcslen(pathbuf)+1] = 0;
-		SHFILEOPSTRUCT fileop;
-		fileop.hwnd = this->m_hWnd;
-		fileop.wFunc = FO_DELETE;
-		fileop.pFrom = pathbuf;
-		fileop.pTo = NULL;
-		fileop.fFlags = FOF_NO_CONNECTED_ELEMENTS | FOF_NOCONFIRMATION;// | FOF_NOERRORUI | FOF_SILENT;
-		fileop.lpszProgressTitle = _T("deleting file");
-		SHFileOperation(&fileop);
+		DeleteViaShell(pathbuf, IDS_SETTINGS_DELFILE);
 	}
 	m_btnAuthHistClear.EnableWindow(FALSE);
 	m_tooltips.DelTool(GetDlgItem(IDC_AUTHHISTCLEAR));
@@ -260,16 +253,8 @@ void CSetSavedDataPage::OnBnClickedRepologclear()
 	CString path = CPathUtils::GetAppDataDirectory()+_T("logcache");
 	TCHAR pathbuf[MAX_PATH] = {0};
 	_tcscpy_s(pathbuf, MAX_PATH, (LPCTSTR)path);
-	pathbuf[_tcslen(pathbuf)+1] = 0;
 
-	SHFILEOPSTRUCT fileop = {0};
-	fileop.hwnd = this->m_hWnd;
-	fileop.wFunc = FO_DELETE;
-	fileop.pFrom = pathbuf;
-	fileop.pTo = NULL;
-	fileop.fFlags = FOF_NO_CONNECTED_ELEMENTS | FOF_NOCONFIRMATION;
-	fileop.lpszProgressTitle = _T("deleting cached data");
-	SHFileOperation(&fileop);
+	DeleteViaShell(pathbuf, IDS_SETTINGS_DELCACHE);
 
 	m_btnRepoLogClear.EnableWindow(FALSE);
 	m_tooltips.DelTool(GetDlgItem(IDC_REPOLOG));
@@ -341,3 +326,22 @@ BOOL CSetSavedDataPage::OnApply()
     return ISettingsPropPage::OnApply();
 }
 
+void CSetSavedDataPage::DeleteViaShell(LPCTSTR path, UINT progressText)
+{
+	CString p(path);
+	p += L"||";
+	int len = p.GetLength();
+	std::unique_ptr<TCHAR[]> buf(new TCHAR[len + 2]);
+	wcscpy_s(buf.get(), len + 2, p);
+	CStringUtils::PipesToNulls(buf.get(), len);
+
+	CString progText(MAKEINTRESOURCE(progressText));
+	SHFILEOPSTRUCT fileop;
+	fileop.hwnd = m_hWnd;
+	fileop.wFunc = FO_DELETE;
+	fileop.pFrom = buf.get();
+	fileop.pTo = NULL;
+	fileop.fFlags = FOF_NO_CONNECTED_ELEMENTS | FOF_NOCONFIRMATION;
+	fileop.lpszProgressTitle = progText;
+	SHFileOperation(&fileop);
+}

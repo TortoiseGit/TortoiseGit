@@ -3659,6 +3659,8 @@ BEGIN
     IDS_ENCRYPT_NONE        "none"
     IDS_ENCRYPT_STARTTLS    "STARTTLS"
     IDS_ENCRYPT_SSL         "SSL"
+    IDS_SETTINGS_DELFILE    "Deleting file"
+    IDS_SETTINGS_DELCACHE   "Deleting cached data"
     IDS_PROC_RENAME         "Rename %s"
     IDS_PROC_NEWNAME        "New name for %s"
 END
