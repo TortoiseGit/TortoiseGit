@@ -1650,21 +1650,17 @@ void CCommitDlg::GetAutocompletionList()
 	if (!m_bRunThread)
 		return;
 	ParseRegexFile(sRegexFile, mapRegex);
-	SHGetFolderPath(NULL, CSIDL_APPDATA, NULL, SHGFP_TYPE_CURRENT, sRegexFile.GetBuffer(MAX_PATH+1));
-	sRegexFile.ReleaseBuffer();
-	sRegexFile += _T("\\TortoiseGit\\autolist.txt");
+	sRegexFile = CPathUtils::GetAppDataDirectory();
+	sRegexFile += _T("autolist.txt");
 	if (PathFileExists(sRegexFile))
-	{
 		ParseRegexFile(sRegexFile, mapRegex);
-	}
 
 	m_snippet.clear();
 	CString sSnippetFile = CPathUtils::GetAppDirectory();
 	sSnippetFile += _T("snippet.txt");
 	ParseSnippetFile(sSnippetFile, m_snippet);
-	SHGetFolderPath(NULL, CSIDL_APPDATA, NULL, SHGFP_TYPE_CURRENT, sSnippetFile.GetBuffer(MAX_PATH+1));
-	sSnippetFile.ReleaseBuffer();
-	sSnippetFile += _T("\\TortoiseGit\\snippet.txt");
+	sSnippetFile = CPathUtils::GetAppDataDirectory();
+	sSnippetFile += _T("snippet.txt");
 	if (PathFileExists(sSnippetFile))
 		ParseSnippetFile(sSnippetFile, m_snippet);
 	for (auto snip : m_snippet)
