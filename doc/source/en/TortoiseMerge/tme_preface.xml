@@ -48,8 +48,8 @@
             TortoiseGitMerge is an Open Source project. That means you have full
             read access to the source code of this program. You can browse it
             on this link
-            <ulink url="http://code.google.com/p/tortoisegit/source/browse/">
-                <citetitle>http://code.google.com/p/tortoisegit/source/browse/</citetitle>
+            <ulink url="https://code.google.com/p/tortoisegit/source/browse/">
+                <citetitle>https://code.google.com/p/tortoisegit/source/browse/</citetitle>
             </ulink>.
         </para>
         <xi:include href="../wishlist.xml"/>

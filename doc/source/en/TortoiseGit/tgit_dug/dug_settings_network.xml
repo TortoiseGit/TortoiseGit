@@ -73,7 +73,7 @@
 		which is beyond the scope of this help file. However, you can find a
 		guide in the TortoiseGit FAQ listed under
 		<xref linkend="tgit-ssh-howto"/> or the latest version 
-		<ulink url="http://code.google.com/p/tortoisegit/wiki/UsingPuTTY">
+		<ulink url="https://code.google.com/p/tortoisegit/wiki/UsingPuTTY">
 			<citetitle>Git/TortoiseGit SSH How-To</citetitle>
 		</ulink>.
 	</para>

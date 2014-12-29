@@ -241,8 +241,8 @@
 			Of course your private autolist will not be overwritten when you update your
 			installation of TortoiseGit. If you are unfamiliar with regular expressions,
 			take a look at the introduction at
-			<ulink url="http://en.wikipedia.org/wiki/Regular_expression">
-				<citetitle>http://en.wikipedia.org/wiki/Regular_expression</citetitle>
+			<ulink url="https://en.wikipedia.org/wiki/Regular_expression">
+				<citetitle>https://en.wikipedia.org/wiki/Regular_expression</citetitle>
 			</ulink>,
 			and the online documentation and tutorial at
 			<ulink url="http://www.regular-expressions.info/">

@@ -79,7 +79,7 @@
 							TortoiseGit shows only the
 							issue number and not the link to it.
 							e.g the TortoiseGit project is using
-							<systemitem class="url">http://code.google.com/p/tortoisegit/issues/detail?id=%BUGID%</systemitem>
+							<systemitem class="url">https://code.google.com/p/tortoisegit/issues/detail?id=%BUGID%</systemitem>
 						</para>
 					</listitem>
 				</varlistentry>
@@ -237,8 +237,8 @@
 							<para>
 								If you are unfamiliar with regular expressions, take a look at
 								the introduction at
-								<ulink url="http://en.wikipedia.org/wiki/Regular_expression">
-									<citetitle>http://en.wikipedia.org/wiki/Regular_expression</citetitle>
+								<ulink url="https://en.wikipedia.org/wiki/Regular_expression">
+									<citetitle>https://en.wikipedia.org/wiki/Regular_expression</citetitle>
 								</ulink>,
 								and the online documentation and tutorial at
 								<ulink url="http://www.regular-expressions.info/">
@@ -303,7 +303,7 @@
 		<para>
 			This issue tracker integration is not restricted to TortoiseGit; it can be used
 			with other clients (e.g. TortoiseSVN). For more information, read the full
-			<ulink url="http://tortoisegit.googlecode.com/git/doc/issuetrackers.txt">
+			<ulink url="https://tortoisegit.googlecode.com/git/doc/issuetrackers.txt">
 				<citetitle>Issue Tracker Integration Specification</citetitle>
 			</ulink>
 			in the TortoiseGit source repository.
@@ -327,18 +327,18 @@
 			program is beyond the scope of this manual. The interface definition
 			and sample programs can be obtained from the <literal>contrib</literal>
 			folder in the
-			<ulink url="http://code.google.com/p/tortoisegit/source/browse/#git%2Fcontrib%2Fissue-tracker-plugins">
+			<ulink url="https://code.google.com/p/tortoisegit/source/browse/#git%2Fcontrib%2Fissue-tracker-plugins">
 				<citetitle>TortoiseGit repository</citetitle>
 			</ulink>.
 			(<xref linkend="tgit-preface-source"/> explains how to access the repository).
 			A summary of the API is also given in <xref linkend="tgit-ibugtraqprovider"/>
 			
 			Another (working) example plugin in C# is 
-			<ulink url="http://code.google.com/p/gurtle/">
+			<ulink url="https://code.google.com/p/gurtle/">
 				<citetitle>Gurtle</citetitle>
 			</ulink>
 			which implements the required COM interface to interact with the 
-			<ulink url="http://code.google.com/hosting/">
+			<ulink url="https://code.google.com/hosting/">
 				<citetitle>Google Code</citetitle>
 			</ulink>
 			issue tracker.

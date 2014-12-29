@@ -1320,7 +1320,7 @@ Released: 2009-06-05
 == Features ==
  * Add bug track plug-in support
    Compatible with TortoiseSVN. The typical plug in is gurtl(google code issue plug-in).
-   http://code.google.com/p/gurtle/.
+   https://code.google.com/p/gurtle/.
 
  * Support browse reference.
    Show all branch, tags information. Support add remote, del branch\tag.
