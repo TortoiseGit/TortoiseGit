@@ -29,6 +29,14 @@
 #define BLOCK_PATH_DEFAULT_TIMEOUT	600		// 10 minutes
 #define BLOCK_PATH_MAX_TIMEOUT		1200	// 20 minutes
 
+#define CACHEDISKVERSION 2
+
+#ifdef _WIN64
+#define STATUSCACHEFILENAME L"\\cache64"
+#else
+#define STATUSCACHEFILENAME L"\\cache"
+#endif
+
 CGitStatusCache* CGitStatusCache::m_pInstance;
 
 CGitStatusCache& CGitStatusCache::Instance()
@@ -62,7 +70,7 @@ void CGitStatusCache::Create()
 			if (CreateDirectory(path, NULL)==0)
 				goto error;
 		}
-		_tcscat_s(path, MAX_PATH, _T("\\cache"));
+		_tcscat_s(path, MAX_PATH, STATUSCACHEFILENAME);
 		// in case the cache file is corrupt, we could crash while
 		// reading it! To prevent crashing every time once that happens,
 		// we make a copy of the cache file and use that copy to read from.
@@ -80,7 +88,7 @@ void CGitStatusCache::Create()
 			try
 			{
 				LOADVALUEFROMFILE(value);
-				if (value != 2)
+				if (value != CACHEDISKVERSION)
 				{
 					goto error;
 				}
@@ -163,11 +171,11 @@ bool CGitStatusCache::SaveCache()
 		_tcscat_s(path, MAX_PATH, _T("\\TGitCache"));
 		if (!PathIsDirectory(path))
 			CreateDirectory(path, NULL);
-		_tcscat_s(path, MAX_PATH, _T("\\cache"));
+		_tcscat_s(path, MAX_PATH, STATUSCACHEFILENAME);
 		_tfopen_s(&pFile, path, _T("wb"));
 		if (pFile)
 		{
-			value = 2;		// 'version'
+			value = CACHEDISKVERSION;
 			WRITEVALUETOFILE(value);
 			value = (int)m_pInstance->m_directoryCache.size();
 			WRITEVALUETOFILE(value);
