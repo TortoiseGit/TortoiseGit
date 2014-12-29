@@ -347,28 +347,33 @@ CString CPathUtils::GetAppParentDirectory(HMODULE hMod /* = NULL */)
 
 CString CPathUtils::GetAppDataDirectory()
 {
-	TCHAR path[MAX_PATH] = { 0 };		//MAX_PATH ok here.
-	if (SHGetFolderPath(NULL, CSIDL_APPDATA, NULL, SHGFP_TYPE_CURRENT, path)!=S_OK)
+	PWSTR pszPath = nullptr;
+	if (SHGetKnownFolderPath(FOLDERID_RoamingAppData, KF_FLAG_CREATE, nullptr, &pszPath) != S_OK)
 		return CString();
 
-	_tcscat_s(path, MAX_PATH, _T("\\TortoiseGit"));
+	CString path = pszPath;
+	CoTaskMemFree(pszPath);
+	path += L"\\TortoiseGit";
 	if (!PathIsDirectory(path))
 		CreateDirectory(path, NULL);
 
-	return CString (path) + _T('\\');
+	path += _T('\\');
+	return path;
 }
 
 CString CPathUtils::GetLocalAppDataDirectory()
 {
-	TCHAR path[MAX_PATH] = { 0 };		//MAX_PATH ok here.
-	if (SHGetFolderPath(NULL, CSIDL_LOCAL_APPDATA, NULL, SHGFP_TYPE_CURRENT, path) != S_OK)
+	PWSTR pszPath = nullptr;
+	if (SHGetKnownFolderPath(FOLDERID_LocalAppData, KF_FLAG_CREATE, nullptr, &pszPath) != S_OK)
 		return CString();
-
-	_tcscat_s(path, MAX_PATH, _T("\\TortoiseGit"));
+	CString path = pszPath;
+	CoTaskMemFree(pszPath);
+	path += L"\\TortoiseGit";
 	if (!PathIsDirectory(path))
 		CreateDirectory(path, NULL);
 
-	return CString(path) + _T('\\');
+	path += _T('\\');
+	return path;
 }
 
 CStringA CPathUtils::PathUnescape(const CStringA& path)

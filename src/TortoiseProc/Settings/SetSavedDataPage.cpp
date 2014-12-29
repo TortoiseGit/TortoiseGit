@@ -115,13 +115,17 @@ BOOL CSetSavedDataPage::OnInitDialog()
 	CString sFile;
 	bool bIsDir = false;
 
-	TCHAR pathbuf[MAX_PATH] = {0};
-	if (SHGetFolderPath(NULL, CSIDL_APPDATA, NULL, SHGFP_TYPE_CURRENT, pathbuf)==S_OK)
+	PWSTR pszPath = nullptr;
+	if (SHGetKnownFolderPath(FOLDERID_RoamingAppData, KF_FLAG_CREATE, nullptr, &pszPath) == S_OK)
 	{
-		_tcscat_s(pathbuf, MAX_PATH, _T("\\Subversion\\auth\\"));
-		CString sSimple = CString(pathbuf) + _T("svn.simple");
-		CString sSSL = CString(pathbuf) + _T("svn.ssl.server");
-		CString sUsername = CString(pathbuf) + _T("svn.username");
+		CString path = pszPath;
+		CoTaskMemFree(pszPath);
+
+		path += L"\\Subversion\\auth\\";
+
+		CString sSimple = path + L"svn.simple";
+		CString sSSL = path + L"svn.ssl.server";
+		CString sUsername = path + L"svn.username";
 		CDirFileEnum simpleenum(sSimple);
 		while (simpleenum.NextFile(sFile, &bIsDir))
 			nSimple++;
@@ -232,11 +236,13 @@ void CSetSavedDataPage::OnBnClickedAuthhistclear()
 {
 	CRegStdString auth = CRegStdString(_T("Software\\TortoiseGit\\Auth\\"));
 	auth.removeKey();
-	TCHAR pathbuf[MAX_PATH] = {0};
-	if (SHGetFolderPath(NULL, CSIDL_APPDATA, NULL, SHGFP_TYPE_CURRENT, pathbuf)==S_OK)
+	PWSTR pszPath = nullptr;
+	if (SHGetKnownFolderPath(FOLDERID_RoamingAppData, KF_FLAG_CREATE, nullptr, &pszPath) == S_OK)
 	{
-		_tcscat_s(pathbuf, MAX_PATH, _T("\\Subversion\\auth"));
-		DeleteViaShell(pathbuf, IDS_SETTINGS_DELFILE);
+		CString path = pszPath;
+		CoTaskMemFree(pszPath);
+		path += L"\\Subversion\\auth\\";
+		DeleteViaShell(path, IDS_SETTINGS_DELFILE);
 	}
 	m_btnAuthHistClear.EnableWindow(FALSE);
 	m_tooltips.DelTool(GetDlgItem(IDC_AUTHHISTCLEAR));
