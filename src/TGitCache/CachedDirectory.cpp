@@ -459,11 +459,21 @@ int CCachedDirectory::EnumFiles(const CTGitPath &path , bool IsFull)
 			AutoLocker lock(m_critSec);
 			// clear subdirectory status cache
 			m_childDirectories.clear();
+			// build new files status cache
+			m_entryCache_tmp.clear();
 		}
 
 		m_mostImportantFileStatus = git_wc_status_none;
 		pStatus->EnumDirStatus(sProjectRoot, sSubPath, &status, IsFull, false, true, GetStatusCallback,this);
 		m_mostImportantFileStatus = GitStatus::GetMoreImportant(m_mostImportantFileStatus, status);
+
+		{
+			AutoLocker lock(m_critSec);
+			// use a tmp files status cache so that we can still use the old cached values
+			// for deciding whether we have to issue a shell notify
+			m_entryCache = m_entryCache_tmp;
+			m_entryCache_tmp.clear();
+		}
 
 		// need to set/construct m_ownStatus (only unversioned and normal are valid values)
 		m_ownStatus = git_wc_status_unversioned;
@@ -552,6 +562,8 @@ CCachedDirectory::AddEntry(const CTGitPath& path, const git_wc_status2_t* pGitSt
 		entry_it->second = CStatusCacheEntry(pGitStatus, path.GetLastWriteTime(), path.IsReadOnly(), validuntil);
 		// TEMP(?): git status doesn't not have "entry" that contains node type, so manually set as file
 		entry_it->second.SetKind(git_node_file);
+
+		childDir->m_entryCache_tmp[cachekey] = entry_it->second;
 
 		if(bNotified)
 		{
