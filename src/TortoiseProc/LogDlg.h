@@ -146,6 +146,7 @@ protected:
 	afx_msg void OnFocusFilter();
 	afx_msg void OnEditCopy();
 	afx_msg void OnEnChangeFileFilter();
+	afx_msg void OnEnscrollMsgview();
 
 	virtual void OnCancel();
 	virtual void OnOK();

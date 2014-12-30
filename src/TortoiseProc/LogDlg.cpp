@@ -143,6 +143,8 @@ BEGIN_MESSAGE_MAP(CLogDlg, CResizableStandAloneDialog)
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_LOGLIST, OnLvnItemchangedLoglist)
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_LOGMSG, OnLvnItemchangedLogmsg)
 	ON_NOTIFY(EN_LINK, IDC_MSGVIEW, OnEnLinkMsgview)
+	ON_EN_VSCROLL(IDC_MSGVIEW, OnEnscrollMsgview)
+	ON_EN_HSCROLL(IDC_MSGVIEW, OnEnscrollMsgview)
 	ON_BN_CLICKED(IDC_STATBUTTON, OnBnClickedStatbutton)
 
 	ON_MESSAGE(WM_TGIT_REFRESH_SELECTION, OnRefreshSelection)
@@ -265,7 +267,7 @@ BOOL CLogDlg::OnInitDialog()
 	// automatically detect URLs in the log message and turn them into links
 	GetDlgItem(IDC_MSGVIEW)->SendMessage(EM_AUTOURLDETECT, TRUE, NULL);
 	// make the log message rich edit control send a message when the mouse pointer is over a link
-	GetDlgItem(IDC_MSGVIEW)->SendMessage(EM_SETEVENTMASK, NULL, ENM_LINK);
+	GetDlgItem(IDC_MSGVIEW)->SendMessage(EM_SETEVENTMASK, NULL, ENM_LINK | ENM_SCROLL);
 
 	// "unrelated paths" should be in gray color
 	m_iHidePaths = 2;
@@ -1696,7 +1698,7 @@ void CLogDlg::OnLvnItemchangedLogmsg(NMHDR * /*pNMHDR*/, LRESULT * /*pResult*/)
 void CLogDlg::OnEnLinkMsgview(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	ENLINK *pEnLink = reinterpret_cast<ENLINK *>(pNMHDR);
-	if (pEnLink->msg == WM_LBUTTONUP)
+	if ((pEnLink->msg == WM_LBUTTONUP) || (pEnLink->msg == WM_SETCURSOR))
 	{
 		CString url, msg;
 		GetDlgItemText(IDC_MSGVIEW, msg);
@@ -1711,8 +1713,33 @@ void CLogDlg::OnEnLinkMsgview(NMHDR *pNMHDR, LRESULT *pResult)
 			url = GetAbsoluteUrlFromRelativeUrl(url);
 		}
 		if (::PathIsURL(url))
-			ShellExecute(this->m_hWnd, _T("open"), url, NULL, NULL, SW_SHOWDEFAULT);
-		else
+		{
+			if (pEnLink->msg == WM_LBUTTONUP)
+				ShellExecute(this->m_hWnd, _T("open"), url, NULL, NULL, SW_SHOWDEFAULT);
+			else
+			{
+				static RECT prevRect = { 0 };
+				CWnd * pMsgView = GetDlgItem(IDC_MSGVIEW);
+				if (pMsgView)
+				{
+					RECT rc;
+					POINTL pt;
+					pMsgView->SendMessage(EM_POSFROMCHAR, (WPARAM)&pt, pEnLink->chrg.cpMin);
+					rc.left = pt.x;
+					rc.top = pt.y;
+					pMsgView->SendMessage(EM_POSFROMCHAR, (WPARAM)&pt, pEnLink->chrg.cpMax);
+					rc.right = pt.x;
+					rc.bottom = pt.y + 12;
+					if ((prevRect.left != rc.left) || (prevRect.top != rc.top))
+					{
+						m_tooltips.DelTool(pMsgView, 1);
+						m_tooltips.AddTool(pMsgView, url, &rc, 1);
+						prevRect = rc;
+					}
+				}
+			}
+		}
+		else if(pEnLink->msg == WM_LBUTTONUP)
 		{
 			int pos = 0;
 			if (LookLikeGitHash(url, pos))
@@ -1883,6 +1910,11 @@ void CLogDlg::SetSplitterRange()
 		ScreenToClient(rcBottom);
 		m_wndSplitter2.SetRange(rcMiddle.top+30, rcBottom.bottom-20);
 	}
+}
+
+void CLogDlg::OnEnscrollMsgview()
+{
+	m_tooltips.DelTool(GetDlgItem(IDC_MSGVIEW), 1);
 }
 
 LRESULT CLogDlg::OnClickedInfoIcon(WPARAM wParam, LPARAM lParam)

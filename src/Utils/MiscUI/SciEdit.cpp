@@ -246,6 +246,8 @@ void CSciEdit::Init(const ProjectProperties& props)
 	m_sBugID = CStringA(CUnicodeUtils::GetUTF8(props.GetBugIDRe()));
 	m_sUrl = CStringA(CUnicodeUtils::GetUTF8(props.sUrl));
 
+	Call(SCI_SETMOUSEDWELLTIME, 333);
+
 	if (props.nLogWidthMarker)
 	{
 		Call(SCI_SETWRAPMODE, SC_WRAP_NONE);
@@ -804,12 +806,15 @@ BOOL CSciEdit::OnChildNotify(UINT message, WPARAM wParam, LPARAM lParam, LRESULT
 				return TRUE;
 			}
 			break;
+		case SCN_DWELLSTART:
 		case SCN_HOTSPOTCLICK:
 			{
 				TEXTRANGEA textrange;
 				textrange.chrg.cpMin = lpSCN->position;
 				textrange.chrg.cpMax = lpSCN->position;
 				DWORD style = GetStyleAt(lpSCN->position);
+				if (style != STYLE_ISSUEBOLDITALIC && style != STYLE_URL)
+					break;
 				while (GetStyleAt(textrange.chrg.cpMin - 1) == style)
 					--textrange.chrg.cpMin;
 				while (GetStyleAt(textrange.chrg.cpMax + 1) == style)
@@ -827,8 +832,19 @@ BOOL CSciEdit::OnChildNotify(UINT message, WPARAM wParam, LPARAM lParam, LRESULT
 					url.Replace(L"%BUGID%", StringFromControl(textbuffer.get()));
 				}
 				if (!url.IsEmpty())
-					ShellExecute(GetParent()->GetSafeHwnd(), _T("open"), url, NULL, NULL, SW_SHOWDEFAULT);
+				{
+					if (lpnmhdr->code == SCN_HOTSPOTCLICK)
+						ShellExecute(GetParent()->GetSafeHwnd(), _T("open"), url, NULL, NULL, SW_SHOWDEFAULT);
+					else
+					{
+						CStringA sTextA = StringForControl(url);
+						Call(SCI_CALLTIPSHOW, lpSCN->position + 3, (LPARAM)(LPCSTR)sTextA);
+					}
+				}
 			}
+			break;
+		case SCN_DWELLEND:
+			Call(SCI_CALLTIPCANCEL);
 			break;
 		}
 	}
