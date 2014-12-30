@@ -46,6 +46,7 @@ protected:
 	afx_msg void OnWindowPosChanging(WINDOWPOS* lpwndpos);
 	afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
 	afx_msg void OnBnClickedButtonUpdate();
+	afx_msg void OnBnClickedDonotaskagain();
 	afx_msg LRESULT OnDisplayStatus(WPARAM, LPARAM lParam);
 	afx_msg LRESULT OnEndDownload(WPARAM, LPARAM lParam);
 	afx_msg LRESULT OnFillChangelog(WPARAM, LPARAM lParam);
@@ -89,7 +90,9 @@ private:
 	CString		GetDownloadsDirectory();
 	CMenuButton	m_ctrlUpdate;
 	BOOL		VerifySignature(CString fileName);
-	void		FillDownloads(CStdioFile &file, CString version);
+	void		FillDownloads(CAutoConfig& versionfile, const CString version);
 	CSciEdit	m_cLogMessage;
-	void		FillChangelog(CStdioFile &file);
+	void		FillChangelog(CAutoConfig& versionfile, bool official);
+	static CString GetWinINetError(DWORD err);
+	CString		m_sErrors;
 };

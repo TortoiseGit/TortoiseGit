@@ -23,13 +23,17 @@ public:
 	CUpdateDownloader(HWND hwnd, bool force = false, UINT msg = 0, CEvent *m_eventStop = nullptr);
 	~CUpdateDownloader(void);
 
-	BOOL	DownloadFile(const CString &url, const CString& dest, bool showProgress) const;
+	DWORD	DownloadFile(const CString &url, const CString& dest, bool showProgress) const;
 
 	typedef struct DOWNLOADSTATUS
 	{
 		ULONG ulProgress;
 		ULONG ulProgressMax;
 	};
+
+	CString m_sWindowsPlatform;
+	CString m_sWindowsVersion;
+	CString m_sWindowsServicePack;
 
 private:
 	static void BruteforceGetWindowsVersionNumber(OSVERSIONINFOEX& osVersionInfo);

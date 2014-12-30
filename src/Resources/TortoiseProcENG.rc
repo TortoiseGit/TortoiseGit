@@ -548,6 +548,7 @@ BEGIN
     CONTROL         "",IDC_PROGRESSBAR,"msctls_progress32",NOT WS_VISIBLE | WS_BORDER,14,272,385,14
     PUSHBUTTON      "&Download",IDC_BUTTON_UPDATE,409,272,75,14,WS_DISABLED
     DEFPUSHBUTTON   "&Close",IDOK,220,299,50,14
+    PUSHBUTTON      "&Don't ask me again",IDC_DONOTASKAGAIN,122,299,106,14,NOT WS_VISIBLE
 END
 
 IDD_REVERT DIALOGEX 0, 0, 279, 232
@@ -3661,6 +3662,9 @@ BEGIN
     IDS_ENCRYPT_SSL         "SSL"
     IDS_SETTINGS_DELFILE    "Deleting file"
     IDS_SETTINGS_DELCACHE   "Deleting cached data"
+    IDS_DISABLEUPDATECHECKSBUTTON "Disable update checks"
+    IDS_DISABLEUPDATECHECKS "Do you really want to disable automatic update checks for TortoiseGit?\r\n\r\nAutomatic update checks can be re-enabled in TortoiseGit settings on the General page."
+    IDS_REMINDMELATER       "&Remind me later"
     IDS_PROC_RENAME         "Rename %s"
     IDS_PROC_NEWNAME        "New name for %s"
 END
@@ -4560,7 +4564,7 @@ BEGIN
     IDS_HIERARCHICALCONFIG  "Git uses the concept of a hierarchical configuration.\nI.e. there are multiple levels; settings in higher levels override values in lower levels.\nThe ""Effective"" tab shows you the effective values for the current scope (read-only).\nSelect any level to see the values stored there.\nIn order to change settings select a level, enter the values and select where to store to."
     IDS_OFFLINEMODE         "System in offline mode. Check Internet Explorer."
     IDS_CHECKNEWER_NETERROR_FORMAT 
-                            "Could not check for a newer version! (Error code: 0x%08X)"
+                            "Could not check for a newer version! %s (Error code: 0x%08X)"
     IDS_PROC_BRANCH_FF      "Branch (FF)"
     IDS_PROC_LOG_LOCAL_BRANCHES "<Local Branches>"
     IDS_PROC_LOG_SELECT_LOCAL_BRANCHES "All local branches"
