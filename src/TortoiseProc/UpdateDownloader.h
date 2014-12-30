@@ -31,6 +31,10 @@ public:
 		ULONG ulProgressMax;
 	};
 
+	CString m_sWindowsPlatform;
+	CString m_sWindowsVersion;
+	CString m_sWindowsServicePack;
+
 private:
 	static void BruteforceGetWindowsVersionNumber(OSVERSIONINFOEX& osVersionInfo);
 

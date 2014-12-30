@@ -30,8 +30,13 @@ CUpdateDownloader::CUpdateDownloader(HWND hwnd, bool force, UINT msg, CEvent *ev
 	OSVERSIONINFOEX inf = {0};
 	BruteforceGetWindowsVersionNumber(inf);
 
+	m_sWindowsPlatform = (inf.dwPlatformId == VER_PLATFORM_WIN32_NT) ? _T("NT") : _T("");
+	m_sWindowsVersion.Format(L"%ld.%ld", inf.dwMajorVersion, inf.dwMinorVersion);
+	if (inf.wServicePackMajor)
+		m_sWindowsServicePack.Format(L"SP%ld", inf.wServicePackMajor);
+
 	CString userAgent;
-	userAgent.Format(L"TortoiseGit %s; %s; Windows%s %ld.%ld", _T(STRFILEVER), _T(TGIT_PLATFORM), (inf.dwPlatformId == VER_PLATFORM_WIN32_NT) ? _T(" NT") : _T(""), inf.dwMajorVersion, inf.dwMinorVersion);
+	userAgent.Format(L"TortoiseGit %s; %s; Windows%s%s %s%s%s", _T(STRFILEVER), _T(TGIT_PLATFORM), m_sWindowsPlatform.IsEmpty() ? _T("") : _T(" "), m_sWindowsPlatform, m_sWindowsVersion, m_sWindowsServicePack.IsEmpty() ? _T("") : _T(" "), m_sWindowsServicePack);
 	hOpenHandle = InternetOpen(userAgent, INTERNET_OPEN_TYPE_PRECONFIG, nullptr, nullptr, 0);
 }
 
@@ -48,13 +53,23 @@ void CUpdateDownloader::BruteforceGetWindowsVersionNumber(OSVERSIONINFOEX& osVer
 
 	ULONGLONG maskConditioMajor = ::VerSetConditionMask(0, VER_MAJORVERSION, VER_LESS);
 	ULONGLONG maskConditioMinor = ::VerSetConditionMask(0, VER_MINORVERSION, VER_LESS);
+	ULONGLONG maskConditioSPMajor = ::VerSetConditionMask(0, VER_SERVICEPACKMAJOR, VER_LESS);
 	while (!::VerifyVersionInfo(&osVersionInfo, VER_MAJORVERSION, maskConditioMajor))
 	{
 		++osVersionInfo.dwMajorVersion;
 		osVersionInfo.dwMinorVersion = 0;
+		osVersionInfo.wServicePackMajor = 0;
+		osVersionInfo.wServicePackMinor = 0;
 	}
 	while (!::VerifyVersionInfo(&osVersionInfo, VER_MINORVERSION, maskConditioMinor))
+	{
 		++osVersionInfo.dwMinorVersion;
+		osVersionInfo.wServicePackMajor = 0;
+		osVersionInfo.wServicePackMinor = 0;
+	}
+	while (!::VerifyVersionInfo(&osVersionInfo, VER_SERVICEPACKMAJOR, maskConditioSPMajor))
+		++osVersionInfo.wServicePackMajor;
+	// detection of VER_SERVICEPACKMINOR doesn't work reliably
 }
 
 DWORD CUpdateDownloader::DownloadFile(const CString& url, const CString& dest, bool showProgress) const
