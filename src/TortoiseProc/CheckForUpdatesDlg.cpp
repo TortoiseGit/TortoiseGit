@@ -375,7 +375,13 @@ void CCheckForUpdatesDlg::FillDownloads(CAutoConfig& versioncheck, const CString
 	if (m_sFilesURL.IsEmpty())
 		m_sFilesURL.Format(_T("http://updater.download.tortoisegit.org/tgit/%s/"), version);
 
-	m_ctrlFiles.InsertItem(0, _T("TortoiseGit"));
+	bool isHotfix = false;
+	versioncheck.GetBool(_T("tortoisegit.hotfix"), isHotfix);
+
+	if (isHotfix)
+		m_ctrlFiles.InsertItem(0, _T("TortoiseGit Hotfix"));
+	else
+		m_ctrlFiles.InsertItem(0, _T("TortoiseGit"));
 	CString filenameMain, filenamePattern;
 	versioncheck.GetString(_T("tortoisegit.mainfilename"), filenamePattern);
 	if (filenamePattern.IsEmpty())
@@ -383,6 +389,12 @@ void CCheckForUpdatesDlg::FillDownloads(CAutoConfig& versioncheck, const CString
 	filenameMain.FormatMessage(filenamePattern, version, x86x64);
 	m_ctrlFiles.SetItemData(0, (DWORD_PTR)(new CUpdateListCtrl::Entry(filenameMain, CUpdateListCtrl::STATUS_NONE)));
 	m_ctrlFiles.SetCheck(0 , TRUE);
+
+	if (isHotfix)
+	{
+		DialogEnableWindow(IDC_BUTTON_UPDATE, TRUE);
+		return;
+	}
 
 	struct LangPack
 	{
