@@ -1445,9 +1445,12 @@ void CSciEdit::StyleURLs(int startstylepos, int endstylepos)
 		{
 			if ((starturl >= 0) && IsUrl(msg.Mid(starturl, i - starturl)))
 			{
-				ASSERT(startstylepos + i <= endstylepos);
+				int skipTrailing = 0;
+				while (i - skipTrailing - 1 > starturl && (msg[i - skipTrailing - 1] == '.' || msg[i - skipTrailing - 1] == '-' || msg[i - skipTrailing - 1] == '?' || msg[i - skipTrailing - 1] == ';' || msg[i - skipTrailing - 1] == ':'))
+					++skipTrailing;
+				ASSERT(startstylepos + i - skipTrailing <= endstylepos);
 				Call(SCI_STARTSTYLING, startstylepos + starturl, STYLE_MASK);
-				Call(SCI_SETSTYLING, i - starturl, STYLE_URL);
+				Call(SCI_SETSTYLING, i - starturl - skipTrailing, STYLE_URL);
 			}
 			starturl = -1;
 		}
