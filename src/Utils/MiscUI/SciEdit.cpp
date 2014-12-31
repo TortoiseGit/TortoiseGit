@@ -1413,7 +1413,8 @@ bool CSciEdit::IsValidURLChar(unsigned char ch)
 {
 	return isalnum(ch) ||
 		ch == '_' || ch == '/' || ch == ';' || ch == '?' || ch == '&' || ch == '=' ||
-		ch == '%' || ch == ':' || ch == '.' || ch == '#' || ch == '-' || ch == '+';
+		ch == '%' || ch == ':' || ch == '.' || ch == '#' || ch == '-' || ch == '+' ||
+		ch == '|' || ch == '>' || ch == '<';
 }
 
 void CSciEdit::StyleURLs(int startstylepos, int endstylepos)
@@ -1434,7 +1435,7 @@ void CSciEdit::StyleURLs(int startstylepos, int endstylepos)
 	CStringA msg = textbuffer.get();
 
 	int starturl = -1;
-	for(int i = 0; i <= msg.GetLength(); )
+	for (int i = 0; i <= msg.GetLength(); AdvanceUTF8(msg, i))
 	{
 		if ((i < len) && IsValidURLChar(msg[i]))
 		{
@@ -1443,10 +1444,26 @@ void CSciEdit::StyleURLs(int startstylepos, int endstylepos)
 		}
 		else
 		{
-			if ((starturl >= 0) && IsUrl(msg.Mid(starturl, i - starturl)))
+			if (starturl >= 0)
 			{
+				bool strip = true;
+				if (msg[starturl] == '<' && i < len) // try to detect and do not strip URLs put within <>
+				{
+					while (msg[starturl] == '<' && starturl <= i) // strip leading '<'
+						++starturl;
+					strip = false;
+					i = starturl;
+					while (i < len && msg[i] != '\r' && msg[i] != '\n' && msg[i] != '>') // find first '>' or new line after resetting i to start position
+						AdvanceUTF8(msg, i);
+				}
+				if (!IsUrl(msg.Mid(starturl, i - starturl)))
+				{
+					starturl = -1;
+					continue;
+				}
+
 				int skipTrailing = 0;
-				while (i - skipTrailing - 1 > starturl && (msg[i - skipTrailing - 1] == '.' || msg[i - skipTrailing - 1] == '-' || msg[i - skipTrailing - 1] == '?' || msg[i - skipTrailing - 1] == ';' || msg[i - skipTrailing - 1] == ':'))
+				while (strip && i - skipTrailing - 1 > starturl && (msg[i - skipTrailing - 1] == '.' || msg[i - skipTrailing - 1] == '-' || msg[i - skipTrailing - 1] == '?' || msg[i - skipTrailing - 1] == ';' || msg[i - skipTrailing - 1] == ':' || msg[i - skipTrailing - 1] == '>' || msg[i - skipTrailing - 1] == '<'))
 					++skipTrailing;
 				ASSERT(startstylepos + i - skipTrailing <= endstylepos);
 				Call(SCI_STARTSTYLING, startstylepos + starturl, STYLE_MASK);
@@ -1454,7 +1471,6 @@ void CSciEdit::StyleURLs(int startstylepos, int endstylepos)
 			}
 			starturl = -1;
 		}
-		AdvanceUTF8(msg, i);
 	}
 }
 
