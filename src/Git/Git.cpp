@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2014 - TortoiseGit
+// Copyright (C) 2008-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -1768,21 +1768,16 @@ int CGit::DeleteRemoteRefs(const CString& sRemote, const STRING_VECTOR& list)
 		if (git_remote_connect(remote, GIT_DIRECTION_PUSH) < 0)
 			return -1;
 
-		CAutoPush push;
-		if (git_push_new(push.GetPointer(), remote) < 0)
-			return -1;
-
+		std::vector<CStringA> refspecs;
 		for (auto ref : list)
-		{
-			CString refspec = _T(":") + ref;
-			if (git_push_add_refspec(push, CUnicodeUtils::GetUTF8(refspec)) < 0)
-				return -1;
-		}
+			refspecs.push_back(CUnicodeUtils::GetUTF8(_T(":") + ref));
 
-		if (git_push_finish(push) < 0)
-			return -1;
+		std::vector<char*> vc;
+		vc.reserve(refspecs.size());
+		std::transform(refspecs.begin(), refspecs.end(), std::back_inserter(vc), [](CStringA& s) -> char* { return s.GetBuffer(); });
+		git_strarray specs = { &vc[0], vc.size() };
 
-		if (git_push_update_tips(push, nullptr, nullptr) < 0)
+		if (git_remote_push(remote, &specs, nullptr, nullptr, nullptr) < 0)
 			return -1;
 	}
 	else

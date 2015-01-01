@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2014 - TortoiseGit
+// Copyright (C) 2014-2015 - TortoiseGit
 // based on SmartHandle of TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -397,21 +397,6 @@ protected:
 		if (git_remote_connected(m_Ref) == 1)
 			git_remote_disconnect(m_Ref);
 		git_remote_free(m_Ref);
-	}
-};
-
-class CAutoPush : public CSmartLibgit2Ref<git_push>
-{
-public:
-	~CAutoPush()
-	{
-		CleanUp();
-	}
-
-protected:
-	virtual void FreeRef()
-	{
-		git_push_free(m_Ref);
 	}
 };
 
