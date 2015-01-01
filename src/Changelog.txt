@@ -1,5 +1,9 @@
-﻿= Release 1.8.17.0 =
+﻿= Release 2.0.0 =
 Released: unreleased
+
+== Changes ==
+ * Custom dictionaries are no longer loaded when located in %PROGRAMFILES%\TortoiseGit or %PROGRAMFILES%\TortoiseGit\bin-directory
+   Must be in  %APPDATA%\TortoiseGit\dic or %PROGRAMFILES%\TortoiseGit\Languages folder (former has priority)
 
 == Features ==
  * Fixed issue #2641: Commit: Pre-select first item from "Changes made" list

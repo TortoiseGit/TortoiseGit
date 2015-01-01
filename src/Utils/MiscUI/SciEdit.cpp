@@ -275,7 +275,6 @@ BOOL CSciEdit::LoadDictionaries(LONG lLanguageID)
 {
 	//Setup the spell checker and thesaurus
 	TCHAR buf[6] = { 0 };
-	CString sFolder = CPathUtils::GetAppDirectory();
 	CString sFolderUp = CPathUtils::GetAppParentDirectory();
 	CString sFolderAppData = CPathUtils::GetAppDataDirectory();
 	CString sFile;
@@ -294,26 +293,6 @@ BOOL CSciEdit::LoadDictionaries(LONG lLanguageID)
 		{
 			pChecker = new Hunspell(CStringA(sFolderAppData + _T("dic\\") + sFile + _T(".aff")), CStringA(sFolderAppData + _T("dic\\") + sFile + _T(".dic")));
 		}
-		else if ((PathFileExists(sFolder + sFile + _T(".aff"))) &&
-			(PathFileExists(sFolder + sFile + _T(".dic"))))
-		{
-			pChecker = new Hunspell(CStringA(sFolder + sFile + _T(".aff")), CStringA(sFolder + sFile + _T(".dic")));
-		}
-		else if ((PathFileExists(sFolder + _T("dic\\") + sFile + _T(".aff"))) &&
-			(PathFileExists(sFolder + _T("dic\\") + sFile + _T(".dic"))))
-		{
-			pChecker = new Hunspell(CStringA(sFolder + _T("dic\\") + sFile + _T(".aff")), CStringA(sFolder + _T("dic\\") + sFile + _T(".dic")));
-		}
-		else if ((PathFileExists(sFolderUp + sFile + _T(".aff"))) &&
-			(PathFileExists(sFolderUp + sFile + _T(".dic"))))
-		{
-			pChecker = new Hunspell(CStringA(sFolderUp + sFile + _T(".aff")), CStringA(sFolderUp + sFile + _T(".dic")));
-		}
-		else if ((PathFileExists(sFolderUp + _T("dic\\") + sFile + _T(".aff"))) &&
-			(PathFileExists(sFolderUp + _T("dic\\") + sFile + _T(".dic"))))
-		{
-			pChecker = new Hunspell(CStringA(sFolderUp + _T("dic\\") + sFile + _T(".aff")), CStringA(sFolderUp + _T("dic\\") + sFile + _T(".dic")));
-		}
 		else if ((PathFileExists(sFolderUp + _T("Languages\\") + sFile + _T(".aff"))) &&
 			(PathFileExists(sFolderUp + _T("Languages\\") + sFile + _T(".dic"))))
 		{
@@ -327,26 +306,6 @@ BOOL CSciEdit::LoadDictionaries(LONG lLanguageID)
 			(PathFileExists(sFolderAppData + _T("dic\\th_") + sFile + _T("_v2.dat"))))
 		{
 			pThesaur = new MyThes(CStringA(sFolderAppData + _T("dic\\th_") + sFile + _T("_v2.idx")), CStringA(sFolderAppData + _T("dic\\th_") + sFile + _T("_v2.dat")));
-		}
-		else if ((PathFileExists(sFolder + _T("th_") + sFile + _T("_v2.idx"))) &&
-			(PathFileExists(sFolder + _T("th_") + sFile + _T("_v2.dat"))))
-		{
-			pThesaur = new MyThes(CStringA(sFolder + sFile + _T("_v2.idx")), CStringA(sFolder + sFile + _T("_v2.dat")));
-		}
-		else if ((PathFileExists(sFolder + _T("dic\\th_") + sFile + _T("_v2.idx"))) &&
-			(PathFileExists(sFolder + _T("dic\\th_") + sFile + _T("_v2.dat"))))
-		{
-			pThesaur = new MyThes(CStringA(sFolder + _T("dic\\") + sFile + _T("_v2.idx")), CStringA(sFolder + _T("dic\\") + sFile + _T("_v2.dat")));
-		}
-		else if ((PathFileExists(sFolderUp + _T("th_") + sFile + _T("_v2.idx"))) &&
-			(PathFileExists(sFolderUp + _T("th_") + sFile + _T("_v2.dat"))))
-		{
-			pThesaur = new MyThes(CStringA(sFolderUp + _T("th_") + sFile + _T("_v2.idx")), CStringA(sFolderUp + _T("th_") + sFile + _T("_v2.dat")));
-		}
-		else if ((PathFileExists(sFolderUp + _T("dic\\th_") + sFile + _T("_v2.idx"))) &&
-			(PathFileExists(sFolderUp + _T("dic\\th_") + sFile + _T("_v2.dat"))))
-		{
-			pThesaur = new MyThes(CStringA(sFolderUp + _T("dic\\th_") + sFile + _T("_v2.idx")), CStringA(sFolderUp + _T("dic\\th_") + sFile + _T("_v2.dat")));
 		}
 		else if ((PathFileExists(sFolderUp + _T("Languages\\th_") + sFile + _T("_v2.idx"))) &&
 			(PathFileExists(sFolderUp + _T("Languages\\th_") + sFile + _T("_v2.dat"))))
