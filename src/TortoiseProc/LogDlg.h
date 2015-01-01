@@ -143,6 +143,7 @@ protected:
 	void OnBnClickedFirstParent();
 	afx_msg void OnBnClickedRefresh();
 	afx_msg void OnRefresh();
+	afx_msg void RefreshWorkingDir();
 	afx_msg void OnFocusFilter();
 	afx_msg void OnEditCopy();
 	afx_msg void OnEnChangeFileFilter();

@@ -176,6 +176,7 @@ BEGIN_MESSAGE_MAP(CLogDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_REFRESH, &CLogDlg::OnBnClickedRefresh)
 	ON_STN_CLICKED(IDC_STATIC_REF, &CLogDlg::OnBnClickedBrowseRef)
 	ON_COMMAND(ID_LOGDLG_REFRESH, &CLogDlg::OnBnClickedRefresh)
+	ON_COMMAND(ID_REFRESH_WORK_DIR, &CLogDlg::RefreshWorkingDir)
 	ON_COMMAND(ID_GO_BACKWARD_SELECT, &CLogDlg::GoBackAndSelect)
 	ON_COMMAND(ID_GO_FORWARD_SELECT, &CLogDlg::GoForwardAndSelect)
 	ON_COMMAND(ID_GO_BACKWARD, &CLogDlg::GoBack)
@@ -1131,6 +1132,12 @@ void CLogDlg::GoBackForward(bool select, bool bForward)
 void CLogDlg::OnBnClickedRefresh()
 {
 	Refresh (true);
+}
+
+void CLogDlg::RefreshWorkingDir()
+{
+	m_LogList.ResetWcRev(true);
+	FillLogMessageCtrl();
 }
 
 void CLogDlg::Refresh (bool clearfilter /*autoGoOnline*/)
