@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2014 - TortoiseGit
+// Copyright (C) 2013-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -30,6 +30,10 @@ protected:
 	}
 
 public:
+	FetchProgressCommand()
+		: m_AutoTag(GIT_REMOTE_DOWNLOAD_TAGS_AUTO)
+	{}
+
 	void SetAutoTag(int tag){ m_AutoTag = tag; }
 	virtual bool Run(CGitProgressList* list, CString& sWindowTitle, int& m_itemCountTotal, int& m_itemCount);
 };
