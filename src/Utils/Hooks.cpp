@@ -283,7 +283,6 @@ bool CHooks::PrePush(const CString& workingTree, DWORD& exitcode, CString& error
 	if (it == end())
 		return false;
 	CString sCmd = it->second.commandline;
-	AddPathParam(sCmd, CTGitPathList(workingTree));
 	AddErrorParam(sCmd, error);
 	AddCWDParam(sCmd, workingTree);
 	exitcode = RunScript(sCmd, workingTree, error, it->second.bWait, it->second.bShow);
@@ -296,7 +295,6 @@ bool CHooks::PostPush(const CString& workingTree, DWORD& exitcode, CString& erro
 	if (it == end())
 		return false;
 	CString sCmd = it->second.commandline;
-	AddPathParam(sCmd, CTGitPathList(workingTree));
 	AddErrorParam(sCmd, error);
 	AddCWDParam(sCmd, workingTree);
 	exitcode = RunScript(sCmd, workingTree, error, it->second.bWait, it->second.bShow);

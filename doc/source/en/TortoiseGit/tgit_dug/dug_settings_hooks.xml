@@ -140,7 +140,6 @@
 				<term>Pre-push</term>
 				<listitem condition="pot">
 					<para>
-						<literal>PATH</literal>
 						<literal>ERROR</literal>
 						<literal>CWD</literal>
 					</para>
@@ -150,7 +149,6 @@
 				<term>Post-push</term>
 				<listitem condition="pot">
 					<para>
-						<literal>PATH</literal>
 						<literal>ERROR</literal>
 						<literal>CWD</literal>
 					</para>
