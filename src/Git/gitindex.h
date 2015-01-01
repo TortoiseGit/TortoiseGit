@@ -53,7 +53,6 @@ public:
 	FRIEND_TEST(GitIndexCBasicGitWithTestRepoFixture, GetFileStatus);
 #endif
 protected:
-	bool m_bCheckContent;
 	__int64 m_iMaxCheckSize;
 	CComCriticalSection m_critRepoSec;
 	CAutoRepository repository;

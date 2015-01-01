@@ -377,23 +377,17 @@
             </listitem>
         </varlistentry>
         <varlistentry>
-            <term condition="pot">TGitCacheCheckContent</term>
-            <listitem>
-                <para>
-                    This makes TGitCache check file contents if timestamps (to index) mismatch in order to
-                    calculate the file status.
-                    TortoiseGit 1.7.0 up to 1.7.12 calculated the file status based on the timestamp only.
-                    If do not you want TGitCache to check the file contents (this lowers disk access and CPU time), set this value to <literal>false</literal>.
-                </para>
-            </listitem>
-        </varlistentry>
-        <varlistentry>
             <term condition="pot">TGitCacheCheckContentMaxSize</term>
             <listitem>
                 <para>
-                    If TGitCacheCheckContent is enabled, TGitCache checks the content of files by hashing them and comparing the SHA1.
-                    This option allows to restrict this behavior for file which do not exceed a specific size (in KiB).
-                    The default maximum file size is 10 MiB (i.e., 10 * 1024 KiB = <literal>10240</literal> KiB). 
+                    TGitCache checks the content of files by hashing them and comparing the SHA1 in order to
+                    calculate the file statuses if the timestamps (to index) mismatch.
+                    This option allows to restrict this behavior for files which do not exceed a specific size (in KiB).
+                    The default maximum file size is 10 MiB (i.e., 10 * 1024 KiB = <literal>10240</literal> KiB).
+                    Set this to 0 in order to make TGitCache only check the timestamps (as TortoiseGit 1.7.0 up to 1.7.12 did;
+                    before TortoiseGit 1.9.0.0 this was controlled by TGitCacheCheckContent).
+                    Disabling checking the file contents can lower disk access and CPU time of the TGitCache process, however, overlay
+                    accuracy might not be as accurate as with checking of the file contents enabled.
                 </para>
             </listitem>
         </varlistentry>

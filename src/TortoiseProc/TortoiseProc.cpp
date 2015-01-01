@@ -612,6 +612,15 @@ void CTortoiseProcApp::CheckUpgrade()
 	}
 
 	// version specific updates
+	if (lVersion <= 0x01090000)
+	{
+		if (CRegDWORD(_T("Software\\TortoiseGit\\TGitCacheCheckContent"), TRUE) == FALSE)
+		{
+			CRegDWORD(_T("Software\\TortoiseGit\\TGitCacheCheckContentMaxSize")) = 0;
+			CRegDWORD(_T("Software\\TortoiseGit\\TGitCacheCheckContent")).removeValue();
+		}
+	}
+
 	if (lVersion <= 0x01080801)
 	{
 		CRegStdDWORD(_T("Software\\TortoiseGit\\StatusColumns\\BrowseRefs")).removeValue();

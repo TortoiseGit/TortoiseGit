@@ -142,10 +142,6 @@ CSettingsAdvanced::CSettingsAdvanced()
 	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
 	settings[i++].def.b	= true;
 
-	settings[i].sName	= L"TGitCacheCheckContent";
-	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
-	settings[i++].def.b	= true;
-
 	settings[i].sName	= L"TGitCacheCheckContentMaxSize";
 	settings[i].type	= CSettingsAdvanced::SettingTypeNumber;
 	settings[i++].def.l	= 10 * 1024;

@@ -4,6 +4,7 @@ Released: unreleased
 == Changes ==
  * Custom dictionaries are no longer loaded when located in %PROGRAMFILES%\TortoiseGit or %PROGRAMFILES%\TortoiseGit\bin-directory
    Must be in  %APPDATA%\TortoiseGit\dic or %PROGRAMFILES%\TortoiseGit\Languages folder (former has priority)
+ * Dropped TGitCacheCheckContent configuration setting, please use TGitCacheCheckContentMaxSize instead (settings will be automatically migrated)
 
 == Features ==
  * Fixed issue #2641: Commit: Pre-select first item from "Changes made" list
