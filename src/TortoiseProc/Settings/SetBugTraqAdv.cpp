@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2014 - TortoiseGit
-// Copyright (C) 2008,2010,2014 - TortoiseSVN
+// Copyright (C) 2008,2010,2014-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -159,13 +159,11 @@ void CSetBugTraqAdv::OnBnClickedBugTraqbrowse()
 {
 	CBrowseFolder browser;
 	CString sPath;
+	GetDlgItemText(IDC_BUGTRAQPATH, sPath);
 	browser.SetInfo(CString(MAKEINTRESOURCE(IDS_SETTINGS_BUGTRAQ_SELECTFOLDERPATH)));
 	browser.m_style = BIF_EDITBOX | BIF_NEWDIALOGSTYLE | BIF_RETURNFSANCESTORS | BIF_RETURNONLYFSDIRS;
 	if (browser.Show(m_hWnd, sPath) == CBrowseFolder::OK)
-	{
-		m_sPath = sPath;
-		UpdateData(FALSE);
-	}
+		SetDlgItemText(IDC_BUGTRAQPATH, sPath);
 }
 
 CBugTraqAssociation CSetBugTraqAdv::GetAssociation() const
