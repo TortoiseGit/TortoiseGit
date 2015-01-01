@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2014 - TortoiseGit
+// Copyright (C) 2012-2015 - TortoiseGit
 // Copyright (C) 2003-2008,2012-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -326,10 +326,10 @@ BOOL CSciEdit::LoadDictionaries(LONG lLanguageID)
 #if THESAURUS
 	if (pThesaur==NULL)
 	{
-		if ((PathFileExists(sFolderAppData + _T("th_") + sFile + _T("_v2.idx"))) &&
-			(PathFileExists(sFolderAppData + _T("th_") + sFile + _T("_v2.dat"))))
+		if ((PathFileExists(sFolderAppData + _T("dic\\th_") + sFile + _T("_v2.idx"))) &&
+			(PathFileExists(sFolderAppData + _T("dic\\th_") + sFile + _T("_v2.dat"))))
 		{
-			pThesaur = new MyThes(CStringA(sFolderAppData + sFile + _T("_v2.idx")), CStringA(sFolderAppData + sFile + _T("_v2.dat")));
+			pThesaur = new MyThes(CStringA(sFolderAppData + _T("dic\\th_") + sFile + _T("_v2.idx")), CStringA(sFolderAppData + _T("dic\\th_") + sFile + _T("_v2.dat")));
 		}
 		else if ((PathFileExists(sFolder + _T("th_") + sFile + _T("_v2.idx"))) &&
 			(PathFileExists(sFolder + _T("th_") + sFile + _T("_v2.dat"))))
