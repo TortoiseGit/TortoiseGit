@@ -5,6 +5,8 @@ Released: unreleased
  * Improved auto update
    Version checks will use SSL (on Vista or newer systems)
    New version.txt file format with more options
+ * Fixed issue #2243: Submodule red-icon doesn't propagate to higher folders (configurable now)
+ * Improved overlay icon accuracy
 
 == Bug Fixes ==
  * Fixed issue #2359: Selected files counter not updated after revert
