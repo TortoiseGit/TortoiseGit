@@ -1,5 +1,5 @@
 # Translation of TortoiseGit
-# Copyright (C) 2008-2014 the TortoiseGit team
+# Copyright (C) 2008-2015 the TortoiseGit team
 #
 # This file is distributed under the same license as TortoiseGit
 #
@@ -3080,7 +3080,7 @@ msgid "Copying..."
 msgstr ""
 
 #. Resource IDs: (1001)
-msgid "Copyright (C) 2009-2014 TortoiseGit"
+msgid "Copyright (C) 2009-2015 TortoiseGit"
 msgstr ""
 
 #. Resource IDs: (1254)
