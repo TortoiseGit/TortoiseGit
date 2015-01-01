@@ -1,6 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2013-2014 - TortoiseGit
+// Copyright (C) 2013-2015 - TortoiseGit
 // Copyright (C) 2006-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -32,7 +32,6 @@
 #include "FileDlgEventHandler.h"
 #include "TempFile.h"
 #include "TaskbarUUID.h"
-#include "git2/threads.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
