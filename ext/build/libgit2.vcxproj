@@ -231,6 +231,7 @@
     <ClInclude Include="..\libgit2\include\git2\sys\index.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\mempack.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\odb_backend.h" />
+    <ClInclude Include="..\libgit2\include\git2\sys\openssl.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\refdb_backend.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\reflog.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\refs.h" />
@@ -386,7 +387,6 @@
     <ClInclude Include="..\libgit2\include\git2\status.h" />
     <ClInclude Include="..\libgit2\include\git2\stdint.h" />
     <ClInclude Include="..\libgit2\include\git2\tag.h" />
-    <ClInclude Include="..\libgit2\include\git2\threads.h" />
     <ClInclude Include="..\libgit2\include\git2\tree.h" />
     <ClInclude Include="..\libgit2\include\git2\types.h" />
     <ClInclude Include="..\libgit2\include\git2\version.h" />

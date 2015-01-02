@@ -751,9 +751,6 @@
     <ClInclude Include="..\libgit2\include\git2\tag.h">
       <Filter>Public Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\libgit2\include\git2\threads.h">
-      <Filter>Public Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\libgit2\include\git2\tree.h">
       <Filter>Public Header Files</Filter>
     </ClInclude>
@@ -899,6 +896,9 @@
       <Filter>Public Header Files\sys</Filter>
     </ClInclude>
     <ClInclude Include="..\libgit2\include\git2\sys\odb_backend.h">
+      <Filter>Public Header Files\sys</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\include\git2\sys\openssl.h">
       <Filter>Public Header Files\sys</Filter>
     </ClInclude>
     <ClInclude Include="..\libgit2\include\git2\sys\refdb_backend.h">
