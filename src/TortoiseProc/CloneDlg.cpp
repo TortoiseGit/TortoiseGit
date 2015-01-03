@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2014 - TortoiseGit
+// Copyright (C) 2008-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -33,8 +33,6 @@ CCloneDlg::CCloneDlg(CWnd* pParent /*=NULL*/)
 	: CHorizontalResizableStandAloneDialog(CCloneDlg::IDD, pParent)
 	, m_Directory(_T(""))
 {
-	m_bAutoloadPuttyKeyFile = CAppUtils::IsSSHPutty();
-
 	m_bRecursive = FALSE;
 	m_bBare = FALSE;
 	m_bBranch = FALSE;
@@ -54,7 +52,10 @@ CCloneDlg::CCloneDlg(CWnd* pParent /*=NULL*/)
 
 	m_regBrowseUrl = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\CloneBrowse"),0);
 	m_regCloneDir = CRegString(_T("Software\\TortoiseGit\\TortoiseProc\\CloneDir"));
+	m_regUseSSHKey = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\CloneUseSSHKey"), TRUE);
 	m_nSVNFrom = 0;
+
+	m_bAutoloadPuttyKeyFile = m_regUseSSHKey && CAppUtils::IsSSHPutty();
 
 	m_nDepth = 1;
 	m_bDepth = false;
@@ -244,6 +245,7 @@ void CCloneDlg::OnOK()
 	m_URLCombo.SaveHistory();
 	m_PuttyKeyCombo.SaveHistory();
 	m_regCloneDir = m_Directory;
+	m_regUseSSHKey = m_bAutoloadPuttyKeyFile;
 
 	this->m_PuttyKeyCombo.GetWindowText(m_strPuttyKeyFile);
 	CResizableDialog::OnOK();

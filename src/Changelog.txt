@@ -18,6 +18,7 @@ Released: unreleased
  * Fixed issue #2385: 'Mail' - 'Use configured server' & 'none'... seems can not be localized
  * Fixed issue #2356: Rebase dialog should also auto-link to issue tracker
  * Fixed issue #2390: /command:log /outfile not written
+ * Fixed issue #2391: Cannot clear "Load Putty Key" in clone dialog persistently
 
 = Release 1.8.12.0 =
 Released: 2014-11-25

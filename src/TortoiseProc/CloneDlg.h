@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2013,2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -88,6 +88,7 @@ public:
 protected:
 	CMenuButton	m_BrowseUrl;
 	CRegDWORD	m_regBrowseUrl;
+	CRegDWORD	m_regUseSSHKey;
 	CRegString	m_regCloneDir;
 	bool		m_bSaving;
 
