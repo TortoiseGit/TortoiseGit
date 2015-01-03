@@ -624,6 +624,8 @@ void CGitLogListBase::DrawTagBranchMessage(HDC hdc, CRect &rect, INT_PTR index, 
 		rt.left += oneSpaceSize.cx;
 	}
 
+	int action = data->GetRebaseAction();
+	bool skip = !!(action & (LOGACTIONS_REBASE_DONE | LOGACTIONS_REBASE_SKIP));
 	if (IsAppThemed() && pfnDrawThemeTextEx)
 	{
 		int txtState = LISS_NORMAL;
@@ -632,7 +634,7 @@ void CGitLogListBase::DrawTagBranchMessage(HDC hdc, CRect &rect, INT_PTR index, 
 
 		DTTOPTS opts = { 0 };
 		opts.dwSize = sizeof(opts);
-		opts.crText = ::GetSysColor(COLOR_WINDOWTEXT);
+		opts.crText = skip ? RGB(128,128,128) : ::GetSysColor(COLOR_WINDOWTEXT);
 		opts.dwFlags = DTT_TEXTCOLOR;
 		pfnDrawThemeTextEx(hTheme, hdc, LVP_LISTITEM, txtState, data->GetSubject(), -1, DT_NOPREFIX | DT_LEFT | DT_SINGLELINE | DT_VCENTER | DT_END_ELLIPSIS, &rt, &opts);
 	}
@@ -640,13 +642,13 @@ void CGitLogListBase::DrawTagBranchMessage(HDC hdc, CRect &rect, INT_PTR index, 
 	{
 		if (rItem.state & LVIS_SELECTED)
 		{
-			COLORREF clrOld = ::SetTextColor(hdc,::GetSysColor(COLOR_HIGHLIGHTTEXT));
+			COLORREF clrOld = ::SetTextColor(hdc, skip ? RGB(128,128,128) : ::GetSysColor(COLOR_HIGHLIGHTTEXT));
 			::DrawText(hdc,data->GetSubject(), data->GetSubject().GetLength(), &rt, DT_NOPREFIX | DT_LEFT | DT_SINGLELINE | DT_VCENTER | DT_END_ELLIPSIS);
 			::SetTextColor(hdc, clrOld);
 		}
 		else
 		{
-			COLORREF clrOld = ::SetTextColor(hdc, ::GetSysColor(COLOR_WINDOWTEXT));
+			COLORREF clrOld = ::SetTextColor(hdc, skip ? RGB(128,128,128) : ::GetSysColor(COLOR_WINDOWTEXT));
 			::DrawText(hdc, data->GetSubject(), data->GetSubject().GetLength(), &rt, DT_NOPREFIX | DT_LEFT | DT_SINGLELINE | DT_VCENTER | DT_END_ELLIPSIS);
 			::SetTextColor(hdc, clrOld);
 		}
