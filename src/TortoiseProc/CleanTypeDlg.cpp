@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2014 - TortoiseGit
+// Copyright (C) 2008-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -81,9 +81,7 @@ BOOL CCleanTypeDlg::OnInitDialog()
 
 	EnableSaveRestore(_T("CleanTypeDlg"));
 
-	CString sWindowTitle;
-	GetWindowText(sWindowTitle);
-	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);
+	SetDlgTitle();
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
@@ -97,4 +95,15 @@ void CCleanTypeDlg::OnOK()
 	this->m_regType = this->m_CleanType ;
 
 	CStateStandAloneDialog::OnOK();
+}
+
+void CCleanTypeDlg::SetDlgTitle()
+{
+	if (m_sTitle.IsEmpty())
+		GetWindowText(m_sTitle);
+
+	if (m_pathList.GetCount() == 1)
+		CAppUtils::SetWindowTitle(m_hWnd, g_Git.CombinePath(m_pathList[0].GetUIPathString()), m_sTitle);
+	else
+		CAppUtils::SetWindowTitle(m_hWnd, g_Git.CombinePath(m_pathList.GetCommonRoot().GetDirectory()), m_sTitle);
 }

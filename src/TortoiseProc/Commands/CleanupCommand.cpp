@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009,2011-2014 - TortoiseGit
+// Copyright (C) 2009,2011-2015 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -285,6 +285,7 @@ bool CleanupCommand::Execute()
 	bool bRet = false;
 
 	CCleanTypeDlg dlg;
+	dlg.m_pathList = pathList;
 	if (dlg.DoModal() == IDOK)
 	{
 		bRet = DoCleanUp(pathList, dlg.m_CleanType, dlg.m_bDir == BST_CHECKED, dlg.m_bSubmodules == BST_CHECKED, dlg.m_bDryRun == BST_CHECKED, dlg.m_bNoRecycleBin == BST_CHECKED);

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2014 - TortoiseGit
+// Copyright (C) 2008-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -21,6 +21,7 @@
 
 #include "StandAloneDlg.h"
 #include "registry.h"
+#include "TGitPath.h"
 
 // CCleanTypeDlg dialog
 
@@ -40,12 +41,14 @@ protected:
 
 	CRegDWORD m_regDir;
 	CRegDWORD m_regType;
+	CString m_sTitle;
 
 	DECLARE_MESSAGE_MAP()
 
 	virtual	BOOL OnInitDialog();
 	virtual	void OnOK();
 	afx_msg void OnBnClickedCheckNoRecycleBin();
+	void SetDlgTitle();
 
 public:
 	BOOL	m_bDir;
@@ -53,4 +56,5 @@ public:
 	BOOL	m_bNoRecycleBin;
 	BOOL	m_bDryRun;
 	BOOL	m_bSubmodules;
+	CTGitPathList m_pathList;
 };
