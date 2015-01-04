@@ -4249,6 +4249,20 @@ CString CGitLogListBase::GetToolTipText(int nItem, int nSubItem)
 			return CString();
 		return pLogEntry->GetSubject();
 	}
+	else if (nSubItem == LOGLIST_DATE && m_bRelativeTimes)
+	{
+		GitRev* pLogEntry = (GitRev*)m_arShownList.SafeGetAt(nItem);
+		if (pLogEntry == nullptr)
+			return CString();
+		return CLoglistUtils::FormatDateAndTime(pLogEntry->GetAuthorDate(), m_DateFormat, true, false);
+	}
+	else if (nSubItem == LOGLIST_COMMIT_DATE && m_bRelativeTimes)
+	{
+		GitRev* pLogEntry = (GitRev*)m_arShownList.SafeGetAt(nItem);
+		if (pLogEntry == nullptr)
+			return CString();
+		return CLoglistUtils::FormatDateAndTime(pLogEntry->GetCommitterDate(), m_DateFormat, true, false);
+	}
 	else if (nSubItem == LOGLIST_ACTION)
 	{
 		GitRev* pLogEntry = (GitRev*)m_arShownList.SafeGetAt(nItem);
