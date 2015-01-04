@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2012, 2014 - TortoiseSVN
+// Copyright (C) 2003-2012, 2014-2015 - TortoiseSVN
 // Copyright (C) 2008-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
@@ -1930,8 +1930,8 @@ LPCTSTR CShellExt::GetMenuTextFromResource(int id)
 				space = 0;
 				break;
 			default:
-				space = layout & menuInfo[menuIndex].menuID ? 0 : 6;
-				if (layout & (menuInfo[menuIndex].menuID))
+				space = (layout & menuInfo[menuIndex].menuID) ? 0 : 6;
+				if (layout & menuInfo[menuIndex].menuID)
 				{
 					_tcscpy_s(textbuf, 255, _T("Git "));
 					_tcscat_s(textbuf, 255, stringtablebuffer);

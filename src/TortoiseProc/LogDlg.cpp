@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2009 - TortoiseSVN
+// Copyright (C) 2003-2009, 2015 - TortoiseSVN
 // Copyright (C) 2008-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
@@ -1930,7 +1930,7 @@ LRESULT CLogDlg::OnClickedInfoIcon(WPARAM wParam, LPARAM lParam)
 	CPoint point;
 	CString temp;
 	point = CPoint(rect->left, rect->bottom);
-#define LOGMENUFLAGS(x) (MF_STRING | MF_ENABLED | (m_LogList.m_SelectedFilters & x ? MF_CHECKED : MF_UNCHECKED))
+#define LOGMENUFLAGS(x) (MF_STRING | MF_ENABLED | ((m_LogList.m_SelectedFilters & x) ? MF_CHECKED : MF_UNCHECKED))
 	CMenu popup;
 	if (popup.CreatePopupMenu())
 	{

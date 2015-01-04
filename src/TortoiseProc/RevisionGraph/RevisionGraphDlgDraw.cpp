@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2011 - TortoiseSVN
+// Copyright (C) 2003-2011, 2015 - TortoiseSVN
 // Copyright (C) 2012-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
@@ -671,7 +671,7 @@ void CRevisionGraphWnd::IndicateGlyphDirection
 
 	// draw the indication (only one condition should match)
 
-	RectF glyphCenter = indicateAbove ^ upsideDown
+	RectF glyphCenter = (indicateAbove ^ upsideDown)
 		? RectF (nodeRect.X, nodeRect.Y - 1.0f, 0.0f, 0.0f)
 		: RectF (nodeRect.X, nodeRect.GetBottom() - 1.0f, 0.0f, 0.0f);
 
