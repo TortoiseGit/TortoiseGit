@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2014 - TortoiseGit
+// Copyright (C) 2008-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -513,6 +513,11 @@ protected:
 	void FetchTrackingBranchList();
 	void FetchLastLogInfo();
 	void FetchFullLogInfo(CString &from, CString &to);
+
+	virtual afx_msg BOOL OnToolTipText(UINT id, NMHDR * pNMHDR, LRESULT * pResult);
+	virtual INT_PTR OnToolHitTest(CPoint point, TOOLINFO * pTI) const;
+	CString GetToolTipText(int nItem, int nSubItem);
+
 	void FillBackGround(HDC hdc, DWORD_PTR Index, CRect &rect);
 	void DrawTagBranchMessage(HDC hdc, CRect &rect, INT_PTR index, std::vector<REFLABEL> &refList);
 	void DrawTagBranch(HDC hdc, CDC &W_Dc, HTHEME hTheme, CRect &rect, CRect &rt, LVITEM &rItem, GitRev* data, std::vector<REFLABEL> &refList);
@@ -646,6 +651,8 @@ protected:
 	typedef HRESULT (WINAPI *FNDRAWTHEMETEXTEX) (HTHEME, HDC, int, int, LPCWSTR, int, DWORD, LPRECT, const DTTOPTS *);
 	HMODULE				hUxTheme;
 	FNDRAWTHEMETEXTEX	pfnDrawThemeTextEx;
+	TCHAR               m_wszTip[8192];
+	char                m_szTip[8192];
 };
 
 
