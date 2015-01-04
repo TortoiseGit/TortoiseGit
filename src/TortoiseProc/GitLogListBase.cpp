@@ -4240,7 +4240,16 @@ BOOL CGitLogListBase::OnToolTipText(UINT /*id*/, NMHDR* pNMHDR, LRESULT* pResult
 
 CString CGitLogListBase::GetToolTipText(int nItem, int nSubItem)
 {
-	if (nSubItem == LOGLIST_ACTION)
+	if (nSubItem == LOGLIST_MESSAGE && !m_bTagsBranchesOnRightSide)
+	{
+		GitRev* pLogEntry = (GitRev*)m_arShownList.SafeGetAt(nItem);
+		if (pLogEntry == nullptr)
+			return CString();
+		if (m_HashMap[pLogEntry->m_CommitHash].empty())
+			return CString();
+		return pLogEntry->GetSubject();
+	}
+	else if (nSubItem == LOGLIST_ACTION)
 	{
 		GitRev* pLogEntry = (GitRev*)m_arShownList.SafeGetAt(nItem);
 		if (pLogEntry == nullptr)
