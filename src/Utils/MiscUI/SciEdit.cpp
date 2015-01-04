@@ -1007,7 +1007,7 @@ void CSciEdit::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 		popup.AppendMenu(MF_SEPARATOR);
 
 		sMenuItemText.LoadString(IDS_SCIEDIT_CUT);
-		popup.AppendMenu(bHasSelection ? uEnabledMenu : uDisabledMenu, SCI_CUT, sMenuItemText);
+		popup.AppendMenu(!bIsReadOnly && bHasSelection ? uEnabledMenu : uDisabledMenu, SCI_CUT, sMenuItemText);
 		sMenuItemText.LoadString(IDS_SCIEDIT_COPY);
 		popup.AppendMenu(bHasSelection ? uEnabledMenu : uDisabledMenu, SCI_COPY, sMenuItemText);
 		sMenuItemText.LoadString(IDS_SCIEDIT_PASTE);
