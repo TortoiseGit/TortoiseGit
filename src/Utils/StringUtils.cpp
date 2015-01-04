@@ -1,6 +1,6 @@
 // TortoiseSVN - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2011 - TortoiseSVN
+// Copyright (C) 2003-2011, 2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -465,8 +465,6 @@ void CStringUtils::PipesToNulls(TCHAR* buffer)
 		++ptr;
 	}
 }
-
-#define IsCharNumeric(C) (!IsCharAlpha(C) && IsCharAlphaNumeric(C))
 
 
 #if defined(_DEBUG) && defined(_MFC_VER)
