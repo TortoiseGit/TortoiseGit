@@ -771,20 +771,14 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 			// and we can find a match of those in the log message
 
 			pMsgView->SetSel(-1,-1);
-			CHARFORMAT2 format;
-			SecureZeroMemory(&format, sizeof(CHARFORMAT2));
-			format.cbSize = sizeof(CHARFORMAT2);
-			format.dwMask = CFM_BOLD;
-			format.dwEffects = CFE_BOLD;
-			pMsgView->SendMessage(EM_SETCHARFORMAT, SCF_SELECTION, (LPARAM)&format);
+			CAppUtils::SetCharFormat(pMsgView, CFM_BOLD, CFE_BOLD);
 
 			CString msg = m_bAsteriskLogPrefix ? _T("* ") : _T("");
 			msg+=pLogEntry->GetSubject();
 			pMsgView->ReplaceSel(msg);
 
 			pMsgView->SetSel(-1,-1);
-			format.dwEffects = 0;
-			pMsgView->SendMessage(EM_SETCHARFORMAT, SCF_SELECTION, (LPARAM)&format);
+			CAppUtils::SetCharFormat(pMsgView, CFM_BOLD, 0);
 
 			msg=_T("\n");
 			msg+=pLogEntry->GetBody();

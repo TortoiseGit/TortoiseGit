@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2013,2015 - TortoiseGit
 // Copyright (C) 2003-2008,2010 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -46,9 +46,9 @@ public:
 	 * @a window text.
 	 */
 	static void SetCharFormat(CWnd* window, DWORD mask, DWORD effects, const std::vector<CHARRANGE>& positions);
+	static void SetCharFormat(CWnd* window, DWORD mask, DWORD effects);
 
 protected:
-	static void SetCharFormat(CWnd* window, DWORD mask, DWORD effects);
 	CCommonAppUtils(void){};
 	~CCommonAppUtils(void){};
 };
