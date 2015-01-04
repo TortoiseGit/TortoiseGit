@@ -1409,6 +1409,7 @@ BOOL CSciEdit::MarkEnteredBugID(int startstylepos, int endstylepos)
 	return FALSE;
 }
 
+//similar code in AppUtils.cpp
 bool CSciEdit::IsValidURLChar(unsigned char ch)
 {
 	return isalnum(ch) ||
@@ -1417,6 +1418,7 @@ bool CSciEdit::IsValidURLChar(unsigned char ch)
 		ch == '|' || ch == '>' || ch == '<';
 }
 
+//similar code in AppUtils.cpp
 void CSciEdit::StyleURLs(int startstylepos, int endstylepos)
 {
 	const int line_number = (int)Call(SCI_LINEFROMPOSITION, startstylepos);

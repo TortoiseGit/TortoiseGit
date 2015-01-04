@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2009, 2015 - TortoiseSVN
-// Copyright (C) 2008-2014 - TortoiseGit
+// Copyright (C) 2008-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -264,8 +264,6 @@ BOOL CLogDlg::OnInitDialog()
 	// set the font to use in the log message view, configured in the settings dialog
 	CAppUtils::CreateFontForLogs(m_logFont);
 	GetDlgItem(IDC_MSGVIEW)->SetFont(&m_logFont);
-	// automatically detect URLs in the log message and turn them into links
-	GetDlgItem(IDC_MSGVIEW)->SendMessage(EM_AUTOURLDETECT, TRUE, NULL);
 	// make the log message rich edit control send a message when the mouse pointer is over a link
 	GetDlgItem(IDC_MSGVIEW)->SendMessage(EM_SETEVENTMASK, NULL, ENM_LINK | ENM_SCROLL);
 
@@ -816,6 +814,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 				findHashStart = text.Find('\n', findHashStart + 1);
 			FindGitHash(text, findHashStart, pMsgView);
 			m_LogList.m_ProjectProperties.FindBugID(text, pMsgView);
+			CAppUtils::StyleURLs(text, pMsgView);
 			if (((DWORD)CRegStdDWORD(_T("Software\\TortoiseGit\\StyleCommitMessages"), TRUE)) == TRUE)
 				CAppUtils::FormatTextInRichEditControl(pMsgView);
 

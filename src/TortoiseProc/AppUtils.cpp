@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2014 - TortoiseGit
+// Copyright (C) 2008-2015 - TortoiseGit
 // Copyright (C) 2003-2011, 2013-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -904,6 +904,85 @@ bool CAppUtils::FindStyleChars(const CString& sText, TCHAR stylechar, int& start
 		++i;
 	}
 	return bFoundMarker;
+}
+
+// from CSciEdit
+namespace {
+	bool IsValidURLChar(wchar_t ch)
+	{
+		return iswalnum(ch) ||
+			ch == L'_' || ch == L'/' || ch == L';' || ch == L'?' || ch == L'&' || ch == L'=' ||
+			ch == L'%' || ch == L':' || ch == L'.' || ch == L'#' || ch == L'-' || ch == L'+' ||
+			ch == L'|' || ch == L'>' || ch == L'<';
+	}
+
+	bool IsUrl(const CString& sText)
+	{
+		if (!PathIsURLW(sText))
+			return false;
+		if (sText.Find(L"://") >= 0)
+			return true;
+		return false;
+	}
+}
+
+BOOL CAppUtils::StyleURLs(const CString& msg, CWnd* pWnd)
+{
+	std::vector<CHARRANGE> positions = FindURLMatches(msg);
+	CAppUtils::SetCharFormat(pWnd, CFM_LINK, CFE_LINK, positions);
+
+	return positions.empty() ? FALSE : TRUE;
+}
+
+/**
+* implements URL searching with the same logic as CSciEdit::StyleURLs
+*/
+std::vector<CHARRANGE> CAppUtils::FindURLMatches(const CString& msg)
+{
+	std::vector<CHARRANGE> result;
+
+	int len = msg.GetLength();
+	int starturl = -1;
+
+	for (int i = 0; i <= msg.GetLength(); ++i)
+	{
+		if ((i < len) && IsValidURLChar(msg[i]))
+		{
+			if (starturl < 0)
+				starturl = i;
+		}
+		else
+		{
+			if (starturl >= 0)
+			{
+				bool strip = true;
+				if (msg[starturl] == '<' && i < len) // try to detect and do not strip URLs put within <>
+				{
+					while (starturl <= i && msg[starturl] == '<') // strip leading '<'
+						++starturl;
+					strip = false;
+					i = starturl;
+					while (i < len && msg[i] != '\r' && msg[i] != '\n' && msg[i] != '>') // find first '>' or new line after resetting i to start position
+						++i;
+				}
+				if (!IsUrl(msg.Mid(starturl, i - starturl)))
+				{
+					starturl = -1;
+					continue;
+				}
+
+				int skipTrailing = 0;
+				while (strip && i - skipTrailing - 1 > starturl && (msg[i - skipTrailing - 1] == '.' || msg[i - skipTrailing - 1] == '-' || msg[i - skipTrailing - 1] == '?' || msg[i - skipTrailing - 1] == ';' || msg[i - skipTrailing - 1] == ':' || msg[i - skipTrailing - 1] == '>' || msg[i - skipTrailing - 1] == '<'))
+					++skipTrailing;
+				
+				CHARRANGE range = { starturl, i - skipTrailing };
+				result.push_back(range);
+			}
+			starturl = -1;
+		}
+	}
+
+	return result;
 }
 
 bool CAppUtils::StartShowUnifiedDiff(HWND hWnd, const CTGitPath& url1, const git_revnum_t& rev1,

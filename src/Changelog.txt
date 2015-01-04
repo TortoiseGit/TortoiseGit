@@ -22,6 +22,7 @@ Released: unreleased
  * Fixed issue #2390: /command:log /outfile not written
  * Fixed issue #2391: Cannot clear "Load Putty Key" in clone dialog persistently
  * Fixed issue #1789: Tooltips not properly displayed in Log List if that commit has refs
+ * Fixed issue #2353: Link to bug tracker not available in Show Log dialog
 
 = Release 1.8.12.0 =
 Released: 2014-11-25

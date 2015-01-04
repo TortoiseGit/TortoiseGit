@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2014 - TortoiseGit
+// Copyright (C) 2008-2015 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -133,6 +133,11 @@ public:
 	 */
 	static bool FormatTextInRichEditControl(CWnd * pWnd);
 	static bool FindStyleChars(const CString& sText, TCHAR stylechar, int& start, int& end);
+	/**
+	* implements URL searching with the same logic as CSciEdit::StyleURLs
+	*/
+	static std::vector<CHARRANGE> FindURLMatches(const CString& msg);
+	static BOOL StyleURLs(const CString& msg, CWnd* pWnd);
 
 	/**
 	 * Replacement for GitDiff::ShowUnifiedDiff(), but started as a separate process.
