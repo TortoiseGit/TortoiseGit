@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2012-2015 - TortoiseGit
-// Copyright (C) 2003-2008,2012-2014 - TortoiseSVN
+// Copyright (C) 2003-2008,2012-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -1449,7 +1449,7 @@ void CSciEdit::StyleURLs(int startstylepos, int endstylepos)
 				bool strip = true;
 				if (msg[starturl] == '<' && i < len) // try to detect and do not strip URLs put within <>
 				{
-					while (msg[starturl] == '<' && starturl <= i) // strip leading '<'
+					while (starturl <= i && msg[starturl] == '<') // strip leading '<'
 						++starturl;
 					strip = false;
 					i = starturl;
