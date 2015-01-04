@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2013 - TortoiseGit
+// Copyright (C) 2009-2013, 2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -53,6 +53,7 @@ BEGIN_MESSAGE_MAP(CPatchListCtrl, CListCtrl)
 	ON_NOTIFY_REFLECT(NM_DBLCLK, &CPatchListCtrl::OnNMDblclk)
 	ON_WM_CONTEXTMENU()
 	ON_NOTIFY_REFLECT(NM_CUSTOMDRAW, &CPatchListCtrl::OnNMCustomdraw)
+	ON_WM_DROPFILES()
 END_MESSAGE_MAP()
 
 
@@ -223,4 +224,30 @@ void CPatchListCtrl::OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult)
 		break;
 	}
 	*pResult = CDRF_DODEFAULT;
+}
+
+void CPatchListCtrl::OnDropFiles(HDROP hDropInfo)
+{
+	UINT nNumFiles = DragQueryFile(hDropInfo, 0xFFFFFFFF, nullptr, 0);
+	for (UINT i = 0; i < nNumFiles; ++i)
+	{
+		CString file;
+		DragQueryFile(hDropInfo, i, file.GetBufferSetLength(MAX_PATH), MAX_PATH);
+		file.ReleaseBuffer();
+		if (PathIsDirectory(file))
+			continue;
+
+		// no duplicates
+		LVFINDINFO lvInfo;
+		lvInfo.flags = LVFI_STRING;
+		lvInfo.psz = file;
+		if (FindItem(&lvInfo, -1) != -1)
+			continue;
+
+		int index = InsertItem(GetItemCount(), file);
+		if (index >= 0)
+			SetCheck(index, true);
+	}
+	DragFinish(hDropInfo);
+	SetColumnWidth(0, LVSCW_AUTOSIZE);
 }
