@@ -1,8 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2014 - TortoiseGit
+// Copyright (C) 2008-2015 - TortoiseGit
 // Copyright (C) 2005-2007 Marco Costalba
-// Copyright (C) 2011-2013 - Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -330,6 +329,8 @@ BEGIN_MESSAGE_MAP(CGitLogListBase, CHintListCtrl)
 	ON_NOTIFY(HDN_ITEMCHANGINGW, 0, OnHdnItemchanging)
 	ON_NOTIFY(HDN_ENDTRACK, 0, OnColumnResized)
 	ON_NOTIFY(HDN_ENDDRAG, 0, OnColumnMoved)
+	ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTW, 0, 0xFFFF, &OnToolTipText)
+	ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTA, 0, 0xFFFF, &OnToolTipText)
 END_MESSAGE_MAP()
 
 void CGitLogListBase::MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct)
@@ -4137,4 +4138,172 @@ void CGitLogListBase::OnColumnMoved(NMHDR *pNMHDR, LRESULT *pResult)
 	m_ColumnManager.OnColumnMoved(pNMHDR, pResult);
 
 	Invalidate(FALSE);
+}
+
+INT_PTR CGitLogListBase::OnToolHitTest(CPoint point, TOOLINFO * pTI) const
+{
+	LVHITTESTINFO lvhitTestInfo;
+
+	lvhitTestInfo.pt = point;
+
+	int nItem = ListView_SubItemHitTest(m_hWnd, &lvhitTestInfo);
+	int nSubItem = lvhitTestInfo.iSubItem;
+
+	UINT nFlags = lvhitTestInfo.flags;
+
+	// nFlags is 0 if the SubItemHitTest fails
+	// Therefore, 0 & <anything> will equal false
+	if (nFlags & LVHT_ONITEM)
+	{
+		// Get the client area occupied by this control
+		RECT rcClient;
+		GetClientRect(&rcClient);
+
+		// Fill in the TOOLINFO structure
+		pTI->hwnd = m_hWnd;
+		pTI->uId = (UINT)((nItem<<10)+(nSubItem&0x3ff)+1);
+		pTI->lpszText = LPSTR_TEXTCALLBACK;
+		pTI->rect = rcClient;
+
+		return pTI->uId; // By returning a unique value per listItem,
+		// we ensure that when the mouse moves over another list item,
+		// the tooltip will change
+	}
+	else
+	{
+		// Otherwise, we aren't interested, so let the message propagate
+		return -1;
+	}
+}
+
+BOOL CGitLogListBase::OnToolTipText(UINT /*id*/, NMHDR* pNMHDR, LRESULT* pResult)
+{
+	TOOLTIPTEXTA* pTTTA = (TOOLTIPTEXTA*)pNMHDR;
+	TOOLTIPTEXTW* pTTTW = (TOOLTIPTEXTW*)pNMHDR;
+
+	*pResult = 0;
+
+	// Ignore messages from the built in tooltip, we are processing them internally
+	if ((pNMHDR->idFrom == (UINT_PTR)m_hWnd) &&
+		(((pNMHDR->code == TTN_NEEDTEXTA) && (pTTTA->uFlags & TTF_IDISHWND)) ||
+		((pNMHDR->code == TTN_NEEDTEXTW) && (pTTTW->uFlags & TTF_IDISHWND))))
+		return FALSE;
+
+	// Get the mouse position
+	const MSG* pMessage = GetCurrentMessage();
+
+	CPoint pt;
+	pt = pMessage->pt;
+	ScreenToClient(&pt);
+
+	// Check if the point falls onto a list item
+	LVHITTESTINFO lvhitTestInfo;
+	lvhitTestInfo.pt = pt;
+
+	int nItem = SubItemHitTest(&lvhitTestInfo);
+
+	if (lvhitTestInfo.flags & LVHT_ONITEM)
+	{
+		CString strTipText = GetToolTipText(nItem, lvhitTestInfo.iSubItem);
+		if (strTipText.IsEmpty())
+			return FALSE;
+
+		// we want multiline tooltips
+		::SendMessage(pNMHDR->hwndFrom, TTM_SETMAXTIPWIDTH, 0, INT_MAX);
+
+		wcscpy_s(m_wszTip, strTipText);
+		// handle Unicode as well as non-Unicode requests
+		if (pNMHDR->code == TTN_NEEDTEXTA)
+		{
+			pTTTA->hinst = nullptr;
+			pTTTA->lpszText = m_szTip;
+			::WideCharToMultiByte(CP_ACP, 0, m_wszTip, -1, m_szTip, 8192, NULL, NULL);
+		}
+		else
+		{
+			pTTTW->hinst = nullptr;
+			pTTTW->lpszText = m_wszTip;
+		}
+
+		CRect rect;
+		GetSubItemRect(nItem, lvhitTestInfo.iSubItem, LVIR_LABEL, rect);
+		ClientToScreen(rect);
+		::SetWindowPos(pNMHDR->hwndFrom, HWND_TOP, rect.left, rect.top, 0, 0, SWP_NOACTIVATE|SWP_NOSIZE|SWP_NOOWNERZORDER);
+
+		return TRUE; // We found a tool tip,
+		// tell the framework this message has been handled
+	}
+
+	return FALSE; // We didn't handle the message,
+	// let the framework continue propagating the message
+}
+
+CString CGitLogListBase::GetToolTipText(int nItem, int nSubItem)
+{
+	if (nSubItem == LOGLIST_MESSAGE && !m_bTagsBranchesOnRightSide)
+	{
+		GitRev* pLogEntry = (GitRev*)m_arShownList.SafeGetAt(nItem);
+		if (pLogEntry == nullptr)
+			return CString();
+		if (m_HashMap[pLogEntry->m_CommitHash].empty())
+			return CString();
+		return pLogEntry->GetSubject();
+	}
+	else if (nSubItem == LOGLIST_DATE && m_bRelativeTimes)
+	{
+		GitRev* pLogEntry = (GitRev*)m_arShownList.SafeGetAt(nItem);
+		if (pLogEntry == nullptr)
+			return CString();
+		return CLoglistUtils::FormatDateAndTime(pLogEntry->GetAuthorDate(), m_DateFormat, true, false);
+	}
+	else if (nSubItem == LOGLIST_COMMIT_DATE && m_bRelativeTimes)
+	{
+		GitRev* pLogEntry = (GitRev*)m_arShownList.SafeGetAt(nItem);
+		if (pLogEntry == nullptr)
+			return CString();
+		return CLoglistUtils::FormatDateAndTime(pLogEntry->GetCommitterDate(), m_DateFormat, true, false);
+	}
+	else if (nSubItem == LOGLIST_ACTION)
+	{
+		GitRev* pLogEntry = (GitRev*)m_arShownList.SafeGetAt(nItem);
+		if (pLogEntry == nullptr)
+			return CString();
+
+		CString sToolTipText;
+
+		DWORD actions = SafeGetAction(pLogEntry);
+
+		CString actionText;
+		if (actions & CTGitPath::LOGACTIONS_MODIFIED)
+			actionText += CTGitPath::GetActionName(CTGitPath::LOGACTIONS_MODIFIED);
+
+		if (actions & CTGitPath::LOGACTIONS_ADDED)
+		{
+			if (!actionText.IsEmpty())
+				actionText += L"\r\n";
+			actionText += CTGitPath::GetActionName(CTGitPath::LOGACTIONS_ADDED);
+		}
+
+		if (actions & CTGitPath::LOGACTIONS_DELETED)
+		{
+			if (!actionText.IsEmpty())
+				actionText += L"\r\n";
+			actionText += CTGitPath::GetActionName(CTGitPath::LOGACTIONS_DELETED);
+		}
+
+		if (actions & CTGitPath::LOGACTIONS_REPLACED)
+		{
+			if (!actionText.IsEmpty())
+				actionText += L"\r\n";
+			actionText += CTGitPath::GetActionName(CTGitPath::LOGACTIONS_REPLACED);
+		}
+
+		if (!actionText.IsEmpty())
+		{
+			CString sTitle(MAKEINTRESOURCE(IDS_LOG_ACTIONS));
+			sToolTipText = sTitle + L":\r\n" + actionText;
+		}
+		return sToolTipText;
+	}
+	return CString();
 }

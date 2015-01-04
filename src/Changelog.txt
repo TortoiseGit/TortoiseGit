@@ -7,6 +7,7 @@ Released: unreleased
    New version.txt file format with more options
  * Fixed issue #2243: Submodule red-icon doesn't propagate to higher folders (configurable now)
  * Improved overlay icon accuracy
+ * Fixed issue #2388: See the exact time when the Relative time in log enabled
 
 == Bug Fixes ==
  * Fixed issue #2359: Selected files counter not updated after revert
@@ -19,6 +20,7 @@ Released: unreleased
  * Fixed issue #2356: Rebase dialog should also auto-link to issue tracker
  * Fixed issue #2390: /command:log /outfile not written
  * Fixed issue #2391: Cannot clear "Load Putty Key" in clone dialog persistently
+ * Fixed issue #1789: Tooltips not properly displayed in Log List if that commit has refs
 
 = Release 1.8.12.0 =
 Released: 2014-11-25
