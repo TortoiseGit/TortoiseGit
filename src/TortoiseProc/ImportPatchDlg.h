@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2011, 2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -20,7 +20,6 @@
 #pragma once
 
 #include "StandAloneDlg.h"
-// CImportPatchDlg dialog
 #include "TGitPath.h"
 #include "PatchListCtrl.h"
 #include "SciEdit.h"
@@ -42,6 +41,12 @@ public:
 	CImportPatchDlg(CWnd* pParent = NULL);   // standard constructor
 	virtual ~CImportPatchDlg();
 
+	// Dialog Data
+	enum { IDD = IDD_APPLY_PATCH_LIST };
+
+	CTGitPathList m_PathList;
+
+protected:
 	int m_CurrentItem;
 
 	volatile LONG		m_bExitThread;
@@ -71,10 +76,6 @@ public:
 
 	void AddLogString(CString str);
 
-// Dialog Data
-	enum { IDD = IDD_APPLY_PATCH_LIST };
-
-protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	virtual BOOL OnInitDialog();
 
@@ -107,7 +108,7 @@ protected:
 	}
 
 	DECLARE_MESSAGE_MAP()
-public:
+
 	afx_msg void OnLbnSelchangeListPatch();
 	afx_msg void OnBnClickedButtonAdd();
 	afx_msg void OnBnClickedButtonUp();
@@ -118,14 +119,11 @@ public:
 	void EnableInputCtrl(BOOL b);
 	void UpdateOkCancelText();
 
-	CTGitPathList m_PathList;
 	afx_msg void OnSize(UINT nType, int cx, int cy);
-protected:
 	virtual LRESULT DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam);
 
 	afx_msg LRESULT	OnTaskbarBtnCreated(WPARAM wParam, LPARAM lParam);
 	CComPtr<ITaskbarList3>	m_pTaskbarList;
-public:
 	afx_msg void OnBnClickedCancel();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	afx_msg void OnHdnItemclickListPatch(NMHDR *pNMHDR, LRESULT *pResult);
