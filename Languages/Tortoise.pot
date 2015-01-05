@@ -8563,6 +8563,10 @@ msgstr ""
 msgid "Show special characters for whitespaces and newlines\nShow Whitespaces"
 msgstr ""
 
+#. Resource IDs: (1314)
+msgid "Show status of subrepositories in parent folders"
+msgstr ""
+
 #. Resource IDs: (87)
 msgid "Show symbols on ref labels to substitute part of the ref names"
 msgstr ""
