@@ -907,7 +907,7 @@ END
 STRINGTABLE
 BEGIN
     IDS_SAVEASTITLE         "Save as..."
-    IDS_COMMANDLINEHELP     "Valid command line options are:\n/base:<path to base file>\n/theirs:<path to their file>\n/mine:<path to your file>\n/merged:<path to resulting merged file>\n/diff:<path to unified diff file>\n/patchpath:<path to folder>"
+    IDS_COMMANDLINEHELP     "Valid command line options are:\n/base:<path to base file>\n/basename:<name to show on the view title>\n/theirs:<path to their file>\n/theirsname:<name to show on the view title>\n/mine:<path to your file>\n/minename:<name to show on the view title>\n/merged:<path to resulting merged file>\n/mergedname:<name to show on the view title>\n/diff:<path to unified diff file>\n/patchpath:<path to folder>\n/saverequired\n/saverequiredonconflicts\n/oneway <forces the one-way view>\n/line:<line number to jump to>"
     IDS_OPENDIFFFILETITLE   "Apply Patch..."
     IDS_GETVERSIONOFFILETITLE "Fetching file..."
     IDS_GETVERSIONOFFILE    "Fetching revision %s of file:"
