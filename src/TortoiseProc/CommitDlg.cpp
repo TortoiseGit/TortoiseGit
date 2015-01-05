@@ -475,6 +475,9 @@ BOOL CCommitDlg::OnInitDialog()
 
 static bool UpdateIndex(CMassiveGitTask &mgt, CSysProgressDlg &sysProgressDlg, int progress, int maxProgress)
 {
+	if (!mgt.GetListCount())
+		return true;
+
 	if (sysProgressDlg.HasUserCancelled())
 		return false;
 
