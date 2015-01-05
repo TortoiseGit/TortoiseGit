@@ -20,6 +20,7 @@
 
 #include "stdafx.h"
 #include "MassiveGitTask.h"
+#include "MessageBox.h"
 
 CMassiveGitTask::CMassiveGitTask(CString gitParameters, BOOL isPath, bool ignoreErrors)
 	: CMassiveGitTaskBase(gitParameters, isPath, ignoreErrors)
@@ -36,6 +37,8 @@ void CMassiveGitTask::ReportError(const CString& out)
 {
 	if (m_NotifyCallbackInstance)
 		m_NotifyCallbackInstance->ReportError(out);
+	else
+		CMessageBox::Show(NULL, out, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 }
 
 void CMassiveGitTask::ReportProgress(const CTGitPath& path, int index)
