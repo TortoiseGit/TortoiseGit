@@ -108,6 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Resources\Tortoise.ico" />
+    <Image Include="..\Resources\menudelete.ico" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\ext\build\libgit2.vcxproj">

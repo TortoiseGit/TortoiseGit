@@ -29,6 +29,7 @@ LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
 IDI_TGITCACHE           ICON                    "..\\Resources\\Tortoise.ico"
+IDI_TGITCACHE_STOPPING  ICON                    "..\\Resources\\menudelete.ico"
 #endif    // Neutral resources
 /////////////////////////////////////////////////////////////////////////////
 

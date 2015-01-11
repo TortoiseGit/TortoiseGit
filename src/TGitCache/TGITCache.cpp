@@ -72,6 +72,8 @@ public:
 	~CGit2InitClass()
 	{
 		git_libgit2_shutdown();
+		if (niData.hWnd)
+			Shell_NotifyIcon(NIM_DELETE, &niData);
 	}
 } git2init;
 
@@ -273,7 +275,6 @@ int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR lp
 
 	bRun = false;
 
-	Shell_NotifyIcon(NIM_DELETE,&niData);
 	CGitStatusCache::Destroy();
 	HandleRestart();
 	return 0;
@@ -399,6 +400,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	case WM_QUIT:
 		{
 			CTraceToOutputDebugString::Instance()(__FUNCTION__ ": WM_CLOSE/DESTROY/ENDSESSION/QUIT\n");
+			if (niData.hWnd)
+			{
+				niData.hIcon = (HICON)LoadImage(GetModuleHandle(NULL),
+					MAKEINTRESOURCE(IDI_TGITCACHE_STOPPING),
+					IMAGE_ICON,
+					GetSystemMetrics(SM_CXSMICON),
+					GetSystemMetrics(SM_CYSMICON),
+					LR_DEFAULTCOLOR);
+				Shell_NotifyIcon(NIM_MODIFY, &niData);
+			}
 			CAutoWriteLock writeLock(CGitStatusCache::Instance().GetGuard());
 			CGitStatusCache::Instance().Stop();
 			CGitStatusCache::Instance().SaveCache();
