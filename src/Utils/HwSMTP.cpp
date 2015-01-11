@@ -1266,7 +1266,6 @@ BOOL CHwSMTP::SendOnAttach(LPCTSTR lpszFileName)
 	if ( !pBuf )
 	{
 		::AfxThrowMemoryException ();
-		return FALSE;
 	}
 
 	if(!Send ( csAttach ))

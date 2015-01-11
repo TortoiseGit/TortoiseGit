@@ -271,7 +271,7 @@ public:
 
 		int value = FALSE;
 		int ret = 0;
-		if ((ret = GetBOOL(key, value)))
+		if ((ret = GetBOOL(key, value)) < 0)
 			return ret;
 
 		b = (value == TRUE);
