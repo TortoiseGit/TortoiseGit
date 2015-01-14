@@ -260,7 +260,7 @@ CGitStatusCache::CGitStatusCache(void)
 				for (KNOWNFOLDERID folderid : folderids)
 				{
 					PWSTR pszPath = NULL;
-					if (SHGetKnownFolderPath(folderid, KF_FLAG_CREATE, NULL, &pszPath) != S_OK)
+					if (pfnSHGetKnownFolderPath(folderid, KF_FLAG_CREATE, NULL, &pszPath) != S_OK)
 						continue;
 
 					m_NoWatchPaths[CTGitPath(CString(pszPath))] = forever;
