@@ -3664,6 +3664,8 @@ BEGIN
     IDS_ENCRYPT_SSL         "SSL"
     IDS_SETTINGS_DELFILE    "Deleting file"
     IDS_SETTINGS_DELCACHE   "Deleting cached data"
+    IDS_COMMIT_MESSAGEONLY_TT 
+                            "Allows to create an empty commit which only has a commit message and no files (cf. git commit --allow-empty)."
     IDS_DISABLEUPDATECHECKSBUTTON "Disable update checks"
     IDS_DISABLEUPDATECHECKS "Do you really want to disable automatic update checks for TortoiseGit?\r\n\r\nAutomatic update checks can be re-enabled in TortoiseGit settings on the General page."
     IDS_REMINDMELATER       "&Remind me later"

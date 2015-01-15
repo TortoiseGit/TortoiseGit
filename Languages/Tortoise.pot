@@ -1781,6 +1781,10 @@ msgstr ""
 msgid "Allow to use custom Gravatar URL"
 msgstr ""
 
+#. Resource IDs: (97)
+msgid "Allows to create an empty commit which only has a commit message and no files (cf. git commit --allow-empty)."
+msgstr ""
+
 #. Resource IDs: (66)
 msgid "Already up to date."
 msgstr ""

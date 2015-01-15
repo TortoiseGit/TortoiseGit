@@ -1181,6 +1181,7 @@
 #define IDC_BUTTON_FROM2                1542
 #define IDC_BUTTON_REF                  1542
 #define IDC_REGEDT                      1542
+#define IDS_COMMIT_MESSAGEONLY_TT       1542
 #define IDC_LOCAL_BRANCH                1543
 #define IDS_DISABLEUPDATECHECKSBUTTON   1543
 #define IDC_LOCAL_BRANCHES              1543

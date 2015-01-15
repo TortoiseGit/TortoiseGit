@@ -259,6 +259,7 @@ BOOL CCommitDlg::OnInitDialog()
 	m_tooltips.AddTool(IDC_EXTERNALWARNING, IDS_COMMITDLG_EXTERNALS);
 	m_tooltips.AddTool(IDC_COMMIT_AMEND,IDS_COMMIT_AMEND_TT);
 	m_tooltips.AddTool(IDC_MERGEACTIVE, IDC_MERGEACTIVE_TT);
+	m_tooltips.AddTool(IDC_COMMIT_MESSAGEONLY, IDS_COMMIT_MESSAGEONLY_TT);
 //	m_tooltips.AddTool(IDC_HISTORY, IDS_COMMITDLG_HISTORY_TT);
 
 	CBugTraqAssociations bugtraq_associations;
