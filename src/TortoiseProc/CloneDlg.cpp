@@ -379,6 +379,14 @@ void CCloneDlg::OnCbnEditchangeUrlcombo()
 	m_Directory += _T('\\');
 	m_Directory += m_ModuleName;
 
+	// check if URL starts with http://, https:// or git:// in those cases loading putty keys is only
+	// asking for passwords for keys that are never used
+	if (url.Find(L"http://", 0) >= 0 || url.Find(L"https://", 0) >= 0 || url.Find(L"git://", 0) >= 0)
+		m_bAutoloadPuttyKeyFile = false;
+	else
+		m_bAutoloadPuttyKeyFile = m_regUseSSHKey && CAppUtils::IsSSHPutty();
+
+
 	this->UpdateData(FALSE);
 }
 
