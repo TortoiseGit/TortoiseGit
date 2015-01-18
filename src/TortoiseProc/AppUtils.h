@@ -162,7 +162,7 @@ public:
 	static bool ConflictEdit(const CTGitPath& file, bool bAlternativeTool = false, bool revertTheirMy = false, HWND resolveMsgHwnd = nullptr);
 
 	static CString GetMergeTempFile(const CString& str, const CTGitPath& merge);
-	static bool	StashSave(const CString& msg = CString());
+	static bool	StashSave(const CString& msg = CString(), bool showPull = false, bool pullShowPush = false, bool showMerge = false, const CString& mergeRev = CString());
 	static bool StashApply(CString ref, bool showChanges = true);
 	static bool	StashPop(bool showChanges = true);
 
@@ -185,7 +185,7 @@ public:
 
 	static int  GetLogOutputEncode(CGit *pGit=&g_Git);
 
-	static bool Pull(bool showPush = false);
+	static bool Pull(bool showPush = false, bool showStashPop = false);
 	static bool RebaseAfterFetch(const CString& upstream = _T(""));
 	static bool Fetch(const CString& remoteName = _T(""), bool allRemotes = false);
 	static bool Push(const CString& selectLocalBranch = CString());
@@ -203,7 +203,7 @@ public:
 					bool bSelectFilesForCommit);
 
 	static BOOL SVNDCommit();
-	static BOOL Merge(const CString* commit = nullptr);
+	static BOOL Merge(const CString* commit = nullptr, bool showStashPop = false);
 	static BOOL MergeAbort();
 	static void RemoveTempMergeFile(const CTGitPath& path);
 	static void EditNote(GitRev *hash);

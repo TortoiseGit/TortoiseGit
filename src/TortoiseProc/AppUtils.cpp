@@ -114,7 +114,7 @@ CAppUtils::~CAppUtils(void)
 {
 }
 
-bool CAppUtils::StashSave(const CString& msg)
+bool CAppUtils::StashSave(const CString& msg, bool showPull, bool pullShowPush, bool showMerge, const CString& mergeRev)
 {
 	CStashSaveDlg dlg;
 	dlg.m_sMessage = msg;
@@ -140,6 +140,16 @@ bool CAppUtils::StashSave(const CString& msg)
 
 		CProgressDlg progress;
 		progress.m_GitCmd = cmd;
+		progress.m_PostCmdCallback = [&](DWORD status, PostCmdList& postCmdList)
+		{
+			if (status)
+				return;
+
+			if (showPull)
+				postCmdList.push_back(PostCmd(IDI_PULL, IDS_MENUPULL, [&]{ CAppUtils::Pull(pullShowPush, true); }));
+			if (showMerge)
+				postCmdList.push_back(PostCmd(IDI_MERGE, IDS_MENUMERGE, [&]{ CAppUtils::Merge(&mergeRev, true); }));
+		};
 		return (progress.DoModal() == IDOK);
 	}
 	return false;
@@ -2360,7 +2370,7 @@ int CAppUtils::SaveCommitUnicodeFile(const CString& filename, CString &message)
 	}
 }
 
-bool CAppUtils::Pull(bool showPush)
+bool CAppUtils::Pull(bool showPush, bool showStashPop)
 {
 	CPullFetchDlg dlg;
 	dlg.m_IsPull = TRUE;
@@ -2443,8 +2453,12 @@ bool CAppUtils::Pull(bool showPush)
 			if (status)
 			{
 				postCmdList.push_back(PostCmd(IDI_PULL, IDS_MENUPULL, [&]{ Pull(); }));
+				postCmdList.push_back(PostCmd(IDI_COMMIT, IDS_MENUSTASHSAVE, [&]{ StashSave(_T(""), true); }));
 				return;
 			}
+
+			if (showStashPop)
+				postCmdList.push_back(PostCmd(IDI_RELOCATE, IDS_MENUSTASHPOP, []{ StashPop(); }));
 
 			if (g_Git.GetHash(hashNew, _T("HEAD")))
 				MessageBox(nullptr, g_Git.GetGitLastErr(_T("Could not get HEAD hash after pulling.")), _T("TortoiseGit"), MB_ICONERROR);
@@ -3130,7 +3144,7 @@ BOOL CAppUtils::SVNDCommit()
 	return FALSE;
 }
 
-BOOL CAppUtils::Merge(const CString* commit)
+BOOL CAppUtils::Merge(const CString* commit, bool showStashPop)
 {
 	if (!CheckUserData())
 		return FALSE;
@@ -3198,8 +3212,13 @@ BOOL CAppUtils::Merge(const CString* commit)
 						CAppUtils::RunTortoiseGitProc(sCmd);
 					}));
 				}
+
+				postCmdList.push_back(PostCmd(IDI_COMMIT, IDS_MENUSTASHSAVE, [&]{ CAppUtils::StashSave(_T(""), false, false, true, g_Git.FixBranchName(dlg.m_VersionName)); }));
 				return;
 			}
+
+			if (showStashPop)
+				postCmdList.push_back(PostCmd(IDI_RELOCATE, IDS_MENUSTASHPOP, []{ StashPop(); }));
 
 			if (dlg.m_bNoCommit)
 			{
