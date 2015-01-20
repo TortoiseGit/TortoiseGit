@@ -262,7 +262,6 @@ void CRefLogDlg::OnCbnSelchangeRef()
 	CString ref=m_ChooseRef.GetString();
 	m_RefList.ClearText();
 
-	//this->m_logEntries.ParserFromLog();
 	m_RefList.SetRedraw(false);
 
 	ParserFromRefLog(ref, m_RefList.m_RevCache);

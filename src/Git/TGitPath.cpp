@@ -1146,13 +1146,10 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log, bool parseDeletes /*false*/)
 {
 	this->Clear();
 	int pos=0;
-	//BYTE *p=&log[0];
-	//CString one;
 	CTGitPath path;
 	m_Action=0;
 	while (pos >= 0 && pos < (int)log.size())
 	{
-		//one=log.Tokenize(_T("\n"),pos);
 		path.Reset();
 		if(log[pos]=='\n')
 			++pos;

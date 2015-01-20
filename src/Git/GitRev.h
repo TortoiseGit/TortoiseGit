@@ -210,7 +210,6 @@ public:
 	BOOL IsBoundary(){return m_Mark == _T('-');}
 
 	void Clear();
-	//int ParserFromLog(BYTE_VECTOR &log,int start=0);
 	inline int ParentsCount(){ return (int)m_ParentHash.size(); }
 
 	//Show version tree Graphic

@@ -2565,7 +2565,6 @@ int CGitLogListBase::FillGitLog(CTGitPath *path, CString *range, int info)
 	if (this->m_logEntries.ParserFromLog(path, -1, info, range))
 		return -1;
 
-	//this->m_logEntries.ParserFromLog();
 	SetItemCountEx((int)m_logEntries.size());
 
 	for (unsigned int i = 0; i < m_logEntries.size(); ++i)
