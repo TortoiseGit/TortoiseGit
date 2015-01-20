@@ -930,8 +930,11 @@ namespace {
 	{
 		if (!PathIsURLW(sText))
 			return false;
-		if (sText.Find(L"://") >= 0)
-			return true;
+		for (const CString& prefix : { L"http://", L"https://", L"git://", L"ftp://", L"file://", L"mailto:" })
+		{
+			if (sText.Find(prefix) == 0 && sText.GetLength() != prefix.GetLength())
+				return true;
+		}
 		return false;
 	}
 }
