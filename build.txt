@@ -16,26 +16,18 @@ Requirements
 
 First, you need to install the compiler package:
 
-*  You need VS2012 Professional with Update 4 to allow
-   building of the full TortoiseGit package. 
-   If you don't have the Update 3 installed for VS2012 you cannot build
-   binaries which run on Windows XP.
+*  You need at least VS2012 Professional with Update 4 for
+   building the full TortoiseGit package.
+   The TortoiseGit teams uses VS2013 Professional Update 4.
    This is the recommended option, but it is not free :-(
    If you want to build the msi make sure the "Tools for Redistributing
    Applications" are installed.
 *  If you do not have access to VS Professional you can download the free
-   Visual Studio Express 2012 for Windows Desktop.
-   This will allow you to build the git libraries and the
-   TortoiseGitUDiff, TortoiseGitIDiff, and ResText projects only.
-   You can not build the main parts of TortoiseGit(shell extension, TortoiseGitProc,
-   TGitCache, TortoiseGitMerge, and TortoiseGitBlame)
-   with the Express Edition!
-   - Install Visual Studio Express 2012 for Windows Desktop.
-     Download it from http://www.microsoft.com/visualstudio/eng/products/visual-studio-express-for-windows-desktop
-     Do not bother to install WiX as you cannot build very much.
+   Visual Studio Community 2013 Edition (http://www.visualstudio.com/en-us/news/vs2013-community-vs.aspx).
+   This version also allows to fully build the TortoiseGit package.
 
 Next you might need to install some utilities/programs:
-*  If you want to build the MSI installer you need WiX3.8 (http://wix.codeplex.com/)
+*  If you want to build the MSI installer you need WiX3.9 (http://wix.codeplex.com/)
 *  For building the docs you need NAnt (http://nant.sourceforge.net/) and
    http://code.google.com/p/tortoisesvn/downloads/detail?name=Tools-1.8.0.7z
 
