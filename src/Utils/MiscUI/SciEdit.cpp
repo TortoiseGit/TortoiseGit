@@ -1480,7 +1480,8 @@ bool CSciEdit::IsUrl(const CStringA& sText)
 {
 	if (!PathIsURLA(sText))
 		return false;
-	for (const CStringA& prefix : { "http://", "https://", "git://", "ftp://", "file://", "mailto:" })
+	CStringA prefixes[] = { "http://", "https://", "git://", "ftp://", "file://", "mailto:" };
+	for (const CStringA& prefix : prefixes)
 	{
 		if (sText.Find(prefix) == 0 && sText.GetLength() != prefix.GetLength())
 			return true;

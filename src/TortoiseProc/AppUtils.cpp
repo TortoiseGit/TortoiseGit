@@ -930,7 +930,8 @@ namespace {
 	{
 		if (!PathIsURLW(sText))
 			return false;
-		for (const CString& prefix : { L"http://", L"https://", L"git://", L"ftp://", L"file://", L"mailto:" })
+		CString prefixes[] = { L"http://", L"https://", L"git://", L"ftp://", L"file://", L"mailto:" };
+		for (const CString& prefix : prefixes)
 		{
 			if (sText.Find(prefix) == 0 && sText.GetLength() != prefix.GetLength())
 				return true;
