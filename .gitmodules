@@ -3,7 +3,7 @@
 	url = http://git.apache.org/apr-util.git
 [submodule "ext/apr"]
 	path = ext/apr
-	url = http://git.apache.org/apr.git
+	url = https://github.com/TortoiseGit/apr.git
 [submodule "ext/tgit"]
 	path = ext/tgit
 	url = https://code.google.com/p/tortoisegit.tgit
