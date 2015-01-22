@@ -1,6 +1,6 @@
 [submodule "ext/apr-util"]
 	path = ext/apr-util
-	url = http://git.apache.org/apr-util.git
+	url = https://github.com/apache/apr-util.git
 [submodule "ext/apr"]
 	path = ext/apr
 	url = https://github.com/TortoiseGit/apr.git
