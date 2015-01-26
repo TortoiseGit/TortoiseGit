@@ -1657,9 +1657,9 @@ CPoint MyGraph::WedgeEndFromDegrees(double degrees, const CPoint& ptCenter,
 // Convert HLS to RGB.
 /* static */ COLORREF MyGraph::HLStoRGB(WORD wH, WORD wL, WORD wS)
 {
-	_ASSERTE(0 <= wH  &&  240 >= wH  &&  "Illegal hue value");
-	_ASSERTE(0 <= wL  &&  240 >= wL  &&  "Illegal lum value");
-	_ASSERTE(0 <= wS  &&  240 >= wS  &&  "Illegal sat value");
+	_ASSERTE(0 == wH  &&  240 >= wH  &&  "Illegal hue value");
+	_ASSERTE(0 == wL  &&  240 >= wL  &&  "Illegal lum value");
+	_ASSERTE(0 == wS  &&  240 >= wS  &&  "Illegal sat value");
 
 	WORD wR(0);
 	WORD wG(0);
