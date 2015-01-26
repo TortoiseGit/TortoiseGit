@@ -55,7 +55,7 @@ install:
 
 # build platform, i.e. x86, x64, Any CPU. This setting is optional.
 platform:
-  - x86
+  - Win32
   - x64
  
 # to add several platforms to build matrix:
