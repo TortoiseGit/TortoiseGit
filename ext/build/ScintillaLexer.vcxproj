@@ -55,6 +55,7 @@
     <ClCompile Include="..\scintilla\lexers\LexBibTeX.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexDMAP.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexDMIS.cxx" />
+    <ClCompile Include="..\scintilla\lexers\LexHex.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexKVIrc.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexLaTeX.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexRegistry.cxx" />

@@ -136,6 +136,7 @@ LEXOBJS=\
 	$(DIR_O)\LexGAP.obj \
 	$(DIR_O)\LexGui4Cli.obj \
 	$(DIR_O)\LexHaskell.obj \
+	$(DIR_O)\LexHex.obj \
 	$(DIR_O)\LexHTML.obj \
 	$(DIR_O)\LexInno.obj \
 	$(DIR_O)\LexKix.obj \
@@ -529,6 +530,8 @@ $(DIR_O)\LexGAP.obj: ..\lexers\LexGAP.cxx $(LEX_HEADERS)
 $(DIR_O)\LexGui4Cli.obj: ..\lexers\LexGui4Cli.cxx $(LEX_HEADERS)
 
 $(DIR_O)\LexHaskell.obj: ..\lexers\LexHaskell.cxx $(LEX_HEADERS)
+
+$(DIR_O)\LexHex.obj: ..\lexers\LexHex.cxx $(LEX_HEADERS)
 
 $(DIR_O)\LexHTML.obj: ..\lexers\LexHTML.cxx $(LEX_HEADERS)
 

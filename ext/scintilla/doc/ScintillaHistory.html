@@ -463,6 +463,8 @@
       </tr><tr>
 	<td>Erik Angelin</td>
 	<td>Yusuf Ramazan Karagöz</td>
+	<td>Markus Heidelberg</td>
+	<td>Joe Mueller</td>
     </tr>
     </table>
     <p>
@@ -473,6 +475,74 @@
         <a href="http://sourceforge.net/projects/icon-collection/">
         Icons</a> Copyright(C) 1998 by Dean S. Jones<br />
       </li>
+    </ul>
+    <h3>
+       <a href="http://prdownloads.sourceforge.net/scintilla/scite353.zip?download">Release 3.5.3</a>
+    </h3>
+    <ul>
+	<li>
+	Released 20 January 2015.
+	</li>
+	<li>
+	Support removed for Windows 95, 98, and ME.
+	</li>
+	<li>
+	Lexers added for Motorola S-Record files, Intel hex files, and Tektronix extended hex files with folding for Intel hex files.
+	<a href="http://sourceforge.net/p/scintilla/feature-requests/1091/">Feature #1091.</a>
+	<a href="http://sourceforge.net/p/scintilla/feature-requests/1093/">Feature #1093.</a>
+	<a href="http://sourceforge.net/p/scintilla/feature-requests/1095/">Feature #1095.</a>
+	<a href="http://sourceforge.net/p/scintilla/feature-requests/1096/">Feature #1096.</a>
+	</li>
+	<li>
+	C++ folder allows folding on square brackets '['.
+	<a href="http://sourceforge.net/p/scintilla/feature-requests/1087/">Feature #1087.</a>
+	</li>
+	<li>
+	Shell lexer fixes three issues with here-documents.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1672/">Bug #1672</a>.
+	</li>
+	<li>
+	Verilog lexer highlights doc comment keywords; has separate styles for input, output, and inout ports
+	(lexer.verilog.portstyling); fixes a bug in highlighting numbers; can treat upper-case identifiers as
+	keywords (lexer.verilog.allupperkeywords); and can use different styles for code that is inactive due
+	to preprocessor commands (lexer.verilog.track.preprocessor, lexer.verilog.update.preprocessor).
+	</li>
+	<li>
+	When the calltip window is taller than the Scintilla window, leave it in a
+	position that avoids overlapping the Scintilla text.
+	</li>
+	<li>
+	When a text margin is displayed, for annotation lines, use the background colour of the base line.
+	</li>
+	<li>
+	On Windows GDI, assume font names are encoded in UTF-8. This matches the Direct2D code path.
+	</li>
+	<li>
+	Fix paste for GTK+ on OS X.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1677/">Bug #1677</a>.
+	</li>
+	<li>
+	Reverted a fix on Qt where Qt 5.3 has returned to the behaviour of 4.x.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1575/">Bug #1575</a>.
+	</li>
+	<li>
+	When the mouse is on the line between margin and text changed to treat as within text.
+	This makes the PLAT_CURSES character cell platform work better.
+	</li>
+	<li>
+	Fix a crash in SciTE when the command line is just "-close:".
+	<a href="http://sourceforge.net/p/scintilla/bugs/1675/">Bug #1675</a>.
+	</li>
+	<li>
+	Fix unexpected dialog in SciTE on Windows when the command line has a quoted filename then ends with a space.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1673/">Bug #1673</a>.
+	</li>
+	<li>
+	On Windows and GTK+, use indicators for inline IME.
+	</li>
+	<li>
+	SciTE shuts down quicker when there is no user-written OnClose function and no directors are attached.
+	</li>
     </ul>
     <h3>
        <a href="http://prdownloads.sourceforge.net/scintilla/scite352.zip?download">Release 3.5.2</a>
@@ -498,6 +568,7 @@
 	<li>
 	ANNOTATION_INDENTED added which is similar to ANNOTATION_BOXED in terms of positioning
 	but does not show a border.
+	<a href="http://sourceforge.net/p/scintilla/feature-requests/1086/">Feature #1086.</a>
 	</li>
 	<li>
 	Allow platform overrides for drawing tab arrows, wrap markers, and line markers.
