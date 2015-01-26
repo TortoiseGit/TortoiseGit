@@ -388,6 +388,7 @@ protected:	// ScintillaBase subclass needs access to much of Editor
 	int InsertSpace(int position, unsigned int spaces);
 	void AddChar(char ch);
 	virtual void AddCharUTF(const char *s, unsigned int len, bool treatAsDBCS=false);
+	void FillVirtualSpace();
 	void InsertPaste(const char *text, int len);
 	enum PasteShape { pasteStream=0, pasteRectangular = 1, pasteLine = 2 };
 	void InsertPasteShape(const char *text, int len, PasteShape shape);
@@ -560,7 +561,6 @@ protected:	// ScintillaBase subclass needs access to much of Editor
 	static sptr_t BytesResult(sptr_t lParam, const unsigned char *val, size_t len);
 
 public:
-	virtual void NotifyParent(SCNotification * scn) = 0;
 	// Public so the COM thunks can access it.
 	bool IsUnicodeMode() const;
 	// Public so scintilla_send_message can use it.

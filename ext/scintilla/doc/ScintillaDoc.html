@@ -82,7 +82,7 @@
 
     <h1>Scintilla Documentation</h1>
 
-    <p>Last edited 24 November 2014 NH</p>
+    <p>Last edited 10 January 2015 NH</p>
 
     <p>There is <a class="jump" href="Design.html">an overview of the internal design of
     Scintilla</a>.<br />
@@ -2577,11 +2577,15 @@ struct Sci_TextToFind {
     <b id="SCI_STYLEGETITALIC">SCI_STYLEGETITALIC(int styleNumber)</b><br />
      These messages (plus <a class="message"
     href="#SCI_STYLESETCHARACTERSET"><code>SCI_STYLESETCHARACTERSET</code></a>) set the font
-    attributes that are used to match the fonts you request to those available. The
+    attributes that are used to match the fonts you request to those available.</p>
+    <p>The
     <code>fontName</code> is a zero terminated string holding the name of a font. Under Windows,
-    only the first 32 characters of the name are used and the name is not case sensitive. For
+    only the first 32 characters of the name are used, the name is decoded as UTF-8, and the name is not case sensitive. For
     internal caching, Scintilla tracks fonts by name and does care about the casing of font names,
-    so please be consistent. On GTK+, Pango is used to display text.</p>
+    so please be consistent.
+    On GTK+, Pango is used to display text and the name is sent directly to Pango without transformation.
+    On Qt, the name is decoded as UTF-8.
+    On Cocoa, the name is decoded as MacRoman.</p>
     <p>Sizes can be set to a whole number of points with <code>SCI_STYLESETSIZE</code>
     or to a fractional point size in hundredths of a point with <code>SCI_STYLESETSIZEFRACTIONAL</code>
     by multiplying the size by 100 (<code>SC_FONT_SIZE_MULTIPLIER</code>).
@@ -7320,6 +7324,7 @@ for line = lineStart to lineEnd do SCI_ENSUREVISIBLE(line) next
      These notifications are generated when the user clicks or double clicks on
      text that is in a style with the hotspot attribute set.
     This notification can be used to link to variable definitions or web pages.
+    In the notification handler, you should avoid calling any function that modifies the current selection or caret position.
     The <code>position</code> field is set the text position of the click or
     double click and the <code>modifiers</code> field set to the key modifiers
     held down in a similar manner to <a class="message" href="#SCN_KEY">SCN_KEY</a>.

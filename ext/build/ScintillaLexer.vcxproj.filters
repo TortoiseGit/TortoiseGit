@@ -430,6 +430,9 @@
     <ClCompile Include="..\scintilla\src\MarginView.cxx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\scintilla\lexers\LexHex.cxx">
+      <Filter>lexers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\scintilla\src\AutoComplete.h">
