@@ -1,0 +1,146 @@
+# Notes:
+#   - Minimal appveyor.yml file is an empty file. All sections are optional.
+#   - Indent each level of configuration with 2 spaces. Do not use tabs!
+#   - All section names are case-sensitive.
+#   - Section names should be unique on each level.
+ 
+#---------------------------------#
+#      general configuration      #
+#---------------------------------#
+
+# version format
+version: 1.0.{build}-{branch}
+
+# branches to build
+branches:
+  # whitelist
+  only:
+    - master
+	
+# Do not build on tag (GitHub only)
+skip_tags: true
+
+#---------------------------------#
+#    environment configuration    #
+#---------------------------------#
+
+# Operating system (build VM template)
+#os: Windows Server 2012
+
+# scripts that are called at very beginning, before repo cloning
+init:
+  - git config --global core.autocrlf input
+
+# clone directory
+clone_folder: c:\projects\TortoiseSI
+
+# this is how to allow failing jobs in the matrix
+matrix:
+  fast_finish: true     # set this flag to immediately finish build once one of the jobs fails.
+  allow_failures:
+    - platform: x86
+      configuration: Debug
+    - platform: x64
+      configuration: Release
+	  
+# scripts that run after cloning repository
+install:
+  # by default, all script lines are interpreted as batch
+  - echo Repository cloned
+
+#---------------------------------#
+#       build configuration       #
+#---------------------------------#
+
+# build platform, i.e. x86, x64, Any CPU. This setting is optional.
+platform: Any CPU
+ 
+# to add several platforms to build matrix:
+#platform:
+#  - x86
+#  - Any CPU
+ 
+# build Configuration, i.e. Debug, Release, etc.
+configuration: Release
+ 
+# to add several configurations to build matrix:
+#configuration:
+#  - Debug
+#  - Release
+ 
+
+	  
+build:
+  parallel: true                  # enable MSBuild parallel builds
+  project: src/TortoiseGit.sln    # path to Visual Studio solution or project
+ 
+  # MSBuild verbosity level
+  verbosity: quiet|minimal|normal|detailed
+ 
+ 
+# scripts to run before build
+before_build:
+ 
+# scripts to run after build
+after_build:
+ 
+# to run your custom scripts instead of automatic MSBuild
+build_script:
+ 
+# to disable automatic builds
+#build: off
+
+#---------------------------------#
+#       tests configuration       #
+#---------------------------------#
+
+# test configuration here
+
+# to disable automatic tests
+#test: off
+
+#---------------------------------#
+#      artifacts configuration    #
+#---------------------------------#
+# Tells AppVeyor which file and folders should be uploaded to AppVeyor cloud storage
+# during the build
+
+# artifacts configuration here
+
+#---------------------------------#
+#     deployment configuration    #
+#---------------------------------#
+
+# deployment configuration here
+
+#---------------------------------#
+#        global handlers          #
+#---------------------------------#
+ 
+# on successful build
+on_success:
+#  - do something
+ 
+# on build failure
+on_failure:
+#  - do something
+ 
+# after build failure or success
+on_finish:
+#  - do something
+ 
+#---------------------------------#
+#         notifications           #
+#---------------------------------#
+
+# Need to determine what email group to notify
+#notifications:
+ 
+#  # Email
+#  - provider: Email
+#    to:
+#      - user1@email.com
+#      - user2@email.com
+#    subject: 'Build {{status}}'                  # optional
+#    message: "{{message}}, {{commitId}}, ..."    # optional
+#    on_build_status_changed: true
