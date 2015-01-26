@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2014 - TortoiseGit
+// Copyright (C) 2008-2015 - TortoiseGit
 // Copyright (C) 2003-2008, 2012-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -597,6 +597,8 @@ void CTortoiseProcApp::CheckUpgrade()
 		if (CMessageBox::Show(nullptr, _T("You have a non-default setting of UseLibgit2_mask in your registry.\n\nThis might be the case in order to resolve an issue in an older TortoiseGit version.\n\nDo you want to restore the default value (i.e., remove custom setting from registry)?"), _T("TortoiseGit"), MB_ICONQUESTION | MB_YESNO) == IDYES)
 			CRegStdDWORD(_T("Software\\TortoiseGit\\UseLibgit2_mask")).removeValue();
 	}
+
+	CMessageBox::RemoveRegistryKey(_T("OldMsysgitVersionWarning"));
 
 	srand((unsigned)time(0));
 	CRegDWORD checkNewerWeekDay = CRegDWORD(_T("Software\\TortoiseGit\\CheckNewerWeekDay"), 0);
