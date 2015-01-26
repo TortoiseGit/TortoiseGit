@@ -9,7 +9,7 @@
 #---------------------------------#
 
 # version format
-version: 1.0.{build}-{branch}
+version: 1.0.{build}
 
 # branches to build
 branches:
@@ -39,7 +39,7 @@ matrix:
   fast_finish: true     # set this flag to immediately finish build once one of the jobs fails.
   allow_failures:
     - platform: x86
-      configuration: Debug
+      configuration: Release
     - platform: x64
       configuration: Release
 	  
@@ -133,14 +133,15 @@ on_finish:
 #         notifications           #
 #---------------------------------#
 
-# Need to determine what email group to notify
-#notifications:
+notifications:
  
-#  # Email
-#  - provider: Email
-#    to:
-#      - user1@email.com
-#      - user2@email.com
-#    subject: 'Build {{status}}'                  # optional
-#    message: "{{message}}, {{commitId}}, ..."    # optional
-#    on_build_status_changed: true
+  # Email
+  - provider: Email
+    to:
+      - gisraeli@ptc.com
+      - krtaylor@ptc.com
+      - szhao@ptc.com
+      - bleskowsky@ptc.com
+    subject: 'Build {{status}}: {{projectName}} {{buildVersion}}'
+    message: "{{message}}, {{commitId}}, ..."    # optional
+    on_build_status_changed: true
