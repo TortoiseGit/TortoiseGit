@@ -291,10 +291,10 @@ UINT __stdcall CShellExt::CopyCallback_Wrap(HWND /*hWnd*/, UINT wFunc, UINT /*wF
 	case FO_RENAME:
 		if (pszSrcFile && pszSrcFile[0])
 		{
-			CString topDir;
+/*			CString topDir; TODO
 			if (g_GitAdminDir.HasAdminDir(pszSrcFile, &topDir))
 				m_CachedStatus.m_GitStatus.ReleasePath(topDir);
-			m_remoteCacheLink.ReleaseLockForPath(CTGitPath(pszSrcFile));
+			m_remoteCacheLink.ReleaseLockForPath(CTGitPath(pszSrcFile));*/
 		}
 		break;
 	default:

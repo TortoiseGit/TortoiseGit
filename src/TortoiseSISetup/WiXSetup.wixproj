@@ -1,0 +1,64 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>3.0</ProductVersion>
+    <ProjectGuid>{150172a5-8d02-4c00-abb5-bd99d4b16b4c}</ProjectGuid>
+    <SchemaVersion>2.0</SchemaVersion>
+    <OutputName>TortoiseSI</OutputName>
+    <OutputType>Package</OutputType>
+    <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' ">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <OutputPath>..\..\bin\setup\</OutputPath>
+    <IntermediateOutputPath>..\..\obj\TortoiseGitSetup\$(Configuration)\</IntermediateOutputPath>
+    <DefineConstants>Debug;IncludeCrashReportDll=0;DictionaryENGB=1;DictionaryENUS=1;VisualStudioVersion=$(VisualStudioVersion);</DefineConstants>
+    <WixVariables>
+    </WixVariables>
+    <SuppressSpecificWarnings>
+    </SuppressSpecificWarnings>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <OutputPath>..\..\bin\setup\x86\</OutputPath>
+    <IntermediateOutputPath>..\..\obj\TortoiseGitSetup\$(Configuration)\</IntermediateOutputPath>
+    <DefineConstants>DictionaryENGB=1;DictionaryENUS=1;VisualStudioVersion=$(VisualStudioVersion);</DefineConstants>
+    <SuppressSpecificWarnings>
+    </SuppressSpecificWarnings>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
+    <DefineConstants>Debug;DictionaryENGB=1;DictionaryENUS=1;VisualStudioVersion=$(VisualStudioVersion);</DefineConstants>
+    <WixVariables>
+    </WixVariables>
+    <SuppressSpecificWarnings>
+    </SuppressSpecificWarnings>
+    <OutputPath>bin\$(Platform)\$(Configuration)\</OutputPath>
+    <IntermediateOutputPath>..\..\obj\TortoiseGitSetup\$(Configuration)64\</IntermediateOutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
+    <DefineConstants>DictionaryENGB=1;DictionaryENUS=1;VisualStudioVersion=$(VisualStudioVersion);</DefineConstants>
+    <SuppressSpecificWarnings>
+    </SuppressSpecificWarnings>
+    <OutputPath>..\..\bin\setup\x64\</OutputPath>
+    <IntermediateOutputPath>..\..\obj\TortoiseGitSetup\$(Configuration)64\</IntermediateOutputPath>
+  </PropertyGroup>
+  <Import Project="$(WixTargetsPath)" />
+  <!--
+	To modify your build process, add your task inside one of the targets below and uncomment it.
+	Other similar extension points exist, see Wix.targets.
+	<Target Name="BeforeBuild">
+	</Target>
+	<Target Name="AfterBuild">
+	</Target>
+	-->
+  <ItemGroup>
+    <Compile Include="TortoiseSI.wxs" />
+    <Compile Include="WixUI_Simplest.wxs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="FeaturesFragment.wxi" />
+    <Content Include="Includes.wxi" />
+    <Content Include="StructureFragment.wxi" />
+    <Content Include="UIFragment.wxi" />
+    <Content Include="VersionNumberInclude.wxi" />
+  </ItemGroup>
+</Project>

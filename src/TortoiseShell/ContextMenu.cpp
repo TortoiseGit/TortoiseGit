@@ -22,12 +22,12 @@
 #include "ItemIDList.h"
 #include "PreserveChdir.h"
 #include "UnicodeUtils.h"
-#include "GitStatus.h"
-#include "TGitPath.h"
+//#include "GitStatus.h"
+//#include "TGitPath.h"
 #include "PathUtils.h"
 #include "CreateProcessHelper.h"
 #include "FormatMessageWrapper.h"
-#include "..\TGitCache\CacheInterface.h"
+//#include "..\TGitCache\CacheInterface.h"
 #include "resource.h"
 
 #define GetPIDLFolder(pida) (LPCITEMIDLIST)(((LPBYTE)pida)+(pida)->aoffset[0])
@@ -65,8 +65,9 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 	itemStates = 0;
 	itemStatesFolder = 0;
 	stdstring statuspath;
-	git_wc_status_kind fetchedstatus = git_wc_status_none;
+//	git_wc_status_kind fetchedstatus = git_wc_status_none;
 	// get selected files/folders
+#if 0
 	if (pDataObj)
 	{
 		STGMEDIUM medium;
@@ -529,7 +530,7 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 		}
 
 	}
-
+#endif
 	return S_OK;
 }
 
@@ -560,18 +561,18 @@ void CShellExt::InsertGitMenu(BOOL istop, HMENU menu, UINT pos, UINT_PTR id, UIN
 	if (com == ShellMenuCommit)
 	{
 		// get branch name
-		CTGitPath path(folder_.empty() ? files_.front().c_str() : folder_.c_str());
+		stdstring path(folder_.empty() ? files_.front().c_str() : folder_.c_str());
 		CString sProjectRoot;
 		CString sBranchName;
-
-		if (path.GetAdminDirMask() & ITEMIS_SUBMODULE)
+		
+//		if (path.GetAdminDirMask() & ITEMIS_SUBMODULE)
 		{
 			if (istop)
 				_tcscpy_s(menutextbuffer, 255, _T("Git "));
 			_tcscat_s(menutextbuffer, 255, CString(MAKEINTRESOURCE(IDS_MENUCOMMITSUBMODULE)));
 		}
 
-		if (path.HasAdminDir(&sProjectRoot) && !CGit::GetCurrentBranchFromFile(sProjectRoot, sBranchName))
+	//	if (path.HasAdminDir(&sProjectRoot) && !CGit::GetCurrentBranchFromFile(sProjectRoot, sBranchName))
 		{
 			if (sBranchName.GetLength() == 40)
 			{
@@ -666,97 +667,6 @@ void CShellExt::InsertGitMenu(BOOL istop, HMENU menu, UINT pos, UINT_PTR id, UIN
 	myIDMap[id] = com;
 	if (!istop)
 		mySubMenuMap[pos] = com;
-}
-
-bool CShellExt::WriteClipboardPathsToTempFile(stdstring& tempfile)
-{
-	bool bRet = true;
-	tempfile = stdstring();
-	//write all selected files and paths to a temporary file
-	//for TortoiseGitProc.exe to read out again.
-	DWORD written = 0;
-	DWORD pathlength = GetTortoiseGitTempPath(0, NULL);
-	std::unique_ptr<TCHAR[]> path(new TCHAR[pathlength + 1]);
-	std::unique_ptr<TCHAR[]> tempFile(new TCHAR[pathlength + 100]);
-	GetTortoiseGitTempPath(pathlength+1, path.get());
-	GetTempFileName(path.get(), _T("git"), 0, tempFile.get());
-	tempfile = stdstring(tempFile.get());
-
-	CAutoFile file = ::CreateFile(tempFile.get(),
-		GENERIC_WRITE,
-		FILE_SHARE_READ,
-		0,
-		CREATE_ALWAYS,
-		FILE_ATTRIBUTE_TEMPORARY,
-		0);
-
-	if (!file)
-		return false;
-
-	if (!IsClipboardFormatAvailable(CF_HDROP))
-		return false;
-	if (!OpenClipboard(NULL))
-		return false;
-
-	stdstring sClipboardText;
-	HGLOBAL hglb = GetClipboardData(CF_HDROP);
-	HDROP hDrop = (HDROP)GlobalLock(hglb);
-	if(hDrop != NULL)
-	{
-		TCHAR szFileName[MAX_PATH] = {0};
-		UINT cFiles = DragQueryFile(hDrop, 0xFFFFFFFF, NULL, 0);
-		for(UINT i = 0; i < cFiles; ++i)
-		{
-			DragQueryFile(hDrop, i, szFileName, _countof(szFileName));
-			stdstring filename = szFileName;
-			::WriteFile (file, filename.c_str(), (DWORD)filename.size()*sizeof(TCHAR), &written, 0);
-			::WriteFile (file, _T("\n"), 2, &written, 0);
-		}
-		GlobalUnlock(hDrop);
-	}
-	else bRet = false;
-	GlobalUnlock(hglb);
-
-	CloseClipboard();
-
-	return bRet;
-}
-
-stdstring CShellExt::WriteFileListToTempFile()
-{
-	//write all selected files and paths to a temporary file
-	//for TortoiseGitProc.exe to read out again.
-	DWORD pathlength = GetTortoiseGitTempPath(0, NULL);
-	std::unique_ptr<TCHAR[]> path(new TCHAR[pathlength + 1]);
-	std::unique_ptr<TCHAR[]> tempFile(new TCHAR[pathlength + 100]);
-	GetTortoiseGitTempPath(pathlength + 1, path.get());
-	GetTempFileName(path.get(), _T("git"), 0, tempFile.get());
-	stdstring retFilePath = stdstring(tempFile.get());
-
-	CAutoFile file = ::CreateFile (tempFile.get(),
-								GENERIC_WRITE,
-								FILE_SHARE_READ,
-								0,
-								CREATE_ALWAYS,
-								FILE_ATTRIBUTE_TEMPORARY,
-								0);
-
-	if (!file)
-		return stdstring();
-
-	DWORD written = 0;
-	if (files_.empty())
-	{
-		::WriteFile (file, folder_.c_str(), (DWORD)folder_.size()*sizeof(TCHAR), &written, 0);
-		::WriteFile (file, _T("\n"), 2, &written, 0);
-	}
-
-	for (std::vector<stdstring>::iterator I = files_.begin(); I != files_.end(); ++I)
-	{
-		::WriteFile (file, I->c_str(), (DWORD)I->size()*sizeof(TCHAR), &written, 0);
-		::WriteFile (file, _T("\n"), 2, &written, 0);
-	}
-	return retFilePath;
 }
 
 STDMETHODIMP CShellExt::QueryDropContext(UINT uFlags, UINT idCmdFirst, HMENU hMenu, UINT &indexMenu)
@@ -936,8 +846,8 @@ STDMETHODIMP CShellExt::QueryContextMenu_Wrap(HMENU hMenu,
 	}
 
 	//check if our menu is requested for a git admin directory
-	if (g_GitAdminDir.IsAdminDirPath(folder_.c_str()))
-		return S_OK;
+//	if (g_GitAdminDir.IsAdminDirPath(folder_.c_str()))
+//		return S_OK;
 
 	if (uFlags & CMF_EXTENDEDVERBS)
 		itemStates |= ITEMIS_EXTENDED;
@@ -954,7 +864,7 @@ STDMETHODIMP CShellExt::QueryContextMenu_Wrap(HMENU hMenu,
 		// It would only show the standard menu items
 		// which are already shown for the lnk-file.
 		CString path = files_.front().c_str();
-		if ( !g_GitAdminDir.HasAdminDir(path) )
+	//	if ( !g_GitAdminDir.HasAdminDir(path) )
 		{
 			return S_OK;
 		}
@@ -1173,20 +1083,20 @@ void CShellExt::AddPathCommand(tstring& gitCmd, LPCTSTR command, bool bFilesAllo
 
 void CShellExt::AddPathFileCommand(tstring& gitCmd, LPCTSTR command)
 {
-	tstring tempfile = WriteFileListToTempFile();
+//	tstring tempfile = WriteFileListToTempFile();
 	gitCmd += command;
 	gitCmd += _T(" /pathfile:\"");
-	gitCmd += tempfile;
+	//gitCmd += tempfile;
 	gitCmd += _T("\"");
 	gitCmd += _T(" /deletepathfile");
 }
 
 void CShellExt::AddPathFileDropCommand(tstring& gitCmd, LPCTSTR command)
 {
-	tstring tempfile = WriteFileListToTempFile();
+	//tstring tempfile = WriteFileListToTempFile();
 	gitCmd += command;
 	gitCmd += _T(" /pathfile:\"");
-	gitCmd += tempfile;
+	//gitCmd += tempfile;
 	gitCmd += _T("\"");
 	gitCmd += _T(" /deletepathfile");
 	gitCmd += _T(" /droptarget:\"");
@@ -1516,108 +1426,8 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				AddPathCommand(gitCmd, L"blame", true);
 				break;
 			case ShellMenuApplyPatch:
-				if ((itemStates & ITEMIS_PATCHINCLIPBOARD) && ((~itemStates) & ITEMIS_PATCHFILE))
-				{
-					// if there's a patch file in the clipboard, we save it
-					// to a temporary file and tell TortoiseGitMerge to use that one
-					UINT cFormat = RegisterClipboardFormat(_T("TGIT_UNIFIEDDIFF"));
-					if ((cFormat)&&(OpenClipboard(NULL)))
-					{
-						HGLOBAL hglb = GetClipboardData(cFormat);
-						LPCSTR lpstr = (LPCSTR)GlobalLock(hglb);
-
-						DWORD len = GetTortoiseGitTempPath(0, NULL);
-						std::unique_ptr<TCHAR[]> path(new TCHAR[len + 1]);
-						std::unique_ptr<TCHAR[]> tempF(new TCHAR[len + 100]);
-						GetTortoiseGitTempPath(len + 1, path.get());
-						GetTempFileName(path.get(), TEXT("git"), 0, tempF.get());
-						std::wstring sTempFile = std::wstring(tempF.get());
-
-						FILE * outFile;
-						size_t patchlen = strlen(lpstr);
-						_tfopen_s(&outFile, sTempFile.c_str(), _T("wb"));
-						if(outFile)
-						{
-							size_t size = fwrite(lpstr, sizeof(char), patchlen, outFile);
-							if (size == patchlen)
-							{
-								itemStates |= ITEMIS_PATCHFILE;
-								files_.clear();
-								files_.push_back(sTempFile);
-							}
-							fclose(outFile);
-						}
-						GlobalUnlock(hglb);
-						CloseClipboard();
-					}
-				}
-				if (itemStates & ITEMIS_PATCHFILE)
-				{
-					gitCmd = _T(" /diff:\"");
-					if (!files_.empty())
-					{
-						gitCmd += files_.front();
-						if (itemStatesFolder & ITEMIS_FOLDERINGIT)
-						{
-							gitCmd += _T("\" /patchpath:\"");
-							gitCmd += folder_;
-						}
-					}
-					else
-						gitCmd += folder_;
-					if (itemStates & ITEMIS_INVERSIONEDFOLDER)
-						gitCmd += _T("\" /wc");
-					else
-						gitCmd += _T("\"");
-				}
-				else
-				{
-					gitCmd = _T(" /patchpath:\"");
-					if (!files_.empty())
-						gitCmd += files_.front();
-					else
-						gitCmd += folder_;
-					gitCmd += _T("\"");
-				}
-				myIDMap.clear();
-				myVerbsIDMap.clear();
-				myVerbsMap.clear();
-				RunCommand(tortoiseMergePath, gitCmd, _T("TortoiseGitMerge launch failed"));
-				return S_OK;
 				break;
 			case ShellMenuClipPaste:
-				if (WriteClipboardPathsToTempFile(tempfile))
-				{
-					bool bCopy = true;
-					UINT cPrefDropFormat = RegisterClipboardFormat(_T("Preferred DropEffect"));
-					if (cPrefDropFormat)
-					{
-						if (OpenClipboard(lpcmi->hwnd))
-						{
-							HGLOBAL hglb = GetClipboardData(cPrefDropFormat);
-							if (hglb)
-							{
-								DWORD* effect = (DWORD*) GlobalLock(hglb);
-								if (*effect == DROPEFFECT_MOVE)
-									bCopy = false;
-								GlobalUnlock(hglb);
-							}
-							CloseClipboard();
-						}
-					}
-
-					if (bCopy)
-						gitCmd += _T("pastecopy /pathfile:\"");
-					else
-						gitCmd += _T("pastemove /pathfile:\"");
-					gitCmd += tempfile;
-					gitCmd += _T("\"");
-					gitCmd += _T(" /deletepathfile");
-					gitCmd += _T(" /droptarget:\"");
-					gitCmd += folder_;
-					gitCmd += _T("\"");
-				}
-				else return S_OK;
 				break;
 			case ShellMenuClone:
 				AddPathCommand(gitCmd, L"clone", false);

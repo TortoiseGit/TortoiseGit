@@ -18,7 +18,7 @@
 //
 #pragma once
 
-#include "TGitPath.h"
+//#include "TGitPath.h"
 
 /**
 * \ingroup Utils
@@ -38,12 +38,12 @@ public:
 	 * Add a single path for updating.
 	 * The update will happen at some suitable time in the future
 	 */
-	void AddPathForUpdate(const CTGitPath& path);
+	void AddPathForUpdate(const std::wstring& path);
 	/**
 	 * Add a list of paths for updating.
 	 * The update will happen at some suitable time in the future
 	 */
-	void AddPathsForUpdate(const CTGitPathList& pathList);
+	void AddPathsForUpdate(const std::list<std::wstring>& pathList);
 	/**
 	 * Do the update, and clear the list of items waiting
 	 */
@@ -56,7 +56,7 @@ private:
 
 private:
 	// The list of paths which will need updating
-	CTGitPathList m_pathsForUpdating;
+	std::list<std::wstring> m_pathsForUpdating;
 	// A handle to an event which, when set, tells the ShellExtension to purge its status cache
 	HANDLE			m_hInvalidationEvent;
 };

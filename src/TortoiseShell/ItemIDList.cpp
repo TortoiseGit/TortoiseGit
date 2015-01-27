@@ -130,7 +130,7 @@ tstring ItemIDList::toString(bool resolveLibraries /*= true*/)
 		if (SUCCEEDED(hr))
 		{
 			typedef HRESULT STDAPICALLTYPE SHCreateItemFromParsingNameFN(__in PCWSTR pszPath, __in_opt IBindCtx *pbc, __in REFIID riid, __deref_out void **ppv);
-			CAutoLibrary hShell = AtlLoadSystemLibraryUsingFullPath(_T("shell32.dll"));
+			/*CAutoLibrary hShell = AtlLoadSystemLibraryUsingFullPath(_T("shell32.dll"));
 			if (hShell)
 			{
 				SHCreateItemFromParsingNameFN *pfnSHCreateItemFromParsingName = (SHCreateItemFromParsingNameFN*)GetProcAddress(hShell, "SHCreateItemFromParsingName");
@@ -158,7 +158,7 @@ tstring ItemIDList::toString(bool resolveLibraries /*= true*/)
 						}
 					}
 				}
-			}
+			}*/
 		}
 	}
 	return ret;

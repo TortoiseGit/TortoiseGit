@@ -24,14 +24,14 @@
     <RootNamespace>TortoiseLangs</RootNamespace>
     <Keyword>MakeFileProj</Keyword>
   </PropertyGroup>
-  <Import Project="$(SolutionDir)TortoiseGit.toolset.props" />
+  <Import Project="$(SolutionDir)TortoiseSI.toolset.props" />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Label="Configuration">
     <ConfigurationType>Makefile</ConfigurationType>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  <Import Project="$(SolutionDir)TortoiseGit.common.props" />
+  <Import Project="$(SolutionDir)TortoiseSI.common.props" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <NMakeBuildCommandLine>build-lang.cmd $(OutDir)</NMakeBuildCommandLine>
@@ -62,18 +62,6 @@
   <ItemGroup>
     <ProjectReference Include="..\src\ResText\ResText.vcxproj">
       <Project>{72efb681-1397-4193-bbf9-ca05ac52b75d}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\src\TortoiseGitBlame\TortoiseGitBlameLang.vcxproj">
-      <Project>{4c8c72be-fe20-4a92-a592-0d44ed849b1c}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\src\TortoiseIDiff\TortoiseIDiffLang.vcxproj">
-      <Project>{56016512-d578-46fd-85e0-9edcd37433ac}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\src\TortoiseMerge\TortoiseMergeLang.vcxproj">
-      <Project>{1b3c273e-6ddf-4fbe-ba31-fcf39c6dbcf9}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\src\TortoiseProc\TortoiseProcLang.vcxproj">
-      <Project>{1b3c273e-6ddf-4fbe-ba31-f9f39c6dac99}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

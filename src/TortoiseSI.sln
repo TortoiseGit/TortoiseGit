@@ -1,0 +1,67 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TortoiseSISetup", "TortoiseSISetup", "{97449875-7B08-41B1-AF99-1EBE64AD7939}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{84AFABE1-6139-457A-8645-F86D1F182E06}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Languages", "Languages", "{FB607AFD-DD1E-4C6D-8C34-BC00AF725037}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TortoiseShell", "TortoiseShell\TortoiseShell.vcxproj", "{E873DD32-5A31-4DE1-8341-A56A2A5489EA}"
+EndProject
+Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "WixSetup", "TortoiseSISetup\WixSetup.wixproj", "{150172A5-8D02-4C00-ABB5-BD99D4B16B4C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{DB98402B-2CF6-4EC6-89F9-D19365EE8DE3} = {DB98402B-2CF6-4EC6-89F9-D19365EE8DE3}
+		{E873DD32-5A31-4DE1-8341-A56A2A5489EA} = {E873DD32-5A31-4DE1-8341-A56A2A5489EA}
+		{454D5FCC-E25A-4B45-9CA2-01ABB0FA5181} = {454D5FCC-E25A-4B45-9CA2-01ABB0FA5181}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CustomActions", "TortoiseSISetup\CustomActions\CustomActions.vcxproj", "{454D5FCC-E25A-4B45-9CA2-01ABB0FA5181}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TortoiseSIStub", "TortoiseShell\TortoiseStub.vcxproj", "{DB98402B-2CF6-4EC6-89F9-D19365EE8DE3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Debug|x64 = Debug|x64
+		Release|Win32 = Release|Win32
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E873DD32-5A31-4DE1-8341-A56A2A5489EA}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E873DD32-5A31-4DE1-8341-A56A2A5489EA}.Debug|Win32.Build.0 = Debug|Win32
+		{E873DD32-5A31-4DE1-8341-A56A2A5489EA}.Debug|x64.ActiveCfg = Debug|x64
+		{E873DD32-5A31-4DE1-8341-A56A2A5489EA}.Debug|x64.Build.0 = Debug|x64
+		{E873DD32-5A31-4DE1-8341-A56A2A5489EA}.Release|Win32.ActiveCfg = Release|Win32
+		{E873DD32-5A31-4DE1-8341-A56A2A5489EA}.Release|Win32.Build.0 = Release|Win32
+		{E873DD32-5A31-4DE1-8341-A56A2A5489EA}.Release|x64.ActiveCfg = Release|x64
+		{E873DD32-5A31-4DE1-8341-A56A2A5489EA}.Release|x64.Build.0 = Release|x64
+		{150172A5-8D02-4C00-ABB5-BD99D4B16B4C}.Debug|Win32.ActiveCfg = Debug|x86
+		{150172A5-8D02-4C00-ABB5-BD99D4B16B4C}.Debug|x64.ActiveCfg = Debug|x64
+		{150172A5-8D02-4C00-ABB5-BD99D4B16B4C}.Release|Win32.ActiveCfg = Release|x86
+		{150172A5-8D02-4C00-ABB5-BD99D4B16B4C}.Release|Win32.Build.0 = Release|x86
+		{150172A5-8D02-4C00-ABB5-BD99D4B16B4C}.Release|x64.ActiveCfg = Release|x64
+		{150172A5-8D02-4C00-ABB5-BD99D4B16B4C}.Release|x64.Build.0 = Release|x64
+		{454D5FCC-E25A-4B45-9CA2-01ABB0FA5181}.Debug|Win32.ActiveCfg = Release|Win32
+		{454D5FCC-E25A-4B45-9CA2-01ABB0FA5181}.Debug|x64.ActiveCfg = Release|x64
+		{454D5FCC-E25A-4B45-9CA2-01ABB0FA5181}.Release|Win32.ActiveCfg = Release|Win32
+		{454D5FCC-E25A-4B45-9CA2-01ABB0FA5181}.Release|Win32.Build.0 = Release|Win32
+		{454D5FCC-E25A-4B45-9CA2-01ABB0FA5181}.Release|x64.ActiveCfg = Release|x64
+		{454D5FCC-E25A-4B45-9CA2-01ABB0FA5181}.Release|x64.Build.0 = Release|x64
+		{DB98402B-2CF6-4EC6-89F9-D19365EE8DE3}.Debug|Win32.ActiveCfg = Debug|Win32
+		{DB98402B-2CF6-4EC6-89F9-D19365EE8DE3}.Debug|Win32.Build.0 = Debug|Win32
+		{DB98402B-2CF6-4EC6-89F9-D19365EE8DE3}.Debug|x64.ActiveCfg = Debug|x64
+		{DB98402B-2CF6-4EC6-89F9-D19365EE8DE3}.Debug|x64.Build.0 = Debug|x64
+		{DB98402B-2CF6-4EC6-89F9-D19365EE8DE3}.Release|Win32.ActiveCfg = Release|Win32
+		{DB98402B-2CF6-4EC6-89F9-D19365EE8DE3}.Release|Win32.Build.0 = Release|Win32
+		{DB98402B-2CF6-4EC6-89F9-D19365EE8DE3}.Release|x64.ActiveCfg = Release|x64
+		{DB98402B-2CF6-4EC6-89F9-D19365EE8DE3}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{150172A5-8D02-4C00-ABB5-BD99D4B16B4C} = {97449875-7B08-41B1-AF99-1EBE64AD7939}
+		{454D5FCC-E25A-4B45-9CA2-01ABB0FA5181} = {97449875-7B08-41B1-AF99-1EBE64AD7939}
+	EndGlobalSection
+EndGlobal

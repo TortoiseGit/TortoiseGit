@@ -20,8 +20,8 @@
 #pragma once
 #include "registry.h"
 #include "Globals.h"
-#include "GitAdminDir.h"
-#include "Git.h"
+
+typedef std::wstring stdstring;
 
 #define REGISTRYTIMEOUT 2000
 #define EXCLUDELISTTIMEOUT 5000
@@ -494,7 +494,7 @@ public:
 			}
 		}
 		CString sProjectRoot;
-		BOOL hasAdminDir = g_GitAdminDir.HasAdminDir(buf.get(), true, &sProjectRoot);
+		BOOL hasAdminDir = FALSE;// TODO g_GitAdminDir.HasAdminDir(buf.get(), true, &sProjectRoot);
 		admindirticker = GetTickCount();
 		Locker lock(m_critSec);
 
