@@ -713,7 +713,7 @@
 					</Component>
 					<?if $(var.Platform) = "x64" ?>
 					<Component Id="C__TortoiseShell32" Guid="$(var.GuidTortoiseShell32)" Win64="$(var.Win64YesNo)">
-<!--						<File Id="F__TortoiseSIStub32" Name="TortoiseSIStub32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\TortoiseSIStub32.dll" /> -->
+						<File Id="F__TortoiseSIStub32" Name="TortoiseSIStub32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\TortoiseSIStub32.dll" /> 
 						<File Id="F__TortoiseShell32" Name="TortoiseSI32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\TortoiseSI32.dll" />
 					</Component>
 					<?endif ?>
