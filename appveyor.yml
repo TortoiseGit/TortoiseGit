@@ -23,7 +23,9 @@ skip_tags: true
 #---------------------------------#
 #    environment configuration    #
 #---------------------------------#
-
+environment:
+  VisualStudioVersion: 12.0
+  
 # Operating system (build VM template)
 #os: Windows Server 2012
 
@@ -48,6 +50,7 @@ matrix:
 install:
   # by default, all script lines are interpreted as batch
   - echo Repository cloned
+  - echo AppVeyor Build Version - $APPVEYOR_BUILD_VERSION
 
 #---------------------------------#
 #       build configuration       #
@@ -74,7 +77,7 @@ configuration: Release
 
       
 build:
-  parallel: true                  # enable MSBuild parallel builds
+  parallel: true                 # enable MSBuild parallel builds
   project: src/TortoiseSI.sln    # path to Visual Studio solution or project
  
   # MSBuild verbosity level
