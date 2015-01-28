@@ -31,6 +31,11 @@
 #include <list>
 #include <algorithm>
 #include <functional>
+#include <memory>
+#include <future>
+#include <locale>
+#include <thread>
+#include <atomic>
 
 #define CSTRING_AVAILABLE
 

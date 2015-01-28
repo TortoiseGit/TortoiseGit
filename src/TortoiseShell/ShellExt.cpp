@@ -261,7 +261,7 @@ STDMETHODIMP CShellExt::GetClassID(CLSID *pclsid)
 {
 	if(pclsid == 0)
 		return E_POINTER;
-	*pclsid = CLSID_Tortoisegit_UNCONTROLLED;
+	*pclsid = CLSID_TortoiseSI_UNCONTROLLED;
 	return S_OK;
 }
 

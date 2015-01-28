@@ -106,7 +106,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\Integrity\IntegrityActions.cpp" />
+    <ClCompile Include="..\Integrity\IntegritySession.cpp" />
     <ClCompile Include="..\Utils\DebugOutput.cpp" />
+    <ClCompile Include="..\Utils\EventLog.cpp" />
     <ClCompile Include="..\Utils\MiscUI\IconBitmapUtils.cpp" />
     <ClCompile Include="..\Utils\ReaderWriterLock.cpp" />
     <ClCompile Include="ContextMenu.cpp" />
@@ -134,11 +137,15 @@
     <None Include="resourceshell.rc2" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Integrity\IntegrityActions.h" />
+    <ClInclude Include="..\Integrity\IntegritySession.h" />
     <ClInclude Include="..\Utils\CrashReport.h" />
     <ClInclude Include="..\Utils\DebugOutput.h" />
+    <ClInclude Include="..\Utils\EventLog.h" />
     <ClInclude Include="..\Utils\MiscUI\IconBitmapUtils.h" />
     <ClInclude Include="..\Utils\ReaderWriterLock.h" />
     <ClInclude Include="..\Utils\ShellUpdater.h" />
+    <ClInclude Include="FileStatus.h" />
     <ClInclude Include="PropertyPage.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="Guids.h" />
