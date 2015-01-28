@@ -134,9 +134,11 @@
     <None Include="resourceshell.rc2" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Utils\CrashReport.h" />
     <ClInclude Include="..\Utils\DebugOutput.h" />
     <ClInclude Include="..\Utils\MiscUI\IconBitmapUtils.h" />
     <ClInclude Include="..\Utils\ReaderWriterLock.h" />
+    <ClInclude Include="..\Utils\ShellUpdater.h" />
     <ClInclude Include="PropertyPage.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="Guids.h" />

@@ -1,5 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+// TortoiseSI - a Windows shell extension for easy version control
 
+// Copyright (C) 2015 - TortoiseSI
 // Copyright (C) 2011-2014 - TortoiseGit
 // Copyright (C) 2003-2013 - TortoiseSVN
 
@@ -39,7 +40,7 @@ CShellExt::CShellExt(FileState state)
 #if ENABLE_CRASHHANLDER
 	, m_crasher(L"TortoiseGit", TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD, TGIT_VERDATE, false)
 #endif
-	,regDiffLater(L"Software\\TortoiseGit\\DiffLater", L"")
+	,regDiffLater(L"Software\\TortoiseSI\\DiffLater", L"")
 {
 	m_cRef = 0L;
 	InterlockedIncrement(&g_cRefThisDll);

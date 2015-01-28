@@ -1,5 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+// TortoiseSI - a Windows shell extension for easy version control
 
+// Copyright (C) 2015 TortoiseSI
 // Copyright (C) 2009-2013 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
