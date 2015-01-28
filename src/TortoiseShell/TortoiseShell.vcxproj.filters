@@ -93,6 +93,12 @@
     <ClCompile Include="..\Utils\EventLog.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="StatusCache.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RootFolderCache.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="ShellExt.def">
@@ -175,11 +181,17 @@
     <ClInclude Include="..\Integrity\IntegritySession.h">
       <Filter>Integrity</Filter>
     </ClInclude>
-    <ClInclude Include="FileStatus.h">
-      <Filter>Integrity</Filter>
-    </ClInclude>
     <ClInclude Include="..\Utils\EventLog.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Integrity\FileStatus.h">
+      <Filter>Integrity</Filter>
+    </ClInclude>
+    <ClInclude Include="StatusCache.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RootFolderCache.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
