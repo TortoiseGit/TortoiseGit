@@ -19,7 +19,7 @@
 #include "stdafx.h"
 #include "ShellExt.h"
 #include "ItemIDList.h"
-
+#include "SmartHandle.h"
 
 ItemIDList::ItemIDList(PCUITEMID_CHILD item, PCUIDLIST_RELATIVE parent)
 	: item_ (item)
