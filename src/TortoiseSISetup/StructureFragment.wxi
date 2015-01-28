@@ -1,0 +1,878 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+	<?include Includes.wxi?>
+-->
+	<?if $(var.Platform) = "x86" ?>
+	<?define cf="CommonFilesFolder" ?>
+	<?endif ?>
+	<?if $(var.Platform) = "x64" ?>
+	<?define cf="CommonFiles64Folder" ?>
+	<?endif ?>
+<!--
+	<Fragment Id="StructureFragment">
+-->
+
+<?if $(var.VisualStudioVersion) = "12.0" ?>
+<?define vcver="120" ?>
+<?endif ?>
+<?if $(var.VisualStudioVersion) = "11.0" ?>
+<?define vcver="110" ?>
+<?endif ?>
+
+<?ifdef env.CommonProgramFiles(x86) ?>
+<?define MergeModules="C:\Program Files (x86)\Common Files\Merge Modules" ?>
+<?else?>
+<?define MergeModules="C:\Program Files\Common Files\Merge Modules" ?>
+<?endif?>
+
+<Include>
+	<Directory Id="TARGETDIR" Name="SourceDir">
+		<Directory Id="D__ProgramFilesFolder" Name="Program Files">
+			<Directory Id="INSTALLDIR" Name="TortoiseGit">
+
+				<?if $(var.Platform) = "x86" ?>
+				<Merge Id='CRT' Language='0' SourceFile='$(var.MergeModules)\Microsoft_VC$(var.vcver)_CRT_x86.msm' DiskId='1'/>
+				<?endif ?>
+
+				<?if $(var.Platform) = "x64" ?>
+				<Merge Id='CRT' Language='0' SourceFile='$(var.MergeModules)\Microsoft_VC$(var.vcver)_CRT_x64.msm' DiskId='1'/>
+				<Merge Id='CRT32' Language='0' SourceFile='$(var.MergeModules)\Microsoft_VC$(var.vcver)_CRT_x86.msm' DiskId='1'/>
+				<?endif ?>
+
+				<?if $(var.Platform) = "x86" ?>
+				<Merge Id='Ovlays' Language='0' SourceFile='..\..\ext\TortoiseOverlays\TortoiseOverlays-1.1.3.21564-win32.msm' DiskId='1'/>
+				<?endif ?>
+
+				<?if $(var.Platform) = "x64" ?>
+				<Merge Id='Ovlays' Language='0' SourceFile='..\..\ext\TortoiseOverlays\TortoiseOverlays-1.1.3.21564-x64.msm' DiskId='1'/>
+				<Merge Id='Ovlays32' Language='0' SourceFile='..\..\ext\TortoiseOverlays\TortoiseOverlays-1.1.3.21564-win32.msm' DiskId='1'/>
+				<?endif ?>
+
+				<Component Id="C__infofiles" Guid="$(var.GuidInfoFiles)" Win64="$(var.Win64YesNo)">
+<!--					<File Id="F__changelog" Name="Changelog.txt" DiskId="1" Source="..\Changelog.txt" KeyPath="yes" />
+					<File Id="F__changelog_pre1.8" Name="Changelog-pre1.8.txt" DiskId="1" Source="..\Changelog-pre1.8.txt" /> -->
+					<File Id="F__tortoisesilicense" Name="TortoiseSI License.txt" DiskId="1" Source="..\gpl.txt" />
+				</Component>
+
+				<Component Id="C__ProgramMenuFolder" Guid="$(var.GuidProgramMenuFolder)" Win64="$(var.Win64YesNo)">
+					<RemoveFolder Directory="INSTALLDIR" On="uninstall" Id="RemoveFolder_INSTALLDIR" />
+					<RemoveFolder Directory="D_TortoisePrgMenu" On="uninstall" Id="RemoveFolder_PrgMenu" />
+				</Component>
+
+				<Component Id="C__shellregistry" Guid="$(var.GuidShellRegistry)" Win64="$(var.Win64YesNo)">
+					<?if $(var.Platform) = "x86" ?>
+					<RegistryKey Root="HKMU" Key="Software\Classes\Drive\shellex\ContextMenuHandlers\TortoiseSI" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\Drive\shellex\ContextMenuHandlers\TortoiseSI" KeyPath="yes" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryKey Root="HKMU" Key="Software\Classes\Drive\shellex\PropertySheetHandlers\TortoiseSI" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\Drive\shellex\PropertySheetHandlers\TortoiseSI" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryKey Root="HKMU" Key="Software\Classes\Directory\shellex\ContextMenuHandlers\TortoiseSI" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\Directory\shellex\ContextMenuHandlers\TortoiseSI" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryKey Root="HKMU" Key="Software\Classes\Directory\shellex\DragDropHandlers\TortoiseSI" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\Directory\shellex\DragDropHandlers\TortoiseSI" Value="{$(var.GuidDropHandler)}" Type="string" />
+					<RegistryKey Root="HKMU" Key="Software\Classes\Directory\shellex\PropertySheetHandlers\TortoiseSI" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\Directory\shellex\PropertySheetHandlers\TortoiseSI" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryKey Root="HKMU" Key="Software\Classes\Directory\Background\shellex\ContextMenuHandlers\TortoiseSI" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\Directory\Background\shellex\ContextMenuHandlers\TortoiseSI" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryKey Root="HKMU" Key="Software\Classes\Folder\shellex\ContextMenuHandlers\TortoiseSI" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\Folder\shellex\ContextMenuHandlers\TortoiseSI" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryKey Root="HKLM" Key="Software\Classes\LibraryLocation\shellex\ContextMenuHandlers\TortoiseSI" />
+					<RegistryValue Root="HKLM" Key="Software\Classes\LibraryLocation\shellex\ContextMenuHandlers\TortoiseSI" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryKey Root="HKLM" Key="Software\Classes\LibraryFolder\background\shellex\ContextMenuHandlers\TortoiseSI" />
+					<RegistryValue Root="HKLM" Key="Software\Classes\LibraryFolder\background\shellex\ContextMenuHandlers\TortoiseSI" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryKey Root="HKMU" Key="Software\Classes\Folder\shellex\DragDropHandlers\TortoiseSI" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\Folder\shellex\DragDropHandlers\TortoiseSI" Value="{$(var.GuidDropHandler)}" Type="string" />
+					<RegistryKey Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidAdded)}" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidAdded)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseSIStub32.dll" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidAdded)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidAdded)}\shellex\NoRecentDocs" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidAdded)}" Value="TortoiseSI" Type="string" />
+					<RegistryKey Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidLocked)}" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidLocked)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseSIStub32.dll" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidLocked)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidLocked)}" Value="TortoiseSI" Type="string" />
+					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidLocked)}\shellex\NoRecentDocs" />
+					<RegistryKey Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDeleted)}" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDeleted)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseSIStub32.dll" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDeleted)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDeleted)}" Value="TortoiseSI" Type="string" />
+					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidDeleted)}\shellex\NoRecentDocs" />
+					<RegistryKey Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidNormal)}" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidNormal)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseSIStub32.dll" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidNormal)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidNormal)}" Value="TortoiseSI" Type="string" />
+					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidNormal)}\shellex\NoRecentDocs" />
+					<RegistryKey Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidReadonly)}" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidReadonly)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseSIStub32.dll" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidReadonly)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidReadonly)}" Value="TortoiseSI" Type="string" />
+					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidReadonly)}\shellex\NoRecentDocs" />
+					<RegistryKey Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUncontrolled)}" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUncontrolled)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUncontrolled)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseSIStub32.dll" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUncontrolled)}" Value="TortoiseSI" Type="string" />
+					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidUncontrolled)}\shellex\NoRecentDocs" />
+					<RegistryKey Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidModified)}" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidModified)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseSIStub32.dll" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidModified)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidModified)}" Value="TortoiseSI" Type="string" />
+					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidModified)}\shellex\NoRecentDocs" />
+					<RegistryKey Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDropHandler)}" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDropHandler)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDropHandler)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseSIStub32.dll" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDropHandler)}" Value="TortoiseSI" Type="string" />
+					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidDropHandler)}\shellex\NoRecentDocs" />
+					<RegistryKey Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidConflict)}" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidConflict)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidConflict)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseSIStub32.dll" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidConflict)}" Value="TortoiseSI" Type="string" />
+					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidConflict)}\shellex\NoRecentDocs" />
+					<RegistryKey Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidIgnored)}" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidIgnored)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidIgnored)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseSIStub32.dll" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidIgnored)}" Value="TortoiseSI" Type="string" />
+					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidIgnored)}\shellex\NoRecentDocs" />
+					<RegistryKey Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUnversioned)}" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUnversioned)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUnversioned)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseSIStub32.dll" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUnversioned)}" Value="TortoiseSI" Type="string" />
+					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidUnversioned)}\shellex\NoRecentDocs" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\lnkfile\shellex\ContextMenuHandlers\TortoiseSI" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\InternetShortcut\shellex\ContextMenuHandlers\TortoiseSI" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\*\shellex\ContextMenuHandlers\TortoiseSI" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\*\shellex\PropertySheetHandlers\TortoiseSI" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\Directory\shellex\CopyHookHandlers\TortoiseSI" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<?endif ?>
+					<?if $(var.Platform) = "x64" ?>
+					<RegistryKey Root="HKMU" Key="Software\Classes\Drive\shellex\ContextMenuHandlers\TortoiseSI" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\Drive\shellex\ContextMenuHandlers\TortoiseSI" KeyPath="yes" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryKey Root="HKMU" Key="Software\Classes\Drive\shellex\PropertySheetHandlers\TortoiseSI" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\Drive\shellex\PropertySheetHandlers\TortoiseSI" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryKey Root="HKMU" Key="Software\Classes\Directory\shellex\ContextMenuHandlers\TortoiseSI" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\Directory\shellex\ContextMenuHandlers\TortoiseSI" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryKey Root="HKMU" Key="Software\Classes\Directory\shellex\DragDropHandlers\TortoiseSI" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\Directory\shellex\DragDropHandlers\TortoiseSI" Value="{$(var.GuidDropHandler)}" Type="string" />
+					<RegistryKey Root="HKMU" Key="Software\Classes\Directory\shellex\PropertySheetHandlers\TortoiseSI" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\Directory\shellex\PropertySheetHandlers\TortoiseSI" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryKey Root="HKMU" Key="Software\Classes\Directory\Background\shellex\ContextMenuHandlers\TortoiseSI" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\Directory\Background\shellex\ContextMenuHandlers\TortoiseSI" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryKey Root="HKMU" Key="Software\Classes\Folder\shellex\ContextMenuHandlers\TortoiseSI" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\Folder\shellex\ContextMenuHandlers\TortoiseSI" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryKey Root="HKLM" Key="Software\Classes\LibraryLocation\shellex\ContextMenuHandlers\TortoiseSI" />
+					<RegistryValue Root="HKLM" Key="Software\Classes\LibraryLocation\shellex\ContextMenuHandlers\TortoiseSI" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryKey Root="HKLM" Key="Software\Classes\LibraryFolder\background\shellex\ContextMenuHandlers\TortoiseSI" />
+					<RegistryValue Root="HKLM" Key="Software\Classes\LibraryFolder\background\shellex\ContextMenuHandlers\TortoiseSI" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryKey Root="HKMU" Key="Software\Classes\Folder\shellex\DragDropHandlers\TortoiseSI" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\Folder\shellex\DragDropHandlers\TortoiseSI" Value="{$(var.GuidDropHandler)}" Type="string" />
+					<RegistryKey Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidAdded)}" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidAdded)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseSIStub.dll" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidAdded)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidAdded)}\shellex\NoRecentDocs" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidAdded)}" Value="TortoiseSI" Type="string" />
+					<RegistryKey Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidLocked)}" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidLocked)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseSIStub.dll" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidLocked)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidLocked)}" Value="TortoiseSI" Type="string" />
+					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidLocked)}\shellex\NoRecentDocs" />
+					<RegistryKey Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDeleted)}" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDeleted)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseSIStub.dll" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDeleted)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDeleted)}" Value="TortoiseSI" Type="string" />
+					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidDeleted)}\shellex\NoRecentDocs" />
+					<RegistryKey Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidNormal)}" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidNormal)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseSIStub.dll" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidNormal)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidNormal)}" Value="TortoiseSI" Type="string" />
+					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidNormal)}\shellex\NoRecentDocs" />
+					<RegistryKey Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidReadonly)}" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidReadonly)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseSIStub.dll" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidReadonly)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidReadonly)}" Value="TortoiseSI" Type="string" />
+					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidReadonly)}\shellex\NoRecentDocs" />
+					<RegistryKey Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUncontrolled)}" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUncontrolled)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUncontrolled)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseSIStub.dll" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUncontrolled)}" Value="TortoiseSI" Type="string" />
+					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidUncontrolled)}\shellex\NoRecentDocs" />
+					<RegistryKey Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidModified)}" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidModified)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseSIStub.dll" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidModified)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidModified)}" Value="TortoiseSI" Type="string" />
+					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidModified)}\shellex\NoRecentDocs" />
+					<RegistryKey Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDropHandler)}" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDropHandler)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDropHandler)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseSIStub.dll" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDropHandler)}" Value="TortoiseSI" Type="string" />
+					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidDropHandler)}\shellex\NoRecentDocs" />
+					<RegistryKey Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidConflict)}" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidConflict)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidConflict)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseSIStub.dll" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidConflict)}" Value="TortoiseSI" Type="string" />
+					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidConflict)}\shellex\NoRecentDocs" />
+					<RegistryKey Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidIgnored)}" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidIgnored)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidIgnored)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseSIStub.dll" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidIgnored)}" Value="TortoiseSI" Type="string" />
+					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidIgnored)}\shellex\NoRecentDocs" />
+					<RegistryKey Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUnversioned)}" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUnversioned)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUnversioned)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseSIStub.dll" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUnversioned)}" Value="TortoiseSI" Type="string" />
+					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidUnversioned)}\shellex\NoRecentDocs" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\lnkfile\shellex\ContextMenuHandlers\TortoiseSI" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\InternetShortcut\shellex\ContextMenuHandlers\TortoiseSI" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\*\shellex\ContextMenuHandlers\TortoiseSI" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\*\shellex\PropertySheetHandlers\TortoiseSI" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\Directory\shellex\CopyHookHandlers\TortoiseSI" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<?endif ?>
+				</Component>
+				<?if $(var.Platform) = "x64" ?>
+				<Component Id="C__shellregistry32" Guid="$(var.GuidShellRegistry32)" Win64="no">
+					<RegistryKey Root="HKMU" Key="Software\Classes\Drive\shellex\ContextMenuHandlers\TortoiseSI" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\Drive\shellex\ContextMenuHandlers\TortoiseSI" KeyPath="yes" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryKey Root="HKMU" Key="Software\Classes\Drive\shellex\PropertySheetHandlers\TortoiseSI" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\Drive\shellex\PropertySheetHandlers\TortoiseSI" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryKey Root="HKMU" Key="Software\Classes\Directory\shellex\ContextMenuHandlers\TortoiseSI" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\Directory\shellex\ContextMenuHandlers\TortoiseSI" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryKey Root="HKMU" Key="Software\Classes\Directory\shellex\DragDropHandlers\TortoiseSI" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\Directory\shellex\DragDropHandlers\TortoiseSI" Value="{$(var.GuidDropHandler)}" Type="string" />
+					<RegistryKey Root="HKMU" Key="Software\Classes\Directory\shellex\PropertySheetHandlers\TortoiseSI" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\Directory\shellex\PropertySheetHandlers\TortoiseSI" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryKey Root="HKMU" Key="Software\Classes\Directory\Background\shellex\ContextMenuHandlers\TortoiseSI" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\Directory\Background\shellex\ContextMenuHandlers\TortoiseSI" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryKey Root="HKMU" Key="Software\Classes\Folder\shellex\ContextMenuHandlers\TortoiseSI" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\Folder\shellex\ContextMenuHandlers\TortoiseSI" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryKey Root="HKLM" Key="Software\Classes\LibraryLocation\shellex\ContextMenuHandlers\TortoiseSI" />
+					<RegistryValue Root="HKLM" Key="Software\Classes\LibraryLocation\shellex\ContextMenuHandlers\TortoiseSI" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryKey Root="HKLM" Key="Software\Classes\LibraryFolder\background\shellex\ContextMenuHandlers\TortoiseSI" />
+					<RegistryValue Root="HKLM" Key="Software\Classes\LibraryFolder\background\shellex\ContextMenuHandlers\TortoiseSI" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryKey Root="HKMU" Key="Software\Classes\Folder\shellex\DragDropHandlers\TortoiseSI" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\Folder\shellex\DragDropHandlers\TortoiseSI" Value="{$(var.GuidDropHandler)}" Type="string" />
+					<RegistryKey Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidAdded)}" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidAdded)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseSIStub32.dll" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidAdded)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidAdded)}\shellex\NoRecentDocs" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidAdded)}" Value="TortoiseSI" Type="string" />
+					<RegistryKey Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidLocked)}" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidLocked)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseSIStub32.dll" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidLocked)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidLocked)}" Value="TortoiseSI" Type="string" />
+					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidLocked)}\shellex\NoRecentDocs" />
+					<RegistryKey Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDeleted)}" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDeleted)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseSIStub32.dll" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDeleted)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDeleted)}" Value="TortoiseSI" Type="string" />
+					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidDeleted)}\shellex\NoRecentDocs" />
+					<RegistryKey Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidNormal)}" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidNormal)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseSIStub32.dll" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidNormal)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidNormal)}" Value="TortoiseSI" Type="string" />
+					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidNormal)}\shellex\NoRecentDocs" />
+					<RegistryKey Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidReadonly)}" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidReadonly)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseSIStub32.dll" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidReadonly)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidReadonly)}" Value="TortoiseSI" Type="string" />
+					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidReadonly)}\shellex\NoRecentDocs" />
+					<RegistryKey Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUncontrolled)}" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUncontrolled)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUncontrolled)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseSIStub32.dll" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUncontrolled)}" Value="TortoiseSI" Type="string" />
+					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidUncontrolled)}\shellex\NoRecentDocs" />
+					<RegistryKey Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidModified)}" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidModified)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseSIStub32.dll" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidModified)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidModified)}" Value="TortoiseSI" Type="string" />
+					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidModified)}\shellex\NoRecentDocs" />
+					<RegistryKey Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDropHandler)}" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDropHandler)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDropHandler)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseSIStub32.dll" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDropHandler)}" Value="TortoiseSI" Type="string" />
+					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidDropHandler)}\shellex\NoRecentDocs" />
+					<RegistryKey Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidConflict)}" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidConflict)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidConflict)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseSIStub32.dll" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidConflict)}" Value="TortoiseSI" Type="string" />
+					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidConflict)}\shellex\NoRecentDocs" />
+					<RegistryKey Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidIgnored)}" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidIgnored)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidIgnored)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseSIStub32.dll" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidIgnored)}" Value="TortoiseSI" Type="string" />
+					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidIgnored)}\shellex\NoRecentDocs" />
+					<RegistryKey Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUnversioned)}" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUnversioned)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUnversioned)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseSIStub32.dll" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUnversioned)}" Value="TortoiseSI" Type="string" />
+					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidUnversioned)}\shellex\NoRecentDocs" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\lnkfile\shellex\ContextMenuHandlers\TortoiseSI" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\InternetShortcut\shellex\ContextMenuHandlers\TortoiseSI" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\*\shellex\ContextMenuHandlers\TortoiseSI" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\*\shellex\PropertySheetHandlers\TortoiseSI" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<RegistryValue Root="HKMU" Key="Software\Classes\Directory\shellex\CopyHookHandlers\TortoiseSI" Value="{$(var.GuidUncontrolled)}" Type="string" />
+				</Component>
+				<?endif ?>
+
+				<Component Id="C__machineregistry" Guid="$(var.GuidMachineRegistry)" Win64="$(var.Win64YesNo)">
+					<RegistryKey Root="HKLM" Key="Software\[Manufacturer]" />
+					<RegistryValue Root="HKLM" Key="Software\[Manufacturer]" Name="Directory" Value="[INSTALLDIR]" Type="string" />
+					<RegistryKey Root="HKLM" Key="Software\TortoiseOverlays\Normal" />
+					<RegistryValue Root="HKLM" Key="Software\TortoiseOverlays\Normal" Name="SI" Value="{$(var.GuidNormal)}" Type="string" />
+					<RegistryKey Root="HKLM" Key="Software\TortoiseOverlays\Modified" />
+					<RegistryValue Root="HKLM" Key="Software\TortoiseOverlays\Modified" Name="SI" Value="{$(var.GuidModified)}" Type="string" />
+					<RegistryKey Root="HKLM" Key="Software\TortoiseOverlays\Conflict" />
+					<RegistryValue Root="HKLM" Key="Software\TortoiseOverlays\Conflict" Name="SI" Value="{$(var.GuidConflict)}" Type="string" />
+					<RegistryKey Root="HKLM" Key="Software\TortoiseOverlays\Deleted" />
+					<RegistryValue Root="HKLM" Key="Software\TortoiseOverlays\Deleted" Name="SI" Value="{$(var.GuidDeleted)}" Type="string" />
+					<RegistryKey Root="HKLM" Key="Software\TortoiseOverlays\ReadOnly" />
+					<RegistryValue Root="HKLM" Key="Software\TortoiseOverlays\ReadOnly" Name="SI" Value="{$(var.GuidReadonly)}" Type="string" />
+					<RegistryKey Root="HKLM" Key="Software\TortoiseOverlays\Locked" />
+					<RegistryValue Root="HKLM" Key="Software\TortoiseOverlays\Locked" Name="SI" Value="{$(var.GuidLocked)}" Type="string" />
+					<RegistryKey Root="HKLM" Key="Software\TortoiseOverlays\Added" />
+					<RegistryValue Root="HKLM" Key="Software\TortoiseOverlays\Added" Name="SI" Value="{$(var.GuidAdded)}" Type="string" />
+					<RegistryKey Root="HKLM" Key="Software\TortoiseOverlays\Ignored" />
+					<RegistryValue Root="HKLM" Key="Software\TortoiseOverlays\Ignored" Name="SI" Value="{$(var.GuidIgnored)}" Type="string" />
+					<RegistryKey Root="HKLM" Key="Software\TortoiseOverlays\Unversioned" />
+					<RegistryValue Root="HKLM" Key="Software\TortoiseOverlays\Unversioned" Name="SI" Value="{$(var.GuidUnversioned)}" Type="string" />
+				</Component>
+				<?if $(var.Platform) = "x64" ?>
+				<Component Id="C__machineregistry32" Guid="$(var.GuidMachineRegistry32)" Win64="no">
+					<RegistryKey Root="HKLM" Key="Software\[Manufacturer]" />
+					<RegistryValue Root="HKLM" Key="Software\[Manufacturer]" Name="Directory" Value="[INSTALLDIR]" Type="string" />
+					<RegistryKey Root="HKLM" Key="Software\TortoiseOverlays\Normal" />
+					<RegistryValue Root="HKLM" Key="Software\TortoiseOverlays\Normal" Name="SI" Value="{$(var.GuidNormal)}" Type="string" />
+					<RegistryKey Root="HKLM" Key="Software\TortoiseOverlays\Modified" />
+					<RegistryValue Root="HKLM" Key="Software\TortoiseOverlays\Modified" Name="SI" Value="{$(var.GuidModified)}" Type="string" />
+					<RegistryKey Root="HKLM" Key="Software\TortoiseOverlays\Conflict" />
+					<RegistryValue Root="HKLM" Key="Software\TortoiseOverlays\Conflict" Name="SI" Value="{$(var.GuidConflict)}" Type="string" />
+					<RegistryKey Root="HKLM" Key="Software\TortoiseOverlays\Deleted" />
+					<RegistryValue Root="HKLM" Key="Software\TortoiseOverlays\Deleted" Name="SI" Value="{$(var.GuidDeleted)}" Type="string" />
+					<RegistryKey Root="HKLM" Key="Software\TortoiseOverlays\ReadOnly" />
+					<RegistryValue Root="HKLM" Key="Software\TortoiseOverlays\ReadOnly" Name="SI" Value="{$(var.GuidReadonly)}" Type="string" />
+					<RegistryKey Root="HKLM" Key="Software\TortoiseOverlays\Locked" />
+					<RegistryValue Root="HKLM" Key="Software\TortoiseOverlays\Locked" Name="SI" Value="{$(var.GuidLocked)}" Type="string" />
+					<RegistryKey Root="HKLM" Key="Software\TortoiseOverlays\Added" />
+					<RegistryValue Root="HKLM" Key="Software\TortoiseOverlays\Added" Name="SI" Value="{$(var.GuidAdded)}" Type="string" />
+					<RegistryKey Root="HKLM" Key="Software\TortoiseOverlays\Ignored" />
+					<RegistryValue Root="HKLM" Key="Software\TortoiseOverlays\Ignored" Name="SI" Value="{$(var.GuidIgnored)}" Type="string" />
+					<RegistryKey Root="HKLM" Key="Software\TortoiseOverlays\Unversioned" />
+					<RegistryValue Root="HKLM" Key="Software\TortoiseOverlays\Unversioned" Name="SI" Value="{$(var.GuidUnversioned)}" Type="string" />
+				</Component>
+				<?endif ?>
+<!--
+				<Component Id="C__win7library" Guid="$(var.GuidWin7Library)" Win64="$(var.Win64YesNo)">
+					<Condition><![CDATA[(VersionNT >= 600)]]></Condition> -->
+					<!-- Folders -->
+	<!--				<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)" Name="CanonicalName" Value="GitWCs" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)" Name="class" Value="GitWCs" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)" Name="LayoutType" Value="7" Type="integer" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)" Name="MostRelevant" Value="prop:System.Author;System.StructuredQuery.Virtual.Type;System.DateModified;System.Size;System.ItemNameDisplay;System.ItemFolderPathDisplay;System.Keywords;System.Title" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)" Name="PerceivedType" Value="6" Type="integer" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)" Name="Theme" Value="GitWCs" Type="string" />
+
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\Modifiers" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\Modifiers" Name="Library" Value="$(var.GuidLibraryTypeGit)" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\Modifiers" Name="LibraryFolder" Value="$(var.GuidLibraryFolderGit)" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\Modifiers" Name="SearchResults" Value="$(var.GuidSearchFolderGit)" Type="string" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TopViews\{00000000-0000-0000-0000-000000000000}" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TopViews\{00000000-0000-0000-0000-000000000000}" Name="ColumnList" Value="prop:0(34)System.ItemNameDisplay;0System.DateModified;0System.ItemTypeText;0System.Size;1System.DateCreated;1System.Author;1System.Category;1System.Keywords;1System.Title" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TopViews\{00000000-0000-0000-0000-000000000000}" Name="Name" Value="NoName" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TopViews\{00000000-0000-0000-0000-000000000000}" Name="SortByList" Value="prop:System.ItemNameDisplay" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TopViews\{00000000-0000-0000-0000-000000000000}" Name="LogicalViewMode" Value="1" Type="integer" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TopViews\{00000000-0000-0000-0000-000000000000}" Name="Order" Value="0" Type="integer" />
+-->
+					<!-- WC Library -->
+		<!--			<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)" Name="CanonicalName" Value="GitWCs.Library" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)" Name="Parent" Value="$(var.GuidFolderTypeGit)" Type="string" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TasksItemsSelected" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TasksItemsSelected" Value="Windows.print;Windows.email;Windows.burn;Windows.CscWorkOfflineOnline" Type="string" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TasksNoItemsSelected" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TasksNoItemsSelected" Value="Windows.burn;Windows.CscWorkOfflineOnline" Type="string" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TopViews\$(var.GuidTopView1)" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TopViews\$(var.GuidTopView1)" Name="ChildViewID" Value="$(var.GuidTopView6)" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TopViews\$(var.GuidTopView1)" Name="ColumnList" Value="prop:0System.ItemNameDisplay;0System.DateModified;0System.Size;0System.FileCount;0System.ItemTypeText" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TopViews\$(var.GuidTopView1)" Name="IconSize" Value="96" Type="integer" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TopViews\$(var.GuidTopView1)" Name="LogicalViewMode" Value="3" Type="integer" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TopViews\$(var.GuidTopView1)" Name="Name" Value="@shell32.dll,-34821" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TopViews\$(var.GuidTopView1)" Name="Order" Value="5" Type="integer" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TopViews\$(var.GuidTopView1)" Name="PrimaryProperty" Value="System.ItemTypeText" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TopViews\$(var.GuidTopView1)" Name="QueryType" Value="1" Type="integer" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TopViews\$(var.GuidTopView1)" Name="SortByList" Value="prop:System.DefaultGroupOrder" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TopViews\$(var.GuidTopView1)" Name="StackBy" Value="System.ItemTypeText" Type="string" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TopViews\$(var.GuidTopView2)" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TopViews\$(var.GuidTopView2)" Name="ColumnList" Value="prop:0System.ItemNameDisplay;0System.DateModified;0System.Size;0System.FileCount;0System.ItemTypeText" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TopViews\$(var.GuidTopView2)" Name="LogicalViewMode" Value="1" Type="integer" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TopViews\$(var.GuidTopView2)" Name="Name" Value="@shell32.dll,-34817" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TopViews\$(var.GuidTopView2)" Name="Order" Value="1" Type="integer" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TopViews\$(var.GuidTopView2)" Name="PrimaryProperty" Value="System.ItemSearchLocation" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TopViews\$(var.GuidTopView2)" Name="SortByList" Value="prop:System.ItemNameDisplay;-System.DateModified" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TopViews\$(var.GuidTopView2)" Name="GroupBy" Value="System.ItemSearchLocation" Type="string" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TopViews\$(var.GuidTopView3)" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TopViews\$(var.GuidTopView3)" Name="ChildViewID" Value="$(var.GuidTopView6)" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TopViews\$(var.GuidTopView3)" Name="ColumnList" Value="prop:0System.ItemNameDisplay;0System.DateModified;0System.Size;0System.FileCount;0System.Author" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TopViews\$(var.GuidTopView3)" Name="IconSize" Value="96" Type="integer" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TopViews\$(var.GuidTopView3)" Name="LogicalViewMode" Value="3" Type="integer" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TopViews\$(var.GuidTopView3)" Name="Name" Value="@shell32.dll,-34818" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TopViews\$(var.GuidTopView3)" Name="Order" Value="2" Type="integer" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TopViews\$(var.GuidTopView3)" Name="PrimaryProperty" Value="System.Author" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TopViews\$(var.GuidTopView3)" Name="QueryType" Value="1" Type="integer" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TopViews\$(var.GuidTopView3)" Name="SortByList" Value="prop:System.DefaultGroupOrder" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TopViews\$(var.GuidTopView3)" Name="StackBy" Value="System.Author" Type="string" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TopViews\$(var.GuidTopView4)" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TopViews\$(var.GuidTopView4)" Name="ChildViewID" Value="$(var.GuidTopView6)" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TopViews\$(var.GuidTopView4)" Name="ColumnList" Value="prop:0System.ItemNameDisplay;0System.DateModified;0System.Size;0System.FileCount;0System.Keywords" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TopViews\$(var.GuidTopView4)" Name="IconSize" Value="96" Type="integer" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TopViews\$(var.GuidTopView4)" Name="LogicalViewMode" Value="3" Type="integer" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TopViews\$(var.GuidTopView4)" Name="Name" Value="@shell32.dll,-34820" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TopViews\$(var.GuidTopView4)" Name="Order" Value="4" Type="integer" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TopViews\$(var.GuidTopView4)" Name="PrimaryProperty" Value="System.Keywords" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TopViews\$(var.GuidTopView4)" Name="QueryType" Value="1" Type="integer" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TopViews\$(var.GuidTopView4)" Name="SortByList" Value="prop:System.DefaultGroupOrder" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TopViews\$(var.GuidTopView4)" Name="StackBy" Value="System.Keywords" Type="string" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TopViews\$(var.GuidTopView5)" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TopViews\$(var.GuidTopView5)" Name="GroupAscending" Value="0" Type="integer" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TopViews\$(var.GuidTopView5)" Name="ColumnList" Value="prop:0System.ItemNameDisplay;0System.DateModified;0System.ItemTypeText;0System.Size;0System.Keywords;0System.Author;1System.DateCreated;1System.ItemFolderPathDisplay;1System.Category;1System.Title" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TopViews\$(var.GuidTopView5)" Name="GroupBy" Value="System.DateModified" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TopViews\$(var.GuidTopView5)" Name="LogicalViewMode" Value="1" Type="integer" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TopViews\$(var.GuidTopView5)" Name="Name" Value="@shell32.dll,-34819" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TopViews\$(var.GuidTopView5)" Name="Order" Value="3" Type="integer" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TopViews\$(var.GuidTopView5)" Name="PrimaryProperty" Value="System.DateModified" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TopViews\$(var.GuidTopView5)" Name="QueryType" Value="1" Type="integer" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TopViews\$(var.GuidTopView5)" Name="SortByList" Value="prop:-System.DateModified" Type="string" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TopViews\$(var.GuidTopView6)" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TopViews\$(var.GuidTopView6)" Name="ColumnList" Value="prop:0(34)System.ItemNameDisplay;0System.DateModified;0System.ItemTypeText;0System.Size;1System.DateCreated;1System.ItemFolderPathDisplay;1System.Author;1System.Category;1System.Keywords;1System.Title" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TopViews\$(var.GuidTopView6)" Name="LogicalViewMode" Value="1" Type="integer" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TopViews\$(var.GuidTopView6)" Name="Name" Value="@shell32.dll,-34839" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TopViews\$(var.GuidTopView6)" Name="Order" Value="6" Type="integer" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TopViews\$(var.GuidTopView6)" Name="QueryType" Value="1" Type="integer" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TopViews\$(var.GuidTopView6)" Name="SortByList" Value="prop:System.ItemNameDisplay;-System.DateModified" Type="string" />
+-->
+					<!-- LibraryFolder -->
+        <!--			<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)" Name="CanonicalName" Value="GitWCs.LibraryFolder" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)" Name="Parent" Value="$(var.GuidLibraryTypeGit)" Type="string" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TopViews" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TopViews" Name="OverrideParentTopViews" Value="1" Type="integer" />
+-->
+					<!-- SearchResults -->
+		<!--			<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidSearchFolderGit)" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidSearchFolderGit)" Name="Parent" Value="$(var.GuidFolderTypeGit)" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidSearchFolderGit)" Name="CanonicalName" Value="GitWCs.SearchResults" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidSearchFolderGit)" Name="Mode" Value="1" Type="integer" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidSearchFolderGit)" Name="TopViewPersistence" Value="1" Type="integer" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidSearchFolderGit)\TasksItemsSelected" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidSearchFolderGit)\TasksItemsSelected" Value="Windows.print;Windows.email;Windows.burn" Type="string" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidSearchFolderGit)\TasksNoItemsSelected" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidSearchFolderGit)\TasksNoItemsSelected" Value="Windows.burn" Type="string" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidSearchFolderGit)\TopViews" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidSearchFolderGit)\TopViews" Name="OverrideParentTopViews" Value="1" Type="integer" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidSearchFolderGit)\TopViews\{424c81ab-7a7b-4fc1-a848-ddbadc10cdf5}" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidSearchFolderGit)\TopViews\{424c81ab-7a7b-4fc1-a848-ddbadc10cdf5}" Name="Name" Value="@shell32.dll,-34822" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidSearchFolderGit)\TopViews\{424c81ab-7a7b-4fc1-a848-ddbadc10cdf5}" Name="Order" Value="0" Type="integer" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidSearchFolderGit)\TopViews\{424c81ab-7a7b-4fc1-a848-ddbadc10cdf5}" Name="ColumnList" Value="prop:0System.ItemNameDisplay;0System.DateModified;0System.ItemTypeText;0System.Size;0System.ItemFolderPathDisplay;1System.Search.Rank;1System.DateCreated;1System.Author;1System.Category;1System.Keywords;1System.Title" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidSearchFolderGit)\TopViews\{424c81ab-7a7b-4fc1-a848-ddbadc10cdf5}" Name="SortByList" Value="prop:-System.Search.Rank;-System.DateModified;System.ItemNameDisplay" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidSearchFolderGit)\TopViews\{424c81ab-7a7b-4fc1-a848-ddbadc10cdf5}" Name="QueryType" Value="1" Type="integer" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidSearchFolderGit)\TopViews\{424c81ab-7a7b-4fc1-a848-ddbadc10cdf5}" Name="IconSize" Value="96" Type="integer" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidSearchFolderGit)\TopViews\{424c81ab-7a7b-4fc1-a848-ddbadc10cdf5}" Name="LogicalViewMode" Value="5" Type="integer" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidSearchFolderGit)\TopViews\{424c81ab-7a7b-4fc1-a848-ddbadc10cdf5}" Name="PrimarySettings" Value="1" Type="integer" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidSearchFolderGit)\TopViews\{4804caf0-de08-42ec-b811-52350e94c01e}" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidSearchFolderGit)\TopViews\{4804caf0-de08-42ec-b811-52350e94c01e}" Name="Name" Value="@shell32.dll,-34819" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidSearchFolderGit)\TopViews\{4804caf0-de08-42ec-b811-52350e94c01e}" Name="Order" Value="1" Type="integer" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidSearchFolderGit)\TopViews\{4804caf0-de08-42ec-b811-52350e94c01e}" Name="ColumnList" Value="prop:0System.ItemNameDisplay;0System.DateModified;0System.ItemTypeText;0System.Size;0System.Keywords;0System.Author;0System.ItemFolderPathDisplay;1System.Search.Rank;1System.DateCreated;1System.Category;1System.Title" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidSearchFolderGit)\TopViews\{4804caf0-de08-42ec-b811-52350e94c01e}" Name="SortByList" Value="prop:-System.DateModified" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidSearchFolderGit)\TopViews\{4804caf0-de08-42ec-b811-52350e94c01e}" Name="GroupBy" Value="System.DateModified" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidSearchFolderGit)\TopViews\{4804caf0-de08-42ec-b811-52350e94c01e}" Name="PrimaryProperty" Value="System.DateModified" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidSearchFolderGit)\TopViews\{4804caf0-de08-42ec-b811-52350e94c01e}" Name="GroupAscending" Value="0" Type="integer" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidSearchFolderGit)\TopViews\{4804caf0-de08-42ec-b811-52350e94c01e}" Name="QueryType" Value="1" Type="integer" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidSearchFolderGit)\TopViews\{4804caf0-de08-42ec-b811-52350e94c01e}" Name="LogicalViewMode" Value="5" Type="integer" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidSearchFolderGit)\TopViews\{724cded7-242e-425c-b660-86af28ba1567}" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidSearchFolderGit)\TopViews\{724cded7-242e-425c-b660-86af28ba1567}" Name="Name" Value="@shell32.dll,-34820" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidSearchFolderGit)\TopViews\{724cded7-242e-425c-b660-86af28ba1567}" Name="Order" Value="5" Type="integer" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidSearchFolderGit)\TopViews\{724cded7-242e-425c-b660-86af28ba1567}" Name="ColumnList" Value="prop:0System.ItemNameDisplay;0System.DateModified;0System.ItemTypeText;0System.Size;0System.ItemFolderPathDisplay;1System.Search.Rank;1System.DateCreated;1System.Author;1System.Category;1System.Keywords;1System.Title" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidSearchFolderGit)\TopViews\{724cded7-242e-425c-b660-86af28ba1567}" Name="SortByList" Value="prop:System.ItemNameDisplay;-System.DateModified" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidSearchFolderGit)\TopViews\{724cded7-242e-425c-b660-86af28ba1567}" Name="GroupBy" Value="System.Keywords" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidSearchFolderGit)\TopViews\{724cded7-242e-425c-b660-86af28ba1567}" Name="PrimaryProperty" Value="PrimaryProperty" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidSearchFolderGit)\TopViews\{724cded7-242e-425c-b660-86af28ba1567}" Name="QueryType" Value="1" Type="integer" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidSearchFolderGit)\TopViews\{724cded7-242e-425c-b660-86af28ba1567}" Name="LogicalViewMode" Value="5" Type="integer" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidSearchFolderGit)\TopViews\{bb69f21e-3e71-466e-b8ec-db1a35410985}" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidSearchFolderGit)\TopViews\{bb69f21e-3e71-466e-b8ec-db1a35410985}" Name="Name" Value="@shell32.dll,-34821" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidSearchFolderGit)\TopViews\{bb69f21e-3e71-466e-b8ec-db1a35410985}" Name="Order" Value="6" Type="integer" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidSearchFolderGit)\TopViews\{bb69f21e-3e71-466e-b8ec-db1a35410985}" Name="ColumnList" Value="prop:0System.ItemNameDisplay;0System.DateModified;0System.ItemTypeText;0System.Size;0System.ItemFolderPathDisplay;1System.Search.Rank;1System.DateCreated;1System.Author;1System.Category;1System.Keywords;1System.Title" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidSearchFolderGit)\TopViews\{bb69f21e-3e71-466e-b8ec-db1a35410985}" Name="SortByList" Value="prop:System.ItemNameDisplay;-System.DateModified" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidSearchFolderGit)\TopViews\{bb69f21e-3e71-466e-b8ec-db1a35410985}" Name="GroupBy" Value="System.ItemTypeText" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidSearchFolderGit)\TopViews\{bb69f21e-3e71-466e-b8ec-db1a35410985}" Name="PrimaryProperty" Value="System.ItemTypeText" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidSearchFolderGit)\TopViews\{bb69f21e-3e71-466e-b8ec-db1a35410985}" Name="QueryType" Value="1" Type="integer" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidSearchFolderGit)\TopViews\{bb69f21e-3e71-466e-b8ec-db1a35410985}" Name="LogicalViewMode" Value="5" Type="integer" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidSearchFolderGit)\TopViews\{bd6ab8cf-c0fd-4d50-bc73-7aad9b067958}" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidSearchFolderGit)\TopViews\{bd6ab8cf-c0fd-4d50-bc73-7aad9b067958}" Name="Name" Value="@shell32.dll,-34818" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidSearchFolderGit)\TopViews\{bd6ab8cf-c0fd-4d50-bc73-7aad9b067958}" Name="Order" Value="3" Type="integer" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidSearchFolderGit)\TopViews\{bd6ab8cf-c0fd-4d50-bc73-7aad9b067958}" Name="ColumnList" Value="prop:0System.ItemNameDisplay;0System.DateModified;0System.ItemTypeText;0System.Size;0System.ItemFolderPathDisplay;1System.Search.Rank;1System.DateCreated;1System.Author;1System.Category;1System.Keywords;1System.Title" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidSearchFolderGit)\TopViews\{bd6ab8cf-c0fd-4d50-bc73-7aad9b067958}" Name="SortByList" Value="prop:System.ItemNameDisplay;-System.DateModified" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidSearchFolderGit)\TopViews\{bd6ab8cf-c0fd-4d50-bc73-7aad9b067958}" Name="GroupBy" Value="System.Author" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidSearchFolderGit)\TopViews\{bd6ab8cf-c0fd-4d50-bc73-7aad9b067958}" Name="PrimaryProperty" Value="System.Author" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidSearchFolderGit)\TopViews\{bd6ab8cf-c0fd-4d50-bc73-7aad9b067958}" Name="QueryType" Value="1" Type="integer" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidSearchFolderGit)\TopViews\{bd6ab8cf-c0fd-4d50-bc73-7aad9b067958}" Name="LogicalViewMode" Value="5" Type="integer" />
+-->
+					<!-- no need to create these on x64 in the Wow6432Node too: these are only used by the explorer, and that one is 64-bit. If
+						 a user really starts the 32-bit explorer on win64 and these buttons aren't there, it won't be that bad -->
+<!--					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\0\$(var.GuidFolderTypeCmd0)" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\0\$(var.GuidFolderTypeCmd0)" Name="Icon" Value="[INSTALLDIR]bin\TortoiseGitProc.exe,-123" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\0\$(var.GuidFolderTypeCmd0)" Name="Title" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-122" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\0\$(var.GuidFolderTypeCmd0)" Name="InfoTip" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-138" Type="string" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\0\$(var.GuidFolderTypeCmd0)\Shell\InvokeTask\Command" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\0\$(var.GuidFolderTypeCmd0)\Shell\InvokeTask\Command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /command:commit /expaths:%*" Type="string" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\1\$(var.GuidFolderTypeCmd1)" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\1\$(var.GuidFolderTypeCmd1)" Name="Icon" Value="[INSTALLDIR]bin\TortoiseGitProc.exe,-136" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\1\$(var.GuidFolderTypeCmd1)" Name="Title" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-180" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\1\$(var.GuidFolderTypeCmd1)" Name="InfoTip" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-181" Type="string" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\1\$(var.GuidFolderTypeCmd1)\Shell\InvokeTask\Command" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\1\$(var.GuidFolderTypeCmd1)\Shell\InvokeTask\Command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /command:log /expaths:%*" Type="string" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\2\$(var.GuidFolderTypeCmd2)" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\2\$(var.GuidFolderTypeCmd2)" Name="Icon" Value="[INSTALLDIR]bin\TortoiseGitProc.exe,-321" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\2\$(var.GuidFolderTypeCmd2)" Name="Title" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-339" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\2\$(var.GuidFolderTypeCmd2)" Name="InfoTip" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-340" Type="string" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\2\$(var.GuidFolderTypeCmd2)\Shell\InvokeTask\Command" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\2\$(var.GuidFolderTypeCmd2)\Shell\InvokeTask\Command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /command:sync /expaths:%*" Type="string" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\3\$(var.GuidFolderTypeCmd3)" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\3\$(var.GuidFolderTypeCmd3)" Name="Icon" Value="[INSTALLDIR]bin\TortoiseGitProc.exe,-128" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\3\$(var.GuidFolderTypeCmd3)" Name="Title" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-128" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\3\$(var.GuidFolderTypeCmd3)" Name="InfoTip" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-143" Type="string" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\3\$(var.GuidFolderTypeCmd3)\Shell\InvokeTask\Command" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\3\$(var.GuidFolderTypeCmd3)\Shell\InvokeTask\Command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /command:switch /expaths:%*" Type="string" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\4\$(var.GuidFolderTypeCmd4)" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\4\$(var.GuidFolderTypeCmd4)" Name="Icon" Value="[INSTALLDIR]bin\TortoiseGitProc.exe,-129" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\4\$(var.GuidFolderTypeCmd4)" Name="Title" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-129" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\4\$(var.GuidFolderTypeCmd4)" Name="InfoTip" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-149" Type="string" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\4\$(var.GuidFolderTypeCmd4)\Shell\InvokeTask\Command" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\4\$(var.GuidFolderTypeCmd4)\Shell\InvokeTask\Command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /command:merge /expaths:%*" Type="string" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\5\$(var.GuidFolderTypeCmd5)" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\5\$(var.GuidFolderTypeCmd5)" Name="Icon" Value="[INSTALLDIR]bin\TortoiseGitProc.exe,-135" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\5\$(var.GuidFolderTypeCmd5)" Name="Title" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-176" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\5\$(var.GuidFolderTypeCmd5)" Name="InfoTip" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-177" Type="string" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\5\$(var.GuidFolderTypeCmd5)\Shell\InvokeTask\Command" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\5\$(var.GuidFolderTypeCmd5)\Shell\InvokeTask\Command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /command:diff /expaths:%*" Type="string" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\0\$(var.GuidFolderTypeCmd0)" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\0\$(var.GuidFolderTypeCmd0)" Name="Icon" Value="[INSTALLDIR]bin\TortoiseGitProc.exe,-123" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\0\$(var.GuidFolderTypeCmd0)" Name="Title" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-122" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\0\$(var.GuidFolderTypeCmd0)" Name="InfoTip" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-138" Type="string" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\0\$(var.GuidFolderTypeCmd0)\Shell\InvokeTask\Command" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\0\$(var.GuidFolderTypeCmd0)\Shell\InvokeTask\Command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /command:commit /path:%*" Type="string" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\1\$(var.GuidFolderTypeCmd1)" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\1\$(var.GuidFolderTypeCmd1)" Name="Icon" Value="[INSTALLDIR]bin\TortoiseGitProc.exe,-136" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\1\$(var.GuidFolderTypeCmd1)" Name="Title" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-180" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\1\$(var.GuidFolderTypeCmd1)" Name="InfoTip" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-181" Type="string" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\1\$(var.GuidFolderTypeCmd1)\Shell\InvokeTask\Command" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\1\$(var.GuidFolderTypeCmd1)\Shell\InvokeTask\Command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /command:log /path:%*" Type="string" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\2\$(var.GuidFolderTypeCmd2)" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\2\$(var.GuidFolderTypeCmd2)" Name="Icon" Value="[INSTALLDIR]bin\TortoiseGitProc.exe,-321" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\2\$(var.GuidFolderTypeCmd2)" Name="Title" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-339" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\2\$(var.GuidFolderTypeCmd2)" Name="InfoTip" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-340" Type="string" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\2\$(var.GuidFolderTypeCmd2)\Shell\InvokeTask\Command" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\2\$(var.GuidFolderTypeCmd2)\Shell\InvokeTask\Command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /command:sync /path:%*" Type="string" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\3\$(var.GuidFolderTypeCmd3)" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\3\$(var.GuidFolderTypeCmd3)" Name="Icon" Value="[INSTALLDIR]bin\TortoiseGitProc.exe,-128" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\3\$(var.GuidFolderTypeCmd3)" Name="Title" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-128" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\3\$(var.GuidFolderTypeCmd3)" Name="InfoTip" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-143" Type="string" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\3\$(var.GuidFolderTypeCmd3)\Shell\InvokeTask\Command" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\3\$(var.GuidFolderTypeCmd3)\Shell\InvokeTask\Command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /command:switch /path:%*" Type="string" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\4\$(var.GuidFolderTypeCmd4)" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\4\$(var.GuidFolderTypeCmd4)" Name="Icon" Value="[INSTALLDIR]bin\TortoiseGitProc.exe,-129" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\4\$(var.GuidFolderTypeCmd4)" Name="Title" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-129" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\4\$(var.GuidFolderTypeCmd4)" Name="InfoTip" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-149" Type="string" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\4\$(var.GuidFolderTypeCmd4)\Shell\InvokeTask\Command" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\4\$(var.GuidFolderTypeCmd4)\Shell\InvokeTask\Command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /command:merge /path:%*" Type="string" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\5\$(var.GuidFolderTypeCmd5)" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\5\$(var.GuidFolderTypeCmd5)" Name="Icon" Value="[INSTALLDIR]bin\TortoiseGitProc.exe,-135" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\5\$(var.GuidFolderTypeCmd5)" Name="Title" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-176" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\5\$(var.GuidFolderTypeCmd5)" Name="InfoTip" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-177" Type="string" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\5\$(var.GuidFolderTypeCmd5)\Shell\InvokeTask\Command" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\5\$(var.GuidFolderTypeCmd5)\Shell\InvokeTask\Command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /command:diff /path:%*" Type="string" />
+
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksItemsSelected\0\$(var.GuidFolderTypeCmd0)" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksItemsSelected\0\$(var.GuidFolderTypeCmd0)" Name="Icon" Value="[INSTALLDIR]bin\TortoiseGitProc.exe,-123" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksItemsSelected\0\$(var.GuidFolderTypeCmd0)" Name="Title" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-122" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksItemsSelected\0\$(var.GuidFolderTypeCmd0)" Name="InfoTip" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-138" Type="string" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksItemsSelected\0\$(var.GuidFolderTypeCmd0)\Shell\InvokeTask\Command" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksItemsSelected\0\$(var.GuidFolderTypeCmd0)\Shell\InvokeTask\Command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /command:commit /expaths:%*" Type="string" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksItemsSelected\1\$(var.GuidFolderTypeCmd1)" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksItemsSelected\1\$(var.GuidFolderTypeCmd1)" Name="Icon" Value="[INSTALLDIR]bin\TortoiseGitProc.exe,-136" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksItemsSelected\1\$(var.GuidFolderTypeCmd1)" Name="Title" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-180" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksItemsSelected\1\$(var.GuidFolderTypeCmd1)" Name="InfoTip" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-181" Type="string" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksItemsSelected\1\$(var.GuidFolderTypeCmd1)\Shell\InvokeTask\Command" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksItemsSelected\1\$(var.GuidFolderTypeCmd1)\Shell\InvokeTask\Command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /command:log /expaths:%*" Type="string" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksItemsSelected\2\$(var.GuidFolderTypeCmd2)" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksItemsSelected\2\$(var.GuidFolderTypeCmd2)" Name="Icon" Value="[INSTALLDIR]bin\TortoiseGitProc.exe,-321" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksItemsSelected\2\$(var.GuidFolderTypeCmd2)" Name="Title" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-339" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksItemsSelected\2\$(var.GuidFolderTypeCmd2)" Name="InfoTip" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-340" Type="string" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksItemsSelected\2\$(var.GuidFolderTypeCmd2)\Shell\InvokeTask\Command" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksItemsSelected\2\$(var.GuidFolderTypeCmd2)\Shell\InvokeTask\Command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /command:sync /expaths:%*" Type="string" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksItemsSelected\3\$(var.GuidFolderTypeCmd3)" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksItemsSelected\3\$(var.GuidFolderTypeCmd3)" Name="Icon" Value="[INSTALLDIR]bin\TortoiseGitProc.exe,-128" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksItemsSelected\3\$(var.GuidFolderTypeCmd3)" Name="Title" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-128" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksItemsSelected\3\$(var.GuidFolderTypeCmd3)" Name="InfoTip" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-143" Type="string" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksItemsSelected\3\$(var.GuidFolderTypeCmd3)\Shell\InvokeTask\Command" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksItemsSelected\3\$(var.GuidFolderTypeCmd3)\Shell\InvokeTask\Command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /command:switch /expaths:%*" Type="string" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksItemsSelected\4\$(var.GuidFolderTypeCmd4)" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksItemsSelected\4\$(var.GuidFolderTypeCmd4)" Name="Icon" Value="[INSTALLDIR]bin\TortoiseGitProc.exe,-129" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksItemsSelected\4\$(var.GuidFolderTypeCmd4)" Name="Title" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-129" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksItemsSelected\4\$(var.GuidFolderTypeCmd4)" Name="InfoTip" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-149" Type="string" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksItemsSelected\4\$(var.GuidFolderTypeCmd4)\Shell\InvokeTask\Command" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksItemsSelected\4\$(var.GuidFolderTypeCmd4)\Shell\InvokeTask\Command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /command:merge /expaths:%*" Type="string" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksItemsSelected\5\$(var.GuidFolderTypeCmd5)" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksItemsSelected\5\$(var.GuidFolderTypeCmd5)" Name="Icon" Value="[INSTALLDIR]bin\TortoiseGitProc.exe,-135" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksItemsSelected\5\$(var.GuidFolderTypeCmd5)" Name="Title" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-176" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksItemsSelected\5\$(var.GuidFolderTypeCmd5)" Name="InfoTip" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-177" Type="string" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksItemsSelected\5\$(var.GuidFolderTypeCmd5)\Shell\InvokeTask\Command" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksItemsSelected\5\$(var.GuidFolderTypeCmd5)\Shell\InvokeTask\Command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /command:diff /expaths:%*" Type="string" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksNoItemsSelected\0\$(var.GuidFolderTypeCmd0)" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksNoItemsSelected\0\$(var.GuidFolderTypeCmd0)" Name="Icon" Value="[INSTALLDIR]bin\TortoiseGitProc.exe,-123" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksNoItemsSelected\0\$(var.GuidFolderTypeCmd0)" Name="Title" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-122" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksNoItemsSelected\0\$(var.GuidFolderTypeCmd0)" Name="InfoTip" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-138" Type="string" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksNoItemsSelected\0\$(var.GuidFolderTypeCmd0)\Shell\InvokeTask\Command" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksNoItemsSelected\0\$(var.GuidFolderTypeCmd0)\Shell\InvokeTask\Command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /command:commit /path:%*" Type="string" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksNoItemsSelected\1\$(var.GuidFolderTypeCmd1)" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksNoItemsSelected\1\$(var.GuidFolderTypeCmd1)" Name="Icon" Value="[INSTALLDIR]bin\TortoiseGitProc.exe,-136" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksNoItemsSelected\1\$(var.GuidFolderTypeCmd1)" Name="Title" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-180" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksNoItemsSelected\1\$(var.GuidFolderTypeCmd1)" Name="InfoTip" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-181" Type="string" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksNoItemsSelected\1\$(var.GuidFolderTypeCmd1)\Shell\InvokeTask\Command" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksNoItemsSelected\1\$(var.GuidFolderTypeCmd1)\Shell\InvokeTask\Command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /command:log /path:%*" Type="string" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksNoItemsSelected\2\$(var.GuidFolderTypeCmd2)" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksNoItemsSelected\2\$(var.GuidFolderTypeCmd2)" Name="Icon" Value="[INSTALLDIR]bin\TortoiseGitProc.exe,-321" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksNoItemsSelected\2\$(var.GuidFolderTypeCmd2)" Name="Title" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-339" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksNoItemsSelected\2\$(var.GuidFolderTypeCmd2)" Name="InfoTip" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-340" Type="string" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksNoItemsSelected\2\$(var.GuidFolderTypeCmd2)\Shell\InvokeTask\Command" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksNoItemsSelected\2\$(var.GuidFolderTypeCmd2)\Shell\InvokeTask\Command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /command:sync /path:%*" Type="string" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksNoItemsSelected\3\$(var.GuidFolderTypeCmd3)" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksNoItemsSelected\3\$(var.GuidFolderTypeCmd3)" Name="Icon" Value="[INSTALLDIR]bin\TortoiseGitProc.exe,-128" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksNoItemsSelected\3\$(var.GuidFolderTypeCmd3)" Name="Title" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-128" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksNoItemsSelected\3\$(var.GuidFolderTypeCmd3)" Name="InfoTip" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-143" Type="string" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksNoItemsSelected\3\$(var.GuidFolderTypeCmd3)\Shell\InvokeTask\Command" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksNoItemsSelected\3\$(var.GuidFolderTypeCmd3)\Shell\InvokeTask\Command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /command:switch /path:%*" Type="string" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksNoItemsSelected\4\$(var.GuidFolderTypeCmd4)" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksNoItemsSelected\4\$(var.GuidFolderTypeCmd4)" Name="Icon" Value="[INSTALLDIR]bin\TortoiseGitProc.exe,-129" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksNoItemsSelected\4\$(var.GuidFolderTypeCmd4)" Name="Title" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-129" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksNoItemsSelected\4\$(var.GuidFolderTypeCmd4)" Name="InfoTip" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-149" Type="string" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksNoItemsSelected\4\$(var.GuidFolderTypeCmd4)\Shell\InvokeTask\Command" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksNoItemsSelected\4\$(var.GuidFolderTypeCmd4)\Shell\InvokeTask\Command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /command:merge /path:%*" Type="string" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksNoItemsSelected\5\$(var.GuidFolderTypeCmd5)" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksNoItemsSelected\5\$(var.GuidFolderTypeCmd5)" Name="Icon" Value="[INSTALLDIR]bin\TortoiseGitProc.exe,-135" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksNoItemsSelected\5\$(var.GuidFolderTypeCmd5)" Name="Title" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-176" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksNoItemsSelected\5\$(var.GuidFolderTypeCmd5)" Name="InfoTip" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-177" Type="string" />
+					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksNoItemsSelected\5\$(var.GuidFolderTypeCmd5)\Shell\InvokeTask\Command" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)\TasksNoItemsSelected\5\$(var.GuidFolderTypeCmd5)\Shell\InvokeTask\Command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /command:diff /path:%*" Type="string" />
+				</Component>
+-->
+				<Component Id="C__approveshellcomponents" Guid="$(var.GuidApproveShellComponents)" Win64="$(var.Win64YesNo)">
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidConflict)}" Value="TortoiseSI" KeyPath="yes" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidModified)}" Value="TortoiseSI" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidDropHandler)}" Value="TortoiseSI" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidDeleted)}" Value="TortoiseSI" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidNormal)}" Value="TortoiseSI" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidUncontrolled)}" Value="TortoiseSI" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidReadonly)}" Value="TortoiseSI" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidLocked)}" Value="TortoiseSI" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidAdded)}" Value="TortoiseSI" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidIgnored)}" Value="TortoiseSI" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidUnversioned)}" Value="TortoiseSI" Type="string" />
+				</Component>
+				<?if $(var.Platform) = "x64" ?>
+				<Component Id="C__approveshellcomponents32" Guid="$(var.GuidApproveShellComponents32)" Win64="no">
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidConflict)}" Value="TortoiseSI" KeyPath="yes" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidModified)}" Value="TortoiseSI" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidDropHandler)}" Value="TortoiseSI" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidDeleted)}" Value="TortoiseSI" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidNormal)}" Value="TortoiseSI" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidUncontrolled)}" Value="TortoiseSI" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidReadonly)}" Value="TortoiseSI" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidLocked)}" Value="TortoiseSI" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidAdded)}" Value="TortoiseSI" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidIgnored)}" Value="TortoiseSI" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidUnversioned)}" Value="TortoiseSI" Type="string" />
+				</Component>
+				<?endif ?>
+
+				<Directory Id="D__Bin" Name="bin">
+          <!--
+					<Component Id="C__help_en" Guid="$(var.GuidHelpEN)" Win64="$(var.Win64YesNo)">
+						<File Id="F_TortoiseGit_en" Name="TortoiseGit_en.chm" DiskId="1" Source="..\..\doc\output\TortoiseGit_en.chm" KeyPath="yes" />
+						<File Id="F__TortoiseMerge_en" Name="TortoiseMerge_en.chm" DiskId="1" Source="..\..\doc\output\TortoiseMerge_en.chm" />
+						<RemoveFile Id="F__Tortoise_lang" Name="*.chm" On="uninstall" />
+					</Component>
+-->
+
+					<Component Id="C__TortoiseShell" Guid="$(var.GuidTortoiseShell)" Win64="$(var.Win64YesNo)">
+						<?if $(var.Platform) = "x86" ?>
+            <File Id="F__TortoiseSIStub32" Name="TortoiseSIStub32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\TortoiseSIStub32.dll" /> 
+						<File Id="F__TortoiseShell32" Name="TortoiseSI32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\TortoiseSI32.dll" />
+						<?endif ?>
+						<?if $(var.Platform) = "x64" ?>
+						<File Id="F__TortoiseSIStub" Name="TortoiseSIStub.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseSIStub.dll" /> 
+						<File Id="F__TortoiseShell" Name="TortoiseSI.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseSI.dll" />
+						<?endif ?>
+					</Component>
+					<?if $(var.Platform) = "x64" ?>
+					<Component Id="C__TortoiseShell32" Guid="$(var.GuidTortoiseShell32)" Win64="$(var.Win64YesNo)">
+						<File Id="F__TortoiseSIStub32" Name="TortoiseSIStub32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\TortoiseSIStub32.dll" /> 
+						<File Id="F__TortoiseShell32" Name="TortoiseSI32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\TortoiseSI32.dll" />
+					</Component>
+					<?endif ?>
+				</Directory>
+
+				<Directory Id="ProgramMenuFolder" Name="." SourceName="User's Programs Menu">
+					<Directory Id="D_TortoisePrgMenu" Name="TortoiseSI" />
+				</Directory>
+
+				<Directory Id='$(var.cf)' Name='Common'>
+					<Directory Id='TortoioseOverlays' Name='TortoiseOverlays'>
+						<Directory Id="D__icons" Name="icons">
+							<Directory Id="D__iconscvsclassic" Name="CVSClassic" >
+								<Component Id="C__iconscvsclassic" Guid="$(var.GuidIconsCVSClassic)" Win64="$(var.Win64YesNo)">
+									<File Id="F__CVSClassicConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\CVSClassic\ConflictIcon.ico" KeyPath="yes" />
+									<File Id="F__CVSClassicInSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\CVSClassic\NormalIcon.ico" />
+									<File Id="F__CVSClassicModifiedIcon" Name="ModifiedIcon.ico" DiskId="1" Source="..\Resources\Icons\CVSClassic\ModifiedIcon.ico" />
+									<File Id="F__CVSClassicReadOnlyIcon" Name="ReadOnlyIcon.ico" DiskId="1" Source="..\Resources\Icons\CVSClassic\ReadOnlyIcon.ico" />
+									<File Id="F__CVSClassicDeletedIcon" Name="DeletedIcon.ico" DiskId="1" Source="..\Resources\Icons\CVSClassic\DeletedIcon.ico" />
+									<File Id="F__CVSClassicLockedIcon" Name="LockedIcon.ico" DiskId="1" Source="..\Resources\Icons\CVSClassic\LockedIcon.ico" />
+									<File Id="F__CVSClassicAddedIcon" Name="AddedIcon.ico" DiskId="1" Source="..\Resources\Icons\CVSClassic\AddedIcon.ico" />
+									<File Id="F__CVSClassicIgnoredIcon" Name="IgnoredIcon.ico" DiskId="1" Source="..\Resources\Icons\CVSClassic\IgnoredIcon.ico" />
+									<File Id="F__CVSClassicUnversionedIcon" Name="UnversionedIcon.ico" DiskId="1" Source="..\Resources\Icons\CVSClassic\UnversionedIcon.ico" />
+								</Component>
+							</Directory>
+
+							<Directory Id="D__iconsmodern" Name="Modern" >
+								<Component Id="C__iconsmodern" Guid="$(var.GuidIconsModern)" Win64="$(var.Win64YesNo)">
+									<File Id="F__ModernConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\Modern\ConflictIcon.ico" KeyPath="yes" />
+									<File Id="F__ModernInSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\Modern\NormalIcon.ico" />
+									<File Id="F__ModernModifiedIcon" Name="ModifiedIcon.ico" DiskId="1" Source="..\Resources\Icons\Modern\ModifiedIcon.ico" />
+									<File Id="F__ModernReadOnlyIcon" Name="ReadOnlyIcon.ico" DiskId="1" Source="..\Resources\Icons\Modern\ReadOnlyIcon.ico" />
+									<File Id="F__ModernDeletedIcon" Name="DeletedIcon.ico" DiskId="1" Source="..\Resources\Icons\Modern\DeletedIcon.ico" />
+									<File Id="F__ModernLockedIcon" Name="LockedIcon.ico" DiskId="1" Source="..\Resources\Icons\Modern\LockedIcon.ico" />
+									<File Id="F__ModernAddedIcon" Name="AddedIcon.ico" DiskId="1" Source="..\Resources\Icons\Modern\AddedIcon.ico" />
+									<File Id="F__ModernIgnoredIcon" Name="IgnoredIcon.ico" DiskId="1" Source="..\Resources\Icons\Modern\IgnoredIcon.ico" />
+									<File Id="F__ModernUnversionedIcon" Name="UnversionedIcon.ico" DiskId="1" Source="..\Resources\Icons\Modern\UnversionedIcon.ico" />
+								</Component>
+							</Directory>
+
+							<Directory Id="D__iconssubclipse" Name="Subclipse" >
+								<Component Id="C__iconsmarkphippard" Guid="$(var.GuidIconsMarkPhippard)" Win64="$(var.Win64YesNo)">
+									<File Id="F__SubclipseConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\Subclipse\ConflictIcon.ico" KeyPath="yes" />
+									<File Id="F__SubclipseInSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\Subclipse\NormalIcon.ico" />
+									<File Id="F__SubclipseModifiedIcon" Name="ModifiedIcon.ico" DiskId="1" Source="..\Resources\Icons\Subclipse\ModifiedIcon.ico" />
+									<File Id="F__SubclipseReadOnlyIcon" Name="ReadOnlyIcon.ico" DiskId="1" Source="..\Resources\Icons\Subclipse\ReadOnlyIcon.ico" />
+									<File Id="F__SubclipseDeletedIcon" Name="DeletedIcon.ico" DiskId="1" Source="..\Resources\Icons\Subclipse\DeletedIcon.ico" />
+									<File Id="F__SubclipseLockedIcon" Name="LockedIcon.ico" DiskId="1" Source="..\Resources\Icons\Subclipse\LockedIcon.ico" />
+									<File Id="F__SubclipseAddedIcon" Name="AddedIcon.ico" DiskId="1" Source="..\Resources\Icons\Subclipse\AddedIcon.ico" />
+									<File Id="F__SubclipseIgnoredIcon" Name="IgnoredIcon.ico" DiskId="1" Source="..\Resources\Icons\Subclipse\IgnoredIcon.ico" />
+									<File Id="F__SubclipseUnversionedIcon" Name="UnversionedIcon.ico" DiskId="1" Source="..\Resources\Icons\Subclipse\UnversionedIcon.ico" />
+								</Component>
+							</Directory>
+
+							<Directory Id="D__iconsstraight" Name="Straight" >
+								<Component Id="C__iconsstraight" Guid="$(var.GuidIconsStraight)" Win64="$(var.Win64YesNo)">
+									<File Id="F__StraightConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\Straight\ConflictIcon.ico" KeyPath="yes" />
+									<File Id="F__StraightInSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\Straight\NormalIcon.ico" />
+									<File Id="F__StraightModifiedIcon" Name="ModifiedIcon.ico" DiskId="1" Source="..\Resources\Icons\Straight\ModifiedIcon.ico" />
+									<File Id="F__StraightReadOnlyIcon" Name="ReadOnlyIcon.ico" DiskId="1" Source="..\Resources\Icons\Straight\ReadOnlyIcon.ico" />
+									<File Id="F__StraightDeletedIcon" Name="DeletedIcon.ico" DiskId="1" Source="..\Resources\Icons\Straight\DeletedIcon.ico" />
+									<File Id="F__StraightLockedIcon" Name="LockedIcon.ico" DiskId="1" Source="..\Resources\Icons\Straight\LockedIcon.ico" />
+									<File Id="F__StraightAddedIcon" Name="AddedIcon.ico" DiskId="1" Source="..\Resources\Icons\Straight\AddedIcon.ico" />
+									<File Id="F__StraightIgnoredIcon" Name="IgnoredIcon.ico" DiskId="1" Source="..\Resources\Icons\Straight\IgnoredIcon.ico" />
+									<File Id="F__StraightUnversionedIcon" Name="UnversionedIcon.ico" DiskId="1" Source="..\Resources\Icons\Straight\UnversionedIcon.ico" />
+								</Component>
+							</Directory>
+
+							<Directory Id="D__iconsfunction" Name="Function" >
+								<Component Id="C__iconsfunction" Guid="$(var.GuidIconsFunction)" Win64="$(var.Win64YesNo)">
+									<File Id="F__FunctionConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\Function\ConflictIcon.ico" KeyPath="yes" />
+									<File Id="F__FunctionInSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\Function\NormalIcon.ico" />
+									<File Id="F__FunctionModifiedIcon" Name="ModifiedIcon.ico" DiskId="1" Source="..\Resources\Icons\Function\ModifiedIcon.ico" />
+									<File Id="F__FunctionReadOnlyIcon" Name="ReadOnlyIcon.ico" DiskId="1" Source="..\Resources\Icons\Function\ReadOnlyIcon.ico" />
+									<File Id="F__FunctionDeletedIcon" Name="DeletedIcon.ico" DiskId="1" Source="..\Resources\Icons\Function\DeletedIcon.ico" />
+									<File Id="F__FunctionLockedIcon" Name="LockedIcon.ico" DiskId="1" Source="..\Resources\Icons\Function\LockedIcon.ico" />
+									<File Id="F__FunctionAddedIcon" Name="AddedIcon.ico" DiskId="1" Source="..\Resources\Icons\Function\AddedIcon.ico" />
+									<File Id="F__FunctionIgnoredIcon" Name="IgnoredIcon.ico" DiskId="1" Source="..\Resources\Icons\Function\IgnoredIcon.ico" />
+									<File Id="F__FunctionUnversionedIcon" Name="UnversionedIcon.ico" DiskId="1" Source="..\Resources\Icons\Function\UnversionedIcon.ico" />
+								</Component>
+							</Directory>
+
+							<Directory Id="D__iconsdechenesxp" Name="DechenesXP" >
+								<Component Id="C__iconsdechenesxp" Guid="$(var.GuidIconsDechenesXP)" Win64="$(var.Win64YesNo)">
+									<File Id="F__DechenesXPConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesXP\ConflictIcon.ico" KeyPath="yes" />
+									<File Id="F__DechenesXPInSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesXP\NormalIcon.ico" />
+									<File Id="F__DechenesXPModifiedIcon" Name="ModifiedIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesXP\ModifiedIcon.ico" />
+									<File Id="F__DechenesXPReadOnlyIcon" Name="ReadOnlyIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesXP\ReadOnlyIcon.ico" />
+									<File Id="F__DechenesXPDeletedIcon" Name="DeletedIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesXP\DeletedIcon.ico" />
+									<File Id="F__DechenesXPLockedIcon" Name="LockedIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesXP\LockedIcon.ico" />
+									<File Id="F__DechenesXPAddedIcon" Name="AddedIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesXP\AddedIcon.ico" />
+									<File Id="F__DechenesXPIgnoredIcon" Name="IgnoredIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesXP\IgnoredIcon.ico" />
+									<File Id="F__DechenesXPUnversionedIcon" Name="UnversionedIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesXP\UnversionedIcon.ico" />
+								</Component>
+							</Directory>
+
+							<Directory Id="D__iconsdechenesvista" Name="DechenesVista" >
+								<Component Id="C__iconsdechenesvista" Guid="$(var.GuidIconsDechenesVista)" Win64="$(var.Win64YesNo)">
+									<File Id="F__DechenesVistaConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesVista\ConflictIcon.ico" KeyPath="yes" />
+									<File Id="F__DechenesVistaInSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesVista\NormalIcon.ico" />
+									<File Id="F__DechenesVistaModifiedIcon" Name="ModifiedIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesVista\ModifiedIcon.ico" />
+									<File Id="F__DechenesVistaReadOnlyIcon" Name="ReadOnlyIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesVista\ReadOnlyIcon.ico" />
+									<File Id="F__DechenesVistaDeletedIcon" Name="DeletedIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesVista\DeletedIcon.ico" />
+									<File Id="F__DechenesVistaLockedIcon" Name="LockedIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesVista\LockedIcon.ico" />
+									<File Id="F__DechenesVistaAddedIcon" Name="AddedIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesVista\AddedIcon.ico" />
+									<File Id="F__DechenesVistaIgnoredIcon" Name="IgnoredIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesVista\IgnoredIcon.ico" />
+									<File Id="F__DechenesVistaUnversionedIcon" Name="UnversionedIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesVista\UnversionedIcon.ico" />
+								</Component>
+							</Directory>
+
+							<Directory Id="D__iconsblip" Name="Blip" >
+								<Component Id="C__iconsblip" Guid="$(var.GuidIconsBlip)" Win64="$(var.Win64YesNo)">
+									<File Id="F__BlipConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip\ConflictIcon.ico" KeyPath="yes" />
+									<File Id="F__BlipInSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip\NormalIcon.ico" />
+									<File Id="F__BlipModifiedIcon" Name="ModifiedIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip\ModifiedIcon.ico" />
+									<File Id="F__BlipReadOnlyIcon" Name="ReadOnlyIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip\ReadOnlyIcon.ico" />
+									<File Id="F__BlipDeletedIcon" Name="DeletedIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip\DeletedIcon.ico" />
+									<File Id="F__BlipLockedIcon" Name="LockedIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip\LockedIcon.ico" />
+									<File Id="F__BlipAddedIcon" Name="AddedIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip\AddedIcon.ico" />
+									<File Id="F__BlipIgnoredIcon" Name="IgnoredIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip\IgnoredIcon.ico" />
+									<File Id="F__BlipUnversionedIcon" Name="UnversionedIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip\UnversionedIcon.ico" />
+								</Component>
+							</Directory>
+
+							<Directory Id="D__iconsblipclean" Name="BlipClean" >
+								<Component Id="C__iconsblipclean" Guid="$(var.GuidIconsBlipClean)" Win64="$(var.Win64YesNo)">
+									<File Id="F__BlipCleanConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip Clean\ConflictIcon.ico" KeyPath="yes" />
+									<File Id="F__BlipCleanInSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip Clean\NormalIcon.ico" />
+									<File Id="F__BlipCleanModifiedIcon" Name="ModifiedIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip Clean\ModifiedIcon.ico" />
+									<File Id="F__BlipCleanReadOnlyIcon" Name="ReadOnlyIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip Clean\ReadOnlyIcon.ico" />
+									<File Id="F__BlipCleanDeletedIcon" Name="DeletedIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip Clean\DeletedIcon.ico" />
+									<File Id="F__BlipCleanLockedIcon" Name="LockedIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip Clean\LockedIcon.ico" />
+									<File Id="F__BlipCleanAddedIcon" Name="AddedIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip Clean\AddedIcon.ico" />
+									<File Id="F__BlipCleanIgnoredIcon" Name="IgnoredIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip Clean\IgnoredIcon.ico" />
+									<File Id="F__BlipCleanUnversionedIcon" Name="UnversionedIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip Clean\UnversionedIcon.ico" />
+								</Component>
+							</Directory>
+
+							<Directory Id="D__iconsmufwin7" Name="MufWin7" >
+								<Component Id="C__iconsmufwin7" Guid="$(var.GuidIconsMufWin7)" Win64="$(var.Win64YesNo)">
+									<File Id="F__MufWin7ConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\MufWin7\ConflictIcon.ico" KeyPath="yes" />
+									<File Id="F__MufWin7InSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\MufWin7\NormalIcon.ico" />
+									<File Id="F__MufWin7ModifiedIcon" Name="ModifiedIcon.ico" DiskId="1" Source="..\Resources\Icons\MufWin7\ModifiedIcon.ico" />
+									<File Id="F__MufWin7ReadOnlyIcon" Name="ReadOnlyIcon.ico" DiskId="1" Source="..\Resources\Icons\MufWin7\ReadOnlyIcon.ico" />
+									<File Id="F__MufWin7DeletedIcon" Name="DeletedIcon.ico" DiskId="1" Source="..\Resources\Icons\MufWin7\DeletedIcon.ico" />
+									<File Id="F__MufWin7LockedIcon" Name="LockedIcon.ico" DiskId="1" Source="..\Resources\Icons\MufWin7\LockedIcon.ico" />
+									<File Id="F__MufWin7AddedIcon" Name="AddedIcon.ico" DiskId="1" Source="..\Resources\Icons\MufWin7\AddedIcon.ico" />
+									<File Id="F__MufWin7IgnoredIcon" Name="IgnoredIcon.ico" DiskId="1" Source="..\Resources\Icons\MufWin7\IgnoredIcon.ico" />
+									<File Id="F__MufWin7UnversionedIcon" Name="UnversionedIcon.ico" DiskId="1" Source="..\Resources\Icons\MufWin7\UnversionedIcon.ico" />
+								</Component>
+							</Directory>
+						</Directory>
+					</Directory>
+				</Directory>
+			</Directory>
+		</Directory>
+	</Directory>
+</Include>
+<!--
+	</Fragment>
+</Wix>
+-->

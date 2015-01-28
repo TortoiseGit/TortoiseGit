@@ -4,15 +4,9 @@
 [submodule "ext/apr"]
 	path = ext/apr
 	url = http://git.apache.org/apr.git
-[submodule "ext/tgit"]
-	path = ext/tgit
-	url = https://code.google.com/p/tortoisegit.tgit
 [submodule "ext/zlib"]
 	path = ext/zlib
 	url = https://github.com/madler/zlib.git
-[submodule "ext/libgit2"]
-	path = ext/libgit2
-	url = https://github.com/libgit2/libgit2.git
 [submodule "ext/spell"]
 	path = ext/spell
 	url = http://anongit.freedesktop.org/git/libreoffice/dictionaries.git

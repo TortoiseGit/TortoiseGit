@@ -1,5 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+// TortoiseSI - a Windows shell extension for easy version control
 
+// Copyright (C) 2015 - TortoiseSI
 // Copyright (C) 2003-2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -22,9 +23,6 @@
 #include "registry.h"
 #include "resource.h"
 #include "ShellCache.h"
-#include "RemoteCacheLink.h"
-#include "GitStatus.h"
-#include "GitFolderStatus.h"
 #include "IconBitmapUtils.h"
 #include "MenuInfo.h"
 #include "CrashReport.h"
@@ -37,7 +35,7 @@ extern	DWORD				g_langid;
 extern	DWORD				g_langTimeout;
 extern	HINSTANCE			g_hResInst;
 extern	stdstring			g_filepath;
-extern	git_wc_status_kind	g_filestatus;			///< holds the corresponding status to the file/dir above
+//extern	git_wc_status_kind	g_filestatus;			///< holds the corresponding status to the file/dir above
 extern	bool				g_readonlyoverlay;		///< whether to show the read only overlay or not
 extern	bool				g_lockedoverlay;		///< whether to show the locked overlay or not
 
@@ -92,8 +90,8 @@ protected:
 	stdstring ignoredprops;
 	CRegStdString		regDiffLater;
 
-	GitFolderStatus		m_CachedStatus;		// status cache
-	CRemoteCacheLink	m_remoteCacheLink;
+//	GitFolderStatus		m_CachedStatus;		// status cache TODO
+//	CRemoteCacheLink	m_remoteCacheLink;
 	IconBitmapUtils		m_iconBitmapUtils;
 
 #if ENABLE_CRASHHANLDER
@@ -104,8 +102,6 @@ protected:
 private:
 	void			InsertGitMenu(BOOL istop, HMENU menu, UINT pos, UINT_PTR id, UINT stringid, UINT icon, UINT idCmdFirst, GitCommands com, UINT uFlags);
 	bool			InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, HMENU subMenu, UINT &indexMenu, int &indexSubMenu, unsigned __int64 topmenu, bool bShowIcons, UINT uFlags);
-	stdstring		WriteFileListToTempFile();
-	bool			WriteClipboardPathsToTempFile(stdstring& tempfile);
 	LPCTSTR			GetMenuTextFromResource(int id);
 	bool			ShouldInsertItem(const MenuInfo& pair) const;
 	bool			ShouldEnableMenu(const YesNoPair& pair) const;

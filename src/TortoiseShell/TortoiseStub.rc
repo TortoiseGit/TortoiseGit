@@ -26,13 +26,13 @@ BEGIN
     BEGIN
         BLOCK "040004e4"
         BEGIN
-            VALUE "CompanyName", "http://tortoisegit.org/"
-            VALUE "FileDescription", "TortoiseGit shell extension client"
+            VALUE "CompanyName", "PTC Inc"
+            VALUE "FileDescription", "TortoiseSI shell extension client"
             VALUE "FileVersion", STRFILEVER
             VALUE "InternalName", "TortoiseStub.dll"
-            VALUE "LegalCopyright", "Copyright (C) 2012-2013 TortoiseGit, Copyright (C) 2007-2012 TortoiseSVN"
+            VALUE "LegalCopyright", "TODO???? Copyright (C) 2012-2013 TortoiseGit, Copyright (C) 2007-2012 TortoiseSVN"
             VALUE "OriginalFilename", "TortoiseStub.dll"
-            VALUE "ProductName", "TortoiseGit"
+            VALUE "ProductName", "TortoiseSI"
             VALUE "ProductVersion", STRPRODUCTVER
         END
     END

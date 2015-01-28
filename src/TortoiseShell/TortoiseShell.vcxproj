@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -22,7 +22,7 @@
     <ProjectGuid>{E873DD32-5A31-4DE1-8341-A56A2A5489EA}</ProjectGuid>
     <RootNamespace>TortoiseShell</RootNamespace>
   </PropertyGroup>
-  <Import Project="$(SolutionDir)TortoiseGit.toolset.props" />
+  <Import Project="$(SolutionDir)TortoiseSI.toolset.props" />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
@@ -34,24 +34,24 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  <Import Project="$(SolutionDir)TortoiseGit.common.props" />
-  <Import Project="$(SolutionDir)TortoiseGit.common-dll.props" />
+  <Import Project="$(SolutionDir)TortoiseSI.common.props" />
+  <Import Project="$(SolutionDir)TortoiseSI.common-dll.props" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <TargetName>TortoiseGit32</TargetName>
+    <TargetName>TortoiseSI32</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <TargetName>TortoiseGit</TargetName>
+    <TargetName>TortoiseSI</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <TargetName>TortoiseGit32</TargetName>
+    <TargetName>TortoiseSI32</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <TargetName>TortoiseGit</TargetName>
+    <TargetName>TortoiseSI</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>..\..\ext\gitdll;..\Git;..\Utils;..\TortoiseShell;..\Utils\MiscUI;..\..\ext\libgit2\include;..\..\ext\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Utils;..\TortoiseShell;..\Utils\MiscUI;..\..\ext\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>TORTOISESHELL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <ResourceCompile>
@@ -65,7 +65,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>..\..\ext\gitdll;..\Git;..\Utils;..\TortoiseShell;..\Utils\MiscUI;..\..\ext\libgit2\include;..\..\ext\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Utils;..\TortoiseShell;..\Utils\MiscUI;..\..\ext\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>TORTOISESHELL;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <ResourceCompile>
@@ -79,7 +79,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>..\..\ext\gitdll;..\Git;..\Utils;..\TortoiseShell;..\Utils\MiscUI;..\..\ext\libgit2\include;..\..\ext\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Utils;..\TortoiseShell;..\Utils\MiscUI;..\..\ext\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>TORTOISESHELL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <ResourceCompile>
@@ -93,7 +93,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(ProjectDir);..\..\ext\gitdll;..\Git;..\Utils;..\Utils\MiscUI;..\..\ext\libgit2\include;..\..\ext\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);..\Utils;..\Utils\MiscUI;..\..\ext\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>TORTOISESHELL;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <ResourceCompile>
@@ -106,19 +106,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\Git\MassiveGitTaskBase.cpp" />
-    <ClCompile Include="..\TGitCache\CacheInterface.cpp" />
     <ClCompile Include="..\Utils\DebugOutput.cpp" />
     <ClCompile Include="..\Utils\MiscUI\IconBitmapUtils.cpp" />
     <ClCompile Include="..\Utils\ReaderWriterLock.cpp" />
     <ClCompile Include="ContextMenu.cpp" />
-    <ClCompile Include="..\Git\Git.cpp" />
-    <ClCompile Include="..\Git\GitAdminDir.cpp" />
-    <ClCompile Include="..\Git\GitFolderStatus.cpp" />
-    <ClCompile Include="..\Git\GitIndex.cpp" />
-    <ClCompile Include="GITPropertyPage.cpp" />
-    <ClCompile Include="..\Git\GitRev.cpp" />
-    <ClCompile Include="..\Git\GitStatus.cpp" />
+    <ClCompile Include="PropertyPage.cpp" />
     <ClCompile Include="IconOverlay.cpp" />
     <ClCompile Include="ItemIDList.cpp" />
     <ClCompile Include="MenuInfo.cpp" />
@@ -126,7 +118,6 @@
     <ClCompile Include="PIDL.cpp" />
     <ClCompile Include="PreserveChdir.cpp" />
     <ClCompile Include="..\Utils\Registry.cpp" />
-    <ClCompile Include="RemoteCacheLink.cpp" />
     <ClCompile Include="ShellExt.cpp" />
     <ClCompile Include="ShellExtClassFactory.cpp" />
     <ClCompile Include="ShellObjects.cpp" />
@@ -135,8 +126,7 @@
     </ClCompile>
     <ClCompile Include="..\Utils\StringUtils.cpp" />
     <ClCompile Include="..\Utils\SysInfo.cpp" />
-    <ClCompile Include="..\Git\TGitPath.cpp" />
-    <ClCompile Include="TortoiseGIT.cpp" />
+    <ClCompile Include="TortoiseSI.cpp" />
     <ClCompile Include="..\Utils\UnicodeUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -144,22 +134,12 @@
     <None Include="resourceshell.rc2" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Git\Git.h" />
-    <ClInclude Include="..\Git\GitAdminDir.h" />
-    <ClInclude Include="..\Git\GitFolderStatus.h" />
-    <ClInclude Include="..\Git\GitForWindows.h" />
-    <ClInclude Include="..\Git\GitHash.h" />
-    <ClInclude Include="..\Git\gitindex.h" />
-    <ClInclude Include="..\Git\GitRev.h" />
-    <ClInclude Include="..\Git\GitStatus.h" />
-    <ClInclude Include="..\Git\gittype.h" />
-    <ClInclude Include="..\Git\MassiveGitTaskBase.h" />
-    <ClInclude Include="..\Git\TGitPath.h" />
-    <ClInclude Include="..\TGitCache\CacheInterface.h" />
+    <ClInclude Include="..\Utils\CrashReport.h" />
     <ClInclude Include="..\Utils\DebugOutput.h" />
     <ClInclude Include="..\Utils\MiscUI\IconBitmapUtils.h" />
     <ClInclude Include="..\Utils\ReaderWriterLock.h" />
-    <ClInclude Include="GITPropertyPage.h" />
+    <ClInclude Include="..\Utils\ShellUpdater.h" />
+    <ClInclude Include="PropertyPage.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="Guids.h" />
     <ClInclude Include="ItemIDList.h" />
@@ -167,7 +147,6 @@
     <ClInclude Include="PIDL.h" />
     <ClInclude Include="PreserveChdir.h" />
     <ClInclude Include="..\Utils\registry.h" />
-    <ClInclude Include="RemoteCacheLink.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="ShellCache.h" />
     <ClInclude Include="ShellExt.h" />
@@ -238,20 +217,6 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resourceshell.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\ext\build\libgit2.vcxproj">
-      <Project>{2b4f366c-93ba-491e-87af-5ef7b37f75f7}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
-    <ProjectReference Include="..\..\ext\build\zlib.vcxproj">
-      <Project>{5c6b6a95-2053-4593-9617-c4f176736d5a}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
-    <ProjectReference Include="..\..\ext\gitdll\gitdll.vcxproj">
-      <Project>{4f0a55de-dafd-4a0b-a03d-2c14cb77e08f}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

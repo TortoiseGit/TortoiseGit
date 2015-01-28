@@ -1,7 +1,8 @@
-// TortoiseGit - a Windows shell extension for easy version control
+// TortoiseSI - a Windows shell extension for easy version control
 
 // Copyright (C) 2012-2014 - TortoiseGit
 // Copyright (C) 2007, 2009, 2013-2014 - TortoiseSVN
+// Copyright (C) 2015 - TortoiseSI 
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -26,13 +27,13 @@ const HINSTANCE NIL = (HINSTANCE)((char*)(0)-1);
 
 static HINSTANCE hInst = NULL;
 
-static HINSTANCE hTortoiseGit = NULL;
+static HINSTANCE hTortoiseSI = NULL;
 static LPFNGETCLASSOBJECT pDllGetClassObject = NULL;
 static LPFNCANUNLOADNOW pDllCanUnloadNow = NULL;
 
 static BOOL DebugActive(void)
 {
-	static const WCHAR TGitRootKey[]=_T("Software\\TortoiseGit");
+	static const WCHAR TSIRootKey[]=_T("Software\\TortoiseSI");
 	static const WCHAR ExplorerOnlyValue[]=_T("DebugShell");
 
 	DWORD bDebug = 0;
@@ -49,7 +50,7 @@ static BOOL DebugActive(void)
 
 	if (IsDebuggerPresent())
 	{
-		Result = RegOpenKeyEx(HKEY_LOCAL_MACHINE, TGitRootKey, 0, KEY_READ, &hKey);
+		Result = RegOpenKeyEx(HKEY_LOCAL_MACHINE, TSIRootKey, 0, KEY_READ, &hKey);
 		if (Result == ERROR_SUCCESS)
 		{
 			Result = RegQueryValueEx(hKey, ExplorerOnlyValue, NULL, &Type, (BYTE *)&bDebug, &Len);
@@ -69,11 +70,11 @@ static BOOL DebugActive(void)
 
 /**
  * \ingroup TortoiseShell
- * Check whether to load the full TortoiseGit.dll or not.
+ * Check whether to load the full TortoiseSI.dll or not.
  */
 static BOOL WantRealVersion(void)
 {
-	static const WCHAR TGitRootKey[]=_T("Software\\TortoiseGit");
+	static const WCHAR TSIRootKey[]=_T("Software\\TortoiseSI");
 	static const WCHAR ExplorerOnlyValue[]=_T("LoadDllOnlyInExplorer");
 
 	static const WCHAR ExplorerEnvPath[]=_T("%SystemRoot%\\explorer.exe");
@@ -91,7 +92,7 @@ static BOOL WantRealVersion(void)
 
 	TRACE(_T("WantRealVersion() - Enter\n"));
 
-	Result = RegOpenKeyEx(HKEY_CURRENT_USER, TGitRootKey, 0, KEY_READ, &hKey);
+	Result = RegOpenKeyEx(HKEY_CURRENT_USER, TSIRootKey, 0, KEY_READ, &hKey);
 	if (Result == ERROR_SUCCESS)
 	{
 		Result = RegQueryValueEx(hKey, ExplorerOnlyValue, NULL, &Type, (BYTE *)&bExplorerOnly, &Len);
@@ -137,16 +138,16 @@ static void LoadRealLibrary(void)
 	DWORD Len = 0;
 	HINSTANCE hUseInst = hInst;
 
-	if (hTortoiseGit)
+	if (hTortoiseSI)
 		return;
 
 	if (!WantRealVersion())
 	{
 		TRACE(_T("LoadRealLibrary() - Bypass\n"));
-		hTortoiseGit = NIL;
+		hTortoiseSI = NIL;
 		return;
 	}
-	// if HKCU\Software\TortoiseGit\DebugShell is set, load the dlls from the location of the current process
+	// if HKCU\Software\TortoiseSI\DebugShell is set, load the dlls from the location of the current process
 	// which is for our debug purposes an instance of usually TortoiseProc. That way we can force the load
 	// of the debug dlls.
 	if (DebugActive())
@@ -155,7 +156,7 @@ static void LoadRealLibrary(void)
 	if (!Len)
 	{
 		TRACE(_T("LoadRealLibrary() - Fail\n"));
-		hTortoiseGit = NIL;
+		hTortoiseSI = NIL;
 		return;
 	}
 
@@ -172,54 +173,54 @@ static void LoadRealLibrary(void)
 	if (Len == 0)
 	{
 		TRACE(_T("LoadRealLibrary() - Fail\n"));
-		hTortoiseGit = NIL;
+		hTortoiseSI = NIL;
 		return;
 	}
 #ifdef _WIN64
-	lstrcat(ModuleName, _T("\\TortoiseGit.dll"));
+	lstrcat(ModuleName, _T("\\TortoiseSI.dll"));
 #else
-	lstrcat(ModuleName, _T("\\TortoiseGit32.dll"));
+	lstrcat(ModuleName, _T("\\TortoiseSI32.dll"));
 #endif
 	TRACE(_T("LoadRealLibrary() - Load %s\n"), ModuleName);
 
-	hTortoiseGit = LoadLibraryEx(ModuleName, NULL, LOAD_WITH_ALTERED_SEARCH_PATH);
-	if (!hTortoiseGit)
+	hTortoiseSI = LoadLibraryEx(ModuleName, NULL, LOAD_WITH_ALTERED_SEARCH_PATH);
+	if (!hTortoiseSI)
 	{
 		TRACE(_T("LoadRealLibrary() - Fail\n"));
-		hTortoiseGit = NIL;
+		hTortoiseSI = NIL;
 		return;
 	}
 
 	TRACE(_T("LoadRealLibrary() - Success\n"));
 	pDllGetClassObject = NULL;
 	pDllCanUnloadNow = NULL;
-	pDllGetClassObject = (LPFNGETCLASSOBJECT)GetProcAddress(hTortoiseGit, GetClassObject);
+	pDllGetClassObject = (LPFNGETCLASSOBJECT)GetProcAddress(hTortoiseSI, GetClassObject);
 	if (pDllGetClassObject == NULL)
 	{
 		TRACE(_T("LoadRealLibrary() - Fail\n"));
-		FreeLibrary(hTortoiseGit);
-		hTortoiseGit = NIL;
+		FreeLibrary(hTortoiseSI);
+		hTortoiseSI = NIL;
 		return;
 	}
-	pDllCanUnloadNow = (LPFNCANUNLOADNOW)GetProcAddress(hTortoiseGit, CanUnloadNow);
+	pDllCanUnloadNow = (LPFNCANUNLOADNOW)GetProcAddress(hTortoiseSI, CanUnloadNow);
 	if (pDllCanUnloadNow == NULL)
 	{
 		TRACE(_T("LoadRealLibrary() - Fail\n"));
-		FreeLibrary(hTortoiseGit);
-		hTortoiseGit = NIL;
+		FreeLibrary(hTortoiseSI);
+		hTortoiseSI = NIL;
 		return;
 	}
 }
 
 static void UnloadRealLibrary(void)
 {
-	if (!hTortoiseGit)
+	if (!hTortoiseSI)
 		return;
 
-	if (hTortoiseGit != NIL)
-		FreeLibrary(hTortoiseGit);
+	if (hTortoiseSI != NIL)
+		FreeLibrary(hTortoiseSI);
 
-	hTortoiseGit = NULL;
+	hTortoiseSI = NULL;
 	pDllGetClassObject = NULL;
 	pDllCanUnloadNow = NULL;
 }

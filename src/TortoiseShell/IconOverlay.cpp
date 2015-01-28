@@ -1,5 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+// TortoiseSI - a Windows shell extension for easy version control
 
+// Copyright (C) 2015 TortoiseSI
 // Copyright (C) 2009-2013 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
@@ -22,8 +23,6 @@
 #include "Guids.h"
 #include "PreserveChdir.h"
 #include "UnicodeUtils.h"
-#include "GitStatus.h"
-#include "..\TGitCache\CacheInterface.h"
 
 // "The Shell calls IShellIconOverlayIdentifier::GetOverlayInfo to request the
 //  location of the handler's icon overlay. The icon overlay handler returns
@@ -156,7 +155,7 @@ STDMETHODIMP CShellExt::IsMemberOf_Wrap(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 	if (_tcslen(pPath)<2)
 		return S_FALSE;
 	PreserveChdir preserveChdir;
-	git_wc_status_kind status = git_wc_status_none;
+//	git_wc_status_kind status = git_wc_status_none;
 	bool readonlyoverlay = false;
 	bool lockedoverlay = false;
 
@@ -165,6 +164,7 @@ STDMETHODIMP CShellExt::IsMemberOf_Wrap(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 	// To make sure that cache expires, clear it as soon as one handler is used.
 
 	AutoLocker lock(g_csGlobalCOMGuard);
+#if 0
 	if (_tcscmp(pPath, g_filepath.c_str())==0)
 	{
 		status = g_filestatus;
@@ -288,9 +288,10 @@ STDMETHODIMP CShellExt::IsMemberOf_Wrap(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 		}
 		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Status %d for file %s\n"), status, pwszPath);
 	}
+#endif
 	g_filepath.clear();
 	g_filepath = pPath;
-	g_filestatus = status;
+//	g_filestatus = status;
 	g_readonlyoverlay = readonlyoverlay;
 	g_lockedoverlay = lockedoverlay;
 
@@ -298,7 +299,7 @@ STDMETHODIMP CShellExt::IsMemberOf_Wrap(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 	//as it seems that if one handler returns S_OK then that handler is used, no matter
 	//if other handlers would return S_OK too (they're never called on my machine!)
 	//So we return S_OK for ONLY ONE handler!
-
+	/*
 	switch (status)
 	{
 		// note: we can show other overlays if due to lack of enough free overlay
@@ -442,6 +443,7 @@ STDMETHODIMP CShellExt::IsMemberOf_Wrap(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 		default:
 			return S_FALSE;
 	} // switch (status)
-	//return S_FALSE;
+	*/
+	return S_FALSE;
 }
 

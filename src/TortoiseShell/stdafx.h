@@ -28,15 +28,13 @@
 #include <set>
 #include <map>
 #include <vector>
+#include <list>
 #include <algorithm>
 #include <functional>
 
 #define CSTRING_AVAILABLE
 
-#pragma warning(push)
-#include "git2.h"
-#pragma warning(pop)
-#include "SmartLibgit2Ref.h"
+// TODO add integrity stuff here!
 
 #include "SysInfo.h"
 #include "DebugOutput.h"

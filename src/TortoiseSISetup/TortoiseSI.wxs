@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<?include Includes.wxi?>
+	<Product UpgradeCode="$(var.UpgradeGuid)" Name="$(var.ProductName) $(var.VersionNumberUserVisible) $(var.PlatformUserVisible)" Id="*" Version="$(var.VersionNumberInternal)" Manufacturer="TortoiseGit" Language="1033" Codepage="1252">
+
+		<Package Id="*" Keywords="$(var.PackageKeywords)" Description="$(var.PackageDescription)" Comments="$(var.PackageComments)" Manufacturer="$(var.PackageManufacturer)" InstallerVersion="405" Platform="$(var.PackagePlatforms)" Languages="1033" Compressed="yes" SummaryCodepage="1252" InstallPrivileges="elevated" />
+		<Upgrade Id="$(var.UpgradeGuid)">
+			<!-- upgrade is flagged if current-install is newer than or equal to package -->
+			<UpgradeVersion Property="NEWERVERSIONDETECTED" Minimum="$(var.VersionNumberInternal)" OnlyDetect="yes" />
+
+			<!-- flag is set if the install will trigger an upgrade of an existing install -->
+			<UpgradeVersion Property="PREVIOUSVERSIONSINSTALLED" Maximum="$(var.VersionNumberInternal)" IncludeMaximum="no" MigrateFeatures="yes" />
+		</Upgrade>
+
+		<MajorUpgrade AllowDowngrades="yes" Schedule="afterInstallValidate" />
+		<Media Id="1" Cabinet="TSI.cab" EmbedCab="yes" CompressionLevel="high" />
+
+		<Icon Id="TSIIcon" SourceFile="..\Resources\Tortoise.ico" />
+
+		<Property Id="SSHTOOL" Secure="yes">Plink</Property>
+		<Property Id="OLDSSH" Secure="yes">
+			<RegistrySearch Id="oldSSHSetting" Root="HKCU" Key="Software\[Manufacturer]" Name="SSH" Type="raw" />
+		</Property>
+
+		<!-- Launch Condition related properties ................................................................................. -->
+		<!-- <Property Id="ShowChangelogCheck">1</Property> -->
+		<Property Id="ALLUSERS" Secure="yes">1</Property>
+
+		<Condition Message="[ProductName] requires Windows Vista or later."><![CDATA[Installed OR (VersionNT >= 600)]]></Condition>
+
+		<?if $(var.Platform) = "x86" ?>
+		<Condition Message="You are attempting to run the 32-bit installer on a 64-bit version of Windows. Please install the 64-bit version of TortoiseSI instead.">NOT Msix64</Condition>
+		<?endif ?>
+
+		<?if $(var.Platform) = "x64" ?>
+		<Upgrade Id="$(var.UpgradeGuid32)">
+			<UpgradeVersion Minimum="0.0.0.0" OnlyDetect="yes" Property="WIN32TSIFOUND" />
+		</Upgrade>
+		<Condition Message="Please uninstall all 32-bit versions of TortoiseSI before installing [ProductName].">NOT WIN32TSIFOUND</Condition>
+		<?endif ?>
+
+		<!-- Show/Don't-show changelog related properties and custom actions ..................................................... -->
+		<!-- <Property Id="TEXTEDITOR" Secure="yes">
+			<DirectorySearch Id="FileSearchTextEditorExe" Path="[WindowsFolder]">
+				<FileSearch Id="FileSearchTextEditorExe" Name="notepad.exe" />
+			</DirectorySearch>
+		</Property>
+		<CustomAction Id="Set_ShowChangelog" Property="ShowChangelog" Value="Yes" Return="check" />
+		<CustomAction Id="ShowChangelogAction" Property="TEXTEDITOR" ExeCommand="[INSTALLDIR]changelog.txt" Return="asyncNoWait" />
+
+		<CustomAction Id="ShowDonatePage" BinaryKey="CustomActionsDLL" DllEntry="OpenDonatePage" /> 
+
+		<CustomAction Id="KillCache" BinaryKey="CustomActionsDLL" DllEntry="TerminateCache" /> -->
+		<Binary Id="CustomActionsDLL" SourceFile="..\..\bin\$(var.ReleasePath)\bin\CustomActions.dll" />
+
+		<!-- Unsafe-check properties and custom actions .......................................................................... -->
+		<Property Id="VSDUIANDADVERTISED" Secure="yes">This advertised application will not be installed because it might be unsafe. Contact your administrator to change the installation user interface option of the package to basic.</Property>
+		<CustomAction Id="ERRCA_UIANDADVERTISED" Error="[VSDUIANDADVERTISED]" />
+
+		<!-- Figure out where a previous installation was, if any ................................................................ -->
+		<?if $(var.Platform) = "x64" ?>
+		<CustomAction Id="DefaultTargetDir" Property="INSTALLDIR" Value="[ProgramFiles64Folder]$(var.ProductName)" Execute="immediate" />
+		<Property Id="INSTALLDIR" Secure="yes">
+			<RegistrySearch Id="PreviousInstallLocationRegistrySearch" Root="HKLM" Key="Software\[Manufacturer]" Name="Directory" Type="raw" Win64="$(var.Win64YesNo)" />
+		</Property>
+		<?else ?>
+		<CustomAction Id="DefaultTargetDir" Property="INSTALLDIR" Value="[ProgramFilesFolder]$(var.ProductName)" Execute="immediate" />
+		<Property Id="INSTALLDIR" Secure="yes">
+			<RegistrySearch Id="PreviousInstallLocationRegistrySearch" Root="HKLM" Key="Software\[Manufacturer]" Name="Directory" Type="raw" Win64="$(var.Win64YesNo)" />
+		</Property>
+		<?endif ?>
+
+		<?include FeaturesFragment.wxi?>
+		<?include StructureFragment.wxi?>
+		<?include UIFragment.wxi?>
+
+		<!--
+		<FragmentRef Id="StructureFragment" />
+		<FragmentRef Id="FeaturesFragment" />
+		<FragmentRef Id="UIFragment" />
+		-->
+
+		<!-- Execute Sequencing ................................................................................................. -->
+		<AdminExecuteSequence />
+		<InstallExecuteSequence>
+			<!-- AppSearch must be done before RemoveExistingProducts and before FindRelatedProducts -->
+			<AppSearch Sequence="1" />
+			<LaunchConditions After="AppSearch" />
+			<Custom Action="DefaultTargetDir" After="LaunchConditions">INSTALLDIR=""</Custom>
+<!--			<Custom Action="KillCache" After="RemoveExistingProducts">Installed</Custom> -->
+		</InstallExecuteSequence>
+
+		<!-- UI Sequencing ...................................................................................................... -->
+		<AdminUISequence>
+			<Show Dialog="FatalErrorDlg" OnExit="error" />
+			<Show Dialog="UserExit" OnExit="cancel" />
+			<Show Dialog="ExitDlg" OnExit="success" />
+			<Show Dialog="PrepareDlg" Before="CostInitialize"><![CDATA[]]></Show>
+			<Show Dialog="AdminWelcomeDlg" After="CostFinalize" />
+			<Show Dialog="ProgressDlg" After="AdminWelcomeDlg" />
+		</AdminUISequence>
+
+		<InstallUISequence>
+			<Show Dialog="FatalErrorDlg" OnExit="error" />
+			<Show Dialog="UserExit" OnExit="cancel" />
+			<Show Dialog="ExitDlg" OnExit="success" />
+			<Show Dialog="PrepareDlg" After="LaunchConditions" />
+			<Show Dialog="WelcomeDlg" After="MigrateFeatureStates"><![CDATA[NOT Installed]]></Show>
+			<Show Dialog="ResumeDlg" After="WelcomeDlg"><![CDATA[Installed AND (RESUME OR Preselected)]]></Show>
+			<Show Dialog="MaintenanceWelcomeDlg" After="ResumeDlg"><![CDATA[Installed AND NOT RESUME AND NOT Preselected]]></Show>
+			<Show Dialog="ProgressDlg" After="MaintenanceWelcomeDlg" />
+
+			<FindRelatedProducts Suppress="no">1</FindRelatedProducts>
+
+			<Custom Action="DefaultTargetDir" After="PrepareDlg">INSTALLDIR=""</Custom>
+			<Custom Action="ERRCA_UIANDADVERTISED" Before="AppSearch">ProductState=1</Custom>
+      <!--   <Custom Action="Set_ShowChangelog" After="AppSearch">NOT Installed</Custom> -->
+		</InstallUISequence>
+	</Product>
+</Wix>

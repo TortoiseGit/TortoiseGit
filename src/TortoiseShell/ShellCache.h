@@ -1,5 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+// TortoiseSI - a Windows shell extension for easy version control
 
+// Copyright (C) 2015 - TortoiseSI
 // Copyright (C) 2012-2014 - TortoiseGit
 // Copyright (C) 2003-2008 - Stefan Kueng
 
@@ -20,8 +21,8 @@
 #pragma once
 #include "registry.h"
 #include "Globals.h"
-#include "GitAdminDir.h"
-#include "Git.h"
+
+typedef std::wstring stdstring;
 
 #define REGISTRYTIMEOUT 2000
 #define EXCLUDELISTTIMEOUT 5000
@@ -494,7 +495,7 @@ public:
 			}
 		}
 		CString sProjectRoot;
-		BOOL hasAdminDir = g_GitAdminDir.HasAdminDir(buf.get(), true, &sProjectRoot);
+		BOOL hasAdminDir = FALSE;// TODO g_GitAdminDir.HasAdminDir(buf.get(), true, &sProjectRoot);
 		admindirticker = GetTickCount();
 		Locker lock(m_critSec);
 

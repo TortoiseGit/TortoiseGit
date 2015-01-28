@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Include>
+	<Feature Id="DefaultFeature" Level="1" ConfigurableDirectory="INSTALLDIR" Title="TortoiseSI" Absent="disallow" TypicalDefault="install" Description="The TortoiseSI package and dependencies." Display="expand" InstallDefault="local" AllowAdvertise="no">
+		<ComponentRef Id="C__infofiles" />
+
+    <!--		<ComponentRef Id="C__help_en" />
+		<ComponentRef Id="C__gitlibs" /> -->
+		<ComponentRef Id="C__TortoiseShell" />
+<!--		<ComponentRef Id="C__TortoiseGitTools" />
+		<ComponentRef Id="C__TGitCache" />
+		<ComponentRef Id="C__TortoiseProc" />
+		<ComponentRef Id="C__TortoiseGITShortcuts" />
+		<ComponentRef Id="C__TortoiseMerge" />
+		<ComponentRef Id="C__TortoiseMergeShortcuts" />
+-->
+<!--		<ComponentRef Id="C__PlainSettingsShortcuts" />
+		<ComponentRef Id="C__PlatformSettingsShortcuts" /> -->
+		<ComponentRef Id="C__shellregistry" />
+		<ComponentRef Id="C__machineregistry" />
+
+		<ComponentRef Id="C__approveshellcomponents" />
+
+	<!--	<ComponentRef Id="C__win7library" /> -->
+
+		<ComponentRef Id="C__ProgramMenuFolder" />
+
+		<Feature Id="F_CRT" Level="1" Title="C-Runtime" Description="The Visual-C Runtime libs" TypicalDefault="install" Display="hidden">
+			<MergeRef Id="CRT" />
+		</Feature>
+
+    <!--
+		<Feature Id="F_MFC" Level="1" Title="MFC 11.0" Description="The MFC 11.0 libs" TypicalDefault="install" Display="hidden">
+			<MergeRef Id="MFC" />
+			<MergeRef Id="MFCLOC" />
+		</Feature> -->
+
+		<Feature Id="F_OVL" Level="1" Title="Tortoise Overlay handler" Description="The overlay handler for all Tortoise clients" TypicalDefault="install" Display="hidden">
+			<MergeRef Id="Ovlays" />
+		</Feature>
+
+		<?if $(var.Platform) = "x64" ?>
+		<Feature Id="F_TSHELL32" Level="1" Title="32-bit TortoiseSI Shell-Extension" Description="The TortoiseGit Shell-Extension for 32-bit applications." TypicalDefault="install" Absent="allow" AllowAdvertise="no">
+			<ComponentRef Id="C__TortoiseShell32" />
+			<ComponentRef Id="C__shellregistry32" />
+			<ComponentRef Id="C__machineregistry32" />
+			<ComponentRef Id="C__approveshellcomponents32" />
+
+			<Feature Id="F_OVL32" Level="1" Title="Tortoise Overlay handler" Description="The overlay handler for all Tortoise clients" TypicalDefault="install" Display="hidden">
+				<MergeRef Id="Ovlays32" />
+			</Feature>
+
+			<Feature Id="F_CRT32" Level="1" Title="C-Runtime" Description="The Visual-C Runtime libs" TypicalDefault="install" Display="hidden">
+				<MergeRef Id="CRT32" />
+			</Feature>
+		</Feature>
+		<?endif ?>
+
+		<Feature Id="MoreIcons" Level="1" Title="Additional icon sets" Description="Additional sets of icon overlays in different styles" TypicalDefault="install" Absent="allow" AllowAdvertise="no">
+			<ComponentRef Id="C__iconscvsclassic" />
+			<ComponentRef Id="C__iconsmodern" />
+			<ComponentRef Id="C__iconsmarkphippard" />
+			<ComponentRef Id="C__iconsstraight" />
+			<ComponentRef Id="C__iconsfunction" />
+			<ComponentRef Id="C__iconsdechenesxp" />
+			<ComponentRef Id="C__iconsdechenesvista" />
+			<ComponentRef Id="C__iconsblip" />
+			<ComponentRef Id="C__iconsblipclean" />
+			<ComponentRef Id="C__iconsmufwin7" />
+		</Feature> 
+  </Feature>
+</Include>
