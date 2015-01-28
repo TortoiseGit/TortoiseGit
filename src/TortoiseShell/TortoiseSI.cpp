@@ -129,27 +129,27 @@ STDAPI DllGetClassObject(REFCLSID rclsid, REFIID riid, LPVOID *ppvOut)
 	*ppvOut = NULL;
 
 	FileState state = FileStateInvalid;
-	if (IsEqualIID(rclsid, CLSID_Tortoisegit_UPTODATE))
+	if (IsEqualIID(rclsid, CLSID_TortoiseSI_UPTODATE))
 		state = FileStateVersioned;
-	else if (IsEqualIID(rclsid, CLSID_Tortoisegit_MODIFIED))
+	else if (IsEqualIID(rclsid, CLSID_TortoiseSI_MODIFIED))
 		state = FileStateModified;
-	else if (IsEqualIID(rclsid, CLSID_Tortoisegit_CONFLICTING))
+	else if (IsEqualIID(rclsid, CLSID_TortoiseSI_CONFLICTING))
 		state = FileStateConflict;
-	else if (IsEqualIID(rclsid, CLSID_Tortoisegit_UNCONTROLLED))
+	else if (IsEqualIID(rclsid, CLSID_TortoiseSI_UNCONTROLLED))
 		state = FileStateUncontrolled;
-	else if (IsEqualIID(rclsid, CLSID_Tortoisegit_DROPHANDLER))
+	else if (IsEqualIID(rclsid, CLSID_TortoiseSI_DROPHANDLER))
 		state = FileStateDropHandler;
-	else if (IsEqualIID(rclsid, CLSID_Tortoisegit_DELETED))
+	else if (IsEqualIID(rclsid, CLSID_TortoiseSI_DELETED))
 		state = FileStateDeleted;
-	else if (IsEqualIID(rclsid, CLSID_Tortoisegit_READONLY))
+	else if (IsEqualIID(rclsid, CLSID_TortoiseSI_READONLY))
 		state = FileStateReadOnly;
-	else if (IsEqualIID(rclsid, CLSID_Tortoisegit_LOCKED))
+	else if (IsEqualIID(rclsid, CLSID_TortoiseSI_LOCKED))
 		state = FileStateLockedOverlay;
 	else if (IsEqualIID(rclsid, CLSID_Tortoisegit_ADDED))
 		state = FileStateAddedOverlay;
-	else if (IsEqualIID(rclsid, CLSID_Tortoisegit_IGNORED))
+	else if (IsEqualIID(rclsid, CLSID_TortoiseSI_IGNORED))
 		state = FileStateIgnoredOverlay;
-	else if (IsEqualIID(rclsid, CLSID_Tortoisegit_UNVERSIONED))
+	else if (IsEqualIID(rclsid, CLSID_TortoiseSI_UNVERSIONED))
 		state = FileStateUnversionedOverlay;
 
 	if (state != FileStateInvalid)
