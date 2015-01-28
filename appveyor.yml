@@ -9,7 +9,7 @@
 #---------------------------------#
 
 # version format
-version: 1.0.{build}
+version: 1.0.{build}.0
 
 # branches to build
 branches:
@@ -75,7 +75,7 @@ configuration: Release
       
 build:
   parallel: true                  # enable MSBuild parallel builds
-  project: src/TortoiseGit.sln    # path to Visual Studio solution or project
+  project: src/TortoiseSI.sln    # path to Visual Studio solution or project
  
   # MSBuild verbosity level
   verbosity: normal
@@ -108,7 +108,10 @@ build_script:
 # Tells AppVeyor which file and folders should be uploaded to AppVeyor cloud storage
 # during the build
 
-# artifacts configuration here
+artifacts:
+
+  # relative to root of repository
+  - path: bin\setup
 
 #---------------------------------#
 #     deployment configuration    #
