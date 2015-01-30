@@ -8,7 +8,7 @@ if($Env:Platform -eq "Win32")
 	Push-AppveyorArtifact "\bin\Release\bin\TortoiseSI32.dll"
 }
 # if building x64 version, upload installer
-else if($Env:Platform -eq "x64")
+elseif($Env:Platform -eq "x64")
 {
 	Write-host "Uploading installer"
 	Push-AppveyorArtifact "\bin\setup\x64\TortoiseSI.msi"

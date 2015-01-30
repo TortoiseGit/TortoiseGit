@@ -86,6 +86,7 @@ build:
 # scripts to run before build
 before_build:
   - ps: .\updateInstallerVersion.ps1 $Env:APPVEYOR_BUILD_VERSION
+  - ps: Push-AppveyorArtifact "src\TortoiseSISetup\*"
 # scripts to run after build
 after_build:
   - ps: .\pushArtifacts.ps1
@@ -134,7 +135,7 @@ on_success:
 on_failure:
 #  - do something
   # error handling: push setup files
-  - ps: Push-AppveyorArtifact "src\TortoiseSISetup\*"
+  # - ps: Push-AppveyorArtifact "src\TortoiseSISetup\*"
  
 # after build failure or success
 on_finish:
