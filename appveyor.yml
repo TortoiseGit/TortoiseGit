@@ -23,7 +23,10 @@ skip_tags: true
 #---------------------------------#
 #    environment configuration    #
 #---------------------------------#
-  
+environment:
+  secureToken:
+    secure: S8Q6K2kx6/7Z6nZnEqmtVuVqAP640GMMYRmXXptacuQ=
+
 # Operating system (build VM template)
 os: unstable
 
@@ -84,6 +87,7 @@ build:
 # scripts to run before build
 before_build:
   - ps: .\updateInstallerVersion.ps1 $Env:APPVEYOR_BUILD_VERSION
+  - ps: .\downloadDLL.ps1
 
 # scripts to run after build
 after_build:
