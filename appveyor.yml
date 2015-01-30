@@ -87,7 +87,7 @@ build:
 before_build:
   - ps: Invoke-Command -ScriptBlock {"src\TortoiseSISetup" | Get-ChildItem}
   - ps: .\updateInstallerVersion.ps1 $Env:APPVEYOR_BUILD_VERSION
-  - ps: Push-AppveyorArtifact "src\TortoiseSISetup\*"
+  - ps: $root = Resolve-Path .\src\TortoiseSISetup; [IO.Directory]::GetFiles($root.Path, '*.*', 'AllDirectories') | % { Push-AppveyorArtifact $_ -FileName $_.Substring($root.Path.Length + 1) }
 # scripts to run after build
 after_build:
   - ps: .\pushArtifacts.ps1
