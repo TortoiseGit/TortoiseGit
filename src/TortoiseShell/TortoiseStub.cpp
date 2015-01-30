@@ -21,6 +21,7 @@
 #include "../targetver.h"
 #include <Windows.h>
 #include <tchar.h>
+#include <string>
 #include "Debug.h"
 
 const HINSTANCE NIL = (HINSTANCE)((char*)(0)-1);
@@ -31,9 +32,12 @@ static HINSTANCE hTortoiseSI = NULL;
 static LPFNGETCLASSOBJECT pDllGetClassObject = NULL;
 static LPFNCANUNLOADNOW pDllCanUnloadNow = NULL;
 
+static const WCHAR TSIRootKey[]=_T("Software\\TortoiseSI");
+static const WCHAR ExplorerEnvPath[]=_T("%SystemRoot%\\explorer.exe");
+
+
 static BOOL DebugActive(void)
 {
-	static const WCHAR TSIRootKey[]=_T("Software\\TortoiseSI");
 	static const WCHAR ExplorerOnlyValue[]=_T("DebugShell");
 
 	DWORD bDebug = 0;
@@ -74,11 +78,7 @@ static BOOL DebugActive(void)
  */
 static BOOL WantRealVersion(void)
 {
-	static const WCHAR TSIRootKey[]=_T("Software\\TortoiseSI");
 	static const WCHAR ExplorerOnlyValue[]=_T("LoadDllOnlyInExplorer");
-
-	static const WCHAR ExplorerEnvPath[]=_T("%SystemRoot%\\explorer.exe");
-
 
 	DWORD bExplorerOnly = 0;
 	WCHAR ModuleName[MAX_PATH] = {0};
@@ -129,14 +129,84 @@ static BOOL WantRealVersion(void)
 	return bWantReal;
 }
 
+static std::wstring PathToDebugDll()
+{
+	WCHAR dllPath[MAX_PATH] = {0};
+#ifdef _WIN64
+	WCHAR dubugDllPathKey[] = L"DebugDllLocation";
+#else
+	WCHAR dubugDllPathKey[] = L"DebugDll32Location";
+#endif
+	
+	HKEY hKey = HKEY_CURRENT_USER;
+	LONG Result = ERROR;
+	DWORD Type = REG_SZ;
+	DWORD length = sizeof(dllPath);
+
+	std::wstring path;
+
+	TRACE(_T("PathToDll() - Enter\n"));
+
+	Result = RegOpenKeyEx(HKEY_CURRENT_USER, TSIRootKey, 0, KEY_READ, &hKey);
+	if (Result == ERROR_SUCCESS)
+	{
+		Result = RegQueryValueEx(hKey, dubugDllPathKey, NULL, &Type, (BYTE *)&dllPath, &length);
+		length = length / 2; // 2 bytes per character
+
+		if ((Result == ERROR_SUCCESS) && (Type == REG_SZ) && (length > 0) && dllPath)
+		{
+			TRACE(_T("PathToDll() - using DebugDllLocation\n"));
+
+			// don't include the null terminating character, wstring adds one for us
+			if (dllPath[length-1] == '\0') {
+				length--;
+			}
+
+			RegCloseKey(hKey);
+			std::wstring path = std::wstring(dllPath, length);
+
+			if (path[path.length()-1] != '\\' || path[path.length()-1] != '/') {
+				path += L"\\";
+			}
+			return path;
+		}
+
+		RegCloseKey(hKey);
+	}
+
+	// use same folder location as this dll
+	length = GetModuleFileName(hInst, dllPath, _countof(dllPath));
+	if (!length)
+	{
+		TRACE(_T("PathToDll() - Fail\n"));
+		return L"";
+	}
+
+	// truncate the string at the last '\' char
+	while(length > 0)
+	{
+		--length;
+		if (dllPath[length] == '\\')
+		{
+			// don't set the null terminating character, wstring does it for us
+			break;
+		}
+	}
+
+	if (length == 0)
+	{
+		TRACE(_T("PathToDll() - Fail\n"));
+		return L"";
+	}
+
+	TRACE(_T("PathToDll() - Exit\n"));
+	return std::wstring(dllPath, length);
+}
+
 static void LoadRealLibrary(void)
 {
 	static const char GetClassObject[] = "DllGetClassObject";
 	static const char CanUnloadNow[] = "DllCanUnloadNow";
-
-	WCHAR ModuleName[MAX_PATH] = {0};
-	DWORD Len = 0;
-	HINSTANCE hUseInst = hInst;
 
 	if (hTortoiseSI)
 		return;
@@ -150,40 +220,26 @@ static void LoadRealLibrary(void)
 	// if HKCU\Software\TortoiseSI\DebugShell is set, load the dlls from the location of the current process
 	// which is for our debug purposes an instance of usually TortoiseProc. That way we can force the load
 	// of the debug dlls.
-	if (DebugActive())
-		hUseInst = NULL;
-	Len = GetModuleFileName(hUseInst, ModuleName, _countof(ModuleName));
-	if (!Len)
-	{
+//	if (DebugActive()) {
+	//	hUseInst = NULL;
+	//}
+
+	std::wstring path = PathToDebugDll();
+	
+	if (path.size() == 0) {
 		TRACE(_T("LoadRealLibrary() - Fail\n"));
 		hTortoiseSI = NIL;
 		return;
 	}
 
-	// truncate the string at the last '\' char
-	while(Len > 0)
-	{
-		--Len;
-		if (ModuleName[Len] == '\\')
-		{
-			ModuleName[Len] = '\0';
-			break;
-		}
-	}
-	if (Len == 0)
-	{
-		TRACE(_T("LoadRealLibrary() - Fail\n"));
-		hTortoiseSI = NIL;
-		return;
-	}
 #ifdef _WIN64
-	lstrcat(ModuleName, _T("\\TortoiseSI.dll"));
+	path += L"TortoiseSI.dll";
 #else
-	lstrcat(ModuleName, _T("\\TortoiseSI32.dll"));
+	path += L"TortoiseSI32.dll";
 #endif
-	TRACE(_T("LoadRealLibrary() - Load %s\n"), ModuleName);
+	TRACE(_T("LoadRealLibrary() - Load %s\n"), path.c_str());
 
-	hTortoiseSI = LoadLibraryEx(ModuleName, NULL, LOAD_WITH_ALTERED_SEARCH_PATH);
+	hTortoiseSI = LoadLibraryEx(path.c_str(), NULL, LOAD_WITH_ALTERED_SEARCH_PATH);
 	if (!hTortoiseSI)
 	{
 		TRACE(_T("LoadRealLibrary() - Fail\n"));
@@ -232,23 +288,7 @@ BOOL WINAPI DllMain(HINSTANCE hInstance, DWORD Reason, LPVOID /*Reserved*/)
 	// this prevents other apps from loading the dll and locking
 	// it.
 
-	BOOL bInShellTest = FALSE;
-	TCHAR buf[MAX_PATH + 1] = {0};       // MAX_PATH ok, the test really is for debugging anyway.
-	DWORD pathLength = GetModuleFileName(NULL, buf, MAX_PATH);
-
-	if (pathLength >= 14)
-	{
-		if ((lstrcmpi(&buf[pathLength-14], _T("\\ShellTest.exe"))) == 0)
-		{
-			bInShellTest = TRUE;
-		}
-		if ((_tcsicmp(&buf[pathLength-13], _T("\\verclsid.exe"))) == 0)
-		{
-			bInShellTest = TRUE;
-		}
-	}
-
-	if (!IsDebuggerPresent() && !bInShellTest)
+	if (!IsDebuggerPresent())
 	{
 		TRACE(_T("In debug load preventer\n"));
 		return FALSE;

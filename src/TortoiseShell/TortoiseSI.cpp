@@ -23,7 +23,7 @@
 #include "Guids.h"
 #include "ShellExtClassFactory.h"
 #include "ShellObjects.h"
-//#include "gitindex.h"
+#include "EventLog.h"
 
 volatile LONG		g_cRefThisDll = 0;				///< reference count of this DLL.
 HINSTANCE			g_hmodThisDll = NULL;			///< handle to this DLL itself.
@@ -31,8 +31,6 @@ ShellCache			g_ShellCache;					///< caching of registry entries, ...
 DWORD				g_langid;
 DWORD				g_langTimeout = 0;
 HINSTANCE			g_hResInst = NULL;
-stdstring			g_filepath;
-//git_wc_status_kind	g_filestatus = git_wc_status_none;	///< holds the corresponding status to the file/dir above TODO
 bool				g_readonlyoverlay = false;
 bool				g_lockedoverlay = false;
 
@@ -47,12 +45,18 @@ bool				g_ignoredovlloaded = false;
 bool				g_unversionedovlloaded = false;
 CComCriticalSection	g_csGlobalCOMGuard;
 
-LPCTSTR				g_MenuIDString = _T("TortoiseGit");
+LPCTSTR				g_MenuIDString = _T("TortoiseSI");
 
 ShellObjects		g_shellObjects;
-//CGitIndexFileMap	g_IndexFileMap; TODO
 
 #pragma comment(linker, "\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
+
+std::wstring getProcessFilesName() 
+{
+	WCHAR moduleName[MAX_PATH] = {0};
+	GetModuleFileName(NULL, moduleName, _countof(moduleName));
+	return std::wstring(moduleName);
+}
 
 extern "C" int APIENTRY
 DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID /* lpReserved */)
@@ -62,38 +66,21 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID /* lpReserved */)
 	// this prevents other apps from loading the dll and locking
 	// it.
 
-	bool bInShellTest = false;
-	TCHAR buf[MAX_PATH + 1] = {0};		// MAX_PATH ok, the test really is for debugging anyway.
-	DWORD pathLength = GetModuleFileName(NULL, buf, MAX_PATH);
-	if(pathLength >= 14)
-	{
-		if (pathLength >= 24 && _tcsicmp(&buf[pathLength - 24], _T("\\TortoiseGitExplorer.exe")) == 0)
-		{
-			bInShellTest = true;
-		}
-		if ((_tcsicmp(&buf[pathLength-14], _T("\\ShellTest.exe"))) == 0)
-		{
-			bInShellTest = true;
-		}
-		if ((_tcsicmp(&buf[pathLength-13], _T("\\verclsid.exe"))) == 0)
-		{
-			bInShellTest = true;
-		}
-	}
-
-	if (!::IsDebuggerPresent() && !bInShellTest)
+	if (!::IsDebuggerPresent())
 	{
 		ATLTRACE("In debug load preventer\n");
 		return FALSE;
 	}
 #endif
 
-	// NOTE: Do *NOT* call apr_initialize() or apr_terminate() here in DllMain(),
-	// because those functions call LoadLibrary() indirectly through malloc().
+	// NOTE: Do *NOT* init the PTC API here in DllMain(),
+	// because those functions may call LoadLibrary() 
 	// And LoadLibrary() inside DllMain() is not allowed and can lead to unexpected
 	// behavior and even may create dependency loops in the dll load order.
 	if (dwReason == DLL_PROCESS_ATTACH)
 	{
+		EventLog::writeInformation(std::wstring(L"TortoiseSI dll Loaded by") + getProcessFilesName());
+
 		if (g_hmodThisDll == NULL)
 		{
 			g_csGlobalCOMGuard.Init();
@@ -104,6 +91,8 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID /* lpReserved */)
 	}
 	else if (dwReason == DLL_PROCESS_DETACH)
 	{
+		EventLog::writeInformation(std::wstring(L"TortoiseSI dll unloaded by") + getProcessFilesName());
+
 		// do not clean up memory here:
 		// if an application doesn't release all COM objects
 		// but still unloads the dll, cleaning up ourselves
@@ -119,6 +108,10 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID /* lpReserved */)
 
 STDAPI DllCanUnloadNow(void)
 {
+	EventLog::writeInformation(std::wstring(L"DllCanUnloadNow by") + 
+		getProcessFilesName() +
+		L", g_cRefThisDll = " + std::to_wstring(g_cRefThisDll));
+
 	return (g_cRefThisDll == 0 ? S_OK : S_FALSE);
 }
 
@@ -166,5 +159,25 @@ STDAPI DllGetClassObject(REFCLSID rclsid, REFIID riid, LPVOID *ppvOut)
 	}
 
 	return CLASS_E_CLASSNOTAVAILABLE;
+}
 
+ wchar_t* fileStateString[] = {
+    L"FileStateUncontrolled",
+    L"FileStateVersioned",
+    L"FileStateModified",
+    L"FileStateConflict",
+    L"FileStateDeleted",
+    L"FileStateReadOnly",
+    L"FileStateLockedOverlay",
+    L"FileStateAddedOverlay",
+    L"FileStateIgnoredOverlay",
+    L"FileStateUnversionedOverlay",
+    L"FileStateDropHandler",
+    L"FileStateInvalid",
+    L"FileStateNoState"
+};
+
+std::wstring to_wstring(FileState fileState)
+{
+	return fileStateString[fileState];
 }

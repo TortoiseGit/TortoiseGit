@@ -25,13 +25,31 @@ IntegritySession::IntegritySession()
 	ip = NULL;
 	session = NULL;
 
-	mksAPIInitialize(NULL); // TODO allow API loging
-	//mksLogConfigure(MKS_LOG_ERROR, MKS_LOG_MEDIUM);
+	initAPI();
 
 	mksCreateLocalIntegrationPoint(&ip, TRUE);
 	if (ip != NULL) {
 		mksGetCommonSession(&session, ip);
 	}
+}
+
+IntegritySession::IntegritySession(std::string hostname, int port) 
+{
+	ip = NULL;
+	session = NULL;
+
+	initAPI();
+
+	mksCreateIntegrationPoint(&ip, hostname.c_str(), port, FALSE);
+	if (ip != NULL) {
+		mksGetCommonSession(&session, ip);
+	}
+}
+
+void IntegritySession::initAPI()
+{
+	mksAPIInitialize(NULL); // TODO allow API loging
+	//mksLogConfigure(MKS_LOG_ERROR, MKS_LOG_MEDIUM);
 }
 
 IntegritySession::~IntegritySession()

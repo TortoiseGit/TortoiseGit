@@ -26,6 +26,7 @@
 #include "IconBitmapUtils.h"
 #include "MenuInfo.h"
 #include "CrashReport.h"
+#include "FileStatus.h"
 #include "../version.h"
 
 extern	volatile LONG		g_cRefThisDll;			// Reference count of this DLL.
@@ -34,8 +35,6 @@ extern	ShellCache			g_ShellCache;			// caching of registry entries, ...
 extern	DWORD				g_langid;
 extern	DWORD				g_langTimeout;
 extern	HINSTANCE			g_hResInst;
-extern	stdstring			g_filepath;
-//extern	git_wc_status_kind	g_filestatus;			///< holds the corresponding status to the file/dir above
 extern	bool				g_readonlyoverlay;		///< whether to show the read only overlay or not
 extern	bool				g_lockedoverlay;		///< whether to show the locked overlay or not
 
@@ -79,12 +78,12 @@ protected:
 	std::map<UINT_PTR, UINT_PTR>	mySubMenuMap;
 	std::map<stdstring, UINT_PTR> myVerbsMap;
 	std::map<UINT_PTR, stdstring> myVerbsIDMap;
-	stdstring	folder_;
-	std::vector<stdstring> files_;
+	std::wstring	folder_;
+	std::vector<std::wstring> files_;
 	DWORD itemStates;				///< see the globals.h file for the ITEMIS_* defines
 	DWORD itemStatesFolder;			///< used for states of the folder_ (folder background and/or drop target folder)
-	stdstring uuidSource;
-	stdstring uuidTarget;
+	std::wstring uuidSource;
+	std::wstring uuidTarget;
 	int space;
 	TCHAR stringtablebuffer[255];
 	stdstring ignoredprops;
@@ -93,10 +92,6 @@ protected:
 //	GitFolderStatus		m_CachedStatus;		// status cache TODO
 //	CRemoteCacheLink	m_remoteCacheLink;
 	IconBitmapUtils		m_iconBitmapUtils;
-
-#if ENABLE_CRASHHANLDER
-	CCrashReportTGit	m_crasher;
-#endif
 
 #define MAKESTRING(ID) LoadStringEx(g_hResInst, ID, stringtablebuffer, _countof(stringtablebuffer), (WORD)CRegStdDWORD(_T("Software\\TortoiseGit\\LanguageID"), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT)))
 private:
@@ -111,6 +106,7 @@ private:
 	void			AddPathFileDropCommand(tstring& gitCmd, LPCTSTR command);
 	STDMETHODIMP	QueryDropContext(UINT uFlags, UINT idCmdFirst, HMENU hMenu, UINT &indexMenu);
 	bool			IsIllegalFolder(std::wstring folder, int * cslidarray);
+	HRESULT			doesStatusMatch(FileStatusFlags fileStatusFlags);
 	static void		RunCommand(const tstring& path, const tstring& command, LPCTSTR errorMessage);
 
 	/** \name IContextMenu2 wrappers

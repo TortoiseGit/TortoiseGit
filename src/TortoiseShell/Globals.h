@@ -98,6 +98,8 @@ enum FileState
 	FileStateInvalid
 };
 
+extern std::wstring to_wstring(FileState fileState);
+
 #define ITEMIS_ONLYONE				0x00000001
 #define ITEMIS_EXTENDED				0x00000002
 #define ITEMIS_INGIT				0x00000004

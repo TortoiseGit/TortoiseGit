@@ -19,11 +19,11 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #pragma once
-//#include "../../ext/CrashServer/CrashHandler/CrashHandler/CrashHandler.h"
 #include <time.h>
 #include <string>
 #include <tchar.h>
 #include <DbgHelp.h>
+#include "EventLog.h"
 
 // dummy define, needed only when we use crashrpt instead of this.
 #define CR_AF_MAKE_FILE_COPY 0
@@ -71,12 +71,13 @@ public:
 		static CCrashReport instance;
 		return instance;
 	}
-
+#if 0
 	int                     Uninstall(void) { return FALSE; }
 	int                     AddFile2(LPCTSTR pszFile,LPCTSTR pszDestFile,LPCTSTR /*pszDesc*/,DWORD /*dwFlags*/)
 	{
 //		return AddFileToReport(pszFile, pszDestFile) ? 1 : 0;
 	}
+#endif
 
 	//! Checks that crash handling was enabled.
 	//! \return Return \b true if crash handling was enabled.
@@ -187,6 +188,7 @@ public:
 												//!<      function inside __except keyword.
 		)
 	{
+		EventLog::writeError(L"Unhandled Exception: " + std::to_wstring(exceptionPointers->ExceptionRecord->ExceptionCode));
 //		if (!m_SendReport)
 			return EXCEPTION_CONTINUE_SEARCH;
 		// There is no crash handler but asserts should continue anyway
@@ -220,14 +222,14 @@ public:
 	}
 #endif
 private:
-
+#if 0
 	static LONG CALLBACK SkipAsserts(EXCEPTION_POINTERS* pExceptionInfo)
 	{
 //		if (pExceptionInfo->ExceptionRecord->ExceptionCode == ExceptionAssertionViolated)
 	//		return EXCEPTION_CONTINUE_EXECUTION;
 		return EXCEPTION_CONTINUE_SEARCH;
 	}
-
+#endif
 	bool m_bLoaded;
 	bool m_bWorking;
 	bool m_bSkipAssertsAdded;

@@ -42,6 +42,7 @@ class IntegrityResponse;
 class IntegritySession {
 public:
 	IntegritySession();
+	IntegritySession(std::string hostname, int port);
 	~IntegritySession();
 
 	std::unique_ptr<IntegrityResponse> execute(const IntegrityCommand& command) const;
@@ -50,6 +51,8 @@ public:
 private:
 	mksIntegrationPoint ip;
 	mksSession session;
+
+	void initAPI();
 };
 
 class IntegrityCommand {

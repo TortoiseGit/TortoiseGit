@@ -23,8 +23,9 @@
 namespace EventLog {
 	static const wchar_t* APPLICATION_NAME = L"TortoiseSI";
 
-	void writeEvent(const wchar_t* message, WORD wType);
 	void writeError(std::wstring error);
 	void writeInformation(std::wstring info);
 	void writeWarning(std::wstring warning);
+	// note this check the regsittry to see if debug logging is enabled, DO NOT CALL FROM DllMain!!
+	void writeDebug(std::wstring message);
 }

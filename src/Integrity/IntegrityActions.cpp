@@ -53,7 +53,7 @@ namespace IntegrityActions {
 
 		std::future_status::future_status status = responseFuture.wait_for(std::chrono::seconds(10));
 		if (status != std::future_status::ready) {
-			EventLog::writeWarning(L"get status timeout");
+			EventLog::writeWarning(L"get status timeout for " + file);
 
 			// need to call get so that the unique_ptr will exisit somewhere and go out of 
 			// scope and delete the command runner / response
@@ -85,7 +85,7 @@ namespace IntegrityActions {
 
 			// TODO exception field?
 
-			//	mksLogW(MKS_LOG_GENERAL, MKS_LOG_MEDIUM, __FILE__, __LINE__, L"status for file %s, %d", pathStr.c_str(), status);
+			EventLog::writeDebug(std::wstring(L"wf fileInfo ") + file + L" has status " +  std::to_wstring(status));
 			return status;
 		}
 		return NO_STATUS;
@@ -123,7 +123,7 @@ namespace IntegrityActions {
 
 	std::vector<std::wstring> getControlledPaths(const IntegritySession& session) 
 	{
-		IntegrityCommand command(L"si", L"sandboxes");
+		IntegrityCommand command(L"wf", L"folders");
 		std::vector<std::wstring> rootPaths;
 
 		std::unique_ptr<IntegrityResponse> response = session.execute(command);
@@ -137,8 +137,6 @@ namespace IntegrityActions {
 			wchar_t path[1024];
 
 			mksWorkItemGetId(item, path, 1024);
-
-			PathRemoveFileSpec(path);
 
 			// TODO exception field?
 

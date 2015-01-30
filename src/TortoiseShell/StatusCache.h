@@ -25,7 +25,7 @@ class ICache {
 public:
 	virtual FileStatusFlags getStatus(std::wstring fileName) = 0;
 	virtual bool isPathControlled(std::wstring path) = 0;
-	virtual void refresh(std::wstring path) = 0;
+	virtual void clear(std::wstring path) = 0;
 
 	// the IntegritySession the cache uses to talk to integrity 
 	virtual IntegritySession& getIntegritySession() = 0;

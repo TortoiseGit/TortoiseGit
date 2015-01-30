@@ -36,10 +36,10 @@
 #include <locale>
 #include <thread>
 #include <atomic>
+#include <regex>
+#include <codecvt>
 
 #define CSTRING_AVAILABLE
-
-// TODO add integrity stuff here!
 
 #include "SysInfo.h"
 #include "DebugOutput.h"

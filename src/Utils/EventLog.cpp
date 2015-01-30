@@ -18,6 +18,7 @@
 //
 #include "stdafx.h"
 #include "EventLog.h"
+#include "ShellCache.h"
 
 namespace EventLog {
 
@@ -74,7 +75,6 @@ namespace EventLog {
 	void writeError(std::wstring error) {
 		writeEvent(error.c_str(), EVENTLOG_ERROR_TYPE);
 	}
-
 	//
 	//   FUNCTION: EventLog::writeInformationLogEntry(wstring)
 	//
@@ -85,6 +85,14 @@ namespace EventLog {
 	//
 	void writeInformation(std::wstring info) {
 		writeEvent(info.c_str(), EVENTLOG_INFORMATION_TYPE);
+	}
+
+	void writeDebug(std::wstring info) {
+		static ShellCache shellCache;
+
+		if (shellCache.IsDebugLogging()) {
+			writeInformation(info);
+		}
 	}
 
 	//

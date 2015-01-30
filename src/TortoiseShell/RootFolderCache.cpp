@@ -53,6 +53,8 @@ bool startsWith(std::wstring text, std::wstring prefix) {
 
 bool RootFolderCache::isPathControlled(std::wstring path)
 {
+	refreshIfStale();
+
 	std::transform(path.begin(), path.end(), path.begin(), ::tolower);
 
 	{
@@ -76,24 +78,6 @@ void RootFolderCache::updateFoldersList()
 	for (std::wstring& rootPath : rootFolders) {
 		std::transform(rootPath.begin(), rootPath.end(), rootPath.begin(), ::tolower);
 	}
-
-	// sort and merge duplicates
-	std::sort(rootFolders.begin(), rootFolders.end(),
-		[](std::wstring const & a, std::wstring const &b){return a < b;});
-	std::unique(rootFolders.begin(), rootFolders.end());
-	std::list<std::wstring> rootFoldersList = std::list<std::wstring>(rootFolders.begin(), rootFolders.end());
-
-	// eliminate nested elements
-	for (std::wstring rootPath1 : rootFolders) {
-		for (std::wstring rootPath2 : rootFolders) {
-			if (rootPath1 != rootPath2 &&
-				startsWith(rootPath1, rootPath2)) {
-				rootFoldersList.remove(rootPath1);
-			}
-		}
-	}
-
-	rootFolders = std::vector<std::wstring>(rootFoldersList.begin(), rootFoldersList.end());
 
 	// lock cach and copy back
 	std::vector<std::wstring> oldRootFolders;

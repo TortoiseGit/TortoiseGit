@@ -66,6 +66,7 @@ public:
 		showignoredoverlay = CRegStdDWORD(_T("Software\\TortoiseSI\\ShowIgnoredOverlay"), TRUE);
 		getlocktop = CRegStdDWORD(_T("Software\\TortoiseSI\\GetLockTop"), TRUE);
 		excludedasnormal = CRegStdDWORD(_T("Software\\TortoiseSI\\ShowExcludedAsNormal"), TRUE);
+		debugLogging = CRegStdDWORD(REGISTRYTIMEOUT, _T("Software\\TortoiseSI\\DebugLogging"), FALSE);
 		cachetypeticker = GetTickCount();
 		recursiveticker = cachetypeticker;
 		folderoverlayticker = cachetypeticker;
@@ -147,6 +148,7 @@ public:
 		menumasklow_cu.read();
 		menumaskhigh_cu.read();
 		nocontextpaths.read();
+		debugLogging.read();
 	}
 	DWORD BlockStatus()
 	{
@@ -494,6 +496,13 @@ public:
 
 		return hasAdminDir;
 	}
+
+	BOOL IsDebugLogging()
+	{
+		Locker lock(m_critSec);
+		return (debugLogging);
+	}
+
 private:
 	void DriveValid()
 	{
@@ -595,6 +604,7 @@ private:
 		stdstring sProjectRoot;
 	};
 public:
+	CRegStdDWORD debugLogging;
 	CRegStdDWORD blockstatus;
 	CRegStdDWORD langid;
 	CRegStdDWORD showrecursive;
