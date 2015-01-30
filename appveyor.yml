@@ -85,6 +85,7 @@ build:
  
 # scripts to run before build
 before_build:
+  - ps: Invoke-Command -ScriptBlock {"src\TortoiseSISetup" | Get-ChildItem}
   - ps: .\updateInstallerVersion.ps1 $Env:APPVEYOR_BUILD_VERSION
   - ps: Push-AppveyorArtifact "src\TortoiseSISetup\*"
 # scripts to run after build
