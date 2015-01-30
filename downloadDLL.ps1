@@ -30,8 +30,11 @@ $jobId = $project.build.jobs[0].jobId
 $artifacts = Invoke-RestMethod -Method Get -Uri "$apiUrl/buildJobs/$jobId/artifacts" -Headers $headers
 
 # specify artifact file name and copy location
-$artifactFileName = "TortoiseSI32.dll"
-$localArtifactPath = "$downloadLocation\$artifactFileName"
+$artifactFileName1 = "TortoiseSI32.dll"
+$localArtifactPath1 = "$downloadLocation\$artifactFileName1"
+
+$artifactFileName2 = "TortoiseSIStub32.dll"
+$localArtifactPath2 = "$downloadLocation\$artifactFileName2"
 
 # if download location doesn't exist, create it
 if (!(Test-Path -Path $downloadLocation)) {
@@ -40,7 +43,13 @@ if (!(Test-Path -Path $downloadLocation)) {
 }
 
 # download TortoiseSI32.dll to download location
-Invoke-RestMethod -Method Get -Uri "$apiUrl/buildjobs/$jobId/artifacts/$artifactFileName" `
-     -OutFile $localArtifactPath -Headers $headers
+Invoke-RestMethod -Method Get -Uri "$apiUrl/buildjobs/$jobId/artifacts/$artifactFileName1" `
+     -OutFile $localArtifactPath1 -Headers $headers
 
-Write-host "Copied $artifactFileName to $downloadLocation"
+Write-host "Copied $artifactFileName1 to $downloadLocation"
+
+# download TortoiseSIStub32.dll to download location
+Invoke-RestMethod -Method Get -Uri "$apiUrl/buildjobs/$jobId/artifacts/$artifactFileName2" `
+     -OutFile $localArtifactPath2 -Headers $headers
+
+Write-host "Copied $artifactFileName2 to $downloadLocation"

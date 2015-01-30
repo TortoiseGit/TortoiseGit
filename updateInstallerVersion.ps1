@@ -1,23 +1,11 @@
 # Use Bypass so script does not need to be digitally signed
 Set-ExecutionPolicy Bypass -Force
 
-$version=$args[0]
-$versionRegex = '\s*\d+.\d+.\d+.\d+\s*'
-$scriptDir =  Split-Path -Path $MyInvocation.MyCommand.Definition -Parent
+$version = $Env:APPVEYOR_BUILD_VERSION
 
 # Relative file paths
 $header = "$($scriptDir)/src/version.h"
 $versionNumberInclude = "$($scriptDir)/src/TortoiseSISetup/VersionNumberInclude.wxi"
-
-if ($version -eq $null) {
-	Write-host "Error: No version number specified as argument. Terminating..."
-	exit
-}
-
-if($version -notmatch $versionRegex) {
-	Write-host "Error: Invalid version number $version. Terminating..."
-	exit
-}
 
 $split = $version.replace(' ', '').split('.')
 
