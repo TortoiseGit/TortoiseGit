@@ -51,6 +51,6 @@ Foreach-Object {$_ -replace "MajorVersion=""\d*""", "MajorVersion=""$($split[0])
 Foreach-Object {$_ -replace "MinorVersion=""\d*""", "MinorVersion=""$($split[1])"""} |
 Foreach-Object {$_ -replace "MicroVersion=""\d*""", "MicroVersion=""$($split[2])"""} |
 Foreach-Object {$_ -replace "BuildVersion=""\d*""", "BuildVersion=""$($split[3])"""} |
-Out-file $versionNumberInclude
+Out-file $versionNumberInclude -Encoding "UTF8"
 
 Write-host "Modified $versionNumberInclude to use version $version"
