@@ -133,6 +133,8 @@ on_success:
 # on build failure
 on_failure:
 #  - do something
+  # error handling: push setup files
+  - ps: Push-AppveyorArtifact "src\TortoiseSISetup\"
  
 # after build failure or success
 on_finish:
