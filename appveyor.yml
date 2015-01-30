@@ -48,8 +48,6 @@ matrix:
 install:
   # by default, all script lines are interpreted as batch
   - echo Repository cloned
-  - echo "APPVEYOR_BUILD_VERSION ->"
-  - echo %APPVEYOR_BUILD_VERSION%
 
 #---------------------------------#
 #       build configuration       #
@@ -85,8 +83,8 @@ build:
  
 # scripts to run before build
 before_build:
-  - ps: Invoke-Command -ScriptBlock {"src\TortoiseSISetup" | Get-ChildItem}
   - ps: .\updateInstallerVersion.ps1 $Env:APPVEYOR_BUILD_VERSION
+
 # scripts to run after build
 after_build:
   - ps: .\pushArtifacts.ps1
@@ -112,11 +110,6 @@ build_script:
 # Tells AppVeyor which file and folders should be uploaded to AppVeyor cloud storage
 # during the build
 
-artifacts:
-
-  # relative to root of repository
-  - path: bin
-
 #---------------------------------#
 #     deployment configuration    #
 #---------------------------------#
@@ -134,8 +127,6 @@ on_success:
 # on build failure
 on_failure:
 #  - do something
-  # error handling: push setup files
-  - ps: $root = Resolve-Path .\src\TortoiseSISetup; [IO.Directory]::GetFiles($root.Path, '*.*', 'AllDirectories') | % { Push-AppveyorArtifact $_ -FileName $_.Substring($root.Path.Length + 1) }
  
 # after build failure or success
 on_finish:
