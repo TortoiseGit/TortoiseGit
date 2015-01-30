@@ -3,9 +3,9 @@ Set-ExecutionPolicy Bypass -Force
 
 $version = $Env:APPVEYOR_BUILD_VERSION
 
-# Relative file paths
-$header = "$($scriptDir)/src/version.h"
-$versionNumberInclude = "$($scriptDir)/src/TortoiseSISetup/VersionNumberInclude.wxi"
+$root = Resolve-Path .
+$header = "$root/src/version.h"
+$versionNumberInclude = "$root/src/TortoiseSISetup/VersionNumberInclude.wxi"
 
 $split = $version.replace(' ', '').split('.')
 
