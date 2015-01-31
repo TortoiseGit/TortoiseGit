@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011 - Sven Strickroth <email@cs-ware.de>
+// Copyright (C) 2011,2015 - Sven Strickroth <email@cs-ware.de>
 
 //based on:
 // Copyright (C) 2003-2006,2008 - Stefan Kueng
@@ -129,6 +129,13 @@ BOOL CMenuButton::PreTranslateMessage(MSG* pMsg)
 	{
 		switch(pMsg->wParam)
 		{
+		case VK_RETURN:
+		case VK_SPACE:
+			if (m_bMenuIsActive && !m_bRealMenuIsActive)
+			{
+				GetParent()->SendMessage(WM_COMMAND, MAKEWPARAM(GetDlgCtrlID(), BN_CLICKED), (LPARAM)m_hWnd);
+				return TRUE;
+			}
 		case VK_F4:
 			OnShowMenu();
 			return TRUE;
