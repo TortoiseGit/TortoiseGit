@@ -125,10 +125,10 @@ BEGIN
     EDITTEXT        IDC_LAST_SUBJECT,80,108,163,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER,WS_EX_TRANSPARENT
     EDITTEXT        IDC_LAST_AUTHOR,80,121,163,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER,WS_EX_TRANSPARENT
     EDITTEXT        IDC_LAST_DATE,80,132,163,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER,WS_EX_TRANSPARENT
-    AUTOCHECKBOX    "Assume valid/unchanged",IDC_ASSUMEVALID,4,145,116,10,BS_AUTOCHECKBOX | WS_TABSTOP
-    AUTOCHECKBOX    "Executable (+x)",IDC_EXECUTABLE,120,145,116,10,BS_AUTOCHECKBOX | WS_TABSTOP
-    AUTOCHECKBOX    "Skip worktree",IDC_SKIPWORKTREE,4,157,116,10,BS_AUTOCHECKBOX | WS_TABSTOP
-    AUTOCHECKBOX    "Symlink",IDC_SYMLINK,120,157,116,10,BS_AUTOCHECKBOX | WS_TABSTOP
+    CONTROL         "Assume valid/unchanged",IDC_ASSUMEVALID,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,145,116,10
+    CONTROL         "Executable (+x)",IDC_EXECUTABLE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,120,145,116,10
+    CONTROL         "Skip worktree",IDC_SKIPWORKTREE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,157,116,10
+    CONTROL         "Symlink",IDC_SYMLINK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,120,157,116,10
     GROUPBOX        "Config",IDC_STATIC,4,169,239,66
     LTEXT           "Auto Crlf:",IDC_STATIC,13,181,76,8
     EDITTEXT        IDC_CONFIG_AUTOCRLF,98,181,136,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER
@@ -222,7 +222,7 @@ STRINGTABLE
 BEGIN
     IDS_MENUSWITCH          "S&witch/Checkout..."
     IDS_MENUMERGE           "&Merge..."
-    IDS_MENUBRANCH          "Create Branch..."
+    IDS_MENUBRANCH          "Create &Branch..."
     IDS_MENUIMPORT          "&Import..."
     IDS_MENUEXPORT          "E&xport..."
     IDS_MENUSETTINGS        "&Settings"
@@ -248,7 +248,6 @@ BEGIN
     IDS_MENUDESCMERGE       "Merges another branch"
     IDS_MENUDESCSETTINGS    "Tweak TortoiseGit"
     IDS_MENUDESCDEFAULT     "no description for this command is available"
-    IDS_LOADING             "Loading..."
     IDS_STATUSNONE          " "
     IDS_STATUSUNVERSIONED   "non-versioned"
     IDS_STATUSNORMAL        "normal"
@@ -263,16 +262,17 @@ STRINGTABLE
 BEGIN
     IDS_MENUDESCREVISIONGRAPH 
                             "Shows a graphical representation of copies/tags/branches"
+    IDS_LOADING             "Loading..."
 END
 
 STRINGTABLE
 BEGIN
     IDS_git_DEPTH_UNKNOWN   "Unknown depth"
     IDS_git_DEPTH_WORKING   "Working Tree"
-    IDS_MENUTAG             "Create Tag..."
+    IDS_MENUTAG             "Create &Tag..."
     IDS_MENUFORMATPATCH     "Create Patch Serial..."
     IDS_MENUIMPORTPATCH     "Apply Patch Serial..."
-    IDS_MENUFETCH           "Fetch..."
+    IDS_MENUFETCH           "F&etch..."
     IDS_MENUREBASE          "Rebase..."
     IDS_MENUSTASHSAVE       "Stash Save"
     IDS_MENUSTASHAPPLY      "Stash Apply"
@@ -397,8 +397,8 @@ BEGIN
     IDS_DROPEXPORTMENU      "Git Export versioned items here"
     IDS_DROPEXPORTEXTENDEDMENU "Git Export all items here"
     IDS_MENUIGNOREMULTIPLEMASK "Ignore %d items by &extension"
-    IDS_MENUPULL            "Pull..."
-    IDS_MENUPUSH            "Push..."
+    IDS_MENUPULL            "&Pull..."
+    IDS_MENUPUSH            "Pus&h..."
     IDS_MENUCLONE           "Clone..."
 END
 

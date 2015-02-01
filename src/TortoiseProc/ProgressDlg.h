@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2014 - TortoiseGit
+// Copyright (C) 2008-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -177,6 +177,15 @@ private:
 	afx_msg void OnBnClickedButton1();
 
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
+
+	typedef struct {
+		int id;
+		int cnt;
+		int wmid;
+	} ACCELLERATOR;
+	std::map<TCHAR, ACCELLERATOR>	m_accellerators;
+	HACCEL							m_hAccel;
+	virtual LRESULT DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam);
 };
 
 class CCommitProgressDlg:public CProgressDlg

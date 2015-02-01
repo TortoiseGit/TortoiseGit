@@ -14,6 +14,7 @@ Released: unreleased
  * Fixed issue #2643: Set branch description on its creation
  * Fixed issue #1629: Have the push dialog opened via right-click in log default to branch that was actually clicked on
  * Update TortoiseGitPlink to version 0.66
+ * Fixed issue #943: Allow to use keyboard shortcuts in Git progress dialog (e.g., ALT+R for ReCommit after commit)
 
 == Bug Fixes ==
  * Fixed issue #2647: TortoiseGitBlame does not display files correctly with mixed line endings (such as CRCRLF)

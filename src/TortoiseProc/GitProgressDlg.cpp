@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2014 - TortoiseGit
+// Copyright (C) 2008-2015 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -22,17 +22,20 @@
 #include "GitProgressDlg.h"
 #include "AppUtils.h"
 #include "SmartHandle.h"
-
+#include "StringUtils.h"
 
 IMPLEMENT_DYNAMIC(CGitProgressDlg, CResizableStandAloneDialog)
 CGitProgressDlg::CGitProgressDlg(CWnd* pParent /*=NULL*/)
 	: CResizableStandAloneDialog(CGitProgressDlg::IDD, pParent)
 	, m_dwCloseOnEnd((DWORD)-1)
+	, m_hAccel(nullptr)
 {
 }
 
 CGitProgressDlg::~CGitProgressDlg()
 {
+	if (m_hAccel)
+		DestroyAcceleratorTable(m_hAccel);
 }
 
 void CGitProgressDlg::DoDataExchange(CDataExchange* pDX)
@@ -176,6 +179,8 @@ BOOL CGitProgressDlg::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 
 BOOL CGitProgressDlg::PreTranslateMessage(MSG* pMsg)
 {
+	if (m_hAccel && TranslateAccelerator(m_hWnd, m_hAccel, pMsg))
+		return TRUE;
 	if (pMsg->message == WM_KEYDOWN)
 	{
 		if (pMsg->wParam == VK_ESCAPE)
@@ -252,8 +257,36 @@ LRESULT	CGitProgressDlg::OnCmdEnd(WPARAM /*wParam*/, LPARAM /*lParam*/)
 
 	if (!m_PostCmdList.empty())
 	{
-		for (auto it = m_PostCmdList.cbegin(); it != m_PostCmdList.cend(); ++it)
-			m_cMenuButton.AddEntry((*it).icon, (*it).label);
+		int i = 0;
+		for (const auto& entry : m_PostCmdList)
+		{
+			++i;
+			m_cMenuButton.AddEntry(entry.icon, entry.label);
+			TCHAR accellerator = CStringUtils::GetAccellerator(entry.label);
+			if (accellerator == L'\0')
+				continue;
+			++m_accellerators[accellerator].cnt;
+			if (m_accellerators[accellerator].cnt > 1)
+				m_accellerators[accellerator].id = -1;
+			else
+				m_accellerators[accellerator].id = i - 1;
+		}
+
+		if (m_accellerators.size())
+		{
+			LPACCEL lpaccelNew = (LPACCEL)LocalAlloc(LPTR, m_accellerators.size() * sizeof(ACCEL));
+			SCOPE_EXIT { LocalFree(lpaccelNew); };
+			i = 0;
+			for (auto& entry : m_accellerators)
+			{
+				lpaccelNew[i].cmd = (WORD)(WM_USER + 1 + entry.second.id);
+				lpaccelNew[i].fVirt = FVIRTKEY | FALT;
+				lpaccelNew[i].key = entry.first;
+				entry.second.wmid = lpaccelNew[i].cmd;
+				++i;
+			}
+			m_hAccel = CreateAcceleratorTable(lpaccelNew, (int)m_accellerators.size());
+		}
 		m_cMenuButton.ShowWindow(SW_SHOW);
 	}
 
@@ -272,4 +305,26 @@ LRESULT	CGitProgressDlg::OnCmdStart(WPARAM /*wParam*/, LPARAM /*lParam*/)
 	DialogEnableWindow(IDCANCEL, TRUE);
 
 	return 0;
+}
+
+LRESULT CGitProgressDlg::DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam)
+{
+	if (m_hAccel && message == WM_COMMAND && LOWORD(wParam) >= WM_USER && LOWORD(wParam) <= WM_USER + m_accellerators.size())
+	{
+		for (const auto& entry : m_accellerators)
+		{
+			if (entry.second.wmid != LOWORD(wParam))
+				continue;
+			if (entry.second.id == -1)
+				m_cMenuButton.PostMessage(WM_KEYDOWN, VK_F4, NULL);
+			else
+			{
+				m_cMenuButton.SetCurrentEntry(entry.second.id);
+				OnBnClickedLogbutton();
+			}
+			return 0;
+		}
+	}
+
+	return __super::DefWindowProc(message, wParam, lParam);
 }

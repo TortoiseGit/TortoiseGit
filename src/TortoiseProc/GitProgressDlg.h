@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2014 - TortoiseGit
+// Copyright (C) 2008-2015 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -90,4 +90,13 @@ private:
 
 	CBrush					m_background_brush;
 	DWORD					m_dwCloseOnEnd;
+
+	typedef struct {
+		int id;
+		int cnt;
+		int wmid;
+	} ACCELLERATOR;
+	std::map<TCHAR, ACCELLERATOR>	m_accellerators;
+	HACCEL							m_hAccel;
+	virtual LRESULT DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam);
 };

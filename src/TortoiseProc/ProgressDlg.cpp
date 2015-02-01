@@ -34,6 +34,7 @@
 #include "MessageBox.h"
 #include "LogFile.h"
 #include "CmdLineParser.h"
+#include "StringUtils.h"
 
 // CProgressDlg dialog
 
@@ -47,6 +48,7 @@ CProgressDlg::CProgressDlg(CWnd* pParent /*=NULL*/)
 	, m_startTick(GetTickCount64())
 	, m_BufStart(0)
 	, m_Git(&g_Git)
+	, m_hAccel(nullptr)
 {
 	m_pThread = NULL;
 	m_bBufferAll=false;
@@ -71,6 +73,8 @@ CProgressDlg::CProgressDlg(CWnd* pParent /*=NULL*/)
 
 CProgressDlg::~CProgressDlg()
 {
+	if (m_hAccel)
+		DestroyAcceleratorTable(m_hAccel);
 	delete m_pThread;
 }
 
@@ -432,8 +436,36 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 
 				if (!m_PostCmdList.empty())
 				{
+					int i = 0;
 					for (const auto& entry : m_PostCmdList)
+					{
+						++i;
 						m_ctrlPostCmd.AddEntry(entry.icon, entry.label);
+						TCHAR accellerator = CStringUtils::GetAccellerator(entry.label);
+						if (accellerator == L'\0')
+							continue;
+						++m_accellerators[accellerator].cnt;
+						if (m_accellerators[accellerator].cnt > 1)
+							m_accellerators[accellerator].id = -1;
+						else
+							m_accellerators[accellerator].id = i - 1;
+					}
+
+					if (m_accellerators.size())
+					{
+						LPACCEL lpaccelNew = (LPACCEL)LocalAlloc(LPTR, m_accellerators.size() * sizeof(ACCEL));
+						SCOPE_EXIT { LocalFree(lpaccelNew); };
+						i = 0;
+						for (auto& entry : m_accellerators)
+						{
+							lpaccelNew[i].cmd = (WORD)(WM_USER + 1 + entry.second.id);
+							lpaccelNew[i].fVirt = FVIRTKEY | FALT;
+							lpaccelNew[i].key = entry.first;
+							entry.second.wmid = lpaccelNew[i].cmd;
+							++i;
+						}
+						m_hAccel = CreateAcceleratorTable(lpaccelNew, (int)m_accellerators.size());
+					}
 					GetDlgItem(IDC_PROGRESS_BUTTON1)->ShowWindow(SW_SHOW);
 				}
 			}
@@ -779,6 +811,8 @@ LRESULT CProgressDlg::OnTaskbarBtnCreated(WPARAM /*wParam*/, LPARAM /*lParam*/)
 
 BOOL CProgressDlg::PreTranslateMessage(MSG* pMsg)
 {
+	if (m_hAccel && TranslateAccelerator(m_hWnd, m_hAccel, pMsg))
+		return TRUE;
 	if (pMsg->message == WM_KEYDOWN)
 	{
 		if (pMsg->wParam == VK_ESCAPE)
@@ -840,4 +874,26 @@ BOOL CProgressDlg::PreTranslateMessage(MSG* pMsg)
 		}
 	}
 	return __super::PreTranslateMessage(pMsg);
+}
+
+LRESULT CProgressDlg::DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam)
+{
+	if (m_hAccel && message == WM_COMMAND && LOWORD(wParam) >= WM_USER && LOWORD(wParam) <= WM_USER + m_accellerators.size())
+	{
+		for (const auto& entry : m_accellerators)
+		{
+			if (entry.second.wmid != LOWORD(wParam))
+				continue;
+			if (entry.second.id == -1)
+				m_ctrlPostCmd.PostMessage(WM_KEYDOWN, VK_F4, NULL);
+			else
+			{
+				m_ctrlPostCmd.SetCurrentEntry(entry.second.id);
+				OnBnClickedButton1();
+			}
+			return 0;
+		}
+	}
+
+	return __super::DefWindowProc(message, wParam, lParam);
 }

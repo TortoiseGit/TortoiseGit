@@ -1,6 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2010 - TortoiseSVN
+// Copyright (C) 2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -64,6 +65,11 @@ public:
 	 * Removes all '&' chars from a string.
 	 */
 	static void RemoveAccelerators(CString& text);
+
+	/**
+	 * Returns the accellerator used in the string or \0
+	 */
+	static TCHAR GetAccellerator(const CString& text);
 
 	/**
 	 * Writes an ASCII CString to the clipboard in CF_TEXT format

@@ -470,7 +470,7 @@ msgstr ""
 msgid "&Clear stash"
 msgstr ""
 
-#. Resource IDs: (58112, Dialog IDD_CHECKFORUPDATES: Control id 1, Dialog IDD_GITPROGRESS: Control id 1)
+#. Resource IDs: (58112, Dialog IDD_CHECKFORUPDATES: Control id 1)
 msgid "&Close"
 msgstr ""
 
@@ -1006,6 +1006,10 @@ msgstr ""
 
 #. Resource IDs: (IDS_PROC_SYNC_PULL)
 msgid "&Pull"
+msgstr ""
+
+#. Resource IDs: (IDS_MENUPULL)
+msgid "&Pull..."
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_PUSH: Control id 1481)
@@ -2764,7 +2768,7 @@ msgstr ""
 msgid "Clone..."
 msgstr ""
 
-#. Resource IDs: (16032, 16105, 17023, 2, Dialog IDD_DELETEREMOTETAG: Control id 2, Dialog IDD_SYNC: Control id 1)
+#. Resource IDs: (16032, 16105, 17023, 2, Dialog IDD_DELETEREMOTETAG: Control id 2, Dialog IDD_GITPROGRESS: Control id 1, Dialog IDD_SYNC: Control id 1)
 msgid "Close"
 msgstr ""
 
@@ -3279,8 +3283,16 @@ msgstr ""
 msgid "Count: %u matches."
 msgstr ""
 
+#. Resource IDs: (IDS_MENUBRANCH)
+msgid "Create &Branch..."
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_SETTINGSMAIN: Control id 1683)
 msgid "Create &Library"
+msgstr ""
+
+#. Resource IDs: (IDS_MENUTAG)
+msgid "Create &Tag..."
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_SVNIGNORE: Control id 1641)
@@ -3293,10 +3305,6 @@ msgstr ""
 
 #. Resource IDs: (IDS_CREATE_BRANCH_AT_THIS)
 msgid "Create Branch at this version..."
-msgstr ""
-
-#. Resource IDs: (IDS_MENUBRANCH)
-msgid "Create Branch..."
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_CREATECHANGELIST: Control id 243)
@@ -3317,10 +3325,6 @@ msgstr ""
 
 #. Resource IDs: (IDS_CREATE_TAG_AT_THIS)
 msgid "Create Tag at this version..."
-msgstr ""
-
-#. Resource IDs: (IDS_MENUTAG)
-msgid "Create Tag..."
 msgstr ""
 
 #. Resource IDs: (57600)
@@ -4434,6 +4438,10 @@ msgstr ""
 msgid "External Program:"
 msgstr ""
 
+#. Resource IDs: (IDS_MENUFETCH)
+msgid "F&etch..."
+msgstr ""
+
 #. Resource IDs: (17113)
 msgid "Fade"
 msgstr ""
@@ -4554,10 +4562,6 @@ msgstr ""
 #. Resource IDs: (IDS_PROC_BROWSEREFS_FETCHFROM)
 #, c-format
 msgid "Fetch from \"%s\""
-msgstr ""
-
-#. Resource IDs: (IDS_MENUFETCH)
-msgid "Fetch..."
 msgstr ""
 
 #. Resource IDs: (IDS_LOG_FETCHINGSTATUS)
@@ -7333,10 +7337,6 @@ msgstr ""
 msgid "Pull requires the selected local branch to be the current branch."
 msgstr ""
 
-#. Resource IDs: (IDS_MENUPULL)
-msgid "Pull..."
-msgstr ""
-
 #. Resource IDs: (Dialog IDD_PULLFETCH: Control id 302)
 msgid "Pull/Fetch"
 msgstr ""
@@ -7351,6 +7351,10 @@ msgstr ""
 
 #. Resource IDs: (IDS_PROC_SYNC_PUSH)
 msgid "Pus&h"
+msgstr ""
+
+#. Resource IDs: (IDS_MENUPUSH)
+msgid "Pus&h..."
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_PUSH: Control id 303, Dialog IDD_SYNC: Control id 1612, IDS_MENUDESCPUSH)
@@ -7373,7 +7377,7 @@ msgstr ""
 msgid "Push ta&gs"
 msgstr ""
 
-#. Resource IDs: (IDS_LOG_PUSH, IDS_MENUPUSH)
+#. Resource IDs: (IDS_LOG_PUSH)
 msgid "Push..."
 msgstr ""
 
