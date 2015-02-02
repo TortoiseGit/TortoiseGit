@@ -31,13 +31,13 @@ BEGIN
     BEGIN
         BLOCK "040004e4"
         BEGIN
-            VALUE "CompanyName", "http://tortoisegit.org/\0"
-            VALUE "FileDescription", "TortoiseGit shell extension client\0"
+            VALUE "CompanyName", "http://tortoisesi.org/\0"
+            VALUE "FileDescription", "TortoiseSI shell extension client\0"
             VALUE "FileVersion", STRFILEVER
-            VALUE "InternalName", "TortoiseGit.dll\0"
-            VALUE "LegalCopyright", "Copyright (C) 2008-2015 - TortoiseGit and Copyright (C) 2003-2014 - TortoiseSVN\0"
-            VALUE "OriginalFilename", "TortoiseGit.dll\0"
-            VALUE "ProductName", "TortoiseGit\0"
+            VALUE "InternalName", "TortoiseSI.dll\0"
+            VALUE "LegalCopyright", "Copyright (C) 2015 - TortoiseSI and Copyright (C) 2008-2015 - TortoiseGit and Copyright (C) 2003-2014 - TortoiseSVN\0"
+            VALUE "OriginalFilename", "TortoiseSI.dll\0"
+            VALUE "ProductName", "TortoiseSI\0"
             VALUE "ProductVersion", STRPRODUCTVER
         END
     END

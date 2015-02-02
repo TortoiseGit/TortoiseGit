@@ -23,6 +23,8 @@
 #include "Guids.h"
 #include "PreserveChdir.h"
 #include "UnicodeUtils.h"
+#include "StatusCache.h"
+#include "EventLog.h"
 
 // "The Shell calls IShellIconOverlayIdentifier::GetOverlayInfo to request the
 //  location of the handler's icon overlay. The icon overlay handler returns
@@ -149,30 +151,21 @@ STDMETHODIMP CShellExt::IsMemberOf_Wrap(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 {
 	if (pwszPath == NULL)
 		return E_INVALIDARG;
-	const TCHAR* pPath = pwszPath;
+     std::wstring path = pwszPath;
 	// the shell sometimes asks overlays for invalid paths, e.g. for network
 	// printers (in that case the path is "0", at least for me here).
-	if (_tcslen(pPath)<2)
+	if (path.length() < 2) {
 		return S_FALSE;
-	PreserveChdir preserveChdir;
-//	git_wc_status_kind status = git_wc_status_none;
-	bool readonlyoverlay = false;
-	bool lockedoverlay = false;
+	}
 
 	// since the shell calls each and every overlay handler with the same filepath
 	// we use a small 'fast' cache of just one path here.
 	// To make sure that cache expires, clear it as soon as one handler is used.
 
-	AutoLocker lock(g_csGlobalCOMGuard);
-#if 0
-	if (_tcscmp(pPath, g_filepath.c_str())==0)
-	{
-		status = g_filestatus;
-		readonlyoverlay = g_readonlyoverlay;
-		lockedoverlay = g_lockedoverlay;
-	}
-	else
-	{
+	// TODO - do we need this lock?
+	//AutoLocker lock(g_csGlobalCOMGuard);
+
+	/** TODO?
 		if (!g_ShellCache.IsPathAllowed(pPath))
 		{
 			if ((m_State == FileStateVersioned) && g_ShellCache.ShowExcludedAsNormal() &&
@@ -183,267 +176,99 @@ STDMETHODIMP CShellExt::IsMemberOf_Wrap(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 			}
 			return S_FALSE;
 		}
-
-		switch (g_ShellCache.GetCacheType())
-		{
-		case ShellCache::exe:
-			{
-				CTGitPath tpath(pPath);
-				if(!tpath.HasAdminDir())
-				{
-					status = git_wc_status_none;
-					break;
-				}
-				if(tpath.IsAdminDir())
-				{
-					status = git_wc_status_none;
-					break;
-				}
-				TGITCacheResponse itemStatus;
-				SecureZeroMemory(&itemStatus, sizeof(itemStatus));
-				if (m_remoteCacheLink.GetStatusFromRemoteCache(tpath, &itemStatus, true))
-				{
-					if (itemStatus.m_bAssumeValid)
-						readonlyoverlay = true;
-					if (itemStatus.m_bSkipWorktree)
-						lockedoverlay = true;
-					status = GitStatus::GetMoreImportant(itemStatus.m_status.text_status, itemStatus.m_status.prop_status);
-				}
+		*/
+	if ( ICache::getInstance().isPathControlled(path) ) {
+		// TODO PathIsDirectoryW is an expensive call on remote paths
+		if (PathIsDirectoryW(path.c_str())) {
+			if (m_State == FileStateVersioned) {
+				EventLog::writeDebug(std::wstring(L"IShellIconOverlayIdentifier::IsMemberOf ") + path + L" has icon " + 
+					to_wstring(m_State));
+				return S_OK;
+			} else {
+				return S_FALSE;
 			}
-			break;
-		case ShellCache::dll:
-		case ShellCache::dllFull:
-			{
-				// Look in our caches for this item
-				const FileStatusCacheEntry * s = m_CachedStatus.GetCachedItem(CTGitPath(pPath));
-				if (s)
-				{
-					status = s->status;
-					if (s->assumeValid)
-						readonlyoverlay = true;
-					if (s->skipWorktree)
-						lockedoverlay = true;
-				}
-				else
-				{
-					// No cached status available
-
-					// since the dwAttrib param of the IsMemberOf() function does not
-					// have the SFGAO_FOLDER flag set at all (it's 0 for files and folders!)
-					// we have to check if the path is a folder ourselves :(
-					if (PathIsDirectory(pPath))
-					{
-						if (g_ShellCache.HasGITAdminDir(pPath, TRUE))
-						{
-							if ((!g_ShellCache.IsRecursive()) && (!g_ShellCache.IsFolderOverlay()))
-							{
-								status = git_wc_status_normal;
-							}
-							else
-							{
-								const FileStatusCacheEntry * s = m_CachedStatus.GetFullStatus(CTGitPath(pPath), TRUE);
-								status = s->status;
-							}
-						}
-						else
-						{
-							status = git_wc_status_none;
-						}
-					}
-					else
-					{
-						const FileStatusCacheEntry * s = m_CachedStatus.GetFullStatus(CTGitPath(pPath), FALSE);
-						status = s->status;
-						if (s->assumeValid)
-							readonlyoverlay = true;
-						if (s->skipWorktree)
-							lockedoverlay = true;
-					}
-				}
-			}
-
-			break;
-		default:
-		case ShellCache::none:
-			{
-				// no cache means we only show a 'versioned' overlay on folders
-				// with an admin directory
-				if (PathIsDirectory(pPath))
-				{
-					if (g_ShellCache.HasGITAdminDir(pPath, TRUE))
-					{
-						status = git_wc_status_normal;
-					}
-					else
-					{
-						status = git_wc_status_none;
-					}
-				}
-				else
-				{
-					status = git_wc_status_none;
-				}
-			}
-			break;
 		}
-		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Status %d for file %s\n"), status, pwszPath);
-	}
-#endif
-	g_filepath.clear();
-	g_filepath = pPath;
-//	g_filestatus = status;
-	g_readonlyoverlay = readonlyoverlay;
-	g_lockedoverlay = lockedoverlay;
 
-	//the priority system of the shell doesn't seem to work as expected (or as I expected):
-	//as it seems that if one handler returns S_OK then that handler is used, no matter
-	//if other handlers would return S_OK too (they're never called on my machine!)
-	//So we return S_OK for ONLY ONE handler!
-	/*
-	switch (status)
-	{
-		// note: we can show other overlays if due to lack of enough free overlay
-		// slots some of our overlays aren't loaded. But we assume that
-		// at least the 'normal' and 'modified' overlay are available.
-		case git_wc_status_none:
-			return S_FALSE;
-		case git_wc_status_unversioned:
-			if (g_ShellCache.ShowUnversionedOverlay() && g_unversionedovlloaded && (m_State == FileStateUnversionedOverlay))
-			{
-				g_filepath.clear();
-				return S_OK;
-			}
-			return S_FALSE;
-		case git_wc_status_ignored:
-			if (g_ShellCache.ShowIgnoredOverlay() && g_ignoredovlloaded && (m_State == FileStateIgnoredOverlay))
-			{
-				g_filepath.clear();
-				return S_OK;
-			}
-			return S_FALSE;
-		case git_wc_status_normal:
-		case git_wc_status_external:
-		case git_wc_status_incomplete:
-			// skip-worktree aka locked has higher priority than assume-valid
-			if ((lockedoverlay)&&(g_lockedovlloaded))
-			{
-				if (m_State == FileStateLockedOverlay)
-				{
-					g_filepath.clear();
-					return S_OK;
-				}
-				else
-					return S_FALSE;
-			}
-			else if ((readonlyoverlay)&&(g_readonlyovlloaded))
-			{
-				if (m_State == FileStateReadOnly)
-				{
-					g_filepath.clear();
-					return S_OK;
-				}
-				else
-					return S_FALSE;
-			}
-			else if (m_State == FileStateVersioned)
-			{
-				g_filepath.clear();
-				return S_OK;
-			}
-			else
-				return S_FALSE;
-		case git_wc_status_missing:
-		case git_wc_status_deleted:
-			if (g_deletedovlloaded)
-			{
-				if (m_State == FileStateDeleted)
-				{
-					g_filepath.clear();
-					return S_OK;
-				}
-				else
-					return S_FALSE;
-			}
-			else
-			{
-				// the 'deleted' overlay isn't available (due to lack of enough
-				// overlay slots). So just show the 'modified' overlay instead.
-				if (m_State == FileStateModified)
-				{
-					g_filepath.clear();
-					return S_OK;
-				}
-				else
-					return S_FALSE;
-			}
-		case git_wc_status_replaced:
-		case git_wc_status_modified:
-			if (m_State == FileStateModified)
-			{
-				g_filepath.clear();
-				return S_OK;
-			}
-			else
-				return S_FALSE;
-		case git_wc_status_merged:
-			if (m_State == FileStateReadOnly)
-			{
-				g_filepath.clear();
-				return S_OK;
-			}
-			else
-				return S_FALSE;
-		case git_wc_status_added:
-			if (g_addedovlloaded)
-			{
-				if (m_State== FileStateAddedOverlay)
-				{
-					g_filepath.clear();
-					return S_OK;
-				}
-				else
-					return S_FALSE;
-			}
-			else
-			{
-				// the 'added' overlay isn't available (due to lack of enough
-				// overlay slots). So just show the 'modified' overlay instead.
-				if (m_State == FileStateModified)
-				{
-					g_filepath.clear();
-					return S_OK;
-				}
-				else
-					return S_FALSE;
-			}
-		case git_wc_status_conflicted:
-		case git_wc_status_obstructed:
-			if (g_conflictedovlloaded)
-			{
-				if (m_State == FileStateConflict)
-				{
-					g_filepath.clear();
-					return S_OK;
-				}
-				else
-					return S_FALSE;
-			}
-			else
-			{
-				// the 'conflicted' overlay isn't available (due to lack of enough
-				// overlay slots). So just show the 'modified' overlay instead.
-				if (m_State == FileStateModified)
-				{
-					g_filepath.clear();
-					return S_OK;
-				}
-				else
-					return S_FALSE;
-			}
-		default:
-			return S_FALSE;
-	} // switch (status)
-	*/
+		FileStatusFlags fileStatus = ICache::getInstance().getStatus(path);
+		HRESULT result = doesStatusMatch(fileStatus);
+
+		if (result == S_OK) {
+			ICache::getInstance().clear(path);
+			EventLog::writeDebug(std::wstring(L"IShellIconOverlayIdentifier::IsMemberOf ") + path + L" has icon " + 
+				to_wstring(m_State));
+		}
+		return result;
+	} else {
+		EventLog::writeDebug(std::wstring(L"IShellIconOverlayIdentifier::IsMemberOf is uncontrolled ") + path);
+	}
 	return S_FALSE;
 }
 
+//the priority system of the shell doesn't seem to work as expected (or as I expected):
+//as it seems that if one handler returns S_OK then that handler is used, no matter
+//if other handlers would return S_OK too (they're never called on my machine!)
+//So we return S_OK for ONLY ONE handler!
+ HRESULT CShellExt::doesStatusMatch(FileStatusFlags fileStatusFlags) 
+ {
+		// note: we can show other overlays if due to lack of enough free overlay
+		// slots some of our overlays aren't loaded. But we assume that
+		// at least the 'normal' and 'modified' overlay are available.
+
+	if (fileStatusFlags == 0) {
+		 return S_FALSE;	
+	} else if (hasFileStatus(fileStatusFlags, FileStatus::FormerMember)) {
+		 if (g_deletedovlloaded && m_State == FileStateDeleted) {
+			 return S_OK;
+		 } else if (m_State == FileStateModified) {
+			 // the 'deleted' overlay isn't available (due to lack of enough
+			 // overlay slots). So just show the 'modified' overlay instead.
+			 return S_OK;
+		 } else {
+			return S_FALSE;
+		 }
+	} else if (hasFileStatus(fileStatusFlags, FileStatus::Incoming)) {
+		 if (g_conflictedovlloaded && m_State == FileStateConflict) {
+			 return S_OK;
+		 } else if (m_State == FileStateModified) {
+			 // the 'conflicted' overlay isn't available (due to lack of enough
+			 // overlay slots). So just show the 'modified' overlay instead.
+			 return S_OK;
+		 } else {
+			return S_FALSE;
+		 }
+	} else if (hasFileStatus(fileStatusFlags, FileStatus::Modified) 
+		|| hasFileStatus(fileStatusFlags, FileStatus::Moved)
+		|| hasFileStatus(fileStatusFlags, FileStatus::Renamed)) {
+
+		if (m_State == FileStateModified) {
+			return S_OK;
+		} else {
+			return S_FALSE;
+		}
+	 } else if (hasFileStatus(fileStatusFlags, FileStatus::Add)) {
+		 if (g_addedovlloaded && m_State == FileStateAddedOverlay){
+			 return S_OK;
+		 } else	if (m_State == FileStateModified) {
+			// the 'added' overlay isn't available (due to lack of enough
+			// overlay slots). So just show the 'modified' overlay instead.
+			return S_OK;
+		 } else {
+			return S_FALSE;
+		}
+	} else if (hasFileStatus(fileStatusFlags, FileStatus::Locked)) {
+		 if (g_lockedovlloaded && m_State == FileStateLockedOverlay) {
+			 return S_OK;
+		 } else if (m_State == FileStateVersioned) {
+			 return S_OK;
+		 } else {
+			 return S_FALSE;
+		 }
+	 } else if (hasFileStatus(fileStatusFlags, FileStatus::Member)) {
+		if (m_State == FileStateVersioned) {
+			 return S_OK;
+		 } else {
+			 return S_FALSE;
+		 }
+	 }
+	 return S_FALSE;
+ }

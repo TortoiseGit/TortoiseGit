@@ -19,6 +19,9 @@
     <Filter Include="Utils\MiscUI">
       <UniqueIdentifier>{47668c56-a66c-4f37-aa34-40a0426a5681}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Integrity">
+      <UniqueIdentifier>{3f5cdff7-5b88-4171-8c1c-cefd8f3e4f76}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ContextMenu.cpp">
@@ -79,6 +82,21 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PropertyPage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Integrity\IntegrityActions.cpp">
+      <Filter>Integrity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Integrity\IntegritySession.cpp">
+      <Filter>Integrity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\EventLog.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="StatusCache.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RootFolderCache.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -156,6 +174,24 @@
     </ClInclude>
     <ClInclude Include="..\Utils\ShellUpdater.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Integrity\IntegrityActions.h">
+      <Filter>Integrity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Integrity\IntegritySession.h">
+      <Filter>Integrity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\EventLog.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Integrity\FileStatus.h">
+      <Filter>Integrity</Filter>
+    </ClInclude>
+    <ClInclude Include="StatusCache.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RootFolderCache.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

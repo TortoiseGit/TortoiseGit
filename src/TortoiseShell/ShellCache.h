@@ -43,36 +43,30 @@ typedef CComCritSecLock<CComCriticalSection> Locker;
 class ShellCache
 {
 public:
-	enum CacheType
-	{
-		none,
-		exe,
-		dll,
-		dllFull,// same as dll except it uses commandline git tool with all status modes supported
-	};
+	
 	ShellCache()
 	{
-		cachetype = CRegStdDWORD(_T("Software\\TortoiseGit\\CacheType"), GetSystemMetrics(SM_REMOTESESSION) ? dll : exe);
-		showrecursive = CRegStdDWORD(_T("Software\\TortoiseGit\\RecursiveOverlay"), TRUE);
-		folderoverlay = CRegStdDWORD(_T("Software\\TortoiseGit\\FolderOverlay"), TRUE);
-		driveremote = CRegStdDWORD(_T("Software\\TortoiseGit\\DriveMaskRemote"));
-		drivefixed = CRegStdDWORD(_T("Software\\TortoiseGit\\DriveMaskFixed"), TRUE);
-		drivecdrom = CRegStdDWORD(_T("Software\\TortoiseGit\\DriveMaskCDROM"));
-		driveremove = CRegStdDWORD(_T("Software\\TortoiseGit\\DriveMaskRemovable"));
-		drivefloppy = CRegStdDWORD(_T("Software\\TortoiseGit\\DriveMaskFloppy"));
-		driveram = CRegStdDWORD(_T("Software\\TortoiseGit\\DriveMaskRAM"));
-		driveunknown = CRegStdDWORD(_T("Software\\TortoiseGit\\DriveMaskUnknown"));
-		shellmenuaccelerators = CRegStdDWORD(_T("Software\\TortoiseGit\\ShellMenuAccelerators"), TRUE);
-		excludelist = CRegStdString(_T("Software\\TortoiseGit\\OverlayExcludeList"));
-		includelist = CRegStdString(_T("Software\\TortoiseGit\\OverlayIncludeList"));
-		simplecontext = CRegStdDWORD(_T("Software\\TortoiseGit\\SimpleContext"), FALSE);
-		unversionedasmodified = CRegStdDWORD(_T("Software\\TortoiseGit\\UnversionedAsModified"), FALSE);
-		recursesubmodules = CRegStdDWORD(_T("Software\\TortoiseGit\\TGitCacheRecurseSubmodules"), FALSE);
-		hidemenusforunversioneditems = CRegStdDWORD(_T("Software\\TortoiseGit\\HideMenusForUnversionedItems"), FALSE);
-		showunversionedoverlay = CRegStdDWORD(_T("Software\\TortoiseGit\\ShowUnversionedOverlay"), TRUE);
-		showignoredoverlay = CRegStdDWORD(_T("Software\\TortoiseGit\\ShowIgnoredOverlay"), TRUE);
-		getlocktop = CRegStdDWORD(_T("Software\\TortoiseGit\\GetLockTop"), TRUE);
-		excludedasnormal = CRegStdDWORD(_T("Software\\TortoiseGit\\ShowExcludedAsNormal"), TRUE);
+		showrecursive = CRegStdDWORD(_T("Software\\TortoiseSI\\RecursiveOverlay"), TRUE);
+		folderoverlay = CRegStdDWORD(_T("Software\\TortoiseSI\\FolderOverlay"), TRUE);
+		driveremote = CRegStdDWORD(_T("Software\\TortoiseSI\\DriveMaskRemote"));
+		drivefixed = CRegStdDWORD(_T("Software\\TortoiseSI\\DriveMaskFixed"), TRUE);
+		drivecdrom = CRegStdDWORD(_T("Software\\TortoiseSI\\DriveMaskCDROM"));
+		driveremove = CRegStdDWORD(_T("Software\\TortoiseSI\\DriveMaskRemovable"));
+		drivefloppy = CRegStdDWORD(_T("Software\\TortoiseSI\\DriveMaskFloppy"));
+		driveram = CRegStdDWORD(_T("Software\\TortoiseSI\\DriveMaskRAM"));
+		driveunknown = CRegStdDWORD(_T("Software\\TortoiseSI\\DriveMaskUnknown"));
+		shellmenuaccelerators = CRegStdDWORD(_T("Software\\TortoiseSI\\ShellMenuAccelerators"), TRUE);
+		excludelist = CRegStdString(_T("Software\\TortoiseSI\\OverlayExcludeList"));
+		includelist = CRegStdString(_T("Software\\TortoiseSI\\OverlayIncludeList"));
+		simplecontext = CRegStdDWORD(_T("Software\\TortoiseSI\\SimpleContext"), FALSE);
+		unversionedasmodified = CRegStdDWORD(_T("Software\\TortoiseSI\\UnversionedAsModified"), FALSE);
+		recursesubmodules = CRegStdDWORD(_T("Software\\TortoiseSI\\TSICacheRecurseSubmodules"), FALSE);
+		hidemenusforunversioneditems = CRegStdDWORD(_T("Software\\TortoiseSI\\HideMenusForUnversionedItems"), FALSE);
+		showunversionedoverlay = CRegStdDWORD(_T("Software\\TortoiseSI\\ShowUnversionedOverlay"), TRUE);
+		showignoredoverlay = CRegStdDWORD(_T("Software\\TortoiseSI\\ShowIgnoredOverlay"), TRUE);
+		getlocktop = CRegStdDWORD(_T("Software\\TortoiseSI\\GetLockTop"), TRUE);
+		excludedasnormal = CRegStdDWORD(_T("Software\\TortoiseSI\\ShowExcludedAsNormal"), TRUE);
+		debugLogging = CRegStdDWORD(REGISTRYTIMEOUT, _T("Software\\TortoiseSI\\DebugLogging"), FALSE);
 		cachetypeticker = GetTickCount();
 		recursiveticker = cachetypeticker;
 		folderoverlayticker = cachetypeticker;
@@ -94,22 +88,22 @@ public:
 		excontextticker = cachetypeticker;
 
 		unsigned __int64 entries = (DEFAULTMENUTOPENTRIES);
-		menulayoutlow = CRegStdDWORD(_T("Software\\TortoiseGit\\ContextMenuEntries"),	  entries&0xFFFFFFFF);
-		menulayouthigh = CRegStdDWORD(_T("Software\\TortoiseGit\\ContextMenuEntrieshigh"), entries>>32);
+		menulayoutlow = CRegStdDWORD(_T("Software\\TortoiseSI\\ContextMenuEntries"),	  entries&0xFFFFFFFF);
+		menulayouthigh = CRegStdDWORD(_T("Software\\TortoiseSI\\ContextMenuEntrieshigh"), entries>>32);
 		layoutticker = cachetypeticker;
 
 		unsigned __int64 ext = (DEFAULTMENUEXTENTRIES);
-		menuextlow	= CRegStdDWORD(_T("Software\\TortoiseGit\\ContextMenuExtEntriesLow"), ext&0xFFFFFFFF  );
-		menuexthigh = CRegStdDWORD(_T("Software\\TortoiseGit\\ContextMenuExtEntriesHigh"),	ext>>32	  );
+		menuextlow	= CRegStdDWORD(_T("Software\\TortoiseSI\\ContextMenuExtEntriesLow"), ext&0xFFFFFFFF  );
+		menuexthigh = CRegStdDWORD(_T("Software\\TortoiseSI\\ContextMenuExtEntriesHigh"),	ext>>32	  );
 		exticker = cachetypeticker;
 
-		menumasklow_lm = CRegStdDWORD(_T("Software\\TortoiseGit\\ContextMenuEntriesMaskLow"), 0, FALSE, HKEY_LOCAL_MACHINE);
-		menumaskhigh_lm = CRegStdDWORD(_T("Software\\TortoiseGit\\ContextMenuEntriesMaskHigh"), 0, FALSE, HKEY_LOCAL_MACHINE);
-		menumasklow_cu = CRegStdDWORD(_T("Software\\TortoiseGit\\ContextMenuEntriesMaskLow"), 0);
-		menumaskhigh_cu = CRegStdDWORD(_T("Software\\TortoiseGit\\ContextMenuEntriesMaskHigh"), 0);
+		menumasklow_lm = CRegStdDWORD(_T("Software\\TortoiseSI\\ContextMenuEntriesMaskLow"), 0, FALSE, HKEY_LOCAL_MACHINE);
+		menumaskhigh_lm = CRegStdDWORD(_T("Software\\TortoiseSI\\ContextMenuEntriesMaskHigh"), 0, FALSE, HKEY_LOCAL_MACHINE);
+		menumasklow_cu = CRegStdDWORD(_T("Software\\TortoiseSI\\ContextMenuEntriesMaskLow"), 0);
+		menumaskhigh_cu = CRegStdDWORD(_T("Software\\TortoiseSI\\ContextMenuEntriesMaskHigh"), 0);
 		menumaskticker = cachetypeticker;
-		langid = CRegStdDWORD(_T("Software\\TortoiseGit\\LanguageID"), 1033);
-		blockstatus = CRegStdDWORD(_T("Software\\TortoiseGit\\BlockStatus"), 0);
+		langid = CRegStdDWORD(_T("Software\\TortoiseSI\\LanguageID"), 1033);
+		blockstatus = CRegStdDWORD(_T("Software\\TortoiseSI\\BlockStatus"), 0);
 		blockstatusticker = cachetypeticker;
 		for (int i = 0; i < 27; ++i)
 		{
@@ -120,12 +114,11 @@ public:
 		drivetypecache[1] = DRIVE_REMOVABLE;
 		drivetypepathcache[0] = 0;
 		sAdminDirCacheKey.reserve(MAX_PATH);		// MAX_PATH as buffer reservation ok.
-		nocontextpaths = CRegStdString(_T("Software\\TortoiseGit\\NoContextPaths"), _T(""));
+		nocontextpaths = CRegStdString(_T("Software\\TortoiseSI\\NoContextPaths"), _T(""));
 		m_critSec.Init();
 	}
 	void ForceRefresh()
 	{
-		cachetype.read();
 		showrecursive.read();
 		folderoverlay.read();
 		driveremote.read();
@@ -155,15 +148,7 @@ public:
 		menumasklow_cu.read();
 		menumaskhigh_cu.read();
 		nocontextpaths.read();
-	}
-	CacheType GetCacheType()
-	{
-		if ((GetTickCount() - REGISTRYTIMEOUT) > cachetypeticker)
-		{
-			cachetypeticker = GetTickCount();
-			cachetype.read();
-		}
-		return CacheType(DWORD((cachetype)));
+		debugLogging.read();
 	}
 	DWORD BlockStatus()
 	{
@@ -470,7 +455,7 @@ public:
 		}
 		return (langid);
 	}
-	BOOL HasGITAdminDir(LPCTSTR path, BOOL bIsDir, CString *ProjectTopDir = NULL)
+	BOOL HasSIAdminDir(LPCTSTR path, BOOL bIsDir, CString *ProjectTopDir = NULL)
 	{
 		size_t len = _tcslen(path);
 		std::unique_ptr<TCHAR[]> buf(new TCHAR[len + 1]);
@@ -495,7 +480,7 @@ public:
 			}
 		}
 		CString sProjectRoot;
-		BOOL hasAdminDir = FALSE;// TODO g_GitAdminDir.HasAdminDir(buf.get(), true, &sProjectRoot);
+		BOOL hasAdminDir = FALSE;// TODO g_SIAdminDir.HasAdminDir(buf.get(), true, &sProjectRoot);
 		admindirticker = GetTickCount();
 		Locker lock(m_critSec);
 
@@ -511,6 +496,13 @@ public:
 
 		return hasAdminDir;
 	}
+
+	BOOL IsDebugLogging()
+	{
+		Locker lock(m_critSec);
+		return (debugLogging);
+	}
+
 private:
 	void DriveValid()
 	{
@@ -612,7 +604,7 @@ private:
 		stdstring sProjectRoot;
 	};
 public:
-	CRegStdDWORD cachetype;
+	CRegStdDWORD debugLogging;
 	CRegStdDWORD blockstatus;
 	CRegStdDWORD langid;
 	CRegStdDWORD showrecursive;

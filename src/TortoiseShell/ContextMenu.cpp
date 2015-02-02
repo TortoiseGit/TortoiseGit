@@ -64,7 +64,7 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 	uuidTarget.clear();
 	itemStates = 0;
 	itemStatesFolder = 0;
-	stdstring statuspath;
+	std::wstring statuspath;
 //	git_wc_status_kind fetchedstatus = git_wc_status_none;
 	// get selected files/folders
 #if 0
@@ -671,7 +671,7 @@ void CShellExt::InsertGitMenu(BOOL istop, HMENU menu, UINT pos, UINT_PTR id, UIN
 
 STDMETHODIMP CShellExt::QueryDropContext(UINT uFlags, UINT idCmdFirst, HMENU hMenu, UINT &indexMenu)
 {
-	if (!CRegStdDWORD(L"Software\\TortoiseGit\\EnableDragContextMenu", TRUE))
+	if (!CRegStdDWORD(L"Software\\TortoiseSI\\EnableDragContextMenu", TRUE))
 		return S_OK;
 
 	PreserveChdir preserveChdir;
