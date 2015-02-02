@@ -30,7 +30,7 @@
 <Include>
 	<Directory Id="TARGETDIR" Name="SourceDir">
 		<Directory Id="D__ProgramFilesFolder" Name="Program Files">
-			<Directory Id="INSTALLDIR" Name="TortoiseGit">
+			<Directory Id="INSTALLDIR" Name="TortoiseSI">
 
 				<?if $(var.Platform) = "x86" ?>
 				<Merge Id='CRT' Language='0' SourceFile='$(var.MergeModules)\Microsoft_VC$(var.vcver)_CRT_x86.msm' DiskId='1'/>
@@ -55,12 +55,12 @@
 					<File Id="F__changelog_pre1.8" Name="Changelog-pre1.8.txt" DiskId="1" Source="..\Changelog-pre1.8.txt" /> -->
 					<File Id="F__tortoisesilicense" Name="TortoiseSI License.txt" DiskId="1" Source="..\gpl.txt" />
 				</Component>
-
+<!--
 				<Component Id="C__ProgramMenuFolder" Guid="$(var.GuidProgramMenuFolder)" Win64="$(var.Win64YesNo)">
 					<RemoveFolder Directory="INSTALLDIR" On="uninstall" Id="RemoveFolder_INSTALLDIR" />
 					<RemoveFolder Directory="D_TortoisePrgMenu" On="uninstall" Id="RemoveFolder_PrgMenu" />
 				</Component>
-
+-->
 				<Component Id="C__shellregistry" Guid="$(var.GuidShellRegistry)" Win64="$(var.Win64YesNo)">
 					<?if $(var.Platform) = "x86" ?>
 					<RegistryKey Root="HKMU" Key="Software\Classes\Drive\shellex\ContextMenuHandlers\TortoiseSI" />
@@ -719,10 +719,12 @@
 					<?endif ?>
 				</Directory>
 
+        <!--
 				<Directory Id="ProgramMenuFolder" Name="." SourceName="User's Programs Menu">
 					<Directory Id="D_TortoisePrgMenu" Name="TortoiseSI" />
 				</Directory>
-
+        -->
+        
 				<Directory Id='$(var.cf)' Name='Common'>
 					<Directory Id='TortoioseOverlays' Name='TortoiseOverlays'>
 						<Directory Id="D__icons" Name="icons">

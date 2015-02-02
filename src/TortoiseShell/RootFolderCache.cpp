@@ -26,9 +26,8 @@ bool RootFolderCache::refreshIfStale() {
 
 	auto now = std::chrono::system_clock::now();
 
-	if ( now - lastRefresh > std::chrono::seconds(60)) {
-		lastRefresh = now;
-
+	if (now - lastRefresh > std::chrono::seconds(60) && !refreshInProgress) {
+		refreshInProgress = true;
 		std::async(std::launch::async, [&]{ this->updateFoldersList(); });
 		return true;
 	} else {
@@ -39,7 +38,11 @@ bool RootFolderCache::refreshIfStale() {
 void RootFolderCache::forceRefresh() {
 	{
 		std::lock_guard<std::mutex> lock( lockObject );
-		lastRefresh = std::chrono::system_clock::now();
+
+		if (refreshInProgress) {
+			return;
+		}
+		refreshInProgress = true;
 	}
 
 	std::async(std::launch::async, [&]{ this->updateFoldersList(); });
@@ -83,8 +86,10 @@ void RootFolderCache::updateFoldersList()
 	std::vector<std::wstring> oldRootFolders;
 	{
 		std::lock_guard<std::mutex> lock( lockObject );
+
 		oldRootFolders = this->rootFolders;
 		this->rootFolders = rootFolders;
+		lastRefresh = std::chrono::system_clock::now();
 	}
 
 	std::vector<std::wstring> foldersAddedOrRemoved;

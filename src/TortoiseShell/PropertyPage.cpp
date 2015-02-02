@@ -743,7 +743,7 @@ STDMETHODIMP CShellExt::AddPages(LPFNADDPROPSHEETPAGE lpfnAddPage, LPARAM lParam
 	{
 		return AddPages_Wrap(lpfnAddPage, lParam);
 	}
-	__except(CCrashReport::Instance().SendReport(GetExceptionInformation()))
+	__except (HandleException(GetExceptionInformation()))
 	{
 	}
 	return E_FAIL;

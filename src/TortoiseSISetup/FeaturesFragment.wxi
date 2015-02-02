@@ -3,8 +3,7 @@
 	<Feature Id="DefaultFeature" Level="1" ConfigurableDirectory="INSTALLDIR" Title="TortoiseSI" Absent="disallow" TypicalDefault="install" Description="The TortoiseSI package and dependencies." Display="expand" InstallDefault="local" AllowAdvertise="no">
 		<ComponentRef Id="C__infofiles" />
 
-    <!--		<ComponentRef Id="C__help_en" />
-		<ComponentRef Id="C__gitlibs" /> -->
+    <!--		<ComponentRef Id="C__help_en" /> -->
 		<ComponentRef Id="C__TortoiseShell" />
 <!--		<ComponentRef Id="C__TortoiseGitTools" />
 		<ComponentRef Id="C__TGitCache" />
@@ -22,7 +21,7 @@
 
 	<!--	<ComponentRef Id="C__win7library" /> -->
 
-		<ComponentRef Id="C__ProgramMenuFolder" />
+<!--		<ComponentRef Id="C__ProgramMenuFolder" /> -->
 
 		<Feature Id="F_CRT" Level="1" Title="C-Runtime" Description="The Visual-C Runtime libs" TypicalDefault="install" Display="hidden">
 			<MergeRef Id="CRT" />

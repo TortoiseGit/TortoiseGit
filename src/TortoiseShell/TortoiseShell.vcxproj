@@ -108,6 +108,7 @@
   <ItemGroup>
     <ClCompile Include="..\Integrity\IntegrityActions.cpp" />
     <ClCompile Include="..\Integrity\IntegritySession.cpp" />
+    <ClCompile Include="..\Utils\CrashReport.cpp" />
     <ClCompile Include="..\Utils\DebugOutput.cpp" />
     <ClCompile Include="..\Utils\EventLog.cpp" />
     <ClCompile Include="..\Utils\MiscUI\IconBitmapUtils.cpp" />
