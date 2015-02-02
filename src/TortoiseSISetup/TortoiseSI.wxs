@@ -12,15 +12,10 @@
 			<UpgradeVersion Property="PREVIOUSVERSIONSINSTALLED" Maximum="$(var.VersionNumberInternal)" IncludeMaximum="no" MigrateFeatures="yes" />
 		</Upgrade>
 
-		<MajorUpgrade AllowDowngrades="yes" Schedule="afterInstallValidate" />
+		<MajorUpgrade AllowDowngrades="no" Schedule="afterInstallValidate"  DowngradeErrorMessage="A later version of [ProductName] is already installed. Setup will now exit."/>
 		<Media Id="1" Cabinet="TSI.cab" EmbedCab="yes" CompressionLevel="high" />
 
 		<Icon Id="TSIIcon" SourceFile="..\Resources\Tortoise.ico" />
-
-		<Property Id="SSHTOOL" Secure="yes">Plink</Property>
-		<Property Id="OLDSSH" Secure="yes">
-			<RegistrySearch Id="oldSSHSetting" Root="HKCU" Key="Software\[Manufacturer]" Name="SSH" Type="raw" />
-		</Property>
 
 		<!-- Launch Condition related properties ................................................................................. -->
 		<!-- <Property Id="ShowChangelogCheck">1</Property> -->
