@@ -13,7 +13,7 @@ $headers = @{
 }
 
 $buildVersion = $Env:APPVEYOR_BUILD_VERSION
-$accountName = "TortoiseSI"
+$accountName = "PTC-ALM"
 $projectSlug = "TortoiseSI"
 
 # determine root directory
