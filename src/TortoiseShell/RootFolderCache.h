@@ -23,7 +23,10 @@
 class RootFolderCache {
 public:
 	RootFolderCache(const IntegritySession& integritySession) 
-		: integritySession(integritySession){ forceRefresh(); };
+		: refreshInProgress(false),
+		integritySession(integritySession){
+		forceRefresh();
+	};
 
 	bool isPathControlled(std::wstring path);
 	void forceRefresh();
@@ -31,6 +34,7 @@ public:
 private:
 	const IntegritySession& integritySession;
 
+	bool refreshInProgress;
 	std::mutex lockObject;
 	std::chrono::time_point<std::chrono::system_clock> lastRefresh;
 	std::vector<std::wstring> rootFolders;
