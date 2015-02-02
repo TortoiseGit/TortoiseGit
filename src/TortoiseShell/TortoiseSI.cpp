@@ -145,7 +145,7 @@ STDAPI DllGetClassObject(REFCLSID rclsid, REFIID riid, LPVOID *ppvOut)
 		state = FileStateReadOnly;
 	else if (IsEqualIID(rclsid, CLSID_TortoiseSI_LOCKED))
 		state = FileStateLockedOverlay;
-	else if (IsEqualIID(rclsid, CLSID_Tortoisegit_ADDED))
+	else if (IsEqualIID(rclsid, CLSID_TortoiseSI_ADDED))
 		state = FileStateAddedOverlay;
 	else if (IsEqualIID(rclsid, CLSID_TortoiseSI_IGNORED))
 		state = FileStateIgnoredOverlay;

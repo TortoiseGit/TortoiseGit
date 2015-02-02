@@ -24,10 +24,11 @@ skip_tags: true
 #    environment configuration    #
 #---------------------------------#
 environment:
-  VisualStudioVersion: 11.0
-  
+  secureToken:
+    secure: S8Q6K2kx6/7Z6nZnEqmtVuVqAP640GMMYRmXXptacuQ=
+
 # Operating system (build VM template)
-#os: Windows Server 2012
+os: unstable
 
 # scripts that are called at very beginning, before repo cloning
 init:
@@ -50,8 +51,6 @@ matrix:
 install:
   # by default, all script lines are interpreted as batch
   - echo Repository cloned
-  - echo "APPVEYOR_BUILD_VERSION ->"
-  - echo %APPVEYOR_BUILD_VERSION%
 
 #---------------------------------#
 #       build configuration       #
@@ -87,10 +86,13 @@ build:
  
 # scripts to run before build
 before_build:
- 
+  - ps: .\updateInstallerVersion.ps1
+  - ps: .\downloadDLL.ps1
+
 # scripts to run after build
 after_build:
- 
+  - ps: .\pushArtifacts.ps1
+
 # to run your custom scripts instead of automatic MSBuild
 build_script:
  
@@ -111,11 +113,6 @@ build_script:
 #---------------------------------#
 # Tells AppVeyor which file and folders should be uploaded to AppVeyor cloud storage
 # during the build
-
-artifacts:
-
-  # relative to root of repository
-  - path: bin\setup
 
 #---------------------------------#
 #     deployment configuration    #
