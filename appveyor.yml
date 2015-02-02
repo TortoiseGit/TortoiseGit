@@ -25,7 +25,7 @@ skip_tags: true
 #---------------------------------#
 environment:
   secureToken:
-    secure: S8Q6K2kx6/7Z6nZnEqmtVuVqAP640GMMYRmXXptacuQ=
+    secure: gIOwKs8sHD6nNd1D9V5vNarX5fpq4a2a6yX0nvZGhP4=
 
 # Operating system (build VM template)
 os: unstable
@@ -145,4 +145,8 @@ notifications:
   # Email
   - provider: Email
     to:
+      - krtaylor@ptc.com
+      - gisraeli@ptc.com
+      - crovers@ptc.com
+      - szhao@ptc.com
       - bleskowsky@ptc.com
