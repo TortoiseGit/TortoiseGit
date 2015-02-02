@@ -46,7 +46,7 @@ public:
 	~IntegritySession();
 
 	std::unique_ptr<IntegrityResponse> execute(const IntegrityCommand& command) const;
-	std::shared_future<std::unique_ptr<IntegrityResponse>> executeAsync(const IntegrityCommand& command) const;
+	std::future<std::unique_ptr<IntegrityResponse>> executeAsync(const IntegrityCommand& command) const;
 
 private:
 	mksIntegrationPoint ip;

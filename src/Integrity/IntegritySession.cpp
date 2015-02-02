@@ -143,6 +143,6 @@ std::unique_ptr<IntegrityResponse> IntegritySession::execute(const IntegrityComm
 	return NULL;
 };
 
-std::shared_future<std::unique_ptr<IntegrityResponse>> IntegritySession::executeAsync(const IntegrityCommand& command) const {
+std::future<std::unique_ptr<IntegrityResponse>> IntegritySession::executeAsync(const IntegrityCommand& command) const {
 	return std::async(std::launch::async, [&]() { return this->execute(command); } );
 }
