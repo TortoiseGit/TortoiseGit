@@ -46,7 +46,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 	{
 		return Initialize_Wrap(pIDFolder, pDataObj, hRegKey);
 	}
-	__except(CCrashReport::Instance().SendReport(GetExceptionInformation()))
+	__except (HandleException(GetExceptionInformation()))
 	{
 	}
 	return E_FAIL;
@@ -761,7 +761,7 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu,
 	{
 		return QueryContextMenu_Wrap(hMenu, indexMenu, idCmdFirst, idCmdLast, uFlags);
 	}
-	__except(CCrashReport::Instance().SendReport(GetExceptionInformation()))
+	__except (HandleException(GetExceptionInformation()))
 	{
 	}
 	return E_FAIL;
@@ -1110,7 +1110,7 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 	{
 		return InvokeCommand_Wrap(lpcmi);
 	}
-	__except(CCrashReport::Instance().SendReport(GetExceptionInformation()))
+	__except (HandleException(GetExceptionInformation()))
 	{
 	}
 	return E_FAIL;
@@ -1487,7 +1487,7 @@ STDMETHODIMP CShellExt::GetCommandString(UINT_PTR idCmd,
 	{
 		return GetCommandString_Wrap(idCmd, uFlags, reserved, pszName, cchMax);
 	}
-	__except(CCrashReport::Instance().SendReport(GetExceptionInformation()))
+	__except (HandleException(GetExceptionInformation()))
 	{
 	}
 	return E_FAIL;
@@ -1573,7 +1573,7 @@ STDMETHODIMP CShellExt::HandleMenuMsg(UINT uMsg, WPARAM wParam, LPARAM lParam)
 	{
 		return HandleMenuMsg_Wrap(uMsg, wParam, lParam);
 	}
-	__except(CCrashReport::Instance().SendReport(GetExceptionInformation()))
+	__except (HandleException(GetExceptionInformation()))
 	{
 	}
 	return E_FAIL;
@@ -1591,7 +1591,7 @@ STDMETHODIMP CShellExt::HandleMenuMsg2(UINT uMsg, WPARAM wParam, LPARAM lParam, 
 	{
 		return HandleMenuMsg2_Wrap(uMsg, wParam, lParam, pResult);
 	}
-	__except(CCrashReport::Instance().SendReport(GetExceptionInformation()))
+	__except (HandleException(GetExceptionInformation()))
 	{
 	}
 	return E_FAIL;

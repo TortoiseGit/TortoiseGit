@@ -277,7 +277,7 @@ UINT __stdcall CShellExt::CopyCallback(HWND hWnd, UINT wFunc, UINT wFlags, LPCTS
 	{
 		return CopyCallback_Wrap(hWnd, wFunc, wFlags, pszSrcFile, dwSrcAttribs, pszDestFile, dwDestAttribs);
 	}
-	__except(CCrashReport::Instance().SendReport(GetExceptionInformation()))
+	__except (HandleException(GetExceptionInformation()))
 	{
 	}
 	return IDYES;

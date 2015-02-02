@@ -37,7 +37,7 @@ STDMETHODIMP CShellExt::GetOverlayInfo(LPWSTR pwszIconFile, int cchMax, int* pIn
 	{
 		return GetOverlayInfo_Wrap(pwszIconFile, cchMax, pIndex, pdwFlags);
 	}
-	__except(CCrashReport::Instance().SendReport(GetExceptionInformation()))
+	__except (HandleException(GetExceptionInformation()))
 	{
 	}
 	return E_FAIL;
@@ -87,7 +87,7 @@ STDMETHODIMP CShellExt::GetPriority(int *pPriority)
 	{
 		return GetPriority_Wrap(pPriority);
 	}
-	__except(CCrashReport::Instance().SendReport(GetExceptionInformation()))
+	__except (HandleException(GetExceptionInformation()))
 	{
 	}
 	return E_FAIL;
@@ -141,7 +141,7 @@ STDMETHODIMP CShellExt::IsMemberOf(LPCWSTR pwszPath, DWORD dwAttrib)
 	{
 		return IsMemberOf_Wrap(pwszPath, dwAttrib);
 	}
-	__except(CCrashReport::Instance().SendReport(GetExceptionInformation()))
+	__except (HandleException(GetExceptionInformation()))
 	{
 	}
 	return E_FAIL;
