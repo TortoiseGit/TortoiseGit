@@ -33,7 +33,7 @@ ShellObjects::~ShellObjects()
 void ShellObjects::Insert(CShellExt * obj)
 {
 	AutoLocker lock(m_critSec);
-	m_exts.insert(ob);
+	m_exts.insert(obj);
 }
 
 void ShellObjects::Erase(CShellExt * obj)
