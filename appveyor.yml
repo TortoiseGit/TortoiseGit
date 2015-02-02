@@ -145,10 +145,4 @@ notifications:
   # Email
   - provider: Email
     to:
-      - gisraeli@ptc.com
-      - krtaylor@ptc.com
-      - szhao@ptc.com
       - bleskowsky@ptc.com
-    subject: 'Build {{status}}: {{projectName}} {{buildVersion}}'
-    message: "{{message}}, {{commitId}}, ..."
-    on_build_status_changed: true
