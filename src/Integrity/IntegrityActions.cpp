@@ -51,7 +51,7 @@ namespace IntegrityActions {
 
 		std::future<std::unique_ptr<IntegrityResponse>> responseFuture = session.executeAsync(command);
 
-		std::future_status::future_status status = responseFuture.wait_for(std::chrono::seconds(10));
+		std::future_status status = responseFuture.wait_for(std::chrono::seconds(10));
 		if (status != std::future_status::ready) {
 			EventLog::writeWarning(L"get status timeout for " + file);
 
