@@ -277,8 +277,7 @@ Don't touch these lines:
 						<row>
 							<entry condition="pot">:cleanup</entry>
 							<entry>
-								Cleans up interrupted or aborted operations and
-								unlocks the working tree in <option>/path</option>.
+								Cleans up the working tree in <option>/path</option>.
 							</entry>
 						</row>
 						<row>
@@ -307,10 +306,8 @@ Don't touch these lines:
 						<row>
 							<entry condition="pot">:export</entry>
 							<entry>
-								Exports the working tree in <option>/path</option>
-								to another directory. If the <option>/path</option>
-								points to an unversioned directory, a dialog will ask
-								for an URL to export to the directory in <option>/path</option>.
+								Exports a revision of the repository in <option>/path</option>
+								to a zip file.
 							</entry>
 						</row>
 						<row>
@@ -318,17 +315,6 @@ Don't touch these lines:
 							<entry>
 								Opens the merge dialog. The <option>/path</option> specifies the
 								target directory.
-<!--
-								For merging a revision range, the following options are available:
-								<option>/fromurl:URL</option>,
-								<option>/revrange:string</option>.
-								For merging two repository trees, the following options are available:
-								<option>/fromurl:URL</option>,
-								<option>/tourl:URL</option>,
-								<option>/fromrev:xxx</option> and 
-								<option>/torev:xxx</option>.
-								These pre-fill the relevant fields in the merge dialog.
--->
 							</entry>
 						</row>
 						<!--
@@ -367,8 +353,10 @@ Don't touch these lines:
 							<entry>
 								Renames the file in <option>/path</option>. The new
 								name for the file is asked with a dialog.
+<!--
 								To avoid the question about renaming similar files
 								in one step, pass <option>/noquestion</option>.
+-->
 							</entry>
 						</row>
 						<row>
@@ -403,6 +391,7 @@ Don't touch these lines:
 								a dialog with a list of files that have changed (filtered by a possibly entered subpath) or if 
 								the path point to a file starts the diff viewer for 
 								those the file in the different revisions.
+								Use <option>/revision1:xxx</option> and <option>/revision2:xxx</option> to specify the revisions to compare.
 								</para>
 							</entry>
 						</row>
@@ -442,8 +431,8 @@ Don't touch these lines:
 							<entry condition="pot">:ignore</entry>
 							<entry>
 								Adds all targets in <option>/path</option> to the
-								ignore list, i.e. adds the <literal>.gitignore</literal>
-								file to those files.
+								ignore list, i.e. adds file(s) to the <literal>.gitignore</literal>
+								file.
 							</entry>
 						</row>
 						<row>
@@ -486,69 +475,76 @@ Don't touch these lines:
 						<row>
 							<entry condition="pot">:pull</entry>
 							<entry>
-								Pull change from remote repository
+								Opens the pull dialog in the working tree located in
 								<option>/path</option>.
 							</entry>
 						</row>
 						<row>
 							<entry condition="pot">:push</entry>
 							<entry>
-								Push change to remote repository
+								Opens the push dialog in the working tree located in
 								<option>/path</option>.
 							</entry>
 						</row>
 						<row>
 							<entry condition="pot">:rebase</entry>
 							<entry>
-								Rebase commits to special commit.
+								Opens the rebase dialog for the working tree located in
 								<option>/path</option>.
 							</entry>
 						</row>
 						<row>
 							<entry condition="pot">:stashsave</entry>
 							<entry>
-								<option>/path. A prefilled mesage can be achieved by using the <option>/msg</option> parameter.</option>.
+								Opens the stash save dialog for the working tree located in
+								<option>/path</option>. A prefilled mesage can be achieved by using the <option>/msg</option> parameter.
 							</entry>
 						</row>
 						<row>
 							<entry condition="pot">:stashapply</entry>
 							<entry>
+								Applies to latest stash to the working tree located in
 								<option>/path</option>.
 							</entry>
 						</row>
 						<row>
 							<entry condition="pot">:stashpop</entry>
 							<entry>
-								<option>/path</option>.
+								Applies to latest stash to the working tree located in
+								<option>/path</option> and drops the latest stash entry.
 							</entry>
 						</row>
 						<row>
 							<entry condition="pot">:subadd</entry>
 							<entry>
+								Opens the submodule add dialog.
 								<option>/path</option>.
 							</entry>
 						</row>
 						<row>
 							<entry condition="pot">:subupdate</entry>
 							<entry>
+								Opens the submodule add dialog for and filters the submodules regarding the folder
 								<option>/path</option>.
 							</entry>
 						</row>
 						<row>
 							<entry condition="pot">:subsync</entry>
 							<entry>
+								Opens the submodule sync dialog for the working tree located in
 								<option>/path</option>.
 							</entry>
 						</row>
 						<row>
 							<entry condition="pot">:reflog</entry>
 							<entry>
-								<option>/path</option>.
+								Opens the reflog dialog for the repository located in <option>/path</option>.
 							</entry>
 						</row>
 						<row>
 							<entry condition="pot">:refbrowse</entry>
 							<entry>
+								Opens the browse references dialog for the repository located in
 								<option>/path</option>.
 							</entry>
 						</row>
@@ -562,7 +558,7 @@ Don't touch these lines:
 						<row>
 							<entry condition="pot">:revisiongraph</entry>
 							<entry>
-								Shows the revision graph for the path given in
+								Shows the revision graph for the repository given in
 								<option>/path</option>.
 								<para>
 								To create an image file of the revision graph for a specific path, but
@@ -583,7 +579,7 @@ Don't touch these lines:
 						<row>
 							<entry condition="pot">:daemon</entry>
 							<entry>
-								Launch Git Daemon for the path given in
+								Launch Git Daemon for the repository given in
 								<option>/path</option>.
 							</entry>
 						</row>
