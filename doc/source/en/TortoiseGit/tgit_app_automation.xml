@@ -130,7 +130,7 @@ Don't touch these lines:
 						<row>
 							<entry condition="pot">:bisect</entry>
 							<entry>
-								Allows to control the bisect logic of TortoiseGit.
+								Allows to control the <link linkend="tgit-dug-bisect">bisect logic</link> of TortoiseGit.
 								Use the <option>/start</option> parameter to start a bisect you can specify <option>/good:REF</option> and <option>/bad:REF</option> here).
 								When bisect is active, you can use <option>/good</option>, <option>/bad</option> and <option>/reset</option> to control the bisect process.
 							</entry>
@@ -138,14 +138,14 @@ Don't touch these lines:
 						<row>
 							<entry condition="pot">:fetch</entry>
 							<entry>
-								Opens the fetch dialog.
+								Opens the <link linkend="tgit-dug-pull">fetch dialog</link>.
 								Use the <option>/remote</option> parameter to control the remote which should be pre-selected.
 							</entry>
 						</row>
 						<row>
 							<entry condition="pot">:log</entry>
 							<entry>
-								Opens the log dialog. The <option>/path</option> specifies the
+								Opens the <link linkend="tgit-dug-showlog">log dialog</link>. The <option>/path</option> specifies the
 								file or folder for which the log should be shown.
 								Additional options can be set:
 								<option>/rev:"SHA1"</option> highlights and automatically scrolls to the specified revision,
@@ -207,7 +207,7 @@ Don't touch these lines:
 						<row>
 							<entry condition="pot">:clone</entry>
 							<entry>
-								Opens the clone dialog.
+								Opens the <link linkend="tgit-dug-clone">clone dialog</link>.
 								The <option>/url</option> specifies the URL to clone from.
 								The <option>/path</option> specifies the target directory
 								to clone to.
@@ -245,7 +245,7 @@ Don't touch these lines:
 						<row>
 							<entry condition="pot">:commit</entry>
 							<entry>
-								Opens the commit dialog. The <option>/path</option> specifies the
+								Opens the <link linkend="tgit-dug-commit">commit dialog</link>. The <option>/path</option> specifies the
 								target directory or the list of files to commit.
 								You can also specify the <option>/logmsg</option> switch
 								to pass a predefined log message to the commit dialog.
@@ -277,7 +277,7 @@ Don't touch these lines:
 						<row>
 							<entry condition="pot">:cleanup</entry>
 							<entry>
-								Cleans up the working tree in <option>/path</option>.
+								<link linkend="tgit-dug-cleanup">Cleans up the working tree</link> in <option>/path</option>.
 							</entry>
 						</row>
 						<row>
@@ -293,27 +293,27 @@ Don't touch these lines:
 						<row>
 							<entry condition="pot">:repocreate</entry>
 							<entry>
-								Creates a repository in <option>/path</option>
+								<link linkend="tgit-dug-create">Creates a repository</link> in <option>/path</option>
 							</entry>
 						</row>
 						<row>
 							<entry condition="pot">:switch</entry>
 							<entry>
-								Opens the switch dialog. The <option>/path</option> specifies the
+								Opens the <link linkend="tgit-dug-checkout">switch dialog</link>. The <option>/path</option> specifies the
 								target directory.
 							</entry>
 						</row>
 						<row>
 							<entry condition="pot">:export</entry>
 							<entry>
-								Exports a revision of the repository in <option>/path</option>
+								<link linkend="tgit-dug-export">Exports a revision</link> of the repository in <option>/path</option>
 								to a zip file.
 							</entry>
 						</row>
 						<row>
 							<entry condition="pot">:merge</entry>
 							<entry>
-								Opens the merge dialog. The <option>/path</option> specifies the
+								Opens the <link linkend="tgit-dug-merge">merge dialog</link>. The <option>/path</option> specifies the
 								target directory.
 							</entry>
 						</row>
@@ -338,7 +338,7 @@ Don't touch these lines:
 						<row>
 							<entry condition="pot">:settings</entry>
 							<entry>
-								Opens the settings dialog.
+								Opens the <link linkend="tgit-dug-settings">settings dialog</link>.
 							</entry>
 						</row>
 						<row>
@@ -419,7 +419,7 @@ Don't touch these lines:
 						<row>
 							<entry condition="pot">:repobrowser</entry>
 							<entry>
-								Starts the repository browser dialog, pointing to
+								Starts the <link linkend="tgit-dug-repobrowser">repository browser dialog</link>, pointing to
 								the working tree given in <option>/path</option>.
 								An additional option <option>/rev:xxx</option> can
 								be used to specify the revision which the repository
@@ -439,7 +439,7 @@ Don't touch these lines:
 							<entry condition="pot">:blame</entry>
 							<entry>
 								<para>
-								Opens the blame dialog for the file specified 
+								Opens <link linkend="tgit-dug-blame">TortoiseGitBlame</link> for the file specified 
 								in <option>/path</option>.
 								</para>
 								<para>
@@ -475,28 +475,28 @@ Don't touch these lines:
 						<row>
 							<entry condition="pot">:pull</entry>
 							<entry>
-								Opens the pull dialog in the working tree located in
+								Opens the <link linkend="tgit-dug-pull">pull dialog</link> in the working tree located in
 								<option>/path</option>.
 							</entry>
 						</row>
 						<row>
 							<entry condition="pot">:push</entry>
 							<entry>
-								Opens the push dialog in the working tree located in
+								Opens the <link linkend="tgit-dug-push">push dialog</link> in the working tree located in
 								<option>/path</option>.
 							</entry>
 						</row>
 						<row>
 							<entry condition="pot">:rebase</entry>
 							<entry>
-								Opens the rebase dialog for the working tree located in
+								Opens the <link linkend="tgit-dug-rebase">rebase dialog</link> for the working tree located in
 								<option>/path</option>.
 							</entry>
 						</row>
 						<row>
 							<entry condition="pot">:stashsave</entry>
 							<entry>
-								Opens the stash save dialog for the working tree located in
+								Opens the <link linkend="tgit-dug-stash">stash save dialog</link> for the working tree located in
 								<option>/path</option>. A prefilled mesage can be achieved by using the <option>/msg</option> parameter.
 							</entry>
 						</row>
@@ -517,21 +517,21 @@ Don't touch these lines:
 						<row>
 							<entry condition="pot">:subadd</entry>
 							<entry>
-								Opens the submodule add dialog.
+								Opens the <link linkend="tgit-dug-submodules">submodule add dialog</link>.
 								<option>/path</option>.
 							</entry>
 						</row>
 						<row>
 							<entry condition="pot">:subupdate</entry>
 							<entry>
-								Opens the submodule add dialog for and filters the submodules regarding the folder
+								Opens the <link linkend="tgit-dug-submodules">submodule update dialog</link> for and filters the submodules regarding the folder
 								<option>/path</option>.
 							</entry>
 						</row>
 						<row>
 							<entry condition="pot">:subsync</entry>
 							<entry>
-								Opens the submodule sync dialog for the working tree located in
+								Syncs the submodule information for the working tree located in
 								<option>/path</option>.
 							</entry>
 						</row>
@@ -544,7 +544,7 @@ Don't touch these lines:
 						<row>
 							<entry condition="pot">:refbrowse</entry>
 							<entry>
-								Opens the browse references dialog for the repository located in
+								Opens the <link linkend="tgit-dug-browse-ref">browse references dialog</link> for the repository located in
 								<option>/path</option>.
 							</entry>
 						</row>
@@ -558,7 +558,7 @@ Don't touch these lines:
 						<row>
 							<entry condition="pot">:revisiongraph</entry>
 							<entry>
-								Shows the revision graph for the repository given in
+								Shows the <link linkend="tgit-dug-revgraph">revision graph</link> for the repository given in
 								<option>/path</option>.
 								<para>
 								To create an image file of the revision graph for a specific path, but
@@ -579,7 +579,7 @@ Don't touch these lines:
 						<row>
 							<entry condition="pot">:daemon</entry>
 							<entry>
-								Launch Git Daemon for the repository given in
+								Launches the <link linkend="tgit-dug-daemon">Git Daemon</link> for the repository given in
 								<option>/path</option>.
 							</entry>
 						</row>
