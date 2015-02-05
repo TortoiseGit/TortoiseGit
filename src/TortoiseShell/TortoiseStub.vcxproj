@@ -62,14 +62,10 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\Utils\Debug.cpp" />
     <ClCompile Include="TortoiseStub.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="TortoiseStub.def" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\Utils\Debug.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="TortoiseStub.rc" />

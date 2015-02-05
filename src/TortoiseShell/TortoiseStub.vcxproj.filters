@@ -13,16 +13,10 @@
       <UniqueIdentifier>{20d5bf6b-6b47-4967-a7c3-407e72e2acd0}</UniqueIdentifier>
       <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
     </Filter>
-    <Filter Include="Utils">
-      <UniqueIdentifier>{dae29164-1498-483f-a993-6a742bb7fc31}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TortoiseStub.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Utils\Debug.cpp">
-      <Filter>Utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -34,10 +28,5 @@
     <ResourceCompile Include="TortoiseStub.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\Utils\Debug.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>
