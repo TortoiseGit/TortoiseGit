@@ -30,6 +30,7 @@ public:
 
 	bool isPathControlled(std::wstring path);
 	void forceRefresh();
+	std::vector<std::wstring> getRootFolders();
 
 private:
 	const IntegritySession& integritySession;
@@ -42,3 +43,5 @@ private:
 	bool refreshIfStale();
 	void updateFoldersList();
 };
+
+extern bool startsWith(std::wstring text, std::wstring prefix);

@@ -23,7 +23,7 @@
 // Initialize GUIDs (should be done only and at-least once per DLL/EXE)
 #include <initguid.h>
 #include "Guids.h"
-
+#include "UnicodeUtils.h"
 #include "ShellExt.h"
 #include "ShellObjects.h"
 #include "..\version.h"
@@ -245,4 +245,11 @@ namespace EventLog {
 			EventLog::writeInformation(info);
 		}
 	}
+}
+
+std::wstring getTortoiseSIString(DWORD stringID)
+{
+	wchar_t buffer[1024];
+	LoadStringEx(g_hResInst, stringID, buffer, _countof(buffer), (WORD)CRegStdDWORD(_T("Software\\TortoiseSI\\LanguageID"), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT)));
+	return buffer;
 }

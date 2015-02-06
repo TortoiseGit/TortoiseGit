@@ -22,6 +22,13 @@
 #include "IntegrityActions.h"
 #include "ShellExt.h"
 
+std::vector<std::wstring> RootFolderCache::getRootFolders()
+{
+	std::lock_guard<std::mutex> lock(lockObject);
+
+	return rootFolders;
+};
+
 bool RootFolderCache::refreshIfStale() 
 {
 	std::lock_guard<std::mutex> lock( lockObject );

@@ -179,18 +179,15 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 
 void CShellExt::InsertSIMenu(HMENU menu, UINT pos, UINT_PTR id, UINT idCmdFirst, MenuInfo& menuInfo)
 {
-	TCHAR menutextbuffer[512] = {0};
+	std::wstring menutext = getTortoiseSIString(menuInfo.menuTextID);
 	TCHAR verbsbuffer[255] = {0};
-	MAKESTRING(menuInfo.menuTextID);
-
-	_tcscat_s(menutextbuffer, 255, stringtablebuffer);
 
 	MENUITEMINFO menuiteminfo;
 	SecureZeroMemory(&menuiteminfo, sizeof(menuiteminfo));
 	menuiteminfo.cbSize = sizeof(menuiteminfo);
 	menuiteminfo.fMask = MIIM_FTYPE | MIIM_ID | MIIM_STRING;
 	menuiteminfo.fType = MFT_STRING;
-	menuiteminfo.dwTypeData = menutextbuffer;
+	menuiteminfo.dwTypeData = (LPWSTR)menutext.c_str();
 	if (menuInfo.iconID)
 	{
 		menuiteminfo.fMask |= MIIM_BITMAP;
@@ -200,8 +197,7 @@ void CShellExt::InsertSIMenu(HMENU menu, UINT pos, UINT_PTR id, UINT idCmdFirst,
 	InsertMenuItem(menu, pos, TRUE, &menuiteminfo);
 
 	LoadString(g_hResInst, menuInfo.menuTextID, verbsbuffer, _countof(verbsbuffer));
-	_tcscat_s(menutextbuffer, 255, verbsbuffer);
-	stdstring verb = stdstring(menutextbuffer);
+	std::wstring verb = verbsbuffer;
 	if (verb.find('&') != -1)
 	{
 		verb.erase(verb.find('&'),1);
@@ -319,7 +315,6 @@ STDMETHODIMP CShellExt::QueryContextMenu_Wrap(HMENU hMenu,
                                               UINT /*idCmdLast*/,
                                               UINT uFlags)
 {
-	//CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Shell :: QueryContextMenu itemStates=%ld\n", itemStates);
 	PreserveChdir preserveChdir;
 
 	//first check if our drop handler is called
@@ -461,12 +456,13 @@ STDMETHODIMP CShellExt::QueryContextMenu_Wrap(HMENU hMenu,
 	//add sub menu to main context menu
 	//don't use InsertMenu because this will lead to multiple menu entries in the explorer file menu.
 	//see http://support.microsoft.com/default.aspx?scid=kb;en-us;214477 for details of that.
-	MAKESTRING(IDS_MENU);
+	std::wstring menuName = getTortoiseSIString(IDS_MENU);
+
 	MENUITEMINFO menuiteminfo;
 	SecureZeroMemory(&menuiteminfo, sizeof(menuiteminfo));
 	menuiteminfo.cbSize = sizeof(menuiteminfo);
 	menuiteminfo.fType = MFT_STRING;
- 	menuiteminfo.dwTypeData = stringtablebuffer;
+	menuiteminfo.dwTypeData = (LPWSTR)menuName.c_str();
 
 	menuiteminfo.fMask = MIIM_FTYPE | MIIM_ID | MIIM_SUBMENU | MIIM_DATA | MIIM_STRING;
 	menuiteminfo.fMask |= MIIM_BITMAP;
@@ -531,7 +527,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 		std::map<UINT_PTR, MenuInfo*>::const_iterator id_it = myIDMap.lower_bound(idCmd);
 		if (id_it != myIDMap.end() && id_it->first == idCmd)
 		{
-			id_it->second->siCommand(this);
+			id_it->second->siCommand(this, lpcmi->hwnd);
 			hr = S_OK;
 		} // if (id_it != myIDMap.end() && id_it->first == idCmd)
 	} // if (files_.empty() || folder_.empty())
@@ -574,22 +570,20 @@ STDMETHODIMP CShellExt::GetCommandString_Wrap(UINT_PTR idCmd,
 	LoadLangDll();
 	HRESULT hr = E_INVALIDARG;
 
-	MAKESTRING(id_it->second->menuID);
+	std::wstring menuDescription = getTortoiseSIString(id_it->second->menuDescID);
 
-	const TCHAR * desc = stringtablebuffer;
 	switch(uFlags)
 	{
 	case GCS_HELPTEXTA:
 		{
-			std::string help = WideToMultibyte(desc);
+			std::string help = WideToMultibyte(menuDescription.c_str());
 			lstrcpynA(pszName, help.c_str(), cchMax);
 			hr = S_OK;
 			break;
 		}
 	case GCS_HELPTEXTW:
 		{
-			wide_string help = desc;
-			lstrcpynW((LPWSTR)pszName, help.c_str(), cchMax);
+			lstrcpynW((LPWSTR)pszName, menuDescription.c_str(), cchMax);
 			hr = S_OK;
 			break;
 		}

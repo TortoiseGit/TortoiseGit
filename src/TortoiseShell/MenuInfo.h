@@ -37,6 +37,6 @@ struct MenuInfo
 	UINT				iconID;			///< the icon to show for the menu entry
 	UINT				menuTextID;		///< the text of the menu entry
 	UINT				menuDescID;		///< the description text for the menu entry
-	std::function<void(CShellExt*)>		siCommand;
-	std::function<bool(CShellExt*)>		enable;
+	std::function<void(CShellExt*, HWND)>	siCommand;
+	std::function<bool(CShellExt*)>			enable;
 };

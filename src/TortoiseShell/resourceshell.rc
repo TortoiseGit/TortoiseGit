@@ -205,6 +205,7 @@ BEGIN
     IDS_VIEW_SANDBOX        "View Sandbox"
     IDS_CREATE_SANDBOX      "Create Sandbox"
     IDS_MENU                "Tortoise SI"
+    IDS_SANDBOX_NOTALLOWED1 "Can't create Sandbox here becase the following folder already has a Sandbox:"
 END
 
 #endif    // English (United States) resources

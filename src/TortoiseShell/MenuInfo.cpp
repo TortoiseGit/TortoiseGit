@@ -28,7 +28,7 @@
 
 // defaults are specified in ShellCache.h
 
-MenuInfo menuSeperator = { MenuItem::Seperator, 0, 0, 0, [](CShellExt*) {}, [](CShellExt*) { return true; } };
+MenuInfo menuSeperator = { MenuItem::Seperator, 0, 0, 0, [](CShellExt*, HWND) {}, [](CShellExt*) { return true; } };
 
 static const IntegritySession& getIntegritySession() {
 	return ICache::getInstance().getIntegritySession();
@@ -37,7 +37,7 @@ static const IntegritySession& getIntegritySession() {
 std::vector<MenuInfo> menuInfo =
 {
 	{ MenuItem::ViewSandbox, 0, IDS_VIEW_SANDBOX, IDS_VIEW_SANDBOX,
-		[](CShellExt* shell) 
+		[](CShellExt* shell, HWND)
 		{
 			std::wstring path;
 			if (shell->getSelectedItems().size() == 0) {
@@ -56,13 +56,28 @@ std::vector<MenuInfo> menuInfo =
 		}
 	},
 	{ MenuItem::CreateSandbox, 0, IDS_CREATE_SANDBOX, IDS_CREATE_SANDBOX,
-	[](CShellExt* shell)
+		[](CShellExt* shell, HWND parentWindow)
 		{
 			std::wstring path;
 			if (shell->getSelectedItems().size() == 0) {
 				path = shell->getCurrentFolder();
 			} else {
 				path = shell->getSelectedItems().front();
+			}
+
+			std::wstring message;
+			for (std::wstring rootFolder : ICache::getInstance().getRootFolderCache().getRootFolders()) {
+				if (startsWith(rootFolder, path)) {
+					if (message.empty()) {
+						message = getTortoiseSIString(IDS_SANDBOX_NOTALLOWED1);
+					}
+					message += L"\n\t '" + rootFolder + L"'";
+				}
+			}
+
+			if (!message.empty()) {
+				MessageBoxW(parentWindow, message.c_str(), NULL, MB_ICONERROR);
+				return;
 			}
 
 			IntegrityActions::createSandbox(getIntegritySession(), path,

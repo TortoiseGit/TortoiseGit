@@ -54,6 +54,8 @@ extern	void				LoadLangDll();
 extern  CComCriticalSection	g_csGlobalCOMGuard;
 typedef CComCritSecLock<CComCriticalSection> AutoLocker;
 
+extern std::wstring getTortoiseSIString(DWORD stringID);
+
 // The actual OLE Shell context menu handler
 /**
  * \ingroup TortoiseShell
@@ -74,18 +76,15 @@ protected:
 	ULONG	m_cRef;
 	// used by IContextMenu
 	std::map<UINT_PTR, MenuInfo*> myIDMap;
-	std::map<stdstring, UINT_PTR> myVerbsMap;
-	std::map<UINT_PTR, stdstring> myVerbsIDMap;
+	std::map<std::wstring, UINT_PTR> myVerbsMap;
+	std::map<UINT_PTR, std::wstring> myVerbsIDMap;
 	std::wstring	folder_;
 	std::vector<std::wstring> files_;
-	TCHAR stringtablebuffer[255];
 	stdstring ignoredprops;
-	FileStatusFlags		selectedItemsStatus;
+	FileStatusFlags	selectedItemsStatus;
 	bool currentFolderIsControlled;
 
 	IconBitmapUtils		m_iconBitmapUtils;
-
-#define MAKESTRING(ID) LoadStringEx(g_hResInst, ID, stringtablebuffer, _countof(stringtablebuffer), (WORD)CRegStdDWORD(_T("Software\\TortoiseSI\\LanguageID"), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT)))
 public:
 	const std::vector<std::wstring>& getSelectedItems() { return files_; }
 	const std::wstring& getCurrentFolder() { return folder_; }
