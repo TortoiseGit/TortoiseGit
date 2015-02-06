@@ -753,7 +753,7 @@ STDMETHODIMP CShellExt::AddPages_Wrap(LPFNADDPROPSHEETPAGE lpfnAddPage, LPARAM l
 {
 	CString ProjectTopDir;
 
-	for (std::vector<stdstring>::iterator I = files_.begin(); I != files_.end(); ++I)
+	for (std::wstring path : selectedItems)
 	{
 		/*
 		GitStatus svn = GitStatus();
@@ -769,14 +769,14 @@ STDMETHODIMP CShellExt::AddPages_Wrap(LPFNADDPROPSHEETPAGE lpfnAddPage, LPARAM l
 			return S_OK; */
 	}
 
-	if (files_.empty())
+	if (selectedItems.empty())
 		return S_OK;
 
 	LoadLangDll();
 	PROPSHEETPAGE psp;
 	SecureZeroMemory(&psp, sizeof(PROPSHEETPAGE));
 	HPROPSHEETPAGE hPage;
-	CGitPropertyPage *sheetpage = new (std::nothrow) CGitPropertyPage(files_);
+	CGitPropertyPage *sheetpage = new (std::nothrow) CGitPropertyPage(selectedItems);
 
 	psp.dwSize = sizeof (psp);
 	psp.dwFlags = PSP_USEREFPARENT | PSP_USETITLE | PSP_USEICONID | PSP_USECALLBACK;

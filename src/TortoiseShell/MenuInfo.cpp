@@ -65,6 +65,10 @@ std::vector<MenuInfo> menuInfo =
 				path = shell->getSelectedItems().front();
 			}
 
+			std::transform(path.begin(), path.end(), path.begin(), ::tolower);
+
+			// show the user where the sandboxes when they are decandants of the current folder since 
+			// it may not be obvious to the user why they can't create a sandbox here
 			std::wstring message;
 			for (std::wstring rootFolder : ICache::getInstance().getRootFolderCache().getRootFolders()) {
 				if (startsWith(rootFolder, path)) {
