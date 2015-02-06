@@ -196,6 +196,12 @@
     <ClInclude Include="RootFolderCache.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DebugEventLog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MenuInfo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Resources\checkout.ico">

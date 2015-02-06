@@ -14,11 +14,10 @@ class SmallFixedInProcessCache : public ICache {
 public:
 	SmallFixedInProcessCache();
 
-	virtual FileStatusFlags getStatus(std::wstring fileName);
-	virtual bool isPathControlled(std::wstring path);
-	virtual void refresh(std::wstring path);
+	virtual FileStatusFlags getFileStatus(std::wstring fileName);
 	virtual void clear(std::wstring path);
 
+	virtual RootFolderCache& getRootFolderCache(){ return *rootFolderCache;  };
 	virtual IntegritySession& getIntegritySession() { return *integritySession; };
 	
 private:
@@ -61,7 +60,6 @@ int getIntegrationPoint()
 	integrationPointKey.read();
 
 	int port = (DWORD)integrationPointKey;
-
 	return port;
 }
 
@@ -69,7 +67,7 @@ SmallFixedInProcessCache::SmallFixedInProcessCache()
 {
 	int port = getIntegrationPoint();
 
-	if (port > 0) {
+	if (port > 0 && port <= std::numeric_limits<unsigned short>::max()) {
 		integritySession = std::unique_ptr<IntegritySession>(new IntegritySession("localhost", port));
 	} else {
 		integritySession = std::unique_ptr<IntegritySession>(new IntegritySession());
@@ -116,7 +114,7 @@ void SmallFixedInProcessCache::addCachedStatus(const std::wstring& path, FileSta
 	cachedStatus[oldestEntryIndex].age = ++lastAge;
 }
 
-FileStatusFlags SmallFixedInProcessCache::getStatus(std::wstring fileName)
+FileStatusFlags SmallFixedInProcessCache::getFileStatus(std::wstring fileName)
 {
 	CachedResult result = findCachedStatus(fileName);
 	if (result.valid) {
@@ -140,21 +138,6 @@ void SmallFixedInProcessCache::clear(std::wstring path) {
 			return;
 		}
 	}
-}
-
-bool SmallFixedInProcessCache::isPathControlled(std::wstring path)
-{
-	return rootFolderCache->isPathControlled(path);
-}
-
-void SmallFixedInProcessCache::refresh(std::wstring path) {
-	rootFolderCache->forceRefresh();
-
-	for (CachedEntry entry : cachedStatus) {
-		entry.path = L"";
-	}
-
-	// TODO? flush wf cache for folders?
 }
 
 ////////////////////////////////////////////////////////////////////////////////

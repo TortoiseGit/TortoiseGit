@@ -82,6 +82,9 @@
 #define IDS_MENUUPDATEEXT               170
 #define IDS_MENUDESCUPDATEEXT           171
 #define IDS_MENUBISECTRESET             171
+#define IDS_VIEW_SANDBOX                172
+#define IDS_CREATE_SANDBOX              173
+#define IDS_MENU                        174
 #define IDS_MENUDIFF                    176
 #define IDS_MENUDESCDIFF                177
 #define IDS_DROPCOPYADDMENU             178

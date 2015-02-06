@@ -18,18 +18,7 @@
 //
 #pragma once
 
-#include "FileStatus.h"
-#include "IntegritySession.h"
-#include "RootFolderCache.h"
-
-class ICache {
-public:
-	virtual FileStatusFlags getFileStatus(std::wstring fileName) = 0;
-	virtual void clear(std::wstring path) = 0;
-	virtual RootFolderCache& getRootFolderCache() = 0;
-
-	// the IntegritySession the cache uses to talk to integrity 
-	virtual IntegritySession& getIntegritySession() = 0;
-
-	static ICache& getInstance();
-};
+// note this check the regsittry to see if debug logging is enabled, DO NOT CALL FROM DllMain!!
+namespace EventLog {
+	extern void writeDebug(std::wstring info);
+}

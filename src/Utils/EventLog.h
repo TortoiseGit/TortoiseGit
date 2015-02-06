@@ -26,6 +26,4 @@ namespace EventLog {
 	void writeError(std::wstring error);
 	void writeInformation(std::wstring info);
 	void writeWarning(std::wstring warning);
-	// note this check the regsittry to see if debug logging is enabled, DO NOT CALL FROM DllMain!!
-	void writeDebug(std::wstring message);
 }

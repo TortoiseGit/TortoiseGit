@@ -28,6 +28,7 @@
 #include "CrashReport.h"
 #include "FileStatus.h"
 #include "../version.h"
+#include "DebugEventLog.h"
 
 extern	volatile LONG		g_cRefThisDll;			// Reference count of this DLL.
 extern	HINSTANCE			g_hmodThisDll;			// Instance handle for this DLL
@@ -61,69 +62,54 @@ typedef CComCritSecLock<CComCriticalSection> AutoLocker;
  * \remark The implementations of the different interfaces are
  * split into several *.cpp files to keep them in a reasonable size.
  */
-class CShellExt : public IContextMenu3,
-							IPersistFile,
+class CShellExt : public IContextMenu,
 							IShellExtInit,
 							IShellIconOverlayIdentifier,
-							IShellPropSheetExt,
-							ICopyHookW
+							IShellPropSheetExt
 
 {
 protected:
-
+	// used by IShellIconOverlayIdentifier to ask which icon we want
 	FileState m_State;
 	ULONG	m_cRef;
-	//std::map<int,std::string> verbMap;
-	std::map<UINT_PTR, UINT_PTR>	myIDMap;
-	std::map<UINT_PTR, UINT_PTR>	mySubMenuMap;
+	// used by IContextMenu
+	std::map<UINT_PTR, MenuInfo*> myIDMap;
 	std::map<stdstring, UINT_PTR> myVerbsMap;
 	std::map<UINT_PTR, stdstring> myVerbsIDMap;
 	std::wstring	folder_;
 	std::vector<std::wstring> files_;
-	DWORD itemStates;				///< see the globals.h file for the ITEMIS_* defines
-	DWORD itemStatesFolder;			///< used for states of the folder_ (folder background and/or drop target folder)
-	std::wstring uuidSource;
-	std::wstring uuidTarget;
-	int space;
 	TCHAR stringtablebuffer[255];
 	stdstring ignoredprops;
-	CRegStdString		regDiffLater;
+	FileStatusFlags		selectedItemsStatus;
+	bool currentFolderIsControlled;
 
-//	GitFolderStatus		m_CachedStatus;		// status cache TODO
-//	CRemoteCacheLink	m_remoteCacheLink;
 	IconBitmapUtils		m_iconBitmapUtils;
 
-#define MAKESTRING(ID) LoadStringEx(g_hResInst, ID, stringtablebuffer, _countof(stringtablebuffer), (WORD)CRegStdDWORD(_T("Software\\TortoiseGit\\LanguageID"), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT)))
-private:
-	void			InsertGitMenu(BOOL istop, HMENU menu, UINT pos, UINT_PTR id, UINT stringid, UINT icon, UINT idCmdFirst, GitCommands com, UINT uFlags);
-	bool			InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, HMENU subMenu, UINT &indexMenu, int &indexSubMenu, unsigned __int64 topmenu, bool bShowIcons, UINT uFlags);
-	LPCTSTR			GetMenuTextFromResource(int id);
-	bool			ShouldInsertItem(const MenuInfo& pair) const;
-	bool			ShouldEnableMenu(const YesNoPair& pair) const;
-	void			TweakMenu(HMENU menu);
-	void			AddPathCommand(tstring& gitCmd, LPCTSTR command, bool bFilesAllowed);
-	void			AddPathFileCommand(tstring& gitCmd, LPCTSTR command);
-	void			AddPathFileDropCommand(tstring& gitCmd, LPCTSTR command);
-	STDMETHODIMP	QueryDropContext(UINT uFlags, UINT idCmdFirst, HMENU hMenu, UINT &indexMenu);
-	bool			IsIllegalFolder(std::wstring folder, int * cslidarray);
-	HRESULT			doesStatusMatch(FileStatusFlags fileStatusFlags);
-	static void		RunCommand(const tstring& path, const tstring& command, LPCTSTR errorMessage);
+#define MAKESTRING(ID) LoadStringEx(g_hResInst, ID, stringtablebuffer, _countof(stringtablebuffer), (WORD)CRegStdDWORD(_T("Software\\TortoiseSI\\LanguageID"), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT)))
+public:
+	const std::vector<std::wstring>& getSelectedItems() { return files_; }
+	const std::wstring& getCurrentFolder() { return folder_; }
+	bool isCurrentFolderControlled() { return currentFolderIsControlled; }
+	FileStatusFlags getSelectedItemsStatus() { return selectedItemsStatus; }
 
-	/** \name IContextMenu2 wrappers
-	 * IContextMenu2 wrapper functions to catch exceptions and send crash reports
+private:
+	void			InsertSIMenu(HMENU menu, UINT pos, UINT_PTR id, UINT idCmdFirst, MenuInfo& menuInfo);
+	bool			InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, HMENU subMenu, UINT &indexMenu, int &indexSubMenu, unsigned __int64 topmenu, bool bShowIcons, UINT uFlags);
+	void			TweakMenu(HMENU menu);
+	STDMETHODIMP	QueryDropContext(UINT uFlags, UINT idCmdFirst, HMENU hMenu, UINT &indexMenu);
+	bool			IsIllegalFolder(std::wstring folder);
+	HRESULT			doesStatusMatch(FileStatusFlags fileStatusFlags);
+	// TODO exclude remote paths
+	bool			IsPathAllowed(std::wstring folder){ return true; };
+	FileStatusFlags	getPathStatus(std::wstring path);
+
+	/** \name IContextMenu wrappers
+	 * IContextMenu wrapper functions to catch exceptions and send crash reports
 	 */
 	//@{
 	STDMETHODIMP	QueryContextMenu_Wrap(HMENU hMenu, UINT indexMenu, UINT idCmdFirst, UINT idCmdLast, UINT uFlags);
 	STDMETHODIMP	InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi);
 	STDMETHODIMP	GetCommandString_Wrap(UINT_PTR idCmd, UINT uFlags, UINT FAR *reserved, LPSTR pszName, UINT cchMax);
-	STDMETHODIMP	HandleMenuMsg_Wrap(UINT uMsg, WPARAM wParam, LPARAM lParam);
-	//@}
-
-	/** \name IContextMenu3 wrappers
-	 * IContextMenu3 wrapper functions to catch exceptions and send crash reports
-	 */
-	//@{
-	STDMETHODIMP	HandleMenuMsg2_Wrap(UINT uMsg, WPARAM wParam, LPARAM lParam, LRESULT *pResult);
 	//@}
 
 	/** \name IShellExtInit wrappers
@@ -150,13 +136,6 @@ private:
 	//STDMETHODIMP	ReplacePage_Wrap(UINT, LPFNADDPROPSHEETPAGE, LPARAM);
 	//@}
 
-	/** \name ICopyHook wrapper
-	 * ICopyHook wrapper functions to catch exceptions and send crash reports
-	 */
-	//@{
-	STDMETHODIMP_(UINT) CopyCallback_Wrap(HWND hWnd, UINT wFunc, UINT wFlags, LPCTSTR pszSrcFile, DWORD dwSrcAttribs, LPCTSTR pszDestFile, DWORD dwDestAttribs);
-	//@}
-
 public:
 	CShellExt(FileState state);
 	virtual ~CShellExt();
@@ -170,40 +149,21 @@ public:
 	STDMETHODIMP_(ULONG) Release();
 	//@}
 
-	/** \name IContextMenu2
-	 * IContextMenu2 members
+	/** \name IContextMenu
+	 * IContextMenu members
 	 */
 	//@{
 	STDMETHODIMP	QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT idCmdFirst, UINT idCmdLast, UINT uFlags);
 	STDMETHODIMP	InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi);
 	STDMETHODIMP	GetCommandString(UINT_PTR idCmd, UINT uFlags, UINT FAR *reserved, LPSTR pszName, UINT cchMax);
-	STDMETHODIMP	HandleMenuMsg(UINT uMsg, WPARAM wParam, LPARAM lParam);
 	//@}
 
-	/** \name IContextMenu3
-	 * IContextMenu3 members
-	 */
-	//@{
-	STDMETHODIMP	HandleMenuMsg2(UINT uMsg, WPARAM wParam, LPARAM lParam, LRESULT *pResult);
-	//@}
 
 	/** \name IShellExtInit
 	 * IShellExtInit methods
 	 */
 	//@{
 	STDMETHODIMP	Initialize(LPCITEMIDLIST pIDFolder, LPDATAOBJECT pDataObj, HKEY hKeyID);
-	//@}
-
-	/** \name IPersistFile
-	 * IPersistFile methods
-	 */
-	//@{
-	STDMETHODIMP	GetClassID(CLSID *pclsid);
-	STDMETHODIMP	Load(LPCOLESTR pszFileName, DWORD dwMode);
-	STDMETHODIMP	IsDirty(void) { return S_OK; };
-	STDMETHODIMP	Save(LPCOLESTR /*pszFileName*/, BOOL /*fRemember*/) { return S_OK; };
-	STDMETHODIMP	SaveCompleted(LPCOLESTR /*pszFileName*/) { return S_OK; };
-	STDMETHODIMP	GetCurFile(LPOLESTR * /*ppszFileName*/) { return S_OK; };
 	//@}
 
 	/** \name IShellIconOverlayIdentifier
@@ -222,12 +182,4 @@ public:
 	STDMETHODIMP	AddPages(LPFNADDPROPSHEETPAGE lpfnAddPage, LPARAM lParam);
 	STDMETHODIMP	ReplacePage (UINT, LPFNADDPROPSHEETPAGE, LPARAM);
 	//@}
-
-	/** \name ICopyHook
-	 * ICopyHook members
-	 */
-	//@{
-	STDMETHODIMP_(UINT) CopyCallback(HWND hWnd, UINT wFunc, UINT wFlags, LPCTSTR pszSrcFile, DWORD dwSrcAttribs, LPCTSTR pszDestFile, DWORD dwDestAttribs);
-	//@}
-
 };

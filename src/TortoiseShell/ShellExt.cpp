@@ -34,13 +34,8 @@ extern ShellObjects g_shellObjects;
 // *********************** CShellExt *************************
 CShellExt::CShellExt(FileState state)
 	: m_State(state)
-	, itemStates(0)
-	, itemStatesFolder(0)
-	, space(0)
-#if ENABLE_CRASHHANLDER
-	, m_crasher(L"TortoiseGit", TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD, TGIT_VERDATE, false)
-#endif
-	,regDiffLater(L"Software\\TortoiseSI\\DiffLater", L"")
+	, selectedItemsStatus(0)
+	, currentFolderIsControlled(false)
 {
 	m_cRef = 0L;
 	InterlockedIncrement(&g_cRefThisDll);
@@ -212,14 +207,6 @@ STDMETHODIMP CShellExt::QueryInterface(REFIID riid, LPVOID FAR *ppv)
 	{
 		*ppv = static_cast<LPCONTEXTMENU>(this);
 	}
-	else if (IsEqualIID(riid, IID_IContextMenu2))
-	{
-		*ppv = static_cast<LPCONTEXTMENU2>(this);
-	}
-	else if (IsEqualIID(riid, IID_IContextMenu3))
-	{
-		*ppv = static_cast<LPCONTEXTMENU3>(this);
-	}
 	else if (IsEqualIID(riid, IID_IShellIconOverlayIdentifier))
 	{
 		*ppv = static_cast<IShellIconOverlayIdentifier*>(this);
@@ -227,10 +214,6 @@ STDMETHODIMP CShellExt::QueryInterface(REFIID riid, LPVOID FAR *ppv)
 	else if (IsEqualIID(riid, IID_IShellPropSheetExt))
 	{
 		*ppv = static_cast<LPSHELLPROPSHEETEXT>(this);
-	}
-	else if (IsEqualIID(riid, IID_IShellCopyHook))
-	{
-		*ppv = static_cast<ICopyHook*>(this);
 	}
 	else
 	{
@@ -256,55 +239,10 @@ STDMETHODIMP_(ULONG) CShellExt::Release()
 	return 0L;
 }
 
-// IPersistFile members
-STDMETHODIMP CShellExt::GetClassID(CLSID *pclsid)
-{
-	if(pclsid == 0)
-		return E_POINTER;
-	*pclsid = CLSID_TortoiseSI_UNCONTROLLED;
-	return S_OK;
-}
-
-STDMETHODIMP CShellExt::Load(LPCOLESTR /*pszFileName*/, DWORD /*dwMode*/)
-{
-	return S_OK;
-}
-
-// ICopyHook member
-UINT __stdcall CShellExt::CopyCallback(HWND hWnd, UINT wFunc, UINT wFlags, LPCTSTR pszSrcFile, DWORD dwSrcAttribs, LPCTSTR pszDestFile, DWORD dwDestAttribs)
-{
-	__try
-	{
-		return CopyCallback_Wrap(hWnd, wFunc, wFlags, pszSrcFile, dwSrcAttribs, pszDestFile, dwDestAttribs);
-	}
-	__except (HandleException(GetExceptionInformation()))
-	{
-	}
-	return IDYES;
-}
-
-UINT __stdcall CShellExt::CopyCallback_Wrap(HWND /*hWnd*/, UINT wFunc, UINT /*wFlags*/, LPCTSTR pszSrcFile, DWORD /*dwSrcAttribs*/, LPCTSTR /*pszDestFile*/, DWORD /*dwDestAttribs*/)
-{
-	switch (wFunc)
-	{
-	case FO_MOVE:
-	case FO_DELETE:
-	case FO_RENAME:
-		if (pszSrcFile && pszSrcFile[0])
-		{
-/*			CString topDir; TODO
-			if (g_GitAdminDir.HasAdminDir(pszSrcFile, &topDir))
-				m_CachedStatus.m_GitStatus.ReleasePath(topDir);
-			m_remoteCacheLink.ReleaseLockForPath(CTGitPath(pszSrcFile));*/
+namespace EventLog {
+	void writeDebug(std::wstring info) {
+		if (g_ShellCache.IsDebugLogging()) {
+			EventLog::writeInformation(info);
 		}
-		break;
-	default:
-		break;
 	}
-
-	// we could now wait a little bit to give the cache time to release the handles.
-	// but the explorer/shell already retries any action for about two seconds
-	// if it first fails. So if the cache hasn't released the handle yet, the explorer
-	// will retry anyway, so we just leave here immediately.
-	return IDYES;
 }

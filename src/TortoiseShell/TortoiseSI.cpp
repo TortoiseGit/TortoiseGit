@@ -68,7 +68,7 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID /* lpReserved */)
 
 	if (!::IsDebuggerPresent())
 	{
-		ATLTRACE("In debug load preventer\n");
+		EventLog::writeInformation(std::wstring(L"In debug load preventer for ") + getProcessFilesName());
 		return FALSE;
 	}
 #endif

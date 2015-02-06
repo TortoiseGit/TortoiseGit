@@ -81,16 +81,41 @@ void writeInformation(std::wstring info) {
 	writeEvent(info, EVENTLOG_INFORMATION_TYPE);
 }
 
+static BOOL IsExplorer()
+{
+	WCHAR ModuleName[MAX_PATH] = { 0 };
+	BOOL isExplorer = FALSE;
+
+	// check if the current process is in fact the explorer
+	DWORD Len = GetModuleFileName(NULL, ModuleName, _countof(ModuleName));
+	if (Len)
+	{
+		WCHAR ExplorerPath[MAX_PATH] = { 0 };
+		Len = ExpandEnvironmentStrings(ExplorerEnvPath, ExplorerPath, _countof(ExplorerPath));
+		if (Len && (Len <= _countof(ExplorerPath)))
+		{
+			isExplorer = !lstrcmpi(ModuleName, ExplorerPath);
+		}
+
+		// we also have to allow the verclsid.exe process - that process determines
+		// first whether the shell is allowed to even use an extension.
+		Len = lstrlen(ModuleName);
+		if ((Len > 13) && (lstrcmpi(&ModuleName[Len - 13], L"\\verclsid.exe")) == 0) {
+			isExplorer = TRUE;
+		}
+	}
+	return isExplorer;
+}
+
 /**
 * \ingroup TortoiseShell
 * Check whether to load the full TortoiseSI.dll or not.
 */
-static BOOL WantRealVersion(void)
+static BOOL WantRealVersion()
 {
 	static const WCHAR ExplorerOnlyValue[] = L"LoadDllOnlyInExplorer";
 
 	DWORD bExplorerOnly = 0;
-	WCHAR ModuleName[MAX_PATH] = { 0 };
 
 	HKEY hKey = HKEY_CURRENT_USER;
 	LONG Result = ERROR;
@@ -106,22 +131,7 @@ static BOOL WantRealVersion(void)
 		if ((Result == ERROR_SUCCESS) && (Type == REG_DWORD) && (Len == sizeof(DWORD)) && bExplorerOnly)
 		{
 			// check if the current process is in fact the explorer
-			Len = GetModuleFileName(NULL, ModuleName, _countof(ModuleName));
-			if (Len)
-			{
-				WCHAR ExplorerPath[MAX_PATH] = { 0 };
-				Len = ExpandEnvironmentStrings(ExplorerEnvPath, ExplorerPath, _countof(ExplorerPath));
-				if (Len && (Len <= _countof(ExplorerPath)))
-				{
-					bWantReal = !lstrcmpi(ModuleName, ExplorerPath);
-				}
-
-				// we also have to allow the verclsid.exe process - that process determines
-				// first whether the shell is allowed to even use an extension.
-				Len = lstrlen(ModuleName);
-				if ((Len > 13) && (lstrcmpi(&ModuleName[Len - 13], L"\\verclsid.exe")) == 0)
-					bWantReal = TRUE;
-			}
+			bWantReal = IsExplorer();
 		}
 
 		RegCloseKey(hKey);
@@ -129,7 +139,7 @@ static BOOL WantRealVersion(void)
 	return bWantReal;
 }
 
-static std::wstring PathToDebugDll()
+static std::wstring PathToDll()
 {
 	WCHAR dllPath[MAX_PATH] = { 0 };
 #ifdef _WIN64
@@ -226,7 +236,7 @@ static void LoadRealLibrary(void)
 	//	hUseInst = NULL;
 	//}
 
-	std::wstring path = PathToDebugDll();
+	std::wstring path = PathToDll();
 
 	if (path.size() == 0) {
 		hTortoiseSI = NIL;
@@ -288,7 +298,7 @@ BOOL WINAPI DllMain(HINSTANCE hInstance, DWORD Reason, LPVOID /*Reserved*/)
 	// this prevents other apps from loading the dll and locking
 	// it.
 
-	if (!IsDebuggerPresent())
+	if (!IsDebuggerPresent() && !IsExplorer())
 	{
 		writeInformation(L"debugger not present, not loading dll");
 		return FALSE;

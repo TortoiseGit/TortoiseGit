@@ -145,7 +145,7 @@ public:
 private:
 	mksCmdRunner commandRunner;
 	mksResponse response;
-	const IntegrityCommand& command;
+	IntegrityCommand command;
 };
 
 class WorkItemIterator {

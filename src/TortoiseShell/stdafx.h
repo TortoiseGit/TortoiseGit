@@ -38,6 +38,7 @@
 #include <atomic>
 #include <regex>
 #include <codecvt>
+#include <functional>
 
 #define CSTRING_AVAILABLE
 
