@@ -158,50 +158,36 @@ STDMETHODIMP CShellExt::IsMemberOf_Wrap(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 		return S_FALSE;
 	}
 
-	// since the shell calls each and every overlay handler with the same filepath
-	// we use a small 'fast' cache of just one path here.
-	// To make sure that cache expires, clear it as soon as one handler is used.
+	FileStatusFlags fileStatus = getPathStatus(path);
 
-	// TODO - do we need this lock?
-	//AutoLocker lock(g_csGlobalCOMGuard);
-
-	/** TODO?
-		if (!g_ShellCache.IsPathAllowed(pPath))
-		{
-			if ((m_State == FileStateVersioned) && g_ShellCache.ShowExcludedAsNormal() &&
-				(PathGetDriveNumber(pPath)>1) &&
-				PathIsDirectory(pPath) && g_ShellCache.HasGITAdminDir(pPath, true))
-			{
-				return S_OK;
-			}
-			return S_FALSE;
-		}
-		*/
-	if ( ICache::getInstance().isPathControlled(path) ) {
-		// TODO PathIsDirectoryW is an expensive call on remote paths
-		if (PathIsDirectoryW(path.c_str())) {
-			if (m_State == FileStateVersioned) {
-				EventLog::writeDebug(std::wstring(L"IShellIconOverlayIdentifier::IsMemberOf ") + path + L" has icon " + 
-					to_wstring(m_State));
-				return S_OK;
-			} else {
-				return S_FALSE;
-			}
-		}
-
-		FileStatusFlags fileStatus = ICache::getInstance().getStatus(path);
-		HRESULT result = doesStatusMatch(fileStatus);
-
-		if (result == S_OK) {
-			ICache::getInstance().clear(path);
-			EventLog::writeDebug(std::wstring(L"IShellIconOverlayIdentifier::IsMemberOf ") + path + L" has icon " + 
-				to_wstring(m_State));
-		}
-		return result;
-	} else {
-		EventLog::writeDebug(std::wstring(L"IShellIconOverlayIdentifier::IsMemberOf is uncontrolled ") + path);
+	HRESULT result = doesStatusMatch(fileStatus);
+	if (result == S_OK) {
+		ICache::getInstance().clear(path);
+		EventLog::writeDebug(std::wstring(L"IShellIconOverlayIdentifier::IsMemberOf ") + path + L" has icon " +
+			to_wstring(m_State));
 	}
-	return S_FALSE;
+	return result;
+}
+
+FileStatusFlags	CShellExt::getPathStatus(std::wstring path)
+{
+	if (IsPathAllowed(path) ){
+		if (ICache::getInstance().getRootFolderCache().isPathControlled(path)) {
+			// TODO PathIsDirectoryW is an expensive call on remote paths
+			if (PathIsDirectoryW(path.c_str())) {
+				return FileStatus::Folder | FileStatus::Member;
+			} else {
+				return ICache::getInstance().getFileStatus(path) | FileStatus::File;
+			}
+		} else {
+			if (PathIsDirectoryW(path.c_str())) {
+				return (FileStatusFlags)FileStatus::Folder;
+			} else {
+				return (FileStatusFlags)FileStatus::File;
+			}
+		}
+	}
+	return (FileStatusFlags)FileStatus::None;
 }
 
 //the priority system of the shell doesn't seem to work as expected (or as I expected):

@@ -52,7 +52,7 @@ namespace IntegrityActions {
 	void resynchronize(const IntegritySession& session, std::wstring path);
 	void resynchronizeByChangePackage(const IntegritySession& session, std::wstring path);
 
-	void createSandbox(const IntegritySession& session, std::wstring path);
+	void createSandbox(const IntegritySession& session, std::wstring path, std::function<void()> onDone);
 	void dropSandbox(const IntegritySession& session, std::wstring path);
 	void retargetSandbox(const IntegritySession& session, std::wstring path);
 

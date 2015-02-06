@@ -18,30 +18,7 @@
 //
 #pragma once
 
-#include "IntegritySession.h"
-
-class RootFolderCache {
-public:
-	RootFolderCache(const IntegritySession& integritySession) 
-		: refreshInProgress(false),
-		integritySession(integritySession){
-		forceRefresh();
-	};
-
-	bool isPathControlled(std::wstring path);
-	void forceRefresh();
-	std::vector<std::wstring> getRootFolders();
-
-private:
-	const IntegritySession& integritySession;
-
-	bool refreshInProgress;
-	std::mutex lockObject;
-	std::chrono::time_point<std::chrono::system_clock> lastRefresh;
-	std::vector<std::wstring> rootFolders;
-
-	bool refreshIfStale();
-	void updateFoldersList();
-};
-
-extern bool startsWith(std::wstring text, std::wstring prefix);
+// note this check the regsittry to see if debug logging is enabled, DO NOT CALL FROM DllMain!!
+namespace EventLog {
+	extern void writeDebug(std::wstring info);
+}

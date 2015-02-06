@@ -19,6 +19,7 @@
 
 #include "stdafx.h"
 #include "IntegritySession.h"
+#include "IntegrityResponse.h"
 
 IntegritySession::IntegritySession()
 {

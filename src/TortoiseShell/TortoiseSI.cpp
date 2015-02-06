@@ -51,13 +51,6 @@ ShellObjects		g_shellObjects;
 
 #pragma comment(linker, "\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
-std::wstring getProcessFilesName() 
-{
-	WCHAR moduleName[MAX_PATH] = {0};
-	GetModuleFileName(NULL, moduleName, _countof(moduleName));
-	return std::wstring(moduleName);
-}
-
 extern "C" int APIENTRY
 DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID /* lpReserved */)
 {
@@ -68,7 +61,7 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID /* lpReserved */)
 
 	if (!::IsDebuggerPresent())
 	{
-		ATLTRACE("In debug load preventer\n");
+		EventLog::writeInformation(L"In debug load preventer");
 		return FALSE;
 	}
 #endif
@@ -79,7 +72,7 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID /* lpReserved */)
 	// behavior and even may create dependency loops in the dll load order.
 	if (dwReason == DLL_PROCESS_ATTACH)
 	{
-		EventLog::writeInformation(std::wstring(L"TortoiseSI dll Loaded by") + getProcessFilesName());
+		EventLog::writeInformation(L"TortoiseSI dll Loaded");
 
 		if (g_hmodThisDll == NULL)
 		{
@@ -91,7 +84,7 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID /* lpReserved */)
 	}
 	else if (dwReason == DLL_PROCESS_DETACH)
 	{
-		EventLog::writeInformation(std::wstring(L"TortoiseSI dll unloaded by") + getProcessFilesName());
+		EventLog::writeInformation(L"TortoiseSI dll unloaded by");
 
 		// do not clean up memory here:
 		// if an application doesn't release all COM objects
@@ -108,8 +101,7 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID /* lpReserved */)
 
 STDAPI DllCanUnloadNow(void)
 {
-	EventLog::writeInformation(std::wstring(L"DllCanUnloadNow by") + 
-		getProcessFilesName() +
+	EventLog::writeInformation(std::wstring(L"DllCanUnloadNow") + 
 		L", g_cRefThisDll = " + std::to_wstring(g_cRefThisDll));
 
 	return (g_cRefThisDll == 0 ? S_OK : S_FALSE);

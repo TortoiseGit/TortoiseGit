@@ -4,6 +4,7 @@
 
 #pragma once
 
+#ifdef TORTOISESHELL
 #include "..\targetver.h"
 
 #define ISOLATION_AWARE_ENABLED 1
@@ -38,9 +39,10 @@
 #include <atomic>
 #include <regex>
 #include <codecvt>
+#include <functional>
 
 #define CSTRING_AVAILABLE
 
 #include "SysInfo.h"
 #include "DebugOutput.h"
-
+#endif

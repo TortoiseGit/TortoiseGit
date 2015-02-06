@@ -102,6 +102,9 @@
     <ClCompile Include="..\Utils\CrashReport.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="..\Integrity\IntegrityResponse.cpp">
+      <Filter>Integrity</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="ShellExt.def">
@@ -184,9 +187,6 @@
     <ClInclude Include="..\Integrity\IntegritySession.h">
       <Filter>Integrity</Filter>
     </ClInclude>
-    <ClInclude Include="..\Utils\EventLog.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
     <ClInclude Include="..\Integrity\FileStatus.h">
       <Filter>Integrity</Filter>
     </ClInclude>
@@ -195,6 +195,18 @@
     </ClInclude>
     <ClInclude Include="RootFolderCache.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugEventLog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MenuInfo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\EventLog.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Integrity\IntegrityResponse.h">
+      <Filter>Integrity</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

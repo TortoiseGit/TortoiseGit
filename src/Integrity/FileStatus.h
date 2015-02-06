@@ -22,31 +22,46 @@
 enum class FileStatus
 {
 	// repo status
-	None		= 0x00000000,
-	Member		= 0x00000100,
-	FormerMember= 0x00000200,
-	Incoming	= 0x00000400, // (member)
-	Locked		= 0x00000800, // (member)
+	None		= 0x00000000l,
+	Member		= 0x00000100l,
+	FormerMember= 0x00000200l,
+	Incoming	= 0x00000400l, // (member)
+	Locked		= 0x00000800l, // (member)
 
 	// local status
-	Add			= 0x00000001,
-	Drop		= 0x00000002, 
-	Modified	= 0x00000004,  // (member)
-	Moved		= 0x00000008,  // (member)
-	Renamed		= 0x00000010,  // (member)
-	MergeNeeded = 0x00000020,  // (member)
+	Add			= 0x00000001l,
+	Drop		= 0x00000002l, 
+	Modified	= 0x00000004l,  // (member)
+	Moved		= 0x00000008l,  // (member)
+	Renamed		= 0x00000010l,  // (member)
+	MergeNeeded = 0x00000020l,  // (member)
 
 	// errors - note: these are not returned by Integrtiy, but are used
 	//	              by the local code to handle errors talking to Integrity
 	//			      Used by the caching layer to avoid caching error results
-	TimeoutError= 0x10000000,
-	GenericError= 0x10000000,
+	TimeoutError= 0x10000000l,
+	GenericError= 0x10000000l,
+
+	// local stuff (ie things we figure out in the extension)
+	Folder		= 0x00100000l,
+	File		= 0x00200000l,
 };
 
 typedef int FileStatusFlags;
 
-inline FileStatus operator& (FileStatusFlags flags, FileStatus status) {
+inline FileStatus operator& (FileStatusFlags flags, FileStatus status) 
+{
 	return (FileStatus) (flags & (FileStatusFlags)status);
+}
+
+inline FileStatusFlags operator| (FileStatusFlags flags, FileStatus status)
+{
+	return flags | (FileStatusFlags)status;
+}
+
+inline FileStatusFlags operator| (FileStatus status1, FileStatus status2)
+{
+	return ((FileStatusFlags)status1) | status2;
 }
 
 inline bool hasFileStatus(FileStatusFlags statusFlags, FileStatus status) 

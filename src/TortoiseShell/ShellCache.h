@@ -30,9 +30,6 @@ typedef std::wstring stdstring;
 #define DRIVETYPETIMEOUT 300000		// 5 min
 #define MENUTIMEOUT 100
 
-#define DEFAULTMENUTOPENTRIES	MENUSYNC|MENUCREATEREPOS|MENUCLONE|MENUCOMMIT
-#define DEFAULTMENUEXTENTRIES	MENUSVNIGNORE|MENUREFLOG|MENUREFBROWSE|MENUSTASHAPPLY|MENUSUBSYNC
-
 typedef CComCritSecLock<CComCriticalSection> Locker;
 
 /**
@@ -46,8 +43,6 @@ public:
 	
 	ShellCache()
 	{
-		showrecursive = CRegStdDWORD(_T("Software\\TortoiseSI\\RecursiveOverlay"), TRUE);
-		folderoverlay = CRegStdDWORD(_T("Software\\TortoiseSI\\FolderOverlay"), TRUE);
 		driveremote = CRegStdDWORD(_T("Software\\TortoiseSI\\DriveMaskRemote"));
 		drivefixed = CRegStdDWORD(_T("Software\\TortoiseSI\\DriveMaskFixed"), TRUE);
 		drivecdrom = CRegStdDWORD(_T("Software\\TortoiseSI\\DriveMaskCDROM"));
@@ -55,56 +50,23 @@ public:
 		drivefloppy = CRegStdDWORD(_T("Software\\TortoiseSI\\DriveMaskFloppy"));
 		driveram = CRegStdDWORD(_T("Software\\TortoiseSI\\DriveMaskRAM"));
 		driveunknown = CRegStdDWORD(_T("Software\\TortoiseSI\\DriveMaskUnknown"));
-		shellmenuaccelerators = CRegStdDWORD(_T("Software\\TortoiseSI\\ShellMenuAccelerators"), TRUE);
 		excludelist = CRegStdString(_T("Software\\TortoiseSI\\OverlayExcludeList"));
 		includelist = CRegStdString(_T("Software\\TortoiseSI\\OverlayIncludeList"));
-		simplecontext = CRegStdDWORD(_T("Software\\TortoiseSI\\SimpleContext"), FALSE);
-		unversionedasmodified = CRegStdDWORD(_T("Software\\TortoiseSI\\UnversionedAsModified"), FALSE);
-		recursesubmodules = CRegStdDWORD(_T("Software\\TortoiseSI\\TSICacheRecurseSubmodules"), FALSE);
-		hidemenusforunversioneditems = CRegStdDWORD(_T("Software\\TortoiseSI\\HideMenusForUnversionedItems"), FALSE);
 		showunversionedoverlay = CRegStdDWORD(_T("Software\\TortoiseSI\\ShowUnversionedOverlay"), TRUE);
 		showignoredoverlay = CRegStdDWORD(_T("Software\\TortoiseSI\\ShowIgnoredOverlay"), TRUE);
-		getlocktop = CRegStdDWORD(_T("Software\\TortoiseSI\\GetLockTop"), TRUE);
 		excludedasnormal = CRegStdDWORD(_T("Software\\TortoiseSI\\ShowExcludedAsNormal"), TRUE);
 		debugLogging = CRegStdDWORD(REGISTRYTIMEOUT, _T("Software\\TortoiseSI\\DebugLogging"), FALSE);
-		cachetypeticker = GetTickCount();
-		recursiveticker = cachetypeticker;
-		folderoverlayticker = cachetypeticker;
-		driveticker = cachetypeticker;
-		drivetypeticker = cachetypeticker;
-		langticker = cachetypeticker;
-		excludelistticker = cachetypeticker;
-		includelistticker = cachetypeticker;
-		simplecontextticker = cachetypeticker;
-		shellmenuacceleratorsticker = cachetypeticker;
-		unversionedasmodifiedticker = cachetypeticker;
-		recursesubmodulesticker = cachetypeticker;
-		showunversionedoverlayticker = cachetypeticker;
-		showignoredoverlayticker = cachetypeticker;
-		admindirticker = cachetypeticker;
-		getlocktopticker = cachetypeticker;
-		excludedasnormalticker = cachetypeticker;
-		hidemenusforunversioneditemsticker = cachetypeticker;
-		excontextticker = cachetypeticker;
+		driveticker = GetTickCount();
+		drivetypeticker = driveticker;
+		langticker = driveticker;
+		excludelistticker = driveticker;
+		includelistticker = driveticker;
+		simplecontextticker = driveticker;
+		showunversionedoverlayticker = driveticker;
+		showignoredoverlayticker = driveticker;
+		excludedasnormalticker = driveticker;
 
-		unsigned __int64 entries = (DEFAULTMENUTOPENTRIES);
-		menulayoutlow = CRegStdDWORD(_T("Software\\TortoiseSI\\ContextMenuEntries"),	  entries&0xFFFFFFFF);
-		menulayouthigh = CRegStdDWORD(_T("Software\\TortoiseSI\\ContextMenuEntrieshigh"), entries>>32);
-		layoutticker = cachetypeticker;
-
-		unsigned __int64 ext = (DEFAULTMENUEXTENTRIES);
-		menuextlow	= CRegStdDWORD(_T("Software\\TortoiseSI\\ContextMenuExtEntriesLow"), ext&0xFFFFFFFF  );
-		menuexthigh = CRegStdDWORD(_T("Software\\TortoiseSI\\ContextMenuExtEntriesHigh"),	ext>>32	  );
-		exticker = cachetypeticker;
-
-		menumasklow_lm = CRegStdDWORD(_T("Software\\TortoiseSI\\ContextMenuEntriesMaskLow"), 0, FALSE, HKEY_LOCAL_MACHINE);
-		menumaskhigh_lm = CRegStdDWORD(_T("Software\\TortoiseSI\\ContextMenuEntriesMaskHigh"), 0, FALSE, HKEY_LOCAL_MACHINE);
-		menumasklow_cu = CRegStdDWORD(_T("Software\\TortoiseSI\\ContextMenuEntriesMaskLow"), 0);
-		menumaskhigh_cu = CRegStdDWORD(_T("Software\\TortoiseSI\\ContextMenuEntriesMaskHigh"), 0);
-		menumaskticker = cachetypeticker;
 		langid = CRegStdDWORD(_T("Software\\TortoiseSI\\LanguageID"), 1033);
-		blockstatus = CRegStdDWORD(_T("Software\\TortoiseSI\\BlockStatus"), 0);
-		blockstatusticker = cachetypeticker;
 		for (int i = 0; i < 27; ++i)
 		{
 			drivetypecache[i] = (UINT)-1;
@@ -113,14 +75,11 @@ public:
 		drivetypecache[0] = DRIVE_REMOVABLE;
 		drivetypecache[1] = DRIVE_REMOVABLE;
 		drivetypepathcache[0] = 0;
-		sAdminDirCacheKey.reserve(MAX_PATH);		// MAX_PATH as buffer reservation ok.
 		nocontextpaths = CRegStdString(_T("Software\\TortoiseSI\\NoContextPaths"), _T(""));
 		m_critSec.Init();
 	}
 	void ForceRefresh()
 	{
-		showrecursive.read();
-		folderoverlay.read();
 		driveremote.read();
 		drivefixed.read();
 		drivecdrom.read();
@@ -130,131 +89,14 @@ public:
 		driveunknown.read();
 		excludelist.read();
 		includelist.read();
-		simplecontext.read();
-		shellmenuaccelerators.read();
-		unversionedasmodified.read();
-		recursesubmodules.read();
 		showunversionedoverlay.read();
 		showignoredoverlay.read();
 		excludedasnormal.read();
-		hidemenusforunversioneditems.read();
-		menulayoutlow.read();
-		menulayouthigh.read();
 		langid.read();
-		blockstatus.read();
-		getlocktop.read();
-		menumasklow_lm.read();
-		menumaskhigh_lm.read();
-		menumasklow_cu.read();
-		menumaskhigh_cu.read();
 		nocontextpaths.read();
 		debugLogging.read();
 	}
-	DWORD BlockStatus()
-	{
-		if ((GetTickCount() - REGISTRYTIMEOUT) > blockstatusticker)
-		{
-			blockstatusticker = GetTickCount();
-			blockstatus.read();
-		}
-		return (blockstatus);
-	}
-	unsigned __int64 GetMenuLayout()
-	{
-		if ((GetTickCount() - REGISTRYTIMEOUT) > layoutticker)
-		{
-			layoutticker = GetTickCount();
-			menulayoutlow.read();
-			menulayouthigh.read();
-		}
-		unsigned __int64 temp = unsigned __int64(DWORD(menulayouthigh))<<32;
-		temp |= unsigned __int64(DWORD(menulayoutlow));
-		return temp;
-	}
 
-	unsigned __int64 GetMenuExt()
-	{
-		if ((GetTickCount() - REGISTRYTIMEOUT) > exticker)
-		{
-			exticker = GetTickCount();
-			menuextlow.read();
-			menuexthigh.read();
-		}
-		unsigned __int64 temp = unsigned __int64(DWORD(menuexthigh))<<32;
-		temp |= unsigned __int64(DWORD(menuextlow));
-		return temp;
-	}
-
-	unsigned __int64 GetMenuMask()
-	{
-		if ((GetTickCount() - REGISTRYTIMEOUT) > menumaskticker)
-		{
-			menumaskticker = GetTickCount();
-			menumasklow_lm.read();
-			menumaskhigh_lm.read();
-			menumasklow_cu.read();
-			menumaskhigh_cu.read();
-		}
-		DWORD low = (DWORD)menumasklow_lm | (DWORD)menumasklow_cu;
-		DWORD high = (DWORD)menumaskhigh_lm | (DWORD)menumaskhigh_cu;
-		unsigned __int64 temp = unsigned __int64(high)<<32;
-		temp |= unsigned __int64(low);
-		return temp;
-	}
-	BOOL IsRecursive()
-	{
-		if ((GetTickCount() - REGISTRYTIMEOUT)>recursiveticker)
-		{
-			recursiveticker = GetTickCount();
-			showrecursive.read();
-		}
-		return (showrecursive);
-	}
-	BOOL IsFolderOverlay()
-	{
-		if ((GetTickCount() - REGISTRYTIMEOUT)>folderoverlayticker)
-		{
-			folderoverlayticker = GetTickCount();
-			folderoverlay.read();
-		}
-		return (folderoverlay);
-	}
-	BOOL IsSimpleContext()
-	{
-		if ((GetTickCount() - REGISTRYTIMEOUT)>simplecontextticker)
-		{
-			simplecontextticker = GetTickCount();
-			simplecontext.read();
-		}
-		return (simplecontext!=0);
-	}
-	BOOL HasShellMenuAccelerators()
-	{
-		if ((GetTickCount() - shellmenuacceleratorsticker)>REGISTRYTIMEOUT)
-		{
-			shellmenuacceleratorsticker = GetTickCount();
-			shellmenuaccelerators.read();
-		}
-		return (shellmenuaccelerators!=0);
-	}
-	BOOL IsUnversionedAsModified()
-	{
-		if ((GetTickCount() - REGISTRYTIMEOUT)>unversionedasmodifiedticker)
-		{
-			unversionedasmodifiedticker = GetTickCount();
-			unversionedasmodified.read();
-		}
-		return (unversionedasmodified);
-	}
-	BOOL IsRecurseSubmodules()
-	{
-		if ((GetTickCount() - REGISTRYTIMEOUT) > recursesubmodulesticker)
-		{
-			recursesubmodulesticker = GetTickCount();
-			recursesubmodules.read();
-		}
-		return (recursesubmodules);
-	}
 	BOOL ShowUnversionedOverlay()
 	{
 		if ((GetTickCount() - REGISTRYTIMEOUT)>showunversionedoverlayticker)
@@ -273,15 +115,7 @@ public:
 		}
 		return (showignoredoverlay);
 	}
-	BOOL IsGetLockTop()
-	{
-		if ((GetTickCount() - REGISTRYTIMEOUT)>getlocktopticker)
-		{
-			getlocktopticker = GetTickCount();
-			getlocktop.read();
-		}
-		return (getlocktop);
-	}
+
 	BOOL ShowExcludedAsNormal()
 	{
 		if ((GetTickCount() - REGISTRYTIMEOUT)>excludedasnormalticker)
@@ -290,15 +124,6 @@ public:
 			excludedasnormal.read();
 		}
 		return (excludedasnormal);
-	}
-	BOOL HideMenusForUnversionedItems()
-	{
-	if ((GetTickCount() - hidemenusforunversioneditemsticker)>REGISTRYTIMEOUT)
-		{
-			hidemenusforunversioneditemsticker = GetTickCount();
-			hidemenusforunversioneditems.read();
-		}
-		return (hidemenusforunversioneditems);
 	}
 	BOOL IsRemote()
 	{
@@ -455,47 +280,6 @@ public:
 		}
 		return (langid);
 	}
-	BOOL HasSIAdminDir(LPCTSTR path, BOOL bIsDir, CString *ProjectTopDir = NULL)
-	{
-		size_t len = _tcslen(path);
-		std::unique_ptr<TCHAR[]> buf(new TCHAR[len + 1]);
-		_tcscpy_s(buf.get(), len + 1, path);
-		if (! bIsDir)
-		{
-			TCHAR * ptr = _tcsrchr(buf.get(), '\\');
-			if (ptr != 0)
-			{
-				*ptr = 0;
-			}
-		}
-		if ((GetTickCount() - ADMINDIRTIMEOUT) < admindirticker)
-		{
-			std::map<stdstring, AdminDir_s>::iterator iter;
-			sAdminDirCacheKey.assign(buf.get());
-			if ((iter = admindircache.find(sAdminDirCacheKey)) != admindircache.end())
-			{
-				if (ProjectTopDir && iter->second.bHasAdminDir)
-					*ProjectTopDir = iter->second.sProjectRoot.c_str();
-				return iter->second.bHasAdminDir;
-			}
-		}
-		CString sProjectRoot;
-		BOOL hasAdminDir = FALSE;// TODO g_SIAdminDir.HasAdminDir(buf.get(), true, &sProjectRoot);
-		admindirticker = GetTickCount();
-		Locker lock(m_critSec);
-
-		AdminDir_s &ad = admindircache[buf.get()];
-		ad.bHasAdminDir = hasAdminDir;
-		if (hasAdminDir)
-		{
-			ad.sProjectRoot.assign(sProjectRoot);
-
-			if (ProjectTopDir)
-				*ProjectTopDir = sProjectRoot;
-		}
-
-		return hasAdminDir;
-	}
 
 	BOOL IsDebugLogging()
 	{
@@ -598,18 +382,10 @@ private:
 		}
 	}
 
-	struct AdminDir_s
-	{
-		BOOL bHasAdminDir;
-		stdstring sProjectRoot;
-	};
+
 public:
 	CRegStdDWORD debugLogging;
-	CRegStdDWORD blockstatus;
 	CRegStdDWORD langid;
-	CRegStdDWORD showrecursive;
-	CRegStdDWORD folderoverlay;
-	CRegStdDWORD getlocktop;
 	CRegStdDWORD driveremote;
 	CRegStdDWORD drivefixed;
 	CRegStdDWORD drivecdrom;
@@ -617,59 +393,31 @@ public:
 	CRegStdDWORD drivefloppy;
 	CRegStdDWORD driveram;
 	CRegStdDWORD driveunknown;
-	CRegStdDWORD menulayoutlow; /* Fist level mask */
-	CRegStdDWORD menulayouthigh;
-	CRegStdDWORD shellmenuaccelerators;
-	CRegStdDWORD menuextlow;	   /* ext menu mask */
-	CRegStdDWORD menuexthigh;
-	CRegStdDWORD simplecontext;
-	CRegStdDWORD menumasklow_lm;
-	CRegStdDWORD menumaskhigh_lm;
-	CRegStdDWORD menumasklow_cu;
-	CRegStdDWORD menumaskhigh_cu;
-	CRegStdDWORD unversionedasmodified;
-	CRegStdDWORD recursesubmodules;
 	CRegStdDWORD showunversionedoverlay;
 	CRegStdDWORD showignoredoverlay;
 	CRegStdDWORD excludedasnormal;
 	CRegStdString excludelist;
-	CRegStdDWORD hidemenusforunversioneditems;
 	stdstring excludeliststr;
 	std::vector<stdstring> exvector;
 	CRegStdString includelist;
 	stdstring includeliststr;
 	std::vector<stdstring> invector;
-	DWORD cachetypeticker;
-	DWORD recursiveticker;
-	DWORD folderoverlayticker;
-	DWORD getlocktopticker;
 	DWORD driveticker;
 	DWORD drivetypeticker;
-	DWORD layoutticker;
-	DWORD exticker;
-	DWORD menumaskticker;
 	DWORD langticker;
-	DWORD blockstatusticker;
 	DWORD excludelistticker;
 	DWORD includelistticker;
 	DWORD simplecontextticker;
-	DWORD shellmenuacceleratorsticker;
-	DWORD unversionedasmodifiedticker;
-	DWORD recursesubmodulesticker;
 	DWORD showunversionedoverlayticker;
 	DWORD showignoredoverlayticker;
 	DWORD excludedasnormalticker;
-	DWORD hidemenusforunversioneditemsticker;
 	UINT  drivetypecache[27];
 	TCHAR drivetypepathcache[MAX_PATH];		// MAX_PATH ok.
 	TCHAR szDecSep[5];
 	TCHAR szThousandsSep[5];
-	std::map<stdstring, AdminDir_s> admindircache;
-	stdstring sAdminDirCacheKey;
 	CRegStdString nocontextpaths;
 	stdstring excludecontextstr;
 	std::vector<stdstring> excontextvector;
 	DWORD excontextticker;
-	DWORD admindirticker;
 	CComCriticalSection m_critSec;
 };

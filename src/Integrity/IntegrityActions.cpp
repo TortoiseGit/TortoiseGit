@@ -19,18 +19,15 @@
 
 #include "stdafx.h"
 #include "IntegrityActions.h"
+#include "IntegrityResponse.h"
 #include "EventLog.h"
-
-#define SIZE 256
+#include "CrashReport.h"
+#include "DebugEventLog.h"
 
 namespace IntegrityActions {
 	void displayException(const IntegrityResponse& response);
-	std::wstring getExceptionId(mksAPIException exception);
-	std::wstring getExceptionMessage(mksAPIException exception);
-	void logException(mksAPIException exception);
-	int getIntegerFieldValue(mksField field);
-	int getIntegerFieldValue(mksWorkItem item, const std::wstring&  fieldName, int defaultValue);
-	void executeUserCommand(const IntegritySession& session, const IntegrityCommand& command);
+	void logAnyExceptions(const IntegrityResponse& response);
+	void executeUserCommand(const IntegritySession& session, const IntegrityCommand& command, std::function<void()>);
 
 	void launchSandboxView(const IntegritySession& session, std::wstring path)
 	{
@@ -38,7 +35,16 @@ namespace IntegrityActions {
 		command.addOption(L"cwd", path);
 		command.addOption(L"g");
 
-		executeUserCommand(session, command);
+		executeUserCommand(session, command, nullptr);
+	}
+
+	void createSandbox(const IntegritySession& session, std::wstring path, std::function<void()> onDone)
+	{
+		IntegrityCommand command(L"si", L"createsandbox");
+		command.addOption(L"g");
+		command.addSelection(path);
+
+		executeUserCommand(session, command, onDone);
 	}
 
 	const FileStatusFlags NO_STATUS = 0;
@@ -72,7 +78,7 @@ namespace IntegrityActions {
 		}
 
 		if (response->getException() != NULL) {
-			logException(response->getException());
+			logAnyExceptions(*response);
 			return NO_STATUS;
 		} 
 
@@ -83,42 +89,10 @@ namespace IntegrityActions {
 		for (mksWorkItem item : *response) {
 			int status = getIntegerFieldValue(item, L"status", NO_STATUS);
 
-			// TODO exception field?
-
 			EventLog::writeDebug(std::wstring(L"wf fileInfo ") + file + L" has status " +  std::to_wstring(status));
 			return status;
 		}
 		return NO_STATUS;
-	}
-
-	bool getBooleanFieldValue(mksField field) 
-	{
-		unsigned short boolValue = 0;
-		mksFieldGetBooleanValue(field, &boolValue);
-
-		if (boolValue) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	int getIntegerFieldValue(mksField field) 
-	{
-		int value = 0;
-		mksFieldGetIntegerValue(field, &value);
-		return value;
-	}
-
-	int getIntegerFieldValue(mksWorkItem item, const std::wstring& fieldName, int defaultValue) 
-	{
-		mksField field = mksWorkItemGetField(item, (wchar_t*)fieldName.c_str());
-
-		if (field != NULL) {
-			return getIntegerFieldValue(field);
-		} else {
-			return defaultValue;
-		}
 	}
 
 	std::vector<std::wstring> getControlledPaths(const IntegritySession& session) 
@@ -129,29 +103,39 @@ namespace IntegrityActions {
 		std::unique_ptr<IntegrityResponse> response = session.execute(command);
 
 		if (response->getException() != NULL) {
-			logException(response->getException());
+			logAnyExceptions(*response);
 			return rootPaths;
 		} 
 
 		for (mksWorkItem item : *response) {
-			wchar_t path[1024];
-
-			mksWorkItemGetId(item, path, 1024);
-
-			// TODO exception field?
-
-			rootPaths.push_back(path);
+			rootPaths.push_back(getId(item));
 		}
 		
 		return rootPaths;
 	}
 
-	void logException(mksAPIException exception) {
-		std::wstring message = std::wstring(L"Error encountered running command 'wf getstatus': \n\terror id = ")
-			+ getExceptionId(exception) + L"\n\t message = '" 
-			+ getExceptionMessage(exception) + L"'";
+	void logAnyExceptions(const IntegrityResponse& response) {
+		if (response.getException() != NULL) {
+			std::wstring message = std::wstring(L"Error encountered running command '")
+				+ response.getCommand().getApp() + L" " + response.getCommand().getName()
+				+ L"': \n\terror id = "
+				+ getId(response.getException()) + L"\n\t message = '"
+				+ getExceptionMessage(response.getException()) + L"'";
 
-		EventLog::writeError(message);
+			for (mksWorkItem item : response) {
+				mksAPIException workItemException = mksWorkItemGetAPIException(item);
+
+				if (workItemException != NULL) {
+					message = std::wstring(L"\nError processing item '")
+						+ getId(item) + L"' with type '" + getModelType(item)
+						+ L"': \n\terror id = "
+						+ getId(response.getException()) + L"\n\t message = '"
+						+ getExceptionMessage(response.getException()) + L"'";
+				}
+			}
+
+			EventLog::writeError(message);
+		}
 	}
 
 	void displayException(const IntegrityCommand& command, std::wstring errorId, std::wstring msg) {
@@ -162,12 +146,21 @@ namespace IntegrityActions {
 		MessageBoxW(NULL, message.c_str(), L"Error", MB_OK | MB_ICONEXCLAMATION);
 	}
 
-	void executeUserCommand(const IntegritySession& session, const IntegrityCommand& command) {		
-		std::async(std::launch::async, [&](IntegrityCommand command){ 
+	void executeUserCommand(const IntegritySession& session, const IntegrityCommand& command, std::function<void()> onDone) {
+		std::async(std::launch::async, [&](IntegrityCommand command, std::function<void()> onDone){
+			try {
 				std::unique_ptr<IntegrityResponse> response = session.execute(command);
 
-				displayException(*response);
-			}, command);
+				logAnyExceptions(*response);
+
+				if (onDone != nullptr) {
+					onDone();
+				}
+			}
+			catch (std::exception)
+			{
+			}
+		}, command, onDone);
 	}
 
 	void displayException(const IntegrityResponse& response) {
@@ -177,26 +170,14 @@ namespace IntegrityActions {
 				mksAPIException workItemException = mksWorkItemGetAPIException(item);
 
 				if (workItemException != NULL) {
-					displayException(response.getCommand(), getExceptionId(workItemException), 
+					displayException(response.getCommand(), getId(workItemException),
 						getExceptionMessage(workItemException));
 					return;
 				}
 			}
 			
-			displayException(response.getCommand(), getExceptionId(exception), 
+			displayException(response.getCommand(), getId(exception),
 				getExceptionMessage(exception));
 		}
-	}
-
-	std::wstring getExceptionMessage(mksAPIException exception) { 
-		wchar_t buffer[1024];
-		mksAPIExceptionGetMessage(exception, buffer, 1024);
-		return std::wstring(buffer);
-	}
-
-	std::wstring getExceptionId(mksAPIException exception) {
-		wchar_t buffer[1024];
-		mksAPIExceptionGetId(exception, buffer, 1024);
-		return std::wstring(buffer);
 	}
 }

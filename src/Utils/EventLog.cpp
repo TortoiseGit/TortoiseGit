@@ -16,11 +16,15 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
+
 #include "stdafx.h"
+#include <Windows.h>
 #include "EventLog.h"
-#include "ShellCache.h"
+
+unsigned int getPID();
 
 namespace EventLog {
+	static const wchar_t* APPLICATION_NAME = L"TortoiseSI";
 
 	//
 	//   FUNCTION: EventLog::writeEvent(wchar_t *, WORD)
@@ -39,15 +43,19 @@ namespace EventLog {
 	//     EVENTLOG_INFORMATION_TYPE
 	//     EVENTLOG_WARNING_TYPE
 	//
-	void writeEvent(const wchar_t *message, WORD wType) {
+	void writeEvent(std::wstring message, WORD wType) {
 		HANDLE hEventSource = NULL;
-		LPCWSTR lpszStrings[2] = {NULL, NULL};
+		LPCWSTR lpszStrings[3] = {NULL, NULL, NULL};
 		const wchar_t *name = EventLog::APPLICATION_NAME;
 
 		hEventSource = RegisterEventSource(NULL, name);
 		if (hEventSource) {
-			lpszStrings[0] = name;
-			lpszStrings[1] = message;
+			std::wstring source = L"Source Module: " + getProcessFilesName();
+			std::wstring pid = L"Process ID: " + std::to_wstring(getPID());
+
+			lpszStrings[0] = source.c_str();
+			lpszStrings[1] = pid.c_str();
+			lpszStrings[2] = message.c_str();
 
 			 ReportEvent(hEventSource,		// Event log handle
 				wType,						// Event type
@@ -73,7 +81,7 @@ namespace EventLog {
 	//   * error - the error message
 	//
 	void writeError(std::wstring error) {
-		writeEvent(error.c_str(), EVENTLOG_ERROR_TYPE);
+		writeEvent(error, EVENTLOG_ERROR_TYPE);
 	}
 	//
 	//   FUNCTION: EventLog::writeInformationLogEntry(wstring)
@@ -84,15 +92,7 @@ namespace EventLog {
 	//   * info - the information message
 	//
 	void writeInformation(std::wstring info) {
-		writeEvent(info.c_str(), EVENTLOG_INFORMATION_TYPE);
-	}
-
-	void writeDebug(std::wstring info) {
-		static ShellCache shellCache;
-
-		if (shellCache.IsDebugLogging()) {
-			writeInformation(info);
-		}
+		writeEvent(info, EVENTLOG_INFORMATION_TYPE);
 	}
 
 	//
@@ -104,6 +104,18 @@ namespace EventLog {
 	//   * warning - the warning message
 	//
 	void writeWarning(std::wstring warning) {
-		writeEvent(warning.c_str(), EVENTLOG_WARNING_TYPE);
+		writeEvent(warning, EVENTLOG_WARNING_TYPE);
 	}
+}
+
+std::wstring getProcessFilesName()
+{
+	wchar_t moduleName[MAX_PATH] = { 0 };
+	GetModuleFileName(NULL, moduleName, _countof(moduleName));
+	return std::wstring(moduleName);
+}
+
+unsigned int getPID() 
+{
+	return GetCurrentProcessId();
 }

@@ -84,7 +84,7 @@ IDI_MERGEABORT          ICON                    "..\\Resources\\menumergeabort.i
 
 
 /////////////////////////////////////////////////////////////////////////////
-// Englisch (USA) resources
+// English (United States) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
@@ -123,10 +123,10 @@ BEGIN
     EDITTEXT        IDC_LAST_SUBJECT,80,108,163,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER,WS_EX_TRANSPARENT
     EDITTEXT        IDC_LAST_AUTHOR,80,121,163,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER,WS_EX_TRANSPARENT
     EDITTEXT        IDC_LAST_DATE,80,132,163,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER,WS_EX_TRANSPARENT
-    AUTOCHECKBOX    "Assume valid/unchanged",IDC_ASSUMEVALID,4,145,116,10,BS_AUTOCHECKBOX | WS_TABSTOP
-    AUTOCHECKBOX    "Executable (+x)",IDC_EXECUTABLE,120,145,116,10,BS_AUTOCHECKBOX | WS_TABSTOP
-    AUTOCHECKBOX    "Skip worktree",IDC_SKIPWORKTREE,4,157,116,10,BS_AUTOCHECKBOX | WS_TABSTOP
-    AUTOCHECKBOX    "Symlink",IDC_SYMLINK,120,157,116,10,BS_AUTOCHECKBOX | WS_TABSTOP
+    CONTROL         "Assume valid/unchanged",IDC_ASSUMEVALID,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,145,116,10
+    CONTROL         "Executable (+x)",IDC_EXECUTABLE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,120,145,116,10
+    CONTROL         "Skip worktree",IDC_SKIPWORKTREE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,157,116,10
+    CONTROL         "Symlink",IDC_SYMLINK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,120,157,116,10
     GROUPBOX        "Config",IDC_STATIC,4,169,239,66
     LTEXT           "Auto Crlf:",IDC_STATIC,13,181,76,8
     EDITTEXT        IDC_CONFIG_AUTOCRLF,98,181,136,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER
@@ -197,238 +197,18 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_MENUCOMMIT          "&Commit..."
-    IDS_MENUCREATEREPOS     "Create repositor&y here..."
-    IDS_MENUADD             "&Add..."
-    IDS_MENUREVERT          "Re&vert..."
-    IDS_MENUCLEANUP         "&Clean up..."
-    IDS_MENURESOLVE         "Res&olve..."
-END
-
-STRINGTABLE
-BEGIN
-    IDS_MENUDELETEIGNOREMULTIPLEMASK 
-                            "Delete and ignore %d items by &extension"
-    IDS_MENUDELETEIGNORE    "Delete and add to &ignore list"
-    IDS_MENUDESCDELETEIGNORE 
-                            "Deletes and adds the selected file(s) or the filemask to the 'ignore' list"
-    IDS_MENUCOMMITSUBMODULE "&Commit submodule..."
-    IDS_MENUREVISIONGRAPH   "Revision &graph"
-END
-
-STRINGTABLE
-BEGIN
-    IDS_MENUSWITCH          "S&witch/Checkout..."
-    IDS_MENUMERGE           "&Merge..."
-    IDS_MENUBRANCH          "Create Branch..."
-    IDS_MENUIMPORT          "&Import..."
-    IDS_MENUEXPORT          "E&xport..."
-    IDS_MENUSETTINGS        "&Settings"
-    IDS_MENUABOUT           "A&bout"
-    IDS_MENUSUBMENU         "&TortoiseGit"
-    IDS_MENUBISECTSTART     "Bisect start"
-    IDS_MENUBISECTGOOD      "Bisect good"
-    IDS_MENUDESCCOMMIT      "Commits your changes to the repository"
-    IDS_MENUDESCADD         "Adds file(s) to Git control"
-    IDS_MENUDESCREVERT      "Reverts all changes you made since the last update"
-    IDS_MENUDESCCLEANUP     "Remove untracked files from the working tree, ..."
-    IDS_MENUDESCRESOLVE     "Resolves conflicted files"
-    IDS_MENUDESCSWITCH      "Switch/Checkout working tree to another branch/tag"
-END
-
-STRINGTABLE
-BEGIN
-    IDS_MENUASSUMEVALID     "Assume Unchanged"
-    IDS_MENUDESCEXPORT      "Exports a revision to a zip file"
-    IDS_MENUDESCABOUT       "Shows information about TortoiseGit"
-    IDS_MENUDESCCREATEREPOS "Creates a repository database at the current location"
-    IDS_MENUDESCCOPY        "Creates a branch or tag"
-    IDS_MENUDESCMERGE       "Merges another branch"
-    IDS_MENUDESCSETTINGS    "Tweak TortoiseGit"
-    IDS_MENUDESCDEFAULT     "no description for this command is available"
     IDS_LOADING             "Loading..."
-    IDS_STATUSNONE          " "
-    IDS_STATUSUNVERSIONED   "non-versioned"
-    IDS_STATUSNORMAL        "normal"
-    IDS_STATUSADDED         "added"
-    IDS_STATUSABSENT        "missing"
-    IDS_STATUSDELETED       "deleted"
-    IDS_STATUSREPLACED      "replaced"
-    IDS_STATUSMODIFIED      "modified"
 END
 
 STRINGTABLE
 BEGIN
-    IDS_MENUDESCREVISIONGRAPH 
-                            "Shows a graphical representation of copies/tags/branches"
+    IDS_VIEW_SANDBOX        "View Sandbox"
+    IDS_CREATE_SANDBOX      "Create Sandbox"
+    IDS_MENU                "Tortoise SI"
+    IDS_SANDBOX_NOTALLOWED1 "Can't create Sandbox here becase the following folder already has a Sandbox:"
 END
 
-STRINGTABLE
-BEGIN
-    IDS_git_DEPTH_UNKNOWN   "Unknown depth"
-    IDS_git_DEPTH_WORKING   "Working Tree"
-    IDS_MENUTAG             "Create Tag..."
-    IDS_MENUFORMATPATCH     "Create Patch Serial..."
-    IDS_MENUIMPORTPATCH     "Apply Patch Serial..."
-    IDS_MENUFETCH           "Fetch..."
-    IDS_MENUREBASE          "Rebase..."
-    IDS_MENUSTASHSAVE       "Stash Save"
-    IDS_MENUSTASHAPPLY      "Stash Apply"
-    IDS_MENUSUBADD          "Submodule Add..."
-    IDS_MENUSUBSYNC         "Submodule Sync"
-    IDS_MENUREFLOG          "Show &Reflog"
-    IDS_MENUDESCREFLOG      "Shows reference log"
-    IDS_MENUSTASHLIST       "Stash List"
-END
-
-STRINGTABLE
-BEGIN
-    IDS_MENUSVNREBASE_DESC  "Git SVN Rebase"
-    IDS_MENUSVNDCOMMIT      "SVN DCommit..."
-    IDS_MENUSVNDCOMMIT_DESC "Git SVN DCommit"
-    IDS_MENUSYNC            "Sync..."
-    IDS_MENUDESCSYNC        "Sync Remote Repositories, including pull, push, email patch and so on"
-    IDS_MENUSTASHPOP        "Stash Pop"
-    IDS_MENUSVNIGNORE       "Import SVN Ignore ..."
-    IDS_MENUSVNIGNORE_DESC  "Import SVN Ignore"
-    IDS_MENUDIFFTWO         "Diff Two Commits"
-    IDS_MENUDESCDIFFTWO     "Diffs two any commits"
-    IDS_MENUDESCIMPORTPATCH "Apply a series of patches from a mailbox"
-    IDS_MENUDESCPULL        "Pull"
-    IDS_MENUDESCPUSH        "Push"
-    IDS_MENUDESCCLONE       "Clone a repository"
-    IDS_MENUDESCFETCH       "Fetch"
-    IDS_MENUDELETEIGNOREMULTIPLE "Delete and &ignore %d items by name"
-END
-
-STRINGTABLE
-BEGIN
-    IDS_REFLOG_DEL          "Delete Ref..."
-    IDS_MENUSENDMAIL        "Send Mail..."
-    IDS_MENUDESSENDMAIL     "Send Patch(es) by eMail"
-    IDS_MENUREFBROWSE       "Browse References"
-    IDS_MENUDESCREFBROWSE   "Opens the Reference Browser dialog."
-    IDS_MENUSVNREBASE       "SVN Rebase"
-END
-
-STRINGTABLE
-BEGIN
-    IDS_STATUSMERGED        "merged"
-    IDS_STATUSCONFLICTED    "conflicted"
-    IDS_STATUSOBSTRUCTED    "obstructed"
-    IDS_MENUBISECTBAD       "Bisect bad"
-    IDS_PROPPROPERTY        "Property"
-    IDS_PROPVALUE           "Value"
-    IDS_MENURENAME          "Re&name..."
-    IDS_MENUDESCRENAME      "Renames files/folders inside version control"
-    IDS_MENUREMOVE          "&Delete"
-    IDS_MENUDESCREMOVE      "Deletes files/folders from version control"
-    IDS_MENUUPDATEEXT       "Submodule &Update..."
-    IDS_MENUBISECTRESET     "Bisect reset"
-END
-
-STRINGTABLE
-BEGIN
-    IDS_MENUSHOWCHANGED     "Check for modi&fications"
-    IDS_MENUDESCSHOWCHANGED "Shows all files which were changed since the last update, locally and in the repository"
-    IDS_MENUIGNORE          "Add to &ignore list"
-    IDS_MENUDESCIGNORE      "Adds the selected file(s) or the filemask to the 'ignore' list"
-    IDS_STATUSINCOMPLETE    "incomplete"
-    IDS_STATUSIGNORED       "ignored"
-    IDS_DROPCOPYMENU        "Git Copy versioned item(s) here"
-    IDS_PROPWAITCANCEL      "Please wait while cancelling..."
-    IDS_SETPROPTITLE        "Setting properties..."
-    IDS_MENUDESCBISECTBAD   "Marks revision as bad"
-    IDS_MENUDESCBISECTRESET "Stops bisect mode"
-    IDS_MENUBLAME           "&Blame"
-    IDS_STATUSEXTERNAL      "external"
-    IDS_MENUDESCBLAME       "Blames each line of a file on an author"
-    IDS_MENUSVNFETCH        "SVN Fetch"
-    IDS_MENUAPPLYPATCH      "Review/apply single &patch..."
-END
-
-STRINGTABLE
-BEGIN
-    IDS_MENUMERGEABORT      "Abort &Merge"
-    IDS_MENUCLIPPASTE       "&Paste"
-    IDS_MENUDESCCLIPPASTE   "Pastes the svn path from the clipboard, resulting in a move (cut) or copy operation"
-    IDS_MENUREPOBROWSE      "&Repo-browser"
-    IDS_MENUDESCREPOBROWSE  "Opens the repository browser"
-    IDS_MENUDESCMERGEABORT  "Aborts a running merge."
-    IDS_ERR_PROPNOTONFILE   "This property is only allowed on folders, not files."
-    IDS_MENUIGNOREMULTIPLE  "&Ignore %d items by name"
-    IDS_MENUDIFFLATER       "Diff later"
-    IDS_MENUDESCDIFFLATER   "Stores the path of the file to be used for a diff on a later right-click. Hold down the Ctrl key to remove the last saved path."
-    IDS_MENUDIFFNOW         "Diff with ""%s"""
-    IDS_MENUUNIGNORE        "Remove from &ignore list"
-    IDS_MENUDESCUNIGNORE    "Removes the file or filemask from the list of ignored items"
-END
-
-STRINGTABLE
-BEGIN
-    IDS_MENUDIFF            "&Diff"
-    IDS_MENUDESCDIFF        "Compares the file with the last committed revision to show you the changes you made"
-    IDS_DROPCOPYADDMENU     "Git Copy and add files to this WC"
-    IDS_DROPMOVEMENU        "Git Move versioned item(s) here"
-    IDS_MENULOG             "Show &log"
-    IDS_MENUDESCLOG         "Shows the log for the selected file/folder"
-    IDS_MENUCONFLICT        "&Edit conflicts"
-    IDS_MENUDESCCONFLICT    "Launches the external diff/merge program to solve the conflicts"
-    IDS_MENUDESCBISECTSTART "Start bisect mode..."
-    IDS_MENUDESCBISECTGOOD  "Marks revision as good"
-    IDS_MENUHELP            "&Help"
-    IDS_MENUDESCHELP        "Read the 'Daily Use Guide' before you are stuck..."
-END
-
-STRINGTABLE
-BEGIN
-    IDS_MENUDESCCREATEPATCH "Creates a unified diff file with all changes you made"
-    IDS_MENUDESCAPPLYPATCH  "Review/apply a unified diff file with TortoiseGitMerge"
-    IDS_MENUDESCSVNFETCH    "Fetch from SVN repository"
-    IDS_MENULOGSUBMODULE    "Show log of this folder"
-    IDS_MENUUNDOADD         "Undo Add..."
-    IDS_MENUDESCUNDOADD     "Reverts an addition to version control"
-    IDS_MENUPREVDIFF        "&Diff with previous version"
-    IDS_MENUDESCPREVDIFF    "Diffs the working tree file with the one before the last commit"
-    IDS_MENUDAEMON          "Daemon"
-    IDS_MENUDESCDAEMON      "Starts a git server running git protocol"
-    IDS_DROPEXPORTMENU      "Git Export versioned items here"
-    IDS_DROPEXPORTEXTENDEDMENU "Git Export all items here"
-    IDS_MENUIGNOREMULTIPLEMASK "Ignore %d items by &extension"
-    IDS_MENUPULL            "Pull..."
-    IDS_MENUPUSH            "Push..."
-    IDS_MENUCLONE           "Clone..."
-END
-
-STRINGTABLE
-BEGIN
-    IDS_DROPMOVERENAMEMENU  "Git Move and rename versioned item here"
-    IDS_MENUREMOVEKEEP      "&Delete (keep local)"
-END
-
-STRINGTABLE
-BEGIN
-    IDS_DROPCOPYRENAMEMENU  "Git Copy and rename versioned item here"
-    IDS_FILEPROPONFOLDER    "You can't set this property on folders, only on files!\nIf you want to set it on all files within that folder,\nyou must activate the 'recursive' checkbox."
-    IDS_PROPSNOTSAVED       "You have modified properties without saving them first.\nDo you want to save them now?"
-END
-
-STRINGTABLE
-BEGIN
-    IDS_MENUDESCREMOVEKEEP  "Deletes files/folders from version control but keeps the file"
-    IDS_YES                 "yes"
-    IDS_NO                  "no"
-END
-
-STRINGTABLE
-BEGIN
-    IDS_git_DEPTH_INFINITE  "Fully recursive"
-    IDS_git_DEPTH_IMMEDIATE "Immediate children, including folders"
-    IDS_git_DEPTH_FILES     "Only file children"
-    IDS_git_DEPTH_EMPTY     "Only this item"
-END
-
-#endif    // Englisch (USA) resources
+#endif    // English (United States) resources
 /////////////////////////////////////////////////////////////////////////////
 
 

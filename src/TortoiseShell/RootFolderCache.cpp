@@ -20,8 +20,17 @@
 #include "stdafx.h"
 #include "RootFolderCache.h"
 #include "IntegrityActions.h"
+#include "ShellExt.h"
 
-bool RootFolderCache::refreshIfStale() {
+std::vector<std::wstring> RootFolderCache::getRootFolders()
+{
+	std::lock_guard<std::mutex> lock(lockObject);
+
+	return rootFolders;
+};
+
+bool RootFolderCache::refreshIfStale() 
+{
 	std::lock_guard<std::mutex> lock( lockObject );
 
 	auto now = std::chrono::system_clock::now();
@@ -35,7 +44,8 @@ bool RootFolderCache::refreshIfStale() {
 	}
 }
 
-void RootFolderCache::forceRefresh() {
+void RootFolderCache::forceRefresh() 
+{
 	{
 		std::lock_guard<std::mutex> lock( lockObject );
 
@@ -48,7 +58,8 @@ void RootFolderCache::forceRefresh() {
 	std::async(std::launch::async, [&]{ this->updateFoldersList(); });
 }
 
-bool startsWith(std::wstring text, std::wstring prefix) {
+bool startsWith(std::wstring text, std::wstring prefix) 
+{
 	return text.length() >= prefix.length()
 		&&
 		text.substr(0, prefix.length()) == prefix;
@@ -84,12 +95,14 @@ void RootFolderCache::updateFoldersList()
 
 	// lock cach and copy back
 	std::vector<std::wstring> oldRootFolders;
+
 	{
 		std::lock_guard<std::mutex> lock( lockObject );
 
 		oldRootFolders = this->rootFolders;
 		this->rootFolders = rootFolders;
-		lastRefresh = std::chrono::system_clock::now();
+		this->lastRefresh = std::chrono::system_clock::now();
+		this->refreshInProgress = false;
 	}
 
 	std::vector<std::wstring> foldersAddedOrRemoved;
@@ -99,6 +112,8 @@ void RootFolderCache::updateFoldersList()
 
 	// update shell with root folders that were added or removed
 	for (std::wstring rootFolder : foldersAddedOrRemoved) {
+		EventLog::writeDebug(L"sending update notification for " + rootFolder);
+
 		SHChangeNotify(SHCNE_ATTRIBUTES, SHCNF_PATH| SHCNF_FLUSH, (LPCVOID) rootFolder.c_str(), NULL );
 	}
 }
