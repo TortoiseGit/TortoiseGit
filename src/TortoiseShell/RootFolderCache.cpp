@@ -20,6 +20,7 @@
 #include "stdafx.h"
 #include "RootFolderCache.h"
 #include "IntegrityActions.h"
+#include "ShellExt.h"
 
 bool RootFolderCache::refreshIfStale() 
 {
@@ -104,6 +105,8 @@ void RootFolderCache::updateFoldersList()
 
 	// update shell with root folders that were added or removed
 	for (std::wstring rootFolder : foldersAddedOrRemoved) {
+		EventLog::writeDebug(L"sending update notification for " + rootFolder);
+
 		SHChangeNotify(SHCNE_ATTRIBUTES, SHCNF_PATH| SHCNF_FLUSH, (LPCVOID) rootFolder.c_str(), NULL );
 	}
 }

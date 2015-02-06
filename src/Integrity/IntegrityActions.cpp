@@ -20,6 +20,7 @@
 #include "stdafx.h"
 #include "IntegrityActions.h"
 #include "EventLog.h"
+#include "CrashReport.h"
 #include "DebugEventLog.h"
 
 #define SIZE 256
@@ -183,7 +184,8 @@ namespace IntegrityActions {
 	}
 
 	void executeUserCommand(const IntegritySession& session, const IntegrityCommand& command, std::function<void()> onDone) {
-		std::async(std::launch::async, [&](IntegrityCommand command){ 
+		std::async(std::launch::async, [&](IntegrityCommand command, std::function<void()> onDone){
+			try {
 				std::unique_ptr<IntegrityResponse> response = session.execute(command);
 
 				logAnyExceptions(*response);
@@ -191,7 +193,11 @@ namespace IntegrityActions {
 				if (onDone != nullptr) {
 					onDone();
 				}
-			}, command);
+			}
+			catch (std::exception)
+			{
+			}
+		}, command, onDone);
 	}
 
 	void displayException(const IntegrityResponse& response) {

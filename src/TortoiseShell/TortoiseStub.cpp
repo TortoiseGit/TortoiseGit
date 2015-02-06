@@ -170,7 +170,7 @@ static void LoadRealLibrary(void)
 
 	if (!WantRealVersion())
 	{
-		EventLog::writeInformation(L"not loading TortoiseSI, loading only enabled for explorer.exe, current module = " + getProcessFilesName());
+		EventLog::writeInformation(L"not loading TortoiseSI, loading only enabled for explorer.exe");
 		hTortoiseSI = NIL;
 		return;
 	}
@@ -193,7 +193,7 @@ static void LoadRealLibrary(void)
 #else
 	path += L"TortoiseSI32.dll";
 #endif
-	EventLog::writeInformation(L"attempting to load dll = " + path + L" for " + getProcessFilesName());
+	EventLog::writeInformation(L"attempting to load dll = " + path);
 
 	hTortoiseSI = LoadLibraryEx(path.c_str(), NULL, LOAD_WITH_ALTERED_SEARCH_PATH);
 	if (!hTortoiseSI)

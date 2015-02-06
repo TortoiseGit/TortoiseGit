@@ -21,6 +21,8 @@
 #include <Windows.h>
 #include "EventLog.h"
 
+unsigned int getPID();
+
 namespace EventLog {
 	static const wchar_t* APPLICATION_NAME = L"TortoiseSI";
 
@@ -43,13 +45,17 @@ namespace EventLog {
 	//
 	void writeEvent(std::wstring message, WORD wType) {
 		HANDLE hEventSource = NULL;
-		LPCWSTR lpszStrings[2] = {NULL, NULL};
+		LPCWSTR lpszStrings[3] = {NULL, NULL, NULL};
 		const wchar_t *name = EventLog::APPLICATION_NAME;
 
 		hEventSource = RegisterEventSource(NULL, name);
 		if (hEventSource) {
-			lpszStrings[0] = name;
-			lpszStrings[1] = message.c_str();
+			std::wstring source = L"Source Module: " + getProcessFilesName();
+			std::wstring pid = L"Process ID: " + std::to_wstring(getPID());
+
+			lpszStrings[0] = source.c_str();
+			lpszStrings[1] = pid.c_str();
+			lpszStrings[2] = message.c_str();
 
 			 ReportEvent(hEventSource,		// Event log handle
 				wType,						// Event type
@@ -107,4 +113,9 @@ std::wstring getProcessFilesName()
 	wchar_t moduleName[MAX_PATH] = { 0 };
 	GetModuleFileName(NULL, moduleName, _countof(moduleName));
 	return std::wstring(moduleName);
+}
+
+unsigned int getPID() 
+{
+	return GetCurrentProcessId();
 }

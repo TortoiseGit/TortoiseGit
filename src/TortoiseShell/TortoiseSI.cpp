@@ -61,7 +61,7 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID /* lpReserved */)
 
 	if (!::IsDebuggerPresent())
 	{
-		EventLog::writeInformation(std::wstring(L"In debug load preventer for ") + getProcessFilesName());
+		EventLog::writeInformation(L"In debug load preventer");
 		return FALSE;
 	}
 #endif
@@ -72,7 +72,7 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID /* lpReserved */)
 	// behavior and even may create dependency loops in the dll load order.
 	if (dwReason == DLL_PROCESS_ATTACH)
 	{
-		EventLog::writeInformation(std::wstring(L"TortoiseSI dll Loaded by") + getProcessFilesName());
+		EventLog::writeInformation(L"TortoiseSI dll Loaded");
 
 		if (g_hmodThisDll == NULL)
 		{
@@ -84,7 +84,7 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID /* lpReserved */)
 	}
 	else if (dwReason == DLL_PROCESS_DETACH)
 	{
-		EventLog::writeInformation(std::wstring(L"TortoiseSI dll unloaded by") + getProcessFilesName());
+		EventLog::writeInformation(L"TortoiseSI dll unloaded by");
 
 		// do not clean up memory here:
 		// if an application doesn't release all COM objects
@@ -101,8 +101,7 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID /* lpReserved */)
 
 STDAPI DllCanUnloadNow(void)
 {
-	EventLog::writeInformation(std::wstring(L"DllCanUnloadNow by") + 
-		getProcessFilesName() +
+	EventLog::writeInformation(std::wstring(L"DllCanUnloadNow") + 
 		L", g_cRefThisDll = " + std::to_wstring(g_cRefThisDll));
 
 	return (g_cRefThisDll == 0 ? S_OK : S_FALSE);
