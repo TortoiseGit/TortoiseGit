@@ -107,6 +107,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Integrity\IntegrityActions.cpp" />
+    <ClCompile Include="..\Integrity\IntegrityResponse.cpp" />
     <ClCompile Include="..\Integrity\IntegritySession.cpp" />
     <ClCompile Include="..\Utils\CrashReport.cpp" />
     <ClCompile Include="..\Utils\DebugOutput.cpp" />
@@ -142,6 +143,7 @@
   <ItemGroup>
     <ClInclude Include="..\Integrity\FileStatus.h" />
     <ClInclude Include="..\Integrity\IntegrityActions.h" />
+    <ClInclude Include="..\Integrity\IntegrityResponse.h" />
     <ClInclude Include="..\Integrity\IntegritySession.h" />
     <ClInclude Include="..\Utils\CrashReport.h" />
     <ClInclude Include="..\Utils\DebugOutput.h" />

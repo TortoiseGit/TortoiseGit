@@ -19,21 +19,14 @@
 
 #include "stdafx.h"
 #include "IntegrityActions.h"
+#include "IntegrityResponse.h"
 #include "EventLog.h"
 #include "CrashReport.h"
 #include "DebugEventLog.h"
 
-#define SIZE 256
-
 namespace IntegrityActions {
 	void displayException(const IntegrityResponse& response);
-	std::wstring getId(mksAPIException exception);
-	std::wstring getExceptionMessage(mksAPIException exception);
-	std::wstring getId(mksWorkItem item);
-	std::wstring getModelType(mksWorkItem item);
 	void logAnyExceptions(const IntegrityResponse& response);
-	int getIntegerFieldValue(mksField field);
-	int getIntegerFieldValue(mksWorkItem item, const std::wstring&  fieldName, int defaultValue);
 	void executeUserCommand(const IntegritySession& session, const IntegrityCommand& command, std::function<void()>);
 
 	void launchSandboxView(const IntegritySession& session, std::wstring path)
@@ -100,36 +93,6 @@ namespace IntegrityActions {
 			return status;
 		}
 		return NO_STATUS;
-	}
-
-	bool getBooleanFieldValue(mksField field) 
-	{
-		unsigned short boolValue = 0;
-		mksFieldGetBooleanValue(field, &boolValue);
-
-		if (boolValue) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	int getIntegerFieldValue(mksField field) 
-	{
-		int value = 0;
-		mksFieldGetIntegerValue(field, &value);
-		return value;
-	}
-
-	int getIntegerFieldValue(mksWorkItem item, const std::wstring& fieldName, int defaultValue) 
-	{
-		mksField field = mksWorkItemGetField(item, (wchar_t*)fieldName.c_str());
-
-		if (field != NULL) {
-			return getIntegerFieldValue(field);
-		} else {
-			return defaultValue;
-		}
 	}
 
 	std::vector<std::wstring> getControlledPaths(const IntegritySession& session) 
@@ -216,29 +179,5 @@ namespace IntegrityActions {
 			displayException(response.getCommand(), getId(exception),
 				getExceptionMessage(exception));
 		}
-	}
-
-	std::wstring getExceptionMessage(mksAPIException exception) { 
-		wchar_t buffer[1024];
-		mksAPIExceptionGetMessage(exception, buffer, 1024);
-		return std::wstring(buffer);
-	}
-
-	std::wstring getId(mksAPIException exception) {
-		wchar_t buffer[1024];
-		mksAPIExceptionGetId(exception, buffer, 1024);
-		return std::wstring(buffer);
-	}
-
-	std::wstring getId(mksWorkItem item) {
-		wchar_t buffer[1024];
-		mksWorkItemGetId(item, buffer, 1024);
-		return std::wstring(buffer);
-	}
-
-	std::wstring getModelType(mksWorkItem item) {
-		wchar_t buffer[1024];
-		mksWorkItemGetModelType(item, buffer, 1024);
-		return std::wstring(buffer);
 	}
 }
