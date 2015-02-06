@@ -78,16 +78,19 @@ protected:
 	std::map<UINT_PTR, MenuInfo*> myIDMap;
 	std::map<std::wstring, UINT_PTR> myVerbsMap;
 	std::map<UINT_PTR, std::wstring> myVerbsIDMap;
-	std::wstring	folder_;
-	std::vector<std::wstring> files_;
-	stdstring ignoredprops;
+
+	std::vector<std::wstring> selectedItems;
 	FileStatusFlags	selectedItemsStatus;
+
+	std::wstring currentExplorerWindowFolder;
 	bool currentFolderIsControlled;
+
+	stdstring ignoredprops;
 
 	IconBitmapUtils		m_iconBitmapUtils;
 public:
-	const std::vector<std::wstring>& getSelectedItems() { return files_; }
-	const std::wstring& getCurrentFolder() { return folder_; }
+	const std::vector<std::wstring>& getSelectedItems() { return selectedItems; }
+	const std::wstring& getCurrentFolder() { return currentExplorerWindowFolder; }
 	bool isCurrentFolderControlled() { return currentFolderIsControlled; }
 	FileStatusFlags getSelectedItemsStatus() { return selectedItemsStatus; }
 

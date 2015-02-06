@@ -57,8 +57,8 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 {
 	CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Shell :: Initialize\n");
 	PreserveChdir preserveChdir;
-	files_.clear();
-	folder_.clear();
+	selectedItems.clear();
+	currentExplorerWindowFolder.clear();
 	selectedItemsStatus = (FileStatusFlags)FileStatus::None;
 	currentFolderIsControlled = false;
 	// get selected files/folders
@@ -106,7 +106,7 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 					stdstring str = stdstring(szFileName.get());
 					if ((!str.empty()) && (g_ShellCache.IsContextPathAllowed(szFileName.get())))
 					{
-						files_.push_back(str);
+						selectedItems.push_back(str);
 						if (i == 0)
 						{
 							try
@@ -138,7 +138,7 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 					stdstring str = child.toString();
 					if (!str.empty() && IsPathAllowed(str))
 					{
-						files_.push_back(str);
+						selectedItems.push_back(str);
 						// TODO batch?
 						selectedItemsStatus |= getPathStatus(str);
 					}
@@ -161,17 +161,17 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 	if (pIDFolder)
 	{
 		ItemIDList list(pIDFolder);
-		folder_ = list.toString();
-		if (IsPathAllowed(folder_))
+		currentExplorerWindowFolder = list.toString();
+		if (IsPathAllowed(currentExplorerWindowFolder))
 		{
-			if (ICache::getInstance().getRootFolderCache().isPathControlled(folder_))
+			if (ICache::getInstance().getRootFolderCache().isPathControlled(currentExplorerWindowFolder))
 			{
 				currentFolderIsControlled = true;
 			}
 		}
 		else
 		{
-			folder_.clear();
+			currentExplorerWindowFolder.clear();
 		}
 	}	
 	return S_OK;
@@ -328,31 +328,31 @@ STDMETHODIMP CShellExt::QueryContextMenu_Wrap(HMENU hMenu,
 	if ((uFlags & CMF_DEFAULTONLY)!=0)
 		return S_OK;					//we don't change the default action
 
-	if (files_.empty() && folder_.empty())
+	if (selectedItems.empty() && currentExplorerWindowFolder.empty())
 		return S_OK;
 
 	if (((uFlags & 0x000f)!=CMF_NORMAL)&&(!(uFlags & CMF_EXPLORE))&&(!(uFlags & CMF_VERBSONLY)))
 		return S_OK;
 
-	if (IsIllegalFolder(folder_))
+	if (IsIllegalFolder(currentExplorerWindowFolder))
 		return S_OK;
 
-	if (folder_.empty())
+	if (currentExplorerWindowFolder.empty())
 	{
 		// folder is empty, but maybe files are selected
-		if (files_.empty())
+		if (selectedItems.empty())
 			return S_OK;	// nothing selected - we don't have a menu to show
 		// check whether a selected entry is an UID - those are namespace extensions
 		// which we can't handle
-		for (const std::wstring& file : files_)
+		for (const std::wstring& path : selectedItems)
 		{
-			if (_tcsncmp(file.c_str(), _T("::{"), 3) == 0)
+			if (_tcsncmp(path.c_str(), _T("::{"), 3) == 0)
 				return S_OK;
 		}
 	}
 	else
 	{
-		if (_tcsncmp(folder_.c_str(), _T("::{"), 3) == 0)
+		if (_tcsncmp(currentExplorerWindowFolder.c_str(), _T("::{"), 3) == 0)
 			return S_OK;
 	}
 
@@ -509,7 +509,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 	if (lpcmi == NULL)
 		return hr;
 
-	if (!files_.empty() || !folder_.empty())
+	if (!selectedItems.empty() || !currentExplorerWindowFolder.empty())
 	{
 		UINT_PTR idCmd = LOWORD(lpcmi->lpVerb);
 
@@ -739,23 +739,6 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 		{
 			if (itemStates & ITEMIS_INGIT)
 			{
-				InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING, idCmd, ignorepath);
-				myIDMap[idCmd - idCmdFirst] = ShellMenuDeleteIgnore;
-				myIDMap[idCmd++] = ShellMenuDeleteIgnore;
-
-				_tcscpy_s(maskbuf, MAX_PATH, _T("*"));
-				if (!(itemStates & ITEMIS_FOLDER) && _tcsrchr(ignorepath, '.'))
-				{
-					_tcscat_s(maskbuf, MAX_PATH, _tcsrchr(ignorepath, '.'));
-					InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING, idCmd, maskbuf);
-					stdstring verb = stdstring(maskbuf);
-					myVerbsMap[verb] = idCmd - idCmdFirst;
-					myVerbsMap[verb] = idCmd;
-					myVerbsIDMap[idCmd - idCmdFirst] = verb;
-					myVerbsIDMap[idCmd] = verb;
-					myIDMap[idCmd - idCmdFirst] = ShellMenuDeleteIgnoreCaseSensitive;
-					myIDMap[idCmd++] = ShellMenuDeleteIgnoreCaseSensitive;
-				}
 			}
 			else
 			{
@@ -782,27 +765,6 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 		{
 			if (itemStates & ITEMIS_INGIT)
 			{
-				MAKESTRING(IDS_MENUDELETEIGNOREMULTIPLE);
-				_stprintf_s(ignorepath, MAX_PATH, stringtablebuffer, files_.size());
-				InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING, idCmd, ignorepath);
-				stdstring verb = stdstring(ignorepath);
-				myVerbsMap[verb] = idCmd - idCmdFirst;
-				myVerbsMap[verb] = idCmd;
-				myVerbsIDMap[idCmd - idCmdFirst] = verb;
-				myVerbsIDMap[idCmd] = verb;
-				myIDMap[idCmd - idCmdFirst] = ShellMenuDeleteIgnore;
-				myIDMap[idCmd++] = ShellMenuDeleteIgnore;
-
-				MAKESTRING(IDS_MENUDELETEIGNOREMULTIPLEMASK);
-				_stprintf_s(ignorepath, MAX_PATH, stringtablebuffer, files_.size());
-				InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING, idCmd, ignorepath);
-				verb = stdstring(ignorepath);
-				myVerbsMap[verb] = idCmd - idCmdFirst;
-				myVerbsMap[verb] = idCmd;
-				myVerbsIDMap[idCmd - idCmdFirst] = verb;
-				myVerbsIDMap[idCmd] = verb;
-				myIDMap[idCmd - idCmdFirst] = ShellMenuDeleteIgnoreCaseSensitive;
-				myIDMap[idCmd++] = ShellMenuDeleteIgnoreCaseSensitive;
 			}
 			else
 			{
