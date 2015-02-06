@@ -21,6 +21,7 @@
 #include "../targetver.h"
 #include <Windows.h>
 #include <string>
+#include "EventLog.h"
 
 const HINSTANCE NIL = (HINSTANCE)((char*)(0) - 1);
 
@@ -32,54 +33,6 @@ static LPFNCANUNLOADNOW pDllCanUnloadNow = NULL;
 
 static const WCHAR TSIRootKey[] = L"Software\\TortoiseSI";
 static const WCHAR ExplorerEnvPath[] = L"%SystemRoot%\\explorer.exe";
-
-void writeEvent(std::wstring message, WORD wType) {
-	HANDLE hEventSource = NULL;
-	LPCWSTR lpszStrings[2] = { NULL, NULL };
-	const wchar_t *name = L"TortoiseSI";
-
-	hEventSource = RegisterEventSource(NULL, name);
-	if (hEventSource) {
-		lpszStrings[0] = name;
-		lpszStrings[1] = message.c_str();
-
-		ReportEvent(hEventSource,		// Event log handle
-			wType,						// Event type
-			0,							// Event category
-			0,							// Event identifier
-			NULL,						// No security identifier
-			ARRAYSIZE(lpszStrings),		// Size of lpszStrings array
-			0,							// No binary data
-			lpszStrings,				// Array of strings
-			NULL						// No binary data
-			);
-
-		DeregisterEventSource(hEventSource);
-	}
-}
-
-//
-//   FUNCTION: EventLog::writeErrorLogEntry(wstring)
-//
-//   PURPOSE: Log an ERROR type message to the Application event log.
-//
-//   PARAMETERS:
-//   * error - the error message
-//
-void writeError(std::wstring error) {
-	writeEvent(error, EVENTLOG_ERROR_TYPE);
-}
-//
-//   FUNCTION: EventLog::writeInformationLogEntry(wstring)
-//
-//   PURPOSE: Log an INFORMATION type message to the Application event log.
-//
-//   PARAMETERS:
-//   * info - the information message
-//
-void writeInformation(std::wstring info) {
-	writeEvent(info, EVENTLOG_INFORMATION_TYPE);
-}
 
 static BOOL IsExplorer()
 {
@@ -183,7 +136,7 @@ static std::wstring PathToDll()
 	length = GetModuleFileName(hInst, dllPath, _countof(dllPath));
 	if (!length)
 	{
-		writeError(L"PathToDll - failed to get location of TortoiseStub");
+		EventLog::writeError(L"PathToDll - failed to get location of TortoiseStub");
 		return L"";
 	}
 
@@ -200,20 +153,12 @@ static std::wstring PathToDll()
 
 	if (length == 0)
 	{
-		writeError(L"PathToDll - failed to get location of " + std::wstring(dllPath));
+		EventLog::writeError(L"PathToDll - failed to get location of " + std::wstring(dllPath));
 		return L"";
 	}
 
 	return std::wstring(dllPath, length+1);
 }
-
-std::wstring getProcessFilesName()
-{
-	WCHAR moduleName[MAX_PATH] = { 0 };
-	GetModuleFileName(NULL, moduleName, _countof(moduleName));
-	return std::wstring(moduleName);
-}
-
 
 static void LoadRealLibrary(void)
 {
@@ -225,7 +170,7 @@ static void LoadRealLibrary(void)
 
 	if (!WantRealVersion())
 	{
-		writeInformation(L"not loading TortoiseSI, loading only enabled for explorer.exe, current module = " + getProcessFilesName());
+		EventLog::writeInformation(L"not loading TortoiseSI, loading only enabled for explorer.exe, current module = " + getProcessFilesName());
 		hTortoiseSI = NIL;
 		return;
 	}
@@ -248,12 +193,12 @@ static void LoadRealLibrary(void)
 #else
 	path += L"TortoiseSI32.dll";
 #endif
-	writeInformation(L"attempting to load dll = " + path);
+	EventLog::writeInformation(L"attempting to load dll = " + path + L" for " + getProcessFilesName());
 
 	hTortoiseSI = LoadLibraryEx(path.c_str(), NULL, LOAD_WITH_ALTERED_SEARCH_PATH);
 	if (!hTortoiseSI)
 	{
-		writeError(L"attempting to load dll = " + path + L" fail!");
+		EventLog::writeError(L"attempting to load dll = " + path + L" fail!");
 		hTortoiseSI = NIL;
 		return;
 	}
@@ -263,7 +208,7 @@ static void LoadRealLibrary(void)
 	pDllGetClassObject = (LPFNGETCLASSOBJECT)GetProcAddress(hTortoiseSI, GetClassObject);
 	if (pDllGetClassObject == NULL)
 	{
-		writeError(L"failed to find DllGetClassObject function");
+		EventLog::writeError(L"failed to find DllGetClassObject function");
 		FreeLibrary(hTortoiseSI);
 		hTortoiseSI = NIL;
 		return;
@@ -271,7 +216,7 @@ static void LoadRealLibrary(void)
 	pDllCanUnloadNow = (LPFNCANUNLOADNOW)GetProcAddress(hTortoiseSI, CanUnloadNow);
 	if (pDllCanUnloadNow == NULL)
 	{
-		writeError(L"failed to find DllCanUnloadNow function");
+		EventLog::writeError(L"failed to find DllCanUnloadNow function");
 		FreeLibrary(hTortoiseSI);
 		hTortoiseSI = NIL;
 		return;
@@ -300,7 +245,7 @@ BOOL WINAPI DllMain(HINSTANCE hInstance, DWORD Reason, LPVOID /*Reserved*/)
 
 	if (!IsDebuggerPresent() && !IsExplorer())
 	{
-		writeInformation(L"debugger not present, not loading dll");
+		EventLog::writeInformation(L"debugger not present, not loading dll");
 		return FALSE;
 	}
 #endif

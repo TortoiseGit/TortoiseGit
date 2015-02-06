@@ -184,9 +184,6 @@
     <ClInclude Include="..\Integrity\IntegritySession.h">
       <Filter>Integrity</Filter>
     </ClInclude>
-    <ClInclude Include="..\Utils\EventLog.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
     <ClInclude Include="..\Integrity\FileStatus.h">
       <Filter>Integrity</Filter>
     </ClInclude>
@@ -201,6 +198,9 @@
     </ClInclude>
     <ClInclude Include="MenuInfo.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\EventLog.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

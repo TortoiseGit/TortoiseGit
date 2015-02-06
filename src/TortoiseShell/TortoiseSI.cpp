@@ -51,13 +51,6 @@ ShellObjects		g_shellObjects;
 
 #pragma comment(linker, "\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
-std::wstring getProcessFilesName() 
-{
-	WCHAR moduleName[MAX_PATH] = {0};
-	GetModuleFileName(NULL, moduleName, _countof(moduleName));
-	return std::wstring(moduleName);
-}
-
 extern "C" int APIENTRY
 DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID /* lpReserved */)
 {

@@ -17,13 +17,15 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #pragma once
-
+#ifndef TORTOISESHELL
+#include <string>
+#endif
 // methods to log events to the Windows Event Log
 
 namespace EventLog {
-	static const wchar_t* APPLICATION_NAME = L"TortoiseSI";
-
 	void writeError(std::wstring error);
 	void writeInformation(std::wstring info);
 	void writeWarning(std::wstring warning);
 }
+
+extern std::wstring getProcessFilesName();

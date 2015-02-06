@@ -28,7 +28,7 @@
 
 // defaults are specified in ShellCache.h
 
-MenuInfo menuSeperator = { MenuItem::Seperator, 0, 0, 0, [](CShellExt* shell) {}, [](CShellExt* shell) { return true; } };
+MenuInfo menuSeperator = { MenuItem::Seperator, 0, 0, 0, [](CShellExt*) {}, [](CShellExt*) { return true; } };
 
 static const IntegritySession& getIntegritySession() {
 	return ICache::getInstance().getIntegritySession();
@@ -47,11 +47,13 @@ std::vector<MenuInfo> menuInfo =
 			}
 			IntegrityActions::launchSandboxView(getIntegritySession(), path);
 		},
-		[](CShellExt* shell) { return (shell->getSelectedItems().size() == 0 && shell->isCurrentFolderControlled())
+		[](CShellExt* shell) { 
+			return (shell->getSelectedItems().size() == 0 && shell->isCurrentFolderControlled())
 											||
-									  (shell->getSelectedItems().size() == 1 &&
-									  hasFileStatus(shell->getSelectedItemsStatus(), FileStatus::Folder) &&
-									  hasFileStatus(shell->getSelectedItemsStatus(), FileStatus::Member)); }
+					  (shell->getSelectedItems().size() == 1 &&
+								  hasFileStatus(shell->getSelectedItemsStatus(), FileStatus::Folder) &&
+								  hasFileStatus(shell->getSelectedItemsStatus(), FileStatus::Member)); 
+		}
 	},
 	{ MenuItem::CreateSandbox, 0, IDS_CREATE_SANDBOX, IDS_CREATE_SANDBOX,
 	[](CShellExt* shell)
@@ -67,11 +69,13 @@ std::vector<MenuInfo> menuInfo =
 				[]{ ICache::getInstance().getRootFolderCache().forceRefresh(); });
 			
 		},
-			[](CShellExt* shell) { return (shell->getSelectedItems().size() == 0 && !shell->isCurrentFolderControlled())
-			||
-			(shell->getSelectedItems().size() == 1 &&
-			hasFileStatus(shell->getSelectedItemsStatus(), FileStatus::Folder) &&
-			!hasFileStatus(shell->getSelectedItemsStatus(), FileStatus::Member)); }
+		[](CShellExt* shell) { 
+			return (shell->getSelectedItems().size() == 0 && !shell->isCurrentFolderControlled())
+							||
+						(shell->getSelectedItems().size() == 1 &&
+							hasFileStatus(shell->getSelectedItemsStatus(), FileStatus::Folder) &&
+							!hasFileStatus(shell->getSelectedItemsStatus(), FileStatus::Member)); 
+		}
 	},
 	menuSeperator,
 
