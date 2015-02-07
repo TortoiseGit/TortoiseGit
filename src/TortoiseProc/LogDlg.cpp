@@ -71,6 +71,7 @@ CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
 	m_bFilterWithRegex = !!CRegDWORD(_T("Software\\TortoiseGit\\UseRegexFilter"), FALSE);
 	m_bFilterCaseSensitively = !!CRegDWORD(L"Software\\TortoiseGit\\FilterCaseSensitively", FALSE);
 	m_bAsteriskLogPrefix = !!CRegDWORD(L"Software\\TortoiseGit\\AsteriskLogPrefix", TRUE);
+	m_LogList.m_SelectedFilters = CRegDWORD(_T("Software\\TortoiseGit\\SelectedLogFilters"), LOGFILTER_ALL);
 
 	CString str;
 	str=g_Git.m_CurrentDir;
@@ -1995,6 +1996,7 @@ LRESULT CLogDlg::OnClickedInfoIcon(WPARAM wParam, LPARAM lParam)
 				m_LogList.m_SelectedFilters ^= selection;
 				SetFilterCueText();
 			}
+			CRegDWORD(_T("Software\\TortoiseGit\\SelectedLogFilters")) = m_LogList.m_SelectedFilters;
 			// Reload only if a search text is entered
 			if (m_LogList.HasFilterText())
 				SetTimer(LOGFILTER_TIMER, 1000, NULL);
