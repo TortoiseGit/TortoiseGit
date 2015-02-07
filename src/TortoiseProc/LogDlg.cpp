@@ -1954,8 +1954,13 @@ LRESULT CLogDlg::OnClickedInfoIcon(WPARAM wParam, LPARAM lParam)
 			popup.AppendMenu(LOGMENUFLAGS(LOGFILTER_BUGID), LOGFILTER_BUGID, temp);
 		}
 
+		popup.AppendMenu(MF_SEPARATOR, NULL);
+
 		temp.LoadString(IDS_LOG_FILTER_TOGGLE);
 		popup.AppendMenu(MF_STRING | MF_ENABLED, LOGFILTER_TOGGLE, temp);
+
+		temp.LoadString(IDS_ALL);
+		popup.AppendMenu(MF_STRING | MF_ENABLED, LOGFILTER_ALL, temp);
 
 		popup.AppendMenu(MF_SEPARATOR, NULL);
 
@@ -1989,6 +1994,11 @@ LRESULT CLogDlg::OnClickedInfoIcon(WPARAM wParam, LPARAM lParam)
 			else if (selection == LOGFILTER_TOGGLE)
 			{
 				m_LogList.m_SelectedFilters = (~m_LogList.m_SelectedFilters) & LOGFILTER_ALL;
+				SetFilterCueText();
+			}
+			else if (selection == LOGFILTER_ALL)
+			{
+				m_LogList.m_SelectedFilters = selection;
 				SetFilterCueText();
 			}
 			else
