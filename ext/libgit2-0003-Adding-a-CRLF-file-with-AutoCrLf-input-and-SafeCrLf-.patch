@@ -1,0 +1,76 @@
+From 3a0242eef57962555bbc31f41bdcebe0727bf9f0 Mon Sep 17 00:00:00 2001
+From: Sven Strickroth <email@cs-ware.de>
+Date: Fri, 23 Jan 2015 15:34:14 +0100
+Subject: [PATCH 3/6] Adding a CRLF-file with AutoCrLf=input and SafeCrLf=true
+ does not fail as with vanilla git
+
+Signed-off-by: Sven Strickroth <email@cs-ware.de>
+---
+ CHANGELOG.md       |  1 +
+ src/crlf.c         | 13 +++++++++++++
+ tests/index/crlf.c |  6 ++++++
+ 3 files changed, 20 insertions(+)
+
+diff --git a/CHANGELOG.md b/CHANGELOG.md
+index 1894d07..17da574 100644
+--- a/CHANGELOG.md
++++ b/CHANGELOG.md
+@@ -8,6 +8,7 @@ v0.22 + 1
+ 
+ * LF -> CRLF filter now correctly honors SafeCrLf=true errors
+   * LF only files were accepted with AutoCrLf=true on CRLF platforms
++  * files containig CRLF in combination with AutoCrLf=input were accepted
+ 
+ * Rename and copy detection is enabled for small files.
+ 
+diff --git a/src/crlf.c b/src/crlf.c
+index bb1657b..29fa9a0 100644
+--- a/src/crlf.c
++++ b/src/crlf.c
+@@ -156,6 +156,19 @@ static int crlf_apply_to_odb(
+ 			default:
+ 				break;
+ 			}
++		} else if (stats.crlf && ca->auto_crlf == GIT_AUTO_CRLF_INPUT) {
++			switch (ca->safe_crlf) {
++			case GIT_SAFE_CRLF_FAIL:
++				giterr_set(
++					GITERR_FILTER, "CRLF would be replaced by LF in '%s'",
++					git_filter_source_path(src));
++				return -1;
++			case GIT_SAFE_CRLF_WARN:
++				/* TODO: issue warning when warning API is available */;
++				break;
++			default:
++				break;
++			}
+ 		}
+ 
+ 		/*
+diff --git a/tests/index/crlf.c b/tests/index/crlf.c
+index 803c141..38e7916 100644
+--- a/tests/index/crlf.c
++++ b/tests/index/crlf.c
+@@ -152,6 +152,9 @@ void test_index_crlf__safecrlf_true_autocrlf_input_text_auto_attr(void)
+ 
+ 	cl_git_pass(git_oid_fromstr(&oid, FILE_OID_LF));
+ 	cl_assert_equal_oid(&oid, &entry->id);
++
++	cl_git_mkfile("./crlf/newfile2.txt", FILE_CONTENTS_CRLF);
++	cl_git_fail(git_index_add_bypath(g_index, "newfile2.txt"));
+ }
+ 
+ void test_index_crlf__safecrlf_true_autocrlf_input_text__no_attr(void)
+@@ -169,6 +172,9 @@ void test_index_crlf__safecrlf_true_autocrlf_input_text__no_attr(void)
+ 
+ 	cl_git_pass(git_oid_fromstr(&oid, FILE_OID_LF));
+ 	cl_assert_equal_oid(&oid, &entry->id);
++
++	cl_git_mkfile("./crlf/newfile2.txt", FILE_CONTENTS_CRLF);
++	cl_git_fail(git_index_add_bypath(g_index, "newfile2.txt"));
+ }
+ 
+ void test_index_crlf__safecrlf_true_no_attrs(void)
+-- 
+1.9.5.msysgit.0
+

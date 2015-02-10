@@ -1,0 +1,122 @@
+From 5f85c2c0f6f2c791ef7e31fc158b4e65f40faf49 Mon Sep 17 00:00:00 2001
+From: Sven Strickroth <email@cs-ware.de>
+Date: Fri, 23 Jan 2015 14:16:34 +0100
+Subject: [PATCH 1/6] AutoCrLf=true and SafeCrLf=true did not fail on LF-only
+ file as vanilla git does
+
+Reported-by: Yue Lin Ho <b8732003@student.nsysu.edu.tw>
+Signed-off-by: Sven Strickroth <email@cs-ware.de>
+---
+ CHANGELOG.md        |  3 +++
+ src/crlf.c          |  4 ++--
+ tests/filter/crlf.c |  6 +++---
+ tests/index/crlf.c  | 38 +++++++++++++++++++++++++++++++++++++-
+ 4 files changed, 45 insertions(+), 6 deletions(-)
+
+diff --git a/CHANGELOG.md b/CHANGELOG.md
+index bffcb25..1894d07 100644
+--- a/CHANGELOG.md
++++ b/CHANGELOG.md
+@@ -6,6 +6,9 @@ v0.22 + 1
+ * Updated binary identification in CRLF filtering to avoid false positives in
+   UTF-8 files.
+ 
++* LF -> CRLF filter now correctly honors SafeCrLf=true errors
++  * LF only files were accepted with AutoCrLf=true on CRLF platforms
++
+ * Rename and copy detection is enabled for small files.
+ 
+ ### API additions
+diff --git a/src/crlf.c b/src/crlf.c
+index c0a7399..976e474 100644
+--- a/src/crlf.c
++++ b/src/crlf.c
+@@ -138,8 +138,8 @@ static int crlf_apply_to_odb(
+ 		if (git_buf_text_gather_stats(&stats, from, false))
+ 			return GIT_PASSTHROUGH;
+ 
+-		/* If there are no CR characters to filter out, then just pass */
+-		if (!stats.cr)
++		/* If there are no CR characters to filter out and CrLf is not set to "true", then just pass */
++		if (!stats.cr && ca->auto_crlf != GIT_AUTO_CRLF_TRUE)
+ 			return GIT_PASSTHROUGH;
+ 
+ 		/* If safecrlf is enabled, sanity-check the result. */
+diff --git a/tests/filter/crlf.c b/tests/filter/crlf.c
+index a31dac9..59358f3 100644
+--- a/tests/filter/crlf.c
++++ b/tests/filter/crlf.c
+@@ -103,12 +103,12 @@ void test_filter_crlf__with_safecrlf(void)
+ 	cl_git_fail(git_filter_list_apply_to_data(&out, fl, &in));
+ 	cl_assert_equal_i(giterr_last()->klass, GITERR_FILTER);
+ 
+-	/* Normalized \n is reversible, so does not fail with safecrlf */
++	/* Normalized \n fails with safecrlf if AutoCrLf=true which is the case here */
+ 	in.ptr = "Normal\nLF\nonly\nline-endings.\n";
+ 	in.size = strlen(in.ptr);
+ 
+-	cl_git_pass(git_filter_list_apply_to_data(&out, fl, &in));
+-	cl_assert_equal_s(in.ptr, out.ptr);
++	cl_git_fail(git_filter_list_apply_to_data(&out, fl, &in));
++	cl_assert_equal_i(giterr_last()->klass, GITERR_FILTER);
+ 
+ 	git_filter_list_free(fl);
+ 	git_buf_free(&out);
+diff --git a/tests/index/crlf.c b/tests/index/crlf.c
+index 23f4793..803c141 100644
+--- a/tests/index/crlf.c
++++ b/tests/index/crlf.c
+@@ -135,13 +135,49 @@ void test_index_crlf__autocrlf_input_text_auto_attr(void)
+ 	cl_assert_equal_oid(&oid, &entry->id);
+ }
+ 
++void test_index_crlf__safecrlf_true_autocrlf_input_text_auto_attr(void)
++{
++	const git_index_entry *entry;
++	git_oid oid;
++
++	cl_git_mkfile("./crlf/.gitattributes", "* text=auto\n");
++
++	cl_repo_set_string(g_repo, "core.autocrlf", "input");
++	cl_repo_set_bool(g_repo, "core.safecrlf", true);
++
++	cl_git_mkfile("./crlf/newfile.txt", FILE_CONTENTS_LF);
++
++	cl_git_pass(git_index_add_bypath(g_index, "newfile.txt"));
++	entry = git_index_get_bypath(g_index, "newfile.txt", 0);
++
++	cl_git_pass(git_oid_fromstr(&oid, FILE_OID_LF));
++	cl_assert_equal_oid(&oid, &entry->id);
++}
++
++void test_index_crlf__safecrlf_true_autocrlf_input_text__no_attr(void)
++{
++	const git_index_entry *entry;
++	git_oid oid;
++
++	cl_repo_set_string(g_repo, "core.autocrlf", "input");
++	cl_repo_set_bool(g_repo, "core.safecrlf", true);
++
++	cl_git_mkfile("./crlf/newfile.txt", FILE_CONTENTS_LF);
++
++	cl_git_pass(git_index_add_bypath(g_index, "newfile.txt"));
++	entry = git_index_get_bypath(g_index, "newfile.txt", 0);
++
++	cl_git_pass(git_oid_fromstr(&oid, FILE_OID_LF));
++	cl_assert_equal_oid(&oid, &entry->id);
++}
++
+ void test_index_crlf__safecrlf_true_no_attrs(void)
+ {
+ 	cl_repo_set_bool(g_repo, "core.autocrlf", true);
+ 	cl_repo_set_bool(g_repo, "core.safecrlf", true);
+ 
+ 	cl_git_mkfile("crlf/newfile.txt", ALL_LF_TEXT_RAW);
+-	cl_git_pass(git_index_add_bypath(g_index, "newfile.txt"));
++	cl_git_fail(git_index_add_bypath(g_index, "newfile.txt")); /* vanilla git fails here (on CrLf as well as on Lf-ony platforms): "fatal: LF would be replaced by CRLF in crlf/newfile.txt" */
+ 
+ 	cl_git_mkfile("crlf/newfile.txt", ALL_CRLF_TEXT_RAW);
+ 	cl_git_pass(git_index_add_bypath(g_index, "newfile.txt"));
+-- 
+1.9.5.msysgit.0
+
