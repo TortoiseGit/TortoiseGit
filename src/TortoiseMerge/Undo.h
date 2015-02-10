@@ -1,6 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2006-2007,2009-2014 - TortoiseSVN
+// Copyright (C) 2006-2007,2009-2015 - TortoiseSVN
 // Copyright (C) 2011 Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
@@ -28,8 +28,13 @@ class CBaseView;
  * \ingroup TortoiseMerge
  * this struct holds all the information of a single change in TortoiseMerge.
  */
-typedef struct viewstate
+class viewstate
 {
+public:
+	viewstate()
+	: modifies(false)
+	{}
+
 	std::map<int, CString>	difflines;
 	std::map<int, DWORD>	linestates;
 	std::map<int, DWORD>	linelines;
@@ -44,7 +49,7 @@ typedef struct viewstate
 	void	AddViewLineFromView(CBaseView *pView, int nViewLine, bool bAddEmptyLine);
 	void	Clear();
 	bool	IsEmpty() const { return difflines.empty() && linestates.empty() && linelines.empty() && linesEOL.empty() && markedlines.empty() && addedlines.empty() && removedlines.empty() && replacedlines.empty(); }
-} viewstate;
+};
 
 /**
  * \ingroup TortoiseMerge
