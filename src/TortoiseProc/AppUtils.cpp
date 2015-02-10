@@ -157,6 +157,9 @@ bool CAppUtils::StashSave(const CString& msg, bool showPull, bool pullShowPush, 
 
 bool CAppUtils::StashApply(CString ref, bool showChanges /* true */)
 {
+	if (!CheckCleanWorkTreeAndWarn())
+		return false;
+
 	CString cmd,out;
 	cmd = _T("git.exe stash apply ");
 	if (ref.Find(_T("refs/")) == 0)
@@ -210,6 +213,9 @@ bool CAppUtils::StashApply(CString ref, bool showChanges /* true */)
 
 bool CAppUtils::StashPop(bool showChanges /* true */)
 {
+	if (!CheckCleanWorkTreeAndWarn())
+		return false;
+
 	CString cmd,out;
 	cmd=_T("git.exe stash pop ");
 
@@ -254,6 +260,29 @@ bool CAppUtils::StashPop(bool showChanges /* true */)
 		}
 	}
 	return false;
+}
+
+bool CAppUtils::CheckCleanWorkTreeAndWarn()
+{
+	CString key = L"NoWarnStashPop";
+	if (g_Git.CheckCleanWorkTree())
+		return true;
+
+	if ((DWORD)CRegDWORD(L"Software\\TortoiseGit\\" + key) == 1)
+		return true;
+
+	// Once the NoWarnStashPop is true, it will be not effective that set the value back to false.
+	// (Caused by the behavior of CMessageBox::ShowCheck())
+	// So, it is needed to remove the key first when the value is not true.
+	CMessageBox::RemoveRegistryKey(key);
+
+	if (CMessageBox::ShowCheck(nullptr, IDS_WARN_NOCLEAN, IDS_APPNAME, 1, IDI_WARNING, IDS_CONTINUEBUTTON, IDS_ABORTBUTTON, 0, key, IDS_PROC_NOTSHOWAGAINCONTINUE) == 2)
+	{
+		CMessageBox::RemoveRegistryKey(key); // only store answer if it is "Continue"
+		return false;
+	}
+
+	return true;
 }
 
 BOOL CAppUtils::StartExtMerge(

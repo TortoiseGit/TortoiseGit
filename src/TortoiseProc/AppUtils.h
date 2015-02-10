@@ -168,6 +168,8 @@ public:
 	static bool StashApply(CString ref, bool showChanges = true);
 	static bool	StashPop(bool showChanges = true);
 
+	static bool CheckCleanWorkTreeAndWarn();
+
 	static bool IsSSHPutty();
 
 	static bool LaunchRemoteSetting();

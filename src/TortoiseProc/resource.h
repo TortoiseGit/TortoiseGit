@@ -1876,6 +1876,7 @@
 #define IDS_MENU_APPLY                  9635
 #define IDS_MENU_SENDMAIL               9636
 #define IDS_ERROR_NOREF                 9638
+#define IDS_WARN_NOCLEAN                9640
 #define IDS_ERROR_NOCLEAN_STASH         9641
 #define IDS_ERROR_NOTHING_COMMIT        9642
 #define IDS_COMMIT_FINISH               9643

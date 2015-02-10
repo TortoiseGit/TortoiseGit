@@ -9291,6 +9291,10 @@ msgstr ""
 msgid "The working tree is not clean and contains unstaged changes.\nReview and commit the changes?"
 msgstr ""
 
+#. Resource IDs: (603)
+msgid "The working tree is not clean!\nDo you want to stash pop/apply changes?"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Their file:"
 msgstr ""
