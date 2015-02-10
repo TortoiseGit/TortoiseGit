@@ -837,7 +837,7 @@ int CBaseView::GetScreenLines()
 			// only use the scroll bar size if the info is correct and the scrollbar is visible
 			// if anything isn't proper, assume the scrollbar has a size of zero
 			// and calculate the screen lines without it.
-			if (!(sbi.rgstate[0] & STATE_SYSTEM_INVISIBLE) && !(sbi.rgstate[0] & STATE_SYSTEM_INVISIBLE))
+			if (!(sbi.rgstate[0] & STATE_SYSTEM_INVISIBLE) && !(sbi.rgstate[0] & STATE_SYSTEM_UNAVAILABLE))
 				scrollBarHeight = sbi.rcScrollBar.bottom - sbi.rcScrollBar.top;
 		}
 		CRect rect;
