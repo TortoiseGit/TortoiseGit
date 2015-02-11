@@ -173,7 +173,6 @@ FileStatusFlags	CShellExt::getPathStatus(std::wstring path)
 {
 	if (IsPathAllowed(path) ){
 		if (ICache::getInstance().getRootFolderCache().isPathControlled(path)) {
-			// TODO PathIsDirectoryW is an expensive call on remote paths
 			if (PathIsDirectoryW(path.c_str())) {
 				return FileStatus::Folder | FileStatus::Member;
 			} else {
