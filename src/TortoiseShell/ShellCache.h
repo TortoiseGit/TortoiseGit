@@ -103,7 +103,7 @@ public:
 			}
 		}
 		
-		return drivetype != DRIVE_FIXED;
+		return drivetype == DRIVE_FIXED;
 	}
 	DWORD GetLangID()
 	{

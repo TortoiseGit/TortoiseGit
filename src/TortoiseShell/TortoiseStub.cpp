@@ -92,7 +92,7 @@ static BOOL WantRealVersion()
 	return bWantReal;
 }
 
-static std::wstring PathToDll()
+static std::wstring PathToDllOverride()
 {
 	WCHAR dllPath[MAX_PATH] = { 0 };
 #ifdef _WIN64
@@ -111,6 +111,7 @@ static std::wstring PathToDll()
 	if (Result == ERROR_SUCCESS)
 	{
 		Result = RegQueryValueEx(hKey, dubugDllPathKey, NULL, &Type, (BYTE *)&dllPath, &length);
+		RegCloseKey(hKey);
 		length = length / 2; // 2 bytes per character
 
 		if ((Result == ERROR_SUCCESS) && (Type == REG_SZ) && (length > 0) && dllPath)
@@ -120,7 +121,6 @@ static std::wstring PathToDll()
 				length--;
 			}
 
-			RegCloseKey(hKey);
 			std::wstring path = std::wstring(dllPath, length);
 
 			if (path[path.length() - 1] != '\\' || path[path.length() - 1] != '/') {
@@ -128,12 +128,16 @@ static std::wstring PathToDll()
 			}
 			return path;
 		}
-
-		RegCloseKey(hKey);
 	}
+	return L"";
+}
+
+static std::wstring PathToDll()
+{
+	WCHAR dllPath[MAX_PATH] = { 0 };
 
 	// use same folder location as this dll
-	length = GetModuleFileName(hInst, dllPath, _countof(dllPath));
+	DWORD length = GetModuleFileName(hInst, dllPath, _countof(dllPath));
 	if (!length)
 	{
 		EventLog::writeError(L"PathToDll - failed to get location of TortoiseStub");
@@ -160,6 +164,27 @@ static std::wstring PathToDll()
 	return std::wstring(dllPath, length+1);
 }
 
+static HINSTANCE LoadTortoiseSIDll(std::wstring pathToDll) 
+{
+	HINSTANCE hlib;
+
+#ifdef _WIN64
+	pathToDll += L"TortoiseSI.dll";
+#else
+	pathToDll += L"TortoiseSI32.dll";
+#endif
+	EventLog::writeInformation(L"attempting to load dll = " + pathToDll);
+
+	hlib = LoadLibraryEx(pathToDll.c_str(), NULL, LOAD_WITH_ALTERED_SEARCH_PATH);
+	if (!hlib)
+	{
+		EventLog::writeError(L"fail to load dll = " + pathToDll + L" fail!");
+		return NIL;
+	}
+	EventLog::writeInformation(L"success loading dll = " + pathToDll);
+	return hlib;
+}
+
 static void LoadRealLibrary(void)
 {
 	static const char GetClassObject[] = "DllGetClassObject";
@@ -181,24 +206,24 @@ static void LoadRealLibrary(void)
 	//	hUseInst = NULL;
 	//}
 
-	std::wstring path = PathToDll();
+	std::wstring path = PathToDllOverride();
 
-	if (path.size() == 0) {
-		hTortoiseSI = NIL;
-		return;
+	if (path.size() != 0) {
+		hTortoiseSI = LoadTortoiseSIDll(path);
+
+		// try default dll location
+		if (!hTortoiseSI)
+		{
+			path = PathToDll();
+			hTortoiseSI = LoadTortoiseSIDll(path);
+		}
+	} else {
+		path = PathToDll();
+		hTortoiseSI = LoadTortoiseSIDll(path);
 	}
 
-#ifdef _WIN64
-	path += L"TortoiseSI.dll";
-#else
-	path += L"TortoiseSI32.dll";
-#endif
-	EventLog::writeInformation(L"attempting to load dll = " + path);
-
-	hTortoiseSI = LoadLibraryEx(path.c_str(), NULL, LOAD_WITH_ALTERED_SEARCH_PATH);
 	if (!hTortoiseSI)
 	{
-		EventLog::writeError(L"attempting to load dll = " + path + L" fail!");
 		hTortoiseSI = NIL;
 		return;
 	}
