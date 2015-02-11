@@ -1,9 +1,0 @@
-The following folders are not imported:
-bin
-cocoa
-gtk
-qt
-test
-scripts
-
-apply backgroundcolors.patch and unicodefont.patch

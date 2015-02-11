@@ -101,8 +101,7 @@ private:
 	STDMETHODIMP	QueryDropContext(UINT uFlags, UINT idCmdFirst, HMENU hMenu, UINT &indexMenu);
 	bool			IsIllegalFolder(std::wstring folder);
 	HRESULT			doesStatusMatch(FileStatusFlags fileStatusFlags);
-	// TODO exclude remote paths
-	bool			IsPathAllowed(std::wstring folder){ return true; };
+	bool			IsPathAllowed(std::wstring folder){ return g_ShellCache.IsPathAllowed(folder); };
 	FileStatusFlags	getPathStatus(std::wstring path);
 
 	/** \name IContextMenu wrappers

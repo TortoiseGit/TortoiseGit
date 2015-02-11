@@ -104,7 +104,7 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 					if (0 == DragQueryFile(drop, i, szFileName.get(), len + 1))
 						continue;
 					stdstring str = stdstring(szFileName.get());
-					if ((!str.empty()) && (g_ShellCache.IsContextPathAllowed(szFileName.get())))
+					if (!str.empty())
 					{
 						selectedItems.push_back(str);
 						if (i == 0)
