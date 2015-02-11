@@ -3,7 +3,7 @@ Set-ExecutionPolicy Bypass -Force
 
 $version = $Env:APPVEYOR_BUILD_VERSION
 
-$root = Resolve-Path ..
+$root = Resolve-Path .
 $header = "$root\src\version.h"
 $versionNumberInclude = "$root\src\TortoiseSISetup\VersionNumberInclude.wxi"
 

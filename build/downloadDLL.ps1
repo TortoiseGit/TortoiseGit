@@ -17,7 +17,7 @@ $accountName = "PTC-ALM"
 $projectSlug = "TortoiseSI"
 
 # determine root directory
-$root = Resolve-Path ..
+$root = Resolve-Path .
 $downloadLocation = "$root\bin\Release\bin\"
 
 # get project based on current build version
