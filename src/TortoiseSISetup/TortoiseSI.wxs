@@ -18,7 +18,6 @@
 		<Icon Id="TSIIcon" SourceFile="..\Resources\Tortoise.ico" />
 
 		<!-- Launch Condition related properties ................................................................................. -->
-		<!-- <Property Id="ShowChangelogCheck">1</Property> -->
 		<Property Id="ALLUSERS" Secure="yes">1</Property>
 
 		<Condition Message="[ProductName] requires Windows Vista or later."><![CDATA[Installed OR (VersionNT >= 600)]]></Condition>
@@ -33,20 +32,6 @@
 		</Upgrade>
 		<Condition Message="Please uninstall all 32-bit versions of TortoiseSI before installing [ProductName].">NOT WIN32TSIFOUND</Condition>
 		<?endif ?>
-
-		<!-- Show/Don't-show changelog related properties and custom actions ..................................................... -->
-		<!-- <Property Id="TEXTEDITOR" Secure="yes">
-			<DirectorySearch Id="FileSearchTextEditorExe" Path="[WindowsFolder]">
-				<FileSearch Id="FileSearchTextEditorExe" Name="notepad.exe" />
-			</DirectorySearch>
-		</Property>
-		<CustomAction Id="Set_ShowChangelog" Property="ShowChangelog" Value="Yes" Return="check" />
-		<CustomAction Id="ShowChangelogAction" Property="TEXTEDITOR" ExeCommand="[INSTALLDIR]changelog.txt" Return="asyncNoWait" />
-
-		<CustomAction Id="ShowDonatePage" BinaryKey="CustomActionsDLL" DllEntry="OpenDonatePage" /> 
-
-		<CustomAction Id="KillCache" BinaryKey="CustomActionsDLL" DllEntry="TerminateCache" /> -->
-		<Binary Id="CustomActionsDLL" SourceFile="..\..\bin\$(var.ReleasePath)\bin\CustomActions.dll" />
 
 		<!-- Unsafe-check properties and custom actions .......................................................................... -->
 		<Property Id="VSDUIANDADVERTISED" Secure="yes">This advertised application will not be installed because it might be unsafe. Contact your administrator to change the installation user interface option of the package to basic.</Property>
@@ -69,11 +54,6 @@
 		<?include StructureFragment.wxi?>
 		<?include UIFragment.wxi?>
 
-		<!--
-		<FragmentRef Id="StructureFragment" />
-		<FragmentRef Id="FeaturesFragment" />
-		<FragmentRef Id="UIFragment" />
-		-->
 
 		<!-- Execute Sequencing ................................................................................................. -->
 		<AdminExecuteSequence />
@@ -82,7 +62,6 @@
 			<AppSearch Sequence="1" />
 			<LaunchConditions After="AppSearch" />
 			<Custom Action="DefaultTargetDir" After="LaunchConditions">INSTALLDIR=""</Custom>
-<!--			<Custom Action="KillCache" After="RemoveExistingProducts">Installed</Custom> -->
 		</InstallExecuteSequence>
 
 		<!-- UI Sequencing ...................................................................................................... -->
@@ -109,7 +88,6 @@
 
 			<Custom Action="DefaultTargetDir" After="PrepareDlg">INSTALLDIR=""</Custom>
 			<Custom Action="ERRCA_UIANDADVERTISED" Before="AppSearch">ProductState=1</Custom>
-      <!--   <Custom Action="Set_ShowChangelog" After="AppSearch">NOT Installed</Custom> -->
 		</InstallUISequence>
 	</Product>
 </Wix>
