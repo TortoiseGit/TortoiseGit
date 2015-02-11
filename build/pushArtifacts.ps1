@@ -4,7 +4,7 @@ Set-ExecutionPolicy Bypass -Force
 # If building Win32 version, upload TortoiseSI32.dll
 if($Env:Platform -eq "Win32")
 {
-	$root = Resolve-Path .
+	$root = Resolve-Path ..
 	Push-AppveyorArtifact "$root\bin\Release\bin\TortoiseSI32.dll"
 	Push-AppveyorArtifact "$root\bin\Release\bin\TortoiseSIStub32.dll"
 	Write-host "Uploaded TortoiseSI32.dll and TortoiseSIStub32.dll"
