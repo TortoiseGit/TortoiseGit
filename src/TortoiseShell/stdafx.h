@@ -31,7 +31,6 @@
 #include <vector>
 #include <list>
 #include <algorithm>
-#include <functional>
 #include <memory>
 #include <future>
 #include <locale>

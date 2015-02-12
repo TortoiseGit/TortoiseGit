@@ -28,72 +28,68 @@
 
 // defaults are specified in ShellCache.h
 
-MenuInfo menuSeperator = { MenuItem::Seperator, 0, 0, 0, [](CShellExt*, HWND) {}, [](CShellExt*) { return true; } };
+MenuInfo menuSeperator = { MenuItem::Seperator, 0, 0, 0, [](const std::vector<std::wstring>&, HWND) {}, [](const std::vector<std::wstring>&, FileStatusFlags) { return true; } };
 
 static const IntegritySession& getIntegritySession() {
-	return ICache::getInstance().getIntegritySession();
+	return IStatusCache::getInstance().getIntegritySession();
+}
+
+/**
+ *  return true if there was a decentant path that was controlled
+ */
+bool warnIfPathHasControlledDecendantFolders(std::wstring path, HWND parentWindow) {
+	std::transform(path.begin(), path.end(), path.begin(), ::tolower);
+
+	// show the user where the sandboxes when they are decandants of the current folder since 
+	// it may not be obvious to the user why they can't create a sandbox here
+	std::wstring message;
+	for (std::wstring rootFolder : IStatusCache::getInstance().getRootFolderCache().getRootFolders()) {
+		if (startsWith(rootFolder, path)) {
+			if (message.empty()) {
+				message = getTortoiseSIString(IDS_SANDBOX_NOTALLOWED1);
+			}
+			message += L"\n\t '" + rootFolder + L"'";
+		}
+	}
+
+	if (!message.empty()) {
+		MessageBoxW(parentWindow, message.c_str(), NULL, MB_ICONERROR);
+		return true;
+	} else {
+		return false;
+	}
 }
 
 std::vector<MenuInfo> menuInfo =
 {
 	{ MenuItem::ViewSandbox, 0, IDS_VIEW_SANDBOX, IDS_VIEW_SANDBOX,
-		[](CShellExt* shell, HWND)
+		[](const std::vector<std::wstring>& selectedItems, HWND)
 		{
-			std::wstring path;
-			if (shell->getSelectedItems().size() == 0) {
-				path = shell->getCurrentFolder();
-			} else {
-				path = shell->getSelectedItems().front();
-			}
-			IntegrityActions::launchSandboxView(getIntegritySession(), path);
+			IntegrityActions::launchSandboxView(getIntegritySession(), selectedItems.front());
 		},
-		[](CShellExt* shell) { 
-			return (shell->getSelectedItems().size() == 0 && shell->isCurrentFolderControlled())
-											||
-					  (shell->getSelectedItems().size() == 1 &&
-								  hasFileStatus(shell->getSelectedItemsStatus(), FileStatus::Folder) &&
-								  hasFileStatus(shell->getSelectedItemsStatus(), FileStatus::Member)); 
+		[](const std::vector<std::wstring>& selectedItems, FileStatusFlags selectedItemsStatus)
+		{
+			return selectedItems.size() == 1 &&
+				hasFileStatus(selectedItemsStatus, FileStatus::Folder) &&
+				hasFileStatus(selectedItemsStatus, FileStatus::Member);
 		}
 	},
 	{ MenuItem::CreateSandbox, 0, IDS_CREATE_SANDBOX, IDS_CREATE_SANDBOX,
-		[](CShellExt* shell, HWND parentWindow)
+		[](const std::vector<std::wstring>& selectedItems, HWND parentWindow)
 		{
-			std::wstring path;
-			if (shell->getSelectedItems().size() == 0) {
-				path = shell->getCurrentFolder();
-			} else {
-				path = shell->getSelectedItems().front();
-			}
-
-			std::transform(path.begin(), path.end(), path.begin(), ::tolower);
-
-			// show the user where the sandboxes when they are decandants of the current folder since 
-			// it may not be obvious to the user why they can't create a sandbox here
-			std::wstring message;
-			for (std::wstring rootFolder : ICache::getInstance().getRootFolderCache().getRootFolders()) {
-				if (startsWith(rootFolder, path)) {
-					if (message.empty()) {
-						message = getTortoiseSIString(IDS_SANDBOX_NOTALLOWED1);
-					}
-					message += L"\n\t '" + rootFolder + L"'";
-				}
-			}
-
-			if (!message.empty()) {
-				MessageBoxW(parentWindow, message.c_str(), NULL, MB_ICONERROR);
+			if (warnIfPathHasControlledDecendantFolders(selectedItems.front(), parentWindow)) {
 				return;
 			}
 
-			IntegrityActions::createSandbox(getIntegritySession(), path,
-				[]{ ICache::getInstance().getRootFolderCache().forceRefresh(); });
+			IntegrityActions::createSandbox(getIntegritySession(), selectedItems.front(),
+				[]{ IStatusCache::getInstance().getRootFolderCache().forceRefresh(); });
 			
 		},
-		[](CShellExt* shell) { 
-			return (shell->getSelectedItems().size() == 0 && !shell->isCurrentFolderControlled())
-							||
-						(shell->getSelectedItems().size() == 1 &&
-							hasFileStatus(shell->getSelectedItemsStatus(), FileStatus::Folder) &&
-							!hasFileStatus(shell->getSelectedItemsStatus(), FileStatus::Member)); 
+		[](const std::vector<std::wstring>& selectedItems, FileStatusFlags selectedItemsStatus) 
+		{
+			return selectedItems.size() == 1 &&
+				hasFileStatus(selectedItemsStatus, FileStatus::Folder) &&
+				!hasFileStatus(selectedItemsStatus, FileStatus::Member);
 		}
 	},
 	menuSeperator,

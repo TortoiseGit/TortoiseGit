@@ -19,7 +19,7 @@
 //
 
 #pragma once
-class CShellExt;
+#include "FileStatus.h"
 
 enum MenuItem {
 	ViewSandbox,
@@ -37,6 +37,6 @@ struct MenuInfo
 	UINT				iconID;			///< the icon to show for the menu entry
 	UINT				menuTextID;		///< the text of the menu entry
 	UINT				menuDescID;		///< the description text for the menu entry
-	std::function<void(CShellExt*, HWND)>	siCommand;
-	std::function<bool(CShellExt*)>			enable;
+	std::function<void(const std::vector<std::wstring>&, HWND)>	siCommand;
+	std::function<bool(const std::vector<std::wstring>&, FileStatusFlags)>			enable;
 };

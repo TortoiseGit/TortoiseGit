@@ -162,7 +162,7 @@ STDMETHODIMP CShellExt::IsMemberOf_Wrap(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 
 	HRESULT result = doesStatusMatch(fileStatus);
 	if (result == S_OK) {
-		ICache::getInstance().clear(path);
+		IStatusCache::getInstance().clear(path);
 		EventLog::writeDebug(std::wstring(L"IShellIconOverlayIdentifier::IsMemberOf ") + path + L" has icon " +
 			to_wstring(m_State));
 	}
@@ -172,11 +172,11 @@ STDMETHODIMP CShellExt::IsMemberOf_Wrap(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 FileStatusFlags	CShellExt::getPathStatus(std::wstring path)
 {
 	if (IsPathAllowed(path) ){
-		if (ICache::getInstance().getRootFolderCache().isPathControlled(path)) {
+		if (IStatusCache::getInstance().getRootFolderCache().isPathControlled(path)) {
 			if (PathIsDirectoryW(path.c_str())) {
 				return FileStatus::Folder | FileStatus::Member;
 			} else {
-				return ICache::getInstance().getFileStatus(path) | FileStatus::File;
+				return IStatusCache::getInstance().getFileStatus(path) | FileStatus::File;
 			}
 		} else {
 			if (PathIsDirectoryW(path.c_str())) {

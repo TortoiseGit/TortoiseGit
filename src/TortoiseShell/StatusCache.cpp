@@ -10,7 +10,7 @@
 #undef min
 #undef max
 
-class SmallFixedInProcessCache : public ICache {
+class SmallFixedInProcessCache : public IStatusCache {
 public:
 	SmallFixedInProcessCache();
 
@@ -68,8 +68,12 @@ SmallFixedInProcessCache::SmallFixedInProcessCache()
 	int port = getIntegrationPoint();
 
 	if (port > 0 && port <= std::numeric_limits<unsigned short>::max()) {
+		EventLog::writeInformation(L"connecting to Integrity client via localhost:"+std::to_wstring(port));
+
 		integritySession = std::unique_ptr<IntegritySession>(new IntegritySession("localhost", port));
 	} else {
+		EventLog::writeInformation(L"connecting to Integrity client via localintegration point");
+
 		integritySession = std::unique_ptr<IntegritySession>(new IntegritySession());
 	}
 	rootFolderCache = std::unique_ptr<RootFolderCache>(new RootFolderCache(*integritySession));
@@ -143,7 +147,7 @@ void SmallFixedInProcessCache::clear(std::wstring path) {
 ////////////////////////////////////////////////////////////////////////////////
 // ICache
 
-ICache& ICache::getInstance() {
+IStatusCache& IStatusCache::getInstance() {
 	AutoLocker lock(g_csGlobalCOMGuard);
 	if(cacheInstance == NULL) {
 		cacheInstance = new SmallFixedInProcessCache();

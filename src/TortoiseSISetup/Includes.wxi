@@ -43,7 +43,6 @@
 	<?endif?>
 
 	<?define GuidUncontrolled="54B31F7A-5780-4C5E-BB2A-C62103E4EAD2"?>
-	<?define GuidDropHandler="39049ADF-D3BF-43C2-988D-6F67BD6D57A2"?>
 	<?define GuidAdded="FE682D2F-95BB-4599-8F25-EE120722D397"?>
 	<?define GuidLocked="331E54FC-D086-4711-8936-F8B97C2C5996"?>
 	<?define GuidDeleted="627BDF38-20FF-4926-8051-3E69682DB3BC"?>
