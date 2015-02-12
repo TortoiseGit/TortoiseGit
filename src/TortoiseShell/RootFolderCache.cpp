@@ -58,11 +58,15 @@ void RootFolderCache::forceRefresh()
 	std::async(std::launch::async, [&]{ this->updateFoldersList(); });
 }
 
-bool startsWith(std::wstring text, std::wstring prefix) 
+bool startsWith(std::wstring path, std::wstring potentialAncestor) 
 {
-	return text.length() >= prefix.length()
+	if (path.at(path.size() - 1) != '\\') {
+		path += L"\\";
+	}
+
+	return path.length() >= potentialAncestor.length()
 		&&
-		text.substr(0, prefix.length()) == prefix;
+		path.substr(0, potentialAncestor.length()) == potentialAncestor;
 }
 
 bool RootFolderCache::isPathControlled(std::wstring path)
@@ -90,6 +94,10 @@ void RootFolderCache::updateFoldersList()
 
 	// to lower case everything
 	for (std::wstring& rootPath : rootFolders) {
+		if (rootPath.at(rootPath.size() - 1) != '\\') {
+			rootPath += L"\\";
+		}
+
 		std::transform(rootPath.begin(), rootPath.end(), rootPath.begin(), ::tolower);
 	}
 
