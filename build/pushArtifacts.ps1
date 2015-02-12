@@ -9,7 +9,7 @@ if($Env:Platform -eq "Win32")
 	$root = Resolve-Path .
 	Push-AppveyorArtifact "$root\bin\Release\bin\TortoiseSI32.dll"
 	Push-AppveyorArtifact "$root\bin\Release\bin\TortoiseSIStub32.dll"
-	Push-AppveyorArtifact "$root\bin\setup\x64\TortoiseSI.msi" -FileName "TortoiseSI-$($version)-x86.msi"	
+	Push-AppveyorArtifact "$root\bin\setup\x86\TortoiseSI.msi" -FileName "TortoiseSI-$($version)-x86.msi"	
 	Write-host "Uploaded TortoiseSI32.dll, TortoiseSIStub32.dll and 32 bit installer"
 }
 # if building x64 version, upload installer
