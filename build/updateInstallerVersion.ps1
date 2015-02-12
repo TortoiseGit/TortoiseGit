@@ -4,8 +4,8 @@ Set-ExecutionPolicy Bypass -Force
 $version = $Env:APPVEYOR_BUILD_VERSION
 
 $root = Resolve-Path .
-$header = "$root/src/version.h"
-$versionNumberInclude = "$root/src/TortoiseSISetup/VersionNumberInclude.wxi"
+$header = "$root\src\version.h"
+$versionNumberInclude = "$root\src\TortoiseSISetup\VersionNumberInclude.wxi"
 
 $split = $version.replace(' ', '').split('.')
 
@@ -16,6 +16,8 @@ $split = $version.replace(' ', '').split('.')
 # split[3] -> Build Version
 
 # Modify version.h
+Write-host "Attempt to modify $header to use version $version"
+
 (Copy-Item $header "$($header).bak")
 
 (Get-Content $header) |
@@ -29,9 +31,11 @@ Foreach-Object {$_ -replace '^#define TGIT_VERMICRO.+', "#define TGIT_VERMICRO 	
 Foreach-Object {$_ -replace '^#define TGIT_VERBUILD.+', "#define TGIT_VERBUILD 		$($split[3])"} |
 Out-file $header
 
-Write-host "Modified $header to use version $version"
+
 
 # Modify VersionNumberInclude.wxi
+Write-host "Attempt to modify $versionNumberInclude to use version $version"
+
 (Copy-Item $versionNumberInclude "$($versionNumberInclude).bak")
 
 (Get-Content $versionNumberInclude) |
@@ -41,4 +45,3 @@ Foreach-Object {$_ -replace "MicroVersion=""\d*""", "MicroVersion=""$($split[2])
 Foreach-Object {$_ -replace "BuildVersion=""\d*""", "BuildVersion=""$($split[3])"""} |
 Out-file $versionNumberInclude -Encoding "UTF8"
 
-Write-host "Modified $versionNumberInclude to use version $version"
