@@ -22,7 +22,7 @@
 #include "IntegritySession.h"
 #include "RootFolderCache.h"
 
-class ICache {
+class IStatusCache {
 public:
 	virtual FileStatusFlags getFileStatus(std::wstring fileName) = 0;
 	virtual void clear(std::wstring path) = 0;
@@ -31,5 +31,5 @@ public:
 	// the IntegritySession the cache uses to talk to integrity 
 	virtual IntegritySession& getIntegritySession() = 0;
 
-	static ICache& getInstance();
+	static IStatusCache& getInstance();
 };

@@ -164,7 +164,7 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 		currentExplorerWindowFolder = list.toString();
 		if (IsPathAllowed(currentExplorerWindowFolder))
 		{
-			if (ICache::getInstance().getRootFolderCache().isPathControlled(currentExplorerWindowFolder))
+			if (IStatusCache::getInstance().getRootFolderCache().isPathControlled(currentExplorerWindowFolder))
 			{
 				currentFolderIsControlled = true;
 			}
@@ -388,6 +388,9 @@ STDMETHODIMP CShellExt::QueryContextMenu_Wrap(HMENU hMenu,
 	// insert separator at start
 	InsertMenu(hMenu, indexMenu++, MF_SEPARATOR|MF_BYPOSITION, 0, NULL); idCmd++;
 
+	std::vector<std::wstring> itemsForMenuAction = getItemsForMenuAction();
+	FileStatusFlags itemStatusForMenuAction = getItemsStatusForMenuAction();
+
 	for (MenuInfo& menu : menuInfo)
 	{
 		if (menu.menuID == MenuItem::Seperator)
@@ -404,7 +407,7 @@ STDMETHODIMP CShellExt::QueryContextMenu_Wrap(HMENU hMenu,
 		else
 		{
 			// check the conditions whether to show the menu entry or not
-			bool bInsertMenu = menu.enable(this);
+			bool bInsertMenu = menu.enable(itemsForMenuAction, itemStatusForMenuAction);
 			if (bInsertMenu)
 			{
 				// insert a separator
@@ -527,7 +530,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 		std::map<UINT_PTR, MenuInfo*>::const_iterator id_it = myIDMap.lower_bound(idCmd);
 		if (id_it != myIDMap.end() && id_it->first == idCmd)
 		{
-			id_it->second->siCommand(this, lpcmi->hwnd);
+			id_it->second->siCommand(getItemsForMenuAction(), lpcmi->hwnd);
 			hr = S_OK;
 		} // if (id_it != myIDMap.end() && id_it->first == idCmd)
 	} // if (files_.empty() || folder_.empty())
@@ -833,3 +836,29 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 #endif 
 	return false;
 }
+
+std::vector<std::wstring> CShellExt::getItemsForMenuAction()
+{
+	if (selectedItems.size() > 0) {
+		return selectedItems;
+	} else if (currentExplorerWindowFolder.size() > 0){
+		return { currentExplorerWindowFolder };
+	} else {
+		return {};
+	}
+};
+
+FileStatusFlags CShellExt::getItemsStatusForMenuAction()
+{
+	if (selectedItems.size() > 0) {
+		return selectedItemsStatus;
+	} else if (currentExplorerWindowFolder.size() > 0){
+		if (currentFolderIsControlled) {
+			return FileStatus::Folder | FileStatus::Member;
+		} else {
+			return (FileStatusFlags)FileStatus::Folder;
+		}
+	} else {
+		return 0;
+	}
+};

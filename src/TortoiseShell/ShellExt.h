@@ -88,13 +88,10 @@ protected:
 	stdstring ignoredprops;
 
 	IconBitmapUtils		m_iconBitmapUtils;
-public:
-	const std::vector<std::wstring>& getSelectedItems() { return selectedItems; }
-	const std::wstring& getCurrentFolder() { return currentExplorerWindowFolder; }
-	bool isCurrentFolderControlled() { return currentFolderIsControlled; }
-	FileStatusFlags getSelectedItemsStatus() { return selectedItemsStatus; }
 
 private:
+	std::vector<std::wstring> getItemsForMenuAction();
+	FileStatusFlags getItemsStatusForMenuAction();
 	void			InsertSIMenu(HMENU menu, UINT pos, UINT_PTR id, UINT idCmdFirst, MenuInfo& menuInfo);
 	bool			InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, HMENU subMenu, UINT &indexMenu, int &indexSubMenu, unsigned __int64 topmenu, bool bShowIcons, UINT uFlags);
 	void			TweakMenu(HMENU menu);
