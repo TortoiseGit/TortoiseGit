@@ -86,12 +86,12 @@ build:
  
 # scripts to run before build
 before_build:
-  - ps: .\updateInstallerVersion.ps1
-  - ps: .\downloadDLL.ps1
+  - ps: build/updateInstallerVersion.ps1
+  - ps: build/downloadDLL.ps1
 
 # scripts to run after build
 after_build:
-  - ps: .\pushArtifacts.ps1
+  - ps: build/pushArtifacts.ps1
 
 # to run your custom scripts instead of automatic MSBuild
 build_script:
@@ -150,3 +150,5 @@ notifications:
       - crovers@ptc.com
       - szhao@ptc.com
       - bleskowsky@ptc.com
+      - atusek@ptc.com
+      - gfleming@ptc.com
