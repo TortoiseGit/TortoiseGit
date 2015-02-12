@@ -85,8 +85,6 @@ protected:
 	std::wstring currentExplorerWindowFolder;
 	bool currentFolderIsControlled;
 
-	stdstring ignoredprops;
-
 	IconBitmapUtils		m_iconBitmapUtils;
 
 private:
@@ -95,7 +93,6 @@ private:
 	void			InsertSIMenu(HMENU menu, UINT pos, UINT_PTR id, UINT idCmdFirst, MenuInfo& menuInfo);
 	bool			InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, HMENU subMenu, UINT &indexMenu, int &indexSubMenu, unsigned __int64 topmenu, bool bShowIcons, UINT uFlags);
 	void			TweakMenu(HMENU menu);
-	STDMETHODIMP	QueryDropContext(UINT uFlags, UINT idCmdFirst, HMENU hMenu, UINT &indexMenu);
 	bool			IsIllegalFolder(std::wstring folder);
 	HRESULT			doesStatusMatch(FileStatusFlags fileStatusFlags);
 	bool			IsPathAllowed(std::wstring folder){ return g_ShellCache.IsPathAllowed(folder); };

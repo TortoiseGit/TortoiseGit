@@ -62,8 +62,6 @@
 					<RegistryValue Root="HKMU" Key="Software\Classes\Drive\shellex\PropertySheetHandlers\TortoiseSI" Value="{$(var.GuidUncontrolled)}" Type="string" />
 					<RegistryKey Root="HKMU" Key="Software\Classes\Directory\shellex\ContextMenuHandlers\TortoiseSI" />
 					<RegistryValue Root="HKMU" Key="Software\Classes\Directory\shellex\ContextMenuHandlers\TortoiseSI" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryKey Root="HKMU" Key="Software\Classes\Directory\shellex\DragDropHandlers\TortoiseSI" />
-					<RegistryValue Root="HKMU" Key="Software\Classes\Directory\shellex\DragDropHandlers\TortoiseSI" Value="{$(var.GuidDropHandler)}" Type="string" />
 					<RegistryKey Root="HKMU" Key="Software\Classes\Directory\shellex\PropertySheetHandlers\TortoiseSI" />
 					<RegistryValue Root="HKMU" Key="Software\Classes\Directory\shellex\PropertySheetHandlers\TortoiseSI" Value="{$(var.GuidUncontrolled)}" Type="string" />
 					<RegistryKey Root="HKMU" Key="Software\Classes\Directory\Background\shellex\ContextMenuHandlers\TortoiseSI" />
@@ -74,8 +72,6 @@
 					<RegistryValue Root="HKLM" Key="Software\Classes\LibraryLocation\shellex\ContextMenuHandlers\TortoiseSI" Value="{$(var.GuidUncontrolled)}" Type="string" />
 					<RegistryKey Root="HKLM" Key="Software\Classes\LibraryFolder\background\shellex\ContextMenuHandlers\TortoiseSI" />
 					<RegistryValue Root="HKLM" Key="Software\Classes\LibraryFolder\background\shellex\ContextMenuHandlers\TortoiseSI" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryKey Root="HKMU" Key="Software\Classes\Folder\shellex\DragDropHandlers\TortoiseSI" />
-					<RegistryValue Root="HKMU" Key="Software\Classes\Folder\shellex\DragDropHandlers\TortoiseSI" Value="{$(var.GuidDropHandler)}" Type="string" />
 					<RegistryKey Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidAdded)}" />
 					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidAdded)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseSIStub32.dll" Type="string" />
 					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidAdded)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
@@ -111,11 +107,6 @@
 					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidModified)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
 					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidModified)}" Value="TortoiseSI" Type="string" />
 					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidModified)}\shellex\NoRecentDocs" />
-					<RegistryKey Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDropHandler)}" />
-					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDropHandler)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDropHandler)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseSIStub32.dll" Type="string" />
-					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDropHandler)}" Value="TortoiseSI" Type="string" />
-					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidDropHandler)}\shellex\NoRecentDocs" />
 					<RegistryKey Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidConflict)}" />
 					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidConflict)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
 					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidConflict)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseSIStub32.dll" Type="string" />
@@ -143,8 +134,6 @@
 					<RegistryValue Root="HKMU" Key="Software\Classes\Drive\shellex\PropertySheetHandlers\TortoiseSI" Value="{$(var.GuidUncontrolled)}" Type="string" />
 					<RegistryKey Root="HKMU" Key="Software\Classes\Directory\shellex\ContextMenuHandlers\TortoiseSI" />
 					<RegistryValue Root="HKMU" Key="Software\Classes\Directory\shellex\ContextMenuHandlers\TortoiseSI" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryKey Root="HKMU" Key="Software\Classes\Directory\shellex\DragDropHandlers\TortoiseSI" />
-					<RegistryValue Root="HKMU" Key="Software\Classes\Directory\shellex\DragDropHandlers\TortoiseSI" Value="{$(var.GuidDropHandler)}" Type="string" />
 					<RegistryKey Root="HKMU" Key="Software\Classes\Directory\shellex\PropertySheetHandlers\TortoiseSI" />
 					<RegistryValue Root="HKMU" Key="Software\Classes\Directory\shellex\PropertySheetHandlers\TortoiseSI" Value="{$(var.GuidUncontrolled)}" Type="string" />
 					<RegistryKey Root="HKMU" Key="Software\Classes\Directory\Background\shellex\ContextMenuHandlers\TortoiseSI" />
@@ -155,8 +144,6 @@
 					<RegistryValue Root="HKLM" Key="Software\Classes\LibraryLocation\shellex\ContextMenuHandlers\TortoiseSI" Value="{$(var.GuidUncontrolled)}" Type="string" />
 					<RegistryKey Root="HKLM" Key="Software\Classes\LibraryFolder\background\shellex\ContextMenuHandlers\TortoiseSI" />
 					<RegistryValue Root="HKLM" Key="Software\Classes\LibraryFolder\background\shellex\ContextMenuHandlers\TortoiseSI" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryKey Root="HKMU" Key="Software\Classes\Folder\shellex\DragDropHandlers\TortoiseSI" />
-					<RegistryValue Root="HKMU" Key="Software\Classes\Folder\shellex\DragDropHandlers\TortoiseSI" Value="{$(var.GuidDropHandler)}" Type="string" />
 					<RegistryKey Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidAdded)}" />
 					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidAdded)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseSIStub.dll" Type="string" />
 					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidAdded)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
@@ -192,11 +179,6 @@
 					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidModified)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
 					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidModified)}" Value="TortoiseSI" Type="string" />
 					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidModified)}\shellex\NoRecentDocs" />
-					<RegistryKey Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDropHandler)}" />
-					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDropHandler)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDropHandler)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseSIStub.dll" Type="string" />
-					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDropHandler)}" Value="TortoiseSI" Type="string" />
-					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidDropHandler)}\shellex\NoRecentDocs" />
 					<RegistryKey Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidConflict)}" />
 					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidConflict)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
 					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidConflict)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseSIStub.dll" Type="string" />
@@ -226,8 +208,6 @@
 					<RegistryValue Root="HKMU" Key="Software\Classes\Drive\shellex\PropertySheetHandlers\TortoiseSI" Value="{$(var.GuidUncontrolled)}" Type="string" />
 					<RegistryKey Root="HKMU" Key="Software\Classes\Directory\shellex\ContextMenuHandlers\TortoiseSI" />
 					<RegistryValue Root="HKMU" Key="Software\Classes\Directory\shellex\ContextMenuHandlers\TortoiseSI" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryKey Root="HKMU" Key="Software\Classes\Directory\shellex\DragDropHandlers\TortoiseSI" />
-					<RegistryValue Root="HKMU" Key="Software\Classes\Directory\shellex\DragDropHandlers\TortoiseSI" Value="{$(var.GuidDropHandler)}" Type="string" />
 					<RegistryKey Root="HKMU" Key="Software\Classes\Directory\shellex\PropertySheetHandlers\TortoiseSI" />
 					<RegistryValue Root="HKMU" Key="Software\Classes\Directory\shellex\PropertySheetHandlers\TortoiseSI" Value="{$(var.GuidUncontrolled)}" Type="string" />
 					<RegistryKey Root="HKMU" Key="Software\Classes\Directory\Background\shellex\ContextMenuHandlers\TortoiseSI" />
@@ -238,8 +218,6 @@
 					<RegistryValue Root="HKLM" Key="Software\Classes\LibraryLocation\shellex\ContextMenuHandlers\TortoiseSI" Value="{$(var.GuidUncontrolled)}" Type="string" />
 					<RegistryKey Root="HKLM" Key="Software\Classes\LibraryFolder\background\shellex\ContextMenuHandlers\TortoiseSI" />
 					<RegistryValue Root="HKLM" Key="Software\Classes\LibraryFolder\background\shellex\ContextMenuHandlers\TortoiseSI" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryKey Root="HKMU" Key="Software\Classes\Folder\shellex\DragDropHandlers\TortoiseSI" />
-					<RegistryValue Root="HKMU" Key="Software\Classes\Folder\shellex\DragDropHandlers\TortoiseSI" Value="{$(var.GuidDropHandler)}" Type="string" />
 					<RegistryKey Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidAdded)}" />
 					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidAdded)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseSIStub32.dll" Type="string" />
 					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidAdded)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
@@ -275,11 +253,6 @@
 					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidModified)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
 					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidModified)}" Value="TortoiseSI" Type="string" />
 					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidModified)}\shellex\NoRecentDocs" />
-					<RegistryKey Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDropHandler)}" />
-					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDropHandler)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDropHandler)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseSIStub32.dll" Type="string" />
-					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDropHandler)}" Value="TortoiseSI" Type="string" />
-					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidDropHandler)}\shellex\NoRecentDocs" />
 					<RegistryKey Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidConflict)}" />
 					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidConflict)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
 					<RegistryValue Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidConflict)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseSIStub32.dll" Type="string" />
@@ -353,7 +326,6 @@
 				<Component Id="C__approveshellcomponents" Guid="$(var.GuidApproveShellComponents)" Win64="$(var.Win64YesNo)">
 					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidConflict)}" Value="TortoiseSI" KeyPath="yes" Type="string" />
 					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidModified)}" Value="TortoiseSI" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidDropHandler)}" Value="TortoiseSI" Type="string" />
 					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidDeleted)}" Value="TortoiseSI" Type="string" />
 					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidNormal)}" Value="TortoiseSI" Type="string" />
 					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidUncontrolled)}" Value="TortoiseSI" Type="string" />
@@ -367,7 +339,6 @@
 				<Component Id="C__approveshellcomponents32" Guid="$(var.GuidApproveShellComponents32)" Win64="no">
 					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidConflict)}" Value="TortoiseSI" KeyPath="yes" Type="string" />
 					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidModified)}" Value="TortoiseSI" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidDropHandler)}" Value="TortoiseSI" Type="string" />
 					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidDeleted)}" Value="TortoiseSI" Type="string" />
 					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidNormal)}" Value="TortoiseSI" Type="string" />
 					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidUncontrolled)}" Value="TortoiseSI" Type="string" />

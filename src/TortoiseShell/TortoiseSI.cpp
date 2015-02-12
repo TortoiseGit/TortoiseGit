@@ -122,8 +122,6 @@ STDAPI DllGetClassObject(REFCLSID rclsid, REFIID riid, LPVOID *ppvOut)
 		state = FileStateConflict;
 	else if (IsEqualIID(rclsid, CLSID_TortoiseSI_UNCONTROLLED))
 		state = FileStateUncontrolled;
-	else if (IsEqualIID(rclsid, CLSID_TortoiseSI_DROPHANDLER))
-		state = FileStateDropHandler;
 	else if (IsEqualIID(rclsid, CLSID_TortoiseSI_DELETED))
 		state = FileStateDeleted;
 	else if (IsEqualIID(rclsid, CLSID_TortoiseSI_READONLY))

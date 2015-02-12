@@ -38,7 +38,6 @@ enum FileState
 	FileStateAddedOverlay,
 	FileStateIgnoredOverlay,
 	FileStateUnversionedOverlay,
-	FileStateDropHandler,
 	FileStateInvalid
 };
 

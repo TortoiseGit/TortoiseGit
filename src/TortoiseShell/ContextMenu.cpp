@@ -75,85 +75,32 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 
 		if (SUCCEEDED(hres) && medium.hGlobal)
 		{
-			if (m_State == FileStateDropHandler)
+			//Enumerate PIDLs which the user has selected
+			CIDA* cida = (CIDA*)GlobalLock(medium.hGlobal);
+			ItemIDList parent(GetPIDLFolder(cida));
+
+			int count = cida->cidl;
+			for (int i = 0; i < count; ++i)
 			{
-				FORMATETC etc = { CF_HDROP, NULL, DVASPECT_CONTENT, -1, TYMED_HGLOBAL };
-				STGMEDIUM stg = { TYMED_HGLOBAL };
-				if ( FAILED( pDataObj->GetData ( &etc, &stg )))
+				ItemIDList child(GetPIDLItem(cida, i), &parent);
+				stdstring str = child.toString();
+				if (!str.empty() && IsPathAllowed(str))
 				{
-					ReleaseStgMedium ( &medium );
-					return E_INVALIDARG;
+					selectedItems.push_back(str);
+					// TODO batch?
+					selectedItemsStatus |= getPathStatus(str);
 				}
-
-				HDROP drop = (HDROP)GlobalLock(stg.hGlobal);
-				if ( NULL == drop )
-				{
-					ReleaseStgMedium ( &stg );
-					ReleaseStgMedium ( &medium );
-					return E_INVALIDARG;
-				}
-
-				int count = DragQueryFile(drop, (UINT)-1, NULL, 0);
-				for (int i = 0; i < count; i++)
-				{
-					// find the path length in chars
-					UINT len = DragQueryFile(drop, i, NULL, 0);
-					if (len == 0)
-						continue;
-					std::unique_ptr<TCHAR[]> szFileName(new TCHAR[len + 1]);
-					if (0 == DragQueryFile(drop, i, szFileName.get(), len + 1))
-						continue;
-					stdstring str = stdstring(szFileName.get());
-					if (!str.empty())
-					{
-						selectedItems.push_back(str);
-						if (i == 0)
-						{
-							try
-							{
-								selectedItemsStatus |= getPathStatus(str);
-							}
-							catch ( ... )
-							{
-								CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Exception in GitStatus::GetStatus()\n");
-							}
-						}
-					}
-				} // for (int i = 0; i < count; i++)
-				GlobalUnlock ( drop );
-				ReleaseStgMedium ( &stg );
-
-			} // if (m_State == FileStateDropHandler)
-			else
-			{
-
-				//Enumerate PIDLs which the user has selected
-				CIDA* cida = (CIDA*)GlobalLock(medium.hGlobal);
-				ItemIDList parent( GetPIDLFolder (cida));
-
-				int count = cida->cidl;
-				for (int i = 0; i < count; ++i)
-				{
-					ItemIDList child (GetPIDLItem (cida, i), &parent);
-					stdstring str = child.toString();
-					if (!str.empty() && IsPathAllowed(str))
-					{
-						selectedItems.push_back(str);
-						// TODO batch?
-						selectedItemsStatus |= getPathStatus(str);
-					}
-				} 
-				ItemIDList child (GetPIDLItem (cida, 0), &parent);
-
-				GlobalUnlock(medium.hGlobal);
 			}
+			ItemIDList child(GetPIDLItem(cida, 0), &parent);
 
-			ReleaseStgMedium ( &medium );
-			if (medium.pUnkForRelease)
-			{
-				IUnknown* relInterface = (IUnknown*)medium.pUnkForRelease;
-				relInterface->Release();
-			}
+			GlobalUnlock(medium.hGlobal);
+		}
+
+		ReleaseStgMedium(&medium);
+		if (medium.pUnkForRelease)
+		{
+			IUnknown* relInterface = (IUnknown*)medium.pUnkForRelease;
+			relInterface->Release();
 		}
 	}
 
@@ -210,89 +157,6 @@ void CShellExt::InsertSIMenu(HMENU menu, UINT pos, UINT_PTR id, UINT idCmdFirst,
 	myIDMap[id] = &menuInfo;
 }
 
-STDMETHODIMP CShellExt::QueryDropContext(UINT uFlags, UINT idCmdFirst, HMENU hMenu, UINT &indexMenu)
-{
-	//if (!CRegStdDWORD(L"Software\\TortoiseSI\\EnableDragContextMenu", TRUE))
-		return S_OK;
-#if 0
-	PreserveChdir preserveChdir;
-	LoadLangDll();
-
-	if ((uFlags & CMF_DEFAULTONLY)!=0)
-		return S_OK;					//we don't change the default action
-
-	if (files_.empty() || folder_.empty())
-		return S_OK;
-
-	if (((uFlags & 0x000f)!=CMF_NORMAL)&&(!(uFlags & CMF_EXPLORE))&&(!(uFlags & CMF_VERBSONLY)))
-		return S_OK;
-
-	bool bSourceAndTargetFromSameRepository = (uuidSource.compare(uuidTarget) == 0) || uuidSource.empty() || uuidTarget.empty();
-
-	//the drop handler only has eight commands, but not all are visible at the same time:
-	//if the source file(s) are under version control then those files can be moved
-	//to the new location or they can be moved with a rename,
-	//if they are unversioned then they can be added to the working copy
-	//if they are versioned, they also can be exported to an unversioned location
-	UINT idCmd = idCmdFirst;
-
-	bool moveAvailable = false;
-	// Git move here
-	// available if source is versioned but not added, target is versioned, source and target from same repository or target folder is added
-	if ((bSourceAndTargetFromSameRepository || (itemStatesFolder & ITEMIS_ADDED)) && (itemStatesFolder & ITEMIS_FOLDERINGIT) && ((itemStates & (ITEMIS_NORMAL | ITEMIS_INGIT | ITEMIS_FOLDERINGIT)) && ((~itemStates) & ITEMIS_ADDED)))
-	{
-		InsertMenu(FALSE, hMenu, indexMenu++, idCmd++, IDS_DROPMOVEMENU, 0, idCmdFirst, ShellMenuDropMove, uFlags);
-		moveAvailable = true;
-	}
-
-	// Git move and rename here
-	// available if source is a single, versioned but not added item, target is versioned, source and target from same repository or target folder is added
-	if ((bSourceAndTargetFromSameRepository || (itemStatesFolder & ITEMIS_ADDED)) && (itemStatesFolder & ITEMIS_FOLDERINGIT) && (itemStates & (ITEMIS_NORMAL | ITEMIS_INGIT | ITEMIS_FOLDERINGIT)) && (itemStates & ITEMIS_ONLYONE) && ((~itemStates) & ITEMIS_ADDED))
-	{
-		InsertMenu(FALSE, hMenu, indexMenu++, idCmd++, IDS_DROPMOVERENAMEMENU, 0, idCmdFirst, ShellMenuDropMoveRename, uFlags);
-		moveAvailable = true;
-	}
-
-	// Git copy here
-	// available if source is versioned but not added, target is versioned, source and target from same repository or target folder is added
-	//if ((bSourceAndTargetFromSameRepository||(itemStatesFolder & ITEMIS_ADDED))&&(itemStatesFolder & ITEMIS_FOLDERINGIT)&&(itemStates & ITEMIS_INGIT)&&((~itemStates) & ITEMIS_ADDED))
-	//	InsertGitMenu(FALSE, hMenu, indexMenu++, idCmd++, IDS_DROPCOPYMENU, 0, idCmdFirst, ShellMenuDropCopy, uFlags);
-
-	// Git copy and rename here, source and target from same repository
-	// available if source is a single, versioned but not added item, target is versioned or target folder is added
-	//if ((bSourceAndTargetFromSameRepository||(itemStatesFolder & ITEMIS_ADDED))&&(itemStatesFolder & ITEMIS_FOLDERINGIT)&&(itemStates & ITEMIS_INGIT)&&(itemStates & ITEMIS_ONLYONE)&&((~itemStates) & ITEMIS_ADDED))
-	//	InsertGitMenu(FALSE, hMenu, indexMenu++, idCmd++, IDS_DROPCOPYRENAMEMENU, 0, idCmdFirst, ShellMenuDropCopyRename, uFlags);
-
-	// Git add here
-	// available if target is versioned and source is either unversioned or from another repository
-	if ((itemStatesFolder & ITEMIS_FOLDERINGIT) && (((~itemStates) & ITEMIS_INGIT) || !bSourceAndTargetFromSameRepository) && !moveAvailable)
-		InsertGitMenu(FALSE, hMenu, indexMenu++, idCmd++, IDS_DROPCOPYADDMENU, 0, idCmdFirst, ShellMenuDropCopyAdd, uFlags);
-
-	// Git export here
-	// available if source is versioned and a folder
-	//if ((itemStates & ITEMIS_INGIT)&&(itemStates & ITEMIS_FOLDER))
-	//	InsertGitMenu(FALSE, hMenu, indexMenu++, idCmd++, IDS_DROPEXPORTMENU, 0, idCmdFirst, ShellMenuDropExport, uFlags);
-
-	// Git export all here
-	// available if source is versioned and a folder
-	//if ((itemStates & ITEMIS_INGIT)&&(itemStates & ITEMIS_FOLDER))
-	//	InsertGitMenu(FALSE, hMenu, indexMenu++, idCmd++, IDS_DROPEXPORTEXTENDEDMENU, 0, idCmdFirst, ShellMenuDropExportExtended, uFlags);
-
-	// apply patch
-	// available if source is a patchfile
-	if (itemStates & ITEMIS_PATCHFILE)
-		InsertMenu(FALSE, hMenu, indexMenu++, idCmd++, IDS_MENUAPPLYPATCH, 0, idCmdFirst, ShellMenuApplyPatch, uFlags);
-
-	// separator
-	if (idCmd != idCmdFirst)
-		InsertMenu(hMenu, indexMenu++, MF_SEPARATOR|MF_BYPOSITION, 0, NULL);
-
-	TweakMenu(hMenu);
-
-	return ResultFromScode(MAKE_SCODE(SEVERITY_SUCCESS, 0, (USHORT)(idCmd - idCmdFirst)));
-#endif
-}
-
 STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu,
                                          UINT indexMenu,
                                          UINT idCmdFirst,
@@ -316,14 +180,6 @@ STDMETHODIMP CShellExt::QueryContextMenu_Wrap(HMENU hMenu,
                                               UINT uFlags)
 {
 	PreserveChdir preserveChdir;
-
-	//first check if our drop handler is called
-	//and then (if true) provide the context menu for the
-	//drop handler
-	if (m_State == FileStateDropHandler)
-	{
-		return QueryDropContext(uFlags, idCmdFirst, hMenu, indexMenu);
-	}
 
 	if ((uFlags & CMF_DEFAULTONLY)!=0)
 		return S_OK;					//we don't change the default action
