@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2014 - TortoiseGit
+// Copyright (C) 2009-2015 - TortoiseGit
 // Copyright (C) 2007-2008,2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -52,7 +52,7 @@ bool ResolveCommand::Execute()
 				}
 
 				HWND resolveMsgWnd = parser.HasVal(L"resolvemsghwnd") ? (HWND)parser.GetLongLongVal(L"resolvemsghwnd") : 0;
-				if (resolveMsgWnd)
+				if (resolveMsgWnd && CRegDWORD(_T("Software\\TortoiseGit\\RefreshFileListAfterResolvingConflict"), TRUE) == TRUE)
 				{
 					static UINT WM_REVERTMSG = RegisterWindowMessage(_T("GITSLNM_NEEDSREFRESH"));
 					::PostMessage(resolveMsgWnd, WM_REVERTMSG, NULL, NULL);

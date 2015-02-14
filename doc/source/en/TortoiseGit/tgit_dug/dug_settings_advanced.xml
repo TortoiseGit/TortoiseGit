@@ -247,6 +247,17 @@
             </listitem>
         </varlistentry>
         <varlistentry>
+            <term condition="pot">RefreshFileListAfterResolvingConflict</term>
+            <listitem>
+                <para>
+                    This option toggles if the file lists of the commit dialog, resolve conflicts and rebase dialog automatically refresh
+                    when a conflict is marked as resolved. By default this is set to <literal>true</literal>, but in certain cases, e.g.
+                    when refreshing takes lots of time or you want to prevent the scrolling to the top, this can be set to <literal>false</literal>.
+                    However, then a manual refresh (e.g. by pressing <keycap>F5</keycap>) is necessary.
+                </para>
+            </listitem>
+        </varlistentry>
+        <varlistentry>
             <term condition="pot">SanitizeCommitMsg</term>
             <listitem>
                 <para>

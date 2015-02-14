@@ -2092,7 +2092,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 								resolveWith = CAppUtils::RESOLVE_WITH_THEIRS;
 							else if (((!this->m_bIsRevertTheirMy) && cmd == IDGITLC_RESOLVEMINE) || ((this->m_bIsRevertTheirMy) && cmd == IDGITLC_RESOLVETHEIRS))
 								resolveWith = CAppUtils::RESOLVE_WITH_MINE;
-							if (CAppUtils::ResolveConflict(*fentry, resolveWith) == 0 && fentry->m_Action & CTGitPath::LOGACTIONS_UNMERGED)
+							if (CAppUtils::ResolveConflict(*fentry, resolveWith) == 0 && fentry->m_Action & CTGitPath::LOGACTIONS_UNMERGED && CRegDWORD(_T("Software\\TortoiseGit\\RefreshFileListAfterResolvingConflict"), TRUE) == TRUE)
 							{
 								CWnd* pParent = GetLogicalParent();
 								if (pParent && pParent->GetSafeHwnd())

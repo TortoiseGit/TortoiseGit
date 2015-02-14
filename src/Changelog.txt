@@ -13,6 +13,12 @@ Released: unreleased
  * Fixed issue #2420: Make push available in log for arbitrary commits
  * Fixed issue #2351: Allow upstream to be separate from onto in rebase
  * Fixed issue #1400: Allow the use of tags within the Git Rebase dialog
+ * Fixes issue #2417: Resolving a conflict forces refresh of Commit Dialog
+   A new advanced option (RefreshFileListAfterResolvingConflict) was added which controls
+   whether file lists are refreshed after resolving conflicts. By default this is set to
+   true, but can be disabled in cases where refreshing the list takes lots of time or
+   people don't want the list to automatically scroll to the top (this also mitigates
+   issue #1949 until we have a cleaner fix). F5 for manual refresh is needed if enabled.
 
 == Bug Fixes ==
  * Fixed issue #2359: Selected files counter not updated after revert
