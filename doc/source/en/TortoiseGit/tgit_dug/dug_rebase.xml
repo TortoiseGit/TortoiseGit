@@ -18,6 +18,9 @@
   <para>
 	Rebase dialog will be shown. <graphic fileref="../images/GitRebase.png"/>
   </para>
+  <para>
+	Rebasing commits takes places from the bottom of the list to the top (in ascending order of the ID column). For example, "squash" means that the commit gets squashed/combined with the previous commit(s) which are located below in the list (with a lower ID).
+  </para>
 	<tip>
 		<para>
 			Instead of setting "pick", "skip", "edit", "squash" by using the context-menu, you can also use the following keys:
@@ -40,4 +43,9 @@
 			cherry-picks the commits. This approach touches fewer files and runs faster.
 		</para>
 	</tip>
+	<important>
+		<para>
+			TortoiseGit currently cannot rebase merge commits (<ulink url="https://code.google.com/p/tortoisegit/issues/detail?id=2314">issue #2314</ulink>).
+		</para>
+	</important>
 </sect1>
