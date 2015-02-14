@@ -12,15 +12,15 @@
 # Tetsuhiko Koto, 2014
 # YANO Tetsu <tetuyano+transi@gmail.com>, 2012-2013
 # YANO Tetsu <tetuyano+transi@gmail.com>, 2013
-# YANO Tetsu <tetuyano+transi@gmail.com>, 2013
+# YANO Tetsu <tetuyano+transi@gmail.com>, 2013-2014
 # Yoshiharu Hirose <yh1224@gmail.com>, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2014-11-25 05:02+0000\n"
-"Last-Translator: Tetsuhiko Koto\n"
+"PO-Revision-Date: 2014-12-30 15:26+0000\n"
+"Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Japanese (http://www.transifex.com/projects/p/tortoisegit/language/ja/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -609,6 +609,10 @@ msgstr "残りを同様に実行する(&D)"
 msgid "&Docking"
 msgstr "ドッキング(&D)"
 
+#. Resource IDs: (1032)
+msgid "&Don't ask me again"
+msgstr ""
+
 #. Resource IDs: (1384)
 msgid "&Down"
 msgstr "下へ(&D)"
@@ -1042,6 +1046,10 @@ msgstr "更新(&R)"
 #. Resource IDs: (20093)
 msgid "&Regular Expression"
 msgstr "正規表現(&R)"
+
+#. Resource IDs: (97)
+msgid "&Remind me later"
+msgstr ""
 
 #. Resource IDs: (1617)
 msgid "&Remote Branch:"
@@ -3261,8 +3269,8 @@ msgstr "最新のバージョンのチェックができませんでした。"
 
 #. Resource IDs: (93)
 #, c-format
-msgid "Could not check for a newer version! (Error code: 0x%08X)"
-msgstr "最新のバージョンのチェックができませんでした。\n(エラーコード: 0x%08X)"
+msgid "Could not check for a newer version! %s (Error code: 0x%08X)"
+msgstr "最新のバージョンのチェックができませんでした。 %s (エラーコード: 0x%08X)"
 
 #. Resource IDs: (81)
 #, c-format
@@ -3731,6 +3739,14 @@ msgstr "アクションログファイルを削除する"
 msgid "Deleting"
 msgstr "削除中"
 
+#. Resource IDs: (97)
+msgid "Deleting cached data"
+msgstr ""
+
+#. Resource IDs: (97)
+msgid "Deleting file"
+msgstr ""
+
 #. Resource IDs: (88)
 msgid "Deleting remote refs..."
 msgstr "リモートのrefを削除..."
@@ -3899,6 +3915,10 @@ msgid ""
 "too much disk access when browsing the working tree."
 msgstr "大きな作業ツリーを使用している場合や、作業ツリーをブラウズする際に\r\nとても時間がかかるなら、このオプションを無効にしてください。"
 
+#. Resource IDs: (97)
+msgid "Disable update checks"
+msgstr ""
+
 #. Resource IDs: (2054)
 msgid "Disabled"
 msgstr "無効"
@@ -3976,6 +3996,13 @@ msgstr "本当に<b>%s</b> を<ct=0x0000FF>削除</ct>しても宜しいです�
 #, c-format
 msgid "Do you really want to delete the toolbar '%s'?"
 msgstr "本当にこのツールバー「%s」を削除してもよろしいですか？"
+
+#. Resource IDs: (97)
+msgid ""
+"Do you really want to disable automatic update checks for TortoiseGit?\r\n"
+"\r\n"
+"Automatic update checks can be re-enabled in TortoiseGit settings on the General page."
+msgstr ""
 
 #. Resource IDs: (88)
 msgid "Do you really want to mark the selected file(s) as assume-valid?"
@@ -5201,8 +5228,8 @@ msgid "Git for Windows"
 msgstr "Git for Windows"
 
 #. Resource IDs: (84)
-msgid "Git for Windows (http://code.google.com/p/msysgit/) not found."
-msgstr "Git for Windows (http://code.google.com/p/msysgit/) が見つかりませんでした。"
+msgid "Git for Windows (https://msysgit.github.io/) not found."
+msgstr "Git for Windows (https://msysgit.github.io/) が見つかりませんでした。"
 
 #. Resource IDs: (79)
 msgid "Git reported an error while creating a repository!\n"
@@ -8364,6 +8391,14 @@ msgstr "SMTPで直接宛先のサーバーへ"
 msgid "SSH"
 msgstr "SSH"
 
+#. Resource IDs: (97)
+msgid "SSL"
+msgstr "SSL"
+
+#. Resource IDs: (97)
+msgid "STARTTLS"
+msgstr "STARTTLS"
+
 #. Resource IDs: (331)
 msgid "SVN Commit Type"
 msgstr "SVN コミットタイプ"
@@ -8484,7 +8519,7 @@ msgstr "マーク以外を採用して保存\nマークされていないブロ�
 msgid ""
 "Save and ignore marked blocks\n"
 "Only your manual edits are saved, marked blocks are left as they are"
-msgstr "マークは無視して保存\n現在のビューの内容を保存します。"
+msgstr "マークは無視して保存\n手動の変更を除いて、変更前の内容を保存します。"
 
 #. Resource IDs: (7)
 msgid ""
@@ -10600,6 +10635,10 @@ msgstr "両方のテキストブロックを使用（こちらを前にする）
 msgid "Use both text blocks (this one last)"
 msgstr "両方のテキストブロックを使用（こちらを後にする）"
 
+#. Resource IDs: (97)
+msgid "Use configured server"
+msgstr "設定済サーバーを使用"
+
 #. Resource IDs: (156)
 msgid "Use left block"
 msgstr "左側のブロックを使用"
@@ -11085,10 +11124,10 @@ msgstr "リネームでリファレンス(ref)のタイプを変えることは�
 
 #. Resource IDs: (84)
 msgid ""
-"You have an old version of Git for Windows (http://code.google.com/p/msysgit/) installed.\n"
+"You have an old version of Git for Windows (https://msysgit.github.io/) installed which contains security issues.\n"
 "\n"
-"You should consider an upgrade to 1.7.10+ which supports UTF-8 and is compatible to the *nix version of git."
-msgstr "古いバージョンの Git for Windows (http://code.google.com/p/msysgit/) が検出されました。\n\nUTF-8をサポートし、Git の *nix 版と互換性のある 1.7.10 以降のバージョンにアップグレードする事を推奨します。"
+"You should consider an upgrade to 1.9.5+."
+msgstr ""
 
 #. Resource IDs: (86)
 msgid ""
@@ -11488,6 +11527,10 @@ msgstr "このコマンドへのすべての記述は無効です"
 #. Resource IDs: (10)
 msgid "non-versioned"
 msgstr "バージョン管理外"
+
+#. Resource IDs: (97)
+msgid "none"
+msgstr "無し"
 
 #. Resource IDs: (10)
 msgid "normal"

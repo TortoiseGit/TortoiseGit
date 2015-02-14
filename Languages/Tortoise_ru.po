@@ -4,7 +4,7 @@
 # This file is distributed under the same license as TortoiseGit
 # 
 # Translators:
-# Alexander Shchekaturov <shcham@gmail.com>, 2013-2014
+# Alexander Shchekaturov <shcham@gmail.com>, 2013-2015
 # Andrei Stepanov, 2014
 # Arioch <the_Arioch@nm.ru>, 2012-2013
 # Arkady Shapkin <arkadiy_s@inbox.ru>, 2011
@@ -27,7 +27,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2014-11-24 11:27+0000\n"
+"PO-Revision-Date: 2015-01-09 10:37+0000\n"
 "Last-Translator: Alexander Shchekaturov <shcham@gmail.com>\n"
 "Language-Team: Russian (http://www.transifex.com/projects/p/tortoisegit/language/ru/)\n"
 "MIME-Version: 1.0\n"
@@ -617,6 +617,10 @@ msgstr "&Сделать то же самое для остальных"
 msgid "&Docking"
 msgstr "&Присоединение"
 
+#. Resource IDs: (1032)
+msgid "&Don't ask me again"
+msgstr "Не &спрашивать меня снова"
+
 #. Resource IDs: (1384)
 msgid "&Down"
 msgstr "&Вниз"
@@ -1050,6 +1054,10 @@ msgstr "&Обновить"
 #. Resource IDs: (20093)
 msgid "&Regular Expression"
 msgstr "&Регулярное выражение"
+
+#. Resource IDs: (97)
+msgid "&Remind me later"
+msgstr "&Напомнить мне позже"
 
 #. Resource IDs: (1617)
 msgid "&Remote Branch:"
@@ -3269,8 +3277,8 @@ msgstr "Не могу произвести проверку на наличие 
 
 #. Resource IDs: (93)
 #, c-format
-msgid "Could not check for a newer version! (Error code: 0x%08X)"
-msgstr "Не могу произвести проверку на наличие новой версии! (Error code: 0x%08X)"
+msgid "Could not check for a newer version! %s (Error code: 0x%08X)"
+msgstr "Не могу проверить наличие новой версии! %s (Код ошибки: 0x%08X)"
 
 #. Resource IDs: (81)
 #, c-format
@@ -3739,6 +3747,14 @@ msgstr "Удаляет файл журнала действий"
 msgid "Deleting"
 msgstr "Удаление"
 
+#. Resource IDs: (97)
+msgid "Deleting cached data"
+msgstr "Удаление кэшированных данных"
+
+#. Resource IDs: (97)
+msgid "Deleting file"
+msgstr "Удаление файла"
+
 #. Resource IDs: (88)
 msgid "Deleting remote refs..."
 msgstr "Удаляются отдалённые ссылки..."
@@ -3907,6 +3923,10 @@ msgid ""
 "too much disk access when browsing the working tree."
 msgstr "Отключите эту опцию, если у вас действительно большие рабочие копии и происходит\r\nслишком интенсивное обращение к диску при обзоре рабочей копии."
 
+#. Resource IDs: (97)
+msgid "Disable update checks"
+msgstr "Выключить проверку обновлений"
+
 #. Resource IDs: (2054)
 msgid "Disabled"
 msgstr "Отключено"
@@ -3984,6 +4004,13 @@ msgstr "Вы действительно хотите <ct=0x0000FF>удалить
 #, c-format
 msgid "Do you really want to delete the toolbar '%s'?"
 msgstr "Вы действительно желаете удалить панель инструментов '%s'?"
+
+#. Resource IDs: (97)
+msgid ""
+"Do you really want to disable automatic update checks for TortoiseGit?\r\n"
+"\r\n"
+"Automatic update checks can be re-enabled in TortoiseGit settings on the General page."
+msgstr "Вы действительно хотите отменить автоматическую проверку обновлений для TortoiseGit?\n\nАвтоматическая проверка обновлений может быть включена в настройках TortoiseGit на Главной странице."
 
 #. Resource IDs: (88)
 msgid "Do you really want to mark the selected file(s) as assume-valid?"
@@ -5209,8 +5236,8 @@ msgid "Git for Windows"
 msgstr "Git для Windows"
 
 #. Resource IDs: (84)
-msgid "Git for Windows (http://code.google.com/p/msysgit/) not found."
-msgstr "Git для Windows (http://code.google.com/p/msysgit/) не найден."
+msgid "Git for Windows (https://msysgit.github.io/) not found."
+msgstr "Git для Windows (https://msysgit.github.io/) не найден."
 
 #. Resource IDs: (79)
 msgid "Git reported an error while creating a repository!\n"
@@ -8372,6 +8399,14 @@ msgstr "SMTP, напрямую на сервер назначения"
 msgid "SSH"
 msgstr "SSH"
 
+#. Resource IDs: (97)
+msgid "SSL"
+msgstr "SSL"
+
+#. Resource IDs: (97)
+msgid "STARTTLS"
+msgstr "STARTTLS"
+
 #. Resource IDs: (331)
 msgid "SVN Commit Type"
 msgstr "SVN Тип фиксации"
@@ -10608,6 +10643,10 @@ msgstr "Использовать оба текстовых блока (этот 
 msgid "Use both text blocks (this one last)"
 msgstr "Использовать оба текстовых блока (этот в конце)"
 
+#. Resource IDs: (97)
+msgid "Use configured server"
+msgstr "Использовать сконфигурированный сервер"
+
 #. Resource IDs: (156)
 msgid "Use left block"
 msgstr "Использовать левый блок"
@@ -11093,10 +11132,10 @@ msgstr "Вы не можете изменить тип этой ссылки п�
 
 #. Resource IDs: (84)
 msgid ""
-"You have an old version of Git for Windows (http://code.google.com/p/msysgit/) installed.\n"
+"You have an old version of Git for Windows (https://msysgit.github.io/) installed which contains security issues.\n"
 "\n"
-"You should consider an upgrade to 1.7.10+ which supports UTF-8 and is compatible to the *nix version of git."
-msgstr "У вас установлена старая версия Git (http://code.google.com/p/msysgit/)\n\nВам следует рассмотреть возможность обновления до версии 1.7.10 и выше, которая поддерживает UTF-8 и совместима с *nix-версией git."
+"You should consider an upgrade to 1.9.5+."
+msgstr "У вас установлена старая версия Git для Windows (https://msysgit.github.io/) имеющая некоторые проблемы безопасности. \n\nВам следует рассмотреть возможность обновления до версии 1.9.5+."
 
 #. Resource IDs: (86)
 msgid ""
@@ -11496,6 +11535,10 @@ msgstr "нет описания для этой команды"
 #. Resource IDs: (10)
 msgid "non-versioned"
 msgstr "неверсирован"
+
+#. Resource IDs: (97)
+msgid "none"
+msgstr "ничего"
 
 #. Resource IDs: (10)
 msgid "normal"

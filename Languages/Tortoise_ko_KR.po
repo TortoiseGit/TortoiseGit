@@ -34,7 +34,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2014-11-13 16:50+0000\n"
+"PO-Revision-Date: 2014-12-30 15:26+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Korean (Korea) (http://www.transifex.com/projects/p/tortoisegit/language/ko_KR/)\n"
 "MIME-Version: 1.0\n"
@@ -624,6 +624,10 @@ msgstr "&Do the same for the rest"
 msgid "&Docking"
 msgstr "붙이기(&D)"
 
+#. Resource IDs: (1032)
+msgid "&Don't ask me again"
+msgstr ""
+
 #. Resource IDs: (1384)
 msgid "&Down"
 msgstr "&Down"
@@ -1057,6 +1061,10 @@ msgstr "새로고침(&R)"
 #. Resource IDs: (20093)
 msgid "&Regular Expression"
 msgstr "정규 표현식(&R)"
+
+#. Resource IDs: (97)
+msgid "&Remind me later"
+msgstr ""
 
 #. Resource IDs: (1617)
 msgid "&Remote Branch:"
@@ -3276,8 +3284,8 @@ msgstr "새 버전을 확인할 수 없습니다!"
 
 #. Resource IDs: (93)
 #, c-format
-msgid "Could not check for a newer version! (Error code: 0x%08X)"
-msgstr "새 버전을 확인할 수 없음! (오류 코드: 0x%08X)"
+msgid "Could not check for a newer version! %s (Error code: 0x%08X)"
+msgstr "새 버전을 확인할 수 없음! %s (오류 코드: 0x%08X)"
 
 #. Resource IDs: (81)
 #, c-format
@@ -3746,6 +3754,14 @@ msgstr "명령 로그 파일을 삭제"
 msgid "Deleting"
 msgstr "삭제"
 
+#. Resource IDs: (97)
+msgid "Deleting cached data"
+msgstr ""
+
+#. Resource IDs: (97)
+msgid "Deleting file"
+msgstr ""
+
 #. Resource IDs: (88)
 msgid "Deleting remote refs..."
 msgstr "Deleting remote refs..."
@@ -3914,6 +3930,10 @@ msgid ""
 "too much disk access when browsing the working tree."
 msgstr "Disable this option if you have really big working trees and experience\r\ntoo much disk access when browsing the working tree."
 
+#. Resource IDs: (97)
+msgid "Disable update checks"
+msgstr ""
+
 #. Resource IDs: (2054)
 msgid "Disabled"
 msgstr "비활성화"
@@ -3991,6 +4011,13 @@ msgstr "정말 <b>%s</b>을 <ct=0x0000FF>삭제</ct>하겠습니까?"
 #, c-format
 msgid "Do you really want to delete the toolbar '%s'?"
 msgstr "'%s' 툴바를 정말로 삭제하시겠습니까?"
+
+#. Resource IDs: (97)
+msgid ""
+"Do you really want to disable automatic update checks for TortoiseGit?\r\n"
+"\r\n"
+"Automatic update checks can be re-enabled in TortoiseGit settings on the General page."
+msgstr ""
 
 #. Resource IDs: (88)
 msgid "Do you really want to mark the selected file(s) as assume-valid?"
@@ -5216,8 +5243,8 @@ msgid "Git for Windows"
 msgstr "윈도우용 Git"
 
 #. Resource IDs: (84)
-msgid "Git for Windows (http://code.google.com/p/msysgit/) not found."
-msgstr "MSysGit (http://code.google.com/p/msysgit/)을 못 찾았습니다."
+msgid "Git for Windows (https://msysgit.github.io/) not found."
+msgstr "Git for Windows (https://msysgit.github.io/)을 못 찾았습니다."
 
 #. Resource IDs: (79)
 msgid "Git reported an error while creating a repository!\n"
@@ -8379,6 +8406,14 @@ msgstr "SMTP, 목적지 서버로 직접"
 msgid "SSH"
 msgstr "SSH"
 
+#. Resource IDs: (97)
+msgid "SSL"
+msgstr "SSL"
+
+#. Resource IDs: (97)
+msgid "STARTTLS"
+msgstr "STARTTLS"
+
 #. Resource IDs: (331)
 msgid "SVN Commit Type"
 msgstr "SVN Commit Type"
@@ -10615,6 +10650,10 @@ msgstr "두 블럭 모두 사용 (이것을 원본으로 사용)"
 msgid "Use both text blocks (this one last)"
 msgstr "두 블럭 모두 사용 (이것을 비교본으로 사용)"
 
+#. Resource IDs: (97)
+msgid "Use configured server"
+msgstr ""
+
 #. Resource IDs: (156)
 msgid "Use left block"
 msgstr "왼쪽 블럭을 사용"
@@ -11100,10 +11139,10 @@ msgstr "You cannot change the type of this ref with a rename."
 
 #. Resource IDs: (84)
 msgid ""
-"You have an old version of Git for Windows (http://code.google.com/p/msysgit/) installed.\n"
+"You have an old version of Git for Windows (https://msysgit.github.io/) installed which contains security issues.\n"
 "\n"
-"You should consider an upgrade to 1.7.10+ which supports UTF-8 and is compatible to the *nix version of git."
-msgstr "구버전 msysGit(http://code.google.com/p/msysgit/)이 설치되어 있습니다.\n\nUTF-8을 지원하고 *nix계열 git과 호환되는 1.7.10버전 이상으로 업그레이드하길 권장합니다."
+"You should consider an upgrade to 1.9.5+."
+msgstr ""
 
 #. Resource IDs: (86)
 msgid ""
@@ -11503,6 +11542,10 @@ msgstr "이 명령에 대한 설명이 없습니다."
 #. Resource IDs: (10)
 msgid "non-versioned"
 msgstr "버전관리 대상 아님"
+
+#. Resource IDs: (97)
+msgid "none"
+msgstr ""
 
 #. Resource IDs: (10)
 msgid "normal"

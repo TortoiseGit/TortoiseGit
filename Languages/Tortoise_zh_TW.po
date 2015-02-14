@@ -8,17 +8,17 @@
 # ch cooli <ch3cooli@gmail.com>, 2012
 # ch cooli <ch3cooli@gmail.com>, 2012-2014
 # Hydriz Scholz <admin@alphacorp.tk>, 2013
-# Hydriz Scholz <admin@alphacorp.tk>, 2013
+# Hydriz Scholz <admin@alphacorp.tk>, 2013,2015
 # Sven Strickroth <sstrickroth@googlemail.com>, 2013
-# Yue Lin Ho <yuelinho777@gmail.com>, 2014
+# Yue Lin Ho <yuelinho777@gmail.com>, 2014-2015
 # ch cooli <ch3cooli@gmail.com>, 2012-2013
 msgid ""
 msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2014-11-23 15:59+0000\n"
-"Last-Translator: ch cooli <ch3cooli@gmail.com>\n"
+"PO-Revision-Date: 2015-01-08 07:11+0000\n"
+"Last-Translator: Yue Lin Ho <yuelinho777@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/tortoisegit/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -521,7 +521,7 @@ msgstr "提交子模組(&C) ..."
 
 #. Resource IDs: (68)
 msgid "&Commit w/o"
-msgstr "提交但不(&C)"
+msgstr "強制提交(&C)"
 
 #. Resource IDs: (8)
 msgid "&Commit..."
@@ -606,6 +606,10 @@ msgstr "對其餘的作相同處理(&D)"
 #. Resource IDs: (1066)
 msgid "&Docking"
 msgstr "視窗停駐(&D)"
+
+#. Resource IDs: (1032)
+msgid "&Don't ask me again"
+msgstr "不再詢問(&D)"
 
 #. Resource IDs: (1384)
 msgid "&Down"
@@ -859,7 +863,7 @@ msgstr "亮度(&L):"
 
 #. Resource IDs: (65535)
 msgid "&Max line length for inline diffs"
-msgstr "行內比對的最大行長度"
+msgstr "比對行內差異的長度上限(&M)"
 
 #. Resource IDs: (16543)
 msgid "&Menu animations:"
@@ -1040,6 +1044,10 @@ msgstr "重新整理(&R)"
 #. Resource IDs: (20093)
 msgid "&Regular Expression"
 msgstr "正規表示式(&R)"
+
+#. Resource IDs: (97)
+msgid "&Remind me later"
+msgstr "稍後再提醒(&R)"
 
 #. Resource IDs: (1617)
 msgid "&Remote Branch:"
@@ -3259,8 +3267,8 @@ msgstr "無法檢查新版!"
 
 #. Resource IDs: (93)
 #, c-format
-msgid "Could not check for a newer version! (Error code: 0x%08X)"
-msgstr "無法檢查新版! (錯誤編號: 0x%08X)"
+msgid "Could not check for a newer version! %s (Error code: 0x%08X)"
+msgstr "無法檢查新版! %s (錯誤編號: 0x%08X)"
 
 #. Resource IDs: (81)
 #, c-format
@@ -3729,6 +3737,14 @@ msgstr "刪除動作紀錄"
 msgid "Deleting"
 msgstr "正在刪除"
 
+#. Resource IDs: (97)
+msgid "Deleting cached data"
+msgstr "正在刪除快取資料"
+
+#. Resource IDs: (97)
+msgid "Deleting file"
+msgstr "正在刪除文件"
+
 #. Resource IDs: (88)
 msgid "Deleting remote refs..."
 msgstr "正在刪除遠端參考點 ..."
@@ -3897,6 +3913,10 @@ msgid ""
 "too much disk access when browsing the working tree."
 msgstr "如果你有很大的工作複本, 在瀏覽工作複本目錄時\r\n曾經發生過大量磁碟動作. 建議取消此選項."
 
+#. Resource IDs: (97)
+msgid "Disable update checks"
+msgstr "停用檢查更新"
+
 #. Resource IDs: (2054)
 msgid "Disabled"
 msgstr "己停用"
@@ -3974,6 +3994,13 @@ msgstr "確定要 <ct=0x0000FF>刪除</ct> <b>%s</b>？"
 #, c-format
 msgid "Do you really want to delete the toolbar '%s'?"
 msgstr "確定要刪除工具列 '%s' 嗎?"
+
+#. Resource IDs: (97)
+msgid ""
+"Do you really want to disable automatic update checks for TortoiseGit?\r\n"
+"\r\n"
+"Automatic update checks can be re-enabled in TortoiseGit settings on the General page."
+msgstr "你真的想要停用 TortoiseGit 的自動檢查更新?\r\n\r\n自動檢查更新可以在 TortoiseGit 的「一般」設定頁中被重新啟用"
 
 #. Resource IDs: (88)
 msgid "Do you really want to mark the selected file(s) as assume-valid?"
@@ -5199,8 +5226,8 @@ msgid "Git for Windows"
 msgstr "Git for Windows"
 
 #. Resource IDs: (84)
-msgid "Git for Windows (http://code.google.com/p/msysgit/) not found."
-msgstr "找不到 Git for Windows (http://code.google.com/p/msysgit/)"
+msgid "Git for Windows (https://msysgit.github.io/) not found."
+msgstr "找不到 Git for Windows (https://msysgit.github.io/)"
 
 #. Resource IDs: (79)
 msgid "Git reported an error while creating a repository!\n"
@@ -6196,7 +6223,7 @@ msgstr "紀錄"
 
 #. Resource IDs: (65535)
 msgid "Log Branch Line"
-msgstr "歷史中的分支行"
+msgstr "歷史紀錄中的分支線"
 
 #. Resource IDs: (65535)
 msgid "Log Graphic"
@@ -8362,6 +8389,14 @@ msgstr "SMTP，直接到目的伺服器"
 msgid "SSH"
 msgstr "SSH"
 
+#. Resource IDs: (97)
+msgid "SSL"
+msgstr "SSL"
+
+#. Resource IDs: (97)
+msgid "STARTTLS"
+msgstr "STARTTLS"
+
 #. Resource IDs: (331)
 msgid "SVN Commit Type"
 msgstr "SVN Commit類型"
@@ -9849,7 +9884,7 @@ msgid ""
 "and the patchline\n"
 "%s\n"
 "do not match!"
-msgstr "補綴檔似乎過舊! 檔案中的\n%s\n 行與補綴檔中的\n%s\n行不符合!"
+msgstr "補綴檔似乎過舊! 檔案中此行\n%s\n與補綴檔中此行\n%s\n不符合！"
 
 #. Resource IDs: (88)
 msgid ""
@@ -10427,7 +10462,7 @@ msgstr "預期外的檔案格式."
 
 #. Resource IDs: (93)
 msgid "Unflag as skip-worktree and assume-unchanged"
-msgstr "取消忽略本地變更旗標 skip-worktree 及 assume-unchanged"
+msgstr "取消 skip-worktree 及 assume-unchanged 標記"
 
 #. Resource IDs: (1070)
 msgid "Unfold"
@@ -10597,6 +10632,10 @@ msgstr "使用兩個文字區域(先使用本區塊)"
 #. Resource IDs: (251)
 msgid "Use both text blocks (this one last)"
 msgstr "使用兩個文字區塊(最後使用本區塊)"
+
+#. Resource IDs: (97)
+msgid "Use configured server"
+msgstr "使用已組態伺服器"
 
 #. Resource IDs: (156)
 msgid "Use left block"
@@ -11083,10 +11122,10 @@ msgstr "你不能透過重新命名來更改這參考點的類型"
 
 #. Resource IDs: (84)
 msgid ""
-"You have an old version of Git for Windows (http://code.google.com/p/msysgit/) installed.\n"
+"You have an old version of Git for Windows (https://msysgit.github.io/) installed which contains security issues.\n"
 "\n"
-"You should consider an upgrade to 1.7.10+ which supports UTF-8 and is compatible to the *nix version of git."
-msgstr "你安裝了舊版的 Git for Windows (http://code.google.com/p/msysgit/)。\n\n你應考慮升級到 1.7.10+ ，能支援 UTF-8 及與 *nix 版本的 git 相容。"
+"You should consider an upgrade to 1.9.5+."
+msgstr "你安裝了舊版的、有安全漏洞的 Git for Windows (https://msysgit.github.io/)\n\n你應該考慮升級到 1.9.5+."
 
 #. Resource IDs: (86)
 msgid ""
@@ -11096,7 +11135,7 @@ msgstr "你選擇了 「包含未追蹤的檔案」，這包含一個 \"git clea
 
 #. Resource IDs: (7)
 msgid "You have marked changed blocks. How should those blocks be saved?"
-msgstr "有被標記的內容，要怎樣儲存？"
+msgstr "你標記了一些已修改區塊，要如何儲存它們？"
 
 #. Resource IDs: (16)
 msgid ""
@@ -11486,6 +11525,10 @@ msgstr "此指令尚無說明"
 #. Resource IDs: (10)
 msgid "non-versioned"
 msgstr "無版本控制"
+
+#. Resource IDs: (97)
+msgid "none"
+msgstr "無"
 
 #. Resource IDs: (10)
 msgid "normal"

@@ -9,14 +9,14 @@
 # Sven Strickroth <sstrickroth@googlemail.com>, 2012-2013
 # Václav Valíček <Valicek1994@gmail.com>, 2012,2014
 # Václav Valíček <Valicek1994@gmail.com>, 2012
-# Zbyněk Schwarz <zbynek.schwarz@gmail.com>, 2012-2014
+# Zbyněk Schwarz <zbynek.schwarz@gmail.com>, 2012-2015
 msgid ""
 msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2014-11-13 16:50+0000\n"
-"Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
+"PO-Revision-Date: 2015-01-27 21:48+0000\n"
+"Last-Translator: Zbyněk Schwarz <zbynek.schwarz@gmail.com>\n"
 "Language-Team: Czech (http://www.transifex.com/projects/p/tortoisegit/language/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -605,6 +605,10 @@ msgstr "&Provést totéž u ostatních"
 msgid "&Docking"
 msgstr "&Ukotvení"
 
+#. Resource IDs: (1032)
+msgid "&Don't ask me again"
+msgstr "&Již se mě neptat"
+
 #. Resource IDs: (1384)
 msgid "&Down"
 msgstr "&Dolů"
@@ -1038,6 +1042,10 @@ msgstr "&Obnovit"
 #. Resource IDs: (20093)
 msgid "&Regular Expression"
 msgstr "&Regulární výraz"
+
+#. Resource IDs: (97)
+msgid "&Remind me later"
+msgstr "&Zeptat se mě později"
 
 #. Resource IDs: (1617)
 msgid "&Remote Branch:"
@@ -1801,7 +1809,7 @@ msgstr "Všechny místní větve"
 
 #. Resource IDs: (96)
 msgid "All refs"
-msgstr ""
+msgstr "Všechny odkazy"
 
 #. Resource IDs: (96)
 msgid "All tags"
@@ -1923,7 +1931,7 @@ msgstr "Na řádku %d byl nalezen neznámý typ řádku!"
 
 #. Resource IDs: (96)
 msgid "Annotated tags"
-msgstr ""
+msgstr "Anotované značky"
 
 #. Resource IDs: (251)
 msgid "Append right block"
@@ -2172,7 +2180,7 @@ msgstr "Zpět"
 
 #. Resource IDs: (65535)
 msgid "Background"
-msgstr ""
+msgstr "Pozadí"
 
 #. Resource IDs: (65535)
 msgid "Baltic"
@@ -2184,7 +2192,7 @@ msgstr "Sloupcový graf"
 
 #. Resource IDs: (1385)
 msgid "Base"
-msgstr ""
+msgstr "Základ"
 
 #. Resource IDs: (1522)
 msgid "Base On"
@@ -3013,7 +3021,7 @@ msgstr "Odevzdáním složky bez verze nebudou rekurzivně přidány její podř
 
 #. Resource IDs: (65535)
 msgid "Common Name:"
-msgstr ""
+msgstr "Společný název:"
 
 #. Resource IDs: (2054)
 msgid "Compare &HEAD revisions"
@@ -3257,8 +3265,8 @@ msgstr "Nelze zkontrolovat novou verzi!"
 
 #. Resource IDs: (93)
 #, c-format
-msgid "Could not check for a newer version! (Error code: 0x%08X)"
-msgstr "Nelze zkontrolovat novou verzi! (Kód chyby: 0x%08X)"
+msgid "Could not check for a newer version! %s (Error code: 0x%08X)"
+msgstr "Nelze zkontrolovat novou verzi! %s (Kód chyby: 0x%08X)"
 
 #. Resource IDs: (81)
 #, c-format
@@ -3727,6 +3735,14 @@ msgstr "Smaže soubor protokolu činností"
 msgid "Deleting"
 msgstr "Mazání"
 
+#. Resource IDs: (97)
+msgid "Deleting cached data"
+msgstr "Mazání dat v mezipaměti"
+
+#. Resource IDs: (97)
+msgid "Deleting file"
+msgstr "Mazání souboru"
+
 #. Resource IDs: (88)
 msgid "Deleting remote refs..."
 msgstr "Smazat vzdálené odkazy..."
@@ -3821,15 +3837,15 @@ msgstr "Prohlížeč rozdílů::Nástroj sloučení"
 
 #. Resource IDs: (65535)
 msgid "Diff added lines"
-msgstr ""
+msgstr "Porovnat přidané soubory"
 
 #. Resource IDs: (65535)
 msgid "Diff command"
-msgstr ""
+msgstr "Porovnat příkaz"
 
 #. Resource IDs: (65535)
 msgid "Diff comment"
-msgstr ""
+msgstr "Porovnat komentář"
 
 #. Resource IDs: (65535)
 msgid "Diff file:"
@@ -3837,7 +3853,7 @@ msgstr "Soubor porovnání:"
 
 #. Resource IDs: (65535)
 msgid "Diff header"
-msgstr ""
+msgstr "Porovnat hlavičku"
 
 #. Resource IDs: (15)
 msgid "Diff later"
@@ -3845,11 +3861,11 @@ msgstr "Porovnat později"
 
 #. Resource IDs: (65535)
 msgid "Diff position"
-msgstr ""
+msgstr "Porovnat umístění"
 
 #. Resource IDs: (65535)
 msgid "Diff removed lines"
-msgstr ""
+msgstr "Porovnat odstraněné řádky"
 
 #. Resource IDs: (15)
 #, c-format
@@ -3894,6 +3910,10 @@ msgid ""
 "Disable this option if you have really big working trees and experience\r\n"
 "too much disk access when browsing the working tree."
 msgstr "Tuto možnost zakažte, pokud máte opravdu velké pracovní stromy a pokud se stává,\nže máte příliš velké přístupy na disk při procházení pracovního stromu."
+
+#. Resource IDs: (97)
+msgid "Disable update checks"
+msgstr "Zakázat kontrolu aktualizací"
 
 #. Resource IDs: (2054)
 msgid "Disabled"
@@ -3972,6 +3992,13 @@ msgstr "Opravdu chcete <ct=0x0000FF>smazat</ct> <b>%s</b>?"
 #, c-format
 msgid "Do you really want to delete the toolbar '%s'?"
 msgstr "Opravdu chcete smazat panel nástrojů '%s'?"
+
+#. Resource IDs: (97)
+msgid ""
+"Do you really want to disable automatic update checks for TortoiseGit?\r\n"
+"\r\n"
+"Automatic update checks can be re-enabled in TortoiseGit settings on the General page."
+msgstr "Opravdu chcete zakázat automatickou kontrolu aktualizací TortoiseGit?\n\nAutomatická kontrola aktualizací může být znovu povolena v nastavení TortoiseGit na stránce obecné."
 
 #. Resource IDs: (88)
 msgid "Do you really want to mark the selected file(s) as assume-valid?"
@@ -4283,7 +4310,7 @@ msgstr "Povolit mezipaměť protokolu"
 
 #. Resource IDs: (90)
 msgid "Enable showing Gravatar image in Log Dialog"
-msgstr "Povolit zobrazení obrázku Gravatar v dialogovém okně záznamu"
+msgstr "Povolit zobrazení obrázku Gravatar v dialogovém okně protokolu"
 
 #. Resource IDs: (65535)
 msgid "Enabled Overlay Handlers"
@@ -4851,7 +4878,7 @@ msgstr "Hledání: Nalezen první výskyt při hledání shora. Dosaženo konce 
 
 #. Resource IDs: (65535)
 msgid "Fingerprints"
-msgstr ""
+msgstr "Otisky"
 
 #. Resource IDs: (67)
 msgid "Finish"
@@ -4923,14 +4950,14 @@ msgid ""
 "Force push only if the remote reference points to the same commit as the remote tracking branch.\n"
 "This can cause the remote repository to lose commits; use it with care.\n"
 "This option corresponds to the --force-with-lease git option."
-msgstr ""
+msgstr "Vynutit odevzdání pouze pokud vzdálený odkaz ukazuje na stejné odevzdání jako sledovaná vzdálená větev.\nTo může způsobit ztrátu odevzdání ve vzdáleném úložišti; používejte opatrně.\nTato volba odpovídá volbě git --force-with-lease."
 
 #. Resource IDs: (1796)
 msgid ""
 "Force push to the selected remote reference and override it without any safety checks.\n"
 "This can cause the remote repository to lose unseen commits; use it with care.\n"
 "This option corresponds to the --force git option."
-msgstr ""
+msgstr "Vynutit odeslání do vybraného vzdáleného odkazu a potlačit ho bez kontrol bezpečnosti.\nTo může způsobit ztrátu neviděných odevzdání ve vzdáleném úložišti; používejte opatrně.\nTato volba odpovídá volbě git --force."
 
 #. Resource IDs: (603)
 msgid ""
@@ -4944,7 +4971,7 @@ msgstr "Vynutit: Může dojít k zahození"
 
 #. Resource IDs: (65535)
 msgid "Foreground"
-msgstr ""
+msgstr "Pořpedí"
 
 #. Resource IDs: (312)
 msgid "Format Patch"
@@ -5197,8 +5224,8 @@ msgid "Git for Windows"
 msgstr "Git pro Windows"
 
 #. Resource IDs: (84)
-msgid "Git for Windows (http://code.google.com/p/msysgit/) not found."
-msgstr "Git pro Windows (http://code.google.com/p/msysgit/) nenalezen."
+msgid "Git for Windows (https://msysgit.github.io/) not found."
+msgstr "Git pro Windows (https://msysgit.github.io/) nenalezen."
 
 #. Resource IDs: (79)
 msgid "Git reported an error while creating a repository!\n"
@@ -5507,7 +5534,7 @@ msgstr "ID:32870:V C +L"
 
 #. Accelerator Entry for Menu ID:32873; ''
 msgid "ID:32873:V C +E"
-msgstr ""
+msgstr "ID:32873:V C +E"
 
 #. Accelerator Entry for Menu ID:32881; ''
 msgid "ID:32881:V C +P"
@@ -5655,7 +5682,7 @@ msgstr "Ikony/Návrh/Kód:\t\tLuebbe Onken"
 
 #. Resource IDs: (97)
 msgid "Identical"
-msgstr ""
+msgstr "Identické"
 
 #. Resource IDs: (194)
 msgid ""
@@ -6057,7 +6084,7 @@ msgstr "Ponechat v konfliktu\nJe ponechán konfliktní stav souboru"
 
 #. Resource IDs: (252)
 msgid "Leave only marked blocks"
-msgstr ""
+msgstr "Ponechat pouze označené bloky"
 
 #. Resource IDs: (188)
 msgid "Left View: "
@@ -6222,7 +6249,7 @@ msgstr "Protokol zpráv (Vstupní dialogové okno)"
 
 #. Resource IDs: (1280)
 msgid "Log messages (Show log dialog)"
-msgstr "Protokol zpráv (Dialogové okno zobrazení záznamu)"
+msgstr "Protokol zpráv (Dialogové okno zobrazení protokolu)"
 
 #. Resource IDs: (1760)
 msgid "Login:"
@@ -6296,7 +6323,7 @@ msgstr "Označit tento blok"
 
 #. Resource IDs: (7)
 msgid "Marked Blocks"
-msgstr ""
+msgstr "Označené bloky"
 
 #. Resource IDs: (2051)
 msgid ""
@@ -6832,7 +6859,7 @@ msgstr "Uvědomte si, že pokud vyberete obnovu automaticky uložených dokument
 
 #. Resource IDs: (65535)
 msgid "Note: These settings also apply to the Patch Viewer dialog."
-msgstr ""
+msgstr "Poznámka: Tato nastavení také ovlivňují dialogové okno zobrazení záplaty."
 
 #. Resource IDs: (1481)
 msgid "Note: the folder contains unversioned items"
@@ -6884,7 +6911,7 @@ msgstr "Počet znaků nutných pro zjištění přesunutého nebo zkopírovanéh
 
 #. Resource IDs: (96)
 msgid "Number of characters to show in the abbreviated hash part"
-msgstr ""
+msgstr "Počet zobrazených znaků ve zkrácené části kontrolního součtu"
 
 #. Resource IDs: (1160)
 msgid "Number of weeks:"
@@ -7311,7 +7338,7 @@ msgstr "Vybrat"
 
 #. Resource IDs: (90)
 msgid "Pick commit hash"
-msgstr "Vyberte hash odevzdání"
+msgstr "Vyberte kontrolní součet odevzdání"
 
 #. Resource IDs: (90)
 msgid "Pick commit message"
@@ -8121,7 +8148,7 @@ msgstr "Vyřešit"
 
 #. Resource IDs: (4595)
 msgid "Resolve Submodule Conflict"
-msgstr ""
+msgstr "Vyřešit konflikt podmodulu"
 
 #. Resource IDs: (282)
 msgid "Resolve conflict using 'mine'"
@@ -8360,6 +8387,14 @@ msgstr "SMTp, přímo k cílovému serveru"
 msgid "SSH"
 msgstr "SSH"
 
+#. Resource IDs: (97)
+msgid "SSL"
+msgstr "SSL"
+
+#. Resource IDs: (97)
+msgid "STARTTLS"
+msgstr "STARTTLS"
+
 #. Resource IDs: (331)
 msgid "SVN Commit Type"
 msgstr "Typ odevzdání SVN"
@@ -8408,7 +8443,7 @@ msgid ""
 "Fixed issue #123\n"
 "Resolves issue #88.\n"
 "Closes issue #99.\n"
-msgstr "Vzorová zpráva záznamu pro vyzkoušení regulárních řetězců bugtraq.\n\nZkouška se zmiňuje o úlohách v textu: Zmiňuje jednu úlohu #55. Zmiňuje úlohy #77, #78 a #79. Zmiňuje další úlohy #123, #124 a #125 a některé oddělené: Úlohu #45, úlohu #46 a úlohu #47.\n\n\nAktualizace úlohy #101\nOpravuje problém #202\nProblém #123 opraven\nŘeší úlohu #88.\nUzavírá úlohu #99.\n"
+msgstr "Vzorová zpráva protokolu pro vyzkoušení regulárních řetězců bugtraq.\n\nZkouška se zmiňuje o úlohách v textu: Zmiňuje jednu úlohu #55. Zmiňuje úlohy #77, #78 a #79. Zmiňuje další úlohy #123, #124 a #125 a některé oddělené: Úlohu #45, úlohu #46 a úlohu #47.\n\n\nAktualizace úlohy #101\nOpravuje problém #202\nProblém #123 opraven\nŘeší úlohu #88.\nUzavírá úlohu #99.\n"
 
 #. Resource IDs: (1612)
 msgid "Sample text:"
@@ -8474,19 +8509,19 @@ msgstr "Uložit vše\nOba soubory jsou uloženy"
 msgid ""
 "Save and exclude\n"
 "Your changes are saved and the original content is used"
-msgstr ""
+msgstr "Uložit a vyloučit\nJe použit původní obsah a vaše změny jsou uloženy."
 
 #. Resource IDs: (7)
 msgid ""
 "Save and ignore marked blocks\n"
 "Only your manual edits are saved, marked blocks are left as they are"
-msgstr ""
+msgstr "Uložit a ignorovat označené bloky\nPouze vaše ruční úpravy jsou uloženy, označené bloky jsou ponechány tak jak jsou"
 
 #. Resource IDs: (7)
 msgid ""
 "Save and include\n"
 "Your changes are saved and the marked blocks are included"
-msgstr ""
+msgstr "Uložit a zahrnout\nVaše změny jsou uloženy a označené bloky jsou zahrnuty"
 
 #. Resource IDs: (156)
 msgid "Save as"
@@ -8935,11 +8970,11 @@ msgstr "Zobrazit přehled celého grafu"
 
 #. Resource IDs: (1074)
 msgid "Show asterisk log prefix"
-msgstr ""
+msgstr "Zobrazit před záznamem hvězdičku"
 
 #. Resource IDs: (97)
 msgid "Show asterisk log prefix in log dialog"
-msgstr ""
+msgstr "Zobrazit před záznamem hvězdičku v dialogovém okně záznamu"
 
 #. Resource IDs: (32775)
 msgid "Show author"
@@ -8967,11 +9002,11 @@ msgstr "Zobrazit datum"
 
 #. Resource IDs: (1804)
 msgid "Show describe in log"
-msgstr ""
+msgstr "Zobrazit popis v záznamu"
 
 #. Resource IDs: (96)
 msgid "Show describe in log dialog"
-msgstr ""
+msgstr "Zobrazit popis v dialogovém okně záznamu"
 
 #. Resource IDs: (83)
 msgid "Show destination folder"
@@ -9044,7 +9079,7 @@ msgstr "Zobrazit protokol..."
 
 #. Resource IDs: (96)
 msgid "Show long format even if a tag is exactly on that commit"
-msgstr ""
+msgstr "Zobrazit dlouhý formát i když je značka přímo v odevzdání"
 
 #. Resource IDs: (1382)
 msgid "Show modified files in working tree"
@@ -9257,7 +9292,7 @@ msgstr "Spin1"
 
 #. Resource IDs: (1827)
 msgid "Split commit"
-msgstr ""
+msgstr "Rozdělit odevzdání"
 
 #. Resource IDs: (1253)
 msgid "Split lines"
@@ -9949,7 +9984,7 @@ msgstr "Dvě vybrané URL nejsou vytvořeny ze stejného kořene.\nNení možné
 msgid ""
 "The working tree is not clean and contains unstaged changes.\n"
 "Review and commit the changes?"
-msgstr ""
+msgstr "Pracovní strom není čistý a obsahuje nezařazené změny. \nChcete změny zkontrolovat a odevzdat?"
 
 #. Resource IDs: (65535)
 msgid "Their file:"
@@ -10253,7 +10288,7 @@ msgstr "TortoiseGitMerge nemůže zpracovat tuto záplatu. Název souboru \"%s\"
 
 #. Resource IDs: (357)
 msgid "TortoiseGitUDiff"
-msgstr ""
+msgstr "TortoiseGitUDiff"
 
 #. Resource IDs: (1739)
 msgid "Total changed lines including added/deleted files:"
@@ -10596,6 +10631,10 @@ msgstr "Použít oba textové bloky (tento první)"
 msgid "Use both text blocks (this one last)"
 msgstr "Použít oba textové bloky (tento poslední)"
 
+#. Resource IDs: (97)
+msgid "Use configured server"
+msgstr "Použít nastavený server"
+
 #. Resource IDs: (156)
 msgid "Use left block"
 msgstr "Použít blok vlevo"
@@ -10696,7 +10735,7 @@ msgstr "Použít původní cestu.\nPoužít záplatu na\n%s"
 
 #. Resource IDs: (1825, 1826)
 msgid "Use this"
-msgstr ""
+msgstr "Použít toto"
 
 #. Resource IDs: (251)
 msgid "Use this &whole file"
@@ -10938,7 +10977,7 @@ msgstr "Když zadáte URL, název vzdálené větve bude automaticky zadán jako
 
 #. Resource IDs: (96)
 msgid "Whether to reference only annotated tags, all tags or all refs"
-msgstr ""
+msgstr "Zdali odkazovat pouze na anotované značky, všechny značky nebo všechny odkazy"
 
 #. Resource IDs: (1409)
 msgid ""
@@ -11081,10 +11120,10 @@ msgstr "Přejmenováním nelze změnit tento typ odkazu"
 
 #. Resource IDs: (84)
 msgid ""
-"You have an old version of Git for Windows (http://code.google.com/p/msysgit/) installed.\n"
+"You have an old version of Git for Windows (https://msysgit.github.io/) installed which contains security issues.\n"
 "\n"
-"You should consider an upgrade to 1.7.10+ which supports UTF-8 and is compatible to the *nix version of git."
-msgstr "Máte instalovánu starou verzi Git pro Windows (http://code.google.com/p/msysgit/).\n\nMěli byste zvážit nainstalovat verzi 1.7.10 a vyšší, které podporují UTF-8 a jsou kompatibilní s verzemi git v systémech *nix."
+"You should consider an upgrade to 1.9.5+."
+msgstr "Máte instalovánu starou verzi Git pro Windows (https://msysgit.github.io/), která má problémy se zabezpečením.\n\nMěli byste zvážit nainstalovat verzi 1.9.5 a vyšší."
 
 #. Resource IDs: (86)
 msgid ""
@@ -11094,7 +11133,7 @@ msgstr "Zaškrtli jste \"zahrnout nesledované\".\nTo zahrnuje volání \"git cl
 
 #. Resource IDs: (7)
 msgid "You have marked changed blocks. How should those blocks be saved?"
-msgstr ""
+msgstr "Máte označeny změněné bloky. Jak by tyto bloky měly být uloženy?"
 
 #. Resource IDs: (16)
 msgid ""
@@ -11484,6 +11523,10 @@ msgstr "pro tento příkaz není dostupný žádný popis"
 #. Resource IDs: (10)
 msgid "non-versioned"
 msgstr "bez verze"
+
+#. Resource IDs: (97)
+msgid "none"
+msgstr "žádné"
 
 #. Resource IDs: (10)
 msgid "normal"

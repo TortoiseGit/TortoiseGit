@@ -21,7 +21,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2014-11-13 16:50+0000\n"
+"PO-Revision-Date: 2014-12-30 15:26+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Swedish (http://www.transifex.com/projects/p/tortoisegit/language/sv/)\n"
 "MIME-Version: 1.0\n"
@@ -611,6 +611,10 @@ msgstr "&Upprepa för resten"
 msgid "&Docking"
 msgstr "&Dockning"
 
+#. Resource IDs: (1032)
+msgid "&Don't ask me again"
+msgstr ""
+
 #. Resource IDs: (1384)
 msgid "&Down"
 msgstr "&Ner"
@@ -1044,6 +1048,10 @@ msgstr "&Uppdatera"
 #. Resource IDs: (20093)
 msgid "&Regular Expression"
 msgstr "&Reguljärt uttryck"
+
+#. Resource IDs: (97)
+msgid "&Remind me later"
+msgstr ""
 
 #. Resource IDs: (1617)
 msgid "&Remote Branch:"
@@ -3263,8 +3271,8 @@ msgstr "Kunde inte leta efter nyare version!"
 
 #. Resource IDs: (93)
 #, c-format
-msgid "Could not check for a newer version! (Error code: 0x%08X)"
-msgstr "Kunde inte leta efter nyare version! (Fel kod: 0x%08X)"
+msgid "Could not check for a newer version! %s (Error code: 0x%08X)"
+msgstr "Kunde inte leta efter nyare version! %s (Fel kod: 0x%08X)"
 
 #. Resource IDs: (81)
 #, c-format
@@ -3733,6 +3741,14 @@ msgstr "Tar bort händelseloggen"
 msgid "Deleting"
 msgstr "Tar bort"
 
+#. Resource IDs: (97)
+msgid "Deleting cached data"
+msgstr ""
+
+#. Resource IDs: (97)
+msgid "Deleting file"
+msgstr ""
+
 #. Resource IDs: (88)
 msgid "Deleting remote refs..."
 msgstr "Tar bort fjärr-refs..."
@@ -3901,6 +3917,10 @@ msgid ""
 "too much disk access when browsing the working tree."
 msgstr "Avaktivera denna om du använder riktigt stora arbetsträd och du upplever\natt hårddisken accessas för mycket när du utforskar arbetsträdet."
 
+#. Resource IDs: (97)
+msgid "Disable update checks"
+msgstr ""
+
 #. Resource IDs: (2054)
 msgid "Disabled"
 msgstr "Inaktiv"
@@ -3978,6 +3998,13 @@ msgstr "Vill du verkligen <ct=0x0000FF>ta bort</ct> <b>%s</b>?"
 #, c-format
 msgid "Do you really want to delete the toolbar '%s'?"
 msgstr "Vill du verkligen ta bort verktygsraden '%s'?"
+
+#. Resource IDs: (97)
+msgid ""
+"Do you really want to disable automatic update checks for TortoiseGit?\r\n"
+"\r\n"
+"Automatic update checks can be re-enabled in TortoiseGit settings on the General page."
+msgstr ""
 
 #. Resource IDs: (88)
 msgid "Do you really want to mark the selected file(s) as assume-valid?"
@@ -5203,8 +5230,8 @@ msgid "Git for Windows"
 msgstr "Git för Windows"
 
 #. Resource IDs: (84)
-msgid "Git for Windows (http://code.google.com/p/msysgit/) not found."
-msgstr "Git för Windows (http://code.google.com/p/msysgit/) hittades inte."
+msgid "Git for Windows (https://msysgit.github.io/) not found."
+msgstr "Git för Windows (https://msysgit.github.io/) hittades inte."
 
 #. Resource IDs: (79)
 msgid "Git reported an error while creating a repository!\n"
@@ -8366,6 +8393,14 @@ msgstr "SMTP, direkt till servern"
 msgid "SSH"
 msgstr "SSH"
 
+#. Resource IDs: (97)
+msgid "SSL"
+msgstr "SSL"
+
+#. Resource IDs: (97)
+msgid "STARTTLS"
+msgstr "STARTTLS"
+
 #. Resource IDs: (331)
 msgid "SVN Commit Type"
 msgstr "SVN Commit Type"
@@ -10602,6 +10637,10 @@ msgstr "Avnänd båda textblocken (den här först)"
 msgid "Use both text blocks (this one last)"
 msgstr "Använd båda textblocken (den här sist)"
 
+#. Resource IDs: (97)
+msgid "Use configured server"
+msgstr ""
+
 #. Resource IDs: (156)
 msgid "Use left block"
 msgstr "Använd vänster block"
@@ -11087,10 +11126,10 @@ msgstr "Du kan inte ändra typen för denna referens genom ett namnbyte."
 
 #. Resource IDs: (84)
 msgid ""
-"You have an old version of Git for Windows (http://code.google.com/p/msysgit/) installed.\n"
+"You have an old version of Git for Windows (https://msysgit.github.io/) installed which contains security issues.\n"
 "\n"
-"You should consider an upgrade to 1.7.10+ which supports UTF-8 and is compatible to the *nix version of git."
-msgstr "Du har en gammal version av Git för Windows (http://code.google.com/p/msysgit/) installerad.\n\nDu borde överväga att uppgradera till 1.7.10+ som hanterar UTF-8 och är kompatibel med *nix versionen av git."
+"You should consider an upgrade to 1.9.5+."
+msgstr ""
 
 #. Resource IDs: (86)
 msgid ""
@@ -11490,6 +11529,10 @@ msgstr "beskrivning för detta kommando saknas"
 #. Resource IDs: (10)
 msgid "non-versioned"
 msgstr "icke versionhanterad"
+
+#. Resource IDs: (97)
+msgid "none"
+msgstr ""
 
 #. Resource IDs: (10)
 msgid "normal"

@@ -24,8 +24,8 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2014-11-20 14:58+0000\n"
-"Last-Translator: bauland <nicolas.bauland@laposte.net>\n"
+"PO-Revision-Date: 2014-12-30 15:26+0000\n"
+"Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: French (http://www.transifex.com/projects/p/tortoisegit/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -614,6 +614,10 @@ msgstr "Faire de &même pour le reste"
 msgid "&Docking"
 msgstr "&Ranger"
 
+#. Resource IDs: (1032)
+msgid "&Don't ask me again"
+msgstr ""
+
 #. Resource IDs: (1384)
 msgid "&Down"
 msgstr "&Bas"
@@ -1047,6 +1051,10 @@ msgstr "&Rafraîchir"
 #. Resource IDs: (20093)
 msgid "&Regular Expression"
 msgstr "Expression &Régulière"
+
+#. Resource IDs: (97)
+msgid "&Remind me later"
+msgstr ""
 
 #. Resource IDs: (1617)
 msgid "&Remote Branch:"
@@ -3266,8 +3274,8 @@ msgstr "Ne peut pas vérifier la disponibilité d'une nouvelle version !"
 
 #. Resource IDs: (93)
 #, c-format
-msgid "Could not check for a newer version! (Error code: 0x%08X)"
-msgstr "Ne peut pas vérifier la disponibilité d'une nouvelle version ! (Code d'erreur: 0x%08X)"
+msgid "Could not check for a newer version! %s (Error code: 0x%08X)"
+msgstr "Ne peut pas vérifier la disponibilité d'une nouvelle version! %s (Code d'erreur: 0x%08X)"
 
 #. Resource IDs: (81)
 #, c-format
@@ -3736,6 +3744,14 @@ msgstr "Supprime le journal des actions"
 msgid "Deleting"
 msgstr "Supprime"
 
+#. Resource IDs: (97)
+msgid "Deleting cached data"
+msgstr ""
+
+#. Resource IDs: (97)
+msgid "Deleting file"
+msgstr ""
+
 #. Resource IDs: (88)
 msgid "Deleting remote refs..."
 msgstr "Supprimer les refs distant..."
@@ -3904,6 +3920,10 @@ msgid ""
 "too much disk access when browsing the working tree."
 msgstr "Désactiver cette option si vous avez une énorme arborescence de travail et que vous constatez trop d'accès disque lorsque vous explorez l'arborescence de travail."
 
+#. Resource IDs: (97)
+msgid "Disable update checks"
+msgstr ""
+
 #. Resource IDs: (2054)
 msgid "Disabled"
 msgstr "Désactivé"
@@ -3981,6 +4001,13 @@ msgstr "Voulez-vous vraiment <ct=0x0000FF>supprimer</ct> <b>%s</b> ?"
 #, c-format
 msgid "Do you really want to delete the toolbar '%s'?"
 msgstr "Voulez-vous vraiment supprimer la barre d'outils '%s' ?"
+
+#. Resource IDs: (97)
+msgid ""
+"Do you really want to disable automatic update checks for TortoiseGit?\r\n"
+"\r\n"
+"Automatic update checks can be re-enabled in TortoiseGit settings on the General page."
+msgstr ""
 
 #. Resource IDs: (88)
 msgid "Do you really want to mark the selected file(s) as assume-valid?"
@@ -5206,8 +5233,8 @@ msgid "Git for Windows"
 msgstr "Git pour Windows"
 
 #. Resource IDs: (84)
-msgid "Git for Windows (http://code.google.com/p/msysgit/) not found."
-msgstr "Git pour Windows (http://code.google.com/p/msysgit/) introuvable."
+msgid "Git for Windows (https://msysgit.github.io/) not found."
+msgstr "Git pour Windows (https://msysgit.github.io/) introuvable."
 
 #. Resource IDs: (79)
 msgid "Git reported an error while creating a repository!\n"
@@ -8369,6 +8396,14 @@ msgstr "SMTP, directement vers le serveur de destination"
 msgid "SSH"
 msgstr "SSH"
 
+#. Resource IDs: (97)
+msgid "SSL"
+msgstr "SSL"
+
+#. Resource IDs: (97)
+msgid "STARTTLS"
+msgstr "STARTTLS"
+
 #. Resource IDs: (331)
 msgid "SVN Commit Type"
 msgstr "Type de livraison SVN"
@@ -10605,6 +10640,10 @@ msgstr "Utiliser les deux blocs de texte (celui-ci en premier)"
 msgid "Use both text blocks (this one last)"
 msgstr "Utiliser les deux blocs de texte (celui-ci en dernier)"
 
+#. Resource IDs: (97)
+msgid "Use configured server"
+msgstr ""
+
 #. Resource IDs: (156)
 msgid "Use left block"
 msgstr "Utiliser le bloc de gauche"
@@ -11090,10 +11129,10 @@ msgstr "Vous ne pouvez pas modifier le type de cette référence avec un renomma
 
 #. Resource IDs: (84)
 msgid ""
-"You have an old version of Git for Windows (http://code.google.com/p/msysgit/) installed.\n"
+"You have an old version of Git for Windows (https://msysgit.github.io/) installed which contains security issues.\n"
 "\n"
-"You should consider an upgrade to 1.7.10+ which supports UTF-8 and is compatible to the *nix version of git."
-msgstr "Vous avez une ancienne version de Git pour Windows d'installé (http://code.google.com/p/msysgit/) .\n\nVous devriez considérer une mise à jour vers 1.7.10+ qui supporte UTF-8 et est compatible avec la version *nix de git."
+"You should consider an upgrade to 1.9.5+."
+msgstr ""
 
 #. Resource IDs: (86)
 msgid ""
@@ -11493,6 +11532,10 @@ msgstr "pas de description disponible pour cette commande"
 #. Resource IDs: (10)
 msgid "non-versioned"
 msgstr "non versionné"
+
+#. Resource IDs: (97)
+msgid "none"
+msgstr ""
 
 #. Resource IDs: (10)
 msgid "normal"

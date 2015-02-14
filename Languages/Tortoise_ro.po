@@ -11,6 +11,7 @@
 # spencea <pencea.simona@gmail.com>, 2014
 # radu.murzea <radu.murzea@gmail.com>, 2013
 # radu.murzea <radu.murzea@gmail.com>, 2013
+# SoboLAN <sobolanx@gmail.com>, 2014-2015
 # Sven Strickroth <sstrickroth@googlemail.com>, 2013
 # zveriu <zveriu@gmail.com>, 2011
 # zveriu <zveriu@gmail.com>, 2011
@@ -19,8 +20,8 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2014-11-13 20:46+0000\n"
-"Last-Translator: spencea <pencea.simona@gmail.com>\n"
+"PO-Revision-Date: 2015-01-17 10:30+0000\n"
+"Last-Translator: SoboLAN <sobolanx@gmail.com>\n"
 "Language-Team: Romanian (http://www.transifex.com/projects/p/tortoisegit/language/ro/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -609,6 +610,10 @@ msgstr "Fă același lucru pentru restul"
 msgid "&Docking"
 msgstr "&Ataşare"
 
+#. Resource IDs: (1032)
+msgid "&Don't ask me again"
+msgstr "&Nu mă întreba din nou"
+
 #. Resource IDs: (1384)
 msgid "&Down"
 msgstr "&Jos"
@@ -1042,6 +1047,10 @@ msgstr "&Reîmprospătează"
 #. Resource IDs: (20093)
 msgid "&Regular Expression"
 msgstr "&Expresie regulata"
+
+#. Resource IDs: (97)
+msgid "&Remind me later"
+msgstr ""
 
 #. Resource IDs: (1617)
 msgid "&Remote Branch:"
@@ -3261,8 +3270,8 @@ msgstr "Nu s-a putut căuta o versiune mai nouă!"
 
 #. Resource IDs: (93)
 #, c-format
-msgid "Could not check for a newer version! (Error code: 0x%08X)"
-msgstr "Nu s-a putut cauta o versiune mai noua (Cod eroare 0x%08X)"
+msgid "Could not check for a newer version! %s (Error code: 0x%08X)"
+msgstr ""
 
 #. Resource IDs: (81)
 #, c-format
@@ -3731,6 +3740,14 @@ msgstr "Şterge junalul de acţiuni"
 msgid "Deleting"
 msgstr "Se şterge"
 
+#. Resource IDs: (97)
+msgid "Deleting cached data"
+msgstr ""
+
+#. Resource IDs: (97)
+msgid "Deleting file"
+msgstr ""
+
 #. Resource IDs: (88)
 msgid "Deleting remote refs..."
 msgstr "Ştergere referinţe destinaţie..."
@@ -3899,6 +3916,10 @@ msgid ""
 "too much disk access when browsing the working tree."
 msgstr "Dezactivaţi această opţiune daca aveţi structuri de lucru cu adevărat mari şi experimentaţi»⏎ prea multă activitate pe disc atunci când răsfoiţi structura de lucru."
 
+#. Resource IDs: (97)
+msgid "Disable update checks"
+msgstr "Dezactivează actualizările"
+
 #. Resource IDs: (2054)
 msgid "Disabled"
 msgstr "Dezactivat"
@@ -3976,6 +3997,13 @@ msgstr "Chiar doriţi să <ct=0x0000FF>ştergeţi</ct> <b>%s</b>?"
 #, c-format
 msgid "Do you really want to delete the toolbar '%s'?"
 msgstr "Chiar doriţi să ştergeţi bara de unelte '%s'?"
+
+#. Resource IDs: (97)
+msgid ""
+"Do you really want to disable automatic update checks for TortoiseGit?\r\n"
+"\r\n"
+"Automatic update checks can be re-enabled in TortoiseGit settings on the General page."
+msgstr ""
 
 #. Resource IDs: (88)
 msgid "Do you really want to mark the selected file(s) as assume-valid?"
@@ -4180,7 +4208,7 @@ msgstr "Editează .git/config &local"
 
 #. Resource IDs: (1755)
 msgid "Edit .tgitconfig"
-msgstr ""
+msgstr "Modifică .tgitconfig"
 
 #. Resource IDs: (16133)
 msgid "Edit Button Image"
@@ -4270,7 +4298,7 @@ msgstr ""
 
 #. Resource IDs: (1766)
 msgid "Enable Gravatar"
-msgstr ""
+msgstr "Activează Gravatar"
 
 #. Resource IDs: (1788)
 msgid "Enable drag context menu"
@@ -4419,7 +4447,7 @@ msgstr "Nu introduceţi mai mult de %1 caractere."
 
 #. Resource IDs: (65535)
 msgid "Enter the regex string below:"
-msgstr ""
+msgstr "Introdu mai jos expresia regulară:"
 
 #. Resource IDs: (3603)
 msgid ""
@@ -4535,7 +4563,7 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Extension:"
-msgstr ""
+msgstr "Extensie:"
 
 #. Resource IDs: (65535)
 msgid "Extern DLL Path:"
@@ -4704,7 +4732,7 @@ msgstr "Fişier"
 
 #. Resource IDs: (252)
 msgid "File Encoding"
-msgstr ""
+msgstr "Encodarea Fișierului"
 
 #. Resource IDs: (605)
 #, c-format
@@ -4721,11 +4749,11 @@ msgstr "Diferenţieri de fişier"
 
 #. Resource IDs: (319)
 msgid "File has no conflicts"
-msgstr ""
+msgstr "Fișierul nu conține conflicte"
 
 #. Resource IDs: (314)
 msgid "File is empty."
-msgstr ""
+msgstr "Fișierul e gol."
 
 #. Resource IDs: (213)
 msgid "File list is empty"
@@ -4842,7 +4870,7 @@ msgstr "Caută textul specificat\nCaută"
 #. Resource IDs: (95)
 #, c-format
 msgid "Find: Can't find the text \"%s\""
-msgstr ""
+msgstr "Căutare: Textul \"%s\" nu poate fi găsit"
 
 #. Resource IDs: (95)
 msgid ""
@@ -4948,7 +4976,7 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Foreground"
-msgstr ""
+msgstr "Prim-plan"
 
 #. Resource IDs: (312)
 msgid "Format Patch"
@@ -4991,11 +5019,11 @@ msgstr "Din depozit &SVN"
 
 #. Resource IDs: (32793)
 msgid "From &existing files"
-msgstr ""
+msgstr "De la fișiere existente"
 
 #. Resource IDs: (32791)
 msgid "From &modified files"
-msgstr ""
+msgstr "De la fișiere modificate"
 
 #. Resource IDs: (1603)
 msgid "From SVN Repository"
@@ -5003,11 +5031,11 @@ msgstr "Din depozit SVN"
 
 #. Resource IDs: (2054)
 msgid "From existing files"
-msgstr ""
+msgstr "De la fișiere existente"
 
 #. Resource IDs: (2054)
 msgid "From modified files"
-msgstr ""
+msgstr "De la fișiere modificate"
 
 #. Resource IDs: (1200, 65535)
 msgid "From:"
@@ -5027,7 +5055,7 @@ msgstr "Complet recursiv"
 
 #. Resource IDs: (65535)
 msgid "Further options for the commit dialog are on Dialogs 3 page."
-msgstr ""
+msgstr "Mai multe opțiuni pentru fereastra de commit sunt pe pagina Dialogs 3."
 
 #. Resource IDs: (92)
 msgid "G&ravatar"
@@ -5154,7 +5182,7 @@ msgstr "Iniţializare Git"
 
 #. Resource IDs: (79)
 msgid "Git Install Path"
-msgstr ""
+msgstr "Calea de instalare a Git-ului"
 
 #. Resource IDs: (1270)
 msgid "Git Log"
@@ -5194,14 +5222,14 @@ msgstr "Clonă git - TortoiseGit"
 
 #. Resource IDs: (71)
 msgid "Git directory not set (see \"General\" settings page)."
-msgstr ""
+msgstr "Directorul Git nu a fost setat (vezi pagina cu setări \"General\")"
 
 #. Resource IDs: (65535)
 msgid "Git for Windows"
-msgstr ""
+msgstr "Git pentru Windows"
 
 #. Resource IDs: (84)
-msgid "Git for Windows (http://code.google.com/p/msysgit/) not found."
+msgid "Git for Windows (https://msysgit.github.io/) not found."
 msgstr ""
 
 #. Resource IDs: (79)
@@ -5210,7 +5238,7 @@ msgstr "Git a raportat o eroare în timpul creării unui depozit!\n"
 
 #. Resource IDs: (2050)
 msgid "Git revision list contains the complete file history"
-msgstr ""
+msgstr "Lista de revizii a Git-ului conține întreaga istorie a fișierului"
 
 #. Resource IDs: (2049)
 msgid "Git revision list follows file renames"
@@ -5393,7 +5421,7 @@ msgstr "Ascunde/Afişează lista de fişiere petice\nAscunde sau afişează list
 
 #. Resource IDs: (92)
 msgid "Hint"
-msgstr ""
+msgstr "Sugestie"
 
 #. Resource IDs: (16519)
 msgid ""
@@ -5659,7 +5687,7 @@ msgstr "Iconiţe/Design/Cod:\t\tLuebbe Onken"
 
 #. Resource IDs: (97)
 msgid "Identical"
-msgstr ""
+msgstr "Identic"
 
 #. Resource IDs: (194)
 msgid ""
@@ -5726,7 +5754,7 @@ msgstr "Ignoră %d elemente după &extensie"
 
 #. Resource IDs: (156)
 msgid "Ignore Comments"
-msgstr ""
+msgstr "Ignoră Comentariile"
 
 #. Resource IDs: (1692)
 msgid "Ignore File"
@@ -5738,7 +5766,7 @@ msgstr "Ignoră tip"
 
 #. Resource IDs: (94)
 msgid "Ignore all space"
-msgstr ""
+msgstr "Ignoră toate spațiile"
 
 #. Resource IDs: (156)
 msgid "Ignore all whitespace changes"
@@ -5746,7 +5774,7 @@ msgstr "Ignoră schimbările în spaţii goale"
 
 #. Resource IDs: (94)
 msgid "Ignore blank lines"
-msgstr ""
+msgstr "Ignoră liniile goale"
 
 #. Resource IDs: (1067)
 msgid "Ignore case cha&nges"
@@ -5756,7 +5784,7 @@ msgstr "Ignoră schimbările de &majuscule"
 msgid ""
 "Ignore changes\n"
 "Ignore the outside changes."
-msgstr ""
+msgstr "Ignoră modificările\nIgnoră modificările exterioare."
 
 #. Resource IDs: (1687)
 msgid "Ignore item(s) only in the containing folder(s)"
@@ -5772,15 +5800,15 @@ msgstr "Ignoră caracterele de &linie nouă (recomandat)"
 
 #. Resource IDs: (94)
 msgid "Ignore space at EOL"
-msgstr ""
+msgstr "Ignoră spațiile la sfarșitul liniilor"
 
 #. Resource IDs: (94)
 msgid "Ignore space change"
-msgstr ""
+msgstr "Ignoră schimbările de spaţiu"
 
 #. Resource IDs: (1676)
 msgid "Ignore whitespace"
-msgstr ""
+msgstr "Ignoră spațiile goale"
 
 #. Resource IDs: (156)
 msgid "Ignore whitespace changes"
@@ -5957,7 +5985,7 @@ msgstr "KOI8-U"
 
 #. Resource IDs: (92)
 msgid "Keep"
-msgstr ""
+msgstr "Păstrează"
 
 #. Resource IDs: (1126)
 msgid "Keep changelists"
@@ -6023,7 +6051,7 @@ msgstr "LINIA8"
 
 #. Resource IDs: (65535)
 msgid "Language:"
-msgstr ""
+msgstr "Limba:"
 
 #. Resource IDs: (85)
 msgid "Last Author"
@@ -6057,7 +6085,7 @@ msgstr "Autorul cel mai puţin activ:"
 msgid ""
 "Leave as conflicted\n"
 "The conflict status of the file is kept"
-msgstr ""
+msgstr "Lasă în modul conflict\nStatutul de conflict al fișierului este păstrat"
 
 #. Resource IDs: (252)
 msgid "Leave only marked blocks"
@@ -6604,7 +6632,7 @@ msgstr "Meniu nou"
 
 #. Resource IDs: (95)
 msgid "New hash"
-msgstr ""
+msgstr "Noul hash"
 
 #. Resource IDs: (95)
 msgid "New message"
@@ -6986,7 +7014,7 @@ msgstr "Office XP"
 
 #. Resource IDs: (95)
 msgid "Old hash"
-msgstr ""
+msgstr "Vechiul hash"
 
 #. Resource IDs: (95)
 msgid "Old message"
@@ -7315,7 +7343,7 @@ msgstr "Alege"
 
 #. Resource IDs: (90)
 msgid "Pick commit hash"
-msgstr ""
+msgstr "Alege hash-ul commit-ului"
 
 #. Resource IDs: (90)
 msgid "Pick commit message"
@@ -8364,6 +8392,14 @@ msgstr "SMTP, direct la serverul destinatie"
 msgid "SSH"
 msgstr "SSH"
 
+#. Resource IDs: (97)
+msgid "SSL"
+msgstr "SSL"
+
+#. Resource IDs: (97)
+msgid "STARTTLS"
+msgstr "STARTTLS"
+
 #. Resource IDs: (331)
 msgid "SVN Commit Type"
 msgstr "Tip transmitere SVN"
@@ -9096,7 +9132,7 @@ msgstr "Afişează sau ascunde bara de unelte\nComută bara de unelte"
 
 #. Resource IDs: (2051, 32803)
 msgid "Show original line number"
-msgstr ""
+msgstr "Arată numărul original de linii"
 
 #. Resource IDs: (1270)
 msgid ""
@@ -10110,7 +10146,7 @@ msgstr "Comută afişarea de una/două pagini\nComută afişarea de una/două pa
 
 #. Resource IDs: (93)
 msgid "Toggle filters"
-msgstr ""
+msgstr "Comută între filtre"
 
 #. Resource IDs: (65535)
 msgid "Toolbar"
@@ -10455,7 +10491,7 @@ msgstr "Profunzime necunoscută"
 
 #. Resource IDs: (252)
 msgid "Unmark this block"
-msgstr ""
+msgstr "Demarchează acest bloc"
 
 #. Resource IDs: (315)
 msgid "Unresolved conflicts!"
@@ -10599,6 +10635,10 @@ msgstr "Foloseşte amândouă blocurile de text (acesta întâi)"
 #. Resource IDs: (251)
 msgid "Use both text blocks (this one last)"
 msgstr "Foloseşte amândouă blocurile de text (acesta ultimul)"
+
+#. Resource IDs: (97)
+msgid "Use configured server"
+msgstr ""
 
 #. Resource IDs: (156)
 msgid "Use left block"
@@ -10952,7 +10992,7 @@ msgstr "Când lucrează în modul demon, toate datele din acest depozit sunt exp
 
 #. Resource IDs: (101)
 msgid "Whitespace changes (tabs, spaces)"
-msgstr ""
+msgstr "Schimbări de spații (tab-uri, spații)"
 
 #. Resource IDs: (65535)
 msgid "Whitespaces"
@@ -11016,7 +11056,7 @@ msgstr "Windows-1258"
 
 #. Resource IDs: (65535)
 msgid "Within a file:"
-msgstr ""
+msgstr "În interiorul unui fișier:"
 
 #. Resource IDs: (2054)
 msgid "Within file"
@@ -11085,9 +11125,9 @@ msgstr "Nu puteţi schimba tipul acestei referinţe prin redenumire."
 
 #. Resource IDs: (84)
 msgid ""
-"You have an old version of Git for Windows (http://code.google.com/p/msysgit/) installed.\n"
+"You have an old version of Git for Windows (https://msysgit.github.io/) installed which contains security issues.\n"
 "\n"
-"You should consider an upgrade to 1.7.10+ which supports UTF-8 and is compatible to the *nix version of git."
+"You should consider an upgrade to 1.9.5+."
 msgstr ""
 
 #. Resource IDs: (86)
@@ -11415,7 +11455,7 @@ msgstr "incomplet"
 
 #. Resource IDs: (1780, 1781, 1782, 1783)
 msgid "inherit"
-msgstr ""
+msgstr "moștenește"
 
 #. Resource IDs: (214)
 msgid "item kept locally"
@@ -11423,7 +11463,7 @@ msgstr "element păstrat local"
 
 #. Resource IDs: (65535)
 msgid "keep the file lists in English"
-msgstr ""
+msgstr "păstrează listele fișierelor în engleză"
 
 #. Resource IDs: (69)
 #, c-format
@@ -11489,6 +11529,10 @@ msgstr "pentru această comandă nu este disponibilă nici o descriere"
 msgid "non-versioned"
 msgstr "fără versiune"
 
+#. Resource IDs: (97)
+msgid "none"
+msgstr ""
+
 #. Resource IDs: (10)
 msgid "normal"
 msgstr "normal"
@@ -11524,7 +11568,7 @@ msgstr "trimestru"
 
 #. Resource IDs: (65535)
 msgid "renamed"
-msgstr ""
+msgstr "redenumit"
 
 #. Resource IDs: (10)
 msgid "replaced"

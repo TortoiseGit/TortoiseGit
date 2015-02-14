@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2014-11-13 16:50+0000\n"
+"PO-Revision-Date: 2014-12-30 15:26+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Catalan (http://www.transifex.com/projects/p/tortoisegit/language/ca/)\n"
 "MIME-Version: 1.0\n"
@@ -605,6 +605,10 @@ msgstr "Fes el mateix per la resta"
 msgid "&Docking"
 msgstr "&Acoblament"
 
+#. Resource IDs: (1032)
+msgid "&Don't ask me again"
+msgstr ""
+
 #. Resource IDs: (1384)
 msgid "&Down"
 msgstr "&Avall"
@@ -1037,6 +1041,10 @@ msgstr "&Refresca"
 
 #. Resource IDs: (20093)
 msgid "&Regular Expression"
+msgstr ""
+
+#. Resource IDs: (97)
+msgid "&Remind me later"
 msgstr ""
 
 #. Resource IDs: (1617)
@@ -3257,7 +3265,7 @@ msgstr "No s'ha pogut comprovar si hi ha una versió més nova!"
 
 #. Resource IDs: (93)
 #, c-format
-msgid "Could not check for a newer version! (Error code: 0x%08X)"
+msgid "Could not check for a newer version! %s (Error code: 0x%08X)"
 msgstr ""
 
 #. Resource IDs: (81)
@@ -3727,6 +3735,14 @@ msgstr "Elimina el fitxer d'acció de registre"
 msgid "Deleting"
 msgstr "Esborrant"
 
+#. Resource IDs: (97)
+msgid "Deleting cached data"
+msgstr ""
+
+#. Resource IDs: (97)
+msgid "Deleting file"
+msgstr ""
+
 #. Resource IDs: (88)
 msgid "Deleting remote refs..."
 msgstr "Eliminant refs remots..."
@@ -3895,6 +3911,10 @@ msgid ""
 "too much disk access when browsing the working tree."
 msgstr "Desactiva aquesta opció si teniu directoris de treball excessivament grans i patiu problemes de rendiment amb els accessos al disc dur quan navegueu pel directori."
 
+#. Resource IDs: (97)
+msgid "Disable update checks"
+msgstr ""
+
 #. Resource IDs: (2054)
 msgid "Disabled"
 msgstr ""
@@ -3972,6 +3992,13 @@ msgstr "Realment vol <ct=0x0000FF>eliminar</ct> <b>%s</b>?"
 #, c-format
 msgid "Do you really want to delete the toolbar '%s'?"
 msgstr "Realment voleu esborrar la barra d'eines '%s'?"
+
+#. Resource IDs: (97)
+msgid ""
+"Do you really want to disable automatic update checks for TortoiseGit?\r\n"
+"\r\n"
+"Automatic update checks can be re-enabled in TortoiseGit settings on the General page."
+msgstr ""
 
 #. Resource IDs: (88)
 msgid "Do you really want to mark the selected file(s) as assume-valid?"
@@ -5197,7 +5224,7 @@ msgid "Git for Windows"
 msgstr ""
 
 #. Resource IDs: (84)
-msgid "Git for Windows (http://code.google.com/p/msysgit/) not found."
+msgid "Git for Windows (https://msysgit.github.io/) not found."
 msgstr ""
 
 #. Resource IDs: (79)
@@ -8360,6 +8387,14 @@ msgstr "SMTP, directament al servidor de destí"
 msgid "SSH"
 msgstr "SSH"
 
+#. Resource IDs: (97)
+msgid "SSL"
+msgstr ""
+
+#. Resource IDs: (97)
+msgid "STARTTLS"
+msgstr ""
+
 #. Resource IDs: (331)
 msgid "SVN Commit Type"
 msgstr "Entrega tipus SVN"
@@ -10596,6 +10631,10 @@ msgstr "Utilitza els dos blocs de text (primer aquest)"
 msgid "Use both text blocks (this one last)"
 msgstr "Utilitza els dos blocs de text (aquest el darrer)"
 
+#. Resource IDs: (97)
+msgid "Use configured server"
+msgstr ""
+
 #. Resource IDs: (156)
 msgid "Use left block"
 msgstr "Utilitza el bloc de l'esquerra"
@@ -11081,9 +11120,9 @@ msgstr "No podeu canviar el tipus d'aquesta referència canviant el nom."
 
 #. Resource IDs: (84)
 msgid ""
-"You have an old version of Git for Windows (http://code.google.com/p/msysgit/) installed.\n"
+"You have an old version of Git for Windows (https://msysgit.github.io/) installed which contains security issues.\n"
 "\n"
-"You should consider an upgrade to 1.7.10+ which supports UTF-8 and is compatible to the *nix version of git."
+"You should consider an upgrade to 1.9.5+."
 msgstr ""
 
 #. Resource IDs: (86)
@@ -11484,6 +11523,10 @@ msgstr "no hi ha descripció disponible per aquesta comanda"
 #. Resource IDs: (10)
 msgid "non-versioned"
 msgstr "sense versionar"
+
+#. Resource IDs: (97)
+msgid "none"
+msgstr ""
 
 #. Resource IDs: (10)
 msgid "normal"

@@ -12,6 +12,7 @@
 # Ekrem KAYA <webmaster@e-piksel.com>, 2012
 # Ertan Tike <ertant@rdgnet.org>, 2013
 # Ertan Tike <ertant@rdgnet.org>, 2013
+# Göktuğ Öztürk <goktug.ozturk@teknomavi.com>, 2014
 # Ozan Tunca <ozantunca90@gmail.com>, 2013
 # Ozan Tunca <ozantunca90@gmail.com>, 2013
 # Sven Strickroth <sstrickroth@googlemail.com>, 2012-2013
@@ -23,7 +24,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2014-11-13 16:50+0000\n"
+"PO-Revision-Date: 2014-12-30 15:26+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Turkish (http://www.transifex.com/projects/p/tortoisegit/language/tr/)\n"
 "MIME-Version: 1.0\n"
@@ -57,7 +58,7 @@ msgstr "# yazarların bireysel gösterimi:"
 #. Resource IDs: (357)
 #, c-format
 msgid "%.2f MiB transferred"
-msgstr ""
+msgstr "%.2f MB aktarıldı"
 
 #. Resource IDs: (3868)
 #, c-format
@@ -152,7 +153,7 @@ msgstr "%1!d! yıl önce"
 #. Resource IDs: (90)
 #, c-format
 msgid "%1!d! items selected"
-msgstr ""
+msgstr "%1!d! öğe seçildi"
 
 #. Resource IDs: (602)
 #, c-format
@@ -162,14 +163,14 @@ msgstr "%1!d! dakika önce"
 #. Resource IDs: (90)
 #, c-format
 msgid "%1!s!"
-msgstr ""
+msgstr "%1!s!"
 
 #. Resource IDs: (90)
 #, c-format
 msgid ""
 "%1!s!\r\n"
 "Showing %2!d! files, %3!d! submodules and %4!d! folders, %5!d! items in total"
-msgstr ""
+msgstr "%1!s!\n%2!d! dosya gösteriliyor, %3!d! alt modül ve %4!d! klasör, toplam %5!d! öğe"
 
 #. Resource IDs: (90)
 #, c-format
@@ -206,7 +207,7 @@ msgstr "%I64d Byte aktarıldı"
 #. Resource IDs: (357)
 #, c-format
 msgid "%I64d KiB transferred"
-msgstr ""
+msgstr "%I64d kB aktarıldı"
 
 #. Resource IDs: (75)
 #, c-format
@@ -264,7 +265,7 @@ msgstr "%s - uyarlama: %d"
 #. Resource IDs: (3887)
 #, c-format
 msgid "%s [Recovered]"
-msgstr ""
+msgstr "%s [Kurtarıldı]"
 
 #. Resource IDs: (226)
 #, c-format
@@ -274,7 +275,7 @@ msgstr "%s içinde %s"
 #. Resource IDs: (87)
 #, c-format
 msgid "%s requires Git >= %s"
-msgstr ""
+msgstr "%s için Git >= %s gerekiyor"
 
 #. Resource IDs: (357)
 #, c-format
@@ -308,7 +309,7 @@ msgstr "%s\n%s"
 msgid ""
 "%s\n"
 "Could not be cleanly patched."
-msgstr ""
+msgstr "%s\nDüzgün bir şekilde yamalanamadı."
 
 #. Resource IDs: (145)
 #, c-format
@@ -323,7 +324,7 @@ msgid ""
 "%s\n"
 "is a directory, not a file!\n"
 "TortoiseGitMerge can't diff directories."
-msgstr ""
+msgstr "%s\nbir klasör, dosya değil!\nTortoiseGitMerge klasörlerin farkını alamaz."
 
 #. Resource IDs: (16923)
 msgid "&..."
@@ -339,7 +340,7 @@ msgstr "&TortoiseGitBlame Hakkında..."
 
 #. Resource IDs: (57664)
 msgid "&About TortoiseGitMerge..."
-msgstr ""
+msgstr "TortoiseGitMerge &Hakkında..."
 
 #. Resource IDs: (16920)
 msgid "&Activate"
@@ -355,7 +356,7 @@ msgstr "&Ekle >>"
 
 #. Resource IDs: (1505)
 msgid "&Add Filter"
-msgstr ""
+msgstr "&Filtre Ekle"
 
 #. Resource IDs: (1382)
 msgid "&Add New/Save"
@@ -415,7 +416,7 @@ msgstr "&Otomatik Gizle"
 
 #. Resource IDs: (65535)
 msgid "&Autoclose Git.exe dialog:"
-msgstr ""
+msgstr "Git.exe &penceresi otomatik kapansın:"
 
 #. Resource IDs: (1505)
 msgid "&Autoload Putty Key"
@@ -443,7 +444,7 @@ msgstr "&Mavi:"
 
 #. Resource IDs: (65535)
 msgid "&Border:"
-msgstr ""
+msgstr "&Kenarlık"
 
 #. Resource IDs: (1512)
 msgid "&Branch"
@@ -612,6 +613,10 @@ msgstr ""
 #. Resource IDs: (1066)
 msgid "&Docking"
 msgstr "&Yerleştirme"
+
+#. Resource IDs: (1032)
+msgid "&Don't ask me again"
+msgstr ""
 
 #. Resource IDs: (1384)
 msgid "&Down"
@@ -1045,6 +1050,10 @@ msgstr "&Yenile"
 
 #. Resource IDs: (20093)
 msgid "&Regular Expression"
+msgstr ""
+
+#. Resource IDs: (97)
+msgid "&Remind me later"
 msgstr ""
 
 #. Resource IDs: (1617)
@@ -3265,7 +3274,7 @@ msgstr "Yeni versiyon kontrolü yapılamadı!"
 
 #. Resource IDs: (93)
 #, c-format
-msgid "Could not check for a newer version! (Error code: 0x%08X)"
+msgid "Could not check for a newer version! %s (Error code: 0x%08X)"
 msgstr ""
 
 #. Resource IDs: (81)
@@ -3735,6 +3744,14 @@ msgstr "İşlem günlük dosyasını siler"
 msgid "Deleting"
 msgstr "Siliniyor"
 
+#. Resource IDs: (97)
+msgid "Deleting cached data"
+msgstr ""
+
+#. Resource IDs: (97)
+msgid "Deleting file"
+msgstr ""
+
 #. Resource IDs: (88)
 msgid "Deleting remote refs..."
 msgstr ""
@@ -3903,6 +3920,10 @@ msgid ""
 "too much disk access when browsing the working tree."
 msgstr ""
 
+#. Resource IDs: (97)
+msgid "Disable update checks"
+msgstr ""
+
 #. Resource IDs: (2054)
 msgid "Disabled"
 msgstr ""
@@ -3980,6 +4001,13 @@ msgstr ""
 #, c-format
 msgid "Do you really want to delete the toolbar '%s'?"
 msgstr "'%s' araç çubuğunu gerçekten silmek istiyor musunuz?"
+
+#. Resource IDs: (97)
+msgid ""
+"Do you really want to disable automatic update checks for TortoiseGit?\r\n"
+"\r\n"
+"Automatic update checks can be re-enabled in TortoiseGit settings on the General page."
+msgstr ""
 
 #. Resource IDs: (88)
 msgid "Do you really want to mark the selected file(s) as assume-valid?"
@@ -5205,7 +5233,7 @@ msgid "Git for Windows"
 msgstr ""
 
 #. Resource IDs: (84)
-msgid "Git for Windows (http://code.google.com/p/msysgit/) not found."
+msgid "Git for Windows (https://msysgit.github.io/) not found."
 msgstr ""
 
 #. Resource IDs: (79)
@@ -8368,6 +8396,14 @@ msgstr ""
 msgid "SSH"
 msgstr "SSH"
 
+#. Resource IDs: (97)
+msgid "SSL"
+msgstr ""
+
+#. Resource IDs: (97)
+msgid "STARTTLS"
+msgstr ""
+
 #. Resource IDs: (331)
 msgid "SVN Commit Type"
 msgstr ""
@@ -10604,6 +10640,10 @@ msgstr "Metin bloklarının ikisini de kullan (ilk olarak bunu)"
 msgid "Use both text blocks (this one last)"
 msgstr "Metin bloklarının ikisini de kullan (son olarak bunu)"
 
+#. Resource IDs: (97)
+msgid "Use configured server"
+msgstr ""
+
 #. Resource IDs: (156)
 msgid "Use left block"
 msgstr ""
@@ -11089,9 +11129,9 @@ msgstr ""
 
 #. Resource IDs: (84)
 msgid ""
-"You have an old version of Git for Windows (http://code.google.com/p/msysgit/) installed.\n"
+"You have an old version of Git for Windows (https://msysgit.github.io/) installed which contains security issues.\n"
 "\n"
-"You should consider an upgrade to 1.7.10+ which supports UTF-8 and is compatible to the *nix version of git."
+"You should consider an upgrade to 1.9.5+."
 msgstr ""
 
 #. Resource IDs: (86)
@@ -11492,6 +11532,10 @@ msgstr "bu komut için açıklama mevcut değil"
 #. Resource IDs: (10)
 msgid "non-versioned"
 msgstr "sürümlenmedi"
+
+#. Resource IDs: (97)
+msgid "none"
+msgstr ""
 
 #. Resource IDs: (10)
 msgid "normal"

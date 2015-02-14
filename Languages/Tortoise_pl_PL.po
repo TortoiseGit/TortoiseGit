@@ -15,6 +15,7 @@
 # mkrawiecki <michal.krawiecki@erlkoenig.pl>, 2011
 # Pablos <pawel.patyk@pabloart.pl>, 2012
 # Pablos <pawel.patyk@pabloart.pl>, 2012
+# Sebastian Kaczorowski <gq9lbk@gmail.com>, 2015
 # Sven Strickroth <sstrickroth@googlemail.com>, 2012-2013
 # taksun <taksun@o2.pl>, 2014
 # taksun <taksun@o2.pl>, 2014
@@ -23,8 +24,8 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2014-11-13 16:50+0000\n"
-"Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
+"PO-Revision-Date: 2015-02-06 15:53+0000\n"
+"Last-Translator: Sebastian Kaczorowski <gq9lbk@gmail.com>\n"
 "Language-Team: Polish (Poland) (http://www.transifex.com/projects/p/tortoisegit/language/pl_PL/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -169,7 +170,7 @@ msgstr "%1!s!"
 msgid ""
 "%1!s!\r\n"
 "Showing %2!d! files, %3!d! submodules and %4!d! folders, %5!d! items in total"
-msgstr ""
+msgstr "%1!s!\nWyświetla %2!d! pliki, %3!d! podmoduły i %4!d! katalogi, %5!d! pozycji "
 
 #. Resource IDs: (90)
 #, c-format
@@ -527,7 +528,7 @@ msgstr ""
 
 #. Resource IDs: (68)
 msgid "&Commit w/o"
-msgstr ""
+msgstr "&Zatwierdź "
 
 #. Resource IDs: (8)
 msgid "&Commit..."
@@ -539,7 +540,7 @@ msgstr "&Porównaj wersje"
 
 #. Resource IDs: (92)
 msgid "&Compressed Graph"
-msgstr ""
+msgstr "&Skompresowany wykres"
 
 #. Resource IDs: (501, 1367, 1471, 57634)
 msgid "&Copy"
@@ -579,7 +580,7 @@ msgstr "&Usuń zdalne && lokalne"
 
 #. Resource IDs: (65535)
 msgid "&Detect moved or copied lines"
-msgstr ""
+msgstr "&Wykryj przeniesione lub skopiowane wiersze"
 
 #. Resource IDs: (65535)
 msgid "&Detect moved or copied lines:"
@@ -612,6 +613,10 @@ msgstr ""
 #. Resource IDs: (1066)
 msgid "&Docking"
 msgstr "&Dokowanie"
+
+#. Resource IDs: (1032)
+msgid "&Don't ask me again"
+msgstr "&Nie pytaj ponownie"
 
 #. Resource IDs: (1384)
 msgid "&Down"
@@ -659,7 +664,7 @@ msgstr "&Użyj serwera proxy"
 
 #. Resource IDs: (32976)
 msgid "&Enable edit"
-msgstr ""
+msgstr "&Włącz edytowanie"
 
 #. Resource IDs: (323)
 msgid "&Export selection to..."
@@ -764,7 +769,7 @@ msgstr "&Pomiń %d elementów wg nazwy"
 
 #. Resource IDs: (32786)
 msgid "&Ignore whitespace"
-msgstr ""
+msgstr "&Ignoruj spacje"
 
 #. Resource IDs: (16914)
 msgid "&Image"
@@ -808,7 +813,7 @@ msgstr "&Zachowaj aktualny stan"
 
 #. Resource IDs: (92)
 msgid "&Labels"
-msgstr ""
+msgstr "&Etykiety"
 
 #. Resource IDs: (65535)
 msgid "&Language:"
@@ -828,7 +833,7 @@ msgstr "Szukaj tylko w &zmienionych liniach"
 
 #. Resource IDs: (65535)
 msgid "&Limit:"
-msgstr ""
+msgstr "&Limit:"
 
 #. Resource IDs: (1078)
 msgid "&Line number"
@@ -901,7 +906,7 @@ msgstr "&Minimalizuj"
 
 #. Resource IDs: (32880)
 msgid "&Moved blocks"
-msgstr ""
+msgstr "&Przeniesione bloki"
 
 #. Resource IDs: (1515)
 msgid "&Name"
@@ -1009,11 +1014,11 @@ msgstr ""
 
 #. Resource IDs: (76)
 msgid "&Pull"
-msgstr ""
+msgstr "&Pobierz"
 
 #. Resource IDs: (1481)
 msgid "&Push all branches"
-msgstr ""
+msgstr "&Wypchnij wszystkie gałęzie"
 
 #. Resource IDs: (72)
 msgid "&ReCommit"
@@ -1046,6 +1051,10 @@ msgstr "&Odśwież"
 #. Resource IDs: (20093)
 msgid "&Regular Expression"
 msgstr "&Wyrażenia regularne"
+
+#. Resource IDs: (97)
+msgid "&Remind me later"
+msgstr "&Przypomnij mi później"
 
 #. Resource IDs: (1617)
 msgid "&Remote Branch:"
@@ -1213,7 +1222,7 @@ msgstr "&Dokument z zakładkami"
 
 #. Resource IDs: (1513)
 msgid "&Tag"
-msgstr ""
+msgstr "Tag"
 
 #. Resource IDs: (91)
 msgid "&Tags"
@@ -1329,7 +1338,7 @@ msgstr "&Całe słowo"
 
 #. Resource IDs: (32790)
 msgid "&Within file"
-msgstr ""
+msgstr "Wewnątrz piliku"
 
 #. Resource IDs: (1657)
 msgid "&ignore space change"
@@ -1630,7 +1639,7 @@ msgstr ""
 
 #. Resource IDs: (4592)
 msgid "Abort Merge"
-msgstr ""
+msgstr "Zatrzymaj scalanie"
 
 #. Resource IDs: (15)
 msgid "Aborts a running merge."
@@ -1654,7 +1663,7 @@ msgstr "O programie TortoiseGitMerge"
 
 #. Resource IDs: (1)
 msgid "Accept certificate"
-msgstr ""
+msgstr "Zaakceptuj certyfikat"
 
 #. Resource IDs: (3867)
 #, c-format
@@ -1805,7 +1814,7 @@ msgstr "Każdy rodzic"
 
 #. Resource IDs: (93)
 msgid "All local branches"
-msgstr ""
+msgstr "Wszystkie lokalne gałęzie"
 
 #. Resource IDs: (96)
 msgid "All refs"
@@ -1813,11 +1822,11 @@ msgstr ""
 
 #. Resource IDs: (96)
 msgid "All tags"
-msgstr ""
+msgstr "Wszystkie tagi"
 
 #. Resource IDs: (9690)
 msgid "All tags only"
-msgstr ""
+msgstr "Wyłącznie wszystkie tagi"
 
 #. Resource IDs: (1008)
 msgid ""
@@ -1867,7 +1876,7 @@ msgstr ""
 
 #. Resource IDs: (1805)
 msgid "Always show long format"
-msgstr ""
+msgstr "Zawsze pokazuj dugi format"
 
 #. Resource IDs: (197)
 msgid "Always use the system locale settings to show times and dates"
@@ -2180,7 +2189,7 @@ msgstr "Wstecz"
 
 #. Resource IDs: (65535)
 msgid "Background"
-msgstr ""
+msgstr "Tło"
 
 #. Resource IDs: (65535)
 msgid "Baltic"
@@ -2312,7 +2321,7 @@ msgstr ""
 
 #. Resource IDs: (68)
 msgid "Branch Name"
-msgstr ""
+msgstr "Nazwa gałęzi"
 
 #. Resource IDs: (64)
 msgid "Branch/Tag name is invalid."
@@ -2412,7 +2421,7 @@ msgstr "CC:"
 
 #. Resource IDs: (1741)
 msgid "Calculate"
-msgstr ""
+msgstr "Oblicz"
 
 #. Resource IDs: (1127)
 msgid "Can double-click in log list to compare with previous revision"
@@ -3078,7 +3087,7 @@ msgstr "Konfiguracja"
 
 #. Resource IDs: (65535)
 msgid "Config source"
-msgstr ""
+msgstr "Konfiguracja źródła"
 
 #. Resource IDs: (65535)
 msgid "Config type:"
@@ -3265,7 +3274,7 @@ msgstr "Nie można sprawdzić, czy jest nowsza wersja!"
 
 #. Resource IDs: (93)
 #, c-format
-msgid "Could not check for a newer version! (Error code: 0x%08X)"
+msgid "Could not check for a newer version! %s (Error code: 0x%08X)"
 msgstr ""
 
 #. Resource IDs: (81)
@@ -3735,6 +3744,14 @@ msgstr "Usuwa plik z logiem akcji"
 msgid "Deleting"
 msgstr "Usuwanie"
 
+#. Resource IDs: (97)
+msgid "Deleting cached data"
+msgstr ""
+
+#. Resource IDs: (97)
+msgid "Deleting file"
+msgstr ""
+
 #. Resource IDs: (88)
 msgid "Deleting remote refs..."
 msgstr ""
@@ -3903,6 +3920,10 @@ msgid ""
 "too much disk access when browsing the working tree."
 msgstr "Wyłącz tą opcję, jeżeli posiadasz naprawdę duże kopie robocze i występuje\nzbyt dużo dostęp do dysku w trakcie przeglądania kopii roboczej."
 
+#. Resource IDs: (97)
+msgid "Disable update checks"
+msgstr ""
+
 #. Resource IDs: (2054)
 msgid "Disabled"
 msgstr ""
@@ -3980,6 +4001,13 @@ msgstr "Czy naprawdę chcesz <ct=0x0000FF>usunąć</ct> <b>%s</b>?"
 #, c-format
 msgid "Do you really want to delete the toolbar '%s'?"
 msgstr "Czy na pewno chcesz usunąć pasek narzędzi '%s'?"
+
+#. Resource IDs: (97)
+msgid ""
+"Do you really want to disable automatic update checks for TortoiseGit?\r\n"
+"\r\n"
+"Automatic update checks can be re-enabled in TortoiseGit settings on the General page."
+msgstr ""
 
 #. Resource IDs: (88)
 msgid "Do you really want to mark the selected file(s) as assume-valid?"
@@ -5205,7 +5233,7 @@ msgid "Git for Windows"
 msgstr ""
 
 #. Resource IDs: (84)
-msgid "Git for Windows (http://code.google.com/p/msysgit/) not found."
+msgid "Git for Windows (https://msysgit.github.io/) not found."
 msgstr ""
 
 #. Resource IDs: (79)
@@ -8368,6 +8396,14 @@ msgstr ""
 msgid "SSH"
 msgstr "SSH"
 
+#. Resource IDs: (97)
+msgid "SSL"
+msgstr ""
+
+#. Resource IDs: (97)
+msgid "STARTTLS"
+msgstr ""
+
 #. Resource IDs: (331)
 msgid "SVN Commit Type"
 msgstr ""
@@ -9400,7 +9436,7 @@ msgstr ""
 
 #. Resource IDs: (1)
 msgid "Strategy"
-msgstr ""
+msgstr "Strategia"
 
 #. Resource IDs: (1406)
 msgid "Strip lines starting with \"#\" in commit message"
@@ -9642,7 +9678,7 @@ msgstr ""
 
 #. Resource IDs: (1787)
 msgid "Test"
-msgstr ""
+msgstr "Testuj"
 
 #. Resource IDs: (219)
 msgid "Test Only"
@@ -10604,6 +10640,10 @@ msgstr "Użyj obu bloków tekstu (ten jako pierwszy)"
 msgid "Use both text blocks (this one last)"
 msgstr "Użyj obu bloków tekstu (ten jako ostatni)"
 
+#. Resource IDs: (97)
+msgid "Use configured server"
+msgstr ""
+
 #. Resource IDs: (156)
 msgid "Use left block"
 msgstr "Użyj lewego bloku"
@@ -10704,7 +10744,7 @@ msgstr ""
 
 #. Resource IDs: (1825, 1826)
 msgid "Use this"
-msgstr ""
+msgstr "Użyj tego"
 
 #. Resource IDs: (251)
 msgid "Use this &whole file"
@@ -11024,7 +11064,7 @@ msgstr ""
 
 #. Resource IDs: (2054)
 msgid "Within file"
-msgstr ""
+msgstr "W pliku"
 
 #. Resource IDs: (20, 158)
 msgid "Working Tree"
@@ -11089,9 +11129,9 @@ msgstr ""
 
 #. Resource IDs: (84)
 msgid ""
-"You have an old version of Git for Windows (http://code.google.com/p/msysgit/) installed.\n"
+"You have an old version of Git for Windows (https://msysgit.github.io/) installed which contains security issues.\n"
 "\n"
-"You should consider an upgrade to 1.7.10+ which supports UTF-8 and is compatible to the *nix version of git."
+"You should consider an upgrade to 1.9.5+."
 msgstr ""
 
 #. Resource IDs: (86)
@@ -11492,6 +11532,10 @@ msgstr "opis tej komendy nie jest dostępny"
 #. Resource IDs: (10)
 msgid "non-versioned"
 msgstr "poza kontrolą wersji"
+
+#. Resource IDs: (97)
+msgid "none"
+msgstr ""
 
 #. Resource IDs: (10)
 msgid "normal"
