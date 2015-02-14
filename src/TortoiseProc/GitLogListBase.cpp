@@ -1812,6 +1812,8 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 
 #endif
 
+	bool showExtendedMenu = (GetAsyncKeyState(VK_SHIFT) & 0x8000) != 0;
+
 	int FirstSelect=-1, LastSelect=-1;
 	pos = GetFirstSelectedItemPosition();
 	FirstSelect = GetNextSelectedItem(pos);
@@ -2228,7 +2230,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 		if (GetSelectedCount() == 1)
 		{
 			bool bAddSeparator = false;
-			if (m_ContextMenuMask&GetContextMenuBit(ID_PUSH) && !isStash && !m_HashMap[pSelLogEntry->m_CommitHash].empty())
+			if (m_ContextMenuMask&GetContextMenuBit(ID_PUSH) && ((!isStash && !m_HashMap[pSelLogEntry->m_CommitHash].empty()) || showExtendedMenu))
 			{
 				// show the push-option only if the log entry has an associated local branch
 				bool isLocal = false;
@@ -2237,7 +2239,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					if (m_HashMap[pSelLogEntry->m_CommitHash][i].Find(_T("refs/heads/")) == 0)
 						isLocal = true;
 				}
-				if (isLocal)
+				if (isLocal || showExtendedMenu)
 				{
 					popup.AppendMenuIcon(ID_PUSH, IDS_LOG_PUSH, IDI_PUSH);
 					bAddSeparator = true;

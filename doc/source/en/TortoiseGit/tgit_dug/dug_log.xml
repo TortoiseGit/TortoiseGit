@@ -107,9 +107,9 @@
 				<graphic fileref="../images/LogContextMenu.png"/>
 			</figure>
 			The top pane of the Log dialog has a context menu that allows you to
-			access much more information. Some of these menu entries appear only
+			access much more information. <!-- Some of these menu entries appear only
 			when the log is shown for a file, and some only when the log is shown
-			for a folder.
+			for a folder. --> You can press the <keycap>Shift</keycap> key to see the extended menu with some more options.
 			<variablelist>
 				<varlistentry>
 					<term>Compare with working tree</term>

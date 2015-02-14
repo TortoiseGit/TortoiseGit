@@ -10,6 +10,7 @@ Released: unreleased
  * Fixed issue #2388: See the exact time when the Relative time in log enabled
  * Fixed issue #2346: Add drag'n'drop to "Apply patches" window
  * Fixed issue #2357: Save the state of Search criteria checkboxes in Log dialog
+ * Fixed issue #2420: Make push available in log for arbitrary commits
 
 == Bug Fixes ==
  * Fixed issue #2359: Selected files counter not updated after revert

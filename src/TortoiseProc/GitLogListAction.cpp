@@ -1,7 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2014 - TortoiseGit
-// Copyright (C) 2011-2013 - Sven Strickroth <email@cs-ware.de>
+// Copyright (C) 2008-2015 - TortoiseGit
 // Copyright (C) 2005-2007 Marco Costalba
 
 // This program is free software; you can redistribute it and/or
@@ -825,8 +824,8 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			break;
 		case ID_PUSH:
 			{
-				CString guessAssociatedBranch;
-				if (!m_HashMap[pSelLogEntry->m_CommitHash].empty())
+				CString guessAssociatedBranch = pSelLogEntry->m_CommitHash;
+				if (!m_HashMap[pSelLogEntry->m_CommitHash].empty() && m_HashMap[pSelLogEntry->m_CommitHash].at(0).Find(_T("refs/heads/")) == 0)
 					guessAssociatedBranch = m_HashMap[pSelLogEntry->m_CommitHash].at(0);
 				if (CAppUtils::Push(guessAssociatedBranch))
 					Refresh();
