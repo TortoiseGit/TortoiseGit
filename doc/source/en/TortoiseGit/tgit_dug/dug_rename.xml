@@ -5,7 +5,10 @@
 	<para>
 		Unlike CVS, Git allows renaming and moving of files and
 		folders. So there are menu entries for delete and rename
-		in the TortoiseGit submenu.
+		in the TortoiseGit submenu. However, unlike SVN Git does not track filenames.
+		Git only tracks the content of files. So there is in general no need to use the
+		Git rename or remove functionality or even to "repair renames" as in SVN. Renames
+		and copies are automatically detected when showing the log.
 		<figure id="tgit-dug-renaming-dia-1">
 			<title>Explorer context menu for versioned files</title>
 			<graphic fileref="../images/ContextMenuFileControl.png"/>
