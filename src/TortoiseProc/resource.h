@@ -1544,6 +1544,7 @@
 #define IDC_BUTTON_UPDATE2              1825
 #define IDC_BUTTON_UPDATE3              1826
 #define IDC_REBASE_SPLIT_COMMIT         1827
+#define IDC_BUTTON_ONTO                 1828
 #define IDS_LOG_FILTER_BY               1850
 #define IDS_LOG_FILTER_PATHS            1851
 #define IDS_LOG_FILTER_AUTHORS          1852
@@ -2001,7 +2002,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        358
 #define _APS_NEXT_COMMAND_VALUE         32874
-#define _APS_NEXT_CONTROL_VALUE         1828
+#define _APS_NEXT_CONTROL_VALUE         1829
 #define _APS_NEXT_SYMED_VALUE           201
 #endif
 #endif

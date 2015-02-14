@@ -157,6 +157,7 @@ public:
 
 	CString				m_Upstream;
 	CString				m_Branch;
+	CString				m_Onto;
 
 	BOOL				m_IsCherryPick;
 
@@ -200,4 +201,5 @@ protected:
 
 	afx_msg LRESULT OnRebaseActionMessage(WPARAM wParam, LPARAM lParam);
 	afx_msg void OnBnClickedRebaseSplitCommit();
+	afx_msg void OnBnClickedButtonOnto();
 };

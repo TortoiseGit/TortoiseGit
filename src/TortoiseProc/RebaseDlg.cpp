@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2014 - TortoiseGit
+// Copyright (C) 2008-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -99,6 +99,7 @@ BEGIN_MESSAGE_MAP(CRebaseDlg, CResizableStandAloneDialog)
 	ON_WM_CTLCOLOR()
 	ON_BN_CLICKED(IDC_SPLITALLOPTIONS, &CRebaseDlg::OnBnClickedSplitAllOptions)
 	ON_BN_CLICKED(IDC_REBASE_SPLIT_COMMIT, &CRebaseDlg::OnBnClickedRebaseSplitCommit)
+	ON_BN_CLICKED(IDC_BUTTON_ONTO, &CRebaseDlg::OnBnClickedButtonOnto)
 END_MESSAGE_MAP()
 
 void CRebaseDlg::AddRebaseAnchor()
@@ -276,6 +277,7 @@ BOOL CRebaseDlg::OnInitDialog()
 		GetDlgItem(IDC_REBASE_CHECK_FORCE)->ShowWindow(SW_HIDE);
 		GetDlgItem(IDC_BUTTON_BROWSE)->EnableWindow(FALSE);
 		GetDlgItem(IDC_BUTTON_REVERSE)->EnableWindow(FALSE);
+		GetDlgItem(IDC_BUTTON_ONTO)->EnableWindow(FALSE);
 		this->m_UpstreamCtrl.AddString(_T("HEAD"));
 		this->m_UpstreamCtrl.EnableWindow(FALSE);
 		CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, CString(MAKEINTRESOURCE(IDS_PROGS_TITLE_CHERRYPICK)));
@@ -283,6 +285,7 @@ BOOL CRebaseDlg::OnInitDialog()
 	}
 	else
 	{
+		((CButton*)GetDlgItem(IDC_BUTTON_ONTO))->SetCheck(m_Onto.IsEmpty() ? BST_UNCHECKED : BST_CHECKED);
 		GetDlgItem(IDC_CHECK_CHERRYPICKED_FROM)->ShowWindow(SW_HIDE);
 		((CButton *)GetDlgItem(IDC_BUTTON_REVERSE))->SetIcon((HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_SWITCHLEFTRIGHT), IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR));
 		SetContinueButtonText();
@@ -514,7 +517,7 @@ void CRebaseDlg::FetchLogList()
 		return;
 	}
 
-	if (g_Git.IsFastForward(m_BranchCtrl.GetString(), m_UpstreamCtrl.GetString(), &base))
+	if (g_Git.IsFastForward(m_BranchCtrl.GetString(), m_UpstreamCtrl.GetString(), &base) && m_Onto.IsEmpty())
 	{
 		//fast forword
 		this->m_IsFastForward=TRUE;
@@ -532,7 +535,7 @@ void CRebaseDlg::FetchLogList()
 		return ;
 	}
 
-	if(!this->m_bForce)
+	if (!m_bForce && m_Onto.IsEmpty())
 	{
 		if (base == upstream)
 		{
@@ -582,6 +585,8 @@ void CRebaseDlg::FetchLogList()
 	}
 
 	// Default to skip when already in upstream
+	if (!m_Onto.IsEmpty())
+		refFrom = g_Git.FixBranchName(m_Onto);
 	CString cherryCmd;
 	cherryCmd.Format(L"git.exe cherry \"%s\" \"%s\"", refFrom, refTo);
 	bool bHasSKip = false;
@@ -851,9 +856,9 @@ int CRebaseDlg::StartRebase()
 	}
 
 	m_OrigUpstreamHash.Empty();
-	if (g_Git.GetHash(m_OrigUpstreamHash, m_UpstreamCtrl.GetString()))
+	if (g_Git.GetHash(m_OrigUpstreamHash, (m_IsCherryPick || m_Onto.IsEmpty()) ? m_UpstreamCtrl.GetString() : m_Onto))
 	{
-		MessageBox(g_Git.GetGitLastErr(_T("Could not get hash of \"") + m_UpstreamCtrl.GetString() + _T("\".")), _T("TortoiseGit"), MB_ICONERROR);
+		MessageBox(g_Git.GetGitLastErr(_T("Could not get hash of \"") + (m_IsCherryPick || m_Onto.IsEmpty()) ? m_UpstreamCtrl.GetString() : m_Onto + _T("\".")), _T("TortoiseGit"), MB_ICONERROR);
 		return -1;
 	}
 
@@ -2392,4 +2397,37 @@ void CRebaseDlg::OnBnClickedSplitAllOptions()
 void CRebaseDlg::OnBnClickedRebaseSplitCommit()
 {
 	UpdateData();
+}
+
+static bool GetCompareHash(const CString& ref, const CGitHash& hash)
+{
+	CGitHash refHash;
+	if (g_Git.GetHash(refHash, ref))
+		MessageBox(nullptr, g_Git.GetGitLastErr(_T("Could not get hash of \"") + ref + _T("\".")), _T("TortoiseGit"), MB_ICONERROR);
+	return refHash.IsEmpty() || (hash == refHash);
+}
+
+void CRebaseDlg::OnBnClickedButtonOnto()
+{
+	m_Onto = CBrowseRefsDlg::PickRef(false, m_Onto);
+	if (!m_Onto.IsEmpty())
+	{
+		// make sure that the user did not select upstream, selected branch or HEAD
+		CGitHash hash;
+		if (g_Git.GetHash(hash, m_Onto))
+		{
+			MessageBox(g_Git.GetGitLastErr(_T("Could not get hash of \"") + m_BranchCtrl.GetString() + _T("\".")), _T("TortoiseGit"), MB_ICONERROR);
+			m_Onto.Empty();
+			((CButton*)GetDlgItem(IDC_BUTTON_ONTO))->SetCheck(m_Onto.IsEmpty() ? BST_UNCHECKED : BST_CHECKED);
+			return;
+		}
+		if (GetCompareHash(_T("HEAD"), hash) || GetCompareHash(m_UpstreamCtrl.GetString(), hash) || GetCompareHash(m_BranchCtrl.GetString(), hash))
+			m_Onto.Empty();
+	}
+	if (m_Onto.IsEmpty())
+		m_tooltips.DelTool(IDC_BUTTON_ONTO);
+	else
+		m_tooltips.AddTool(IDC_BUTTON_ONTO, m_Onto);
+	((CButton*)GetDlgItem(IDC_BUTTON_ONTO))->SetCheck(m_Onto.IsEmpty() ? BST_UNCHECKED : BST_CHECKED);
+	FetchLogList();
 }
