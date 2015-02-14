@@ -202,6 +202,9 @@ UINT CCheckForUpdatesDlg::CheckThread()
 		}
 	}
 
+	if (!official && sCheckURL.Find(_T("://versioncheck.tortoisegit.org/")) > 0)
+		official = true;
+
 	if (!official)
 		SetDlgItemText(IDC_SOURCE, _T("Using (unofficial) release channel: ") + sCheckURL);
 
