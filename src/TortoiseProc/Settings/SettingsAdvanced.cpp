@@ -54,9 +54,9 @@ CSettingsAdvanced::CSettingsAdvanced()
 	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
 	settings[i++].def.b	= false;
 
-    settings[i].sName   = L"DebugOutputString";
-    settings[i].type    = CSettingsAdvanced::SettingTypeBoolean;
-    settings[i++].def.b = false;
+	settings[i].sName	= L"DebugOutputString";
+	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
+	settings[i++].def.b	= false;
 
 	settings[i].sName	= L"DiffBlamesWithTortoiseMerge";
 	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
@@ -73,7 +73,6 @@ CSettingsAdvanced::CSettingsAdvanced()
 	settings[i].sName	= L"GroupTaskbarIconsPerRepoOverlay";
 	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
 	settings[i++].def.b	= true;
-
 
 	settings[i].sName	= L"LogIncludeBoundaryCommits";
 	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
@@ -95,13 +94,13 @@ CSettingsAdvanced::CSettingsAdvanced()
 	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
 	settings[i++].def.b	= true;
 
-	settings[i].sName   = L"RefreshFileListAfterResolvingConflict";
-	settings[i].type    = CSettingsAdvanced::SettingTypeBoolean;
-	settings[i++].def.b = true;
+	settings[i].sName	= L"RefreshFileListAfterResolvingConflict";
+	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
+	settings[i++].def.b	= true;
 
-	settings[i].sName   = L"SanitizeCommitMsg";
-	settings[i].type    = CSettingsAdvanced::SettingTypeBoolean;
-	settings[i++].def.b = true;
+	settings[i].sName	= L"SanitizeCommitMsg";
+	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
+	settings[i++].def.b	= true;
 
 	settings[i].sName	= L"ScintillaDirect2D";
 	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;

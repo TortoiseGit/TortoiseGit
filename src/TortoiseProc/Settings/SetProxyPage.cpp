@@ -243,11 +243,11 @@ BOOL CSetProxyPage::OnApply()
 	UpdateData();
 
 	CString temp;
-	Store (m_serveraddress, m_regServeraddress);
+	Store(m_serveraddress, m_regServeraddress);
 	temp.Format(_T("%u"), m_serverport);
-	Store (temp, m_regServerport);
-	Store (m_username, m_regUsername);
-	Store (m_password, m_regPassword);
+	Store(temp, m_regServerport);
+	Store(m_username, m_regUsername);
+	Store(m_password, m_regPassword);
 
 
 	CString http_proxy;

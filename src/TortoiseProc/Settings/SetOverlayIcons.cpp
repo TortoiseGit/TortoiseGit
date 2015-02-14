@@ -330,15 +330,15 @@ BOOL CSetOverlayIcons::OnApply()
 	if ((!m_sIconSet.IsEmpty())&&(m_sIconSet.CompareNoCase(m_sOriginalIconSet)!=0))
 	{
 		// the selected icon set has changed.
-		Store (m_sIconPath + _T("\\") + m_sIconSet + _T("\\NormalIcon.ico"), m_regNormal);
-		Store (m_sIconPath + _T("\\") + m_sIconSet + _T("\\ModifiedIcon.ico"), m_regModified);
-		Store (m_sIconPath + _T("\\") + m_sIconSet + _T("\\ConflictIcon.ico"), m_regConflicted);
-		Store (m_sIconPath + _T("\\") + m_sIconSet + _T("\\ReadOnlyIcon.ico"), m_regReadOnly);
-		Store (m_sIconPath + _T("\\") + m_sIconSet + _T("\\DeletedIcon.ico"), m_regDeleted);
-		Store (m_sIconPath + _T("\\") + m_sIconSet + _T("\\LockedIcon.ico"), m_regLocked);
-		Store (m_sIconPath + _T("\\") + m_sIconSet + _T("\\AddedIcon.ico"), m_regAdded);
-		Store (m_sIconPath + _T("\\") + m_sIconSet + _T("\\IgnoredIcon.ico"), m_regIgnored);
-		Store (m_sIconPath + _T("\\") + m_sIconSet + _T("\\UnversionedIcon.ico"), m_regUnversioned);
+		Store(m_sIconPath + _T("\\") + m_sIconSet + _T("\\NormalIcon.ico"), m_regNormal);
+		Store(m_sIconPath + _T("\\") + m_sIconSet + _T("\\ModifiedIcon.ico"), m_regModified);
+		Store(m_sIconPath + _T("\\") + m_sIconSet + _T("\\ConflictIcon.ico"), m_regConflicted);
+		Store(m_sIconPath + _T("\\") + m_sIconSet + _T("\\ReadOnlyIcon.ico"), m_regReadOnly);
+		Store(m_sIconPath + _T("\\") + m_sIconSet + _T("\\DeletedIcon.ico"), m_regDeleted);
+		Store(m_sIconPath + _T("\\") + m_sIconSet + _T("\\LockedIcon.ico"), m_regLocked);
+		Store(m_sIconPath + _T("\\") + m_sIconSet + _T("\\AddedIcon.ico"), m_regAdded);
+		Store(m_sIconPath + _T("\\") + m_sIconSet + _T("\\IgnoredIcon.ico"), m_regIgnored);
+		Store(m_sIconPath + _T("\\") + m_sIconSet + _T("\\UnversionedIcon.ico"), m_regUnversioned);
 
 		m_restart = Restart_System;
 		m_sOriginalIconSet = m_sIconSet;

@@ -101,27 +101,27 @@ BOOL CSetOverlayHandlers::OnApply()
 
 	if (DWORD(m_regShowIgnoredOverlay) != DWORD(m_bShowIgnoredOverlay))
 		m_restart = Restart_System;
-	Store (m_bShowIgnoredOverlay, m_regShowIgnoredOverlay);
+	Store(m_bShowIgnoredOverlay, m_regShowIgnoredOverlay);
 
 	if (DWORD(m_regShowUnversionedOverlay) != DWORD(m_bShowUnversionedOverlay))
 		m_restart = Restart_System;
-	Store (m_bShowUnversionedOverlay, m_regShowUnversionedOverlay);
+	Store(m_bShowUnversionedOverlay, m_regShowUnversionedOverlay);
 
 	if (DWORD(m_regShowAddedOverlay) != DWORD(m_bShowAddedOverlay))
 		m_restart = Restart_System;
-	Store (m_bShowAddedOverlay, m_regShowAddedOverlay);
+	Store(m_bShowAddedOverlay, m_regShowAddedOverlay);
 
 	if (DWORD(m_regShowLockedOverlay) != DWORD(m_bShowLockedOverlay))
 		m_restart = Restart_System;
-	Store (m_bShowLockedOverlay, m_regShowLockedOverlay);
+	Store(m_bShowLockedOverlay, m_regShowLockedOverlay);
 
 	if (DWORD(m_regShowReadonlyOverlay) != DWORD(m_bShowReadonlyOverlay))
 		m_restart = Restart_System;
-	Store (m_bShowReadonlyOverlay, m_regShowReadonlyOverlay);
+	Store(m_bShowReadonlyOverlay, m_regShowReadonlyOverlay);
 
 	if (DWORD(m_regShowDeletedOverlay) != DWORD(m_bShowDeletedOverlay))
 		m_restart = Restart_System;
-	Store (m_bShowDeletedOverlay, m_regShowDeletedOverlay);
+	Store(m_bShowDeletedOverlay, m_regShowDeletedOverlay);
 
 
 	SetModified(FALSE);

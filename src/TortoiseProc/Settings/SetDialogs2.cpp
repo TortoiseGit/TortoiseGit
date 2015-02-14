@@ -168,17 +168,17 @@ BOOL CSetDialogs2::OnApply()
 	UpdateData();
 
 	Store((DWORD)m_dwAutoCloseGitProgress, m_regAutoCloseGitProgress);
-	Store (m_bUseRecycleBin, m_regUseRecycleBin);
-	Store (m_bConfirmKillProcess, m_regConfirmKillProcess);
-	Store (m_bSyncDialogRandomPos, m_regSyncDialogRandomPos);
-	Store (m_bRefCompareHideUnchanged, m_regRefCompareHideUnchanged);
+	Store(m_bUseRecycleBin, m_regUseRecycleBin);
+	Store(m_bConfirmKillProcess, m_regConfirmKillProcess);
+	Store(m_bSyncDialogRandomPos, m_regSyncDialogRandomPos);
+	Store(m_bRefCompareHideUnchanged, m_regRefCompareHideUnchanged);
 	Store(m_bSortTagsReversed, m_regSortTagsReversed);
 
-	Store (m_bAutocompletion, m_regAutocompletion);
-	Store (m_dwAutocompletionTimeout, m_regAutocompletionTimeout);
-	Store (m_dwMaxHistory, m_regMaxHistory);
-	Store (m_bAutoSelect, m_regAutoSelect);
-	Store (m_bStripCommentedLines, m_regStripCommentedLines);
+	Store(m_bAutocompletion, m_regAutocompletion);
+	Store(m_dwAutocompletionTimeout, m_regAutocompletionTimeout);
+	Store(m_dwMaxHistory, m_regMaxHistory);
+	Store(m_bAutoSelect, m_regAutoSelect);
+	Store(m_bStripCommentedLines, m_regStripCommentedLines);
 	Store(m_bShowGitexeTimings, m_regShowGitexeTimings);
 
 	SetModified(FALSE);

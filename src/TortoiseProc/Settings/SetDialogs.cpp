@@ -236,25 +236,25 @@ BOOL CSetDialogs::OnApply()
 	else
 		m_sFontName = m_regFontName;
 
-	Store (m_bShortDateFormat, m_regShortDateFormat);
-	Store (m_bRelativeTimes, m_regRelativeTimes);
-	Store (m_bAsteriskLogPrefix, m_regAsteriskLogPrefix);
-    Store (m_bUseSystemLocaleForDates, m_regUseSystemLocaleForDates);
+	Store(m_bShortDateFormat, m_regShortDateFormat);
+	Store(m_bRelativeTimes, m_regRelativeTimes);
+	Store(m_bAsteriskLogPrefix, m_regAsteriskLogPrefix);
+	Store(m_bUseSystemLocaleForDates, m_regUseSystemLocaleForDates);
 
-    Store (m_sFontName, m_regFontName);
-    Store (m_dwFontSize, m_regFontSize);
-	Store (m_bDiffByDoubleClick, m_regDiffByDoubleClick);
-	Store (m_bAbbreviateRenamings, m_regAbbreviateRenamings);
-	Store (m_bSymbolizeRefNames, m_regSymbolizeRefNames);
-	Store (m_bEnableLogCache, m_regEnableLogCache);
-	Store (m_bEnableGravatar, m_regEnableGravatar);
-	Store (m_GravatarUrl, m_regGravatarUrl);
-	Store (m_bDrawBranchesTagsOnRightSide, m_regDrawBranchesTagsOnRightSide);
-	Store (m_bShowDescribe, m_regShowDescribe);
-	Store (m_DescribeStrategy, m_regDescribeStrategy);
-	Store (m_DescribeAbbreviatedSize, m_regDescribeAbbreviatedSize);
-	Store (m_bDescribeAlwaysLong, m_regDescribeAlwaysLong);
+	Store(m_sFontName, m_regFontName);
+	Store(m_dwFontSize, m_regFontSize);
+	Store(m_bDiffByDoubleClick, m_regDiffByDoubleClick);
+	Store(m_bAbbreviateRenamings, m_regAbbreviateRenamings);
+	Store(m_bSymbolizeRefNames, m_regSymbolizeRefNames);
+	Store(m_bEnableLogCache, m_regEnableLogCache);
+	Store(m_bEnableGravatar, m_regEnableGravatar);
+	Store(m_GravatarUrl, m_regGravatarUrl);
+	Store(m_bDrawBranchesTagsOnRightSide, m_regDrawBranchesTagsOnRightSide);
+	Store(m_bShowDescribe, m_regShowDescribe);
+	Store(m_DescribeStrategy, m_regDescribeStrategy);
+	Store(m_DescribeAbbreviatedSize, m_regDescribeAbbreviatedSize);
+	Store(m_bDescribeAlwaysLong, m_regDescribeAlwaysLong);
 
-    SetModified(FALSE);
+	SetModified(FALSE);
 	return ISettingsPropPage::OnApply();
 }

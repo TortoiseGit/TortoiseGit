@@ -208,61 +208,61 @@ void CSetOverlayPage::OnChange()
 BOOL CSetOverlayPage::OnApply()
 {
 	UpdateData();
-	Store (m_bOnlyExplorer, m_regOnlyExplorer);
+	Store(m_bOnlyExplorer, m_regOnlyExplorer);
 	if (DWORD(m_regDriveMaskRemovable) != DWORD(m_bRemovable))
 		m_restart = Restart_Cache;
-	Store (m_bRemovable, m_regDriveMaskRemovable);
+	Store(m_bRemovable, m_regDriveMaskRemovable);
 
 	if (DWORD(m_regDriveMaskFloppy) != DWORD(m_bFloppy))
 		m_restart = Restart_Cache;
-	Store (m_bFloppy, m_regDriveMaskFloppy);
+	Store(m_bFloppy, m_regDriveMaskFloppy);
 
 	if (DWORD(m_regDriveMaskRemote) != DWORD(m_bNetwork))
 		m_restart = Restart_Cache;
-	Store (m_bNetwork, m_regDriveMaskRemote);
+	Store(m_bNetwork, m_regDriveMaskRemote);
 
 	if (DWORD(m_regDriveMaskFixed) != DWORD(m_bFixed))
 		m_restart = Restart_Cache;
-	Store (m_bFixed, m_regDriveMaskFixed);
+	Store(m_bFixed, m_regDriveMaskFixed);
 
 	if (DWORD(m_regDriveMaskCDROM) != DWORD(m_bCDROM))
 		m_restart = Restart_Cache;
-	Store (m_bCDROM, m_regDriveMaskCDROM);
+	Store(m_bCDROM, m_regDriveMaskCDROM);
 
 	if (DWORD(m_regDriveMaskRAM) != DWORD(m_bRAM))
 		m_restart = Restart_Cache;
-	Store (m_bRAM, m_regDriveMaskRAM);
+	Store(m_bRAM, m_regDriveMaskRAM);
 
 	if (DWORD(m_regDriveMaskUnknown) != DWORD(m_bUnknown))
 		m_restart = Restart_Cache;
-	Store (m_bUnknown, m_regDriveMaskUnknown);
+	Store(m_bUnknown, m_regDriveMaskUnknown);
 
 	if (m_sExcludePaths.Compare(CString(m_regExcludePaths)))
 		m_restart = Restart_Cache;
 	m_sExcludePaths.Remove('\r');
 	if (m_sExcludePaths.Right(1).Compare(_T("\n"))!=0)
 		m_sExcludePaths += _T("\n");
-	Store (m_sExcludePaths, m_regExcludePaths);
+	Store(m_sExcludePaths, m_regExcludePaths);
 	m_sExcludePaths.Replace(_T("\n"), _T("\r\n"));
 	m_sIncludePaths.Remove('\r');
 	if (m_sIncludePaths.Right(1).Compare(_T("\n"))!=0)
 		m_sIncludePaths += _T("\n");
 	if (m_sIncludePaths.Compare(CString(m_regIncludePaths)))
 		m_restart = Restart_Cache;
-	Store (m_sIncludePaths, m_regIncludePaths);
+	Store(m_sIncludePaths, m_regIncludePaths);
 	m_sIncludePaths.Replace(_T("\n"), _T("\r\n"));
 
 	if (DWORD(m_regUnversionedAsModified) != DWORD(m_bUnversionedAsModified))
 		m_restart = Restart_Cache;
-	Store (m_bUnversionedAsModified, m_regUnversionedAsModified);
+	Store(m_bUnversionedAsModified, m_regUnversionedAsModified);
 	if (DWORD(m_regRecurseSubmodules) != DWORD(m_bRecurseSubmodules))
 		m_restart = Restart_Cache;
 	Store(m_bRecurseSubmodules, m_regRecurseSubmodules);
 	if (DWORD(m_regShowExcludedAsNormal) != DWORD(m_bShowExcludedAsNormal))
 		m_restart = Restart_Cache;
-	Store (m_bShowExcludedAsNormal, m_regShowExcludedAsNormal);
+	Store(m_bShowExcludedAsNormal, m_regShowExcludedAsNormal);
 
-	Store (m_dwCacheType, m_regCacheType);
+	Store(m_dwCacheType, m_regCacheType);
 	if (m_dwCacheType != 1)
 	{
 		// close the possible running cache process

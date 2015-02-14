@@ -249,9 +249,9 @@ BOOL CSetLookAndFeelPage::OnApply()
 	if (m_sNoContextPaths.Right(1).Compare(_T("\n"))!=0)
 		m_sNoContextPaths += _T("\n");
 
-	Store (m_bHideMenus, m_regHideMenus);
-	Store (m_sNoContextPaths, m_regNoContextPaths);
-	Store (m_bEnableDragContextMenu, m_regEnableDragContextMenu);
+	Store(m_bHideMenus, m_regHideMenus);
+	Store(m_sNoContextPaths, m_regNoContextPaths);
+	Store(m_bEnableDragContextMenu, m_regEnableDragContextMenu);
 
 	m_sNoContextPaths.Replace(_T("\n"), _T("\r\n"));
 

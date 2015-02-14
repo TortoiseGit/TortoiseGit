@@ -108,17 +108,17 @@ protected:
 		}
 	}
 
-    /**
-     * Utility method:
-     * Store the current value of a BOOL, DWORD or CString into the
-     * respective CRegDWORD etc. and check for success.
-     */
+	/**
+	 * Utility method:
+	 * Store the current value of a BOOL, DWORD or CString into the
+	 * respective CRegDWORD etc. and check for success.
+	 */
 
-    template<class T, class Reg>
-    void Store (const T& value, Reg& registryKey)
-    {
-    	registryKey = value;
-	    if (registryKey.GetLastError() != ERROR_SUCCESS)
-		    CMessageBox::Show (m_hWnd, registryKey.getErrorString(), _T("TortoiseGit"), MB_ICONERROR);
-    }
+	template<class T, class Reg>
+	void Store(const T& value, Reg& registryKey)
+	{
+		registryKey = value;
+		if (registryKey.GetLastError() != ERROR_SUCCESS)
+			CMessageBox::Show (m_hWnd, registryKey.getErrorString(), _T("TortoiseGit"), MB_ICONERROR);
+	}
 };

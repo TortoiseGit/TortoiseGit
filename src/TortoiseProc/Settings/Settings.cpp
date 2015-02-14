@@ -57,8 +57,8 @@ void CSettings::AddPropPages()
 	m_pDialogsPage2 = new CSetDialogs2();
 	m_pDialogsPage3 = new CSetDialogs3();
 	m_pColorsPage = new CSettingsColors();
-    m_pColorsPage2 = new CSettingsColors2();
-    m_pColorsPage3 = new CSettingsColors3();
+	m_pColorsPage2 = new CSettingsColors2();
+	m_pColorsPage3 = new CSettingsColors3();
 	m_pSavedPage = new CSetSavedDataPage();
 	m_pHooksPage = new CSetHooks();
 	m_pBugTraqPage = new CSetBugTraq();
@@ -86,8 +86,8 @@ void CSettings::AddPropPages()
 	SetPageIcon(m_pDialogsPage2, m_pDialogsPage2->GetIconID());
 	SetPageIcon(m_pDialogsPage3, m_pDialogsPage3->GetIconID());
 	SetPageIcon(m_pColorsPage, m_pColorsPage->GetIconID());
-    SetPageIcon(m_pColorsPage2, m_pColorsPage2->GetIconID());
-    SetPageIcon(m_pColorsPage3, m_pColorsPage3->GetIconID());
+	SetPageIcon(m_pColorsPage2, m_pColorsPage2->GetIconID());
+	SetPageIcon(m_pColorsPage3, m_pColorsPage3->GetIconID());
 
 	SetPageIcon(m_pSavedPage, m_pSavedPage->GetIconID());
 	SetPageIcon(m_pHooksPage, m_pHooksPage->GetIconID());

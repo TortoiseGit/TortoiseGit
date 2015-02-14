@@ -221,15 +221,15 @@ BOOL CSetMainPage::OnApply()
 	PerformCommonGitPathCleanup(m_sMsysGitPath);
 	UpdateData(FALSE);
 
-	Store (m_dwLanguage, m_regLanguage);
+	Store(m_dwLanguage, m_regLanguage);
 	if (m_sMsysGitPath.Compare(CString(m_regMsysGitPath)) ||
 		this->m_sMsysGitExtranPath.Compare(CString(m_regMsysGitExtranPath)))
 	{
-		Store (m_sMsysGitPath, m_regMsysGitPath);
-		Store (m_sMsysGitExtranPath, m_regMsysGitExtranPath);
+		Store(m_sMsysGitPath, m_regMsysGitPath);
+		Store(m_sMsysGitExtranPath, m_regMsysGitExtranPath);
 		m_restart = Restart_Cache;
 	}
-	Store (m_bCheckNewer, m_regCheckNewer);
+	Store(m_bCheckNewer, m_regCheckNewer);
 
 	// only complete if the msysgit directory is ok
 	g_Git.m_bInitialized = FALSE;
@@ -316,8 +316,8 @@ void CSetMainPage::OnCheck()
 			OnHelp();
 	}
 
-	Store (oldpath, m_regMsysGitPath);
-	Store (oldextranpath, m_regMsysGitExtranPath);
+	Store(oldpath, m_regMsysGitPath);
+	Store(oldextranpath, m_regMsysGitExtranPath);
 }
 
 void CSetMainPage::OnBnClickedButtonShowEnv()

@@ -322,8 +322,8 @@ void CSetSavedDataPage::OnModified()
 
 BOOL CSetSavedDataPage::OnApply()
 {
-    Store (m_maxLines, 	m_regMaxLines);
-    return ISettingsPropPage::OnApply();
+	Store(m_maxLines, m_regMaxLines);
+	return ISettingsPropPage::OnApply();
 }
 
 void CSetSavedDataPage::DeleteViaShell(LPCTSTR path, UINT progressText)
