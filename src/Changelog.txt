@@ -26,6 +26,7 @@ Released: unreleased
  * Fixed issue #1789: Tooltips not properly displayed in Log List if that commit has refs
  * Fixed issue #2353: Link to bug tracker not available in Show Log dialog
  * Fixed issue #2368: CTRL+ENTER locks up GUI on Updating Index...
+ * Fixed issue #2414: SendMail doesn't correctly place the mail in to list
 
 = Release 1.8.12.0 =
 Released: 2014-11-25
