@@ -924,6 +924,10 @@ msgstr ""
 msgid "&One Page"
 msgstr ""
 
+#. Resource IDs: (1828)
+msgid "&Onto"
+msgstr ""
+
 #. Resource IDs: (101, 1251, 32773, 57601)
 msgid "&Open"
 msgstr ""

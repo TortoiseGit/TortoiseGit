@@ -11,6 +11,8 @@ Released: unreleased
  * Fixed issue #2346: Add drag'n'drop to "Apply patches" window
  * Fixed issue #2357: Save the state of Search criteria checkboxes in Log dialog
  * Fixed issue #2420: Make push available in log for arbitrary commits
+ * Fixed issue #2351: Allow upstream to be separate from onto in rebase
+ * Fixed issue #1400: Allow the use of tags within the Git Rebase dialog
 
 == Bug Fixes ==
  * Fixed issue #2359: Selected files counter not updated after revert
