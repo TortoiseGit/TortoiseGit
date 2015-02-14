@@ -437,6 +437,7 @@ void CRebaseDlg::LoadBranchInfo()
 		m_BranchCtrl.AddString(g_Git.GetCurrentBranch(true));
 	list.clear();
 	g_Git.GetBranchList(list, NULL, CGit::BRANCH_ALL_F);
+	g_Git.GetTagList(list);
 	m_UpstreamCtrl.SetList(list);
 
 	AddBranchToolTips(&m_BranchCtrl);
@@ -2154,7 +2155,7 @@ void CRebaseDlg::OnBnClickedButtonReverse()
 
 void CRebaseDlg::OnBnClickedButtonBrowse()
 {
-	if(CBrowseRefsDlg::PickRefForCombo(&m_UpstreamCtrl, gPickRef_NoTag))
+	if(CBrowseRefsDlg::PickRefForCombo(&m_UpstreamCtrl))
 		OnCbnSelchangeUpstream();
 }
 
