@@ -2011,7 +2011,6 @@ void CRebaseDlg::OnBnClickedAbort()
 	m_tooltips.Pop();
 
 	CString cmd,out;
-	CString pron = m_OrigUpstreamHash.ToString();
 	if(m_OrigUpstreamHash.IsEmpty())
 	{
 		__super::OnCancel();

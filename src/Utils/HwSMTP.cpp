@@ -1166,8 +1166,6 @@ BOOL CHwSMTP::SendSubject(const CString &hostname)
 
 	csSubject += FormatString ( _T("To: %s\r\n"), this->m_csToList);
 
-	CString m_csToList;
-
 	csSubject += FormatString ( _T("Subject: %s\r\n"), m_csSubject );
 
 	CString m_ListID;
