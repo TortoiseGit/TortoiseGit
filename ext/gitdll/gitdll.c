@@ -143,10 +143,11 @@ int git_parse_commit(GIT_COMMIT *commit)
 	commit->m_Encode = NULL;
 	commit->m_EncodeSize = 0;
 
-	if(p->buffer == NULL)
+	pbuf = get_commit_buffer(commit, NULL);
+
+	if (pbuf == NULL)
 		return -3;
 
-	pbuf = p->buffer;
 	while(pbuf)
 	{
 		if (strncmp(pbuf, "author", 6) == 0)
@@ -254,14 +255,15 @@ int git_get_commit_next_parent(GIT_COMMIT_LIST *list, GIT_HASH hash)
 int git_free_commit(GIT_COMMIT *commit)
 {
 	struct commit *p = commit->m_pGitCommit;
+	char* pbuf = get_commit_buffer(commit, NULL);
 
 	if( p->parents)
 		free_commit_list(p->parents);
 
-	if( p->buffer )
+	if (pbuf)
 	{
-		free(p->buffer);
-		p->buffer=NULL;
+		free(pbuf);
+		pbuf = NULL; // Call free_commit_buffer() ?
 		p->object.parsed=0;
 		p->parents=0;
 		p->tree=0;
