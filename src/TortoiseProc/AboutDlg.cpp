@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
-// Copyright (C) 2009-2013 - TortoiseGit
+// Copyright (C) 2009-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -83,7 +83,12 @@ BOOL CAboutDlg::OnInitDialog()
 	out.Trim();
 
 	if (!CGit::ms_LastMsysGitDir.IsEmpty())
-		out += _T(" (") + CGit::ms_LastMsysGitDir + _T(")");
+	{
+		out += _T(" (") + CGit::ms_LastMsysGitDir;
+		if (CGit::ms_bCygwinGit)
+			out += _T("; with cygwin hack");
+		out += _T(")");
+	}
 
 	CString tortoisegitprocpath;
 	tortoisegitprocpath.Format(_T("(%s)"), CPathUtils::GetAppDirectory());

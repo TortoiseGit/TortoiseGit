@@ -19,6 +19,10 @@ Released: unreleased
    true, but can be disabled in cases where refreshing the list takes lots of time or
    people don't want the list to automatically scroll to the top (this also mitigates
    issue #1949 until we have a cleaner fix). F5 for manual refresh is needed if enabled.
+ * Fixed issue #56: Ability to use Cygwin's git instead of msysGit
+   Check out the manual (keyword "Gygwin git") regarding Cygwin Git support and configuration hints.
+   Please note that Cygwin Git is not officially supported by TortoiseGit as the developers only
+   use Git for Windows. Bugreports, however, are welcome.
 
 == Bug Fixes ==
  * Fixed issue #2359: Selected files counter not updated after revert

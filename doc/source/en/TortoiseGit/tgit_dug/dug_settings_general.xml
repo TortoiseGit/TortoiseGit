@@ -10,6 +10,9 @@
 		<primary>git.exe path</primary>
 	</indexterm>
 	<indexterm>
+		<primary>Cygwin git</primary>
+	</indexterm>
+	<indexterm>
 		<primary>Extern DLL Path</primary>
 	</indexterm>
 	<para>
@@ -97,6 +100,29 @@
 				</para>
 				<para>
 					Often you can see if you need this when you start git.exe in <literal>[MSYSGIT-INSTALL-PATH]\mingw\bin</literal>-folder and you get a messagebox saying that a dll is missing.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term>Cygwin Git</term>
+			<listitem>
+				<para>
+					There is no official support for Cygwin git in TortoiseGit. The TortoiseGit developers only use Git for Windows. Bugreports, however, are welcome. If you really want to use it here are the steps you have to perform:
+				</para>
+				<para>
+					1) Select the <literal>[CYGWIN-INSTALL-PATH]\bin</literal>-folder as git.exe folder.
+				</para>
+				<para>
+					2) Configure the <literal>HOME</literal> environment variable in Windows, so that Cygwin and TortoiseGit are using the same home directory and global git-config. Use the normal Windows notation here (e.g., "C:\Users\USERNAME"). By default, TortoiseGit uses the Windows home directory which is normally located under <literal>c:\Users</literal> and Cygwin uses its own home directories which are located under <literal>[CYGWIN-INSTALL-PATH]\home</literal>.
+				</para>
+				<para>
+					3) Configure AutoCrLf, this is necessary as TortoiseGit and Cygwin Git have different defaults. The default in Cygwin Git is <literal>true</literal>.
+				</para>
+				<para>
+					4) Go to TortoiseGit <xref linkend="tgit-dug-settings-registry"/> and set <literal>CygwinHack</literal> to <literal>true</literal> in order to activate cygwin workarounds.
+				</para>
+				<para>
+					5) Reboot.
 				</para>
 			</listitem>
 		</varlistentry>

@@ -70,6 +70,16 @@
             </listitem>
         </varlistentry>
         <varlistentry>
+            <term condition="pot">CygwinHack</term>
+            <listitem>
+                <para>
+                    This enables some workarounds which enables TortoiseGit to be used wit Cygwin Git.
+                    Cygwin Git, however, is not officially supported by TortoiseGit.
+                    The default is <literal>false</literal>.
+                </para>
+            </listitem>
+        </varlistentry>
+        <varlistentry>
             <term condition="pot">Debug</term>
             <listitem>
                 <para>

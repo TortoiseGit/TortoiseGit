@@ -309,6 +309,8 @@ void CSetMainPage::OnCheck()
 			else if (CMessageBox::Show(NULL, _T("Could not get read version information from git.exe.\nCheck help file for \"Git.exe Path\"."),_T("TortoiseGit"), 1, IDI_ERROR, CString(MAKEINTRESOURCE(IDS_MSGBOX_OK)), CString(MAKEINTRESOURCE(IDS_MSGBOX_HELP))) == 2)
 				OnHelp();
 		}
+		else if (!CGit::ms_bCygwinGit && out.Find(_T("msysgit")) == -1 && CMessageBox::Show(NULL, _T("Could not find \"msysgit\" in versionstring of git.exe.\nIf you are using git of the cygwin environment please read the help file for the keyword \"cygwin git\"."), _T("TortoiseGit"), 1, IDI_INFORMATION, CString(MAKEINTRESOURCE(IDS_MSGBOX_OK)), CString(MAKEINTRESOURCE(IDS_MSGBOX_HELP))) == 2)
+			OnHelp();
 	}
 	else
 	{

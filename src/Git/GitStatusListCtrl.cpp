@@ -3710,6 +3710,18 @@ int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash,CTGitPathList *list)
 			CString cmd;
 			if(!g_Git.IsInitRepos())
 			{
+				if (CGit::ms_bCygwinGit)
+				{
+					// Prevent showing all files as modified when using cygwin's git
+					if (list == NULL)
+						cmd = (_T("git.exe status --"));
+					else
+						cmd.Format(_T("git.exe status -- \"%s\""), (*list)[i].GetGitPathString());
+					cmdList += cmd + _T("\n");
+					g_Git.Run(cmd, &cmdout);
+					cmdout.clear();
+				}
+
 				// also list staged files which will be in the commit
 				cmd=(_T("git.exe diff-index --cached --raw ") + head + _T(" --numstat -C -M -z --"));
 				cmdList += cmd + _T("\n");

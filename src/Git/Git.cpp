@@ -34,6 +34,7 @@
 #include "../libgit2/filter-filter.h"
 #include "../libgit2/ssh-wintunnel.h"
 
+bool CGit::ms_bCygwinGit = (CRegDWORD(_T("Software\\TortoiseGit\\CygwinHack"), FALSE) == TRUE);
 int CGit::m_LogEncode=CP_UTF8;
 typedef CComCritSecLock<CComCriticalSection> CAutoLocker;
 
@@ -326,7 +327,13 @@ int CGit::RunAsync(CString cmd, PROCESS_INFORMATION *piOut, HANDLE *hReadOut, HA
 	memset(&this->m_CurrentGitPi,0,sizeof(PROCESS_INFORMATION));
 	memset(&pi, 0, sizeof(PROCESS_INFORMATION));
 
-	if(cmd.Find(_T("git")) == 0)
+	if (ms_bCygwinGit && cmd.Find(_T("git")) == 0)
+	{
+		cmd.Replace(_T('\\'), _T('/'));
+		cmd.Replace(_T("\""), _T("\\\""));
+		cmd = _T('"') + CGit::ms_LastMsysGitDir + _T("\\bash.exe\" -c \"/bin/") + cmd + _T('"');
+	}
+	else if(cmd.Find(_T("git")) == 0)
 	{
 		int firstSpace = cmd.Find(_T(" "));
 		if (firstSpace > 0)
@@ -2067,7 +2074,10 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 	static git_smart_subtransport_definition ssh_wintunnel_subtransport_definition = { [](git_smart_subtransport **out, git_transport* owner) -> int { return git_smart_subtransport_ssh_wintunnel(out, owner, FindExecutableOnPath(g_Git.m_Environment.GetEnv(_T("GIT_SSH")), g_Git.m_Environment.GetEnv(_T("PATH"))), &g_Git.m_Environment[0]); }, 0 };
 	git_transport_register("ssh", git_transport_smart, &ssh_wintunnel_subtransport_definition);
 	CString msysGitTemplateDir;
-	PathCanonicalize(msysGitTemplateDir.GetBufferSetLength(MAX_PATH), CGit::ms_LastMsysGitDir + _T("\\..\\share\\git-core\\templates"));
+	if (!ms_bCygwinGit)
+		PathCanonicalize(msysGitTemplateDir.GetBufferSetLength(MAX_PATH), CGit::ms_LastMsysGitDir + _T("\\..\\share\\git-core\\templates"));
+	else
+		PathCanonicalize(msysGitTemplateDir.GetBufferSetLength(MAX_PATH), CGit::ms_LastMsysGitDir + _T("\\..\\usr\\share\\git-core\\templates"));
 	msysGitTemplateDir.ReleaseBuffer();
 	SetLibGit2TemplatePath(msysGitTemplateDir);
 
