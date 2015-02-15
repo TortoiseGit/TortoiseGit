@@ -251,7 +251,6 @@
     <ClInclude Include="..\libgit2\src\blame_git.h" />
     <ClInclude Include="..\libgit2\src\blob.h" />
     <ClInclude Include="..\libgit2\src\branch.h" />
-    <ClInclude Include="..\libgit2\src\bswap.h" />
     <ClInclude Include="..\libgit2\src\buf_text.h" />
     <ClInclude Include="..\libgit2\src\buffer.h" />
     <ClInclude Include="..\libgit2\src\cache.h" />
@@ -281,6 +280,7 @@
     <ClInclude Include="..\libgit2\src\hash\hash_common_crypto.h" />
     <ClInclude Include="..\libgit2\src\ignore.h" />
     <ClInclude Include="..\libgit2\src\index.h" />
+    <ClInclude Include="..\libgit2\src\integer.h" />
     <ClInclude Include="..\libgit2\src\iterator.h" />
     <ClInclude Include="..\libgit2\src\khash.h" />
     <ClInclude Include="..\libgit2\src\map.h" />

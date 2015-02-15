@@ -1,4 +1,4 @@
-From 5f85c2c0f6f2c791ef7e31fc158b4e65f40faf49 Mon Sep 17 00:00:00 2001
+From 39dfbc18e2f5ff5b044fe230226eab0d6c5621a3 Mon Sep 17 00:00:00 2001
 From: Sven Strickroth <email@cs-ware.de>
 Date: Fri, 23 Jan 2015 14:16:34 +0100
 Subject: [PATCH 1/6] AutoCrLf=true and SafeCrLf=true did not fail on LF-only

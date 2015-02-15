@@ -1,4 +1,4 @@
-From 41db1361dc63241d37c86e83e33a5dcc83b67611 Mon Sep 17 00:00:00 2001
+From 4f4d81baf7745e427002e0767d55cb40423df6bc Mon Sep 17 00:00:00 2001
 From: Sven Strickroth <email@cs-ware.de>
 Date: Fri, 23 Jan 2015 15:33:36 +0100
 Subject: [PATCH 2/6] AutoCrLf is not correctly initialized on Win32 if

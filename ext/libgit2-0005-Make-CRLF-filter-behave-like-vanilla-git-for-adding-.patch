@@ -1,4 +1,4 @@
-From f28ad191e4a62d53855b6957755fc844d75c566c Mon Sep 17 00:00:00 2001
+From 9d6454dfa9105a8b450b9347ce88e513bac865a2 Mon Sep 17 00:00:00 2001
 From: Sven Strickroth <email@cs-ware.de>
 Date: Sun, 1 Feb 2015 13:39:31 +0100
 Subject: [PATCH 5/6] Make CRLF filter behave like vanilla git for adding files

@@ -1,4 +1,4 @@
-From 8cd7fdac195a8f9c1f7f8c00659b5f9161ee9178 Mon Sep 17 00:00:00 2001
+From 8782aa143e29dc4fef30e82fba469cca21eeca28 Mon Sep 17 00:00:00 2001
 From: Sven Strickroth <email@cs-ware.de>
 Date: Fri, 23 Jan 2015 17:15:16 +0100
 Subject: [PATCH 4/6] Make files with #CR!=#CRLF not fail with SafeCrLf enabled

@@ -1,4 +1,4 @@
-From 3a0242eef57962555bbc31f41bdcebe0727bf9f0 Mon Sep 17 00:00:00 2001
+From f7ae42e37cb673ab042b04197ab7c197c299fd5c Mon Sep 17 00:00:00 2001
 From: Sven Strickroth <email@cs-ware.de>
 Date: Fri, 23 Jan 2015 15:34:14 +0100
 Subject: [PATCH 3/6] Adding a CRLF-file with AutoCrLf=input and SafeCrLf=true

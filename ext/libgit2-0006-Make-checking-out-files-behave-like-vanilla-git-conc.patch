@@ -1,4 +1,4 @@
-From 1a8f70c4073906938f02c373c4d366fc7cb8f651 Mon Sep 17 00:00:00 2001
+From b66d909063c76e1606b56d9256ab40c1c1a383c8 Mon Sep 17 00:00:00 2001
 From: Sven Strickroth <email@cs-ware.de>
 Date: Sun, 25 Jan 2015 20:17:38 +0100
 Subject: [PATCH 6/6] Make checking out files behave like vanilla git
@@ -12,7 +12,7 @@ Signed-off-by: Sven Strickroth <email@cs-ware.de>
 ---
  CHANGELOG.md                                       |   6 +
  src/buf_text.c                                     |  14 +-
- src/crlf.c                                         |  34 ++-
+ src/crlf.c                                         |  33 ++-
  tests/checkout/crlf.c                              | 240 +++++++++++++++++++++
  tests/core/buffer.c                                |  24 ++-
  tests/filter/crlf.h                                |   6 +
@@ -27,7 +27,7 @@ Signed-off-by: Sven Strickroth <email@cs-ware.de>
  .../d1/1e7ef63ba7db1db3b1b99cdbafc57a8549f8a4      | Bin 0 -> 35 bytes
  .../de/5bfa165999d9d6c6dbafad2a7e709f93ec30fd      | Bin 0 -> 179 bytes
  tests/resources/crlf/.gitted/refs/heads/master     | Bin 42 -> 41 bytes
- 17 files changed, 305 insertions(+), 19 deletions(-)
+ 17 files changed, 304 insertions(+), 19 deletions(-)
  create mode 100644 tests/resources/crlf/.gitted/objects/16/78031ee023a23bd3515e4e1693b661a69f0a73
  create mode 100644 tests/resources/crlf/.gitted/objects/20/3555c5676d75cd80d69b50beb1f4b588c59ceb
  create mode 100644 tests/resources/crlf/.gitted/objects/41/7786fc35b3c71aa546e3f95eb5da3c8dad8c41
@@ -57,12 +57,12 @@ index a2e9386..443925f 100644
  
  ### API additions
 diff --git a/src/buf_text.c b/src/buf_text.c
-index cb3661e..3eefdb6 100644
+index 864e39c..c338160 100644
 --- a/src/buf_text.c
 +++ b/src/buf_text.c
-@@ -125,16 +125,16 @@ int git_buf_text_lf_to_crlf(git_buf *tgt, const git_buf *src)
+@@ -131,17 +131,17 @@ int git_buf_text_lf_to_crlf(git_buf *tgt, const git_buf *src)
+ 	for (; next; scan = next + 1, next = memchr(scan, '\n', end - scan)) {
  		size_t copylen = next - scan;
- 		size_t needsize = tgt->size + copylen + 2 + 1;
  
 -		/* if we find mixed line endings, bail */
 -		if (next > start && next[-1] == '\r') {
@@ -70,7 +70,8 @@ index cb3661e..3eefdb6 100644
 -			return GIT_PASSTHROUGH;
 -		}
 -
- 		if (tgt->asize < needsize && git_buf_grow(tgt, needsize) < 0)
+ 		GITERR_CHECK_ALLOC_ADD(&alloclen, copylen, 3);
+ 		if (git_buf_grow_by(tgt, alloclen) < 0)
  			return -1;
  
 -		if (next > scan) {
@@ -85,7 +86,7 @@ index cb3661e..3eefdb6 100644
  			tgt->size += copylen;
  		}
 diff --git a/src/crlf.c b/src/crlf.c
-index 2516c40..a669e78 100644
+index 2516c40..847a78a 100644
 --- a/src/crlf.c
 +++ b/src/crlf.c
 @@ -242,15 +242,13 @@ static int crlf_apply_to_workdir(
@@ -106,7 +107,7 @@ index 2516c40..a669e78 100644
  	/* Determine proper line ending */
  	workdir_ending = line_ending(ca);
  	if (!workdir_ending)
-@@ -260,6 +258,34 @@ static int crlf_apply_to_workdir(
+@@ -260,6 +258,33 @@ static int crlf_apply_to_workdir(
  	if (strcmp(workdir_ending, "\r\n") != 0)
  		return GIT_PASSTHROUGH;
  
@@ -121,7 +122,6 @@ index 2516c40..a669e78 100644
 +		return GIT_PASSTHROUGH;
 +
 +	if (ca->crlf_action == GIT_CRLF_AUTO || ca->crlf_action == GIT_CRLF_GUESS) {
-+
 +		if (ca->crlf_action == GIT_CRLF_GUESS) {
 +			/*
 +			 * If the file in the index has any CR OR crlf in it, do not convert.

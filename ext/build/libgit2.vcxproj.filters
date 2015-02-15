@@ -478,9 +478,6 @@
     <ClInclude Include="..\libgit2\src\blob.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\libgit2\src\bswap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\libgit2\src\buf_text.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -1055,6 +1052,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\libgit2\src\socket_stream.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\src\integer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
