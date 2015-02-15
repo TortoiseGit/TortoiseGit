@@ -1718,7 +1718,7 @@ int CGit::GetRemoteTags(const CString& remote, STRING_VECTOR& list)
 		if (git_remote_ls(&heads, &size, remote) < 0)
 			return -1;
 
-		for (int i = 0; i < size; i++)
+		for (size_t i = 0; i < size; i++)
 		{
 			CString ref = CUnicodeUtils::GetUnicode(heads[i]->name);
 			CString shortname;
