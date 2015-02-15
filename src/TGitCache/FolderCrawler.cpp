@@ -24,8 +24,6 @@
 #include "registry.h"
 #include "TGitCache.h"
 #include <ShlObj.h>
-#include "SysInfo.h"
-
 
 CFolderCrawler::CFolderCrawler(void)
 {
@@ -156,10 +154,8 @@ void CFolderCrawler::WorkerThread()
 	{
 		bool bRecursive = !!(DWORD)CRegStdDWORD(_T("Software\\TortoiseGit\\RecursiveOverlay"), TRUE);
 
-		if (SysInfo::Instance().IsVistaOrLater())
-		{
-			SetThreadPriority(GetCurrentThread(), THREAD_MODE_BACKGROUND_END);
-		}
+		SetThreadPriority(GetCurrentThread(), THREAD_MODE_BACKGROUND_END);
+
 		DWORD waitResult = WaitForMultipleObjects(_countof(hWaitHandles), hWaitHandles, FALSE, INFINITE);
 
 		// exit event/working loop if the first event (m_hTerminationEvent)
@@ -171,10 +167,7 @@ void CFolderCrawler::WorkerThread()
 			break;
 		}
 
-		if (SysInfo::Instance().IsVistaOrLater())
-		{
-			SetThreadPriority(GetCurrentThread(), THREAD_MODE_BACKGROUND_BEGIN);
-		}
+		SetThreadPriority(GetCurrentThread(), THREAD_MODE_BACKGROUND_BEGIN);
 
 		// If we get here, we've been woken up by something being added to the queue.
 		// However, it's important that we don't do our crawling while

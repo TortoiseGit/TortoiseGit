@@ -34,7 +34,6 @@
 #include "ChangedDlg.h"
 //#include "RevisionGraph/StandardLayout.h"
 //#include "RevisionGraph/UpsideDownLayout.h"
-#include "SysInfo.h"
 #include "FormatMessageWrapper.h"
 #include "GitRevLoglist.h"
 
@@ -845,10 +844,6 @@ CString CRevisionGraphWnd::DisplayableText ( const CString& wholeText
 
 	NONCLIENTMETRICS metrics;
 	metrics.cbSize = sizeof (metrics);
-	if (!SysInfo::Instance().IsVistaOrLater())
-	{
-		metrics.cbSize -= sizeof(int);  // subtract the size of the iPaddedBorderWidth member which is not available on XP
-	}
 	SystemParametersInfo (SPI_GETNONCLIENTMETRICS, metrics.cbSize, &metrics, 0);
 
 	CFont font;

@@ -19,7 +19,6 @@
 //
 #include "stdafx.h"
 #include "IconMenu.h"
-#include "SysInfo.h"
 #include "registry.h"
 
 CIconMenu::CIconMenu(void) : CMenu()
@@ -55,9 +54,6 @@ BOOL CIconMenu::CreatePopupMenu()
 
 BOOL CIconMenu::SetMenuStyle(void)
 {
-	if (!SysInfo::Instance().IsVistaOrLater())
-		return FALSE;
-
 	MENUINFO MenuInfo;
 
 	memset(&MenuInfo, 0, sizeof(MenuInfo));
@@ -92,10 +88,7 @@ BOOL CIconMenu::AppendMenuIcon(UINT_PTR nIDNewItem, LPCTSTR lpszNewItem, UINT uI
 	if ((uIcon != 0) && bShowIcons)
 	{
 		info.fMask |= MIIM_BITMAP;
-		if (SysInfo::Instance().IsVistaOrLater())
-			info.hbmpItem = bitmapUtils.IconToBitmapPARGB32(AfxGetResourceHandle(), uIcon);
-		else
-			info.hbmpItem = HBMMENU_CALLBACK;
+		info.hbmpItem = bitmapUtils.IconToBitmapPARGB32(AfxGetResourceHandle(), uIcon);
 
 		icons[nIDNewItem] = uIcon;
 	}

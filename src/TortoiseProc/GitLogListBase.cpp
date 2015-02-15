@@ -35,7 +35,6 @@
 #include "GitStatus.h"
 #include "..\TortoiseShell\Resource.h"
 #include "FindDlg.h"
-#include "SysInfo.h"
 
 template < typename Cont, typename Pred>
 void for_each(Cont& c, Pred p)
@@ -520,7 +519,7 @@ void CGitLogListBase::FillBackGround(HDC hdc, DWORD_PTR Index, CRect &rect)
 		else if (action & LOGACTIONS_REBASE_EDIT)
 			brush = ::CreateSolidBrush(RGB(200,200,128));
 	}
-	else if (!(IsAppThemed() && SysInfo::Instance().IsVistaOrLater()))
+	else if (!IsAppThemed())
 	{
 		if (rItem.state & LVIS_SELECTED)
 		{
@@ -597,7 +596,7 @@ void CGitLogListBase::DrawTagBranchMessage(HDC hdc, CRect &rect, INT_PTR index, 
 	W_Dc.Attach(hdc);
 
 	HTHEME hTheme = NULL;
-	if (IsAppThemed() && SysInfo::Instance().IsVistaOrLater())
+	if (IsAppThemed())
 		hTheme = OpenThemeData(m_hWnd, L"Explorer::ListView;ListView");
 
 	SIZE oneSpaceSize;
@@ -675,7 +674,7 @@ void CGitLogListBase::DrawTagBranch(HDC hdc, CDC& W_Dc, HTHEME hTheme, CRect& re
 		CGit::REF_TYPE refType = refList[i].refType;
 
 		//When row selected, ajust label color
-		if (!(IsAppThemed() && SysInfo::Instance().IsVistaOrLater()))
+		if (!IsAppThemed())
 		{
 			if (rItem.state & LVIS_SELECTED)
 				colRef = CColors::MixColors(colRef, ::GetSysColor(COLOR_HIGHLIGHT), 150);
@@ -1301,7 +1300,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 						int index = (int)pLVCD->nmcd.dwItemSpec;
 						int state = GetItemState(index, LVIS_SELECTED);
 						int txtState = LISS_NORMAL;
-						if (IsAppThemed() && SysInfo::Instance().IsVistaOrLater() && GetHotItem() == (int)index)
+						if (IsAppThemed() && GetHotItem() == (int)index)
 						{
 							if (state & LVIS_SELECTED)
 								txtState = LISS_HOTSELECTED;
@@ -1317,7 +1316,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 						}
 
 						HTHEME hTheme = nullptr;
-						if (IsAppThemed() && SysInfo::Instance().IsVistaOrLater())
+						if (IsAppThemed())
 							hTheme = OpenThemeData(m_hWnd, L"Explorer::ListView;ListView");
 
 						if (hTheme && IsThemeBackgroundPartiallyTransparent(hTheme, LVP_LISTDETAIL, txtState))

@@ -100,6 +100,7 @@ public:
 	CReaderWriterLock& GetGuard() { return m_guard; }
 	bool m_bClearMemory;
 private:
+	static CString GetSpecialFolder(REFKNOWNFOLDERID rfid);
 	bool RemoveCacheForDirectory(CCachedDirectory * cdir);
 	CReaderWriterLock m_guard;
 	CAtlList<CString> m_askedList;

@@ -24,7 +24,6 @@
 #include "StringUtils.h"
 #include "TaskbarUUID.h"
 #include "CreateProcessHelper.h"
-#include "SysInfo.h"
 #include "UDiffColors.h"
 #include "registry.h"
 
@@ -592,8 +591,7 @@ bool CMainWindow::Initialize()
 	SendEditor(SCI_SETSELFORE, TRUE, ::GetSysColor(COLOR_HIGHLIGHTTEXT));
 	SendEditor(SCI_SETSELBACK, TRUE, ::GetSysColor(COLOR_HIGHLIGHT));
 	SendEditor(SCI_SETCARETFORE, ::GetSysColor(COLOR_WINDOWTEXT));
-	CRegStdDWORD used2d(L"Software\\TortoiseGit\\ScintillaDirect2D", FALSE);
-	if (SysInfo::Instance().IsWin7OrLater() && DWORD(used2d))
+	if (CRegStdDWORD(L"Software\\TortoiseGit\\ScintillaDirect2D", FALSE) != FALSE)
 	{
 		SendEditor(SCI_SETTECHNOLOGY, SC_TECHNOLOGY_DIRECTWRITERETAIN);
 		SendEditor(SCI_SETBUFFEREDDRAW, 0);

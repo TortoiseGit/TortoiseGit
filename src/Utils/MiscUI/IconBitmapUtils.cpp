@@ -18,26 +18,12 @@
 //
 #include "stdafx.h"
 #include "IconBitmapUtils.h"
-#include "SysInfo.h"
 #include "registry.h"
 
-IconBitmapUtils::IconBitmapUtils()
-    : hUxTheme(NULL)
-    , pfnGetBufferedPaintBits(NULL)
-    , pfnBeginBufferedPaint(NULL)
-    , pfnEndBufferedPaint(NULL)
-{
-    if (SysInfo::Instance().IsVistaOrLater())
-    {
-        hUxTheme = AtlLoadSystemLibraryUsingFullPath(_T("UXTHEME.DLL"));
+#pragma comment(lib, "UxTheme.lib")
 
-        if (hUxTheme)
-        {
-            pfnGetBufferedPaintBits = (FN_GetBufferedPaintBits)::GetProcAddress(hUxTheme, "GetBufferedPaintBits");
-            pfnBeginBufferedPaint = (FN_BeginBufferedPaint)::GetProcAddress(hUxTheme, "BeginBufferedPaint");
-            pfnEndBufferedPaint = (FN_EndBufferedPaint)::GetProcAddress(hUxTheme, "EndBufferedPaint");
-        }
-    }
+IconBitmapUtils::IconBitmapUtils()
+{
 }
 
 IconBitmapUtils::~IconBitmapUtils()
@@ -45,8 +31,6 @@ IconBitmapUtils::~IconBitmapUtils()
 	for (const auto& bitmap : bitmaps)
 		::DeleteObject(bitmap.second);
     bitmaps.clear();
-    if (hUxTheme)
-        FreeLibrary(hUxTheme);
 }
 
 HBITMAP IconBitmapUtils::IconToBitmap(HINSTANCE hInst, UINT uIcon)
@@ -150,9 +134,6 @@ HBITMAP IconBitmapUtils::IconToBitmapPARGB32(HICON hIcon)
     if (!hIcon)
         return NULL;
 
-    if (pfnBeginBufferedPaint == NULL || pfnEndBufferedPaint == NULL || pfnGetBufferedPaintBits == NULL)
-        return NULL;
-
     SIZE sizIcon;
     sizIcon.cx = GetSystemMetrics(SM_CXSMICON);
     sizIcon.cy = GetSystemMetrics(SM_CYSMICON);
@@ -176,7 +157,7 @@ HBITMAP IconBitmapUtils::IconToBitmapPARGB32(HICON hIcon)
                 paintParams.pBlendFunction = &bfAlpha;
 
                 HDC hdcBuffer;
-                HPAINTBUFFER hPaintBuffer = pfnBeginBufferedPaint(hdcDest, &rcIcon, BPBF_DIB, &paintParams, &hdcBuffer);
+                HPAINTBUFFER hPaintBuffer = BeginBufferedPaint(hdcDest, &rcIcon, BPBF_DIB, &paintParams, &hdcBuffer);
                 if (hPaintBuffer)
                 {
                     if (DrawIconEx(hdcBuffer, 0, 0, hIcon, sizIcon.cx, sizIcon.cy, 0, NULL, DI_NORMAL))
@@ -186,7 +167,7 @@ HBITMAP IconBitmapUtils::IconToBitmapPARGB32(HICON hIcon)
                     }
 
                     // This will write the buffer contents to the destination bitmap
-                    pfnEndBufferedPaint(hPaintBuffer, TRUE);
+                    EndBufferedPaint(hPaintBuffer, TRUE);
                 }
 
                 SelectObject(hdcDest, hbmpOld);
@@ -234,7 +215,7 @@ HRESULT IconBitmapUtils::ConvertBufferToPARGB32(HPAINTBUFFER hPaintBuffer, HDC h
 {
     RGBQUAD *prgbQuad;
     int cxRow;
-    HRESULT hr = pfnGetBufferedPaintBits(hPaintBuffer, &prgbQuad, &cxRow);
+    HRESULT hr = GetBufferedPaintBits(hPaintBuffer, &prgbQuad, &cxRow);
     if (SUCCEEDED(hr))
     {
         Gdiplus::ARGB *pargb = reinterpret_cast<Gdiplus::ARGB *>(prgbQuad);

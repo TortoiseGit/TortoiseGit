@@ -52,7 +52,6 @@
     <ClCompile Include="..\Utils\MiscUI\BaseWindow.cpp" />
     <ClCompile Include="..\Utils\Registry.cpp" />
     <ClCompile Include="..\Utils\StringUtils.cpp" />
-    <ClCompile Include="..\Utils\SysInfo.cpp" />
     <ClCompile Include="..\Utils\TaskbarUUID.cpp" />
     <ClCompile Include="..\Utils\UnicodeUtils.cpp" />
     <ClCompile Include="FindBar.cpp" />
@@ -71,7 +70,6 @@
     <ClInclude Include="..\Utils\MiscUI\ResString.h" />
     <ClInclude Include="..\Utils\registry.h" />
     <ClInclude Include="..\Utils\StringUtils.h" />
-    <ClInclude Include="..\Utils\SysInfo.h" />
     <ClInclude Include="..\Utils\TaskbarUUID.h" />
     <ClInclude Include="..\Utils\UnicodeUtils.h" />
     <ClInclude Include="FindBar.h" />

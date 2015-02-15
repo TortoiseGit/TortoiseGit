@@ -190,15 +190,11 @@ UINT CCheckForUpdatesDlg::CheckThread()
 #endif
 			if (checkPreview)
 			{
-				sCheckURL = _T("://versioncheck.tortoisegit.org/version-preview.txt");
+				sCheckURL = _T("https://versioncheck.tortoisegit.org/version-preview.txt");
 				SetDlgItemText(IDC_SOURCE, _T("Using preview release channel"));
 			}
 			else
-				sCheckURL = _T("://versioncheck.tortoisegit.org/version.txt");
-			if (SysInfo::Instance().IsVistaOrLater()) // we need SNI support
-				sCheckURL = _T("https") + sCheckURL;
-			else
-				sCheckURL = _T("http") + sCheckURL;
+				sCheckURL = _T("https://versioncheck.tortoisegit.org/version.txt");
 		}
 	}
 
@@ -800,33 +796,13 @@ CString CCheckForUpdatesDlg::GetDownloadsDirectory()
 {
 	CString folder;
 
-	if (SysInfo::Instance().IsVistaOrLater())
+	PWSTR wcharPtr = nullptr;
+	if (SUCCEEDED(SHGetKnownFolderPath(FOLDERID_Downloads, KF_FLAG_CREATE, nullptr, &wcharPtr)))
 	{
-		CAutoLibrary hShell = AtlLoadSystemLibraryUsingFullPath(_T("shell32.dll"));
-		if (hShell)
-		{
-			typedef HRESULT STDAPICALLTYPE SHGetKnownFolderPathFN(__in REFKNOWNFOLDERID rfid, __in DWORD dwFlags, __in_opt HANDLE hToken, __deref_out PWSTR *ppszPath);
-			SHGetKnownFolderPathFN *pfnSHGetKnownFolderPath = (SHGetKnownFolderPathFN*)GetProcAddress(hShell, "SHGetKnownFolderPath");
-			if (pfnSHGetKnownFolderPath)
-			{
-				wchar_t * wcharPtr = 0;
-				HRESULT hr = pfnSHGetKnownFolderPath(FOLDERID_Downloads, KF_FLAG_CREATE, NULL, &wcharPtr);
-				if (SUCCEEDED(hr))
-				{
-					folder = wcharPtr;
-					CoTaskMemFree(static_cast<void*>(wcharPtr));
-					return folder.TrimRight(_T("\\")) + _T("\\");
-				}
-			}
-		}
+		folder = wcharPtr;
+		CoTaskMemFree(wcharPtr);
+		return folder.TrimRight(_T("\\")) + _T("\\");
 	}
-
-	TCHAR szPath[MAX_PATH] = {0};
-	if (SUCCEEDED(SHGetFolderPath(NULL, CSIDL_PERSONAL | CSIDL_FLAG_CREATE, NULL, SHGFP_TYPE_CURRENT, szPath)))
-		folder = szPath;
-	CString downloads = folder.TrimRight(_T("\\")) + _T("\\Downloads\\");
-	if ((PathFileExists(downloads) && PathIsDirectory(downloads)) || (!PathFileExists(downloads) && CreateDirectory(downloads, NULL)))
-		return downloads;
 
 	return folder;
 }

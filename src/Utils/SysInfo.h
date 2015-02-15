@@ -36,10 +36,6 @@ public:
     static const SysInfo& Instance();
 
     DWORD           GetFullVersion() const {return MAKEWORD(inf.dwMinorVersion, inf.dwMajorVersion);}
-    bool            IsXP() const {return (GetFullVersion() < 0x0600);} // cover Win5.1 and 5.2 alike
-    bool            IsVista() const {return (GetFullVersion() == 0x0600);}
-    bool            IsVistaOrLater() const {return (GetFullVersion() >= 0x0600);}
-    bool            IsWin7() const {return (GetFullVersion() == 0x0601);}
     bool            IsWin7OrLater() const {return (GetFullVersion() >= 0x0601);}
     bool            IsWin8OrLater() const { return (GetFullVersion() >= 0x0602); }
     bool            IsWin10() const { return (GetFullVersion() == 0xA00); }
