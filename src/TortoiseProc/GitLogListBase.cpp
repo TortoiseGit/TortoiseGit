@@ -641,7 +641,7 @@ void CGitLogListBase::DrawTagBranchMessage(HDC hdc, CRect &rect, INT_PTR index, 
 	}
 	else
 	{
-		if (rItem.state & LVIS_SELECTED)
+		if ((rItem.state & LVIS_SELECTED) && (::GetFocus() == m_hWnd))
 		{
 			COLORREF clrOld = ::SetTextColor(hdc, skip ? RGB(128,128,128) : ::GetSysColor(COLOR_HIGHLIGHTTEXT));
 			::DrawText(hdc,data->GetSubject(), data->GetSubject().GetLength(), &rt, DT_NOPREFIX | DT_LEFT | DT_SINGLELINE | DT_VCENTER | DT_END_ELLIPSIS);
