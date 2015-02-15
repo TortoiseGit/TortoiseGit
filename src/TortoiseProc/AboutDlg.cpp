@@ -91,7 +91,7 @@ BOOL CAboutDlg::OnInitDialog()
 	}
 
 	CString tortoisegitprocpath;
-	tortoisegitprocpath.Format(_T("(%s)"), CPathUtils::GetAppDirectory());
+	tortoisegitprocpath.Format(_T("(%s)"), CPathUtils::GetAppDirectory().TrimRight(_T('\\')));
 	temp.Format(IDS_ABOUTVERSION, TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD, tortoisegitprocpath, out);
 	SetDlgItemText(IDC_VERSIONABOUT, Lf2Crlf(temp));
 
