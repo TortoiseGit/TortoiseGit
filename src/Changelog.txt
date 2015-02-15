@@ -1,5 +1,5 @@
 ﻿= Release 1.8.13.0 =
-Released: unreleased
+Released: 2015-02-15
 
 == Features ==
  * Improved auto update
@@ -7,10 +7,11 @@ Released: unreleased
    New version.txt file format with more options
  * Fixed issue #2243: Submodule red-icon doesn't propagate to higher folders (configurable now)
  * Improved overlay icon accuracy
+   You might need to kill TGitCache.exe once using the TaskManager in order to reset its cache
  * Fixed issue #2388: See the exact time when the Relative time in log enabled
  * Fixed issue #2346: Add drag'n'drop to "Apply patches" window
  * Fixed issue #2357: Save the state of Search criteria checkboxes in Log dialog
- * Fixed issue #2420: Make push available in log for arbitrary commits
+ * Fixed issue #2420: Make push available in log for arbitrary commits (when pressing the shift key)
  * Fixed issue #2351: Allow upstream to be separate from onto in rebase
  * Fixed issue #1400: Allow the use of tags within the Git Rebase dialog
  * Fixes issue #2417: Resolving a conflict forces refresh of Commit Dialog
@@ -20,7 +21,7 @@ Released: unreleased
    people don't want the list to automatically scroll to the top (this also mitigates
    issue #1949 until we have a cleaner fix). F5 for manual refresh is needed if enabled.
  * Fixed issue #56: Ability to use Cygwin's git instead of msysGit
-   Check out the manual (keyword "Gygwin git") regarding Cygwin Git support and configuration hints.
+   Check out the manual (keyword "Cygwin git") regarding Cygwin Git support and configuration hints.
    Please note that Cygwin Git is not officially supported by TortoiseGit as the developers only
    use Git for Windows. Bugreports, however, are welcome.
 
@@ -36,9 +37,10 @@ Released: unreleased
  * Fixed issue #2390: /command:log /outfile not written
  * Fixed issue #2391: Cannot clear "Load Putty Key" in clone dialog persistently
  * Fixed issue #1789: Tooltips not properly displayed in Log List if that commit has refs
- * Fixed issue #2353: Link to bug tracker not available in Show Log dialog
+ * Fixed issue #2353: Link to bug tracker not available in Show Log dialog on Win8+
  * Fixed issue #2368: CTRL+ENTER locks up GUI on Updating Index...
  * Fixed issue #2414: SendMail doesn't correctly place the mail in to list
+ * Fixed several issues in libgit2 regarding SafeCrLf and AutoCrlf
 
 = Release 1.8.12.0 =
 Released: 2014-11-25
