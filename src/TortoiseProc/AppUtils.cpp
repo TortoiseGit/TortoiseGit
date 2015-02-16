@@ -2734,19 +2734,19 @@ bool CAppUtils::Push(const CString& selectLocalBranch)
 			CString cmd;
 			if (dlg.m_bPushAllBranches)
 			{
-				cmd.Format(_T("git.exe push --all %s \"%s\""),
+				cmd.Format(_T("git.exe push --all %s\"%s\""),
 						arg,
 						remotesList[i]);
 
 				if (dlg.m_bTags)
 				{
 					progress.m_GitCmdList.push_back(cmd);
-					cmd.Format(_T("git.exe push --tags %s \"%s\""), arg, remotesList[i]);
+					cmd.Format(_T("git.exe push --tags %s\"%s\""), arg, remotesList[i]);
 				}
 			}
 			else
 			{
-				cmd.Format(_T("git.exe push %s \"%s\" %s"),
+				cmd.Format(_T("git.exe push %s\"%s\" %s"),
 						arg,
 						remotesList[i],
 						dlg.m_BranchSourceName);
