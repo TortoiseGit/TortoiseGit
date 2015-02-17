@@ -1,4 +1,10 @@
-﻿= Release 1.8.13.0 =
+﻿= Release 1.8.14.0 =
+Released: Unreleased
+
+== Bug Fixes ==
+ * Fixed issue #2427: "Submodule of Project: " cannot be localized
+
+= Release 1.8.13.0 =
 Released: 2015-02-15
 
 == Features ==

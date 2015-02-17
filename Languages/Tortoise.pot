@@ -8874,10 +8874,6 @@ msgstr ""
 msgid "Submodule Diff"
 msgstr ""
 
-#. Resource IDs: (1585)
-msgid "Submodule Info"
-msgstr ""
-
 #. Resource IDs: (76)
 msgid "Submodule Init"
 msgstr ""
@@ -8897,6 +8893,10 @@ msgstr ""
 #. Resource IDs: (90)
 #, c-format
 msgid "Submodule \"%1!s!\"\r\nRevision %2!s!"
+msgstr ""
+
+#. Resource IDs: (1585)
+msgid "Submodule of Project: "
 msgstr ""
 
 #. Resource IDs: (1708)

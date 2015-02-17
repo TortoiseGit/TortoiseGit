@@ -116,7 +116,10 @@ BOOL CSubmoduleAddDlg::OnInitDialog()
 	GetDlgItem(IDC_PUTTYKEYFILE)->EnableWindow(m_bAutoloadPuttyKeyFile);
 	GetDlgItem(IDC_PUTTYKEYFILE_BROWSE)->EnableWindow(m_bAutoloadPuttyKeyFile);
 
-	GetDlgItem(IDC_GROUP_SUBMODULE)->SetWindowText(CString(_T("Submodule of Project: "))+m_strProject);
+	CString text;
+	GetDlgItem(IDC_GROUP_SUBMODULE)->GetWindowText(text);
+	text += m_strProject;
+	GetDlgItem(IDC_GROUP_SUBMODULE)->SetWindowText(text);
 
 	m_tooltips.Create(this);
 
