@@ -273,6 +273,7 @@
 #define IDC_SKIPWORKTREE                11029
 #define IDC_STATIC_LASTMODIFIED         11030
 #define IDC_SYMLINK                     11031
+#define IDS_ETC                         11032
 
 // Next default values for new objects
 // 

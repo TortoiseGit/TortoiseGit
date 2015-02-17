@@ -208,6 +208,11 @@ BEGIN
     IDS_SANDBOX_NOTALLOWED1 "Can't create Sandbox here becase the following folder already has a Sandbox:"
 END
 
+STRINGTABLE
+BEGIN
+    IDS_ETC                 "..."
+END
+
 #endif    // English (United States) resources
 /////////////////////////////////////////////////////////////////////////////
 

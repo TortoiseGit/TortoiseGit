@@ -38,17 +38,28 @@ static const IntegritySession& getIntegritySession() {
  *  return true if there was a decentant path that was controlled
  */
 bool warnIfPathHasControlledDecendantFolders(std::wstring path, HWND parentWindow) {
+	int maxPaths = 10;
+	int nPaths = 0;
+
 	std::transform(path.begin(), path.end(), path.begin(), ::tolower);
 
 	// show the user where the sandboxes when they are decandants of the current folder since 
 	// it may not be obvious to the user why they can't create a sandbox here
 	std::wstring message;
 	for (std::wstring rootFolder : IStatusCache::getInstance().getRootFolderCache().getRootFolders()) {
+
+		nPaths++;
+
 		if (startsWith(rootFolder, path)) {
 			if (message.empty()) {
 				message = getTortoiseSIString(IDS_SANDBOX_NOTALLOWED1);
 			}
 			message += L"\n\t '" + rootFolder + L"'";
+		}
+
+		if (nPaths >= maxPaths) {
+			message += L"\n\t  " + getTortoiseSIString(IDS_ETC);
+			break;
 		}
 	}
 
