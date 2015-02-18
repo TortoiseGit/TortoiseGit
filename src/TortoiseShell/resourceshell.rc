@@ -205,12 +205,13 @@ BEGIN
     IDS_VIEW_SANDBOX        "View Sandbox"
     IDS_CREATE_SANDBOX      "Create Sandbox"
     IDS_MENU                "Tortoise SI"
-    IDS_SANDBOX_NOTALLOWED1 "Can't create Sandbox here becase the following folder already has a Sandbox:"
+    IDS_SANDBOX_NOTALLOWED1 "Can't create Sandbox here because the following folder(s) already have Sandboxes:"
 END
 
 STRINGTABLE
 BEGIN
     IDS_ETC                 "..."
+    IDS_SHOWING_PARTIAL_RESULTS "(Showing %1!d! of %2!d! only)"
 END
 
 #endif    // English (United States) resources

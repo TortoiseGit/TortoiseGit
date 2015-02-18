@@ -55,6 +55,7 @@ extern  CComCriticalSection	g_csGlobalCOMGuard;
 typedef CComCritSecLock<CComCriticalSection> AutoLocker;
 
 extern std::wstring getTortoiseSIString(DWORD stringID);
+extern std::wstring getFormattedTortoiseSIString(DWORD stringID, ...);
 
 // The actual OLE Shell context menu handler
 /**

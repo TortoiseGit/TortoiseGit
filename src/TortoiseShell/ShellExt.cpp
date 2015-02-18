@@ -253,3 +253,17 @@ std::wstring getTortoiseSIString(DWORD stringID)
 	LoadStringEx(g_hResInst, stringID, buffer, _countof(buffer), (WORD)CRegStdDWORD(_T("Software\\TortoiseSI\\LanguageID"), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT)));
 	return buffer;
 }
+
+std::wstring getFormattedTortoiseSIString(DWORD stringID, ... )
+{
+	wchar_t parameterized_buffer[1024];
+	wchar_t output_buffer[1024];
+	va_list args = NULL;
+
+	va_start(args, stringID);
+	LoadStringEx(g_hResInst, stringID, parameterized_buffer, _countof(parameterized_buffer), (WORD)CRegStdDWORD(_T("Software\\TortoiseSI\\LanguageID"), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT)));
+	FormatMessageW(FORMAT_MESSAGE_FROM_STRING, parameterized_buffer, 0, 0, output_buffer, 1024, &args);
+	va_end(args);
+
+	return output_buffer;
+}
