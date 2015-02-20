@@ -33,7 +33,10 @@ CMergeAbortDlg::CMergeAbortDlg(CWnd* pParent /*=NULL*/)
 	: CStateStandAloneDialog(CMergeAbortDlg::IDD, pParent)
 	, m_ResetType(2)
 {
-
+	CString WorkingDir = g_Git.m_CurrentDir;
+	WorkingDir.Replace(_T(':'), _T('_'));
+	m_regResetType = CRegDWORD(_T("Software\\TortoiseGit\\History\\MergeAbort\\") + WorkingDir, 2);
+	m_ResetType = (int)m_regResetType;
 }
 
 CMergeAbortDlg::~CMergeAbortDlg()
@@ -76,6 +79,7 @@ void CMergeAbortDlg::OnOK()
 {
 	this->UpdateData(TRUE);
 	m_ResetType = this->GetCheckedRadioButton(IDC_RADIO_ABORT_MERGE, IDC_RADIO_RESET_HARD) - IDC_RADIO_ABORT_MERGE;
+	m_regResetType = m_ResetType;
 	return CStateStandAloneDialog::OnOK();
 }
 

@@ -39,6 +39,9 @@ protected:
 	afx_msg void OnBnClickedShowModifiedFiles();
 
 	DECLARE_MESSAGE_MAP()
+
+	CRegDWORD m_regResetType;
+
 public:
 	int m_ResetType;
 };
