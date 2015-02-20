@@ -158,20 +158,12 @@ bool CloneCommand::Execute()
 		}
 
 		CString cmd;
-		CString progressarg;
-
-		int ver = CAppUtils::GetMsysgitVersion();
-
-		if(ver >= 0x01070002) //above 1.7.0.2
-			progressarg = _T(" --progress");
-
-		cmd.Format(_T("git.exe clone%s%s%s%s%s%s -v%s \"%s\" \"%s\""),
+		cmd.Format(_T("git.exe clone --progress%s%s%s%s%s -v%s \"%s\" \"%s\""),
 						(LPCTSTR)nocheckoutStr,
 						(LPCTSTR)recursiveStr,
 						(LPCTSTR)bareStr,
 						(LPCTSTR)branchStr,
 						(LPCTSTR)originStr,
-						(LPCTSTR)progressarg,
 						(LPCTSTR)depth,
 						(LPCTSTR)url,
 						(LPCTSTR)dir);
@@ -276,9 +268,6 @@ bool CloneCommand::Execute()
 			progress.m_GitCmd=cmd;
 			progress.m_PostCmdCallback = postCmdCallback;
 			INT_PTR ret = progress.DoModal();
-
-			if (dlg.m_bSVN)
-				::DeleteFile(g_Git.m_CurrentDir + _T("\\sys$command"));
 
 			if (!retry)
 				return ret == IDOK;

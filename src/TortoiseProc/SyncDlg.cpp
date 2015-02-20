@@ -45,7 +45,6 @@ CSyncDlg::CSyncDlg(CWnd* pParent /*=NULL*/)
 	m_CmdOutCurrentPos=0;
 	m_bAutoLoadPuttyKey = CAppUtils::IsSSHPutty();
 	m_bForce=false;
-	m_Gitverion = 0;
 	m_bBlock = false;
 	m_BufStart = 0;
 	m_pThread = NULL;
@@ -171,7 +170,7 @@ void CSyncDlg::OnBnClickedButtonPull()
 
 	CString force;
 	if(this->m_bForce)
-		force = _T(" --force ");
+		force = _T(" --force");
 
 	CString cmd;
 
@@ -196,10 +195,7 @@ void CSyncDlg::OnBnClickedButtonPull()
 				remotebranch.Empty();
 		}
 
-		if(m_Gitverion >= 0x01070203) //above 1.7.0.2
-			force += _T("--progress ");
-
-		cmd.Format(_T("git.exe pull -v %s \"%s\" %s"),
+		cmd.Format(_T("git.exe pull -v --progress%s \"%s\" %s"),
 				(LPCTSTR)force,
 				(LPCTSTR)m_strURL,
 				(LPCTSTR)remotebranch);
@@ -260,10 +256,7 @@ void CSyncDlg::OnBnClickedButtonPull()
 		}
 		else
 		{
-			if(m_Gitverion >= 0x01070203) //above 1.7.0.2
-				force += _T("--progress ");
-
-			cmd.Format(_T("git.exe fetch -v %s \"%s\" %s"),
+			cmd.Format(_T("git.exe fetch --progress -v%s \"%s\" %s"),
 					(LPCTSTR)force,
 					(LPCTSTR)m_strURL,
 					(LPCTSTR)remotebranch);
@@ -549,7 +542,7 @@ void CSyncDlg::OnBnClickedButtonPush()
 	switch (m_ctrlPush.GetCurrentEntry())
 	{
 	case 1:
-		arg += _T(" --tags ");
+		arg += _T(" --tags");
 		break;
 	case 2:
 		refName = _T("refs/notes/commits");	//default ref for notes
@@ -557,12 +550,9 @@ void CSyncDlg::OnBnClickedButtonPush()
 	}
 
 	if(this->m_bForce)
-		arg += _T(" --force ");
+		arg += _T(" --force");
 
-	if(m_Gitverion >= 0x01070203) //above 1.7.0.2
-		arg += _T("--progress ");
-
-	cmd.Format(_T("git.exe push -v %s \"%s\" %s"),
+	cmd.Format(_T("git.exe push -v --progress%s \"%s\" %s"),
 				(LPCTSTR)arg,
 				(LPCTSTR)m_strURL,
 				(LPCTSTR)refName);
@@ -992,8 +982,6 @@ BOOL CSyncDlg::OnInitDialog()
 
 	m_ctrlRemoteBranch.m_bWantReturn = TRUE;
 	m_ctrlURL.m_bWantReturn = TRUE;
-
-	this->m_Gitverion = CAppUtils::GetMsysgitVersion();
 
 	if (m_seq > 0 && (DWORD)CRegDWORD(_T("Software\\TortoiseGit\\SyncDialogRandomPos")))
 	{

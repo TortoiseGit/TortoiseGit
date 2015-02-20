@@ -196,13 +196,6 @@ void CSubmoduleUpdateDlg::OnBnClickedOk()
 {
 	CResizableStandAloneDialog::UpdateData(TRUE);
 	m_PathList.clear();
-	if (m_bRemote && CAppUtils::GetMsysgitVersion() < 0x01080200)
-	{
-		CString gitver;
-		gitver.Format(IDS_GITVER_REQUIRED, _T("--remote"), _T("1.8.2"));
-		CMessageBox::Show(m_hWnd, gitver, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
-		return;
-	}
 
 	CString selected;
 	for (int i = 0; i < m_PathListBox.GetCount(); ++i)

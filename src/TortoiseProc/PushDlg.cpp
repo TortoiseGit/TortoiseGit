@@ -202,9 +202,6 @@ BOOL CPushDlg::OnInitDialog()
 	m_RecurseSubmodulesCombo.AddString(CString(MAKEINTRESOURCE(IDS_RECURSE_SUBMODULES_ONDEMAND)));
 	m_RecurseSubmodulesCombo.SetCurSel(m_RecurseSubmodules);
 
-	if (CAppUtils::GetMsysgitVersion() < 0x01080500)
-		GetDlgItem(IDC_FORCE_WITH_LEASE)->EnableWindow(FALSE);
-
 	Refresh();
 
 	this->UpdateData(false);
@@ -475,13 +472,6 @@ void CPushDlg::OnBnClickedOk()
 	m_regThinPack = m_bPack;
 	this->m_regAutoLoad = m_bAutoLoad ;
 	m_RecurseSubmodules = m_RecurseSubmodulesCombo.GetCurSel();
-	if (m_RecurseSubmodules == 2 && CAppUtils::GetMsysgitVersion() < 0x01070b00)
-	{
-		CString gitver;
-		gitver.Format(IDS_GITVER_REQUIRED, _T("--recurse-submodules=on-demand"), _T("1.7.11"));
-		CMessageBox::Show(m_hWnd, gitver, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
-		return;
-	}
 	m_regRecurseSubmodules = m_RecurseSubmodules;
 
 	CHorizontalResizableStandAloneDialog::OnOK();
@@ -589,8 +579,7 @@ void CPushDlg::OnBnClickedPushall()
 void CPushDlg::OnBnClickedForce()
 {
 	UpdateData();
-	if (CAppUtils::GetMsysgitVersion() >= 0x01080500)
-		GetDlgItem(IDC_FORCE_WITH_LEASE)->EnableWindow(m_bTags || m_bForce ? FALSE : TRUE);
+	GetDlgItem(IDC_FORCE_WITH_LEASE)->EnableWindow(m_bTags || m_bForce ? FALSE : TRUE);
 }
 
 void CPushDlg::OnBnClickedForceWithLease()

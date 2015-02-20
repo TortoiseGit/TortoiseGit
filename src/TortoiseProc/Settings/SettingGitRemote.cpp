@@ -110,18 +110,8 @@ BOOL CSettingGitRemote::OnInitDialog()
 
 	m_ctrlTagOpt.AddString(CString(MAKEINTRESOURCE(IDS_FETCH_REACHABLE)));
 	m_ctrlTagOpt.AddString(CString(MAKEINTRESOURCE(IDS_NONE)));
-	m_ctrlTagOpt.AddString(CString(MAKEINTRESOURCE(CAppUtils::GetMsysgitVersion() < 0x01090000 ? IDS_FETCH_TAGS_ONLY : IDS_ALL)));
+	m_ctrlTagOpt.AddString(CString(MAKEINTRESOURCE(IDS_ALL)));
 	m_ctrlTagOpt.SetCurSel(0);
-
-	if (CAppUtils::GetMsysgitVersion() < 0x0108030)
-	{
-		GetDlgItem(IDC_CHECK_PUSHDEFAULT)->ShowWindow(SW_HIDE);
-	}
-	if (CAppUtils::GetMsysgitVersion() < 0x0108050)
-	{
-		GetDlgItem(IDC_CHECK_PRUNE)->ShowWindow(SW_HIDE);
-		GetDlgItem(IDC_CHECK_PRUNEALL)->ShowWindow(SW_HIDE);
-	}
 
 	CString pruneAll = g_Git.GetConfigValue(_T("fetch.prune"));
 	m_bPruneAll = pruneAll == _T("true") ? TRUE : FALSE;

@@ -3190,7 +3190,6 @@ BOOL CAppUtils::SVNDCommit()
 	}
 	if(progress.DoModal()==IDOK && progress.m_GitStatus == 0)
 	{
-		::DeleteFile(g_Git.m_CurrentDir + _T("\\sys$command"));
 		if( IsStash)
 		{
 			if(CMessageBox::Show(NULL,IDS_DCOMMIT_STASH_POP,IDS_APPNAME,MB_YESNO|MB_ICONINFORMATION)==IDYES)

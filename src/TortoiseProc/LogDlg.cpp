@@ -977,9 +977,7 @@ void CLogDlg::FillPatchView(bool onlySetTimer)
 
 	if (pos == nullptr)
 	{
-		int diffContext = 0;
-		if (CAppUtils::GetMsysgitVersion() > 0x01080100)
-			diffContext = g_Git.GetConfigValueInt32(_T("diff.context"), -1);
+		int diffContext = g_Git.GetConfigValueInt32(_T("diff.context"), -1);
 		CStringA outA;
 		CString rev1 = pLogEntry->m_CommitHash.IsEmpty() ? _T("HEAD") : (pLogEntry->m_CommitHash.ToString() + _T("~1"));
 		CString rev2 = pLogEntry->m_CommitHash.IsEmpty() ? GIT_REV_ZERO : pLogEntry->m_CommitHash.ToString();

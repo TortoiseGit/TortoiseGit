@@ -199,8 +199,6 @@ public:
 	int				m_seq;
 
 protected:
-	int				m_Gitverion;
-
 	static UINT		ProgressThreadEntry(LPVOID pVoid){ return ((CSyncDlg*)pVoid) ->ProgressThread(); };
 	UINT			ProgressThread();
 

@@ -1,7 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2011-2015 - TortoiseGit
-// Copyright (C) 2011-2013 Sven Strickroth, <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -72,12 +71,6 @@ BOOL CStashSaveDlg::OnInitDialog()
 	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);
 
 	this->UpdateData(false);
-
-	if (CAppUtils::GetMsysgitVersion() < 0x01070700)
-	{
-		GetDlgItem(IDC_CHECK_UNTRACKED)->EnableWindow(FALSE);
-		GetDlgItem(IDC_CHECK_ALL)->EnableWindow(FALSE);
-	}
 
 	return TRUE;
 }
