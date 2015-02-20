@@ -3268,7 +3268,44 @@ BOOL CAppUtils::MergeAbort()
 {
 	CMergeAbortDlg dlg;
 	if (dlg.DoModal() == IDOK)
-		return Reset(_T("HEAD"), dlg.m_ResetType + 1);
+	{
+		if (dlg.m_ResetType == 0)
+		{
+			CString cmd;
+			if (GetMsysgitVersion() < 0x01070600)
+				cmd = _T("git.exe reset --merge");
+			else
+				cmd = _T("git.exe merge --abort");
+
+			CProgressDlg progress;
+			progress.m_GitCmd = cmd;
+
+			progress.m_PostCmdCallback = [&](DWORD status, PostCmdList& postCmdList)
+			{
+				if (status)
+				{
+					postCmdList.push_back(PostCmd(IDI_REFRESH, IDS_MSGBOX_RETRY, []{ MergeAbort(); }));
+					return;
+				}
+
+				CTGitPath gitPath = g_Git.m_CurrentDir;
+				if (gitPath.HasSubmodules())
+				{
+					postCmdList.push_back(PostCmd(IDI_UPDATE, IDS_PROC_SUBMODULESUPDATE, [&]
+					{
+						CString sCmd;
+						sCmd.Format(_T("/command:subupdate /bkpath:\"%s\""), g_Git.m_CurrentDir);
+						CAppUtils::RunTortoiseGitProc(sCmd);
+					}));
+				}
+			};
+
+			INT_PTR ret = progress.DoModal();
+			return ret == IDOK;
+		}
+
+		return Reset(_T("HEAD"), dlg.m_ResetType);
+	}
 
 	return FALSE;
 }

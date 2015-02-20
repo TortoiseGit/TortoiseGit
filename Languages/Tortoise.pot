@@ -1579,6 +1579,10 @@ msgstr ""
 msgid "Abort Merge"
 msgstr ""
 
+#. Resource IDs: (1554)
+msgid "Abort Type"
+msgstr ""
+
 #. Resource IDs: (15)
 msgid "Aborts a running merge."
 msgstr ""
@@ -5523,10 +5527,6 @@ msgstr ""
 msgid "In Commits"
 msgstr ""
 
-#. Resource IDs: (1649)
-msgid "In order to abort a merge progess a reset (to HEAD) is needed."
-msgstr ""
-
 #. Resource IDs: (1499)
 msgid "Include &Tags"
 msgstr ""
@@ -6004,6 +6004,10 @@ msgstr ""
 #. Resource IDs: (1252)
 #, c-format
 msgid "Merge to \"%s\"..."
+msgstr ""
+
+#. Resource IDs: (1550)
+msgid "Merge: Reset files related to this merge in working tree and index"
 msgstr ""
 
 #. Resource IDs: (263, 1257)

@@ -3,6 +3,7 @@ Released: Unreleased
 
 == Features ==
  * Fixed issue #2441: A way to disable the sound that is played on errors
+ * Fixed issue #2429: TortoiseGit "Abort merge" should work like "git merge --abort"
 
 == Bug Fixes ==
  * Fixed issue #2427: "Submodule of Project: " cannot be localized
