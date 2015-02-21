@@ -18,7 +18,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #include "stdafx.h"
-//#include "resource.h"			//if you defined some IDS_MSGBOX_xxxx this include is needed!
+#include "resource.h"			//if you defined some IDS_MSGBOX_xxxx this include is needed!
 #include "messagebox.h"
 #include "ClipboardHelper.h"
 #include "SmartHandle.h"

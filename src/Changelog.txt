@@ -3,6 +3,7 @@ Released: Unreleased
 
 == Bug Fixes ==
  * Fixed issue #2427: "Submodule of Project: " cannot be localized
+ * Fixed issue #2432: MessageBox buttons cannot be localized
 
 = Release 1.8.13.0 =
 Released: 2015-02-15
