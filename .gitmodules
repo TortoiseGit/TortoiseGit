@@ -22,3 +22,6 @@
 [submodule "ext/pcre"]
 	path = ext/pcre
 	url = https://gitorious.org/pcre/pcre.git
+[submodule "ext/gtest"]
+	path = ext/gtest
+	url = http://git.chromium.org/external/googletest.git
