@@ -19,7 +19,6 @@
 #include "stdafx.h"
 #include "HyperLink.h"
 #include "SmartHandle.h"
-#include <atlconv.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

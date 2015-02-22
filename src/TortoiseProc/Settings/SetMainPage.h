@@ -51,7 +51,6 @@ protected:
 	afx_msg void OnModified();
 	afx_msg void OnMsysGitPathModify();
 	afx_msg void OnBnClickedChecknewerbutton();
-	afx_msg void OnBnClickedSounds();
 	afx_msg void OnBrowseDir();
 	afx_msg void OnCheck();
 	afx_msg void OnBnClickedButtonShowEnv();

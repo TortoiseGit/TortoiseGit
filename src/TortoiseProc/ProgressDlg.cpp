@@ -23,7 +23,6 @@
 #include "TortoiseProc.h"
 #include "ProgressDlg.h"
 #include "Git.h"
-#include "atlconv.h"
 #include "UnicodeUtils.h"
 #include "IconMenu.h"
 #include "LoglistCommonResource.h"

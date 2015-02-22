@@ -74,7 +74,6 @@ BEGIN_MESSAGE_MAP(CSetMainPage, ISettingsPropPage)
 //	ON_EN_CHANGE(IDC_TEMPEXTENSIONS, OnModified)
 	ON_BN_CLICKED(IDC_CHECKNEWERVERSION, OnModified)
 	ON_BN_CLICKED(IDC_CHECKNEWERBUTTON, OnBnClickedChecknewerbutton)
-	ON_BN_CLICKED(IDC_SOUNDS, OnBnClickedSounds)
 	ON_BN_CLICKED(IDC_MSYSGIT_BROWSE,OnBrowseDir)
 	ON_BN_CLICKED(IDC_MSYSGIT_CHECK,OnCheck)
 	ON_EN_CHANGE(IDC_MSYSGIT_PATH, OnMsysGitPathModify)
@@ -249,14 +248,6 @@ BOOL CSetMainPage::OnApply()
 void CSetMainPage::OnBnClickedChecknewerbutton()
 {
 	CAppUtils::RunTortoiseGitProc(_T("/command:updatecheck /visible"), false, false);
-}
-
-void CSetMainPage::OnBnClickedSounds()
-{
-	if (SysInfo::Instance().IsVistaOrLater())
-		CAppUtils::LaunchApplication(_T("RUNDLL32 Shell32,Control_RunDLL mmsys.cpl,,2"), NULL, false);
-	else
-		CAppUtils::LaunchApplication(_T("RUNDLL32 Shell32,Control_RunDLL mmsys.cpl,,1"), NULL, false);
 }
 
 void CSetMainPage::OnBrowseDir()
