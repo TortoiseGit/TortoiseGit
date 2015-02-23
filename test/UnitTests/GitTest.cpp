@@ -28,3 +28,37 @@ TEST(CGit, RunSet)
 	ASSERT_FALSE(output.IsEmpty());
 	ASSERT_TRUE(output.Find(_T("windir"))); // should be there on any MS OS ;)
 }
+
+TEST(CGit, IsInitRepos_Git)
+{
+	CAutoTempDir tmpDir;
+
+	CGit cgit;
+	cgit.m_IsUseLibGit2 = false;
+	cgit.m_CurrentDir = tmpDir.GetTempDir();
+
+	ASSERT_TRUE(cgit.IsInitRepos());
+
+	CString output;
+	EXPECT_EQ(0, cgit.Run(_T("git.exe init"), &output, CP_UTF8));
+	EXPECT_FALSE(output.IsEmpty());
+
+	EXPECT_TRUE(cgit.IsInitRepos());
+}
+
+TEST(CGit, IsInitRepos_Libgit2)
+{
+	CAutoTempDir tmpDir;
+
+	CGit cgit;
+	cgit.m_IsUseLibGit2 = true;
+	cgit.m_CurrentDir = tmpDir.GetTempDir();
+
+	ASSERT_TRUE(cgit.IsInitRepos());
+
+	CString output;
+	EXPECT_EQ(0, cgit.Run(_T("git.exe init"), &output, CP_UTF8));
+	EXPECT_FALSE(output.IsEmpty());
+
+	EXPECT_TRUE(cgit.IsInitRepos());
+}

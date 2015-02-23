@@ -76,6 +76,7 @@
     <ClInclude Include="..\..\src\Utils\CommonAppUtils.h" />
     <ClInclude Include="..\..\src\Utils\DebugHelpers.h" />
     <ClInclude Include="..\..\src\Utils\DebugOutput.h" />
+    <ClInclude Include="..\..\src\Utils\DirFileEnum.h" />
     <ClInclude Include="..\..\src\Utils\PathUtils.h" />
     <ClInclude Include="..\..\src\Utils\ProfilingInfo.h" />
     <ClInclude Include="..\..\src\Utils\ReaderWriterLock.h" />
@@ -84,6 +85,7 @@
     <ClInclude Include="..\..\src\Utils\SmartLibgit2Ref.h" />
     <ClInclude Include="..\..\src\Utils\StringUtils.h" />
     <ClInclude Include="..\..\src\Utils\UnicodeUtils.h" />
+    <ClInclude Include="AutoTempDir.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
@@ -97,12 +99,15 @@
     <ClCompile Include="..\..\src\TortoiseProc\ProjectProperties.cpp" />
     <ClCompile Include="..\..\src\Utils\CommonAppUtils.cpp" />
     <ClCompile Include="..\..\src\Utils\DebugOutput.cpp" />
+    <ClCompile Include="..\..\src\Utils\DirFileEnum.cpp" />
     <ClCompile Include="..\..\src\Utils\PathUtils.cpp" />
     <ClCompile Include="..\..\src\Utils\ProfilingInfo.cpp" />
     <ClCompile Include="..\..\src\Utils\ReaderWriterLock.cpp" />
     <ClCompile Include="..\..\src\Utils\Registry.cpp" />
     <ClCompile Include="..\..\src\Utils\StringUtils.cpp" />
     <ClCompile Include="..\..\src\Utils\UnicodeUtils.cpp" />
+    <ClCompile Include="AutoTempDir.cpp" />
+    <ClCompile Include="GitAdminDirTest.cpp" />
     <ClCompile Include="GitTest.cpp" />
     <ClCompile Include="PathUtilsTest.cpp" />
     <ClCompile Include="ProjectPropertiesTest.cpp" />

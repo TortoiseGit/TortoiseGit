@@ -44,3 +44,5 @@
 
 // Header for gtest
 #include "gtest/gtest.h"
+
+#include "AutoTempDir.h"

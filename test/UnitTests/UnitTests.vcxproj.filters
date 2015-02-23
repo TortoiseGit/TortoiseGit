@@ -89,6 +89,12 @@
     <ClInclude Include="..\..\src\Utils\CommonAppUtils.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="AutoTempDir.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Utils\DirFileEnum.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -157,7 +163,16 @@
     <ClCompile Include="PathUtilsTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AutoTempDir.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Utils\DirFileEnum.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
     <ClCompile Include="UnitTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GitAdminDirTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
