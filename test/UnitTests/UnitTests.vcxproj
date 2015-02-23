@@ -72,6 +72,8 @@
     <ClInclude Include="..\..\src\Git\gittype.h" />
     <ClInclude Include="..\..\src\Git\MassiveGitTaskBase.h" />
     <ClInclude Include="..\..\src\Git\TGitPath.h" />
+    <ClInclude Include="..\..\src\TortoiseProc\ProjectProperties.h" />
+    <ClInclude Include="..\..\src\Utils\CommonAppUtils.h" />
     <ClInclude Include="..\..\src\Utils\DebugHelpers.h" />
     <ClInclude Include="..\..\src\Utils\DebugOutput.h" />
     <ClInclude Include="..\..\src\Utils\PathUtils.h" />
@@ -92,6 +94,8 @@
     <ClCompile Include="..\..\src\Git\GitStatus.cpp" />
     <ClCompile Include="..\..\src\Git\MassiveGitTaskBase.cpp" />
     <ClCompile Include="..\..\src\Git\TGitPath.cpp" />
+    <ClCompile Include="..\..\src\TortoiseProc\ProjectProperties.cpp" />
+    <ClCompile Include="..\..\src\Utils\CommonAppUtils.cpp" />
     <ClCompile Include="..\..\src\Utils\DebugOutput.cpp" />
     <ClCompile Include="..\..\src\Utils\PathUtils.cpp" />
     <ClCompile Include="..\..\src\Utils\ProfilingInfo.cpp" />
@@ -100,9 +104,13 @@
     <ClCompile Include="..\..\src\Utils\StringUtils.cpp" />
     <ClCompile Include="..\..\src\Utils\UnicodeUtils.cpp" />
     <ClCompile Include="GitTest.cpp" />
+    <ClCompile Include="PathUtilsTest.cpp" />
+    <ClCompile Include="ProjectPropertiesTest.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="StringUtilsTest.cpp" />
+    <ClCompile Include="TGitPathTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\ext\build\gtest.vcxproj">

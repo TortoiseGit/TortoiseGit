@@ -15,6 +15,9 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
+    <Filter Include="TortoiseProc">
+      <UniqueIdentifier>{72614fd5-1346-4028-b739-2c1740f915d9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -80,6 +83,12 @@
     <ClInclude Include="..\..\src\Utils\ReaderWriterLock.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\TortoiseProc\ProjectProperties.h">
+      <Filter>TortoiseProc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Utils\CommonAppUtils.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -127,7 +136,25 @@
     <ClCompile Include="..\..\src\Utils\ReaderWriterLock.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="StringUtilsTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="GitTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\TortoiseProc\ProjectProperties.cpp">
+      <Filter>TortoiseProc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Utils\CommonAppUtils.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="ProjectPropertiesTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TGitPathTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PathUtilsTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

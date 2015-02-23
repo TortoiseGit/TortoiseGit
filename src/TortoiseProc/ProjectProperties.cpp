@@ -18,7 +18,7 @@
 //
 #include "stdafx.h"
 #include "ProjectProperties.h"
-#include "AppUtils.h"
+#include "CommonAppUtils.h"
 #include "Git.h"
 #include "UnicodeUtils.h"
 
@@ -355,7 +355,7 @@ std::vector<CHARRANGE> ProjectProperties::FindBugIDPositions(const CString& msg)
 BOOL ProjectProperties::FindBugID(const CString& msg, CWnd * pWnd)
 {
 	std::vector<CHARRANGE> positions = FindBugIDPositions(msg);
-	CAppUtils::SetCharFormat(pWnd, CFM_LINK, CFE_LINK, positions);
+	CCommonAppUtils::SetCharFormat(pWnd, CFM_LINK, CFE_LINK, positions);
 
 	return positions.empty() ? FALSE : TRUE;
 }
@@ -449,56 +449,3 @@ BOOL ProjectProperties::HasBugID(const CString& sMessage)
 	}
 	return FALSE;
 }
-
-#ifdef DEBUG
-static class PropTest
-{
-public:
-	PropTest()
-	{
-		CString msg = _T("this is a test logmessage: issue 222\nIssue #456, #678, 901  #456");
-		CString sUrl = _T("http://tortoisesvn.tigris.org/issues/show_bug.cgi?id=%BUGID%");
-		CString sCheckRe = _T("[Ii]ssue #?(\\d+)(,? ?#?(\\d+))+");
-		CString sBugIDRe = _T("(\\d+)");
-		ProjectProperties props;
-		props.sCheckRe = _T("PAF-[0-9]+");
-		props.sUrl = _T("http://tortoisesvn.tigris.org/issues/show_bug.cgi?id=%BUGID%");
-		CString sRet = props.FindBugID(_T("This is a test for PAF-88"));
-		ATLASSERT(sRet.IsEmpty());
-		props.sCheckRe = _T("[Ii]ssue #?(\\d+)");
-		props.regExNeedUpdate = true;
-		sRet = props.FindBugID(_T("Testing issue #99"));
-		sRet.Trim();
-		ATLASSERT(sRet.Compare(_T("99"))==0);
-		props.sCheckRe = _T("[Ii]ssues?:?(\\s*(,|and)?\\s*#\\d+)+");
-		props.sBugIDRe = _T("(\\d+)");
-		props.sUrl = _T("http://tortoisesvn.tigris.org/issues/show_bug.cgi?id=%BUGID%");
-		props.regExNeedUpdate = true;
-		sRet = props.FindBugID(_T("This is a test for Issue #7463,#666"));
-		ATLASSERT(props.HasBugID(_T("This is a test for Issue #7463,#666")));
-		ATLASSERT(!props.HasBugID(_T("This is a test for Issue 7463,666")));
-		sRet.Trim();
-		ATLASSERT(sRet.Compare(_T("666 7463"))==0);
-		sRet = props.FindBugID(_T("This is a test for Issue #850,#1234,#1345"));
-		sRet.Trim();
-		ATLASSERT(sRet.Compare(_T("850 1234 1345"))==0);
-		props.sCheckRe = _T("^\\[(\\d+)\\].*");
-		props.sUrl = _T("http://tortoisesvn.tigris.org/issues/show_bug.cgi?id=%BUGID%");
-		props.regExNeedUpdate = true;
-		sRet = props.FindBugID(_T("[000815] some stupid programming error fixed"));
-		sRet.Trim();
-		ATLASSERT(sRet.Compare(_T("000815"))==0);
-		props.sCheckRe = _T("\\[\\[(\\d+)\\]\\]\\]");
-		props.sUrl = _T("http://tortoisesvn.tigris.org/issues/show_bug.cgi?id=%BUGID%");
-		props.regExNeedUpdate = true;
-		sRet = props.FindBugID(_T("test test [[000815]]] some stupid programming error fixed"));
-		sRet.Trim();
-		ATLASSERT(sRet.Compare(_T("000815"))==0);
-		ATLASSERT(props.HasBugID(_T("test test [[000815]]] some stupid programming error fixed")));
-		ATLASSERT(!props.HasBugID(_T("test test [000815]] some stupid programming error fixed")));
-	}
-} PropTest;
-#endif
-
-
-

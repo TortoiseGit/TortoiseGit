@@ -9,3 +9,5 @@
 // and not in this file
 
 CGitIndexFileMap g_IndexFileMap;
+CString g_sGroupingUUID;
+CString sOrigCWD;
