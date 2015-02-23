@@ -142,6 +142,7 @@ TEST(CTGitPath, PathAppendTest)
 	// You wouldn't want to do this in real life - you'd use append-raw
 	testBasePath.AppendPathString(testFilePath.GetFileExtension());
 	EXPECT_EQ(_T("c:\\temp\\myfile.txt\\.ini"), testBasePath.GetWinPathString());
+	EXPECT_EQ(_T("c:/temp/myfile.txt/.ini"), testBasePath.GetGitPathString());
 }
 
 TEST(CTGitPath, RemoveDuplicatesTest)
@@ -382,13 +383,94 @@ TEST(CTGitPath, ListLoadingTest)
 	testList.LoadFromAsteriskSeparatedString(sPathList);
 
 	EXPECT_EQ(3, testList.GetCount());
-	EXPECT_TRUE(testList[0].GetWinPathString() == CString(buf) + _T("\\Path1"));
-	EXPECT_TRUE(testList[1].GetWinPathString() == _T("c:\\path2 with spaces and stuff"));
-	EXPECT_TRUE(testList[2].GetWinPathString() == _T("\\funnypath"));
+	EXPECT_STREQ(CString(buf) + _T("\\Path1"), testList[0].GetWinPathString());
+	EXPECT_STREQ(_T("c:\\path2 with spaces and stuff"), testList[1].GetWinPathString());
+	EXPECT_STREQ(_T("\\funnypath"), testList[2].GetWinPathString());
 
-	EXPECT_TRUE(testList.GetCommonRoot().GetWinPathString() == _T(""));
+	EXPECT_STREQ(_T(""), testList.GetCommonRoot().GetWinPathString());
 	testList.Clear();
 	sPathList = _T("c:\\path2 with spaces and stuff*c:\\funnypath\\*");
 	testList.LoadFromAsteriskSeparatedString(sPathList);
-	EXPECT_TRUE(testList.GetCommonRoot().GetWinPathString() == _T("c:\\"));
+	EXPECT_STREQ(_T("c:\\"), testList.GetCommonRoot().GetWinPathString());
+}
+
+TEST(CTGitPath, ParserFromLsFile_Empty)
+{
+	CGitByteArray byteArray;
+	CTGitPathList testList;
+	EXPECT_EQ(0, testList.ParserFromLsFile(byteArray));
+	EXPECT_EQ(0, testList.GetCount());
+}
+
+TEST(CTGitPath, ParserFromLsFile_SingleFileConflict)
+{
+	BYTE git_ls_file_u_t_z_output[] = { "M 100644 1f9f46da1ee155aa765d6e379d9d19853358cb07 1	bla.txt\0M 100644 3aa011e7d3609ab9af90c4b10f616312d2be422f 2	bla.txt\0M 100644 56d252d69d535834b9fbfa6f6a633ecd505ea2e6 3	bla.txt\0" };
+	CGitByteArray byteArray;
+	byteArray.append(git_ls_file_u_t_z_output, sizeof(git_ls_file_u_t_z_output));
+	CTGitPathList testList;
+	EXPECT_EQ(0, testList.ParserFromLsFile(byteArray));
+	EXPECT_EQ(3, testList.GetCount());
+	EXPECT_STREQ(_T("bla.txt"), testList[0].GetGitPathString());
+	EXPECT_STREQ(_T("bla.txt"), testList[1].GetGitPathString());
+	EXPECT_STREQ(_T("bla.txt"), testList[2].GetGitPathString());
+	EXPECT_EQ(1, testList[0].m_Stage);
+	EXPECT_EQ(2, testList[1].m_Stage);
+	EXPECT_EQ(3, testList[2].m_Stage);
+	EXPECT_EQ(0, testList[0].m_Action);
+	EXPECT_EQ(0, testList[1].m_Action);
+	EXPECT_EQ(0, testList[2].m_Action);
+}
+
+TEST(CTGitPath, ParserFromLsFile_DeletedFileConflict)
+{
+	// file added, modified on branch A, deleted on branch B, merge branch A on B (git status says: "deleted by us")
+	BYTE git_ls_file_u_t_z_output[] = { "M 100644 24091f0add7afc47ac7cdc80ae4d3866b2ef588c 1	Neues Textdokument.txt\0M 100644 293b6f6293106b6ebb5d54ad482d7561b0f1c9ae 3	Neues Textdokument.txt\0" };
+	CGitByteArray byteArray;
+	byteArray.append(git_ls_file_u_t_z_output, sizeof(git_ls_file_u_t_z_output));
+	CTGitPathList testList;
+	EXPECT_EQ(0, testList.ParserFromLsFile(byteArray));
+	EXPECT_EQ(2, testList.GetCount());
+	EXPECT_STREQ(_T("Neues Textdokument.txt"), testList[0].GetGitPathString());
+	EXPECT_STREQ(_T("Neues Textdokument.txt"), testList[1].GetGitPathString());
+	EXPECT_EQ(1, testList[0].m_Stage);
+	EXPECT_EQ(3, testList[1].m_Stage);
+	EXPECT_EQ(0, testList[0].m_Action);
+	EXPECT_EQ(0, testList[1].m_Action);
+}
+
+TEST(CTGitPath, ParserFromLsFile_MultipleFilesConflict)
+{
+	BYTE git_ls_file_u_t_z_output[] = { "M 100644 0ead9277724fc163fe64e1163cc2ff97d5670e41 1	OSMtracker.sln\0M 100644 7a8a41c7c26d259caba707adea36a8b9ae493c97 2	OSMtracker.sln\0M 100644 dcdd1c25bb0ebfd91082b3de5bd45d3f25418027 3	OSMtracker.sln\0M 100644 cbb00533d69b53e40a97f9bcf1c507a71f3c7353 1	OSMtracker/frmMain.vb\0M 100644 1cbfa36fef1af473884ad2e5820075b581fe33af 2	OSMtracker/frmMain.vb\0M 100644 337331224f438f5f49d5e8a4d4c1bafb66f2e67d 3	OSMtracker/frmMain.vb\0M 100644 786e60a550be11ef8e321222ffe6c0fa0f51f23d 1	OSMtracker/osmTileMap.vb\0M 100644 7fe8b75f56cf0202b4640d74d46240d2ba894115 2	OSMtracker/osmTileMap.vb\0M 100644 53d75915e78d0a53ba05c124d613fd75d625c142 3	OSMtracker/osmTileMap.vb\0" };
+	CGitByteArray byteArray;
+	byteArray.append(git_ls_file_u_t_z_output, sizeof(git_ls_file_u_t_z_output));
+	CTGitPathList testList;
+	EXPECT_EQ(0, testList.ParserFromLsFile(byteArray));
+	EXPECT_EQ(3 * 3, testList.GetCount()); // 3 files are conflicted with 3 stages
+	EXPECT_STREQ(_T("OSMtracker.sln"), testList[0].GetGitPathString());
+	EXPECT_STREQ(_T("OSMtracker.sln"), testList[1].GetGitPathString());
+	EXPECT_STREQ(_T("OSMtracker.sln"), testList[2].GetGitPathString());
+	EXPECT_STREQ(_T("OSMtracker/frmMain.vb"), testList[3].GetGitPathString());
+	EXPECT_STREQ(_T("OSMtracker/frmMain.vb"), testList[4].GetGitPathString());
+	EXPECT_STREQ(_T("OSMtracker/frmMain.vb"), testList[5].GetGitPathString());
+	EXPECT_STREQ(_T("OSMtracker/osmTileMap.vb"), testList[6].GetGitPathString());
+	EXPECT_STREQ(_T("OSMtracker/osmTileMap.vb"), testList[7].GetGitPathString());
+	EXPECT_STREQ(_T("OSMtracker/osmTileMap.vb"), testList[8].GetGitPathString());
+	EXPECT_EQ(1, testList[0].m_Stage);
+	EXPECT_EQ(2, testList[1].m_Stage);
+	EXPECT_EQ(3, testList[2].m_Stage);
+	EXPECT_EQ(1, testList[3].m_Stage);
+	EXPECT_EQ(2, testList[4].m_Stage);
+	EXPECT_EQ(3, testList[5].m_Stage);
+	EXPECT_EQ(1, testList[6].m_Stage);
+	EXPECT_EQ(2, testList[7].m_Stage);
+	EXPECT_EQ(3, testList[8].m_Stage);
+	EXPECT_EQ(0, testList[0].m_Action);
+	EXPECT_EQ(0, testList[1].m_Action);
+	EXPECT_EQ(0, testList[2].m_Action);
+	EXPECT_EQ(0, testList[3].m_Action);
+	EXPECT_EQ(0, testList[4].m_Action);
+	EXPECT_EQ(0, testList[5].m_Action);
+	EXPECT_EQ(0, testList[6].m_Action);
+	EXPECT_EQ(0, testList[7].m_Action);
+	EXPECT_EQ(0, testList[8].m_Action);
 }
