@@ -111,6 +111,7 @@
     </ClCompile>
     <ClCompile Include="StringUtilsTest.cpp" />
     <ClCompile Include="TGitPathTest.cpp" />
+    <ClCompile Include="UnitTests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\ext\build\gtest.vcxproj">

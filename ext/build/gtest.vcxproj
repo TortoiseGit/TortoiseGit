@@ -44,7 +44,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\gtest\src\gtest-all.cc" />
-    <ClCompile Include="..\gtest\src\gtest_main.cc" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\gtest\include\gtest\gtest.h" />
