@@ -108,8 +108,6 @@ int CTGitPath::ParserAction(BYTE action)
 		m_Action|= LOGACTIONS_UNMERGED;
 	if(action == 'K')
 		m_Action|= LOGACTIONS_DELETED;
-	if(action == 'H')
-		m_Action|= LOGACTIONS_CACHE;
 	if(action == 'C' )
 		m_Action|= LOGACTIONS_COPY;
 	if(action == 'T')
@@ -1000,6 +998,7 @@ int CTGitPathList::ParserFromLsFile(BYTE_VECTOR &out,bool /*staged*/)
 		CGit::StringAppend(&one, &out[pos], CP_UTF8);
 		int tabstart=0;
 		// m_Action is never used and propably never worked (needs to be set after path.SetFromGit)
+		// also dropped LOGACTIONS_CACHE for 'H'
 		// path.m_Action=path.ParserAction(out[pos]);
 		one.Tokenize(_T("\t"),tabstart);
 

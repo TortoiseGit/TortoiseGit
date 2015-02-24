@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2014 - TortoiseGit
+// Copyright (C) 2008-2015 - TortoiseGit
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -42,7 +42,6 @@ public:
 		LOGACTIONS_REPLACED	= 0x00000004,
 		LOGACTIONS_DELETED	= 0x00000008,
 		LOGACTIONS_UNMERGED = 0x00000010,
-		LOGACTIONS_CACHE	= 0x00000020,
 		LOGACTIONS_COPY		= 0x00000040,
 		LOGACTIONS_MERGED   = 0x00000080,
 		LOGACTIONS_FORWORD  = 0x00000100,
