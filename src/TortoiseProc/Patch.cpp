@@ -76,7 +76,7 @@ int CSendMailPatch::SendAsCombinedMail(CTGitPathList &list, CGitProgressList * i
 		{
 			try
 			{
-				g_Git.StringAppend(&body, (BYTE*)patch.m_Body.GetBuffer(), CP_UTF8, patch.m_Body.GetLength());
+				CGit::StringAppend(&body, (BYTE*)patch.m_Body.GetBuffer(), CP_UTF8, patch.m_Body.GetLength());
 			}
 			catch (CMemoryException *)
 			{
@@ -121,29 +121,29 @@ int CPatch::Parse(CString &pathfile)
 			return -1;
 		one=m_Body.Tokenize("\n",start);
 		if(one.GetLength()>6)
-			g_Git.StringAppend(&m_Author, (BYTE*)one.GetBuffer() + 6, CP_UTF8, one.GetLength() - 6);
+			CGit::StringAppend(&m_Author, (BYTE*)one.GetBuffer() + 6, CP_UTF8, one.GetLength() - 6);
 
 		if (start == -1)
 			return -1;
 		one=m_Body.Tokenize("\n",start);
 		if(one.GetLength()>6)
-			g_Git.StringAppend(&m_Date, (BYTE*)one.GetBuffer() + 6, CP_UTF8, one.GetLength() - 6);
+			CGit::StringAppend(&m_Date, (BYTE*)one.GetBuffer() + 6, CP_UTF8, one.GetLength() - 6);
 
 		if (start == -1)
 			return -1;
 		one=m_Body.Tokenize("\n",start);
 		if(one.GetLength()>9)
 		{
-			g_Git.StringAppend(&m_Subject, (BYTE*)one.GetBuffer() + 9, CP_UTF8, one.GetLength() - 9);
+			CGit::StringAppend(&m_Subject, (BYTE*)one.GetBuffer() + 9, CP_UTF8, one.GetLength() - 9);
 			while (m_Body.GetLength() > start && m_Body.GetAt(start) == _T(' '))
 			{
 				one = m_Body.Tokenize("\n", start);
-				g_Git.StringAppend(&m_Subject, (BYTE*)one.GetBuffer(), CP_UTF8, one.GetLength());
+				CGit::StringAppend(&m_Subject, (BYTE*)one.GetBuffer(), CP_UTF8, one.GetLength());
 			}
 		}
 
 		if (start + 1 < m_Body.GetLength())
-			g_Git.StringAppend(&m_strBody, (BYTE*)m_Body.GetBuffer() + start + 1, CP_UTF8, m_Body.GetLength() - start - 1);
+			CGit::StringAppend(&m_strBody, (BYTE*)m_Body.GetBuffer() + start + 1, CP_UTF8, m_Body.GetLength() - start - 1);
 	}
 	catch (CException *)
 	{

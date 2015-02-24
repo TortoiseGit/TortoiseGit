@@ -108,7 +108,7 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 		const git_index_entry *e = git_index_get_byindex(index, i);
 
 		this->at(i).m_FileName.Empty();
-		g_Git.StringAppend(&this->at(i).m_FileName, (BYTE*)e->path, CP_UTF8);
+		this->at(i).m_FileName = CUnicodeUtils::GetUnicode(e->path);
 		this->at(i).m_FileName.MakeLower();
 		this->at(i).m_ModifyTime = e->mtime.seconds;
 		this->at(i).m_Flags = e->flags | e->flags_extended;
@@ -556,7 +556,7 @@ int CGitHeadFileList::ReadHeadHash(CString gitdir)
 			return -1;
 
 		ReadFile(hfile, p, filesize - 4, &size, nullptr);
-		g_Git.StringAppend(&m_HeadRefFile, p, CP_UTF8, filesize - 4);
+		CGit::StringAppend(&m_HeadRefFile, p, CP_UTF8, filesize - 4);
 		free(p);
 
 		CString ref = m_HeadRefFile.Trim();
@@ -697,8 +697,8 @@ int CGitHeadFileList::CallBack(const unsigned char *sha1, const char *base, int 
 	p->at(cur).m_Hash = sha1;
 	p->at(cur).m_FileName.Empty();
 
-	g_Git.StringAppend(&p->at(cur).m_FileName, (BYTE*)base, CP_UTF8, baselen);
-	g_Git.StringAppend(&p->at(cur).m_FileName,(BYTE*)pathname, CP_UTF8);
+	CGit::StringAppend(&p->at(cur).m_FileName, (BYTE*)base, CP_UTF8, baselen);
+	CGit::StringAppend(&p->at(cur).m_FileName, (BYTE*)pathname, CP_UTF8);
 
 	p->at(cur).m_FileName.MakeLower();
 

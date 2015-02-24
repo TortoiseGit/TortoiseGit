@@ -303,14 +303,9 @@ CString CGitRefCompareList::GetCommitMessage(git_commit *commit)
 	int encode = CP_UTF8;
 	const char *encodingString = git_commit_message_encoding(commit);
 	if (encodingString != nullptr)
-	{
-		CString str;
-		g_Git.StringAppend(&str, (BYTE*)encodingString, CP_UTF8);
-		encode = CUnicodeUtils::GetCPCode(str);
-	}
+		encode = CUnicodeUtils::GetCPCode(CUnicodeUtils::GetUnicode(encodingString));
 
-	CString message;
-	g_Git.StringAppend(&message, (BYTE*)git_commit_message(commit), encode);
+	CString message = CUnicodeUtils::GetUnicode(git_commit_message(commit), encode);
 	int start = 0;
 	message = message.Tokenize(_T("\n"), start);
 	return message;

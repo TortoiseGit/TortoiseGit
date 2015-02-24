@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
-// Copyright (C) 2008-2014 - TortoiseGit
+// Copyright (C) 2008-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -259,18 +259,18 @@ int CGitDiff::SubmoduleDiff(const CTGitPath * pPath, const CTGitPath * /*pPath2*
 		if(g_Git.Run(cmd, &bytes, &errBytes))
 		{
 			CString err;
-			g_Git.StringAppend(&err, &errBytes[0], CP_UTF8);
+			CGit::StringAppend(&err, &errBytes[0], CP_UTF8);
 			CMessageBox::Show(NULL,err,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
 			return -1;
 		}
 
-		if (bytes.size() < 15 + 41 + 40)
+		if (bytes.size() < 15 + 2 * GIT_HASH_SIZE + 1 + 2 * GIT_HASH_SIZE)
 		{
 			CMessageBox::Show(NULL, _T("git diff-tree gives invalid output"), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 			return -1;
 		}
-		g_Git.StringAppend(&oldhash, &bytes[15], CP_UTF8, 40);
-		g_Git.StringAppend(&newhash, &bytes[15+41], CP_UTF8, 40);
+		CGit::StringAppend(&oldhash, &bytes[15], CP_UTF8, 2 * GIT_HASH_SIZE);
+		CGit::StringAppend(&newhash, &bytes[15 + 2 * GIT_HASH_SIZE + 1], CP_UTF8, 2 * GIT_HASH_SIZE);
 
 	}
 

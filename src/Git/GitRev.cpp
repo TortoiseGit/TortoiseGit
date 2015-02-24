@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2014 - TortoiseGit
+// Copyright (C) 2008-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -303,7 +303,7 @@ int GitRev::ParserFromCommit(GIT_COMMIT *commit)
 	if(commit->m_Encode != 0 && commit->m_EncodeSize != 0)
 	{
 		CString str;
-		g_Git.StringAppend(&str, (BYTE*)commit->m_Encode, CP_UTF8, commit->m_EncodeSize);
+		CGit::StringAppend(&str, (BYTE*)commit->m_Encode, CP_UTF8, commit->m_EncodeSize);
 		encode = CUnicodeUtils::GetCPCode(str);
 	}
 
@@ -312,24 +312,24 @@ int GitRev::ParserFromCommit(GIT_COMMIT *commit)
 	this->m_AuthorDate = commit->m_Author.Date;
 
 	this->m_AuthorEmail.Empty();
-	g_Git.StringAppend(&m_AuthorEmail,(BYTE*)commit->m_Author.Email,encode,commit->m_Author.EmailSize);
+	CGit::StringAppend(&m_AuthorEmail, (BYTE*)commit->m_Author.Email, encode, commit->m_Author.EmailSize);
 
 	this->m_AuthorName.Empty();
-	g_Git.StringAppend(&m_AuthorName,(BYTE*)commit->m_Author.Name,encode,commit->m_Author.NameSize);
+	CGit::StringAppend(&m_AuthorName, (BYTE*)commit->m_Author.Name, encode, commit->m_Author.NameSize);
 
 	this->m_Body.Empty();
-	g_Git.StringAppend(&m_Body,(BYTE*)commit->m_Body,encode,commit->m_BodySize);
+	CGit::StringAppend(&m_Body, (BYTE*)commit->m_Body, encode, commit->m_BodySize);
 
 	this->m_CommitterDate = commit->m_Committer.Date;
 
 	this->m_CommitterEmail.Empty();
-	g_Git.StringAppend(&m_CommitterEmail, (BYTE*)commit->m_Committer.Email,encode, commit->m_Committer.EmailSize);
+	CGit::StringAppend(&m_CommitterEmail, (BYTE*)commit->m_Committer.Email, encode, commit->m_Committer.EmailSize);
 
 	this->m_CommitterName.Empty();
-	g_Git.StringAppend(&m_CommitterName, (BYTE*)commit->m_Committer.Name,encode, commit->m_Committer.NameSize);
+	CGit::StringAppend(&m_CommitterName, (BYTE*)commit->m_Committer.Name, encode, commit->m_Committer.NameSize);
 
 	this->m_Subject.Empty();
-	g_Git.StringAppend(&m_Subject, (BYTE*)commit->m_Subject,encode,commit->m_SubjectSize);
+	CGit::StringAppend(&m_Subject, (BYTE*)commit->m_Subject,encode,commit->m_SubjectSize);
 
 	return 0;
 }

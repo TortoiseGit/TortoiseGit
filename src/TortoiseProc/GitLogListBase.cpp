@@ -2967,8 +2967,7 @@ UINT CGitLogListBase::LogThread()
 
 			if(note)
 			{
-				pRev->m_Notes.Empty();
-				g_Git.StringAppend(&pRev->m_Notes,(BYTE*)note);
+				pRev->m_Notes = CUnicodeUtils::GetUnicode(note);
 				free(note);
 				note = nullptr;
 			}

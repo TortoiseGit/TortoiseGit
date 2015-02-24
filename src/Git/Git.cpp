@@ -1323,9 +1323,7 @@ int CGit::GetCommitDiffList(const CString &rev1, const CString &rev2, CTGitPathL
 int addto_list_each_ref_fn(const char *refname, const unsigned char * /*sha1*/, int /*flags*/, void *cb_data)
 {
 	STRING_VECTOR *list = (STRING_VECTOR*)cb_data;
-	CString str;
-	g_Git.StringAppend(&str, (BYTE*)refname, CP_UTF8);
-	list->push_back(str);
+	list->push_back(CUnicodeUtils::GetUnicode(refname));
 	return 0;
 }
 
@@ -1806,9 +1804,7 @@ int CGit::DeleteRemoteRefs(const CString& sRemote, const STRING_VECTOR& list)
 int libgit2_addto_list_each_ref_fn(git_reference *ref, void *payload)
 {
 	STRING_VECTOR *list = (STRING_VECTOR*)payload;
-	CString str;
-	g_Git.StringAppend(&str, (BYTE*)git_reference_name(ref), CP_UTF8);
-	list->push_back(str);
+	list->push_back(CUnicodeUtils::GetUnicode(git_reference_name(ref)));
 	return 0;
 }
 
@@ -1862,8 +1858,7 @@ int libgit2_addto_map_each_ref_fn(git_reference *ref, void *payload)
 {
 	map_each_ref_payload *payloadContent = (map_each_ref_payload*)payload;
 
-	CString str;
-	g_Git.StringAppend(&str, (BYTE*)git_reference_name(ref), CP_UTF8);
+	CString str = CUnicodeUtils::GetUnicode(git_reference_name(ref));
 
 	CAutoObject gitObject;
 	if (git_revparse_single(gitObject.GetPointer(), payloadContent->repo, git_reference_name(ref)))

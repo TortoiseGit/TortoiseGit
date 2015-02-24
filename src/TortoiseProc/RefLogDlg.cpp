@@ -141,8 +141,7 @@ int AddToRefLoglist(unsigned char * /*osha1*/, unsigned char *nsha1, const char 
 	rev.m_CommitHash = (char *)nsha1;
 	rev.GetCommitterDate() = CTime(time);
 
-	CString one;
-	g_Git.StringAppend(&one, (BYTE *)msg);
+	CString one = CUnicodeUtils::GetUnicode(msg);
 
 	int message = one.Find(_T(":"), 0);
 	if (message > 0)
@@ -187,8 +186,7 @@ int ParserFromRefLog(CString ref, std::vector<GitRev> &refloglist)
 			rev.GetCommitterDate() = CTime(git_reflog_entry_committer(entry)->when.time);
 			if (git_reflog_entry_message(entry) != nullptr)
 			{
-				CString one;
-				g_Git.StringAppend(&one, (BYTE *)git_reflog_entry_message(entry));
+				CString one = CUnicodeUtils::GetUnicode(git_reflog_entry_message(entry));
 				int message = one.Find(_T(":"), 0);
 				if (message > 0)
 				{

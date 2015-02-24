@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
-// Copyright (C) 2008-2014 - TortoiseGit
+// Copyright (C) 2008-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -541,7 +541,7 @@ void CCheckForUpdatesDlg::FillChangelog(CAutoConfig& versioncheck, bool official
 		std::unique_ptr<BYTE[]> buf(new BYTE[(UINT)file.GetLength()]);
 		UINT read = file.Read(buf.get(), (UINT)file.GetLength());
 		bool skipBom = read >= 3 && buf[0] == 0xEF && buf[1] == 0xBB && buf[2] == 0xBF;
-		g_Git.StringAppend(&temp, buf.get() + (skipBom ? 3 : 0), CP_UTF8, read - (skipBom ? 3 : 0));
+		CGit::StringAppend(&temp, buf.get() + (skipBom ? 3 : 0), CP_UTF8, read - (skipBom ? 3 : 0));
 	}
 	else
 		temp = _T("Could not open downloaded changelog file.");

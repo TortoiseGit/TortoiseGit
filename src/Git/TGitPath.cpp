@@ -1001,7 +1001,7 @@ int CTGitPathList::ParserFromLsFile(BYTE_VECTOR &out,bool /*staged*/)
 		one.Empty();
 		path.Reset();
 
-		g_Git.StringAppend(&one, &out[pos], CP_UTF8);
+		CGit::StringAppend(&one, &out[pos], CP_UTF8);
 		int tabstart=0;
 		path.m_Action=path.ParserAction(out[pos]);
 		one.Tokenize(_T("\t"),tabstart);
@@ -1073,7 +1073,7 @@ int CTGitPathList::FillUnRev(unsigned int action, CTGitPathList *list, CString *
 		if (g_Git.Run(cmd, &out, &errb))
 		{
 			if (err != nullptr)
-				g_Git.StringAppend(err, &errb[0], CP_UTF8, (int)errb.size());
+				CGit::StringAppend(err, &errb[0], CP_UTF8, (int)errb.size());
 			return -1;
 		}
 
@@ -1082,7 +1082,7 @@ int CTGitPathList::FillUnRev(unsigned int action, CTGitPathList *list, CString *
 		while (pos >= 0 && pos < (int)out.size())
 		{
 			one.Empty();
-			g_Git.StringAppend(&one, &out[pos], CP_UTF8);
+			CGit::StringAppend(&one, &out[pos], CP_UTF8);
 			if(!one.IsEmpty())
 			{
 				//SetFromGit will clear all status
@@ -1100,7 +1100,6 @@ int CTGitPathList::FillBasedOnIndexFlags(unsigned short flag, CTGitPathList* lis
 {
 	Clear();
 	CTGitPath path;
-	CString one;
 
 	CAutoRepository repository(g_Git.GetGitRepository());
 	if (!repository)
@@ -1124,8 +1123,7 @@ int CTGitPathList::FillBasedOnIndexFlags(unsigned short flag, CTGitPathList* lis
 			if (!e || !((e->flags | e->flags_extended) & flag) || !e->path)
 				continue;
 
-			one.Empty();
-			g_Git.StringAppend(&one, (BYTE*)e->path, CP_UTF8);
+			CString one = CUnicodeUtils::GetUnicode(e->path);
 
 			if (!(!list || (*list)[j].GetWinPathString().IsEmpty() || one == (*list)[j].GetGitPathString() || (PathIsDirectory(g_Git.CombinePath((*list)[j].GetWinPathString())) && one.Find((*list)[j].GetGitPathString() + _T("/")) == 0)))
 				continue;
@@ -1196,9 +1194,9 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log, bool parseDeletes /*false*/)
 			CString pathname2;
 
 			if( file1>=0 )
-				g_Git.StringAppend(&pathname1, &log[file1], CP_UTF8);
+				CGit::StringAppend(&pathname1, &log[file1], CP_UTF8);
 			if( file2>=0 )
-				g_Git.StringAppend(&pathname2, &log[file2], CP_UTF8);
+				CGit::StringAppend(&pathname2, &log[file2], CP_UTF8);
 
 			CTGitPath *GitPath=LookForGitPath(pathname1);
 
@@ -1242,7 +1240,7 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log, bool parseDeletes /*false*/)
 			if(tabstart >=0)
 			{
 				log[tabstart]=0;
-				g_Git.StringAppend(&StatAdd,&log[pos],CP_UTF8);
+				CGit::StringAppend(&StatAdd, &log[pos], CP_UTF8);
 				pos=tabstart+1;
 			}
 
@@ -1251,26 +1249,26 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log, bool parseDeletes /*false*/)
 			{
 				log[tabstart]=0;
 
-				g_Git.StringAppend(&StatDel,&log[pos],CP_UTF8);
+				CGit::StringAppend(&StatDel, &log[pos], CP_UTF8);
 				pos=tabstart+1;
 			}
 
 			if(log[pos] == 0) //rename
 			{
 				++pos;
-				g_Git.StringAppend(&file2, &log[pos], CP_UTF8);
+				CGit::StringAppend(&file2, &log[pos], CP_UTF8);
 				int sec=log.find(0,pos);
 				if(sec>=0)
 				{
 					++sec;
-					g_Git.StringAppend(&file1, &log[sec], CP_UTF8);
+					CGit::StringAppend(&file1, &log[sec], CP_UTF8);
 				}
 				pos=sec;
 
 			}
 			else
 			{
-				g_Git.StringAppend(&file1, &log[pos], CP_UTF8);
+				CGit::StringAppend(&file1, &log[pos], CP_UTF8);
 			}
 			path.SetFromGit(file1,&file2);
 

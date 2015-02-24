@@ -144,7 +144,7 @@ private:
 	virtual CString Convert2UnionCode(char *buff, int size=-1)
 	{
 		CString str;
-		g_Git.StringAppend(&str, (BYTE*)buff, CP_UTF8, size);
+		CGit::StringAppend(&str, (BYTE*)buff, CP_UTF8, size);
 		return str;
 	}
 

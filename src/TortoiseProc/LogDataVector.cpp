@@ -142,8 +142,7 @@ int CLogDataVector::ParserFromLog(CTGitPath *path, int count, int infomask, CStr
 		}
 		if (pNote)
 		{
-			pRev->m_Notes.Empty();
-			g_Git.StringAppend(&pRev->m_Notes,(BYTE*)pNote);
+			pRev->m_Notes = CUnicodeUtils::GetUnicode(pNote);
 			free(pNote);
 			pNote = nullptr;
 		}
@@ -263,8 +262,7 @@ int AddTolist(unsigned char * /*osha1*/, unsigned char *nsha1, const char * /*na
 	GitRev rev;
 	rev.m_CommitHash = (char*)nsha1;
 
-	CString one;
-	g_Git.StringAppend(&one, (BYTE *)msg);
+	CString one = CUnicodeUtils::GetUnicode(msg);
 
 	int message = one.Find(_T(":"), 0);
 	if (message > 0)

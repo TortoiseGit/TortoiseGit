@@ -472,18 +472,12 @@ void CGitPropertyPage::DisplayCommit(const git_commit* commit, UINT hashLabel, U
 	int encode = CP_UTF8;
 	const char * encodingString = git_commit_message_encoding(commit);
 	if (encodingString != NULL)
-	{
-		CString str;
-		g_Git.StringAppend(&str, (BYTE*)encodingString, CP_UTF8);
-		encode = CUnicodeUtils::GetCPCode(str);
-	}
+		encode = CUnicodeUtils::GetCPCode(CUnicodeUtils::GetUnicode(encodingString));
 
 	const git_signature * author = git_commit_author(commit);
-	CString authorName;
-	g_Git.StringAppend(&authorName, (BYTE*)author->name, encode);
+	CString authorName = CUnicodeUtils::GetUnicode(author->name, encode);
 
-	CString message;
-	g_Git.StringAppend(&message, (BYTE*)git_commit_message(commit), encode);
+	CString message = CUnicodeUtils::GetUnicode(git_commit_message(commit), encode);
 
 	int start = 0;
 	message = message.Tokenize(L"\n", start);

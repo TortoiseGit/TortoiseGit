@@ -528,13 +528,12 @@ void CProgressDlg::ParserCmdOutput(CRichEditCtrl &log,CProgressCtrl &progressctr
 	//TRACE(_T("%c"),ch);
 	if( ch == ('\r') || ch == ('\n'))
 	{
-		CString str;
+		CString str = CUnicodeUtils::GetUnicode(oneline);
 
 //		TRACE(_T("End Char %s \r\n"),ch==_T('\r')?_T("lf"):_T(""));
 //		TRACE(_T("End Char %s \r\n"),ch==_T('\n')?_T("cr"):_T(""));
 
 		int lines = log.GetLineCount();
-		g_Git.StringAppend(&str, (BYTE*)oneline.GetBuffer(), CP_UTF8);
 		str.Trim();
 //		TRACE(_T("%s"), str);
 
@@ -751,8 +750,8 @@ CString CCommitProgressDlg::Convert2UnionCode(char *buff, int size)
 	}
 
 	CString str;
-	g_Git.StringAppend(&str, (BYTE*)buff, g_Git.m_LogEncode, start);
-	g_Git.StringAppend(&str, (BYTE*)buff + start, CP_UTF8, size - start);
+	CGit::StringAppend(&str, (BYTE*)buff, g_Git.m_LogEncode, start);
+	CGit::StringAppend(&str, (BYTE*)buff + start, CP_UTF8, size - start);
 
 	ClearESC(str);
 
