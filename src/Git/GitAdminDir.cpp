@@ -49,6 +49,9 @@ CString GitAdminDir::GetSuperProjectRoot(const CString& path)
 
 		projectroot = projectroot.Left(projectroot.ReverseFind('\\'));
 
+		// don't check for \\COMPUTERNAME\.git
+		if (projectroot[0] == _T('\\') && projectroot[1] == _T('\\') && projectroot.Find(_T('\\'), 2) < 0)
+			return _T("");
 	}while(projectroot.ReverseFind('\\')>0);
 
 	return _T("");
@@ -126,6 +129,9 @@ bool GitAdminDir::HasAdminDir(const CString& path, bool bDir,CString *ProjectTop
 			break;
 
 		sDirName = sDirName.Left(x);
+		// don't check for \\COMPUTERNAME\.git
+		if (sDirName[0] == _T('\\') && sDirName[1] == _T('\\') && sDirName.Find(_T('\\'), 2) < 0)
+			break;
 	}
 
 	return false;
