@@ -568,6 +568,8 @@ void CShellExt::InsertGitMenu(BOOL istop, HMENU menu, UINT pos, UINT_PTR id, UIN
 		{
 			if (istop)
 				_tcscpy_s(menutextbuffer, 255, _T("Git "));
+			else
+				menutextbuffer[0] = '\0';
 			_tcscat_s(menutextbuffer, 255, CString(MAKEINTRESOURCE(IDS_MENUCOMMITSUBMODULE)));
 		}
 
