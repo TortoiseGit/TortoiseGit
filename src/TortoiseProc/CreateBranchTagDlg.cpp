@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2014 - TortoiseGit
+// Copyright (C) 2008-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -126,7 +126,7 @@ BOOL CCreateBranchTagDlg::OnInitDialog()
 	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);
 
 	// show the switch checkbox if we are a create branch dialog
-	this->GetDlgItem(IDC_CHECK_SWITCH)->ShowWindow( !m_bIsTag && !g_GitAdminDir.IsBareRepo(g_Git.m_CurrentDir));
+	this->GetDlgItem(IDC_CHECK_SWITCH)->ShowWindow(!m_bIsTag && !GitAdminDir::IsBareRepo(g_Git.m_CurrentDir));
 	CWnd* pHead = GetDlgItem(IDC_RADIO_HEAD);
 	CString HeadText;
 	pHead->GetWindowText( HeadText );

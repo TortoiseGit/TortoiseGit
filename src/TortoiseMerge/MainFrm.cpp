@@ -1,6 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2008-2014 - TortoiseGit
+// Copyright (C) 2008-2015 - TortoiseGit
 // Copyright (C) 2004-2015 - TortoiseSVN
 // Copyright (C) 2012-2014 - Sven Strickroth <email@cs-ware.de>
 
@@ -1716,7 +1716,7 @@ bool CMainFrame::FileSave(bool bCheckResolved /*=true*/)
 	if (IsViewGood(m_pwndBottomView) && !m_bHasConflicts && bCheckResolved)
 	{
 		CString projectRoot;
-		if (g_GitAdminDir.HasAdminDir(m_Data.m_mergedFile.GetFilename(), false, &projectRoot))
+		if (GitAdminDir::HasAdminDir(m_Data.m_mergedFile.GetFilename(), false, &projectRoot))
 		{
 			CString subpath = m_Data.m_mergedFile.GetFilename();
 			subpath.Replace(_T('\\'), _T('/'));

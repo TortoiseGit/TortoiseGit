@@ -758,7 +758,7 @@ bool CTGitPath::HasAdminDir() const
 		return m_bHasAdminDir;
 
 	EnsureBackslashPathSet();
-	m_bHasAdminDir = g_GitAdminDir.HasAdminDir(m_sBackslashPath, IsDirectory(), &m_sProjectRoot);
+	m_bHasAdminDir = GitAdminDir::HasAdminDir(m_sBackslashPath, IsDirectory(), &m_sProjectRoot);
 	m_bHasAdminDirKnown = true;
 	return m_bHasAdminDir;
 }
@@ -779,7 +779,7 @@ int CTGitPath::GetAdminDirMask() const
 {
 	int status = 0;
 	CString topdir;
-	if(!g_GitAdminDir.HasAdminDir(GetWinPathString(),&topdir))
+	if (!GitAdminDir::HasAdminDir(GetWinPathString(), &topdir))
 	{
 		return status;
 	}
@@ -795,7 +795,7 @@ int CTGitPath::GetAdminDirMask() const
 			status |= ITEMIS_WCROOT;
 
 			CString topProjectDir;
-			if (g_GitAdminDir.HasAdminDir(GetWinPathString(), false, &topProjectDir))
+			if (GitAdminDir::HasAdminDir(GetWinPathString(), false, &topProjectDir))
 			{
 				if (PathFileExists(topProjectDir + _T("\\.gitmodules")))
 				{
@@ -814,7 +814,7 @@ int CTGitPath::GetAdminDirMask() const
 	}
 
 	CString dotGitPath;
-	g_GitAdminDir.GetAdminDirPath(topdir, dotGitPath);
+	GitAdminDir::GetAdminDirPath(topdir, dotGitPath);
 
 	if (PathFileExists(dotGitPath + _T("BISECT_START")))
 		status |= ITEMIS_BISECT;
@@ -837,65 +837,65 @@ int CTGitPath::GetAdminDirMask() const
 bool CTGitPath::HasStashDir() const
 {
 	CString topdir;
-	if(!g_GitAdminDir.HasAdminDir(GetWinPathString(),&topdir))
+	if(!GitAdminDir::HasAdminDir(GetWinPathString(),&topdir))
 	{
 		return false;
 	}
 
 	CString dotGitPath;
-	g_GitAdminDir.GetAdminDirPath(topdir, dotGitPath);
+	GitAdminDir::GetAdminDirPath(topdir, dotGitPath);
 
 	return !!PathFileExists(dotGitPath + _T("\\refs\\stash"));
 }
 bool CTGitPath::HasGitSVNDir() const
 {
 	CString topdir;
-	if(!g_GitAdminDir.HasAdminDir(GetWinPathString(),&topdir))
+	if (!GitAdminDir::HasAdminDir(GetWinPathString(), &topdir))
 	{
 		return false;
 	}
 
 	CString dotGitPath;
-	g_GitAdminDir.GetAdminDirPath(topdir, dotGitPath);
+	GitAdminDir::GetAdminDirPath(topdir, dotGitPath);
 
 	return !!PathFileExists(dotGitPath + _T("svn"));
 }
 bool CTGitPath::IsBisectActive() const
 {
 	CString topdir;
-	if(!g_GitAdminDir.HasAdminDir(GetWinPathString(),&topdir))
+	if (!GitAdminDir::HasAdminDir(GetWinPathString(), &topdir))
 	{
 		return false;
 	}
 
 	CString dotGitPath;
-	g_GitAdminDir.GetAdminDirPath(topdir, dotGitPath);
+	GitAdminDir::GetAdminDirPath(topdir, dotGitPath);
 
 	return !!PathFileExists(dotGitPath + _T("BISECT_START"));
 }
 bool CTGitPath::IsMergeActive() const
 {
 	CString topdir;
-	if(!g_GitAdminDir.HasAdminDir(GetWinPathString(),&topdir))
+	if (!GitAdminDir::HasAdminDir(GetWinPathString(), &topdir))
 	{
 		return false;
 	}
 
 	CString dotGitPath;
-	g_GitAdminDir.GetAdminDirPath(topdir, dotGitPath);
+	GitAdminDir::GetAdminDirPath(topdir, dotGitPath);
 
 	return !!PathFileExists(dotGitPath + _T("MERGE_HEAD"));
 }
 bool CTGitPath::HasRebaseApply() const
 {
 	CString topdir;
-	if(!g_GitAdminDir.HasAdminDir(GetWinPathString(),&topdir))
+	if (!GitAdminDir::HasAdminDir(GetWinPathString(), &topdir))
 	{
 		return false;
 	}
 
 	CString dotGitPath;
-	g_GitAdminDir.GetAdminDirPath(topdir, dotGitPath);
+	GitAdminDir::GetAdminDirPath(topdir, dotGitPath);
 
 	return !!PathFileExists(dotGitPath + _T("rebase-apply"));
 }
@@ -910,7 +910,7 @@ bool CTGitPath::HasAdminDir(CString *ProjectTopDir) const
 	}
 
 	EnsureBackslashPathSet();
-	m_bHasAdminDir = g_GitAdminDir.HasAdminDir(m_sBackslashPath, IsDirectory(), &m_sProjectRoot);
+	m_bHasAdminDir = GitAdminDir::HasAdminDir(m_sBackslashPath, IsDirectory(), &m_sProjectRoot);
 	m_bHasAdminDirKnown = true;
 	if (ProjectTopDir)
 		*ProjectTopDir = m_sProjectRoot;
@@ -923,7 +923,7 @@ bool CTGitPath::IsAdminDir() const
 		return m_bIsAdminDir;
 
 	EnsureBackslashPathSet();
-	m_bIsAdminDir = g_GitAdminDir.IsAdminDirPath(m_sBackslashPath);
+	m_bIsAdminDir = GitAdminDir::IsAdminDirPath(m_sBackslashPath);
 	m_bIsAdminDirKnown = true;
 	return m_bIsAdminDir;
 }

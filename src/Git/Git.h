@@ -250,8 +250,8 @@ public:
 	static CString GetLibGit2LastErr(const CString& msg);
 	bool SetCurrentDir(CString path, bool submodule = false)
 	{
-		bool b = g_GitAdminDir.HasAdminDir(path, submodule ? false : !!PathIsDirectory(path), &m_CurrentDir);
-		if (!b && g_GitAdminDir.IsBareRepo(path))
+		bool b = GitAdminDir::HasAdminDir(path, submodule ? false : !!PathIsDirectory(path), &m_CurrentDir);
+		if (!b && GitAdminDir::IsBareRepo(path))
 		{
 			m_CurrentDir = path;
 			b = true;

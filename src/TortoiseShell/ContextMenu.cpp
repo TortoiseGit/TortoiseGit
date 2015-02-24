@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2012, 2014-2015 - TortoiseSVN
-// Copyright (C) 2008-2014 - TortoiseGit
+// Copyright (C) 2008-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -232,7 +232,7 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 					if ((str.empty() == false)&&(g_ShellCache.IsContextPathAllowed(str.c_str())))
 					{
 						//check if our menu is requested for a git admin directory
-						if (g_GitAdminDir.IsAdminDirPath(str.c_str()))
+						if (GitAdminDir::IsAdminDirPath(str.c_str()))
 							continue;
 
 						files_.push_back(str);
@@ -347,7 +347,7 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 				if (g_ShellCache.HasGITAdminDir(child.toString().c_str(), FALSE))
 					itemStates |= ITEMIS_INVERSIONEDFOLDER;
 
-				if (g_GitAdminDir.IsBareRepo(child.toString().c_str()))
+				if (GitAdminDir::IsBareRepo(child.toString().c_str()))
 					itemStates = ITEMIS_BAREREPO;
 
 				GlobalUnlock(medium.hGlobal);
@@ -936,7 +936,7 @@ STDMETHODIMP CShellExt::QueryContextMenu_Wrap(HMENU hMenu,
 	}
 
 	//check if our menu is requested for a git admin directory
-	if (g_GitAdminDir.IsAdminDirPath(folder_.c_str()))
+	if (GitAdminDir::IsAdminDirPath(folder_.c_str()))
 		return S_OK;
 
 	if (uFlags & CMF_EXTENDEDVERBS)
@@ -954,7 +954,7 @@ STDMETHODIMP CShellExt::QueryContextMenu_Wrap(HMENU hMenu,
 		// It would only show the standard menu items
 		// which are already shown for the lnk-file.
 		CString path = files_.front().c_str();
-		if ( !g_GitAdminDir.HasAdminDir(path) )
+		if (!GitAdminDir::HasAdminDir(path))
 		{
 			return S_OK;
 		}

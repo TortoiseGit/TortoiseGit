@@ -436,7 +436,7 @@ BOOL CTortoiseProcApp::InitInstance()
 		case 4:
 			{
 				CString wcroot;
-				if (g_GitAdminDir.HasAdminDir(g_Git.m_CurrentDir, true, &wcroot))
+				if (GitAdminDir::HasAdminDir(g_Git.m_CurrentDir, true, &wcroot))
 				{
 					git_oid oid;
 					CStringA wcRootA(wcroot + CPathUtils::GetAppDirectory());

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2011,2013-2014 - TortoiseGit
+// Copyright (C) 2003-2011,2013-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -49,10 +49,10 @@ int ProjectProperties::ReadProps()
 {
 	CAutoConfig gitconfig(true);
 	CString adminDirPath;
-	if (g_GitAdminDir.GetAdminDirPath(g_Git.m_CurrentDir, adminDirPath))
+	if (GitAdminDir::GetAdminDirPath(g_Git.m_CurrentDir, adminDirPath))
 		git_config_add_file_ondisk(gitconfig, CGit::GetGitPathStringA(adminDirPath + L"config"), GIT_CONFIG_LEVEL_APP, FALSE); // this needs to have the highest priority in order to override .tgitconfig settings
 
-	if (!g_GitAdminDir.IsBareRepo(g_Git.m_CurrentDir))
+	if (!GitAdminDir::IsBareRepo(g_Git.m_CurrentDir))
 		git_config_add_file_ondisk(gitconfig, CGit::GetGitPathStringA(g_Git.CombinePath(L".tgitconfig")), GIT_CONFIG_LEVEL_LOCAL, FALSE); // this needs to have the second highest priority
 	else
 	{

@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005-2006,2008,2010,2014 - TortoiseSVN
-// Copyright (C) 2008-2014 - TortoiseGit
+// Copyright (C) 2008-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -486,7 +486,7 @@ CCachedDirectory * CGitStatusCache::GetDirectoryCacheEntry(const CTGitPath& path
 		}
 		// We don't know anything about this directory yet - lets add it to our cache
 		// but only if it exists!
-		if (path.Exists() && m_shellCache.IsPathAllowed(path.GetWinPath()) && !g_GitAdminDir.IsAdminDirPath(path.GetWinPath()))
+		if (path.Exists() && m_shellCache.IsPathAllowed(path.GetWinPath()) && !GitAdminDir::IsAdminDirPath(path.GetWinPath()))
 		{
 			// some notifications are for files which got removed/moved around.
 			// In such cases, the CTGitPath::IsDirectory() will return true (it assumes a directory if

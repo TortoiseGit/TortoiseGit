@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2014 - TortoiseGit
+// Copyright (C) 2013-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -56,9 +56,9 @@ protected:
 		}
 
 		CString str = g_Git.m_CurrentDir;
-		m_bIsBareRepo = g_GitAdminDir.IsBareRepo(str);
+		m_bIsBareRepo = GitAdminDir::IsBareRepo(str);
 		CString proj;
-		if (g_GitAdminDir.HasAdminDir(str, &proj) || m_bIsBareRepo)
+		if (GitAdminDir::HasAdminDir(str, &proj) || m_bIsBareRepo)
 		{
 			CString title;
 			page->GetWindowText(title);

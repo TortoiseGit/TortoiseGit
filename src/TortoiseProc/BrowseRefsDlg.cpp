@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2014 - TortoiseGit
+// Copyright (C) 2009-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -283,7 +283,7 @@ BOOL CBrowseRefsDlg::OnInitDialog()
 	GetWindowText(sWindowTitle);
 	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);
 
-	m_bHasWC = !g_GitAdminDir.IsBareRepo(g_Git.m_CurrentDir);
+	m_bHasWC = !GitAdminDir::IsBareRepo(g_Git.m_CurrentDir);
 
 	if (m_bPickOne)
 		m_ListRefLeafs.ModifyStyle(0, LVS_SINGLESEL);

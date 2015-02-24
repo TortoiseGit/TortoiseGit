@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2014 - TortoiseGit
+// Copyright (C) 2008-2015 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -268,7 +268,7 @@ BOOL CFileDiffDlg::OnInitDialog()
 
 	EnableSaveRestore(_T("FileDiffDlg"));
 
-	m_bIsBare = GitAdminDir().IsBareRepo(g_Git.m_CurrentDir);
+	m_bIsBare = GitAdminDir::IsBareRepo(g_Git.m_CurrentDir);
 
 	if(this->m_strRev1.IsEmpty())
 		this->m_ctrRev1Edit.SetWindowText(this->m_rev1.m_CommitHash.ToString());
