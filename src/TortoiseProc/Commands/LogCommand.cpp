@@ -25,7 +25,8 @@
 
 bool LogCommand::Execute()
 {
-	if (!GitAdminDir::HasAdminDir(g_Git.m_CurrentDir) && !GitAdminDir::IsBareRepo(g_Git.m_CurrentDir)) {
+	if (!GitAdminDir::IsWorkingTreeOrBareRepo(g_Git.m_CurrentDir))
+	{
 		CMessageBox::Show(hwndExplorer, IDS_NOWORKINGCOPY, IDS_APPNAME, MB_ICONERROR);
 		return false;
 	}

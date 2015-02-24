@@ -63,6 +63,11 @@ CString GitAdminDir::GetGitTopDir(const CString& path)
 	return str;
 }
 
+bool GitAdminDir::IsWorkingTreeOrBareRepo(const CString& path)
+{
+	return HasAdminDir(path) || IsBareRepo(path);
+}
+
 bool GitAdminDir::HasAdminDir(const CString& path)
 {
 	return HasAdminDir(path, !!PathIsDirectory(path));
