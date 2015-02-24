@@ -39,9 +39,12 @@ CString GitAdminDir::GetSuperProjectRoot(const CString& path)
 
 	do
 	{
-		if(CGit::GitPathFileExists(projectroot + _T("\\.gitmodules")))
+		if (CGit::GitPathFileExists(projectroot + _T("\\.git")))
 		{
-			return projectroot;
+			if (CGit::GitPathFileExists(projectroot + _T("\\.gitmodules")))
+				return projectroot;
+			else
+				return _T("");
 		}
 
 		projectroot = projectroot.Left(projectroot.ReverseFind('\\'));
