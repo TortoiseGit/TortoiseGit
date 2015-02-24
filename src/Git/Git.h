@@ -79,7 +79,6 @@ public:
 class CGit
 {
 private:
-	GitAdminDir m_GitDir;
 	CString		gitLastErr;
 protected:
 	bool m_IsGitDllInited;
@@ -251,7 +250,7 @@ public:
 	static CString GetLibGit2LastErr(const CString& msg);
 	bool SetCurrentDir(CString path, bool submodule = false)
 	{
-		bool b = m_GitDir.HasAdminDir(path, submodule ? false : !!PathIsDirectory(path), &m_CurrentDir);
+		bool b = g_GitAdminDir.HasAdminDir(path, submodule ? false : !!PathIsDirectory(path), &m_CurrentDir);
 		if (!b && g_GitAdminDir.IsBareRepo(path))
 		{
 			m_CurrentDir = path;
