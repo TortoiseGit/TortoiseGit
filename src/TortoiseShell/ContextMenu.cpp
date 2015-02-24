@@ -570,7 +570,8 @@ void CShellExt::InsertGitMenu(BOOL istop, HMENU menu, UINT pos, UINT_PTR id, UIN
 				_tcscpy_s(menutextbuffer, 255, _T("Git "));
 			else
 				menutextbuffer[0] = '\0';
-			_tcscat_s(menutextbuffer, 255, CString(MAKEINTRESOURCE(IDS_MENUCOMMITSUBMODULE)));
+			MAKESTRING(IDS_MENUCOMMITSUBMODULE);
+			_tcscat_s(menutextbuffer, 255, stringtablebuffer);
 		}
 
 		if (path.HasAdminDir(&sProjectRoot) && !CGit::GetCurrentBranchFromFile(sProjectRoot, sBranchName))
