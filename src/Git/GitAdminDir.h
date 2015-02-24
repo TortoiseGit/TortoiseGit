@@ -29,6 +29,8 @@ public:
 	/// Returns true if the path points to or below an admin directory
 	static bool IsAdminDirPath(const CString& path);
 
+	static bool IsWorkingTreeOrBareRepo(const CString& path);
+
 	/// Returns true if the path points is a bare repository
 	static bool IsBareRepo(const CString& path);
 

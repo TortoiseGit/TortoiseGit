@@ -123,7 +123,7 @@ void CSettings::AddPropPages()
 	AddPage(m_pSavedPage);
 
 	CString repo = g_Git.m_CurrentDir;
-	bool hasLocalRepo = GitAdminDir::HasAdminDir(repo) || GitAdminDir::IsBareRepo(repo);
+	bool hasLocalRepo = GitAdminDir::IsWorkingTreeOrBareRepo(repo);
 	if (hasLocalRepo)
 	{
 		AddPage(m_pGitRemote);
@@ -292,7 +292,7 @@ BOOL CSettings::OnInitDialog()
 
 	SetIcon(m_hIcon, TRUE);			// Set big icon
 	SetIcon(m_hIcon, FALSE);		// Set small icon
-	if (GitAdminDir::HasAdminDir(g_Git.m_CurrentDir) || GitAdminDir::IsBareRepo(g_Git.m_CurrentDir))
+	if (GitAdminDir::IsWorkingTreeOrBareRepo(g_Git.m_CurrentDir))
 	{
 		CString title;
 		GetWindowText(title);
@@ -394,7 +394,7 @@ BOOL CSettings::OnInitDialog()
 	{
 		this->SetActivePage(this->m_pUDiffPage);
 	}
-	else if (GitAdminDir::HasAdminDir(g_Git.m_CurrentDir) || GitAdminDir::IsBareRepo(g_Git.m_CurrentDir))
+	else if (GitAdminDir::IsWorkingTreeOrBareRepo(g_Git.m_CurrentDir))
 	{
 		this->SetActivePage(this->m_pGitConfig);
 	}
