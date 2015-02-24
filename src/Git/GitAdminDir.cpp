@@ -23,8 +23,6 @@
 #include "Git.h"
 #include <memory>
 
-GitAdminDir g_GitAdminDir;
-
 GitAdminDir::GitAdminDir()
 {
 }
@@ -65,17 +63,17 @@ CString GitAdminDir::GetGitTopDir(const CString& path)
 	return str;
 }
 
-bool GitAdminDir::HasAdminDir(const CString& path) const
+bool GitAdminDir::HasAdminDir(const CString& path)
 {
 	return HasAdminDir(path, !!PathIsDirectory(path));
 }
 
-bool GitAdminDir::HasAdminDir(const CString& path,CString *ProjectTopDir) const
+bool GitAdminDir::HasAdminDir(const CString& path,CString* ProjectTopDir)
 {
 	return HasAdminDir(path, !!PathIsDirectory(path),ProjectTopDir);
 }
 
-bool GitAdminDir::HasAdminDir(const CString& path, bool bDir,CString *ProjectTopDir) const
+bool GitAdminDir::HasAdminDir(const CString& path, bool bDir, CString* ProjectTopDir)
 {
 	if (path.IsEmpty())
 		return false;
@@ -141,7 +139,7 @@ bool GitAdminDir::HasAdminDir(const CString& path, bool bDir,CString *ProjectTop
  * Returns the .git-path (if .git is a file, read the repository path and return it)
  * adminDir always ends with "\"
  */
-bool GitAdminDir::GetAdminDirPath(const CString &projectTopDir, CString &adminDir) const
+bool GitAdminDir::GetAdminDirPath(const CString &projectTopDir, CString& adminDir)
 {
 	if (IsBareRepo(projectTopDir))
 	{
@@ -151,7 +149,7 @@ bool GitAdminDir::GetAdminDirPath(const CString &projectTopDir, CString &adminDi
 		return true;
 	}
 
-	CString sDotGitPath = projectTopDir + _T("\\") + g_GitAdminDir.GetAdminDirName();
+	CString sDotGitPath = projectTopDir + _T("\\") + GetAdminDirName();
 	if (CTGitPath(sDotGitPath).IsDirectory())
 	{
 		sDotGitPath.TrimRight('\\');
@@ -191,7 +189,7 @@ bool GitAdminDir::GetAdminDirPath(const CString &projectTopDir, CString &adminDi
 	}
 }
 
-bool GitAdminDir::IsAdminDirPath(const CString& path) const
+bool GitAdminDir::IsAdminDirPath(const CString& path)
 {
 	if (path.IsEmpty())
 		return false;
@@ -217,7 +215,7 @@ bool GitAdminDir::IsAdminDirPath(const CString& path) const
 	return bIsAdminDir;
 }
 
-bool GitAdminDir::IsBareRepo(const CString& path) const
+bool GitAdminDir::IsBareRepo(const CString& path)
 {
 	if (path.IsEmpty())
 		return false;

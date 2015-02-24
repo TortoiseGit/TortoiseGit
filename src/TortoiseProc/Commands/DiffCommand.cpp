@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2007-2008 - TortoiseSVN
-// Copyright (C) 2007-2011, 2013-2014 - TortoiseGit
+// Copyright (C) 2007-2011, 2013-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -65,7 +65,7 @@ bool DiffCommand::Execute()
 					CBlockCacheForPath cacheBlock(topDir);
 					CAutoIndex index;
 					CString adminDir;
-					g_GitAdminDir.GetAdminDirPath(topDir, adminDir);
+					GitAdminDir::GetAdminDirPath(topDir, adminDir);
 					if (!git_index_open(index.GetPointer(), CUnicodeUtils::GetUTF8(adminDir + _T("index"))))
 						g_Git.Run(_T("git.exe update-index -- \"") + cmdLinePath.GetGitPathString() + _T("\""), nullptr); // make sure we get the right status
 					GitStatus::GetFileStatus(topDir, cmdLinePath.GetWinPathString(), &status, true);

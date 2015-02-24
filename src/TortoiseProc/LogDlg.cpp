@@ -278,7 +278,7 @@ BOOL CLogDlg::OnInitDialog()
 	m_LogList.DeleteAllItems();
 
 	m_LogList.m_Path=m_path;
-	m_LogList.m_hasWC = m_LogList.m_bShowWC = !g_GitAdminDir.IsBareRepo(g_Git.m_CurrentDir);
+	m_LogList.m_hasWC = m_LogList.m_bShowWC = !GitAdminDir::IsBareRepo(g_Git.m_CurrentDir);
 	m_LogList.InsertGitColumn();
 
 	if (m_bWholeProject)

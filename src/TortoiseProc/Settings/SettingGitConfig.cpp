@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2014 - TortoiseGit
+// Copyright (C) 2008-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -283,7 +283,7 @@ void CSettingGitConfig::OnBnClickedEditlocalgitconfig()
 void CSettingGitConfig::OnBnClickedEdittgitconfig()
 {
 	// use alternative editor because of LineEndings
-	if (g_GitAdminDir.IsBareRepo(g_Git.m_CurrentDir))
+	if (GitAdminDir::IsBareRepo(g_Git.m_CurrentDir))
 	{
 		CString tmpFile = GetTempFile();
 		CTGitPath path(_T(".tgitconfig"));

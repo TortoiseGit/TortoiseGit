@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2014 - TortoiseGit
+// Copyright (C) 2009-2015 - TortoiseGit
 // Copyright (C) 2003-2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -252,7 +252,7 @@ BOOL CRepositoryBrowser::OnInitDialog()
 	GetWindowText(sWindowTitle);
 	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);
 
-	m_bHasWC = !g_GitAdminDir.IsBareRepo(g_Git.m_CurrentDir);
+	m_bHasWC = !GitAdminDir::IsBareRepo(g_Git.m_CurrentDir);
 
 	Refresh();
 
@@ -1198,7 +1198,7 @@ void CRepositoryBrowser::OpenFile(const CString path, eOpenType mode, bool isSub
 
 	if (isSubmodule)
 	{
-		if (mode == OPEN && !g_GitAdminDir.IsBareRepo(g_Git.m_CurrentDir))
+		if (mode == OPEN && !GitAdminDir::IsBareRepo(g_Git.m_CurrentDir))
 		{
 			CTGitPath subPath = CTGitPath(g_Git.m_CurrentDir);
 			subPath.AppendPathString(gitPath.GetWinPathString());
