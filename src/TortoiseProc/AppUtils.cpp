@@ -1446,7 +1446,7 @@ bool CAppUtils::IgnoreFile(const CTGitPathList& path,bool IsMask)
 				ignorefile += _T(".gitignore");
 				break;
 			case 2:
-				g_GitAdminDir.GetAdminDirPath(g_Git.m_CurrentDir, ignorefile);
+				GitAdminDir::GetAdminDirPath(g_Git.m_CurrentDir, ignorefile);
 				ignorefile += _T("info/exclude");
 				break;
 		}
@@ -2631,7 +2631,7 @@ static bool DoFetch(const CString& url, const bool fetchAllRemotes, const bool l
 
 		postCmdList.push_back(PostCmd(IDI_PULL, IDS_MENUFETCH, []{ CAppUtils::Fetch(); }));
 
-		if (!runRebase && !g_GitAdminDir.IsBareRepo(g_Git.m_CurrentDir))
+		if (!runRebase && !GitAdminDir::IsBareRepo(g_Git.m_CurrentDir))
 			postCmdList.push_back(PostCmd(IDI_REBASE, IDS_MENUREBASE, [&]{ runRebase = false; CAppUtils::RebaseAfterFetch(); }));
 	};
 
@@ -2759,7 +2759,7 @@ bool CAppUtils::Push(const CString& selectLocalBranch)
 		}
 
 		CString superprojectRoot;
-		g_GitAdminDir.HasAdminDir(g_Git.m_CurrentDir, false, &superprojectRoot);
+		GitAdminDir::HasAdminDir(g_Git.m_CurrentDir, false, &superprojectRoot);
 		progress.m_PostCmdCallback = [&](DWORD status, PostCmdList& postCmdList)
 		{
 			// need to execute hooks as those might be needed by post action commands

@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2013 - TortoiseSVN
-// Copyright (C) 2008-2014 - TortoiseGit
+// Copyright (C) 2008-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -192,7 +192,7 @@ BOOL CCommitDlg::OnInitDialog()
 			GetCommitTemplate(m_sLogMessage);
 
 		CString dotGitPath;
-		g_GitAdminDir.GetAdminDirPath(g_Git.m_CurrentDir, dotGitPath);
+		GitAdminDir::GetAdminDirPath(g_Git.m_CurrentDir, dotGitPath);
 		bool loadedMsg = !CGit::LoadTextFile(dotGitPath + _T("MERGE_MSG"), m_sLogMessage);
 		loadedMsg = loadedMsg && !CGit::LoadTextFile(dotGitPath + _T("SQUASH_MSG"), m_sLogMessage);
 	}
@@ -1167,7 +1167,7 @@ UINT CCommitDlg::StatusThread()
 	}
 
 	CString dotGitPath;
-	g_GitAdminDir.GetAdminDirPath(g_Git.m_CurrentDir, dotGitPath);
+	GitAdminDir::GetAdminDirPath(g_Git.m_CurrentDir, dotGitPath);
 	if (PathFileExists(dotGitPath + _T("CHERRY_PICK_HEAD")))
 	{
 		GetDlgItem(IDC_COMMIT_AMENDDIFF)->ShowWindow(SW_HIDE);

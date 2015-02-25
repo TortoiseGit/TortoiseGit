@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2014 - TortoiseGit
+// Copyright (C) 2008-2015 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -123,7 +123,7 @@ void CSettings::AddPropPages()
 	AddPage(m_pSavedPage);
 
 	CString repo = g_Git.m_CurrentDir;
-	bool hasLocalRepo = g_GitAdminDir.HasAdminDir(repo) || g_GitAdminDir.IsBareRepo(repo);
+	bool hasLocalRepo = GitAdminDir::IsWorkingTreeOrBareRepo(repo);
 	if (hasLocalRepo)
 	{
 		AddPage(m_pGitRemote);
@@ -292,7 +292,7 @@ BOOL CSettings::OnInitDialog()
 
 	SetIcon(m_hIcon, TRUE);			// Set big icon
 	SetIcon(m_hIcon, FALSE);		// Set small icon
-	if (g_GitAdminDir.HasAdminDir(g_Git.m_CurrentDir) || g_GitAdminDir.IsBareRepo(g_Git.m_CurrentDir))
+	if (GitAdminDir::IsWorkingTreeOrBareRepo(g_Git.m_CurrentDir))
 	{
 		CString title;
 		GetWindowText(title);
@@ -394,7 +394,7 @@ BOOL CSettings::OnInitDialog()
 	{
 		this->SetActivePage(this->m_pUDiffPage);
 	}
-	else if (g_GitAdminDir.HasAdminDir(g_Git.m_CurrentDir) || g_GitAdminDir.IsBareRepo(g_Git.m_CurrentDir))
+	else if (GitAdminDir::IsWorkingTreeOrBareRepo(g_Git.m_CurrentDir))
 	{
 		this->SetActivePage(this->m_pGitConfig);
 	}

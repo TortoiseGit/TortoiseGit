@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2014 - TortoiseGit
+// Copyright (C) 2008-2015 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -23,8 +23,6 @@
 #include "Git.h"
 #include <memory>
 
-GitAdminDir g_GitAdminDir;
-
 GitAdminDir::GitAdminDir()
 {
 }
@@ -39,13 +37,19 @@ CString GitAdminDir::GetSuperProjectRoot(const CString& path)
 
 	do
 	{
-		if(CGit::GitPathFileExists(projectroot + _T("\\.gitmodules")))
+		if (CGit::GitPathFileExists(projectroot + _T("\\.git")))
 		{
-			return projectroot;
+			if (CGit::GitPathFileExists(projectroot + _T("\\.gitmodules")))
+				return projectroot;
+			else
+				return _T("");
 		}
 
 		projectroot = projectroot.Left(projectroot.ReverseFind('\\'));
 
+		// don't check for \\COMPUTERNAME\.git
+		if (projectroot[0] == _T('\\') && projectroot[1] == _T('\\') && projectroot.Find(_T('\\'), 2) < 0)
+			return _T("");
 	}while(projectroot.ReverseFind('\\')>0);
 
 	return _T("");
@@ -55,22 +59,26 @@ CString GitAdminDir::GetSuperProjectRoot(const CString& path)
 CString GitAdminDir::GetGitTopDir(const CString& path)
 {
 	CString str;
-	str=_T("");
 	HasAdminDir(path,!!PathIsDirectory(path),&str);
 	return str;
 }
 
-bool GitAdminDir::HasAdminDir(const CString& path) const
+bool GitAdminDir::IsWorkingTreeOrBareRepo(const CString& path)
+{
+	return HasAdminDir(path) || IsBareRepo(path);
+}
+
+bool GitAdminDir::HasAdminDir(const CString& path)
 {
 	return HasAdminDir(path, !!PathIsDirectory(path));
 }
 
-bool GitAdminDir::HasAdminDir(const CString& path,CString *ProjectTopDir) const
+bool GitAdminDir::HasAdminDir(const CString& path,CString* ProjectTopDir)
 {
 	return HasAdminDir(path, !!PathIsDirectory(path),ProjectTopDir);
 }
 
-bool GitAdminDir::HasAdminDir(const CString& path, bool bDir,CString *ProjectTopDir) const
+bool GitAdminDir::HasAdminDir(const CString& path, bool bDir, CString* ProjectTopDir)
 {
 	if (path.IsEmpty())
 		return false;
@@ -124,6 +132,9 @@ bool GitAdminDir::HasAdminDir(const CString& path, bool bDir,CString *ProjectTop
 			break;
 
 		sDirName = sDirName.Left(x);
+		// don't check for \\COMPUTERNAME\.git
+		if (sDirName[0] == _T('\\') && sDirName[1] == _T('\\') && sDirName.Find(_T('\\'), 2) < 0)
+			break;
 	}
 
 	return false;
@@ -133,7 +144,7 @@ bool GitAdminDir::HasAdminDir(const CString& path, bool bDir,CString *ProjectTop
  * Returns the .git-path (if .git is a file, read the repository path and return it)
  * adminDir always ends with "\"
  */
-bool GitAdminDir::GetAdminDirPath(const CString &projectTopDir, CString &adminDir) const
+bool GitAdminDir::GetAdminDirPath(const CString &projectTopDir, CString& adminDir)
 {
 	if (IsBareRepo(projectTopDir))
 	{
@@ -143,7 +154,7 @@ bool GitAdminDir::GetAdminDirPath(const CString &projectTopDir, CString &adminDi
 		return true;
 	}
 
-	CString sDotGitPath = projectTopDir + _T("\\") + g_GitAdminDir.GetAdminDirName();
+	CString sDotGitPath = projectTopDir + _T("\\") + GetAdminDirName();
 	if (CTGitPath(sDotGitPath).IsDirectory())
 	{
 		sDotGitPath.TrimRight('\\');
@@ -183,7 +194,7 @@ bool GitAdminDir::GetAdminDirPath(const CString &projectTopDir, CString &adminDi
 	}
 }
 
-bool GitAdminDir::IsAdminDirPath(const CString& path) const
+bool GitAdminDir::IsAdminDirPath(const CString& path)
 {
 	if (path.IsEmpty())
 		return false;
@@ -209,7 +220,7 @@ bool GitAdminDir::IsAdminDirPath(const CString& path) const
 	return bIsAdminDir;
 }
 
-bool GitAdminDir::IsBareRepo(const CString& path) const
+bool GitAdminDir::IsBareRepo(const CString& path)
 {
 	if (path.IsEmpty())
 		return false;

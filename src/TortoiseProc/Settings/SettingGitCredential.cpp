@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2014 - TortoiseGit
+// Copyright (C) 2013-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -171,7 +171,7 @@ BOOL CSettingGitCredential::OnInitDialog()
 
 	AdjustControlSize(IDC_CHECK_USEHTTPPATH);
 
-	bool hasLocal = g_GitAdminDir.HasAdminDir(g_Git.m_CurrentDir);
+	bool hasLocal = GitAdminDir::HasAdminDir(g_Git.m_CurrentDir);
 
 	m_ctrlUrlList.ResetContent();
 
