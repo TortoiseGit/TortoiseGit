@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2009,2012-2014 - TortoiseGit
+// Copyright (C) 2008-2009,2012-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -99,7 +99,7 @@ bool SubmoduleUpdateCommand::Execute()
 			bkpath = bkpath.Left(start);
 	}
 
-	CString super = g_GitAdminDir.GetSuperProjectRoot(bkpath);
+	CString super = GitAdminDir::GetSuperProjectRoot(bkpath);
 	if (super.IsEmpty())
 	{
 		CMessageBox::Show(NULL,IDS_ERR_NOTFOUND_SUPER_PRJECT,IDS_APPNAME,MB_OK|MB_ICONERROR);
@@ -178,7 +178,7 @@ bool SubmoduleCommand::Execute(CString cmd,  CString arg)
 			bkpath=bkpath.Left(start);
 	}
 
-	CString super=g_GitAdminDir.GetSuperProjectRoot( bkpath );
+	CString super = GitAdminDir::GetSuperProjectRoot(bkpath);
 	if(super.IsEmpty())
 	{
 		CMessageBox::Show(NULL,IDS_ERR_NOTFOUND_SUPER_PRJECT,IDS_APPNAME,MB_OK|MB_ICONERROR);

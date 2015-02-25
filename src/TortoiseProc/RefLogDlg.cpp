@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2014 - TortoiseGit
+// Copyright (C) 2009-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -89,7 +89,7 @@ BOOL CRefLogDlg::OnInitDialog()
 
 	m_ChooseRef.SetMaxHistoryItems(0x7FFFFFFF);
 
-	m_RefList.m_hasWC = !g_GitAdminDir.IsBareRepo(g_Git.m_CurrentDir);
+	m_RefList.m_hasWC = !GitAdminDir::IsBareRepo(g_Git.m_CurrentDir);
 
 	this->m_RefList.InsertRefLogColumn();
 

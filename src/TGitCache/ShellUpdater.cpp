@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005-2008 - TortoiseSVN
-// Copyright (C) 2008-2011,2013 - TortoiseGit
+// Copyright (C) 2008-2011,2013,2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -152,7 +152,7 @@ void CShellUpdater::WorkerThread()
 				// first send a notification about a sub folder change, so explorer doesn't discard
 				// the folder notification. Since we only know for sure that the git admin
 				// dir is present, we send a notification for that folder.
-				CString admindir = workingPath.GetWinPathString() + _T("\\") + g_GitAdminDir.GetAdminDirName();
+				CString admindir = workingPath.GetWinPathString() + _T("\\") + GitAdminDir::GetAdminDirName();
 				if(::PathFileExists(admindir))
 					SHChangeNotify(SHCNE_UPDATEITEM, SHCNF_PATH | SHCNF_FLUSHNOWAIT, (LPCTSTR)admindir, NULL);
 

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2014 - TortoiseGit
+// Copyright (C) 2011-2015 - TortoiseGit
 // Copyright (C) 2003-2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -292,7 +292,7 @@ UINT __stdcall CShellExt::CopyCallback_Wrap(HWND /*hWnd*/, UINT wFunc, UINT /*wF
 		if (pszSrcFile && pszSrcFile[0])
 		{
 			CString topDir;
-			if (g_GitAdminDir.HasAdminDir(pszSrcFile, &topDir))
+			if (GitAdminDir::HasAdminDir(pszSrcFile, &topDir))
 				m_CachedStatus.m_GitStatus.ReleasePath(topDir);
 			m_remoteCacheLink.ReleaseLockForPath(CTGitPath(pszSrcFile));
 		}

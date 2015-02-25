@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2014 - TortoiseGit
+// Copyright (C) 2008-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -204,7 +204,7 @@ BOOL CPullFetchDlg::OnInitDialog()
 		this->GetDlgItem(IDC_CHECK_NOCOMMIT)->EnableWindow(FALSE);
 	}
 
-	if (g_GitAdminDir.IsBareRepo(g_Git.m_CurrentDir))
+	if (GitAdminDir::IsBareRepo(g_Git.m_CurrentDir))
 		this->GetDlgItem(IDC_CHECK_REBASE)->EnableWindow(FALSE);
 
 	if (repo && git_repository_is_shallow(repo))

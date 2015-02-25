@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2014 - TortoiseGit
+// Copyright (C) 2008-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -110,9 +110,8 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 		CCommonAppUtils::RunTortoiseGitProc(_T(" /command:settings"));
 		return FALSE;
 	}
-	GitAdminDir admindir;
 	CString topdir;
-	if(!admindir.HasAdminDir(m_CurrentFileName, &topdir))
+	if (!GitAdminDir::HasAdminDir(m_CurrentFileName, &topdir))
 	{
 		CString temp;
 		temp.Format(IDS_CANNOTBLAMENOGIT, CString(m_CurrentFileName));
@@ -121,7 +120,6 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 	}
 	else
 	{
-		GitAdminDir lastAdminDir;
 		CString oldTopDir;
 		if (topdir != g_Git.m_CurrentDir && CTGitPath(g_Git.m_CurrentDir).HasAdminDir(&oldTopDir) && oldTopDir != topdir)
 		{

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2014 - TortoiseGit
+// Copyright (C) 2012-2015 - TortoiseGit
 // Copyright (C) 2003-2008 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
@@ -494,7 +494,7 @@ public:
 			}
 		}
 		CString sProjectRoot;
-		BOOL hasAdminDir = g_GitAdminDir.HasAdminDir(buf.get(), true, &sProjectRoot);
+		BOOL hasAdminDir = GitAdminDir::HasAdminDir(buf.get(), true, &sProjectRoot);
 		admindirticker = GetTickCount();
 		Locker lock(m_critSec);
 

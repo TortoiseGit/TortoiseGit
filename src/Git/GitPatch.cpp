@@ -1,6 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2012-2013 - TortoiseGit
+// Copyright (C) 2012-2013, 2015 - TortoiseGit
 // Copyright (C) 2010-2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -306,7 +306,7 @@ CString GitPatch::CheckPatchPath(const CString& path)
 			return path;
 		if (!isDir)
 			continue;
-		if (g_GitAdminDir.IsAdminDirPath(subpath))
+		if (GitAdminDir::IsAdminDirPath(subpath))
 			continue;
 		progress.SetLine(2, subpath, true);
 		if (CountMatches(subpath) > (GetNumberOfFiles()/3))
