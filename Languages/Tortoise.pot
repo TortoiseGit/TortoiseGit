@@ -9994,6 +9994,10 @@ msgstr ""
 msgid "Use th&is text block"
 msgstr ""
 
+#. Resource IDs: (98)
+msgid "Use the current time by setting the author date to the commit date."
+msgstr ""
+
 #. Resource IDs: (314)
 #, c-format
 msgid "Use the found path.\nApply the patch to\n%s"

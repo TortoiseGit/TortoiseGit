@@ -1216,6 +1216,7 @@
 #define IDS_PROC_NEWNAMELABEL           1554
 #define IDC_GROUP_RESET_TYPE            1554
 #define IDC_COMMIT_AMEND                1555
+#define IDS_COMMIT_AS_COMMIT_DATE_TT    1555
 #define IDC_SOUNDS_TEXT                 1556
 #define IDC_COMMIT_AMENDDIFF            1556
 #define IDC_REBASE_PROGRESS             1557
@@ -1224,6 +1225,7 @@
 #define IDC_COMMIT_SETAUTHOR            1558
 #define IDC_SPLITALLOPTIONS             1559
 #define IDS_PROC_MULTIRENAME            1560
+#define IDC_COMMIT_AS_COMMIT_DATE       1561
 #define IDC_REBASE_SPLIT                1562
 #define IDC_STATUS_STATIC               1563
 #define IDC_REBASE_CONTINUE             1564

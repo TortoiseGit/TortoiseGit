@@ -251,7 +251,8 @@ BEGIN
     CONTROL         "Show diff to last commit",IDC_COMMIT_AMENDDIFF,"Button",BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,212,110,132,10
     CONTROL         "Set author &date",IDC_COMMIT_SETDATETIME,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,125,102,10
     CONTROL         "",IDC_COMMIT_DATEPICKER,"SysDateTimePick32",DTS_RIGHTALIGN | NOT WS_VISIBLE | WS_TABSTOP,123,123,66,13,WS_EX_RIGHT
-    CONTROL         "",IDC_COMMIT_TIMEPICKER,"SysDateTimePick32",DTS_RIGHTALIGN | DTS_UPDOWN | NOT WS_VISIBLE | WS_TABSTOP | 0x8,195,123,61,13
+    CONTROL         "",IDC_COMMIT_TIMEPICKER,"SysDateTimePick32",DTS_RIGHTALIGN | DTS_UPDOWN | NOT WS_VISIBLE | WS_TABSTOP | 0x8,193,123,61,13
+    CONTROL         "Reset",IDC_COMMIT_AS_COMMIT_DATE,"Button",BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,259,125,85,10
     CONTROL         "Set au&thor",IDC_COMMIT_SETAUTHOR,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,139,102,10
     EDITTEXT        IDC_COMMIT_AUTHORDATA,123,137,119,13,ES_AUTOHSCROLL | NOT WS_VISIBLE
     PUSHBUTTON      "Add &Signed-off-by",IDC_SIGNOFF,258,137,86,13
@@ -3996,6 +3997,8 @@ BEGIN
     IDS_PROC_NEWNAMECOPY    "Copy: New name for %s"
     IDS_PROC_NEWNAMEMOVE    "Move: New name for %s"
     IDS_PROC_NEWNAMELABEL   "New name:"
+    IDS_COMMIT_AS_COMMIT_DATE_TT 
+                            "Use the current time by setting the author date to the commit date."
     IDS_PROC_MULTIRENAME    "TortoiseGit has detected similar filenames. Do you want the files:%s\nto be renamed too?"
 END
 
