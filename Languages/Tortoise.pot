@@ -1924,6 +1924,10 @@ msgstr ""
 msgid "Arrange &vertical"
 msgstr ""
 
+#. Resource IDs: (1561)
+msgid "As commit date"
+msgstr ""
+
 #. Resource IDs: (264)
 #, c-format
 msgid "Assigned to changelist '%s'"

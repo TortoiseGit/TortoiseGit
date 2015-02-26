@@ -201,6 +201,7 @@ private:
 	BOOL				m_bSetCommitDateTime;
 	CDateTimeCtrl		m_CommitDate;
 	CDateTimeCtrl		m_CommitTime;
+	CButton				m_AsCommitDateCtrl;
 	CLinkControl		m_linkControl;
 	CString				m_sLogTemplate;
 
@@ -221,6 +222,7 @@ protected:
 	afx_msg void OnBnClickedCommitAmenddiff();
 	afx_msg void OnBnClickedNoautoselectsubmodules();
 	afx_msg void OnBnClickedCommitSetDateTime();
+	afx_msg void OnBnClickedCommitAsCommitDate();
 	afx_msg void OnBnClickedCheckNewBranch();
 	afx_msg void OnBnClickedCommitSetauthor();
 };
