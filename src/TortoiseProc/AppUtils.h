@@ -50,9 +50,11 @@ public:
 		DiffFlags& AlternativeTool(bool b = true) { bAlternativeTool = b; return *this; }
 	};
 
+private:
 	CAppUtils(void);
 	~CAppUtils(void);
 
+public:
 	/**
 	 * Launches the external merge program if there is one.
 	 * \return TRUE if the program could be started
