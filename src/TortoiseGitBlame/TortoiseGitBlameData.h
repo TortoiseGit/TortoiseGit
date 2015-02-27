@@ -64,7 +64,8 @@ public:
 		}
 		return line;
 	}
-	int FindFirstLineWrapAround(const CString& what, int line, bool bCaseSensitive);
+	enum SearchDirection{ SearchNext = 0, SearchPrevious = 1 };
+	int FindFirstLineWrapAround(SearchDirection direction, const CString& what, int line, bool bCaseSensitive);
 
 	int GetNumberOfLines() const
 	{

@@ -64,6 +64,8 @@ BEGIN_MESSAGE_MAP(CTortoiseGitBlameView, CView)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_COPY, OnUpdateViewCopyToClipboard)
 	ON_COMMAND(ID_VIEW_NEXT,OnViewNext)
 	ON_COMMAND(ID_VIEW_PREV,OnViewPrev)
+	ON_COMMAND(ID_FIND_NEXT, OnFindNext)
+	ON_COMMAND(ID_FIND_PREV, OnFindPrev)
 	ON_COMMAND(ID_VIEW_SHOWAUTHOR, OnViewToggleAuthor)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_SHOWAUTHOR, OnUpdateViewToggleAuthor)
 	ON_COMMAND(ID_VIEW_SHOWDATE, OnViewToggleDate)
@@ -676,15 +678,12 @@ void CTortoiseGitBlameView::InitialiseEditor()
 
 }
 
-bool CTortoiseGitBlameView::DoSearch(CString what, DWORD flags)
+bool CTortoiseGitBlameView::DoSearch(CTortoiseGitBlameData::SearchDirection direction)
 {
 	int pos = (int)SendEditor(SCI_GETCURRENTPOS);
 	int line = (int)SendEditor(SCI_LINEFROMPOSITION, pos);
-	bool bCaseSensitive = !!(flags & FR_MATCHCASE);
-	theApp.WriteInt(_T("FindMatchCase"), bCaseSensitive ? 1 : 0);
-	theApp.WriteString(_T("FindString"), what);
 
-	int i = m_data.FindFirstLineWrapAround(what, line, bCaseSensitive);
+	int i = m_data.FindFirstLineWrapAround(direction, m_sFindText, line, m_bMatchCase);
 	if (i >= 0)
 	{
 		GotoLine(i + 1);
@@ -696,10 +695,24 @@ bool CTortoiseGitBlameView::DoSearch(CString what, DWORD flags)
 	}
 	else
 	{
-		::MessageBox(m_pFindDialog && m_pFindDialog->GetSafeHwnd() ? m_pFindDialog->GetSafeHwnd() : wMain, _T("\"") + what + _T("\" ") + CString(MAKEINTRESOURCE(IDS_NOTFOUND)), _T("TortoiseGitBlame"), MB_ICONINFORMATION);
+		::MessageBox(m_pFindDialog && m_pFindDialog->GetSafeHwnd() ? m_pFindDialog->GetSafeHwnd() : wMain, _T("\"") + m_sFindText + _T("\" ") + CString(MAKEINTRESOURCE(IDS_NOTFOUND)), _T("TortoiseGitBlame"), MB_ICONINFORMATION);
 	}
 
 	return true;
+}
+
+void CTortoiseGitBlameView::OnFindPrev()
+{
+	if (m_sFindText.IsEmpty())
+		return;
+	DoSearch(CTortoiseGitBlameData::SearchPrevious);
+}
+
+void CTortoiseGitBlameView::OnFindNext()
+{
+	if (m_sFindText.IsEmpty())
+		return;
+	DoSearch(CTortoiseGitBlameData::SearchNext);
 }
 
 bool CTortoiseGitBlameView::GotoLine(int line)
@@ -1909,10 +1922,13 @@ LRESULT CTortoiseGitBlameView::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*l
 	// to search for the requested string.
 	if(m_pFindDialog->FindNext())
 	{
-		//read data from dialog
-		CString FindName = m_pFindDialog->GetFindString();
+		m_bMatchCase = !!(m_pFindDialog->m_nFlags & FR_MATCHCASE);
+		m_sFindText = m_pFindDialog->GetFindString();
 
-		DoSearch(FindName,m_pFindDialog->m_fr.Flags);
+		theApp.WriteInt(_T("FindMatchCase"), m_bMatchCase ? 1 : 0);
+		theApp.WriteString(_T("FindString"), m_sFindText);
+
+		DoSearch(CTortoiseGitBlameData::SearchNext);
 	}
 
 	return 0;

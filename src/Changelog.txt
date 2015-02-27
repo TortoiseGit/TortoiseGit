@@ -5,6 +5,7 @@ Released: Unreleased
  * Fixed issue #2427: "Submodule of Project: " cannot be localized
  * Fixed issue #2432: MessageBox buttons cannot be localized
  * Fixed issue #2433: Cannot see the log in Diff with previous version
+ * TortoiseGitBlame: Implemented search forward (F3) and search backward (Shift+F3)
 
 = Release 1.8.13.0 =
 Released: 2015-02-15

@@ -127,6 +127,8 @@ protected:
 	afx_msg void OnChangeEncode(UINT nID);
 	afx_msg void OnEditFind();
 	afx_msg void OnEditGoto();
+	afx_msg void OnFindNext();
+	afx_msg void OnFindPrev();
 	afx_msg void OnFilePrintPreview();
 	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
 	afx_msg int OnCreate(LPCREATESTRUCT lpcs);
@@ -218,7 +220,7 @@ public:
 	void DrawBlame(HDC hDC);
 	void DrawLocatorBar(HDC hDC);
 	void CopyToClipboard();
-	bool DoSearch(CString what, DWORD flags);
+	bool DoSearch(CTortoiseGitBlameData::SearchDirection direction);
 	bool GotoLine(int line);
 	bool ScrollToLine(long line);
 	void GotoLineDlg();
@@ -289,6 +291,9 @@ protected:
 	CString					m_sAuthor;
 	CString					m_sDate;
 	CString					m_sMessage;
+
+	CString					m_sFindText;
+	bool					m_bMatchCase;
 };
 
 #ifndef _DEBUG  // debug version in TortoiseGitBlameView.cpp

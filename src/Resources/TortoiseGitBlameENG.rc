@@ -339,6 +339,8 @@ BEGIN
     VK_F6,          ID_PREV_PANE,           VIRTKEY, SHIFT
     VK_F1,          ID_CONTEXT_HELP,        VIRTKEY, SHIFT
     VK_F1,          ID_HELP,                VIRTKEY 
+    VK_F3,          ID_FIND_NEXT,           VIRTKEY, NOINVERT
+    VK_F3,          ID_FIND_PREV,           VIRTKEY, SHIFT, NOINVERT
 END
 
 

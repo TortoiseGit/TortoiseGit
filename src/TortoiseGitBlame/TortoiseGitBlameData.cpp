@@ -406,7 +406,7 @@ static int FindUtf8Lower(const CStringA& strA, bool allAscii, const CString &fin
 	return strW.MakeLower().Find(findW);
 }
 
-int CTortoiseGitBlameData::FindFirstLineWrapAround(const CString& what, int line, bool bCaseSensitive)
+int CTortoiseGitBlameData::FindFirstLineWrapAround(SearchDirection direction, const CString& what, int line, bool bCaseSensitive)
 {
 	bool allAscii = true;
 	for (int i = 0; i < what.GetLength(); ++i)
@@ -425,11 +425,15 @@ int CTortoiseGitBlameData::FindFirstLineWrapAround(const CString& what, int line
 
 	CStringA whatNormalizedUtf8 = CUnicodeUtils::GetUTF8(whatNormalized);
 
-	bool bFound = false;
-
-	int i = line;
 	int numberOfLines = GetNumberOfLines();
-	if (line < 0 || line + 1 >= numberOfLines)
+	int i = line;
+	if (direction == SearchPrevious)
+	{
+		i -= 2;
+		if (i < 0)
+			i = numberOfLines - 1;
+	}
+	else if (line < 0 || line + 1 >= numberOfLines)
 		i = 0;
 
 	do
@@ -437,31 +441,33 @@ int CTortoiseGitBlameData::FindFirstLineWrapAround(const CString& what, int line
 		if (bCaseSensitive)
 		{
 			if (m_Authors[i].Find(whatNormalized) >= 0)
-				bFound = true;
+				return i;
 			else if (m_Utf8Lines[i].Find(whatNormalizedUtf8) >=0)
-				bFound = true;
+				return i;
 		}
 		else
 		{
 			if (CString(m_Authors[i]).MakeLower().Find(whatNormalized) >= 0)
-				bFound = true;
+				return i;
 			else if (FindUtf8Lower(m_Utf8Lines[i], allAscii, whatNormalized, whatNormalizedUtf8) >= 0)
-				bFound = true;
+				return i;
 		}
 
-		if(bFound)
-		{
-			break;
-		}
-		else
+		if (direction == SearchNext)
 		{
 			++i;
 			if (i >= numberOfLines)
 				i = 0;
 		}
+		else if (direction == SearchPrevious)
+		{
+			--i;
+			if (i < 0)
+				i = numberOfLines - 2;
+		}
 	} while (i != line);
 
-	return bFound ? i : -1;
+	return -1;
 }
 
 bool CTortoiseGitBlameData::ContainsOnlyFilename(const CString &filename) const
