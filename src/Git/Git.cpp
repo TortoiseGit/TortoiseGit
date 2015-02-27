@@ -1288,7 +1288,7 @@ int CGit::GetInitAddList(CTGitPathList &outputlist)
 	if (Run(cmd, &cmdout))
 		return -1;
 
-	if (outputlist.ParserFromLsFile(cmdout))
+	if (outputlist.ParserFromLsFile(cmdout))//todo
 		return -1;
 	for(int i = 0; i < outputlist.GetCount(); ++i)
 		const_cast<CTGitPath&>(outputlist[i]).m_Action = CTGitPath::LOGACTIONS_ADDED;

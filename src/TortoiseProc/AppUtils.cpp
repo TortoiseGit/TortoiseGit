@@ -1626,7 +1626,7 @@ CString CAppUtils::GetMergeTempFile(const CString& type, const CTGitPath &merge)
 	return file;
 }
 
-bool ParseHashesFromLsFile(const BYTE_VECTOR& out, CString& hash1, CString& hash2, CString& hash3)
+bool ParseHashesFromLsFile(const BYTE_VECTOR& out, CString& hash1, CString& hash2, CString& hash3) // wtf?
 {
 	int pos = 0;
 	CString one;

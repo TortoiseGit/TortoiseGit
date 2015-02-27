@@ -1054,7 +1054,7 @@ int CTGitPathList::FillUnRev(unsigned int action, CTGitPathList *list, CString *
 
 		if(list==NULL)
 		{
-			cmd=_T("git.exe ls-files --exclude-standard --full-name --others -z");
+			cmd=_T("git.exe ls-files --exclude-standard --full-name --others -z"); // are just null terminated
 			cmd+=ignored;
 
 		}
