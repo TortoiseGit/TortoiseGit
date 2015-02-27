@@ -1194,6 +1194,7 @@
 #define IDS_SETTINGS_DELCACHE           1547
 #define IDC_COLOR_LINE3                 1548
 #define IDC_LOGMINSIZE                  1548
+#define IDS_STATUSLIST_CONTEXT_SHELL    1548
 #define IDC_COLOR_LINE4                 1549
 #define IDC_SHOWADDEDOVERLAY            1549
 #define IDC_SHOWREADONLYOVERLAY         1550

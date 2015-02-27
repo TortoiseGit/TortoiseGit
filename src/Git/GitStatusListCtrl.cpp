@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008-2015 - TortoiseGit
-// Copyright (C) 2003-2008, 2013 - TortoiseSVN
+// Copyright (C) 2003-2008, 2013-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -57,8 +57,142 @@ const UINT CGitStatusListCtrl::GITSLNM_CHECKCHANGED
 const UINT CGitStatusListCtrl::GITSLNM_ITEMCHANGED
 					= ::RegisterWindowMessage(_T("GITSLNM_ITEMCHANGED"));
 
+struct icompare
+{
+	bool operator() (const std::wstring& lhs, const std::wstring& rhs) const
+	{
+		// no logical comparison here: we need this sorted strictly
+		return _wcsicmp(lhs.c_str(), rhs.c_str()) < 0;
+	}
+};
 
+class CIShellFolderHook : public IShellFolder
+{
+public:
+	CIShellFolderHook(LPSHELLFOLDER sf, const CTGitPathList& pathlist)
+	{
+		sf->AddRef();
+		m_iSF = sf;
+		// it seems the paths in the HDROP need to be sorted, otherwise
+		// it might not work properly or even crash.
+		// to get the items sorted, we just add them to a set
+		for (int i = 0; i < pathlist.GetCount(); ++i)
+			sortedpaths.insert((LPCTSTR)g_Git.CombinePath(pathlist[i].GetWinPath()));
+	}
 
+	~CIShellFolderHook() { m_iSF->Release(); }
+
+	// IUnknown methods --------
+	virtual HRESULT STDMETHODCALLTYPE QueryInterface(REFIID riid, __RPC__deref_out void **ppvObject) { return m_iSF->QueryInterface(riid, ppvObject); }
+	virtual ULONG STDMETHODCALLTYPE AddRef(void) { return m_iSF->AddRef(); }
+	virtual ULONG STDMETHODCALLTYPE Release(void) { return m_iSF->Release(); }
+
+	// IShellFolder methods ----
+	virtual HRESULT STDMETHODCALLTYPE GetUIObjectOf(HWND hwndOwner, UINT cidl, PCUITEMID_CHILD_ARRAY apidl, REFIID riid, UINT *rgfReserved, void **ppv);
+
+	virtual HRESULT STDMETHODCALLTYPE CompareIDs(LPARAM lParam, __RPC__in PCUIDLIST_RELATIVE pidl1, __RPC__in PCUIDLIST_RELATIVE pidl2) { return m_iSF->CompareIDs(lParam, pidl1, pidl2); }
+	virtual HRESULT STDMETHODCALLTYPE GetDisplayNameOf(__RPC__in_opt PCUITEMID_CHILD pidl, SHGDNF uFlags, __RPC__out STRRET *pName) { return m_iSF->GetDisplayNameOf(pidl, uFlags, pName); }
+	virtual HRESULT STDMETHODCALLTYPE CreateViewObject(__RPC__in_opt HWND hwndOwner, __RPC__in REFIID riid, __RPC__deref_out_opt void **ppv) { return m_iSF->CreateViewObject(hwndOwner, riid, ppv); }
+	virtual HRESULT STDMETHODCALLTYPE EnumObjects(__RPC__in_opt HWND hwndOwner, SHCONTF grfFlags, __RPC__deref_out_opt IEnumIDList **ppenumIDList) { return m_iSF->EnumObjects(hwndOwner, grfFlags, ppenumIDList); }
+	virtual HRESULT STDMETHODCALLTYPE BindToObject(__RPC__in PCUIDLIST_RELATIVE pidl, __RPC__in_opt IBindCtx *pbc, __RPC__in REFIID riid, __RPC__deref_out_opt void **ppv) { return m_iSF->BindToObject(pidl, pbc, riid, ppv); }
+	virtual HRESULT STDMETHODCALLTYPE ParseDisplayName(__RPC__in_opt HWND hwnd, __RPC__in_opt IBindCtx *pbc, __RPC__in_string LPWSTR pszDisplayName, __reserved ULONG *pchEaten, __RPC__deref_out_opt PIDLIST_RELATIVE *ppidl, __RPC__inout_opt ULONG *pdwAttributes) { return m_iSF->ParseDisplayName(hwnd, pbc, pszDisplayName, pchEaten, ppidl, pdwAttributes); }
+	virtual HRESULT STDMETHODCALLTYPE GetAttributesOf(UINT cidl, __RPC__in_ecount_full_opt(cidl) PCUITEMID_CHILD_ARRAY apidl, __RPC__inout SFGAOF *rgfInOut) { return m_iSF->GetAttributesOf(cidl, apidl, rgfInOut); }
+	virtual HRESULT STDMETHODCALLTYPE BindToStorage(__RPC__in PCUIDLIST_RELATIVE pidl, __RPC__in_opt IBindCtx *pbc, __RPC__in REFIID riid, __RPC__deref_out_opt void **ppv) { return m_iSF->BindToStorage(pidl, pbc, riid, ppv); }
+	virtual HRESULT STDMETHODCALLTYPE SetNameOf(__in_opt HWND hwnd, __in PCUITEMID_CHILD pidl, __in LPCWSTR pszName, __in SHGDNF uFlags, __deref_opt_out PITEMID_CHILD *ppidlOut) { return m_iSF->SetNameOf(hwnd, pidl, pszName, uFlags, ppidlOut); }
+
+protected:
+	LPSHELLFOLDER m_iSF;
+	std::set<std::wstring, icompare> sortedpaths;
+};
+
+HRESULT STDMETHODCALLTYPE CIShellFolderHook::GetUIObjectOf(HWND hwndOwner, UINT cidl, PCUITEMID_CHILD_ARRAY apidl, REFIID riid, UINT *rgfReserved, void **ppv)
+{
+	if (InlineIsEqualGUID(riid, IID_IDataObject))
+	{
+		HRESULT hres = m_iSF->GetUIObjectOf(hwndOwner, cidl, apidl, IID_IDataObject, NULL, ppv);
+		if (FAILED(hres))
+			return hres;
+
+		IDataObject * idata = (LPDATAOBJECT)(*ppv);
+		// the IDataObject returned here doesn't have a HDROP, so we create one ourselves and add it to the IDataObject
+		// the HDROP is necessary for most context menu handlers
+		int nLength = 0;
+		for (auto it = sortedpaths.cbegin(); it != sortedpaths.cend(); ++it)
+		{
+			nLength += (int)it->size();
+			nLength += 1; // '\0' separator
+		}
+		int nBufferSize = sizeof(DROPFILES) + ((nLength + 5)*sizeof(TCHAR));
+		std::unique_ptr<char[]> pBuffer(new char[nBufferSize]);
+		SecureZeroMemory(pBuffer.get(), nBufferSize);
+		DROPFILES* df = (DROPFILES*)pBuffer.get();
+		df->pFiles = sizeof(DROPFILES);
+		df->fWide = 1;
+		TCHAR* pFilenames = (TCHAR*)((BYTE*)(pBuffer.get()) + sizeof(DROPFILES));
+		TCHAR* pCurrentFilename = pFilenames;
+
+		for (auto it = sortedpaths.cbegin(); it != sortedpaths.cend(); ++it)
+		{
+			wcscpy_s(pCurrentFilename, it->size() + 1, it->c_str());
+			pCurrentFilename += it->size();
+			*pCurrentFilename = '\0'; // separator between file names
+			pCurrentFilename++;
+		}
+		*pCurrentFilename = '\0'; // terminate array
+		pCurrentFilename++;
+		*pCurrentFilename = '\0'; // terminate array
+		STGMEDIUM medium = { 0 };
+		medium.tymed = TYMED_HGLOBAL;
+		medium.hGlobal = GlobalAlloc(GMEM_ZEROINIT | GMEM_MOVEABLE, nBufferSize + 20);
+		if (medium.hGlobal)
+		{
+			LPVOID pMem = ::GlobalLock(medium.hGlobal);
+			if (pMem)
+			{
+				memcpy(pMem, pBuffer.get(), nBufferSize);
+				GlobalUnlock(medium.hGlobal);
+				FORMATETC formatetc = { 0 };
+				formatetc.cfFormat = CF_HDROP;
+				formatetc.dwAspect = DVASPECT_CONTENT;
+				formatetc.lindex = -1;
+				formatetc.tymed = TYMED_HGLOBAL;
+				medium.pUnkForRelease = nullptr;
+				hres = idata->SetData(&formatetc, &medium, TRUE);
+				return hres;
+			}
+		}
+		return E_OUTOFMEMORY;
+	}
+	else
+	{
+		// just pass it on to the base object
+		return m_iSF->GetUIObjectOf(hwndOwner, cidl, apidl, riid, rgfReserved, ppv);
+	}
+}
+
+IContextMenu2 *         g_IContext2 = nullptr;
+IContextMenu3 *         g_IContext3 = nullptr;
+CIShellFolderHook *     g_pFolderhook = nullptr;
+IShellFolder *          g_psfDesktopFolder = nullptr;
+LPITEMIDLIST *          g_pidlArray = nullptr;
+int                     g_pidlArrayItems = 0;
+
+#define SHELL_MIN_CMD   10000
+#define SHELL_MAX_CMD   20000
+
+HRESULT CALLBACK dfmCallback(IShellFolder * /*psf*/, HWND /*hwnd*/, IDataObject * /*pdtobj*/, UINT uMsg, WPARAM /*wParam*/, LPARAM /*lParam*/)
+{
+	switch (uMsg)
+	{
+	case DFM_MERGECONTEXTMENU:
+		return S_OK;
+	case DFM_INVOKECOMMAND:
+	case DFM_INVOKECOMMANDEX:
+	case DFM_GETDEFSTATICID: // Required for Windows 7 to pick a default
+		return S_FALSE;
+	}
+	return E_NOTIMPL;
+}
 
 BEGIN_MESSAGE_MAP(CGitStatusListCtrl, CListCtrl)
 	ON_NOTIFY(HDN_ITEMCLICKA, 0, OnHdnItemclick)
@@ -143,12 +277,21 @@ CGitStatusListCtrl::CGitStatusListCtrl() : CListCtrl()
 	, m_dwContextMenus(0)
 	, m_nIconFolder(0)
 	, m_nRestoreOvl(0)
+	, pfnSHCreateDefaultContextMenu(nullptr)
+	, pfnAssocCreateForClasses(nullptr)
+	, m_pContextMenu(nullptr)
 {
 	m_FileLoaded=0;
 	m_dwDefaultColumns = 0;
 	m_critSec.Init();
 	m_bIsRevertTheirMy = false;
 	this->m_nLineAdded =this->m_nLineDeleted =0;
+	m_ShellDll = AtlLoadSystemLibraryUsingFullPath(_T("Shell32.dll"));
+	if (m_ShellDll)
+	{
+		pfnSHCreateDefaultContextMenu = (FNSHCreateDefaultContextMenu)::GetProcAddress(m_ShellDll, "SHCreateDefaultContextMenu");
+		pfnAssocCreateForClasses = (FNAssocCreateForClasses)::GetProcAddress(m_ShellDll, "AssocCreateForClasses");
+	}
 }
 
 CGitStatusListCtrl::~CGitStatusListCtrl()
@@ -1443,7 +1586,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 
 	//WORD langID = (WORD)CRegStdDWORD(_T("Software\\TortoiseGit\\LanguageID"), GetUserDefaultLangID());
 
-	//bool bShift = !!(GetAsyncKeyState(VK_SHIFT) & 0x8000);
+	bool bShift = !!(GetAsyncKeyState(VK_SHIFT) & 0x8000);
 	CTGitPath * filepath;
 
 	int selIndex = GetSelectionMark();
@@ -1477,6 +1620,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 		CIconMenu popup;
 		CMenu changelistSubMenu;
 		CMenu ignoreSubMenu;
+		CMenu shellMenu;
 		if (popup.CreatePopupMenu())
 		{
 			//Add Menu for version controlled file
@@ -1828,7 +1972,61 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 #endif
 			}
 
-			int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this, 0);
+			m_hShellMenu = nullptr;
+			if (pfnSHCreateDefaultContextMenu && pfnAssocCreateForClasses && GetSelectedCount() > 0 && !(wcStatus & CTGitPath::LOGACTIONS_DELETED) && m_bHasWC && (this->m_CurrentVersion.IsEmpty() || this->m_CurrentVersion == GIT_REV_ZERO) && shellMenu.CreatePopupMenu())
+			{
+				// insert the shell context menu
+				popup.AppendMenu(MF_SEPARATOR);
+				popup.InsertMenu((UINT)-1, MF_BYPOSITION | MF_POPUP, (UINT_PTR)shellMenu.m_hMenu, CString(MAKEINTRESOURCE(IDS_STATUSLIST_CONTEXT_SHELL)));
+				m_hShellMenu = shellMenu.m_hMenu;
+			}
+
+			int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_RIGHTBUTTON, point.x, point.y, this, 0);
+			g_IContext2 = nullptr;
+			g_IContext3 = nullptr;
+			if (m_pContextMenu)
+			{
+				if (cmd >= SHELL_MIN_CMD && cmd <= SHELL_MAX_CMD) // see if returned idCommand belongs to shell menu entries)
+				{
+					CMINVOKECOMMANDINFOEX cmi = { 0 };
+					cmi.cbSize = sizeof(CMINVOKECOMMANDINFOEX);
+					cmi.fMask = CMIC_MASK_UNICODE | CMIC_MASK_PTINVOKE;
+					if (GetKeyState(VK_CONTROL) < 0)
+						cmi.fMask |= CMIC_MASK_CONTROL_DOWN;
+					if (bShift)
+						cmi.fMask |= CMIC_MASK_SHIFT_DOWN;
+					cmi.hwnd = m_hWnd;
+					cmi.lpVerb = MAKEINTRESOURCEA(cmd - SHELL_MIN_CMD);
+					cmi.lpVerbW = MAKEINTRESOURCEW(cmd - SHELL_MIN_CMD);
+					cmi.nShow = SW_SHOWNORMAL;
+					cmi.ptInvoke = point;
+
+					m_pContextMenu->InvokeCommand((LPCMINVOKECOMMANDINFO)&cmi);
+
+					cmd = 0;
+				}
+				m_pContextMenu->Release();
+				m_pContextMenu = nullptr;
+			}
+			if (g_pFolderhook)
+			{
+				delete g_pFolderhook;
+				g_pFolderhook = nullptr;
+			}
+			if (g_psfDesktopFolder)
+			{
+				g_psfDesktopFolder->Release();
+				g_psfDesktopFolder = nullptr;
+			}
+			for (int i = 0; i < g_pidlArrayItems; i++)
+			{
+				if (g_pidlArray[i])
+					CoTaskMemFree(g_pidlArray[i]);
+			}
+			if (g_pidlArray)
+				CoTaskMemFree(g_pidlArray);
+			g_pidlArray = nullptr;
+			g_pidlArrayItems = 0;
 
 			m_bBlock = TRUE;
 			AfxGetApp()->DoWaitCursor(1);
@@ -4383,4 +4581,167 @@ void CGitStatusListCtrl::DeleteSelectedFiles()
 		}
 		SetRedraw(TRUE);
 	}
+}
+
+BOOL CGitStatusListCtrl::OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pResult)
+{
+	switch (message)
+	{
+	case WM_MENUCHAR:   // only supported by IContextMenu3
+		if (g_IContext3)
+		{
+			g_IContext3->HandleMenuMsg2(message, wParam, lParam, pResult);
+			return TRUE;
+		}
+		break;
+
+	case WM_DRAWITEM:
+	case WM_MEASUREITEM:
+		if (wParam)
+			break; // if wParam != 0 then the message is not menu-related
+
+	case WM_INITMENU:
+	case WM_INITMENUPOPUP:
+	{
+		HMENU hMenu = (HMENU)wParam;
+		if (pfnSHCreateDefaultContextMenu && pfnAssocCreateForClasses && (hMenu == m_hShellMenu) && (GetMenuItemCount(hMenu) == 0))
+		{
+			// the shell submenu is populated only on request, i.e. right
+			// before the submenu is shown
+			if (g_pFolderhook)
+			{
+				delete g_pFolderhook;
+				g_pFolderhook = nullptr;
+			}
+			CTGitPathList targetList;
+			FillListOfSelectedItemPaths(targetList);
+			if (targetList.GetCount() > 0)
+			{
+				// get IShellFolder interface of Desktop (root of shell namespace)
+				if (g_psfDesktopFolder)
+					g_psfDesktopFolder->Release();
+				SHGetDesktopFolder(&g_psfDesktopFolder);    // needed to obtain full qualified pidl
+
+				// ParseDisplayName creates a PIDL from a file system path relative to the IShellFolder interface
+				// but since we use the Desktop as our interface and the Desktop is the namespace root
+				// that means that it's a fully qualified PIDL, which is what we need
+
+				if (g_pidlArray)
+				{
+					for (int i = 0; i < g_pidlArrayItems; i++)
+					{
+						if (g_pidlArray[i])
+							CoTaskMemFree(g_pidlArray[i]);
+					}
+					CoTaskMemFree(g_pidlArray);
+					g_pidlArray = nullptr;
+					g_pidlArrayItems = 0;
+				}
+				int nItems = targetList.GetCount();
+				g_pidlArray = (LPITEMIDLIST *)CoTaskMemAlloc((nItems + 10) * sizeof(LPITEMIDLIST));
+				SecureZeroMemory(g_pidlArray, (nItems + 10) * sizeof(LPITEMIDLIST));
+				int succeededItems = 0;
+				PIDLIST_RELATIVE pidl = nullptr;
+
+				size_t bufsize = 1024;
+				std::unique_ptr<WCHAR[]> filepath(new WCHAR[bufsize]);
+				for (size_t i = 0; i < nItems; i++)
+				{
+					CString fullPath = g_Git.CombinePath(targetList[i].GetWinPath());
+					if (bufsize < fullPath.GetLength())
+					{
+						bufsize = fullPath.GetLength() + 3;
+						filepath = std::unique_ptr<WCHAR[]>(new WCHAR[bufsize]);
+					}
+					wcscpy_s(filepath.get(), bufsize, fullPath);
+					if (SUCCEEDED(g_psfDesktopFolder->ParseDisplayName(nullptr, 0, filepath.get(), nullptr, &pidl, nullptr)))
+						g_pidlArray[succeededItems++] = pidl; // copy pidl to pidlArray
+				}
+				if (succeededItems == 0)
+				{
+					CoTaskMemFree(g_pidlArray);
+					g_pidlArray = nullptr;
+				}
+
+				g_pidlArrayItems = succeededItems;
+
+				if (g_pidlArrayItems)
+				{
+					CString ext = targetList[0].GetFileExtension();
+
+					ASSOCIATIONELEMENT const rgAssocItem[] =
+					{
+						{ ASSOCCLASS_PROGID_STR, NULL, ext },
+						{ ASSOCCLASS_SYSTEM_STR, NULL, ext },
+						{ ASSOCCLASS_APP_STR, NULL, ext },
+						{ ASSOCCLASS_STAR, NULL, NULL },
+						{ ASSOCCLASS_FOLDER, NULL, NULL },
+					};
+					IQueryAssociations * pIQueryAssociations;
+					pfnAssocCreateForClasses(rgAssocItem, ARRAYSIZE(rgAssocItem), IID_IQueryAssociations, (void**)&pIQueryAssociations);
+
+					g_pFolderhook = new CIShellFolderHook(g_psfDesktopFolder, targetList);
+					LPCONTEXTMENU icm1 = nullptr;
+
+					DEFCONTEXTMENU dcm = { 0 };
+					dcm.hwnd = m_hWnd;
+					dcm.psf = g_pFolderhook;
+					dcm.cidl = g_pidlArrayItems;
+					dcm.apidl = (PCUITEMID_CHILD_ARRAY)g_pidlArray;
+					dcm.punkAssociationInfo = pIQueryAssociations;
+					if (SUCCEEDED(pfnSHCreateDefaultContextMenu(&dcm, IID_IContextMenu, (void**)&icm1)))
+					{
+						int iMenuType = 0;  // to know which version of IContextMenu is supported
+						if (icm1)
+						{   // since we got an IContextMenu interface we can now obtain the higher version interfaces via that
+							if (icm1->QueryInterface(IID_IContextMenu3, (void**)&m_pContextMenu) == S_OK)
+								iMenuType = 3;
+							else if (icm1->QueryInterface(IID_IContextMenu2, (void**)&m_pContextMenu) == S_OK)
+								iMenuType = 2;
+
+							if (m_pContextMenu)
+								icm1->Release(); // we can now release version 1 interface, cause we got a higher one
+							else
+							{
+								// since no higher versions were found
+								// redirect ppContextMenu to version 1 interface
+								iMenuType = 1;
+								m_pContextMenu = icm1;
+							}
+						}
+						if (m_pContextMenu)
+						{
+							// lets fill the our popup menu
+							UINT flags = CMF_NORMAL;
+							flags |= (GetKeyState(VK_SHIFT) & 0x8000) != 0 ? CMF_EXTENDEDVERBS : 0;
+							m_pContextMenu->QueryContextMenu(hMenu, 0, SHELL_MIN_CMD, SHELL_MAX_CMD, flags);
+
+
+							// subclass window to handle menu related messages in CShellContextMenu
+							if (iMenuType > 1)  // only subclass if its version 2 or 3
+							{
+								if (iMenuType == 2)
+									g_IContext2 = (LPCONTEXTMENU2)m_pContextMenu;
+								else    // version 3
+									g_IContext3 = (LPCONTEXTMENU3)m_pContextMenu;
+							}
+						}
+					}
+					pIQueryAssociations->Release();
+				}
+			}
+			if (g_IContext3)
+				g_IContext3->HandleMenuMsg2(message, wParam, lParam, pResult);
+			else if (g_IContext2)
+				g_IContext2->HandleMenuMsg(message, wParam, lParam);
+			return TRUE;
+		}
+	}
+
+	break;
+	default:
+		break;
+	}
+
+	return CListCtrl::OnWndMsg(message, wParam, lParam, pResult);
 }

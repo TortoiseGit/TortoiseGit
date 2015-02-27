@@ -3670,6 +3670,7 @@ BEGIN
     IDS_DISABLEUPDATECHECKSBUTTON "Disable update checks"
     IDS_DISABLEUPDATECHECKS "Do you really want to disable automatic update checks for TortoiseGit?\r\n\r\nAutomatic update checks can be re-enabled in TortoiseGit settings on the General page."
     IDS_REMINDMELATER       "&Remind me later"
+    IDS_STATUSLIST_CONTEXT_SHELL "Shell"
     IDS_PROC_RENAME         "Rename %s"
     IDS_PROC_NEWNAME        "New name for %s"
 END

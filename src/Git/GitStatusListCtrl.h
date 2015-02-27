@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2014 - TortoiseGit
+// Copyright (C) 2008-2015 - TortoiseGit
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -24,6 +24,7 @@
 #include "Colors.h"
 #include "LoglistCommonResource.h"
 #include "HintListCtrl.h"
+#include "SmartHandle.h"
 
 #define GIT_WC_ENTRY_WORKING_SIZE_UNKNOWN (-1)
 
@@ -1036,6 +1037,7 @@ private:
 
 	virtual void PreSubclassWindow();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	virtual BOOL OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pResult);
 	afx_msg void OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg BOOL OnToolTipText(UINT id, NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnHdnItemclick(NMHDR *pNMHDR, LRESULT *pResult);
@@ -1146,6 +1148,12 @@ private:
 	std::map<CString,bool>		m_mapDirectFiles;
 	CComCriticalSection			m_critSec;
 
+	CAutoLibrary				m_ShellDll;
+	typedef HRESULT(WINAPI* FNSHCreateDefaultContextMenu) (const DEFCONTEXTMENU *pdcm, REFIID riid, void **ppv);
+	FNSHCreateDefaultContextMenu	pfnSHCreateDefaultContextMenu;
+	typedef HRESULT(WINAPI* FNAssocCreateForClasses) (const ASSOCIATIONELEMENT *rgClasses, ULONG cClasses, REFIID riid, void **ppv);
+	FNAssocCreateForClasses			pfnAssocCreateForClasses;
+
 	friend class CGitStatusListCtrlDropTarget;
 public:
 	enum
@@ -1171,6 +1179,9 @@ public:
 	git_revnum_t m_CurrentVersion;
 	bool m_bDoNotAutoselectSubmodules;
 	std::map<CString, CString>	m_restorepaths;
+
+	HMENU			m_hShellMenu;
+	LPCONTEXTMENU	m_pContextMenu;
 };
 
 #if 0
