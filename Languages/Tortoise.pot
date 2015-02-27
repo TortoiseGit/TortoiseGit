@@ -5115,6 +5115,10 @@ msgid "Hook Type:"
 msgstr ""
 
 #. Resource IDs: (65535)
+msgid "Don't show the selected items: (press shift key to show them)"
+msgstr ""
+
+#. Resource IDs: (65535)
 msgid "I&nclude paths:"
 msgstr ""
 
@@ -6142,10 +6146,6 @@ msgstr ""
 
 #. Resource IDs: (209)
 msgid "Move to changelist"
-msgstr ""
-
-#. Resource IDs: (65535)
-msgid "Move to extended context menu (press shift key to show it)"
 msgstr ""
 
 #. Resource IDs: (229)

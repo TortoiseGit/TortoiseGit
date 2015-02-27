@@ -1698,7 +1698,7 @@ STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "General::Set Extend Menu Item"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
-    GROUPBOX        "Move to extended context menu (press shift key to show it)",-1,7,7,286,210
+    GROUPBOX        "Don't show the selected items: (press shift key to show them)",-1,7,7,286,210
     CONTROL         "",IDC_MENULIST,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_ALIGNLEFT | LVS_NOCOLUMNHEADER | WS_BORDER | WS_TABSTOP,12,19,274,175
     CONTROL         "Select/deselect &all",IDC_SELECTALL,"Button",BS_AUTO3STATE | WS_TABSTOP,12,198,106,14
     PUSHBUTTON      "Restore Default",IDC_RESTORE,204,198,82,14
