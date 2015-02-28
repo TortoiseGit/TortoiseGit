@@ -1513,6 +1513,7 @@
 #define IDC_EDIT_PUSHURL                1794
 #define IDC_SORTTAGSREVERSED            1795
 #define IDC_STATIC_FORCE                1796
+#define IDC_NOSOUNDS                    1796
 #define IDC_OPENCERT                    1797
 #define IDC_ERRORDESC                   1798
 #define IDC_ERROR                       1799

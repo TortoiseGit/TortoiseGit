@@ -3704,6 +3704,10 @@ msgstr ""
 msgid "Directory:"
 msgstr ""
 
+#. Resource IDs: (1796)
+msgid "Disable sounds"
+msgstr ""
+
 #. Resource IDs: (195)
 msgid "Disable this option if you have really big working trees and experience\r\ntoo much disk access when browsing the working tree."
 msgstr ""
