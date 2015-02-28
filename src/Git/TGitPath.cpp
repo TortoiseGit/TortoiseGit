@@ -1303,7 +1303,7 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log, bool parseDeletes /*false*/)
 		}
 		pos=log.findNextString(pos);
 	}
-	return pos;
+	return 0;
 }
 
 void CTGitPathList::AddPath(const CTGitPath& newPath)

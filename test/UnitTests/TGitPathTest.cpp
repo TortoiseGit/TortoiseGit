@@ -413,7 +413,7 @@ TEST(CTGitPath, ParserFromLog_Conflict)
 	CGitByteArray byteArray;
 	byteArray.append(git_ls_file_u_t_z_output, sizeof(git_ls_file_u_t_z_output));
 	CTGitPathList testList;
-	EXPECT_EQ(-1, testList.ParserFromLog(byteArray));
+	EXPECT_EQ(0, testList.ParserFromLog(byteArray));
 	ASSERT_EQ(1, testList.GetCount());
 	EXPECT_STREQ(_T("bla.txt"), testList[0].GetGitPathString());
 	EXPECT_EQ(0, testList[0].m_Stage); // not set
@@ -471,14 +471,14 @@ TEST(CTGitPath, ParserFromLog_Deleted_From_LsFiles)
 
 	BYTE git_ls_file_d_z_output[] = { "build.txt\0" };
 	byteArray.append(git_ls_file_d_z_output, sizeof(git_ls_file_d_z_output));
-	EXPECT_EQ(-1, testList.ParserFromLog(byteArray, true));
+	EXPECT_EQ(0, testList.ParserFromLog(byteArray, true));
 	ASSERT_EQ(1, testList.GetCount());
 	EXPECT_STREQ(_T("build.txt"), testList[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, testList[0].m_Action);
 
 	BYTE git_ls_file_d_z_output2[] = { "zzz-added-only-in-index-missing-on-fs.txt\0" };
 	byteArray.append(git_ls_file_d_z_output2, sizeof(git_ls_file_d_z_output2));
-	EXPECT_EQ(-1, testList.ParserFromLog(byteArray, true));
+	EXPECT_EQ(0, testList.ParserFromLog(byteArray, true));
 	ASSERT_EQ(2, testList.GetCount());
 	EXPECT_STREQ(_T("build.txt"), testList[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, testList[0].m_Action);
@@ -495,7 +495,7 @@ TEST(CTGitPath, ParserFromLog_DiffIndex_Raw_M_C_z)
 	CGitByteArray byteArray;
 	byteArray.append(git_DiffIndex_Raw_M_C_z_output, sizeof(git_DiffIndex_Raw_M_C_z_output));
 	CTGitPathList testList;
-	EXPECT_EQ(-1, testList.ParserFromLog(byteArray));
+	EXPECT_EQ(0, testList.ParserFromLog(byteArray));
 	ASSERT_EQ(9, testList.GetCount());
 	EXPECT_STREQ(_T("build.txt"), testList[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, testList[0].m_Action);
@@ -552,7 +552,7 @@ TEST(CTGitPath, ParserFromLog_DiffIndex_Raw_M_C_Numstat_z)
 	CGitByteArray byteArray;
 	byteArray.append(git_DiffIndex_Raw_M_C_z_output, sizeof(git_DiffIndex_Raw_M_C_z_output));
 	CTGitPathList testList;
-	EXPECT_EQ(-1, testList.ParserFromLog(byteArray));
+	EXPECT_EQ(0, testList.ParserFromLog(byteArray));
 	ASSERT_EQ(9, testList.GetCount());
 	EXPECT_STREQ(_T("build.txt"), testList[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, testList[0].m_Action);
@@ -609,7 +609,7 @@ TEST(CTGitPath, ParserFromLog_DiffIndex_Raw_Cached_M_C_Numstat_z)
 	CGitByteArray byteArray;
 	byteArray.append(git_DiffIndex_Raw_Cached_M_C_z_output, sizeof(git_DiffIndex_Raw_Cached_M_C_z_output));
 	CTGitPathList testList;
-	EXPECT_EQ(-1, testList.ParserFromLog(byteArray));
+	EXPECT_EQ(0, testList.ParserFromLog(byteArray));
 	ASSERT_EQ(5, testList.GetCount());
 	EXPECT_STREQ(_T("release-renamed.txt"), testList[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED, testList[0].m_Action);
@@ -646,7 +646,7 @@ TEST(CTGitPath, ParserFromLog_DiffIndex_Raw_Cached_M_C_Numstat_z_AND_DiffIndex_R
 	CGitByteArray byteArray;
 	byteArray.append(git_DiffIndex_Raw_Cached_M_C_z_output, sizeof(git_DiffIndex_Raw_Cached_M_C_z_output));
 	CTGitPathList testList;
-	EXPECT_EQ(-1, testList.ParserFromLog(byteArray));
+	EXPECT_EQ(0, testList.ParserFromLog(byteArray));
 	ASSERT_EQ(10, testList.GetCount());
 	EXPECT_STREQ(_T("release-renamed.txt"), testList[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED, testList[0].m_Action);
@@ -708,7 +708,7 @@ TEST(CTGitPath, ParserFromLog_Diff_r_raw_C_M_numstat_z_HEAD)
 	CGitByteArray byteArray;
 	byteArray.append(git_Diff_r_raw_C_M_numstat_z_HEAD_output, sizeof(git_Diff_r_raw_C_M_numstat_z_HEAD_output));
 	CTGitPathList testList;
-	EXPECT_EQ(-1, testList.ParserFromLog(byteArray));
+	EXPECT_EQ(0, testList.ParserFromLog(byteArray));
 	ASSERT_EQ(9, testList.GetCount());
 	EXPECT_STREQ(_T("build.txt"), testList[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, testList[0].m_Action);
@@ -765,7 +765,7 @@ TEST(CTGitPath, ParserFromLog_DiffTree)
 	CGitByteArray byteArray;
 	byteArray.append(git_difftree_output, sizeof(git_difftree_output));
 	CTGitPathList testList;
-	EXPECT_EQ(-1, testList.ParserFromLog(byteArray));
+	EXPECT_EQ(0, testList.ParserFromLog(byteArray));
 	ASSERT_EQ(9, testList.GetCount());
 	EXPECT_STREQ(_T("src/Git/Git.cpp"), testList[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, testList[0].m_Action);

@@ -1315,9 +1315,7 @@ int CGit::GetCommitDiffList(const CString &rev1, const CString &rev2, CTGitPathL
 	if (Run(cmd, &out))
 		return -1;
 
-	outputlist.ParserFromLog(out);
-
-	return 0;
+	return outputlist.ParserFromLog(out);
 }
 
 int addto_list_each_ref_fn(const char *refname, const unsigned char * /*sha1*/, int /*flags*/, void *cb_data)
