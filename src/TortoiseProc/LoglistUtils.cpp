@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012, 2014 - TortoiseGit
+// Copyright (C) 2008-2012, 2014-2015 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -52,7 +52,11 @@ CString CLoglistUtils::FormatDateAndTime(const CTime& cTime, DWORD option, bool 
 	else
 	{
 		// should we use the locale settings for formatting the date/time?
+#ifdef GTEST_INCLUDE_GTEST_GTEST_H_
+		if (false)
+#else
 		if (CRegDWORD(_T("Software\\TortoiseGit\\UseSystemLocaleForDates"), TRUE))
+#endif
 		{
 			// yes
 			SYSTEMTIME sysTime;

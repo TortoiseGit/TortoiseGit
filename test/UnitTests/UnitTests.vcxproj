@@ -52,7 +52,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>$(ProjectDir);..\..\src\Resources;..\..\src\Git;..\..\ext\hunspell;..\..\ext\scintilla\include;..\..\src\Utils;..\..\src\Utils\MiscUI;..\..\src\TortoiseShell;..\..\ext\gitdll;..\..\ext\libgit2\include;..\..\ext\gtest\include;..\..\ext\ResizableLib;..\..\src\TortoiseProc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);..\..\src\Resources;..\..\src\Git;..\..\ext\hunspell;..\..\ext\scintilla\include;..\..\src\Utils;..\..\src\Utils\MiscUI;..\..\src\TortoiseShell;..\..\ext\gitdll;..\..\ext\libgit2\include;..\..\ext\gtest\include;..\..\ext\ResizableLib;..\..\src\TortoiseProc;..\..\src\TortoiseMerge;..\..\src\TortoiseGitBlame;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ExceptionHandling>Async</ExceptionHandling>
       <PreprocessorDefinitions Condition="'$(VisualStudioVersion)' == '11.0'">_VARIADIC_MAX=10;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -73,6 +73,9 @@
     <ClInclude Include="..\..\src\Git\gittype.h" />
     <ClInclude Include="..\..\src\Git\MassiveGitTaskBase.h" />
     <ClInclude Include="..\..\src\Git\TGitPath.h" />
+    <ClInclude Include="..\..\src\TortoiseGitBlame\TortoiseGitBlameData.h" />
+    <ClInclude Include="..\..\src\TortoiseMerge\FileTextLines.h" />
+    <ClInclude Include="..\..\src\TortoiseProc\LoglistUtils.h" />
     <ClInclude Include="..\..\src\TortoiseProc\ProjectProperties.h" />
     <ClInclude Include="..\..\src\Utils\CommonAppUtils.h" />
     <ClInclude Include="..\..\src\Utils\DebugHelpers.h" />
@@ -97,6 +100,9 @@
     <ClCompile Include="..\..\src\Git\GitStatus.cpp" />
     <ClCompile Include="..\..\src\Git\MassiveGitTaskBase.cpp" />
     <ClCompile Include="..\..\src\Git\TGitPath.cpp" />
+    <ClCompile Include="..\..\src\TortoiseGitBlame\TortoiseGitBlameData.cpp" />
+    <ClCompile Include="..\..\src\TortoiseMerge\FileTextLines.cpp" />
+    <ClCompile Include="..\..\src\TortoiseProc\LoglistUtils.cpp" />
     <ClCompile Include="..\..\src\TortoiseProc\ProjectProperties.cpp" />
     <ClCompile Include="..\..\src\Utils\CommonAppUtils.cpp" />
     <ClCompile Include="..\..\src\Utils\DebugOutput.cpp" />
@@ -118,6 +124,7 @@
     </ClCompile>
     <ClCompile Include="StringUtilsTest.cpp" />
     <ClCompile Include="TGitPathTest.cpp" />
+    <ClCompile Include="TortoiseGitBlameDataTest.cpp" />
     <ClCompile Include="UnitTests.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -18,6 +18,12 @@
     <Filter Include="TortoiseProc">
       <UniqueIdentifier>{72614fd5-1346-4028-b739-2c1740f915d9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="TortoiseGitBlame">
+      <UniqueIdentifier>{fbfc9178-8234-46ef-bc40-9d8274adcc7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TortoiseMerge">
+      <UniqueIdentifier>{1a580c50-f928-43f9-af79-f95613c6fba1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -94,6 +100,15 @@
     </ClInclude>
     <ClInclude Include="..\..\src\Utils\DirFileEnum.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\TortoiseGitBlame\TortoiseGitBlameData.h">
+      <Filter>TortoiseGitBlame</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\TortoiseMerge\FileTextLines.h">
+      <Filter>TortoiseMerge</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\TortoiseProc\LoglistUtils.h">
+      <Filter>TortoiseProc</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -176,6 +191,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GitByteArrayTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\TortoiseGitBlame\TortoiseGitBlameData.cpp">
+      <Filter>TortoiseGitBlame</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\TortoiseMerge\FileTextLines.cpp">
+      <Filter>TortoiseMerge</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\TortoiseProc\LoglistUtils.cpp">
+      <Filter>TortoiseProc</Filter>
+    </ClCompile>
+    <ClCompile Include="TortoiseGitBlameDataTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
