@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{20988578-4A14-441C-886F-61F2B9307D44}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>UnitTest</RootNamespace>
+    <ProjectName>UnitTests</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(SolutionDir)TortoiseGit.toolset.props" />
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Release'" Label="Configuration">
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  <Import Project="$(SolutionDir)TortoiseGit.common.props" />
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <TargetName>Tests</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <TargetName>Tests</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <TargetName>Tests</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <TargetName>Tests</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(ProjectDir);..\..\src\Resources;..\..\src\Git;..\..\ext\hunspell;..\..\ext\scintilla\include;..\..\src\Utils;..\..\src\Utils\MiscUI;..\..\src\TortoiseShell;..\..\ext\gitdll;..\..\ext\libgit2\include;..\..\ext\gtest\include;..\..\ext\ResizableLib;..\..\src\TortoiseProc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ExceptionHandling>Async</ExceptionHandling>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>version.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\src\Git\Git.h" />
+    <ClInclude Include="..\..\src\Git\GitAdminDir.h" />
+    <ClInclude Include="..\..\src\Git\GitForWindows.h" />
+    <ClInclude Include="..\..\src\Git\GitHash.h" />
+    <ClInclude Include="..\..\src\Git\gitindex.h" />
+    <ClInclude Include="..\..\src\Git\GitRev.h" />
+    <ClInclude Include="..\..\src\Git\GitStatus.h" />
+    <ClInclude Include="..\..\src\Git\gittype.h" />
+    <ClInclude Include="..\..\src\Git\MassiveGitTaskBase.h" />
+    <ClInclude Include="..\..\src\Git\TGitPath.h" />
+    <ClInclude Include="..\..\src\TortoiseProc\ProjectProperties.h" />
+    <ClInclude Include="..\..\src\Utils\CommonAppUtils.h" />
+    <ClInclude Include="..\..\src\Utils\DebugHelpers.h" />
+    <ClInclude Include="..\..\src\Utils\DebugOutput.h" />
+    <ClInclude Include="..\..\src\Utils\DirFileEnum.h" />
+    <ClInclude Include="..\..\src\Utils\PathUtils.h" />
+    <ClInclude Include="..\..\src\Utils\ProfilingInfo.h" />
+    <ClInclude Include="..\..\src\Utils\ReaderWriterLock.h" />
+    <ClInclude Include="..\..\src\Utils\registry.h" />
+    <ClInclude Include="..\..\src\Utils\SmartHandle.h" />
+    <ClInclude Include="..\..\src\Utils\SmartLibgit2Ref.h" />
+    <ClInclude Include="..\..\src\Utils\StringUtils.h" />
+    <ClInclude Include="..\..\src\Utils\UnicodeUtils.h" />
+    <ClInclude Include="AutoTempDir.h" />
+    <ClInclude Include="stdafx.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\Git\Git.cpp" />
+    <ClCompile Include="..\..\src\Git\GitAdminDir.cpp" />
+    <ClCompile Include="..\..\src\Git\GitIndex.cpp" />
+    <ClCompile Include="..\..\src\Git\GitRev.cpp" />
+    <ClCompile Include="..\..\src\Git\GitStatus.cpp" />
+    <ClCompile Include="..\..\src\Git\MassiveGitTaskBase.cpp" />
+    <ClCompile Include="..\..\src\Git\TGitPath.cpp" />
+    <ClCompile Include="..\..\src\TortoiseProc\ProjectProperties.cpp" />
+    <ClCompile Include="..\..\src\Utils\CommonAppUtils.cpp" />
+    <ClCompile Include="..\..\src\Utils\DebugOutput.cpp" />
+    <ClCompile Include="..\..\src\Utils\DirFileEnum.cpp" />
+    <ClCompile Include="..\..\src\Utils\PathUtils.cpp" />
+    <ClCompile Include="..\..\src\Utils\ProfilingInfo.cpp" />
+    <ClCompile Include="..\..\src\Utils\ReaderWriterLock.cpp" />
+    <ClCompile Include="..\..\src\Utils\Registry.cpp" />
+    <ClCompile Include="..\..\src\Utils\StringUtils.cpp" />
+    <ClCompile Include="..\..\src\Utils\UnicodeUtils.cpp" />
+    <ClCompile Include="AutoTempDir.cpp" />
+    <ClCompile Include="GitAdminDirTest.cpp" />
+    <ClCompile Include="GitTest.cpp" />
+    <ClCompile Include="PathUtilsTest.cpp" />
+    <ClCompile Include="ProjectPropertiesTest.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="StringUtilsTest.cpp" />
+    <ClCompile Include="TGitPathTest.cpp" />
+    <ClCompile Include="UnitTests.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\ext\build\gtest.vcxproj">
+      <Project>{c8f6c172-56f2-4e76-b5fa-c3b423b31be8}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ext\build\libgit2.vcxproj">
+      <Project>{2b4f366c-93ba-491e-87af-5ef7b37f75f7}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ext\gitdll\gitdll.vcxproj">
+      <Project>{4f0a55de-dafd-4a0b-a03d-2c14cb77e08f}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

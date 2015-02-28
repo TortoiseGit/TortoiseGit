@@ -49,7 +49,7 @@ public:
 		if (!IsValidSHA1(str))
 		{
 #ifdef ASSERT
-			ASSERT(FALSE);
+			//ASSERT(FALSE); // TODO problematic
 #endif
 			memset(m_hash, 0, GIT_HASH_SIZE);
 			return;

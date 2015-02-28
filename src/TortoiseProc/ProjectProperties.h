@@ -209,7 +209,7 @@ private:
 
 	int			nBugIdPos;				///< result	of sMessage.Find(L"%BUGID%");
 
-#ifdef DEBUG
-	friend class PropTest;
+#ifdef GTEST_INCLUDE_GTEST_GTEST_H_
+	FRIEND_TEST(ProjectPropertiesTest, ParseBugIDs);
 #endif
 };
