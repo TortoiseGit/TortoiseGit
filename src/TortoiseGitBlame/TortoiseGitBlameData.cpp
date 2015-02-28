@@ -111,7 +111,7 @@ void CTortoiseGitBlameData::ParseBlameOutput(BYTE_VECTOR &data, CGitHashMap & Ha
 			continue;
 
 		int lineBegin = pos;
-		int lineEnd = data.findData((const BYTE*)"\n", 1, lineBegin);
+		int lineEnd = data.find('\n', lineBegin);
 		if (lineEnd < 0)
 			lineEnd = (int)data.size();
 
@@ -128,12 +128,12 @@ void CTortoiseGitBlameData::ParseBlameOutput(BYTE_VECTOR &data, CGitHashMap & Ha
 
 						int hashEnd = lineBegin + 40;
 						int originalLineNumberBegin = hashEnd + 1;
-						int originalLineNumberEnd = data.findData((const BYTE*)" ", 1, originalLineNumberBegin);
+						int originalLineNumberEnd = data.find(' ', originalLineNumberBegin);
 						if (originalLineNumberEnd >= 0)
 						{
 							originalLineNumber = atoi(CStringA((LPCSTR)&data[originalLineNumberBegin], originalLineNumberEnd - originalLineNumberBegin));
 							int finalLineNumberBegin = originalLineNumberEnd + 1;
-							int finalLineNumberEnd = (numberOfSubsequentLines == 0) ? data.findData((const BYTE*)" ", 1, finalLineNumberBegin) : lineEnd;
+							int finalLineNumberEnd = (numberOfSubsequentLines == 0) ? data.find(' ', finalLineNumberBegin) : lineEnd;
 							if (finalLineNumberEnd >= 0)
 							{
 								finalLineNumber = atoi(CStringA((LPCSTR)&data[finalLineNumberBegin], finalLineNumberEnd - finalLineNumberBegin));
@@ -174,7 +174,7 @@ void CTortoiseGitBlameData::ParseBlameOutput(BYTE_VECTOR &data, CGitHashMap & Ha
 				else
 				{
 					int tokenBegin = lineBegin;
-					int tokenEnd = data.findData((const BYTE*)" ", 1, tokenBegin);
+					int tokenEnd = data.find(' ', tokenBegin);
 					if (tokenEnd >= 0)
 					{
 						if (!strncmp("filename", (const char*)&data[tokenBegin], tokenEnd - tokenBegin))
