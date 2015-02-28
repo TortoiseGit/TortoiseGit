@@ -1,7 +1,6 @@
 // TortoiseGitBlame - a Viewer for Git Blames
 
-// Copyright (C) 2008-2013 - TortoiseGit
-// Copyright (C) 2010-2013 Sven Strickroth <email@cs-ware.de>
+// Copyright (C) 2008-2015 - TortoiseGit
 // Copyright (C) 2003 Don HO <donho@altern.org>
 
 // This program is free software; you can redistribute it and/or
@@ -22,20 +21,10 @@
 //
 
 #include "stdafx.h"
-#include "TortoiseGitBlame.h"
-#include "CommonAppUtils.h"
-#include "TortoiseGitBlameDoc.h"
 #include "TortoiseGitBlameData.h"
-#include "MainFrm.h"
-#include "EditGotoDlg.h"
 #include "LoglistUtils.h"
 #include "FileTextLines.h"
 #include "UnicodeUtils.h"
-#include "MenuEncode.h"
-#include "gitdll.h"
-#include "SysInfo.h"
-#include "StringUtils.h"
-#include "TGitPath.h"
 
 wchar_t WideCharSwap2(wchar_t nValue)
 {
