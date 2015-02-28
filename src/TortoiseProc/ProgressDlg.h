@@ -140,7 +140,7 @@ private:
 	void					OnCancel();
 	afx_msg void			OnClose();
 
-	CGitByteArray			m_Databuf;
+	CGitGuardedByteArray	m_Databuf;
 	virtual CString Convert2UnionCode(char *buff, int size=-1)
 	{
 		CString str;
@@ -164,7 +164,7 @@ public:
 	/**
 	 *@param dirlist if empty, the current directory of param git is used; otherwise each entry in param cmdlist uses the corresponding entry in param dirlist
 	 */
-	static UINT	RunCmdList(CWnd *pWnd, STRING_VECTOR &cmdlist, STRING_VECTOR &dirlist, bool bShowCommand, CString *pfilename, bool *bAbort, CGitByteArray *pdata, CGit *git = &g_Git);
+	static UINT	RunCmdList(CWnd* pWnd, STRING_VECTOR& cmdlist, STRING_VECTOR& dirlist, bool bShowCommand, CString* pfilename, bool* bAbort, CGitGuardedByteArray* pdata, CGit* git = &g_Git);
 
 	static void KillProcessTree(DWORD dwProcessId, unsigned int depth = 0);
 

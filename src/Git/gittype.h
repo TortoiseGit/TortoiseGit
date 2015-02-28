@@ -31,9 +31,6 @@ enum
 class CGitByteArray:public std::vector<BYTE>
 {
 public:
-	CGitByteArray(){ m_critSec.Init(); }
-	CComCriticalSection			m_critSec;
-
 	int find(BYTE data, int start = 0) const
 	{
 		for (unsigned int i = start; i < size(); ++i)
@@ -120,7 +117,15 @@ public:
 		return 0;
 	}
 };
+
+class CGitGuardedByteArray : public CGitByteArray
+{
+public:
+	CGitGuardedByteArray() { m_critSec.Init(); }
+	~CGitGuardedByteArray() { m_critSec.Term(); }
+	CComCriticalSection			m_critSec;
+};
+
 typedef std::vector<CString> STRING_VECTOR;
 typedef std::map<CGitHash, STRING_VECTOR> MAP_HASH_NAME;
 typedef CGitByteArray BYTE_VECTOR;
-

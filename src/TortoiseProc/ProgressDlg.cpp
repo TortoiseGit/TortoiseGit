@@ -195,7 +195,7 @@ UINT CProgressDlg::ProgressThreadEntry(LPVOID pVoid)
 }
 
 //static function, Share with SyncDialog
-UINT CProgressDlg::RunCmdList(CWnd *pWnd, STRING_VECTOR &cmdlist, STRING_VECTOR &dirlist, bool bShowCommand, CString *pfilename, bool *bAbort, CGitByteArray *pdata, CGit *git)
+UINT CProgressDlg::RunCmdList(CWnd* pWnd, STRING_VECTOR& cmdlist, STRING_VECTOR& dirlist, bool bShowCommand, CString* pfilename, bool* bAbort, CGitGuardedByteArray* pdata, CGit* git)
 {
 	UINT ret=0;
 
