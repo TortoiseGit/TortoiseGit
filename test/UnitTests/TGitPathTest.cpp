@@ -417,7 +417,7 @@ TEST(CTGitPath, ParserFromLog_Conflict)
 	ASSERT_EQ(1, testList.GetCount());
 	EXPECT_STREQ(_T("bla.txt"), testList[0].GetGitPathString());
 	EXPECT_EQ(0, testList[0].m_Stage); // not set
-	EXPECT_EQ(CTGitPath::LOGACTIONS_FORWORD, testList[0].m_Action);
+	EXPECT_EQ(0, testList[0].m_Action);
 }
 
 /* git status output for the following tests marked with "(*)"

@@ -237,7 +237,6 @@ public:
 
 public:
 	void DbgPrint();
-	int	AddMergeFiles();
 private:
 	int GetCommitFromHash_withoutLock(CGitHash &hash);
 };

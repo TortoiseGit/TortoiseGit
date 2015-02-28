@@ -1203,7 +1203,6 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log, bool parseDeletes /*false*/)
 				if(merged)
 				{
 					GitPath->m_Action |= CTGitPath::LOGACTIONS_MERGED;
-					GitPath->m_Action &= ~CTGitPath::LOGACTIONS_FORWORD;
 				}
 				m_Action |=GitPath->m_Action;
 
@@ -1287,7 +1286,6 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log, bool parseDeletes /*false*/)
 				{
 					path.m_StatAdd=StatAdd;
 					path.m_StatDel=StatDel;
-					path.m_Action |= CTGitPath::LOGACTIONS_FORWORD;
 				}
 				AddPath(path);
 			}
@@ -1656,9 +1654,6 @@ CString CTGitPath::GetActionName(int action)
 		return MAKEINTRESOURCE(IDS_PATHACTIONS_RENAME);
 	if(action  & CTGitPath::LOGACTIONS_COPY)
 		return MAKEINTRESOURCE(IDS_PATHACTIONS_COPY);
-
-	if(action  & CTGitPath::LOGACTIONS_FORWORD )
-		return MAKEINTRESOURCE(IDS_PATHACTIONS_FORWARD);
 
 	if (action & CTGitPath::LOGACTIONS_ASSUMEVALID)
 		return MAKEINTRESOURCE(IDS_PATHACTIONS_ASSUMEUNCHANGED);
