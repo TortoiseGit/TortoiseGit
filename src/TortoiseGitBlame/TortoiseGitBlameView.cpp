@@ -117,6 +117,7 @@ CTortoiseGitBlameView::CTortoiseGitBlameView()
 	, bIgnoreSpaces(false)
 	, bIgnoreAllSpaces(false)
 	, m_MouseLine(-1)
+	, m_bMatchCase(false)
 {
 	hInstance = 0;
 	hResource = 0;
