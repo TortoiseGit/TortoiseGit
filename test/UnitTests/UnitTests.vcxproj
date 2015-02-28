@@ -108,6 +108,7 @@
     <ClCompile Include="..\..\src\Utils\UnicodeUtils.cpp" />
     <ClCompile Include="AutoTempDir.cpp" />
     <ClCompile Include="GitAdminDirTest.cpp" />
+    <ClCompile Include="GitByteArrayTest.cpp" />
     <ClCompile Include="GitTest.cpp" />
     <ClCompile Include="PathUtilsTest.cpp" />
     <ClCompile Include="ProjectPropertiesTest.cpp" />
