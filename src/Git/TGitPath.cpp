@@ -1142,15 +1142,21 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log, bool parseDeletes /*false*/)
 	int pos=0;
 	CTGitPath path;
 	m_Action=0;
-	while (pos >= 0 && pos < (int)log.size())
+	int logend = (int)log.size();
+	while (pos >= 0 && pos < logend)
 	{
 		path.Reset();
 		if(log[pos]=='\n')
 			++pos;
 
+		if (pos >= logend)
+			return -1;
+
 		if(log[pos]==':')
 		{
 			bool merged=false;
+			if (pos + 1 >= logend)
+				return -1;
 			if(log[pos+1] ==':')
 			{
 				merged=true;
@@ -1166,6 +1172,8 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log, bool parseDeletes /*false*/)
 			if( actionstart>0 )
 			{
 				++actionstart;
+				if (actionstart >= logend)
+					return -1;
 
 				file1 = log.find(0,actionstart);
 				if( file1>=0 )
@@ -1196,6 +1204,8 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log, bool parseDeletes /*false*/)
 
 			CTGitPath *GitPath=LookForGitPath(pathname1);
 
+			if (actionstart < 0)
+				return -1;
 			if(GitPath)
 			{
 				GitPath->ParserAction( log[actionstart] );
