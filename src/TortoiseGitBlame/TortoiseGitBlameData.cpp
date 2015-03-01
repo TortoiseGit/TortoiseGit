@@ -86,7 +86,7 @@ int CTortoiseGitBlameData::GetEncode(int *bomoffset)
 	return encoding;
 }
 
-void CTortoiseGitBlameData::ParseBlameOutput(BYTE_VECTOR &data, CGitHashMap & HashToRev, DWORD dateFormat, bool bRelativeTimes)
+void CTortoiseGitBlameData::ParseBlameOutput(BYTE_VECTOR &data, CGitHashMap & HashToRev, DWORD dateFormat, bool bRelativeTimes, bool bUtc)
 {
 	std::map<CGitHash, CString> hashToFilename;
 
@@ -226,7 +226,7 @@ void CTortoiseGitBlameData::ParseBlameOutput(BYTE_VECTOR &data, CGitHashMap & Ha
 		if (pRev)
 		{
 			authors.push_back(pRev->GetAuthorName());
-			dates.push_back(CLoglistUtils::FormatDateAndTime(pRev->GetAuthorDate(), dateFormat, true, bRelativeTimes));
+			dates.push_back(CLoglistUtils::FormatDateAndTime(pRev->GetAuthorDate(), dateFormat, true, bRelativeTimes, bUtc));
 		}
 		else
 		{

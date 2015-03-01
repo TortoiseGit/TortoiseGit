@@ -43,7 +43,7 @@ CLoglistUtils::~CLoglistUtils(void)
  *				   rather than locale
  * RETURN      :   CString containing date/time
  */
-CString CLoglistUtils::FormatDateAndTime(const CTime& cTime, DWORD option, bool bIncludeTime /*=true*/, bool bRelative /*=false*/)
+CString CLoglistUtils::FormatDateAndTime(const CTime& cTime, DWORD option, bool bIncludeTime /*=true*/, bool bRelative /*=false*/, bool bUtc /*=false*/)
 {
 	if (bRelative)
 	{
@@ -60,7 +60,15 @@ CString CLoglistUtils::FormatDateAndTime(const CTime& cTime, DWORD option, bool 
 		{
 			// yes
 			SYSTEMTIME sysTime;
-			cTime.GetAsSystemTime(sysTime);
+			if (bUtc)
+			{
+				TIME_ZONE_INFORMATION tz;
+				GetTimeZoneInformation(&tz);
+				CTime utcTime = cTime + CTimeSpan(0, tz.Bias, 0, 0);
+				utcTime.GetAsSystemTime(sysTime);
+			}
+			else
+				cTime.GetAsSystemTime(sysTime);
 
 			TCHAR buf[100] = { 0 };
 
@@ -73,6 +81,18 @@ CString CLoglistUtils::FormatDateAndTime(const CTime& cTime, DWORD option, bool 
 				datetime += buf;
 			}
 			return datetime;
+		}
+		else if (bUtc)
+		{
+			// no, so fixed format
+			if (bIncludeTime)
+			{
+				return cTime.FormatGmt(_T("%Y-%m-%d %H:%M:%S"));
+			}
+			else
+			{
+				return cTime.FormatGmt(_T("%Y-%m-%d"));
+			}
 		}
 		else
 		{

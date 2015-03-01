@@ -41,7 +41,7 @@ public:
 	 *                 rather than locale
 	 * RETURN      :   CString containing date/time
 	 */
-	static CString FormatDateAndTime(const CTime& cTime, DWORD option, bool bIncludeTime=true, bool bRelative=false);
+	static CString FormatDateAndTime(const CTime& cTime, DWORD option, bool bIncludeTime=true, bool bRelative=false, bool bUtc=false);
 	/**
 	 *	Converts a given time to a relative display string (relative to current time)
 	 *	Given time must be in local timezone

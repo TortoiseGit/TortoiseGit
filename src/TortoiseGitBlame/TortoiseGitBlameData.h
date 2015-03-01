@@ -33,7 +33,7 @@ public:
 public:
 	int GetEncode(unsigned char * buffer, int size, int *bomoffset);
 	int GetEncode(int *bomoffset);
-	void ParseBlameOutput(BYTE_VECTOR &data, CGitHashMap & HashToRev, DWORD dateFormat, bool bRelativeTimes);
+	void ParseBlameOutput(BYTE_VECTOR &data, CGitHashMap & HashToRev, DWORD dateFormat, bool bRelativeTimes, bool bUtc = false);
 	// updates sourcecode lines to the given encoding, encode==0 detects the encoding, returns the used encoding
 	int UpdateEncoding(int encode = 0);
 

@@ -273,7 +273,7 @@ TEST(CTortoiseGitBlameData, ParseBlameOutput_ASCII)
 
 	CTortoiseGitBlameData data;
 	CGitHashMap hashToRev;
-	data.ParseBlameOutput(blame_output, hashToRev, 0, false);
+	data.ParseBlameOutput(blame_output, hashToRev, 0, false, true);
 
 	EXPECT_EQ(26, data.GetNumberOfLines());
 
@@ -293,10 +293,10 @@ TEST(CTortoiseGitBlameData, ParseBlameOutput_ASCII)
 	for (int i = 0; i < 26; ++i)
 		EXPECT_STREQ(hashes[i], data.GetHash(i).ToString().Left(8));
 
-	EXPECT_STREQ(L"2011-05-14 13:49:58", data.GetDate(0));
-	EXPECT_STREQ(L"2011-05-14 13:49:58", data.GetDate(6));
-	EXPECT_STREQ(L"2012-12-28 21:34:29", data.GetDate(13));
-	EXPECT_STREQ(L"2012-12-28 21:34:29", data.GetDate(25));
+	EXPECT_STREQ(L"2011-05-14 11:49:58", data.GetDate(0));
+	EXPECT_STREQ(L"2011-05-14 11:49:58", data.GetDate(6));
+	EXPECT_STREQ(L"2012-12-28 20:34:29", data.GetDate(13));
+	EXPECT_STREQ(L"2012-12-28 20:34:29", data.GetDate(25));
 
 	data.UpdateEncoding(CP_UTF8);
 	const CStringA lines[] = { "\\section Version numbers", "", "Upgrade numbers in:", "", "-# doc/doc.build.include", "-# src/version.h", "-# src/TortoiseGitSetup/VersionNumberInclude.wxi", "", "Upload symbols to drdump.com", "", "Upload (signed) msi-files (do not forget to upload debug symbols and language packs for stable releases).", "Naming-convention:", "- stable release", "  - TortoiseGit-VERSION-XXbit.msi", "  - TortoiseGit-LanguagePack-VERSION-XXbit-ISOLANG.msi", "  - TortoiseGit-DebugSymbols-VERSION.7z", "- preview release", "  - TortoiseGit-preview-VERSION-YYYYMMDD-(SHA1-7chars)-XXbit", "", "Google code tasks:", "- for a stable release", "  - update front/summary page as well as \"Downloads\" and \"ReleaseNotes\" (make sure it contains no unwanted links) wiki pages", "", "Update version.txt (http://code.google.com/p/tortoisegit/source/checkout?repo=version) for auto updater (for a stable release make sure version-preview.txt has the same content as version.txt)", "", "Send annoucement mail (for stable releases)" };
