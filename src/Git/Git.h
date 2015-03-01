@@ -28,6 +28,8 @@
 #define REG_MSYSGIT_PATH _T("Software\\TortoiseGit\\MSysGit")
 #define REG_MSYSGIT_EXTRA_PATH _T("Software\\TortoiseGit\\MSysGitExtra")
 
+#define DEFAULT_USE_LIBGIT2_MASK (1 << CGit::GIT_CMD_MERGE_BASE) | (1 << CGit::GIT_CMD_DELETETAGBRANCH) | (1 << CGit::GIT_CMD_GETONEFILE) | (1 << CGit::GIT_CMD_ADD)
+
 struct git_repository;
 
 class CFilterData
