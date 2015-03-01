@@ -208,7 +208,7 @@ CGit::CGit(void)
 	m_GitSimpleListDiff=0;
 	m_IsUseGitDLL = !!CRegDWORD(_T("Software\\TortoiseGit\\UsingGitDLL"),1);
 	m_IsUseLibGit2 = !!CRegDWORD(_T("Software\\TortoiseGit\\UseLibgit2"), TRUE);
-	m_IsUseLibGit2_mask = CRegDWORD(_T("Software\\TortoiseGit\\UseLibgit2_mask"), (1 << GIT_CMD_MERGE_BASE) | (1 << GIT_CMD_DELETETAGBRANCH) | (1 << GIT_CMD_GETONEFILE) | (1 << GIT_CMD_ADD));
+	m_IsUseLibGit2_mask = CRegDWORD(_T("Software\\TortoiseGit\\UseLibgit2_mask"), DEFAULT_USE_LIBGIT2_MASK);
 
 	SecureZeroMemory(&m_CurrentGitPi, sizeof(PROCESS_INFORMATION));
 
@@ -2142,6 +2142,26 @@ CString CGit::GetGitSystemConfig() const
 
 BOOL CGit::CheckCleanWorkTree(bool stagedOk /* false */)
 {
+	if (UsingLibGit2(GIT_CMD_CHECK_CLEAN_WT))
+	{
+		CAutoRepository repo = GetGitRepository();
+		if (!repo)
+			return FALSE;
+
+		if (git_repository_head_unborn(repo))
+			return FALSE;
+
+		git_status_options statusopt = GIT_STATUS_OPTIONS_INIT;
+		statusopt.show = stagedOk ? GIT_STATUS_SHOW_WORKDIR_ONLY : GIT_STATUS_SHOW_INDEX_AND_WORKDIR;
+		statusopt.flags = GIT_STATUS_OPT_UPDATE_INDEX | GIT_STATUS_OPT_EXCLUDE_SUBMODULES;
+
+		CAutoStatusList status;
+		if (git_status_list_new(status.GetPointer(), repo, &statusopt))
+			return FALSE;
+
+		return (0 == git_status_list_entrycount(status));
+	}
+
 	CString out;
 	CString cmd;
 	cmd=_T("git.exe rev-parse --verify HEAD");
