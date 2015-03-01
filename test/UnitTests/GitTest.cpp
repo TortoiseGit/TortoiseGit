@@ -109,7 +109,19 @@ TEST_P(CBasicGitFixture, IsInitRepos)
 
 TEST_P(CBasicGitWithEmptyRepositoryFixture, IsInitRepos)
 {
+	CString output;
+	CString testFile = m_Dir.GetTempDir() + L"\\test.txt";
+
 	EXPECT_TRUE(m_Git.IsInitRepos());
+
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)testFile, L"this is testing file."));
+	EXPECT_EQ(0, m_Git.Run(_T("git.exe add test.txt"), &output, CP_UTF8));
+	EXPECT_TRUE(output.IsEmpty());
+	output.Empty();
+	EXPECT_EQ(0, m_Git.Run(_T("git.exe commit -m \"Add test.txt\""), &output, CP_UTF8));
+	EXPECT_FALSE(output.IsEmpty());
+
+	EXPECT_FALSE(m_Git.IsInitRepos());
 }
 
 TEST_P(CBasicGitWithEmptyRepositoryFixture, CheckCleanWorkTree)
