@@ -2014,10 +2014,6 @@ msgid "Authors case sensitive"
 msgstr ""
 
 #. Resource IDs: (65535)
-msgid "Authors:"
-msgstr ""
-
-#. Resource IDs: (65535)
 msgid "Authors:\tFrank Li (lznuaa@gmail.com),\n\t\tSven Strickroth (email@cs-ware.de)"
 msgstr ""
 
@@ -3320,10 +3316,6 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Credentials"
-msgstr ""
-
-#. Resource IDs: (65535)
-msgid "Credits:"
 msgstr ""
 
 #. Resource IDs: (1253)
@@ -4686,10 +4678,6 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Found auto words:"
-msgstr ""
-
-#. Resource IDs: (65535)
-msgid "Frank Li (lznuaa@gmail.com), Sven Strickroth <email@cs-ware.de>"
 msgstr ""
 
 #. Resource IDs: (1385, 1522, 65535)
@@ -8633,6 +8621,10 @@ msgstr ""
 msgid "Si&gn"
 msgstr ""
 
+#. Resource IDs: (65535)
+msgid "Significant contributions by: (see Git repository for a complete list)"
+msgstr ""
+
 #. Resource IDs: (156, 626)
 msgid "Silver Style"
 msgstr ""
@@ -8909,10 +8901,6 @@ msgstr ""
 
 #. Resource IDs: (65)
 msgid "Success"
-msgstr ""
-
-#. Resource IDs: (65535)
-msgid "Sup Yut Sum <ch3cooli@gmail.com>, Colin Law <clanlaw@googlemail.com>, Myagi <snowcoder@gmail.com>, Johan 't Hart <johanthart@gmail.com>, Laszlo Papp <djszapi@archlinux.us>"
 msgstr ""
 
 #. Resource IDs: (78)
