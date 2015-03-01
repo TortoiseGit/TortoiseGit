@@ -110,3 +110,35 @@ TEST_P(CBasicGitWithEmptyRepositoryFixture, IsInitRepos)
 
 	EXPECT_FALSE(m_Git.IsInitRepos());
 }
+
+TEST_P(CBasicGitWithEmptyRepositoryFixture, CheckCleanWorkTree)
+{
+	CString output;
+	CString testFile = m_Dir.GetTempDir() + L"\\test.txt";
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)testFile, L"this is testing file."));
+	EXPECT_EQ(0, m_Git.Run(_T("git.exe add test.txt"), &output, CP_UTF8));
+	output.Empty();
+	EXPECT_EQ(0, m_Git.Run(_T("git.exe commit -m \"Add test.txt\""), &output, CP_UTF8));
+	// repo with 1 versioned file
+	EXPECT_FALSE(output.IsEmpty());
+	EXPECT_TRUE(m_Git.CheckCleanWorkTree());
+	EXPECT_TRUE(m_Git.CheckCleanWorkTree(true));
+
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)testFile, L"Overwriting this testing file."));
+	// repo with 1 modified versioned file
+	EXPECT_FALSE(m_Git.CheckCleanWorkTree());
+	EXPECT_FALSE(m_Git.CheckCleanWorkTree(true));
+
+	output.Empty();
+	EXPECT_EQ(0, m_Git.Run(_T("git.exe add test.txt"), &output, CP_UTF8));
+	// repo with 1 modified versioned and staged file
+	EXPECT_TRUE(output.IsEmpty());
+	EXPECT_FALSE(m_Git.CheckCleanWorkTree());
+	EXPECT_TRUE(m_Git.CheckCleanWorkTree(true));
+
+	EXPECT_EQ(0, m_Git.Run(_T("git.exe commit -m \"Modified test.txt\""), &output, CP_UTF8));
+	testFile = m_Dir.GetTempDir() + L"\\test2.txt";
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)testFile, L"this is ANOTHER testing file."));
+	EXPECT_TRUE(m_Git.CheckCleanWorkTree());
+	EXPECT_TRUE(m_Git.CheckCleanWorkTree(true));
+}
