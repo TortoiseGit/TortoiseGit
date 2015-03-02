@@ -1514,6 +1514,14 @@ void CSyncDlg::OnBnClickedButtonSubmodule()
 
 void CSyncDlg::OnBnClickedButtonStash()
 {
+	INT_PTR curEntry = m_ctrlStash.GetCurrentEntry();
+
+	if (curEntry == 1 || curEntry == 2)
+	{
+		if (!CAppUtils::CheckCleanWorkTreeAndWarn())
+			return;
+	}
+
 	UpdateData();
 	UpdateCombox();
 	m_ctrlCmdOut.SetWindowTextW(_T(""));
@@ -1531,7 +1539,7 @@ void CSyncDlg::OnBnClickedButtonStash()
 	m_ctrlTabCtrl.ShowTab(IDC_IN_CONFLICT -1, false);
 
 	CString cmd;
-	switch (m_ctrlStash.GetCurrentEntry())
+	switch (curEntry)
 	{
 	case 0:
 		cmd = _T("git.exe stash save");

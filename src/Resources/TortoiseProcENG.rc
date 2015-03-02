@@ -4260,6 +4260,7 @@ BEGIN
     IDS_MENU_APPLY          "Apply Patch..."
     IDS_MENU_SENDMAIL       "Send Mail..."
     IDS_ERROR_NOREF         "No reference found"
+    IDS_WARN_NOCLEAN        "The working tree is not clean!\nDo you want to stash pop/apply changes?"
     IDS_ERROR_NOCLEAN_STASH "The current working tree is not clean.\nDo you want to stash the changes?"
     IDS_ERROR_NOTHING_COMMIT "Nothing to commit"
     IDS_COMMIT_FINISH       "Commit Finish"
