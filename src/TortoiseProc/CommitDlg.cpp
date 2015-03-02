@@ -116,6 +116,7 @@ void CCommitDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX,IDC_VIEW_PATCH,m_ctrlShowPatch);
 	DDX_Control(pDX, IDC_COMMIT_DATEPICKER, m_CommitDate);
 	DDX_Control(pDX, IDC_COMMIT_TIMEPICKER, m_CommitTime);
+	DDX_Control(pDX, IDC_COMMIT_AS_COMMIT_DATE, m_AsCommitDateCtrl);
 }
 
 BEGIN_MESSAGE_MAP(CCommitDlg, CResizableStandAloneDialog)
@@ -151,6 +152,7 @@ BEGIN_MESSAGE_MAP(CCommitDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_COMMIT_AMENDDIFF, &CCommitDlg::OnBnClickedCommitAmenddiff)
 	ON_BN_CLICKED(IDC_NOAUTOSELECTSUBMODULES, &CCommitDlg::OnBnClickedNoautoselectsubmodules)
 	ON_BN_CLICKED(IDC_COMMIT_SETDATETIME, &CCommitDlg::OnBnClickedCommitSetDateTime)
+	ON_BN_CLICKED(IDC_COMMIT_AS_COMMIT_DATE, &CCommitDlg::OnBnClickedCommitAsCommitDate)
 	ON_BN_CLICKED(IDC_CHECK_NEWBRANCH, &CCommitDlg::OnBnClickedCheckNewBranch)
 	ON_BN_CLICKED(IDC_COMMIT_SETAUTHOR, &CCommitDlg::OnBnClickedCommitSetauthor)
 END_MESSAGE_MAP()
@@ -390,6 +392,7 @@ BOOL CCommitDlg::OnInitDialog()
 	AddAnchor(IDC_COMMIT_SETDATETIME,TOP_LEFT);
 	AddAnchor(IDC_COMMIT_DATEPICKER,TOP_LEFT);
 	AddAnchor(IDC_COMMIT_TIMEPICKER,TOP_LEFT);
+	AddAnchor(IDC_COMMIT_AS_COMMIT_DATE, TOP_LEFT);
 	AddAnchor(IDC_COMMIT_SETAUTHOR, TOP_LEFT);
 	AddAnchor(IDC_COMMIT_AUTHORDATA, TOP_LEFT, TOP_RIGHT);
 
@@ -963,7 +966,14 @@ void CCommitDlg::OnOK()
 			CTime date, time;
 			m_CommitDate.GetTime(date);
 			m_CommitTime.GetTime(time);
-			dateTime.Format(_T("--date=%sT%s"), date.Format(_T("%Y-%m-%d")), time.Format(_T("%H:%M:%S")));
+			if (m_bCommitAmend && m_AsCommitDateCtrl.GetCheck())
+			{
+				dateTime = L"--date=\"\"";
+			}
+			else
+			{
+				dateTime.Format(_T("--date=%sT%s"), date.Format(_T("%Y-%m-%d")), time.Format(_T("%H:%M:%S")));
+			}
 		}
 		CString author;
 		if (m_bSetAuthor)
@@ -2213,6 +2223,7 @@ void CCommitDlg::DoSize(int delta)
 	RemoveAnchor(IDC_COMMIT_SETDATETIME);
 	RemoveAnchor(IDC_COMMIT_DATEPICKER);
 	RemoveAnchor(IDC_COMMIT_TIMEPICKER);
+	RemoveAnchor(IDC_COMMIT_AS_COMMIT_DATE);
 	RemoveAnchor(IDC_COMMIT_SETAUTHOR);
 	RemoveAnchor(IDC_COMMIT_AUTHORDATA);
 	RemoveAnchor(IDC_LISTGROUP);
@@ -2239,6 +2250,7 @@ void CCommitDlg::DoSize(int delta)
 	CSplitterControl::ChangePos(GetDlgItem(IDC_COMMIT_SETDATETIME),0,delta);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_COMMIT_DATEPICKER),0,delta);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_COMMIT_TIMEPICKER),0,delta);
+	CSplitterControl::ChangePos(GetDlgItem(IDC_COMMIT_AS_COMMIT_DATE), 0, delta);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_COMMIT_SETAUTHOR), 0, delta);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_COMMIT_AUTHORDATA), 0, delta);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_TEXT_INFO),0,delta);
@@ -2264,6 +2276,7 @@ void CCommitDlg::DoSize(int delta)
 	AddAnchor(IDC_COMMIT_SETDATETIME,TOP_LEFT);
 	AddAnchor(IDC_COMMIT_DATEPICKER,TOP_LEFT);
 	AddAnchor(IDC_COMMIT_TIMEPICKER,TOP_LEFT);
+	AddAnchor(IDC_COMMIT_AS_COMMIT_DATE, TOP_LEFT);
 	AddAnchor(IDC_COMMIT_SETAUTHOR, TOP_LEFT);
 	AddAnchor(IDC_COMMIT_AUTHORDATA, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_TEXT_INFO,TOP_RIGHT);
@@ -2352,12 +2365,17 @@ void CCommitDlg::OnBnClickedCommitAmend()
 		this->m_NoAmendStr=this->m_cLogMessage.GetText();
 		m_cLogMessage.SetText(m_AmendStr);
 		GetDlgItem(IDC_COMMIT_AMENDDIFF)->ShowWindow(SW_SHOW);
+		if (m_bSetCommitDateTime)
+			m_AsCommitDateCtrl.ShowWindow(SW_SHOW);
 	}
 	else
 	{
 		this->m_AmendStr=this->m_cLogMessage.GetText();
 		m_cLogMessage.SetText(m_NoAmendStr);
 		GetDlgItem(IDC_COMMIT_AMENDDIFF)->ShowWindow(SW_HIDE);
+		m_AsCommitDateCtrl.ShowWindow(SW_HIDE);
+		m_AsCommitDateCtrl.SetCheck(FALSE);
+		OnBnClickedCommitAsCommitDate();
 	}
 
 	OnBnClickedCommitSetDateTime(); // to update the commit date and time
@@ -2566,6 +2584,7 @@ void CCommitDlg::OnBnClickedCommitSetDateTime()
 				CMessageBox::Show(m_hWnd, _T("Could not get HEAD commit.\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
 			}
 			authordate = headRevision.GetAuthorDate();
+			m_AsCommitDateCtrl.ShowWindow(SW_SHOW);
 		}
 
 		m_CommitDate.SetTime(&authordate);
@@ -2578,7 +2597,16 @@ void CCommitDlg::OnBnClickedCommitSetDateTime()
 	{
 		GetDlgItem(IDC_COMMIT_DATEPICKER)->ShowWindow(SW_HIDE);
 		GetDlgItem(IDC_COMMIT_TIMEPICKER)->ShowWindow(SW_HIDE);
+		m_AsCommitDateCtrl.ShowWindow(SW_HIDE);
+		m_AsCommitDateCtrl.SetCheck(FALSE);
+		OnBnClickedCommitAsCommitDate();
 	}
+}
+
+void CCommitDlg::OnBnClickedCommitAsCommitDate()
+{
+	GetDlgItem(IDC_COMMIT_DATEPICKER)->EnableWindow(!m_AsCommitDateCtrl.GetCheck());
+	GetDlgItem(IDC_COMMIT_TIMEPICKER)->EnableWindow(!m_AsCommitDateCtrl.GetCheck());
 }
 
 void CCommitDlg::OnBnClickedCheckNewBranch()
