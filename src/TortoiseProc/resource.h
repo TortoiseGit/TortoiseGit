@@ -1201,6 +1201,7 @@
 #define IDC_MSYSGIT_PATH                1550
 #define IDS_PROC_RENAME                 1550
 #define IDC_RADIO_RESET_SOFT            1550
+#define IDC_RADIO_ABORT_MERGE           1550
 #define IDC_SHOWDELETEDOVERLAY          1551
 #define IDC_MSYSGIT_BROWSE              1551
 #define IDS_PROC_NEWNAME                1551

@@ -1953,7 +1953,9 @@ STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSM
 CAPTION "Abort Merge"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    GROUPBOX        "Reset Type",IDC_GROUP_RESET_TYPE,7,21,285,42
+    GROUPBOX        "Abort Type",IDC_GROUP_RESET_TYPE,7,7,285,56
+    CONTROL         "Merge: Reset files related to this merge in working tree and index",IDC_RADIO_ABORT_MERGE,
+                    "Button",BS_AUTORADIOBUTTON,15,20,270,10
     CONTROL         "Mixed: Leave working tree untouched, reset index",IDC_RADIO_RESET_MIXED,
                     "Button",BS_AUTORADIOBUTTON,15,33,270,10
     CONTROL         "Hard: Reset working tree and index (discard all local changes)",IDC_RADIO_RESET_HARD,
@@ -1962,7 +1964,6 @@ BEGIN
     DEFPUSHBUTTON   "OK",IDOK,125,90,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,184,90,50,14
     PUSHBUTTON      "Help",IDHELP,242,90,50,14
-    LTEXT           "In order to abort a merge progess a reset (to HEAD) is needed.",IDC_STATIC_REMINDER,7,7,285,10
 END
 
 IDD_SETTINGSDIALOGS3 DIALOGEX 0, 0, 301, 231
