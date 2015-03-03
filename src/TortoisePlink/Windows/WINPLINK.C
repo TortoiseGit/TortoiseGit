@@ -68,10 +68,6 @@ void nonfatal(char *p, ...)
     MessageBox(GetParentHwnd(), stuff, morestuff,
         MB_SYSTEMMODAL | MB_ICONERROR | MB_OK);
     sfree(stuff);
-    if (logctx) {
-        log_free(logctx);
-        logctx = NULL;
-    }
 }
 void connection_fatal(void *frontend, char *p, ...)
 {
@@ -206,10 +202,12 @@ static void usage(void)
     j += sprintf(buf+j, "  -pgpfp    print PGP key fingerprints and exit\n");
     j += sprintf(buf+j, "  -v        show verbose messages\n");
     j += sprintf(buf+j, "  -load sessname  Load settings from saved session\n");
-    j += sprintf(buf+j, "  -ssh -telnet -rlogin -raw\n");
+    j += sprintf(buf+j, "  -ssh -telnet -rlogin -raw -serial\n");
     j += sprintf(buf+j, "            force use of a particular protocol\n");
     j += sprintf(buf+j, "  -P port   connect to specified port\n");
     j += sprintf(buf+j, "  -l user   connect with specified username\n");
+    j += sprintf(buf+j, "  -sercfg configuration-string (e.g. 19200,8,n,1,X)\n");
+    j += sprintf(buf+j, "            Specify the serial configuration (serial only)\n");
     j += sprintf(buf+j, "The following options only apply to SSH connections:\n");
     j += sprintf(buf+j, "  -pw passw login with specified password\n");
     j += sprintf(buf+j, "  -D [listen-IP:]listen-port\n");
@@ -224,9 +222,11 @@ static void usage(void)
     j += sprintf(buf+j, "  -1 -2     force use of particular protocol version\n");
     j += sprintf(buf+j, "  -4 -6     force use of IPv4 or IPv6\n");
     j += sprintf(buf+j, "  -C        enable compression\n");
-    j += sprintf(buf+j, "  -i key    private key file for authentication\n");
+    j += sprintf(buf+j, "  -i key    private key file for user authentication\n");
     j += sprintf(buf+j, "  -noagent  disable use of Pageant\n");
     j += sprintf(buf+j, "  -agent    enable use of Pageant\n");
+    j += sprintf(buf+j, "  -hostkey aa:bb:cc:...\n");
+    j += sprintf(buf+j, "            manually specify a host key (may be repeated)\n");
     j += sprintf(buf+j, "  -m file   read remote command(s) from file\n");
     j += sprintf(buf+j, "  -s        remote command is an SSH subsystem (SSH-2 only)\n");
     j += sprintf(buf+j, "  -N        don't start a shell/command (SSH-2 only)\n");
@@ -311,6 +311,9 @@ void stdouterr_sent(struct handle *h, int new_backlog)
     }
 }
 
+const int share_can_be_downstream = TRUE;
+const int share_can_be_upstream = TRUE;
+
 int main(int argc, char **argv)
 {
     int sending;
@@ -389,8 +392,7 @@ int main(int argc, char **argv)
 			q += 2;
 		    conf_set_int(conf, CONF_protocol, PROT_TELNET);
 		    p = q;
-		    while (*p && *p != ':' && *p != '/')
-			p++;
+                    p += host_strcspn(p, ":/");
 		    c = *p;
 		    if (*p)
 			*p++ = '\0';
@@ -528,10 +530,21 @@ int main(int argc, char **argv)
 	    }
 	}
 
-	/*
-	 * Trim off a colon suffix if it's there.
-	 */
-	host[strcspn(host, ":")] = '\0';
+        /*
+         * Trim a colon suffix off the hostname if it's there. In
+         * order to protect unbracketed IPv6 address literals
+         * against this treatment, we do not do this if there's
+         * _more_ than one colon.
+         */
+        {
+            char *c = host_strchr(host, ':');
+ 
+            if (c) {
+                char *d = host_strchr(c+1, ':');
+                if (!d)
+                    *c = '\0';
+            }
+        }
 
 	/*
 	 * Remove any remaining whitespace.
@@ -654,7 +667,10 @@ int main(int argc, char **argv)
 	    sending = TRUE;
 	}
 
-	if (run_timers(now, &next)) {
+        if (toplevel_callback_pending()) {
+            ticks = 0;
+            next = now;
+        } else if (run_timers(now, &next)) {
 	    then = now;
 	    now = GETTICKCOUNT();
 	    if (now - then > next - then)
@@ -663,6 +679,8 @@ int main(int argc, char **argv)
 		ticks = next - now;
 	} else {
 	    ticks = INFINITE;
+            /* no need to initialise next here because we can never
+             * get WAIT_TIMEOUT */
 	}
 
 	handles = handle_get_events(&nhandles);
@@ -743,6 +761,8 @@ int main(int argc, char **argv)
 		sfree(c);
 	    }
 	}
+
+        run_toplevel_callbacks();
 
 	if (n == WAIT_TIMEOUT) {
 	    now = next;

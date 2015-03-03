@@ -67,7 +67,7 @@ static int loadrsakey_main(FILE * fp, struct RSAKey *key, int pub_only,
     i += 4;
 
     /* Now the serious stuff. An ordinary SSH-1 public key. */
-    j = makekey(buf + i, len, key, NULL, 1);
+    j = makekey(buf + i, len - i, key, NULL, 1);
     if (j < 0)
 	goto end;		       /* overran */
     i += j;
@@ -513,54 +513,6 @@ static char *read_body(FILE * fp)
     }
 }
 
-int base64_decode_atom(char *atom, unsigned char *out)
-{
-    int vals[4];
-    int i, v, len;
-    unsigned word;
-    char c;
-
-    for (i = 0; i < 4; i++) {
-	c = atom[i];
-	if (c >= 'A' && c <= 'Z')
-	    v = c - 'A';
-	else if (c >= 'a' && c <= 'z')
-	    v = c - 'a' + 26;
-	else if (c >= '0' && c <= '9')
-	    v = c - '0' + 52;
-	else if (c == '+')
-	    v = 62;
-	else if (c == '/')
-	    v = 63;
-	else if (c == '=')
-	    v = -1;
-	else
-	    return 0;		       /* invalid atom */
-	vals[i] = v;
-    }
-
-    if (vals[0] == -1 || vals[1] == -1)
-	return 0;
-    if (vals[2] == -1 && vals[3] != -1)
-	return 0;
-
-    if (vals[3] != -1)
-	len = 3;
-    else if (vals[2] != -1)
-	len = 2;
-    else
-	len = 1;
-
-    word = ((vals[0] << 18) |
-	    (vals[1] << 12) | ((vals[2] & 0x3F) << 6) | (vals[3] & 0x3F));
-    out[0] = (word >> 16) & 0xFF;
-    if (len > 1)
-	out[1] = (word >> 8) & 0xFF;
-    if (len > 2)
-	out[2] = word & 0xFF;
-    return len;
-}
-
 static unsigned char *read_blob(FILE * fp, int nlines, int *bloblen)
 {
     unsigned char *blob;
@@ -827,6 +779,7 @@ struct ssh2_userkey *ssh2_load_userkey(const Filename *filename,
 	}
     }
     sfree(mac);
+    mac = NULL;
 
     /*
      * Create and return the key.
@@ -837,13 +790,13 @@ struct ssh2_userkey *ssh2_load_userkey(const Filename *filename,
     ret->data = alg->createkey(public_blob, public_blob_len,
 			       private_blob, private_blob_len);
     if (!ret->data) {
-	sfree(ret->comment);
 	sfree(ret);
 	ret = NULL;
 	error = "createkey failed";
 	goto error;
     }
     sfree(public_blob);
+    smemclr(private_blob, private_blob_len);
     sfree(private_blob);
     sfree(encryption);
     if (errorstr)
@@ -864,8 +817,10 @@ struct ssh2_userkey *ssh2_load_userkey(const Filename *filename,
 	sfree(mac);
     if (public_blob)
 	sfree(public_blob);
-    if (private_blob)
-	sfree(private_blob);
+    if (private_blob) {
+        smemclr(private_blob, private_blob_len);
+        sfree(private_blob);
+    }
     if (errorstr)
 	*errorstr = error;
     return ret;
@@ -1154,8 +1109,14 @@ int ssh2_save_userkey(const Filename *filename, struct ssh2_userkey *key,
     }
 
     fp = f_open(filename, "w", TRUE);
-    if (!fp)
-	return 0;
+    if (!fp) {
+        sfree(pub_blob);
+        smemclr(priv_blob, priv_blob_len);
+        sfree(priv_blob);
+        smemclr(priv_blob_encrypted, priv_blob_len);
+        sfree(priv_blob_encrypted);
+        return 0;
+    }
     fprintf(fp, "PuTTY-User-Key-File-2: %s\n", key->alg->name);
     fprintf(fp, "Encryption: %s\n", cipherstr);
     fprintf(fp, "Comment: %s\n", key->comment);
@@ -1172,6 +1133,7 @@ int ssh2_save_userkey(const Filename *filename, struct ssh2_userkey *key,
     sfree(pub_blob);
     smemclr(priv_blob, priv_blob_len);
     sfree(priv_blob);
+    smemclr(priv_blob_encrypted, priv_blob_len);
     sfree(priv_blob_encrypted);
     return 1;
 }

@@ -188,7 +188,35 @@
     </ClCompile>
     <ClCompile Include="..\..\..\conf.c">
       <Filter>Source Files</Filter>
-    </ClCompile>  </ItemGroup>
+    </ClCompile>
+    <ClCompile Include="..\..\..\noterm.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\winnps.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\sshshare.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\errsock.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\callback.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\winshare.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\winsecur.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\winhsock.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\winnpc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\charset\charset.h">
       <Filter>Header Files</Filter>
@@ -245,6 +273,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\sshgssc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\winsecur.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

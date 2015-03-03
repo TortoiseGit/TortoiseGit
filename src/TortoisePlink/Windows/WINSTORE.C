@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>
+#include <assert.h>
 #include "putty.h"
 #include "storage.h"
 
@@ -152,7 +153,7 @@ void *open_settings_r(const char *sessionname)
 
 char *read_setting_s(void *handle, const char *key)
 {
-    DWORD type, size;
+    DWORD type, allocsize, size;
     char *ret;
 
     if (!handle)
@@ -164,13 +165,17 @@ char *read_setting_s(void *handle, const char *key)
 	type != REG_SZ)
 	return NULL;
 
-    ret = snewn(size+1, char);
+    allocsize = size+1;         /* allow for an extra NUL if needed */
+    ret = snewn(allocsize, char);
     if (RegQueryValueEx((HKEY) handle, key, 0,
 			&type, ret, &size) != ERROR_SUCCESS ||
 	type != REG_SZ) {
         sfree(ret);
         return NULL;
     }
+    assert(size < allocsize);
+    ret[size] = '\0'; /* add an extra NUL in case RegQueryValueEx
+                       * didn't supply one */
 
     return ret;
 }

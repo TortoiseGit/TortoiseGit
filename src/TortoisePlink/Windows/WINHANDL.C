@@ -65,6 +65,8 @@ struct handle_generic {
     void *privdata;		       /* for client to remember who they are */
 };
 
+typedef enum { HT_INPUT, HT_OUTPUT, HT_FOREIGN } HandleType;
+
 /* ----------------------------------------------------------------------
  * Input threads.
  */
@@ -169,8 +171,10 @@ static DWORD WINAPI handle_input_threadfunc(void *param)
 	    break;
 
 	WaitForSingleObject(ctx->ev_from_main, INFINITE);
-	if (ctx->done)
+	if (ctx->done) {
+            SetEvent(ctx->ev_to_main);
 	    break;		       /* main thread told us to shut down */
+        }
     }
 
     if (povl)
@@ -330,15 +334,43 @@ static void handle_try_output(struct handle_output *ctx)
 }
 
 /* ----------------------------------------------------------------------
+ * 'Foreign events'. These are handle structures which just contain a
+ * single event object passed to us by another module such as
+ * winnps.c, so that they can make use of our handle_get_events /
+ * handle_got_event mechanism for communicating with application main
+ * loops.
+ */
+struct handle_foreign {
+    /*
+     * Copy of the handle_generic structure.
+     */
+    HANDLE h;			       /* the handle itself */
+    HANDLE ev_to_main;		       /* event used to signal main thread */
+    HANDLE ev_from_main;	       /* event used to signal back to us */
+    int moribund;		       /* are we going to kill this soon? */
+    int done;			       /* request subthread to terminate */
+    int defunct;		       /* has the subthread already gone? */
+    int busy;			       /* operation currently in progress? */
+    void *privdata;		       /* for client to remember who they are */
+
+    /*
+     * Our own data, just consisting of knowledge of who to call back.
+     */
+    void (*callback)(void *);
+    void *ctx;
+};
+
+/* ----------------------------------------------------------------------
  * Unified code handling both input and output threads.
  */
 
 struct handle {
-    int output;
+    HandleType type;
     union {
 	struct handle_generic g;
 	struct handle_input i;
 	struct handle_output o;
+	struct handle_foreign f;
     } u;
 };
 
@@ -376,7 +408,7 @@ struct handle *handle_input_new(HANDLE handle, handle_inputfn_t gotdata,
     struct handle *h = snew(struct handle);
     DWORD in_threadid; /* required for Win9x */
 
-    h->output = FALSE;
+    h->type = HT_INPUT;
     h->u.i.h = handle;
     h->u.i.ev_to_main = CreateEvent(NULL, FALSE, FALSE, NULL);
     h->u.i.ev_from_main = CreateEvent(NULL, FALSE, FALSE, NULL);
@@ -404,7 +436,7 @@ struct handle *handle_output_new(HANDLE handle, handle_outputfn_t sentdata,
     struct handle *h = snew(struct handle);
     DWORD out_threadid; /* required for Win9x */
 
-    h->output = TRUE;
+    h->type = HT_OUTPUT;
     h->u.o.h = handle;
     h->u.o.ev_to_main = CreateEvent(NULL, FALSE, FALSE, NULL);
     h->u.o.ev_from_main = CreateEvent(NULL, FALSE, FALSE, NULL);
@@ -428,9 +460,33 @@ struct handle *handle_output_new(HANDLE handle, handle_outputfn_t sentdata,
     return h;
 }
 
+struct handle *handle_add_foreign_event(HANDLE event,
+                                        void (*callback)(void *), void *ctx)
+{
+    struct handle *h = snew(struct handle);
+
+    h->type = HT_FOREIGN;
+    h->u.f.h = INVALID_HANDLE_VALUE;
+    h->u.f.ev_to_main = event;
+    h->u.f.ev_from_main = INVALID_HANDLE_VALUE;
+    h->u.f.defunct = TRUE;  /* we have no thread in the first place */
+    h->u.f.moribund = FALSE;
+    h->u.f.done = FALSE;
+    h->u.f.privdata = NULL;
+    h->u.f.callback = callback;
+    h->u.f.ctx = ctx;
+    h->u.f.busy = TRUE;
+
+    if (!handles_by_evtomain)
+	handles_by_evtomain = newtree234(handle_cmp_evtomain);
+    add234(handles_by_evtomain, h);
+
+    return h;
+}
+
 int handle_write(struct handle *h, const void *data, int len)
 {
-    assert(h->output);
+    assert(h->type == HT_OUTPUT);
     assert(h->u.o.outgoingeof == EOF_NO);
     bufchain_add(&h->u.o.queued_data, data, len);
     handle_try_output(&h->u.o);
@@ -446,7 +502,7 @@ void handle_write_eof(struct handle *h)
      * bidirectional handle if we're still interested in its incoming
      * direction!
      */
-    assert(h->output);
+    assert(h->type == HT_OUTPUT);
     if (!h->u.o.outgoingeof == EOF_NO) {
         h->u.o.outgoingeof = EOF_PENDING;
         handle_try_output(&h->u.o);
@@ -483,7 +539,7 @@ HANDLE *handle_get_events(int *nevents)
 
 static void handle_destroy(struct handle *h)
 {
-    if (h->output)
+    if (h->type == HT_OUTPUT)
 	bufchain_clear(&h->u.o.queued_data);
     CloseHandle(h->u.g.ev_from_main);
     CloseHandle(h->u.g.ev_to_main);
@@ -560,9 +616,10 @@ void handle_got_event(HANDLE event)
 	return;
     }
 
-    if (!h->output) {
+    switch (h->type) {
 	int backlog;
 
+      case HT_INPUT:
 	h->u.i.busy = FALSE;
 
 	/*
@@ -572,13 +629,15 @@ void handle_got_event(HANDLE event)
 	    /*
 	     * EOF, or (nearly equivalently) read error.
 	     */
-	    h->u.i.gotdata(h, NULL, -h->u.i.readerr);
 	    h->u.i.defunct = TRUE;
+	    h->u.i.gotdata(h, NULL, -h->u.i.readerr);
 	} else {
 	    backlog = h->u.i.gotdata(h, h->u.i.buffer, h->u.i.len);
 	    handle_throttle(&h->u.i, backlog);
 	}
-    } else {
+        break;
+
+      case HT_OUTPUT:
 	h->u.o.busy = FALSE;
 
 	/*
@@ -592,25 +651,31 @@ void handle_got_event(HANDLE event)
 	     * and mark the thread as defunct (because the output
 	     * thread is terminating by now).
 	     */
-	    h->u.o.sentdata(h, -h->u.o.writeerr);
 	    h->u.o.defunct = TRUE;
+	    h->u.o.sentdata(h, -h->u.o.writeerr);
 	} else {
 	    bufchain_consume(&h->u.o.queued_data, h->u.o.lenwritten);
 	    h->u.o.sentdata(h, bufchain_size(&h->u.o.queued_data));
 	    handle_try_output(&h->u.o);
 	}
+        break;
+
+      case HT_FOREIGN:
+        /* Just call the callback. */
+        h->u.f.callback(h->u.f.ctx);
+        break;
     }
 }
 
 void handle_unthrottle(struct handle *h, int backlog)
 {
-    assert(!h->output);
+    assert(h->type == HT_INPUT);
     handle_throttle(&h->u.i, backlog);
 }
 
 int handle_backlog(struct handle *h)
 {
-    assert(h->output);
+    assert(h->type == HT_OUTPUT);
     return bufchain_size(&h->u.o.queued_data);
 }
 

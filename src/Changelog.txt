@@ -3,6 +3,8 @@ Released: Unreleased
 
 == Features ==
  * Fixed issue #2441: A way to disable the sound that is played on errors
+ * Updated shipped TortoiseGitPlink and putty binaries to version 0.64
+   If you are still using TortoisePLink, please switch to TortoiseGitPlink.
 
 == Bug Fixes ==
  * Fixed issue #2427: "Submodule of Project: " cannot be localized
