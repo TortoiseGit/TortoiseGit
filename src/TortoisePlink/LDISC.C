@@ -7,6 +7,7 @@
 
 #include <stdio.h>
 #include <ctype.h>
+#include <assert.h>
 
 #include "putty.h"
 #include "terminal.h"
@@ -139,12 +140,35 @@ void ldisc_send(void *handle, char *buf, int len, int interactive)
 	ldisc_update(ldisc->frontend, ECHOING, EDITING);
 	return;
     }
+
+    /*
+     * If that wasn't true, then we expect ldisc->term to be non-NULL
+     * hereafter. (The only front ends which have an ldisc but no term
+     * are those which do networking but no terminal emulation, in
+     * which case they need the above if statement to handle
+     * ldisc_updates passed from the back ends, but should never send
+     * any actual input through this function.)
+     */
+    assert(ldisc->term);
+
     /*
      * Notify the front end that something was pressed, in case
      * it's depending on finding out (e.g. keypress termination for
      * Close On Exit). 
      */
     frontend_keypress(ldisc->frontend);
+
+    if (interactive) {
+        /*
+         * Interrupt a paste from the clipboard, if one was in
+         * progress when the user pressed a key. This is easier than
+         * buffering the current piece of data and saving it until the
+         * terminal has finished pasting, and has the potential side
+         * benefit of permitting a user to cancel an accidental huge
+         * paste.
+         */
+        term_nopaste(ldisc->term);
+    }
 
     /*
      * Less than zero means null terminated special string.

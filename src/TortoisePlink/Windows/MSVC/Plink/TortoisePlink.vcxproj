@@ -55,13 +55,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\be_all_s.c" />
+    <ClCompile Include="..\..\..\callback.c" />
     <ClCompile Include="..\..\..\cmdline.c" />
     <ClCompile Include="..\..\..\conf.c" />
     <ClCompile Include="..\..\..\cproxy.c" />
+    <ClCompile Include="..\..\..\errsock.c" />
     <ClCompile Include="..\..\..\ldisc.c" />
     <ClCompile Include="..\..\..\logging.c" />
     <ClCompile Include="..\..\..\logindialog.cpp" />
     <ClCompile Include="..\..\..\misc.c" />
+    <ClCompile Include="..\..\..\noterm.c" />
     <ClCompile Include="..\..\..\pgssapi.c" />
     <ClCompile Include="..\..\..\pinger.c" />
     <ClCompile Include="..\..\..\portfwd.c" />
@@ -92,6 +95,7 @@
     <ClCompile Include="..\..\..\sshsh256.c" />
     <ClCompile Include="..\..\..\sshsh512.c" />
     <ClCompile Include="..\..\..\sshsha.c" />
+    <ClCompile Include="..\..\..\sshshare.c" />
     <ClCompile Include="..\..\..\sshzlib.c" />
     <ClCompile Include="..\..\..\telnet.c" />
     <ClCompile Include="..\..\..\timing.c" />
@@ -102,14 +106,19 @@
     <ClCompile Include="..\..\windefs.c" />
     <ClCompile Include="..\..\wingss.c" />
     <ClCompile Include="..\..\winhandl.c" />
+    <ClCompile Include="..\..\winhsock.c" />
     <ClCompile Include="..\..\winjump.c" />
     <ClCompile Include="..\..\winmisc.c" />
     <ClCompile Include="..\..\winnet.c" />
     <ClCompile Include="..\..\winnoise.c" />
+    <ClCompile Include="..\..\winnpc.c" />
+    <ClCompile Include="..\..\winnps.c" />
     <ClCompile Include="..\..\winpgntc.c" />
     <ClCompile Include="..\..\winplink.c" />
     <ClCompile Include="..\..\winproxy.c" />
+    <ClCompile Include="..\..\winsecur.c" />
     <ClCompile Include="..\..\winser.c" />
+    <ClCompile Include="..\..\winshare.c" />
     <ClCompile Include="..\..\winstore.c" />
     <ClCompile Include="..\..\wintime.c" />
     <ClCompile Include="..\..\..\x11fwd.c" />
@@ -134,6 +143,7 @@
     <ClInclude Include="..\..\..\terminal.h" />
     <ClInclude Include="..\..\..\tree234.h" />
     <ClInclude Include="..\..\winhelp.h" />
+    <ClInclude Include="..\..\winsecur.h" />
     <ClInclude Include="..\..\winstuff.h" />
   </ItemGroup>
   <ItemGroup>

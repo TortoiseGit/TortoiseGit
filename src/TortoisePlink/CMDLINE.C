@@ -236,6 +236,21 @@ int cmdline_process_param(char *p, char *value, int need_save, Conf *conf)
 	SAVEABLE(0);
 	conf_set_str(conf, CONF_loghost, value);
     }
+    if (!strcmp(p, "-hostkey")) {
+        char *dup;
+	RETURN(2);
+	UNAVAILABLE_IN(TOOLTYPE_NONNETWORK);
+	SAVEABLE(0);
+        dup = dupstr(value);
+        if (!validate_manual_hostkey(dup)) {
+            cmdline_error("'%s' is not a valid format for a manual host "
+                          "key specification", value);
+            sfree(dup);
+            return ret;
+        }
+	conf_set_str_str(conf, CONF_ssh_manual_hostkeys, dup, "");
+        sfree(dup);
+    }
     if ((!strcmp(p, "-L") || !strcmp(p, "-R") || !strcmp(p, "-D"))) {
 	char type, *q, *qq, *key, *val;
 	RETURN(2);
@@ -261,9 +276,9 @@ int cmdline_process_param(char *p, char *value, int need_save, Conf *conf)
 
             type = p[1];               /* 'L' or 'R' */
 
-	    q = qq = strchr(value, ':');
+	    q = qq = host_strchr(value, ':');
 	    while (qq) {
-		char *qqq = strchr(qq+1, ':');
+		char *qqq = host_strchr(qq+1, ':');
 		if (qqq)
 		    q = qq;
 		qq = qqq;
@@ -275,7 +290,7 @@ int cmdline_process_param(char *p, char *value, int need_save, Conf *conf)
 		return ret;
 	    }
 
-	    key = dupprintf("%c%.*s", type, q - value, value);
+	    key = dupprintf("%c%.*s", type, (int)(q - value), value);
 	    val = dupstr(q+1);
 	} else {
             /*
@@ -301,13 +316,13 @@ int cmdline_process_param(char *p, char *value, int need_save, Conf *conf)
 	UNAVAILABLE_IN(TOOLTYPE_FILETRANSFER | TOOLTYPE_NONNETWORK);
 	SAVEABLE(0);
 
-	portp = strchr(value, ':');
+	portp = host_strchr(value, ':');
 	if (!portp) {
 	    cmdline_error("-nc expects argument of form 'host:port'");
 	    return ret;
 	}
 
-	host = dupprintf("%.*s", portp - value, value);
+	host = dupprintf("%.*s", (int)(portp - value), value);
 	conf_set_str(conf, CONF_ssh_nc_host, host);
 	conf_set_int(conf, CONF_ssh_nc_port, atoi(portp + 1));
         sfree(host);

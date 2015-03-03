@@ -288,14 +288,13 @@ void random_ref(void)
     if (!random_active) {
 	memset(&pool, 0, sizeof(pool));    /* just to start with */
 
-        random_active++;
-
 	noise_get_heavy(random_add_heavynoise_bitbybit);
 	random_stir();
 
 	next_noise_collection =
 	    schedule_timer(NOISE_REGULAR_INTERVAL, random_timer, &pool);
     }
+    random_active++;
 }
 
 void random_unref(void)
