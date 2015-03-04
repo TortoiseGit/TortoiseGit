@@ -460,6 +460,20 @@ protected:
 	}
 };
 
+class CAutoStatusList : public CSmartLibgit2Ref<git_status_list>
+{
+public:
+	~CAutoStatusList()
+	{
+		CleanUp();
+	}
+protected:
+	virtual void FreeRef()
+	{
+		git_status_list_free(m_Ref);
+	}
+};
+
 template <typename HandleType, class FreeFunction>
 class CSmartBuffer : public FreeFunction
 {

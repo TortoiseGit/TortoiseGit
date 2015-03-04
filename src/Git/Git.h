@@ -28,6 +28,8 @@
 #define REG_MSYSGIT_PATH _T("Software\\TortoiseGit\\MSysGit")
 #define REG_MSYSGIT_EXTRA_PATH _T("Software\\TortoiseGit\\MSysGitExtra")
 
+#define DEFAULT_USE_LIBGIT2_MASK (1 << CGit::GIT_CMD_MERGE_BASE) | (1 << CGit::GIT_CMD_DELETETAGBRANCH) | (1 << CGit::GIT_CMD_GETONEFILE) | (1 << CGit::GIT_CMD_ADD)
+
 struct git_repository;
 
 class CFilterData
@@ -164,6 +166,7 @@ public:
 		GIT_CMD_GETONEFILE,
 		GIT_CMD_ADD,
 		GIT_CMD_PUSH,
+		GIT_CMD_CHECK_CLEAN_WT,
 	} LIBGIT2_CMD;
 	bool UsingLibGit2(LIBGIT2_CMD cmd) const;
 	/**
@@ -236,6 +239,9 @@ public:
 	void GetRemoteTrackedBranchForHEAD(CString& remote, CString& branch);
 	// read current branch name from HEAD file, returns 0 on success, -1 on failure, 1 detached (branch name "HEAD" returned)
 	static int GetCurrentBranchFromFile(const CString &sProjectRoot, CString &sBranchOut, bool fallback = false);
+	/*
+	Use this method only when the HEAD is exist.
+	*/
 	BOOL CheckCleanWorkTree(bool stagedOk = false);
 	int Revert(const CString& commit, const CTGitPathList &list, CString& err);
 	int Revert(const CString& commit, const CTGitPath &path, CString& err);
