@@ -19,7 +19,7 @@
 
 #include "stdafx.h"
 #include "AutoTempDir.h"
-#include "DirFileEnum.h"
+#include "TGitPath.h"
 
 CAutoTempDir::CAutoTempDir()
 {
@@ -36,20 +36,7 @@ CAutoTempDir::CAutoTempDir()
 CAutoTempDir::~CAutoTempDir()
 {
 	if (!tempdir.IsEmpty())
-	{
-		CDirFileEnum finder(tempdir);
-		bool isDir;
-		CString filepath;
-		while (finder.NextFile(filepath, &isDir))
-		{
-			::SetFileAttributes(filepath, FILE_ATTRIBUTE_NORMAL);
-			if (isDir)
-					::RemoveDirectory(filepath);
-				else
-					::DeleteFile(filepath);
-		}
-		RemoveDirectory(tempdir);
-	}
+		CTGitPath(tempdir).Delete(false);
 }
 
 CString CAutoTempDir::GetTempDir() const
