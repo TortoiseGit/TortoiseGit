@@ -1,0 +1,5 @@
+# pack-refs with: peeled fully-peeled 
+ab555b2776c6b700ad93848d0dd050e7d08be779 refs/tags/all-files-signed
+^313a41bc88a527289c87d7531802ab484715974f
+b9ef30183497cdad5c30b88d32dc1bed7951dfeb refs/tags/normal-tag
+10385764a4d42d7428bbeb245015f8f338fc1e40 refs/heads/forconflict
