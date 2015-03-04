@@ -29,6 +29,13 @@ enum config
 	GIT_CLI,
 };
 
+enum check_str_empty
+{
+	EXPECT_STR_EMPTY,
+	EXPECT_STR_NOT_EMPTY,
+	NO_CHECK,
+};
+
 class CBasicGitFixture : public ::testing::TestWithParam<config>
 {
 protected:
@@ -63,6 +70,25 @@ protected:
 public:
 	CGit m_Git;
 	CAutoTempDir m_Dir;
+	testing::AssertionResult RunGitCmdOrWarn(const char* pCmd, const char* /*pCheckOutputEmpty*/, const CString& cmd, check_str_empty checkOutputEmpty)
+	{
+		CString output;
+		int ret = m_Git.Run(cmd, &output, CP_UTF8);
+		switch (checkOutputEmpty)
+		{
+		case EXPECT_STR_EMPTY:
+			EXPECT_TRUE(output.IsEmpty());
+			break;
+		case EXPECT_STR_NOT_EMPTY:
+			EXPECT_FALSE(output.IsEmpty());
+			break;
+		}
+		if (ret == 0)
+			return testing::AssertionSuccess();
+		testing::Message msg;
+		msg << pCmd << "\n*** Git Command Error ***" << CStringA(output);
+		return testing::AssertionFailure(msg);
+	}
 };
 
 class CBasicGitWithEmptyRepositoryFixture : public CBasicGitFixture
@@ -71,9 +97,7 @@ protected:
 	virtual void SetUp()
 	{
 		CBasicGitFixture::SetUp();
-		CString output;
-		EXPECT_EQ(0, m_Git.Run(_T("git.exe init"), &output, CP_UTF8));
-		EXPECT_FALSE(output.IsEmpty());
+		EXPECT_PRED_FORMAT2(RunGitCmdOrWarn, _T("git.exe init"), EXPECT_STR_NOT_EMPTY);
 	}
 };
 
@@ -83,9 +107,7 @@ protected:
 	virtual void SetUp()
 	{
 		CBasicGitFixture::SetUp();
-		CString output;
-		EXPECT_EQ(0, m_Git.Run(_T("git.exe init --bare"), &output, CP_UTF8));
-		EXPECT_FALSE(output.IsEmpty());
+		EXPECT_PRED_FORMAT2(RunGitCmdOrWarn, _T("git.exe init --bare"), EXPECT_STR_NOT_EMPTY);
 	}
 };
 
@@ -109,31 +131,24 @@ TEST_P(CBasicGitFixture, IsInitRepos)
 
 TEST_P(CBasicGitWithEmptyRepositoryFixture, IsInitRepos)
 {
-	CString output;
 	CString testFile = m_Dir.GetTempDir() + L"\\test.txt";
 
 	EXPECT_TRUE(m_Git.IsInitRepos());
 
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)testFile, L"this is testing file."));
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe add test.txt"), &output, CP_UTF8));
-	EXPECT_TRUE(output.IsEmpty());
-	output.Empty();
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe commit -m \"Add test.txt\""), &output, CP_UTF8));
-	EXPECT_FALSE(output.IsEmpty());
+	EXPECT_PRED_FORMAT2(RunGitCmdOrWarn, _T("git.exe add test.txt"), EXPECT_STR_EMPTY);
+	EXPECT_PRED_FORMAT2(RunGitCmdOrWarn, _T("git.exe commit -m \"Add test.txt\""), EXPECT_STR_NOT_EMPTY);
 
 	EXPECT_FALSE(m_Git.IsInitRepos());
 }
 
 TEST_P(CBasicGitWithEmptyRepositoryFixture, CheckCleanWorkTree)
 {
-	CString output;
 	CString testFile = m_Dir.GetTempDir() + L"\\test.txt";
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)testFile, L"this is testing file."));
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe add test.txt"), &output, CP_UTF8));
-	output.Empty();
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe commit -m \"Add test.txt\""), &output, CP_UTF8));
+	EXPECT_PRED_FORMAT2(RunGitCmdOrWarn, _T("git.exe add test.txt"), EXPECT_STR_EMPTY);
+	EXPECT_PRED_FORMAT2(RunGitCmdOrWarn, _T("git.exe commit -m \"Add test.txt\""), EXPECT_STR_NOT_EMPTY);
 	// repo with 1 versioned file
-	EXPECT_FALSE(output.IsEmpty());
 	EXPECT_TRUE(m_Git.CheckCleanWorkTree());
 	EXPECT_TRUE(m_Git.CheckCleanWorkTree(true));
 
@@ -142,14 +157,12 @@ TEST_P(CBasicGitWithEmptyRepositoryFixture, CheckCleanWorkTree)
 	EXPECT_FALSE(m_Git.CheckCleanWorkTree());
 	EXPECT_FALSE(m_Git.CheckCleanWorkTree(true));
 
-	output.Empty();
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe add test.txt"), &output, CP_UTF8));
+	EXPECT_PRED_FORMAT2(RunGitCmdOrWarn, _T("git.exe add test.txt"), EXPECT_STR_EMPTY);
 	// repo with 1 modified versioned and staged file
-	EXPECT_TRUE(output.IsEmpty());
 	EXPECT_FALSE(m_Git.CheckCleanWorkTree());
 	EXPECT_TRUE(m_Git.CheckCleanWorkTree(true));
 
-	EXPECT_EQ(0, m_Git.Run(_T("git.exe commit -m \"Modified test.txt\""), &output, CP_UTF8));
+	EXPECT_PRED_FORMAT2(RunGitCmdOrWarn, _T("git.exe commit -m \"Modified test.txt\""), EXPECT_STR_NOT_EMPTY);
 	testFile = m_Dir.GetTempDir() + L"\\test2.txt";
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)testFile, L"this is ANOTHER testing file."));
 	EXPECT_TRUE(m_Git.CheckCleanWorkTree());
