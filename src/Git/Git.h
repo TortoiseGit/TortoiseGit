@@ -346,6 +346,10 @@ public:
 	static void StringAppend(CString *str, const BYTE *p, int code = CP_UTF8, int length = -1);
 
 	BOOL CanParseRev(CString ref);
+	/**
+	Checks if HEAD points to an unborn branch
+	This method assumes, that we already know that we are in a working tree.
+	*/
 	BOOL IsInitRepos();
 	int ListConflictFile(CTGitPathList &list, const CTGitPath *path = nullptr);
 	int GetRefList(STRING_VECTOR &list);

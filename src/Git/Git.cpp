@@ -402,9 +402,8 @@ BOOL CGit::CanParseRev(CString ref)
 BOOL CGit::IsInitRepos()
 {
 	CGitHash hash;
-	// handle error on reading HEAD hash as init repo
 	if (GetHash(hash, _T("HEAD")) != 0)
-		return TRUE;
+		return FALSE;
 	return hash.IsEmpty() ? TRUE : FALSE;
 }
 
@@ -1257,13 +1256,24 @@ int CGit::GetHash(CGitHash &hash, const CString& friendname)
 	}
 	else
 	{
+		CString branch = FixBranchName(friendname);
+		if (friendname == _T("FETCH_HEAD") && branch.IsEmpty())
+			branch = friendname;
 		CString cmd;
-		cmd.Format(_T("git.exe rev-parse %s" ),FixBranchName(friendname));
+		cmd.Format(_T("git.exe rev-parse %s"), branch);
 		gitLastErr.Empty();
 		int ret = Run(cmd, &gitLastErr, NULL, CP_UTF8);
 		hash = CGitHash(gitLastErr.Trim());
 		if (ret == 0)
 			gitLastErr.Empty();
+		else if (friendname == _T("HEAD")) // special check for unborn branch
+		{
+			CString branch;
+			if (GetCurrentBranchFromFile(m_CurrentDir, branch))
+				return -1;
+			gitLastErr.Empty();
+			return 0;
+		}
 		return ret;
 	}
 }
@@ -1365,6 +1375,8 @@ int CGit::GetTagList(STRING_VECTOR &list)
 			}
 			std::sort(list.begin(), list.end(), g_bSortTagsReversed ? LogicalCompareReversedPredicate : LogicalComparePredicate);
 		}
+		else if (ret == 1 && IsInitRepos())
+			return 0;
 		return ret;
 	}
 }
@@ -1621,9 +1633,15 @@ int CGit::GetBranchList(STRING_VECTOR &list,int *current,BRANCH_TYPE type)
 					cur = one;
 				}
 				if (one.Left(10) != _T("(no branch") && one.Left(15) != _T("(detached from "))
+				{
+					if ((type & BRANCH_REMOTE) != 0 && (type & BRANCH_LOCAL) == 0)
+						one = _T("remotes/") + one;
 					list.push_back(one);
+				}
 			}
 		}
+		else if (ret == 1 && IsInitRepos())
+			return 0;
 	}
 
 	if(type & BRANCH_FETCH_HEAD && !DerefFetchHead().IsEmpty())
@@ -1838,11 +1856,14 @@ int CGit::GetRefList(STRING_VECTOR &list)
 				{
 					CString name;
 					name=one.Right(one.GetLength()-start-1);
-					list.push_back(name);
+					if (list.empty() || name != *list.crbegin() + _T("^{}"))
+						list.push_back(name);
 				}
 			}
 			std::sort(list.begin(), list.end(), LogicalComparePredicate);
 		}
+		else if (ret == 1 && IsInitRepos())
+			return 0;
 		return ret;
 	}
 }
@@ -1932,6 +1953,8 @@ int CGit::GetMapHashToFriendName(MAP_HASH_NAME &map)
 				}
 			}
 		}
+		else if (ret == 1 && IsInitRepos())
+			return 0;
 		return ret;
 	}
 }
