@@ -1670,13 +1670,6 @@ bool CAppUtils::ConflictEdit(const CTGitPath& path, bool /*bAlternativeTool = fa
 	CTGitPath merge=path;
 	CTGitPath directory = merge.GetDirectory();
 
-	// we have the conflicted file (%merged)
-	// now look for the other required files
-	//GitStatus stat;
-	//stat.GetStatus(merge);
-	//if (stat.status == NULL)
-	//	return false;
-
 	BYTE_VECTOR vector;
 
 	CString cmd;
