@@ -151,6 +151,7 @@ BEGIN_MESSAGE_MAP(CCommitDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_COMMIT_AMENDDIFF, &CCommitDlg::OnBnClickedCommitAmenddiff)
 	ON_BN_CLICKED(IDC_NOAUTOSELECTSUBMODULES, &CCommitDlg::OnBnClickedNoautoselectsubmodules)
 	ON_BN_CLICKED(IDC_COMMIT_SETDATETIME, &CCommitDlg::OnBnClickedCommitSetDateTime)
+	ON_BN_CLICKED(IDC_COMMIT_DATETIME_NOW, &CCommitDlg::OnBnClickedCommitDatetimeNow)
 	ON_BN_CLICKED(IDC_CHECK_NEWBRANCH, &CCommitDlg::OnBnClickedCheckNewBranch)
 	ON_BN_CLICKED(IDC_COMMIT_SETAUTHOR, &CCommitDlg::OnBnClickedCommitSetauthor)
 END_MESSAGE_MAP()
@@ -327,6 +328,7 @@ BOOL CCommitDlg::OnInitDialog()
 	AdjustControlSize(IDC_COMMIT_MESSAGEONLY);
 	AdjustControlSize(IDC_COMMIT_AMENDDIFF);
 	AdjustControlSize(IDC_COMMIT_SETDATETIME);
+	AdjustControlSize(IDC_COMMIT_DATETIME_NOW);
 	AdjustControlSize(IDC_COMMIT_SETAUTHOR);
 	AdjustControlSize(IDC_NOAUTOSELECTSUBMODULES);
 	AdjustControlSize(IDC_KEEPLISTS);
@@ -390,6 +392,7 @@ BOOL CCommitDlg::OnInitDialog()
 	AddAnchor(IDC_COMMIT_SETDATETIME,TOP_LEFT);
 	AddAnchor(IDC_COMMIT_DATEPICKER,TOP_LEFT);
 	AddAnchor(IDC_COMMIT_TIMEPICKER,TOP_LEFT);
+	AddAnchor(IDC_COMMIT_DATETIME_NOW, TOP_LEFT);
 	AddAnchor(IDC_COMMIT_SETAUTHOR, TOP_LEFT);
 	AddAnchor(IDC_COMMIT_AUTHORDATA, TOP_LEFT, TOP_RIGHT);
 
@@ -432,6 +435,7 @@ BOOL CCommitDlg::OnInitDialog()
 	if (m_bForceCommitAmend || m_bCommitAmend)
 		GetDlgItem(IDC_COMMIT_AMENDDIFF)->ShowWindow(SW_SHOW);
 
+	GetDlgItem(IDC_COMMIT_DATETIME_NOW)->ShowWindow(SW_HIDE);
 	// add all directories to the watcher
 	/*
 	for (int i=0; i<m_pathList.GetCount(); ++i)
@@ -2213,6 +2217,7 @@ void CCommitDlg::DoSize(int delta)
 	RemoveAnchor(IDC_COMMIT_SETDATETIME);
 	RemoveAnchor(IDC_COMMIT_DATEPICKER);
 	RemoveAnchor(IDC_COMMIT_TIMEPICKER);
+	RemoveAnchor(IDC_COMMIT_DATETIME_NOW);
 	RemoveAnchor(IDC_COMMIT_SETAUTHOR);
 	RemoveAnchor(IDC_COMMIT_AUTHORDATA);
 	RemoveAnchor(IDC_LISTGROUP);
@@ -2239,6 +2244,7 @@ void CCommitDlg::DoSize(int delta)
 	CSplitterControl::ChangePos(GetDlgItem(IDC_COMMIT_SETDATETIME),0,delta);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_COMMIT_DATEPICKER),0,delta);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_COMMIT_TIMEPICKER),0,delta);
+	CSplitterControl::ChangePos(GetDlgItem(IDC_COMMIT_DATETIME_NOW), 0, delta);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_COMMIT_SETAUTHOR), 0, delta);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_COMMIT_AUTHORDATA), 0, delta);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_TEXT_INFO),0,delta);
@@ -2264,6 +2270,7 @@ void CCommitDlg::DoSize(int delta)
 	AddAnchor(IDC_COMMIT_SETDATETIME,TOP_LEFT);
 	AddAnchor(IDC_COMMIT_DATEPICKER,TOP_LEFT);
 	AddAnchor(IDC_COMMIT_TIMEPICKER,TOP_LEFT);
+	AddAnchor(IDC_COMMIT_DATETIME_NOW, TOP_LEFT);
 	AddAnchor(IDC_COMMIT_SETAUTHOR, TOP_LEFT);
 	AddAnchor(IDC_COMMIT_AUTHORDATA, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_TEXT_INFO,TOP_RIGHT);
@@ -2566,6 +2573,8 @@ void CCommitDlg::OnBnClickedCommitSetDateTime()
 				CMessageBox::Show(m_hWnd, _T("Could not get HEAD commit.\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
 			}
 			authordate = headRevision.GetAuthorDate();
+
+			GetDlgItem(IDC_COMMIT_DATETIME_NOW)->ShowWindow(SW_SHOW);
 		}
 
 		m_CommitDate.SetTime(&authordate);
@@ -2578,7 +2587,17 @@ void CCommitDlg::OnBnClickedCommitSetDateTime()
 	{
 		GetDlgItem(IDC_COMMIT_DATEPICKER)->ShowWindow(SW_HIDE);
 		GetDlgItem(IDC_COMMIT_TIMEPICKER)->ShowWindow(SW_HIDE);
+		GetDlgItem(IDC_COMMIT_DATETIME_NOW)->ShowWindow(SW_HIDE);
 	}
+}
+
+
+void CCommitDlg::OnBnClickedCommitDatetimeNow()
+{
+	CTime authordate = CTime::GetCurrentTime();
+
+	m_CommitDate.SetTime(&authordate);
+	m_CommitTime.SetTime(&authordate);
 }
 
 void CCommitDlg::OnBnClickedCheckNewBranch()

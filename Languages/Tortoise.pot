@@ -6469,6 +6469,10 @@ msgstr ""
 msgid "Notice"
 msgstr ""
 
+#. Resource IDs: (1829)
+msgid "Now"
+msgstr ""
+
 #. Resource IDs: (1534)
 msgid "Number Commits"
 msgstr ""
