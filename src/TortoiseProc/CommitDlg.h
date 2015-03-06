@@ -221,6 +221,7 @@ protected:
 	afx_msg void OnBnClickedCommitAmenddiff();
 	afx_msg void OnBnClickedNoautoselectsubmodules();
 	afx_msg void OnBnClickedCommitSetDateTime();
+	afx_msg void OnBnClickedCommitDatetimeNow();
 	afx_msg void OnBnClickedCheckNewBranch();
 	afx_msg void OnBnClickedCommitSetauthor();
 };
