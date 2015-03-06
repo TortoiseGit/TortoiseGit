@@ -899,13 +899,13 @@ int CRebaseDlg::StartRebase()
 }
 int CRebaseDlg::VerifyNoConflict()
 {
-	CTGitPathList list;
-	if(g_Git.ListConflictFile(list))
+	int hasConflicts = g_Git.HasWorkingTreeConflicts();
+	if (hasConflicts < 0)
 	{
-		AddLogString(_T("Get conflict files fail"));
+		AddLogString(g_Git.GetGitLastErr(L"Checking for conflicts failed.", CGit::GIT_CMD_CHECKCONFLICTS));
 		return -1;
 	}
-	if (!list.IsEmpty())
+	if (hasConflicts)
 	{
 		CMessageBox::Show(NULL, IDS_PROGRS_CONFLICTSOCCURED, IDS_APPNAME, MB_OK);
 		return -1;
@@ -1730,13 +1730,13 @@ int CRebaseDlg::DoRebase()
 		if(g_Git.Run(cmd,&out,CP_UTF8))
 		{
 			AddLogString(out);
-			CTGitPathList list;
-			if(g_Git.ListConflictFile(list))
+			int hasConflicts = g_Git.HasWorkingTreeConflicts();
+			if (hasConflicts < 0)
 			{
-				AddLogString(_T("Get conflict files fail"));
+				AddLogString(g_Git.GetGitLastErr(L"Checking for conflicts failed.", CGit::GIT_CMD_CHECKCONFLICTS));
 				return -1;
 			}
-			if (list.IsEmpty())
+			if (!hasConflicts)
 			{
 				if (mode ==  CGitLogListBase::LOGACTIONS_REBASE_PICK)
 				{

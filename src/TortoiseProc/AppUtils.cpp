@@ -3204,8 +3204,10 @@ BOOL CAppUtils::Merge(const CString* commit, bool showStashPop)
 		{
 			if (status)
 			{
-				CTGitPathList list;
-				if (!g_Git.ListConflictFile(list) && !list.IsEmpty())
+				int hasConflicts = g_Git.HasWorkingTreeConflicts();
+				if (hasConflicts < 0)
+					CMessageBox::Show(nullptr, g_Git.GetGitLastErr(L"Checking for conflicts failed.", CGit::GIT_CMD_CHECKCONFLICTS), _T("TortoiseGit"), MB_ICONEXCLAMATION);
+				else if (hasConflicts)
 				{
 					// there are conflict files
 

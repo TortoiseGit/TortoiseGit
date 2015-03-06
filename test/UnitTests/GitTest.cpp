@@ -355,30 +355,23 @@ TEST_P(CBasicGitWithTestRepoFixture, IsInitRepos)
 	EXPECT_TRUE(m_Git.IsInitRepos());
 }
 
-TEST_P(CBasicGitWithTestRepoFixture, ListConflictFile)
+TEST_P(CBasicGitWithTestRepoFixture, HasWorkingTreeConflicts)
 {
 	CString output;
 	EXPECT_EQ(0, m_Git.Run(_T("git.exe reset --hard master"), &output, CP_UTF8));
 	EXPECT_FALSE(output.IsEmpty());
 
-	CTGitPathList conflictedFiles;
-	EXPECT_EQ(0, m_Git.ListConflictFile(conflictedFiles));
-	EXPECT_TRUE(conflictedFiles.IsEmpty());
+	EXPECT_EQ(FALSE, m_Git.HasWorkingTreeConflicts());
 
 	output.Empty();
 	EXPECT_EQ(0, m_Git.Run(_T("git.exe merge forconflict"), &output, CP_UTF8));
 	EXPECT_FALSE(output.IsEmpty());
-	EXPECT_EQ(0, m_Git.ListConflictFile(conflictedFiles));
-	EXPECT_TRUE(conflictedFiles.IsEmpty());
+	EXPECT_EQ(FALSE, m_Git.HasWorkingTreeConflicts());
 
 	output.Empty();
 	EXPECT_EQ(1, m_Git.Run(_T("git.exe merge simple-conflict"), &output, CP_UTF8));
 	EXPECT_FALSE(output.IsEmpty());
-	EXPECT_EQ(0, m_Git.ListConflictFile(conflictedFiles));
-	ASSERT_EQ(3, conflictedFiles.GetCount());
-	EXPECT_STREQ(_T("ansi.txt"), conflictedFiles[0].GetGitPathString());
-	EXPECT_STREQ(_T("ansi.txt"), conflictedFiles[1].GetGitPathString());
-	EXPECT_STREQ(_T("ansi.txt"), conflictedFiles[2].GetGitPathString());
+	EXPECT_EQ(TRUE, m_Git.HasWorkingTreeConflicts());
 
 	output.Empty();
 	EXPECT_EQ(0, m_Git.Run(_T("git.exe reset --hard master"), &output, CP_UTF8));
@@ -391,11 +384,7 @@ TEST_P(CBasicGitWithTestRepoFixture, ListConflictFile)
 	output.Empty();
 	EXPECT_EQ(1, m_Git.Run(_T("git.exe merge simple-conflict"), &output, CP_UTF8));
 	EXPECT_FALSE(output.IsEmpty());
-	EXPECT_EQ(0, m_Git.ListConflictFile(conflictedFiles));
-	ASSERT_EQ(3, conflictedFiles.GetCount());
-	EXPECT_STREQ(_T("ansi.txt"), conflictedFiles[0].GetGitPathString());
-	EXPECT_STREQ(_T("ansi.txt"), conflictedFiles[1].GetGitPathString());
-	EXPECT_STREQ(_T("ansi.txt"), conflictedFiles[2].GetGitPathString());
+	EXPECT_EQ(TRUE, m_Git.HasWorkingTreeConflicts());
 }
 
 TEST_P(CBasicGitWithTestRepoFixture, GetCurrentBranch)

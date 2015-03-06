@@ -2264,25 +2264,35 @@ int CGit::Revert(const CString& commit, const CTGitPath &path, CString& err)
 	return 0;
 }
 
-int CGit::ListConflictFile(CTGitPathList &list, const CTGitPath *path)
+int CGit::HasWorkingTreeConflicts(git_repository* repo)
 {
-	BYTE_VECTOR vector;
+	ATLASSERT(repo);
 
-	CString cmd;
-	if(path)
-		cmd.Format(_T("git.exe ls-files -u -t -z -- \"%s\""),path->GetGitPathString());
-	else
-		cmd=_T("git.exe ls-files -u -t -z");
-
-	if (Run(cmd, &vector))
-	{
+	CAutoIndex index;
+	if (git_repository_index(index.GetPointer(), repo))
 		return -1;
+
+	return git_index_has_conflicts(index);
+}
+
+int CGit::HasWorkingTreeConflicts()
+{
+	if (UsingLibGit2(GIT_CMD_CHECKCONFLICTS))
+	{
+		CAutoRepository repo(GetGitRepository());
+		if (!repo)
+			return -1;
+
+		return HasWorkingTreeConflicts(repo);
 	}
 
-	if (list.ParserFromLsFile(vector))
+	CString cmd = _T("git.exe ls-files -u -t -z");
+
+	CString output;
+	if (Run(cmd, &output, &gitLastErr, CP_UTF8))
 		return -1;
 
-	return 0;
+	return output.IsEmpty() ? 0 : 1;
 }
 
 bool CGit::IsFastForward(const CString &from, const CString &to, CGitHash * commonAncestor)
@@ -2314,10 +2324,10 @@ bool CGit::IsFastForward(const CString &from, const CString &to, CGitHash * comm
 	// else
 	CString base;
 	CGitHash basehash,hash;
-	CString cmd, err;
+	CString cmd;
 	cmd.Format(_T("git.exe merge-base %s %s"), FixBranchName(to), FixBranchName(from));
 
-	if (Run(cmd, &base, &err, CP_UTF8))
+	if (Run(cmd, &base, &gitLastErr, CP_UTF8))
 	{
 		return false;
 	}

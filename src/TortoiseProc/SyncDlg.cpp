@@ -351,17 +351,17 @@ void CSyncDlg::PullComplete()
 
 	if( this ->m_GitCmdStatus )
 	{
-		CTGitPathList list;
-		if(g_Git.ListConflictFile(list))
+		int hasConflicts = g_Git.HasWorkingTreeConflicts();
+		if (hasConflicts < 0)
 		{
 			this->m_ctrlCmdOut.SetSel(-1,-1);
-			this->m_ctrlCmdOut.ReplaceSel(_T("Get conflict files fail\n"));
+			this->m_ctrlCmdOut.ReplaceSel(g_Git.GetGitLastErr(L"Checking for conflicts failed.", CGit::GIT_CMD_CHECKCONFLICTS));
 
 			this->ShowTab(IDC_CMD_LOG);
 			return;
 		}
 
-		if (!list.IsEmpty())
+		if (hasConflicts)
 		{
 			this->m_ConflictFileList.Clear();
 			CTGitPathList list;
@@ -447,17 +447,17 @@ void CSyncDlg::StashComplete()
 	SwitchToInput();
 	if (m_GitCmdStatus)
 	{
-		CTGitPathList list;
-		if (g_Git.ListConflictFile(list))
+		int hasConflicts = g_Git.HasWorkingTreeConflicts();
+		if (hasConflicts < 0)
 		{
 			m_ctrlCmdOut.SetSel(-1, -1);
-			m_ctrlCmdOut.ReplaceSel(_T("Get conflict files fail\n"));
+			m_ctrlCmdOut.ReplaceSel(g_Git.GetGitLastErr(L"Checking for conflicts failed.", CGit::GIT_CMD_CHECKCONFLICTS));
 
 			ShowTab(IDC_CMD_LOG);
 			return;
 		}
 
-		if (!list.IsEmpty())
+		if (hasConflicts)
 		{
 			m_ConflictFileList.Clear();
 			CTGitPathList list;

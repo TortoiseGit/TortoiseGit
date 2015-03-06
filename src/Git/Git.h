@@ -28,7 +28,7 @@
 #define REG_MSYSGIT_PATH _T("Software\\TortoiseGit\\MSysGit")
 #define REG_MSYSGIT_EXTRA_PATH _T("Software\\TortoiseGit\\MSysGitExtra")
 
-#define DEFAULT_USE_LIBGIT2_MASK (1 << CGit::GIT_CMD_MERGE_BASE) | (1 << CGit::GIT_CMD_DELETETAGBRANCH) | (1 << CGit::GIT_CMD_GETONEFILE) | (1 << CGit::GIT_CMD_ADD)
+#define DEFAULT_USE_LIBGIT2_MASK (1 << CGit::GIT_CMD_MERGE_BASE) | (1 << CGit::GIT_CMD_DELETETAGBRANCH) | (1 << CGit::GIT_CMD_GETONEFILE) | (1 << CGit::GIT_CMD_ADD) | (1 << CGit::GIT_CMD_CHECKCONFLICTS)
 
 struct git_repository;
 
@@ -167,6 +167,7 @@ public:
 		GIT_CMD_ADD,
 		GIT_CMD_PUSH,
 		GIT_CMD_CHECK_CLEAN_WT,
+		GIT_CMD_CHECKCONFLICTS,
 	} LIBGIT2_CMD;
 	bool UsingLibGit2(LIBGIT2_CMD cmd) const;
 	/**
@@ -351,7 +352,10 @@ public:
 	This method assumes, that we already know that we are in a working tree.
 	*/
 	BOOL IsInitRepos();
-	int ListConflictFile(CTGitPathList &list, const CTGitPath *path = nullptr);
+	/** Returns 0 if no conflict, if a conflict was found and -1 in case of a failure */
+	int HasWorkingTreeConflicts();
+	/** Returns 0 if no conflict, if a conflict was found and -1 in case of a failure */
+	int HasWorkingTreeConflicts(git_repository* repo);
 	int GetRefList(STRING_VECTOR &list);
 
 	int RefreshGitIndex();
