@@ -21,7 +21,7 @@
 	url = https://github.com/editorconfig/editorconfig-core-c.git
 [submodule "ext/pcre"]
 	path = ext/pcre
-	url = https://gitorious.org/pcre/pcre.git
+	url = https://code.google.com/p/tortoisegit.pcre/
 [submodule "ext/gtest"]
 	path = ext/gtest
 	url = http://git.chromium.org/external/googletest.git
