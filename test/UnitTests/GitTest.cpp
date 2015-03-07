@@ -485,10 +485,10 @@ static void FETCHHEAD(CGit& m_Git, bool isBare)
 {
 	STRING_VECTOR list;
 	EXPECT_EQ(0, m_Git.GetBranchList(list, nullptr));
-	EXPECT_EQ(4, list.size());
+	EXPECT_EQ(5, list.size());
 	list.clear();
 	EXPECT_EQ(0, m_Git.GetBranchList(list, nullptr, CGit::BRANCH_LOCAL_F));
-	EXPECT_EQ(4, list.size());
+	EXPECT_EQ(5, list.size());
 
 	EXPECT_STREQ(_T("HEAD"), m_Git.FixBranchName(_T("HEAD")));
 	EXPECT_STREQ(_T("master"), m_Git.FixBranchName(_T("master")));
@@ -507,10 +507,10 @@ static void FETCHHEAD(CGit& m_Git, bool isBare)
 
 	list.clear();
 	EXPECT_EQ(0, m_Git.GetBranchList(list, nullptr));
-	EXPECT_EQ(4, list.size());
+	EXPECT_EQ(5, list.size());
 	list.clear();
 	EXPECT_EQ(0, m_Git.GetBranchList(list, nullptr, CGit::BRANCH_LOCAL_F));
-	EXPECT_EQ(isBare ? 4 : 5, list.size());
+	EXPECT_EQ(isBare ? 5 : 6, list.size());
 
 	EXPECT_STREQ(_T("master"), m_Git.FixBranchName(_T("master")));
 	EXPECT_STREQ(_T("non-existing"), m_Git.FixBranchName(_T("non-existing")));
@@ -538,10 +538,10 @@ static void FETCHHEAD(CGit& m_Git, bool isBare)
 
 	list.clear();
 	EXPECT_EQ(0, m_Git.GetBranchList(list, nullptr));
-	EXPECT_EQ(4, list.size());
+	EXPECT_EQ(5, list.size());
 	list.clear();
 	EXPECT_EQ(0, m_Git.GetBranchList(list, nullptr, CGit::BRANCH_LOCAL_F));
-	EXPECT_EQ(isBare ? 4 : 5, list.size());
+	EXPECT_EQ(isBare ? 5 : 6, list.size());
 
 	if (!isBare)
 	{
@@ -579,13 +579,13 @@ static void GetHash(CGit& m_Git)
 {
 	CGitHash hash;
 	EXPECT_EQ(0, m_Git.GetHash(hash, _T("HEAD")));
-	EXPECT_STREQ(_T("49ecdfff36bfe2b9b499b33e5034f427e2fa54dd"), hash.ToString());
+	EXPECT_STREQ(_T("7c3cbfe13a929d2291a574dca45e4fd2d2ac1aa6"), hash.ToString());
 	EXPECT_EQ(0, m_Git.GetHash(hash, _T("HEAD~1")));
-	EXPECT_STREQ(_T("35c91b4ae2f77f4f21a7aba56d3c473c705d89e6"), hash.ToString());
+	EXPECT_STREQ(_T("1fc3c9688e27596d8717b54f2939dc951568f6cb"), hash.ToString());
 	EXPECT_EQ(0, m_Git.GetHash(hash, _T("ff1fbef1a54a9849afd4a5e94d2ca4d80d5b96c2")));
 	EXPECT_STREQ(_T("ff1fbef1a54a9849afd4a5e94d2ca4d80d5b96c2"), hash.ToString());
 	EXPECT_EQ(0, m_Git.GetHash(hash, _T("master")));
-	EXPECT_STREQ(_T("49ecdfff36bfe2b9b499b33e5034f427e2fa54dd"), hash.ToString());
+	EXPECT_STREQ(_T("7c3cbfe13a929d2291a574dca45e4fd2d2ac1aa6"), hash.ToString());
 	EXPECT_EQ(0, m_Git.GetHash(hash, _T("origin/master")));
 	EXPECT_STREQ(_T("a9d53b535cb49640a6099860ac4999f5a0857b91"), hash.ToString());
 	EXPECT_EQ(0, m_Git.GetHash(hash, _T("49ecdfff36bfe2b9b499b33e5034f427e2fa54dd")));
@@ -651,23 +651,25 @@ static void GetBranchesTagsRefs(CGit& m_Git, config testConfig)
 	STRING_VECTOR branches;
 	int current = -2;
 	EXPECT_EQ(0, m_Git.GetBranchList(branches, &current));
-	ASSERT_EQ(4, branches.size());
-	EXPECT_EQ(1, current);
-	EXPECT_STREQ(_T("forconflict"), branches[0]);
-	EXPECT_STREQ(_T("master"), branches[1]);
-	EXPECT_STREQ(_T("simple-conflict"), branches[2]);
-	EXPECT_STREQ(_T("subdir/branch"), branches[3]);
-
-	branches.clear();
-	current = -2;
-	EXPECT_EQ(0, m_Git.GetBranchList(branches, &current, CGit::BRANCH_ALL));
 	ASSERT_EQ(5, branches.size());
 	EXPECT_EQ(1, current);
 	EXPECT_STREQ(_T("forconflict"), branches[0]);
 	EXPECT_STREQ(_T("master"), branches[1]);
-	EXPECT_STREQ(_T("simple-conflict"), branches[2]);
-	EXPECT_STREQ(_T("subdir/branch"), branches[3]);
-	EXPECT_STREQ(_T("remotes/origin/master"), branches[4]);
+	EXPECT_STREQ(_T("master2"), branches[2]);
+	EXPECT_STREQ(_T("simple-conflict"), branches[3]);
+	EXPECT_STREQ(_T("subdir/branch"), branches[4]);
+
+	branches.clear();
+	current = -2;
+	EXPECT_EQ(0, m_Git.GetBranchList(branches, &current, CGit::BRANCH_ALL));
+	ASSERT_EQ(6, branches.size());
+	EXPECT_EQ(1, current);
+	EXPECT_STREQ(_T("forconflict"), branches[0]);
+	EXPECT_STREQ(_T("master"), branches[1]);
+	EXPECT_STREQ(_T("master2"), branches[2]);
+	EXPECT_STREQ(_T("simple-conflict"), branches[3]);
+	EXPECT_STREQ(_T("subdir/branch"), branches[4]);
+	EXPECT_STREQ(_T("remotes/origin/master"), branches[5]);
 
 	branches.clear();
 	current = -2;
@@ -685,25 +687,32 @@ static void GetBranchesTagsRefs(CGit& m_Git, config testConfig)
 
 	STRING_VECTOR refs;
 	EXPECT_EQ(0, m_Git.GetRefList(refs));
-	ASSERT_EQ(9, refs.size());
+	ASSERT_EQ(11, refs.size());
 	EXPECT_STREQ(_T("refs/heads/forconflict"), refs[0]);
 	EXPECT_STREQ(_T("refs/heads/master"), refs[1]);
-	EXPECT_STREQ(_T("refs/heads/simple-conflict"), refs[2]);
-	EXPECT_STREQ(_T("refs/heads/subdir/branch"), refs[3]);
-	EXPECT_STREQ(_T("refs/remotes/origin/master"), refs[4]);
-	EXPECT_STREQ(_T("refs/stash"), refs[5]);
-	EXPECT_STREQ(_T("refs/tags/all-files-signed"), refs[6]);
-	EXPECT_STREQ(_T("refs/tags/also-signed"), refs[7]);
-	EXPECT_STREQ(_T("refs/tags/normal-tag"), refs[8]);
+	EXPECT_STREQ(_T("refs/heads/master2"), refs[2]);
+	EXPECT_STREQ(_T("refs/heads/simple-conflict"), refs[3]);
+	EXPECT_STREQ(_T("refs/heads/subdir/branch"), refs[4]);
+	EXPECT_STREQ(_T("refs/notes/commits"), refs[5]);
+	EXPECT_STREQ(_T("refs/remotes/origin/master"), refs[6]);
+	EXPECT_STREQ(_T("refs/stash"), refs[7]);
+	EXPECT_STREQ(_T("refs/tags/all-files-signed"), refs[8]);
+	EXPECT_STREQ(_T("refs/tags/also-signed"), refs[9]);
+	EXPECT_STREQ(_T("refs/tags/normal-tag"), refs[10]);
 
 	MAP_HASH_NAME map;
 	EXPECT_EQ(0, m_Git.GetMapHashToFriendName(map));
 	if (testConfig == GIT_CLI)
-		ASSERT_EQ(10, map.size()); // also contains the undereferenced tags with hashes
+		ASSERT_EQ(12, map.size()); // also contains the undereferenced tags with hashes
 	else
-		ASSERT_EQ(8, map.size());
+		ASSERT_EQ(10, map.size());
+
+	ASSERT_EQ(1, map[CGitHash(L"7c3cbfe13a929d2291a574dca45e4fd2d2ac1aa6")].size());
+	EXPECT_STREQ(_T("refs/heads/master"), map[CGitHash(L"7c3cbfe13a929d2291a574dca45e4fd2d2ac1aa6")][0]);
 	ASSERT_EQ(1, map[CGitHash(L"8d1ebbcc7eeb63af10ff8bcf7712afb9fcc90b8a")].size());
 	EXPECT_STREQ(_T("refs/heads/subdir/branch"), map[CGitHash(L"8d1ebbcc7eeb63af10ff8bcf7712afb9fcc90b8a")][0]);
+	ASSERT_EQ(1, map[CGitHash(L"5e702e1712aa6f8cd8e0328a87be006f3a923710")].size());
+	EXPECT_STREQ(_T("refs/notes/commits"), map[CGitHash(L"5e702e1712aa6f8cd8e0328a87be006f3a923710")][0]);
 	ASSERT_EQ(1, map[CGitHash(L"18da7c332dcad0f37f9977d9176dce0b0c66f3eb")].size());
 	EXPECT_STREQ(_T("refs/stash"), map[CGitHash(L"18da7c332dcad0f37f9977d9176dce0b0c66f3eb")][0]);
 	ASSERT_EQ(1, map[CGitHash(L"c5b89de0335fd674e2e421ac4543098cb2f22cde")].size());
@@ -711,7 +720,7 @@ static void GetBranchesTagsRefs(CGit& m_Git, config testConfig)
 	ASSERT_EQ(1, map[CGitHash(L"10385764a4d42d7428bbeb245015f8f338fc1e40")].size());
 	EXPECT_STREQ(_T("refs/heads/forconflict"), map[CGitHash(L"10385764a4d42d7428bbeb245015f8f338fc1e40")][0]);
 	ASSERT_EQ(2, map[CGitHash(L"49ecdfff36bfe2b9b499b33e5034f427e2fa54dd")].size());
-	EXPECT_STREQ(_T("refs/heads/master"), map[CGitHash(L"49ecdfff36bfe2b9b499b33e5034f427e2fa54dd")][0]);
+	EXPECT_STREQ(_T("refs/heads/master2"), map[CGitHash(L"49ecdfff36bfe2b9b499b33e5034f427e2fa54dd")][0]);
 	EXPECT_STREQ(_T("refs/tags/also-signed^{}"), map[CGitHash(L"49ecdfff36bfe2b9b499b33e5034f427e2fa54dd")][1]);
 	ASSERT_EQ(1, map[CGitHash(L"b9ef30183497cdad5c30b88d32dc1bed7951dfeb")].size());//
 	EXPECT_STREQ(_T("refs/tags/normal-tag"), map[CGitHash(L"b9ef30183497cdad5c30b88d32dc1bed7951dfeb")][0]);
@@ -728,48 +737,59 @@ static void GetBranchesTagsRefs(CGit& m_Git, config testConfig)
 	EXPECT_EQ(-1, m_Git.DeleteRef(_T("refs/tags/gibbednet")));
 	branches.clear();
 	EXPECT_EQ(0, m_Git.GetBranchList(branches, nullptr, CGit::BRANCH_ALL));
-	EXPECT_EQ(5, branches.size());
+	EXPECT_EQ(6, branches.size());
 	tags.clear();
 	EXPECT_EQ(0, m_Git.GetTagList(tags));
 	EXPECT_EQ(3, tags.size());
 	refs.clear();
 	EXPECT_EQ(0, m_Git.GetRefList(refs));
-	EXPECT_EQ(9, refs.size());
+	EXPECT_EQ(11, refs.size());
 
 	EXPECT_EQ(-1, m_Git.DeleteRef(_T("refs/heads/gibbednet")));
 	branches.clear();
 	EXPECT_EQ(0, m_Git.GetBranchList(branches, nullptr, CGit::BRANCH_ALL));
-	EXPECT_EQ(5, branches.size());
+	EXPECT_EQ(6, branches.size());
 	tags.clear();
 	EXPECT_EQ(0, m_Git.GetTagList(tags));
 	EXPECT_EQ(3, tags.size());
 	refs.clear();
 	EXPECT_EQ(0, m_Git.GetRefList(refs));
-	EXPECT_EQ(9, refs.size());
+	EXPECT_EQ(11, refs.size());
 
 	EXPECT_EQ(-1, m_Git.DeleteRef(_T("refs/remotes/origin/gibbednet")));
 	branches.clear();
 	EXPECT_EQ(0, m_Git.GetBranchList(branches, nullptr, CGit::BRANCH_ALL));
-	EXPECT_EQ(5, branches.size());
+	EXPECT_EQ(6, branches.size());
 	tags.clear();
 	EXPECT_EQ(0, m_Git.GetTagList(tags));
 	EXPECT_EQ(3, tags.size());
 	refs.clear();
 	EXPECT_EQ(0, m_Git.GetRefList(refs));
-	EXPECT_EQ(9, refs.size());
+	EXPECT_EQ(11, refs.size());
 
 	EXPECT_EQ(0, m_Git.DeleteRef(_T("refs/tags/normal-tag")));
 	branches.clear();
 	EXPECT_EQ(0, m_Git.GetBranchList(branches, nullptr, CGit::BRANCH_ALL));
-	EXPECT_EQ(5, branches.size());
+	EXPECT_EQ(6, branches.size());
 	tags.clear();
 	EXPECT_EQ(0, m_Git.GetTagList(tags));
 	EXPECT_EQ(2, tags.size());
 	refs.clear();
 	EXPECT_EQ(0, m_Git.GetRefList(refs));
-	EXPECT_EQ(8, refs.size());
+	EXPECT_EQ(10, refs.size());
 
 	EXPECT_EQ(0, m_Git.DeleteRef(_T("refs/tags/all-files-signed^{}")));
+	branches.clear();
+	EXPECT_EQ(0, m_Git.GetBranchList(branches, nullptr, CGit::BRANCH_ALL));
+	EXPECT_EQ(6, branches.size());
+	tags.clear();
+	EXPECT_EQ(0, m_Git.GetTagList(tags));
+	EXPECT_EQ(1, tags.size());
+	refs.clear();
+	EXPECT_EQ(0, m_Git.GetRefList(refs));
+	EXPECT_EQ(9, refs.size());
+
+	EXPECT_EQ(0, m_Git.DeleteRef(_T("refs/heads/subdir/branch")));
 	branches.clear();
 	EXPECT_EQ(0, m_Git.GetBranchList(branches, nullptr, CGit::BRANCH_ALL));
 	EXPECT_EQ(5, branches.size());
@@ -778,9 +798,9 @@ static void GetBranchesTagsRefs(CGit& m_Git, config testConfig)
 	EXPECT_EQ(1, tags.size());
 	refs.clear();
 	EXPECT_EQ(0, m_Git.GetRefList(refs));
-	EXPECT_EQ(7, refs.size());
+	EXPECT_EQ(8, refs.size());
 
-	EXPECT_EQ(0, m_Git.DeleteRef(_T("refs/heads/subdir/branch")));
+	EXPECT_EQ(0, m_Git.DeleteRef(_T("refs/remotes/origin/master")));
 	branches.clear();
 	EXPECT_EQ(0, m_Git.GetBranchList(branches, nullptr, CGit::BRANCH_ALL));
 	EXPECT_EQ(4, branches.size());
@@ -789,18 +809,7 @@ static void GetBranchesTagsRefs(CGit& m_Git, config testConfig)
 	EXPECT_EQ(1, tags.size());
 	refs.clear();
 	EXPECT_EQ(0, m_Git.GetRefList(refs));
-	EXPECT_EQ(6, refs.size());
-
-	EXPECT_EQ(0, m_Git.DeleteRef(_T("refs/remotes/origin/master")));
-	branches.clear();
-	EXPECT_EQ(0, m_Git.GetBranchList(branches, nullptr, CGit::BRANCH_ALL));
-	EXPECT_EQ(3, branches.size());
-	tags.clear();
-	EXPECT_EQ(0, m_Git.GetTagList(tags));
-	EXPECT_EQ(1, tags.size());
-	refs.clear();
-	EXPECT_EQ(0, m_Git.GetRefList(refs));
-	EXPECT_EQ(5, refs.size());
+	EXPECT_EQ(7, refs.size());
 }
 
 TEST_P(CBasicGitWithTestRepoFixture, GetBranchesTagsRefs)
@@ -822,12 +831,13 @@ TEST_P(CBasicGitWithTestRepoFixture, GetBranchList_orphan)
 	STRING_VECTOR branches;
 	int current = -2;
 	EXPECT_EQ(0, m_Git.GetBranchList(branches, &current));
-	ASSERT_EQ(4, branches.size());
+	ASSERT_EQ(5, branches.size());
 	EXPECT_EQ(-2, current);
 	EXPECT_STREQ(_T("forconflict"), branches[0]);
 	EXPECT_STREQ(_T("master"), branches[1]);
-	EXPECT_STREQ(_T("simple-conflict"), branches[2]);
-	EXPECT_STREQ(_T("subdir/branch"), branches[3]);
+	EXPECT_STREQ(_T("master2"), branches[2]);
+	EXPECT_STREQ(_T("simple-conflict"), branches[3]);
+	EXPECT_STREQ(_T("subdir/branch"), branches[4]);
 }
 
 TEST_P(CBasicGitWithEmptyBareRepositoryFixture, GetEmptyBranchesTagsRefs)
