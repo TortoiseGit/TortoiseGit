@@ -22,7 +22,6 @@
 #include "GitRev.h"
 #include "registry.h"
 #include "GitForWindows.h"
-#include <map>
 #include "UnicodeUtils.h"
 #include "gitdll.h"
 #include <fstream>

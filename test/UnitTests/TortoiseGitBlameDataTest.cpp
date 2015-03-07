@@ -19,10 +19,41 @@
 
 #include "stdafx.h"
 #include "TortoiseGitBlameData.h"
+#include "PathUtils.h"
+#include "DirFileEnum.h"
 
-TEST(CTortoiseGitBlameData, ParseBlameOutput_ASCII)
+class CTortoiseGitBlameDataWithTestRepoFixture : public ::testing::Test
 {
-	return;
+protected:
+	virtual void SetUp()
+	{
+		g_Git.m_CurrentDir = m_Dir.GetTempDir();
+		CString resourcesDir = CPathUtils::GetAppDirectory() + _T("\\resources");
+		if (!PathIsDirectory(resourcesDir))
+		{
+			resourcesDir = CPathUtils::GetAppDirectory() + _T("\\..\\..\\..\\test\\UnitTests\\resources");
+			ASSERT_TRUE(PathIsDirectory(resourcesDir));
+		}
+		EXPECT_TRUE(CreateDirectory(m_Dir.GetTempDir() + _T("\\.git"), nullptr));
+		CString repoDir = resourcesDir + _T("\\git-repo1");
+		CDirFileEnum finder(repoDir);
+		bool isDir;
+		CString filepath;
+		while (finder.NextFile(filepath, &isDir))
+		{
+			CString relpath = filepath.Mid(repoDir.GetLength());
+			if (isDir)
+				EXPECT_TRUE(CreateDirectory(m_Dir.GetTempDir() + _T("\\.git") + relpath, nullptr));
+			else
+				EXPECT_TRUE(CopyFile(filepath, m_Dir.GetTempDir() + _T("\\.git") + relpath, false));
+		}
+	}
+
+	CAutoTempDir m_Dir;
+};
+
+TEST_F(CTortoiseGitBlameDataWithTestRepoFixture, ParseBlameOutput_ASCII)
+{
 	// git.exe blame -p 5617c7b4cb9466da214b3a01f5ffef561c51cead -- release.txt
 	BYTE inputByteArray[] = {
 		0x30, 0x33, 0x37, 0x66, 0x63, 0x33, 0x65, 0x35, 0x66, 0x36, 0x65, 0x39, 0x35, 0x66, 0x30, 0x31,
@@ -311,9 +342,8 @@ TEST(CTortoiseGitBlameData, ParseBlameOutput_ASCII)
 		EXPECT_STREQ(L"release.txt", data.GetFilename(i));
 }
 
-TEST(CTortoiseGitBlameData, ParseBlameOutput_UTF8_BOM)
+TEST_F(CTortoiseGitBlameDataWithTestRepoFixture, ParseBlameOutput_UTF8_BOM)
 {
-	return;
 	// git.exe blame -p 5617c7b4cb9466da214b3a01f5ffef561c51cead -- release.txt
 	BYTE inputByteArray[] = {
 		0x33, 0x64, 0x33, 0x34, 0x32, 0x30, 0x62, 0x62, 0x33, 0x66, 0x62, 0x36, 0x38, 0x61, 0x63, 0x30,
