@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+ï»¿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2015 - TortoiseGit
 
@@ -461,7 +461,7 @@ TEST_F(CTortoiseGitBlameDataWithTestRepoFixture, ParseBlameOutput_UTF8_BOM)
 		EXPECT_STREQ(dates[i], data.GetDate(i));
 
 	data.UpdateEncoding(CP_UTF8);
-	const CString lines[] = { L"ä#äf34öööäß€9875oe", L"fgdjkglsfdg", L"öäöü45g", L"fdgi&§$%&hfdsgä", L"ä#äf34öööäß€9875oe", L"öäüpfgmfdg", L"€fgfdsg", L"45", L"äü" };
+	const CString lines[] = { L"Ã¤#Ã¤f34Ã¶Ã¶Ã¶Ã¤ÃŸÂ€9875oe", L"fgdjkglsfdg", L"Ã¶Ã¤Ã¶Ã¼45g", L"fdgi&Â§$%&hfdsgÃ¤", L"Ã¤#Ã¤f34Ã¶Ã¶Ã¶Ã¤ÃŸÂ€9875oe", L"Ã¶Ã¤Ã¼pfgmfdg", L"Â€fgfdsg", L"45", L"Ã¤Ã¼" };
 	for (int i = 0; i < 9; ++i)
 		EXPECT_STREQ(lines[i] + _T('\r'), CUnicodeUtils::GetUnicode(data.GetUtf8Line(i)));
 
