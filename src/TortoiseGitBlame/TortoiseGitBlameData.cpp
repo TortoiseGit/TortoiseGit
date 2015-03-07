@@ -108,7 +108,10 @@ void CTortoiseGitBlameData::ParseBlameOutput(BYTE_VECTOR &data, CGitHashMap & Ha
 	while (pos >= 0 && (size_t)pos < data.size())
 	{
 		if (data[pos] == 0)
+		{
+			++pos;
 			continue;
+		}
 
 		int lineBegin = pos;
 		int lineEnd = data.find('\n', lineBegin);
