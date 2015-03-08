@@ -105,7 +105,7 @@ protected:
 		bool revfail = false;
 		try
 		{
-			revfail = !!gitrev.GetCommit(str);
+			revfail = !!gitrev.GetCommit(str);//TODO
 		}
 		catch (const char *msg)
 		{

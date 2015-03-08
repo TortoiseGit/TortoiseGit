@@ -141,7 +141,7 @@ protected:
 
 			try
 			{
-				if (rev.GetCommit(text))
+				if (rev.GetCommit(text))//TODO
 				{
 					ASSERT(FALSE);
 					return;

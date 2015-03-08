@@ -144,7 +144,7 @@ void CFileDiffDlg::SetDiff(const CTGitPath * path, const CString &hash1, const C
 	{
 		try
 		{
-			m_rev1.GetCommit(hash1);
+			m_rev1.GetCommit(hash1);//TODO
 		}
 		catch (const char *msg)
 		{
@@ -163,7 +163,7 @@ void CFileDiffDlg::SetDiff(const CTGitPath * path, const CString &hash1, const C
 	{
 		try
 		{
-			m_rev2.GetCommit(hash2);
+			m_rev2.GetCommit(hash2);//TODO
 		}
 		catch (const char *msg)
 		{
@@ -277,7 +277,7 @@ BOOL CFileDiffDlg::OnInitDialog()
 		bool rev1fail = false;
 		try
 		{
-			rev1fail = !!m_rev1.GetCommit(m_strRev1);
+			rev1fail = !!m_rev1.GetCommit(m_strRev1);//TODO
 		}
 		catch (const char *msg)
 		{
@@ -301,7 +301,7 @@ BOOL CFileDiffDlg::OnInitDialog()
 		bool rev2fail = false;
 		try
 		{
-			rev2fail = !!m_rev2.GetCommit(m_strRev2);
+			rev2fail = !!m_rev2.GetCommit(m_strRev2);//TODO
 		}
 		catch (const char *msg)
 		{
@@ -1173,7 +1173,7 @@ void CFileDiffDlg::OnTimer(UINT_PTR nIDEvent)
 		this->m_ctrRev1Edit.GetWindowText(str);
 		try
 		{
-			if (!gitrev.GetCommit(str))
+			if (!gitrev.GetCommit(str))//TODO
 			{
 				m_rev1 = gitrev;
 				mask |= 0x1;
@@ -1188,7 +1188,7 @@ void CFileDiffDlg::OnTimer(UINT_PTR nIDEvent)
 
 		try
 		{
-			if (!gitrev.GetCommit(str))
+			if (!gitrev.GetCommit(str))//TODO
 			{
 				m_rev2 = gitrev;
 				mask |= 0x2;

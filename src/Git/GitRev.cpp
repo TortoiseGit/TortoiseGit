@@ -333,6 +333,74 @@ int GitRev::ParserFromCommit(GIT_COMMIT *commit)
 
 	return 0;
 }
+
+int GitRev::ParserParentFromCommit(const git_commit* commit)
+{
+	m_ParentHash.clear();
+	unsigned int parentCount = git_commit_parentcount(commit);
+	for (unsigned int i = 0; i < parentCount; ++i)
+		m_ParentHash.push_back(CGitHash((char *)git_commit_parent_id(commit, i)->id));
+
+	return 0;
+}
+
+int GitRev::ParserFromCommit(git_commit* commit)
+{
+	Clear();
+
+	int encode = CP_UTF8;
+
+	const char* encodingstr = git_commit_message_encoding(commit);
+	if (encodingstr)
+		encode = CUnicodeUtils::GetCPCode(CUnicodeUtils::GetUnicode(encodingstr));
+
+	m_CommitHash = git_commit_id(commit)->id;
+
+	const git_signature* author = git_commit_author(commit);
+	m_AuthorDate = author->when.time;
+	m_AuthorEmail = CUnicodeUtils::GetUnicode(author->email, encode);
+	m_AuthorName = CUnicodeUtils::GetUnicode(author->name, encode);
+
+	const git_signature* committer = git_commit_committer(commit);
+	m_CommitterDate = committer->when.time;
+	m_CommitterEmail = CUnicodeUtils::GetUnicode(committer->email, encode);
+	m_CommitterName = CUnicodeUtils::GetUnicode(committer->name, encode);
+
+	m_Subject = CUnicodeUtils::GetUnicode(git_commit_summary(commit), encode);
+
+	m_Body = CUnicodeUtils::GetUnicode(git_commit_message_raw(commit), encode);
+
+	return 0;
+}
+
+int GitRev::GetCommitFromHash(git_repository* repo, const CGitHash& hash)
+{
+	CAutoCommit commit;
+	if (git_commit_lookup(commit.GetPointer(), repo, (const git_oid*)hash.m_hash) < 0)
+		return -1;
+
+	return ParserFromCommit(commit);
+}
+
+int GitRev::GetCommit(git_repository* repo, const CString& refname)
+{
+	if (refname.GetLength() >= 8)
+	{
+		if (refname.Find(_T("00000000")) == 0)
+		{
+			Clear();
+			this->m_CommitHash.Empty();
+			this->m_Subject = _T("Working Copy");
+			return 0;
+		}
+	}
+
+	CGitHash hash;
+	CGit::GetHash(repo, hash, refname);
+
+	return GetCommitFromHash(repo, hash);
+}
+
 void GitRev::DbgPrint()
 {
 	ATLTRACE(_T("Commit %s\r\n"), this->m_CommitHash.ToString());
@@ -390,7 +458,7 @@ int GitRev::GetCommitFromHash_withoutLock(CGitHash &hash)
 }
 
 
-int GitRev::GetCommit(CString refname)
+int GitRev::GetCommit(const CString& refname)
 {
 	CAutoLocker lock(g_Git.m_critGitDllSec);
 

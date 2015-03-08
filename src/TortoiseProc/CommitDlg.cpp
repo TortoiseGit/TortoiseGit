@@ -1860,7 +1860,7 @@ bool CCommitDlg::HandleMenuItemClick(int cmd, CSciEdit * pSciEdit)
 			// get selected hash if any
 			CString selectedHash = dlg.GetSelectedHash();
 			GitRev rev;
-			rev.GetCommit(selectedHash);
+			rev.GetCommit(selectedHash);//TODO
 			CString message = rev.GetSubject() + _T("\r\n") + rev.GetBody();
 			pSciEdit->InsertText(message);
 		}
@@ -2338,7 +2338,7 @@ void CCommitDlg::OnBnClickedCommitAmend()
 		GitRev rev;
 		try
 		{
-			rev.GetCommit(CString(_T("HEAD")));
+			rev.GetCommit(CString(_T("HEAD")));//TODO
 		}
 		catch (const char *msg)
 		{
@@ -2559,7 +2559,7 @@ void CCommitDlg::OnBnClickedCommitSetDateTime()
 			GitRev headRevision;
 			try
 			{
-				headRevision.GetCommit(_T("HEAD"));
+				headRevision.GetCommit(_T("HEAD"));//TODO
 			}
 			catch (const char *msg)
 			{
@@ -2631,7 +2631,7 @@ void CCommitDlg::OnBnClickedCommitSetauthor()
 			GitRev headRevision;
 			try
 			{
-				headRevision.GetCommit(_T("HEAD"));
+				headRevision.GetCommit(_T("HEAD"));//TODO
 			}
 			catch (const char *msg)
 			{

@@ -478,7 +478,7 @@ GitRev* CTortoiseGitBlameData::GetRevForHash(CGitHashMap & HashToRev, CGitHash& 
 	if (it == HashToRev.end())
 	{
 		GitRev rev;
-		rev.GetCommitFromHash(hash);
+		rev.GetCommitFromHash(hash);//TODO
 		it = HashToRev.insert(std::make_pair(hash, rev)).first;
 	}
 	return &(it->second);

@@ -245,7 +245,7 @@ void CPropertiesWnd::UpdateProperties(GitRev *pRev)
 		{
 			try
 			{
-				pRev->GetParentFromHash(pRev->m_CommitHash);
+				pRev->GetParentFromHash(pRev->m_CommitHash);//TODO
 			}
 			catch (const char* msg)
 			{

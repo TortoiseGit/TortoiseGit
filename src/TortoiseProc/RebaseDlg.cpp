@@ -640,7 +640,7 @@ void CRebaseDlg::AddBranchToolTips(CHistoryCombo *pBranch)
 		GitRev rev;
 		try
 		{
-			rev.GetCommit(text);
+			rev.GetCommit(text); // TODO
 		}
 		catch (const char *msg)
 		{
