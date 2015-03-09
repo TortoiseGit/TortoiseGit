@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2014 - TortoiseGit
+// Copyright (C) 2008-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -22,6 +22,7 @@
 #include "GitStatus.h"
 #include "UnicodeUtils.h"
 #include "ReaderWriterLock.h"
+#include "GitAdminDir.h"
 
 class CGitIndex
 {
@@ -417,40 +418,14 @@ public:
 			}
 			else
 			{
-				FILE * pFile = _tfsopen(path + _T("\\.git"), _T("r"), SH_DENYWR);
-				if (pFile)
+				CString result = GitAdminDir::ReadGitLink(path, path + _T("\\.git"));
+				if (!result.IsEmpty())
 				{
-					int size = 65536;
-					std::unique_ptr<char[]> buffer(new char[size]);
-					int length = 0;
-					if ((length = (int)fread(buffer.get(), sizeof(char), size, pFile)) >= 8)
-					{
-						fclose(pFile);
-						CStringA strA(buffer.get(), length);
-						if (strA.Left(8) == "gitdir: ")
-						{
-							CString str = CUnicodeUtils::GetUnicode(strA);
-							// trim after converting to UTF-16, because CStringA trim does not work when having UTF-8 chars
-							str = str.Trim().Mid(8); // 8 = len("gitdir: ")
-							str.Replace(_T("/"), _T("\\"));
-							str.TrimRight(_T("\\"));
-							if (str.GetLength() > 0 && str[0] == _T('.'))
-							{
-								str = path + _T("\\") + str;
-								CString newPath;
-								PathCanonicalize(newPath.GetBuffer(MAX_PATH), str.GetBuffer());
-								newPath.ReleaseBuffer();
-								str.ReleaseBuffer();
-								str = newPath;
-							}
-							(*this)[thePath] = str + _T("\\");
-							m_reverseLookup[str.MakeLower()] = path;
-							return (*this)[thePath];
-						}
-					}
-					else
-						fclose(pFile);
+					(*this)[thePath] = result + _T("\\");
+					m_reverseLookup[result.MakeLower()] = path;
+					return (*this)[thePath];
 				}
+
 				return path + _T("\\.git\\"); // in case of an error stick to old behavior
 			}
 		}

@@ -164,36 +164,42 @@ bool GitAdminDir::GetAdminDirPath(const CString &projectTopDir, CString& adminDi
 	}
 	else
 	{
-		FILE *pFile;
-		_tfopen_s(&pFile, sDotGitPath, _T("r"));
-
-		if (!pFile)
+		CString result = ReadGitLink(projectTopDir, sDotGitPath);
+		if (result.IsEmpty())
 			return false;
-
-		int size = 65536;
-		std::unique_ptr<char[]> buffer(new char[size]);
-		int length = (int)fread(buffer.get(), sizeof(char), size, pFile);
-		fclose(pFile);
-		CStringA gitPathA(buffer.get(), length);
-		if (length < 8 || gitPathA.Left(8) != "gitdir: ")
-			return false;
-		CString gitPath = CUnicodeUtils::GetUnicode(gitPathA);
-		// trim after converting to UTF-16, because CStringA trim does not work when having UTF-8 chars
-		gitPath = gitPath.Trim().Mid(8); // 8 = len("gitdir: ")
-		gitPath.Replace('/', '\\');
-		gitPath.TrimRight('\\');
-		gitPath.Append(_T("\\"));
-		if (gitPath.GetLength() > 0 && gitPath[0] == _T('.'))
-		{
-			gitPath = projectTopDir + _T("\\") + gitPath;
-			PathCanonicalize(adminDir.GetBuffer(MAX_PATH), gitPath.GetBuffer());
-			adminDir.ReleaseBuffer();
-			gitPath.ReleaseBuffer();
-			return true;
-		}
-		adminDir = gitPath;
+		adminDir = result + _T("\\");
 		return true;
 	}
+}
+
+CString GitAdminDir::ReadGitLink(const CString& topDir, const CString& dotGitPath)
+{
+	FILE* pFile = _tfsopen(dotGitPath, _T("r"), SH_DENYWR);
+
+	if (!pFile)
+		return _T("");
+
+	int size = 65536;
+	std::unique_ptr<char[]> buffer(new char[size]);
+	int length = (int)fread(buffer.get(), sizeof(char), size, pFile);
+	fclose(pFile);
+	CStringA gitPathA(buffer.get(), length);
+	if (length < 8 || gitPathA.Left(8) != "gitdir: ")
+		return _T("");
+	CString gitPath = CUnicodeUtils::GetUnicode(gitPathA);
+	// trim after converting to UTF-16, because CStringA trim does not work when having UTF-8 chars
+	gitPath = gitPath.Trim().Mid(8); // 8 = len("gitdir: ")
+	gitPath.Replace('/', '\\');
+	gitPath.TrimRight('\\');
+	if (!gitPath.IsEmpty() && gitPath[0] == _T('.'))
+	{
+		gitPath = topDir + _T("\\") + gitPath;
+		CString adminDir;
+		PathCanonicalize(adminDir.GetBuffer(MAX_PATH), gitPath);
+		adminDir.ReleaseBuffer();
+		return adminDir;
+	}
+	return gitPath;
 }
 
 bool GitAdminDir::IsAdminDirPath(const CString& path)
