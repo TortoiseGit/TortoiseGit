@@ -429,7 +429,9 @@ public:
 						CStringA strA(buffer.get(), length);
 						if (strA.Left(8) == "gitdir: ")
 						{
-							CString str = CUnicodeUtils::GetUnicode(strA.Trim().Mid(8)); // 8 = len("gitdir: ")
+							CString str = CUnicodeUtils::GetUnicode(strA);
+							// trim after converting to UTF-16, because CStringA trim does not work when having UTF-8 chars
+							str = str.Trim().Mid(8); // 8 = len("gitdir: ")
 							str.Replace(_T("/"), _T("\\"));
 							str.TrimRight(_T("\\"));
 							if (str.GetLength() > 0 && str[0] == _T('.'))

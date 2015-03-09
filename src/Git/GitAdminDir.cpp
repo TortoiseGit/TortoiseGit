@@ -177,7 +177,9 @@ bool GitAdminDir::GetAdminDirPath(const CString &projectTopDir, CString& adminDi
 		CStringA gitPathA(buffer.get(), length);
 		if (length < 8 || gitPathA.Left(8) != "gitdir: ")
 			return false;
-		CString gitPath = CUnicodeUtils::GetUnicode(gitPathA.Trim().Mid(8)); // 8 = len("gitdir: ")
+		CString gitPath = CUnicodeUtils::GetUnicode(gitPathA);
+		// trim after converting to UTF-16, because CStringA trim does not work when having UTF-8 chars
+		gitPath = gitPath.Trim().Mid(8); // 8 = len("gitdir: ")
 		gitPath.Replace('/', '\\');
 		gitPath.TrimRight('\\');
 		gitPath.Append(_T("\\"));
