@@ -155,9 +155,13 @@ static void GetSortOptions()
 	g_bSortLocalBranchesFirst = !CRegDWORD(L"Software\\TortoiseGit\\NoSortLocalBranchesFirst", 0, false, HKEY_CURRENT_USER);
 	if (g_bSortLocalBranchesFirst)
 		g_bSortLocalBranchesFirst = !CRegDWORD(L"Software\\TortoiseGit\\NoSortLocalBranchesFirst", 0, false, HKEY_LOCAL_MACHINE);
+#ifdef GTEST_INCLUDE_GTEST_GTEST_H_
+	g_bSortTagsReversed = false;
+#else
 	g_bSortTagsReversed = !!CRegDWORD(L"Software\\TortoiseGit\\SortTagsReversed", 0, false, HKEY_LOCAL_MACHINE);
 	if (!g_bSortTagsReversed)
 		g_bSortTagsReversed = !!CRegDWORD(L"Software\\TortoiseGit\\SortTagsReversed", 0, false, HKEY_CURRENT_USER);
+#endif
 }
 
 static int LogicalComparePredicate(const CString &left, const CString &right)
