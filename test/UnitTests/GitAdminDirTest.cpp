@@ -124,17 +124,25 @@ TEST(CGitAdminDir, GetAdminDirPath_ReferencedRepo)
 	CString adminDir;
 	EXPECT_FALSE(GitAdminDir::GetAdminDirPath(tmpDir.GetTempDir(), adminDir));
 
-	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)gitFile, L"gitdir: dontcare"));
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)gitFile, L"gitdir: dontcare\n"));
 
 	EXPECT_TRUE(GitAdminDir::GetAdminDirPath(tmpDir.GetTempDir(), adminDir));
 	EXPECT_STREQ(L"dontcare\\", adminDir);
 
 	ASSERT_TRUE(CreateDirectory(tmpDir.GetTempDir() + L"\\anotherdir", nullptr));
 	gitFile = tmpDir.GetTempDir() + L"\\anotherdir\\.git";
-	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)gitFile, L"gitdir: ../something"));
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)gitFile, L"gitdir: ../something\n"));
 
 	EXPECT_TRUE(GitAdminDir::GetAdminDirPath(tmpDir.GetTempDir() + L"\\anotherdir", adminDir));
 	EXPECT_STREQ(tmpDir.GetTempDir() + L"\\something\\", adminDir);
+
+	ASSERT_TRUE(CreateDirectory(tmpDir.GetTempDir() + L"\\\x6587", nullptr));
+	gitFile = tmpDir.GetTempDir() + L"\\\x6587\\.git";
+
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)gitFile, L"gitdir: ../\x4e2d\n"));
+
+	EXPECT_TRUE(GitAdminDir::GetAdminDirPath(tmpDir.GetTempDir() + L"\\\x6587", adminDir));
+	EXPECT_STREQ(tmpDir.GetTempDir() + L"\\\x4e2d\\", adminDir);
 }
 
 TEST(CGitAdminDir, HasAdminDir)
