@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2014 Sven Strickroth <email@cs-ware.de>
-// Copyright (C) 2014 TortoiseGit
+// Copyright (C) 2013-2015 Sven Strickroth <email@cs-ware.de>
+// Copyright (C) 2014-2015 TortoiseGit
 // Copyright (C) VLC project (http://videolan.org)
 // - pgp parsing code was copied from src/misc/update(_crypto)?.c
 // Copyright (C) The Internet Society (1998).  All Rights Reserved.
@@ -838,6 +838,9 @@ static int verify_signature_rsa(HCRYPTPROV hCryptProv, HCRYPTHASH hHash, public_
 	int i_n_len = min(mpi_len(p_pkey.key.sig.rsa.n), sizeof(p_pkey.key.sig.rsa.n) - 2);
 	int i_s_len = min(mpi_len(p_sig.algo_specific.rsa.s), sizeof(p_sig.algo_specific.rsa.s) - 2);
 
+	if (i_s_len > i_n_len)
+		return -1;
+
 	RSAKEY rsakey;
 	rsakey.blobheader.bType = PUBLICKEYBLOB; // 0x06
 	rsakey.blobheader.bVersion = CUR_BLOB_VERSION; // 0x02
@@ -853,10 +856,16 @@ static int verify_signature_rsa(HCRYPTPROV hCryptProv, HCRYPTHASH hHash, public_
 	if (CryptImportKey(hCryptProv, (BYTE*)&rsakey, sizeof(BLOBHEADER) + sizeof(RSAPUBKEY) + i_n_len, 0, 0, &hPubKey) == 0)
 		return -1;
 
-	std::unique_ptr<BYTE[]> pSig(new BYTE[i_s_len]);
+	/* i_s_len might be shorter than i_n_len,
+	 * but CrytoAPI requires that both have same length,
+	 * thus, use i_n_len as buffer length (pSig; it's safe as i_n_len cannot be longer than the buffer),
+	 * but do not copy/reverse NULs at the end of p_sig.algo_specific.rsa.s into pSig
+	 */
+	std::unique_ptr<BYTE[]> pSig(new BYTE[i_n_len]);
+	SecureZeroMemory(pSig.get(), i_n_len);
 	memcpy(pSig.get(), p_sig.algo_specific.rsa.s + 2, i_s_len);
 	std::reverse(pSig.get(), pSig.get() + i_s_len);
-	if (!CryptVerifySignature(hHash, pSig.get(), i_s_len, hPubKey, nullptr, 0))
+	if (!CryptVerifySignature(hHash, pSig.get(), i_n_len, hPubKey, nullptr, 0))
 	{
 		CryptDestroyKey(hPubKey);
 		return -1;
