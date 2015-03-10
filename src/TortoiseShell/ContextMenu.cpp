@@ -626,8 +626,9 @@ void CShellExt::InsertGitMenu(BOOL istop, HMENU menu, UINT pos, UINT_PTR id, UIN
 			// add the path of the saved file
 			wchar_t compact[40] = {0};
 			PathCompactPathEx(compact, sPath.c_str(), _countof(compact) - 1, 0);
+			MAKESTRING(IDS_MENUDIFFNOW);
 			CString sMenu;
-			sMenu.Format(IDS_MENUDIFFNOW, compact);
+			sMenu.Format(CString(stringtablebuffer), compact);
 			wcscpy_s(menutextbuffer, sMenu);
 		}
 	}
