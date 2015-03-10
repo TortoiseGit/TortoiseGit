@@ -5023,7 +5023,7 @@ BOOL CBaseView::GetViewSelection( int& start, int& end ) const
 int CBaseView::Screen2View::GetViewLineForScreen( int screenLine )
 {
 	RebuildIfNecessary();
-	if (size() <= screenLine)
+	if ((size() <= screenLine) || (screenLine < 0))
 		return 0;
 	return m_Screen2View[screenLine].nViewLine;
 }
