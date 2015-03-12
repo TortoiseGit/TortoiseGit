@@ -28,7 +28,7 @@
 #define REG_MSYSGIT_PATH _T("Software\\TortoiseGit\\MSysGit")
 #define REG_MSYSGIT_EXTRA_PATH _T("Software\\TortoiseGit\\MSysGitExtra")
 
-#define DEFAULT_USE_LIBGIT2_MASK (1 << CGit::GIT_CMD_MERGE_BASE) | (1 << CGit::GIT_CMD_DELETETAGBRANCH) | (1 << CGit::GIT_CMD_GETONEFILE) | (1 << CGit::GIT_CMD_ADD) | (1 << CGit::GIT_CMD_CHECKCONFLICTS)
+#define DEFAULT_USE_LIBGIT2_MASK (1 << CGit::GIT_CMD_MERGE_BASE) | (1 << CGit::GIT_CMD_DELETETAGBRANCH) | (1 << CGit::GIT_CMD_GETONEFILE) | (1 << CGit::GIT_CMD_ADD) | (1 << CGit::GIT_CMD_CHECKCONFLICTS) | (1 << CGit::GIT_CMD_GET_COMMIT)
 
 struct git_repository;
 
@@ -168,6 +168,8 @@ public:
 		GIT_CMD_PUSH,
 		GIT_CMD_CHECK_CLEAN_WT,
 		GIT_CMD_CHECKCONFLICTS,
+		GIT_CMD_GET_COMMIT,
+		GIT_CMD_LOGLISTDIFF,
 	} LIBGIT2_CMD;
 	bool UsingLibGit2(LIBGIT2_CMD cmd) const;
 	/**

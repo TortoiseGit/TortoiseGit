@@ -123,6 +123,11 @@ public:
 	int ParserFromCommit(GIT_COMMIT *commit);
 	int ParserParentFromCommit(GIT_COMMIT *commit);
 
+	int ParserFromCommit(const git_commit* commit);
+	int ParserParentFromCommit(const git_commit* commit);
+	int GetCommitFromHash(git_repository* repo, const CGitHash& hash);
+	int GetCommit(git_repository* repo, const CString& Rev);
+
 	int GetParentFromHash(CGitHash &hash);
 	int GetCommitFromHash(CGitHash &hash);
 	int GetCommit(const CString& rev);

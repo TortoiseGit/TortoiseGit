@@ -115,6 +115,27 @@ int CTGitPath::ParserAction(BYTE action)
 
 	return m_Action;
 }
+
+int CTGitPath::ParserAction(git_delta_t action)
+{
+	if (action == GIT_DELTA_MODIFIED)
+		m_Action |= LOGACTIONS_MODIFIED;
+	if (action == GIT_DELTA_RENAMED)
+		m_Action |= LOGACTIONS_REPLACED;
+	if (action == GIT_DELTA_ADDED)
+		m_Action |= LOGACTIONS_ADDED;
+	if (action == GIT_DELTA_DELETED)
+		m_Action |= LOGACTIONS_DELETED;
+	if (action == GIT_DELTA_UNMODIFIED)
+		m_Action |= LOGACTIONS_UNMERGED;
+	if (action == GIT_DELTA_COPIED)
+		m_Action |= LOGACTIONS_COPY;
+	if (action == GIT_DELTA_TYPECHANGE)
+		m_Action |= LOGACTIONS_MODIFIED;
+
+	return m_Action;
+}
+
 void CTGitPath::SetFromGit(const char* pPath)
 {
 	Reset();
