@@ -156,13 +156,9 @@ int CLogDataVector::ParserFromLog(CTGitPath *path, int count, int infomask, CStr
 
 		if (!pRev->m_IsFull && (infomask & CGit::LOG_INFO_FULL_DIFF))
 		{
-			try
+			if (pRev->SafeFetchFullInfo(&g_Git))
 			{
-				pRev->SafeFetchFullInfo(&g_Git);
-			}
-			catch (char * g_last_error)
-			{
-				MessageBox(NULL, _T("Could not fetch full info of a commit.\nlibgit reports:\n") + CString(g_last_error), _T("TortoiseGit"), MB_ICONERROR);
+				MessageBox(nullptr, pRev->GetLastErr(), _T("TortoiseGit"), MB_ICONERROR);
 				return -1;
 			}
 		}

@@ -638,13 +638,11 @@ void CRebaseDlg::AddBranchToolTips(CHistoryCombo *pBranch)
 		CString tooltip;
 
 		GitRev rev;
-		try
+		if (rev.GetCommit(text))
 		{
-			rev.GetCommit(text);
-		}
-		catch (const char *msg)
-		{
-			CMessageBox::Show(m_hWnd, _T("Could not get commit ") + text + _T("\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
+			MessageBox(rev.GetLastErr(), _T("TortoiseGit"), MB_ICONERROR);
+			pBranch->DisableTooltip();
+			return;
 		}
 
 		tooltip.Format(_T("%s: %s\n%s: %s <%s>\n%s: %s\n%s:\n%s\n%s"),
@@ -1987,7 +1985,9 @@ LRESULT CRebaseDlg::OnRebaseUpdateUI(WPARAM,LPARAM)
 			// Since the new commit is done and the HEAD points to it,
 			// just using the new body modified by git self.
 			GitRev headRevision;
-			headRevision.GetCommit(_T("HEAD"));
+			if (headRevision.GetCommit(_T("HEAD")))
+				MessageBox(headRevision.GetLastErr(), _T("TortoiseGit"), MB_ICONERROR);
+
 			m_LogMessageCtrl.SetText(headRevision.GetSubject() + _T("\n") + headRevision.GetBody());
 		}
 		else

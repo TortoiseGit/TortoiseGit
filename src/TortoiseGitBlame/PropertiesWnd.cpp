@@ -243,14 +243,8 @@ void CPropertiesWnd::UpdateProperties(GitRevLoglist* pRev)
 	{
 		if (pRev->m_ParentHash.empty())
 		{
-			try
-			{
-				pRev->GetParentFromHash(pRev->m_CommitHash);
-			}
-			catch (const char* msg)
-			{
-				MessageBox(_T("Could not get parent.\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
-			}
+			if (pRev->GetParentFromHash(pRev->m_CommitHash))
+				MessageBox(pRev->GetLastErr(), _T("TortoiseGit"), MB_ICONERROR);
 		}
 		CString hash = pRev->m_CommitHash.ToString();
 		m_CommitHash->SetValue(hash);

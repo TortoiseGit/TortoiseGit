@@ -139,18 +139,9 @@ protected:
 			CString tooltip;
 			GitRev rev;
 
-			try
+			if (rev.GetCommit(text))
 			{
-				if (rev.GetCommit(text))
-				{
-					ASSERT(FALSE);
-					return;
-				}
-			}
-			catch (char* msg)
-			{
-				CString err(msg);
-				MessageBox(NULL, _T("Could not get commit \"") + text +  _T("\".\nlibgit reports:\n") + err, _T("TortoiseGit"), MB_ICONERROR);
+				MessageBox(nullptr, rev.GetLastErr(), _T("TortoiseGit"), MB_ICONERROR);
 				return;
 			}
 

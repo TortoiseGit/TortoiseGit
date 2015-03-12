@@ -64,13 +64,14 @@ public:
 	{
 		if (!m_IsDiffFiles && !m_CommitHash.IsEmpty())
 		{
-			SafeFetchFullInfo(&g_Git);
+			int ret = 0;
+			ret = SafeFetchFullInfo(&g_Git);
 			InterlockedExchange(&m_IsDiffFiles, TRUE);
 			if (m_IsDiffFiles && m_IsCommitParsed)
 				InterlockedExchange(&m_IsFull, TRUE);
-			return 0;
+			return ret;
 		}
-		return -1;
+		return 1;
 	}
 
 public:

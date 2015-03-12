@@ -59,6 +59,7 @@ void GitRev::Clear()
 	m_Body.Empty();
 	m_Subject.Empty();
 	m_CommitHash.Empty();
+	m_sErr.Empty();
 
 }
 int GitRev::CopyFrom(GitRev &rev,bool OmitParentAndMark)
@@ -146,8 +147,19 @@ int GitRev::GetParentFromHash(CGitHash &hash)
 	g_Git.CheckAndInitDll();
 
 	GIT_COMMIT commit;
-	if(git_get_commit_from_hash( &commit, hash.m_hash))
+	try
+	{
+		if (git_get_commit_from_hash(&commit, hash.m_hash))
+		{
+			m_sErr = _T("git_get_commit_from_hash failed for ") + hash.ToString();
+			return -1;
+		}
+	}
+	catch (char* msg)
+	{
+		m_sErr = _T("Could not get parents of commit \"") + hash.ToString() + _T("\".\nlibgit reports:\n") + CString(msg);
 		return -1;
+	}
 
 	this->ParserParentFromCommit(&commit);
 	git_free_commit(&commit);
@@ -171,16 +183,21 @@ int GitRev::GetCommitFromHash_withoutLock(CGitHash &hash)
 	try
 	{
 		if (git_get_commit_from_hash(&commit, hash.m_hash))
+		{
+			m_sErr = _T("git_get_commit_from_hash failed for ") + hash.ToString();
 			return -1;
+		}
 	}
 	catch (char * msg)
 	{
-		MessageBox(NULL, _T("Could not get commit \"") + hash.ToString() + _T("\".\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
+		m_sErr = _T("Could not get commit \"") + hash.ToString() + _T("\".\nlibgit reports:\n") + CString(msg);
 		return -1;
 	}
 
 	this->ParserFromCommit(&commit);
 	git_free_commit(&commit);
+
+	m_sErr.Empty();
 
 	return 0;
 }
@@ -197,6 +214,7 @@ int GitRev::GetCommit(CString refname)
 		{
 			this->m_CommitHash.Empty();
 			this->m_Subject=_T("Working Copy");
+			m_sErr.Empty();
 			return 0;
 		}
 	CStringA rev;
@@ -206,15 +224,17 @@ int GitRev::GetCommit(CString refname)
 	try
 	{
 		if (git_get_sha1(rev.GetBuffer(), sha))
+		{
+			m_sErr = _T("Could not get SHA-1 of ref \"") + g_Git.FixBranchName(refname);
 			return -1;
+		}
 	}
 	catch (char * msg)
 	{
-		MessageBox(NULL, _T("Could not get SHA-1 of ref \"") + g_Git.FixBranchName(refname) + _T("\".\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
+		m_sErr = _T("Could not get SHA-1 of ref \"") + g_Git.FixBranchName(refname) + _T("\".\nlibgit reports:\n") + CString(msg);
 		return -1;
 	}
 
 	CGitHash hash((char*)sha);
-	GetCommitFromHash_withoutLock(hash);
-	return 0;
+	return GetCommitFromHash_withoutLock(hash);
 }

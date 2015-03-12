@@ -302,14 +302,8 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 
 				if (pSelLogEntry->m_ParentHash.empty())
 				{
-					try
-					{
-						pSelLogEntry->GetParentFromHash(pSelLogEntry->m_CommitHash);
-					}
-					catch (const char* msg)
-					{
-						MessageBox(_T("Could not get parent.\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
-					}
+					if (pSelLogEntry->GetParentFromHash(pSelLogEntry->m_CommitHash))
+						MessageBox(pSelLogEntry->GetLastErr(), _T("TortoiseGit"), MB_ICONERROR);
 				}
 
 				if (!pSelLogEntry->m_ParentHash.empty())
@@ -522,14 +516,9 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			}
 
 			GitRev lastRevision;
-			try
+			if (lastRevision.GetParentFromHash(hashLast))
 			{
-				lastRevision.GetParentFromHash(hashLast);
-			}
-			catch (char* msg)
-			{
-				CString err(msg);
-				MessageBox(_T("Could not get parent(s) of ") + hashLast.ToString() + _T(".\nlibgit reports:\n") + err, _T("TortoiseGit"), MB_ICONERROR);
+				MessageBox(lastRevision.GetLastErr(), _T("TortoiseGit"), MB_ICONERROR);
 				break;
 			}
 

@@ -142,14 +142,8 @@ void CFileDiffDlg::SetDiff(const CTGitPath * path, const CString &hash1, const C
 	}
 	else
 	{
-		try
-		{
-			m_rev1.GetCommit(hash1);
-		}
-		catch (const char *msg)
-		{
-			MessageBox(_T("Could not get commit ") + hash1 + _T("\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
-		}
+		if (m_rev1.GetCommit(hash1))
+			MessageBox(m_rev1.GetLastErr(), _T("TortoiseGit"), MB_ICONERROR);
 	}
 
 	logout.clear();
@@ -161,14 +155,8 @@ void CFileDiffDlg::SetDiff(const CTGitPath * path, const CString &hash1, const C
 	}
 	else
 	{
-		try
-		{
-			m_rev2.GetCommit(hash2);
-		}
-		catch (const char *msg)
-		{
-			MessageBox(_T("Could not get commit ") + hash2 + _T("\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
-		}
+		if (m_rev2.GetCommit(hash2))
+			MessageBox(m_rev2.GetLastErr(), _T("TortoiseGit"), MB_ICONERROR);
 	}
 }
 
@@ -274,21 +262,11 @@ BOOL CFileDiffDlg::OnInitDialog()
 		this->m_ctrRev1Edit.SetWindowText(this->m_rev1.m_CommitHash.ToString());
 	else
 	{
-		bool rev1fail = false;
-		try
-		{
-			rev1fail = !!m_rev1.GetCommit(m_strRev1);
-		}
-		catch (const char *msg)
-		{
-			rev1fail = true;
-			MessageBox(_T("Could not get commit ") + m_strRev1 + _T("\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
-		}
-		if (rev1fail)
+		if (m_rev1.GetCommit(m_strRev1))
 		{
 			CString msg;
 			msg.Format(IDS_PROC_REFINVALID, m_strRev1);
-			this->m_FileListText += msg;
+			this->m_FileListText += msg + _T("\n") + m_rev1.GetLastErr();
 		}
 
 		this->m_ctrRev1Edit.SetWindowText(m_strRev1);
@@ -298,21 +276,11 @@ BOOL CFileDiffDlg::OnInitDialog()
 		this->m_ctrRev2Edit.SetWindowText(this->m_rev2.m_CommitHash.ToString());
 	else
 	{
-		bool rev2fail = false;
-		try
-		{
-			rev2fail = !!m_rev2.GetCommit(m_strRev2);
-		}
-		catch (const char *msg)
-		{
-			rev2fail = true;
-			MessageBox(_T("Could not get commit ") + m_strRev2 + _T("\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
-		}
-		if (rev2fail)
+		if (m_rev2.GetCommit(m_strRev2))
 		{
 			CString msg;
 			msg.Format(IDS_PROC_REFINVALID, m_strRev2);
-			this->m_FileListText += msg;
+			this->m_FileListText += msg + _T("\n") + m_rev1.GetLastErr();
 		}
 
 		this->m_ctrRev2Edit.SetWindowText(m_strRev2);
@@ -1171,33 +1139,23 @@ void CFileDiffDlg::OnTimer(UINT_PTR nIDEvent)
 		CString str;
 		int mask = 0;
 		this->m_ctrRev1Edit.GetWindowText(str);
-		try
+		if (!gitrev.GetCommit(str))
 		{
-			if (!gitrev.GetCommit(str))
-			{
-				m_rev1 = gitrev;
-				mask |= 0x1;
-			}
+			m_rev1 = gitrev;
+			mask |= 0x1;
 		}
-		catch (const char *msg)
-		{
-			CMessageBox::Show(m_hWnd, _T("Could not get commit ") + str + _T("\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
-		}
+		else
+			MessageBox(gitrev.GetLastErr(), _T("TortoiseGit"), MB_ICONERROR);
 
 		this->m_ctrRev2Edit.GetWindowText(str);
 
-		try
+		if (!gitrev.GetCommit(str))
 		{
-			if (!gitrev.GetCommit(str))
-			{
-				m_rev2 = gitrev;
-				mask |= 0x2;
-			}
+			m_rev2 = gitrev;
+			mask |= 0x2;
 		}
-		catch (const char *msg)
-		{
-			CMessageBox::Show(m_hWnd, _T("Could not get commit ") + str + _T("\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
-		}
+		else
+			MessageBox(gitrev.GetLastErr(), _T("TortoiseGit"), MB_ICONERROR);
 
 		this->SetURLLabels(mask);
 

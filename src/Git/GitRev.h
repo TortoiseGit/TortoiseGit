@@ -57,6 +57,8 @@ protected:
 	CString	m_Subject;
 	CString	m_Body;
 
+	CString m_sErr;
+
 public:
 	GitRev(void);
 	CString GetAuthorName()
@@ -127,6 +129,7 @@ public:
 	int GetCommitFromHash(CGitHash &hash);
 	int GetCommit(CString Rev);
 
+	CString GetLastErr() { return m_sErr; }
 public:
 	void DbgPrint();
 private:

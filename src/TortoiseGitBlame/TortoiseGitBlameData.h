@@ -119,7 +119,7 @@ public:
 	}
 
 private:
-	static GitRevLoglist* GetRevForHash(CGitHashMap& HashToRev, CGitHash& hash);
+	static GitRevLoglist* GetRevForHash(CGitHashMap& HashToRev, CGitHash& hash, CString* err = nullptr);
 	static CString UnquoteFilename(CStringA& s);
 
 	std::vector<CGitHash>		m_Hash;

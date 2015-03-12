@@ -198,13 +198,11 @@ int CGitLogListBase::AsyncDiffThread()
 				{
 					g_Git.GetCommitDiffList(pRev->m_CommitHash.ToString(),this->m_HeadHash.ToString(), pRev->GetFiles(this));
 				}
-				int dummyAction = 0;
-				int *action = &dummyAction;
-				SafeGetAction(pRev, &action);
-				*action = 0;
-
-				for (int j = 0; j < pRev->GetFiles(this).GetCount(); ++j)
-					*action |= pRev->GetFiles(this)[j].m_Action;
+				int& action = pRev->GetAction(this);
+				action = 0;
+				const CTGitPathList& files = pRev->GetFiles(this);
+				for (int j = 0; j < files.GetCount(); ++j)
+					action |= files[j].m_Action;
 
 				CString err;
 				if (pRev->GetUnRevFiles().FillUnRev(CTGitPath::LOGACTIONS_UNVER, nullptr, &err))
@@ -1517,8 +1515,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 				FillBackGround(pLVCD->nmcd.hdc, pLVCD->nmcd.dwItemSpec, rect);
 
 				// Draw the icon(s) into the compatible DC
-				int action = SafeGetAction(pLogEntry);
-
+				int action = pLogEntry->GetAction(this);
 				if (!pLogEntry->m_IsDiffFiles)
 				{
 					::DrawIconEx(pLVCD->nmcd.hdc, rect.left + ICONITEMBORDER, rect.top, m_hFetchIcon, iconwidth, iconheight, 0, NULL, DI_NORMAL);
@@ -1718,14 +1715,8 @@ void CGitLogListBase::GetParentHashes(GitRev *pRev, GIT_REV_LIST &parentHash)
 {
 	if (pRev->m_ParentHash.empty())
 	{
-		try
-		{
-			pRev->GetParentFromHash(pRev->m_CommitHash);
-		}
-		catch (const char* msg)
-		{
-			MessageBox(_T("Could not get parent.\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
-		}
+		if (pRev->GetParentFromHash(pRev->m_CommitHash))
+			MessageBox(pRev->GetLastErr(), _T("TortoiseGit"), MB_ICONERROR);
 	}
 	parentHash = pRev->m_ParentHash;
 }
@@ -4275,9 +4266,8 @@ CString CGitLogListBase::GetToolTipText(int nItem, int nSubItem)
 		if (!pLogEntry->m_IsDiffFiles)
 			return CString(MAKEINTRESOURCE(IDS_PROC_LOG_FETCHINGFILES));
 
+		int actions = pLogEntry->GetAction(this);
 		CString sToolTipText;
-
-		DWORD actions = SafeGetAction(pLogEntry);
 
 		CString actionText;
 		if (actions & CTGitPath::LOGACTIONS_MODIFIED)

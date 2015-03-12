@@ -575,22 +575,6 @@ protected:
 	int AsyncDiffThread();
 	bool m_AsyncThreadExited;
 
-	int SafeGetAction(GitRevLoglist* rev, int** ptr = nullptr)
-	{
-		try
-		{
-			int *p = &rev->GetAction(this);
-			if (ptr)
-				*ptr = p;
-			return *p;
-		}
-		catch (const char* msg)
-		{
-			MessageBox(_T("Could not get action of commit ") + rev->m_CommitHash.ToString() + _T(".\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
-			return 0;
-		}
-	}
-
 public:
 	void SafeTerminateAsyncDiffThread()
 	{
