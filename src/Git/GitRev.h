@@ -111,8 +111,6 @@ public:
 		REV_UNSPECIFIED = -4,	///< unspecified revision
 	};
 
-	int CopyFrom(GitRev &rev,bool OmitParentAndMark=false);
-
 	static CString GetHead(){return CString(_T("HEAD"));};
 	static CString GetWorkingCopy(){return CString(GIT_REV_ZERO);};
 
@@ -127,11 +125,12 @@ public:
 
 	int GetParentFromHash(CGitHash &hash);
 	int GetCommitFromHash(CGitHash &hash);
-	int GetCommit(CString Rev);
+	int GetCommit(const CString& rev);
 
 	CString GetLastErr() { return m_sErr; }
-public:
+
 	void DbgPrint();
+
 private:
 	int GetCommitFromHash_withoutLock(CGitHash &hash);
 };

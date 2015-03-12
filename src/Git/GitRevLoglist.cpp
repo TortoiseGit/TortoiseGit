@@ -58,18 +58,6 @@ void GitRevLoglist::Clear()
 	m_Mark = 0;
 }
 
-int GitRevLoglist::CopyFrom(GitRevLoglist& rev, bool OmitParentAndMark)
-{
-	GitRev::CopyFrom(rev, OmitParentAndMark);
-	m_IsFull = rev.m_IsFull;
-	m_Files = rev.m_Files;
-	m_Action = rev.m_Action;
-
-	if (!OmitParentAndMark)
-		m_Mark = rev.m_Mark;
-
-	return 0;
-}
 
 int GitRevLoglist::SafeGetSimpleList(CGit* git)
 {

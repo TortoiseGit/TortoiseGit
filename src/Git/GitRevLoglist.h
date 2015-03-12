@@ -167,8 +167,6 @@ public:
 		return m_Body;
 	}
 
-	int CopyFrom(GitRevLoglist& rev, bool OmitParentAndMark = false);
-
 	BOOL IsBoundary() { return m_Mark == _T('-'); }
 
 	virtual void Clear();

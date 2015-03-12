@@ -24,14 +24,6 @@
 #include "gitdll.h"
 #include "UnicodeUtils.h"
 
-class CException; //Just in case afx.h is not included (cannot be included in every project which uses this file)
-
-// provide an ASSERT macro for when compiled without MFC
-#if !defined ASSERT
-	// Don't use _asm here, it isn't supported by x64 version of compiler. In fact, MFC's ASSERT() is the same with _ASSERTE().
-	#define ASSERT(x) _ASSERTE(x)
-#endif
-
 typedef CComCritSecLock<CComCriticalSection> CAutoLocker;
 
 GitRev::GitRev(void)
@@ -42,15 +34,6 @@ GitRev::~GitRev(void)
 {
 }
 
-#if 0
-GitRev::GitRev(GitRev & rev)
-{
-}
-GitRev& GitRev::operator=(GitRev &rev)
-{
-	return *this;
-}
-#endif
 void GitRev::Clear()
 {
 	this->m_ParentHash.clear();
@@ -61,22 +44,6 @@ void GitRev::Clear()
 	m_CommitHash.Empty();
 	m_sErr.Empty();
 
-}
-int GitRev::CopyFrom(GitRev &rev,bool OmitParentAndMark)
-{
-	m_AuthorName	=rev.m_AuthorName;
-	m_AuthorEmail	=rev.m_AuthorEmail;
-	m_AuthorDate	=rev.m_AuthorDate;
-	m_CommitterName	=rev.m_CommitterName;
-	m_CommitterEmail=rev.m_CommitterEmail;
-	m_CommitterDate	=rev.m_CommitterDate;
-	m_Subject		=rev.m_Subject;
-	m_Body			=rev.m_Body;
-	m_CommitHash	=rev.m_CommitHash;
-
-	if(!OmitParentAndMark)
-		m_ParentHash	=rev.m_ParentHash;
-	return 0;
 }
 
 int GitRev::ParserParentFromCommit(GIT_COMMIT *commit)
@@ -168,6 +135,7 @@ int GitRev::GetParentFromHash(CGitHash &hash)
 
 	return 0;
 }
+
 int GitRev::GetCommitFromHash(CGitHash &hash)
 {
 	CAutoLocker lock(g_Git.m_critGitDllSec);
@@ -202,8 +170,7 @@ int GitRev::GetCommitFromHash_withoutLock(CGitHash &hash)
 	return 0;
 }
 
-
-int GitRev::GetCommit(CString refname)
+int GitRev::GetCommit(const CString& refname)
 {
 	CAutoLocker lock(g_Git.m_critGitDllSec);
 
