@@ -65,6 +65,50 @@ int GitRevLoglist::SafeGetSimpleList(CGit* git)
 		return 0;
 
 	m_SimpleFileList.clear();
+	if (git->UsingLibGit2(CGit::GIT_CMD_LOGLISTDIFF))
+	{
+		CAutoRepository repo(git->GetGitRepository());
+		if (!repo)
+			return -1;
+		CAutoCommit commit;
+		if (git_commit_lookup(commit.GetPointer(), repo, (const git_oid*)m_CommitHash.m_hash) < 0)
+			return -1;
+
+		CAutoTree commitTree;
+		if (git_commit_tree(commitTree.GetPointer(), commit) < 0)
+			return -1;
+
+		bool isRoot = git_commit_parentcount(commit) == 0;
+		for (unsigned int parentId = 0; isRoot || parentId < git_commit_parentcount(commit); ++parentId)
+		{
+			CAutoTree parentTree;
+			if (!isRoot)
+			{
+				CAutoCommit parentCommit;
+				if (git_commit_parent(parentCommit.GetPointer(), commit, parentId) < 0)
+					return -1;
+
+				if (git_commit_tree(parentTree.GetPointer(), parentCommit) < 0)
+					return -1;
+			}
+			isRoot = false;
+
+			CAutoDiff diff;
+			if (git_diff_tree_to_tree(diff.GetPointer(), repo, parentTree, commitTree, nullptr) < 0)
+				return -1;
+
+			size_t deltas = git_diff_num_deltas(diff);
+			for (size_t i = 0; i < deltas; ++i)
+			{
+				const git_diff_delta* delta = git_diff_get_delta(diff, i);
+				m_SimpleFileList.push_back(CUnicodeUtils::GetUnicode(delta->new_file.path));
+			}
+		}
+
+		InterlockedExchange(&m_IsUpdateing, FALSE);
+		InterlockedExchange(&m_IsSimpleListReady, TRUE);
+		return 0;
+	}
 	git->CheckAndInitDll();
 	GIT_COMMIT commit = { 0 };
 	GIT_COMMIT_LIST list;
@@ -119,8 +163,8 @@ int GitRevLoglist::SafeGetSimpleList(CGit* git)
 			}
 
 			m_SimpleFileList.push_back(CUnicodeUtils::GetUnicode(newname));
-		}
 
+		}
 		git_diff_flush(git->GetGitSimpleListDiff());
 		++i;
 	}
@@ -137,7 +181,85 @@ int GitRevLoglist::SafeFetchFullInfo(CGit* git)
 	if (InterlockedExchange(&m_IsUpdateing, TRUE) == TRUE)
 		return 0;
 
+
 	m_Files.Clear();
+	if (git->UsingLibGit2(CGit::GIT_CMD_LOGLISTDIFF))
+	{
+		CAutoRepository repo(git->GetGitRepository());
+		if (!repo)
+			return -1;
+		CAutoCommit commit;
+		if (git_commit_lookup(commit.GetPointer(), repo, (const git_oid*)m_CommitHash.m_hash) < 0)
+			return -1;
+
+		CAutoTree commitTree;
+		if (git_commit_tree(commitTree.GetPointer(), commit) < 0)
+			return -1;
+
+		bool isRoot = git_commit_parentcount(commit) == 0;
+		for (unsigned int parentId = 0; isRoot || parentId < git_commit_parentcount(commit); ++parentId)
+		{
+			CAutoTree parentTree;
+			if (!isRoot)
+			{
+				CAutoCommit parentCommit;
+				if (git_commit_parent(parentCommit.GetPointer(), commit, parentId) < 0)
+					return -1;
+
+				if (git_commit_tree(parentTree.GetPointer(), parentCommit) < 0)
+					return -1;
+			}
+			isRoot = false;
+
+			CAutoDiff diff;
+			if (git_diff_tree_to_tree(diff.GetPointer(), repo, parentTree, commitTree, nullptr) < 0)
+				return -1;
+
+			if (git_diff_find_similar(diff, nullptr) < 0)
+				return-1;
+
+			size_t deltas = git_diff_num_deltas(diff);
+			for (size_t i = 0; i < deltas; ++i)
+			{
+				CAutoPatch patch;
+				if (git_patch_from_diff(patch.GetPointer(), diff, i) < 0)
+					return -1;
+
+				const git_diff_delta* delta = git_patch_get_delta(patch);
+
+				CString newname = CUnicodeUtils::GetUnicode(delta->new_file.path);
+				CString oldname = CUnicodeUtils::GetUnicode(delta->old_file.path);
+
+				if (newname == oldname)
+					oldname.Empty();
+
+				CTGitPath path;
+				path.SetFromGit(newname, &oldname);
+				m_Action |= path.ParserAction(delta->status);
+				path.m_ParentNo = parentId;
+
+				if (delta->flags & GIT_DIFF_FLAG_BINARY)
+				{
+					path.m_StatAdd = _T("-");
+					path.m_StatDel = _T("-");
+				}
+				else
+				{
+					size_t adds, dels;
+					if (git_patch_line_stats(nullptr, &adds, &dels, patch) < 0)
+						return -1;
+					path.m_StatAdd.Format(_T("%d"), adds);
+					path.m_StatDel.Format(_T("%d"), dels);
+				}
+				m_Files.AddPath(path);
+			}
+		}
+
+		InterlockedExchange(&m_IsUpdateing, FALSE);
+		InterlockedExchange(&m_IsFull, TRUE);
+		return 0;
+	}
+
 	git->CheckAndInitDll();
 	GIT_COMMIT commit = { 0 };
 	GIT_COMMIT_LIST list;
