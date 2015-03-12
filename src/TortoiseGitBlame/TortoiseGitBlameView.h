@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2013, 2015 - TortoiseGit
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -182,7 +182,7 @@ public:
 	void UpdateInfo(int encode = 0);
 	CString ResolveCommitFile(int line);
 	CString ResolveCommitFile(const CString& path);
-	void FocusOn(GitRev *pRev);
+	void FocusOn(GitRevLoglist* pRev);
 
 	CSciEditBlame		m_TextView;
 	CToolTips			m_ToolTip;

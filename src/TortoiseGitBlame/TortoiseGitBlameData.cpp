@@ -472,12 +472,12 @@ bool CTortoiseGitBlameData::ContainsOnlyFilename(const CString &filename) const
 	return true;
 }
 
-GitRev* CTortoiseGitBlameData::GetRevForHash(CGitHashMap & HashToRev, CGitHash& hash)
+GitRevLoglist* CTortoiseGitBlameData::GetRevForHash(CGitHashMap& HashToRev, CGitHash& hash)
 {
 	auto it = HashToRev.find(hash);
 	if (it == HashToRev.end())
 	{
-		GitRev rev;
+		GitRevLoglist rev;
 		rev.GetCommitFromHash(hash);
 		it = HashToRev.insert(std::make_pair(hash, rev)).first;
 	}

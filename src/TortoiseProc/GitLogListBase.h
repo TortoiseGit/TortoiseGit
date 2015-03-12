@@ -30,7 +30,7 @@
 #include "MenuButton.h"
 #include "LogDlgHelper.h"
 #include "FilterEdit.h"
-#include "GitRev.h"
+#include "GitRevLoglist.h"
 #include "Tooltip.h"
 #include "lanes.h"
 #include "GitLogCache.h"
@@ -238,7 +238,7 @@ public:
 
 	bool				m_hasWC;
 	bool				m_bShowWC;
-	GitRev				m_wcRev;
+	GitRevLoglist		m_wcRev;
 	volatile LONG 		m_bThreadRunning;
 	CLogCache			m_LogCache;
 
@@ -376,8 +376,8 @@ public:
 	int  BeginFetchLog();
 	int  FillGitLog(CTGitPath *path, CString *range = NULL, int infomask = CGit::LOG_INFO_STAT| CGit::LOG_INFO_FILESTATE | CGit::LOG_INFO_SHOW_MERGEDFILE);
 	int  FillGitLog(std::set<CGitHash>& hashes);
-	BOOL IsMatchFilter(bool bRegex, GitRev *pRev, std::tr1::wregex &pat);
-	bool ShouldShowFilter(GitRev *pRev, const std::map<CGitHash, std::set<CGitHash>> &commitChildren);
+	BOOL IsMatchFilter(bool bRegex, GitRevLoglist* pRev, std::tr1::wregex& pat);
+	bool ShouldShowFilter(GitRevLoglist* pRev, const std::map<CGitHash, std::set<CGitHash>>& commitChildren);
 	void ShowGraphColumn(bool bShow);
 	CString	GetTagInfo(GitRev* pLogEntry);
 
@@ -416,7 +416,7 @@ public:
 	int					m_ShowRefMask;
 
 	void				GetTimeRange(CTime &oldest,CTime &latest);
-	virtual void GetParentHashes(GitRev *pRev, GIT_REV_LIST &parentHash);
+	virtual void GetParentHashes(GitRev* pRev, GIT_REV_LIST& parentHash);
 	virtual void ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMenu * menu)=0;
 	void ReloadHashMap()
 	{
@@ -520,7 +520,7 @@ protected:
 
 	void FillBackGround(HDC hdc, DWORD_PTR Index, CRect &rect);
 	void DrawTagBranchMessage(HDC hdc, CRect &rect, INT_PTR index, std::vector<REFLABEL> &refList);
-	void DrawTagBranch(HDC hdc, CDC &W_Dc, HTHEME hTheme, CRect &rect, CRect &rt, LVITEM &rItem, GitRev* data, std::vector<REFLABEL> &refList);
+	void DrawTagBranch(HDC hdc, CDC& W_Dc, HTHEME hTheme, CRect& rect, CRect& rt, LVITEM& rItem, GitRevLoglist* data, std::vector<REFLABEL>& refList);
 	void DrawGraph(HDC,CRect &rect,INT_PTR index);
 
 	void paintGraphLane(HDC hdc,int laneHeight, int type, int x1, int x2,
@@ -535,13 +535,13 @@ protected:
 
 	int GetHeadIndex();
 
-	std::vector<GitRev*> m_AsynDiffList;
+	std::vector<GitRevLoglist*> m_AsynDiffList;
 	CComCriticalSection m_AsynDiffListLock;
 	HANDLE	m_AsyncDiffEvent;
 	volatile LONG m_AsyncThreadExit;
 	CWinThread*			m_DiffingThread;
 
-	static int DiffAsync(GitRev *rev, void *data)
+	static int DiffAsync(GitRevLoglist* rev, void* data)
 	{
 		ULONGLONG offset=((CGitLogListBase*)data)->m_LogCache.GetOffset(rev->m_CommitHash);
 		if(!offset)
@@ -575,7 +575,7 @@ protected:
 	int AsyncDiffThread();
 	bool m_AsyncThreadExited;
 
-	int SafeGetAction(GitRev *rev, int **ptr = nullptr)
+	int SafeGetAction(GitRevLoglist* rev, int** ptr = nullptr)
 	{
 		try
 		{

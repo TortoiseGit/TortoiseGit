@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2014 - TortoiseGit
+// Copyright (C) 2008-2015 - TortoiseGit
 // Copyright (C) 2003-2011,2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -753,7 +753,7 @@ int CStatGraphDlg::GatherData(BOOL fetchdiff, BOOL keepFetchedData)
 	git_read_mailmap(&mailmap);
 	for (INT_PTR i = 0; i < m_ShowList.GetCount(); ++i)
 	{
-		GitRev* pLogEntry = reinterpret_cast<GitRev*>(m_ShowList.SafeGetAt(i));
+		GitRevLoglist* pLogEntry = reinterpret_cast<GitRevLoglist*>(m_ShowList.SafeGetAt(i));
 		int inc, dec, incnewfile, decdeletedfile, files;
 		inc = dec = incnewfile = decdeletedfile = files= 0;
 

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2013, 2015 - TortoiseGit
 // Copyright (C) 2011-2013 Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
@@ -237,7 +237,7 @@ void CPropertiesWnd::RemoveParent()
 	}
 }
 
-void CPropertiesWnd::UpdateProperties(GitRev *pRev)
+void CPropertiesWnd::UpdateProperties(GitRevLoglist* pRev)
 {
 	if (pRev)
 	{

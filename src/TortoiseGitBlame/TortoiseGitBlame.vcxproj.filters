@@ -180,6 +180,9 @@
     <ClCompile Include="..\Git\MassiveGitTaskBase.cpp">
       <Filter>Git</Filter>
     </ClCompile>
+    <ClCompile Include="..\Git\GitRevLoglist.cpp">
+      <Filter>Git</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EditGotoDlg.h">
@@ -330,6 +333,9 @@
       <Filter>Git</Filter>
     </ClInclude>
     <ClInclude Include="..\Git\GitForWindows.h">
+      <Filter>Git</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Git\GitRevLoglist.h">
       <Filter>Git</Filter>
     </ClInclude>
   </ItemGroup>

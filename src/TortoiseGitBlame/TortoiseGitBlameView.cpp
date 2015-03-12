@@ -1,6 +1,6 @@
 // TortoiseGitBlame - a Viewer for Git Blames
 
-// Copyright (C) 2008-2014 - TortoiseGit
+// Copyright (C) 2008-2015 - TortoiseGit
 // Copyright (C) 2010-2013 Sven Strickroth <email@cs-ware.de>
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
 
@@ -364,7 +364,7 @@ void CTortoiseGitBlameView::OnRButtonUp(UINT /*nFlags*/, CPoint point)
 		CGitHash hash = m_data.GetHash(line);
 		CString hashStr = hash.ToString();
 
-		GitRev* pRev = nullptr;
+		GitRevLoglist* pRev = nullptr;
 		int logIndex = m_lineToLogIndex[line];
 		if (logIndex >= 0)
 			pRev = &GetLogData()->GetGitRevAt(logIndex);
@@ -1741,7 +1741,7 @@ void CTortoiseGitBlameView::OnLButtonDown(UINT nFlags,CPoint point)
 			}
 			else
 			{
-				GitRev *pRev = m_data.GetRev(line, GetLogData()->m_pLogCache->m_HashMap);
+				GitRevLoglist* pRev = m_data.GetRev(line, GetLogData()->m_pLogCache->m_HashMap);
 				this->GetDocument()->GetMainFrame()->m_wndProperties.UpdateProperties(pRev);
 			}
 		}
@@ -1775,7 +1775,7 @@ void CTortoiseGitBlameView::OnSciGetBkColor(NMHDR* hdr, LRESULT* /*result*/)
 	}
 }
 
-void CTortoiseGitBlameView::FocusOn(GitRev *pRev)
+void CTortoiseGitBlameView::FocusOn(GitRevLoglist* pRev)
 {
 	this->GetDocument()->GetMainFrame()->m_wndProperties.UpdateProperties(pRev);
 

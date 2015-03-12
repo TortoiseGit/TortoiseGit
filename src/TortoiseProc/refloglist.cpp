@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2011,2013 TortoiseGit
+// Copyright (C) 2009-2011,2013,2015 TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -91,16 +91,16 @@ void CRefLogList::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 
 	// Which item number?
 	int itemid = pItem->iItem;
-	GitRev * pLogEntry = NULL;
+	GitRevLoglist* pLogEntry = nullptr;
 	if (itemid < m_arShownList.GetCount())
-		pLogEntry = reinterpret_cast<GitRev*>(m_arShownList.GetAt(pItem->iItem));
+		pLogEntry = reinterpret_cast<GitRevLoglist*>(m_arShownList.GetAt(pItem->iItem));
 
 	CString temp;
 
 	// Which column?
 	switch (pItem->iSubItem)
 	{
-	case this->REFLOG_HASH:
+	case REFLOG_HASH:
 		if (pLogEntry)
 		{
 			lstrcpyn(pItem->pszText,pLogEntry->m_CommitHash.ToString(), pItem->cchTextMax);

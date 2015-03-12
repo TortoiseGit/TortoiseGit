@@ -18,7 +18,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #pragma once
-#include "GitRev.h"
+#include "GitRevLoglist.h"
 #include "CommonAppUtils.h"
 
 class CTGitPath;
@@ -208,7 +208,7 @@ public:
 	static BOOL Merge(const CString* commit = nullptr, bool showStashPop = false);
 	static BOOL MergeAbort();
 	static void RemoveTempMergeFile(const CTGitPath& path);
-	static void EditNote(GitRev *hash);
+	static void EditNote(GitRevLoglist* hash);
 	static int GetMsysgitVersion();
 	static void MarkWindowAsUnpinnable(HWND hWnd);
 

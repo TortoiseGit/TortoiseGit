@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2013, 2015 - TortoiseGit
 // Copyright (C) 2011-2013 Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
@@ -46,7 +46,7 @@ void CGitBlameLogList::hideUnimplementedCommands()
 		, true);
 }
 
-void CGitBlameLogList::GetParentHashes(GitRev *pRev, GIT_REV_LIST &parentHash)
+void CGitBlameLogList::GetParentHashes(GitRevLoglist* pRev, GIT_REV_LIST& parentHash)
 {
 	std::vector<CTGitPath> paths;
 	GetPaths(pRev->m_CommitHash, paths);
@@ -77,7 +77,7 @@ void CGitBlameLogList::ContextMenuAction(int cmd, int /*FirstSelect*/, int /*Las
 		return;
 	CTortoiseGitBlameView *pView = DYNAMIC_DOWNCAST(CTortoiseGitBlameView,((CMainFrame*)::AfxGetApp()->GetMainWnd())->GetActiveView());
 
-	GitRev *pRev = &this->m_logEntries.GetGitRevAt(indexNext);
+	GitRevLoglist* pRev = &this->m_logEntries.GetGitRevAt(indexNext);
 
 	switch (cmd & 0xFFFF)
 	{
@@ -185,7 +185,7 @@ void CGitBlameLogList::GetPaths(const CGitHash& hash, std::vector<CTGitPath>& pa
 	}
 }
 
-void CGitBlameLogList::GetParentNumbers(GitRev *pRev, const std::vector<CTGitPath>& paths, std::set<int> &parentNos)
+void CGitBlameLogList::GetParentNumbers(GitRevLoglist* pRev, const std::vector<CTGitPath>& paths, std::set<int>& parentNos)
 {
 	if (pRev->m_ParentHash.empty())
 	{
@@ -235,7 +235,7 @@ void CGitBlameLogList::GetParentNumbers(GitRev *pRev, const std::vector<CTGitPat
 	}
 }
 
-void CGitBlameLogList::GetParentHash(GitRev *pRev, int index, CGitHash &parentHash, std::vector<CString>& parentFilenames)
+void CGitBlameLogList::GetParentHash(GitRevLoglist* pRev, int index, CGitHash& parentHash, std::vector<CString>& parentFilenames)
 {
 	std::vector<CTGitPath> paths;
 	GetPaths(pRev->m_CommitHash, paths);

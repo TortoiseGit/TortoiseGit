@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2012, 2015 - TortoiseSVN
-// Copyright (C) 2012-2014 - TortoiseGit
+// Copyright (C) 2012-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -36,6 +36,7 @@
 //#include "RevisionGraph/UpsideDownLayout.h"
 #include "SysInfo.h"
 #include "FormatMessageWrapper.h"
+#include "GitRevLoglist.h"
 
 #pragma warning(push)
 #pragma warning(disable: 4100) // unreferenced formal parameter
@@ -915,7 +916,7 @@ CString CRevisionGraphWnd::TooltipText(node index)
 	{
 		CString str;
 		CGitHash	hash = m_logEntries[index->index()];
-		GitRev *rev = this->m_LogCache.GetCacheData(hash);
+		GitRevLoglist* rev = this->m_LogCache.GetCacheData(hash);
 		str += rev->m_CommitHash.ToString();
 		str += _T("\n");
 		str += rev->GetAuthorName() +_T(" ") + rev->GetAuthorEmail();

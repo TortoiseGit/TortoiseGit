@@ -3275,7 +3275,7 @@ BOOL CAppUtils::MergeAbort()
 	return FALSE;
 }
 
-void CAppUtils::EditNote(GitRev *rev)
+void CAppUtils::EditNote(GitRevLoglist* rev)
 {
 	if (!CheckUserData())
 		return;

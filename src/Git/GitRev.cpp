@@ -36,17 +36,6 @@ typedef CComCritSecLock<CComCriticalSection> CAutoLocker;
 
 GitRev::GitRev(void)
 {
-	m_Action=0;
-	m_RebaseAction = 0;
-	m_IsFull = 0;
-	m_IsUpdateing = 0;
-	m_IsCommitParsed = 0;
-	m_IsDiffFiles = 0;
-	m_CallDiffAsync = NULL;
-	m_IsSimpleListReady =0;
-	m_Mark = 0;
-
-	memset(&this->m_GitCommit,0,sizeof(GIT_COMMIT));
 }
 
 GitRev::~GitRev(void)
@@ -64,18 +53,12 @@ GitRev& GitRev::operator=(GitRev &rev)
 #endif
 void GitRev::Clear()
 {
-	this->m_Action=0;
-	this->m_Files.Clear();
-	this->m_Action=0;
 	this->m_ParentHash.clear();
 	m_CommitterName.Empty();
 	m_CommitterEmail.Empty();
 	m_Body.Empty();
 	m_Subject.Empty();
 	m_CommitHash.Empty();
-	m_Ref.Empty();
-	m_RefAction.Empty();
-	m_Mark=0;
 
 }
 int GitRev::CopyFrom(GitRev &rev,bool OmitParentAndMark)
@@ -89,196 +72,9 @@ int GitRev::CopyFrom(GitRev &rev,bool OmitParentAndMark)
 	m_Subject		=rev.m_Subject;
 	m_Body			=rev.m_Body;
 	m_CommitHash	=rev.m_CommitHash;
-	m_Files			=rev.m_Files;
-	m_Action		=rev.m_Action;
-	m_IsFull		=rev.m_IsFull;
 
 	if(!OmitParentAndMark)
-	{
 		m_ParentHash	=rev.m_ParentHash;
-		m_Mark			=rev.m_Mark;
-	}
-	return 0;
-}
-
-int GitRev::SafeGetSimpleList(CGit *git)
-{
-	if(InterlockedExchange(&m_IsUpdateing,TRUE) == FALSE)
-	{
-		m_SimpleFileList.clear();
-		git->CheckAndInitDll();
-		GIT_COMMIT commit;
-		GIT_COMMIT_LIST list;
-		GIT_HASH   parent;
-		memset(&commit,0,sizeof(GIT_COMMIT));
-
-		CAutoLocker lock(g_Git.m_critGitDllSec);
-
-		try
-		{
-			if(git_get_commit_from_hash(&commit, this->m_CommitHash.m_hash))
-				return -1;
-		}
-		catch (char *)
-		{
-			return -1;
-		}
-
-		int i=0;
-		bool isRoot = this->m_ParentHash.empty();
-		git_get_commit_first_parent(&commit,&list);
-		while(git_get_commit_next_parent(&list,parent) == 0 || isRoot)
-		{
-			GIT_FILE file=0;
-			int count=0;
-			try
-			{
-				if(isRoot)
-					git_root_diff(git->GetGitSimpleListDiff(), commit.m_hash, &file, &count, 0);
-				else
-					git_do_diff(git->GetGitSimpleListDiff(), parent, commit.m_hash, &file, &count, 0);
-			}
-			catch (char *)
-			{
-				return -1;
-			}
-
-			isRoot = false;
-
-			CTGitPath path;
-			CString strnewname;
-			CString stroldname;
-
-			for (int j = 0; j < count; ++j)
-			{
-				path.Reset();
-				char *newname;
-				char *oldname;
-
-				strnewname.Empty();
-				stroldname.Empty();
-
-				int mode,IsBin,inc,dec;
-				try
-				{
-					git_get_diff_file(git->GetGitSimpleListDiff(), file, j, &newname, &oldname, &mode, &IsBin, &inc, &dec);
-				}
-				catch (char *)
-				{
-					return -1;
-				}
-
-				git->StringAppend(&strnewname, (BYTE*)newname, CP_UTF8);
-
-				m_SimpleFileList.push_back(strnewname);
-
-			}
-			git_diff_flush(git->GetGitSimpleListDiff());
-			++i;
-		}
-
-		InterlockedExchange(&m_IsUpdateing,FALSE);
-		InterlockedExchange(&m_IsSimpleListReady, TRUE);
-		git_free_commit(&commit);
-	}
-
-	return 0;
-}
-int GitRev::SafeFetchFullInfo(CGit *git)
-{
-	if(InterlockedExchange(&m_IsUpdateing,TRUE) == FALSE)
-	{
-		this->m_Files.Clear();
-		git->CheckAndInitDll();
-		GIT_COMMIT commit;
-		GIT_COMMIT_LIST list;
-		GIT_HASH   parent;
-		memset(&commit,0,sizeof(GIT_COMMIT));
-
-		CAutoLocker lock(g_Git.m_critGitDllSec);
-
-		try
-		{
-			if (git_get_commit_from_hash(&commit, this->m_CommitHash.m_hash))
-				return -1;
-		}
-		catch (char *)
-		{
-			return -1;
-		}
-
-		int i=0;
-
-		git_get_commit_first_parent(&commit,&list);
-		bool isRoot = (list==NULL);
-
-		while(git_get_commit_next_parent(&list,parent) == 0 || isRoot)
-		{
-			GIT_FILE file=0;
-			int count=0;
-
-			try
-			{
-				if (isRoot)
-					git_root_diff(git->GetGitDiff(), this->m_CommitHash.m_hash, &file, &count, 1);
-				else
-					git_do_diff(git->GetGitDiff(), parent, commit.m_hash, &file, &count, 1);
-			}
-			catch (char *)
-			{
-				git_free_commit(&commit);
-				return -1;
-			}
-			isRoot = false;
-
-			CTGitPath path;
-			CString strnewname;
-			CString stroldname;
-
-			for (int j = 0; j < count; ++j)
-			{
-				path.Reset();
-				char *newname;
-				char *oldname;
-
-				strnewname.Empty();
-				stroldname.Empty();
-
-				int mode,IsBin,inc,dec;
-				git_get_diff_file(git->GetGitDiff(),file,j,&newname,&oldname,
-						&mode,&IsBin,&inc,&dec);
-
-				git->StringAppend(&strnewname, (BYTE*)newname, CP_UTF8);
-				git->StringAppend(&stroldname, (BYTE*)oldname, CP_UTF8);
-
-				path.SetFromGit(strnewname,&stroldname);
-				path.ParserAction((BYTE)mode);
-				path.m_ParentNo = i;
-
-				this->m_Action|=path.m_Action;
-
-				if(IsBin)
-				{
-					path.m_StatAdd=_T("-");
-					path.m_StatDel=_T("-");
-				}
-				else
-				{
-					path.m_StatAdd.Format(_T("%d"),inc);
-					path.m_StatDel.Format(_T("%d"),dec);
-				}
-				m_Files.AddPath(path);
-			}
-			git_diff_flush(git->GetGitDiff());
-			++i;
-		}
-
-
-		InterlockedExchange(&m_IsUpdateing,FALSE);
-		InterlockedExchange(&m_IsFull,TRUE);
-		git_free_commit(&commit);
-	}
-
 	return 0;
 }
 
