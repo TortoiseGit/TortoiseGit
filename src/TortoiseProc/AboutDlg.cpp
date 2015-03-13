@@ -97,6 +97,9 @@ BOOL CAboutDlg::OnInitDialog()
 
 	this->SetWindowText(_T("TortoiseGit"));
 
+	// we can only put up to 256 chars into the resource file, so fill it here with the full list
+	SetDlgItemText(IDC_STATIC_AUTHORS, L"Sven Strickroth <email@cs-ware.de> (Current Maintainer), Sup Yut Sum <ch3cooli@gmail.com>, Frank Li <lznuaa@gmail.com> (Founder), Yue Lin Ho <b8732003@student.nsysu.edu.tw>, Colin Law <clanlaw@googlemail.com>, Myagi <snowcoder@gmail.com>, Johan 't Hart <johanthart@gmail.com>, Laszlo Papp <djszapi@archlinux.us>");
+
 	CPictureHolder tmpPic;
 	tmpPic.CreateFromBitmap(IDB_LOGOFLIPPED);
 	m_renderSrc.Create32BitFromPicture(&tmpPic,468,64);
