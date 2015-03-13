@@ -394,8 +394,6 @@ public:
 protected:
 	virtual void FreeRef()
 	{
-		if (git_remote_connected(m_Ref) == 1)
-			git_remote_disconnect(m_Ref);
 		git_remote_free(m_Ref);
 	}
 };
