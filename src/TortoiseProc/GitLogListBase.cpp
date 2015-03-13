@@ -185,22 +185,22 @@ int CGitLogListBase::AsyncDiffThread()
 				if(pRev->m_IsDiffFiles)
 					continue;
 
-				pRev->GetFiles(this).Clear();
+				CTGitPathList& files = pRev->GetFiles(this);
+				files.Clear();
 				pRev->m_ParentHash.clear();
 				pRev->m_ParentHash.push_back(m_HeadHash);
 				if(g_Git.IsInitRepos())
 				{
-					if (g_Git.GetInitAddList(pRev->GetFiles(this)))
+					if (g_Git.GetInitAddList(files))
 						CMessageBox::Show(NULL, _T("Run ls-files failed!"), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 
 				}
 				else
 				{
-					g_Git.GetCommitDiffList(pRev->m_CommitHash.ToString(),this->m_HeadHash.ToString(), pRev->GetFiles(this));
+					g_Git.GetCommitDiffList(pRev->m_CommitHash.ToString(), this->m_HeadHash.ToString(), files);
 				}
 				int& action = pRev->GetAction(this);
 				action = 0;
-				const CTGitPathList& files = pRev->GetFiles(this);
 				for (int j = 0; j < files.GetCount(); ++j)
 					action |= files[j].m_Action;
 
@@ -214,7 +214,7 @@ int CGitLogListBase::AsyncDiffThread()
 				InterlockedExchange(&pRev->m_IsDiffFiles, TRUE);
 				InterlockedExchange(&pRev->m_IsFull, TRUE);
 
-				pRev->GetBody().Format(IDS_FILESCHANGES, pRev->GetFiles(this).GetCount());
+				pRev->GetBody().Format(IDS_FILESCHANGES, files.GetCount());
 				::PostMessage(m_hWnd,MSG_LOADED,(WPARAM)0,0);
 				this->GetParent()->PostMessage(WM_COMMAND, MSG_FETCHED_DIFF, 0);
 			}
