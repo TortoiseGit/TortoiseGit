@@ -1521,7 +1521,11 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 				int action = SafeGetAction(pLogEntry);
 
 				if (!pLogEntry->m_IsDiffFiles)
+				{
 					::DrawIconEx(pLVCD->nmcd.hdc, rect.left + ICONITEMBORDER, rect.top, m_hFetchIcon, iconwidth, iconheight, 0, NULL, DI_NORMAL);
+					*pResult = CDRF_SKIPDEFAULT;
+					return;
+				}
 
 				if (action & CTGitPath::LOGACTIONS_MODIFIED)
 					::DrawIconEx(pLVCD->nmcd.hdc, rect.left + ICONITEMBORDER, rect.top, m_hModifiedIcon, iconwidth, iconheight, 0, NULL, DI_NORMAL);
@@ -4268,6 +4272,9 @@ CString CGitLogListBase::GetToolTipText(int nItem, int nSubItem)
 		GitRev* pLogEntry = (GitRev*)m_arShownList.SafeGetAt(nItem);
 		if (pLogEntry == nullptr)
 			return CString();
+
+		if (!pLogEntry->m_IsDiffFiles)
+			return CString(MAKEINTRESOURCE(IDS_PROC_LOG_FETCHINGFILES));
 
 		CString sToolTipText;
 
