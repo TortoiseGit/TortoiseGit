@@ -21,6 +21,9 @@
     <Filter Include="BuildIn">
       <UniqueIdentifier>{4e9c72cd-497a-4307-a224-0c2da265db38}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ewah">
+      <UniqueIdentifier>{9fe53345-1b05-4bce-88c6-8ce0b79db374}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\tgit\compat\msvc.c">
@@ -33,9 +36,6 @@
       <Filter>compat</Filter>
     </ClCompile>
     <ClCompile Include="..\tgit\compat\win32\dirent.c">
-      <Filter>compat</Filter>
-    </ClCompile>
-    <ClCompile Include="..\tgit\compat\fnmatch\fnmatch.c">
       <Filter>compat</Filter>
     </ClCompile>
     <ClCompile Include="..\tgit\compat\fopen.c">
@@ -225,9 +225,6 @@
       <Filter>git</Filter>
     </ClCompile>
     <ClCompile Include="..\tgit\grep.c">
-      <Filter>git</Filter>
-    </ClCompile>
-    <ClCompile Include="..\tgit\hash.c">
       <Filter>git</Filter>
     </ClCompile>
     <ClCompile Include="..\tgit\help.c">
@@ -650,9 +647,6 @@
     <ClCompile Include="..\tgit\builtin\notes.c">
       <Filter>BuildIn</Filter>
     </ClCompile>
-    <ClCompile Include="..\tgit\builtin\pack-objects.c">
-      <Filter>BuildIn</Filter>
-    </ClCompile>
     <ClCompile Include="..\tgit\builtin\pack-redundant.c">
       <Filter>BuildIn</Filter>
     </ClCompile>
@@ -797,11 +791,41 @@
     <ClCompile Include="..\tgit\builtin\check-mailmap.c">
       <Filter>BuildIn</Filter>
     </ClCompile>
-    <ClCompile Include="..\tgit\builtin\repack.c">
-      <Filter>BuildIn</Filter>
+    <ClCompile Include="..\tgit\hashmap.c">
+      <Filter>git</Filter>
     </ClCompile>
     <ClCompile Include="..\tgit\builtin\get-tar-commit-id.c">
       <Filter>BuildIn</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\ewah\bitmap.c">
+      <Filter>ewah</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\ewah\ewah_bitmap.c">
+      <Filter>ewah</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\ewah\ewah_io.c">
+      <Filter>ewah</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\ewah\ewah_rlw.c">
+      <Filter>ewah</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\pack-bitmap.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\pack-bitmap-write.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\pack-objects.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\builtin\pack-objects-bi.c">
+      <Filter>BuildIn</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\versioncmp.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\split-index.c">
+      <Filter>git</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -887,9 +911,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\tgit\grep.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\tgit\hash.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\tgit\help.h">
@@ -1042,9 +1063,6 @@
     <ClInclude Include="..\tgit\xdiff-interface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\tgit\compat\fnmatch\fnmatch.h">
-      <Filter>compat</Filter>
-    </ClInclude>
     <ClInclude Include="..\tgit\compat\mingw.h">
       <Filter>compat</Filter>
     </ClInclude>
@@ -1112,6 +1130,30 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\tgit\commit-slab.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\hashmap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\advice.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\ewah\ewok.h">
+      <Filter>ewah</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\ewah\ewok_rlw.h">
+      <Filter>ewah</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\khash.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\pack-bitmap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\pack-objects.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\split-index.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
