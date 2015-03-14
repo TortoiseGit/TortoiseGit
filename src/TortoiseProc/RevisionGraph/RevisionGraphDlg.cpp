@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2012 - TortoiseSVN
-// Copyright (C) 2012-2014 - TortoiseGit
+// Copyright (C) 2012-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -281,7 +281,7 @@ bool CRevisionGraphDlg::UpdateData()
 {
 	CoInitialize(NULL);
 
-	if (!m_Graph.FetchRevisionData (m_Graph.m_sPath, GitRev(), NULL, m_pTaskbarList, m_hWnd))
+	if (!m_Graph.FetchRevisionData (m_Graph.m_sPath, nullptr, m_pTaskbarList, m_hWnd))
 	{
 		// only show the error dialog if we're not in hidden mode
 		//if (m_bVisible)
