@@ -280,6 +280,7 @@ CGitStatusListCtrl::CGitStatusListCtrl() : CListCtrl()
 	, pfnSHCreateDefaultContextMenu(nullptr)
 	, pfnAssocCreateForClasses(nullptr)
 	, m_pContextMenu(nullptr)
+	, m_hShellMenu(nullptr)
 {
 	m_FileLoaded=0;
 	m_dwDefaultColumns = 0;
