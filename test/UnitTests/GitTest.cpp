@@ -27,6 +27,7 @@ INSTANTIATE_TEST_CASE_P(CGit, CBasicGitFixture, testing::Values(GIT_CLI, /*LIBGI
 INSTANTIATE_TEST_CASE_P(CGit, CBasicGitWithEmptyRepositoryFixture, testing::Values(GIT_CLI, /*LIBGIT,*/ LIBGIT2, LIBGIT2_ALL));
 INSTANTIATE_TEST_CASE_P(CGit, CBasicGitWithEmptyBareRepositoryFixture, testing::Values(GIT_CLI, /*LIBGIT,*/ LIBGIT2, LIBGIT2_ALL));
 INSTANTIATE_TEST_CASE_P(CGit, CBasicGitWithTestRepoFixture, testing::Values(GIT_CLI, /*LIBGIT,*/ LIBGIT2, LIBGIT2_ALL));
+INSTANTIATE_TEST_CASE_P(CGit, CBasicGitWithTestRepoBareFixture, testing::Values(GIT_CLI, /*LIBGIT,*/ LIBGIT2, LIBGIT2_ALL));
 
 TEST(CGit, RunSet)
 {
@@ -309,7 +310,13 @@ TEST_P(CBasicGitWithTestRepoFixture, GetCurrentBranch)
 	EXPECT_STREQ(_T("orphanic"), m_Git.GetCurrentBranch(true));
 }
 
-TEST_P(CBasicGitWithTestRepoFixture, BranchTagExists_IsBranchTagNameUnique)
+TEST_P(CBasicGitWithTestRepoBareFixture, GetCurrentBranch)
+{
+	EXPECT_STREQ(_T("master"), m_Git.GetCurrentBranch());
+	EXPECT_STREQ(_T("master"), m_Git.GetCurrentBranch(true));
+}
+
+static void BranchTagExists_IsBranchTagNameUnique(CGit& m_Git)
 {
 	EXPECT_TRUE(m_Git.BranchTagExists(_T("master"), true));
 	EXPECT_FALSE(m_Git.BranchTagExists(_T("origin/master"), true));
@@ -340,7 +347,17 @@ TEST_P(CBasicGitWithTestRepoFixture, BranchTagExists_IsBranchTagNameUnique)
 	EXPECT_TRUE(m_Git.IsBranchTagNameUnique(_T("also-signed")));
 }
 
-TEST_P(CBasicGitWithTestRepoFixture, GetFullRefName)
+TEST_P(CBasicGitWithTestRepoFixture, BranchTagExists_IsBranchTagNameUnique)
+{
+	BranchTagExists_IsBranchTagNameUnique(m_Git);
+}
+
+TEST_P(CBasicGitWithTestRepoBareFixture, BranchTagExists_IsBranchTagNameUnique)
+{
+	BranchTagExists_IsBranchTagNameUnique(m_Git);
+}
+
+static void GetFullRefName(CGit& m_Git)
 {
 	EXPECT_STREQ(_T(""), m_Git.GetFullRefName(_T("does_not_exist")));
 	EXPECT_STREQ(_T("refs/heads/master"), m_Git.GetFullRefName(_T("master")));
@@ -361,10 +378,21 @@ TEST_P(CBasicGitWithTestRepoFixture, GetFullRefName)
 	EXPECT_EQ(0, m_Git.Run(_T("git.exe branch origin/master HEAD~2"), &output, CP_UTF8));
 	EXPECT_TRUE(output.IsEmpty());
 	EXPECT_STREQ(_T(""), m_Git.GetFullRefName(_T("origin/master")));
+}
 
+TEST_P(CBasicGitWithTestRepoFixture, GetFullRefName)
+{
+	GetFullRefName(m_Git);
+
+	CString output;
 	EXPECT_EQ(0, m_Git.Run(_T("git.exe checkout --orphan orphanic"), &output, CP_UTF8));
 	EXPECT_FALSE(output.IsEmpty());
 	EXPECT_STREQ(_T(""), m_Git.GetFullRefName(_T("orphanic")));
+}
+
+TEST_P(CBasicGitWithTestRepoBareFixture, GetFullRefName)
+{
+	GetFullRefName(m_Git);
 }
 
 TEST_P(CBasicGitWithEmptyRepositoryFixture, GetRemoteTrackedBranch)
@@ -383,7 +411,7 @@ TEST_P(CBasicGitWithEmptyRepositoryFixture, GetRemoteTrackedBranch)
 	EXPECT_TRUE(branch.IsEmpty());
 }
 
-TEST_P(CBasicGitWithTestRepoFixture, GetRemoteTrackedBranch)
+static void GetRemoteTrackedBranch(CGit& m_Git)
 {
 	CString remote, branch;
 	m_Git.GetRemoteTrackedBranchForHEAD(remote, branch);
@@ -403,7 +431,17 @@ TEST_P(CBasicGitWithTestRepoFixture, GetRemoteTrackedBranch)
 	EXPECT_TRUE(branch.IsEmpty());
 }
 
-TEST_P(CBasicGitWithTestRepoFixture, CanParseRev)
+TEST_P(CBasicGitWithTestRepoFixture, GetRemoteTrackedBranch)
+{
+	GetRemoteTrackedBranch(m_Git);
+}
+
+TEST_P(CBasicGitWithTestRepoBareFixture, GetRemoteTrackedBranch)
+{
+	GetRemoteTrackedBranch(m_Git);
+}
+
+static void CanParseRev(CGit& m_Git)
 {
 	EXPECT_TRUE(m_Git.CanParseRev(_T("")));
 	EXPECT_TRUE(m_Git.CanParseRev(_T("HEAD")));
@@ -423,6 +461,11 @@ TEST_P(CBasicGitWithTestRepoFixture, CanParseRev)
 	EXPECT_TRUE(m_Git.CanParseRev(_T("all-files-signed^{}")));
 
 	EXPECT_FALSE(m_Git.CanParseRev(_T("orphanic")));
+}
+
+TEST_P(CBasicGitWithTestRepoFixture, CanParseRev)
+{
+	CanParseRev(m_Git);
 
 	CString output;
 	EXPECT_EQ(0, m_Git.Run(_T("git.exe checkout --orphan orphanic"), &output, CP_UTF8));
@@ -433,7 +476,12 @@ TEST_P(CBasicGitWithTestRepoFixture, CanParseRev)
 	EXPECT_TRUE(m_Git.CanParseRev(_T("master")));
 }
 
-TEST_P(CBasicGitWithTestRepoFixture, FETCHHEAD)
+TEST_P(CBasicGitWithTestRepoBareFixture, CanParseRev)
+{
+	CanParseRev(m_Git);
+}
+
+static void FETCHHEAD(CGit& m_Git, bool isBare)
 {
 	STRING_VECTOR list;
 	EXPECT_EQ(0, m_Git.GetBranchList(list, nullptr));
@@ -454,7 +502,7 @@ TEST_P(CBasicGitWithTestRepoFixture, FETCHHEAD)
 	CGitHash hash;
 	EXPECT_NE(0, m_Git.GetHash(hash, _T("FETCH_HEAD")));
 
-	CString testFile = m_Dir.GetTempDir() + L"\\.git\\FETCH_HEAD";
+	CString testFile = m_Git.m_CurrentDir + L"\\.git\\FETCH_HEAD";
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)testFile, L"b9ef30183497cdad5c30b88d32dc1bed7951dfeb		branch 'master' of https://code.google.com/p/tortoisegit\n737878a4e2eabfa4fab580867c2b060c70999d31	not-for-merge	branch 'extend_hooks' of https://code.google.com/p/tortoisegit\n"));
 
 	list.clear();
@@ -462,11 +510,12 @@ TEST_P(CBasicGitWithTestRepoFixture, FETCHHEAD)
 	EXPECT_EQ(4, list.size());
 	list.clear();
 	EXPECT_EQ(0, m_Git.GetBranchList(list, nullptr, CGit::BRANCH_LOCAL_F));
-	EXPECT_EQ(5, list.size());
+	EXPECT_EQ(isBare ? 4 : 5, list.size());
 
 	EXPECT_STREQ(_T("master"), m_Git.FixBranchName(_T("master")));
 	EXPECT_STREQ(_T("non-existing"), m_Git.FixBranchName(_T("non-existing")));
-	EXPECT_STREQ(_T("b9ef30183497cdad5c30b88d32dc1bed7951dfeb"), m_Git.FixBranchName(_T("FETCH_HEAD")));
+	if (!isBare)
+		EXPECT_STREQ(_T("b9ef30183497cdad5c30b88d32dc1bed7951dfeb"), m_Git.FixBranchName(_T("FETCH_HEAD")));
 	branch = _T("HEAD");
 	EXPECT_STREQ(_T("HEAD"), m_Git.FixBranchName_Mod(branch));
 	EXPECT_STREQ(_T("HEAD"), branch);
@@ -476,11 +525,14 @@ TEST_P(CBasicGitWithTestRepoFixture, FETCHHEAD)
 	branch = _T("non-existing");
 	EXPECT_STREQ(_T("non-existing"), m_Git.FixBranchName_Mod(branch));
 	EXPECT_STREQ(_T("non-existing"), branch);
-	branch = _T("FETCH_HEAD");
-	EXPECT_STREQ(_T("b9ef30183497cdad5c30b88d32dc1bed7951dfeb"), m_Git.FixBranchName_Mod(branch));
-	EXPECT_STREQ(_T("b9ef30183497cdad5c30b88d32dc1bed7951dfeb"), branch);
-	EXPECT_EQ(0, m_Git.GetHash(hash, _T("FETCH_HEAD")));
-	EXPECT_STREQ(_T("b9ef30183497cdad5c30b88d32dc1bed7951dfeb"), hash.ToString());
+	if (!isBare)
+	{
+		branch = _T("FETCH_HEAD");
+		EXPECT_STREQ(_T("b9ef30183497cdad5c30b88d32dc1bed7951dfeb"), m_Git.FixBranchName_Mod(branch));
+		EXPECT_STREQ(_T("b9ef30183497cdad5c30b88d32dc1bed7951dfeb"), branch);
+		EXPECT_EQ(0, m_Git.GetHash(hash, _T("FETCH_HEAD")));
+		EXPECT_STREQ(_T("b9ef30183497cdad5c30b88d32dc1bed7951dfeb"), hash.ToString());
+	}
 
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)testFile, L"737878a4e2eabfa4fab580867c2b060c70999d31	not-for-merge	branch 'extend_hooks' of https://code.google.com/p/tortoisegit\nb9ef30183497cdad5c30b88d32dc1bed7951dfeb		branch 'master' of https://code.google.com/p/tortoisegit\n"));
 
@@ -489,15 +541,28 @@ TEST_P(CBasicGitWithTestRepoFixture, FETCHHEAD)
 	EXPECT_EQ(4, list.size());
 	list.clear();
 	EXPECT_EQ(0, m_Git.GetBranchList(list, nullptr, CGit::BRANCH_LOCAL_F));
-	EXPECT_EQ(5, list.size());
+	EXPECT_EQ(isBare ? 4 : 5, list.size());
 
-	EXPECT_STREQ(_T("b9ef30183497cdad5c30b88d32dc1bed7951dfeb"), m_Git.FixBranchName(_T("FETCH_HEAD")));
-	branch = _T("FETCH_HEAD");
-	EXPECT_STREQ(_T("b9ef30183497cdad5c30b88d32dc1bed7951dfeb"), m_Git.FixBranchName_Mod(branch));
-	EXPECT_STREQ(_T("b9ef30183497cdad5c30b88d32dc1bed7951dfeb"), branch);
-	// libgit2 fails here
-	// EXPECT_EQ(0, m_Git.GetHash(hash, _T("FETCH_HEAD")));
-	// EXPECT_STREQ(_T("b9ef30183497cdad5c30b88d32dc1bed7951dfeb"), hash.ToString());
+	if (!isBare)
+	{
+		EXPECT_STREQ(_T("b9ef30183497cdad5c30b88d32dc1bed7951dfeb"), m_Git.FixBranchName(_T("FETCH_HEAD")));
+		branch = _T("FETCH_HEAD");
+		EXPECT_STREQ(_T("b9ef30183497cdad5c30b88d32dc1bed7951dfeb"), m_Git.FixBranchName_Mod(branch));
+		EXPECT_STREQ(_T("b9ef30183497cdad5c30b88d32dc1bed7951dfeb"), branch);
+		// libgit2 fails here
+		// EXPECT_EQ(0, m_Git.GetHash(hash, _T("FETCH_HEAD")));
+		// EXPECT_STREQ(_T("b9ef30183497cdad5c30b88d32dc1bed7951dfeb"), hash.ToString());
+	}
+}
+
+TEST_P(CBasicGitWithTestRepoFixture, FETCHHEAD)
+{
+	FETCHHEAD(m_Git, false);
+}
+
+TEST_P(CBasicGitWithTestRepoBareFixture, FETCHHEAD)
+{
+	FETCHHEAD(m_Git, true);
 }
 
 TEST_P(CBasicGitWithTestRepoFixture, IsFastForward)
@@ -510,7 +575,7 @@ TEST_P(CBasicGitWithTestRepoFixture, IsFastForward)
 	EXPECT_STREQ(_T("b02add66f48814a73aa2f0876d6bbc8662d6a9a8"), commonAncestor.ToString());
 }
 
-TEST_P(CBasicGitWithTestRepoFixture, GetHash)
+static void GetHash(CGit& m_Git)
 {
 	CGitHash hash;
 	EXPECT_EQ(0, m_Git.GetHash(hash, _T("HEAD")));
@@ -533,6 +598,16 @@ TEST_P(CBasicGitWithTestRepoFixture, GetHash)
 	EXPECT_STREQ(_T("313a41bc88a527289c87d7531802ab484715974f"), hash.ToString());
 
 	EXPECT_NE(0, m_Git.GetHash(hash, _T("non-existing")));
+}
+
+TEST_P(CBasicGitWithTestRepoFixture, GetHash)
+{
+	GetHash(m_Git);
+}
+
+TEST_P(CBasicGitWithTestRepoBareFixture, GetHash)
+{
+	GetHash(m_Git);
 }
 
 TEST_P(CBasicGitWithEmptyRepositoryFixture, GetHash_EmptyRepo)
@@ -571,7 +646,7 @@ TEST_P(CBasicGitWithEmptyRepositoryFixture, GetEmptyBranchesTagsRefs)
 	EXPECT_TRUE(remotes.empty());
 }
 
-TEST_P(CBasicGitWithTestRepoFixture, GetBranchesTagsRefs)
+static void GetBranchesTagsRefs(CGit& m_Git, config testConfig)
 {
 	STRING_VECTOR branches;
 	int current = -2;
@@ -623,7 +698,7 @@ TEST_P(CBasicGitWithTestRepoFixture, GetBranchesTagsRefs)
 
 	MAP_HASH_NAME map;
 	EXPECT_EQ(0, m_Git.GetMapHashToFriendName(map));
-	if (GetParam() == GIT_CLI)
+	if (testConfig == GIT_CLI)
 		ASSERT_EQ(10, map.size()); // also contains the undereferenced tags with hashes
 	else
 		ASSERT_EQ(8, map.size());
@@ -728,165 +803,14 @@ TEST_P(CBasicGitWithTestRepoFixture, GetBranchesTagsRefs)
 	EXPECT_EQ(5, refs.size());
 }
 
-TEST_P(CBasicGitWithTestRepoFixture, GetBranchesTagsRefs_Bare)
+TEST_P(CBasicGitWithTestRepoFixture, GetBranchesTagsRefs)
 {
-	m_Git.m_CurrentDir += _T("\\.git");
-	m_Git.SetConfigValue(L"core.bare", "true");
+	GetBranchesTagsRefs(m_Git, GetParam());
+}
 
-	// 1:1 copied from CBasicGitWithTestRepoFixture_GetBranchesTagsRefs
-	STRING_VECTOR branches;
-	int current = -2;
-	EXPECT_EQ(0, m_Git.GetBranchList(branches, &current));
-	ASSERT_EQ(4, branches.size());
-	EXPECT_EQ(1, current);
-	EXPECT_STREQ(_T("forconflict"), branches[0]);
-	EXPECT_STREQ(_T("master"), branches[1]);
-	EXPECT_STREQ(_T("simple-conflict"), branches[2]);
-	EXPECT_STREQ(_T("subdir/branch"), branches[3]);
-
-	branches.clear();
-	current = -2;
-	EXPECT_EQ(0, m_Git.GetBranchList(branches, &current, CGit::BRANCH_ALL));
-	ASSERT_EQ(5, branches.size());
-	EXPECT_EQ(1, current);
-	EXPECT_STREQ(_T("forconflict"), branches[0]);
-	EXPECT_STREQ(_T("master"), branches[1]);
-	EXPECT_STREQ(_T("simple-conflict"), branches[2]);
-	EXPECT_STREQ(_T("subdir/branch"), branches[3]);
-	EXPECT_STREQ(_T("remotes/origin/master"), branches[4]);
-
-	branches.clear();
-	current = -2;
-	EXPECT_EQ(0, m_Git.GetBranchList(branches, &current, CGit::BRANCH_REMOTE));
-	ASSERT_EQ(1, branches.size());
-	EXPECT_EQ(-2, current); // not touched
-	EXPECT_STREQ(_T("remotes/origin/master"), branches[0]);
-
-	STRING_VECTOR tags;
-	EXPECT_EQ(0, m_Git.GetTagList(tags));
-	ASSERT_EQ(3, tags.size());
-	EXPECT_STREQ(_T("all-files-signed"), tags[0]);
-	EXPECT_STREQ(_T("also-signed"), tags[1]);
-	EXPECT_STREQ(_T("normal-tag"), tags[2]);
-
-	STRING_VECTOR refs;
-	EXPECT_EQ(0, m_Git.GetRefList(refs));
-	ASSERT_EQ(9, refs.size());
-	EXPECT_STREQ(_T("refs/heads/forconflict"), refs[0]);
-	EXPECT_STREQ(_T("refs/heads/master"), refs[1]);
-	EXPECT_STREQ(_T("refs/heads/simple-conflict"), refs[2]);
-	EXPECT_STREQ(_T("refs/heads/subdir/branch"), refs[3]);
-	EXPECT_STREQ(_T("refs/remotes/origin/master"), refs[4]);
-	EXPECT_STREQ(_T("refs/stash"), refs[5]);
-	EXPECT_STREQ(_T("refs/tags/all-files-signed"), refs[6]);
-	EXPECT_STREQ(_T("refs/tags/also-signed"), refs[7]);
-	EXPECT_STREQ(_T("refs/tags/normal-tag"), refs[8]);
-
-	MAP_HASH_NAME map;
-	EXPECT_EQ(0, m_Git.GetMapHashToFriendName(map));
-	if (GetParam() == GIT_CLI)
-		ASSERT_EQ(10, map.size()); // also contains the undereferenced tags with hashes
-	else
-		ASSERT_EQ(8, map.size());
-	ASSERT_EQ(1, map[CGitHash(L"8d1ebbcc7eeb63af10ff8bcf7712afb9fcc90b8a")].size());
-	EXPECT_STREQ(_T("refs/heads/subdir/branch"), map[CGitHash(L"8d1ebbcc7eeb63af10ff8bcf7712afb9fcc90b8a")][0]);
-	ASSERT_EQ(1, map[CGitHash(L"18da7c332dcad0f37f9977d9176dce0b0c66f3eb")].size());
-	EXPECT_STREQ(_T("refs/stash"), map[CGitHash(L"18da7c332dcad0f37f9977d9176dce0b0c66f3eb")][0]);
-	ASSERT_EQ(1, map[CGitHash(L"c5b89de0335fd674e2e421ac4543098cb2f22cde")].size());
-	EXPECT_STREQ(_T("refs/heads/simple-conflict"), map[CGitHash(L"c5b89de0335fd674e2e421ac4543098cb2f22cde")][0]);
-	ASSERT_EQ(1, map[CGitHash(L"10385764a4d42d7428bbeb245015f8f338fc1e40")].size());
-	EXPECT_STREQ(_T("refs/heads/forconflict"), map[CGitHash(L"10385764a4d42d7428bbeb245015f8f338fc1e40")][0]);
-	ASSERT_EQ(2, map[CGitHash(L"49ecdfff36bfe2b9b499b33e5034f427e2fa54dd")].size());
-	EXPECT_STREQ(_T("refs/heads/master"), map[CGitHash(L"49ecdfff36bfe2b9b499b33e5034f427e2fa54dd")][0]);
-	EXPECT_STREQ(_T("refs/tags/also-signed^{}"), map[CGitHash(L"49ecdfff36bfe2b9b499b33e5034f427e2fa54dd")][1]);
-	ASSERT_EQ(1, map[CGitHash(L"b9ef30183497cdad5c30b88d32dc1bed7951dfeb")].size());//
-	EXPECT_STREQ(_T("refs/tags/normal-tag"), map[CGitHash(L"b9ef30183497cdad5c30b88d32dc1bed7951dfeb")][0]);
-	ASSERT_EQ(1, map[CGitHash(L"a9d53b535cb49640a6099860ac4999f5a0857b91")].size());
-	EXPECT_STREQ(_T("refs/remotes/origin/master"), map[CGitHash(L"a9d53b535cb49640a6099860ac4999f5a0857b91")][0]);
-	ASSERT_EQ(1, map[CGitHash(L"313a41bc88a527289c87d7531802ab484715974f")].size());
-	EXPECT_STREQ(_T("refs/tags/all-files-signed^{}"), map[CGitHash(L"313a41bc88a527289c87d7531802ab484715974f")][0]);
-
-	STRING_VECTOR remotes;
-	EXPECT_EQ(0, m_Git.GetRemoteList(remotes));
-	ASSERT_EQ(1, remotes.size());
-	EXPECT_STREQ(_T("origin"), remotes[0]);
-
-	EXPECT_EQ(-1, m_Git.DeleteRef(_T("refs/tags/gibbednet")));
-	branches.clear();
-	EXPECT_EQ(0, m_Git.GetBranchList(branches, nullptr, CGit::BRANCH_ALL));
-	EXPECT_EQ(5, branches.size());
-	tags.clear();
-	EXPECT_EQ(0, m_Git.GetTagList(tags));
-	EXPECT_EQ(3, tags.size());
-	refs.clear();
-	EXPECT_EQ(0, m_Git.GetRefList(refs));
-	EXPECT_EQ(9, refs.size());
-
-	EXPECT_EQ(-1, m_Git.DeleteRef(_T("refs/heads/gibbednet")));
-	branches.clear();
-	EXPECT_EQ(0, m_Git.GetBranchList(branches, nullptr, CGit::BRANCH_ALL));
-	EXPECT_EQ(5, branches.size());
-	tags.clear();
-	EXPECT_EQ(0, m_Git.GetTagList(tags));
-	EXPECT_EQ(3, tags.size());
-	refs.clear();
-	EXPECT_EQ(0, m_Git.GetRefList(refs));
-	EXPECT_EQ(9, refs.size());
-
-	EXPECT_EQ(-1, m_Git.DeleteRef(_T("refs/remotes/origin/gibbednet")));
-	branches.clear();
-	EXPECT_EQ(0, m_Git.GetBranchList(branches, nullptr, CGit::BRANCH_ALL));
-	EXPECT_EQ(5, branches.size());
-	tags.clear();
-	EXPECT_EQ(0, m_Git.GetTagList(tags));
-	EXPECT_EQ(3, tags.size());
-	refs.clear();
-	EXPECT_EQ(0, m_Git.GetRefList(refs));
-	EXPECT_EQ(9, refs.size());
-
-	EXPECT_EQ(0, m_Git.DeleteRef(_T("refs/tags/normal-tag")));
-	branches.clear();
-	EXPECT_EQ(0, m_Git.GetBranchList(branches, nullptr, CGit::BRANCH_ALL));
-	EXPECT_EQ(5, branches.size());
-	tags.clear();
-	EXPECT_EQ(0, m_Git.GetTagList(tags));
-	EXPECT_EQ(2, tags.size());
-	refs.clear();
-	EXPECT_EQ(0, m_Git.GetRefList(refs));
-	EXPECT_EQ(8, refs.size());
-
-	EXPECT_EQ(0, m_Git.DeleteRef(_T("refs/tags/all-files-signed^{}")));
-	branches.clear();
-	EXPECT_EQ(0, m_Git.GetBranchList(branches, nullptr, CGit::BRANCH_ALL));
-	EXPECT_EQ(5, branches.size());
-	tags.clear();
-	EXPECT_EQ(0, m_Git.GetTagList(tags));
-	EXPECT_EQ(1, tags.size());
-	refs.clear();
-	EXPECT_EQ(0, m_Git.GetRefList(refs));
-	EXPECT_EQ(7, refs.size());
-
-	EXPECT_EQ(0, m_Git.DeleteRef(_T("refs/heads/subdir/branch")));
-	branches.clear();
-	EXPECT_EQ(0, m_Git.GetBranchList(branches, nullptr, CGit::BRANCH_ALL));
-	EXPECT_EQ(4, branches.size());
-	tags.clear();
-	EXPECT_EQ(0, m_Git.GetTagList(tags));
-	EXPECT_EQ(1, tags.size());
-	refs.clear();
-	EXPECT_EQ(0, m_Git.GetRefList(refs));
-	EXPECT_EQ(6, refs.size());
-
-	EXPECT_EQ(0, m_Git.DeleteRef(_T("refs/remotes/origin/master")));
-	branches.clear();
-	EXPECT_EQ(0, m_Git.GetBranchList(branches, nullptr, CGit::BRANCH_ALL));
-	EXPECT_EQ(3, branches.size());
-	tags.clear();
-	EXPECT_EQ(0, m_Git.GetTagList(tags));
-	EXPECT_EQ(1, tags.size());
-	refs.clear();
-	EXPECT_EQ(0, m_Git.GetRefList(refs));
-	EXPECT_EQ(5, refs.size());
+TEST_P(CBasicGitWithTestRepoBareFixture, GetBranchesTagsRefs)
+{
+	GetBranchesTagsRefs(m_Git, GetParam());
 }
 
 TEST_P(CBasicGitWithTestRepoFixture, GetBranchList_orphan)

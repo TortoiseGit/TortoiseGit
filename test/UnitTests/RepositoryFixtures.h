@@ -69,6 +69,11 @@ public:
 class CBasicGitWithTestRepoFixture : public CBasicGitFixture
 {
 protected:
+	CBasicGitWithTestRepoFixture()
+	{
+		prefix = _T("\\.git");
+	}
+
 	virtual void SetUp()
 	{
 		CBasicGitFixture::SetUp();
@@ -87,10 +92,28 @@ protected:
 		{
 			CString relpath = filepath.Mid(repoDir.GetLength());
 			if (isDir)
-				EXPECT_TRUE(CreateDirectory(m_Dir.GetTempDir() + _T("\\.git") + relpath, nullptr));
+				EXPECT_TRUE(CreateDirectory(m_Dir.GetTempDir() + prefix + relpath, nullptr));
 			else
-				EXPECT_TRUE(CopyFile(filepath, m_Dir.GetTempDir() + _T("\\.git") + relpath, false));
+				EXPECT_TRUE(CopyFile(filepath, m_Dir.GetTempDir() + prefix + relpath, false));
 		}
+	}
+	CString prefix;
+};
+
+class CBasicGitWithTestRepoBareFixture : public CBasicGitWithTestRepoFixture
+{
+protected:
+	virtual void SetUp()
+	{
+		prefix.Empty();
+		CBasicGitWithTestRepoFixture::SetUp();
+
+		DeleteFile(m_Dir.GetTempDir() + _T("\\index"));
+		CString configFile = m_Dir.GetTempDir() + _T("\\config");
+		CString text;
+		ASSERT_TRUE(CStringUtils::ReadStringFromTextFile(configFile, text));
+		EXPECT_EQ(1, text.Replace(_T("bare = false"), _T("bare = true")));
+		EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)configFile, (LPCTSTR)text));
 	}
 };
 
