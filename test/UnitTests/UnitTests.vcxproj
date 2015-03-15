@@ -87,6 +87,7 @@
     <ClInclude Include="..\..\src\Utils\StringUtils.h" />
     <ClInclude Include="..\..\src\Utils\UnicodeUtils.h" />
     <ClInclude Include="AutoTempDir.h" />
+    <ClInclude Include="RepositoryFixtures.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>

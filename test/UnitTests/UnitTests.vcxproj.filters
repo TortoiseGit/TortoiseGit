@@ -95,6 +95,9 @@
     <ClInclude Include="..\..\src\Utils\DirFileEnum.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="RepositoryFixtures.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
