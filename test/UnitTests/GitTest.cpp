@@ -709,8 +709,8 @@ static void GetBranchesTagsRefs(CGit& m_Git, config testConfig)
 
 	ASSERT_EQ(1, map[CGitHash(L"7c3cbfe13a929d2291a574dca45e4fd2d2ac1aa6")].size());
 	EXPECT_STREQ(_T("refs/heads/master"), map[CGitHash(L"7c3cbfe13a929d2291a574dca45e4fd2d2ac1aa6")][0]);
-	ASSERT_EQ(1, map[CGitHash(L"8d1ebbcc7eeb63af10ff8bcf7712afb9fcc90b8a")].size());
-	EXPECT_STREQ(_T("refs/heads/subdir/branch"), map[CGitHash(L"8d1ebbcc7eeb63af10ff8bcf7712afb9fcc90b8a")][0]);
+	ASSERT_EQ(1, map[CGitHash(L"4c5c93d2a0b368bc4570d5ec02ab03b9c4334d44")].size());
+	EXPECT_STREQ(_T("refs/heads/subdir/branch"), map[CGitHash(L"4c5c93d2a0b368bc4570d5ec02ab03b9c4334d44")][0]);
 	ASSERT_EQ(1, map[CGitHash(L"5e702e1712aa6f8cd8e0328a87be006f3a923710")].size());
 	EXPECT_STREQ(_T("refs/notes/commits"), map[CGitHash(L"5e702e1712aa6f8cd8e0328a87be006f3a923710")][0]);
 	ASSERT_EQ(1, map[CGitHash(L"18da7c332dcad0f37f9977d9176dce0b0c66f3eb")].size());

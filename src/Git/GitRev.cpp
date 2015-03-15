@@ -37,6 +37,8 @@ GitRev::~GitRev(void)
 void GitRev::Clear()
 {
 	this->m_ParentHash.clear();
+	m_AuthorName.Empty();
+	m_AuthorEmail.Empty();
 	m_CommitterName.Empty();
 	m_CommitterEmail.Empty();
 	m_Body.Empty();

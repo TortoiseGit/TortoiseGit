@@ -98,6 +98,9 @@
     <ClInclude Include="RepositoryFixtures.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\Git\GitRevLoglist.h">
+      <Filter>Git</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -179,6 +182,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GitByteArrayTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GitRevTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Git\GitRevLoglist.cpp">
+      <Filter>Git</Filter>
+    </ClCompile>
+    <ClCompile Include="GitRevLoglistTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
