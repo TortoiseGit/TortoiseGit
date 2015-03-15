@@ -83,9 +83,12 @@ class CGit
 private:
 	CString		gitLastErr;
 protected:
-	bool m_IsGitDllInited;
 	GIT_DIFF m_GitDiff;
 	GIT_DIFF m_GitSimpleListDiff;
+#ifdef GTEST_INCLUDE_GTEST_GTEST_H_
+public:
+#endif
+	bool m_IsGitDllInited;
 public:
 	CComCriticalSection			m_critGitDllSec;
 	bool	m_IsUseGitDLL;

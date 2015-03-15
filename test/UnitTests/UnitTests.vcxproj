@@ -69,6 +69,7 @@
     <ClInclude Include="..\..\src\Git\GitHash.h" />
     <ClInclude Include="..\..\src\Git\gitindex.h" />
     <ClInclude Include="..\..\src\Git\GitRev.h" />
+    <ClInclude Include="..\..\src\Git\GitRevLoglist.h" />
     <ClInclude Include="..\..\src\Git\GitStatus.h" />
     <ClInclude Include="..\..\src\Git\gittype.h" />
     <ClInclude Include="..\..\src\Git\MassiveGitTaskBase.h" />
@@ -95,6 +96,7 @@
     <ClCompile Include="..\..\src\Git\GitAdminDir.cpp" />
     <ClCompile Include="..\..\src\Git\GitIndex.cpp" />
     <ClCompile Include="..\..\src\Git\GitRev.cpp" />
+    <ClCompile Include="..\..\src\Git\GitRevLoglist.cpp" />
     <ClCompile Include="..\..\src\Git\GitStatus.cpp" />
     <ClCompile Include="..\..\src\Git\MassiveGitTaskBase.cpp" />
     <ClCompile Include="..\..\src\Git\TGitPath.cpp" />
@@ -111,6 +113,8 @@
     <ClCompile Include="AutoTempDir.cpp" />
     <ClCompile Include="GitAdminDirTest.cpp" />
     <ClCompile Include="GitByteArrayTest.cpp" />
+    <ClCompile Include="GitRevLoglistTest.cpp" />
+    <ClCompile Include="GitRevTest.cpp" />
     <ClCompile Include="GitTest.cpp" />
     <ClCompile Include="PathUtilsTest.cpp" />
     <ClCompile Include="ProjectPropertiesTest.cpp" />

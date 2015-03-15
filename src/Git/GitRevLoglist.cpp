@@ -53,9 +53,16 @@ void GitRevLoglist::Clear()
 	GitRev::Clear();
 	m_Action = 0;
 	m_Files.Clear();
+	m_UnRevFiles.Clear();
 	m_Ref.Empty();
 	m_RefAction.Empty();
 	m_Mark = 0;
+	m_IsFull = FALSE;
+	m_IsUpdateing = FALSE;
+	m_IsCommitParsed = FALSE;
+	m_IsDiffFiles = FALSE;
+	m_CallDiffAsync = nullptr;
+	m_IsSimpleListReady = FALSE;
 }
 
 
@@ -217,6 +224,8 @@ int GitRevLoglist::SafeFetchFullInfo(CGit* git)
 			if (git_diff_find_similar(diff, nullptr) < 0)
 				return-1;
 
+			const git_diff_delta* lastDelta = nullptr;
+			int oldAction = 0;
 			size_t deltas = git_diff_num_deltas(diff);
 			for (size_t i = 0; i < deltas; ++i)
 			{
@@ -226,14 +235,26 @@ int GitRevLoglist::SafeFetchFullInfo(CGit* git)
 
 				const git_diff_delta* delta = git_patch_get_delta(patch);
 
+				if (lastDelta && strcmp(lastDelta->new_file.path, delta->new_file.path) == 0 && (lastDelta->status == GIT_DELTA_DELETED && delta->status == GIT_DELTA_ADDED || delta->status == GIT_DELTA_DELETED && lastDelta->status == GIT_DELTA_ADDED))
+				{
+					CTGitPath path = m_Files[m_Files.GetCount() - 1];
+					m_Files.RemoveItem(path);
+					path.m_StatAdd = _T("-");
+					path.m_StatDel = _T("-");
+					path.m_Action = CTGitPath::LOGACTIONS_MODIFIED;
+					m_Action = oldAction | CTGitPath::LOGACTIONS_MODIFIED;
+					m_Files.AddPath(path);
+					lastDelta = nullptr;
+					continue;
+				}
+				lastDelta = delta;
+
 				CString newname = CUnicodeUtils::GetUnicode(delta->new_file.path);
 				CString oldname = CUnicodeUtils::GetUnicode(delta->old_file.path);
 
-				if (newname == oldname)
-					oldname.Empty();
-
 				CTGitPath path;
 				path.SetFromGit(newname, &oldname);
+				oldAction = m_Action;
 				m_Action |= path.ParserAction(delta->status);
 				path.m_ParentNo = parentId;
 
