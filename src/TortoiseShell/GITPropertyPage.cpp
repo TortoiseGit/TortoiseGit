@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
-// Copyright (C) 2008-2014 - TortoiseGit
+// Copyright (C) 2008-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -407,7 +407,6 @@ static git_commit* FindFileRecentCommit(git_repository* repository, const CStrin
 	CAutoCommit commit;
 	while (!git_revwalk_next(&oid, walk))
 	{
-		commit.Free();
 		if (git_commit_lookup(commit.GetPointer(), repository, &oid))
 			return nullptr;
 

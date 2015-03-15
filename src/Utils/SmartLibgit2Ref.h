@@ -62,8 +62,12 @@ public:
 		return m_Ref;
 	}
 
+	/**
+	 * Free the wrapped object and return a pointer to the wrapped object ReferenceType*
+	 */
 	ReferenceType** GetPointer()
 	{
+		CleanUp();
 		return &m_Ref;
 	}
 
