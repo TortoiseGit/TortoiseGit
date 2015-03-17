@@ -82,12 +82,7 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 
 	this->m_critSec.Init();
 	m_critSec_AsyncDiff.Init();
-	m_wcRev.m_CommitHash.Empty();
-	m_wcRev.GetSubject() = CString(MAKEINTRESOURCE(IDS_LOG_WORKINGDIRCHANGES));
-	m_wcRev.m_ParentHash.clear();
-	m_wcRev.m_Mark=_T('-');
-	m_wcRev.m_IsUpdateing=FALSE;
-	m_wcRev.m_IsFull = TRUE;
+	ResetWcRev(false);
 
 	m_hModifiedIcon	= (HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_ACTIONMODIFIED), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE);
 	m_hReplacedIcon	= (HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_ACTIONREPLACED), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE);
