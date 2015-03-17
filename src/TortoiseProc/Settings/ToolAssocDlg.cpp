@@ -20,7 +20,6 @@
 #include "TortoiseProc.h"
 #include "ToolAssocDlg.h"
 #include "AppUtils.h"
-#include "StringUtils.h"
 
 IMPLEMENT_DYNAMIC(CToolAssocDlg, CDialog)
 CToolAssocDlg::CToolAssocDlg(const CString& type, bool add, CWnd* pParent /*=NULL*/)

@@ -20,6 +20,7 @@
 #include "FetchCommand.h"
 #include "AppUtils.h"
 #include "MessageBox.h"
+#include "GitAdminDir.h"
 
 bool FetchCommand::Execute()
 {

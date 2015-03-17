@@ -19,7 +19,7 @@
 //
 #pragma once
 #include "Git.h"
-#include "GitRev.h"
+#include "GitRevLoglist.h"
 #include "GitStatus.h"
 #include "ILogReceiver.h"
 #include "lanes.h"

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2014 - TortoiseGit
+// Copyright (C) 2008-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -27,7 +27,7 @@
 #include "MergeDlg.h"
 #include "AppUtils.h"
 #include "HistoryDlg.h"
-#include "Messagebox.h"
+
 // CMergeDlg dialog
 
 IMPLEMENT_DYNAMIC(CMergeDlg, CResizableStandAloneDialog)

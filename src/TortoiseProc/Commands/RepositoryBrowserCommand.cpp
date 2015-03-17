@@ -20,6 +20,7 @@
 #include "RepositoryBrowserCommand.h"
 #include "MessageBox.h"
 #include "RepositoryBrowser.h"
+#include "GitAdminDir.h"
 
 bool RepositoryBrowserCommand::Execute()
 {

@@ -25,8 +25,7 @@
 #include "SciEdit.h"
 #include "SplitterControl.h"
 #include "HistoryCombo.h"
-#include "GitLogList.h"
-#include "MenuButton.h"
+#include "Tooltip.h"
 #include "Win7.h"
 
 #define MSG_REBASE_UPDATE_UI	(WM_USER+151)

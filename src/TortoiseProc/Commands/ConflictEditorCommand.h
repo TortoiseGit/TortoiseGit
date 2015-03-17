@@ -19,8 +19,6 @@
 #pragma once
 #include "Command.h"
 
-//#include "SVNDiff.h"
-
 /**
  * \ingroup TortoiseProc
  * Starts the conflict editor tool.

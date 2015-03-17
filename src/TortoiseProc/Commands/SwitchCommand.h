@@ -19,8 +19,6 @@
 #pragma once
 #include "Command.h"
 
-#include "MessageBox.h"
-
 /**
  * \ingroup TortoiseProc
  * Switches the working copy to another part of the repository.

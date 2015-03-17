@@ -28,6 +28,9 @@
 
 #include "stdafx.h"
 #include "TortoiseProc.h"
+#include "Git.h"
+#include "GitHash.h"
+#include "TGitPath.h"
 #include "GitLogListBase.h"
 #include "UnicodeUtils.h"
 

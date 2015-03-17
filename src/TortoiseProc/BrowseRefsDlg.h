@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2014 - TortoiseGit
+// Copyright (C) 2009-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -18,12 +18,11 @@
 //
 #pragma once
 
-#include "Git.h"
 #include <map>
 #include "StandAloneDlg.h"
-#include "afxwin.h"
 #include "FilterEdit.h"
 #include "GitStatusListCtrl.h"
+#include "gittype.h"
 
 const int gPickRef_Head		= 1;
 const int gPickRef_Tag		= 2;

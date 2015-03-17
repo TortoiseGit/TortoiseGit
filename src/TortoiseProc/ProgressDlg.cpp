@@ -22,7 +22,6 @@
 #include "stdafx.h"
 #include "TortoiseProc.h"
 #include "ProgressDlg.h"
-#include "Git.h"
 #include "UnicodeUtils.h"
 #include "IconMenu.h"
 #include "LoglistCommonResource.h"

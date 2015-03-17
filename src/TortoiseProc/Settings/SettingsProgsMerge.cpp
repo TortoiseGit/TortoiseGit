@@ -19,7 +19,6 @@
 #include "stdafx.h"
 #include "TortoiseProc.h"
 #include "AppUtils.h"
-#include "StringUtils.h"
 #include "SettingsProgsMerge.h"
 
 

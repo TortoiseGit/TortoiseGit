@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2013 - TortoiseGit
+// Copyright (C) 2011-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -20,8 +20,6 @@
 #pragma once
 
 #include "HistoryCombo.h"
-#include "afxcmn.h"
-#include "afxwin.h"
 #include "StandAloneDlg.h"
 #include "LoglistCommonResource.h"
 #include "registry.h"

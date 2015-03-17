@@ -20,7 +20,6 @@
 #include "stdafx.h"
 #include "CommitCommand.h"
 #include "CommitDlg.h"
-//#include "SVNProgressDlg.h"
 #include "StringUtils.h"
 #include "Hooks.h"
 #include "MessageBox.h"

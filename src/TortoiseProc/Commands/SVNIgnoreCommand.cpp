@@ -19,12 +19,9 @@
 #include "stdafx.h"
 #include "SVNIgnoreCommand.h"
 
-#include "SysProgressDlg.h"
 #include "ProgressDlg.h"
 #include "MessageBox.h"
-#include "RenameDlg.h"
 #include "Git.h"
-#include "ShellUpdater.h"
 #include "SVNIgnoreTypeDlg.h"
 
 bool SVNIgnoreCommand::Execute()

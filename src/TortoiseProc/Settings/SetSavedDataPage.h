@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2011-2012, 2015 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -20,7 +21,6 @@
 #include "SettingsPropPage.h"
 #include "Tooltip.h"
 #include "registry.h"
-#include "afxwin.h"
 
 /**
  * \ingroup TortoiseProc

@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2011-2015 - TortoiseGit
 // Copyright (C) 2011-2013 Sven Strickroth, <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
@@ -22,6 +23,7 @@
 #include "StashSave.h"
 #include "AppUtils.h"
 #include "MessageBox.h"
+#include "Git.h"
 
 IMPLEMENT_DYNAMIC(CStashSaveDlg, CHorizontalResizableStandAloneDialog)
 

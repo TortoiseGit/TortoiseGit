@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2007-2008 - TortoiseGit
+// Copyright (C) 2009-2012, 2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -18,13 +18,6 @@
 //
 #include "stdafx.h"
 #include "SVNDCommitCommand.h"
-
-#include "SysProgressDlg.h"
-#include "ProgressDlg.h"
-#include "MessageBox.h"
-#include "RenameDlg.h"
-#include "Git.h"
-#include "ShellUpdater.h"
 #include "AppUtils.h"
 
 bool SVNDCommitCommand::Execute()

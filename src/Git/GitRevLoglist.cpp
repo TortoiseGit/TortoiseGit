@@ -18,7 +18,6 @@
 //
 
 #include "stdafx.h"
-#include <ATLComTime.h>
 #include "GitRevLoglist.h"
 #include "Git.h"
 #include "gitdll.h"

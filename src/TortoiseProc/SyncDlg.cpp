@@ -24,11 +24,11 @@
 #include "TortoiseProc.h"
 #include "SyncDlg.h"
 #include "AppUtils.h"
-#include "progressdlg.h"
+#include "ProgressDlg.h"
 #include "MessageBox.h"
 #include "ImportPatchDlg.h"
 #include "RebaseDlg.h"
-#include "hooks.h"
+#include "Hooks.h"
 #include "SmartHandle.h"
 #include "ProgressCommands/FetchProgressCommand.h"
 

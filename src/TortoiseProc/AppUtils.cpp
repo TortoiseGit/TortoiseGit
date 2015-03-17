@@ -21,7 +21,6 @@
 #include "TortoiseProc.h"
 #include "PathUtils.h"
 #include "AppUtils.h"
-#include "StringUtils.h"
 #include "MessageBox.h"
 #include "registry.h"
 #include "TGitPath.h"

@@ -21,7 +21,6 @@
 #include "UnicodeUtils.h"
 #include "GitAdminDir.h"
 #include "Git.h"
-#include <memory>
 
 GitAdminDir::GitAdminDir()
 {

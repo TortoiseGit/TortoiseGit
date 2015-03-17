@@ -23,7 +23,6 @@
 #include "AtlTime.h"
 #include "GitHash.h"
 #include "GitDll.h"
-#include "Git.h"
 
 typedef std::vector<CGitHash> GIT_REV_LIST;
 
@@ -40,10 +39,6 @@ typedef std::vector<CGitHash> GIT_REV_LIST;
 #define LOG_REV_COMMIT_FILE		_T('A')
 #define LOG_REV_ITEM_BEGIN		_T('B')
 #define LOG_REV_ITEM_END		_T('C')
-
-class CGit;
-extern CGit g_Git;
-class GitRev;
 
 class GitRev
 {

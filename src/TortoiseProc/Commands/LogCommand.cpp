@@ -22,6 +22,7 @@
 #include "StringUtils.h"
 #include "LogDlg.h"
 #include "MessageBox.h"
+#include "GitAdminDir.h"
 
 bool LogCommand::Execute()
 {

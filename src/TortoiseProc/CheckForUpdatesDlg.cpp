@@ -19,6 +19,7 @@
 //
 #include "stdafx.h"
 #include "TortoiseProc.h"
+#include "Git.h"
 #include "LoglistCommonResource.h"
 #include "..\version.h"
 #include "MessageBox.h"

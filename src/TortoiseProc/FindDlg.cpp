@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2013 - TortoiseGit
+// Copyright (C) 2011-2015 - TortoiseGit
 // Copyright (C) 2006 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
@@ -20,7 +20,6 @@
 #include "stdafx.h"
 #include "resource.h"
 #include "FindDlg.h"
-#include "registry.h"
 
 
 // CFindDlg dialog

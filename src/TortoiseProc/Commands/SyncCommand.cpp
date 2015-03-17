@@ -19,12 +19,10 @@
 //
 #include "stdafx.h"
 #include "TortoiseProc.h"
-#include "messagebox.h"
-#include "DirFileEnum.h"
+#include "MessageBox.h"
 #include "SyncDlg.h"
-//#include "SVNConfig.h"
-#include "registry.h"
 #include "SyncCommand.h"
+#include "GitAdminDir.h"
 
 bool SyncCommand::Execute()
 {

@@ -20,9 +20,8 @@
 #include "stdafx.h"
 #include "TortoiseProc.h"
 #include "StatGraphDlg.h"
-#include "gdiplus.h"
+#include <GdiPlus.h>
 #include "AppUtils.h"
-#include "StringUtils.h"
 #include "PathUtils.h"
 #include "MessageBox.h"
 #include "registry.h"

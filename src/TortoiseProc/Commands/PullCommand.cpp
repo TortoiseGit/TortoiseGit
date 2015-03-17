@@ -21,6 +21,7 @@
 #include "PullCommand.h"
 #include "MessageBox.h"
 #include "AppUtils.h"
+#include "GitAdminDir.h"
 
 bool PullCommand::Execute()
 {

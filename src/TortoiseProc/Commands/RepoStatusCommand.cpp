@@ -21,6 +21,7 @@
 #include "RepoStatusCommand.h"
 #include "MessageBox.h"
 #include "ChangedDlg.h"
+#include "GitAdminDir.h"
 
 bool RepoStatusCommand::Execute()
 {

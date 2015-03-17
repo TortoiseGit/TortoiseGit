@@ -20,7 +20,6 @@
 #include "stdafx.h"
 #include "TortoiseProc.h"
 #include "CommitDlg.h"
-#include "DirFileEnum.h"
 #include "MessageBox.h"
 #include "AppUtils.h"
 #include "PathUtils.h"

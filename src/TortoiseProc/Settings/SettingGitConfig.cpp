@@ -22,7 +22,6 @@
 #include "stdafx.h"
 #include "TortoiseProc.h"
 #include "SettingGitConfig.h"
-#include "Git.h"
 #include "Settings.h"
 #include "GitAdminDir.h"
 #include "AppUtils.h"

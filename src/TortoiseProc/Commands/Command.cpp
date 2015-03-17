@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2014 - TortoiseGit
+// Copyright (C) 2008-2015 - TortoiseGit
 // Copyright (C) 2007-2009 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -19,7 +19,7 @@
 //
 #include "stdafx.h"
 #include "Command.h"
-
+#include "MessageBox.h"
 #include "AboutCommand.h"
 #include "AutoTextTestCommand.h"
 #include "CommitCommand.h"

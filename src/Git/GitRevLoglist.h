@@ -18,9 +18,9 @@
 //
 
 #pragma once
-#include "Git.h"
 #include "GitRev.h"
 
+class CGit;
 extern CGit g_Git;
 class GitRevLoglist;
 class CLogCache;

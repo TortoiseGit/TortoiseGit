@@ -25,7 +25,6 @@
 #include "MessageBox.h"
 #include "registry.h"
 #include "AppUtils.h"
-#include "PathUtils.h"
 #include "StringUtils.h"
 #include "UnicodeUtils.h"
 #include "TempFile.h"

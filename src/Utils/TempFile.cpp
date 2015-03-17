@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2013 - TortoiseGit
+// Copyright (C) 2011-2013, 2015 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -22,6 +22,7 @@
 #include "TempFile.h"
 #include "TGitPath.h"
 #include "SmartHandle.h"
+#include "Git.h"
 
 CTempFiles::CTempFiles(void)
 {

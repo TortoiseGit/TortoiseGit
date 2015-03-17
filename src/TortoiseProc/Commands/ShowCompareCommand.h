@@ -19,8 +19,6 @@
 #pragma once
 #include "Command.h"
 
-#include "MessageBox.h"
-
 /**
  * \ingroup TortoiseProc
  * Shows the differences in various ways, according to the

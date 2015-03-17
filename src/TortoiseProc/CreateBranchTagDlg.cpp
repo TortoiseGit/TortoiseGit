@@ -23,7 +23,7 @@
 #include "TortoiseProc.h"
 #include "CreateBranchTagDlg.h"
 #include "AppUtils.h"
-#include "Messagebox.h"
+#include "MessageBox.h"
 
 // CCreateBranchTagDlg dialog
 

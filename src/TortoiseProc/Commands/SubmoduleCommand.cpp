@@ -20,10 +20,7 @@
 #include "SubmoduleCommand.h"
 
 #include "MessageBox.h"
-#include "RenameDlg.h"
-#include "InputLogDlg.h"
 #include "Git.h"
-#include "DirFileEnum.h"
 #include "ShellUpdater.h"
 #include "SubmoduleAddDlg.h"
 #include "SubmoduleUpdateDlg.h"

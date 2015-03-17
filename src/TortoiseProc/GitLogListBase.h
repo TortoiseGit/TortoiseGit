@@ -25,13 +25,9 @@
 #include "ProjectProperties.h"
 #include "TGitPath.h"
 #include "registry.h"
-#include "SplitterControl.h"
 #include "Colors.h"
-#include "MenuButton.h"
 #include "LogDlgHelper.h"
-#include "FilterEdit.h"
 #include "GitRevLoglist.h"
-#include "Tooltip.h"
 #include "lanes.h"
 #include "GitLogCache.h"
 #include <regex>

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2014 - TortoiseGit
+// Copyright (C) 2011-2015 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -23,6 +23,7 @@
 #include "StringUtils.h"
 #include "TempFile.h"
 #include "SmartHandle.h"
+#include "Git.h"
 
 CHooks* CHooks::m_pInstance;
 
