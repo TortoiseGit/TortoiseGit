@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2014 - TortoiseGit
+// Copyright (C) 2008-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -44,15 +44,9 @@ typedef std::vector<CGitHash> GIT_REV_LIST;
 class CGit;
 extern CGit g_Git;
 class GitRev;
-class CLogCache;
-
-typedef int CALL_UPDATE_DIFF_ASYNC(GitRev *pRev, void *data);
 
 class GitRev
 {
-public:
-	friend class CLogCache;
-
 protected:
 	CString	m_AuthorName;
 	CString	m_AuthorEmail;
@@ -63,126 +57,51 @@ protected:
 	CString	m_Subject;
 	CString	m_Body;
 
-	CTGitPathList	m_Files;
-	int		m_Action;
-	int		m_RebaseAction;
-	CTGitPathList	m_UnRevFiles;
+	CString m_sErr;
 
 public:
 	GitRev(void);
-
-	CALL_UPDATE_DIFF_ASYNC *m_CallDiffAsync;
-	int CheckAndDiff()
+	CString GetAuthorName()
 	{
-		if(!m_IsDiffFiles && !m_CommitHash.IsEmpty())
-		{
-			SafeFetchFullInfo(&g_Git);
-			InterlockedExchange(&m_IsDiffFiles, TRUE);
-			if(m_IsDiffFiles && m_IsCommitParsed)
-				InterlockedExchange(&m_IsFull, TRUE);
-			return 0;
-		}
-		return 1;
-	}
-
-	int & GetAction(void * data)
-	{
-		CheckAndParser();
-		if(!m_IsDiffFiles && m_CallDiffAsync)
-			m_CallDiffAsync(this, data);
-		else
-			CheckAndDiff();
-		return m_Action;
-	}
-
-	int & GetRebaseAction()
-	{
-		return m_RebaseAction;
-	}
-
-	CTGitPathList & GetFiles(void * data)
-	{
-		CheckAndParser();
-		if(data && !m_IsDiffFiles && m_CallDiffAsync)
-			m_CallDiffAsync(this, data);
-		else
-			CheckAndDiff();
-		return m_Files;
-	}
-
-	CTGitPathList & GetUnRevFiles()
-	{
-		return m_UnRevFiles;
-	}
-
-//	GitRev(GitRev &rev);
-//	GitRev &operator=(GitRev &rev);
-	int CheckAndParser()
-	{
-		if(!m_IsCommitParsed && m_GitCommit.m_pGitCommit)
-		{
-			ParserFromCommit(&m_GitCommit);
-			InterlockedExchange(&m_IsCommitParsed, TRUE);
-			git_free_commit(&m_GitCommit);
-			if(m_IsDiffFiles && m_IsCommitParsed)
-				InterlockedExchange(&m_IsFull, TRUE);
-			return 0;
-		}
-		return 1;
-	}
-
-	CString & GetAuthorName()
-	{
-		CheckAndParser();
 		return m_AuthorName;
 	}
 
-	CString & GetAuthorEmail()
+	CString GetAuthorEmail()
 	{
-		CheckAndParser();
 		return m_AuthorEmail;
 	}
 
-	CTime & GetAuthorDate()
+	CTime GetAuthorDate()
 	{
-		CheckAndParser();
 		return m_AuthorDate;
 	}
 
-	CString & GetCommitterName()
+	CString GetCommitterName()
 	{
-		CheckAndParser();
 		return m_CommitterName;
 	}
 
-	CString &GetCommitterEmail()
+	CString GetCommitterEmail()
 	{
-		CheckAndParser();
 		return m_CommitterEmail;
 	}
 
-	CTime &GetCommitterDate()
+	CTime GetCommitterDate()
 	{
-		CheckAndParser();
 		return m_CommitterDate;
 	}
 
-	CString & GetSubject()
+	CString GetSubject()
 	{
-		CheckAndParser();
 		return m_Subject;
 	}
 
-	CString & GetBody()
+	CString GetBody()
 	{
-		CheckAndParser();
 		return m_Body;
 	}
 
-
 	~GitRev(void);
-
-	GIT_COMMIT m_GitCommit;
 
 	enum
 	{
@@ -192,51 +111,31 @@ public:
 		REV_UNSPECIFIED = -4,	///< unspecified revision
 	};
 
-	int CopyFrom(GitRev &rev,bool OmitParentAndMark=false);
-
 	static CString GetHead(){return CString(_T("HEAD"));};
 	static CString GetWorkingCopy(){return CString(GIT_REV_ZERO);};
-
-	CString m_Notes;
 
 	CGitHash m_CommitHash;
 	GIT_REV_LIST m_ParentHash;
 
-
-	TCHAR m_Mark;
-	CString m_Ref;
-	CString m_RefAction;
-
-	BOOL IsBoundary(){return m_Mark == _T('-');}
-
-	void Clear();
+	virtual void Clear();
 	inline int ParentsCount(){ return (int)m_ParentHash.size(); }
-
-	//Show version tree Graphic
-	std::vector<int> m_Lanes;
-
-	volatile LONG m_IsFull;
-	volatile LONG m_IsUpdateing;
-	volatile LONG m_IsCommitParsed;
-	volatile LONG m_IsDiffFiles;
-
-	int SafeFetchFullInfo(CGit *git);
 
 	int ParserFromCommit(GIT_COMMIT *commit);
 	int ParserParentFromCommit(GIT_COMMIT *commit);
 
+	int ParserFromCommit(const git_commit* commit);
+	int ParserParentFromCommit(const git_commit* commit);
+	int GetCommitFromHash(git_repository* repo, const CGitHash& hash);
+	int GetCommit(git_repository* repo, const CString& Rev);
 
 	int GetParentFromHash(CGitHash &hash);
 	int GetCommitFromHash(CGitHash &hash);
-	int GetCommit(CString Rev);
+	int GetCommit(const CString& rev);
 
-	int SafeGetSimpleList(CGit *git);
-	volatile LONG m_IsSimpleListReady;
-	std::vector<CString> m_SimpleFileList;  /* use for find and filter*/
-										/* no rename detect and line num stat infor*/
+	CString GetLastErr() { return m_sErr; }
 
-public:
 	void DbgPrint();
+
 private:
 	int GetCommitFromHash_withoutLock(CGitHash &hash);
 };

@@ -60,6 +60,7 @@ public:
 	unsigned int		m_Action;
 	bool    m_Checked;
 	int	ParserAction(BYTE action);
+	int ParserAction(git_delta_t action);
 	CString GetActionName();
 	static CString GetActionName(int action);
 	/**

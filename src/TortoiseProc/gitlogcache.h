@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2013, 2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -20,7 +20,7 @@
 
 #include "Git.h"
 #include "TGitPath.h"
-#include "GitRev.h"
+#include "GitRevLoglist.h"
 #include "GitHash.h"
 
 #define LOG_INDEX_MAGIC		0x88AA5566
@@ -77,7 +77,7 @@ struct SLogCacheDataFileHeader
 	DWORD m_Version;
 };
 
-class CGitHashMap:public std::map<CGitHash,GitRev>
+class CGitHashMap : public std::map<CGitHash, GitRevLoglist>
 {
 public:
 	bool IsExist(CGitHash &hash)
@@ -157,7 +157,7 @@ protected:
 		return TRUE;
 	}
 
-	int SaveOneItem(GitRev &Rev, LONG offset);
+	int SaveOneItem(GitRevLoglist& Rev, LONG offset);
 
 	CString m_GitDir;
 	int RebuildCacheFile();
@@ -166,13 +166,13 @@ public:
 	CLogCache();
 	~CLogCache();
 	int FetchCacheIndex(CString GitDir);
-	int LoadOneItem(GitRev &Rev,ULONGLONG offset);
+	int LoadOneItem(GitRevLoglist& Rev, ULONGLONG offset);
 	ULONGLONG GetOffset(CGitHash &hash, SLogCacheIndexFile *pData =NULL);
 
 	CGitHashMap m_HashMap;
 
-	GitRev * GetCacheData(CGitHash &hash);
-	int AddCacheEntry(GitRev &Rev);
+	GitRevLoglist* GetCacheData(CGitHash& hash);
+	int AddCacheEntry(GitRevLoglist& Rev);
 	int SaveCache();
 
 	int ClearAllParent();

@@ -216,16 +216,8 @@ void CTortoiseGitBlameData::ParseBlameOutput(BYTE_VECTOR &data, CGitHashMap & Ha
 	for (auto it = hashes.begin(), it_end = hashes.end(); it != it_end; ++it)
 	{
 		CGitHash hash = *it;
-		GitRev *pRev;
-		try
-		{
-			pRev = GetRevForHash(HashToRev, hash);
-		}
-		catch (char* e)
-		{
-			MessageBox(nullptr, _T("Could not get revision by hash \"") + hash.ToString() + _T("\".\nlibgit reported:\n") + CString(e), _T("TortoiseGit"), MB_OK);
-			return;
-		}
+		CString err;
+		GitRev* pRev = GetRevForHash(HashToRev, hash, &err);
 		if (pRev)
 		{
 			authors.push_back(pRev->GetAuthorName());
@@ -233,6 +225,7 @@ void CTortoiseGitBlameData::ParseBlameOutput(BYTE_VECTOR &data, CGitHashMap & Ha
 		}
 		else
 		{
+			MessageBox(nullptr, err, _T("TortoiseGit"), MB_ICONERROR);
 			authors.push_back(CString());
 			dates.push_back(CString());
 		}
@@ -472,13 +465,17 @@ bool CTortoiseGitBlameData::ContainsOnlyFilename(const CString &filename) const
 	return true;
 }
 
-GitRev* CTortoiseGitBlameData::GetRevForHash(CGitHashMap & HashToRev, CGitHash& hash)
+GitRevLoglist* CTortoiseGitBlameData::GetRevForHash(CGitHashMap& HashToRev, CGitHash& hash, CString* err)
 {
 	auto it = HashToRev.find(hash);
 	if (it == HashToRev.end())
 	{
-		GitRev rev;
-		rev.GetCommitFromHash(hash);
+		GitRevLoglist rev;
+		if (rev.GetCommitFromHash(hash))
+		{
+			*err = rev.GetLastErr();
+			return nullptr;
+		}
 		it = HashToRev.insert(std::make_pair(hash, rev)).first;
 	}
 	return &(it->second);

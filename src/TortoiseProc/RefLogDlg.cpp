@@ -136,8 +136,8 @@ void CRefLogDlg::OnBnClickedClearStash()
 
 int AddToRefLoglist(unsigned char * /*osha1*/, unsigned char *nsha1, const char * /*name*/, unsigned long time, int /*sz*/, const char *msg, void *data)
 {
-	std::vector<GitRev> *vector = (std::vector<GitRev> *)data;
-	GitRev rev;
+	std::vector<GitRevLoglist>* vector = (std::vector<GitRevLoglist>*)data;
+	GitRevLoglist rev;
 	rev.m_CommitHash = (char *)nsha1;
 	rev.GetCommitterDate() = CTime(time);
 
@@ -155,7 +155,7 @@ int AddToRefLoglist(unsigned char * /*osha1*/, unsigned char *nsha1, const char 
 	return 0;
 }
 
-int ParserFromRefLog(CString ref, std::vector<GitRev> &refloglist)
+int ParserFromRefLog(CString ref, std::vector<GitRevLoglist>& refloglist)
 {
 	refloglist.clear();
 	if (g_Git.m_IsUseLibGit2)
@@ -180,7 +180,7 @@ int ParserFromRefLog(CString ref, std::vector<GitRev> &refloglist)
 			if (!entry)
 				continue;
 
-			GitRev rev;
+			GitRevLoglist rev;
 			rev.m_CommitHash = (char *)git_reflog_entry_id_new(entry)->id;
 			rev.m_Ref.Format(_T("%s@{%d}"), ref, i);
 			rev.GetCommitterDate() = CTime(git_reflog_entry_committer(entry)->when.time);
@@ -206,7 +206,7 @@ int ParserFromRefLog(CString ref, std::vector<GitRev> &refloglist)
 	else
 	{
 		CString cmd, out;
-		GitRev rev;
+		GitRevLoglist rev;
 		cmd.Format(_T("git.exe reflog show --pretty=\"%%H %%gD: %%gs\" --date=raw %s"), ref);
 		if (g_Git.Run(cmd, &out, NULL, CP_UTF8))
 			return -1;
@@ -270,7 +270,7 @@ void CRefLogDlg::OnCbnSelchangeRef()
 
 	for (unsigned int i = 0; i < m_RefList.m_RevCache.size(); ++i)
 	{
-		GitRev *rev = &m_RefList.m_RevCache[i];
+		GitRevLoglist* rev = &m_RefList.m_RevCache[i];
 		rev->m_IsFull = TRUE;
 		this->m_RefList.m_arShownList.Add(rev);
 	}
@@ -375,7 +375,7 @@ LRESULT CRefLogDlg::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*/)
 
 		do
 		{
-			GitRev * data = (GitRev*)m_RefList.m_arShownList.SafeGetAt(i);
+			GitRevLoglist* data = (GitRevLoglist*)m_RefList.m_arShownList.SafeGetAt(i);
 
 			CString str;
 			str += data->m_Ref;

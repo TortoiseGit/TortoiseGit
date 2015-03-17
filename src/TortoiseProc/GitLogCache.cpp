@@ -86,13 +86,13 @@ CLogCache::~CLogCache()
 	CloseDataHandles();
 }
 
-int CLogCache::AddCacheEntry(GitRev &Rev)
+int CLogCache::AddCacheEntry(GitRevLoglist& Rev)
 {
 	this->m_HashMap[Rev.m_CommitHash] = Rev;
 	return 0;
 }
 
-GitRev * CLogCache::GetCacheData(CGitHash &hash)
+GitRevLoglist* CLogCache::GetCacheData(CGitHash& hash)
 {
 	m_HashMap[hash].m_CommitHash=hash;
 	return &m_HashMap[hash];
@@ -229,7 +229,7 @@ int CLogCache::FetchCacheIndex(CString GitDir)
 
 }
 
-int CLogCache::SaveOneItem(GitRev &Rev, LONG offset)
+int CLogCache::SaveOneItem(GitRevLoglist& Rev, LONG offset)
 {
 	if(!Rev.m_IsDiffFiles)
 		return -1;
@@ -285,7 +285,7 @@ int CLogCache::SaveOneItem(GitRev &Rev, LONG offset)
 	return 0;
 }
 
-int CLogCache::LoadOneItem(GitRev &Rev,ULONGLONG offset)
+int CLogCache::LoadOneItem(GitRevLoglist& Rev,ULONGLONG offset)
 {
 	if(m_pCacheData == NULL)
 		return -1;

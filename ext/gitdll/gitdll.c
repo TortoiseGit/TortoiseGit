@@ -85,6 +85,7 @@ int git_init()
 	convert_slash(path);
 
 	git_extract_argv0_path(path);
+	reset_git_env();
 	g_prefix = setup_git_directory();
 	ret = git_config(git_default_config, NULL);
 

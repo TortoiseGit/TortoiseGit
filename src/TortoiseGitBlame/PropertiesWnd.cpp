@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2013, 2015 - TortoiseGit
 // Copyright (C) 2011-2013 Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
@@ -237,20 +237,14 @@ void CPropertiesWnd::RemoveParent()
 	}
 }
 
-void CPropertiesWnd::UpdateProperties(GitRev *pRev)
+void CPropertiesWnd::UpdateProperties(GitRevLoglist* pRev)
 {
 	if (pRev)
 	{
 		if (pRev->m_ParentHash.empty())
 		{
-			try
-			{
-				pRev->GetParentFromHash(pRev->m_CommitHash);
-			}
-			catch (const char* msg)
-			{
-				MessageBox(_T("Could not get parent.\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
-			}
+			if (pRev->GetParentFromHash(pRev->m_CommitHash))
+				MessageBox(pRev->GetLastErr(), _T("TortoiseGit"), MB_ICONERROR);
 		}
 		CString hash = pRev->m_CommitHash.ToString();
 		m_CommitHash->SetValue(hash);

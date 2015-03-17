@@ -758,7 +758,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 			return;
 		}
 		Locker lock(m_LogList.m_critSec_AsyncDiff);
-		GitRev* pLogEntry = reinterpret_cast<GitRev *>(m_LogList.m_arShownList.SafeGetAt(selIndex));
+		GitRevLoglist* pLogEntry = reinterpret_cast<GitRevLoglist*>(m_LogList.m_arShownList.SafeGetAt(selIndex));
 
 		{
 			CString out_describe;
@@ -1327,7 +1327,7 @@ void CLogDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 		if (pos)
 			selIndex = m_LogList.GetNextSelectedItem(pos);
 
-		GitRev *pRev = ((GitRev*)m_LogList.m_arShownList[selIndex]);
+		GitRevLoglist* pRev = ((GitRevLoglist*)m_LogList.m_arShownList[selIndex]);
 
 		if ((point.x == -1) && (point.y == -1))
 		{

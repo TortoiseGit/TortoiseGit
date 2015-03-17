@@ -1286,15 +1286,8 @@ UINT CCommitDlg::StatusThread()
 			if (!hash.IsEmpty())
 			{
 				GitRev headRevision;
-				try
-				{
-					headRevision.GetParentFromHash(hash);
-				}
-				catch (char* msg)
-				{
-					CString err(msg);
-					MessageBox(_T("Could not get parent from HEAD.\nlibgit reports:\n") + err, _T("TortoiseGit"), MB_ICONERROR);
-				}
+				if (headRevision.GetParentFromHash(hash))
+					MessageBox(headRevision.GetLastErr(), _T("TortoiseGit"), MB_ICONERROR);
 				// do not allow to show diff to "last" revision if it has more that one parent
 				if (headRevision.ParentsCount() != 1)
 				{
@@ -1860,7 +1853,11 @@ bool CCommitDlg::HandleMenuItemClick(int cmd, CSciEdit * pSciEdit)
 			// get selected hash if any
 			CString selectedHash = dlg.GetSelectedHash();
 			GitRev rev;
-			rev.GetCommit(selectedHash);
+			if (rev.GetCommit(selectedHash))
+			{
+				MessageBox(rev.GetLastErr(), _T("TortoiseGit"), MB_ICONERROR);
+				return false;
+			}
 			CString message = rev.GetSubject() + _T("\r\n") + rev.GetBody();
 			pSciEdit->InsertText(message);
 		}
@@ -2336,14 +2333,8 @@ void CCommitDlg::OnBnClickedCommitAmend()
 	if(this->m_bCommitAmend && this->m_AmendStr.IsEmpty())
 	{
 		GitRev rev;
-		try
-		{
-			rev.GetCommit(CString(_T("HEAD")));
-		}
-		catch (const char *msg)
-		{
-			CMessageBox::Show(m_hWnd, _T("Could not get HEAD commit.\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
-		}
+		if (rev.GetCommit(CString(_T("HEAD"))))
+			MessageBox(rev.GetLastErr(), _T("TortoiseGit"), MB_ICONERROR);
 		m_AmendStr=rev.GetSubject()+_T("\n")+rev.GetBody();
 	}
 
@@ -2557,14 +2548,8 @@ void CCommitDlg::OnBnClickedCommitSetDateTime()
 		if (m_bCommitAmend)
 		{
 			GitRev headRevision;
-			try
-			{
-				headRevision.GetCommit(_T("HEAD"));
-			}
-			catch (const char *msg)
-			{
-				CMessageBox::Show(m_hWnd, _T("Could not get HEAD commit.\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
-			}
+			if (headRevision.GetCommit(_T("HEAD")))
+				MessageBox(headRevision.GetLastErr(), _T("TortoiseGit"), MB_ICONERROR);
 			authordate = headRevision.GetAuthorDate();
 		}
 
@@ -2629,14 +2614,8 @@ void CCommitDlg::OnBnClickedCommitSetauthor()
 		if (m_bCommitAmend)
 		{
 			GitRev headRevision;
-			try
-			{
-				headRevision.GetCommit(_T("HEAD"));
-			}
-			catch (const char *msg)
-			{
-				CMessageBox::Show(m_hWnd, _T("Could not get HEAD commit.\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
-			}
+			if (headRevision.GetCommit(_T("HEAD")))
+				MessageBox(headRevision.GetLastErr(), _T("TortoiseGit"), MB_ICONERROR);
 			m_sAuthor.Format(_T("%s <%s>"), headRevision.GetAuthorName(), headRevision.GetAuthorEmail());
 		}
 

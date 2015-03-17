@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2013, 2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -113,13 +113,13 @@ public:
 
 	bool ContainsOnlyFilename(const CString &filename) const;
 
-	GitRev* GetRev(int line, CGitHashMap & hashToRev)
+	GitRevLoglist* GetRev(int line, CGitHashMap & hashToRev)
 	{
 		return GetRevForHash(hashToRev, GetHash(line));
 	}
 
 private:
-	static GitRev* GetRevForHash(CGitHashMap & HashToRev, CGitHash& hash);
+	static GitRevLoglist* GetRevForHash(CGitHashMap& HashToRev, CGitHash& hash, CString* err = nullptr);
 	static CString UnquoteFilename(CStringA& s);
 
 	std::vector<CGitHash>		m_Hash;

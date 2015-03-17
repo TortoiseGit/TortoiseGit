@@ -160,7 +160,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 	if (indexNext < 0)
 		return;
 
-	GitRev* pSelLogEntry = reinterpret_cast<GitRev*>(m_arShownList.GetAt(indexNext));
+	GitRevLoglist* pSelLogEntry = reinterpret_cast<GitRevLoglist*>(m_arShownList.GetAt(indexNext));
 
 	theApp.DoWaitCursor(1);
 	switch (cmd&0xFFFF)
@@ -240,7 +240,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 					// start with 1 (0 = working copy changes)
 					for (int i = 1; i < FirstSelect; ++i)
 					{
-						GitRev * first = reinterpret_cast<GitRev*>(m_arShownList.GetAt(i));
+						GitRevLoglist* first = reinterpret_cast<GitRevLoglist*>(m_arShownList.GetAt(i));
 						CTGitPathList list = first->GetFiles(NULL);
 						CTGitPath * file = list.LookForGitPath(path1);
 						if (file && !file->GetGitOldPathString().IsEmpty())
@@ -249,7 +249,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 					CString path2 = path1;
 					for (int i = FirstSelect; i < LastSelect; ++i)
 					{
-						GitRev * first = reinterpret_cast<GitRev*>(m_arShownList.GetAt(i));
+						GitRevLoglist* first = reinterpret_cast<GitRevLoglist*>(m_arShownList.GetAt(i));
 						CTGitPathList list = first->GetFiles(NULL);
 						CTGitPath * file = list.LookForGitPath(path2);
 						if (file && !file->GetGitOldPathString().IsEmpty())
@@ -263,8 +263,8 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 
 		case ID_COMPARE: // compare revision with WC
 			{
-				GitRev * r1 = &m_wcRev;
-				GitRev * r2 = pSelLogEntry;
+				GitRevLoglist* r1 = &m_wcRev;
+				GitRevLoglist* r2 = pSelLogEntry;
 
 				if (m_Path.IsDirectory() || !(m_ShowMask & CGit::LOG_INFO_FOLLOW))
 					CGitDiff::DiffCommit(this->m_Path, r1,r2);
@@ -274,7 +274,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 					// start with 1 (0 = working copy changes)
 					for (int i = 1; i < FirstSelect; ++i)
 					{
-						GitRev * first = reinterpret_cast<GitRev*>(m_arShownList.GetAt(i));
+						GitRevLoglist* first = reinterpret_cast<GitRevLoglist*>(m_arShownList.GetAt(i));
 						CTGitPathList list = first->GetFiles(NULL);
 						CTGitPath * file = list.LookForGitPath(path1);
 						if (file && !file->GetGitOldPathString().IsEmpty())
@@ -302,14 +302,8 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 
 				if (pSelLogEntry->m_ParentHash.empty())
 				{
-					try
-					{
-						pSelLogEntry->GetParentFromHash(pSelLogEntry->m_CommitHash);
-					}
-					catch (const char* msg)
-					{
-						MessageBox(_T("Could not get parent.\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
-					}
+					if (pSelLogEntry->GetParentFromHash(pSelLogEntry->m_CommitHash))
+						MessageBox(pSelLogEntry->GetLastErr(), _T("TortoiseGit"), MB_ICONERROR);
 				}
 
 				if (!pSelLogEntry->m_ParentHash.empty())
@@ -329,14 +323,14 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 						// start with 1 (0 = working copy changes)
 						for (int i = 1; i < indexNext; ++i)
 						{
-							GitRev * first = reinterpret_cast<GitRev*>(m_arShownList.GetAt(i));
+							GitRevLoglist* first = reinterpret_cast<GitRevLoglist*>(m_arShownList.GetAt(i));
 							CTGitPathList list = first->GetFiles(NULL);
 							CTGitPath * file = list.LookForGitPath(path1);
 							if (file && !file->GetGitOldPathString().IsEmpty())
 								path1 = file->GetGitOldPathString();
 						}
 						CString path2 = path1;
-						GitRev * first = reinterpret_cast<GitRev*>(m_arShownList.GetAt(indexNext));
+						GitRevLoglist* first = reinterpret_cast<GitRevLoglist*>(m_arShownList.GetAt(indexNext));
 						CTGitPathList list = first->GetFiles(NULL);
 						CTGitPath * file = list.LookForGitPath(path2);
 						if (file && !file->GetGitOldPathString().IsEmpty())
@@ -522,14 +516,9 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			}
 
 			GitRev lastRevision;
-			try
+			if (lastRevision.GetParentFromHash(hashLast))
 			{
-				lastRevision.GetParentFromHash(hashLast);
-			}
-			catch (char* msg)
-			{
-				CString err(msg);
-				MessageBox(_T("Could not get parent(s) of ") + hashLast.ToString() + _T(".\nlibgit reports:\n") + err, _T("TortoiseGit"), MB_ICONERROR);
+				MessageBox(lastRevision.GetLastErr(), _T("TortoiseGit"), MB_ICONERROR);
 				break;
 			}
 
@@ -660,8 +649,8 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				while(pos)
 				{
 					int indexNext = GetNextSelectedItem(pos);
-					dlg.m_CommitList.m_logEntries.push_back( ((GitRev*)m_arShownList[indexNext])->m_CommitHash );
-					dlg.m_CommitList.m_LogCache.m_HashMap[((GitRev*)m_arShownList[indexNext])->m_CommitHash]=*(GitRev*)m_arShownList[indexNext];
+					dlg.m_CommitList.m_logEntries.push_back(((GitRevLoglist*)m_arShownList[indexNext])->m_CommitHash);
+					dlg.m_CommitList.m_LogCache.m_HashMap[((GitRevLoglist*)m_arShownList[indexNext])->m_CommitHash] = *(GitRevLoglist*)m_arShownList[indexNext];
 					dlg.m_CommitList.m_logEntries.GetGitRevAt(dlg.m_CommitList.m_logEntries.size() - 1).GetRebaseAction() |= LOGACTIONS_REBASE_PICK;
 				}
 
@@ -732,7 +721,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				POSITION pos = GetFirstSelectedItemPosition();
 				while (pos)
 				{
-					CString ref = ((GitRev *)m_arShownList[GetNextSelectedItem(pos)])->m_Ref;
+					CString ref = ((GitRevLoglist*)m_arShownList[GetNextSelectedItem(pos)])->m_Ref;
 					if (ref.Find(_T("refs/")) == 0)
 						ref = ref.Mid(5);
 					int refpos = ref.ReverseFind('{');
@@ -1163,9 +1152,9 @@ void CGitLogList::SetSelectedRebaseAction(int action)
 	while(pos)
 	{
 		index = GetNextSelectedItem(pos);
-		if (((GitRev*)m_arShownList[index])->GetRebaseAction() & (LOGACTIONS_REBASE_CURRENT | LOGACTIONS_REBASE_DONE))
+		if (((GitRevLoglist*)m_arShownList[index])->GetRebaseAction() & (LOGACTIONS_REBASE_CURRENT | LOGACTIONS_REBASE_DONE))
 			continue;
-		((GitRev*)m_arShownList[index])->GetRebaseAction() = action;
+		((GitRevLoglist*)m_arShownList[index])->GetRebaseAction() = action;
 		CRect rect;
 		this->GetItemRect(index,&rect,LVIR_BOUNDS);
 		this->InvalidateRect(rect);
@@ -1182,7 +1171,7 @@ void CGitLogList::ShiftSelectedRebaseAction()
 		index = GetNextSelectedItem(pos);
 		int dummyAction = 0;
 		int *action = &dummyAction;
-		action = &((GitRev*)m_arShownList[index])->GetRebaseAction();
+		action = &((GitRevLoglist*)m_arShownList[index])->GetRebaseAction();
 		switch (*action)
 		{
 		case LOGACTIONS_REBASE_PICK:

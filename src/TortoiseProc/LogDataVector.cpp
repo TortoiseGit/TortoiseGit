@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2013 - TortoiseGit
+// Copyright (C) 2009-2013, 2015 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -133,7 +133,7 @@ int CLogDataVector::ParserFromLog(CTGitPath *path, int count, int infomask, CStr
 
 		CGitHash hash = (char*)commit.m_hash ;
 
-		GitRev *pRev = this->m_pLogCache->GetCacheData(hash);
+		GitRevLoglist* pRev = this->m_pLogCache->GetCacheData(hash);
 
 		char *pNote = nullptr;
 		{
@@ -156,13 +156,9 @@ int CLogDataVector::ParserFromLog(CTGitPath *path, int count, int infomask, CStr
 
 		if (!pRev->m_IsFull && (infomask & CGit::LOG_INFO_FULL_DIFF))
 		{
-			try
+			if (pRev->SafeFetchFullInfo(&g_Git))
 			{
-				pRev->SafeFetchFullInfo(&g_Git);
-			}
-			catch (char * g_last_error)
-			{
-				MessageBox(NULL, _T("Could not fetch full info of a commit.\nlibgit reports:\n") + CString(g_last_error), _T("TortoiseGit"), MB_ICONERROR);
+				MessageBox(nullptr, pRev->GetLastErr(), _T("TortoiseGit"), MB_ICONERROR);
 				return -1;
 			}
 		}
@@ -183,7 +179,7 @@ int CLogDataVector::ParserFromLog(CTGitPath *path, int count, int infomask, CStr
 
 struct SortByParentDate
 {
-	bool operator()(GitRev *pLhs, GitRev *pRhs)
+	bool operator()(GitRevLoglist* pLhs, GitRevLoglist* pRhs)
 	{
 		if (pLhs->m_CommitHash == pRhs->m_CommitHash)
 			return false;
@@ -213,12 +209,12 @@ int CLogDataVector::Fill(std::set<CGitHash>& hashes)
 		return -1;
 	}
 
-	std::set<GitRev*, SortByParentDate> revs;
+	std::set<GitRevLoglist*, SortByParentDate> revs;
 
 	for (auto it = hashes.begin(); it != hashes.end(); ++it)
 	{
 		CGitHash hash = *it;
-		GitRev *pRev = this->m_pLogCache->GetCacheData(hash);
+		GitRevLoglist* pRev = this->m_pLogCache->GetCacheData(hash);
 		ASSERT(pRev->m_CommitHash == hash);
 
 		GIT_COMMIT commit;
@@ -259,7 +255,7 @@ int CLogDataVector::Fill(std::set<CGitHash>& hashes)
 int AddTolist(unsigned char * /*osha1*/, unsigned char *nsha1, const char * /*name*/, unsigned long /*time*/, int /*sz*/, const char *msg, void *data)
 {
 	CLogDataVector *vector = (CLogDataVector*)data;
-	GitRev rev;
+	GitRevLoglist rev;
 	rev.m_CommitHash = (char*)nsha1;
 
 	CString one = CUnicodeUtils::GetUnicode(msg);
@@ -282,7 +278,7 @@ void CLogDataVector::append(CGitHash& sha, bool storeInVector)
 	if (storeInVector)
 		this->push_back(sha);
 
-	GitRev* r = &m_pLogCache->m_HashMap[sha];
+	GitRevLoglist* r = &m_pLogCache->m_HashMap[sha];
 	updateLanes(*r, this->m_Lns, sha);
 }
 
@@ -297,7 +293,7 @@ void CLogDataVector::setLane(CGitHash& sha)
 
 	for (int cnt = (int)size(); i < cnt; ++i) {
 
-		GitRev* r = & this->GetGitRevAt(i);
+		GitRevLoglist* r = &this->GetGitRevAt(i);
 		CGitHash curSha=r->m_CommitHash;
 
 		if (r->m_Lanes.empty())
@@ -331,7 +327,7 @@ void CLogDataVector::setLane(CGitHash& sha)
 }
 
 
-void CLogDataVector::updateLanes(GitRev& c, Lanes& lns, CGitHash &sha)
+void CLogDataVector::updateLanes(GitRevLoglist& c, Lanes& lns, CGitHash& sha)
 {
 // we could get third argument from c.sha(), but we are in fast path here
 // and c.sha() involves a deep copy, so we accept a little redundancy

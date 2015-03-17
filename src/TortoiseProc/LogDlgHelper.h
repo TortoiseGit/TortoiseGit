@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2007 - TortoiseSVN
-// Copyright (C) 2008-2014 - TortoiseGit
+// Copyright (C) 2008-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -70,7 +70,7 @@ public:
 	{
 		m_pLogCache = pLogCache;
 	}
-	GitRev & GetGitRevAt(size_t i)
+	GitRevLoglist& GetGitRevAt(size_t i)
 	{
 		ASSERT(i<size());
 		return 	m_pLogCache->m_HashMap[(*this)[i]];
@@ -88,7 +88,7 @@ public:
 	Lanes m_Lns;
 	int	 m_FirstFreeLane;
 	MAP_HASH_REV m_HashMap;
-	void updateLanes(GitRev& c, Lanes& lns, CGitHash &sha) ;
+	void updateLanes(GitRevLoglist& c, Lanes& lns, CGitHash& sha);
 	void setLane(CGitHash& sha) ;
 	void append(CGitHash& sha, bool storeInVector);
 
