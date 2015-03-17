@@ -176,4 +176,6 @@ public:
 	int SafeGetSimpleList(CGit* git);
 	volatile LONG m_IsSimpleListReady;
 	STRING_VECTOR m_SimpleFileList;  /* use for find and filter, no rename detection and line num stat info */
+
+	static int GetRefLog(const CString& ref, std::vector<GitRevLoglist>& refloglist, CString& error);
 };

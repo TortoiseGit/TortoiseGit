@@ -30,8 +30,19 @@ class GitRevLoglistCBasicGitWithTestRepoBareFixture : public CBasicGitWithTestRe
 {
 };
 
+class GitRevLoglist2CBasicGitWithTestRepoFixture : public CBasicGitWithTestRepoFixture
+{
+};
+
+class GitRevLoglist2CBasicGitWithTestRepoBareFixture : public CBasicGitWithTestRepoBareFixture
+{
+};
+
 INSTANTIATE_TEST_CASE_P(GitRevLoglist, GitRevLoglistCBasicGitWithTestRepoFixture, testing::Values(LIBGIT, LIBGIT2, LIBGIT2_ALL));
 INSTANTIATE_TEST_CASE_P(GitRevLoglist, GitRevLoglistCBasicGitWithTestRepoBareFixture, testing::Values(LIBGIT, LIBGIT2, LIBGIT2_ALL));
+
+INSTANTIATE_TEST_CASE_P(GitRevLoglist, GitRevLoglist2CBasicGitWithTestRepoFixture, testing::Values(GIT_CLI, LIBGIT, LIBGIT2, LIBGIT2_ALL));
+INSTANTIATE_TEST_CASE_P(GitRevLoglist, GitRevLoglist2CBasicGitWithTestRepoBareFixture, testing::Values(GIT_CLI, LIBGIT, LIBGIT2, LIBGIT2_ALL));
 
 static void SafeFetchFullInfo(CGit* cGit)
 {
@@ -400,4 +411,69 @@ TEST(GitRevLoglist, GetAction)
 	rev.Clear();
 	EXPECT_EQ(0, action);
 	EXPECT_EQ(0, rev.GetAction(nullptr));
+}
+
+static void GetReflog()
+{
+	CString err;
+	std::vector<GitRevLoglist> revloglist;
+	EXPECT_EQ(0, GitRevLoglist::GetRefLog(_T("refs/stash"), revloglist, err));
+	EXPECT_EQ(0, revloglist.size());
+	EXPECT_TRUE(err.IsEmpty());
+
+	EXPECT_EQ(0, GitRevLoglist::GetRefLog(_T("HEAD"), revloglist, err));
+	EXPECT_EQ(12, revloglist.size());
+	EXPECT_TRUE(err.IsEmpty());
+
+	revloglist.clear();
+	EXPECT_EQ(0, GitRevLoglist::GetRefLog(_T("refs/heads/does-not-exist"), revloglist, err));
+	EXPECT_EQ(0, revloglist.size());
+	EXPECT_TRUE(err.IsEmpty());
+
+	err.Empty();
+	EXPECT_EQ(0, GitRevLoglist::GetRefLog(_T("refs/heads/master"), revloglist, err));
+	ASSERT_EQ(5, revloglist.size());
+	EXPECT_TRUE(err.IsEmpty());
+
+	EXPECT_STREQ(_T("7c3cbfe13a929d2291a574dca45e4fd2d2ac1aa6"), revloglist[0].m_CommitHash.ToString());
+	EXPECT_STREQ(_T("refs/heads/master@{0}"), revloglist[0].m_Ref);
+	EXPECT_STREQ(_T("reset"), revloglist[0].m_RefAction);
+	//EXPECT_STREQ(_T("Sven Strickroth"), revloglist[0].GetCommitterName());
+	//EXPECT_STREQ(_T("email@cs-ware.de"), revloglist[0].GetCommitterEmail());
+	EXPECT_STREQ(_T("2015-03-16 12:59:51"), revloglist[0].GetCommitterDate().FormatGmt(L"%Y-%m-%d %H:%M:%S"));
+	EXPECT_STREQ(_T(" moving to 7c3cbfe13a929d2291a574dca45e4fd2d2ac1aa6"), revloglist[0].GetSubject());
+
+	EXPECT_STREQ(_T("aa5b97f89cea6863222823c8289ce392d06d1691"), revloglist[2].m_CommitHash.ToString());
+	EXPECT_STREQ(_T("refs/heads/master@{2}"), revloglist[2].m_Ref);
+	EXPECT_STREQ(_T("reset"), revloglist[2].m_RefAction);
+	//EXPECT_STREQ(_T("Dümmy User"), revloglist[2].GetCommitterName());
+	//EXPECT_STREQ(_T("dummy@example.com"), revloglist[2].GetCommitterEmail());
+	EXPECT_STREQ(_T("2015-03-16 12:59:07"), revloglist[2].GetCommitterDate().FormatGmt(L"%Y-%m-%d %H:%M:%S"));
+	EXPECT_STREQ(_T(" moving to aa5b97f89cea6863222823c8289ce392d06d1691"), revloglist[2].GetSubject());
+
+	EXPECT_STREQ(_T("df8019413c88d2aedbf33fc2dac3544312da4c18"), revloglist[3].m_CommitHash.ToString());
+	EXPECT_STREQ(_T("refs/heads/master@{3}"), revloglist[3].m_Ref);
+	EXPECT_STREQ(_T("commit (amend)"), revloglist[3].m_RefAction);
+	//EXPECT_STREQ(_T("Sven Strickroth"), revloglist[3].GetCommitterName());
+	//EXPECT_STREQ(_T("email@cs-ware.de"), revloglist[3].GetCommitterEmail());
+	EXPECT_STREQ(_T("2015-03-16 12:55:00"), revloglist[3].GetCommitterDate().FormatGmt(L"%Y-%m-%d %H:%M:%S"));
+	EXPECT_STREQ(_T(" Several actions"), revloglist[3].GetSubject());
+
+	EXPECT_STREQ(_T("32c344625f14ecb16b6f003a77eb7a3d2c15d470"), revloglist[4].m_CommitHash.ToString());
+	EXPECT_STREQ(_T("refs/heads/master@{4}"), revloglist[4].m_Ref);
+	EXPECT_STREQ(_T("commit"), revloglist[4].m_RefAction);
+	//EXPECT_STREQ(_T("Sven Strickroth"), revloglist[4].GetCommitterName());
+	//EXPECT_STREQ(_T("email@cs-ware.de"), revloglist[4].GetCommitterEmail());
+	EXPECT_STREQ(_T("2015-03-16 12:52:22"), revloglist[4].GetCommitterDate().FormatGmt(L"%Y-%m-%d %H:%M:%S"));
+	EXPECT_STREQ(_T(" renamed a file"), revloglist[4].GetSubject());
+}
+
+TEST_P(GitRevLoglist2CBasicGitWithTestRepoFixture, GetReflog)
+{
+	GetReflog();
+}
+
+TEST_P(GitRevLoglist2CBasicGitWithTestRepoBareFixture, GetReflog)
+{
+	GetReflog();
 }

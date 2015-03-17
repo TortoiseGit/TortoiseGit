@@ -366,3 +366,136 @@ int GitRevLoglist::SafeFetchFullInfo(CGit* git)
 
 	return 0;
 }
+
+int GitRevLoglist::GetRefLog(const CString& ref, std::vector<GitRevLoglist>& refloglist, CString& error)
+{
+	refloglist.clear();
+	if (g_Git.m_IsUseLibGit2)
+	{
+		CAutoRepository repo(g_Git.GetGitRepository());
+		if (!repo)
+		{
+			error = g_Git.GetLibGit2LastErr();
+			return -1;
+		}
+
+		CAutoReflog reflog;
+		if (git_reflog_read(reflog.GetPointer(), repo, CUnicodeUtils::GetUTF8(ref)) < 0)
+		{
+			error = g_Git.GetLibGit2LastErr();
+			return -1;
+		}
+
+		for (size_t i = 0; i < git_reflog_entrycount(reflog); ++i)
+		{
+			const git_reflog_entry *entry = git_reflog_entry_byindex(reflog, i);
+			if (!entry)
+				continue;
+
+			GitRevLoglist rev;
+			rev.m_CommitHash = (const unsigned char*)git_reflog_entry_id_new(entry)->id;
+			rev.m_Ref.Format(_T("%s@{%d}"), ref, i);
+			rev.GetCommitterDate() = CTime(git_reflog_entry_committer(entry)->when.time);
+			if (git_reflog_entry_message(entry) != nullptr)
+			{
+				CString one = CUnicodeUtils::GetUnicode(git_reflog_entry_message(entry));
+				int message = one.Find(_T(":"), 0);
+				if (message > 0)
+				{
+					rev.m_RefAction = one.Left(message);
+					rev.GetSubject() = one.Mid(message + 1);
+				}
+			}
+			refloglist.push_back(rev);
+		}
+		return 0;
+	}
+	else if (g_Git.m_IsUseGitDLL)
+	{
+		g_Git.CheckAndInitDll();
+		std::vector<GitRevLoglist> tmp;
+		// no error checking, because the only error which could occour is file not found
+		git_for_each_reflog_ent(CUnicodeUtils::GetUTF8(ref), [](unsigned char * /*osha1*/, unsigned char *nsha1, const char * /*name*/, unsigned long time, int /*sz*/, const char *msg, void *data)
+		{
+			std::vector<GitRevLoglist>* vector = (std::vector<GitRevLoglist>*)data;
+			GitRevLoglist rev;
+			rev.m_CommitHash = (const unsigned char*)nsha1;
+			rev.GetCommitterDate() = CTime(time);
+
+			CString one = CUnicodeUtils::GetUnicode(msg);
+			int message = one.Find(_T(":"), 0);
+			if (message > 0)
+			{
+				rev.m_RefAction = one.Left(message);
+				rev.GetSubject() = one.Mid(message + 1).TrimRight(L'\n');
+			}
+			vector->push_back(rev);
+
+			return 0;
+		}, &tmp);
+
+		for (size_t i = tmp.size(), id = 0; i > 0; --i, ++id)
+		{
+			GitRevLoglist rev = tmp[i - 1];
+			rev.m_Ref.Format(_T("%s@{%ld}"), ref, id);
+			refloglist.push_back(rev);
+		}
+		return 0;
+	}
+
+	CString dotGitDir;
+	if (!GitAdminDir::GetAdminDirPath(g_Git.m_CurrentDir, dotGitDir))
+	{
+		error = _T(".git directory not found");
+		return -1;
+	}
+
+	error.Empty();
+	// git.exe would fail with "branch not known"
+	if (!PathFileExists(dotGitDir + ref))
+		return 0;
+
+	CString cmd, out;
+	cmd.Format(_T("git.exe reflog show --pretty=\"%%H %%gD: %%gs\" --date=raw %s"), ref);
+	if (g_Git.Run(cmd, &out, &error, CP_UTF8))
+		return -1;
+
+	int i = 0;
+	CString prefix = ref + _T("@{");
+	int pos = 0;
+	while (pos >= 0)
+	{
+		CString one = out.Tokenize(_T("\n"), pos);
+		int refPos = one.Find(_T(' '), 0);
+		if (refPos < 0)
+			continue;
+
+		GitRevLoglist rev;
+		rev.m_CommitHash = one.Left(refPos);
+		rev.m_Ref.Format(_T("%s@{%d}"), ref, i++);
+		int prefixPos = one.Find(prefix, refPos + 1);
+		if (prefixPos != refPos + 1)
+			continue;
+
+		int spacePos = one.Find(_T(' '), prefixPos + prefix.GetLength() + 1);
+		if (spacePos < 0)
+			continue;
+
+		CString timeStr = one.Mid(prefixPos + prefix.GetLength(), spacePos - prefixPos - prefix.GetLength());
+		rev.GetCommitterDate() = CTime(_ttoi(timeStr));
+		int action = one.Find(_T("}: "), spacePos + 1);
+		if (action > 0)
+		{
+			action += 2;
+			int message = one.Find(_T(":"), action);
+			if (message > 0)
+			{
+				rev.m_RefAction = one.Mid(action + 1, message - action - 1);
+				rev.GetSubject() = one.Right(one.GetLength() - message - 1);
+			}
+		}
+
+		refloglist.push_back(rev);
+	}
+	return 0;
+}

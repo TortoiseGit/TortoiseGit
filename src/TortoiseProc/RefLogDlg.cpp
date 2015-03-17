@@ -134,127 +134,6 @@ void CRefLogDlg::OnBnClickedClearStash()
 	}
 }
 
-int AddToRefLoglist(unsigned char * /*osha1*/, unsigned char *nsha1, const char * /*name*/, unsigned long time, int /*sz*/, const char *msg, void *data)
-{
-	std::vector<GitRevLoglist>* vector = (std::vector<GitRevLoglist>*)data;
-	GitRevLoglist rev;
-	rev.m_CommitHash = (char *)nsha1;
-	rev.GetCommitterDate() = CTime(time);
-
-	CString one = CUnicodeUtils::GetUnicode(msg);
-
-	int message = one.Find(_T(":"), 0);
-	if (message > 0)
-	{
-		rev.m_RefAction = one.Left(message);
-		rev.GetSubject() = one.Mid(message + 1);
-	}
-
-	vector->insert(vector->begin(), rev); 
-
-	return 0;
-}
-
-int ParserFromRefLog(CString ref, std::vector<GitRevLoglist>& refloglist)
-{
-	refloglist.clear();
-	if (g_Git.m_IsUseLibGit2)
-	{
-		CAutoRepository repo(g_Git.GetGitRepository());
-		if (!repo)
-		{
-			MessageBox(nullptr, CGit::GetLibGit2LastErr(_T("Could not open repository.")), _T("TortoiseGit"), MB_ICONERROR);
-			return -1;
-		}
-
-		CAutoReflog reflog;
-		if (git_reflog_read(reflog.GetPointer(), repo, CUnicodeUtils::GetUTF8(ref)) < 0)
-		{
-			MessageBox(nullptr, CGit::GetLibGit2LastErr(_T("Could not read reflog.")), _T("TortoiseGit"), MB_ICONERROR);
-			return -1;
-		}
-
-		for (size_t i = 0; i < git_reflog_entrycount(reflog); ++i)
-		{
-			const git_reflog_entry *entry = git_reflog_entry_byindex(reflog, i);
-			if (!entry)
-				continue;
-
-			GitRevLoglist rev;
-			rev.m_CommitHash = (char *)git_reflog_entry_id_new(entry)->id;
-			rev.m_Ref.Format(_T("%s@{%d}"), ref, i);
-			rev.GetCommitterDate() = CTime(git_reflog_entry_committer(entry)->when.time);
-			if (git_reflog_entry_message(entry) != nullptr)
-			{
-				CString one = CUnicodeUtils::GetUnicode(git_reflog_entry_message(entry));
-				int message = one.Find(_T(":"), 0);
-				if (message > 0)
-				{
-					rev.m_RefAction = one.Left(message);
-					rev.GetSubject() = one.Mid(message + 1);
-				}
-			}
-			refloglist.push_back(rev); 
-		}
-	}
-	else if (g_Git.m_IsUseGitDLL)
-	{
-		git_for_each_reflog_ent(CUnicodeUtils::GetUTF8(ref), AddToRefLoglist, &refloglist);
-		for (size_t i = 0; i < refloglist.size(); ++i)
-			refloglist[i].m_Ref.Format(_T("%s@{%d}"), ref, i);
-	}
-	else
-	{
-		CString cmd, out;
-		GitRevLoglist rev;
-		cmd.Format(_T("git.exe reflog show --pretty=\"%%H %%gD: %%gs\" --date=raw %s"), ref);
-		if (g_Git.Run(cmd, &out, NULL, CP_UTF8))
-			return -1;
-
-		int i = 0;
-		CString prefix = ref + _T("@{");
-		int pos = 0;
-		while (pos >= 0)
-		{
-			CString one = out.Tokenize(_T("\n"), pos);
-			int refPos = one.Find(_T(' '), 0);
-			if (refPos < 0)
-				continue;
-
-			rev.Clear();
-
-			CString hashStr = one.Left(refPos);
-			rev.m_CommitHash = hashStr;
-			rev.m_Ref.Format(_T("%s@{%d}"), ref, i++);
-			int prefixPos = one.Find(prefix, refPos + 1);
-			if (prefixPos != refPos + 1)
-				continue;
-
-			int spacePos = one.Find(_T(' '), prefixPos + prefix.GetLength() + 1);
-			if (spacePos < 0)
-				continue;
-
-			CString timeStr = one.Mid(prefixPos + prefix.GetLength(), spacePos - prefixPos - prefix.GetLength());
-			rev.GetCommitterDate() = CTime(_ttoi(timeStr));
-			int action = one.Find(_T("}: "), spacePos + 1);
-			if (action > 0)
-			{
-				action += 2;
-				int message = one.Find(_T(":"), action);
-				if (message > 0)
-				{
-					rev.m_RefAction = one.Mid(action + 1, message - action - 1);
-					rev.GetSubject() = one.Right(one.GetLength() - message - 1);
-				}
-			}
-
-			refloglist.push_back(rev);
-		}
-	}
-	return 0;
-}
-
-
 void CRefLogDlg::OnCbnSelchangeRef()
 {
 	CString ref=m_ChooseRef.GetString();
@@ -262,7 +141,9 @@ void CRefLogDlg::OnCbnSelchangeRef()
 
 	m_RefList.SetRedraw(false);
 
-	ParserFromRefLog(ref, m_RefList.m_RevCache);
+	CString err;
+	if (GitRevLoglist::GetRefLog(ref, m_RefList.m_RevCache, err))
+		MessageBox(_T("Error while loading reflog.\n") + err, _T("TortoiseGit"), MB_ICONERROR);
 
 	m_RefList.SetItemCountEx((int)m_RefList.m_RevCache.size());
 
