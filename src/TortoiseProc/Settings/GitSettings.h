@@ -97,9 +97,10 @@ protected:
 		int err = 0;
 		if (deleteKey)
 		{
-			const git_config_entry * entry = nullptr;
+			git_config_entry* entry = nullptr;
 			if (git_config_get_entry(&entry, config, keyA) == GIT_ENOTFOUND)
 				return true;
+			git_config_entry_free(entry);
 			err = git_config_delete_entry(config, keyA);
 		}
 		else

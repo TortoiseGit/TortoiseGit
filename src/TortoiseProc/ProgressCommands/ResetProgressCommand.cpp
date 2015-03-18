@@ -58,7 +58,7 @@ bool ResetProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, in
 		cbpayload->list->m_itemCount = (int)completed_steps;
 		cbpayload->list->AddNotify(new CGitProgressList::WC_File_NotificationData(CUnicodeUtils::GetUnicode(path), CGitProgressList::WC_File_NotificationData::git_wc_notify_checkout));
 	};
-	if (git_reset(repo, target, (git_reset_t)(m_resetType + 1), &checkout_options, nullptr, nullptr))
+	if (git_reset(repo, target, (git_reset_t)(m_resetType + 1), &checkout_options))
 		goto error;
 
 	// Not setting m_PostCmdCallback here, as clone is only called from AppUtils.cpp

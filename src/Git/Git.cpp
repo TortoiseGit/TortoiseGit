@@ -1796,7 +1796,7 @@ int CGit::DeleteRemoteRefs(const CString& sRemote, const STRING_VECTOR& list)
 		std::transform(refspecs.begin(), refspecs.end(), std::back_inserter(vc), [](CStringA& s) -> char* { return s.GetBuffer(); });
 		git_strarray specs = { &vc[0], vc.size() };
 
-		if (git_remote_push(remote, &specs, nullptr, nullptr, nullptr) < 0)
+		if (git_remote_push(remote, &specs, nullptr) < 0)
 			return -1;
 	}
 	else

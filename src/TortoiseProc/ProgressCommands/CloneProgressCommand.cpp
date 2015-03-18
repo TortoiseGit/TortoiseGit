@@ -37,7 +37,7 @@ bool CloneProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, in
 		return false;
 
 	git_checkout_options checkout_opts = GIT_CHECKOUT_OPTIONS_INIT;
-	checkout_opts.checkout_strategy = m_bNoCheckout ? GIT_CHECKOUT_NONE : GIT_CHECKOUT_SAFE_CREATE;
+	checkout_opts.checkout_strategy = m_bNoCheckout ? GIT_CHECKOUT_NONE : GIT_CHECKOUT_SAFE;
 	checkout_opts.progress_cb = CheckoutCallback;
 	checkout_opts.progress_payload = list;
 

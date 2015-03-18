@@ -507,9 +507,10 @@ CString CSettingGitCredential::Load(CString key)
 	
 	CStringA cmdA = CUnicodeUtils::GetUTF8(cmd);
 	CStringA valueA;
-	const git_config_entry *entry;
+	git_config_entry* entry;
 	if (!git_config_get_entry(&entry, config, cmdA))
 		valueA = CStringA(entry->value);
+	git_config_entry_free(entry);
 
 	return CUnicodeUtils::GetUnicode(valueA);
 }
