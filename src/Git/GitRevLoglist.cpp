@@ -249,10 +249,14 @@ int GitRevLoglist::SafeFetchFullInfo(CGit* git)
 				lastDelta = delta;
 
 				CString newname = CUnicodeUtils::GetUnicode(delta->new_file.path);
-				CString oldname = CUnicodeUtils::GetUnicode(delta->old_file.path);
-
 				CTGitPath path;
-				path.SetFromGit(newname, &oldname);
+				if (delta->new_file.path == delta->old_file.path)
+					path.SetFromGit(newname);
+				else
+				{
+					CString oldname = CUnicodeUtils::GetUnicode(delta->old_file.path);
+					path.SetFromGit(newname, &oldname);
+				}
 				oldAction = m_Action;
 				m_Action |= path.ParserAction(delta->status);
 				path.m_ParentNo = parentId;
@@ -336,9 +340,13 @@ int GitRevLoglist::SafeFetchFullInfo(CGit* git)
 			git_get_diff_file(git->GetGitDiff(), file, j, &newname, &oldname, &mode, &IsBin, &inc, &dec);
 
 			git->StringAppend(&strnewname, (BYTE*)newname, CP_UTF8);
-			git->StringAppend(&stroldname, (BYTE*)oldname, CP_UTF8);
-
-			path.SetFromGit(strnewname, &stroldname);
+			if (newname == oldname)
+				path.SetFromGit(strnewname);
+			else
+			{
+				git->StringAppend(&stroldname, (BYTE*)oldname, CP_UTF8);
+				path.SetFromGit(strnewname, &stroldname);
+			}
 			path.ParserAction((BYTE)mode);
 			path.m_ParentNo = i;
 
