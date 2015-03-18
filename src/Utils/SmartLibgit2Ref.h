@@ -24,6 +24,64 @@
 * \ingroup Utils
 * Helper classes for libgit2 references.
 */
+template <typename HandleType, class FreeFunction>
+class CSmartBuffer : public FreeFunction
+{
+public:
+	CSmartBuffer()
+	{
+		HandleType tmp = { 0 };
+		m_Ref = tmp;
+	}
+
+	operator HandleType*()
+	{
+		return &m_Ref;
+	}
+
+	HandleType* operator->()
+	{
+		return &m_Ref;
+	}
+
+	~CSmartBuffer()
+	{
+		Free(&m_Ref);
+	}
+
+protected:
+	HandleType m_Ref;
+};
+
+struct CFreeBuf
+{
+protected:
+	void Free(git_buf* ref)
+	{
+		git_buf_free(ref);
+	}
+
+	~CFreeBuf()
+	{
+	}
+};
+
+struct CFreeStrArray
+{
+protected:
+	void Free(git_strarray* ref)
+	{
+		git_strarray_free(ref);
+	}
+
+	~CFreeStrArray()
+	{
+	}
+};
+
+typedef CSmartBuffer<git_buf, CFreeBuf>	CAutoBuf;
+typedef CSmartBuffer<git_strarray, CFreeStrArray>	CAutoStrArray;
+
 template <typename ReferenceType>
 class CSmartLibgit2Ref
 {
@@ -247,15 +305,15 @@ public:
 		if (!IsValid())
 			return -1;
 
-		const char* out = nullptr;
+		CAutoBuf buf;
 		int ret = 0;
-		if ((ret = git_config_get_string(&out, m_Ref, CUnicodeUtils::GetUTF8(key))))
+		if ((ret = git_config_get_string_buf(buf, m_Ref, CUnicodeUtils::GetUTF8(key))))
 		{
 			value.Empty();
 			return ret;
 		}
 
-		value = CUnicodeUtils::GetUnicode((CStringA)out);
+		value = CUnicodeUtils::GetUnicode((CStringA)buf->ptr);
 
 		return ret;
 	}
@@ -475,61 +533,3 @@ protected:
 		git_status_list_free(m_Ref);
 	}
 };
-
-template <typename HandleType, class FreeFunction>
-class CSmartBuffer : public FreeFunction
-{
-public:
-	CSmartBuffer()
-	{
-		HandleType tmp = { 0 };
-		m_Ref = tmp;
-	}
-
-	operator HandleType*()
-	{
-		return &m_Ref;
-	}
-
-	HandleType* operator->()
-	{
-		return &m_Ref;
-	}
-
-	~CSmartBuffer()
-	{
-		Free(&m_Ref);
-	}
-
-protected:
-	HandleType m_Ref;
-};
-
-struct CFreeBuf
-{
-protected:
-	void Free(git_buf* ref)
-	{
-		git_buf_free(ref);
-	}
-
-	~CFreeBuf()
-	{
-	}
-};
-
-struct CFreeStrArray
-{
-protected:
-	void Free(git_strarray* ref)
-	{
-		git_strarray_free(ref);
-	}
-
-	~CFreeStrArray()
-	{
-	}
-};
-
-typedef CSmartBuffer<git_buf, CFreeBuf>	CAutoBuf;
-typedef CSmartBuffer<git_strarray, CFreeStrArray>	CAutoStrArray;

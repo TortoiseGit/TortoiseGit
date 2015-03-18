@@ -116,6 +116,7 @@
     <ClCompile Include="GitRevLoglistTest.cpp" />
     <ClCompile Include="GitRevTest.cpp" />
     <ClCompile Include="GitTest.cpp" />
+    <ClCompile Include="libgit2Test.cpp" />
     <ClCompile Include="PathUtilsTest.cpp" />
     <ClCompile Include="ProjectPropertiesTest.cpp" />
     <ClCompile Include="stdafx.cpp">

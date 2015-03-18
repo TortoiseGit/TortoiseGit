@@ -193,5 +193,8 @@
     <ClCompile Include="GitRevLoglistTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="libgit2Test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

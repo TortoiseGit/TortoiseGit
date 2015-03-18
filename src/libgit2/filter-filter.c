@@ -128,8 +128,7 @@ static int filter_apply(
 	git_buf configKey = GIT_BUF_INIT;
 	int isRequired = FALSE;
 	int error;
-	const char *cmd = NULL;
-	git_buf cmdBuf = GIT_BUF_INIT;
+	git_buf cmd = GIT_BUF_INIT;
 	wchar_t *wide_cmd;
 	COMMAND_HANDLE commandHandle;
 	git_buf errBuf = GIT_BUF_INIT;
@@ -163,7 +162,7 @@ static int filter_apply(
 		return -1;
 	}
 
-	error = git_config_get_string(&cmd, config, configKey.ptr);
+	error = git_config_get_string_buf(&cmd, config, configKey.ptr);
 	git_buf_free(&configKey);
 	if (error && error != GIT_ENOTFOUND)
 		return -1;
@@ -174,37 +173,31 @@ static int filter_apply(
 		return GIT_PASSTHROUGH;
 	}
 
-	git_buf_puts(&cmdBuf, cmd);
-	if (git_buf_oom(&cmdBuf)) {
-		giterr_set_oom();
-		return -1;
-	}
-
-	if (expandPerCentF(&cmdBuf, git_filter_source_path(src)))
+	if (expandPerCentF(&cmd, git_filter_source_path(src)))
 		return -1;
 
 	if (ffs->shexepath) {
 		// build params for sh.exe
 		git_buf shParams = GIT_BUF_INIT;
 		git_buf_puts(&shParams, " -c \"");
-		git_buf_text_puts_escaped(&shParams, cmdBuf.ptr, "\"\\", "\\");
+		git_buf_text_puts_escaped(&shParams, cmd.ptr, "\"\\", "\\");
 		git_buf_puts(&shParams, "\"");
 		if (git_buf_oom(&shParams)) {
-			git_buf_free(&cmdBuf);
+			git_buf_free(&cmd);
 			giterr_set_oom();
 			return -1;
 		}
-		git_buf_swap(&shParams, &cmdBuf);
+		git_buf_swap(&shParams, &cmd);
 		git_buf_free(&shParams);
 	}
 
-	if (git__utf8_to_16_alloc(&wide_cmd, cmdBuf.ptr) < 0)
+	if (git__utf8_to_16_alloc(&wide_cmd, cmd.ptr) < 0)
 	{
-		git_buf_free(&cmdBuf);
+		git_buf_free(&cmd);
 		giterr_set_oom();
 		return -1;
 	}
-	git_buf_free(&cmdBuf);
+	git_buf_free(&cmd);
 
 	if (ffs->shexepath) {
 		// build cmd, i.e. shexepath + params
