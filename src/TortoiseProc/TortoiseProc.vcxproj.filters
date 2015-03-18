@@ -1660,6 +1660,12 @@
     <ClInclude Include="..\Git\GitRevLoglist.h">
       <Filter>Git</Filter>
     </ClInclude>
+    <ClInclude Include="Settings\SettingsProgsDiff.h">
+      <Filter>Commands\setting</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\SettingsProgsMerge.h">
+      <Filter>Commands\setting</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Resources\actionadded.ico">

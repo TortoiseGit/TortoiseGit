@@ -404,6 +404,8 @@
     <ClInclude Include="Settings\SetDialogs2.h" />
     <ClInclude Include="Settings\SetDialogs3.h" />
     <ClInclude Include="Settings\SettingGitCredential.h" />
+    <ClInclude Include="Settings\SettingsProgsDiff.h" />
+    <ClInclude Include="Settings\SettingsProgsMerge.h" />
     <ClInclude Include="Settings\SettingsTUDiff.h" />
     <ClInclude Include="SinglePropSheetDlg.h" />
     <ClInclude Include="DeleteConflictDlg.h" />
