@@ -189,7 +189,6 @@ BOOL CSetLookAndFeelPage::OnInitDialog()
 	AdjustControlSize(IDC_HIDEMENUS);
 	AdjustControlSize(IDC_ENABLEDRAGCONTEXTMENU);
 
-	m_tooltips.Create(this);
 	m_tooltips.AddTool(IDC_MENULIST, IDS_SETTINGS_MENULAYOUT_TT);
 	m_tooltips.AddTool(IDC_HIDEMENUS, IDS_SETTINGS_HIDEMENUS_TT);
 	m_tooltips.AddTool(IDC_NOCONTEXTPATHS, IDS_SETTINGS_EXCLUDECONTEXTLIST_TT);
@@ -229,12 +228,6 @@ BOOL CSetLookAndFeelPage::OnInitDialog()
 	UpdateData(FALSE);
 
 	return TRUE;
-}
-
-BOOL CSetLookAndFeelPage::PreTranslateMessage(MSG* pMsg)
-{
-	m_tooltips.RelayEvent(pMsg);
-	return ISettingsPropPage::PreTranslateMessage(pMsg);
 }
 
 BOOL CSetLookAndFeelPage::OnApply()
@@ -384,12 +377,6 @@ BOOL CSetExtMenu::OnInitDialog()
 	UpdateData(FALSE);
 
 	return TRUE;
-}
-
-BOOL CSetExtMenu::PreTranslateMessage(MSG* pMsg)
-{
-	m_tooltips.RelayEvent(pMsg);
-	return ISettingsPropPage::PreTranslateMessage(pMsg);
 }
 
 BOOL CSetExtMenu::OnApply()

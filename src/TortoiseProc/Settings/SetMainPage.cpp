@@ -91,7 +91,6 @@ BOOL CSetMainPage::OnInitDialog()
 	m_dwLanguage = m_regLanguage;
 	m_bCheckNewer = m_regCheckNewer;
 
-	m_tooltips.Create(this);
 	m_tooltips.AddTool(IDC_MSYSGIT_PATH,IDS_MSYSGIT_PATH_TT);
 	m_tooltips.AddTool(IDC_CHECKNEWERVERSION, IDS_SETTINGS_CHECKNEWER_TT);
 	m_tooltips.AddTool(IDC_CREATELIB, IDS_SETTINGS_CREATELIB_TT);
@@ -148,12 +147,6 @@ BOOL CSetMainPage::OnInitDialog()
 
 	UpdateData(FALSE);
 	return TRUE;
-}
-
-BOOL CSetMainPage::PreTranslateMessage(MSG* pMsg)
-{
-	m_tooltips.RelayEvent(pMsg);
-	return ISettingsPropPage::PreTranslateMessage(pMsg);
 }
 
 void CSetMainPage::OnModified()

@@ -19,7 +19,6 @@
 #pragma once
 
 #include "SettingsPropPage.h"
-#include "Tooltip.h"
 #include "registry.h"
 #include "FileDropEdit.h"
 
@@ -45,7 +44,6 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	virtual BOOL OnApply();
 	virtual BOOL OnInitDialog();
-	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	afx_msg void OnChange();
 	afx_msg void OnBnClickedEnable();
 	afx_msg void OnBnClickedSshbrowse();
@@ -55,7 +53,6 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 private:
-	CToolTips		m_tooltips;
 	CString			m_serveraddress;
 	CRegString		m_regServeraddress;
 	UINT			m_serverport;

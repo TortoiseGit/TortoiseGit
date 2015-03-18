@@ -102,17 +102,10 @@ BOOL CSettingsProgsAlternativeEditor::OnInitDialog()
 
 	SHAutoComplete(::GetDlgItem(m_hWnd, IDC_ALTERNATIVEEDITOR), SHACF_FILESYSTEM | SHACF_FILESYS_ONLY);
 
-	m_tooltips.Create(this);
 	m_tooltips.AddTool(IDC_ALTERNATIVEEDITOR, IDS_SETTINGS_ALTERNATIVEEDITOR_TT);
 
 	UpdateData(FALSE);
 	return TRUE;
-}
-
-BOOL CSettingsProgsAlternativeEditor::PreTranslateMessage(MSG* pMsg)
-{
-	m_tooltips.RelayEvent(pMsg);
-	return ISettingsPropPage::PreTranslateMessage(pMsg);
 }
 
 BOOL CSettingsProgsAlternativeEditor::OnApply()

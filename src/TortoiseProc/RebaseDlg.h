@@ -26,7 +26,6 @@
 #include "GitLogList.h"
 #include "MenuButton.h"
 #include "Win7.h"
-#include "Tooltip.h"
 #include "ProjectProperties.h"
 
 // CRebaseDlg dialog
@@ -143,7 +142,6 @@ protected:
 
 	CProgressCtrl		m_ProgressBar;
 	CStatic				m_CtrlStatusText;
-	CToolTips			m_tooltips;
 
 	BOOL				m_bForce;
 	BOOL				m_bAddCherryPickedFrom;

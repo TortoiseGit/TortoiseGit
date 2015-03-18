@@ -20,7 +20,6 @@
 #include "SettingsPropPage.h"
 #include "SetProgsAdvDlg.h"
 #include "FileDropEdit.h"
-#include "Tooltip.h"
 
 /**
  * \ingroup TortoiseProc
@@ -44,7 +43,6 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	virtual BOOL OnInitDialog();
-	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	virtual BOOL OnApply();
 	afx_msg void OnBnClickedExtmergeOff();
 	afx_msg void OnBnClickedExtmergeOn();
@@ -59,7 +57,6 @@ private:
 	CRegString		m_regMergePath;
 	int             m_iExtMerge;
 	CSetProgsAdvDlg m_dlgAdvMerge;
-	CToolTips		m_tooltips;
 
 	CFileDropEdit	m_cMergeEdit;
 };

@@ -89,8 +89,6 @@ BOOL CSetDialogs3::OnInitDialog()
 	for (DWORD langID : g_langs)
 		AddLangToCombo(langID);
 
-	m_tooltips.Create(this);
-
 	InitGitSettings(this, true, &m_tooltips);
 
 	UpdateData(FALSE);
@@ -208,12 +206,6 @@ BOOL CSetDialogs3::SafeDataImpl(CAutoConfig& config)
 		return FALSE;
 
 	return TRUE;
-}
-
-BOOL CSetDialogs3::PreTranslateMessage(MSG* pMsg)
-{
-	m_tooltips.RelayEvent(pMsg);
-	return ISettingsPropPage::PreTranslateMessage(pMsg);
 }
 
 void CSetDialogs3::EnDisableControls()

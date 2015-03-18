@@ -190,7 +190,6 @@ BOOL CFileDiffDlg::OnInitDialog()
 	this->m_ctrRev1Edit.Init();
 	this->m_ctrRev2Edit.Init();
 
-	m_tooltips.Create(this);
 	m_tooltips.AddTool(IDC_SWITCHLEFTRIGHT, IDS_FILEDIFF_SWITCHLEFTRIGHT_TT);
 
 	m_cFileList.SetRedraw(false);
@@ -860,7 +859,6 @@ void CFileDiffDlg::ClearURLabels(int mask)
 }
 BOOL CFileDiffDlg::PreTranslateMessage(MSG* pMsg)
 {
-	m_tooltips.RelayEvent(pMsg);
 	if (pMsg->message == WM_KEYDOWN)
 	{
 		switch (pMsg->wParam)

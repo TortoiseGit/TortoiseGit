@@ -76,13 +76,11 @@ CStatGraphDlg::CStatGraphDlg(CWnd* pParent /*=NULL*/)
 , m_maxDate(0)
 , m_nTotalFileChanges(0)
 {
-	m_pToolTip = NULL;
 }
 
 CStatGraphDlg::~CStatGraphDlg()
 {
 	ClearGraph();
-	delete m_pToolTip;
 }
 
 void CStatGraphDlg::OnOK() {
@@ -159,17 +157,12 @@ BOOL CStatGraphDlg::OnInitDialog()
 	// the case sensitivity of author names is changed
 	GatherData();
 
-	m_pToolTip = new CToolTipCtrl;
-	if (m_pToolTip->Create(this))
-	{
-		m_pToolTip->AddTool(&m_btnGraphPie, IDS_STATGRAPH_PIEBUTTON_TT);
-		m_pToolTip->AddTool(&m_btnGraphLineStacked, IDS_STATGRAPH_LINESTACKEDBUTTON_TT);
-		m_pToolTip->AddTool(&m_btnGraphLine, IDS_STATGRAPH_LINEBUTTON_TT);
-		m_pToolTip->AddTool(&m_btnGraphBarStacked, IDS_STATGRAPH_BARSTACKEDBUTTON_TT);
-		m_pToolTip->AddTool(&m_btnGraphBar, IDS_STATGRAPH_BARBUTTON_TT);
-
-		m_pToolTip->Activate(TRUE);
-	}
+	m_tooltips.AddTool(&m_btnGraphPie, IDS_STATGRAPH_PIEBUTTON_TT);
+	m_tooltips.AddTool(&m_btnGraphLineStacked, IDS_STATGRAPH_LINESTACKEDBUTTON_TT);
+	m_tooltips.AddTool(&m_btnGraphLine, IDS_STATGRAPH_LINEBUTTON_TT);
+	m_tooltips.AddTool(&m_btnGraphBarStacked, IDS_STATGRAPH_BARSTACKEDBUTTON_TT);
+	m_tooltips.AddTool(&m_btnGraphBar, IDS_STATGRAPH_BARBUTTON_TT);
+	m_tooltips.Activate(TRUE);
 
 	m_bAuthorsCaseSensitive = DWORD(CRegDWORD(_T("Software\\TortoiseGit\\StatAuthorsCaseSensitive")));
 	m_bSortByCommitCount = DWORD(CRegDWORD(_T("Software\\TortoiseGit\\StatSortByCommitCount")));
@@ -1623,14 +1616,6 @@ void CStatGraphDlg::OnBnClickedGraphpiebutton()
 	m_GraphType = MyGraph::PieChart;
 	m_bStacked = false;
 	RedrawGraph();
-}
-
-BOOL CStatGraphDlg::PreTranslateMessage(MSG* pMsg)
-{
-	if (NULL != m_pToolTip)
-		m_pToolTip->RelayEvent(pMsg);
-
-	return CStandAloneDialogTmpl<CResizableDialog>::PreTranslateMessage(pMsg);
 }
 
 void CStatGraphDlg::EnableDisableMenu()

@@ -98,7 +98,6 @@ BOOL CExportDlg::OnInitDialog()
 	pHead->SetWindowText(headText + " (" + g_Git.GetCurrentBranch() + ")");
 	AdjustControlSize(IDC_RADIO_HEAD);
 
-	m_tooltips.Create(this);
 	m_tooltips.AddTool(IDC_EXPORTFILE, IDS_EXPORTFILE_TT);
 
 	SHAutoComplete(GetDlgItem(IDC_EXPORTFILE)->m_hWnd, SHACF_FILESYSTEM);
@@ -168,12 +167,6 @@ void CExportDlg::OnBnClickedCheckoutdirectoryBrowse()
 		UpdateData(FALSE);
 		OnEnChangeCheckoutdirectory();
 	}
-}
-
-BOOL CExportDlg::PreTranslateMessage(MSG* pMsg)
-{
-	m_tooltips.RelayEvent(pMsg);
-	return CHorizontalResizableStandAloneDialog::PreTranslateMessage(pMsg);
 }
 
 void CExportDlg::OnEnChangeCheckoutdirectory()

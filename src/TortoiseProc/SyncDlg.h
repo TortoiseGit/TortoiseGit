@@ -87,8 +87,6 @@ protected:
 
 	CMFCTabCtrl			m_ctrlTabCtrl;
 
-	CToolTips		m_tooltips;
-
 	BOOL				m_bInited;
 
 	CGitLogList			m_OutLogList;

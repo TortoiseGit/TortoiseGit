@@ -23,7 +23,6 @@
 #include "HistoryCombo.h"
 #include "MenuButton.h"
 #include "registry.h"
-#include "Tooltip.h"
 
 // CPushDlg dialog
 class CPushDlg : public CHorizontalResizableStandAloneDialog
@@ -70,8 +69,6 @@ protected:
 
 	BOOL			m_bSetPushRemote;
 	BOOL			m_bSetPushBranch;
-
-	CToolTips		m_tooltips;
 
 	virtual BOOL OnInitDialog();
 

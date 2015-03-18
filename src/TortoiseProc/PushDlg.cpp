@@ -187,7 +187,6 @@ BOOL CPushDlg::OnInitDialog()
 	m_BrowseLocalRef.AddEntry(CString(MAKEINTRESOURCE(IDS_LOG)));
 	m_BrowseLocalRef.AddEntry(CString(MAKEINTRESOURCE(IDS_REFLOG)));
 
-	m_tooltips.Create(this);
 	m_tooltips.AddTool(IDC_PROC_PUSH_SET_PUSHBRANCH, IDS_PUSHDLG_PUSHBRANCH_TT);
 	m_tooltips.AddTool(IDC_PROC_PUSH_SET_PUSHREMOTE, IDS_PUSHDLG_PUSHREMOTE_TT);
 	m_tooltips.AddTool(IDC_FORCE, IDS_FORCE_TT);
@@ -560,8 +559,6 @@ void CPushDlg::OnBnClickedButtonBrowseDestBranch()
 
 BOOL CPushDlg::PreTranslateMessage(MSG* pMsg)
 {
-	m_tooltips.RelayEvent(pMsg);
-
 	if (pMsg->message == WM_KEYDOWN)
 	{
 		switch (pMsg->wParam)

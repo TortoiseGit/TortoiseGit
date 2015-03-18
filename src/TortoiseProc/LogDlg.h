@@ -30,7 +30,6 @@
 #include "LogDlgHelper.h"
 #include "FilterEdit.h"
 #include "GitRev.h"
-#include "Tooltip.h"
 #include <regex>
 #include "GitLogList.h"
 #include "GitStatusListCtrl.h"
@@ -268,8 +267,6 @@ private:
 	CString				m_sTitle;
 	bool				m_bSelect;
 	CString				m_sLogInfo;
-
-	CToolTips			m_tooltips;
 
 	CColors				m_Colors;
 	CImageList			m_imgList;

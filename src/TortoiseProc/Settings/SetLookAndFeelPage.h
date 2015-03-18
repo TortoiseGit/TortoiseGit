@@ -20,7 +20,6 @@
 #pragma once
 
 #include "SettingsPropPage.h"
-#include "Tooltip.h"
 #include "registry.h"
 
 /**
@@ -42,7 +41,6 @@ public:
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	virtual BOOL OnApply();
 	afx_msg void OnBnClickedSelectall();
 	afx_msg void OnBnClickedRestoreDefaults();
@@ -55,7 +53,6 @@ protected:
 	virtual BOOL OnInitDialog();
 
 private:
-	CToolTips			m_tooltips;
 	CRegStdDWORD			m_regTopmenu;
 	CRegStdDWORD			m_regTopmenuhigh;
 

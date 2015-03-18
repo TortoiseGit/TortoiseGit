@@ -92,7 +92,6 @@ BOOL CSetHooksAdv::OnInitDialog()
 	m_sCommandLine = cmd.commandline;
 	m_bWait = cmd.bWait;
 	m_bHide = !cmd.bShow;
-	m_tooltips.Create(this);
 	UpdateData(FALSE);
 
 	AddAnchor(IDC_HOOKTYPELABEL, TOP_LEFT, TOP_RIGHT);
@@ -173,10 +172,4 @@ void CSetHooksAdv::OnBnClickedHookcommandbrowse()
 		m_sCommandLine = sCmdLine;
 		UpdateData(FALSE);
 	}
-}
-
-BOOL CSetHooksAdv::PreTranslateMessage(MSG* pMsg)
-{
-	m_tooltips.RelayEvent(pMsg);
-	return CResizableStandAloneDialog::PreTranslateMessage(pMsg);
 }

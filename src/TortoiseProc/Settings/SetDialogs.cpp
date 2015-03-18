@@ -160,7 +160,6 @@ BOOL CSetDialogs::OnInitDialog()
 
 	CString temp;
 
-	m_tooltips.Create(this);
 	m_tooltips.AddTool(IDC_SHORTDATEFORMAT, IDS_SETTINGS_SHORTDATEFORMAT_TT);
 	m_tooltips.AddTool(IDC_RELATIVETIMES, IDS_SETTINGS_RELATIVETIMES_TT);
 	m_tooltips.AddTool(IDC_ASTERISKLOGPREFIX, IDS_SETTINGS_ASTERISKLOGPREFIX_TT);
@@ -215,12 +214,6 @@ BOOL CSetDialogs::OnInitDialog()
 
 	UpdateData(FALSE);
 	return TRUE;
-}
-
-BOOL CSetDialogs::PreTranslateMessage(MSG* pMsg)
-{
-	m_tooltips.RelayEvent(pMsg);
-	return ISettingsPropPage::PreTranslateMessage(pMsg);
 }
 
 void CSetDialogs::OnChange()

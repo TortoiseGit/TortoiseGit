@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2013 - TortoiseSVN
+// Copyright (C) 2003-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -20,6 +20,7 @@
 
 #include "ResizableDialog.h"
 #include "TaskbarUUID.h"
+#include "Tooltip.h"
 
 #pragma comment(lib, "htmlhelp.lib")
 
@@ -49,11 +50,15 @@ protected:
 		SetIcon(m_hIcon, TRUE);			// Set big icon
 		SetIcon(m_hIcon, FALSE);		// Set small icon
 
+		EnableToolTips();
+		m_tooltips.Create(this);
+
 		return FALSE;
 	}
 
 	virtual BOOL PreTranslateMessage(MSG* pMsg)
 	{
+		m_tooltips.RelayEvent(pMsg, this);
 		if (pMsg->message == WM_KEYDOWN)
 		{
 			int nVirtKey = (int) pMsg->wParam;
@@ -238,6 +243,8 @@ protected:
 	}
 
 protected:
+	CToolTips	m_tooltips;
+
 	DECLARE_MESSAGE_MAP()
 
 private:

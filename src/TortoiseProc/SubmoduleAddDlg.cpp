@@ -121,8 +121,6 @@ BOOL CSubmoduleAddDlg::OnInitDialog()
 	text += m_strProject;
 	GetDlgItem(IDC_GROUP_SUBMODULE)->SetWindowText(text);
 
-	m_tooltips.Create(this);
-
 	return TRUE;
 }
 

@@ -19,7 +19,6 @@
 #pragma once
 #include "Hooks.h"
 #include "StandAloneDlg.h"
-#include "Tooltip.h"
 
 /**
  * \ingroup TortoiseProc
@@ -42,7 +41,6 @@ public:
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	virtual BOOL OnInitDialog();
-	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	virtual void OnOK();
 	afx_msg void OnBnClickedHookbrowse();
 	afx_msg void OnBnClickedHookcommandbrowse();
@@ -54,5 +52,4 @@ protected:
 	BOOL			m_bWait;
 	BOOL			m_bHide;
 	CComboBox		m_cHookTypeCombo;
-	CToolTips		m_tooltips;
 };

@@ -88,18 +88,11 @@ BOOL CSettingsProgsDiff::OnInitDialog()
 
 	SHAutoComplete(::GetDlgItem(m_hWnd, IDC_DIFFVIEWER), SHACF_FILESYSTEM | SHACF_FILESYS_ONLY);
 
-	m_tooltips.Create(this);
 	m_tooltips.AddTool(IDC_EXTDIFF, IDS_SETTINGS_EXTDIFF_TT);
 	m_tooltips.AddTool(IDC_DIFFVIEWER, IDS_SETTINGS_DIFFVIEWER_TT);
 
 	UpdateData(FALSE);
 	return TRUE;
-}
-
-BOOL CSettingsProgsDiff::PreTranslateMessage(MSG* pMsg)
-{
-	m_tooltips.RelayEvent(pMsg);
-	return ISettingsPropPage::PreTranslateMessage(pMsg);
 }
 
 BOOL CSettingsProgsDiff::OnApply()

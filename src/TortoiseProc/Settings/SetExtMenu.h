@@ -36,7 +36,6 @@ public:
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	virtual BOOL OnApply();
 	afx_msg void OnLvnItemchangedMenulist(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnBnClickedSelectall();
@@ -48,8 +47,6 @@ public:
 	virtual BOOL OnInitDialog();
 
 private:
-
-	CToolTips			m_tooltips;
 	CRegStdDWORD			m_regExtmenu;
 	CRegStdDWORD			m_regExtmenuhigh;
 

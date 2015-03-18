@@ -19,7 +19,6 @@
 //
 #pragma once
 #include "SettingsPropPage.h"
-#include "Tooltip.h"
 #include "registry.h"
 
 /**
@@ -54,12 +53,10 @@ protected:
 	afx_msg void OnModified();
 
 	virtual BOOL OnInitDialog();
-	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	virtual BOOL OnApply();
 	void DeleteViaShell(LPCTSTR path, UINT progressText);
 
 private:
-	CToolTips		m_tooltips;
 	CButton			m_btnUrlHistClear;
 	CButton			m_btnLogHistClear;
 	CButton			m_btnResizableHistClear;

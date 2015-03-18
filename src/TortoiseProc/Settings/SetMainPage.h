@@ -19,7 +19,6 @@
 //
 #pragma once
 #include "SettingsPropPage.h"
-#include "Tooltip.h"
 #include "registry.h"
 
 
@@ -46,7 +45,6 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 	virtual BOOL OnInitDialog();
-	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	virtual BOOL OnApply();
 	afx_msg void OnModified();
 	afx_msg void OnMsysGitPathModify();
@@ -61,7 +59,6 @@ private:
 	CRegString		m_regMsysGitExtranPath;
 	CString			m_sMsysGitPath;
 	CString			m_sMsysGitExtranPath;
-	CToolTips		m_tooltips;
 	CComboBox		m_LanguageCombo;
 	CRegDWORD		m_regLanguage;
 	DWORD			m_dwLanguage;

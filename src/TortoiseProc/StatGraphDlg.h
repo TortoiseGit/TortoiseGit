@@ -136,7 +136,6 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);
 	virtual BOOL OnInitDialog();
 	void ShowLabels(BOOL bShow);
-	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	afx_msg void OnCbnSelchangeGraphcombo();
 	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 	afx_msg void OnBnClickedStacked();
@@ -238,8 +237,6 @@ protected:
 
 	MyGraph::GraphType	m_GraphType;
 	bool				m_bStacked;
-
-	CToolTipCtrl*	m_pToolTip;
 
 	int				m_langOrder;
 

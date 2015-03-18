@@ -82,7 +82,6 @@ protected:
 
 	CSciEdit	m_PatchCtrl;
 	CSciEdit	m_wndOutput;
-	CToolTips	m_tooltips;
 
 	void AddAmAnchor();
 	void SetSplitterRange();

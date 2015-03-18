@@ -22,7 +22,6 @@
 #include "HistoryCombo.h"
 #include "MenuButton.h"
 #include "registry.h"
-#include "tooltip.h"
 // CCloneDlg dialog
 
 class CCloneDlg : public CHorizontalResizableStandAloneDialog
@@ -106,8 +105,5 @@ protected:
 	afx_msg void OnBnClickedCheckSvnBranch();
 	afx_msg void OnBnClickedCheckSvnFrom();
 	afx_msg void OnBnClickedCheckDepth();
-
-	CToolTips	m_tooltips;
-	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	afx_msg void OnBnClickedCheckUsername();
 };

@@ -157,7 +157,6 @@ BOOL CSetOverlayPage::OnInitDialog()
 	GetDlgItem(IDC_RECURSIVESUBMODULES)->EnableWindow(m_dwCacheType == 1);
 	GetDlgItem(IDC_FLOPPY)->EnableWindow(m_bRemovable);
 
-	m_tooltips.Create(this);
 	m_tooltips.AddTool(IDC_ONLYEXPLORER, IDS_SETTINGS_ONLYEXPLORER_TT);
 	m_tooltips.AddTool(IDC_EXCLUDEPATHS, IDS_SETTINGS_EXCLUDELIST_TT);
 	m_tooltips.AddTool(IDC_INCLUDEPATHS, IDS_SETTINGS_INCLUDELIST_TT);
@@ -171,12 +170,6 @@ BOOL CSetOverlayPage::OnInitDialog()
 	UpdateData(FALSE);
 
 	return TRUE;
-}
-
-BOOL CSetOverlayPage::PreTranslateMessage(MSG* pMsg)
-{
-	m_tooltips.RelayEvent(pMsg);
-	return ISettingsPropPage::PreTranslateMessage(pMsg);
 }
 
 void CSetOverlayPage::OnChange()

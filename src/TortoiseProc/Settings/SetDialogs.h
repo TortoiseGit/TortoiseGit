@@ -19,7 +19,6 @@
 //
 #pragma once
 #include "SettingsPropPage.h"
-#include "Tooltip.h"
 #include "registry.h"
 #include "HistoryCombo.h"
 
@@ -47,13 +46,11 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 	virtual BOOL OnInitDialog();
-	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	virtual BOOL OnApply();
 	afx_msg void OnChange();
 	afx_msg void OnBnClickedBrowsecheckoutpath();
 
 private:
-	CToolTips			m_tooltips;
 	BOOL				m_bShortDateFormat;
 	BOOL				m_bRelativeTimes;
 	CRegDWORD			m_regShortDateFormat;

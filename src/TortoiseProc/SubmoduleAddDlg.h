@@ -21,7 +21,6 @@
 #include "afxcmn.h"
 #include "HorizontalResizableStandAloneDialog.h"
 #include "HistoryCombo.h"
-#include "ToolTip.h"
 // CSubmoduleAddDlg dialog
 
 class CSubmoduleAddDlg : public CHorizontalResizableStandAloneDialog
@@ -43,7 +42,6 @@ protected:
 	void OnBnClickedPuttykeyfileBrowse();
 	void OnBnClickedPuttykeyAutoload();
 	virtual void OnOK();
-	CToolTips m_tooltips;
 	DECLARE_MESSAGE_MAP()
 public:
 	CHistoryCombo m_Repository;

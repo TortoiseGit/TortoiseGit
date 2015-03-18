@@ -129,7 +129,6 @@ BOOL CCloneDlg::OnInitDialog()
 	AdjustControlSize(IDC_CHECK_SVN_FROM);
 	AdjustControlSize(IDC_CHECK_USERNAME);
 
-	m_tooltips.Create(this);
 	CString tt;
 	tt.LoadString(IDS_CLONE_DEPTH_TT);
 	m_tooltips.AddTool(IDC_EDIT_DEPTH,tt);
@@ -501,13 +500,6 @@ void CCloneDlg::OnBnClickedCheckOrigin()
 {
 	UpdateData(TRUE);
 	this->GetDlgItem(IDC_EDIT_ORIGIN)->EnableWindow(this->m_bOrigin);
-}
-
-BOOL CCloneDlg::PreTranslateMessage(MSG* pMsg)
-{
-	m_tooltips.RelayEvent(pMsg);
-
-	return CHorizontalResizableStandAloneDialog::PreTranslateMessage(pMsg);
 }
 
 void CCloneDlg::OnBnClickedCheckUsername()

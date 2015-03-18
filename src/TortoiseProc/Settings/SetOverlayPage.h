@@ -20,7 +20,6 @@
 #pragma once
 
 #include "SettingsPropPage.h"
-#include "Tooltip.h"
 #include "registry.h"
 
 /**
@@ -44,7 +43,6 @@ public:
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	virtual BOOL OnInitDialog();
-	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	afx_msg void OnChange();
 	virtual BOOL OnApply();
 
@@ -73,7 +71,6 @@ private:
 	CRegDWORD		m_regUnversionedAsModified;
 	CRegDWORD		m_regRecurseSubmodules;
 	CRegDWORD		m_regShowExcludedAsNormal;
-	CToolTips		m_tooltips;
 	CRegString		m_regExcludePaths;
 	CString			m_sExcludePaths;
 	CRegString		m_regIncludePaths;

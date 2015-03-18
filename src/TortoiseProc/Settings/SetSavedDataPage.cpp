@@ -151,7 +151,6 @@ BOOL CSetSavedDataPage::OnInitDialog()
 
 	EnableToolTips();
 
-	m_tooltips.Create(this);
 	CString sTT;
 	sTT.Format(IDS_SETTINGS_SAVEDDATA_LOGHIST_TT, nLogHistMsg, nLogHistWC);
 	m_tooltips.AddTool(IDC_LOGHISTORY, sTT);
@@ -176,12 +175,6 @@ BOOL CSetSavedDataPage::OnInitDialog()
 	m_tooltips.AddTool(IDC_ACTIONLOGCLEAR, sTT);
 
 	return TRUE;
-}
-
-BOOL CSetSavedDataPage::PreTranslateMessage(MSG* pMsg)
-{
-	m_tooltips.RelayEvent(pMsg);
-	return ISettingsPropPage::PreTranslateMessage(pMsg);
 }
 
 BEGIN_MESSAGE_MAP(CSetSavedDataPage, ISettingsPropPage)

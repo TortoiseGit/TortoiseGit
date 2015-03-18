@@ -97,8 +97,6 @@ BOOL CSettingGitConfig::OnInitDialog()
 	AdjustControlSize(IDC_CHECK_INHERIT_KEYID);
 	GITSETTINGS_ADJUSTCONTROLSIZE
 
-	m_tooltips.Create(this);
-
 	InitGitSettings(this, false, &m_tooltips);
 
 	if (!m_bGlobal || m_bIsBareRepo)
@@ -241,12 +239,6 @@ BOOL CSettingGitConfig::SafeDataImpl(CAutoConfig& config)
 	}
 
 	return TRUE;
-}
-
-BOOL CSettingGitConfig::PreTranslateMessage(MSG* pMsg)
-{
-	m_tooltips.RelayEvent(pMsg);
-	return ISettingsPropPage::PreTranslateMessage(pMsg);
 }
 
 BOOL CSettingGitConfig::OnApply()

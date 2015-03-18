@@ -21,8 +21,6 @@
 #include "SettingsPropPage.h"
 #include "SetProgsAdvDlg.h"
 #include "FileDropEdit.h"
-#include "Tooltip.h"
-
 
 /**
  * \ingroup TortoiseProc
@@ -43,7 +41,6 @@ public:
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	virtual BOOL OnInitDialog();
-	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	virtual BOOL OnApply();
 	afx_msg void OnBnClickedAlternativeEditorOff();
 	afx_msg void OnBnClickedAlternativeEditorOn();
@@ -59,7 +56,6 @@ private:
 	CString			m_sAlternativeEditorPath;
 	CRegString		m_regAlternativeEditorPath;
 	int				m_iAlternativeEditor;
-	CToolTips		m_tooltips;
 
 	CFileDropEdit	m_cAlternativeEditorEdit;
 };

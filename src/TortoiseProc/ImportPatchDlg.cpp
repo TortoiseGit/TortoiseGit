@@ -157,8 +157,6 @@ BOOL CImportPatchDlg::OnInitDialog()
 	m_wndOutput.Init(-1, FALSE);
 	m_wndOutput.Call(SCI_SETREADONLY, TRUE);
 
-	m_tooltips.Create(this);
-
 	m_tooltips.AddTool(IDC_CHECK_3WAY,IDS_AM_3WAY_TT);
 	m_tooltips.AddTool(IDC_CHECK_IGNORE_SPACE,IDS_AM_IGNORE_SPACE_TT);
 
@@ -684,7 +682,6 @@ BOOL CImportPatchDlg::PreTranslateMessage(MSG* pMsg)
 			}
 		}
 	}
-	m_tooltips.RelayEvent(pMsg);
 	return CResizableStandAloneDialog::PreTranslateMessage(pMsg);
 }
 

@@ -18,7 +18,6 @@
 //
 #pragma once
 #include "SettingsPropPage.h"
-#include "Tooltip.h"
 #include "registry.h"
 
 // CSettingGitRemote dialog

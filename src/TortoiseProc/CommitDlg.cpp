@@ -254,7 +254,6 @@ BOOL CCommitDlg::OnInitDialog()
 
 	OnEnChangeLogmessage();
 
-	m_tooltips.Create(this);
 	m_tooltips.AddTool(IDC_EXTERNALWARNING, IDS_COMMITDLG_EXTERNALS);
 	m_tooltips.AddTool(IDC_COMMIT_AMEND,IDS_COMMIT_AMEND_TT);
 	m_tooltips.AddTool(IDC_MERGEACTIVE, IDC_MERGEACTIVE_TT);
@@ -1371,9 +1370,6 @@ void CCommitDlg::OnCancel()
 
 BOOL CCommitDlg::PreTranslateMessage(MSG* pMsg)
 {
-	if (!m_bBlock)
-		m_tooltips.RelayEvent(pMsg);
-
 	if (m_hAccel)
 	{
 		int ret = TranslateAccelerator(m_hWnd, m_hAccel, pMsg);

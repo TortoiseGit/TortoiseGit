@@ -22,7 +22,6 @@
 #include "StandAloneDlg.h"
 #include "Git.h"
 #include "registry.h"
-#include "Tooltip.h"
 
 #include "GitStatusListCtrl.h"
 
@@ -94,6 +93,5 @@ private:
 	bool					m_bCanceled;
 	BOOL					m_bShowIgnored;
 	BOOL					m_bWholeProject;
-	CToolTips				m_tooltips;
 };
 

@@ -140,7 +140,6 @@ BOOL CSetDialogs2::OnInitDialog()
 
 	CString temp;
 
-	m_tooltips.Create(this);
 	m_tooltips.AddTool(IDC_AUTOCLOSECOMBO, IDS_SETTINGS_AUTOCLOSE_TT);
 	m_tooltips.AddTool(IDC_USERECYCLEBIN, IDS_SETTINGS_USERECYCLEBIN_TT);
 	m_tooltips.AddTool(IDC_CONFIRMKILLPROCESS, IDS_SETTINGS_CONFIRMKILLPROCESS_TT);
@@ -156,12 +155,6 @@ BOOL CSetDialogs2::OnInitDialog()
 
 	UpdateData(FALSE);
 	return TRUE;
-}
-
-BOOL CSetDialogs2::PreTranslateMessage(MSG* pMsg)
-{
-	m_tooltips.RelayEvent(pMsg);
-	return ISettingsPropPage::PreTranslateMessage(pMsg);
 }
 
 void CSetDialogs2::OnChange()

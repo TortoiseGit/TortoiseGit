@@ -72,13 +72,6 @@ BEGIN_MESSAGE_MAP(CGitSwitchDlg, CHorizontalResizableStandAloneDialog)
 	ON_EN_CHANGE(IDC_EDIT_BRANCH, &CGitSwitchDlg::OnEnChangeEditBranch)
 END_MESSAGE_MAP()
 
-BOOL CGitSwitchDlg::PreTranslateMessage(MSG* pMsg)
-{
-	m_ToolTip.RelayEvent(pMsg);
-
-	return CDialog::PreTranslateMessage(pMsg);
-}
-
 BOOL CGitSwitchDlg::OnInitDialog()
 {
 	CHorizontalResizableStandAloneDialog::OnInitDialog();
@@ -117,18 +110,10 @@ BOOL CGitSwitchDlg::OnInitDialog()
 
 	this->GetDlgItem(IDC_CHECK_TRACK)->EnableWindow(FALSE);
 
-	//Create the ToolTip control
-	if (!m_ToolTip.Create(this))
-	{
-		TRACE0("Unable to create the ToolTip!");
-	}
-	else
-	{
-		m_ToolTip.AddTool(GetDlgItem(IDC_CHECK_FORCE), CString(MAKEINTRESOURCE(IDS_PROC_NEWBRANCHTAG_FORCE_TT)));
-		m_ToolTip.AddTool(GetDlgItem(IDC_CHECK_MERGE), CString(MAKEINTRESOURCE(IDS_PROC_SWITCH_MERGE_TT)));
-		m_ToolTip.AddTool(GetDlgItem(IDC_CHECK_TRACK), CString(MAKEINTRESOURCE(IDS_PROC_NEWBRANCHTAG_TRACK_TT)));
-		m_ToolTip.Activate(TRUE);
-	}
+	m_tooltips.AddTool(GetDlgItem(IDC_CHECK_FORCE), CString(MAKEINTRESOURCE(IDS_PROC_NEWBRANCHTAG_FORCE_TT)));
+	m_tooltips.AddTool(GetDlgItem(IDC_CHECK_MERGE), CString(MAKEINTRESOURCE(IDS_PROC_SWITCH_MERGE_TT)));
+	m_tooltips.AddTool(GetDlgItem(IDC_CHECK_TRACK), CString(MAKEINTRESOURCE(IDS_PROC_NEWBRANCHTAG_TRACK_TT)));
+	m_tooltips.Activate(TRUE);
 
 	return FALSE;
 }

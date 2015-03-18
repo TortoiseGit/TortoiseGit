@@ -842,8 +842,6 @@ BOOL CSyncDlg::OnInitDialog()
 	m_refList.Init();
 	m_ctrlTabCtrl.InsertTab(&m_refList, CString(MAKEINTRESOURCE(IDS_REFLIST)), -1);
 
-	this->m_tooltips.Create(this);
-
 	AddAnchor(IDC_SYNC_TAB,TOP_LEFT,BOTTOM_RIGHT);
 
 	AddAnchor(IDC_GROUP_INFO,TOP_LEFT,TOP_RIGHT);
@@ -1062,7 +1060,6 @@ BOOL CSyncDlg::PreTranslateMessage(MSG* pMsg)
 			}
 		}
 	}
-	m_tooltips.RelayEvent(pMsg);
 	return __super::PreTranslateMessage(pMsg);
 }
 void CSyncDlg::FetchOutList(bool force)

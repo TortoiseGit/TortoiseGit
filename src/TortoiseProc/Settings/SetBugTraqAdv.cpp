@@ -91,7 +91,6 @@ BOOL CSetBugTraqAdv::OnInitDialog()
 		}
 	}
 
-	m_tooltips.Create(this);
 	UpdateData(FALSE);
 	CheckHasOptions();
 
@@ -231,10 +230,4 @@ void CSetBugTraqAdv::OnBnClickedOptions()
 			SetDlgItemText(IDC_BUGTRAQPARAMETERS, temp);
 		}
 	}
-}
-
-BOOL CSetBugTraqAdv::PreTranslateMessage(MSG* pMsg)
-{
-	m_tooltips.RelayEvent(pMsg);
-	return CResizableStandAloneDialog::PreTranslateMessage(pMsg);
 }

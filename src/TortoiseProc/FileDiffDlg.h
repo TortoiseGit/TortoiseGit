@@ -27,7 +27,6 @@
 #include "Colors.h"
 #include "FilterEdit.h"
 #include "MessageBox.h"
-#include "Tooltip.h"
 #include "ProgressDlg.h"
 #include "MenuButton.h"
 #include "ACEdit.h"
@@ -130,8 +129,6 @@ private:
 	virtual BOOL		Cancel() {return m_bCancelled;}
 	virtual BOOL DestroyWindow();
 	void OnTextUpdate(CACEdit *pEdit);
-
-	CToolTips			m_tooltips;
 
 	CMenuButton			m_cRev1Btn;
 	CMenuButton			m_cRev2Btn;

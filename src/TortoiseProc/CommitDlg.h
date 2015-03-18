@@ -28,7 +28,6 @@
 #include "LinkControl.h"
 #include "PathWatcher.h"
 #include "BugTraqAssociations.h"
-#include "Tooltip.h"
 #include "..\IBugTraqProvider\IBugTraqProvider_h.h"
 #include "Git.h"
 #include "HyperLink.h"
@@ -175,7 +174,6 @@ private:
 	volatile LONG		m_bBlock;
 	volatile LONG		m_bThreadRunning;
 	volatile LONG		m_bRunThread;
-	CToolTips			m_tooltips;
 	CRegDWORD			m_regAddBeforeCommit;
 	CRegDWORD			m_regKeepChangelists;
 	CRegDWORD			m_regDoNotAutoselectSubmodules;

@@ -18,7 +18,6 @@
 //
 #pragma once
 #include "SettingsPropPage.h"
-#include "Tooltip.h"
 #include "GitSettings.h"
 
 /**
@@ -44,7 +43,6 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 	virtual BOOL OnInitDialog();
-	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	virtual BOOL OnApply();
 
 	virtual void LoadDataImpl(CAutoConfig& config);
@@ -60,7 +58,6 @@ protected:
 
 private:
 	bool				m_bNeedSave;
-	CToolTips			m_tooltips;
 	CComboBox			m_langCombo;
 	CString				m_LogMinSize;
 	BOOL				m_bInheritLogMinSize;

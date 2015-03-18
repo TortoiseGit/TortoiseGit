@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2007-2010 - TortoiseSVN
+// Copyright (C) 2007-2010, 2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -18,6 +18,7 @@
 //
 #pragma once
 #include "MessageBox.h"
+#include "Tooltip.h"
 
 /**
  * \ingroup TortoiseProc
@@ -58,8 +59,22 @@ public:
 	virtual SettingsRestart GetRestart() {return m_restart;}
 
 protected:
+	virtual BOOL OnInitDialog()
+	{
+		CPropertyPage::OnInitDialog();
+		m_tooltips.Create(this);
+		return FALSE;
+	}
+	virtual BOOL PreTranslateMessage(MSG* pMsg)
+	{
+		m_tooltips.RelayEvent(pMsg, this);
+		return CPropertyPage::PreTranslateMessage(pMsg);
+	}
+
+protected:
 
 	SettingsRestart m_restart;
+	CToolTips		m_tooltips;
 
 	/**
 	* Adjusts the size of a checkbox or radio button control.

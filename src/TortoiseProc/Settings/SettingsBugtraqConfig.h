@@ -40,7 +40,6 @@ protected:
 
 	virtual BOOL OnInitDialog();
 	virtual BOOL OnApply();
-	virtual BOOL PreTranslateMessage(MSG* pMsg);
 
 	afx_msg void OnBnClickedTestbugtraqregexbutton();
 
@@ -52,8 +51,6 @@ protected:
 
 	afx_msg void OnChange();
 	GITSETTINGS_RADIO_EVENT_HANDLE
-
-	CToolTips	m_tooltips;
 
 	CRegexEdit	m_BugtraqRegex1;
 

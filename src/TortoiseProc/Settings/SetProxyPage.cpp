@@ -109,7 +109,6 @@ BOOL CSetProxyPage::OnInitDialog()
 
 	AdjustControlSize(IDC_ENABLE);
 
-	m_tooltips.Create(this);
 	m_tooltips.AddTool(IDC_SERVERADDRESS, IDS_SETTINGS_PROXYSERVER_TT);
 
 	CString proxy = g_Git.GetConfigValue(_T("http.proxy"));
@@ -225,12 +224,6 @@ void CSetProxyPage::EnableGroup(BOOL b)
 	GetDlgItem(IDC_PROXYLABEL2)->EnableWindow(b);
 	GetDlgItem(IDC_PROXYLABEL3)->EnableWindow(b);
 	GetDlgItem(IDC_PROXYLABEL6)->EnableWindow(b);
-}
-
-BOOL CSetProxyPage::PreTranslateMessage(MSG* pMsg)
-{
-	m_tooltips.RelayEvent(pMsg);
-	return ISettingsPropPage::PreTranslateMessage(pMsg);
 }
 
 void CSetProxyPage::OnChange()

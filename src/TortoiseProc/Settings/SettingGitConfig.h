@@ -19,7 +19,6 @@
 #pragma once
 
 #include "SettingsPropPage.h"
-#include "Tooltip.h"
 #include "registry.h"
 #include "Git.h"
 #include "GitSettings.h"
@@ -41,7 +40,6 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	BOOL OnInitDialog();
 	BOOL OnApply();
-	virtual BOOL PreTranslateMessage(MSG* pMsg);
 
 	virtual void LoadDataImpl(CAutoConfig& config);
 	virtual BOOL SafeDataImpl(CAutoConfig& config);
@@ -59,7 +57,6 @@ protected:
 	GITSETTINGS_RADIO_EVENT_HANDLE;
 
 	bool	m_bNeedSave;
-	CToolTips	m_tooltips;
 	CString	m_UserName;
 	BOOL	m_bInheritUserName;
 	CString	m_UserEmail;

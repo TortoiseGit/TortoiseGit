@@ -19,7 +19,6 @@
 //
 #pragma once
 #include "HorizontalResizableStandAloneDialog.h"
-#include "Tooltip.h"
 #include "ChooseVersion.h"
 
 /**
@@ -42,7 +41,6 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
 	virtual BOOL OnInitDialog();
-	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	virtual void OnOK();
 	afx_msg void OnDestroy();
 	afx_msg void OnBnClickedCheckoutdirectoryBrowse();
@@ -53,7 +51,6 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 protected:
-	CToolTips		m_tooltips;
 	CString			m_sTitle;
 
 	CHOOSE_EVENT_RADIO()	;

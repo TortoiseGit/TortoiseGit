@@ -21,8 +21,6 @@
 #include "SettingsPropPage.h"
 #include "SetProgsAdvDlg.h"
 #include "FileDropEdit.h"
-#include "Tooltip.h"
-
 
 /**
  * \ingroup TortoiseProc
@@ -46,7 +44,6 @@ protected:
 	DECLARE_MESSAGE_MAP()
 protected:
 	virtual BOOL OnInitDialog();
-	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	virtual BOOL OnApply();
 	afx_msg void OnBnClickedExtdiffOff();
 	afx_msg void OnBnClickedExtdiffOn();
@@ -68,7 +65,6 @@ private:
 	CRegString		m_regDiffPath;
 	int				m_iExtDiff;
 	CSetProgsAdvDlg m_dlgAdvDiff;
-	CToolTips		m_tooltips;
 	CString			m_sDiffViewerPath;
 	CRegString		m_regDiffViewerPath;
 	int				m_iDiffViewer;

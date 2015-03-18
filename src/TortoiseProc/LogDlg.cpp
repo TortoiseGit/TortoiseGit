@@ -289,7 +289,6 @@ BOOL CLogDlg::OnInitDialog()
 
 	SetDlgTitle();
 
-	m_tooltips.Create(this);
 	CheckRegexpTooltip();
 
 	SetSplitterRange();
@@ -1602,8 +1601,6 @@ BOOL CLogDlg::PreTranslateMessage(MSG* pMsg)
 			return TRUE;
 	}
 
-	if(::IsWindow(m_tooltips.m_hWnd))
-		m_tooltips.RelayEvent(pMsg);
 	return __super::PreTranslateMessage(pMsg);
 }
 

@@ -78,8 +78,6 @@ BOOL CChangedDlg::OnInitDialog()
 {
 	CResizableStandAloneDialog::OnInitDialog();
 
-	m_tooltips.Create(this);
-
 	m_regAddBeforeCommit = CRegDWORD(_T("Software\\TortoiseGit\\AddBeforeCommit"), TRUE);
 	m_bShowUnversioned = m_regAddBeforeCommit;
 
@@ -318,7 +316,6 @@ LRESULT CChangedDlg::OnSVNStatusListCtrlItemCountChanged(WPARAM, LPARAM)
 
 BOOL CChangedDlg::PreTranslateMessage(MSG* pMsg)
 {
-	m_tooltips.RelayEvent(pMsg);
 	if (pMsg->message == WM_KEYDOWN)
 	{
 		switch (pMsg->wParam)

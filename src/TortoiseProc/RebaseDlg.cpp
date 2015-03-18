@@ -198,8 +198,6 @@ BOOL CRebaseDlg::OnInitDialog()
 	m_wndOutputRebase.Init(0, FALSE);
 	m_wndOutputRebase.Call(SCI_SETREADONLY, TRUE);
 
-	m_tooltips.Create(this);
-
 	m_tooltips.AddTool(IDC_REBASE_CHECK_FORCE,IDS_REBASE_FORCE_TT);
 	m_tooltips.AddTool(IDC_REBASE_ABORT, IDS_REBASE_ABORT_TT);
 
@@ -773,7 +771,6 @@ BOOL CRebaseDlg::PreTranslateMessage(MSG*pMsg)
 			return TRUE;
 		}
 	}
-	m_tooltips.RelayEvent(pMsg);
 	return CResizableStandAloneDialog::PreTranslateMessage(pMsg);
 }
 
