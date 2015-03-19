@@ -61,15 +61,6 @@
               <?endif ?>
               
             </Component>
-            <?if $(var.TSVNMoFile) = "$COUNTRYCODE$" ?>
-            <Directory Id='SVNLANG' Name='$COUNTRYCODE$' >
-              <Directory Id='LCMESG' Name='LC_MESSAGES'>
-                <Component Id='SVNMO' Guid='3CD420FC-32B4-4413-84EE-BAEB77E04B06'>
-                  <File Id='MO' Name='Subversion.mo' DiskId='1' Source='Subversion.mo' Vital='no'></File>
-                </Component>
-              </Directory>
-            </Directory>
-            <?endif?>
           </Directory>
         </Directory>
       </Directory>
@@ -80,9 +71,6 @@
       Display='expand' Level='1' ConfigurableDirectory='INSTALLDIR'>
       <Feature Id='Main' Title='Program' Description='The language pack files.' Level='1'>
         <ComponentRef Id='Main' />
-        <?if $(var.TSVNMoFile) = "$COUNTRYCODE$" ?>
-        <ComponentRef Id='SVNMO' />
-        <?endif?>
       </Feature>
     </Feature>
 

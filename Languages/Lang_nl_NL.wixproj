@@ -20,7 +20,7 @@
     <IntermediateOutputPath>..\obj\$(OutputName)\$(Configuration)\</IntermediateOutputPath>
     <WixVariables>
     </WixVariables>
-    <DefineConstants>TSVNHelpFile=0;TMergeHelpFile=0;TSVNMoFile=0;COUNTRYID=1043;LANGNATIVE=Dutch (Nederlands);SPELL=1;</DefineConstants>
+    <DefineConstants>TSVNHelpFile=0;TMergeHelpFile=0;COUNTRYID=1043;LANGNATIVE=Dutch (Nederlands);SPELL=1;</DefineConstants>
     <LinkerAdditionalOptions>-ext WixUIExtension</LinkerAdditionalOptions>
     <SuppressIces>ICE61;ICE82</SuppressIces>
     <Cultures>nl-NL</Cultures>
@@ -36,7 +36,7 @@
     <IntermediateOutputPath>..\obj\$(OutputName)\$(Configuration)64\</IntermediateOutputPath>
     <WixVariables>
     </WixVariables>
-    <DefineConstants>TSVNHelpFile=0;TMergeHelpFile=0;TSVNMoFile=0;COUNTRYID=1043;LANGNATIVE=Dutch (Nederlands);SPELL=1;</DefineConstants>
+    <DefineConstants>TSVNHelpFile=0;TMergeHelpFile=0;COUNTRYID=1043;LANGNATIVE=Dutch (Nederlands);SPELL=1;</DefineConstants>
     <LinkerAdditionalOptions>-ext WixUIExtension</LinkerAdditionalOptions>
     <SuppressIces>ICE61;ICE82</SuppressIces>
     <Cultures>nl-NL</Cultures>
