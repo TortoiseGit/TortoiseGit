@@ -70,6 +70,9 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TortoiseProcLang", "TortoiseProc\TortoiseProcLang.vcxproj", "{1B3C273E-6DDF-4FBE-BA31-F9F39C6DAC99}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TortoiseLangs", "..\Languages\TortoiseLang.vcxproj", "{EC88E7EC-3074-4841-BA45-B938D098EFF6}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2643919E-D024-440B-9817-1B2DF5FE4603} = {2643919E-D024-440B-9817-1B2DF5FE4603}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SshAskPass", "SshAskPass\SshAskPass.vcxproj", "{E8C01071-3B47-4A3F-9168-AA58A4635638}"
 EndProject
@@ -250,6 +253,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UnitTests", "..\test\UnitTests\UnitTests.vcxproj", "{20988578-4A14-441C-886F-61F2B9307D44}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gtest", "..\ext\build\gtest.vcxproj", "{C8F6C172-56F2-4E76-B5FA-C3B423B31BE8}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TortoiseGitUDiffLang", "TortoiseUDiff\TortoiseUDiffLang.vcxproj", "{2643919E-D024-440B-9817-1B2DF5FE4603}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -705,6 +710,12 @@ Global
 		{C8F6C172-56F2-4E76-B5FA-C3B423B31BE8}.Debug|x64.Build.0 = Debug|x64
 		{C8F6C172-56F2-4E76-B5FA-C3B423B31BE8}.Release|Win32.ActiveCfg = Release|Win32
 		{C8F6C172-56F2-4E76-B5FA-C3B423B31BE8}.Release|x64.ActiveCfg = Release|x64
+		{2643919E-D024-440B-9817-1B2DF5FE4603}.Debug|Win32.ActiveCfg = Debug|Win32
+		{2643919E-D024-440B-9817-1B2DF5FE4603}.Debug|x64.ActiveCfg = Debug|x64
+		{2643919E-D024-440B-9817-1B2DF5FE4603}.Release|Win32.ActiveCfg = Release|Win32
+		{2643919E-D024-440B-9817-1B2DF5FE4603}.Release|Win32.Build.0 = Release|Win32
+		{2643919E-D024-440B-9817-1B2DF5FE4603}.Release|x64.ActiveCfg = Release|x64
+		{2643919E-D024-440B-9817-1B2DF5FE4603}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -769,5 +780,6 @@ Global
 		{34EF5520-AE7E-42F0-A0A4-A4FA920E7E69} = {586BCCB7-619B-4F83-A07B-596F04E5A3E7}
 		{20988578-4A14-441C-886F-61F2B9307D44} = {84AFABE1-6139-457A-8645-F86D1F182E06}
 		{C8F6C172-56F2-4E76-B5FA-C3B423B31BE8} = {C4836DB1-8F21-4113-A9C4-CE7F5264C90C}
+		{2643919E-D024-440B-9817-1B2DF5FE4603} = {FB607AFD-DD1E-4C6D-8C34-BC00AF725037}
 	EndGlobalSection
 EndGlobal

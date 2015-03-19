@@ -19,6 +19,7 @@ APPLY		= apply
 LANGDLLS	=	$(outdir)TortoiseProc$(LANGID).dll \
 				$(outdir)TortoiseMerge$(LANGID).dll \
 				$(outdir)TortoiseIdiff$(LANGID).dll \
+				$(outdir)TortoiseGitUDiff$(LANGID).dll \
 				$(outdir)TortoiseGitBlame$(LANGID).dll
 
 all: $(LANGDLLS)
@@ -34,6 +35,9 @@ $(outdir)TortoiseMerge$(LANGID).dll: Tortoise_$(ISO).po $(outdir)TortoiseMergeLa
 
 $(outdir)TortoiseIDiff$(LANGID).dll: Tortoise_$(ISO).po $(outdir)TortoiseIDiffLang.dll
   $(RESTEXT) $(APPLY) $(outdir)TortoiseIdiffLang.dll $@ Tortoise_$(ISO).po
+
+$(outdir)TortoiseGitUDiff$(LANGID).dll: Tortoise_$(ISO).po $(outdir)TortoiseGitUDiffLang.dll
+  $(RESTEXT) $(APPLY) $(outdir)TortoiseGitUDiffLang.dll $@ Tortoise_$(ISO).po
 
 $(outdir)TortoiseGitBlame$(LANGID).dll: Tortoise_$(ISO).po $(outdir)TortoiseGitBlameLang.dll
   $(RESTEXT) $(APPLY) $(outdir)TortoiseGitBlameLang.dll $@ Tortoise_$(ISO).po

@@ -55,6 +55,7 @@
               <File Id='MERGDLL' Name='TortoiseMerge$(var.COUNTRYID).dll' DiskId='1' Source='..\bin\$(var.ReleasePath)\bin\TortoiseMerge$(var.COUNTRYID).dll' Vital='yes'></File>
               <File Id='BLAMDLL' Name='TortoiseGitBlame$(var.COUNTRYID).dll' DiskId='1' Source='..\bin\$(var.ReleasePath)\bin\TortoiseGitBlame$(var.COUNTRYID).dll' Vital='yes'></File>
               <File Id='IDIFDLL' Name='TortoiseIDiff$(var.COUNTRYID).dll' DiskId='1' Source='..\bin\$(var.ReleasePath)\bin\TortoiseIDiff$(var.COUNTRYID).dll' Vital='yes'></File>
+              <File Id='UDIFDLL' Name='TortoiseGitUDiff$(var.COUNTRYID).dll' DiskId='1' Source='..\bin\$(var.ReleasePath)\bin\TortoiseGitUDiff$(var.COUNTRYID).dll' Vital='yes'></File>
 
               <?if $(var.Platform) = "x64" ?>
                 <File Id='PROCDLL32' Name='TortoiseProc32$(var.COUNTRYID).dll' DiskId='1' Source='..\bin\$(var.ReleasePath32)\bin\TortoiseProc$(var.COUNTRYID).dll' Vital='yes'></File>

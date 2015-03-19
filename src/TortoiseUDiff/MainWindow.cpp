@@ -18,6 +18,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #include "stdafx.h"
+#include "TortoiseUDiff.h"
 #include "MainWindow.h"
 #include "UnicodeUtils.h"
 #include "StringUtils.h"
@@ -67,7 +68,7 @@ bool CMainWindow::RegisterAndCreateWindow()
 		if (Create(WS_CAPTION | WS_MAXIMIZEBOX | WS_MINIMIZEBOX | WS_SIZEBOX | WS_SYSMENU | WS_CLIPCHILDREN, NULL))
 		{
 			m_FindBar.SetParent(*this);
-			m_FindBar.Create(hResource, IDD_FINDBAR, *this);
+			m_FindBar.Create(::hResource, IDD_FINDBAR, *this);
 			UpdateWindow(*this);
 			return true;
 		}
@@ -819,7 +820,7 @@ void CMainWindow::loadOrSaveFile(bool doLoad, const std::wstring& filename /* = 
 	ofn.lpstrFile = szFile;
 	ofn.nMaxFile = sizeof(szFile)/sizeof(TCHAR);
 	TCHAR filter[1024] = { 0 };
-	LoadString(hResource, IDS_PATCHFILEFILTER, filter, sizeof(filter)/sizeof(TCHAR));
+	LoadString(::hResource, IDS_PATCHFILEFILTER, filter, sizeof(filter)/sizeof(TCHAR));
 	CStringUtils::PipesToNulls(filter);
 	ofn.lpstrFilter = filter;
 	ofn.nFilterIndex = 1;
@@ -827,7 +828,7 @@ void CMainWindow::loadOrSaveFile(bool doLoad, const std::wstring& filename /* = 
 	ofn.nMaxFileTitle = 0;
 	ofn.lpstrInitialDir = NULL;
 	TCHAR fileTitle[1024] = { 0 };
-	LoadString(hResource, doLoad ? IDS_OPENPATCH : IDS_SAVEPATCH, fileTitle, sizeof(fileTitle)/sizeof(TCHAR));
+	LoadString(::hResource, doLoad ? IDS_OPENPATCH : IDS_SAVEPATCH, fileTitle, sizeof(fileTitle)/sizeof(TCHAR));
 	ofn.lpstrTitle = fileTitle;
 	ofn.Flags = OFN_ENABLESIZING | OFN_EXPLORER;
 	if(doLoad)

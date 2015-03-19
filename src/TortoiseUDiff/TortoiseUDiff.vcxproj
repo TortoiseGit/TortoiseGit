@@ -47,6 +47,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Utils\CmdLineParser.cpp" />
+    <ClCompile Include="..\Utils\LangDll.cpp" />
     <ClCompile Include="..\Utils\MiscUI\BaseDialog.cpp" />
     <ClCompile Include="..\Utils\MiscUI\BaseWindow.cpp" />
     <ClCompile Include="..\Utils\Registry.cpp" />
@@ -64,6 +65,7 @@
   <ItemGroup>
     <ClInclude Include="..\Utils\CmdLineParser.h" />
     <ClInclude Include="..\Utils\CreateProcessHelper.h" />
+    <ClInclude Include="..\Utils\LangDll.h" />
     <ClInclude Include="..\Utils\MiscUI\BaseDialog.h" />
     <ClInclude Include="..\Utils\MiscUI\BaseWindow.h" />
     <ClInclude Include="..\Utils\MiscUI\ResString.h" />

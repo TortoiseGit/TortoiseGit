@@ -21,13 +21,15 @@
 #include "MainWindow.h"
 #include "CmdLineParser.h"
 #include "TaskbarUUID.h"
+#include "registry.h"
+#include "LangDll.h"
 
 #include <commctrl.h>
 #pragma comment(lib, "comctl32.lib")
 
-
 #pragma comment(linker, "\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
+HINSTANCE hResource; // the resource dll
 
 int APIENTRY _tWinMain(HINSTANCE hInstance,
 					 HINSTANCE /*hPrevInstance*/,
@@ -36,15 +38,22 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 {
 	SetDllDirectory(L"");
 	SetTaskIDPerUUID();
+	CRegStdDWORD loc = CRegStdDWORD(_T("Software\\TortoiseGit\\LanguageID"), 1033);
+	long langId = loc;
 	MSG msg;
 	HACCEL hAccelTable;
+
+	CLangDll langDLL;
+	hResource = langDLL.Init(_T("TortoiseGitUDiff"), langId);
+	if (hResource == NULL)
+		hResource = hInstance;
 
 	CCmdLineParser parser(lpCmdLine);
 
 	if (parser.HasKey(_T("?")) || parser.HasKey(_T("help")))
 	{
 		TCHAR buf[1024] = { 0 };
-		LoadString(hInstance, IDS_COMMANDLINEHELP, buf, sizeof(buf)/sizeof(TCHAR));
+		LoadString(hResource, IDS_COMMANDLINEHELP, buf, sizeof(buf) / sizeof(TCHAR));
 		MessageBox(NULL, buf, _T("TortoiseGitUDiff"), MB_ICONINFORMATION);
 		return 0;
 	}
@@ -60,7 +69,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	if (hSciLexerDll == NULL)
 		return FALSE;
 
-	CMainWindow mainWindow(hInstance);
+	CMainWindow mainWindow(hResource);
 	mainWindow.SetRegistryPath(_T("Software\\TortoiseGit\\UDiffViewerWindowPos"));
 	if (parser.HasVal(_T("title")))
 		mainWindow.SetTitle(parser.GetVal(_T("title")));
@@ -102,7 +111,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	::ShowWindow(mainWindow.GetHWNDEdit(), SW_SHOW);
 	::SetFocus(mainWindow.GetHWNDEdit());
 
-	hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_TORTOISEUDIFF));
+	hAccelTable = LoadAccelerators(hResource, MAKEINTRESOURCE(IDC_TORTOISEUDIFF));
 
 	// Main message loop:
 	while (GetMessage(&msg, NULL, 0, 0))
