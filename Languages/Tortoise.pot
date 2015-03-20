@@ -944,6 +944,10 @@ msgstr ""
 msgid "&Open Git for Windows WebSite"
 msgstr ""
 
+#. Resource IDs: (32774)
+msgid "&Open..."
+msgstr ""
+
 #. Resource IDs: (57601)
 msgid "&Open...\tCtrl+O"
 msgstr ""
@@ -974,10 +978,6 @@ msgstr ""
 
 #. Resource IDs: (1414)
 msgid "&Port:"
-msgstr ""
-
-#. Resource IDs: (32782)
-msgid "&Print"
 msgstr ""
 
 #. Resource IDs: (1069)
@@ -6779,7 +6779,7 @@ msgid "Overwrite"
 msgstr ""
 
 #. Resource IDs: (32781)
-msgid "P&age setup"
+msgid "P&age setup..."
 msgstr ""
 
 #. Resource IDs: (3845)
@@ -7992,10 +7992,6 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
-#. Resource IDs: (32773)
-msgid "Save &as"
-msgstr ""
-
 #. Resource IDs: (101)
 msgid "Save &as..."
 msgstr ""
@@ -8142,7 +8138,7 @@ msgid "Scroll Right"
 msgstr ""
 
 #. Resource IDs: (32779)
-msgid "Se&ttings"
+msgid "Se&ttings..."
 msgstr ""
 
 #. Resource IDs: (1253)
@@ -9590,7 +9586,7 @@ msgid "TortoiseGitUDiff"
 msgstr ""
 
 #. Resource IDs: (7)
-msgid "TortoiseGitUDiff: the unified diff viewer for TortoiseSVN\n\nAvailable command line parameters are:\n/patchfile:\"path to unified diff file\"\n/title:\"title to show for the viewer\"\n/?  - this help dialog\n/p  - read diff input from console pipe"
+msgid "TortoiseGitUDiff: the unified diff viewer for TortoiseGit\n\nAvailable command line parameters are:\n/patchfile:\"path to unified diff file\"\n/title:\"title to show for the viewer\"\n/?  - this help dialog\n/p  - read diff input from console pipe"
 msgstr ""
 
 #. Resource IDs: (1739)

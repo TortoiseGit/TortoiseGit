@@ -37,7 +37,7 @@ IDI_CANCELNORMAL        ICON                    "..\\Resources\\cancel-normal.ic
 
 
 /////////////////////////////////////////////////////////////////////////////
-// English (United States) resources
+// Englisch (USA) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
@@ -80,14 +80,14 @@ IDC_TORTOISEUDIFF MENU
 BEGIN
     POPUP "&File"
     BEGIN
-        MENUITEM "&Open",                       ID_FILE_OPEN
+        MENUITEM "&Open...",                    ID_FILE_OPEN
         MENUITEM "&Save",                       ID_FILE_SAVE
-        MENUITEM "Save &as",                    ID_FILE_SAVEAS
+        MENUITEM "Save &as...",                 ID_FILE_SAVEAS
         MENUITEM SEPARATOR
-        MENUITEM "P&age setup",                 ID_FILE_PAGESETUP
-        MENUITEM "&Print",                      ID_FILE_PRINT
+        MENUITEM "P&age setup...",              ID_FILE_PAGESETUP
+        MENUITEM "&Print...",                   ID_FILE_PRINT
         MENUITEM SEPARATOR
-        MENUITEM "Se&ttings",                   ID_FILE_SETTINGS
+        MENUITEM "Se&ttings...",                ID_FILE_SETTINGS
         MENUITEM SEPARATOR
         MENUITEM "Apply &Patch...",             ID_FILE_APPLYPATCH
         MENUITEM SEPARATOR
@@ -116,25 +116,40 @@ END
 
 /////////////////////////////////////////////////////////////////////////////
 //
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_FINDBAR, DIALOG
+    BEGIN
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
 // String Table
 //
 
 STRINGTABLE
 BEGIN
     IDS_APP_TITLE           "TortoiseGitUDiff"
-    IDS_COMMANDLINEHELP     "TortoiseGitUDiff: the unified diff viewer for TortoiseSVN\n\nAvailable command line parameters are:\n/patchfile:""path to unified diff file""\n/title:""title to show for the viewer""\n/?  - this help dialog\n/p  - read diff input from console pipe"
+    IDS_COMMANDLINEHELP     "TortoiseGitUDiff: the unified diff viewer for TortoiseGit\n\nAvailable command line parameters are:\n/patchfile:""path to unified diff file""\n/title:""title to show for the viewer""\n/?  - this help dialog\n/p  - read diff input from console pipe"
     IDS_PATCHFILEFILTER     "Patchfiles (*.diff, *.patch)|*.diff;*.patch|All Files (*.*)|*.*||"
     IDS_OPENPATCH           "Open patch file"
     IDS_SAVEPATCH           "Save patch file"
     IDC_TORTOISEUDIFF       "TORTOISEGITUDIFF"
 END
 
-#endif    // English (United States) resources
+#endif    // Englisch (USA) resources
 /////////////////////////////////////////////////////////////////////////////
 
 
 /////////////////////////////////////////////////////////////////////////////
-// German (Switzerland) resources
+// Deutsch (Schweiz) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DES)
 LANGUAGE LANG_GERMAN, SUBLANG_GERMAN_SWISS
@@ -170,7 +185,7 @@ END
 
 #endif    // APSTUDIO_INVOKED
 
-#endif    // German (Switzerland) resources
+#endif    // Deutsch (Schweiz) resources
 /////////////////////////////////////////////////////////////////////////////
 
 
