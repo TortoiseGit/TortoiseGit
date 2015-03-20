@@ -309,7 +309,7 @@ int CGit::RunAsync(CString cmd, PROCESS_INFORMATION *piOut, HANDLE *hReadOut, HA
 	si.wShowWindow=SW_HIDE;
 	si.dwFlags=STARTF_USESTDHANDLES|STARTF_USESHOWWINDOW;
 
-	LPTSTR pEnv = (!m_Environment.empty()) ? &m_Environment[0]: NULL;
+	LPTSTR pEnv = m_Environment;
 	DWORD dwFlags = pEnv ? CREATE_UNICODE_ENVIRONMENT : 0;
 
 	dwFlags |= CREATE_NEW_PROCESS_GROUP;
@@ -1141,7 +1141,7 @@ int CGit::RunLogFile(CString cmd, const CString &filename, CString *stdErr)
 	si.hStdOutput = houtfile;
 	si.hStdError = hWriteErr;
 
-	LPTSTR pEnv = (!m_Environment.empty()) ? &m_Environment[0]: NULL;
+	LPTSTR pEnv = m_Environment;
 	DWORD dwFlags = pEnv ? CREATE_UNICODE_ENVIRONMENT : 0;
 
 	if(cmd.Find(_T("git")) == 0)
@@ -2085,7 +2085,7 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 	SetLibGit2SearchPath(GIT_CONFIG_LEVEL_SYSTEM, msysGitDir);
 	SetLibGit2SearchPath(GIT_CONFIG_LEVEL_GLOBAL, g_Git.GetHomeDirectory());
 	SetLibGit2SearchPath(GIT_CONFIG_LEVEL_XDG, g_Git.GetGitGlobalXDGConfigPath());
-	static git_smart_subtransport_definition ssh_wintunnel_subtransport_definition = { [](git_smart_subtransport **out, git_transport* owner) -> int { return git_smart_subtransport_ssh_wintunnel(out, owner, FindExecutableOnPath(g_Git.m_Environment.GetEnv(_T("GIT_SSH")), g_Git.m_Environment.GetEnv(_T("PATH"))), &g_Git.m_Environment[0]); }, 0 };
+	static git_smart_subtransport_definition ssh_wintunnel_subtransport_definition = { [](git_smart_subtransport **out, git_transport* owner) -> int { return git_smart_subtransport_ssh_wintunnel(out, owner, FindExecutableOnPath(g_Git.m_Environment.GetEnv(_T("GIT_SSH")), g_Git.m_Environment.GetEnv(_T("PATH"))), g_Git.m_Environment); }, 0 };
 	git_transport_register("ssh", git_transport_smart, &ssh_wintunnel_subtransport_definition);
 	CString msysGitTemplateDir;
 	if (!ms_bCygwinGit)
@@ -2112,7 +2112,7 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 	// register filter only once
 	if (!git_filter_lookup("filter"))
 	{
-		if (git_filter_register("filter", git_filter_filter_new(_T("\"") + CGit::ms_LastMsysGitDir + L"\\sh.exe\"", &m_Environment[0]), GIT_FILTER_DRIVER_PRIORITY))
+		if (git_filter_register("filter", git_filter_filter_new(_T("\"") + CGit::ms_LastMsysGitDir + L"\\sh.exe\"", m_Environment), GIT_FILTER_DRIVER_PRIORITY))
 			return FALSE;
 	}
 #endif
@@ -2457,8 +2457,28 @@ int CGit::GetOneFile(const CString &Refname, const CTGitPath &path, const CStrin
 		return RunLogFile(cmd, outputfile, &gitLastErr);
 	}
 }
+
+void CEnvironment::clear()
+{
+	__super::clear();
+}
+
+bool CEnvironment::empty()
+{
+	return size() < 3; // three is minimum for an empty environment with an empty key and empty value: "=\0\0"
+}
+
+CEnvironment::operator LPTSTR()
+{
+	if (empty())
+		return nullptr;
+	return &__super::at(0);
+}
+
 void CEnvironment::CopyProcessEnvironment()
 {
+	if (!empty())
+		pop_back();
 	TCHAR *porig = GetEnvironmentStrings();
 	TCHAR *p = porig;
 	while(*p !=0 || *(p+1) !=0)
@@ -2506,6 +2526,11 @@ void CEnvironment::SetEnv(const TCHAR *name, const TCHAR* value)
 	{
 		if (!value) // as we haven't found the variable we want to remove, just return
 			return;
+		if (i == 0) // make inserting into an empty environment work
+		{
+			this->push_back(_T('\0'));
+			++i;
+		}
 		i -= 1; // roll back terminate \0\0
 		this->push_back(_T('\0'));
 	}

@@ -902,3 +902,59 @@ TEST_P(CBasicGitWithEmptyRepositoryFixture, CheckCleanWorkTree)
 	EXPECT_TRUE(m_Git.CheckCleanWorkTree());
 	EXPECT_TRUE(m_Git.CheckCleanWorkTree(true));
 }
+
+TEST(CGit, CEnvironment)
+{
+	CEnvironment env;
+	EXPECT_TRUE(env.empty());
+	env.SetEnv(_T("not-found"), nullptr);
+	EXPECT_STREQ(_T(""), env.GetEnv(L"test"));
+	env.SetEnv(L"key1", L"value1");
+	EXPECT_STREQ(_T("value1"), env.GetEnv(L"key1"));
+	EXPECT_STREQ(_T("value1"), env.GetEnv(L"kEy1")); // check case insensitivity
+	EXPECT_FALSE(env.empty());
+	EXPECT_STREQ(_T("value1"), env.GetEnv(L"key1"));
+	env.SetEnv(L"key1", nullptr); // delete first
+	EXPECT_TRUE(env.empty());
+	env.SetEnv(L"key1", L"value1");
+	EXPECT_STREQ(_T("value1"), env.GetEnv(L"key1"));
+	env.SetEnv(L"key2", L"value2");
+	EXPECT_STREQ(_T("value1"), env.GetEnv(L"key1"));
+	EXPECT_STREQ(_T("value2"), env.GetEnv(L"key2"));
+	env.SetEnv(_T("not-found"), nullptr);
+	EXPECT_STREQ(_T("value1"), env.GetEnv(L"key1"));
+	EXPECT_STREQ(_T("value2"), env.GetEnv(L"key2"));
+	env.SetEnv(_T("key2"), nullptr); // delete last
+	EXPECT_STREQ(_T("value1"), env.GetEnv(L"key1"));
+	EXPECT_STREQ(_T(""), env.GetEnv(L"key2"));
+	env.SetEnv(L"key3", L"value3");
+	EXPECT_STREQ(_T("value1"), env.GetEnv(L"key1"));
+	EXPECT_STREQ(_T("value3"), env.GetEnv(L"key3"));
+	env.SetEnv(L"key4", L"value4");
+	env.SetEnv(_T("value3"), nullptr); // delete middle
+	EXPECT_STREQ(_T("value1"), env.GetEnv(L"key1"));
+	EXPECT_STREQ(_T("value4"), env.GetEnv(L"key4"));
+	env.SetEnv(L"key5", L"value5");
+	EXPECT_STREQ(_T("value1"), env.GetEnv(L"key1"));
+	EXPECT_STREQ(_T("value4"), env.GetEnv(L"key4"));
+	EXPECT_STREQ(_T("value5"), env.GetEnv(L"key5"));
+	env.SetEnv(L"key4", L"value4a");
+	EXPECT_STREQ(_T("value1"), env.GetEnv(L"key1"));
+	EXPECT_STREQ(_T("value4a"), env.GetEnv(L"key4"));
+	EXPECT_STREQ(_T("value5"), env.GetEnv(L"key5"));
+	env.SetEnv(L"key5", L"value5a");
+	EXPECT_STREQ(_T("value1"), env.GetEnv(L"key1"));
+	EXPECT_STREQ(_T("value4a"), env.GetEnv(L"key4"));
+	EXPECT_STREQ(_T("value5a"), env.GetEnv(L"key5"));
+	CString windir = _wgetenv(L"windir");
+	env.CopyProcessEnvironment();
+	EXPECT_STREQ(windir, env.GetEnv(L"windir"));
+	EXPECT_STREQ(_T("value1"), env.GetEnv(L"key1"));
+	EXPECT_STREQ(_T("value4a"), env.GetEnv(L"key4"));
+	EXPECT_STREQ(_T("value5a"), env.GetEnv(L"key5"));
+	env.clear();
+	EXPECT_TRUE(env.empty());
+	EXPECT_STREQ(_T(""), env.GetEnv(L"key4"));
+	env.CopyProcessEnvironment();
+	EXPECT_STREQ(windir, env.GetEnv(L"windir"));
+}

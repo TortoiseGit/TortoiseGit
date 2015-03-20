@@ -71,12 +71,15 @@ private:
 typedef std::function<void (const CStringA&)> GitReceiverFunc;
 
 class CTGitPath;
-class CEnvironment:public std::vector<TCHAR>
+class CEnvironment : protected std::vector<TCHAR>
 {
 public:
 	void CopyProcessEnvironment();
 	CString GetEnv(const TCHAR *name);
 	void SetEnv(const TCHAR* name, const TCHAR* value);
+	void clear();
+	bool empty();
+	operator LPTSTR();
 };
 class CGit
 {
