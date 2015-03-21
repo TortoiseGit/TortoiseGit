@@ -26,8 +26,8 @@
 INSTANTIATE_TEST_CASE_P(CGit, CBasicGitFixture, testing::Values(GIT_CLI, /*LIBGIT,*/ LIBGIT2, LIBGIT2_ALL));
 INSTANTIATE_TEST_CASE_P(CGit, CBasicGitWithEmptyRepositoryFixture, testing::Values(GIT_CLI, /*LIBGIT,*/ LIBGIT2, LIBGIT2_ALL));
 INSTANTIATE_TEST_CASE_P(CGit, CBasicGitWithEmptyBareRepositoryFixture, testing::Values(GIT_CLI, /*LIBGIT,*/ LIBGIT2, LIBGIT2_ALL));
-INSTANTIATE_TEST_CASE_P(CGit, CBasicGitWithTestRepoFixture, testing::Values(GIT_CLI, /*LIBGIT,*/ LIBGIT2, LIBGIT2_ALL));
-INSTANTIATE_TEST_CASE_P(CGit, CBasicGitWithTestRepoBareFixture, testing::Values(GIT_CLI, /*LIBGIT,*/ LIBGIT2, LIBGIT2_ALL));
+INSTANTIATE_TEST_CASE_P(CGit, CBasicGitWithTestRepoFixture, testing::Values(GIT_CLI, LIBGIT, LIBGIT2, LIBGIT2_ALL));
+INSTANTIATE_TEST_CASE_P(CGit, CBasicGitWithTestRepoBareFixture, testing::Values(GIT_CLI, LIBGIT, LIBGIT2, LIBGIT2_ALL));
 
 TEST(CGit, RunSet)
 {
@@ -702,7 +702,7 @@ static void GetBranchesTagsRefs(CGit& m_Git, config testConfig)
 
 	MAP_HASH_NAME map;
 	EXPECT_EQ(0, m_Git.GetMapHashToFriendName(map));
-	if (testConfig == GIT_CLI)
+	if (testConfig == GIT_CLI || testConfig == LIBGIT)
 		ASSERT_EQ(12, map.size()); // also contains the undereferenced tags with hashes
 	else
 		ASSERT_EQ(10, map.size());
@@ -957,4 +957,98 @@ TEST(CGit, CEnvironment)
 	EXPECT_STREQ(_T(""), env.GetEnv(L"key4"));
 	env.CopyProcessEnvironment();
 	EXPECT_STREQ(windir, env.GetEnv(L"windir"));
+}
+
+static void GetOneFile(CGit& m_Git)
+{
+	CString tmpFile = GetTempFile();
+	EXPECT_EQ(0, m_Git.GetOneFile(L"b9ef30183497cdad5c30b88d32dc1bed7951dfeb", CTGitPath(L"utf8-nobom.txt"), tmpFile));
+	CString fileContents;
+	EXPECT_EQ(true, CStringUtils::ReadStringFromTextFile(tmpFile, fileContents));
+	struct _stat32 stat_buf = { 0 };
+	EXPECT_EQ(0, _wstat32(tmpFile, &stat_buf));
+	EXPECT_EQ(139, stat_buf.st_size);
+	EXPECT_EQ(108, fileContents.GetLength());
+	EXPECT_STREQ(_T("ä#äf34ööcöäß€9875oe\r\nfgdjkglsfdg\r\nöäöü45g\r\nfdgi&§$%&hfdsgä\r\nä#äf34öööäß€9875oe\r\nöäcüpfgmfdg\r\n€fgfdsg\r\n45\r\näü"), fileContents);
+	::DeleteFile(tmpFile);
+}
+
+TEST_P(CBasicGitWithTestRepoFixture, GetOneFile)
+{
+	GetOneFile(m_Git);
+
+	// clean&smudge filters are not available for GetOneFile without libigt2
+	if (GetParam() == GIT_CLI || GetParam() == LIBGIT)
+		return;
+
+	CString cleanFilterFilename = m_Git.m_CurrentDir + L"\\clean_filter_openssl";
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)cleanFilterFilename, L"#!/bin/bash\nopenssl enc -base64 -aes-256-ecb -S FEEDDEADBEEF -k PASS_FIXED"));
+	CString smudgeFilterFilename = m_Git.m_CurrentDir + L"\\smudge_filter_openssl";
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)smudgeFilterFilename, L"#!/bin/bash\nopenssl enc -d -base64 -aes-256-ecb -k PASS_FIXED"));
+
+	CAutoRepository repo(m_Git.GetGitRepository());
+	ASSERT_TRUE(repo.IsValid());
+	CAutoConfig config(repo);
+	ASSERT_TRUE(config.IsValid());
+	CStringA path = CUnicodeUtils::GetUTF8(m_Git.m_CurrentDir);
+	path.Replace('\\', '/');
+	EXPECT_EQ(0, git_config_set_string(config, "filter.openssl.clean", path + "/clean_filter_openssl"));
+	EXPECT_EQ(0, git_config_set_string(config, "filter.openssl.smudge", path + "/smudge_filter_openssl"));
+	EXPECT_EQ(0, git_config_set_bool(config, "filter.openssl.required", 1));
+
+	CString attributesFile = m_Git.m_CurrentDir + L"\\.gitattributes";
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)attributesFile, L"*.enc filter=openssl\n"));
+
+	CString encryptedFileOne = m_Git.m_CurrentDir + L"\\1.enc";
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)encryptedFileOne, L"This should be encrypted...\nAnd decrypted on the fly\n"));
+
+	CString encryptedFileTwo = m_Git.m_CurrentDir + L"\\2.enc";
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)encryptedFileTwo, L"This should also be encrypted...\nAnd also decrypted on the fly\n"));
+
+	CString output;
+	EXPECT_EQ(0, m_Git.Run(_T("git.exe add 1.enc"), &output, CP_UTF8));
+	EXPECT_TRUE(output.IsEmpty());
+
+	CAutoIndex index;
+	ASSERT_EQ(0, git_repository_index(index.GetPointer(), repo));
+	EXPECT_EQ(0, git_index_add_bypath(index, "2.enc"));
+	EXPECT_EQ(0, git_index_write(index));
+
+	EXPECT_EQ(0, m_Git.Run(_T("git.exe commit -m \"Message\""), &output, CP_UTF8));
+	EXPECT_FALSE(output.IsEmpty());
+
+	CString fileContents;
+	CString tmpFile = GetTempFile();
+	EXPECT_EQ(0, m_Git.GetOneFile(L"HEAD", CTGitPath(L"1.enc"), tmpFile));
+	EXPECT_EQ(true, CStringUtils::ReadStringFromTextFile(tmpFile, fileContents));
+	EXPECT_STREQ(_T("This should be encrypted...\nAnd decrypted on the fly\n"), fileContents);
+	::DeleteFile(tmpFile);
+
+	fileContents.Empty();
+	tmpFile = GetTempFile();
+	EXPECT_EQ(0, m_Git.GetOneFile(L"HEAD", CTGitPath(L"2.enc"), tmpFile));
+	EXPECT_EQ(true, CStringUtils::ReadStringFromTextFile(tmpFile, fileContents));
+	EXPECT_STREQ(_T("This should also be encrypted...\nAnd also decrypted on the fly\n"), fileContents);
+	::DeleteFile(tmpFile);
+
+	EXPECT_TRUE(::DeleteFile(attributesFile));
+
+	fileContents.Empty();
+	tmpFile = GetTempFile();
+	EXPECT_EQ(0, m_Git.GetOneFile(L"HEAD", CTGitPath(L"1.enc"), tmpFile));
+	EXPECT_EQ(true, CStringUtils::ReadStringFromTextFile(tmpFile, fileContents));
+	EXPECT_STREQ(_T("U2FsdGVkX1/+7d6tvu8AABwbE+Xy7U4l5boTKjIgUkYHONqmYHD+0e6k35MgtUGx\ns11nq1QuKeFCW5wFWNSj1WcHg2n4W59xfnB7RkSSIDQ=\n"), fileContents);
+	::DeleteFile(tmpFile);
+
+	fileContents.Empty();
+	tmpFile = GetTempFile();
+	EXPECT_EQ(0, m_Git.GetOneFile(L"HEAD", CTGitPath(L"2.enc"), tmpFile));
+	EXPECT_EQ(true, CStringUtils::ReadStringFromTextFile(tmpFile, fileContents));
+	EXPECT_STREQ(_T("U2FsdGVkX1/+7d6tvu8AAIDDx8qi/l0qzkSMsS2YLt8tYK1oWzj8+o78fXH0/tlO\nCRVrKqTvh9eUFklY8QFYfZfj01zBkFat+4zrW+1rV4Q=\n"), fileContents);
+	::DeleteFile(tmpFile);
+}
+
+TEST_P(CBasicGitWithTestRepoBareFixture, GetOneFile)
+{
+	GetOneFile(m_Git);
 }

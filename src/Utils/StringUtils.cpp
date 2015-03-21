@@ -223,7 +223,8 @@ bool CStringUtils::ReadStringFromTextFile(const CString& path, CString& text)
 	try
 	{
 		CStdioFile file;
-		if (!file.Open(path, CFile::modeRead | CFile::shareDenyWrite))
+		// w/o typeBinary for some files \r gets dropped
+		if (!file.Open(path, CFile::typeBinary | CFile::modeRead | CFile::shareDenyWrite))
 			return false;
 
 		CStringA filecontent;
