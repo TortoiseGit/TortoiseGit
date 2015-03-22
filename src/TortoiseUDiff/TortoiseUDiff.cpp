@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2008, 2010-2012, 2014 - TortoiseSVN
+// Copyright (C) 2003-2008, 2010-2012, 2014-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -23,6 +23,8 @@
 #include "TaskbarUUID.h"
 #include "registry.h"
 #include "LangDll.h"
+#include "../version.h"
+#include "../Utils/CrashReport.h"
 
 #include <commctrl.h>
 #pragma comment(lib, "comctl32.lib")
@@ -43,6 +45,13 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	MSG msg;
 	HACCEL hAccelTable;
 
+#if ENABLE_CRASHHANLDER
+	CCrashReportTGit crasher(_T("TortoiseGitUDiff ") _T(APP_X64_STRING), TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD, TGIT_VERDATE);
+	CCrashReport::Instance().AddUserInfoToReport(L"CommandLine", GetCommandLine());
+#endif
+
+	CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
+
 	CLangDll langDLL;
 	hResource = langDLL.Init(_T("TortoiseGitUDiff"), langId);
 	if (hResource == NULL)
@@ -52,9 +61,8 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 
 	if (parser.HasKey(_T("?")) || parser.HasKey(_T("help")))
 	{
-		TCHAR buf[1024] = { 0 };
-		LoadString(hResource, IDS_COMMANDLINEHELP, buf, sizeof(buf) / sizeof(TCHAR));
-		MessageBox(NULL, buf, _T("TortoiseGitUDiff"), MB_ICONINFORMATION);
+		ResString rHelp(hResource, IDS_COMMANDLINEHELP);
+		MessageBox(nullptr, rHelp, L"TortoiseGitUDiff", MB_ICONINFORMATION);
 		return 0;
 	}
 
@@ -76,7 +84,10 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	else if (parser.HasVal(_T("patchfile")))
 		mainWindow.SetTitle(parser.GetVal(_T("patchfile")));
 	else
-		mainWindow.SetTitle(_T("diff from pipe"));
+	{
+		ResString rPipeTitle(hResource, IDS_PIPETITLE);
+		mainWindow.SetTitle(rPipeTitle);
+	}
 
 	if (!mainWindow.RegisterAndCreateWindow())
 	{

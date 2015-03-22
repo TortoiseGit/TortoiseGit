@@ -24,3 +24,9 @@
 #define COMMITMONITOR_FINDMSGNEXT		(WM_APP+2)
 #define COMMITMONITOR_FINDEXIT			(WM_APP+3)
 #define COMMITMONITOR_FINDRESET			(WM_APP+4)
+
+#ifdef _WIN64
+#   define APP_X64_STRING "x64"
+#else
+#   define APP_X64_STRING ""
+#endif

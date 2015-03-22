@@ -8,6 +8,7 @@
 #define IDS_OPENPATCH                   106
 #define IDI_TORTOISEUDIFF               107
 #define IDS_SAVEPATCH                   107
+#define IDS_PIPETITLE                   108
 #define IDC_TORTOISEUDIFF               109
 #define IDB_CANCELNORMAL                130
 #define IDI_CANCELNORMAL                132

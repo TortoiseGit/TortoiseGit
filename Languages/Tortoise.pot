@@ -10602,6 +10602,10 @@ msgstr ""
 msgid "deleted"
 msgstr ""
 
+#. Resource IDs: (7)
+msgid "diff from pipe"
+msgstr ""
+
 #. Resource IDs: (58116)
 msgid "dummy"
 msgstr ""
