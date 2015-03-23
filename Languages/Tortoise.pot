@@ -5989,10 +5989,6 @@ msgstr ""
 msgid "Marks revision as good"
 msgstr ""
 
-#. Resource IDs: (1021)
-msgid "Mat&ch case"
-msgstr ""
-
 #. Resource IDs: (1064, 20084)
 msgid "Match &case"
 msgstr ""
