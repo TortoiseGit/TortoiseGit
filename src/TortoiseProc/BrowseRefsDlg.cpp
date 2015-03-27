@@ -402,7 +402,7 @@ MAP_STRING_STRING GetBranchDescriptions()
 	MAP_STRING_STRING descriptions;
 	CAutoConfig config(true);
 	git_config_add_file_ondisk(config, CGit::GetGitPathStringA(g_Git.GetGitLocalConfig()), GIT_CONFIG_LEVEL_LOCAL, FALSE);
-	git_config_foreach_match(config, "branch\\..*\\.description", GetBranchDescriptionsCallback, &descriptions);
+	git_config_foreach_match(config, "^branch\\..*\\.description$", GetBranchDescriptionsCallback, &descriptions);
 	return descriptions;
 }
 
