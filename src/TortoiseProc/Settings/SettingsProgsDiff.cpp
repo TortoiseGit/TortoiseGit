@@ -72,6 +72,7 @@ END_MESSAGE_MAP()
 
 BOOL CSettingsProgsDiff::OnInitDialog()
 {
+	ISettingsPropPage::OnInitDialog();
 	EnableToolTips();
 	AdjustControlSize(IDC_EXTDIFF_OFF);
 	AdjustControlSize(IDC_EXTDIFF_ON);
