@@ -15,6 +15,7 @@ Released: Unreleased
  * Fixed issue #2453: The overlay icon of commited files in a submodule named with chinese characters is unversioned icon
  * Fixed issue #2455: "Diff with ..." menu cannot be localized
  * Fixed issue #2431: Add fails in submodule after upgrade from 1.8.12 to 1.8.13
+ * Fixed issue #2449: wrong column info in tag reference dialog
 
 = Release 1.8.13.0 =
 Released: 2015-02-15
