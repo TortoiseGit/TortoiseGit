@@ -9,6 +9,9 @@
 		<primary>tag</primary>
 	</indexterm>
 	<indexterm>
+		<primary>GPG signing</primary>
+	</indexterm>
+	<indexterm>
 		<primary>mark release</primary>
 	</indexterm>
 	<?dbhh topicname="HIDD_NEW_BRANCH_TAG"?>
@@ -85,8 +88,22 @@
 			(<xref linkend="git-config(1)"/>) and --track parameter documentation for <xref linkend="git-branch(1)"/>.
 		</para>
 		<para>
-			Check <guilabel>Sign</guilabel> to create a signed tag. This requires GPG
-			and a key <emphasis>without</emphasis> a passphrase.
+			Check <guilabel>Sign</guilabel> to create a GPG signed tag. This requires GPG and also the configuration variable
+			"user.signingkey" to be set (see <xref linkend="tgit-dug-settings-config"/> and <xref linkend="git-config(1)"/>).
+			<tip>
+				<para>
+					When using GPG 1.4 (which is shipped with Git for Windows) this requires a key
+					<emphasis>without</emphasis> a passphrase. GPG &gt;= 2 comes with an agent like pageant
+					and, thus,.also works with passphrase protected keys, however, you might need to
+					configure git to use the right gpg.exe. This can be done be setting the configuration variable
+					"gpg.program" (e.g., "C:/Program Files (x86)/GNU/GnuPG/pub/gpg.exe").
+					We tested this with
+					<ulink url="http://www.gpg4win.de/">
+						<citetitle>Gpg4win</citetitle>
+					</ulink>
+					(GPG4win vanilla is sufficient and with version 2.2.x it is also compatible to GPG 1.4 key files).
+				</para>
+			</tip>
 		</para>
 		<para>
 			Press <guibutton>OK</guibutton> to create branch or tag at  

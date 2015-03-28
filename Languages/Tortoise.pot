@@ -4772,6 +4772,10 @@ msgstr ""
 msgid "GDI+ couldn't create a bitmap object. You probably don't have enough memory."
 msgstr ""
 
+#. Resource IDs: (82)
+msgid "GPG signs the tag, see manual for details"
+msgstr ""
+
 #. Resource IDs: (284)
 msgid "Gathering information. Please wait..."
 msgstr ""
@@ -7652,10 +7656,6 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Requests a username and a password"
-msgstr ""
-
-#. Resource IDs: (82)
-msgid "Requires GPG and a key without passphrase."
 msgstr ""
 
 #. Resource IDs: (8)

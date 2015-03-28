@@ -3620,7 +3620,7 @@ BEGIN
     IDS_PROC_BRANCH         "Branch"
     IDS_PROC_NEWBRANCHTAG_FORCE_TT 
                             "Force creation of branch/tag - even if one with same name already exists."
-    IDS_PROC_NEWBRANCHTAG_SIGN_TT "Requires GPG and a key without passphrase."
+    IDS_PROC_NEWBRANCHTAG_SIGN_TT "GPG signs the tag, see manual for details"
     IDS_ERR_COPYITSELF      "Can't copy \n%s\nto\n%s"
     IDS_ERR_INVALIDREV      "Invalid revision number!"
     IDS_SUBMODULE_EMPTYDIFF "No differences found! Submodule may not be updated. Update submodule now?"

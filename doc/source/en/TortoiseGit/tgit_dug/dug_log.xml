@@ -576,7 +576,20 @@
 			If you want to restrict the log messages to show only those
 			you are interested in rather than scrolling through a list
 			of hundreds, you can use the filter controls at the top of
-			the Log Dialog. The start and end date controls allow you
+			the Log Dialog.
+		</para>
+		<para>
+			The first element is the branch/revision filter.
+			Clicking on on opens the Reference Browser (see <xref linkend="tgit-dug-browse-ref"/>).
+			There you can select single or multiple references. If you select exactly two references,
+			you can choose how to combine them (showing especially both A and B "A B"; showing
+			differences "A...B" or all commits between A and B "A..B").
+			This filter element also contains a special context menu. Here shortcuts for "HEAD",
+			"FETCH_HEAD", "All" and "All local branches" are available. Also, the last manual selected
+			filters are included there.
+		</para>
+		<para>
+			The start and end date controls allow you
 			to restrict the output to a known date range. The search
 			box allows you to show only messages which contain a
 			particular phrase.
