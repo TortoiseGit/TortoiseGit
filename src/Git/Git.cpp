@@ -603,7 +603,6 @@ CString CGit::GetUserEmail(void)
 CString CGit::GetConfigValue(const CString& name)
 {
 	CString configValue;
-	int start = 0;
 	if(this->m_IsUseGitDLL)
 	{
 		CAutoLocker lock(g_Git.m_critGitDllSec);
@@ -629,14 +628,16 @@ CString CGit::GetConfigValue(const CString& name)
 		}
 
 		StringAppend(&configValue, (BYTE*)(LPCSTR)value);
-		return configValue.Tokenize(_T("\n"),start);
+		return configValue;
 	}
 	else
 	{
 		CString cmd;
 		cmd.Format(L"git.exe config %s", name);
 		Run(cmd, &configValue, nullptr, CP_UTF8);
-		return configValue.Tokenize(_T("\n"),start);
+		if (configValue.IsEmpty())
+			return configValue;
+		return configValue.Left(configValue.GetLength() - 1); // strip last newline character
 	}
 }
 
@@ -702,7 +703,10 @@ int CGit::SetConfigValue(const CString& key, const CString& value, CONFIG_TYPE t
 		default:
 			break;
 		}
-		cmd.Format(_T("git.exe config %s %s \"%s\""), option, key, value);
+		CString mangledValue = value;
+		mangledValue.Replace(_T("\\\""), _T("\\\\\""));
+		mangledValue.Replace(_T("\""), _T("\\\""));
+		cmd.Format(_T("git.exe config %s %s \"%s\""), option, key, mangledValue);
 		CString out;
 		if (Run(cmd, &out, nullptr, CP_UTF8))
 		{

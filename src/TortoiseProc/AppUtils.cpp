@@ -3191,6 +3191,7 @@ BOOL CAppUtils::Merge(const CString* commit, bool showStashPop)
 		if(!dlg.m_strLogMesage.IsEmpty())
 		{
 			CString logmsg = dlg.m_strLogMesage;
+			logmsg.Replace(_T("\\\""), _T("\\\\\""));
 			logmsg.Replace(_T("\""), _T("\\\""));
 			args += _T(" -m \"") + logmsg + _T("\"");
 		}

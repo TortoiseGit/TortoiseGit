@@ -1077,3 +1077,57 @@ TEST_P(CBasicGitWithEmptyBareRepositoryFixture, GetBranchDescriptions)
 {
 	GetBranchDescriptions(m_Git);
 }
+
+TEST_P(CBasicGitWithTestRepoFixture, Config)
+{
+	EXPECT_STREQ(_T(""), m_Git.GetConfigValue(_T("not-found")));
+
+	EXPECT_STREQ(_T("false"), m_Git.GetConfigValue(_T("core.bare")));
+	EXPECT_STREQ(_T("true"), m_Git.GetConfigValue(_T("core.ignorecase")));
+	EXPECT_STREQ(_T("0"), m_Git.GetConfigValue(_T("core.repositoryformatversion")));
+	EXPECT_STREQ(_T("https://example.com/git/testing"), m_Git.GetConfigValue(_T("remote.origin.url")));
+
+	EXPECT_EQ(false, m_Git.GetConfigValueBool(_T("not-found")));
+	EXPECT_EQ(false, m_Git.GetConfigValueBool(_T("core.bare")));
+	EXPECT_EQ(false, m_Git.GetConfigValueBool(_T("core.repositoryformatversion")));
+	EXPECT_EQ(false, m_Git.GetConfigValueBool(_T("remote.origin.url")));
+	EXPECT_EQ(true, m_Git.GetConfigValueBool(_T("core.ignorecase")));
+
+	CString values[] = { _T(""), _T(" "), _T("ending-with-space "), _T(" starting with-space"), _T("test1"), _T("some\\backslashes\\in\\it"), _T("with \" doublequote"), _T("with backslash before \\\" doublequote"), _T("with'quote"), _T("multi\nline"), _T("no-multi\\nline"), _T("new line at end\n") };
+	for (int i = 0; i < _countof(values); ++i)
+	{
+		CString key;
+		key.Format(_T("re-read.test%d"), i);
+		EXPECT_EQ(0, m_Git.SetConfigValue(key, values[i]));
+		EXPECT_STREQ(values[i], m_Git.GetConfigValue(key));
+	}
+
+	m_Git.SetConfigValue(_T("booltest.true1"), _T("1"));
+	m_Git.SetConfigValue(_T("booltest.true2"), _T("100"));
+	m_Git.SetConfigValue(_T("booltest.true3"), _T("-2"));
+	m_Git.SetConfigValue(_T("booltest.true4"), _T("yes"));
+	m_Git.SetConfigValue(_T("booltest.true5"), _T("yEs"));
+	m_Git.SetConfigValue(_T("booltest.true6"), _T("true"));
+	m_Git.SetConfigValue(_T("booltest.true7"), _T("on"));
+	for (int i = 1; i <= 6; ++i)
+	{
+		CString key;
+		key.Format(_T("booltest.true%d"), i);
+		EXPECT_EQ(true, m_Git.GetConfigValueBool(key));
+	}
+
+	EXPECT_EQ(0, m_Git.GetConfigValueInt32(_T("does-not-exist")));
+	EXPECT_EQ(15, m_Git.GetConfigValueInt32(_T("does-not-exist"), 15));
+	EXPECT_EQ(0, m_Git.GetConfigValueInt32(_T("core.repositoryformatversion")));
+	EXPECT_EQ(1, m_Git.GetConfigValueInt32(_T("booltest.true1")));
+	EXPECT_EQ(100, m_Git.GetConfigValueInt32(_T("booltest.true2")));
+	EXPECT_EQ(-2, m_Git.GetConfigValueInt32(_T("booltest.true3")));
+	EXPECT_EQ(0, m_Git.GetConfigValueInt32(_T("booltest.true4")));
+
+	EXPECT_NE(0, m_Git.UnsetConfigValue(_T("does-not-exist")));
+	EXPECT_STREQ(_T("false"), m_Git.GetConfigValue(_T("core.bare")));
+	EXPECT_STREQ(_T("true"), m_Git.GetConfigValue(_T("core.ignorecase")));
+	EXPECT_EQ(0, m_Git.UnsetConfigValue(_T("core.bare")));
+	EXPECT_STREQ(_T(""), m_Git.GetConfigValue(_T("core.bare")));
+	EXPECT_STREQ(_T("true"), m_Git.GetConfigValue(_T("core.ignorecase")));
+}
