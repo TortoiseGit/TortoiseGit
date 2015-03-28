@@ -101,6 +101,9 @@
     <ClInclude Include="..\..\src\Git\GitRevLoglist.h">
       <Filter>Git</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\Git\GitRevRefBrowser.h">
+      <Filter>Git</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -194,6 +197,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="libgit2Test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Git\GitRevRefBrowser.cpp">
+      <Filter>Git</Filter>
+    </ClCompile>
+    <ClCompile Include="GitRevRefBrowseTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

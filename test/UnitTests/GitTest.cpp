@@ -1052,3 +1052,28 @@ TEST_P(CBasicGitWithTestRepoBareFixture, GetOneFile)
 {
 	GetOneFile(m_Git);
 }
+
+static void GetBranchDescriptions(CGit& m_Git)
+{
+	MAP_STRING_STRING descriptions;
+	EXPECT_EQ(0, m_Git.GetBranchDescriptions(descriptions));
+	EXPECT_EQ(0, descriptions.size());
+
+	g_Git.SetConfigValue(_T("branch.master.description"), _T("test"));
+	g_Git.SetConfigValue(_T("branch.subdir/branch.description"), _T("multi\nline"));
+
+	EXPECT_EQ(0, m_Git.GetBranchDescriptions(descriptions));
+	ASSERT_EQ(2, descriptions.size());
+	EXPECT_STREQ(_T("test"), descriptions[L"master"]);
+	EXPECT_STREQ(_T("multi\nline"), descriptions[L"subdir/branch"]);
+}
+
+TEST_P(CBasicGitWithEmptyRepositoryFixture, GetBranchDescriptions)
+{
+	GetBranchDescriptions(m_Git);
+}
+
+TEST_P(CBasicGitWithEmptyBareRepositoryFixture, GetBranchDescriptions)
+{
+	GetBranchDescriptions(m_Git);
+}

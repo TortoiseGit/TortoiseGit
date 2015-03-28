@@ -1957,6 +1957,21 @@ int CGit::GetMapHashToFriendName(MAP_HASH_NAME &map)
 	}
 }
 
+int CGit::GetBranchDescriptions(MAP_STRING_STRING& map)
+{
+	CAutoConfig config(true);
+	if (git_config_add_file_ondisk(config, CGit::GetGitPathStringA(GetGitLocalConfig()), GIT_CONFIG_LEVEL_LOCAL, FALSE) < 0)
+		return -1;
+	return git_config_foreach_match(config, "^branch\\..*\\.description$", [](const git_config_entry* entry, void* data)
+	{
+		MAP_STRING_STRING* descriptions = (MAP_STRING_STRING*)data;
+		CString key = CUnicodeUtils::GetUnicode(entry->name);
+		key = key.Mid(7, key.GetLength() - 7 - 12); // 7: branch., 12: .description
+		descriptions->insert(std::make_pair(key, CUnicodeUtils::GetUnicode(entry->value)));
+		return 0;
+	}, &map);
+}
+
 static void SetLibGit2SearchPath(int level, const CString &value)
 {
 	CStringA valueA = CUnicodeUtils::GetMulti(value, CP_UTF8);

@@ -36,6 +36,7 @@
 #include "InputDlg.h"
 #include "SysProgressDlg.h"
 #include "LoglistUtils.h"
+#include "GitRevRefBrowser.h"
 
 static int SplitRemoteBranchName(CString ref, CString &remote, CString &branch)
 {
@@ -354,9 +355,6 @@ CShadowTree* CShadowTree::FindLeaf(CString partialRefName)
 	return NULL;//Not found
 }
 
-
-typedef std::map<CString,CString> MAP_STRING_STRING;
-
 CString CBrowseRefsDlg::GetSelectedRef(bool onlyIfLeaf, bool pickFirstSelIfMultiSel)
 {
 	POSITION pos=m_ListRefLeafs.GetFirstSelectedItemPosition();
@@ -397,29 +395,8 @@ CString CBrowseRefsDlg::GetSelectedRef(bool onlyIfLeaf, bool pickFirstSelIfMulti
 	return CString();//None
 }
 
-static int GetBranchDescriptionsCallback(const git_config_entry *entry, void *data)
-{
-	MAP_STRING_STRING *descriptions = (MAP_STRING_STRING *) data;
-	CString key = CUnicodeUtils::GetUnicode(entry->name, CP_UTF8);
-	CString val = CUnicodeUtils::GetUnicode(entry->value, CP_UTF8);
-	descriptions->insert(std::make_pair(key.Mid(7, key.GetLength() - 7 - 12), val)); // 7: branch., 12: .description
-	return 0;
-}
-
-MAP_STRING_STRING GetBranchDescriptions()
-{
-	MAP_STRING_STRING descriptions;
-	CAutoConfig config(true);
-	git_config_add_file_ondisk(config, CGit::GetGitPathStringA(g_Git.GetGitLocalConfig()), GIT_CONFIG_LEVEL_LOCAL, FALSE);
-	git_config_foreach_match(config, "^branch\\..*\\.description$", GetBranchDescriptionsCallback, &descriptions);
-	return descriptions;
-}
-
 void CBrowseRefsDlg::Refresh(CString selectRef)
 {
-//	m_RefMap.clear();
-//	g_Git.GetMapHashToFriendName(m_RefMap);
-
 	remotes.clear();
 	if (g_Git.GetRemoteList(remotes))
 		MessageBox(CGit::GetLibGit2LastErr(_T("Could not get a list of remotes.")), _T("TortoiseGit"), MB_ICONERROR);
@@ -446,66 +423,36 @@ void CBrowseRefsDlg::Refresh(CString selectRef)
 	m_TreeRoot.m_hTree=m_RefTreeCtrl.InsertItem(L"refs",NULL,NULL);
 	m_RefTreeCtrl.SetItemData(m_TreeRoot.m_hTree,(DWORD_PTR)&m_TreeRoot);
 
-	CString allRefs, error;
-	if (g_Git.Run(L"git.exe for-each-ref --format="
-			  L"%(refname)%04"
-			  L"%(objectname)%04"
-			  L"%(upstream)%04"
-			  L"%(subject)%04"
-			  L"%(authorname)%04"
-			  L"%(authordate:raw)%03",
-			  &allRefs, &error, CP_UTF8))
+	CString err;
+	MAP_REF_GITREVREFBROWSER refMap;
+	if (GitRevRefBrowser::GetGitRevRefMap(refMap, err, [&](const CString& refName)
 	{
-		CMessageBox::Show(NULL, CString(_T("Get refs failed\n")) + error, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
-	}
-
-	int linePos=0;
-	CString singleRef;
-
-	MAP_STRING_STRING refMap;
-
-	//First sort on ref name
-	while(!(singleRef=allRefs.Tokenize(L"\03",linePos)).IsEmpty())
-	{
-		singleRef.TrimLeft(L"\r\n");
-		int valuePos=0;
-		CString refName=singleRef.Tokenize(L"\04",valuePos);
-		if(refName.IsEmpty())
-			continue;
-		CString refRest=singleRef.Mid(valuePos);
-
-
 		//Use ref based on m_pickRef_Kind
 		if (wcsncmp(refName, L"refs/heads/", 11) == 0 && !(m_pickRef_Kind & gPickRef_Head))
-			continue; //Skip
+			return false; //Skip
 		if (wcsncmp(refName, L"refs/tags/", 10) == 0 && !(m_pickRef_Kind & gPickRef_Tag))
-			continue; //Skip
+			return false; //Skip
 		if (wcsncmp(refName, L"refs/remotes/", 13) == 0 && !(m_pickRef_Kind & gPickRef_Remote))
-			continue; //Skip
-
-		refMap[refName] = refRest; //Use
+			return false; //Skip
+		return true;
+	}))
+	{
+		MessageBox(_T("Get refs failed:") + err, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 	}
 
-	MAP_STRING_STRING descriptions = GetBranchDescriptions();
-
 	//Populate ref tree
-	for(MAP_STRING_STRING::iterator iterRefMap=refMap.begin();iterRefMap!=refMap.end();++iterRefMap)
+	for (auto iterRefMap = refMap.cbegin(); iterRefMap != refMap.cend(); ++iterRefMap)
 	{
-		CShadowTree& treeLeaf=GetTreeNode(iterRefMap->first,NULL,true);
-		CString values=iterRefMap->second;
-		while (values.Replace(L"\04" L"\04",L"\04 \04") > 0); // Workaround Tokenize problem (treating multiple tokens as one)
+		CShadowTree& treeLeaf = GetTreeNode(iterRefMap->first, nullptr, true);
+		GitRevRefBrowser ref = iterRefMap->second;
 
-		int valuePos=0;
-		treeLeaf.m_csRefHash=		values.Tokenize(L"\04",valuePos); if(valuePos < 0) continue;
-		treeLeaf.m_csUpstream =		values.Tokenize(L"\04", valuePos); if (valuePos < 0) continue;
+		treeLeaf.m_csRefHash = ref.m_CommitHash.ToString();
+		treeLeaf.m_csUpstream = ref.m_UpstreamRef;
 		CGit::GetShortName(treeLeaf.m_csUpstream, treeLeaf.m_csUpstream, L"refs/remotes/");
-		treeLeaf.m_csSubject=		values.Tokenize(L"\04",valuePos); if(valuePos < 0) continue;
-		treeLeaf.m_csAuthor=		values.Tokenize(L"\04",valuePos); if(valuePos < 0) continue;
-		CString date = values.Tokenize(L"\04", valuePos);
-		treeLeaf.m_csDate = StrToInt(date);
-
-		if (wcsncmp(iterRefMap->first, L"refs/heads/", 11) == 0)
-			treeLeaf.m_csDescription = descriptions[treeLeaf.m_csRefName];
+		treeLeaf.m_csSubject = ref.GetSubject();
+		treeLeaf.m_csAuthor = ref.GetAuthorName();
+		treeLeaf.m_csDate = ref.GetAuthorDate();
+		treeLeaf.m_csDescription = ref.m_Description;
 	}
 
 	// always expand the tree first

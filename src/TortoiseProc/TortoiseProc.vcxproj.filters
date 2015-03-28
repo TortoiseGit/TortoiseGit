@@ -902,6 +902,9 @@
     <ClCompile Include="..\Git\GitRevLoglist.cpp">
       <Filter>Git</Filter>
     </ClCompile>
+    <ClCompile Include="..\Git\GitRevRefBrowser.cpp">
+      <Filter>Git</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddRemoteDlg.h">
@@ -1665,6 +1668,9 @@
     </ClInclude>
     <ClInclude Include="Settings\SettingsProgsMerge.h">
       <Filter>Commands\setting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Git\GitRevRefBrowser.h">
+      <Filter>Git</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
