@@ -376,6 +376,8 @@ bool CGitStatusCache::RemoveTimedoutBlocks()
 
 void CGitStatusCache::UpdateShell(const CTGitPath& path)
 {
+	if (path.IsEquivalentToWithoutCase(m_mostRecentPath))
+		m_mostRecentExpiresAt = 0;
 	m_shellUpdater.AddPathForUpdate(path);
 }
 

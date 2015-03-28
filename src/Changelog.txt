@@ -6,6 +6,7 @@ Released: Unreleased
  * Updated shipped TortoiseGitPlink and putty binaries to version 0.64
    If you are still using TortoisePLink, please switch to TortoiseGitPlink.
  * Fixed issue #2466: TortoiseGitUDiff tool cannot be localized
+ * TGitCache: Improve reaction time for propagating changes to explorer
 
 == Bug Fixes ==
  * Fixed issue #2427: "Submodule of Project: " cannot be localized
