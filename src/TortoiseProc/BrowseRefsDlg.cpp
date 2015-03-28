@@ -272,7 +272,11 @@ BOOL CBrowseRefsDlg::OnInitDialog()
 	AddAnchor(IDC_INFOLABEL, BOTTOM_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
 
-	m_ListRefLeafs.SetExtendedStyle(m_ListRefLeafs.GetExtendedStyle()|LVS_EX_FULLROWSELECT);
+	CRegDWORD regFullRowSelect(_T("Software\\TortoiseGit\\FullRowSelect"), TRUE);
+	DWORD exStyle = LVS_EX_INFOTIP;
+	if (DWORD(regFullRowSelect))
+		exStyle |= LVS_EX_FULLROWSELECT;
+	m_ListRefLeafs.SetExtendedStyle(m_ListRefLeafs.GetExtendedStyle() | exStyle);
 	static UINT columnNames[] = { IDS_BRANCHNAME, IDS_TRACKEDBRANCH, IDS_DATELASTCOMMIT, IDS_LASTCOMMIT, IDS_LASTAUTHOR, IDS_HASH, IDS_DESCRIPTION };
 	static int columnWidths[] = { 150, 100, 100, 300, 100, 80, 80 };
 	DWORD dwDefaultColumns = (1 << eCol_Name) | (1 << eCol_Upstream ) | (1 << eCol_Date) | (1 << eCol_Msg) |
