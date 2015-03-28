@@ -35,6 +35,7 @@
 #include "UnicodeUtils.h"
 #include "InputDlg.h"
 #include "SysProgressDlg.h"
+#include "LoglistUtils.h"
 
 static int SplitRemoteBranchName(CString ref, CString &remote, CString &branch)
 {
@@ -124,7 +125,7 @@ public:
 		{
 		case CBrowseRefsDlg::eCol_Name:	return SortStrCmp(pLeft->GetRefName(), pRight->GetRefName());
 		case CBrowseRefsDlg::eCol_Upstream:	return SortStrCmp(pLeft->m_csUpstream, pRight->m_csUpstream);
-		case CBrowseRefsDlg::eCol_Date:	return pLeft->m_csDate_Iso8601.CompareNoCase(pRight->m_csDate_Iso8601);
+		case CBrowseRefsDlg::eCol_Date:	return ((pLeft->m_csDate == pRight->m_csDate) ? 0 : ((pLeft->m_csDate > pRight->m_csDate) ? 1 : -1));
 		case CBrowseRefsDlg::eCol_Msg:	return SortStrCmp(pLeft->m_csSubject, pRight->m_csSubject);
 		case CBrowseRefsDlg::eCol_LastAuthor: return SortStrCmp(pLeft->m_csAuthor, pRight->m_csAuthor);
 		case CBrowseRefsDlg::eCol_Hash:	return pLeft->m_csRefHash.CompareNoCase(pRight->m_csRefHash);
@@ -163,7 +164,15 @@ CBrowseRefsDlg::CBrowseRefsDlg(CString cmdPath, CWnd* pParent /*=NULL*/)
 	m_bPickOne(false),
 	m_bPickedRefSet(false)
 {
-
+	// get short/long datetime setting from registry
+	DWORD RegUseShortDateFormat = CRegDWORD(_T("Software\\TortoiseGit\\LogDateFormat"), TRUE);
+	if (RegUseShortDateFormat)
+		m_DateFormat = DATE_SHORTDATE;
+	else
+		m_DateFormat = DATE_LONGDATE;
+	// get relative time display setting from registry
+	DWORD regRelativeTimes = CRegDWORD(_T("Software\\TortoiseGit\\RelativeTimes"), FALSE);
+	m_bRelativeTimes = (regRelativeTimes != 0);
 }
 
 CBrowseRefsDlg::~CBrowseRefsDlg()
@@ -442,10 +451,9 @@ void CBrowseRefsDlg::Refresh(CString selectRef)
 			  L"%(refname)%04"
 			  L"%(objectname)%04"
 			  L"%(upstream)%04"
-			  L"%(authordate:relative)%04"
 			  L"%(subject)%04"
 			  L"%(authorname)%04"
-			  L"%(authordate:iso8601)%03",
+			  L"%(authordate:raw)%03",
 			  &allRefs, &error, CP_UTF8))
 	{
 		CMessageBox::Show(NULL, CString(_T("Get refs failed\n")) + error, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
@@ -491,10 +499,10 @@ void CBrowseRefsDlg::Refresh(CString selectRef)
 		treeLeaf.m_csRefHash=		values.Tokenize(L"\04",valuePos); if(valuePos < 0) continue;
 		treeLeaf.m_csUpstream =		values.Tokenize(L"\04", valuePos); if (valuePos < 0) continue;
 		CGit::GetShortName(treeLeaf.m_csUpstream, treeLeaf.m_csUpstream, L"refs/remotes/");
-		treeLeaf.m_csDate=			values.Tokenize(L"\04",valuePos); if(valuePos < 0) continue;
 		treeLeaf.m_csSubject=		values.Tokenize(L"\04",valuePos); if(valuePos < 0) continue;
 		treeLeaf.m_csAuthor=		values.Tokenize(L"\04",valuePos); if(valuePos < 0) continue;
-		treeLeaf.m_csDate_Iso8601=	values.Tokenize(L"\04",valuePos);
+		CString date = values.Tokenize(L"\04", valuePos);
+		treeLeaf.m_csDate = StrToInt(date);
 
 		if (wcsncmp(iterRefMap->first, L"refs/heads/", 11) == 0)
 			treeLeaf.m_csDescription = descriptions[treeLeaf.m_csRefName];
@@ -622,7 +630,7 @@ void CBrowseRefsDlg::FillListCtrlForShadowTree(CShadowTree* pTree, CString refNa
 			m_ListRefLeafs.SetItemData(indexItem,(DWORD_PTR)pTree);
 			m_ListRefLeafs.SetItemText(indexItem,eCol_Name, ref);
 			m_ListRefLeafs.SetItemText(indexItem, eCol_Upstream, pTree->m_csUpstream);
-			m_ListRefLeafs.SetItemText(indexItem,eCol_Date, pTree->m_csDate);
+			m_ListRefLeafs.SetItemText(indexItem, eCol_Date, pTree->m_csDate != 0 ? CLoglistUtils::FormatDateAndTime(pTree->m_csDate, m_DateFormat, true, m_bRelativeTimes) : _T(""));
 			m_ListRefLeafs.SetItemText(indexItem,eCol_Msg, pTree->m_csSubject);
 			m_ListRefLeafs.SetItemText(indexItem,eCol_LastAuthor, pTree->m_csAuthor);
 			m_ListRefLeafs.SetItemText(indexItem,eCol_Hash, pTree->m_csRefHash);

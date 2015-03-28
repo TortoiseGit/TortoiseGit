@@ -56,8 +56,7 @@ public:
 	CString			m_csRefName;
 	CString			m_csUpstream;
 	CString			m_csRefHash;
-	CString			m_csDate;
-	CString			m_csDate_Iso8601;
+	CTime			m_csDate;
 	CString			m_csAuthor;
 	CString			m_csSubject;
 	CString			m_csDescription;
@@ -193,6 +192,9 @@ private:
 	CString m_pickedRef;
 	bool	m_bPickOne;
 	bool	m_bPickedRefSet;
+
+	DWORD	m_DateFormat;		// DATE_SHORTDATE or DATE_LONGDATE
+	bool	m_bRelativeTimes;	// Show relative times
 
 public:
 	static CString	PickRef(bool returnAsHash = false, CString initialRef = CString(), int pickRef_Kind = gPickRef_All, bool pickMultipleRefsOrRange = false);
