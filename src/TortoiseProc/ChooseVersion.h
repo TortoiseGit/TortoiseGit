@@ -21,6 +21,7 @@
 #include "LogDlg.h"
 #include "BrowseRefsDlg.h"
 #include "MessageBox.h"
+#include "registry.h"
 
 static UINT WM_GUIUPDATES = RegisterWindowMessage(_T("TORTOISEGIT_CHOOSEVERSION_GUIUPDATES"));
 
@@ -194,7 +195,7 @@ protected:
 		STRING_VECTOR list;
 
 		int current = -1;
-		g_Git.GetBranchList(list,&current,CGit::BRANCH_ALL_F);
+		g_Git.GetBranchList(list, &current, CRegDWORD(L"Software\\TortoiseGit\\BranchesIncludeFetchHead", TRUE) ? CGit::BRANCH_ALL_F : CGit::BRANCH_ALL);
 		m_ChooseVersioinBranch.SetList(list);
 		m_ChooseVersioinBranch.SetCurSel(current);
 

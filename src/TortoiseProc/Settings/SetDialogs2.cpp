@@ -39,6 +39,7 @@ CSetDialogs2::CSetDialogs2()
 	, m_bAutoSelect(TRUE)
 	, m_bShowGitexeTimings(TRUE)
 	, m_bNoSounds(FALSE)
+	, m_bBranchesIncludeFetchHead(TRUE)
 {
 	m_regAutoCloseGitProgress = CRegDWORD(_T("Software\\TortoiseGit\\AutoCloseGitProgress"));
 	m_regUseRecycleBin = CRegDWORD(_T("Software\\TortoiseGit\\RevertWithRecycleBin"), TRUE);
@@ -64,6 +65,8 @@ CSetDialogs2::CSetDialogs2()
 	m_bShowGitexeTimings = (BOOL)(DWORD)m_regShowGitexeTimings;
 	m_regNoSounds = CRegDWORD(_T("Software\\TortoiseGit\\NoSounds"), FALSE);
 	m_bNoSounds = (BOOL)(DWORD)m_regNoSounds;
+	m_regBranchesIncludeFetchHead = CRegDWORD(L"Software\\TortoiseGit\\BranchesIncludeFetchHead", TRUE);
+	m_bBranchesIncludeFetchHead = (BOOL)(DWORD)m_regBranchesIncludeFetchHead;
 }
 
 CSetDialogs2::~CSetDialogs2()
@@ -88,6 +91,7 @@ void CSetDialogs2::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_STRIPCOMMENTEDLINES, m_bStripCommentedLines);
 	DDX_Check(pDX, IDC_PROGRESSDLG_SHOW_TIMES, m_bShowGitexeTimings);
 	DDX_Check(pDX, IDC_NOSOUNDS, m_bNoSounds);
+	DDX_Check(pDX, IDC_BRANCHESINCLUDEFETCHHEAD, m_bBranchesIncludeFetchHead);
 }
 
 BEGIN_MESSAGE_MAP(CSetDialogs2, ISettingsPropPage)
@@ -104,6 +108,7 @@ BEGIN_MESSAGE_MAP(CSetDialogs2, ISettingsPropPage)
 	ON_BN_CLICKED(IDC_STRIPCOMMENTEDLINES, OnChange)
 	ON_BN_CLICKED(IDC_PROGRESSDLG_SHOW_TIMES, OnChange)
 	ON_BN_CLICKED(IDC_NOSOUNDS, OnChange)
+	ON_BN_CLICKED(IDC_BRANCHESINCLUDEFETCHHEAD, OnChange)
 END_MESSAGE_MAP()
 
 // CSetDialogs2 message handlers
@@ -121,6 +126,7 @@ BOOL CSetDialogs2::OnInitDialog()
 	AdjustControlSize(IDC_STRIPCOMMENTEDLINES);
 	AdjustControlSize(IDC_PROGRESSDLG_SHOW_TIMES);
 	AdjustControlSize(IDC_NOSOUNDS);
+	AdjustControlSize(IDC_BRANCHESINCLUDEFETCHHEAD);
 
 	EnableToolTips();
 
@@ -180,6 +186,7 @@ BOOL CSetDialogs2::OnApply()
 	Store(m_bStripCommentedLines, m_regStripCommentedLines);
 	Store(m_bShowGitexeTimings, m_regShowGitexeTimings);
 	Store(m_bNoSounds, m_regNoSounds);
+	Store(m_bBranchesIncludeFetchHead, m_regBranchesIncludeFetchHead);
 
 	SetModified(FALSE);
 	return ISettingsPropPage::OnApply();

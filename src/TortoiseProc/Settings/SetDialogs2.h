@@ -76,4 +76,6 @@ private:
 	BOOL			m_bShowGitexeTimings;
 	CRegDWORD		m_regNoSounds;
 	BOOL			m_bNoSounds;
+	CRegDWORD		m_regBranchesIncludeFetchHead;
+	BOOL			m_bBranchesIncludeFetchHead;
 };

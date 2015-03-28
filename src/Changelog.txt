@@ -7,6 +7,7 @@ Released: Unreleased
    If you are still using TortoisePLink, please switch to TortoiseGitPlink.
  * Fixed issue #2466: TortoiseGitUDiff tool cannot be localized
  * TGitCache: Improve reaction time for propagating changes to explorer
+ * Fixed issue #2031: Missing option to disable displaying "FETCH_HEAD" in "Switch/Checkout" dialog box
 
 == Bug Fixes ==
  * Fixed issue #2427: "Submodule of Project: " cannot be localized

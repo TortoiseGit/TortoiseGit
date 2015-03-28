@@ -721,12 +721,12 @@ BEGIN
     CONTROL         "Always show long format",IDC_DESCRIBEALWAYSLONG,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,164,186,120,10
 END
 
-IDD_SETTINGSDIALOGS2 DIALOGEX 0, 0, 301, 244
+IDD_SETTINGSDIALOGS2 DIALOGEX 0, 0, 301, 254
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "General::Dialogs 2"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
-    GROUPBOX        "Misc",IDC_STATIC,7,8,287,122
+    GROUPBOX        "Misc",IDC_STATIC,7,8,287,136
     LTEXT           "&Autoclose Git.exe dialog:",IDC_STATIC,14,16,85,16,SS_CENTERIMAGE
     COMBOBOX        IDC_AUTOCLOSECOMBO,107,18,177,75,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
     CONTROL         "Use recycle bin when reverting",IDC_USERECYCLEBIN,
@@ -742,18 +742,20 @@ BEGIN
     CONTROL         "Sort tag list in reversed order",IDC_SORTTAGSREVERSED,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,101,270,10
     CONTROL         "Disable sounds",IDC_NOSOUNDS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,115,270,10
-    GROUPBOX        "Commit",IDC_COMMITGROUP,7,134,287,103
+    CONTROL         "Include FETCH_HEAD in branch selection boxes",IDC_BRANCHESINCLUDEFETCHHEAD,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,129,270,10
+    GROUPBOX        "Commit",IDC_COMMITGROUP,7,148,287,98
     CONTROL         "&Use auto-completion of file paths and keywords",IDC_AUTOCOMPLETION,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,145,271,10
-    LTEXT           "&Timeout in seconds to stop the auto-completion parsing",IDC_AUTOCOMPLETIONTIMEOUTLABEL,14,161,231,8,SS_NOTIFY
-    EDITTEXT        IDC_AUTOCOMPLETIONTIMEOUT,252,161,31,12,ES_AUTOHSCROLL | ES_NUMBER,WS_EX_RIGHT
-    LTEXT           "Max. items to keep in the log message history",IDC_MAXHISTORYLABEL,14,179,226,8,SS_NOTIFY
-    EDITTEXT        IDC_MAXHISTORY,252,176,31,14,ES_AUTOHSCROLL | ES_NUMBER,WS_EX_RIGHT
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,159,271,10
+    LTEXT           "&Timeout in seconds to stop the auto-completion parsing",IDC_AUTOCOMPLETIONTIMEOUTLABEL,14,175,231,8,SS_NOTIFY
+    EDITTEXT        IDC_AUTOCOMPLETIONTIMEOUT,252,175,31,12,ES_AUTOHSCROLL | ES_NUMBER,WS_EX_RIGHT
+    LTEXT           "Max. items to keep in the log message history",IDC_MAXHISTORYLABEL,14,193,226,8,SS_NOTIFY
+    EDITTEXT        IDC_MAXHISTORY,252,190,31,14,ES_AUTOHSCROLL | ES_NUMBER,WS_EX_RIGHT
     CONTROL         "Select items automatically",IDC_SELECTFILESONCOMMIT,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,193,270,10
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,207,270,10
     CONTROL         "Strip lines starting with ""#"" in commit message",IDC_STRIPCOMMENTEDLINES,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,206,270,10
-    LTEXT           "Further options for the commit dialog are on Dialogs 3 page.",IDC_STATIC,14,219,270,9
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,220,270,10
+    LTEXT           "Further options for the commit dialog are on Dialogs 3 page.",IDC_STATIC,14,234,270,9
 END
 
 IDD_RESOLVE DIALOGEX 0, 0, 289, 154
@@ -2408,7 +2410,7 @@ BEGIN
         VERTGUIDE, 272
         VERTGUIDE, 284
         TOPMARGIN, 7
-        BOTTOMMARGIN, 237
+        BOTTOMMARGIN, 247
     END
 
     IDD_RESOLVE, DIALOG

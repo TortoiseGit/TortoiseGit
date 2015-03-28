@@ -1515,6 +1515,7 @@
 #define IDC_STATIC_FORCE                1796
 #define IDC_NOSOUNDS                    1796
 #define IDC_OPENCERT                    1797
+#define IDC_BRANCHESINCLUDEFETCHHEAD    1797
 #define IDC_ERRORDESC                   1798
 #define IDC_ERROR                       1799
 #define IDC_SHA1                        1800

@@ -5579,6 +5579,10 @@ msgstr ""
 msgid "Include &ignored files"
 msgstr ""
 
+#. Resource IDs: (1797)
+msgid "Include FETCH_HEAD in branch selection boxes"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Include only the following revision range:"
 msgstr ""
