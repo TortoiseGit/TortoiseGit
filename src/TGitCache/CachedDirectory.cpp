@@ -455,6 +455,8 @@ int CCachedDirectory::EnumFiles(const CTGitPath &path , bool IsFull)
 	}
 	else
 	{
+		bool isSelf = path == m_directoryPath;
+		if (isSelf)
 		{
 			AutoLocker lock(m_critSec);
 			// clear subdirectory status cache
@@ -467,6 +469,7 @@ int CCachedDirectory::EnumFiles(const CTGitPath &path , bool IsFull)
 		pStatus->EnumDirStatus(sProjectRoot, sSubPath, &status, IsFull, false, true, GetStatusCallback,this);
 		m_mostImportantFileStatus = GitStatus::GetMoreImportant(m_mostImportantFileStatus, status);
 
+		if (isSelf)
 		{
 			AutoLocker lock(m_critSec);
 			// use a tmp files status cache so that we can still use the old cached values
