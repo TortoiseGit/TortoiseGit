@@ -188,7 +188,57 @@ int CGitLogListBase::AsyncDiffThread()
 				}
 				else
 				{
-					g_Git.GetCommitDiffList(pRev->m_CommitHash.ToString(), this->m_HeadHash.ToString(), files);
+					// based on CGitStatusListCtrl::UpdateFileList
+
+					BYTE_VECTOR cmdout;
+					if (CGit::ms_bCygwinGit)
+					{
+						// Prevent showing all files as modified when using cygwin's git
+						g_Git.Run(_T("git.exe status --"), &cmdout);
+						cmdout.clear();
+					}
+
+					// also list staged files which will be in the commit
+					g_Git.Run(_T("git.exe diff-index --cached --raw --numstat -C -M -z HEAD --"), &cmdout);
+					BYTE_VECTOR cmdErr;
+					if (g_Git.Run(_T("git.exe diff-index --raw --numstat -C -M -z HEAD --"), &cmdout, &cmdErr))
+					{
+						int last = cmdErr.RevertFind(0, -1);
+						CString str;
+						CGit::StringAppend(&str, &cmdErr[last + 1], CP_UTF8, (int)cmdErr.size() - last - 1);
+						MessageBox(str, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+					}
+					files.ParserFromLog(cmdout);
+
+					// handle delete conflict case, when remote : modified, local : deleted.
+					cmdout.clear();
+					g_Git.Run(_T("git.exe ls-files -u -t -z"), &cmdout);
+					CTGitPathList conflictlist;
+					conflictlist.ParserFromLog(cmdout);
+					for (int i = 0; i < conflictlist.GetCount(); ++i)
+					{
+						CTGitPath *p = files.LookForGitPath(conflictlist[i].GetGitPathString());
+						if (p)
+						{
+							p->m_Action |= CTGitPath::LOGACTIONS_UNMERGED;
+							p->m_Action &= ~CTGitPath::LOGACTIONS_ADDED;
+						}
+						else
+							files.AddPath(conflictlist[i]);
+					}
+
+					// handle source files of file renames/moves (issue #860)
+					// if a file gets renamed and the new file "git add"ed, diff-index doesn't list the source file anymore
+					cmdout.clear();
+					g_Git.Run(_T("git.exe ls-files -d -z"), &cmdout);
+					CTGitPathList deletelist;
+					deletelist.ParserFromLog(cmdout, true);
+					for (int i = 0; i < deletelist.GetCount(); ++i)
+					{
+						CTGitPath* p = files.LookForGitPath(deletelist[i].GetGitPathString());
+						if (!p)
+							files.AddPath(deletelist[i]);
+					}
 				}
 				int& action = pRev->GetAction(this);
 				action = 0;
