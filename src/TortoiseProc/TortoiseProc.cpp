@@ -602,7 +602,8 @@ void CTortoiseProcApp::CheckUpgrade()
 
 	srand((unsigned)time(0));
 	CRegDWORD checkNewerWeekDay = CRegDWORD(_T("Software\\TortoiseGit\\CheckNewerWeekDay"), 0);
-	checkNewerWeekDay = rand() % 7;
+	if (!checkNewerWeekDay.exists())
+		checkNewerWeekDay = rand() % 7;
 
 	// version specific updates
 	if (lVersion <= 0x01080802)
