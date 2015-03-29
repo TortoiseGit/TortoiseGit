@@ -635,6 +635,12 @@ void CRebaseDlg::AddBranchToolTips(CHistoryCombo *pBranch)
 		CString text=pBranch->GetString();
 		CString tooltip;
 
+		if (text.IsEmpty())
+		{
+			pBranch->DisableTooltip();
+			return;
+		}
+
 		GitRev rev;
 		if (rev.GetCommit(text))
 		{

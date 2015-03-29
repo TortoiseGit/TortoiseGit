@@ -136,10 +136,17 @@ protected:
 		{
 			CString text=pBranch->GetString();
 			CString tooltip;
-			GitRev rev;
 
+			if (text.IsEmpty())
+			{
+				pBranch->DisableTooltip();
+				return;
+			}
+
+			GitRev rev;
 			if (rev.GetCommit(text))
 			{
+				pBranch->DisableTooltip();
 				MessageBox(nullptr, rev.GetLastErr(), _T("TortoiseGit"), MB_ICONERROR);
 				return;
 			}
