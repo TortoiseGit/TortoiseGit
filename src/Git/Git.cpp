@@ -3111,3 +3111,141 @@ bool CGit::LoadTextFile(const CString &filename, CString &msg)
 	}
 	return false;
 }
+
+int CGit::GetWorkingTreeChanges(CTGitPathList& result, bool amend, CTGitPathList* filterlist)
+{
+	CString cmdList;
+	BYTE_VECTOR out;
+
+	int count = 0;
+	if (!filterlist)
+		count = 1;
+	else
+		count = filterlist->GetCount();
+
+	CString head = _T("HEAD");
+	if (amend)
+		head = _T("HEAD~1");
+	for (int i = 0; i < count; ++i)
+	{
+		BYTE_VECTOR cmdout;
+		CString cmd;
+		if (!IsInitRepos())
+		{
+			if (ms_bCygwinGit)
+			{
+				// Prevent showing all files as modified when using cygwin's git
+				if (!filterlist)
+					cmd = _T("git.exe status --");
+				else
+					cmd.Format(_T("git.exe status -- \"%s\""), (*filterlist)[i].GetGitPathString());
+				cmdList += cmd + _T("\n");
+				Run(cmd, &cmdout);
+				cmdout.clear();
+			}
+
+			// also list staged files which will be in the commit
+			cmd = _T("git.exe diff-index --cached --raw ") + head + _T(" --numstat -C -M -z --");
+			cmdList += cmd + _T("\n");
+			Run(cmd, &cmdout);
+
+			if (!filterlist)
+				cmd = (_T("git.exe diff-index --raw ") + head + _T(" --numstat -C -M -z --"));
+			else
+				cmd.Format(_T("git.exe diff-index --raw ") + head + _T(" --numstat -C -M -z -- \"%s\""), (*filterlist)[i].GetGitPathString());
+			cmdList += cmd + _T("\n");
+
+			BYTE_VECTOR cmdErr;
+			if (Run(cmd, &cmdout, &cmdErr))
+			{
+				int last = cmdErr.RevertFind(0, -1);
+				CString str;
+				CGit::StringAppend(&str, &cmdErr[last + 1], CP_UTF8, (int)cmdErr.size() - last - 1);
+				MessageBox(nullptr, str, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+			}
+
+			out.append(cmdout, 0);
+		}
+		else // Init Repository
+		{
+			// We will list all added file for init repository because commit will comit these
+			cmd = _T("git.exe ls-files -s -t -z");
+			cmdList += cmd + _T("\n");
+
+			Run(cmd, &cmdout);
+			out.append(cmdout, 0);
+			break;
+		}
+	}
+
+	if (IsInitRepos())
+	{
+		if (result.ParserFromLsFile(out))
+		{
+			CString tempFile1 = GetTempFile();
+			CFile file1(tempFile1, CFile::modeWrite | CFile::typeBinary);
+			file1.Write(out.data(), (UINT)out.size());
+			file1.Close();
+			CString tempFile2 = GetTempFile();
+			CFile file2(tempFile2, CFile::modeWrite);
+			file2.Write(cmdList, sizeof(TCHAR) * cmdList.GetLength());
+			file2.Close();
+			MessageBox(nullptr, _T("Parse ls-files failed!\nPlease inspect ") + tempFile1 + _T("\nand ") + tempFile2, _T("TortoiseGit"), MB_OK);
+		}
+		for (int i = 0; i < result.GetCount(); ++i)
+			((CTGitPath&)(result[i])).m_Action = CTGitPath::LOGACTIONS_ADDED;
+	}
+	else
+		result.ParserFromLog(out);
+
+	// handle delete conflict case, when remote : modified, local : deleted.
+	for (int i = 0; i < count; ++i)
+	{
+		BYTE_VECTOR cmdout;
+		CString cmd;
+
+		if (!filterlist)
+			cmd = _T("git.exe ls-files -u -t -z");
+		else
+			cmd.Format(_T("git.exe ls-files -u -t -z -- \"%s\""), (*filterlist)[i].GetGitPathString());
+
+		Run(cmd, &cmdout);
+
+		CTGitPathList conflictlist;
+		conflictlist.ParserFromLog(cmdout);
+		for (int i = 0; i < conflictlist.GetCount(); ++i)
+		{
+			CTGitPath* p = result.LookForGitPath(conflictlist[i].GetGitPathString());
+			if (p)
+				p->m_Action |= CTGitPath::LOGACTIONS_UNMERGED;
+			else
+				result.AddPath(conflictlist[i]);
+		}
+	}
+
+	// handle source files of file renames/moves (issue #860)
+	// if a file gets renamed and the new file "git add"ed, diff-index doesn't list the source file anymore
+	for (int i = 0; i < count; ++i)
+	{
+		BYTE_VECTOR cmdout;
+		CString cmd;
+
+		if (!filterlist)
+			cmd = _T("git.exe ls-files -d -z");
+		else
+			cmd.Format(_T("git.exe ls-files -d -z -- \"%s\""), (*filterlist)[i].GetGitPathString());
+
+		Run(cmd, &cmdout);
+
+		CTGitPathList deletelist;
+		deletelist.ParserFromLog(cmdout, true);
+		for (int i = 0; i < deletelist.GetCount(); ++i)
+		{
+			CTGitPath* p = result.LookForGitPath(deletelist[i].GetGitPathString());
+			if (!p)
+				result.AddPath(deletelist[i]);
+		}
+	}
+
+	return 0;
+}

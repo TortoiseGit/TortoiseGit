@@ -408,7 +408,7 @@ TEST(CTGitPath, ParserFromLog_Empty)
 
 TEST(CTGitPath, ParserFromLog_Conflict)
 {
-	// as used in CGitStatusListCtrl::UpdateFileList
+	// as used in CGit::GetWorkingTreeChanges
 	BYTE git_ls_file_u_t_z_output[] = { "M 100644 1f9f46da1ee155aa765d6e379d9d19853358cb07 1	bla.txt\0M 100644 3aa011e7d3609ab9af90c4b10f616312d2be422f 2	bla.txt\0M 100644 56d252d69d535834b9fbfa6f6a633ecd505ea2e6 3	bla.txt\0" };
 	CGitByteArray byteArray;
 	byteArray.append(git_ls_file_u_t_z_output, sizeof(git_ls_file_u_t_z_output));
@@ -463,7 +463,7 @@ src/gpl.txt
 
 TEST(CTGitPath, ParserFromLog_Deleted_From_LsFiles)
 {
-	// as used in CGitStatusListCtrl::UpdateFileList, based on (*)
+	// as used in CGit::GetWorkingTreeChanges, based on (*)
 	CGitByteArray byteArray;
 	CTGitPathList testList;
 	EXPECT_EQ(0, testList.ParserFromLog(byteArray, true));
@@ -547,7 +547,7 @@ TEST(CTGitPath, ParserFromLog_DiffIndex_Raw_M_C_z)
 
 TEST(CTGitPath, ParserFromLog_DiffIndex_Raw_M_C_Numstat_z)
 {
-	// as used in CGitStatusListCtrl::UpdateFileList, but here separated; based on (*)
+	// as used in CGit::GetWorkingTreeChanges, but here separated; based on (*)
 	BYTE git_DiffIndex_Raw_M_C_z_output[] = { ":100644 000000 39bba2f577adc09d9706703340daf6e1138cfc71 0000000000000000000000000000000000000000 D\0build.txt\0:160000 160000 6dcb2184662c5b50fd2f6adc63f24398ced2b98c 6dcb2184662c5b50fd2f6adc63f24398ced2b98c M\0ext/apr\0:160000 160000 ca83ff5fbeb9c27454b4f0242f17ebf584ed0521 ca83ff5fbeb9c27454b4f0242f17ebf584ed0521 M\0ext/apr-util\0:160000 160000 a291790a8d42579dafe8684151931847921a9578 0000000000000000000000000000000000000000 M\0ext/libgit2\0:100644 100644 f523fd2eb6ea2328e46d88f6406ccebbcb173c9f f523fd2eb6ea2328e46d88f6406ccebbcb173c9f R100\0release.txt\0release-renamed.txt\0:000000 100644 0000000000000000000000000000000000000000 9c752c94669d3319973c5c363045881d8466af3a A\0signedness.txt\0:100644 000000 53b6e6cefd7fc7d68e5aa73678c2895406614c1e 0000000000000000000000000000000000000000 D\0src/Debug-Hints.txt\0:100644 000000 36488d58658d63f9d7a8d5e0637c530df987c4e5 0000000000000000000000000000000000000000 D\0src/gpl.txt\0:100644 100644 9a59162db1af7a7c7cf7da0417b89065ac71b987 0000000000000000000000000000000000000000 M\0test/UnitTests/TGitPathTest.cpp\0""0	61	build.txt\0""0	0	ext/apr\0""0	0	ext/apr-util\0""1	1	ext/libgit2\0""0	0	\0release.txt\0release-renamed.txt\0""1176	0	signedness.txt\0""0	74	src/Debug-Hints.txt\0""0	340	src/gpl.txt\0""162	2	test/UnitTests/TGitPathTest.cpp\0" };
 	CGitByteArray byteArray;
 	byteArray.append(git_DiffIndex_Raw_M_C_z_output, sizeof(git_DiffIndex_Raw_M_C_z_output));
@@ -604,7 +604,7 @@ TEST(CTGitPath, ParserFromLog_DiffIndex_Raw_M_C_Numstat_z)
 
 TEST(CTGitPath, ParserFromLog_DiffIndex_Raw_Cached_M_C_Numstat_z)
 {
-	// as used in CGitStatusListCtrl::UpdateFileList, but here separated; based on (*)
+	// as used in CGit::GetWorkingTreeChanges, but here separated; based on (*)
 	BYTE git_DiffIndex_Raw_Cached_M_C_z_output[] = { ":100644 100644 f523fd2eb6ea2328e46d88f6406ccebbcb173c9f f523fd2eb6ea2328e46d88f6406ccebbcb173c9f R100\0release.txt\0release-renamed.txt\0:000000 100644 0000000000000000000000000000000000000000 9c752c94669d3319973c5c363045881d8466af3a A\0signedness.txt\0:100644 000000 53b6e6cefd7fc7d68e5aa73678c2895406614c1e 0000000000000000000000000000000000000000 D\0src/Debug-Hints.txt\0:100644 000000 36488d58658d63f9d7a8d5e0637c530df987c4e5 0000000000000000000000000000000000000000 D\0src/gpl.txt\0:000000 100644 0000000000000000000000000000000000000000 285fc7c8fe9f37876efe56dbb31e34da8b75be24 A\0zzz-added-only-in-index-missing-on-fs.txt\0""0	0	\0release.txt\0release-renamed.txt\0""1176	0	signedness.txt\0""0	74	src/Debug-Hints.txt\0""0	340	src/gpl.txt\0""1	0	zzz-added-only-in-index-missing-on-fs.txt\0" };
 	CGitByteArray byteArray;
 	byteArray.append(git_DiffIndex_Raw_Cached_M_C_z_output, sizeof(git_DiffIndex_Raw_Cached_M_C_z_output));
@@ -641,7 +641,7 @@ TEST(CTGitPath, ParserFromLog_DiffIndex_Raw_Cached_M_C_Numstat_z)
 
 TEST(CTGitPath, ParserFromLog_DiffIndex_Raw_Cached_M_C_Numstat_z_AND_DiffIndex_Raw_M_C_Numstat_z)
 {
-	// as used in CGitStatusListCtrl::UpdateFileList; based on (*)
+	// as used in CGit::GetWorkingTreeChanges; based on (*)
 	BYTE git_DiffIndex_Raw_Cached_M_C_z_output[] = { ":100644 100644 f523fd2eb6ea2328e46d88f6406ccebbcb173c9f f523fd2eb6ea2328e46d88f6406ccebbcb173c9f R100\0release.txt\0release-renamed.txt\0:000000 100644 0000000000000000000000000000000000000000 9c752c94669d3319973c5c363045881d8466af3a A\0signedness.txt\0:100644 000000 53b6e6cefd7fc7d68e5aa73678c2895406614c1e 0000000000000000000000000000000000000000 D\0src/Debug-Hints.txt\0:100644 000000 36488d58658d63f9d7a8d5e0637c530df987c4e5 0000000000000000000000000000000000000000 D\0src/gpl.txt\0:000000 100644 0000000000000000000000000000000000000000 285fc7c8fe9f37876efe56dbb31e34da8b75be24 A\0zzz-added-only-in-index-missing-on-fs.txt\0""0	0	\0release.txt\0release-renamed.txt\0""1176	0	signedness.txt\0""0	74	src/Debug-Hints.txt\0""0	340	src/gpl.txt\0""1	0	zzz-added-only-in-index-missing-on-fs.txt\0:100644 000000 39bba2f577adc09d9706703340daf6e1138cfc71 0000000000000000000000000000000000000000 D\0build.txt\0:160000 160000 6dcb2184662c5b50fd2f6adc63f24398ced2b98c 6dcb2184662c5b50fd2f6adc63f24398ced2b98c M\0ext/apr\0:160000 160000 ca83ff5fbeb9c27454b4f0242f17ebf584ed0521 ca83ff5fbeb9c27454b4f0242f17ebf584ed0521 M\0ext/apr-util\0:160000 160000 a291790a8d42579dafe8684151931847921a9578 0000000000000000000000000000000000000000 M\0ext/libgit2\0:100644 100644 f523fd2eb6ea2328e46d88f6406ccebbcb173c9f f523fd2eb6ea2328e46d88f6406ccebbcb173c9f R100\0release.txt\0release-renamed.txt\0:000000 100644 0000000000000000000000000000000000000000 9c752c94669d3319973c5c363045881d8466af3a A\0signedness.txt\0:100644 000000 53b6e6cefd7fc7d68e5aa73678c2895406614c1e 0000000000000000000000000000000000000000 D\0src/Debug-Hints.txt\0:100644 000000 36488d58658d63f9d7a8d5e0637c530df987c4e5 0000000000000000000000000000000000000000 D\0src/gpl.txt\0:100644 100644 9a59162db1af7a7c7cf7da0417b89065ac71b987 0000000000000000000000000000000000000000 M\0test/UnitTests/TGitPathTest.cpp\0""0	61	build.txt\0""0	0	ext/apr\0""0	0	ext/apr-util\0""1	1	ext/libgit2\0""0	0	\0release.txt\0release-renamed.txt\0""1176	0	signedness.txt\0""0	74	src/Debug-Hints.txt\0""0	340	src/gpl.txt\0""162	2	test/UnitTests/TGitPathTest.cpp\0" };
 	CGitByteArray byteArray;
 	byteArray.append(git_DiffIndex_Raw_Cached_M_C_z_output, sizeof(git_DiffIndex_Raw_Cached_M_C_z_output));
