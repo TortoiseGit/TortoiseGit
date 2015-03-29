@@ -167,8 +167,6 @@ private:
 	CACEdit				m_ctrRev1Edit;
 	CACEdit				m_ctrRev2Edit;
 
-	CString				m_FileListText;
-
 	bool				m_bIgnoreSpaceAtEol;
 	bool				m_bIgnoreSpaceChange;
 	bool				m_bIgnoreAllSpace;

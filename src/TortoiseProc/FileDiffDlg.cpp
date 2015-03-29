@@ -265,7 +265,7 @@ BOOL CFileDiffDlg::OnInitDialog()
 		{
 			CString msg;
 			msg.Format(IDS_PROC_REFINVALID, m_strRev1);
-			this->m_FileListText += msg + _T("\n") + m_rev1.GetLastErr();
+			m_cFileList.ShowText(msg + _T("\n") + m_rev1.GetLastErr());
 		}
 
 		this->m_ctrRev1Edit.SetWindowText(m_strRev1);
@@ -279,7 +279,7 @@ BOOL CFileDiffDlg::OnInitDialog()
 		{
 			CString msg;
 			msg.Format(IDS_PROC_REFINVALID, m_strRev2);
-			this->m_FileListText += msg + _T("\n") + m_rev1.GetLastErr();
+			m_cFileList.ShowText(msg + _T("\n") + m_rev1.GetLastErr());
 		}
 
 		this->m_ctrRev2Edit.SetWindowText(m_strRev2);
@@ -1143,7 +1143,11 @@ void CFileDiffDlg::OnTimer(UINT_PTR nIDEvent)
 			mask |= 0x1;
 		}
 		else
-			MessageBox(gitrev.GetLastErr(), _T("TortoiseGit"), MB_ICONERROR);
+		{
+			CString msg;
+			msg.Format(IDS_PROC_REFINVALID, str);
+			m_cFileList.ShowText(msg + _T("\n") + gitrev.GetLastErr());
+		}
 
 		this->m_ctrRev2Edit.GetWindowText(str);
 
@@ -1153,7 +1157,11 @@ void CFileDiffDlg::OnTimer(UINT_PTR nIDEvent)
 			mask |= 0x2;
 		}
 		else
-			MessageBox(gitrev.GetLastErr(), _T("TortoiseGit"), MB_ICONERROR);
+		{
+			CString msg;
+			msg.Format(IDS_PROC_REFINVALID, str);
+			m_cFileList.ShowText(msg + _T("\n") + gitrev.GetLastErr());
+		}
 
 		this->SetURLLabels(mask);
 
