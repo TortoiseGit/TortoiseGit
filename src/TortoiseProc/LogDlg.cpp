@@ -1748,7 +1748,7 @@ void CLogDlg::OnEnLinkMsgview(NMHDR *pNMHDR, LRESULT *pResult)
 						if (pos)
 						{
 							int index = m_LogList.GetNextSelectedItem(pos);
-							if (index > 0)
+							if (index >= 0)
 								m_LogList.SetItemState(index, 0, LVIS_SELECTED);
 						}
 						m_LogList.SetItemState(i, LVIS_SELECTED, LVIS_SELECTED);
