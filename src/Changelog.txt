@@ -19,6 +19,7 @@ Released: Unreleased
  * Fixed issue #2431: Add fails in submodule after upgrade from 1.8.12 to 1.8.13
  * Fixed issue #2449: wrong column info in tag reference dialog
  * In some conditions all files in a versioned folders were displayed as unversioned.
+ * Fixed issue #2374: Rebase option in config not working anymore for pull
 
 = Release 1.8.13.0 =
 Released: 2015-02-15
