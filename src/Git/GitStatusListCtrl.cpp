@@ -1839,6 +1839,26 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					popup.AppendMenuIcon(IDGITLC_EXPLORE, IDS_STATUSLIST_CONTEXT_EXPLORE, IDI_EXPLORER);
 				}
 
+				if (m_dwContextMenus & GITSLC_PREPAREDIFF && !(wcStatus & CTGitPath::LOGACTIONS_DELETED))
+				{
+					popup.AppendMenu(MF_SEPARATOR);
+					popup.AppendMenuIcon(IDGITLC_PREPAREDIFF, IDS_PREPAREDIFF, IDI_DIFF);
+					if (!m_sMarkForDiffFilename.IsEmpty())
+					{
+						CString diffWith;
+						if (filepath && filepath->GetGitPathString() == m_sMarkForDiffFilename)
+							diffWith = m_sMarkForDiffVersion;
+						else
+						{
+							PathCompactPathEx(diffWith.GetBuffer(40), m_sMarkForDiffFilename, 39, 0);
+							diffWith.ReleaseBuffer();
+							diffWith += _T(":") + m_sMarkForDiffVersion.Left(g_Git.GetShortHASHLength());
+						}
+						CString menuEntry;
+						menuEntry.Format(IDS_MENUDIFFNOW, (LPCTSTR)diffWith);
+						popup.AppendMenuIcon(IDGITLC_PREPAREDIFF_COMPARE, menuEntry, IDI_DIFF);
+					}
+				}
 			}
 			if (GetSelectedCount() > 0)
 			{
@@ -2047,6 +2067,32 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 
 			case IDGITLC_EXPLORE:
 				CAppUtils::ExploreTo(GetSafeHwnd(), g_Git.CombinePath(filepath));
+				break;
+
+			case IDGITLC_PREPAREDIFF:
+				if (!filepath)
+					return;
+				m_sMarkForDiffFilename = filepath->GetGitPathString();
+				if (!(filepath->m_ParentNo & MERGE_MASK))
+					m_sMarkForDiffVersion.Format(_T("%s^%d"), m_CurrentVersion, (filepath->m_ParentNo & PARENT_MASK) + 1);
+				else
+					m_sMarkForDiffVersion = m_CurrentVersion;
+				break;
+
+			case IDGITLC_PREPAREDIFF_COMPARE:
+				{
+					if (!filepath)
+						return;
+
+					CString currentVersion;
+					if (!(filepath->m_ParentNo & MERGE_MASK))
+						currentVersion.Format(_T("%s^%d"), m_CurrentVersion, (filepath->m_ParentNo & PARENT_MASK) + 1);
+					else
+						currentVersion = m_CurrentVersion;
+
+					CTGitPath savedFile(m_sMarkForDiffFilename);
+					CGitDiff::Diff(filepath, &savedFile, m_CurrentVersion, m_sMarkForDiffVersion);
+				}
 				break;
 
 			case IDGITLC_CREATERESTORE:

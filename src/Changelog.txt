@@ -8,6 +8,7 @@ Released: Unreleased
  * Fixed issue #2466: TortoiseGitUDiff tool cannot be localized
  * TGitCache: Improve reaction time for propagating changes to explorer
  * Fixed issue #2031: Missing option to disable displaying "FETCH_HEAD" in "Switch/Checkout" dialog box
+ * Log, RepoBrowser, and Rebase Dialogs: Allow to compare arbitrary files across commits
 
 == Bug Fixes ==
  * Fixed issue #2427: "Submodule of Project: " cannot be localized

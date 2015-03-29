@@ -5977,6 +5977,10 @@ msgstr ""
 msgid "Mark as resolved\nThe file status is changed to modified"
 msgstr ""
 
+#. Resource IDs: (97)
+msgid "Mark for comparison"
+msgstr ""
+
 #. Resource IDs: (252)
 msgid "Mark this block"
 msgstr ""

@@ -1197,6 +1197,7 @@
 #define IDS_STATUSLIST_CONTEXT_SHELL    1548
 #define IDC_COLOR_LINE4                 1549
 #define IDC_SHOWADDEDOVERLAY            1549
+#define IDS_PREPAREDIFF                 1549
 #define IDC_SHOWREADONLYOVERLAY         1550
 #define IDC_MSYSGIT_PATH                1550
 #define IDS_PROC_RENAME                 1550

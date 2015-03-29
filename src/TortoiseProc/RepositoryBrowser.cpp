@@ -778,6 +778,27 @@ void CRepositoryBrowser::ShowContextMenu(CPoint point, TShadowFilesTreeList &sel
 		popupMenu.AppendMenu(MF_SEPARATOR);
 	bAddSeparator = false;
 
+	if (selectedLeafs.size() == 1 && selType == ONLY_FILES)
+	{
+		popupMenu.AppendMenuIcon(eCmd_PrepareDiff, IDS_PREPAREDIFF, IDI_DIFF);
+		if (!m_sMarkForDiffFilename.IsEmpty())
+		{
+			CString diffWith;
+			if (selectedLeafs.at(0)->GetFullName() == m_sMarkForDiffFilename)
+				diffWith = m_sMarkForDiffVersion;
+			else
+			{
+				PathCompactPathEx(diffWith.GetBuffer(40), m_sMarkForDiffFilename, 39, 0);
+				diffWith.ReleaseBuffer();
+				diffWith += _T(":") + m_sMarkForDiffVersion.ToString().Left(g_Git.GetShortHASHLength());
+			}
+			CString menuEntry;
+			menuEntry.Format(IDS_MENUDIFFNOW, (LPCTSTR)diffWith);
+			popupMenu.AppendMenuIcon(eCmd_PrepareDiff_Compare, menuEntry, IDI_DIFF);
+		}
+		popupMenu.AppendMenu(MF_SEPARATOR);
+	}
+
 	if (!selectedLeafs.empty())
 	{
 		popupMenu.AppendMenuIcon(eCmd_CopyPath, IDS_STATUSLIST_CONTEXT_COPY, IDI_COPYCLIP);
@@ -854,6 +875,27 @@ void CRepositoryBrowser::ShowContextMenu(CPoint point, TShadowFilesTreeList &sel
 	case eCmd_CopyHash:
 		{
 			CopyHashToClipboard(selectedLeafs);
+		}
+		break;
+	case eCmd_PrepareDiff:
+		m_sMarkForDiffFilename = selectedLeafs.at(0)->GetFullName();
+		if (g_Git.GetHash(m_sMarkForDiffVersion, m_sRevision))
+		{
+			m_sMarkForDiffFilename.Empty();
+			MessageBox(g_Git.GetGitLastErr(_T("Could not get SHA-1 for ") + m_sRevision), _T("TortoiseGit"), MB_ICONERROR);
+		}
+		break;
+	case eCmd_PrepareDiff_Compare:
+		{
+			CTGitPath savedFile(m_sMarkForDiffFilename);
+			CTGitPath selectedFile(selectedLeafs.at(0)->GetFullName());
+			CGitHash currentHash;
+			if (g_Git.GetHash(currentHash, m_sRevision))
+			{
+				MessageBox(g_Git.GetGitLastErr(_T("Could not get SHA-1 for ") + m_sRevision), _T("TortoiseGit"), MB_ICONERROR);
+				return;
+			}
+			CGitDiff::Diff(&selectedFile, &savedFile, currentHash, m_sMarkForDiffVersion);
 		}
 		break;
 	}

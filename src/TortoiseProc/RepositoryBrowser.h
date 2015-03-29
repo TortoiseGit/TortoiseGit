@@ -97,6 +97,8 @@ public:
 		eCmd_CopyPath,
 		eCmd_CopyHash,
 		eCmd_ViewLogSubmodule,
+		eCmd_PrepareDiff,
+		eCmd_PrepareDiff_Compare,
 	};
 
 	enum eCol
@@ -172,6 +174,9 @@ private:
 	afx_msg void			OnBnClickedButtonRevision();
 
 	virtual BOOL			PreTranslateMessage(MSG* pMsg);
+
+	CString					m_sMarkForDiffFilename;
+	CGitHash				m_sMarkForDiffVersion;
 
 	/// resizes the control so that the divider is at position 'point'
 	void					HandleDividerMove(CPoint point, bool bDraw);
