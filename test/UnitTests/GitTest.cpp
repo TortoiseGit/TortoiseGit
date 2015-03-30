@@ -901,6 +901,11 @@ TEST_P(CBasicGitWithEmptyRepositoryFixture, CheckCleanWorkTree)
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)testFile, L"this is ANOTHER testing file."));
 	EXPECT_TRUE(m_Git.CheckCleanWorkTree());
 	EXPECT_TRUE(m_Git.CheckCleanWorkTree(true));
+
+	EXPECT_EQ(0, m_Git.Run(_T("git.exe checkout --orphan orphanic"), &output, CP_UTF8));
+	EXPECT_FALSE(output.IsEmpty());
+	EXPECT_FALSE(m_Git.CheckCleanWorkTree());
+	EXPECT_FALSE(m_Git.CheckCleanWorkTree(true));
 }
 
 TEST(CGit, CEnvironment)
