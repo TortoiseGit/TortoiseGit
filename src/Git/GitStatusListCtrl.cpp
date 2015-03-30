@@ -2073,22 +2073,13 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				if (!filepath)
 					return;
 				m_sMarkForDiffFilename = filepath->GetGitPathString();
-				if (!(filepath->m_ParentNo & MERGE_MASK))
-					m_sMarkForDiffVersion.Format(_T("%s^%d"), m_CurrentVersion, (filepath->m_ParentNo & PARENT_MASK) + 1);
-				else
-					m_sMarkForDiffVersion = m_CurrentVersion;
+				m_sMarkForDiffVersion = m_CurrentVersion;
 				break;
 
 			case IDGITLC_PREPAREDIFF_COMPARE:
 				{
 					if (!filepath)
 						return;
-
-					CString currentVersion;
-					if (!(filepath->m_ParentNo & MERGE_MASK))
-						currentVersion.Format(_T("%s^%d"), m_CurrentVersion, (filepath->m_ParentNo & PARENT_MASK) + 1);
-					else
-						currentVersion = m_CurrentVersion;
 
 					CTGitPath savedFile(m_sMarkForDiffFilename);
 					CGitDiff::Diff(filepath, &savedFile, m_CurrentVersion, m_sMarkForDiffVersion);
