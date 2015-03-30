@@ -465,6 +465,10 @@
 	<td>Yusuf Ramazan Karagöz</td>
 	<td>Markus Heidelberg</td>
 	<td>Joe Mueller</td>
+      </tr><tr>
+	<td>Mika Attila</td>
+	<td>JoMazM</td>
+	<td>Markus Moser</td>
     </tr>
     </table>
     <p>
@@ -475,6 +479,84 @@
         <a href="http://sourceforge.net/projects/icon-collection/">
         Icons</a> Copyright(C) 1998 by Dean S. Jones<br />
       </li>
+    </ul>
+    <h3>
+       <a href="http://prdownloads.sourceforge.net/scintilla/scite354.zip?download">Release 3.5.4</a>
+    </h3>
+    <ul>
+	<li>
+	Released 8 March 2015.
+	</li>
+	<li>
+	Indicators may have a different colour and style when the mouse is over them or the caret is moved into them.
+	</li>
+	<li>
+	An indicator may display in a large variety of colours with the SC_INDICFLAG_VALUEFORE
+	flag taking the colour from the indicator's value, which may differ for every character, instead of its
+	foreground colour attribute.
+	</li>
+	<li>
+	On Cocoa, additional IME methods implemented so that more commands are enabled.
+	For Japanese: Reverse Conversion, Convert to Related Character, and Search Similar Kanji
+	can now be performed.
+	The global definition hotkey Command+Control+D and the equivalent three finger tap gesture
+	can be used.
+	</li>
+	<li>
+	Minimum version of Qt supported is now 4.8 due to the use of QElapsedTimer::nsecsElapsed.
+	</li>
+	<li>
+	On Windows, for Korean, the VK_HANJA key is implemented to choose Hanja for Hangul and
+	to convert from Hanja to Hangul.
+	</li>
+	<li>
+	C++ lexer adds lexer.cpp.verbatim.strings.allow.escapes option that allows verbatim (@") strings
+	to contain escape sequences. This should remain off (0) for C# and be turned on (1) for Objective C.
+	</li>
+	<li>
+	Rust lexer accepts new 'is'/'us' integer suffixes instead of 'i'/'u'.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1098/">Bug #1098</a>.
+	</li>
+	<li>
+	Ruby folder can fold multiline comments.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1697/">Bug #1697</a>.
+	</li>
+	<li>
+	SQL lexer fixes a bug with the q-quote operator.
+	</li>
+	<li>
+	TCL lexer fixes a bug with some strings.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1642/">Bug #1642</a>.
+	</li>
+	<li>
+	Verilog lexer handles escaped identifiers that begin with \ and end with space like \reset* .
+	Verilog folder fixes one bug with inconsistent folding when fold.comment is on and another
+	with typedef class statements creating a fold point, expecting an endclass statement.
+	</li>
+	<li>
+	VHDL folder fixes hang in folding when document starts with "entity".
+	</li>
+	<li>
+	Add new indicators INDIC_COMPOSITIONTHIN, INDIC_FULLBOX, and INDIC_TEXTFORE.
+	INDIC_COMPOSITIONTHIN is a thin underline that mimics the appearance of non-target segments in OS X IME.
+	INDIC_FULLBOX is similar to INDIC_STRAIGHTBOX but covers the entire character area which means that
+	indicators with this style on contiguous lines may touch. INDIC_TEXTFORE changes the text foreground colour.
+	</li>
+	<li>
+	Fix adaptive scrolling speed for GTK+ on OS X with GTK Quartz backend (as opposed to X11 backend).
+	<a href="http://sourceforge.net/p/scintilla/bugs/1696/">Bug #1696</a>.
+	</li>
+	<li>
+	Fix crash in SciTE when saving large files in background when closing application.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1691/">Bug #1691</a>.
+	</li>
+	<li>
+	Fix decoding of MSVC warnings in SciTE so that files in the C:\Program Files (x86)\ directory can be opened.
+	This is a common location of system include files.
+	</li>
+	<li>
+	Fix compilation failure of C++11 &lt;regex&gt; on Windows using gcc.
+	</li>
     </ul>
     <h3>
        <a href="http://prdownloads.sourceforge.net/scintilla/scite353.zip?download">Release 3.5.3</a>

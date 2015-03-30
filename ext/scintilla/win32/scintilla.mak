@@ -25,7 +25,7 @@ CXXNDEBUG=-O1 -MT -DNDEBUG -GL
 NAME=-Fo
 LDFLAGS=-OPT:REF -LTCG -DEBUG
 LDDEBUG=
-LIBS=KERNEL32.lib USER32.lib GDI32.lib IMM32.lib OLE32.LIB
+LIBS=KERNEL32.lib USER32.lib GDI32.lib IMM32.lib OLE32.LIB OLEAUT32.LIB
 NOLOGO=-nologo
 
 !IFDEF QUIET
@@ -88,7 +88,8 @@ SHAREDOBJS=\
 	$(DIR_O)\Style.obj \
 	$(DIR_O)\UniConversion.obj \
 	$(DIR_O)\ViewStyle.obj \
-	$(DIR_O)\XPM.obj
+	$(DIR_O)\XPM.obj \
+	$(DIR_O)\HanjaDic.obj \
 
 SOBJS=\
 	$(SHAREDOBJS) \
@@ -877,7 +878,8 @@ $(DIR_O)\ScintillaWin.obj: \
 	../src/Editor.h \
 	../src/AutoComplete.h \
 	../src/ScintillaBase.h \
-	PlatWin.h
+	PlatWin.h \
+	HanjaDic.h
 $(DIR_O)\ScintillaWinL.obj: \
 	ScintillaWin.cxx \
 	../include/Platform.h \
@@ -910,7 +912,8 @@ $(DIR_O)\ScintillaWinL.obj: \
 	../src/Editor.h \
 	../src/AutoComplete.h \
 	../src/ScintillaBase.h \
-	PlatWin.h
+	PlatWin.h \
+	HanjaDic.h
 $(DIR_O)\ScintillaWinS.obj: \
 	ScintillaWin.cxx \
 	../include/Platform.h \
@@ -943,7 +946,8 @@ $(DIR_O)\ScintillaWinS.obj: \
 	../src/Editor.h \
 	../src/AutoComplete.h \
 	../src/ScintillaBase.h \
-	PlatWin.h
+	PlatWin.h \
+	HanjaDic.h
 $(DIR_O)\Selection.obj: \
 	../src/Selection.cxx \
 	../include/Platform.h \
@@ -983,3 +987,5 @@ $(DIR_O)\XPM.obj: \
 	../src/XPM.cxx \
 	../include/Platform.h \
 	../src/XPM.h
+$(DIR_O)\HanjaDic: \
+	./HanjaDic.h

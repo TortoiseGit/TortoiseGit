@@ -433,6 +433,9 @@
     <ClCompile Include="..\scintilla\lexers\LexHex.cxx">
       <Filter>lexers</Filter>
     </ClCompile>
+    <ClCompile Include="..\scintilla\win32\HanjaDic.cxx">
+      <Filter>win32</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\scintilla\src\AutoComplete.h">
@@ -572,6 +575,9 @@
     </ClInclude>
     <ClInclude Include="..\scintilla\src\MarginView.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scintilla\win32\HanjaDic.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
