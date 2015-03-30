@@ -53,12 +53,12 @@ TEST(CGit, RunGit_Error)
 	cgit.m_CurrentDir = tempdir.GetTempDir();
 	
 	CString output;
-	ASSERT_EQ(2, cgit.Run(_T("git-not-found.exe"), &output, CP_UTF8));
-	ASSERT_TRUE(output.IsEmpty());
+	EXPECT_NE(0, cgit.Run(_T("git-not-found.exe"), &output, CP_UTF8)); // Git for Windows returns 2, cygwin-hack returns 127
+	//EXPECT_TRUE(output.IsEmpty()); with cygwin-hack we get an error message from sh.exe
 
 	output.Empty();
-	ASSERT_EQ(128, cgit.Run(_T("git.exe add file.txt"), &output, CP_UTF8));
-	ASSERT_TRUE(output.Find(_T("fatal: Not a git repository (or any of the parent directories): .git")) == 0);
+	EXPECT_EQ(128, cgit.Run(_T("git.exe add file.txt"), &output, CP_UTF8));
+	EXPECT_TRUE(output.Find(_T("fatal: Not a git repository (or any")) == 0);
 }
 
 TEST(CGit, StringAppend)
