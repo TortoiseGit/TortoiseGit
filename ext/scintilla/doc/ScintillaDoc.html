@@ -82,7 +82,7 @@
 
     <h1>Scintilla Documentation</h1>
 
-    <p>Last edited 10 January 2015 NH</p>
+    <p>Last edited 22 February 2015 NH</p>
 
     <p>There is <a class="jump" href="Design.html">an overview of the internal design of
     Scintilla</a>.<br />
@@ -585,12 +585,14 @@ struct Sci_TextRange {
 };
 </pre>
 
-    <h3 id="EncodedAccess">GTK+-specific: Access to encoded text</h3>
+    <h3 id="EncodedAccess">Specific to GTK+ and Cocoa only: Access to encoded text</h3>
 
     <p><b id="SCI_TARGETASUTF8">SCI_TARGETASUTF8(&lt;unused&gt;, char *s)</b><br />
      This method retrieves the value of the target encoded as UTF-8 which is the default
      encoding of GTK+ so is useful for retrieving text for use in other parts of the user interface,
      such as find and replace dialogs. The length of the encoded text in bytes is returned.
+     Cocoa uses UTF-16 which is easily converted from UTF-8 so this method can be used to perform the
+     more complex work of transcoding from the various of encodings supported.
     </p>
 
     <p><b id="SCI_ENCODEDFROMUTF8">SCI_ENCODEDFROMUTF8(const char *utf8, char *encoded)</b><br />
@@ -635,11 +637,14 @@ struct Sci_TextRange {
      <a class="message" href="#SCI_GETTARGETSTART">SCI_GETTARGETSTART</a><br />
      <a class="message" href="#SCI_SETTARGETEND">SCI_SETTARGETEND(int pos)</a><br />
      <a class="message" href="#SCI_GETTARGETEND">SCI_GETTARGETEND</a><br />
+     <a class="message" href="#SCI_SETTARGETRANGE">SCI_SETTARGETRANGE(int start, int end)</a><br />
      <a class="message" href="#SCI_TARGETFROMSELECTION">SCI_TARGETFROMSELECTION</a><br />
      <a class="message" href="#SCI_SETSEARCHFLAGS">SCI_SETSEARCHFLAGS(int searchFlags)</a><br />
      <a class="message" href="#SCI_GETSEARCHFLAGS">SCI_GETSEARCHFLAGS</a><br />
      <a class="message" href="#SCI_SEARCHINTARGET">SCI_SEARCHINTARGET(int length, const char
     *text)</a><br />
+     <a class="message" href="#SCI_GETTARGETTEXT">SCI_GETTARGETTEXT(&lt;unused&gt;,
+     char *text)</a><br />
      <a class="message" href="#SCI_REPLACETARGET">SCI_REPLACETARGET(int length, const char
     *text)</a><br />
      <a class="message" href="#SCI_REPLACETARGETRE">SCI_REPLACETARGETRE(int length, const char
@@ -651,6 +656,7 @@ struct Sci_TextRange {
      <b id="SCI_GETTARGETSTART">SCI_GETTARGETSTART</b><br />
      <b id="SCI_SETTARGETEND">SCI_SETTARGETEND(int pos)</b><br />
      <b id="SCI_GETTARGETEND">SCI_GETTARGETEND</b><br />
+     <b id="SCI_SETTARGETRANGE">SCI_SETTARGETRANGE(int start, int end)</b><br />
      These functions set and return the start and end of the target. When searching
      you can set start greater than end to find the last matching text in the
     target rather than the first matching text. The target is also set by a successful
@@ -672,6 +678,9 @@ struct Sci_TextRange {
     set by <code>SCI_SETSEARCHFLAGS</code>. If the search succeeds, the target is set to the found
     text and the return value is the position of the start of the matching text. If the search
     fails, the result is -1.</p>
+
+    <p><b id="SCI_GETTARGETTEXT">SCI_GETTARGETTEXT(&lt;unused&gt;, char *text)</b><br />
+     Retrieve the value in the target.</p>
 
     <p><b id="SCI_REPLACETARGET">SCI_REPLACETARGET(int length, const char *text)</b><br />
      If <code>length</code> is -1, <code>text</code> is a zero terminated string, otherwise
@@ -3900,8 +3909,12 @@ struct Sci_TextToFind {
     They can be used to show, for example, syntax errors, deprecated names and bad indentation
     by drawing underlines under text or boxes around text.</p>
 
+    <p>Indicators may have a different "hover" colour and style when the mouse is over them or the caret is moved into them.
+    This may be used, for example, to indicate that a URL can be clicked.</p>
+
     <p>Indicators may be displayed as simple underlines, squiggly underlines, a
-    line of small 'T' shapes, a line of diagonal hatching, a strike-out or a rectangle around the text.</p>
+    line of small 'T' shapes, a line of diagonal hatching, a strike-out or a rectangle around the text.
+    They may also be invisible when used to track pieces of content for the application as <code>INDIC_HIDDEN</code>.</p>
 
     <p>The <code>SCI_INDIC*</code> messages allow you to get and set the visual appearance of the
     indicators. They all use an <code>indicatorNumber</code> argument in the range 0 to INDIC_MAX(35)
@@ -3909,6 +3922,11 @@ struct Sci_TextToFind {
     by lexers (0..7) a range for use by containers
     (8=<code>INDIC_CONTAINER</code> .. 31=<code>INDIC_IME-1</code>)
     and a range for IME indicators (32=<code>INDIC_IME</code> .. 35=<code>INDIC_IME_MAX</code>).</p>
+
+    <p>Indicators are stored in a format similar to run length encoding which is efficient in both
+    speed and storage for sparse information.</p>
+    <p>An indicator may store different values for each range but currently all values are drawn the same.
+    In the future, it may be possible to draw different values in different styles.</p>
 
     <p>Originally, Scintilla used a different technique for indicators but this
     has been <a href="#RemovedFeatures">removed</a>
@@ -3928,6 +3946,15 @@ struct Sci_TextToFind {
      <a class="message" href="#SCI_INDICGETOUTLINEALPHA">SCI_INDICGETOUTLINEALPHA(int indicatorNumber)</a><br />
      <a class="message" href="#SCI_INDICSETUNDER">SCI_INDICSETUNDER(int indicatorNumber, bool under)</a><br />
      <a class="message" href="#SCI_INDICGETUNDER">SCI_INDICGETUNDER(int indicatorNumber)</a><br />
+    <a class="message" href="#SCI_INDICSETHOVERSTYLE">SCI_INDICSETHOVERSTYLE(int indicatorNumber, int
+    indicatorStyle)</a><br />
+     <a class="message" href="#SCI_INDICGETHOVERSTYLE">SCI_INDICGETHOVERSTYLE(int indicatorNumber)</a><br />
+     <a class="message" href="#SCI_INDICSETHOVERFORE">SCI_INDICSETHOVERFORE(int indicatorNumber, int
+    colour)</a><br />
+     <a class="message" href="#SCI_INDICGETHOVERFORE">SCI_INDICGETHOVERFORE(int indicatorNumber)</a><br />
+     <a class="message" href="#SCI_INDICSETFLAGS">SCI_INDICSETFLAGS(int indicatorNumber, int flags)</a><br />
+     <a class="message" href="#SCI_INDICGETFLAGS">SCI_INDICGETFLAGS(int indicatorNumber)</a><br />
+     <br />
 
      <a class="message" href="#SCI_SETINDICATORCURRENT">SCI_SETINDICATORCURRENT(int indicator)</a><br />
      <a class="message" href="#SCI_GETINDICATORCURRENT">SCI_GETINDICATORCURRENT</a><br />
@@ -4042,7 +4069,18 @@ struct Sci_TextToFind {
               interior usually more transparent than the border. You can use
               <a class="message" href="#SCI_INDICSETALPHA">SCI_INDICSETALPHA</a> and
 			  <a class="message" href="#SCI_INDICSETOUTLINEALPHA">SCI_INDICSETOUTLINEALPHA</a>
-              to control the alpha transparency values. The default alpha values are 30 for fill colour and 50 for outline colour.</td>
+              to control the alpha transparency values. The default alpha values are 30 for fill colour and 50 for outline colour.
+              This indicator does not colour the top pixel of the line so that indicators on contiguous lines are visually distinct
+              and disconnected.</td>
+        </tr>
+
+        <tr>
+          <td align="left"><code>INDIC_FULLBOX</code></td>
+
+          <td align="center">16</td>
+
+          <td>A rectangle around the text using translucent drawing similar to <code>INDIC_STRAIGHTBOX</code>
+              but covering the entire character area.</td>
         </tr>
 
         <tr>
@@ -4101,7 +4139,25 @@ struct Sci_TextToFind {
 
           <td>A 2-pixel thick underline located at the bottom of the line to try to avoid touching the character base.
 	  Each side is inset 1 pixel so that different indicators in this style covering a range appear isolated.
-	  This is similar to an appearance used for Asian language input composition.</td>
+	  This is similar to an appearance used for the target in Asian language input composition.</td>
+        </tr>
+
+        <tr>
+          <td align="left"><code>INDIC_COMPOSITIONTHIN</code></td>
+
+          <td align="center">15</td>
+
+          <td>A 1-pixel thick underline located just before the bottom of the line.
+	  Each side is inset 1 pixel so that different indicators in this style covering a range appear isolated.
+	  This is similar to an appearance used for non-target ranges in Asian language input composition.</td>
+        </tr>
+
+        <tr>
+          <td align="left"><code>INDIC_TEXTFORE</code></td>
+
+          <td align="center">17</td>
+
+          <td>Change the colour of the text to the indicator's fore colour.</td>
         </tr>
 
       </tbody>
@@ -4140,10 +4196,29 @@ struct Sci_TextToFind {
      Drawing under text works only for indicators when <a class="message" href="#SCI_SETTWOPHASEDRAW">two phase drawing</a>
      is enabled.</p>
 
-    <p>Indicators are stored in a format similar to run length encoding which is efficient in both
-    speed and storage for sparse information.</p>
-    <p>An indicator may store different values for each range but currently all values are drawn the same.
-    In the future, it may be possible to draw different values in different styles.</p>
+    <p><b id="SCI_INDICSETHOVERSTYLE">SCI_INDICSETHOVERSTYLE(int indicatorNumber, int
+    indicatorStyle)</b><br />
+     <b id="SCI_INDICGETHOVERSTYLE">SCI_INDICGETHOVERSTYLE(int indicatorNumber)</b><br />
+     <b id="SCI_INDICSETHOVERFORE">SCI_INDICSETHOVERFORE(int indicatorNumber, int <a class="jump" href="#colour">colour</a>)</b><br />
+     <b id="SCI_INDICGETHOVERFORE">SCI_INDICGETHOVERFORE(int indicatorNumber)</b><br />
+     These messages set and get the colour and style used to draw indicators when the mouse is over them or the caret moved into them.
+     The mouse cursor also changes when an indicator is drawn in hover style. 
+     The default is for the hover appearance to be the same as the normal appearance and calling
+     <a class="message" href="#SCI_INDICSETFORE">SCI_INDICSETFORE</a> or 
+     <a class="message" href="#SCI_INDICSETSTYLE">SCI_INDICSETSTYLE</a> will
+     also reset the hover attribute.</p>
+
+    <p><b id="SCI_INDICSETFLAGS">SCI_INDICSETFLAGS(int indicatorNumber, int flags)</b><br />
+     <b id="SCI_INDICGETFLAGS">SCI_INDICGETFLAGS(int indicatorNumber)</b><br />
+     These messages set and get the flags associated with an indicator.
+     There is currently one flag defined, <code>SC_INDICFLAG_VALUEFORE</code>: when this flag is set
+     the colour used by the indicator is not from the indicator's fore setting but instead from the value of the indicator at
+     that point in the file. This allows many colours to be displayed for a single indicator. The value is an <a class="jump"
+    href="#colour">RGB integer colour</a> that has been ored with <code>SC_INDICVALUEBIT</code>(0x1000000)
+    when calling <a class="message" href="#SCI_SETINDICATORVALUE">SCI_SETINDICATORVALUE</a>.
+    To find the colour from the value, and the value with <code>SC_INDICVALUEMASK<code>(0xFFFFFF).
+     </p>
+
     <p>
     <b id="SCI_SETINDICATORCURRENT">SCI_SETINDICATORCURRENT(int indicator)</b><br />
     <b id="SCI_GETINDICATORCURRENT">SCI_GETINDICATORCURRENT</b><br />

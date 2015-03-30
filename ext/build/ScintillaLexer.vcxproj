@@ -187,6 +187,7 @@
     <ClCompile Include="..\scintilla\lexlib\PropSetSimple.cxx" />
     <ClCompile Include="..\scintilla\lexlib\StyleContext.cxx" />
     <ClCompile Include="..\scintilla\lexlib\WordList.cxx" />
+    <ClCompile Include="..\scintilla\win32\HanjaDic.cxx" />
     <ClCompile Include="..\scintilla\win32\PlatWin.cxx" />
     <ClCompile Include="..\scintilla\win32\ScintillaWin.cxx" />
   </ItemGroup>
@@ -237,6 +238,7 @@
     <ClInclude Include="..\scintilla\lexlib\SparseState.h" />
     <ClInclude Include="..\scintilla\lexlib\StyleContext.h" />
     <ClInclude Include="..\scintilla\lexlib\WordList.h" />
+    <ClInclude Include="..\scintilla\win32\HanjaDic.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\scintilla\win32\ScintRes.rc" />

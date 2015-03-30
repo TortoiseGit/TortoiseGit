@@ -545,6 +545,8 @@ protected:	// ScintillaBase subclass needs access to much of Editor
 	bool PointIsHotspot(Point pt);
 	void SetHotSpotRange(Point *pt);
 	Range GetHotSpotRange() const;
+	void SetHoverIndicatorPosition(int position);
+	void SetHoverIndicatorPoint(Point pt);
 
 	int CodePage() const;
 	virtual bool ValidCodePage(int /* codePage */) const { return true; }
@@ -561,7 +563,6 @@ protected:	// ScintillaBase subclass needs access to much of Editor
 	static sptr_t BytesResult(sptr_t lParam, const unsigned char *val, size_t len);
 
 public:
-	virtual void NotifyParent(SCNotification * scn) = 0;
 	// Public so the COM thunks can access it.
 	bool IsUnicodeMode() const;
 	// Public so scintilla_send_message can use it.
