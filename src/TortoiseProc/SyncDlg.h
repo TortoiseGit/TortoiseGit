@@ -181,7 +181,7 @@ protected:
 		pCtrlList->m_Rev1=rev1;
 		pCtrlList->m_Rev2=rev2;
 		pCtrlList->Show(0,*pGitList);
-		pCtrlList->SetEmptyString(CString(_T("No changed file")));
+		pCtrlList->SetEmptyString(CString(MAKEINTRESOURCE(IDS_COMPAREREV_NODIFF)));
 		return;
 	}
 
