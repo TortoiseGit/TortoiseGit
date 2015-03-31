@@ -22,6 +22,8 @@ Released: Unreleased
  * Fixed issue #2449: wrong column info in tag reference dialog
  * In some conditions all files in a versioned folders were displayed as unversioned.
  * Fixed issue #2374: Rebase option in config not working anymore for pull
+ * Fixed issue #1440: Different status of modifed renamed or moved files in Show log dialog, Check for Modifications dialog and Commit dialog
+ * Fixed issue #1501: Unchanged files appears modified in Show Log dialog
 
 = Release 1.8.13.0 =
 Released: 2015-02-15
