@@ -1058,6 +1058,8 @@ void CGitStatusListCtrl::AddEntry(CTGitPath * GitPath, WORD /*langID*/, int list
 		m_nShownAdded++;
 		break;
 	case CTGitPath::LOGACTIONS_DELETED:
+	case CTGitPath::LOGACTIONS_MISSING:
+	case CTGitPath::LOGACTIONS_DELETED | CTGitPath::LOGACTIONS_MISSING:
 		m_nShownDeleted++;
 		break;
 	case CTGitPath::LOGACTIONS_REPLACED:
@@ -1126,7 +1128,7 @@ void CGitStatusListCtrl::AddEntry(CTGitPath * GitPath, WORD /*langID*/, int list
 	{
 		CString modificationDate;
 		__int64 filetime = GitPath->GetLastWriteTime();
-		if (filetime && (GitPath->m_Action != CTGitPath::LOGACTIONS_DELETED))
+		if (filetime && !(GitPath->m_Action & CTGitPath::LOGACTIONS_DELETED))
 		{
 			FILETIME* f = (FILETIME*)(__int64*)&filetime;
 			modificationDate = CLoglistUtils::FormatDateAndTime(CTime(g_Git.filetime_to_time_t(f)), DATE_SHORTDATE, true, relativeTimes);
@@ -4236,7 +4238,7 @@ void CGitStatusListCtrl::FilesExport()
 	{
 		CTGitPath *fd = (CTGitPath*)GetItemData(index);
 		// we cannot export directories or folders
-		if (fd->m_Action == CTGitPath::LOGACTIONS_DELETED || fd->IsDirectory())
+		if ((fd->m_Action & CTGitPath::LOGACTIONS_DELETED) || fd->IsDirectory())
 			continue;
 
 		CAppUtils::CreateMultipleDirectory(exportDir + _T("\\") + fd->GetContainingDirectory().GetWinPathString());

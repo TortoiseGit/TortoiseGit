@@ -1162,7 +1162,7 @@ void CRebaseDlg::OnBnClickedContinue()
 				else if(!(entry->m_Action & CTGitPath::LOGACTIONS_UNVER))
 				{
 					mgtReset.AddFile(entry->GetGitPathString());
-					if (entry->m_Action & CTGitPath::LOGACTIONS_DELETED)
+					if (entry->m_Action & CTGitPath::LOGACTIONS_DELETED && !(entry->m_Action & CTGitPath::LOGACTIONS_MISSING))
 						mgtReDelAfterCommit.AddFile(entry->GetGitPathString());
 				}
 			}
