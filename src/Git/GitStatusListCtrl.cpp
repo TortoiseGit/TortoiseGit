@@ -3918,197 +3918,35 @@ void CGitStatusListCtrl::NotifyCheck()
 	}
 }
 
-int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash,CTGitPathList *list)
+int CGitStatusListCtrl::UpdateFileList(CTGitPathList *list)
 {
-	CString cmdList;
-	BYTE_VECTOR out;
 	this->m_bBusy=TRUE;
-	m_CurrentVersion=hash;
+	m_CurrentVersion = GIT_REV_ZERO;
 
-	int count = 0;
-	if(list == NULL)
-		count = 1;
-	else
-		count = list->GetCount();
+	g_Git.GetWorkingTreeChanges(m_StatusFileList, m_amend, list);
 
-	CString head = _T("HEAD");
-	if(m_amend)
-		head = _T("HEAD~1");
-
-	if(hash == GIT_REV_ZERO)
-	{
-		for (int i = 0; i < count; ++i)
-		{
-			BYTE_VECTOR cmdout;
-			cmdout.clear();
-			CString cmd;
-			if(!g_Git.IsInitRepos())
-			{
-				if (CGit::ms_bCygwinGit)
-				{
-					// Prevent showing all files as modified when using cygwin's git
-					if (list == NULL)
-						cmd = (_T("git.exe status --"));
-					else
-						cmd.Format(_T("git.exe status -- \"%s\""), (*list)[i].GetGitPathString());
-					cmdList += cmd + _T("\n");
-					g_Git.Run(cmd, &cmdout);
-					cmdout.clear();
-				}
-
-				// also list staged files which will be in the commit
-				cmd=(_T("git.exe diff-index --cached --raw ") + head + _T(" --numstat -C -M -z --"));
-				cmdList += cmd + _T("\n");
-				g_Git.Run(cmd, &cmdout);
-
-				if(list == NULL)
-					cmd=(_T("git.exe diff-index --raw ") + head + _T("  --numstat -C -M -z --"));
-				else
-					cmd.Format(_T("git.exe diff-index --raw ") + head + _T("  --numstat -C -M -z -- \"%s\""),(*list)[i].GetGitPathString());
-				cmdList += cmd + _T("\n");
-
-				BYTE_VECTOR cmdErr;
-				if(g_Git.Run(cmd, &cmdout, &cmdErr))
-				{
-					int last = cmdErr.RevertFind(0,-1);
-					CString str;
-					CGit::StringAppend(&str, &cmdErr[last + 1], CP_UTF8, (int)cmdErr.size() - last -1);
-					CMessageBox::Show(NULL, str, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
-				}
-
-				out.append(cmdout, 0);
-			}
-			else // Init Repository
-			{
-				//We will list all added file for init repository because commit will comit these
-				//if(list == NULL)
-				cmd=_T("git.exe ls-files -s -t -z");
-				cmdList += cmd + _T("\n");
-				//else
-				//	cmd.Format(_T("git.exe ls-files -s -t -z -- \"%s\""),(*list)[i].GetGitPathString());
-
-				g_Git.Run(cmd, &cmdout);
-				//out+=cmdout;
-				out.append(cmdout,0);
-
-				break;
-			}
-		}
-
-		if(g_Git.IsInitRepos())
-		{
-			if (m_StatusFileList.ParserFromLsFile(out))
-			{
-				CString tempFile1 = GetTempFile();
-				CFile file1(tempFile1, CFile::modeWrite | CFile::typeBinary);
-				file1.Write(out.data(), (UINT)out.size());
-				file1.Close();
-				CString tempFile2 = GetTempFile();
-				CFile file2(tempFile2, CFile::modeWrite);
-				file2.Write(cmdList, sizeof(TCHAR) * cmdList.GetLength());
-				file2.Close();
-				CMessageBox::Show(NULL, _T("Parse ls-files failed!\nPlease inspect ") + tempFile1 + _T("\nand ") + tempFile2, _T("TortoiseGit"), MB_OK);
-			}
-			for (int i = 0; i < m_StatusFileList.GetCount(); ++i)
-				((CTGitPath&)(m_StatusFileList[i])).m_Action=CTGitPath::LOGACTIONS_ADDED;
-		}
-		else
-			this->m_StatusFileList.ParserFromLog(out);
-
-		//handle delete conflict case, when remote : modified, local : deleted.
-		for (int i = 0; i < count; ++i)
-		{
-			BYTE_VECTOR cmdout;
-			CString cmd;
-
-			if(list == NULL)
-				cmd=_T("git.exe ls-files -u -t -z");
-			else
-				cmd.Format(_T("git.exe ls-files -u -t -z -- \"%s\""),(*list)[i].GetGitPathString());
-
-			g_Git.Run(cmd, &cmdout);
-
-			CTGitPathList conflictlist;
-			conflictlist.ParserFromLog(cmdout);
-			for (int i = 0; i < conflictlist.GetCount(); ++i)
-			{
-				CTGitPath *p=m_StatusFileList.LookForGitPath(conflictlist[i].GetGitPathString());
-				if(p)
-					p->m_Action|=CTGitPath::LOGACTIONS_UNMERGED;
-				else
-					m_StatusFileList.AddPath(conflictlist[i]);
-			}
-		}
-
-		// handle source files of file renames/moves (issue #860)
-		// if a file gets renamed and the new file "git add"ed, diff-index doesn't list the source file anymore
-		for (int i = 0; i < count; ++i)
-		{
-			BYTE_VECTOR cmdout;
-			CString cmd;
-
-			if(list == NULL)
-				cmd = _T("git.exe ls-files -d -z");
-			else
-				cmd.Format(_T("git.exe ls-files -d -z -- \"%s\""),(*list)[i].GetGitPathString());
-
-			g_Git.Run(cmd, &cmdout);
-
-			CTGitPathList deletelist;
-			deletelist.ParserFromLog(cmdout, true);
-			BOOL bDeleteChecked = FALSE;
-			int deleteFromIndex = 0;
-			for (int i = 0; i < deletelist.GetCount(); ++i)
-			{
-				CTGitPath *p = m_StatusFileList.LookForGitPath(deletelist[i].GetGitPathString());
-				if(!p)
-					m_StatusFileList.AddPath(deletelist[i]);
-				else if ((p->m_Action == CTGitPath::LOGACTIONS_ADDED || p->m_Action == CTGitPath::LOGACTIONS_REPLACED) && !p->Exists())
-				{
-					if (!bDeleteChecked)
-					{
-						CString message;
-						message.Format(IDS_ASK_REMOVE_FROM_INDEX, p->GetWinPathString());
-						deleteFromIndex = CMessageBox::ShowCheck(m_hWnd, message, _T("TortoiseGit"), 1, IDI_EXCLAMATION, CString(MAKEINTRESOURCE(IDS_REMOVE_FROM_INDEX)), CString(MAKEINTRESOURCE(IDS_IGNOREBUTTON)), NULL, NULL, CString(MAKEINTRESOURCE(IDS_DO_SAME_FOR_REST)), &bDeleteChecked);
-					}
-					if (deleteFromIndex == 1)
-					{
-						g_Git.Run(_T("git.exe rm -f --cache -- \"") + p->GetWinPathString() + _T("\""), &cmdout);
-						m_StatusFileList.RemoveItem(*p);
-					}
-				}
-			}
-		}
-	}
-	else
-	{
-		int count = 0;
-		if(list == NULL)
-			count = 1;
-		else
-			count = list->GetCount();
-
-		for (int i = 0; i < count; ++i)
-		{
-			BYTE_VECTOR cmdout;
-			CString cmd;
-			if(list == NULL)
-				cmd.Format(_T("git.exe diff-tree --raw --numstat -C -M -z %s --"), hash);
-			else
-				cmd.Format(_T("git.exe diff-tree --raw  --numstat -C -M %s -z -- \"%s\""),hash,(*list)[i].GetGitPathString());
-
-			g_Git.Run(cmd, &cmdout, NULL);
-
-			out.append(cmdout);
-		}
-		this->m_StatusFileList.ParserFromLog(out);
-
-	}
-
+	BOOL bDeleteChecked = FALSE;
+	int deleteFromIndex = 0;
 	for (int i = 0; i < m_StatusFileList.GetCount(); ++i)
 	{
 		CTGitPath * gitpatch=(CTGitPath*)&m_StatusFileList[i];
 		gitpatch->m_Checked = TRUE;
+
+		if ((gitpatch->m_Action == CTGitPath::LOGACTIONS_ADDED || gitpatch->m_Action == CTGitPath::LOGACTIONS_REPLACED) && !gitpatch->Exists())
+		{
+			if (!bDeleteChecked)
+			{
+				CString message;
+				message.Format(IDS_ASK_REMOVE_FROM_INDEX, gitpatch->GetWinPathString());
+				deleteFromIndex = CMessageBox::ShowCheck(m_hWnd, message, _T("TortoiseGit"), 1, IDI_EXCLAMATION, CString(MAKEINTRESOURCE(IDS_REMOVE_FROM_INDEX)), CString(MAKEINTRESOURCE(IDS_IGNOREBUTTON)), NULL, NULL, CString(MAKEINTRESOURCE(IDS_DO_SAME_FOR_REST)), &bDeleteChecked);
+			}
+			if (deleteFromIndex == 1)
+			{
+				g_Git.Run(_T("git.exe rm -f --cache -- \"") + gitpatch->GetWinPathString() + _T("\""), nullptr, CP_UTF8);
+				continue;
+			}
+		}
+
 		m_arStatusArray.push_back((CTGitPath*)&m_StatusFileList[i]);
 	}
 
@@ -4198,7 +4036,7 @@ int CGitStatusListCtrl::UpdateFileList(int mask,bool once,CTGitPathList *List)
 	{
 		if(once || (!(m_FileLoaded&CGitStatusListCtrl::FILELIST_MODIFY)))
 		{
-			UpdateFileList(git_revnum_t(GIT_REV_ZERO),List);
+			UpdateFileList(List);
 			m_FileLoaded|=CGitStatusListCtrl::FILELIST_MODIFY;
 		}
 	}

@@ -562,6 +562,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Resources\actionadded.ico" />
+    <Image Include="..\Resources\actionconflicted.ico" />
     <Image Include="..\Resources\actiondeleted.ico" />
     <Image Include="..\Resources\actionfetching.ico" />
     <Image Include="..\Resources\actionmodified.ico" />

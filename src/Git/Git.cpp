@@ -3111,3 +3111,106 @@ bool CGit::LoadTextFile(const CString &filename, CString &msg)
 	}
 	return false;
 }
+
+int CGit::GetWorkingTreeChanges(CTGitPathList& result, bool amend, CTGitPathList* filterlist)
+{
+	if (IsInitRepos())
+		return GetInitAddList(result);
+
+	BYTE_VECTOR out;
+
+	int count = 1;
+	if (filterlist)
+		count = filterlist->GetCount();
+
+	CString head = _T("HEAD");
+	if (amend)
+		head = _T("HEAD~1");
+
+	for (int i = 0; i < count; ++i)
+	{
+		BYTE_VECTOR cmdout;
+		CString cmd;
+		if (ms_bCygwinGit)
+		{
+			// Prevent showing all files as modified when using cygwin's git
+			if (!filterlist)
+				cmd = _T("git.exe status --");
+			else
+				cmd.Format(_T("git.exe status -- \"%s\""), (*filterlist)[i].GetGitPathString());
+			Run(cmd, &cmdout);
+			cmdout.clear();
+		}
+
+		// also list staged files which will be in the commit
+		Run(_T("git.exe diff-index --cached --raw ") + head + _T(" --numstat -C -M -z --"), &cmdout);
+
+		if (!filterlist)
+			cmd = (_T("git.exe diff-index --raw ") + head + _T(" --numstat -C -M -z --"));
+		else
+			cmd.Format(_T("git.exe diff-index --raw ") + head + _T(" --numstat -C -M -z -- \"%s\""), (*filterlist)[i].GetGitPathString());
+
+		BYTE_VECTOR cmdErr;
+		if (Run(cmd, &cmdout, &cmdErr))
+		{
+			int last = cmdErr.RevertFind(0, -1);
+			CString str;
+			CGit::StringAppend(&str, &cmdErr[last + 1], CP_UTF8, (int)cmdErr.size() - last - 1);
+			MessageBox(nullptr, str, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+		}
+
+		out.append(cmdout, 0);
+	}
+	result.ParserFromLog(out);
+
+	// handle delete conflict case, when remote : modified, local : deleted.
+	for (int i = 0; i < count; ++i)
+	{
+		BYTE_VECTOR cmdout;
+		CString cmd;
+
+		if (!filterlist)
+			cmd = _T("git.exe ls-files -u -t -z");
+		else
+			cmd.Format(_T("git.exe ls-files -u -t -z -- \"%s\""), (*filterlist)[i].GetGitPathString());
+
+		Run(cmd, &cmdout);
+
+		CTGitPathList conflictlist;
+		conflictlist.ParserFromLog(cmdout);
+		for (int j = 0; j < conflictlist.GetCount(); ++j)
+		{
+			CTGitPath* p = result.LookForGitPath(conflictlist[j].GetGitPathString());
+			if (p)
+				p->m_Action |= CTGitPath::LOGACTIONS_UNMERGED;
+			else
+				result.AddPath(conflictlist[j]);
+		}
+	}
+
+	// handle source files of file renames/moves (issue #860)
+	// if a file gets renamed and the new file "git add"ed, diff-index doesn't list the source file anymore
+	for (int i = 0; i < count; ++i)
+	{
+		BYTE_VECTOR cmdout;
+		CString cmd;
+
+		if (!filterlist)
+			cmd = _T("git.exe ls-files -d -z");
+		else
+			cmd.Format(_T("git.exe ls-files -d -z -- \"%s\""), (*filterlist)[i].GetGitPathString());
+
+		Run(cmd, &cmdout);
+
+		CTGitPathList deletelist;
+		deletelist.ParserFromLog(cmdout, true);
+		for (int j = 0; j < deletelist.GetCount(); ++j)
+		{
+			CTGitPath* p = result.LookForGitPath(deletelist[j].GetGitPathString());
+			if (!p)
+				result.AddPath(deletelist[j]);
+		}
+	}
+
+	return 0;
+}

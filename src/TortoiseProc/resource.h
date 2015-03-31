@@ -65,6 +65,7 @@
 #define IDI_ACTIONDELETED               214
 #define IDI_ACTIONMODIFIED              215
 #define IDI_ACTIONREPLACED              216
+#define IDI_ACTIONCONFLICTED            217
 #define IDI_SAVEDDATA                   225
 #define IDI_GRAPHBAR                    229
 #define IDI_GRAPHBARSTACKED             230

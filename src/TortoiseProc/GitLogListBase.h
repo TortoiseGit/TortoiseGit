@@ -596,6 +596,7 @@ protected:
 
 	HICON				m_hModifiedIcon;
 	HICON				m_hReplacedIcon;
+	HICON				m_hConflictedIcon;
 	HICON				m_hAddedIcon;
 	HICON				m_hDeletedIcon;
 	HICON				m_hFetchIcon;

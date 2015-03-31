@@ -1169,8 +1169,9 @@ public:
 		FILELIST_IGNORE =0x4,
 		FILELIST_LOCALCHANGESIGNORED = 0x8, // assume valid & skip worktree files
 	};
+private:
+	int UpdateFileList(CTGitPathList *List = NULL);
 public:
-	int UpdateFileList(git_revnum_t hash,CTGitPathList *List=NULL);
 	int UpdateFileList(int mask, bool once=true,CTGitPathList *List=NULL);
 	int UpdateUnRevFileList(CTGitPathList &list);
 	int UpdateUnRevFileList(CTGitPathList *List=NULL);

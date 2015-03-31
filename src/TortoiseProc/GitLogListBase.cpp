@@ -86,6 +86,7 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 
 	m_hModifiedIcon	= (HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_ACTIONMODIFIED), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE);
 	m_hReplacedIcon	= (HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_ACTIONREPLACED), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE);
+	m_hConflictedIcon = (HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_ACTIONCONFLICTED), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE);
 	m_hAddedIcon	= (HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_ACTIONADDED), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE);
 	m_hDeletedIcon	= (HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_ACTIONDELETED), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE);
 	m_hFetchIcon	= (HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_ACTIONFETCHING), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE);
@@ -180,16 +181,7 @@ int CGitLogListBase::AsyncDiffThread()
 				files.Clear();
 				pRev->m_ParentHash.clear();
 				pRev->m_ParentHash.push_back(m_HeadHash);
-				if(g_Git.IsInitRepos())
-				{
-					if (g_Git.GetInitAddList(files))
-						CMessageBox::Show(NULL, _T("Run ls-files failed!"), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
-
-				}
-				else
-				{
-					g_Git.GetCommitDiffList(pRev->m_CommitHash.ToString(), this->m_HeadHash.ToString(), files);
-				}
+				g_Git.GetWorkingTreeChanges(files);
 				int& action = pRev->GetAction(this);
 				action = 0;
 				for (int j = 0; j < files.GetCount(); ++j)
@@ -268,6 +260,7 @@ CGitLogListBase::~CGitLogListBase()
 
 	DestroyIcon(m_hModifiedIcon);
 	DestroyIcon(m_hReplacedIcon);
+	DestroyIcon(m_hConflictedIcon);
 	DestroyIcon(m_hAddedIcon);
 	DestroyIcon(m_hDeletedIcon);
 	m_logEntries.ClearAll();
@@ -1529,6 +1522,11 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 				if (action & CTGitPath::LOGACTIONS_REPLACED)
 					::DrawIconEx(pLVCD->nmcd.hdc, rect.left+nIcons*iconwidth + ICONITEMBORDER, rect.top, m_hReplacedIcon, iconwidth, iconheight, 0, NULL, DI_NORMAL);
 				++nIcons;
+
+				if (action & CTGitPath::LOGACTIONS_UNMERGED)
+					::DrawIconEx(pLVCD->nmcd.hdc, rect.left + nIcons*iconwidth + ICONITEMBORDER, rect.top, m_hConflictedIcon, iconwidth, iconheight, 0, NULL, DI_NORMAL);
+				++nIcons;
+
 				*pResult = CDRF_SKIPDEFAULT;
 				return;
 			}
@@ -4283,6 +4281,13 @@ CString CGitLogListBase::GetToolTipText(int nItem, int nSubItem)
 			if (!actionText.IsEmpty())
 				actionText += L"\r\n";
 			actionText += CTGitPath::GetActionName(CTGitPath::LOGACTIONS_REPLACED);
+		}
+
+		if (actions & CTGitPath::LOGACTIONS_UNMERGED)
+		{
+			if (!actionText.IsEmpty())
+				actionText += L"\r\n";
+			actionText += CTGitPath::GetActionName(CTGitPath::LOGACTIONS_UNMERGED);
 		}
 
 		if (!actionText.IsEmpty())
