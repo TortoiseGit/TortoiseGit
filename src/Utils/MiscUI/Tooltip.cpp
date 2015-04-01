@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2011 - Sven Strickroth <email@cs-ware.de>
-// Copyright (C) 2008-2012 - TortoiseSVN
+// Copyright (C) 2008-2012, 2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -160,6 +160,8 @@ void CToolTips::RelayEvent(LPMSG lpMsg, CWnd * dlgWnd)
 		for (auto it = toolTextMap.cbegin(); it != toolTextMap.cend(); ++it)
 		{
 			CWnd * pWndCtrl = dlgWnd->GetDlgItem(it->first);
+			if (pWndCtrl == nullptr)
+				continue;
 			pWndCtrl->GetWindowRect(&rect);
 			if (lpMsg->message == WM_MOUSEMOVE)
 				dlgWnd->ScreenToClient(&rect);
