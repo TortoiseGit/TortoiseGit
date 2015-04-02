@@ -1220,8 +1220,10 @@
 #define IDS_COMMIT_AS_COMMIT_DATE_TT    1555
 #define IDC_SOUNDS_TEXT                 1556
 #define IDC_COMMIT_AMENDDIFF            1556
+#define IDS_REBASE_ADDANOTHERCOMMIT     1556
 #define IDC_REBASE_PROGRESS             1557
 #define IDC_COMMIT_SETDATETIME          1557
+#define IDS_PROC_LOG_ONLYONCE           1557
 #define IDC_REBASE_SHEET                1558
 #define IDC_COMMIT_SETAUTHOR            1558
 #define IDC_SPLITALLOPTIONS             1559

@@ -638,7 +638,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			{
 				if (m_bThreadRunning)
 				{
-					MessageBox(_T("This operation cannot be started while the log dialog is still loading commits."), _T("TortoiseGit"), MB_ICONEXCLAMATION);
+					CMessageBox::Show(GetSafeHwnd(), IDS_PROC_LOG_ONLYONCE, IDS_APPNAME, MB_ICONEXCLAMATION);
 					break;
 				}
 				CRebaseDlg dlg;
@@ -663,7 +663,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			{
 				if (m_bThreadRunning)
 				{
-					MessageBox(_T("This operation cannot be started while the log dialog is still loading commits."), _T("TortoiseGit"), MB_ICONEXCLAMATION);
+					CMessageBox::Show(GetSafeHwnd(), IDS_PROC_LOG_ONLYONCE, IDS_APPNAME, MB_ICONEXCLAMATION);
 					break;
 				}
 				CRebaseDlg dlg;

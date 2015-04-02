@@ -1670,6 +1670,10 @@ msgstr ""
 msgid "Add \"&Signed-off-by\""
 msgstr ""
 
+#. Resource IDs: (98)
+msgid "Add another commit?"
+msgstr ""
+
 #. Resource IDs: (110)
 msgid "Add extension specific diff program"
 msgstr ""
@@ -9411,6 +9415,10 @@ msgstr ""
 
 #. Resource IDs: (82)
 msgid "This is not a valid path!\nA valid path must not contain '<<>|\"?*:' or one of the following device names:\ncom1-com9, lpt1-lpt9, prn, aux, con, nul, clock$"
+msgstr ""
+
+#. Resource IDs: (98)
+msgid "This operation cannot be started while the log dialog is still loading commits."
 msgstr ""
 
 #. Resource IDs: (3857)

@@ -1278,7 +1278,7 @@ void CRebaseDlg::OnBnClickedContinue()
 			isFirst = !m_bSplitCommit; // only select amend on second+ runs if not in split commit mode
 
 			m_SquashMessage.Empty();
-		} while (!g_Git.CheckCleanWorkTree() || (m_bSplitCommit && MessageBox(_T("Add another commit?"), _T("TortoiseGit"), MB_YESNO | MB_ICONQUESTION) == IDYES));
+		} while (!g_Git.CheckCleanWorkTree() || (m_bSplitCommit && CMessageBox::Show(GetSafeHwnd(), IDS_REBASE_ADDANOTHERCOMMIT, IDS_APPNAME, MB_YESNO | MB_ICONQUESTION) == IDYES));
 
 		m_bSplitCommit = FALSE;
 		UpdateData(FALSE);
