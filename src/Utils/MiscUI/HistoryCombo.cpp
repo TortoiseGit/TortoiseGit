@@ -25,7 +25,7 @@
 #include "../SysImageList.h"
 #endif
 
-#define MAX_HISTORY_ITEMS 25
+#define MAX_HISTORY_ITEMS 50
 
 int CHistoryCombo::m_nGitIconIndex = 0;
 
