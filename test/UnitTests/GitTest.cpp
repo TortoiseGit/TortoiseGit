@@ -483,6 +483,10 @@ TEST_P(CBasicGitWithTestRepoBareFixture, CanParseRev)
 
 static void FETCHHEAD(CGit& m_Git, bool isBare)
 {
+	CString repoDir = m_Git.m_CurrentDir;
+	if (!isBare)
+		repoDir += _T("\\.git");
+
 	STRING_VECTOR list;
 	EXPECT_EQ(0, m_Git.GetBranchList(list, nullptr));
 	EXPECT_EQ(5, list.size());
@@ -502,7 +506,7 @@ static void FETCHHEAD(CGit& m_Git, bool isBare)
 	CGitHash hash;
 	EXPECT_NE(0, m_Git.GetHash(hash, _T("FETCH_HEAD")));
 
-	CString testFile = m_Git.m_CurrentDir + L"\\.git\\FETCH_HEAD";
+	CString testFile = repoDir + L"\\FETCH_HEAD";
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)testFile, L"b9ef30183497cdad5c30b88d32dc1bed7951dfeb		branch 'master' of https://code.google.com/p/tortoisegit\n737878a4e2eabfa4fab580867c2b060c70999d31	not-for-merge	branch 'extend_hooks' of https://code.google.com/p/tortoisegit\n"));
 
 	list.clear();
@@ -510,12 +514,11 @@ static void FETCHHEAD(CGit& m_Git, bool isBare)
 	EXPECT_EQ(5, list.size());
 	list.clear();
 	EXPECT_EQ(0, m_Git.GetBranchList(list, nullptr, CGit::BRANCH_LOCAL_F));
-	EXPECT_EQ(isBare ? 5 : 6, list.size());
+	EXPECT_EQ(6, list.size());
 
 	EXPECT_STREQ(_T("master"), m_Git.FixBranchName(_T("master")));
 	EXPECT_STREQ(_T("non-existing"), m_Git.FixBranchName(_T("non-existing")));
-	if (!isBare)
-		EXPECT_STREQ(_T("b9ef30183497cdad5c30b88d32dc1bed7951dfeb"), m_Git.FixBranchName(_T("FETCH_HEAD")));
+	EXPECT_STREQ(_T("b9ef30183497cdad5c30b88d32dc1bed7951dfeb"), m_Git.FixBranchName(_T("FETCH_HEAD")));
 	branch = _T("HEAD");
 	EXPECT_STREQ(_T("HEAD"), m_Git.FixBranchName_Mod(branch));
 	EXPECT_STREQ(_T("HEAD"), branch);
@@ -525,14 +528,11 @@ static void FETCHHEAD(CGit& m_Git, bool isBare)
 	branch = _T("non-existing");
 	EXPECT_STREQ(_T("non-existing"), m_Git.FixBranchName_Mod(branch));
 	EXPECT_STREQ(_T("non-existing"), branch);
-	if (!isBare)
-	{
-		branch = _T("FETCH_HEAD");
-		EXPECT_STREQ(_T("b9ef30183497cdad5c30b88d32dc1bed7951dfeb"), m_Git.FixBranchName_Mod(branch));
-		EXPECT_STREQ(_T("b9ef30183497cdad5c30b88d32dc1bed7951dfeb"), branch);
-		EXPECT_EQ(0, m_Git.GetHash(hash, _T("FETCH_HEAD")));
-		EXPECT_STREQ(_T("b9ef30183497cdad5c30b88d32dc1bed7951dfeb"), hash.ToString());
-	}
+	branch = _T("FETCH_HEAD");
+	EXPECT_STREQ(_T("b9ef30183497cdad5c30b88d32dc1bed7951dfeb"), m_Git.FixBranchName_Mod(branch));
+	EXPECT_STREQ(_T("b9ef30183497cdad5c30b88d32dc1bed7951dfeb"), branch);
+	EXPECT_EQ(0, m_Git.GetHash(hash, _T("FETCH_HEAD")));
+	EXPECT_STREQ(_T("b9ef30183497cdad5c30b88d32dc1bed7951dfeb"), hash.ToString());
 
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)testFile, L"737878a4e2eabfa4fab580867c2b060c70999d31	not-for-merge	branch 'extend_hooks' of https://code.google.com/p/tortoisegit\nb9ef30183497cdad5c30b88d32dc1bed7951dfeb		branch 'master' of https://code.google.com/p/tortoisegit\n"));
 
@@ -541,18 +541,15 @@ static void FETCHHEAD(CGit& m_Git, bool isBare)
 	EXPECT_EQ(5, list.size());
 	list.clear();
 	EXPECT_EQ(0, m_Git.GetBranchList(list, nullptr, CGit::BRANCH_LOCAL_F));
-	EXPECT_EQ(isBare ? 5 : 6, list.size());
+	EXPECT_EQ(6, list.size());
 
-	if (!isBare)
-	{
-		EXPECT_STREQ(_T("b9ef30183497cdad5c30b88d32dc1bed7951dfeb"), m_Git.FixBranchName(_T("FETCH_HEAD")));
-		branch = _T("FETCH_HEAD");
-		EXPECT_STREQ(_T("b9ef30183497cdad5c30b88d32dc1bed7951dfeb"), m_Git.FixBranchName_Mod(branch));
-		EXPECT_STREQ(_T("b9ef30183497cdad5c30b88d32dc1bed7951dfeb"), branch);
-		// libgit2 fails here
-		// EXPECT_EQ(0, m_Git.GetHash(hash, _T("FETCH_HEAD")));
-		// EXPECT_STREQ(_T("b9ef30183497cdad5c30b88d32dc1bed7951dfeb"), hash.ToString());
-	}
+	EXPECT_STREQ(_T("b9ef30183497cdad5c30b88d32dc1bed7951dfeb"), m_Git.FixBranchName(_T("FETCH_HEAD")));
+	branch = _T("FETCH_HEAD");
+	EXPECT_STREQ(_T("b9ef30183497cdad5c30b88d32dc1bed7951dfeb"), m_Git.FixBranchName_Mod(branch));
+	EXPECT_STREQ(_T("b9ef30183497cdad5c30b88d32dc1bed7951dfeb"), branch);
+	// libgit2 fails here
+	//EXPECT_EQ(0, m_Git.GetHash(hash, _T("FETCH_HEAD")));
+	//EXPECT_STREQ(_T("b9ef30183497cdad5c30b88d32dc1bed7951dfeb"), hash.ToString());
 }
 
 TEST_P(CBasicGitWithTestRepoFixture, FETCHHEAD)
