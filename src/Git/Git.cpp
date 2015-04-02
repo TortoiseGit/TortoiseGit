@@ -1684,7 +1684,7 @@ int CGit::GetRemoteList(STRING_VECTOR &list)
 			list.push_back(CUnicodeUtils::GetUnicode(remote));
 		}
 
-		std::sort(list.begin(), list.end());
+		std::sort(list.begin(), list.end(), LogicalComparePredicate);
 
 		return 0;
 	}
