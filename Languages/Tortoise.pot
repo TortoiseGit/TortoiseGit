@@ -4034,6 +4034,10 @@ msgstr ""
 msgid "Edit..."
 msgstr ""
 
+#. Resource IDs: (1827)
+msgid "Edit/Split commit"
+msgstr ""
+
 #. Resource IDs: (1770)
 msgid "Effective"
 msgstr ""
@@ -8772,10 +8776,6 @@ msgstr ""
 
 #. Resource IDs: (16976, 16977, 16978, 16979, 16980, 16981)
 msgid "Spin1"
-msgstr ""
-
-#. Resource IDs: (1827)
-msgid "Split commit"
 msgstr ""
 
 #. Resource IDs: (1253)
