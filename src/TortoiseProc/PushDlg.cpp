@@ -158,6 +158,7 @@ BOOL CPushDlg::OnInitDialog()
 
 	EnableSaveRestore(_T("PushDlg"));
 
+	m_Remote.SetMaxHistoryItems(0x7FFFFFFF);
 	m_RemoteURL.SetCaseSensitive(TRUE);
 	m_RemoteURL.SetURLHistory(TRUE);
 
