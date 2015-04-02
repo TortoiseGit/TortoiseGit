@@ -2421,7 +2421,7 @@ int CGit::GetOneFile(const CString &Refname, const CTGitPath &path, const CStrin
 			return -1;
 
 		FILE *file = nullptr;
-		_tfopen_s(&file, outputfile, _T("w"));
+		_tfopen_s(&file, outputfile, _T("wb"));
 		if (file == nullptr)
 		{
 			giterr_set_str(GITERR_NONE, "Could not create file.");
