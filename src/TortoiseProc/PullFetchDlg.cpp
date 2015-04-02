@@ -182,6 +182,7 @@ BOOL CPullFetchDlg::OnInitDialog()
 
 	CheckRadioButton(IDC_REMOTE_RD,IDC_OTHER_RD,IDC_REMOTE_RD);
 	m_Remote.EnableWindow(TRUE);
+	m_Remote.SetMaxHistoryItems(0x7FFFFFFF);
 	m_Other.EnableWindow(FALSE);
 	if(!m_IsPull)
 	{

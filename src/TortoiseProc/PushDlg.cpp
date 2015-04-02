@@ -222,6 +222,7 @@ void CPushDlg::Refresh()
 
 	STRING_VECTOR list;
 	m_Remote.Reset();
+	m_Remote.SetMaxHistoryItems(0x7FFFFFFF);
 
 	if(!g_Git.GetRemoteList(list))
 	{
