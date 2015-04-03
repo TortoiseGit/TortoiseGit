@@ -21,16 +21,16 @@
 #include "RepositoryFixtures.h"
 #include "GitRev.h"
 
-class GitRevCBasicGitWithTestRepoFixture : public CBasicGitWithTestRepoFixture
+class Rev_RepoF : public CRepoFixture
 {
 };
 
-class GitRevCBasicGitWithTestRepoBareFixture : public CBasicGitWithTestRepoBareFixture
+class Rev_BareF : public CBareRepoFixture
 {
 };
 
-INSTANTIATE_TEST_CASE_P(GitRev, GitRevCBasicGitWithTestRepoFixture, testing::Values(LIBGIT, LIBGIT2, LIBGIT2_ALL));
-INSTANTIATE_TEST_CASE_P(GitRev, GitRevCBasicGitWithTestRepoBareFixture, testing::Values(LIBGIT, LIBGIT2, LIBGIT2_ALL));
+INSTANTIATE_TEST_CASE_P(GitRev, Rev_RepoF, testing::Values(LIBGIT, LIBGIT2, LIBGIT2_ALL));
+INSTANTIATE_TEST_CASE_P(GitRev, Rev_BareF, testing::Values(LIBGIT, LIBGIT2, LIBGIT2_ALL));
 
 void GetRevParsingTests()
 {
@@ -160,12 +160,12 @@ void GetRevParsingTests()
 	EXPECT_TRUE(rev.GetLastErr().IsEmpty());
 }
 
-TEST_P(GitRevCBasicGitWithTestRepoFixture, GitRevParsing)
+TEST_P(Rev_RepoF, GitRevParsing)
 {
 	GetRevParsingTests();
 }
 
-TEST_P(GitRevCBasicGitWithTestRepoBareFixture, GitRevParsing)
+TEST_P(Rev_BareF, GitRevParsing)
 {
 	GetRevParsingTests();
 }

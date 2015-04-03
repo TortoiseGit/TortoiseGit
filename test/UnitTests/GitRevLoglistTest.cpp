@@ -22,27 +22,27 @@
 #include "GitRevLoglist.h"
 #include "TGitPath.h"
 
-class GitRevLoglistCBasicGitWithTestRepoFixture : public CBasicGitWithTestRepoFixture
+class RevLogList_RepoF : public CRepoFixture
 {
 };
 
-class GitRevLoglistCBasicGitWithTestRepoBareFixture : public CBasicGitWithTestRepoBareFixture
+class RevLogList_BareF : public CBareRepoFixture
 {
 };
 
-class GitRevLoglist2CBasicGitWithTestRepoFixture : public CBasicGitWithTestRepoFixture
+class RevLogList2_RepoF : public CRepoFixture
 {
 };
 
-class GitRevLoglist2CBasicGitWithTestRepoBareFixture : public CBasicGitWithTestRepoBareFixture
+class RevLogList2_BareF : public CBareRepoFixture
 {
 };
 
-INSTANTIATE_TEST_CASE_P(GitRevLoglist, GitRevLoglistCBasicGitWithTestRepoFixture, testing::Values(LIBGIT, LIBGIT2, LIBGIT2_ALL));
-INSTANTIATE_TEST_CASE_P(GitRevLoglist, GitRevLoglistCBasicGitWithTestRepoBareFixture, testing::Values(LIBGIT, LIBGIT2, LIBGIT2_ALL));
+INSTANTIATE_TEST_CASE_P(GitRevLoglist, RevLogList_RepoF, testing::Values(LIBGIT, LIBGIT2, LIBGIT2_ALL));
+INSTANTIATE_TEST_CASE_P(GitRevLoglist, RevLogList_BareF, testing::Values(LIBGIT, LIBGIT2, LIBGIT2_ALL));
 
-INSTANTIATE_TEST_CASE_P(GitRevLoglist, GitRevLoglist2CBasicGitWithTestRepoFixture, testing::Values(GIT_CLI, LIBGIT, LIBGIT2, LIBGIT2_ALL));
-INSTANTIATE_TEST_CASE_P(GitRevLoglist, GitRevLoglist2CBasicGitWithTestRepoBareFixture, testing::Values(GIT_CLI, LIBGIT, LIBGIT2, LIBGIT2_ALL));
+INSTANTIATE_TEST_CASE_P(GitRevLoglist, RevLogList2_RepoF, testing::Values(GIT_CLI, LIBGIT, LIBGIT2, LIBGIT2_ALL));
+INSTANTIATE_TEST_CASE_P(GitRevLoglist, RevLogList2_BareF, testing::Values(GIT_CLI, LIBGIT, LIBGIT2, LIBGIT2_ALL));
 
 static void SafeFetchFullInfo(CGit* cGit)
 {
@@ -220,12 +220,12 @@ static void SafeFetchFullInfo(CGit* cGit)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED, list[3].m_Action);
 }
 
-TEST_P(GitRevLoglistCBasicGitWithTestRepoFixture, SafeFetchFullInfo)
+TEST_P(RevLogList_RepoF, SafeFetchFullInfo)
 {
 	SafeFetchFullInfo(&g_Git);
 }
 
-TEST_P(GitRevLoglistCBasicGitWithTestRepoBareFixture, SafeFetchFullInfo)
+TEST_P(RevLogList_BareF, SafeFetchFullInfo)
 {
 	SafeFetchFullInfo(&g_Git);
 }
@@ -369,12 +369,12 @@ static void SafeGetSimpleList(CGit* cGit)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED, list[3].m_Action);
 }
 
-TEST_P(GitRevLoglistCBasicGitWithTestRepoFixture, SafeGetSimpleList)
+TEST_P(RevLogList_RepoF, SafeGetSimpleList)
 {
 	SafeGetSimpleList(&g_Git);
 }
 
-TEST_P(GitRevLoglistCBasicGitWithTestRepoBareFixture, SafeGetSimpleList)
+TEST_P(RevLogList_BareF, SafeGetSimpleList)
 {
 	SafeGetSimpleList(&g_Git);
 }
@@ -468,12 +468,12 @@ static void GetReflog()
 	EXPECT_STREQ(_T(" renamed a file"), revloglist[4].GetSubject());
 }
 
-TEST_P(GitRevLoglist2CBasicGitWithTestRepoFixture, GetReflog)
+TEST_P(RevLogList2_RepoF, GetReflog)
 {
 	GetReflog();
 }
 
-TEST_P(GitRevLoglist2CBasicGitWithTestRepoBareFixture, GetReflog)
+TEST_P(RevLogList2_BareF, GetReflog)
 {
 	GetReflog();
 }

@@ -79,10 +79,10 @@ public:
 	CAutoTempDir m_Dir;
 };
 
-class CBasicGitWithTestRepoFixture : public CBasicGitFixture
+class CRepoFixture : public CBasicGitFixture
 {
 protected:
-	CBasicGitWithTestRepoFixture()
+	CRepoFixture()
 	{
 		prefix = _T("\\.git");
 	}
@@ -119,13 +119,13 @@ protected:
 	CString prefix;
 };
 
-class CBasicGitWithTestRepoBareFixture : public CBasicGitWithTestRepoFixture
+class CBareRepoFixture : public CRepoFixture
 {
 protected:
 	virtual void SetUp()
 	{
 		prefix.Empty();
-		CBasicGitWithTestRepoFixture::SetUp();
+		CRepoFixture::SetUp();
 
 		DeleteFile(m_Dir.GetTempDir() + _T("\\index"));
 		CString configFile = m_Dir.GetTempDir() + _T("\\config");
@@ -136,7 +136,7 @@ protected:
 	}
 };
 
-class CBasicGitWithEmptyRepositoryFixture : public CBasicGitFixture
+class CEmptyRepoFixture : public CBasicGitFixture
 {
 protected:
 	virtual void SetUp()
@@ -157,7 +157,7 @@ protected:
 	}
 };
 
-class CBasicGitWithEmptyBareRepositoryFixture : public CBasicGitFixture
+class CEmptyBareRepoFixture : public CBasicGitFixture
 {
 protected:
 	virtual void SetUp()

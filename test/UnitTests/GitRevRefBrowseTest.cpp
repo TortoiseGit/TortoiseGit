@@ -21,16 +21,16 @@
 #include "RepositoryFixtures.h"
 #include "GitRevRefBrowser.h"
 
-class GitRevRefBrowserCBasicGitWithTestRepoFixture : public CBasicGitWithTestRepoFixture
+class RevRefBrowser_RepoF : public CRepoFixture
 {
 };
 
-class GitRevRefBrowserCBasicGitWithTestRepoBareFixture : public CBasicGitWithTestRepoBareFixture
+class RevRefBrowser_BareF : public CBareRepoFixture
 {
 };
 
-INSTANTIATE_TEST_CASE_P(GitRevRefBrowser, GitRevRefBrowserCBasicGitWithTestRepoFixture, testing::Values(GIT_CLI));
-INSTANTIATE_TEST_CASE_P(GitRevRefBrowser, GitRevRefBrowserCBasicGitWithTestRepoBareFixture, testing::Values(GIT_CLI));
+INSTANTIATE_TEST_CASE_P(GitRevRefBrowser, RevRefBrowser_RepoF, testing::Values(GIT_CLI));
+INSTANTIATE_TEST_CASE_P(GitRevRefBrowser, RevRefBrowser_BareF, testing::Values(GIT_CLI));
 
 static void GetGitRevRefMap()
 {
@@ -74,12 +74,12 @@ static void GetGitRevRefMap()
 	EXPECT_TRUE(refMap.find(L"refs/heads/master") != refMap.end());
 }
 
-TEST_P(GitRevRefBrowserCBasicGitWithTestRepoFixture, GetGitRevRefMap)
+TEST_P(RevRefBrowser_RepoF, GetGitRevRefMap)
 {
 	GetGitRevRefMap();
 }
 
-TEST_P(GitRevRefBrowserCBasicGitWithTestRepoBareFixture, GetGitRevRefMap)
+TEST_P(RevRefBrowser_BareF, GetGitRevRefMap)
 {
 	GetGitRevRefMap();
 }

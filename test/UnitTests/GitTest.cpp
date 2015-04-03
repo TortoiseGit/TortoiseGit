@@ -24,10 +24,10 @@
 
 // For performance reason, turn LIBGIT off by default, 
 INSTANTIATE_TEST_CASE_P(CGit, CBasicGitFixture, testing::Values(GIT_CLI, /*LIBGIT,*/ LIBGIT2, LIBGIT2_ALL));
-INSTANTIATE_TEST_CASE_P(CGit, CBasicGitWithEmptyRepositoryFixture, testing::Values(GIT_CLI, /*LIBGIT,*/ LIBGIT2, LIBGIT2_ALL));
-INSTANTIATE_TEST_CASE_P(CGit, CBasicGitWithEmptyBareRepositoryFixture, testing::Values(GIT_CLI, /*LIBGIT,*/ LIBGIT2, LIBGIT2_ALL));
-INSTANTIATE_TEST_CASE_P(CGit, CBasicGitWithTestRepoFixture, testing::Values(GIT_CLI, LIBGIT, LIBGIT2, LIBGIT2_ALL));
-INSTANTIATE_TEST_CASE_P(CGit, CBasicGitWithTestRepoBareFixture, testing::Values(GIT_CLI, LIBGIT, LIBGIT2, LIBGIT2_ALL));
+INSTANTIATE_TEST_CASE_P(CGit, CEmptyRepoFixture, testing::Values(GIT_CLI, /*LIBGIT,*/ LIBGIT2, LIBGIT2_ALL));
+INSTANTIATE_TEST_CASE_P(CGit, CEmptyBareRepoFixture, testing::Values(GIT_CLI, /*LIBGIT,*/ LIBGIT2, LIBGIT2_ALL));
+INSTANTIATE_TEST_CASE_P(CGit, CRepoFixture, testing::Values(GIT_CLI, LIBGIT, LIBGIT2, LIBGIT2_ALL));
+INSTANTIATE_TEST_CASE_P(CGit, CBareRepoFixture, testing::Values(GIT_CLI, LIBGIT, LIBGIT2, LIBGIT2_ALL));
 
 TEST(CGit, RunSet)
 {
@@ -210,7 +210,7 @@ TEST(CGit, GetRepository)
 	EXPECT_TRUE(repo3.IsValid());
 }
 
-TEST_P(CBasicGitWithEmptyRepositoryFixture, IsInitRepos_GetInitAddList)
+TEST_P(CEmptyRepoFixture, IsInitRepos_GetInitAddList)
 {
 	EXPECT_STREQ(_T("master"), m_Git.GetCurrentBranch());
 
@@ -241,7 +241,7 @@ TEST_P(CBasicGitWithEmptyRepositoryFixture, IsInitRepos_GetInitAddList)
 	EXPECT_STREQ(_T("master"), m_Git.GetCurrentBranch());
 }
 
-TEST_P(CBasicGitWithTestRepoFixture, IsInitRepos)
+TEST_P(CRepoFixture, IsInitRepos)
 {
 	EXPECT_FALSE(m_Git.IsInitRepos());
 
@@ -252,7 +252,7 @@ TEST_P(CBasicGitWithTestRepoFixture, IsInitRepos)
 	EXPECT_TRUE(m_Git.IsInitRepos());
 }
 
-TEST_P(CBasicGitWithTestRepoFixture, HasWorkingTreeConflicts)
+TEST_P(CRepoFixture, HasWorkingTreeConflicts)
 {
 	CString output;
 	EXPECT_EQ(0, m_Git.Run(_T("git.exe reset --hard master"), &output, CP_UTF8));
@@ -284,7 +284,7 @@ TEST_P(CBasicGitWithTestRepoFixture, HasWorkingTreeConflicts)
 	EXPECT_EQ(TRUE, m_Git.HasWorkingTreeConflicts());
 }
 
-TEST_P(CBasicGitWithTestRepoFixture, GetCurrentBranch)
+TEST_P(CRepoFixture, GetCurrentBranch)
 {
 	EXPECT_STREQ(_T("master"), m_Git.GetCurrentBranch());
 	EXPECT_STREQ(_T("master"), m_Git.GetCurrentBranch(true));
@@ -310,7 +310,7 @@ TEST_P(CBasicGitWithTestRepoFixture, GetCurrentBranch)
 	EXPECT_STREQ(_T("orphanic"), m_Git.GetCurrentBranch(true));
 }
 
-TEST_P(CBasicGitWithTestRepoBareFixture, GetCurrentBranch)
+TEST_P(CBareRepoFixture, GetCurrentBranch)
 {
 	EXPECT_STREQ(_T("master"), m_Git.GetCurrentBranch());
 	EXPECT_STREQ(_T("master"), m_Git.GetCurrentBranch(true));
@@ -347,12 +347,12 @@ static void BranchTagExists_IsBranchTagNameUnique(CGit& m_Git)
 	EXPECT_TRUE(m_Git.IsBranchTagNameUnique(_T("also-signed")));
 }
 
-TEST_P(CBasicGitWithTestRepoFixture, BranchTagExists_IsBranchTagNameUnique)
+TEST_P(CRepoFixture, BranchTagExists_IsBranchTagNameUnique)
 {
 	BranchTagExists_IsBranchTagNameUnique(m_Git);
 }
 
-TEST_P(CBasicGitWithTestRepoBareFixture, BranchTagExists_IsBranchTagNameUnique)
+TEST_P(CBareRepoFixture, BranchTagExists_IsBranchTagNameUnique)
 {
 	BranchTagExists_IsBranchTagNameUnique(m_Git);
 }
@@ -380,7 +380,7 @@ static void GetFullRefName(CGit& m_Git)
 	EXPECT_STREQ(_T(""), m_Git.GetFullRefName(_T("origin/master")));
 }
 
-TEST_P(CBasicGitWithTestRepoFixture, GetFullRefName)
+TEST_P(CRepoFixture, GetFullRefName)
 {
 	GetFullRefName(m_Git);
 
@@ -390,12 +390,12 @@ TEST_P(CBasicGitWithTestRepoFixture, GetFullRefName)
 	EXPECT_STREQ(_T(""), m_Git.GetFullRefName(_T("orphanic")));
 }
 
-TEST_P(CBasicGitWithTestRepoBareFixture, GetFullRefName)
+TEST_P(CBareRepoFixture, GetFullRefName)
 {
 	GetFullRefName(m_Git);
 }
 
-TEST_P(CBasicGitWithEmptyRepositoryFixture, GetRemoteTrackedBranch)
+TEST_P(CEmptyRepoFixture, GetRemoteTrackedBranch)
 {
 	CString remote, branch;
 	m_Git.GetRemoteTrackedBranchForHEAD(remote, branch);
@@ -431,12 +431,12 @@ static void GetRemoteTrackedBranch(CGit& m_Git)
 	EXPECT_TRUE(branch.IsEmpty());
 }
 
-TEST_P(CBasicGitWithTestRepoFixture, GetRemoteTrackedBranch)
+TEST_P(CRepoFixture, GetRemoteTrackedBranch)
 {
 	GetRemoteTrackedBranch(m_Git);
 }
 
-TEST_P(CBasicGitWithTestRepoBareFixture, GetRemoteTrackedBranch)
+TEST_P(CBareRepoFixture, GetRemoteTrackedBranch)
 {
 	GetRemoteTrackedBranch(m_Git);
 }
@@ -463,7 +463,7 @@ static void CanParseRev(CGit& m_Git)
 	EXPECT_FALSE(m_Git.CanParseRev(_T("orphanic")));
 }
 
-TEST_P(CBasicGitWithTestRepoFixture, CanParseRev)
+TEST_P(CRepoFixture, CanParseRev)
 {
 	CanParseRev(m_Git);
 
@@ -476,7 +476,7 @@ TEST_P(CBasicGitWithTestRepoFixture, CanParseRev)
 	EXPECT_TRUE(m_Git.CanParseRev(_T("master")));
 }
 
-TEST_P(CBasicGitWithTestRepoBareFixture, CanParseRev)
+TEST_P(CBareRepoFixture, CanParseRev)
 {
 	CanParseRev(m_Git);
 }
@@ -552,17 +552,17 @@ static void FETCHHEAD(CGit& m_Git, bool isBare)
 	//EXPECT_STREQ(_T("b9ef30183497cdad5c30b88d32dc1bed7951dfeb"), hash.ToString());
 }
 
-TEST_P(CBasicGitWithTestRepoFixture, FETCHHEAD)
+TEST_P(CRepoFixture, FETCHHEAD)
 {
 	FETCHHEAD(m_Git, false);
 }
 
-TEST_P(CBasicGitWithTestRepoBareFixture, FETCHHEAD)
+TEST_P(CBareRepoFixture, FETCHHEAD)
 {
 	FETCHHEAD(m_Git, true);
 }
 
-TEST_P(CBasicGitWithTestRepoFixture, IsFastForward)
+TEST_P(CRepoFixture, IsFastForward)
 {
 	CGitHash commonAncestor;
 	EXPECT_TRUE(m_Git.IsFastForward(_T("origin/master"), _T("master"), &commonAncestor));
@@ -597,24 +597,24 @@ static void GetHash(CGit& m_Git)
 	EXPECT_NE(0, m_Git.GetHash(hash, _T("non-existing")));
 }
 
-TEST_P(CBasicGitWithTestRepoFixture, GetHash)
+TEST_P(CRepoFixture, GetHash)
 {
 	GetHash(m_Git);
 }
 
-TEST_P(CBasicGitWithTestRepoBareFixture, GetHash)
+TEST_P(CBareRepoFixture, GetHash)
 {
 	GetHash(m_Git);
 }
 
-TEST_P(CBasicGitWithEmptyRepositoryFixture, GetHash_EmptyRepo)
+TEST_P(CEmptyRepoFixture, GetHash_EmptyRepo)
 {
 	CGitHash hash;
 	EXPECT_EQ(0, m_Git.GetHash(hash, _T("HEAD")));
 	EXPECT_TRUE(hash.IsEmpty());
 }
 
-TEST_P(CBasicGitWithEmptyRepositoryFixture, GetEmptyBranchesTagsRefs)
+TEST_P(CEmptyRepoFixture, GetEmptyBranchesTagsRefs)
 {
 	STRING_VECTOR branches;
 	int current = -2;
@@ -809,17 +809,17 @@ static void GetBranchesTagsRefs(CGit& m_Git, config testConfig)
 	EXPECT_EQ(7, refs.size());
 }
 
-TEST_P(CBasicGitWithTestRepoFixture, GetBranchesTagsRefs)
+TEST_P(CRepoFixture, GetBranchesTagsRefs)
 {
 	GetBranchesTagsRefs(m_Git, GetParam());
 }
 
-TEST_P(CBasicGitWithTestRepoBareFixture, GetBranchesTagsRefs)
+TEST_P(CBareRepoFixture, GetBranchesTagsRefs)
 {
 	GetBranchesTagsRefs(m_Git, GetParam());
 }
 
-TEST_P(CBasicGitWithTestRepoFixture, GetBranchList_orphan)
+TEST_P(CRepoFixture, GetBranchList_orphan)
 {
 	CString output;
 	EXPECT_EQ(0, m_Git.Run(_T("git.exe checkout --orphan orphanic"), &output, CP_UTF8));
@@ -837,7 +837,7 @@ TEST_P(CBasicGitWithTestRepoFixture, GetBranchList_orphan)
 	EXPECT_STREQ(_T("subdir/branch"), branches[4]);
 }
 
-TEST_P(CBasicGitWithEmptyBareRepositoryFixture, GetEmptyBranchesTagsRefs)
+TEST_P(CEmptyBareRepoFixture, GetEmptyBranchesTagsRefs)
 {
 	EXPECT_STREQ(_T("master"), m_Git.GetCurrentBranch());
 
@@ -868,7 +868,7 @@ TEST_P(CBasicGitWithEmptyBareRepositoryFixture, GetEmptyBranchesTagsRefs)
 	EXPECT_TRUE(remotes.empty());
 }
 
-TEST_P(CBasicGitWithEmptyRepositoryFixture, CheckCleanWorkTree)
+TEST_P(CEmptyRepoFixture, CheckCleanWorkTree)
 {
 	CString output;
 	CString testFile = m_Dir.GetTempDir() + L"\\test.txt";
@@ -975,7 +975,7 @@ static void GetOneFile(CGit& m_Git)
 	::DeleteFile(tmpFile);
 }
 
-TEST_P(CBasicGitWithTestRepoFixture, GetOneFile)
+TEST_P(CRepoFixture, GetOneFile)
 {
 	GetOneFile(m_Git);
 
@@ -1050,7 +1050,7 @@ TEST_P(CBasicGitWithTestRepoFixture, GetOneFile)
 	::DeleteFile(tmpFile);
 }
 
-TEST_P(CBasicGitWithTestRepoBareFixture, GetOneFile)
+TEST_P(CBareRepoFixture, GetOneFile)
 {
 	GetOneFile(m_Git);
 }
@@ -1070,17 +1070,17 @@ static void GetBranchDescriptions(CGit& m_Git)
 	EXPECT_STREQ(_T("multi\nline"), descriptions[L"subdir/branch"]);
 }
 
-TEST_P(CBasicGitWithEmptyRepositoryFixture, GetBranchDescriptions)
+TEST_P(CEmptyRepoFixture, GetBranchDescriptions)
 {
 	GetBranchDescriptions(m_Git);
 }
 
-TEST_P(CBasicGitWithEmptyBareRepositoryFixture, GetBranchDescriptions)
+TEST_P(CEmptyBareRepoFixture, GetBranchDescriptions)
 {
 	GetBranchDescriptions(m_Git);
 }
 
-TEST_P(CBasicGitWithTestRepoFixture, Config)
+TEST_P(CRepoFixture, Config)
 {
 	EXPECT_STREQ(_T(""), m_Git.GetConfigValue(_T("not-found")));
 
@@ -1134,7 +1134,7 @@ TEST_P(CBasicGitWithTestRepoFixture, Config)
 	EXPECT_STREQ(_T("true"), m_Git.GetConfigValue(_T("core.ignorecase")));
 }
 
-TEST_P(CBasicGitWithTestRepoFixture, GetWorkingTreeChanges)
+TEST_P(CRepoFixture, GetWorkingTreeChanges)
 {
 	if (GetParam() != 0)
 		return;
@@ -1745,7 +1745,7 @@ TEST_P(CBasicGitWithTestRepoFixture, GetWorkingTreeChanges)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[6].m_Action);
 }
 
-TEST_P(CBasicGitWithTestRepoFixture, GetWorkingTreeChanges_DeleteModifyConflict_DeletedRemotely)
+TEST_P(CRepoFixture, GetWorkingTreeChanges_DeleteModifyConflict_DeletedRemotely)
 {
 	if (GetParam() != 0)
 		return;
@@ -1828,7 +1828,7 @@ TEST_P(CBasicGitWithTestRepoFixture, GetWorkingTreeChanges_DeleteModifyConflict_
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[6].m_Action);
 }
 
-TEST_P(CBasicGitWithTestRepoFixture, GetWorkingTreeChanges_DeleteModifyConflict_DeletedLocally)
+TEST_P(CRepoFixture, GetWorkingTreeChanges_DeleteModifyConflict_DeletedLocally)
 {
 	if (GetParam() != 0)
 		return;
@@ -1872,7 +1872,7 @@ TEST_P(CBasicGitWithTestRepoFixture, GetWorkingTreeChanges_DeleteModifyConflict_
 	EXPECT_EQ(CTGitPath::LOGACTIONS_UNMERGED, list[0].m_Action);
 }
 
-TEST_P(CBasicGitWithEmptyRepositoryFixture, GetWorkingTreeChanges)
+TEST_P(CEmptyRepoFixture, GetWorkingTreeChanges)
 {
 	if (GetParam() != 0)
 		return;
