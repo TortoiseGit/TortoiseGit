@@ -96,7 +96,7 @@ protected:
 			resourcesDir = CPathUtils::GetAppDirectory() + _T("\\..\\..\\..\\test\\UnitTests\\resources");
 			ASSERT_TRUE(PathIsDirectory(resourcesDir));
 		}
-		EXPECT_TRUE(CreateDirectory(m_Dir.GetTempDir() + _T("\\.git"), nullptr));
+		EXPECT_TRUE(CreateDirectory(m_Dir.GetTempDir() + prefix, nullptr));
 		CString repoDir = resourcesDir + _T("\\git-repo1");
 		CDirFileEnum finder(repoDir);
 		bool isDir;
