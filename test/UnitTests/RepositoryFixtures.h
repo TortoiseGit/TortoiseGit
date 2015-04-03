@@ -104,6 +104,12 @@ protected:
 			else
 				EXPECT_TRUE(CopyFile(filepath, m_Dir.GetTempDir() + prefix + relpath, false));
 		}
+
+		CString configFile = m_Dir.GetTempDir() + prefix + _T("\\config");
+		CString text;
+		ASSERT_TRUE(CStringUtils::ReadStringFromTextFile(configFile, text));
+		text += _T("\n[core]\n  autocrlf = false\n[user]\n  name = User\n  email = user@example.com\n");
+		EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)configFile, (LPCTSTR)text));
 	}
 	CString prefix;
 };
@@ -134,6 +140,15 @@ protected:
 		CString output;
 		EXPECT_EQ(0, m_Git.Run(_T("git.exe init"), &output, CP_UTF8));
 		EXPECT_FALSE(output.IsEmpty());
+		output.Empty();
+		EXPECT_EQ(0, m_Git.Run(_T("git.exe config core.autocrlf false"), &output, CP_UTF8));
+		EXPECT_TRUE(output.IsEmpty());
+		output.Empty();
+		EXPECT_EQ(0, m_Git.Run(_T("git.exe config user.name User"), &output, CP_UTF8));
+		EXPECT_TRUE(output.IsEmpty());
+		output.Empty();
+		EXPECT_EQ(0, m_Git.Run(_T("git.exe config user.email user@example.com"), &output, CP_UTF8));
+		EXPECT_TRUE(output.IsEmpty());
 	}
 };
 
