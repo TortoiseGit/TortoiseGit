@@ -25,6 +25,7 @@ Released: Unreleased
  * Fixed issue #1440: Different status of modifed renamed or moved files in Show log dialog, Check for Modifications dialog and Commit dialog
  * Fixed issue #1501: Unchanged files appears modified in Show Log dialog
  * Fixed issue #2477: Change "Split commit" label to "Edit/Split commit" in Rebase dlg
+ * Fixed issue #2481: "Start registry editor" does not work properly in non-English locales
 
 = Release 1.8.13.0 =
 Released: 2015-02-15

@@ -225,7 +225,7 @@ void CSetOverlayHandlers::OnBnClickedRegedt()
 		// HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\ShellIconOverlayIdentifiers
 		// so when we start regedit, it will show that key on start
 		CRegString regLastKey(L"Software\\Microsoft\\Windows\\CurrentVersion\\Applets\\Regedit\\LastKey");
-		regLastKey = L"Computer\\HKEY_Local_Machine\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\ShellIconOverlayIdentifiers";
+		regLastKey = L"HKEY_Local_Machine\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\ShellIconOverlayIdentifiers";
 
 		SHELLEXECUTEINFO si = { sizeof(SHELLEXECUTEINFO) };
 		si.hwnd = GetSafeHwnd();
