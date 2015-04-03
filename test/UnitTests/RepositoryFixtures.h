@@ -69,6 +69,11 @@ protected:
 		SetCurrentDirectory(m_Git.m_CurrentDir);
 	}
 
+	virtual void TearDown()
+	{
+		SetCurrentDirectory(CPathUtils::GetAppDirectory());
+	}
+
 public:
 	CGit m_Git;
 	CAutoTempDir m_Dir;
