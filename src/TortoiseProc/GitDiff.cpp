@@ -475,7 +475,7 @@ int CGitDiff::Diff(const CTGitPath * pPath, const CTGitPath * pPath2, git_revnum
 		if (g_Git.GetOneFile(rev2, fileName, file2))
 		{
 			CString out;
-			out.Format(IDS_STATUSLIST_CHECKOUTFILEFAILED, pPath->GetGitPathString(), rev2, file2);
+			out.Format(IDS_STATUSLIST_CHECKOUTFILEFAILED, pPath2->GetGitPathString(), rev2, file2);
 			CMessageBox::Show(nullptr, g_Git.GetGitLastErr(out, CGit::GIT_CMD_GETONEFILE), _T("TortoiseGit"), MB_OK);
 			return -1;
 		}
