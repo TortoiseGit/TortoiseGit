@@ -33,10 +33,39 @@ CAutoTempDir::CAutoTempDir()
 	tempdir = szTempName;
 }
 
+static void DeleteDirectoryRecursive(CString dir)
+{
+	WIN32_FIND_DATA ffd;
+	HANDLE hp = FindFirstFile(dir + _T("\\*"), &ffd);
+	do
+	{
+		if (!_tcscmp(ffd.cFileName, _T(".")) || !_tcscmp(ffd.cFileName, _T("..")))
+			continue;
+		if ((ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == FILE_ATTRIBUTE_DIRECTORY)
+		{
+			CString subdir = dir + _T("\\") + ffd.cFileName;
+			DeleteDirectoryRecursive(subdir);
+		}
+		else
+		{
+			CString file = dir + _T("\\") + ffd.cFileName;
+			bool failed = !DeleteFile(file);
+			if (failed && GetLastError() == ERROR_ACCESS_DENIED)
+			{
+				SetFileAttributes(file, GetFileAttributes(file) & ~FILE_ATTRIBUTE_READONLY);
+				failed = !DeleteFile(file);
+			}
+		}
+	} while(FindNextFile(hp, &ffd)); 
+	FindClose(hp);
+
+	RemoveDirectory(dir);
+}
+
 CAutoTempDir::~CAutoTempDir()
 {
 	if (!tempdir.IsEmpty())
-		CTGitPath(tempdir).Delete(false);
+		DeleteDirectoryRecursive(tempdir);
 }
 
 CString CAutoTempDir::GetTempDir() const
