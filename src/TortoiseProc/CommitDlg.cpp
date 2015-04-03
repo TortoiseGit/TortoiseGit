@@ -1709,7 +1709,7 @@ void CCommitDlg::GetAutocompletionList()
 
 		if (path->m_Action == CTGitPath::LOGACTIONS_UNVER && !CRegDWORD(_T("Software\\TortoiseGit\\AutocompleteParseUnversioned"), FALSE))
 			continue;
-		if (path->m_Action == CTGitPath::LOGACTIONS_IGNORE || path->m_Action == CTGitPath::LOGACTIONS_DELETED)
+		if (path->m_Action == CTGitPath::LOGACTIONS_IGNORE)
 			continue;
 
 		CString sExt = path->GetFileExtension();
