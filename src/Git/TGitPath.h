@@ -222,7 +222,7 @@ public:
 	 * Deletes the file/folder
 	 * \param bTrash if true, uses the Windows trash bin when deleting.
 	 */
-	bool Delete(bool bTrash) const;
+	bool Delete(bool bTrash, bool bShowErrrorUI) const;
 
 	/**
 	 * Checks if a git admin directory is present. For files, the check
@@ -375,9 +375,10 @@ public:
 	/**
 	 * Delete all the files in the list, then clear the list.
 	 * \param bTrash if true, the items are deleted using the Windows trash bin
+	 * \param bShowErrrorUI if true, show error dialog box when error occurs.
 	 */
-	void DeleteAllFiles(bool bTrash, bool bFilesOnly = true);
-	static bool DeleteViaShell(LPCTSTR path, bool useTrashbin);
+	void DeleteAllFiles(bool bTrash, bool bFilesOnly = true, bool bShowErrrorUI = false);
+	static bool DeleteViaShell(LPCTSTR path, bool useTrashbin, bool bShowErrrorUI);
 	/** Remove duplicate entries from the list (sorts the list as a side-effect */
 	void RemoveDuplicates();
 	/** Removes all paths which are on or in a git admin directory */

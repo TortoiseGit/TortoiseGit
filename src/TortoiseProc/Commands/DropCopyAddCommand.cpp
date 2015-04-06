@@ -126,7 +126,7 @@ bool DropCopyAddCommand::Execute()
 								return FALSE;
 							if (ret == 1)
 							{
-								CTGitPath(filepath).Delete(false);
+								CTGitPath(filepath).Delete(false, true);
 								lastRepo.Empty();
 							}
 							continue;

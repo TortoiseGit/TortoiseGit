@@ -272,7 +272,7 @@ static bool DoCleanUp(const CTGitPathList& pathList, int cleanType, bool bDir, b
 				return false;
 		}
 
-		delList.DeleteAllFiles(true, false);
+		delList.DeleteAllFiles(true, false, true);
 
 		sysProgressDlg.Stop();
 	}

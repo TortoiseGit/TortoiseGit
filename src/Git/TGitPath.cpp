@@ -325,7 +325,7 @@ bool CTGitPath::Exists() const
 	return m_bExists;
 }
 
-bool CTGitPath::Delete(bool bTrash) const
+bool CTGitPath::Delete(bool bTrash, bool bShowErrrorUI) const
 {
 	EnsureBackslashPathSet();
 	::SetFileAttributes(m_sBackslashPath, FILE_ATTRIBUTE_NORMAL);
@@ -338,7 +338,7 @@ bool CTGitPath::Delete(bool bTrash) const
 			_tcscpy_s(buf.get(), m_sBackslashPath.GetLength() + 2, m_sBackslashPath);
 			buf[m_sBackslashPath.GetLength()] = 0;
 			buf[m_sBackslashPath.GetLength()+1] = 0;
-			bRet = CTGitPathList::DeleteViaShell(buf.get(), bTrash);
+			bRet = CTGitPathList::DeleteViaShell(buf.get(), bTrash, bShowErrrorUI);
 		}
 		else
 		{
@@ -1557,7 +1557,7 @@ void CTGitPathList::SortByPathname(bool bReverse /*= false*/)
 		std::reverse(m_paths.begin(), m_paths.end());
 }
 
-void CTGitPathList::DeleteAllFiles(bool bTrash, bool bFilesOnly)
+void CTGitPathList::DeleteAllFiles(bool bTrash, bool bFilesOnly, bool bShowErrrorUI)
 {
 	PathVector::const_iterator it;
 	SortByPathname(true); // nested ones first
@@ -1576,16 +1576,18 @@ void CTGitPathList::DeleteAllFiles(bool bTrash, bool bFilesOnly)
 	}
 	sPaths += '\0';
 	sPaths += '\0';
-	DeleteViaShell((LPCTSTR)sPaths, bTrash);
+	DeleteViaShell((LPCTSTR)sPaths, bTrash, bShowErrrorUI);
 	Clear();
 }
 
-bool CTGitPathList::DeleteViaShell(LPCTSTR path, bool bTrash)
+bool CTGitPathList::DeleteViaShell(LPCTSTR path, bool bTrash, bool bShowErrrorUI)
 {
 	SHFILEOPSTRUCT shop = {0};
 	shop.wFunc = FO_DELETE;
 	shop.pFrom = path;
-	shop.fFlags = FOF_NOCONFIRMATION|FOF_NOERRORUI|FOF_SILENT|FOF_NO_CONNECTED_ELEMENTS;
+	shop.fFlags = FOF_NOCONFIRMATION|FOF_NO_CONNECTED_ELEMENTS;
+	if (!bShowErrrorUI)
+		shop.fFlags |= FOF_NOERRORUI | FOF_SILENT;
 	if (bTrash)
 		shop.fFlags |= FOF_ALLOWUNDO;
 	const bool bRet = (SHFileOperation(&shop) == 0);
