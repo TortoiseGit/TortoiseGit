@@ -27,6 +27,7 @@ Released: Unreleased
  * Fixed issue #2477: Change "Split commit" label to "Edit/Split commit" in Rebase dlg
  * Fixed issue #2481: "Start registry editor" does not work properly in non-English locales
  * Fixed issue #2480: CommitDlg: auto-complete doesnt include removed items
+ * Fixed issue #2451: Cleanup fails quietly if file is in use
 
 = Release 1.8.13.0 =
 Released: 2015-02-15
