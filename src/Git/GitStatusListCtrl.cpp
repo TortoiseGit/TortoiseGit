@@ -1724,17 +1724,13 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					if (index >= 0)
 					{
 						CTGitPath * entry2 = NULL;
-						bool bothItemsAreExistingFiles = true;
-						entry2 = (CTGitPath * )GetItemData(index);
-						if (entry2)
-							bothItemsAreExistingFiles = !entry2->IsDirectory() && entry2->Exists();
+						entry2 = (CTGitPath*)GetItemData(index);
+						bool firstEntryExistsAndIsFile = entry2 && !entry2->IsDirectory();
 						index = GetNextSelectedItem(pos);
 						if (index >= 0)
 						{
 							entry2 = (CTGitPath * )GetItemData(index);
-							if (entry2)
-								bothItemsAreExistingFiles = bothItemsAreExistingFiles && !entry2->IsDirectory() && entry2->Exists();
-							if (bothItemsAreExistingFiles)
+							if (firstEntryExistsAndIsFile && entry2 && !entry2->IsDirectory())
 								popup.AppendMenuIcon(IDGITLC_COMPARETWOFILES, IDS_STATUSLIST_CONTEXT_COMPARETWOFILES, IDI_DIFF);
 						}
 					}
@@ -2192,7 +2188,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 							break;
 
 						CString sCmd;
-						sCmd.Format(_T("/command:diff /path:\"%s\" /path2:\"%s\" /hwnd:%p"), firstfilepath->GetWinPath(), secondfilepath->GetWinPath(), (void*)m_hWnd);
+						sCmd.Format(_T("/command:diff /path:\"%s\" /endrev:%s /path2:\"%s\" /startrev:%s /hwnd:%p"), firstfilepath->GetWinPath(), firstfilepath->Exists() ? GIT_REV_ZERO : _T("HEAD"), secondfilepath->GetWinPath(), secondfilepath->Exists() ? GIT_REV_ZERO : _T("HEAD"), (void*)m_hWnd);
 						CAppUtils::RunTortoiseGitProc(sCmd);
 					}
 				}
