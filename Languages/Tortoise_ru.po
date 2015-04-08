@@ -1,18 +1,18 @@
 # Translation of TortoiseGit
-# Copyright (C) 2008-2014 the TortoiseGit team
+# Copyright (C) 2008-2015 the TortoiseGit team
 # 
 # This file is distributed under the same license as TortoiseGit
 # 
 # Translators:
 # Alexander Shchekaturov <shcham@gmail.com>, 2013-2015
-# Andrei Stepanov, 2014
+# Andrei Stepanov, 2014-2015
 # Arioch <the_Arioch@nm.ru>, 2012-2013
 # Arkady Shapkin <arkadiy_s@inbox.ru>, 2011
-# KOLANICH <c770453@rmqkr.net>, 2013-2014
+# KOLANICH, 2013-2015
 # _deniska <denis_levin@mail.ru>, 2011
 # Дмитрий Сытьков <sytkov@gmail.com>, 2011
 # German Borisov <borisov.german@gmail.com>, 2012-2013
-# KOLANICH <c770453@rmqkr.net>, 2013
+# KOLANICH, 2013
 # Lübbe Onken <l.onken@rac.de>, 2011
 # Alexander Shchekaturov <shcham@gmail.com>, 2013
 # Sven Strickroth <sstrickroth@googlemail.com>, 2012-2013
@@ -27,8 +27,8 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2015-01-09 10:37+0000\n"
-"Last-Translator: Alexander Shchekaturov <shcham@gmail.com>\n"
+"PO-Revision-Date: 2015-04-02 18:53+0000\n"
+"Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Russian (http://www.transifex.com/projects/p/tortoisegit/language/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -669,6 +669,10 @@ msgstr "Использовать прокси-&сервер"
 msgid "&Enable edit"
 msgstr "&Разрешить редактирование"
 
+#. Resource IDs: (32771)
+msgid "&Exit"
+msgstr "&Выход"
+
 #. Resource IDs: (323)
 msgid "&Export selection to..."
 msgstr "&Экспортировать выбранное в..."
@@ -935,6 +939,10 @@ msgstr "Со&здать"
 msgid "&New..."
 msgstr "Со&здать..."
 
+#. Resource IDs: (1014)
+msgid "&Next >"
+msgstr "&Далее >"
+
 #. Resource IDs: (58114)
 msgid "&Next Page"
 msgstr "&Следующая страница"
@@ -963,6 +971,10 @@ msgstr "O&K"
 msgid "&One Page"
 msgstr "&Одна страница"
 
+#. Resource IDs: (1828)
+msgid "&Onto"
+msgstr "Поверх"
+
 #. Resource IDs: (101, 1251, 32773, 57601)
 msgid "&Open"
 msgstr "&Открыть"
@@ -970,6 +982,10 @@ msgstr "&Открыть"
 #. Resource IDs: (84)
 msgid "&Open Git for Windows WebSite"
 msgstr "&Перейти на сайт Git для Windows"
+
+#. Resource IDs: (32774)
+msgid "&Open..."
+msgstr "&Открыть..."
 
 #. Resource IDs: (57601)
 msgid "&Open...\tCtrl+O"
@@ -1432,6 +1448,10 @@ msgstr ".gitignore в корне хранилища"
 msgid ".tgitconfig in the repository root"
 msgstr ".tgitconfig в корне хранилища"
 
+#. Resource IDs: (1020)
+msgid "< &Previous"
+msgstr "< &Предыдущий"
+
 #. Resource IDs: (16506)
 msgid "<.....>"
 msgstr "<.....>"
@@ -1721,6 +1741,10 @@ msgstr "Добавить Отдалённый"
 msgid "Add \"&Signed-off-by\""
 msgstr "Добавить \"&Подписано\""
 
+#. Resource IDs: (98)
+msgid "Add another commit?"
+msgstr ""
+
 #. Resource IDs: (110)
 msgid "Add extension specific diff program"
 msgstr "Добавить программу просмотра различий для определённых расширений"
@@ -1865,6 +1889,12 @@ msgstr "Разрешить редактирование этого вида⏎\n
 msgid "Allow to use custom Gravatar URL"
 msgstr "Разрешить использовать свой URL Gravatar"
 
+#. Resource IDs: (97)
+msgid ""
+"Allows to create an empty commit which only has a commit message and no "
+"files (cf. git commit --allow-empty)."
+msgstr "Позволяет создать пустой коммит, в котором есть только комментарий коммита и нет файлов (cf. git commit --allow-empty)."
+
 #. Resource IDs: (66)
 msgid "Already up to date."
 msgstr "Уже обновлено"
@@ -1956,6 +1986,10 @@ msgstr "Добавить сзади этот блок слева"
 #. Resource IDs: (65535)
 msgid "Application Frame Menus: "
 msgstr "Базовые меню приложения:"
+
+#. Resource IDs: (32780)
+msgid "Apply &Patch..."
+msgstr "Применить &заплатку..."
 
 #. Resource IDs: (20)
 msgid "Apply Patch Serial..."
@@ -2105,10 +2139,6 @@ msgstr "Авторы"
 #. Resource IDs: (1265)
 msgid "Authors case sensitive"
 msgstr "Авторы c учётом регистра"
-
-#. Resource IDs: (65535)
-msgid "Authors:"
-msgstr "Авторы:"
 
 #. Resource IDs: (65535)
 msgid ""
@@ -3259,8 +3289,8 @@ msgid "Copying..."
 msgstr "Копирование..."
 
 #. Resource IDs: (1001)
-msgid "Copyright (C) 2009-2014 TortoiseGit"
-msgstr "Авторские права (C) 2009-2014 TortoiseGit"
+msgid "Copyright (C) 2009-2015 TortoiseGit"
+msgstr "© TortoiseGit, 2009-2015"
 
 #. Resource IDs: (1254)
 msgid "Corrections"
@@ -3522,10 +3552,6 @@ msgstr "Удостоверяющий центр:"
 #. Resource IDs: (65535)
 msgid "Credentials"
 msgstr "Удостоверения"
-
-#. Resource IDs: (65535)
-msgid "Credits:"
-msgstr "Участники:"
 
 #. Resource IDs: (1253)
 msgid "Cu&t"
@@ -3917,6 +3943,10 @@ msgstr "Папка..."
 msgid "Directory:"
 msgstr "Папка:"
 
+#. Resource IDs: (1796)
+msgid "Disable sounds"
+msgstr "Отключить звуки"
+
 #. Resource IDs: (195)
 msgid ""
 "Disable this option if you have really big working trees and experience\r\n"
@@ -4129,6 +4159,10 @@ msgid ""
 "Reload the views without saving the modifications"
 msgstr "Не сохранять⏎\nПерезагрузить виды без сохранения изменений"
 
+#. Resource IDs: (65535)
+msgid "Don't show the selected items: (press shift key to show them)"
+msgstr "Не показывать выбранные элементы: (отображаются при удерживании shift)"
+
 #. Resource IDs: (73, 80)
 msgid "Don't show this message again"
 msgstr "Больше не показывать это сообщение"
@@ -4264,6 +4298,10 @@ msgstr "Редактировать общесистемный gitconfig"
 #. Resource IDs: (1331, 1382)
 msgid "Edit..."
 msgstr "Поправить..."
+
+#. Resource IDs: (1827)
+msgid "Edit/Split commit"
+msgstr ""
 
 #. Resource IDs: (1770)
 msgid "Effective"
@@ -4874,6 +4912,10 @@ msgid ""
 "Find"
 msgstr "Найти текст\nНайти"
 
+#. Resource IDs: (65535)
+msgid "Find:"
+msgstr "Найти:"
+
 #. Resource IDs: (95)
 #, c-format
 msgid "Find: Can't find the text \"%s\""
@@ -5012,10 +5054,6 @@ msgstr "Найдено пустое сообщение фиксации. Вы д
 msgid "Found auto words:"
 msgstr "Автоматически обнаруженные слова:"
 
-#. Resource IDs: (65535)
-msgid "Frank Li (lznuaa@gmail.com), Sven Strickroth <email@cs-ware.de>"
-msgstr "Франк Ли Frank Li (lznuaa@gmail.com), Свен Стрикрот Sven Strickroth <email@cs-ware.de>"
-
 #. Resource IDs: (1385, 1522, 65535)
 msgid "From"
 msgstr "От"
@@ -5080,6 +5118,10 @@ msgstr "Невозможно инициализировать GDI+"
 msgid ""
 "GDI+ couldn't create a bitmap object. You probably don't have enough memory."
 msgstr "GDI+ не может создать рисунок. Вероятно очень мало памяти."
+
+#. Resource IDs: (82)
+msgid "GPG signs the tag, see manual for details"
+msgstr "GPG подписывает метку, подробнее см. руководство пользователя"
 
 #. Resource IDs: (284)
 msgid "Gathering information. Please wait..."
@@ -5476,6 +5518,10 @@ msgstr "ID"
 msgid "ID:220:V C +G"
 msgstr "ID:220:V C +G"
 
+#. Accelerator Entry for Menu ID:32771; '&Exit'
+msgid "ID:32771:V C +W"
+msgstr "ID:32771:V C +W"
+
 #. Accelerator Entry for Menu ID:32772; '&Overlay images'
 msgid "ID:32772:V   +O"
 msgstr "ID:32772:V   +O"
@@ -5483,6 +5529,14 @@ msgstr "ID:32772:V   +O"
 #. Accelerator Entry for Menu ID:32773; '&Open'
 msgid "ID:32773:V C +O"
 msgstr "ID:32773:V C +O"
+
+#. Accelerator Entry for Menu ID:32773; 'Save &as'
+msgid "ID:32773:V CS+S"
+msgstr "ID:32773:V CS+S"
+
+#. Accelerator Entry for Menu ID:32774; '&Open'
+msgid "ID:32774:V C +O"
+msgstr "ID:32774:V C +O"
 
 #. Accelerator Entry for Menu ID:32774; '&Whitespaces'
 msgid "ID:32774:V C +T"
@@ -5492,6 +5546,10 @@ msgstr "ID:32774:V C +T"
 msgid "ID:32775:V C +D"
 msgstr "ID:32775:V C +D"
 
+#. Accelerator Entry for Menu ID:32776; '&Save'
+msgid "ID:32776:V C +S"
+msgstr "ID:32776:V C +S"
+
 #. Accelerator Entry for Menu ID:32778; '&Fit images in window'
 msgid "ID:32778:V   +F"
 msgstr "ID:32778:V   +F"
@@ -5499,6 +5557,14 @@ msgstr "ID:32778:V   +F"
 #. Accelerator Entry for Menu ID:32779; 'Ori&ginal size'
 msgid "ID:32779:V   +S"
 msgstr "ID:32779:V   +S"
+
+#. Accelerator Entry for Menu ID:32782; '&Print'
+msgid "ID:32782:V C +P"
+msgstr "ID:32782:V C +P"
+
+#. Accelerator Entry for Menu ID:32787; ''
+msgid "ID:32787:V C +F"
+msgstr "ID:32787:V C +F"
 
 #. Accelerator Entry for Menu ID:32793; 'Arrange &vertical'
 msgid "ID:32793:V C +V"
@@ -5907,6 +5973,10 @@ msgstr "Включая &метки"
 #. Resource IDs: (1068)
 msgid "Include &ignored files"
 msgstr "Включить игнорируемые файлы"
+
+#. Resource IDs: (1797)
+msgid "Include FETCH_HEAD in branch selection boxes"
+msgstr "Включить ветвь FETCH_HEAD в выпадающее меню выбора ветвей"
 
 #. Resource IDs: (65535)
 msgid "Include only the following revision range:"
@@ -6329,6 +6399,10 @@ msgid ""
 "The file status is changed to modified"
 msgstr "Отметить как улаженный⏎\nСтатус файла меняется на изменённый"
 
+#. Resource IDs: (97)
+msgid "Mark for comparison"
+msgstr "Отметить для сравнения"
+
 #. Resource IDs: (252)
 msgid "Mark this block"
 msgstr "Пометить этот блок"
@@ -6548,10 +6622,6 @@ msgstr "Перемещение с переименованием"
 #. Resource IDs: (209)
 msgid "Move to changelist"
 msgstr "Переместить в группу изменений"
-
-#. Resource IDs: (65535)
-msgid "Move to extended context menu (press shift key to show it)"
-msgstr "Переместить в расширенное меню (отображается при удерживании shift)"
 
 #. Resource IDs: (229)
 msgid "Move/Rename"
@@ -7105,6 +7175,10 @@ msgstr "Открыть файл изображения..."
 msgid "Open parent folder"
 msgstr "Открыть родительскую папку"
 
+#. Resource IDs: (7)
+msgid "Open patch file"
+msgstr "Открыть файл с заплаткой"
+
 #. Resource IDs: (3602)
 msgid "Open this document"
 msgstr "Открыть этот документ"
@@ -7178,6 +7252,10 @@ msgstr "Перезаписать существующую ветвь"
 #. Resource IDs: (92)
 msgid "Overwrite"
 msgstr "Перезаписать"
+
+#. Resource IDs: (32781)
+msgid "P&age setup..."
+msgstr "Настройка страницы..."
 
 #. Resource IDs: (3845)
 #, c-format
@@ -8116,10 +8194,6 @@ msgstr "Запросить получение"
 msgid "Requests a username and a password"
 msgstr "запрашивает имя пользователя и пароль"
 
-#. Resource IDs: (82)
-msgid "Requires GPG and a key without passphrase."
-msgstr "Требуется GPG и ключ без парольной фразы."
-
 #. Resource IDs: (8)
 msgid "Res&olve..."
 msgstr "У&ладить..."
@@ -8558,6 +8632,10 @@ msgstr "Сохранить изменения в %1?"
 msgid "Save modifications."
 msgstr "Сохранить изменения."
 
+#. Resource IDs: (7)
+msgid "Save patch file"
+msgstr "Сохранить файл с заплаткой"
+
 #. Resource IDs: (1253)
 msgid "Save revision &to..."
 msgstr "Сохранить ревизию &в..."
@@ -8638,6 +8716,10 @@ msgstr "Прокрутить влево"
 #. Resource IDs: (1003)
 msgid "Scroll Right"
 msgstr "Прокрутить вправо"
+
+#. Resource IDs: (32779)
+msgid "Se&ttings..."
+msgstr "&Настройки..."
 
 #. Resource IDs: (1253)
 msgid "Search &log messages..."
@@ -9161,6 +9243,10 @@ msgid ""
 "Show Whitespaces"
 msgstr "Показать специальные символы для непечатаемых знаков и переводов строк\nПоказать непечатаемые знаки"
 
+#. Resource IDs: (1314)
+msgid "Show status of subrepositories in parent folders"
+msgstr "Показывать состояние подрепозиториев в родительских папках"
+
 #. Resource IDs: (87)
 msgid "Show symbols on ref labels to substitute part of the ref names"
 msgstr "Показать символы на бирках ссылок для подстановки частей имен ссылок"
@@ -9218,6 +9304,10 @@ msgstr "Показывает журнал для выбранного файла
 #. Resource IDs: (1523)
 msgid "Si&gn"
 msgstr "Под&писать"
+
+#. Resource IDs: (65535)
+msgid "Significant contributions by: (see Git repository for a complete list)"
+msgstr "Значительный вклад внесли: (полный список в Git-репозитории)"
 
 #. Resource IDs: (156, 626)
 msgid "Silver Style"
@@ -9301,10 +9391,6 @@ msgstr "Задаёт количество недавно введённых со
 #. Resource IDs: (16976, 16977, 16978, 16979, 16980, 16981)
 msgid "Spin1"
 msgstr "Счётчик1"
-
-#. Resource IDs: (1827)
-msgid "Split commit"
-msgstr "Разделить фиксацию"
 
 #. Resource IDs: (1253)
 msgid "Split lines"
@@ -9477,10 +9563,6 @@ msgstr "Подмодуль Добавить..."
 msgid "Submodule Diff"
 msgstr "Подмодуль Различия"
 
-#. Resource IDs: (1585)
-msgid "Submodule Info"
-msgstr "Подмодуль Инфо"
-
 #. Resource IDs: (76)
 msgid "Submodule Init"
 msgstr "Подмодуль Инициализация"
@@ -9504,6 +9586,10 @@ msgid ""
 "Revision %2!s!"
 msgstr "Подмодуль \"%1!s!\"↩⏎\nРевизия %2!s!"
 
+#. Resource IDs: (1585)
+msgid "Submodule of Project: "
+msgstr "Подмодуль проекта"
+
 #. Resource IDs: (1708)
 msgid "Submodules"
 msgstr "Подмодули"
@@ -9511,13 +9597,6 @@ msgstr "Подмодули"
 #. Resource IDs: (65)
 msgid "Success"
 msgstr "Успешно"
-
-#. Resource IDs: (65535)
-msgid ""
-"Sup Yut Sum <ch3cooli@gmail.com>, Colin Law <clanlaw@googlemail.com>, Myagi "
-"<snowcoder@gmail.com>, Johan 't Hart <johanthart@gmail.com>, Laszlo Papp "
-"<djszapi@archlinux.us>"
-msgstr "Sup Yut Sum <ch3cooli@gmail.com>, Colin Law <clanlaw@googlemail.com>, Myagi <snowcoder@gmail.com>, Johan 't Hart <johanthart@gmail.com>, Laszlo Papp <djszapi@archlinux.us>"
 
 #. Resource IDs: (78)
 msgid "Switch"
@@ -9629,6 +9708,10 @@ msgstr "TIS-620"
 #. Resource IDs: (7)
 msgid "TORTOISEGITIDIFF"
 msgstr "TORTOISEGITIDIFF"
+
+#. Resource IDs: (7)
+msgid "TORTOISEGITUDIFF"
+msgstr "TORTOISEGITUDIFF"
 
 #. Resource IDs: (1513)
 msgid "Ta&gs:"
@@ -10077,6 +10160,12 @@ msgid ""
 "com1-com9, lpt1-lpt9, prn, aux, con, nul, clock$"
 msgstr "Этот путь не является корректным!\nКорректный путь не должен содержать '<<>|\"?*:' или одно из следующих имён устройств:\ncom1-com9, lpt1-lpt9, prn, aux, con, nul, clock$"
 
+#. Resource IDs: (98)
+msgid ""
+"This operation cannot be started while the log dialog is still loading "
+"commits."
+msgstr ""
+
 #. Resource IDs: (3857)
 #, c-format
 msgid ""
@@ -10301,6 +10390,17 @@ msgstr "TortoiseGitMerge не может обработать этот файл 
 #. Resource IDs: (357)
 msgid "TortoiseGitUDiff"
 msgstr "TortoiseGitUDiff"
+
+#. Resource IDs: (7)
+msgid ""
+"TortoiseGitUDiff: the unified diff viewer for TortoiseGit\n"
+"\n"
+"Available command line parameters are:\n"
+"/patchfile:\"path to unified diff file\"\n"
+"/title:\"title to show for the viewer\"\n"
+"/?  - this help dialog\n"
+"/p  - read diff input from console pipe"
+msgstr "TortoiseGitUDiff: унифицированный инструмент для просмотра различий в TortoiseGit\n\nДоступны следующие параметры командной строки:\n/patchfile:\"путь до унифицированного файла различий\"\n/title:\"заголовок для показа при просмотре\"\n/? - данный диалог помощи\n/p - считывать ввод различий из console pipe"
 
 #. Resource IDs: (1739)
 msgid "Total changed lines including added/deleted files:"
@@ -10729,6 +10829,10 @@ msgstr "Использовать текстовый блок из левой п�
 msgid "Use th&is text block"
 msgstr "Использовать э&тот текстовый блок"
 
+#. Resource IDs: (98)
+msgid "Use the current time by setting the author date to the commit date."
+msgstr "Использовать текущее время путем присвоения даты у автора дате фиксации."
+
 #. Resource IDs: (314)
 #, c-format
 msgid ""
@@ -10799,12 +10903,20 @@ msgstr "Имя пользователя:"
 msgid ""
 "Valid command line options are:\n"
 "/base:<path to base file>\n"
+"/basename:<name to show on the view title>\n"
 "/theirs:<path to their file>\n"
+"/theirsname:<name to show on the view title>\n"
 "/mine:<path to your file>\n"
+"/minename:<name to show on the view title>\n"
 "/merged:<path to resulting merged file>\n"
+"/mergedname:<name to show on the view title>\n"
 "/diff:<path to unified diff file>\n"
-"/patchpath:<path to folder>"
-msgstr "Разрешенные опции в командной строке:\n/base:<путь к базовому файлу>\n/theirs:<путь к их файлу>\n/yours:<путь к вашему файлу>\n/merged:<путь к результирующему файлу>\n/diff:<путь к файлу объединённых различий>\n/patchpath:<путь к папке>"
+"/patchpath:<path to folder>\n"
+"/saverequired\n"
+"/saverequiredonconflicts\n"
+"/oneway <forces the one-way view>\n"
+"/line:<line number to jump to>"
+msgstr "Верные параметры командной строки:\n/base:<путь к базовому файлу>\n/basename:<базовое имя в заголовке>\n/theirs:<путь к \"их\" файлу>\n/theirsname:<\"их\" имя в заголовке>\n/mine:<путь к \"нашему\" файлу>\n/minename:<\"наше\" имя в заголовке>\n/merged:<путь к слитому файлу>\n/mergedname:<name to show on the view title>\n/diff:<путь к файлу унифицированноных различий>\n/patchpath:<путь к папке>\n/saverequired\n/saverequiredonconflicts\n/oneway <принудительный однонаправленный вид>\n/line:<номер строки, к которой перейти>"
 
 #. Resource IDs: (11, 357)
 msgid "Value"
@@ -11421,6 +11533,10 @@ msgstr "день"
 #. Resource IDs: (10)
 msgid "deleted"
 msgstr "удалён"
+
+#. Resource IDs: (7)
+msgid "diff from pipe"
+msgstr "сравнить из канала"
 
 #. Resource IDs: (58116)
 msgid "dummy"

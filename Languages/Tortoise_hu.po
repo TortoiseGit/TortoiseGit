@@ -1,5 +1,5 @@
 # Translation of TortoiseGit
-# Copyright (C) 2008-2014 the TortoiseGit team
+# Copyright (C) 2008-2015 the TortoiseGit team
 # 
 # This file is distributed under the same license as TortoiseGit
 # 
@@ -10,14 +10,14 @@
 # Gábor Prótár <protar.gabor@gmail.com>, 2013-2014
 # Hgrg <hgrg.wp@gmail.com>, 2013
 # Hgrg <hgrg.wp@gmail.com>, 2013
-# Péter Handbauer <loserock@gmail.com>, 2014
+# Péter Handbauer <loserock@gmail.com>, 2014-2015
 # Sven Strickroth <sstrickroth@googlemail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2014-12-30 15:26+0000\n"
+"PO-Revision-Date: 2015-04-02 18:53+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Hungarian (http://www.transifex.com/projects/p/tortoisegit/language/hu/)\n"
 "MIME-Version: 1.0\n"
@@ -190,7 +190,7 @@ msgstr "%1\nA fájl nem található.\nEllenőrizd, hogy helyes-e az elérési ú
 #. Resource IDs: (91)
 #, c-format
 msgid "%HOME%/.gitconfig or %XDGHOME%/git/config"
-msgstr ""
+msgstr "%HOME%/.gitconfig vagy %XDGHOME%/git/config"
 
 #. Resource IDs: (357)
 #, c-format
@@ -220,7 +220,7 @@ msgstr "%d fájl eltávolítva."
 #. Resource IDs: (69)
 #, c-format
 msgid "%d files reverted to %s."
-msgstr ""
+msgstr "%d fájl visszaállítva %s verzióra."
 
 #. Resource IDs: (169)
 #, c-format
@@ -659,6 +659,10 @@ msgstr "&Proxy szerver engedélyezése"
 msgid "&Enable edit"
 msgstr ""
 
+#. Resource IDs: (32771)
+msgid "&Exit"
+msgstr ""
+
 #. Resource IDs: (323)
 msgid "&Export selection to..."
 msgstr "&Kijelölés exportálása ide..."
@@ -925,6 +929,10 @@ msgstr "&Új"
 msgid "&New..."
 msgstr "&Új..."
 
+#. Resource IDs: (1014)
+msgid "&Next >"
+msgstr ""
+
 #. Resource IDs: (58114)
 msgid "&Next Page"
 msgstr "&Következő oldal"
@@ -953,12 +961,20 @@ msgstr "&OK"
 msgid "&One Page"
 msgstr "&Egy oldal"
 
+#. Resource IDs: (1828)
+msgid "&Onto"
+msgstr ""
+
 #. Resource IDs: (101, 1251, 32773, 57601)
 msgid "&Open"
 msgstr "&Megnyitás"
 
 #. Resource IDs: (84)
 msgid "&Open Git for Windows WebSite"
+msgstr ""
+
+#. Resource IDs: (32774)
+msgid "&Open..."
 msgstr ""
 
 #. Resource IDs: (57601)
@@ -1422,6 +1438,10 @@ msgstr ""
 msgid ".tgitconfig in the repository root"
 msgstr ""
 
+#. Resource IDs: (1020)
+msgid "< &Previous"
+msgstr ""
+
 #. Resource IDs: (16506)
 msgid "<.....>"
 msgstr "<.....>"
@@ -1550,7 +1570,7 @@ msgstr ""
 
 #. Resource IDs: (85)
 msgid "A branch with this name already exists."
-msgstr ""
+msgstr "Már létezik azonos nevű branch."
 
 #. Resource IDs: (69)
 msgid ""
@@ -1560,7 +1580,7 @@ msgstr ""
 
 #. Resource IDs: (201)
 msgid "A newer version is available. Please download the current version!"
-msgstr ""
+msgstr "Újabb verzió érhető el. Kérem töltse le a friss verziót!"
 
 #. Resource IDs: (195)
 msgid ""
@@ -1636,7 +1656,7 @@ msgstr ""
 
 #. Resource IDs: (15)
 msgid "Aborts a running merge."
-msgstr ""
+msgstr "Futó merge megszakítása."
 
 #. Resource IDs: (156)
 msgid "About"
@@ -1709,6 +1729,10 @@ msgstr ""
 
 #. Resource IDs: (1482)
 msgid "Add \"&Signed-off-by\""
+msgstr ""
+
+#. Resource IDs: (98)
+msgid "Add another commit?"
 msgstr ""
 
 #. Resource IDs: (110)
@@ -1855,6 +1879,12 @@ msgstr ""
 msgid "Allow to use custom Gravatar URL"
 msgstr ""
 
+#. Resource IDs: (97)
+msgid ""
+"Allows to create an empty commit which only has a commit message and no "
+"files (cf. git commit --allow-empty)."
+msgstr ""
+
 #. Resource IDs: (66)
 msgid "Already up to date."
 msgstr ""
@@ -1937,15 +1967,19 @@ msgstr ""
 
 #. Resource IDs: (251)
 msgid "Append right block"
-msgstr ""
+msgstr "Baloldali blokk hozzáfűzése."
 
 #. Resource IDs: (251)
 msgid "Append this block to left"
-msgstr ""
+msgstr "Jelen blokk hozzáfűzése balra"
 
 #. Resource IDs: (65535)
 msgid "Application Frame Menus: "
 msgstr "Alkalmazás Keret Menü"
+
+#. Resource IDs: (32780)
+msgid "Apply &Patch..."
+msgstr ""
 
 #. Resource IDs: (20)
 msgid "Apply Patch Serial..."
@@ -2043,7 +2077,7 @@ msgstr "Jelenlegi verzió: %d"
 
 #. Resource IDs: (84)
 msgid "At the moment, you can only rename branches."
-msgstr ""
+msgstr "Jelen pillanatban a branch-ágak csak átnevezhetők."
 
 #. Resource IDs: (3843)
 msgid "Attempted an unsupported operation."
@@ -2066,7 +2100,7 @@ msgstr "A program %1-ból olvasás közben kísérelt meg írni."
 
 #. Resource IDs: (65535)
 msgid "Attention: This command affects the whole working tree!"
-msgstr ""
+msgstr "Figyelem: A parancs a teljes fejelsztői fát befolyásolja!"
 
 #. Resource IDs: (131, 160)
 msgid "Authentication"
@@ -2095,10 +2129,6 @@ msgstr "Fejlesztők"
 #. Resource IDs: (1265)
 msgid "Authors case sensitive"
 msgstr "Fejlesztők nevében számít a kisbetű/nagybetű"
-
-#. Resource IDs: (65535)
-msgid "Authors:"
-msgstr "Fejlesztők:"
 
 #. Resource IDs: (65535)
 msgid ""
@@ -2457,7 +2487,7 @@ msgstr "Mégse"
 msgid ""
 "Cancel\n"
 "Don't quit TortoiseGitMerge"
-msgstr ""
+msgstr "Mégse\nNem lép ki a TortoiseGitMerge"
 
 #. Resource IDs: (315)
 msgid ""
@@ -2469,13 +2499,13 @@ msgstr ""
 msgid ""
 "Cancel\n"
 "Keep the empty file."
-msgstr ""
+msgstr "Mégse\nÜres fájl megtartása."
 
 #. Resource IDs: (315)
 msgid ""
 "Cancel\n"
 "Resolve the conflicts first."
-msgstr ""
+msgstr "Mégse\nKonfliktusok feloldása először."
 
 #. Resource IDs: (315)
 msgid ""
@@ -2520,7 +2550,7 @@ msgstr "Jobbklikk-re megjelenő menü"
 
 #. Resource IDs: (117)
 msgid "Case-sensitive"
-msgstr ""
+msgstr "Nagybetű érzékeny"
 
 #. Resource IDs: (65535)
 msgid "Cate&gories:"
@@ -2824,7 +2854,7 @@ msgstr "Vágólap"
 
 #. Resource IDs: (606)
 msgid "Clone"
-msgstr ""
+msgstr "Klónozás"
 
 #. Resource IDs: (1572)
 msgid "Clone Existing Repository"
@@ -2836,7 +2866,7 @@ msgstr "Tároló klónozása"
 
 #. Resource IDs: (1653)
 msgid "Clone into Bare Repo"
-msgstr ""
+msgstr "Klónozás csupasz tárolóba"
 
 #. Resource IDs: (14)
 msgid "Clone..."
@@ -2878,7 +2908,7 @@ msgstr "Bezárja az aktív ablakot és megkérdezi, hogy elmentse-e a dokumentum
 
 #. Resource IDs: (156)
 msgid "Collapse"
-msgstr ""
+msgstr "Összecsukás"
 
 #. Resource IDs: (2055)
 msgid ""
@@ -2908,7 +2938,7 @@ msgstr ""
 
 #. Resource IDs: (1255)
 msgid "Combine to one commit"
-msgstr ""
+msgstr "Egyesítés egy kommitba"
 
 #. Resource IDs: (65535)
 msgid "Comman&ds:"
@@ -3080,7 +3110,7 @@ msgstr "Beállítások"
 
 #. Resource IDs: (65535)
 msgid "Config source"
-msgstr ""
+msgstr "Forrás beállítása"
 
 #. Resource IDs: (65535)
 msgid "Config type:"
@@ -3118,7 +3148,7 @@ msgstr ""
 
 #. Resource IDs: (1768)
 msgid "Confirm to kill running git process"
-msgstr ""
+msgstr "Futó git folyamat kilövésének megerősítése"
 
 #. Resource IDs: (1257, 4568)
 msgid "Conflict"
@@ -3126,7 +3156,7 @@ msgstr "Konfliktus"
 
 #. Resource IDs: (67)
 msgid "Conflict Files"
-msgstr ""
+msgstr "Konfliktus fájlok"
 
 #. Resource IDs: (65535)
 msgid "Conflict resolved"
@@ -3138,7 +3168,7 @@ msgstr "Konfliktusos"
 
 #. Resource IDs: (86)
 msgid "Conflicts"
-msgstr ""
+msgstr "Konfliktusok"
 
 #. Resource IDs: (188)
 #, c-format
@@ -3163,11 +3193,11 @@ msgstr "Dokkolt ablak összecsukása"
 
 #. Resource IDs: (501)
 msgid "Convert spaces to tabs"
-msgstr ""
+msgstr "Szóközök cseréje tabulátorra"
 
 #. Resource IDs: (501)
 msgid "Convert tabs to spaces"
-msgstr ""
+msgstr "Tabulátorok cseréje szóközre"
 
 #. Resource IDs: (1253)
 msgid "Cop&y"
@@ -3206,11 +3236,11 @@ msgstr "Másolás és átnevezés"
 
 #. Resource IDs: (1252)
 msgid "Copy log messages to clipboard"
-msgstr ""
+msgstr "Log üzenetek másolása vágólapra"
 
 #. Resource IDs: (32777)
 msgid "Copy log to clipboard"
-msgstr ""
+msgstr "Log másolása vágólapra"
 
 #. Resource IDs: (209)
 msgid "Copy paths to clipboard"
@@ -3249,7 +3279,7 @@ msgid "Copying..."
 msgstr "Másolás..."
 
 #. Resource IDs: (1001)
-msgid "Copyright (C) 2009-2014 TortoiseGit"
+msgid "Copyright (C) 2009-2015 TortoiseGit"
 msgstr ""
 
 #. Resource IDs: (1254)
@@ -3410,7 +3440,7 @@ msgstr ".gitignore fájl létrehozása"
 
 #. Resource IDs: (82)
 msgid "Create Branch"
-msgstr ""
+msgstr "Branch létrehozása"
 
 #. Resource IDs: (1254)
 msgid "Create Branch at this version..."
@@ -3512,10 +3542,6 @@ msgstr ""
 #. Resource IDs: (65535)
 msgid "Credentials"
 msgstr ""
-
-#. Resource IDs: (65535)
-msgid "Credits:"
-msgstr "Készítők:"
 
 #. Resource IDs: (1253)
 msgid "Cu&t"
@@ -3667,7 +3693,7 @@ msgstr "%d &elem törlése és kizárása kiterjesztés alapján"
 
 #. Resource IDs: (80)
 msgid "Delete branch"
-msgstr ""
+msgstr "Branch törlése"
 
 #. Resource IDs: (1255)
 msgid "Delete branch/tag"
@@ -3675,7 +3701,7 @@ msgstr "Ág/címke törlése"
 
 #. Resource IDs: (80)
 msgid "Delete remote branch"
-msgstr ""
+msgstr "Távoli branch törlése"
 
 #. Resource IDs: (4579)
 msgid "Delete remote tag - TortoiseGit"
@@ -3692,7 +3718,7 @@ msgstr ""
 
 #. Resource IDs: (605)
 msgid "Delete submodule"
-msgstr ""
+msgstr "Almodul törlése"
 
 #. Resource IDs: (83)
 msgid "Delete tag"
@@ -3700,7 +3726,7 @@ msgstr ""
 
 #. Resource IDs: (85)
 msgid "Delete the existing branch or use a different name."
-msgstr ""
+msgstr "Törölje a létező branch-ágat vagy használjon másik nevet."
 
 #. Resource IDs: (314)
 msgid ""
@@ -3907,6 +3933,10 @@ msgstr ""
 msgid "Directory:"
 msgstr "Mappa:"
 
+#. Resource IDs: (1796)
+msgid "Disable sounds"
+msgstr ""
+
 #. Resource IDs: (195)
 msgid ""
 "Disable this option if you have really big working trees and experience\r\n"
@@ -4024,7 +4054,7 @@ msgstr ""
 #. Resource IDs: (71)
 #, c-format
 msgid "Do you really want to remove \"%s\"?"
-msgstr ""
+msgstr "Biztosan el akarja \"%s\"-t távolítani?"
 
 #. Resource IDs: (69)
 msgid ""
@@ -4117,6 +4147,10 @@ msgstr ""
 msgid ""
 "Don't save\n"
 "Reload the views without saving the modifications"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Don't show the selected items: (press shift key to show them)"
 msgstr ""
 
 #. Resource IDs: (73, 80)
@@ -4254,6 +4288,10 @@ msgstr ""
 #. Resource IDs: (1331, 1382)
 msgid "Edit..."
 msgstr "Szerkeszt..."
+
+#. Resource IDs: (1827)
+msgid "Edit/Split commit"
+msgstr ""
 
 #. Resource IDs: (1770)
 msgid "Effective"
@@ -4864,6 +4902,10 @@ msgid ""
 "Find"
 msgstr "Megkeresi a megadott szöveget\nKeres"
 
+#. Resource IDs: (65535)
+msgid "Find:"
+msgstr ""
+
 #. Resource IDs: (95)
 #, c-format
 msgid "Find: Can't find the text \"%s\""
@@ -5002,10 +5044,6 @@ msgstr ""
 msgid "Found auto words:"
 msgstr ""
 
-#. Resource IDs: (65535)
-msgid "Frank Li (lznuaa@gmail.com), Sven Strickroth <email@cs-ware.de>"
-msgstr "Frank Li (lznuaa@gmail.com), Sven Strickroth <email@cs-ware.de>"
-
 #. Resource IDs: (1385, 1522, 65535)
 msgid "From"
 msgstr ""
@@ -5070,6 +5108,10 @@ msgstr "A GDI+ inicializálása sikertelen!"
 msgid ""
 "GDI+ couldn't create a bitmap object. You probably don't have enough memory."
 msgstr "A GDI+ nem tudott létrehozni egy bitkép objektumot. Valószínűleg nincs elég memória."
+
+#. Resource IDs: (82)
+msgid "GPG signs the tag, see manual for details"
+msgstr ""
 
 #. Resource IDs: (284)
 msgid "Gathering information. Please wait..."
@@ -5466,6 +5508,10 @@ msgstr "Azonosító"
 msgid "ID:220:V C +G"
 msgstr ""
 
+#. Accelerator Entry for Menu ID:32771; '&Exit'
+msgid "ID:32771:V C +W"
+msgstr ""
+
 #. Accelerator Entry for Menu ID:32772; '&Overlay images'
 msgid "ID:32772:V   +O"
 msgstr "ID:32772:V   +O"
@@ -5473,6 +5519,14 @@ msgstr "ID:32772:V   +O"
 #. Accelerator Entry for Menu ID:32773; '&Open'
 msgid "ID:32773:V C +O"
 msgstr "ID:32773:V C +O"
+
+#. Accelerator Entry for Menu ID:32773; 'Save &as'
+msgid "ID:32773:V CS+S"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:32774; '&Open'
+msgid "ID:32774:V C +O"
+msgstr ""
 
 #. Accelerator Entry for Menu ID:32774; '&Whitespaces'
 msgid "ID:32774:V C +T"
@@ -5482,6 +5536,10 @@ msgstr "ID:32774:V C +T"
 msgid "ID:32775:V C +D"
 msgstr "ID:32775:V C +D"
 
+#. Accelerator Entry for Menu ID:32776; '&Save'
+msgid "ID:32776:V C +S"
+msgstr ""
+
 #. Accelerator Entry for Menu ID:32778; '&Fit images in window'
 msgid "ID:32778:V   +F"
 msgstr "ID:32778:V   +F"
@@ -5489,6 +5547,14 @@ msgstr "ID:32778:V   +F"
 #. Accelerator Entry for Menu ID:32779; 'Ori&ginal size'
 msgid "ID:32779:V   +S"
 msgstr "ID:32779:V   +S"
+
+#. Accelerator Entry for Menu ID:32782; '&Print'
+msgid "ID:32782:V C +P"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:32787; ''
+msgid "ID:32787:V C +F"
+msgstr ""
 
 #. Accelerator Entry for Menu ID:32793; 'Arrange &vertical'
 msgid "ID:32793:V C +V"
@@ -5896,6 +5962,10 @@ msgstr ""
 
 #. Resource IDs: (1068)
 msgid "Include &ignored files"
+msgstr ""
+
+#. Resource IDs: (1797)
+msgid "Include FETCH_HEAD in branch selection boxes"
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -6319,6 +6389,10 @@ msgid ""
 "The file status is changed to modified"
 msgstr ""
 
+#. Resource IDs: (97)
+msgid "Mark for comparison"
+msgstr ""
+
 #. Resource IDs: (252)
 msgid "Mark this block"
 msgstr ""
@@ -6538,10 +6612,6 @@ msgstr "Áthelyezés és átnevezés"
 #. Resource IDs: (209)
 msgid "Move to changelist"
 msgstr "Változáslistába helyezés"
-
-#. Resource IDs: (65535)
-msgid "Move to extended context menu (press shift key to show it)"
-msgstr ""
 
 #. Resource IDs: (229)
 msgid "Move/Rename"
@@ -7095,6 +7165,10 @@ msgstr "Képfájl megnyitása..."
 msgid "Open parent folder"
 msgstr "Szülőmappa megnyitása"
 
+#. Resource IDs: (7)
+msgid "Open patch file"
+msgstr ""
+
 #. Resource IDs: (3602)
 msgid "Open this document"
 msgstr ""
@@ -7167,6 +7241,10 @@ msgstr ""
 
 #. Resource IDs: (92)
 msgid "Overwrite"
+msgstr ""
+
+#. Resource IDs: (32781)
+msgid "P&age setup..."
 msgstr ""
 
 #. Resource IDs: (3845)
@@ -8106,10 +8184,6 @@ msgstr ""
 msgid "Requests a username and a password"
 msgstr "Felhasználónevet és jelszót igényel"
 
-#. Resource IDs: (82)
-msgid "Requires GPG and a key without passphrase."
-msgstr ""
-
 #. Resource IDs: (8)
 msgid "Res&olve..."
 msgstr ""
@@ -8548,6 +8622,10 @@ msgstr "Elmented %1 változásait?"
 msgid "Save modifications."
 msgstr "Módosítások mentése."
 
+#. Resource IDs: (7)
+msgid "Save patch file"
+msgstr ""
+
 #. Resource IDs: (1253)
 msgid "Save revision &to..."
 msgstr "Verzió mentése &ide..."
@@ -8628,6 +8706,10 @@ msgstr "Görgetés balra"
 #. Resource IDs: (1003)
 msgid "Scroll Right"
 msgstr "Görgetés jobbra"
+
+#. Resource IDs: (32779)
+msgid "Se&ttings..."
+msgstr ""
 
 #. Resource IDs: (1253)
 msgid "Search &log messages..."
@@ -9151,6 +9233,10 @@ msgid ""
 "Show Whitespaces"
 msgstr ""
 
+#. Resource IDs: (1314)
+msgid "Show status of subrepositories in parent folders"
+msgstr ""
+
 #. Resource IDs: (87)
 msgid "Show symbols on ref labels to substitute part of the ref names"
 msgstr ""
@@ -9207,6 +9293,10 @@ msgstr ""
 
 #. Resource IDs: (1523)
 msgid "Si&gn"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Significant contributions by: (see Git repository for a complete list)"
 msgstr ""
 
 #. Resource IDs: (156, 626)
@@ -9291,10 +9381,6 @@ msgstr "Megadja, hogy a korábbi megjegyzések ablakban hány megjegyzés legyen
 #. Resource IDs: (16976, 16977, 16978, 16979, 16980, 16981)
 msgid "Spin1"
 msgstr "Spin1"
-
-#. Resource IDs: (1827)
-msgid "Split commit"
-msgstr ""
 
 #. Resource IDs: (1253)
 msgid "Split lines"
@@ -9467,10 +9553,6 @@ msgstr ""
 msgid "Submodule Diff"
 msgstr ""
 
-#. Resource IDs: (1585)
-msgid "Submodule Info"
-msgstr ""
-
 #. Resource IDs: (76)
 msgid "Submodule Init"
 msgstr ""
@@ -9494,6 +9576,10 @@ msgid ""
 "Revision %2!s!"
 msgstr ""
 
+#. Resource IDs: (1585)
+msgid "Submodule of Project: "
+msgstr ""
+
 #. Resource IDs: (1708)
 msgid "Submodules"
 msgstr ""
@@ -9501,13 +9587,6 @@ msgstr ""
 #. Resource IDs: (65)
 msgid "Success"
 msgstr ""
-
-#. Resource IDs: (65535)
-msgid ""
-"Sup Yut Sum <ch3cooli@gmail.com>, Colin Law <clanlaw@googlemail.com>, Myagi "
-"<snowcoder@gmail.com>, Johan 't Hart <johanthart@gmail.com>, Laszlo Papp "
-"<djszapi@archlinux.us>"
-msgstr "Sup Yut Sum <ch3cooli@gmail.com>, Colin Law <clanlaw@googlemail.com>, Myagi <snowcoder@gmail.com>, Johan 't Hart <johanthart@gmail.com>, Laszlo Papp <djszapi@archlinux.us>"
 
 #. Resource IDs: (78)
 msgid "Switch"
@@ -9619,6 +9698,10 @@ msgstr "TIS-620"
 #. Resource IDs: (7)
 msgid "TORTOISEGITIDIFF"
 msgstr "TORTOISEGITIDIFF"
+
+#. Resource IDs: (7)
+msgid "TORTOISEGITUDIFF"
+msgstr ""
 
 #. Resource IDs: (1513)
 msgid "Ta&gs:"
@@ -10067,6 +10150,12 @@ msgid ""
 "com1-com9, lpt1-lpt9, prn, aux, con, nul, clock$"
 msgstr "Az útvonal érvénytelen!\nEgy útvonal nem tartalmazhatja az alábbi karaktereket: <<>|\"?*: és az alábbi eszközneveket:\ncom1-com9, lpt1-lpt9, prn, aux, con, nul, clock$"
 
+#. Resource IDs: (98)
+msgid ""
+"This operation cannot be started while the log dialog is still loading "
+"commits."
+msgstr ""
+
 #. Resource IDs: (3857)
 #, c-format
 msgid ""
@@ -10290,6 +10379,17 @@ msgstr ""
 
 #. Resource IDs: (357)
 msgid "TortoiseGitUDiff"
+msgstr ""
+
+#. Resource IDs: (7)
+msgid ""
+"TortoiseGitUDiff: the unified diff viewer for TortoiseGit\n"
+"\n"
+"Available command line parameters are:\n"
+"/patchfile:\"path to unified diff file\"\n"
+"/title:\"title to show for the viewer\"\n"
+"/?  - this help dialog\n"
+"/p  - read diff input from console pipe"
 msgstr ""
 
 #. Resource IDs: (1739)
@@ -10719,6 +10819,10 @@ msgstr "Bal oldali szövegblokk használata\nBal oldali szövegblokk használata
 msgid "Use th&is text block"
 msgstr "&Ezt a szövegblokkot használja"
 
+#. Resource IDs: (98)
+msgid "Use the current time by setting the author date to the commit date."
+msgstr ""
+
 #. Resource IDs: (314)
 #, c-format
 msgid ""
@@ -10789,12 +10893,20 @@ msgstr "Felhasználónév:"
 msgid ""
 "Valid command line options are:\n"
 "/base:<path to base file>\n"
+"/basename:<name to show on the view title>\n"
 "/theirs:<path to their file>\n"
+"/theirsname:<name to show on the view title>\n"
 "/mine:<path to your file>\n"
+"/minename:<name to show on the view title>\n"
 "/merged:<path to resulting merged file>\n"
+"/mergedname:<name to show on the view title>\n"
 "/diff:<path to unified diff file>\n"
-"/patchpath:<path to folder>"
-msgstr "A használható paraméterek:\n/base:<útvonal az alap fájlhoz>\n/theirs:<útvonal a másik fájlhoz>\n/mine:<útvonal a saját fájlhoz>\n/merged:<útvonal a létrehozandó egyesített fájlhoz>\n/diff:<útvonal az \"egyesített diff\" fájlhoz>\n/patchpath:<útvonal a mappához>"
+"/patchpath:<path to folder>\n"
+"/saverequired\n"
+"/saverequiredonconflicts\n"
+"/oneway <forces the one-way view>\n"
+"/line:<line number to jump to>"
+msgstr ""
 
 #. Resource IDs: (11, 357)
 msgid "Value"
@@ -11411,6 +11523,10 @@ msgstr "nap"
 #. Resource IDs: (10)
 msgid "deleted"
 msgstr "törölve"
+
+#. Resource IDs: (7)
+msgid "diff from pipe"
+msgstr ""
 
 #. Resource IDs: (58116)
 msgid "dummy"

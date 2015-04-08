@@ -1,5 +1,5 @@
 # Translation of TortoiseGit
-# Copyright (C) 2008-2014 the TortoiseGit team
+# Copyright (C) 2008-2015 the TortoiseGit team
 # 
 # This file is distributed under the same license as TortoiseGit
 # 
@@ -10,14 +10,14 @@
 # Lübbe  <luebbe.tortoisesvn@googlemail.com>, 2012
 # Lübbe Onken <l.onken@rac.de>, 2011-2012, 2013
 # Lübbe TortoiseSVN <luebbe.tortoisesvn@gmail.com>, 2012
-# Sven Strickroth <sstrickroth@googlemail.com>, 2012-2014
+# Sven Strickroth <sstrickroth@googlemail.com>, 2012-2015
 # Torsten Widmann <goover0976@googlemail.com>, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2014-12-30 15:35+0000\n"
+"PO-Revision-Date: 2015-04-08 13:41+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: German (http://www.transifex.com/projects/p/tortoisegit/language/de/)\n"
 "MIME-Version: 1.0\n"
@@ -659,6 +659,10 @@ msgstr "Aktiviere &Proxy Server"
 msgid "&Enable edit"
 msgstr "B&earbeiten aktivieren"
 
+#. Resource IDs: (32771)
+msgid "&Exit"
+msgstr "&Beenden"
+
 #. Resource IDs: (323)
 msgid "&Export selection to..."
 msgstr "&Exportiere Auswahl in..."
@@ -925,6 +929,10 @@ msgstr "&Neu "
 msgid "&New..."
 msgstr "&Neu..."
 
+#. Resource IDs: (1014)
+msgid "&Next >"
+msgstr "&Nächste >"
+
 #. Resource IDs: (58114)
 msgid "&Next Page"
 msgstr "&Nächste Seite"
@@ -953,6 +961,10 @@ msgstr "&OK"
 msgid "&One Page"
 msgstr "&Eine Seite"
 
+#. Resource IDs: (1828)
+msgid "&Onto"
+msgstr "&Auf"
+
 #. Resource IDs: (101, 1251, 32773, 57601)
 msgid "&Open"
 msgstr "Ö&ffnen"
@@ -960,6 +972,10 @@ msgstr "Ö&ffnen"
 #. Resource IDs: (84)
 msgid "&Open Git for Windows WebSite"
 msgstr "Ö&ffne \"Git für Windows\" WebSite"
+
+#. Resource IDs: (32774)
+msgid "&Open..."
+msgstr "&Öffnen..."
 
 #. Resource IDs: (57601)
 msgid "&Open...\tCtrl+O"
@@ -1422,6 +1438,10 @@ msgstr ".gitignore im Projektarchiv Wurzelverzeichnis"
 msgid ".tgitconfig in the repository root"
 msgstr ".tgitconfig im Projektwurzelverzeichnis"
 
+#. Resource IDs: (1020)
+msgid "< &Previous"
+msgstr "< &Vorherige"
+
 #. Resource IDs: (16506)
 msgid "<.....>"
 msgstr "<.....>"
@@ -1711,6 +1731,10 @@ msgstr "Archiv hinzufügen"
 msgid "Add \"&Signed-off-by\""
 msgstr "\"&Signed-off-by\" hinzufügen"
 
+#. Resource IDs: (98)
+msgid "Add another commit?"
+msgstr "Weitere Eintragung hinzufügen?"
+
 #. Resource IDs: (110)
 msgid "Add extension specific diff program"
 msgstr "Vergleichsprogramm für bestimmte Dateitypen hinzufügen"
@@ -1855,6 +1879,12 @@ msgstr "Bearbeiten für diese Ansicht zulassen\nBearbeiten zulassen"
 msgid "Allow to use custom Gravatar URL"
 msgstr "Benutze benutzerdefinierte Gravatar URL"
 
+#. Resource IDs: (97)
+msgid ""
+"Allows to create an empty commit which only has a commit message and no "
+"files (cf. git commit --allow-empty)."
+msgstr "Erlaubt das Erstellen einer leeren Eintragung, die nur aus eine Eintragungsmeldung und keinen Dateien besteht (siehe auch git commit --allow-empty)."
+
 #. Resource IDs: (66)
 msgid "Already up to date."
 msgstr "Bereits auf dem neusten Stand."
@@ -1946,6 +1976,10 @@ msgstr "Diesen Block links anfügen"
 #. Resource IDs: (65535)
 msgid "Application Frame Menus: "
 msgstr "Application Frame Menus: "
+
+#. Resource IDs: (32780)
+msgid "Apply &Patch..."
+msgstr "&Patch anwenden..."
 
 #. Resource IDs: (20)
 msgid "Apply Patch Serial..."
@@ -2095,10 +2129,6 @@ msgstr "Autoren"
 #. Resource IDs: (1265)
 msgid "Authors case sensitive"
 msgstr "Groß-/Kleinschreibung bei Autoren beachten"
-
-#. Resource IDs: (65535)
-msgid "Authors:"
-msgstr "Autoren:"
 
 #. Resource IDs: (65535)
 msgid ""
@@ -3249,8 +3279,8 @@ msgid "Copying..."
 msgstr "Kopiere..."
 
 #. Resource IDs: (1001)
-msgid "Copyright (C) 2009-2014 TortoiseGit"
-msgstr "Copyright (C) 2009-2014 TortoiseGit"
+msgid "Copyright (C) 2009-2015 TortoiseGit"
+msgstr "Copyright (C) 2009-2015 TortoiseGit"
 
 #. Resource IDs: (1254)
 msgid "Corrections"
@@ -3512,10 +3542,6 @@ msgstr "Credential helper:"
 #. Resource IDs: (65535)
 msgid "Credentials"
 msgstr "Anmeldeinformationen"
-
-#. Resource IDs: (65535)
-msgid "Credits:"
-msgstr "Danksagung:"
 
 #. Resource IDs: (1253)
 msgid "Cu&t"
@@ -3907,6 +3933,10 @@ msgstr "Verz..."
 msgid "Directory:"
 msgstr "Verzeichnis:"
 
+#. Resource IDs: (1796)
+msgid "Disable sounds"
+msgstr "Sounds deaktivieren"
+
 #. Resource IDs: (195)
 msgid ""
 "Disable this option if you have really big working trees and experience\r\n"
@@ -4119,6 +4149,10 @@ msgid ""
 "Reload the views without saving the modifications"
 msgstr "Nicht speichern\nDie Ansichten neu laden, ohne die Änderungen zu speichern."
 
+#. Resource IDs: (65535)
+msgid "Don't show the selected items: (press shift key to show them)"
+msgstr "Zeige die gewählten Einträge nicht immer an (zum Anzeigen die Umschalttaste drücken)"
+
 #. Resource IDs: (73, 80)
 msgid "Don't show this message again"
 msgstr "Diese Meldung nicht wieder anzeigen"
@@ -4254,6 +4288,10 @@ msgstr "S&ystemweite gitconfig bearbeiten"
 #. Resource IDs: (1331, 1382)
 msgid "Edit..."
 msgstr "Bearbeiten..."
+
+#. Resource IDs: (1827)
+msgid "Edit/Split commit"
+msgstr "Eintragung bearbeiten/aufspalten"
 
 #. Resource IDs: (1770)
 msgid "Effective"
@@ -4864,6 +4902,10 @@ msgid ""
 "Find"
 msgstr "Angegebenen Text suchen\nSuchen"
 
+#. Resource IDs: (65535)
+msgid "Find:"
+msgstr "Suchen:"
+
 #. Resource IDs: (95)
 #, c-format
 msgid "Find: Can't find the text \"%s\""
@@ -5002,10 +5044,6 @@ msgstr "Eine leere Log-Meldung wurde gefunden. Sie müssen eine eingeben, um das
 msgid "Found auto words:"
 msgstr "Gefundene Autotexte:"
 
-#. Resource IDs: (65535)
-msgid "Frank Li (lznuaa@gmail.com), Sven Strickroth <email@cs-ware.de>"
-msgstr "Frank Li (lznuaa@gmail.com), Sven Strickroth <email@cs-ware.de>"
-
 #. Resource IDs: (1385, 1522, 65535)
 msgid "From"
 msgstr "Von"
@@ -5070,6 +5108,10 @@ msgstr "GDI+ konnte nicht initialisiert werden!"
 msgid ""
 "GDI+ couldn't create a bitmap object. You probably don't have enough memory."
 msgstr "GDI+ konnte kein Bitmapobjekt erzeugen. Vermutlich reicht der Speicher nicht aus."
+
+#. Resource IDs: (82)
+msgid "GPG signs the tag, see manual for details"
+msgstr "Markierung GPG-signieren, beachten Sie die Hilfe für Details"
 
 #. Resource IDs: (284)
 msgid "Gathering information. Please wait..."
@@ -5466,6 +5508,10 @@ msgstr "ID"
 msgid "ID:220:V C +G"
 msgstr "ID:220:V C +G"
 
+#. Accelerator Entry for Menu ID:32771; '&Exit'
+msgid "ID:32771:V C +W"
+msgstr "ID:32771:V C +W"
+
 #. Accelerator Entry for Menu ID:32772; '&Overlay images'
 msgid "ID:32772:V   +O"
 msgstr "ID:32772:V   +B"
@@ -5473,6 +5519,14 @@ msgstr "ID:32772:V   +B"
 #. Accelerator Entry for Menu ID:32773; '&Open'
 msgid "ID:32773:V C +O"
 msgstr "ID:32773:V C +O"
+
+#. Accelerator Entry for Menu ID:32773; 'Save &as'
+msgid "ID:32773:V CS+S"
+msgstr "ID:32773:V CS+S"
+
+#. Accelerator Entry for Menu ID:32774; '&Open'
+msgid "ID:32774:V C +O"
+msgstr "ID:32774:V C +O"
 
 #. Accelerator Entry for Menu ID:32774; '&Whitespaces'
 msgid "ID:32774:V C +T"
@@ -5482,6 +5536,10 @@ msgstr "ID:32774:V C +L"
 msgid "ID:32775:V C +D"
 msgstr "ID:32775:V C +D"
 
+#. Accelerator Entry for Menu ID:32776; '&Save'
+msgid "ID:32776:V C +S"
+msgstr "ID:32776:V C +S"
+
 #. Accelerator Entry for Menu ID:32778; '&Fit images in window'
 msgid "ID:32778:V   +F"
 msgstr "ID:32778:V   +F"
@@ -5489,6 +5547,14 @@ msgstr "ID:32778:V   +F"
 #. Accelerator Entry for Menu ID:32779; 'Ori&ginal size'
 msgid "ID:32779:V   +S"
 msgstr "ID:32779:V   +O"
+
+#. Accelerator Entry for Menu ID:32782; '&Print'
+msgid "ID:32782:V C +P"
+msgstr "ID:32782:V C +P"
+
+#. Accelerator Entry for Menu ID:32787; ''
+msgid "ID:32787:V C +F"
+msgstr "ID:32787:V C +F"
 
 #. Accelerator Entry for Menu ID:32793; 'Arrange &vertical'
 msgid "ID:32793:V C +V"
@@ -5897,6 +5963,10 @@ msgstr "Markierungen einschließen"
 #. Resource IDs: (1068)
 msgid "Include &ignored files"
 msgstr "beachte &ignorierte Dateien"
+
+#. Resource IDs: (1797)
+msgid "Include FETCH_HEAD in branch selection boxes"
+msgstr "FETCH_HEAD in Zweig-Auswahlboxen anzeigen"
 
 #. Resource IDs: (65535)
 msgid "Include only the following revision range:"
@@ -6319,6 +6389,10 @@ msgid ""
 "The file status is changed to modified"
 msgstr "Als aufgelöst markieren\nDer Status der Datei wird auf 'verändert' gesetzt"
 
+#. Resource IDs: (97)
+msgid "Mark for comparison"
+msgstr "Für Vergleich auswählen"
+
 #. Resource IDs: (252)
 msgid "Mark this block"
 msgstr "Block markieren"
@@ -6538,10 +6612,6 @@ msgstr "Verschieben und umbenennen"
 #. Resource IDs: (209)
 msgid "Move to changelist"
 msgstr "Zur Änderungsliste hinzufügen"
-
-#. Resource IDs: (65535)
-msgid "Move to extended context menu (press shift key to show it)"
-msgstr "Zum erweiteren Kontextmenü verschieben (zum Anzeigen die Umschalttaste drücken)"
 
 #. Resource IDs: (229)
 msgid "Move/Rename"
@@ -7095,6 +7165,10 @@ msgstr "Öffne Bilddatei..."
 msgid "Open parent folder"
 msgstr "Elternordner öffnen"
 
+#. Resource IDs: (7)
+msgid "Open patch file"
+msgstr "Patch-Datei öffnen"
+
 #. Resource IDs: (3602)
 msgid "Open this document"
 msgstr "Dieses Dokument öffnen"
@@ -7168,6 +7242,10 @@ msgstr "Überschreibe Zweig, falls er existiert"
 #. Resource IDs: (92)
 msgid "Overwrite"
 msgstr "Überschreiben"
+
+#. Resource IDs: (32781)
+msgid "P&age setup..."
+msgstr "Seite &einrichten..."
 
 #. Resource IDs: (3845)
 #, c-format
@@ -8106,10 +8184,6 @@ msgstr "Anforderungsanfrage"
 msgid "Requests a username and a password"
 msgstr "Erfragt Anwendername und Passwort"
 
-#. Resource IDs: (82)
-msgid "Requires GPG and a key without passphrase."
-msgstr "Erfordert GPG und einen Schlüssel ohne Passphrase."
-
 #. Resource IDs: (8)
 msgid "Res&olve..."
 msgstr "Konflikt &lösen..."
@@ -8548,6 +8622,10 @@ msgstr "Änderungen in %1 speichern?"
 msgid "Save modifications."
 msgstr "Änderungen speichern."
 
+#. Resource IDs: (7)
+msgid "Save patch file"
+msgstr "Patch-Datei &speichern"
+
 #. Resource IDs: (1253)
 msgid "Save revision &to..."
 msgstr "Speichere Revision &unter..."
@@ -8628,6 +8706,10 @@ msgstr "Nach links rollen"
 #. Resource IDs: (1003)
 msgid "Scroll Right"
 msgstr "Nach rechts rollen"
+
+#. Resource IDs: (32779)
+msgid "Se&ttings..."
+msgstr "Eins&tellungen"
 
 #. Resource IDs: (1253)
 msgid "Search &log messages..."
@@ -9151,6 +9233,10 @@ msgid ""
 "Show Whitespaces"
 msgstr "Leerzeichen und Zeilenumbrüche hervorheben\nNichtdruckbare Zeichen anzeigen"
 
+#. Resource IDs: (1314)
+msgid "Show status of subrepositories in parent folders"
+msgstr "Zeige Status von Subrepositories in Eltern-Verzeichnissen"
+
 #. Resource IDs: (87)
 msgid "Show symbols on ref labels to substitute part of the ref names"
 msgstr "Ersetzt Teile des Refnamens durch Symbole"
@@ -9208,6 +9294,10 @@ msgstr "Zeigt das Log der gewählten Datei/Ordner"
 #. Resource IDs: (1523)
 msgid "Si&gn"
 msgstr "Si&gnieren"
+
+#. Resource IDs: (65535)
+msgid "Significant contributions by: (see Git repository for a complete list)"
+msgstr "Signifikante Beiträge von: (betrachten Sie das Git Repository für eine vollständige Liste)"
 
 #. Resource IDs: (156, 626)
 msgid "Silver Style"
@@ -9291,10 +9381,6 @@ msgstr "Legt fest, wie viele Einträge in der Liste der letzten Logmeldungen ges
 #. Resource IDs: (16976, 16977, 16978, 16979, 16980, 16981)
 msgid "Spin1"
 msgstr "Spin1"
-
-#. Resource IDs: (1827)
-msgid "Split commit"
-msgstr "Eintragung aufteilen"
 
 #. Resource IDs: (1253)
 msgid "Split lines"
@@ -9467,10 +9553,6 @@ msgstr "Submodul hinzufügen..."
 msgid "Submodule Diff"
 msgstr "Submodul vergleichen"
 
-#. Resource IDs: (1585)
-msgid "Submodule Info"
-msgstr "Submodul Informationen"
-
 #. Resource IDs: (76)
 msgid "Submodule Init"
 msgstr "Submodul(e) einrichten"
@@ -9494,6 +9576,10 @@ msgid ""
 "Revision %2!s!"
 msgstr "Submodul \"%1!s!\"\nRevision %2!s!"
 
+#. Resource IDs: (1585)
+msgid "Submodule of Project: "
+msgstr "Submodul des Projekts:"
+
 #. Resource IDs: (1708)
 msgid "Submodules"
 msgstr "Submodule"
@@ -9501,13 +9587,6 @@ msgstr "Submodule"
 #. Resource IDs: (65)
 msgid "Success"
 msgstr "Erfolgreich"
-
-#. Resource IDs: (65535)
-msgid ""
-"Sup Yut Sum <ch3cooli@gmail.com>, Colin Law <clanlaw@googlemail.com>, Myagi "
-"<snowcoder@gmail.com>, Johan 't Hart <johanthart@gmail.com>, Laszlo Papp "
-"<djszapi@archlinux.us>"
-msgstr "Sup Yut Sum <ch3cooli@gmail.com>, Colin Law <clanlaw@googlemail.com>, Myagi <snowcoder@gmail.com>, Johan 't Hart <johanthart@gmail.com>, Laszlo Papp <djszapi@archlinux.us>"
 
 #. Resource IDs: (78)
 msgid "Switch"
@@ -9619,6 +9698,10 @@ msgstr "TIS-620"
 #. Resource IDs: (7)
 msgid "TORTOISEGITIDIFF"
 msgstr "TORTOISEGITIDIFF"
+
+#. Resource IDs: (7)
+msgid "TORTOISEGITUDIFF"
+msgstr "TORTOISEGITUDIFF"
 
 #. Resource IDs: (1513)
 msgid "Ta&gs:"
@@ -10067,6 +10150,12 @@ msgid ""
 "com1-com9, lpt1-lpt9, prn, aux, con, nul, clock$"
 msgstr "Dies ist kein gültiger Pfad!\nEine gültige Pfadangabe unter Windows darf keine '<<>|\"*:' oder einen der folgenden Gerätenamen enthalten:\ncom1-com9, lpt1-lpt9, prn, aux, con, nul, clock$"
 
+#. Resource IDs: (98)
+msgid ""
+"This operation cannot be started while the log dialog is still loading "
+"commits."
+msgstr "Diese Operation kann nicht gestartet werden solange der Aktionslog noch Eintragungen lädt."
+
 #. Resource IDs: (3857)
 #, c-format
 msgid ""
@@ -10291,6 +10380,17 @@ msgstr "TortoiseGitMerge kann diesen Patch nicht verarbeiten. Der Dateiname \"%s
 #. Resource IDs: (357)
 msgid "TortoiseGitUDiff"
 msgstr "TortoiseGitUDiff"
+
+#. Resource IDs: (7)
+msgid ""
+"TortoiseGitUDiff: the unified diff viewer for TortoiseGit\n"
+"\n"
+"Available command line parameters are:\n"
+"/patchfile:\"path to unified diff file\"\n"
+"/title:\"title to show for the viewer\"\n"
+"/?  - this help dialog\n"
+"/p  - read diff input from console pipe"
+msgstr "TortoiseGitUDiff: Der Unified-Diff-Viewer von TortoiseGit\n\nVerfügbare Kommandozeilenparameter sind:\n/patchfile:\"Pfad zur unified diff Datei\"\n/title:\"Titel der im Viewer angezeigt werden soll\"\n/?  - dieser Dialog\n/p  - Lese die Vergleichseingabe vom Standard-Input der Konsole"
 
 #. Resource IDs: (1739)
 msgid "Total changed lines including added/deleted files:"
@@ -10719,6 +10819,10 @@ msgstr "Verwende Block aus der linken Seite\nVerwende linken Block"
 msgid "Use th&is text block"
 msgstr "Verwende &diesen Textblock"
 
+#. Resource IDs: (98)
+msgid "Use the current time by setting the author date to the commit date."
+msgstr "Benutzt die aktuelle Zeit für die Eintrage- und den Autorenzeitstempel der Eintragung."
+
 #. Resource IDs: (314)
 #, c-format
 msgid ""
@@ -10789,12 +10893,20 @@ msgstr "Benutzername:"
 msgid ""
 "Valid command line options are:\n"
 "/base:<path to base file>\n"
+"/basename:<name to show on the view title>\n"
 "/theirs:<path to their file>\n"
+"/theirsname:<name to show on the view title>\n"
 "/mine:<path to your file>\n"
+"/minename:<name to show on the view title>\n"
 "/merged:<path to resulting merged file>\n"
+"/mergedname:<name to show on the view title>\n"
 "/diff:<path to unified diff file>\n"
-"/patchpath:<path to folder>"
-msgstr "Kommandozeilenoptionen:\n/base:<Originaldatei, ohne Änderungen>\n/theirs:<Datei mit den Änderungen der anderen>\n/mine:<Datei mit Ihren eigenen Änderungen>\n/merged:<Ergebnisdatei>\n/diff:<Patchdatei>\n/patchpath:<Verzeichnis, das gepatcht werden soll>"
+"/patchpath:<path to folder>\n"
+"/saverequired\n"
+"/saverequiredonconflicts\n"
+"/oneway <forces the one-way view>\n"
+"/line:<line number to jump to>"
+msgstr "Gültige Kommandozeilenparameter sind:\n/base:<Pfad zur Basisdatei>\n/basename:<Anzeigename für die Titelzeile>\n/theirs:<Pfad zur zu integrierenden Datei>\n/theirsname:<Anzeigename für die Titelzeile>\n/mine:<Pfad zu Ihrer Datei>\n/minename:<Anzeigename für die Titelzeile>\n/merged:<Pfad zur Ergebnisdatei>\n/mergedname:<Anzeigename für die Titelzeile>\n/diff:<Pfad zur Standard-Diffdatei>\n/patchpath:<Pfad zum Ordner>\n/saverequired\n/saverequiredonconflicts\n/oneway <Erzwingt die Einfenstersicht>\n/line:<Zeilennummer in die gesprungen werden soll>"
 
 #. Resource IDs: (11, 357)
 msgid "Value"
@@ -11411,6 +11523,10 @@ msgstr "Tag"
 #. Resource IDs: (10)
 msgid "deleted"
 msgstr "Gelöscht"
+
+#. Resource IDs: (7)
+msgid "diff from pipe"
+msgstr "Vergleichen über Standard-Input-Pipe"
 
 #. Resource IDs: (58116)
 msgid "dummy"
