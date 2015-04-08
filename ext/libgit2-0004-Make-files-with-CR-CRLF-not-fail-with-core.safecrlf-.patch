@@ -1,7 +1,8 @@
-From 8782aa143e29dc4fef30e82fba469cca21eeca28 Mon Sep 17 00:00:00 2001
+From 1e98bdf76126d80e652a6ab152a8aa978c542594 Mon Sep 17 00:00:00 2001
 From: Sven Strickroth <email@cs-ware.de>
 Date: Fri, 23 Jan 2015 17:15:16 +0100
-Subject: [PATCH 4/6] Make files with #CR!=#CRLF not fail with SafeCrLf enabled
+Subject: [PATCH 4/6] Make files with #CR!=#CRLF not fail with
+ core.safecrlf=true
 
 Signed-off-by: Sven Strickroth <email@cs-ware.de>
 ---
@@ -11,19 +12,19 @@ Signed-off-by: Sven Strickroth <email@cs-ware.de>
  3 files changed, 17 insertions(+), 9 deletions(-)
 
 diff --git a/CHANGELOG.md b/CHANGELOG.md
-index 17da574..2c7734c 100644
+index 0475da3..412839a 100644
 --- a/CHANGELOG.md
 +++ b/CHANGELOG.md
 @@ -9,6 +9,7 @@ v0.22 + 1
- * LF -> CRLF filter now correctly honors SafeCrLf=true errors
-   * LF only files were accepted with AutoCrLf=true on CRLF platforms
-   * files containig CRLF in combination with AutoCrLf=input were accepted
+ * LF -> CRLF filter now correctly honors core.safecrlf=true errors
+   * LF only files were accepted with core.autocrlf=true on CRLF platforms
+   * files containig CRLF in combination with core.autocrlf=input were accepted
 +  * adding files containing CR and CRLF but not the same number failed
  
  * Rename and copy detection is enabled for small files.
  
 diff --git a/src/crlf.c b/src/crlf.c
-index 29fa9a0..53e2f0b 100644
+index c1e0b2b..cf75086 100644
 --- a/src/crlf.c
 +++ b/src/crlf.c
 @@ -138,12 +138,20 @@ static int crlf_apply_to_odb(
@@ -64,7 +65,7 @@ index 29fa9a0..53e2f0b 100644
  			/*
  			 * If the file in the index has any CR in it, do not convert.
 diff --git a/tests/filter/crlf.c b/tests/filter/crlf.c
-index 59358f3..a37b17f 100644
+index 969c3bd..b81fbeb 100644
 --- a/tests/filter/crlf.c
 +++ b/tests/filter/crlf.c
 @@ -110,6 +110,13 @@ void test_filter_crlf__with_safecrlf(void)
@@ -82,5 +83,5 @@ index 59358f3..a37b17f 100644
  	git_buf_free(&out);
  }
 -- 
-1.9.5.msysgit.0
+1.9.5.msysgit.1
 

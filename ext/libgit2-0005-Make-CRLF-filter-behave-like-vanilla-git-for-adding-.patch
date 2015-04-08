@@ -1,4 +1,4 @@
-From 9d6454dfa9105a8b450b9347ce88e513bac865a2 Mon Sep 17 00:00:00 2001
+From 9a8ca15dab6420866d69e3da1c280191a9efce4c Mon Sep 17 00:00:00 2001
 From: Sven Strickroth <email@cs-ware.de>
 Date: Sun, 1 Feb 2015 13:39:31 +0100
 Subject: [PATCH 5/6] Make CRLF filter behave like vanilla git for adding files
@@ -9,17 +9,17 @@ Based on lots of manual testing (even with "malformed" files and binary) with va
 Signed-off-by: Sven Strickroth <email@cs-ware.de>
 ---
  CHANGELOG.md        |    5 +
- src/crlf.c          |   52 +--
+ src/crlf.c          |   58 +--
  tests/filter/crlf.h |   12 +
- tests/index/crlf.c  | 1194 ++++++++++++++++++++++++++++++++++++++++++++++++++-
- 4 files changed, 1230 insertions(+), 33 deletions(-)
+ tests/index/crlf.c  | 1200 ++++++++++++++++++++++++++++++++++++++++++++++++++-
+ 4 files changed, 1242 insertions(+), 33 deletions(-)
 
 diff --git a/CHANGELOG.md b/CHANGELOG.md
-index 2c7734c..a2e9386 100644
+index 412839a..881dca4 100644
 --- a/CHANGELOG.md
 +++ b/CHANGELOG.md
 @@ -11,6 +11,11 @@ v0.22 + 1
-   * files containig CRLF in combination with AutoCrLf=input were accepted
+   * files containig CRLF in combination with core.autocrlf=input were accepted
    * adding files containing CR and CRLF but not the same number failed
  
 +* LF -> CRLF filter now handles files on adding to index the way vanilla git does
@@ -29,9 +29,9 @@ index 2c7734c..a2e9386 100644
 +
  * Rename and copy detection is enabled for small files.
  
- ### API additions
+ * Checkout can now handle an initial checkout of a repository, making
 diff --git a/src/crlf.c b/src/crlf.c
-index 53e2f0b..2516c40 100644
+index cf75086..eef8b5f 100644
 --- a/src/crlf.c
 +++ b/src/crlf.c
 @@ -124,18 +124,21 @@ static int crlf_apply_to_odb(
@@ -39,13 +39,13 @@ index 53e2f0b..2516c40 100644
  	const git_filter_source *src)
  {
 +	git_buf_text_stats stats;
-+	int isBinary;
++	bool is_binary;
 +
  	/* Empty file? Nothing to do */
  	if (!git_buf_len(from))
  		return 0;
  
-+	isBinary = git_buf_text_gather_stats(&stats, from, false);
++	is_binary = git_buf_text_gather_stats(&stats, from, false);
 +
  	/* Heuristics to see if we can skip the conversion.
  	 * Straight from Core Git.
@@ -56,11 +56,11 @@ index 53e2f0b..2516c40 100644
 -		/* Check heuristics for binary vs text - returns true if binary */
 -		if (git_buf_text_gather_stats(&stats, from, false))
 +		/* Check heuristics for binary vs text */
-+		if (isBinary)
++		if (is_binary)
  			return GIT_PASSTHROUGH;
  
  		/*
-@@ -146,16 +149,23 @@ static int crlf_apply_to_odb(
+@@ -146,16 +149,26 @@ static int crlf_apply_to_odb(
  		if (stats.cr != stats.crlf)
  			return GIT_PASSTHROUGH;
  
@@ -80,7 +80,10 @@ index 53e2f0b..2516c40 100644
 -		/* If safecrlf is enabled, sanity-check the result. */
 -		if (stats.lf != stats.crlf) {
 +	/* If safecrlf is enabled, sanity-check the result. */
-+	if (ca->crlf_action == GIT_CRLF_INPUT || (ca->auto_crlf == GIT_AUTO_CRLF_INPUT && (ca->crlf_action == GIT_CRLF_GUESS || ca->crlf_action == GIT_CRLF_AUTO || (ca->crlf_action == GIT_CRLF_TEXT && ca->eol==GIT_EOL_UNSET)))) {
++	if (ca->crlf_action == GIT_CRLF_INPUT ||
++		(ca->auto_crlf == GIT_AUTO_CRLF_INPUT &&
++		(ca->crlf_action == GIT_CRLF_GUESS || ca->crlf_action == GIT_CRLF_AUTO ||
++		(ca->crlf_action == GIT_CRLF_TEXT && ca->eol==GIT_EOL_UNSET)))) {
 +		if (stats.crlf) {
  			switch (ca->safe_crlf) {
  			case GIT_SAFE_CRLF_FAIL:
@@ -90,13 +93,16 @@ index 53e2f0b..2516c40 100644
  					git_filter_source_path(src));
  				return -1;
  			case GIT_SAFE_CRLF_WARN:
-@@ -164,11 +174,13 @@ static int crlf_apply_to_odb(
+@@ -164,11 +177,16 @@ static int crlf_apply_to_odb(
  			default:
  				break;
  			}
 -		} else if (stats.crlf && ca->auto_crlf == GIT_AUTO_CRLF_INPUT) {
 +		}
-+	} else if (ca->crlf_action == GIT_CRLF_CRLF || (ca->auto_crlf == GIT_AUTO_CRLF_TRUE && (ca->crlf_action == GIT_CRLF_GUESS || ca->crlf_action == GIT_CRLF_AUTO || (ca->crlf_action == GIT_CRLF_TEXT && ca->eol == GIT_EOL_UNSET)))) {
++	} else if (ca->crlf_action == GIT_CRLF_CRLF ||
++				(ca->auto_crlf == GIT_AUTO_CRLF_TRUE &&
++				(ca->crlf_action == GIT_CRLF_GUESS || ca->crlf_action == GIT_CRLF_AUTO ||
++				(ca->crlf_action == GIT_CRLF_TEXT && ca->eol == GIT_EOL_UNSET)))) {
 +		if (stats.lf != stats.crlf) {
  			switch (ca->safe_crlf) {
  			case GIT_SAFE_CRLF_FAIL:
@@ -106,7 +112,7 @@ index 53e2f0b..2516c40 100644
  					git_filter_source_path(src));
  				return -1;
  			case GIT_SAFE_CRLF_WARN:
-@@ -178,20 +190,12 @@ static int crlf_apply_to_odb(
+@@ -178,20 +196,12 @@ static int crlf_apply_to_odb(
  				break;
  			}
  		}
@@ -165,10 +171,10 @@ index 786edfc..0a7a10d 100644
  #define FEW_UTF8_CRLF_RAW		"\xe2\x9a\xbdThe rest is ASCII01.\r\nThe rest is ASCII02.\r\nThe rest is ASCII03.\r\nThe rest is ASCII04.\r\nThe rest is ASCII05.\r\nThe rest is ASCII06.\r\nThe rest is ASCII07.\r\nThe rest is ASCII08.\r\nThe rest is ASCII09.\r\nThe rest is ASCII10.\r\nThe rest is ASCII11.\r\nThe rest is ASCII12.\r\nThe rest is ASCII13.\r\nThe rest is ASCII14.\r\nThe rest is ASCII15.\r\nThe rest is ASCII16.\r\nThe rest is ASCII17.\r\nThe rest is ASCII18.\r\nThe rest is ASCII19.\r\nThe rest is ASCII20.\r\nThe rest is ASCII21.\r\nThe rest is ASCII22.\r\n"
  #define FEW_UTF8_LF_RAW			"\xe2\x9a\xbdThe rest is ASCII01.\nThe rest is ASCII02.\nThe rest is ASCII03.\nThe rest is ASCII04.\nThe rest is ASCII05.\nThe rest is ASCII06.\nThe rest is ASCII07.\nThe rest is ASCII08.\nThe rest is ASCII09.\nThe rest is ASCII10.\nThe rest is ASCII11.\nThe rest is ASCII12.\nThe rest is ASCII13.\nThe rest is ASCII14.\nThe rest is ASCII15.\nThe rest is ASCII16.\nThe rest is ASCII17.\nThe rest is ASCII18.\nThe rest is ASCII19.\nThe rest is ASCII20.\nThe rest is ASCII21.\nThe rest is ASCII22.\n"
 diff --git a/tests/index/crlf.c b/tests/index/crlf.c
-index 38e7916..ce9c9aa 100644
+index 38e7916..c9d2d84 100644
 --- a/tests/index/crlf.c
 +++ b/tests/index/crlf.c
-@@ -7,9 +7,28 @@
+@@ -7,9 +7,34 @@
  
  #define FILE_CONTENTS_LF "one\ntwo\nthree\nfour\n"
  #define FILE_CONTENTS_CRLF "one\r\ntwo\r\nthree\r\nfour\r\n"
@@ -192,12 +198,18 @@ index 38e7916..ce9c9aa 100644
 +#define FILE_OID_BINARY_LF_CR "203555c5676d75cd80d69b50beb1f4b588c59ceb"
 +#define FILE_OID_BINARY_LF_CR_CRLF "aaf083a9cb53dac3669dcfa0e48921580d629ec7"
 +
-+#define CHECK_CRLF_TO_LF_ERROR cl_assert(giterr_last() != NULL && giterr_last()->klass == GITERR_FILTER && strstr(giterr_last()->message, "CRLF would be replaced by LF in") != NULL); giterr_clear();
-+#define CHECK_LF_TO_CRLF_ERROR cl_assert(giterr_last() != NULL && giterr_last()->klass == GITERR_FILTER && strstr(giterr_last()->message, "LF would be replaced by CRLF in") != NULL); giterr_clear();
++#define CHECK_CRLF_TO_LF_ERROR cl_assert(giterr_last() != NULL && \
++							   giterr_last()->klass == GITERR_FILTER && \
++							   strstr(giterr_last()->message, "CRLF would be replaced by LF in") != NULL); \
++							   giterr_clear();
++#define CHECK_LF_TO_CRLF_ERROR cl_assert(giterr_last() != NULL && \
++							   giterr_last()->klass == GITERR_FILTER && \
++							   strstr(giterr_last()->message, "LF would be replaced by CRLF in") != NULL); \
++							   giterr_clear();
  
  static git_repository *g_repo;
  static git_index *g_index;
-@@ -42,6 +61,54 @@ void test_index_crlf__autocrlf_false_no_attrs(void)
+@@ -42,6 +67,54 @@ void test_index_crlf__autocrlf_false_no_attrs(void)
  	cl_git_pass(git_oid_fromstr(&oid,
  		(GIT_EOL_NATIVE == GIT_EOL_CRLF) ? FILE_OID_CRLF : FILE_OID_LF));
  	cl_assert_equal_oid(&oid, &entry->id);
@@ -252,7 +264,7 @@ index 38e7916..ce9c9aa 100644
  }
  
  void test_index_crlf__autocrlf_true_no_attrs(void)
-@@ -59,6 +126,63 @@ void test_index_crlf__autocrlf_true_no_attrs(void)
+@@ -59,6 +132,63 @@ void test_index_crlf__autocrlf_true_no_attrs(void)
  
  	cl_git_pass(git_oid_fromstr(&oid, FILE_OID_LF));
  	cl_assert_equal_oid(&oid, &entry->id);
@@ -316,7 +328,7 @@ index 38e7916..ce9c9aa 100644
  }
  
  void test_index_crlf__autocrlf_input_no_attrs(void)
-@@ -76,6 +200,42 @@ void test_index_crlf__autocrlf_input_no_attrs(void)
+@@ -76,6 +206,42 @@ void test_index_crlf__autocrlf_input_no_attrs(void)
  
  	cl_git_pass(git_oid_fromstr(&oid, FILE_OID_LF));
  	cl_assert_equal_oid(&oid, &entry->id);
@@ -359,7 +371,7 @@ index 38e7916..ce9c9aa 100644
  }
  
  void test_index_crlf__autocrlf_false_text_auto_attr(void)
-@@ -95,6 +255,42 @@ void test_index_crlf__autocrlf_false_text_auto_attr(void)
+@@ -95,6 +261,42 @@ void test_index_crlf__autocrlf_false_text_auto_attr(void)
  
  	cl_git_pass(git_oid_fromstr(&oid, FILE_OID_LF));
  	cl_assert_equal_oid(&oid, &entry->id);
@@ -402,7 +414,7 @@ index 38e7916..ce9c9aa 100644
  }
  
  void test_index_crlf__autocrlf_true_text_auto_attr(void)
-@@ -104,7 +300,7 @@ void test_index_crlf__autocrlf_true_text_auto_attr(void)
+@@ -104,7 +306,7 @@ void test_index_crlf__autocrlf_true_text_auto_attr(void)
  
  	cl_git_mkfile("./crlf/.gitattributes", "* text=auto\n");
  
@@ -411,7 +423,7 @@ index 38e7916..ce9c9aa 100644
  
  	cl_git_mkfile("./crlf/newfile.txt",
  		(GIT_EOL_NATIVE == GIT_EOL_CRLF) ? FILE_CONTENTS_CRLF : FILE_CONTENTS_LF);
-@@ -114,6 +310,42 @@ void test_index_crlf__autocrlf_true_text_auto_attr(void)
+@@ -114,6 +316,42 @@ void test_index_crlf__autocrlf_true_text_auto_attr(void)
  
  	cl_git_pass(git_oid_fromstr(&oid, FILE_OID_LF));
  	cl_assert_equal_oid(&oid, &entry->id);
@@ -454,7 +466,7 @@ index 38e7916..ce9c9aa 100644
  }
  
  void test_index_crlf__autocrlf_input_text_auto_attr(void)
-@@ -133,6 +365,59 @@ void test_index_crlf__autocrlf_input_text_auto_attr(void)
+@@ -133,6 +371,59 @@ void test_index_crlf__autocrlf_input_text_auto_attr(void)
  
  	cl_git_pass(git_oid_fromstr(&oid, FILE_OID_LF));
  	cl_assert_equal_oid(&oid, &entry->id);
@@ -514,7 +526,7 @@ index 38e7916..ce9c9aa 100644
  }
  
  void test_index_crlf__safecrlf_true_autocrlf_input_text_auto_attr(void)
-@@ -155,6 +440,45 @@ void test_index_crlf__safecrlf_true_autocrlf_input_text_auto_attr(void)
+@@ -155,6 +446,45 @@ void test_index_crlf__safecrlf_true_autocrlf_input_text_auto_attr(void)
  
  	cl_git_mkfile("./crlf/newfile2.txt", FILE_CONTENTS_CRLF);
  	cl_git_fail(git_index_add_bypath(g_index, "newfile2.txt"));
@@ -560,7 +572,7 @@ index 38e7916..ce9c9aa 100644
  }
  
  void test_index_crlf__safecrlf_true_autocrlf_input_text__no_attr(void)
-@@ -173,8 +497,35 @@ void test_index_crlf__safecrlf_true_autocrlf_input_text__no_attr(void)
+@@ -173,8 +503,35 @@ void test_index_crlf__safecrlf_true_autocrlf_input_text__no_attr(void)
  	cl_git_pass(git_oid_fromstr(&oid, FILE_OID_LF));
  	cl_assert_equal_oid(&oid, &entry->id);
  
@@ -598,7 +610,7 @@ index 38e7916..ce9c9aa 100644
  }
  
  void test_index_crlf__safecrlf_true_no_attrs(void)
-@@ -182,15 +533,840 @@ void test_index_crlf__safecrlf_true_no_attrs(void)
+@@ -182,15 +539,840 @@ void test_index_crlf__safecrlf_true_no_attrs(void)
  	cl_repo_set_bool(g_repo, "core.autocrlf", true);
  	cl_repo_set_bool(g_repo, "core.safecrlf", true);
  
@@ -1446,5 +1458,5 @@ index 38e7916..ce9c9aa 100644
 +	cl_assert_equal_oid(&oid, &entry->id);
  }
 -- 
-1.9.5.msysgit.0
+1.9.5.msysgit.1
 

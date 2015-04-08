@@ -1,10 +1,10 @@
-From 4f4d81baf7745e427002e0767d55cb40423df6bc Mon Sep 17 00:00:00 2001
+From 8a71a40b4392c3d888b9c47524a34cb38cb75803 Mon Sep 17 00:00:00 2001
 From: Sven Strickroth <email@cs-ware.de>
 Date: Fri, 23 Jan 2015 15:33:36 +0100
-Subject: [PATCH 2/6] AutoCrLf is not correctly initialized on Win32 if
+Subject: [PATCH 2/6] core.autocrlf is not correctly initialized on Win32 if
  .gitattributes file exists and matches
 
-Knowing the proper core.autocrlf value is need for deciding whether the crlf filter needs to be executed...
+Knowing the proper core.autocrlf value is need for deciding whether the CRLF filter needs to be executed...
 
 Signed-off-by: Sven Strickroth <email@cs-ware.de>
 ---
@@ -12,7 +12,7 @@ Signed-off-by: Sven Strickroth <email@cs-ware.de>
  1 file changed, 4 insertions(+), 5 deletions(-)
 
 diff --git a/src/crlf.c b/src/crlf.c
-index 976e474..bb1657b 100644
+index ba34c2b..9e03f20 100644
 --- a/src/crlf.c
 +++ b/src/crlf.c
 @@ -267,6 +267,10 @@ static int crlf_check(
@@ -39,5 +39,5 @@ index 976e474..bb1657b 100644
  			ca.auto_crlf == GIT_AUTO_CRLF_FALSE)
  			return GIT_PASSTHROUGH;
 -- 
-1.9.5.msysgit.0
+1.9.5.msysgit.1
 

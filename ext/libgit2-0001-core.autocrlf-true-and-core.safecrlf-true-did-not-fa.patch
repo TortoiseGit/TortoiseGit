@@ -1,8 +1,8 @@
-From 39dfbc18e2f5ff5b044fe230226eab0d6c5621a3 Mon Sep 17 00:00:00 2001
+From 24dc594f617f754c6112ac014ab9cc4f2f86ef1d Mon Sep 17 00:00:00 2001
 From: Sven Strickroth <email@cs-ware.de>
 Date: Fri, 23 Jan 2015 14:16:34 +0100
-Subject: [PATCH 1/6] AutoCrLf=true and SafeCrLf=true did not fail on LF-only
- file as vanilla git does
+Subject: [PATCH 1/6] core.autocrlf=true and core.safecrlf=true did not fail on
+ LF-only file as vanilla git does
 
 Reported-by: Yue Lin Ho <b8732003@student.nsysu.edu.tw>
 Signed-off-by: Sven Strickroth <email@cs-ware.de>
@@ -14,21 +14,21 @@ Signed-off-by: Sven Strickroth <email@cs-ware.de>
  4 files changed, 45 insertions(+), 6 deletions(-)
 
 diff --git a/CHANGELOG.md b/CHANGELOG.md
-index bffcb25..1894d07 100644
+index b88488e..75ec09d 100644
 --- a/CHANGELOG.md
 +++ b/CHANGELOG.md
 @@ -6,6 +6,9 @@ v0.22 + 1
  * Updated binary identification in CRLF filtering to avoid false positives in
    UTF-8 files.
  
-+* LF -> CRLF filter now correctly honors SafeCrLf=true errors
-+  * LF only files were accepted with AutoCrLf=true on CRLF platforms
++* LF -> CRLF filter now correctly honors core.safecrlf=true errors
++  * LF only files were accepted with core.autocrlf=true on CRLF platforms
 +
  * Rename and copy detection is enabled for small files.
  
- ### API additions
+ * Checkout can now handle an initial checkout of a repository, making
 diff --git a/src/crlf.c b/src/crlf.c
-index c0a7399..976e474 100644
+index b5d1dbf..ba34c2b 100644
 --- a/src/crlf.c
 +++ b/src/crlf.c
 @@ -138,8 +138,8 @@ static int crlf_apply_to_odb(
@@ -43,7 +43,7 @@ index c0a7399..976e474 100644
  
  		/* If safecrlf is enabled, sanity-check the result. */
 diff --git a/tests/filter/crlf.c b/tests/filter/crlf.c
-index a31dac9..59358f3 100644
+index 406d3b6..969c3bd 100644
 --- a/tests/filter/crlf.c
 +++ b/tests/filter/crlf.c
 @@ -103,12 +103,12 @@ void test_filter_crlf__with_safecrlf(void)
@@ -118,5 +118,5 @@ index 23f4793..803c141 100644
  	cl_git_mkfile("crlf/newfile.txt", ALL_CRLF_TEXT_RAW);
  	cl_git_pass(git_index_add_bypath(g_index, "newfile.txt"));
 -- 
-1.9.5.msysgit.0
+1.9.5.msysgit.1
 
