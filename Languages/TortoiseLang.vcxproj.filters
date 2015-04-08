@@ -54,5 +54,36 @@
     <None Include="Tortoise_bg_BG.po">
       <Filter>Translation Files</Filter>
     </None>
+    <None Include="Tortoise_ca.po">
+      <Filter>Translation Files</Filter>
+    </None>
+    <None Include="Tortoise_hu.po">
+      <Filter>Translation Files</Filter>
+    </None>
+    <None Include="Tortoise_id.po">
+      <Filter>Translation Files</Filter>
+    </None>
+    <None Include="Tortoise_nl_NL.po">
+      <Filter>Translation Files</Filter>
+    </None>
+    <None Include="Tortoise_pt_PT.po">
+      <Filter>Translation Files</Filter>
+    </None>
+    <None Include="Tortoise_ro.po">
+      <Filter>Translation Files</Filter>
+    </None>
+    <None Include="Tortoise_sk.po">
+      <Filter>Translation Files</Filter>
+    </None>
+    <None Include="Tortoise_sr%40latin.po">
+      <Filter>Translation Files</Filter>
+    </None>
+    <None Include="Tortoise_uk.po">
+      <Filter>Translation Files</Filter>
+    </None>
+    <None Include="Tortoise_vi.po">
+      <Filter>Translation Files</Filter>
+    </None>
+    <None Include="Tortoise.pot" />
   </ItemGroup>
 </Project>
