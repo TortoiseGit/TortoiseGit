@@ -73,6 +73,9 @@
 			As Git became more stable it attracted more and more users
 			who also started using TortoiseGit as their Git client.
 		</para>
+		<para>
+			For more information what changed over the releases check out the <ulink url="http://redir.tortoisegit.org/releasenotes">latest release notes</ulink> or inspect our <ulink url="http://redir.tortoisegit.org/sourcecode">git commit history</ulink>.
+		</para>
 	</sect1>
 	<!-- ================================================================= -->
 	<!-- ======================== SECTION 3 ============================== -->
