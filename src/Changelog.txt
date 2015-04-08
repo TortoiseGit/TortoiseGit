@@ -1,5 +1,5 @@
 ﻿= Release 1.8.14.0 =
-Released: Unreleased
+Released: 2015-04-08
 
 == Features ==
  * Fixed issue #2441: A way to disable the sound that is played on errors
@@ -9,18 +9,21 @@ Released: Unreleased
  * TGitCache: Improve reaction time for propagating changes to explorer
  * Fixed issue #2031: Missing option to disable displaying "FETCH_HEAD" in "Switch/Checkout" dialog box
  * Log, RepoBrowser, and Rebase Dialogs: Allow to compare arbitrary files across commits
- * Fixed issue #2534: Use the current time for amending commit
+ * Fixed issue #2534: Use the current time for amending commit (also sets commit time)
+ * TortoiseGitBlame: Implemented search forward (F3) and search backward (Shift+F3)
+ * Allow to compare file with deleted file in CommitDlg (e.g., useful for renames)
+ * Allow to use Explorer context menu options from TortoiseGit context menu
+ * Sort remotes logically/case-insensitively
 
 == Bug Fixes ==
  * Fixed issue #2427: "Submodule of Project: " cannot be localized
  * Fixed issue #2432: MessageBox buttons cannot be localized
  * Fixed issue #2433: Cannot see the log in Diff with previous version
- * TortoiseGitBlame: Implemented search forward (F3) and search backward (Shift+F3)
  * Fixed issue #2453: The overlay icon of commited files in a submodule named with chinese characters is unversioned icon
  * Fixed issue #2455: "Diff with ..." menu cannot be localized
  * Fixed issue #2431: Add fails in submodule after upgrade from 1.8.12 to 1.8.13
  * Fixed issue #2449: wrong column info in tag reference dialog
- * In some conditions all files in a versioned folders were displayed as unversioned.
+ * Fixed issue #2436: Overlay icons gradually disappear or show files as unversioned after a short time
  * Fixed issue #2374: Rebase option in config not working anymore for pull
  * Fixed issue #1440: Different status of modifed renamed or moved files in Show log dialog, Check for Modifications dialog and Commit dialog
  * Fixed issue #1501: Unchanged files appears modified in Show Log dialog
@@ -28,6 +31,8 @@ Released: Unreleased
  * Fixed issue #2481: "Start registry editor" does not work properly in non-English locales
  * Fixed issue #2480: CommitDlg: auto-complete doesnt include removed items
  * Fixed issue #2451: Cleanup fails quietly if file is in use
+ * Various bugfixes based on our newly added unit tests
+ * Not all remotes showing in Push/Pull/Fetch/Sync dialogs (was limited to 25)
 
 = Release 1.8.13.0 =
 Released: 2015-02-15

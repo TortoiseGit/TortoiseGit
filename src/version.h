@@ -1,11 +1,11 @@
-#define FILEVER				1,8,13,0
+#define FILEVER				1,8,14,0
 #define PRODUCTVER			FILEVER
-#define STRFILEVER			"1.8.13.0"
+#define STRFILEVER			"1.8.14.0"
 #define STRPRODUCTVER		STRFILEVER
 
 #define TGIT_VERMAJOR		1
 #define TGIT_VERMINOR		8
-#define TGIT_VERMICRO		13
+#define TGIT_VERMICRO		14
 #define TGIT_VERBUILD		0
 #define TGIT_VERDATE		__DATE__
 
@@ -25,7 +25,7 @@
  *
  * This only makes sense for official (preview) releases of the TortoiseGit team
  */
-#define ENABLE_CRASHHANLDER	0
+#define ENABLE_CRASHHANLDER	1
 
 /*****************************************************************************
  * TortoiseGit PGP Public Key used to sign releases
