@@ -3818,6 +3818,10 @@ msgstr ""
 msgid "Do &not show me this warning again (if Ignore is selected)"
 msgstr ""
 
+#. Resource IDs: (1407)
+msgid "Do not auto-select \"missing\" files (deleted, but unstaged)"
+msgstr ""
+
 #. Resource IDs: (1669)
 msgid "Do not autoselect submodules"
 msgstr ""

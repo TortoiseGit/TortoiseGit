@@ -852,6 +852,7 @@
 #define IDS_WARN_NOTE                   1406
 #define IDC_STRIPCOMMENTEDLINES         1406
 #define IDS_WARN_NOVALIDPATH            1407
+#define IDC_NOAUTOSELECTMISSING         1407
 #define IDS_SYSTEM_WINCRED              1408
 #define IDC_PROXYLABEL1                 1409
 #define IDS_DAEMON_SECURITY_WARN        1409
