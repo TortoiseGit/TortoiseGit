@@ -81,7 +81,7 @@ BEGIN
     IDS_REBASE_SKIP         "Skip"
     IDS_REBASE_EDIT         "Edit"
     IDS_REBASE_PICK         "Pick"
-    IDS_REBASE_SQUASH       "Squash"
+    IDS_REBASE_SQUASH       "Squash (with commit below)"
     IDS_SWITCH_TO_THIS      "Switch/Checkout to this..."
     IDS_CREATE_BRANCH_AT_THIS "Create Branch at this version..."
     IDS_CREATE_TAG_AT_THIS  "Create Tag at this version..."

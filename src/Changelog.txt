@@ -1,4 +1,10 @@
-﻿= Release 1.8.14.0 =
+﻿= Release 1.8.15.0 =
+Released: unreleased
+
+== Features ==
+ * Fixed issue #2245: Make the meaning of "Squash" clearer
+
+= Release 1.8.14.0 =
 Released: 2015-04-08
 
 == Features ==
