@@ -8794,6 +8794,10 @@ msgstr ""
 msgid "Squash"
 msgstr ""
 
+#. Resource IDs: (1254)
+msgid "Squash (with commit below)"
+msgstr ""
+
 #. Resource IDs: (246)
 msgid "Stacked Bar Graph"
 msgstr ""
