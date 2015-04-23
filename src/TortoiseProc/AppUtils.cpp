@@ -1284,23 +1284,23 @@ bool CAppUtils::PerformSwitch(const CString& ref, bool bForce /* false */, const
 	if(!sNewBranch.IsEmpty()){
 		if (bBranchOverride)
 		{
-			branch.Format(_T("-B %s"), sNewBranch);
+			branch.Format(_T("-B %s "), sNewBranch);
 		}
 		else
 		{
-			branch.Format(_T("-b %s"), sNewBranch);
+			branch.Format(_T("-b %s "), sNewBranch);
 		}
 		if (bTrack == TRUE)
-			track = _T("--track");
+			track = _T("--track ");
 		else if (bTrack == FALSE)
-			track = _T("--no-track");
+			track = _T("--no-track ");
 	}
 	if (bForce)
-		force = _T("-f");
+		force = _T("-f ");
 	if (bMerge)
-		merge = _T("--merge");
+		merge = _T("--merge ");
 
-	cmd.Format(_T("git.exe checkout %s %s %s %s %s --"),
+	cmd.Format(_T("git.exe checkout %s%s%s%s%s --"),
 		 force,
 		 track,
 		 merge,
@@ -3195,7 +3195,7 @@ BOOL CAppUtils::Merge(const CString* commit, bool showStashPop)
 			logmsg.Replace(_T("\""), _T("\\\""));
 			args += _T(" -m \"") + logmsg + _T("\"");
 		}
-		cmd.Format(_T("git.exe merge %s %s"), args, g_Git.FixBranchName(dlg.m_VersionName));
+		cmd.Format(_T("git.exe merge%s %s"), args, g_Git.FixBranchName(dlg.m_VersionName));
 
 		CProgressDlg Prodlg;
 		Prodlg.m_GitCmd = cmd;
