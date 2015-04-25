@@ -751,25 +751,13 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				while (pos2)
 				{
 					CString ref = ((GitRevLoglist*)m_arShownList[GetNextSelectedItem(pos2)])->m_Ref;
-					if (ref.Find(_T("refs/")) == 0)
-						ref = ref.Mid(5);
-					int refpos = ref.ReverseFind('{');
-					if (refpos > 0 && ref.Mid(refpos - 1, 2) != _T("@{"))
-						ref = ref.Left(refpos) + _T("@")+ ref.Mid(refpos);
 					refsToDelete.push_back(ref);
 				}
 
-				for (auto revIt = refsToDelete.crbegin(); revIt != refsToDelete.crend(); ++revIt)
 				{
-					CString ref = *revIt;
-					CString sCmd, out;
-					if (ref.Find(_T("stash")) == 0)
-						sCmd.Format(_T("git.exe stash drop %s"), (LPCTSTR)ref);
-					else
-						sCmd.Format(_T("git.exe reflog delete %s"), (LPCTSTR)ref);
-
-					if (g_Git.Run(sCmd, &out, CP_UTF8))
-						CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
+					CString err;
+					GitRevLoglist::DropRefLog(refsToDelete, [] (CString refstr, CString err)
+						{ CMessageBox::Show(NULL, _T("Failed to delete reflog ") + refstr + _T("\n") + err, _T("TortoiseGit"),MB_OK); });
 
 					::PostMessage(this->GetParent()->m_hWnd,MSG_REFLOG_CHANGED,0,0);
 				}

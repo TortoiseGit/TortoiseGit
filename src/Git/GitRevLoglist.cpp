@@ -515,3 +515,103 @@ int GitRevLoglist::GetRefLog(const CString& ref, std::vector<GitRevLoglist>& ref
 	}
 	return 0;
 }
+
+static bool SplitRefLog(const CString& reflog, CString& ref, int& index)
+{
+	int refpos = reflog.ReverseFind('{');
+	if (refpos > 0 && reflog.Mid(refpos - 1, 2) == _T("@{"))
+	{
+		index = _ttoi(reflog.Mid(refpos + 1));
+		ref = reflog.Left(refpos - 1);
+		return true;
+	}
+	return false;
+}
+
+static int RefLogPredicate(const std::pair<CString, int>& left, const std::pair<CString, int>& right)
+{
+	return (left.first == right.first) ? (left.second > right.second) : (left.first < right.first);
+}
+
+int GitRevLoglist::DropRefLog(const STRING_VECTOR& refloglist, std::function<void(CString, CString)> errCallback)
+{
+	std::vector<std::pair<CString, int>> list;
+	for (CString r : refloglist)
+	{
+		CString ref;
+		int index = 0;
+		if (!SplitRefLog(r, ref, index))
+		{
+			errCallback(_T("Invalid reflog ") + r, _T("Invalid reflog"));
+			return -1;
+		}
+		list.push_back(std::make_pair(ref, index));
+	}
+	std::sort(list.begin(), list.end(), RefLogPredicate);
+
+	bool allSuccess = true;
+	if (g_Git.m_IsUseLibGit2)
+	{
+		CAutoRepository repo(g_Git.GetGitRepository());
+		if (!repo)
+		{
+			errCallback(_T("Open Repository"), g_Git.GetLibGit2LastErr());
+			return -1;
+		}
+
+		for (auto r : list)
+		{
+			CString ref;
+			ref.Format(_T("%s@{%d}"), r.first, r.second);
+			if (r.first == _T("refs/stash"))
+			{
+				if (git_stash_drop(repo, r.second) < 0)
+				{
+					allSuccess = false;
+					errCallback(_T("Drop stash ") + ref, g_Git.GetLibGit2LastErr());
+				}
+			}
+			else
+			{
+				CAutoReflog reflog;
+				if (git_reflog_read(reflog.GetPointer(), repo, CUnicodeUtils::GetUTF8(r.first)) < 0)
+				{
+					errCallback(_T("Read reflog ") + r.first, g_Git.GetLibGit2LastErr());
+					return -1;
+				}
+
+				if (git_reflog_drop(reflog, r.second, 1) < 0)
+				{
+					allSuccess = false;
+					errCallback(_T("Drop reflog ") + ref, g_Git.GetLibGit2LastErr());
+				}
+
+				if (git_reflog_write(reflog) < 0)
+				{
+					errCallback(_T("Write reflog ") + r.first, g_Git.GetLibGit2LastErr());
+					return -1;
+				}
+			}
+		}
+
+		return allSuccess ? 0 : -2;
+	}
+
+	for (auto r : list)
+	{
+		CString ref;
+		ref.Format(_T("%s@{%d}"), r.first, r.second);
+		CString cmd, out;
+		if (r.first == _T("refs/stash"))
+			cmd.Format(_T("git.exe stash drop %s"), ref);
+		else
+			cmd.Format(_T("git.exe reflog delete %s"), ref);
+		if (g_Git.Run(cmd, &out, CP_UTF8))
+		{
+			allSuccess = false;
+			errCallback(_T("Delete reflog ") + ref, out);
+		}
+	}
+
+	return allSuccess ? 0 : -2;
+}
