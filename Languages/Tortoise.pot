@@ -8422,6 +8422,10 @@ msgstr ""
 msgid "Show &log..."
 msgstr ""
 
+#. Resource IDs: (1830)
+msgid "Show &nested refs"
+msgstr ""
+
 #. Resource IDs: (1088)
 msgid "Show &overlays and context menu only in explorer"
 msgstr ""

@@ -3,6 +3,7 @@ Released: unreleased
 
 == Features ==
  * Fixed issue #2245: Make the meaning of "Squash" clearer
+ * Fixed issue #2488: BrowseRefsDlg: Option to hide nested branches
 
 = Release 1.8.14.0 =
 Released: 2015-04-08

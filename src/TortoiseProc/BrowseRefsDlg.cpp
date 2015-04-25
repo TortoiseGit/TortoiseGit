@@ -163,6 +163,7 @@ CBrowseRefsDlg::CBrowseRefsDlg(CString cmdPath, CWnd* pParent /*=NULL*/)
 	m_SelectedFilters(LOGFILTER_ALL),
 	m_ColumnManager(&m_ListRefLeafs),
 	m_bPickOne(false),
+	m_bIncludeNestedRefs(TRUE),
 	m_bPickedRefSet(false)
 {
 	// get short/long datetime setting from registry
@@ -174,6 +175,8 @@ CBrowseRefsDlg::CBrowseRefsDlg(CString cmdPath, CWnd* pParent /*=NULL*/)
 	// get relative time display setting from registry
 	DWORD regRelativeTimes = CRegDWORD(_T("Software\\TortoiseGit\\RelativeTimes"), FALSE);
 	m_bRelativeTimes = (regRelativeTimes != 0);
+
+	m_regIncludeNestedRefs = CRegDWORD(_T("Software\\TortoiseGit\\RefBrowserIncludeNestedRefs"), TRUE);
 }
 
 CBrowseRefsDlg::~CBrowseRefsDlg()
@@ -186,6 +189,7 @@ void CBrowseRefsDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_TREE_REF,			m_RefTreeCtrl);
 	DDX_Control(pDX, IDC_LIST_REF_LEAFS,	m_ListRefLeafs);
 	DDX_Control(pDX, IDC_BROWSEREFS_EDIT_FILTER, m_ctrlFilter);
+	DDX_Check(pDX, IDC_INCLUDENESTEDREFS, m_bIncludeNestedRefs);
 }
 
 
@@ -204,6 +208,7 @@ BEGIN_MESSAGE_MAP(CBrowseRefsDlg, CResizableStandAloneDialog)
 	ON_MESSAGE(WM_FILTEREDIT_CANCELCLICKED, OnClickedCancelFilter)
 	ON_WM_TIMER()
 	ON_BN_CLICKED(IDC_CURRENTBRANCH, OnBnClickedCurrentbranch)
+	ON_BN_CLICKED(IDC_INCLUDENESTEDREFS, &CBrowseRefsDlg::OnBnClickedCheck1)
 END_MESSAGE_MAP()
 
 
@@ -270,6 +275,7 @@ BOOL CBrowseRefsDlg::OnInitDialog()
 	AddAnchor(IDC_BROWSEREFS_STATIC_FILTER, TOP_LEFT);
 	AddAnchor(IDC_BROWSEREFS_EDIT_FILTER, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_INFOLABEL, BOTTOM_LEFT, BOTTOM_RIGHT);
+	AddAnchor(IDC_INCLUDENESTEDREFS, BOTTOM_LEFT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
 
 	CRegDWORD regFullRowSelect(_T("Software\\TortoiseGit\\FullRowSelect"), TRUE);
@@ -288,6 +294,9 @@ BOOL CBrowseRefsDlg::OnInitDialog()
 	AddAnchor(IDOK,BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL,BOTTOM_RIGHT);
 	AddAnchor(IDC_CURRENTBRANCH, BOTTOM_RIGHT);
+
+	m_bIncludeNestedRefs = !!m_regIncludeNestedRefs;
+	UpdateData();
 
 	Refresh(m_initialRef);
 
@@ -593,7 +602,9 @@ void CBrowseRefsDlg::FillListCtrlForShadowTree(CShadowTree* pTree, CString refNa
 	{
 
 		CString csThisName;
-		if(!isFirstLevel)
+		if (!isFirstLevel && !m_bIncludeNestedRefs)
+			return;
+		else if (!isFirstLevel)
 			csThisName=refNamePrefix+pTree->m_csRefName+L"/";
 		else
 			m_pListCtrlRoot = pTree;
@@ -1565,4 +1576,12 @@ void CBrowseRefsDlg::UpdateInfoLabel()
 	CString temp;
 	temp.FormatMessage(IDS_REFBROWSE_INFO, m_ListRefLeafs.GetItemCount(), m_ListRefLeafs.GetSelectedCount());
 	SetDlgItemText(IDC_INFOLABEL, temp);
+}
+
+
+void CBrowseRefsDlg::OnBnClickedCheck1()
+{
+	UpdateData(TRUE);
+	m_regIncludeNestedRefs = m_bIncludeNestedRefs;
+	Refresh();
 }
