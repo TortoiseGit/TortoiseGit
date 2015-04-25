@@ -1226,6 +1226,7 @@
 #define IDS_PROC_LOG_ONLYONCE           1557
 #define IDC_REBASE_SHEET                1558
 #define IDC_COMMIT_SETAUTHOR            1558
+#define IDS_DIFFWITHMERGE               1558
 #define IDC_SPLITALLOPTIONS             1559
 #define IDS_PROC_MULTIRENAME            1560
 #define IDC_COMMIT_AS_COMMIT_DATE       1561
