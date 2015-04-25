@@ -1234,6 +1234,7 @@
 #define IDC_STATUS_STATIC               1563
 #define IDS_PROC_REBASE_UNSELECTED_EDIT 1563
 #define IDC_REBASE_CONTINUE             1564
+#define IDS_DIFFWITHMERGE               1564
 #define IDC_REBASE_ABORT                1565
 #define IDC_REBASE_DUMY_TAB             1566
 #define IDC_GIT_USERNAME                1566

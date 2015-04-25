@@ -8534,6 +8534,10 @@ msgstr ""
 msgid "Show branches this commit is on"
 msgstr ""
 
+#. Resource IDs: (1564)
+msgid "Show changes after merge"
+msgstr ""
+
 #. Resource IDs: (20011, 20026)
 msgid "Show changes as &unified diff"
 msgstr ""
