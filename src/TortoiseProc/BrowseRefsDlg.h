@@ -123,6 +123,8 @@ public:
 		eCmd_ViewLogRange,
 		eCmd_ViewLogRangeReachableFromOnlyOne,
 		eCmd_UnifiedDiff,
+		eCmd_UpstreamDrop,
+		eCmd_UpstreamSet,
 	};
 
 	enum eCol

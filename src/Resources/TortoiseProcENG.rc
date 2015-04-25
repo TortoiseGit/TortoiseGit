@@ -4003,6 +4003,8 @@ BEGIN
                             "Use the current time by setting the author date to the commit date."
     IDS_REBASE_ADDANOTHERCOMMIT "Add another commit?"
     IDS_PROC_LOG_ONLYONCE   "This operation cannot be started while the log dialog is still loading commits."
+    IDS_PROC_BROWSEREFS_DROPTRACKEDBRANCH "Unset tracked branch"
+    IDS_PROC_BROWSEREFS_SETTRACKEDBRANCH "Select tracked branch"
     IDS_PROC_MULTIRENAME    "TortoiseGit has detected similar filenames. Do you want the files:%s\nto be renamed too?"
 END
 
