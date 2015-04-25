@@ -418,7 +418,7 @@ static void GetReflog()
 	CString err;
 	std::vector<GitRevLoglist> revloglist;
 	EXPECT_EQ(0, GitRevLoglist::GetRefLog(_T("refs/stash"), revloglist, err));
-	EXPECT_EQ(0, revloglist.size());
+	EXPECT_EQ(5, revloglist.size());
 	EXPECT_TRUE(err.IsEmpty());
 
 	EXPECT_EQ(0, GitRevLoglist::GetRefLog(_T("HEAD"), revloglist, err));
