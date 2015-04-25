@@ -1170,9 +1170,7 @@ void CGitLogList::ShiftSelectedRebaseAction()
 		index = GetNextSelectedItem(pos);
 		if (index == GetItemCount() - 1)
 			continue;
-		int dummyAction = 0;
-		int *action = &dummyAction;
-		action = &((GitRevLoglist*)m_arShownList[index])->GetRebaseAction();
+		int *action = &((GitRevLoglist*)m_arShownList[index])->GetRebaseAction();
 		switch (*action)
 		{
 		case LOGACTIONS_REBASE_PICK:
