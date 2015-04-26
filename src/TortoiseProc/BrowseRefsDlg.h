@@ -70,6 +70,11 @@ public:
 		return wcsncmp(name, from, len) == 0;
 	}
 
+	CString			GetRefsHeadsName() const
+	{
+		return GetRefName().Mid(11); // len = 11 refs/heads/
+	}
+
 	CShadowTree*	FindLeaf(CString partialRefName);
 
 	CString			m_csRefName;
