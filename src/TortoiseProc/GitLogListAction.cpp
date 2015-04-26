@@ -194,9 +194,22 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 					cmd >>= 16;
 					if( (cmd&0xFFFF) == 0xFFFF)
 						bMerge = true;
-
 					else if((cmd&0xFFFF) == 0xFFFE)
 						bCombine = true;
+					else if ((cmd & 0xFFFF) == 0xFFFD)
+					{
+						CString tempfile = GetTempFile();
+						CString cmd = _T("git.exe diff-tree --cc ") + r1->m_CommitHash.ToString();
+						CString lastErr;
+						if (g_Git.RunLogFile(cmd, tempfile, &lastErr))
+						{
+							MessageBox(lastErr, _T("TortoiseGit"), MB_ICONERROR);
+							break;
+						}
+
+						CAppUtils::StartUnifiedDiffViewer(tempfile, _T("dd"));
+						break;
+					}
 					else
 					{
 						if(cmd > r1->m_ParentHash.size())

@@ -10605,6 +10605,10 @@ msgstr ""
 msgid "bugtraq.warningifnoissue"
 msgstr ""
 
+#. Resource IDs: (98)
+msgid "changes after merge"
+msgstr ""
+
 #. Resource IDs: (244, 245)
 msgid "commits"
 msgstr ""
