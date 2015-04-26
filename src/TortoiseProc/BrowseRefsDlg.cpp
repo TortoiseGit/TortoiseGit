@@ -569,7 +569,7 @@ void CBrowseRefsDlg::FillListCtrlForTreeNode(HTREEITEM treeNode)
 		return;
 	}
 	FillListCtrlForShadowTree(pTree,L"",true);
-	m_ColumnManager.SetVisible(eCol_Upstream, (wcsncmp(pTree->GetRefName(), L"refs/heads", 11) == 0));
+	m_ColumnManager.SetVisible(eCol_Upstream, pTree->IsFrom(L"refs/heads"));
 }
 
 void CBrowseRefsDlg::FillListCtrlForShadowTree(CShadowTree* pTree, CString refNamePrefix, bool isFirstLevel)
