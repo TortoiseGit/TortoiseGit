@@ -8270,6 +8270,10 @@ msgstr ""
 msgid "Select the language this project is using. This settings affects the spell checker used for commit messages."
 msgstr ""
 
+#. Resource IDs: (98)
+msgid "Select tracked branch"
+msgstr ""
+
 #. Resource IDs: (78)
 msgid "Select viewer for diff-files"
 msgstr ""
@@ -9799,6 +9803,10 @@ msgstr ""
 
 #. Resource IDs: (315)
 msgid "Unresolved conflicts!"
+msgstr ""
+
+#. Resource IDs: (98)
+msgid "Unset tracked branch"
 msgstr ""
 
 #. Resource IDs: (3841)
