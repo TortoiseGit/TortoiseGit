@@ -447,6 +447,8 @@ void CBrowseRefsDlg::Refresh(CString selectRef)
 			return false; //Skip
 		if (wcsncmp(refName, L"refs/remotes/", 13) == 0 && !(m_pickRef_Kind & gPickRef_Remote))
 			return false; //Skip
+		if (m_pickRef_Kind == gPickRef_Remote && wcsncmp(refName, L"refs/remotes/", 13) != 0) // do not show refs/stash if only remote branches are requested
+			return false;
 		return true;
 	}))
 	{
