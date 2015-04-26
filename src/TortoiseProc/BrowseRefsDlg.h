@@ -46,9 +46,28 @@ public:
 			return m_csRefName;
 		return m_pParent->GetRefName()+"/"+m_csRefName;
 	}
+
+	/**
+	 * from = refs/heads, refname = refs/heads/master => true
+	 * from = refs/heads, refname = refs/heads => true
+	 * from = refs/heads, refname = refs/headsh => false
+	 * from = refs/heads/, refname = refs/heads/master => true
+	 * from = refs/heads/, refname = refs/heads => false
+	 */
 	bool			IsFrom(const wchar_t* from)const
 	{
-		return wcsncmp(GetRefName(),from,wcslen(from))==0;
+		CString name = GetRefName();
+		int len = (int)wcslen(from);
+		if (from[len - 1] != '/' && wcsncmp(name, from, len) == 0)
+		{
+			if (len == name.GetLength())
+				return true;
+			if (len < name.GetLength() && name[len] == '/')
+				return true;
+			return false;
+		}
+
+		return wcsncmp(name, from, len) == 0;
 	}
 
 	CShadowTree*	FindLeaf(CString partialRefName);
