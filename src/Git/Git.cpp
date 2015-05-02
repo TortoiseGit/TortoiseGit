@@ -24,6 +24,7 @@
 #include "UnicodeUtils.h"
 #include "gitdll.h"
 #include <fstream>
+#include <iterator>
 #include "FormatMessageWrapper.h"
 #include "SmartHandle.h"
 #include "MassiveGitTaskBase.h"

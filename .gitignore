@@ -20,6 +20,7 @@
 /Languages/.tx
 /sign-x64.bat
 /sign-x86.bat
+/src/.vs
 /src/ipch
 /src/TortoiseShell/register.reg
 /src/TortoiseShell/register_recover.reg

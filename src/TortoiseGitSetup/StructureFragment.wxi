@@ -14,6 +14,9 @@
 	<Fragment Id="StructureFragment">
 -->
 
+<?if $(var.VisualStudioVersion) = "14.0" ?>
+<?define vcver="140" ?>
+<?endif ?>
 <?if $(var.VisualStudioVersion) = "12.0" ?>
 <?define vcver="120" ?>
 <?endif ?>
