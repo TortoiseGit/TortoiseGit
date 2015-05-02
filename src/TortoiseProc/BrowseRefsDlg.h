@@ -210,7 +210,7 @@ private:
 	afx_msg void OnLvnEndlabeleditListRefLeafs(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnLvnBeginlabeleditListRefLeafs(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnBnClickedCurrentbranch();
-	afx_msg void OnBnClickedCheck1();
+	afx_msg void OnBnClickedIncludeNestedRefs();
 	BOOL		m_bIncludeNestedRefs;
 	CRegDWORD	m_regIncludeNestedRefs;
 	void		UpdateInfoLabel();

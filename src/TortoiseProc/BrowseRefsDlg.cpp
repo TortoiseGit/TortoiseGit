@@ -208,7 +208,7 @@ BEGIN_MESSAGE_MAP(CBrowseRefsDlg, CResizableStandAloneDialog)
 	ON_MESSAGE(WM_FILTEREDIT_CANCELCLICKED, OnClickedCancelFilter)
 	ON_WM_TIMER()
 	ON_BN_CLICKED(IDC_CURRENTBRANCH, OnBnClickedCurrentbranch)
-	ON_BN_CLICKED(IDC_INCLUDENESTEDREFS, &CBrowseRefsDlg::OnBnClickedCheck1)
+	ON_BN_CLICKED(IDC_INCLUDENESTEDREFS, &CBrowseRefsDlg::OnBnClickedIncludeNestedRefs)
 END_MESSAGE_MAP()
 
 
@@ -1617,7 +1617,7 @@ void CBrowseRefsDlg::UpdateInfoLabel()
 }
 
 
-void CBrowseRefsDlg::OnBnClickedCheck1()
+void CBrowseRefsDlg::OnBnClickedIncludeNestedRefs()
 {
 	UpdateData(TRUE);
 	m_regIncludeNestedRefs = m_bIncludeNestedRefs;
