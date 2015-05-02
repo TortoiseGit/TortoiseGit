@@ -432,7 +432,7 @@ static void GetReflog()
 
 	err.Empty();
 	EXPECT_EQ(0, GitRevLoglist::GetRefLog(_T("refs/heads/master"), revloglist, err));
-	ASSERT_EQ(5, revloglist.size());
+	ASSERT_EQ(6, revloglist.size());
 	EXPECT_TRUE(err.IsEmpty());
 
 	EXPECT_STREQ(_T("7c3cbfe13a929d2291a574dca45e4fd2d2ac1aa6"), revloglist[0].m_CommitHash.ToString());
@@ -466,6 +466,14 @@ static void GetReflog()
 	//EXPECT_STREQ(_T("email@cs-ware.de"), revloglist[4].GetCommitterEmail());
 	EXPECT_STREQ(_T("2015-03-16 12:52:22"), revloglist[4].GetCommitterDate().FormatGmt(L"%Y-%m-%d %H:%M:%S"));
 	EXPECT_STREQ(_T(" renamed a file"), revloglist[4].GetSubject());
+
+	EXPECT_STREQ(_T("7c3cbfe13a929d2291a574dca45e4fd2d2ac1aa6"), revloglist[5].m_CommitHash.ToString());
+	EXPECT_STREQ(_T("refs/heads/master@{5}"), revloglist[5].m_Ref);
+	EXPECT_STREQ(_T("push"), revloglist[5].m_RefAction);
+	//EXPECT_STREQ(_T("Sven Strickroth"), revloglist[5].GetCommitterName());
+	//EXPECT_STREQ(_T("email@cs-ware.de"), revloglist[5].GetCommitterEmail());
+	EXPECT_STREQ(_T("2015-03-16 12:51:40"), revloglist[5].GetCommitterDate().FormatGmt(L"%Y-%m-%d %H:%M:%S"));
+	EXPECT_STREQ(_T(""), revloglist[5].GetSubject());
 }
 
 TEST_P(GitRevLoglist2CBasicGitWithTestRepoFixture, GetReflog)
