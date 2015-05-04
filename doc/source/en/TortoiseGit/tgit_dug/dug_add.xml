@@ -46,7 +46,7 @@
 		<para>
 			Git only tracks content and, thus, cannot version (empty) directories. If you
 			need a directory to be automatically created on checkout, make sure at least one
-			versioned file is in it (e.g. a flaceholder file ).
+			versioned file is in it (e.g. a placeholder file).
 		</para>
 	</tip>
 	<para>
