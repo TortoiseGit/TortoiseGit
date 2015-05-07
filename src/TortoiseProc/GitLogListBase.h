@@ -372,6 +372,7 @@ public:
 	int  BeginFetchLog();
 	int  FillGitLog(CTGitPath *path, CString *range = NULL, int infomask = CGit::LOG_INFO_STAT| CGit::LOG_INFO_FILESTATE | CGit::LOG_INFO_SHOW_MERGEDFILE);
 	int  FillGitLog(std::set<CGitHash>& hashes);
+	CString CGitLogListBase::MessageDisplayStr(GitRev * pLogEntry);
 	BOOL IsMatchFilter(bool bRegex, GitRevLoglist* pRev, std::tr1::wregex& pat);
 	bool ShouldShowFilter(GitRevLoglist* pRev, const std::map<CGitHash, std::set<CGitHash>>& commitChildren);
 	void ShowGraphColumn(bool bShow);
