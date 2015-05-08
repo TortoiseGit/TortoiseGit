@@ -411,7 +411,7 @@ int GitRevLoglist::GetRefLog(const CString& ref, std::vector<GitRevLoglist>& ref
 				if (message > 0)
 				{
 					rev.m_RefAction = one.Left(message);
-					rev.GetSubject() = one.Mid(message + 1);
+					rev.GetSubject() = one.Mid(message + 2);
 				}
 				else
 					rev.m_RefAction = one;
@@ -437,7 +437,7 @@ int GitRevLoglist::GetRefLog(const CString& ref, std::vector<GitRevLoglist>& ref
 			if (message > 0)
 			{
 				rev.m_RefAction = one.Left(message);
-				rev.GetSubject() = one.Mid(message + 1).TrimRight(L'\n');
+				rev.GetSubject() = one.Mid(message + 2).TrimRight(L'\n');
 			}
 			else
 				rev.m_RefAction = one.TrimRight(L'\n');
@@ -503,7 +503,7 @@ int GitRevLoglist::GetRefLog(const CString& ref, std::vector<GitRevLoglist>& ref
 			if (message > 0)
 			{
 				rev.m_RefAction = one.Mid(action + 1, message - action - 1);
-				rev.GetSubject() = one.Right(one.GetLength() - message - 1);
+				rev.GetSubject() = one.Right(one.GetLength() - message - 2);
 			}
 			else
 				rev.m_RefAction = one.Mid(action + 1);
