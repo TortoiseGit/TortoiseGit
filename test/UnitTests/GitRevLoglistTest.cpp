@@ -432,7 +432,7 @@ static void GetReflog()
 
 	err.Empty();
 	EXPECT_EQ(0, GitRevLoglist::GetRefLog(_T("refs/heads/master"), revloglist, err));
-	ASSERT_EQ(6, revloglist.size());
+	ASSERT_EQ(7, revloglist.size());
 	EXPECT_TRUE(err.IsEmpty());
 
 	EXPECT_STREQ(_T("7c3cbfe13a929d2291a574dca45e4fd2d2ac1aa6"), revloglist[0].m_CommitHash.ToString());
@@ -469,11 +469,19 @@ static void GetReflog()
 
 	EXPECT_STREQ(_T("7c3cbfe13a929d2291a574dca45e4fd2d2ac1aa6"), revloglist[5].m_CommitHash.ToString());
 	EXPECT_STREQ(_T("refs/heads/master@{5}"), revloglist[5].m_Ref);
-	EXPECT_STREQ(_T("push"), revloglist[5].m_RefAction);
-	//EXPECT_STREQ(_T("Sven Strickroth"), revloglist[5].GetCommitterName());
-	//EXPECT_STREQ(_T("email@cs-ware.de"), revloglist[5].GetCommitterEmail());
-	EXPECT_STREQ(_T("2015-03-16 12:51:40"), revloglist[5].GetCommitterDate().FormatGmt(L"%Y-%m-%d %H:%M:%S"));
-	EXPECT_STREQ(_T(""), revloglist[5].GetSubject());
+	EXPECT_STREQ(_T("fetch origin +refs/heads/*:refs/heads/*"), revloglist[5].m_RefAction);
+	//EXPECT_STREQ(_T("Dummy author"), revloglist[5].GetCommitterName());
+	//EXPECT_STREQ(_T("a@example.com"), revloglist[5].GetCommitterEmail());
+	EXPECT_STREQ(_T("2015-03-16 12:52:10"), revloglist[5].GetCommitterDate().FormatGmt(L"%Y-%m-%d %H:%M:%S"));
+	EXPECT_STREQ(_T(" forced-update"), revloglist[5].GetSubject());
+
+	EXPECT_STREQ(_T("560deea87853158b22d0c0fd73f60a458d47838a"), revloglist[6].m_CommitHash.ToString());
+	EXPECT_STREQ(_T("refs/heads/master@{6}"), revloglist[6].m_Ref);
+	EXPECT_STREQ(_T("push"), revloglist[6].m_RefAction);
+	//EXPECT_STREQ(_T("Sven Strickroth"), revloglist[6].GetCommitterName());
+	//EXPECT_STREQ(_T("email@cs-ware.de"), revloglist[6].GetCommitterEmail());
+	EXPECT_STREQ(_T("2015-03-16 12:51:40"), revloglist[6].GetCommitterDate().FormatGmt(L"%Y-%m-%d %H:%M:%S"));
+	EXPECT_STREQ(_T(""), revloglist[6].GetSubject());
 }
 
 TEST_P(GitRevLoglist2CBasicGitWithTestRepoFixture, GetReflog)

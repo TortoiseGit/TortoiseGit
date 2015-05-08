@@ -407,7 +407,7 @@ int GitRevLoglist::GetRefLog(const CString& ref, std::vector<GitRevLoglist>& ref
 			if (git_reflog_entry_message(entry) != nullptr)
 			{
 				CString one = CUnicodeUtils::GetUnicode(git_reflog_entry_message(entry));
-				int message = one.Find(_T(":"), 0);
+				int message = one.Find(_T(": "), 0);
 				if (message > 0)
 				{
 					rev.m_RefAction = one.Left(message);
@@ -433,7 +433,7 @@ int GitRevLoglist::GetRefLog(const CString& ref, std::vector<GitRevLoglist>& ref
 			rev.GetCommitterDate() = CTime(time);
 
 			CString one = CUnicodeUtils::GetUnicode(msg);
-			int message = one.Find(_T(":"), 0);
+			int message = one.Find(_T(": "), 0);
 			if (message > 0)
 			{
 				rev.m_RefAction = one.Left(message);
@@ -499,7 +499,7 @@ int GitRevLoglist::GetRefLog(const CString& ref, std::vector<GitRevLoglist>& ref
 		if (action > 0)
 		{
 			action += 2;
-			int message = one.Find(_T(":"), action);
+			int message = one.Find(_T(": "), action);
 			if (message > 0)
 			{
 				rev.m_RefAction = one.Mid(action + 1, message - action - 1);
