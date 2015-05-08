@@ -4549,7 +4549,9 @@ bool CBaseView::GetInlineDiffPositions(int nViewLine, std::vector<inlineDiffPos>
 		return false;
 
 	svn_diff_t * diff = NULL;
-	m_svnlinediff.Diff(&diff, sLine, sLine.GetLength(), sDiffLine, sDiffLine.GetLength(), m_bInlineWordDiff);
+	auto pLine1 = (this == m_pwndLeft) ? &sLine : &sDiffLine;
+	auto pLine2 = (this == m_pwndLeft) ? &sDiffLine : &sLine;
+	m_svnlinediff.Diff(&diff, *pLine1, pLine1->GetLength(), *pLine2, pLine2->GetLength(), m_bInlineWordDiff);
 	if (!diff || !SVNLineDiff::ShowInlineDiff(diff))
 		return false;
 
@@ -4562,7 +4564,7 @@ bool CBaseView::GetInlineDiffPositions(int nViewLine, std::vector<inlineDiffPos>
 
 		for (apr_off_t i = 0; i < len; ++i)
 		{
-			position += m_svnlinediff.m_line1tokens[lineoffset].size();
+			position += (this == m_pwndRight) ? m_svnlinediff.m_line2tokens[lineoffset].size() : m_svnlinediff.m_line1tokens[lineoffset].size();
 			lineoffset++;
 		}
 
@@ -4830,7 +4832,9 @@ LineColors & CBaseView::GetLineColors(int nViewLine)
 		svn_diff_t * diff = NULL;
 		if (sLine.GetLength() > (int)m_nInlineDiffMaxLineLength)
 			break;
-		m_svnlinediff.Diff(&diff, sLine, sLine.GetLength(), sDiffLine, sDiffLine.GetLength(), m_bInlineWordDiff);
+		auto pLine1 = (this == m_pwndLeft) ? &sLine : &sDiffLine;
+		auto pLine2 = (this == m_pwndLeft) ? &sDiffLine : &sLine;
+		m_svnlinediff.Diff(&diff, *pLine1, pLine1->GetLength(), *pLine2, pLine2->GetLength(), m_bInlineWordDiff);
 		if (!diff || !SVNLineDiff::ShowInlineDiff(diff) || !diff->next)
 			break;
 
@@ -4839,16 +4843,25 @@ LineColors & CBaseView::GetLineColors(int nViewLine)
 		std::map<int, COLORREF> removedPositions;
 		while (diff)
 		{
+			if (this == m_pwndRight)
+			{
+				apr_off_t nTmp = diff->modified_length;
+				diff->modified_length = diff->original_length;
+				diff->original_length = nTmp;
+
+				nTmp = diff->modified_start;
+				diff->modified_start = diff->original_start;
+				diff->original_start = nTmp;
+			}
 			apr_off_t len = diff->original_length;
 
-			CString s;
+			size_t nTextLength = 0;
 			for (int i = 0; i < len; ++i)
 			{
-				s += m_svnlinediff.m_line1tokens[lineoffset].c_str();
+				nTextLength += (this == m_pwndRight) ? m_svnlinediff.m_line2tokens[lineoffset].size() : m_svnlinediff.m_line1tokens[lineoffset].size();
 				lineoffset++;
 			}
 			bool bInlineDiff = (diff->type == svn_diff__type_diff_modified);
-			int nTextLength = s.GetLength();
 
 			CDiffColors::GetInstance().GetColors(diffState, crBkgnd, crText);
 			if ((m_bShowInlineDiff)&&(bInlineDiff))
@@ -4866,7 +4879,7 @@ LineColors & CBaseView::GetLineColors(int nViewLine)
 			}
 			oLineColors.SetColor(nTextStartOffset, crText, crBkgnd);
 
-			nTextStartOffset += nTextLength;
+			nTextStartOffset += (int)nTextLength;
 			diff = diff->next;
 		}
 		for (std::map<int, COLORREF>::const_iterator it = removedPositions.begin(); it != removedPositions.end(); ++it)
