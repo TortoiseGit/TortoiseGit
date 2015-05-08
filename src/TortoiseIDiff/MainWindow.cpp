@@ -1,6 +1,6 @@
 // TortoiseIDiff - an image diff viewer in TortoiseSVN
 
-// Copyright (C) 2006-2013 - TortoiseSVN
+// Copyright (C) 2006-2013, 2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -464,14 +464,17 @@ LRESULT CMainWindow::DoCommand(int id, LPARAM lParam)
             UINT uCheck = MF_BYCOMMAND;
             uCheck |= bOverlap ? MF_CHECKED : MF_UNCHECKED;
             CheckMenuItem(hMenu, ID_VIEW_OVERLAPIMAGES, uCheck);
-            uCheck |= (m_BlendType == CPicWindow::BLEND_ALPHA) ? MF_CHECKED : MF_UNCHECKED;
+            uCheck |= ((m_BlendType == CPicWindow::BLEND_ALPHA) && bOverlap) ? MF_CHECKED : MF_UNCHECKED;
             CheckMenuItem(hMenu, ID_VIEW_BLENDALPHA, uCheck);
+            UINT uEnabled = MF_BYCOMMAND;
+            uEnabled |= bOverlap ? MF_ENABLED : MF_DISABLED | MF_GRAYED;
+            EnableMenuItem(hMenu, ID_VIEW_BLENDALPHA, uEnabled);
 
             // change the state of the toolbar button
             TBBUTTONINFO tbi;
             tbi.cbSize = sizeof(TBBUTTONINFO);
             tbi.dwMask = TBIF_STATE;
-            tbi.fsState = bOverlap ? TBSTATE_CHECKED | TBSTATE_ENABLED : TBSTATE_ENABLED;
+            tbi.fsState = ((m_BlendType == CPicWindow::BLEND_ALPHA) && bOverlap) ? TBSTATE_CHECKED : 0;
             SendMessage(hwndTB, TB_SETBUTTONINFO, ID_VIEW_OVERLAPIMAGES, (LPARAM)&tbi);
 
             tbi.fsState = (m_BlendType == CPicWindow::BLEND_ALPHA) ? TBSTATE_CHECKED : 0;
@@ -532,14 +535,17 @@ LRESULT CMainWindow::DoCommand(int id, LPARAM lParam)
 
             HMENU hMenu = GetMenu(*this);
             UINT uCheck = MF_BYCOMMAND;
-            uCheck |= (m_BlendType == CPicWindow::BLEND_ALPHA) ? MF_CHECKED : MF_UNCHECKED;
+            uCheck |= ((m_BlendType == CPicWindow::BLEND_ALPHA) && bOverlap) ? MF_CHECKED : MF_UNCHECKED;
             CheckMenuItem(hMenu, ID_VIEW_BLENDALPHA, uCheck);
+            UINT uEnabled = MF_BYCOMMAND;
+            uEnabled |= bOverlap ? MF_ENABLED : MF_DISABLED | MF_GRAYED;
+            EnableMenuItem(hMenu, ID_VIEW_BLENDALPHA, uEnabled);
 
             // change the state of the toolbar button
             TBBUTTONINFO tbi;
             tbi.cbSize = sizeof(TBBUTTONINFO);
             tbi.dwMask = TBIF_STATE;
-            tbi.fsState = (m_BlendType == CPicWindow::BLEND_ALPHA) ? TBSTATE_CHECKED | TBSTATE_ENABLED : TBSTATE_ENABLED;
+            tbi.fsState = ((m_BlendType == CPicWindow::BLEND_ALPHA) && bOverlap) ? TBSTATE_CHECKED | TBSTATE_ENABLED : TBSTATE_ENABLED;
             SendMessage(hwndTB, TB_SETBUTTONINFO, ID_VIEW_BLENDALPHA, (LPARAM)&tbi);
             picWindow1.SetBlendAlpha(m_BlendType, picWindow1.GetBlendAlpha());
             PositionChildren();

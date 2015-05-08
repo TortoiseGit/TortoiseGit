@@ -112,7 +112,7 @@ BEGIN
     POPUP "&View"
     BEGIN
         MENUITEM "&Overlay images",             ID_VIEW_OVERLAPIMAGES
-        MENUITEM "Blend alpha",                 ID_VIEW_BLENDALPHA
+        MENUITEM "Blend alpha",                 ID_VIEW_BLENDALPHA, INACTIVE
         MENUITEM "&Link image positions",       ID_VIEW_LINKIMAGESTOGETHER, CHECKED
         MENUITEM "Fit image &widths",           ID_VIEW_FITIMAGEWIDTHS
         MENUITEM "Fit image &heights",          ID_VIEW_FITIMAGEHEIGHTS
