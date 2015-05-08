@@ -1151,7 +1151,7 @@ void CGitLogList::SetSelectedRebaseAction(int action)
 	while(pos)
 	{
 		index = GetNextSelectedItem(pos);
-		if (((GitRevLoglist*)m_arShownList[index])->GetRebaseAction() & (LOGACTIONS_REBASE_CURRENT | LOGACTIONS_REBASE_DONE) || index == GetItemCount() - 1)
+		if (((GitRevLoglist*)m_arShownList[index])->GetRebaseAction() & (LOGACTIONS_REBASE_CURRENT | LOGACTIONS_REBASE_DONE) || (index == GetItemCount() - 1 && action == LOGACTIONS_REBASE_SQUASH))
 			continue;
 		((GitRevLoglist*)m_arShownList[index])->GetRebaseAction() = action;
 		CRect rect;
