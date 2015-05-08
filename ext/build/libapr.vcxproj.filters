@@ -62,6 +62,9 @@
     <Filter Include="Public Header Files">
       <UniqueIdentifier>{f172cfd0-1974-4f64-9728-0b471ed06f8b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\encoding">
+      <UniqueIdentifier>{61a7fecb-a110-4e86-a0dc-b58af3840ba1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\apr\atomic\win32\apr_atomic.c">
@@ -276,6 +279,9 @@
     </ClCompile>
     <ClCompile Include="..\apr\user\win32\userinfo.c">
       <Filter>Source Files\user</Filter>
+    </ClCompile>
+    <ClCompile Include="..\apr\encoding\apr_escape.c">
+      <Filter>Source Files\encoding</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -39,6 +39,10 @@
     <TargetName>$(ProjectName)_tgitmerge</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup>
+    <PreBuildEvent>
+      <Command>fc apr_escape_test_char.h ..\apr\include\apr_escape_test_char.h &gt;NUL 2&gt;NUL
+if errorlevel 1 type apr_escape_test_char.h &gt;..\apr\include\apr_escape_test_char.h</Command>
+    </PreBuildEvent>
     <ClCompile>
       <AdditionalIncludeDirectories>..\apr\include;..\apr\include\arch;..\apr\include\arch\win32;..\apr\include\arch\unix;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>APR_DECLARE_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -66,6 +70,7 @@
   <ItemGroup>
     <ClCompile Include="..\apr\atomic\win32\apr_atomic.c" />
     <ClCompile Include="..\apr\dso\win32\dso.c" />
+    <ClCompile Include="..\apr\encoding\apr_escape.c" />
     <ClCompile Include="..\apr\file_io\win32\buffer.c" />
     <ClCompile Include="..\apr\file_io\unix\copy.c" />
     <ClCompile Include="..\apr\file_io\win32\dir.c" />
