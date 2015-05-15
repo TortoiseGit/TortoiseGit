@@ -43,7 +43,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
-       <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
     </ClCompile>
     <Link>

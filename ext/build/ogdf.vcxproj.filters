@@ -245,6 +245,9 @@
     <ClCompile Include="..\ogdf\src\planarity\FindKuratowskis.cpp">
       <Filter>Source Files\planarity</Filter>
     </ClCompile>
+    <ClCompile Include="..\ogdf\src\basic\simple_graph_alg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\ogdf\ogdf\augmentation\DfsMakeBiconnected.h">

@@ -46,27 +46,27 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="pcre\pcre_chartables.c"  />
-    <ClCompile Include="..\pcre\pcre_byte_order.c"  />
-    <ClCompile Include="..\pcre\pcre_compile.c"  />
-    <ClCompile Include="..\pcre\pcre_config.c"  />
-    <ClCompile Include="..\pcre\pcre_dfa_exec.c"  />
-    <ClCompile Include="..\pcre\pcre_exec.c"  />
-    <ClCompile Include="..\pcre\pcre_fullinfo.c"  />
-    <ClCompile Include="..\pcre\pcre_get.c"  />
-    <ClCompile Include="..\pcre\pcre_globals.c"  />
-    <ClCompile Include="..\pcre\pcre_jit_compile.c"  />
-    <ClCompile Include="..\pcre\pcre_maketables.c"  />
-    <ClCompile Include="..\pcre\pcre_newline.c"  />
-    <ClCompile Include="..\pcre\pcre_ord2utf8.c"  />
-    <ClCompile Include="..\pcre\pcre_refcount.c"  />
-    <ClCompile Include="..\pcre\pcre_string_utils.c"  />
-    <ClCompile Include="..\pcre\pcre_study.c"  />
-    <ClCompile Include="..\pcre\pcre_tables.c"  />
-    <ClCompile Include="..\pcre\pcre_ucd.c"  />
-    <ClCompile Include="..\pcre\pcre_valid_utf8.c"  />
-    <ClCompile Include="..\pcre\pcre_version.c"  />
-    <ClCompile Include="..\pcre\pcre_xclass.c"  />
+    <ClCompile Include="pcre\pcre_chartables.c" />
+    <ClCompile Include="..\pcre\pcre_byte_order.c" />
+    <ClCompile Include="..\pcre\pcre_compile.c" />
+    <ClCompile Include="..\pcre\pcre_config.c" />
+    <ClCompile Include="..\pcre\pcre_dfa_exec.c" />
+    <ClCompile Include="..\pcre\pcre_exec.c" />
+    <ClCompile Include="..\pcre\pcre_fullinfo.c" />
+    <ClCompile Include="..\pcre\pcre_get.c" />
+    <ClCompile Include="..\pcre\pcre_globals.c" />
+    <ClCompile Include="..\pcre\pcre_jit_compile.c" />
+    <ClCompile Include="..\pcre\pcre_maketables.c" />
+    <ClCompile Include="..\pcre\pcre_newline.c" />
+    <ClCompile Include="..\pcre\pcre_ord2utf8.c" />
+    <ClCompile Include="..\pcre\pcre_refcount.c" />
+    <ClCompile Include="..\pcre\pcre_string_utils.c" />
+    <ClCompile Include="..\pcre\pcre_study.c" />
+    <ClCompile Include="..\pcre\pcre_tables.c" />
+    <ClCompile Include="..\pcre\pcre_ucd.c" />
+    <ClCompile Include="..\pcre\pcre_valid_utf8.c" />
+    <ClCompile Include="..\pcre\pcre_version.c" />
+    <ClCompile Include="..\pcre\pcre_xclass.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pcre\pcre.h" />
