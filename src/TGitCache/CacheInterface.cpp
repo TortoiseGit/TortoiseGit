@@ -141,8 +141,7 @@ bool SendCacheCommand(BYTE command, const WCHAR * path /* = NULL */)
 
 CBlockCacheForPath::CBlockCacheForPath(const WCHAR * aPath)
 {
-	wcsncpy_s(path, aPath, MAX_PATH);
-	path[MAX_PATH] = 0;
+	wcsncpy_s(path, aPath, _countof(path) - 1);
 
 	SendCacheCommand(TGITCACHECOMMAND_BLOCK, path);
 	// Wait a short while to make sure the cache has

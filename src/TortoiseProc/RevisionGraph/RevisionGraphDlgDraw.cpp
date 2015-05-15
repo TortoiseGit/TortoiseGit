@@ -65,7 +65,7 @@ CFont* CRevisionGraphWnd::GetFont(BOOL bItalic /*= FALSE*/, BOOL bBold /*= FALSE
 		ReleaseDC(pDC);
 		// use the empty font name, so GDI takes the first font which matches
 		// the specs. Maybe this will help render chinese/japanese chars correctly.
-		_tcsncpy_s(m_lfBaseFont.lfFaceName, _T("MS Shell Dlg 2"), 32);
+		_tcsncpy_s(m_lfBaseFont.lfFaceName, _T("MS Shell Dlg 2"), _countof(m_lfBaseFont.lfFaceName) - 1);
 		if (!m_apFonts[nIndex]->CreateFontIndirect(&m_lfBaseFont))
 		{
 			delete m_apFonts[nIndex];

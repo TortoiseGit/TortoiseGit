@@ -427,8 +427,8 @@ int LoadStringEx(HINSTANCE hInstance, UINT uID, LPTSTR lpBuffer, int nBufferMax,
 		return 0;
 #ifdef UNICODE
 	ret = pImage->nLength;
-	if (ret > nBufferMax)
-		ret = nBufferMax;
+	if (ret >= nBufferMax)
+		ret = nBufferMax - 1;
 	wcsncpy_s((wchar_t *)lpBuffer, nBufferMax, pImage->achString, ret);
 	lpBuffer[ret] = 0;
 #else

@@ -54,7 +54,7 @@ typedef enum git_node_kind_t
 class CBlockCacheForPath
 {
 private:
-	WCHAR path[MAX_PATH+1];
+	WCHAR path[MAX_PATH];
 
 public:
 	CBlockCacheForPath(const WCHAR * aPath);
@@ -68,7 +68,7 @@ public:
 struct TGITCacheRequest
 {
 	DWORD flags;
-	WCHAR path[MAX_PATH+1];
+	WCHAR path[MAX_PATH];
 };
 
 // CustomActions will use this header but does not need nor understand the SVN types ...
@@ -91,7 +91,7 @@ struct TGITCacheResponse
 struct TGITCacheCommand
 {
 	BYTE command;				///< the command to execute
-	WCHAR path[MAX_PATH+1];		///< path to do the command for
+	WCHAR path[MAX_PATH];		///< path to do the command for
 };
 
 #define		TGITCACHECOMMAND_END		0		///< ends the thread handling the pipe communication

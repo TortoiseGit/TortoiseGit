@@ -42,7 +42,7 @@ BOOL CPathUtils::MakeSureDirectoryPathExists(LPCTSTR path)
 		if (slashpos)
 			_tcsncpy_s(buf.get(), len, internalpathbuf.get(), slashpos - internalpathbuf.get());
 		else
-			_tcsncpy_s(buf.get(), len, internalpathbuf.get(), len);
+			_tcsncpy_s(buf.get(), len, internalpathbuf.get(), len - 1);
 		CreateDirectory(buf.get(), &attribs);
 		pPath = _tcschr(pPath, '\\');
 	} while ((pPath++)&&(_tcschr(pPath, '\\')));

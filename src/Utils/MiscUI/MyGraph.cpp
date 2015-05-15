@@ -317,7 +317,7 @@ BOOL MyGraph::OnNeedText(UINT /*uiId*/, NMHDR* pNMHDR, LRESULT* pResult)
 
 #ifndef _UNICODE
 		if (TTN_NEEDTEXTA == pNMHDR->code) {
-			lstrcpyn(pTTTA->szText, sTipText, _countof(pTTTA->szText));
+			lstrcpyn(pTTTA->szText, sTipText, _countof(pTTTA->szText) - 1);
 		}
 		else {
 			_mbstowcsz(pTTTW->szText, sTipText, _countof(pTTTA->szText));
@@ -327,7 +327,7 @@ BOOL MyGraph::OnNeedText(UINT /*uiId*/, NMHDR* pNMHDR, LRESULT* pResult)
 			_wcstombsz(pTTTA->szText, sTipText, _countof(pTTTA->szText));
 		}
 		else {
-			lstrcpyn(pTTTW->szText, sTipText, _countof(pTTTA->szText));
+			lstrcpyn(pTTTW->szText, sTipText, _countof(pTTTA->szText) - 1);
 		}
 #endif
 

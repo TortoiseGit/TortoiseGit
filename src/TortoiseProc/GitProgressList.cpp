@@ -597,7 +597,7 @@ void CGitProgressList::OnLvnGetdispinfoSvnprogress(NMHDR *pNMHDR, LRESULT *pResu
 					lstrcpyn(m_columnbuf, data->sActionColumnText, MAX_PATH);
 					break;
 				case 1:
-					lstrcpyn(m_columnbuf, data->sPathColumnText, pDispInfo->item.cchTextMax);
+					lstrcpyn(m_columnbuf, data->sPathColumnText, pDispInfo->item.cchTextMax - 1);
 					if (!data->bAuxItem)
 					{
 						int cWidth = GetColumnWidth(1);

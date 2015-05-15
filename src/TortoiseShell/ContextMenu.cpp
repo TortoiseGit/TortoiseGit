@@ -1723,14 +1723,14 @@ STDMETHODIMP CShellExt::GetCommandString_Wrap(UINT_PTR idCmd,
 	case GCS_HELPTEXTA:
 		{
 			std::string help = WideToMultibyte(desc);
-			lstrcpynA(pszName, help.c_str(), cchMax);
+			lstrcpynA(pszName, help.c_str(), cchMax - 1);
 			hr = S_OK;
 			break;
 		}
 	case GCS_HELPTEXTW:
 		{
 			wide_string help = desc;
-			lstrcpynW((LPWSTR)pszName, help.c_str(), cchMax);
+			lstrcpynW((LPWSTR)pszName, help.c_str(), cchMax - 1);
 			hr = S_OK;
 			break;
 		}
@@ -1740,7 +1740,7 @@ STDMETHODIMP CShellExt::GetCommandString_Wrap(UINT_PTR idCmd,
 			if (verb_id_it != myVerbsIDMap.end() && verb_id_it->first == idCmd)
 			{
 				std::string help = WideToMultibyte(verb_id_it->second);
-				lstrcpynA(pszName, help.c_str(), cchMax);
+				lstrcpynA(pszName, help.c_str(), cchMax - 1);
 				hr = S_OK;
 			}
 		}
@@ -1752,7 +1752,7 @@ STDMETHODIMP CShellExt::GetCommandString_Wrap(UINT_PTR idCmd,
 			{
 				wide_string help = verb_id_it->second;
 				CTraceToOutputDebugString::Instance()(__FUNCTION__ ": verb : %ws\n", help.c_str());
-				lstrcpynW((LPWSTR)pszName, help.c_str(), cchMax);
+				lstrcpynW((LPWSTR)pszName, help.c_str(), cchMax - 1);
 				hr = S_OK;
 			}
 		}

@@ -129,7 +129,7 @@ void CShellUpdater::UpdateShell()
 				DWORD cbWritten;
 				TGITCacheCommand cmd;
 				cmd.command = TGITCACHECOMMAND_CRAWL;
-				wcsncpy_s(cmd.path, MAX_PATH+1, path.GetDirectory().GetWinPath(), MAX_PATH);
+				wcsncpy_s(cmd.path, path.GetDirectory().GetWinPath(), _countof(cmd.path) - 1);
 				BOOL fSuccess = WriteFile(
 					hPipe,			// handle to pipe
 					&cmd,			// buffer to write from

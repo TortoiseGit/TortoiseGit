@@ -346,7 +346,7 @@ void CTreePropSheet::RefillPageTree()
 		SecureZeroMemory(&ti, sizeof(ti));
 		ti.mask = TCIF_TEXT|TCIF_IMAGE;
 		ti.cchTextMax = MAX_PATH;
-		ti.pszText = strPagePath.GetBuffer(ti.cchTextMax);
+		ti.pszText = strPagePath.GetBuffer(ti.cchTextMax + 1);
 		ASSERT(ti.pszText);
 		if (!ti.pszText)
 			return;

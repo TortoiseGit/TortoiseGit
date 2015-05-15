@@ -198,7 +198,7 @@ bool CRemoteCacheLink::GetStatusFromRemoteCache(const CTGitPath& Path, TGITCache
 	{
 		request.flags |= TGITCACHE_FLAGS_RECUSIVE_STATUS;
 	}
-	wcsncpy_s(request.path, Path.GetWinPath(), MAX_PATH);
+	wcsncpy_s(request.path, Path.GetWinPath(), _countof(request.path) - 1);
 	SecureZeroMemory(&m_Overlapped, sizeof(OVERLAPPED));
 	m_Overlapped.hEvent = m_hEvent;
 	// Do the transaction in overlapped mode.
@@ -260,7 +260,7 @@ bool CRemoteCacheLink::ReleaseLockForPath(const CTGitPath& path)
 		TGITCacheCommand cmd;
 		SecureZeroMemory(&cmd, sizeof(TGITCacheCommand));
 		cmd.command = TGITCACHECOMMAND_RELEASE;
-		wcsncpy_s(cmd.path, path.GetDirectory().GetWinPath(), MAX_PATH);
+		wcsncpy_s(cmd.path, path.GetDirectory().GetWinPath(), _countof(cmd.path) - 1);
 		BOOL fSuccess = WriteFile(
 			m_hCommandPipe, // handle to pipe
 			&cmd,           // buffer to write from

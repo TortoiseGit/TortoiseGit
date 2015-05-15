@@ -425,7 +425,7 @@ public:
 					CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T("GetDriveType for %s\n"), pathbuf);
 					drivetype = GetDriveType(pathbuf);
 					drivetypecache[26] = drivetype;
-					_tcsncpy_s(drivetypepathcache, MAX_PATH, pathbuf, MAX_PATH);			// MAX_PATH ok.
+					_tcsncpy_s(drivetypepathcache, MAX_PATH, pathbuf, MAX_PATH - 1);			// MAX_PATH ok.
 				}
 			}
 		}

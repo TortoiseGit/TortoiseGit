@@ -103,24 +103,24 @@ void CRefLogList::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 	case REFLOG_HASH:
 		if (pLogEntry)
 		{
-			lstrcpyn(pItem->pszText,pLogEntry->m_CommitHash.ToString(), pItem->cchTextMax);
+			lstrcpyn(pItem->pszText,pLogEntry->m_CommitHash.ToString(), pItem->cchTextMax - 1);
 		}
 		break;
 	case REFLOG_REF:
 		if(pLogEntry)
-			lstrcpyn(pItem->pszText, pLogEntry->m_Ref, pItem->cchTextMax);
+			lstrcpyn(pItem->pszText, pLogEntry->m_Ref, pItem->cchTextMax - 1);
 		break;
 	case REFLOG_ACTION:
 		if (pLogEntry)
-			lstrcpyn(pItem->pszText, (LPCTSTR)pLogEntry->m_RefAction, pItem->cchTextMax);
+			lstrcpyn(pItem->pszText, (LPCTSTR)pLogEntry->m_RefAction, pItem->cchTextMax - 1);
 		break;
 	case REFLOG_MESSAGE:
 		if (pLogEntry)
-			lstrcpyn(pItem->pszText, (LPCTSTR)pLogEntry->GetSubject().Trim(), pItem->cchTextMax);
+			lstrcpyn(pItem->pszText, (LPCTSTR)pLogEntry->GetSubject().Trim(), pItem->cchTextMax - 1);
 		break;
 	case REFLOG_DATE:
 		if (pLogEntry)
-			lstrcpyn(pItem->pszText, (LPCTSTR)CLoglistUtils::FormatDateAndTime(pLogEntry->GetCommitterDate(), m_DateFormat, true, m_bRelativeTimes), pItem->cchTextMax);
+			lstrcpyn(pItem->pszText, (LPCTSTR)CLoglistUtils::FormatDateAndTime(pLogEntry->GetCommitterDate(), m_DateFormat, true, m_bRelativeTimes), pItem->cchTextMax - 1);
 		break;
 
 	default:

@@ -288,7 +288,7 @@ void CPathWatcher::WorkerThread()
 					{
 						nOffset = pnotify->NextEntryOffset;
 						SecureZeroMemory(buf, bufferSize*sizeof(TCHAR));
-						_tcsncpy_s(buf, bufferSize, pdi->m_DirPath, bufferSize);
+						_tcsncpy_s(buf, bufferSize, pdi->m_DirPath, bufferSize - 1);
 						errno_t err = _tcsncat_s(buf+pdi->m_DirPath.GetLength(), bufferSize-pdi->m_DirPath.GetLength(), pnotify->FileName, min(bufferSize-pdi->m_DirPath.GetLength(), pnotify->FileNameLength/sizeof(TCHAR)));
 						if (err == STRUNCATE)
 						{
