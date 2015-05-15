@@ -1559,6 +1559,8 @@ void CTGitPathList::SortByPathname(bool bReverse /*= false*/)
 
 void CTGitPathList::DeleteAllFiles(bool bTrash, bool bFilesOnly, bool bShowErrorUI)
 {
+	if (m_paths.empty())
+		return;
 	PathVector::const_iterator it;
 	SortByPathname(true); // nested ones first
 
@@ -1574,6 +1576,8 @@ void CTGitPathList::DeleteAllFiles(bool bTrash, bool bFilesOnly, bool bShowError
 			sPaths += '\0';
 		}
 	}
+	if (sPaths.IsEmpty())
+		return;
 	sPaths += '\0';
 	sPaths += '\0';
 	DeleteViaShell((LPCTSTR)sPaths, bTrash, bShowErrorUI);
