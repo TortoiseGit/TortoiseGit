@@ -156,7 +156,7 @@ bool SVNRebaseCommand::Execute()
 			askIfUserWantsToStashPop();
 		if (response == IDC_REBASE_POST_BUTTON)
 		{
-			CString cmd = _T("/command:log");
+			cmd = _T("/command:log");
 			cmd += _T(" /path:\"") + g_Git.m_CurrentDir + _T("\"");
 			CAppUtils::RunTortoiseGitProc(cmd);
 		}

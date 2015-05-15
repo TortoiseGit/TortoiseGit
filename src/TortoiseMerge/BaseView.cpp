@@ -2395,7 +2395,7 @@ void CBaseView::OnContextMenu(CPoint point, DiffStates state)
 		EOL eEolType = GetLineEndings(oWhites.HasMixedEols);
 		for (int i = 1; i < _countof(eolArray); i++)
 		{
-			CString temp = GetEolName(eolArray[i]);
+			temp = GetEolName(eolArray[i]);
 			bool bChecked = (eEolType == eolArray[i]);
 			popupEols.AppendMenu(MF_STRING | MF_ENABLED | (bChecked ? MF_CHECKED : 0), nEolCommandBase+i, temp);
 		}
@@ -2408,7 +2408,7 @@ void CBaseView::OnContextMenu(CPoint point, DiffStates state)
 			return;
 		for (int i = 0; i < _countof(uctArray); i++)
 		{
-			CString temp = CFileTextLines::GetEncodingName(uctArray[i]);
+			temp = CFileTextLines::GetEncodingName(uctArray[i]);
 			bool bChecked = (m_texttype == uctArray[i]);
 			popupUnicode.AppendMenu(MF_STRING | MF_ENABLED | (bChecked ? MF_CHECKED : 0), nEncodingCommandBase+i, temp);
 		}

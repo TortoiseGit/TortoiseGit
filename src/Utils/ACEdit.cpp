@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (c) 2003 by Andreas Kapust <info@akinstaller.de>; <http://www.codeproject.com/Articles/2607/AutoComplete-without-IAutoComplete>
-// Copyright (C) 2009,2012-2013 - TortoiseGit
+// Copyright (C) 2009,2012-2013,2015 - TortoiseGit
 
 // Licensed under: The Code Project Open License (CPOL); <http://www.codeproject.com/info/cpol10.aspx>
 
@@ -266,20 +266,20 @@ bool CACEdit::HandleKey(UINT nChar, bool m_bFromChild)
 			if(m_iMode & _MODE_SEPARATION_)
 			{
 				CString m_Text,m_Left,m_Right;
-				int left,right,pos=0,len;
+				int left,right,pos2=0,len;
 
 				m_CursorMode = true;
 
 				GetWindowText(m_EditText);
 
 				if(m_iType == _EDIT_)
-					pos = LOWORD(((CEdit*)this)->CharFromPos(GetCaretPos()));
+					pos2 = LOWORD(((CEdit*)this)->CharFromPos(GetCaretPos()));
 
 				if(m_iType == _COMBOBOX_)
-					pos = m_pEdit->CharFromPos(m_pEdit->GetCaretPos());
+					pos2 = m_pEdit->CharFromPos(m_pEdit->GetCaretPos());
 
-				left  = FindSepLeftPos(pos-1,true);
-				right = FindSepRightPos(pos);
+				left  = FindSepLeftPos(pos2-1,true);
+				right = FindSepRightPos(pos2);
 
 				m_Text = m_EditText.Left(left);
 
@@ -297,7 +297,7 @@ bool CACEdit::HandleKey(UINT nChar, bool m_bFromChild)
 				SetWindowText(m_Text);
 				GetParent()->SendMessage(ENAC_UPDATE, WM_KEYDOWN, GetDlgCtrlID());
 
-				right = FindSepLeftPos2(pos-1);
+				right = FindSepLeftPos2(pos2-1);
 				left -= right;
 				len += right;
 

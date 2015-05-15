@@ -439,7 +439,7 @@ static git_commit* FindFileRecentCommit(git_repository* repository, const CStrin
 
 			TreewalkStruct treewalkstruct2 = { folder, file };
 			memset(&treewalkstruct2.oid.id, 0, sizeof(treewalkstruct2.oid.id));
-			int ret = git_tree_walk(tree2, GIT_TREEWALK_PRE, TreewalkCB_FindFileRecentCommit, &treewalkstruct2);
+			ret = git_tree_walk(tree2, GIT_TREEWALK_PRE, TreewalkCB_FindFileRecentCommit, &treewalkstruct2);
 
 			if (ret < 0 && ret != GIT_EUSER)
 				return nullptr;

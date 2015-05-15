@@ -202,7 +202,7 @@ void CCreateBranchTagDlg::OnCbnSelchangeComboboxexBranch()
 		if( m_BranchTagName.IsEmpty() ||  isDefault)
 		{
 			m_BranchTagName= m_ChooseVersioinBranch.GetString();
-			int start = m_BranchTagName.Find(_T('/'), 9);;
+			start = m_BranchTagName.Find(_T('/'), 9);
 			if(start>=0)
 				m_BranchTagName = m_BranchTagName.Mid(start+1);
 

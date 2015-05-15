@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2014 - TortoiseSVN
+// Copyright (C) 2003-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -448,22 +448,22 @@ bool CPicture::LoadPictureData(BYTE *pBuffer, int nSize)
 {
 	bool bResult = false;
 
-	HGLOBAL hGlobal = GlobalAlloc(GMEM_MOVEABLE, nSize);
+	HGLOBAL hGlobalMem = GlobalAlloc(GMEM_MOVEABLE, nSize);
 
-	if(hGlobal == NULL)
+	if(hGlobalMem == NULL)
 	{
 		return(false);
 	}
 
-	void* pData = GlobalLock(hGlobal);
+	void* pData = GlobalLock(hGlobalMem);
 	if (pData == NULL)
 		return false;
 	memcpy(pData, pBuffer, nSize);
-	GlobalUnlock(hGlobal);
+	GlobalUnlock(hGlobalMem);
 
 	IStream* pStream = NULL;
 
-	if ((CreateStreamOnHGlobal(hGlobal, true, &pStream) == S_OK)&&(pStream))
+	if ((CreateStreamOnHGlobal(hGlobalMem, true, &pStream) == S_OK)&&(pStream))
 	{
 		HRESULT hr = OleLoadPicture(pStream, nSize, false, IID_IPicture, (LPVOID *)&m_IPicture);
 		pStream->Release();
@@ -472,7 +472,7 @@ bool CPicture::LoadPictureData(BYTE *pBuffer, int nSize)
 		bResult = hr == S_OK;
 	}
 
-	FreeResource(hGlobal); // 16Bit Windows Needs This (32Bit - Automatic Release)
+	FreeResource(hGlobalMem); // 16Bit Windows Needs This (32Bit - Automatic Release)
 
 	return(bResult);
 }

@@ -1,6 +1,6 @@
 // TortoiseIDiff - an image diff viewer in TortoiseSVN
 
-// Copyright (C) 2006-2007, 2009, 2011-2013 - TortoiseSVN
+// Copyright (C) 2006-2007, 2009, 2011-2013, 2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -44,10 +44,10 @@ enum FileType
 class CMainWindow : public CWindow
 {
 public:
-    CMainWindow(HINSTANCE hInst, const WNDCLASSEX* wcx = NULL) : CWindow(hInst, wcx)
-        , picWindow1(hInst)
-        , picWindow2(hInst)
-        , picWindow3(hInst)
+    CMainWindow(HINSTANCE hInstance, const WNDCLASSEX* wcx = NULL) : CWindow(hInstance, wcx)
+        , picWindow1(hInstance)
+        , picWindow2(hInstance)
+        , picWindow3(hInstance)
         , oldx(-4)
         , oldy(-4)
         , bMoved(false)

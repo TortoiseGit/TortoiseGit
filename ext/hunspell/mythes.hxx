@@ -55,7 +55,7 @@ private:
         int readLine(FILE * pf, char * buf, int nc);
 
         // binary search on null terminated character strings
-        int binsearch(char * wrd, char* list[], int nlst);
+        int binsearch(char * wrd, char* clist[], int nlst);
 
         // string duplication routine
         char * mystrdup(const char * p);

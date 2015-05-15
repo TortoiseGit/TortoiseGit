@@ -44,8 +44,6 @@ bool PrevDiffCommand::Execute()
 	}
 	else
 	{
-		CGitDiff diff;
-//		diff.SetAlternativeTool(bAlternativeTool);
 		GitStatus st;
 		st.GetStatus(cmdLinePath);
 

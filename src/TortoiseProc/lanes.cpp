@@ -2,6 +2,7 @@
 	Description: history graph computation
 
 	Author: Marco Costalba (C) 2005-2007
+	Copyright (C) 2008-2015 - TortoiseGit
 
 	Copyright: See COPYING file that comes with this distribution
 
@@ -160,16 +161,16 @@ void Lanes::setMerge(const CGitHashList& parents) {
 
 	for (int i = rangeStart + 1; i < rangeEnd; ++i) {
 
-		int& t = typeVec[i];
+		int& t2 = typeVec[i];
 
-		if (t == NOT_ACTIVE)
-			t = CROSS;
+		if (t2 == NOT_ACTIVE)
+			t2 = CROSS;
 
-		else if (t == EMPTY)
-			t = CROSS_EMPTY;
+		else if (t2 == EMPTY)
+			t2 = CROSS_EMPTY;
 
-		else if (t == TAIL_R || t == TAIL_L)
-			t = TAIL;
+		else if (t2 == TAIL_R || t2 == TAIL_L)
+			t2 = TAIL;
 	}
 }
 

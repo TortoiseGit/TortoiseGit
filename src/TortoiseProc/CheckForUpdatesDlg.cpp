@@ -337,7 +337,6 @@ UINT CCheckForUpdatesDlg::CheckThread()
 			{
 				GetDlgItem(IDC_DONOTASKAGAIN)->ShowWindow(SW_SHOW);
 				rectOKButton.left += 60;
-				CString temp;
 				temp.LoadString(IDS_REMINDMELATER);
 				GetDlgItem(IDOK)->SetWindowText(temp);
 				rectOKButton.right += 160;

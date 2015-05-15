@@ -1744,10 +1744,10 @@ void CLogDlg::OnEnLinkMsgview(NMHDR *pNMHDR, LRESULT *pResult)
 					if (!rev) continue;
 					if (rev->m_CommitHash.ToString().Left(url.GetLength()) == url)
 					{
-						POSITION pos = m_LogList.GetFirstSelectedItemPosition();
-						if (pos)
+						POSITION pos2 = m_LogList.GetFirstSelectedItemPosition();
+						if (pos2)
 						{
-							int index = m_LogList.GetNextSelectedItem(pos);
+							int index = m_LogList.GetNextSelectedItem(pos2);
 							if (index >= 0)
 								m_LogList.SetItemState(index, 0, LVIS_SELECTED);
 						}

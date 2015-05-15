@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2008, 2010-2014 - TortoiseSVN
+// Copyright (C) 2003-2008, 2010-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -1915,11 +1915,11 @@ BOOL CResModule::ReplaceRibbon(LPCTSTR lpszType, WORD wLanguage)
 	for (std::sregex_iterator it(ss.begin(), ss.end(), regRevMatch); it != end; ++it)
 	{
 		std::string str = (*it)[1];
-		size_t len = str.size();
-		std::unique_ptr<wchar_t[]> bufw(new wchar_t[len*4 + 1]);
-		SecureZeroMemory(bufw.get(), (len*4 + 1)*sizeof(wchar_t));
-		MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, bufw.get(), (int)len*4);
-		std::wstring ret = bufw.get();
+		size_t slen = str.size();
+		std::unique_ptr<wchar_t[]> bufw2(new wchar_t[slen * 4 + 1]);
+		SecureZeroMemory(bufw2.get(), (slen * 4 + 1)*sizeof(wchar_t));
+		MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, bufw2.get(), (int)slen * 4);
+		std::wstring ret = bufw2.get();
 
 		RESOURCEENTRY entry = m_StringEntries[ret];
 		ret = L"<TEXT>" + ret + L"</TEXT>";
@@ -1937,11 +1937,11 @@ BOOL CResModule::ReplaceRibbon(LPCTSTR lpszType, WORD wLanguage)
 	for (std::sregex_iterator it(ss.begin(), ss.end(), regRevMatchName); it != end; ++it)
 	{
 		std::string str = (*it)[1];
-		size_t len = str.size();
-		std::unique_ptr<wchar_t[]> bufw(new wchar_t[len*4 + 1]);
-		SecureZeroMemory(bufw.get(), (len*4 + 1)*sizeof(wchar_t));
-		MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, bufw.get(), (int)len*4);
-		std::wstring ret = bufw.get();
+		size_t slen = str.size();
+		std::unique_ptr<wchar_t[]> bufw2(new wchar_t[slen * 4 + 1]);
+		SecureZeroMemory(bufw2.get(), (slen * 4 + 1)*sizeof(wchar_t));
+		MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, bufw2.get(), (int)slen * 4);
+		std::wstring ret = bufw2.get();
 
 		RESOURCEENTRY entry = m_StringEntries[ret];
 		ret = L"</ELEMENT_NAME><NAME>" + ret + L"</NAME>";

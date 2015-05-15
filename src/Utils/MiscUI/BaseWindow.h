@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2007, 2010, 2013-2014 - TortoiseSVN
+// Copyright (C) 2003-2007, 2010, 2013-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -81,14 +81,14 @@ protected:
     bool bWindowRestored;
 
     //constructor
-    CWindow(HINSTANCE hInst, CONST WNDCLASSEX* wcx = NULL)
+    CWindow(HINSTANCE hInstance, CONST WNDCLASSEX* wcx = NULL)
         : m_hwnd(NULL)
         , hResource(NULL)
         , m_hParent(NULL)
         , bWindowClosed(FALSE)
         , bWindowRestored(false)
     {
-        hResource = hInst;
+        hResource = hInstance;
         if (wcx != NULL)
             RegisterWindow(wcx);
     };

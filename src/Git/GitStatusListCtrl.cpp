@@ -1498,11 +1498,11 @@ int CGitStatusListCtrl::GetGroupFromPoint(POINT * ppt)
 				if ((flags & LVHT_ONITEM)&&(nItem >= 0))
 				{
 					// the first item below the point
-					LVITEM lv = {0};
-					lv.mask = LVIF_GROUPID;
-					lv.iItem = nItem;
-					GetItem(&lv);
-					if (lv.iGroupId != groupID)
+					LVITEM lv2 = {0};
+					lv2.mask = LVIF_GROUPID;
+					lv2.iItem = nItem;
+					GetItem(&lv2);
+					if (lv2.iGroupId != groupID)
 						return groupID;
 					else
 						return -1;
@@ -2438,11 +2438,11 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						// put all reverted files in the trashbin, except the ones with 'added'
 						// status because they are not restored by the revert.
 						CTGitPathList delList;
-						POSITION pos = GetFirstSelectedItemPosition();
-						int index;
-						while ((index = GetNextSelectedItem(pos)) >= 0)
+						POSITION pos2 = GetFirstSelectedItemPosition();
+						int index2;
+						while ((index2 = GetNextSelectedItem(pos2)) >= 0)
 						{
-							CTGitPath *entry=(CTGitPath *)GetItemData(index);
+							CTGitPath *entry=(CTGitPath *)GetItemData(index2);
 							if (entry&&(!(entry->m_Action& CTGitPath::LOGACTIONS_ADDED))
 									&& (!(entry->m_Action& CTGitPath::LOGACTIONS_REPLACED)) && !entry->IsDirectory())
 							{
@@ -4439,15 +4439,15 @@ void CGitStatusListCtrl::DeleteSelectedFiles()
 	if ((result == 0) && (!fileop.fAnyOperationsAborted))
 	{
 		SetRedraw(FALSE);
-		POSITION pos = NULL;
-		while ((pos = GetFirstSelectedItemPosition()) != 0)
+		POSITION pos2 = NULL;
+		while ((pos2 = GetFirstSelectedItemPosition()) != 0)
 		{
-			int index = GetNextSelectedItem(pos);
-			if (GetCheck(index))
+			int index2 = GetNextSelectedItem(pos2);
+			if (GetCheck(index2))
 				m_nSelected--;
 			m_nTotal--;
 
-			RemoveListEntry(index);
+			RemoveListEntry(index2);
 		}
 		SetRedraw(TRUE);
 	}

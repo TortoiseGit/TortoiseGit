@@ -1794,7 +1794,6 @@ bool CAppUtils::ConflictEdit(const CTGitPath& path, bool /*bAlternativeTool = fa
 
 	for (int i = 0; i< list.GetCount(); ++i)
 	{
-		CString cmd;
 		CString outfile;
 		cmd.Empty();
 		outfile.Empty();
@@ -1867,7 +1866,7 @@ bool CAppUtils::ConflictEdit(const CTGitPath& path, bool /*bAlternativeTool = fa
 		dlg.m_File=merge.GetGitPathString();
 		if(dlg.DoModal() == IDOK)
 		{
-			CString cmd,out;
+			CString out;
 			if(dlg.m_bIsDelete)
 			{
 				cmd.Format(_T("git.exe rm -- \"%s\""),merge.GetGitPathString());
@@ -2500,9 +2499,9 @@ bool CAppUtils::Pull(bool showPush, bool showStashPop)
 
 		if (ret == IDOK && progress.m_GitStatus == 1 && progress.m_LogText.Find(_T("CONFLICT")) >= 0 && CMessageBox::Show(NULL, IDS_SEECHANGES, IDS_APPNAME, MB_YESNO | MB_ICONINFORMATION) == IDYES)
 		{
-			CChangedDlg dlg;
-			dlg.m_pathList.AddPath(CTGitPath());
-			dlg.DoModal();
+			CChangedDlg changeddlg;
+			changeddlg.m_pathList.AddPath(CTGitPath());
+			changeddlg.DoModal();
 
 			return true;
 		}
@@ -2847,13 +2846,13 @@ bool CAppUtils::RequestPull(const CString& endrevision, const CString& repositor
 
 		if (dlg.m_bSendMail)
 		{
-			CSendMailDlg dlg;
-			dlg.m_PathList = CTGitPathList(CTGitPath(tempFileName));
-			dlg.m_bCustomSubject = true;
+			CSendMailDlg sendmaildlg;
+			sendmaildlg.m_PathList = CTGitPathList(CTGitPath(tempFileName));
+			sendmaildlg.m_bCustomSubject = true;
 
-			if (dlg.DoModal() == IDOK)
+			if (sendmaildlg.DoModal() == IDOK)
 			{
-				if (dlg.m_PathList.IsEmpty())
+				if (sendmaildlg.m_PathList.IsEmpty())
 					return FALSE;
 
 				CGitProgressDlg progDlg;
@@ -2862,10 +2861,10 @@ bool CAppUtils::RequestPull(const CString& endrevision, const CString& repositor
 				SendMailProgressCommand sendMailProgressCommand;
 				progDlg.SetCommand(&sendMailProgressCommand);
 
-				sendMailProgressCommand.SetPathList(dlg.m_PathList);
-				progDlg.SetItemCount(dlg.m_PathList.GetCount());
+				sendMailProgressCommand.SetPathList(sendmaildlg.m_PathList);
+				progDlg.SetItemCount(sendmaildlg.m_PathList.GetCount());
 
-				CSendMailCombineable sendMailCombineable(dlg.m_To, dlg.m_CC, dlg.m_Subject, !!dlg.m_bAttachment, !!dlg.m_bCombine);
+				CSendMailCombineable sendMailCombineable(sendmaildlg.m_To, sendmaildlg.m_CC, sendmaildlg.m_Subject, !!sendmaildlg.m_bAttachment, !!sendmaildlg.m_bCombine);
 				sendMailProgressCommand.SetSendMailOption(&sendMailCombineable);
 
 				progDlg.DoModal();

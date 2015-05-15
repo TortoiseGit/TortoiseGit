@@ -632,12 +632,12 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 				while (pos)
 				{
 					int index = m_cFileList.GetNextSelectedItem(pos);
-					CString cmd = _T("/command:log");
-					if (cmd == ID_LOGSUBMODULE)
-						cmd += _T(" /submodule");
-					cmd += _T(" /path:\"")+m_arFilteredList[index]->GetWinPathString()+_T("\" ");
-					cmd += _T(" /endrev:")+m_rev1.m_CommitHash.ToString();
-					CAppUtils::RunTortoiseGitProc(cmd);
+					CString sCmd = _T("/command:log");
+					if (sCmd == ID_LOGSUBMODULE)
+						sCmd += _T(" /submodule");
+					sCmd += _T(" /path:\"") + m_arFilteredList[index]->GetWinPathString() + _T("\" ");
+					sCmd += _T(" /endrev:") + m_rev1.m_CommitHash.ToString();
+					CAppUtils::RunTortoiseGitProc(sCmd);
 				}
 			}
 			break;

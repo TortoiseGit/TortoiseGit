@@ -318,7 +318,6 @@ void CPullFetchDlg::OnCbnSelchangeRemote()
 	}
 	if (!prune.IsEmpty())
 	{
-		CString value;
 		value.Format(_T("%s: %s"), CString(MAKEINTRESOURCE(IDS_DEFAULT)), prune);
 		GetDlgItem(IDC_STATIC_PRUNE)->SetWindowText(value);
 	}

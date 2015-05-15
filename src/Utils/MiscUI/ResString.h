@@ -1,6 +1,6 @@
 // TortoiseSVN - a Windows shell extension for easy version control
 
-// Copyright (C) 2013 - TortoiseSVN
+// Copyright (C) 2013, 2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -27,14 +27,14 @@
 class ResString
 {
 public:
-	ResString (HINSTANCE hInst, int resId)
+	ResString (HINSTANCE hInstance, int resId)
 	{
 		int bufsize = 1024;
 		str.clear();
 		do
 		{
 			std::unique_ptr<wchar_t[]> buf(new wchar_t[bufsize]);
-			int ret = ::LoadString(hInst, resId, buf.get(), bufsize);
+			int ret = ::LoadString(hInstance, resId, buf.get(), bufsize);
 			if (ret == (bufsize-1))
 				bufsize *= 2;
 			else

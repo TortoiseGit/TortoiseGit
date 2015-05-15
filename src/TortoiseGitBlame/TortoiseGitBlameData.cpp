@@ -215,9 +215,9 @@ void CTortoiseGitBlameData::ParseBlameOutput(BYTE_VECTOR &data, CGitHashMap & Ha
 
 	for (auto it = hashes.begin(), it_end = hashes.end(); it != it_end; ++it)
 	{
-		CGitHash hash = *it;
+		CGitHash hash2 = *it;
 		CString err;
-		GitRev* pRev = GetRevForHash(HashToRev, hash, &err);
+		GitRev* pRev = GetRevForHash(HashToRev, hash2, &err);
 		if (pRev)
 		{
 			authors.push_back(pRev->GetAuthorName());
@@ -267,7 +267,7 @@ int CTortoiseGitBlameData::UpdateEncoding(int encode)
 		{
 			const BYTE_VECTOR& rawLine = m_RawLines[i_Lines];
 
-			int bomoffset = 0;
+			int linebomoffset = 0;
 			CStringA lineUtf8;
 			lineUtf8.Empty();
 
@@ -276,9 +276,9 @@ int CTortoiseGitBlameData::UpdateEncoding(int encode)
 				if (encoding == 1201)
 				{
 					CString line;
-					int size = (int)((rawLine.size() - bomoffset)/2);
+					int size = (int)((rawLine.size() - linebomoffset) / 2);
 					TCHAR *buffer = line.GetBuffer(size);
-					memcpy(buffer, &rawLine[bomoffset], sizeof(TCHAR)*size);
+					memcpy(buffer, &rawLine[linebomoffset], sizeof(TCHAR) * size);
 					// swap the bytes to little-endian order to get proper strings in wchar_t format
 					wchar_t * pSwapBuf = buffer;
 					for (int i = 0; i < size; ++i)
@@ -295,28 +295,28 @@ int CTortoiseGitBlameData::UpdateEncoding(int encode)
 					CString line;
 					// the first bomoffset is 2, after that it's 1 (see issue #920)
 					// also: don't set bomoffset if called from Encodings menu (i.e. start == 42 and bomoffset == 0); bomoffset gets only set if autodetected
-					if (bomoffset == 0 && i_Lines != 0)
+					if (linebomoffset == 0 && i_Lines != 0)
 					{
-						bomoffset = 1;
+						linebomoffset = 1;
 					}
-					int size = (int)((rawLine.size() - bomoffset)/2);
+					int size = (int)((rawLine.size() - linebomoffset) / 2);
 					TCHAR *buffer = line.GetBuffer(size);
-					memcpy(buffer, &rawLine[bomoffset], sizeof(TCHAR) * size);
+					memcpy(buffer, &rawLine[linebomoffset], sizeof(TCHAR) * size);
 					line.ReleaseBuffer();
 
 					lineUtf8 = CUnicodeUtils::GetUTF8(line);
 				}
 				else if (encoding == CP_UTF8)
-					lineUtf8 = CStringA((LPCSTR)&rawLine[bomoffset], (int)(rawLine.size() - bomoffset));
+					lineUtf8 = CStringA((LPCSTR)&rawLine[linebomoffset], (int)(rawLine.size() - linebomoffset));
 				else
 				{
-					CString line = CUnicodeUtils::GetUnicode(CStringA((LPCSTR)&rawLine[bomoffset], (int)(rawLine.size() - bomoffset)), encoding);
+					CString line = CUnicodeUtils::GetUnicode(CStringA((LPCSTR)&rawLine[linebomoffset], (int)(rawLine.size() - linebomoffset)), encoding);
 					lineUtf8 = CUnicodeUtils::GetUTF8(line);
 				}
 			}
 
 			m_Utf8Lines[i_Lines] = lineUtf8;
-			bomoffset = 0;
+			linebomoffset = 0;
 		}
 	}
 	return encoding;

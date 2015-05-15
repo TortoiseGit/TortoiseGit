@@ -251,23 +251,23 @@ int CLogCache::SaveOneItem(GitRevLoglist& Rev, LONG offset)
 	CString name,oldname;
 	for (int i = 0; i < Rev.m_Files.GetCount(); ++i)
 	{
-		SLogCacheRevFileHeader header;
-		header.m_Magic=LOG_DATA_FILE_MAGIC;
-		header.m_Version=LOG_INDEX_VERSION;
-		header.m_Action = Rev.m_Files[i].m_Action;
-		header.m_Stage = Rev.m_Files[i].m_Stage;
-		header.m_ParentNo = Rev.m_Files[i].m_ParentNo;
+		SLogCacheRevFileHeader revfileheader;
+		revfileheader.m_Magic = LOG_DATA_FILE_MAGIC;
+		revfileheader.m_Version = LOG_INDEX_VERSION;
+		revfileheader.m_Action = Rev.m_Files[i].m_Action;
+		revfileheader.m_Stage = Rev.m_Files[i].m_Stage;
+		revfileheader.m_ParentNo = Rev.m_Files[i].m_ParentNo;
 		name =  Rev.m_Files[i].GetGitPathString();
-		header.m_FileNameSize = name.GetLength();
+		revfileheader.m_FileNameSize = name.GetLength();
 		oldname = Rev.m_Files[i].GetGitOldPathString();
-		header.m_OldFileNameSize = oldname.GetLength();
+		revfileheader.m_OldFileNameSize = oldname.GetLength();
 
 		stat = Rev.m_Files[i].m_StatAdd;
-		header.m_Add = (stat == _T("-"))? 0xFFFFFFFF:_tstol(stat);
+		revfileheader.m_Add = (stat == _T("-")) ? 0xFFFFFFFF : _tstol(stat);
 		stat = Rev.m_Files[i].m_StatDel;
-		header.m_Del = (stat == _T("-"))? 0xFFFFFFFF:_tstol(stat);
+		revfileheader.m_Del = (stat == _T("-")) ? 0xFFFFFFFF : _tstol(stat);
 
-		if(!WriteFile(this->m_DataFile,&header, sizeof(header)-sizeof(TCHAR),&num,0))
+		if(!WriteFile(this->m_DataFile, &revfileheader, sizeof(revfileheader) - sizeof(TCHAR), &num, 0))
 			return -1;
 
 		if(!name.IsEmpty())
@@ -453,10 +453,10 @@ int CLogCache::SaveCache()
 		}
 		if(!bIsRebuild)
 		{
-			SLogCacheDataFileHeader header;
+			SLogCacheDataFileHeader datafileheader;
 			DWORD num=0;
-			if((!ReadFile(m_DataFile,&header,sizeof(SLogCacheDataFileHeader),&num,0)||
-				!CheckHeader(&header)))
+			if((!ReadFile(m_DataFile, &datafileheader, sizeof(SLogCacheDataFileHeader), &num, 0) ||
+				!CheckHeader(&datafileheader)))
 			{
 				RebuildCacheFile();
 				bIsRebuild=true;

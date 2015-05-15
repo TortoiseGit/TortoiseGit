@@ -436,14 +436,14 @@ BOOL ProjectProperties::CheckBugID(const CString& sID)
 	return TRUE;
 }
 
-BOOL ProjectProperties::HasBugID(const CString& sMessage)
+BOOL ProjectProperties::HasBugID(const CString& sMsg)
 {
 	if (!sCheckRe.IsEmpty())
 	{
 		try
 		{
 			AutoUpdateRegex();
-			return std::tr1::regex_search((LPCTSTR)sMessage, regCheck);
+			return std::tr1::regex_search((LPCTSTR)sMsg, regCheck);
 		}
 		catch (std::exception) {}
 	}

@@ -515,7 +515,7 @@ VOID GetAnswerToRequest(const TGITCacheRequest* pRequest, TGITCacheResponse* pRe
 DWORD WINAPI PipeThread(LPVOID lpvParam)
 {
 	CTraceToOutputDebugString::Instance()(__FUNCTION__ ": PipeThread started\n");
-	bool * bRun = (bool *)lpvParam;
+	bool* bThreadRun = (bool*)lpvParam;
 	// The main loop creates an instance of the named pipe and
 	// then waits for a client to connect to it. When the client
 	// connects, a thread is created to handle communications
@@ -524,7 +524,7 @@ DWORD WINAPI PipeThread(LPVOID lpvParam)
 	BOOL fConnected;
 	CAutoFile hPipe;
 
-	while (*bRun)
+	while (*bThreadRun)
 	{
 		hPipe = CreateNamedPipe(
 			GetCachePipeName(),
@@ -540,7 +540,7 @@ DWORD WINAPI PipeThread(LPVOID lpvParam)
 
 		if (!hPipe)
 		{
-			if (*bRun)
+			if (*bThreadRun)
 				Sleep(200);
 			continue; // never leave the thread!
 		}
@@ -576,7 +576,7 @@ DWORD WINAPI PipeThread(LPVOID lpvParam)
 		{
 			// The client could not connect, so close the pipe.
 			hPipe.CloseHandle();
-			if (*bRun)
+			if (*bThreadRun)
 				Sleep(200);
 			continue;	// don't end the thread!
 		}
@@ -588,7 +588,7 @@ DWORD WINAPI PipeThread(LPVOID lpvParam)
 DWORD WINAPI CommandWaitThread(LPVOID lpvParam)
 {
 	CTraceToOutputDebugString::Instance()(__FUNCTION__ ": CommandWaitThread started\n");
-	bool * bRun = (bool *)lpvParam;
+	bool* bThreadRun = (bool*)lpvParam;
 	// The main loop creates an instance of the named pipe and
 	// then waits for a client to connect to it. When the client
 	// connects, a thread is created to handle communications
@@ -597,7 +597,7 @@ DWORD WINAPI CommandWaitThread(LPVOID lpvParam)
 	BOOL fConnected;
 	CAutoFile hPipe;
 
-	while (*bRun)
+	while (*bThreadRun)
 	{
 		hPipe = CreateNamedPipe(
 			GetCacheCommandPipeName(),
@@ -613,7 +613,7 @@ DWORD WINAPI CommandWaitThread(LPVOID lpvParam)
 
 		if (!hPipe)
 		{
-			if (*bRun)
+			if (*bThreadRun)
 				Sleep(200);
 			continue; // never leave the thread!
 		}
@@ -650,7 +650,7 @@ DWORD WINAPI CommandWaitThread(LPVOID lpvParam)
 		{
 			// The client could not connect, so close the pipe.
 			hPipe.CloseHandle();
-			if (*bRun)
+			if (*bThreadRun)
 				Sleep(200);
 			continue;	// don't end the thread!
 		}

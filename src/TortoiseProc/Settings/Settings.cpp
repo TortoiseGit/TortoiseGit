@@ -256,8 +256,6 @@ void CSettings::HandleRestart()
 				if (hPipe != INVALID_HANDLE_VALUE)
 				{
 					// now tell the cache we don't need it's command thread anymore
-					DWORD cbWritten;
-					TGITCacheCommand cmd;
 					SecureZeroMemory(&cmd, sizeof(TGITCacheCommand));
 					cmd.command = TGITCACHECOMMAND_END;
 					WriteFile(

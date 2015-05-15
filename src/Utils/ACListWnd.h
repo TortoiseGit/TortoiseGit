@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (c) 2003 by Andreas Kapust <info@akinstaller.de>; <http://www.codeproject.com/Articles/2607/AutoComplete-without-IAutoComplete>
-// Copyright (C) 2009,2012-2013 - TortoiseGit
+// Copyright (C) 2009,2012-2013,2015 - TortoiseGit
 
 // Licensed under: The Code Project Open License (CPOL); <http://www.codeproject.com/info/cpol10.aspx>
 
@@ -105,7 +105,7 @@ protected:
 	void SetProp();
 	long ScrollBarWidth();
 	void InvalidateAndScroll();
-	void SortList(CStringArray& m_List);
+	void SortList(CStringArray& list);
 	static int CompareString(const void* p1, const void* p2);
 };
 
