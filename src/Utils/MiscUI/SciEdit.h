@@ -147,7 +147,7 @@ private:
 protected:
 	virtual BOOL OnChildNotify(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pLResult);
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
-	void		CheckSpelling(void);
+	void		CheckSpelling(int startpos, int endpos);
 	void		SuggestSpellingAlternatives(void);
 	void		DoAutoCompletion(int nMinPrefixLength);
 	BOOL		LoadDictionaries(LONG lLanguageID);

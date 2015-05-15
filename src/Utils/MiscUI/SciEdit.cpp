@@ -564,18 +564,15 @@ BOOL CSciEdit::IsMisspelled(const CString& sWord)
 	return FALSE;
 }
 
-void CSciEdit::CheckSpelling()
+void CSciEdit::CheckSpelling(int startpos, int endpos)
 {
 	if (pChecker == NULL)
 		return;
 
 	TEXTRANGEA textrange;
-
-	LRESULT firstline = Call(SCI_GETFIRSTVISIBLELINE);
-	LRESULT lastline = firstline + Call(SCI_LINESONSCREEN);
-	textrange.chrg.cpMin = (LONG)Call(SCI_POSITIONFROMLINE, firstline);
+	textrange.chrg.cpMin = startpos;
 	textrange.chrg.cpMax = (LONG)textrange.chrg.cpMin;
-	LRESULT lastpos = Call(SCI_POSITIONFROMLINE, lastline) + Call(SCI_LINELENGTH, lastline);
+	LRESULT lastpos = endpos;
 	if (lastpos < 0)
 		lastpos = Call(SCI_GETLENGTH)-textrange.chrg.cpMin;
 	Call(SCI_SETINDICATORCURRENT, INDIC_MISSPELLED);
@@ -793,19 +790,26 @@ BOOL CSciEdit::OnChildNotify(UINT message, WPARAM wParam, LPARAM lParam, LRESULT
 				}
 				return TRUE;
 			}
-		case SCN_STYLENEEDED:
+		case SCN_MODIFIED:
+		{
+			if (lpSCN->modificationType & (SC_MOD_INSERTTEXT | SC_MOD_DELETETEXT))
 			{
-				int startstylepos = (int)Call(SCI_GETENDSTYLED);
-				int endstylepos = ((SCNotification *)lpnmhdr)->position;
-				MarkEnteredBugID(startstylepos, endstylepos);
+				LRESULT firstline = Call(SCI_GETFIRSTVISIBLELINE);
+				LRESULT lastline = firstline + Call(SCI_LINESONSCREEN);
+				int firstpos = (int)Call(SCI_POSITIONFROMLINE, firstline);
+				int lastpos = (int)Call(SCI_GETLINEENDPOSITION, lastline);
+				MarkEnteredBugID(firstpos, lastpos);
 				if (m_bDoStyle)
-					StyleEnteredText(startstylepos, endstylepos);
-				StyleURLs(startstylepos, endstylepos);
-				CheckSpelling();
-				WrapLines(startstylepos, endstylepos);
-				return TRUE;
+					StyleEnteredText(firstpos, lastpos);
+
+				int startpos = (int)Call(SCI_WORDSTARTPOSITION, lpSCN->position, true);
+				int endpos = (int)Call(SCI_WORDENDPOSITION, lpSCN->position + lpSCN->length, true);
+				StyleURLs(startpos, endpos);
+				CheckSpelling(startpos, endpos);
+				WrapLines(firstpos, lastpos);
 			}
 			break;
+		}
 		case SCN_DWELLSTART:
 		case SCN_HOTSPOTCLICK:
 			{
@@ -1110,7 +1114,7 @@ void CSciEdit::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 			break;
 		case SCI_ADDWORD:
 			m_personalDict.AddWord(sWord);
-			CheckSpelling();
+			CheckSpelling(Call(SCI_POSITIONFROMLINE, Call(SCI_GETFIRSTVISIBLELINE)), Call(SCI_POSITIONFROMLINE, Call(SCI_GETFIRSTVISIBLELINE) + Call(SCI_LINESONSCREEN)));
 			break;
 		case SCI_LINESSPLIT:
 			{
@@ -1187,7 +1191,7 @@ bool CSciEdit::StyleEnteredText(int startstylepos, int endstylepos)
 		int end = 0;
 		while (FindStyleChars(linebuffer.get(), '*', start, end))
 		{
-			Call(SCI_STARTSTYLING, start+offset, STYLE_MASK);
+			Call(SCI_STARTSTYLING, start + offset, STYLE_BOLD);
 			Call(SCI_SETSTYLING, end-start, STYLE_BOLD);
 			bStyled = true;
 			start = end;
@@ -1196,7 +1200,7 @@ bool CSciEdit::StyleEnteredText(int startstylepos, int endstylepos)
 		end = 0;
 		while (FindStyleChars(linebuffer.get(), '^', start, end))
 		{
-			Call(SCI_STARTSTYLING, start+offset, STYLE_MASK);
+			Call(SCI_STARTSTYLING, start + offset, STYLE_ITALIC);
 			Call(SCI_SETSTYLING, end-start, STYLE_ITALIC);
 			bStyled = true;
 			start = end;
@@ -1205,7 +1209,7 @@ bool CSciEdit::StyleEnteredText(int startstylepos, int endstylepos)
 		end = 0;
 		while (FindStyleChars(linebuffer.get(), '_', start, end))
 		{
-			Call(SCI_STARTSTYLING, start+offset, STYLE_MASK);
+			Call(SCI_STARTSTYLING, start + offset, STYLE_UNDERLINED);
 			Call(SCI_SETSTYLING, end-start, STYLE_UNDERLINED);
 			bStyled = true;
 			start = end;
@@ -1468,7 +1472,7 @@ void CSciEdit::StyleURLs(int startstylepos, int endstylepos)
 				while (strip && i - skipTrailing - 1 > starturl && (msg[i - skipTrailing - 1] == '.' || msg[i - skipTrailing - 1] == '-' || msg[i - skipTrailing - 1] == '?' || msg[i - skipTrailing - 1] == ';' || msg[i - skipTrailing - 1] == ':' || msg[i - skipTrailing - 1] == '>' || msg[i - skipTrailing - 1] == '<'))
 					++skipTrailing;
 				ASSERT(startstylepos + i - skipTrailing <= endstylepos);
-				Call(SCI_STARTSTYLING, startstylepos + starturl, STYLE_MASK);
+				Call(SCI_STARTSTYLING, startstylepos + starturl, STYLE_URL);
 				Call(SCI_SETSTYLING, i - starturl - skipTrailing, STYLE_URL);
 			}
 			starturl = -1;
