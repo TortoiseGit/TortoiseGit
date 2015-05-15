@@ -49,6 +49,10 @@ public:
 		Free(&m_Ref);
 	}
 
+private:
+	CSmartBuffer(const CSmartBuffer& that);
+	CSmartBuffer& operator=(const CSmartBuffer& that);
+
 protected:
 	HandleType m_Ref;
 };
@@ -138,6 +142,10 @@ public:
 	{
 		return m_Ref != nullptr;
 	}
+
+private:
+	CSmartLibgit2Ref(const CSmartLibgit2Ref& that);
+	CSmartLibgit2Ref& operator=(const CSmartLibgit2Ref& that);
 
 protected:
 	virtual void FreeRef() = 0;

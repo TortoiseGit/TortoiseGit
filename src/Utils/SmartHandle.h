@@ -1,6 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2011 - TortoiseSVN
+// Copyright (C) 2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -91,6 +92,9 @@ public:
 		CleanUp();
 	}
 
+private:
+	CSmartHandle(const CSmartHandle& that);
+	CSmartHandle& operator=(const CSmartHandle& that);
 
 protected:
 	bool CleanUp()
