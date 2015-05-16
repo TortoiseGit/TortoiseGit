@@ -2838,7 +2838,7 @@ bool CBaseView::SelectNextBlock(int nDirection, bool bConflict, bool bSkipEndOfC
 
 BOOL CBaseView::OnToolTipNotify(UINT /*id*/, NMHDR *pNMHDR, LRESULT *pResult)
 {
-	if (pNMHDR->idFrom != (UINT)m_hWnd)
+	if (pNMHDR->idFrom != (UINT_PTR)m_hWnd)
 		return FALSE;
 
 	CString strTipText;
@@ -2909,7 +2909,7 @@ INT_PTR CBaseView::OnToolHitTest(CPoint point, TOOLINFO* pTI) const
 		pTI->hwnd = this->m_hWnd;
 		this->GetClientRect(&pTI->rect);
 		pTI->uFlags  |= TTF_ALWAYSTIP | TTF_IDISHWND;
-		pTI->uId = (UINT)m_hWnd;
+		pTI->uId = (UINT_PTR)m_hWnd;
 		pTI->lpszText = LPSTR_TEXTCALLBACK;
 
 		// we want multi line tooltips

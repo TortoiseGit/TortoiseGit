@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2012-2013 - TortoiseGit
-// Copyright (C) 2003-2008, 2011-2014 - TortoiseSVN
+// Copyright (C) 2003-2008, 2011-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -248,7 +248,7 @@ BOOL CPOFile::SaveFile(LPCTSTR szPath, LPCTSTR lpszHeaderFile)
 		{
 			File << _T("#. Resource IDs: (");
 
-			std::set<DWORD>::const_iterator II = I->second.resourceIDs.begin();
+			std::set<INT_PTR>::const_iterator II = I->second.resourceIDs.begin();
 			File << (*II);
 			++II;
 			while (II != I->second.resourceIDs.end())
