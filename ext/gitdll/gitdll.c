@@ -21,6 +21,8 @@
 
 #include "stdafx.h"
 #include "../build/libgit-defines.h"
+#pragma warning(push)
+#pragma warning(disable: 4100 4018 4127 4244 4267)
 #include "git-compat-util.h"
 #include "gitdll.h"
 #include "cache.h"
@@ -35,6 +37,7 @@
 #include "quote.h"
 #include "run-command.h"
 #include "mailmap.h"
+#pragma warning(pop)
 
 extern char g_last_error[];
 const char * g_prefix;
