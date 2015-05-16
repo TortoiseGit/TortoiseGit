@@ -42,6 +42,19 @@ const char * g_prefix;
 extern void die_dll(const char *err, va_list params);
 extern int die_is_recursing_dll();
 
+extern void free_all_pack();
+extern void reset_git_env();
+extern void invalidate_ref_cache(const char* submodule);
+extern void cmd_log_init(int argc, const char** argv, const char* prefix, struct rev_info* rev, struct setup_revision_opt* opt);
+extern int estimate_commit_count(struct rev_info* rev, struct commit_list* list);
+extern int log_tree_commit(struct rev_info*, struct commit*);
+extern int write_entry(struct cache_entry* ce, char* path, const struct checkout* state, int to_tempfile);
+extern struct object* deref_tag(struct object* o, const char* warn, int warnlen);
+extern void diff_flush_stat(struct diff_filepair* p, struct diff_options* o, struct diffstat_t* diffstat);
+extern void free_diffstat_info(struct diffstat_t* diffstat);
+extern int for_each_reflog_ent(const char* refname, each_reflog_ent_fn fn, void* cb_data);
+extern int for_each_ref_in(const char* prefix, each_ref_fn fn, void* cb_data);
+
 void dll_entry()
 {
 	set_die_routine(die_dll);
