@@ -40,7 +40,7 @@ extern char g_last_error[];
 const char * g_prefix;
 
 extern void die_dll(const char *err, va_list params);
-extern int die_is_recursing_dll();
+extern int die_is_recursing_dll(void);
 
 extern void free_all_pack();
 extern void reset_git_env();
