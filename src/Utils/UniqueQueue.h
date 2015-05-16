@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2013 - TortoiseGit
-// Copyright (C) 2010-2011, 2014 - TortoiseSVN
+// Copyright (C) 2010-2011, 2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -51,7 +51,7 @@ public:
 	size_t			size() const { return m_Queue.size(); }
 	bool			empty() { return m_Queue.empty(); }
 private:
-	typedef struct UniqueQueueStruct
+	struct UniqueQueueStruct
 	{
 		T			value;
 		size_t		priority;
