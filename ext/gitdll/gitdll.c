@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2014 - TortoiseGit
+// Copyright (C) 2008-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -925,7 +925,7 @@ static int update_some(const unsigned char *sha1, const char *base, int baselen,
 	return 0;
 }
 
-int git_checkout_file(const char *ref, const char *path, const char *outputpath)
+int git_checkout_file(const char* ref, const char* path, char* outputpath)
 {
 	struct cache_entry *ce;
 	int ret;
