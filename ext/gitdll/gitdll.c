@@ -120,7 +120,7 @@ static int git_parse_commit_author(struct GIT_COMMIT_AUTHOR *author, char *pbuff
 	{
 		return -1;
 	}
-	author->NameSize = end - pbuff - 1;
+	author->NameSize = (int)(end - pbuff - 1);
 
 	pbuff = end +1;
 	end = strchr(pbuff, '>');
@@ -128,7 +128,7 @@ static int git_parse_commit_author(struct GIT_COMMIT_AUTHOR *author, char *pbuff
 		return -1;
 
 	author->Email = pbuff ;
-	author->EmailSize = end - pbuff;
+	author->EmailSize = (int)(end - pbuff);
 
 	pbuff = end + 2;
 
@@ -184,7 +184,7 @@ int git_parse_commit(GIT_COMMIT *commit)
 			pbuf += 9;
 			commit->m_Encode=pbuf;
 			end = strchr(pbuf,'\n');
-			commit->m_EncodeSize=end -pbuf;
+			commit->m_EncodeSize= (int)(end -pbuf);
 		}
 
 		// the headers end after the first empty line
@@ -198,7 +198,7 @@ int git_parse_commit(GIT_COMMIT *commit)
 				commit->m_SubjectSize = strlen(pbuf);
 			else
 			{
-				commit->m_SubjectSize = end - pbuf;
+				commit->m_SubjectSize = (int)(end - pbuf);
 				pbuf = end +1;
 				commit->m_Body = pbuf;
 				commit->m_BodySize = strlen(pbuf);
@@ -614,9 +614,9 @@ int git_get_diff_file(GIT_DIFF diff,GIT_FILE file,int i, char **newname, char **
 		if(IsBin)
 			*IsBin = p_Rev->diffstat.files[j]->is_binary;
 		if(inc)
-			*inc = p_Rev->diffstat.files[j]->added;
+			*inc = (int)p_Rev->diffstat.files[j]->added;
 		if(dec)
-			*dec = p_Rev->diffstat.files[j]->deleted;
+			*dec = (int)p_Rev->diffstat.files[j]->deleted;
 	}else
 	{
 		*IsBin=1;
