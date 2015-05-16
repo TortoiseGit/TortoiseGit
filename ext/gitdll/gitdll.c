@@ -195,13 +195,13 @@ int git_parse_commit(GIT_COMMIT *commit)
 			commit->m_Subject=pbuf;
 			end = strchr(pbuf,'\n');
 			if( end == 0)
-				commit->m_SubjectSize = strlen(pbuf);
+				commit->m_SubjectSize = (int)strlen(pbuf);
 			else
 			{
 				commit->m_SubjectSize = (int)(end - pbuf);
 				pbuf = end +1;
 				commit->m_Body = pbuf;
-				commit->m_BodySize = strlen(pbuf);
+				commit->m_BodySize = (int)strlen(pbuf);
 				return 0;
 			}
 		}
@@ -919,7 +919,7 @@ static int update_some(const unsigned char *sha1, const char *base, int baselen,
 	hashcpy(ce->sha1, sha1);
 	memcpy(ce->name, base, baselen);
 	memcpy(ce->name + baselen, pathname, strlen(pathname));
-	ce->ce_flags = create_ce_flags(strlen(pathname) + baselen);
+	ce->ce_flags = create_ce_flags((unsigned int)strlen(pathname) + baselen);
 	ce->ce_mode = create_ce_mode(mode);
 
 	return 0;
