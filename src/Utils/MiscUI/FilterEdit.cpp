@@ -287,7 +287,7 @@ BOOL CFilterEdit::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 	// if the cursor is not in the edit area, show the normal arrow cursor
 	if (!m_rcEditArea.PtInRect(pntCursor))
 	{
-		SetCursor(AfxGetApp()->LoadStandardCursor(MAKEINTRESOURCE(IDC_ARROW)));
+		SetCursor(AfxGetApp()->LoadStandardCursor(IDC_ARROW));
 		return TRUE;
 	}
 

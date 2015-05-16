@@ -1709,7 +1709,7 @@ BOOL CRevisionGraphWnd::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 		}
 	}
 
-	HCURSOR hCur = LoadCursor(resourceHandle, MAKEINTRESOURCE(cursorID));
+	HCURSOR hCur = LoadCursor(resourceHandle, cursorID);
 	if (GetCursor() != hCur)
 		SetCursor (hCur);
 

@@ -577,7 +577,7 @@ void CCheckForUpdatesDlg::OnWindowPosChanging(WINDOWPOS* lpwndpos)
 
 BOOL CCheckForUpdatesDlg::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 {
-	HCURSOR hCur = LoadCursor(NULL, MAKEINTRESOURCE(IDC_ARROW));
+	HCURSOR hCur = LoadCursor(NULL, IDC_ARROW);
 	SetCursor(hCur);
 	return CStandAloneDialogTmpl<CDialog>::OnSetCursor(pWnd, nHitTest, message);
 }

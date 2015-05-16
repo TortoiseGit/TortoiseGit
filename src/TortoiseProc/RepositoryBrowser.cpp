@@ -1179,7 +1179,7 @@ BOOL CRepositoryBrowser::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 				GetDlgItem(IDC_REPOLIST)->GetWindowRect(&rect);
 				if (pt.x < rect.left)
 				{
-					HCURSOR hCur = LoadCursor(NULL, MAKEINTRESOURCE(IDC_SIZEWE));
+					HCURSOR hCur = LoadCursor(NULL, IDC_SIZEWE);
 					SetCursor(hCur);
 					return TRUE;
 				}

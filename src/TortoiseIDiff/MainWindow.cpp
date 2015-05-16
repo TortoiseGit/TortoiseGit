@@ -283,12 +283,12 @@ LRESULT CALLBACK CMainWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam,
                 {
                     if (bVertical)
                     {
-                        HCURSOR hCur = LoadCursor(NULL, MAKEINTRESOURCE(IDC_SIZENS));
+                        HCURSOR hCur = LoadCursor(NULL, IDC_SIZENS);
                         SetCursor(hCur);
                     }
                     else
                     {
-                        HCURSOR hCur = LoadCursor(NULL, MAKEINTRESOURCE(IDC_SIZEWE));
+                        HCURSOR hCur = LoadCursor(NULL, IDC_SIZEWE);
                         SetCursor(hCur);
                     }
                     return TRUE;

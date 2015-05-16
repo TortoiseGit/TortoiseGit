@@ -26,8 +26,14 @@
 #define RT_RIBBON MAKEINTRESOURCE(28)
 #endif
 
-
 #define MYERROR {CUtils::Error(); return FALSE;}
+
+static const WORD * AlignWORD(const WORD * pWord)
+{
+	const WORD * res = pWord;
+	res += ((((UINT_PTR)pWord + 3) & ~3) - (UINT_PTR)pWord) / sizeof(WORD);
+	return res;
+}
 
 CResModule::CResModule(void)
 	: m_bTranslatedStrings(0)
@@ -766,7 +772,7 @@ const WORD* CResModule::ParseMenuExResource(const WORD * res)
 		size_t l = wcslen(str)+1;
 		res += l;
 		// Align to DWORD boundary
-		res += ((((WORD)res + 3) & ~3) - (WORD)res)/sizeof(WORD);
+		res = AlignWORD(res);
 
 		if (dwType & MFT_SEPARATOR)
 			continue;
@@ -866,7 +872,7 @@ const WORD* CResModule::CountMemReplaceMenuExResource(const WORD * res, size_t *
 			ReplaceStr((LPCWSTR)res, newMenu, wordcount, &m_bTranslatedMenuStrings, &m_bDefaultMenuStrings);
 			res += wcslen((LPCWSTR)res) + 1;
 			// Align to DWORD
-			res += ((((WORD)res + 3) & ~3) - (WORD)res)/sizeof(WORD);
+			res = AlignWORD(res);
 			if ((*wordcount) & 0x01)
 				(*wordcount)++;
 
@@ -892,7 +898,7 @@ const WORD* CResModule::CountMemReplaceMenuExResource(const WORD * res, size_t *
 			res += wcslen((LPCWSTR)res) + 1;
 		}
 		// Align to DWORD
-		res += ((((WORD)res + 3) & ~3) - (WORD)res)/sizeof(WORD);
+		res = AlignWORD(res);
 		if ((*wordcount) & 0x01)
 			(*wordcount)++;
 	} while (!(bResInfo & 0x80));
@@ -1400,7 +1406,7 @@ const WORD* CResModule::GetDialogInfo(const WORD * pTemplate, LPDIALOGINFO lpDlg
 		p += wcslen((LPCWSTR) p) + 1;
 	}
 	// First control is on DWORD boundary
-	p += ((((WORD)p + 3) & ~3) - (WORD)p)/sizeof(WORD);
+	p = AlignWORD(p);
 
 	return p;
 }
@@ -1484,7 +1490,7 @@ const WORD* CResModule::GetControlInfo(const WORD* p, LPDLGITEMINFO lpDlgItemInf
 
 	p++;
 	// Next control is on DWORD boundary
-	p += ((((WORD)p + 3) & ~3) - (WORD)p)/sizeof(WORD);
+	p = AlignWORD(p);
 	return p;
 }
 
@@ -1807,7 +1813,7 @@ const WORD* CResModule::ReplaceControlInfo(const WORD * res, size_t * wordcount,
 	// Next control is on DWORD boundary
 	while ((*wordcount) % 2)
 		(*wordcount)++;
-	res += ((((WORD)res + 3) & ~3) - (WORD)res)/sizeof(WORD);
+	res = AlignWORD(res);
 
 	return res;
 }
