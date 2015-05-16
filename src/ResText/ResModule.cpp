@@ -1464,7 +1464,7 @@ const WORD* CResModule::GetControlInfo(const WORD* p, LPDLGITEMINFO lpDlgItemInf
 	if (GET_WORD(p) == 0xffff)	// an integer ID?
 	{
 		*bIsID = TRUE;
-		lpDlgItemInfo->windowName = (LPCTSTR) (DWORD) GET_WORD(p + 1);
+		lpDlgItemInfo->windowName = (LPCTSTR) (UINT_PTR) GET_WORD(p + 1);
 		p += 2;
 	}
 	else
