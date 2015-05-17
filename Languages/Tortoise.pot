@@ -298,6 +298,10 @@ msgstr ""
 msgid "&3 way merge"
 msgstr ""
 
+#. Resource IDs: (73)
+msgid "&Abort"
+msgstr ""
+
 #. Resource IDs: (57664)
 msgid "&About TortoiseGitBlame..."
 msgstr ""
@@ -506,6 +510,10 @@ msgstr ""
 msgid "&Compressed Graph"
 msgstr ""
 
+#. Resource IDs: (73)
+msgid "&Continue"
+msgstr ""
+
 #. Resource IDs: (501, 1367, 1471, 57634)
 msgid "&Copy"
 msgstr ""
@@ -580,6 +588,10 @@ msgstr ""
 
 #. Resource IDs: (1032)
 msgid "&Don't ask me again"
+msgstr ""
+
+#. Resource IDs: (73)
+msgid "&Don't show this message again"
 msgstr ""
 
 #. Resource IDs: (1384)
@@ -908,6 +920,10 @@ msgstr ""
 msgid "&Next Page"
 msgstr ""
 
+#. Resource IDs: (73)
+msgid "&No"
+msgstr ""
+
 #. Resource IDs: (16632)
 msgid "&No double-click event"
 msgstr ""
@@ -1096,6 +1112,10 @@ msgstr ""
 msgid "&Restore old state"
 msgstr ""
 
+#. Resource IDs: (73)
+msgid "&Retry"
+msgstr ""
+
 #. Resource IDs: (1252)
 msgid "&Revert change by this commit"
 msgstr ""
@@ -1252,6 +1272,10 @@ msgstr ""
 msgid "&Trunk:"
 msgstr ""
 
+#. Resource IDs: (73)
+msgid "&Try Again"
+msgstr ""
+
 #. Resource IDs: (3845)
 msgid "&Two Page"
 msgstr ""
@@ -1318,6 +1342,10 @@ msgstr ""
 
 #. Resource IDs: (32790)
 msgid "&Within file"
+msgstr ""
+
+#. Resource IDs: (73)
+msgid "&Yes"
 msgstr ""
 
 #. Resource IDs: (1657)
@@ -6339,10 +6367,6 @@ msgstr ""
 msgid "Next inline difference"
 msgstr ""
 
-#. Resource IDs: (73)
-msgid "No"
-msgstr ""
-
 #. Resource IDs: (1481)
 msgid "No &Fast Forward"
 msgstr ""
@@ -7759,10 +7783,6 @@ msgstr ""
 
 #. Resource IDs: (73)
 msgid "Restored"
-msgstr ""
-
-#. Resource IDs: (73)
-msgid "Retry"
 msgstr ""
 
 #. Resource IDs: (602)
@@ -9662,10 +9682,6 @@ msgstr ""
 msgid "Try a 'Cleanup'. If that doesn't work you need to do a fresh checkout."
 msgstr ""
 
-#. Resource IDs: (73)
-msgid "Try again"
-msgstr ""
-
 #. Resource IDs: (65535)
 msgid "Turkish"
 msgstr ""
@@ -10340,10 +10356,6 @@ msgstr ""
 
 #. Resource IDs: (2056)
 msgid "Wrap long lines at the right border of the view\nWrap long lines"
-msgstr ""
-
-#. Resource IDs: (73)
-msgid "Yes"
 msgstr ""
 
 #. Resource IDs: (145)

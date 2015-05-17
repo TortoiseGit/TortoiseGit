@@ -9,6 +9,7 @@ Released: unreleased
 == Bug Fixes ==
  * Fixed issue #2495: "Show Reflog" dialog shows empty action for "push" entries
  * Fixed issue #2500: Amend with date reset causes an error with git 2.x
+ * Fixed issue #2507: Support keyboard shortcuts in yes/no prompts
 
 = Release 1.8.14.0 =
 Released: 2015-04-08
