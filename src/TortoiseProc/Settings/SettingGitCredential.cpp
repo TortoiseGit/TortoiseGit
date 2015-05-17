@@ -707,7 +707,7 @@ BOOL CSettingGitCredential::OnApply()
 		Save(_T("helper"), m_strHelper);
 		m_ChangedMask &= ~CREDENTIAL_HELPER;
 		
-		int sel = m_ctrlConfigType.GetCurSel();
+		sel = m_ctrlConfigType.GetCurSel();
 		CString prefix = sel == ConfigType::System ? _T("S") : sel == ConfigType::Global ? _T("G") : _T("L");
 		CString text;
 		if (!m_strUrl.IsEmpty())

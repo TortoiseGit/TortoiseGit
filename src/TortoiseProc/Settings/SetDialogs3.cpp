@@ -249,7 +249,7 @@ void CSetDialogs3::OnBnClickedIconfileBrowse()
 	SetCurrentDirectory(g_Git.m_CurrentDir);
 	if (ret == IDOK)
 	{
-		CString iconFile = dlg.GetPathName();
+		iconFile = dlg.GetPathName();
 		if (iconFile.Left(currentDir.GetLength()) == currentDir)
 			iconFile = iconFile.Mid(currentDir.GetLength());
 		iconFile.Replace('\\', '/');

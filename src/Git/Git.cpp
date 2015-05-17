@@ -1271,8 +1271,8 @@ int CGit::GetHash(CGitHash &hash, const CString& friendname)
 			gitLastErr.Empty();
 		else if (friendname == _T("HEAD")) // special check for unborn branch
 		{
-			CString branch;
-			if (GetCurrentBranchFromFile(m_CurrentDir, branch))
+			CString currentbranch;
+			if (GetCurrentBranchFromFile(m_CurrentDir, currentbranch))
 				return -1;
 			gitLastErr.Empty();
 			return 0;
@@ -1719,20 +1719,20 @@ int CGit::GetRemoteTags(const CString& remote, STRING_VECTOR& list)
 			return -1;
 
 		CStringA remoteA = CUnicodeUtils::GetUTF8(remote);
-		CAutoRemote remote;
-		if (git_remote_lookup(remote.GetPointer(), repo, remoteA) < 0)
+		CAutoRemote gitremote;
+		if (git_remote_lookup(gitremote.GetPointer(), repo, remoteA) < 0)
 			return -1;
 
 		git_remote_callbacks callbacks = GIT_REMOTE_CALLBACKS_INIT;
 		callbacks.credentials = g_Git2CredCallback;
 		callbacks.certificate_check = g_Git2CheckCertificateCallback;
-		git_remote_set_callbacks(remote, &callbacks);
-		if (git_remote_connect(remote, GIT_DIRECTION_FETCH) < 0)
+		git_remote_set_callbacks(gitremote, &callbacks);
+		if (git_remote_connect(gitremote, GIT_DIRECTION_FETCH) < 0)
 			return -1;
 
 		const git_remote_head** heads = nullptr;
 		size_t size = 0;
-		if (git_remote_ls(&heads, &size, remote) < 0)
+		if (git_remote_ls(&heads, &size, gitremote) < 0)
 			return -1;
 
 		for (size_t i = 0; i < size; i++)
@@ -2456,7 +2456,9 @@ int CGit::GetOneFile(const CString &Refname, const CTGitPath &path, const CStrin
 			patha = CUnicodeUtils::GetMulti(path.GetGitPathString(), CP_UTF8);
 			outa = CUnicodeUtils::GetMulti(outputfile, CP_UTF8);
 			::DeleteFile(outputfile);
-			return git_checkout_file(ref, patha, outa);
+			int ret = git_checkout_file(ref, patha, outa.GetBuffer());
+			outa.ReleaseBuffer();
+			return ret;
 
 		}
 		catch (const char * msg)

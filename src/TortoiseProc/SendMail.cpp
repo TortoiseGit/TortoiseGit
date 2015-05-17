@@ -1,7 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
-// Copyright (C) 2011-2013 Sven Strickroth <email@cs-ware.de>
+// Copyright (C) 2008-2013, 2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -64,9 +63,9 @@ int CSendMail::SendMail(const CTGitPath &item, CGitProgressList * instance, CStr
 			++retry;
 			if (retry < 3)
 			{
-				CString retry;
-				retry.LoadString(IDS_SVNACTION_SENDMAIL_RETRY);
-				instance->ReportNotification(retry);
+				CString temp;
+				temp.LoadString(IDS_SVNACTION_SENDMAIL_RETRY);
+				instance->ReportNotification(temp);
 				Sleep(2000);
 			}
 		}

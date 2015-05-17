@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2010 - TortoiseSVN
+// Copyright (C) 2009-2010, 2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -33,7 +33,7 @@ public:
 // Dialog Data
 	enum { IDD = IDD_SETTINGS_CONFIG };
 
-	typedef enum SettingType
+	enum SettingType
 	{
 		SettingTypeBoolean,
 		SettingTypeNumber,
@@ -41,14 +41,14 @@ public:
 		SettingTypeNone,
 	};
 
-	typedef union defaultValue
+	union defaultValue
 	{
 		bool		b;
 		LPCTSTR		s;
 		DWORD		l;
 	};
 
-	typedef struct AdvancedSetting
+	struct AdvancedSetting
 	{
 		CString			sName;
 		SettingType		type;

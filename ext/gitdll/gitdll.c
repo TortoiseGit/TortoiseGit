@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2014 - TortoiseGit
+// Copyright (C) 2008-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -21,6 +21,8 @@
 
 #include "stdafx.h"
 #include "../build/libgit-defines.h"
+#pragma warning(push)
+#pragma warning(disable: 4100 4018 4127 4244 4267)
 #include "git-compat-util.h"
 #include "gitdll.h"
 #include "cache.h"
@@ -35,12 +37,26 @@
 #include "quote.h"
 #include "run-command.h"
 #include "mailmap.h"
+#pragma warning(pop)
 
 extern char g_last_error[];
 const char * g_prefix;
 
 extern void die_dll(const char *err, va_list params);
-extern int die_is_recursing_dll();
+extern int die_is_recursing_dll(void);
+
+extern void free_all_pack();
+extern void reset_git_env();
+extern void invalidate_ref_cache(const char* submodule);
+extern void cmd_log_init(int argc, const char** argv, const char* prefix, struct rev_info* rev, struct setup_revision_opt* opt);
+extern int estimate_commit_count(struct rev_info* rev, struct commit_list* list);
+extern int log_tree_commit(struct rev_info*, struct commit*);
+extern int write_entry(struct cache_entry* ce, char* path, const struct checkout* state, int to_tempfile);
+extern struct object* deref_tag(struct object* o, const char* warn, int warnlen);
+extern void diff_flush_stat(struct diff_filepair* p, struct diff_options* o, struct diffstat_t* diffstat);
+extern void free_diffstat_info(struct diffstat_t* diffstat);
+extern int for_each_reflog_ent(const char* refname, each_reflog_ent_fn fn, void* cb_data);
+extern int for_each_ref_in(const char* prefix, each_ref_fn fn, void* cb_data);
 
 void dll_entry()
 {
@@ -107,7 +123,7 @@ static int git_parse_commit_author(struct GIT_COMMIT_AUTHOR *author, char *pbuff
 	{
 		return -1;
 	}
-	author->NameSize = end - pbuff - 1;
+	author->NameSize = (int)(end - pbuff - 1);
 
 	pbuff = end +1;
 	end = strchr(pbuff, '>');
@@ -115,7 +131,7 @@ static int git_parse_commit_author(struct GIT_COMMIT_AUTHOR *author, char *pbuff
 		return -1;
 
 	author->Email = pbuff ;
-	author->EmailSize = end - pbuff;
+	author->EmailSize = (int)(end - pbuff);
 
 	pbuff = end + 2;
 
@@ -171,7 +187,7 @@ int git_parse_commit(GIT_COMMIT *commit)
 			pbuf += 9;
 			commit->m_Encode=pbuf;
 			end = strchr(pbuf,'\n');
-			commit->m_EncodeSize=end -pbuf;
+			commit->m_EncodeSize= (int)(end -pbuf);
 		}
 
 		// the headers end after the first empty line
@@ -182,13 +198,13 @@ int git_parse_commit(GIT_COMMIT *commit)
 			commit->m_Subject=pbuf;
 			end = strchr(pbuf,'\n');
 			if( end == 0)
-				commit->m_SubjectSize = strlen(pbuf);
+				commit->m_SubjectSize = (int)strlen(pbuf);
 			else
 			{
-				commit->m_SubjectSize = end - pbuf;
+				commit->m_SubjectSize = (int)(end - pbuf);
 				pbuf = end +1;
 				commit->m_Body = pbuf;
-				commit->m_BodySize = strlen(pbuf);
+				commit->m_BodySize = (int)strlen(pbuf);
 				return 0;
 			}
 		}
@@ -601,9 +617,9 @@ int git_get_diff_file(GIT_DIFF diff,GIT_FILE file,int i, char **newname, char **
 		if(IsBin)
 			*IsBin = p_Rev->diffstat.files[j]->is_binary;
 		if(inc)
-			*inc = p_Rev->diffstat.files[j]->added;
+			*inc = (int)p_Rev->diffstat.files[j]->added;
 		if(dec)
-			*dec = p_Rev->diffstat.files[j]->deleted;
+			*dec = (int)p_Rev->diffstat.files[j]->deleted;
 	}else
 	{
 		*IsBin=1;
@@ -906,13 +922,13 @@ static int update_some(const unsigned char *sha1, const char *base, int baselen,
 	hashcpy(ce->sha1, sha1);
 	memcpy(ce->name, base, baselen);
 	memcpy(ce->name + baselen, pathname, strlen(pathname));
-	ce->ce_flags = create_ce_flags(strlen(pathname) + baselen);
+	ce->ce_flags = create_ce_flags((unsigned int)strlen(pathname) + baselen);
 	ce->ce_mode = create_ce_mode(mode);
 
 	return 0;
 }
 
-int git_checkout_file(const char *ref, const char *path, const char *outputpath)
+int git_checkout_file(const char* ref, const char* path, char* outputpath)
 {
 	struct cache_entry *ce;
 	int ret;

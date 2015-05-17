@@ -35,6 +35,7 @@ using namespace ATL;
 #include <functional>
 
 #pragma warning(push)
+#pragma warning(disable: 4510 4610)
 #include "git2.h"
 #pragma warning(pop)
 #include "SmartLibgit2Ref.h"

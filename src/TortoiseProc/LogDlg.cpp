@@ -1616,7 +1616,7 @@ BOOL CLogDlg::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 			(pWnd == GetDlgItem(IDC_MSGVIEW))||
 			(pWnd == GetDlgItem(IDC_LOGMSG))))
 		{
-			HCURSOR hCur = LoadCursor(NULL, MAKEINTRESOURCE(IDC_WAIT));
+			HCURSOR hCur = LoadCursor(NULL, IDC_WAIT);
 			SetCursor(hCur);
 			return TRUE;
 		}
@@ -1624,7 +1624,7 @@ BOOL CLogDlg::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 	if ((pWnd) && (pWnd == GetDlgItem(IDC_MSGVIEW)))
 		return CResizableStandAloneDialog::OnSetCursor(pWnd, nHitTest, message);
 
-	HCURSOR hCur = LoadCursor(NULL, MAKEINTRESOURCE(IDC_ARROW));
+	HCURSOR hCur = LoadCursor(NULL, IDC_ARROW);
 	SetCursor(hCur);
 	return CResizableStandAloneDialog::OnSetCursor(pWnd, nHitTest, message);
 }
@@ -1744,10 +1744,10 @@ void CLogDlg::OnEnLinkMsgview(NMHDR *pNMHDR, LRESULT *pResult)
 					if (!rev) continue;
 					if (rev->m_CommitHash.ToString().Left(url.GetLength()) == url)
 					{
-						POSITION pos = m_LogList.GetFirstSelectedItemPosition();
-						if (pos)
+						POSITION pos2 = m_LogList.GetFirstSelectedItemPosition();
+						if (pos2)
 						{
-							int index = m_LogList.GetNextSelectedItem(pos);
+							int index = m_LogList.GetNextSelectedItem(pos2);
 							if (index >= 0)
 								m_LogList.SetItemState(index, 0, LVIS_SELECTED);
 						}
@@ -3078,7 +3078,7 @@ void CLogDlg::OnBnClickedView()
 			AppendMenuChecked(showLabelsMenu, IDS_VIEW_SHOWTAGLABELS, VIEW_SHOWTAGS, m_bShowTags);
 			AppendMenuChecked(showLabelsMenu, IDS_VIEW_SHOWLOCALBRANCHLABELS, VIEW_SHOWLOCALBRANCHES, m_bShowLocalBranches);
 			AppendMenuChecked(showLabelsMenu, IDS_VIEW_SHOWREMOTEBRANCHLABELS, VIEW_SHOWREMOTEBRANCHES, m_bShowRemoteBranches);
-			popup.AppendMenu(MF_STRING | MF_POPUP, (UINT)showLabelsMenu.m_hMenu, (CString)MAKEINTRESOURCE(IDS_VIEW_LABELS));
+			popup.AppendMenu(MF_STRING | MF_POPUP, (UINT_PTR)showLabelsMenu.m_hMenu, (CString)MAKEINTRESOURCE(IDS_VIEW_LABELS));
 		}
 		popup.AppendMenu(MF_SEPARATOR, NULL);
 		AppendMenuChecked(popup, IDS_VIEW_SHOWGRAVATAR, VIEW_SHOWGRAVATAR, m_bShowGravatar);

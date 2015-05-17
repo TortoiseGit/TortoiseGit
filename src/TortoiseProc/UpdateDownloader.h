@@ -25,7 +25,7 @@ public:
 
 	DWORD	DownloadFile(const CString &url, const CString& dest, bool showProgress) const;
 
-	typedef struct DOWNLOADSTATUS
+	struct DOWNLOADSTATUS
 	{
 		ULONG ulProgress;
 		ULONG ulProgressMax;

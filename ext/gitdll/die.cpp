@@ -40,7 +40,7 @@ void die(const char *err, ...)
 
 	va_start(params, err);
 	die_dll(err, params);
-	va_end(params);
+	// va_end(params); // we never come here
 }
 
 extern "C" void vc_exit(int code)

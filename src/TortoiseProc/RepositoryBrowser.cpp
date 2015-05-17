@@ -222,7 +222,7 @@ BOOL CRepositoryBrowser::OnInitDialog()
 	m_RepoTree.SetImageList(&SYS_IMAGE_LIST(), TVSIL_NORMAL);
 	if (SysInfo::Instance().IsVistaOrLater())
 	{
-		DWORD exStyle = TVS_EX_FADEINOUTEXPANDOS | TVS_EX_AUTOHSCROLL | TVS_EX_DOUBLEBUFFER;
+		exStyle = TVS_EX_FADEINOUTEXPANDOS | TVS_EX_AUTOHSCROLL | TVS_EX_DOUBLEBUFFER;
 		m_RepoTree.SetExtendedStyle(exStyle, exStyle);
 	}
 
@@ -1179,7 +1179,7 @@ BOOL CRepositoryBrowser::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 				GetDlgItem(IDC_REPOLIST)->GetWindowRect(&rect);
 				if (pt.x < rect.left)
 				{
-					HCURSOR hCur = LoadCursor(NULL, MAKEINTRESOURCE(IDC_SIZEWE));
+					HCURSOR hCur = LoadCursor(NULL, IDC_SIZEWE);
 					SetCursor(hCur);
 					return TRUE;
 				}

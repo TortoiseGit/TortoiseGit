@@ -423,8 +423,8 @@ STRING_VECTOR CRevisionGraphWnd::GetFriendRefNames(ogdf::node v, CGit::REF_TYPE 
 				list.push_back(shortName);
 			else
 			{
-				for (int i = 0; i < refTypeCount; ++i)
-					if (refTypes[i] == refType)
+				for (int j = 0; j < refTypeCount; ++j)
+					if (refTypes[j] == refType)
 						list.push_back(shortName);
 			}
 		}

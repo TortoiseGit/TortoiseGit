@@ -1225,8 +1225,8 @@ void CRebaseDlg::OnBnClickedContinue()
 
 		if (((DWORD)CRegStdDWORD(_T("Software\\TortoiseGit\\ReaddUnselectedAddedFilesAfterCommit"), TRUE)) == TRUE)
 		{
-			BOOL cancel = FALSE;
-			mgtReAddAfterCommit.Execute(cancel);
+			BOOL cancel2 = FALSE;
+			mgtReAddAfterCommit.Execute(cancel2);
 		}
 
 		this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_LOG);

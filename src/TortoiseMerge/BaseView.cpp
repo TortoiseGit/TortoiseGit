@@ -2316,7 +2316,7 @@ BOOL CBaseView::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 					{
 						if (m_pViewData->GetHideState(viewLine) == HIDESTATE_MARKER)
 						{
-							::SetCursor(::LoadCursor(NULL, MAKEINTRESOURCE(IDC_HAND)));
+							::SetCursor(::LoadCursor(NULL, IDC_HAND));
 							return TRUE;
 						}
 					}
@@ -2330,11 +2330,11 @@ BOOL CBaseView::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 		}
 		if (m_nMouseLine >= 0)
 		{
-			::SetCursor(::LoadCursor(NULL, MAKEINTRESOURCE(IDC_IBEAM)));    // Set To Edit Cursor
+			::SetCursor(::LoadCursor(NULL, IDC_IBEAM));    // Set To Edit Cursor
 			return TRUE;
 		}
 
-		::SetCursor(::LoadCursor(NULL, MAKEINTRESOURCE(IDC_ARROW)));	// Set To Arrow Cursor
+		::SetCursor(::LoadCursor(NULL, IDC_ARROW));	// Set To Arrow Cursor
 		return TRUE;
 	}
 	return CView::OnSetCursor(pWnd, nHitTest, message);
@@ -2395,7 +2395,7 @@ void CBaseView::OnContextMenu(CPoint point, DiffStates state)
 		EOL eEolType = GetLineEndings(oWhites.HasMixedEols);
 		for (int i = 1; i < _countof(eolArray); i++)
 		{
-			CString temp = GetEolName(eolArray[i]);
+			temp = GetEolName(eolArray[i]);
 			bool bChecked = (eEolType == eolArray[i]);
 			popupEols.AppendMenu(MF_STRING | MF_ENABLED | (bChecked ? MF_CHECKED : 0), nEolCommandBase+i, temp);
 		}
@@ -2408,7 +2408,7 @@ void CBaseView::OnContextMenu(CPoint point, DiffStates state)
 			return;
 		for (int i = 0; i < _countof(uctArray); i++)
 		{
-			CString temp = CFileTextLines::GetEncodingName(uctArray[i]);
+			temp = CFileTextLines::GetEncodingName(uctArray[i]);
 			bool bChecked = (m_texttype == uctArray[i]);
 			popupUnicode.AppendMenu(MF_STRING | MF_ENABLED | (bChecked ? MF_CHECKED : 0), nEncodingCommandBase+i, temp);
 		}
@@ -2838,7 +2838,7 @@ bool CBaseView::SelectNextBlock(int nDirection, bool bConflict, bool bSkipEndOfC
 
 BOOL CBaseView::OnToolTipNotify(UINT /*id*/, NMHDR *pNMHDR, LRESULT *pResult)
 {
-	if (pNMHDR->idFrom != (UINT)m_hWnd)
+	if (pNMHDR->idFrom != (UINT_PTR)m_hWnd)
 		return FALSE;
 
 	CString strTipText;
@@ -2909,7 +2909,7 @@ INT_PTR CBaseView::OnToolHitTest(CPoint point, TOOLINFO* pTI) const
 		pTI->hwnd = this->m_hWnd;
 		this->GetClientRect(&pTI->rect);
 		pTI->uFlags  |= TTF_ALWAYSTIP | TTF_IDISHWND;
-		pTI->uId = (UINT)m_hWnd;
+		pTI->uId = (UINT_PTR)m_hWnd;
 		pTI->lpszText = LPSTR_TEXTCALLBACK;
 
 		// we want multi line tooltips

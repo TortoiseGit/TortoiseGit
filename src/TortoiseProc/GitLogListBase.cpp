@@ -2035,14 +2035,14 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 						}
 					}
 
-					CString str;
-					str.LoadString(IDS_SWITCH_BRANCH);
+					CString str2;
+					str2.LoadString(IDS_SWITCH_BRANCH);
 
 					if(branchs.size() == 1)
 					{
-						str+=_T(" ");
-						str+= _T('"') + branchs[0]->Mid(11) + _T('"');
-						popup.AppendMenuIcon(ID_SWITCHBRANCH,str,IDI_SWITCH);
+						str2 += _T(" ");
+						str2 += _T('"') + branchs[0]->Mid(11) + _T('"');
+						popup.AppendMenuIcon(ID_SWITCHBRANCH, str2, IDI_SWITCH);
 
 						popup.SetMenuItemData(ID_SWITCHBRANCH,(ULONG_PTR)branchs[0]);
 
@@ -2095,9 +2095,9 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 
 						for (size_t i = 0; i < parentHash.size(); ++i)
 						{
-							CString str;
-							str.Format(IDS_PARENT, i + 1);
-							revertmenu.AppendMenuIcon(ID_REVERTREV + ((i + 1) << 16), str);
+							CString str2;
+							str2.Format(IDS_PARENT, i + 1);
+							revertmenu.AppendMenuIcon(ID_REVERTREV + ((i + 1) << 16), str2);
 						}
 					}
 				}
@@ -4029,11 +4029,11 @@ LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*
 			*/
 			if(pLogEntry->m_IsFull)
 			{
-				for (int i = 0; i < pLogEntry->GetFiles(this).GetCount(); ++i)
+				for (int j = 0; j < pLogEntry->GetFiles(this).GetCount(); ++j)
 				{
-					str+=pLogEntry->GetFiles(this)[i].GetWinPath();
+					str += pLogEntry->GetFiles(this)[j].GetWinPath();
 					str+=_T("\n");
-					str+=pLogEntry->GetFiles(this)[i].GetGitOldPathString();
+					str += pLogEntry->GetFiles(this)[j].GetGitOldPathString();
 					str+=_T("\n");
 				}
 			}
@@ -4042,9 +4042,9 @@ LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*
 				if(!pLogEntry->m_IsSimpleListReady)
 					pLogEntry->SafeGetSimpleList(&g_Git);
 
-				for (size_t i = 0; i < pLogEntry->m_SimpleFileList.size(); ++i)
+				for (size_t j = 0; j < pLogEntry->m_SimpleFileList.size(); ++j)
 				{
-					str+=pLogEntry->m_SimpleFileList[i];
+					str += pLogEntry->m_SimpleFileList[j];
 					str+=_T("\n");
 				}
 

@@ -1080,7 +1080,7 @@ bool CGitIgnoreList::CheckAndUpdateCoreExcludefile(const CString &adminDir)
 
 	CString excludesFile;
 	{
-		CAutoReadLock lock(m_SharedMutex);
+		CAutoReadLock lock2(m_SharedMutex);
 		excludesFile = m_CoreExcludesfiles[adminDir];
 	}
 	if (!excludesFile.IsEmpty())

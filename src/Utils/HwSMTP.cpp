@@ -1501,7 +1501,6 @@ CString FormatString ( LPCTSTR lpszStr, ... )
 		if ( !buf )
 		{
 			::AfxThrowMemoryException ();
-			return _T("");
 		}
 		memset ( buf, 0, nBufCount*sizeof(TCHAR) );
 

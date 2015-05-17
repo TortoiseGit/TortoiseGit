@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2011, 2015 - TortoiseSVN
-// Copyright (C) 2012-2013 - TortoiseGit
+// Copyright (C) 2012-2013, 2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -830,7 +830,7 @@ PointF CRevisionGraphWnd::cutPoint(node v,double lw,PointF ps, PointF pt)
 		// below
 		if(pt.Y > ymax) {
 			double t = (ymax-ps.Y) / dy;
-			double x = ps.X + t*dx;
+			x = ps.X + t * dx;
 
 			if(xmin <= x && x <= xmax)
 				return PointF((REAL)x, (REAL)ymax);
@@ -838,7 +838,7 @@ PointF CRevisionGraphWnd::cutPoint(node v,double lw,PointF ps, PointF pt)
 		// above
 		} else if(pt.Y < ymin) {
 			double t = (ymin-ps.Y) / dy;
-			double x = ps.X + t*dx;
+			x = ps.X + t * dx;
 
 			if(xmin <= x && x <= xmax)
 				return PointF((REAL)x, (REAL)ymin);
@@ -850,7 +850,7 @@ PointF CRevisionGraphWnd::cutPoint(node v,double lw,PointF ps, PointF pt)
 		// right
 		if(pt.X > xmax) {
 			double t = (xmax-ps.X) / dx;
-			double y = ps.Y + t*dy;
+			y = ps.Y + t * dy;
 
 			if(ymin <= y && y <= ymax)
 				return PointF((REAL)xmax, (REAL)y);
@@ -858,7 +858,7 @@ PointF CRevisionGraphWnd::cutPoint(node v,double lw,PointF ps, PointF pt)
 		// left
 		} else if(pt.X < xmin) {
 			double t = (xmin-ps.X) / dx;
-			double y = ps.Y + t*dy;
+			y = ps.Y + t * dy;
 
 			if(ymin <= y && y <= ymax)
 				return PointF((REAL)xmin, (REAL)y);

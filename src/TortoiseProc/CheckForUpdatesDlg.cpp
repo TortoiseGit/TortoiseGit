@@ -337,7 +337,6 @@ UINT CCheckForUpdatesDlg::CheckThread()
 			{
 				GetDlgItem(IDC_DONOTASKAGAIN)->ShowWindow(SW_SHOW);
 				rectOKButton.left += 60;
-				CString temp;
 				temp.LoadString(IDS_REMINDMELATER);
 				GetDlgItem(IDOK)->SetWindowText(temp);
 				rectOKButton.right += 160;
@@ -578,7 +577,7 @@ void CCheckForUpdatesDlg::OnWindowPosChanging(WINDOWPOS* lpwndpos)
 
 BOOL CCheckForUpdatesDlg::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 {
-	HCURSOR hCur = LoadCursor(NULL, MAKEINTRESOURCE(IDC_ARROW));
+	HCURSOR hCur = LoadCursor(NULL, IDC_ARROW);
 	SetCursor(hCur);
 	return CStandAloneDialogTmpl<CDialog>::OnSetCursor(pWnd, nHitTest, message);
 }

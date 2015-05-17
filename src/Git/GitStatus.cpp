@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2014 - TortoiseGit
+// Copyright (C) 2008-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -523,19 +523,19 @@ int GitStatus::EnumDirStatus(const CString &gitdir, const CString &subpath, git_
 
 			if (GetRangeInSortVector(*indexptr, lowcasepath, lowcasepath.GetLength(), &start, &end, pos) == 0)
 			{
-				CGitIndexList::iterator it;
+				CGitIndexList::iterator it2;
 				CString oldstring;
 
-				for (it = indexptr->begin() + start; it <= indexptr->begin() + end; ++it)
+				for (it2 = indexptr->begin() + start; it2 <= indexptr->begin() + end; ++it2)
 				{
 					int commonPrefixLength = lowcasepath.GetLength();
-					int index = (*it).m_FileName.Find(_T('/'), commonPrefixLength);
+					int index = (*it2).m_FileName.Find(_T('/'), commonPrefixLength);
 					if(index<0)
-						index = (*it).m_FileName.GetLength();
+						index = (*it2).m_FileName.GetLength();
 					else
 						++index; // include slash at the end for subfolders, so that we do not match files by mistake
 
-					CString filename = (*it).m_FileName.Mid(commonPrefixLength, index - commonPrefixLength);
+					CString filename = (*it2).m_FileName.Mid(commonPrefixLength, index - commonPrefixLength);
 					if(oldstring != filename)
 					{
 						oldstring = filename;
@@ -543,14 +543,14 @@ int GitStatus::EnumDirStatus(const CString &gitdir, const CString &subpath, git_
 						{
 							bool skipWorktree = false;
 							*status = git_wc_status_deleted;
-							if (((*it).m_Flags & GIT_IDXENTRY_SKIP_WORKTREE) != 0)
+							if (((*it2).m_Flags & GIT_IDXENTRY_SKIP_WORKTREE) != 0)
 							{
 								skipWorktreeMap[filename] = true;
 								skipWorktree = true;
 								*status = git_wc_status_normal;
 							}
 							if(callback)
-								callback(gitdir + _T("/") + (*it).m_FileName, *status, false, pData, false, skipWorktree);
+								callback(gitdir + _T("/") + (*it2).m_FileName, *status, false, pData, false, skipWorktree);
 						}
 					}
 				}
@@ -560,19 +560,19 @@ int GitStatus::EnumDirStatus(const CString &gitdir, const CString &subpath, git_
 			pos = SearchInSortVector(*treeptr, lowcasepath, lowcasepath.GetLength()); // match path prefix, (sub)folders end with slash
 			if (GetRangeInSortVector(*treeptr, lowcasepath, lowcasepath.GetLength(), &start, &end, pos) == 0)
 			{
-				CGitHeadFileList::iterator it;
+				CGitHeadFileList::iterator it2;
 				CString oldstring;
 
-				for (it = treeptr->begin() + start; it <= treeptr->begin() + end; ++it)
+				for (it2 = treeptr->begin() + start; it2 <= treeptr->begin() + end; ++it2)
 				{
 					int commonPrefixLength = lowcasepath.GetLength();
-					int index = (*it).m_FileName.Find(_T('/'), commonPrefixLength);
+					int index = (*it2).m_FileName.Find(_T('/'), commonPrefixLength);
 					if(index<0)
-						index = (*it).m_FileName.GetLength();
+						index = (*it2).m_FileName.GetLength();
 					else
 						++index; // include slash at the end for subfolders, so that we do not match files by mistake
 
-					CString filename = (*it).m_FileName.Mid(commonPrefixLength, index - commonPrefixLength);
+					CString filename = (*it2).m_FileName.Mid(commonPrefixLength, index - commonPrefixLength);
 					if (oldstring != filename && skipWorktreeMap[filename] != true)
 					{
 						oldstring = filename;
@@ -580,7 +580,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir, const CString &subpath, git_
 						{
 							*status = git_wc_status_deleted;
 							if(callback)
-								callback(gitdir + _T("/") + (*it).m_FileName, *status, false, pData, false, false);
+								callback(gitdir + _T("/") + (*it2).m_FileName, *status, false, pData, false, false);
 						}
 					}
 				}
@@ -781,11 +781,11 @@ int GitStatus::GetDirStatus(const CString &gitdir, const CString &subpath, git_w
 							if( !IsRecursive )
 							{
 								//skip child directory
-								int pos = (*it).m_FileName.Find(_T('/'), path.GetLength());
+								int slashpos = (*it).m_FileName.Find(_T('/'), path.GetLength());
 
-								if( pos > 0)
+								if (slashpos > 0)
 								{
-									currentPath = (*it).m_FileName.Left(pos);
+									currentPath = (*it).m_FileName.Left(slashpos);
 									if( callback && (sub != currentPath) )
 									{
 										sub = currentPath;

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2008, 2010-2014 - TortoiseSVN
+// Copyright (C) 2003-2008, 2010-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -26,8 +26,14 @@
 #define RT_RIBBON MAKEINTRESOURCE(28)
 #endif
 
-
 #define MYERROR {CUtils::Error(); return FALSE;}
+
+static const WORD * AlignWORD(const WORD * pWord)
+{
+	const WORD * res = pWord;
+	res += ((((UINT_PTR)pWord + 3) & ~3) - (UINT_PTR)pWord) / sizeof(WORD);
+	return res;
+}
 
 CResModule::CResModule(void)
 	: m_bTranslatedStrings(0)
@@ -289,7 +295,7 @@ BOOL CResModule::ExtractString(LPCTSTR lpszType)
 		{
 			std::wstring str = std::wstring(pBuf);
 			RESOURCEENTRY entry = m_StringEntries[str];
-			entry.resourceIDs.insert((DWORD)lpszType);
+			entry.resourceIDs.insert((INT_PTR)lpszType);
 			if (wcschr(str.c_str(), '%'))
 				entry.flag = _T("#, c-format");
 			m_StringEntries[str] = entry;
@@ -766,7 +772,7 @@ const WORD* CResModule::ParseMenuExResource(const WORD * res)
 		size_t l = wcslen(str)+1;
 		res += l;
 		// Align to DWORD boundary
-		res += ((((WORD)res + 3) & ~3) - (WORD)res)/sizeof(WORD);
+		res = AlignWORD(res);
 
 		if (dwType & MFT_SEPARATOR)
 			continue;
@@ -866,7 +872,7 @@ const WORD* CResModule::CountMemReplaceMenuExResource(const WORD * res, size_t *
 			ReplaceStr((LPCWSTR)res, newMenu, wordcount, &m_bTranslatedMenuStrings, &m_bDefaultMenuStrings);
 			res += wcslen((LPCWSTR)res) + 1;
 			// Align to DWORD
-			res += ((((WORD)res + 3) & ~3) - (WORD)res)/sizeof(WORD);
+			res = AlignWORD(res);
 			if ((*wordcount) & 0x01)
 				(*wordcount)++;
 
@@ -892,7 +898,7 @@ const WORD* CResModule::CountMemReplaceMenuExResource(const WORD * res, size_t *
 			res += wcslen((LPCWSTR)res) + 1;
 		}
 		// Align to DWORD
-		res += ((((WORD)res + 3) & ~3) - (WORD)res)/sizeof(WORD);
+		res = AlignWORD(res);
 		if ((*wordcount) & 0x01)
 			(*wordcount)++;
 	} while (!(bResInfo & 0x80));
@@ -1203,7 +1209,7 @@ BOOL CResModule::ExtractDialog(LPCTSTR lpszType)
 
 		std::wstring wstr = std::wstring(pBuf);
 		RESOURCEENTRY entry = m_StringEntries[wstr];
-		entry.resourceIDs.insert((DWORD)lpszType);
+		entry.resourceIDs.insert((INT_PTR)lpszType);
 
 		m_StringEntries[wstr] = entry;
 		delete [] pBuf;
@@ -1400,7 +1406,7 @@ const WORD* CResModule::GetDialogInfo(const WORD * pTemplate, LPDIALOGINFO lpDlg
 		p += wcslen((LPCWSTR) p) + 1;
 	}
 	// First control is on DWORD boundary
-	p += ((((WORD)p + 3) & ~3) - (WORD)p)/sizeof(WORD);
+	p = AlignWORD(p);
 
 	return p;
 }
@@ -1464,7 +1470,7 @@ const WORD* CResModule::GetControlInfo(const WORD* p, LPDLGITEMINFO lpDlgItemInf
 	if (GET_WORD(p) == 0xffff)	// an integer ID?
 	{
 		*bIsID = TRUE;
-		lpDlgItemInfo->windowName = (LPCTSTR) (DWORD) GET_WORD(p + 1);
+		lpDlgItemInfo->windowName = (LPCTSTR) (UINT_PTR) GET_WORD(p + 1);
 		p += 2;
 	}
 	else
@@ -1484,7 +1490,7 @@ const WORD* CResModule::GetControlInfo(const WORD* p, LPDLGITEMINFO lpDlgItemInf
 
 	p++;
 	// Next control is on DWORD boundary
-	p += ((((WORD)p + 3) & ~3) - (WORD)p)/sizeof(WORD);
+	p = AlignWORD(p);
 	return p;
 }
 
@@ -1668,7 +1674,7 @@ const WORD * CResModule::CountMemReplaceDialogResource(const WORD * res, size_t 
 	// First control is on DWORD boundary
 	while ((*wordcount)%2)
 		(*wordcount)++;
-	while ((ULONG)res % 4)
+	while ((UINT_PTR)res % 4)
 		res++;
 
 	while (nbItems--)
@@ -1807,7 +1813,7 @@ const WORD* CResModule::ReplaceControlInfo(const WORD * res, size_t * wordcount,
 	// Next control is on DWORD boundary
 	while ((*wordcount) % 2)
 		(*wordcount)++;
-	res += ((((WORD)res + 3) & ~3) - (WORD)res)/sizeof(WORD);
+	res = AlignWORD(res);
 
 	return res;
 }
@@ -1850,7 +1856,7 @@ BOOL CResModule::ExtractRibbon(LPCTSTR lpszType)
 		MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, bufw.get(), (int)len*4);
 		std::wstring ret = bufw.get();
 		RESOURCEENTRY entry = m_StringEntries[ret];
-		entry.resourceIDs.insert((DWORD)lpszType);
+		entry.resourceIDs.insert((INT_PTR)lpszType);
 		if (wcschr(ret.c_str(), '%'))
 			entry.flag = _T("#, c-format");
 		m_StringEntries[ret] = entry;
@@ -1869,7 +1875,7 @@ BOOL CResModule::ExtractRibbon(LPCTSTR lpszType)
 		MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, bufw.get(), (int)len*4);
 		std::wstring ret = bufw.get();
 		RESOURCEENTRY entry = m_StringEntries[ret];
-		entry.resourceIDs.insert((DWORD)lpszType);
+		entry.resourceIDs.insert((INT_PTR)lpszType);
 		if (wcschr(ret.c_str(), '%'))
 			entry.flag = _T("#, c-format");
 		m_StringEntries[ret] = entry;
@@ -1915,11 +1921,11 @@ BOOL CResModule::ReplaceRibbon(LPCTSTR lpszType, WORD wLanguage)
 	for (std::sregex_iterator it(ss.begin(), ss.end(), regRevMatch); it != end; ++it)
 	{
 		std::string str = (*it)[1];
-		size_t len = str.size();
-		std::unique_ptr<wchar_t[]> bufw(new wchar_t[len*4 + 1]);
-		SecureZeroMemory(bufw.get(), (len*4 + 1)*sizeof(wchar_t));
-		MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, bufw.get(), (int)len*4);
-		std::wstring ret = bufw.get();
+		size_t slen = str.size();
+		std::unique_ptr<wchar_t[]> bufw2(new wchar_t[slen * 4 + 1]);
+		SecureZeroMemory(bufw2.get(), (slen * 4 + 1)*sizeof(wchar_t));
+		MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, bufw2.get(), (int)slen * 4);
+		std::wstring ret = bufw2.get();
 
 		RESOURCEENTRY entry = m_StringEntries[ret];
 		ret = L"<TEXT>" + ret + L"</TEXT>";
@@ -1937,11 +1943,11 @@ BOOL CResModule::ReplaceRibbon(LPCTSTR lpszType, WORD wLanguage)
 	for (std::sregex_iterator it(ss.begin(), ss.end(), regRevMatchName); it != end; ++it)
 	{
 		std::string str = (*it)[1];
-		size_t len = str.size();
-		std::unique_ptr<wchar_t[]> bufw(new wchar_t[len*4 + 1]);
-		SecureZeroMemory(bufw.get(), (len*4 + 1)*sizeof(wchar_t));
-		MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, bufw.get(), (int)len*4);
-		std::wstring ret = bufw.get();
+		size_t slen = str.size();
+		std::unique_ptr<wchar_t[]> bufw2(new wchar_t[slen * 4 + 1]);
+		SecureZeroMemory(bufw2.get(), (slen * 4 + 1)*sizeof(wchar_t));
+		MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, bufw2.get(), (int)slen * 4);
+		std::wstring ret = bufw2.get();
 
 		RESOURCEENTRY entry = m_StringEntries[ret];
 		ret = L"</ELEMENT_NAME><NAME>" + ret + L"</NAME>";

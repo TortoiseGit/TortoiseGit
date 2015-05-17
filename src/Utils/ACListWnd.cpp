@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (c) 2003 by Andreas Kapust <info@akinstaller.de>; <http://www.codeproject.com/Articles/2607/AutoComplete-without-IAutoComplete>
-// Copyright (C) 2009,2012-2013 - TortoiseGit
+// Copyright (C) 2009,2012-2013,2015 - TortoiseGit
 
 // Licensed under: The Code Project Open License (CPOL); <http://www.codeproject.com/info/cpol10.aspx>
 
@@ -895,15 +895,15 @@ int CACListWnd::CompareString(const void* p1, const void* p2)
 
 /*********************************************************************/
 
-void CACListWnd::SortList(CStringArray& m_List)
+void CACListWnd::SortList(CStringArray& list)
 {
-	int m_Count = (int)m_List.GetSize();
+	int m_Count = (int)list.GetSize();
 	int i;
 
 	if (m_Count > 1)
 	{
 		CStringArray m_Liste1;
-		m_Liste1.Copy(m_List);
+		m_Liste1.Copy(list);
 
 		LPCTSTR* ppSortArray = new LPCTSTR[m_Count+1];
 
@@ -913,13 +913,13 @@ void CACListWnd::SortList(CStringArray& m_List)
 			ppSortArray[i] = (LPCTSTR)m_Liste1.GetAt(i);
 		}
 
-		m_List.RemoveAll();
+		list.RemoveAll();
 
 		qsort(ppSortArray, m_Count, sizeof(LPCTSTR), CompareString);
 
 		for(i=0; i < m_Count; i++)
 		{
-			m_List.Add((LPCTSTR) ppSortArray[i]);
+			list.Add((LPCTSTR) ppSortArray[i]);
 		}
 		m_Liste1.RemoveAll();
 		delete [] ppSortArray;

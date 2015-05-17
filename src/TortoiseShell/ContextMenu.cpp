@@ -1049,7 +1049,7 @@ STDMETHODIMP CShellExt::QueryContextMenu_Wrap(HMENU hMenu,
 					}
 					else
 					{
-						bool bIsTop = ((topmenu & menuInfo[menuIndex].menuID) != 0);
+						bIsTop = ((topmenu & menuInfo[menuIndex].menuID) != 0);
 
 						// insert the menu entry
 						InsertGitMenu(	bIsTop,
