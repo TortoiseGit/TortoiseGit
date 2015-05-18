@@ -311,39 +311,8 @@ BOOL CLogDlg::OnInitDialog()
 
 	m_staticRef.SetURL(CString());
 
-	// resizable stuff
-	AddAnchor(IDC_STATIC_REF, TOP_LEFT);
-	//AddAnchor(IDC_BUTTON_BROWSE_REF, TOP_LEFT);
-	AddAnchor(IDC_FROMLABEL, TOP_LEFT);
-	AddAnchor(IDC_DATEFROM, TOP_LEFT);
-	AddAnchor(IDC_TOLABEL, TOP_LEFT);
-	AddAnchor(IDC_DATETO, TOP_LEFT);
-
+	AddMainAnchors();
 	SetFilterCueText();
-	AddAnchor(IDC_SEARCHEDIT, TOP_LEFT, TOP_RIGHT);
-	AddAnchor(IDC_LOG_JUMPTYPE, TOP_RIGHT);
-	AddAnchor(IDC_LOG_JUMPUP, TOP_RIGHT);
-	AddAnchor(IDC_LOG_JUMPDOWN, TOP_RIGHT);
-
-	AddAnchor(IDC_LOGLIST, TOP_LEFT, TOP_RIGHT);
-	AddAnchor(IDC_SPLITTERTOP, TOP_LEFT, TOP_RIGHT);
-	AddAnchor(IDC_MSGVIEW, TOP_LEFT, BOTTOM_RIGHT);
-	AddAnchor(IDC_PIC_AUTHOR, TOP_RIGHT);
-	AddAnchor(IDC_SPLITTERBOTTOM, BOTTOM_LEFT, BOTTOM_RIGHT);
-	AddAnchor(IDC_LOGMSG, BOTTOM_LEFT, BOTTOM_RIGHT);
-
-	AddAnchor(IDC_LOGINFO, BOTTOM_LEFT, BOTTOM_RIGHT);
-	AddAnchor(IDC_WALKBEHAVIOUR, BOTTOM_LEFT);
-	AddAnchor(IDC_VIEW, BOTTOM_LEFT);
-	AddAnchor(IDC_LOG_ALLBRANCH,BOTTOM_LEFT);
-	AddAnchor(IDC_FILTER, BOTTOM_LEFT, BOTTOM_RIGHT);
-	AddAnchor(IDC_SHOWWHOLEPROJECT, BOTTOM_LEFT);
-	AddAnchor(IDC_REFRESH, BOTTOM_LEFT);
-	AddAnchor(IDC_STATBUTTON, BOTTOM_LEFT);
-	AddAnchor(IDC_PROGRESS, BOTTOM_LEFT, BOTTOM_RIGHT);
-	AddAnchor(IDOK, BOTTOM_RIGHT);
-	AddAnchor(IDCANCEL, BOTTOM_RIGHT);
-	AddAnchor(IDHELP, BOTTOM_RIGHT);
 
 	m_LogList.m_ShowMask &= ~CGit::LOG_INFO_LOCAL_BRANCHES;
 	if (m_bAllBranch == BST_CHECKED)
@@ -384,7 +353,7 @@ BOOL CLogDlg::OnInitDialog()
 	ScreenToClient(&rcLogList);
 	m_ChangedFileListCtrl.GetWindowRect(&rcChgMsg);
 	ScreenToClient(&rcChgMsg);
-	if (yPos1)
+	if (yPos1 && ((LONG)yPos1 < rcDlg.bottom - 185))
 	{
 		RECT rectSplitter;
 		m_wndSplitter1.GetWindowRect(&rectSplitter);
@@ -397,7 +366,7 @@ BOOL CLogDlg::OnInitDialog()
 			DoSizeV1(delta);
 		}
 	}
-	if (yPos2)
+	if (yPos2 && ((LONG)yPos2 < rcDlg.bottom - 153))
 	{
 		RECT rectSplitter;
 		m_wndSplitter2.GetWindowRect(&rectSplitter);
@@ -1802,55 +1771,137 @@ void CLogDlg::MoveToSameTop(CWnd *pWndRef, CWnd *pWndTarget)
 
 void CLogDlg::DoSizeV1(int delta)
 {
+	RemoveMainAnchors();
 
-	RemoveAnchor(IDC_LOGLIST);
-	RemoveAnchor(IDC_SPLITTERTOP);
-	RemoveAnchor(IDC_MSGVIEW);
-	RemoveAnchor(IDC_PIC_AUTHOR);
-	RemoveAnchor(IDC_SPLITTERBOTTOM);
-	RemoveAnchor(IDC_LOGMSG);
+	// first, reduce the middle section to a minimum.
+	// if that is not sufficient, minimize the lower section
+
+	CRect changeListViewRect;
+	m_ChangedFileListCtrl.GetClientRect(changeListViewRect);
+	CRect messageViewRect;
+	GetDlgItem(IDC_MSGVIEW)->GetClientRect(messageViewRect);
+
+	int messageViewDelta = max(-delta, 20 - messageViewRect.Height());
+	int changeFileListDelta = -delta - messageViewDelta;
+
+	// set new sizes & positions
 	CSplitterControl::ChangeHeight(&m_LogList, delta, CW_TOPALIGN);
-	CSplitterControl::ChangeHeight(GetDlgItem(IDC_MSGVIEW), -delta, CW_BOTTOMALIGN);
+	CSplitterControl::ChangeHeight(GetDlgItem(IDC_MSGVIEW), messageViewDelta, CW_TOPALIGN);
+	CSplitterControl::ChangePos(GetDlgItem(IDC_MSGVIEW), 0, delta);
 	MoveToSameTop(GetDlgItem(IDC_MSGVIEW), GetDlgItem(IDC_PIC_AUTHOR));
-	AddAnchor(IDC_LOGLIST, TOP_LEFT, TOP_RIGHT);
-	AddAnchor(IDC_SPLITTERTOP, TOP_LEFT, TOP_RIGHT);
-	AddAnchor(IDC_MSGVIEW, TOP_LEFT, BOTTOM_RIGHT);
-	AddAnchor(IDC_PIC_AUTHOR, TOP_RIGHT);
-	AddAnchor(IDC_SPLITTERBOTTOM, BOTTOM_LEFT, BOTTOM_RIGHT);
-	AddAnchor(IDC_LOGMSG, BOTTOM_LEFT, BOTTOM_RIGHT);
+	CSplitterControl::ChangePos(GetDlgItem(IDC_SPLITTERBOTTOM), 0, -changeFileListDelta);
+	CSplitterControl::ChangeHeight(&m_ChangedFileListCtrl, changeFileListDelta, CW_BOTTOMALIGN);
+
+	AddMainAnchors();
 	ArrangeLayout();
 	AdjustMinSize();
 	SetSplitterRange();
 	m_LogList.Invalidate();
+	m_ChangedFileListCtrl.Invalidate();
 	GetDlgItem(IDC_MSGVIEW)->Invalidate();
 	m_gravatar.Invalidate();
-
 }
 
 void CLogDlg::DoSizeV2(int delta)
 {
+	RemoveMainAnchors();
 
-	RemoveAnchor(IDC_LOGLIST);
-	RemoveAnchor(IDC_SPLITTERTOP);
-	RemoveAnchor(IDC_MSGVIEW);
-	RemoveAnchor(IDC_PIC_AUTHOR);
-	RemoveAnchor(IDC_SPLITTERBOTTOM);
-	RemoveAnchor(IDC_LOGMSG);
-	CSplitterControl::ChangeHeight(GetDlgItem(IDC_MSGVIEW), delta, CW_TOPALIGN);
+	// first, reduce the middle section to a minimum.
+	// if that is not sufficient, minimize the top section
+
+	CRect logViewRect;
+	m_LogList.GetClientRect(logViewRect);
+	CRect messageViewRect;
+	GetDlgItem(IDC_MSGVIEW)->GetClientRect(messageViewRect);
+
+	int messageViewDelta = max(delta, 20 - messageViewRect.Height());
+	int logListDelta = delta - messageViewDelta;
+
+	// set new sizes & positions
+	CSplitterControl::ChangeHeight(&m_LogList, logListDelta, CW_TOPALIGN);
+	CSplitterControl::ChangePos(GetDlgItem(IDC_SPLITTERTOP), 0, logListDelta);
+
+	CSplitterControl::ChangeHeight(GetDlgItem(IDC_MSGVIEW), messageViewDelta, CW_TOPALIGN);
+	CSplitterControl::ChangePos(GetDlgItem(IDC_MSGVIEW), 0, logListDelta);
+	MoveToSameTop(GetDlgItem(IDC_MSGVIEW), GetDlgItem(IDC_PIC_AUTHOR));
+
 	CSplitterControl::ChangeHeight(&m_ChangedFileListCtrl, -delta, CW_BOTTOMALIGN);
-	AddAnchor(IDC_LOGLIST, TOP_LEFT, TOP_RIGHT);
-	AddAnchor(IDC_SPLITTERTOP, TOP_LEFT, TOP_RIGHT);
-	AddAnchor(IDC_MSGVIEW, TOP_LEFT, BOTTOM_RIGHT);
-	AddAnchor(IDC_PIC_AUTHOR, TOP_RIGHT);
-	AddAnchor(IDC_SPLITTERBOTTOM, BOTTOM_LEFT, BOTTOM_RIGHT);
-	AddAnchor(IDC_LOGMSG, BOTTOM_LEFT, BOTTOM_RIGHT);
+
+	AddMainAnchors();
 	ArrangeLayout();
 	AdjustMinSize();
 	SetSplitterRange();
 	GetDlgItem(IDC_MSGVIEW)->Invalidate();
 	m_ChangedFileListCtrl.Invalidate();
 	m_gravatar.Invalidate();
+}
 
+void CLogDlg::AddMainAnchors()
+{
+	AddAnchor(IDC_STATIC_REF, TOP_LEFT);
+	AddAnchor(IDC_FROMLABEL, TOP_LEFT);
+	AddAnchor(IDC_DATEFROM, TOP_LEFT);
+	AddAnchor(IDC_TOLABEL, TOP_LEFT);
+	AddAnchor(IDC_DATETO, TOP_LEFT);
+
+	AddAnchor(IDC_SEARCHEDIT, TOP_LEFT, TOP_RIGHT);
+	AddAnchor(IDC_LOG_JUMPTYPE, TOP_RIGHT);
+	AddAnchor(IDC_LOG_JUMPUP, TOP_RIGHT);
+	AddAnchor(IDC_LOG_JUMPDOWN, TOP_RIGHT);
+
+	AddAnchor(IDC_LOGLIST, TOP_LEFT, MIDDLE_RIGHT);
+	AddAnchor(IDC_SPLITTERTOP, MIDDLE_LEFT, MIDDLE_RIGHT);
+	AddAnchor(IDC_MSGVIEW, MIDDLE_LEFT, MIDDLE_RIGHT); // keep in sync with ShowGravatar()
+	AddAnchor(IDC_PIC_AUTHOR, MIDDLE_RIGHT);
+	AddAnchor(IDC_SPLITTERBOTTOM, MIDDLE_LEFT, MIDDLE_RIGHT);
+	AddAnchor(IDC_LOGMSG, MIDDLE_LEFT, BOTTOM_RIGHT);
+
+	AddAnchor(IDC_LOGINFO, BOTTOM_LEFT, BOTTOM_RIGHT);
+	AddAnchor(IDC_WALKBEHAVIOUR, BOTTOM_LEFT);
+	AddAnchor(IDC_VIEW, BOTTOM_LEFT);
+	AddAnchor(IDC_LOG_ALLBRANCH, BOTTOM_LEFT);
+	AddAnchor(IDC_FILTER, BOTTOM_LEFT, BOTTOM_RIGHT);
+	AddAnchor(IDC_SHOWWHOLEPROJECT, BOTTOM_LEFT);
+	AddAnchor(IDC_REFRESH, BOTTOM_LEFT);
+	AddAnchor(IDC_STATBUTTON, BOTTOM_LEFT);
+	AddAnchor(IDC_PROGRESS, BOTTOM_LEFT, BOTTOM_RIGHT);
+	AddAnchor(IDOK, BOTTOM_RIGHT);
+	AddAnchor(IDCANCEL, BOTTOM_RIGHT);
+	AddAnchor(IDHELP, BOTTOM_RIGHT);
+}
+
+void CLogDlg::RemoveMainAnchors()
+{
+	RemoveAnchor(IDC_STATIC_REF);
+	RemoveAnchor(IDC_FROMLABEL);
+	RemoveAnchor(IDC_DATEFROM);
+	RemoveAnchor(IDC_TOLABEL);
+	RemoveAnchor(IDC_DATETO);
+
+	RemoveAnchor(IDC_SEARCHEDIT);
+	RemoveAnchor(IDC_LOG_JUMPTYPE);
+	RemoveAnchor(IDC_LOG_JUMPUP);
+	RemoveAnchor(IDC_LOG_JUMPDOWN);
+
+	RemoveAnchor(IDC_LOGLIST);
+	RemoveAnchor(IDC_SPLITTERTOP);
+	RemoveAnchor(IDC_MSGVIEW);
+	RemoveAnchor(IDC_PIC_AUTHOR);
+	RemoveAnchor(IDC_SPLITTERBOTTOM);
+	RemoveAnchor(IDC_LOGMSG);
+
+	RemoveAnchor(IDC_LOGINFO);
+	RemoveAnchor(IDC_WALKBEHAVIOUR);
+	RemoveAnchor(IDC_VIEW);
+	RemoveAnchor(IDC_LOG_ALLBRANCH);
+	RemoveAnchor(IDC_FILTER);
+	RemoveAnchor(IDC_SHOWWHOLEPROJECT);
+	RemoveAnchor(IDC_REFRESH);
+	RemoveAnchor(IDC_STATBUTTON);
+	RemoveAnchor(IDC_PROGRESS);
+	RemoveAnchor(IDOK);
+	RemoveAnchor(IDCANCEL);
+	RemoveAnchor(IDHELP);
 }
 
 void CLogDlg::AdjustMinSize()
@@ -1861,10 +1912,12 @@ void CLogDlg::AdjustMinSize()
 	m_ChangedFileListCtrl.GetClientRect(rcChgListView);
 	CRect rcLogList;
 	m_LogList.GetClientRect(rcLogList);
+	CRect rcLogMsg;
+	GetDlgItem(IDC_MSGVIEW)->GetClientRect(rcLogMsg);
 
 	SetMinTrackSize(CSize(m_DlgOrigRect.Width(),
 		m_DlgOrigRect.Height()-m_ChgOrigRect.Height()-m_LogListOrigRect.Height()-m_MsgViewOrigRect.Height()
-		+rcChgListView.Height()+rcLogList.Height()+60));
+		+ rcLogMsg.Height() + abs(rcChgListView.Height() - rcLogList.Height()) + 60));
 }
 
 LRESULT CLogDlg::DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam)
@@ -1894,14 +1947,11 @@ void CLogDlg::SetSplitterRange()
 		CRect rcTop;
 		m_LogList.GetWindowRect(rcTop);
 		ScreenToClient(rcTop);
-		CRect rcMiddle;
-		GetDlgItem(IDC_MSGVIEW)->GetWindowRect(rcMiddle);
-		ScreenToClient(rcMiddle);
-		m_wndSplitter1.SetRange(rcTop.top+30, rcMiddle.bottom-20);
 		CRect rcBottom;
 		m_ChangedFileListCtrl.GetWindowRect(rcBottom);
 		ScreenToClient(rcBottom);
-		m_wndSplitter2.SetRange(rcMiddle.top+30, rcBottom.bottom-20);
+		m_wndSplitter1.SetRange(rcTop.top + 20, rcBottom.bottom - 50);
+		m_wndSplitter2.SetRange(rcTop.top + 50, rcBottom.bottom - 20);
 	}
 }
 
@@ -2793,7 +2843,7 @@ void CLogDlg::ShowGravatar()
 		GetDlgItem(IDC_MSGVIEW)->MoveWindow(&rect);
 		m_gravatar.ShowWindow(SW_HIDE);
 	}
-	AddAnchor(IDC_MSGVIEW, TOP_LEFT, BOTTOM_RIGHT);
+	AddAnchor(IDC_MSGVIEW, MIDDLE_LEFT, MIDDLE_RIGHT); // keep in sync with AddMainAnchors
 }
 
 

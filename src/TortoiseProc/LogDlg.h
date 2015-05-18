@@ -165,6 +165,8 @@ private:
 
 	void Refresh (bool clearfilter = false);
 	void MoveToSameTop(CWnd *pWndRef, CWnd *pWndTarget);
+	void AddMainAnchors();
+	void RemoveMainAnchors();
 	void DoSizeV1(int delta);
 	void DoSizeV2(int delta);
 	void AdjustMinSize();
