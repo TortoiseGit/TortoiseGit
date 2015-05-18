@@ -223,7 +223,6 @@
 #define IDC_FONTNAMES                   1030
 #define IDS_PROCEXPORTERRFOLDER         1030
 #define IDC_LOGBUTTON                   1031
-#define IDC_GETALL                      1031
 #define IDC_UPDATE                      1031
 #define IDS_PROC_NOZIPFILE              1031
 #define IDC_DONOTASKAGAIN               1032
@@ -413,7 +412,6 @@
 #define IDS_PROC_GITCONFIG_DELETEREMOTE 1128
 #define IDC_ABBREVIATERENAMINGS         1128
 #define IDS_PROC_GITCONFIG_EDITLOCALGONCFIG 1129
-#define IDC_CHECK_STOPONCOPY            1130
 #define IDC_CHECK_UNTRACKED             1130
 #define IDS_PROC_GITCONFIG_NOMSYSGIT    1130
 #define IDC_GRAPH                       1131
