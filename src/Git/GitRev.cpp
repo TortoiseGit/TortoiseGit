@@ -190,11 +190,11 @@ int GitRev::GetParentFromHash(CGitHash &hash)
 {
 	CAutoLocker lock(g_Git.m_critGitDllSec);
 
-	g_Git.CheckAndInitDll();
-
 	GIT_COMMIT commit;
 	try
 	{
+		g_Git.CheckAndInitDll();
+
 		if (git_get_commit_from_hash(&commit, hash.m_hash))
 		{
 			m_sErr = _T("git_get_commit_from_hash failed for ") + hash.ToString();
@@ -264,7 +264,15 @@ int GitRev::GetCommit(const CString& refname)
 
 	CAutoLocker lock(g_Git.m_critGitDllSec);
 
-	g_Git.CheckAndInitDll();
+	try
+	{
+		g_Git.CheckAndInitDll();
+	}
+	catch (char* msg)
+	{
+		m_sErr = _T("Could not initiate libgit.\nlibgit reports:\n") + CString(msg);
+		return -1;
+	}
 
 	if(refname.GetLength() >= 8)
 		if(refname.Find(_T("00000000")) == 0)
