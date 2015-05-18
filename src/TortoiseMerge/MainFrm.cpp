@@ -35,7 +35,6 @@
 #include "SelectFileFilter.h"
 #include "FormatMessageWrapper.h"
 #include "TaskbarUUID.h"
-#include "SmartLibgit2Ref.h" // needs to be included after git2.h
 #include "RegexFiltersDlg.h"
 #include "SysInfo.h"
 
