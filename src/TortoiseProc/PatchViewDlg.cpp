@@ -30,7 +30,6 @@ IMPLEMENT_DYNAMIC(CPatchViewDlg, CDialog)
 CPatchViewDlg::CPatchViewDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(CPatchViewDlg::IDD, pParent)
 	, m_ParentDlg(nullptr)
-	, m_pProjectProperties(nullptr)
 {
 
 }
@@ -57,7 +56,7 @@ BOOL CPatchViewDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
-	m_ctrlPatchView.Init(*m_pProjectProperties);
+	m_ctrlPatchView.Init(-1);
 
 	m_ctrlPatchView.SetUDiffStyle();
 

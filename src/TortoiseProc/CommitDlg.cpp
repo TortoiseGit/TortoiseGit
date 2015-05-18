@@ -2433,7 +2433,6 @@ void CCommitDlg::TogglePatchView()
 
 void CCommitDlg::OnStnClickedViewPatch()
 {
-	m_patchViewdlg.m_pProjectProperties = &this->m_ProjectProperties;
 	m_patchViewdlg.m_ParentDlg = this;
 	if(!IsWindow(this->m_patchViewdlg.m_hWnd))
 	{

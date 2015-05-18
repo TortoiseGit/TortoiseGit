@@ -951,7 +951,6 @@ void CLogDlg::FillPatchView(bool onlySetTimer)
 
 void CLogDlg::TogglePatchView()
 {
-	m_patchViewdlg.m_pProjectProperties = &m_LogList.m_ProjectProperties;
 	m_patchViewdlg.m_ParentDlg = this;
 	if (!IsWindow(m_patchViewdlg.m_hWnd))
 	{
