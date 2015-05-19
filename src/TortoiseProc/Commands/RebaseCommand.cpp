@@ -20,43 +20,13 @@
 #include "stdafx.h"
 #include "RebaseCommand.h"
 
-#include "MessageBox.h"
 #include "RebaseDlg.h"
 #include "Git.h"
-#include "SysProgressDlg.h"
 #include "AppUtils.h"
 
 bool RebaseCommand::Execute()
 {
 	bool bRet =false;
-
-	if(!g_Git.CheckCleanWorkTree())
-	{
-		if (CMessageBox::Show(NULL, IDS_ERROR_NOCLEAN_STASH, IDS_APPNAME, 1, IDI_QUESTION, IDS_STASHBUTTON, IDS_ABORTBUTTON) == 1)
-		{
-			CSysProgressDlg sysProgressDlg;
-			sysProgressDlg.SetTitle(CString(MAKEINTRESOURCE(IDS_APPNAME)));
-			sysProgressDlg.SetLine(1, CString(MAKEINTRESOURCE(IDS_PROC_STASHRUNNING)));
-			sysProgressDlg.SetLine(2, CString(MAKEINTRESOURCE(IDS_PROGRESSWAIT)));
-			sysProgressDlg.SetShowProgressBar(false);
-			sysProgressDlg.SetCancelMsg(IDS_PROGRS_INFOFAILED);
-			sysProgressDlg.ShowModeless((HWND)NULL, true);
-
-			CString cmd,out;
-			cmd=_T("git.exe stash");
-			if (g_Git.Run(cmd, &out, CP_UTF8))
-			{
-				sysProgressDlg.Stop();
-				CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
-				return false;
-			}
-			sysProgressDlg.Stop();
-		}
-		else
-		{
-			return false;
-		}
-	}
 
 	while(1)
 	{

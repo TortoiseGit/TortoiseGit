@@ -12,6 +12,7 @@ Released: unreleased
  * Fixed issue #2507: Support keyboard shortcuts in yes/no prompts
  * Fixed issue #2496: LogDlg: Controls may overlap on screen resolution change
  * Fixed issue #2153: Log window resize should expand commit list
+ * Fixed issue #2509: Prompt for stash before rebase is not matched with pop stash after rebase
 
 = Release 1.8.14.0 =
 Released: 2015-04-08
