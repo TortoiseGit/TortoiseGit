@@ -784,7 +784,10 @@ BOOL CTreePropSheet::OnInitDialog()
 	m_pFrame->ShowCaption(m_bPageCaption);
 
 	// Lets make place for the tree ctrl
-	const int	nTreeWidth = m_nPageTreeWidth;
+	HDC hdc = ::GetDC(nullptr);
+	int dpiX = GetDeviceCaps(hdc, LOGPIXELSX);
+	::ReleaseDC(nullptr, hdc);
+	const int	nTreeWidth = m_nPageTreeWidth * dpiX / 96;
 	const int	nTreeSpace = 5;
 
 	CRect	rectSheet;
