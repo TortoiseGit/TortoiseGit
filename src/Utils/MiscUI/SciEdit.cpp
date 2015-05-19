@@ -1583,7 +1583,6 @@ void CSciEdit::SetUDiffStyle()
 		CUnicodeUtils::StdGetUTF8(CRegStdString(L"Software\\TortoiseGit\\UDiffFontName", L"Courier New")).c_str());
 	Call(SCI_SETTABWIDTH, CRegStdDWORD(L"Software\\TortoiseGit\\UDiffTabSize", 4));
 
-	Call(SCI_SETTABWIDTH, 4);
 	Call(SCI_SETREADONLY, TRUE);
 	//LRESULT pix = Call(SCI_TEXTWIDTH, STYLE_LINENUMBER, (LPARAM)"_99999");
 	//Call(SCI_SETMARGINWIDTHN, 0, pix);
