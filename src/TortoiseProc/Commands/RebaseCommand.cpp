@@ -26,24 +26,16 @@
 
 bool RebaseCommand::Execute()
 {
-	bool bRet =false;
-
 	while(1)
 	{
 		CRebaseDlg dlg;
 		dlg.m_PostButtonTexts.Add(CString(MAKEINTRESOURCE(IDS_MENULOG)));
 		dlg.m_PostButtonTexts.Add(CString(MAKEINTRESOURCE(IDS_PROC_RESTARTREBASE)));
 		INT_PTR ret = dlg.DoModal();
-		if( ret == IDOK)
-		{
-			bRet=true;
-			return bRet;
-		}
-		if( ret == IDCANCEL)
-		{
-			bRet=false;
-			return bRet;
-		}
+		if (ret == IDOK)
+			return true;
+		if (ret == IDCANCEL)
+			return false;
 		if (ret == IDC_REBASE_POST_BUTTON)
 		{
 			CString cmd = _T("/command:log");
@@ -52,5 +44,4 @@ bool RebaseCommand::Execute()
 			return true;
 		}
 	}
-	return bRet;
 }
