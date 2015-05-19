@@ -43,7 +43,7 @@ void CExportDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CHorizontalResizableStandAloneDialog::DoDataExchange(pDX);
 	DDX_Text(pDX, IDC_EXPORTFILE, m_strFile);
-	DDX_Check(pDX, IDC_SHOWWHOLEPROJECT, m_bWholeProject);
+	DDX_Check(pDX, IDC_WHOLE_PROJECT, m_bWholeProject);
 	CHOOSE_VERSION_DDX;
 }
 
@@ -51,7 +51,7 @@ void CExportDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CExportDlg, CHorizontalResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_EXPORTFILE_BROWSE, OnBnClickedCheckoutdirectoryBrowse)
 	ON_EN_CHANGE(IDC_EXPORTFILE, OnEnChangeCheckoutdirectory)
-	ON_BN_CLICKED(IDC_SHOWWHOLEPROJECT, OnBnClickedWholeProject)
+	ON_BN_CLICKED(IDC_WHOLE_PROJECT, OnBnClickedWholeProject)
 	CHOOSE_VERSION_EVENT
 	ON_WM_DESTROY()
 END_MESSAGE_MAP()
@@ -63,8 +63,8 @@ BOOL CExportDlg::OnInitDialog()
 
 	if (g_Git.m_CurrentDir == m_orgPath.GetWinPathString())
 	{
-		GetDlgItem(IDC_SHOWWHOLEPROJECT)->EnableWindow(FALSE);
-		((CButton *)GetDlgItem(IDC_SHOWWHOLEPROJECT))->SetCheck(TRUE);
+		GetDlgItem(IDC_WHOLE_PROJECT)->EnableWindow(FALSE);
+		((CButton *)GetDlgItem(IDC_WHOLE_PROJECT))->SetCheck(TRUE);
 	}
 
 	AddAnchor(IDC_REPOGROUP, TOP_LEFT, TOP_RIGHT);

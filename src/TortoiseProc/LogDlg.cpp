@@ -129,7 +129,7 @@ void CLogDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_LOG_JUMPDOWN, m_JumpDown);
 	DDX_Text(pDX, IDC_LOGINFO, m_sLogInfo);
 	DDX_Check(pDX, IDC_LOG_ALLBRANCH,m_bAllBranch);
-	DDX_Check(pDX, IDC_SHOWWHOLEPROJECT,m_bWholeProject);
+	DDX_Check(pDX, IDC_WHOLE_PROJECT, m_bWholeProject);
 	DDX_Check(pDX, IDC_WALKBEHAVIOUR, m_bWalkBehavior);
 	DDX_Control(pDX, IDC_SEARCHEDIT, m_cFilter);
 	DDX_Control(pDX, IDC_STATIC_REF, m_staticRef);
@@ -164,7 +164,7 @@ BEGIN_MESSAGE_MAP(CLogDlg, CResizableStandAloneDialog)
 	ON_COMMAND(ID_GO_DOWN, &CLogDlg::OnBnClickedJumpDown)
 	ON_BN_CLICKED(IDC_WALKBEHAVIOUR, OnBnClickedWalkBehaviour)
 	ON_BN_CLICKED(IDC_VIEW, OnBnClickedView)
-	ON_BN_CLICKED(IDC_SHOWWHOLEPROJECT, OnBnClickShowWholeProject)
+	ON_BN_CLICKED(IDC_WHOLE_PROJECT, OnBnClickShowWholeProject)
 	ON_NOTIFY(LVN_COLUMNCLICK,IDC_LOGLIST, OnLvnColumnclick)
 	ON_COMMAND(MSG_FETCHED_DIFF, OnBnClickedHidepaths)
 	ON_BN_CLICKED(IDC_LOG_ALLBRANCH, OnBnClickedAllBranch)
@@ -299,7 +299,7 @@ BOOL CLogDlg::OnInitDialog()
 	m_cFilter.SetValidator(this);
 
 	AdjustControlSize(IDC_LOG_ALLBRANCH);
-	AdjustControlSize(IDC_SHOWWHOLEPROJECT);
+	AdjustControlSize(IDC_WHOLE_PROJECT);
 
 	GetClientRect(m_DlgOrigRect);
 	m_LogList.GetClientRect(m_LogListOrigRect);
@@ -476,7 +476,7 @@ LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM /*lParam*/)
 		if (m_pTaskbarList)
 			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NOPROGRESS);
 
-		DialogEnableWindow(IDC_SHOWWHOLEPROJECT, !m_bFollowRenames && !m_path.IsEmpty());
+		DialogEnableWindow(IDC_WHOLE_PROJECT, !m_bFollowRenames && !m_path.IsEmpty());
 
 		DialogEnableWindow(IDC_STATBUTTON, !(m_LogList.m_arShownList.IsEmpty() || m_LogList.m_arShownList.GetCount() == 1 && m_LogList.m_bShowWC));
 		DialogEnableWindow(IDC_REFRESH, TRUE);
@@ -1860,7 +1860,7 @@ void CLogDlg::AddMainAnchors()
 	AddAnchor(IDC_VIEW, BOTTOM_LEFT);
 	AddAnchor(IDC_LOG_ALLBRANCH, BOTTOM_LEFT);
 	AddAnchor(IDC_FILTER, BOTTOM_LEFT, BOTTOM_RIGHT);
-	AddAnchor(IDC_SHOWWHOLEPROJECT, BOTTOM_LEFT);
+	AddAnchor(IDC_WHOLE_PROJECT, BOTTOM_LEFT);
 	AddAnchor(IDC_REFRESH, BOTTOM_LEFT);
 	AddAnchor(IDC_STATBUTTON, BOTTOM_LEFT);
 	AddAnchor(IDC_PROGRESS, BOTTOM_LEFT, BOTTOM_RIGHT);
@@ -1894,7 +1894,7 @@ void CLogDlg::RemoveMainAnchors()
 	RemoveAnchor(IDC_VIEW);
 	RemoveAnchor(IDC_LOG_ALLBRANCH);
 	RemoveAnchor(IDC_FILTER);
-	RemoveAnchor(IDC_SHOWWHOLEPROJECT);
+	RemoveAnchor(IDC_WHOLE_PROJECT);
 	RemoveAnchor(IDC_REFRESH);
 	RemoveAnchor(IDC_STATBUTTON);
 	RemoveAnchor(IDC_PROGRESS);
@@ -2935,7 +2935,7 @@ void CLogDlg::OnBnClickedFollowRenames()
 		m_LogList.m_ShowMask &= ~CGit::LOG_INFO_FOLLOW;
 
 	DialogEnableWindow(IDC_LOG_ALLBRANCH, !m_bFollowRenames);
-	DialogEnableWindow(IDC_SHOWWHOLEPROJECT, !m_bFollowRenames && !m_path.IsEmpty());
+	DialogEnableWindow(IDC_WHOLE_PROJECT, !m_bFollowRenames && !m_path.IsEmpty());
 
 	OnRefresh();
 

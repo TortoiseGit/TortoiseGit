@@ -545,7 +545,6 @@
 #define IDS_STATUSLIST_GROUP_MODIFIEDFILES 1206
 #define IDC_CHECKBOX                    1207
 #define IDS_PROC_SYNC_PUSHTAGS          1207
-#define IDC_SHOWWHOLEPROJECT            1208
 #define IDS_PROC_SYNC_PULL              1208
 #define IDC_SHOWUNMODIFIED              1209
 #define IDS_PROC_SYNC_FETCH             1209
