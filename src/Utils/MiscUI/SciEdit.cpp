@@ -1578,6 +1578,7 @@ void CSciEdit::SetAStyle(int style, COLORREF fore, COLORREF back, int size, cons
 
 void CSciEdit::SetUDiffStyle()
 {
+	m_bDoStyle = false;
 	SetAStyle(STYLE_DEFAULT, ::GetSysColor(COLOR_WINDOWTEXT), ::GetSysColor(COLOR_WINDOW),
 		CRegStdDWORD(L"Software\\TortoiseGit\\UDiffFontSize", 10),
 		CUnicodeUtils::StdGetUTF8(CRegStdString(L"Software\\TortoiseGit\\UDiffFontName", L"Courier New")).c_str());
