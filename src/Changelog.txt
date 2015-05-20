@@ -13,6 +13,7 @@ Released: unreleased
  * Fixed issue #2496: LogDlg: Controls may overlap on screen resolution change
  * Fixed issue #2153: Log window resize should expand commit list
  * Fixed issue #2509: Prompt for stash before rebase is not matched with pop stash after rebase
+ * Fixed issue #2510: Non-correctly visualized settings dialog on modern high-DPI displays
 
 = Release 1.8.14.0 =
 Released: 2015-04-08
