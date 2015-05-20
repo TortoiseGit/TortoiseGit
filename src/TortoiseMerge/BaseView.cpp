@@ -4559,6 +4559,16 @@ bool CBaseView::GetInlineDiffPositions(int nViewLine, std::vector<inlineDiffPos>
 	size_t position = 0;
 	while (diff)
 	{
+		if (this == m_pwndRight)
+		{
+			apr_off_t nTmp = diff->modified_length;
+			diff->modified_length = diff->original_length;
+			diff->original_length = nTmp;
+
+			nTmp = diff->modified_start;
+			diff->modified_start = diff->original_start;
+			diff->original_start = nTmp;
+		}
 		apr_off_t len = diff->original_length;
 		size_t oldpos = position;
 
