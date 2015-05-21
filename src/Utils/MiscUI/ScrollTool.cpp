@@ -41,7 +41,7 @@ bool CScrollTool::Init(LPPOINT pos, bool bRightAligned /* = false */)
 	if (!m_bInitCalled)
 	{
 		// create the tooltip window
-		if (!CreateEx(WS_EX_TOPMOST,
+		if (!CreateEx(NULL,
 					 TOOLTIPS_CLASS,
 					 NULL,
 					 TTS_NOPREFIX | TTS_ALWAYSTIP,

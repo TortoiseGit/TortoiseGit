@@ -594,7 +594,7 @@ void CHistoryCombo::OnTimer(UINT_PTR nIDEvent)
 void CHistoryCombo::CreateToolTip()
 {
 	// create tooltip
-	m_hWndToolTip = ::CreateWindowEx(WS_EX_TOPMOST,
+	m_hWndToolTip = ::CreateWindowEx(NULL,
 		TOOLTIPS_CLASS,
 		NULL,
 		TTS_NOPREFIX | TTS_ALWAYSTIP,

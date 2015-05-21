@@ -88,7 +88,7 @@ LRESULT CALLBACK CPicWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, 
             TOOLINFO ti;
             RECT rect;                  // for client area coordinates
 
-            hwndTT = CreateWindowEx(WS_EX_TOPMOST,
+            hwndTT = CreateWindowEx(NULL,
                 TOOLTIPS_CLASS,
                 NULL,
                 WS_POPUP | TTS_NOPREFIX | TTS_ALWAYSTIP,
@@ -103,7 +103,7 @@ LRESULT CALLBACK CPicWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, 
                 );
 
             SetWindowPos(hwndTT,
-                HWND_TOPMOST,
+                HWND_TOP,
                 0,
                 0,
                 0,
