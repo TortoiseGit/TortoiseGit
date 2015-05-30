@@ -457,10 +457,10 @@ BOOL CAppUtils::StartExtPatch(const CTGitPath& patchfile, const CTGitPath& dir, 
 
 CString CAppUtils::PickDiffTool(const CTGitPath& file1, const CTGitPath& file2)
 {
-	CString difftool = CRegString(_T("Software\\TortoiseGit\\DiffTools\\.") + file2.GetFilename().MakeLower());
+	CString difftool = CRegString(_T("Software\\TortoiseGit\\DiffTools\\") + file2.GetFilename().MakeLower());
 	if (!difftool.IsEmpty())
 		return difftool;
-	difftool = CRegString(_T("Software\\TortoiseGit\\DiffTools\\.") + file1.GetFilename().MakeLower());
+	difftool = CRegString(_T("Software\\TortoiseGit\\DiffTools\\") + file1.GetFilename().MakeLower());
 	if (!difftool.IsEmpty())
 		return difftool;
 
