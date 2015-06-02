@@ -1610,65 +1610,65 @@ void CGitLogListBase::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 	// Which column?
 	switch (pItem->iSubItem)
 	{
-	case this->LOGLIST_GRAPH:	//Graphic
+	case LOGLIST_GRAPH:	//Graphic
 		break;
-	case this->LOGLIST_REBASE:
+	case LOGLIST_REBASE:
 		{
 			if (this->m_IsRebaseReplaceGraph && pLogEntry)
 				lstrcpyn(pItem->pszText, GetRebaseActionName(pLogEntry->GetRebaseAction() & LOGACTIONS_REBASE_MODE_MASK), pItem->cchTextMax - 1);
 		}
 		break;
-	case this->LOGLIST_ACTION: //action -- no text in the column
+	case LOGLIST_ACTION: //action -- no text in the column
 		break;
-	case this->LOGLIST_HASH:
+	case LOGLIST_HASH:
 		if(pLogEntry)
 			lstrcpyn(pItem->pszText, pLogEntry->m_CommitHash.ToString(), pItem->cchTextMax - 1);
 		break;
-	case this->LOGLIST_ID:
+	case LOGLIST_ID:
 		if(this->m_IsIDReplaceAction)
 			lstrcpyn(pItem->pszText, temp, pItem->cchTextMax - 1);
 		break;
-	case this->LOGLIST_MESSAGE: //Message
+	case LOGLIST_MESSAGE: //Message
 		if (pLogEntry)
 			lstrcpyn(pItem->pszText, (LPCTSTR)pLogEntry->GetSubject(), pItem->cchTextMax - 1);
 		break;
-	case this->LOGLIST_AUTHOR: //Author
+	case LOGLIST_AUTHOR: //Author
 		if (pLogEntry)
 			lstrcpyn(pItem->pszText, (LPCTSTR)pLogEntry->GetAuthorName(), pItem->cchTextMax - 1);
 		break;
-	case this->LOGLIST_DATE: //Date
+	case LOGLIST_DATE: //Date
 		if ( pLogEntry && (!pLogEntry->m_CommitHash.IsEmpty()) )
 			lstrcpyn(pItem->pszText,
 				CLoglistUtils::FormatDateAndTime(pLogEntry->GetAuthorDate(), m_DateFormat, true, m_bRelativeTimes),
 				pItem->cchTextMax - 1);
 		break;
 
-	case this->LOGLIST_EMAIL:
+	case LOGLIST_EMAIL:
 		if (pLogEntry)
 			lstrcpyn(pItem->pszText, (LPCTSTR)pLogEntry->GetAuthorEmail(), pItem->cchTextMax - 1);
 		break;
 
-	case this->LOGLIST_COMMIT_NAME: //Commit
+	case LOGLIST_COMMIT_NAME: //Commit
 		if (pLogEntry)
 			lstrcpyn(pItem->pszText, (LPCTSTR)pLogEntry->GetCommitterName(), pItem->cchTextMax - 1);
 		break;
 
-	case this->LOGLIST_COMMIT_EMAIL: //Commit Email
+	case LOGLIST_COMMIT_EMAIL: //Commit Email
 		if (pLogEntry)
 			lstrcpyn(pItem->pszText, (LPCTSTR)pLogEntry->GetCommitterEmail(), pItem->cchTextMax - 1);
 		break;
 
-	case this->LOGLIST_COMMIT_DATE: //Commit Date
+	case LOGLIST_COMMIT_DATE: //Commit Date
 		if (pLogEntry && (!pLogEntry->m_CommitHash.IsEmpty()))
 			lstrcpyn(pItem->pszText,
 				CLoglistUtils::FormatDateAndTime(pLogEntry->GetCommitterDate(), m_DateFormat, true, m_bRelativeTimes),
 				pItem->cchTextMax - 1);
 		break;
-	case this->LOGLIST_BUG: //Bug ID
+	case LOGLIST_BUG: //Bug ID
 		if(pLogEntry)
 			lstrcpyn(pItem->pszText, (LPCTSTR)this->m_ProjectProperties.FindBugID(pLogEntry->GetSubject() + _T("\r\n\r\n") + pLogEntry->GetBody()), pItem->cchTextMax - 1);
 		break;
-	case this->LOGLIST_SVNREV: //SVN revision
+	case LOGLIST_SVNREV: //SVN revision
 		if (pLogEntry)
 			lstrcpyn(pItem->pszText, (LPCTSTR)FindSVNRev(pLogEntry->GetSubject() + _T("\r\n\r\n") + pLogEntry->GetBody()), pItem->cchTextMax - 1);
 		break;
