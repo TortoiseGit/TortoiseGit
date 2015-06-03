@@ -3974,6 +3974,10 @@ msgstr ""
 msgid "Dumy Group For locat TabCtr"
 msgstr ""
 
+#. Resource IDs: (98)
+msgid "E&dit unselected"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "E&xclude paths:"
 msgstr ""
@@ -7930,6 +7934,14 @@ msgstr ""
 
 #. Resource IDs: (17078)
 msgid "S&how Quick Access Toolbar below the Ribbon"
+msgstr ""
+
+#. Resource IDs: (98)
+msgid "S&kip unselected"
+msgstr ""
+
+#. Resource IDs: (98)
+msgid "S&quash unselected"
 msgstr ""
 
 #. Resource IDs: (1132)

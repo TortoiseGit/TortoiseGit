@@ -4006,6 +4006,9 @@ BEGIN
     IDS_PROC_BROWSEREFS_DROPTRACKEDBRANCH "Unset tracked branch"
     IDS_PROC_BROWSEREFS_SETTRACKEDBRANCH "Select tracked branch"
     IDS_PROC_MULTIRENAME    "TortoiseGit has detected similar filenames. Do you want the files:%s\nto be renamed too?"
+    IDS_PROC_REBASE_UNSELECTED_SKIP "S&kip unselected"
+    IDS_PROC_REBASE_UNSELECTED_SQUASH "S&quash unselected"
+    IDS_PROC_REBASE_UNSELECTED_EDIT "E&dit unselected"
 END
 
 STRINGTABLE

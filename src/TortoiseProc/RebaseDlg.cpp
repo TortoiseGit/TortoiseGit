@@ -209,6 +209,12 @@ BOOL CRebaseDlg::OnInitDialog()
 		m_SplitAllOptions.AddEntry(temp);
 		temp.LoadString(IDS_PROC_REBASE_SELECTALL_EDIT);
 		m_SplitAllOptions.AddEntry(temp);
+		temp.LoadString(IDS_PROC_REBASE_UNSELECTED_SKIP);
+		m_SplitAllOptions.AddEntry(temp);
+		temp.LoadString(IDS_PROC_REBASE_UNSELECTED_SQUASH);
+		m_SplitAllOptions.AddEntry(temp);
+		temp.LoadString(IDS_PROC_REBASE_UNSELECTED_EDIT);
+		m_SplitAllOptions.AddEntry(temp);
 	}
 
 	m_FileListCtrl.Init(GITSLC_COLEXT | GITSLC_COLSTATUS |GITSLC_COLADD|GITSLC_COLDEL , _T("RebaseDlg"),(GITSLC_POPALL ^ (GITSLC_POPCOMMIT|GITSLC_POPRESTORE)), false, true, GITSLC_COLEXT | GITSLC_COLSTATUS | GITSLC_COLADD| GITSLC_COLDEL);
@@ -2392,6 +2398,15 @@ void CRebaseDlg::OnBnClickedSplitAllOptions()
 		break;
 	case 2:
 		SetAllRebaseAction(CGitLogListBase::LOGACTIONS_REBASE_EDIT);
+		break;
+	case 3:
+		m_CommitList.SetUnselectedRebaseAction(CGitLogListBase::LOGACTIONS_REBASE_SKIP);
+		break;
+	case 4:
+		m_CommitList.SetUnselectedRebaseAction(CGitLogListBase::LOGACTIONS_REBASE_SQUASH);
+		break;
+	case 5:
+		m_CommitList.SetUnselectedRebaseAction(CGitLogListBase::LOGACTIONS_REBASE_EDIT);
 		break;
 	default:
 		ATLASSERT(false);

@@ -28,6 +28,7 @@ class CGitLogList : public CGitLogListBase
 public:
 	void ShiftSelectedRebaseAction();
 	void SetSelectedRebaseAction(int action);
+	void SetUnselectedRebaseAction(int action);
 
 protected:
 	int	 CherryPickFrom(CString from, CString to);

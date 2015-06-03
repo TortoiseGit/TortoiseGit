@@ -1161,6 +1161,30 @@ void CGitLogList::SetSelectedRebaseAction(int action)
 	}
 	GetParent()->PostMessage(CGitLogListBase::m_RebaseActionMessage);
 }
+
+void CGitLogList::SetUnselectedRebaseAction(int action)
+{
+	POSITION pos = GetFirstSelectedItemPosition();
+	int index = pos ? GetNextSelectedItem(pos) : -1;
+	for (int i = 0; i < GetItemCount(); i++)
+	{
+		if (i == index)
+		{
+			index = pos ? GetNextSelectedItem(pos) : -1;
+			continue;
+		}
+
+		if (((GitRevLoglist*)m_arShownList[i])->GetRebaseAction() & (LOGACTIONS_REBASE_CURRENT | LOGACTIONS_REBASE_DONE) || (i == GetItemCount() - 1 && action == LOGACTIONS_REBASE_SQUASH))
+			continue;
+		((GitRevLoglist*)m_arShownList[i])->GetRebaseAction() = action;
+		CRect rect;
+		this->GetItemRect(i, &rect, LVIR_BOUNDS);
+		this->InvalidateRect(rect);
+	}
+
+	GetParent()->PostMessage(CGitLogListBase::m_RebaseActionMessage);
+}
+
 void CGitLogList::ShiftSelectedRebaseAction()
 {
 	POSITION pos = GetFirstSelectedItemPosition();
