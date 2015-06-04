@@ -64,7 +64,9 @@ int CLogDataVector::ParserFromLog(CTGitPath *path, int count, int infomask, CStr
 	CString gitrange = _T("HEAD");
 	if (range != nullptr)
 		gitrange = *range;
-	CString cmd = g_Git.GetLogCmd(gitrange, path, count, infomask, true);
+	CFilterData filter;
+	filter.m_NumberOfLogs = count;
+	CString cmd = g_Git.GetLogCmd(gitrange, path, infomask, true, &filter);
 
 	if (!g_Git.CanParseRev(gitrange))
 		return 0;

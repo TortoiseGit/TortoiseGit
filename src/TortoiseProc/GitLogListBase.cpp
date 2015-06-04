@@ -2673,7 +2673,7 @@ int CGitLogListBase::BeginFetchLog()
 	if (mask & CGit::LOG_INFO_FOLLOW)
 		mask &= ~CGit::LOG_INFO_ALL_BRANCH | CGit::LOG_INFO_LOCAL_BRANCHES;
 
-	CString cmd = g_Git.GetLogCmd(m_sRange, path, -1, mask, true, &m_Filter);
+	CString cmd = g_Git.GetLogCmd(m_sRange, path, mask, true, &m_Filter);
 
 	//this->m_logEntries.ParserFromLog();
 	if(IsInWorkingThread())
@@ -2708,7 +2708,7 @@ int CGitLogListBase::BeginFetchLog()
 		if (list.size() == 0)
 			return 0;
 
-		cmd = g_Git.GetLogCmd(list[0], path, -1, mask, true, &m_Filter);
+		cmd = g_Git.GetLogCmd(list[0], path, mask, true, &m_Filter);
 	}
 
 	g_Git.m_critGitDllSec.Lock();
