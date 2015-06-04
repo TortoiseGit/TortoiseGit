@@ -492,10 +492,10 @@ LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM /*lParam*/)
 		CTime begin,end;
 		m_LogList.GetTimeRange(begin,end);
 
-		if(m_LogList.m_From == -1)
+		if(m_LogList.m_Filter.m_From == -1)
 			m_DateFrom.SetTime(&begin);
 
-		if(m_LogList.m_To == -1)
+		if(m_LogList.m_Filter.m_To == -1)
 			m_DateTo.SetTime(&end);
 
 
@@ -2303,9 +2303,9 @@ void CLogDlg::OnDtnDatetimechangeDateto(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 		m_DateTo.GetTime(_time);
 
 		CTime time(_time.GetYear(), _time.GetMonth(), _time.GetDay(), 23, 59, 59);
-		if (time.GetTime() != m_LogList.m_To)
+		if (time.GetTime() != m_LogList.m_Filter.m_To)
 		{
-			m_LogList.m_To = (DWORD)time.GetTime();
+			m_LogList.m_Filter.m_To = (DWORD)time.GetTime();
 			SetTimer(LOGFTIME_TIMER, 10, NULL);
 		}
 	}
@@ -2326,9 +2326,9 @@ void CLogDlg::OnDtnDatetimechangeDatefrom(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 		m_DateFrom.GetTime(_time);
 
 		CTime time(_time.GetYear(), _time.GetMonth(), _time.GetDay(), 0, 0, 0);
-		if (time.GetTime() != m_LogList.m_From)
+		if (time.GetTime() != m_LogList.m_Filter.m_From)
 		{
-			m_LogList.m_From = (DWORD)time.GetTime();
+			m_LogList.m_Filter.m_From = (DWORD)time.GetTime();
 			SetTimer(LOGFTIME_TIMER, 10, NULL);
 		}
 	}
