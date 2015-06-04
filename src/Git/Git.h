@@ -40,7 +40,9 @@ public:
 	{
 		m_From=m_To=-1;
 		m_IsRegex=1;
+		m_NumberOfLogs = 0;
 	}
+	DWORD m_NumberOfLogs;
 	__time64_t m_From;
 	__time64_t m_To;
 	CString m_Author;
@@ -352,7 +354,7 @@ public:
 	CString	FixBranchName_Mod(CString& branchName);
 	CString	FixBranchName(const CString& branchName);
 
-	CString GetLogCmd(const CString &range, const CTGitPath *path = NULL, int count=-1, int InfoMask = LOG_INFO_FULL_DIFF|LOG_INFO_STAT|LOG_INFO_FILESTATE|LOG_INFO_BOUNDARY|LOG_INFO_DETECT_COPYRENAME|LOG_INFO_SHOW_MERGEDFILE, bool paramonly=false, CFilterData * filter =NULL);
+	CString GetLogCmd(const CString& range, const CTGitPath* path = nullptr, int InfoMask = LOG_INFO_FULL_DIFF | LOG_INFO_STAT | LOG_INFO_FILESTATE | LOG_INFO_BOUNDARY | LOG_INFO_DETECT_COPYRENAME | LOG_INFO_SHOW_MERGEDFILE, bool paramonly = false, CFilterData* filter = nullptr);
 
 	int GetHash(CGitHash &hash, const CString& friendname);
 	static int GetHash(git_repository * repo, CGitHash &hash, const CString& friendname, bool skipFastCheck = false);

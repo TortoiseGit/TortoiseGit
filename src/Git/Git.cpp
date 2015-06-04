@@ -940,7 +940,7 @@ int CGit::BuildOutputFormat(CString &format,bool IsFull)
 	return 0;
 }
 
-CString CGit::GetLogCmd(const CString &range, const CTGitPath *path, int count, int mask, bool paramonly,
+CString CGit::GetLogCmd(const CString& range, const CTGitPath* path, int mask, bool paramonly,
 						CFilterData *Filter)
 {
 	CString cmd;
@@ -951,9 +951,6 @@ CString CGit::GetLogCmd(const CString &range, const CTGitPath *path, int count, 
 
 	if(path)
 		file.Format(_T(" -- \"%s\""), (LPCTSTR)path->GetGitPathString());
-
-	if(count>0)
-		num.Format(_T("-n%d"),count);
 
 	CString param;
 
@@ -1001,6 +998,9 @@ CString CGit::GetLogCmd(const CString &range, const CTGitPath *path, int count, 
 	param += range;
 
 	CString st1,st2;
+
+	if (Filter && Filter->m_NumberOfLogs > 0)
+		num.Format(_T("-n%d"), Filter->m_NumberOfLogs);
 
 	if( Filter && (Filter->m_From != -1))
 	{
