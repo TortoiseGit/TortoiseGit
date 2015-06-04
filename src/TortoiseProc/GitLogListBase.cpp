@@ -95,9 +95,6 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	m_bFilterWithRegex = !!CRegDWORD(_T("Software\\TortoiseGit\\UseRegexFilter"), FALSE);
 	m_bFilterCaseSensitively = !!CRegDWORD(_T("Software\\TortoiseGit\\FilterCaseSensitively"), FALSE);
 
-	m_From = -1;
-	m_To = -1;
-
 	m_ShowMask = 0;
 	m_LoadingThread = NULL;
 
@@ -2659,10 +2656,6 @@ int CGitLogListBase::BeginFetchLog()
 	if (m_sRange.IsEmpty())
 		m_sRange = _T("HEAD");
 
-	CFilterData data;
-	data.m_From = m_From;
-	data.m_To =m_To;
-
 #if 0 /* use tortoiegit filter */
 	if (this->m_nSelectedFilter == LOGFILTER_ALL || m_nSelectedFilter == LOGFILTER_AUTHORS)
 		data.m_Author = this->m_sFilterText;
@@ -2680,7 +2673,7 @@ int CGitLogListBase::BeginFetchLog()
 	if (mask & CGit::LOG_INFO_FOLLOW)
 		mask &= ~CGit::LOG_INFO_ALL_BRANCH | CGit::LOG_INFO_LOCAL_BRANCHES;
 
-	CString cmd = g_Git.GetLogCmd(m_sRange, path, -1, mask, true, &data);
+	CString cmd = g_Git.GetLogCmd(m_sRange, path, -1, mask, true, &m_Filter);
 
 	//this->m_logEntries.ParserFromLog();
 	if(IsInWorkingThread())
@@ -2715,7 +2708,7 @@ int CGitLogListBase::BeginFetchLog()
 		if (list.size() == 0)
 			return 0;
 
-		cmd = g_Git.GetLogCmd(list[0], path, -1, mask, true, &data);
+		cmd = g_Git.GetLogCmd(list[0], path, -1, mask, true, &m_Filter);
 	}
 
 	g_Git.m_critGitDllSec.Lock();
@@ -3130,8 +3123,8 @@ void CGitLogListBase::Refresh(BOOL IsCleanFilter)
 		if(IsCleanFilter)
 		{
 			m_sFilterText.Empty();
-			m_From=-1;
-			m_To=-1;
+			m_Filter.m_From = -1;
+			m_Filter.m_To = -1;
 		}
 
 		InterlockedExchange(&m_bExitThread,FALSE);
