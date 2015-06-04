@@ -6891,19 +6891,19 @@ msgid "Paste"
 msgstr ""
 
 #. Resource IDs: (603)
-msgid "Paste Recent Message..."
+msgid "Paste &Recent Message..."
+msgstr ""
+
+#. Resource IDs: (172)
+msgid "Paste &filename list"
+msgstr ""
+
+#. Resource IDs: (172)
+msgid "Paste &last commit message"
 msgstr ""
 
 #. Resource IDs: (1057)
 msgid "Paste Tool\nPaste"
-msgstr ""
-
-#. Resource IDs: (172)
-msgid "Paste filename list"
-msgstr ""
-
-#. Resource IDs: (172)
-msgid "Paste last commit message"
 msgstr ""
 
 #. Resource IDs: (15)
@@ -6984,11 +6984,11 @@ msgid "Pick"
 msgstr ""
 
 #. Resource IDs: (90)
-msgid "Pick commit hash"
+msgid "Pick commit &hash"
 msgstr ""
 
 #. Resource IDs: (90)
-msgid "Pick commit message"
+msgid "Pick commit &message"
 msgstr ""
 
 #. Resource IDs: (69)
