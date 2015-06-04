@@ -2816,11 +2816,11 @@ void CGitLogListBase::GetTimeRange(CTime &oldest, CTime &latest)
 		if(m_logEntries[i].IsEmpty())
 			continue;
 
-		if(m_logEntries.GetGitRevAt(i).GetAuthorDate().GetTime() < oldest.GetTime())
-			oldest = m_logEntries.GetGitRevAt(i).GetAuthorDate().GetTime();
+		if (m_logEntries.GetGitRevAt(i).GetCommitterDate().GetTime() < oldest.GetTime())
+			oldest = m_logEntries.GetGitRevAt(i).GetCommitterDate().GetTime();
 
-		if(m_logEntries.GetGitRevAt(i).GetAuthorDate().GetTime() > latest.GetTime())
-			latest = m_logEntries.GetGitRevAt(i).GetAuthorDate().GetTime();
+		if (m_logEntries.GetGitRevAt(i).GetCommitterDate().GetTime() > latest.GetTime())
+			latest = m_logEntries.GetGitRevAt(i).GetCommitterDate().GetTime();
 
 	}
 
