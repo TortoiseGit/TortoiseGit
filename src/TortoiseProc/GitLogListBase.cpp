@@ -3123,8 +3123,6 @@ void CGitLogListBase::Refresh(BOOL IsCleanFilter)
 		if(IsCleanFilter)
 		{
 			m_sFilterText.Empty();
-			m_Filter.m_From = -1;
-			m_Filter.m_To = -1;
 		}
 
 		InterlockedExchange(&m_bExitThread,FALSE);
