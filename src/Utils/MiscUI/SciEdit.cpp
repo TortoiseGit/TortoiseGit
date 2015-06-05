@@ -1114,7 +1114,7 @@ void CSciEdit::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 			break;
 		case SCI_ADDWORD:
 			m_personalDict.AddWord(sWord);
-			CheckSpelling(Call(SCI_POSITIONFROMLINE, Call(SCI_GETFIRSTVISIBLELINE)), Call(SCI_POSITIONFROMLINE, Call(SCI_GETFIRSTVISIBLELINE) + Call(SCI_LINESONSCREEN)));
+			CheckSpelling((int)Call(SCI_POSITIONFROMLINE, Call(SCI_GETFIRSTVISIBLELINE)), (int)Call(SCI_POSITIONFROMLINE, Call(SCI_GETFIRSTVISIBLELINE) + Call(SCI_LINESONSCREEN)));
 			break;
 		case SCI_LINESSPLIT:
 			{
