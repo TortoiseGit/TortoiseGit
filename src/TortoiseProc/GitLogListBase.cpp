@@ -2059,7 +2059,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 							}
 						}
 
-						popup.AppendMenuIcon(ID_SWITCHBRANCH, str, IDI_SWITCH, subbranchmenu.m_hMenu);
+						popup.AppendMenuIcon(ID_SWITCHBRANCH, str2, IDI_SWITCH, subbranchmenu.m_hMenu);
 					}
 				}
 
