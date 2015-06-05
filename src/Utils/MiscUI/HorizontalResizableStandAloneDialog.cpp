@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011 - TortoiseGit
+// Copyright (C) 2011, 2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -24,39 +24,14 @@ IMPLEMENT_DYNAMIC(CHorizontalResizableStandAloneDialog, CResizableStandAloneDial
 CHorizontalResizableStandAloneDialog::CHorizontalResizableStandAloneDialog(UINT nIDTemplate, CWnd* pParentWnd /*= NULL*/)
 	: CResizableStandAloneDialog(nIDTemplate, pParentWnd)
 {
-	m_height = 0;
 }
 
 BEGIN_MESSAGE_MAP(CHorizontalResizableStandAloneDialog, CResizableStandAloneDialog)
-	ON_WM_SIZING()
 END_MESSAGE_MAP()
 
 BOOL CHorizontalResizableStandAloneDialog::OnInitDialog()
 {
 	CResizableStandAloneDialog::OnInitDialog();
-
-	RECT rect;
-	GetWindowRect(&rect);
-	m_height = rect.bottom - rect.top;
-
+	BlockResize(DIALOG_BLOCKVERTICAL);
 	return FALSE;
-}
-
-void CHorizontalResizableStandAloneDialog::OnSizing(UINT fwSide, LPRECT pRect)
-{
-	// don't allow the dialog to be changed in height
-	switch (fwSide)
-	{
-	case WMSZ_BOTTOM:
-	case WMSZ_BOTTOMLEFT:
-	case WMSZ_BOTTOMRIGHT:
-		pRect->bottom = pRect->top + m_height;
-		break;
-	case WMSZ_TOP:
-	case WMSZ_TOPLEFT:
-	case WMSZ_TOPRIGHT:
-		pRect->top = pRect->bottom - m_height;
-		break;
-	}
-	CResizableStandAloneDialog::OnSizing(fwSide, pRect);
 }

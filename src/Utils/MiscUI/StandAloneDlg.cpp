@@ -56,6 +56,7 @@ BEGIN_MESSAGE_MAP(CResizableStandAloneDialog, CStandAloneDialogTmpl<CResizableDi
 	ON_WM_MOVING()
 	ON_WM_NCMBUTTONUP()
 	ON_WM_NCRBUTTONUP()
+	ON_WM_NCHITTEST()
 	ON_BN_CLICKED(IDHELP, OnHelp)
 END_MESSAGE_MAP()
 
@@ -63,6 +64,40 @@ void CResizableStandAloneDialog::OnSizing(UINT fwSide, LPRECT pRect)
 {
 	m_bVertical = m_bVertical && (fwSide == WMSZ_LEFT || fwSide == WMSZ_RIGHT);
 	m_bHorizontal = m_bHorizontal && (fwSide == WMSZ_TOP || fwSide == WMSZ_BOTTOM);
+	if (m_nResizeBlock & DIALOG_BLOCKVERTICAL)
+	{
+		// don't allow the dialog to be changed in height
+		switch (fwSide)
+		{
+		case WMSZ_BOTTOM:
+		case WMSZ_BOTTOMLEFT:
+		case WMSZ_BOTTOMRIGHT:
+			pRect->bottom = pRect->top + m_height;
+			break;
+		case WMSZ_TOP:
+		case WMSZ_TOPLEFT:
+		case WMSZ_TOPRIGHT:
+			pRect->top = pRect->bottom - m_height;
+			break;
+		}
+	}
+	if (m_nResizeBlock & DIALOG_BLOCKHORIZONTAL)
+	{
+		// don't allow the dialog to be changed in width
+		switch (fwSide)
+		{
+		case WMSZ_RIGHT:
+		case WMSZ_TOPRIGHT:
+		case WMSZ_BOTTOMRIGHT:
+			pRect->right = pRect->left + m_width;
+			break;
+		case WMSZ_LEFT:
+		case WMSZ_TOPLEFT:
+		case WMSZ_BOTTOMLEFT:
+			pRect->left = pRect->right - m_width;
+			break;
+		}
+	}
 	CStandAloneDialogTmpl<CResizableDialog>::OnSizing(fwSide, pRect);
 }
 
@@ -124,6 +159,44 @@ void CResizableStandAloneDialog::OnNcRButtonUp(UINT nHitTest, CPoint point)
 		SetMenu(GetMenu());
 	}
 	CStandAloneDialogTmpl<CResizableDialog>::OnNcRButtonUp(nHitTest, point);
+}
+
+LRESULT CResizableStandAloneDialog::OnNcHitTest(CPoint point)
+{
+	if (m_nResizeBlock == 0)
+		return __super::OnNcHitTest(point);
+
+	// when resizing is blocked in a direction, don't return
+	// a hit code that would allow that resizing.
+	// Using the OnNcHitTest handler tells Windows to
+	// not show a resizing mouse pointer if it's not possible
+	auto ht = __super::OnNcHitTest(point);
+	if (m_nResizeBlock & DIALOG_BLOCKVERTICAL)
+	{
+		switch (ht)
+		{
+		case HTBOTTOMLEFT:  ht = HTLEFT;   break;
+		case HTBOTTOMRIGHT: ht = HTRIGHT;  break;
+		case HTTOPLEFT:     ht = HTLEFT;   break;
+		case HTTOPRIGHT:    ht = HTRIGHT;  break;
+		case HTTOP:         ht = HTBORDER; break;
+		case HTBOTTOM:      ht = HTBORDER; break;
+		}
+	}
+	if (m_nResizeBlock & DIALOG_BLOCKHORIZONTAL)
+	{
+		switch (ht)
+		{
+		case HTBOTTOMLEFT:  ht = HTBOTTOM; break;
+		case HTBOTTOMRIGHT: ht = HTBOTTOM; break;
+		case HTTOPLEFT:     ht = HTTOP;    break;
+		case HTTOPRIGHT:    ht = HTTOP;    break;
+		case HTLEFT:        ht = HTBORDER; break;
+		case HTRIGHT:       ht = HTBORDER; break;
+		}
+	}
+
+	return ht;
 }
 
 BEGIN_MESSAGE_MAP(CStateDialog, CDialog)

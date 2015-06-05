@@ -24,6 +24,9 @@
 
 #pragma comment(lib, "htmlhelp.lib")
 
+#define DIALOG_BLOCKHORIZONTAL 1
+#define DIALOG_BLOCKVERTICAL 2
+
 /**
  * \ingroup TortoiseProc
  *
@@ -40,6 +43,9 @@ protected:
 	CStandAloneDialogTmpl(UINT nIDTemplate, CWnd* pParentWnd = NULL) : BaseType(nIDTemplate, pParentWnd)
 	{
 		m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+		m_nResizeBlock = 0;
+		m_height = 0;
+		m_width = 0;
 	}
 	virtual BOOL OnInitDialog()
 	{
@@ -50,6 +56,10 @@ protected:
 		SetIcon(m_hIcon, TRUE);			// Set big icon
 		SetIcon(m_hIcon, FALSE);		// Set small icon
 
+		RECT rect;
+		GetWindowRect(&rect);
+		m_height = rect.bottom - rect.top;
+		m_width = rect.right - rect.left;
 		EnableToolTips();
 		m_tooltips.Create(this);
 
@@ -242,8 +252,16 @@ protected:
 		SetCursorPos(pt.x, pt.y);
 	}
 
+	void BlockResize(int block)
+	{
+		m_nResizeBlock = block;
+	}
+
 protected:
 	CToolTips	m_tooltips;
+	int			m_nResizeBlock;
+	long		m_width;
+	long		m_height;
 
 	DECLARE_MESSAGE_MAP()
 
@@ -352,6 +370,7 @@ protected:
 	afx_msg void	OnMoving(UINT fwSide, LPRECT pRect);
 	afx_msg void	OnNcMButtonUp(UINT nHitTest, CPoint point);
 	afx_msg void	OnNcRButtonUp(UINT nHitTest, CPoint point);
+	afx_msg LRESULT OnNcHitTest(CPoint point);
 
 	DECLARE_MESSAGE_MAP()
 
