@@ -116,10 +116,17 @@ BOOL CResizableWndState::LoadWindowRect(LPCTSTR pszName, BOOL bRectOnly)
 	// use workspace coordinates
 	RECT& rc = wp.rcNormalPosition;
 
+	long min_width = rc.right - rc.left;
+	long min_height = rc.bottom - rc.top;
+
 	if (_stscanf(data, PLACEMENT_FMT, &rc.left, &rc.top,
 		&rc.right, &rc.bottom, &wp.showCmd, &wp.flags,
 		&wp.ptMinPosition.x, &wp.ptMinPosition.y) == 8)
 	{
+		if (rc.bottom - rc.top < min_height)
+			rc.bottom = rc.top + min_height;
+		if (rc.right - rc.left < min_width)
+			rc.right = rc.left + min_width;
 		if (bRectOnly)	// restore size/pos only
 		{
 			wp.showCmd = SW_SHOWNORMAL;
