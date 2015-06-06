@@ -3517,8 +3517,8 @@ BEGIN
     IDS_SMTP_DIRECTLY       "SMTP, directly to destination server"
     IDS_PROC_GITCONFIG_ASKTAGOPT 
                             "To avoid fetching wrong tags, if this is not an official remote,\nyou are advised to disable tag fetching for this remote.\nDisable tag fetching?"
-    IDS_COMMITDLG_POPUP_PICKCOMMITHASH "Pick commit hash"
-    IDS_COMMITDLG_POPUP_PICKCOMMITMESSAGE "Pick commit message"
+    IDS_COMMITDLG_POPUP_PICKCOMMITHASH "Pick commit &hash"
+    IDS_COMMITDLG_POPUP_PICKCOMMITMESSAGE "Pick commit &message"
     IDS_REPOBROWSE_INFO     "%1!s!\r\nShowing %2!d! files, %3!d! submodules and %4!d! folders, %5!d! items in total"
     IDS_REPOBROWSE_INFOEXT  "Submodule ""%1!s!""\r\nRevision %2!s!"
     IDS_REPOBROWSE_INFODIR  "%1!s!"
@@ -3946,8 +3946,8 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_COMMITDLG_POPUP_PASTEFILELIST "Paste filename list"
-    IDS_COMMITDLG_POPUP_PASTELASTMESSAGE "Paste last commit message"
+    IDS_COMMITDLG_POPUP_PASTEFILELIST "Paste &filename list"
+    IDS_COMMITDLG_POPUP_PASTELASTMESSAGE "Paste &last commit message"
 END
 
 STRINGTABLE
@@ -4276,7 +4276,7 @@ BEGIN
     IDS_ERROR_NOCLEAN_STASH "The current working tree is not clean.\nDo you want to stash the changes?"
     IDS_ERROR_NOTHING_COMMIT "Nothing to commit"
     IDS_COMMIT_FINISH       "Commit Finish"
-    IDS_COMMITDLG_POPUP_LOGHISTORY "Paste Recent Message..."
+    IDS_COMMITDLG_POPUP_LOGHISTORY "Paste &Recent Message..."
     IDS_REBASE_UPTODATE_FMT "Current branch %s is up to date\r\n\r\n If you want to force the rebase even if the current branch is a descendant of the commit you are rebasing onto, please check below ""Force Rebase"" checkbox."
     IDS_REBASE_FORCE_TT     "Force the rebase even if the current branch is a descendant of the commit you are rebasing onto. \r\nNormally the command will exit with the message ""Current branch is up to date"" in such a situation."
     IDS_REBASE_ABORT_TT     "Recover to the status before rebase"
