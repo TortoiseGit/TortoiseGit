@@ -55,7 +55,7 @@ void CLogDataVector::ClearAll()
 }
 
 //CLogDataVector Class
-int CLogDataVector::ParserFromLog(CTGitPath *path, int count, int infomask, CString *range)
+int CLogDataVector::ParserFromLog(CTGitPath* path, DWORD count, DWORD infomask, CString* range)
 {
 	// only enable --follow on files
 	if ((path == NULL || path->IsDirectory()) && (infomask & CGit::LOG_INFO_FOLLOW))
@@ -65,7 +65,13 @@ int CLogDataVector::ParserFromLog(CTGitPath *path, int count, int infomask, CStr
 	if (range != nullptr)
 		gitrange = *range;
 	CFilterData filter;
-	filter.m_NumberOfLogs = count;
+	if (count == 0)
+		filter.m_NumberOfLogsScale = CFilterData::SHOW_NO_LIMIT;
+	else
+	{
+		filter.m_NumberOfLogs = count;
+		filter.m_NumberOfLogsScale = CFilterData::SHOW_LAST_N_COMMITS;
+	}
 	CString cmd = g_Git.GetLogCmd(gitrange, path, infomask, true, &filter);
 
 	if (!g_Git.CanParseRev(gitrange))

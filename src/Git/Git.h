@@ -36,12 +36,27 @@ struct git_repository;
 class CFilterData
 {
 public:
+
+	enum
+	{
+		SHOW_NO_LIMIT, // NOTE: no limitation does not mean "without all limitations", it's just without the following limitations. That say, the log still could be limited by auther, committer, etc.
+		SHOW_LAST_SEL_DATE,
+		SHOW_LAST_SEL_ITEM,
+		SHOW_LAST_N_COMMITS,
+		SHOW_LAST_N_YEARS,
+		SHOW_LAST_N_MONTHS,
+		SHOW_LAST_N_WEEKS,
+	};
+
 	CFilterData()
 	{
 		m_From=m_To=-1;
 		m_IsRegex=1;
-		m_NumberOfLogs = 0;
+		m_NumberOfLogsScale = SHOW_NO_LIMIT;
+		m_NumberOfLogs = 1;
 	}
+
+	DWORD m_NumberOfLogsScale;
 	DWORD m_NumberOfLogs;
 	__time64_t m_From;
 	__time64_t m_To;

@@ -3464,6 +3464,10 @@ msgstr ""
 msgid "Default application menu. Appears when no documents are open."
 msgstr ""
 
+#. Resource IDs: (65535)
+msgid "Default limitation of log messages:"
+msgstr ""
+
 #. Resource IDs: (1064)
 msgid "Default to UTF-8 encoding"
 msgstr ""
@@ -5787,6 +5791,10 @@ msgstr ""
 msgid "Language:"
 msgstr ""
 
+#. Resource IDs: (1570)
+msgid "Last"
+msgstr ""
+
 #. Resource IDs: (1350)
 msgid "Last Author"
 msgstr ""
@@ -5803,8 +5811,32 @@ msgstr ""
 msgid "Last Modified:"
 msgstr ""
 
+#. Resource IDs: (1580)
+msgid "Last N commit(s)"
+msgstr ""
+
+#. Resource IDs: (1582)
+msgid "Last N month(s)"
+msgstr ""
+
+#. Resource IDs: (1583)
+msgid "Last N week(s)"
+msgstr ""
+
+#. Resource IDs: (1581)
+msgid "Last N year(s)"
+msgstr ""
+
 #. Resource IDs: (1616)
 msgid "Last known &good:"
+msgstr ""
+
+#. Resource IDs: (1578)
+msgid "Last selected date"
+msgstr ""
+
+#. Resource IDs: (1579)
+msgid "Last selected item"
 msgstr ""
 
 #. Resource IDs: (187)
@@ -6461,6 +6493,10 @@ msgstr ""
 #. Resource IDs: (4362)
 #, c-format
 msgid "No image encoder found for %s."
+msgstr ""
+
+#. Resource IDs: (1577)
+msgid "No limitation"
 msgstr ""
 
 #. Resource IDs: (1375)
@@ -7529,6 +7565,10 @@ msgstr ""
 
 #. Resource IDs: (32794)
 msgid "Reloads the opened files and reverts all changes.\nReload"
+msgstr ""
+
+#. Resource IDs: (1584)
+msgid "Remember selected date on close"
 msgstr ""
 
 #. Resource IDs: (1660)
@@ -9228,6 +9268,10 @@ msgstr ""
 msgid "The Remote Config was changed.\nDo you want to save now or discard changes?"
 msgstr ""
 
+#. Resource IDs: (1575)
+msgid "The \"number of\" value for those \"Last N\" options.\nShould > 0"
+msgstr ""
+
 #. Resource IDs: (1115)
 #, c-format
 msgid "The branch \"%s\" is a <i>remote</i> branch.\n\nDo you really want to <ct=0x0000FF>delete</ct> it?"
@@ -9252,6 +9296,10 @@ msgstr ""
 
 #. Resource IDs: (9641)
 msgid "The current working tree is not clean.\nDo you want to stash the changes?"
+msgstr ""
+
+#. Resource IDs: (1576)
+msgid "The dafault limitation of log messages when you open Log Message dialog.\nNote1: All \"Last N\" options share the \"number of\" value.\nNote2: If you choose one limiation execpt \"No limitation\",\nfor showing all commits in Log Message dialog,\nyou can right click on \"FROM\" date control, then click \"All\" item."
 msgstr ""
 
 #. Resource IDs: (1080)
@@ -10673,6 +10721,10 @@ msgstr ""
 msgid "bugtraq.warningifnoissue"
 msgstr ""
 
+#. Resource IDs: (1571)
+msgid "commit(s)"
+msgstr ""
+
 #. Resource IDs: (3903, 3905)
 msgid "commits"
 msgstr ""
@@ -10782,6 +10834,10 @@ msgstr ""
 msgid "month"
 msgstr ""
 
+#. Resource IDs: (1573)
+msgid "month(s)"
+msgstr ""
+
 #. Resource IDs: (1681)
 msgid "new branch"
 msgstr ""
@@ -10878,6 +10934,10 @@ msgstr ""
 msgid "week"
 msgstr ""
 
+#. Resource IDs: (1574)
+msgid "week(s)"
+msgstr ""
+
 #. Resource IDs: (1408)
 msgid "wincred - all Windows users"
 msgstr ""
@@ -10900,6 +10960,10 @@ msgstr ""
 
 #. Resource IDs: (3912)
 msgid "year"
+msgstr ""
+
+#. Resource IDs: (1572)
+msgid "year(s)"
 msgstr ""
 
 #. Resource IDs: (273)

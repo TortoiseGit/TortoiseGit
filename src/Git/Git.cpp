@@ -999,12 +999,37 @@ CString CGit::GetLogCmd(const CString &range, const CTGitPath *path, int mask, b
 
 	CString st1,st2;
 
-	if (Filter && Filter->m_NumberOfLogs > 0)
+	if (Filter && Filter->m_NumberOfLogsScale == CFilterData::SHOW_LAST_N_COMMITS)
 		num.Format(_T("-n%d"), Filter->m_NumberOfLogs);
 
-	if( Filter && (Filter->m_From != -1))
+	if (Filter)
 	{
-		st1.Format(_T(" --max-age=%I64u "), Filter->m_From);
+		if (Filter->m_NumberOfLogsScale == CFilterData::SHOW_LAST_SEL_DATE && Filter->m_From > 0)
+		{
+			st1.Format(_T(" --max-age=%I64u "), Filter->m_From);
+		}
+		else
+		{
+			CString scale;
+			switch (Filter->m_NumberOfLogsScale)
+			{
+			case CFilterData::SHOW_LAST_N_YEARS:
+				scale = _T("year");
+				break;
+			case CFilterData::SHOW_LAST_N_MONTHS:
+				scale = _T("month");
+				break;
+			case CFilterData::SHOW_LAST_N_WEEKS:
+				scale = _T("week");
+				break;
+			}
+			if (!scale.IsEmpty())
+			{
+				if (Filter->m_NumberOfLogs > 1)
+					scale += _T("s");
+				st1.Format(_T(" --since=\"%d.%s\" "), Filter->m_NumberOfLogs, scale);
+			}
+		}
 		param += st1;
 	}
 

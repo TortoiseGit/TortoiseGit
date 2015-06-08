@@ -95,6 +95,21 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	m_bFilterWithRegex = !!CRegDWORD(_T("Software\\TortoiseGit\\UseRegexFilter"), FALSE);
 	m_bFilterCaseSensitively = !!CRegDWORD(_T("Software\\TortoiseGit\\FilterCaseSensitively"), FALSE);
 
+	CString key = _T("Software\\TortoiseGit\\History\\LogDlg_FromDates\\") + g_Git.m_CurrentDir + _T("\\FromDate0");
+	key.Replace(_T(':'), _T('_'));
+	CString str = CRegString(key, _T("-1"));
+	m_Filter.m_From = (__time64_t)ConvertStrUtcDateToLocalTime(str);
+
+	m_Filter.m_NumberOfLogsScale = (DWORD)CRegDWORD(_T("Software\\TortoiseGit\\LogDialog\\NumberOfLogsScale"), CFilterData::SHOW_NO_LIMIT);
+	if (m_Filter.m_NumberOfLogsScale == CFilterData::SHOW_LAST_SEL_ITEM)
+	{
+		key = _T("Software\\TortoiseGit\\History\\LogDlg_LastLimitItem\\") + g_Git.m_CurrentDir + _T("\\Item0");
+		key.Replace(_T(':'), _T('_'));
+		str = CRegString(key, _T("0"));
+		m_Filter.m_NumberOfLogsScale = (DWORD)_tcstol(str, nullptr, 10);
+	}
+	m_Filter.m_NumberOfLogs = (DWORD)CRegDWORD(_T("Software\\TortoiseGit\\LogDialog\\NumberOfLogs"), 1);
+
 	m_ShowMask = 0;
 	m_LoadingThread = NULL;
 
@@ -2562,7 +2577,7 @@ int CGitLogListBase::FillGitLog(CTGitPath *path, CString *range, int info)
 	this->m_arShownList.SafeRemoveAll();
 
 	this->m_logEntries.ClearAll();
-	if (this->m_logEntries.ParserFromLog(path, -1, info, range))
+	if (this->m_logEntries.ParserFromLog(path, 0, info, range))
 		return -1;
 
 	SetItemCountEx((int)m_logEntries.size());
@@ -4310,4 +4325,14 @@ CString CGitLogListBase::GetToolTipText(int nItem, int nSubItem)
 		return sToolTipText;
 	}
 	return CString();
+}
+
+__time64_t CGitLogListBase::ConvertStrUtcDateToLocalTime(CString& strUtcDate)
+{
+	__time64_t utc_date = (__time64_t)(_tcstoui64(strUtcDate.GetBuffer(0), nullptr, 10));
+	strUtcDate.ReleaseBuffer();
+
+	tm tm_local;
+	_localtime64_s(&tm_local, &utc_date);
+	return _mkgmtime64(&tm_local);
 }

@@ -401,6 +401,7 @@ public:
 	CString				m_sFilterText;
 
 	CFilterData			m_Filter;
+	__time64_t			ConvertStrUtcDateToLocalTime(CString& strUtcDate);
 
 	CTGitPath			m_Path;
 	int					m_ShowMask;
