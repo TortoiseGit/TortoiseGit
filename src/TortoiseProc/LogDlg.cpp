@@ -63,8 +63,6 @@ CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
 	, m_pNotifyWindow(NULL)
 
 	, m_bAscending(FALSE)
-
-	, m_limit(0)
 	, m_hAccel(NULL)
 	, m_bNavigatingWithSelect(false)
 {
@@ -212,7 +210,7 @@ enum JumpType
 	JumpType_History,
 };
 
-void CLogDlg::SetParams(const CTGitPath& orgPath, const CTGitPath& path, CString hightlightRevision, CString range, int limit)
+void CLogDlg::SetParams(const CTGitPath& orgPath, const CTGitPath& path, CString hightlightRevision, CString range, DWORD limit, DWORD limitScale/*=CFilterData::SHOW_NO_LIMIT*/)
 {
 	m_orgPath = orgPath;
 	m_path = path;
@@ -226,7 +224,14 @@ void CLogDlg::SetParams(const CTGitPath& orgPath, const CTGitPath& path, CString
 
 	SetRange(range);
 
-	m_limit = limit;
+	if (limitScale != CFilterData::SHOW_NO_LIMIT)
+	{
+		// limitation from command line argument, so override the filter.
+		m_LogList.m_Filter.m_NumberOfLogsScale = limitScale;
+		if (limit > 0 && limitScale != CFilterData::SHOW_LAST_SEL_DATE &&limitScale != CFilterData::SHOW_LAST_SEL_ITEM)
+			m_LogList.m_Filter.m_NumberOfLogs = limit;
+	}
+
 	if (::IsWindow(m_hWnd))
 		UpdateData(FALSE);
 }
@@ -1153,7 +1158,6 @@ void CLogDlg::OnBnClickedRefresh()
 
 void CLogDlg::Refresh (bool clearfilter /*autoGoOnline*/)
 {
-	m_limit = 0;
 	m_LogList.Refresh(clearfilter);
 	EnableOKButton();
 	ShowStartRef();
@@ -1751,7 +1755,6 @@ BOOL CLogDlg::PreTranslateMessage(MSG* pMsg)
 		if (GetFocus() == GetDlgItem(IDC_SEARCHEDIT))
 		{
 			KillTimer(LOGFILTER_TIMER);
-			m_limit = 0;
 			m_LogList.Refresh(FALSE);
 			FillLogMessageCtrl(false);
 		}
@@ -2374,7 +2377,6 @@ void CLogDlg::OnTimer(UINT_PTR nIDEvent)
 	if (nIDEvent == LOGFTIME_TIMER)
 	{
 		KillTimer(LOGFTIME_TIMER);
-		m_limit = 0;
 		m_LogList.Refresh(FALSE);
 		FillLogMessageCtrl(false);
 	}
@@ -2385,7 +2387,6 @@ void CLogDlg::OnTimer(UINT_PTR nIDEvent)
 	else if (nIDEvent == LOGFILTER_TIMER)
 	{
 		KillTimer(LOGFILTER_TIMER);
-		m_limit = 0;
 		m_LogList.Refresh(FALSE);
 		FillLogMessageCtrl(false);
 
@@ -2965,7 +2966,6 @@ void CLogDlg::OnSize(UINT nType, int cx, int cy)
 void CLogDlg::OnRefresh()
 {
 	{
-		m_limit = 0;
 		this->m_LogProgress.SetPos(0);
 
 		Refresh (false);

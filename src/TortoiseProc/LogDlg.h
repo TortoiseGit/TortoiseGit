@@ -59,7 +59,7 @@ class CLogDlg : public CResizableStandAloneDialog, IFilterEditValidator, IHasPat
 public:
 	CLogDlg(CWnd* pParent = NULL); // standard constructor
 	virtual ~CLogDlg();
-	void SetParams(const CTGitPath& orgPath, const CTGitPath& path, CString hightlightRevision, CString range, int limit);
+	void SetParams(const CTGitPath& orgPath, const CTGitPath& path, CString hightlightRevision, CString range, DWORD limit, DWORD limitScale = CFilterData::SHOW_NO_LIMIT);
 	void SetFilter(const CString& findstr, LONG findtype, bool findregex);
 	bool IsThreadRunning() {return !!m_LogList.m_bThreadRunning;}
 	void SetSelect(bool bSelect) {m_bSelect = bSelect;}
@@ -271,7 +271,6 @@ private:
 	CComboBox			m_JumpType;
 	CButton				m_JumpUp;
 	CButton				m_JumpDown;
-	int					m_limit;
 	int					m_nSortColumn;
 	bool				m_bAscending;
 	static int			m_nSortColumnPathList;
