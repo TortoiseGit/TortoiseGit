@@ -95,6 +95,21 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	m_bFilterWithRegex = !!CRegDWORD(_T("Software\\TortoiseGit\\UseRegexFilter"), FALSE);
 	m_bFilterCaseSensitively = !!CRegDWORD(_T("Software\\TortoiseGit\\FilterCaseSensitively"), FALSE);
 
+	m_Filter.m_NumberOfLogsScale = (DWORD)CRegDWORD(_T("Software\\TortoiseGit\\LogDialog\\NumberOfLogsScale"), CFilterData::SHOW_NO_LIMIT);
+	if (m_Filter.m_NumberOfLogsScale == CFilterData::SHOW_LAST_SEL_DATE)
+	{
+		CString key;
+		key.Format(_T("Software\\TortoiseGit\\History\\LogDlg_Limits\\%s\\FromDate"), (LPCTSTR)g_Git.m_CurrentDir);
+		key.Replace(_T(':'), _T('_'));
+		CString lastSelFromDate = CRegString(key);
+		if (lastSelFromDate.GetLength() == 10)
+		{
+			CTime time = CTime(_wtoi((LPCTSTR)lastSelFromDate.Mid(0, 4)), _wtoi((LPCTSTR)lastSelFromDate.Mid(5, 2)), _wtoi((LPCTSTR)lastSelFromDate.Mid(8, 2)), 0, 0, 0);
+			m_Filter.m_From = (DWORD)time.GetTime();
+		}
+	}
+	m_Filter.m_NumberOfLogs = (DWORD)CRegDWORD(_T("Software\\TortoiseGit\\LogDialog\\NumberOfLogs"), 1);
+
 	m_ShowMask = 0;
 	m_LoadingThread = NULL;
 
@@ -2562,7 +2577,7 @@ int CGitLogListBase::FillGitLog(CTGitPath *path, CString *range, int info)
 	this->m_arShownList.SafeRemoveAll();
 
 	this->m_logEntries.ClearAll();
-	if (this->m_logEntries.ParserFromLog(path, -1, info, range))
+	if (this->m_logEntries.ParserFromLog(path, 0, info, range))
 		return -1;
 
 	SetItemCountEx((int)m_logEntries.size());

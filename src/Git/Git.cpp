@@ -999,12 +999,32 @@ CString CGit::GetLogCmd(const CString& range, const CTGitPath* path, int mask, b
 
 	CString st1,st2;
 
-	if (Filter && Filter->m_NumberOfLogs > 0)
-		num.Format(_T("-n%d"), Filter->m_NumberOfLogs);
-
-	if( Filter && (Filter->m_From != -1))
+	if (Filter)
 	{
-		st1.Format(_T(" --max-age=%I64u "), Filter->m_From);
+		if (Filter->m_NumberOfLogsScale >= CFilterData::SHOW_LAST_N_YEARS)
+		{
+			CTime now = CTime::GetCurrentTime();
+			CTime time = CTime(now.GetYear(), now.GetMonth(), now.GetDay(), 0, 0, 0);
+			__time64_t substract = 86400;
+			CString scale;
+			switch (Filter->m_NumberOfLogsScale)
+			{
+			case CFilterData::SHOW_LAST_N_YEARS:
+				substract *= 365;
+				break;
+			case CFilterData::SHOW_LAST_N_MONTHS:
+				substract *= 30;
+				break;
+			case CFilterData::SHOW_LAST_N_WEEKS:
+				substract *= 7;
+				break;
+			}
+			Filter->m_From = (DWORD)time.GetTime() - substract;
+		}
+		if (Filter->m_NumberOfLogsScale == CFilterData::SHOW_LAST_N_COMMITS)
+			num.Format(_T("-n%ld"), Filter->m_NumberOfLogs);
+		else if (Filter->m_NumberOfLogsScale >= CFilterData::SHOW_LAST_SEL_DATE  && Filter->m_From > 0)
+			st1.Format(_T(" --max-age=%I64u "), Filter->m_From);
 		param += st1;
 	}
 

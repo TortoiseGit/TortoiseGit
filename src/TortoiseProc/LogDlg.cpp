@@ -63,8 +63,6 @@ CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
 	, m_pNotifyWindow(NULL)
 
 	, m_bAscending(FALSE)
-
-	, m_limit(0)
 	, m_hAccel(NULL)
 	, m_bNavigatingWithSelect(false)
 {
@@ -192,6 +190,8 @@ BEGIN_MESSAGE_MAP(CLogDlg, CResizableStandAloneDialog)
 	ON_WM_MOVE()
 	ON_WM_MOVING()
 	ON_WM_SIZING()
+	ON_WM_CTLCOLOR()
+	ON_WM_PAINT()
 END_MESSAGE_MAP()
 
 enum JumpType
@@ -208,7 +208,7 @@ enum JumpType
 	JumpType_History,
 };
 
-void CLogDlg::SetParams(const CTGitPath& orgPath, const CTGitPath& path, CString hightlightRevision, CString range, int limit)
+void CLogDlg::SetParams(const CTGitPath& orgPath, const CTGitPath& path, CString hightlightRevision, CString range, DWORD limit, DWORD limitScale/*=CFilterData::SHOW_NO_LIMIT*/)
 {
 	m_orgPath = orgPath;
 	m_path = path;
@@ -222,7 +222,13 @@ void CLogDlg::SetParams(const CTGitPath& orgPath, const CTGitPath& path, CString
 
 	SetRange(range);
 
-	m_limit = limit;
+	if (limitScale >= CFilterData::SHOW_LAST_N_COMMITS && limit > 0)
+	{
+		// limitation from command line argument, so override the filter.
+		m_LogList.m_Filter.m_NumberOfLogs = limit;
+		m_LogList.m_Filter.m_NumberOfLogsScale = limitScale;
+	}
+
 	if (::IsWindow(m_hWnd))
 		UpdateData(FALSE);
 }
@@ -306,6 +312,8 @@ BOOL CLogDlg::OnInitDialog()
 	m_LogList.GetClientRect(m_LogListOrigRect);
 	GetDlgItem(IDC_MSGVIEW)->GetClientRect(m_MsgViewOrigRect);
 	m_ChangedFileListCtrl.GetClientRect(m_ChgOrigRect);
+
+	m_Brush.CreateSolidBrush(RGB(174, 200, 255));
 
 	m_DateFrom.SendMessage(DTM_SETMCSTYLE, 0, MCS_WEEKNUMBERS|MCS_NOTODAY|MCS_NOTRAILINGDATES|MCS_NOSELCHANGEONNAV);
 	m_DateTo.SendMessage(DTM_SETMCSTYLE, 0, MCS_WEEKNUMBERS|MCS_NOTODAY|MCS_NOTRAILINGDATES|MCS_NOSELCHANGEONNAV);
@@ -431,8 +439,46 @@ BOOL CLogDlg::OnInitDialog()
 	reg.Replace(_T(':'),_T('_'));
 	m_History.Load(reg, _T("ref"));
 
+	reg.Format(_T("Software\\TortoiseGit\\History\\LogDlg_Limits\\%s\\FromDate"), (LPCTSTR)g_Git.m_CurrentDir);
+	reg.Replace(_T(':'), _T('_'));
+	m_regLastSelectedFromDate = CRegString(reg);
+
 	ShowStartRef();
 	return FALSE;
+}
+
+HBRUSH CLogDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
+{
+	HBRUSH hbr = __super::OnCtlColor(pDC, pWnd, nCtlColor);
+
+	if (m_LogList.m_Filter.m_NumberOfLogsScale > CFilterData::SHOW_NO_LIMIT && pWnd->GetDlgCtrlID() == IDC_FROMLABEL)
+	{
+		pDC->SetBkMode(TRANSPARENT);
+		return m_Brush;
+	}
+
+	return hbr;
+}
+
+void CLogDlg::OnPaint()
+{
+	CPaintDC dc(this);
+
+	if (m_LogList.m_Filter.m_NumberOfLogsScale == CFilterData::SHOW_NO_LIMIT)
+		return;
+	
+	CWnd* pWnd = GetDlgItem(IDC_FROMLABEL);
+	if (!pWnd)
+		return;
+
+	CRect rect;
+	pWnd->GetWindowRect(&rect);
+	ScreenToClient(rect);
+	rect.left -= 5;
+	rect.top -= 3;
+	rect.bottom += 3;
+
+	dc.FillRect(rect, &m_Brush);
 }
 
 LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM /*lParam*/)
@@ -492,13 +538,11 @@ LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM /*lParam*/)
 		CTime begin,end;
 		m_LogList.GetTimeRange(begin,end);
 
-		if(m_LogList.m_Filter.m_From == -1)
-			m_DateFrom.SetTime(&begin);
-
-		if(m_LogList.m_Filter.m_To == -1)
-			m_DateTo.SetTime(&end);
-
-
+		if (m_LogList.m_Filter.m_From > 0 && m_LogList.m_Filter.m_NumberOfLogsScale >= CFilterData::SHOW_LAST_SEL_DATE)
+			begin = m_LogList.m_Filter.m_From;
+		m_DateFrom.SetTime(&begin);
+		m_DateTo.SetTime(&end);
+		Invalidate();
 	}
 	else
 	{
@@ -1106,7 +1150,6 @@ void CLogDlg::OnBnClickedRefresh()
 
 void CLogDlg::Refresh (bool clearfilter /*autoGoOnline*/)
 {
-	m_limit = 0;
 	m_LogList.Refresh(clearfilter);
 	EnableOKButton();
 	ShowStartRef();
@@ -1215,8 +1258,9 @@ void CLogDlg::CopyChangedSelectionToClipBoard()
 
 void CLogDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 {
-	// we have three separate context menus:
+	// we have 4 separate context menus:
 	// one for the branch label in the upper left
+	// one for FROM date control
 	// one shown on the log message list control,
 	// one shown in the changed-files list control
 	if (pWnd == GetDlgItem(IDC_STATIC_REF))
@@ -1293,6 +1337,63 @@ void CLogDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 
 		return;
 	}
+
+	if (pWnd == GetDlgItem(IDC_DATEFROM))
+	{
+		CIconMenu popup;
+		if (!popup.CreatePopupMenu())
+			return;
+
+		int cnt = 0;
+
+		popup.AppendMenuIcon(++cnt, IDS_NO_LIMIT);
+
+		DWORD scale = (DWORD)CRegDWORD(_T("Software\\TortoiseGit\\LogDialog\\NumberOfLogsScale"), CFilterData::SHOW_NO_LIMIT);
+		CString strScale;
+		switch (scale)
+		{
+		case CFilterData::SHOW_LAST_N_COMMITS:
+			strScale.LoadString(IDS_LAST_N_COMMITS);
+			break;
+		case CFilterData::SHOW_LAST_N_YEARS:
+			strScale.LoadString(IDS_LAST_N_YEARS);
+			break;
+		case CFilterData::SHOW_LAST_N_MONTHS:
+			strScale.LoadString(IDS_LAST_N_MONTHS);
+			break;
+		case CFilterData::SHOW_LAST_N_WEEKS:
+			strScale.LoadString(IDS_LAST_N_WEEKS);
+			break;
+		}
+		if (!strScale.IsEmpty() && m_LogList.m_Filter.m_NumberOfLogs > 0)
+		{
+			popup.AppendMenu(MF_SEPARATOR, 0);
+			CString number;
+			number.Format(L"%ld", m_LogList.m_Filter.m_NumberOfLogs);
+			CString item;
+			item.Format(strScale, (LPCTSTR)number);
+			popup.AppendMenuIcon(++cnt, item);
+		}
+
+		int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this, 0);
+		if (cmd <= 0)
+			return;
+		else if (cmd == 1)
+		{
+			m_LogList.m_Filter.m_NumberOfLogsScale = CFilterData::SHOW_NO_LIMIT;
+			// reset last selected date
+			m_regLastSelectedFromDate.removeValue();
+		}
+		else if (cmd == 2)
+			m_LogList.m_Filter.m_NumberOfLogsScale = scale;
+
+		UpdateData(FALSE);
+		OnRefresh();
+		FillLogMessageCtrl(false);
+
+		return;
+	}
+
 	int selCount = m_LogList.GetSelectedCount();
 	if ((selCount == 1)&&(pWnd == GetDlgItem(IDC_MSGVIEW)))
 	{
@@ -1601,7 +1702,6 @@ BOOL CLogDlg::PreTranslateMessage(MSG* pMsg)
 		if (GetFocus() == GetDlgItem(IDC_SEARCHEDIT))
 		{
 			KillTimer(LOGFILTER_TIMER);
-			m_limit = 0;
 			m_LogList.Refresh(FALSE);
 			FillLogMessageCtrl(false);
 		}
@@ -2224,7 +2324,6 @@ void CLogDlg::OnTimer(UINT_PTR nIDEvent)
 	if (nIDEvent == LOGFTIME_TIMER)
 	{
 		KillTimer(LOGFTIME_TIMER);
-		m_limit = 0;
 		m_LogList.Refresh(FALSE);
 		FillLogMessageCtrl(false);
 	}
@@ -2235,7 +2334,6 @@ void CLogDlg::OnTimer(UINT_PTR nIDEvent)
 	else if (nIDEvent == LOGFILTER_TIMER)
 	{
 		KillTimer(LOGFILTER_TIMER);
-		m_limit = 0;
 		m_LogList.Refresh(FALSE);
 		FillLogMessageCtrl(false);
 
@@ -2329,6 +2427,11 @@ void CLogDlg::OnDtnDatetimechangeDatefrom(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 		if (time.GetTime() != m_LogList.m_Filter.m_From)
 		{
 			m_LogList.m_Filter.m_From = (DWORD)time.GetTime();
+			m_LogList.m_Filter.m_NumberOfLogsScale = CFilterData::SHOW_LAST_SEL_DATE;
+
+			if (m_LogList.m_Filter.m_NumberOfLogsScale == CFilterData::SHOW_LAST_SEL_DATE)
+				m_regLastSelectedFromDate = time.Format(L"%Y-%m-%d");
+
 			SetTimer(LOGFTIME_TIMER, 10, NULL);
 		}
 	}
@@ -2805,7 +2908,6 @@ void CLogDlg::OnSize(UINT nType, int cx, int cy)
 void CLogDlg::OnRefresh()
 {
 	{
-		m_limit = 0;
 		this->m_LogProgress.SetPos(0);
 
 		Refresh (false);

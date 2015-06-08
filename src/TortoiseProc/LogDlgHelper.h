@@ -76,7 +76,7 @@ public:
 		return 	m_pLogCache->m_HashMap[(*this)[i]];
 	}
 	void ClearAll();
-	int  ParserFromLog(CTGitPath *path =NULL, int count = -1, int infomask = CGit::LOG_INFO_STAT | CGit::LOG_INFO_FILESTATE | CGit::LOG_INFO_SHOW_MERGEDFILE, CString *range = NULL);
+	int  ParserFromLog(CTGitPath* path = nullptr, DWORD count = 0, DWORD infomask = CGit::LOG_INFO_STAT | CGit::LOG_INFO_FILESTATE | CGit::LOG_INFO_SHOW_MERGEDFILE, CString* range = nullptr);
 	int  Fill(std::set<CGitHash>& hashes);
 
 	int FetchFullInfo(int i);

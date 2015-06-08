@@ -1182,14 +1182,22 @@
 #define IDC_BUGTRAQLOGREGEX1            1569
 #define IDS_REMOVEBUTTON                1569
 #define IDC_BUGTRAQLOGREGEX2            1570
+#define IDS_LAST_N_WEEKS                1570
 #define IDC_PUTTYKEYFILE                1571
+#define IDS_LAST_N_MONTHS               1571
 #define IDC_GROUP_CLONE                 1572
+#define IDS_LAST_N_YEARS                1572
 #define IDC_GROUPT_REMOTE               1573
+#define IDS_LAST_N_COMMITS              1574
 #define IDC_SENDMAIL_PATCHS             1575
+#define IDS_DEFAULT_NUMBER_OF_TT        1575
+#define IDS_DEFAULT_SCALE_TT            1576
 #define IDC_SENDMAIL_TO                 1577
+#define IDS_NO_LIMIT                    1577
 #define IDC_COMBOBOXEX_REF              1578
 #define IDC_SENDMAIL_CC                 1578
 #define IDC_REGEXIDLABEL                1578
+#define IDS_LAST_SEL_DATE               1578
 #define IDC_STATIC_REF                  1579
 #define IDC_SENDMAIL_ATTACHMENT         1579
 #define IDC_REGEXMSGLABEL               1579
@@ -1489,6 +1497,8 @@
 #define IDC_BUTTON_ONTO                 1828
 #define IDC_STATIC_AUTHORS              1829
 #define IDC_INCLUDENESTEDREFS           1830
+#define IDC_DEFAULT_NUMBER_OF           1831
+#define IDC_DEFAULT_SCALE               1832
 #define IDS_LOG_FILTER_BY               1850
 #define IDS_LOG_FILTER_PATHS            1851
 #define IDS_LOG_FILTER_AUTHORS          1852
@@ -1930,7 +1940,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        358
 #define _APS_NEXT_COMMAND_VALUE         32874
-#define _APS_NEXT_CONTROL_VALUE         1831
+#define _APS_NEXT_CONTROL_VALUE         1833
 #define _APS_NEXT_SYMED_VALUE           201
 #endif
 #endif
