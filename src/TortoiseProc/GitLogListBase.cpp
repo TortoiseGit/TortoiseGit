@@ -2856,6 +2856,9 @@ UINT CGitLogListBase::LogThread()
 
 	// store commit number of the last selected commit/line before the refresh or -1
 	int lastSelectedHashNItem = -1;
+	if (m_lastSelectedHash.IsEmpty())
+		lastSelectedHashNItem = 0;
+
 	int ret = 0;
 
 	bool shouldWalk = true;

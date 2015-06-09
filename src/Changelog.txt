@@ -15,6 +15,7 @@ Released: unreleased
  * Fixed issue #2509: Prompt for stash before rebase is not matched with pop stash after rebase
  * Fixed issue #2510: Non-correctly visualized settings dialog on modern high-DPI displays
  * Fixed issue #2514: diff uses wrong tool in case the filename matches a registered extension
+ * Fixed issue #2487: Show log dialog lose focus of "working dir changes" after content refresh
 
 = Release 1.8.14.0 =
 Released: 2015-04-08
