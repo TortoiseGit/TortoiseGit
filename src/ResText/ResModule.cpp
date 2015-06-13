@@ -295,7 +295,7 @@ BOOL CResModule::ExtractString(LPCTSTR lpszType)
 		{
 			std::wstring str = std::wstring(pBuf);
 			RESOURCEENTRY entry = m_StringEntries[str];
-			entry.resourceIDs.insert((INT_PTR)lpszType);
+			entry.resourceIDs.insert(((INT_PTR)lpszType - 1) * 16 + i);
 			if (wcschr(str.c_str(), '%'))
 				entry.flag = _T("#, c-format");
 			m_StringEntries[str] = entry;
