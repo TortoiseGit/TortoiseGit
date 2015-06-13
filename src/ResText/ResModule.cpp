@@ -1842,24 +1842,34 @@ BOOL CResModule::ExtractRibbon(LPCTSTR lpszType)
 	// Resource consists of one single string
 	// that is XML.
 
-	// extract all <text>blah</text> elements
+	// extract all <id><name>blah1</name><value>blah2</value></id><text>blah</text> elements
 
-	const std::regex regRevMatch("<TEXT>([^<]+)</TEXT>");
+	const std::regex regRevMatch("<ID><NAME>([^<]+)</NAME><VALUE>([^<]+)</VALUE></ID><TEXT>([^<]+)</TEXT>");
 	std::string ss = std::string((const char*)p, sizeres);
 	const std::sregex_iterator end;
 	for (std::sregex_iterator it(ss.begin(), ss.end(), regRevMatch); it != end; ++it)
 	{
-		std::string str = (*it)[1];
-		size_t len = str.size();
-		std::unique_ptr<wchar_t[]> bufw(new wchar_t[len*4 + 1]);
-		SecureZeroMemory(bufw.get(), (len*4 + 1)*sizeof(wchar_t));
-		MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, bufw.get(), (int)len*4);
-		std::wstring ret = bufw.get();
-		RESOURCEENTRY entry = m_StringEntries[ret];
-		entry.resourceIDs.insert((INT_PTR)lpszType);
-		if (wcschr(ret.c_str(), '%'))
+		size_t len;
+
+		std::string str2 = (*it)[2];
+		len = str2.size();
+		std::unique_ptr<wchar_t[]> bufw2(new wchar_t[len * 4 + 1]);
+		SecureZeroMemory(bufw2.get(), (len * 4 + 1)*sizeof(wchar_t));
+		MultiByteToWideChar(CP_UTF8, 0, str2.c_str(), -1, bufw2.get(), (int)len * 4);
+		std::wstring strIdVal = bufw2.get();
+
+		std::string str3 = (*it)[3];
+		len = str3.size();
+		std::unique_ptr<wchar_t[]> bufw3(new wchar_t[len * 4 + 1]);
+		SecureZeroMemory(bufw3.get(), (len * 4 + 1)*sizeof(wchar_t));
+		MultiByteToWideChar(CP_UTF8, 0, str3.c_str(), -1, bufw3.get(), (int)len * 4);
+		std::wstring str = bufw3.get();
+
+		RESOURCEENTRY entry = m_StringEntries[str];
+		entry.resourceIDs.insert(std::stoi(strIdVal));
+		if (wcschr(str.c_str(), '%'))
 			entry.flag = _T("#, c-format");
-		m_StringEntries[ret] = entry;
+		m_StringEntries[str] = entry;
 		m_bDefaultRibbonTexts++;
 	}
 
