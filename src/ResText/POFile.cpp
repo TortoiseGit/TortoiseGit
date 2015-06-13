@@ -147,6 +147,12 @@ BOOL CPOFile::ParseFile(LPCTSTR szPath, BOOL bUpdateExisting, bool bAdjustEOLs)
 				{
 					AdjustEOLs(resEntry.msgstr);
 				}
+				// always use the new data for generated comments/flags
+				auto newEntry = (*this)[msgid];
+				resEntry.automaticcomments = newEntry.automaticcomments;
+				resEntry.flag = newEntry.flag;
+				resEntry.resourceIDs = newEntry.resourceIDs;
+
 				(*this)[msgid] = resEntry;
 			}
 			msgid.clear();
