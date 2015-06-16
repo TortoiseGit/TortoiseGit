@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2014 - TortoiseGit
+// Copyright (C) 2012-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -23,7 +23,7 @@
 #include "registry.h"
 #include "HistoryCombo.h"
 
-class CSubmoduleUpdateDlg : public CStandAloneDialog
+class CSubmoduleUpdateDlg : public CResizableStandAloneDialog
 {
 	DECLARE_DYNAMIC(CSubmoduleUpdateDlg)
 

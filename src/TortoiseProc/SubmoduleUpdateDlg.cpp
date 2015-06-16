@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2014 - TortoiseGit
+// Copyright (C) 2012-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -24,12 +24,12 @@
 #include "UnicodeUtils.h"
 #include "MessageBox.h"
 
-IMPLEMENT_DYNAMIC(CSubmoduleUpdateDlg, CStandAloneDialog)
+IMPLEMENT_DYNAMIC(CSubmoduleUpdateDlg, CResizableStandAloneDialog)
 
 bool CSubmoduleUpdateDlg::s_bSortLogical = true;
 
 CSubmoduleUpdateDlg::CSubmoduleUpdateDlg(CWnd* pParent /*=NULL*/)
-	: CStandAloneDialog(CSubmoduleUpdateDlg::IDD, pParent)
+	: CResizableStandAloneDialog(CSubmoduleUpdateDlg::IDD, pParent)
 	, m_bInit(TRUE)
 	, m_bRecursive(FALSE)
 	, m_bForce(FALSE)
@@ -50,7 +50,7 @@ CSubmoduleUpdateDlg::~CSubmoduleUpdateDlg()
 
 void CSubmoduleUpdateDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CStandAloneDialog::DoDataExchange(pDX);
+	CResizableStandAloneDialog::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_LIST_PATH, m_PathListBox);
 	DDX_Control(pDX, IDC_SELECTALL, m_SelectAll);
 	DDX_Check(pDX, IDC_WHOLE_PROJECT, m_bWholeProject);
@@ -64,7 +64,7 @@ void CSubmoduleUpdateDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 
-BEGIN_MESSAGE_MAP(CSubmoduleUpdateDlg, CStandAloneDialog)
+BEGIN_MESSAGE_MAP(CSubmoduleUpdateDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_SELECTALL, OnBnClickedSelectall)
 	ON_BN_CLICKED(IDC_WHOLE_PROJECT, OnBnClickedShowWholeProject)
 	ON_BN_CLICKED(IDOK, &CSubmoduleUpdateDlg::OnBnClickedOk)
@@ -120,8 +120,24 @@ static void GetSubmodulePathList(STRING_VECTOR &list, STRING_VECTOR &prefixList)
 
 BOOL CSubmoduleUpdateDlg::OnInitDialog()
 {
-	CStandAloneDialog::OnInitDialog();
+	CResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
+
+	AddAnchor(IDOK, BOTTOM_RIGHT);
+	AddAnchor(IDCANCEL, BOTTOM_RIGHT);
+	AddAnchor(IDHELP, BOTTOM_RIGHT);
+	AddAnchor((UINT)IDC_STATIC, TOP_LEFT);
+	AddAnchor(IDC_LIST_PATH, TOP_LEFT, BOTTOM_RIGHT);
+	AddAnchor(IDC_SELECTALL, BOTTOM_LEFT);
+	AddAnchor(IDC_WHOLE_PROJECT, BOTTOM_LEFT);
+	AddAnchor(IDC_GROUP_INFO, BOTTOM_LEFT, BOTTOM_RIGHT);
+	AddAnchor(IDC_CHECK_SUBMODULE_INIT, BOTTOM_LEFT);
+	AddAnchor(IDC_CHECK_SUBMODULE_RECURSIVE, BOTTOM_LEFT);
+	AddAnchor(IDC_FORCE, BOTTOM_LEFT);
+	AddAnchor(IDC_CHECK_SUBMODULE_REMOTE, BOTTOM_LEFT);
+	AddAnchor(IDC_CHECK_SUBMODULE_NOFETCH, BOTTOM_RIGHT);
+	AddAnchor(IDC_CHECK_SUBMODULE_MERGE, BOTTOM_RIGHT);
+	AddAnchor(IDC_CHECK_SUBMODULE_REBASE, BOTTOM_RIGHT);
 
 	CString str(g_Git.m_CurrentDir);
 	str.Replace(_T(":"), _T("_"));
@@ -153,6 +169,8 @@ BOOL CSubmoduleUpdateDlg::OnInitDialog()
 	AdjustControlSize(IDC_CHECK_SUBMODULE_MERGE);
 	AdjustControlSize(IDC_CHECK_SUBMODULE_REBASE);
 
+	EnableSaveRestore(_T("SubmoduleUpdateDlg"));
+
 	Refresh();
 	UpdateData(FALSE);
 
@@ -176,7 +194,7 @@ void CSubmoduleUpdateDlg::SetDlgTitle()
 
 void CSubmoduleUpdateDlg::OnBnClickedOk()
 {
-	CStandAloneDialog::UpdateData(TRUE);
+	CResizableStandAloneDialog::UpdateData(TRUE);
 	m_PathList.clear();
 	if (m_bRemote && CAppUtils::GetMsysgitVersion() < 0x01080200)
 	{
@@ -209,7 +227,7 @@ void CSubmoduleUpdateDlg::OnBnClickedOk()
 	m_regMerge = m_bMerge;
 	m_regRebase = m_bRebase;
 
-	CStandAloneDialog::OnOK();
+	CResizableStandAloneDialog::OnOK();
 }
 
 void CSubmoduleUpdateDlg::OnLbnSelchangeListPath()
