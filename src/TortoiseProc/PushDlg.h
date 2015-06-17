@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2014 - TortoiseGit
+// Copyright (C) 2008-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -85,6 +85,7 @@ protected:
 	afx_msg void OnBnClickedPushall();
 	afx_msg void OnBnClickedForce();
 	afx_msg void OnBnClickedForceWithLease();
+	afx_msg void OnBnClickedTags();
 	afx_msg void OnBnClickedProcPushSetUpstream();
 	afx_msg void OnBnClickedProcPushSetPushremote();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);

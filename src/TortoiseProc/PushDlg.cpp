@@ -89,6 +89,7 @@ BEGIN_MESSAGE_MAP(CPushDlg, CHorizontalResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_PUSHALL, &CPushDlg::OnBnClickedPushall)
 	ON_BN_CLICKED(IDC_FORCE, &CPushDlg::OnBnClickedForce)
 	ON_BN_CLICKED(IDC_FORCE_WITH_LEASE, &CPushDlg::OnBnClickedForceWithLease)
+	ON_BN_CLICKED(IDC_TAGS, &CPushDlg::OnBnClickedTags)
 	ON_BN_CLICKED(IDC_PROC_PUSH_SET_UPSTREAM, &CPushDlg::OnBnClickedProcPushSetUpstream)
 	ON_BN_CLICKED(IDC_PROC_PUSH_SET_PUSHREMOTE, &CPushDlg::OnBnClickedProcPushSetPushremote)
 	ON_BN_CLICKED(IDC_PROC_PUSH_SET_PUSHBRANCH, &CPushDlg::OnBnClickedProcPushSetPushremote)
@@ -589,13 +590,21 @@ void CPushDlg::OnBnClickedForce()
 {
 	UpdateData();
 	if (CAppUtils::GetMsysgitVersion() >= 0x01080500)
-		GetDlgItem(IDC_FORCE_WITH_LEASE)->EnableWindow(m_bForce ? FALSE : TRUE);
+		GetDlgItem(IDC_FORCE_WITH_LEASE)->EnableWindow(m_bTags || m_bForce ? FALSE : TRUE);
 }
 
 void CPushDlg::OnBnClickedForceWithLease()
 {
 	UpdateData();
 	GetDlgItem(IDC_FORCE)->EnableWindow(m_bForceWithLease ? FALSE : TRUE);
+	GetDlgItem(IDC_TAGS)->EnableWindow(m_bForceWithLease ? FALSE : TRUE);
+}
+
+void CPushDlg::OnBnClickedTags()
+{
+	UpdateData();
+	if (CAppUtils::GetMsysgitVersion() >= 0x01080500)
+		GetDlgItem(IDC_FORCE_WITH_LEASE)->EnableWindow(m_bTags || m_bForce ? FALSE : TRUE);
 }
 
 void CPushDlg::OnBnClickedProcPushSetUpstream()
