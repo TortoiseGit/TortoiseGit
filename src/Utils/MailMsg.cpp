@@ -4,12 +4,12 @@
   Copyright (c) 2003, Michael Carruth
   All rights reserved.
 
-  Adjusted by Sven Strickroth <email@cs-ware.de>, 2011
+  Adjusted by Sven Strickroth <email@cs-ware.de>, 2011, 2015
    * make it work with no attachments
    * added flag to show mail compose dialog
    * make it work with 32-64bit inconsistencies (http://msdn.microsoft.com/en-us/library/dd941355.aspx)
    * auto extract filenames of attachments
-   * added AddCC
+   * make work with multiple recipients (to|cc)
 
   Redistribution and use in source and binary forms, with or without modification, 
   are permitted provided that the following conditions are met:
@@ -71,9 +71,22 @@ void CMailMsg::SetFrom(CString sAddress)
 	m_from = CUnicodeUtils::GetUTF8(sAddress);
 }
 
-void CMailMsg::SetTo(CString sAddress)
+static void addAdresses(std::vector<std::string>& recipients, const CString& sAddresses)
 {
-	m_to = CUnicodeUtils::GetUTF8(sAddress);
+	int start = 0;
+	while (start >= 0)
+	{
+		CString address = sAddresses.Tokenize(_T(";"), start);
+		address = address.Trim();
+		if (address.IsEmpty())
+			continue;
+		recipients.push_back((std::string)CUnicodeUtils::GetUTF8(address));
+	}
+}
+
+void CMailMsg::SetTo(const CString& sAddresses)
+{
+	addAdresses(m_to, sAddresses);
 }
 
 void CMailMsg::SetSubject(CString sSubject)
@@ -91,9 +104,9 @@ void CMailMsg::SetShowComposeDialog(BOOL showComposeDialog)
 	m_bShowComposeDialog = showComposeDialog;
 };
 
-void CMailMsg::AddCC(CString sAddress)
+void CMailMsg::SetCC(const CString& sAddresses)
 {
-	m_cc.push_back((std::string)CUnicodeUtils::GetUTF8(sAddress));
+	addAdresses(m_cc, sAddresses);
 }
 
 void CMailMsg::AddAttachment(CString sAttachment, CString sTitle)
@@ -209,7 +222,7 @@ BOOL CMailMsg::Send()
 	if(!m_bReady && !MAPIInitialize())
 		return FALSE;
 
-	pRecipients = new MapiRecipDesc[2 + m_cc.size()];
+	pRecipients = new MapiRecipDesc[1 + m_to.size() + m_cc.size()];
 	if(!pRecipients)
 	{
 		m_sErrorMsg = _T("Error allocating memory");
@@ -236,25 +249,28 @@ BOOL CMailMsg::Send()
 	pRecipients[0].ulEIDSize = 0;
 	pRecipients[0].lpEntryID = NULL;
 
-	// set to
-	pRecipients[1].ulReserved = 0;
-	pRecipients[1].ulRecipClass = MAPI_TO;
-	pRecipients[1].lpszAddress = (LPSTR)m_to.c_str();
-	pRecipients[1].lpszName = (LPSTR)m_to.c_str();
-	pRecipients[1].ulEIDSize = 0;
-	pRecipients[1].lpEntryID = NULL;
+	// add to recipients
+	for (size_t i = 0; i < m_to.size(); ++i)
+	{
+		++nIndex;
+		pRecipients[nIndex].ulReserved = 0;
+		pRecipients[nIndex].ulRecipClass = MAPI_TO;
+		pRecipients[nIndex].lpszAddress = (LPSTR)m_to.at(i).c_str();
+		pRecipients[nIndex].lpszName = (LPSTR)m_to.at(i).c_str();
+		pRecipients[nIndex].ulEIDSize = 0;
+		pRecipients[nIndex].lpEntryID = NULL;
+	}
 
 	// add cc receipients
-	nIndex = 2;
 	for (size_t i = 0; i < m_cc.size(); ++i)
 	{
+		++nIndex;
 		pRecipients[nIndex].ulReserved = 0;
 		pRecipients[nIndex].ulRecipClass = MAPI_CC;
 		pRecipients[nIndex].lpszAddress = (LPSTR)m_cc.at(i).c_str();
 		pRecipients[nIndex].lpszName = (LPSTR)m_cc.at(i).c_str();
 		pRecipients[nIndex].ulEIDSize = 0;
 		pRecipients[nIndex].lpEntryID = NULL;
-		nIndex++;
 	}
 
 	nIndex=0;
@@ -278,7 +294,7 @@ BOOL CMailMsg::Send()
 	message.lpszConversationID				= NULL;
 	message.flFlags							= 0;
 	message.lpOriginator					= pRecipients;
-	message.nRecipCount						= (ULONG)(1 + m_cc.size());
+	message.nRecipCount						= (ULONG)(m_to.size() + m_cc.size());
 	message.lpRecips						= &pRecipients[1];
 	message.nFileCount						= nAttachments;
 	message.lpFiles							= nAttachments ? pAttachments : NULL;

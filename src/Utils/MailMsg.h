@@ -61,12 +61,12 @@ public:
 	virtual ~CMailMsg();
 
 	// Operations
-	void SetTo(CString sAddress);
-	void SetFrom(CString sAddress);
+	void SetTo(const CString& sAddress);
+	void SetFrom(CString sAddresses);
 	void SetSubject(CString sSubject);
 	void SetMessage(CString sMessage);
 	void AddAttachment(CString sAttachment, CString sTitle = _T(""));
-	void AddCC(CString sAddress);
+	void SetCC(const CString& sAddresses);
 	void SetShowComposeDialog(BOOL showComposeDialog);
 
 	BOOL MAPIInitialize();
@@ -79,7 +79,7 @@ public:
 
 protected:
 	std::string					m_from;                       // From <address,name>
-	std::string					m_to;                         // To <address,name>
+	std::vector<std::string>	m_to;                         // To receipients
 	TStrStrMap					m_attachments;                // Attachment <file,title>
 	std::vector<std::string>	m_cc;                         // CC receipients
 	std::string					m_sSubject;                   // EMail subject

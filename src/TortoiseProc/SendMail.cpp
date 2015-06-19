@@ -90,7 +90,7 @@ int CSendMail::SendMail(CString &FromName, CString &FromMail, CString &To, CStri
 		mapiSender.SetFrom(FromName);
 		mapiSender.SetTo(To);
 		if (!CC.IsEmpty())
-			mapiSender.AddCC(CC);
+			mapiSender.SetCC(CC);
 		mapiSender.SetSubject(subject);
 		mapiSender.SetMessage(body);
 		for (int i = 0; i < attachments.GetSize(); ++i)
