@@ -90,12 +90,12 @@ void CMailMsg::SetTo(const CString& sAddresses)
 	addAdresses(m_to, sAddresses);
 }
 
-void CMailMsg::SetSubject(CString sSubject)
+void CMailMsg::SetSubject(const CString& sSubject)
 {
 	m_sSubject = CUnicodeUtils::GetUTF8(sSubject);
 }
 
-void CMailMsg::SetMessage(CString sMessage) 
+void CMailMsg::SetMessage(const CString& sMessage)
 {
 	m_sMessage = CUnicodeUtils::GetUTF8(sMessage);
 };
@@ -110,7 +110,7 @@ void CMailMsg::SetCC(const CString& sAddresses)
 	addAdresses(m_cc, sAddresses);
 }
 
-void CMailMsg::AddAttachment(CString sAttachment, CString sTitle)
+void CMailMsg::AddAttachment(const CString& sAttachment, CString sTitle)
 {
 	if (sTitle.IsEmpty())
 	{
