@@ -87,7 +87,7 @@ int CSendMail::SendMail(CString &FromName, CString &FromMail, CString &To, CStri
 		}
 
 		mapiSender.SetShowComposeDialog(TRUE);
-		mapiSender.SetFrom(FromName);
+		mapiSender.SetFrom(FromMail, FromName);
 		mapiSender.SetTo(To);
 		if (!CC.IsEmpty())
 			mapiSender.SetCC(CC);

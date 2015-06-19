@@ -66,9 +66,10 @@ CMailMsg::~CMailMsg()
 }
 
 
-void CMailMsg::SetFrom(CString sAddress)
+void CMailMsg::SetFrom(const CString& sAddress, const CString& sName)
 {  
 	m_from = CUnicodeUtils::GetUTF8(sAddress);
+	m_fromname = CUnicodeUtils::GetUTF8(sName);
 }
 
 static void addAdresses(std::vector<std::string>& recipients, const CString& sAddresses)
@@ -245,7 +246,7 @@ BOOL CMailMsg::Send()
 	pRecipients[0].ulReserved = 0;
 	pRecipients[0].ulRecipClass = MAPI_ORIG;
 	pRecipients[0].lpszAddress = (LPSTR)m_from.c_str();
-	pRecipients[0].lpszName = "";
+	pRecipients[0].lpszName = (LPSTR)m_fromname.c_str();
 	pRecipients[0].ulEIDSize = 0;
 	pRecipients[0].lpEntryID = NULL;
 

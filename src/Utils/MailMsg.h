@@ -62,7 +62,7 @@ public:
 
 	// Operations
 	void SetTo(const CString& sAddress);
-	void SetFrom(CString sAddresses);
+	void SetFrom(const CString& sAddresses, const CString& sName);
 	void SetSubject(CString sSubject);
 	void SetMessage(CString sMessage);
 	void AddAttachment(CString sAttachment, CString sTitle = _T(""));
@@ -79,6 +79,7 @@ public:
 
 protected:
 	std::string					m_from;                       // From <address,name>
+	std::string					m_fromname;                   // From <address,name>
 	std::vector<std::string>	m_to;                         // To receipients
 	TStrStrMap					m_attachments;                // Attachment <file,title>
 	std::vector<std::string>	m_cc;                         // CC receipients
