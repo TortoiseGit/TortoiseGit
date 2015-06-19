@@ -68,7 +68,7 @@ CMailMsg::~CMailMsg()
 
 void CMailMsg::SetFrom(const CString& sAddress, const CString& sName)
 {  
-	m_from = CUnicodeUtils::GetUTF8(sAddress);
+	m_from = CUnicodeUtils::GetUTF8(L"SMTP:" + sAddress);
 	m_fromname = CUnicodeUtils::GetUTF8(sName);
 }
 
@@ -81,7 +81,7 @@ static void addAdresses(std::vector<std::string>& recipients, const CString& sAd
 		address = address.Trim();
 		if (address.IsEmpty())
 			continue;
-		recipients.push_back((std::string)CUnicodeUtils::GetUTF8(address));
+		recipients.push_back((std::string)CUnicodeUtils::GetUTF8(L"SMTP:" + address));
 	}
 }
 
@@ -257,7 +257,7 @@ BOOL CMailMsg::Send()
 		pRecipients[nIndex].ulReserved = 0;
 		pRecipients[nIndex].ulRecipClass = MAPI_TO;
 		pRecipients[nIndex].lpszAddress = (LPSTR)m_to.at(i).c_str();
-		pRecipients[nIndex].lpszName = (LPSTR)m_to.at(i).c_str();
+		pRecipients[nIndex].lpszName = (LPSTR)m_to.at(i).c_str() + 5;
 		pRecipients[nIndex].ulEIDSize = 0;
 		pRecipients[nIndex].lpEntryID = NULL;
 	}
@@ -269,7 +269,7 @@ BOOL CMailMsg::Send()
 		pRecipients[nIndex].ulReserved = 0;
 		pRecipients[nIndex].ulRecipClass = MAPI_CC;
 		pRecipients[nIndex].lpszAddress = (LPSTR)m_cc.at(i).c_str();
-		pRecipients[nIndex].lpszName = (LPSTR)m_cc.at(i).c_str();
+		pRecipients[nIndex].lpszName = (LPSTR)m_cc.at(i).c_str() + 5;
 		pRecipients[nIndex].ulEIDSize = 0;
 		pRecipients[nIndex].lpEntryID = NULL;
 	}

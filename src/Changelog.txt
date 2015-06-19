@@ -17,6 +17,7 @@ Released: unreleased
  * Fixed issue #2514: diff uses wrong tool in case the filename matches a registered extension
  * Fixed issue #2487: Show log dialog lose focus of "working dir changes" after content refresh
  * Fixed issue #2517: Submodule Update dialog cannot be re-sized and is too small to be useful in some cases
+ * Fixed issue #2504: Problems with MS Outlook and generated emails
 
 = Release 1.8.14.0 =
 Released: 2015-04-08
