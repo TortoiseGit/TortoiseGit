@@ -1508,7 +1508,8 @@ void CRebaseDlg::SetControlEnable()
 		this->m_CommitList.m_ContextMenuMask |= m_CommitList.GetContextMenuBit(CGitLogListBase::ID_REBASE_PICK)|
 												m_CommitList.GetContextMenuBit(CGitLogListBase::ID_REBASE_SQUASH)|
 												m_CommitList.GetContextMenuBit(CGitLogListBase::ID_REBASE_EDIT)|
-												m_CommitList.GetContextMenuBit(CGitLogListBase::ID_REBASE_SKIP);
+												m_CommitList.GetContextMenuBit(CGitLogListBase::ID_REBASE_SKIP)|
+												m_CommitList.GetContextMenuBit(CGitLogListBase::ID_LOG);
 		break;
 
 	case REBASE_START:
