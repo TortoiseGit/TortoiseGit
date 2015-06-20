@@ -4,7 +4,6 @@ init:
 - git config --global user.email "dummy@example.com"
 - git config --global user.name "Dummy Name"
 build_script:
-- perl -pi'~' -e "s#https://git.chromium.org#http://git.chromium.org#g" .gitmodules
 - git submodule update --init -- ext/gtest ext/libgit2 ext/tgit ext/zlib
 - msbuild "src\TortoiseGit.sln" /t:"test\UnitTests" /m /verbosity:minimal /p:Configuration=Debug /p:Platform=x64 /maxcpucount /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 - msbuild "src\TortoiseGit.sln" /t:"test\UnitTests" /m /verbosity:minimal /p:Configuration=Debug /p:Platform=Win32 /maxcpucount /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"

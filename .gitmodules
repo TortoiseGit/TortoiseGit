@@ -24,4 +24,4 @@
 	url = https://code.google.com/p/tortoisegit.pcre/
 [submodule "ext/gtest"]
 	path = ext/gtest
-	url = https://git.chromium.org/external/googletest.git
+	url = https://chromium.googlesource.com/external/gtest.git
