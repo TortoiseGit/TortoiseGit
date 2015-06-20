@@ -69,6 +69,7 @@ void CPatchViewDlg::SetText(const CString& text)
 	m_ctrlPatchView.Call(SCI_SETREADONLY, FALSE);
 	m_ctrlPatchView.SetText(text);
 	m_ctrlPatchView.Call(SCI_SETREADONLY, TRUE);
+	m_ctrlPatchView.Call(SCI_COLOURISE, 0, -1);
 	if (!text.IsEmpty())
 	{
 		m_ctrlPatchView.Call(SCI_GOTOPOS, 0);
