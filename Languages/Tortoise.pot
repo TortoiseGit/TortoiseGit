@@ -6391,6 +6391,10 @@ msgstr ""
 msgid "No HEAD found"
 msgstr ""
 
+#. Resource IDs: (1565)
+msgid "No changes after merge"
+msgstr ""
+
 #. Resource IDs: (1283)
 msgid "No command specified!\n\nTortoiseGitProc.exe is used by the Shell extension and should not be called directly!"
 msgstr ""

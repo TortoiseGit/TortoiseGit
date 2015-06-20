@@ -207,6 +207,23 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 							break;
 						}
 
+						try
+						{
+							CStdioFile file(tempfile, CFile::typeText | CFile::modeRead | CFile::shareDenyWrite);
+							CString strLine;
+							bool isHash = file.ReadString(strLine) && r1->m_CommitHash.ToString() == strLine;
+							bool more = isHash && file.ReadString(strLine) && !strLine.IsEmpty();
+							if (!more)
+							{
+								CMessageBox::Show(nullptr, IDS_NOCHANGEAFTERMERGE, IDS_APPNAME, MB_OK);
+								break;
+							}
+						}
+						catch (CFileException* e)
+						{
+							e->Delete();
+						}
+
 						CAppUtils::StartUnifiedDiffViewer(tempfile, _T("dd"));
 						break;
 					}
