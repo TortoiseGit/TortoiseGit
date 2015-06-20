@@ -295,7 +295,9 @@ git_filter *git_filter_filter_new(LPCWSTR shexepath, LPWSTR pEnv)
 	f->f.check		= filter_check;
 	f->f.apply		= filter_apply;
 	f->f.cleanup	= filter_cleanup;
-	f->shexepath	= wcsdup(shexepath);
+	f->shexepath	= NULL;
+	if (shexepath && wcslen(shexepath) > 0)
+		f->shexepath = wcsdup(shexepath);
 	f->pEnv			= pEnv;
 
 	return (git_filter *)f;

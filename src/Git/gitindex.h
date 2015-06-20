@@ -269,20 +269,20 @@ private:
 
 	// core.excludesfile stuff
 	std::map<CString, CString> m_CoreExcludesfiles;
-	CString m_sMsysGitBinPath;
-	DWORD m_dMsysGitBinPathLastChecked;
+	CString m_sGitSystemConfigPath;
+	DWORD m_dGitSystemConfigPathLastChecked;
 	CReaderWriterLock	m_coreExcludefilesSharedMutex;
 	// checks if the msysgit path has changed and return true/false
 	// if the path changed, the cache is update
 	// force is only ised in constructor
-	bool CheckAndUpdateMsysGitBinpath(bool force = true);
+	bool CheckAndUpdateGitSystemConfigPath(bool force = true);
 	bool CheckAndUpdateCoreExcludefile(const CString &adminDir);
 	const CString GetWindowsHome();
 
 public:
 	CReaderWriterLock		m_SharedMutex;
 
-	CGitIgnoreList(){ CheckAndUpdateMsysGitBinpath(true); }
+	CGitIgnoreList(){ CheckAndUpdateGitSystemConfigPath(true); }
 
 	std::map<CString, CGitIgnoreItem> m_Map;
 

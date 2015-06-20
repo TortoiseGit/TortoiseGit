@@ -26,6 +26,7 @@
 #include <functional>
 
 #define REG_MSYSGIT_PATH _T("Software\\TortoiseGit\\MSysGit")
+#define REG_SYSTEM_GITCONFIGPATH _T("Software\\TortoiseGit\\SystemConfig")
 #define REG_MSYSGIT_EXTRA_PATH _T("Software\\TortoiseGit\\MSysGitExtra")
 
 #define DEFAULT_USE_LIBGIT2_MASK (1 << CGit::GIT_CMD_MERGE_BASE) | (1 << CGit::GIT_CMD_DELETETAGBRANCH) | (1 << CGit::GIT_CMD_GETONEFILE) | (1 << CGit::GIT_CMD_ADD) | (1 << CGit::GIT_CMD_CHECKCONFLICTS) | (1 << CGit::GIT_CMD_GET_COMMIT)
@@ -77,6 +78,7 @@ public:
 	void CopyProcessEnvironment();
 	CString GetEnv(const TCHAR *name);
 	void SetEnv(const TCHAR* name, const TCHAR* value);
+	void AddToPath(CString value);
 	void clear();
 	bool empty();
 	operator LPTSTR();
@@ -157,6 +159,7 @@ public:
 	}
 
 	BOOL CheckMsysGitDir(BOOL bFallback = TRUE);
+	BOOL FindAndSetGitExePath(BOOL bFallback);
 	BOOL m_bInitialized;
 
 	typedef enum
@@ -193,6 +196,7 @@ public:
 	git_repository * GetGitRepository() const;
 	static CStringA GetGitPathStringA(const CString &path);
 	static CString ms_LastMsysGitDir;	// the last msysgitdir added to the path, blank if none
+	static CString ms_MsysGitRootDir;
 	static int ms_LastMsysGitVersion;
 	static bool ms_bCygwinGit;
 	static int m_LogEncode;

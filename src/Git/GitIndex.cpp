@@ -81,13 +81,13 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 	CString projectConfig = dgitdir + _T("config");
 	CString globalConfig = g_Git.GetGitGlobalConfig();
 	CString globalXDGConfig = g_Git.GetGitGlobalXDGConfig();
-	CString msysGitBinPath(CRegString(REG_MSYSGIT_PATH, _T(""), FALSE));
+	CString systemConfig(CRegString(REG_SYSTEM_GITCONFIGPATH, _T(""), FALSE));
 
 	git_config_add_file_ondisk(config, CGit::GetGitPathStringA(projectConfig), GIT_CONFIG_LEVEL_LOCAL, FALSE);
 	git_config_add_file_ondisk(config, CGit::GetGitPathStringA(globalConfig), GIT_CONFIG_LEVEL_GLOBAL, FALSE);
 	git_config_add_file_ondisk(config, CGit::GetGitPathStringA(globalXDGConfig), GIT_CONFIG_LEVEL_XDG, FALSE);
-	if (!msysGitBinPath.IsEmpty())
-		git_config_add_file_ondisk(config, CGit::GetGitPathStringA(msysGitBinPath + _T("\\..\\etc\\gitconfig")), GIT_CONFIG_LEVEL_SYSTEM, FALSE);
+	if (!systemConfig.IsEmpty())
+		git_config_add_file_ondisk(config, CGit::GetGitPathStringA(systemConfig), GIT_CONFIG_LEVEL_SYSTEM, FALSE);
 
 	git_repository_set_config(repository, config);
 
@@ -1047,16 +1047,16 @@ int CGitIgnoreList::LoadAllIgnoreFile(const CString &gitdir, const CString &path
 	}
 	return 0;
 }
-bool CGitIgnoreList::CheckAndUpdateMsysGitBinpath(bool force)
+bool CGitIgnoreList::CheckAndUpdateGitSystemConfigPath(bool force)
 {
 	// recheck every 30 seconds
-	if (GetTickCount() - m_dMsysGitBinPathLastChecked > 30000 || force)
+	if (GetTickCount() - m_dGitSystemConfigPathLastChecked > 30000 || force)
 	{
-		m_dMsysGitBinPathLastChecked = GetTickCount();
-		CString msysGitBinPath(CRegString(REG_MSYSGIT_PATH, _T(""), FALSE));
-		if (msysGitBinPath != m_sMsysGitBinPath)
+		m_dGitSystemConfigPathLastChecked = GetTickCount();
+		CString gitSystemConfigPath(CRegString(REG_MSYSGIT_PATH, _T(""), FALSE));
+		if (gitSystemConfigPath != m_sGitSystemConfigPath)
 		{
-			m_sMsysGitBinPath = msysGitBinPath;
+			m_sGitSystemConfigPath = gitSystemConfigPath;
 			return true;
 		}
 	}
@@ -1069,14 +1069,12 @@ bool CGitIgnoreList::CheckAndUpdateCoreExcludefile(const CString &adminDir)
 	CString globalXDGConfig = g_Git.GetGitGlobalXDGConfig();
 
 	CAutoWriteLock lock(m_coreExcludefilesSharedMutex);
-	bool hasChanged = CheckAndUpdateMsysGitBinpath();
-	CString systemConfig = m_sMsysGitBinPath + _T("\\..\\etc\\gitconfig");
-
+	bool hasChanged = CheckAndUpdateGitSystemConfigPath();
 	hasChanged = hasChanged || CheckFileChanged(projectConfig);
 	hasChanged = hasChanged || CheckFileChanged(globalConfig);
 	hasChanged = hasChanged || CheckFileChanged(globalXDGConfig);
-	if (!m_sMsysGitBinPath.IsEmpty())
-		hasChanged = hasChanged || CheckFileChanged(systemConfig);
+	if (!m_sGitSystemConfigPath.IsEmpty())
+		hasChanged = hasChanged || CheckFileChanged(m_sGitSystemConfigPath);
 
 	CString excludesFile;
 	{
@@ -1093,8 +1091,8 @@ bool CGitIgnoreList::CheckAndUpdateCoreExcludefile(const CString &adminDir)
 	git_config_add_file_ondisk(config, CGit::GetGitPathStringA(projectConfig), GIT_CONFIG_LEVEL_LOCAL, FALSE);
 	git_config_add_file_ondisk(config, CGit::GetGitPathStringA(globalConfig), GIT_CONFIG_LEVEL_GLOBAL, FALSE);
 	git_config_add_file_ondisk(config, CGit::GetGitPathStringA(globalXDGConfig), GIT_CONFIG_LEVEL_XDG, FALSE);
-	if (!m_sMsysGitBinPath.IsEmpty())
-		git_config_add_file_ondisk(config, CGit::GetGitPathStringA(systemConfig), GIT_CONFIG_LEVEL_SYSTEM, FALSE);
+	if (!m_sGitSystemConfigPath.IsEmpty())
+		git_config_add_file_ondisk(config, CGit::GetGitPathStringA(m_sGitSystemConfigPath), GIT_CONFIG_LEVEL_SYSTEM, FALSE);
 	config.GetString(_T("core.excludesfile"), excludesFile);
 	if (excludesFile.IsEmpty())
 		excludesFile = GetWindowsHome() + _T("\\.config\\git\\ignore");
@@ -1109,10 +1107,10 @@ bool CGitIgnoreList::CheckAndUpdateCoreExcludefile(const CString &adminDir)
 	g_Git.GetFileModifyTime(globalConfig, &m_Map[globalConfig].m_LastModifyTime);
 	if (m_Map[globalConfig].m_LastModifyTime == 0)
 		m_Map.erase(globalConfig);
-	if (!m_sMsysGitBinPath.IsEmpty())
-		g_Git.GetFileModifyTime(systemConfig, &m_Map[systemConfig].m_LastModifyTime);
-	if (m_Map[systemConfig].m_LastModifyTime == 0 || m_sMsysGitBinPath.IsEmpty())
-		m_Map.erase(systemConfig);
+	if (!m_sGitSystemConfigPath.IsEmpty())
+		g_Git.GetFileModifyTime(m_sGitSystemConfigPath, &m_Map[m_sGitSystemConfigPath].m_LastModifyTime);
+	if (m_Map[m_sGitSystemConfigPath].m_LastModifyTime == 0 || m_sGitSystemConfigPath.IsEmpty())
+		m_Map.erase(m_sGitSystemConfigPath);
 	m_CoreExcludesfiles[adminDir] = excludesFile;
 
 	return true;

@@ -128,10 +128,8 @@ static CString GetWinstorePath()
 
 static bool WincredExists()
 {
-	CString path = g_Git.ms_LastMsysGitDir;
-	if (g_Git.ms_LastMsysGitDir.Right(1) != _T("\\"))
-		path.AppendChar(_T('\\'));
-	path.Append(_T("..\\libexec\\git-core\\git-credential-wincred.exe"));
+	CString path = CGit::ms_MsysGitRootDir;
+	path.Append(_T("libexec\\git-core\\git-credential-wincred.exe"));
 	return !!PathFileExists(path);
 }
 
