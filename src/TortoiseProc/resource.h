@@ -1236,6 +1236,7 @@
 #define IDC_REBASE_CONTINUE             1564
 #define IDS_DIFFWITHMERGE               1564
 #define IDC_REBASE_ABORT                1565
+#define IDS_NOCHANGEAFTERMERGE          1565
 #define IDC_REBASE_DUMY_TAB             1566
 #define IDC_GIT_USERNAME                1566
 #define IDC_CHECK_GLOBAL                1567
