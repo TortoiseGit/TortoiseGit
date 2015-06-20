@@ -870,6 +870,10 @@ TEST_P(CBasicGitWithEmptyBareRepositoryFixture, GetEmptyBranchesTagsRefs)
 
 TEST_P(CBasicGitWithEmptyRepositoryFixture, CheckCleanWorkTree)
 {
+	// this test is known to fail with cygwin and also not enabled by default
+	if (GetParam() == LIBGIT2_ALL && CGit::ms_bCygwinGit)
+		return;
+
 	CString output;
 	CString testFile = m_Dir.GetTempDir() + L"\\test.txt";
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)testFile, L"this is testing file."));
