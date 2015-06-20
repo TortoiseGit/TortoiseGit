@@ -434,6 +434,8 @@ typedef sptr_t (*SciFnDirect)(sptr_t ptr, unsigned int iMessage, uptr_t wParam, 
 #define SCI_GETTARGETEND 2193
 #define SCI_SETTARGETRANGE 2686
 #define SCI_GETTARGETTEXT 2687
+#define SCI_TARGETFROMSELECTION 2287
+#define SCI_TARGETWHOLEDOCUMENT 2690
 #define SCI_REPLACETARGET 2194
 #define SCI_REPLACETARGETRE 2195
 #define SCI_SEARCHINTARGET 2197
@@ -498,6 +500,7 @@ typedef sptr_t (*SciFnDirect)(sptr_t ptr, unsigned int iMessage, uptr_t wParam, 
 #define SCI_GETMOUSEDWELLTIME 2265
 #define SCI_WORDSTARTPOSITION 2266
 #define SCI_WORDENDPOSITION 2267
+#define SCI_ISRANGEWORD 2691
 #define SC_WRAP_NONE 0
 #define SC_WRAP_WORD 1
 #define SC_WRAP_CHAR 2
@@ -559,7 +562,6 @@ typedef sptr_t (*SciFnDirect)(sptr_t ptr, unsigned int iMessage, uptr_t wParam, 
 #define SCI_SETMULTIPASTE 2614
 #define SCI_GETMULTIPASTE 2615
 #define SCI_GETTAG 2616
-#define SCI_TARGETFROMSELECTION 2287
 #define SCI_LINESJOIN 2288
 #define SCI_LINESSPLIT 2289
 #define SCI_SETFOLDMARGINCOLOUR 2290
@@ -797,8 +799,6 @@ typedef sptr_t (*SciFnDirect)(sptr_t ptr, unsigned int iMessage, uptr_t wParam, 
 #define SCI_GETCHARACTERPOINTER 2520
 #define SCI_GETRANGEPOINTER 2643
 #define SCI_GETGAPPOSITION 2644
-#define SCI_SETKEYSUNICODE 2521
-#define SCI_GETKEYSUNICODE 2522
 #define SCI_INDICSETALPHA 2523
 #define SCI_INDICGETALPHA 2524
 #define SCI_INDICSETOUTLINEALPHA 2558
@@ -896,6 +896,8 @@ typedef sptr_t (*SciFnDirect)(sptr_t ptr, unsigned int iMessage, uptr_t wParam, 
 #define SCI_GETADDITIONALCARETFORE 2605
 #define SCI_ROTATESELECTION 2606
 #define SCI_SWAPMAINANCHORCARET 2607
+#define SCI_MULTIPLESELECTADDNEXT 2688
+#define SCI_MULTIPLESELECTADDEACH 2689
 #define SCI_CHANGELEXERSTATE 2617
 #define SCI_CONTRACTEDFOLDNEXT 2618
 #define SCI_VERTICALCENTRECARET 2619
@@ -1158,6 +1160,8 @@ struct SCNotification {
 #define SC_CP_DBCS 1
 #define SCI_SETUSEPALETTE 2039
 #define SCI_GETUSEPALETTE 2139
+#define SCI_SETKEYSUNICODE 2521
+#define SCI_GETKEYSUNICODE 2522
 
 #endif
 

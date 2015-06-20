@@ -469,6 +469,9 @@
 	<td>Mika Attila</td>
 	<td>JoMazM</td>
 	<td>Markus Moser</td>
+	<td>Stefan Küng</td>
+      </tr><tr>
+	<td>Jiří Techet</td>
     </tr>
     </table>
     <p>
@@ -479,6 +482,187 @@
         <a href="http://sourceforge.net/projects/icon-collection/">
         Icons</a> Copyright(C) 1998 by Dean S. Jones<br />
       </li>
+    </ul>
+    <h3>
+       <a href="http://prdownloads.sourceforge.net/scintilla/scite356.zip?download">Release 3.5.7</a>
+    </h3>
+    <ul>
+	<li>
+	Released 20 June 2015.
+	</li>
+	<li>
+	Added SCI_MULTIPLESELECTADDNEXT to add the next occurrence of the main selection within the
+	target to the set of selections as main. If the current selection is empty then select word around caret.
+	SCI_MULTIPLESELECTADDNEXT adds each occurrence of the main selection within the
+	target to the set of selections.
+	</li>
+	<li>
+	SciTE adds "Selection Add Next" and "Selection Add Each" commands to the Search menu.
+	</li>
+	<li>
+	Added SCI_ISRANGEWORD to determine if the parameters are at the start and end of a word.
+	</li>
+	<li>
+	Added SCI_TARGETWHOLEDOCUMENT to set the target to the whole document.
+	</li>
+	<li>
+	Verilog lexer recognises protected regions and the folder folds protected regions.
+	</li>
+	<li>
+	A performance problem with markers when deleting many lines was fixed.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1733/">Bug #1733</a>.
+	</li>
+	<li>
+	On Cocoa fix crash when ScintillaView destroyed if no autocompletion ever displayed.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1728/">Bug #1728</a>.
+	</li>
+	<li>
+	On Cocoa fix crash in drag and drop.
+	</li>
+	<li>
+	On GTK+ 3.4+, when there are both horizontal and vertical scrollbars, draw the lower-right corner
+	so that it does not appear black when text selected.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1611/">Bug #1611</a>.
+	</li>
+	<li>
+	Fixed most calls deprecated in GTK+ 3.16. Does not fix style override calls
+	as they are more complex.
+	</li>
+	<li>
+	SciTE on GTK+ 3.x uses a different technique for highlighting the search strip when there is
+	no match which is more compatible with future and past versions and different themes.
+	</li>
+    </ul>
+    <h3>
+       <a href="http://prdownloads.sourceforge.net/scintilla/scite356.zip?download">Release 3.5.6</a>
+    </h3>
+    <ul>
+	<li>
+	Released 26 May 2015.
+	</li>
+	<li>
+	On Qt, use fractional positioning calls and avoid rounding to ensure consistency.
+	</li>
+	<li>
+	SCI_TARGETASUTF8 and SCI_ENCODEDFROMUTF8 implemented on
+	Win32 as well as GTK+ and Cocoa.
+	</li>
+	<li>
+	C++ lexer fixes empty backquoted string.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1711/">Bug #1711</a>.
+	</li>
+	<li>
+	C++ lexer fixes #undef directive.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1719/">Bug #1719</a>.
+	</li>
+	<li>
+	Fortran folder fixes handling of "selecttype" and "selectcase".
+	<a href="http://sourceforge.net/p/scintilla/bugs/1724/">Bug #1724</a>.
+	</li>
+	<li>
+	Verilog folder folds interface definitions.
+	</li>
+	<li>
+	VHDL folder folds units declarations and fixes a case insensitivity bug with not treating "IS" the same as "is".
+	</li>
+	<li>
+	Fix bug when drawing text margins in buffered mode which would use default
+	encoding instead of chosen encoding.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1703/">Bug #1703</a>.
+	</li>
+	<li>
+	Fix bug with Korean Hanja conversions in DBCS encoding on Windows.
+	</li>
+	<li>
+	Fix for reading a UTF-16 file in SciTE where a non-BMP character is split over a read buffer boundary.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1710/">Bug #1710</a>.
+	</li>
+	<li>
+	Fix bug on GTK+ 2.x for Windows where there was an ABI difference between
+	compiler version.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1726/">Bug #1726</a>.
+	</li>
+	<li>
+	Fix undo bug on Cocoa that could lose data..
+	</li>
+	<li>
+	Fix link error on Windows when SCI_NAMESPACE used.
+	</li>
+	<li>
+	Fix exporting from SciTE when using Scintillua for lexing.
+	</li>
+	<li>
+	SciTE does not report twice that a search string can not be found when "Replace" pressed.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1716/">Bug #1716</a>.
+	</li>
+	<li>
+	SciTE on GTK+ 3.x disables arrow in search combo when no entries.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1717/">Bug #1717</a>.
+	</li>
+    </ul>
+    <h3>
+       <a href="http://prdownloads.sourceforge.net/scintilla/scite355.zip?download">Release 3.5.5</a>
+    </h3>
+    <ul>
+	<li>
+	Released 17 April 2015.
+	</li>
+	<li>
+	Scintilla on Windows is now always a wide character window so SCI_SETKEYSUNICODE has no effect
+	and SCI_GETKEYSUNICODE always returns true. These APIs are deprecated and should not be called.
+	</li>
+	<li>
+	The wxWidgets-specific ascent member of Font has been removed which breaks
+	compatibility with current wxStyledTextCtrl.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1682/">Bug #1682</a>.
+	</li>
+	<li>
+	IME on Qt supports multiple carets and behaves more like other platforms.
+	</li>
+	<li>
+	Always use inline IME on GTK+ for Korean.
+	</li>
+	<li>
+	SQL lexer fixes handling of '+' and '-' in numbers so the '-' in '1-1' is seen as an operator and for
+	'1--comment' the comment is recognized.
+	</li>
+	<li>
+	TCL lexer reverts change to string handling.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1642/">Bug #1642</a>.
+	</li>
+	<li>
+	Verilog lexer fixes bugs with macro styling.
+	Verilog folder fixes bugs with `end completing an `if* instead of `endif and fold.at.else, and implements
+	folding at preprocessor `else.
+	</li>
+	<li>
+	VHDL lexer supports extended identifiers.
+	</li>
+	<li>
+	Fix bug on Cocoa where the calltip would display incorrectly when
+	switching calltips and the new calltip required a taller window.
+	</li>
+	<li>
+	Fix leak on Cocoa with autocompletion lists.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1706/">Bug #1706</a>.
+	</li>
+	<li>
+	Fix potential crash on Cocoa with drag and drop.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1709/">Bug #1709</a>.
+	</li>
+	<li>
+	Fix bug on Windows when compiling with MinGW-w64 which caused text to not be drawn
+	when in wrap mode.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1705/">Bug #1705</a>.
+	</li>
+	<li>
+	Fix SciTE bug with missing file open filters and add hex to excluded set of properties files so that its
+	settings don't appear.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1707/">Bug #1707</a>.
+	</li>
+	<li>
+	Fix SciTE bug where files without extensions like "makefile" were not highlighted correctly.
+	</li>
     </ul>
     <h3>
        <a href="http://prdownloads.sourceforge.net/scintilla/scite354.zip?download">Release 3.5.4</a>
@@ -545,6 +729,9 @@
 	<li>
 	Fix adaptive scrolling speed for GTK+ on OS X with GTK Quartz backend (as opposed to X11 backend).
 	<a href="http://sourceforge.net/p/scintilla/bugs/1696/">Bug #1696</a>.
+	</li>
+	<li>
+	Fix position of autocompletion and calltips on Cocoa when there were two screens stacked vertically.
 	</li>
 	<li>
 	Fix crash in SciTE when saving large files in background when closing application.
