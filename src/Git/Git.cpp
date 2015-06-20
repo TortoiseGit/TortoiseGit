@@ -1989,6 +1989,54 @@ static void SetLibGit2TemplatePath(const CString &value)
 	git_libgit2_opts(GIT_OPT_SET_TEMPLATE_PATH, valueA);
 }
 
+int CGit::FindAndSetGitExePath(BOOL bFallback)
+{
+	CRegString msysdir = CRegString(REG_MSYSGIT_PATH, _T(""), FALSE);
+	CString str = msysdir;
+	if (str.IsEmpty() || !FileExists(str + _T("\\git.exe")))
+	{
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": git.exe not exists: %s\n"), CGit::ms_LastMsysGitDir);
+		if (!bFallback)
+			return FALSE;
+
+		CRegString msyslocalinstalldir = CRegString(REG_MSYSGIT_INSTALL_LOCAL, _T(""), FALSE, HKEY_CURRENT_USER);
+		str = msyslocalinstalldir;
+		str.TrimRight(_T("\\"));
+		if (str.IsEmpty())
+		{
+			CRegString msysinstalldir = CRegString(REG_MSYSGIT_INSTALL, _T(""), FALSE, HKEY_LOCAL_MACHINE);
+			str = msysinstalldir;
+			str.TrimRight(_T("\\"));
+		}
+		if (!str.IsEmpty())
+		{
+			str += "\\bin";
+			msysdir = str;
+			CGit::ms_LastMsysGitDir = str;
+			msysdir.write();
+			return TRUE;
+		}
+		else
+		{
+			// search PATH if git/bin directory is already present
+			if (FindGitPath())
+			{
+				CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": FindGitPath() => %s\n"), CGit::ms_LastMsysGitDir);
+				msysdir = CGit::ms_LastMsysGitDir;
+				msysdir.write();
+				return TRUE;
+			}
+
+			return FALSE;
+		}
+	}
+	else
+	{
+		CGit::ms_LastMsysGitDir = str;
+		return TRUE;
+	}
+}
+
 BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 {
 	if (m_bInitialized)
@@ -2044,51 +2092,8 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 		}
 	}
 
-	// add git/bin path to PATH
-
-	CRegString msysdir=CRegString(REG_MSYSGIT_PATH,_T(""),FALSE);
-	CString str = msysdir;
-	if(str.IsEmpty() || !FileExists(str + _T("\\git.exe")))
-	{
-		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": git.exe not exists: %s\n"), CGit::ms_LastMsysGitDir);
-		if (!bFallback)
-			return FALSE;
-
-		CRegString msyslocalinstalldir = CRegString(REG_MSYSGIT_INSTALL_LOCAL, _T(""), FALSE, HKEY_CURRENT_USER);
-		str = msyslocalinstalldir;
-		str.TrimRight(_T("\\"));
-		if (str.IsEmpty())
-		{
-			CRegString msysinstalldir = CRegString(REG_MSYSGIT_INSTALL, _T(""), FALSE, HKEY_LOCAL_MACHINE);
-			str = msysinstalldir;
-			str.TrimRight(_T("\\"));
-		}
-		if ( !str.IsEmpty() )
-		{
-			str += "\\bin";
-			msysdir=str;
-			CGit::ms_LastMsysGitDir = str;
-			msysdir.write();
-		}
-		else
-		{
-			// search PATH if git/bin directory is already present
-			if ( FindGitPath() )
-			{
-				CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": FindGitPath() => %s\n"), CGit::ms_LastMsysGitDir);
-				m_bInitialized = TRUE;
-				msysdir = CGit::ms_LastMsysGitDir;
-				msysdir.write();
-				return TRUE;
-			}
-
-			return FALSE;
-		}
-	}
-	else
-	{
-		CGit::ms_LastMsysGitDir = str;
-	}
+	if (!FindAndSetGitExePath(bFallback))
+		return FALSE;
 
 	// check for git.exe existance (maybe it was deinstalled in the meantime)
 	if (!FileExists(CGit::ms_LastMsysGitDir + _T("\\git.exe")))

@@ -157,6 +157,7 @@ public:
 	}
 
 	BOOL CheckMsysGitDir(BOOL bFallback = TRUE);
+	BOOL FindAndSetGitExePath(BOOL bFallback);
 	BOOL m_bInitialized;
 
 	typedef enum
