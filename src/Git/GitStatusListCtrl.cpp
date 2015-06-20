@@ -627,6 +627,8 @@ void CGitStatusListCtrl::Show(unsigned int dwShow, unsigned int dwCheck /*=0*/, 
 	m_nShownFiles = 0;
 	m_nShownSubmodules = 0;
 
+	m_dwShow = dwShow;
+
 	if(UpdateStatusList)
 	{
 		m_arStatusArray.clear();
@@ -724,8 +726,6 @@ void CGitStatusListCtrl::Show(unsigned int dwShow, unsigned int dwCheck /*=0*/, 
 		pApp->DoWaitCursor(-1);
 
 	Invalidate();
-
-	m_dwShow = dwShow;
 
 	this->BuildStatistics();
 
@@ -3767,9 +3767,9 @@ bool CGitStatusListCtrl::PrepareGroups(bool bForce /* = false */)
 			max=m_arStatusArray[i]->m_ParentNo&PARENT_MASK;
 	}
 
-	if (!m_UnRevFileList.IsEmpty() ||
-		!m_IgnoreFileList.IsEmpty() ||
-		!m_LocalChangesIgnoredFileList.IsEmpty() ||
+	if (((m_dwShow & GITSLC_SHOWUNVERSIONED) && !m_UnRevFileList.IsEmpty()) ||
+		((m_dwShow & GITSLC_SHOWIGNORED) && !m_IgnoreFileList.IsEmpty()) ||
+		(m_dwShow & (GITSLC_SHOWASSUMEVALID | GITSLC_SHOWSKIPWORKTREE) && !m_LocalChangesIgnoredFileList.IsEmpty()) ||
 		max>0 || bForce)
 	{
 		bHasGroups = true;
