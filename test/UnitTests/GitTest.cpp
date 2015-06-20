@@ -959,6 +959,37 @@ TEST(CGit, CEnvironment)
 	EXPECT_STREQ(_T(""), env.GetEnv(L"key4"));
 	env.CopyProcessEnvironment();
 	EXPECT_STREQ(windir, env.GetEnv(L"windir"));
+
+	env.clear();
+	CString path = L"c:\\windows;c:\\windows\\system32";
+	env.SetEnv(L"PATH", path);
+	env.AddToPath(L"");
+	EXPECT_STREQ(path, env.GetEnv(L"PATH"));
+	env.AddToPath(L"c:\\windows");
+	EXPECT_STREQ(path, env.GetEnv(L"PATH"));
+	env.AddToPath(L"c:\\windows\\");
+	EXPECT_STREQ(path, env.GetEnv(L"PATH"));
+	env.AddToPath(L"c:\\windows\\system32");
+	EXPECT_STREQ(path, env.GetEnv(L"PATH"));
+	env.AddToPath(L"c:\\windows\\system32\\");
+	EXPECT_STREQ(path, env.GetEnv(L"PATH"));
+	path += L";c:\\windows\\system";
+	env.AddToPath(L"c:\\windows\\system");
+	EXPECT_STREQ(path, env.GetEnv(L"PATH"));
+	path += L";c:\\test";
+	env.AddToPath(L"c:\\test\\");
+	EXPECT_STREQ(path, env.GetEnv(L"PATH"));
+	env.AddToPath(L"c:\\test\\");
+	EXPECT_STREQ(path, env.GetEnv(L"PATH"));
+	env.AddToPath(L"c:\\test");
+	EXPECT_STREQ(path, env.GetEnv(L"PATH"));
+	path = L"c:\\windows;c:\\windows\\system32;";
+	env.SetEnv(L"PATH", path);
+	env.AddToPath(L"");
+	EXPECT_STREQ(path, env.GetEnv(L"PATH"));
+	env.AddToPath(L"c:\\test");
+	path += L"c:\\test";
+	EXPECT_STREQ(path, env.GetEnv(L"PATH"));
 }
 
 static void GetOneFile(CGit& m_Git)

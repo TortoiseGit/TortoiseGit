@@ -2052,10 +2052,8 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 	m_Environment.CopyProcessEnvironment();
 	m_Environment.SetEnv(_T("GIT_DIR"), nullptr); // Remove %GIT_DIR% before executing git.exe
 
-	TCHAR *oldpath;
-	size_t homesize,size;
-
 	// set HOME if not set already
+	size_t homesize;
 	_tgetenv_s(&homesize, NULL, 0, _T("HOME"));
 	if (!homesize)
 		m_Environment.SetEnv(_T("HOME"), GetHomeDirectory());
@@ -2116,18 +2114,8 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 	msysGitTemplateDir.ReleaseBuffer();
 	SetLibGit2TemplatePath(msysGitTemplateDir);
 
-	//set path
-	_tdupenv_s(&oldpath,&size,_T("PATH"));
-
-	CString path;
-	path.Format(_T("%s;%s"), oldpath, CGit::ms_LastMsysGitDir + _T(";") + (CString)CRegString(REG_MSYSGIT_EXTRA_PATH, _T(""), FALSE));
-
-	m_Environment.SetEnv(_T("PATH"), path);
-
-	CString str1 = m_Environment.GetEnv(_T("PATH"));
-
-	CString sOldPath = oldpath;
-	free(oldpath);
+	m_Environment.AddToPath(CGit::ms_LastMsysGitDir);
+	m_Environment.AddToPath((CString)CRegString(REG_MSYSGIT_EXTRA_PATH, _T(""), FALSE));
 
 #if !defined(TGITCACHE) && !defined(TORTOISESHELL)
 	// register filter only once
@@ -2593,6 +2581,23 @@ void CEnvironment::SetEnv(const TCHAR *name, const TCHAR* value)
 		it= begin()+i;
 	}
 
+}
+
+void CEnvironment::AddToPath(CString value)
+{
+	value.TrimRight(L"\\");
+	if (value.IsEmpty())
+		return;
+
+	CString path = GetEnv(L"PATH").TrimRight(L";") + L";";
+
+	// do not double add paths to %PATH%
+	if (path.Find(value + L";") >= 0 || path.Find(value + L"\\;") >= 0)
+		return;
+
+	path += value;
+
+	SetEnv(L"PATH", path);
 }
 
 int CGit::GetGitEncode(TCHAR* configkey)

@@ -77,6 +77,7 @@ public:
 	void CopyProcessEnvironment();
 	CString GetEnv(const TCHAR *name);
 	void SetEnv(const TCHAR* name, const TCHAR* value);
+	void AddToPath(CString value);
 	void clear();
 	bool empty();
 	operator LPTSTR();
