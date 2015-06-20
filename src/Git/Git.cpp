@@ -1999,6 +1999,15 @@ int CGit::FindAndSetGitExePath(BOOL bFallback)
 		if (!bFallback)
 			return FALSE;
 
+		// first, search PATH if git/bin directory is already present
+		if (FindGitPath())
+		{
+			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": FindGitPath() => %s\n"), CGit::ms_LastMsysGitDir);
+			msysdir = CGit::ms_LastMsysGitDir;
+			msysdir.write();
+			return TRUE;
+		}
+
 		CRegString msyslocalinstalldir = CRegString(REG_MSYSGIT_INSTALL_LOCAL, _T(""), FALSE, HKEY_CURRENT_USER);
 		str = msyslocalinstalldir;
 		str.TrimRight(_T("\\"));
@@ -2017,18 +2026,7 @@ int CGit::FindAndSetGitExePath(BOOL bFallback)
 			return TRUE;
 		}
 		else
-		{
-			// search PATH if git/bin directory is already present
-			if (FindGitPath())
-			{
-				CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": FindGitPath() => %s\n"), CGit::ms_LastMsysGitDir);
-				msysdir = CGit::ms_LastMsysGitDir;
-				msysdir.write();
-				return TRUE;
-			}
-
 			return FALSE;
-		}
 	}
 	else
 	{
