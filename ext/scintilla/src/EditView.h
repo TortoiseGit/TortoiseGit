@@ -51,6 +51,7 @@ class EditView {
 public:
 	PrintParameters printParameters;
 	PerLine *ldTabstops;
+	int tabWidthMinimumPixels;
 
 	bool hideSelection;
 	bool drawOverstrikeCaret;
@@ -76,7 +77,6 @@ public:
 	Surface *pixmapLine;
 	Surface *pixmapIndentGuide;
 	Surface *pixmapIndentGuideHighlight;
-	void	*editor;
 
 	LineLayoutCache llc;
 	PositionCache posCache;

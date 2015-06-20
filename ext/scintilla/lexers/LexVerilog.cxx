@@ -118,6 +118,7 @@ public:
 struct OptionsVerilog {
 	bool foldComment;
 	bool foldPreprocessor;
+	bool foldPreprocessorElse;
 	bool foldCompact;
 	bool foldAtElse;
 	bool foldAtModule;
@@ -128,6 +129,7 @@ struct OptionsVerilog {
 	OptionsVerilog() {
 		foldComment = false;
 		foldPreprocessor = false;
+		foldPreprocessorElse = false;
 		foldCompact = false;
 		foldAtElse = false;
 		foldAtModule = false;
@@ -161,6 +163,8 @@ struct OptionSetVerilog : public OptionSet<OptionsVerilog> {
 			"Set to 1 to style input, output, and inout ports differently from regular keywords.");
 		DefineProperty("lexer.verilog.allupperkeywords", &OptionsVerilog::allUppercaseDocKeyword,
 			"Set to 1 to style identifiers that are all uppercase as documentation keyword.");
+		DefineProperty("lexer.verilog.fold.preprocessor.else", &OptionsVerilog::foldPreprocessorElse,
+			"This option enables folding on `else and `elsif preprocessor directives.");
 	}
 };
 
@@ -203,7 +207,7 @@ class LexerVerilog : public ILexerWithSubStyles {
 	//		foldExternFlag: EOL while parsing an extern function/task declaration terminated by ';'
 	//		foldWaitDisableFlag: EOL while parsing wait or disable statement, terminated by "fork" or '('
 	//		typdefFlag: EOL while parsing typedef statement, terminated by ';'
-	enum {foldExternFlag = 0x01, foldWaitDisableFlag = 0x02, typedefFlag = 0x04};
+	enum {foldExternFlag = 0x01, foldWaitDisableFlag = 0x02, typedefFlag = 0x04, protectedFlag = 0x08};
 	// map using line number as key to store fold state information
 	std::map<int, int> foldState;
 
@@ -342,7 +346,7 @@ int SCI_METHOD LexerVerilog::WordListSet(int n, const char *wl) {
 }
 
 static inline bool IsAWordChar(const int ch) {
-	return (ch < 0x80) && (isalnum(ch) || ch == '.' || ch == '_' || ch == '\''|| ch == '$');
+	return (ch < 0x80) && (isalnum(ch) || ch == '_' || ch == '\''|| ch == '$');
 }
 
 static inline bool IsAWordStart(const int ch) {
@@ -391,7 +395,7 @@ void SCI_METHOD LexerVerilog::Lex(unsigned int startPos, int length, int initSty
 {
 	LexAccessor styler(pAccess);
 
-	const int kwOther=0, kwDot=0x100, kwInput=0x200, kwOutput=0x300, kwInout=0x400;
+	const int kwOther=0, kwDot=0x100, kwInput=0x200, kwOutput=0x300, kwInout=0x400, kwProtected=0x800;
 	int lineState = kwOther;
 	bool continuationLine = false;
 
@@ -441,6 +445,7 @@ void SCI_METHOD LexerVerilog::Lex(unsigned int startPos, int length, int initSty
 	int activitySet = preproc.IsInactive() ? activeFlag : 0;
 	int lineEndNext = styler.LineEnd(curLine);
 	bool isEscapedId = false;    // true when parsing an escaped Identifier
+	bool isProtected = (lineState&kwProtected) != 0;	// true when parsing a protected region
 
 	for (; sc.More(); sc.Forward()) {
 		if (sc.atLineStart) {
@@ -549,7 +554,7 @@ void SCI_METHOD LexerVerilog::Lex(unsigned int startPos, int length, int initSty
 				}
 				break;
 			case SCE_V_PREPROCESSOR:
-				if (!IsAWordChar(sc.ch) && !sc.atLineEnd) {
+				if (!IsAWordChar(sc.ch) || sc.atLineEnd) {
 					sc.SetState(SCE_V_DEFAULT|activitySet);
 				}
 				break;
@@ -597,21 +602,7 @@ void SCI_METHOD LexerVerilog::Lex(unsigned int startPos, int length, int initSty
 
 		// Determine if a new state should be entered.
 		if (MaskActive(sc.state) == SCE_V_DEFAULT) {
-			if (IsADigit(sc.ch) || (sc.ch == '\'') || (sc.ch == '.' && IsADigit(sc.chNext))) {
-				sc.SetState(SCE_V_NUMBER|activitySet);
-			} else if (IsAWordStart(sc.ch)) {
-				sc.SetState(SCE_V_IDENTIFIER|activitySet);
-			} else if (sc.Match('/', '*')) {
-				sc.SetState(SCE_V_COMMENT|activitySet);
-				sc.Forward();	// Eat the * so it isn't used for the end of the comment
-			} else if (sc.Match('/', '/')) {
-				if (sc.Match("//!"))	// Nice to have a different comment style
-					sc.SetState(SCE_V_COMMENTLINEBANG|activitySet);
-				else
-					sc.SetState(SCE_V_COMMENTLINE|activitySet);
-			} else if (sc.ch == '\"') {
-				sc.SetState(SCE_V_STRING|activitySet);
-			} else if (sc.ch == '`') {
+			if (sc.ch == '`') {
 				sc.SetState(SCE_V_PREPROCESSOR|activitySet);
 				// Skip whitespace between ` and preprocessor word
 				do {
@@ -621,7 +612,15 @@ void SCI_METHOD LexerVerilog::Lex(unsigned int startPos, int length, int initSty
 					sc.SetState(SCE_V_DEFAULT|activitySet);
 					styler.SetLineState(curLine, lineState);
 				} else {
-					if (options.trackPreprocessor) {
+					if (sc.Match("protected")) {
+						isProtected = true;
+						lineState |= kwProtected;
+						styler.SetLineState(curLine, lineState);
+					} else if (sc.Match("endprotected")) {
+						isProtected = false;
+						lineState &= ~kwProtected;
+						styler.SetLineState(curLine, lineState);
+					} else if (!isProtected && options.trackPreprocessor) {
 						if (sc.Match("ifdef") || sc.Match("ifndef")) {
 							bool isIfDef = sc.Match("ifdef");
 							int i = isIfDef ? 5 : 6;
@@ -725,14 +724,30 @@ void SCI_METHOD LexerVerilog::Lex(unsigned int startPos, int length, int initSty
 						}
 					}
 				}
-			} else if (sc.ch == '\\') {
-				// escaped identifier, everything is ok up to whitespace
-				isEscapedId = true;
-				sc.SetState(SCE_V_IDENTIFIER|activitySet);
-			} else if (isoperator(static_cast<char>(sc.ch)) || sc.ch == '@' || sc.ch == '#') {
-				sc.SetState(SCE_V_OPERATOR|activitySet);
-				if (sc.ch == '.') lineState = kwDot;
-				if (sc.ch == ';') lineState = kwOther;
+			} else if (!isProtected) {
+				if (IsADigit(sc.ch) || (sc.ch == '\'') || (sc.ch == '.' && IsADigit(sc.chNext))) {
+					sc.SetState(SCE_V_NUMBER|activitySet);
+				} else if (IsAWordStart(sc.ch)) {
+					sc.SetState(SCE_V_IDENTIFIER|activitySet);
+				} else if (sc.Match('/', '*')) {
+					sc.SetState(SCE_V_COMMENT|activitySet);
+					sc.Forward();	// Eat the * so it isn't used for the end of the comment
+				} else if (sc.Match('/', '/')) {
+					if (sc.Match("//!"))	// Nice to have a different comment style
+						sc.SetState(SCE_V_COMMENTLINEBANG|activitySet);
+					else
+						sc.SetState(SCE_V_COMMENTLINE|activitySet);
+				} else if (sc.ch == '\"') {
+					sc.SetState(SCE_V_STRING|activitySet);
+				} else if (sc.ch == '\\') {
+					// escaped identifier, everything is ok up to whitespace
+					isEscapedId = true;
+					sc.SetState(SCE_V_IDENTIFIER|activitySet);
+				} else if (isoperator(static_cast<char>(sc.ch)) || sc.ch == '@' || sc.ch == '#') {
+					sc.SetState(SCE_V_OPERATOR|activitySet);
+					if (sc.ch == '.') lineState = kwDot;
+					if (sc.ch == ';') lineState = kwOther;
+				}
 			}
 		}
 		if (isEscapedId && isspacechar(sc.ch)) {
@@ -818,42 +833,71 @@ void SCI_METHOD LexerVerilog::Fold(unsigned int startPos, int length, int initSt
 		style = styleNext;
 		styleNext = MaskActive(styler.StyleAt(i + 1));
 		bool atEOL = (ch == '\r' && chNext != '\n') || (ch == '\n');
-		if (options.foldComment && IsStreamCommentStyle(style)) {
-			if (!IsStreamCommentStyle(stylePrev)) {
-				levelNext++;
-			} else if (!IsStreamCommentStyle(styleNext) && !atEOL) {
-				// Comments don't end at end of line and the next character may be unstyled.
-				levelNext--;
-			}
-		}
-		if (options.foldComment && atEOL && IsCommentLine(lineCurrent, styler))
-		{
-			if (!IsCommentLine(lineCurrent - 1, styler)
-			    && IsCommentLine(lineCurrent + 1, styler))
-				levelNext++;
-			else if (IsCommentLine(lineCurrent - 1, styler)
-			         && !IsCommentLine(lineCurrent+1, styler))
-				levelNext--;
-		}
-		if (options.foldComment && (style == SCE_V_COMMENTLINE)) {
-			if ((ch == '/') && (chNext == '/')) {
-				char chNext2 = styler.SafeGetCharAt(i + 2);
-				if (chNext2 == '{') {
+		if (!(stateCurrent & protectedFlag)) {
+			if (options.foldComment && IsStreamCommentStyle(style)) {
+				if (!IsStreamCommentStyle(stylePrev)) {
 					levelNext++;
-				} else if (chNext2 == '}') {
+				} else if (!IsStreamCommentStyle(styleNext) && !atEOL) {
+					// Comments don't end at end of line and the next character may be unstyled.
 					levelNext--;
 				}
 			}
-		}
-		if (options.foldPreprocessor && (style == SCE_V_PREPROCESSOR)) {
-			if (ch == '`') {
-				unsigned int j = i + 1;
-				while ((j < endPos) && IsASpaceOrTab(styler.SafeGetCharAt(j))) {
-					j++;
-				}
-				if (styler.Match(j, "if")) {
+			if (options.foldComment && atEOL && IsCommentLine(lineCurrent, styler))
+			{
+				if (!IsCommentLine(lineCurrent - 1, styler)
+					&& IsCommentLine(lineCurrent + 1, styler))
 					levelNext++;
-				} else if (styler.Match(j, "end")) {
+				else if (IsCommentLine(lineCurrent - 1, styler)
+						 && !IsCommentLine(lineCurrent+1, styler))
+					levelNext--;
+			}
+			if (options.foldComment && (style == SCE_V_COMMENTLINE)) {
+				if ((ch == '/') && (chNext == '/')) {
+					char chNext2 = styler.SafeGetCharAt(i + 2);
+					if (chNext2 == '{') {
+						levelNext++;
+					} else if (chNext2 == '}') {
+						levelNext--;
+					}
+				}
+			}
+		}
+		if (ch == '`') {
+			unsigned int j = i + 1;
+			while ((j < endPos) && IsASpaceOrTab(styler.SafeGetCharAt(j))) {
+				j++;
+			}
+			if (styler.Match(j, "protected")) {
+				stateCurrent |= protectedFlag;
+				levelNext++;
+			} else if (styler.Match(j, "endprotected")) {
+				stateCurrent &= ~protectedFlag;
+				levelNext--;
+			} else if (!(stateCurrent & protectedFlag) && options.foldPreprocessor && (style == SCE_V_PREPROCESSOR)) {
+				if (styler.Match(j, "if")) {
+					if (options.foldPreprocessorElse) {
+						// Measure the minimum before a begin to allow
+						// folding on "end else begin"
+						if (levelMinCurrent > levelNext) {
+							levelMinCurrent = levelNext;
+						}
+					}
+					levelNext++;
+				} else if (options.foldPreprocessorElse && styler.Match(j, "else")) {
+					levelNext--;
+					if (levelMinCurrent > levelNext) {
+						levelMinCurrent = levelNext;
+					}
+					levelNext++;
+				} else if (options.foldPreprocessorElse && styler.Match(j, "elsif")) {
+					levelNext--;
+					// Measure the minimum before a begin to allow
+					// folding on "end else begin"
+					if (levelMinCurrent > levelNext) {
+						levelMinCurrent = levelNext;
+					}
+					levelNext++;
+				} else if (styler.Match(j, "endif")) {
 					levelNext--;
 				}
 			}
@@ -903,9 +947,10 @@ void SCI_METHOD LexerVerilog::Fold(unsigned int startPos, int length, int initSt
 			if (styler.Match(j, "case") ||
 				styler.Match(j, "casex") ||
 				styler.Match(j, "casez") ||
+				styler.Match(j, "covergroup") ||
 				styler.Match(j, "function") ||
 				styler.Match(j, "generate") ||
-				styler.Match(j, "covergroup") ||
+				styler.Match(j, "interface") ||
 				styler.Match(j, "package") ||
 				styler.Match(j, "primitive") ||
 				styler.Match(j, "program") ||
@@ -913,8 +958,14 @@ void SCI_METHOD LexerVerilog::Fold(unsigned int startPos, int length, int initSt
 				styler.Match(j, "specify") ||
 				styler.Match(j, "table") ||
 				styler.Match(j, "task") ||
-				(styler.Match(j, "module") && options.foldAtModule) ||
-				styler.Match(j, "begin")) {
+				(styler.Match(j, "module") && options.foldAtModule)) {
+				levelNext++;
+			} else if (styler.Match(j, "begin")) {
+				// Measure the minimum before a begin to allow
+				// folding on "end else begin"
+				if (levelMinCurrent > levelNext) {
+					levelMinCurrent = levelNext;
+				}
 				levelNext++;
 			} else if (styler.Match(j, "class")) {
 				// class does not introduce a block when used in a typedef statement
@@ -931,6 +982,7 @@ void SCI_METHOD LexerVerilog::Fold(unsigned int startPos, int length, int initSt
 				styler.Match(j, "endfunction") ||
 				styler.Match(j, "endgenerate") ||
 				styler.Match(j, "endgroup") ||
+				styler.Match(j, "endinterface") ||
 				styler.Match(j, "endpackage") ||
 				styler.Match(j, "endprimitive") ||
 				styler.Match(j, "endprogram") ||
@@ -958,7 +1010,7 @@ void SCI_METHOD LexerVerilog::Fold(unsigned int startPos, int length, int initSt
 		}
 		if (atEOL) {
 			int levelUse = levelCurrent;
-			if (options.foldAtElse) {
+			if (options.foldAtElse||options.foldPreprocessorElse) {
 				levelUse = levelMinCurrent;
 			}
 			int lev = levelUse | levelNext << 16;

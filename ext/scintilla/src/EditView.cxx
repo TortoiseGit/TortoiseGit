@@ -47,7 +47,6 @@
 #include "EditModel.h"
 #include "MarginView.h"
 #include "EditView.h"
-#include "Editor.h"
 
 #ifdef SCI_NAMESPACE
 using namespace Scintilla;
@@ -174,6 +173,7 @@ const XYPOSITION epsilon = 0.0001f;	// A small nudge to avoid floating point pre
 
 EditView::EditView() {
 	ldTabstops = NULL;
+	tabWidthMinimumPixels = 2; // needed for calculating tab stops for fractional proportional fonts
 	hideSelection = false;
 	drawOverstrikeCaret = true;
 	bufferedDraw = true;
@@ -190,7 +190,6 @@ EditView::EditView() {
 	tabArrowHeight = 4;
 	customDrawTabArrow = NULL;
 	customDrawWrapMarker = NULL;
-	editor = NULL;
 }
 
 EditView::~EditView() {
@@ -222,10 +221,10 @@ void EditView::ClearAllTabstops() {
 }
 
 XYPOSITION EditView::NextTabstopPos(int line, XYPOSITION x, XYPOSITION tabWidth) const {
-	int next = GetNextTabstop(line, static_cast<int>(x + 2));
+	int next = GetNextTabstop(line, static_cast<int>(x + tabWidthMinimumPixels));
 	if (next > 0)
 		return static_cast<XYPOSITION>(next);
-	return (static_cast<int>((x + 2) / tabWidth) + 1) * tabWidth;
+	return (static_cast<int>((x + tabWidthMinimumPixels) / tabWidth) + 1) * tabWidth;
 }
 
 bool EditView::ClearTabstops(int line) {
@@ -1670,17 +1669,7 @@ void EditView::DrawLine(Surface *surface, const EditModel &model, const ViewStyl
 	}
 
 	// See if something overrides the line background color.
-	ColourOptional background = vsDraw.Background(model.pdoc->GetMark(line), model.caret.active, ll->containsCaret);
-	SCNotification scn = { 0 };
-	scn.nmhdr.code = SCN_GETBKCOLOR;
-	scn.line = line;
-	scn.lParam = -1;
-	if (editor)
-		((Editor*)editor)->NotifyParent(&scn);
-	if (scn.lParam != -1) {
-		background.Set(scn.lParam);
-		background.isSet = true;
-	}
+	const ColourOptional background = vsDraw.Background(model.pdoc->GetMark(line), model.caret.active, ll->containsCaret);
 
 	const int posLineStart = model.pdoc->LineStart(line);
 

@@ -12,7 +12,7 @@
 #include "HanjaDic.h"
 
 #ifdef SCI_NAMESPACE
-using namespace Scintilla;
+namespace Scintilla {
 #endif
 
 namespace HanjaDict {
@@ -97,26 +97,33 @@ public:
 	}
 };
 
-int GetHangulOfHanja(int hanjaChar) {
-	// Convert hanja character to hangul one.
-	int hangulChar = -1; // If fails, return -1.
+int GetHangulOfHanja(wchar_t *inout) {
+	// Convert every hanja to hangul.
+	// Return the number of characters converted.
+	int changed = 0;
 	HanjaDic dict;
-	if (!dict.HJdictAvailable() || !dict.IsHanja(hanjaChar)) {
-		return hangulChar;
+	if (dict.HJdictAvailable()) {
+		const size_t len = wcslen(inout);
+		wchar_t conv[UTF8MaxBytes] = {0};
+		BSTR bstrHangul = SysAllocString(conv);
+		for (size_t i=0; i<len; i++) {
+			if (dict.IsHanja(static_cast<int>(inout[i]))) { // Pass hanja only!
+				conv[0] = inout[i];
+				BSTR bstrHanja = SysAllocString(conv);
+				HRESULT hr = dict.HJinterface->HanjaToHangul(bstrHanja, &bstrHangul);
+				if (SUCCEEDED(hr)) {
+					inout[i] = static_cast<wchar_t>(bstrHangul[0]);
+					changed += 1;
+				}
+				SysFreeString(bstrHanja);
+			}
+		}
+		SysFreeString(bstrHangul);
 	}
-	wchar_t convHnja[UTF8MaxBytes] = {0};
-	convHnja[0] = static_cast<wchar_t>(hanjaChar);
-
-	BSTR bstrHangul = SysAllocString(NULL);
-	BSTR bstrHanja = SysAllocString(convHnja);
-	HRESULT hr = dict.HJinterface->HanjaToHangul(bstrHanja, &bstrHangul);
-	if (SUCCEEDED(hr)) {
-		wchar_t wHangul = static_cast<wchar_t *>(bstrHangul)[0];
-		hangulChar = static_cast<int>(wHangul);
-	}
-	SysFreeString(bstrHangul);
-	SysFreeString(bstrHanja);
-	return hangulChar;
+	return changed;
 }
 
 }
+#ifdef SCI_NAMESPACE
+}
+#endif

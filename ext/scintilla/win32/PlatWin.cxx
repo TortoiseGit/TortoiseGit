@@ -479,7 +479,7 @@ public:
 	}
 };
 
-const int stackBufferLength = 10000;
+const int stackBufferLength = 1000;
 class TextWide : public VarBuffer<wchar_t, stackBufferLength> {
 public:
 	int tlen;
@@ -634,11 +634,14 @@ void SurfaceGDI::Init(SurfaceID sid, WindowID) {
 
 void SurfaceGDI::InitPixMap(int width, int height, Surface *surface_, WindowID) {
 	Release();
-	hdc = ::CreateCompatibleDC(static_cast<SurfaceGDI *>(surface_)->hdc);
+	SurfaceGDI *psurfOther = static_cast<SurfaceGDI *>(surface_);
+	hdc = ::CreateCompatibleDC(psurfOther->hdc);
 	hdcOwned = true;
-	bitmap = ::CreateCompatibleBitmap(static_cast<SurfaceGDI *>(surface_)->hdc, width, height);
+	bitmap = ::CreateCompatibleBitmap(psurfOther->hdc, width, height);
 	bitmapOld = static_cast<HBITMAP>(::SelectObject(hdc, bitmap));
 	::SetTextAlign(reinterpret_cast<HDC>(hdc), TA_BASELINE);
+	SetUnicodeMode(psurfOther->unicodeMode);
+	SetDBCSMode(psurfOther->codePage);
 }
 
 void SurfaceGDI::PenColour(ColourDesired fore) {
@@ -741,7 +744,7 @@ void SurfaceGDI::RoundedRectangle(PRectangle rc, ColourDesired fore, ColourDesir
 		8, 8);
 }
 
-// Plot a point into a DWORD buffer symetrically to all 4 qudrants
+// Plot a point into a DWORD buffer symmetrically to all 4 quadrants
 static void AllFour(DWORD *pixels, int width, int height, int x, int y, DWORD val) {
 	pixels[y*width+x] = val;
 	pixels[y*width+width-1-x] = val;
@@ -984,7 +987,7 @@ void SurfaceGDI::MeasureWidths(Font &font_, const char *s, int len, XYPOSITION *
 		if (!::GetTextExtentExPointW(hdc, tbuf.buffer, tbuf.tlen, maxWidthMeasure, &fit, poses.buffer, &sz)) {
 			// Likely to have failed because on Windows 9x where function not available
 			// So measure the character widths by measuring each initial substring
-			// Turns a linear operation into a qudratic but seems fast enough on test files
+			// Turns a linear operation into a quadratic but seems fast enough on test files
 			for (int widthSS=0; widthSS < tbuf.tlen; widthSS++) {
 				::GetTextExtentPoint32W(hdc, tbuf.buffer, widthSS+1, &sz);
 				poses.buffer[widthSS] = sz.cx;
@@ -1287,6 +1290,8 @@ void SurfaceD2D::InitPixMap(int width, int height, Surface *surface_, WindowID) 
 		pRenderTarget->BeginDraw();
 		ownRenderTarget = true;
 	}
+	SetUnicodeMode(psurfOther->unicodeMode);
+	SetDBCSMode(psurfOther->codePage);
 }
 
 void SurfaceD2D::PenColour(ColourDesired fore) {
@@ -1793,12 +1798,13 @@ XYPOSITION SurfaceD2D::AverageCharWidth(Font &font_) {
 		// Create a layout
 		IDWriteTextLayout *pTextLayout = 0;
 		const WCHAR wszAllAlpha[] = L"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-		HRESULT hr = pIDWriteFactory->CreateTextLayout(wszAllAlpha, static_cast<UINT32>(wcslen(wszAllAlpha)),
+		const size_t lenAllAlpha = wcslen(wszAllAlpha);
+		HRESULT hr = pIDWriteFactory->CreateTextLayout(wszAllAlpha, static_cast<UINT32>(lenAllAlpha),
 			pTextFormat, 1000.0, 1000.0, &pTextLayout);
 		if (SUCCEEDED(hr)) {
 			DWRITE_TEXT_METRICS textMetrics;
 			if (SUCCEEDED(pTextLayout->GetMetrics(&textMetrics)))
-				width = textMetrics.width / wcslen(wszAllAlpha);
+				width = textMetrics.width / lenAllAlpha;
 			pTextLayout->Release();
 		}
 	}
@@ -3047,7 +3053,7 @@ public:
 	// Use GetProcAddress to get a pointer to the relevant function.
 	virtual Function FindFunction(const char *name) {
 		if (h != NULL) {
-			// C++ standard doesn't like casts betwen function pointers and void pointers so use a union
+			// C++ standard doesn't like casts between function pointers and void pointers so use a union
 			union {
 				FARPROC fp;
 				Function f;
