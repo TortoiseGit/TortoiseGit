@@ -2054,12 +2054,26 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 		if (!bFallback)
 			return FALSE;
 
-		CRegString msyslocalinstalldir = CRegString(REG_MSYSGIT_INSTALL_LOCAL, _T(""), FALSE, HKEY_CURRENT_USER);
-		str = msyslocalinstalldir;
-		str.TrimRight(_T("\\"));
+		{
+			CRegString msysinstalldir = CRegString(REG_MSYSGIT_INSTALL, _T(""), FALSE, HKEY_CURRENT_USER);
+			str = msysinstalldir;
+			str.TrimRight(_T("\\"));
+		}
+		if (str.IsEmpty())
+		{
+			CRegString msysinstalldir = CRegString(REG_MSYSGIT_INSTALL_32, _T(""), FALSE, HKEY_CURRENT_USER);
+			str = msysinstalldir;
+			str.TrimRight(_T("\\"));
+		}
 		if (str.IsEmpty())
 		{
 			CRegString msysinstalldir = CRegString(REG_MSYSGIT_INSTALL, _T(""), FALSE, HKEY_LOCAL_MACHINE);
+			str = msysinstalldir;
+			str.TrimRight(_T("\\"));
+		}
+		if (str.IsEmpty())
+		{
+			CRegString msysinstalldir = CRegString(REG_MSYSGIT_INSTALL_32, _T(""), FALSE, HKEY_LOCAL_MACHINE);
 			str = msysinstalldir;
 			str.TrimRight(_T("\\"));
 		}
