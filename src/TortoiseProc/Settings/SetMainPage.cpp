@@ -174,6 +174,10 @@ static void PerformCommonGitPathCleanup(CString &path)
 
 	path.TrimRight(L"\\");
 
+	// prefer git.exe in cmd-directory for Git for Windows based on msys2
+	if (path.GetLength() > 12 && (path.Right(12) == _T("\\mingw32\\bin") || path.Right(12) == _T("\\mingw64\\bin")) && PathFileExists(path.Left(path.GetLength() - 12) + _T("\\cmd\\git.exe")))
+		path = path.Left(path.GetLength() - 12) + _T("\\cmd");
+
 	// prefer git.exe in bin-directory, see https://github.com/msysgit/msysgit/issues/103
 	if (path.GetLength() > 5 && path.Right(4) == _T("\\cmd") && PathFileExists(path.Left(path.GetLength() - 4) + _T("\\bin\\git.exe")))
 		path = path.Left(path.GetLength() - 4) + _T("\\bin");

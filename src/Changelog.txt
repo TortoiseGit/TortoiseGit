@@ -6,6 +6,7 @@ Released: unreleased
  * Fixed issue #2488: BrowseRefsDlg: Option to hide nested branches
  * Fixed issue #2490: BrowseRefsDlg: Allow to configure tracked branches
  * Fixed issue #2469: Support reviewing merge commits (git show merge-commit)
+ * Add full support for Git for Windows 2.x and windows-wide system config
 
 == Bug Fixes ==
  * Fixed issue #2495: "Show Reflog" dialog shows empty action for "push" entries

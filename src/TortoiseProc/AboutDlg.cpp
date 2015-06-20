@@ -85,6 +85,8 @@ BOOL CAboutDlg::OnInitDialog()
 	if (!CGit::ms_LastMsysGitDir.IsEmpty())
 	{
 		out += _T(" (") + CGit::ms_LastMsysGitDir;
+		out += L"; " + CGit::ms_MsysGitRootDir;
+		out += L"; " + g_Git.GetGitSystemConfig();
 		if (CGit::ms_bCygwinGit)
 			out += _T("; with cygwin hack");
 		out += _T(")");
