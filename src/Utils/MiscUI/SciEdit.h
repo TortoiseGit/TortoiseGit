@@ -124,6 +124,7 @@ public:
 	CString		StringFromControl(const CStringA& text);
 	int			LoadFromFile(CString &filename);
 	void		RestyleBugIDs();
+	void		ReStyle(int firstPos, int lastPos);
 
 private:
 	bool IsUTF8(LPVOID pBuffer, size_t cb);
