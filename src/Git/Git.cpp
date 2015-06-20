@@ -334,7 +334,7 @@ int CGit::RunAsync(CString cmd, PROCESS_INFORMATION *piOut, HANDLE *hReadOut, HA
 	memset(&this->m_CurrentGitPi,0,sizeof(PROCESS_INFORMATION));
 	memset(&pi, 0, sizeof(PROCESS_INFORMATION));
 
-	if (ms_bCygwinGit && cmd.Find(_T("git")) == 0)
+	if (ms_bCygwinGit && cmd.Find(_T("git")) == 0 && cmd.Find(L"git.exe config ") == -1)
 	{
 		cmd.Replace(_T('\\'), _T('/'));
 		cmd.Replace(_T("\""), _T("\\\""));
