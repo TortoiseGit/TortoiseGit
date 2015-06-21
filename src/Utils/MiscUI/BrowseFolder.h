@@ -65,6 +65,8 @@ public:
 	 */
 	void DisableCheckBox2WhenCheckbox1IsEnabled(bool bSet = true) {m_DisableCheckbox2WhenCheckbox1IsChecked = bSet;}
 
+	BOOL SetRootFolder(LPCWSTR lpszPath); 
+
 	static BOOL m_bCheck;		///< state of the checkbox on closing the dialog
 	static BOOL m_bCheck2;
 	TCHAR m_title[200];

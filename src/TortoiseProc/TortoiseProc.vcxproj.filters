@@ -159,6 +159,9 @@
     <Filter Include="Utils\TreePropSheet">
       <UniqueIdentifier>{e772451b-ebd6-46da-b8e2-f4794840702a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Commands\Subtree">
+      <UniqueIdentifier>{948d663b-f368-4fe6-b111-265438df8b63}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AddRemoteDlg.cpp">
@@ -904,6 +907,12 @@
     </ClCompile>
     <ClCompile Include="..\Git\GitRevRefBrowser.cpp">
       <Filter>Git</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\SubtreeCommand.cpp">
+      <Filter>Commands\Subtree</Filter>
+    </ClCompile>
+    <ClCompile Include="SubtreeCmdDlg.cpp">
+      <Filter>Commands\Subtree</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1671,6 +1680,12 @@
     </ClInclude>
     <ClInclude Include="..\Git\GitRevRefBrowser.h">
       <Filter>Git</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\SubtreeCommand.h">
+      <Filter>Commands\Subtree</Filter>
+    </ClInclude>
+    <ClInclude Include="SubtreeCmdDlg.h">
+      <Filter>Commands\Subtree</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

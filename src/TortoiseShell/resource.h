@@ -197,6 +197,12 @@
 #define IDS_MENUREVISIONGRAPH           367
 #define IDS_MENUDESCREVISIONGRAPH       368
 #define IDS_LOADING                     369
+#define IDS_MENUSUBTREEADD              370
+#define IDS_MENUSUBTREEPUSH             371
+#define IDS_MENUSUBTREEPULL             372
+#define IDS_MENUDESC_SUBTREEADD         373
+#define IDS_MENUDESC_SUBTREEPUSH        374
+#define IDS_MENUDESC_SUBTREEPULL        375
 #define IDC_REVISION                    1001
 #define IDC_HEAD_HASH                   1001
 #define IDC_LAST_HASH                   1002
