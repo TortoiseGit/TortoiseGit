@@ -1053,7 +1053,7 @@ bool CGitIgnoreList::CheckAndUpdateGitSystemConfigPath(bool force)
 	if (GetTickCount() - m_dGitSystemConfigPathLastChecked > 30000 || force)
 	{
 		m_dGitSystemConfigPathLastChecked = GetTickCount();
-		CString gitSystemConfigPath(CRegString(REG_MSYSGIT_PATH, _T(""), FALSE));
+		CString gitSystemConfigPath(CRegString(REG_SYSTEM_GITCONFIGPATH, _T(""), FALSE));
 		if (gitSystemConfigPath != m_sGitSystemConfigPath)
 		{
 			m_sGitSystemConfigPath = gitSystemConfigPath;
