@@ -208,8 +208,7 @@ CGit g_Git;
 
 CGit::CGit(void)
 {
-	GetCurrentDirectory(MAX_PATH, m_CurrentDir.GetBuffer(MAX_PATH));
-	m_CurrentDir.ReleaseBuffer();
+	GetCurrentDirectory(MAX_PATH, CStrBuf(m_CurrentDir, MAX_PATH));
 	m_IsGitDllInited = false;
 	m_GitDiff=0;
 	m_GitSimpleListDiff=0;
@@ -553,7 +552,7 @@ public:
 		if (size == 0)
 			return false;
 		int oldEndPos = m_buffer.GetLength();
-		memcpy(m_buffer.GetBufferSetLength(oldEndPos + (int)size) + oldEndPos, data, size);
+		memcpy(m_buffer.GetBuffer(oldEndPos + (int)size) + oldEndPos, data, size);
 		m_buffer.ReleaseBuffer(oldEndPos + (int)size);
 
 		// Break into lines and feed to m_recv
@@ -627,7 +626,7 @@ CString CGit::GetConfigValue(const CString& name)
 
 		try
 		{
-			if (git_get_config(key, value.GetBufferSetLength(4096), 4096))
+			if (git_get_config(key, CStrBufA(value, 4096), 4096))
 				return CString();
 		}
 		catch (const char *msg)
@@ -2115,8 +2114,7 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 		return FALSE;
 
 	CString msysGitDir;
-	PathCanonicalize(msysGitDir.GetBufferSetLength(MAX_PATH), CGit::ms_LastMsysGitDir + _T("\\..\\"));
-	msysGitDir.ReleaseBuffer();
+	PathCanonicalize(CStrBuf(msysGitDir, MAX_PATH), CGit::ms_LastMsysGitDir + _T("\\..\\"));
 	static CString prefixes[] = { L"mingw64\\etc", L"mingw32\\etc", L"etc" };
 	static int prefixes_len[] = { 8, 8, 0 };
 	for (int i = 0; i < _countof(prefixes); ++i)
@@ -2165,8 +2163,7 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 			if (PathFileExists(possibleShExe))
 			{
 				CString temp;
-				PathCanonicalize(temp.GetBufferSetLength(MAX_PATH), possibleShExe);
-				temp.ReleaseBuffer();
+				PathCanonicalize(CStrBuf(temp, MAX_PATH), possibleShExe);
 				sh.Format(L"\"%s\"", temp);
 				// we need to put the usr\bin folder on the path for Git for Windows based on msys2
 				m_Environment.AddToPath(temp.Left(temp.GetLength() - 7)); // 7 = len("\\sh.exe")

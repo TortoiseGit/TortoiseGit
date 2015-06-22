@@ -194,8 +194,7 @@ CString GitAdminDir::ReadGitLink(const CString& topDir, const CString& dotGitPat
 	{
 		gitPath = topDir + _T("\\") + gitPath;
 		CString adminDir;
-		PathCanonicalize(adminDir.GetBuffer(MAX_PATH), gitPath);
-		adminDir.ReleaseBuffer();
+		PathCanonicalize(CStrBuf(adminDir, MAX_PATH), gitPath);
 		return adminDir;
 	}
 	return gitPath;

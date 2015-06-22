@@ -1846,8 +1846,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 							diffWith = m_sMarkForDiffVersion;
 						else
 						{
-							PathCompactPathEx(diffWith.GetBuffer(40), m_sMarkForDiffFilename, 39, 0);
-							diffWith.ReleaseBuffer();
+							PathCompactPathEx(CStrBuf(diffWith, 40), m_sMarkForDiffFilename, 40, 0);
 							diffWith += _T(":") + m_sMarkForDiffVersion.Left(g_Git.GetShortHASHLength());
 						}
 						CString menuEntry;

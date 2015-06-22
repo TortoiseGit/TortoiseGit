@@ -3539,12 +3539,10 @@ int CAppUtils::Git2CertificateCheck(git_cert* base_cert, int /*valid*/, const ch
 		}
 
 		CString servernameInCert;
-		CertGetNameString(pServerCert, CERT_NAME_SIMPLE_DISPLAY_TYPE, 0, nullptr, servernameInCert.GetBuffer(128), 128);
-		servernameInCert.ReleaseBuffer();
+		CertGetNameString(pServerCert, CERT_NAME_SIMPLE_DISPLAY_TYPE, 0, nullptr, CStrBuf(servernameInCert, 128), 128);
 
 		CString issuer;
-		CertGetNameString(pServerCert, CERT_NAME_SIMPLE_DISPLAY_TYPE, CERT_NAME_ISSUER_FLAG, nullptr, issuer.GetBuffer(128), 128);
-		issuer.ReleaseBuffer();
+		CertGetNameString(pServerCert, CERT_NAME_SIMPLE_DISPLAY_TYPE, CERT_NAME_ISSUER_FLAG, nullptr, CStrBuf(issuer, 128), 128);
 
 		CertFreeCertificateContext(pServerCert);
 

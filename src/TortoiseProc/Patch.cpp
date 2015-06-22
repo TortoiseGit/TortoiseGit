@@ -107,8 +107,7 @@ int CPatch::Parse(CString &pathfile)
 	if (!PatchFile.Open(m_PathFile, CFile::modeRead))
 		return -1;
 
-	PatchFile.Read(m_Body.GetBuffer((UINT)PatchFile.GetLength()), (UINT)PatchFile.GetLength());
-	m_Body.ReleaseBuffer();
+	PatchFile.Read(CStrBufA(m_Body, (UINT)PatchFile.GetLength()), (UINT)PatchFile.GetLength());
 	PatchFile.Close();
 
 	try

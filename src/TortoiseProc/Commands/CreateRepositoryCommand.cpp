@@ -60,10 +60,7 @@ bool CreateRepositoryCommand::Execute()
 	if (folder.IsEmpty())
 		folder = g_Git.m_CurrentDir;
 	if (folder.IsEmpty())
-	{
-		GetCurrentDirectory(MAX_PATH, folder.GetBuffer(MAX_PATH));
-		folder.ReleaseBuffer();
-	}
+		GetCurrentDirectory(MAX_PATH, CStrBuf(folder, MAX_PATH));
 	if (CheckSpecialFolder(folder))
 	{
 		CString message;

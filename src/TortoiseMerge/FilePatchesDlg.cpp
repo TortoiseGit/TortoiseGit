@@ -447,8 +447,8 @@ void CFilePatchesDlg::SetTitleWithPath(int width)
 	{
 		PathCompactPath(pDC->GetSafeHdc(), title.GetBuffer(), width);
 		ReleaseDC(pDC);
+		title.ReleaseBuffer();
 	}
-	title.ReleaseBuffer();
 	SetWindowText(title);
 }
 

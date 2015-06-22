@@ -169,8 +169,10 @@ int GetCommitTemplate(CString &msg)
 			// handle "/d/TortoiseGit/tpl.txt" -> "d:/TortoiseGit/tpl.txt"
 			if (tplFilename[2] == _T('/'))
 			{
-				tplFilename.GetBuffer()[0] = tplFilename[1];
-				tplFilename.GetBuffer()[1] = _T(':');
+				LPWSTR buf = tplFilename.GetBuffer();
+				buf[0] = buf[1];
+				buf[1] = _T(':');
+				tplFilename.ReleaseBuffer();
 			}
 		}
 	}
