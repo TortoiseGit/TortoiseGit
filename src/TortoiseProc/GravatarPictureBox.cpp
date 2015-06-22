@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2015 - TortoiseGit
+// Copyright (C) 2013-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -151,9 +151,9 @@ void CGravatar::GravatarThread()
 	CString baseUrlPath;
 	URL_COMPONENTS urlComponents = {0};
 	urlComponents.dwStructSize = sizeof(urlComponents);
-	urlComponents.lpszHostName = hostname.GetBufferSetLength(INTERNET_MAX_HOST_NAME_LENGTH);
+	urlComponents.lpszHostName = hostname.GetBuffer(INTERNET_MAX_HOST_NAME_LENGTH);
 	urlComponents.dwHostNameLength = INTERNET_MAX_HOST_NAME_LENGTH;
-	urlComponents.lpszUrlPath = baseUrlPath.GetBufferSetLength(INTERNET_MAX_PATH_LENGTH);
+	urlComponents.lpszUrlPath = baseUrlPath.GetBuffer(INTERNET_MAX_PATH_LENGTH);
 	urlComponents.dwUrlPathLength = INTERNET_MAX_PATH_LENGTH;
 	if (!InternetCrackUrl(gravatarBaseUrl, gravatarBaseUrl.GetLength(), 0, &urlComponents))
 	{
