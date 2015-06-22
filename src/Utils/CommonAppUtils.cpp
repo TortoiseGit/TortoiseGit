@@ -297,8 +297,7 @@ bool CCommonAppUtils::FileOpenSave(CString& path, int * filterindex, UINT title,
 	{
 		bRet = !!GetSaveFileName(&ofn);
 	}
-	SetCurrentDirectory(sOrigCWD.GetBuffer());
-	sOrigCWD.ReleaseBuffer();
+	SetCurrentDirectory(sOrigCWD);
 	if (bRet)
 	{
 		path = CString(ofn.lpstrFile);

@@ -272,12 +272,12 @@ int CLogCache::SaveOneItem(GitRevLoglist& Rev, LONG offset)
 
 		if(!name.IsEmpty())
 		{
-			if(!WriteFile(this->m_DataFile,name.GetBuffer(), name.GetLength()*sizeof(TCHAR),&num,0))
+			if (!WriteFile(this->m_DataFile, name, name.GetLength() * sizeof(TCHAR), &num, 0))
 				return -1;
 		}
 		if(!oldname.IsEmpty())
 		{
-			if(!WriteFile(this->m_DataFile,oldname.GetBuffer(), oldname.GetLength()*sizeof(TCHAR),&num,0))
+			if (!WriteFile(this->m_DataFile, oldname, oldname.GetLength() * sizeof(TCHAR), &num, 0))
 				return -1;
 		}
 

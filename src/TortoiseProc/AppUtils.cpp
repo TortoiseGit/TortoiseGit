@@ -2360,7 +2360,7 @@ int CAppUtils::SaveCommitUnicodeFile(const CString& filename, CString &message)
 				continue;
 			line.TrimRight(L" \r");
 			CStringA lineA = CUnicodeUtils::GetMulti(line + L"\n", cp);
-			file.Write(lineA.GetBuffer(), lineA.GetLength());
+			file.Write((LPCSTR)lineA, lineA.GetLength());
 		}
 		file.Close();
 		return 0;

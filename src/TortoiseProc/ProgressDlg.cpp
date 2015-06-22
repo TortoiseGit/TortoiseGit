@@ -608,7 +608,7 @@ void CProgressDlg::WriteLog() const
 	{
 		logfile.AddTimeLine();
 		CString text = GetLogText();
-		LPTSTR psz_string = text.GetBuffer();
+		LPCTSTR psz_string = text;
 		while (*psz_string)
 		{
 			if (*psz_string == '\r')

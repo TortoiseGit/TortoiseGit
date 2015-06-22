@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2014 - TortoiseGit
+// Copyright (C) 2013-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -40,7 +40,7 @@ static CString CalcMD5(CString text)
 	}
 
 	CStringA textA = CUnicodeUtils::GetUTF8(text);
-	if (!CryptHashData(hHash, (LPBYTE)textA.GetBuffer(), textA.GetLength(), 0))
+	if (!CryptHashData(hHash, (LPBYTE)(LPCSTR)textA, textA.GetLength(), 0))
 	{
 		CryptDestroyHash(hHash);
 		CryptReleaseContext(hProv, 0);

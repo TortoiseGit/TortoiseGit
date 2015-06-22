@@ -1205,7 +1205,7 @@ void CRepositoryBrowser::FileSaveAs(const CString path)
 	CFileDialog dlg(FALSE, NULL, filename, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, NULL);
 
 	CString currentpath(g_Git.CombinePath(gitPath.GetContainingDirectory()));
-	dlg.m_ofn.lpstrInitialDir = currentpath.GetBuffer();
+	dlg.m_ofn.lpstrInitialDir = currentpath;
 
 	CString cmd, out;
 	INT_PTR ret = dlg.DoModal();

@@ -1004,7 +1004,7 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& /*logR
 
 	CString fontname = CRegString(_T("Software\\TortoiseGit\\LogFontName"), _T("Courier New"));
 
-	Gdiplus::Font font(fontname.GetBuffer(),(REAL)m_nFontSize,FontStyleRegular);
+	Gdiplus::Font font(fontname, (REAL)m_nFontSize, FontStyleRegular);
 	SolidBrush blackbrush((ARGB)Color::Black);
 
 	DWORD revGraphUseLocalForCur = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\Graph\\RevGraphUseLocalForCur"));
@@ -1131,7 +1131,7 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& /*logR
 					//graphics.graphics->FillRectangle(&SolidBrush(Gdiplus::Color(GetRValue(colRef), GetGValue(colRef), GetBValue(colRef))),
 					//		rect);
 
-					graphics.graphics->DrawString(shortname.GetBuffer(),shortname.GetLength(),
+					graphics.graphics->DrawString(shortname, shortname.GetLength(),
 						&font,
 						Gdiplus::PointF((REAL)(noderect.X + this->GetLeftRightMargin()*m_fZoomFactor),
 										(REAL)(noderect.Y + this->GetTopBottomMargin()*m_fZoomFactor+ hight*i)),
@@ -1327,8 +1327,8 @@ void CRevisionGraphWnd::SetNodeRect(GraphicsDevice& graphics, ogdf::node *pnode,
 			if(graphics.graphics)
 			{
 				//GetTextExtentPoint32(graphics.pDC->m_hDC, shorthash.GetBuffer(), shorthash.GetLength(), &size);
-				Gdiplus::Font font(fontname.GetBuffer(), (REAL)m_nFontSize, FontStyleRegular);
-				graphics.graphics->MeasureString(shorthash.GetBuffer(), shorthash.GetLength(),
+				Gdiplus::Font font(fontname, (REAL)m_nFontSize, FontStyleRegular);
+				graphics.graphics->MeasureString(shorthash, shorthash.GetLength(),
 										&font,
 										Gdiplus::PointF(0,0), &rect);
 
@@ -1348,8 +1348,8 @@ void CRevisionGraphWnd::SetNodeRect(GraphicsDevice& graphics, ogdf::node *pnode,
 				shortref = CGit::GetShortName(shortref,NULL);
 				if(graphics.pDC)
 				{
-					Gdiplus::Font font(fontname.GetBuffer(), (REAL)m_nFontSize, FontStyleRegular);
-					graphics.graphics->MeasureString(shortref.GetBuffer(), shortref.GetLength(),
+					Gdiplus::Font font(fontname, (REAL)m_nFontSize, FontStyleRegular);
+					graphics.graphics->MeasureString(shortref, shortref.GetLength(),
 										&font,
 										Gdiplus::PointF(0,0), &rect);
 					if(rect.Width > xmax)

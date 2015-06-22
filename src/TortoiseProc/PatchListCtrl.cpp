@@ -158,7 +158,7 @@ int CPatchListCtrl::LaunchProc(const CString& command)
 	{
 		int index = this->GetNextSelectedItem(pos);
 		CString one=this->GetItemText(index,0);
-		file.Write(one.GetBuffer(),sizeof(TCHAR)*one.GetLength());
+		file.Write((LPCTSTR)one, sizeof(TCHAR) * one.GetLength());
 		file.Write(_T("\n"),sizeof(TCHAR)*1);
 	}
 

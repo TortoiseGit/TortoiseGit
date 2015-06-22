@@ -1092,7 +1092,7 @@ void CTortoiseGitBlameView::SetupLexer(CString filename)
 		//_tcscpy_s(line, 20, lineptr+1);
 		//_tcslwr_s(line, 20);
 		CString ext=filename.Right(filename.GetLength()-start-1);
-		TCHAR * line = ext.GetBuffer();
+		const TCHAR* line = ext;
 
 		if ((_tcscmp(line, _T("py"))==0)||
 			(_tcscmp(line, _T("pyw"))==0))
