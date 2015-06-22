@@ -426,7 +426,6 @@ void CSciEdit::SetText(const CString& sText)
 	Call(SCI_DOCUMENTEND);
 	Call(SCI_NEWLINE);
 	Call(SCI_DELETEBACK);
-	ReStyle(0, (int)Call(SCI_GETLENGTH));
 }
 
 void CSciEdit::InsertText(const CString& sText, bool bNewLine)
@@ -435,7 +434,6 @@ void CSciEdit::InsertText(const CString& sText, bool bNewLine)
 	Call(SCI_REPLACESEL, 0, (LPARAM)(LPCSTR)sTextA);
 	if (bNewLine)
 		Call(SCI_REPLACESEL, 0, (LPARAM)(LPCSTR)"\n");
-	ReStyle(0, (int)Call(SCI_GETLENGTH));
 }
 
 CString CSciEdit::GetText()
@@ -800,15 +798,21 @@ BOOL CSciEdit::OnChildNotify(UINT message, WPARAM wParam, LPARAM lParam, LRESULT
 				LRESULT lastline = firstline + Call(SCI_LINESONSCREEN);
 				int firstpos = (int)Call(SCI_POSITIONFROMLINE, firstline);
 				int lastpos = (int)Call(SCI_GETLINEENDPOSITION, lastline);
+				int pos1 = lpSCN->position;
+				int pos2 = pos1 + lpSCN->length;
+				// always use the bigger range
+				firstpos = min(firstpos, pos1);
+				lastpos = max(lastpos, pos2);
 				MarkEnteredBugID(firstpos, lastpos);
 				if (m_bDoStyle)
 					StyleEnteredText(firstpos, lastpos);
 
-				int startpos = (int)Call(SCI_WORDSTARTPOSITION, lpSCN->position, true);
-				int endpos = (int)Call(SCI_WORDENDPOSITION, lpSCN->position + lpSCN->length, true);
+				int startpos = (int)Call(SCI_WORDSTARTPOSITION, firstpos, true);
+				int endpos = (int)Call(SCI_WORDENDPOSITION, lastpos, true);
 				StyleURLs(startpos, endpos);
 				CheckSpelling(startpos, endpos);
 				WrapLines(firstpos, lastpos);
+				Call(SCI_COLOURISE, startpos, endpos);
 			}
 			break;
 		}
@@ -1674,16 +1678,4 @@ void CSciEdit::RestyleBugIDs()
 	Call(SCI_SETSTYLING, endstylepos, STYLE_DEFAULT);
 	// style the bug IDs
 	MarkEnteredBugID(0, endstylepos);
-}
-
-void CSciEdit::ReStyle(int firstPos, int lastPos)
-{
-	MarkEnteredBugID(firstPos, lastPos);
-	if (m_bDoStyle)
-		StyleEnteredText(firstPos, lastPos);
-
-	StyleURLs(firstPos, lastPos);
-	CheckSpelling(firstPos, lastPos);
-	WrapLines(firstPos, lastPos);
-	Call(SCI_COLOURISE, firstPos, lastPos);
 }
