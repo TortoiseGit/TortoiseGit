@@ -1749,7 +1749,7 @@ int CGit::GetRemoteTags(const CString& remote, STRING_VECTOR& list)
 			if (!GetShortName(ref, shortname, _T("refs/tags/")))
 				continue;
 			// dot not include annotated tags twice; this works, because an annotated tag appears twice (one normal tag and one with ^{} at the end)
-			if (shortname.Find(_T("^{}")) >= 1)
+			if (ref.Find(_T("^{}")) >= 1)
 				continue;
 			list.push_back(shortname);
 		}
