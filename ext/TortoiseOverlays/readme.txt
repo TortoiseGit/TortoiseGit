@@ -2,5 +2,5 @@ The binary files in this directory are directly taken from the TortoiseSVN proje
 
 The source code and the original binary files are available in the TortoiseSVN Subversion repository:
 
-Google Code Web-SVN-Browser: http://code.google.com/p/tortoisesvn/source/browse/#svn%2FTortoiseOverlays
-Subversion access: http://tortoisesvn.googlecode.com/svn/TortoiseOverlays
+SourceForge Web-SVN-Browser: http://sourceforge.net/p/tortoisesvn/code/HEAD/tree/trunk/src/TortoiseOverlays/
+Official binaries: http://sourceforge.net/p/tortoisesvn/code/HEAD/tree/TortoiseOverlays/
