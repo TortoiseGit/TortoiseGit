@@ -1672,6 +1672,9 @@
     <ClInclude Include="..\Git\GitRevRefBrowser.h">
       <Filter>Git</Filter>
     </ClInclude>
+    <ClInclude Include="..\Resources\LoglistCommonResource.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Resources\actionadded.ico">
@@ -2085,6 +2088,9 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="..\Resources\search.avi">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\Resources\TortoiseLoglistCommon.rc2">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

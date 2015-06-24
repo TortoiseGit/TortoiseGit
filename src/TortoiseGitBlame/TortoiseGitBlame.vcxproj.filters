@@ -338,6 +338,9 @@
     <ClInclude Include="..\Git\GitRevLoglist.h">
       <Filter>Git</Filter>
     </ClInclude>
+    <ClInclude Include="..\Resources\LoglistCommonResource.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Resources\blameres\output_wnd.ico">
@@ -381,5 +384,10 @@
     <ResourceCompile Include="..\Resources\TortoiseGitBlameENG.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Resources\TortoiseLoglistCommon.rc2">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

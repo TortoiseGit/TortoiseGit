@@ -316,6 +316,7 @@
     <ClInclude Include="..\Git\gittype.h" />
     <ClInclude Include="..\Git\MassiveGitTaskBase.h" />
     <ClInclude Include="..\Git\TGitPath.h" />
+    <ClInclude Include="..\Resources\LoglistCommonResource.h" />
     <ClInclude Include="..\Utils\ACEdit.h" />
     <ClInclude Include="..\Utils\ACListWnd.h" />
     <ClInclude Include="..\Utils\BugTraqAssociations.h" />
@@ -700,6 +701,7 @@
     <None Include="..\Resources\pan.cur" />
     <None Include="..\Resources\pandown.cur" />
     <None Include="..\Resources\search.avi" />
+    <None Include="..\Resources\TortoiseLoglistCommon.rc2" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\Resources\TortoiseProcENG.rc" />
