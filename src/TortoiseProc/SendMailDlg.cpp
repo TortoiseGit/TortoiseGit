@@ -153,7 +153,7 @@ void CSendMailDlg::OnBnClickedOk()
 {
 	this->UpdateData();
 
-	if(this->m_To.IsEmpty() && this->m_CC.IsEmpty())
+	if (m_To.IsEmpty() && m_CC.IsEmpty() && CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\DeliveryType"), 1) != 1)
 	{
 		CMessageBox::Show(NULL,IDS_ERR_ADDRESS_NO_EMPTY,IDS_APPNAME,MB_OK|MB_ICONERROR);
 		return;
