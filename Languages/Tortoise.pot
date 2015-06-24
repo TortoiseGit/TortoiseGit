@@ -6391,10 +6391,6 @@ msgstr ""
 msgid "No HEAD found"
 msgstr ""
 
-#. Resource IDs: (1565)
-msgid "No changes after merge"
-msgstr ""
-
 #. Resource IDs: (1283)
 msgid "No command specified!\n\nTortoiseGitProc.exe is used by the Shell extension and should not be called directly!"
 msgstr ""
@@ -6417,6 +6413,10 @@ msgstr ""
 
 #. Resource IDs: (61856, 61872)
 msgid "No error occurred."
+msgstr ""
+
+#. Resource IDs: (1565)
+msgid "No extra changes after merge"
 msgstr ""
 
 #. Resource IDs: (1310)
@@ -8538,10 +8538,6 @@ msgstr ""
 msgid "Show branches this commit is on"
 msgstr ""
 
-#. Resource IDs: (1564)
-msgid "Show changes after merge"
-msgstr ""
-
 #. Resource IDs: (20011, 20026)
 msgid "Show changes as &unified diff"
 msgstr ""
@@ -8580,6 +8576,10 @@ msgstr ""
 
 #. Resource IDs: (1126)
 msgid "Show excluded folders as normal"
+msgstr ""
+
+#. Resource IDs: (1564)
+msgid "Show extra changes after merge"
 msgstr ""
 
 #. Resource IDs: (16656)

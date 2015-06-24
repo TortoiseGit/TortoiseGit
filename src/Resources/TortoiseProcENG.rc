@@ -4009,8 +4009,8 @@ BEGIN
     IDS_PROC_REBASE_UNSELECTED_SKIP "S&kip unselected"
     IDS_PROC_REBASE_UNSELECTED_SQUASH "S&quash unselected"
     IDS_PROC_REBASE_UNSELECTED_EDIT "E&dit unselected"
-    IDS_DIFFWITHMERGE       "Show changes after merge"
-    IDS_NOCHANGEAFTERMERGE  "No changes after merge"
+    IDS_DIFFWITHMERGE       "Show extra changes after merge"
+    IDS_NOCHANGEAFTERMERGE  "No extra changes after merge"
 END
 
 STRINGTABLE
