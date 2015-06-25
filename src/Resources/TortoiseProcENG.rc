@@ -3503,7 +3503,6 @@ BEGIN
                             "The credential helper URL ""%s"" already exists.\nDo you want to overwrite it?"
     IDS_GITCREDENTIAL_SAVEHELPER 
                             "The credential helper was changed.\nDo you want to save now or discard changes?"
-    IDS_GITCREDENTIAL_DELETEHELPER "Do you really want to remove ""%s""?"
     IDS_RESET_MIXED         "Mixed"
     IDS_RESET_HARD          "Hard"
 END
@@ -3703,7 +3702,7 @@ BEGIN
     IDS_DISCARDBUTTON       "&Discard"
     IDS_PROC_SAVECONFIGFAILED 
                             "Saving config failed (key: ""%s"", value: ""%s"")."
-    IDS_PROC_GITCONFIG_DELETEREMOTE "Do you really want to remove ""%s""?"
+    IDS_WARN_REMOVE         "Do you really want to remove ""%s""?"
     IDS_PROC_GITCONFIG_EDITLOCALGONCFIG "Edit local git config"
     IDS_PROC_GITCONFIG_NOMSYSGIT 
                             "Git directory not set (see ""General"" settings page)."

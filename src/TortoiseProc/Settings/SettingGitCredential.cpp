@@ -743,7 +743,7 @@ void CSettingGitCredential::OnBnClickedButtonRemove()
 		CString str;
 		m_ctrlUrlList.GetText(index, str);
 		CString msg;
-		msg.Format(IDS_GITCREDENTIAL_DELETEHELPER, str);
+		msg.Format(IDS_WARN_REMOVE, str);
 		if (CMessageBox::Show(NULL, msg, _T("TortoiseGit"), MB_YESNO | MB_ICONQUESTION) == IDYES)
 		{
 			CAutoConfig config(true);

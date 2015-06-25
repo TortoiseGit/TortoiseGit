@@ -3849,7 +3849,7 @@ msgstr ""
 msgid "Do you really want to permanently delete the %d selected refs? It can <ct=0x0000FF><b>NOT</b></ct> be recovered!"
 msgstr ""
 
-#. Resource IDs: (1128, 1421)
+#. Resource IDs: (1128)
 #, c-format
 msgid "Do you really want to remove \"%s\"?"
 msgstr ""

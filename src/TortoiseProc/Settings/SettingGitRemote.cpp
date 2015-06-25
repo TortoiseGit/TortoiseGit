@@ -589,7 +589,7 @@ void CSettingGitRemote::OnBnClickedButtonRemove()
 		CString str;
 		m_ctrlRemoteList.GetText(index,str);
 		CString msg;
-		msg.Format(IDS_PROC_GITCONFIG_DELETEREMOTE, str);
+		msg.Format(IDS_WARN_REMOVE, str);
 		if(CMessageBox::Show(NULL, msg, _T("TortoiseGit"), MB_YESNO | MB_ICONQUESTION) == IDYES)
 		{
 			CString cmd,out;
