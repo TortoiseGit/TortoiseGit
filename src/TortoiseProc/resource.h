@@ -39,7 +39,6 @@
 #define IDD_REVERT                      175
 #define IDD_STATGRAPH                   179
 #define IDD_PATCH_FILE_OPEN_CUSTOM      180
-#define IDD_OVERLAYICONS                184
 #define IDD_SETOVERLAYICONS             184
 #define IDI_SET_OVERLAYS                190
 #define IDD_SETTINGSPROGSDIFF           192

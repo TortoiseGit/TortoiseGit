@@ -36,7 +36,7 @@ public:
 	UINT GetIconID() {return IDI_ICONSET;}
 
 // Dialog Data
-	enum { IDD = IDD_OVERLAYICONS };
+	enum { IDD = IDD_SETOVERLAYICONS };
 
 protected:
 	virtual void	DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
