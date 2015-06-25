@@ -4010,6 +4010,9 @@ BEGIN
     IDS_PROC_REBASE_UNSELECTED_EDIT "E&dit unselected"
     IDS_DIFFWITHMERGE       "Show extra changes after merge"
     IDS_NOCHANGEAFTERMERGE  "No extra changes after merge"
+    IDS_WARN_DELETE_MANY    "Do you really want to remove the %d selected files/directories?"
+    IDS_WARN_DELETE_MANY_FROM_INDEX 
+                            "Do you really want to remove the %d selected files/directories from the index?"
 END
 
 STRINGTABLE
@@ -4648,6 +4651,13 @@ BEGIN
                             "Number of characters to show in the abbreviated hash part"
     IDS_SETTINGS_DESCRIBEALWAYSLONG_TT 
                             "Show long format even if a tag is exactly on that commit"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_WARN_DELETE_ONE_FROM_INDEX 
+                            "Do you really want to remove ""%s"" from the index?"
+    IDS_REMOVEBUTTON        "&Remove"
 END
 
 #endif    // English (U.S.) resources

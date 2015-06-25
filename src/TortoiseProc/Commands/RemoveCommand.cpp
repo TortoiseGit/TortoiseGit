@@ -121,18 +121,16 @@ bool RemoveCommand::Execute()
 	//int key=CMessageBox::Show(hwndExplorer, _T("File will removed from version control\r\n Do you want to keep local copy"), _T("TortoiseGit"), MB_ICONINFORMATION|MB_YESNOCANCEL);
 	//if(key == IDCANCEL)
 
-	CString format, keepLocal;
-	if(parser.HasKey(_T("keep")))
-		keepLocal = _T(" from the index");
+	CString format;
+	BOOL keepLocal = parser.HasKey(_T("keep"));
 	if (pathList.GetCount() > 1)
-		format.Format(_T("Do you really want to remove the %d selected files/directories%s?"), pathList.GetCount(), keepLocal);
+		format.Format(keepLocal ? IDS_WARN_DELETE_MANY_FROM_INDEX : IDS_WARN_DELETE_MANY, pathList.GetCount());
 	else
-		format.Format(_T("Do you really want to remove \"%s\"%s?"), pathList[0].GetGitPathString(), keepLocal);
-	if (CMessageBox::Show(hwndExplorer, format, _T("TortoiseGit"), 2, IDI_QUESTION, _T("&Remove"), _T("&Abort")) == 2) {
+		format.Format(keepLocal ? IDS_WARN_DELETE_ONE_FROM_INDEX : IDS_WARN_REMOVE, pathList[0].GetGitPathString());
+	if (CMessageBox::Show(hwndExplorer, format, _T("TortoiseGit"), 2, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_REMOVEBUTTON)), CString(MAKEINTRESOURCE(IDS_MSGBOX_ABORT))) == 2)
 		return false;
-	}
 
-	if(parser.HasKey(_T("keep")))
+	if (keepLocal)
 	{
 		format= _T("git.exe rm -r -f --cached -- \"%s\"");
 	}

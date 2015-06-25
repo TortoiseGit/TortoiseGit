@@ -1064,7 +1064,7 @@ msgstr ""
 msgid "&Remote:"
 msgstr ""
 
-#. Resource IDs: (1100, 1385, 16646)
+#. Resource IDs: (1100, 1385, 1569, 16646)
 msgid "&Remove"
 msgstr ""
 
@@ -3849,9 +3849,24 @@ msgstr ""
 msgid "Do you really want to permanently delete the %d selected refs? It can <ct=0x0000FF><b>NOT</b></ct> be recovered!"
 msgstr ""
 
+#. Resource IDs: (1568)
+#, c-format
+msgid "Do you really want to remove \"%s\" from the index?"
+msgstr ""
+
 #. Resource IDs: (1128)
 #, c-format
 msgid "Do you really want to remove \"%s\"?"
+msgstr ""
+
+#. Resource IDs: (1567)
+#, c-format
+msgid "Do you really want to remove the %d selected files/directories from the index?"
+msgstr ""
+
+#. Resource IDs: (1566)
+#, c-format
+msgid "Do you really want to remove the %d selected files/directories?"
 msgstr ""
 
 #. Resource IDs: (1089)

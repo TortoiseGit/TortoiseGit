@@ -1238,10 +1238,14 @@
 #define IDS_NOCHANGEAFTERMERGE          1565
 #define IDC_REBASE_DUMY_TAB             1566
 #define IDC_GIT_USERNAME                1566
+#define IDS_WARN_DELETE_MANY            1566
 #define IDC_CHECK_GLOBAL                1567
+#define IDS_WARN_DELETE_MANY_FROM_INDEX 1567
 #define IDC_EDIT_URL                    1568
+#define IDS_WARN_DELETE_ONE_FROM_INDEX  1568
 #define IDC_EDIT_PUTTY_KEY              1569
 #define IDC_BUGTRAQLOGREGEX1            1569
+#define IDS_REMOVEBUTTON                1569
 #define IDC_CHECK_ISAUTOLOADPUTTYKEY    1570
 #define IDC_BUGTRAQLOGREGEX2            1570
 #define IDC_PUTTYKEYFILE                1571
