@@ -2302,7 +2302,7 @@ bool CAppUtils::SendPatchMail(const CString& cmd, const CString& formatpatchoutp
 	{
 		CString one=log.Tokenize(_T("\n"),start);
 		one=one.Trim();
-		if(one.IsEmpty() || one.Find(_T("Success")) == 0)
+		if (one.IsEmpty() || one.Find(CString(MAKEINTRESOURCE(IDS_SUCCESS))) == 0)
 			continue;
 		one.Replace(_T('/'),_T('\\'));
 		CTGitPath path;
