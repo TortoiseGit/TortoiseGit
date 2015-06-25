@@ -2837,7 +2837,7 @@ bool CAppUtils::RequestPull(const CString& endrevision, const CString& repositor
 
 		if (sysProgressDlg.HasUserCancelled())
 		{
-			CMessageBox::Show(NULL, IDS_SVN_USERCANCELLED, IDS_APPNAME, MB_OK);
+			CMessageBox::Show(NULL, IDS_USERCANCELLED, IDS_APPNAME, MB_OK);
 			::DeleteFile(tempFileName);
 			return false;
 		}

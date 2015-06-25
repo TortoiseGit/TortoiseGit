@@ -480,7 +480,7 @@
 #define IDS_PROGS_EXTCOL                1178
 #define IDS_PROGS_TOOLCOL               1179
 #define IDS_LOG_FILE                    1180
-#define IDS_SVN_USERCANCELLED           1181
+#define IDS_USERCANCELLED               1181
 #define IDC_AUTOCLOSECOMBO              1181
 #define IDS_LOG_SIZE                    1182
 #define IDS_ERR_INVALIDPATH             1183

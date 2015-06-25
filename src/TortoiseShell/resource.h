@@ -207,7 +207,6 @@
 #define IDC_LAST_DATE                   1010
 #define IDC_SHOWLOG                     1016
 #define IDC_SHOWSETTINGS                1017
-#define IDS_git_USERCANCELLED           1181
 #define IDI_REPOBROWSE                  5145
 #define IDI_BLAME                       5146
 #define IDI_PATCH                       5147

@@ -3188,7 +3188,7 @@ BEGIN
     IDS_PROGS_EXTCOL        "Extension"
     IDS_PROGS_TOOLCOL       "Program"
     IDS_LOG_FILE            "File"
-    IDS_SVN_USERCANCELLED   "User cancelled"
+    IDS_USERCANCELLED       "User cancelled"
     IDS_LOG_SIZE            "Size"
     IDS_ERR_INVALIDPATH     "The parameters '/path' and '/pathfile' are mutually exclusive.\nYou must only specify one of them."
 END

@@ -113,7 +113,7 @@ bool DropMoveCommand::Execute()
 			}
 			else
 			{
-				CMessageBox::Show(hwndExplorer, IDS_git_USERCANCELLED, IDS_APPNAME, MB_ICONERROR);
+				CMessageBox::Show(hwndExplorer, IDS_USERCANCELLED, IDS_APPNAME, MB_ICONERROR);
 				return FALSE;		//get out of here
 			}
 		}
@@ -128,7 +128,7 @@ bool DropMoveCommand::Execute()
 		}
 		if ((progress.IsValid())&&(progress.HasUserCancelled()))
 		{
-			CMessageBox::Show(hwndExplorer, IDS_SVN_USERCANCELLED, IDS_APPNAME, MB_ICONINFORMATION);
+			CMessageBox::Show(hwndExplorer, IDS_USERCANCELLED, IDS_APPNAME, MB_ICONINFORMATION);
 			return FALSE;
 		}
 	}

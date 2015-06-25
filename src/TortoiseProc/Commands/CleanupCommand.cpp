@@ -125,7 +125,7 @@ static bool GetFilesToCleanUp(CTGitPathList& delList, const CString& baseCmd, CG
 
 	if (sysProgressDlg.HasUserCancelled())
 	{
-		CMessageBox::Show(nullptr, IDS_SVN_USERCANCELLED, IDS_APPNAME, MB_OK);
+		CMessageBox::Show(nullptr, IDS_USERCANCELLED, IDS_APPNAME, MB_OK);
 		return false;
 	}
 
@@ -146,7 +146,7 @@ static bool GetFilesToCleanUp(CTGitPathList& delList, const CString& baseCmd, CG
 
 	if (sysProgressDlg.HasUserCancelled())
 	{
-		CMessageBox::Show(nullptr, IDS_SVN_USERCANCELLED, IDS_APPNAME, MB_OK);
+		CMessageBox::Show(nullptr, IDS_USERCANCELLED, IDS_APPNAME, MB_OK);
 		return false;
 	}
 

@@ -383,7 +383,7 @@ void CGitProgressList::ReportGitError()
 
 void CGitProgressList::ReportUserCanceled()
 {
-	ReportError(CString(MAKEINTRESOURCE(IDS_SVN_USERCANCELLED)));
+	ReportError(CString(MAKEINTRESOURCE(IDS_USERCANCELLED)));
 }
 
 void CGitProgressList::ReportError(const CString& sError)

@@ -625,7 +625,7 @@ void CProgressDlg::WriteLog() const
 		if (m_bAbort)
 		{
 			CString canceled;
-			canceled.LoadString(IDS_SVN_USERCANCELLED);
+			canceled.LoadString(IDS_USERCANCELLED);
 			logfile.AddLine(canceled);
 		}
 		logfile.Close();
