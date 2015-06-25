@@ -5,7 +5,6 @@
 #define IDS_VERSION                     102
 #define IDS_APP_TITLE                   103
 #define IDS_COMMANDLINEHELP             104
-#define IDC_POINTER                     104
 #define IDC_PANCUR                      104
 #define IDM_EXIT                        105
 #define IDS_OPENIMAGEFILE               105
@@ -35,7 +34,6 @@
 #define IDI_VERTICAL                    144
 #define IDI_LINK                        145
 #define IDI_ALPHATOGGLE                 147
-#define IDI_UNDO                        148
 #define IDI_FITWIDTHS                   149
 #define IDI_BLEND                       152
 #define IDD_ABOUT                       153

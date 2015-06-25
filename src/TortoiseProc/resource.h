@@ -7,15 +7,11 @@
 #define IDD_SETTINGSHOOKS               103
 #define IDD_SETTINGSOVERLAY             106
 #define IDD_SETTINGSSAVEDDATA           108
-#define IDI_COMMIT                      123
-#define IDI_REVERT                      125
 #define IDD_ABOUT                       129
 #define IDD_LOGMESSAGE                  130
 #define IDD_PROMPT                      131
-#define IDD_CHECKOUT                    133
 #define IDD_SVNPROGRESS                 134
 #define IDD_COMMITDLG                   135
-#define IDI_DIFF                        135
 #define IDD_SETTINGSMAIN                143
 #define IDR_ANIMATION                   148
 #define IDR_MOVEANI                     149
@@ -51,14 +47,10 @@
 #define IDD_SETTINGSDIALOGS2            197
 #define IDI_DIALOGS                     198
 #define IDD_DIFFFILES                   199
-#define IDR_HTML_CLONEDLG               200
-#define IDB_CANCELHIGHLIGHT             201
-#define IDB_BITMAP1                     203
 #define IDD_RESOLVE                     207
 #define IDI_WARNING_GENERAL             210
 #define IDD_HISTORYDLG                  211
 #define IDR_CLEANUPANI                  212
-#define IDD_SETTINGSCOLORS              212
 #define IDD_SETTINGSCOLORS_2            212
 #define IDI_ACTIONADDED                 213
 #define IDI_ACTIONDELETED               214
@@ -101,8 +93,6 @@
 #define IDI_MERGE_BKG                   273
 #define IDI_RENAME_BKG                  274
 #define IDI_SWITCH_BKG                  275
-#define IDD_PROPPAGE_LARGE              278
-#define IDD_DIALOG1                     279
 #define IDD_SETTINGSBUGTRAQ             283
 #define IDI_BUGTRAQ                     284
 #define IDD_SETTINGSBUGTRAQADV          284
@@ -135,7 +125,6 @@
 #define IDD_SETTINGSMTP                 321
 #define IDD_DIALOG_BROWSE_REFS          322
 #define IDD_ADD_REMOTE                  323
-#define IDD_DIALOG2                     324
 #define IDR_ACC_COMMITDLG               325
 #define IDD_SYNC                        326
 #define IDI_SHOWBRANCHES                326
@@ -147,7 +136,6 @@
 #define IDI_ACTIONFETCHING              332
 #define IDD_SETTINGSPROGSALTERNATIVEEDITOR 333
 #define IDD_REQUESTPULL                 334
-#define IDB_BITMAP2                     336
 #define IDB_BITMAP_REFTYPE              336
 #define IDI_IMPORTPATHCES_BKG           337
 #define IDD_SETTINGSOVERLAYHANDLERS     338
@@ -205,7 +193,6 @@
 #define IDS_B_T_INVALID                 1021
 #define IDC_EXTMERGEBROWSE              1022
 #define IDS_B_T_LOCALEMPTY              1022
-#define IDC_CHANGEDDIRS                 1023
 #define IDC_ENABLE                      1023
 #define IDC_SAVECHECK                   1023
 #define IDS_B_T_BOTHEMPTY               1023
@@ -232,7 +219,6 @@
 #define IDC_EXPORTFILE_BROWSE           1036
 #define IDC_INCLUDEPATHS                1036
 #define IDS_LOG                         1036
-#define IDC_REPOS_TREE                  1037
 #define IDS_PROC_APPLYPATCH_GITAMACTIVE 1037
 #define IDC_SERVERPORT                  1038
 #define IDS_SUCCESS                     1038
@@ -263,7 +249,6 @@
 #define IDS_PROC_PULL_DIFFS             1050
 #define IDC_CDROM                       1051
 #define IDS_PROC_PULL_LOG               1051
-#define IDC_HINTLABEL                   1052
 #define IDS_PROGRS_TITLE_PULL           1052
 #define IDS_PROGRS_TITLE_FETCH          1053
 #define IDC_VERSIONABOUT                1054
@@ -272,7 +257,6 @@
 #define IDS_PROGS_TITLE_CHERRYPICK      1056
 #define IDS_PROC_REVISIONFILES          1057
 #define IDS_PROC_NOTHINGTOREBASE        1058
-#define IDC_CLEARAUTH                   1059
 #define IDS_PROC_NOCLEAN                1059
 #define IDS_PROC_NOHEAD                 1060
 #define IDC_UNKNOWN                     1061
@@ -292,14 +276,12 @@
 #define IDC_SSHBROWSE                   1069
 #define IDS_CONTINUEBUTTON              1069
 #define IDS_COMMITBUTTON                1070
-#define IDC_DEFAULTLOG                  1071
 #define IDS_FINISHBUTTON                1071
 #define IDC_RELATIVETIMES               1072
 #define IDS_PROC_STARTREBASEBUTTON      1072
 #define IDC_RAM                         1073
 #define IDC_CHECKNEWERVERSION           1073
 #define IDC_SHOWUNVERSIONED             1073
-#define IDC_TOPOORDER                   1073
 #define IDS_PROC_STARTREBASEFFBUTTON    1073
 #define IDC_RIGHTSIDEBRANCHESTAGS       1073
 #define IDC_EXPORTFILE_LABEL            1074
@@ -320,7 +302,6 @@
 #define IDS_PROC_COMMIT_NOADDSIGNOFFBUTTON 1080
 #define IDC_SSHGROUP                    1081
 #define IDS_PROC_COMMIT_NOSIGNOFFLINE   1081
-#define IDC_MISCGROUP                   1082
 #define IDS_PROC_COMMIT_PREPARECOMMIT   1082
 #define IDC_COMMITGROUP                 1083
 #define IDS_PROC_COMMIT_UPDATEINDEX     1083
@@ -331,7 +312,6 @@
 #define IDC_FONTSIZES                   1086
 #define IDS_PROC_COMMIT_RESTOREFILES_RESTORE 1086
 #define IDS_PROC_COMMIT_RESTOREFILES_KEEP 1087
-#define IDC_COMMITFILETIMES             1088
 #define IDC_ONLYEXPLORER                1088
 #define IDC_MERGEACTIVE_TT              1088
 #define IDC_DIFFVIEWERBROWSE            1089
@@ -396,14 +376,11 @@
 #define IDS_PROC_GITCONFIG_REMOTEEMPTY  1121
 #define IDS_PROC_GITCONFIG_URLEMPTY     1122
 #define IDS_PROC_GITCONFIG_OVERWRITEREMOTE 1123
-#define IDC_OLDLOGS                     1124
 #define IDC_ICONSETCOMBO                1124
 #define IDS_PROC_GITCONFIG_SAVEREMOTE   1124
-#define IDC_CHIST                       1125
 #define IDS_SAVEBUTTON                  1125
 #define IDC_KEEPLISTS                   1126
 #define IDC_SHOWEXCLUDEDASNORMAL        1126
-#define IDC_IGNOREEOL                   1126
 #define IDC_SORTBYCOMMITCOUNT           1126
 #define IDS_DISCARDBUTTON               1126
 #define IDC_DIFFBYDOUBLECLICK           1127
@@ -418,7 +395,6 @@
 #define IDC_CHECK_ALL                   1131
 #define IDC_STATBUTTON                  1132
 #define IDC_PATCH_TO_CLIPBOARD          1132
-#define IDC_SELECTOVERLAYSET            1132
 #define IDC_LOG                         1132
 #define IDS_PROC_CLONE_WEB              1132
 #define IDC_GRAPHCOMBO                  1133
@@ -489,7 +465,6 @@
 #define IDC_NUMFILECHANGESVALUE         1167
 #define IDS_SVNACTION_RESOLVE           1168
 #define IDS_SVNACTION_UPDATE            1169
-#define IDC_SHOWFOLDERSTATUS            1169
 #define IDS_SVNACTION_COMPLETED         1170
 #define IDC_ICONSETLABEL                1170
 #define IDS_SVNACTION_EXTERNAL          1171
@@ -525,7 +500,6 @@
 #define IDC_SEARCHEDIT                  1194
 #define IDS_PROC_SYNC_PUSH_UNKNOWNBRANCH 1194
 #define IDS_PROC_SYNC_INCOMMITS         1195
-#define IDC_FILTERICON                  1196
 #define IDS_PROC_SYNC_INCHANGELIST      1196
 #define IDS_PROC_SYNC_OUTCOMMITS        1197
 #define IDC_DATETO                      1198
@@ -555,11 +529,9 @@
 #define IDC_CHECKNEWERBUTTON            1215
 #define IDS_PROC_SYNC_SUBKODULEINIT     1215
 #define IDS_LOG_POPUP_COPY              1216
-#define IDC_CHECKNEWERBUTTON2           1216
 #define IDC_MSYSGIT_CHECK               1216
 #define IDS_COMMITDLG_FILE              1217
 #define IDS_COMMITDLG_STATUS            1218
-#define IDC_FILTERCANCEL                1218
 #define IDS_COMMITDLG_ASKADD            1219
 #define IDS_COMMITDLG_NOTHINGTOCOMMIT   1220
 #define IDC_REALM                       1220
@@ -568,14 +540,10 @@
 #define IDS_PROGRS_ACTION               1222
 #define IDC_AUTOCOMPLETIONTIMEOUTLABEL  1222
 #define IDS_PROGRS_PATH                 1223
-#define IDC_RECURSIVECHECK              1223
 #define IDS_PROGRS_TITLEFIN             1224
-#define IDC_SPELL                       1224
 #define IDS_PROGRS_TITLE_CHECKOUT       1225
 #define IDS_PROGRS_TITLE_IMPORT         1226
-#define IDC_WCPATHLABEL                 1226
 #define IDS_PROGRS_TITLE_UPDATE         1227
-#define IDC_REPOCHECK                   1227
 #define IDS_PROC_SYNC_SUBKODULESYNC     1227
 #define IDS_PROGRS_TITLE_COMMIT         1228
 #define IDS_PROGRS_TITLE_ADD            1229
@@ -593,7 +561,6 @@
 #define IDS_STATUSLIST_GROUP_IGNOREDFILES 1239
 #define IDC_MERGEACTIVE                 1239
 #define IDS_PROGRS_REVERTMARKERS        1240
-#define IDC_ENABLEACCELERATORS          1240
 #define IDS_SETTINGS_SELECTDIFF         1241
 #define IDC_MESSAGEGROUP                1241
 #define IDS_SETTINGS_SELECTDIFFVIEWER   1242
@@ -609,7 +576,6 @@
 #define IDS_SETTINGS_CHANGEDDIRS_TT     1247
 #define IDS_PROC_BROWSEREFS_FETCHFROM   1247
 #define IDS_MSYSGIT_PATH_TT             1248
-#define IDS_SETTINGS_FOLDERSTATUS_TT    1249
 #define IDC_CONFLICTCOLOR               1249
 #define IDS_PROC_BROWSEREFS_COMPAREREFS 1249
 #define IDS_SETTINGS_EXTMERGE_TT        1250
@@ -630,16 +596,13 @@
 #define IDS_PROC_REPOCREATEERR          1258
 #define IDS_PROC_EXPORT_1               1259
 #define IDS_PROC_EXPORT_2               1260
-#define IDC_UNVERSIONEDRECURSE          1260
 #define IDS_PROC_EXPORT_3               1261
 #define IDC_SKIPPER                     1261
 #define IDS_PROC_EXPORT_4               1262
 #define IDC_SKIPPERLABEL                1262
 #define IDS_PROC_COPY_SUCCESS           1263
-#define IDC_STACKED                     1263
 #define IDS_PROC_SETTINGS_TITLE         1264
 #define IDC_SHOWIGNORED                 1264
-#define IDC_SHOWUSERPROPS               1265
 #define IDC_AUTHORSCASESENSITIVE        1265
 #define IDS_SETTINGS_ALTERNATIVEEDITOR_TT 1265
 #define IDC_SHOWLOCALCHANGESIGNORED     1265
@@ -709,7 +672,6 @@
 #define IDS_ERR_COPYITSELF              1303
 #define IDC_SECONDURL                   1303
 #define IDS_ERR_INVALIDREV              1304
-#define IDC_DIFFSTATIC2                 1304
 #define IDS_SUBMODULE_EMPTYDIFF         1305
 #define IDS_ERR_NOTHINGTOADD            1306
 #define IDS_ERR_ERROR                   1307
@@ -727,7 +689,6 @@
 #define IDC_FLOPPY                      1315
 #define IDS_CHECKUPDATE_DESTFOLDER      1315
 #define IDS_ERR_MERGEIDENTICALREVISIONS 1316
-#define IDC_REOPENCOMMIT                1316
 #define IDC_MAXHISTORYLABEL             1317
 #define IDS_ERR_NOHOOKTYPESPECIFIED     1317
 #define IDS_ERR_NOHOOKPATHSPECIFIED     1318
@@ -767,9 +728,7 @@
 #define IDS_PROC_OLDMSYSGIT             1338
 #define IDS_PROC_NOTSHOWAGAINIGNORE     1339
 #define IDS_PROC_EDITLOCALGITCONFIG     1340
-#define IDC_EOLCOMBO                    1341
 #define IDS_PROC_EDITGLOBALGITCONFIG    1341
-#define IDC_EOLLABEL                    1342
 #define IDS_PROC_STASHPOPSUCCESS        1342
 #define IDS_PROC_STASHAPPLYSUCCESS      1343
 #define IDS_PROC_STASHPOPFAILED         1344
@@ -795,11 +754,8 @@
 #define IDC_GROUPBOX                    1359
 #define IDS_SETTINGS_ABBREVIATERENAMINGS_TT 1359
 #define IDS_PROC_PUSHFETCH_ALLREMOTES   1360
-#define IDC_CHECKOUTPATH                1361
 #define IDS_PROC_SYNC_NOFASTFORWARD     1361
-#define IDC_BROWSECHECKOUTPATH          1362
 #define IDS_PUSHDLG_PUSHBRANCH_TT       1362
-#define IDC_CHECKOUTURL                 1363
 #define IDS_PUSHDLG_PUSHREMOTE_TT       1363
 #define IDS_STATUSLIST_COLLASTMODIFIED  1364
 #define IDS_STATUSLIST_COLSIZE          1365
@@ -813,7 +769,6 @@
 #define IDC_REPOTREE                    1371
 #define IDS_STASHBUTTON                 1371
 #define IDC_REPOLIST                    1372
-#define IDC_LIST1                       1372
 #define IDC_BUGTRAQLIST                 1372
 #define IDC_LIST_PATCH                  1372
 #define IDC_COMMIT_LIST                 1372
@@ -861,7 +816,6 @@
 #define IDC_BUTTON_DIR                  1384
 #define IDC_BUTTON_DOWN                 1384
 #define IDC_PUTTYKEYFILE_BROWSE         1384
-#define IDC_BUTTON_SHOW2                1384
 #define IDC_BUTTON_UP2                  1384
 #define IDC_BUTTON_STASH                1384
 #define IDC_EDITSYSTEMGITCONFIG         1384
@@ -880,9 +834,7 @@
 #define IDS_CARE_SUBMODULE_CHANGES      1390
 #define IDS_STATUSLIST_WARN_MAXDIFF     1391
 #define IDS_PROC_MARK_ASSUMEVALID       1392
-#define IDC_REVISIONGROUP               1393
 #define IDS_PROC_MARK_SKIPWORKTREE      1393
-#define IDC_REPOLABEL                   1394
 #define IDS_SHOWLOG_OF                  1394
 #define IDS_LOG_CHRONOLOGICALREVERSEDORDER 1395
 #define IDS_TORTOISEGITDEFAULT          1396
@@ -930,7 +882,6 @@
 #define IDS_SMTP_DIRECTLY               1428
 #define IDS_PROC_GITCONFIG_ASKTAGOPT    1429
 #define IDS_COMMITDLG_POPUP_PICKCOMMITHASH 1430
-#define IDC_DEFAULTOFFLINE              1431
 #define IDS_COMMITDLG_POPUP_PICKCOMMITMESSAGE 1431
 #define IDC_SHOWIGNOREDOVERLAY          1432
 #define IDC_USERECYCLEBIN               1432
@@ -951,7 +902,6 @@
 #define IDS_CONFIG_GLOBAL_TT            1446
 #define IDS_CONFIG_PROJECT_TT           1447
 #define IDS_CONFIG_LOCAL_TT             1448
-#define IDS_ASK_DELETE_EMPTY            1449
 #define IDS_COMPAREREV_NODIFF           1449
 #define IDS_WARNUSERSAFEDIFFERENT       1450
 #define IDS_WALKBEHAVIOUR_FIRSTPARENT   1451
@@ -972,7 +922,6 @@
 #define IDS_ICONFILEFILTER              1465
 #define IDC_LINK                        1466
 #define IDS_PROC_OVERWRITEEXPORT_CANCEL 1466
-#define IDC_LINK_CHANGE_LOG             1467
 #define IDS_PROC_OVERWRITEEXPORT_OVERWRITE 1467
 #define IDS_PROC_OVERWRITEEXPORT_KEEP   1468
 #define IDC_BUGTRAQPARAMETERS           1469
@@ -983,7 +932,6 @@
 #define IDC_EDIT_REMOTE                 1470
 #define IDC_SMTP_PORT                   1470
 #define IDC_EDIT_SVN_FROM               1470
-#define IDC_VER2EDIT                    1470
 #define IDC_REV2EDIT                    1470
 #define IDC_NEWBRANCH                   1470
 #define IDS_RENAME_INFO                 1470
@@ -1006,7 +954,6 @@
 #define IDS_PROC_LOG_SELECT_LOCAL_BRANCHES 1478
 #define IDC_BROWSEREFS_STATIC_FILTER    1479
 #define IDS_STATUSLIST_GROUP_IGNORELOCALCHANGES 1479
-#define IDC_SHOWEXTERNALS               1480
 #define IDC_FORCE                       1480
 #define IDS_PROC_UNSET_IGNORELOCALCHANGES 1480
 #define IDC_UNVERSIONEDITEMS            1481
@@ -1017,7 +964,6 @@
 #define IDC_SIGN_OFF                    1482
 #define IDC_SIGNOFF                     1482
 #define IDC_CHECK_NOCOMMIT              1482
-#define IDC_SENDMAIL_MAPI               1482
 #define IDC_PROC_PUSH_SET_PUSHREMOTE    1482
 #define IDS_LOG_FILTER_TOGGLE           1482
 #define IDC_BUTTON_BROWSE               1483
@@ -1026,8 +972,6 @@
 #define IDC_BUTTON_MANAGE               1483
 #define IDC_KEEP_CR                     1483
 #define IDS_WARN_GITINIT_SPECIALFOLDER  1483
-#define IDC_CLONE_URL                   1484
-#define IDC_BUTTON_BROWSE_SOURCE_BRANCH2 1484
 #define IDC_BUTTON_BROWSE_DEST_BRANCH   1484
 #define IDC_CHECK_FFONLY                1484
 #define IDS_SAMPLEBUGTRAQTESTMSG        1484
@@ -1043,24 +987,19 @@
 #define IDS_SELECTFILE                  1487
 #define IDC_COMBOBOX_RECURSE_SUBMODULES 1488
 #define IDS_SETTINGS_ENABLEDRAGCONTEXTMENU_TT 1488
-#define IDC_COMBOBOXEX1                 1489
 #define IDC_REMOTE_COMBO                1489
 #define IDC_BRANCH_REMOTE               1489
 #define IDC_COMBOBOXEX_BRANCH           1489
 #define IDC_COMBOBOXEX_FROM             1489
-#define IDS_IGNORESPACEATEOL            1489
 #define IDS_DIFFOPTION_IGNORESPACEATEOL 1489
 #define IDC_REMOTE_RD                   1490
 #define IDC_URL                         1490
 #define IDC_COMBOBOXEX_TAGS             1490
 #define IDC_COMBOBOXEX_TO               1490
-#define IDS_IGNORESPACECHANGE           1490
 #define IDS_DIFFOPTION_IGNORESPACECHANGE 1490
 #define IDC_COMBOBOXEX_VERSION          1491
-#define IDS_IGNOREALLSPACE              1491
 #define IDS_DIFFOPTION_IGNOREALLSPACE   1491
 #define IDC_OTHER_RD                    1492
-#define IDS_IGNORBLANKLINES             1492
 #define IDS_DIFFOPTION_IGNORBLANKLINES  1492
 #define IDC_OTHER                       1493
 #define IDC_BRANCH_SOURCE               1493
@@ -1173,7 +1112,6 @@
 #define IDC_BUTTON_FROM                 1541
 #define IDS_ENCRYPT_SSL                 1541
 #define IDC_CURRENT_BRANCH              1542
-#define IDC_BUTTON_FROM2                1542
 #define IDC_BUTTON_REF                  1542
 #define IDC_REGEDT                      1542
 #define IDS_COMMIT_MESSAGEONLY_TT       1542
@@ -1208,18 +1146,15 @@
 #define IDS_PROC_NEWNAMECOPY            1552
 #define IDC_RADIO_RESET_HARD            1552
 #define IDS_PROC_NEWNAMEMOVE            1553
-#define IDC_RESET_BRANCH_NAME           1553
 #define IDS_PROC_NEWNAMELABEL           1554
 #define IDC_GROUP_RESET_TYPE            1554
 #define IDC_COMMIT_AMEND                1555
 #define IDS_COMMIT_AS_COMMIT_DATE_TT    1555
-#define IDC_SOUNDS_TEXT                 1556
 #define IDC_COMMIT_AMENDDIFF            1556
 #define IDS_REBASE_ADDANOTHERCOMMIT     1556
 #define IDC_REBASE_PROGRESS             1557
 #define IDC_COMMIT_SETDATETIME          1557
 #define IDS_PROC_LOG_ONLYONCE           1557
-#define IDC_REBASE_SHEET                1558
 #define IDC_COMMIT_SETAUTHOR            1558
 #define IDS_PROC_BROWSEREFS_DROPTRACKEDBRANCH 1558
 #define IDC_SPLITALLOPTIONS             1559
@@ -1238,14 +1173,12 @@
 #define IDC_REBASE_DUMY_TAB             1566
 #define IDC_GIT_USERNAME                1566
 #define IDS_WARN_DELETE_MANY            1566
-#define IDC_CHECK_GLOBAL                1567
 #define IDS_WARN_DELETE_MANY_FROM_INDEX 1567
 #define IDC_EDIT_URL                    1568
 #define IDS_WARN_DELETE_ONE_FROM_INDEX  1568
 #define IDC_EDIT_PUTTY_KEY              1569
 #define IDC_BUGTRAQLOGREGEX1            1569
 #define IDS_REMOVEBUTTON                1569
-#define IDC_CHECK_ISAUTOLOADPUTTYKEY    1570
 #define IDC_BUGTRAQLOGREGEX2            1570
 #define IDC_PUTTYKEYFILE                1571
 #define IDC_GROUP_CLONE                 1572
@@ -1285,8 +1218,6 @@
 #define IDC_TREE_REF                    1588
 #define IDD_SUBMODULE_ADD               1589
 #define IDC_EDIT_NAME                   1589
-#define IDC_CHECK_FORSE                 1590
-#define IDC_STATIC_BRANCH               1592
 #define IDC_BUGTRAQ_WARNINGIFNOISSUE    1593
 #define IDC_BUGTRAQ_APPEND              1594
 #define IDC_WARN_NO_SIGNED_OFF_BY       1594
@@ -1330,7 +1261,6 @@
 #define IDC_CHECK_AUTOCRLF              1631
 #define IDC_COMBO_SAFECRLF              1632
 #define IDC_CHECK_QUOTEPATH             1633
-#define IDC_CHECK_AUTORETRY             1634
 #define IDC_STATIC_MERGE_MESSAGE        1635
 #define IDC_PATCH                       1636
 #define IDC_VIEW_PATCH                  1637
@@ -1351,7 +1281,6 @@
 #define IDC_CHECK_BARE                  1653
 #define IDC_INIT_REPO_DESC              1654
 #define IDC_CHECK_RECURSIVE             1654
-#define IDC_CHECK_IGNORE_WHITE_SPACE    1655
 #define IDC_CHECK_3WAY                  1656
 #define IDC_CHECK_IGNORE_SPACE          1657
 #define IDC_AM_SPLIT                    1658
@@ -1438,7 +1367,6 @@
 #define IDC_REV1BTN1                    1729
 #define IDC_CHECK_NORECYCLEBIN          1730
 #define IDC_CHECK_DRYRUN                1731
-#define IDC_LOG_SHOWTAGS                1732
 #define IDC_SYMBOLIZEREFNAMES           1733
 #define IDC_CHECK_SUBMODULE_NOFETCH     1734
 #define IDC_CHECK_SUBMODULE_MERGE       1735
@@ -1469,7 +1397,6 @@
 #define IDC_SMTPDELIVERYCOMBO           1754
 #define IDS_DLGTITLE_ADV_MERGE          1755
 #define IDC_EDITTGITCONFIG              1755
-#define IDC_LABEL_SMTPSERVER            1755
 #define IDC_SMTPENCRYPTIONCOMBO         1756
 #define IDS_REVGRAPH_POPUP_COMPAREREVS  1757
 #define IDC_STATIC_SMTPSERVER           1757
@@ -1490,7 +1417,6 @@
 #define IDC_CONFIRMKILLPROCESS          1768
 #define IDC_SYNCDIALOGRANDOMPOS         1769
 #define IDC_RADIO_SETTINGS_EFFECTIVE    1770
-#define IDC_CONFIRMKILLPROCESS2         1770
 #define IDC_RADIO_SETTINGS_LOCAL        1771
 #define IDC_RADIO_SETTINGS_PROJECT      1772
 #define IDC_RADIO_SETTINGS_GLOBAL       1773
@@ -1590,7 +1516,6 @@
 #define IDS_INPUT_REMOVEONE             2014
 #define IDS_INPUT_REMOVEMORE            2015
 #define IDS_MENUREFRESH                 2150
-#define IDC_GROUP_DCOMMIT_TYPE          2151
 #define IDC_RADIO_SVN_COMMIT            2152
 #define IDC_RADIO_GIT_COMMIT            2153
 #define IDS_LOG_COMPAREWITHBASE         2200
@@ -1645,7 +1570,6 @@
 #define IDS_SETTINGS_ICONSETCHANGED     3108
 #define IDS_SETTINGS_READONLYNAME       3110
 #define IDS_SETTINGS_LOCKEDNAME         3111
-#define IDS_SETTINGS_OLDLOGAPIS_TT      3112
 #define IDS_SETTINGS_AUTOCOMPLETION_TT  3114
 #define IDS_SETTINGS_AUTOCOMPLETIONTIMEOUT_TT 3115
 #define IDS_SETTINGS_RECURSIVE_TT       3116
@@ -1661,7 +1585,6 @@
 #define IDS_SETTINGS_RESTARTSYSTEM      3131
 #define IDS_SETTINGS_UNVERSIONEDASMODIFIED_TT 3133
 #define IDS_SETTINGS_COMMITREOPEN_TT    3134
-#define IDS_SETTINGS_SORTNUMERICAL_TT   3137
 #define IDS_SETTINGS_SHOWEXCLUDEDASNORMAL_TT 3138
 #define IDS_SETTINGS_SAVEDDATA_REPOLOGHIST_TT 3139
 #define IDS_SETTINGS_SELECTFILESONCOMMIT_TT 3141
@@ -1707,7 +1630,6 @@
 #define IDS_STATUSLIST_CONTEXT_COPYEXT  3336
 #define IDS_STATUSLIST_CONTEXT_REMOVEFROMCS 3338
 #define IDS_STATUSLIST_CONTEXT_CREATECS 3339
-#define IDS_STATUSLIST_CONTEXT_ADDTOCS  3340
 #define IDS_STATUSLIST_CONTEXT_MOVETOCS 3340
 #define IDS_STATUSLIST_CONTEXT_ADD_RECURSIVE 3341
 #define IDS_STATUSLIST_NESTED           3402
@@ -1812,8 +1734,6 @@
 #define IDC_DEL_GROUP                   4570
 #define IDD_SETTINREMOTE                4570
 #define IDC_DELETE                      4571
-#define IDD_SETTINGEMAIL                4571
-#define IDD_SETTIN                      4571
 #define IDD_SETTINGSBUGTRAQ_CONFIG      4571
 #define IDC_LOCAL_STATUS                4572
 #define IDD_CLEAN                       4572
@@ -1832,11 +1752,7 @@
 #define IDD_REVGRAPHFILTER              4584
 #define IDC_FROMREV                     4585
 #define IDD_USER_PASSWD                 4585
-#define IDC_FROMSPIN                    4586
 #define IDC_TOREV                       4587
-#define IDC_TOSPIN                      4588
-#define IDC_PATHFILTER                  4589
-#define IDC_REMOVESUBTREE               4590
 #define IDD_SETTINGSCREDENTIAL          4591
 #define IDD_MERGEABORT                  4592
 #define IDD_SETTINGSDIALOGS3            4593
@@ -1847,11 +1763,8 @@
 #define IDC_COMBOBOXEX_BAD              5001
 #define IDC_LABEL2                      5002
 #define IDS_FILEDIFF_FILE               5100
-#define IDS_FILEDIFF_COMMENT            5101
 #define IDS_FILEDIFF_ACTION             5101
-#define IDS_FILEDIFF_COMMENTCOPY        5102
 #define IDS_FILEDIFF_WAIT               5102
-#define IDS_FILEDIFF_COMMENTRENAMED     5103
 #define IDS_FILEDIFF_FILTERCUE          5120
 #define IDS_FILEDIFF_POPBLAME           5150
 #define IDS_FILEDIFF_POPSAVELIST        5151
@@ -1874,7 +1787,6 @@
 #define IDS_HOOKTYPE_STARTCOMMIT        9100
 #define IDS_HOOKTYPE_PRECOMMIT          9101
 #define IDS_HOOKTYPE_POSTCOMMIT         9102
-#define IDS_TT_RECURSIVE                9290
 #define IDS_STATUSLIST_COLADD           9603
 #define IDS_STATUSLIST_COLDEL           9604
 #define IDS_B_T_NOTEMPTY                9619
@@ -1903,7 +1815,6 @@
 #define IDS_CLONE_DEPTH_TT              9651
 #define IDS_HOOKTYPE_PREPUSH            9652
 #define IDS_HOOKTYPE_POSTPUSH           9653
-#define IDS_STASH_POP                   9654
 #define IDS_DCOMMIT_STASH_POP           9654
 #define IDS_HASH                        9655
 #define IDS_REF                         9656
@@ -1911,7 +1822,6 @@
 #define IDS_MESSAGE                     9658
 #define IDS_TREE_DIFF                   9659
 #define IDS_AM_3WAY_TT                  9660
-#define IDS_AM_IGNORE_SPACE             9661
 #define IDS_AM_IGNORE_SPACE_TT          9661
 #define IDS_STATGRAPH_NUMBEROFUNIT      9662
 #define IDS_STATGRAPH_COMMITSBYUNIT     9663

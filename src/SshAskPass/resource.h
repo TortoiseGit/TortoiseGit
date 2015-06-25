@@ -2,12 +2,9 @@
 // Microsoft Visual C++ generated include file.
 // Used by SshAskPass.rc
 //
-#define IDC_MYICON                      2
-#define IDD_SSHASKPASS_DIALOG           102
 #define IDS_APP_TITLE                   103
 #define IDI_SSHASKPASS                  107
 #define IDC_SSHASKPASS                  109
-#define IDR_MAINFRAME                   128
 #define IDD_ASK_PASSWORD                129
 #define IDC_PASSWORD                    1000
 #define IDC_STATIC_TITLE                1001
