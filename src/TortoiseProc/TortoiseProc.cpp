@@ -43,6 +43,7 @@
 #include "HistoryCombo.h"
 #include "gitindex.h"
 #include <math.h>
+#include "SendMail.h"
 
 #define STRUCT_IOVEC_DEFINED
 
@@ -621,7 +622,7 @@ void CTortoiseProcApp::CheckUpgrade()
 	if (lVersion <= 0x01080401)
 	{
 		if (CRegStdDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\UseMAPI"), FALSE) == TRUE)
-			CRegStdDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\DeliveryType")) = 1;
+			CRegStdDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\DeliveryType")) = SEND_MAIL_MAPI;
 		CRegStdDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\UseMAPI")).removeValue();
 	}
 

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2013, 2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -153,7 +153,7 @@ void CSendMailDlg::OnBnClickedOk()
 {
 	this->UpdateData();
 
-	if (m_To.IsEmpty() && m_CC.IsEmpty() && CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\DeliveryType"), 1) != 1)
+	if (m_To.IsEmpty() && m_CC.IsEmpty() && CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\DeliveryType"), SEND_MAIL_MAPI) != SEND_MAIL_MAPI)
 	{
 		CMessageBox::Show(NULL,IDS_ERR_ADDRESS_NO_EMPTY,IDS_APPNAME,MB_OK|MB_ICONERROR);
 		return;

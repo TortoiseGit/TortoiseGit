@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009, 2013-2014 - TortoiseGit
+// Copyright (C) 2009, 2013-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -22,6 +22,7 @@
 #include "stdafx.h"
 #include "TortoiseProc.h"
 #include "SettingSMTP.h"
+#include "SendMail.h"
 #include "MailMsg.h"
 
 // CSettingSMTP dialog
@@ -30,7 +31,7 @@ IMPLEMENT_DYNAMIC(CSettingSMTP, ISettingsPropPage)
 
 CSettingSMTP::CSettingSMTP()
 	: ISettingsPropPage(CSettingSMTP::IDD)
-	, m_regDeliveryType(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\DeliveryType"), 0)
+	, m_regDeliveryType(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\DeliveryType"), SEND_MAIL_SMTP_DIRECT)
 	, m_regServer(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\Address"), _T(""))
 	, m_regPort(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\Port"), 25)
 	, m_regEncryption(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\Encryption"), 0)

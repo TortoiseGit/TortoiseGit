@@ -75,7 +75,7 @@ int CSendMail::SendMail(const CTGitPath &item, CGitProgressList * instance, CStr
 
 int CSendMail::SendMail(CString &FromName, CString &FromMail, CString &To, CString &CC, CString &subject, CString &body, CStringArray &attachments, CString *errortext)
 {
-	if (CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\DeliveryType"), 1) == 1)
+	if (CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\DeliveryType"), SEND_MAIL_MAPI) == SEND_MAIL_MAPI)
 	{
 		CMailMsg mapiSender;
 		BOOL bMAPIInit = mapiSender.MAPIInitialize();
@@ -112,7 +112,7 @@ int CSendMail::SendMail(CString &FromName, CString &FromMail, CString &To, CStri
 		sender.Format(_T("%s <%s>"), (LPCTSTR)FromName, (LPCTSTR)FromMail);
 
 		CHwSMTP mail;
-		if (CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\DeliveryType"), 2) == 2)
+		if (CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\DeliveryType"), SEND_MAIL_SMTP_CONFIGURED) == SEND_MAIL_SMTP_CONFIGURED)
 		{
 			CString recipients(To);
 			if (!CC.IsEmpty())
