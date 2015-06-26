@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2014 - TortoiseGit
+// Copyright (C) 2008-2015 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -43,6 +43,7 @@ CSetDialogs::CSetDialogs()
 	, m_DescribeStrategy(GIT_DESCRIBE_DEFAULT)
 	, m_DescribeAbbreviatedSize(GIT_DESCRIBE_DEFAULT_ABBREVIATED_SIZE)
 	, m_bDescribeAlwaysLong(FALSE)
+	, m_bFullCommitMessageOnLogLine(FALSE)
 {
 	m_regShortDateFormat = CRegDWORD(_T("Software\\TortoiseGit\\LogDateFormat"), TRUE);
 	m_regRelativeTimes = CRegDWORD(_T("Software\\TortoiseGit\\RelativeTimes"), FALSE);
@@ -61,6 +62,7 @@ CSetDialogs::CSetDialogs()
 	m_regDescribeStrategy = CRegDWORD(_T("Software\\TortoiseGit\\DescribeStrategy"), GIT_DESCRIBE_DEFAULT);
 	m_regDescribeAbbreviatedSize = CRegDWORD(_T("Software\\TortoiseGit\\DescribeAbbreviatedSize"), GIT_DESCRIBE_DEFAULT_ABBREVIATED_SIZE);
 	m_regDescribeAlwaysLong = CRegDWORD(_T("Software\\TortoiseGit\\DescribeAlwaysLong"), FALSE);
+	m_regFullCommitMessageOnLogLine = CRegDWORD(_T("Software\\TortoiseGit\\FullCommitMessageOnLogLine"), FALSE);
 }
 
 CSetDialogs::~CSetDialogs()
@@ -96,6 +98,7 @@ void CSetDialogs::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_DESCRIBESTRATEGY, m_cDescribeStrategy);
 	DDX_Text(pDX, IDC_DESCRIBEABBREVIATEDSIZE, m_DescribeAbbreviatedSize);
 	DDX_Check(pDX, IDC_DESCRIBEALWAYSLONG, m_bDescribeAlwaysLong);
+	DDX_Check(pDX, IDC_FULLCOMMITMESSAGEONLOGLINE, m_bFullCommitMessageOnLogLine);
 }
 
 BEGIN_MESSAGE_MAP(CSetDialogs, ISettingsPropPage)
@@ -116,6 +119,7 @@ BEGIN_MESSAGE_MAP(CSetDialogs, ISettingsPropPage)
 	ON_CBN_SELCHANGE(IDC_DESCRIBESTRATEGY, OnChange)
 	ON_EN_CHANGE(IDC_DESCRIBEABBREVIATEDSIZE, OnChange)
 	ON_BN_CLICKED(IDC_DESCRIBEALWAYSLONG, OnChange)
+	ON_BN_CLICKED(IDC_FULLCOMMITMESSAGEONLOGLINE, OnChange)
 END_MESSAGE_MAP()
 
 // CSetDialogs message handlers
@@ -137,6 +141,7 @@ BOOL CSetDialogs::OnInitDialog()
 	AdjustControlSize(IDC_RIGHTSIDEBRANCHESTAGS);
 	AdjustControlSize(IDC_SHOWDESCRIBE);
 	AdjustControlSize(IDC_DESCRIBEALWAYSLONG);
+	AdjustControlSize(IDC_FULLCOMMITMESSAGEONLOGLINE);
 
 	EnableToolTips();
 
@@ -157,6 +162,7 @@ BOOL CSetDialogs::OnInitDialog()
 	m_DescribeStrategy = m_regDescribeStrategy;
 	m_DescribeAbbreviatedSize = m_regDescribeAbbreviatedSize;
 	m_bDescribeAlwaysLong = m_regDescribeAlwaysLong;
+	m_bFullCommitMessageOnLogLine = m_regFullCommitMessageOnLogLine;
 
 	CString temp;
 
@@ -247,6 +253,7 @@ BOOL CSetDialogs::OnApply()
 	Store(m_DescribeStrategy, m_regDescribeStrategy);
 	Store(m_DescribeAbbreviatedSize, m_regDescribeAbbreviatedSize);
 	Store(m_bDescribeAlwaysLong, m_regDescribeAlwaysLong);
+	Store(m_bFullCommitMessageOnLogLine, m_regFullCommitMessageOnLogLine);
 
 	SetModified(FALSE);
 	return ISettingsPropPage::OnApply();

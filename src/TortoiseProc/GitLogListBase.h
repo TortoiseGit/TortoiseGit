@@ -624,6 +624,7 @@ protected:
 	GIT_LOG				m_DllGitLog;
 	CString				m_SingleRemote;
 	bool				m_bTagsBranchesOnRightSide;
+	bool				m_bFullCommitMessageOnLogLine;
 	bool				m_bSymbolizeRefNames;
 	bool				m_bIncludeBoundaryCommits;
 

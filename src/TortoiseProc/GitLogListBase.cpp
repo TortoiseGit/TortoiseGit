@@ -61,6 +61,7 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	, m_hasWC(true)
 	, m_bNoHightlightHead(FALSE)
 	, m_ShowRefMask(LOGLIST_SHOWALLREFS)
+	, m_bFullCommitMessageOnLogLine(false)
 {
 	// use the default GUI font, create a copy of it and
 	// change the copy to BOLD (leave the rest of the font
@@ -136,6 +137,7 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	m_bTagsBranchesOnRightSide = !!CRegDWORD(_T("Software\\TortoiseGit\\DrawTagsBranchesOnRightSide"), FALSE);
 	m_bSymbolizeRefNames = !!CRegDWORD(_T("Software\\TortoiseGit\\SymbolizeRefNames"), FALSE);
 	m_bIncludeBoundaryCommits = !!CRegDWORD(_T("Software\\TortoiseGit\\LogIncludeBoundaryCommits"), FALSE);
+	m_bFullCommitMessageOnLogLine = !!CRegDWORD(_T("Software\\TortoiseGit\\FullCommitMessageOnLogLine"), FALSE);
 
 	m_LineWidth = max(1, CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\Graph\\LogLineWidth"), 2));
 	m_NodeSize = max(1, CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\Graph\\LogNodeSize"), 10));
@@ -1571,7 +1573,7 @@ CString FindSVNRev(const CString& msg)
 
 CString CGitLogListBase::MessageDisplayStr(GitRev* pLogEntry)
 {
-	if (pLogEntry->GetBody().IsEmpty())
+	if (!m_bFullCommitMessageOnLogLine || pLogEntry->GetBody().IsEmpty())
 		return pLogEntry->GetSubject();
 
 	CString txt;
