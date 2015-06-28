@@ -621,7 +621,7 @@ void CCommitDlg::OnOK()
 		if (dirty)
 		{
 			CString message;
-			message.Format(CString(MAKEINTRESOURCE(IDS_COMMITDLG_SUBMODULEDIRTY)), (LPCTSTR)entry->GetGitPathString());
+			message.Format(IDS_COMMITDLG_SUBMODULEDIRTY, (LPCTSTR)entry->GetGitPathString());
 			int result = CMessageBox::Show(m_hWnd, message, _T("TortoiseGit"), 1, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_PROGRS_CMD_COMMIT)), CString(MAKEINTRESOURCE(IDS_MSGBOX_IGNORE)), CString(MAKEINTRESOURCE(IDS_MSGBOX_CANCEL)));
 			if (result == 1)
 			{

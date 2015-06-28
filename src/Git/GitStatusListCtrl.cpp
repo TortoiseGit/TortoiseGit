@@ -4071,7 +4071,7 @@ bool CGitStatusListCtrl::CheckMultipleDiffs()
 	if (selCount > max(3, (DWORD)CRegDWORD(_T("Software\\TortoiseGit\\NumDiffWarning"), 10)))
 	{
 		CString message;
-		message.Format(CString(MAKEINTRESOURCE(IDS_STATUSLIST_WARN_MAXDIFF)), selCount);
+		message.Format(IDS_STATUSLIST_WARN_MAXDIFF, selCount);
 		return ::MessageBox(GetSafeHwnd(), message, _T("TortoiseGit"), MB_YESNO | MB_ICONQUESTION) == IDYES;
 	}
 	return true;

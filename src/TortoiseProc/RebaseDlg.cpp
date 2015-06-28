@@ -513,9 +513,8 @@ void CRebaseDlg::FetchLogList()
 	if (hash == upstream)
 	{
 		m_CommitList.Clear();
-		CString text,fmt;
-		fmt.LoadString(IDS_REBASE_EQUAL_FMT);
-		text.Format(fmt, (LPCTSTR)m_BranchCtrl.GetString(), (LPCTSTR)this->m_UpstreamCtrl.GetString());
+		CString text;
+		text.Format(IDS_REBASE_EQUAL_FMT, (LPCTSTR)m_BranchCtrl.GetString(), (LPCTSTR)this->m_UpstreamCtrl.GetString());
 
 		m_CommitList.ShowText(text);
 		this->GetDlgItem(IDC_REBASE_CONTINUE)->EnableWindow(false);
@@ -528,9 +527,8 @@ void CRebaseDlg::FetchLogList()
 		this->m_IsFastForward=TRUE;
 
 		m_CommitList.Clear();
-		CString text,fmt;
-		fmt.LoadString(IDS_REBASE_FASTFORWARD_FMT);
-		text.Format(fmt, (LPCTSTR)m_BranchCtrl.GetString(), (LPCTSTR)this->m_UpstreamCtrl.GetString(),
+		CString text;
+		text.Format(IDS_REBASE_FASTFORWARD_FMT, (LPCTSTR)m_BranchCtrl.GetString(), (LPCTSTR)this->m_UpstreamCtrl.GetString(),
 						(LPCTSTR)m_BranchCtrl.GetString(), (LPCTSTR)this->m_UpstreamCtrl.GetString());
 
 		m_CommitList.ShowText(text);
@@ -545,9 +543,8 @@ void CRebaseDlg::FetchLogList()
 		if (base == upstream)
 		{
 			m_CommitList.Clear();
-			CString text,fmt;
-			fmt.LoadString(IDS_REBASE_UPTODATE_FMT);
-			text.Format(fmt, (LPCTSTR)m_BranchCtrl.GetString());
+			CString text;
+			text.Format(IDS_REBASE_UPTODATE_FMT, (LPCTSTR)m_BranchCtrl.GetString());
 			m_CommitList.ShowText(text);
 			this->GetDlgItem(IDC_REBASE_CONTINUE)->EnableWindow(m_CommitList.GetItemCount());
 			SetContinueButtonText();

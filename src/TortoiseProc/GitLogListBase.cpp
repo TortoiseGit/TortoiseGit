@@ -2013,7 +2013,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 //				popup.AppendMenu(MF_SEPARATOR, NULL);
 //			}
 
-			CString str,format;
+			CString str;
 			//if (m_hasWC)
 			//	popup.AppendMenuIcon(ID_REVERTTOREV, IDS_LOG_POPUP_REVERTTOREV, IDI_REVERT);
 
@@ -2026,14 +2026,12 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 				if (m_ContextMenuMask&GetContextMenuBit(ID_REPOBROWSE))
 					popup.AppendMenuIcon(ID_REPOBROWSE, IDS_LOG_BROWSEREPO, IDI_REPOBROWSE);
 
-				format.LoadString(IDS_LOG_POPUP_MERGEREV);
-				str.Format(format, (LPCTSTR)g_Git.GetCurrentBranch());
+				str.Format(IDS_LOG_POPUP_MERGEREV, (LPCTSTR)g_Git.GetCurrentBranch());
 
 				if (m_ContextMenuMask&GetContextMenuBit(ID_MERGEREV) && !isHeadCommit && m_hasWC && !isMergeActive && !isStash)
 					popup.AppendMenuIcon(ID_MERGEREV, str, IDI_MERGE);
 
-				format.LoadString(IDS_RESET_TO_THIS_FORMAT);
-				str.Format(format, (LPCTSTR)g_Git.GetCurrentBranch());
+				str.Format(IDS_RESET_TO_THIS_FORMAT, (LPCTSTR)g_Git.GetCurrentBranch());
 
 				if (m_ContextMenuMask&GetContextMenuBit(ID_RESET) && m_hasWC && !isStash)
 					popup.AppendMenuIcon(ID_RESET,str,IDI_REVERT);
@@ -2091,8 +2089,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 				if (m_ContextMenuMask&GetContextMenuBit(ID_CREATE_TAG) && !isStash)
 					popup.AppendMenuIcon(ID_CREATE_TAG,IDS_CREATE_TAG_AT_THIS , IDI_TAG);
 
-				format.LoadString(IDS_REBASE_THIS_FORMAT);
-				str.Format(format, (LPCTSTR)g_Git.GetCurrentBranch());
+				str.Format(IDS_REBASE_THIS_FORMAT, (LPCTSTR)g_Git.GetCurrentBranch());
 
 				if (pSelLogEntry->m_CommitHash != m_HeadHash && m_hasWC && !isMergeActive && !isStash)
 					if(m_ContextMenuMask&GetContextMenuBit(ID_REBASE_TO_VERSION))

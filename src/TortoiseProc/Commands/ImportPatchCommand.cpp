@@ -43,10 +43,8 @@ bool ImportPatchCommand::Execute()
 
 		if(!path.HasAdminDir())
 		{
-			CString format;
-			format.LoadString(IDS_ERR_NOT_REPOSITORY);
 			CString err;
-			err.Format(format, (LPCTSTR)str);
+			err.Format(IDS_ERR_NOT_REPOSITORY, (LPCTSTR)str);
 			CMessageBox::Show(NULL,err,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
 			return FALSE;
 		}
