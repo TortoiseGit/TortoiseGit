@@ -289,6 +289,7 @@
 #define IDC_ASTERISKLOGPREFIX           1074
 #define IDC_VERSIONBOX                  1075
 #define IDS_PROC_REBASE_ABORT           1075
+#define IDC_FULLCOMMITMESSAGEONLOGLINE  1075
 #define IDC_LABEL                       1076
 #define IDS_LASTCOMMIT                  1076
 #define IDC_MSGVIEW                     1077

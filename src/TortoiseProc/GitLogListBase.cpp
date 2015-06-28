@@ -61,6 +61,7 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	, m_hasWC(true)
 	, m_bNoHightlightHead(FALSE)
 	, m_ShowRefMask(LOGLIST_SHOWALLREFS)
+	, m_bFullCommitMessageOnLogLine(false)
 {
 	// use the default GUI font, create a copy of it and
 	// change the copy to BOLD (leave the rest of the font
@@ -136,6 +137,7 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	m_bTagsBranchesOnRightSide = !!CRegDWORD(_T("Software\\TortoiseGit\\DrawTagsBranchesOnRightSide"), FALSE);
 	m_bSymbolizeRefNames = !!CRegDWORD(_T("Software\\TortoiseGit\\SymbolizeRefNames"), FALSE);
 	m_bIncludeBoundaryCommits = !!CRegDWORD(_T("Software\\TortoiseGit\\LogIncludeBoundaryCommits"), FALSE);
+	m_bFullCommitMessageOnLogLine = !!CRegDWORD(_T("Software\\TortoiseGit\\FullCommitMessageOnLogLine"), FALSE);
 
 	m_LineWidth = max(1, CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\Graph\\LogLineWidth"), 2));
 	m_NodeSize = max(1, CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\Graph\\LogNodeSize"), 10));
@@ -606,6 +608,7 @@ void CGitLogListBase::DrawTagBranchMessage(HDC hdc, CRect &rect, INT_PTR index, 
 		rt.left += oneSpaceSize.cx;
 	}
 
+	CString msg = MessageDisplayStr(data);
 	int action = data->GetRebaseAction();
 	bool skip = !!(action & (LOGACTIONS_REBASE_DONE | LOGACTIONS_REBASE_SKIP));
 	if (IsAppThemed() && pfnDrawThemeTextEx)
@@ -618,20 +621,20 @@ void CGitLogListBase::DrawTagBranchMessage(HDC hdc, CRect &rect, INT_PTR index, 
 		opts.dwSize = sizeof(opts);
 		opts.crText = skip ? RGB(128,128,128) : ::GetSysColor(COLOR_WINDOWTEXT);
 		opts.dwFlags = DTT_TEXTCOLOR;
-		pfnDrawThemeTextEx(hTheme, hdc, LVP_LISTITEM, txtState, data->GetSubject(), -1, DT_NOPREFIX | DT_LEFT | DT_SINGLELINE | DT_VCENTER | DT_END_ELLIPSIS, &rt, &opts);
+		pfnDrawThemeTextEx(hTheme, hdc, LVP_LISTITEM, txtState, msg, -1, DT_NOPREFIX | DT_LEFT | DT_SINGLELINE | DT_VCENTER | DT_END_ELLIPSIS, &rt, &opts);
 	}
 	else
 	{
 		if ((rItem.state & LVIS_SELECTED) && (::GetFocus() == m_hWnd))
 		{
 			COLORREF clrOld = ::SetTextColor(hdc, skip ? RGB(128,128,128) : ::GetSysColor(COLOR_HIGHLIGHTTEXT));
-			::DrawText(hdc,data->GetSubject(), data->GetSubject().GetLength(), &rt, DT_NOPREFIX | DT_LEFT | DT_SINGLELINE | DT_VCENTER | DT_END_ELLIPSIS);
+			::DrawText(hdc,msg, msg.GetLength(), &rt, DT_NOPREFIX | DT_LEFT | DT_SINGLELINE | DT_VCENTER | DT_END_ELLIPSIS);
 			::SetTextColor(hdc, clrOld);
 		}
 		else
 		{
 			COLORREF clrOld = ::SetTextColor(hdc, skip ? RGB(128,128,128) : ::GetSysColor(COLOR_WINDOWTEXT));
-			::DrawText(hdc, data->GetSubject(), data->GetSubject().GetLength(), &rt, DT_NOPREFIX | DT_LEFT | DT_SINGLELINE | DT_VCENTER | DT_END_ELLIPSIS);
+			::DrawText(hdc, msg, msg.GetLength(), &rt, DT_NOPREFIX | DT_LEFT | DT_SINGLELINE | DT_VCENTER | DT_END_ELLIPSIS);
 			::SetTextColor(hdc, clrOld);
 		}
 	}
@@ -639,7 +642,7 @@ void CGitLogListBase::DrawTagBranchMessage(HDC hdc, CRect &rect, INT_PTR index, 
 	if (m_bTagsBranchesOnRightSide)
 	{
 		SIZE size;
-		GetTextExtentPoint32(hdc, data->GetSubject(), data->GetSubject().GetLength(), &size);
+		GetTextExtentPoint32(hdc, msg, msg.GetLength(), &size);
 
 		rt.left += oneSpaceSize.cx + size.cx;
 
@@ -1568,6 +1571,21 @@ CString FindSVNRev(const CString& msg)
 	return _T("");
 }
 
+CString CGitLogListBase::MessageDisplayStr(GitRev* pLogEntry)
+{
+	if (!m_bFullCommitMessageOnLogLine || pLogEntry->GetBody().IsEmpty())
+		return pLogEntry->GetSubject();
+
+	CString txt;
+	txt.Format(L"%s %s", (LPCTSTR)pLogEntry->GetSubject(), (LPCTSTR)pLogEntry->GetBody());
+
+	// Deal with CRLF
+	txt.Replace(_T("\n"), _T(" "));
+	txt.Replace(_T("\r"), _T(" "));
+
+	return txt;
+}
+
 // CGitLogListBase message handlers
 
 void CGitLogListBase::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
@@ -1630,7 +1648,7 @@ void CGitLogListBase::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 		break;
 	case LOGLIST_MESSAGE: //Message
 		if (pLogEntry)
-			lstrcpyn(pItem->pszText, (LPCTSTR)pLogEntry->GetSubject(), pItem->cchTextMax - 1);
+			lstrcpyn(pItem->pszText, (LPCTSTR)MessageDisplayStr(pLogEntry), pItem->cchTextMax - 1);
 		break;
 	case LOGLIST_AUTHOR: //Author
 		if (pLogEntry)

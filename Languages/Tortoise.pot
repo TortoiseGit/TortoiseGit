@@ -3798,6 +3798,10 @@ msgstr ""
 msgid "Display program information, version number and copyright\nAbout"
 msgstr ""
 
+#. Resource IDs: (1075)
+msgid "Display subject and body of commit messages"
+msgstr ""
+
 #. Resource IDs: (1374)
 msgid "Do &not show me this warning again (if Continue is selected)"
 msgstr ""

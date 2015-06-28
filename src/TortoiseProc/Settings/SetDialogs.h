@@ -89,4 +89,6 @@ private:
 	CRegDWORD			m_regDescribeAbbreviatedSize;
 	BOOL				m_bDescribeAlwaysLong;
 	CRegDWORD			m_regDescribeAlwaysLong;
+	BOOL				m_bFullCommitMessageOnLogLine;
+	CRegDWORD			m_regFullCommitMessageOnLogLine;
 };
