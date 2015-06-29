@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2014 - TortoiseGit
+// Copyright (C) 2013-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -49,14 +49,15 @@ bool FetchProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, in
 	if (git_remote_lookup(remote.GetPointer(), repo, url) < 0)
 	{
 		// retry with repository located at a specific url
-		if (git_remote_create_anonymous(remote.GetPointer(), repo, url, nullptr) < 0)
+		if (git_remote_create_anonymous(remote.GetPointer(), repo, url) < 0)
 		{
 			list->ReportGitError();
 			return false;
 		}
 	}
 
-	git_remote_callbacks callbacks = GIT_REMOTE_CALLBACKS_INIT;
+	git_fetch_options fetchopts = GIT_FETCH_OPTIONS_INIT;
+	git_remote_callbacks& callbacks = fetchopts.callbacks;
 	callbacks.update_tips = RemoteUpdatetipsCallback;
 	callbacks.sideband_progress = RemoteProgressCallback;
 	callbacks.transfer_progress = FetchCallback;
@@ -66,13 +67,12 @@ bool FetchProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, in
 	CGitProgressList::Payload cbpayload = { list, repo };
 	callbacks.payload = &cbpayload;
 
-	git_remote_set_callbacks(remote, &callbacks);
-	git_remote_set_autotag(remote, (git_remote_autotag_option_t)m_AutoTag);
+	git_remote_set_autotag(repo, git_remote_name(remote), (git_remote_autotag_option_t)m_AutoTag);
 
-	if (!m_RefSpec.IsEmpty() && git_remote_add_fetch(remote, CUnicodeUtils::GetUTF8(m_RefSpec)))
+	if (!m_RefSpec.IsEmpty() && git_remote_add_fetch(repo, git_remote_name(remote), CUnicodeUtils::GetUTF8(m_RefSpec)))
 		goto error;
 
-	if (git_remote_fetch(remote, nullptr, nullptr) < 0)
+	if (git_remote_fetch(remote, nullptr, &fetchopts, nullptr) < 0)
 		goto error;
 
 	// Not setting m_PostCmdCallback here, as clone is only called from AppUtils.cpp

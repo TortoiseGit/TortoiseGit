@@ -55,6 +55,9 @@
     <ResourceCompile>
       <PreprocessorDefinitions>LIBGIT2_FILENAME=\"$(AssemblyName)\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>rpcrt4.lib;crypt32.lib;winhttp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\libgit2\filter-filter.c" />
@@ -168,6 +171,9 @@
     <ClCompile Include="..\libgit2\src\tsort.c" />
     <ClCompile Include="..\libgit2\src\util.c" />
     <ClCompile Include="..\libgit2\src\vector.c" />
+    <ClCompile Include="..\libgit2\src\win32\buffer.c">
+      <ObjectFileName>$(IntDir)buffer_win32.obj</ObjectFileName>
+    </ClCompile>
     <ClCompile Include="..\libgit2\src\win32\dir.c" />
     <ClCompile Include="..\libgit2\src\win32\error.c" />
     <ClCompile Include="..\libgit2\src\win32\findfile.c" />
@@ -215,7 +221,6 @@
     <ClInclude Include="..\libgit2\include\git2\message.h" />
     <ClInclude Include="..\libgit2\include\git2\patch.h" />
     <ClInclude Include="..\libgit2\include\git2\pathspec.h" />
-    <ClInclude Include="..\libgit2\include\git2\push.h" />
     <ClInclude Include="..\libgit2\include\git2\rebase.h" />
     <ClInclude Include="..\libgit2\include\git2\refdb.h" />
     <ClInclude Include="..\libgit2\include\git2\reset.h" />
@@ -334,6 +339,7 @@
     <ClInclude Include="..\libgit2\src\tree.h" />
     <ClInclude Include="..\libgit2\src\util.h" />
     <ClInclude Include="..\libgit2\src\vector.h" />
+    <ClInclude Include="..\libgit2\src\win32\buffer.h" />
     <ClInclude Include="..\libgit2\src\win32\dir.h" />
     <ClInclude Include="..\libgit2\src\win32\error.h" />
     <ClInclude Include="..\libgit2\src\win32\findfile.h" />

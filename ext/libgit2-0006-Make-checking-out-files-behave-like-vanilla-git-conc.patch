@@ -1,7 +1,7 @@
-From 769c2d713952de107cf0325de3ddd2531072e849 Mon Sep 17 00:00:00 2001
+From 6692dea5a0df76a54a7c830dd27009ede3506539 Mon Sep 17 00:00:00 2001
 From: Sven Strickroth <email@cs-ware.de>
 Date: Tue, 3 Mar 2015 17:51:18 +0100
-Subject: [PATCH 6/6] Make checking out files behave like vanilla git
+Subject: [PATCH 6/7] Make checking out files behave like vanilla git
  concerning CRLF filter
 
 This also fixes
@@ -9,42 +9,17 @@ This also fixes
 * core.autocrlf=true and "* text eol=crlf" on LF-only platforms
 
 Signed-off-by: Sven Strickroth <email@cs-ware.de>
+Signed-off-by: Sup Yut Sum <ch3cooli@gmail.com>
 ---
- CHANGELOG.md                                       |   7 +
- src/buf_text.c                                     |  14 +-
- src/crlf.c                                         |  39 +-
- tests/checkout/crlf.c                              | 888 +++++++++++++++++++--
- tests/core/buffer.c                                |  24 +-
- tests/filter/crlf.c                                |   4 -
- tests/filter/crlf.h                                |   6 +
- .../16/78031ee023a23bd3515e4e1693b661a69f0a73      | Bin 0 -> 193 bytes
- .../20/3555c5676d75cd80d69b50beb1f4b588c59ceb      | Bin 0 -> 36 bytes
- .../41/7786fc35b3c71aa546e3f95eb5da3c8dad8c41      | Bin 0 -> 36 bytes
- .../69/597764abeaa1a403ebf589d2ea579c6a8f877e      | Bin 0 -> 170 bytes
- .../85/340755cfe5e28c2835781978bb1cece91b3d0f      | Bin 0 -> 37 bytes
- .../92/0e90a663bea5d740989d5f935f6dfb473a0c5d      | Bin 0 -> 303 bytes
- .../aa/f083a9cb53dac3669dcfa0e48921580d629ec7      | Bin 0 -> 37 bytes
- .../af/6fcf6da196f615d7cda269b55b5c4ecfb4a5b3      | Bin 0 -> 36 bytes
- .../d1/1e7ef63ba7db1db3b1b99cdbafc57a8549f8a4      | Bin 0 -> 35 bytes
- .../de/5bfa165999d9d6c6dbafad2a7e709f93ec30fd      | Bin 0 -> 179 bytes
- tests/resources/crlf/.gitted/refs/heads/master     | Bin 42 -> 41 bytes
- 18 files changed, 877 insertions(+), 105 deletions(-)
- create mode 100644 tests/resources/crlf/.gitted/objects/16/78031ee023a23bd3515e4e1693b661a69f0a73
- create mode 100644 tests/resources/crlf/.gitted/objects/20/3555c5676d75cd80d69b50beb1f4b588c59ceb
- create mode 100644 tests/resources/crlf/.gitted/objects/41/7786fc35b3c71aa546e3f95eb5da3c8dad8c41
- create mode 100644 tests/resources/crlf/.gitted/objects/69/597764abeaa1a403ebf589d2ea579c6a8f877e
- create mode 100644 tests/resources/crlf/.gitted/objects/85/340755cfe5e28c2835781978bb1cece91b3d0f
- create mode 100644 tests/resources/crlf/.gitted/objects/92/0e90a663bea5d740989d5f935f6dfb473a0c5d
- create mode 100644 tests/resources/crlf/.gitted/objects/aa/f083a9cb53dac3669dcfa0e48921580d629ec7
- create mode 100644 tests/resources/crlf/.gitted/objects/af/6fcf6da196f615d7cda269b55b5c4ecfb4a5b3
- create mode 100644 tests/resources/crlf/.gitted/objects/d1/1e7ef63ba7db1db3b1b99cdbafc57a8549f8a4
- create mode 100644 tests/resources/crlf/.gitted/objects/de/5bfa165999d9d6c6dbafad2a7e709f93ec30fd
+ CHANGELOG.md          |   7 +
+ tests/checkout/crlf.c | 960 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 967 insertions(+)
 
 diff --git a/CHANGELOG.md b/CHANGELOG.md
-index 881dca4..d9f695d 100644
+index b22b497..ee7bf69 100644
 --- a/CHANGELOG.md
 +++ b/CHANGELOG.md
-@@ -16,6 +16,13 @@ v0.22 + 1
+@@ -20,6 +20,13 @@ v0.22 + 1
    * especially files containing single CR chars are added as is now
    * honor "text" attribute for forcing a file being interpreted as text
  
@@ -58,122 +33,26 @@ index 881dca4..d9f695d 100644
  * Rename and copy detection is enabled for small files.
  
  * Checkout can now handle an initial checkout of a repository, making
-diff --git a/src/buf_text.c b/src/buf_text.c
-index 864e39c..c338160 100644
---- a/src/buf_text.c
-+++ b/src/buf_text.c
-@@ -131,17 +131,17 @@ int git_buf_text_lf_to_crlf(git_buf *tgt, const git_buf *src)
- 	for (; next; scan = next + 1, next = memchr(scan, '\n', end - scan)) {
- 		size_t copylen = next - scan;
- 
--		/* if we find mixed line endings, bail */
--		if (next > start && next[-1] == '\r') {
--			git_buf_free(tgt);
--			return GIT_PASSTHROUGH;
--		}
--
- 		GITERR_CHECK_ALLOC_ADD(&alloclen, copylen, 3);
- 		if (git_buf_grow_by(tgt, alloclen) < 0)
- 			return -1;
- 
--		if (next > scan) {
-+		/* if we find mixed line endings, ignore it as vanilla git does
-+		 * the decision if this function needs to be called at all is made in the crlf filter
-+		 */
-+		if (next > start && next[-1] == '\r') {
-+			memcpy(tgt->ptr + tgt->size, scan, copylen - 1);
-+			tgt->size += copylen - 1;
-+		} else if (next > scan) {
- 			memcpy(tgt->ptr + tgt->size, scan, copylen);
- 			tgt->size += copylen;
- 		}
-diff --git a/src/crlf.c b/src/crlf.c
-index eef8b5f..e4a4963 100644
---- a/src/crlf.c
-+++ b/src/crlf.c
-@@ -227,6 +227,10 @@ static const char *line_ending(struct crlf_attrs *ca)
- 
- 	switch (ca->eol) {
- 	case GIT_EOL_UNSET:
-+		if (ca->auto_crlf == GIT_AUTO_CRLF_TRUE)
-+			return "\r\n";
-+		if (ca->auto_crlf == GIT_AUTO_CRLF_INPUT)
-+			return "\n";
- 		return GIT_EOL_NATIVE == GIT_EOL_CRLF ? "\r\n" : "\n";
- 
- 	case GIT_EOL_CRLF:
-@@ -248,24 +252,49 @@ static int crlf_apply_to_workdir(
- 	struct crlf_attrs *ca, git_buf *to, const git_buf *from)
- {
- 	const char *workdir_ending = NULL;
-+	git_buf_text_stats stats;
-+	bool is_binary;
- 
- 	/* Empty file? Nothing to do. */
- 	if (git_buf_len(from) == 0)
- 		return 0;
- 
--	/* Don't filter binary files */
--	if (git_buf_text_is_binary(from))
--		return GIT_PASSTHROUGH;
--
- 	/* Determine proper line ending */
- 	workdir_ending = line_ending(ca);
- 	if (!workdir_ending)
- 		return -1;
- 
--	/* only LF->CRLF conversion is supported, do nothing on LF platforms */
-+	/* check if we need to consider a LF->CRLF conversation */
- 	if (strcmp(workdir_ending, "\r\n") != 0)
- 		return GIT_PASSTHROUGH;
- 
-+	is_binary = git_buf_text_gather_stats(&stats, from, false);
-+
-+	/* Nothing to convert */
-+	if (!stats.lf)
-+		return GIT_PASSTHROUGH;
-+
-+	/* Is file already CRLF? */
-+	if (stats.lf == stats.crlf)
-+		return GIT_PASSTHROUGH;
-+
-+	if (ca->crlf_action == GIT_CRLF_AUTO || ca->crlf_action == GIT_CRLF_GUESS) {
-+		if (ca->crlf_action == GIT_CRLF_GUESS) {
-+			/*
-+			 * If the file in the index has any CR OR crlf in it, do not convert.
-+			 */
-+			if (stats.cr || stats.crlf)
-+				return GIT_PASSTHROUGH;
-+		}
-+
-+		/* If we have any bare CR characters, we're not going to touch it */
-+		if (stats.cr != stats.crlf)
-+			return GIT_PASSTHROUGH;
-+
-+		if (is_binary)
-+			return GIT_PASSTHROUGH;
-+	}
-+
- 	return git_buf_text_lf_to_crlf(to, from);
- }
- 
 diff --git a/tests/checkout/crlf.c b/tests/checkout/crlf.c
-index a7a579e..78ddbea 100644
+index 8e77d08..90d86ea 100644
 --- a/tests/checkout/crlf.c
 +++ b/tests/checkout/crlf.c
-@@ -18,7 +18,7 @@ void test_checkout_crlf__cleanup(void)
- 	cl_git_sandbox_cleanup();
+@@ -461,3 +461,963 @@ void test_checkout_crlf__can_write_empty_file(void)
+ 
+ 	check_file_contents("./crlf/test3.txt", "");
  }
- 
--void test_checkout_crlf__detect_crlf_autocrlf_false(void)
++
 +void test_checkout_crlf__autocrlf_false(void)
- {
- 	git_checkout_options opts = GIT_CHECKOUT_OPTIONS_INIT;
- 	opts.checkout_strategy = GIT_CHECKOUT_FORCE;
-@@ -29,6 +29,17 @@ void test_checkout_crlf__detect_crlf_autocrlf_false(void)
- 
- 	check_file_contents("./crlf/all-lf", ALL_LF_TEXT_RAW);
- 	check_file_contents("./crlf/all-crlf", ALL_CRLF_TEXT_RAW);
++{
++	git_checkout_options opts = GIT_CHECKOUT_OPTIONS_INIT;
++	opts.checkout_strategy = GIT_CHECKOUT_FORCE;
++
++	cl_repo_set_bool(g_repo, "core.autocrlf", false);
++
++	git_checkout_head(g_repo, &opts);
++
++	check_file_contents("./crlf/all-lf", ALL_LF_TEXT_RAW);
++	check_file_contents("./crlf/all-crlf", ALL_CRLF_TEXT_RAW);
 +
 +	check_file_contents("./crlf/more-lf", MORE_LF_TEXT_RAW);
 +	check_file_contents("./crlf/more-crlf", MORE_CRLF_TEXT_RAW);
@@ -185,180 +64,111 @@ index a7a579e..78ddbea 100644
 +	check_file_contents("./crlf/binary-all-crlf", BINARY_ALL_CRLF_TEXT_RAW);
 +	check_file_contents("./crlf/binary-mixed-lf-cr", BINARY_MIXED_LF_CR_RAW);
 +	check_file_contents("./crlf/binary-mixed-lf-cr-crlf", BINARY_MIXED_LF_CR_CRLF_RAW);
- }
- 
- void test_checkout_crlf__autocrlf_false_index_size_is_unfiltered_size(void)
-@@ -50,39 +61,34 @@ void test_checkout_crlf__autocrlf_false_index_size_is_unfiltered_size(void)
- 	cl_assert((entry = git_index_get_bypath(index, "all-crlf", 0)) != NULL);
- 	cl_assert(entry->file_size == strlen(ALL_CRLF_TEXT_RAW));
- 
--	git_index_free(index);
--}
++}
++
++void test_checkout_crlf__autocrlf_false_index_size_is_unfiltered_size1(void)
++{
++	git_index *index;
++	const git_index_entry *entry;
++	git_checkout_options opts = GIT_CHECKOUT_OPTIONS_INIT;
++	opts.checkout_strategy = GIT_CHECKOUT_FORCE;
++
++	cl_repo_set_bool(g_repo, "core.autocrlf", false);
++
++	git_checkout_head(g_repo, &opts);
++
++	git_repository_index(&index, g_repo);
++
++	cl_assert((entry = git_index_get_bypath(index, "all-lf", 0)) != NULL);
++	cl_assert(entry->file_size == strlen(ALL_LF_TEXT_RAW));
++
++	cl_assert((entry = git_index_get_bypath(index, "all-crlf", 0)) != NULL);
++	cl_assert(entry->file_size == strlen(ALL_CRLF_TEXT_RAW));
++
 +	cl_assert((entry = git_index_get_bypath(index, "more-lf", 0)) != NULL);
 +	cl_assert(entry->file_size == strlen(MORE_LF_TEXT_RAW));
- 
--void test_checkout_crlf__detect_crlf_autocrlf_true(void)
--{
--	git_checkout_options opts = GIT_CHECKOUT_OPTIONS_INIT;
--	opts.checkout_strategy = GIT_CHECKOUT_FORCE;
++
 +	cl_assert((entry = git_index_get_bypath(index, "more-crlf", 0)) != NULL);
 +	cl_assert(entry->file_size == strlen(MORE_CRLF_TEXT_RAW));
- 
--	cl_repo_set_bool(g_repo, "core.autocrlf", true);
++
 +	cl_assert((entry = git_index_get_bypath(index, "mixed-lf-cr", 0)) != NULL);
 +	cl_assert(entry->file_size == strlen(MIXED_LF_CR_RAW));
- 
--	git_checkout_head(g_repo, &opts);
++
 +	cl_assert((entry = git_index_get_bypath(index, "mixed-lf-cr-crlf", 0)) != NULL);
 +	cl_assert(entry->file_size == strlen(MIXED_LF_CR_CRLF_RAW));
- 
--	if (GIT_EOL_NATIVE == GIT_EOL_LF)
--		check_file_contents("./crlf/all-lf", ALL_LF_TEXT_RAW);
--	else
--		check_file_contents("./crlf/all-lf", ALL_LF_TEXT_AS_CRLF);
++
 +	cl_assert((entry = git_index_get_bypath(index, "binary-all-lf", 0)) != NULL);
 +	cl_assert(entry->file_size == strlen(BINARY_ALL_LF_TEXT_RAW));
- 
--	check_file_contents("./crlf/all-crlf", ALL_CRLF_TEXT_RAW);
--}
++
 +	cl_assert((entry = git_index_get_bypath(index, "binary-all-crlf", 0)) != NULL);
 +	cl_assert(entry->file_size == strlen(BINARY_ALL_CRLF_TEXT_RAW));
- 
--void test_checkout_crlf__more_lf_autocrlf_true(void)
--{
--	git_checkout_options opts = GIT_CHECKOUT_OPTIONS_INIT;
--	opts.checkout_strategy = GIT_CHECKOUT_FORCE;
--
--	cl_repo_set_bool(g_repo, "core.autocrlf", true);
++
 +	cl_assert((entry = git_index_get_bypath(index, "binary-mixed-lf-cr", 0)) != NULL);
 +	cl_assert(entry->file_size == strlen(BINARY_MIXED_LF_CR_RAW));
- 
--	git_checkout_head(g_repo, &opts);
++
 +	cl_assert((entry = git_index_get_bypath(index, "binary-mixed-lf-cr-crlf", 0)) != NULL);
 +	cl_assert(entry->file_size == strlen(BINARY_MIXED_LF_CR_CRLF_RAW));
- 
--	check_file_contents("./crlf/more-lf", MORE_LF_TEXT_RAW);
++
 +	git_index_free(index);
- }
- 
--void test_checkout_crlf__more_crlf_autocrlf_true(void)
++}
++
 +void test_checkout_crlf__autocrlf_true(void)
- {
- 	git_checkout_options opts = GIT_CHECKOUT_OPTIONS_INIT;
- 	opts.checkout_strategy = GIT_CHECKOUT_FORCE;
-@@ -91,19 +97,19 @@ void test_checkout_crlf__more_crlf_autocrlf_true(void)
- 
- 	git_checkout_head(g_repo, &opts);
- 
--	check_file_contents("./crlf/more-crlf", MORE_CRLF_TEXT_RAW);
--}
--
--void test_checkout_crlf__all_crlf_autocrlf_true(void)
--{
--	git_checkout_options opts = GIT_CHECKOUT_OPTIONS_INIT;
--	opts.checkout_strategy = GIT_CHECKOUT_FORCE;
++{
++	git_checkout_options opts = GIT_CHECKOUT_OPTIONS_INIT;
++	opts.checkout_strategy = GIT_CHECKOUT_FORCE;
++
++	cl_repo_set_bool(g_repo, "core.autocrlf", true);
++
++	git_checkout_head(g_repo, &opts);
++
 +	check_file_contents("./crlf/all-lf", ALL_LF_TEXT_AS_CRLF);
 +	check_file_contents("./crlf/all-crlf", ALL_CRLF_TEXT_RAW);
- 
--	cl_repo_set_bool(g_repo, "core.autocrlf", true);
++
 +	check_file_contents("./crlf/more-lf", MORE_LF_TEXT_RAW);
 +	check_file_contents("./crlf/more-crlf", MORE_CRLF_TEXT_RAW);
- 
--	git_checkout_head(g_repo, &opts);
++
 +	check_file_contents("./crlf/mixed-lf-cr", MIXED_LF_CR_RAW);
 +	check_file_contents("./crlf/mixed-lf-cr-crlf", MIXED_LF_CR_CRLF_RAW);
- 
--	check_file_contents("./crlf/all-crlf", ALL_CRLF_TEXT_RAW);
++
 +	check_file_contents("./crlf/binary-all-lf", BINARY_ALL_LF_TEXT_RAW);
 +	check_file_contents("./crlf/binary-all-crlf", BINARY_ALL_CRLF_TEXT_RAW);
 +	check_file_contents("./crlf/binary-mixed-lf-cr", BINARY_MIXED_LF_CR_RAW);
 +	check_file_contents("./crlf/binary-mixed-lf-cr-crlf", BINARY_MIXED_LF_CR_CRLF_RAW);
- }
- 
- void test_checkout_crlf__detect_crlf_autocrlf_true_utf8(void)
-@@ -116,16 +122,8 @@ void test_checkout_crlf__detect_crlf_autocrlf_true_utf8(void)
- 	git_repository_set_head(g_repo, "refs/heads/utf8");
- 	git_checkout_head(g_repo, &opts);
- 
--	if (GIT_EOL_NATIVE == GIT_EOL_LF)
--	{
--		check_file_contents("./crlf/few-utf8-chars-lf.txt", FEW_UTF8_LF_RAW);
--		check_file_contents("./crlf/many-utf8-chars-lf.txt", MANY_UTF8_LF_RAW);
--	}
--	else
--	{
--		check_file_contents("./crlf/few-utf8-chars-lf.txt", FEW_UTF8_CRLF_RAW);
--		check_file_contents("./crlf/many-utf8-chars-lf.txt", MANY_UTF8_CRLF_RAW);
--	}
-+	check_file_contents("./crlf/few-utf8-chars-lf.txt", FEW_UTF8_CRLF_RAW);
-+	check_file_contents("./crlf/many-utf8-chars-lf.txt", MANY_UTF8_CRLF_RAW);
- 
- 	check_file_contents("./crlf/few-utf8-chars-crlf.txt", FEW_UTF8_CRLF_RAW);
- 	check_file_contents("./crlf/many-utf8-chars-crlf.txt", MANY_UTF8_CRLF_RAW);
-@@ -145,11 +143,7 @@ void test_checkout_crlf__autocrlf_true_index_size_is_filtered_size(void)
- 	git_repository_index(&index, g_repo);
- 
- 	cl_assert((entry = git_index_get_bypath(index, "all-lf", 0)) != NULL);
--
--	if (GIT_EOL_NATIVE == GIT_EOL_LF)
--		cl_assert_equal_sz(strlen(ALL_LF_TEXT_RAW), entry->file_size);
--	else
--		cl_assert_equal_sz(strlen(ALL_LF_TEXT_AS_CRLF), entry->file_size);
++}
++
++void test_checkout_crlf__autocrlf_true_index_size_is_filtered_size1(void)
++{
++	git_index *index;
++	const git_index_entry *entry;
++	git_checkout_options opts = GIT_CHECKOUT_OPTIONS_INIT;
++	opts.checkout_strategy = GIT_CHECKOUT_FORCE;
++
++	cl_repo_set_bool(g_repo, "core.autocrlf", true);
++
++	git_checkout_head(g_repo, &opts);
++
++	git_repository_index(&index, g_repo);
++
++	cl_assert((entry = git_index_get_bypath(index, "all-lf", 0)) != NULL);
 +	cl_assert_equal_sz(strlen(ALL_LF_TEXT_AS_CRLF), entry->file_size);
- 
- 	cl_assert((entry = git_index_get_bypath(index, "all-crlf", 0)) != NULL);
- 	cl_assert_equal_sz(strlen(ALL_CRLF_TEXT_RAW), entry->file_size);
-@@ -218,25 +212,14 @@ void test_checkout_crlf__with_ident(void)
- 
- 	git_checkout_head(g_repo, &opts);
- 
--	if (GIT_EOL_NATIVE == GIT_EOL_LF) {
--		cl_assert_equal_file(
--			ALL_LF_TEXT_RAW
--			"\n$Id: fcf6d4d9c212dc66563b1171b1cd99953c756467$\n",
--			0, "crlf/lf.ident");
--		cl_assert_equal_file(
--			ALL_CRLF_TEXT_AS_LF
--			"\n$Id: f2c66ad9b2b5a734d9bf00d5000cc10a62b8a857$\n\n",
--			0, "crlf/crlf.ident");
--	} else {
--		cl_assert_equal_file(
--			ALL_LF_TEXT_AS_CRLF
--			"\r\n$Id: fcf6d4d9c212dc66563b1171b1cd99953c756467$\r\n",
--			0, "crlf/lf.ident");
--		cl_assert_equal_file(
--			ALL_CRLF_TEXT_RAW
--			"\r\n$Id: f2c66ad9b2b5a734d9bf00d5000cc10a62b8a857$\r\n\r\n",
--			0, "crlf/crlf.ident");
--	}
-+	cl_assert_equal_file(
-+		ALL_LF_TEXT_AS_CRLF
-+		"\r\n$Id: fcf6d4d9c212dc66563b1171b1cd99953c756467$\r\n",
-+		0, "crlf/lf.ident");
-+	cl_assert_equal_file(
-+		ALL_CRLF_TEXT_RAW
-+		"\r\n$Id: f2c66ad9b2b5a734d9bf00d5000cc10a62b8a857$\r\n\r\n",
-+		0, "crlf/crlf.ident");
- 
- 	cl_assert_equal_file(
- 		"$Id: f7830382dac1f1583422be5530fdfbd26289431b$\n"
-@@ -249,51 +232,124 @@ void test_checkout_crlf__with_ident(void)
- 	git_index_free(index);
- }
- 
--void test_checkout_crlf__autocrlf_false_no_attrs(void)
++
++	cl_assert((entry = git_index_get_bypath(index, "all-crlf", 0)) != NULL);
++	cl_assert_equal_sz(strlen(ALL_CRLF_TEXT_RAW), entry->file_size);
++
++	git_index_free(index);
++}
++
 +void test_checkout_crlf__autocrlf_input(void)
- {
- 	git_checkout_options opts = GIT_CHECKOUT_OPTIONS_INIT;
- 	opts.checkout_strategy = GIT_CHECKOUT_FORCE;
- 
--	cl_repo_set_bool(g_repo, "core.autocrlf", false);
++{
++	git_checkout_options opts = GIT_CHECKOUT_OPTIONS_INIT;
++	opts.checkout_strategy = GIT_CHECKOUT_FORCE;
++
 +	cl_repo_set_string(g_repo, "core.autocrlf", "input");
- 
- 	git_checkout_head(g_repo, &opts);
- 
- 	check_file_contents("./crlf/all-lf", ALL_LF_TEXT_RAW);
- 	check_file_contents("./crlf/all-crlf", ALL_CRLF_TEXT_RAW);
++
++	git_checkout_head(g_repo, &opts);
++
++	check_file_contents("./crlf/all-lf", ALL_LF_TEXT_RAW);
++	check_file_contents("./crlf/all-crlf", ALL_CRLF_TEXT_RAW);
 +
 +	check_file_contents("./crlf/more-lf", MORE_LF_TEXT_RAW);
 +	check_file_contents("./crlf/more-crlf", MORE_CRLF_TEXT_RAW);
@@ -370,24 +180,22 @@ index a7a579e..78ddbea 100644
 +	check_file_contents("./crlf/binary-all-crlf", BINARY_ALL_CRLF_TEXT_RAW);
 +	check_file_contents("./crlf/binary-mixed-lf-cr", BINARY_MIXED_LF_CR_RAW);
 +	check_file_contents("./crlf/binary-mixed-lf-cr-crlf", BINARY_MIXED_LF_CR_CRLF_RAW);
- }
- 
--void test_checkout_crlf__autocrlf_true_no_attrs(void)
++}
++
 +void test_checkout_crlf__autocrlf_false__text_attr(void)
- {
- 	git_checkout_options opts = GIT_CHECKOUT_OPTIONS_INIT;
- 	opts.checkout_strategy = GIT_CHECKOUT_FORCE;
- 
--	cl_repo_set_bool(g_repo, "core.autocrlf", true);
++{
++	git_checkout_options opts = GIT_CHECKOUT_OPTIONS_INIT;
++	opts.checkout_strategy = GIT_CHECKOUT_FORCE;
++
 +	cl_git_mkfile("./crlf/.gitattributes", "* text\n");
 +
 +	cl_repo_set_bool(g_repo, "core.autocrlf", false);
- 
- 	git_checkout_head(g_repo, &opts);
- 
- 	if (GIT_EOL_NATIVE == GIT_EOL_CRLF) {
- 		check_file_contents("./crlf/all-lf", ALL_LF_TEXT_AS_CRLF);
- 		check_file_contents("./crlf/all-crlf", ALL_CRLF_TEXT_AS_CRLF);
++
++	git_checkout_head(g_repo, &opts);
++
++	if (GIT_EOL_NATIVE == GIT_EOL_CRLF) {
++		check_file_contents("./crlf/all-lf", ALL_LF_TEXT_AS_CRLF);
++		check_file_contents("./crlf/all-crlf", ALL_CRLF_TEXT_AS_CRLF);
 +
 +		check_file_contents("./crlf/more-lf", MORE_LF_TEXT_AS_CRLF);
 +		check_file_contents("./crlf/more-crlf", MORE_CRLF_TEXT_AS_CRLF);
@@ -399,9 +207,9 @@ index a7a579e..78ddbea 100644
 +		check_file_contents("./crlf/binary-all-crlf", BINARY_ALL_CRLF_TEXT_AS_CRLF);
 +		check_file_contents("./crlf/binary-mixed-lf-cr", BINARY_MIXED_LF_CR_AS_CRLF);
 +		check_file_contents("./crlf/binary-mixed-lf-cr-crlf", BINARY_MIXED_LF_CR_CRLF_AS_CRLF);
- 	} else {
- 		check_file_contents("./crlf/all-lf", ALL_LF_TEXT_RAW);
- 		check_file_contents("./crlf/all-crlf", ALL_CRLF_TEXT_RAW);
++	} else {
++		check_file_contents("./crlf/all-lf", ALL_LF_TEXT_RAW);
++		check_file_contents("./crlf/all-crlf", ALL_CRLF_TEXT_RAW);
 +
 +		check_file_contents("./crlf/more-lf", MORE_LF_TEXT_RAW);
 +		check_file_contents("./crlf/more-crlf", MORE_CRLF_TEXT_RAW);
@@ -413,15 +221,14 @@ index a7a579e..78ddbea 100644
 +		check_file_contents("./crlf/binary-all-crlf", BINARY_ALL_CRLF_TEXT_RAW);
 +		check_file_contents("./crlf/binary-mixed-lf-cr", BINARY_MIXED_LF_CR_RAW);
 +		check_file_contents("./crlf/binary-mixed-lf-cr-crlf", BINARY_MIXED_LF_CR_CRLF_RAW);
- 	}
- }
- 
--void test_checkout_crlf__autocrlf_input_no_attrs(void)
++	}
++}
++
 +void test_checkout_crlf__autocrlf_true__text_attr(void)
- {
- 	git_checkout_options opts = GIT_CHECKOUT_OPTIONS_INIT;
- 	opts.checkout_strategy = GIT_CHECKOUT_FORCE;
- 
++{
++	git_checkout_options opts = GIT_CHECKOUT_OPTIONS_INIT;
++	opts.checkout_strategy = GIT_CHECKOUT_FORCE;
++
 +	cl_git_mkfile("./crlf/.gitattributes", "* text\n");
 +
 +	cl_repo_set_bool(g_repo, "core.autocrlf", true);
@@ -449,12 +256,12 @@ index a7a579e..78ddbea 100644
 +
 +	cl_git_mkfile("./crlf/.gitattributes", "* text\n");
 +
- 	cl_repo_set_string(g_repo, "core.autocrlf", "input");
- 
- 	git_checkout_head(g_repo, &opts);
- 
- 	check_file_contents("./crlf/all-lf", ALL_LF_TEXT_RAW);
- 	check_file_contents("./crlf/all-crlf", ALL_CRLF_TEXT_RAW);
++	cl_repo_set_string(g_repo, "core.autocrlf", "input");
++
++	git_checkout_head(g_repo, &opts);
++
++	check_file_contents("./crlf/all-lf", ALL_LF_TEXT_RAW);
++	check_file_contents("./crlf/all-crlf", ALL_CRLF_TEXT_RAW);
 +
 +	check_file_contents("./crlf/more-lf", MORE_LF_TEXT_RAW);
 +	check_file_contents("./crlf/more-crlf", MORE_CRLF_TEXT_RAW);
@@ -466,27 +273,32 @@ index a7a579e..78ddbea 100644
 +	check_file_contents("./crlf/binary-all-crlf", BINARY_ALL_CRLF_TEXT_RAW);
 +	check_file_contents("./crlf/binary-mixed-lf-cr", BINARY_MIXED_LF_CR_RAW);
 +	check_file_contents("./crlf/binary-mixed-lf-cr-crlf", BINARY_MIXED_LF_CR_CRLF_RAW);
- }
- 
--void test_checkout_crlf__autocrlf_false_text_auto_attr(void)
++}
++
 +void test_checkout_crlf__autocrlf_false__text_auto_attr(void)
- {
- 	git_checkout_options opts = GIT_CHECKOUT_OPTIONS_INIT;
- 	opts.checkout_strategy = GIT_CHECKOUT_FORCE;
-@@ -307,13 +363,27 @@ void test_checkout_crlf__autocrlf_false_text_auto_attr(void)
- 	if (GIT_EOL_NATIVE == GIT_EOL_CRLF) {
- 		check_file_contents("./crlf/all-lf", ALL_LF_TEXT_AS_CRLF);
- 		check_file_contents("./crlf/all-crlf", ALL_CRLF_TEXT_AS_CRLF);
++{
++	git_checkout_options opts = GIT_CHECKOUT_OPTIONS_INIT;
++	opts.checkout_strategy = GIT_CHECKOUT_FORCE;
++
++	cl_git_mkfile("./crlf/.gitattributes", "* text=auto\n");
++
++	cl_repo_set_bool(g_repo, "core.autocrlf", false);
++
++	git_checkout_head(g_repo, &opts);
++
++	if (GIT_EOL_NATIVE == GIT_EOL_CRLF) {
++		check_file_contents("./crlf/all-lf", ALL_LF_TEXT_AS_CRLF);
++		check_file_contents("./crlf/all-crlf", ALL_CRLF_TEXT_AS_CRLF);
 +
 +		check_file_contents("./crlf/more-lf", MORE_LF_TEXT_AS_CRLF);
 +		check_file_contents("./crlf/more-crlf", MORE_CRLF_TEXT_AS_CRLF);
- 	} else {
- 		check_file_contents("./crlf/all-lf", ALL_LF_TEXT_RAW);
- 		check_file_contents("./crlf/all-crlf", ALL_CRLF_TEXT_RAW);
++	} else {
++		check_file_contents("./crlf/all-lf", ALL_LF_TEXT_RAW);
++		check_file_contents("./crlf/all-crlf", ALL_CRLF_TEXT_RAW);
 +
 +		check_file_contents("./crlf/more-lf", MORE_LF_TEXT_RAW);
 +		check_file_contents("./crlf/more-crlf", MORE_CRLF_TEXT_RAW);
- 	}
++	}
 +
 +	check_file_contents("./crlf/mixed-lf-cr", MIXED_LF_CR_RAW);
 +	check_file_contents("./crlf/mixed-lf-cr-crlf", MIXED_LF_CR_CRLF_RAW);
@@ -495,19 +307,19 @@ index a7a579e..78ddbea 100644
 +	check_file_contents("./crlf/binary-all-crlf", BINARY_ALL_CRLF_TEXT_RAW);
 +	check_file_contents("./crlf/binary-mixed-lf-cr", BINARY_MIXED_LF_CR_RAW);
 +	check_file_contents("./crlf/binary-mixed-lf-cr-crlf", BINARY_MIXED_LF_CR_CRLF_RAW);
- }
- 
--void test_checkout_crlf__autocrlf_true_text_auto_attr(void)
++}
++
 +void test_checkout_crlf__autocrlf_true__text_auto_attr(void)
- {
- 	git_checkout_options opts = GIT_CHECKOUT_OPTIONS_INIT;
- 	opts.checkout_strategy = GIT_CHECKOUT_FORCE;
-@@ -324,21 +394,432 @@ void test_checkout_crlf__autocrlf_true_text_auto_attr(void)
- 
- 	git_checkout_head(g_repo, &opts);
- 
--	if (GIT_EOL_NATIVE == GIT_EOL_CRLF) {
--		check_file_contents("./crlf/all-lf", ALL_LF_TEXT_AS_CRLF);
++{
++	git_checkout_options opts = GIT_CHECKOUT_OPTIONS_INIT;
++	opts.checkout_strategy = GIT_CHECKOUT_FORCE;
++
++	cl_git_mkfile("./crlf/.gitattributes", "* text=auto\n");
++
++	cl_repo_set_bool(g_repo, "core.autocrlf", true);
++
++	git_checkout_head(g_repo, &opts);
++
 +	check_file_contents("./crlf/all-lf", ALL_LF_TEXT_AS_CRLF);
 +	check_file_contents("./crlf/all-crlf", ALL_CRLF_TEXT_AS_CRLF);
 +	check_file_contents("./crlf/more-lf", MORE_LF_TEXT_AS_CRLF);
@@ -873,7 +685,7 @@ index a7a579e..78ddbea 100644
 +
 +	if (GIT_EOL_NATIVE == GIT_EOL_LF) {
 +		check_file_contents("./crlf/all-lf", ALL_LF_TEXT_RAW);
- 		check_file_contents("./crlf/all-crlf", ALL_CRLF_TEXT_AS_CRLF);
++		check_file_contents("./crlf/all-crlf", ALL_CRLF_TEXT_AS_CRLF);
 +
 +		check_file_contents("./crlf/more-lf", MORE_LF_TEXT_RAW);
 +		check_file_contents("./crlf/more-crlf", MORE_CRLF_TEXT_RAW);
@@ -885,9 +697,7 @@ index a7a579e..78ddbea 100644
 +		check_file_contents("./crlf/binary-all-crlf", BINARY_ALL_CRLF_TEXT_AS_CRLF);
 +		check_file_contents("./crlf/binary-mixed-lf-cr", BINARY_MIXED_LF_CR_RAW);
 +		check_file_contents("./crlf/binary-mixed-lf-cr-crlf", BINARY_MIXED_LF_CR_CRLF_RAW);
- 	} else {
--		check_file_contents("./crlf/all-lf", ALL_LF_TEXT_RAW);
--		check_file_contents("./crlf/all-crlf", ALL_CRLF_TEXT_RAW);
++	} else {
 +		check_file_contents("./crlf/all-lf", ALL_LF_TEXT_AS_CRLF);
 +		check_file_contents("./crlf/all-crlf", ALL_CRLF_TEXT_AS_CRLF);
 +
@@ -901,16 +711,14 @@ index a7a579e..78ddbea 100644
 +		check_file_contents("./crlf/binary-all-crlf", BINARY_ALL_CRLF_TEXT_AS_CRLF);
 +		check_file_contents("./crlf/binary-mixed-lf-cr", BINARY_MIXED_LF_CR_AS_CRLF);
 +		check_file_contents("./crlf/binary-mixed-lf-cr-crlf", BINARY_MIXED_LF_CR_CRLF_AS_CRLF);
- 	}
- }
- 
--void test_checkout_crlf__autocrlf_input_text_auto_attr(void)
++	}
++}
++
 +void test_checkout_crlf__autocrlf_true__crlf_attr(void)
- {
- 	git_checkout_options opts = GIT_CHECKOUT_OPTIONS_INIT;
- 	opts.checkout_strategy = GIT_CHECKOUT_FORCE;
- 
--	cl_git_mkfile("./crlf/.gitattributes", "* text=auto\n");
++{
++	git_checkout_options opts = GIT_CHECKOUT_OPTIONS_INIT;
++	opts.checkout_strategy = GIT_CHECKOUT_FORCE;
++
 +	cl_git_mkfile("./crlf/.gitattributes", "* crlf\n");
 +
 +	cl_repo_set_bool(g_repo, "core.autocrlf", true);
@@ -938,13 +746,13 @@ index a7a579e..78ddbea 100644
 +	opts.checkout_strategy = GIT_CHECKOUT_FORCE;
 +
 +	cl_git_mkfile("./crlf/.gitattributes", "* crlf\n");
- 
- 	cl_repo_set_string(g_repo, "core.autocrlf", "input");
- 
-@@ -346,4 +827,249 @@ void test_checkout_crlf__autocrlf_input_text_auto_attr(void)
- 
- 	check_file_contents("./crlf/all-lf", ALL_LF_TEXT_RAW);
- 	check_file_contents("./crlf/all-crlf", ALL_CRLF_TEXT_RAW);
++
++	cl_repo_set_string(g_repo, "core.autocrlf", "input");
++
++	git_checkout_head(g_repo, &opts);
++
++	check_file_contents("./crlf/all-lf", ALL_LF_TEXT_RAW);
++	check_file_contents("./crlf/all-crlf", ALL_CRLF_TEXT_RAW);
 +
 +	check_file_contents("./crlf/more-lf", MORE_LF_TEXT_RAW);
 +	check_file_contents("./crlf/more-crlf", MORE_CRLF_TEXT_RAW);
@@ -1190,260 +998,9 @@ index a7a579e..78ddbea 100644
 +	check_file_contents("./crlf/binary-all-crlf", BINARY_ALL_CRLF_TEXT_AS_CRLF);
 +	check_file_contents("./crlf/binary-mixed-lf-cr", BINARY_MIXED_LF_CR_AS_CRLF);
 +	check_file_contents("./crlf/binary-mixed-lf-cr-crlf", BINARY_MIXED_LF_CR_CRLF_AS_CRLF);
- }
-diff --git a/tests/core/buffer.c b/tests/core/buffer.c
-index d28aa21..67ab560 100644
---- a/tests/core/buffer.c
-+++ b/tests/core/buffer.c
-@@ -1054,14 +1054,16 @@ void test_core_buffer__lf_and_crlf_conversions(void)
- 
- 	git_buf_sets(&src, "crlf\r\ncrlf\r\ncrlf\r\ncrlf\r\n");
- 
--	cl_git_fail_with(GIT_PASSTHROUGH, git_buf_text_lf_to_crlf(&tgt, &src));
-+	cl_git_pass(git_buf_text_lf_to_crlf(&tgt, &src));
-+	check_buf("crlf\r\ncrlf\r\ncrlf\r\ncrlf\r\n", tgt);
- 
- 	cl_git_pass(git_buf_text_crlf_to_lf(&tgt, &src));
- 	check_buf("crlf\ncrlf\ncrlf\ncrlf\n", tgt);
- 
- 	git_buf_sets(&src, "\r\ncrlf\r\ncrlf\r\ncrlf\r\ncrlf\r\ncrlf");
- 
--	cl_git_fail_with(GIT_PASSTHROUGH, git_buf_text_lf_to_crlf(&tgt, &src));
-+	cl_git_pass(git_buf_text_lf_to_crlf(&tgt, &src));
-+	check_buf("\r\ncrlf\r\ncrlf\r\ncrlf\r\ncrlf\r\ncrlf", tgt);
- 
- 	cl_git_pass(git_buf_text_crlf_to_lf(&tgt, &src));
- 	check_buf("\ncrlf\ncrlf\ncrlf\ncrlf\ncrlf", tgt);
-@@ -1070,7 +1072,8 @@ void test_core_buffer__lf_and_crlf_conversions(void)
- 
- 	git_buf_sets(&src, "\nlf\nlf\ncrlf\r\nlf\nlf\ncrlf\r\n");
- 
--	cl_git_fail_with(GIT_PASSTHROUGH, git_buf_text_lf_to_crlf(&tgt, &src));
-+	cl_git_pass(git_buf_text_lf_to_crlf(&tgt, &src));
-+	check_buf("\r\nlf\r\nlf\r\ncrlf\r\nlf\r\nlf\r\ncrlf\r\n", tgt);
- 	cl_git_pass(git_buf_text_crlf_to_lf(&tgt, &src));
- 	check_buf("\nlf\nlf\ncrlf\nlf\nlf\ncrlf\n", tgt);
- 
-@@ -1078,7 +1081,8 @@ void test_core_buffer__lf_and_crlf_conversions(void)
- 
- 	git_buf_sets(&src, "\ncrlf\r\ncrlf\r\nlf\ncrlf\r\ncrlf");
- 
--	cl_git_fail_with(GIT_PASSTHROUGH, git_buf_text_lf_to_crlf(&tgt, &src));
-+	cl_git_pass(git_buf_text_lf_to_crlf(&tgt, &src));
-+	check_buf("\r\ncrlf\r\ncrlf\r\nlf\r\ncrlf\r\ncrlf", tgt);
- 	cl_git_pass(git_buf_text_crlf_to_lf(&tgt, &src));
- 	check_buf("\ncrlf\ncrlf\nlf\ncrlf\ncrlf", tgt);
- 
-@@ -1086,7 +1090,8 @@ void test_core_buffer__lf_and_crlf_conversions(void)
- 
- 	git_buf_sets(&src, "\rcrlf\r\nlf\nlf\ncr\rcrlf\r\nlf\ncr\r");
- 
--	cl_git_fail_with(GIT_PASSTHROUGH, git_buf_text_lf_to_crlf(&tgt, &src));
-+	cl_git_pass(git_buf_text_lf_to_crlf(&tgt, &src));
-+	check_buf("\rcrlf\r\nlf\r\nlf\r\ncr\rcrlf\r\nlf\r\ncr\r", tgt);
- 	cl_git_pass(git_buf_text_crlf_to_lf(&tgt, &src));
- 	check_buf("\rcrlf\nlf\nlf\ncr\rcrlf\nlf\ncr\r", tgt);
- 
-@@ -1102,7 +1107,8 @@ void test_core_buffer__lf_and_crlf_conversions(void)
- 	/* blob correspondence tests */
- 
- 	git_buf_sets(&src, ALL_CRLF_TEXT_RAW);
--	cl_git_fail_with(GIT_PASSTHROUGH, git_buf_text_lf_to_crlf(&tgt, &src));
-+	cl_git_pass(git_buf_text_lf_to_crlf(&tgt, &src));
-+	check_buf(ALL_CRLF_TEXT_RAW, tgt);
- 	cl_git_pass(git_buf_text_crlf_to_lf(&tgt, &src));
- 	check_buf(ALL_CRLF_TEXT_AS_LF, tgt);
- 	git_buf_free(&src);
-@@ -1117,14 +1123,16 @@ void test_core_buffer__lf_and_crlf_conversions(void)
- 	git_buf_free(&tgt);
- 
- 	git_buf_sets(&src, MORE_CRLF_TEXT_RAW);
--	cl_git_fail_with(GIT_PASSTHROUGH, git_buf_text_lf_to_crlf(&tgt, &src));
-+	cl_git_pass(git_buf_text_lf_to_crlf(&tgt, &src));
-+	check_buf(MORE_CRLF_TEXT_AS_CRLF, tgt);
- 	cl_git_pass(git_buf_text_crlf_to_lf(&tgt, &src));
- 	check_buf(MORE_CRLF_TEXT_AS_LF, tgt);
- 	git_buf_free(&src);
- 	git_buf_free(&tgt);
- 
- 	git_buf_sets(&src, MORE_LF_TEXT_RAW);
--	cl_git_fail_with(GIT_PASSTHROUGH, git_buf_text_lf_to_crlf(&tgt, &src));
-+	cl_git_pass(git_buf_text_lf_to_crlf(&tgt, &src));
-+	check_buf(MORE_LF_TEXT_AS_CRLF, tgt);
- 	cl_git_pass(git_buf_text_crlf_to_lf(&tgt, &src));
- 	check_buf(MORE_LF_TEXT_AS_LF, tgt);
- 	git_buf_free(&src);
-diff --git a/tests/filter/crlf.c b/tests/filter/crlf.c
-index b81fbeb..d1bf7a4 100644
---- a/tests/filter/crlf.c
-+++ b/tests/filter/crlf.c
-@@ -38,11 +38,7 @@ void test_filter_crlf__to_worktree(void)
- 
- 	cl_git_pass(git_filter_list_apply_to_data(&out, fl, &in));
- 
--#ifdef GIT_WIN32
- 	cl_assert_equal_s("Some text\r\nRight here\r\n", out.ptr);
--#else
--	cl_assert_equal_s("Some text\nRight here\n", out.ptr);
--#endif
- 
- 	git_filter_list_free(fl);
- 	git_buf_free(&out);
-diff --git a/tests/filter/crlf.h b/tests/filter/crlf.h
-index 0a7a10d..bb13162 100644
---- a/tests/filter/crlf.h
-+++ b/tests/filter/crlf.h
-@@ -11,6 +11,8 @@
- #define ALL_LF_TEXT_RAW			"lf\nlf\nlf\nlf\nlf\n"
- #define MORE_CRLF_TEXT_RAW		"crlf\r\ncrlf\r\nlf\ncrlf\r\ncrlf\r\n"
- #define MORE_LF_TEXT_RAW		"lf\nlf\ncrlf\r\nlf\nlf\n"
-+#define MIXED_LF_CR_RAW			"one\ntwo\rthree\nfour\r"
-+#define MIXED_LF_CR_CRLF_RAW	"one\ntwo\rthree\r\nfour\r"
- #define BINARY_ALL_CRLF_TEXT_RAW	"\01one\r\ntwo\r\nthree\r\nfour\r\n"
- #define BINARY_ALL_LF_TEXT_RAW		"\01one\ntwo\nthree\nfour\n"
- #define BINARY_MIXED_LF_CR_RAW		"\01" MIXED_LF_CR_RAW
-@@ -20,6 +22,8 @@
- #define ALL_LF_TEXT_AS_CRLF		"lf\r\nlf\r\nlf\r\nlf\r\nlf\r\n"
- #define MORE_CRLF_TEXT_AS_CRLF	"crlf\r\ncrlf\r\nlf\r\ncrlf\r\ncrlf\r\n"
- #define MORE_LF_TEXT_AS_CRLF	"lf\r\nlf\r\ncrlf\r\nlf\r\nlf\r\n"
-+#define MIXED_LF_CR_AS_CRLF		"one\r\ntwo\rthree\r\nfour\r"
-+#define MIXED_LF_CR_CRLF_AS_CRLF	MIXED_LF_CR_AS_CRLF
- #define BINARY_ALL_CRLF_TEXT_AS_CRLF	BINARY_ALL_CRLF_TEXT_RAW
- #define BINARY_ALL_LF_TEXT_AS_CRLF		BINARY_ALL_CRLF_TEXT_AS_CRLF
- #define BINARY_MIXED_LF_CR_AS_CRLF		"\01" MIXED_LF_CR_AS_CRLF
-@@ -29,6 +33,8 @@
- #define ALL_LF_TEXT_AS_LF		ALL_LF_TEXT_RAW
- #define MORE_CRLF_TEXT_AS_LF	"crlf\ncrlf\nlf\ncrlf\ncrlf\n"
- #define MORE_LF_TEXT_AS_LF		"lf\nlf\ncrlf\nlf\nlf\n"
-+#define MIXED_LF_CR_AS_LF		MIXED_LF_CR_RAW
-+#define MIXED_LF_CR_CRLF_AS_LF	MIXED_LF_CR_CRLF_RAW
- #define BINARY_ALL_CRLF_TEXT_AS_LF		BINARY_ALL_CRLF_TEXT_RAW
- #define BINARY_ALL_LF_TEXT_AS_LF		BINARY_ALL_LF_TEXT_RAW
- #define BINARY_MIXED_LF_CR_AS_LF		BINARY_MIXED_LF_CR_RAW
-diff --git a/tests/resources/crlf/.gitted/objects/16/78031ee023a23bd3515e4e1693b661a69f0a73 b/tests/resources/crlf/.gitted/objects/16/78031ee023a23bd3515e4e1693b661a69f0a73
-new file mode 100644
-index 0000000000000000000000000000000000000000..4aa4ffb1d6714929c6a392d9e09de3644ba8cdc6
-GIT binary patch
-literal 193
-zcmV;y06zbC0V^p=O;s>5GG#C{FfcPQQAo_m(M>MONn=>K=*2`E*?k&9zm7iJ@?go{
-zSl-AqBsD-4mD39@p8t{_ytH=vf;7?DVFI`Ete`4#Gb>V4baT>xMloEJtNUiX{I=}o
-zjXUSuUVpTz)$_*^Ol1&D9n0JPm~K8UwbbqL&$z9(Y<k!BIKtHC7o|cJ@qb-vFS-BH
-v)^`hcg)&V&QYxC>*^aCT=ropl44Wf98h1`<4=YxTc(v;NLYE!@<*i^c2jO2d
-
-literal 0
-HcmV?d00001
-
-diff --git a/tests/resources/crlf/.gitted/objects/20/3555c5676d75cd80d69b50beb1f4b588c59ceb b/tests/resources/crlf/.gitted/objects/20/3555c5676d75cd80d69b50beb1f4b588c59ceb
-new file mode 100644
-index 0000000000000000000000000000000000000000..8038a9b10bc3b9af4e1e4a198291456e74566343
-GIT binary patch
-literal 36
-scmb<m^geacKghr+A>qt<@26Ut=b!7I)bR3s>UCOQ_Yo^Y)g6w504Ajn00000
-
-literal 0
-HcmV?d00001
-
-diff --git a/tests/resources/crlf/.gitted/objects/41/7786fc35b3c71aa546e3f95eb5da3c8dad8c41 b/tests/resources/crlf/.gitted/objects/41/7786fc35b3c71aa546e3f95eb5da3c8dad8c41
-new file mode 100644
-index 0000000000000000000000000000000000000000..ec57bdeba5e506e741354d77acdcb22472929fb2
-GIT binary patch
-literal 36
-scmb<m^geacKghr+;lz3Gr&^llpX;8~@bZ27)a$gq?ju%)`ga^>0WSRzqyPW_
-
-literal 0
-HcmV?d00001
-
-diff --git a/tests/resources/crlf/.gitted/objects/69/597764abeaa1a403ebf589d2ea579c6a8f877e b/tests/resources/crlf/.gitted/objects/69/597764abeaa1a403ebf589d2ea579c6a8f877e
-new file mode 100644
-index 0000000000000000000000000000000000000000..ee4f4273d7f6cfab8beed2589e4091d2ac4eff28
-GIT binary patch
-literal 170
-zcmV;b09F5Z0iDj#jlwVtfMK39h2Kwia+4;lC4^vxPT<6jh@dS>!y&c@F#-d8zy7q&
-zb7^4RxNB7v$f6Q*2repn8G59V#Ak9o2g$J?9AolgZd`R~AnIf0E_fmml8}N#&McM(
-z9gyBmlfx{A@9n%+nErKvsnwD$b!}(Z>&)ePOxy3{9sCnLK-XJq5d)3zgB_wtpU0-(
-YX>$^RZJiZjS-3tSm#c2(1xk}l#h0#84FCWD
-
-literal 0
-HcmV?d00001
-
-diff --git a/tests/resources/crlf/.gitted/objects/85/340755cfe5e28c2835781978bb1cece91b3d0f b/tests/resources/crlf/.gitted/objects/85/340755cfe5e28c2835781978bb1cece91b3d0f
-new file mode 100644
-index 0000000000000000000000000000000000000000..e83fbc290c653dea7ac2037b899212e4c2f19705
-GIT binary patch
-literal 37
-tcmb<m^geacKghr+G2zU4@25|-G|#gONxH6dD2uAg6x0`Im}<cB82}#34jcdg
-
-literal 0
-HcmV?d00001
-
-diff --git a/tests/resources/crlf/.gitted/objects/92/0e90a663bea5d740989d5f935f6dfb473a0c5d b/tests/resources/crlf/.gitted/objects/92/0e90a663bea5d740989d5f935f6dfb473a0c5d
-new file mode 100644
-index 0000000000000000000000000000000000000000..f872be6e99d45ac3f960d5b99a0f0ed5d74ad4e6
-GIT binary patch
-literal 303
-zcmV+~0nq+<0V^p=O;s>4Fk>(@FfcPQQAo_m(M>MONn=>K=*2`E*?k&9zm7iJ@?go{
-zSl-AqBsD-4mD39@p8t{_ytH=vf;7?DVFI`Ete`5AGV>CPDs|z8wVJSpo`3qNN5iy2
-zvSPQ)o0rnI{Fq9CX0FdapSy6{H__{77iDgZj`2IcW$9*Ag}Ip(sVTZSX+T#pD42#G
-zP0uYo+i-1mz`l)Nwssty^BSjWh__aKXkK|b_}1aHx#t%==~Rs1O`3Ncss-8Pi*j|}
-zte4-G-Mn$<oZIV<R<(NmSc0hxVx(hv+aJ@-$EB9KJ^mTD^_ETV+8#%k+Wewah$8;4
-zOYJ51U)uU^;jU1osYgmh(>vRd6#@Oua*tti#7E=KDeYm!iV?3?y<h0k0|3GWt8b(d
-BpFjWr
-
-literal 0
-HcmV?d00001
-
-diff --git a/tests/resources/crlf/.gitted/objects/aa/f083a9cb53dac3669dcfa0e48921580d629ec7 b/tests/resources/crlf/.gitted/objects/aa/f083a9cb53dac3669dcfa0e48921580d629ec7
-new file mode 100644
-index 0000000000000000000000000000000000000000..38775d0050805307f9ad1e688eb1d4fb6c7b43a2
-GIT binary patch
-literal 37
-tcmb<m^geacKghr+CE?6@@26Ut=b!7I)bR3s`qb;RzV0Jdh9(=1^8h=j5MKZQ
-
-literal 0
-HcmV?d00001
-
-diff --git a/tests/resources/crlf/.gitted/objects/af/6fcf6da196f615d7cda269b55b5c4ecfb4a5b3 b/tests/resources/crlf/.gitted/objects/af/6fcf6da196f615d7cda269b55b5c4ecfb4a5b3
-new file mode 100644
-index 0000000000000000000000000000000000000000..0acc9744e1dbdaed5619a94adf6860a0983d8835
-GIT binary patch
-literal 36
-scmb<m^geacKghr+A>qt<@26Ut=bvkx)bR3s>UCOQ_Yo6A)mDz(043!Q%>V!Z
-
-literal 0
-HcmV?d00001
-
-diff --git a/tests/resources/crlf/.gitted/objects/d1/1e7ef63ba7db1db3b1b99cdbafc57a8549f8a4 b/tests/resources/crlf/.gitted/objects/d1/1e7ef63ba7db1db3b1b99cdbafc57a8549f8a4
-new file mode 100644
-index 0000000000000000000000000000000000000000..05d88fc8645aa8f991a418ec6ac102ca78bde4e5
-GIT binary patch
-literal 35
-rcmb<m^geacKgeK9%8B#dPqj49Ki55};pO|(>$JY^BUXk=Uyc(1B{~n8
-
-literal 0
-HcmV?d00001
-
-diff --git a/tests/resources/crlf/.gitted/objects/de/5bfa165999d9d6c6dbafad2a7e709f93ec30fd b/tests/resources/crlf/.gitted/objects/de/5bfa165999d9d6c6dbafad2a7e709f93ec30fd
-new file mode 100644
-index 0000000000000000000000000000000000000000..e288b975fede10d3b6e62a352cf103d4ea9c7b32
-GIT binary patch
-literal 179
-zcmV;k08IaQ0gaAZYQr!P0Q;>|?0<0C)mjfjDd`z<0%^4(qIO&q^>O^BAqObT?+hdR
-zwzUCv=BLqBfqaO_q>7f4<y_d2(^<(coV};ymx?K{`AA(a141m>1{8|(A2qlX$pyBQ
-zi)4o>lT|Nl(&squ9Zp|*fz#+s-uphz@S<C4>rt-L_bvEb^c85f7I}#r;edo_<o-DH
-h|Mu;L+`~3+rNGvHw1D(!t&{Y%LT#&F%`fkXOT==gUkd;L
-
-literal 0
-HcmV?d00001
-
-diff --git a/tests/resources/crlf/.gitted/refs/heads/master b/tests/resources/crlf/.gitted/refs/heads/master
-index c150a97763d3c0c3326d25ce6c2b1a53773e18e0..50a386e51c0da6f47615efc5fda44ca3849ac9dc 100644
-GIT binary patch
-literal 41
-ucmV~$$pHW$2m`Rc(|7=daf-tJBbZod04B^L7iFHxR*$!finvB^2Woum><dZ&
-
-literal 42
-wcmV~$$qfJ?2n4{tiM>E%QOe=$zXWGUB(jhegN`b2gT>8{3NG;*($VI<J_AAvHUIzs
-
++}
++
++////////
 -- 
-1.9.5.msysgit.1
+1.8.1.2
 

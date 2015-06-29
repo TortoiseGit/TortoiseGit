@@ -1,7 +1,7 @@
-From 24dc594f617f754c6112ac014ab9cc4f2f86ef1d Mon Sep 17 00:00:00 2001
+From d57a7c9e34150792203435405125b9ce0b54353f Mon Sep 17 00:00:00 2001
 From: Sven Strickroth <email@cs-ware.de>
 Date: Fri, 23 Jan 2015 14:16:34 +0100
-Subject: [PATCH 1/6] core.autocrlf=true and core.safecrlf=true did not fail on
+Subject: [PATCH 1/7] core.autocrlf=true and core.safecrlf=true did not fail on
  LF-only file as vanilla git does
 
 Reported-by: Yue Lin Ho <b8732003@student.nsysu.edu.tw>
@@ -14,10 +14,10 @@ Signed-off-by: Sven Strickroth <email@cs-ware.de>
  4 files changed, 45 insertions(+), 6 deletions(-)
 
 diff --git a/CHANGELOG.md b/CHANGELOG.md
-index b88488e..75ec09d 100644
+index e140608..8fb39cd 100644
 --- a/CHANGELOG.md
 +++ b/CHANGELOG.md
-@@ -6,6 +6,9 @@ v0.22 + 1
+@@ -10,6 +10,9 @@ v0.22 + 1
  * Updated binary identification in CRLF filtering to avoid false positives in
    UTF-8 files.
  
@@ -28,7 +28,7 @@ index b88488e..75ec09d 100644
  
  * Checkout can now handle an initial checkout of a repository, making
 diff --git a/src/crlf.c b/src/crlf.c
-index b5d1dbf..ba34c2b 100644
+index f391137..3a3c937 100644
 --- a/src/crlf.c
 +++ b/src/crlf.c
 @@ -138,8 +138,8 @@ static int crlf_apply_to_odb(
@@ -43,10 +43,10 @@ index b5d1dbf..ba34c2b 100644
  
  		/* If safecrlf is enabled, sanity-check the result. */
 diff --git a/tests/filter/crlf.c b/tests/filter/crlf.c
-index 406d3b6..969c3bd 100644
+index a8ebd94..3490f1e 100644
 --- a/tests/filter/crlf.c
 +++ b/tests/filter/crlf.c
-@@ -103,12 +103,12 @@ void test_filter_crlf__with_safecrlf(void)
+@@ -99,12 +99,12 @@ void test_filter_crlf__with_safecrlf(void)
  	cl_git_fail(git_filter_list_apply_to_data(&out, fl, &in));
  	cl_assert_equal_i(giterr_last()->klass, GITERR_FILTER);
  
@@ -118,5 +118,5 @@ index 23f4793..803c141 100644
  	cl_git_mkfile("crlf/newfile.txt", ALL_CRLF_TEXT_RAW);
  	cl_git_pass(git_index_add_bypath(g_index, "newfile.txt"));
 -- 
-1.9.5.msysgit.1
+1.8.1.2
 

@@ -1,7 +1,7 @@
-From 4c00f8a27b8db5f03290871f64d3d20aaac84ee4 Mon Sep 17 00:00:00 2001
+From 16ebc13d93ed0433acadf7499a3834c7ba44d17f Mon Sep 17 00:00:00 2001
 From: Sven Strickroth <email@cs-ware.de>
 Date: Fri, 23 Jan 2015 15:34:14 +0100
-Subject: [PATCH 3/6] Adding a CRLF-file with core.autocrlf=input and
+Subject: [PATCH 3/7] Adding a CRLF-file with core.autocrlf=input and
  core.safecrlf=true does not fail as with vanilla git
 
 Signed-off-by: Sven Strickroth <email@cs-ware.de>
@@ -12,10 +12,10 @@ Signed-off-by: Sven Strickroth <email@cs-ware.de>
  3 files changed, 20 insertions(+)
 
 diff --git a/CHANGELOG.md b/CHANGELOG.md
-index 75ec09d..0475da3 100644
+index 8fb39cd..c31d921 100644
 --- a/CHANGELOG.md
 +++ b/CHANGELOG.md
-@@ -8,6 +8,7 @@ v0.22 + 1
+@@ -12,6 +12,7 @@ v0.22 + 1
  
  * LF -> CRLF filter now correctly honors core.safecrlf=true errors
    * LF only files were accepted with core.autocrlf=true on CRLF platforms
@@ -24,7 +24,7 @@ index 75ec09d..0475da3 100644
  * Rename and copy detection is enabled for small files.
  
 diff --git a/src/crlf.c b/src/crlf.c
-index 9e03f20..c1e0b2b 100644
+index 1290c01..29bbb5f 100644
 --- a/src/crlf.c
 +++ b/src/crlf.c
 @@ -156,6 +156,19 @@ static int crlf_apply_to_odb(
@@ -72,5 +72,5 @@ index 803c141..38e7916 100644
  
  void test_index_crlf__safecrlf_true_no_attrs(void)
 -- 
-1.9.5.msysgit.1
+1.8.1.2
 

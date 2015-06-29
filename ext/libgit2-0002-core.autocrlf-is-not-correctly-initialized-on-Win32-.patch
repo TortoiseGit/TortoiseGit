@@ -1,7 +1,7 @@
-From 8a71a40b4392c3d888b9c47524a34cb38cb75803 Mon Sep 17 00:00:00 2001
+From 3ce5aed4449b6e2dd9e4a11f4f306024d0fe8d02 Mon Sep 17 00:00:00 2001
 From: Sven Strickroth <email@cs-ware.de>
 Date: Fri, 23 Jan 2015 15:33:36 +0100
-Subject: [PATCH 2/6] core.autocrlf is not correctly initialized on Win32 if
+Subject: [PATCH 2/7] core.autocrlf is not correctly initialized on Win32 if
  .gitattributes file exists and matches
 
 Knowing the proper core.autocrlf value is need for deciding whether the CRLF filter needs to be executed...
@@ -12,10 +12,10 @@ Signed-off-by: Sven Strickroth <email@cs-ware.de>
  1 file changed, 4 insertions(+), 5 deletions(-)
 
 diff --git a/src/crlf.c b/src/crlf.c
-index ba34c2b..9e03f20 100644
+index 3a3c937..1290c01 100644
 --- a/src/crlf.c
 +++ b/src/crlf.c
-@@ -267,6 +267,10 @@ static int crlf_check(
+@@ -289,6 +289,10 @@ static int crlf_check(
  		ca.eol = check_eol(attr_values[1]); /* eol */
  	}
  	ca.auto_crlf = GIT_AUTO_CRLF_DEFAULT;
@@ -26,8 +26,8 @@ index ba34c2b..9e03f20 100644
  
  	/*
  	 * Use the core Git logic to see if we should perform CRLF for this file
-@@ -281,11 +285,6 @@ static int crlf_check(
- 		(ca.crlf_action == GIT_CRLF_AUTO &&
+@@ -303,11 +307,6 @@ static int crlf_check(
+ 		((ca.crlf_action == GIT_CRLF_AUTO || ca.crlf_action == GIT_CRLF_TEXT) &&
  		git_filter_source_mode(src) == GIT_FILTER_SMUDGE)) {
  
 -		error = git_repository__cvar(
@@ -39,5 +39,5 @@ index ba34c2b..9e03f20 100644
  			ca.auto_crlf == GIT_AUTO_CRLF_FALSE)
  			return GIT_PASSTHROUGH;
 -- 
-1.9.5.msysgit.1
+1.8.1.2
 

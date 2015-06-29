@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2014 - TortoiseGit
+// Copyright (C) 2013-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -41,7 +41,8 @@ bool CloneProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, in
 	checkout_opts.progress_cb = CheckoutCallback;
 	checkout_opts.progress_payload = list;
 
-	git_remote_callbacks callbacks = GIT_REMOTE_CALLBACKS_INIT;
+	git_clone_options cloneOpts = GIT_CLONE_OPTIONS_INIT;
+	git_remote_callbacks& callbacks = cloneOpts.fetch_opts.callbacks;
 	callbacks.update_tips = RemoteUpdatetipsCallback;
 	callbacks.sideband_progress = RemoteProgressCallback;
 	callbacks.completion = RemoteCompletionCallback;
@@ -52,7 +53,6 @@ bool CloneProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, in
 	callbacks.payload = &cbpayload;
 
 	CSmartAnimation animate(list->m_pAnimate);
-	git_clone_options cloneOpts = GIT_CLONE_OPTIONS_INIT;
 	cloneOpts.bare = m_bBare;
 	cloneOpts.repository_cb = [](git_repository** out, const char* path, int bare, void* /*payload*/) -> int
 	{
@@ -66,7 +66,6 @@ bool CloneProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, in
 	struct remote_cb_payload
 	{
 		const char* remoteName;
-		const git_remote_callbacks* callbacks;
 	};
 
 	cloneOpts.remote_cb = [](git_remote** out, git_repository* repo, const char* /*name*/, const char* url, void* payload) -> int
@@ -79,16 +78,10 @@ bool CloneProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, in
 		if ((error = git_remote_create(origin.GetPointer(), repo, data->remoteName, url)) < 0)
 			return error;
 
-		auto remotePayload = (CGitProgressList::Payload*)data->callbacks->payload;
-		remotePayload->repo = repo;
-		if ((error = git_remote_set_callbacks(origin, data->callbacks)) < 0) // if remote_cb is used, one has to manually set remote_callbacks
-			return error;
-
 		*out = origin.Detach();
 		return 0;
 	};
 	remote_cb_payload remote_cb_payloadData;
-	remote_cb_payloadData.callbacks = &callbacks;
 	remote_cb_payloadData.remoteName = m_remote.IsEmpty() ? "origin" : CUnicodeUtils::GetUTF8(m_remote);
 	cloneOpts.remote_cb_payload = &remote_cb_payloadData;
 

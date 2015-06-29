@@ -1,7 +1,7 @@
-From 4ba2ba113c65196cbd2aba1ce85e01f310a53314 Mon Sep 17 00:00:00 2001
+From 397bc237c63758e6818e4fc08c7a97bb39270419 Mon Sep 17 00:00:00 2001
 From: Sven Strickroth <email@cs-ware.de>
 Date: Sat, 20 Jun 2015 17:00:03 +0200
-Subject: [PATCH] Allow to use %PROGRAMDATA%\Git\config file
+Subject: [PATCH 7/7] Allow to use %PROGRAMDATA%\Git\config file
 
 Signed-off-by: Sven Strickroth <email@cs-ware.de>
 ---
@@ -9,10 +9,10 @@ Signed-off-by: Sven Strickroth <email@cs-ware.de>
  1 file changed, 3 insertions(+)
 
 diff --git a/src/config.c b/src/config.c
-index d116a9d..ed36f8a 100644
+index 77cf573..12ec5a4 100644
 --- a/src/config.c
 +++ b/src/config.c
-@@ -1083,6 +1083,9 @@ int git_config_find_xdg(git_buf *path)
+@@ -1082,6 +1082,9 @@ int git_config_find_xdg(git_buf *path)
  int git_config_find_system(git_buf *path)
  {
  	git_buf_sanitize(path);
@@ -23,5 +23,5 @@ index d116a9d..ed36f8a 100644
  }
  
 -- 
-1.9.5.msysgit.1
+1.8.1.2
 

@@ -467,6 +467,9 @@
     <ClCompile Include="..\libgit2\src\win32\path_w32.c">
       <Filter>Source Files\win32</Filter>
     </ClCompile>
+    <ClCompile Include="..\libgit2\src\win32\buffer.c">
+      <Filter>Source Files\win32</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\libgit2\src\attr.h">
@@ -820,9 +823,6 @@
     <ClInclude Include="..\libgit2\include\git2\message.h">
       <Filter>Public Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\libgit2\include\git2\push.h">
-      <Filter>Public Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\libgit2\src\revwalk.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -1056,6 +1056,9 @@
     </ClInclude>
     <ClInclude Include="..\libgit2\src\integer.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\src\win32\buffer.h">
+      <Filter>Header Files\win32</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
