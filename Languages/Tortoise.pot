@@ -8745,7 +8745,7 @@ msgid "Shows a graphical representation of copies/tags/branches"
 msgstr ""
 
 #. Resource IDs: (193)
-msgid "Shows all files which were changed since the last update, locally and in the repository"
+msgid "Shows all files which were changed since the last commit."
 msgstr ""
 
 #. Resource IDs: (146)

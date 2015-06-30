@@ -331,7 +331,7 @@ END
 STRINGTABLE
 BEGIN
     IDS_MENUSHOWCHANGED     "Check for modi&fications"
-    IDS_MENUDESCSHOWCHANGED "Shows all files which were changed since the last update, locally and in the repository"
+    IDS_MENUDESCSHOWCHANGED "Shows all files which were changed since the last commit."
     IDS_MENUIGNORE          "Add to &ignore list"
     IDS_MENUDESCIGNORE      "Adds the selected file(s) or the filemask to the 'ignore' list"
     IDS_STATUSINCOMPLETE    "incomplete"
