@@ -4510,6 +4510,10 @@ msgstr ""
 msgid "Fetch"
 msgstr ""
 
+#. Resource IDs: (1210)
+msgid "Fetch && Re&base"
+msgstr ""
+
 #. Resource IDs: (210)
 msgid "Fetch from SVN repository"
 msgstr ""
@@ -4517,10 +4521,6 @@ msgstr ""
 #. Resource IDs: (1247)
 #, c-format
 msgid "Fetch from \"%s\""
-msgstr ""
-
-#. Resource IDs: (1210)
-msgid "Fetch&&Re&base"
 msgstr ""
 
 #. Resource IDs: (311)
