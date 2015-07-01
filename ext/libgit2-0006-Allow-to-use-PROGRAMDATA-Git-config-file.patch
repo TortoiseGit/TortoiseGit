@@ -1,7 +1,7 @@
-From 397bc237c63758e6818e4fc08c7a97bb39270419 Mon Sep 17 00:00:00 2001
+From b1606cfcf3d362246130596e85f9d4ce0e8514f4 Mon Sep 17 00:00:00 2001
 From: Sven Strickroth <email@cs-ware.de>
 Date: Sat, 20 Jun 2015 17:00:03 +0200
-Subject: [PATCH 7/7] Allow to use %PROGRAMDATA%\Git\config file
+Subject: [PATCH 6/6] Allow to use %PROGRAMDATA%\Git\config file
 
 Signed-off-by: Sven Strickroth <email@cs-ware.de>
 ---
@@ -23,5 +23,5 @@ index 77cf573..12ec5a4 100644
  }
  
 -- 
-1.8.1.2
+2.4.4.windows.2
 

@@ -1,7 +1,7 @@
-From 2ff053f5e7d516ab1f62be2841ed6b5256ca81f7 Mon Sep 17 00:00:00 2001
+From 5cff6a6469599a012b94b2f9d7519900ab19fd2f Mon Sep 17 00:00:00 2001
 From: Sven Strickroth <email@cs-ware.de>
 Date: Fri, 23 Jan 2015 17:15:16 +0100
-Subject: [PATCH 4/7] Make files with #CR!=#CRLF not fail with
+Subject: [PATCH 4/6] Make files with #CR!=#CRLF not fail with
  core.safecrlf=true
 
 Signed-off-by: Sven Strickroth <email@cs-ware.de>
@@ -83,5 +83,5 @@ index 3490f1e..d1bf7a4 100644
  	git_buf_free(&out);
  }
 -- 
-1.8.1.2
+2.4.4.windows.2
 

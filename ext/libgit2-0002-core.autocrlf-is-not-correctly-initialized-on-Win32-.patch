@@ -1,7 +1,7 @@
-From 3ce5aed4449b6e2dd9e4a11f4f306024d0fe8d02 Mon Sep 17 00:00:00 2001
+From 8ae26c725a1cd57dd8f577b670ecaeed66ac357f Mon Sep 17 00:00:00 2001
 From: Sven Strickroth <email@cs-ware.de>
 Date: Fri, 23 Jan 2015 15:33:36 +0100
-Subject: [PATCH 2/7] core.autocrlf is not correctly initialized on Win32 if
+Subject: [PATCH 2/6] core.autocrlf is not correctly initialized on Win32 if
  .gitattributes file exists and matches
 
 Knowing the proper core.autocrlf value is need for deciding whether the CRLF filter needs to be executed...
@@ -39,5 +39,5 @@ index 3a3c937..1290c01 100644
  			ca.auto_crlf == GIT_AUTO_CRLF_FALSE)
  			return GIT_PASSTHROUGH;
 -- 
-1.8.1.2
+2.4.4.windows.2
 

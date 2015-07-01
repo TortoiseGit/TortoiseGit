@@ -1,7 +1,7 @@
-From 16ebc13d93ed0433acadf7499a3834c7ba44d17f Mon Sep 17 00:00:00 2001
+From 15d05a0c3e9ad4dfe75d17e23304e338726de9f8 Mon Sep 17 00:00:00 2001
 From: Sven Strickroth <email@cs-ware.de>
 Date: Fri, 23 Jan 2015 15:34:14 +0100
-Subject: [PATCH 3/7] Adding a CRLF-file with core.autocrlf=input and
+Subject: [PATCH 3/6] Adding a CRLF-file with core.autocrlf=input and
  core.safecrlf=true does not fail as with vanilla git
 
 Signed-off-by: Sven Strickroth <email@cs-ware.de>
@@ -48,10 +48,10 @@ index 1290c01..29bbb5f 100644
  
  		/*
 diff --git a/tests/index/crlf.c b/tests/index/crlf.c
-index 803c141..38e7916 100644
+index d2f01d1..490d43a 100644
 --- a/tests/index/crlf.c
 +++ b/tests/index/crlf.c
-@@ -152,6 +152,9 @@ void test_index_crlf__safecrlf_true_autocrlf_input_text_auto_attr(void)
+@@ -358,6 +358,9 @@ void test_index_crlf__safecrlf_true_autocrlf_input_text_auto_attr(void)
  
  	cl_git_pass(git_oid_fromstr(&oid, FILE_OID_LF));
  	cl_assert_equal_oid(&oid, &entry->id);
@@ -61,7 +61,7 @@ index 803c141..38e7916 100644
  }
  
  void test_index_crlf__safecrlf_true_autocrlf_input_text__no_attr(void)
-@@ -169,6 +172,9 @@ void test_index_crlf__safecrlf_true_autocrlf_input_text__no_attr(void)
+@@ -375,6 +378,9 @@ void test_index_crlf__safecrlf_true_autocrlf_input_text__no_attr(void)
  
  	cl_git_pass(git_oid_fromstr(&oid, FILE_OID_LF));
  	cl_assert_equal_oid(&oid, &entry->id);
@@ -72,5 +72,5 @@ index 803c141..38e7916 100644
  
  void test_index_crlf__safecrlf_true_no_attrs(void)
 -- 
-1.8.1.2
+2.4.4.windows.2
 
