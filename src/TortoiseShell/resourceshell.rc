@@ -79,6 +79,7 @@ IDI_THUMB_UP            ICON                    "..\\Resources\\thumb_up.ico"
 IDI_REVISIONGRAPH       ICON                    "..\\Resources\\menurevisiongraph.ico"
 IDI_DAEMON              ICON                    "..\\Resources\\menudaemon.ico"
 IDI_MERGEABORT          ICON                    "..\\Resources\\menumergeabort.ico"
+IDI_BISECT              ICON                    "..\\Resources\\menubisect.ico"
 #endif    // Neutral resources
 /////////////////////////////////////////////////////////////////////////////
 

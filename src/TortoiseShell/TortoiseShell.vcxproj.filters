@@ -243,6 +243,9 @@
     <Image Include="..\Resources\menuadd.ico">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="..\Resources\menubisect.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
     <Image Include="..\Resources\menublame.ico">
       <Filter>Resource Files</Filter>
     </Image>
