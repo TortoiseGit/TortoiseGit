@@ -220,10 +220,10 @@ int CGitDiff::SubmoduleDiff(const CTGitPath * pPath, const CTGitPath * /*pPath2*
 
 			if (output.IsEmpty())
 			{
-				CMessageBox::Show(NULL, CString(MAKEINTRESOURCE(IDS_ERR_EMPTYDIFF)), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+				CMessageBox::Show(nullptr, IDS_ERR_EMPTYDIFF, IDS_APPNAME, MB_OK | MB_ICONERROR);
 				return -1;
 			}
-			else if (CMessageBox::Show(NULL, CString(MAKEINTRESOURCE(IDS_SUBMODULE_EMPTYDIFF)), _T("TortoiseGit"), 1, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_MSGBOX_YES)), CString(MAKEINTRESOURCE(IDS_MSGBOX_NO))) == 1)
+			else if (CMessageBox::Show(nullptr, IDS_SUBMODULE_EMPTYDIFF, IDS_APPNAME, 1, IDI_QUESTION, IDS_MSGBOX_YES, IDS_MSGBOX_NO) == 1)
 			{
 				CString sCmd;
 				sCmd.Format(_T("/command:subupdate /bkpath:\"%s\""), (LPCTSTR)g_Git.m_CurrentDir);
