@@ -115,7 +115,7 @@ int CGitRefCompareList::AddEntry(git_repository *repo, CString ref, CGitHash *ol
 	{
 		if (*oldHash == *newHash)
 		{
-			entry.change = CString(MAKEINTRESOURCE(IDS_SAME));
+			entry.change.LoadString(IDS_SAME);
 			entry.changeType = ChangeType::Same;
 		}
 		else
@@ -140,17 +140,17 @@ int CGitRefCompareList::AddEntry(git_repository *repo, CString ref, CGitHash *ol
 					git_time_t newTime = git_commit_committer(newCommit)->when.time;
 					if (oldTime < newTime)
 					{
-						entry.change = CString(MAKEINTRESOURCE(IDS_SUBMODULEDIFF_NEWERTIME));
+						entry.change.LoadString(IDS_SUBMODULEDIFF_NEWERTIME);
 						entry.changeType = ChangeType::NewerTime;
 					}
 					else if (oldTime > newTime)
 					{
-						entry.change = CString(MAKEINTRESOURCE(IDS_SUBMODULEDIFF_OLDERTIME));
+						entry.change.LoadString(IDS_SUBMODULEDIFF_OLDERTIME);
 						entry.changeType = ChangeType::OlderTime;
 					}
 					else
 					{
-						entry.change = CString(MAKEINTRESOURCE(IDS_SUBMODULEDIFF_SAMETIME));
+						entry.change.LoadString(IDS_SUBMODULEDIFF_SAMETIME);
 						entry.changeType = ChangeType::SameTime;
 					}
 				}
@@ -159,12 +159,12 @@ int CGitRefCompareList::AddEntry(git_repository *repo, CString ref, CGitHash *ol
 	}
 	else if (oldHash)
 	{
-		entry.change = CString(MAKEINTRESOURCE(IDS_DELETED));
+		entry.change.LoadString(IDS_DELETED);
 		entry.changeType = ChangeType::Deleted;
 	}
 	else if (newHash)
 	{
-		entry.change = CString(MAKEINTRESOURCE(IDS_NEW));
+		entry.change.LoadString(IDS_NEW);
 		entry.changeType = ChangeType::New;
 	}
 

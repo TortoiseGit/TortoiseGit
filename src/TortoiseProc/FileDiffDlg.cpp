@@ -138,7 +138,7 @@ void CFileDiffDlg::SetDiff(const CTGitPath * path, const CString &hash1, const C
 	if(hash1 == GIT_REV_ZERO)
 	{
 		m_rev1.m_CommitHash.Empty();
-		m_rev1.GetSubject() = CString(MAKEINTRESOURCE(IDS_git_DEPTH_WORKING));
+		m_rev1.GetSubject().LoadString(IDS_git_DEPTH_WORKING);
 	}
 	else
 	{
@@ -151,7 +151,7 @@ void CFileDiffDlg::SetDiff(const CTGitPath * path, const CString &hash1, const C
 	if(hash2 == GIT_REV_ZERO)
 	{
 		m_rev2.m_CommitHash.Empty();
-		m_rev2.GetSubject() = CString(MAKEINTRESOURCE(IDS_git_DEPTH_WORKING));
+		m_rev2.GetSubject().LoadString(IDS_git_DEPTH_WORKING);
 	}
 	else
 	{
@@ -170,7 +170,7 @@ void CFileDiffDlg::SetDiff(const CTGitPath * path, const GitRev &rev1)
 	}
 	m_rev1 = rev1;
 	m_rev2.m_CommitHash.Empty();
-	m_rev2.GetSubject() = CString(MAKEINTRESOURCE(IDS_PROC_PREVIOUSVERSION));
+	m_rev2.GetSubject().LoadString(IDS_PROC_PREVIOUSVERSION);
 
 	//this->GetDlgItem()->EnableWindow(FALSE);
 }

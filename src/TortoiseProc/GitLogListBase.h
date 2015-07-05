@@ -208,9 +208,9 @@ public:
 	void ResetWcRev(bool refresh = false)
 	{
 		m_wcRev.Clear();
-		m_wcRev.GetSubject() = CString(MAKEINTRESOURCE(IDS_LOG_WORKINGDIRCHANGES));
+		m_wcRev.GetSubject().LoadString(IDS_LOG_WORKINGDIRCHANGES);
 		m_wcRev.m_Mark = _T('-');
-		m_wcRev.GetBody() = CString(MAKEINTRESOURCE(IDS_LOG_FETCHINGSTATUS));
+		m_wcRev.GetBody().LoadString(IDS_LOG_FETCHINGSTATUS);
 		m_wcRev.m_CallDiffAsync = DiffAsync;
 		InterlockedExchange(&m_wcRev.m_IsDiffFiles, FALSE);
 		if (refresh && m_bShowWC)

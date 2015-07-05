@@ -5898,7 +5898,7 @@ void CBaseView::AskUserForNewLineEndingsAndTextType(int nTextId)
 	if (IsReadonly())
 		return; // nothing to be changed in read-only view
 	CEncodingDlg dlg;
-	dlg.view = CString(MAKEINTRESOURCE(nTextId));
+	dlg.view.LoadString(nTextId);
 	dlg.texttype = m_texttype;
 	dlg.lineendings = GetLineEndings();
 	if (dlg.DoModal() != IDOK)

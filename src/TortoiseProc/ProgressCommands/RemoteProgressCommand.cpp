@@ -56,7 +56,7 @@ int RemoteProgressCommand::RemoteUpdatetipsCallback(const char* refname, const g
 	{
 		if (git_oid_equal(oldOid, newOid))
 		{
-			change = CString(MAKEINTRESOURCE(IDS_SAME));
+			change.LoadString(IDS_SAME);
 		}
 		else
 		{
@@ -80,19 +80,19 @@ int RemoteProgressCommand::RemoteUpdatetipsCallback(const char* refname, const g
 					if (!git_commit_lookup(&newCommit, ptr->repo, newOid))
 						newTime = git_commit_committer(newCommit)->when.time;
 					if (oldTime < newTime)
-						change = CString(MAKEINTRESOURCE(IDS_SUBMODULEDIFF_NEWERTIME));
+						change.LoadString(IDS_SUBMODULEDIFF_NEWERTIME);
 					else if (oldTime > newTime)
-						change = CString(MAKEINTRESOURCE(IDS_SUBMODULEDIFF_OLDERTIME));
+						change.LoadString(IDS_SUBMODULEDIFF_OLDERTIME);
 					else
-						change = CString(MAKEINTRESOURCE(IDS_SUBMODULEDIFF_SAMETIME));
+						change.LoadString(IDS_SUBMODULEDIFF_SAMETIME);
 				}
 			}
 		}
 	}
 	else if (!git_oid_iszero(oldOid))
-		change = CString(MAKEINTRESOURCE(IDS_DELETED));
+		change.LoadString(IDS_DELETED);
 	else if (!git_oid_iszero(newOid))
-		change = CString(MAKEINTRESOURCE(IDS_NEW));
+		change.LoadString(IDS_NEW);
 
 	ptr->list->AddNotify(new RefUpdateNotificationData(refname, oldOid, newOid, change));
 	return 0;

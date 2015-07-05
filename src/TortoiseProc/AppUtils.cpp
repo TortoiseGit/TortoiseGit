@@ -1599,16 +1599,15 @@ void CAppUtils::DescribeConflictFile(bool mode, bool base,CString &descript)
 {
 	if(mode == FALSE)
 	{
-		descript = CString(MAKEINTRESOURCE(IDS_SVNACTION_DELETE));
+		descript.LoadString(IDS_SVNACTION_DELETE);
 		return;
 	}
 	if(base)
 	{
-		descript = CString(MAKEINTRESOURCE(IDS_SVNACTION_MODIFIED));
+		descript.LoadString(IDS_SVNACTION_MODIFIED);
 		return;
 	}
-	descript = CString(MAKEINTRESOURCE(IDS_PROC_CREATED));
-	return;
+	descript.LoadString(IDS_PROC_CREATED);
 }
 
 void CAppUtils::RemoveTempMergeFile(const CTGitPath& path)

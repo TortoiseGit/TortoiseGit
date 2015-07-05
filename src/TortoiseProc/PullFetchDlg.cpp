@@ -229,9 +229,9 @@ BOOL CPullFetchDlg::OnInitDialog()
 
 	CString sWindowTitle;
 	if(m_IsPull)
-		sWindowTitle = CString(MAKEINTRESOURCE(IDS_PROGRS_TITLE_PULL));
+		sWindowTitle.LoadString(IDS_PROGRS_TITLE_PULL);
 	else
-		sWindowTitle = CString(MAKEINTRESOURCE(IDS_PROGRS_TITLE_FETCH));
+		sWindowTitle.LoadString(IDS_PROGRS_TITLE_FETCH);
 
 	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);
 
@@ -299,11 +299,11 @@ void CPullFetchDlg::OnCbnSelchangeRemote()
 	key.Format(_T("remote.%s.tagopt"), (LPCTSTR)remote);
 	CString tagopt = g_Git.GetConfigValue(key);
 	if (tagopt == "--no-tags")
-		tagopt = CString(MAKEINTRESOURCE(IDS_NONE));
+		tagopt.LoadString(IDS_NONE);
 	else if (tagopt == "--tags")
-		tagopt = CString(MAKEINTRESOURCE(CAppUtils::GetMsysgitVersion() < 0x01090000 ? IDS_FETCH_TAGS_ONLY : IDS_ALL));
+		tagopt.LoadString(CAppUtils::GetMsysgitVersion() < 0x01090000 ? IDS_FETCH_TAGS_ONLY : IDS_ALL);
 	else
-		tagopt = CString(MAKEINTRESOURCE(IDS_FETCH_REACHABLE));
+		tagopt.LoadString(IDS_FETCH_REACHABLE);
 	CString value;
 	value.Format(_T("%s: %s"), (LPCTSTR)CString(MAKEINTRESOURCE(IDS_DEFAULT)), (LPCTSTR)tagopt);
 	GetDlgItem(IDC_STATIC_TAGOPT)->SetWindowText(value);

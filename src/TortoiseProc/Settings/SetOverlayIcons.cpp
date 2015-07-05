@@ -108,13 +108,13 @@ BOOL CSetOverlayIcons::OnInitDialog()
 			m_cIconSet.SetCurSel(i);
 	}
 
-	m_sNormal = CString(MAKEINTRESOURCE(IDS_STATUSNORMAL));
-	m_sModified = CString(MAKEINTRESOURCE(IDS_STATUSMODIFIED));
-	m_sConflicted = CString(MAKEINTRESOURCE(IDS_STATUSCONFLICTED));
-	m_sDeleted = CString(MAKEINTRESOURCE(IDS_STATUSDELETED));
-	m_sAdded = CString(MAKEINTRESOURCE(IDS_STATUSADDED));
-	m_sIgnored = CString(MAKEINTRESOURCE(IDS_STATUSIGNORED));
-	m_sUnversioned = CString(MAKEINTRESOURCE(IDS_STATUSUNVERSIONED));
+	m_sNormal.LoadString(IDS_STATUSNORMAL);
+	m_sModified.LoadString(IDS_STATUSMODIFIED);
+	m_sConflicted.LoadString(IDS_STATUSCONFLICTED);
+	m_sDeleted.LoadString(IDS_STATUSDELETED);
+	m_sAdded.LoadString(IDS_STATUSADDED);
+	m_sIgnored.LoadString(IDS_STATUSIGNORED);
+	m_sUnversioned.LoadString(IDS_STATUSUNVERSIONED);
 
 	m_sReadOnly.LoadString(IDS_SETTINGS_READONLYNAME);
 	m_sLocked.LoadString(IDS_SETTINGS_LOCKEDNAME);

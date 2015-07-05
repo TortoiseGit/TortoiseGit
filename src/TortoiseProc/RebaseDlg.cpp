@@ -986,7 +986,7 @@ int CRebaseDlg::FinishRebase()
 	while (m_ctrlTabCtrl.GetTabsNum() > 1)
 		m_ctrlTabCtrl.RemoveTab(0);
 	m_CtrlStatusText.SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_REBASEFINISHED)));
-	m_sStatusText = CString(MAKEINTRESOURCE(IDS_PROC_REBASEFINISHED));
+	m_sStatusText.LoadString(IDS_PROC_REBASEFINISHED);
 	m_bStatusWarning = false;
 	m_CtrlStatusText.Invalidate();
 

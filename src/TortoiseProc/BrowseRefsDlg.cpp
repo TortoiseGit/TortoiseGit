@@ -1227,9 +1227,9 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 	case eCmd_EditBranchDescription:
 		{
 			CInputDlg dlg;
-			dlg.m_sHintText = CString(MAKEINTRESOURCE(IDS_PROC_BROWSEREFS_EDITDESCRIPTION));
+			dlg.m_sHintText.LoadString(IDS_PROC_BROWSEREFS_EDITDESCRIPTION);
 			dlg.m_sInputText = selectedLeafs[0]->m_csDescription;
-			dlg.m_sTitle = CString(MAKEINTRESOURCE(IDS_PROC_BROWSEREFS_EDITDESCRIPTION));
+			dlg.m_sTitle.LoadString(IDS_PROC_BROWSEREFS_EDITDESCRIPTION);
 			dlg.m_bUseLogWidth = true;
 			if(dlg.DoModal() == IDOK)
 			{
