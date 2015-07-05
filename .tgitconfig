@@ -1,5 +1,5 @@
 [bugtraq]
-	url = https://code.google.com/p/tortoisegit/issues/detail?id=%BUGID%
+	url = https://tortoisegit.org/issue/%BUGID%
 	logregex = "[Ii]ssues?:?(\\s*(,|and)?\\s*#?\\d+)+\n(\\d+)"
 	warnifnoissue = false
 

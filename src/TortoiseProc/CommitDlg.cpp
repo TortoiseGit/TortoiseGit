@@ -670,8 +670,8 @@ void CCommitDlg::OnOK()
 	{
 		/*
 			Do not use the libgit2 implementation right now, since it has several flaws:
-			* https://code.google.com/p/tortoisegit/issues/detail?id=1690: possible access denied problem
-			* https://code.google.com/p/tortoisegit/issues/detail?id=2224: filters not correctly applied
+			* https://tortoisegit.org/issue/1690: possible access denied problem
+			* https://tortoisegit.org/issue/2224: filters not correctly applied
 			* changes to x-bit are not correctly committed, since we reset the index
 		*/
 		bAddSuccess = false;

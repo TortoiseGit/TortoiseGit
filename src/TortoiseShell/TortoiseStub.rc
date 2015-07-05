@@ -26,7 +26,7 @@ BEGIN
     BEGIN
         BLOCK "040004e4"
         BEGIN
-            VALUE "CompanyName", "http://tortoisegit.org/"
+            VALUE "CompanyName", "https://tortoisegit.org/"
             VALUE "FileDescription", "TortoiseGit shell extension client"
             VALUE "FileVersion", STRFILEVER
             VALUE "InternalName", "TortoiseStub.dll"

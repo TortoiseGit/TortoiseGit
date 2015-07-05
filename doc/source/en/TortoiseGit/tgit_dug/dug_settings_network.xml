@@ -72,10 +72,7 @@
 		Finally, setting up SSH on clients is a non-trivial process
 		which is beyond the scope of this help file. However, you can find a
 		guide in the TortoiseGit FAQ listed under
-		<xref linkend="tgit-ssh-howto"/> or the latest version 
-		<ulink url="https://code.google.com/p/tortoisegit/wiki/UsingPuTTY">
-			<citetitle>Git/TortoiseGit SSH How-To</citetitle>
-		</ulink>.
+		<xref linkend="tgit-ssh-howto"/>.
 	</para>
 
 	<sect3 id="tgit-dug-settings-network-email">

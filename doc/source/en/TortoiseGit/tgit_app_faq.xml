@@ -11,7 +11,7 @@
 			it is sometimes hard to keep the documentation completely
 			up to date. 
 			
-			<ulink url="http://redir.tortoisegit.org/faq">
+			<ulink url="https://tortoisegit.org/faq">
 				<citetitle>online FAQ</citetitle>
 			</ulink>
 			
@@ -22,7 +22,7 @@
 		</para>
 		<para>
 			We also maintain a project
-			<ulink url="https://code.google.com/p/tortoisegit/issues/list">
+			<ulink url="https://tortoisegit.org/issues">
 				<citetitle>Issue Tracker</citetitle>
 			</ulink>
 			which tells you about some of the things we have on our To-Do list,

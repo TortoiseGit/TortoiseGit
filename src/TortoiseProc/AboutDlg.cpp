@@ -111,8 +111,8 @@ BOOL CAboutDlg::OnInitDialog()
 	SetTimer(ID_EFFECTTIMER, 40, NULL);
 	SetTimer(ID_DROPTIMER, 1500, NULL);
 
-	m_cWebLink.SetURL(_T("http://tortoisegit.org/"));
-	m_cSupportLink.SetURL(_T("http://redir.tortoisegit.org/donate"));
+	m_cWebLink.SetURL(_T("https://tortoisegit.org/"));
+	m_cSupportLink.SetURL(_T("https://tortoisegit.org/donate"));
 
 	CenterWindow(CWnd::FromHandle(hWndExplorer));
 	GetDlgItem(IDOK)->SetFocus();

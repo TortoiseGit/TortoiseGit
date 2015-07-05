@@ -79,7 +79,7 @@
 							TortoiseGit shows only the
 							issue number and not the link to it.
 							e.g the TortoiseGit project is using
-							<systemitem class="url">https://code.google.com/p/tortoisegit/issues/detail?id=%BUGID%</systemitem>
+							<systemitem class="url">https://tortoisegit.org/issue/%BUGID%</systemitem>
 						</para>
 					</listitem>
 				</varlistentry>

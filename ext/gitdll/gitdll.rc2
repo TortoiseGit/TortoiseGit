@@ -31,11 +31,11 @@ BEGIN
     BEGIN
         BLOCK "040004e4"
         BEGIN
-            VALUE "CompanyName", "http://tortoisegit.org/\0"
+            VALUE "CompanyName", "https://tortoisegit.org/\0"
             VALUE "FileDescription", "libgit (based on git version " GIT_VERSION ") implementation for TortoiseGit\0"
             VALUE "FileVersion", STRFILEVER
             VALUE "InternalName", "gitdll.dll\0"
-            VALUE "LegalCopyright", "Copyright (C) 2008-2014 - TortoiseGit, Copyright (C) 2005-2013 - Git developers\0"
+            VALUE "LegalCopyright", "Copyright (C) 2008-2015 - TortoiseGit, Copyright (C) 2005-2013 - Git developers\0"
             VALUE "OriginalFilename", "gitdll.dll\0"
             VALUE "ProductName", "TortoiseGit\0"
             VALUE "ProductVersion", STRPRODUCTVER

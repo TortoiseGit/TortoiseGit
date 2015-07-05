@@ -45,7 +45,7 @@
 	</tip>
 	<important>
 		<para>
-			TortoiseGit currently cannot rebase merge commits (<ulink url="https://code.google.com/p/tortoisegit/issues/detail?id=2314">issue #2314</ulink>).
+			TortoiseGit currently cannot rebase merge commits (<ulink url="https://tortoisegit.org/issue/2314">issue #2314</ulink>).
 		</para>
 	</important>
 </sect1>

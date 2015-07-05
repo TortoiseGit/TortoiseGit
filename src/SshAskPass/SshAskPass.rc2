@@ -38,11 +38,11 @@ BEGIN
     BEGIN
         BLOCK "040004e4"
         BEGIN
-            VALUE "CompanyName", "http://tortoisegit.org/\0"
+            VALUE "CompanyName", "https://tortoisegit.org/\0"
             VALUE "FileDescription", "TortoiseGit - git CLI stdin wrapper\0"
             VALUE "FileVersion", STRFILEVER
             VALUE "InternalName", "SshAskPass.exe\0"
-            VALUE "LegalCopyright", "Copyright (C) 2009-2014 - TortoiseGit\0"
+            VALUE "LegalCopyright", "Copyright (C) 2009-2015 - TortoiseGit\0"
             VALUE "OriginalFilename", "SshAskPass.exe\0"
             VALUE "ProductName", "SSHAskPass\0"
             VALUE "ProductVersion", STRPRODUCTVER

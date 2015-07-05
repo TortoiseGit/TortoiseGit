@@ -31,11 +31,11 @@ BEGIN
     BEGIN
         BLOCK "040004e4"
         BEGIN
-            VALUE "CompanyName", "http://tortoisegit.org/\0"
+            VALUE "CompanyName", "https://tortoisegit.org/\0"
             VALUE "FileDescription", "TortoiseGit client\0"
             VALUE "FileVersion", STRFILEVER
             VALUE "InternalName", "TortoiseGitProc.exe\0"
-            VALUE "LegalCopyright", "Copyright (C) 2008-2015 - TortoiseGit and Copyright (C) 2003-2014 - TortoiseSVN\0"
+            VALUE "LegalCopyright", "Copyright (C) 2008-2015 - TortoiseGit and Copyright (C) 2003-2015 - TortoiseSVN\0"
             VALUE "OriginalFilename", "TortoiseGitProc.exe\0"
             VALUE "ProductName", "TortoiseGit\0"
             VALUE "ProductVersion", STRPRODUCTVER

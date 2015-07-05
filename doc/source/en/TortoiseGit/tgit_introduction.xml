@@ -74,7 +74,7 @@
 			who also started using TortoiseGit as their Git client.
 		</para>
 		<para>
-			For more information what changed over the releases check out the <ulink url="http://redir.tortoisegit.org/releasenotes">latest release notes</ulink> or inspect our <ulink url="http://redir.tortoisegit.org/sourcecode">git commit history</ulink>.
+			For more information what changed over the releases check out the <ulink url="https://tortoisegit.org/releasenotes">latest release notes</ulink> or inspect our <ulink url="https://tortoisegit.org/sourcecode">git commit history</ulink>.
 		</para>
 	</sect1>
 	<!-- ================================================================= -->
@@ -277,11 +277,11 @@
 				different languages, so you may be able to download a language
 				pack to suit your needs.
 				You can find the language packs on our 
-				<ulink url="http://redir.tortoisegit.org/download">
+				<ulink url="https://tortoisegit.org/download">
 					<citetitle>translation status page</citetitle>
 				</ulink>.
 				And if there is no language pack available yet, why not join
-				the team and <ulink url="http://redir.tortoisegit.org/translate">submit your own translation</ulink> ;-)
+				the team and <ulink url="https://tortoisegit.org/translate">submit your own translation</ulink> ;-)
 			</para>
 			<para>
 				Each language pack is packaged as a <literal>.msi</literal> installer.

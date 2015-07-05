@@ -64,7 +64,7 @@ UINT __stdcall TerminateCache(MSIHANDLE /*hModule*/)
 
 UINT __stdcall OpenDonatePage(MSIHANDLE /*hModule*/)
 {
-	ShellExecute(NULL, _T("open"), _T("http://redir.tortoisegit.org/donate"), NULL,NULL, SW_SHOW);
+	ShellExecute(NULL, _T("open"), _T("https://tortoisegit.org/donate"), NULL,NULL, SW_SHOW);
 	return ERROR_SUCCESS;
 }
 

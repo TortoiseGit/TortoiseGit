@@ -51,7 +51,7 @@ CCheckForUpdatesDlg::CCheckForUpdatesDlg(CWnd* pParent /*=NULL*/)
 	, m_bThreadRunning(FALSE)
 	, m_updateDownloader(nullptr)
 {
-	m_sUpdateDownloadLink = _T("http://redir.tortoisegit.org/download");
+	m_sUpdateDownloadLink = _T("https://tortoisegit.org/download");
 }
 
 CCheckForUpdatesDlg::~CCheckForUpdatesDlg()
@@ -493,7 +493,7 @@ void CCheckForUpdatesDlg::FillChangelog(CAutoConfig& versioncheck, bool official
 	ProjectProperties pp;
 	pp.lProjectLanguage = -1;
 	if (versioncheck.GetString(_T("tortoisegit.issuesurl"), pp.sUrl))
-		pp.sUrl = _T("https://code.google.com/p/tortoisegit/issues/detail?id=%BUGID%");
+		pp.sUrl = _T("https://tortoisegit.org/issue/%BUGID%");
 	if (!pp.sUrl.IsEmpty())
 	{
 		pp.SetCheckRe(_T("[Ii]ssues?:?(\\s*(,|and)?\\s*#?\\d+)+"));
