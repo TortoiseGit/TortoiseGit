@@ -163,7 +163,10 @@ void CRefLogDlg::OnCbnSelchangeRef()
 	if (ref == _T("refs/stash"))
 	{
 		GetDlgItem(IDC_REFLOG_BUTTONCLEARSTASH)->ShowWindow(SW_SHOW);
-		GetDlgItem(IDC_REFLOG_BUTTONCLEARSTASH)->EnableWindow((m_RefList.m_arShownList.GetSize() > 0));
+		BOOL enabled = m_RefList.m_arShownList.GetSize() > 0;
+		GetDlgItem(IDC_REFLOG_BUTTONCLEARSTASH)->EnableWindow(enabled);
+		if (!enabled)
+			GetDlgItem(IDOK)->SetFocus();
 	}
 	else
 		GetDlgItem(IDC_REFLOG_BUTTONCLEARSTASH)->ShowWindow(SW_HIDE);
