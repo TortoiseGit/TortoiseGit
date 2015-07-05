@@ -2160,10 +2160,10 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 			{
 				CString temp;
 				PathCanonicalize(CStrBuf(temp, MAX_PATH), possibleShExe);
-				sh.Format(L"\"%s\"", (LPCTSTR)temp);
+				if (!sh.IsEmpty()) // remember only the first found sh.exe, but make sure all possible bin-directories are on the PATH
+					sh.Format(L"\"%s\"", (LPCTSTR)temp);
 				// we need to put the usr\bin folder on the path for Git for Windows based on msys2
 				m_Environment.AddToPath(temp.Left(temp.GetLength() - 7)); // 7 = len("\\sh.exe")
-				break;
 			}
 		}
 		if (git_filter_register("filter", git_filter_filter_new(sh, m_Environment), GIT_FILTER_DRIVER_PRIORITY))
