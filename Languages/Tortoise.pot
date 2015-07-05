@@ -10632,6 +10632,11 @@ msgstr ""
 msgid "author"
 msgstr ""
 
+#. Resource IDs: (1421)
+#, c-format
+msgid "author (>= 0.5%)"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "based on TortoiseSVN (http://www.tortoisesvn.net/)"
 msgstr ""

@@ -1014,7 +1014,7 @@ void CStatGraphDlg::ShowPercentageOfAuthorship()
 	// Set up the graph.
 	MyGraphSeries * graphData = PreViewGraph(IDS_STATGRAPH_PERCENTAGE_OF_AUTHORSHIP,
 		IDS_STATGRAPH_PERCENTAGE_OF_AUTHORSHIPY,
-		IDS_STATGRAPH_COMMITSBYAUTHORX);
+		IDS_STATGRAPH_COMMITSBYAUTHORMOREX);
 	if(graphData == NULL) return;
 
 	// Find out which authors are to be shown and which are to be skipped.

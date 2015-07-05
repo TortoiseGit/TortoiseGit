@@ -3505,6 +3505,8 @@ BEGIN
                             "The credential helper URL ""%s"" already exists.\nDo you want to overwrite it?"
     IDS_GITCREDENTIAL_SAVEHELPER 
                             "The credential helper was changed.\nDo you want to save now or discard changes?"
+    IDS_STATGRAPH_COMMITSBYAUTHORMOREX 
+                            "author (>= 0.5%)"
     IDS_RESET_MIXED         "Mixed"
     IDS_RESET_HARD          "Hard"
 END
