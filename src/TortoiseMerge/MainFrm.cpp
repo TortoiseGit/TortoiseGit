@@ -640,7 +640,7 @@ BOOL CMainFrame::PatchFile(CString sFilePath, bool /*bContentMods*/, bool bPropM
 				m_Data.m_yourFile.SetFileName(CTempFiles::Instance().GetTempFilePathString());
 				m_Data.m_yourFile.CreateEmptyFile();
 				CString temp;
-				temp.Format(_T("%s %s"), (LPCTSTR)CPathUtils::GetFileNameFromPath(sFilePath), CString(MAKEINTRESOURCE(IDS_NOTFOUNDVIEWTITLEINDICATOR)));
+				temp.Format(_T("%s %s"), (LPCTSTR)CPathUtils::GetFileNameFromPath(sFilePath), (LPCTSTR)CString(MAKEINTRESOURCE(IDS_NOTFOUNDVIEWTITLEINDICATOR)));
 				m_Data.m_yourFile.SetDescriptiveName(temp);
 			}
 			else

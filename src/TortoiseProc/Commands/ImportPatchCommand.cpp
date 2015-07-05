@@ -46,7 +46,7 @@ bool ImportPatchCommand::Execute()
 			CString format;
 			format.LoadString(IDS_ERR_NOT_REPOSITORY);
 			CString err;
-			err.Format(format,str);
+			err.Format(format, (LPCTSTR)str);
 			CMessageBox::Show(NULL,err,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
 			return FALSE;
 		}

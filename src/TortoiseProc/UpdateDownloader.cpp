@@ -36,7 +36,7 @@ CUpdateDownloader::CUpdateDownloader(HWND hwnd, bool force, UINT msg, CEvent *ev
 		m_sWindowsServicePack.Format(L"SP%ld", inf.wServicePackMajor);
 
 	CString userAgent;
-	userAgent.Format(L"TortoiseGit %s; %s; Windows%s%s %s%s%s", _T(STRFILEVER), _T(TGIT_PLATFORM), m_sWindowsPlatform.IsEmpty() ? _T("") : _T(" "), m_sWindowsPlatform, m_sWindowsVersion, m_sWindowsServicePack.IsEmpty() ? _T("") : _T(" "), m_sWindowsServicePack);
+	userAgent.Format(L"TortoiseGit %s; %s; Windows%s%s %s%s%s", _T(STRFILEVER), _T(TGIT_PLATFORM), m_sWindowsPlatform.IsEmpty() ? _T("") : _T(" "), (LPCTSTR)m_sWindowsPlatform, (LPCTSTR)m_sWindowsVersion, m_sWindowsServicePack.IsEmpty() ? _T("") : _T(" "), (LPCTSTR)m_sWindowsServicePack);
 	hOpenHandle = InternetOpen(userAgent, INTERNET_OPEN_TYPE_PRECONFIG, nullptr, nullptr, 0);
 }
 
@@ -98,14 +98,14 @@ DWORD CUpdateDownloader::DownloadFile(const CString& url, const CString& dest, b
 	if (!hConnectHandle)
 	{
 		DWORD err = GetLastError();
-		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Download of %s failed on InternetConnect: %d\n"), url, err);
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Download of %s failed on InternetConnect: %d\n"), (LPCTSTR)url, err);
 		return err;
 	}
 	HINTERNET hResourceHandle = HttpOpenRequest(hConnectHandle, nullptr, urlpath, nullptr, nullptr, nullptr, INTERNET_FLAG_KEEP_CONNECTION | (isHttps ? INTERNET_FLAG_SECURE : 0), 0);
 	if (!hResourceHandle)
 	{
 		DWORD err = GetLastError();
-		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Download of %s failed on HttpOpenRequest: %d\n"), url, err);
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Download of %s failed on HttpOpenRequest: %d\n"), (LPCTSTR)url, err);
 		InternetCloseHandle(hConnectHandle);
 		return err;
 	}
@@ -124,7 +124,7 @@ resend:
 		else if (!httpsendrequest)
 		{
 			DWORD err = GetLastError();
-			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Download of %s failed: %d, %d\n"), url, httpsendrequest, err);
+			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Download of %s failed: %d, %d\n"), (LPCTSTR)url, httpsendrequest, err);
 			InternetCloseHandle(hResourceHandle);
 			InternetCloseHandle(hConnectHandle);
 			return err;
@@ -141,7 +141,7 @@ resend:
 		DWORD length = sizeof(statusCode);
 		if (!HttpQueryInfo(hResourceHandle, HTTP_QUERY_STATUS_CODE | HTTP_QUERY_FLAG_NUMBER, (LPVOID)&statusCode, &length, NULL) || statusCode != 200)
 		{
-			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Download of %s returned %d\n"), url, statusCode);
+			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Download of %s returned %d\n"), (LPCTSTR)url, statusCode);
 			InternetCloseHandle(hResourceHandle);
 			InternetCloseHandle(hConnectHandle);
 			if (statusCode == 404)
@@ -166,7 +166,7 @@ resend:
 		if (!InternetQueryDataAvailable(hResourceHandle, &size, 0, 0))
 		{
 			DWORD err = GetLastError();
-			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Download of %s failed on InternetQueryDataAvailable: %d\n"), url, err);
+			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Download of %s failed on InternetQueryDataAvailable: %d\n"), (LPCTSTR)url, err);
 			InternetCloseHandle(hResourceHandle);
 			InternetCloseHandle(hConnectHandle);
 			return err;
@@ -178,7 +178,7 @@ resend:
 		{
 			delete[] lpszData;
 			DWORD err = GetLastError();
-			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Download of %s failed on InternetReadFile: %d\n"), url, err);
+			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Download of %s failed on InternetReadFile: %d\n"), (LPCTSTR)url, err);
 			InternetCloseHandle(hResourceHandle);
 			InternetCloseHandle(hConnectHandle);
 			return err;
@@ -227,7 +227,7 @@ resend:
 	InternetCloseHandle(hConnectHandle);
 	if (downloadedSum == 0)
 	{
-		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Download size of %s was zero.\n"), url);
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Download size of %s was zero.\n"), (LPCTSTR)url);
 		return (DWORD)INET_E_DOWNLOAD_FAILURE;
 	}
 	return ERROR_SUCCESS;

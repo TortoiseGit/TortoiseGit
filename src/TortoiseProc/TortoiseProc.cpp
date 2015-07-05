@@ -304,7 +304,7 @@ BOOL CTortoiseProcApp::InitInstance()
 			return FALSE;
 		}
 		CString newCmd;
-		newCmd.Format(_T("/command:clone /url:\"%s\" /hasurlhandler"), url);
+		newCmd.Format(_T("/command:clone /url:\"%s\" /hasurlhandler"), (LPCTSTR)url);
 		parser = CCmdLineParser(newCmd);
 	}
 
@@ -559,7 +559,7 @@ void CTortoiseProcApp::CheckUpgrade()
 {
 	CRegString regVersion = CRegString(_T("Software\\TortoiseGit\\CurrentVersion"));
 	CString sVersion = regVersion;
-	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Current TGit Version %s\n"), sVersion);
+	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Current TGit Version %s\n"), (LPCTSTR)sVersion);
 	if (sVersion.Compare(_T(STRPRODUCTVER))==0)
 		return;
 	// we're starting the first time with a new version!

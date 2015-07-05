@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012, 2014 - TortoiseGit
+// Copyright (C) 2012, 2014-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -229,7 +229,7 @@ void CSubmoduleDiffDlg::SetDiff(CString path, bool toIsWorkingCopy, CString from
 void CSubmoduleDiffDlg::ShowLog(CString hash)
 {
 	CString sCmd;
-	sCmd.Format(_T("/command:log /path:\"%s\" /endrev:%s"), g_Git.CombinePath(m_sPath), hash);
+	sCmd.Format(_T("/command:log /path:\"%s\" /endrev:%s"), (LPCTSTR)g_Git.CombinePath(m_sPath), (LPCTSTR)hash);
 	CAppUtils::RunTortoiseGitProc(sCmd, false, false);
 }
 
@@ -246,13 +246,13 @@ void CSubmoduleDiffDlg::OnBnClickedLog2()
 void CSubmoduleDiffDlg::OnBnClickedShowDiff()
 {
 	CString sCmd;
-	sCmd.Format(_T("/command:showcompare /path:\"%s\" /revision1:%s /revision2:%s"), g_Git.CombinePath(m_sPath), m_sFromHash, ((m_bDirty && m_nChangeType == CGitDiff::Unknown) || m_ctrlShowDiffBtn.GetCurrentEntry() == 1) ? GIT_REV_ZERO : m_sToHash);
+	sCmd.Format(_T("/command:showcompare /path:\"%s\" /revision1:%s /revision2:%s"), (LPCTSTR)g_Git.CombinePath(m_sPath), (LPCTSTR)m_sFromHash, ((m_bDirty && m_nChangeType == CGitDiff::Unknown) || m_ctrlShowDiffBtn.GetCurrentEntry() == 1) ? GIT_REV_ZERO : (LPCTSTR)m_sToHash);
 	CAppUtils::RunTortoiseGitProc(sCmd, false, false);
 }
 
 void CSubmoduleDiffDlg::OnBnClickedButtonUpdate()
 {
 	CString sCmd;
-	sCmd.Format(_T("/command:subupdate /bkpath:\"%s\" /selectedpath:\"%s\""), g_Git.m_CurrentDir, m_sPath);
+	sCmd.Format(_T("/command:subupdate /bkpath:\"%s\" /selectedpath:\"%s\""), (LPCTSTR)g_Git.m_CurrentDir, (LPCTSTR)m_sPath);
 	CAppUtils::RunTortoiseGitProc(sCmd);
 }

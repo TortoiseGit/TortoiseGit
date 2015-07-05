@@ -194,7 +194,7 @@ bool CGitStatusCache::SaveCache()
 			fclose(pFile);
 		}
 	}
-	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": cache saved to disk at %s\n"), path);
+	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": cache saved to disk at %s\n"), (LPCTSTR)path);
 	return true;
 error:
 	fclose(pFile);
@@ -436,7 +436,7 @@ bool CGitStatusCache::RemoveCacheForDirectory(CCachedDirectory * cdir)
 		itMap = m_directoryCache.lower_bound(cdir->m_directoryPath);
 	} while (itMap != m_directoryCache.end() && cdir->m_directoryPath.IsAncestorOf(itMap->first));
 
-	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": removed from cache %s\n"), cdir->m_directoryPath.GetWinPathString());
+	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": removed from cache %s\n"), cdir->m_directoryPath.GetWinPath());
 	delete cdir;
 	return true;
 }

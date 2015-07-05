@@ -365,7 +365,7 @@ BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
 	{
 		if (filenamesToPatch[m_arFileDiffs.GetAt(i)->sFilePath] > 1 && m_arFileDiffs.GetAt(i)->sFilePath != _T("NUL"))
 		{
-			m_sErrorMessage.Format(IDS_ERR_PATCH_FILENAMENOTUNIQUE, m_arFileDiffs.GetAt(i)->sFilePath);
+			m_sErrorMessage.Format(IDS_ERR_PATCH_FILENAMENOTUNIQUE, (LPCTSTR)m_arFileDiffs.GetAt(i)->sFilePath);
 			FreeMemory();
 			return FALSE;
 		}
@@ -374,7 +374,7 @@ BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
 		{
 			if (filenamesToPatch[m_arFileDiffs.GetAt(i)->sFilePath2] > 1 && m_arFileDiffs.GetAt(i)->sFilePath2 != _T("NUL"))
 			{
-				m_sErrorMessage.Format(IDS_ERR_PATCH_FILENAMENOTUNIQUE, m_arFileDiffs.GetAt(i)->sFilePath);
+				m_sErrorMessage.Format(IDS_ERR_PATCH_FILENAMENOTUNIQUE, (LPCTSTR)m_arFileDiffs.GetAt(i)->sFilePath);
 				FreeMemory();
 				return FALSE;
 			}
@@ -570,7 +570,7 @@ int CPatch::PatchFile(const int strip, int nIndex, const CString& sPatchPath, co
 					{
 						if (k >= chunk->arLines.GetCount())
 							k = j;
-						m_sErrorMessage.Format(IDS_ERR_PATCH_DOESNOTMATCH, (LPCTSTR)PatchLines.GetAt(lAddLine - 1), chunk->arLines.GetAt(k));
+						m_sErrorMessage.Format(IDS_ERR_PATCH_DOESNOTMATCH, (LPCTSTR)PatchLines.GetAt(lAddLine - 1), (LPCTSTR)chunk->arLines.GetAt(k));
 						return FALSE;
 					}
 				}

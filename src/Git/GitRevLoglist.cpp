@@ -402,7 +402,7 @@ int GitRevLoglist::GetRefLog(const CString& ref, std::vector<GitRevLoglist>& ref
 
 			GitRevLoglist rev;
 			rev.m_CommitHash = (const unsigned char*)git_reflog_entry_id_new(entry)->id;
-			rev.m_Ref.Format(_T("%s@{%d}"), ref, i);
+			rev.m_Ref.Format(_T("%s@{%d}"), (LPCTSTR)ref, i);
 			rev.GetCommitterDate() = CTime(git_reflog_entry_committer(entry)->when.time);
 			if (git_reflog_entry_message(entry) != nullptr)
 			{
@@ -449,7 +449,7 @@ int GitRevLoglist::GetRefLog(const CString& ref, std::vector<GitRevLoglist>& ref
 		for (size_t i = tmp.size(), id = 0; i > 0; --i, ++id)
 		{
 			GitRevLoglist rev = tmp[i - 1];
-			rev.m_Ref.Format(_T("%s@{%ld}"), ref, id);
+			rev.m_Ref.Format(_T("%s@{%ld}"), (LPCTSTR)ref, id);
 			refloglist.push_back(rev);
 		}
 		return 0;
@@ -468,7 +468,7 @@ int GitRevLoglist::GetRefLog(const CString& ref, std::vector<GitRevLoglist>& ref
 		return 0;
 
 	CString cmd, out;
-	cmd.Format(_T("git.exe reflog show --pretty=\"%%H %%gD: %%gs\" --date=raw %s"), ref);
+	cmd.Format(_T("git.exe reflog show --pretty=\"%%H %%gD: %%gs\" --date=raw %s"), (LPCTSTR)ref);
 	if (g_Git.Run(cmd, &out, &error, CP_UTF8))
 		return -1;
 
@@ -484,7 +484,7 @@ int GitRevLoglist::GetRefLog(const CString& ref, std::vector<GitRevLoglist>& ref
 
 		GitRevLoglist rev;
 		rev.m_CommitHash = one.Left(refPos);
-		rev.m_Ref.Format(_T("%s@{%d}"), ref, i++);
+		rev.m_Ref.Format(_T("%s@{%d}"), (LPCTSTR)ref, i++);
 		int prefixPos = one.Find(prefix, refPos + 1);
 		if (prefixPos != refPos + 1)
 			continue;

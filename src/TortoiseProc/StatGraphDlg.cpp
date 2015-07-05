@@ -808,7 +808,7 @@ int CStatGraphDlg::GatherData(BOOL fetchdiff, BOOL keepFetchedData)
 
 		if (progress.IsVisible() && (GetTickCount() - starttime > 100))
 		{
-			progress.FormatNonPathLine(2, _T("%s: %s"), pLogEntry->m_CommitHash.ToString().Left(g_Git.GetShortHASHLength()), pLogEntry->GetSubject());
+			progress.FormatNonPathLine(2, _T("%s: %s"), (LPCTSTR)pLogEntry->m_CommitHash.ToString().Left(g_Git.GetShortHASHLength()), (LPCTSTR)pLogEntry->GetSubject());
 			progress.SetProgress64(i, m_ShowList.GetCount());
 			starttime = GetTickCount();
 		}
@@ -1262,12 +1262,12 @@ void CStatGraphDlg::ShowStats()
 		nWeeks = 1;
 	// Adjust the labels with the unit type (week, month, ...)
 	CString labelText;
-	labelText.Format(IDS_STATGRAPH_NUMBEROFUNIT, GetUnitString());
+	labelText.Format(IDS_STATGRAPH_NUMBEROFUNIT, (LPCTSTR)GetUnitString());
 	SetDlgItemText(IDC_NUMWEEK, labelText);
-	labelText.Format(IDS_STATGRAPH_COMMITSBYUNIT, GetUnitString());
+	labelText.Format(IDS_STATGRAPH_COMMITSBYUNIT, (LPCTSTR)GetUnitString());
 	SetDlgItemText(IDC_COMMITSEACHWEEK, labelText);
-	labelText.Format(IDS_STATGRAPH_FILECHANGESBYUNIT, GetUnitString());
-	SetDlgItemText(IDC_FILECHANGESEACHWEEK, labelText);
+	labelText.Format(IDS_STATGRAPH_FILECHANGESBYUNIT, (LPCTSTR)GetUnitString());
+	SetDlgItemText(IDC_FILECHANGESEACHWEEK, (LPCTSTR)labelText);
 	// We have now all data we want and we can fill in the labels...
 	CString number;
 	number.Format(_T("%d"), nWeeks);
@@ -1728,7 +1728,7 @@ void CStatGraphDlg::SaveGraph(CString sFilename)
 						}
 						else
 						{
-							sErrormessage.Format(IDS_REVGRAPH_ERR_NOENCODER, CPathUtils::GetFileExtFromPath(sFilename));
+							sErrormessage.Format(IDS_REVGRAPH_ERR_NOENCODER, (LPCTSTR)CPathUtils::GetFileExtFromPath(sFilename));
 						}
 					}
 					else

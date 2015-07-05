@@ -407,7 +407,7 @@ CString MyGraph::GetTipText() const
 			double barTop = m_ptOrigin.y - (double)m_nYAxisHeight *
 				(average / (double)nMaxDataValue);
 			if (pt.y >= barTop - 2 && pt.y <= barTop + 2) {
-				sTip.Format(_T("Average: %d %s (%d%%)"), average, m_sYAxisLabel, nMaxDataValue ? (100 * average / nMaxDataValue) : 0);
+				sTip.Format(_T("Average: %d %s (%d%%)"), average, (LPCTSTR)m_sYAxisLabel, nMaxDataValue ? (100 * average / nMaxDataValue) : 0);
 				return sTip;
 			}
 		}

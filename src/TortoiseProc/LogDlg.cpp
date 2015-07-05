@@ -426,7 +426,7 @@ BOOL CLogDlg::OnInitDialog()
 
 	m_History.SetMaxHistoryItems((LONG)CRegDWORD(_T("Software\\TortoiseGit\\MaxRefHistoryItems"), 5));
 	CString reg;
-	reg.Format(_T("Software\\TortoiseGit\\History\\log-refs\\%s"), g_Git.m_CurrentDir);
+	reg.Format(_T("Software\\TortoiseGit\\History\\log-refs\\%s"), (LPCTSTR)g_Git.m_CurrentDir);
 	reg.Replace(_T(':'),_T('_'));
 	m_History.Load(reg, _T("ref"));
 
@@ -938,9 +938,9 @@ void CLogDlg::FillPatchView(bool onlySetTimer)
 			{
 				CString cmd;
 				if (pLogEntry->m_CommitHash.IsEmpty())
-					cmd.Format(_T("git.exe diff HEAD -- \"%s\""), p->GetGitPathString());
+					cmd.Format(_T("git.exe diff HEAD -- \"%s\""), (LPCTSTR)p->GetGitPathString());
 				else
-					cmd.Format(_T("git.exe diff %s^%d..%s -- \"%s\""), pLogEntry->m_CommitHash.ToString(), p->m_ParentNo + 1, pLogEntry->m_CommitHash.ToString(), p->GetGitPathString());
+					cmd.Format(_T("git.exe diff %s^%d..%s -- \"%s\""), (LPCTSTR)pLogEntry->m_CommitHash.ToString(), p->m_ParentNo + 1, (LPCTSTR)pLogEntry->m_CommitHash.ToString(), (LPCTSTR)p->GetGitPathString());
 				g_Git.Run(cmd, &out, CP_UTF8);
 			}
 		}
@@ -1083,7 +1083,7 @@ void CLogDlg::GoBackForward(bool select, bool bForward)
 		if (i == m_LogList.m_arShownList.GetCount())
 		{
 			CString msg;
-			msg.Format(IDS_LOG_NOT_VISIBLE, gotoHash.ToString());
+			msg.Format(IDS_LOG_NOT_VISIBLE, (LPCTSTR)gotoHash.ToString());
 			MessageBox(msg, _T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
 			return;
 		}
@@ -1480,17 +1480,17 @@ void CLogDlg::DoDiffFromLog(INT_PTR selIndex, GitRev* rev1, GitRev* rev2, bool /
 
 	CString file1;
 	file1.Format(_T("%s%s_%s%s"),
-				temppath,
-				(*m_currentChangedArray)[selIndex].GetBaseFilename(),
-				rev1->m_CommitHash.ToString().Left(g_Git.GetShortHASHLength()),
-				(*m_currentChangedArray)[selIndex].GetFileExtension());
+				(LPCTSTR)temppath,
+				(LPCTSTR)(*m_currentChangedArray)[selIndex].GetBaseFilename(),
+				(LPCTSTR)rev1->m_CommitHash.ToString().Left(g_Git.GetShortHASHLength()),
+				(LPCTSTR)(*m_currentChangedArray)[selIndex].GetFileExtension());
 
 	CString file2;
 	file2.Format(_T("%s\\%s_%s%s"),
-				temppath,
-				(*m_currentChangedArray)[selIndex].GetBaseFilename(),
-				rev2->m_CommitHash.ToString().Left(g_Git.GetShortHASHLength()),
-				(*m_currentChangedArray)[selIndex].GetFileExtension());
+				(LPCTSTR)temppath,
+				(LPCTSTR)(*m_currentChangedArray)[selIndex].GetBaseFilename(),
+				(LPCTSTR)rev2->m_CommitHash.ToString().Left(g_Git.GetShortHASHLength()),
+				(LPCTSTR)(*m_currentChangedArray)[selIndex].GetFileExtension());
 
 	CString cmd;
 	CTGitPath &path = (CTGitPath &)(*m_currentChangedArray)[selIndex];
@@ -1498,7 +1498,7 @@ void CLogDlg::DoDiffFromLog(INT_PTR selIndex, GitRev* rev1, GitRev* rev2, bool /
 	if (g_Git.GetOneFile(rev1->m_CommitHash.ToString(), path, file1))
 	{
 		CString out;
-		out.Format(IDS_STATUSLIST_CHECKOUTFILEFAILED, path.GetGitPathString(), rev1->m_CommitHash.ToString(), file1);
+		out.Format(IDS_STATUSLIST_CHECKOUTFILEFAILED, (LPCTSTR)path.GetGitPathString(), (LPCTSTR)rev1->m_CommitHash.ToString(), (LPCTSTR)file1);
 		CMessageBox::Show(nullptr, g_Git.GetGitLastErr(out, CGit::GIT_CMD_GETONEFILE), _T("TortoiseGit"), MB_OK);
 		theApp.DoWaitCursor(-1);
 		EnableOKButton();
@@ -1507,7 +1507,7 @@ void CLogDlg::DoDiffFromLog(INT_PTR selIndex, GitRev* rev1, GitRev* rev2, bool /
 	if (g_Git.GetOneFile(rev2->m_CommitHash.ToString(), path, file2))
 	{
 		CString out;
-		out.Format(IDS_STATUSLIST_CHECKOUTFILEFAILED, path.GetGitPathString(), rev2->m_CommitHash.ToString(), file2);
+		out.Format(IDS_STATUSLIST_CHECKOUTFILEFAILED, (LPCTSTR)path.GetGitPathString(), (LPCTSTR)rev2->m_CommitHash.ToString(), (LPCTSTR)file2);
 		CMessageBox::Show(nullptr, g_Git.GetGitLastErr(out, CGit::GIT_CMD_GETONEFILE), _T("TortoiseGit"), MB_OK);
 		theApp.DoWaitCursor(-1);
 		EnableOKButton();
@@ -2722,7 +2722,7 @@ void CLogDlg::UpdateLogInfoLabel()
 	CString sTemp;
 	sTemp.Format(IDS_PROC_LOG_STATS,
 		count - start,
-		rev2.ToString().Left(g_Git.GetShortHASHLength()), rev1.ToString().Left(g_Git.GetShortHASHLength()), selectedrevs, selectedfiles);
+		(LPCTSTR)rev2.ToString().Left(g_Git.GetShortHASHLength()), (LPCTSTR)rev1.ToString().Left(g_Git.GetShortHASHLength()), selectedrevs, selectedfiles);
 
 	if(selectedrevs == 1)
 	{

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2013 - TortoiseGit
+// Copyright (C) 2012-2013, 2015 - TortoiseGit
 // Copyright (C) 2003-2008,2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -120,7 +120,7 @@ void CShellUpdater::UpdateShell()
 			for(int nPath = 0; nPath < m_pathsForUpdating.GetCount(); ++nPath)
 			{
 				path.SetFromWin(g_Git.CombinePath(m_pathsForUpdating[nPath]));
-				CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Cache Item Update for %s (%d)\n"), path.GetWinPathString(), GetTickCount());
+				CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Cache Item Update for %s (%d)\n"), (LPCTSTR)path.GetWinPathString(), GetTickCount());
 				if (!path.IsDirectory())
 				{
 					// send notifications to the shell for changed files - folders are updated by the cache itself.

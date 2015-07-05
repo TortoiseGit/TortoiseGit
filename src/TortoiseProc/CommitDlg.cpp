@@ -613,7 +613,7 @@ void CCommitDlg::OnOK()
 		else
 		{
 			CString cmd, cmdout;
-			cmd.Format(_T("git.exe diff -- \"%s\""), entry->GetWinPathString());
+			cmd.Format(_T("git.exe diff -- \"%s\""), entry->GetWinPath());
 			g_Git.Run(cmd, &cmdout, CP_UTF8);
 			dirty = cmdout.Right(7) == _T("-dirty\n");
 		}
@@ -621,12 +621,12 @@ void CCommitDlg::OnOK()
 		if (dirty)
 		{
 			CString message;
-			message.Format(CString(MAKEINTRESOURCE(IDS_COMMITDLG_SUBMODULEDIRTY)), entry->GetGitPathString());
+			message.Format(CString(MAKEINTRESOURCE(IDS_COMMITDLG_SUBMODULEDIRTY)), (LPCTSTR)entry->GetGitPathString());
 			int result = CMessageBox::Show(m_hWnd, message, _T("TortoiseGit"), 1, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_PROGRS_CMD_COMMIT)), CString(MAKEINTRESOURCE(IDS_MSGBOX_IGNORE)), CString(MAKEINTRESOURCE(IDS_MSGBOX_CANCEL)));
 			if (result == 1)
 			{
 				CString cmdCommit;
-				cmdCommit.Format(_T("/command:commit /path:\"%s\\%s\""), g_Git.m_CurrentDir, entry->GetWinPathString());
+				cmdCommit.Format(_T("/command:commit /path:\"%s\\%s\""), (LPCTSTR)g_Git.m_CurrentDir, entry->GetWinPath());
 				CAppUtils::RunTortoiseGitProc(cmdCommit);
 				return;
 			}
@@ -924,7 +924,7 @@ void CCommitDlg::OnOK()
 			{
 				COMError ce(hr);
 				CString sErr;
-				sErr.Format(IDS_ERR_FAILEDISSUETRACKERCOM, m_bugtraq_association.GetProviderName(), ce.GetMessageAndDescription().c_str());
+				sErr.Format(IDS_ERR_FAILEDISSUETRACKERCOM, (LPCTSTR)m_bugtraq_association.GetProviderName(), ce.GetMessageAndDescription().c_str());
 				CMessageBox::Show(m_hWnd, sErr, _T("TortoiseGit"), MB_ICONERROR);
 			}
 			else
@@ -970,13 +970,13 @@ void CCommitDlg::OnOK()
 			if (m_bCommitAmend && m_AsCommitDateCtrl.GetCheck())
 				dateTime = CAppUtils::GetMsysgitVersion() > 0x02010000 ? L"--date=\"now\"" : L"--date=\"\"" ;
 			else
-				dateTime.Format(_T("--date=%sT%s"), date.Format(_T("%Y-%m-%d")), time.Format(_T("%H:%M:%S")));
+				dateTime.Format(_T("--date=%sT%s"), (LPCTSTR)date.Format(_T("%Y-%m-%d")), (LPCTSTR)time.Format(_T("%H:%M:%S")));
 		}
 		CString author;
 		if (m_bSetAuthor)
-			author.Format(_T("--author=\"%s\""), m_sAuthor);
+			author.Format(_T("--author=\"%s\""), (LPCTSTR)m_sAuthor);
 		CString allowEmpty = m_bCommitMessageOnly ? _T("--allow-empty") : _T("");
-		cmd.Format(_T("git.exe commit %s %s %s %s -F \"%s\""), author, dateTime, amend, allowEmpty, tempfile);
+		cmd.Format(_T("git.exe commit %s %s %s %s -F \"%s\""), (LPCTSTR)author, (LPCTSTR)dateTime, (LPCTSTR)amend, (LPCTSTR)allowEmpty, (LPCTSTR)tempfile);
 
 		CCommitProgressDlg progress;
 		progress.m_bBufferAll=true; // improve show speed when there are many file added.
@@ -2107,7 +2107,7 @@ void CCommitDlg::FillPatchView(bool onlySetTimer)
 				CString head = _T("HEAD");
 				if(m_bCommitAmend==TRUE && m_bAmendDiffToLastCommit==FALSE)
 					head = _T("HEAD~1");
-				cmd.Format(_T("git.exe diff %s -- \"%s\""), head, p->GetGitPathString());
+				cmd.Format(_T("git.exe diff %s -- \"%s\""), (LPCTSTR)head, (LPCTSTR)p->GetGitPathString());
 				g_Git.Run(cmd, &out, CP_UTF8);
 			}
 		}
@@ -2311,7 +2311,7 @@ CString CCommitDlg::GetSignedOffByLine()
 	username.Remove(_T('\n'));
 	email.Remove(_T('\n'));
 
-	str.Format(_T("Signed-off-by: %s <%s>"), username, email);
+	str.Format(_T("Signed-off-by: %s <%s>"), (LPCTSTR)username, (LPCTSTR)email);
 
 	return str;
 }
@@ -2631,13 +2631,13 @@ void CCommitDlg::OnBnClickedCommitSetauthor()
 
 	if (m_bSetAuthor)
 	{
-		m_sAuthor.Format(_T("%s <%s>"), g_Git.GetUserName(), g_Git.GetUserEmail());
+		m_sAuthor.Format(_T("%s <%s>"), (LPCTSTR)g_Git.GetUserName(), (LPCTSTR)g_Git.GetUserEmail());
 		if (m_bCommitAmend)
 		{
 			GitRev headRevision;
 			if (headRevision.GetCommit(_T("HEAD")))
 				MessageBox(headRevision.GetLastErr(), _T("TortoiseGit"), MB_ICONERROR);
-			m_sAuthor.Format(_T("%s <%s>"), headRevision.GetAuthorName(), headRevision.GetAuthorEmail());
+			m_sAuthor.Format(_T("%s <%s>"), (LPCTSTR)headRevision.GetAuthorName(), (LPCTSTR)headRevision.GetAuthorEmail());
 		}
 
 		UpdateData(FALSE);

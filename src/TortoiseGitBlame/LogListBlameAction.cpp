@@ -65,7 +65,7 @@ void RunTortoiseGitProcWithCurrentRev(const CString& command, const GitRev* pRev
 {
 	ASSERT(pRev);
 	CString  procCmd;
-	procCmd.Format(L"/command:%s /path:\"%s\" /rev:%s", command, path, pRev->m_CommitHash.ToString());
+	procCmd.Format(L"/command:%s /path:\"%s\" /rev:%s", (LPCTSTR)command, (LPCTSTR)path, (LPCTSTR)pRev->m_CommitHash.ToString());
 	CCommonAppUtils::RunTortoiseGitProc(procCmd);
 }
 

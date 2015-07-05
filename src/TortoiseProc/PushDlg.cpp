@@ -287,14 +287,14 @@ void CPushDlg::GetRemoteBranch(CString currentBranch)
 
 	CString configName;
 
-	configName.Format(L"branch.%s.pushremote", currentBranch);
+	configName.Format(L"branch.%s.pushremote", (LPCTSTR)currentBranch);
 	CString pushRemote = g_Git.GetConfigValue(configName);
 	if( pushRemote.IsEmpty() )
 	{
 		pushRemote = g_Git.GetConfigValue(L"remote.pushdefault");
 		if (pushRemote.IsEmpty())
 		{
-			configName.Format(L"branch.%s.remote", currentBranch);
+			configName.Format(L"branch.%s.remote", (LPCTSTR)currentBranch);
 			pushRemote = g_Git.GetConfigValue(configName);
 		}
 	}
@@ -328,11 +328,11 @@ void CPushDlg::GetRemoteBranch(CString currentBranch)
 	}
 
 	//Select pull-branch from current branch
-	configName.Format(L"branch.%s.pushbranch", currentBranch);
+	configName.Format(L"branch.%s.pushbranch", (LPCTSTR)currentBranch);
 	CString pushBranch = g_Git.GetConfigValue(configName); // do not strip branch name (for gerrit), see issue #1609)
 	if( pushBranch.IsEmpty() )
 	{
-		configName.Format(L"branch.%s.merge", currentBranch);
+		configName.Format(L"branch.%s.merge", (LPCTSTR)currentBranch);
 		pushBranch = CGit::StripRefName(g_Git.GetConfigValue(configName));
 	}
 
@@ -452,7 +452,7 @@ void CPushDlg::OnBnClickedOk()
 				CString configName;
 				if (m_bSetPushBranch)
 				{
-					configName.Format(L"branch.%s.pushbranch", m_BranchSourceName);
+					configName.Format(L"branch.%s.pushbranch", (LPCTSTR)m_BranchSourceName);
 					if (!m_BranchRemoteName.IsEmpty())
 						g_Git.SetConfigValue(configName, m_BranchRemoteName);
 					else
@@ -460,7 +460,7 @@ void CPushDlg::OnBnClickedOk()
 				}
 				if (m_bSetPushRemote)
 				{
-					configName.Format(L"branch.%s.pushremote", m_BranchSourceName);
+					configName.Format(L"branch.%s.pushremote", (LPCTSTR)m_BranchSourceName);
 					if (!m_URL.IsEmpty())
 						g_Git.SetConfigValue(configName, m_URL);
 					else

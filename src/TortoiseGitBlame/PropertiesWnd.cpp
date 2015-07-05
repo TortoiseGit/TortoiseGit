@@ -275,7 +275,7 @@ void CPropertiesWnd::UpdateProperties(GitRevLoglist* pRev)
 			if (it != hashMap.end())
 				parentsubject = it->second.GetSubject();
 
-			str.Format(_T("%u - %s\n%s"), i, pRev->m_ParentHash[i].ToString(), parentsubject);
+			str.Format(_T("%u - %s\n%s"), i, (LPCTSTR)pRev->m_ParentHash[i].ToString(), (LPCTSTR)parentsubject);
 
 			CMFCPropertyGridProperty *pProperty = new CMFCPropertyGridProperty(pRev->m_ParentHash[i].ToString().Left(8), parentsubject, str);
 			pProperty->AllowEdit(FALSE);

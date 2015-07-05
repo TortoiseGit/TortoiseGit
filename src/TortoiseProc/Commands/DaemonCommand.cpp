@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2014 - TortoiseGit
+// Copyright (C) 2013-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -56,7 +56,7 @@ bool DaemonCommand::Execute()
 	}
 
 	CString cmd;
-	cmd.Format(_T("git.exe daemon --verbose --export-all --base-path=\"%s\""), g_Git.m_CurrentDir);
+	cmd.Format(_T("git.exe daemon --verbose --export-all --base-path=\"%s\""), (LPCTSTR)g_Git.m_CurrentDir);
 	CProgressDlg progDlg;
 	progDlg.m_GitCmd = cmd;
 	progDlg.m_PreText = _T("git://") + ip + _T("/");

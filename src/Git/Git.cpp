@@ -285,13 +285,13 @@ int CGit::RunAsync(CString cmd, PROCESS_INFORMATION *piOut, HANDLE *hReadOut, HA
 	if (!CreatePipe(hRead.GetPointer(), hWrite.GetPointer(), &sa, 0))
 	{
 		CString err = CFormatMessageWrapper();
-		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": could not open stdout pipe: %s\n"), err.Trim());
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": could not open stdout pipe: %s\n"), (LPCTSTR)err.Trim());
 		return TGIT_GIT_ERROR_OPEN_PIP;
 	}
 	if (hErrReadOut && !CreatePipe(hReadErr.GetPointer(), hWriteErr.GetPointer(), &sa, 0))
 	{
 		CString err = CFormatMessageWrapper();
-		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": could not open stderr pipe: %s\n"), err.Trim());
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": could not open stderr pipe: %s\n"), (LPCTSTR)err.Trim());
 		return TGIT_GIT_ERROR_OPEN_PIP;
 	}
 
@@ -348,11 +348,11 @@ int CGit::RunAsync(CString cmd, PROCESS_INFORMATION *piOut, HANDLE *hReadOut, HA
 			cmd=_T('"')+CGit::ms_LastMsysGitDir+_T("\\")+cmd+_T('"');
 	}
 
-	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": executing %s\n"), cmd);
-	if(!CreateProcess(NULL,(LPWSTR)cmd.GetString(), NULL,NULL,TRUE,dwFlags,pEnv,(LPWSTR)m_CurrentDir.GetString(),&si,&pi))
+	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": executing %s\n"), (LPCTSTR)cmd);
+	if(!CreateProcess(nullptr, cmd.GetBuffer(), nullptr, nullptr, TRUE, dwFlags, pEnv, m_CurrentDir.GetBuffer(), &si, &pi))
 	{
 		CString err = CFormatMessageWrapper();
-		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": error while executing command: %s\n"), err.Trim());
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": error while executing command: %s\n"), (LPCTSTR)err.Trim());
 		return TGIT_GIT_ERROR_CREATE_PROCESS;
 	}
 
@@ -466,7 +466,7 @@ int CGit::Run(CGitCall* pcall)
 	if(!GetExitCodeProcess(pi.hProcess,&exitcode))
 	{
 		CString err = CFormatMessageWrapper();
-		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": could not get exit code: %s\n"), err.Trim());
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": could not get exit code: %s\n"), (LPCTSTR)err.Trim());
 		return TGIT_GIT_ERROR_GET_EXIT_CODE;
 	}
 	else
@@ -641,7 +641,7 @@ CString CGit::GetConfigValue(const CString& name)
 	else
 	{
 		CString cmd;
-		cmd.Format(L"git.exe config %s", name);
+		cmd.Format(L"git.exe config %s", (LPCTSTR)name);
 		Run(cmd, &configValue, nullptr, CP_UTF8);
 		if (configValue.IsEmpty())
 			return configValue;
@@ -714,7 +714,7 @@ int CGit::SetConfigValue(const CString& key, const CString& value, CONFIG_TYPE t
 		CString mangledValue = value;
 		mangledValue.Replace(_T("\\\""), _T("\\\\\""));
 		mangledValue.Replace(_T("\""), _T("\\\""));
-		cmd.Format(_T("git.exe config %s %s \"%s\""), option, key, mangledValue);
+		cmd.Format(_T("git.exe config %s %s \"%s\""), (LPCTSTR)option, (LPCTSTR)key, (LPCTSTR)mangledValue);
 		CString out;
 		if (Run(cmd, &out, nullptr, CP_UTF8))
 		{
@@ -764,7 +764,7 @@ int CGit::UnsetConfigValue(const CString& key, CONFIG_TYPE type)
 		default:
 			break;
 		}
-		cmd.Format(_T("git.exe config %s --unset %s"), option, key);
+		cmd.Format(_T("git.exe config %s --unset %s"), (LPCTSTR)option, (LPCTSTR)key);
 		CString out;
 		if (Run(cmd, &out, nullptr, CP_UTF8))
 		{
@@ -795,11 +795,11 @@ void CGit::GetRemoteTrackedBranch(const CString& localBranch, CString& pullRemot
 		return;
 
 	CString configName;
-	configName.Format(L"branch.%s.remote", localBranch);
+	configName.Format(L"branch.%s.remote", (LPCTSTR)localBranch);
 	pullRemote =  GetConfigValue(configName);
 
 	//Select pull-branch from current branch
-	configName.Format(L"branch.%s.merge", localBranch);
+	configName.Format(L"branch.%s.merge", (LPCTSTR)localBranch);
 	pullBranch = StripRefName(GetConfigValue(configName));
 }
 
@@ -815,7 +815,7 @@ CString CGit::GetFullRefName(const CString& shortRefName)
 {
 	CString refName;
 	CString cmd;
-	cmd.Format(L"git.exe rev-parse --symbolic-full-name %s", shortRefName);
+	cmd.Format(L"git.exe rev-parse --symbolic-full-name %s", (LPCTSTR)shortRefName);
 	if (Run(cmd, &refName, NULL, CP_UTF8) != 0)
 		return CString();//Error
 	int iStart = 0;
@@ -943,7 +943,7 @@ CString CGit::GetLogCmd(const CString &range, const CTGitPath *path, int count, 
 	CString file = _T(" --");
 
 	if(path)
-		file.Format(_T(" -- \"%s\""),path->GetGitPathString());
+		file.Format(_T(" -- \"%s\""), (LPCTSTR)path->GetGitPathString());
 
 	if(count>0)
 		num.Format(_T("-n%d"),count);
@@ -1010,21 +1010,21 @@ CString CGit::GetLogCmd(const CString &range, const CTGitPath *path, int count, 
 	bool isgrep = false;
 	if( Filter && (!Filter->m_Author.IsEmpty()))
 	{
-		st1.Format(_T(" --author=\"%s\"" ),Filter->m_Author);
+		st1.Format(_T(" --author=\"%s\"" ), (LPCTSTR)Filter->m_Author);
 		param += st1;
 		isgrep = true;
 	}
 
 	if( Filter && (!Filter->m_Committer.IsEmpty()))
 	{
-		st1.Format(_T(" --committer=\"%s\"" ),Filter->m_Author);
+		st1.Format(_T(" --committer=\"%s\"" ), (LPCTSTR)Filter->m_Author);
 		param += st1;
 		isgrep = true;
 	}
 
 	if( Filter && (!Filter->m_MessageFilter.IsEmpty()))
 	{
-		st1.Format(_T(" --grep=\"%s\"" ),Filter->m_MessageFilter);
+		st1.Format(_T(" --grep=\"%s\"" ), (LPCTSTR)Filter->m_MessageFilter);
 		param += st1;
 		isgrep = true;
 	}
@@ -1044,13 +1044,13 @@ CString CGit::GetLogCmd(const CString &range, const CTGitPath *path, int count, 
 		param += _T(" --date-order");
 
 	if(paramonly) //tgit.dll.Git.cpp:setup_revisions() only looks at args[1] and greater.  To account for this, pass a dummy parameter in the 0th place
-		cmd.Format(_T("--ignore-this-parameter %s -z %s --parents "), num, param);
+		cmd.Format(_T("--ignore-this-parameter %s -z %s --parents "), (LPCTSTR)num, (LPCTSTR)param);
 	else
 	{
 		CString log;
 		BuildOutputFormat(log,!(mask&CGit::LOG_INFO_ONLY_HASH));
 		cmd.Format(_T("git.exe log %s -z %s --parents --pretty=format:\"%s\""),
-				num,param,log);
+				(LPCTSTR)num, (LPCTSTR)param, (LPCTSTR)log);
 	}
 
 	cmd += file;
@@ -1132,7 +1132,7 @@ int CGit::RunLogFile(CString cmd, const CString &filename, CString *stdErr)
 	if (!CreatePipe(&hReadErr, &hWriteErr, &psa, 0))
 	{
 		CString err = CFormatMessageWrapper();
-		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": could not open stderr pipe: %s\n"), err.Trim());
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": could not open stderr pipe: %s\n"), (LPCTSTR)err.Trim());
 		return TGIT_GIT_ERROR_OPEN_PIP;
 	}
 
@@ -1142,7 +1142,7 @@ int CGit::RunLogFile(CString cmd, const CString &filename, CString *stdErr)
 	if (houtfile == INVALID_HANDLE_VALUE)
 	{
 		CString err = CFormatMessageWrapper();
-		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": could not open stdout pipe: %s\n"), err.Trim());
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": could not open stdout pipe: %s\n"), (LPCTSTR)err.Trim());
 		CloseHandle(hReadErr);
 		CloseHandle(hWriteErr);
 		return TGIT_GIT_ERROR_OPEN_PIP;
@@ -1159,11 +1159,11 @@ int CGit::RunLogFile(CString cmd, const CString &filename, CString *stdErr)
 	if(cmd.Find(_T("git")) == 0)
 		cmd=CGit::ms_LastMsysGitDir+_T("\\")+cmd;
 
-	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": executing %s\n"), cmd);
+	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": executing %s\n"), (LPCTSTR)cmd);
 	if(!CreateProcess(NULL,(LPWSTR)cmd.GetString(), NULL,NULL,TRUE,dwFlags,pEnv,(LPWSTR)m_CurrentDir.GetString(),&si,&pi))
 	{
 		CString err = CFormatMessageWrapper();
-		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": failed to create Process: %s\n"), err.Trim());
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": failed to create Process: %s\n"), (LPCTSTR)err.Trim());
 		stdErr = &err;
 		CloseHandle(hReadErr);
 		CloseHandle(hWriteErr);
@@ -1194,7 +1194,7 @@ int CGit::RunLogFile(CString cmd, const CString &filename, CString *stdErr)
 	if (!GetExitCodeProcess(pi.hProcess, &exitcode))
 	{
 		CString err = CFormatMessageWrapper();
-		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": could not get exit code: %s\n"), err.Trim());
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": could not get exit code: %s\n"), (LPCTSTR)err.Trim());
 		return TGIT_GIT_ERROR_GET_EXIT_CODE;
 	}
 	else
@@ -1270,7 +1270,7 @@ int CGit::GetHash(CGitHash &hash, const CString& friendname)
 		if (friendname == _T("FETCH_HEAD") && branch.IsEmpty())
 			branch = friendname;
 		CString cmd;
-		cmd.Format(_T("git.exe rev-parse %s"), branch);
+		cmd.Format(_T("git.exe rev-parse %s"), (LPCTSTR)branch);
 		gitLastErr.Empty();
 		int ret = Run(cmd, &gitLastErr, NULL, CP_UTF8);
 		hash = CGitHash(gitLastErr.Trim());
@@ -1322,13 +1322,13 @@ int CGit::GetCommitDiffList(const CString &rev1, const CString &rev2, CTGitPathL
 	{
 		//rev1=+_T("");
 		if(rev1 == GIT_REV_ZERO)
-			cmd.Format(_T("git.exe diff -r --raw -C -M --numstat -z %s %s --"), ignore, rev2);
+			cmd.Format(_T("git.exe diff -r --raw -C -M --numstat -z %s %s --"), (LPCTSTR)ignore, (LPCTSTR)rev2);
 		else
-			cmd.Format(_T("git.exe diff -r -R --raw -C -M --numstat -z %s %s --"), ignore, rev1);
+			cmd.Format(_T("git.exe diff -r -R --raw -C -M --numstat -z %s %s --"), (LPCTSTR)ignore, (LPCTSTR)rev1);
 	}
 	else
 	{
-		cmd.Format(_T("git.exe diff-tree -r --raw -C -M --numstat -z %s %s %s --"), ignore, rev2, rev1);
+		cmd.Format(_T("git.exe diff-tree -r --raw -C -M --numstat -z %s %s %s --"), (LPCTSTR)ignore, (LPCTSTR)rev2, (LPCTSTR)rev1);
 	}
 
 	BYTE_VECTOR out;
@@ -1475,7 +1475,7 @@ bool CGit::IsBranchTagNameUnique(const CString& name)
 	CString output;
 
 	CString cmd;
-	cmd.Format(_T("git.exe show-ref --tags --heads refs/heads/%s refs/tags/%s"), name, name);
+	cmd.Format(_T("git.exe show-ref --tags --heads refs/heads/%s refs/tags/%s"), (LPCTSTR)name, (LPCTSTR)name);
 	int ret = Run(cmd, &output, NULL, CP_UTF8);
 	if (!ret)
 	{
@@ -1757,7 +1757,7 @@ int CGit::GetRemoteTags(const CString& remote, STRING_VECTOR& list)
 	}
 
 	CString cmd, out, err;
-	cmd.Format(_T("git.exe ls-remote -t \"%s\""), remote);
+	cmd.Format(_T("git.exe ls-remote -t \"%s\""), (LPCTSTR)remote);
 	if (Run(cmd, &out, &err, CP_UTF8))
 	{
 		MessageBox(NULL, err, _T("TortoiseGit"), MB_ICONERROR);
@@ -2002,14 +2002,14 @@ int CGit::FindAndSetGitExePath(BOOL bFallback)
 		return TRUE;
 	}
 
-	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": git.exe not exists: %s\n"), CGit::ms_LastMsysGitDir);
+	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": git.exe not exists: %s\n"), (LPCTSTR)CGit::ms_LastMsysGitDir);
 	if (!bFallback)
 		return FALSE;
 
 	// first, search PATH if git/bin directory is already present
 	if (FindGitPath())
 	{
-		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": FindGitPath() => %s\n"), CGit::ms_LastMsysGitDir);
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": FindGitPath() => %s\n"), (LPCTSTR)CGit::ms_LastMsysGitDir);
 		msysdir = CGit::ms_LastMsysGitDir;
 		msysdir.write();
 		return TRUE;
@@ -2040,7 +2040,7 @@ int CGit::FindAndSetGitExePath(BOOL bFallback)
 			str += _T("\\cmd");
 		else
 		{
-			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Git for Windows installation found, but git.exe not exists in %s\n"), str);
+			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Git for Windows installation found, but git.exe not exists in %s\n"), (LPCTSTR)str);
 			return FALSE;
 		}
 		msysdir = str;
@@ -2129,9 +2129,9 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 	if ((CString)CRegString(REG_SYSTEM_GITCONFIGPATH, _T(""), FALSE) != g_Git.GetGitSystemConfig())
 		CRegString(REG_SYSTEM_GITCONFIGPATH, _T(""), FALSE) = g_Git.GetGitSystemConfig();
 
-	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": ms_LastMsysGitDir = %s\n"), CGit::ms_LastMsysGitDir);
-	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": ms_MsysGitRootDir = %s\n"), CGit::ms_MsysGitRootDir);
-	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": System config = %s\n"), g_Git.GetGitSystemConfig());
+	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": ms_LastMsysGitDir = %s\n"), (LPCTSTR)CGit::ms_LastMsysGitDir);
+	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": ms_MsysGitRootDir = %s\n"), (LPCTSTR)CGit::ms_MsysGitRootDir);
+	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": System config = %s\n"), (LPCTSTR)g_Git.GetGitSystemConfig());
 
 	// Configure libgit2 search paths
 	SetLibGit2SearchPath(GIT_CONFIG_LEVEL_SYSTEM, CTGitPath(g_Git.GetGitSystemConfig()).GetContainingDirectory().GetWinPathString());
@@ -2160,7 +2160,7 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 			{
 				CString temp;
 				PathCanonicalize(CStrBuf(temp, MAX_PATH), possibleShExe);
-				sh.Format(L"\"%s\"", temp);
+				sh.Format(L"\"%s\"", (LPCTSTR)temp);
 				// we need to put the usr\bin folder on the path for Git for Windows based on msys2
 				m_Environment.AddToPath(temp.Left(temp.GetLength() - 7)); // 7 = len("\\sh.exe")
 				break;
@@ -2277,38 +2277,38 @@ int CGit::Revert(const CString& commit, const CTGitPath &path, CString& err)
 	{
 		if (CTGitPath(path.GetGitOldPathString()).IsDirectory())
 		{
-			err.Format(_T("Cannot revert renaming of \"%s\". A directory with the old name \"%s\" exists."), path.GetGitPathString(), path.GetGitOldPathString());
+			err.Format(_T("Cannot revert renaming of \"%s\". A directory with the old name \"%s\" exists."), (LPCTSTR)path.GetGitPathString(), (LPCTSTR)path.GetGitOldPathString());
 			return -1;
 		}
 		CString force;
 		// if the filenames only differ in case, we have to pass "-f"
 		if (path.GetGitPathString().CompareNoCase(path.GetGitOldPathString()) == 0)
 			force = _T("-f ");
-		cmd.Format(_T("git.exe mv %s-- \"%s\" \"%s\""), force, path.GetGitPathString(), path.GetGitOldPathString());
+		cmd.Format(_T("git.exe mv %s-- \"%s\" \"%s\""), (LPCTSTR)force, (LPCTSTR)path.GetGitPathString(), (LPCTSTR)path.GetGitOldPathString());
 		if (Run(cmd, &err, CP_UTF8))
 			return -1;
 
-		cmd.Format(_T("git.exe checkout %s -f -- \"%s\""), commit, path.GetGitOldPathString());
+		cmd.Format(_T("git.exe checkout %s -f -- \"%s\""), (LPCTSTR)commit, (LPCTSTR)path.GetGitOldPathString());
 		if (Run(cmd, &err, CP_UTF8))
 			return -1;
 	}
 	else if(path.m_Action & CTGitPath::LOGACTIONS_ADDED)
 	{	//To init git repository, there are not HEAD, so we can use git reset command
-		cmd.Format(_T("git.exe rm -f --cached -- \"%s\""),path.GetGitPathString());
+		cmd.Format(_T("git.exe rm -f --cached -- \"%s\""), (LPCTSTR)path.GetGitPathString());
 
 		if (Run(cmd, &err, CP_UTF8))
 			return -1;
 	}
 	else
 	{
-		cmd.Format(_T("git.exe checkout %s -f -- \"%s\""), commit, path.GetGitPathString());
+		cmd.Format(_T("git.exe checkout %s -f -- \"%s\""), (LPCTSTR)commit, (LPCTSTR)path.GetGitPathString());
 		if (Run(cmd, &err, CP_UTF8))
 			return -1;
 	}
 
 	if (path.m_Action & CTGitPath::LOGACTIONS_DELETED)
 	{
-		cmd.Format(_T("git.exe add -f -- \"%s\""), path.GetGitPathString());
+		cmd.Format(_T("git.exe add -f -- \"%s\""), (LPCTSTR)path.GetGitPathString());
 		if (Run(cmd, &err, CP_UTF8))
 			return -1;
 	}
@@ -2377,7 +2377,7 @@ bool CGit::IsFastForward(const CString &from, const CString &to, CGitHash * comm
 	CString base;
 	CGitHash basehash,hash;
 	CString cmd;
-	cmd.Format(_T("git.exe merge-base %s %s"), FixBranchName(to), FixBranchName(from));
+	cmd.Format(_T("git.exe merge-base %s %s"), (LPCTSTR)FixBranchName(to), (LPCTSTR)FixBranchName(from));
 
 	if (Run(cmd, &base, &gitLastErr, CP_UTF8))
 	{
@@ -2509,7 +2509,7 @@ int CGit::GetOneFile(const CString &Refname, const CTGitPath &path, const CStrin
 	else
 	{
 		CString cmd;
-		cmd.Format(_T("git.exe cat-file -p %s:\"%s\""), Refname, path.GetGitPathString());
+		cmd.Format(_T("git.exe cat-file -p %s:\"%s\""), (LPCTSTR)Refname, (LPCTSTR)path.GetGitPathString());
 		return RunLogFile(cmd, outputfile, &gitLastErr);
 	}
 }
@@ -2821,9 +2821,9 @@ CString CGit::GetUnifiedDiffCmd(const CTGitPath& path, const git_revnum_t& rev1,
 {
 	CString cmd;
 	if (rev2 == GitRev::GetWorkingCopy())
-		cmd.Format(_T("git.exe diff --stat -p %s --"), rev1);
+		cmd.Format(_T("git.exe diff --stat -p %s --"), (LPCTSTR)rev1);
 	else if (rev1 == GitRev::GetWorkingCopy())
-		cmd.Format(_T("git.exe diff -R --stat -p %s --"), rev2);
+		cmd.Format(_T("git.exe diff -R --stat -p %s --"), (LPCTSTR)rev2);
 	else
 	{
 		CString merge;
@@ -2836,7 +2836,7 @@ CString CGit::GetUnifiedDiffCmd(const CTGitPath& path, const git_revnum_t& rev1,
 		CString unified;
 		if (diffContext >= 0)
 			unified.Format(_T(" --unified=%d"), diffContext);
-		cmd.Format(_T("git.exe diff-tree -r -p %s %s --stat %s %s --"), merge, unified, rev1, rev2);
+		cmd.Format(_T("git.exe diff-tree -r -p %s %s --stat %s %s --"), (LPCTSTR)merge, (LPCTSTR)unified, (LPCTSTR)rev1, (LPCTSTR)rev2);
 	}
 
 	if (!path.IsEmpty())
@@ -3069,7 +3069,7 @@ int CGit::GitRevert(int parent, const CGitHash &hash)
 		CString cmd, merge;
 		if (parent)
 			merge.Format(_T("-m %d "), parent);
-		cmd.Format(_T("git.exe revert --no-edit --no-commit %s%s"), merge, hash.ToString());
+		cmd.Format(_T("git.exe revert --no-edit --no-commit %s%s"), (LPCTSTR)merge, (LPCTSTR)hash.ToString());
 		gitLastErr = cmd + _T("\n");
 		if (Run(cmd, &gitLastErr, CP_UTF8))
 		{
@@ -3117,11 +3117,11 @@ int CGit::DeleteRef(const CString& reference)
 	{
 		CString cmd, shortname;
 		if (GetShortName(reference, shortname, _T("refs/heads/")))
-			cmd.Format(_T("git.exe branch -D -- %s"), shortname);
+			cmd.Format(_T("git.exe branch -D -- %s"), (LPCTSTR)shortname);
 		else if (GetShortName(reference, shortname, _T("refs/tags/")))
-			cmd.Format(_T("git.exe tag -d -- %s"), shortname);
+			cmd.Format(_T("git.exe tag -d -- %s"), (LPCTSTR)shortname);
 		else if (GetShortName(reference, shortname, _T("refs/remotes/")))
-			cmd.Format(_T("git.exe branch -r -D -- %s"), shortname);
+			cmd.Format(_T("git.exe branch -r -D -- %s"), (LPCTSTR)shortname);
 		else
 		{
 			gitLastErr = L"unsupported reference type: " + reference;
@@ -3191,7 +3191,7 @@ int CGit::GetWorkingTreeChanges(CTGitPathList& result, bool amend, CTGitPathList
 			if (!filterlist)
 				cmd = _T("git.exe status --");
 			else
-				cmd.Format(_T("git.exe status -- \"%s\""), (*filterlist)[i].GetGitPathString());
+				cmd.Format(_T("git.exe status -- \"%s\""), (LPCTSTR)(*filterlist)[i].GetGitPathString());
 			Run(cmd, &cmdout);
 			cmdout.clear();
 		}
@@ -3202,7 +3202,7 @@ int CGit::GetWorkingTreeChanges(CTGitPathList& result, bool amend, CTGitPathList
 		if (!filterlist)
 			cmd = (_T("git.exe diff-index --raw ") + head + _T(" --numstat -C -M -z --"));
 		else
-			cmd.Format(_T("git.exe diff-index --raw ") + head + _T(" --numstat -C -M -z -- \"%s\""), (*filterlist)[i].GetGitPathString());
+			cmd.Format(_T("git.exe diff-index --raw ") + head + _T(" --numstat -C -M -z -- \"%s\""), (LPCTSTR)(*filterlist)[i].GetGitPathString());
 
 		BYTE_VECTOR cmdErr;
 		if (Run(cmd, &cmdout, &cmdErr))
@@ -3226,7 +3226,7 @@ int CGit::GetWorkingTreeChanges(CTGitPathList& result, bool amend, CTGitPathList
 		if (!filterlist)
 			cmd = _T("git.exe ls-files -u -t -z");
 		else
-			cmd.Format(_T("git.exe ls-files -u -t -z -- \"%s\""), (*filterlist)[i].GetGitPathString());
+			cmd.Format(_T("git.exe ls-files -u -t -z -- \"%s\""), (LPCTSTR)(*filterlist)[i].GetGitPathString());
 
 		Run(cmd, &cmdout);
 
@@ -3252,7 +3252,7 @@ int CGit::GetWorkingTreeChanges(CTGitPathList& result, bool amend, CTGitPathList
 		if (!filterlist)
 			cmd = _T("git.exe ls-files -d -z");
 		else
-			cmd.Format(_T("git.exe ls-files -d -z -- \"%s\""), (*filterlist)[i].GetGitPathString());
+			cmd.Format(_T("git.exe ls-files -d -z -- \"%s\""), (LPCTSTR)(*filterlist)[i].GetGitPathString());
 
 		Run(cmd, &cmdout);
 

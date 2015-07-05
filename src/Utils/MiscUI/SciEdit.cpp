@@ -361,7 +361,7 @@ BOOL CSciEdit::LoadDictionaries(LONG lLanguageID)
 	if (pChecker)
 	{
 		const char * encoding = pChecker->get_dic_encoding();
-		CTraceToOutputDebugString::Instance()(__FUNCTION__ ": %s\n", encoding);
+		CTraceToOutputDebugString::Instance()(__FUNCTION__ ": %s\n", (LPCTSTR)encoding);
 		int n = _countof(enc2locale);
 		m_spellcodepage = 0;
 		for (int i = 0; i < n; i++)
@@ -663,7 +663,7 @@ void CSciEdit::SuggestSpellingAlternatives()
 		CString suggestions;
 		for (int i=0; i < ns; i++)
 		{
-			suggestions.AppendFormat(_T("%s%c%d%c"), CString(wlst[i]), m_typeSeparator, AUTOCOMPLETE_SPELLING, m_separator);
+			suggestions.AppendFormat(_T("%s%c%d%c"), (LPCTSTR)CString(wlst[i]), m_typeSeparator, AUTOCOMPLETE_SPELLING, m_separator);
 			free(wlst[i]);
 		}
 		free(wlst);
@@ -742,7 +742,7 @@ void CSciEdit::DoAutoCompletion(int nMinPrefixLength)
 	}
 
 	for (const auto& w : wordset)
-		sAutoCompleteList.AppendFormat(_T("%s%c%d%c"), w.first, m_typeSeparator, w.second, m_separator);
+		sAutoCompleteList.AppendFormat(_T("%s%c%d%c"), (LPCTSTR)w.first, m_typeSeparator, w.second, m_separator);
 
 	sAutoCompleteList.TrimRight(m_separator);
 	if (sAutoCompleteList.IsEmpty())
@@ -1002,7 +1002,7 @@ void CSciEdit::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 		if ((sWord.GetLength()<PDICT_MAX_WORD_LENGTH)&&((pChecker)&&(m_autolist.find(sWord) == m_autolist.end())&&(!pChecker->spell(worda)))&&
 			(!_istdigit(sWord.GetAt(0)))&&(!m_personalDict.FindWord(sWord)) && !bIsReadOnly)
 		{
-			sMenuItemText.Format(IDS_SCIEDIT_ADDWORD, sWord);
+			sMenuItemText.Format(IDS_SCIEDIT_ADDWORD, (LPCTSTR)sWord);
 			popup.AppendMenu(uEnabledMenu, SCI_ADDWORD, sMenuItemText);
 			// another separator
 			popup.AppendMenu(MF_SEPARATOR);

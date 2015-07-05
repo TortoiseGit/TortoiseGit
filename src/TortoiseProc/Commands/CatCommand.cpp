@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009,2011-2014 - TortoiseGit
+// Copyright (C) 2009,2011-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -86,7 +86,7 @@ bool CatCommand::Execute()
 	}
 
 	CString cmd, output, err;
-	cmd.Format(_T("git.exe cat-file -t %s"),revision);
+	cmd.Format(_T("git.exe cat-file -t %s"), (LPCTSTR)revision);
 
 	if (g_Git.Run(cmd, &output, &err, CP_UTF8))
 	{
@@ -97,11 +97,11 @@ bool CatCommand::Execute()
 
 	if(output.Find(_T("blob")) == 0)
 	{
-		cmd.Format(_T("git.exe cat-file -p %s"),revision);
+		cmd.Format(_T("git.exe cat-file -p %s"), (LPCTSTR)revision);
 	}
 	else
 	{
-		cmd.Format(_T("git.exe show %s -- \"%s\""),revision,this->cmdLinePath);
+		cmd.Format(_T("git.exe show %s -- \"%s\""), (LPCTSTR)revision, (LPCTSTR)this->cmdLinePath.GetWinPathString());
 	}
 
 	if (g_Git.RunLogFile(cmd, savepath, &err))

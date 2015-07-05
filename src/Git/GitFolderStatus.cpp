@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008,2011 - TortoiseSVN
-// Copyright (C) 2008-2014 - TortoiseGit
+// Copyright (C) 2008-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -205,12 +205,12 @@ const FileStatusCacheEntry * GitFolderStatus::GetCachedItem(const CTGitPath& fil
 	if(m_mostRecentPath.IsEquivalentTo(CTGitPath(sCacheKey.c_str())))
 	{
 		// We've hit the same result as we were asked for last time
-		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": fast cache hit for %s\n"), filepath);
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": fast cache hit for %s\n"), filepath.GetWinPath());
 		retVal = m_mostRecentStatus;
 	}
 	else if ((iter = m_cache.find(sCacheKey)) != m_cache.end())
 	{
-		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": cache found for %s\n"), filepath);
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": cache found for %s\n"), filepath.GetWinPath());
 		retVal = &iter->second;
 		m_mostRecentStatus = retVal;
 		m_mostRecentPath = CTGitPath(sCacheKey.c_str());

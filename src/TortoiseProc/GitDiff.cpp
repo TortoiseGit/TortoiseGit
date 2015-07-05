@@ -42,9 +42,9 @@ int CGitDiff::SubmoduleDiffNull(const CTGitPath * pPath, const git_revnum_t &rev
 
 	CString cmd;
 	if (rev1 != GIT_REV_ZERO)
-		cmd.Format(_T("git.exe ls-tree \"%s\" -- \"%s\""), rev1, pPath->GetGitPathString());
+		cmd.Format(_T("git.exe ls-tree \"%s\" -- \"%s\""), (LPCTSTR)rev1, (LPCTSTR)pPath->GetGitPathString());
 	else
-		cmd.Format(_T("git.exe ls-files -s -- \"%s\""), pPath->GetGitPathString());
+		cmd.Format(_T("git.exe ls-files -s -- \"%s\""), (LPCTSTR)pPath->GetGitPathString());
 
 	CString output, err;
 	if (g_Git.Run(cmd, &output, &err, CP_UTF8))
@@ -66,7 +66,7 @@ int CGitDiff::SubmoduleDiffNull(const CTGitPath * pPath, const git_revnum_t &rev
 		subgit.m_CurrentDir = g_Git.CombinePath(pPath);
 		int encode=CAppUtils::GetLogOutputEncode(&subgit);
 
-		cmd.Format(_T("git.exe log -n1  --pretty=format:\"%%s\" %s --"), newhash);
+		cmd.Format(_T("git.exe log -n1 --pretty=format:\"%%s\" %s --"), (LPCTSTR)newhash);
 		bool toOK = !subgit.Run(cmd,&newsub,encode);
 
 		bool dirty = false;
@@ -131,15 +131,15 @@ int CGitDiff::DiffNull(const CTGitPath *pPath, git_revnum_t rev1, bool bIsAdd, i
 		DeleteFile(szTempName);
 		CreateDirectory(szTempName, NULL);
 		file1.Format(_T("%s\\%s-%s%s"),
-				temp,
-				pPath->GetBaseFilename(),
-				rev1.Left(g_Git.GetShortHASHLength()),
-				pPath->GetFileExtension());
+				(LPCTSTR)temp,
+				(LPCTSTR)pPath->GetBaseFilename(),
+				(LPCTSTR)rev1.Left(g_Git.GetShortHASHLength()),
+				(LPCTSTR)pPath->GetFileExtension());
 
 		if (g_Git.GetOneFile(rev1, *pPath, file1))
 		{
 			CString out;
-			out.Format(IDS_STATUSLIST_CHECKOUTFILEFAILED, pPath->GetGitPathString(), rev1, file1);
+			out.Format(IDS_STATUSLIST_CHECKOUTFILEFAILED, (LPCTSTR)pPath->GetGitPathString(), (LPCTSTR)rev1, (LPCTSTR)file1);
 			CMessageBox::Show(nullptr, g_Git.GetGitLastErr(out, CGit::GIT_CMD_GETONEFILE), _T("TortoiseGit"), MB_OK);
 			return -1;
 		}
@@ -197,7 +197,7 @@ int CGitDiff::SubmoduleDiff(const CTGitPath * pPath, const CTGitPath * /*pPath2*
 		isWorkingCopy = true;
 
 		cmd.Format(_T("git.exe diff %s -- \"%s\""),
-		rev,pPath->GetGitPathString());
+		(LPCTSTR)rev, (LPCTSTR)pPath->GetGitPathString());
 
 		CString output, err;
 		if (g_Git.Run(cmd, &output, &err, CP_UTF8))
@@ -211,7 +211,7 @@ int CGitDiff::SubmoduleDiff(const CTGitPath * pPath, const CTGitPath * /*pPath2*
 			output.Empty();
 			err.Empty();
 			// also compare against index
-			cmd.Format(_T("git.exe diff -- \"%s\""), pPath->GetGitPathString());
+			cmd.Format(_T("git.exe diff -- \"%s\""), (LPCTSTR)pPath->GetGitPathString());
 			if (g_Git.Run(cmd, &output, &err, CP_UTF8))
 			{
 				CMessageBox::Show(NULL, output + _T("\n") + err, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
@@ -226,7 +226,7 @@ int CGitDiff::SubmoduleDiff(const CTGitPath * pPath, const CTGitPath * /*pPath2*
 			else if (CMessageBox::Show(NULL, CString(MAKEINTRESOURCE(IDS_SUBMODULE_EMPTYDIFF)), _T("TortoiseGit"), 1, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_MSGBOX_YES)), CString(MAKEINTRESOURCE(IDS_MSGBOX_NO))) == 1)
 			{
 				CString sCmd;
-				sCmd.Format(_T("/command:subupdate /bkpath:\"%s\""), g_Git.m_CurrentDir);
+				sCmd.Format(_T("/command:subupdate /bkpath:\"%s\""), (LPCTSTR)g_Git.m_CurrentDir);
 				CAppUtils::RunTortoiseGitProc(sCmd);
 			}
 			return -1;
@@ -253,7 +253,7 @@ int CGitDiff::SubmoduleDiff(const CTGitPath * pPath, const CTGitPath * /*pPath2*
 	else
 	{
 		cmd.Format(_T("git.exe diff-tree -r -z %s %s -- \"%s\""),
-		rev2,rev1,pPath->GetGitPathString());
+		(LPCTSTR)rev2, (LPCTSTR)rev1, (LPCTSTR)pPath->GetGitPathString());
 
 		BYTE_VECTOR bytes, errBytes;
 		if(g_Git.Run(cmd, &bytes, &errBytes))
@@ -303,7 +303,7 @@ void CGitDiff::GetSubmoduleChangeType(CGit& subgit, const CString& oldhash, cons
 	if (oldhash != GIT_REV_ZERO)
 	{
 		CString cmdout, cmderr;
-		cmd.Format(_T("git.exe log -n1 --pretty=format:\"%%ct %%s\" %s --"), oldhash);
+		cmd.Format(_T("git.exe log -n1 --pretty=format:\"%%ct %%s\" %s --"), (LPCTSTR)oldhash);
 		oldOK = !subgit.Run(cmd, &cmdout, &cmderr, encode);
 		if (oldOK)
 		{
@@ -317,7 +317,7 @@ void CGitDiff::GetSubmoduleChangeType(CGit& subgit, const CString& oldhash, cons
 	if (newhash != GIT_REV_ZERO)
 	{
 		CString cmdout, cmderr;
-		cmd.Format(_T("git.exe log -n1 --pretty=format:\"%%ct %%s\" %s --"), newhash);
+		cmd.Format(_T("git.exe log -n1 --pretty=format:\"%%ct %%s\" %s --"), (LPCTSTR)newhash);
 		newOK = !subgit.Run(cmd, &cmdout, &cmderr, encode);
 		if (newOK)
 		{
@@ -422,15 +422,15 @@ int CGitDiff::Diff(const CTGitPath * pPath, const CTGitPath * pPath2, git_revnum
 		CreateDirectory(szTempName, NULL);
 		// use original file extension, an external diff tool might need it
 		file1.Format(_T("%s\\%s-%s-right%s"),
-				temp,
-				pPath->GetBaseFilename(),
-				rev1.Left(g_Git.GetShortHASHLength()),
-				pPath->GetFileExtension());
+				(LPCTSTR)temp,
+				(LPCTSTR)pPath->GetBaseFilename(),
+				(LPCTSTR)rev1.Left(g_Git.GetShortHASHLength()),
+				(LPCTSTR)pPath->GetFileExtension());
 		title1 = pPath->GetFileOrDirectoryName() + _T(":") + rev1.Left(g_Git.GetShortHASHLength());
 		if (g_Git.GetOneFile(rev1, *pPath, file1))
 		{
 			CString out;
-			out.Format(IDS_STATUSLIST_CHECKOUTFILEFAILED, pPath->GetGitPathString(), rev1, file1);
+			out.Format(IDS_STATUSLIST_CHECKOUTFILEFAILED, (LPCTSTR)pPath->GetGitPathString(), (LPCTSTR)rev1, (LPCTSTR)file1);
 			CMessageBox::Show(nullptr, g_Git.GetGitLastErr(out, CGit::GIT_CMD_GETONEFILE), _T("TortoiseGit"), MB_OK);
 			return -1;
 		}
@@ -439,16 +439,16 @@ int CGitDiff::Diff(const CTGitPath * pPath, const CTGitPath * pPath2, git_revnum
 	else
 	{
 		file1 = g_Git.CombinePath(pPath);
-		title1.Format( IDS_DIFF_WCNAME, pPath->GetFileOrDirectoryName() );
+		title1.Format(IDS_DIFF_WCNAME, (LPCTSTR)pPath->GetFileOrDirectoryName());
 		if (!PathFileExists(file1))
 		{
 			CString sMsg;
-			sMsg.Format(IDS_PROC_DIFFERROR_FILENOTINWORKINGTREE, file1);
+			sMsg.Format(IDS_PROC_DIFFERROR_FILENOTINWORKINGTREE, (LPCTSTR)file1);
 			if (MessageBox(NULL, sMsg, _T("TortoiseGit"), MB_ICONEXCLAMATION | MB_YESNO) != IDYES)
 				return 1;
 			if (!CCommonAppUtils::FileOpenSave(file1, NULL, IDS_SELECTFILE, IDS_COMMONFILEFILTER, true))
 				return 1;
-			title1.Format(IDS_DIFF_WCNAME, CTGitPath(file1).GetUIFileOrDirectoryName());
+			title1.Format(IDS_DIFF_WCNAME, (LPCTSTR)CTGitPath(file1).GetUIFileOrDirectoryName());
 		}
 	}
 
@@ -467,15 +467,15 @@ int CGitDiff::Diff(const CTGitPath * pPath, const CTGitPath * pPath2, git_revnum
 
 		// use original file extension, an external diff tool might need it
 		file2.Format(_T("%s\\%s-%s-left%s"),
-				temp,
-				fileName.GetBaseFilename(),
-				rev2.Left(g_Git.GetShortHASHLength()),
-				fileName.GetFileExtension());
+				(LPCTSTR)temp,
+				(LPCTSTR)fileName.GetBaseFilename(),
+				(LPCTSTR)rev2.Left(g_Git.GetShortHASHLength()),
+				(LPCTSTR)fileName.GetFileExtension());
 		title2 = fileName.GetFileOrDirectoryName() + _T(":") + rev2.Left(g_Git.GetShortHASHLength());
 		if (g_Git.GetOneFile(rev2, fileName, file2))
 		{
 			CString out;
-			out.Format(IDS_STATUSLIST_CHECKOUTFILEFAILED, pPath2->GetGitPathString(), rev2, file2);
+			out.Format(IDS_STATUSLIST_CHECKOUTFILEFAILED, (LPCTSTR)pPath2->GetGitPathString(), (LPCTSTR)rev2, (LPCTSTR)file2);
 			CMessageBox::Show(nullptr, g_Git.GetGitLastErr(out, CGit::GIT_CMD_GETONEFILE), _T("TortoiseGit"), MB_OK);
 			return -1;
 		}

@@ -111,7 +111,7 @@ protected:
 		if (err)
 		{
 			CString msg;
-			msg.Format(IDS_PROC_SAVECONFIGFAILED, key, value);
+			msg.Format(IDS_PROC_SAVECONFIGFAILED, (LPCTSTR)key, (LPCTSTR)value);
 			CMessageBox::Show(nullptr, g_Git.GetLibGit2LastErr(msg), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 			return false;
 		}
@@ -172,7 +172,7 @@ protected:
 			CString dest;
 			dest.LoadString(storeTo);
 			CString msg;
-			msg.Format(IDS_WARNUSERSAFEDIFFERENT, dest);
+			msg.Format(IDS_WARNUSERSAFEDIFFERENT, (LPCTSTR)dest);
 			if (CMessageBox::Show(nullptr, msg, _T("TortoiseGit"), 2, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_SAVEBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)
 				return false;
 		}

@@ -114,7 +114,7 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 	if (!GitAdminDir::HasAdminDir(m_CurrentFileName, &topdir))
 	{
 		CString temp;
-		temp.Format(IDS_CANNOTBLAMENOGIT, CString(m_CurrentFileName));
+		temp.Format(IDS_CANNOTBLAMENOGIT, (LPCTSTR)m_CurrentFileName);
 		CMessageBox::Show(NULL, temp, _T("TortoiseGitBlame"), MB_OK);
 		return FALSE;
 	}
@@ -124,7 +124,7 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 		if (topdir != g_Git.m_CurrentDir && CTGitPath(g_Git.m_CurrentDir).HasAdminDir(&oldTopDir) && oldTopDir != topdir)
 		{
 			CString sMsg;
-			sMsg.Format(IDS_ERR_DIFFENERTPREPO, oldTopDir, topdir);
+			sMsg.Format(IDS_ERR_DIFFENERTPREPO, (LPCTSTR)oldTopDir, (LPCTSTR)topdir);
 			MessageBox(NULL, sMsg, _T("TortoiseGitBlame"), MB_OK | MB_ICONERROR);
 			return FALSE;
 		}
@@ -183,7 +183,7 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 		if (theApp.GetInt(_T("IgnoreWhitespace"), 0) == 1)
 			option += _T(" -w");
 
-		cmd.Format(_T("git.exe blame -p %s %s -- \"%s\""), option, Rev, path.GetGitPathString());
+		cmd.Format(_T("git.exe blame -p %s %s -- \"%s\""), (LPCTSTR)option, (LPCTSTR)Rev, (LPCTSTR)path.GetGitPathString());
 		m_BlameData.clear();
 		BYTE_VECTOR err;
 		if(g_Git.Run(cmd, &m_BlameData, &err))
@@ -207,12 +207,12 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 
 		m_TempFileName=GetTempFile();
 
-		cmd.Format(_T("git.exe cat-file blob %s:\"%s\""),Rev,path.GetGitPathString());
+		cmd.Format(_T("git.exe cat-file blob %s:\"%s\""), (LPCTSTR)Rev, (LPCTSTR)path.GetGitPathString());
 
 		if(g_Git.RunLogFile(cmd, m_TempFileName))
 		{
 			CString str;
-			str.Format(IDS_CHECKOUTFAILED, path.GetGitPathString());
+			str.Format(IDS_CHECKOUTFAILED, (LPCTSTR)path.GetGitPathString());
 			MessageBox(NULL, CString(MAKEINTRESOURCE(IDS_BLAMEERROR)) + _T("\n\n") + str, _T("TortoiseGitBlame"), MB_OK);
 			return FALSE;
 		}

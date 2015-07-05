@@ -1081,8 +1081,8 @@ int CTGitPathList::FillUnRev(unsigned int action, CTGitPathList *list, CString *
 		}
 		else
 		{	cmd.Format(_T("git.exe ls-files --exclude-standard --full-name --others -z%s -- \"%s\""),
-					ignored,
-					(*list)[i].GetWinPathString());
+					(LPCTSTR)ignored,
+					(*list)[i].GetWinPath());
 		}
 
 		BYTE_VECTOR out, errb;

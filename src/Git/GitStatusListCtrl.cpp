@@ -1071,7 +1071,7 @@ void CGitStatusListCtrl::AddEntry(CTGitPath * GitPath, WORD /*langID*/, int list
 		{
 			// relative path
 			CString rename;
-			rename.Format(from, GitPath->GetGitOldPathString());
+			rename.Format(from, (LPCTSTR)GitPath->GetGitOldPathString());
 			entryname += _T(" ") + rename;
 		}
 		else
@@ -2214,7 +2214,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 							{
 								CString str;
 								if (!(selectedFilepath->m_ParentNo & MERGE_MASK))
-									str.Format(_T("%s^%d"), m_CurrentVersion, (selectedFilepath->m_ParentNo & PARENT_MASK) + 1);
+									str.Format(_T("%s^%d"), (LPCTSTR)m_CurrentVersion, (selectedFilepath->m_ParentNo & PARENT_MASK) + 1);
 
 								CAppUtils::StartShowUnifiedDiff(m_hWnd, *selectedFilepath, str, *selectedFilepath, m_CurrentVersion, false, false, false, false, !!(selectedFilepath->m_ParentNo & MERGE_MASK));
 							}
@@ -2270,7 +2270,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 			case IDGITLC_LOGSUBMODULE:
 				{
 					CString sCmd;
-					sCmd.Format(_T("/command:log /path:\"%s\""), g_Git.CombinePath(filepath));
+					sCmd.Format(_T("/command:log /path:\"%s\""), (LPCTSTR)g_Git.CombinePath(filepath));
 					if (cmd == IDGITLC_LOG && filepath->IsDirectory())
 						sCmd += _T(" /submodule");
 					if (!m_sDisplayedBranch.IsEmpty())
@@ -2283,7 +2283,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				{
 					CTGitPath oldName(filepath->GetGitOldPathString());
 					CString sCmd;
-					sCmd.Format(_T("/command:log /path:\"%s\""), g_Git.CombinePath(oldName));
+					sCmd.Format(_T("/command:log /path:\"%s\""), (LPCTSTR)g_Git.CombinePath(oldName));
 					if (!m_sDisplayedBranch.IsEmpty())
 						sCmd += _T(" /range:\"") + m_sDisplayedBranch + _T("\"");
 					CAppUtils::RunTortoiseGitProc(sCmd);
@@ -2495,7 +2495,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 									else if (path->GetGitPathString()==targetList[i].GetGitPathString() && path->IsDirectory() && path->IsWCRoot())
 									{
 										CString sCmd;
-										sCmd.Format(_T("/command:revert /path:\"%s\""), path->GetGitPathString());
+										sCmd.Format(_T("/command:revert /path:\"%s\""), (LPCTSTR)path->GetGitPathString());
 										CCommonAppUtils::RunTortoiseGitProc(sCmd);
 									}
 								}
@@ -2844,7 +2844,7 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 		else if (file1.m_Action & file1.LOGACTIONS_DELETED)
 		{
 			if (file1.m_ParentNo > 0)
-				fromwhere.Format(_T("%s^%d"), m_CurrentVersion, file1.m_ParentNo + 1);
+				fromwhere.Format(_T("%s^%d"), (LPCTSTR)m_CurrentVersion, file1.m_ParentNo + 1);
 
 			CGitDiff::DiffNull(&file1,fromwhere,false);
 		}
@@ -2904,7 +2904,7 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 				if(parent1>=0)
 				{
 					CString str;
-					str.Format(_T("%s^%d"),this->m_CurrentVersion, parent1+1);
+					str.Format(_T("%s^%d"), (LPCTSTR)this->m_CurrentVersion, parent1 + 1);
 
 					if(g_Git.GetOneFile(str, file1, (CString&)mine.GetWinPathString()))
 					{
@@ -2915,7 +2915,7 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 				if(parent2>=0)
 				{
 					CString str;
-					str.Format(_T("%s^%d"),this->m_CurrentVersion, parent2+1);
+					str.Format(_T("%s^%d"), (LPCTSTR)this->m_CurrentVersion, parent2 + 1);
 
 					if(g_Git.GetOneFile(str, file1, (CString&)theirs.GetWinPathString()))
 					{
@@ -2926,7 +2926,7 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 				if(parent1>=0 && parent2>=0)
 				{
 					CString cmd, output;
-					cmd.Format(_T("git.exe merge-base %s^%d %s^%d"), this->m_CurrentVersion, parent1+1,
+					cmd.Format(_T("git.exe merge-base %s^%d %s^%d"), (LPCTSTR)this->m_CurrentVersion, parent1 + 1,
 						this->m_CurrentVersion,parent2+1);
 
 					if (g_Git.Run(cmd, &output, NULL, CP_UTF8))
@@ -3516,7 +3516,7 @@ void CGitStatusListCtrl::OnBeginDrag(NMHDR* /*pNMHDR*/, LRESULT* pResult)
 		if (!this->m_CurrentVersion.IsEmpty() && this->m_CurrentVersion != GIT_REV_ZERO)
 		{
 			if (path->m_Action & CTGitPath::LOGACTIONS_DELETED)
-				version.Format(_T("%s^%d"), m_CurrentVersion, (path->m_ParentNo + 1) & PARENT_MASK);
+				version.Format(_T("%s^%d"), (LPCTSTR)m_CurrentVersion, (path->m_ParentNo + 1) & PARENT_MASK);
 			else
 				version = m_CurrentVersion;
 		}
@@ -3548,7 +3548,7 @@ void CGitStatusListCtrl::OnBeginDrag(NMHDR* /*pNMHDR*/, LRESULT* pResult)
 			if (g_Git.GetOneFile(version, *path, tempFile))
 			{
 				CString out;
-				out.Format(IDS_STATUSLIST_CHECKOUTFILEFAILED, path->GetGitPathString(), version, tempFile);
+				out.Format(IDS_STATUSLIST_CHECKOUTFILEFAILED, (LPCTSTR)path->GetGitPathString(), (LPCTSTR)version, (LPCTSTR)tempFile);
 				CMessageBox::Show(nullptr, g_Git.GetGitLastErr(out, CGit::GIT_CMD_GETONEFILE), _T("TortoiseGit"), MB_OK);
 				return;
 			}
@@ -3806,7 +3806,7 @@ bool CGitStatusListCtrl::PrepareGroups(bool bForce /* = false */)
 				if (repository)
 				{
 					CString rev;
-					rev.Format(_T("%s^%d"), m_CurrentVersion, i + 1);
+					rev.Format(_T("%s^%d"), (LPCTSTR)m_CurrentVersion, i + 1);
 					CGitHash hash;
 					if (!CGit::GetHash(repository, hash, rev))
 						str += _T(": ") + hash.ToString().Left(g_Git.GetShortHASHLength());
@@ -3932,7 +3932,7 @@ int CGitStatusListCtrl::UpdateFileList(CTGitPathList *list)
 			if (!bDeleteChecked)
 			{
 				CString message;
-				message.Format(IDS_ASK_REMOVE_FROM_INDEX, gitpatch->GetWinPathString());
+				message.Format(IDS_ASK_REMOVE_FROM_INDEX, gitpatch->GetWinPath());
 				deleteFromIndex = CMessageBox::ShowCheck(m_hWnd, message, _T("TortoiseGit"), 1, IDI_EXCLAMATION, CString(MAKEINTRESOURCE(IDS_REMOVE_FROM_INDEX)), CString(MAKEINTRESOURCE(IDS_IGNOREBUTTON)), NULL, NULL, CString(MAKEINTRESOURCE(IDS_DO_SAME_FOR_REST)), &bDeleteChecked);
 			}
 			if (deleteFromIndex == 1)
@@ -4246,7 +4246,7 @@ void CGitStatusListCtrl::FilesExport()
 			if (g_Git.GetOneFile(m_CurrentVersion, *fd, filename))
 			{
 				CString out;
-				out.Format(IDS_STATUSLIST_CHECKOUTFILEFAILED, fd->GetGitPathString(), m_CurrentVersion, filename);
+				out.Format(IDS_STATUSLIST_CHECKOUTFILEFAILED, (LPCTSTR)fd->GetGitPathString(), (LPCTSTR)m_CurrentVersion, (LPCTSTR)filename);
 				if (CMessageBox::Show(nullptr, g_Git.GetGitLastErr(out, CGit::GIT_CMD_GETONEFILE), _T("TortoiseGit"), 2, IDI_WARNING, CString(MAKEINTRESOURCE(IDS_IGNOREBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)
 					return;
 			}
@@ -4257,7 +4257,7 @@ void CGitStatusListCtrl::FilesExport()
 void CGitStatusListCtrl::FileSaveAs(CTGitPath *path)
 {
 	CString filename;
-	filename.Format(_T("%s-%s%s"), path->GetBaseFilename(), this->m_CurrentVersion.Left(g_Git.GetShortHASHLength()), path->GetFileExtension());
+	filename.Format(_T("%s-%s%s"), (LPCTSTR)path->GetBaseFilename(), (LPCTSTR)this->m_CurrentVersion.Left(g_Git.GetShortHASHLength()), (LPCTSTR)path->GetFileExtension());
 	CFileDialog dlg(FALSE,NULL,
 					filename,
 					OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
@@ -4285,7 +4285,7 @@ void CGitStatusListCtrl::FileSaveAs(CTGitPath *path)
 		{
 			if(g_Git.GetOneFile(m_CurrentVersion,*path,filename))
 			{
-				out.Format(IDS_STATUSLIST_CHECKOUTFILEFAILED, path->GetGitPathString(), m_CurrentVersion, filename);
+				out.Format(IDS_STATUSLIST_CHECKOUTFILEFAILED, (LPCTSTR)path->GetGitPathString(), (LPCTSTR)m_CurrentVersion, (LPCTSTR)filename);
 				CMessageBox::Show(nullptr, g_Git.GetGitLastErr(out, CGit::GIT_CMD_GETONEFILE), _T("TortoiseGit"), MB_OK);
 				return;
 			}
@@ -4313,7 +4313,7 @@ int CGitStatusListCtrl::RevertSelectedItemToVersion(bool parent)
 		{
 			int parentNo = fentry->m_ParentNo & PARENT_MASK;
 			CString ref;
-			ref.Format(_T("%s^%d"), m_CurrentVersion, parentNo + 1);
+			ref.Format(_T("%s^%d"), (LPCTSTR)m_CurrentVersion, parentNo + 1);
 			CGitHash hash;
 			if (g_Git.GetHash(hash, ref))
 			{
@@ -4329,7 +4329,7 @@ int CGitStatusListCtrl::RevertSelectedItemToVersion(bool parent)
 		CString filename = fentry->GetGitPathString();
 		if (!fentry->GetGitOldPathString().IsEmpty())
 			filename = fentry->GetGitOldPathString();
-		cmd.Format(_T("git.exe checkout %s -- \"%s\""), version, filename);
+		cmd.Format(_T("git.exe checkout %s -- \"%s\""), (LPCTSTR)version, (LPCTSTR)filename);
 		out.Empty();
 		if (g_Git.Run(cmd, &out, CP_UTF8))
 		{
@@ -4344,7 +4344,7 @@ int CGitStatusListCtrl::RevertSelectedItemToVersion(bool parent)
 	for (auto it = versionMap.begin(); it != versionMap.end(); ++it)
 	{
 		CString versionEntry;
-		versionEntry.Format(IDS_STATUSLIST_FILESREVERTED, it->second, it->first);
+		versionEntry.Format(IDS_STATUSLIST_FILESREVERTED, it->second, (LPCTSTR)it->first);
 		out += versionEntry + _T("\r\n");
 	}
 	if (!out.IsEmpty())
@@ -4369,14 +4369,14 @@ void CGitStatusListCtrl::OpenFile(CTGitPath*filepath,int mode)
 		DeleteFile(szTempName);
 		CreateDirectory(szTempName, NULL);
 		file.Format(_T("%s\\%s_%s%s"),
-					temp,
-					filepath->GetBaseFilename(),
-					m_CurrentVersion.Left(g_Git.GetShortHASHLength()),
-					filepath->GetFileExtension());
+					(LPCTSTR)temp,
+					(LPCTSTR)filepath->GetBaseFilename(),
+					(LPCTSTR)m_CurrentVersion.Left(g_Git.GetShortHASHLength()),
+					(LPCTSTR)filepath->GetFileExtension());
 		CString cmd,out;
 		if(g_Git.GetOneFile(m_CurrentVersion, *filepath, file))
 		{
-			out.Format(IDS_STATUSLIST_CHECKOUTFILEFAILED, filepath->GetGitPathString(), m_CurrentVersion, file);
+			out.Format(IDS_STATUSLIST_CHECKOUTFILEFAILED, (LPCTSTR)filepath->GetGitPathString(), (LPCTSTR)m_CurrentVersion, (LPCTSTR)file);
 			CMessageBox::Show(nullptr, g_Git.GetGitLastErr(out, CGit::GIT_CMD_GETONEFILE), _T("TortoiseGit"), MB_OK);
 			return;
 		}

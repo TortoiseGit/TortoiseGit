@@ -113,7 +113,7 @@ END_MESSAGE_MAP()
 static bool RunUAC()
 {
 	CString sCmd;
-	sCmd.Format(_T("/command:settings /page:gitcredential /path:\"%s\""), g_Git.m_CurrentDir);
+	sCmd.Format(_T("/command:settings /page:gitcredential /path:\"%s\""), (LPCTSTR)g_Git.m_CurrentDir);
 	return CAppUtils::RunTortoiseGitProc(sCmd, true);
 }
 
@@ -223,13 +223,13 @@ void CSettingGitCredential::OnBnClickedButtonAdd()
 	CString prefix = sel == ConfigType::System ? _T("S") : sel == ConfigType::Global ? _T("G") : _T("L");
 	CString text;
 	if (!m_strUrl.IsEmpty())
-		text.Format(_T("%s:%s"), prefix, m_strUrl);
+		text.Format(_T("%s:%s"), (LPCTSTR)prefix, (LPCTSTR)m_strUrl);
 	else
 		text = prefix;
 	if (IsUrlExist(text))
 	{
 		CString msg;
-		msg.Format(IDS_GITCREDENTIAL_OVERWRITEHELPER, m_strUrl);
+		msg.Format(IDS_GITCREDENTIAL_OVERWRITEHELPER, (LPCTSTR)m_strUrl);
 		if (CMessageBox::Show(NULL, msg, _T("TortoiseGit"), MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2) == IDYES)
 			m_ChangedMask &= ~CREDENTIAL_URL;
 		else
@@ -380,7 +380,7 @@ static int GetCredentialAnyEntryCallback(const git_config_entry *entry, void *pa
 	CString value = CUnicodeUtils::GetUnicode(entry->value);
 	CString display = entry->level == 1 ? _T("S") : entry->level == 2 ? _T("X") : entry->level == 3 ? _T("G") : _T("L");	
 	CString text;
-	text.Format(_T("%s\n%s\n%s"), display, name, value);
+	text.Format(_T("%s\n%s\n%s"), (LPCTSTR)display, (LPCTSTR)name, (LPCTSTR)value);
 	((STRING_VECTOR *)payload)->push_back(text);
 	return 0;
 }
@@ -483,9 +483,9 @@ CString CSettingGitCredential::Load(CString key)
 	CString cmd;
 
 	if (m_strUrl.IsEmpty())
-		cmd.Format(_T("credential.%s"), key);
+		cmd.Format(_T("credential.%s"), (LPCTSTR)key);
 	else
-		cmd.Format(_T("credential.%s.%s"), m_strUrl, key);
+		cmd.Format(_T("credential.%s.%s"), (LPCTSTR)m_strUrl, (LPCTSTR)key);
 
 	CAutoConfig config(true);
 	int sel = m_ctrlConfigType.GetCurSel();
@@ -518,9 +518,9 @@ void CSettingGitCredential::Save(CString key, CString value)
 	CString cmd, out;
 
 	if (m_strUrl.IsEmpty())
-		cmd.Format(_T("credential.%s"), key);
+		cmd.Format(_T("credential.%s"), (LPCTSTR)key);
 	else
-		cmd.Format(_T("credential.%s.%s"), m_strUrl, key);
+		cmd.Format(_T("credential.%s.%s"), (LPCTSTR)m_strUrl, (LPCTSTR)key);
 
 	int sel = m_ctrlConfigType.GetCurSel();
 	CONFIG_TYPE configLevel = sel == ConfigType::System ? CONFIG_SYSTEM : sel == ConfigType::Global ? CONFIG_GLOBAL : CONFIG_LOCAL;
@@ -532,7 +532,7 @@ void CSettingGitCredential::Save(CString key, CString value)
 	if (g_Git.SetConfigValue(cmd, value, configLevel))
 	{
 		CString msg;
-		msg.Format(IDS_PROC_SAVECONFIGFAILED, cmd, value);
+		msg.Format(IDS_PROC_SAVECONFIGFAILED, (LPCTSTR)cmd, (LPCTSTR)value);
 		CMessageBox::Show(NULL, msg, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 	}
 	if (value.IsEmpty())
@@ -540,7 +540,7 @@ void CSettingGitCredential::Save(CString key, CString value)
 		if (g_Git.UnsetConfigValue(cmd, configLevel))
 		{
 			CString msg;
-			msg.Format(IDS_PROC_SAVECONFIGFAILED, cmd, value);
+			msg.Format(IDS_PROC_SAVECONFIGFAILED, (LPCTSTR)cmd, (LPCTSTR)value);
 			CMessageBox::Show(NULL, msg, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 		}
 	}
@@ -596,7 +596,7 @@ static int DeleteOtherKeys(int type)
 			if (g_Git.UnsetConfigValue(key, configLevel))
 			{
 				CString msg;
-				msg.Format(IDS_PROC_SAVECONFIGFAILED, key, _T(""));
+				msg.Format(IDS_PROC_SAVECONFIGFAILED, (LPCTSTR)key, _T(""));
 				CMessageBox::Show(NULL, msg, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 				result = 1;
 				break;
@@ -649,7 +649,7 @@ bool SaveSimpleCredential(int type)
 	if (g_Git.SetConfigValue(_T("credential.helper"), value, configLevel))
 	{
 		CString msg;
-		msg.Format(IDS_PROC_SAVECONFIGFAILED, _T("credential.helper"), value);
+		msg.Format(IDS_PROC_SAVECONFIGFAILED, _T("credential.helper"), (LPCTSTR)value);
 		CMessageBox::Show(NULL, msg, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 		return false;
 	}
@@ -709,7 +709,7 @@ BOOL CSettingGitCredential::OnApply()
 		CString prefix = sel == ConfigType::System ? _T("S") : sel == ConfigType::Global ? _T("G") : _T("L");
 		CString text;
 		if (!m_strUrl.IsEmpty())
-			text.Format(_T("%s:%s"), prefix, m_strUrl);
+			text.Format(_T("%s:%s"), (LPCTSTR)prefix, (LPCTSTR)m_strUrl);
 		else
 			text = prefix;
 		int urlIndex = m_ctrlUrlList.AddString(text);
@@ -743,7 +743,7 @@ void CSettingGitCredential::OnBnClickedButtonRemove()
 		CString str;
 		m_ctrlUrlList.GetText(index, str);
 		CString msg;
-		msg.Format(IDS_WARN_REMOVE, str);
+		msg.Format(IDS_WARN_REMOVE, (LPCTSTR)str);
 		if (CMessageBox::Show(NULL, msg, _T("TortoiseGit"), MB_YESNO | MB_ICONQUESTION) == IDYES)
 		{
 			CAutoConfig config(true);

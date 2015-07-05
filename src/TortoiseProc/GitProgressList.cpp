@@ -543,7 +543,7 @@ UINT CGitProgressList::ProgressThread()
 			str.LoadString(IDS_SUCCESS);
 		else
 			str.LoadString(IDS_FAIL);
-		log.Format(_T("%s (%lu ms @ %s)"), str, time,  CLoglistUtils::FormatDateAndTime(CTime::GetCurrentTime(), DATE_SHORTDATE, true, false));
+		log.Format(_T("%s (%lu ms @ %s)"), (LPCTSTR)str, time, (LPCTSTR)CLoglistUtils::FormatDateAndTime(CTime::GetCurrentTime(), DATE_SHORTDATE, true, false));
 
 		// there's no "finished: xxx" line at the end. We add one here to make
 		// sure the user sees that the command is actually finished.

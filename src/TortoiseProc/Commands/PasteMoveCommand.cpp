@@ -80,7 +80,7 @@ bool PasteMoveCommand::Execute()
 			if (g_Git.Run(cmd, &output, CP_UTF8))
 			//if (!Git.Add(CTGitorgPathList(destPath), &props, Git_depth_infinity, true, false, true))
 			{
-				TRACE(_T("%s\n"), output);
+				TRACE(_T("%s\n"), (LPCTSTR)output);
 				CMessageBox::Show(hwndExplorer, output, _T("TortoiseGit"), MB_ICONERROR);
 				return FALSE;		//get out of here
 			}
@@ -89,7 +89,7 @@ bool PasteMoveCommand::Execute()
 		else
 		{
 			CString cmd,output;
-			cmd.Format(_T("git.exe mv \"%s\" \"%s\""),orgPathList[nPath].GetGitPathString(),destPath.GetGitPathString());
+			cmd.Format(_T("git.exe mv \"%s\" \"%s\""), (LPCTSTR)orgPathList[nPath].GetGitPathString(), (LPCTSTR)destPath.GetGitPathString());
 			if (g_Git.Run(cmd, &output, CP_UTF8))
 			//if (!Git.Move(CTGitorgPathList(orgPathList[nPath]), destPath, FALSE))
 			{

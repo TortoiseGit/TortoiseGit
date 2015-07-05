@@ -55,7 +55,7 @@ protected:
 		this->SetRemote(pullRemote);
 
 		CString defaultUpstream;
-		defaultUpstream.Format(L"remotes/%s/%s", pullRemote, pullBranch);
+		defaultUpstream.Format(L"remotes/%s/%s", (LPCTSTR)pullRemote, (LPCTSTR)pullBranch);
 		int found = m_ctrlRemoteBranch.FindStringExact(0, defaultUpstream);
 		if(found >= 0)
 		{
@@ -152,16 +152,16 @@ protected:
 			}
 
 			tooltip.Format(_T("%s: %s\n%s: %s <%s>\n%s: %s\n%s:\n%s\n%s"),
-				CString(MAKEINTRESOURCE(IDS_LOG_REVISION)),
-				rev.m_CommitHash.ToString(),
-				CString(MAKEINTRESOURCE(IDS_LOG_AUTHOR)),
-				rev.GetAuthorName(),
-				rev.GetAuthorEmail(),
-				CString(MAKEINTRESOURCE(IDS_LOG_DATE)),
-				CLoglistUtils::FormatDateAndTime(rev.GetAuthorDate(), DATE_LONGDATE),
-				CString(MAKEINTRESOURCE(IDS_LOG_MESSAGE)),
-				rev.GetSubject(),
-				rev.GetBody());
+				(LPCTSTR)CString(MAKEINTRESOURCE(IDS_LOG_REVISION)), // TODOTODO
+				(LPCTSTR)rev.m_CommitHash.ToString(),
+				(LPCTSTR)CString(MAKEINTRESOURCE(IDS_LOG_AUTHOR)),
+				(LPCTSTR)rev.GetAuthorName(),
+				(LPCTSTR)rev.GetAuthorEmail(),
+				(LPCTSTR)CString(MAKEINTRESOURCE(IDS_LOG_DATE)),
+				(LPCTSTR)CLoglistUtils::FormatDateAndTime(rev.GetAuthorDate(), DATE_LONGDATE),
+				(LPCTSTR)CString(MAKEINTRESOURCE(IDS_LOG_MESSAGE)),
+				(LPCTSTR)rev.GetSubject(),
+				(LPCTSTR)rev.GetBody());
 
 			pBranch->DisableTooltip();
 

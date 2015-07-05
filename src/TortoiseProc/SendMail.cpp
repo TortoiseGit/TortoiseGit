@@ -109,7 +109,7 @@ int CSendMail::SendMail(CString &FromName, CString &FromMail, CString &To, CStri
 	else
 	{
 		CString sender;
-		sender.Format(_T("%s <%s>"), FromName, FromMail);
+		sender.Format(_T("%s <%s>"), (LPCTSTR)FromName, (LPCTSTR)FromMail);
 
 		CHwSMTP mail;
 		if (CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\DeliveryType"), 2) == 2)

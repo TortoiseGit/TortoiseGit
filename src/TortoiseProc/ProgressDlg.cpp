@@ -184,7 +184,7 @@ redo:
 			goto redo;
 		}
 		else
-			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Message %d-%d could not be sent (error %d; %s)\n"), wParam, lParam, GetLastError(), (CString)CFormatMessageWrapper());
+			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Message %d-%d could not be sent (error %d; %s)\n"), wParam, lParam, GetLastError(), (LPCTSTR)CFormatMessageWrapper());
 	}
 }
 
@@ -293,19 +293,19 @@ UINT CProgressDlg::RunCmdList(CWnd* pWnd, STRING_VECTOR& cmdlist, STRING_VECTOR&
 				EnsurePostMessage(pWnd, MSG_PROGRESSDLG_UPDATE_UI, MSG_PROGRESSDLG_RUN, 0);
 		}
 
-		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": waiting for process to finish (%s), aborted: %d\n"), cmdlist[i], *bAbort);
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": waiting for process to finish (%s), aborted: %d\n"), (LPCTSTR)cmdlist[i], *bAbort);
 
 		WaitForSingleObject(pi.hProcess, INFINITE);
 
 		DWORD status=0;
 		if(!GetExitCodeProcess(pi.hProcess,&status) || *bAbort)
 		{
-			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": process %s finished, status code could not be fetched, (error %d; %s), aborted: %d\n"), cmdlist[i], GetLastError(), (CString)CFormatMessageWrapper(), *bAbort);
+			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": process %s finished, status code could not be fetched, (error %d; %s), aborted: %d\n"), (LPCTSTR)cmdlist[i], GetLastError(), (LPCTSTR)CFormatMessageWrapper(), *bAbort);
 
 			EnsurePostMessage(pWnd, MSG_PROGRESSDLG_UPDATE_UI, MSG_PROGRESSDLG_FAILED, status);
 			return TGIT_GIT_ERROR_GET_EXIT_CODE;
 		}
-		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": process %s finished with code %d\n"), cmdlist[i], status);
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": process %s finished with code %d\n"), (LPCTSTR)cmdlist[i], status);
 		ret |= status;
 	}
 
@@ -390,9 +390,9 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 			log.Format(IDS_PROC_PROGRESS_GITUNCLEANEXIT, m_GitStatus);
 			CString err;
 			if (CRegDWORD(_T("Software\\TortoiseGit\\ShowGitexeTimings"), TRUE))
-				err.Format(_T("\r\n\r\n%s (%lu ms @ %s)\r\n"), log, tickSpent, strEndTime);
+				err.Format(_T("\r\n\r\n%s (%lu ms @ %s)\r\n"), (LPCTSTR)log, tickSpent, (LPCTSTR)strEndTime);
 			else
-				err.Format(_T("\r\n\r\n%s\r\n"), log);
+				err.Format(_T("\r\n\r\n%s\r\n"), (LPCTSTR)log);
 			InsertColorText(this->m_Log, err, RGB(255,0,0));
 			if (CRegDWORD(_T("Software\\TortoiseGit\\NoSounds"), FALSE) == FALSE)
 				PlaySound((LPCTSTR)SND_ALIAS_SYSTEMEXCLAMATION, NULL, SND_ALIAS_ID | SND_ASYNC);
@@ -404,9 +404,9 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 			temp.LoadString(IDS_SUCCESS);
 			CString log;
 			if (CRegDWORD(_T("Software\\TortoiseGit\\ShowGitexeTimings"), TRUE))
-				log.Format(_T("\r\n%s (%lu ms @ %s)\r\n"), temp, tickSpent, strEndTime);
+				log.Format(_T("\r\n%s (%lu ms @ %s)\r\n"), (LPCTSTR)temp, tickSpent, (LPCTSTR)strEndTime);
 			else
-				log.Format(_T("\r\n%s\r\n"), temp);
+				log.Format(_T("\r\n%s\r\n"), (LPCTSTR)temp);
 			InsertColorText(this->m_Log, log, RGB(0,0,255));
 			this->DialogEnableWindow(IDCANCEL,FALSE);
 		}

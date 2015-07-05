@@ -461,7 +461,7 @@ void CGitLogListBase::ResizeAllListCtrlCols()
 		{
 			// get width for this col last time from registry
 			CString regentry;
-			regentry.Format( _T("Software\\TortoiseGit\\%s\\ColWidth%d"),m_ColumnRegKey, col);
+			regentry.Format( _T("Software\\TortoiseGit\\%s\\ColWidth%d"), (LPCTSTR)m_ColumnRegKey, col);
 			CRegDWORD regwidth(regentry, 0);
 			int cx = regwidth;
 			if ( cx == 0 )
@@ -1359,7 +1359,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 								if (!pullRemote.IsEmpty() && !pullBranch.IsEmpty())
 								{
 									CString defaultUpstream;
-									defaultUpstream.Format(_T("refs/remotes/%s/%s"), pullRemote, pullBranch);
+									defaultUpstream.Format(_T("refs/remotes/%s/%s"), (LPCTSTR)pullRemote, (LPCTSTR)pullBranch);
 									refLabel.hasTracking = true;
 									if (m_ShowRefMask & LOGLIST_SHOWREMOTEBRANCHES)
 									{
@@ -2027,13 +2027,13 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					popup.AppendMenuIcon(ID_REPOBROWSE, IDS_LOG_BROWSEREPO, IDI_REPOBROWSE);
 
 				format.LoadString(IDS_LOG_POPUP_MERGEREV);
-				str.Format(format,g_Git.GetCurrentBranch());
+				str.Format(format, (LPCTSTR)g_Git.GetCurrentBranch());
 
 				if (m_ContextMenuMask&GetContextMenuBit(ID_MERGEREV) && !isHeadCommit && m_hasWC && !isMergeActive && !isStash)
 					popup.AppendMenuIcon(ID_MERGEREV, str, IDI_MERGE);
 
 				format.LoadString(IDS_RESET_TO_THIS_FORMAT);
-				str.Format(format,g_Git.GetCurrentBranch());
+				str.Format(format, (LPCTSTR)g_Git.GetCurrentBranch());
 
 				if (m_ContextMenuMask&GetContextMenuBit(ID_RESET) && m_hasWC && !isStash)
 					popup.AppendMenuIcon(ID_RESET,str,IDI_REVERT);
@@ -2092,7 +2092,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					popup.AppendMenuIcon(ID_CREATE_TAG,IDS_CREATE_TAG_AT_THIS , IDI_TAG);
 
 				format.LoadString(IDS_REBASE_THIS_FORMAT);
-				str.Format(format,g_Git.GetCurrentBranch());
+				str.Format(format, (LPCTSTR)g_Git.GetCurrentBranch());
 
 				if (pSelLogEntry->m_CommitHash != m_HeadHash && m_hasWC && !isMergeActive && !isStash)
 					if(m_ContextMenuMask&GetContextMenuBit(ID_REBASE_TO_VERSION))
@@ -2157,9 +2157,9 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					GitRevLoglist* pLastEntry = reinterpret_cast<GitRevLoglist*>(m_arShownList.SafeGetAt(LastSelect));
 					CString lastSelHash = pLastEntry->m_CommitHash.ToString().Left(g_Git.GetShortHASHLength());
 					CString menu;
-					menu.Format(IDS_SHOWLOG_OF, lastSelHash + _T("..") + firstSelHash);
+					menu.Format(IDS_SHOWLOG_OF, (LPCTSTR)(lastSelHash + _T("..") + firstSelHash));
 					popup.AppendMenuIcon(ID_LOG_VIEWRANGE, menu, IDI_LOG);
-					menu.Format(IDS_SHOWLOG_OF, lastSelHash + _T("...") + firstSelHash);
+					menu.Format(IDS_SHOWLOG_OF, (LPCTSTR)(lastSelHash + _T("...") + firstSelHash));
 					popup.AppendMenuIcon(ID_LOG_VIEWRANGE_REACHABLEFROMONLYONE, menu, IDI_LOG);
 				}
 
@@ -2384,7 +2384,7 @@ void CGitLogListBase::CopySelectionToClipBoard(int toCopy)
 					if (((CTGitPath&)pLogEntry->GetFiles(this)[cpPathIndex]).m_Action & (CTGitPath::LOGACTIONS_REPLACED|CTGitPath::LOGACTIONS_COPY) && !((CTGitPath&)pLogEntry->GetFiles(this)[cpPathIndex]).GetGitOldPathString().IsEmpty())
 					{
 						CString rename;
-						rename.Format(from, ((CTGitPath&)pLogEntry->GetFiles(this)[cpPathIndex]).GetGitOldPathString());
+						rename.Format(from, (LPCTSTR)((CTGitPath&)pLogEntry->GetFiles(this)[cpPathIndex]).GetGitOldPathString());
 						sPaths += _T(" ") + rename;
 					}
 					sPaths += _T("\r\n");
@@ -3176,7 +3176,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRevLoglist* pRev, std::tr1::
 			{
 				CString sBugIds = m_ProjectProperties.FindBugID(pRev->GetSubject() + _T("\r\n\r\n") + pRev->GetBody());
 
-				ATLTRACE(_T("bugID = \"%s\"\n"), sBugIds);
+				ATLTRACE(_T("bugID = \"%s\"\n"), (LPCTSTR)sBugIds);
 				if (std::regex_search(std::wstring(sBugIds), pat, flags))
 				{
 					return TRUE;
@@ -3186,7 +3186,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRevLoglist* pRev, std::tr1::
 
 		if ((m_SelectedFilters & LOGFILTER_SUBJECT) || (m_SelectedFilters & LOGFILTER_MESSAGES))
 		{
-			ATLTRACE(_T("messge = \"%s\"\n"), pRev->GetSubject());
+			ATLTRACE(_T("messge = \"%s\"\n"), (LPCTSTR)pRev->GetSubject());
 			if (std::regex_search(std::wstring((LPCTSTR)pRev->GetSubject()), pat, flags))
 			{
 				return TRUE;
@@ -3195,7 +3195,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRevLoglist* pRev, std::tr1::
 
 		if (m_SelectedFilters & LOGFILTER_MESSAGES)
 		{
-			ATLTRACE(_T("messge = \"%s\"\n"),pRev->GetBody());
+			ATLTRACE(_T("messge = \"%s\"\n"), (LPCTSTR)pRev->GetBody());
 			if (std::regex_search(std::wstring((LPCTSTR)pRev->GetBody()), pat, flags))
 			{
 					return TRUE;
@@ -3230,7 +3230,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRevLoglist* pRev, std::tr1::
 
 		if (m_SelectedFilters & LOGFILTER_REVS)
 		{
-			sRev.Format(_T("%s"), pRev->m_CommitHash.ToString());
+			sRev.Format(_T("%s"), (LPCTSTR)pRev->m_CommitHash.ToString());
 			if (std::regex_search(std::wstring((LPCTSTR)sRev), pat, flags))
 			{
 				return TRUE;
@@ -3354,7 +3354,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRevLoglist* pRev, std::tr1::
 
 		if (m_SelectedFilters & LOGFILTER_REVS)
 		{
-			sRev.Format(_T("%s"), pRev->m_CommitHash.ToString());
+			sRev.Format(_T("%s"), (LPCTSTR)pRev->m_CommitHash.ToString());
 			if ((sRev.Find(find) >= 0))
 			{
 				return result;
@@ -3508,7 +3508,7 @@ CString CGitLogListBase::GetTagInfo(GitRev* pLogEntry)
 				else
 					continue;
 
-				cmd.Format(_T("git.exe cat-file	tag %s"), tag);
+				cmd.Format(_T("git.exe cat-file	tag %s"), (LPCTSTR)tag);
 				if (g_Git.Run(cmd, &output, nullptr, CP_UTF8) == 0)
 					output.AppendChar(_T('\n'));
 			}

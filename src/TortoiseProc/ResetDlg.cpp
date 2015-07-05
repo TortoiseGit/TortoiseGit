@@ -82,7 +82,7 @@ BOOL CResetDlg::OnInitDialog()
 
 	CString resetTo;
 	CString currentBranch = g_Git.GetCurrentBranch();
-	resetTo.Format(IDS_PROC_RESETBRANCH, currentBranch);
+	resetTo.Format(IDS_PROC_RESETBRANCH, (LPCTSTR)currentBranch);
 	GetDlgItem(IDC_GROUP_BASEON)->SetWindowTextW(resetTo);
 
 	if (GitAdminDir::IsBareRepo(g_Git.m_CurrentDir))

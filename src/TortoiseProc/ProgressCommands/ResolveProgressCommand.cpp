@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2014 - TortoiseGit
+// Copyright (C) 2009-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -31,7 +31,7 @@ bool ResolveProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, 
 	for (m_itemCount = 0; m_itemCount < m_itemCountTotal; ++m_itemCount)
 	{
 		CString cmd, out, tempmergefile;
-		cmd.Format(_T("git.exe add -f -- \"%s\""), m_targetPathList[m_itemCount].GetGitPathString());
+		cmd.Format(_T("git.exe add -f -- \"%s\""), (LPCTSTR)m_targetPathList[m_itemCount].GetGitPathString());
 		if (g_Git.Run(cmd, &out, CP_UTF8))
 		{
 			list->ReportError(out);
@@ -53,7 +53,7 @@ bool ResolveProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, 
 		postCmdList.push_back(PostCmd(IDI_COMMIT, IDS_MENUCOMMIT, []
 		{
 			CString sCmd;
-			sCmd.Format(_T("/command:commit /path:\"%s\""), g_Git.m_CurrentDir);
+			sCmd.Format(_T("/command:commit /path:\"%s\""), (LPCTSTR)g_Git.m_CurrentDir);
 			CAppUtils::RunTortoiseGitProc(sCmd);
 		}));
 	};

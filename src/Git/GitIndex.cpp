@@ -35,8 +35,8 @@ int CGitIndex::Print()
 	_tprintf(_T("0x%08X  0x%08X %s %s\n"),
 		(int)this->m_ModifyTime,
 		this->m_Flags,
-		this->m_IndexHash.ToString(),
-		this->m_FileName);
+		(LPCTSTR)this->m_IndexHash.ToString(),
+		(LPCTSTR)this->m_FileName);
 
 	return 0;
 }

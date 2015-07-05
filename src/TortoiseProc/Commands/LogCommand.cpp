@@ -46,7 +46,7 @@ bool LogCommand::Execute()
 	if (revstart == GIT_REV_ZERO)
 		revstart.Empty();
 	if (!revstart.IsEmpty())
-		range.Format(_T("%s.."), g_Git.FixBranchName(revstart));
+		range.Format(_T("%s.."), (LPCTSTR)g_Git.FixBranchName(revstart));
 
 	CString revend = parser.GetVal(_T("endrev"));
 	if (revend.IsEmpty())

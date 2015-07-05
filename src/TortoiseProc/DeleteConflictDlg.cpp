@@ -113,6 +113,6 @@ void CDeleteConflictDlg::OnBnClickedModify()
 void CDeleteConflictDlg::ShowLog(CString hash)
 {
 	CString sCmd;
-	sCmd.Format(_T("/command:log /path:\"%s\" /endrev:%s"), g_Git.CombinePath(m_File), hash);
+	sCmd.Format(_T("/command:log /path:\"%s\" /endrev:%s"), (LPCTSTR)g_Git.CombinePath(m_File), (LPCTSTR)hash);
 	CAppUtils::RunTortoiseGitProc(sCmd, false, false);
 }

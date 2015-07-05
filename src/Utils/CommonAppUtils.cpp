@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2013, 2015 - TortoiseGit
 // Copyright (C) 2003-2008,2010 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -62,7 +62,7 @@ bool CCommonAppUtils::LaunchApplication(const CString& sCommandLine, UINT idErrM
 				if (idErrMessageFormat != 0)
 				{
 					CString temp;
-					temp.Format(idErrMessageFormat, CFormatMessageWrapper());
+					temp.Format(idErrMessageFormat, (LPCTSTR)CFormatMessageWrapper());
 					MessageBox(NULL, temp, _T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
 				}
 				return false;
@@ -88,7 +88,7 @@ bool CCommonAppUtils::LaunchApplication(const CString& sCommandLine, UINT idErrM
 			if (idErrMessageFormat != 0)
 			{
 				CString temp;
-				temp.Format(idErrMessageFormat, (CString)CFormatMessageWrapper());
+				temp.Format(idErrMessageFormat, (LPCTSTR)CFormatMessageWrapper());
 				MessageBox(NULL, temp, _T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
 			}
 			return false;
@@ -116,7 +116,7 @@ bool CCommonAppUtils::LaunchApplication(const CString& sCommandLine, UINT idErrM
 			if(idErrMessageFormat != 0)
 			{
 				CString temp;
-				temp.Format(idErrMessageFormat, (CString)CFormatMessageWrapper());
+				temp.Format(idErrMessageFormat, (LPCTSTR)CFormatMessageWrapper());
 				MessageBox(NULL, temp, _T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
 			}
 			return false;

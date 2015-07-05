@@ -1301,13 +1301,13 @@ void CRevisionGraphWnd::DoShowLog()
 
 	if(m_SelectedEntry2 != NULL)
 		sCmd.Format(_T("/command:log %s /startrev:%s /endrev:%s"),
-			this->m_sPath.IsEmpty() ?  _T("") : (_T("/path:\"") + this->m_sPath + _T("\"")),
-			this->m_logEntries[m_SelectedEntry1->index()].ToString(),
-			this->m_logEntries[m_SelectedEntry2->index()].ToString());
+			this->m_sPath.IsEmpty() ?  _T("") : (LPCTSTR)(_T("/path:\"") + this->m_sPath + _T("\"")),
+			(LPCTSTR)this->m_logEntries[m_SelectedEntry1->index()].ToString(),
+			(LPCTSTR)this->m_logEntries[m_SelectedEntry2->index()].ToString());
 	else
 		sCmd.Format(_T("/command:log %s /endrev:%s"),
-			this->m_sPath.IsEmpty() ?  _T("") : (_T("/path:\"") + this->m_sPath + _T("\"")),
-			this->m_logEntries[m_SelectedEntry1->index()].ToString());
+			(LPCTSTR)this->m_sPath.IsEmpty() ?  _T("") : (_T("/path:\"") + this->m_sPath + _T("\"")),
+			(LPCTSTR)this->m_logEntries[m_SelectedEntry1->index()].ToString());
 
 	CAppUtils::RunTortoiseGitProc(sCmd);
 
@@ -1386,8 +1386,8 @@ void CRevisionGraphWnd::DoBrowseRepo()
 
 	CString sCmd;
 	sCmd.Format(_T("/command:repobrowser %s /rev:%s"),
-		this->m_sPath.IsEmpty() ?  _T("") : (_T("/path:\"") + this->m_sPath + _T("\"")),
-		GetFriendRefName(m_SelectedEntry1));
+		this->m_sPath.IsEmpty() ?  _T("") : (LPCTSTR)(_T("/path:\"") + this->m_sPath + _T("\"")),
+		(LPCTSTR)GetFriendRefName(m_SelectedEntry1));
 
 	CAppUtils::RunTortoiseGitProc(sCmd);
 }
@@ -1467,7 +1467,7 @@ void CRevisionGraphWnd::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 		if (branchNames.size() == 1)
 		{
 			CString text;
-			text.Format(_T("%s \"%s\""), CString(MAKEINTRESOURCE(IDS_SWITCH_BRANCH)), branchNames[0]);
+			text.Format(_T("%s \"%s\""), (LPCTSTR)CString(MAKEINTRESOURCE(IDS_SWITCH_BRANCH)), (LPCTSTR)branchNames[0]);
 			AppendMenu(popup, text, ID_SWITCH, &branchNames[0]);
 		}
 		else if (branchNames.size() > 1)

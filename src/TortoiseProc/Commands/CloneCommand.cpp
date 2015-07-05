@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2014 - TortoiseGit
+// Copyright (C) 2008-2015 - TortoiseGit
 // Copyright (C) 2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -163,15 +163,15 @@ bool CloneCommand::Execute()
 			progressarg = _T(" --progress");
 
 		cmd.Format(_T("git.exe clone%s%s%s%s%s%s -v%s \"%s\" \"%s\""),
-						nocheckoutStr,
-						recursiveStr,
-						bareStr,
-						branchStr,
-						originStr,
-						progressarg,
-						depth,
-						url,
-						dir);
+						(LPCTSTR)nocheckoutStr,
+						(LPCTSTR)recursiveStr,
+						(LPCTSTR)bareStr,
+						(LPCTSTR)branchStr,
+						(LPCTSTR)originStr,
+						(LPCTSTR)progressarg,
+						(LPCTSTR)depth,
+						(LPCTSTR)url,
+						(LPCTSTR)dir);
 
 		bool retry = false;
 		auto postCmdCallback = [&](DWORD status, PostCmdList& postCmdList)
@@ -201,8 +201,8 @@ bool CloneCommand::Execute()
 		if(dlg.m_bSVN)
 		{
 			//g_Git.m_CurrentDir=dlg.m_Directory;
-			cmd.Format(_T("git.exe svn clone \"%s\"  \"%s\""),
-				url,dlg.m_Directory);
+			cmd.Format(_T("git.exe svn clone \"%s\" \"%s\""),
+				(LPCTSTR)url, (LPCTSTR)dlg.m_Directory);
 
 			if (dlg.m_bOrigin)
 			{
@@ -210,7 +210,7 @@ bool CloneCommand::Execute()
 				if (dlg.m_strOrigin.IsEmpty())
 					str = _T(" --prefix \"\"");
 				else
-					str.Format(_T(" --prefix \"%s/\""), dlg.m_strOrigin);
+					str.Format(_T(" --prefix \"%s/\""), (LPCTSTR)dlg.m_strOrigin);
 				cmd += str;
 			}
 

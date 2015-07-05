@@ -234,7 +234,7 @@ UINT CCheckForUpdatesDlg::CheckThread()
 		if (CRegDWORD(_T("Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings\\GlobalUserOffline"), 0))
 			errorText.LoadString(IDS_OFFLINEMODE); // offline mode enabled
 		else
-			errorText.Format(IDS_CHECKNEWER_NETERROR_FORMAT, GetWinINetError(ret) + _T(" URL: ") + sCheckURL, ret);
+			errorText.Format(IDS_CHECKNEWER_NETERROR_FORMAT, (LPCTSTR)(GetWinINetError(ret) + _T(" URL: ") + sCheckURL), ret);
 		SetDlgItemText(IDC_CHECKRESULT, errorText);
 		goto finish;
 	}
@@ -376,7 +376,7 @@ void CCheckForUpdatesDlg::FillDownloads(CAutoConfig& versioncheck, const CString
 
 	versioncheck.GetString(_T("tortoisegit.baseurl"), m_sFilesURL);
 	if (m_sFilesURL.IsEmpty())
-		m_sFilesURL.Format(_T("http://updater.download.tortoisegit.org/tgit/%s/"), version);
+		m_sFilesURL.Format(_T("http://updater.download.tortoisegit.org/tgit/%s/"), (LPCTSTR)version);
 
 	bool isHotfix = false;
 	versioncheck.GetBool(_T("tortoisegit.hotfix"), isHotfix);

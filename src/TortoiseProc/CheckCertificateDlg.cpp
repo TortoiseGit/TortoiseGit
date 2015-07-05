@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2014 - TortoiseGit
+// Copyright (C) 2014-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -107,7 +107,7 @@ BOOL CCheckCertificateDlg::OnInitDialog()
 	CryptReleaseContext(hCryptProv, 0);
 
 	CString error;
-	error.Format(IDS_ERR_SSL_VALIDATE, m_sHostname);
+	error.Format(IDS_ERR_SSL_VALIDATE, (LPCTSTR)m_sHostname);
 	SetDlgItemText(IDC_ERRORDESC, error);
 
 	UpdateData(FALSE);

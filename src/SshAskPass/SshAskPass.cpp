@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2014 - TortoiseGit
+// Copyright (C) 2008-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -91,7 +91,7 @@ int APIENTRY _tWinMain(HINSTANCE	/*hInstance*/,
 	{
 		if (DialogBox(hInst, MAKEINTRESOURCE(IDD_ASK_PASSWORD), nullptr, PasswdDlg) == IDOK)
 		{
-			_tprintf(_T("%s\n"), g_PassWord);
+			_tprintf(_T("%s\n"), (LPCTSTR)g_PassWord);
 			return 0;
 		}
 		_tprintf(_T("\n"));

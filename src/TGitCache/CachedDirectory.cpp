@@ -625,7 +625,7 @@ BOOL CCachedDirectory::GetStatusCallback(const CString & path, git_wc_status_kin
 				{
 					if( ::PathFileExists(path+_T("\\.git")))
 					{ // this is submodule
-						CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": skip submodule %s\n"), path);
+						CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": skip submodule %s\n"), (LPCTSTR)path);
 						return FALSE;
 					}
 				}

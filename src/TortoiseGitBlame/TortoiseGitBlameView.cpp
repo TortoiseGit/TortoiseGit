@@ -1825,13 +1825,13 @@ void CTortoiseGitBlameView::OnMouseHover(UINT /*nFlags*/, CPoint point)
 
 			CString filename;
 			if ((m_bShowCompleteLog && m_bFollowRenames) || !BlameIsLimitedToOneFilename(m_dwDetectMovedOrCopiedLines) || m_bBlameOuputContainsOtherFilenames)
-				filename.Format(_T("%s: %s\n"), m_sFileName, m_data.GetFilename(line));
+				filename.Format(_T("%s: %s\n"), (LPCTSTR)m_sFileName, (LPCTSTR)m_data.GetFilename(line));
 
 			CString str;
-			str.Format(_T("%s: %s\n%s%s: %s <%s>\n%s: %s\n%s:\n%s\n%s"),	m_sRev, pRev->m_CommitHash.ToString(), filename,
-																	m_sAuthor, pRev->GetAuthorName(), pRev->GetAuthorEmail(),
-																	m_sDate, CLoglistUtils::FormatDateAndTime(pRev->GetAuthorDate(), m_DateFormat, true, m_bRelativeTimes),
-																	m_sMessage, pRev->GetSubject(),
+			str.Format(_T("%s: %s\n%s%s: %s <%s>\n%s: %s\n%s:\n%s\n%s"),	(LPCTSTR)m_sRev, (LPCTSTR)pRev->m_CommitHash.ToString(), (LPCTSTR)filename,
+																	(LPCTSTR)m_sAuthor, (LPCTSTR)pRev->GetAuthorName(), (LPCTSTR)pRev->GetAuthorEmail(),
+																	(LPCTSTR)m_sDate, (LPCTSTR)CLoglistUtils::FormatDateAndTime(pRev->GetAuthorDate(), m_DateFormat, true, m_bRelativeTimes),
+																	(LPCTSTR)m_sMessage, (LPCTSTR)pRev->GetSubject(),
 																	iline <= maxLine ? body : (body.Left(pos) + _T("\n....................")));
 
 			m_ToolTip.Pop();

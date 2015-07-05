@@ -118,9 +118,9 @@ bool DropCopyAddCommand::Execute()
 							lastRepo = filepath.Mid(0, filepath.GetLength() - GitAdminDir::GetAdminDirName().GetLength());
 							CString msg;
 							if (!isDir)
-								msg.Format(IDS_PROC_COPY_SUBMODULE, lastRepo);
+								msg.Format(IDS_PROC_COPY_SUBMODULE, (LPCTSTR)lastRepo);
 							else
-								msg.Format(IDS_PROC_COPY_REPOSITORY, lastRepo);
+								msg.Format(IDS_PROC_COPY_REPOSITORY, (LPCTSTR)lastRepo);
 							int ret = CMessageBox::Show(hwndExplorer, msg, _T("TortoiseGit"), 1, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_DELETEBUTTON)), CString(MAKEINTRESOURCE(IDS_IGNOREBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON)));
 							if (ret == 3)
 								return FALSE;

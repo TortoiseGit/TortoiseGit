@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2014 - TortoiseGit
+// Copyright (C) 2008-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -64,7 +64,7 @@ bool CreateRepositoryCommand::Execute()
 	if (CheckSpecialFolder(folder))
 	{
 		CString message;
-		message.Format(IDS_WARN_GITINIT_SPECIALFOLDER, folder);
+		message.Format(IDS_WARN_GITINIT_SPECIALFOLDER, (LPCTSTR)folder);
 		if (CMessageBox::Show(hwndExplorer, message, _T("TortoiseGit"), 1, IDI_ERROR, CString(MAKEINTRESOURCE(IDS_ABORTBUTTON)), CString(MAKEINTRESOURCE(IDS_PROCEEDBUTTON))) == 1)
 			return false;
 	}
@@ -74,7 +74,7 @@ bool CreateRepositoryCommand::Execute()
 	if(dlg.DoModal() == IDOK)
 	{
 		CString message;
-		message.Format(IDS_WARN_GITINIT_FOLDERNOTEMPTY, folder);
+		message.Format(IDS_WARN_GITINIT_FOLDERNOTEMPTY, (LPCTSTR)folder);
 		if (dlg.m_bBare && PathIsDirectory(folder) && !PathIsDirectoryEmpty(folder) && CMessageBox::Show(hwndExplorer, message, _T("TortoiseGit"), 1, IDI_ERROR, CString(MAKEINTRESOURCE(IDS_ABORTBUTTON)), CString(MAKEINTRESOURCE(IDS_PROCEEDBUTTON))) == 1)
 		{
 			return false;
@@ -93,7 +93,7 @@ bool CreateRepositoryCommand::Execute()
 		if (!dlg.m_bBare)
 			CShellUpdater::Instance().AddPathForUpdate(orgCmdLinePath);
 		CString str;
-		str.Format(IDS_PROC_REPOCREATED, folder);
+		str.Format(IDS_PROC_REPOCREATED, (LPCTSTR)folder);
 		CMessageBox::Show(hwndExplorer, str, _T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
 		return true;
 	}

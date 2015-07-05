@@ -190,7 +190,7 @@ void CRefLogDlg::Refresh()
 
 	if (m_CurrentBranch.IsEmpty())
 	{
-		m_CurrentBranch.Format(_T("refs/heads/%s"), g_Git.GetCurrentBranch());
+		m_CurrentBranch.Format(_T("refs/heads/%s"), (LPCTSTR)g_Git.GetCurrentBranch());
 		m_ChooseRef.SetCurSel(0); /* Choose HEAD */
 	}
 	else

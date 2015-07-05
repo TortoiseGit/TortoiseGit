@@ -44,7 +44,7 @@ bool SubmoduleAddCommand::Execute()
 
 		CString branch;
 		if(dlg.m_bBranch)
-			branch.Format(_T(" -b %s "), dlg.m_strBranch);
+			branch.Format(_T(" -b %s "), (LPCTSTR)dlg.m_strBranch);
 
 		CString force;
 		if (dlg.m_bForce)
@@ -54,8 +54,8 @@ bool SubmoduleAddCommand::Execute()
 		dlg.m_strRepos.Replace(_T('\\'),_T('/'));
 
 		cmd.Format(_T("git.exe submodule add %s %s -- \"%s\"  \"%s\""),
-						branch, force,
-						dlg.m_strRepos, dlg.m_strPath);
+						(LPCTSTR)branch, (LPCTSTR)force,
+						(LPCTSTR)dlg.m_strRepos, (LPCTSTR)dlg.m_strPath);
 
 		CProgressDlg progress;
 		progress.m_GitCmd=cmd;
@@ -149,7 +149,7 @@ bool SubmoduleUpdateCommand::Execute()
 	for (size_t i = 0; i < submoduleUpdateDlg.m_PathList.size(); ++i)
 	{
 		CString str;
-		str.Format(_T("git.exe submodule update%s -- \"%s\""), params, submoduleUpdateDlg.m_PathList[i]);
+		str.Format(_T("git.exe submodule update%s -- \"%s\""), (LPCTSTR)params, (LPCTSTR)submoduleUpdateDlg.m_PathList[i]);
 		progress.m_GitCmdList.push_back(str);
 	}
 
@@ -192,7 +192,7 @@ bool SubmoduleCommand::Execute(CString cmd,  CString arg)
 	{
 		if(orgPathList[i].IsDirectory())
 		{
-			str.Format(_T("git.exe submodule %s %s -- \"%s\""),cmd,arg, ((CTGitPath &)orgPathList[i]).GetSubPath(CTGitPath(super)).GetGitPathString());
+			str.Format(_T("git.exe submodule %s %s -- \"%s\""), (LPCTSTR)cmd, (LPCTSTR)arg, (LPCTSTR)((CTGitPath &)orgPathList[i]).GetSubPath(CTGitPath(super)).GetGitPathString());
 			progress.m_GitCmdList.push_back(str);
 		}
 	}

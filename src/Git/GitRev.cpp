@@ -178,10 +178,10 @@ int GitRev::GetCommit(git_repository* repo, const CString& refname)
 
 void GitRev::DbgPrint()
 {
-	ATLTRACE(_T("Commit %s\r\n"), this->m_CommitHash.ToString());
+	ATLTRACE(_T("Commit %s\r\n"), (LPCTSTR)this->m_CommitHash.ToString());
 	for (unsigned int i = 0; i < this->m_ParentHash.size(); ++i)
 	{
-		ATLTRACE(_T("Parent %i %s"), i, m_ParentHash[i].ToString());
+		ATLTRACE(_T("Parent %i %s"), i, (LPCTSTR)m_ParentHash[i].ToString());
 	}
 	ATLTRACE(_T("\n"));
 }

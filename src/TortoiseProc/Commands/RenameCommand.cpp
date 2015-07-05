@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2012, 2015 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -54,9 +54,9 @@ bool RenameCommand::Execute()
 	CString cmd;
 	CString output;
 	cmd.Format(_T("git.exe mv %s-- \"%s\" \"%s\""),
-					force,
-					cmdLinePath.GetGitPathString(),
-					sNewName);
+					(LPCTSTR)force,
+					(LPCTSTR)cmdLinePath.GetGitPathString(),
+					(LPCTSTR)sNewName);
 
 	if (g_Git.Run(cmd, &output, CP_UTF8))
 	{

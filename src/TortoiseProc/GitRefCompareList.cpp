@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2014 - TortoiseGit
+// Copyright (C) 2013-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -231,12 +231,12 @@ void CGitRefCompareList::OnContextMenuList(CWnd * /*pWnd*/, CPoint point)
 	CString logStr;
 	if (!oldHash.IsEmpty())
 	{
-		logStr.Format(IDS_SHOWLOG_OF, oldHash);
+		logStr.Format(IDS_SHOWLOG_OF, (LPCTSTR)oldHash);
 		popup.AppendMenuIcon(IDGITRCL_OLDLOG, logStr, IDI_LOG);
 	}
 	if (!newHash.IsEmpty() && oldHash != newHash)
 	{
-		logStr.Format(IDS_SHOWLOG_OF, newHash);
+		logStr.Format(IDS_SHOWLOG_OF, (LPCTSTR)newHash);
 		popup.AppendMenuIcon(IDGITRCL_NEWLOG, logStr, IDI_LOG);
 	}
 	if (!oldHash.IsEmpty() && !newHash.IsEmpty() && oldHash != newHash)
@@ -251,21 +251,21 @@ void CGitRefCompareList::OnContextMenuList(CWnd * /*pWnd*/, CPoint point)
 		case IDGITRCL_NEWLOG:
 		{
 			CString sCmd;
-			sCmd.Format(_T("/command:log /path:\"%s\" /endrev:\"%s\""), g_Git.m_CurrentDir, cmd == IDGITRCL_OLDLOG ? oldHash : newHash);
+			sCmd.Format(_T("/command:log /path:\"%s\" /endrev:\"%s\""), (LPCTSTR)g_Git.m_CurrentDir, cmd == IDGITRCL_OLDLOG ? (LPCTSTR)oldHash : (LPCTSTR)newHash);
 			CAppUtils::RunTortoiseGitProc(sCmd);
 			break;
 		}
 		case IDGITRCL_COMPARE:
 		{
 			CString sCmd;
-			sCmd.Format(_T("/command:showcompare /path:\"%s\" /revision1:\"%s\" /revision2:\"%s\""), g_Git.m_CurrentDir, oldHash, newHash);
+			sCmd.Format(_T("/command:showcompare /path:\"%s\" /revision1:\"%s\" /revision2:\"%s\""), (LPCTSTR)g_Git.m_CurrentDir, (LPCTSTR)oldHash, (LPCTSTR)newHash);
 			CAppUtils::RunTortoiseGitProc(sCmd);
 			break;
 		}
 		case IDGITRCL_REFLOG:
 		{
 			CString sCmd;
-			sCmd.Format(_T("/command:reflog /path:\"%s\" /ref:\"%s\""), g_Git.m_CurrentDir, refName);
+			sCmd.Format(_T("/command:reflog /path:\"%s\" /ref:\"%s\""), (LPCTSTR)g_Git.m_CurrentDir, (LPCTSTR)refName);
 			CAppUtils::RunTortoiseGitProc(sCmd);
 			break;
 		}
