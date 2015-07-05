@@ -411,6 +411,7 @@ void CCloneDlg::OnBnClickedCheckSvn()
 		m_bBare = false;
 		m_bRecursive = false;
 		m_bBranch = FALSE;
+		m_bNoCheckout = FALSE;
 		this->UpdateData(FALSE);
 		OnBnClickedCheckDepth();
 	}
@@ -419,6 +420,7 @@ void CCloneDlg::OnBnClickedCheckSvn()
 	this->GetDlgItem(IDC_CHECK_RECURSIVE)->EnableWindow(!m_bSVN);
 	this->GetDlgItem(IDC_CHECK_BRANCH)->EnableWindow(!m_bSVN);
 	this->GetDlgItem(IDC_EDIT_BRANCH)->EnableWindow(!m_bSVN);
+	this->GetDlgItem(IDC_CHECK_NOCHECKOUT)->EnableWindow(!m_bSVN);
 	OnBnClickedCheckSvnTrunk();
 	OnBnClickedCheckSvnTag();
 	OnBnClickedCheckSvnBranch();
