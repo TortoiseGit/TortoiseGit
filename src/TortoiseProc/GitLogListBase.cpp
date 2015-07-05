@@ -3227,7 +3227,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRevLoglist* pRev, std::tr1::
 
 		if (m_SelectedFilters & LOGFILTER_REVS)
 		{
-			sRev.Format(_T("%s"), (LPCTSTR)pRev->m_CommitHash.ToString());
+			sRev = pRev->m_CommitHash.ToString();
 			if (std::regex_search(std::wstring((LPCTSTR)sRev), pat, flags))
 			{
 				return TRUE;
@@ -3351,7 +3351,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRevLoglist* pRev, std::tr1::
 
 		if (m_SelectedFilters & LOGFILTER_REVS)
 		{
-			sRev.Format(_T("%s"), (LPCTSTR)pRev->m_CommitHash.ToString());
+			sRev = pRev->m_CommitHash.ToString();
 			if ((sRev.Find(find) >= 0))
 			{
 				return result;
@@ -3606,7 +3606,7 @@ void CGitLogListBase::RecalculateShownList(CThreadSafePtrArray * pShownlist)
 			}
 			if (m_SelectedFilters & LOGFILTER_REVS)
 			{
-				sRev.Format(_T("%s"), m_logEntries.GetGitRevAt(i).m_CommitHash.ToString());
+				sRev = m_logEntries.GetGitRevAt(i).m_CommitHash.ToString();
 				if (std::regex_search(std::wstring((LPCTSTR)sRev), pat, flags)&&IsEntryInDateRange(i))
 				{
 					pShownlist->SafeAdd(&m_logEntries.GetGitRevAt(i));
@@ -3730,7 +3730,7 @@ void CGitLogListBase::RecalculateShownList(CThreadSafePtrArray * pShownlist)
 			}
 			if (m_SelectedFilters & LOGFILTER_REVS)
 			{
-				sRev.Format(_T("%s"), m_logEntries.GetGitRevAt(i).m_CommitHash.ToString());
+				sRev = m_logEntries.GetGitRevAt(i).m_CommitHash.ToString();
 				if ((sRev.Find(find) >= 0)&&(IsEntryInDateRange(i)))
 				{
 					pShownlist->SafeAdd(&m_logEntries.GetGitRevAt(i));
