@@ -1069,7 +1069,14 @@ void CLogDlg::GoBackForward(bool select, bool bForward)
 				if (select)
 				{
 					m_LogList.m_highlight.Empty();
-					m_LogList.SetItemState(m_LogList.GetSelectionMark(), 0, LVIS_SELECTED);
+					m_LogList.SetItemState(m_LogList.GetSelectionMark(), 0, LVIS_SELECTED | LVIS_FOCUSED);
+					POSITION pos = m_LogList.GetFirstSelectedItemPosition();
+					while (pos)
+					{
+						int index = m_LogList.GetNextSelectedItem(pos);
+						if (index >= 0)
+							m_LogList.SetItemState(index, 0, LVIS_SELECTED);
+					}
 					m_bNavigatingWithSelect = true;
 					m_LogList.SetItemState(i, LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
 					m_LogList.SetSelectionMark(i);
