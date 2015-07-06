@@ -383,6 +383,10 @@ BOOL CGitStatusListCtrl::GetStatus ( const CTGitPathList* pathList
 									, bool bShowUnRev /* = false */
 									, bool bShowLocalChangesIgnored /* = false */)
 {
+	m_bBusy = true;
+	m_bEmpty = false;
+	Invalidate();
+
 	Locker lock(m_critSec);
 	int mask= CGitStatusListCtrl::FILELIST_MODIFY;
 	if(bShowIgnores)
@@ -607,6 +611,10 @@ DWORD CGitStatusListCtrl::GetShowFlagsFromGitStatus(git_wc_status_kind status)
 
 void CGitStatusListCtrl::Show(unsigned int dwShow, unsigned int dwCheck /*=0*/, bool /*bShowFolders*/ /* = true */,BOOL UpdateStatusList,bool UseStoredCheckStatus)
 {
+	m_bBusy = true;
+	m_bEmpty = false;
+	Invalidate();
+
 	CWinApp * pApp = AfxGetApp();
 	if (pApp)
 		pApp->DoWaitCursor(1);
@@ -725,6 +733,8 @@ void CGitStatusListCtrl::Show(unsigned int dwShow, unsigned int dwCheck /*=0*/, 
 	if (pApp)
 		pApp->DoWaitCursor(-1);
 
+	m_bBusy = false;
+	m_bEmpty = (GetItemCount() == 0);
 	Invalidate();
 
 	this->BuildStatistics();
@@ -3915,7 +3925,6 @@ void CGitStatusListCtrl::NotifyCheck()
 
 int CGitStatusListCtrl::UpdateFileList(CTGitPathList *list)
 {
-	this->m_bBusy=TRUE;
 	m_CurrentVersion = GIT_REV_ZERO;
 
 	g_Git.GetWorkingTreeChanges(m_StatusFileList, m_amend, list);
@@ -3945,7 +3954,6 @@ int CGitStatusListCtrl::UpdateFileList(CTGitPathList *list)
 		m_arStatusArray.push_back((CTGitPath*)&m_StatusFileList[i]);
 	}
 
-	this->m_bBusy=FALSE;
 	return 0;
 }
 
