@@ -6443,7 +6443,7 @@ msgid "No files or folders were modified. There is nothing for TortoiseGit to re
 msgstr ""
 
 #. Resource IDs: (3810)
-msgid "No files to show with the current setting.\nCheck one or more settings below to see unversioned, ignored and/or unmodified files.\nTo see remote changes, click on 'Check Repository'"
+msgid "No files to show with the current setting.\nCheck one or more settings below to see unversioned, ignored and/or unmodified files."
 msgstr ""
 
 #. Resource IDs: (1220)
