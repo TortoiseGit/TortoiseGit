@@ -24,6 +24,8 @@ Released: unreleased
  * Optimized TortoiseGitBlame to be used with high contrast themes and black background colors
  * Fixed issue #2529: The status of files which are not checked should be the same after commit
                       Unchecked deleted/renamed files were not put into previous state in index after commit
+ * Fixed issue #2537: TortoiseGitPlink will not connect to OpenSSH 6.9
+                      Upgraded TortoiseGitPlink to version pre-0.65
 
 = Release 1.8.14.0 =
 Released: 2015-04-08

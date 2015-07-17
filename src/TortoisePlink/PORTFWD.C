@@ -157,6 +157,21 @@ static int pfl_closing(Plug plug, const char *error_msg, int error_code,
     return 1;
 }
 
+static void wrap_send_port_open(void *channel, char *hostname, int port,
+                                Socket s)
+{
+    char *peerinfo, *description;
+    peerinfo = sk_peer_info(s);
+    if (peerinfo) {
+        description = dupprintf("forwarding from %s", peerinfo);
+        sfree(peerinfo);
+    } else {
+        description = dupstr("forwarding");
+    }
+    ssh_send_port_open(channel, hostname, port, description);
+    sfree(description);
+}
+
 static int pfd_receive(Plug plug, int urgent, char *data, int len)
 {
     struct PortForwarding *pf = (struct PortForwarding *) plug;
@@ -371,7 +386,7 @@ static int pfd_receive(Plug plug, int urgent, char *data, int len)
 	    return 1;
 	} else {
 	    /* asks to forward to the specified host/port for this */
-	    ssh_send_port_open(pf->c, pf->hostname, pf->port, "forwarding");
+	    wrap_send_port_open(pf->c, pf->hostname, pf->port, pf->s);
 	}
 	pf->dynamic = 0;
 
@@ -510,7 +525,7 @@ static int pfl_accepting(Plug p, accept_fn_t constructor, accept_ctx_t ctx)
 	    return 1;
 	} else {
 	    /* asks to forward to the specified host/port for this */
-	    ssh_send_port_open(pf->c, pf->hostname, pf->port, "forwarding");
+	    wrap_send_port_open(pf->c, pf->hostname, pf->port, s);
 	}
     }
 

@@ -38,6 +38,7 @@ struct socket_function_table {
     void (*set_frozen) (Socket s, int is_frozen);
     /* ignored by tcp, but vital for ssl */
     const char *(*socket_error) (Socket s);
+    char *(*peer_info) (Socket s);
 };
 
 typedef union { void *p; int i; } accept_ctx_t;
@@ -180,6 +181,13 @@ const char *sk_addr_error(SockAddr addr);
  *    growth.
  */
 #define sk_set_frozen(s, is_frozen) (((*s)->set_frozen) (s, is_frozen))
+
+/*
+ * Return a (dynamically allocated) string giving some information
+ * about the other end of the socket, suitable for putting in log
+ * files. May be NULL if nothing is available at all.
+ */
+#define sk_peer_info(s) (((*s)->peer_info) (s))
 
 /*
  * Simple wrapper on getservbyname(), needed by ssh.c. Returns the

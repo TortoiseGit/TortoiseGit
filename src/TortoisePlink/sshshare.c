@@ -502,6 +502,9 @@ static void share_connstate_free(struct ssh_sharing_connstate *cs)
         sfree(globreq);
     }
 
+    if (cs->sock)
+        sk_close(cs->sock);
+
     sfree(cs);
 }
 
@@ -1924,6 +1927,7 @@ static int share_listen_accepting(Plug plug,
     struct ssh_sharing_state *sharestate = (struct ssh_sharing_state *)plug;
     struct ssh_sharing_connstate *cs;
     const char *err;
+    char *peerinfo;
 
     /*
      * A new downstream has connected to us.
@@ -1966,7 +1970,9 @@ static int share_listen_accepting(Plug plug,
     cs->forwardings = newtree234(share_forwarding_cmp);
     cs->globreq_head = cs->globreq_tail = NULL;
 
-    ssh_sharing_downstream_connected(sharestate->ssh, cs->id);
+    peerinfo = sk_peer_info(cs->sock);
+    ssh_sharing_downstream_connected(sharestate->ssh, cs->id, peerinfo);
+    sfree(peerinfo);
 
     return 0;
 }

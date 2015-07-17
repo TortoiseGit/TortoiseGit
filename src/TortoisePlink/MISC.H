@@ -64,7 +64,19 @@ int validate_manual_hostkey(char *key);
 
 struct tm ltime(void);
 
+/* Wipe sensitive data out of memory that's about to be freed. Simpler
+ * than memset because we don't need the fill char parameter; also
+ * attempts (by fiddly use of volatile) to inhibit the compiler from
+ * over-cleverly trying to optimise the memset away because it knows
+ * the variable is going out of scope. */
 void smemclr(void *b, size_t len);
+
+/* Compare two fixed-length chunks of memory for equality, without
+ * data-dependent control flow (so an attacker with a very accurate
+ * stopwatch can't try to guess where the first mismatching byte was).
+ * Returns 0 for mismatch or 1 for equality (unlike memcmp), hinted at
+ * by the 'eq' in the name. */
+int smemeq(const void *av, const void *bv, size_t len);
 
 /*
  * Debugging functions.

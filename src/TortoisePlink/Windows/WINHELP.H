@@ -148,6 +148,7 @@
 #define WINHELP_CTX_ssh_bugs_maxpkt2 "ssh.bugs.maxpkt2:config-ssh-bug-maxpkt2"
 #define WINHELP_CTX_ssh_bugs_winadj "ssh.bugs.winadj:config-ssh-bug-winadj"
 #define WINHELP_CTX_ssh_bugs_chanreq "ssh.bugs.winadj:config-ssh-bug-chanreq"
+#define WINHELP_CTX_ssh_bugs_oldgex2 "ssh.bugs.oldgex2:config-ssh-bug-oldgex2"
 #define WINHELP_CTX_serial_line "serial.line:config-serial-line"
 #define WINHELP_CTX_serial_speed "serial.speed:config-serial-speed"
 #define WINHELP_CTX_serial_databits "serial.databits:config-serial-databits"

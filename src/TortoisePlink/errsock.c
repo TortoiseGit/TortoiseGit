@@ -43,6 +43,11 @@ static const char *sk_error_socket_error(Socket s)
     return ps->error;
 }
 
+static char *sk_error_peer_info(Socket s)
+{
+    return NULL;
+}
+
 Socket new_error_socket(const char *errmsg, Plug plug)
 {
     static const struct socket_function_table socket_fn_table = {
@@ -53,7 +58,8 @@ Socket new_error_socket(const char *errmsg, Plug plug)
 	NULL /* write_eof */,
 	NULL /* flush */,
 	NULL /* set_frozen */,
-	sk_error_socket_error
+	sk_error_socket_error,
+	sk_error_peer_info,
     };
 
     Error_Socket ret;

@@ -234,6 +234,31 @@ static const char *sk_handle_socket_error(Socket s)
     return ps->error;
 }
 
+static char *sk_handle_peer_info(Socket s)
+{
+    Handle_Socket ps = (Handle_Socket) s;
+    ULONG pid;
+    static HMODULE kernel32_module;
+    DECL_WINDOWS_FUNCTION(static, BOOL, GetNamedPipeClientProcessId,
+                          (HANDLE, PULONG));
+
+    if (!kernel32_module) {
+        kernel32_module = load_system32_dll("kernel32.dll");
+        GET_WINDOWS_FUNCTION(kernel32_module, GetNamedPipeClientProcessId);
+    }
+
+    /*
+     * Of course, not all handles managed by this module will be
+     * server ends of named pipes, but if they are, then it's useful
+     * to log what we can find out about the client end.
+     */
+    if (p_GetNamedPipeClientProcessId &&
+        p_GetNamedPipeClientProcessId(ps->send_H, &pid))
+        return dupprintf("process id %lu", (unsigned long)pid);
+
+    return NULL;
+}
+
 Socket make_handle_socket(HANDLE send_H, HANDLE recv_H, Plug plug,
                           int overlapped)
 {
@@ -245,7 +270,8 @@ Socket make_handle_socket(HANDLE send_H, HANDLE recv_H, Plug plug,
 	sk_handle_write_eof,
 	sk_handle_flush,
 	sk_handle_set_frozen,
-	sk_handle_socket_error
+	sk_handle_socket_error,
+        sk_handle_peer_info,
     };
 
     Handle_Socket ret;

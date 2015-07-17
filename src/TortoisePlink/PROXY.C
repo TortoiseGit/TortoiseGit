@@ -388,7 +388,8 @@ Socket new_connection(SockAddr addr, char *hostname,
 	sk_proxy_write_eof,
 	sk_proxy_flush,
 	sk_proxy_set_frozen,
-	sk_proxy_socket_error
+	sk_proxy_socket_error,
+        NULL, /* peer_info */
     };
 
     static const struct plug_function_table plug_fn_table = {

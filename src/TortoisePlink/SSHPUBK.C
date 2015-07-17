@@ -837,7 +837,7 @@ unsigned char *ssh2_userkey_loadpub(const Filename *filename, char **algorithm,
     int public_blob_len;
     int i;
     const char *error = NULL;
-    char *comment;
+    char *comment = NULL;
 
     public_blob = NULL;
 
@@ -862,11 +862,10 @@ unsigned char *ssh2_userkey_loadpub(const Filename *filename, char **algorithm,
 	goto error;
     /* Select key algorithm structure. */
     alg = find_pubkey_alg(b);
+    sfree(b);
     if (!alg) {
-	sfree(b);
 	goto error;
     }
-    sfree(b);
 
     /* Read the Encryption header line. */
     if (!read_header(fp, header) || 0 != strcmp(header, "Encryption"))
@@ -913,6 +912,10 @@ unsigned char *ssh2_userkey_loadpub(const Filename *filename, char **algorithm,
 	sfree(public_blob);
     if (errorstr)
 	*errorstr = error;
+    if (comment && commentptr) {
+        sfree(comment);
+        *commentptr = NULL;
+    }
     return NULL;
 }
 

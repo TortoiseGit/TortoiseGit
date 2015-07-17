@@ -44,7 +44,8 @@ void ssh_sharing_remove_x11_display(Ssh ssh, struct X11FakeAuth *auth);
 void ssh_send_packet_from_downstream(Ssh ssh, unsigned id, int type,
                                      const void *pkt, int pktlen,
                                      const char *additional_log_text);
-void ssh_sharing_downstream_connected(Ssh ssh, unsigned id);
+void ssh_sharing_downstream_connected(Ssh ssh, unsigned id,
+                                      const char *peerinfo);
 void ssh_sharing_downstream_disconnected(Ssh ssh, unsigned id);
 void ssh_sharing_logf(Ssh ssh, unsigned id, const char *logfmt, ...);
 int ssh_agent_forwarding_permitted(Ssh ssh);
@@ -720,7 +721,8 @@ void platform_ssh_share_cleanup(const char *name);
 #define SSH2_MSG_NEWKEYS                          21	/* 0x15 */
 #define SSH2_MSG_KEXDH_INIT                       30	/* 0x1e */
 #define SSH2_MSG_KEXDH_REPLY                      31	/* 0x1f */
-#define SSH2_MSG_KEX_DH_GEX_REQUEST               30	/* 0x1e */
+#define SSH2_MSG_KEX_DH_GEX_REQUEST_OLD           30	/* 0x1e */
+#define SSH2_MSG_KEX_DH_GEX_REQUEST               34	/* 0x22 */
 #define SSH2_MSG_KEX_DH_GEX_GROUP                 31	/* 0x1f */
 #define SSH2_MSG_KEX_DH_GEX_INIT                  32	/* 0x20 */
 #define SSH2_MSG_KEX_DH_GEX_REPLY                 33	/* 0x21 */
