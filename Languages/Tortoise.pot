@@ -4714,10 +4714,6 @@ msgstr ""
 msgid "For complete history deselect 'Stop on copy/rename'"
 msgstr ""
 
-#. Resource IDs: (1521)
-msgid "Force"
-msgstr ""
-
 #. Resource IDs: (1301)
 msgid "Force creation of branch/tag - even if one with same name already exists."
 msgstr ""
@@ -6843,6 +6839,10 @@ msgstr ""
 
 #. Resource IDs: (1467)
 msgid "Overwrite"
+msgstr ""
+
+#. Resource IDs: (1521)
+msgid "Overwrite working tree changes (force)"
 msgstr ""
 
 #. Resource IDs: (32781)
