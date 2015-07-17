@@ -101,7 +101,7 @@ DWORD CUpdateDownloader::DownloadFile(const CString& url, const CString& dest, b
 		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Download of %s failed on InternetConnect: %d\n"), (LPCTSTR)url, err);
 		return err;
 	}
-	HINTERNET hResourceHandle = HttpOpenRequest(hConnectHandle, nullptr, urlpath, nullptr, nullptr, nullptr, INTERNET_FLAG_KEEP_CONNECTION | (isHttps ? INTERNET_FLAG_SECURE : 0), 0);
+	HINTERNET hResourceHandle = HttpOpenRequest(hConnectHandle, nullptr, urlpath, nullptr, nullptr, nullptr, INTERNET_FLAG_KEEP_CONNECTION | (isHttps ? INTERNET_FLAG_SECURE : 0) | (m_bForce ? INTERNET_FLAG_HYPERLINK : 0), 0);
 	if (!hResourceHandle)
 	{
 		DWORD err = GetLastError();
