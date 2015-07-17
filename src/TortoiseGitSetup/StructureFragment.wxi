@@ -786,12 +786,7 @@
 					</Component>
 
 					<Component Id="C__TortoiseGitTools" Guid="$(var.GuidTortoiseGitTools)" Win64="$(var.Win64YesNo)">
-						<?if $(var.Platform) = "x86" ?>
-						<File Id="F__TortoisePlinkold" Name="TortoisePlink.exe" DiskId="1" Source="..\..\ext\putty\TortoisePlink-x86.exe" />
-						<?endif ?>
-						<?if $(var.Platform) = "x64" ?>
-						<File Id="F__TortoisePlinkold" Name="TortoisePlink.exe" DiskId="1" Source="..\..\ext\putty\TortoisePlink-x64.exe" />
-						<?endif ?>
+						<File Id="F__TortoisePlinkold" Name="TortoisePlink.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGitPlink.exe" />
 						<File Id="F__TortoisePlink" Name="TortoiseGitPlink.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGitPlink.exe" />
 						<File Id="F__PuttyGen" Name="puttygen.exe" DiskId="1" Source="..\..\ext\putty\puttygen.exe" />
 						<File Id="F__pageant" Name="pageant.exe" DiskId="1" Source="..\..\ext\putty\pageant.exe" />
