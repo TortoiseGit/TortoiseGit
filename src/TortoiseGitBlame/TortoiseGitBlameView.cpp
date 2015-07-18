@@ -283,7 +283,7 @@ int CTortoiseGitBlameView::OnCreate(LPCREATESTRUCT lpcs)
 	m_TextView.Init(0,FALSE);
 	m_TextView.ShowWindow( SW_SHOW);
 	CreateFont();
-	InitialiseEditor();
+	SendEditor(SCI_SETREADONLY, TRUE);
 	m_ToolTip.Create(this->GetParent());
 
 	::AfxGetApp()->GetMainWnd();
@@ -621,6 +621,7 @@ void CTortoiseGitBlameView::SetAStyle(int style, COLORREF fore, COLORREF back, i
 
 void CTortoiseGitBlameView::InitialiseEditor()
 {
+	SendEditor(SCI_STYLERESETDEFAULT);
 	// Set up the global default style. These attributes are used wherever no explicit choices are made.
 	std::string fontName = CUnicodeUtils::StdGetUTF8((stdstring)CRegStdString(_T("Software\\TortoiseGit\\BlameFontName"), _T("Courier New")));
 	SetAStyle(STYLE_DEFAULT,
@@ -652,6 +653,7 @@ void CTortoiseGitBlameView::InitialiseEditor()
 	}
 
 	SendEditor(SCI_SETWRAPMODE, SC_WRAP_NONE);
+	SendEditor(SCI_STYLECLEARALL);
 }
 
 bool CTortoiseGitBlameView::DoSearch(CTortoiseGitBlameData::SearchDirection direction)
@@ -1068,6 +1070,7 @@ void CTortoiseGitBlameView::StringExpand(LPWSTR str) const
 void CTortoiseGitBlameView::SetupLexer(CString filename)
 {
 	int start=filename.ReverseFind(_T('.'));
+	SendEditor(SCI_SETLEXER, SCLEX_NULL);
 	if (start>0)
 	{
 		//_tcscpy_s(line, 20, lineptr+1);
@@ -1545,6 +1548,7 @@ void CTortoiseGitBlameView::UpdateInfo(int Encode)
 {
 	CreateFont();
 
+	InitialiseEditor();
 	SendEditor(SCI_SETREADONLY, FALSE);
 	SendEditor(SCI_CLEARALL);
 	SendEditor(EM_EMPTYUNDOBUFFER);
