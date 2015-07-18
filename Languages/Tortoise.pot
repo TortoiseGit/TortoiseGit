@@ -6447,11 +6447,11 @@ msgid "No files to show with the current setting.\nCheck one or more settings be
 msgstr ""
 
 #. Resource IDs: (1220)
-msgid "No files were changed or added since\nthe last commit. There's nothing\nfor TortoiseGit to do here..."
+msgid "No files were changed or added since\nthe last commit."
 msgstr ""
 
 #. Resource IDs: (2704)
-msgid "No files were changed or added since\nthe last commit. There's nothing\nfor TortoiseGit to do here...\nDo you want to see the unversioned files?"
+msgid "No files were changed or added since\nthe last commit.\nDo you want to see the unversioned files?"
 msgstr ""
 
 #. Resource IDs: (2754)

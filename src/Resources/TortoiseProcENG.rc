@@ -3262,7 +3262,7 @@ BEGIN
     IDS_COMMITDLG_STATUS    "Status"
     IDS_COMMITDLG_ASKADD    "You selected an unversioned file.\nThe file will be added to version control when you commit."
     IDS_COMMITDLG_NOTHINGTOCOMMIT 
-                            "No files were changed or added since\nthe last commit. There's nothing\nfor TortoiseGit to do here..."
+                            "No files were changed or added since\nthe last commit."
     IDS_PROGRS_ATREV        "At revision: %d"
     IDS_PROGRS_ACTION       "Action"
     IDS_PROGRS_PATH         "Path"
@@ -3736,7 +3736,7 @@ END
 STRINGTABLE
 BEGIN
     IDS_COMMITDLG_NOTHINGTOCOMMITUNVERSIONED 
-                            "No files were changed or added since\nthe last commit. There's nothing\nfor TortoiseGit to do here...\nDo you want to see the unversioned files?"
+                            "No files were changed or added since\nthe last commit.\nDo you want to see the unversioned files?"
     IDS_COMMITDLG_HISTORY_TT "Click here to select a recently typed message"
     IDS_COMMITDLG_HISTORYHINT_TT 
                             "Your previously entered log messages have been saved.\nClick here to read and insert them again."
