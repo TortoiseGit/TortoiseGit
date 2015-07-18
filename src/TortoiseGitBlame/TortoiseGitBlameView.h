@@ -191,7 +191,6 @@ public:
 	HINSTANCE hResource;
 	HWND currentDialog;
 	HWND wMain;
-	HWND m_wEditor;
 	HWND wBlame;
 	HWND wHeader;
 	HWND wLocator;
@@ -268,9 +267,6 @@ protected:
 	COLORREF				m_windowcolor;
 	COLORREF				m_textcolor;
 	COLORREF				m_texthighlightcolor;
-
-	LRESULT					m_directFunction;
-	LRESULT					m_directPointer;
 
 	CRegStdDWORD				m_regOldLinesColor;
 	CRegStdDWORD				m_regNewLinesColor;

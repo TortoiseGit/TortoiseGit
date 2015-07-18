@@ -123,7 +123,6 @@ CTortoiseGitBlameView::CTortoiseGitBlameView()
 	hResource = 0;
 	currentDialog = 0;
 	wMain = 0;
-	m_wEditor = 0;
 	wLocator = 0;
 
 	m_font = 0;
@@ -145,8 +144,6 @@ CTortoiseGitBlameView::CTortoiseGitBlameView()
 	m_selectedauthorcolor = InterColor(m_selectedrevcolor, m_texthighlightcolor, 35);
 
 	m_SelectedLine = -1;
-	m_directPointer = 0;
-	m_directFunction = 0;
 
 	m_colorage = !!theApp.GetInt(_T("ColorAge"));
 
@@ -285,7 +282,6 @@ int CTortoiseGitBlameView::OnCreate(LPCREATESTRUCT lpcs)
 	}
 	m_TextView.Init(0,FALSE);
 	m_TextView.ShowWindow( SW_SHOW);
-	m_wEditor = m_TextView.m_hWnd;
 	CreateFont();
 	InitialiseEditor();
 	m_ToolTip.Create(this->GetParent());
@@ -615,33 +611,21 @@ COLORREF CTortoiseGitBlameView::InterColor(COLORREF c1, COLORREF c2, int Slider)
 
 LRESULT CTortoiseGitBlameView::SendEditor(UINT Msg, WPARAM wParam, LPARAM lParam)
 {
-	if (m_directFunction)
-	{
-		return ((SciFnDirect) m_directFunction)(m_directPointer, Msg, wParam, lParam);
-	}
-	return ::SendMessage(m_wEditor, Msg, wParam, lParam);
+	return m_TextView.Call(Msg, wParam, lParam);
 }
 
 void CTortoiseGitBlameView::SetAStyle(int style, COLORREF fore, COLORREF back, int size, const char *face)
 {
-	SendEditor(SCI_STYLESETFORE, style, fore);
-	SendEditor(SCI_STYLESETBACK, style, back);
-	if (size >= 1)
-		SendEditor(SCI_STYLESETSIZE, style, size);
-	if (face)
-		SendEditor(SCI_STYLESETFONT, style, reinterpret_cast<LPARAM>(face));
+	m_TextView.SetAStyle(style, fore, back, size, face);
 }
 
 void CTortoiseGitBlameView::InitialiseEditor()
 {
-
-	m_directFunction = ::SendMessage(m_wEditor, SCI_GETDIRECTFUNCTION, 0, 0);
-	m_directPointer = ::SendMessage(m_wEditor, SCI_GETDIRECTPOINTER, 0, 0);
 	// Set up the global default style. These attributes are used wherever no explicit choices are made.
 	std::string fontName = CUnicodeUtils::StdGetUTF8((stdstring)CRegStdString(_T("Software\\TortoiseGit\\BlameFontName"), _T("Courier New")));
 	SetAStyle(STYLE_DEFAULT,
-			  black,
-			  white,
+			::GetSysColor(COLOR_WINDOWTEXT),
+			::GetSysColor(COLOR_WINDOW),
 			(DWORD)CRegStdDWORD(_T("Software\\TortoiseGit\\BlameFontSize"), 10),
 			fontName.c_str()
 			);
@@ -655,8 +639,6 @@ void CTortoiseGitBlameView::InitialiseEditor()
 	SendEditor(SCI_SETMARGINWIDTHN, 1);
 	SendEditor(SCI_SETMARGINWIDTHN, 2);
 	//Set the default windows colors for edit controls
-	SendEditor(SCI_STYLESETFORE, STYLE_DEFAULT, ::GetSysColor(COLOR_WINDOWTEXT));
-	SendEditor(SCI_STYLESETBACK, STYLE_DEFAULT, ::GetSysColor(COLOR_WINDOW));
 	SendEditor(SCI_SETSELFORE, TRUE, ::GetSysColor(COLOR_HIGHLIGHTTEXT));
 	SendEditor(SCI_SETSELBACK, TRUE, ::GetSysColor(COLOR_HIGHLIGHT));
 	SendEditor(SCI_SETCARETFORE, ::GetSysColor(COLOR_WINDOWTEXT));
@@ -669,8 +651,7 @@ void CTortoiseGitBlameView::InitialiseEditor()
 		SendEditor(SCI_SETBUFFEREDDRAW, 0);
 	}
 
-	this->m_TextView.Call(SCI_SETWRAPMODE, SC_WRAP_NONE);
-
+	SendEditor(SCI_SETWRAPMODE, SC_WRAP_NONE);
 }
 
 bool CTortoiseGitBlameView::DoSearch(CTortoiseGitBlameData::SearchDirection direction)
