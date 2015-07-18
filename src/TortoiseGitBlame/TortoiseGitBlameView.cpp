@@ -616,6 +616,8 @@ LRESULT CTortoiseGitBlameView::SendEditor(UINT Msg, WPARAM wParam, LPARAM lParam
 
 void CTortoiseGitBlameView::SetAStyle(int style, COLORREF fore, COLORREF back, int size, const char *face)
 {
+	if (fore == back && fore == m_windowcolor)
+		fore = m_textcolor;
 	m_TextView.SetAStyle(style, fore, back, size, face);
 }
 
