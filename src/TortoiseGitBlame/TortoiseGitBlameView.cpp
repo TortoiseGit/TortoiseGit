@@ -147,8 +147,11 @@ CTortoiseGitBlameView::CTortoiseGitBlameView()
 
 	m_SelectedLine = -1;
 
-	m_colorage = !!theApp.GetInt(_T("ColorAge"));
-	m_bLexer = !!theApp.GetInt(_T("EnableLexer"), TRUE);
+	HIGHCONTRAST highContrast = { 0 };
+	highContrast.cbSize = sizeof(HIGHCONTRAST);
+	BOOL highContrastModeEnabled = SystemParametersInfo(SPI_GETHIGHCONTRAST, 0, &highContrast, 0) == TRUE && (highContrast.dwFlags & HCF_HIGHCONTRASTON);
+	m_colorage = !!theApp.GetInt(_T("ColorAge"), !highContrastModeEnabled);
+	m_bLexer = !!theApp.GetInt(_T("EnableLexer"), !highContrastModeEnabled);
 
 	m_bShowLine=true;
 

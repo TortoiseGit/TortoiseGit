@@ -4149,6 +4149,10 @@ msgstr ""
 msgid "Enable showing Gravatar image in Log Dialog"
 msgstr ""
 
+#. Resource IDs: (32806)
+msgid "Enable syntax highlighting"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Enabled Overlay Handlers"
 msgstr ""

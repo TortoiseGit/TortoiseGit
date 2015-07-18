@@ -671,6 +671,11 @@ void CMainWindow::SetupWindow(bool bUTF8)
 	SendEditor(SCI_CLEARDOCUMENTSTYLE, 0, 0);
 	SendEditor(SCI_SETSTYLEBITS, 5, 0);
 
+	HIGHCONTRAST highContrast = { 0 };
+	highContrast.cbSize = sizeof(HIGHCONTRAST);
+	if (SystemParametersInfo(SPI_GETHIGHCONTRAST, 0, &highContrast, 0) == TRUE && (highContrast.dwFlags & HCF_HIGHCONTRASTON))
+		return;
+
 	//SetAStyle(SCE_DIFF_DEFAULT, RGB(0, 0, 0));
 	SetAStyle(SCE_DIFF_COMMAND,
 				CRegStdDWORD(L"Software\\TortoiseGit\\UDiffForeCommandColor", UDIFF_COLORFORECOMMAND),
