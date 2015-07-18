@@ -298,6 +298,7 @@ BEGIN
         MENUITEM "&Follow renames",             ID_VIEW_FOLLOWRENAMES
         MENUITEM SEPARATOR
         MENUITEM "Color by age, &continuous",   ID_VIEW_COLORBYAGE
+        MENUITEM "Enable syntax highlighting",  ID_VIEW_ENABLELEXER
     END
     POPUP "&Help"
     BEGIN

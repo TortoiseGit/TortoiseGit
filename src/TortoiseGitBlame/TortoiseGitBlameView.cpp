@@ -92,6 +92,8 @@ BEGIN_MESSAGE_MAP(CTortoiseGitBlameView, CView)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_FOLLOWRENAMES, OnUpdateViewToggleFollowRenames)
 	ON_COMMAND(ID_VIEW_COLORBYAGE, OnViewToggleColorByAge)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_COLORBYAGE, OnUpdateViewToggleColorByAge)
+	ON_COMMAND(ID_VIEW_ENABLELEXER, OnViewToggleLexer)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_ENABLELEXER, OnUpdateViewToggleLexer)
 	ON_COMMAND_RANGE(IDM_FORMAT_ENCODE, IDM_FORMAT_ENCODE_END, OnChangeEncode)
 	ON_WM_CREATE()
 	ON_WM_SIZE()
@@ -146,6 +148,7 @@ CTortoiseGitBlameView::CTortoiseGitBlameView()
 	m_SelectedLine = -1;
 
 	m_colorage = !!theApp.GetInt(_T("ColorAge"));
+	m_bLexer = !!theApp.GetInt(_T("EnableLexer"), TRUE);
 
 	m_bShowLine=true;
 
@@ -1073,7 +1076,9 @@ void CTortoiseGitBlameView::SetupLexer(CString filename)
 {
 	int start=filename.ReverseFind(_T('.'));
 	SendEditor(SCI_SETLEXER, SCLEX_NULL);
-	if (start>0)
+	if (!m_bLexer)
+		return;
+	if (start > 0)
 	{
 		//_tcscpy_s(line, 20, lineptr+1);
 		//_tcslwr_s(line, 20);
@@ -2140,6 +2145,22 @@ void CTortoiseGitBlameView::OnViewToggleColorByAge()
 void CTortoiseGitBlameView::OnUpdateViewToggleColorByAge(CCmdUI *pCmdUI)
 {
 	pCmdUI->SetCheck(m_colorage);
+}
+
+void CTortoiseGitBlameView::OnViewToggleLexer()
+{
+	m_bLexer = !m_bLexer;
+
+	theApp.WriteInt(_T("EnableLexer"), m_bLexer);
+
+	InitialiseEditor();
+	SetupLexer(GetDocument()->m_CurrentFileName);
+	this->Invalidate();
+}
+
+void CTortoiseGitBlameView::OnUpdateViewToggleLexer(CCmdUI *pCmdUI)
+{
+	pCmdUI->SetCheck(m_bLexer);
 }
 
 void CTortoiseGitBlameView::OnUpdateViewCopyToClipboard(CCmdUI *pCmdUI)

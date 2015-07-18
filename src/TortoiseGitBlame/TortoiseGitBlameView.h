@@ -168,6 +168,8 @@ protected:
 	afx_msg void OnUpdateViewToggleFollowRenames(CCmdUI *pCmdUI);
 	afx_msg void OnViewToggleColorByAge();
 	afx_msg void OnUpdateViewToggleColorByAge(CCmdUI *pCmdUI);
+	afx_msg void OnViewToggleLexer();
+	afx_msg void OnUpdateViewToggleLexer(CCmdUI *pCmdUI);
 	afx_msg void OnUpdateViewCopyToClipboard(CCmdUI *pCmdUI);
 	void OnViewDetectMovedOrCopiedLines(DWORD dwDetectMovedOrCopiedLines);
 	void ContextMenuAction(int cmd, GitRev* pRev, GIT_REV_LIST& parentHash, const std::vector<CString>& parentFilename);
@@ -231,6 +233,7 @@ public:
 	CGitHash				m_SelectedHash;
 	CGitHash				m_selecteddate;
 	bool					m_colorage;
+	bool					m_bLexer;
 
 	CTortoiseGitBlameData	m_data;
 	std::vector<int>		m_lineToLogIndex;
