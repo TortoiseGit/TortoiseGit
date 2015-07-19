@@ -13,8 +13,7 @@
 	</indexterm>
 	<?dbhh topicname="HIDD_GITSWITCH"?>
 	<para>
-		To obtain a special version working tree you need to do a <firstterm>checkout</firstterm>
-		from a local repository.
+		The Switch/Checkout dialog can be used to checkout a specific version to the working tree  (i.e., all files are updated to match their state of the selected version). Normally, a specific version will be represented by a (local) branch which is set as the current branch (cf. <xref linkend="tgit-dug-branchtag"/> and <xref linkend="repositories-and-branches"/>).
 	</para>
 	<para>
 		Select a git repository directory in windows explorer
@@ -22,24 +21,24 @@
 		context menu and select the command
 		<menuchoice>
 			<guimenu>TortoiseGit</guimenu>
-			<guimenuitem>Switch\Checkout...</guimenuitem>
+			<guimenuitem>Switch/Checkout...</guimenuitem>
 		</menuchoice>,
 		which brings up the following dialog box:
 		<figure id="tgit-dug-checkout-dia-1">
-			<title>The Checkout dialog</title>
+			<title>The Switch/Checkout dialog</title>
 			<graphic fileref="../images/SwitchCheckOut.png"/>
 		</figure>
-		If you enter a branch name at <guilabel>Create New Branch</guilabel>, new branch created and switch to new branches.
+		If you enter a branch name at <guilabel>Create New Branch</guilabel>, a new branch will be created. Also, the new branch will be set as the current branch (HEAD).
 	</para>
   <para>
-    You can click <guibutton>...</guibutton> to browse git log and choose special version. 
+    You can click on the <guibutton>...</guibutton> to browse the references/branches/log to choose a branch to checkout.
   </para>
   <para>
-    Check <guilabel>Force</guilabel> will overwrite working tree with repository version.
+    Check <guilabel>Force</guilabel> will overwrite uncommitted changes in the working tree with the selected version.
   </para>
   <para>
-    Check <guilabel>Track</guilabel> will track remote branch with local branch. When you pull change from remote
-    repository, tracked local branch will merged remote branch change.
+    When you selected a remote branch, you can check <guilabel>Track</guilabel> in order to track the remote branch.
+    When you open the pull or sync dialog, the remote branch will be pre-selected automatically.
   </para>
 	<!--
 	<sect2 id="tgit-dug-checkout-depth">
@@ -219,9 +218,10 @@
 	-->
 	<important>
 		<para>
-			If you checkout/switch to <guilabel>Tag</guilabel> or <guilabel>Commit</guilabel>,
-			it is preferred that you create a new branch for it, otherwise you will
-			work at "no branch" (detached HEAD state).
+			If you checkout/switch to a <guilabel>Tag</guilabel> or <guilabel>Commit</guilabel>,
+			you should create a new branch. Otherwise you will
+			work at "no branch" (detached HEAD state; i.e., there is no current branch, cf. <xref linkend="git-checkout(1)__detached_head"/>).
+			This can be easily fixed by creating a branch at this version and switching to it.
 		</para>
 	</important>
 	
