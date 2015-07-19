@@ -646,6 +646,7 @@ void CCommitDlg::OnOK()
 	int nchecked = 0;
 
 	CMassiveGitTask mgtReAddAfterCommit(_T("add --ignore-errors -f"));
+	CMassiveGitTask mgtReDelAfterCommit(_T("rm --cached --ignore-unmatch"));
 
 	CString cmd;
 	CString out;
@@ -785,7 +786,12 @@ void CCommitDlg::OnOK()
 					++nchecked;
 				}
 				else if (entry->m_Action & CTGitPath::LOGACTIONS_ADDED || entry->m_Action & CTGitPath::LOGACTIONS_REPLACED)
+				{
 					mgtReAddAfterCommit.AddFile(*entry);
+					mgtReDelAfterCommit.AddFile(entry->GetGitOldPathString());
+				}
+				else if (entry->m_Action & CTGitPath::LOGACTIONS_DELETED)
+					mgtReDelAfterCommit.AddFile(entry->GetGitPathString());
 
 				if (sysProgressDlg.HasUserCancelled())
 				{
@@ -839,10 +845,17 @@ void CCommitDlg::OnOK()
 					mgtReAddAfterCommit.AddFile(*entry);
 
 					if (entry->m_Action & CTGitPath::LOGACTIONS_REPLACED && !entry->GetGitOldPathString().IsEmpty())
+					{
 						mgtReset.AddFile(entry->GetGitOldPathString());
+						mgtReDelAfterCommit.AddFile(entry->GetGitOldPathString());
+					}
 				}
 				else if (!(entry->m_Action & CTGitPath::LOGACTIONS_UNVER))
+				{
 					mgtReset.AddFile(entry->GetGitPathString());
+					if (entry->m_Action & CTGitPath::LOGACTIONS_DELETED)
+						mgtReDelAfterCommit.AddFile(entry->GetGitPathString());
+				}
 			}
 
 			if (sysProgressDlg.HasUserCancelled())
@@ -1081,6 +1094,7 @@ void CCommitDlg::OnOK()
 		{
 			BOOL cancel = FALSE;
 			mgtReAddAfterCommit.Execute(cancel);
+			mgtReDelAfterCommit.Execute(cancel);
 		}
 	}
 	else if(bAddSuccess)

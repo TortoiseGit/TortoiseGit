@@ -22,6 +22,8 @@ Released: unreleased
  * Fixed issue #2517: Submodule Update dialog cannot be re-sized and is too small to be useful in some cases
  * Fixed issue #2504: Problems with MS Outlook and generated emails
  * Optimized TortoiseGitBlame to be used with high contrast themes and black background colors
+ * Fixed issue #2529: The status of files which are not checked should be the same after commit
+                      Unchecked deleted/renamed files were not put into previous state in index after commit
 
 = Release 1.8.14.0 =
 Released: 2015-04-08

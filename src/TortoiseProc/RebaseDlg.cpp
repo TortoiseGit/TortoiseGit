@@ -1124,6 +1124,7 @@ void CRebaseDlg::OnBnClickedContinue()
 		// ATTENTION: Similar code in CommitDlg.cpp!!!
 		// ***************************************************
 		CMassiveGitTask mgtReAddAfterCommit(_T("add --ignore-errors -f"));
+		CMassiveGitTask mgtReDelAfterCommit(_T("rm --cached --ignore-unmatch"));
 		CMassiveGitTask mgtAdd(_T("add -f"));
 		CMassiveGitTask mgtUpdateIndexForceRemove(_T("update-index --force-remove"));
 		CMassiveGitTask mgtUpdateIndex(_T("update-index"));
@@ -1153,10 +1154,17 @@ void CRebaseDlg::OnBnClickedContinue()
 					mgtReAddAfterCommit.AddFile(*entry);
 
 					if (entry->m_Action & CTGitPath::LOGACTIONS_REPLACED && !entry->GetGitOldPathString().IsEmpty())
+					{
 						mgtReset.AddFile(entry->GetGitOldPathString());
+						mgtReDelAfterCommit.AddFile(entry->GetGitOldPathString());
+					}
 				}
 				else if(!(entry->m_Action & CTGitPath::LOGACTIONS_UNVER))
+				{
 					mgtReset.AddFile(entry->GetGitPathString());
+					if (entry->m_Action & CTGitPath::LOGACTIONS_DELETED)
+						mgtReDelAfterCommit.AddFile(entry->GetGitPathString());
+				}
 			}
 		}
 
@@ -1230,6 +1238,7 @@ void CRebaseDlg::OnBnClickedContinue()
 		{
 			BOOL cancel2 = FALSE;
 			mgtReAddAfterCommit.Execute(cancel2);
+			mgtReDelAfterCommit.Execute(cancel2);
 		}
 
 		this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_LOG);
