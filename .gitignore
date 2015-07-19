@@ -18,12 +18,11 @@
 /doc/source/en/version.xml
 /doc/xsl/db_*.xsl
 /Languages/.tx
-/sign-x64.bat
-/sign-x86.bat
 /src/.vs
 /src/ipch
 /src/TortoiseShell/register.reg
 /src/TortoiseShell/register_recover.reg
+/Tools
 Desktop.ini
 IBugTraqProvider_?.?
 Thumbs.db

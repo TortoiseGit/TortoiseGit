@@ -1,0 +1,136 @@
+Overall architecture of TortoiseGit
+===================================
+
+Mainly TortoiseGit consists of several executables and two DLLs which
+are of interest here (the project names are in parentheses bebind):
+
+* TortoiseGit(32).dll (TortoiseShell)
+* TortoiseGitStub(32).dll (TortoiseGitStub)
+* TortoiseGitProc.exe (TortoiseGitProc)
+* TGitCache.exe (TGitCache)
+* TortoiseGitBlame.exe (TortoiseGitBlame)
+* TortoiseGitIDiff.exe (TortoiseGitIDiff)
+* TortoiseGitUDiff.exe (TortoiseGitIDiff)
+* TortoiseGitMerge.exe (TortoiseGitMerge)
+* TortoiseGitPlink.exe (TortoiseGitPLink)
+* SshAskPass.exe (SshAskPass)
+* tgittouch.exe (tgittouch)
+
+TortoiseGit(32).dll and TortoiseGitStub(32).dll
+===============================================
+These two files are the heart of the Explorer Shell extension.
+TortoiseGitStub(32).dll is registered as a shell extension and
+loads TortoiseGit(32).dll which finally provides the context menu
+and overlay icons (in combination with TGitCache.exe).
+
+TortoiseGit(32).dll checks which context menu items to show and when a
+context menu item is clicked on, it calls TortoiseGitProc.exe which
+handles all commands from the shell extension.
+
+Why two dlls? The reason for TortoiseGitStub(32).dll is the setting
+"Show overlays and context menu only in explorer". It checks whether
+the parent process is explorer.exe and depending on the setting
+TortoiseGit(32).dll gets loaded. - Before supporting this setting
+TortoiseGit directly registered TortoiseGit(32).dll as the TortoiseGit
+explorer shell extension w/o using TortoiseGitStub(32).dll.
+
+TortoiseGitProc.exe
+===================
+This is the main TortoiseGit GUI program. It is automatically executed
+by the shell extension (TortoiseGit(32).dll) using command line
+parameters indicating which action/command to execute and which files/folders
+are selected in explorer.
+
+If you want to see the command line parameters passed to TortoiseGitProc.exe
+go to TortoiseGit settings, Advanced and set Debug to true. Starting from now
+you will see all parameters passed to TortoiseGitProc.exe.
+
+Some of the command line parameters (which we think are also useful for
+users) are documented on
+https://tortoisegit.org/docs/tortoisegit/tgit-automation.html#tgit-automation-basics.
+
+If this program is started without any parameter, it just displays the about dialog.
+
+Inside !TortoiseGitProc all different commands have their own handler classes
+and maybe dialogs (in MSVC you can see all the project directories for them).
+Mostly TortoiseGitProc.exe will display its own dialogs and call git.exe. But for
+diffing or blaming it will execute the other .exe files (such as TortoiseGitBlame.exe)
+with appropriate command line parameters. Often TortoiseGitProc.exe also creates
+temp files which are passed to the tools.
+
+Noteworthy files
+----------------
+Main class for functionality is AppUtils.cpp, which is called by many commands.
+
+The log dialog and other revision lists are handled by GitLogListBase.cpp or
+derived classes (context menu action handlers are in GitLogListAction.cpp).
+
+GitStatusListCtrl.cpp is used everywhere where file lists are displayed
+in dialogs, such as log dialog and commit dialog.
+
+TGitCache.exe
+=============
+This is a process running in the background. It calculates working tree and
+file statuses. The shell extension (TortoiseGit(32).dll) connects to it for
+asking which overlay icons to show.
+
+TGitCache also watches changes on folders which were opened in explorer before
+in order to instantly react on changes and propagating updates of the overlay
+icons to the shell extension.
+
+For more information you can set the CacheTrayIcon setting to true in the
+TortoiseGit advanced settings. After restarting TGitCache you can see a new
+icon in the systray. Double clicking on it opens a window showing which files
+TGitCache processes right now.
+
+TortoiseGitBlame.exe
+====================
+This program displays the blame functionality. It is called by TortoiseGitProc.exe
+or manually by the user (there is an icon in the startmenu).
+
+TortoiseGitIDiff.exe
+====================
+This program is for comparing images. It is called by TortoiseGitProc.exe
+or manually by the user (there is an icon in the startmenu).
+
+Command line parameters are document here:
+https://tortoisegit.org/docs/tortoisegit/tgit-automation-idiff.html
+
+TortoiseGitUDiff.exe
+====================
+This program is for showing .patch and .diff files with syntax highlighting.
+It is called by TortoiseGitProc.exe or when the user double clicks on a .patch
+or .diff file (TortoiseGitUDiff.exe is registered as a handler for these file
+types on installation by default).
+
+TortoiseGitMerge.exe
+====================
+This program is for comparing files and resolving conflicts. It is called by
+TortoiseGitProc.exe or manually by the user (there is an icon in the startmenu).
+
+Command line parameters are document here:
+https://tortoisegit.org/docs/tortoisegitmerge/tme-automation.html
+
+SshAskPass.exe
+==============
+This program is for providing a guy for asking for credentials especially in
+git.exe and ssh.exe.
+
+Both, git.exe and ssh.exe (from OpenSSH) are command line tools. When executed
+from TortoiseGitProc.exe there is no terminal attached and, thus, those tools
+cannot ask for credentials. However, git.exe and ssh.exe allow to "register"
+a helper utility (using the enviroment variables SSH_ASKPASS and GIT_ASKPASS).
+
+All SshAskPass.exe does is, it displays the command line parameters in the GUI
+and passes the entered values to STDOUT (where it is read by the calling tool).
+
+tgittouch.exe
+=============
+This is a helper utility which creates/touches a file which is passed as
+command line parameter.
+
+It is needed for interacting with the Putty authentication agent (peagent).
+TortoiseGit needs to know when the user finished entering his/her password,
+but peagent is not blocking. Therefore, peagent is called with the private
+key and tgittouch.exe together with a tmp filename.Then TortoiseGitProc.exe
+waits untils the tmp-file is created.

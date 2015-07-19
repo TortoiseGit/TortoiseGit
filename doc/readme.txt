@@ -1,59 +1,65 @@
+Documentation
+=============
+
+You can find the "readable" version of the TortoiseGit manual under
+https://tortoisegit.org/docs/tortoisegit/.
+
+For general information on TortoiseGit please see https://tortoisegit.org/ or the [README file in the root](README.md).
+
 HowTo build the docs
 ====================
 
-Since you are already reading this, I assume that you have succeeded in checking 
-out the TortoiseGit.
+First of all you need a local copy of the TortoiseGit repository.
 
-Tools needed:
-=============
+Tools needed
+------------
 
 There are some tools for processing the XML input that you need to build the docs.
 Scripts and dtd are included, but the executables (formatting processor, microsoft
 help compiler, translation tools) have to be installed separately.
 You will also need to have a Java Runtime Environment version 1.3.x or above.
 
-tools\fop\		- the fop processor (for PDF generation)
-tools\xsl\		- the docbook xsl files from sourceforge
-tools\			- xsl processor, hhc.exe, ...
+    tools\fop\		- the fop processor (for PDF generation)
+    tools\xsl\		- the docbook xsl files from sourceforge
+    tools\			- xsl processor, hhc.exe, ...
 
-you can download all the required tools as a zip package from our website:
+you can download all the required tools as a 7-Zip package from our website:
 http://code.google.com/p/tortoisesvn/downloads/list
-tools-*.7z. Use 7-zip extract to \TortotiseGit\Tools
+Use 7-zip extract the tools-*.7z file to e.g. \TortoiseGit\Tools. You might want to
+place your tools directory somewhere else on your harddisk, if you want to use it
+to build other docs too. This will, however, require tweaking the build scripts.
 
 Please note that having spaces in your directory path will (for the time being)
 cause the documentation build process to fail.
 
-To build only the english docs, that's all you need.
-
-For Chm docs you need:
+For chm docs you need:
 - Microsofts makehm.exe, Part of visual studio, sources available on msdn
 - Microsofts html workshop, Binaries available on msdn
 
-If you want to update the git-man pages see source\en\TortoiseGit\git_doc.patch.
+If you want to update the git-man pages see [source/en/TortoiseGit/git_doc.patch](doc/source/en/TortoiseGit/git_doc.patch).
 
 
-Structure:
-==========
+Structure
+---------
 The most important directories for you are:
-source\en - contains the english XML text source.
-images\en - contains the base (english) images for the docs.
-xsl\	  - contains the stylesheets for the doc creation
-dtd\      - contains the tools and the dtd to validate and build the docs.
-	    You might want to place your tools directory somewhere else on your 
-            harddisk, if you want to use it to build other docs too. This will 
-            however require tweaking the build scripts.
-            I'd recommend to leave dtd in place, so the source stays 
-            compatible between TSVN doc developers.
-            
-Building the docs:
-==================
 
-NAnt Build:
------------
+    source\en - contains the english XML text source.
+    images\en - contains the base (english) images for the docs
+    xsl\	  - contains the stylesheets for the doc creation
+    dtd\      - contains the tools and the dtd to validate and build the docs.
 
-VS->Tools->Visual Studio 2012 command line
-cd doc
-..\tools\nant-0.92\bin\nant.exe
+Please see [Screenshots.txt](doc/Screenshots.txt) for notes on how to create screenshots.
+
+Building the docs
+=================
+
+NAnt Build
+----------
+
+    VS->Tools->Visual Studio 2013 command line
+    cd TortoiseGit
+    cd doc
+    ..\tools\nant\nant.exe
 
 A NAnt build script has been provided to build the docs. When doc.build is run for
 the first time, the template doc.build.include.template is copied to doc.build.include.

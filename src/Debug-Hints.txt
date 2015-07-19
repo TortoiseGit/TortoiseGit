@@ -1,74 +1,109 @@
 Debugging hints
+===============
 
-Since TortoiseGit is a shell extension it's not
-as easy to debug as normal applications. The
-TortoiseShell part is only a dll which is
-loaded by the windows explorer. So the first
-thing you need to do is:
+This guide will show you how to debug TortoiseGit. In general there are
+three stages of debugging with increasing need of work:
+
+* Capturing debug strings
+* Using a debugger (to generate a stack trace)
+* Compile your own debug version
+
+Capture Debug Strings
+=====================
+
+TortoiseGit has some debug statements build in which are not generated
+and visible by default.
+
+You can enable the generation of those debug strings by setting
+"DebugOutputString" to "true" in TortoiseGit advanced settings.
+
+After restarting your computer (or TGitCache.exe, explorer.exe and/or
+TortoiseGitProc.exe) you can capture the debug strings using a tools like
+DebugView (http://technet.microsoft.com/en-us/sysinternals/bb896647.aspx)
+from the SysInternals suite or WinDbg
+(http://msdn.microsoft.com/en-us/windows/hardware/gg463009.aspx).
+
+If you use DebugView and wish to report the values in Time column, you
+need to save the log file or log to file. Time column is not copied
+to clipboard.
+
+How to use a debugger
+=====================
+
+In order to generate a stack trace you can use a debugger like WinDbg
+(http://msdn.microsoft.com/en-us/windows/hardware/gg463009.aspx) or a
+Visual Studio IDE and attach it to a TortoiseGit process.
+
+To get a nice stack trace and resolve symbols, you can use our symbol server
+
+http://www.crash-server.com:8080/public/TortoiseGit/7fbde3fc-94e9-408b-b5c8-62bd4e203570/symsrv/
+
+or download the debug symbols (https://download.tortoisegit.org/tgit/)
+which are only available for our releases.
+
+In WinDbg the symbol server can be used by issuing
+
+    .sympath+ srv*c:\tmp*http://www.crash-server.com:8080/public/TortoiseGit/7fbde3fc-94e9-408b-b5c8-62bd4e203570/symsrv/
+
+the URL for the Microsoft symbol server is:
+
+    srv*c:\tmp*http://msdl.microsoft.com/download/symbols
+
+To debug the TortoiseProc part of TortoiseGit proceed as with any
+normal application.
+
+To debug the TGitCache exit the TGitCache.exe process and proceed
+as with any normal application. Exiting TGitCache.exe is necessary
+because only one instance of TGitCache may run at a time. To exit
+the TGitCache process set HKCU\Software\TortoiseGit\CacheTrayIcon
+to 1 and call "Exit" in the context menu of the tray icon.
+
+Compile your own debug version
+==============================
+
+See build.txt and architecture.txt.
+
+Debugging the shell extension
+-----------------------------
+
+(This might be out of date)
+
+Since TortoiseGit is a shell extension it's not as easy to debug as
+normal applications. The TortoiseShell part is only a dll which is
+loaded by the windows explorer. So the first thing you need to do is:
 
 - add the following value to the registry:
   HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\DesktopProcess
   (REG_DWORD) = 1
-  This will tell windows to start each explorer
-  in a separate process instead of one single
-  process.
-- register the TortoiseShell dll so that
-  the windows explorer loads it. There are
-  three files in the folder src\TortoiseShell
-  with extension *.registry. Make a copy of
-  those files and change the extension to
-  *.reg. Then you have to edit those three
-  files so that the paths in it reflects
-  your source paths exactly.
-  Now if you doubleclick on register.reg
-  the debug version of the TortoiseGit.dll
-  get's registered. registerrelease.reg
-  registers the release version of the
+  This will tell windows to start each explorer in a separate process
+  instead of one single process.
+- register the TortoiseShell dll so that the windows explorer loads it.
+  There are three files in the folder src\TortoiseShell with extension
+  *.registry. Make a copy of those files and change the extension to
+  *.reg. Then you have to edit those three files so that the paths in
+  it reflects your source paths exactly. Now if you doubleclick on
+  register.reg the debug version of the TortoiseGit.dll get's
+  registered. registerrelease.reg registers the release version of the
   TortoiseGit.dll. Don't do it right now!
-- Start VS.NET and load the TortoiseGit
-  solution file. Set the TortoiseShell
-  project as "startup project".
-- Close all running instances of windows
-  explorer.
-- Now execute the register.reg file. Since
-  you already closed all explorer windows
-  you'll have to use the windows start
-  button, then execute, enter the location
-  of the reg file and hit enter.
-  Since this is a lot of clicking I made
-  a shortcut of those files in the quickstart
-  on the taskbar.
-- Hit F5 in the VS.NET IDE (or start
-  debugging via menu). The first time
-  you do that VS.NET will ask you to
-  enter an application to use with the
-  TortoiseGit.dll - enter c:\windows\explorer.exe
-  (or whatever path it is on your system).
-- Now you can set breakpoints and debug
-  as you like.
-- Don't stop debugging by closing the
-  explorer window - this sometimes leads
-  to a locked dll and you can't compile/link
-  the dll again until you have restarted.
-  Always stop debugging with the command
-  in the VS.NET IDE (Shift-F5).
-- After debugging, execute the file
-  deregister.reg. Do this always _immediately_
-  after debugging or you might get a locked
-  dll.
-- while debugging, _never_ start another
-  explorer instance or internet explorer
-  or any other application which uses
-  explorer - this includes already running
-  applications to open dialogs like "save as"!
-
-To debug the TortoiseProc part of TortoiseGit
-proceed as with any normal application.
-
-To debug the TGitCache exit the TGitCache.exe
-process and proceed as with any normal
-application. Exiting TGitCache.exe is necessary
-because only one instance of TGitCache may run
-at a time. To exit the TGitCache process set
-HKCU\Software\TortoiseGit\CacheTrayIcon to 1 and
-call "Exit" in the context menu of the tray icon.
+- Start VS and load the TortoiseGit solution file. Set the
+  TortoiseShell project as "startup project".
+- Close all running instances of windows explorer.
+- Now execute the register.reg file. Since you already closed all
+  explorer windows you'll have to use the windows start button, then
+  execute, enter the location of the reg file and hit enter. Since this
+  is a lot of clicking I made a shortcut of those files in the
+  quickstart on the taskbar.
+- Hit F5 in the VS IDE (or start debugging via menu). The first time
+  you do that VST will ask you to enter an application to use with the
+  TortoiseGit.dll - enter c:\windows\explorer.exe (or whatever path it
+  is on your system).
+- Now you can set breakpoints and debug as you like.
+- Don't stop debugging by closing the explorer window - this sometimes
+  leads to a locked dll and you can't compile/link the dll again until
+  you have restarted. Always stop debugging with the command in the VS
+  IDE (Shift-F5).
+- After debugging, execute the file deregister.reg. Do this always
+  _immediately_ after debugging or you might get a locked dll.
+- while debugging, _never_ start another explorer instance or internet
+  explorer or any other application which uses  explorer - this includes
+  already running applications to open dialogs like "save as"!
