@@ -61,6 +61,17 @@ TEST(CGit, RunGit_Error)
 	EXPECT_TRUE(output.Find(_T("fatal: Not a git repository (or any")) == 0);
 }
 
+TEST_P(CBasicGitWithTestRepoBareFixture, RunGit_AbsolutePath)
+{
+	CAutoTempDir tempdir;
+
+	CString output;
+	EXPECT_EQ(0, m_Git.Run(_T("git archive -o ") + tempdir.GetTempDir() + _T("\\export.zip HEAD"), &output, CP_UTF8));
+	EXPECT_TRUE(output.IsEmpty());
+
+	EXPECT_TRUE(PathFileExists(tempdir.GetTempDir() + _T("\\export.zip")));
+}
+
 TEST(CGit, StringAppend)
 {
 	CGit::StringAppend(nullptr, nullptr); // string may be null

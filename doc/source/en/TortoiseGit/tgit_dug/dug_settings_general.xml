@@ -13,6 +13,9 @@
 		<primary>Cygwin git</primary>
 	</indexterm>
 	<indexterm>
+		<primary>Msys2 git</primary>
+	</indexterm>
+	<indexterm>
 		<primary>Extern DLL Path</primary>
 	</indexterm>
 	<para>
@@ -76,6 +79,14 @@
 							Make sure <guilabel>Git.exe Path</guilabel> points to the <literal>bin</literal>-folder within the Git for Windows installation folder.
 						</para>
 					</caution>
+					<caution>
+						<para>
+							If you don't use Git for Windows, please see the sections for "Cygwin git" and "Msys2 git" below as special settings are required here.
+						</para>
+						<para>
+							As a general note: There is no official support for Cygwin or Msys2 git in TortoiseGit. The TortoiseGit developers only use Git for Windows. Bugreports, however, are welcome.
+						</para>
+					</caution>
 				</para>
 				<para>
 					<tip>
@@ -107,7 +118,7 @@
 			<term>Cygwin Git</term>
 			<listitem>
 				<para>
-					There is no official support for Cygwin git in TortoiseGit. The TortoiseGit developers only use Git for Windows. Bugreports, however, are welcome. If you really want to use it here are the steps you have to perform:
+					As noted above: There is no official support for Cygwin git in TortoiseGit. The TortoiseGit developers only use Git for Windows. Bugreports, however, are welcome. If you really want to use it here are the steps you have to perform:
 				</para>
 				<para>
 					1) Select the <literal>[CYGWIN-INSTALL-PATH]\bin</literal>-folder as git.exe folder.
@@ -120,6 +131,29 @@
 				</para>
 				<para>
 					4) Go to TortoiseGit <xref linkend="tgit-dug-settings-registry"/> and set <literal>CygwinHack</literal> to <literal>true</literal> in order to activate cygwin workarounds.
+				</para>
+				<para>
+					5) Reboot.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term>Msys2 Git</term>
+			<listitem>
+				<para>
+					As noted above: There is no official support for Msys2 git in TortoiseGit. The TortoiseGit developers only use Git for Windows. Bugreports, however, are welcome. If you really want to use it here are the steps you have to perform:
+				</para>
+				<para>
+					1) Select the <literal>[MSYS2-INSTALL-PATH]\usr\bin</literal>-folder as git.exe folder.
+				</para>
+				<para>
+					2) Configure the <literal>HOME</literal> environment variable in Windows, so that Msys2 and TortoiseGit are using the same home directory and global git-config. Use the normal Windows notation here (e.g., "C:\Users\USERNAME"). By default, TortoiseGit uses the Windows home directory which is normally located under <literal>c:\Users</literal> and Msys2 uses its own home directories which are located under <literal>[MSYS2-INSTALL-PATH]\home</literal>.
+				</para>
+				<para>
+					3) Configure AutoCrLf, this is necessary as TortoiseGit and Msys2 Git might have different defaults.
+				</para>
+				<para>
+					4) Go to TortoiseGit <xref linkend="tgit-dug-settings-registry"/> and set <literal>Msys2Hack</literal> to <literal>true</literal> in order to activate Msys2 workarounds.
 				</para>
 				<para>
 					5) Reboot.

@@ -86,6 +86,10 @@ CSettingsAdvanced::CSettingsAdvanced()
 	settings[i].type	= CSettingsAdvanced::SettingTypeNumber;
 	settings[i++].def.l	= 5;
 
+	settings[i].sName   = L"Msys2Hack";
+	settings[i].type    = CSettingsAdvanced::SettingTypeBoolean;
+	settings[i++].def.b = false;
+
 	settings[i].sName	= L"NoSortLocalBranchesFirst";
 	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
 	settings[i++].def.b	= false;

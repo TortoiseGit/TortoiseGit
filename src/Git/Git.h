@@ -199,6 +199,7 @@ public:
 	static CString ms_MsysGitRootDir;
 	static int ms_LastMsysGitVersion;
 	static bool ms_bCygwinGit;
+	static bool ms_bMsys2Git;
 	static int m_LogEncode;
 	static bool IsBranchNameValid(const CString& branchname);
 	bool IsBranchTagNameUnique(const CString& name);

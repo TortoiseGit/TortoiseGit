@@ -34,6 +34,7 @@
 #include "../libgit2/ssh-wintunnel.h"
 
 bool CGit::ms_bCygwinGit = (CRegDWORD(_T("Software\\TortoiseGit\\CygwinHack"), FALSE) == TRUE);
+bool CGit::ms_bMsys2Git = (CRegDWORD(_T("Software\\TortoiseGit\\Msys2Hack"), FALSE) == TRUE);
 int CGit::m_LogEncode=CP_UTF8;
 typedef CComCritSecLock<CComCriticalSection> CAutoLocker;
 
@@ -333,7 +334,13 @@ int CGit::RunAsync(CString cmd, PROCESS_INFORMATION *piOut, HANDLE *hReadOut, HA
 	memset(&this->m_CurrentGitPi,0,sizeof(PROCESS_INFORMATION));
 	memset(&pi, 0, sizeof(PROCESS_INFORMATION));
 
-	if (ms_bCygwinGit && cmd.Find(_T("git")) == 0 && cmd.Find(L"git.exe config ") == -1)
+	if (ms_bMsys2Git && cmd.Find(_T("git")) == 0 && cmd.Find(L"git.exe config ") == -1)
+	{
+		cmd.Replace(_T("\\"), _T("\\\\\\\\"));
+		cmd.Replace(_T("\""), _T("\\\""));
+		cmd = _T('"') + CGit::ms_LastMsysGitDir + _T("\\bash.exe\" -c \"/usr/bin/") + cmd + _T('"');
+	}
+	else if (ms_bCygwinGit && cmd.Find(_T("git")) == 0 && cmd.Find(L"git.exe config ") == -1)
 	{
 		cmd.Replace(_T('\\'), _T('/'));
 		cmd.Replace(_T("\""), _T("\\\""));
@@ -2124,6 +2131,8 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 			break;
 		}
 	}
+	if (ms_bMsys2Git) // in Msys2 git.exe is in usr\bin; this also need to be after the check for etc folder, as Msys2 also has mingw64\etc, but uses etc
+		PathCanonicalize(CStrBuf(msysGitDir, MAX_PATH), CGit::ms_LastMsysGitDir + _T("\\..\\.."));
 	CGit::ms_MsysGitRootDir = msysGitDir;
 
 	if ((CString)CRegString(REG_SYSTEM_GITCONFIGPATH, _T(""), FALSE) != g_Git.GetGitSystemConfig())
@@ -2139,7 +2148,7 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 	SetLibGit2SearchPath(GIT_CONFIG_LEVEL_XDG, g_Git.GetGitGlobalXDGConfigPath());
 	static git_smart_subtransport_definition ssh_wintunnel_subtransport_definition = { [](git_smart_subtransport **out, git_transport* owner, void*) -> int { return git_smart_subtransport_ssh_wintunnel(out, owner, FindExecutableOnPath(g_Git.m_Environment.GetEnv(_T("GIT_SSH")), g_Git.m_Environment.GetEnv(_T("PATH"))), g_Git.m_Environment); }, 0 };
 	git_transport_register("ssh", git_transport_smart, &ssh_wintunnel_subtransport_definition);
-	if (!ms_bCygwinGit)
+	if (!(ms_bCygwinGit || ms_bMsys2Git))
 		SetLibGit2TemplatePath(CGit::ms_MsysGitRootDir + _T("share\\git-core\\templates"));
 	else
 		SetLibGit2TemplatePath(CGit::ms_MsysGitRootDir + _T("usr\\share\\git-core\\templates"));
@@ -3185,7 +3194,7 @@ int CGit::GetWorkingTreeChanges(CTGitPathList& result, bool amend, CTGitPathList
 	{
 		BYTE_VECTOR cmdout;
 		CString cmd;
-		if (ms_bCygwinGit)
+		if (ms_bCygwinGit || ms_bMsys2Git)
 		{
 			// Prevent showing all files as modified when using cygwin's git
 			if (!filterlist)

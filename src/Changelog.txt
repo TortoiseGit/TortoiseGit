@@ -8,6 +8,10 @@ Released: unreleased
  * Fixed issue #2469: Support reviewing merge commits (git show merge-commit)
  * Add full support for Git for Windows 2.x and windows-wide system config
  * Fixed issue #2232: Change Show Log to display all lines of multiline commit comments in the message column
+ * Fixed issue #2280: Ability to use Msys2 git instead of Git for Windows
+   Check out the manual (keyword "Msys2 git") regarding Msys2 Git support and configuration hints.
+   Please note that Msys2 Git is not officially supported by TortoiseGit as the developers only
+   use Git for Windows. Bugreports, however, are welcome.
 
 == Bug Fixes ==
  * Fixed issue #2495: "Show Reflog" dialog shows empty action for "push" entries
