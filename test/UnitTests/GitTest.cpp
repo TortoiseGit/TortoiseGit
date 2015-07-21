@@ -21,6 +21,7 @@
 #include "Git.h"
 #include "StringUtils.h"
 #include "RepositoryFixtures.h"
+#include "SysInfo.h"
 
 // For performance reason, turn LIBGIT off by default, 
 INSTANTIATE_TEST_CASE_P(CGit, CBasicGitFixture, testing::Values(GIT_CLI, /*LIBGIT,*/ LIBGIT2, LIBGIT2_ALL));
@@ -710,7 +711,7 @@ static void GetBranchesTagsRefs(CGit& m_Git, config testConfig)
 
 	MAP_HASH_NAME map;
 	EXPECT_EQ(0, m_Git.GetMapHashToFriendName(map));
-	if (testConfig == GIT_CLI || testConfig == LIBGIT)
+	if (testConfig == GIT_CLI || testConfig == LIBGIT || SysInfo::Instance().IsXP())
 		ASSERT_EQ(12, map.size()); // also contains the undereferenced tags with hashes
 	else
 		ASSERT_EQ(10, map.size());
@@ -1026,7 +1027,7 @@ TEST_P(CBasicGitWithTestRepoFixture, GetOneFile)
 	GetOneFile(m_Git);
 
 	// clean&smudge filters are not available for GetOneFile without libigt2
-	if (GetParam() == GIT_CLI || GetParam() == LIBGIT)
+	if (GetParam() == GIT_CLI || GetParam() == LIBGIT || SysInfo::Instance().IsXP())
 		return;
 
 	CString cleanFilterFilename = m_Git.m_CurrentDir + L"\\clean_filter_openssl";
