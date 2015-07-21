@@ -572,7 +572,7 @@ bool LookLikeGitHash(const CString& msg, int &pos)
 		}
 		else
 		{
-			return c >= g_Git.GetShortHASHLength() && c <= GIT_HASH_SIZE * 2;
+			return c >= g_Git.GetShortHASHLength() && c <= GIT_HASH_SIZE * 2 && msg[pos] != '@';
 		}
 	}
 	return c >= g_Git.GetShortHASHLength() && c <= GIT_HASH_SIZE * 2;
@@ -598,7 +598,7 @@ std::vector<CHARRANGE> FindGitHashPositions(const CString& msg, int offset)
 				offset += 10;
 				while (offset < msg.GetLength())
 				{
-					if (msg[offset++] == '\n')
+					if (msg[++offset] == '\n')
 						break;
 				}
 				continue;
