@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2015 - TortoiseGit
 // Copyright (C) 2005-2006, 2009-2010 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -17,7 +18,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "stdafx.h"
 #include "DirFileEnum.h"
-
+#include "SysInfo.h"
 
 CSimpleFileFind::CSimpleFileFind(const CString &sPath, LPCTSTR pPattern) :
    m_dError(ERROR_SUCCESS),
@@ -36,9 +37,9 @@ CSimpleFileFind::CSimpleFileFind(const CString &sPath, LPCTSTR pPattern) :
         }
     }
     if ((len >= 248)&&(m_sPathPrefix.Left(4).Compare(_T("\\\\?\\"))))
-        m_hFindFile = ::FindFirstFile((LPCTSTR)(_T("\\\\?\\") + m_sPathPrefix + pPattern), &m_FindFileData);
+        m_hFindFile = ::FindFirstFileEx((LPCTSTR)(_T("\\\\?\\") + m_sPathPrefix + pPattern), SysInfo::Instance().IsWin7OrLater() ? FindExInfoBasic : FindExInfoStandard, &m_FindFileData, FindExSearchNameMatch, nullptr, SysInfo::Instance().IsWin7OrLater() ? FIND_FIRST_EX_LARGE_FETCH : 0);
     else
-        m_hFindFile = ::FindFirstFile((LPCTSTR)(m_sPathPrefix + pPattern), &m_FindFileData);
+        m_hFindFile = ::FindFirstFileEx((LPCTSTR)(m_sPathPrefix + pPattern), SysInfo::Instance().IsWin7OrLater() ? FindExInfoBasic : FindExInfoStandard, &m_FindFileData, FindExSearchNameMatch, nullptr, SysInfo::Instance().IsWin7OrLater() ? FIND_FIRST_EX_LARGE_FETCH : 0);
     if (m_hFindFile == INVALID_HANDLE_VALUE) {
         m_dError = ::GetLastError();
     }

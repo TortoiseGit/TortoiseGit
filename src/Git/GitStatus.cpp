@@ -25,6 +25,7 @@
 #include "Git.h"
 #include "gitindex.h"
 #include "ShellCache.h"
+#include "SysInfo.h"
 
 extern CGitAdminDirMap g_AdminDirMap;
 extern CGitIndexFileMap g_IndexFileMap;
@@ -341,7 +342,7 @@ static bool SortFileName(CGitFileName &Item1, CGitFileName &Item2)
 int GitStatus::GetFileList(const CString &gitdir, const CString &subpath, std::vector<CGitFileName> &list)
 {
 	WIN32_FIND_DATA data;
-	HANDLE handle=::FindFirstFile(gitdir+_T("\\")+subpath+_T("\\*.*"), &data);
+	HANDLE handle = ::FindFirstFileEx(gitdir + _T("\\") + subpath + _T("\\*.*"), SysInfo::Instance().IsWin7OrLater() ? FindExInfoBasic : FindExInfoStandard, &data, FindExSearchNameMatch, nullptr, SysInfo::Instance().IsWin7OrLater() ? FIND_FIRST_EX_LARGE_FETCH : 0);
 	do
 	{
 		if(_tcscmp(data.cFileName, _T(".git")) == 0)

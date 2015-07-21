@@ -72,6 +72,9 @@
     <ClCompile Include="..\..\src\Git\MassiveGitTaskBase.cpp">
       <Filter>Git</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\Utils\SysInfo.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Cache.h">
@@ -118,6 +121,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\Git\MassiveGitTaskBase.h">
       <Filter>Git</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Utils\SysInfo.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

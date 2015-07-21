@@ -88,6 +88,7 @@
     <ClInclude Include="..\..\src\Utils\SmartHandle.h" />
     <ClInclude Include="..\..\src\Utils\SmartLibgit2Ref.h" />
     <ClInclude Include="..\..\src\Utils\StringUtils.h" />
+    <ClInclude Include="..\..\src\Utils\SysInfo.h" />
     <ClInclude Include="..\..\src\Utils\UnicodeUtils.h" />
     <ClInclude Include="AutoTempDir.h" />
     <ClInclude Include="RepositoryFixtures.h" />
@@ -112,6 +113,7 @@
     <ClCompile Include="..\..\src\Utils\ReaderWriterLock.cpp" />
     <ClCompile Include="..\..\src\Utils\Registry.cpp" />
     <ClCompile Include="..\..\src\Utils\StringUtils.cpp" />
+    <ClCompile Include="..\..\src\Utils\SysInfo.cpp" />
     <ClCompile Include="..\..\src\Utils\UnicodeUtils.cpp" />
     <ClCompile Include="AutoTempDir.cpp" />
     <ClCompile Include="GitAdminDirTest.cpp" />
