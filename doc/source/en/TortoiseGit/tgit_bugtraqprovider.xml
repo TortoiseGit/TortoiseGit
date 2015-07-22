@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE appendix SYSTEM "../../dtd/dblite.dtd">
 <appendix id="tgit-ibugtraqprovider">
-    <title>IBugtraqProvider interface</title>
+    <title>IBugTraqProvider interface</title>
     <simplesect>
         <indexterm>
             <primary>plugin</primary>
         </indexterm>
         <indexterm>
-            <primary>IBugtraqProvider</primary>
+            <primary>IBugTraqProvider</primary>
         </indexterm>
         <indexterm>
             <primary>COM</primary>
@@ -36,7 +36,7 @@
         <important>
             <para>
                 You should provide both a 32-bit and 64-bit version of your
-                plugin. Because the x64-Version of TortoiseGit can not use a 32-bit
+                plugin. Because the x64-Version of TortoiseGit cannot use a 32-bit
                 plugin and vice-versa.
             </para>
         </important>
@@ -72,9 +72,9 @@
     <!-- ======================== SECTION 1 ============================== -->
     <!-- ================================================================= -->
     <sect1 id="tgit-ibugtraqprovider-1">
-        <title>The IBugtraqProvider interface</title>
+        <title>The IBugTraqProvider interface</title>
         <para>
-            TortoiseGit 1.2.1 and later can use plugins which implement the IBugtraqProvider
+            TortoiseGit 1.2.1 and later can use plugins which implement the IBugTraqProvider
             interface. The interface provides a few methods which plugins can
             use to interact with the issue tracker.
         </para>
@@ -184,11 +184,11 @@ HRESULT GetCommitMessage (
     <!-- ======================== SECTION 2 ============================== -->
     <!-- ================================================================= -->
     <sect1 id="tgit-ibugtraqprovider-2">
-        <title>The IBugtraqProvider2 interface</title>
+        <title>The IBugTraqProvider2 interface</title>
         <para>
             In TortoiseSVN 1.6 a new interface was added which provides
-            more functionality for plugins (also available in TortoiseGit since 1.2.1). This IBugtraqProvider2 interface
-            inherits from IBugtraqProvider.
+            more functionality for plugins (also available in TortoiseGit since 1.2.1). This IBugTraqProvider2 interface
+            inherits from IBugTraqProvider.
         </para>
 <programlisting>
 HRESULT GetCommitMessage2 (
@@ -363,7 +363,7 @@ HRESULT ShowOptionsDialog(
             The <literal>newparameters</literal> return parameter must contain
             the parameters string which the plugin constructed from the info
             it gathered in its options dialog. That <literal>paramameters</literal>
-            string is passed to all other IBugtraqProvider and IBugtraqProvider2
+            string is passed to all other IBugTraqProvider and IBugTraqProvider2
             methods.
         </para>
     </sect1>

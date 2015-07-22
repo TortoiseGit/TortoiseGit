@@ -12,7 +12,7 @@ are of interest here (the project names are in parentheses bebind):
 * TortoiseGitIDiff.exe (TortoiseGitIDiff)
 * TortoiseGitUDiff.exe (TortoiseGitIDiff)
 * TortoiseGitMerge.exe (TortoiseGitMerge)
-* TortoiseGitPlink.exe (TortoiseGitPLink)
+* TortoiseGitPlink.exe (TortoiseGitPlink)
 * SshAskPass.exe (SshAskPass)
 * tgittouch.exe (tgittouch)
 
@@ -51,7 +51,7 @@ https://tortoisegit.org/docs/tortoisegit/tgit-automation.html#tgit-automation-ba
 
 If this program is started without any parameter, it just displays the about dialog.
 
-Inside !TortoiseGitProc all different commands have their own handler classes
+Inside TortoiseGitProc all different commands have their own handler classes
 and maybe dialogs (in MSVC you can see all the project directories for them).
 Mostly TortoiseGitProc.exe will display its own dialogs and call git.exe. But for
 diffing or blaming it will execute the other .exe files (such as TortoiseGitBlame.exe)

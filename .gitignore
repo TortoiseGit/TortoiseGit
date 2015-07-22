@@ -11,6 +11,7 @@
 *.user
 *.zip
 /doc/Aspell/aspell.bat
+/doc/Aspell/Temp.pws
 /doc/images/8bit.tmp
 /doc/output
 /doc/source/*.h

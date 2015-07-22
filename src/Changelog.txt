@@ -8,10 +8,11 @@ Released: unreleased
  * Fixed issue #2469: Support reviewing merge commits (git show merge-commit)
  * Add full support for Git for Windows 2.x and windows-wide system config
  * Fixed issue #2232: Change Show Log to display all lines of multiline commit comments in the message column
+ * Fixed issue #1930: Navigate directly to a commit in "Show log" by pasting its hash
  * Fixed issue #2280: Ability to use Msys2 git instead of Git for Windows
    Check out the manual (keyword "Msys2 git") regarding Msys2 Git support and configuration hints.
    Please note that Msys2 Git is not officially supported by TortoiseGit as the developers only
-   use Git for Windows. Bugreports, however, are welcome.
+   use Git for Windows. Bug reports, however, are welcome.
 
 == Bug Fixes ==
  * Fixed issue #2495: "Show Reflog" dialog shows empty action for "push" entries
@@ -37,7 +38,6 @@ Released: 2015-04-08
 == Features ==
  * Fixed issue #2441: A way to disable the sound that is played on errors
  * Updated shipped TortoiseGitPlink and putty binaries to version 0.64
-   If you are still using TortoisePLink, please switch to TortoiseGitPlink.
  * Fixed issue #2466: TortoiseGitUDiff tool cannot be localized
  * TGitCache: Improve reaction time for propagating changes to explorer
  * Fixed issue #2031: Missing option to disable displaying "FETCH_HEAD" in "Switch/Checkout" dialog box
@@ -47,25 +47,24 @@ Released: 2015-04-08
  * Allow to compare file with deleted file in CommitDlg (e.g., useful for renames)
  * Allow to use Explorer context menu options from TortoiseGit context menu
  * Sort remotes logically/case-insensitively
- * Fixed issue #1930: Navigate directly to a commit in "Show log" by pasting its hash
 
 == Bug Fixes ==
  * Fixed issue #2427: "Submodule of Project: " cannot be localized
  * Fixed issue #2432: MessageBox buttons cannot be localized
  * Fixed issue #2433: Cannot see the log in Diff with previous version
- * Fixed issue #2453: The overlay icon of commited files in a submodule named with chinese characters is unversioned icon
+ * Fixed issue #2453: The overlay icon of committed files in a submodule named with Chinese characters is unversioned icon
  * Fixed issue #2455: "Diff with ..." menu cannot be localized
  * Fixed issue #2431: Add fails in submodule after upgrade from 1.8.12 to 1.8.13
  * Fixed issue #2449: wrong column info in tag reference dialog
  * Fixed issue #2436: Overlay icons gradually disappear or show files as unversioned after a short time
  * Fixed issue #2374: Rebase option in config not working anymore for pull
- * Fixed issue #1440: Different status of modifed renamed or moved files in Show log dialog, Check for Modifications dialog and Commit dialog
+ * Fixed issue #1440: Different status of modified renamed or moved files in Show log dialog, Check for Modifications dialog and Commit dialog
  * Fixed issue #1501: Unchanged files appears modified in Show Log dialog
  * Fixed issue #2477: Change "Split commit" label to "Edit/Split commit" in Rebase dlg
  * Fixed issue #2481: "Start registry editor" does not work properly in non-English locales
- * Fixed issue #2480: CommitDlg: auto-complete doesnt include removed items
+ * Fixed issue #2480: CommitDlg: auto-complete doesn't include removed items
  * Fixed issue #2451: Cleanup fails quietly if file is in use
- * Various bugfixes based on our newly added unit tests
+ * Various bug fixes based on our newly added unit tests
  * Not all remotes showing in Push/Pull/Fetch/Sync dialogs (was limited to 25)
 
 = Release 1.8.13.0 =
@@ -93,7 +92,7 @@ Released: 2015-02-15
  * Fixed issue #56: Ability to use Cygwin's git instead of msysGit
    Check out the manual (keyword "Cygwin git") regarding Cygwin Git support and configuration hints.
    Please note that Cygwin Git is not officially supported by TortoiseGit as the developers only
-   use Git for Windows. Bugreports, however, are welcome.
+   use Git for Windows. Bug reports, however, are welcome.
 
 == Bug Fixes ==
  * Fixed issue #2359: Selected files counter not updated after revert
@@ -102,7 +101,7 @@ Released: 2015-02-15
  * Updated libgit2 in order to fix CVE-2014-9390.
    TortoiseGit is not affected in its default configuration (libgit2 has to be manually enabled for cloning).
    Git for Windows and mSysGit < 1.9.5 are affected, so an update highly recommended.
- * Fixed issue #2385: 'Mail' - 'Use configured server' & 'none'... seems can not be localized
+ * Fixed issue #2385: 'Mail' - 'Use configured server' & 'none'... seems cannot be localized
  * Fixed issue #2356: Rebase dialog should also auto-link to issue tracker
  * Fixed issue #2390: /command:log /outfile not written
  * Fixed issue #2391: Cannot clear "Load Putty Key" in clone dialog persistently
@@ -214,7 +213,7 @@ Released: 2014-08-12
  * Repository Browser said commit not found in submodule
 
 == Known Issues ==
- * There seems to be a bug in the MFC library which occurrs when opening the revision graph in the x64
+ * There seems to be a bug in the MFC library which occurs when opening the revision graph in the x64
    version on AMD CPUs, we cannot fix this. Please vote for this on Microsoft Connect:
    https://connect.microsoft.com/VisualStudio/feedback/details/893171/c000001d-illegal-instruction-on-msvcr120-log-0x2d3-on-x64. 
 
@@ -295,7 +294,7 @@ Released: 2014-04-01
  * Fixed issue #2131: Commit message not used when merging with "squash" option
  * Fixed issue #2147: Resolve not dealing correctly with (modify/delete) conflicts
  * Fixed issue #2148: Cherry pick with conflicts does not add "Cherry picked from..."
- * Fixed issue #2150: Integrate with issue tracker - bug Id can not be larger than 6 digit number
+ * Fixed issue #2150: Integrate with issue tracker - bug Id cannot be larger than 6 digit number
 
 = Release 1.8.7.0 =
 Released: 2014-01-12
@@ -438,7 +437,7 @@ Released: 2013-08-18
  * Fixed issue #1829: You have not concluded your merge (MERGE_HEAD exists) - allow to abort merge more easily.
  * Commit Dialog: Add "Pick commit hash" in message text box context menu
  * Can set log graph line width and node size
- * Updated shipped PuTTY PLink to version 0.63 (which contains some securiuty fixes)
+ * Updated shipped PuTTY Plink to version 0.63 (which contains some security fixes)
  * Fixed issue #1746: Pressing "Delete" on keyboard should delete selected non versioned file in commit dialog
  * Sync Dialog: Add stash menu button
  * Fixed issue #1852: Add command-line argument to tortoisegitproc that specifies value for Directory field
@@ -599,7 +598,7 @@ Released: 2013-02-07
  * Fixed issue #1533: Could not parse git.exe version number
  * Fixed issue #1619: TortoiseGitMerge: Ribbon UI/toolbars can be toggled
  * Fixed issue #1627: TortoiseGit gets the wrong revision if the branch name looks like git-describe format
- * Fixed issue #1617: TortoiseGitPLink does not work with interactive ssh logins
+ * Fixed issue #1617: TortoiseGitPlink does not work with interactive ssh logins
  * Fixed issue #1384: Commit Dialog autocompletion does not work for some pattern
 
 = Release 1.8.0.0 =
@@ -625,7 +624,7 @@ Released: 2013-01-27
    - TortoiseIDiff.exe to TortoiseGitIDiff.exe
    - TortoiseMerge.exe to TortoiseGitMerge.exe
    - TortoiseProc.exe to TortoiseGitProc.exe
-   - TortoisePLink.exe to TortoiseGitPLink.exe (TortoisePLink.exe is still shipped for compatibility reasons)
+   - TortoisePlink.exe to TortoiseGitPlink.exe (TortoisePlink.exe is still shipped for compatibility reasons)
    - TortoiseUDiff.exe to TortoiseGitUDiff.exe
  * Fixed issue #1433: Can reset to remote tracking branch after fetch
  * Fixed issue #763: "Clean up" should show a list of to-be-deleted files

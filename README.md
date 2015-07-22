@@ -31,7 +31,7 @@ An important aspect of reporting issues it to have a reproducible way for the is
 
 TortoiseGit includes a crash reporter (if not disabled on installation), which automatically uploads crash dumps to drdump.com, where the TortoiseGit team can review them. If you have a reproducible way, please also file an issue and link the crash report.
 
-We have a special page describing [steps for debugging](src/Debug-Hints.txt), where the majority does not need to build TortoiseGit on your own.
+We have a special page describing [steps for debugging](src/Debug-Hints.txt), where the majority of ways does not require to build TortoiseGit on your own.
 
 How Can I Contribute?
 =====================

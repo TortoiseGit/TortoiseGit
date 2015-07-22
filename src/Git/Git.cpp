@@ -1755,7 +1755,7 @@ int CGit::GetRemoteTags(const CString& remote, STRING_VECTOR& list)
 			CString shortname;
 			if (!GetShortName(ref, shortname, _T("refs/tags/")))
 				continue;
-			// dot not include annotated tags twice; this works, because an annotated tag appears twice (one normal tag and one with ^{} at the end)
+			// do not include annotated tags twice; this works, because an annotated tag appears twice (one normal tag and one with ^{} at the end)
 			if (ref.Find(_T("^{}")) >= 1)
 				continue;
 			list.push_back(shortname);
@@ -2095,7 +2095,7 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 		GetModuleFileName(NULL, sPlink, _countof(sPlink));
 		LPTSTR ptr = _tcsrchr(sPlink, _T('\\'));
 		if (ptr) {
-			_tcscpy_s(ptr + 1, MAX_PATH - (ptr - sPlink + 1), _T("TortoiseGitPLink.exe"));
+			_tcscpy_s(ptr + 1, MAX_PATH - (ptr - sPlink + 1), _T("TortoiseGitPlink.exe"));
 			m_Environment.SetEnv(_T("GIT_SSH"), sPlink);
 			m_Environment.SetEnv(_T("SVN_SSH"), sPlink);
 		}

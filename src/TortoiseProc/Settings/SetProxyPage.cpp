@@ -123,7 +123,7 @@ BOOL CSetProxyPage::OnInitDialog()
 		LPTSTR ptr = _tcsrchr(sPlink, _T('\\'));
 		if (ptr)
 		{
-			_tcscpy_s(ptr + 1, MAX_PATH - (ptr - sPlink + 1), _T("TortoiseGitPLink.exe"));
+			_tcscpy_s(ptr + 1, MAX_PATH - (ptr - sPlink + 1), _T("TortoiseGitPlink.exe"));
 			m_SSHClient = CString(sPlink);
 		}
 	}

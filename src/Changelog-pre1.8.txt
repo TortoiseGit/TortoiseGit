@@ -573,8 +573,8 @@ Released: 2011-02-14
    Fixed issue #541: show log is extremely slow
    Fixed issue #364: Log - hot key for "browse refs" dialog
 
- * Improve TortoisePLink 3x transfer perfomance
-   Update TortoisePlink to plink 9078
+ * Improve TortoisePlink 3x transfer perfomance
+   Update TortoisePlink to Plink 9078
 
  * Implemented issue #664: Warn when committing to detached HEAD
  * The context menu can be hidden completely for unversioned items (issue 674)
@@ -1330,7 +1330,7 @@ Released: 2009-06-05
  * Update version graphic tree.
    Update graphic tree to qgit2.3
 
- * Add option -p for TortoisePLink.
+ * Add option -p for TortoisePlink.
    -p is the same as -P. So it is compatible with OpenSSH port option
 
 == Bug Fixes ==
@@ -1486,7 +1486,7 @@ Released: 2009-02-08
  * Setting dialog support.
 
  * Enable TortoisePlink.
-   Passwork dialog can prompt when use tortoiseplink as ssh client.
+   Passwork dialog can prompt when use TortoisePlink as ssh client.
 
  * Git Reset support.
    User can right click log list at log dialog. Choose reset to reset current branch to chosen commit.

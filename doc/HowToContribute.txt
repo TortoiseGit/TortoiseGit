@@ -8,7 +8,7 @@ Checklist (and a short version for the impatient):
 	- do not check in commented out code or unneeded files
 	- the first line of the commit message should be a short
 	  description and should skip the full stop. If it is about a
-	  bugreport/issue, prepend "Fixed issue #NUMBER: " to the subject.
+	  bug report/issue, prepend "Fixed issue #NUMBER: " to the subject.
 	- the body should provide a meaningful commit message, which:
 	  . explains the problem the change tries to solve, iow, what
 	    is wrong with the current code without the change.
