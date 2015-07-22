@@ -52,7 +52,7 @@ TEST(libgit2, TGitPatches)
 	EXPECT_EQ(0, git_config_set_string(config, "core.autocrlf", "true"));
 	EXPECT_EQ(0, git_config_set_string(config, "core.safecrlf", "true"));
 
-	CAutoRepository repo2 = CAutoRepository(tempdir.GetTempDir());
+	CAutoRepository repo2(tempdir.GetTempDir());
 	ASSERT_TRUE(repo2.IsValid());
 	CAutoIndex index;
 	ASSERT_EQ(0, git_repository_index(index.GetPointer(), repo2));
@@ -68,7 +68,7 @@ TEST(libgit2, TGitPatches)
 	EXPECT_EQ(0, git_index_add_bypath(index, "safecrlf-failure.txt"));
 
 	EXPECT_EQ(0, git_config_set_string(config, "core.autocrlf", "input"));
-	CAutoRepository repo3 = CAutoRepository(tempdir.GetTempDir());
+	CAutoRepository repo3(tempdir.GetTempDir());
 	ASSERT_TRUE(repo3.IsValid());
 	ASSERT_EQ(0, git_repository_index(index.GetPointer(), repo3));
 
