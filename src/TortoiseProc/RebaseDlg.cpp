@@ -252,7 +252,7 @@ BOOL CRebaseDlg::OnInitDialog()
 		}
 	}
 
-	if( this->m_RebaseStage == CHOOSE_BRANCH)
+	if (this->m_RebaseStage == CHOOSE_BRANCH && !m_IsCherryPick)
 	{
 		this->LoadBranchInfo();
 
