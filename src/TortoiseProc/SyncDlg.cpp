@@ -836,10 +836,13 @@ BOOL CSyncDlg::OnInitDialog()
 
 	dwStyle = LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP | WS_CHILD | WS_VISIBLE;
 	DWORD exStyle = LVS_EX_HEADERDRAGDROP | LVS_EX_DOUBLEBUFFER | LVS_EX_INFOTIP | LVS_EX_FULLROWSELECT;
-	m_refList.Create(dwStyle, rectDummy, &m_ctrlTabCtrl, IDC_REFLIST);
-	m_refList.SetExtendedStyle(exStyle);
-	m_refList.Init();
-	m_ctrlTabCtrl.InsertTab(&m_refList, CString(MAKEINTRESOURCE(IDS_REFLIST)), -1);
+	if (g_Git.m_IsUseLibGit2)
+	{
+		m_refList.Create(dwStyle, rectDummy, &m_ctrlTabCtrl, IDC_REFLIST);
+		m_refList.SetExtendedStyle(exStyle);
+		m_refList.Init();
+		m_ctrlTabCtrl.InsertTab(&m_refList, CString(MAKEINTRESOURCE(IDS_REFLIST)), -1);
+	}
 
 	AddAnchor(IDC_SYNC_TAB,TOP_LEFT,BOTTOM_RIGHT);
 
@@ -1296,6 +1299,10 @@ void CSyncDlg::FillNewRefMap()
 {
 	m_refList.Clear();
 	m_newHashMap.clear();
+
+	if (!g_Git.m_IsUseLibGit2)
+		return;
+
 	CAutoRepository repo(g_Git.GetGitRepository());
 	if (!repo)
 	{
