@@ -852,7 +852,7 @@ BOOL CHwSMTP::SendEmail (
 		}
 
 		git_cert_x509 cert;
-		cert.cert_type = GIT_CERT_X509;
+		cert.parent.cert_type = GIT_CERT_X509;
 		cert.data = pRemoteCertContext->pbCertEncoded;
 		cert.len = pRemoteCertContext->cbCertEncoded;
 		if (CAppUtils::Git2CertificateCheck((git_cert*)&cert, 0, CUnicodeUtils::GetUTF8(m_csSmtpSrvHost), nullptr))
