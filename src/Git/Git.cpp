@@ -32,7 +32,6 @@
 #include "git2/sys/transport.h"
 #include "../libgit2/filter-filter.h"
 #include "../libgit2/ssh-wintunnel.h"
-#include "SysInfo.h"
 
 bool CGit::ms_bCygwinGit = (CRegDWORD(_T("Software\\TortoiseGit\\CygwinHack"), FALSE) == TRUE);
 bool CGit::ms_bMsys2Git = (CRegDWORD(_T("Software\\TortoiseGit\\Msys2Hack"), FALSE) == TRUE);
@@ -215,7 +214,7 @@ CGit::CGit(void)
 	m_GitDiff=0;
 	m_GitSimpleListDiff=0;
 	m_IsUseGitDLL = !!CRegDWORD(_T("Software\\TortoiseGit\\UsingGitDLL"),1);
-	m_IsUseLibGit2 = !!CRegDWORD(_T("Software\\TortoiseGit\\UseLibgit2"), TRUE) && SysInfo::Instance().IsVistaOrLater();
+	m_IsUseLibGit2 = !!CRegDWORD(_T("Software\\TortoiseGit\\UseLibgit2"), TRUE);
 	m_IsUseLibGit2_mask = CRegDWORD(_T("Software\\TortoiseGit\\UseLibgit2_mask"), DEFAULT_USE_LIBGIT2_MASK);
 
 	SecureZeroMemory(&m_CurrentGitPi, sizeof(PROCESS_INFORMATION));

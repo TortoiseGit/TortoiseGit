@@ -22,7 +22,6 @@
 #include "StringUtils.h"
 #include "PathUtils.h"
 #include "DirFileEnum.h"
-#include "SysInfo.h"
 
 enum config
 {
@@ -40,12 +39,12 @@ protected:
 		switch (GetParam())
 		{
 		case LIBGIT2_ALL:
-			m_Git.m_IsUseLibGit2 = true && SysInfo::Instance().IsVistaOrLater();
+			m_Git.m_IsUseLibGit2 = true;
 			m_Git.m_IsUseLibGit2_mask = 0xffffffff;
 			m_Git.m_IsUseGitDLL = false;
 			break;
 		case LIBGIT2:
-			m_Git.m_IsUseLibGit2 = true && SysInfo::Instance().IsVistaOrLater();
+			m_Git.m_IsUseLibGit2 = true;
 			m_Git.m_IsUseLibGit2_mask = DEFAULT_USE_LIBGIT2_MASK;
 			m_Git.m_IsUseGitDLL = false;
 			break;
