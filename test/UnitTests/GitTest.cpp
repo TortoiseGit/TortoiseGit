@@ -848,6 +848,44 @@ TEST_P(CBasicGitWithTestRepoFixture, GetBranchList_orphan)
 	EXPECT_STREQ(_T("subdir/branch"), branches[4]);
 }
 
+TEST_P(CBasicGitWithTestRepoFixture, GetBranchList_detachedhead)
+{
+	CString output;
+	EXPECT_EQ(0, m_Git.Run(_T("git.exe checkout a9d53b535cb49640a6099860ac4999f5a0857b91"), &output, CP_UTF8));
+	EXPECT_FALSE(output.IsEmpty());
+
+	STRING_VECTOR branches;
+	int current = -2;
+	EXPECT_EQ(0, m_Git.GetBranchList(branches, &current));
+	ASSERT_EQ(5, branches.size());
+	EXPECT_EQ(-2, current);
+	EXPECT_STREQ(_T("forconflict"), branches[0]);
+	EXPECT_STREQ(_T("master"), branches[1]);
+	EXPECT_STREQ(_T("master2"), branches[2]);
+	EXPECT_STREQ(_T("simple-conflict"), branches[3]);
+	EXPECT_STREQ(_T("subdir/branch"), branches[4]);
+
+	// cygwin fails here
+	if (CGit::ms_bCygwinGit)
+		return;
+
+	output.Empty();
+	EXPECT_EQ(0, m_Git.Run(_T("git.exe checkout -b (HEAD a9d53b535cb49640a6099860ac4999f5a0857b91"), &output, CP_UTF8));
+	EXPECT_FALSE(output.IsEmpty());
+
+	branches.clear();
+	current = -2;
+	EXPECT_EQ(0, m_Git.GetBranchList(branches, &current));
+	ASSERT_EQ(6, branches.size());
+	EXPECT_EQ(0, current);
+	EXPECT_STREQ(_T("(HEAD"), branches[0]);
+	EXPECT_STREQ(_T("forconflict"), branches[1]);
+	EXPECT_STREQ(_T("master"), branches[2]);
+	EXPECT_STREQ(_T("master2"), branches[3]);
+	EXPECT_STREQ(_T("simple-conflict"), branches[4]);
+	EXPECT_STREQ(_T("subdir/branch"), branches[5]);
+}
+
 TEST_P(CBasicGitWithEmptyBareRepositoryFixture, GetEmptyBranchesTagsRefs)
 {
 	EXPECT_STREQ(_T("master"), m_Git.GetCurrentBranch());

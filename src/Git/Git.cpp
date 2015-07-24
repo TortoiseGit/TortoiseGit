@@ -1581,6 +1581,7 @@ int CGit::GetBranchList(STRING_VECTOR &list,int *current,BRANCH_TYPE type)
 {
 	int ret = 0;
 	CString cur;
+	bool headIsDetached = false;
 	if (m_IsUseLibGit2)
 	{
 		CAutoRepository repo(GetGitRepository());
@@ -1588,7 +1589,7 @@ int CGit::GetBranchList(STRING_VECTOR &list,int *current,BRANCH_TYPE type)
 			return -1;
 
 		if (git_repository_head_detached(repo) == 1)
-			cur = _T("(detached from ");
+			headIsDetached = true;
 
 		if ((type & (BRANCH_LOCAL | BRANCH_REMOTE)) != 0)
 		{
@@ -1648,13 +1649,18 @@ int CGit::GetBranchList(STRING_VECTOR &list,int *current,BRANCH_TYPE type)
 				{
 					one = one.Mid(2);
 					cur = one;
+
+					// check whether HEAD is detached
+					CString currentHead;
+					if (one.Left(1) == _T("(") && GetCurrentBranchFromFile(g_Git.m_CurrentDir, currentHead) == 1)
+					{
+						headIsDetached = true;
+						continue;
+					}
 				}
-				if (one.Left(10) != _T("(no branch") && one.Left(15) != _T("(detached from "))
-				{
-					if ((type & BRANCH_REMOTE) != 0 && (type & BRANCH_LOCAL) == 0)
-						one = _T("remotes/") + one;
-					list.push_back(one);
-				}
+				if ((type & BRANCH_REMOTE) != 0 && (type & BRANCH_LOCAL) == 0)
+					one = _T("remotes/") + one;
+				list.push_back(one);
 			}
 		}
 		else if (ret == 1 && IsInitRepos())
@@ -1666,7 +1672,7 @@ int CGit::GetBranchList(STRING_VECTOR &list,int *current,BRANCH_TYPE type)
 
 	std::sort(list.begin(), list.end(), LogicalCompareBranchesPredicate);
 
-	if (current && cur.Left(10) != _T("(no branch") && cur.Left(15) != _T("(detached from "))
+	if (current && !headIsDetached)
 	{
 		for (unsigned int i = 0; i < list.size(); ++i)
 		{
