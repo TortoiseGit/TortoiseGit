@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2014 TortoiseGit
+// Copyright (C) 2014-2015 TortoiseGit
 
 // with code of PullFetchDlg.cpp
 
@@ -89,7 +89,7 @@ BOOL CBisectStartDlg::OnInitDialog()
 	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);
 
 	STRING_VECTOR list;
-	int current = 0;
+	int current = -1;
 	g_Git.GetBranchList(list, &current, CGit::BRANCH_ALL);
 	m_cLastGoodRevision.SetMaxHistoryItems(0x7FFFFFFF);
 	m_cFirstBadRevision.SetMaxHistoryItems(0x7FFFFFFF);
@@ -102,11 +102,12 @@ BOOL CBisectStartDlg::OnInitDialog()
 		m_cLastGoodRevision.SetCurSel(-1);
 	else
 		m_cLastGoodRevision.SetWindowTextW(m_sLastGood);
-	if (m_sFirstBad.IsEmpty())
+	if (!m_sFirstBad.IsEmpty())
+		m_cFirstBadRevision.SetWindowTextW(m_sFirstBad);
+	else if (current >= 0)
 		m_cFirstBadRevision.SetCurSel(current);
 	else
-		m_cFirstBadRevision.SetWindowTextW(m_sFirstBad);
-
+		m_cFirstBadRevision.SetWindowTextW(L"HEAD");
 	this->UpdateData(FALSE);
 
 	// EnDisable OK Button
