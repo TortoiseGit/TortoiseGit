@@ -206,8 +206,8 @@ EXSTYLE WS_EX_APPWINDOW
 CAPTION "Log Messages"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    LTEXT           "Branch",IDC_STATIC_REF,7,9,90,8,SS_NOTIFY | SS_ENDELLIPSIS
-    LTEXT           "From:",IDC_FROMLABEL,98,9,30,8
+    LTEXT           "Branch",IDC_STATIC_REF,7,9,88,8,SS_NOTIFY | SS_ENDELLIPSIS
+    LTEXT           "From:",IDC_FROMLABEL,99,7,82,15,SS_CENTERIMAGE
     CONTROL         "",IDC_DATEFROM,"SysDateTimePick32",DTS_RIGHTALIGN | WS_TABSTOP,122,7,57,15
     LTEXT           "To:",IDC_TOLABEL,188,9,19,8
     CONTROL         "",IDC_DATETO,"SysDateTimePick32",DTS_RIGHTALIGN | WS_TABSTOP,207,7,55,15
@@ -690,39 +690,42 @@ BEGIN
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,220,100,10
 END
 
-IDD_SETTINGSDIALOGS DIALOGEX 0, 0, 301, 231
+IDD_SETTINGSDIALOGS DIALOGEX 0, 0, 301, 254
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "General::Dialogs 1"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
-    GROUPBOX        "Log messages",IDC_STATIC,7,7,287,217
-    LTEXT           "&Font for log messages:",IDC_STATIC,14,17,92,13,SS_CENTERIMAGE
-    COMBOBOX        IDC_FONTNAMES,107,17,136,90,CBS_DROPDOWNLIST | CBS_OWNERDRAWVARIABLE | CBS_SORT | CBS_HASSTRINGS | WS_VSCROLL | WS_TABSTOP
-    COMBOBOX        IDC_FONTSIZES,253,17,31,47,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    GROUPBOX        "Log messages",IDC_STATIC,7,7,287,240
+    LTEXT           "Default limitation of log messages:",IDC_STATIC,14,20,140,8,SS_CENTERIMAGE
+    EDITTEXT        IDC_DEFAULT_NUMBER_OF,253,18,31,13,ES_CENTER | ES_AUTOHSCROLL,WS_EX_RIGHT
+    COMBOBOX        IDC_DEFAULT_SCALE,156,18,92,47,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "&Font for log messages:",IDC_STATIC,14,34,92,13,SS_CENTERIMAGE
+    COMBOBOX        IDC_FONTNAMES,107,34,141,90,CBS_DROPDOWNLIST | CBS_OWNERDRAWVARIABLE | CBS_SORT | CBS_HASSTRINGS | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_FONTSIZES,253,35,31,47,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
     CONTROL         "Short &date/time format in log messages",IDC_SHORTDATEFORMAT,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,38,191,10
-    CONTROL         "Relative Times in log",IDC_RELATIVETIMES,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,51,120,10
-    CONTROL         "Show asterisk log prefix",IDC_ASTERISKLOGPREFIX,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,170,52,120,10
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,52,191,10
+    CONTROL         "Relative Times in log",IDC_RELATIVETIMES,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,65,120,10
+    CONTROL         "Show asterisk log prefix",IDC_ASTERISKLOGPREFIX,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,170,65,120,10
     CONTROL         "Use system locale for date/time",IDC_SYSTEMLOCALEFORDATES,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,64,150,10
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,78,150,10
     CONTROL         "Can double-click in log list to compare with previous revision",IDC_DIFFBYDOUBLECLICK,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,77,270,10
-    CONTROL         "Abbreviate renamings",IDC_ABBREVIATERENAMINGS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,90,150,10
-    CONTROL         "Symbolize ref names",IDC_SYMBOLIZEREFNAMES,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,170,90,120,10
-    CONTROL         "Enable log cache",IDC_ENABLELOGCACHE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,103,69,10
-    CONTROL         "Enable Gravatar",IDC_ENABLEGRAVATAR,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,116,84,10
-    CONTROL         "",IDC_GRAVATARURL,"ComboBoxEx32",CBS_DROPDOWN | CBS_AUTOHSCROLL | CBS_SORT | WS_VSCROLL | WS_TABSTOP,95,115,189,80
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,91,270,10
+    CONTROL         "Abbreviate renamings",IDC_ABBREVIATERENAMINGS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,104,150,10
+    CONTROL         "Symbolize ref names",IDC_SYMBOLIZEREFNAMES,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,170,104,120,10
+    CONTROL         "Enable log cache",IDC_ENABLELOGCACHE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,117,69,10
+    CONTROL         "Enable Gravatar",IDC_ENABLEGRAVATAR,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,130,84,10
+    CONTROL         "",IDC_GRAVATARURL,"ComboBoxEx32",CBS_DROPDOWN | CBS_AUTOHSCROLL | CBS_SORT | WS_VSCROLL | WS_TABSTOP,95,129,189,80
     CONTROL         "Draw tag/branch labels on right side",IDC_RIGHTSIDEBRANCHESTAGS,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,130,270,10
-    CONTROL         "Display subject and body of commit messages",IDC_FULLCOMMITMESSAGEONLOGLINE,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,143,270,10
-    GROUPBOX        "Describe",IDC_STATIC,14,155,272,61
-    CONTROL         "Show describe in log",IDC_SHOWDESCRIBE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,19,167,253,10
-    LTEXT           "Describe Strategy",IDC_STATIC,19,182,84,8
-    COMBOBOX        IDC_DESCRIBESTRATEGY,103,182,115,30,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "Abbreviated size",IDC_STATIC,19,200,84,8
-    EDITTEXT        IDC_DESCRIBEABBREVIATEDSIZE,105,198,40,14,ES_AUTOHSCROLL,WS_EX_RIGHT
-    CONTROL         "Always show long format",IDC_DESCRIBEALWAYSLONG,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,164,199,120,10
+    CONTROL         "Display subject and body of commit messages",IDC_FULLCOMMITMESSAGEONLOGLINE,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,156,270,10
+    GROUPBOX        "Describe",IDC_STATIC,14,169,272,61
+    CONTROL         "Show describe in log",IDC_SHOWDESCRIBE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,19,182,253,10
+    LTEXT           "Describe Strategy",IDC_STATIC,19,197,84,8,SS_CENTERIMAGE
+    COMBOBOX        IDC_DESCRIBESTRATEGY,107,195,115,30,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Abbreviated size",IDC_STATIC,19,214,84,8
+    EDITTEXT        IDC_DESCRIBEABBREVIATEDSIZE,107,211,40,14,ES_AUTOHSCROLL,WS_EX_RIGHT
+    CONTROL         "Always show long format",IDC_DESCRIBEALWAYSLONG,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,164,213,120,10
 END
 
 IDD_SETTINGSDIALOGS2 DIALOGEX 0, 0, 301, 254
@@ -2402,7 +2405,7 @@ BEGIN
         VERTGUIDE, 272
         VERTGUIDE, 284
         TOPMARGIN, 7
-        BOTTOMMARGIN, 224
+        BOTTOMMARGIN, 247
     END
 
     IDD_SETTINGSDIALOGS2, DIALOG
@@ -4663,6 +4666,26 @@ BEGIN
     IDS_WARN_DELETE_ONE_FROM_INDEX 
                             "Do you really want to remove ""%s"" from the index?"
     IDS_REMOVEBUTTON        "&Remove"
+    IDS_LAST                "Last"
+    IDS_COMMITS             "commit(s)"
+    IDS_YEARS               "year(s)"
+    IDS_MONTHS              "month(s)"
+    IDS_WEEKS               "week(s)"
+    IDS_DEFAULT_NUMBER_OF_TT 
+                            "The ""number of"" value for those ""Last N"" options.\nShould > 0"
+    IDS_DEFAULT_SCALE_TT    "The dafault limitation of log messages when you open Log Message dialog.\nNote1: All ""Last N"" options share the ""number of"" value.\nNote2: If you choose one limiation execpt ""No limitation"",\nfor showing all commits in Log Message dialog,\nyou can right click on ""FROM"" date control, then click ""All"" item."
+    IDS_NO_LIMIT            "No limitation"
+    IDS_LAST_SEL_DATE       "Last selected date"
+    IDS_LAST_SEL_ITEM       "Last selected item"
+    IDS_LAST_N_COMMITS      "Last N commit(s)"
+    IDS_LAST_N_YEARS        "Last N year(s)"
+    IDS_LAST_N_MONTHS       "Last N month(s)"
+    IDS_LAST_N_WEEKS        "Last N week(s)"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_REMEMBER_SEL_DATE   "Remember selected date on close"
 END
 
 #endif    // English (U.S.) resources

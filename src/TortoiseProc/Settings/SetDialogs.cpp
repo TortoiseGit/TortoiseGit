@@ -27,6 +27,7 @@
 IMPLEMENT_DYNAMIC(CSetDialogs, ISettingsPropPage)
 CSetDialogs::CSetDialogs()
 	: ISettingsPropPage(CSetDialogs::IDD)
+	, m_sDefaultLogs(_T(""))
 	, m_bShortDateFormat(FALSE)
 	, m_bRelativeTimes(FALSE)
 	, m_bAsteriskLogPrefix(TRUE)
@@ -45,6 +46,8 @@ CSetDialogs::CSetDialogs()
 	, m_bDescribeAlwaysLong(FALSE)
 	, m_bFullCommitMessageOnLogLine(FALSE)
 {
+	m_regDefaultLogs = CRegDWORD(_T("Software\\TortoiseGit\\LogDialog\\NumberOfLogs"), 1);
+	m_regDefaultLogsScale = CRegDWORD(_T("Software\\TortoiseGit\\LogDialog\\NumberOfLogsScale"), CFilterData::SHOW_NO_LIMIT);
 	m_regShortDateFormat = CRegDWORD(_T("Software\\TortoiseGit\\LogDateFormat"), TRUE);
 	m_regRelativeTimes = CRegDWORD(_T("Software\\TortoiseGit\\RelativeTimes"), FALSE);
 	m_regAsteriskLogPrefix = CRegDWORD(_T("Software\\TortoiseGit\\AsteriskLogPrefix"), TRUE);
@@ -81,6 +84,8 @@ void CSetDialogs::DoDataExchange(CDataExchange* pDX)
 		m_dwFontSize = _ttoi(t);
 	}
 	DDX_Control(pDX, IDC_FONTNAMES, m_cFontNames);
+	DDX_Text(pDX, IDC_DEFAULT_NUMBER_OF, m_sDefaultLogs);
+	DDX_Control(pDX, IDC_DEFAULT_SCALE, m_cDefaultLogsScale);
 	DDX_Check(pDX, IDC_SHORTDATEFORMAT, m_bShortDateFormat);
 	DDX_Check(pDX, IDC_RELATIVETIMES, m_bRelativeTimes);
 	DDX_Check(pDX, IDC_ASTERISKLOGPREFIX, m_bAsteriskLogPrefix);
@@ -99,9 +104,12 @@ void CSetDialogs::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_DESCRIBEABBREVIATEDSIZE, m_DescribeAbbreviatedSize);
 	DDX_Check(pDX, IDC_DESCRIBEALWAYSLONG, m_bDescribeAlwaysLong);
 	DDX_Check(pDX, IDC_FULLCOMMITMESSAGEONLOGLINE, m_bFullCommitMessageOnLogLine);
+	DDX_Control(pDX, IDC_DEFAULT_NUMBER_OF, m_DefaultNumberOfCtl);
 }
 
 BEGIN_MESSAGE_MAP(CSetDialogs, ISettingsPropPage)
+	ON_EN_CHANGE(IDC_DEFAULT_NUMBER_OF, OnChange)
+	ON_CBN_SELCHANGE(IDC_DEFAULT_SCALE, &CSetDialogs::OnCbnSelchangeDefaultlogscale)
 	ON_BN_CLICKED(IDC_SHORTDATEFORMAT, OnChange)
 	ON_BN_CLICKED(IDC_RELATIVETIMES, OnChange)
 	ON_BN_CLICKED(IDC_ASTERISKLOGPREFIX, OnChange)
@@ -164,8 +172,8 @@ BOOL CSetDialogs::OnInitDialog()
 	m_bDescribeAlwaysLong = m_regDescribeAlwaysLong;
 	m_bFullCommitMessageOnLogLine = m_regFullCommitMessageOnLogLine;
 
-	CString temp;
-
+	m_tooltips.AddTool(IDC_DEFAULT_NUMBER_OF, IDS_DEFAULT_NUMBER_OF_TT);
+	m_tooltips.AddTool(IDC_DEFAULT_SCALE, IDS_DEFAULT_SCALE_TT);
 	m_tooltips.AddTool(IDC_SHORTDATEFORMAT, IDS_SETTINGS_SHORTDATEFORMAT_TT);
 	m_tooltips.AddTool(IDC_RELATIVETIMES, IDS_SETTINGS_RELATIVETIMES_TT);
 	m_tooltips.AddTool(IDC_ASTERISKLOGPREFIX, IDS_SETTINGS_ASTERISKLOGPREFIX_TT);
@@ -181,6 +189,33 @@ BOOL CSetDialogs::OnInitDialog()
 	m_tooltips.AddTool(IDC_DESCRIBEABBREVIATEDSIZE, IDS_SETTINGS_DESCRIBEABBREVIATEDSIZE_TT);
 	m_tooltips.AddTool(IDC_DESCRIBEALWAYSLONG, IDS_SETTINGS_DESCRIBEALWAYSLONG_TT);
 
+	m_cDefaultLogsScale.ResetContent();
+	m_cDefaultLogsScale.AddString(CString(MAKEINTRESOURCE(IDS_NO_LIMIT)));
+	m_cDefaultLogsScale.AddString(CString(MAKEINTRESOURCE(IDS_LAST_SEL_DATE)));
+	m_cDefaultLogsScale.AddString(CString(MAKEINTRESOURCE(IDS_LAST_SEL_ITEM)));
+	m_cDefaultLogsScale.AddString(CString(MAKEINTRESOURCE(IDS_LAST_N_COMMITS)));
+	m_cDefaultLogsScale.AddString(CString(MAKEINTRESOURCE(IDS_LAST_N_YEARS)));
+	m_cDefaultLogsScale.AddString(CString(MAKEINTRESOURCE(IDS_LAST_N_MONTHS)));
+	m_cDefaultLogsScale.AddString(CString(MAKEINTRESOURCE(IDS_LAST_N_WEEKS)));
+	m_cDefaultLogsScale.SetCurSel((DWORD)m_regDefaultLogsScale);
+
+	switch (m_regDefaultLogsScale)
+	{
+	case CFilterData::SHOW_NO_LIMIT:
+	case CFilterData::SHOW_LAST_SEL_DATE:
+	case CFilterData::SHOW_LAST_SEL_ITEM:
+		m_sDefaultLogs = _T("");
+		m_DefaultNumberOfCtl.EnableWindow(FALSE);
+		break;
+	case CFilterData::SHOW_LAST_N_COMMITS:
+	case CFilterData::SHOW_LAST_N_YEARS:
+	case CFilterData::SHOW_LAST_N_MONTHS:
+	case CFilterData::SHOW_LAST_N_WEEKS:
+		m_sDefaultLogs.Format(_T("%ld"), (DWORD)m_regDefaultLogs);
+		break;
+	}
+
+	CString temp;
 	int count = 0;
 	for (int i=6; i<32; i=i+2)
 	{
@@ -227,6 +262,19 @@ void CSetDialogs::OnChange()
 	SetModified();
 }
 
+void CSetDialogs::OnCbnSelchangeDefaultlogscale()
+{
+	m_DefaultNumberOfCtl.EnableWindow();
+	long sel = m_cDefaultLogsScale.GetCurSel();
+	CString str;
+	if (sel >= 0 && sel <= 2)
+		m_DefaultNumberOfCtl.EnableWindow(FALSE);
+	else
+		str.Format(_T("%ld"), (DWORD)m_regDefaultLogs);
+	m_DefaultNumberOfCtl.SetWindowText(str);
+	SetModified();
+}
+
 BOOL CSetDialogs::OnApply()
 {
 	UpdateData();
@@ -239,6 +287,38 @@ BOOL CSetDialogs::OnApply()
 	Store(m_bRelativeTimes, m_regRelativeTimes);
 	Store(m_bAsteriskLogPrefix, m_regAsteriskLogPrefix);
 	Store(m_bUseSystemLocaleForDates, m_regUseSystemLocaleForDates);
+
+	long sel = m_cDefaultLogsScale.GetCurSel();
+	long val = 0;
+	switch (sel)
+	{
+	case 0:
+		val = CFilterData::SHOW_NO_LIMIT;
+		break;
+	case 1:
+		val = CFilterData::SHOW_LAST_SEL_DATE;
+		break;
+	case 2:
+		val = CFilterData::SHOW_LAST_SEL_ITEM;
+		break;
+	case 3:
+		val = CFilterData::SHOW_LAST_N_COMMITS;
+		break;
+	case 4:
+		val = CFilterData::SHOW_LAST_N_YEARS;
+		break;
+	case 5:
+		val = CFilterData::SHOW_LAST_N_MONTHS;
+		break;
+	case 6:
+		val = CFilterData::SHOW_LAST_N_WEEKS;
+		break;
+	}
+	Store(val, m_regDefaultLogsScale);
+
+	val = _ttol(m_sDefaultLogs);
+	if(sel > 2 && val > 0)
+		Store(val, m_regDefaultLogs);
 
 	Store(m_sFontName, m_regFontName);
 	Store(m_dwFontSize, m_regFontSize);

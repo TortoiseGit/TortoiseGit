@@ -64,13 +64,21 @@ bool LogCommand::Execute()
 
 	CString val = parser.GetVal(_T("limit"));
 	int limit = _tstoi(val);
-	CString rev = parser.GetVal(_T("rev"));
 
-	if (limit == 0)
-	{
-		CRegDWORD reg = CRegDWORD(_T("Software\\TortoiseGit\\NumberOfLogs"), 100);
-		limit = (int)(LONG)reg;
-	}
+	int scale = CFilterData::SHOW_NO_LIMIT;
+	val.MakeLower();
+	if (val.Find(_T("week")) >= 0)
+		scale = CFilterData::SHOW_LAST_N_WEEKS;
+	else if (val.Find(_T("month")) >= 0)
+		scale = CFilterData::SHOW_LAST_N_MONTHS;
+	else if (val.Find(_T("year")) >= 0)
+		scale = CFilterData::SHOW_LAST_N_YEARS;
+	else if (val == _T("last date") && limit == 0)
+		scale = CFilterData::SHOW_LAST_SEL_DATE;
+	else if (val.Find(_T("commit")) >= 0 || limit > 0)
+		scale = CFilterData::SHOW_LAST_N_COMMITS;
+
+	CString rev = parser.GetVal(_T("rev"));
 
 	CString findStr = parser.GetVal(_T("findstring"));
 	LONG findType = parser.GetLongVal(_T("findtype"));
@@ -82,7 +90,7 @@ bool LogCommand::Execute()
 
 	CLogDlg dlg;
 	theApp.m_pMainWnd = &dlg;
-	dlg.SetParams(orgCmdLinePath, cmdLinePath, rev, range, limit);
+	dlg.SetParams(orgCmdLinePath, cmdLinePath, rev, range, limit, scale);
 	dlg.SetFilter(findStr, findType, findRegex);
 	if (parser.HasVal(_T("outfile")))
 	{

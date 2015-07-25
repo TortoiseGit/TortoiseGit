@@ -21,6 +21,7 @@
 #include "SettingsPropPage.h"
 #include "registry.h"
 #include "HistoryCombo.h"
+#include "afxwin.h"
 
 
 /**
@@ -48,6 +49,7 @@ protected:
 	virtual BOOL OnInitDialog();
 	virtual BOOL OnApply();
 	afx_msg void OnChange();
+	afx_msg void OnCbnSelchangeDefaultlogscale();
 	afx_msg void OnBnClickedBrowsecheckoutpath();
 
 private:
@@ -59,6 +61,11 @@ private:
 	CRegDWORD			m_regAsteriskLogPrefix;
 	BOOL				m_bUseSystemLocaleForDates;
 	CRegDWORD			m_regUseSystemLocaleForDates;
+	CRegDWORD			m_regDefaultLogs;
+	CString				m_sDefaultLogs;
+	CEdit				m_DefaultNumberOfCtl;
+	CRegDWORD			m_regDefaultLogsScale;
+	CComboBox			m_cDefaultLogsScale;
 	CMFCFontComboBox	m_cFontNames;
 	CComboBox			m_cFontSizes;
 	CRegDWORD			m_regFontSize;

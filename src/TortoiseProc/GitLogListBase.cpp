@@ -95,8 +95,20 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	m_bFilterWithRegex = !!CRegDWORD(_T("Software\\TortoiseGit\\UseRegexFilter"), FALSE);
 	m_bFilterCaseSensitively = !!CRegDWORD(_T("Software\\TortoiseGit\\FilterCaseSensitively"), FALSE);
 
-	m_From = -1;
-	m_To = -1;
+	CString key = _T("Software\\TortoiseGit\\History\\LogDlg_FromDates\\") + g_Git.m_CurrentDir + _T("\\FromDate0");
+	key.Replace(_T(':'), _T('_'));
+	CString str = CRegString(key, _T("-1"));
+	m_Filter.m_From = (__time64_t)ConvertStrUtcDateToLocalTime(str);
+
+	m_Filter.m_NumberOfLogsScale = (DWORD)CRegDWORD(_T("Software\\TortoiseGit\\LogDialog\\NumberOfLogsScale"), CFilterData::SHOW_NO_LIMIT);
+	if (m_Filter.m_NumberOfLogsScale == CFilterData::SHOW_LAST_SEL_ITEM)
+	{
+		key = _T("Software\\TortoiseGit\\History\\LogDlg_LastLimitItem\\") + g_Git.m_CurrentDir + _T("\\Item0");
+		key.Replace(_T(':'), _T('_'));
+		str = CRegString(key, _T("0"));
+		m_Filter.m_NumberOfLogsScale = (DWORD)_tcstol(str, nullptr, 10);
+	}
+	m_Filter.m_NumberOfLogs = (DWORD)CRegDWORD(_T("Software\\TortoiseGit\\LogDialog\\NumberOfLogs"), 1);
 
 	m_ShowMask = 0;
 	m_LoadingThread = NULL;
@@ -2565,7 +2577,7 @@ int CGitLogListBase::FillGitLog(CTGitPath *path, CString *range, int info)
 	this->m_arShownList.SafeRemoveAll();
 
 	this->m_logEntries.ClearAll();
-	if (this->m_logEntries.ParserFromLog(path, -1, info, range))
+	if (this->m_logEntries.ParserFromLog(path, 0, info, range))
 		return -1;
 
 	SetItemCountEx((int)m_logEntries.size());
@@ -2659,10 +2671,6 @@ int CGitLogListBase::BeginFetchLog()
 	if (m_sRange.IsEmpty())
 		m_sRange = _T("HEAD");
 
-	CFilterData data;
-	data.m_From = m_From;
-	data.m_To =m_To;
-
 #if 0 /* use tortoiegit filter */
 	if (this->m_nSelectedFilter == LOGFILTER_ALL || m_nSelectedFilter == LOGFILTER_AUTHORS)
 		data.m_Author = this->m_sFilterText;
@@ -2680,7 +2688,7 @@ int CGitLogListBase::BeginFetchLog()
 	if (mask & CGit::LOG_INFO_FOLLOW)
 		mask &= ~CGit::LOG_INFO_ALL_BRANCH | CGit::LOG_INFO_LOCAL_BRANCHES;
 
-	CString cmd = g_Git.GetLogCmd(m_sRange, path, -1, mask, true, &data);
+	CString cmd = g_Git.GetLogCmd(m_sRange, path, mask, true, &m_Filter);
 
 	//this->m_logEntries.ParserFromLog();
 	if(IsInWorkingThread())
@@ -2715,7 +2723,7 @@ int CGitLogListBase::BeginFetchLog()
 		if (list.size() == 0)
 			return 0;
 
-		cmd = g_Git.GetLogCmd(list[0], path, -1, mask, true, &data);
+		cmd = g_Git.GetLogCmd(list[0], path, mask, true, &m_Filter);
 	}
 
 	g_Git.m_critGitDllSec.Lock();
@@ -2823,11 +2831,11 @@ void CGitLogListBase::GetTimeRange(CTime &oldest, CTime &latest)
 		if(m_logEntries[i].IsEmpty())
 			continue;
 
-		if(m_logEntries.GetGitRevAt(i).GetAuthorDate().GetTime() < oldest.GetTime())
-			oldest = m_logEntries.GetGitRevAt(i).GetAuthorDate().GetTime();
+		if (m_logEntries.GetGitRevAt(i).GetCommitterDate().GetTime() < oldest.GetTime())
+			oldest = m_logEntries.GetGitRevAt(i).GetCommitterDate().GetTime();
 
-		if(m_logEntries.GetGitRevAt(i).GetAuthorDate().GetTime() > latest.GetTime())
-			latest = m_logEntries.GetGitRevAt(i).GetAuthorDate().GetTime();
+		if (m_logEntries.GetGitRevAt(i).GetCommitterDate().GetTime() > latest.GetTime())
+			latest = m_logEntries.GetGitRevAt(i).GetCommitterDate().GetTime();
 
 	}
 
@@ -3130,8 +3138,6 @@ void CGitLogListBase::Refresh(BOOL IsCleanFilter)
 		if(IsCleanFilter)
 		{
 			m_sFilterText.Empty();
-			m_From=-1;
-			m_To=-1;
 		}
 
 		InterlockedExchange(&m_bExitThread,FALSE);
@@ -4319,4 +4325,14 @@ CString CGitLogListBase::GetToolTipText(int nItem, int nSubItem)
 		return sToolTipText;
 	}
 	return CString();
+}
+
+__time64_t CGitLogListBase::ConvertStrUtcDateToLocalTime(CString& strUtcDate)
+{
+	__time64_t utc_date = (__time64_t)(_tcstoui64(strUtcDate.GetBuffer(0), nullptr, 10));
+	strUtcDate.ReleaseBuffer();
+
+	tm tm_local;
+	_localtime64_s(&tm_local, &utc_date);
+	return _mkgmtime64(&tm_local);
 }

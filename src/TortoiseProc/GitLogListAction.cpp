@@ -114,7 +114,7 @@ int CGitLogList::CherryPickFrom(CString from, CString to)
 	CLogDataVector logs(&m_LogCache);
 	CString range;
 	range.Format(_T("%s..%s"), (LPCTSTR)from, (LPCTSTR)to);
-	if (logs.ParserFromLog(nullptr, -1, 0, &range))
+	if (logs.ParserFromLog(nullptr, 0, 0, &range))
 		return -1;
 
 	if (logs.empty())

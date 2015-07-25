@@ -193,8 +193,6 @@ public:
 	virtual ~CGitLogListBase();
 	ProjectProperties	m_ProjectProperties;
 
-	CFilterData m_Filter;
-
 	void UpdateProjectProperties()
 	{
 		m_ProjectProperties.ReadProps();
@@ -402,8 +400,8 @@ public:
 	bool ValidateRegexp(LPCTSTR regexp_str, std::tr1::wregex& pat, bool bMatchCase = false );
 	CString				m_sFilterText;
 
-	__time64_t			m_From;
-	__time64_t			m_To;
+	CFilterData			m_Filter;
+	__time64_t			ConvertStrUtcDateToLocalTime(CString& strUtcDate);
 
 	CTGitPath			m_Path;
 	int					m_ShowMask;

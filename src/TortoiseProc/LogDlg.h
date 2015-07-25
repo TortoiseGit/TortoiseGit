@@ -59,7 +59,7 @@ class CLogDlg : public CResizableStandAloneDialog, IFilterEditValidator, IHasPat
 public:
 	CLogDlg(CWnd* pParent = NULL); // standard constructor
 	virtual ~CLogDlg();
-	void SetParams(const CTGitPath& orgPath, const CTGitPath& path, CString hightlightRevision, CString range, int limit);
+	void SetParams(const CTGitPath& orgPath, const CTGitPath& path, CString hightlightRevision, CString range, DWORD limit, DWORD limitScale = CFilterData::SHOW_NO_LIMIT);
 	void SetFilter(const CString& findstr, LONG findtype, bool findregex);
 	bool IsThreadRunning() {return !!m_LogList.m_bThreadRunning;}
 	void SetSelect(bool bSelect) {m_bSelect = bSelect;}
@@ -150,6 +150,8 @@ protected:
 	virtual void OnOK();
 	virtual BOOL OnInitDialog();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
+	afx_msg void OnPaint();
 
 	void	DoDiffFromLog(INT_PTR selIndex, GitRev *rev1, GitRev *rev2, bool blame, bool unified);
 
@@ -193,6 +195,11 @@ private:
 	void SetDlgTitle();
 	CString GetAbsoluteUrlFromRelativeUrl(const CString& url);
 	void ShowGravatar();
+
+	CRegDWORD m_regbRememberSelDate;
+	CRegHistory m_FromDateHistory;
+	CRegHistory m_LastLimitItem;
+	void SaveLastSelectedDate();
 
 	CPatchViewDlg		m_patchViewdlg;
 	void FillPatchView(bool onlySetTimer = false);
@@ -264,7 +271,6 @@ private:
 	CComboBox			m_JumpType;
 	CButton				m_JumpUp;
 	CButton				m_JumpDown;
-	int					m_limit;
 	int					m_nSortColumn;
 	bool				m_bAscending;
 	static int			m_nSortColumnPathList;
@@ -281,6 +287,8 @@ private:
 	CRegHistory			m_History;
 
 	CGravatar			m_gravatar;
+
+	CBrush				m_Brush;
 };
 static UINT WM_REVSELECTED = RegisterWindowMessage(_T("TORTOISEGit_REVSELECTED_MSG"));
 static UINT WM_REVLIST = RegisterWindowMessage(_T("TORTOISEGit_REVLIST_MSG"));
