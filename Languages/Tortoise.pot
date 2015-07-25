@@ -3464,6 +3464,10 @@ msgstr ""
 msgid "Default application menu. Appears when no documents are open."
 msgstr ""
 
+#. Resource IDs: (65535)
+msgid "Default limitation of log messages:"
+msgstr ""
+
 #. Resource IDs: (1064)
 msgid "Default to UTF-8 encoding"
 msgstr ""
@@ -5787,6 +5791,26 @@ msgstr ""
 msgid "Language:"
 msgstr ""
 
+#. Resource IDs: (1574)
+#, c-format
+msgid "Last %s commit(s)"
+msgstr ""
+
+#. Resource IDs: (1571)
+#, c-format
+msgid "Last %s month(s)"
+msgstr ""
+
+#. Resource IDs: (1570)
+#, c-format
+msgid "Last %s week(s)"
+msgstr ""
+
+#. Resource IDs: (1572)
+#, c-format
+msgid "Last %s year(s)"
+msgstr ""
+
 #. Resource IDs: (1350)
 msgid "Last Author"
 msgstr ""
@@ -5805,6 +5829,10 @@ msgstr ""
 
 #. Resource IDs: (1616)
 msgid "Last known &good:"
+msgstr ""
+
+#. Resource IDs: (1578)
+msgid "Last selected date"
 msgstr ""
 
 #. Resource IDs: (187)
@@ -6461,6 +6489,10 @@ msgstr ""
 #. Resource IDs: (4362)
 #, c-format
 msgid "No image encoder found for %s."
+msgstr ""
+
+#. Resource IDs: (1577)
+msgid "No limitation"
 msgstr ""
 
 #. Resource IDs: (1375)
@@ -9228,6 +9260,10 @@ msgstr ""
 msgid "The Remote Config was changed.\nDo you want to save now or discard changes?"
 msgstr ""
 
+#. Resource IDs: (1575)
+msgid "The \"number of\" value for those \"Last N\" options.\nShould be > 0"
+msgstr ""
+
 #. Resource IDs: (1115)
 #, c-format
 msgid "The branch \"%s\" is a <i>remote</i> branch.\n\nDo you really want to <ct=0x0000FF>delete</ct> it?"
@@ -9252,6 +9288,10 @@ msgstr ""
 
 #. Resource IDs: (9641)
 msgid "The current working tree is not clean.\nDo you want to stash the changes?"
+msgstr ""
+
+#. Resource IDs: (1576)
+msgid "The default limitation of log messages when you open Log Message dialog.\nNote: For showing all commits in Log Message dialog,\nyou can right click on \"FROM\" date control, then click \"No limitation\" item."
 msgstr ""
 
 #. Resource IDs: (1080)
