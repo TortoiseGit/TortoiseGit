@@ -223,6 +223,7 @@ void CSyncDlg::OnBnClickedButtonPull()
 	///Fetch
 	if(CurrentEntry == 1 || CurrentEntry ==2 ) //Fetch
 	{
+		m_oldRemoteHash.Empty();
 		CString remotebranch;
 		if(this->IsURL() || m_strRemoteBranch.IsEmpty())
 		{
@@ -232,9 +233,8 @@ void CSyncDlg::OnBnClickedButtonPull()
 		else
 		{
 			remotebranch.Format(_T("remotes/%s/%s"), (LPCTSTR)m_strURL, (LPCTSTR)m_strRemoteBranch);
-			CGitHash remoteBranchHash;
-			g_Git.GetHash(remoteBranchHash, remotebranch);
-			if (remoteBranchHash.IsEmpty())
+			g_Git.GetHash(m_oldRemoteHash, remotebranch);
+			if (m_oldRemoteHash.IsEmpty())
 				remotebranch=m_strRemoteBranch;
 			else
 				remotebranch=m_strRemoteBranch+_T(":")+remotebranch;
@@ -432,6 +432,14 @@ void CSyncDlg::FetchComplete()
 	m_ctrlRemoteBranch.GetWindowText(remotebranch);
 	if (!remote.IsEmpty() && !remotebranch.IsEmpty())
 		upstream = _T("remotes/") + remote + _T("/") + remotebranch;
+
+	if (!upstream.IsEmpty())
+	{
+		CGitHash remoteBranchHash;
+		g_Git.GetHash(remoteBranchHash, upstream);
+		if (remoteBranchHash == m_oldRemoteHash && !m_oldRemoteHash.IsEmpty() && CMessageBox::ShowCheck(this->GetSafeHwnd(), IDS_REBASE_BRANCH_UNCHANGED, IDS_APPNAME, MB_ICONQUESTION | MB_YESNO | MB_DEFBUTTON2, _T("OpenRebaseRemoteBranchUnchanged"), IDS_MSGBOX_DONOTSHOWAGAIN) == IDNO)
+			return;
+	}
 
 	CAppUtils::RebaseAfterFetch(upstream);
 }

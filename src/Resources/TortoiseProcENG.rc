@@ -4666,6 +4666,8 @@ BEGIN
     IDS_WARN_DELETE_ONE_FROM_INDEX 
                             "Do you really want to remove ""%s"" from the index?"
     IDS_REMOVEBUTTON        "&Remove"
+    IDS_REBASE_BRANCH_UNCHANGED 
+                            "The remote branch has not changed.\n\nOpen the rebase dialog anyway?"
     IDS_DEFAULT_NUMBER_OF_TT 
                             "The ""number of"" value for those ""Last N"" options.\nShould be > 0"
     IDS_DEFAULT_SCALE_TT    "The default limitation of log messages when you open Log Message dialog.\nNote: For showing all commits in Log Message dialog,\nyou can right click on ""FROM"" date control, then click ""No limitation"" item."

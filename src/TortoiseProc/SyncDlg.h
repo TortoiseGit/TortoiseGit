@@ -154,6 +154,7 @@ protected:
 	CString			m_OutRemoteBranch;
 
 	CGitHash		m_oldHash;
+	CGitHash		m_oldRemoteHash;
 	MAP_HASH_NAME	m_oldHashMap;
 	MAP_HASH_NAME	m_newHashMap;
 

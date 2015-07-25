@@ -2577,6 +2577,28 @@ static bool DoFetch(const CString& url, const bool fetchAllRemotes, const bool l
 			CAppUtils::LaunchPAgent(NULL, &url);
 	}
 
+	CString upstream;
+	CGitHash oldUpstreamHash;
+	if (runRebase)
+	{
+		STRING_VECTOR list;
+		g_Git.GetRemoteList(list);
+		for (auto it = list.cbegin(); it != list.cend(); ++it)
+		{
+			if (url == *it)
+			{
+				CString remote, trackedBranch;
+				g_Git.GetRemoteTrackedBranchForHEAD(remote, trackedBranch);
+				if (!remote.IsEmpty() && !trackedBranch.IsEmpty())
+				{
+					upstream = remote + _T("/") + trackedBranch;
+					g_Git.GetHash(oldUpstreamHash, upstream);
+				}
+				break;
+			}
+		}
+	}
+
 	CString cmd, arg;
 	int ver = CAppUtils::GetMsysgitVersion();
 	if (ver >= 0x01070203) //above 1.7.0.2
@@ -2654,7 +2676,16 @@ static bool DoFetch(const CString& url, const bool fetchAllRemotes, const bool l
 	if (!progress.m_GitStatus)
 	{
 		if (runRebase)
+		{
+			if (!upstream.IsEmpty())
+			{
+				CGitHash remoteBranchHash;
+				g_Git.GetHash(remoteBranchHash, upstream);
+				if (remoteBranchHash == oldUpstreamHash && !oldUpstreamHash.IsEmpty() && CMessageBox::ShowCheck(nullptr, IDS_REBASE_BRANCH_UNCHANGED, IDS_APPNAME, MB_ICONQUESTION | MB_YESNO | MB_DEFBUTTON2, _T("OpenRebaseRemoteBranchUnchanged"), IDS_MSGBOX_DONOTSHOWAGAIN) == IDNO)
+					return userResponse == IDOK;
+			}
 			return CAppUtils::RebaseAfterFetch();
+		}
 	}
 
 	return userResponse == IDOK;

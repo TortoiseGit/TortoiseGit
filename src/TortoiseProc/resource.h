@@ -1188,6 +1188,7 @@
 #define IDC_GROUP_CLONE                 1572
 #define IDS_LAST_N_YEARS                1572
 #define IDC_GROUPT_REMOTE               1573
+#define IDS_REBASE_BRANCH_UNCHANGED     1573
 #define IDS_LAST_N_COMMITS              1574
 #define IDC_SENDMAIL_PATCHS             1575
 #define IDS_DEFAULT_NUMBER_OF_TT        1575
