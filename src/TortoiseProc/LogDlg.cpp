@@ -2227,11 +2227,6 @@ LRESULT CLogDlg::OnClickedCancelFilter(WPARAM wParam, LPARAM /*lParam*/)
 
 	Refresh();
 
-	CTime begin,end;
-	m_LogList.GetTimeRange(begin,end);
-	m_DateFrom.SetTime(&begin);
-	m_DateTo.SetTime(&end);
-
 	theApp.DoWaitCursor(-1);
 	GetDlgItem(IDC_SEARCHEDIT)->ShowWindow(SW_HIDE);
 	GetDlgItem(IDC_SEARCHEDIT)->ShowWindow(SW_SHOW);
