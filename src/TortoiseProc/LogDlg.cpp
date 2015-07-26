@@ -541,6 +541,8 @@ LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM /*lParam*/)
 		if (m_LogList.m_Filter.m_From > 0 && m_LogList.m_Filter.m_NumberOfLogsScale >= CFilterData::SHOW_LAST_SEL_DATE)
 			begin = m_LogList.m_Filter.m_From;
 		m_DateFrom.SetTime(&begin);
+		if (m_LogList.m_Filter.m_To != -1)
+			end = m_LogList.m_Filter.m_To;
 		m_DateTo.SetTime(&end);
 		Invalidate();
 	}
