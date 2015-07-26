@@ -187,7 +187,7 @@ bool CStringUtils::WriteAsciiStringToClipboard(const CStringW& sClipdata, HWND h
 
 bool CStringUtils::WriteDiffToClipboard(const CStringA& sClipdata, HWND hOwningWnd)
 {
-	UINT cFormat = RegisterClipboardFormat(_T("TSVN_UNIFIEDDIFF"));
+	UINT cFormat = RegisterClipboardFormat(_T("TGIT_UNIFIEDDIFF"));
 	if (cFormat == 0)
 		return false;
 	CClipboardHelper clipboardHelper;

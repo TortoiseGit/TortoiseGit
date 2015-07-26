@@ -92,7 +92,7 @@ BOOL COpenDlg::OnInitDialog()
 	AutoCompleteOn(IDC_DIFFFILEEDIT);
 	AutoCompleteOn(IDC_DIRECTORYEDIT);
 
-	m_cFormat = RegisterClipboardFormat(_T("TSVN_UNIFIEDDIFF"));
+	m_cFormat = RegisterClipboardFormat(_T("TGIT_UNIFIEDDIFF"));
 	m_nextViewer = SetClipboardViewer();
 
 	return TRUE;  // return TRUE unless you set the focus to a control

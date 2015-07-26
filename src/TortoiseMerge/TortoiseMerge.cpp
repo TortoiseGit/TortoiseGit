@@ -342,7 +342,7 @@ BOOL CTortoiseMergeApp::InitInstance()
 				{
 					// check if there's a unified diff on the clipboard and
 					// add a button to the fileopen dialog if there is.
-					UINT cFormat = RegisterClipboardFormat(_T("TSVN_UNIFIEDDIFF"));
+					UINT cFormat = RegisterClipboardFormat(_T("TGIT_UNIFIEDDIFF"));
 					if ((cFormat)&&(OpenClipboard(NULL)))
 					{
 						HGLOBAL hglb = GetClipboardData(cFormat);
@@ -567,7 +567,7 @@ int CTortoiseMergeApp::ExitInstance()
 bool CTortoiseMergeApp::HasClipboardPatch()
 {
 	// check if there's a patchfile in the clipboard
-	const UINT cFormat = RegisterClipboardFormat(_T("TSVN_UNIFIEDDIFF"));
+	const UINT cFormat = RegisterClipboardFormat(_T("TGIT_UNIFIEDDIFF"));
 	if (cFormat == 0)
 		return false;
 
@@ -592,7 +592,7 @@ bool CTortoiseMergeApp::TrySavePatchFromClipboard(std::wstring& resultFile)
 {
 	resultFile.clear();
 
-	UINT cFormat = RegisterClipboardFormat(_T("TSVN_UNIFIEDDIFF"));
+	UINT cFormat = RegisterClipboardFormat(_T("TGIT_UNIFIEDDIFF"));
 	if (cFormat == 0)
 		return false;
 	if (OpenClipboard(NULL) == 0)

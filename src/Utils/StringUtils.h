@@ -75,7 +75,7 @@ public:
 	static bool WriteAsciiStringToClipboard(const CStringW& sClipdata, HWND hOwningWnd = NULL);
 
 	/**
-	* Writes an ASCII CString to the clipboard in TSVN_UNIFIEDDIFF format, which is basically the patch file
+	* Writes an ASCII CString to the clipboard in TGIT_UNIFIEDDIFF format, which is basically the patch file
 	* as a ASCII string.
 	*/
 	static bool WriteDiffToClipboard(const CStringA& sClipdata, HWND hOwningWnd = NULL);
