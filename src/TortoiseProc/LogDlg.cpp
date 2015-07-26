@@ -2442,7 +2442,7 @@ void CLogDlg::OnDtnDatetimechangeDatefrom(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 			m_LogList.m_Filter.m_From = (DWORD)time.GetTime();
 			m_LogList.m_Filter.m_NumberOfLogsScale = CFilterData::SHOW_LAST_SEL_DATE;
 
-			if (m_LogList.m_Filter.m_NumberOfLogsScale == CFilterData::SHOW_LAST_SEL_DATE)
+			if (CFilterData::SHOW_LAST_SEL_DATE == (DWORD)CRegDWORD(_T("Software\\TortoiseGit\\LogDialog\\NumberOfLogsScale"), CFilterData::SHOW_NO_LIMIT))
 				m_regLastSelectedFromDate = time.Format(L"%Y-%m-%d");
 
 			SetTimer(LOGFTIME_TIMER, 10, NULL);
