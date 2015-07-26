@@ -136,7 +136,6 @@ protected:
 	void GoBackForward(bool select, bool bForward);
 
 	afx_msg void OnDtnDropdownDatefrom(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnDtnDropdownDateto(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	void OnBnClickedFirstParent();
 	afx_msg void OnBnClickedRefresh();

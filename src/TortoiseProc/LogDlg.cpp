@@ -170,7 +170,6 @@ BEGIN_MESSAGE_MAP(CLogDlg, CResizableStandAloneDialog)
 	ON_EN_CHANGE(IDC_FILTER, OnEnChangeFileFilter)
 
 	ON_NOTIFY(DTN_DROPDOWN, IDC_DATEFROM, &CLogDlg::OnDtnDropdownDatefrom)
-	ON_NOTIFY(DTN_DROPDOWN, IDC_DATETO, &CLogDlg::OnDtnDropdownDateto)
 	ON_WM_SIZE()
 	ON_BN_CLICKED(IDC_REFRESH, &CLogDlg::OnBnClickedRefresh)
 	ON_STN_CLICKED(IDC_STATIC_REF, &CLogDlg::OnBnClickedBrowseRef)
@@ -316,7 +315,7 @@ BOOL CLogDlg::OnInitDialog()
 	m_Brush.CreateSolidBrush(RGB(174, 200, 255));
 
 	m_DateFrom.SendMessage(DTM_SETMCSTYLE, 0, MCS_WEEKNUMBERS|MCS_NOTODAY|MCS_NOTRAILINGDATES|MCS_NOSELCHANGEONNAV);
-	m_DateTo.SendMessage(DTM_SETMCSTYLE, 0, MCS_WEEKNUMBERS|MCS_NOTODAY|MCS_NOTRAILINGDATES|MCS_NOSELCHANGEONNAV);
+	m_DateTo.SendMessage(DTM_SETMCSTYLE, 0, MCS_WEEKNUMBERS | MCS_NOTRAILINGDATES | MCS_NOSELCHANGEONNAV);
 
 	m_staticRef.SetURL(CString());
 
@@ -2897,15 +2896,6 @@ void CLogDlg::OnDtnDropdownDatefrom(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 {
 	// the date control should not show the "today" button
 	CMonthCalCtrl * pCtrl = m_DateFrom.GetMonthCalCtrl();
-	if (pCtrl)
-		SetWindowLongPtr(pCtrl->GetSafeHwnd(), GWL_STYLE, LONG_PTR(pCtrl->GetStyle() | MCS_NOTODAY));
-	*pResult = 0;
-}
-
-void CLogDlg::OnDtnDropdownDateto(NMHDR * /*pNMHDR*/, LRESULT *pResult)
-{
-	// the date control should not show the "today" button
-	CMonthCalCtrl * pCtrl = m_DateTo.GetMonthCalCtrl();
 	if (pCtrl)
 		SetWindowLongPtr(pCtrl->GetSafeHwnd(), GWL_STYLE, LONG_PTR(pCtrl->GetStyle() | MCS_NOTODAY));
 	*pResult = 0;
