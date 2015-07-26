@@ -206,9 +206,24 @@ bool CStringUtils::WriteDiffToClipboard(const CStringA& sClipdata, HWND hOwningW
 				{
 					return false;
 				}
-				if (SetClipboardData(CF_TEXT,hClipboardData))
+				if (SetClipboardData(CF_TEXT, hClipboardData) == NULL)
 				{
-					return true;
+					return false;
+				}
+				CString sClipdataW = CUnicodeUtils::GetUnicode(sClipdata);
+				auto hClipboardDataW = CClipboardHelper::GlobalAlloc(sClipdataW.GetLength()*sizeof(wchar_t) + 1);
+				if (hClipboardDataW)
+				{
+					wchar_t* pchDataW = (wchar_t*)GlobalLock(hClipboardDataW);
+					if (pchDataW)
+					{
+						wcscpy_s(pchDataW, sClipdataW.GetLength() + 1, (LPCWSTR)sClipdataW);
+						GlobalUnlock(hClipboardDataW);
+						if (SetClipboardData(CF_UNICODETEXT, hClipboardDataW))
+						{
+							return true;
+						}
+					}
 				}
 			}
 		}
