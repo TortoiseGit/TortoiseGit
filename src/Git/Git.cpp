@@ -1019,7 +1019,7 @@ CString CGit::GetLogCmd(const CString& range, const CTGitPath* path, int mask, b
 				substract *= 7;
 				break;
 			}
-			Filter->m_From = (DWORD)time.GetTime() - substract;
+			Filter->m_From = (DWORD)time.GetTime() - (Filter->m_NumberOfLogs * substract);
 		}
 		if (Filter->m_NumberOfLogsScale == CFilterData::SHOW_LAST_N_COMMITS)
 			num.Format(_T("-n%ld"), Filter->m_NumberOfLogs);
