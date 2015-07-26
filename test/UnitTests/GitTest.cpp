@@ -1487,7 +1487,7 @@ TEST_P(CBasicGitWithTestRepoFixture, GetWorkingTreeChanges)
 	ASSERT_EQ(1, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, list.GetAction());
 	EXPECT_STREQ(_T("copy/ansi.txt"), list[0].GetGitPathString());
-	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, list[0].m_Action);
+	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED | CTGitPath::LOGACTIONS_MISSING, list[0].m_Action);
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, true, nullptr));
 	ASSERT_EQ(2, list.GetCount());
@@ -1495,13 +1495,13 @@ TEST_P(CBasicGitWithTestRepoFixture, GetWorkingTreeChanges)
 	EXPECT_STREQ(_T("ascii.txt"), list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[0].m_Action);
 	EXPECT_STREQ(_T("copy/ansi.txt"), list[1].GetGitPathString());
-	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, list[1].m_Action);
+	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED | CTGitPath::LOGACTIONS_MISSING, list[1].m_Action);
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, false, &filter));
 	ASSERT_EQ(1, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, list.GetAction());
 	EXPECT_STREQ(_T("copy/ansi.txt"), list[0].GetGitPathString());
-	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, list[0].m_Action);
+	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED | CTGitPath::LOGACTIONS_MISSING, list[0].m_Action);
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, true, &filter));
 	ASSERT_EQ(2, list.GetCount());
@@ -1509,7 +1509,7 @@ TEST_P(CBasicGitWithTestRepoFixture, GetWorkingTreeChanges)
 	EXPECT_STREQ(_T("ascii.txt"), list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[0].m_Action);
 	EXPECT_STREQ(_T("copy/ansi.txt"), list[1].GetGitPathString());
-	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, list[1].m_Action);
+	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED | CTGitPath::LOGACTIONS_MISSING, list[1].m_Action);
 
 	// deleted file, also deleted in index
 	output.Empty();

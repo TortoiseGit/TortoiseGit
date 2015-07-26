@@ -728,7 +728,7 @@ BEGIN
     CONTROL         "Always show long format",IDC_DESCRIBEALWAYSLONG,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,164,213,120,10
 END
 
-IDD_SETTINGSDIALOGS2 DIALOGEX 0, 0, 301, 254
+IDD_SETTINGSDIALOGS2 DIALOGEX 0, 0, 301, 266
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "General::Dialogs 2"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
@@ -751,7 +751,7 @@ BEGIN
     CONTROL         "Disable sounds",IDC_NOSOUNDS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,115,270,10
     CONTROL         "Include FETCH_HEAD in branch selection boxes",IDC_BRANCHESINCLUDEFETCHHEAD,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,129,270,10
-    GROUPBOX        "Commit",IDC_COMMITGROUP,7,148,287,98
+    GROUPBOX        "Commit",IDC_COMMITGROUP,7,145,287,114
     CONTROL         "&Use auto-completion of file paths and keywords",IDC_AUTOCOMPLETION,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,159,271,10
     LTEXT           "&Timeout in seconds to stop the auto-completion parsing",IDC_AUTOCOMPLETIONTIMEOUTLABEL,14,175,231,8,SS_NOTIFY
@@ -760,9 +760,11 @@ BEGIN
     EDITTEXT        IDC_MAXHISTORY,252,190,31,14,ES_AUTOHSCROLL | ES_NUMBER,WS_EX_RIGHT
     CONTROL         "Select items automatically",IDC_SELECTFILESONCOMMIT,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,207,270,10
-    CONTROL         "Strip lines starting with ""#"" in commit message",IDC_STRIPCOMMENTEDLINES,
+    CONTROL         "Do not auto-select ""missing"" files (deleted, but unstaged)",IDC_NOAUTOSELECTMISSING,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,220,270,10
-    LTEXT           "Further options for the commit dialog are on Dialogs 3 page.",IDC_STATIC,14,234,270,9
+    CONTROL         "Strip lines starting with ""#"" in commit message",IDC_STRIPCOMMENTEDLINES,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,234,270,10
+    LTEXT           "Further options for the commit dialog are on Dialogs 3 page.",IDC_STATIC,14,247,270,9
 END
 
 IDD_RESOLVE DIALOGEX 0, 0, 289, 154
@@ -2419,7 +2421,7 @@ BEGIN
         VERTGUIDE, 272
         VERTGUIDE, 284
         TOPMARGIN, 7
-        BOTTOMMARGIN, 247
+        BOTTOMMARGIN, 259
     END
 
     IDD_RESOLVE, DIALOG

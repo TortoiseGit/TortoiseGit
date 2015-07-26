@@ -3298,6 +3298,8 @@ int CGit::GetWorkingTreeChanges(CTGitPathList& result, bool amend, CTGitPathList
 			CTGitPath* p = result.LookForGitPath(deletelist[j].GetGitPathString());
 			if (!p)
 				result.AddPath(deletelist[j]);
+			else
+				p->m_Action |= CTGitPath::LOGACTIONS_MISSING;
 		}
 	}
 

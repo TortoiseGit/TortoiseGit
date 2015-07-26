@@ -474,16 +474,16 @@ TEST(CTGitPath, ParserFromLog_Deleted_From_LsFiles)
 	EXPECT_EQ(0, testList.ParserFromLog(byteArray, true));
 	ASSERT_EQ(1, testList.GetCount());
 	EXPECT_STREQ(_T("build.txt"), testList[0].GetGitPathString());
-	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, testList[0].m_Action);
+	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED | CTGitPath::LOGACTIONS_MISSING, testList[0].m_Action);
 
 	BYTE git_ls_file_d_z_output2[] = { "zzz-added-only-in-index-missing-on-fs.txt\0" };
 	byteArray.append(git_ls_file_d_z_output2, sizeof(git_ls_file_d_z_output2));
 	EXPECT_EQ(0, testList.ParserFromLog(byteArray, true));
 	ASSERT_EQ(2, testList.GetCount());
 	EXPECT_STREQ(_T("build.txt"), testList[0].GetGitPathString());
-	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, testList[0].m_Action);
+	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED | CTGitPath::LOGACTIONS_MISSING, testList[0].m_Action);
 	EXPECT_STREQ(_T("zzz-added-only-in-index-missing-on-fs.txt"), testList[1].GetGitPathString());
-	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, testList[1].m_Action);
+	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED | CTGitPath::LOGACTIONS_MISSING, testList[1].m_Action);
 }
 
 TEST(CTGitPath, ParserFromLog_DiffIndex_Raw_M_C_z)

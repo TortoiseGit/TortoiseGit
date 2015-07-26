@@ -40,6 +40,7 @@ CSetDialogs2::CSetDialogs2()
 	, m_bShowGitexeTimings(TRUE)
 	, m_bNoSounds(FALSE)
 	, m_bBranchesIncludeFetchHead(TRUE)
+	, m_bNoAutoselectMissing(FALSE)
 {
 	m_regAutoCloseGitProgress = CRegDWORD(_T("Software\\TortoiseGit\\AutoCloseGitProgress"));
 	m_regUseRecycleBin = CRegDWORD(_T("Software\\TortoiseGit\\RevertWithRecycleBin"), TRUE);
@@ -67,6 +68,8 @@ CSetDialogs2::CSetDialogs2()
 	m_bNoSounds = (BOOL)(DWORD)m_regNoSounds;
 	m_regBranchesIncludeFetchHead = CRegDWORD(L"Software\\TortoiseGit\\BranchesIncludeFetchHead", TRUE);
 	m_bBranchesIncludeFetchHead = (BOOL)(DWORD)m_regBranchesIncludeFetchHead;
+	m_regNoAutoselectMissing = CRegDWORD(L"Software\\TortoiseGit\\AutoselectMissingFiles", FALSE);
+	m_bNoAutoselectMissing = (BOOL)(DWORD)m_regNoAutoselectMissing;
 }
 
 CSetDialogs2::~CSetDialogs2()
@@ -92,6 +95,7 @@ void CSetDialogs2::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_PROGRESSDLG_SHOW_TIMES, m_bShowGitexeTimings);
 	DDX_Check(pDX, IDC_NOSOUNDS, m_bNoSounds);
 	DDX_Check(pDX, IDC_BRANCHESINCLUDEFETCHHEAD, m_bBranchesIncludeFetchHead);
+	DDX_Check(pDX, IDC_NOAUTOSELECTMISSING, m_bNoAutoselectMissing);
 }
 
 BEGIN_MESSAGE_MAP(CSetDialogs2, ISettingsPropPage)
@@ -109,6 +113,7 @@ BEGIN_MESSAGE_MAP(CSetDialogs2, ISettingsPropPage)
 	ON_BN_CLICKED(IDC_PROGRESSDLG_SHOW_TIMES, OnChange)
 	ON_BN_CLICKED(IDC_NOSOUNDS, OnChange)
 	ON_BN_CLICKED(IDC_BRANCHESINCLUDEFETCHHEAD, OnChange)
+	ON_BN_CLICKED(IDC_NOAUTOSELECTMISSING, OnChange)
 END_MESSAGE_MAP()
 
 // CSetDialogs2 message handlers
@@ -127,6 +132,7 @@ BOOL CSetDialogs2::OnInitDialog()
 	AdjustControlSize(IDC_PROGRESSDLG_SHOW_TIMES);
 	AdjustControlSize(IDC_NOSOUNDS);
 	AdjustControlSize(IDC_BRANCHESINCLUDEFETCHHEAD);
+	AdjustControlSize(IDC_NOAUTOSELECTMISSING);
 
 	EnableToolTips();
 
@@ -187,6 +193,7 @@ BOOL CSetDialogs2::OnApply()
 	Store(m_bShowGitexeTimings, m_regShowGitexeTimings);
 	Store(m_bNoSounds, m_regNoSounds);
 	Store(m_bBranchesIncludeFetchHead, m_regBranchesIncludeFetchHead);
+	Store(m_bNoAutoselectMissing, m_regNoAutoselectMissing);
 
 	SetModified(FALSE);
 	return ISettingsPropPage::OnApply();

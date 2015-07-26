@@ -247,6 +247,7 @@ CGitStatusListCtrl::CGitStatusListCtrl() : CListCtrl()
 	, m_sNoPropValueText(MAKEINTRESOURCE(IDS_STATUSLIST_NOPROPVALUE))
 	, m_amend(false)
 	, m_bDoNotAutoselectSubmodules(false)
+	, m_bNoAutoselectMissing(false)
 	, m_bHasWC(true)
 	, m_hwndLogicalParent(NULL)
 	, m_bHasUnversionedItems(FALSE)
@@ -284,6 +285,7 @@ CGitStatusListCtrl::CGitStatusListCtrl() : CListCtrl()
 	m_dwDefaultColumns = 0;
 	m_critSec.Init();
 	m_bIsRevertTheirMy = false;
+	m_bNoAutoselectMissing = CRegDWORD(L"Software\\TortoiseGit\\AutoselectMissingFiles", FALSE) == TRUE;
 	this->m_nLineAdded =this->m_nLineDeleted =0;
 	m_ShellDll = AtlLoadSystemLibraryUsingFullPath(_T("Shell32.dll"));
 	if (m_ShellDll)
@@ -675,7 +677,7 @@ void CGitStatusListCtrl::Show(unsigned int dwShow, unsigned int dwCheck /*=0*/, 
 		else if (!UseStoredCheckStatus)
 		{
 			bool autoSelectSubmodules = !(entry->IsDirectory() && m_bDoNotAutoselectSubmodules);
-			if ((entry->m_Action & dwCheck || dwShow & GITSLC_SHOWDIRECTFILES && m_mapDirectFiles.find(path) != m_mapDirectFiles.end()) && autoSelectSubmodules)
+			if (((entry->m_Action & dwCheck) && !(m_bNoAutoselectMissing && entry->m_Action & CTGitPath::LOGACTIONS_MISSING) || dwShow & GITSLC_SHOWDIRECTFILES && m_mapDirectFiles.find(path) != m_mapDirectFiles.end()) && autoSelectSubmodules)
 				entry->m_Checked=true;
 			else
 				entry->m_Checked=false;
@@ -1058,6 +1060,8 @@ void CGitStatusListCtrl::AddEntry(CTGitPath * GitPath, WORD /*langID*/, int list
 		m_nShownAdded++;
 		break;
 	case CTGitPath::LOGACTIONS_DELETED:
+	case CTGitPath::LOGACTIONS_MISSING:
+	case CTGitPath::LOGACTIONS_DELETED | CTGitPath::LOGACTIONS_MISSING:
 		m_nShownDeleted++;
 		break;
 	case CTGitPath::LOGACTIONS_REPLACED:
@@ -1126,7 +1130,7 @@ void CGitStatusListCtrl::AddEntry(CTGitPath * GitPath, WORD /*langID*/, int list
 	{
 		CString modificationDate;
 		__int64 filetime = GitPath->GetLastWriteTime();
-		if (filetime && (GitPath->m_Action != CTGitPath::LOGACTIONS_DELETED))
+		if (filetime && !(GitPath->m_Action & CTGitPath::LOGACTIONS_DELETED))
 		{
 			FILETIME* f = (FILETIME*)(__int64*)&filetime;
 			modificationDate = CLoglistUtils::FormatDateAndTime(CTime(g_Git.filetime_to_time_t(f)), DATE_SHORTDATE, true, relativeTimes);
@@ -1878,7 +1882,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 //					else
 //						popup.AppendMenuIcon(IDGitLC_REMOVE, IDS_MENUREMOVE, IDI_DELETE);
 //				}
-				if ((wcStatus & (CTGitPath::LOGACTIONS_UNVER | CTGitPath::LOGACTIONS_IGNORE))/*||(wcStatus == git_wc_status_deleted)*/)
+				if ((wcStatus & (CTGitPath::LOGACTIONS_UNVER | CTGitPath::LOGACTIONS_IGNORE | CTGitPath::LOGACTIONS_MISSING))/*||(wcStatus == git_wc_status_deleted)*/)
 				{
 					if (m_dwContextMenus & GITSLC_POPDELETE)
 					{
@@ -4236,7 +4240,7 @@ void CGitStatusListCtrl::FilesExport()
 	{
 		CTGitPath *fd = (CTGitPath*)GetItemData(index);
 		// we cannot export directories or folders
-		if (fd->m_Action == CTGitPath::LOGACTIONS_DELETED || fd->IsDirectory())
+		if ((fd->m_Action & CTGitPath::LOGACTIONS_DELETED) || fd->IsDirectory())
 			continue;
 
 		CAppUtils::CreateMultipleDirectory(exportDir + _T("\\") + fd->GetContainingDirectory().GetWinPathString());
@@ -4414,6 +4418,20 @@ void CGitStatusListCtrl::DeleteSelectedFiles()
 		selectIndex.push_back(index);
 	}
 
+	CAutoRepository repo = g_Git.GetGitRepository();
+	if (!repo)
+	{
+		MessageBox(g_Git.GetLibGit2LastErr(_T("Could not open repository.")), _T("TortoiseGit"), MB_OK);
+		return;
+	}
+	CAutoIndex gitIndex;
+	if (git_repository_index(gitIndex.GetPointer(), repo))
+	{
+		g_Git.GetLibGit2LastErr(_T("Could not open index."));
+		return;
+	}
+	int needWriteIndex = 0;
+
 	//Create file-list ('\0' separated) for SHFileOperation
 	CString filelist;
 	for (size_t i = 0; i < selectIndex.size(); ++i)
@@ -4423,6 +4441,12 @@ void CGitStatusListCtrl::DeleteSelectedFiles()
 		CTGitPath * path=(CTGitPath*)GetItemData(index);
 		ASSERT(path);
 		if (path == nullptr)
+			continue;
+
+		// do not report errors as we could remove an unversioned file
+		needWriteIndex += git_index_remove_bypath(gitIndex, CUnicodeUtils::GetUTF8(path->GetGitPathString())) == 0 ? 1 : 0;
+
+		if (!path->Exists())
 			continue;
 
 		filelist += path->GetWinPathString();
@@ -4442,8 +4466,20 @@ void CGitStatusListCtrl::DeleteSelectedFiles()
 	fileop.lpszProgressTitle = _T("deleting file");
 	int result = SHFileOperation(&fileop);
 
-	if ((result == 0) && (!fileop.fAnyOperationsAborted))
+	if ((result == 0 || len == 1) && (!fileop.fAnyOperationsAborted))
 	{
+		if (needWriteIndex && git_index_write(gitIndex))
+			MessageBox(g_Git.GetLibGit2LastErr(_T("Could not write index.")), _T("TortoiseGit"), MB_OK);
+		
+		if (needWriteIndex)
+		{
+			CWnd* pParent = GetLogicalParent();
+			if (pParent && pParent->GetSafeHwnd())
+				pParent->SendMessage(GITSLNM_NEEDSREFRESH);
+			SetRedraw(TRUE);
+			return;
+		}
+
 		SetRedraw(FALSE);
 		POSITION pos2 = NULL;
 		while ((pos2 = GetFirstSelectedItemPosition()) != 0)
