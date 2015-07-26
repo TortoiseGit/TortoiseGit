@@ -1059,7 +1059,7 @@ BOOL CResModule::ReplaceAccelerator(LPCTSTR lpszType, WORD wLanguage)
 	// as appropriate.
 
 	BYTE xfVirt;
-	WORD xkey;
+	wchar_t xkey;
 	static const size_t BufferSize = 1024;
 	std::unique_ptr<WCHAR[]> pBuf(new WCHAR[BufferSize]);
 	std::unique_ptr<WCHAR[]> pBuf2(new WCHAR[BufferSize]);
@@ -1129,7 +1129,7 @@ BOOL CResModule::ReplaceAccelerator(LPCTSTR lpszType, WORD wLanguage)
 			{
 				_stscanf(wtemp.substr(5, 1).c_str(), _T("%c"), &xkey);
 				lpaccelNew[i].fVirt = xfVirt;
-				lpaccelNew[i].key = xkey;
+				lpaccelNew[i].key = (DWORD)xkey;
 			}
 		}
 		else

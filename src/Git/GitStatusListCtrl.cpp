@@ -4555,9 +4555,9 @@ BOOL CGitStatusListCtrl::OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LR
 				int succeededItems = 0;
 				PIDLIST_RELATIVE pidl = nullptr;
 
-				size_t bufsize = 1024;
+				int bufsize = 1024;
 				std::unique_ptr<WCHAR[]> filepath(new WCHAR[bufsize]);
-				for (size_t i = 0; i < nItems; i++)
+				for (int i = 0; i < nItems; i++)
 				{
 					CString fullPath = g_Git.CombinePath(targetList[i].GetWinPath());
 					if (bufsize < fullPath.GetLength())
