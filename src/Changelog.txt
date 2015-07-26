@@ -15,6 +15,7 @@ Released: unreleased
    use Git for Windows. Bug reports, however, are welcome.
  * Fixed issue #1003: Show Log does not remember the from-date
  * Fixed issue #1793: Fetch + rebase: Launch rebase only if the branch is not up to date
+ * Fixed issue #1886: Fetch&Rebase should allow automatic branch update if FF
 
 == Bug Fixes ==
  * Fixed issue #2495: "Show Reflog" dialog shows empty action for "push" entries

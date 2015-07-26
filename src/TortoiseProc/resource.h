@@ -1202,12 +1202,15 @@
 #define IDC_STATIC_REF                  1579
 #define IDC_SENDMAIL_ATTACHMENT         1579
 #define IDC_REGEXMSGLABEL               1579
+#define IDS_REBASE_BRANCH_FF            1579
 #define IDC_REFLOG_LIST                 1580
 #define IDC_SENDMAIL_SETUP              1580
 #define IDC_STATIC_REPOURL              1580
 #define IDC_IBUGTRAQPROVIDERGROUP       1580
+#define IDS_MERGEBUTTON                 1580
 #define IDC_COMBOBOXEX_REPOSITORY       1581
 #define IDC_UUIDLABEL32                 1581
+#define IDS_REBASEBUTTON                1581
 #define IDC_COMBOBOXEX_PATH             1582
 #define IDC_SENDMAIL_GROUP              1582
 #define IDC_UUID32                      1582

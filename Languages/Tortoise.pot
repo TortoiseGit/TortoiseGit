@@ -860,7 +860,7 @@ msgstr ""
 msgid "&Menu contents:"
 msgstr ""
 
-#. Resource IDs: (1735)
+#. Resource IDs: (1580, 1735)
 msgid "&Merge"
 msgstr ""
 
@@ -1018,6 +1018,10 @@ msgstr ""
 
 #. Resource IDs: (1136)
 msgid "&ReCommit"
+msgstr ""
+
+#. Resource IDs: (1581)
+msgid "&Rebase"
 msgstr ""
 
 #. Resource IDs: (1246)
@@ -9301,6 +9305,10 @@ msgstr ""
 
 #. Resource IDs: (1351)
 msgid "The entered source ref is ambiguous.\nYou have to make it unique (e.g. by adding \"refs/heads/\" as a prefix for branches or \"refs/tags/\" for tags)!"
+msgstr ""
+
+#. Resource IDs: (1579)
+msgid "The fetched branch fast-forwards upon the current branch.\n\nMerge or open the rebase dialog anyway?"
 msgstr ""
 
 #. Resource IDs: (1020)

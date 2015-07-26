@@ -2577,7 +2577,7 @@ static bool DoFetch(const CString& url, const bool fetchAllRemotes, const bool l
 			CAppUtils::LaunchPAgent(NULL, &url);
 	}
 
-	CString upstream;
+	CString upstream = _T("FETCH_HEAD");
 	CGitHash oldUpstreamHash;
 	if (runRebase)
 	{
@@ -2677,14 +2677,39 @@ static bool DoFetch(const CString& url, const bool fetchAllRemotes, const bool l
 	{
 		if (runRebase)
 		{
-			if (!upstream.IsEmpty())
+			CGitHash remoteBranchHash;
+			g_Git.GetHash(remoteBranchHash, upstream);
+			if (remoteBranchHash == oldUpstreamHash && !oldUpstreamHash.IsEmpty() && CMessageBox::ShowCheck(nullptr, IDS_REBASE_BRANCH_UNCHANGED, IDS_APPNAME, MB_ICONQUESTION | MB_YESNO | MB_DEFBUTTON2, _T("OpenRebaseRemoteBranchUnchanged"), IDS_MSGBOX_DONOTSHOWAGAIN) == IDNO)
+				return userResponse == IDOK;
+
+			if (g_Git.IsFastForward(_T("HEAD"), upstream))
 			{
-				CGitHash remoteBranchHash;
-				g_Git.GetHash(remoteBranchHash, upstream);
-				if (remoteBranchHash == oldUpstreamHash && !oldUpstreamHash.IsEmpty() && CMessageBox::ShowCheck(nullptr, IDS_REBASE_BRANCH_UNCHANGED, IDS_APPNAME, MB_ICONQUESTION | MB_YESNO | MB_DEFBUTTON2, _T("OpenRebaseRemoteBranchUnchanged"), IDS_MSGBOX_DONOTSHOWAGAIN) == IDNO)
+				UINT ret = CMessageBox::ShowCheck(nullptr, IDS_REBASE_BRANCH_FF, IDS_APPNAME, 2, IDI_QUESTION, IDS_MERGEBUTTON, IDS_REBASEBUTTON, IDS_ABORTBUTTON, _T("OpenRebaseRemoteBranchFastForwards"), IDS_MSGBOX_DONOTSHOWAGAIN);
+				if (ret == 3)
 					return userResponse == IDOK;
+				if (ret == 1)
+				{
+					CProgressDlg mergeProgress;
+					mergeProgress.m_GitCmd = _T("git.exe merge --ff-only ") + upstream;
+					mergeProgress.m_AutoClose = AUTOCLOSE_IF_NO_ERRORS;
+					mergeProgress.m_PostCmdCallback = [](DWORD status, PostCmdList& postCmdList)
+					{
+						if (status && g_Git.HasWorkingTreeConflicts())
+						{
+							// there are conflict files
+							postCmdList.push_back(PostCmd(IDI_RESOLVE, IDS_PROGRS_CMD_RESOLVE, []
+							{
+								CString sCmd;
+								sCmd.Format(_T("/command:commit /path:\"%s\""), g_Git.m_CurrentDir);
+								CAppUtils::RunTortoiseGitProc(sCmd);
+							}));
+						}
+					};
+					return mergeProgress.DoModal() == IDOK;
+				}
 			}
-			return CAppUtils::RebaseAfterFetch();
+
+			return CAppUtils::RebaseAfterFetch(upstream);
 		}
 	}
 

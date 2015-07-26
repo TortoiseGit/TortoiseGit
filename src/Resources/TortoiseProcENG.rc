@@ -4677,6 +4677,9 @@ BEGIN
     IDS_LAST_N_YEARS        "Last %s year(s)"
     IDS_LAST_N_MONTHS       "Last %s month(s)"
     IDS_LAST_N_WEEKS        "Last %s week(s)"
+    IDS_REBASE_BRANCH_FF    "The fetched branch fast-forwards upon the current branch.\n\nMerge or open the rebase dialog anyway?"
+    IDS_MERGEBUTTON         "&Merge"
+    IDS_REBASEBUTTON        "&Rebase"
 END
 
 #endif    // English (U.S.) resources
