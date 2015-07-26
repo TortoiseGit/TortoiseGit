@@ -65,7 +65,7 @@ bool LogCommand::Execute()
 	CString val = parser.GetVal(_T("limit"));
 	int limit = _tstoi(val);
 
-	int scale = CFilterData::SHOW_NO_LIMIT;
+	int scale = -1;
 	val.MakeLower();
 	if (val.Find(_T("week")) > 0)
 		scale = CFilterData::SHOW_LAST_N_WEEKS;
@@ -75,6 +75,8 @@ bool LogCommand::Execute()
 		scale = CFilterData::SHOW_LAST_N_YEARS;
 	else if (val.Find(_T("commit")) > 0 || limit > 0)
 		scale = CFilterData::SHOW_LAST_N_COMMITS;
+	else if (val == L"0")
+		scale = CFilterData::SHOW_NO_LIMIT;
 
 	CString rev = parser.GetVal(_T("rev"));
 

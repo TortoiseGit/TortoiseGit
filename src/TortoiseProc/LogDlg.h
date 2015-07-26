@@ -59,7 +59,7 @@ class CLogDlg : public CResizableStandAloneDialog, IFilterEditValidator, IHasPat
 public:
 	CLogDlg(CWnd* pParent = NULL); // standard constructor
 	virtual ~CLogDlg();
-	void SetParams(const CTGitPath& orgPath, const CTGitPath& path, CString hightlightRevision, CString range, DWORD limit, DWORD limitScale = CFilterData::SHOW_NO_LIMIT);
+	void SetParams(const CTGitPath& orgPath, const CTGitPath& path, CString hightlightRevision, CString range, DWORD limit, int limitScale = -1);
 	void SetFilter(const CString& findstr, LONG findtype, bool findregex);
 	bool IsThreadRunning() {return !!m_LogList.m_bThreadRunning;}
 	void SetSelect(bool bSelect) {m_bSelect = bSelect;}

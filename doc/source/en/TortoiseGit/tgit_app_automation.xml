@@ -154,6 +154,7 @@ Don't touch these lines:
 								<option>/range:"gitrevision"</option>, shows the log of the entered gitrevision (e.g. "branch1...branch2"),
 								<option>/limit:"N SCALE"</option>, SCALE could be "Commit", "Year", "Month", "Week";
 								it shows last N commit(s), last N year(s), last N month(s), last N week(s).
+								Use <option>/limit:0</option> to disable any default limit.
 								<option>/findstring:"filterstring"</option> fills in the filter text,
 								<option>/findtext</option> forces the filter to use text, not regex, or
 								<option>/findregex</option> forces the filter to use regex, not simple text search, and

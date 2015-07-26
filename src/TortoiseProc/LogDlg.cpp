@@ -207,7 +207,7 @@ enum JumpType
 	JumpType_History,
 };
 
-void CLogDlg::SetParams(const CTGitPath& orgPath, const CTGitPath& path, CString hightlightRevision, CString range, DWORD limit, DWORD limitScale/*=CFilterData::SHOW_NO_LIMIT*/)
+void CLogDlg::SetParams(const CTGitPath& orgPath, const CTGitPath& path, CString hightlightRevision, CString range, DWORD limit, int limitScale/*=-1*/)
 {
 	m_orgPath = orgPath;
 	m_path = path;
@@ -221,7 +221,9 @@ void CLogDlg::SetParams(const CTGitPath& orgPath, const CTGitPath& path, CString
 
 	SetRange(range);
 
-	if (limitScale >= CFilterData::SHOW_LAST_N_COMMITS && limit > 0)
+	if (limitScale == CFilterData::SHOW_NO_LIMIT)
+		m_LogList.m_Filter.m_NumberOfLogsScale = limitScale;
+	else if (limitScale >= CFilterData::SHOW_LAST_N_COMMITS && limit > 0)
 	{
 		// limitation from command line argument, so override the filter.
 		m_LogList.m_Filter.m_NumberOfLogs = limit;
