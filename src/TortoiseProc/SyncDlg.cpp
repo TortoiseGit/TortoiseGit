@@ -405,18 +405,17 @@ void CSyncDlg::FetchComplete()
 {
 	EnableControlButton(true);
 	SwitchToInput();
-	this->FetchOutList(true);
 
 	if (g_Git.UsingLibGit2(CGit::GIT_CMD_FETCH))
 		ShowTab(IDC_CMD_GIT_PROG);
 	else
 		ShowTab(IDC_REFLIST);
 
-	if (m_GitCmdStatus)
+	if (m_GitCmdStatus || m_CurrentCmd != GIT_COMMAND_FETCHANDREBASE)
+	{
+		FetchOutList(true);
 		return;
-
-	if (m_CurrentCmd != GIT_COMMAND_FETCHANDREBASE)
-		return;
+	}
 
 	CString remote;
 	CString remotebranch;
@@ -462,11 +461,15 @@ void CSyncDlg::FetchComplete()
 				}
 			};
 			mergeProgress.DoModal();
+			FillNewRefMap();
+			FetchOutList(true);
 			return;
 		}
 	}
 
 	CAppUtils::RebaseAfterFetch(upstream);
+	FillNewRefMap();
+	FetchOutList(true);
 }
 
 void CSyncDlg::StashComplete()
