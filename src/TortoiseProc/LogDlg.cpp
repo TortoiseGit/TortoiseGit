@@ -450,7 +450,7 @@ HBRUSH CLogDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 {
 	HBRUSH hbr = __super::OnCtlColor(pDC, pWnd, nCtlColor);
 
-	if (m_LogList.m_Filter.m_NumberOfLogsScale > CFilterData::SHOW_NO_LIMIT && pWnd->GetDlgCtrlID() == IDC_FROMLABEL)
+	if ((m_LogList.m_Filter.m_NumberOfLogsScale >= CFilterData::SHOW_LAST_N_COMMITS || m_LogList.m_Filter.m_NumberOfLogsScale == CFilterData::SHOW_LAST_SEL_DATE && m_LogList.m_Filter.m_From != -1) && pWnd->GetDlgCtrlID() == IDC_FROMLABEL)
 	{
 		pDC->SetBkMode(TRANSPARENT);
 		return m_Brush;
@@ -463,7 +463,7 @@ void CLogDlg::OnPaint()
 {
 	CPaintDC dc(this);
 
-	if (m_LogList.m_Filter.m_NumberOfLogsScale == CFilterData::SHOW_NO_LIMIT)
+	if (!(m_LogList.m_Filter.m_NumberOfLogsScale >= CFilterData::SHOW_LAST_N_COMMITS || m_LogList.m_Filter.m_NumberOfLogsScale == CFilterData::SHOW_LAST_SEL_DATE && m_LogList.m_Filter.m_From != -1))
 		return;
 	
 	CWnd* pWnd = GetDlgItem(IDC_FROMLABEL);
