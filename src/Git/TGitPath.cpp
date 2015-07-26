@@ -1311,7 +1311,7 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log, bool parseDeletes /*false*/)
 				{
 					path.m_StatAdd=_T("0");
 					path.m_StatDel=_T("0");
-					path.m_Action |= CTGitPath::LOGACTIONS_DELETED;
+					path.m_Action |= CTGitPath::LOGACTIONS_DELETED | CTGitPath::LOGACTIONS_MISSING;
 				}
 				else
 				{
@@ -1680,6 +1680,8 @@ CString CTGitPath::GetActionName(int action)
 		return MAKEINTRESOURCE(IDS_PATHACTIONS_CONFLICT);
 	if(action  & CTGitPath::LOGACTIONS_ADDED)
 		return MAKEINTRESOURCE(IDS_PATHACTIONS_ADD);
+	if (action & CTGitPath::LOGACTIONS_MISSING)
+		return MAKEINTRESOURCE(IDS_PATHACTIONS_MISSING);
 	if(action  & CTGitPath::LOGACTIONS_DELETED)
 		return MAKEINTRESOURCE(IDS_PATHACTIONS_DELETE);
 	if(action  & CTGitPath::LOGACTIONS_MERGED )

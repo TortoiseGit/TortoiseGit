@@ -1185,6 +1185,7 @@ public:
 	int m_FileLoaded;
 	git_revnum_t m_CurrentVersion;
 	bool m_bDoNotAutoselectSubmodules;
+	bool m_bNoAutoselectMissing;
 	std::map<CString, CString>	m_restorepaths;
 
 	HMENU			m_hShellMenu;

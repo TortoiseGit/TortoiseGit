@@ -78,4 +78,6 @@ private:
 	BOOL			m_bNoSounds;
 	CRegDWORD		m_regBranchesIncludeFetchHead;
 	BOOL			m_bBranchesIncludeFetchHead;
+	CRegDWORD		m_regNoAutoselectMissing;
+	BOOL			m_bNoAutoselectMissing;
 };
