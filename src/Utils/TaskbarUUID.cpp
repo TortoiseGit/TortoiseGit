@@ -26,7 +26,10 @@
 #include <Shobjidl.h>
 #include "SmartHandle.h"
 #include <atlbase.h>
+#pragma warning(push)
+#pragma warning(disable: 4458)
 #include <GdiPlus.h>
+#pragma warning(pop)
 
 #define APPID (_T("TGIT.TGIT.1"))
 

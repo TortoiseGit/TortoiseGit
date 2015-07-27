@@ -20,7 +20,10 @@
 #include "tstring.h"
 #include <string>
 #include "ocidl.h"
+#pragma warning(push)
+#pragma warning(disable: 4458)
 #include <GdiPlus.h>
+#pragma warning(pop)
 
 using namespace Gdiplus;
 

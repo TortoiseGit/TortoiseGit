@@ -10,7 +10,10 @@
 #include "putty.h"
 #include "storage.h"
 
+#pragma warning(push)
+#pragma warning(disable: 4091)
 #include <shlobj.h>
+#pragma warning(pop)
 #ifndef CSIDL_APPDATA
 #define CSIDL_APPDATA 0x001a
 #endif

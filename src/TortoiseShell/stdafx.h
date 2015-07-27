@@ -14,7 +14,10 @@
 #include <windows.h>
 
 #include <commctrl.h>
-#include <Shlobj.h>
+#pragma warning(push)
+#pragma warning(disable: 4091)
+#include <ShlObj.h>
+#pragma warning(pop)
 #include <Shlwapi.h>
 #include <tchar.h>
 #include <wininet.h>

@@ -18,7 +18,10 @@
 //
 #pragma once
 #include <Uxtheme.h>
+#pragma warning(push)
+#pragma warning(disable: 4458)
 #include <GdiPlus.h>
+#pragma warning(pop)
 
 typedef HRESULT (WINAPI *FN_GetBufferedPaintBits) (HPAINTBUFFER hBufferedPaint, RGBQUAD **ppbBuffer, int *pcxRow);
 typedef HPAINTBUFFER (WINAPI *FN_BeginBufferedPaint) (HDC hdcTarget, const RECT *prcTarget, BP_BUFFERFORMAT dwFormat, BP_PAINTPARAMS *pPaintParams, HDC *phdc);

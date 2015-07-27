@@ -17,7 +17,10 @@
 
 #include <windows.h>
 
-#include <Shlobj.h>
+#pragma warning(push)
+#pragma warning(disable: 4091)
+#include <ShlObj.h>
+#pragma warning(pop)
 #include <Shlwapi.h>
 
 #include <atlbase.h>
