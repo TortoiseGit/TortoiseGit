@@ -311,7 +311,7 @@ void CFolderCrawler::WorkerThread()
 						if (nCurrentCrawledpathIndex >= MAX_CRAWLEDPATHS)
 							nCurrentCrawledpathIndex = 0;
 					}
-					InvalidateRect(hWnd, NULL, FALSE);
+					InvalidateRect(hWndHidden, NULL, FALSE);
 					{
 						CAutoReadLock readLock(CGitStatusCache::Instance().GetGuard());
 						// Invalidate the cache of this folder, to make sure its status is fetched again.
@@ -366,7 +366,7 @@ void CFolderCrawler::WorkerThread()
 						if (nCurrentCrawledpathIndex >= MAX_CRAWLEDPATHS)
 							nCurrentCrawledpathIndex = 0;
 					}
-					InvalidateRect(hWnd, NULL, FALSE);
+					InvalidateRect(hWndHidden, NULL, FALSE);
 					// HasAdminDir() already checks if the path points to a dir
 					DWORD flags = TGITCACHE_FLAGS_FOLDERISKNOWN;
 					flags |= (workingPath.IsDirectory() ? TGITCACHE_FLAGS_ISFOLDER : 0);
@@ -441,7 +441,7 @@ void CFolderCrawler::WorkerThread()
 					if (nCurrentCrawledpathIndex >= MAX_CRAWLEDPATHS)
 						nCurrentCrawledpathIndex = 0;
 				}
-				InvalidateRect(hWnd, NULL, FALSE);
+				InvalidateRect(hWndHidden, NULL, FALSE);
 				{
 					CAutoReadLock readLock(CGitStatusCache::Instance().GetGuard());
 					// Now, we need to visit this folder, to make sure that we know its 'most important' status

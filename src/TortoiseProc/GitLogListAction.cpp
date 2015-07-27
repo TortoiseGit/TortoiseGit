@@ -199,9 +199,9 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 					else if ((cmd & 0xFFFF) == 0xFFFD)
 					{
 						CString tempfile = GetTempFile();
-						CString cmd = _T("git.exe diff-tree --cc ") + r1->m_CommitHash.ToString();
+						CString gitcmd = _T("git.exe diff-tree --cc ") + r1->m_CommitHash.ToString();
 						CString lastErr;
-						if (g_Git.RunLogFile(cmd, tempfile, &lastErr))
+						if (g_Git.RunLogFile(gitcmd, tempfile, &lastErr))
 						{
 							MessageBox(lastErr, _T("TortoiseGit"), MB_ICONERROR);
 							break;

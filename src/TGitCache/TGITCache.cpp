@@ -58,7 +58,7 @@ LRESULT CALLBACK	WndProc(HWND, UINT, WPARAM, LPARAM);
 bool				bRun = true;
 bool				bRestart = false;
 NOTIFYICONDATA		niData;
-HWND				hWnd;
+HWND				hWndHidden;
 HWND				hTrayWnd;
 TCHAR				szCurrentCrawledPath[MAX_CRAWLEDPATHS][MAX_CRAWLEDPATHSLEN];
 int					nCurrentCrawledpathIndex = 0;
@@ -189,9 +189,9 @@ int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR lp
 	wcex.lpszClassName	= szWindowClass;
 	wcex.hIconSm		= 0;
 	RegisterClassEx(&wcex);
-	hWnd = CreateWindow(TGIT_CACHE_WINDOW_NAME, TGIT_CACHE_WINDOW_NAME, WS_CAPTION, 0, 0, 800, 300, NULL, 0, hInstance, 0);
-	hTrayWnd = hWnd;
-	if (hWnd == NULL)
+	hWndHidden = CreateWindow(TGIT_CACHE_WINDOW_NAME, TGIT_CACHE_WINDOW_NAME, WS_CAPTION, 0, 0, 800, 300, NULL, 0, hInstance, 0);
+	hTrayWnd = hWndHidden;
+	if (hWndHidden == NULL)
 	{
 		return 0;
 	}
@@ -211,7 +211,7 @@ int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR lp
 			niData.cbSize = NOTIFYICONDATA_V1_SIZE;
 
 		niData.uID = TRAY_ID;		// own tray icon ID
-		niData.hWnd	 = hWnd;
+		niData.hWnd	 = hWndHidden;
 		niData.uFlags = NIF_ICON|NIF_MESSAGE;
 
 		// load the icon
@@ -566,7 +566,7 @@ DWORD WINAPI PipeThread(LPVOID lpvParam)
 				// since we're now closing this thread, we also have to close the whole application!
 				// otherwise the thread is dead, but the app is still running, refusing new instances
 				// but no pipe will be available anymore.
-				PostMessage(hWnd, WM_CLOSE, 0, 0);
+				PostMessage(hWndHidden, WM_CLOSE, 0, 0);
 				return 1;
 			}
 			// detach the handle, since we passed it to the thread
@@ -640,7 +640,7 @@ DWORD WINAPI CommandWaitThread(LPVOID lpvParam)
 				// since we're now closing this thread, we also have to close the whole application!
 				// otherwise the thread is dead, but the app is still running, refusing new instances
 				// but no pipe will be available anymore.
-				PostMessage(hWnd, WM_CLOSE, 0, 0);
+				PostMessage(hWndHidden, WM_CLOSE, 0, 0);
 				return 1;
 			}
 			// detach the handle, since we passed it to the thread
@@ -687,7 +687,7 @@ DWORD WINAPI InstanceThread(LPVOID lpvParam)
 			CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Instance thread exited\n");
 			InterlockedDecrement(&nThreadCount);
 			if (nThreadCount == 0)
-				PostMessage(hWnd, WM_CLOSE, 0, 0);
+				PostMessage(hWndHidden, WM_CLOSE, 0, 0);
 			return 1;
 		}
 
@@ -708,7 +708,7 @@ DWORD WINAPI InstanceThread(LPVOID lpvParam)
 			CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Instance thread exited\n");
 			InterlockedDecrement(&nThreadCount);
 			if (nThreadCount == 0)
-				PostMessage(hWnd, WM_CLOSE, 0, 0);
+				PostMessage(hWndHidden, WM_CLOSE, 0, 0);
 			return 1;
 		}
 	}
@@ -722,7 +722,7 @@ DWORD WINAPI InstanceThread(LPVOID lpvParam)
 	CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Instance thread exited\n");
 	InterlockedDecrement(&nThreadCount);
 	if (nThreadCount == 0)
-		PostMessage(hWnd, WM_CLOSE, 0, 0);
+		PostMessage(hWndHidden, WM_CLOSE, 0, 0);
 	return 0;
 }
 
