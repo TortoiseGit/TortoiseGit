@@ -1315,7 +1315,7 @@ inline HBITMAP AtlLoadSysBitmapImage(WORD wBitmapID, UINT fuLoad = LR_DEFAULTCOL
 inline HCURSOR AtlLoadSysCursorImage(ATL::_U_STRINGorID cursor, UINT fuLoad = LR_DEFAULTCOLOR | LR_DEFAULTSIZE, int cxDesired = 0, int cyDesired = 0)
 {
 #ifdef _DEBUG
-    WORD wID = (WORD)cursor.m_lpstr;
+    WORD wID = (WORD)(LONG)(LONG_PTR)cursor.m_lpstr;
     ATLASSERT((wID >= 32512 && wID <= 32516) || (wID >= 32640 && wID <= 32648) || (wID == 32650) || (wID == 32651));
     ATLASSERT((fuLoad & LR_LOADFROMFILE) == 0);   // this one doesn't load from a file
 #endif // _DEBUG
@@ -1325,7 +1325,7 @@ inline HCURSOR AtlLoadSysCursorImage(ATL::_U_STRINGorID cursor, UINT fuLoad = LR
 inline HICON AtlLoadSysIconImage(ATL::_U_STRINGorID icon, UINT fuLoad = LR_DEFAULTCOLOR | LR_DEFAULTSIZE, int cxDesired = 0, int cyDesired = 0)
 {
 #ifdef _DEBUG
-    WORD wID = (WORD)icon.m_lpstr;
+    WORD wID = (WORD)(LONG)(LONG_PTR)icon.m_lpstr;
     ATLASSERT(wID >= 32512 && wID <= 32517);
     ATLASSERT((fuLoad & LR_LOADFROMFILE) == 0);   // this one doesn't load from a file
 #endif // _DEBUG

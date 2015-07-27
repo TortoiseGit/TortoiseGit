@@ -1141,7 +1141,7 @@ public:
         bool bRet = true;
         if(IsNotifyButton())
         {
-            NMHDR nmhdr = { m_hWnd, GetDlgCtrlID(), NM_CLICK };
+            NMHDR nmhdr = { m_hWnd, (UINT_PTR)GetDlgCtrlID(), NM_CLICK };
             ::SendMessage(GetParent(), WM_NOTIFY, GetDlgCtrlID(), (LPARAM)&nmhdr);
         }
         else if(IsCommandButton())
@@ -3355,8 +3355,8 @@ public:
     void NotifyParentSortChanged(int iNewSortCol, int iOldSortCol)
     {
         T* pT = static_cast<T*>(this);
-        int nID = pT->GetDlgCtrlID();
-        NMSORTLISTVIEW nm = { { pT->m_hWnd, nID, SLVN_SORTCHANGED }, iNewSortCol, iOldSortCol };
+        auto nID = pT->GetDlgCtrlID();
+        NMSORTLISTVIEW nm = { { pT->m_hWnd, (UINT_PTR)nID, SLVN_SORTCHANGED }, iNewSortCol, iOldSortCol };
         ::SendMessage(pT->GetParent(), WM_NOTIFY, (WPARAM)nID, (LPARAM)&nm);
     }
 

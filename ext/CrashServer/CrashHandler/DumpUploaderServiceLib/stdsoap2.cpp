@@ -890,7 +890,7 @@ frecv(struct soap *soap, char *s, size_t n)
 #if defined(__cplusplus) && !defined(WITH_LEAN) && !defined(WITH_COMPAT)
   if (soap->is)
   { if (soap->is->good())
-      return soap->is->read(s, (std::streamsize)n).gcount();
+      return (size_t)soap->is->read(s, (std::streamsize)n).gcount();
     return 0;
   }
 #endif

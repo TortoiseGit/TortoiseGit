@@ -185,7 +185,7 @@ wininet_init(
     memset( a_pData, 0, sizeof(struct wininet_data) );
     a_pData->dwRequestFlags = a_dwRequestFlags;
 
-    Trace("InternetOpenA", 0, 0);
+    Trace("InternetOpenA", nullptr, 0);
 
     /* start our internet session */
     a_pData->hInternet = InternetOpenA(
@@ -776,7 +776,7 @@ wininet_fsend(
         /* get the status code from the response to determine if we need
            to authorize */
         dwStatusCodeLen = sizeof(dwStatusCode);
-        Trace("HttpQueryInfo - wininet_fsend", 0, 0);
+        Trace("HttpQueryInfo - wininet_fsend", nullptr, 0);
         bResult = HttpQueryInfo(
             hHttpRequest, HTTP_QUERY_STATUS_CODE | HTTP_QUERY_FLAG_NUMBER,
             &dwStatusCode, &dwStatusCodeLen, NULL);
@@ -902,7 +902,7 @@ retry:
                 pData->pRespHeaders = (char*) malloc(0);
                 pData->uiRespHeadersLen = 0;
                 pData->uiRespHeadersReaded = 0;
-                Trace("HttpQueryInfo - no headers", 0, 0);
+                Trace("HttpQueryInfo - no headers", nullptr, 0);
             }
         }
         else
@@ -1193,7 +1193,7 @@ wininet_have_connection(
         DBGLOG(TEST, SOAP_MESSAGE(fdebug,
             "wininet %p: closing request\n", soap));
 
-        Trace("InternetCloseHandle (closing request)", 0, 0);
+        Trace("InternetCloseHandle (closing request)", nullptr, 0);
         InternetCloseHandle( (HINTERNET) soap->socket );
         soap->socket = SOAP_INVALID_SOCKET;
 
@@ -1230,7 +1230,7 @@ wininet_have_connection(
         DBGLOG(TEST, SOAP_MESSAGE(fdebug,
             "wininet %p: closing connection\n", soap));
 
-        Trace("InternetCloseHandle (closing connection)", 0, 0);
+        Trace("InternetCloseHandle (closing connection)", nullptr, 0);
         InternetCloseHandle( a_pData->hConnection );
         a_pData->hConnection = NULL;
     }

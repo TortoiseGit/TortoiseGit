@@ -809,9 +809,9 @@ namespace RunTimeHelper
     }
 
 #ifndef _WIN32_WCE
-    inline int SizeOf_NONCLIENTMETRICS()
+    inline UINT SizeOf_NONCLIENTMETRICS()
     {
-        int nSize = sizeof(NONCLIENTMETRICS);
+        UINT nSize = sizeof(NONCLIENTMETRICS);
 #if !defined(_WTL_NO_RUNTIME_STRUCT_SIZE) && (WINVER >= 0x0600)
         if(!IsVista())
             nSize = NONCLIENTMETRICS_V1_SIZE;
