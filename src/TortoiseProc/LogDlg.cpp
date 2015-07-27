@@ -221,9 +221,9 @@ void CLogDlg::SetParams(const CTGitPath& orgPath, const CTGitPath& path, CString
 
 	SetRange(range);
 
-	if (limitScale == CFilterData::SHOW_NO_LIMIT)
-		m_LogList.m_Filter.m_NumberOfLogsScale = limitScale;
-	else if (limitScale >= CFilterData::SHOW_LAST_N_COMMITS && limit > 0)
+	if (limitScale == CFilterData::SHOW_NO_LIMIT || (!range.IsEmpty() && m_LogList.m_Filter.m_NumberOfLogsScale != CFilterData::SHOW_LAST_N_COMMITS))
+		m_LogList.m_Filter.m_NumberOfLogsScale = CFilterData::SHOW_NO_LIMIT;
+	if (limitScale >= CFilterData::SHOW_LAST_N_COMMITS && limit > 0)
 	{
 		// limitation from command line argument, so override the filter.
 		m_LogList.m_Filter.m_NumberOfLogs = limit;
