@@ -1236,8 +1236,8 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 		std::map<UINT_PTR, UINT_PTR>::const_iterator id_it = myIDMap.lower_bound(idCmd);
 		if (id_it != myIDMap.end() && id_it->first == idCmd)
 		{
-			tstring tortoiseProcPath = CPathUtils::GetAppDirectory(g_hmodThisDll) + _T("TortoiseGitProc.exe");
-			tstring tortoiseMergePath = CPathUtils::GetAppDirectory(g_hmodThisDll) + _T("TortoiseGitMerge.exe");
+			tstring tortoiseProcPath(CPathUtils::GetAppDirectory(g_hmodThisDll) + _T("TortoiseGitProc.exe"));
+			tstring tortoiseMergePath(CPathUtils::GetAppDirectory(g_hmodThisDll) + _T("TortoiseGitMerge.exe"));
 
 			//TortoiseGitProc expects a command line of the form:
 			//"/command:<commandname> /pathfile:<path> /startrev:<startrevision> /endrev:<endrevision> /deletepathfile
