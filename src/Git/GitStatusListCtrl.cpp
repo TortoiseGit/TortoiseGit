@@ -3940,7 +3940,7 @@ int CGitStatusListCtrl::UpdateFileList(CTGitPathList *list)
 		CTGitPath * gitpatch=(CTGitPath*)&m_StatusFileList[i];
 		gitpatch->m_Checked = TRUE;
 
-		if ((gitpatch->m_Action == CTGitPath::LOGACTIONS_ADDED || gitpatch->m_Action == CTGitPath::LOGACTIONS_REPLACED) && !gitpatch->Exists())
+		if ((gitpatch->m_Action & (CTGitPath::LOGACTIONS_ADDED | CTGitPath::LOGACTIONS_REPLACED)) && !gitpatch->Exists())
 		{
 			if (!bDeleteChecked)
 			{
