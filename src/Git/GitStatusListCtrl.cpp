@@ -2175,6 +2175,8 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 
 			case IDGITLC_COMPARETWOREVISIONS:
 				{
+					if (!CheckMultipleDiffs())
+						break;
 					POSITION pos = GetFirstSelectedItemPosition();
 					while ( pos )
 					{
@@ -2209,6 +2211,8 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 
 			case IDGITLC_GNUDIFF1:
 				{
+					if (!CheckMultipleDiffs())
+						break;
 					POSITION pos = GetFirstSelectedItemPosition();
 					while (pos)
 					{

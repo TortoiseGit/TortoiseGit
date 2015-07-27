@@ -586,6 +586,8 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 		{
 		case ID_COMPARE:
 			{
+				if (!CheckMultipleDiffs())
+					break;
 				POSITION pos = m_cFileList.GetFirstSelectedItemPosition();
 				while (pos)
 				{
@@ -596,6 +598,8 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 			break;
 		case ID_GNUDIFFCOMPARE:
 			{
+				if (!CheckMultipleDiffs())
+					break;
 				POSITION pos = m_cFileList.GetFirstSelectedItemPosition();
 				while (pos)
 				{
@@ -617,6 +621,8 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 			break;
 		case ID_BLAME:
 			{
+				if (!CheckMultipleDiffs())
+					break;
 				POSITION pos = m_cFileList.GetFirstSelectedItemPosition();
 				while (pos)
 				{
@@ -628,6 +634,8 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 		case ID_LOG:
 		case ID_LOGSUBMODULE:
 			{
+				if (!CheckMultipleDiffs())
+					break;
 				POSITION pos = m_cFileList.GetFirstSelectedItemPosition();
 				while (pos)
 				{
@@ -1356,4 +1364,16 @@ void CFileDiffDlg::OnBnClickedLog()
 	CLogDlg dlg;
 	dlg.SetRange(m_rev2.m_CommitHash.ToString() + _T("..") + m_rev1.m_CommitHash.ToString());
 	dlg.DoModal();
+}
+
+bool CFileDiffDlg::CheckMultipleDiffs()
+{
+	UINT selCount = m_cFileList.GetSelectedCount();
+	if (selCount > max(3, (DWORD)CRegDWORD(_T("Software\\TortoiseGit\\NumDiffWarning"), 10)))
+	{
+		CString message;
+		message.Format(IDS_STATUSLIST_WARN_MAXDIFF, selCount);
+		return ::MessageBox(GetSafeHwnd(), message, _T("TortoiseGit"), MB_YESNO | MB_ICONQUESTION) == IDYES;
+	}
+	return true;
 }
