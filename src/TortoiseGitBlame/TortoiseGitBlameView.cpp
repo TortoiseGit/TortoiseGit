@@ -1855,7 +1855,8 @@ void CTortoiseGitBlameView::OnMouseMove(UINT /*nFlags*/, CPoint /*point*/)
 
 BOOL CTortoiseGitBlameView::PreTranslateMessage(MSG* pMsg)
 {
-	m_ToolTip.RelayEvent(pMsg);
+	if (m_ToolTip.GetSafeHwnd())
+		m_ToolTip.RelayEvent(pMsg);
 	return CView::PreTranslateMessage(pMsg);
 }
 
