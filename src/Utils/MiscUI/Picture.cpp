@@ -170,9 +170,10 @@ bool CPicture::Load(tstring sFilePathName)
 		// For that reason, we don't rely on gdiplus telling us if
 		// the image format is "icon" or not, we also check the
 		// file extension for ".ico".
-		std::transform(sFilePathName.begin(), sFilePathName.end(), sFilePathName.begin(), ::tolower);
-		bIsIcon = (guid == ImageFormatIcon) || (wcsstr(sFilePathName.c_str(), L".ico") != NULL) || (wcsstr(sFilePathName.c_str(), L".cur") != NULL);
-		bIsTiff = (guid == ImageFormatTIFF) || (_tcsstr(sFilePathName.c_str(), _T(".tiff")) != NULL);
+		auto lowerfilename = sFilePathName;
+		std::transform(lowerfilename.begin(), lowerfilename.end(), lowerfilename.begin(), ::tolower);
+		bIsIcon = (guid == ImageFormatIcon) || (wcsstr(lowerfilename.c_str(), L".ico") != NULL) || (wcsstr(lowerfilename.c_str(), L".cur") != NULL);
+		bIsTiff = (guid == ImageFormatTIFF) || (wcsstr(lowerfilename.c_str(), L".tiff") != NULL);
 		m_Name = sFilePathName;
 
 		if (bIsIcon)
