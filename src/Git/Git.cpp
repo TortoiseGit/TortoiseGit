@@ -2315,13 +2315,22 @@ int CGit::Revert(const CString& commit, const CTGitPath &path, CString& err)
 			err.Format(_T("Cannot revert renaming of \"%s\". A directory with the old name \"%s\" exists."), (LPCTSTR)path.GetGitPathString(), (LPCTSTR)path.GetGitOldPathString());
 			return -1;
 		}
-		CString force;
-		// if the filenames only differ in case, we have to pass "-f"
-		if (path.GetGitPathString().CompareNoCase(path.GetGitOldPathString()) == 0)
-			force = _T("-f ");
-		cmd.Format(_T("git.exe mv %s-- \"%s\" \"%s\""), (LPCTSTR)force, (LPCTSTR)path.GetGitPathString(), (LPCTSTR)path.GetGitOldPathString());
-		if (Run(cmd, &err, CP_UTF8))
-			return -1;
+		if (path.Exists())
+		{
+			CString force;
+			// if the filenames only differ in case, we have to pass "-f"
+			if (path.GetGitPathString().CompareNoCase(path.GetGitOldPathString()) == 0)
+				force = _T("-f ");
+			cmd.Format(_T("git.exe mv %s-- \"%s\" \"%s\""), (LPCTSTR)force, (LPCTSTR)path.GetGitPathString(), (LPCTSTR)path.GetGitOldPathString());
+			if (Run(cmd, &err, CP_UTF8))
+				return -1;
+		}
+		else
+		{
+			cmd.Format(_T("git.exe rm -f --cached -- \"%s\""), (LPCTSTR)path.GetGitPathString());
+			if (Run(cmd, &err, CP_UTF8))
+				return -1;
+		}
 
 		cmd.Format(_T("git.exe checkout %s -f -- \"%s\""), (LPCTSTR)commit, (LPCTSTR)path.GetGitOldPathString());
 		if (Run(cmd, &err, CP_UTF8))

@@ -1679,7 +1679,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				}
 			}
 
-			if (!(wcStatus & (CTGitPath::LOGACTIONS_UNVER | CTGitPath::LOGACTIONS_IGNORE)) && GetSelectedCount() > 0)
+			if (!(wcStatus & (CTGitPath::LOGACTIONS_UNVER | CTGitPath::LOGACTIONS_IGNORE)) && !((wcStatus & CTGitPath::LOGACTIONS_MISSING) && wcStatus != (CTGitPath::LOGACTIONS_MISSING | CTGitPath::LOGACTIONS_DELETED) && wcStatus != (CTGitPath::LOGACTIONS_MISSING | CTGitPath::LOGACTIONS_DELETED | CTGitPath::LOGACTIONS_MODIFIED)) && GetSelectedCount() > 0)
 			{
 				bool bEntryAdded = false;
 				if (m_dwContextMenus & GITSLC_POPCOMPAREWITHBASE)
@@ -1822,7 +1822,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 
 			if (GetSelectedCount() > 0)
 			{
-				if ((m_dwContextMenus & GetContextMenuBit(IDGITLC_EXPORT)) && !(wcStatus & CTGitPath::LOGACTIONS_DELETED))
+				if ((m_dwContextMenus & GetContextMenuBit(IDGITLC_EXPORT)) && !(wcStatus & (CTGitPath::LOGACTIONS_DELETED | CTGitPath::LOGACTIONS_MISSING)))
 					popup.AppendMenuIcon(IDGITLC_EXPORT, IDS_LOG_POPUP_EXPORT, IDI_EXPORT);
 			}
 
@@ -1834,7 +1834,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					popup.AppendMenuIcon(IDGITLC_SAVEAS, IDS_LOG_POPUP_SAVE, IDI_SAVEAS);
 				}
 
-				if (m_dwContextMenus & GITSLC_POPOPEN && ! filepath->IsDirectory() && !(wcStatus & CTGitPath::LOGACTIONS_DELETED))
+				if (m_dwContextMenus & GITSLC_POPOPEN && !filepath->IsDirectory() && !(wcStatus & (CTGitPath::LOGACTIONS_DELETED | CTGitPath::LOGACTIONS_MISSING)))
 				{
 					popup.AppendMenuIcon(IDGITLC_VIEWREV, IDS_LOG_POPUP_VIEWREV);
 					popup.AppendMenuIcon(IDGITLC_OPEN, IDS_REPOBROWSE_OPEN, IDI_OPEN);
@@ -2001,7 +2001,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 			}
 
 			m_hShellMenu = nullptr;
-			if (pfnSHCreateDefaultContextMenu && pfnAssocCreateForClasses && GetSelectedCount() > 0 && !(wcStatus & CTGitPath::LOGACTIONS_DELETED) && m_bHasWC && (this->m_CurrentVersion.IsEmpty() || this->m_CurrentVersion == GIT_REV_ZERO) && shellMenu.CreatePopupMenu())
+			if (pfnSHCreateDefaultContextMenu && pfnAssocCreateForClasses && GetSelectedCount() > 0 && !(wcStatus & (CTGitPath::LOGACTIONS_DELETED | CTGitPath::LOGACTIONS_MISSING)) && m_bHasWC && (this->m_CurrentVersion.IsEmpty() || this->m_CurrentVersion == GIT_REV_ZERO) && shellMenu.CreatePopupMenu())
 			{
 				// insert the shell context menu
 				popup.AppendMenu(MF_SEPARATOR);
@@ -2763,6 +2763,8 @@ void CGitStatusListCtrl::OnNMDblclk(NMHDR *pNMHDR, LRESULT *pResult)
 				GetLogicalParent()->SendMessage(GITSLNM_NEEDSREFRESH);
 		}
 	}
+	else if ((file->m_Action & CTGitPath::LOGACTIONS_MISSING) && file->m_Action != (CTGitPath::LOGACTIONS_MISSING | CTGitPath::LOGACTIONS_DELETED) && file->m_Action != (CTGitPath::LOGACTIONS_MISSING | CTGitPath::LOGACTIONS_DELETED | CTGitPath::LOGACTIONS_MODIFIED))
+		return;
 	else
 	{
 		if (!m_Rev1.IsEmpty() && !m_Rev2.IsEmpty())
@@ -3387,6 +3389,8 @@ void CGitStatusListCtrl::OnNMReturn(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 		{
 			OpenFile(file, OPEN);
 		}
+		else if ((file->m_Action & CTGitPath::LOGACTIONS_MISSING) && file->m_Action != (CTGitPath::LOGACTIONS_MISSING | CTGitPath::LOGACTIONS_DELETED) && file->m_Action != (CTGitPath::LOGACTIONS_MISSING | CTGitPath::LOGACTIONS_DELETED | CTGitPath::LOGACTIONS_MODIFIED))
+			continue;
 		else
 		{
 			if (!m_Rev1.IsEmpty() && !m_Rev2.IsEmpty())
