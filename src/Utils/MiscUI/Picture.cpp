@@ -116,7 +116,7 @@ tstring CPicture::GetFileSizeAsText(bool bAbbrev /* = true */)
 	if (bAbbrev)
 		StrFormatByteSize(m_nSize, buf, _countof(buf));
 	else
-		_stprintf_s(buf, _T("%ld Bytes"), m_nSize);
+		_stprintf_s(buf, _T("%lu Bytes"), m_nSize);
 
 	return tstring(buf);
 }

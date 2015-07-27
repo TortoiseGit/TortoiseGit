@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2014 - TortoiseGit
+// Copyright (C) 2013-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -184,7 +184,7 @@ BOOL CSetDialogs3::SafeDataImpl(CAutoConfig& config)
 	{
 		CString value;
 		char numBuf[20] = { 0 };
-		sprintf_s(numBuf, "%ld", m_langCombo.GetItemData(m_langCombo.GetCurSel()));
+		sprintf_s(numBuf, "%lu", (DWORD)m_langCombo.GetItemData(m_langCombo.GetCurSel()));
 		if (!Save(config, PROJECTPROPNAME_PROJECTLANGUAGE, (CString)numBuf))
 			return FALSE;
 	}
