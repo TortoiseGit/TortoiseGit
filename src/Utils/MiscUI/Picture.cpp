@@ -89,6 +89,9 @@ void CPicture::FreePictureData()
 		hIcons = NULL;
 	}
 	delete [] lpIcons;
+	lpIcons = nullptr;
+	delete pBitmap;
+	pBitmap = nullptr;
 }
 
 // Util function to ease loading of FreeImage library
