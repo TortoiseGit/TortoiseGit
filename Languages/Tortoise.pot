@@ -643,7 +643,7 @@ msgid "&Enable edit"
 msgstr ""
 
 #. Resource IDs: (32771)
-msgid "&Exit"
+msgid "&Exit\tCtrl+W"
 msgstr ""
 
 #. Resource IDs: (5152)
@@ -662,12 +662,12 @@ msgstr ""
 msgid "&Find"
 msgstr ""
 
-#. Resource IDs: (57636)
+#. Resource IDs: (32787, 57636)
 msgid "&Find\tCtrl+F"
 msgstr ""
 
 #. Resource IDs: (32778)
-msgid "&Fit images in window"
+msgid "&Fit images in window\tF"
 msgstr ""
 
 #. Resource IDs: (1050)
@@ -756,7 +756,7 @@ msgid "&Image"
 msgstr ""
 
 #. Resource IDs: (32790)
-msgid "&Image info"
+msgid "&Image info\tI"
 msgstr ""
 
 #. Resource IDs: (16505)
@@ -952,7 +952,7 @@ msgstr ""
 msgid "&Onto"
 msgstr ""
 
-#. Resource IDs: (1602, 20014, 32773)
+#. Resource IDs: (1602, 20014)
 msgid "&Open"
 msgstr ""
 
@@ -960,11 +960,7 @@ msgstr ""
 msgid "&Open Git for Windows WebSite"
 msgstr ""
 
-#. Resource IDs: (32774)
-msgid "&Open..."
-msgstr ""
-
-#. Resource IDs: (57601)
+#. Resource IDs: (32773, 32774, 57601)
 msgid "&Open...\tCtrl+O"
 msgstr ""
 
@@ -977,7 +973,7 @@ msgid "&Overlay Icon:"
 msgstr ""
 
 #. Resource IDs: (32772)
-msgid "&Overlay images"
+msgid "&Overlay images\tO"
 msgstr ""
 
 #. Resource IDs: (1411, 5002, 65535)
@@ -1000,8 +996,12 @@ msgstr ""
 msgid "&Print Preview"
 msgstr ""
 
-#. Resource IDs: (32782, 58116)
+#. Resource IDs: (58116)
 msgid "&Print..."
+msgstr ""
+
+#. Resource IDs: (32782)
+msgid "&Print...\tCtrl+P"
 msgstr ""
 
 #. Resource IDs: (9677)
@@ -1136,7 +1136,7 @@ msgstr ""
 msgid "&Saturation:"
 msgstr ""
 
-#. Resource IDs: (1125, 16921, 32776)
+#. Resource IDs: (1125, 16921)
 msgid "&Save"
 msgstr ""
 
@@ -1150,6 +1150,10 @@ msgstr ""
 
 #. Resource IDs: (5151)
 msgid "&Save list of selected files to..."
+msgstr ""
+
+#. Resource IDs: (32776)
+msgid "&Save\tCtrl+S"
 msgstr ""
 
 #. Resource IDs: (1336)
@@ -1977,7 +1981,7 @@ msgid "Are you sure you want to save to \"%s\"?"
 msgstr ""
 
 #. Resource IDs: (32793)
-msgid "Arrange &vertical"
+msgid "Arrange &vertical\tV"
 msgstr ""
 
 #. Resource IDs: (4210)
@@ -4699,11 +4703,11 @@ msgid "First known &bad:"
 msgstr ""
 
 #. Resource IDs: (32818)
-msgid "Fit image &heights"
+msgid "Fit image &heights\tH"
 msgstr ""
 
 #. Resource IDs: (32817)
-msgid "Fit image &widths"
+msgid "Fit image &widths\tW"
 msgstr ""
 
 #. Resource IDs: (1315)
@@ -5221,23 +5225,23 @@ msgstr ""
 msgid "ID:220:V C +G"
 msgstr ""
 
-#. Accelerator Entry for Menu ID:32771; '&Exit'
+#. Accelerator Entry for Menu ID:32771; '&Exit\tCtrl+W'
 msgid "ID:32771:V C +W"
 msgstr ""
 
-#. Accelerator Entry for Menu ID:32772; '&Overlay images'
+#. Accelerator Entry for Menu ID:32772; '&Overlay images\tO'
 msgid "ID:32772:V   +O"
 msgstr ""
 
-#. Accelerator Entry for Menu ID:32773; '&Open'
+#. Accelerator Entry for Menu ID:32773; '&Open...\tCtrl+O'
 msgid "ID:32773:V C +O"
 msgstr ""
 
-#. Accelerator Entry for Menu ID:32773; 'Save &as...'
+#. Accelerator Entry for Menu ID:32773; 'Save &as...\tCtrl+Shift+S'
 msgid "ID:32773:V CS+S"
 msgstr ""
 
-#. Accelerator Entry for Menu ID:32774; '&Open...'
+#. Accelerator Entry for Menu ID:32774; '&Open...\tCtrl+O'
 msgid "ID:32774:V C +O"
 msgstr ""
 
@@ -5249,27 +5253,27 @@ msgstr ""
 msgid "ID:32775:V C +D"
 msgstr ""
 
-#. Accelerator Entry for Menu ID:32776; '&Save'
+#. Accelerator Entry for Menu ID:32776; '&Save\tCtrl+S'
 msgid "ID:32776:V C +S"
 msgstr ""
 
-#. Accelerator Entry for Menu ID:32778; '&Fit images in window'
+#. Accelerator Entry for Menu ID:32778; '&Fit images in window\tF'
 msgid "ID:32778:V   +F"
 msgstr ""
 
-#. Accelerator Entry for Menu ID:32779; 'Ori&ginal size'
+#. Accelerator Entry for Menu ID:32779; 'Ori&ginal size\tS'
 msgid "ID:32779:V   +S"
 msgstr ""
 
-#. Accelerator Entry for Menu ID:32782; '&Print...'
+#. Accelerator Entry for Menu ID:32782; '&Print...\tCtrl+P'
 msgid "ID:32782:V C +P"
 msgstr ""
 
-#. Accelerator Entry for Menu ID:32787; ''
+#. Accelerator Entry for Menu ID:32787; '&Find\tCtrl+F'
 msgid "ID:32787:V C +F"
 msgstr ""
 
-#. Accelerator Entry for Menu ID:32793; 'Arrange &vertical'
+#. Accelerator Entry for Menu ID:32793; 'Arrange &vertical\tV'
 msgid "ID:32793:V C +V"
 msgstr ""
 
@@ -5281,11 +5285,11 @@ msgstr ""
 msgid "ID:32811:V C +U"
 msgstr ""
 
-#. Accelerator Entry for Menu ID:32817; 'Fit image &widths'
+#. Accelerator Entry for Menu ID:32817; 'Fit image &widths\tW'
 msgid "ID:32817:V   +W"
 msgstr ""
 
-#. Accelerator Entry for Menu ID:32818; 'Fit image &heights'
+#. Accelerator Entry for Menu ID:32818; 'Fit image &heights\tH'
 msgid "ID:32818:V   +H"
 msgstr ""
 
@@ -6846,7 +6850,7 @@ msgid "Options"
 msgstr ""
 
 #. Resource IDs: (32779)
-msgid "Ori&ginal size"
+msgid "Ori&ginal size\tS"
 msgstr ""
 
 #. Resource IDs: (1531)
@@ -8107,8 +8111,12 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
-#. Resource IDs: (1600, 32773, 57604)
+#. Resource IDs: (1600, 57604)
 msgid "Save &as..."
+msgstr ""
+
+#. Resource IDs: (32773)
+msgid "Save &as...\tCtrl+Shift+S"
 msgstr ""
 
 #. Resource IDs: (61441)
@@ -10580,7 +10588,7 @@ msgid "Zip File"
 msgstr ""
 
 #. Resource IDs: (32783)
-msgid "Zoo&m out"
+msgid "Zoo&m out\t-"
 msgstr ""
 
 #. Resource IDs: (17093)
@@ -10609,7 +10617,7 @@ msgid "Zoom Out\nZoom Out"
 msgstr ""
 
 #. Resource IDs: (32784)
-msgid "Zoom i&n"
+msgid "Zoom i&n\t+"
 msgstr ""
 
 #. Resource IDs: (32772)

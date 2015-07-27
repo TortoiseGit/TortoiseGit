@@ -17,6 +17,7 @@ Released: unreleased
  * Fixed issue #1793: Fetch + rebase: Launch rebase only if the branch is not up to date
  * Fixed issue #1886: Fetch&Rebase should allow automatic branch update if FF
  * Fixed issue #836: Do not auto-select deleted but unstaged files on commit dialog (optional)
+ * Fixed issue #2513: TortoiseGitUDiff: Add keyboard shortcuts
 
 == Bug Fixes ==
  * Fixed issue #2495: "Show Reflog" dialog shows empty action for "push" entries
