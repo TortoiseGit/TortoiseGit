@@ -336,8 +336,7 @@ void CDirectoryWatcher::WorkerThread()
 						break;
 					}
 
-					CDirWatchInfo * pDirInfo = new CDirWatchInfo(hDir, watchedPath);
-					hDir.Detach();  // the new CDirWatchInfo object owns the handle now
+					CDirWatchInfo * pDirInfo = new CDirWatchInfo(hDir.Detach(), watchedPath);// the new CDirWatchInfo object owns the handle now
 					pDirInfo->m_hDevNotify = NotificationFilter.dbch_hdevnotify;
 
 

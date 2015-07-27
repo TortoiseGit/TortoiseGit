@@ -232,8 +232,7 @@ void CPathWatcher::WorkerThread()
 						break;
 					}
 
-					CDirWatchInfo * pDirInfo = new CDirWatchInfo(hDir, watchedPaths[i]);
-					hDir.Detach();  // the new CDirWatchInfo object owns the handle now
+					CDirWatchInfo * pDirInfo = new CDirWatchInfo(hDir.Detach(), watchedPaths[i]); // the new CDirWatchInfo object owns the handle now
 					m_hCompPort = CreateIoCompletionPort(pDirInfo->m_hDir, m_hCompPort, (ULONG_PTR)pDirInfo, 0);
 					if (m_hCompPort == NULL)
 					{
