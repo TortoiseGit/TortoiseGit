@@ -3498,7 +3498,7 @@ BEGIN
     IDS_DAEMON_SECURITY_WARN 
                             "While running daemon, all data of this repository is exposed without authentication and/or encryption."
     IDS_ASK_REMOVE_FROM_INDEX 
-                            "TortoiseGit detected that the file ""%s"" does not exist, but is staged as ""Added"".\nThe commit dialog cannot handle this.\n\nDo you want to remove it from the index?"
+                            "TortoiseGit detected that the file ""%s"" does not exist, but is staged as ""Added"" or ""Modified"".\nThe commit dialog cannot handle this.\n\nDo you want to restore or remove it from the index?"
     IDS_REMOVE_FROM_INDEX   "&Remove this file from index"
     IDS_DO_SAME_FOR_REST    "&Do the same for the rest"
     IDS_PROGRS_TITLE_RESET  "Reset"
@@ -4682,6 +4682,7 @@ BEGIN
     IDS_REBASE_BRANCH_FF    "The fetched branch fast-forwards upon the current branch.\n\nMerge or open the rebase dialog anyway?"
     IDS_MERGEBUTTON         "&Merge"
     IDS_REBASEBUTTON        "&Rebase"
+    IDS_RESTORE_FROM_INDEX  "R&estore this file from index"
 END
 
 #endif    // English (U.S.) resources

@@ -3943,28 +3943,43 @@ int CGitStatusListCtrl::UpdateFileList(CTGitPathList *list)
 
 	BOOL bDeleteChecked = FALSE;
 	int deleteFromIndex = 0;
+	bool needsRefresh = false;
 	for (int i = 0; i < m_StatusFileList.GetCount(); ++i)
 	{
 		CTGitPath * gitpatch=(CTGitPath*)&m_StatusFileList[i];
 		gitpatch->m_Checked = TRUE;
 
-		if ((gitpatch->m_Action & (CTGitPath::LOGACTIONS_ADDED | CTGitPath::LOGACTIONS_REPLACED)) && !gitpatch->Exists())
+		if ((gitpatch->m_Action & (CTGitPath::LOGACTIONS_ADDED | CTGitPath::LOGACTIONS_REPLACED | CTGitPath::LOGACTIONS_MODIFIED)) && !gitpatch->Exists())
 		{
 			if (!bDeleteChecked)
 			{
 				CString message;
 				message.Format(IDS_ASK_REMOVE_FROM_INDEX, gitpatch->GetWinPath());
-				deleteFromIndex = CMessageBox::ShowCheck(m_hWnd, message, _T("TortoiseGit"), 1, IDI_EXCLAMATION, CString(MAKEINTRESOURCE(IDS_REMOVE_FROM_INDEX)), CString(MAKEINTRESOURCE(IDS_IGNOREBUTTON)), NULL, NULL, CString(MAKEINTRESOURCE(IDS_DO_SAME_FOR_REST)), &bDeleteChecked);
+				deleteFromIndex = CMessageBox::ShowCheck(m_hWnd, message, _T("TortoiseGit"), 1, IDI_EXCLAMATION, CString(MAKEINTRESOURCE(IDS_RESTORE_FROM_INDEX)), CString(MAKEINTRESOURCE(IDS_REMOVE_FROM_INDEX)), CString(MAKEINTRESOURCE(IDS_IGNOREBUTTON)), NULL, CString(MAKEINTRESOURCE(IDS_DO_SAME_FOR_REST)), &bDeleteChecked);
 			}
 			if (deleteFromIndex == 1)
 			{
-				g_Git.Run(_T("git.exe rm -f --cache -- \"") + gitpatch->GetWinPathString() + _T("\""), nullptr, CP_UTF8);
-				continue;
+				CString err;
+				if (g_Git.Run(_T("git.exe checkout -- \"") + gitpatch->GetWinPathString() + _T("\""), &err, CP_UTF8))
+					MessageBox(_T("Restoring from index failed:\n") + err, _T("TortoiseGit"), MB_ICONERROR);
+				else
+					needsRefresh = true;
+			}
+			else if (deleteFromIndex == 2)
+			{
+				CString err;
+				if (g_Git.Run(_T("git.exe rm -f --cache -- \"") + gitpatch->GetWinPathString() + _T("\""), &err, CP_UTF8))
+					MessageBox(_T("Removing from index failed:\n") + err, _T("TortoiseGit"), MB_ICONERROR);
+				else
+					needsRefresh = true;
 			}
 		}
 
 		m_arStatusArray.push_back((CTGitPath*)&m_StatusFileList[i]);
 	}
+
+	if (needsRefresh)
+		MessageBox(_T("Due to changes to the index, please refresh the dialog (e.g., by pressing F5)."), _T("TortoiseGit"), MB_ICONINFORMATION);
 
 	return 0;
 }

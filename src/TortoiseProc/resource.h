@@ -1215,6 +1215,7 @@
 #define IDC_COMBOBOXEX_PATH             1582
 #define IDC_SENDMAIL_GROUP              1582
 #define IDC_UUID32                      1582
+#define IDS_RESTORE_FROM_INDEX          1582
 #define IDC_REP_BROWSE                  1583
 #define IDC_SEND_ADDRESS                1583
 #define IDC_UUIDLABEL64                 1583
