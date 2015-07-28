@@ -205,6 +205,21 @@ protected:
 	}
 };
 
+class CAutoSubmodule : public CSmartLibgit2Ref<git_submodule>
+{
+public:
+	~CAutoSubmodule()
+	{
+		CleanUp();
+	}
+
+protected:
+	virtual void FreeRef()
+	{
+		git_submodule_free(m_Ref);
+	}
+};
+
 class CAutoCommit : public CSmartLibgit2Ref<git_commit>
 {
 public:

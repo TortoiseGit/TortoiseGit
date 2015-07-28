@@ -750,8 +750,8 @@ void CCommitDlg::OnOK()
 				{
 					if (entry->IsDirectory())
 					{
-						git_submodule *submodule = nullptr;
-						if (git_submodule_lookup(&submodule, repository, filePathA))
+						CAutoSubmodule submodule;
+						if (git_submodule_lookup(submodule.GetPointer(), repository, filePathA))
 						{
 							bAddSuccess = false;
 							CMessageBox::Show(m_hWnd, CGit::GetLibGit2LastErr(_T("Could not open submodule \"") + entry->GetGitPathString() + _T("\".")), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
