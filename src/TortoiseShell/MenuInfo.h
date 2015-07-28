@@ -84,6 +84,7 @@ enum GitCommands
 		ShellMenuDaemon,
 		ShellMenuMergeAbort,
 		ShellMenuDiffLater,
+		ShellMenuImportPatchDrop,
 		ShellMenuLastEntry			// used to mark the menu array end
 };
 

@@ -114,7 +114,6 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 					stdstring str = stdstring(szFileName.get());
 					if ((!str.empty()) && (g_ShellCache.IsContextPathAllowed(szFileName.get())))
 					{
-						if (itemStates & ITEMIS_ONLYONE)
 						{
 							CTGitPath strpath;
 							strpath.SetFromWin(str.c_str());
@@ -834,7 +833,11 @@ STDMETHODIMP CShellExt::QueryDropContext(UINT uFlags, UINT idCmdFirst, HMENU hMe
 	// apply patch
 	// available if source is a patchfile
 	if (itemStates & ITEMIS_PATCHFILE)
-		InsertGitMenu(FALSE, hMenu, indexMenu++, idCmd++, IDS_MENUAPPLYPATCH, 0, idCmdFirst, ShellMenuApplyPatch, uFlags);
+	{
+		if (itemStates & ITEMIS_ONLYONE)
+			InsertGitMenu(FALSE, hMenu, indexMenu++, idCmd++, IDS_MENUAPPLYPATCH, 0, idCmdFirst, ShellMenuApplyPatch, uFlags);
+		InsertGitMenu(FALSE, hMenu, indexMenu++, idCmd++, IDS_MENUIMPORTPATCH, 0, idCmdFirst, ShellMenuImportPatchDrop, uFlags);
+	}
 
 	// separator
 	if (idCmd != idCmdFirst)
@@ -1643,6 +1646,9 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				break;
 			case ShellMenuImportPatch:
 				AddPathFileCommand(gitCmd, L"importpatch");
+				break;
+			case ShellMenuImportPatchDrop:
+				AddPathFileDropCommand(gitCmd, L"importpatch");
 				break;
 			case ShellMenuFetch:
 				AddPathCommand(gitCmd, L"fetch", false);

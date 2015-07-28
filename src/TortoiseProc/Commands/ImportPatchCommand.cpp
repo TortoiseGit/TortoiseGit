@@ -32,7 +32,21 @@ bool ImportPatchCommand::Execute()
 	CString cmd;
 	CString output;
 
-	if (!orgPathList.IsEmpty() && !orgPathList[0].HasAdminDir())
+	CString droppath = parser.GetVal(_T("droptarget"));
+	if (!droppath.IsEmpty())
+	{
+		if (CTGitPath(droppath).IsAdminDir())
+			return FALSE;
+
+		if (!CTGitPath(droppath).HasAdminDir(&g_Git.m_CurrentDir))
+		{
+			CString err;
+			err.Format(IDS_ERR_NOT_REPOSITORY, (LPCTSTR)g_Git.m_CurrentDir);
+			CMessageBox::Show(nullptr, err, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+			return FALSE;
+		}
+	}
+	else if (!orgPathList.IsEmpty() && !orgPathList[0].HasAdminDir())
 	{
 		CString str=CAppUtils::ChooseRepository(NULL);
 		if(str.IsEmpty())
