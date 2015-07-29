@@ -27,8 +27,6 @@
 #include "CreateProcessHelper.h"
 #include "FormatMessageWrapper.h"
 
-typedef CComCritSecLock<CComCriticalSection> CAutoLocker;
-
 #define MAX_STRING_LENGTH	4096	//should be big enough
 
 // Nonmember function prototypes
@@ -493,8 +491,6 @@ void CGitPropertyPage::DisplayCommit(const git_commit* commit, UINT hashLabel, U
 int CGitPropertyPage::LogThread()
 {
 	CTGitPath path(filenames.front().c_str());
-
-	CAutoLocker lock(g_Git.m_critGitDllSec); // HACK for libgit2
 
 	CString ProjectTopDir;
 	if(!path.HasAdminDir(&ProjectTopDir))
