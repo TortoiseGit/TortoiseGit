@@ -232,23 +232,23 @@ int CGitIndexList::GetStatus(const CString &gitdir,const CString &pathParam, git
 			}
 			int len = path.GetLength();
 
-				for (size_t i = 0; i < size(); ++i)
+				for (auto it = cbegin(), itend = cend(); it != itend; ++it)
 				{
-					if (at(i).m_FileName.GetLength() > len)
+					if ((*it).m_FileName.GetLength() > len)
 					{
-						if (at(i).m_FileName.Left(len) == path)
+						if ((*it).m_FileName.Left(len) == path)
 						{
 							if (!IsFull)
 							{
 								*status = git_wc_status_normal;
 								if (callback)
-									callback(CombinePath(gitdir, path), *status, false, pData, (at(i).m_Flags & GIT_IDXENTRY_VALID) && !(at(i).m_Flags & GIT_IDXENTRY_SKIP_WORKTREE), (at(i).m_Flags & GIT_IDXENTRY_SKIP_WORKTREE) != 0);
+									callback(CombinePath(gitdir, path), *status, false, pData, ((*it).m_Flags & GIT_IDXENTRY_VALID) && !((*it).m_Flags & GIT_IDXENTRY_SKIP_WORKTREE), ((*it).m_Flags & GIT_IDXENTRY_SKIP_WORKTREE) != 0);
 								return 0;
 
 							}
 							else
 							{
-								result = g_Git.GetFileModifyTime(CombinePath(gitdir, at(i).m_FileName), &time, nullptr, &filesize);
+								result = g_Git.GetFileModifyTime(CombinePath(gitdir, (*it).m_FileName), &time, nullptr, &filesize);
 								if (result)
 									continue;
 
@@ -257,7 +257,7 @@ int CGitIndexList::GetStatus(const CString &gitdir,const CString &pathParam, git
 									*assumeValid = false;
 								if (skipWorktree)
 									*skipWorktree = false;
-								GetFileStatus(gitdir, at(i).m_FileName, status, time, filesize, callback, pData, NULL, assumeValid, skipWorktree);
+								GetFileStatus(gitdir, (*it).m_FileName, status, time, filesize, callback, pData, NULL, assumeValid, skipWorktree);
 								// if a file is assumed valid, we need to inform the caller, otherwise the assumevalid flag might not get to the explorer on first open of a repository
 								if (callback && assumeValid && skipWorktree && (*assumeValid || *skipWorktree))
 									callback(CombinePath(gitdir, path), *status, false, pData, *assumeValid, *skipWorktree);
