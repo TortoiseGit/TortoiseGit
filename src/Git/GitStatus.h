@@ -84,6 +84,14 @@ typedef struct git_wc_status2_t
 
 typedef BOOL (*FILL_STATUS_CALLBACK)(const CString &path, git_wc_status_kind status, bool isDir, void *pdata, bool assumeValid, bool skipWorktree);
 
+static CString CombinePath(const CString& part1, const CString& part2)
+{
+	CString path(part1);
+	path += _T('\\');
+	path += part2;
+	return path;
+}
+
 /**
  * \ingroup Git
  * Handles git status of working copies.
@@ -95,7 +103,7 @@ public:
 	static int GetFileStatus(const CString &gitdir, const CString &path, git_wc_status_kind * status, BOOL IsFull = false, BOOL IsRecursive = false, BOOL isIgnore = true, FILL_STATUS_CALLBACK callback = nullptr, void *pData = nullptr, bool * assumeValid = nullptr, bool * skipWorktree = nullptr);
 	static int GetDirStatus(const CString &gitdir, const CString &path, git_wc_status_kind * status, BOOL IsFull = false, BOOL IsRecursive = false, BOOL isIgnore = true, FILL_STATUS_CALLBACK callback = nullptr, void *pData = nullptr);
 	static int EnumDirStatus(const CString &gitdir, const CString &path, git_wc_status_kind * status, BOOL IsFull = false, BOOL IsRecursive = false, BOOL isIgnore = true, FILL_STATUS_CALLBACK callback = nullptr, void *pData = nullptr);
-	static int GetFileList(const CString &gitdir, const CString &path, std::vector<CGitFileName> &list);
+	static int GetFileList(CString path, std::vector<CGitFileName> &list);
 	static bool HasIgnoreFilesChanged(const CString &gitdir, const CString &subpaths, bool isDir);
 	static int LoadIgnoreFile(const CString &gitdir, const CString &subpaths, bool isDir);
 	static int IsUnderVersionControl(const CString &gitdir, const CString &path, bool isDir,bool *isVersion);

@@ -193,7 +193,7 @@ int CGitIndexList::GetFileStatus(const CString &gitdir, const CString &pathorg, 
 	}
 
 	if (callback && status && assumeValid && skipWorktree)
-			callback(gitdir + _T("\\") + pathorg, *status, false, pData, *assumeValid, *skipWorktree);
+			callback(CombinePath(gitdir, pathorg), *status, false, pData, *assumeValid, *skipWorktree);
 	return 0;
 }
 
@@ -213,13 +213,13 @@ int CGitIndexList::GetStatus(const CString &gitdir,const CString &pathParam, git
 		if (path.IsEmpty())
 			result = g_Git.GetFileModifyTime(gitdir, &time, &isDir);
 		else
-			result = g_Git.GetFileModifyTime(gitdir + _T("\\") + path, &time, &isDir, &filesize);
+			result = g_Git.GetFileModifyTime(CombinePath(gitdir, path), &time, &isDir, &filesize);
 
 		if (result)
 		{
 			*status = git_wc_status_deleted;
 			if (callback && assumeValid && skipWorktree)
-				callback(gitdir + _T("\\") + path, git_wc_status_deleted, false, pData, *assumeValid, *skipWorktree);
+				callback(CombinePath(gitdir, path), git_wc_status_deleted, false, pData, *assumeValid, *skipWorktree);
 
 			return 0;
 		}
@@ -242,13 +242,13 @@ int CGitIndexList::GetStatus(const CString &gitdir,const CString &pathParam, git
 							{
 								*status = git_wc_status_normal;
 								if (callback)
-									callback(gitdir + _T("\\") + path, *status, false, pData, (at(i).m_Flags & GIT_IDXENTRY_VALID) && !(at(i).m_Flags & GIT_IDXENTRY_SKIP_WORKTREE), (at(i).m_Flags & GIT_IDXENTRY_SKIP_WORKTREE) != 0);
+									callback(CombinePath(gitdir, path), *status, false, pData, (at(i).m_Flags & GIT_IDXENTRY_VALID) && !(at(i).m_Flags & GIT_IDXENTRY_SKIP_WORKTREE), (at(i).m_Flags & GIT_IDXENTRY_SKIP_WORKTREE) != 0);
 								return 0;
 
 							}
 							else
 							{
-								result = g_Git.GetFileModifyTime(gitdir + _T("\\") + at(i).m_FileName, &time, nullptr, &filesize);
+								result = g_Git.GetFileModifyTime(CombinePath(gitdir, at(i).m_FileName), &time, nullptr, &filesize);
 								if (result)
 									continue;
 
@@ -260,7 +260,7 @@ int CGitIndexList::GetStatus(const CString &gitdir,const CString &pathParam, git
 								GetFileStatus(gitdir, at(i).m_FileName, status, time, filesize, callback, pData, NULL, assumeValid, skipWorktree);
 								// if a file is assumed valid, we need to inform the caller, otherwise the assumevalid flag might not get to the explorer on first open of a repository
 								if (callback && assumeValid && skipWorktree && (*assumeValid || *skipWorktree))
-									callback(gitdir + _T("\\") + path, *status, false, pData, *assumeValid, *skipWorktree);
+									callback(CombinePath(gitdir, path), *status, false, pData, *assumeValid, *skipWorktree);
 								if (*status != git_wc_status_none)
 								{
 									if (dirstatus == git_wc_status_none)
@@ -287,7 +287,7 @@ int CGitIndexList::GetStatus(const CString &gitdir,const CString &pathParam, git
 				*status = git_wc_status_unversioned;
 			}
 			if(callback)
-				callback(gitdir + _T("\\") + path, *status, false, pData, false, false);
+				callback(CombinePath(gitdir, path), *status, false, pData, false, false);
 
 			return 0;
 
@@ -305,7 +305,8 @@ int CGitIndexFileMap::Check(const CString &gitdir, bool *isChanged)
 	__int64 time;
 	int result;
 
-	CString IndexFile = g_AdminDirMap.GetAdminDir(gitdir) + _T("index");
+	CString IndexFile = g_AdminDirMap.GetAdminDir(gitdir);
+	IndexFile += _T("index");
 
 	/* Get data associated with "crt_stat.c": */
 	result = g_Git.GetFileModifyTime(IndexFile, &time);
@@ -521,7 +522,8 @@ int CGitHeadFileList::ReadHeadHash(CString gitdir)
 	CAutoWriteLock lock(m_SharedMutex);
 	m_Gitdir = g_AdminDirMap.GetAdminDir(gitdir);
 
-	m_HeadFile = m_Gitdir + _T("HEAD");
+	m_HeadFile = m_Gitdir;
+	m_HeadFile += _T("HEAD");
 
 	if( g_Git.GetFileModifyTime(m_HeadFile, &m_LastModifyTimeHead))
 		return -1;
@@ -1004,7 +1006,8 @@ int CGitIgnoreList::LoadAllIgnoreFile(const CString &gitdir, const CString &path
 			}
 
 			CString adminDir = g_AdminDirMap.GetAdminDir(tempOrig);
-			CString wcglobalgitignore = adminDir + _T("info\\exclude");
+			CString wcglobalgitignore = adminDir;
+			wcglobalgitignore += _T("info\\exclude");
 			if (CheckFileChanged(wcglobalgitignore))
 			{
 				FetchIgnoreFile(gitdir, wcglobalgitignore, true);
@@ -1203,7 +1206,8 @@ int CGitIgnoreList::CheckIgnore(const CString &path, const CString &projectroot,
 				break;
 
 			CString adminDir = g_AdminDirMap.GetAdminDir(tempOrig);
-			CString wcglobalgitignore = adminDir + _T("info\\exclude");
+			CString wcglobalgitignore = adminDir;
+			wcglobalgitignore += _T("info\\exclude");
 			if ((ret = CheckFileAgainstIgnoreList(wcglobalgitignore, patha, base, type)) != -1)
 				break;
 

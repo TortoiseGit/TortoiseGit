@@ -590,7 +590,10 @@ CCachedDirectory::GetCacheKey(const CTGitPath& path)
 CString
 CCachedDirectory::GetFullPathString(const CString& cacheKey)
 {
-	return m_directoryPath.GetWinPathString() + _T("\\") + cacheKey;
+	CString fullpath(m_directoryPath.GetWinPathString());
+	fullpath += _T('\\');
+	fullpath += cacheKey;
+	return fullpath;
 }
 
 BOOL CCachedDirectory::GetStatusCallback(const CString & path, git_wc_status_kind status,bool isDir, void *, bool assumeValid, bool skipWorktree)

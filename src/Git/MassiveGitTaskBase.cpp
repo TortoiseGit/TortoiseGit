@@ -80,7 +80,11 @@ bool CMassiveGitTaskBase::ExecuteCommands(volatile BOOL& cancel)
 		{
 			CString add;
 			for (int j = firstCombine; j <= i; ++j)
-				add += _T(" \"") + GetListItem(j) + _T("\"");
+			{
+				add += _T(" \"");
+				add += GetListItem(j);
+				add += _T("\"");
+			}
 
 			CString cmd, out;
 			cmd.Format(_T("git.exe %s %s%s"), (LPCTSTR)m_sParams, m_bIsPath ? _T("--") : _T(""), (LPCTSTR)add);

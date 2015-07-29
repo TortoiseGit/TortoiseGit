@@ -1588,8 +1588,9 @@ CString CGitLogListBase::MessageDisplayStr(GitRev* pLogEntry)
 	if (!m_bFullCommitMessageOnLogLine || pLogEntry->GetBody().IsEmpty())
 		return pLogEntry->GetSubject();
 
-	CString txt;
-	txt.Format(L"%s %s", (LPCTSTR)pLogEntry->GetSubject(), (LPCTSTR)pLogEntry->GetBody());
+	CString txt(pLogEntry->GetSubject());
+	txt += _T(' ');
+	txt += pLogEntry->GetBody();
 
 	// Deal with CRLF
 	txt.Replace(_T("\n"), _T(" "));
@@ -1696,11 +1697,11 @@ void CGitLogListBase::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 		break;
 	case LOGLIST_BUG: //Bug ID
 		if(pLogEntry)
-			lstrcpyn(pItem->pszText, (LPCTSTR)this->m_ProjectProperties.FindBugID(pLogEntry->GetSubject() + _T("\r\n\r\n") + pLogEntry->GetBody()), pItem->cchTextMax - 1);
+			lstrcpyn(pItem->pszText, (LPCTSTR)this->m_ProjectProperties.FindBugID(pLogEntry->GetSubjectBody()), pItem->cchTextMax - 1);
 		break;
 	case LOGLIST_SVNREV: //SVN revision
 		if (pLogEntry)
-			lstrcpyn(pItem->pszText, (LPCTSTR)FindSVNRev(pLogEntry->GetSubject() + _T("\r\n\r\n") + pLogEntry->GetBody()), pItem->cchTextMax - 1);
+			lstrcpyn(pItem->pszText, (LPCTSTR)FindSVNRev(pLogEntry->GetSubjectBody()), pItem->cchTextMax - 1);
 		break;
 
 	default:
@@ -3177,7 +3178,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRevLoglist* pRev, std::tr1::
 		{
 			if(this->m_bShowBugtraqColumn)
 			{
-				CString sBugIds = m_ProjectProperties.FindBugID(pRev->GetSubject() + _T("\r\n\r\n") + pRev->GetBody());
+				CString sBugIds = m_ProjectProperties.FindBugID(pRev->GetSubjectBody());
 
 				ATLTRACE(_T("bugID = \"%s\"\n"), (LPCTSTR)sBugIds);
 				if (std::regex_search(std::wstring(sBugIds), pat, flags))
@@ -3298,7 +3299,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRevLoglist* pRev, std::tr1::
 		{
 			if(this->m_bShowBugtraqColumn)
 			{
-				CString sBugIds = m_ProjectProperties.FindBugID(pRev->GetSubject() + _T("\r\n\r\n") + pRev->GetBody());
+				CString sBugIds = m_ProjectProperties.FindBugID(pRev->GetSubjectBody());
 
 				if (!m_bFilterCaseSensitively)
 					sBugIds.MakeLower();

@@ -167,6 +167,15 @@ public:
 		return m_Body;
 	}
 
+	CString GetSubjectBody()
+	{
+		CheckAndParser();
+		CString ret(m_Subject);
+		ret += _T("\r\n\r\n");
+		ret += m_Body;
+		return ret;
+	}
+
 	BOOL IsBoundary() { return m_Mark == _T('-'); }
 
 	virtual void Clear();
