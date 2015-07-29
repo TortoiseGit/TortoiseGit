@@ -221,7 +221,7 @@ void CLogDlg::SetParams(const CTGitPath& orgPath, const CTGitPath& path, CString
 
 	SetRange(range);
 
-	if (limitScale == CFilterData::SHOW_NO_LIMIT || (!range.IsEmpty() && m_LogList.m_Filter.m_NumberOfLogsScale != CFilterData::SHOW_LAST_N_COMMITS))
+	if (limitScale == CFilterData::SHOW_NO_LIMIT || (!range.IsEmpty() && m_LogList.m_Filter.m_NumberOfLogsScale != CFilterData::SHOW_LAST_N_COMMITS) || !hightlightRevision.IsEmpty())
 		m_LogList.m_Filter.m_NumberOfLogsScale = CFilterData::SHOW_NO_LIMIT;
 	if (limitScale >= CFilterData::SHOW_LAST_N_COMMITS && limit > 0)
 	{
