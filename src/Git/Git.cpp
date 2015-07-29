@@ -1672,7 +1672,7 @@ int CGit::GetBranchList(STRING_VECTOR &list,int *current,BRANCH_TYPE type)
 
 					// check whether HEAD is detached
 					CString currentHead;
-					if (one.Left(1) == _T("(") && GetCurrentBranchFromFile(g_Git.m_CurrentDir, currentHead) == 1)
+					if (one.Left(1) == _T("(") && GetCurrentBranchFromFile(m_CurrentDir, currentHead) == 1)
 					{
 						headIsDetached = true;
 						continue;
