@@ -198,6 +198,10 @@ public:
 		CleanUp();
 	}
 
+private:
+	CAutoRepository(const CAutoRepository& that);
+	CAutoRepository& operator=(const CAutoRepository& that);
+
 protected:
 	virtual void FreeRef()
 	{
@@ -208,10 +212,16 @@ protected:
 class CAutoSubmodule : public CSmartLibgit2Ref<git_submodule>
 {
 public:
+	CAutoSubmodule() {};
+
 	~CAutoSubmodule()
 	{
 		CleanUp();
 	}
+
+private:
+	CAutoSubmodule(const CAutoSubmodule& that);
+	CAutoSubmodule& operator=(const CAutoSubmodule& that);
 
 protected:
 	virtual void FreeRef()
@@ -234,6 +244,11 @@ public:
 	{
 		CleanUp();
 	}
+
+private:
+	CAutoCommit(const CAutoCommit& that);
+	CAutoCommit& operator=(const CAutoCommit& that);
+
 protected:
 	virtual void FreeRef()
 	{
@@ -244,6 +259,8 @@ protected:
 class CAutoTree : public CSmartLibgit2Ref<git_tree>
 {
 public:
+	CAutoTree() {};
+
 	git_tree* operator=(git_tree* h)
 	{
 		if (m_Ref != h)
@@ -259,6 +276,10 @@ public:
 		CleanUp();
 	}
 
+private:
+	CAutoTree(const CAutoTree& that);
+	CAutoTree& operator=(const CAutoTree& that);
+
 protected:
 	virtual void FreeRef()
 	{
@@ -269,10 +290,16 @@ protected:
 class CAutoObject : public CSmartLibgit2Ref<git_object>
 {
 public:
+	CAutoObject() {};
+
 	~CAutoObject()
 	{
 		CleanUp();
 	}
+
+private:
+	CAutoObject(const CAutoObject& that);
+	CAutoObject& operator=(const CAutoObject& that);
 
 protected:
 	virtual void FreeRef()
@@ -284,10 +311,16 @@ protected:
 class CAutoBlob : public CSmartLibgit2Ref<git_blob>
 {
 public:
+	CAutoBlob() {};
+
 	~CAutoBlob()
 	{
 		CleanUp();
 	}
+
+private:
+	CAutoBlob(const CAutoBlob& that);
+	CAutoBlob& operator=(const CAutoBlob& that);
 
 protected:
 	virtual void FreeRef()
@@ -364,6 +397,10 @@ public:
 		return ret;
 	}
 
+private:
+	CAutoConfig(const CAutoConfig& that);
+	CAutoConfig& operator=(const CAutoConfig& that);
+
 protected:
 	virtual void FreeRef()
 	{
@@ -386,6 +423,10 @@ public:
 		CleanUp();
 	}
 
+private:
+	CAutoReference(const CAutoReference& that);
+	CAutoReference& operator=(const CAutoReference& that);
+
 protected:
 	virtual void FreeRef()
 	{
@@ -396,10 +437,16 @@ protected:
 class CAutoTreeEntry : public CSmartLibgit2Ref<git_tree_entry>
 {
 public:
+	CAutoTreeEntry() {};
+
 	~CAutoTreeEntry()
 	{
 		CleanUp();
 	}
+
+private:
+	CAutoTreeEntry(const CAutoTreeEntry& that);
+	CAutoTreeEntry& operator=(const CAutoTreeEntry& that);
 
 protected:
 	virtual void FreeRef()
@@ -411,10 +458,16 @@ protected:
 class CAutoDiff : public CSmartLibgit2Ref<git_diff>
 {
 public:
+	CAutoDiff() {};
+
 	~CAutoDiff()
 	{
 		CleanUp();
 	}
+
+private:
+	CAutoDiff(const CAutoDiff& that);
+	CAutoDiff& operator=(const CAutoDiff& that);
 
 protected:
 	virtual void FreeRef()
@@ -426,10 +479,16 @@ protected:
 class CAutoPatch : public CSmartLibgit2Ref<git_patch>
 {
 public:
+	CAutoPatch() {};
+
 	~CAutoPatch()
 	{
 		CleanUp();
 	}
+
+private:
+	CAutoPatch(const CAutoPatch& that);
+	CAutoPatch& operator=(const CAutoPatch& that);
 
 protected:
 	virtual void FreeRef()
@@ -441,10 +500,16 @@ protected:
 class CAutoDiffStats : public CSmartLibgit2Ref<git_diff_stats>
 {
 public:
+	CAutoDiffStats() {};
+
 	~CAutoDiffStats()
 	{
 		CleanUp();
 	}
+
+private:
+	CAutoDiffStats(const CAutoDiffStats& that);
+	CAutoDiffStats& operator=(const CAutoDiffStats& that);
 
 protected:
 	virtual void FreeRef()
@@ -456,10 +521,16 @@ protected:
 class CAutoIndex : public CSmartLibgit2Ref<git_index>
 {
 public:
+	CAutoIndex() {};
+
 	~CAutoIndex()
 	{
 		CleanUp();
 	}
+
+private:
+	CAutoIndex(const CAutoIndex& that);
+	CAutoIndex& operator=(const CAutoIndex& that);
 
 protected:
 	virtual void FreeRef()
@@ -471,10 +542,16 @@ protected:
 class CAutoRemote : public CSmartLibgit2Ref<git_remote>
 {
 public:
+	CAutoRemote() {};
+
 	~CAutoRemote()
 	{
 		CleanUp();
 	}
+
+private:
+	CAutoRemote(const CAutoRemote& that);
+	CAutoRemote& operator=(const CAutoRemote& that);
 
 protected:
 	virtual void FreeRef()
@@ -486,10 +563,16 @@ protected:
 class CAutoReflog : public CSmartLibgit2Ref<git_reflog>
 {
 public:
+	CAutoReflog() {};
+
 	~CAutoReflog()
 	{
 		CleanUp();
 	}
+
+private:
+	CAutoReflog(const CAutoReflog& that);
+	CAutoReflog& operator=(const CAutoReflog& that);
 
 protected:
 	virtual void FreeRef()
@@ -501,10 +584,16 @@ protected:
 class CAutoRevwalk : public CSmartLibgit2Ref<git_revwalk>
 {
 public:
+	CAutoRevwalk() {};
+
 	~CAutoRevwalk()
 	{
 		CleanUp();
 	}
+
+private:
+	CAutoRevwalk(const CAutoRevwalk& that);
+	CAutoRevwalk& operator=(const CAutoRevwalk& that);
 
 protected:
 	virtual void FreeRef()
@@ -516,10 +605,16 @@ protected:
 class CAutoBranchIterator : public CSmartLibgit2Ref<git_branch_iterator>
 {
 public:
+	CAutoBranchIterator() {};
+
 	~CAutoBranchIterator()
 	{
 		CleanUp();
 	}
+
+private:
+	CAutoBranchIterator(const CAutoBranchIterator& that) ;
+	CAutoBranchIterator& operator=(const CAutoBranchIterator& that);
 
 protected:
 	virtual void FreeRef()
@@ -531,10 +626,16 @@ protected:
 class CAutoDescribeResult : public CSmartLibgit2Ref<git_describe_result>
 {
 public:
+	CAutoDescribeResult() {};
+
 	~CAutoDescribeResult()
 	{
 		CleanUp();
 	}
+
+private:
+	CAutoDescribeResult(const CAutoDescribeResult& that);
+	CAutoDescribeResult& operator=(const CAutoDescribeResult& that);
 
 protected:
 	virtual void FreeRef()
@@ -546,10 +647,17 @@ protected:
 class CAutoStatusList : public CSmartLibgit2Ref<git_status_list>
 {
 public:
+	CAutoStatusList() {};
+
 	~CAutoStatusList()
 	{
 		CleanUp();
 	}
+
+private:
+	CAutoStatusList(const CAutoStatusList& that);
+	CAutoStatusList& operator=(const CAutoStatusList& that);
+
 protected:
 	virtual void FreeRef()
 	{
