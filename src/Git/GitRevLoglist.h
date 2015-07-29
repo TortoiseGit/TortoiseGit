@@ -167,6 +167,26 @@ public:
 		return m_Body;
 	}
 
+	CString GetSubjectBody(bool crlf = false)
+	{
+		CheckAndParser();
+		CString ret(m_Subject);
+		if (!crlf)
+		{
+			ret += _T("\n\n");
+			ret += m_Body;
+		}
+		else
+		{
+			ret.TrimRight();
+			ret += _T("\r\n\r\n");
+			CString body(m_Body);
+			body.Replace(_T("\n"), _T("\r\n"));
+			ret += body.TrimRight();
+		}
+		return ret;
+	}
+
 	BOOL IsBoundary() { return m_Mark == _T('-'); }
 
 	virtual void Clear();

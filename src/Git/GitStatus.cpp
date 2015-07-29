@@ -218,7 +218,7 @@ int GitStatus::GetFileStatus(const CString &gitdir, const CString &pathParam, gi
 			{
 				*status =st;
 				if (callback && assumeValid && skipWorktree)
-					callback(gitdir + _T("/") + path, st, false, pData, *assumeValid, *skipWorktree);
+					callback(CombinePath(gitdir, path), st, false, pData, *assumeValid, *skipWorktree);
 				return 0;
 			}
 
@@ -228,7 +228,7 @@ int GitStatus::GetFileStatus(const CString &gitdir, const CString &pathParam, gi
 				{
 					*status = git_wc_status_unversioned;
 					if (callback && assumeValid && skipWorktree)
-						callback(gitdir + _T("/") + path, *status, false, pData, *assumeValid, *skipWorktree);
+						callback(CombinePath(gitdir, path), *status, false, pData, *assumeValid, *skipWorktree);
 					return 0;
 				}
 
@@ -242,7 +242,7 @@ int GitStatus::GetFileStatus(const CString &gitdir, const CString &pathParam, gi
 				}
 				*status = st;
 				if (callback && assumeValid && skipWorktree)
-					callback(gitdir + _T("/") + path, st, false, pData, *assumeValid, *skipWorktree);
+					callback(CombinePath(gitdir, path), st, false, pData, *assumeValid, *skipWorktree);
 
 				return 0;
 			}
@@ -265,7 +265,7 @@ int GitStatus::GetFileStatus(const CString &gitdir, const CString &pathParam, gi
 							*status =st=git_wc_status_added;
 							CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": File miss in head tree %s"), (LPCTSTR)path);
 							if (callback && assumeValid && skipWorktree)
-								callback(gitdir + _T("/") + path, st, false, pData, *assumeValid, *skipWorktree);
+								callback(CombinePath(gitdir, path), st, false, pData, *assumeValid, *skipWorktree);
 							return 0;
 						}
 
@@ -274,7 +274,7 @@ int GitStatus::GetFileStatus(const CString &gitdir, const CString &pathParam, gi
 						{
 							*status =st=git_wc_status_modified;
 							if (callback && assumeValid && skipWorktree)
-								callback(gitdir + _T("/") + path, st, false, pData, *assumeValid, *skipWorktree);
+								callback(CombinePath(gitdir, path), st, false, pData, *assumeValid, *skipWorktree);
 							return 0;
 						}
 					}
@@ -282,7 +282,7 @@ int GitStatus::GetFileStatus(const CString &gitdir, const CString &pathParam, gi
 			}
 			*status =st;
 			if (callback && assumeValid && skipWorktree)
-				callback(gitdir + _T("/") + path, st, false, pData, *assumeValid, *skipWorktree);
+				callback(CombinePath(gitdir, path), st, false, pData, *assumeValid, *skipWorktree);
 			return 0;
 		}
 	}
@@ -339,10 +339,11 @@ static bool SortFileName(CGitFileName &Item1, CGitFileName &Item2)
 	return Item1.m_FileName.Compare(Item2.m_FileName)<0;
 }
 
-int GitStatus::GetFileList(const CString &gitdir, const CString &subpath, std::vector<CGitFileName> &list)
+int GitStatus::GetFileList(CString path, std::vector<CGitFileName> &list)
 {
+	path += _T("\\*.*");
 	WIN32_FIND_DATA data;
-	HANDLE handle = ::FindFirstFileEx(gitdir + _T("\\") + subpath + _T("\\*.*"), SysInfo::Instance().IsWin7OrLater() ? FindExInfoBasic : FindExInfoStandard, &data, FindExSearchNameMatch, nullptr, SysInfo::Instance().IsWin7OrLater() ? FIND_FIRST_EX_LARGE_FETCH : 0);
+	HANDLE handle = ::FindFirstFileEx(path, SysInfo::Instance().IsWin7OrLater() ? FindExInfoBasic : FindExInfoStandard, &data, FindExSearchNameMatch, nullptr, SysInfo::Instance().IsWin7OrLater() ? FIND_FIRST_EX_LARGE_FETCH : 0);
 	do
 	{
 		if(_tcscmp(data.cFileName, _T(".git")) == 0)
@@ -385,11 +386,8 @@ int GitStatus::EnumDirStatus(const CString &gitdir, const CString &subpath, git_
 			if(path[path.GetLength()-1] !=  _T('/'))
 				path += _T('/'); //Add trail / to show it is directory, not file name.
 
-		CString lowcasepath = path;
-		lowcasepath.MakeLower();
-
 		std::vector<CGitFileName> filelist;
-		GetFileList(gitdir, subpath, filelist);
+		GetFileList(CombinePath(gitdir, subpath), filelist);
 
 		if(status)
 		{
@@ -407,7 +405,8 @@ int GitStatus::EnumDirStatus(const CString &gitdir, const CString &subpath, git_
 			{
 				for (it = filelist.begin(); it < filelist.end(); ++it)
 				{
-					CString casepath = path + it->m_CaseFileName;
+					CString casepath = path;
+					casepath += it->m_CaseFileName;
 
 					bool bIsDir = false;
 					if (it->m_FileName.GetLength() > 0 && it->m_FileName[it->m_FileName.GetLength() - 1] == _T('/'))
@@ -431,17 +430,19 @@ int GitStatus::EnumDirStatus(const CString &gitdir, const CString &subpath, git_
 						*status = git_wc_status_unversioned;
 
 					if(callback)
-						callback(gitdir + _T("/") + casepath, *status, bIsDir, pData, false, false);
+						callback(CombinePath(gitdir, casepath), *status, bIsDir, pData, false, false);
 				}
 				return 0;
 			}
+
+			CString lowcasepath = path;
+			lowcasepath.MakeLower();
 
 			CString onepath;
 			CString casepath;
 			for (it = filelist.begin(); it < filelist.end(); ++it)
 			{
-				casepath=onepath = path;
-				onepath.MakeLower();
+				casepath = onepath = lowcasepath;
 				onepath += it->m_FileName;
 				casepath += it->m_CaseFileName;
 
@@ -464,7 +465,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir, const CString &subpath, git_
 					{
 						*status = git_wc_status_unversioned;
 						if(callback)
-							callback(gitdir + _T("/") + casepath, *status, bIsDir, pData, false, false);
+							callback(CombinePath(gitdir, casepath), *status, bIsDir, pData, false, false);
 						continue;
 					}
 
@@ -477,14 +478,14 @@ int GitStatus::EnumDirStatus(const CString &gitdir, const CString &subpath, git_
 						*status = git_wc_status_unversioned;
 
 					if(callback)
-						callback(gitdir + _T("/") + casepath, *status, bIsDir, pData, false, false);
+						callback(CombinePath(gitdir, casepath), *status, bIsDir, pData, false, false);
 
 				}
 				else if(pos <0 && posintree>=0) /* check if file delete in index */
 				{
 					*status = git_wc_status_deleted;
 					if(callback)
-						callback(gitdir + _T("/") + casepath, *status, bIsDir, pData, false, false);
+						callback(CombinePath(gitdir, casepath), *status, bIsDir, pData, false, false);
 
 				}
 				else if(pos >=0 && posintree <0) /* Check if file added */
@@ -493,7 +494,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir, const CString &subpath, git_
 					if (indexptr->at(pos).m_Flags & GIT_IDXENTRY_STAGEMASK)
 						*status = git_wc_status_conflicted;
 					if(callback)
-						callback(gitdir + _T("/") + casepath, *status, bIsDir, pData, false, false);
+						callback(CombinePath(gitdir, casepath), *status, bIsDir, pData, false, false);
 				}
 				else
 				{
@@ -504,7 +505,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir, const CString &subpath, git_
 					{
 						*status = git_wc_status_normal;
 						if(callback)
-							callback(gitdir + _T("/") + casepath, *status, bIsDir, pData, false, false);
+							callback(CombinePath(gitdir, casepath), *status, bIsDir, pData, false, false);
 					}
 					else
 					{
@@ -551,7 +552,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir, const CString &subpath, git_
 								*status = git_wc_status_normal;
 							}
 							if(callback)
-								callback(gitdir + _T("/") + (*it2).m_FileName, *status, false, pData, false, skipWorktree);
+								callback(CombinePath(gitdir, (*it2).m_FileName), *status, false, pData, false, skipWorktree);
 						}
 					}
 				}
@@ -581,7 +582,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir, const CString &subpath, git_
 						{
 							*status = git_wc_status_deleted;
 							if(callback)
-								callback(gitdir + _T("/") + (*it2).m_FileName, *status, false, pData, false, false);
+								callback(CombinePath(gitdir, (*it2).m_FileName), *status, false, pData, false, false);
 						}
 					}
 				}
@@ -606,9 +607,6 @@ int GitStatus::GetDirStatus(const CString &gitdir, const CString &subpath, git_w
 			if(path[path.GetLength()-1] !=  _T('/'))
 				path += _T('/'); //Add trail / to show it is directory, not file name.
 
-		CString lowcasepath = path;
-		lowcasepath.MakeLower();
-
 		if(status)
 		{
 			g_IndexFileMap.CheckAndUpdate(gitdir, true);
@@ -621,6 +619,9 @@ int GitStatus::GetDirStatus(const CString &gitdir, const CString &subpath, git_w
 				return 0;
 			}
 
+			CString lowcasepath = path;
+			lowcasepath.MakeLower();
+
 			int pos = SearchInSortVector(*indexptr, lowcasepath, lowcasepath.GetLength());
 
 			//Not In Version Contorl
@@ -630,7 +631,7 @@ int GitStatus::GetDirStatus(const CString &gitdir, const CString &subpath, git_w
 				{
 					*status = git_wc_status_unversioned;
 					if(callback)
-						callback(gitdir + _T("/") + path, *status, false, pData, false, false);
+						callback(CombinePath(gitdir, path), *status, false, pData, false, false);
 					return 0;
 				}
 				//Check ignore always.
@@ -678,7 +679,7 @@ int GitStatus::GetDirStatus(const CString &gitdir, const CString &subpath, git_w
 						{
 							int dirpos = (*it).m_FileName.Find(_T('/'), path.GetLength());
 							if(dirpos<0 || IsRecursive)
-								callback(gitdir + _T("\\") + it->m_FileName, git_wc_status_conflicted, false, pData, false, false);
+								callback(CombinePath(gitdir, it->m_FileName), git_wc_status_conflicted, false, pData, false, false);
 						}
 						else
 							break;
@@ -713,7 +714,7 @@ int GitStatus::GetDirStatus(const CString &gitdir, const CString &subpath, git_w
 									{
 										int dirpos = (*it).m_FileName.Find(_T('/'), path.GetLength());
 										if(dirpos<0 || IsRecursive)
-											callback(gitdir + _T("\\") + it->m_FileName, git_wc_status_added, false, pData, false, false);
+											callback(CombinePath(gitdir, it->m_FileName), git_wc_status_added, false, pData, false, false);
 
 									}
 									else
@@ -727,7 +728,7 @@ int GitStatus::GetDirStatus(const CString &gitdir, const CString &subpath, git_w
 									{
 										int dirpos = (*it).m_FileName.Find(_T('/'), path.GetLength());
 										if(dirpos<0 || IsRecursive)
-											callback(gitdir + _T("\\") + it->m_FileName, git_wc_status_modified, false, pData, ((*it).m_Flags & GIT_IDXENTRY_VALID) && !((*it).m_Flags & GIT_IDXENTRY_SKIP_WORKTREE), ((*it).m_Flags & GIT_IDXENTRY_SKIP_WORKTREE) != 0);
+											callback(CombinePath(gitdir, it->m_FileName), git_wc_status_modified, false, pData, ((*it).m_Flags & GIT_IDXENTRY_VALID) && !((*it).m_Flags & GIT_IDXENTRY_SKIP_WORKTREE), ((*it).m_Flags & GIT_IDXENTRY_SKIP_WORKTREE) != 0);
 
 									}
 									else
@@ -791,7 +792,7 @@ int GitStatus::GetDirStatus(const CString &gitdir, const CString &subpath, git_w
 									{
 										sub = currentPath;
 										CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": index subdir %s\n"), (LPCTSTR)sub);
-										if(callback) callback(gitdir + _T("\\") + sub,
+										if (callback) callback(CombinePath(gitdir, sub),
 											git_wc_status_normal, true, pData, false, false);
 									}
 									continue;
@@ -807,7 +808,7 @@ int GitStatus::GetDirStatus(const CString &gitdir, const CString &subpath, git_w
 				}
 			}
 
-			if(callback) callback(gitdir + _T("/") + subpath, *status, true, pData, false, false);
+			if (callback) callback(CombinePath(gitdir, path), *status, true, pData, false, false);
 		}
 
 	}catch(...)

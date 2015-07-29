@@ -1588,12 +1588,13 @@ CString CGitLogListBase::MessageDisplayStr(GitRev* pLogEntry)
 	if (!m_bFullCommitMessageOnLogLine || pLogEntry->GetBody().IsEmpty())
 		return pLogEntry->GetSubject();
 
-	CString txt;
-	txt.Format(L"%s %s", (LPCTSTR)pLogEntry->GetSubject(), (LPCTSTR)pLogEntry->GetBody());
+	CString txt(pLogEntry->GetSubject());
+	txt += _T(' ');
+	txt += pLogEntry->GetBody();
 
 	// Deal with CRLF
-	txt.Replace(_T("\n"), _T(" "));
-	txt.Replace(_T("\r"), _T(" "));
+	txt.Replace(_T('\n'), _T(' '));
+	txt.Replace(_T('\r'), _T(' '));
 
 	return txt;
 }
@@ -1696,11 +1697,11 @@ void CGitLogListBase::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 		break;
 	case LOGLIST_BUG: //Bug ID
 		if(pLogEntry)
-			lstrcpyn(pItem->pszText, (LPCTSTR)this->m_ProjectProperties.FindBugID(pLogEntry->GetSubject() + _T("\r\n\r\n") + pLogEntry->GetBody()), pItem->cchTextMax - 1);
+			lstrcpyn(pItem->pszText, (LPCTSTR)this->m_ProjectProperties.FindBugID(pLogEntry->GetSubjectBody()), pItem->cchTextMax - 1);
 		break;
 	case LOGLIST_SVNREV: //SVN revision
 		if (pLogEntry)
-			lstrcpyn(pItem->pszText, (LPCTSTR)FindSVNRev(pLogEntry->GetSubject() + _T("\r\n\r\n") + pLogEntry->GetBody()), pItem->cchTextMax - 1);
+			lstrcpyn(pItem->pszText, (LPCTSTR)FindSVNRev(pLogEntry->GetSubjectBody()), pItem->cchTextMax - 1);
 		break;
 
 	default:
@@ -2069,7 +2070,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 
 					if(branchs.size() == 1)
 					{
-						str2 += _T(" ");
+						str2 += _T(' ');
 						str2 += _T('"') + branchs[0]->Mid(11) + _T('"');
 						popup.AppendMenuIcon(ID_SWITCHBRANCH, str2, IDI_SWITCH);
 
@@ -2279,7 +2280,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					if (branchs.size() == 1)
 					{
 						str.LoadString(IDS_DELETE_BRANCHTAG_SHORT);
-						str+=_T(" ");
+						str+=_T(' ');
 						str += *branchs[0];
 						popup.AppendMenuIcon(ID_DELETE, str, IDI_DELETE);
 						popup.SetMenuItemData(ID_DELETE, (ULONG_PTR)branchs[0]);
@@ -2394,7 +2395,8 @@ void CGitLogListBase::CopySelectionToClipBoard(int toCopy)
 					{
 						CString rename;
 						rename.Format(from, (LPCTSTR)((CTGitPath&)pLogEntry->GetFiles(this)[cpPathIndex]).GetGitOldPathString());
-						sPaths += _T(" ") + rename;
+						sPaths += _T(' ');
+						sPaths += rename;
 					}
 					sPaths += _T("\r\n");
 				}
@@ -2402,23 +2404,25 @@ void CGitLogListBase::CopySelectionToClipBoard(int toCopy)
 				CString body = pLogEntry->GetBody();
 				body.Replace(_T("\n"), _T("\r\n"));
 				sLogCopyText.Format(_T("%s: %s\r\n%s: %s <%s>\r\n%s: %s\r\n%s:\r\n%s\r\n----\r\n%s\r\n\r\n"),
-					(LPCTSTR)sRev, pLogEntry->m_CommitHash.ToString(),
+					(LPCTSTR)sRev, (LPCTSTR)pLogEntry->m_CommitHash.ToString(),
 					(LPCTSTR)sAuthor, (LPCTSTR)pLogEntry->GetAuthorName(), (LPCTSTR)pLogEntry->GetAuthorEmail(),
 					(LPCTSTR)sDate,
 					(LPCTSTR)CLoglistUtils::FormatDateAndTime(pLogEntry->GetAuthorDate(), m_DateFormat, true, m_bRelativeTimes),
-					(LPCTSTR)sMessage, (pLogEntry->GetSubject().Trim() + _T("\r\n\r\n") + body.Trim()).Trim(),
+					(LPCTSTR)sMessage, (LPCTSTR)pLogEntry->GetSubjectBody(true),
 					(LPCTSTR)sPaths);
 				sClipdata +=  sLogCopyText;
 			}
 			else if (toCopy == ID_COPY_MESSAGE)
 			{
-				CString body = pLogEntry->GetBody();
-				body.Replace(_T("\n"), _T("\r\n"));
-				sClipdata += _T("* ") + (pLogEntry->GetSubject().Trim() + _T("\r\n\r\n") + body.Trim()).Trim() + _T("\r\n\r\n");
+				sClipdata += _T("* ");
+				sClipdata += pLogEntry->GetSubjectBody(true);
+				sClipdata += _T("\r\n\r\n");
 			}
 			else if (toCopy == ID_COPY_SUBJECT)
 			{
-				sClipdata += _T("* ") + pLogEntry->GetSubject().Trim() + _T("\r\n\r\n");
+				sClipdata += _T("* ");
+				sClipdata += pLogEntry->GetSubject().Trim();
+				sClipdata += _T("\r\n\r\n");
 			}
 			else
 			{
@@ -3177,7 +3181,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRevLoglist* pRev, std::tr1::
 		{
 			if(this->m_bShowBugtraqColumn)
 			{
-				CString sBugIds = m_ProjectProperties.FindBugID(pRev->GetSubject() + _T("\r\n\r\n") + pRev->GetBody());
+				CString sBugIds = m_ProjectProperties.FindBugID(pRev->GetSubjectBody());
 
 				ATLTRACE(_T("bugID = \"%s\"\n"), (LPCTSTR)sBugIds);
 				if (std::regex_search(std::wstring(sBugIds), pat, flags))
@@ -3298,7 +3302,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRevLoglist* pRev, std::tr1::
 		{
 			if(this->m_bShowBugtraqColumn)
 			{
-				CString sBugIds = m_ProjectProperties.FindBugID(pRev->GetSubject() + _T("\r\n\r\n") + pRev->GetBody());
+				CString sBugIds = m_ProjectProperties.FindBugID(pRev->GetSubjectBody());
 
 				if (!m_bFilterCaseSensitively)
 					sBugIds.MakeLower();
@@ -4020,30 +4024,30 @@ LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*
 
 			CString str;
 			str+=pLogEntry->m_CommitHash.ToString();
-			str+=_T("\n");
+			str += _T('\n');
 
 			for (size_t j = 0; j < this->m_HashMap[pLogEntry->m_CommitHash].size(); ++j)
 			{
 				str+=m_HashMap[pLogEntry->m_CommitHash][j];
-				str+=_T("\n");
+				str += _T('\n');
 			}
 
 			str+=pLogEntry->GetAuthorEmail();
-			str+=_T("\n");
+			str += _T('\n');
 			str+=pLogEntry->GetAuthorName();
-			str+=_T("\n");
+			str += _T('\n');
 			str+=pLogEntry->GetBody();
-			str+=_T("\n");
+			str += _T('\n');
 			str+=pLogEntry->GetCommitterEmail();
-			str+=_T("\n");
+			str += _T('\n');
 			str+=pLogEntry->GetCommitterName();
-			str+=_T("\n");
+			str += _T('\n');
 			str+=pLogEntry->GetSubject();
-			str+=_T("\n");
+			str += _T('\n');
 			str+=pLogEntry->m_Notes;
-			str+=_T("\n");
+			str += _T('\n');
 			str+=GetTagInfo(pLogEntry);
-			str+=_T("\n");
+			str += _T('\n');
 
 
 			/*Because changed files list is loaded on demand when gui show,
@@ -4057,9 +4061,9 @@ LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*
 				for (int j = 0; j < pLogEntry->GetFiles(this).GetCount(); ++j)
 				{
 					str += pLogEntry->GetFiles(this)[j].GetWinPath();
-					str+=_T("\n");
+					str += _T('\n');
 					str += pLogEntry->GetFiles(this)[j].GetGitOldPathString();
-					str+=_T("\n");
+					str += _T('\n');
 				}
 			}
 			else
@@ -4070,7 +4074,7 @@ LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*
 				for (size_t j = 0; j < pLogEntry->m_SimpleFileList.size(); ++j)
 				{
 					str += pLogEntry->m_SimpleFileList[j];
-					str+=_T("\n");
+					str += _T('\n');
 				}
 
 			}
