@@ -838,30 +838,33 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 
 			CString matchpath=this->m_path.GetGitPathString();
 
-			bool mightNeedReset = true;
-
 			CTGitPathList& files = pLogEntry->GetFiles(&m_LogList);
 			int count = files.GetCount();
 			if (!m_bWholeProject && !matchpath.IsEmpty() && m_iHidePaths)
 			{
 				int matchPathLen = matchpath.GetLength();
-				mightNeedReset = false;
+				bool somethingHidden = false;
 				for (int i = 0; i < count; ++i)
 				{
 					((CTGitPath&)files[i]).m_Action &= ~(CTGitPath::LOGACTIONS_HIDE | CTGitPath::LOGACTIONS_GRAY);
 
 					if (files[i].GetGitPathString().Left(matchPathLen) != matchpath && ((files[i].m_Action & (CTGitPath::LOGACTIONS_REPLACED | CTGitPath::LOGACTIONS_COPY)) == 0 || files[i].GetGitOldPathString().Left(matchPathLen) != matchpath))
 					{
+						somethingHidden = true;
 						if (m_iHidePaths == 1)
 							((CTGitPath&)files[i]).m_Action |= CTGitPath::LOGACTIONS_HIDE;
 						else if (m_iHidePaths == 2)
 							((CTGitPath&)files[i]).m_Action |= CTGitPath::LOGACTIONS_GRAY;
 					}
 				}
+				if (somethingHidden)
+					pLogEntry->GetAction(&m_LogList) |= CTGitPath::LOGACTIONS_HIDE;
+				else
+					pLogEntry->GetAction(&m_LogList) &= ~CTGitPath::LOGACTIONS_HIDE;
 			}
-
-			if (mightNeedReset)
+			else if (pLogEntry->GetAction(&m_LogList) & CTGitPath::LOGACTIONS_HIDE)
 			{
+				pLogEntry->GetAction(&m_LogList) &= ~CTGitPath::LOGACTIONS_HIDE;
 				for (int i = 0 ; i < count; ++i)
 					((CTGitPath&)files[i]).m_Action &= ~(CTGitPath::LOGACTIONS_HIDE | CTGitPath::LOGACTIONS_GRAY);
 			}
@@ -871,13 +874,19 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 			if (!fileFilter.IsEmpty())
 			{
 				fileFilter.MakeLower();
+				bool somethingHidden = false;
 				for (int i = 0; i < count; ++i)
 				{
 					CString sPath(files[i].GetGitPathString());
 					sPath.MakeLower();
 					if (sPath.Find(fileFilter) < 0)
+					{
 						((CTGitPath&)files[i]).m_Action |= CTGitPath::LOGACTIONS_HIDE;
+						somethingHidden = true;
+					}
 				}
+				if (somethingHidden)
+					pLogEntry->GetAction(&m_LogList) |= CTGitPath::LOGACTIONS_HIDE;
 			}
 
 			m_ChangedFileListCtrl.UpdateWithGitPathList(pLogEntry->GetFiles(&m_LogList));
