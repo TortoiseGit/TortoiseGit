@@ -326,7 +326,7 @@ int CLogCache::LoadOneItem(GitRevLoglist& Rev,ULONGLONG offset)
 
 		path.m_ParentNo = fileheader ->m_ParentNo;
 		path.m_Stage = fileheader ->m_Stage;
-		path.m_Action = fileheader ->m_Action;
+		path.m_Action = fileheader->m_Action & ~(CTGitPath::LOGACTIONS_HIDE | CTGitPath::LOGACTIONS_GRAY);
 		Rev.m_Action |= path.m_Action;
 
 		if(fileheader->m_Add == 0xFFFFFFFF)

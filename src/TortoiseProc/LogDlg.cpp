@@ -861,7 +861,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 			if (mightNeedReset)
 			{
 				for (int i = 0 ; i < count; ++i)
-					((CTGitPath&)pLogEntry->GetFiles(&m_LogList)[i]).m_Action &= ~CTGitPath::LOGACTIONS_HIDE;
+					((CTGitPath&)pLogEntry->GetFiles(&m_LogList)[i]).m_Action &= ~(CTGitPath::LOGACTIONS_HIDE | CTGitPath::LOGACTIONS_GRAY);
 			}
 
 			CString fileFilter;
