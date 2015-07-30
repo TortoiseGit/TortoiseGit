@@ -327,6 +327,7 @@
     <ClInclude Include="..\Utils\ProfilingInfo.h" />
     <ClInclude Include="..\Utils\SimpleIni.h" />
     <ClInclude Include="..\Utils\TaskbarUUID.h" />
+    <ClInclude Include="CustomMFCRibbonStatusBar.h" />
     <ClInclude Include="EditorConfigWrapper.h" />
     <ClInclude Include="EncodingDlg.h" />
     <ClInclude Include="TempFile.h" />

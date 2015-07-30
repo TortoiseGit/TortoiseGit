@@ -554,6 +554,9 @@
     <ClInclude Include="..\Utils\MiscUI\Tooltip.h">
       <Filter>Utils\MiscUI</Filter>
     </ClInclude>
+    <ClInclude Include="CustomMFCRibbonStatusBar.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resources\download.avi">

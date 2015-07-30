@@ -1,7 +1,7 @@
 // TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2013 - TortoiseGit
-// Copyright (C) 2006-2014 - TortoiseSVN
+// Copyright (C) 2006-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -27,7 +27,7 @@
 #include "XSplitter.h"
 #include "GitPatch.h"
 #include "SimpleIni.h"
-
+#include "CustomMFCRibbonStatusBar.h"
 #include <tuple>
 
 class CLeftView;
@@ -238,7 +238,7 @@ protected:
 
 protected:
 	CMFCStatusBar	m_wndStatusBar;
-	CMFCRibbonStatusBar	m_wndRibbonStatusBar;
+	CCustomMFCRibbonStatusBar	m_wndRibbonStatusBar;
 	CLocatorBar		m_wndLocatorBar;
 	CLineDiffBar	m_wndLineDiffBar;
 	CXSplitter		m_wndSplitter;
