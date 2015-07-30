@@ -840,39 +840,44 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 
 			bool mightNeedReset = true;
 
-			int count = pLogEntry->GetFiles(&m_LogList).GetCount();
-			for (int i = 0 ; i < count && (!matchpath.IsEmpty()); ++i)
+			CTGitPathList& files = pLogEntry->GetFiles(&m_LogList);
+			int count = files.GetCount();
+			if (!m_bWholeProject && !matchpath.IsEmpty() && m_iHidePaths)
 			{
-				if( m_bWholeProject )
-					break;
-
-				((CTGitPath&)pLogEntry->GetFiles(&m_LogList)[i]).m_Action &= ~(CTGitPath::LOGACTIONS_HIDE|CTGitPath::LOGACTIONS_GRAY);
+				int matchPathLen = matchpath.GetLength();
 				mightNeedReset = false;
-
-				if(pLogEntry->GetFiles(&m_LogList)[i].GetGitPathString().Left(matchpath.GetLength()) != matchpath && pLogEntry->GetFiles(&m_LogList)[i].GetGitOldPathString().Left(matchpath.GetLength()) != matchpath)
+				for (int i = 0; i < count; ++i)
 				{
-					if (m_iHidePaths == 1)
-						((CTGitPath&)pLogEntry->GetFiles(&m_LogList)[i]).m_Action |= CTGitPath::LOGACTIONS_HIDE;
-					else if (m_iHidePaths == 2)
-						((CTGitPath&)pLogEntry->GetFiles(&m_LogList)[i]).m_Action |= CTGitPath::LOGACTIONS_GRAY;
+					((CTGitPath&)files[i]).m_Action &= ~(CTGitPath::LOGACTIONS_HIDE | CTGitPath::LOGACTIONS_GRAY);
+
+					if (files[i].GetGitPathString().Left(matchPathLen) != matchpath && ((files[i].m_Action & (CTGitPath::LOGACTIONS_REPLACED | CTGitPath::LOGACTIONS_COPY)) == 0 || files[i].GetGitOldPathString().Left(matchPathLen) != matchpath))
+					{
+						if (m_iHidePaths == 1)
+							((CTGitPath&)files[i]).m_Action |= CTGitPath::LOGACTIONS_HIDE;
+						else if (m_iHidePaths == 2)
+							((CTGitPath&)files[i]).m_Action |= CTGitPath::LOGACTIONS_GRAY;
+					}
 				}
 			}
 
 			if (mightNeedReset)
 			{
 				for (int i = 0 ; i < count; ++i)
-					((CTGitPath&)pLogEntry->GetFiles(&m_LogList)[i]).m_Action &= ~(CTGitPath::LOGACTIONS_HIDE | CTGitPath::LOGACTIONS_GRAY);
+					((CTGitPath&)files[i]).m_Action &= ~(CTGitPath::LOGACTIONS_HIDE | CTGitPath::LOGACTIONS_GRAY);
 			}
 
 			CString fileFilter;
 			m_cFileFilter.GetWindowText(fileFilter);
-			fileFilter.MakeLower();
-			for (int i = 0; i < count && (!fileFilter.IsEmpty()); ++i)
+			if (!fileFilter.IsEmpty())
 			{
-				CString sPath = pLogEntry->GetFiles(&m_LogList)[i].GetGitPathString();
-				sPath.MakeLower();
-				if (sPath.Find(fileFilter) < 0)
-					((CTGitPath&)pLogEntry->GetFiles(&m_LogList)[i]).m_Action |= CTGitPath::LOGACTIONS_HIDE;
+				fileFilter.MakeLower();
+				for (int i = 0; i < count; ++i)
+				{
+					CString sPath(files[i].GetGitPathString());
+					sPath.MakeLower();
+					if (sPath.Find(fileFilter) < 0)
+						((CTGitPath&)files[i]).m_Action |= CTGitPath::LOGACTIONS_HIDE;
+				}
 			}
 
 			m_ChangedFileListCtrl.UpdateWithGitPathList(pLogEntry->GetFiles(&m_LogList));
