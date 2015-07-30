@@ -536,6 +536,7 @@ void CTortoiseGitBlameView::ContextMenuAction(int cmd, GitRev *pRev, GIT_REV_LIS
 			CString procCmd = _T("/path:\"") + path + _T("\" ");
 			procCmd += _T(" /command:log");
 			procCmd += _T(" /rev:") + rev;
+			procCmd += _T(" /endrev:") + rev;
 
 			CCommonAppUtils::RunTortoiseGitProc(procCmd);
 		}

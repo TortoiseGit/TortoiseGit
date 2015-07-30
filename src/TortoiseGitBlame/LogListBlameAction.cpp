@@ -146,7 +146,11 @@ void CGitBlameLogList::ContextMenuAction(int cmd, int /*FirstSelect*/, int /*Las
 			RunTortoiseGitProcWithCurrentRev(_T("switch"), pRev);
 			break;
 		case ID_LOG:
-			RunTortoiseGitProcWithCurrentRev(_T("log"), pRev, ((CMainFrame*)::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName());
+			{
+				CString procCmd;
+				procCmd.Format(L"/command:log /path:\"%s\" /endrev:%s /rev:%s", (LPCTSTR)((CMainFrame*)::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName(), (LPCTSTR)pRev->m_CommitHash.ToString(), (LPCTSTR)pRev->m_CommitHash.ToString());
+				CCommonAppUtils::RunTortoiseGitProc(procCmd);
+			}
 			break;
 		case ID_REPOBROWSE:
 			RunTortoiseGitProcWithCurrentRev(_T("repobrowser"), pRev, ((CMainFrame*)::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName());
