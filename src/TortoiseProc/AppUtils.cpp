@@ -3390,7 +3390,7 @@ int CAppUtils::GetMsysgitVersion()
 	CString gitpath = CGit::ms_LastMsysGitDir+_T("\\git.exe");
 
 	__int64 time=0;
-	if (!g_Git.GetFileModifyTime(gitpath, &time))
+	if (!CGit::GetFileModifyTime(gitpath, &time))
 	{
 		if((DWORD)time == regTime)
 		{

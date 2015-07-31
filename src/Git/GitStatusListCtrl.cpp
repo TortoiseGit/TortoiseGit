@@ -1133,7 +1133,7 @@ void CGitStatusListCtrl::AddEntry(CTGitPath * GitPath, WORD /*langID*/, int list
 		if (filetime && !(GitPath->m_Action & CTGitPath::LOGACTIONS_DELETED))
 		{
 			FILETIME* f = (FILETIME*)(__int64*)&filetime;
-			modificationDate = CLoglistUtils::FormatDateAndTime(CTime(g_Git.filetime_to_time_t(f)), DATE_SHORTDATE, true, relativeTimes);
+			modificationDate = CLoglistUtils::FormatDateAndTime(CTime(CGit::filetime_to_time_t(f)), DATE_SHORTDATE, true, relativeTimes);
 		}
 		SetItemText(index, GetColumnIndex(GITSLC_COLMODIFICATIONDATE), modificationDate);
 	}

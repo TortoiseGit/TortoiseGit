@@ -400,7 +400,7 @@ public:
 	int GetInitAddList(CTGitPathList &outpathlist);
 	int GetWorkingTreeChanges(CTGitPathList& result, bool amend = false, CTGitPathList* filterlist = nullptr);
 
-	__int64 filetime_to_time_t(const FILETIME *ft)
+	static __int64 filetime_to_time_t(const FILETIME *ft)
 	{
 		long long winTime = ((long long)ft->dwHighDateTime << 32) + ft->dwLowDateTime;
 		winTime -= 116444736000000000LL; /* Windows to Unix Epoch conversion */
@@ -408,7 +408,7 @@ public:
 		return (time_t)winTime;
 	}
 
-	int GetFileModifyTime(LPCTSTR filename, __int64* time, bool* isDir = nullptr, __int64* size = nullptr)
+	static int GetFileModifyTime(LPCTSTR filename, __int64* time, bool* isDir = nullptr, __int64* size = nullptr)
 	{
 		WIN32_FILE_ATTRIBUTE_DATA fdata;
 		if (GetFileAttributesEx(filename, GetFileExInfoStandard, &fdata))

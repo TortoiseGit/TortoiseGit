@@ -115,7 +115,7 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 		this->at(i).m_Size = e->file_size;
 	}
 
-	g_Git.GetFileModifyTime(dgitdir + _T("index"), &this->m_LastModifyTime);
+	CGit::GetFileModifyTime(dgitdir + _T("index"), &this->m_LastModifyTime);
 	std::sort(this->begin(), this->end(), SortIndex);
 
 	m_critRepoSec.Unlock();
@@ -211,9 +211,9 @@ int CGitIndexList::GetStatus(const CString &gitdir,const CString &pathParam, git
 		git_wc_status_kind dirstatus = git_wc_status_none;
 		int result;
 		if (path.IsEmpty())
-			result = g_Git.GetFileModifyTime(gitdir, &time, &isDir);
+			result = CGit::GetFileModifyTime(gitdir, &time, &isDir);
 		else
-			result = g_Git.GetFileModifyTime(CombinePath(gitdir, path), &time, &isDir, &filesize);
+			result = CGit::GetFileModifyTime(CombinePath(gitdir, path), &time, &isDir, &filesize);
 
 		if (result)
 		{
@@ -248,7 +248,7 @@ int CGitIndexList::GetStatus(const CString &gitdir,const CString &pathParam, git
 							}
 							else
 							{
-								result = g_Git.GetFileModifyTime(CombinePath(gitdir, (*it).m_FileName), &time, nullptr, &filesize);
+								result = CGit::GetFileModifyTime(CombinePath(gitdir, (*it).m_FileName), &time, nullptr, &filesize);
 								if (result)
 									continue;
 
@@ -309,7 +309,7 @@ int CGitIndexFileMap::Check(const CString &gitdir, bool *isChanged)
 	IndexFile += _T("index");
 
 	/* Get data associated with "crt_stat.c": */
-	result = g_Git.GetFileModifyTime(IndexFile, &time);
+	result = CGit::GetFileModifyTime(IndexFile, &time);
 
 	if (result)
 		return result;
@@ -424,7 +424,7 @@ int CGitHeadFileList::GetPackRef(const CString &gitdir)
 	CString PackRef = g_AdminDirMap.GetAdminDir(gitdir) + _T("packed-refs");
 
 	__int64 mtime;
-	if (g_Git.GetFileModifyTime(PackRef, &mtime))
+	if (CGit::GetFileModifyTime(PackRef, &mtime))
 	{
 		//packed refs is not existed
 		this->m_PackRefFile.Empty();
@@ -525,7 +525,7 @@ int CGitHeadFileList::ReadHeadHash(CString gitdir)
 	m_HeadFile = m_Gitdir;
 	m_HeadFile += _T("HEAD");
 
-	if( g_Git.GetFileModifyTime(m_HeadFile, &m_LastModifyTimeHead))
+	if( CGit::GetFileModifyTime(m_HeadFile, &m_LastModifyTimeHead))
 		return -1;
 
 	CAutoFile hfile = CreateFile(m_HeadFile,
@@ -567,7 +567,7 @@ int CGitHeadFileList::ReadHeadHash(CString gitdir)
 		m_HeadRefFile.Replace(_T('/'), _T('\\'));
 
 		__int64 time;
-		if (g_Git.GetFileModifyTime(m_HeadRefFile, &time, nullptr))
+		if (CGit::GetFileModifyTime(m_HeadRefFile, &time, nullptr))
 		{
 			m_HeadRefFile.Empty();
 			if (GetPackRef(gitdir))
@@ -631,7 +631,7 @@ bool CGitHeadFileList::CheckHeadUpdate()
 
 	__int64 mtime=0;
 
-	if (g_Git.GetFileModifyTime(m_HeadFile, &mtime))
+	if (CGit::GetFileModifyTime(m_HeadFile, &mtime))
 		return true;
 
 	if (mtime != this->m_LastModifyTimeHead)
@@ -639,7 +639,7 @@ bool CGitHeadFileList::CheckHeadUpdate()
 
 	if (!this->m_HeadRefFile.IsEmpty())
 	{
-		if (g_Git.GetFileModifyTime(m_HeadRefFile, &mtime))
+		if (CGit::GetFileModifyTime(m_HeadRefFile, &mtime))
 			return true;
 
 		if (mtime != this->m_LastModifyTimeRef)
@@ -648,7 +648,7 @@ bool CGitHeadFileList::CheckHeadUpdate()
 
 	if(!this->m_PackRefFile.IsEmpty())
 	{
-		if (g_Git.GetFileModifyTime(m_PackRefFile, &mtime))
+		if (CGit::GetFileModifyTime(m_PackRefFile, &mtime))
 			return true;
 
 		if (mtime != this->m_LastModifyTimePackRef)
@@ -800,7 +800,7 @@ int CGitIgnoreItem::FetchIgnoreList(const CString &projectroot, const CString &f
 	}
 	{
 
-		if(g_Git.GetFileModifyTime(file, &m_LastModifyTime))
+		if(CGit::GetFileModifyTime(file, &m_LastModifyTime))
 			return -1;
 
 		if(git_create_exclude_list(&this->m_pExcludeList))
@@ -862,7 +862,7 @@ bool CGitIgnoreList::CheckFileChanged(const CString &path)
 {
 	__int64 time = 0;
 
-	int ret = g_Git.GetFileModifyTime(path, &time);
+	int ret = CGit::GetFileModifyTime(path, &time);
 
 	bool cacheExist;
 	{
@@ -1103,15 +1103,15 @@ bool CGitIgnoreList::CheckAndUpdateCoreExcludefile(const CString &adminDir)
 		excludesFile = GetWindowsHome() + excludesFile.Mid(1);
 
 	CAutoWriteLock lockMap(m_SharedMutex);
-	g_Git.GetFileModifyTime(projectConfig, &m_Map[projectConfig].m_LastModifyTime);
-	g_Git.GetFileModifyTime(globalXDGConfig, &m_Map[globalXDGConfig].m_LastModifyTime);
+	CGit::GetFileModifyTime(projectConfig, &m_Map[projectConfig].m_LastModifyTime);
+	CGit::GetFileModifyTime(globalXDGConfig, &m_Map[globalXDGConfig].m_LastModifyTime);
 	if (m_Map[globalXDGConfig].m_LastModifyTime == 0)
 		m_Map.erase(globalXDGConfig);
-	g_Git.GetFileModifyTime(globalConfig, &m_Map[globalConfig].m_LastModifyTime);
+	CGit::GetFileModifyTime(globalConfig, &m_Map[globalConfig].m_LastModifyTime);
 	if (m_Map[globalConfig].m_LastModifyTime == 0)
 		m_Map.erase(globalConfig);
 	if (!m_sGitSystemConfigPath.IsEmpty())
-		g_Git.GetFileModifyTime(m_sGitSystemConfigPath, &m_Map[m_sGitSystemConfigPath].m_LastModifyTime);
+		CGit::GetFileModifyTime(m_sGitSystemConfigPath, &m_Map[m_sGitSystemConfigPath].m_LastModifyTime);
 	if (m_Map[m_sGitSystemConfigPath].m_LastModifyTime == 0 || m_sGitSystemConfigPath.IsEmpty())
 		m_Map.erase(m_sGitSystemConfigPath);
 	m_CoreExcludesfiles[adminDir] = excludesFile;
