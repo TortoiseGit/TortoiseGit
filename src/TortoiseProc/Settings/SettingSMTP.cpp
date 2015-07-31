@@ -82,12 +82,17 @@ BOOL CSettingSMTP::OnInitDialog()
 
 	AdjustControlSize(IDC_SMTP_AUTH);
 
-	m_SMTPDeliveryTypeCombo.AddString(CString(MAKEINTRESOURCE(IDS_SMTP_DIRECTLY)));
+	int idx = m_SMTPDeliveryTypeCombo.AddString(CString(MAKEINTRESOURCE(IDS_SMTP_DIRECTLY)));
+	m_SMTPDeliveryTypeCombo.SetItemData(idx, SEND_MAIL_SMTP_DIRECT);
 	CString mailCient;
 	CMailMsg::DetectMailClient(mailCient);
 	if (!mailCient.IsEmpty())
-		m_SMTPDeliveryTypeCombo.AddString(CString(MAKEINTRESOURCE(IDS_SMTP_MAPI)));
-	m_SMTPDeliveryTypeCombo.AddString(CString(MAKEINTRESOURCE(IDS_SMTP_CONFIGURED)));
+	{
+		idx = m_SMTPDeliveryTypeCombo.AddString(CString(MAKEINTRESOURCE(IDS_SMTP_MAPI)));
+		m_SMTPDeliveryTypeCombo.SetItemData(idx, SEND_MAIL_MAPI);
+	}
+	idx = m_SMTPDeliveryTypeCombo.AddString(CString(MAKEINTRESOURCE(IDS_SMTP_CONFIGURED)));
+	m_SMTPDeliveryTypeCombo.SetItemData(idx, SEND_MAIL_SMTP_CONFIGURED);
 
 	if ((int)m_dwDeliveryType >= m_SMTPDeliveryTypeCombo.GetCount())
 		m_dwDeliveryType = 0;
@@ -124,7 +129,7 @@ void CSettingSMTP::OnModifiedEncryptionCombo()
 
 void CSettingSMTP::OnModifiedDeliveryCombo()
 {
-	m_dwDeliveryType = m_SMTPDeliveryTypeCombo.GetCurSel();
+	m_dwDeliveryType = m_SMTPDeliveryTypeCombo.GetItemData(m_SMTPDeliveryTypeCombo.GetCurSel());
 
 	GetDlgItem(IDC_SMTP_PASSWORD)->EnableWindow(m_dwDeliveryType >= 2 && m_bAuth);
 	GetDlgItem(IDC_SMTP_USER)->EnableWindow(m_dwDeliveryType >= 2 && m_bAuth);
