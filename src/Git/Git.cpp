@@ -57,12 +57,6 @@ static LPCTSTR nextpath(const wchar_t* path, wchar_t* buf, size_t buflen)
 	return (path != base) ? path : NULL;
 }
 
-static inline BOOL FileExists(LPCTSTR lpszFileName)
-{
-	struct _stat st;
-	return _tstat(lpszFileName, &st) == 0;
-}
-
 static CString FindFileOnPath(const CString& filename, LPCTSTR env, bool wantDirectory = false)
 {
 	TCHAR buf[MAX_PATH] = { 0 };
@@ -83,7 +77,7 @@ static CString FindFileOnPath(const CString& filename, LPCTSTR env, bool wantDir
 		else
 			break;
 
-		if (FileExists(buf))
+		if (PathFileExists(buf))
 		{
 			if (wantDirectory)
 				pfin[1] = 0;
@@ -115,7 +109,7 @@ static BOOL FindGitPath()
 		{
 			// prefer cmd directory as early Git for Windows 2.x releases only had this
 			CString installRoot = CGit::ms_LastMsysGitDir.Mid(0, CGit::ms_LastMsysGitDir.GetLength() - 12) + _T("\\cmd\\git.exe");
-			if (FileExists(installRoot))
+			if (PathFileExists(installRoot))
 				CGit::ms_LastMsysGitDir = CGit::ms_LastMsysGitDir.Mid(0, CGit::ms_LastMsysGitDir.GetLength() - 12) + _T("\\cmd");
 		}
 		if (CGit::ms_LastMsysGitDir.GetLength() > 4 && CGit::ms_LastMsysGitDir.Right(4) == _T("\\cmd"))
@@ -123,7 +117,7 @@ static BOOL FindGitPath()
 			// often the msysgit\cmd folder is on the %PATH%, but
 			// that git.exe does not work, so try to guess the bin folder
 			CString binDir = CGit::ms_LastMsysGitDir.Mid(0, CGit::ms_LastMsysGitDir.GetLength() - 4) + _T("\\bin\\git.exe");
-			if (FileExists(binDir))
+			if (PathFileExists(binDir))
 				CGit::ms_LastMsysGitDir = CGit::ms_LastMsysGitDir.Mid(0, CGit::ms_LastMsysGitDir.GetLength() - 4) + _T("\\bin");
 		}
 		return TRUE;
@@ -139,7 +133,7 @@ static CString FindExecutableOnPath(const CString& executable, LPCTSTR env)
 	if (executable.GetLength() < 4 || executable.Find(_T(".exe"), executable.GetLength() - 4) != executable.GetLength() - 4)
 		filename += _T(".exe");
 
-	if (FileExists(filename))
+	if (PathFileExists(filename))
 		return filename;
 
 	filename = FindFileOnPath(filename, env);
@@ -2029,7 +2023,7 @@ int CGit::FindAndSetGitExePath(BOOL bFallback)
 {
 	CRegString msysdir = CRegString(REG_MSYSGIT_PATH, _T(""), FALSE);
 	CString str = msysdir;
-	if (!str.IsEmpty() && FileExists(str + _T("\\git.exe")))
+	if (!str.IsEmpty() && PathFileExists(str + _T("\\git.exe")))
 	{
 		CGit::ms_LastMsysGitDir = str;
 		return TRUE;
@@ -2067,9 +2061,9 @@ int CGit::FindAndSetGitExePath(BOOL bFallback)
 	}
 	if (!str.IsEmpty())
 	{
-		if (FileExists(str + _T("\\bin\\git.exe")))
+		if (PathFileExists(str + _T("\\bin\\git.exe")))
 			str += _T("\\bin");
-		else if (FileExists(str + _T("\\cmd\\git.exe"))) // only needed for older Git for Windows 2.x packages
+		else if (PathFileExists(str + _T("\\cmd\\git.exe"))) // only needed for older Git for Windows 2.x packages
 			str += _T("\\cmd");
 		else
 		{
