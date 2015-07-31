@@ -129,7 +129,7 @@ void CSettingSMTP::OnModifiedEncryptionCombo()
 
 void CSettingSMTP::OnModifiedDeliveryCombo()
 {
-	m_dwDeliveryType = m_SMTPDeliveryTypeCombo.GetItemData(m_SMTPDeliveryTypeCombo.GetCurSel());
+	m_dwDeliveryType = (DWORD)m_SMTPDeliveryTypeCombo.GetItemData(m_SMTPDeliveryTypeCombo.GetCurSel());
 
 	GetDlgItem(IDC_SMTP_PASSWORD)->EnableWindow(m_dwDeliveryType >= 2 && m_bAuth);
 	GetDlgItem(IDC_SMTP_USER)->EnableWindow(m_dwDeliveryType >= 2 && m_bAuth);

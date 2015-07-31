@@ -1068,7 +1068,10 @@ TEST(CGit, CEnvironment)
 	EXPECT_STREQ(_T("value1"), env.GetEnv(L"key1"));
 	EXPECT_STREQ(_T("value4a"), env.GetEnv(L"key4"));
 	EXPECT_STREQ(_T("value5a"), env.GetEnv(L"key5"));
+#pragma warning(push)
+#pragma warning(disable: 4996)
 	CString windir = _wgetenv(L"windir");
+#pragma warning(pop)
 	env.CopyProcessEnvironment();
 	EXPECT_STREQ(windir, env.GetEnv(L"windir"));
 	EXPECT_STREQ(_T("value1"), env.GetEnv(L"key1"));
