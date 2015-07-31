@@ -350,6 +350,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		m_wndStatusBar.EnablePaneDoubleClick();
 	}
 
+	EnableLoadDockState(FALSE);
 	if (!m_wndLocatorBar.Create(this, IDD_DIFFLOCATOR,
 		CBRS_ALIGN_LEFT | CBRS_SIZE_FIXED, ID_VIEW_LOCATORBAR))
 	{
