@@ -103,10 +103,10 @@
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term>MIME</term>
+				<term>MAPI</term>
 				<listitem>
 					<para>
-						When this option is selected, TortoiseGit uses the Microsoft MIME-API for sending mails.
+						When this option is selected, TortoiseGit uses the Microsoft Messaging API (MAPI) for sending mails.
 						For this, you need a MAPI capable mail client (e.g. Thunderbird or Outlook).
 					</para>
 					<important>
