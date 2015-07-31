@@ -517,7 +517,7 @@ int CGitHeadFileList::GetPackRef(const CString &gitdir)
 	}
 	return 0;
 }
-int CGitHeadFileList::ReadHeadHash(CString gitdir)
+int CGitHeadFileList::ReadHeadHash(const CString& gitdir)
 {
 	CAutoWriteLock lock(m_SharedMutex);
 	m_Gitdir = g_AdminDirMap.GetAdminDir(gitdir);

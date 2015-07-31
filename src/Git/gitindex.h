@@ -184,7 +184,7 @@ public:
 	}
 
 	int ReadTree();
-	int ReadHeadHash(CString gitdir);
+	int ReadHeadHash(const CString& gitdir);
 	bool CheckHeadUpdate();
 	bool HeadHashEqualsTreeHash();
 	bool HeadFileIsEmpty();
