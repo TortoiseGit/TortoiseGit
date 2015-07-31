@@ -45,6 +45,7 @@ GitStatus::~GitStatus(void)
 }
 
 // static method
+#ifndef TGITCACHE
 git_wc_status_kind GitStatus::GetAllStatus(const CTGitPath& path, git_depth_t depth, bool * assumeValid, bool * skipWorktree)
 {
 	git_wc_status_kind			statuskind;
@@ -96,6 +97,7 @@ git_wc_status_kind GitStatus::GetAllStatusRecursive(const CTGitPath& path)
 {
 	return GetAllStatus(path, git_depth_infinity);
 }
+#endif
 
 // static method
 git_wc_status_kind GitStatus::GetMoreImportant(git_wc_status_kind status1, git_wc_status_kind status2)
@@ -140,6 +142,7 @@ int GitStatus::GetStatusRanking(git_wc_status_kind status)
 	return 0;
 }
 
+#ifndef TGITCACHE
 void GitStatus::GetStatus(const CTGitPath& path, bool /*update*/ /* = false */, bool noignore /* = false */, bool /*noexternals*/ /* = false */)
 {
 	// NOTE: unlike the SVN version this one does not cache the enumerated files, because in practice no code in all of
@@ -193,6 +196,7 @@ void GitStatus::GetStatus(const CTGitPath& path, bool /*update*/ /* = false */, 
 
 	status = &m_status;
 }
+#endif
 
 typedef CComCritSecLock<CComCriticalSection> CAutoLocker;
 
@@ -297,6 +301,7 @@ int GitStatus::GetFileStatus(const CString &gitdir, const CString &pathParam, gi
 
 }
 
+#ifdef TGITCACHE
 bool GitStatus::HasIgnoreFilesChanged(const CString &gitdir, const CString &subpaths, bool isDir)
 {
 	return g_IgnoreList.CheckIgnoreChanged(gitdir, subpaths, isDir);
@@ -590,6 +595,9 @@ int GitStatus::EnumDirStatus(const CString &gitdir, const CString &subpath, git_
 	return 0;
 
 }
+#endif
+
+#ifndef TGITCACHE
 int GitStatus::GetDirStatus(const CString &gitdir, const CString &subpath, git_wc_status_kind * status, BOOL IsFul, BOOL IsRecursive, BOOL IsIgnore, FILL_STATUS_CALLBACK callback, void *pData)
 {
 	try
@@ -800,7 +808,9 @@ int GitStatus::GetDirStatus(const CString &gitdir, const CString &subpath, git_w
 
 	return 0;
 }
+#endif
 
+#ifdef TGITCACHE
 bool GitStatus::IsExistIndexLockFile(const CString &gitdir)
 {
 	CString sDirName= gitdir;
@@ -831,6 +841,7 @@ bool GitStatus::IsExistIndexLockFile(const CString &gitdir)
 		sDirName = sDirName.Left(x);
 	}
 }
+#endif
 
 bool GitStatus::ReleasePath(const CString &gitdir)
 {
