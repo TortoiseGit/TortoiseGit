@@ -77,7 +77,7 @@ git_wc_status_kind GitStatus::GetAllStatus(const CTGitPath& path, git_depth_t de
 
 	if(isDir)
 	{
-		err = GetDirStatus(sProjectRoot,sSubPath,&statuskind, isfull,bIsRecursive,isfull,NULL, NULL);
+		err = GetDirStatus(sProjectRoot, sSubPath, &statuskind, isfull, bIsRecursive, isfull);
 		// folders must not be displayed as added or deleted only as modified (this is for Shell Overlay-Modes)
 		if (statuskind == git_wc_status_unversioned && sSubPath.IsEmpty())
 			statuskind = git_wc_status_normal;
@@ -177,7 +177,7 @@ void GitStatus::GetStatus(const CTGitPath& path, bool /*update*/ /* = false */, 
 
 		if(path.IsDirectory())
 		{
-			err = GetDirStatus(sProjectRoot,lpszSubPath,&m_status.text_status , isfull, false,!noignore, NULL, NULL);
+			err = GetDirStatus(sProjectRoot, lpszSubPath, &m_status.text_status, isfull, false, !noignore);
 			if (m_status.text_status == git_wc_status_added || m_status.text_status == git_wc_status_deleted) // fix for issue #1769; a folder is either modified, conflicted or normal
 				m_status.text_status = git_wc_status_modified;
 		}
@@ -589,7 +589,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir, const CString &subpath, git_
 #endif
 
 #ifndef TGITCACHE
-int GitStatus::GetDirStatus(const CString &gitdir, const CString &subpath, git_wc_status_kind * status, BOOL IsFul, BOOL IsRecursive, BOOL IsIgnore, FILL_STATUS_CALLBACK callback, void *pData)
+int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_wc_status_kind* status, BOOL IsFul, BOOL IsRecursive, BOOL IsIgnore)
 {
 	try
 	{
@@ -623,8 +623,6 @@ int GitStatus::GetDirStatus(const CString &gitdir, const CString &subpath, git_w
 				if(!IsIgnore)
 				{
 					*status = git_wc_status_unversioned;
-					if(callback)
-						callback(CombinePath(gitdir, path), *status, false, pData, false, false);
 					return 0;
 				}
 				//Check ignore always.
@@ -668,14 +666,7 @@ int GitStatus::GetDirStatus(const CString &gitdir, const CString &subpath, git_w
 					if (((*it).m_Flags & GIT_IDXENTRY_STAGEMASK) !=0)
 					{
 						*status = git_wc_status_conflicted;
-						if(callback)
-						{
-							int dirpos = (*it).m_FileName.Find(_T('/'), path.GetLength());
-							if(dirpos<0 || IsRecursive)
-								callback(CombinePath(gitdir, it->m_FileName), git_wc_status_conflicted, false, pData, false, false);
-						}
-						else
-							break;
+						break;
 					}
 				}
 
@@ -699,29 +690,13 @@ int GitStatus::GetDirStatus(const CString &gitdir, const CString &subpath, git_w
 								if(pos < 0)
 								{
 									*status = max(git_wc_status_added, *status); // added file found
-									if(callback)
-									{
-										int dirpos = (*it).m_FileName.Find(_T('/'), path.GetLength());
-										if(dirpos<0 || IsRecursive)
-											callback(CombinePath(gitdir, it->m_FileName), git_wc_status_added, false, pData, false, false);
-
-									}
-									else
-										break;
+									break;
 								}
 
 								if( pos>=0 && treeptr->at(pos).m_Hash != (*it).m_IndexHash)
 								{
 									*status = max(git_wc_status_modified, *status); // modified file found
-									if(callback)
-									{
-										int dirpos = (*it).m_FileName.Find(_T('/'), path.GetLength());
-										if(dirpos<0 || IsRecursive)
-											callback(CombinePath(gitdir, it->m_FileName), git_wc_status_modified, false, pData, ((*it).m_Flags & GIT_IDXENTRY_VALID) && !((*it).m_Flags & GIT_IDXENTRY_SKIP_WORKTREE), ((*it).m_Flags & GIT_IDXENTRY_SKIP_WORKTREE) != 0);
-
-									}
-									else
-										break;
+									break;
 								}
 							}
 
@@ -751,15 +726,13 @@ int GitStatus::GetDirStatus(const CString &gitdir, const CString &subpath, git_w
 						}
 					}/* End lock*/
 				}
-				// If define callback, it need update each file status.
-				// If not define callback, status == git_wc_status_conflicted, needn't check each file status
+				// When status == git_wc_status_conflicted, needn't check each file status
 				// because git_wc_status_conflicted is highest.s
-				if(callback || (*status != git_wc_status_conflicted))
+				if (*status != git_wc_status_conflicted)
 				{
 					//Check File Time;
 					//if(IsRecursive)
 					{
-						CString sub, currentPath;
 						for (auto it = indexptr->cbegin() + start, itlast = indexptr->cbegin() + end; it <= itlast; ++it)
 						{
 							if( !IsRecursive )
@@ -768,23 +741,13 @@ int GitStatus::GetDirStatus(const CString &gitdir, const CString &subpath, git_w
 								int slashpos = (*it).m_FileName.Find(_T('/'), path.GetLength());
 
 								if (slashpos > 0)
-								{
-									currentPath = (*it).m_FileName.Left(slashpos);
-									if( callback && (sub != currentPath) )
-									{
-										sub = currentPath;
-										CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": index subdir %s\n"), (LPCTSTR)sub);
-										if (callback) callback(CombinePath(gitdir, sub),
-											git_wc_status_normal, true, pData, false, false);
-									}
 									continue;
-								}
 							}
 
 							git_wc_status_kind filestatus = git_wc_status_none;
 							bool assumeValid = false;
 							bool skipWorktree = false;
-							GetFileStatus(gitdir, (*it).m_FileName, &filestatus, IsFul, IsRecursive, IsIgnore, callback, pData, &assumeValid, &skipWorktree);
+							GetFileStatus(gitdir, (*it).m_FileName, &filestatus, IsFul, IsRecursive, IsIgnore, nullptr, nullptr, &assumeValid, &skipWorktree);
 							switch (filestatus)
 							{
 							case git_wc_status_added:
@@ -797,8 +760,6 @@ int GitStatus::GetDirStatus(const CString &gitdir, const CString &subpath, git_w
 					}
 				}
 			}
-
-			if (callback) callback(CombinePath(gitdir, path), *status, true, pData, false, false);
 		}
 
 	}catch(...)
