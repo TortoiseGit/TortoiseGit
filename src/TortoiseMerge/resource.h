@@ -378,13 +378,15 @@
 #define ID_EDIT_ENABLE                  32976
 #define ID_FILE_ENABLEEDIT              32978
 #define ID_BUTTON3                      32981
+#define ID_EDIT_REGEXFILTER             32992
+#define ID_REGEXFILTER_REGEXFILTER      32993
 
 // Next default values for new objects
 //
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        171
-#define _APS_NEXT_COMMAND_VALUE         32982
+#define _APS_NEXT_COMMAND_VALUE         32994
 #define _APS_NEXT_CONTROL_VALUE         1513
 #define _APS_NEXT_SYMED_VALUE           101
 #endif

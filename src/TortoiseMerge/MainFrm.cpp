@@ -3338,53 +3338,73 @@ void CMainFrame::OnUpdateViewRegexFilter( CCmdUI *pCmdUI )
 	pCmdUI->SetCheck(pCmdUI->m_nID == (UINT)m_regexIndex);
 }
 
-void CMainFrame::BuildRegexSubitems()
+void CMainFrame::BuildRegexSubitems(CMFCPopupMenu* pMenuPopup)
 {
-	CArray<CMFCRibbonBaseElement*, CMFCRibbonBaseElement*> arButtons;
-	m_wndRibbonBar.GetElementsByID(ID_REGEXFILTER, arButtons);
-	if (arButtons.GetCount() == 1)
+	CString sIniPath = CPathUtils::GetAppDataDirectory() + L"regexfilters.ini";
+	if (!PathFileExists(sIniPath))
 	{
-		CMFCRibbonButton * pButton = (CMFCRibbonButton*)arButtons.GetAt(0);
-		if (pButton)
+		// ini file does not exist (yet), so create a default one
+		HRSRC hRes = FindResource(NULL, MAKEINTRESOURCE(IDR_REGEXFILTERINI), L"config");
+		if (hRes)
 		{
-			pButton->RemoveAllSubItems();
-			pButton->AddSubItem(new CMFCRibbonButton(ID_REGEXFILTER+1, CString(MAKEINTRESOURCE(IDS_CONFIGUREREGEXES)), 47));
-
-			CString sIniPath = CPathUtils::GetAppDataDirectory() + L"regexfilters.ini";
-			if (!PathFileExists(sIniPath))
+			HGLOBAL hResourceLoaded = LoadResource(NULL, hRes);
+			if (hResourceLoaded)
 			{
-				// ini file does not exist (yet), so create a default one
-				HRSRC hRes = FindResource(NULL, MAKEINTRESOURCE(IDR_REGEXFILTERINI), L"config");
-				if (hRes)
+				char * lpResLock = (char *)LockResource(hResourceLoaded);
+				DWORD dwSizeRes = SizeofResource(NULL, hRes);
+				if (lpResLock)
 				{
-					HGLOBAL hResourceLoaded = LoadResource(NULL, hRes);
-					if (hResourceLoaded)
+					HANDLE hFile = CreateFile(sIniPath, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+					if (hFile != INVALID_HANDLE_VALUE)
 					{
-						char * lpResLock = (char *) LockResource(hResourceLoaded);
-						DWORD dwSizeRes = SizeofResource(NULL, hRes);
-						if (lpResLock)
-						{
-							HANDLE hFile = CreateFile(sIniPath, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
-							if (hFile != INVALID_HANDLE_VALUE)
-							{
-								DWORD dwWritten = 0;
-								WriteFile(hFile, lpResLock, dwSizeRes, &dwWritten, NULL);
-								CloseHandle(hFile);
-							}
-						}
+						DWORD dwWritten = 0;
+						WriteFile(hFile, lpResLock, dwSizeRes, &dwWritten, NULL);
+						CloseHandle(hFile);
 					}
 				}
 			}
+		}
+	}
 
-			m_regexIni.LoadFile(sIniPath);
-			CSimpleIni::TNamesDepend sections;
-			m_regexIni.GetAllSections(sections);
+	m_regexIni.LoadFile(sIniPath);
+	CSimpleIni::TNamesDepend sections;
+	m_regexIni.GetAllSections(sections);
+
+	if (m_bUseRibbons)
+	{
+		CArray<CMFCRibbonBaseElement*, CMFCRibbonBaseElement*> arButtons;
+		m_wndRibbonBar.GetElementsByID(ID_REGEXFILTER, arButtons);
+		if (arButtons.GetCount() == 1)
+		{
+			CMFCRibbonButton * pButton = (CMFCRibbonButton*)arButtons.GetAt(0);
+			if (pButton)
+			{
+				pButton->RemoveAllSubItems();
+				pButton->AddSubItem(new CMFCRibbonButton(ID_REGEXFILTER + 1, CString(MAKEINTRESOURCE(IDS_CONFIGUREREGEXES)), 47));
+
+				if (!sections.empty())
+					pButton->AddSubItem(new CMFCRibbonSeparator(TRUE));
+				int cmdIndex = 2;
+				for (const auto& section : sections)
+				{
+					pButton->AddSubItem(new CMFCRibbonButton(ID_REGEXFILTER + cmdIndex, section, 46));
+					cmdIndex++;
+				}
+			}
+		}
+	}
+	else if (pMenuPopup)
+	{
+		int iIndex = -1;
+		if (!CMFCToolBar::IsCustomizeMode() &&
+			(iIndex = pMenuPopup->GetMenuBar()->CommandToIndex(ID_REGEXFILTER)) >= 0)
+		{
 			if (!sections.empty())
-				pButton->AddSubItem(new CMFCRibbonSeparator(TRUE));
+				pMenuPopup->InsertSeparator(iIndex + 1); // insert the separator at the end
 			int cmdIndex = 2;
 			for (const auto& section : sections)
 			{
-				pButton->AddSubItem(new CMFCRibbonButton(ID_REGEXFILTER+cmdIndex, section, 46));
+				pMenuPopup->InsertItem(CMFCToolBarMenuButton(ID_REGEXFILTER + cmdIndex, NULL, -1, (LPCWSTR)section), iIndex + cmdIndex);
 				cmdIndex++;
 			}
 		}
@@ -3635,4 +3655,23 @@ void CMainFrame::OnUpdateTabMode(CBaseView *view, CCmdUI *pCmdUI, int startid)
 	}
 	else
 		pCmdUI->Enable(FALSE);
+}
+
+BOOL CMainFrame::OnShowPopupMenu(CMFCPopupMenu* pMenuPopup)
+{
+	__super::OnShowPopupMenu(pMenuPopup);
+
+	if (pMenuPopup == NULL)
+	{
+		return TRUE;
+	}
+
+	int iIndex = -1;
+	if (!CMFCToolBar::IsCustomizeMode() &&
+		(iIndex = pMenuPopup->GetMenuBar()->CommandToIndex(ID_REGEXFILTER)) >= 0)
+	{
+		BuildRegexSubitems(pMenuPopup);
+	}
+
+	return TRUE;
 }

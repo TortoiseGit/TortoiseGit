@@ -539,6 +539,11 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "Find",                        ID_EDIT_FIND
         MENUITEM "Goto Line",                   ID_EDIT_GOTOLINE
+        MENUITEM SEPARATOR
+        POPUP "Regex Filter"
+        BEGIN
+            MENUITEM "Configure Filter Regexes",    ID_REGEXFILTER
+        END
     END
     POPUP "&Navigate"
     BEGIN
