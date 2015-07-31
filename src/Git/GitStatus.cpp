@@ -637,12 +637,15 @@ int GitStatus::GetDirStatus(const CString &gitdir, const CString &subpath, git_w
 					else
 						*status = git_wc_status_unversioned;
 
-					g_HeadFileMap.CheckHeadAndUpdate(gitdir, false);
+					g_HeadFileMap.CheckHeadAndUpdate(gitdir);
 
 					SHARED_TREE_PTR treeptr = g_HeadFileMap.SafeGet(gitdir);
 					//Check init repository
 					if (treeptr->HeadIsEmpty() && path.IsEmpty())
 						*status = git_wc_status_normal;
+					// check if only one file in repository is deleted in index
+					else if (path.IsEmpty() && !treeptr->empty())
+						*status = git_wc_status_deleted;
 				}
 
 			}
