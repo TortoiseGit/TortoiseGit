@@ -544,6 +544,7 @@ BEGIN
         BEGIN
             MENUITEM "Configure Filter Regexes",    ID_REGEXFILTER
         END
+        MENUITEM "Ignore comments",             ID_VIEW_IGNORECOMMENTS
     END
     POPUP "&Navigate"
     BEGIN
