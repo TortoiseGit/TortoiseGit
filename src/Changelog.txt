@@ -39,6 +39,7 @@ Released: unreleased
  * Shell(Extended): Fix mismatch of directory and file status; Only staged changes were
                     considered for the calculation of the overlay icons of directories.
  * Fixed issue #2546: Location bar in TortoiseGitMerge missing
+ * Fixed issue #2545: Incorrect TortiseGitMerge behaivor when ignore comments is on
 
 = Release 1.8.14.0 =
 Released: 2015-04-08

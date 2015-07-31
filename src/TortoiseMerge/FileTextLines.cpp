@@ -1,6 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2007-2014 - TortoiseSVN
+// Copyright (C) 2007-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -672,9 +672,31 @@ bool CFileTextLines::StripComments( CString& sLine, bool bInBlockComment )
 			if ( ((startpos2 < startpos) && (startpos2 >= 0)) ||
 				 ((startpos2 >= 0) && (startpos < 0)) )
 			{
-				// line comment, erase the rest of the line
-				sLine = sLine.Left(startpos2);
-				startpos = -1;
+				// line comment
+				// look if there's a string marker (" or ') before that
+				// note: this check is not fully correct. For example, it
+				// does not account for escaped chars or even multiline strings.
+				// but it has to be fast, so this has to do...
+				int scount = 0;
+				int ccount = 0;
+				auto spos = sLine.Find('"');
+				while ((spos >= 0) && (spos < startpos2))
+				{
+					++scount;
+					spos = sLine.Find('"', spos + 1);
+				}
+				auto cpos = sLine.Find('\'');
+				while ((cpos >= 0) && (cpos < startpos2))
+				{
+					++ccount;
+					cpos = sLine.Find('"', cpos + 1);
+				}
+				if ((scount % 2 == 0) && (ccount % 2 == 0))
+				{
+					// line comment, erase the rest of the line
+					sLine = sLine.Left(startpos2);
+					startpos = -1;
+				}
 			}
 			else if (startpos >= 0)
 			{
