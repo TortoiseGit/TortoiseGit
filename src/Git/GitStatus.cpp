@@ -320,15 +320,6 @@ int GitStatus::IsUnderVersionControl(const CString &gitdir, const CString &path,
 	return 0;
 }
 
-__int64 GitStatus::GetIndexFileTime(const CString &gitdir)
-{
-	SHARED_INDEX_PTR ptr=g_IndexFileMap.SafeGet(gitdir);
-	if(ptr.get() == NULL)
-		return 0;
-
-	return ptr->m_LastModifyTime;
-}
-
 int GitStatus::IsIgnore(const CString &gitdir, const CString &path, bool *isIgnore, bool isDir)
 {
 	if (g_IgnoreList.CheckIgnoreChanged(gitdir, path, isDir))

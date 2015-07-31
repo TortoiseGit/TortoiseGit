@@ -108,7 +108,6 @@ public:
 	static int LoadIgnoreFile(const CString &gitdir, const CString &subpaths, bool isDir);
 	static int IsUnderVersionControl(const CString &gitdir, const CString &path, bool isDir,bool *isVersion);
 	static int IsIgnore(const CString &gitdir, const CString &path, bool *isIgnore, bool isDir);
-	static __int64 GetIndexFileTime(const CString &gitdir);
 	static bool IsExistIndexLockFile(const CString &gitdir);
 	static bool ReleasePath(const CString &gitdir);
 	static bool ReleasePathsRecursively(const CString &rootpath);
