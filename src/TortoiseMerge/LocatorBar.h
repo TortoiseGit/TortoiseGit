@@ -1,6 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2006-2010, 2012 - TortoiseSVN
+// Copyright (C) 2006-2010, 2012, 2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -41,12 +41,16 @@ public:
 	{
 		BOOL bRet = CPaneDialog::Create(pParentWnd, nIDTemplate, nStyle, nID);
 		m_dwControlBarStyle = 0; // can't float, resize, close, slide
+		CRect rc;
+		GetClientRect(&rc);
+		m_minWidth = rc.Width();
 		return bRet;
 	}
 
 	void			DocumentUpdated();
 
 protected:
+	virtual CSize	CalcFixedLayout(BOOL bStretch, BOOL bHorz);
 	afx_msg void	OnPaint();
 	afx_msg void	OnSize(UINT nType, int cx, int cy);
 	afx_msg BOOL	OnEraseBkgnd(CDC* pDC);
@@ -63,6 +67,7 @@ protected:
 
 	CBitmap *		m_pCacheBitmap;
 
+	int				m_minWidth;
 	int				m_nLines;
 	CPoint			m_MousePos;
 	CDWordArray		m_arLeftIdent;

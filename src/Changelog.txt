@@ -38,6 +38,7 @@ Released: unreleased
                       Upgraded TortoiseGitPlink to version pre-0.65
  * Shell(Extended): Fix mismatch of directory and file status; Only staged changes were
                     considered for the calculation of the overlay icons of directories.
+ * Fixed issue #2546: Location bar in TortoiseGitMerge missing
 
 = Release 1.8.14.0 =
 Released: 2015-04-08
