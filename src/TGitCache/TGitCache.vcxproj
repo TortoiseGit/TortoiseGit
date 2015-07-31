@@ -72,7 +72,6 @@
     <ClCompile Include="TGITCache.cpp" />
     <ClCompile Include="..\Git\TGitPath.cpp" />
     <ClCompile Include="..\Utils\UnicodeUtils.cpp" />
-    <ClCompile Include="..\Utils\UniqueQueue.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Git\Git.h" />

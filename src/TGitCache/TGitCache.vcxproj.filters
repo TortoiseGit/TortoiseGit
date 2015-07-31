@@ -75,9 +75,6 @@
     <ClCompile Include="..\Utils\UnicodeUtils.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="..\Utils\UniqueQueue.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
     <ClCompile Include="..\Git\TGitPath.cpp">
       <Filter>Git</Filter>
     </ClCompile>

@@ -96,6 +96,73 @@ TEST(CGit, StringAppend)
 	EXPECT_STREQ(_T("somethinghellhellö\nhellö\n\0hel"), string);
 }
 
+TEST(CGit, GetFileModifyTime)
+{
+	__int64 time = -1;
+	bool isDir = false;
+	__int64 size = -1;
+	EXPECT_EQ(-1, CGit::GetFileModifyTime(L"does-not-exist.txt", &time, &isDir, &size));
+
+	time = -1;
+	isDir = false;
+	size = -1;
+	EXPECT_EQ(0, CGit::GetFileModifyTime(L"c:\\Windows", &time, &isDir, &size));
+	EXPECT_TRUE(isDir);
+
+	time = -1;
+	isDir = false;
+	size = -1;
+	EXPECT_EQ(0, CGit::GetFileModifyTime(L"c:\\Windows\\", &time, &isDir, &size));
+	EXPECT_TRUE(isDir);
+
+	CAutoTempDir tempdir;
+	CString testFile = tempdir.GetTempDir() + L"\\test.txt";
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)testFile, L"this is testing fileöäü."));
+
+	time = -1;
+	EXPECT_EQ(0, CGit::GetFileModifyTime(testFile, &time));
+	EXPECT_NE(-1, time);
+
+	__int64 time2 = -1;
+	isDir = false;
+	size = -1;
+	LONG ticks = GetTickCount();
+	EXPECT_EQ(0, CGit::GetFileModifyTime(testFile, &time2, &isDir, &size));
+	EXPECT_EQ(time, time2);
+	EXPECT_FALSE(isDir);
+	EXPECT_EQ(27, size);
+
+	Sleep(1200);
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)testFile, L"this is testing fileöü."));
+	__int64 time3 = -1;
+	isDir = false;
+	size = -1;
+	EXPECT_EQ(0, CGit::GetFileModifyTime(testFile, &time3, &isDir, &size));
+	EXPECT_NE(-1, time3);
+	EXPECT_FALSE(isDir);
+	EXPECT_EQ(25, size);
+	EXPECT_TRUE(time3 >= time);
+	EXPECT_TRUE(time3 - time <= 1 + (GetTickCount() - ticks) / 1000);
+}
+
+TEST(CGit, LoadTextFile)
+{
+	CAutoTempDir tempdir;
+
+	CString msg;
+	EXPECT_FALSE(CGit::LoadTextFile(L"does-not-exist.txt", msg));
+
+	CString testFile = tempdir.GetTempDir() + L"\\test.txt";
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)testFile, L"this is testing fileöäü."));
+	EXPECT_TRUE(CGit::LoadTextFile(testFile, msg));
+	EXPECT_STREQ(L"this is testing fileöäü.\n", msg);
+
+	msg.Empty();
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)testFile, L"this is\r\ntesting\nfileöäü.\r\n\r\n"));
+	EXPECT_TRUE(CGit::LoadTextFile(testFile, msg));
+	EXPECT_STREQ(L"this is\ntesting\nfileöäü.\n", msg);
+}
+
 TEST(CGit, IsBranchNameValid)
 {
 	CGit cgit;

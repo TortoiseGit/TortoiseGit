@@ -107,6 +107,12 @@
     <ClInclude Include="..\..\src\Utils\SysInfo.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\Utils\CmdLineParser.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Utils\UniqueQueue.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -210,6 +216,18 @@
     </ClCompile>
     <ClCompile Include="..\..\src\Utils\SysInfo.cpp">
       <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="CmdLineParserTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Utils\CmdLineParser.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="UniqueQueueTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GitIndexTest.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

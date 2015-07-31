@@ -48,6 +48,9 @@ public:
 
 	int ReadIndex(CString file);
 	int GetStatus(const CString &gitdir, const CString &path, git_wc_status_kind * status, BOOL IsFull = false, BOOL IsRecursive = false, FILL_STATUS_CALLBACK callback = nullptr, void *pData = nullptr, CGitHash *pHash = nullptr, bool * assumeValid = nullptr, bool * skipWorktree = nullptr);
+#ifdef GTEST_INCLUDE_GTEST_GTEST_H_
+	FRIEND_TEST(GitIndexCBasicGitWithTestRepoFixture, GetFileStatus);
+#endif
 protected:
 	bool m_bCheckContent;
 	__int64 m_iMaxCheckSize;
