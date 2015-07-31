@@ -36,6 +36,7 @@ Released: unreleased
                       Unchecked deleted/renamed files were not put into previous state in index after commit
  * Fixed issue #2537: TortoiseGitPlink will not connect to OpenSSH 6.9
                       Upgraded TortoiseGitPlink to version pre-0.65
+ * Fixed issue #2546: Summary bar in TortoiseGitMerge missing
 
 = Release 1.8.14.0 =
 Released: 2015-04-08
