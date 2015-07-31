@@ -785,6 +785,14 @@ int GitStatus::GetDirStatus(const CString &gitdir, const CString &subpath, git_w
 							bool assumeValid = false;
 							bool skipWorktree = false;
 							GetFileStatus(gitdir, (*it).m_FileName, &filestatus, IsFul, IsRecursive, IsIgnore, callback, pData, &assumeValid, &skipWorktree);
+							switch (filestatus)
+							{
+							case git_wc_status_added:
+							case git_wc_status_modified:
+							case git_wc_status_deleted:
+							case git_wc_status_conflicted:
+								*status = GetMoreImportant(filestatus, *status);
+							}
 						}
 					}
 				}
