@@ -3148,6 +3148,16 @@ void CGitLogListBase::Refresh(BOOL IsCleanFilter)
 
 		InterlockedExchange(&m_bThreadRunning, TRUE);
 		InterlockedExchange(&m_bNoDispUpdates, TRUE);
+
+		SafeTerminateAsyncDiffThread();
+		m_AsynDiffListLock.Lock();
+		m_AsynDiffList.clear();
+		m_AsynDiffListLock.Unlock();
+		InterlockedExchange(&m_AsyncThreadExit, FALSE);
+		m_DiffingThread = AfxBeginThread(AsyncThread, this, THREAD_PRIORITY_BELOW_NORMAL);
+		if (!m_DiffingThread)
+			CMessageBox::Show(nullptr, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
+
 		if ( (m_LoadingThread=AfxBeginThread(LogThreadEntry, this)) ==NULL)
 		{
 			InterlockedExchange(&m_bThreadRunning, FALSE);

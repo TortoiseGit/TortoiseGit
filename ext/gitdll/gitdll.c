@@ -359,7 +359,19 @@ int git_open_log(GIT_LOG * handle, char * arg)
 	{
 		struct object *ob= get_indexed_object(i);
 		if(ob)
+		{
 			ob->flags=0;
+			if (ob->parsed && ob->type == OBJ_COMMIT)
+			{
+				struct commit* commit = (struct commit*)ob;
+				free_commit_list(commit->parents);
+				commit->parents = NULL;
+				commit->tree = NULL;
+				free(commit->buffer);
+				commit->buffer = NULL;
+				ob->parsed = 0;
+			}
+		}
 	}
 
 	if(arg != NULL)

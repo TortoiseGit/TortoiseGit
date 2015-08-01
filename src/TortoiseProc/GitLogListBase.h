@@ -567,14 +567,13 @@ protected:
 	}
 
 	int AsyncDiffThread();
-	bool m_AsyncThreadExited;
+	volatile BOOL m_AsyncThreadExited;
 
 public:
 	void SafeTerminateAsyncDiffThread()
 	{
-		if(m_DiffingThread!=NULL && m_AsyncThreadExit != TRUE)
+		if (m_DiffingThread && InterlockedExchange(&m_AsyncThreadExit, TRUE) == FALSE)
 		{
-			m_AsyncThreadExit = TRUE;
 			::SetEvent(m_AsyncDiffEvent);
 			DWORD ret = WAIT_TIMEOUT;
 			// do not block here, but process messages and ask until the thread ends

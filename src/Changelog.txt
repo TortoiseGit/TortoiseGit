@@ -40,6 +40,7 @@ Released: unreleased
                     considered for the calculation of the overlay icons of directories.
  * Fixed issue #2546: Location bar in TortoiseGitMerge missing
  * Fixed issue #2545: Incorrect TortiseGitMerge behaivor when ignore comments is on
+ * Fixed issue #2544: LogDlg giving inconsistent results with rename and merge files with follow renames
 
 = Release 1.8.14.0 =
 Released: 2015-04-08
