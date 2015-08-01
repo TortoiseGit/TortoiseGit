@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2011 - TortoiseSVN
+// Copyright (C) 2003-2011, 2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -173,14 +173,10 @@ public:
 	 */
 	bool EnsureValid();
 
-private:
-	static LRESULT fnSubclass(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam);
-
 protected:
 	ATL::CComPtr<IProgressDialog> m_pIDlg;
 	bool				m_isVisible;
 	DWORD				m_dwDlgFlags;
 	HWND				m_hWndProgDlg;
 	HWND				m_hWndParent;
-	WNDPROC				m_OrigProc;
 };
