@@ -882,7 +882,7 @@ void CCommitDlg::OnOK()
 	if (sysProgressDlg.HasUserCancelled())
 		bAddSuccess = false;
 
-	//sysProgressDlg.Stop();
+	sysProgressDlg.Stop();
 
 	if (bAddSuccess && m_bCreateNewBranch)
 	{
@@ -900,8 +900,6 @@ void CCommitDlg::OnOK()
 
 	if (bAddSuccess && m_bWarnDetachedHead && CheckHeadDetach())
 		bAddSuccess = false;
-
-	sysProgressDlg.Stop();
 
 	m_sBugID.Trim();
 	CString sExistingBugID = m_ProjectProperties.FindBugID(m_sLogMessage);
