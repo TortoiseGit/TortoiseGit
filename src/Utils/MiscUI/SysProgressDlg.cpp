@@ -301,7 +301,34 @@ void CSysProgressDlg::Stop()
 		// We hide the window here immediately.
 		if (m_hWndProgDlg)
 		{
+			// The progress dialog is handled on a separate thread, which means
+			// even calling StopProgressDialog() will not stop it immediately.
+			// Even destroying the progress window is not enough.
+			// Which can cause problems with modality: if we stop the progress
+			// dialog and immediately show e.g. a messagebox over the same
+			// window the progress dialog has as its parent, then the messagebox
+			// is modal first (deactivates the parent), but then a little bit
+			// later the progress dialog finally closes properly, and by doing that
+			// re-enables its parent window.
+			// Which leads to the parent window being enabled even though
+			// the modal messagebox is shown over the parent window.
+			// This situation can even lead to the messagebox appearing *behind*
+			// the parent window (race condition)
+			// 
+			// So, to really ensure that the progress dialog is fully stopped
+			// and destroyed, we have to attach to its UI thread and handle
+			// all messages until there are no more messages: that's when
+			// the progress dialog is really gone.
+			AttachThreadInput(GetWindowThreadProcessId(m_hWndProgDlg, 0), GetCurrentThreadId(), TRUE);
 			ShowWindow(m_hWndProgDlg, SW_HIDE);
+			auto start = GetTickCount64();
+			while (::IsWindow(m_hWndProgDlg) && ((GetTickCount64() - start) < 3000))
+			{
+				MSG msg = { 0 };
+				while (PeekMessage(&msg, m_hWndProgDlg, 0, 0, PM_REMOVE))
+				{
+				}
+			}
 		}
 		m_isVisible = false;
 		m_pIDlg.Release();
