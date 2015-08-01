@@ -191,6 +191,13 @@ HRESULT CSysProgressDlg::ShowModal(HWND hWndParent, BOOL immediately /* = true *
 	if (!IsValid())
 		return E_FAIL;
 	m_hWndParent = hWndParent;
+	auto winId = GetWindowThreadProcessId(m_hWndParent, 0);
+	auto threadId = GetCurrentThreadId();
+	if (winId != threadId)
+		AttachThreadInput(winId, threadId, TRUE);
+	m_hWndFocus = GetFocus();
+	if (winId != threadId)
+		AttachThreadInput(winId, threadId, FALSE);
 	HRESULT hr = m_pIDlg->StartProgressDialog(hWndParent, NULL, m_dwDlgFlags | PROGDLG_MODAL, NULL);
 	if(FAILED(hr))
 		return hr;
@@ -218,6 +225,13 @@ HRESULT CSysProgressDlg::ShowModeless(HWND hWndParent, BOOL immediately)
 	if (!IsValid())
 		return E_FAIL;
 	m_hWndParent = hWndParent;
+	auto winId = GetWindowThreadProcessId(m_hWndParent, 0);
+	auto threadId = GetCurrentThreadId();
+	if (winId != threadId)
+		AttachThreadInput(winId, threadId, TRUE);
+	m_hWndFocus = GetFocus();
+	if (winId != threadId)
+		AttachThreadInput(winId, threadId, FALSE);
 	HRESULT hr = m_pIDlg->StartProgressDialog(hWndParent, NULL, m_dwDlgFlags, NULL);
 	if(FAILED(hr))
 		return hr;
@@ -302,7 +316,10 @@ void CSysProgressDlg::Stop()
 			// we've attached to the window thread.
 			ShowWindow(m_hWndProgDlg, SW_HIDE);
 			EnableWindow(m_hWndParent, TRUE);
-			SetFocus(m_hWndParent);
+			if (m_hWndFocus)
+				SetFocus(m_hWndFocus);
+			else
+				SetFocus(m_hWndParent);
 			auto start = GetTickCount64();
 			while (::IsWindow(m_hWndProgDlg) && ((GetTickCount64() - start) < 3000))
 			{
