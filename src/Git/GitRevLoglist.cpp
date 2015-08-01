@@ -177,7 +177,8 @@ int GitRevLoglist::SafeGetSimpleList(CGit* git)
 
 	InterlockedExchange(&m_IsUpdateing, FALSE);
 	InterlockedExchange(&m_IsSimpleListReady, TRUE);
-	git_free_commit(&commit);
+	if (m_GitCommit.m_pGitCommit != commit.m_pGitCommit)
+		git_free_commit(&commit);
 
 	return 0;
 }
@@ -370,7 +371,8 @@ int GitRevLoglist::SafeFetchFullInfo(CGit* git)
 
 	InterlockedExchange(&m_IsUpdateing, FALSE);
 	InterlockedExchange(&m_IsFull, TRUE);
-	git_free_commit(&commit);
+	if (m_GitCommit.m_pGitCommit != commit.m_pGitCommit)
+		git_free_commit(&commit);
 
 	return 0;
 }
