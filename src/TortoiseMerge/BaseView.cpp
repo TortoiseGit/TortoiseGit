@@ -830,6 +830,8 @@ int CBaseView::GetScreenLines()
 {
 	if (m_nScreenLines == -1)
 	{
+		CRect rect;
+		GetClientRect(&rect);
 		int scrollBarHeight = 0;
 		SCROLLBARINFO sbi = { sizeof(sbi) };
 		if (GetScrollBarInfo(OBJID_HSCROLL, &sbi))
@@ -838,13 +840,19 @@ int CBaseView::GetScreenLines()
 			// if anything isn't proper, assume the scrollbar has a size of zero
 			// and calculate the screen lines without it.
 			if (!(sbi.rgstate[0] & STATE_SYSTEM_INVISIBLE) && !(sbi.rgstate[0] & STATE_SYSTEM_UNAVAILABLE))
+			{
 				scrollBarHeight = sbi.rcScrollBar.bottom - sbi.rcScrollBar.top;
+				m_nScreenLines = (rect.Height() - HEADERHEIGHT - scrollBarHeight) / GetLineHeight();
+				if (m_nScreenLines < 0)
+					m_nScreenLines = 0;
+				return m_nScreenLines;
+			}
 		}
-		CRect rect;
-		GetClientRect(&rect);
-		m_nScreenLines = (rect.Height() - HEADERHEIGHT - scrollBarHeight) / GetLineHeight();
-		if (m_nScreenLines < 0)
-			m_nScreenLines = 0;
+		// if the scroll bar is not visible, unavailable or there was an error,
+		// assume the scroll bar height is zero and return the screen lines here.
+		// Of course, that means the cache (using the member variable) won't work
+		// and we fetch the scroll bar info every time. But in this case the overhead is necessary.
+		return (rect.Height() - HEADERHEIGHT) / GetLineHeight();
 	}
 	return m_nScreenLines;
 }
