@@ -1,6 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2006, 2008, 2010-2012 - TortoiseSVN
+// Copyright (C) 2006, 2008, 2010-2012, 2015 - TortoiseSVN
 // Copyright (C) 2012 - Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
@@ -25,6 +25,7 @@
 #include "PathUtils.h"
 #include "SysProgressDlg.h"
 #include "MessageBox.h"
+#include "SysImageList.h"
 
 IMPLEMENT_DYNAMIC(CFilePatchesDlg, CResizableStandAloneDialog)
 CFilePatchesDlg::CFilePatchesDlg(CWnd* pParent /*=NULL*/)
@@ -37,7 +38,6 @@ CFilePatchesDlg::CFilePatchesDlg(CWnd* pParent /*=NULL*/)
 	, m_pMainFrame(NULL)
 	, m_boldFont(NULL)
 {
-	m_ImgList.Create(16, 16, ILC_COLOR16 | ILC_MASK, 4, 1);
 }
 
 CFilePatchesDlg::~CFilePatchesDlg()
@@ -59,6 +59,7 @@ BOOL CFilePatchesDlg::SetFileStatusAsPatched(CString sPath)
 		if (sPath.CompareNoCase(GetFullPath(i))==0)
 		{
 			m_arFileStates.SetAt(i, (DWORD)FPDLG_FILESTATE_PATCHED);
+			SetStateText(i, FPDLG_FILESTATE_PATCHED);
 			Invalidate();
 			return TRUE;
 		}
@@ -123,18 +124,16 @@ BOOL CFilePatchesDlg::Init(GitPatch * pPatch, CPatchFilesDlgCallBack * pCallBack
 			m_sPath = m_sPath.Left(m_sPath.GetLength()-1);
 
 		m_sPath = m_sPath + _T("\\");
-		for (int i=m_ImgList.GetImageCount();i>0;i--)
-		{
-			m_ImgList.Remove(0);
-		}
 	}
 
+	SetWindowTheme(m_cFileList.GetSafeHwnd(), L"Explorer", NULL);
 	m_cFileList.SetExtendedStyle(LVS_EX_INFOTIP | LVS_EX_FULLROWSELECT | LVS_EX_DOUBLEBUFFER);
 	m_cFileList.DeleteAllItems();
 	int c = ((CHeaderCtrl*)(m_cFileList.GetDlgItem(0)))->GetItemCount()-1;
 	while (c>=0)
 		m_cFileList.DeleteColumn(c--);
-	m_cFileList.InsertColumn(0, _T(""));
+	m_cFileList.InsertColumn(0, CString(MAKEINTRESOURCE(IDS_PATH)));
+	m_cFileList.InsertColumn(1, CString(MAKEINTRESOURCE(IDS_STATE)));
 
 	m_cFileList.SetRedraw(false);
 
@@ -156,15 +155,8 @@ BOOL CFilePatchesDlg::Init(GitPatch * pPatch, CPatchFilesDlgCallBack * pCallBack
 		m_arFileStates.Add(state);
 		CString sFileName = GetFullPath(i);
 		sFileName = CPathUtils::GetFileNameFromPath(sFileName);
-		SHFILEINFO sfi = {0};
-		SHGetFileInfo(
-			sFileName,
-			FILE_ATTRIBUTE_NORMAL,
-			&sfi,
-			sizeof(SHFILEINFO),
-			SHGFI_ICON | SHGFI_SMALLICON | SHGFI_USEFILEATTRIBUTES);
-		m_cFileList.InsertItem(i, sFile, m_ImgList.Add(sfi.hIcon));
-
+		m_cFileList.InsertItem(i, sFile, SYS_IMAGE_LIST().GetFileIconIndex(sFileName));
+		SetStateText(i, state);
 	}
 	int mincol = 0;
 	int maxcol = ((CHeaderCtrl*)(m_cFileList.GetDlgItem(0)))->GetItemCount()-1;
@@ -174,7 +166,7 @@ BOOL CFilePatchesDlg::Init(GitPatch * pPatch, CPatchFilesDlgCallBack * pCallBack
 		m_cFileList.SetColumnWidth(col,LVSCW_AUTOSIZE_USEHEADER);
 	}
 
-	m_cFileList.SetImageList(&m_ImgList, LVSIL_SMALL);
+	m_cFileList.SetImageList(&SYS_IMAGE_LIST(), LVSIL_SMALL);
 	m_cFileList.SetRedraw(true);
 
 	RECT parentrect;
@@ -526,4 +518,26 @@ void CFilePatchesDlg::OnLvnItemchangedFilelist(NMHDR * /*pNMHDR*/, LRESULT *pRes
 	DialogEnableWindow(IDC_PATCHSELECTEDBUTTON, m_cFileList.GetSelectedCount() > 0);
 
 	*pResult = 0;
+}
+
+void CFilePatchesDlg::SetStateText(int i, int state)
+{
+	CString sState;
+	switch (state)
+	{
+	case FPDLG_FILESTATE_PATCHED:
+		sState.LoadString(IDS_STATE_PATCHED);
+		break;
+	case FPDLG_FILESTATE_ERROR:
+		sState.LoadString(IDS_STATE_ERROR);
+		break;
+	case 0:
+		// all is ok, not yet patched but no failed hunks
+		break;
+	default:
+		// there are failed hunks in the patch
+		sState.LoadString(IDS_STATE_CONFLICTS);
+		break;
+	}
+	m_cFileList.SetItemText(i, 1, sState);
 }

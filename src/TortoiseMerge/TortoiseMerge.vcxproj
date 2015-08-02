@@ -65,6 +65,7 @@
     <ClCompile Include="..\Utils\MiscUI\StandAloneDlg.cpp" />
     <ClCompile Include="..\Utils\MiscUI\Tooltip.cpp" />
     <ClCompile Include="..\Utils\ProfilingInfo.cpp" />
+    <ClCompile Include="..\Utils\SysImageList.cpp" />
     <ClCompile Include="..\Utils\TaskbarUUID.cpp" />
     <ClCompile Include="EditorConfigWrapper.cpp" />
     <ClCompile Include="EncodingDlg.cpp" />
@@ -326,6 +327,7 @@
     <ClInclude Include="..\Utils\MiscUI\TripleClick.h" />
     <ClInclude Include="..\Utils\ProfilingInfo.h" />
     <ClInclude Include="..\Utils\SimpleIni.h" />
+    <ClInclude Include="..\Utils\SysImageList.h" />
     <ClInclude Include="..\Utils\TaskbarUUID.h" />
     <ClInclude Include="CustomMFCRibbonStatusBar.h" />
     <ClInclude Include="EditorConfigWrapper.h" />

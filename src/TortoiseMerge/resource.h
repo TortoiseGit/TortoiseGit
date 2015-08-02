@@ -191,6 +191,11 @@
 #define IDS_PATCH_SEARCHPATHLINE1       2701
 #define IDS_PATCH_PROGTITLE             2702
 #define IDS_PATCH_PATHINGFILE           2703
+#define IDS_PATH                        2704
+#define IDS_STATE                       2705
+#define IDS_STATE_ERROR                 2706
+#define IDS_STATE_PATCHED               2707
+#define IDS_STATE_CONFLICTS             2708
 #define IDS_ERR_PATCH_FILENAMENOTUNIQUE 2800
 #define IDS_ERR_MAINFRAME_FILECONFLICTNOVERSION 2801
 #define IDS_MOVED_FROM_TT               2810

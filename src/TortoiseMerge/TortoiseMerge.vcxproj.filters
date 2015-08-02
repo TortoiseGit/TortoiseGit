@@ -336,6 +336,9 @@
     <ClCompile Include="..\Utils\MiscUI\Tooltip.cpp">
       <Filter>Utils\MiscUI</Filter>
     </ClCompile>
+    <ClCompile Include="..\Utils\SysImageList.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AboutDlg.h">
@@ -556,6 +559,9 @@
     </ClInclude>
     <ClInclude Include="CustomMFCRibbonStatusBar.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\SysImageList.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
