@@ -115,6 +115,8 @@ void CDiffData::TieMovedBlocks(int from, int to, apr_off_t length)
 	for(int i=0; i<length; i++, to++, from++)
 	{
 		int fromIndex = m_YourBaseLeft.FindLineNumber(from);
+		if (fromIndex < 0)
+			return;
 		int toIndex = m_YourBaseRight.FindLineNumber(to);
 		if (toIndex < 0)
 			return;
