@@ -86,6 +86,9 @@
     <ProjectReference Include="..\src\TortoiseProc\TortoiseProcLang.vcxproj">
       <Project>{1b3c273e-6ddf-4fbe-ba31-f9f39c6dac99}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\src\TortoiseUDiff\TortoiseUDiffLang.vcxproj">
+      <Project>{2643919e-d024-440b-9817-1b2df5fe4603}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
