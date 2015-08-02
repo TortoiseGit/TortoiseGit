@@ -1,5 +1,5 @@
 ﻿= Release 1.8.15.0 =
-Released: unreleased
+Released: 2015-08-02
 
 == Features ==
  * Fixed issue #2245: Make the meaning of "Squash" clearer
@@ -7,16 +7,16 @@ Released: unreleased
  * Fixed issue #2490: BrowseRefsDlg: Allow to configure tracked branches
  * Fixed issue #2469: Support reviewing merge commits (git show merge-commit)
  * Add full support for Git for Windows 2.x and windows-wide system config
+   (https://git-for-windows.github.io)
  * Fixed issue #2232: Change Show Log to display all lines of multiline commit comments in the message column
  * Fixed issue #1930: Navigate directly to a commit in "Show log" by pasting its hash
  * Fixed issue #2280: Ability to use Msys2 git instead of Git for Windows
    Check out the manual (keyword "Msys2 git") regarding Msys2 Git support and configuration hints.
-   Please note that Msys2 Git is not officially supported by TortoiseGit as the developers only
-   use Git for Windows. Bug reports, however, are welcome.
- * Fixed issue #1003: Show Log does not remember the from-date
- * Fixed issue #1793: Fetch + rebase: Launch rebase only if the branch is not up to date
+   Please note that Msys2 Git is not officially supported by TortoiseGit as the developers only use Git for Windows. Bug reports, however, are welcome.
+ * Fixed issue #1003: Show Log does not remember the from-date (configurable now)
+ * Fixed issue #1793: Fetch&Rebase: Launch rebase only if the branch isn't up to date
  * Fixed issue #1886: Fetch&Rebase should allow automatic branch update if FF
- * Fixed issue #836: Do not auto-select deleted but unstaged files on commit dialog (optional)
+ * Fixed issue #836: CommitDlg: Do not auto-select files which are deleted in file system, but are not deleted in the index on commit dialog (optional)
  * Fixed issue #2513: TortoiseGitUDiff: Add keyboard shortcuts
 
 == Bug Fixes ==
@@ -25,22 +25,22 @@ Released: unreleased
  * Fixed issue #2507: Support keyboard shortcuts in yes/no prompts
  * Fixed issue #2496: LogDlg: Controls may overlap on screen resolution change
  * Fixed issue #2153: Log window resize should expand commit list
- * Fixed issue #2509: Prompt for stash before rebase is not matched with pop stash after rebase
+ * Fixed issue #2509: Prompt for stash before rebase is not matched with pop stash  after rebase
  * Fixed issue #2510: Non-correctly visualized settings dialog on modern high-DPI displays
- * Fixed issue #2514: diff uses wrong tool in case the filename matches a registered extension
+ * Fixed issue #2514: diff uses wrong tool in case the filename matches an extension for which a special diff tool is registerd
  * Fixed issue #2487: Show log dialog lose focus of "working dir changes" after content refresh
- * Fixed issue #2517: Submodule Update dialog cannot be re-sized and is too small to be useful in some cases
+ * Fixed issue #2517: Submodule Update dialog cannot be re-sized
  * Fixed issue #2504: Problems with MS Outlook and generated emails
  * Optimized TortoiseGitBlame to be used with high contrast themes and black background colors
- * Fixed issue #2529: The status of files which are not checked should be the same after commit
-                      Unchecked deleted/renamed files were not put into previous state in index after commit
+ * Fixed issue #2529: The status of files which are not checked should be the same in the index after commit
+   Unchecked deleted/renamed files were not put into previous state in index after commit
  * Fixed issue #2537: TortoiseGitPlink will not connect to OpenSSH 6.9
-                      Upgraded TortoiseGitPlink to version pre-0.65
- * Shell(Extended): Fix mismatch of directory and file status; Only staged changes were
-                    considered for the calculation of the overlay icons of directories.
+   Upgraded TortoiseGitPlink to version 0.65
+ * Shell(Extended): Fix mismatch of directory and file status; Only staged changes Were considered for the calculation of the overlay icons of directories.
  * Fixed issue #2546: Location bar in TortoiseGitMerge missing
- * Fixed issue #2545: Incorrect TortiseGitMerge behaivor when ignore comments is on
+ * Fixed issue #2545: Incorrect TortiseGitMerge behavior when ignore comments is on
  * Fixed issue #2544: LogDlg giving inconsistent results with rename and merge files with follow renames
+ * Fixed issue #2479: TortoiseGit does not work in hard link folder
 
 = Release 1.8.14.0 =
 Released: 2015-04-08
