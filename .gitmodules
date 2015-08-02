@@ -3,10 +3,10 @@
 	url = https://github.com/apache/apr-util.git
 [submodule "ext/apr"]
 	path = ext/apr
-	url = https://github.com/TortoiseGit/apr.git
+	url = https://gitlab.com/tortoisegit/apr.git
 [submodule "ext/tgit"]
 	path = ext/tgit
-	url = https://code.google.com/p/tortoisegit.tgit
+	url = https://gitlab.com/tortoisegit/tgit.git
 [submodule "ext/zlib"]
 	path = ext/zlib
 	url = https://github.com/madler/zlib.git
@@ -21,7 +21,7 @@
 	url = https://github.com/editorconfig/editorconfig-core-c.git
 [submodule "ext/pcre"]
 	path = ext/pcre
-	url = https://code.google.com/p/tortoisegit.pcre/
+	url = https://gitlab.com/tortoisegit/pcre.git
 [submodule "ext/gtest"]
 	path = ext/gtest
 	url = https://chromium.googlesource.com/external/gtest.git
