@@ -1,6 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2006-2007, 2010-2011, 2013 - TortoiseSVN
+// Copyright (C) 2006-2007, 2010-2011, 2013,2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -51,8 +51,8 @@ void viewstate::Clear()
 
 void CUndo::MarkAsOriginalState(bool bLeft, bool bRight, bool bBottom)
 {
-	// TODO reduce code dumplication
-	// find higest index of changing step
+	// TODO reduce code duplication
+	// find highest index of changing step
 	if (bLeft) // left is selected for mark
 	{
 		m_originalstateLeft = m_viewstates.size();
@@ -104,6 +104,11 @@ void CUndo::AddState(const allviewstate& allstate, POINT pt)
 {
 	m_viewstates.push_back(allstate);
 	m_caretpoints.push_back(pt);
+	// a new action that can be undone clears the redo since
+	// after this there is nothing to redo anymore
+	m_redoviewstates.clear();
+	m_redocaretpoints.clear();
+	m_redogroups.clear();
 }
 
 bool CUndo::Undo(CBaseView * pLeft, CBaseView * pRight, CBaseView * pBottom)
@@ -115,6 +120,8 @@ bool CUndo::Undo(CBaseView * pLeft, CBaseView * pRight, CBaseView * pBottom)
 	{
 		m_groups.pop_back();
 		std::list<int>::size_type b = m_groups.back();
+		m_redogroups.push_back(b);
+		m_redogroups.push_back(m_caretpoints.size());
 		m_groups.pop_back();
 		while (b < m_caretpoints.size())
 			UndoOne(pLeft, pRight, pBottom);
@@ -148,7 +155,7 @@ bool CUndo::Undo(CBaseView * pLeft, CBaseView * pRight, CBaseView * pBottom)
 		pActiveView->EnsureCaretVisible();
 		pActiveView->UpdateCaret();
 
-		// TODO reduce code dumplication
+		// TODO reduce code duplication
 		if (m_viewstates.size() < m_originalstateLeft)
 		{
 			// Left can never get back to original state now
@@ -226,53 +233,211 @@ void CUndo::UndoOne(CBaseView * pLeft, CBaseView * pRight, CBaseView * pBottom)
 	allviewstate allstate = m_viewstates.back();
 	POINT pt = m_caretpoints.back();
 
-	Undo(allstate.left, pLeft, pt);
-	Undo(allstate.right, pRight, pt);
-	Undo(allstate.bottom, pBottom, pt);
+	if (pLeft->IsTarget())
+		m_redocaretpoints.push_back(pLeft->GetCaretPosition());
+	else if (pRight->IsTarget())
+		m_redocaretpoints.push_back(pRight->GetCaretPosition());
+	else if (pBottom->IsTarget())
+		m_redocaretpoints.push_back(pBottom->GetCaretPosition());
+
+	allstate.left   = Do(allstate.left, pLeft, pt);
+	allstate.right  = Do(allstate.right, pRight, pt);
+	allstate.bottom = Do(allstate.bottom, pBottom, pt);
+
+	m_redoviewstates.push_back(allstate);
 
 	m_viewstates.pop_back();
 	m_caretpoints.pop_back();
 }
 
-void CUndo::Undo(const viewstate& state, CBaseView * pView, const POINT& pt)
+bool CUndo::Redo(CBaseView * pLeft, CBaseView * pRight, CBaseView * pBottom)
+{
+	if (!CanRedo())
+		return false;
+
+	if (m_redogroups.size() && m_redogroups.back() == m_redocaretpoints.size())
+	{
+		m_redogroups.pop_back();
+		std::list<int>::size_type b = m_redogroups.back();
+		m_groups.push_back(b);
+		m_groups.push_back(m_redocaretpoints.size());
+		m_redogroups.pop_back();
+		while (b < m_redocaretpoints.size())
+			RedoOne(pLeft, pRight, pBottom);
+	}
+	else
+		RedoOne(pLeft, pRight, pBottom);
+
+	CBaseView * pActiveView = NULL;
+
+	if (pBottom && pBottom->IsTarget())
+	{
+		pActiveView = pBottom;
+	}
+	else
+		if (pRight && pRight->IsTarget())
+		{
+			pActiveView = pRight;
+		}
+		else
+			//if (pLeft && pLeft->IsTarget())
+		{
+			pActiveView = pLeft;
+		}
+
+
+	if (pActiveView)
+	{
+		pActiveView->ClearSelection();
+		pActiveView->BuildAllScreen2ViewVector();
+		pActiveView->RecalcAllVertScrollBars();
+		pActiveView->RecalcAllHorzScrollBars();
+		pActiveView->EnsureCaretVisible();
+		pActiveView->UpdateCaret();
+
+		// TODO reduce code duplication
+		if (m_redoviewstates.size() < m_originalstateLeft)
+		{
+			// Left can never get back to original state now
+			m_originalstateLeft = (size_t)-1;
+		}
+		if (pLeft)
+		{
+			bool bModified = (m_originalstateLeft == (size_t)-1);
+			if (!bModified)
+			{
+				std::list<allviewstate>::iterator i = m_redoviewstates.begin();
+				std::advance(i, m_originalstateLeft);
+				for (; i != m_redoviewstates.end(); ++i)
+				{
+					if (i->left.modifies)
+					{
+						bModified = true;
+						break;
+					}
+				}
+			}
+			pLeft->SetModified(bModified);
+			pLeft->ClearStepModifiedMark();
+		}
+		if (m_redoviewstates.size() < m_originalstateRight)
+		{
+			// Right can never get back to original state now
+			m_originalstateRight = (size_t)-1;
+		}
+		if (pRight)
+		{
+			bool bModified = (m_originalstateRight == (size_t)-1);
+			if (!bModified)
+			{
+				std::list<allviewstate>::iterator i = m_redoviewstates.begin();
+				std::advance(i, m_originalstateRight);
+				for (; i != m_redoviewstates.end() && !i->right.modifies; ++i);
+				bModified = i != m_redoviewstates.end();
+			}
+			pRight->SetModified(bModified);
+			pRight->ClearStepModifiedMark();
+		}
+		if (m_redoviewstates.size() < m_originalstateBottom)
+		{
+			// Bottom can never get back to original state now
+			m_originalstateBottom = (size_t)-1;
+		}
+		if (pBottom)
+		{
+			bool bModified = (m_originalstateBottom == (size_t)-1);
+			if (!bModified)
+			{
+				std::list<allviewstate>::iterator i = m_redoviewstates.begin();
+				std::advance(i, m_originalstateBottom);
+				for (; i != m_redoviewstates.end(); ++i)
+				{
+					if (i->bottom.modifies)
+					{
+						bModified = true;
+						break;
+					}
+				}
+			}
+			pBottom->SetModified(bModified);
+			pBottom->ClearStepModifiedMark();
+		}
+		pActiveView->RefreshViews();
+	}
+
+	return true;
+}
+
+void CUndo::RedoOne(CBaseView * pLeft, CBaseView * pRight, CBaseView * pBottom)
+{
+	allviewstate allstate = m_redoviewstates.back();
+	POINT pt = m_redocaretpoints.back();
+
+	if (pLeft->IsTarget())
+		m_caretpoints.push_back(pLeft->GetCaretPosition());
+	else if (pRight->IsTarget())
+		m_caretpoints.push_back(pRight->GetCaretPosition());
+	else if (pBottom->IsTarget())
+		m_caretpoints.push_back(pBottom->GetCaretPosition());
+
+	allstate.left   = Do(allstate.left, pLeft, pt);
+	allstate.right  = Do(allstate.right, pRight, pt);
+	allstate.bottom = Do(allstate.bottom, pBottom, pt);
+
+	m_viewstates.push_back(allstate);
+
+	m_redoviewstates.pop_back();
+	m_redocaretpoints.pop_back();
+}
+viewstate CUndo::Do(const viewstate& state, CBaseView * pView, const POINT& pt)
 {
 	if (!pView)
-		return;
+		return state;
 
 	CViewData* viewData = pView->m_pViewData;
 	if (!viewData)
-		return;
+		return state;
+
+	viewstate revstate; // the reversed viewstate
 
 	for (std::list<int>::const_reverse_iterator it = state.addedlines.rbegin(); it != state.addedlines.rend(); ++it)
 	{
+		revstate.removedlines[*it] = viewData->GetData(*it);
 		viewData->RemoveData(*it);
 	}
 	for (std::map<int, DWORD>::const_iterator it = state.linelines.begin(); it != state.linelines.end(); ++it)
 	{
+		revstate.linelines[it->first] = viewData->GetLineNumber(it->first);
 		viewData->SetLineNumber(it->first, it->second);
 	}
 	for (std::map<int, DWORD>::const_iterator it = state.linestates.begin(); it != state.linestates.end(); ++it)
 	{
+		revstate.linestates[it->first] = viewData->GetState(it->first);
 		viewData->SetState(it->first, (DiffStates)it->second);
 	}
 	for (std::map<int, EOL>::const_iterator it = state.linesEOL.begin(); it != state.linesEOL.end(); ++it)
 	{
+		revstate.linesEOL[it->first] = viewData->GetLineEnding(it->first);
 		viewData->SetLineEnding(it->first, it->second);
 	}
 	for (std::map<int, bool>::const_iterator it = state.markedlines.begin(); it != state.markedlines.end(); ++it)
 	{
+		revstate.markedlines[it->first] = viewData->GetMarked(it->first);
 		viewData->SetMarked(it->first, it->second);
 	}
 	for (std::map<int, CString>::const_iterator it = state.difflines.begin(); it != state.difflines.end(); ++it)
 	{
+		revstate.difflines[it->first] = viewData->GetLine(it->first);
 		viewData->SetLine(it->first, it->second);
 	}
 	for (std::map<int, viewdata>::const_iterator it = state.removedlines.begin(); it != state.removedlines.end(); ++it)
 	{
+		revstate.addedlines.push_back(it->first);
 		viewData->InsertData(it->first, it->second);
 	}
 	for (std::map<int, viewdata>::const_iterator it = state.replacedlines.begin(); it != state.replacedlines.end(); ++it)
 	{
+		revstate.replacedlines[it->first] = viewData->GetData(it->first);
 		viewData->SetData(it->first, it->second);
 	}
 
@@ -281,6 +446,7 @@ void CUndo::Undo(const viewstate& state, CBaseView * pView, const POINT& pt)
 		pView->SetCaretViewPosition(pt);
 		pView->EnsureCaretVisible();
 	}
+	return revstate;
 }
 
 void CUndo::Clear()
@@ -288,9 +454,11 @@ void CUndo::Clear()
 	m_viewstates.clear();
 	m_caretpoints.clear();
 	m_groups.clear();
+	m_redoviewstates.clear();
+	m_redocaretpoints.clear();
+	m_redogroups.clear();
 	m_originalstateLeft = 0;
 	m_originalstateRight = 0;
 	m_originalstateBottom = 0;
 	m_groupCount = 0;
 }
-
