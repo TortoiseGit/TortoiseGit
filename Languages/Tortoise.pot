@@ -2233,6 +2233,10 @@ msgstr ""
 msgid "Blend alpha"
 msgstr ""
 
+#. Resource IDs: (156)
+msgid "Blocks"
+msgstr ""
+
 #. Resource IDs: (215, 10009)
 msgid "Blue Style"
 msgstr ""
@@ -2987,7 +2991,7 @@ msgstr ""
 msgid "Config type:"
 msgstr ""
 
-#. Resource IDs: (102)
+#. Resource IDs: (102, 500)
 msgid "Configure Filter Regexes"
 msgstr ""
 
@@ -3031,7 +3035,7 @@ msgstr ""
 msgid "Conflict resolved"
 msgstr ""
 
-#. Resource IDs: (4204, 65535)
+#. Resource IDs: (2708, 4204, 65535)
 msgid "Conflicted"
 msgstr ""
 
@@ -3674,6 +3678,10 @@ msgstr ""
 msgid "Dialogs"
 msgstr ""
 
+#. Resource IDs: (156)
+msgid "Diff"
+msgstr ""
+
 #. Resource IDs: (1789)
 msgid "Diff Options"
 msgstr ""
@@ -4309,7 +4317,7 @@ msgstr ""
 msgid "Erase the selection\nErase"
 msgstr ""
 
-#. Resource IDs: (1112, 1307)
+#. Resource IDs: (1112, 1307, 2706)
 msgid "Error"
 msgstr ""
 
@@ -4625,7 +4633,7 @@ msgstr ""
 msgid "Filename"
 msgstr ""
 
-#. Resource IDs: (156, 1707)
+#. Resource IDs: (1707)
 msgid "Files"
 msgstr ""
 
@@ -6048,10 +6056,6 @@ msgstr ""
 msgid "Mail system DLL is invalid."
 msgstr ""
 
-#. Resource IDs: (156)
-msgid "Main"
-msgstr ""
-
 #. Resource IDs: (1653)
 msgid "Make it Bare (No working directories)"
 msgstr ""
@@ -7026,7 +7030,7 @@ msgstr ""
 msgid "Patching file '%s'"
 msgstr ""
 
-#. Resource IDs: (1004, 1223, 3153, 3300)
+#. Resource IDs: (1004, 1223, 2704, 3153, 3300)
 msgid "Path"
 msgstr ""
 
@@ -7511,6 +7515,10 @@ msgid "Recursive"
 msgstr ""
 
 #. Resource IDs: (57644)
+msgid "Redo"
+msgstr ""
+
+#. Resource IDs: (57644)
 msgid "Redo the previously undone action\nRedo"
 msgstr ""
 
@@ -7550,7 +7558,7 @@ msgstr ""
 msgid "Refreshing..."
 msgstr ""
 
-#. Resource IDs: (165, 500)
+#. Resource IDs: (165, 500, 65535)
 msgid "Regex Filter"
 msgstr ""
 
@@ -8993,6 +9001,10 @@ msgstr ""
 msgid "Stash operation running..."
 msgstr ""
 
+#. Resource IDs: (2705)
+msgid "State"
+msgstr ""
+
 #. Resource IDs: (1487, 4572, 4573, 16514)
 msgid "Static"
 msgstr ""
@@ -9003,6 +9015,10 @@ msgstr ""
 
 #. Resource IDs: (1176, 1218, 3301)
 msgid "Status"
+msgstr ""
+
+#. Resource IDs: (59393)
+msgid "Status Bar"
 msgstr ""
 
 #. Resource IDs: (17087)
@@ -10013,10 +10029,6 @@ msgstr ""
 msgid "Use 'theirs' text block then 'mine'"
 msgstr ""
 
-#. Resource IDs: (32914)
-msgid "Use Blocks"
-msgstr ""
-
 #. Resource IDs: (1761)
 msgid "Use HTTP path component"
 msgstr ""
@@ -10268,6 +10280,10 @@ msgstr ""
 msgid "View .tgitconfig"
 msgstr ""
 
+#. Resource IDs: (32898)
+msgid "View Bars"
+msgstr ""
+
 #. Resource IDs: (328, 9633)
 msgid "View Patch"
 msgstr ""
@@ -10385,7 +10401,7 @@ msgstr ""
 msgid "Whitespace changes (tabs, spaces)"
 msgstr ""
 
-#. Resource IDs: (65535)
+#. Resource IDs: (156, 65535)
 msgid "Whitespaces"
 msgstr ""
 
@@ -10889,6 +10905,10 @@ msgstr ""
 #. Resource IDs: (61504)
 #, c-format
 msgid "on %1"
+msgstr ""
+
+#. Resource IDs: (2707)
+msgid "patched"
 msgstr ""
 
 #. Resource IDs: (61888)
