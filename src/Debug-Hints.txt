@@ -36,14 +36,14 @@ Visual Studio IDE and attach it to a TortoiseGit process.
 
 To get a nice stack trace and resolve symbols, you can use our symbol server
 
-http://www.crash-server.com:8080/public/TortoiseGit/7fbde3fc-94e9-408b-b5c8-62bd4e203570/symsrv/
+    http://drdump.com:8080/public/TortoiseGit/7fbde3fc-94e9-408b-b5c8-62bd4e203570/symsrv/
 
 or download the debug symbols (https://download.tortoisegit.org/tgit/)
 which are only available for our releases.
 
 In WinDbg the symbol server can be used by issuing
 
-    .sympath+ srv*c:\tmp*http://www.crash-server.com:8080/public/TortoiseGit/7fbde3fc-94e9-408b-b5c8-62bd4e203570/symsrv/
+    .sympath+ srv*c:\tmp*http://drdump.com:8080/public/TortoiseGit/7fbde3fc-94e9-408b-b5c8-62bd4e203570/symsrv/
 
 the URL for the Microsoft symbol server is:
 
