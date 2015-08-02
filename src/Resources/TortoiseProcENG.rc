@@ -385,12 +385,12 @@ BEGIN
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,18,200,268,10
 END
 
-IDD_SETTINGSOVERLAYHANDLERS DIALOGEX 0, 0, 300, 217
+IDD_SETTINGSOVERLAYHANDLERS DIALOGEX 0, 0, 301, 236
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "Icon Overlays::Overlay Handlers"
 FONT 8, "MS Shell Dlg", 400, 0, 0x0
 BEGIN
-    GROUPBOX        "Enabled Overlay Handlers",IDC_STATIC,7,7,286,203
+    GROUPBOX        "Enabled Overlay Handlers",IDC_STATIC,7,7,287,222
     LTEXT           "You can disable specific Overlay handlers here.\nDisabled handlers won't use up an overlay slot and give other shell extensions a chance to show their overlays.",IDC_STATIC,14,18,270,32
     LTEXT           "Note: this affects all Tortoise clients, not just TortoiseGit!",IDC_STATIC,14,54,270,8
     CONTROL         "Ignored",IDC_SHOWIGNOREDOVERLAY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,67,270,10
@@ -401,8 +401,8 @@ BEGIN
     CONTROL         "Assume valid/unchanged (""Needs-lock"" in TortoiseSVN)",IDC_SHOWREADONLYOVERLAY,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,127,270,10
     CONTROL         "Deleted",IDC_SHOWDELETEDOVERLAY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,142,270,10
-    LTEXT           "",IDC_HANDLERHINT,14,159,270,24
-    PUSHBUTTON      "Start registry editor",IDC_REGEDT,163,188,121,14
+    LTEXT           "",IDC_HANDLERHINT,14,159,270,43
+    PUSHBUTTON      "Start registry editor",IDC_REGEDT,163,208,121,14
 END
 
 IDD_SETTINGSPROXY DIALOGEX 0, 0, 300, 217
@@ -2225,11 +2225,11 @@ BEGIN
     IDD_SETTINGSOVERLAYHANDLERS, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 293
+        RIGHTMARGIN, 294
         VERTGUIDE, 14
         VERTGUIDE, 284
         TOPMARGIN, 7
-        BOTTOMMARGIN, 210
+        BOTTOMMARGIN, 229
     END
 
     IDD_SETTINGSPROXY, DIALOG
