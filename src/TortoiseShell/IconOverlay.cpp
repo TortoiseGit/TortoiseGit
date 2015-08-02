@@ -303,7 +303,9 @@ STDMETHODIMP CShellExt::IsMemberOf_Wrap(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 	{
 		// note: we can show other overlays if due to lack of enough free overlay
 		// slots some of our overlays aren't loaded. But we assume that
-		// at least the 'normal' and 'modified' overlay are available.
+		// at least the 'normal' overlay is available.
+		// if the 'modified' overlay isn't available, we show the 'normal' overlay,
+		// but in this case the overlays don't really provide anything useful anymore.
 		case git_wc_status_none:
 			return S_FALSE;
 		case git_wc_status_unversioned:
@@ -377,13 +379,26 @@ STDMETHODIMP CShellExt::IsMemberOf_Wrap(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 			}
 		case git_wc_status_replaced:
 		case git_wc_status_modified:
-			if (m_State == FileStateModified)
+			if (g_modifiedovlloaded)
 			{
-				g_filepath.clear();
-				return S_OK;
+				if (m_State == FileStateModified)
+				{
+					g_filepath.clear();
+					return S_OK;
+				}
+				else
+					return S_FALSE;
 			}
 			else
-				return S_FALSE;
+			{
+				if (m_State == FileStateVersioned)
+				{
+					g_filepath.clear();
+					return S_OK;
+				}
+				else
+					return S_FALSE;
+			}
 		case git_wc_status_merged:
 			if (m_State == FileStateReadOnly)
 			{
