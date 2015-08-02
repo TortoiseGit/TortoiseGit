@@ -6374,7 +6374,7 @@ msgid "New &name:"
 msgstr ""
 
 #. Resource IDs: (309)
-msgid "New Branch\\Tag"
+msgid "New Branch/Tag"
 msgstr ""
 
 #. Resource IDs: (16014)
@@ -8060,7 +8060,7 @@ msgid "SSH"
 msgstr ""
 
 #. Resource IDs: (1541)
-msgid "SSL"
+msgid "SSL/TLS"
 msgstr ""
 
 #. Resource IDs: (1540)
