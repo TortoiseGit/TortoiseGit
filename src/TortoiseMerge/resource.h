@@ -359,25 +359,13 @@
 #define ID_EDIT_FINDPREVSTART           32892
 #define ID_EDIT_GOTOLINE                32893
 #define ID_EDIT_GOTOLINE32895           32895
-#define ID_BUTTON2                      32896
 #define ID_VIEW_IGNORECOMMENTS          32896
 #define ID_LOGOBUTTON                   32897
+#define ID_VIEW_BARS                    32898
 #define ID_USEBLOCKS                    32914
-#define ID_BUTTON20                     32916
-#define ID_BUTTON24                     32920
-#define ID_BUTTON28                     32924
-#define ID_BUTTON7                      32929
-#define ID_BUTTON18                     32944
-#define ID_BUTTON25                     32949
-#define ID_BUTTON31                     32954
-#define ID_BUTTON32                     32955
 #define ID_APPLOOK                      32956
-#define ID_BUTTON6                      32961
-#define ID_BUTTON14                     32968
-#define ID_BUTTON17                     32971
 #define ID_EDIT_ENABLE                  32976
 #define ID_FILE_ENABLEEDIT              32978
-#define ID_BUTTON3                      32981
 #define ID_EDIT_REGEXFILTER             32992
 #define ID_REGEXFILTER_REGEXFILTER      32993
 

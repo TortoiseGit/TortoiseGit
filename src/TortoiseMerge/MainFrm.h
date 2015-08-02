@@ -132,6 +132,7 @@ protected:
 	afx_msg void	OnUpdateViewLinediffbar(CCmdUI *pCmdUI);
 	afx_msg void	OnViewLinediffbar();
 	afx_msg void	OnUpdateViewLocatorbar(CCmdUI *pCmdUI);
+	afx_msg void	OnUpdateViewBars(CCmdUI *pCmdUI);
 	afx_msg void	OnViewLocatorbar();
 	afx_msg void	OnEditUseleftblock();
 	afx_msg void	OnUpdateUseBlock(CCmdUI *pCmdUI);

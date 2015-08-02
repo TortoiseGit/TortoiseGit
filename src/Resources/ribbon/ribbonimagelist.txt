@@ -48,3 +48,13 @@ Filter16.png
 FilterConfig16.png
 TabSpace.png
 SmartTab.png
+UseLeftBlock.png
+UseLeftFile.png
+UseLeftRight.png
+UseRightLeft.png
+UseMine.png
+UseTheirs.png
+UseMineTheirs.png
+UseTheirsMine.png
+Redo.png
+ViewBars.png
