@@ -744,27 +744,11 @@ void CCommitDlg::OnOK()
 					}
 				}
 
-				CStringA filePathA = CUnicodeUtils::GetMulti(entry->GetGitPathString(), CP_UTF8);
+				CStringA filePathA = CUnicodeUtils::GetMulti(entry->GetGitPathString(), CP_UTF8).TrimRight(_T('/'));
 
 				if (entry->m_Checked && !m_bCommitMessageOnly)
 				{
-					if (entry->IsDirectory())
-					{
-						CAutoSubmodule submodule;
-						if (git_submodule_lookup(submodule.GetPointer(), repository, filePathA))
-						{
-							bAddSuccess = false;
-							CMessageBox::Show(m_hWnd, CGit::GetLibGit2LastErr(_T("Could not open submodule \"") + entry->GetGitPathString() + _T("\".")), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
-							break;
-						}
-						if (git_submodule_add_to_index(submodule, FALSE))
-						{
-							bAddSuccess = false;
-							CMessageBox::Show(m_hWnd, CGit::GetLibGit2LastErr(_T("Could not add submodule \"") + entry->GetGitPathString() + _T("\" to index.")), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
-							break;
-						}
-					}
-					else if (entry->m_Action & CTGitPath::LOGACTIONS_DELETED)
+					if (entry->m_Action & CTGitPath::LOGACTIONS_DELETED)
 					{
 						git_index_remove_bypath(index, filePathA); // ignore error
 					}

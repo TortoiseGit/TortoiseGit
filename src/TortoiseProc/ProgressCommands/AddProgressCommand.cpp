@@ -53,7 +53,8 @@ bool AddProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, int&
 
 		for (m_itemCount = 0; m_itemCount < m_itemCountTotal; ++m_itemCount)
 		{
-			if (git_index_add_bypath(index, CUnicodeUtils::GetUTF8(m_targetPathList[m_itemCount].GetGitPathString())))
+			CStringA filePathA = CUnicodeUtils::GetMulti(m_targetPathList[m_itemCount].GetGitPathString(), CP_UTF8).TrimRight(_T('/'));
+			if (git_index_add_bypath(index, filePathA))
 			{
 				list->ReportGitError();
 				return false;
