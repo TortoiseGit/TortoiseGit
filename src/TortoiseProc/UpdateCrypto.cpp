@@ -883,32 +883,43 @@ static int verify_signature_dsa(HCRYPTPROV hCryptProv, HCRYPTHASH hHash, public_
 	if (p_sig.digest_algo != DIGEST_ALGO_SHA1) // PROV_DSS only supports SHA1 signatures, see http://msdn.microsoft.com/en-us/library/windows/desktop/aa387434%28v=vs.85%29.aspx
 		return -1;
 
+	int i_p_len = min(mpi_len(p_pkey.key.sig.dsa.p), sizeof(p_pkey.key.sig.dsa.p) - 2);
+	int i_q_len = min(mpi_len(p_pkey.key.sig.dsa.q), sizeof(p_pkey.key.sig.dsa.q) - 2);
+	int i_g_len = min(mpi_len(p_pkey.key.sig.dsa.g), sizeof(p_pkey.key.sig.dsa.g) - 2);
+	int i_y_len = min(mpi_len(p_pkey.key.sig.dsa.y), sizeof(p_pkey.key.sig.dsa.y) - 2);
+	int i_r_len = min(mpi_len(p_sig.algo_specific.dsa.r), sizeof(p_sig.algo_specific.dsa.r) - 2);
+	int i_s_len = min(mpi_len(p_sig.algo_specific.dsa.s), sizeof(p_sig.algo_specific.dsa.s) - 2);
+
+	// CryptoAPI only supports 1024-bit DSA keys and SHA1 signatures
+	if (i_p_len > 128 || i_q_len > 20 && i_g_len > 128 || i_y_len > 128 || i_r_len > 20 || i_s_len > 20)
+		return -1;
+
 	HCRYPTKEY hPubKey;
 	// based on http://www.derkeiler.com/Newsgroups/microsoft.public.platformsdk.security/2004-10/0040.html
-	DSAKEY dsakey;
+	DSAKEY dsakey = { 0 };
 	dsakey.blobheader.bType = PUBLICKEYBLOB; // 0x06
 	dsakey.blobheader.bVersion = CUR_BLOB_VERSION + 1; // 0x03
 	dsakey.blobheader.reserved = 0;
 	dsakey.blobheader.aiKeyAlg = CALG_DSS_SIGN;
 	dsakey.dsspubkeyver3.magic = 0x33535344; // ASCII of "DSS3";
-	dsakey.dsspubkeyver3.bitlenP = 1024; // # of bits in prime modulus
-	dsakey.dsspubkeyver3.bitlenQ = 160; // # of bits in prime q, 0 if not available
+	dsakey.dsspubkeyver3.bitlenP = i_p_len * 8; // # of bits in prime modulus
+	dsakey.dsspubkeyver3.bitlenQ = i_q_len * 8; // # of bits in prime q, 0 if not available
 	dsakey.dsspubkeyver3.bitlenJ = 0; // # of bits in (p-1)/q, 0 if not available
 	dsakey.dsspubkeyver3.DSSSeed.counter = 0xFFFFFFFF; // not available
 
-	memcpy(dsakey.p, p_pkey.key.sig.dsa.p + 2, sizeof(p_pkey.key.sig.dsa.p) - 2); std::reverse(dsakey.p, dsakey.p + sizeof(dsakey.p));
-	memcpy(dsakey.q, p_pkey.key.sig.dsa.q + 2, sizeof(p_pkey.key.sig.dsa.q) - 2); std::reverse(dsakey.q, dsakey.q + sizeof(dsakey.q));
-	memcpy(dsakey.g, p_pkey.key.sig.dsa.g + 2, sizeof(p_pkey.key.sig.dsa.g) - 2); std::reverse(dsakey.g, dsakey.g + sizeof(dsakey.g));
-	memcpy(dsakey.y, p_pkey.key.sig.dsa.y + 2, sizeof(p_pkey.key.sig.dsa.y) - 2); std::reverse(dsakey.y, dsakey.y + sizeof(dsakey.y));
+	memcpy(dsakey.p, p_pkey.key.sig.dsa.p + 2, i_p_len); std::reverse(dsakey.p, dsakey.p + i_p_len);
+	memcpy(dsakey.q, p_pkey.key.sig.dsa.q + 2, i_q_len); std::reverse(dsakey.q, dsakey.q + i_q_len);
+	memcpy(dsakey.g, p_pkey.key.sig.dsa.g + 2, i_g_len); std::reverse(dsakey.g, dsakey.g + i_g_len);
+	memcpy(dsakey.y, p_pkey.key.sig.dsa.y + 2, i_y_len); std::reverse(dsakey.y, dsakey.y + i_y_len);
 
 	if (CryptImportKey(hCryptProv, (BYTE*)&dsakey, sizeof(dsakey), 0, 0, &hPubKey) == 0)
 		return -1;
 
 	unsigned char signature[40] = { 0 };
-	memcpy(signature, p_sig.algo_specific.dsa.r + 2, 20);
-	memcpy(signature + 20, p_sig.algo_specific.dsa.s + 2, 20);
-	std::reverse(signature, signature + 20);
-	std::reverse(signature + 20, signature + 40);
+	memcpy(signature, p_sig.algo_specific.dsa.r + 2, i_r_len);
+	memcpy(signature + 20, p_sig.algo_specific.dsa.s + 2, i_s_len);
+	std::reverse(signature, signature + i_r_len);
+	std::reverse(signature + 20, signature + 20 + i_s_len);
 	if (!CryptVerifySignature(hHash, signature, sizeof(signature), hPubKey, nullptr, 0))
 	{
 		CryptDestroyKey(hPubKey);
