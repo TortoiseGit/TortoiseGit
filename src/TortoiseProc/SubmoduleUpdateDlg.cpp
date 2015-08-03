@@ -261,6 +261,7 @@ void CSubmoduleUpdateDlg::OnBnClickedSelectall()
 		for (int i = 0; i < m_PathListBox.GetCount(); ++i)
 			m_PathListBox.SetSel(i, TRUE);
 	}
+	OnLbnSelchangeListPath();
 }
 
 void CSubmoduleUpdateDlg::OnBnClickedShowWholeProject()
