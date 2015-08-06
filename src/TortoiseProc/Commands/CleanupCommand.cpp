@@ -66,6 +66,11 @@ static int SubmoduleCallback(git_submodule *sm, const char * /*name*/, void *pay
 {
 	auto spayload = (SubmodulePayload *)payload;
 	CString path = CUnicodeUtils::GetUnicode(git_submodule_path(sm));
+	CString fullPath(spayload->basePath);
+	fullPath += _T("\\");
+	fullPath += path;
+	if (!PathIsDirectory(fullPath))
+		return 0;
 	if (spayload->prefixList.empty())
 	{
 		CTGitPath subPath(spayload->basePath);
