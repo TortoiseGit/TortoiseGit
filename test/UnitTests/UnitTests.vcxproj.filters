@@ -113,6 +113,15 @@
     <ClInclude Include="..\..\src\Utils\UniqueQueue.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\version.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\TortoiseProc\UpdateCrypto.h">
+      <Filter>TortoiseProc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\TortoiseProc\UpdateDownloader.h">
+      <Filter>TortoiseProc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -228,6 +237,12 @@
     </ClCompile>
     <ClCompile Include="GitIndexTest.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UpdateCryptoTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\TortoiseProc\UpdateCrypto.cpp">
+      <Filter>TortoiseProc</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -77,6 +77,8 @@
     <ClInclude Include="..\..\src\Git\MassiveGitTaskBase.h" />
     <ClInclude Include="..\..\src\Git\TGitPath.h" />
     <ClInclude Include="..\..\src\TortoiseProc\ProjectProperties.h" />
+    <ClInclude Include="..\..\src\TortoiseProc\UpdateCrypto.h" />
+    <ClInclude Include="..\..\src\TortoiseProc\UpdateDownloader.h" />
     <ClInclude Include="..\..\src\Utils\CmdLineParser.h" />
     <ClInclude Include="..\..\src\Utils\CommonAppUtils.h" />
     <ClInclude Include="..\..\src\Utils\DebugHelpers.h" />
@@ -92,6 +94,7 @@
     <ClInclude Include="..\..\src\Utils\SysInfo.h" />
     <ClInclude Include="..\..\src\Utils\UnicodeUtils.h" />
     <ClInclude Include="..\..\src\Utils\UniqueQueue.h" />
+    <ClInclude Include="..\..\src\version.h" />
     <ClInclude Include="AutoTempDir.h" />
     <ClInclude Include="RepositoryFixtures.h" />
     <ClInclude Include="stdafx.h" />
@@ -107,6 +110,7 @@
     <ClCompile Include="..\..\src\Git\MassiveGitTaskBase.cpp" />
     <ClCompile Include="..\..\src\Git\TGitPath.cpp" />
     <ClCompile Include="..\..\src\TortoiseProc\ProjectProperties.cpp" />
+    <ClCompile Include="..\..\src\TortoiseProc\UpdateCrypto.cpp" />
     <ClCompile Include="..\..\src\Utils\CmdLineParser.cpp" />
     <ClCompile Include="..\..\src\Utils\CommonAppUtils.cpp" />
     <ClCompile Include="..\..\src\Utils\DebugOutput.cpp" />
@@ -137,6 +141,7 @@
     <ClCompile Include="TGitPathTest.cpp" />
     <ClCompile Include="UniqueQueueTests.cpp" />
     <ClCompile Include="UnitTests.cpp" />
+    <ClCompile Include="UpdateCryptoTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\ext\build\gtest.vcxproj">

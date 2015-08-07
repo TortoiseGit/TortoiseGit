@@ -946,6 +946,7 @@ int verify_signature(HCRYPTPROV hCryptProv, HCRYPTHASH hHash, public_key_t& p_ke
 		return -1;
 }
 
+#ifndef GTEST_INCLUDE_GTEST_GTEST_H_
 /*
  * download a public key (the last one) from TortoiseGit server, and parse it
  */
@@ -997,11 +998,10 @@ static public_key_t *download_key(const uint8_t *p_longid, const uint8_t *p_sign
 
 	return p_pkey;
 }
+#endif
 
 int VerifyIntegrity(const CString &filename, const CString &signatureFilename, CUpdateDownloader *updateDownloader)
 {
-	ASSERT(updateDownloader);
-
 	signature_packet_t p_sig;
 	memset(&p_sig, 0, sizeof(signature_packet_t));
 	if (LoadSignature(signatureFilename, &p_sig))
@@ -1034,7 +1034,13 @@ int VerifyIntegrity(const CString &filename, const CString &signatureFilename, C
 
 	if (memcmp(p_sig.issuer_longid, p_pkey.longid, 8) != 0)
 	{
-		public_key_t *p_new_pkey = download_key(p_sig.issuer_longid, tortoisegit_public_key_longid, updateDownloader);
+		public_key_t *p_new_pkey = nullptr;
+#ifndef GTEST_INCLUDE_GTEST_GTEST_H_
+		if (updateDownloader)
+			p_new_pkey = download_key(p_sig.issuer_longid, tortoisegit_public_key_longid, updateDownloader);
+#else
+		UNREFERENCED_PARAMETER(updateDownloader);
+#endif
 		if (!p_new_pkey)
 		{
 			if (p_sig.version == 4)
