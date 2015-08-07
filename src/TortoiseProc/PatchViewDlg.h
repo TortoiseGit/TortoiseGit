@@ -18,6 +18,7 @@
 //
 #pragma once
 #include "SciEdit.h"
+#include "FindBar.h"
 
 class IHasPatchView
 {
@@ -43,6 +44,7 @@ public:
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
 
 public:
 	CSciEdit			m_ctrlPatchView;
@@ -54,4 +56,20 @@ protected:
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnMoving(UINT fwSide, LPRECT pRect);
 	afx_msg void OnClose();
+
+	afx_msg void OnShowFindBar();
+	afx_msg void OnFindNext();
+	afx_msg void OnFindPrev();
+	afx_msg void OnFindReset();
+	afx_msg void OnFindExit();
+	afx_msg void OnEscape();
+	LRESULT OnFindNextMessage(WPARAM, LPARAM);
+	LRESULT OnFindPrevMessage(WPARAM, LPARAM);
+	LRESULT OnFindResetMessage(WPARAM, LPARAM);
+	LRESULT OnFindExitMessage(WPARAM, LPARAM);
+
+	CFindBar            m_FindBar;
+	bool                m_bShowFindBar;
+
+	HACCEL				m_hAccel;
 };
