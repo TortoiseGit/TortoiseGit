@@ -168,7 +168,8 @@ static size_t parse_signature_v3_packet(signature_packet_t *p_sig, const uint8_t
 	p_sig->hash_verification[0] = *p_buf++; i_read++;
 	p_sig->hash_verification[1] = *p_buf++; i_read++;
 
-	ASSERT(i_read == 19);
+	if (i_read != 19)
+		return 0;
 
 	return i_read;
 }
@@ -197,7 +198,7 @@ static size_t parse_signature_v4_packet(signature_packet_t *p_sig, const uint8_t
 
 	size_t i_hashed_data_len = scalar_number(p_sig->specific.v4.hashed_data_len, 2);
 	i_read += i_hashed_data_len;
-	if (i_read + 4 > i_sig_len)
+	if (i_read + 4 > i_sig_len || i_hashed_data_len > i_sig_len)
 		return 0;
 
 	p_sig->specific.v4.hashed_data = (uint8_t*) malloc(i_hashed_data_len);
@@ -211,7 +212,7 @@ static size_t parse_signature_v4_packet(signature_packet_t *p_sig, const uint8_t
 
 	size_t i_unhashed_data_len = scalar_number(p_sig->specific.v4.unhashed_data_len, 2);
 	i_read += i_unhashed_data_len;
-	if (i_read + 2 > i_sig_len)
+	if (i_read + 2 > i_sig_len || i_unhashed_data_len > i_sig_len)
 		return 0;
 
 	p_sig->specific.v4.unhashed_data = (uint8_t*) malloc(i_unhashed_data_len);
@@ -226,7 +227,7 @@ static size_t parse_signature_v4_packet(signature_packet_t *p_sig, const uint8_t
 
 	uint8_t *p, *max_pos;
 	p = p_sig->specific.v4.unhashed_data;
-	max_pos = p + scalar_number(p_sig->specific.v4.unhashed_data_len, 2);
+	max_pos = p + i_unhashed_data_len;
 
 	for (;;)
 	{
@@ -266,6 +267,9 @@ static size_t parse_signature_v4_packet(signature_packet_t *p_sig, const uint8_t
 
 			return i_read;
 		}
+
+		if (i_subpacket_len > i_unhashed_data_len)
+			return 0;
 
 		p += i_subpacket_len;
 	}
@@ -328,8 +332,7 @@ static int parse_signature_packet(signature_packet_t *p_sig, const uint8_t *p_bu
 	else
 		goto error;
 
-	ASSERT(i_read == i_packet_len);
-	if (i_read < i_packet_len) /* some extra data, hm ? */
+	if (i_read != i_packet_len)
 		goto error;
 
 	return 0;
@@ -501,7 +504,7 @@ static int parse_public_key(const uint8_t *p_key_data, size_t i_key_len, public_
 		int i_packet_len = scalar_number(pos, i_header_len);
 		pos += i_header_len;
 
-		if (pos + i_packet_len > max_pos)
+		if (pos + i_packet_len > max_pos || i_packet_len < 0 || i_packet_len > i_key_len)
 			goto error;
 
 		switch (i_type)
