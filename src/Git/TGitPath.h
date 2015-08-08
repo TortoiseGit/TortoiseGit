@@ -351,7 +351,7 @@ public:
 	void AddPath(const CTGitPath& newPath);
 	bool LoadFromFile(const CTGitPath& filename);
 	bool WriteToFile(const CString& sFilename, bool bANSI = false) const;
-	CTGitPath * LookForGitPath(CString path);
+	const CTGitPath* LookForGitPath(const CString& path);
 	int	ParserFromLog(BYTE_VECTOR &log, bool parseDeletes = false);
 	int ParserFromLsFile(BYTE_VECTOR &out,bool staged=true);
 	int FillUnRev(unsigned int Action, CTGitPathList *list = nullptr, CString *err = nullptr);

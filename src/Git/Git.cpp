@@ -3255,6 +3255,10 @@ int CGit::GetWorkingTreeChanges(CTGitPathList& result, bool amend, CTGitPathList
 	}
 	result.ParserFromLog(out);
 
+	std::map<CString, int> duplicateMap;
+	for (int i = 0; i < result.GetCount(); ++i)
+		duplicateMap.insert(std::pair<CString, int>(result[i].GetGitPathString(), i));
+
 	// handle delete conflict case, when remote : modified, local : deleted.
 	for (int i = 0; i < count; ++i)
 	{
@@ -3272,11 +3276,17 @@ int CGit::GetWorkingTreeChanges(CTGitPathList& result, bool amend, CTGitPathList
 		conflictlist.ParserFromLog(cmdout);
 		for (int j = 0; j < conflictlist.GetCount(); ++j)
 		{
-			CTGitPath* p = result.LookForGitPath(conflictlist[j].GetGitPathString());
-			if (p)
-				p->m_Action |= CTGitPath::LOGACTIONS_UNMERGED;
+			auto existing = duplicateMap.find(conflictlist[j].GetGitPathString());
+			if (existing != duplicateMap.end())
+			{
+				CTGitPath& p = const_cast<CTGitPath&>(result[existing->second]);
+				p.m_Action |= CTGitPath::LOGACTIONS_UNMERGED;
+			}
 			else
+			{
 				result.AddPath(conflictlist[j]);
+				duplicateMap.insert(std::pair<CString, int>(result[i].GetGitPathString(), result.GetCount() - 1));
+			}
 		}
 	}
 
@@ -3298,11 +3308,17 @@ int CGit::GetWorkingTreeChanges(CTGitPathList& result, bool amend, CTGitPathList
 		deletelist.ParserFromLog(cmdout, true);
 		for (int j = 0; j < deletelist.GetCount(); ++j)
 		{
-			CTGitPath* p = result.LookForGitPath(deletelist[j].GetGitPathString());
-			if (!p)
+			auto existing = duplicateMap.find(deletelist[j].GetGitPathString());
+			if (existing == duplicateMap.end())
+			{
 				result.AddPath(deletelist[j]);
+				duplicateMap.insert(std::pair<CString, int>(result[i].GetGitPathString(), result.GetCount() - 1));
+			}
 			else
-				p->m_Action |= CTGitPath::LOGACTIONS_MISSING;
+			{
+				CTGitPath& p = const_cast<CTGitPath&>(result[existing->second]);
+				p.m_Action |= CTGitPath::LOGACTIONS_MISSING;
+			}
 		}
 	}
 

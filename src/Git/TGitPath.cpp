@@ -1162,6 +1162,7 @@ int CTGitPathList::FillBasedOnIndexFlags(unsigned short flag, CTGitPathList* lis
 int CTGitPathList::ParserFromLog(BYTE_VECTOR &log, bool parseDeletes /*false*/)
 {
 	this->Clear();
+	std::map<CString, size_t> duplicateMap;
 	int pos=0;
 	CTGitPath path;
 	m_Action=0;
@@ -1225,19 +1226,18 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log, bool parseDeletes /*false*/)
 			if( file2>=0 )
 				CGit::StringAppend(&pathname2, &log[file2], CP_UTF8);
 
-			CTGitPath *GitPath=LookForGitPath(pathname1);
-
 			if (actionstart < 0)
 				return -1;
-			if(GitPath)
+
+			auto existing = duplicateMap.find(pathname1);
+			if (existing != duplicateMap.end())
 			{
-				GitPath->ParserAction( log[actionstart] );
+				CTGitPath& p = m_paths[existing->second];
+				p.ParserAction(log[actionstart]);
 
 				if(merged)
-				{
-					GitPath->m_Action |= CTGitPath::LOGACTIONS_MERGED;
-				}
-				m_Action |=GitPath->m_Action;
+					p.m_Action |= CTGitPath::LOGACTIONS_MERGED;
+				m_Action |= p.m_Action;
 
 			}
 			else
@@ -1251,7 +1251,7 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log, bool parseDeletes /*false*/)
 				this->m_Action|=ac;
 
 				AddPath(path);
-
+				duplicateMap.insert(std::pair<CString, size_t>(path.GetGitPathString(), m_paths.size() - 1));
 			}
 
 		}
@@ -1300,11 +1300,12 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log, bool parseDeletes /*false*/)
 			}
 			path.SetFromGit(file1,&file2);
 
-			CTGitPath *GitPath=LookForGitPath(path.GetGitPathString());
-			if(GitPath)
+			auto existing = duplicateMap.find(path.GetGitPathString());
+			if (existing != duplicateMap.end())
 			{
-				GitPath->m_StatAdd=StatAdd;
-				GitPath->m_StatDel=StatDel;
+				CTGitPath& p = m_paths[existing->second];
+				p.m_StatAdd = StatAdd;
+				p.m_StatDel = StatDel;
 			}
 			else
 			{
@@ -1321,6 +1322,7 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log, bool parseDeletes /*false*/)
 					path.m_StatDel=StatDel;
 				}
 				AddPath(path);
+				duplicateMap.insert(std::pair<CString, size_t>(path.GetGitPathString(), m_paths.size() - 1));
 			}
 
 		}
@@ -1666,7 +1668,7 @@ bool CTGitPathList::IsEqual(const CTGitPathList& list)
 	return true;
 }
 
-CTGitPath * CTGitPathList::LookForGitPath(CString path)
+const CTGitPath* CTGitPathList::LookForGitPath(const CString& path)
 {
 	int i=0;
 	for (i = 0; i < this->GetCount(); ++i)

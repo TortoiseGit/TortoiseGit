@@ -271,7 +271,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 					{
 						GitRevLoglist* first = reinterpret_cast<GitRevLoglist*>(m_arShownList.GetAt(i));
 						CTGitPathList list = first->GetFiles(NULL);
-						CTGitPath * file = list.LookForGitPath(path1);
+						const CTGitPath* file = list.LookForGitPath(path1);
 						if (file && !file->GetGitOldPathString().IsEmpty())
 							path1 = file->GetGitOldPathString();
 					}
@@ -280,7 +280,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 					{
 						GitRevLoglist* first = reinterpret_cast<GitRevLoglist*>(m_arShownList.GetAt(i));
 						CTGitPathList list = first->GetFiles(NULL);
-						CTGitPath * file = list.LookForGitPath(path2);
+						const CTGitPath* file = list.LookForGitPath(path2);
 						if (file && !file->GetGitOldPathString().IsEmpty())
 							path2 = file->GetGitOldPathString();
 					}
@@ -305,7 +305,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 					{
 						GitRevLoglist* first = reinterpret_cast<GitRevLoglist*>(m_arShownList.GetAt(i));
 						CTGitPathList list = first->GetFiles(NULL);
-						CTGitPath * file = list.LookForGitPath(path1);
+						const CTGitPath* file = list.LookForGitPath(path1);
 						if (file && !file->GetGitOldPathString().IsEmpty())
 							path1 = file->GetGitOldPathString();
 					}
@@ -354,14 +354,14 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 						{
 							GitRevLoglist* first = reinterpret_cast<GitRevLoglist*>(m_arShownList.GetAt(i));
 							CTGitPathList list = first->GetFiles(NULL);
-							CTGitPath * file = list.LookForGitPath(path1);
+							const CTGitPath* file = list.LookForGitPath(path1);
 							if (file && !file->GetGitOldPathString().IsEmpty())
 								path1 = file->GetGitOldPathString();
 						}
 						CString path2 = path1;
 						GitRevLoglist* first = reinterpret_cast<GitRevLoglist*>(m_arShownList.GetAt(indexNext));
 						CTGitPathList list = first->GetFiles(NULL);
-						CTGitPath * file = list.LookForGitPath(path2);
+						const CTGitPath* file = list.LookForGitPath(path2);
 						if (file && !file->GetGitOldPathString().IsEmpty())
 							path2 = file->GetGitOldPathString();
 
