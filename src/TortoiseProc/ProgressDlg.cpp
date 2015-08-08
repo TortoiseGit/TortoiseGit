@@ -198,7 +198,7 @@ UINT CProgressDlg::ProgressThreadEntry(LPVOID pVoid)
 }
 
 //static function, Share with SyncDialog
-UINT CProgressDlg::RunCmdList(CWnd* pWnd, STRING_VECTOR& cmdlist, STRING_VECTOR& dirlist, bool bShowCommand, CString* pfilename, volatile bool* bAbort, CGitGuardedByteArray* pdata, CGit* git)
+UINT CProgressDlg::RunCmdList(CWnd* pWnd, STRING_VECTOR& cmdlist, STRING_VECTOR& dirlist, STRING_VECTOR& puttykeylist, bool bShowCommand, CString* pfilename, volatile bool* bAbort, CGitGuardedByteArray* pdata, CGit* git)
 {
 	UINT ret=0;
 
@@ -249,13 +249,16 @@ UINT CProgressDlg::RunCmdList(CWnd* pWnd, STRING_VECTOR& cmdlist, STRING_VECTOR&
 				pWnd->PostMessage(MSG_PROGRESSDLG_UPDATE_UI,MSG_PROGRESSDLG_RUN,0);
 		}
 
+		CString* puttykey = nullptr;
+		if (!puttykeylist.empty())
+			*puttykey = puttykey[i];
 		PROCESS_INFORMATION pi;
 		CAutoGeneralHandle hRead;
 		int runAsyncRet = -1;
 		if (gitList.empty())
-			runAsyncRet = git->RunAsync(cmdlist[i].Trim(), &pi, hRead.GetPointer(), nullptr, pfilename);
+			runAsyncRet = git->RunAsync(cmdlist[i].Trim(), &pi, hRead.GetPointer(), nullptr, pfilename, puttykey);
 		else
-			runAsyncRet = gitList[i]->RunAsync(cmdlist[i].Trim(), &pi, hRead.GetPointer(), nullptr, pfilename);
+			runAsyncRet = gitList[i]->RunAsync(cmdlist[i].Trim(), &pi, hRead.GetPointer(), nullptr, pfilename, puttykey);
 		if (runAsyncRet)
 		{
 			EnsurePostMessage(pWnd, MSG_PROGRESSDLG_UPDATE_UI, MSG_PROGRESSDLG_FAILED, -1 * runAsyncRet);
@@ -331,7 +334,7 @@ UINT CProgressDlg::ProgressThread()
 		pfilename=&m_LogFile;
 
 	m_startTick = GetTickCount64();
-	m_GitStatus = RunCmdList(this, m_GitCmdList, m_GitDirList, m_bShowCommand, pfilename, &m_bAbort, &this->m_Databuf, m_Git);
+	m_GitStatus = RunCmdList(this, m_GitCmdList, m_GitDirList, m_PuttyKeyList, m_bShowCommand, pfilename, &m_bAbort, &this->m_Databuf, m_Git);
 	return 0;
 }
 

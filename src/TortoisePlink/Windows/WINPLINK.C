@@ -12,6 +12,8 @@
 #include "storage.h"
 #include "tree234.h"
 
+#include "Shlwapi.h"
+
 #define WM_AGENT_CALLBACK (WM_APP + 4)
 
 #include <commctrl.h>
@@ -352,6 +354,18 @@ int main(int argc, char **argv)
     conf_set_int(conf, CONF_port, default_port);
     conf_set_int(conf, CONF_agentfwd, 0);
     conf_set_int(conf, CONF_x11_forward, 0);
+	{
+		/*
+		* Set default keyfile from PLINK_KEYFILE
+		*/
+		char *p = getenv("PLINK_KEYFILE");
+		if (p && PathFileExists(p)) {
+			Filename *fn;
+			fn = filename_from_str(p);
+			conf_set_filename(conf, CONF_keyfile, fn);
+			filename_free(fn);
+		}
+	}
     while (--argc) {
 	char *p = *++argv;
 	if (*p == '-') {

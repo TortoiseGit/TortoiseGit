@@ -268,7 +268,7 @@ static bool IsPowerShell(CString cmd)
 	return (end - 4 - 10 == powerShellPos || end - 10 == powerShellPos); // len(".exe")==4, len("powershell")==10
 }
 
-int CGit::RunAsync(CString cmd, PROCESS_INFORMATION *piOut, HANDLE *hReadOut, HANDLE *hErrReadOut, CString *StdioFile)
+int CGit::RunAsync(CString cmd, PROCESS_INFORMATION* piOut, HANDLE* hReadOut, HANDLE* hErrReadOut, CString* StdioFile, const CString* pPublicKey)
 {
 	SECURITY_ATTRIBUTES sa;
 	CAutoGeneralHandle hRead, hWrite, hReadErr, hWriteErr;
@@ -348,13 +348,22 @@ int CGit::RunAsync(CString cmd, PROCESS_INFORMATION *piOut, HANDLE *hReadOut, HA
 			cmd=_T('"')+CGit::ms_LastMsysGitDir+_T("\\")+cmd+_T('"');
 	}
 
+	if (pPublicKey)
+		m_Environment.SetEnv(_T("PLINK_KEYFILE"), *pPublicKey);
+
 	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": executing %s\n"), (LPCTSTR)cmd);
 	if(!CreateProcess(nullptr, cmd.GetBuffer(), nullptr, nullptr, TRUE, dwFlags, pEnv, m_CurrentDir.GetBuffer(), &si, &pi))
 	{
+		if (pPublicKey)
+			m_Environment.SetEnv(_T("PLINK_KEYFILE"), nullptr);
 		CString err = CFormatMessageWrapper();
 		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": error while executing command: %s\n"), (LPCTSTR)err.Trim());
 		return TGIT_GIT_ERROR_CREATE_PROCESS;
 	}
+	m_Environment.clear();
+
+	if (pPublicKey)
+		m_Environment.SetEnv(_T("PLINK_KEYFILE"), nullptr);
 
 	m_CurrentGitPi = pi;
 

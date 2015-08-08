@@ -247,7 +247,7 @@ private:
 	CString GetUnifiedDiffCmd(const CTGitPath& path, const git_revnum_t& rev1, const git_revnum_t& rev2, bool bMerge, bool bCombine, int diffContext);
 
 public:
-	int RunAsync(CString cmd, PROCESS_INFORMATION *pi, HANDLE* hRead, HANDLE *hErrReadOut, CString *StdioFile = NULL);
+	int RunAsync(CString cmd, PROCESS_INFORMATION* pi, HANDLE* hRead, HANDLE* hErrReadOut, CString* StdioFile = nullptr, const CString* pPublicKey = nullptr);
 	int RunLogFile(CString cmd, const CString &filename, CString *stdErr);
 
 	int GetDiffPath(CTGitPathList *PathList, CGitHash *hash1, CGitHash *hash2, char *arg=NULL);

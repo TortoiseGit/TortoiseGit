@@ -97,6 +97,7 @@ public:
 	std::vector<CString>	m_GitCmdList;
 	PostExecCallback		m_PostExecCallback; // After executing command line, this callback can modify exit code / display extra message
 	STRING_VECTOR			m_GitDirList;
+	STRING_VECTOR			m_PuttyKeyList;
 	CString					m_PreText;		// optional text to show in log window before running command
 	CString					m_PreFailText;	// optional fail text to show in log window
 	bool					m_bShowCommand;	// whether to display the command in the log window (default true)
@@ -167,7 +168,7 @@ public:
 	/**
 	 *@param dirlist if empty, the current directory of param git is used; otherwise each entry in param cmdlist uses the corresponding entry in param dirlist
 	 */
-	static UINT	RunCmdList(CWnd* pWnd, STRING_VECTOR& cmdlist, STRING_VECTOR& dirlist, bool bShowCommand, CString* pfilename, volatile bool* bAbort, CGitGuardedByteArray* pdata, CGit* git = &g_Git);
+	static UINT	RunCmdList(CWnd* pWnd, STRING_VECTOR& cmdlist, STRING_VECTOR& dirlist, STRING_VECTOR& puttykeylist, bool bShowCommand, CString* pfilename, volatile bool* bAbort, CGitGuardedByteArray* pdata, CGit* git = &g_Git);
 
 	static void KillProcessTree(DWORD dwProcessId, unsigned int depth = 0);
 
