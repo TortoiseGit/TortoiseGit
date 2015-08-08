@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2007-2008 - TortoiseSVN
-// Copyright (C) 2011-2014 - TortoiseGit
+// Copyright (C) 2011-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -32,7 +32,6 @@
 CSettingsTBlame::CSettingsTBlame()
 	: ISettingsPropPage(CSettingsTBlame::IDD)
 	, m_dwFontSize(0)
-	, m_sFontName(_T(""))
 	, m_dwTabSize(4)
 	, m_dwDetectMovedOrCopiedLines(BLAME_DETECT_MOVED_OR_COPIED_LINES_DISABLED)
 	, m_dwDetectMovedOrCopiedLinesNumCharactersWithinFile(BLAME_DETECT_MOVED_OR_COPIED_LINES_NUM_CHARACTERS_WITHIN_FILE_DEFAULT)

@@ -173,9 +173,9 @@ void CMergeDlg::OnBnClickedOk()
 	}
 
 	if (m_MergeStrategy != _T("recursive"))
-		m_StrategyOption = _T("");
+		m_StrategyOption.Empty();
 	if (m_StrategyOption != _T("rename-threshold") && m_StrategyOption != _T("subtree"))
-		m_StrategyParam = _T("");
+		m_StrategyParam.Empty();
 
 	OnOK();
 }

@@ -594,7 +594,7 @@ int CACListWnd::FindString(int nStartAfter, LPCTSTR lpszString, bool m_bDisplayO
 			if(m_PrefixChar)
 				m_Str1 = m_PrefixChar;
 			else
-				m_Str1 = _T("");
+				m_Str1.Empty();
 
 			m_Str1 += m_SearchList.GetAt(i);
 

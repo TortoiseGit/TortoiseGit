@@ -64,8 +64,8 @@ CSize CHTMLFormatter::DrawHTML(CDC * pDC, CRect rect, CString str, LOGFONT font,
 	int nHeight = textMetric.tmHeight;
 	int nWidth = textMetric.tmAveCharWidth;
 
-	CString strTag = _T("");
-	CString strText = _T("");
+	CString strTag;
+	CString strText;
 	UINT nParam = 0;
 
 	CRect linkRect;
@@ -92,7 +92,7 @@ CSize CHTMLFormatter::DrawHTML(CDC * pDC, CRect rect, CString str, LOGFONT font,
 				case _T('<'):
 					nState = TEXT_TAG;	//statemachine to 'waiting for the tag'
 					bCloseTag = FALSE;		//opening bracket
-					strTag = _T("");
+					strTag.Empty();
 					break;
 				case _T('\n'):
 					nCmd = NEW_LINE;
@@ -224,7 +224,7 @@ CSize CHTMLFormatter::DrawHTML(CDC * pDC, CRect rect, CString str, LOGFONT font,
 				//waiting for the start of a number
 				if (str.GetAt(i) == _T('='))
 				{
-					strTag = _T("");
+					strTag.Empty();
 					nState = TEXT_NUMBER;
 				}
 				else if (str.GetAt(i) == _T('>'))
@@ -234,7 +234,7 @@ CSize CHTMLFormatter::DrawHTML(CDC * pDC, CRect rect, CString str, LOGFONT font,
 				//waiting for the start of a number
 				if (str.GetAt(i) == _T('='))
 				{
-					strTag = _T("");
+					strTag.Empty();
 					nState = TEXT_URL;
 				}
 				else if (str.GetAt(i) == _T('>'))
@@ -307,7 +307,7 @@ CSize CHTMLFormatter::DrawHTML(CDC * pDC, CRect rect, CString str, LOGFONT font,
 				linkRect.right = linkRect.left + s.cx;
 				linkRect.bottom = linkRect.top + s.cy;
 				ptCur.x += s.cx;
-				strText = _T("");
+				strText.Empty();
 				bFirstOutput = FALSE;
 			}
 

@@ -35,7 +35,6 @@
 IMPLEMENT_DYNAMIC(CSetMainPage, ISettingsPropPage)
 CSetMainPage::CSetMainPage()
 	: ISettingsPropPage(CSetMainPage::IDD)
-	, m_sMsysGitPath(_T(""))
 	, m_bCheckNewer(TRUE)
 	, m_dwLanguage(0)
 {

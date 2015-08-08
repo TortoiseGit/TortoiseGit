@@ -211,8 +211,6 @@ void CSetProgsAdvDlg::EnableBtns()
 void CSetProgsAdvDlg::OnBnClickedAddtool()
 {
 	CToolAssocDlg dlg(m_sType, true);
-	dlg.m_sExtension = _T("");
-	dlg.m_sTool = _T("");
 	if (dlg.DoModal() == IDOK)
 	{
 		int index = AddExtension(dlg.m_sExtension, dlg.m_sTool);

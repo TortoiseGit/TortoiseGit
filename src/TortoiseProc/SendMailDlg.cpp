@@ -32,9 +32,6 @@ IMPLEMENT_DYNAMIC(CSendMailDlg, CResizableStandAloneDialog)
 
 CSendMailDlg::CSendMailDlg(CWnd* pParent /*=NULL*/)
 	: CResizableStandAloneDialog(CSendMailDlg::IDD, pParent)
-	, m_To(_T(""))
-	, m_CC(_T(""))
-	, m_Subject(_T(""))
 	, m_bCustomSubject(FALSE)
 
 	, m_regAttach(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\Attach"),0)

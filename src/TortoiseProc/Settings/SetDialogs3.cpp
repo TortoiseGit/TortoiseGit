@@ -136,7 +136,7 @@ void CSetDialogs3::LoadDataImpl(CAutoConfig& config)
 	}
 
 	{
-		m_LogMinSize = _T("");
+		m_LogMinSize.Empty();
 		CString value;
 		m_bInheritLogMinSize = (config.GetString(PROJECTPROPNAME_LOGMINSIZE, value) == GIT_ENOTFOUND);
 		if (!value.IsEmpty() || m_iConfigSource == 0)
@@ -148,7 +148,7 @@ void CSetDialogs3::LoadDataImpl(CAutoConfig& config)
 	}
 
 	{
-		m_Border = _T("");
+		m_Border.Empty();
 		CString value;
 		m_bInheritBorder = (config.GetString(PROJECTPROPNAME_LOGWIDTHLINE, value) == GIT_ENOTFOUND);
 		if (!value.IsEmpty() || m_iConfigSource == 0)

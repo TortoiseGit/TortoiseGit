@@ -24,8 +24,6 @@
 IMPLEMENT_DYNAMIC(CPromptDlg, CDialog)
 CPromptDlg::CPromptDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(CPromptDlg::IDD, pParent)
-	, m_info(_T(""))
-	, m_sPass(_T(""))
 	, m_saveCheck(FALSE)
 	, m_hide(FALSE)
 	, m_hParentWnd(NULL)

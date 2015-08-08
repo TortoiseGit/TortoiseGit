@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011 - Sven Strickroth <email@cs-ware.de>
+// Copyright (C) 2011, 2015 - Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -23,8 +23,8 @@
 
 bool RequestPullCommand::Execute()
 {
-	CString endrevision = _T("");;
-	CString reposirotyurl = _T("");;
+	CString endrevision;
+	CString reposirotyurl;
 	if (parser.HasVal(_T("endrev")))
 		endrevision = parser.GetVal(_T("endrev"));
 	if (parser.HasVal(_T("url")))

@@ -31,9 +31,6 @@ IMPLEMENT_DYNAMIC(CDeleteConflictDlg, CStandAloneDialog)
 
 CDeleteConflictDlg::CDeleteConflictDlg(CWnd* pParent /*=NULL*/)
 	: CStandAloneDialog(CDeleteConflictDlg::IDD, pParent)
-
-	, m_LocalStatus(_T(""))
-	, m_RemoteStatus(_T(""))
 {
 	m_bShowModifiedButton = FALSE;
 	m_bIsDelete =FALSE;

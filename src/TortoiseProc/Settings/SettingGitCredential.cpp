@@ -71,9 +71,6 @@ IMPLEMENT_DYNAMIC(CSettingGitCredential, ISettingsPropPage)
 
 CSettingGitCredential::CSettingGitCredential()
 	: ISettingsPropPage(CSettingGitCredential::IDD)
-	, m_strUrl(_T(""))
-	, m_strHelper(_T(""))
-	, m_strUsername(_T(""))
 	, m_bUseHttpPath(FALSE)
 {
 

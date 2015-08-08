@@ -90,7 +90,7 @@ void CWorkingFile::TransferDetailsFrom(CWorkingFile& rightHandFile)
 
 CString CWorkingFile::GetWindowName() const
 {
-	CString sErrMsg = _T("");
+	CString sErrMsg;
 	// TortoiseMerge allows non-existing files to be used in a merge
 	// Inform the user (in a non-intrusive way) if a file is absent
 	if (! this->Exists())

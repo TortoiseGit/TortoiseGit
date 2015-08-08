@@ -31,7 +31,6 @@ CExportDlg::CExportDlg(CWnd* pParent /*=NULL*/)
 	, CChooseVersion(this)
 	, m_bWholeProject(FALSE)
 	, m_Revision(_T("HEAD"))
-	, m_strFile(_T(""))
 {
 }
 

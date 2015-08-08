@@ -1397,7 +1397,7 @@ public:
 	void ResetState()
 	{
 		m_Items.clear();
-		m_eol = _T("");
+		m_eol.Empty();
 	}
 };
 
@@ -2224,7 +2224,7 @@ CString CAppUtils::GetClipboardLink(const CString &skipGitPrefix, int paramsCoun
 		}
 	}
 
-	return CString(_T(""));
+	return CString();
 }
 
 CString CAppUtils::ChooseRepository(const CString* path)
@@ -2480,7 +2480,7 @@ bool CAppUtils::Pull(bool showPush, bool showStashPop)
 			}
 
 			if (showPush)
-				postCmdList.push_back(PostCmd(IDI_PUSH, IDS_MENUPUSH, []{ Push(_T("")); }));
+				postCmdList.push_back(PostCmd(IDI_PUSH, IDS_MENUPUSH, []{ Push(); }));
 
 			CTGitPath gitPath = g_Git.m_CurrentDir;
 			if (gitPath.HasSubmodules())
@@ -3099,7 +3099,7 @@ BOOL CAppUtils::SVNDCommit()
 {
 	CSVNDCommitDlg dcommitdlg;
 	CString gitSetting = g_Git.GetConfigValue(_T("svn.rmdir"));
-	if (gitSetting == _T("")) {
+	if (gitSetting.IsEmpty()) {
 		if (dcommitdlg.DoModal() != IDOK)
 		{
 			return false;

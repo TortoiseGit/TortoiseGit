@@ -23,10 +23,7 @@
 IMPLEMENT_DYNAMIC(CSimplePrompt, CDialog)
 CSimplePrompt::CSimplePrompt(CWnd* pParent /*=NULL*/)
 	: CDialog(CSimplePrompt::IDD, pParent)
-	, m_sUsername(_T(""))
-	, m_sPassword(_T(""))
 	, m_bSaveAuthentication(FALSE)
-	, m_sRealm(_T(""))
 	, m_hParentWnd(NULL)
 {
 }

@@ -3088,10 +3088,9 @@ UINT CGitLogListBase::LogThread()
 void CGitLogListBase::FetchRemoteList()
 {
 	STRING_VECTOR remoteList;
-	if (!g_Git.GetRemoteList(remoteList))
-		m_SingleRemote = remoteList.size() == 1 ? remoteList[0] : _T("");
-	else
-		m_SingleRemote = _T("");
+	m_SingleRemote.Empty();
+	if (!g_Git.GetRemoteList(remoteList) && remoteList.size() == 1)
+		m_SingleRemote = remoteList[0];
 }
 
 void CGitLogListBase::FetchTrackingBranchList()

@@ -28,8 +28,6 @@ CSettingsProgsDiff::CSettingsProgsDiff()
 	: ISettingsPropPage(CSettingsProgsDiff::IDD)
 	, m_dlgAdvDiff(_T("Diff"))
 	, m_iExtDiff(0)
-	, m_sDiffPath(_T(""))
-	, m_sDiffViewerPath(_T(""))
 	, m_iDiffViewer(0)
 {
 	m_regDiffPath = CRegString(_T("Software\\TortoiseGit\\Diff"));

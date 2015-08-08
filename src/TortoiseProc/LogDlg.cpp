@@ -57,8 +57,6 @@ CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
 
 	, m_bSelectionMustBeContinuous(false)
 
-	, m_sLogInfo(_T(""))
-
 	, m_bCancelled(FALSE)
 	, m_pNotifyWindow(NULL)
 

@@ -26,7 +26,6 @@
 IMPLEMENT_DYNAMIC(CSettingsProgsAlternativeEditor, ISettingsPropPage)
 CSettingsProgsAlternativeEditor::CSettingsProgsAlternativeEditor()
 	: ISettingsPropPage(CSettingsProgsAlternativeEditor::IDD)
-	, m_sAlternativeEditorPath(_T(""))
 	, m_iAlternativeEditor(0)
 {
 	m_regAlternativeEditorPath = CRegString(_T("Software\\TortoiseGit\\AlternativeEditor"));

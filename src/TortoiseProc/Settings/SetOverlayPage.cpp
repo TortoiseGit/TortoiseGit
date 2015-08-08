@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2009,2011,2013-2014 - TortoiseGit
+// Copyright (C) 2008-2009,2011,2013-2015 - TortoiseGit
 // Copyright (C) 2003-2008,2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -36,8 +36,6 @@ CSetOverlayPage::CSetOverlayPage()
 	, m_bRAM(FALSE)
 	, m_bUnknown(FALSE)
 	, m_bOnlyExplorer(FALSE)
-	, m_sExcludePaths(_T(""))
-	, m_sIncludePaths(_T(""))
 	, m_bUnversionedAsModified(FALSE)
 	, m_bRecurseSubmodules(FALSE)
 	, m_bFloppy(FALSE)

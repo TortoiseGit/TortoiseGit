@@ -31,7 +31,6 @@ IMPLEMENT_DYNCREATE(CCloneDlg, CHorizontalResizableStandAloneDialog)
 
 CCloneDlg::CCloneDlg(CWnd* pParent /*=NULL*/)
 	: CHorizontalResizableStandAloneDialog(CCloneDlg::IDD, pParent)
-	, m_Directory(_T(""))
 {
 	m_bRecursive = FALSE;
 	m_bBare = FALSE;

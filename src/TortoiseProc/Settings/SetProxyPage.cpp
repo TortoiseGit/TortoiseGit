@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2010-2014 - TortoiseGit
+// Copyright (C) 2010-2015 - TortoiseGit
 // Copyright (C) 2003-2007 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -29,12 +29,8 @@
 IMPLEMENT_DYNAMIC(CSetProxyPage, ISettingsPropPage)
 CSetProxyPage::CSetProxyPage()
 	: ISettingsPropPage(CSetProxyPage::IDD)
-	, m_serveraddress(_T(""))
 	, m_serverport(0)
-	, m_username(_T(""))
-	, m_password(_T(""))
 	, m_isEnabled(FALSE)
-	, m_SSHClient(_T(""))
 {
 	m_regServeraddress = CRegString(_T("Software\\TortoiseGit\\Git\\Servers\\global\\http-proxy-host"), _T(""));
 	m_regServerport = CRegString(_T("Software\\TortoiseGit\\Git\\Servers\\global\\http-proxy-port"), _T(""));

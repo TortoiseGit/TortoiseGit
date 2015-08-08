@@ -103,14 +103,10 @@ bool CloneCommand::Execute()
 		CString recursiveStr;
 		if(dlg.m_bRecursive)
 			recursiveStr = _T(" --recursive");
-		else
-			recursiveStr = _T("");
 
 		CString bareStr;
 		if(dlg.m_bBare)
 			bareStr = _T(" --bare");
-		else
-			bareStr = _T("");
 
 		CString nocheckoutStr;
 		if (dlg.m_bNoCheckout)

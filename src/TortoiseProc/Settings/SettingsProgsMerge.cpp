@@ -25,7 +25,6 @@
 IMPLEMENT_DYNAMIC(CSettingsProgsMerge, ISettingsPropPage)
 CSettingsProgsMerge::CSettingsProgsMerge()
 	: ISettingsPropPage(CSettingsProgsMerge::IDD)
-	, m_sMergePath(_T(""))
 	, m_iExtMerge(0)
 	, m_dlgAdvMerge(_T("Merge"))
 {

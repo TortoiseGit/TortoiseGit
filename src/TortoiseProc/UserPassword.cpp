@@ -28,8 +28,6 @@ IMPLEMENT_DYNAMIC(CUserPassword, CDialog)
 
 CUserPassword::CUserPassword(CWnd* pParent /*=NULL*/)
 	: CDialog(CUserPassword::IDD, pParent)
-	, m_UserName(_T(""))
-	, m_Password(_T(""))
 {
 
 }

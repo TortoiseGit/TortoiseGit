@@ -61,7 +61,7 @@ static int SplitRemoteBranchName(CString ref, CString &remote, CString &branch)
 		if (ref == list[i])
 		{
 			remote = list[i];
-			branch = _T("");
+			branch.Empty();
 			return 0;
 		}
 	}
@@ -1041,7 +1041,7 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 			{
 				CString remoteBranch;
 				if (SplitRemoteBranchName(pTree->GetRefName(), remoteName, remoteBranch))
-					remoteName = _T("");
+					remoteName.Empty();
 				int pos = findVectorPosition(remotes, remoteName);
 				if (pos >= 0)
 				{

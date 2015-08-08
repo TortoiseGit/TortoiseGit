@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2013, 2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -34,7 +34,6 @@ IMPLEMENT_DYNAMIC(CSubmoduleAddDlg, CHorizontalResizableStandAloneDialog)
 CSubmoduleAddDlg::CSubmoduleAddDlg(CWnd* pParent /*=NULL*/)
 	: CHorizontalResizableStandAloneDialog(CSubmoduleAddDlg::IDD, pParent)
 	, m_bBranch(FALSE)
-	, m_strBranch(_T(""))
 	, m_bForce(FALSE)
 {
 	m_bAutoloadPuttyKeyFile = CAppUtils::IsSSHPutty();
