@@ -126,15 +126,6 @@ public:
 	static git_wc_status_kind GetAllStatus(const CTGitPath& path, git_depth_t depth = git_depth_empty, bool * assumeValid = NULL, bool * skipWorktree = NULL);
 
 	/**
-	 * Reads the git status of the working copy entry and all its
-	 * subitems. The resulting status is determined by using priorities for
-	 * each status. The status with the highest priority is then returned.
-	 * If the status of the text and property part are different then
-	 * the more important status is returned.
-	 */
-	static git_wc_status_kind GetAllStatusRecursive(const CTGitPath& path);
-
-	/**
 	 * Returns the status which is more "important" of the two statuses specified.
 	 * This is used for the "recursive" status functions on folders - i.e. which status
 	 * should be returned for a folder which has several files with different statuses
@@ -168,8 +159,6 @@ public:
 	git_wc_status2_t *			status;				///< the status result of GetStatus()
 
 private:
-	git_wc_status_kind			m_allstatus;	///< used by GetAllStatus and GetAllStatusRecursive
-
 	git_wc_status2_t			m_status;		// used for GetStatus
 
 	/**
