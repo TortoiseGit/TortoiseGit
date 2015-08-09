@@ -732,12 +732,14 @@ bool GitStatus::IsExistIndexLockFile(CString sDirName)
 bool GitStatus::ReleasePath(const CString &gitdir)
 {
 	g_IndexFileMap.SafeClear(gitdir);
+	g_HeadFileMap.SafeClear(gitdir);
 	return true;
 }
 
 bool GitStatus::ReleasePathsRecursively(const CString &rootpath)
 {
 	g_IndexFileMap.SafeClearRecursively(rootpath);
+	g_HeadFileMap.SafeClearRecursively(rootpath);
 	return true;
 }
 

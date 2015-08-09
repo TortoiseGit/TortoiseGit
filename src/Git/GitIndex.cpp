@@ -1198,8 +1198,7 @@ int CGitIgnoreList::CheckIgnore(const CString &path, const CString &projectroot,
 
 bool CGitHeadFileMap::CheckHeadAndUpdate(const CString &gitdir, bool readTree /* = true */)
 {
-	SHARED_TREE_PTR ptr;
-	ptr = this->SafeGet(gitdir);
+	SHARED_TREE_PTR ptr = this->SafeGet(gitdir, true);
 
 	if (ptr.get() && !ptr->CheckHeadUpdate() && (!readTree || ptr->HeadHashEqualsTreeHash()))
 		return false;

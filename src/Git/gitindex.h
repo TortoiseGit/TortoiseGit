@@ -94,7 +94,7 @@ public:
 		auto lookup = find(thePath);
 		if (lookup == cend())
 			return false;
-		lookup->second = nullptr;
+		erase(lookup);
 		return true;
 	}
 
@@ -102,12 +102,15 @@ public:
 	{
 		thePath.MakeLower();
 		CAutoLocker lock(m_critIndexSec);
+		std::vector<CString> toRemove;
 		for (auto it = this->begin(); it != this->end(); ++it)
 		{
 			if ((*it).first.Find(thePath) == 0)
-				it->second = nullptr;
+				toRemove.push_back((*it).first);
 		}
-		return true;
+		for (auto it = toRemove.cbegin(); it != toRemove.cend(); ++it)
+			this->erase(*it);
+		return !toRemove.empty();
 	}
 
 	int Check(const CString &gitdir, bool *isChanged);
@@ -199,13 +202,17 @@ public:
 	CGitHeadFileMap() { m_critTreeSec.Init(); }
 	~CGitHeadFileMap() { m_critTreeSec.Term(); }
 
-	SHARED_TREE_PTR SafeGet(CString thePath)
+	SHARED_TREE_PTR SafeGet(CString thePath, bool allowEmpty = false)
 	{
 		thePath.MakeLower();
 		CAutoLocker lock(m_critTreeSec);
 		auto lookup = find(thePath);
 		if (lookup == cend())
-			return SHARED_TREE_PTR();
+		{
+			if (allowEmpty)
+				return SHARED_TREE_PTR();
+			return SHARED_TREE_PTR(new CGitHeadFileList);
+		}
 		return lookup->second;
 	}
 
@@ -214,6 +221,32 @@ public:
 		thePath.MakeLower();
 		CAutoLocker lock(m_critTreeSec);
 		(*this)[thePath] = ptr;
+	}
+
+	bool SafeClear(CString thePath)
+	{
+		thePath.MakeLower();
+		CAutoLocker lock(m_critTreeSec);
+		auto lookup = find(thePath);
+		if (lookup == cend())
+			return false;
+		erase(lookup);
+		return true;
+	}
+
+	bool SafeClearRecursively(CString thePath)
+	{
+		thePath.MakeLower();
+		CAutoLocker lock(m_critTreeSec);
+		std::vector<CString> toRemove;
+		for (auto it = this->begin(); it != this->end(); ++it)
+		{
+			if ((*it).first.Find(thePath) == 0)
+				toRemove.push_back((*it).first);
+		}
+		for (auto it = toRemove.cbegin(); it != toRemove.cend(); ++it)
+			this->erase(*it);
+		return !toRemove.empty();
 	}
 
 	int GetFileStatus(const CString &gitdir,const CString &path,git_wc_status_kind * status,BOOL IsFull=false, BOOL IsRecursive=false,
