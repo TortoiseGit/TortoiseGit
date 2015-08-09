@@ -323,11 +323,6 @@ int GitStatus::IsIgnore(const CString &gitdir, const CString &path, bool *isIgno
 	return 0;
 }
 
-static bool SortFileName(CGitFileName &Item1, CGitFileName &Item2)
-{
-	return Item1.m_FileName.Compare(Item2.m_FileName)<0;
-}
-
 int GitStatus::GetFileList(CString path, std::vector<CGitFileName> &list)
 {
 	path += _T("\\*.*");
@@ -360,7 +355,7 @@ int GitStatus::GetFileList(CString path, std::vector<CGitFileName> &list)
 
 	FindClose(handle);
 
-	std::sort(list.begin(), list.end(), SortFileName);
+	std::sort(list.begin(), list.end(), SortCGitFileName);
 	return 0;
 }
 

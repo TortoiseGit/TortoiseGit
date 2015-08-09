@@ -183,3 +183,169 @@ TEST_P(GitIndexCBasicGitWithTestRepoFixture, GetFileStatus)
 	EXPECT_EQ(0, indexList.GetFileStatus(m_Dir.GetTempDir(), L"ansi.txt", &status, time, filesize));
 	EXPECT_EQ(git_wc_status_conflicted, status);
 }
+
+TEST(GitIndex, SearchInSortVector)
+{
+	std::vector<CGitFileName> vector;
+	EXPECT_EQ(-1, SearchInSortVector(vector, L"something", 9));
+	EXPECT_EQ(-1, SearchInSortVector(vector, L"something", 0));
+	EXPECT_EQ(-1, SearchInSortVector(vector, L"something", -1));
+
+	vector.push_back(CGitFileName(L"One"));
+	EXPECT_EQ(-1, SearchInSortVector(vector, L"something", 9));
+	EXPECT_EQ(-1, SearchInSortVector(vector, L"something", -1));
+	EXPECT_EQ(0, SearchInSortVector(vector, L"something", 0)); // do we really need this behavior?
+	EXPECT_EQ(0, SearchInSortVector(vector, L"one", 3));
+	EXPECT_EQ(0, SearchInSortVector(vector, L"one", -1));
+	EXPECT_EQ(-1, SearchInSortVector(vector, L"one/", 4));
+	EXPECT_EQ(-1, SearchInSortVector(vector, L"One", 3));
+
+	vector.push_back(CGitFileName(L"tWo"));
+	EXPECT_EQ(-1, SearchInSortVector(vector, L"something", 9));
+	EXPECT_EQ(0, SearchInSortVector(vector, L"one", 3));
+	EXPECT_EQ(-1, SearchInSortVector(vector, L"One", 3));
+	EXPECT_EQ(1, SearchInSortVector(vector, L"two", 3));
+	EXPECT_EQ(-1, SearchInSortVector(vector, L"tWo", 3));
+	EXPECT_EQ(1, SearchInSortVector(vector, L"t", 1));
+	EXPECT_EQ(-1, SearchInSortVector(vector, L"0", 1));
+	EXPECT_EQ(-1, SearchInSortVector(vector, L"z", 1));
+
+	vector.push_back(CGitFileName(L"a"));
+	vector.push_back(CGitFileName(L"b/1"));
+	vector.push_back(CGitFileName(L"b/2"));
+	vector.push_back(CGitFileName(L"b/3"));
+	vector.push_back(CGitFileName(L"b/4"));
+	vector.push_back(CGitFileName(L"b/5"));
+	std::sort(vector.begin(), vector.end(), SortCGitFileName);
+	EXPECT_EQ(2, SearchInSortVector(vector, L"b/2", 3));
+	EXPECT_EQ(2, SearchInSortVector(vector, L"b/2", -1));
+	EXPECT_EQ(3, SearchInSortVector(vector, L"b/", 2));
+	EXPECT_EQ(-1, SearchInSortVector(vector, L"b/6", 3));
+	EXPECT_EQ(0, SearchInSortVector(vector, L"a", 1));
+	EXPECT_EQ(6, SearchInSortVector(vector, L"one", 3));
+	EXPECT_EQ(7, SearchInSortVector(vector, L"two", 3));
+}
+
+TEST(GitIndex, GetRangeInSortVector)
+{
+	std::vector<CGitFileName> vector;
+
+	int start = -2;
+	int end = -2;
+	EXPECT_EQ(-1, GetRangeInSortVector(vector, L"something", 9, &start, &end, -1));
+	EXPECT_EQ(-1, GetRangeInSortVector(vector, L"something", 9, &start, &end, 0));
+	EXPECT_EQ(-1, GetRangeInSortVector(vector, L"something", 9, &start, nullptr, 0));
+	EXPECT_EQ(-1, GetRangeInSortVector(vector, L"something", 9, nullptr, &end, 0));
+	EXPECT_EQ(-1, GetRangeInSortVector(vector, L"something", 9, nullptr, &end, 1));
+
+	vector.push_back(CGitFileName(L"a"));
+	EXPECT_EQ(-1, GetRangeInSortVector(vector, L"something", 9, &start, &end, -1));
+	EXPECT_EQ(-1, GetRangeInSortVector(vector, L"something", 9, &start, nullptr, 0));
+	EXPECT_EQ(-1, GetRangeInSortVector(vector, L"something", 9, nullptr, &end, 0));
+	EXPECT_EQ(-1, GetRangeInSortVector(vector, L"something", 9, nullptr, &end, 1));
+
+	EXPECT_EQ(-1, GetRangeInSortVector(vector, L"a", 1, &start, &end, -1));
+	EXPECT_EQ(-1, GetRangeInSortVector(vector, L"a", 1, &start, nullptr, 0));
+	EXPECT_EQ(-1, GetRangeInSortVector(vector, L"a", 1, nullptr, &end, 0));
+	EXPECT_EQ(-1, GetRangeInSortVector(vector, L"a", 1, nullptr, &end, 1));
+	
+	start = end = -2;
+	EXPECT_EQ(-1, GetRangeInSortVector(vector, L"0", 1, &start, &end, 0));
+	EXPECT_EQ(-1, start);
+	EXPECT_EQ(-1, end);
+	start = end = -2;
+	EXPECT_EQ(-1, GetRangeInSortVector(vector, L"b", 1, &start, &end, 0));
+	EXPECT_EQ(-1, start);
+	EXPECT_EQ(-1, end);
+
+	start = end = -2;
+	EXPECT_EQ(0, GetRangeInSortVector(vector, L"a", 1, &start, &end, 0));
+	EXPECT_EQ(0, start);
+	EXPECT_EQ(0, end);
+
+	vector.push_back(CGitFileName(L"b/1"));
+	vector.push_back(CGitFileName(L"b/2"));
+	vector.push_back(CGitFileName(L"b/3"));
+	vector.push_back(CGitFileName(L"b/4"));
+	vector.push_back(CGitFileName(L"b/5"));
+
+	start = end = -2;
+	EXPECT_EQ(0, GetRangeInSortVector(vector, L"a", 1, &start, &end, 0));
+	EXPECT_EQ(0, start);
+	EXPECT_EQ(0, end);
+
+	start = end = -2;
+	EXPECT_EQ(0, GetRangeInSortVector(vector, L"b/", 2, &start, &end, 0));
+	EXPECT_EQ(1, start);
+	EXPECT_EQ(5, end);
+
+	start = end = -2;
+	EXPECT_EQ(0, GetRangeInSortVector(vector, L"b/", 2, &start, &end, 1));
+	EXPECT_EQ(1, start);
+	EXPECT_EQ(5, end);
+
+	start = end = -2;
+	EXPECT_EQ(0, GetRangeInSortVector(vector, L"b/", 2, &start, &end, 2));
+	EXPECT_EQ(1, start);
+	EXPECT_EQ(5, end);
+
+	start = end = -2;
+	EXPECT_EQ(0, GetRangeInSortVector(vector, L"b/", 2, &start, &end, 4));
+	EXPECT_EQ(1, start);
+	EXPECT_EQ(5, end);
+
+	start = end = -2;
+	EXPECT_EQ(0, GetRangeInSortVector(vector, L"b/", 2, &start, &end, 5));
+	EXPECT_EQ(1, start);
+	EXPECT_EQ(5, end);
+
+	EXPECT_EQ(-1, GetRangeInSortVector(vector, L"b/", 2, &start, &end, 6)); // 6 is >= vector.size()
+
+	start = end = -2;
+	EXPECT_EQ(-1, GetRangeInSortVector(vector, L"c/", 2, &start, &end, 0));
+	EXPECT_EQ(-1, start);
+	EXPECT_EQ(-1, end);
+
+	start = end = -2;
+	EXPECT_EQ(-1, GetRangeInSortVector(vector, L"c/", 2, &start, &end, 5));
+	EXPECT_EQ(-1, start);
+	EXPECT_EQ(-1, end);
+
+	vector.push_back(CGitFileName(L"c"));
+	vector.push_back(CGitFileName(L"d"));
+
+	start = end = -2;
+	EXPECT_EQ(0, GetRangeInSortVector(vector, L"b/", 2, &start, &end, 1));
+	EXPECT_EQ(1, start);
+	EXPECT_EQ(5, end);
+
+	start = end = -2;
+	EXPECT_EQ(0, GetRangeInSortVector(vector, L"b/", 2, &start, &end, 2));
+	EXPECT_EQ(1, start);
+	EXPECT_EQ(5, end);
+
+	start = end = -2;
+	EXPECT_EQ(0, GetRangeInSortVector(vector, L"b/", 2, &start, &end, 4));
+	EXPECT_EQ(1, start);
+	EXPECT_EQ(5, end);
+
+	start = end = -2;
+	EXPECT_EQ(0, GetRangeInSortVector(vector, L"b/", 2, &start, &end, 5));
+	EXPECT_EQ(1, start);
+	EXPECT_EQ(5, end);
+
+	start = end = -2;
+	EXPECT_EQ(0, GetRangeInSortVector(vector, L"b/", 2, &start, &end, 6));
+	EXPECT_EQ(1, start);
+	EXPECT_EQ(5, end);
+
+	start = end = -2;
+	EXPECT_EQ(-1, GetRangeInSortVector(vector, L"c/", 2, &start, &end, 6));
+	EXPECT_EQ(-1, start);
+	EXPECT_EQ(-1, end);
+
+	start = end = -2;
+	EXPECT_EQ(0, GetRangeInSortVector(vector, L"c", 1, &start, &end, 6));
+	EXPECT_EQ(6, start);
+	EXPECT_EQ(6, end);
+}

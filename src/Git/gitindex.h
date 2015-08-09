@@ -231,9 +231,21 @@ public:
 class CGitFileName
 {
 public:
+	CGitFileName() {}
+	CGitFileName(const CString& filename)
+	{
+		m_CaseFileName = filename;
+		m_FileName = filename;
+		m_FileName.MakeLower();
+	}
 	CString m_FileName;
 	CString m_CaseFileName;
 };
+
+static bool SortCGitFileName(CGitFileName& item1, CGitFileName& item2)
+{
+	return item1.m_FileName.Compare(item2.m_FileName) < 0;
+}
 
 class CGitIgnoreItem
 {
@@ -322,7 +334,7 @@ int GetRangeInSortVector(const T &vector, LPCTSTR pstr, int len, int *start, int
 				*end =i;
 			}
 		}
-		return -1;
+		return (*start < 0) ? -1 : 0;
 	}
 	else
 	{
