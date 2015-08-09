@@ -854,6 +854,14 @@ int CGitIgnoreItem::FetchIgnoreList(const CString &projectroot, const CString &f
 				p = m_buffer + i + 1;
 			}
 		}
+
+		if (!line)
+		{
+			git_free_exclude_list(m_pExcludeList);
+			m_pExcludeList = nullptr;
+			free(m_buffer);
+			m_buffer = nullptr;
+		}
 	}
 	return 0;
 }
