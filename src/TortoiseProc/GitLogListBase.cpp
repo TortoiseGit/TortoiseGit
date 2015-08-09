@@ -49,7 +49,6 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	,m_bNoDispUpdates(FALSE)
 	, m_bThreadRunning(FALSE)
 	, m_bStrictStopped(false)
-	, m_pStoreSelection(NULL)
 	, m_SelectedFilters(LOGFILTER_ALL)
 	, m_ShowFilter(FILTERSHOW_ALL)
 	, m_bShowWC(false)
@@ -287,12 +286,6 @@ CGitLogListBase::~CGitLogListBase()
 
 	if (m_boldItalicsFont)
 		DeleteObject(m_boldItalicsFont);
-
-	if ( m_pStoreSelection )
-	{
-		delete m_pStoreSelection;
-		m_pStoreSelection = NULL;
-	}
 
 	SafeTerminateThread();
 	SafeTerminateAsyncDiffThread();

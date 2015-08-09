@@ -88,7 +88,6 @@
     <ClCompile Include="..\TortoiseProc\GitStatusListCtrlHelpers.cpp" />
     <ClCompile Include="..\TortoiseProc\lanes.cpp" />
     <ClCompile Include="..\TortoiseProc\LogDataVector.cpp" />
-    <ClCompile Include="..\TortoiseProc\LogDlgHelper.cpp" />
     <ClCompile Include="LogListBlameAction.cpp" />
     <ClCompile Include="..\TortoiseProc\LoglistUtils.cpp" />
     <ClCompile Include="MainFrm.cpp" />

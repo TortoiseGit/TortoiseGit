@@ -150,9 +150,6 @@
     <ClCompile Include="..\TortoiseProc\LogDataVector.cpp">
       <Filter>TortoiseGitProc</Filter>
     </ClCompile>
-    <ClCompile Include="..\TortoiseProc\LogDlgHelper.cpp">
-      <Filter>TortoiseGitProc</Filter>
-    </ClCompile>
     <ClCompile Include="..\TortoiseProc\LoglistUtils.cpp">
       <Filter>TortoiseGitProc</Filter>
     </ClCompile>

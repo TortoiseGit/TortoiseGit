@@ -168,7 +168,6 @@
     <ClCompile Include="Commands\LogCommand.cpp" />
     <ClCompile Include="LogDataVector.cpp" />
     <ClCompile Include="LogDlg.cpp" />
-    <ClCompile Include="LogDlgHelper.cpp" />
     <ClCompile Include="LoglistUtils.cpp" />
     <ClCompile Include="StatGraphDlg.cpp" />
     <ClCompile Include="Commands\RefLogCommand.cpp" />

@@ -245,9 +245,6 @@
     <ClCompile Include="LogDlg.cpp">
       <Filter>Commands\Log</Filter>
     </ClCompile>
-    <ClCompile Include="LogDlgHelper.cpp">
-      <Filter>Commands\Log</Filter>
-    </ClCompile>
     <ClCompile Include="LoglistUtils.cpp">
       <Filter>Commands\Log</Filter>
     </ClCompile>

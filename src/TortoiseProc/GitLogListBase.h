@@ -605,7 +605,6 @@ protected:
 	CRegDWORD			m_regMaxBugIDColWidth;
 
 	void				*m_ProcData;
-	CStoreSelection*	m_pStoreSelection;
 
 	CColors				m_Colors;
 

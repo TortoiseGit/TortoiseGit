@@ -35,17 +35,6 @@ class CLogDlg;
  */
 typedef std::map<CGitHash, int> MAP_HASH_REV;
 
-class CStoreSelection
-{
-public:
-	CStoreSelection(CLogDlg* dlg);
-	~CStoreSelection();
-protected:
-	CLogDlg* m_logdlg;
-	std::set<LONG> m_SetSelectedRevisions;
-};
-
-
 /**
  * \ingroup TortoiseProc
  * Helper class for the log dialog, handles all the log entries, including

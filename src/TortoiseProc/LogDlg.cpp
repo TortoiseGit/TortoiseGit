@@ -2235,7 +2235,6 @@ LRESULT CLogDlg::OnClickedCancelFilter(WPARAM wParam, LPARAM /*lParam*/)
 	m_LogList.m_sFilterText.Empty();
 	UpdateData(FALSE);
 	theApp.DoWaitCursor(1);
-	CStoreSelection storeselection(this);
 	FillLogMessageCtrl(false);
 
 	m_LogList.RemoveFilter();
@@ -3012,7 +3011,6 @@ void CLogDlg::OnEnChangeSearchedit()
 	UpdateData();
 	if (!m_LogList.HasFilterText())
 	{
-		CStoreSelection storeselection(this);
 		// clear the filter, i.e. make all entries appear
 		theApp.DoWaitCursor(1);
 		KillTimer(LOGFILTER_TIMER);
