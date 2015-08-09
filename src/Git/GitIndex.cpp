@@ -316,19 +316,13 @@ int CGitIndexFileMap::Check(const CString &gitdir, bool *isChanged)
 
 int CGitIndexFileMap::LoadIndex(const CString &gitdir)
 {
-	try
-	{
-		SHARED_INDEX_PTR pIndex(new CGitIndexList);
+	SHARED_INDEX_PTR pIndex(new CGitIndexList);
 
-		if(pIndex->ReadIndex(g_AdminDirMap.GetAdminDir(gitdir)))
-			return -1;
-
-		this->SafeSet(gitdir, pIndex);
-
-	}catch(...)
-	{
+	if (pIndex->ReadIndex(g_AdminDirMap.GetAdminDir(gitdir)))
 		return -1;
-	}
+
+	this->SafeSet(gitdir, pIndex);
+
 	return 0;
 }
 
@@ -337,61 +331,47 @@ int CGitIndexFileMap::GetFileStatus(const CString &gitdir, const CString &path, 
 									CGitHash *pHash,
 									bool isLoadUpdatedIndex, bool * assumeValid, bool * skipWorktree)
 {
-	try
-	{
-		CheckAndUpdate(gitdir, isLoadUpdatedIndex);
+	CheckAndUpdate(gitdir, isLoadUpdatedIndex);
 
-		SHARED_INDEX_PTR pIndex = this->SafeGet(gitdir);
-		if (pIndex.get() != NULL)
-		{
-			pIndex->GetStatus(gitdir, path, status, IsFull, IsRecursive, callback, pData, pHash, assumeValid, skipWorktree);
-		}
-		else
-		{
-			// git working tree has not index
-			*status = git_wc_status_unversioned;
-		}
-	}
-	catch(...)
+	SHARED_INDEX_PTR pIndex = this->SafeGet(gitdir);
+	if (pIndex.get())
+		pIndex->GetStatus(gitdir, path, status, IsFull, IsRecursive, callback, pData, pHash, assumeValid, skipWorktree);
+	else
 	{
-		return -1;
+		// git working tree has not index
+		*status = git_wc_status_unversioned;
 	}
+
 	return 0;
 }
 
 int CGitIndexFileMap::IsUnderVersionControl(const CString &gitdir, const CString &path, bool isDir,bool *isVersion, bool isLoadUpdateIndex)
 {
-	try
+	if (path.IsEmpty())
 	{
-		if (path.IsEmpty())
-		{
-			*isVersion = true;
-			return 0;
-		}
-
-		CString subpath = path;
-		subpath.Replace(_T('\\'), _T('/'));
-		if(isDir)
-			subpath += _T('/');
-
-		subpath.MakeLower();
-
-		CheckAndUpdate(gitdir, isLoadUpdateIndex);
-
-		SHARED_INDEX_PTR pIndex = this->SafeGet(gitdir);
-
-		if(pIndex.get())
-		{
-			if(isDir)
-				*isVersion = (SearchInSortVector(*pIndex, subpath, subpath.GetLength()) >= 0);
-			else
-				*isVersion = (SearchInSortVector(*pIndex, subpath, -1) >= 0);
-		}
-
-	}catch(...)
-	{
-		return -1;
+		*isVersion = true;
+		return 0;
 	}
+
+	CString subpath = path;
+	subpath.Replace(_T('\\'), _T('/'));
+	if (isDir)
+		subpath += _T('/');
+
+	subpath.MakeLower();
+
+	CheckAndUpdate(gitdir, isLoadUpdateIndex);
+
+	SHARED_INDEX_PTR pIndex = this->SafeGet(gitdir);
+
+	if (pIndex.get())
+	{
+		if (isDir)
+			*isVersion = (SearchInSortVector(*pIndex, subpath, subpath.GetLength()) >= 0);
+		else
+			*isVersion = (SearchInSortVector(*pIndex, subpath, -1) >= 0);
+	}
+
 	return 0;
 }
 
@@ -1243,46 +1223,39 @@ bool CGitHeadFileMap::CheckHeadAndUpdate(const CString &gitdir, bool readTree /*
 
 int CGitHeadFileMap::IsUnderVersionControl(const CString &gitdir, const CString &path, bool isDir, bool *isVersion)
 {
-	try
+	if (path.IsEmpty())
 	{
-		if (path.IsEmpty())
-		{
-			*isVersion = true;
-			return 0;
-		}
-
-		CString subpath = path;
-		subpath.Replace(_T('\\'), _T('/'));
-		if(isDir)
-			subpath += _T('/');
-
-		subpath.MakeLower();
-
-		CheckHeadAndUpdate(gitdir);
-
-		SHARED_TREE_PTR treeptr = SafeGet(gitdir);
-
-		// Init Repository
-		if (treeptr->HeadFileIsEmpty())
-		{
-			*isVersion = false;
-			return 0;
-		}
-		if (treeptr->empty())
-		{
-			*isVersion = false;
-			return 1;
-		}
-
-		if(isDir)
-			*isVersion = (SearchInSortVector(*treeptr, subpath, subpath.GetLength()) >= 0);
-		else
-			*isVersion = (SearchInSortVector(*treeptr, subpath, -1) >= 0);
+		*isVersion = true;
+		return 0;
 	}
-	catch(...)
+
+	CString subpath = path;
+	subpath.Replace(_T('\\'), _T('/'));
+	if (isDir)
+		subpath += _T('/');
+
+	subpath.MakeLower();
+
+	CheckHeadAndUpdate(gitdir);
+
+	SHARED_TREE_PTR treeptr = SafeGet(gitdir);
+
+	// Init Repository
+	if (treeptr->HeadFileIsEmpty())
 	{
-		return -1;
+		*isVersion = false;
+		return 0;
 	}
+	if (treeptr->empty())
+	{
+		*isVersion = false;
+		return 1;
+	}
+
+	if (isDir)
+		*isVersion = (SearchInSortVector(*treeptr, subpath, subpath.GetLength()) >= 0);
+	else
+		*isVersion = (SearchInSortVector(*treeptr, subpath, -1) >= 0);
 
 	return 0;
 }
