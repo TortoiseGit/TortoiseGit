@@ -275,11 +275,6 @@ TEST(GitIndex, GetRangeInSortVector)
 	EXPECT_EQ(0, end);
 
 	start = end = -2;
-	EXPECT_EQ(0, GetRangeInSortVector(vector, L"b/", 2, &start, &end, 0));
-	EXPECT_EQ(1, start);
-	EXPECT_EQ(5, end);
-
-	start = end = -2;
 	EXPECT_EQ(0, GetRangeInSortVector(vector, L"b/", 2, &start, &end, 1));
 	EXPECT_EQ(1, start);
 	EXPECT_EQ(5, end);
@@ -331,11 +326,6 @@ TEST(GitIndex, GetRangeInSortVector)
 
 	start = end = -2;
 	EXPECT_EQ(0, GetRangeInSortVector(vector, L"b/", 2, &start, &end, 5));
-	EXPECT_EQ(1, start);
-	EXPECT_EQ(5, end);
-
-	start = end = -2;
-	EXPECT_EQ(0, GetRangeInSortVector(vector, L"b/", 2, &start, &end, 6));
 	EXPECT_EQ(1, start);
 	EXPECT_EQ(5, end);
 

@@ -324,18 +324,7 @@ int GetRangeInSortVector(const T &vector, LPCTSTR pstr, int len, int *start, int
 		return -1;
 
 	if( _tcsnccmp(vector[pos].m_FileName, pstr,len) != 0)
-	{
-		for (int i = 0; i < (int)vector.size(); ++i)
-		{
-			if( _tcsnccmp(vector[i].m_FileName, pstr,len) == 0 )
-			{
-				if(*start<0)
-					*start =i;
-				*end =i;
-			}
-		}
-		return (*start < 0) ? -1 : 0;
-	}
+		return -1;
 	else
 	{
 		*start =0;
