@@ -831,7 +831,7 @@ int CGitIgnoreItem::FetchIgnoreList(const CString &projectroot, const CString &f
 		{
 			free(m_buffer);
 			m_buffer = nullptr;
-			return GetLastError();
+			return -1;
 		}
 
 		if (git_create_exclude_list(&m_pExcludeList))
