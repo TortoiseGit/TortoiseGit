@@ -189,12 +189,10 @@ void GitStatus::GetStatus(const CTGitPath& path, bool /*update*/ /* = false */, 
 
 typedef CComCritSecLock<CComCriticalSection> CAutoLocker;
 
-int GitStatus::GetFileStatus(const CString &gitdir, const CString &pathParam, git_wc_status_kind * status,BOOL IsFull, BOOL /*IsRecursive*/,BOOL IsIgnore, FILL_STATUS_CALLBACK callback, void *pData, bool * assumeValid, bool * skipWorktree)
+int GitStatus::GetFileStatus(const CString& gitdir, CString path, git_wc_status_kind* status, BOOL IsFull, BOOL /*IsRecursive*/, BOOL IsIgnore, FILL_STATUS_CALLBACK callback, void* pData, bool* assumeValid, bool* skipWorktree)
 {
 	if (!status)
 		return 0;
-
-	CString path = pathParam;
 
 	path.Replace(_T('\\'), _T('/'));
 
@@ -701,10 +699,8 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 #endif
 
 #ifdef TGITCACHE
-bool GitStatus::IsExistIndexLockFile(const CString &gitdir)
+bool GitStatus::IsExistIndexLockFile(CString sDirName)
 {
-	CString sDirName= gitdir;
-
 	if (!PathIsDirectory(sDirName))
 	{
 		int x = sDirName.ReverseFind(_T('\\'));
@@ -716,9 +712,9 @@ bool GitStatus::IsExistIndexLockFile(const CString &gitdir)
 
 	for (;;)
 	{
-		if(PathFileExists(sDirName + _T("\\.git")))
+		if (PathFileExists(CombinePath(sDirName, _T(".git"))))
 		{
-			if(PathFileExists(g_AdminDirMap.GetAdminDir(sDirName) + _T("index.lock")))
+			if (PathFileExists(g_AdminDirMap.GetAdminDirConcat(sDirName, _T("index.lock"))))
 				return true;
 
 			return false;

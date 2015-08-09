@@ -47,7 +47,7 @@ public:
 	~CGitIndexList();
 
 	int ReadIndex(CString file);
-	int GetStatus(const CString &gitdir, const CString &path, git_wc_status_kind * status, BOOL IsFull = false, BOOL IsRecursive = false, FILL_STATUS_CALLBACK callback = nullptr, void *pData = nullptr, CGitHash *pHash = nullptr, bool * assumeValid = nullptr, bool * skipWorktree = nullptr);
+	int GetStatus(const CString& gitdir, CString path, git_wc_status_kind* status, BOOL IsFull = FALSE, BOOL IsRecursive = FALSE, FILL_STATUS_CALLBACK callback = nullptr, void* pData = nullptr, CGitHash* pHash = nullptr, bool* assumeValid = nullptr, bool* skipWorktree = nullptr);
 #ifdef GTEST_INCLUDE_GTEST_GTEST_H_
 	FRIEND_TEST(GitIndexCBasicGitWithTestRepoFixture, GetFileStatus);
 #endif
@@ -70,44 +70,42 @@ public:
 	CGitIndexFileMap() { m_critIndexSec.Init(); }
 	~CGitIndexFileMap() { m_critIndexSec.Term(); }
 
-	SHARED_INDEX_PTR SafeGet(const CString &path)
+	SHARED_INDEX_PTR SafeGet(CString thePath)
 	{
-		CString thePath = path;
 		thePath.MakeLower();
 		CAutoLocker lock(m_critIndexSec);
-		if(this->find(thePath) == end())
+		auto lookup = find(thePath);
+		if (lookup == cend())
 			return SHARED_INDEX_PTR();
-		return (*this)[thePath];
+		return lookup->second;
 	}
 
-	void SafeSet(const CString &path, SHARED_INDEX_PTR ptr)
+	void SafeSet(CString thePath, SHARED_INDEX_PTR ptr)
 	{
-		CString thePath = path;
 		thePath.MakeLower();
 		CAutoLocker lock(m_critIndexSec);
 		(*this)[thePath] = ptr;
 	}
 
-	bool SafeClear(const CString &path)
+	bool SafeClear(CString thePath)
 	{
-		CString thePath = path;
 		thePath.MakeLower();
 		CAutoLocker lock(m_critIndexSec);
-		if (this->find(thePath) == end())
+		auto lookup = find(thePath);
+		if (lookup == cend())
 			return false;
-		(*this)[thePath] = nullptr;
+		lookup->second = nullptr;
 		return true;
 	}
 
-	bool SafeClearRecursively(const CString &rootpath)
+	bool SafeClearRecursively(CString thePath)
 	{
-		CString thePath = rootpath;
 		thePath.MakeLower();
 		CAutoLocker lock(m_critIndexSec);
 		for (auto it = this->begin(); it != this->end(); ++it)
 		{
 			if ((*it).first.Find(thePath) == 0)
-				(*this)[(*it).first] = nullptr;
+				it->second = nullptr;
 		}
 		return true;
 	}
@@ -136,7 +134,7 @@ public:
 							bool isLoadUpdatedIndex = true, bool * assumeValid = NULL, bool * skipWorktree = NULL);
 
 	int IsUnderVersionControl(const CString &gitdir,
-							  const CString &path,
+							  CString path,
 							  bool isDir,
 							  bool *isVersion,
 							  bool isLoadUpdateIndex=true);
@@ -201,19 +199,18 @@ public:
 	CGitHeadFileMap() { m_critTreeSec.Init(); }
 	~CGitHeadFileMap() { m_critTreeSec.Term(); }
 
-	SHARED_TREE_PTR SafeGet(const CString &path)
+	SHARED_TREE_PTR SafeGet(CString thePath)
 	{
-		CString thePath = path;
 		thePath.MakeLower();
 		CAutoLocker lock(m_critTreeSec);
-		if(this->find(thePath) == end())
+		auto lookup = find(thePath);
+		if (lookup == cend())
 			return SHARED_TREE_PTR();
-		return (*this)[thePath];
+		return lookup->second;
 	}
 
-	void SafeSet(const CString &path, SHARED_TREE_PTR ptr)
+	void SafeSet(CString thePath, SHARED_TREE_PTR ptr)
 	{
-		CString thePath = path;
 		thePath.MakeLower();
 		CAutoLocker lock(m_critTreeSec);
 		(*this)[thePath] = ptr;
@@ -223,7 +220,7 @@ public:
 						FILL_STATUS_CALLBACK callback = nullptr, void *pData = nullptr,
 						bool isLoaded=false);
 	bool CheckHeadAndUpdate(const CString &gitdir, bool readTree = true);
-	int IsUnderVersionControl(const CString &gitdir, const CString &path, bool isDir, bool *isVersion);
+	int IsUnderVersionControl(const CString& gitdir, CString path, bool isDir, bool* isVersion);
 };
 
 class CGitFileName
@@ -310,7 +307,7 @@ public:
 
 	bool CheckIgnoreChanged(const CString &gitdir,const CString &path, bool isDir);
 	int  LoadAllIgnoreFile(const CString &gitdir, const CString &path, bool isDir);
-	bool IsIgnore(const CString &path, const CString &root, bool isDir);
+	bool IsIgnore(CString path, const CString& root, bool isDir);
 };
 
 template<class T>
@@ -407,10 +404,11 @@ public:
 
 	CString GetAdminDir(const CString &path)
 	{
-		CString thePath = path;
+		CString thePath(path);
 		thePath.MakeLower();
 		CAutoLocker lock(m_critIndexSec);
-		if(this->find(thePath) == end())
+		auto lookup = find(thePath);
+		if (lookup == cend())
 		{
 			if (PathIsDirectory(path + _T("\\.git")))
 			{
@@ -430,16 +428,24 @@ public:
 			return path + _T("\\.git\\"); // in case of an error stick to old behavior
 		}
 
-		return (*this)[thePath];
+		return lookup->second;
+	}
+
+	CString GetAdminDirConcat(const CString& path, const CString& subpath)
+	{
+		CString result(GetAdminDir(path));
+		result += subpath;
+		return result;
 	}
 
 	CString GetWorkingCopy(const CString &gitDir)
 	{
-		CString path = gitDir;
+		CString path(gitDir);
 		path.MakeLower();
 		CAutoLocker lock(m_critIndexSec);
-		if (m_reverseLookup.find(path) == m_reverseLookup.end())
+		auto lookup = m_reverseLookup.find(path);
+		if (lookup == m_reverseLookup.cend())
 			return gitDir;
-		return m_reverseLookup[path];
+		return lookup->second;
 	}
 };

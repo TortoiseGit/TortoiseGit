@@ -100,7 +100,7 @@ class GitStatus
 {
 public:
 
-	static int GetFileStatus(const CString &gitdir, const CString &path, git_wc_status_kind * status, BOOL IsFull = false, BOOL IsRecursive = false, BOOL isIgnore = true, FILL_STATUS_CALLBACK callback = nullptr, void *pData = nullptr, bool * assumeValid = nullptr, bool * skipWorktree = nullptr);
+	static int GetFileStatus(const CString& gitdir, CString path, git_wc_status_kind* status, BOOL IsFull = FALSE, BOOL IsRecursive = FALSE, BOOL isIgnore = TRUE, FILL_STATUS_CALLBACK callback = nullptr, void* pData = nullptr, bool* assumeValid = nullptr, bool* skipWorktree = nullptr);
 	static int GetDirStatus(const CString& gitdir, const CString& path, git_wc_status_kind* status, BOOL IsFull = false, BOOL IsRecursive = false, BOOL isIgnore = true);
 	static int EnumDirStatus(const CString &gitdir, const CString &path, git_wc_status_kind * status, BOOL IsFull = false, BOOL IsRecursive = false, BOOL isIgnore = true, FILL_STATUS_CALLBACK callback = nullptr, void *pData = nullptr);
 	static int GetFileList(CString path, std::vector<CGitFileName> &list);
@@ -108,7 +108,7 @@ public:
 	static int LoadIgnoreFile(const CString &gitdir, const CString &subpaths, bool isDir);
 	static int IsUnderVersionControl(const CString &gitdir, const CString &path, bool isDir,bool *isVersion);
 	static int IsIgnore(const CString &gitdir, const CString &path, bool *isIgnore, bool isDir);
-	static bool IsExistIndexLockFile(const CString &gitdir);
+	static bool IsExistIndexLockFile(CString gitdir);
 	static bool ReleasePath(const CString &gitdir);
 	static bool ReleasePathsRecursively(const CString &rootpath);
 
