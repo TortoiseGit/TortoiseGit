@@ -77,8 +77,7 @@ public:
 		CAutoLocker lock(m_critIndexSec);
 		if(this->find(thePath) == end())
 			return SHARED_INDEX_PTR();
-		else
-			return (*this)[thePath];
+		return (*this)[thePath];
 	}
 
 	void SafeSet(const CString &path, SHARED_INDEX_PTR ptr)
@@ -209,8 +208,7 @@ public:
 		CAutoLocker lock(m_critTreeSec);
 		if(this->find(thePath) == end())
 			return SHARED_TREE_PTR();
-		else
-			return (*this)[thePath];
+		return (*this)[thePath];
 	}
 
 	void SafeSet(const CString &path, SHARED_TREE_PTR ptr)
@@ -335,34 +333,25 @@ int GetRangeInSortVector(const T &vector, LPCTSTR pstr, int len, int *start, int
 
 	if( _tcsnccmp(vector[pos].m_FileName, pstr,len) != 0)
 		return -1;
-	else
-	{
-		*start =0;
-		*end = (int)vector.size();
 
-		for (int i = pos; i < (int)vector.size(); ++i)
-		{
-			if( _tcsnccmp(vector[i].m_FileName, pstr,len) == 0 )
-			{
-				*end=i;
-			}
-			else
-			{
-				break;
-			}
-		}
-		for(int i=pos;i>=0;i--)
-		{
-			if( _tcsnccmp(vector[i].m_FileName, pstr,len) == 0 )
-			{
-				*start=i;
-			}
-			else
-			{
-				break;
-			}
-		}
+	*start = 0;
+	*end = (int)vector.size();
+
+	for (int i = pos; i < (int)vector.size(); ++i)
+	{
+		if (_tcsnccmp(vector[i].m_FileName, pstr, len) != 0)
+			break;
+
+		*end = i;
 	}
+	for (int i = pos; i >= 0; --i)
+	{
+		if (_tcsnccmp(vector[i].m_FileName, pstr, len) != 0)
+			break;
+
+		*start = i;
+	}
+
 	return 0;
 }
 
@@ -429,21 +418,19 @@ public:
 				m_reverseLookup[thePath + _T("\\.git")] = path;
 				return (*this)[thePath];
 			}
-			else
-			{
-				CString result = GitAdminDir::ReadGitLink(path, path + _T("\\.git"));
-				if (!result.IsEmpty())
-				{
-					(*this)[thePath] = result + _T("\\");
-					m_reverseLookup[result.MakeLower()] = path;
-					return (*this)[thePath];
-				}
 
-				return path + _T("\\.git\\"); // in case of an error stick to old behavior
+			CString result = GitAdminDir::ReadGitLink(path, path + _T("\\.git"));
+			if (!result.IsEmpty())
+			{
+				(*this)[thePath] = result + _T("\\");
+				m_reverseLookup[result.MakeLower()] = path;
+				return (*this)[thePath];
 			}
+
+			return path + _T("\\.git\\"); // in case of an error stick to old behavior
 		}
-		else
-			return (*this)[thePath];
+
+		return (*this)[thePath];
 	}
 
 	CString GetWorkingCopy(const CString &gitDir)
@@ -453,7 +440,6 @@ public:
 		CAutoLocker lock(m_critIndexSec);
 		if (m_reverseLookup.find(path) == m_reverseLookup.end())
 			return gitDir;
-		else
-			return m_reverseLookup[path];
+		return m_reverseLookup[path];
 	}
 };

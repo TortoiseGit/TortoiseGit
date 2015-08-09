@@ -125,75 +125,71 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 
 int CGitIndexList::GetFileStatus(const CString &gitdir, const CString &pathorg, git_wc_status_kind *status, __int64 time, __int64 filesize, FILL_STATUS_CALLBACK callback, void *pData, CGitHash *pHash, bool * assumeValid, bool * skipWorktree)
 {
-	if(status)
+	if (!status)
+		return 0;
+
+	CString path = pathorg;
+	path.MakeLower();
+
+	int index = SearchInSortVector(*this, path, -1);
+
+	if (index < 0)
 	{
-		CString path = pathorg;
-		path.MakeLower();
+		*status = git_wc_status_unversioned;
+		if (pHash)
+			pHash->Empty();
 
-		int start = SearchInSortVector(*this, path, -1);
+		if (callback && assumeValid && skipWorktree)
+			callback(CombinePath(gitdir, pathorg), *status, false, pData, *assumeValid, *skipWorktree);
 
-		if (start < 0)
-		{
-			*status = git_wc_status_unversioned;
-			if (pHash)
-				pHash->Empty();
-
-		}
-		else
-		{
-			int index = start;
-			if (index >= (int)size())
-				return -1;
-
-			// skip-worktree has higher priority than assume-valid
-			if (at(index).m_Flags & GIT_IDXENTRY_SKIP_WORKTREE)
-			{
-				*status = git_wc_status_normal;
-				if (skipWorktree)
-					*skipWorktree = true;
-			}
-			else if (at(index).m_Flags & GIT_IDXENTRY_VALID)
-			{
-				*status = git_wc_status_normal;
-				if (assumeValid)
-					*assumeValid = true;
-			}
-			else if (filesize != at(index).m_Size)
-				*status = git_wc_status_modified;
-			else if (time == at(index).m_ModifyTime)
-			{
-				*status = git_wc_status_normal;
-			}
-			else if (m_bCheckContent && repository && filesize < m_iMaxCheckSize)
-			{
-				git_oid actual;
-				CStringA fileA = CUnicodeUtils::GetMulti(pathorg, CP_UTF8);
-				m_critRepoSec.Lock(); // prevent concurrent access to repository instance and especially filter-lists
-				if (!git_repository_hashfile(&actual, repository, fileA, GIT_OBJ_BLOB, NULL) && !git_oid_cmp(&actual, (const git_oid*)at(index).m_IndexHash.m_hash))
-				{
-					at(index).m_ModifyTime = time;
-					*status = git_wc_status_normal;
-				}
-				else
-					*status = git_wc_status_modified;
-				m_critRepoSec.Unlock();
-			}
-			else
-				*status = git_wc_status_modified;
-
-			if (at(index).m_Flags & GIT_IDXENTRY_STAGEMASK)
-				*status = git_wc_status_conflicted;
-			else if (at(index).m_Flags & GIT_IDXENTRY_INTENT_TO_ADD)
-				*status = git_wc_status_added;
-
-			if(pHash)
-				*pHash = at(index).m_IndexHash;
-		}
-
+		return 0;
 	}
 
-	if (callback && status && assumeValid && skipWorktree)
-			callback(CombinePath(gitdir, pathorg), *status, false, pData, *assumeValid, *skipWorktree);
+	// skip-worktree has higher priority than assume-valid
+	if (at(index).m_Flags & GIT_IDXENTRY_SKIP_WORKTREE)
+	{
+		*status = git_wc_status_normal;
+		if (skipWorktree)
+			*skipWorktree = true;
+	}
+	else if (at(index).m_Flags & GIT_IDXENTRY_VALID)
+	{
+		*status = git_wc_status_normal;
+		if (assumeValid)
+			*assumeValid = true;
+	}
+	else if (filesize != at(index).m_Size)
+		*status = git_wc_status_modified;
+	else if (time == at(index).m_ModifyTime)
+		*status = git_wc_status_normal;
+	else if (m_bCheckContent && repository && filesize < m_iMaxCheckSize)
+	{
+		git_oid actual;
+		CStringA fileA = CUnicodeUtils::GetMulti(pathorg, CP_UTF8);
+		m_critRepoSec.Lock(); // prevent concurrent access to repository instance and especially filter-lists
+		if (!git_repository_hashfile(&actual, repository, fileA, GIT_OBJ_BLOB, NULL) && !git_oid_cmp(&actual, (const git_oid*)at(index).m_IndexHash.m_hash))
+		{
+			at(index).m_ModifyTime = time;
+			*status = git_wc_status_normal;
+		}
+		else
+			*status = git_wc_status_modified;
+		m_critRepoSec.Unlock();
+	}
+	else
+		*status = git_wc_status_modified;
+
+	if (at(index).m_Flags & GIT_IDXENTRY_STAGEMASK)
+		*status = git_wc_status_conflicted;
+	else if (at(index).m_Flags & GIT_IDXENTRY_INTENT_TO_ADD)
+		*status = git_wc_status_added;
+
+	if (pHash)
+		*pHash = at(index).m_IndexHash;
+
+	if (callback && assumeValid && skipWorktree)
+		callback(CombinePath(gitdir, pathorg), *status, false, pData, *assumeValid, *skipWorktree);
+
 	return 0;
 }
 
@@ -206,113 +202,94 @@ int CGitIndexList::GetStatus(const CString &gitdir,const CString &pathParam, git
 	bool isDir = false;
 	CString path = pathParam;
 
-	if (status)
+	if (!status)
+		return 0;
+
+	git_wc_status_kind dirstatus = git_wc_status_none;
+	int result;
+	if (path.IsEmpty())
+		result = CGit::GetFileModifyTime(gitdir, &time, &isDir);
+	else
+		result = CGit::GetFileModifyTime(CombinePath(gitdir, path), &time, &isDir, &filesize);
+
+	if (result)
 	{
-		git_wc_status_kind dirstatus = git_wc_status_none;
-		int result;
-		if (path.IsEmpty())
-			result = CGit::GetFileModifyTime(gitdir, &time, &isDir);
-		else
-			result = CGit::GetFileModifyTime(CombinePath(gitdir, path), &time, &isDir, &filesize);
+		*status = git_wc_status_deleted;
+		if (callback && assumeValid && skipWorktree)
+			callback(CombinePath(gitdir, path), git_wc_status_deleted, false, pData, *assumeValid, *skipWorktree);
 
-		if (result)
-		{
-			*status = git_wc_status_deleted;
-			if (callback && assumeValid && skipWorktree)
-				callback(CombinePath(gitdir, path), git_wc_status_deleted, false, pData, *assumeValid, *skipWorktree);
-
-			return 0;
-		}
-		if (isDir)
-		{
-			if (!path.IsEmpty())
-			{
-				if (path.Right(1) != _T("\\"))
-					path += _T("\\");
-			}
-			int len = path.GetLength();
-
-				for (auto it = cbegin(), itend = cend(); it != itend; ++it)
-				{
-					if ((*it).m_FileName.GetLength() > len)
-					{
-						if ((*it).m_FileName.Left(len) == path)
-						{
-							if (!IsFull)
-							{
-								*status = git_wc_status_normal;
-								if (callback)
-									callback(CombinePath(gitdir, path), *status, false, pData, ((*it).m_Flags & GIT_IDXENTRY_VALID) && !((*it).m_Flags & GIT_IDXENTRY_SKIP_WORKTREE), ((*it).m_Flags & GIT_IDXENTRY_SKIP_WORKTREE) != 0);
-								return 0;
-
-							}
-							else
-							{
-								result = CGit::GetFileModifyTime(CombinePath(gitdir, (*it).m_FileName), &time, nullptr, &filesize);
-								if (result)
-									continue;
-
-								*status = git_wc_status_none;
-								if (assumeValid)
-									*assumeValid = false;
-								if (skipWorktree)
-									*skipWorktree = false;
-								GetFileStatus(gitdir, (*it).m_FileName, status, time, filesize, callback, pData, NULL, assumeValid, skipWorktree);
-								// if a file is assumed valid, we need to inform the caller, otherwise the assumevalid flag might not get to the explorer on first open of a repository
-								if (callback && assumeValid && skipWorktree && (*assumeValid || *skipWorktree))
-									callback(CombinePath(gitdir, path), *status, false, pData, *assumeValid, *skipWorktree);
-								if (*status != git_wc_status_none)
-								{
-									if (dirstatus == git_wc_status_none)
-									{
-										dirstatus = git_wc_status_normal;
-									}
-									if (*status != git_wc_status_normal)
-									{
-										dirstatus = git_wc_status_modified;
-									}
-								}
-
-							}
-						}
-					}
-				} /* End For */
-
-			if (dirstatus != git_wc_status_none)
-			{
-				*status = dirstatus;
-			}
-			else
-			{
-				*status = git_wc_status_unversioned;
-			}
-			if(callback)
-				callback(CombinePath(gitdir, path), *status, false, pData, false, false);
-
-			return 0;
-
-		}
-		else
-		{
-			GetFileStatus(gitdir, path, status, time, filesize, callback, pData, pHash, assumeValid, skipWorktree);
-		}
+		return 0;
 	}
+
+	if (!isDir)
+	{
+		GetFileStatus(gitdir, path, status, time, filesize, callback, pData, pHash, assumeValid, skipWorktree);
+		return 0;
+	}
+
+	if (!path.IsEmpty() && path.Right(1) != _T("\\"))
+		path += _T("\\");
+
+	int len = path.GetLength();
+
+	for (auto it = cbegin(), itend = cend(); it != itend; ++it)
+	{
+		if (!((*it).m_FileName.GetLength() > len && (*it).m_FileName.Left(len) == path))
+			continue;
+
+		if (!IsFull)
+		{
+			*status = git_wc_status_normal;
+			if (callback)
+				callback(CombinePath(gitdir, path), *status, false, pData, ((*it).m_Flags & GIT_IDXENTRY_VALID) && !((*it).m_Flags & GIT_IDXENTRY_SKIP_WORKTREE), ((*it).m_Flags & GIT_IDXENTRY_SKIP_WORKTREE) != 0);
+
+			return 0;
+		}
+
+		result = CGit::GetFileModifyTime(CombinePath(gitdir, (*it).m_FileName), &time, nullptr, &filesize);
+		if (result)
+			continue;
+
+		*status = git_wc_status_none;
+		if (assumeValid)
+			*assumeValid = false;
+		if (skipWorktree)
+			*skipWorktree = false;
+
+		GetFileStatus(gitdir, (*it).m_FileName, status, time, filesize, callback, pData, NULL, assumeValid, skipWorktree);
+
+		// if a file is assumed valid, we need to inform the caller, otherwise the assumevalid flag might not get to the explorer on first open of a repository
+		if (callback && assumeValid && skipWorktree && (*assumeValid || *skipWorktree))
+			callback(CombinePath(gitdir, path), *status, false, pData, *assumeValid, *skipWorktree);
+		if (*status != git_wc_status_none)
+		{
+			if (dirstatus == git_wc_status_none)
+				dirstatus = git_wc_status_normal;
+			if (*status != git_wc_status_normal)
+				dirstatus = git_wc_status_modified;
+		}
+	} /* End For */
+
+	if (dirstatus != git_wc_status_none)
+		*status = dirstatus;
+	else
+		*status = git_wc_status_unversioned;
+
+	if (callback)
+		callback(CombinePath(gitdir, path), *status, false, pData, false, false);
+
 	return 0;
 }
 
 int CGitIndexFileMap::Check(const CString &gitdir, bool *isChanged)
 {
 	__int64 time;
-	int result;
 
 	CString IndexFile = g_AdminDirMap.GetAdminDir(gitdir);
 	IndexFile += _T("index");
 
-	/* Get data associated with "crt_stat.c": */
-	result = CGit::GetFileModifyTime(IndexFile, &time);
-
-	if (result)
-		return result;
+	if (CGit::GetFileModifyTime(IndexFile, &time))
+		return -1;
 
 	SHARED_INDEX_PTR pIndex;
 	pIndex = this->SafeGet(gitdir);
@@ -432,9 +409,7 @@ int CGitHeadFileList::GetPackRef(const CString &gitdir)
 		return 0;
 	}
 	else if(mtime == m_LastModifyTimePackRef)
-	{
 		return 0;
-	}
 	else
 	{
 		this->m_PackRefFile = PackRef;
@@ -608,17 +583,17 @@ int CGitHeadFileList::ReadHeadHash(const CString& gitdir)
 		m_Head.ConvertFromStrA((char*)buffer);
 
 		m_LastModifyTimeRef = time;
-	}
-	else
-	{
-		ReadFile(hfile, buffer + 4, 40 - 4, &size, NULL);
-		if (size != 36)
-			return -1;
 
-		m_HeadRefFile.Empty();
-
-		m_Head.ConvertFromStrA((char*)buffer);
+		return 0;
 	}
+
+	ReadFile(hfile, buffer + 4, 40 - 4, &size, nullptr);
+	if (size != 36)
+		return -1;
+
+	m_HeadRefFile.Empty();
+
+	m_Head.ConvertFromStrA((char*)buffer);
 
 	return 0;
 }
@@ -687,11 +662,9 @@ int CGitHeadFileList::CallBack(const unsigned char *sha1, const char *base, int 
 #define S_IFGITLINK	0160000
 
 	CGitHeadFileList *p = (CGitHeadFileList*)context;
-	if( mode&S_IFDIR )
-	{
-		if( (mode&S_IFMT) != S_IFGITLINK)
-			return READ_TREE_RECURSIVE;
-	}
+
+	if ((mode & S_IFDIR) && (mode & S_IFMT) != S_IFGITLINK)
+		return READ_TREE_RECURSIVE;
 
 	size_t cur = p->size();
 	p->resize(p->size() + 1);
@@ -798,78 +771,69 @@ int CGitIgnoreItem::FetchIgnoreList(const CString &projectroot, const CString &f
 			this->m_BaseDir = CUnicodeUtils::GetMulti(base, CP_UTF8) + "/";
 		}
 	}
-	{
 
-		if(CGit::GetFileModifyTime(file, &m_LastModifyTime))
-			return -1;
+	if (CGit::GetFileModifyTime(file, &m_LastModifyTime))
+		return -1;
 
-		CAutoFile hfile = CreateFile(file,
+	CAutoFile hfile = CreateFile(file,
 			GENERIC_READ,
-			FILE_SHARE_READ|FILE_SHARE_DELETE|FILE_SHARE_WRITE,
-			NULL,
+			FILE_SHARE_READ | FILE_SHARE_DELETE | FILE_SHARE_WRITE,
+			nullptr,
 			OPEN_EXISTING,
 			FILE_ATTRIBUTE_NORMAL,
-			NULL);
+			nullptr);
 
+	if (!hfile)
+		return -1 ;
 
-		if (!hfile)
-			return -1 ;
+	DWORD filesize = GetFileSize(hfile, nullptr);
+	if (filesize == INVALID_FILE_SIZE)
+		return -1;
 
-		DWORD size=0,filesize=0;
+	m_buffer = new BYTE[filesize + 1];
+	if (!m_buffer)
+		return -1;
 
-		filesize=GetFileSize(hfile, NULL);
+	DWORD size = 0;
+	if (!ReadFile(hfile, m_buffer, filesize, &size, NULL))
+	{
+		free(m_buffer);
+		m_buffer = nullptr;
+		return -1;
+	}
+	m_buffer[size] = 0;
 
-		if(filesize == INVALID_FILE_SIZE)
-			return -1;
+	if (git_create_exclude_list(&m_pExcludeList))
+	{
+		free(m_buffer);
+		m_buffer = nullptr;
+		return -1;
+	}
 
-		m_buffer = new BYTE[filesize + 1];
-
-		if (m_buffer == NULL)
-			return -1;
-
-		if (!ReadFile(hfile, m_buffer, filesize, &size, NULL))
+	BYTE *p = m_buffer;
+	int line = 0;
+	for (DWORD i = 0; i < size; ++i)
+	{
+		if (m_buffer[i] == '\n' || m_buffer[i] == '\r' || i == (size - 1))
 		{
-			free(m_buffer);
-			m_buffer = nullptr;
-			return -1;
-		}
+			if (m_buffer[i] == '\n' || m_buffer[i] == '\r')
+				m_buffer[i] = 0;
 
-		if (git_create_exclude_list(&m_pExcludeList))
-		{
-			free(m_buffer);
-			m_buffer = nullptr;
-			return -1;
-		}
+			if (p[0] != '#' && p[0] != 0)
+				git_add_exclude((const char*)p, this->m_BaseDir, m_BaseDir.GetLength(), this->m_pExcludeList, ++line);
 
-		BYTE *p = m_buffer;
-		int line = 0;
-		for (DWORD i = 0; i < size; ++i)
-		{
-			if (m_buffer[i] == '\n' || m_buffer[i] == '\r' || i == (size - 1))
-			{
-				if (m_buffer[i] == '\n' || m_buffer[i] == '\r')
-					m_buffer[i] = 0;
-				if (i == size - 1)
-					m_buffer[size] = 0;
-
-				if(p[0] != '#' && p[0] != 0)
-					git_add_exclude((const char*)p,
-										this->m_BaseDir,
-										m_BaseDir.GetLength(),
-										this->m_pExcludeList, ++line);
-
-				p = m_buffer + i + 1;
-			}
-		}
-
-		if (!line)
-		{
-			git_free_exclude_list(m_pExcludeList);
-			m_pExcludeList = nullptr;
-			free(m_buffer);
-			m_buffer = nullptr;
+			p = m_buffer + i + 1;
 		}
 	}
+
+	if (!line)
+	{
+		git_free_exclude_list(m_pExcludeList);
+		m_pExcludeList = nullptr;
+		free(m_buffer);
+		m_buffer = nullptr;
+	}
+
 	return 0;
 }
 
@@ -969,12 +933,10 @@ bool CGitIgnoreList::CheckIgnoreChanged(const CString &gitdir, const CString &pa
 
 			return false;
 		}
-		else
-		{
-			temp += _T("ignore");
-			if (CheckFileChanged(temp))
-				return true;
-		}
+
+		temp += _T("ignore");
+		if (CheckFileChanged(temp))
+			return true;
 
 		int found=0;
 		int i;
@@ -1034,9 +996,7 @@ int CGitIgnoreList::LoadAllIgnoreFile(const CString &gitdir, const CString &path
 			CString gitignore = temp;
 			gitignore += _T("ignore");
 			if (CheckFileChanged(gitignore))
-			{
 				FetchIgnoreFile(gitdir, gitignore, false);
-			}
 
 			CString adminDir = g_AdminDirMap.GetAdminDir(tempOrig);
 			CString wcglobalgitignore = adminDir;
@@ -1059,14 +1019,10 @@ int CGitIgnoreList::LoadAllIgnoreFile(const CString &gitdir, const CString &path
 
 			return 0;
 		}
-		else
-		{
-			temp += _T("ignore");
-			if (CheckFileChanged(temp))
-			{
-				FetchIgnoreFile(gitdir, temp, false);
-			}
-		}
+
+		temp += _T("ignore");
+		if (CheckFileChanged(temp))
+			FetchIgnoreFile(gitdir, temp, false);
 
 		int found = 0;
 		int i;
@@ -1245,12 +1201,10 @@ int CGitIgnoreList::CheckIgnore(const CString &path, const CString &projectroot,
 
 			break;
 		}
-		else
-		{
-			temp += _T("ignore");
-			if ((ret = CheckFileAgainstIgnoreList(temp, patha, base, type)) != -1)
-				break;
-		}
+
+		temp += _T("ignore");
+		if ((ret = CheckFileAgainstIgnoreList(temp, patha, base, type)) != -1)
+			break;
 
 		int found = 0;
 		int i;
@@ -1314,7 +1268,7 @@ int CGitHeadFileMap::IsUnderVersionControl(const CString &gitdir, const CString 
 			*isVersion = false;
 			return 0;
 		}
-		else if (treeptr->empty())
+		if (treeptr->empty())
 		{
 			*isVersion = false;
 			return 1;
