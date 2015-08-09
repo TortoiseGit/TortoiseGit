@@ -270,6 +270,16 @@ public:
 	EXCLUDE_LIST m_pExcludeList;
 
 	int FetchIgnoreList(const CString &projectroot, const CString &file, bool isGlobal);
+
+	/**
+	* patha: the filename to be checked whether is is ignored or not
+	* base: must be a pointer to the beginning of the base filename WITHIN patha
+	* type: DT_DIR or DT_REG
+	*/
+	int IsPathIgnored(const CStringA& patha, const char* base, int& type);
+#ifdef GTEST_INCLUDE_GTEST_GTEST_H_
+	int IsPathIgnored(const CStringA& patha, int& type);
+#endif
 };
 
 class CGitIgnoreList

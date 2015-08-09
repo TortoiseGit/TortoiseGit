@@ -858,6 +858,24 @@ int CGitIgnoreItem::FetchIgnoreList(const CString &projectroot, const CString &f
 	return 0;
 }
 
+#ifdef GTEST_INCLUDE_GTEST_GTEST_H_
+int CGitIgnoreItem::IsPathIgnored(const CStringA& patha, int& type)
+{
+	int pos = patha.ReverseFind('/');
+	const char* base = (pos >= 0) ? ((const char*)patha + pos + 1) : patha;
+
+	return IsPathIgnored(patha, base, type);
+}
+#endif
+
+int CGitIgnoreItem::IsPathIgnored(const CStringA& patha, const char* base, int& type)
+{
+	if (!m_pExcludeList)
+		return -1; // error or undecided
+
+	return git_check_excluded_1(patha, patha.GetLength(), base, &type, m_pExcludeList);
+}
+
 bool CGitIgnoreList::CheckFileChanged(const CString &path)
 {
 	__int64 time = 0;
@@ -1149,15 +1167,10 @@ bool CGitIgnoreList::IsIgnore(const CString &path, const CString &projectroot, b
 }
 int CGitIgnoreList::CheckFileAgainstIgnoreList(const CString &ignorefile, const CStringA &patha, const char * base, int &type)
 {
-	if (m_Map.find(ignorefile) != m_Map.end())
-	{
-		int ret = -1;
-		if(m_Map[ignorefile].m_pExcludeList)
-			ret = git_check_excluded_1(patha, patha.GetLength(), base, &type, m_Map[ignorefile].m_pExcludeList);
-		if (ret == 0 || ret == 1)
-			return ret;
-	}
-	return -1;
+	if (m_Map.find(ignorefile) == m_Map.end())
+		return -1; // error or undecided
+
+	return (m_Map[ignorefile].IsPathIgnored(patha, base, type));
 }
 int CGitIgnoreList::CheckIgnore(const CString &path, const CString &projectroot, bool isDir)
 {

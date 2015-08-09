@@ -20,6 +20,7 @@
 #include "stdafx.h"
 #include "RepositoryFixtures.h"
 #include "gitindex.h"
+#include "gitdll.h"
 
 extern CGitAdminDirMap g_AdminDirMap; // not optimal yet
 
@@ -338,4 +339,260 @@ TEST(GitIndex, GetRangeInSortVector)
 	EXPECT_EQ(0, GetRangeInSortVector(vector, L"c", 1, &start, &end, 6));
 	EXPECT_EQ(6, start);
 	EXPECT_EQ(6, end);
+}
+
+TEST(GitIndex, CGitIgnoreItem)
+{
+	CAutoTempDir tempDir;
+	CGitIgnoreItem ignoreItem;
+
+	int type = DT_DIR;
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("not-ignored", type));
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("subdir/not-ignored", type));
+	type = DT_REG;
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("not-ignored", type));
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("subdir/not-ignored", type));
+
+	EXPECT_EQ(-1, ignoreItem.FetchIgnoreList(tempDir.GetTempDir(), L"does-not-exist", false));
+	EXPECT_EQ(-1, ignoreItem.FetchIgnoreList(tempDir.GetTempDir(), L"does-not-exist", true));
+
+	CString ignoreFile = tempDir.GetTempDir() + L"\\.gitignore";
+
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)ignoreFile, L""));
+	EXPECT_EQ(0, ignoreItem.FetchIgnoreList(tempDir.GetTempDir(), ignoreFile, false));
+	EXPECT_STREQ("", ignoreItem.m_BaseDir);
+	EXPECT_EQ(0, ignoreItem.FetchIgnoreList(tempDir.GetTempDir(), ignoreFile, true));
+	EXPECT_STREQ("", ignoreItem.m_BaseDir);
+
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)ignoreFile, L"#"));
+	EXPECT_EQ(0, ignoreItem.FetchIgnoreList(tempDir.GetTempDir(), ignoreFile, false));
+	EXPECT_EQ(0, ignoreItem.FetchIgnoreList(tempDir.GetTempDir(), ignoreFile, true));
+
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)ignoreFile, L"# comment"));
+	EXPECT_EQ(0, ignoreItem.FetchIgnoreList(tempDir.GetTempDir(), ignoreFile, false));
+	EXPECT_EQ(0, ignoreItem.FetchIgnoreList(tempDir.GetTempDir(), ignoreFile, true));
+
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)ignoreFile, L"\n"));
+	EXPECT_EQ(0, ignoreItem.FetchIgnoreList(tempDir.GetTempDir(), ignoreFile, false));
+	EXPECT_EQ(0, ignoreItem.FetchIgnoreList(tempDir.GetTempDir(), ignoreFile, true));
+
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)ignoreFile, L"\n#"));
+	EXPECT_EQ(0, ignoreItem.FetchIgnoreList(tempDir.GetTempDir(), ignoreFile, false));
+	EXPECT_EQ(0, ignoreItem.FetchIgnoreList(tempDir.GetTempDir(), ignoreFile, true));
+
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)ignoreFile, L"*.tmp\n"));
+	EXPECT_EQ(0, ignoreItem.FetchIgnoreList(tempDir.GetTempDir(), ignoreFile, false));
+	type = DT_DIR;
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("not-ignored", type));
+	EXPECT_EQ(1, ignoreItem.IsPathIgnored("text.tmp", type));
+	EXPECT_EQ(1, ignoreItem.IsPathIgnored("subdir/text.tmp", type));
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("1.tmp.1", type));
+	type = DT_REG;
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("not-ignored", type));
+	EXPECT_EQ(1, ignoreItem.IsPathIgnored("text.tmp", type));
+	EXPECT_EQ(1, ignoreItem.IsPathIgnored("subdir/text.tmp", type));
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("1.tmp.1", type));
+	EXPECT_EQ(0, ignoreItem.FetchIgnoreList(tempDir.GetTempDir(), ignoreFile, true));
+	type = DT_DIR;
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("not-ignored", type));
+	EXPECT_EQ(1, ignoreItem.IsPathIgnored("text.tmp", type));
+	EXPECT_EQ(1, ignoreItem.IsPathIgnored("subdir/text.tmp", type));
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("1.tmp.1", type));
+	type = DT_REG;
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("not-ignored", type));
+	EXPECT_EQ(1, ignoreItem.IsPathIgnored("text.tmp", type));
+	EXPECT_EQ(1, ignoreItem.IsPathIgnored("subdir/text.tmp", type));
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("1.tmp.1", type));
+
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)ignoreFile, L"some-file\n"));
+	EXPECT_EQ(0, ignoreItem.FetchIgnoreList(tempDir.GetTempDir(), ignoreFile, false));
+	type = DT_DIR;
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("not-ignored", type));
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("subdir/not-ignored", type));
+	EXPECT_EQ(1, ignoreItem.IsPathIgnored("some-file", type));
+	EXPECT_EQ(1, ignoreItem.IsPathIgnored("subdir/some-file", type));
+	type = DT_REG;
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("not-ignored", type));
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("subdir/not-ignored", type));
+	EXPECT_EQ(1, ignoreItem.IsPathIgnored("some-file", type));
+	EXPECT_EQ(1, ignoreItem.IsPathIgnored("subdir/some-file", type));
+	EXPECT_EQ(0, ignoreItem.FetchIgnoreList(tempDir.GetTempDir(), ignoreFile, true));
+	type = DT_DIR;
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("not-ignored", type));
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("subdir/not-ignored", type));
+	EXPECT_EQ(1, ignoreItem.IsPathIgnored("some-file", type));
+	EXPECT_EQ(1, ignoreItem.IsPathIgnored("subdir/some-file", type));
+	type = DT_REG;
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("not-ignored", type));
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("subdir/not-ignored", type));
+	EXPECT_EQ(1, ignoreItem.IsPathIgnored("some-file", type));
+	EXPECT_EQ(1, ignoreItem.IsPathIgnored("subdir/some-file", type));
+
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)ignoreFile, L"\n\nsome-file\n"));
+	EXPECT_EQ(0, ignoreItem.FetchIgnoreList(tempDir.GetTempDir(), ignoreFile, false));
+	type = DT_DIR;
+	EXPECT_EQ(1, ignoreItem.IsPathIgnored("some-file", type));
+	EXPECT_EQ(1, ignoreItem.IsPathIgnored("subdir/some-file", type));
+	type = DT_REG;
+	EXPECT_EQ(1, ignoreItem.IsPathIgnored("some-file", type));
+	EXPECT_EQ(1, ignoreItem.IsPathIgnored("subdir/some-file", type));
+	EXPECT_EQ(0, ignoreItem.FetchIgnoreList(tempDir.GetTempDir(), ignoreFile, true));
+	type = DT_DIR;
+	EXPECT_EQ(1, ignoreItem.IsPathIgnored("some-file", type));
+	EXPECT_EQ(1, ignoreItem.IsPathIgnored("subdir/some-file", type));
+	type = DT_REG;
+	EXPECT_EQ(1, ignoreItem.IsPathIgnored("some-file", type));
+	EXPECT_EQ(1, ignoreItem.IsPathIgnored("subdir/some-file", type));
+
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)ignoreFile, L"/some-file"));
+	EXPECT_EQ(0, ignoreItem.FetchIgnoreList(tempDir.GetTempDir(), ignoreFile, false));
+	type = DT_DIR;
+	EXPECT_EQ(1, ignoreItem.IsPathIgnored("some-file", type));
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("subdir/some-file", type));
+	type = DT_REG;
+	EXPECT_EQ(1, ignoreItem.IsPathIgnored("some-file", type));
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("subdir/some-file", type));
+	EXPECT_EQ(0, ignoreItem.FetchIgnoreList(tempDir.GetTempDir(), ignoreFile, true));
+	type = DT_DIR;
+	EXPECT_EQ(1, ignoreItem.IsPathIgnored("some-file", type));
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("subdir/some-file", type));
+	type = DT_REG;
+	EXPECT_EQ(1, ignoreItem.IsPathIgnored("some-file", type));
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("subdir/some-file", type));
+
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)ignoreFile, L"some-dir/"));
+	EXPECT_EQ(0, ignoreItem.FetchIgnoreList(tempDir.GetTempDir(), ignoreFile, false));
+	type = DT_DIR;
+	EXPECT_EQ(1, ignoreItem.IsPathIgnored("some-dir", type));
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("some-dir/some-file", type));
+	type = DT_REG;
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("some-file", type));
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("some-dir", type));
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("some-dir/some-file", type));
+	EXPECT_EQ(0, ignoreItem.FetchIgnoreList(tempDir.GetTempDir(), ignoreFile, true));
+	type = DT_DIR;
+	EXPECT_EQ(1, ignoreItem.IsPathIgnored("some-dir", type));
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("some-dir/some-file", type));
+	type = DT_REG;
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("some-file", type));
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("some-dir", type));
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("some-dir/some-file", type));
+
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)ignoreFile, L"some-*\n!some-file"));
+	EXPECT_EQ(0, ignoreItem.FetchIgnoreList(tempDir.GetTempDir(), ignoreFile, false));
+	type = DT_DIR;
+	EXPECT_EQ(1, ignoreItem.IsPathIgnored("some-dir", type));
+	EXPECT_EQ(0, ignoreItem.IsPathIgnored("some-file", type));
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("something", type));
+	type = DT_REG;
+	EXPECT_EQ(1, ignoreItem.IsPathIgnored("some-dir", type));
+	EXPECT_EQ(0, ignoreItem.IsPathIgnored("some-file", type));
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("something", type));
+	EXPECT_EQ(0, ignoreItem.FetchIgnoreList(tempDir.GetTempDir(), ignoreFile, true));
+	type = DT_DIR;
+	EXPECT_EQ(1, ignoreItem.IsPathIgnored("some-dir", type));
+	EXPECT_EQ(0, ignoreItem.IsPathIgnored("some-file", type));
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("something", type));
+	type = DT_REG;
+	EXPECT_EQ(1, ignoreItem.IsPathIgnored("some-dir", type));
+	EXPECT_EQ(0, ignoreItem.IsPathIgnored("some-file", type));
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("something", type));
+
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)ignoreFile, L"some-file\nanother/dir/*"));
+	EXPECT_EQ(0, ignoreItem.FetchIgnoreList(tempDir.GetTempDir(), ignoreFile, false));
+	type = DT_DIR;
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("some-dir", type));
+	EXPECT_EQ(1, ignoreItem.IsPathIgnored("some-file", type));
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("another", type));
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("another/dir", type));
+	EXPECT_EQ(1, ignoreItem.IsPathIgnored("another/dir/some", type));
+	type = DT_REG;
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("some-dir", type));
+	EXPECT_EQ(1, ignoreItem.IsPathIgnored("some-file", type));
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("another", type));
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("another/dir", type));
+	EXPECT_EQ(1, ignoreItem.IsPathIgnored("another/dir/some", type));
+	EXPECT_EQ(0, ignoreItem.FetchIgnoreList(tempDir.GetTempDir(), ignoreFile, true));
+	type = DT_DIR;
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("some-dir", type));
+	EXPECT_EQ(1, ignoreItem.IsPathIgnored("some-file", type));
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("another", type));
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("another/dir", type));
+	EXPECT_EQ(1, ignoreItem.IsPathIgnored("another/dir/some", type));
+	type = DT_REG;
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("some-dir", type));
+	EXPECT_EQ(1, ignoreItem.IsPathIgnored("some-file", type));
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("another", type));
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("another/dir", type));
+	EXPECT_EQ(1, ignoreItem.IsPathIgnored("another/dir/some", type));
+
+	EXPECT_TRUE(::CreateDirectory(tempDir.GetTempDir() + L"\\subdir", nullptr));
+	ignoreFile = tempDir.GetTempDir() + L"\\subdir\\.gitignore";
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)ignoreFile, L"/something"));
+	EXPECT_EQ(0, ignoreItem.FetchIgnoreList(tempDir.GetTempDir(), ignoreFile, false));
+	EXPECT_STREQ("subdir/", ignoreItem.m_BaseDir);
+	type = DT_DIR;
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("something", type));
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("something/more", type));
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("some-dir/something", type));
+	EXPECT_EQ(1, ignoreItem.IsPathIgnored("subdir/something", type));
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("subdir/something/more", type));
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("subdir/some-dir/something", type));
+	type = DT_REG;
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("something", type));
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("something/more", type));
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("some-dir/something", type));
+	EXPECT_EQ(1, ignoreItem.IsPathIgnored("subdir/something", type));
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("subdir/something/more", type));
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("subdir/some-dir/something", type));
+	EXPECT_EQ(0, ignoreItem.FetchIgnoreList(tempDir.GetTempDir(), ignoreFile, true));
+	EXPECT_STREQ("", ignoreItem.m_BaseDir);
+	type = DT_DIR;
+	EXPECT_EQ(1, ignoreItem.IsPathIgnored("something", type));
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("something/more", type));
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("some-dir/something", type));
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("subdir/something", type));
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("subdir/something/more", type));
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("subdir/some-dir/something", type));
+	type = DT_REG;
+	EXPECT_EQ(1, ignoreItem.IsPathIgnored("something", type));
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("something/more", type));
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("some-dir/something", type));
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("subdir/something", type));
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("subdir/something/more", type));
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("subdir/some-dir/something", type));
+
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)ignoreFile, L"something"));
+	EXPECT_EQ(0, ignoreItem.FetchIgnoreList(tempDir.GetTempDir(), ignoreFile, false));
+	EXPECT_STREQ("subdir/", ignoreItem.m_BaseDir);
+	type = DT_DIR;
+	EXPECT_EQ(1, ignoreItem.IsPathIgnored("something", type));
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("something/more", type));
+	EXPECT_EQ(1, ignoreItem.IsPathIgnored("some-dir/something", type));
+	EXPECT_EQ(1, ignoreItem.IsPathIgnored("subdir/something", type));
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("subdir/something/more", type));
+	EXPECT_EQ(1, ignoreItem.IsPathIgnored("subdir/some-dir/something", type));
+	type = DT_REG;
+	EXPECT_EQ(1, ignoreItem.IsPathIgnored("something", type));
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("something/more", type));
+	EXPECT_EQ(1, ignoreItem.IsPathIgnored("some-dir/something", type));
+	EXPECT_EQ(1, ignoreItem.IsPathIgnored("subdir/something", type));
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("subdir/something/more", type));
+	EXPECT_EQ(1, ignoreItem.IsPathIgnored("subdir/some-dir/something", type));
+	EXPECT_EQ(0, ignoreItem.FetchIgnoreList(tempDir.GetTempDir(), ignoreFile, true));
+	EXPECT_STREQ("", ignoreItem.m_BaseDir);
+	type = DT_DIR;
+	EXPECT_EQ(1, ignoreItem.IsPathIgnored("something", type));
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("something/more", type));
+	EXPECT_EQ(1, ignoreItem.IsPathIgnored("some-dir/something", type));
+	EXPECT_EQ(1, ignoreItem.IsPathIgnored("subdir/something", type));
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("subdir/something/more", type));
+	EXPECT_EQ(1, ignoreItem.IsPathIgnored("subdir/some-dir/something", type));
+	type = DT_REG;
+	EXPECT_EQ(1, ignoreItem.IsPathIgnored("something", type));
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("something/more", type));
+	EXPECT_EQ(1, ignoreItem.IsPathIgnored("some-dir/something", type));
+	EXPECT_EQ(1, ignoreItem.IsPathIgnored("subdir/something", type));
+	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("subdir/something/more", type));
+	EXPECT_EQ(1, ignoreItem.IsPathIgnored("subdir/some-dir/something", type));
 }
