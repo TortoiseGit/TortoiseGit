@@ -803,10 +803,6 @@ int CGitIgnoreItem::FetchIgnoreList(const CString &projectroot, const CString &f
 		if(CGit::GetFileModifyTime(file, &m_LastModifyTime))
 			return -1;
 
-		if(git_create_exclude_list(&this->m_pExcludeList))
-			return -1;
-
-
 		CAutoFile hfile = CreateFile(file,
 			GENERIC_READ,
 			FILE_SHARE_READ|FILE_SHARE_DELETE|FILE_SHARE_WRITE,
@@ -832,7 +828,18 @@ int CGitIgnoreItem::FetchIgnoreList(const CString &projectroot, const CString &f
 			return -1;
 
 		if (!ReadFile(hfile, m_buffer, filesize, &size, NULL))
+		{
+			free(m_buffer);
+			m_buffer = nullptr;
 			return GetLastError();
+		}
+
+		if (git_create_exclude_list(&m_pExcludeList))
+		{
+			free(m_buffer);
+			m_buffer = nullptr;
+			return -1;
+		}
 
 		BYTE *p = m_buffer;
 		int line = 0;
