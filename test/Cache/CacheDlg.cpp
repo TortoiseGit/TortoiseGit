@@ -124,7 +124,6 @@ UINT CCacheDlg::TestThread()
 
 	CTime starttime = CTime::GetCurrentTime();
 	GetDlgItem(IDC_STARTTIME)->SetWindowText(starttime.Format(_T("%H:%M:%S")));
-	int filecounter = 0;
 
 	DWORD startticks = GetTickCount();
 
@@ -412,7 +411,6 @@ UINT CCacheDlg::WatchTestThread()
 
 	CTime starttime = CTime::GetCurrentTime();
 	GetDlgItem(IDC_STARTTIME)->SetWindowText(starttime.Format(_T("%H:%M:%S")));
-	int filecounter = 0;
 
 	DWORD startticks = GetTickCount();
 
