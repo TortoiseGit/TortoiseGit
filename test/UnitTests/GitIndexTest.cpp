@@ -63,6 +63,7 @@ TEST_P(GitIndexCBasicGitFixture, EmptyDir)
 	CGitIndexList indexList;
 	EXPECT_EQ(-1, indexList.ReadIndex(m_Dir.GetTempDir()));
 	EXPECT_EQ(0, indexList.size());
+	EXPECT_FALSE(indexList.m_bHasConflicts);
 }
 
 
@@ -87,6 +88,7 @@ static void ReadAndCheckIndex(CGitIndexList& indexList, const CString& gitdir, i
 	EXPECT_EQ(139, indexList[13 + offset].m_Size);
 	EXPECT_EQ(14, indexList[13 + offset].m_Flags);
 	EXPECT_STREQ(L"c225b3f14869ec8b6da32d52bd15dba0b043031d", indexList[13 + offset].m_IndexHash.ToString());
+	EXPECT_FALSE(indexList.m_bHasConflicts);
 }
 
 TEST_P(GitIndexCBasicGitWithTestRepoFixture, ReadIndex)
@@ -149,6 +151,7 @@ TEST_P(GitIndexCBasicGitWithTestRepoFixture, GetFileStatus)
 
 	EXPECT_EQ(0, m_Git.Run(_T("git.exe update-index --skip-worktree -- ansi.txt"), &output, CP_UTF8));
 	EXPECT_EQ(0, indexList.ReadIndex(m_Dir.GetTempDir()));
+	EXPECT_FALSE(indexList.m_bHasConflicts);
 	status = git_wc_status_none;
 	EXPECT_EQ(0, indexList.GetFileStatus(m_Dir.GetTempDir(), L"ansi.txt", &status, time, filesize, nullptr, nullptr, nullptr, nullptr, &skipworktree));
 	EXPECT_EQ(git_wc_status_normal, status);
@@ -178,6 +181,7 @@ TEST_P(GitIndexCBasicGitWithTestRepoFixture, GetFileStatus)
 
 	EXPECT_EQ(0, indexList.ReadIndex(m_Dir.GetTempDir()));
 	EXPECT_EQ(9, indexList.size());
+	EXPECT_TRUE(indexList.m_bHasConflicts);
 
 	EXPECT_EQ(0, CGit::GetFileModifyTime(CombinePath(m_Dir.GetTempDir(), L"ansi.txt"), &time, nullptr, &filesize));
 	status = git_wc_status_none;

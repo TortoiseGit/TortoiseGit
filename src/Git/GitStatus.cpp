@@ -604,7 +604,7 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 	GetRangeInSortVector(*indexptr, lowcasepath, lowcasepath.GetLength(), &start, &end, pos);
 
 	// Check Conflict;
-	for (auto it = indexptr->cbegin() + start, itlast = indexptr->cbegin() + end; it <= itlast; ++it)
+	for (auto it = indexptr->cbegin() + start, itlast = indexptr->cbegin() + end; indexptr->m_bHasConflicts && it <= itlast; ++it)
 	{
 		if (((*it).m_Flags & GIT_IDXENTRY_STAGEMASK) != 0)
 		{

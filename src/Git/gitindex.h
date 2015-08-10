@@ -42,6 +42,7 @@ protected:
 
 public:
 	__time64_t  m_LastModifyTime;
+	BOOL		m_bHasConflicts;
 
 	CGitIndexList();
 	~CGitIndexList();

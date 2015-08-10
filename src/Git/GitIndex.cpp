@@ -42,6 +42,7 @@ int CGitIndex::Print()
 }
 
 CGitIndexList::CGitIndexList()
+: m_bHasConflicts(FALSE)
 {
 	this->m_LastModifyTime = 0;
 	m_critRepoSec.Init();
@@ -100,6 +101,8 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 		return -1;
 	}
 
+	m_bHasConflicts = FALSE;
+
 	size_t ecount = git_index_entrycount(index);
 	resize(ecount);
 	for (size_t i = 0; i < ecount; ++i)
@@ -113,6 +116,7 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 		this->at(i).m_Flags = e->flags | e->flags_extended;
 		this->at(i).m_IndexHash = e->id.id;
 		this->at(i).m_Size = e->file_size;
+		m_bHasConflicts |= GIT_IDXENTRY_STAGE(e);
 	}
 
 	CGit::GetFileModifyTime(dgitdir + _T("index"), &this->m_LastModifyTime);
