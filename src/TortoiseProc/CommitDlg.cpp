@@ -592,12 +592,9 @@ void CCommitDlg::OnOK()
 	}
 
 	int nListItems = m_ListCtrl.GetItemCount();
-	bool needResetIndex = false;
 	for (int i = 0; i < nListItems && !m_bCommitMessageOnly; ++i)
 	{
 		CTGitPath *entry = (CTGitPath *)m_ListCtrl.GetItemData(i);
-		if (!entry->m_Checked && !(entry->m_Action & CTGitPath::LOGACTIONS_UNVER))
-			needResetIndex = true;
 		if (!entry->m_Checked || !entry->IsDirectory())
 			continue;
 
@@ -669,12 +666,6 @@ void CCommitDlg::OnOK()
 
 	if (g_Git.UsingLibGit2(CGit::GIT_CMD_COMMIT_UPDATE_INDEX))
 	{
-		/*
-			Do not use the libgit2 implementation right now, since it has several flaws:
-			* https://tortoisegit.org/issue/1690: possible access denied problem
-			* https://tortoisegit.org/issue/2224: filters not correctly applied
-			* changes to x-bit are not correctly committed, since we reset the index
-		*/
 		bAddSuccess = false;
 		do
 		{
@@ -696,14 +687,14 @@ void CCommitDlg::OnOK()
 			}
 
 			CAutoCommit commit;
-			if (!revHash.IsEmpty() && needResetIndex && git_commit_lookup(commit.GetPointer(), repository, (const git_oid*)revHash.m_hash))
+			if (!revHash.IsEmpty() && git_commit_lookup(commit.GetPointer(), repository, (const git_oid*)revHash.m_hash))
 			{
 				CMessageBox::Show(m_hWnd, CGit::GetLibGit2LastErr(_T("Could not get last commit.")), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 				break;
 			}
 
 			CAutoTree tree;
-			if (!revHash.IsEmpty() && needResetIndex && git_commit_tree(tree.GetPointer(), commit))
+			if (!revHash.IsEmpty() && git_commit_tree(tree.GetPointer(), commit))
 			{
 				CMessageBox::Show(m_hWnd, CGit::GetLibGit2LastErr(_T("Could not read tree of commit.")), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 				break;
@@ -716,15 +707,11 @@ void CCommitDlg::OnOK()
 				break;
 			}
 
-			// reset index to the one of the reference commit (HEAD or HEAD~1)
-			if (!revHash.IsEmpty() && needResetIndex && git_index_read_tree(index, tree))
+			CAutoIndex indexOld;
+			if (!revHash.IsEmpty() && (git_index_new(indexOld.GetPointer()) || git_index_read_tree(indexOld, tree)))
 			{
 				CMessageBox::Show(m_hWnd, CGit::GetLibGit2LastErr(_T("Could not read the tree into the index.")), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 				break;
-			}
-			else if (!revHash.IsEmpty() && !needResetIndex)
-			{
-				git_index_read(index, true);
 			}
 
 			bAddSuccess = true;
@@ -749,9 +736,7 @@ void CCommitDlg::OnOK()
 				if (entry->m_Checked && !m_bCommitMessageOnly)
 				{
 					if (entry->m_Action & CTGitPath::LOGACTIONS_DELETED)
-					{
 						git_index_remove_bypath(index, filePathA); // ignore error
-					}
 					else
 					{
 						if (git_index_add_bypath(index, filePathA))
@@ -762,31 +747,55 @@ void CCommitDlg::OnOK()
 						}
 					}
 
-					if (entry->m_Action & CTGitPath::LOGACTIONS_REPLACED)
-					{
-						git_index_remove_bypath(index, filePathA); // ignore error
-					}
+					if ((entry->m_Action & CTGitPath::LOGACTIONS_REPLACED) && !entry->GetGitOldPathString().IsEmpty())
+						git_index_remove_bypath(index, CUnicodeUtils::GetUTF8(entry->GetGitOldPathString())); // ignore error
 
 					++nchecked;
 				}
-				else if (entry->m_Action & CTGitPath::LOGACTIONS_ADDED || entry->m_Action & CTGitPath::LOGACTIONS_REPLACED)
+				else
 				{
-					mgtReAddAfterCommit.AddFile(*entry);
-					mgtReDelAfterCommit.AddFile(entry->GetGitOldPathString());
+					if (entry->m_Action & CTGitPath::LOGACTIONS_ADDED || entry->m_Action & CTGitPath::LOGACTIONS_REPLACED)
+					{
+						git_index_remove_bypath(index, filePathA); // ignore error
+						mgtReAddAfterCommit.AddFile(*entry);
+
+						if (entry->m_Action & CTGitPath::LOGACTIONS_REPLACED && !entry->GetGitOldPathString().IsEmpty())
+						{
+							const git_index_entry* oldIndexEntry = nullptr;
+							if ((oldIndexEntry = git_index_get_bypath(indexOld, CUnicodeUtils::GetUTF8(entry->GetGitOldPathString()), 0)) == nullptr || git_index_add(index, oldIndexEntry))
+							{
+								bAddSuccess = false;
+								CMessageBox::Show(m_hWnd, CGit::GetLibGit2LastErr(_T("Could not reset \"") + entry->GetGitOldPathString() + _T("\" to old index entry.")), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+								break;
+							}
+							mgtReDelAfterCommit.AddFile(entry->GetGitOldPathString());
+						}
+					}
+					else if (!(entry->m_Action & CTGitPath::LOGACTIONS_UNVER))
+					{
+						const git_index_entry* oldIndexEntry = nullptr;
+						if ((oldIndexEntry = git_index_get_bypath(indexOld, filePathA, 0)) == nullptr || git_index_add(index, oldIndexEntry))
+						{
+							bAddSuccess = false;
+							CMessageBox::Show(m_hWnd, CGit::GetLibGit2LastErr(_T("Could not reset \"") + entry->GetGitPathString() + _T("\" to old index entry.")), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+							break;
+						}
+						if (entry->m_Action & CTGitPath::LOGACTIONS_DELETED && !(entry->m_Action & CTGitPath::LOGACTIONS_MISSING))
+							mgtReDelAfterCommit.AddFile(entry->GetGitPathString());
+					}
 				}
-				else if (entry->m_Action & CTGitPath::LOGACTIONS_DELETED && !(entry->m_Action & CTGitPath::LOGACTIONS_MISSING))
-					mgtReDelAfterCommit.AddFile(entry->GetGitPathString());
 
 				if (sysProgressDlg.HasUserCancelled())
 				{
 					bAddSuccess = false;
 					break;
 				}
-
-				CShellUpdater::Instance().AddPathForUpdate(*entry);
 			}
 			if (bAddSuccess && git_index_write(index))
 				bAddSuccess = false;
+
+			for (int j = 0; bAddSuccess && j < nListItems; ++j)
+				CShellUpdater::Instance().AddPathForUpdate(*(CTGitPath*)m_ListCtrl.GetItemData(j));
 		} while (0);
 	}
 	else
