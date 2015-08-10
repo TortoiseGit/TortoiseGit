@@ -238,8 +238,12 @@ TEST(GitIndex, GetRangeInSortVector)
 	EXPECT_EQ(-1, GetRangeInSortVector(vector, L"something", 9, &start, nullptr, 0));
 	EXPECT_EQ(-1, GetRangeInSortVector(vector, L"something", 9, nullptr, &end, 0));
 	EXPECT_EQ(-1, GetRangeInSortVector(vector, L"something", 9, nullptr, &end, 1));
+	EXPECT_EQ(-1, GetRangeInSortVector(vector, L"", 0, &start, &end, 0));
+	EXPECT_EQ(-1, start);
+	EXPECT_EQ(-1, end);
 
 	vector.push_back(CGitFileName(L"a"));
+	start = end = -2;
 	EXPECT_EQ(-1, GetRangeInSortVector(vector, L"something", 9, &start, &end, -1));
 	EXPECT_EQ(-1, GetRangeInSortVector(vector, L"something", 9, &start, nullptr, 0));
 	EXPECT_EQ(-1, GetRangeInSortVector(vector, L"something", 9, nullptr, &end, 0));
@@ -249,7 +253,13 @@ TEST(GitIndex, GetRangeInSortVector)
 	EXPECT_EQ(-1, GetRangeInSortVector(vector, L"a", 1, &start, nullptr, 0));
 	EXPECT_EQ(-1, GetRangeInSortVector(vector, L"a", 1, nullptr, &end, 0));
 	EXPECT_EQ(-1, GetRangeInSortVector(vector, L"a", 1, nullptr, &end, 1));
-	
+	start = end = -2;
+	EXPECT_EQ(0, GetRangeInSortVector(vector, L"", 0, &start, &end, 0));
+	EXPECT_EQ(0, start);
+	EXPECT_EQ(0, end);
+	start = end = -2;
+	EXPECT_EQ(-1, GetRangeInSortVector(vector, L"", 0, &start, &end, 1));
+
 	start = end = -2;
 	EXPECT_EQ(-1, GetRangeInSortVector(vector, L"0", 1, &start, &end, 0));
 	EXPECT_EQ(-1, start);
@@ -339,6 +349,11 @@ TEST(GitIndex, GetRangeInSortVector)
 	EXPECT_EQ(0, GetRangeInSortVector(vector, L"c", 1, &start, &end, 6));
 	EXPECT_EQ(6, start);
 	EXPECT_EQ(6, end);
+
+	start = end = -2;
+	EXPECT_EQ(0, GetRangeInSortVector(vector, L"", 0, &start, &end, 0));
+	EXPECT_EQ(0, start);
+	EXPECT_EQ(7, end);
 }
 
 TEST(GitIndex, CGitIgnoreItem)

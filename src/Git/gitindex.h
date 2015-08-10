@@ -365,7 +365,11 @@ int GetRangeInSortVector(const T &vector, LPCTSTR pstr, int len, int *start, int
 		return -1;
 
 	*start = 0;
-	*end = (int)vector.size();
+	*end = (int)vector.size() - 1;
+
+	// shortcut, if all entries are going match
+	if (!len)
+		return 0;
 
 	for (int i = pos; i < (int)vector.size(); ++i)
 	{

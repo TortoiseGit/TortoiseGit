@@ -600,8 +600,6 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 
 	int start = 0;
 	int end = 0;
-	if (path.IsEmpty())
-		end = (int)indexptr->size() - 1;
 
 	GetRangeInSortVector(*indexptr, lowcasepath, lowcasepath.GetLength(), &start, &end, pos);
 
