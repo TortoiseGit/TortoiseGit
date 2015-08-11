@@ -660,12 +660,12 @@ BOOL CCachedDirectory::GetStatusCallback(const CString & path, git_wc_status_kin
 				}
 				else
 				{
-					AutoLocker lock(pThis->m_critSec);
 					// the child directory is not in the cache. Create a new entry for it in the cache which is
 					// initially 'unversioned'. But we added that directory to the crawling list above, which
 					// means the cache will be updated soon.
 					CGitStatusCache::Instance().GetDirectoryCacheEntry(gitPath);
 
+					AutoLocker lock(pThis->m_critSec);
 					pThis->m_childDirectories[gitPath] = s;
 					CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": call 2 Update dir %s %d\n"), gitPath.GetWinPath(), s);
 				}
