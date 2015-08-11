@@ -485,7 +485,7 @@ void CCacheDlg::CopyRemoveCopy(const CString& path)
 {
 	if (PathIsDirectory(path))
 		return;
-	if (path.Find(_T(".svn"))>=0)
+	if (path.Find(_T(".git")) >= 0)
 		return;
 	if (CopyFile(path, path+_T(".tmp"), FALSE))
 	{
