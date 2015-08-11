@@ -457,11 +457,15 @@ CDiffData::DoTwoWayDiff(const CString& sBaseFilename, const CString& sYourFilena
 	tempdiff = diffYourBase;
 	baseline = 0;
 	yourline = 0;
+
+	// arbitrary length of 500
+	static const int maxstringlengthforwhitespacecheck = 500;
+	auto s1 = std::make_unique<wchar_t[]>(maxstringlengthforwhitespacecheck);
 	while (tempdiff)
 	{
 		if (tempdiff->type == svn_diff__type_common)
 		{
-			for (int i=0; i<tempdiff->original_length; i++)
+			for (int i = 0; i<tempdiff->original_length; i++)
 			{
 				const CString& sCurrentYourLine = m_arYourFile.GetAt(yourline);
 				EOL endingYours = m_arYourFile.GetLineEnding(yourline);
@@ -470,9 +474,48 @@ CDiffData::DoTwoWayDiff(const CString& sBaseFilename, const CString& sYourFilena
 				if (sCurrentBaseLine != sCurrentYourLine)
 				{
 					bool changedWS = false;
+					bool bWhiteSpaceChanges = true;
 					if (dwIgnoreWS == 2 || dwIgnoreWS == 3)
 						changedWS = CompareWithIgnoreWS(sCurrentBaseLine, sCurrentYourLine, dwIgnoreWS);
-					if (changedWS || dwIgnoreWS == 0)
+					else if (dwIgnoreWS == 0)
+					{
+						// the strings could be identical in relation to the regex filter.
+						// so to find out if there are whitespace changes, we have to strip the strings
+						// of all non-whitespace chars and then compare them.
+						// Note: this is not really fast! So we only do that if the lines are not too long (arbitrary value)
+						if ((sCurrentBaseLine.GetLength() < maxstringlengthforwhitespacecheck) &&
+							(sCurrentYourLine.GetLength() < maxstringlengthforwhitespacecheck))
+						{
+							auto pLine1 = (LPCWSTR)sCurrentBaseLine;
+							auto pLine2 = (LPCWSTR)sCurrentYourLine;
+							auto pS1 = s1.get();
+							while (*pLine1)
+							{
+								if ((*pLine1 == ' ') || (*pLine1 == '\t'))
+								{
+									*pS1 = *pLine1;
+									++pS1;
+								}
+								++pLine1;
+							}
+							*pS1 = '\0';
+
+							pS1 = s1.get();
+							while (*pLine2)
+							{
+								if ((*pLine2 == ' ') || (*pLine2 == '\t'))
+								{
+									if (*pS1 != *pLine2)
+									{
+										bWhiteSpaceChanges = false;
+										break;
+									}
+								}
+								++pLine2;
+							}
+						}
+					}
+					if (changedWS || ((dwIgnoreWS == 0) && bWhiteSpaceChanges))
 					{
 						m_YourBaseLeft.AddData(sCurrentBaseLine, DIFFSTATE_WHITESPACE, baseline, endingBase, HIDESTATE_SHOWN, -1);
 						m_YourBaseRight.AddData(sCurrentYourLine, DIFFSTATE_WHITESPACE, yourline, endingYours, HIDESTATE_SHOWN, -1);
