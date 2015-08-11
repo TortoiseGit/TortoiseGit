@@ -161,13 +161,14 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	if (hUxTheme)
 		pfnDrawThemeTextEx = (FNDRAWTHEMETEXTEX)::GetProcAddress(hUxTheme, "DrawThemeTextEx");
 
-	m_DiffingThread = AfxBeginThread(AsyncThread, this, THREAD_PRIORITY_BELOW_NORMAL);
+	m_DiffingThread = AfxBeginThread(AsyncThread, this, THREAD_PRIORITY_BELOW_NORMAL, 0, CREATE_SUSPENDED);
 	if (m_DiffingThread ==NULL)
 	{
 		CMessageBox::Show(NULL, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
 		return;
 	}
-
+	m_DiffingThread->m_bAutoDelete = FALSE;
+	m_DiffingThread->ResumeThread();
 }
 
 int CGitLogListBase::AsyncDiffThread()
@@ -3146,10 +3147,14 @@ void CGitLogListBase::Refresh(BOOL IsCleanFilter)
 		m_AsynDiffList.clear();
 		m_AsynDiffListLock.Unlock();
 		InterlockedExchange(&m_AsyncThreadExit, FALSE);
-		m_DiffingThread = AfxBeginThread(AsyncThread, this, THREAD_PRIORITY_BELOW_NORMAL);
+		m_DiffingThread = AfxBeginThread(AsyncThread, this, THREAD_PRIORITY_BELOW_NORMAL, 0, CREATE_SUSPENDED);
 		if (!m_DiffingThread)
 			CMessageBox::Show(nullptr, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
-
+		else
+		{
+			m_DiffingThread->m_bAutoDelete = FALSE;
+			m_DiffingThread->ResumeThread();
+		}
 		if ( (m_LoadingThread=AfxBeginThread(LogThreadEntry, this)) ==NULL)
 		{
 			InterlockedExchange(&m_bThreadRunning, FALSE);
