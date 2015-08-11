@@ -358,7 +358,7 @@ BOOL CFileTextLines::Load(const CString& sFilePath, int lengthHint /* = 0*/)
 			{
 				// LFCR is very rare on Windows, so we have to double check
 				// that this is not just a LF followed by CRLF
-				if (((countEOLs[EOL_CRLF] > 1) || (countEOLs[EOL_LF]>1)) &&
+				if (((countEOLs[EOL_CRLF] > 1) || (countEOLs[EOL_LF] > 1) || (GetCount() < 2)) &&
 					((i > 2) && (*(pTextBuf+1) == '\n')))
 				{
 					// change the EOL back to a simple LF
