@@ -3155,7 +3155,7 @@ void CGitLogListBase::Refresh(BOOL IsCleanFilter)
 			m_DiffingThread->m_bAutoDelete = FALSE;
 			m_DiffingThread->ResumeThread();
 		}
-		if ( (m_LoadingThread=AfxBeginThread(LogThreadEntry, this)) ==NULL)
+		if ((m_LoadingThread = AfxBeginThread(LogThreadEntry, this, THREAD_PRIORITY_LOWEST)) == nullptr)
 		{
 			InterlockedExchange(&m_bThreadRunning, FALSE);
 			InterlockedExchange(&m_bNoDispUpdates, FALSE);
