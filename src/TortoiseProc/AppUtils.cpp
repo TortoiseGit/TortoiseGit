@@ -1337,6 +1337,7 @@ bool CAppUtils::PerformSwitch(const CString& ref, bool bForce /* false */, const
 			postCmdList.push_back(PostCmd(IDI_COMMIT, IDS_MENUCOMMIT, []{
 				CTGitPathList pathlist;
 				CTGitPathList selectedlist;
+				pathlist.AddPath(CTGitPath());
 				bool bSelectFilesForCommit = !!DWORD(CRegStdDWORD(_T("Software\\TortoiseGit\\SelectFilesForCommit"), TRUE));
 				CString str;
 				Commit(CString(), false, str, pathlist, selectedlist, bSelectFilesForCommit);
