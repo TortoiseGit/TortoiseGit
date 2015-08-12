@@ -274,6 +274,9 @@ int git_free_commit(GIT_COMMIT *commit)
 	if( p->parents)
 		free_commit_list(p->parents);
 
+	if (p->tree)
+		free_tree_buffer(p->tree);
+
 #pragma warning(push)
 #pragma warning(disable: 4090)
 	if (commit->buffer)
@@ -367,6 +370,8 @@ int git_open_log(GIT_LOG * handle, char * arg)
 				struct commit* commit = (struct commit*)ob;
 				free_commit_list(commit->parents);
 				commit->parents = NULL;
+				if (commit->tree)
+					free_tree_buffer(commit->tree);
 				commit->tree = NULL;
 				ob->parsed = 0;
 			}
