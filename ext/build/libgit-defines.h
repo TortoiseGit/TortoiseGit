@@ -33,3 +33,4 @@
 #define NO_PTHREADS
 #define NO_MBSUPPORT
 #define GAWK
+#define NO_POSIX_GOODIES

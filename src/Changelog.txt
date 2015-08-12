@@ -1,6 +1,9 @@
 ﻿= Release 1.8.15.0 =
 Released: unreleased
 
+== Features ==
+ * Updated libgit to version 2.5.0 
+
 == Bug Fixes ==
  * TortoiseGitMerge highlights wrong line in case of file starts with LF+CRLF
 

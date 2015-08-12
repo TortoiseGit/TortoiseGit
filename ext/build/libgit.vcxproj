@@ -48,12 +48,14 @@
   <ItemGroup>
     <ClCompile Include="..\tgit\builtin\check-mailmap.c" />
     <ClCompile Include="..\tgit\builtin\get-tar-commit-id.c" />
+    <ClCompile Include="..\tgit\builtin\interpret-trailers.c" />
     <ClCompile Include="..\tgit\builtin\repack.c" />
+    <ClCompile Include="..\tgit\builtin\verify-commit.c" />
+    <ClCompile Include="..\tgit\builtin\worktree.c" />
     <ClCompile Include="..\tgit\compat\msvc.c" />
     <ClCompile Include="..\tgit\block-sha1\sha1.c" />
     <ClCompile Include="..\tgit\compat\basename.c" />
     <ClCompile Include="..\tgit\compat\win32\dirent.c" />
-    <ClCompile Include="..\tgit\compat\fnmatch\fnmatch.c" />
     <ClCompile Include="..\tgit\compat\fopen.c" />
     <ClCompile Include="..\tgit\compat\memmem.c" />
     <ClCompile Include="..\tgit\compat\mkdtemp.c" />
@@ -112,13 +114,17 @@
     <ClCompile Include="..\tgit\editor.c" />
     <ClCompile Include="..\tgit\entry.c" />
     <ClCompile Include="..\tgit\environment.c" />
+    <ClCompile Include="..\tgit\ewah\bitmap.c" />
+    <ClCompile Include="..\tgit\ewah\ewah_bitmap.c" />
+    <ClCompile Include="..\tgit\ewah\ewah_io.c" />
+    <ClCompile Include="..\tgit\ewah\ewah_rlw.c" />
     <ClCompile Include="..\tgit\exec_cmd.c" />
     <ClCompile Include="..\tgit\fetch-pack.c" />
     <ClCompile Include="..\tgit\fsck.c" />
     <ClCompile Include="..\tgit\gpg-interface.c" />
     <ClCompile Include="..\tgit\graph.c" />
     <ClCompile Include="..\tgit\grep.c" />
-    <ClCompile Include="..\tgit\hash.c" />
+    <ClCompile Include="..\tgit\hashmap.c" />
     <ClCompile Include="..\tgit\help.c" />
     <ClCompile Include="..\tgit\hex.c" />
     <ClCompile Include="..\tgit\ident.c" />
@@ -142,7 +148,10 @@
     <ClCompile Include="..\tgit\notes-utils.c" />
     <ClCompile Include="..\tgit\notes.c" />
     <ClCompile Include="..\tgit\object.c" />
+    <ClCompile Include="..\tgit\pack-bitmap-write.c" />
+    <ClCompile Include="..\tgit\pack-bitmap.c" />
     <ClCompile Include="..\tgit\pack-check.c" />
+    <ClCompile Include="..\tgit\pack-objects.c" />
     <ClCompile Include="..\tgit\pack-revindex.c" />
     <ClCompile Include="..\tgit\pack-write.c" />
     <ClCompile Include="..\tgit\pager.c" />
@@ -180,6 +189,7 @@
     <ClCompile Include="..\tgit\builtin\shortlog.c" />
     <ClCompile Include="..\tgit\sideband.c" />
     <ClCompile Include="..\tgit\sigchain.c" />
+    <ClCompile Include="..\tgit\split-index.c" />
     <ClCompile Include="..\tgit\strbuf.c" />
     <ClCompile Include="..\tgit\streaming.c" />
     <ClCompile Include="..\tgit\string-list.c" />
@@ -201,6 +211,7 @@
     <ClCompile Include="..\tgit\utf8.c" />
     <ClCompile Include="..\tgit\varint.c" />
     <ClCompile Include="..\tgit\version.c" />
+    <ClCompile Include="..\tgit\versioncmp.c" />
     <ClCompile Include="..\tgit\walker.c" />
     <ClCompile Include="..\tgit\wildmatch.c" />
     <ClCompile Include="..\tgit\wrapper.c" />
@@ -298,7 +309,9 @@
     <ClCompile Include="..\tgit\builtin\notes.c">
       <ObjectFileName>$(IntDir)BuildIn%(Filename).obj</ObjectFileName>
     </ClCompile>
-    <ClCompile Include="..\tgit\builtin\pack-objects.c" />
+    <ClCompile Include="..\tgit\builtin\pack-objects.c">
+      <ObjectFileName>$(IntDir)BuildIn%(Filename).obj</ObjectFileName>
+    </ClCompile>
     <ClCompile Include="..\tgit\builtin\pack-redundant.c" />
     <ClCompile Include="..\tgit\builtin\pack-refs.c">
       <ObjectFileName>$(IntDir)BuildIn%(Filename).obj</ObjectFileName>
@@ -369,6 +382,8 @@
     <ClInclude Include="..\tgit\diff.h" />
     <ClInclude Include="..\tgit\diffcore.h" />
     <ClInclude Include="..\tgit\dir.h" />
+    <ClInclude Include="..\tgit\ewah\ewok.h" />
+    <ClInclude Include="..\tgit\ewah\ewok_rlw.h" />
     <ClInclude Include="..\tgit\exec_cmd.h" />
     <ClInclude Include="..\tgit\fetch-pack.h" />
     <ClInclude Include="..\tgit\fsck.h" />
@@ -376,7 +391,7 @@
     <ClInclude Include="..\tgit\gpg-interface.h" />
     <ClInclude Include="..\tgit\graph.h" />
     <ClInclude Include="..\tgit\grep.h" />
-    <ClInclude Include="..\tgit\hash.h" />
+    <ClInclude Include="..\tgit\hashmap.h" />
     <ClInclude Include="..\tgit\help.h" />
     <ClInclude Include="..\tgit\kwset.h" />
     <ClInclude Include="..\tgit\levenshtein.h" />
@@ -393,6 +408,8 @@
     <ClInclude Include="..\tgit\notes-utils.h" />
     <ClInclude Include="..\tgit\notes.h" />
     <ClInclude Include="..\tgit\object.h" />
+    <ClInclude Include="..\tgit\pack-bitmap.h" />
+    <ClInclude Include="..\tgit\pack-objects.h" />
     <ClInclude Include="..\tgit\pack-revindex.h" />
     <ClInclude Include="..\tgit\pack.h" />
     <ClInclude Include="..\tgit\parse-options.h" />
@@ -416,6 +433,7 @@
     <ClInclude Include="..\tgit\shortlog.h" />
     <ClInclude Include="..\tgit\sideband.h" />
     <ClInclude Include="..\tgit\sigchain.h" />
+    <ClInclude Include="..\tgit\split-index.h" />
     <ClInclude Include="..\tgit\strbuf.h" />
     <ClInclude Include="..\tgit\streaming.h" />
     <ClInclude Include="..\tgit\string-list.h" />
@@ -435,7 +453,6 @@
     <ClInclude Include="..\tgit\wildmatch.h" />
     <ClInclude Include="..\tgit\wt-status.h" />
     <ClInclude Include="..\tgit\xdiff-interface.h" />
-    <ClInclude Include="..\tgit\compat\fnmatch\fnmatch.h" />
     <ClInclude Include="..\tgit\compat\mingw.h" />
     <ClInclude Include="..\tgit\compat\obstack.h" />
     <ClInclude Include="..\tgit\compat\poll\poll.h" />
