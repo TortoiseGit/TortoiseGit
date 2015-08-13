@@ -54,6 +54,7 @@ void CLogDataVector::ClearAll()
 //CLogDataVector Class
 int CLogDataVector::ParserFromLog(CTGitPath* path, DWORD count, DWORD infomask, CString* range)
 {
+	ATLASSERT(m_pLogCache);
 	// only enable --follow on files
 	if ((path == NULL || path->IsDirectory()) && (infomask & CGit::LOG_INFO_FOLLOW))
 		infomask = infomask ^ CGit::LOG_INFO_FOLLOW;
@@ -72,7 +73,7 @@ int CLogDataVector::ParserFromLog(CTGitPath* path, DWORD count, DWORD infomask, 
 	CString cmd = g_Git.GetLogCmd(gitrange, path, infomask, &filter);
 
 	if (!g_Git.CanParseRev(gitrange))
-		return 0;
+		return -1;
 
 	try
 	{
@@ -155,7 +156,6 @@ int CLogDataVector::ParserFromLog(CTGitPath* path, DWORD count, DWORD infomask, 
 			pNote = nullptr;
 		}
 
-		ASSERT(pRev->m_CommitHash == hash);
 		pRev->ParserFromCommit(&commit);
 		pRev->ParserParentFromCommit(&commit);
 		git_free_commit(&commit);
@@ -207,6 +207,7 @@ struct SortByParentDate
 
 int CLogDataVector::Fill(std::set<CGitHash>& hashes)
 {
+	ATLASSERT(m_pLogCache);
 	try
 	{
 		[] { git_init(); } ();
@@ -222,8 +223,6 @@ int CLogDataVector::Fill(std::set<CGitHash>& hashes)
 	for (auto it = hashes.begin(); it != hashes.end(); ++it)
 	{
 		CGitHash hash = *it;
-		GitRevLoglist* pRev = this->m_pLogCache->GetCacheData(hash);
-		ASSERT(pRev->m_CommitHash == hash);
 
 		GIT_COMMIT commit;
 		try
@@ -239,6 +238,8 @@ int CLogDataVector::Fill(std::set<CGitHash>& hashes)
 			MessageBox(nullptr, _T("Could not get commit \"") + hash.ToString() + _T("\".\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
 			return -1;
 		}
+
+		GitRevLoglist* pRev = this->m_pLogCache->GetCacheData(hash);
 
 		// right now this code is only used by TortoiseGitBlame,
 		// as such git notes are not needed to be loaded

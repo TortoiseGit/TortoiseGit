@@ -86,12 +86,6 @@ CLogCache::~CLogCache()
 	CloseDataHandles();
 }
 
-int CLogCache::AddCacheEntry(GitRevLoglist& Rev)
-{
-	this->m_HashMap[Rev.m_CommitHash] = Rev;
-	return 0;
-}
-
 GitRevLoglist* CLogCache::GetCacheData(CGitHash& hash)
 {
 	m_HashMap[hash].m_CommitHash=hash;

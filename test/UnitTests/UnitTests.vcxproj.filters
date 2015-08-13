@@ -122,6 +122,15 @@
     <ClInclude Include="..\..\src\TortoiseProc\UpdateDownloader.h">
       <Filter>TortoiseProc</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\TortoiseProc\lanes.h">
+      <Filter>TortoiseProc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\TortoiseProc\LogDlgHelper.h">
+      <Filter>TortoiseProc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\TortoiseProc\gitlogcache.h">
+      <Filter>TortoiseProc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -242,6 +251,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\TortoiseProc\UpdateCrypto.cpp">
+      <Filter>TortoiseProc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\TortoiseProc\LogDataVector.cpp">
+      <Filter>TortoiseProc</Filter>
+    </ClCompile>
+    <ClCompile Include="LogDataVectorTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\TortoiseProc\lanes.cpp">
+      <Filter>TortoiseProc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\TortoiseProc\GitLogCache.cpp">
       <Filter>TortoiseProc</Filter>
     </ClCompile>
   </ItemGroup>

@@ -172,7 +172,6 @@ public:
 	CGitHashMap m_HashMap;
 
 	GitRevLoglist* GetCacheData(CGitHash& hash);
-	int AddCacheEntry(GitRevLoglist& Rev);
 	int SaveCache();
 
 	int ClearAllParent();
