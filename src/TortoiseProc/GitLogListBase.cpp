@@ -2446,63 +2446,6 @@ void CGitLogListBase::DiffSelectedRevWithPrevious()
 	}
 
 	ContextMenuAction(ID_COMPAREWITHPREVIOUS,FirstSelect,LastSelect, NULL);
-
-#if 0
-	UpdateLogInfoLabel();
-	int selIndex = m_LogList.GetSelectionMark();
-	if (selIndex < 0)
-		return;
-	int selCount = m_LogList.GetSelectedCount();
-	if (selCount != 1)
-		return;
-
-	// Find selected entry in the log list
-	POSITION pos = m_LogList.GetFirstSelectedItemPosition();
-	PLOGENTRYDATA pLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.SafeGetAt(m_LogList.GetNextSelectedItem(pos)));
-	long rev1 = pLogEntry->Rev;
-	long rev2 = rev1-1;
-	CTGitPath path = m_path;
-
-	// See how many files under the relative root were changed in selected revision
-	int nChanged = 0;
-	LogChangedPath * changed = NULL;
-	for (INT_PTR c = 0; c < pLogEntry->pArChangedPaths->GetCount(); ++c)
-	{
-		LogChangedPath * cpath = pLogEntry->pArChangedPaths->SafeGetAt(c);
-		if (cpath  &&  cpath -> sPath.Left(m_sRelativeRoot.GetLength()).Compare(m_sRelativeRoot)==0)
-		{
-			++nChanged;
-			changed = cpath;
-		}
-	}
-
-	if (m_path.IsDirectory() && nChanged == 1)
-	{
-		// We're looking at the log for a directory and only one file under dir was changed in the revision
-		// Do diff on that file instead of whole directory
-		path.AppendPathString(changed->sPath.Mid(m_sRelativeRoot.GetLength()));
-	}
-
-	m_bCancelled = FALSE;
-	DialogEnableWindow(IDOK, FALSE);
-	SetPromptApp(&theApp);
-	theApp.DoWaitCursor(1);
-
-	if (PromptShown())
-	{
-		GitDiff diff(this, m_hWnd, true);
-		diff.SetAlternativeTool(!!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
-		diff.SetHEADPeg(m_LogRevision);
-		diff.ShowCompare(path, rev2, path, rev1);
-	}
-	else
-	{
-		CAppUtils::StartShowCompare(m_hWnd, path, rev2, path, rev1, GitRev(), m_LogRevision, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
-	}
-
-	theApp.DoWaitCursor(-1);
-	EnableOKButton();
-#endif
 }
 
 void CGitLogListBase::OnLvnOdfinditemLoglist(NMHDR *pNMHDR, LRESULT *pResult)
@@ -2686,7 +2629,7 @@ int CGitLogListBase::BeginFetchLog()
 	if (mask & CGit::LOG_INFO_FOLLOW)
 		mask &= ~CGit::LOG_INFO_ALL_BRANCH | CGit::LOG_INFO_LOCAL_BRANCHES;
 
-	CString cmd = g_Git.GetLogCmd(m_sRange, path, mask, true, &m_Filter);
+	CString cmd = g_Git.GetLogCmd(m_sRange, path, mask, &m_Filter);
 
 	//this->m_logEntries.ParserFromLog();
 	if(IsInWorkingThread())
@@ -2721,7 +2664,7 @@ int CGitLogListBase::BeginFetchLog()
 		if (list.size() == 0)
 			return 0;
 
-		cmd = g_Git.GetLogCmd(list[0], path, mask, true, &m_Filter);
+		cmd = g_Git.GetLogCmd(list[0], path, mask, &m_Filter);
 	}
 
 	g_Git.m_critGitDllSec.Lock();

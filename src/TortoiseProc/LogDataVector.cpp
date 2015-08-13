@@ -49,9 +49,6 @@ void CLogDataVector::ClearAll()
 	{
 		m_pLogCache->ClearAllLanes();
 	}
-
-	m_RawlogData.clear();
-	m_RawLogStart.clear();
 }
 
 //CLogDataVector Class
@@ -72,7 +69,7 @@ int CLogDataVector::ParserFromLog(CTGitPath* path, DWORD count, DWORD infomask, 
 		filter.m_NumberOfLogs = count;
 		filter.m_NumberOfLogsScale = CFilterData::SHOW_LAST_N_COMMITS;
 	}
-	CString cmd = g_Git.GetLogCmd(gitrange, path, infomask, true, &filter);
+	CString cmd = g_Git.GetLogCmd(gitrange, path, infomask, &filter);
 
 	if (!g_Git.CanParseRev(gitrange))
 		return 0;
@@ -259,27 +256,6 @@ int CLogDataVector::Fill(std::set<CGitHash>& hashes)
 		this->push_back(pRev->m_CommitHash);
 		m_HashMap[pRev->m_CommitHash] = (int)size() - 1;
 	}
-
-	return 0;
-}
-
-int AddTolist(unsigned char * /*osha1*/, unsigned char *nsha1, const char * /*name*/, unsigned long /*time*/, int /*sz*/, const char *msg, void *data)
-{
-	CLogDataVector *vector = (CLogDataVector*)data;
-	GitRevLoglist rev;
-	rev.m_CommitHash = (char*)nsha1;
-
-	CString one = CUnicodeUtils::GetUnicode(msg);
-
-	int message = one.Find(_T(":"), 0);
-	if (message > 0)
-	{
-		rev.m_RefAction = one.Left(message);
-		rev.GetSubject() = one.Mid(message + 1);
-	}
-
-	vector->m_pLogCache->m_HashMap[rev.m_CommitHash] = rev;
-	vector->insert(vector->begin(),rev.m_CommitHash);
 
 	return 0;
 }

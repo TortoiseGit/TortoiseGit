@@ -152,8 +152,6 @@ protected:
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	afx_msg void OnPaint();
 
-	void	DoDiffFromLog(INT_PTR selIndex, GitRev *rev1, GitRev *rev2, bool blame, bool unified);
-
 	void OnPasteGitHash();
 	void JumpToGitHash(CString& hash);
 
@@ -179,7 +177,6 @@ private:
 
 	void CopySelectionToClipBoard();
 	void CopyChangedSelectionToClipBoard();
-	CTGitPathList GetChangedPathsFromSelectedRevisions(bool bRelativePaths = false, bool bUseFilter = true);
 	void SortShownListArray();
 
 	void SetSortArrow(CListCtrl * control, int nColumn, bool bAscending);
@@ -190,7 +187,6 @@ private:
 	void SaveSplitterPos();
 	bool ValidateRegexp(LPCTSTR regexp_str, std::tr1::wregex& pat, bool bMatchCase);
 	void CheckRegexpTooltip();
-	void GetChangedPaths(std::vector<CString>& changedpaths, std::vector<LogChangedPath*>& changedlogpaths);
 	void SetDlgTitle();
 	CString GetAbsoluteUrlFromRelativeUrl(const CString& url);
 	void ShowGravatar();
@@ -243,10 +239,6 @@ private:
 	BOOL				m_bWalkBehavior;
 	bool				m_bNavigatingWithSelect;
 	bool				m_bAsteriskLogPrefix;
-
-	CTGitPathList	*   m_currentChangedArray;
-	LogChangedPathArray m_CurrentFilteredChangedArray;
-	CTGitPathList		m_currentChangedPathList;
 
 	bool				m_bFilterWithRegex;
 	bool				m_bFilterCaseSensitively;

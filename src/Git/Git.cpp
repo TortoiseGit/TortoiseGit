@@ -934,7 +934,7 @@ int CGit::BuildOutputFormat(CString &format,bool IsFull)
 	return 0;
 }
 
-CString CGit::GetLogCmd(const CString& range, const CTGitPath* path, int mask, bool paramonly,
+CString CGit::GetLogCmd(const CString& range, const CTGitPath* path, int mask,
 						CFilterData *Filter)
 {
 	CString cmd;
@@ -1064,15 +1064,8 @@ CString CGit::GetLogCmd(const CString& range, const CTGitPath* path, int mask, b
 	else if (logOrderBy == LOG_ORDER_DATEORDER)
 		param += _T(" --date-order");
 
-	if(paramonly) //tgit.dll.Git.cpp:setup_revisions() only looks at args[1] and greater.  To account for this, pass a dummy parameter in the 0th place
-		cmd.Format(_T("--ignore-this-parameter %s -z %s --parents "), (LPCTSTR)num, (LPCTSTR)param);
-	else
-	{
-		CString log;
-		BuildOutputFormat(log,!(mask&CGit::LOG_INFO_ONLY_HASH));
-		cmd.Format(_T("git.exe log %s -z %s --parents --pretty=format:\"%s\""),
-				(LPCTSTR)num, (LPCTSTR)param, (LPCTSTR)log);
-	}
+	// gitdll.dll:setup_revisions() only looks at args[1] and greater. To account for this, pass a dummy parameter in the 0th place
+	cmd.Format(_T("--ignore-this-parameter %s -z %s --parents "), (LPCTSTR)num, (LPCTSTR)param);
 
 	cmd += file;
 

@@ -40,7 +40,6 @@ IMPLEMENT_DYNAMIC(CLogDlg, CResizableStandAloneDialog)
 CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
 	: CResizableStandAloneDialog(CLogDlg::IDD, pParent)
 	, m_wParam(0)
-	, m_currentChangedArray(NULL)
 	, m_nSortColumn(0)
 	, m_bFollowRenames(false)
 	, m_bSelect(false)
@@ -105,9 +104,6 @@ CLogDlg::~CLogDlg()
 	m_regbShowLocalBranches = m_bShowLocalBranches;
 	m_regbShowRemoteBranches = m_bShowRemoteBranches;
 	m_regbShowGravatar = m_bShowGravatar;
-
-	m_CurrentFilteredChangedArray.RemoveAll();
-
 }
 
 void CLogDlg::DoDataExchange(CDataExchange* pDX)
@@ -730,7 +726,6 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 	// empty the changed files list
 	m_ChangedFileListCtrl.SetRedraw(FALSE);
 //	InterlockedExchange(&m_bNoDispUpdates, TRUE);
-	m_currentChangedArray = NULL;
 	m_ChangedFileListCtrl.DeleteAllItems();
 
 	// if we're not here to really show a selected revision, just
@@ -916,29 +911,12 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 		// the log message view must be emptied
 		// the changed files list contains all the changed paths from all
 		// selected revisions, with 'doubles' removed
-		m_currentChangedPathList = GetChangedPathsFromSelectedRevisions(true);
 		m_gravatar.LoadGravatar();
 	}
 
 	// redraw the views
 //	InterlockedExchange(&m_bNoDispUpdates, FALSE);
-#if 0
-	if (m_currentChangedArray)
-	{
-		m_ChangedFileListCtrl.SetItemCountEx(m_currentChangedArray->GetCount());
-		m_ChangedFileListCtrl.RedrawItems(0, m_currentChangedArray->GetCount());
-	}
-	else if (m_currentChangedPathList.GetCount())
-	{
-		m_ChangedFileListCtrl.SetItemCountEx(m_currentChangedPathList.GetCount());
-		m_ChangedFileListCtrl.RedrawItems(0, m_currentChangedPathList.GetCount());
-	}
-	else
-	{
-		m_ChangedFileListCtrl.SetItemCountEx(0);
-		m_ChangedFileListCtrl.Invalidate();
-	}
-#endif
+
 	// sort according to the settings
 	if (m_nSortColumnPathList > 0)
 		SetSortArrow(&m_ChangedFileListCtrl, m_nSortColumnPathList, m_bAscendingPathList);
@@ -1591,61 +1569,6 @@ void CLogDlg::OnOK()
 	CRegDWORD reg(_T("Software\\TortoiseGit\\ShowAllEntry"));
 	SaveSplitterPos();
 #endif
-}
-
-void CLogDlg::DoDiffFromLog(INT_PTR selIndex, GitRev* rev1, GitRev* rev2, bool /*blame*/, bool /*unified*/)
-{
-	DialogEnableWindow(IDOK, FALSE);
-//	SetPromptApp(&theApp);
-	theApp.DoWaitCursor(1);
-
-	CString temppath;
-	GetTempPath(temppath);
-
-	CString file1;
-	file1.Format(_T("%s%s_%s%s"),
-				(LPCTSTR)temppath,
-				(LPCTSTR)(*m_currentChangedArray)[selIndex].GetBaseFilename(),
-				(LPCTSTR)rev1->m_CommitHash.ToString().Left(g_Git.GetShortHASHLength()),
-				(LPCTSTR)(*m_currentChangedArray)[selIndex].GetFileExtension());
-
-	CString file2;
-	file2.Format(_T("%s\\%s_%s%s"),
-				(LPCTSTR)temppath,
-				(LPCTSTR)(*m_currentChangedArray)[selIndex].GetBaseFilename(),
-				(LPCTSTR)rev2->m_CommitHash.ToString().Left(g_Git.GetShortHASHLength()),
-				(LPCTSTR)(*m_currentChangedArray)[selIndex].GetFileExtension());
-
-	CString cmd;
-	CTGitPath &path = (CTGitPath &)(*m_currentChangedArray)[selIndex];
-
-	if (g_Git.GetOneFile(rev1->m_CommitHash.ToString(), path, file1))
-	{
-		CString out;
-		out.Format(IDS_STATUSLIST_CHECKOUTFILEFAILED, (LPCTSTR)path.GetGitPathString(), (LPCTSTR)rev1->m_CommitHash.ToString(), (LPCTSTR)file1);
-		CMessageBox::Show(nullptr, g_Git.GetGitLastErr(out, CGit::GIT_CMD_GETONEFILE), _T("TortoiseGit"), MB_OK);
-		theApp.DoWaitCursor(-1);
-		EnableOKButton();
-		return;
-	}
-	if (g_Git.GetOneFile(rev2->m_CommitHash.ToString(), path, file2))
-	{
-		CString out;
-		out.Format(IDS_STATUSLIST_CHECKOUTFILEFAILED, (LPCTSTR)path.GetGitPathString(), (LPCTSTR)rev2->m_CommitHash.ToString(), (LPCTSTR)file2);
-		CMessageBox::Show(nullptr, g_Git.GetGitLastErr(out, CGit::GIT_CMD_GETONEFILE), _T("TortoiseGit"), MB_OK);
-		theApp.DoWaitCursor(-1);
-		EnableOKButton();
-		return;
-	}
-
-	CAppUtils::DiffFlags flags;
-	CAppUtils::StartExtDiff(file1,file2,_T("A"),_T("B"),
-													g_Git.CombinePath(path), g_Git.CombinePath(path),
-													rev1->m_CommitHash.ToString(), rev2->m_CommitHash.ToString(),
-													flags);
-
-	theApp.DoWaitCursor(-1);
-	EnableOKButton();
 }
 
 void CLogDlg::OnPasteGitHash()
@@ -2694,50 +2617,6 @@ void CLogDlg::OnBnClickedJumpDown()
 	}
 
 	CMessageBox::ShowCheck(GetSafeHwnd(), IDS_PROC_LOG_JUMPNOTFOUND, IDS_APPNAME, 1, IDI_INFORMATION, IDS_OKBUTTON, 0, 0, _T("NoJumpNotFoundWarning"), IDS_MSGBOX_DONOTSHOWAGAIN);
-}
-
-CTGitPathList CLogDlg::GetChangedPathsFromSelectedRevisions(bool /*bRelativePaths*/ /* = false */, bool /*bUseFilter*/ /* = true */)
-{
-	CTGitPathList pathList;
-#if 0
-
-	if (m_sRepositoryRoot.IsEmpty() && (bRelativePaths == false))
-	{
-		m_sRepositoryRoot = GetRepositoryRoot(m_path);
-	}
-	if (m_sRepositoryRoot.IsEmpty() && (bRelativePaths == false))
-		return pathList;
-
-	POSITION pos = m_LogList.GetFirstSelectedItemPosition();
-	if (pos != NULL)
-	{
-		while (pos)
-		{
-			int nextpos = m_LogList.GetNextSelectedItem(pos);
-			if (nextpos >= m_arShownList.GetCount())
-				continue;
-			PLOGENTRYDATA pLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.SafeGetAt(nextpos));
-			LogChangedPathArray * cpatharray = pLogEntry->pArChangedPaths;
-			for (INT_PTR cpPathIndex = 0; cpPathIndex<cpatharray->GetCount(); ++cpPathIndex)
-			{
-				LogChangedPath * cpath = cpatharray->SafeGetAt(cpPathIndex);
-				if (cpath == NULL)
-					continue;
-				CTGitPath path;
-				if (!bRelativePaths)
-					path.SetFromGit(m_sRepositoryRoot);
-				path.AppendPathString(cpath->sPath);
-				if ((!bUseFilter)||
-					((m_cHidePaths.GetState() & 0x0003)!=BST_CHECKED)||
-					(cpath->sPath.Left(m_sRelativeRoot.GetLength()).Compare(m_sRelativeRoot)==0))
-					pathList.AddPath(path);
-
-			}
-		}
-	}
-	pathList.RemoveDuplicates();
-#endif
-	return pathList;
 }
 
 void CLogDlg::SortByColumn(int /*nSortColumn*/, bool /*bAscending*/)

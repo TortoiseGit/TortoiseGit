@@ -18,12 +18,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #pragma once
-#include "Git.h"
-#include "GitRevLoglist.h"
-#include "GitStatus.h"
-#include "ILogReceiver.h"
 #include "lanes.h"
-#include <set>
 #include "GitHash.h"
 #include "GitLogCache.h"
 class CLogDlg;
@@ -69,7 +64,6 @@ public:
 	int  Fill(std::set<CGitHash>& hashes);
 
 	int FetchFullInfo(int i);
-//	void AddFullInfo(
 
 	Lanes m_Lns;
 	int	 m_FirstFreeLane;
@@ -77,9 +71,6 @@ public:
 	void updateLanes(GitRevLoglist& c, Lanes& lns, CGitHash& sha);
 	void setLane(CGitHash& sha) ;
 	void append(CGitHash& sha, bool storeInVector);
-
-	BYTE_VECTOR		 m_RawlogData;
-	std::vector<int> m_RawLogStart;
 
 #if 0
 	/// Ascending date sorting.
