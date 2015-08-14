@@ -61,9 +61,9 @@ typedef void * GIT_COMMIT_LIST;
 
 struct GIT_COMMIT_AUTHOR
 {
-	char *Name;
+	const char* Name;
 	int	  NameSize;
-	char *Email;
+	const char* Email;
 	int	  EmailSize;
 	int	  Date;
 	int   TimeZone;
@@ -74,15 +74,15 @@ typedef struct GIT_COMMIT_DATA
 	GIT_HASH m_hash;
 	struct GIT_COMMIT_AUTHOR m_Author;
 	struct GIT_COMMIT_AUTHOR m_Committer;
-	char *	 m_Subject;
+	const char* m_Subject;
 	int		 m_SubjectSize;
-	char *	 m_Body;
+	const char* m_Body;
 	int		 m_BodySize;
 	void *   m_pGitCommit; /** internal used */
-	char *   m_Encode;
+	const char* m_Encode;
 	int		 m_EncodeSize;
 	int		 m_ignore;
-
+	const void* buffer;
 } GIT_COMMIT;
 
 /**
@@ -139,7 +139,7 @@ GITDLL_API int git_close_diff(GIT_DIFF diff);
 GITDLL_API int git_get_diff_file(GIT_DIFF diff,GIT_FILE file, int i,char **newname, char **oldname,  int *mode, int *IsBin, int *inc, int *dec);
 
 #define READ_TREE_RECURSIVE 1
-typedef int (*read_tree_fn_t)(const unsigned char *, const char *, int, const char *, unsigned int, int, void *);
+typedef int (*read_tree_fn_t)(const unsigned char*, struct strbuf*, const char*, unsigned int, int, void*);
 
 GITDLL_API int git_read_tree(GIT_HASH hash,read_tree_fn_t fn, void *context);
 

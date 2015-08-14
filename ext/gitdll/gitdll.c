@@ -83,7 +83,6 @@ static int convert_slash(char * path)
 int git_init()
 {
 	char path[MAX_PATH+1];
-	int ret;
 	size_t homesize;
 
 	_fmode = _O_BINARY;
@@ -103,19 +102,19 @@ int git_init()
 	git_extract_argv0_path(path);
 	reset_git_env();
 	g_prefix = setup_git_directory();
-	ret = git_config(git_default_config, NULL);
+	git_config(git_default_config, NULL);
 
 	if (!homesize)
 	{
 		_putenv_s("HOME","");/* clear home evironment to avoid affact third part software*/
 	}
 
-	return ret;
+	return 0;
 }
 
-static int git_parse_commit_author(struct GIT_COMMIT_AUTHOR *author, char *pbuff)
+static int git_parse_commit_author(struct GIT_COMMIT_AUTHOR* author, const char* pbuff)
 {
-	char *end;
+	const char* end;
 
 	author->Name=pbuff;
 	end=strchr(pbuff,'<');
@@ -149,8 +148,8 @@ static int git_parse_commit_author(struct GIT_COMMIT_AUTHOR *author, char *pbuff
 int git_parse_commit(GIT_COMMIT *commit)
 {
 	int ret = 0;
-	char *pbuf;
-	char *end;
+	const char* pbuf;
+	const char* end;
 	struct commit *p;
 
 	p= (struct commit *)commit->m_pGitCommit;
@@ -160,10 +159,10 @@ int git_parse_commit(GIT_COMMIT *commit)
 	commit->m_Encode = NULL;
 	commit->m_EncodeSize = 0;
 
-	if(p->buffer == NULL)
-		return -3;
+	get_commit_buffer(commit->m_pGitCommit, NULL);;
+	commit->buffer = detach_commit_buffer(commit->m_pGitCommit, NULL);
 
-	pbuf = p->buffer;
+	pbuf = commit->buffer;
 	while(pbuf)
 	{
 		if (strncmp(pbuf, "author", 6) == 0)
@@ -275,14 +274,19 @@ int git_free_commit(GIT_COMMIT *commit)
 	if( p->parents)
 		free_commit_list(p->parents);
 
-	if( p->buffer )
-	{
-		free(p->buffer);
-		p->buffer=NULL;
-		p->object.parsed=0;
-		p->parents=0;
-		p->tree=0;
-	}
+	if (p->tree)
+		free_tree_buffer(p->tree);
+
+#pragma warning(push)
+#pragma warning(disable: 4090)
+	if (commit->buffer)
+		free(commit->buffer);
+#pragma warning(pop)
+
+	p->object.parsed = 0;
+	p->parents = 0;
+	p->tree = 0;
+
 	memset(commit,0,sizeof(GIT_COMMIT));
 	return 0;
 }
@@ -366,9 +370,9 @@ int git_open_log(GIT_LOG * handle, char * arg)
 				struct commit* commit = (struct commit*)ob;
 				free_commit_list(commit->parents);
 				commit->parents = NULL;
+				if (commit->tree)
+					free_tree_buffer(commit->tree);
 				commit->tree = NULL;
-				free(commit->buffer);
-				commit->buffer = NULL;
 				ob->parsed = 0;
 			}
 		}
@@ -886,7 +890,7 @@ int git_for_each_reflog_ent(const char *ref, each_reflog_ent_fn fn, void *cb_dat
 	return for_each_reflog_ent(ref,fn,cb_data);
 }
 
-static int update_some(const unsigned char *sha1, const char *base, int baselen,
+static int update_some(const unsigned char* sha1, struct strbuf* base,
 		const char *pathname, unsigned mode, int stage, void *context)
 {
 	struct cache_entry *ce;
@@ -898,9 +902,9 @@ static int update_some(const unsigned char *sha1, const char *base, int baselen,
 		return READ_TREE_RECURSIVE;
 
 	hashcpy(ce->sha1, sha1);
-	memcpy(ce->name, base, baselen);
-	memcpy(ce->name + baselen, pathname, strlen(pathname));
-	ce->ce_flags = create_ce_flags((unsigned int)strlen(pathname) + baselen);
+	memcpy(ce->name, base->buf, base->len);
+	memcpy(ce->name + base->len, pathname, strlen(pathname));
+	ce->ce_flags = create_ce_flags((unsigned int)(strlen(pathname) + base->len));
 	ce->ce_mode = create_ce_mode(mode);
 
 	return 0;
@@ -1003,6 +1007,7 @@ int git_get_config(const char *key, char *buffer, int size)
 	char *local, *global, *globalxdg;
 	const char *home, *system;
 	struct config_buf buf;
+	struct git_config_source config_source = { 0 };
 
 	buf.buf=buffer;
 	buf.size=size;
@@ -1025,14 +1030,26 @@ int git_get_config(const char *key, char *buffer, int size)
 
 	local = git_pathdup("config");
 
-	if ( !buf.seen)
-		git_config_with_options(get_config, &buf, local, NULL, 1);
+	if (!buf.seen)
+	{
+		config_source.file = local;
+		git_config_with_options(get_config, &buf, &config_source, 1);
+	}
 	if (!buf.seen && global)
-		git_config_with_options(get_config, &buf, global, NULL, 1);
+	{
+		config_source.file = global;
+		git_config_with_options(get_config, &buf, &config_source, 1);
+	}
 	if (!buf.seen && globalxdg)
-		git_config_with_options(get_config, &buf, globalxdg, NULL, 1);
+	{
+		config_source.file = globalxdg;
+		git_config_with_options(get_config, &buf, &config_source, 1);
+	}
 	if (!buf.seen && system)
-		git_config_with_options(get_config, &buf, system, NULL, 1);
+	{
+		config_source.file = system;
+		git_config_with_options(get_config, &buf, &config_source, 1);
+	}
 
 	if(local)
 		free(local);
