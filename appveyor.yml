@@ -18,5 +18,7 @@ test_script:
 - set HOME=%USERPROFILE%
 - bin\Debug\bin\tests.exe
 - bin\Debug64\bin\tests.exe
-- msbuild "src\TortoiseGit.sln" /t:"test\UnitTests" /m /verbosity:minimal /p:Configuration=Debug /p:Platform=x64 /maxcpucount /p:PlatformToolset=v140_xp /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+- git submodule update --init -- ext/apr ext/apr-util ext/editorconfig ext/pcre
+- msbuild "src\TortoiseGit.sln" /t:"TGitCache" /t:"TortoiseGitBlame" /t:"TortoiseGitIDiff" /t:"TortoiseGitMerge" /t:"TortoiseGitPlink" /t:"TortoiseGitProc" /t:"TortoiseGitStub" /t:"TortoiseGitUDiff" /t:"TortoiseShell" /t:"SshAskPass" /t:"tgittouch" /m /verbosity:minimal /p:Configuration=Debug /p:Platform=x64 /maxcpucount /p:PlatformToolset=v120_xp /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+- msbuild "src\TortoiseGit.sln" /t:"test\UnitTests" /t:"TGitCache" /t:"TortoiseGitBlame" /t:"TortoiseGitIDiff" /t:"TortoiseGitMerge" /t:"TortoiseGitPlink" /t:"TortoiseGitProc" /t:"TortoiseGitStub" /t:"TortoiseGitUDiff" /t:"TortoiseShell" /t:"SshAskPass" /t:"tgittouch" /m /verbosity:minimal /p:Configuration=Debug /p:Platform=x64 /maxcpucount /p:PlatformToolset=v140_xp /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 - bin\Debug64\bin\tests.exe
