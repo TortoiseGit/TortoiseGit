@@ -881,43 +881,9 @@ int git_run_cmd(char *cmd, char *arg)
 	return -1;
 }
 
-int git_for_each_ref_in(const char * refname, each_ref_fn fn, void * data)
-{
-	int ret;
-	invalidate_ref_cache(NULL);
-	ret = for_each_ref_in(refname, fn, data);
-	free_all_pack();
-	return ret;
-}
-
-const char *git_resolve_ref(const char *ref, unsigned char *sha1, int reading, int *flag)
-{
-	invalidate_ref_cache(NULL);
-	return resolve_ref_unsafe(ref,sha1,reading, flag);
-}
 int git_for_each_reflog_ent(const char *ref, each_reflog_ent_fn fn, void *cb_data)
 {
 	return for_each_reflog_ent(ref,fn,cb_data);
-}
-
-int git_deref_tag(const unsigned char *tagsha1, GIT_HASH refhash)
-{
-	struct object *obj = NULL;
-	obj = parse_object(tagsha1);
-	if (!obj)
-		return -1;
-
-	if (obj->type == OBJ_TAG)
-	{
-			obj = deref_tag(obj, "", 0);
-			if (!obj)
-				return -1;
-
-			memcpy(refhash, obj->sha1, sizeof(GIT_HASH));
-			return 0;
-	}
-
-	return -1;
 }
 
 static int update_some(const unsigned char *sha1, const char *base, int baselen,
