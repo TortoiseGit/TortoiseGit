@@ -937,61 +937,48 @@ int CGit::BuildOutputFormat(CString &format,bool IsFull)
 CString CGit::GetLogCmd(const CString& range, const CTGitPath* path, int mask,
 						CFilterData *Filter)
 {
-	CString cmd;
-	CString num;
-	CString since;
-
-	CString file = _T(" --");
-
-	if(path)
-		file.Format(_T(" -- \"%s\""), (LPCTSTR)path->GetGitPathString());
-
 	CString param;
 
 	if(mask& LOG_INFO_STAT )
-		param += _T(" --numstat ");
+		param += _T(" --numstat");
 	if(mask& LOG_INFO_FILESTATE)
-		param += _T(" --raw ");
+		param += _T(" --raw");
 
 	if(mask& LOG_INFO_FULLHISTORY)
-		param += _T(" --full-history ");
+		param += _T(" --full-history");
 
 	if(mask& LOG_INFO_BOUNDARY)
-		param += _T(" --left-right --boundary ");
+		param += _T(" --left-right --boundary");
 
 	if(mask& CGit::LOG_INFO_ALL_BRANCH)
-		param += _T(" --all ");
+		param += _T(" --all");
 
 	if(mask & CGit::LOG_INFO_LOCAL_BRANCHES)
-		param += _T(" --branches ");
+		param += _T(" --branches");
 
 	if(mask& CGit::LOG_INFO_DETECT_COPYRENAME)
-		param += _T(" -C ");
+		param += _T(" -C");
 
 	if(mask& CGit::LOG_INFO_DETECT_RENAME )
-		param += _T(" -M ");
+		param += _T(" -M");
 
 	if(mask& CGit::LOG_INFO_FIRST_PARENT )
-		param += _T(" --first-parent ");
+		param += _T(" --first-parent");
 
 	if(mask& CGit::LOG_INFO_NO_MERGE )
-		param += _T(" --no-merges ");
+		param += _T(" --no-merges");
 
 	if(mask& CGit::LOG_INFO_FOLLOW)
-		param += _T(" --follow ");
+		param += _T(" --follow");
 
 	if(mask& CGit::LOG_INFO_SHOW_MERGEDFILE)
-		param += _T(" -c ");
+		param += _T(" -c");
 
 	if(mask& CGit::LOG_INFO_FULL_DIFF)
-		param += _T(" --full-diff ");
+		param += _T(" --full-diff");
 
 	if(mask& CGit::LOG_INFO_SIMPILFY_BY_DECORATION)
-		param += _T(" --simplify-by-decoration ");
-
-	param += range;
-
-	CString st1,st2;
+		param += _T(" --simplify-by-decoration");
 
 	if (Filter)
 	{
@@ -1015,22 +1002,25 @@ CString CGit::GetLogCmd(const CString& range, const CTGitPath* path, int mask,
 			}
 			Filter->m_From = (DWORD)time.GetTime() - (Filter->m_NumberOfLogs * substract);
 		}
+		CString st1;
 		if (Filter->m_NumberOfLogsScale == CFilterData::SHOW_LAST_N_COMMITS)
-			num.Format(_T("-n%ld"), Filter->m_NumberOfLogs);
+			st1.Format(_T(" -n%ld"), Filter->m_NumberOfLogs);
 		else if (Filter->m_NumberOfLogsScale >= CFilterData::SHOW_LAST_SEL_DATE  && Filter->m_From > 0)
-			st1.Format(_T(" --max-age=%I64u "), Filter->m_From);
+			st1.Format(_T(" --max-age=%I64u"), Filter->m_From);
 		param += st1;
 	}
 
 	if( Filter && (Filter->m_To != -1))
 	{
-		st2.Format(_T(" --min-age=%I64u "), Filter->m_To);
+		CString st2;
+		st2.Format(_T(" --min-age=%I64u"), Filter->m_To);
 		param += st2;
 	}
 
 	bool isgrep = false;
 	if( Filter && (!Filter->m_Author.IsEmpty()))
 	{
+		CString st1;
 		st1.Format(_T(" --author=\"%s\"" ), (LPCTSTR)Filter->m_Author);
 		param += st1;
 		isgrep = true;
@@ -1038,6 +1028,7 @@ CString CGit::GetLogCmd(const CString& range, const CTGitPath* path, int mask,
 
 	if( Filter && (!Filter->m_Committer.IsEmpty()))
 	{
+		CString st1;
 		st1.Format(_T(" --committer=\"%s\"" ), (LPCTSTR)Filter->m_Author);
 		param += st1;
 		isgrep = true;
@@ -1045,6 +1036,7 @@ CString CGit::GetLogCmd(const CString& range, const CTGitPath* path, int mask,
 
 	if( Filter && (!Filter->m_MessageFilter.IsEmpty()))
 	{
+		CString st1;
 		st1.Format(_T(" --grep=\"%s\"" ), (LPCTSTR)Filter->m_MessageFilter);
 		param += st1;
 		isgrep = true;
@@ -1053,9 +1045,9 @@ CString CGit::GetLogCmd(const CString& range, const CTGitPath* path, int mask,
 	if(Filter && isgrep)
 	{
 		if(!Filter->m_IsRegex)
-			param += _T(" --fixed-strings ");
+			param += _T(" --fixed-strings");
 
-		param += _T(" --regexp-ignore-case --extended-regexp ");
+		param += _T(" --regexp-ignore-case --extended-regexp");
 	}
 
 	DWORD logOrderBy = CRegDWORD(_T("Software\\TortoiseGit\\LogOrderBy"), LOG_ORDER_TOPOORDER);
@@ -1064,10 +1056,12 @@ CString CGit::GetLogCmd(const CString& range, const CTGitPath* path, int mask,
 	else if (logOrderBy == LOG_ORDER_DATEORDER)
 		param += _T(" --date-order");
 
+	CString cmd;
+	CString file;
+	if (path)
+		file.Format(_T(" \"%s\""), (LPCTSTR)path->GetGitPathString());
 	// gitdll.dll:setup_revisions() only looks at args[1] and greater. To account for this, pass a dummy parameter in the 0th place
-	cmd.Format(_T("--ignore-this-parameter %s -z %s --parents "), (LPCTSTR)num, (LPCTSTR)param);
-
-	cmd += file;
+	cmd.Format(_T("--ignore-this-parameter -z%s %s --parents --%s"), (LPCTSTR)param, (LPCTSTR)range, (LPCTSTR)file);
 
 	return cmd;
 }
