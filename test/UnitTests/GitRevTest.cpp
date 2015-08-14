@@ -32,7 +32,7 @@ class GitRevCBasicGitWithTestRepoBareFixture : public CBasicGitWithTestRepoBareF
 INSTANTIATE_TEST_CASE_P(GitRev, GitRevCBasicGitWithTestRepoFixture, testing::Values(LIBGIT, LIBGIT2, LIBGIT2_ALL));
 INSTANTIATE_TEST_CASE_P(GitRev, GitRevCBasicGitWithTestRepoBareFixture, testing::Values(LIBGIT, LIBGIT2, LIBGIT2_ALL));
 
-void GetRevParsingTests()
+static void GetRevParsingTests()
 {
 	GitRev rev;
 	EXPECT_TRUE(rev.m_CommitHash.IsEmpty());
