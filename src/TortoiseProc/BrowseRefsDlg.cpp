@@ -487,7 +487,7 @@ bool CBrowseRefsDlg::SelectRef(CString refName, bool bExactMatch)
 			refName = newRefName;
 		//else refName is not a valid ref. Try to select as good as possible.
 	}
-	if(_wcsnicmp(refName, L"refs/", 5) != 0)
+	if (_wcsnicmp(refName, L"refs", 4) != 0)
 		return false; // Not a ref name
 
 	CShadowTree& treeLeafHead=GetTreeNode(refName,NULL,false);
@@ -1454,6 +1454,14 @@ void CBrowseRefsDlg::OnLvnEndlabeleditListRefLeafs(NMHDR *pNMHDR, LRESULT *pResu
 		return;
 	}
 
+	CString selectedTreeRef;
+	HTREEITEM hTree = m_RefTreeCtrl.GetSelectedItem();
+	if (!hTree)
+	{
+		CShadowTree* pTree = (CShadowTree*)m_RefTreeCtrl.GetItemData(hTree);
+		selectedTreeRef = pTree->GetRefName();
+	}
+
 	CString origName = pTree->GetRefName().Mid(11);
 
 	CString newName;
@@ -1478,7 +1486,7 @@ void CBrowseRefsDlg::OnLvnEndlabeleditListRefLeafs(NMHDR *pNMHDR, LRESULT *pResu
 	//Do as if it failed to rename. Let Refresh() do the job.
 	//*pResult = TRUE;
 
-	Refresh(newName);
+	Refresh(selectedTreeRef);
 
 //	CString W_csPopup;W_csPopup.Format8(L"Ref: %s. New name: %s. With path: %s", pTree->GetRefName(), pDispInfo->item.pszText, newName);
 
