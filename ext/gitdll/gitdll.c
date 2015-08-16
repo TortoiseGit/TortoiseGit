@@ -159,7 +159,6 @@ int git_parse_commit(GIT_COMMIT *commit)
 	commit->m_Encode = NULL;
 	commit->m_EncodeSize = 0;
 
-	get_commit_buffer(commit->m_pGitCommit, NULL);;
 	commit->buffer = detach_commit_buffer(commit->m_pGitCommit, NULL);
 
 	pbuf = commit->buffer;
@@ -1100,6 +1099,7 @@ const wchar_t *wget_windows_home_directory(void)
 int get_set_config(const char *key, const char *value, CONFIG_TYPE type)
 {
 	char * config_exclusive_filename = NULL;
+	int ret;
 
 	switch(type)
 	{
@@ -1124,7 +1124,9 @@ int get_set_config(const char *key, const char *value, CONFIG_TYPE type)
 	if(!config_exclusive_filename)
 		return -1;
 
-	return git_config_set_multivar_in_file(config_exclusive_filename, key, value, NULL, 0);
+	ret = git_config_set_multivar_in_file(config_exclusive_filename, key, value, NULL, 0);
+	free(config_exclusive_filename);
+	return ret;
 }
 
 struct mailmap_info {
