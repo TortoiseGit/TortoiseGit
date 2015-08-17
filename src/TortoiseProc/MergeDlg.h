@@ -69,6 +69,7 @@ private:
 	int					m_nPopupPasteLastMessage;
 	int					m_nPopupRecentMessage;
 
+	void ReloadHistoryEntries();
 	afx_msg void OnBnClickedOk();
 	virtual void OnCancel();
 	afx_msg void OnDestroy();

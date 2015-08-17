@@ -1014,6 +1014,7 @@ void CCommitDlg::OnOK()
 			{
 				if (!m_sLogMessage.IsEmpty())
 				{
+					ReloadHistoryEntries();
 					m_History.AddEntry(m_sLogMessage);
 					m_History.Save();
 				}
@@ -1106,6 +1107,7 @@ void CCommitDlg::OnOK()
 
 	if (!m_sLogMessage.IsEmpty())
 	{
+		ReloadHistoryEntries();
 		m_History.AddEntry(m_sLogMessage);
 		m_History.Save();
 	}
@@ -1133,6 +1135,14 @@ void CCommitDlg::SaveSplitterPos()
 UINT CCommitDlg::StatusThreadEntry(LPVOID pVoid)
 {
 	return ((CCommitDlg*)pVoid)->StatusThread();
+}
+
+void CCommitDlg::ReloadHistoryEntries()
+{
+	CString reg;
+	reg.Format(_T("Software\\TortoiseGit\\History\\commit%s"), (LPCTSTR)m_ListCtrl.m_sUUID);
+	reg.Replace(_T(':'), _T('_'));
+	m_History.Load(reg, _T("logmsgs"));
 }
 
 UINT CCommitDlg::StatusThread()
@@ -1171,14 +1181,6 @@ UINT CCommitDlg::StatusThread()
 	DialogEnableWindow(IDC_CHECKMODIFIED, false);
 	DialogEnableWindow(IDC_CHECKFILES, false);
 	DialogEnableWindow(IDC_CHECKSUBMODULES, false);
-
-	if (m_History.IsEmpty())
-	{
-		CString reg;
-		reg.Format(_T("Software\\TortoiseGit\\History\\commit%s"), (LPCTSTR)m_ListCtrl.m_sUUID);
-		reg.Replace(_T(':'),_T('_'));
-		m_History.Load(reg, _T("logmsgs"));
-	}
 
 	CString dotGitPath;
 	GitAdminDir::GetAdminDirPath(g_Git.m_CurrentDir, dotGitPath);
@@ -1376,6 +1378,7 @@ void CCommitDlg::OnCancel()
 	}
 	if ((m_sLogTemplate.Compare(m_sLogMessage) != 0) && !m_sLogMessage.IsEmpty())
 	{
+		ReloadHistoryEntries();
 		m_History.AddEntry(m_sLogMessage);
 		m_History.Save();
 	}
@@ -1820,6 +1823,7 @@ void CCommitDlg::InsertMenuItems(CMenu& mPopup, int& nCmd)
 	m_nPopupPasteListCmd = nCmd++;
 	mPopup.AppendMenu(MF_STRING | MF_ENABLED, m_nPopupPasteListCmd, sMenuItemText);
 
+	ReloadHistoryEntries();
 	if (!m_History.IsEmpty())
 	{
 		sMenuItemText.LoadString(IDS_COMMITDLG_POPUP_PASTELASTMESSAGE);
@@ -1966,6 +1970,7 @@ void CCommitDlg::OnBnClickedHistory()
 		return;
 
 	CHistoryDlg historyDlg;
+	ReloadHistoryEntries();
 	historyDlg.SetHistory(m_History);
 	if (historyDlg.DoModal() != IDOK)
 		return;

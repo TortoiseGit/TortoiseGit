@@ -80,6 +80,10 @@ BEGIN_MESSAGE_MAP(CMergeDlg, CResizableStandAloneDialog)
 	ON_CBN_SELCHANGE(IDC_COMBO_STRATEGYOPTION, &CMergeDlg::OnCbnSelchangeComboStrategyoption)
 END_MESSAGE_MAP()
 
+void CMergeDlg::ReloadHistoryEntries()
+{
+	m_History.Load(_T("Software\\TortoiseGit\\History\\merge"), _T("logmsgs"));
+}
 
 BOOL CMergeDlg::OnInitDialog()
 {
@@ -125,8 +129,7 @@ BOOL CMergeDlg::OnInitDialog()
 		m_cLogMessage.SetAStyle(STYLE_DEFAULT, ::GetSysColor(COLOR_GRAYTEXT), ::GetSysColor(COLOR_BTNFACE));
 
 	m_History.SetMaxHistoryItems((LONG)CRegDWORD(_T("Software\\TortoiseGit\\MaxHistoryItems"), 25));
-	if (m_History.IsEmpty())
-		m_History.Load(_T("Software\\TortoiseGit\\History\\merge"), _T("logmsgs"));
+	ReloadHistoryEntries();
 
 	((CComboBox *)GetDlgItem(IDC_COMBO_MERGESTRATEGY))->AddString(_T("resolve"));
 	((CComboBox *)GetDlgItem(IDC_COMBO_MERGESTRATEGY))->AddString(_T("recursive"));
@@ -168,6 +171,7 @@ void CMergeDlg::OnBnClickedOk()
 
 	if (!m_strLogMesage.IsEmpty() && !m_bNoCommit)
 	{
+		ReloadHistoryEntries();
 		m_History.AddEntry(m_strLogMesage);
 		m_History.Save();
 	}
@@ -186,6 +190,7 @@ void CMergeDlg::OnCancel()
 	m_strLogMesage = m_cLogMessage.GetText();
 	if (m_strLogMesage != CString(this->m_pDefaultText) && !m_strLogMesage.IsEmpty() && !m_bNoCommit)
 	{
+		ReloadHistoryEntries();
 		m_History.AddEntry(m_strLogMesage);
 		m_History.Save();
 	}
@@ -201,6 +206,7 @@ void CMergeDlg::OnDestroy()
 // CSciEditContextMenuInterface
 void CMergeDlg::InsertMenuItems(CMenu& mPopup, int& nCmd)
 {
+	ReloadHistoryEntries();
 	//CString sMenuItemText(MAKEINTRESOURCE(IDS_COMMITDLG_POPUP_PASTEFILELIST));
 	if (m_History.GetCount() > 0)
 	{
