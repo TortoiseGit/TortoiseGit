@@ -391,12 +391,11 @@ int GitStatus::EnumDirStatus(const CString &gitdir, const CString &subpath, git_
 	CString lowcasepath = path;
 	lowcasepath.MakeLower();
 
-	CString onepath;
-	CString casepath;
 	for (auto it = filelist.cbegin(), itend = filelist.cend(); it != itend; ++it)
 	{
-		casepath = onepath = lowcasepath;
+		CString onepath(lowcasepath);
 		onepath += it->m_FileName;
+		CString casepath(path);
 		casepath += it->m_CaseFileName;
 
 		bool bIsDir = false;
