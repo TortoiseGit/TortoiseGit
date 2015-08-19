@@ -49,17 +49,20 @@ static CString GetExistingDirectoryForClone(CString path)
 	return path;
 }
 
-static void StorePuttyKey(const CString& repoRoot, const CString& keyFile)
+static void StorePuttyKey(const CString& repoRoot, const CString& remote, const CString& keyFile)
 {
 	CAutoRepository repo(repoRoot);
 	CAutoConfig config;
+	CString configName;
 	if (!repo)
 		goto error;
 
 	if (git_repository_config(config.GetPointer(), repo))
 		goto error;
 
-	if (git_config_set_string(config, "remote.origin.puttykeyfile", CUnicodeUtils::GetUTF8(keyFile)))
+	configName.Format(_T("remote.%s.puttykeyfile"), (LPCTSTR)remote);
+
+	if (git_config_set_string(config, CUnicodeUtils::GetUTF8(configName), CUnicodeUtils::GetUTF8(keyFile)))
 		goto error;
 
 	return;
@@ -185,7 +188,7 @@ bool CloneCommand::Execute()
 			// After cloning, change current directory to the cloned directory
 			g_Git.m_CurrentDir = dlg.m_Directory;
 			if (dlg.m_bAutoloadPuttyKeyFile) // do this here, since it might be needed for actions performed in Log
-				StorePuttyKey(dlg.m_Directory, dlg.m_strPuttyKeyFile);
+				StorePuttyKey(dlg.m_Directory, dlg.m_bOrigin && !dlg.m_strOrigin.IsEmpty() ? dlg.m_strOrigin : _T("origin"), dlg.m_strPuttyKeyFile);
 
 			postCmdList.push_back(PostCmd(IDI_LOG, IDS_MENULOG, [&]
 			{

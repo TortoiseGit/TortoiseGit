@@ -9,6 +9,7 @@ Released: unreleased
  * Fixed issue #2337: CommitDlg: recent commit messages list isn't updated after commit in other dialog windows
  * Fixed issue #2377: BrowseRefsDlg: Don't enter branch directory when renaming a branch
  * Fixed issue #2559: Paths may change to lowercase in explorer
+ * Fixed issue #2492: ssh key not used for new remote after clone
 
 = Release 1.8.15.0 =
 Released: 2015-08-02
