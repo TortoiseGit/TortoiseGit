@@ -352,7 +352,7 @@ int CTortoiseGitBlameData::FindNextLine(CGitHash& CommitHash, int line, bool bUp
 
 static int FindAsciiLower(const CStringA &str, const CStringA &find)
 {
-	if (find.GetLength() == 0)
+	if (find.IsEmpty())
 		return 0;
 
 	for (int i = 0; i < str.GetLength(); ++i)

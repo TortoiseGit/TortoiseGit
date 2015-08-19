@@ -53,7 +53,7 @@ END_MESSAGE_MAP()
 static CString Lf2Crlf(const CString& text)
 {
 	CString s;
-	if (text.GetLength() == 0)
+	if (text.IsEmpty())
 		return s;
 
 	TCHAR c = '\0';

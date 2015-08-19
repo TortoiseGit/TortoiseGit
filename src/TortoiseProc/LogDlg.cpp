@@ -2455,7 +2455,7 @@ void CLogDlg::OnBnClickedJumpUp()
 			found = data->ParentsCount() > 1;
 		else if (jumpType == JumpType_Parent1)
 		{
-			if (data->m_ParentHash.size() > 0)
+			if (!data->m_ParentHash.empty())
 				found = data->m_ParentHash[0] == hashValue;
 		}
 		else if (jumpType == JumpType_Parent2)
@@ -2533,7 +2533,7 @@ void CLogDlg::OnBnClickedJumpDown()
 			strValue = data->GetCommitterEmail();
 		else if (jumpType == JumpType_Parent1)
 		{
-			if (data->m_ParentHash.size() > 0)
+			if (!data->m_ParentHash.empty())
 				hashValue = data->m_ParentHash.at(0);
 			else
 				return;

@@ -2356,7 +2356,7 @@ int CAppUtils::SaveCommitUnicodeFile(const CString& filename, CString &message)
 				line = line.Left(start - oldStart);
 				++start; // move forward so we don't find the same char again
 			}
-			if (stripComments && (line.GetLength() >= 1 && line.GetAt(0) == '#') || (start < 0 && line.IsEmpty()))
+			if (stripComments && (!line.IsEmpty() && line.GetAt(0) == '#') || (start < 0 && line.IsEmpty()))
 				continue;
 			line.TrimRight(L" \r");
 			CStringA lineA = CUnicodeUtils::GetMulti(line + L"\n", cp);

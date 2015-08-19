@@ -233,7 +233,7 @@ void CCloneDlg::OnOK()
 		return;
 	}
 
-	if (m_bOrigin && m_strOrigin.GetLength() == 0 && !m_bSVN)
+	if (m_bOrigin && m_strOrigin.IsEmpty() && !m_bSVN)
 	{
 		ShowEditBalloon(IDC_EDIT_ORIGIN, IDS_B_T_NOTEMPTY, IDS_ERR_ERROR, TTI_ERROR);
 		m_bSaving = false;

@@ -105,9 +105,8 @@ bool DropCopyCommand::Execute()
 
 				CString path;
 				path=fullDropPath.GetGitPathString().Mid(ProjectTopDir.GetLength());
-				if(path.GetLength()>0)
-					if(path[0]==_T('\\') || path[0]==_T('/'))
-						path=path.Mid(1);
+				if (!path.IsEmpty() && (path[0] == _T('\\') || path[0] == _T('/')))
+					path = path.Mid(1);
 				cmd += path;
 				cmd +=_T('\"');
 

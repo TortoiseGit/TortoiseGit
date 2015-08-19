@@ -1095,9 +1095,8 @@ bool CGitIgnoreList::IsIgnore(CString str, const CString& projectroot, bool isDi
 {
 	str.Replace(_T('\\'),_T('/'));
 
-	if (str.GetLength()>0)
-		if (str[str.GetLength()-1] == _T('/'))
-			str = str.Left(str.GetLength() - 1);
+	if (!str.IsEmpty() && str[str.GetLength() - 1] == _T('/'))
+		str = str.Left(str.GetLength() - 1);
 
 	int ret;
 	ret = CheckIgnore(str, projectroot, isDir);
