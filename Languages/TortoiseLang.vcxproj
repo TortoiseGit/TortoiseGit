@@ -34,6 +34,8 @@
   <Import Project="$(SolutionDir)TortoiseGit.common.props" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
+    <OutDir Condition="'$(Platform)'=='Win32'">$(SolutionDir)..\bin\$(Configuration)\Languages\</OutDir>
+    <OutDir Condition="'$(Platform)'=='x64'">$(SolutionDir)..\bin\$(Configuration)64\Languages\</OutDir>
     <NMakeBuildCommandLine>build-lang.cmd "$(OutDir)"</NMakeBuildCommandLine>
     <NMakeReBuildCommandLine>build-lang.cmd "$(OutDir)"</NMakeReBuildCommandLine>
     <NMakeCleanCommandLine>build-lang.cmd "$(OutDir)" clean</NMakeCleanCommandLine>
