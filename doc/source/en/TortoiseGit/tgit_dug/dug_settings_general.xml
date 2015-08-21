@@ -341,6 +341,26 @@
 				</listitem>
 			</varlistentry>
 			<varlistentry>
+				<term>Display branch revision number</term>
+				<listitem>
+					<para>
+						Displays for every selected commit a so called "branch revision number" in the commit message field of the Log Dialog.
+						The branch revision number is calculated by calling <literal>git rev-list --count --first-parent [SHA1]</literal> and
+						represents the number of commits between the beginning of time and the selected commit.
+						This number is NOT guaranteed to be unique, especially if you alter the history (e.g., using rebase) or
+						use several branches at the same time. It can be seen "kinda unique" per branch in case you don't alter its history
+						(e.g. by rebasing, resetting) and only commit or merge other branches on it.
+						See <ulink url="https://gcc.gnu.org/ml/gcc/2015-08/msg00148.html">
+							<citetitle>https://gcc.gnu.org/ml/gcc/2015-08/msg00148.html</citetitle>
+						</ulink>
+						and
+						<ulink url="https://gitlab.com/tortoisegit/tortoisegit/merge_requests/1">
+							<citetitle>https://gitlab.com/tortoisegit/tortoisegit/merge_requests/1</citetitle>
+						</ulink> for more details.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
 				<term>Show describe in log</term>
 				<listitem>
 					<para>

@@ -88,6 +88,8 @@ private:
 	CRegDWORD			m_regDrawBranchesTagsOnRightSide;
 	BOOL				m_bShowDescribe;
 	CRegDWORD			m_regShowDescribe;
+	BOOL				m_bShowBranchRevNo;
+	CRegDWORD			m_regShowBranchRevNo;
 	int					m_DescribeStrategy;
 	CComboBox			m_cDescribeStrategy;
 	CRegDWORD			m_regDescribeStrategy;

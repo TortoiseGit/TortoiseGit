@@ -9,6 +9,7 @@ Released: unreleased
  * Fixed issue #2583: No overlay icon theme for Windows 10
  * Fixed issue #2578: Resolve Dialog <enter> should open "Edit conflicts"
  * Fixed issue #2590: Allow to resolve conflicts with TortoiseGitIDiff by clicking on select
+ * Added branch revision number for tracking of the source code version of a branch in automated builds using "git rev-list --count --first-parent"
 
 == Bug Fixes ==
  * TortoiseGitMerge highlights wrong line in case of file starts with LF+CRLF

@@ -2819,6 +2819,12 @@ bool CAppUtils::Push(const CString& selectLocalBranch)
 				}
 			}
 			progress.m_GitCmdList.push_back(cmd);
+
+			if (!dlg.m_bPushAllBranches && !!CRegDWORD(_T("Software\\TortoiseGit\\ShowBranchRevisionNumber"), FALSE))
+			{
+				cmd.Format(_T("git.exe rev-list --count --first-parent %s"), (LPCTSTR)dlg.m_BranchSourceName);
+				progress.m_GitCmdList.push_back(cmd);
+			}
 		}
 
 		CString superprojectRoot;
