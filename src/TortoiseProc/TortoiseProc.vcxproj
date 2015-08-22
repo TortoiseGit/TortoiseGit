@@ -693,6 +693,7 @@
     <Image Include="..\Resources\update1.ico" />
     <Image Include="..\Resources\warning-general.ico" />
     <Image Include="..\TortoiseUDiff\TortoiseUDiff.ico" />
+    <Image Include="..\Resources\library-win10.ico" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resources\bin167.avi" />

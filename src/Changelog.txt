@@ -3,6 +3,7 @@ Released: unreleased
 
 == Features ==
  * Updated libgit to version 2.5.0 
+ * Fixed issue #2563: No Windows 10-specific library icon
 
 == Bug Fixes ==
  * TortoiseGitMerge highlights wrong line in case of file starts with LF+CRLF

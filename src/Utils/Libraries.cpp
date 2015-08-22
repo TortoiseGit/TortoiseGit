@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2012, 2015 - TortoiseGit
 // Copyright (C) 2010-2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -23,6 +24,7 @@
 #include <initguid.h>
 #include <propkeydef.h>
 #include "SmartHandle.h"
+#include "SysInfo.h"
 
 #ifdef _WIN64
 // {DC9E616B-7611-461c-9D37-730FDD4CE278}
@@ -74,7 +76,7 @@ void EnsureGitLibrary(bool bCreate /* = true*/)
             PathCanonicalize(buf, (LPCTSTR)appDir);
             appDir = buf;
         }
-        path.Format(_T("%s%s,-%d"), (LPCTSTR)appDir, _T("TortoiseGitProc.exe"), IDI_LIBRARY);
+        path.Format(_T("%s%s,-%d"), (LPCTSTR)appDir, _T("TortoiseGitProc.exe"), SysInfo::Instance().IsWin10() ? IDI_LIBRARY_WIN10 : IDI_LIBRARY);
         pLibrary->SetIcon((LPCTSTR)path);
         pLibrary->Commit();
     }

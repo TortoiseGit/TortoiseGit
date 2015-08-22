@@ -37,6 +37,7 @@ public:
     bool            IsVistaOrLater() const {return (GetFullVersion() >= 0x0600);}
     bool            IsWin7() const {return (GetFullVersion() == 0x0601);}
     bool            IsWin7OrLater() const {return (GetFullVersion() >= 0x0601);}
+    bool            IsWin10() const { return (GetFullVersion() == 0xA00); }
 private:
     OSVERSIONINFOEX         inf;
 };
