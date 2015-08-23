@@ -1275,6 +1275,10 @@ TEST_P(CBasicGitWithTestRepoFixture, Config)
 		key.Format(_T("booltest.true%d"), i);
 		EXPECT_EQ(true, m_Git.GetConfigValueBool(key));
 	}
+	m_Git.SetConfigValue(_T("booltest.false1"), _T("0"));
+	EXPECT_EQ(false, m_Git.GetConfigValueBool(_T("booltest.false1")));
+	m_Git.SetConfigValue(_T("booltest.false2"), _T(""));
+	EXPECT_EQ(false, m_Git.GetConfigValueBool(_T("booltest.false2")));
 
 	EXPECT_EQ(0, m_Git.GetConfigValueInt32(_T("does-not-exist")));
 	EXPECT_EQ(15, m_Git.GetConfigValueInt32(_T("does-not-exist"), 15));
@@ -1294,6 +1298,10 @@ TEST_P(CBasicGitWithTestRepoFixture, Config)
 	EXPECT_EQ(0, m_Git.UnsetConfigValue(_T("core.bare")));
 	EXPECT_STREQ(_T("default"), m_Git.GetConfigValue(_T("core.bare"), _T("default")));
 	EXPECT_STREQ(_T("true"), m_Git.GetConfigValue(_T("core.ignorecase")));
+
+	CString gitConfig = m_Git.m_CurrentDir + L"\\.git\\config";
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)gitConfig, L"[booltest]\nistrue"));
+	EXPECT_EQ(true, m_Git.GetConfigValueBool(L"booltest.istrue"));
 }
 
 TEST_P(CBasicGitWithTestRepoFixture, GetWorkingTreeChanges)

@@ -609,7 +609,7 @@ CString CGit::GetUserEmail(void)
 	return GetConfigValue(L"user.email");
 }
 
-CString CGit::GetConfigValue(const CString& name, const CString& def)
+CString CGit::GetConfigValue(const CString& name, const CString& def, bool wantBool)
 {
 	CString configValue;
 	if(this->m_IsUseGitDLL)
@@ -642,7 +642,7 @@ CString CGit::GetConfigValue(const CString& name, const CString& def)
 	else
 	{
 		CString cmd;
-		cmd.Format(L"git.exe config %s", (LPCTSTR)name);
+		cmd.Format(L"git.exe config%s %s", wantBool ? _T(" --bool") : _T(""), (LPCTSTR)name);
 		if (Run(cmd, &configValue, nullptr, CP_UTF8))
 			return def;
 		if (configValue.IsEmpty())
@@ -653,7 +653,7 @@ CString CGit::GetConfigValue(const CString& name, const CString& def)
 
 bool CGit::GetConfigValueBool(const CString& name, const bool def)
 {
-	CString configValue = GetConfigValue(name, def ? _T("true") : _T("false"));
+	CString configValue = GetConfigValue(name, def ? _T("true") : _T("false"), true);
 	configValue.MakeLower();
 	configValue.Trim();
 	if(configValue == _T("true") || configValue == _T("on") || configValue == _T("yes") || StrToInt(configValue) != 0)
