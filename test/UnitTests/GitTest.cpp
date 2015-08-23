@@ -1265,7 +1265,7 @@ TEST_P(CBasicGitWithTestRepoFixture, Config)
 	m_Git.SetConfigValue(_T("booltest.true5"), _T("yEs"));
 	m_Git.SetConfigValue(_T("booltest.true6"), _T("true"));
 	m_Git.SetConfigValue(_T("booltest.true7"), _T("on"));
-	for (int i = 1; i <= 6; ++i)
+	for (int i = 1; i <= 7; ++i)
 	{
 		CString key;
 		key.Format(_T("booltest.true%d"), i);
