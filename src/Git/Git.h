@@ -255,9 +255,9 @@ public:
 	int GetGitEncode(TCHAR* configkey);
 
 	bool IsFastForward(const CString &from, const CString &to, CGitHash * commonAncestor = NULL);
-	CString GetConfigValue(const CString& name);
-	bool GetConfigValueBool(const CString& name);
-	int GetConfigValueInt32(const CString& name, int def = 0);
+	CString GetConfigValue(const CString& name, const CString& def = CString());
+	bool GetConfigValueBool(const CString& name, const bool def = false);
+	int GetConfigValueInt32(const CString& name, const int def = 0);
 
 	int SetConfigValue(const CString& key, const CString& value, CONFIG_TYPE type = CONFIG_LOCAL);
 	int UnsetConfigValue(const CString& key, CONFIG_TYPE type = CONFIG_LOCAL);

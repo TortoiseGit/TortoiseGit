@@ -609,7 +609,7 @@ CString CGit::GetUserEmail(void)
 	return GetConfigValue(L"user.email");
 }
 
-CString CGit::GetConfigValue(const CString& name)
+CString CGit::GetConfigValue(const CString& name, const CString& def)
 {
 	CString configValue;
 	if(this->m_IsUseGitDLL)
@@ -628,12 +628,12 @@ CString CGit::GetConfigValue(const CString& name)
 		try
 		{
 			if (git_get_config(key, CStrBufA(value, 4096), 4096))
-				return CString();
+				return def;
 		}
 		catch (const char *msg)
 		{
 			::MessageBox(NULL, _T("Could not get config.\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
-			return CString();
+			return def;
 		}
 
 		StringAppend(&configValue, (BYTE*)(LPCSTR)value);
@@ -643,16 +643,17 @@ CString CGit::GetConfigValue(const CString& name)
 	{
 		CString cmd;
 		cmd.Format(L"git.exe config %s", (LPCTSTR)name);
-		Run(cmd, &configValue, nullptr, CP_UTF8);
+		if (Run(cmd, &configValue, nullptr, CP_UTF8))
+			return def;
 		if (configValue.IsEmpty())
 			return configValue;
 		return configValue.Left(configValue.GetLength() - 1); // strip last newline character
 	}
 }
 
-bool CGit::GetConfigValueBool(const CString& name)
+bool CGit::GetConfigValueBool(const CString& name, const bool def)
 {
-	CString configValue = GetConfigValue(name);
+	CString configValue = GetConfigValue(name, def ? _T("true") : _T("false"));
 	configValue.MakeLower();
 	configValue.Trim();
 	if(configValue == _T("true") || configValue == _T("on") || configValue == _T("yes") || StrToInt(configValue) != 0)
@@ -661,7 +662,7 @@ bool CGit::GetConfigValueBool(const CString& name)
 		return false;
 }
 
-int CGit::GetConfigValueInt32(const CString& name, int def)
+int CGit::GetConfigValueInt32(const CString& name, const int def)
 {
 	CString configValue = GetConfigValue(name);
 	int value = def;

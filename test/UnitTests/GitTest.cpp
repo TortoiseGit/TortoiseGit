@@ -1237,14 +1237,18 @@ TEST_P(CBasicGitWithEmptyBareRepositoryFixture, GetBranchDescriptions)
 TEST_P(CBasicGitWithTestRepoFixture, Config)
 {
 	EXPECT_STREQ(_T(""), m_Git.GetConfigValue(_T("not-found")));
+	EXPECT_STREQ(_T("default"), m_Git.GetConfigValue(_T("not-found"), _T("default")));
 
 	EXPECT_STREQ(_T("false"), m_Git.GetConfigValue(_T("core.bare")));
+	EXPECT_STREQ(_T("false"), m_Git.GetConfigValue(_T("core.bare"), _T("default-value"))); // value exist, so default does not match
 	EXPECT_STREQ(_T("true"), m_Git.GetConfigValue(_T("core.ignorecase")));
 	EXPECT_STREQ(_T("0"), m_Git.GetConfigValue(_T("core.repositoryformatversion")));
 	EXPECT_STREQ(_T("https://example.com/git/testing"), m_Git.GetConfigValue(_T("remote.origin.url")));
 
 	EXPECT_EQ(false, m_Git.GetConfigValueBool(_T("not-found")));
+	EXPECT_EQ(true, m_Git.GetConfigValueBool(_T("not-found"), true));
 	EXPECT_EQ(false, m_Git.GetConfigValueBool(_T("core.bare")));
+	EXPECT_EQ(false, m_Git.GetConfigValueBool(_T("core.bare"), true)); // value exist, so default does not match
 	EXPECT_EQ(false, m_Git.GetConfigValueBool(_T("core.repositoryformatversion")));
 	EXPECT_EQ(false, m_Git.GetConfigValueBool(_T("remote.origin.url")));
 	EXPECT_EQ(true, m_Git.GetConfigValueBool(_T("core.ignorecase")));
@@ -1275,16 +1279,20 @@ TEST_P(CBasicGitWithTestRepoFixture, Config)
 	EXPECT_EQ(0, m_Git.GetConfigValueInt32(_T("does-not-exist")));
 	EXPECT_EQ(15, m_Git.GetConfigValueInt32(_T("does-not-exist"), 15));
 	EXPECT_EQ(0, m_Git.GetConfigValueInt32(_T("core.repositoryformatversion")));
+	EXPECT_EQ(0, m_Git.GetConfigValueInt32(_T("core.repositoryformatversion"), 42)); // value exist, so default should not be returned
 	EXPECT_EQ(1, m_Git.GetConfigValueInt32(_T("booltest.true1")));
 	EXPECT_EQ(100, m_Git.GetConfigValueInt32(_T("booltest.true2")));
 	EXPECT_EQ(-2, m_Git.GetConfigValueInt32(_T("booltest.true3")));
 	EXPECT_EQ(0, m_Git.GetConfigValueInt32(_T("booltest.true4")));
+	EXPECT_EQ(42, m_Git.GetConfigValueInt32(_T("booltest.true4"), 42));
+	EXPECT_EQ(0, m_Git.GetConfigValueInt32(_T("booltest.true8")));
+	EXPECT_EQ(42, m_Git.GetConfigValueInt32(_T("booltest.true8"), 42));
 
 	EXPECT_NE(0, m_Git.UnsetConfigValue(_T("does-not-exist")));
 	EXPECT_STREQ(_T("false"), m_Git.GetConfigValue(_T("core.bare")));
 	EXPECT_STREQ(_T("true"), m_Git.GetConfigValue(_T("core.ignorecase")));
 	EXPECT_EQ(0, m_Git.UnsetConfigValue(_T("core.bare")));
-	EXPECT_STREQ(_T(""), m_Git.GetConfigValue(_T("core.bare")));
+	EXPECT_STREQ(_T("default"), m_Git.GetConfigValue(_T("core.bare"), _T("default")));
 	EXPECT_STREQ(_T("true"), m_Git.GetConfigValue(_T("core.ignorecase")));
 }
 
