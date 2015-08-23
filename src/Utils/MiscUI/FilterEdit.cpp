@@ -312,6 +312,11 @@ HBRUSH CFilterEdit::CtlColor(CDC* pDC, UINT /*nCtlColor*/)
 	return NULL;
 }
 
+void CFilterEdit::ValidateAndRedraw()
+{
+	OnEnChange();
+}
+
 void CFilterEdit::Validate()
 {
 	if (m_pValidator)

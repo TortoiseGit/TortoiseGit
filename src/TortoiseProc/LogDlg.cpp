@@ -2111,6 +2111,7 @@ LRESULT CLogDlg::OnClickedInfoIcon(WPARAM wParam, LPARAM lParam)
 				m_LogList.m_bFilterWithRegex = m_bFilterWithRegex;
 				SetFilterCueText();
 				CheckRegexpTooltip();
+				m_cFilter.ValidateAndRedraw();
 			}
 			else if (selection == LOGFILTER_CASE)
 			{

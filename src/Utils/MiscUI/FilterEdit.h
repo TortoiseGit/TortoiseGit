@@ -105,6 +105,8 @@ public:
 	BOOL SetCueBanner(LPCWSTR lpcwText);
 
 	void SetValidator(IFilterEditValidator * pValidator) {m_pValidator = pValidator;}
+
+	void ValidateAndRedraw();
 protected:
 	virtual void	PreSubclassWindow( );
 	virtual BOOL	PreTranslateMessage( MSG* pMsg );
