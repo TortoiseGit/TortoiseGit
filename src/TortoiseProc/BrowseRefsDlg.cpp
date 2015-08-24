@@ -1458,8 +1458,8 @@ void CBrowseRefsDlg::OnLvnEndlabeleditListRefLeafs(NMHDR *pNMHDR, LRESULT *pResu
 	HTREEITEM hTree = m_RefTreeCtrl.GetSelectedItem();
 	if (!hTree)
 	{
-		CShadowTree* pTree = (CShadowTree*)m_RefTreeCtrl.GetItemData(hTree);
-		selectedTreeRef = pTree->GetRefName();
+		CShadowTree* pTree2 = (CShadowTree*)m_RefTreeCtrl.GetItemData(hTree);
+		selectedTreeRef = pTree2->GetRefName();
 	}
 
 	CString origName = pTree->GetRefName().Mid(11);
