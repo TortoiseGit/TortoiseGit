@@ -3542,8 +3542,7 @@ BEGIN
                             "The credential helper URL ""%s"" already exists.\nDo you want to overwrite it?"
     IDS_GITCREDENTIAL_SAVEHELPER 
                             "The credential helper was changed.\nDo you want to save now or discard changes?"
-    IDS_STATGRAPH_COMMITSBYAUTHORMOREX 
-                            "author (>= 0.5%)"
+    IDS_STATGRAPH_COMMITSBYAUTHORMOREX "author (>= 0.5%)"
     IDS_RESET_MIXED         "Mixed"
     IDS_RESET_HARD          "Hard"
 END
@@ -3707,13 +3706,13 @@ BEGIN
     IDS_ENCRYPT_NONE        "none"
     IDS_ENCRYPT_STARTTLS    "STARTTLS"
     IDS_ENCRYPT_SSL         "SSL/TLS"
-    IDS_SETTINGS_DELFILE    "Deleting file"
-    IDS_SETTINGS_DELCACHE   "Deleting cached data"
     IDS_COMMIT_MESSAGEONLY_TT 
                             "Allows to create an empty commit which only has a commit message and no files (cf. git commit --allow-empty)."
     IDS_DISABLEUPDATECHECKSBUTTON "Disable update checks"
     IDS_DISABLEUPDATECHECKS "Do you really want to disable automatic update checks for TortoiseGit?\r\n\r\nAutomatic update checks can be re-enabled in TortoiseGit settings on the General page."
+    IDS_SETTINGS_DELFILE    "Deleting file"
     IDS_REMINDMELATER       "&Remind me later"
+    IDS_SETTINGS_DELCACHE   "Deleting cached data"
     IDS_STATUSLIST_CONTEXT_SHELL "Shell"
     IDS_PREPAREDIFF         "Mark for comparison"
     IDS_PROC_RENAME         "Rename %s"
@@ -4102,8 +4101,7 @@ END
 STRINGTABLE
 BEGIN
     IDS_LOG_FILTER_BUGIDS   "Bug-IDs"
-    IDS_LOG_FILTER_CASESENSITIVE
-                            "Case-sensitive"
+    IDS_LOG_FILTER_CASESENSITIVE "Case-sensitive"
     IDS_LOG_FILTER_REGEX_TT "Regular expressions filter:\r\n.   : any character\r\nc+   : match character c one or more times\r\nc*   : match character c zero or more times\r\n^   : start of line\r\n$   : end of line\r\n(string){n} : match string n times\r\n(abcd)   : subexpression\r\n[aei0-9]   : match a,e,i and 0..9\r\n[^aei0-9] : anything but a,e,i and 0..9\r\n\r\n\\w   : matches a-z,A-Z,0-9 and _\r\n\\W   : any non-alphanumeric character\r\n\\d   : digits 0-9\r\n\\s   : whitespaces"
 END
 
@@ -4699,17 +4697,17 @@ BEGIN
     IDS_WARN_DELETE_ONE_FROM_INDEX 
                             "Do you really want to remove ""%s"" from the index?"
     IDS_REMOVEBUTTON        "&Remove"
+    IDS_LAST_N_WEEKS        "Last %s week(s)"
+    IDS_LAST_N_MONTHS       "Last %s month(s)"
+    IDS_LAST_N_YEARS        "Last %s year(s)"
     IDS_REBASE_BRANCH_UNCHANGED 
                             "The remote branch has not changed.\n\nOpen the rebase dialog anyway?"
+    IDS_LAST_N_COMMITS      "Last %s commit(s)"
     IDS_DEFAULT_NUMBER_OF_TT 
                             "The ""number of"" value for those ""Last N"" options.\nShould be > 0"
     IDS_DEFAULT_SCALE_TT    "The default limitation of log messages when you open Log Message dialog.\nNote: For showing all commits in Log Message dialog,\nyou can right click on ""FROM"" date control, then click ""No limitation"" item."
     IDS_NO_LIMIT            "No limitation"
     IDS_LAST_SEL_DATE       "Last selected date"
-    IDS_LAST_N_COMMITS      "Last %s commit(s)"
-    IDS_LAST_N_YEARS        "Last %s year(s)"
-    IDS_LAST_N_MONTHS       "Last %s month(s)"
-    IDS_LAST_N_WEEKS        "Last %s week(s)"
     IDS_REBASE_BRANCH_FF    "The fetched branch fast-forwards upon the current branch.\n\nMerge or open the rebase dialog anyway?"
     IDS_MERGEBUTTON         "&Merge"
     IDS_REBASEBUTTON        "&Rebase"
