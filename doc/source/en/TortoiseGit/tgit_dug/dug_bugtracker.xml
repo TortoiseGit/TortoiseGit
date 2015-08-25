@@ -327,7 +327,7 @@
 			program is beyond the scope of this manual. The interface definition
 			and sample programs can be obtained from the <literal>contrib</literal>
 			folder in the
-			<ulink url="https://code.google.com/p/tortoisegit/source/browse/#git%2Fcontrib%2Fissue-tracker-plugins">
+			<ulink url="https://gitlab.com/tortoisegit/tortoisegit/tree/master/contrib/issue-tracker-plugins">
 				<citetitle>TortoiseGit repository</citetitle>
 			</ulink>.
 			(<xref linkend="tgit-preface-source"/> explains how to access the repository).

@@ -29,11 +29,6 @@
 			</para>
 		</sect2>
 	</sect1>
-	<tip>
-		<para>
-			The latest version (with comments) of this FAQ/chapter is available <ulink url="https://code.google.com/p/tortoisegit/wiki/UsingPuTTY">here</ulink>.
-		</para>
-	</tip>
 	<sect1 id="tgit-ssh-faq">
 		<title>FAQ and examples section</title>
 		<para>
