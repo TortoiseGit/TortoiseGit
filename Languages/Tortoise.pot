@@ -5277,8 +5277,17 @@ msgstr ""
 msgid "ID:32782:V C +P"
 msgstr ""
 
+#. Accelerator Entry for Menu ID:32787; ''
 #. Accelerator Entry for Menu ID:32787; '&Find\tCtrl+F'
 msgid "ID:32787:V C +F"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:32789; ''
+msgid "ID:32789:VA  +N"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:32790; ''
+msgid "ID:32790:VA  +P"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32793; 'Arrange &vertical\tV'
