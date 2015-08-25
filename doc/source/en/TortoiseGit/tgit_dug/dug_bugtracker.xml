@@ -303,7 +303,7 @@
 		<para>
 			This issue tracker integration is not restricted to TortoiseGit; it can be used
 			with other clients (e.g. TortoiseSVN). For more information, read the full
-			<ulink url="https://tortoisegit.googlecode.com/git/doc/issuetrackers.txt">
+			<ulink url="https://gitlab.com/tortoisegit/tortoisegit/blob/master/doc/issuetrackers.txt">
 				<citetitle>Issue Tracker Integration Specification</citetitle>
 			</ulink>
 			in the TortoiseGit source repository.

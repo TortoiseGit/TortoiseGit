@@ -1,5 +1,7 @@
 Checklist (and a short version for the impatient):
 
+Please also see https://tortoisegit.org/contribute/!
+
 	Commits:
 
 	- make commits of (small) logical units
@@ -27,12 +29,16 @@ Checklist (and a short version for the impatient):
 	  to confirm that you agree to the Developer's Certificate of Origin
 
 	Submission:
-	
-	- open an issue on http://code.google.com/p/tortoisegit/ or go to an
+
+	- open an issue on https://tortoisegit.org/issues or go to an
 	  issue you want to fix. Then you have one of the following options:
 	  . attach a patch there
 	  . provide a link to a branch you want the maintainers to pull from
-	  . open a github pull request and put the link into the issue
+	  . open a GitLab merge request and put the link into the issue
+	  . open a GitHub pull request and put the link into the issue
+
+	For exisiting issues it is recommended to start commenting on the issue
+	in order to discuss possible solutions before starting coding.
 
 Longer version:
 
@@ -74,7 +80,7 @@ sending out, please make sure it cleanly applies to the "master"
 branch head.
 
 
-(1b) Create a pull request
+(1b) Create a merge/pull request
 
 Push your changes to a public repository. Use a brief branch name
 describing your changes.
@@ -84,7 +90,8 @@ which do not belong in a submission.  Make sure to review your patch
 after generating it, to ensure accuracy.
 
 There is no need to generate a "formal" pull request. The URL and
-branchname is necessary - or create a github pull request
+branchname is necessary - or create a GitLab merge request
+(https://gitlab.com/tortoisegit/tortoisegit/) or a GitHub pull request
 (https://github.com/TortoiseGit).
 
 
@@ -158,10 +165,12 @@ Here is an ideal patch flow for this project the current maintainer
 suggests to the contributors:
 
  (0) You come up with an itch.  You code it up.
+     For exisiting issues it is recommended to start commenting on the issue
+     in order to discuss possible solutions before starting coding.
 
- (1) Open an issue on http://code.google.com/p/tortoisegit/ or attach
+ (1) Open an issue on https://tortoisegit.org/issues or attach
      your changes to another already reported issue. Attach the patches
-     or provide a pull request (URL branch) there.
+     or provide a merge/pull request (URL branch) there.
 
  (2) You get comments and suggestions for improvements.  You may
      even get them in a "on top of your change" patch form.
