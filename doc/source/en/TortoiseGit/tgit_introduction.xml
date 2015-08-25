@@ -70,6 +70,14 @@
 			at code.google.com and put the source code online. 
 		</para>
 		<para>
+			At the end of 2011 Sven Strickroth joined the TortoiseGit project. Then, he became
+			the current maintainer few years later.
+		</para>
+		<para>
+			From August 2015, GoogleCode was shut down and the TortoiseGit project established their
+			website tortoisegit.org and migrated the main repository and issue tracker to GitLab.
+		</para>
+		<para>
 			As Git became more stable it attracted more and more users
 			who also started using TortoiseGit as their Git client.
 		</para>
