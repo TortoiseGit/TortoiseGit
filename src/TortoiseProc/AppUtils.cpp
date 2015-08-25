@@ -3218,6 +3218,8 @@ BOOL CAppUtils::Merge(const CString* commit, bool showStashPop)
 
 		if(dlg.m_bNoFF)
 			args += _T(" --no-ff");
+		else if (dlg.m_bFFonly)
+			args += _T(" --ff-only");
 
 		if(dlg.m_bSquash)
 			args += _T(" --squash");

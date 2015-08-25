@@ -4522,7 +4522,7 @@ msgid "Fast Forward"
 msgstr ""
 
 #. Resource IDs: (1484)
-msgid "Fast Forward o&nly"
+msgid "Fast Forward O&nly"
 msgstr ""
 
 #. Resource IDs: (1066)

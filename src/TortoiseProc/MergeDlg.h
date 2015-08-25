@@ -38,6 +38,7 @@ public:
 
 	BOOL m_bSquash;
 	BOOL m_bNoFF;
+	BOOL m_bFFonly;
 	BOOL m_bNoCommit;
 	BOOL m_bLog;
 	int m_nLog;
@@ -77,4 +78,5 @@ private:
 	afx_msg void OnBnClickedCheckMergeLog();
 	afx_msg void OnCbnSelchangeComboMergestrategy();
 	afx_msg void OnCbnSelchangeComboStrategyoption();
+	afx_msg void OnBnClickedCheckFFonlyOrNoFF();
 };
