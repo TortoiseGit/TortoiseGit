@@ -14,6 +14,10 @@
 
 #define WM_AGENT_CALLBACK (WM_APP + 4)
 
+#include <commctrl.h>
+#pragma comment(lib, "comctl32.lib")
+#pragma comment(linker, "\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
+
 struct agent_callback {
     void (*callback)(void *, void *, int);
     void *callback_ctx;
@@ -326,6 +330,7 @@ int main(int argc, char **argv)
     int use_subsystem = 0;
     unsigned long now, next, then;
 
+    InitCommonControls();
     sklist = NULL;
     skcount = sksize = 0;
     /*
