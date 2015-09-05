@@ -81,7 +81,7 @@ protected:
 	static HWND ListView;
 	static CString m_sDefaultPath;
 	TCHAR m_displayName[200];
-	LPITEMIDLIST m_root;
+	PCIDLIST_ABSOLUTE m_root;
 	static TCHAR m_CheckText[200];
 	static TCHAR m_CheckText2[200];
 	static bool m_DisableCheckbox2WhenCheckbox1IsChecked;
