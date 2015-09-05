@@ -422,15 +422,11 @@ msgstr ""
 msgid "&Branch:"
 msgstr ""
 
-#. Resource IDs: (1382)
-msgid "&Browse Dir"
-msgstr ""
-
 #. Resource IDs: (20013)
 msgid "&Browse repository"
 msgstr ""
 
-#. Resource IDs: (1001, 1009)
+#. Resource IDs: (1001, 1009, 1131, 1382)
 msgid "&Browse..."
 msgstr ""
 
@@ -2295,7 +2291,7 @@ msgid "Branch:"
 msgstr ""
 
 #. Resource IDs: (1383)
-msgid "Bro&wse"
+msgid "Bro&wse..."
 msgstr ""
 
 #. Resource IDs: (333)
@@ -3758,10 +3754,6 @@ msgstr ""
 
 #. Resource IDs: (345)
 msgid "Diffs two any commits"
-msgstr ""
-
-#. Resource IDs: (1131)
-msgid "Dir..."
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -10356,10 +10348,6 @@ msgstr ""
 #. Resource IDs: (1113)
 #, c-format
 msgid "Warning: \"%s\" will be permanently deleted. It can <ct=0x0000FF><b>NOT</b></ct> be recovered!\r\n\r\nDo you really want to continue?"
-msgstr ""
-
-#. Resource IDs: (1132)
-msgid "Web"
 msgstr ""
 
 #. Resource IDs: (65535)

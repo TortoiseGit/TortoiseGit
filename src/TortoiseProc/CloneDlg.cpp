@@ -171,7 +171,7 @@ BOOL CCloneDlg::OnInitDialog()
 		SHAutoComplete(window->m_hWnd, SHACF_FILESYSTEM);
 
 	this->m_BrowseUrl.AddEntry(CString(MAKEINTRESOURCE(IDS_PROC_CLONE_DIR)));
-	this->m_BrowseUrl.AddEntry(CString(MAKEINTRESOURCE(IDS_PROC_CLONE_WEB)));
+	this->m_BrowseUrl.AddEntry(CString(MAKEINTRESOURCE(IDS_REPOBROWSE_OPEN)));
 	m_BrowseUrl.SetCurrentEntry(m_regBrowseUrl);
 
 	m_PuttyKeyCombo.SetPathHistory(TRUE);
