@@ -34,6 +34,14 @@ CSettingsAdvanced::CSettingsAdvanced()
 	settings[i].type	= CSettingsAdvanced::SettingTypeNumber;
 	settings[i++].def.l	= 3;
 
+	settings[i].sName	= L"AutocompleteParseMaxSize";
+	settings[i].type	= CSettingsAdvanced::SettingTypeNumber;
+	settings[i++].def.l	= 300000L;
+
+	settings[i].sName	= L"AutocompleteParseUnversioned";
+	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
+	settings[i++].def.b	= false;
+
 	settings[i].sName	= L"AutocompleteRemovesExtensions";
 	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
 	settings[i++].def.b	= false;

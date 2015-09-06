@@ -25,6 +25,28 @@
             </listitem>
         </varlistentry>
         <varlistentry>
+            <term condition="pot">AutocompleteParseMaxSize</term>
+            <listitem>
+                <para>
+                    The auto-completion list shown in the commit message editor
+                    can parse source code files and displays methods and variable names.
+                    This limits files to be parsed by their size in bytes. The default value
+                    is <literal>300000</literal>.
+                </para>
+            </listitem>
+        </varlistentry>
+        <varlistentry>
+            <term condition="pot">AutocompleteParseUnversioned</term>
+            <listitem>
+                <para>
+                    The auto-completion list shown in the commit message editor
+                    can parse source code files and displays methods and variable names.
+                    By default only versioned files are parsed. Set this value
+                    to <literal>true</literal> in order to also parse unversioned files.
+                </para>
+            </listitem>
+        </varlistentry>
+        <varlistentry>
             <term condition="pot">AutocompleteRemovesExtensions</term>
             <listitem>
                 <para>
