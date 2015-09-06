@@ -34,9 +34,9 @@
   <Import Project="$(SolutionDir)TortoiseGit.common.props" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <NMakeBuildCommandLine>build-lang.cmd $(OutDir)</NMakeBuildCommandLine>
-    <NMakeReBuildCommandLine>build-lang.cmd $(OutDir)</NMakeReBuildCommandLine>
-    <NMakeCleanCommandLine>build-lang.cmd $(OutDir) clean</NMakeCleanCommandLine>
+    <NMakeBuildCommandLine>build-lang.cmd "$(OutDir)"</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>build-lang.cmd "$(OutDir)"</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>build-lang.cmd "$(OutDir)" clean</NMakeCleanCommandLine>
   </PropertyGroup>
   <ItemDefinitionGroup>
   </ItemDefinitionGroup>
