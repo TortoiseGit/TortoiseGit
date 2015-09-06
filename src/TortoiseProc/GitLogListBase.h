@@ -469,7 +469,6 @@ public:
 
 public:
 	CString				m_ColumnRegKey;
-	CComCriticalSection	m_critSec_AsyncDiff;
 
 protected:
 	typedef struct {

@@ -765,10 +765,11 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 			m_ChangedFileListCtrl.SetRedraw(TRUE);
 			return;
 		}
-		Locker lock(m_LogList.m_critSec_AsyncDiff);
 		GitRevLoglist* pLogEntry = reinterpret_cast<GitRevLoglist*>(m_LogList.m_arShownList.SafeGetAt(selIndex));
 
 		{
+			m_gravatar.LoadGravatar(pLogEntry->GetAuthorEmail());
+
 			CString out_describe;
 			if (m_bShowDescribe)
 			{
@@ -829,6 +830,14 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 			range.cpMax = 0;
 			pMsgView->SendMessage(EM_EXSETSEL, NULL, (LPARAM)&range);
 
+			if (!pLogEntry->m_IsDiffFiles)
+			{
+				m_ChangedFileListCtrl.SetBusyString(CString(MAKEINTRESOURCE(IDS_PROC_LOG_FETCHINGFILES)));
+				m_ChangedFileListCtrl.SetBusy(TRUE);
+				m_ChangedFileListCtrl.SetRedraw(TRUE);
+				return;
+			}
+
 			CString matchpath=this->m_path.GetGitPathString();
 
 			CTGitPathList& files = pLogEntry->GetFiles(&m_LogList);
@@ -882,7 +891,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 					pLogEntry->GetAction(&m_LogList) |= CTGitPath::LOGACTIONS_HIDE;
 			}
 
-			m_ChangedFileListCtrl.UpdateWithGitPathList(pLogEntry->GetFiles(&m_LogList));
+			m_ChangedFileListCtrl.UpdateWithGitPathList(files);
 			m_ChangedFileListCtrl.m_CurrentVersion=pLogEntry->m_CommitHash;
 			if (pLogEntry->m_CommitHash.IsEmpty() && m_bShowUnversioned)
 			{
@@ -892,15 +901,9 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 			else
 				m_ChangedFileListCtrl.Show(GITSLC_SHOWVERSIONED);
 
-			m_ChangedFileListCtrl.SetBusyString(CString(MAKEINTRESOURCE(IDS_PROC_LOG_FETCHINGFILES)));
-
-			if(!pLogEntry->m_IsDiffFiles)
-				m_ChangedFileListCtrl.SetBusy(TRUE);
-			else
-				m_ChangedFileListCtrl.SetBusy(FALSE);
+			m_ChangedFileListCtrl.SetBusy(FALSE);
 
 			m_ChangedFileListCtrl.SetRedraw(TRUE);
-			m_gravatar.LoadGravatar(pLogEntry->GetAuthorEmail());
 			return;
 		}
 

@@ -81,7 +81,6 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	m_IsIDReplaceAction=FALSE;
 
 	this->m_critSec.Init();
-	m_critSec_AsyncDiff.Init();
 	ResetWcRev(false);
 
 	m_hModifiedIcon	= (HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_ACTIONMODIFIED), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE);
@@ -216,10 +215,7 @@ int CGitLogListBase::AsyncDiffThread()
 				this->GetParent()->PostMessage(WM_COMMAND, MSG_FETCHED_DIFF, 0);
 			}
 
-			m_critSec_AsyncDiff.Lock();
-			int ret = pRev->CheckAndDiff();
-			m_critSec_AsyncDiff.Unlock();
-			if (!ret)
+			if (!pRev->CheckAndDiff())
 			{	// fetch change file list
 				for (int i = GetTopIndex(); !m_AsyncThreadExit && i <= GetTopIndex() + GetCountPerPage(); ++i)
 				{
