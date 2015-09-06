@@ -3619,17 +3619,18 @@ int CAppUtils::Git2CertificateCheck(git_cert* base_cert, int /*valid*/, const ch
 	return GIT_ECERTIFICATE;
 }
 
-void CAppUtils::ExploreTo(HWND hwnd, CString path)
+int CAppUtils::ExploreTo(HWND hwnd, CString path)
 {
 	if (PathFileExists(path))
 	{
+		HRESULT ret = -1;
 		ITEMIDLIST __unaligned * pidl = ILCreateFromPath(path);
 		if (pidl)
 		{
-			SHOpenFolderAndSelectItems(pidl, 0, 0, 0);
+			ret = SHOpenFolderAndSelectItems(pidl, 0, 0, 0);
 			ILFree(pidl);
 		}
-		return;
+		return SUCCEEDED(ret) ? 0 : -1;
 	}
 	// if filepath does not exist any more, navigate to closest matching folder
 	do
@@ -3639,7 +3640,7 @@ void CAppUtils::ExploreTo(HWND hwnd, CString path)
 			break;
 		path = path.Left(pos);
 	} while (!PathFileExists(path));
-	ShellExecute(hwnd, _T("explore"), path, nullptr, nullptr, SW_SHOW);
+	return (int)ShellExecute(hwnd, _T("explore"), path, nullptr, nullptr, SW_SHOW) > 32 ? 0 : -1;
 }
 
 int CAppUtils::ResolveConflict(CTGitPath& path, resolve_with resolveWith)
