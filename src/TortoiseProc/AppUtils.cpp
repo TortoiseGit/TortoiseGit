@@ -2520,6 +2520,7 @@ bool CAppUtils::RebaseAfterFetch(const CString& upstream)
 		if (!upstream.IsEmpty())
 			dlg.m_Upstream = upstream;
 		dlg.m_PostButtonTexts.Add(CString(MAKEINTRESOURCE(IDS_MENULOG)));
+		dlg.m_PostButtonTexts.Add(CString(MAKEINTRESOURCE(IDS_MENUPUSH)));
 		dlg.m_PostButtonTexts.Add(CString(MAKEINTRESOURCE(IDS_MENUDESSENDMAIL)));
 		dlg.m_PostButtonTexts.Add(CString(MAKEINTRESOURCE(IDS_MENUREBASE)));
 		INT_PTR response = dlg.DoModal();
@@ -2535,6 +2536,8 @@ bool CAppUtils::RebaseAfterFetch(const CString& upstream)
 			return true;
 		}
 		else if (response == IDC_REBASE_POST_BUTTON + 1)
+			return Push();
+		else if (response == IDC_REBASE_POST_BUTTON + 2)
 		{
 			CString cmd, out, err;
 			cmd.Format(_T("git.exe format-patch -o \"%s\" %s..%s"),
@@ -2549,7 +2552,7 @@ bool CAppUtils::RebaseAfterFetch(const CString& upstream)
 			CAppUtils::SendPatchMail(cmd, out);
 			return true;
 		}
-		else if (response == IDC_REBASE_POST_BUTTON + 2)
+		else if (response == IDC_REBASE_POST_BUTTON + 3)
 			continue;
 		else if (response == IDCANCEL)
 			return false;

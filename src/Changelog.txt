@@ -5,6 +5,7 @@ Released: unreleased
  * Updated libgit to version 2.5.0 
  * Fixed issue #2563: No Windows 10-specific library icon
  * Fixed issue #2568: Add Fast Forward Only option to the merge dialog (--ff-only)
+ * Fixed issue #2579: Add option to retry push after failed push followed by rebase
 
 == Bug Fixes ==
  * TortoiseGitMerge highlights wrong line in case of file starts with LF+CRLF
