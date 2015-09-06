@@ -218,7 +218,7 @@ public:
 
 	static int Git2CertificateCheck(git_cert *cert, int valid, const char* host, void *payload);
 
-	static void ExploreTo(HWND hwnd, CString path);
+	static int ExploreTo(HWND hwnd, CString path);
 
 	enum resolve_with {
 		RESOLVE_WITH_CURRENT,

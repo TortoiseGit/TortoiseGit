@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2012 - TortoiseSVN
+// Copyright (C) 2003-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -38,9 +38,9 @@ CBrowseFolder::CBrowseFolder(void)
 :	m_style(0),
 	m_root(NULL)
 {
-	memset(m_displayName, 0, sizeof(m_displayName));
-	memset(m_title, 0, sizeof(m_title));
-	memset(m_CheckText, 0, sizeof(m_CheckText));
+	SecureZeroMemory(m_displayName, sizeof(m_displayName));
+	SecureZeroMemory(m_title, sizeof(m_title));
+	SecureZeroMemory(m_CheckText, sizeof(m_CheckText));
 }
 
 CBrowseFolder::~CBrowseFolder(void)
@@ -65,6 +65,19 @@ CBrowseFolder::retVal CBrowseFolder::Show(HWND parent, CString& path, const CStr
 	m_sDefaultPath = sDefaultPath;
 	if (m_sDefaultPath.IsEmpty() && !path.IsEmpty())
 	{
+		while (!PathFileExists(path) && !path.IsEmpty())
+		{
+			CString p = path.Left(path.ReverseFind(L'\\'));
+			if ((p.GetLength() == 2) && (p[1] == L':'))
+			{
+				p += L"\\";
+				if (p.Compare(path) == 0)
+					p.Empty();
+			}
+			if (p.GetLength() < 2)
+				p.Empty();
+			path = p;
+		}
 		// if the result path already contains a path, use that as the default path
 		m_sDefaultPath = path;
 	}
@@ -174,11 +187,7 @@ CBrowseFolder::retVal CBrowseFolder::Show(HWND parent, CString& path, const CStr
 		browseInfo.lpszTitle		= m_title;
 		browseInfo.ulFlags			= m_style;
 		browseInfo.lParam			= (LPARAM)this;
-
-		if ((_tcslen(m_CheckText) > 0)||(!m_sDefaultPath.IsEmpty()))
-		{
-			browseInfo.lpfn = BrowseCallBackProc;
-		}
+		browseInfo.lpfn				= BrowseCallBackProc;
 
 		PCIDLIST_ABSOLUTE itemIDList = SHBrowseForFolder(&browseInfo);
 
@@ -205,7 +214,7 @@ void CBrowseFolder::SetInfo(LPCTSTR title)
 	ASSERT(title);
 
 	if (title)
-		_tcscpy_s(m_title, 200, title);
+		_tcscpy_s(m_title, title);
 }
 
 void CBrowseFolder::SetCheckBoxText(LPCTSTR checktext)
@@ -213,7 +222,7 @@ void CBrowseFolder::SetCheckBoxText(LPCTSTR checktext)
 	ASSERT(checktext);
 
 	if (checktext)
-		_tcscpy_s(m_CheckText, 200, checktext);
+		_tcscpy_s(m_CheckText, checktext);
 }
 
 void CBrowseFolder::SetCheckBoxText2(LPCTSTR checktext)
@@ -221,7 +230,7 @@ void CBrowseFolder::SetCheckBoxText2(LPCTSTR checktext)
 	ASSERT(checktext);
 
 	if (checktext)
-		_tcscpy_s(m_CheckText2, 200, checktext);
+		_tcscpy_s(m_CheckText2, checktext);
 }
 
 void CBrowseFolder::SetFont(HWND hwnd,LPTSTR FontName,int FontSize)
@@ -244,13 +253,12 @@ void CBrowseFolder::SetFont(HWND hwnd,LPTSTR FontName,int FontSize)
 
 int CBrowseFolder::BrowseCallBackProc(HWND hwnd, UINT uMsg, LPARAM lParam, LPARAM /*lpData*/)
 {
-	RECT ListViewRect,Dialog;
 	//Initialization callback message
 	if (uMsg == BFFM_INITIALIZED)
 	{
-		if (_tcslen(m_CheckText) > 0)
+		if (m_CheckText[0] != 0)
 		{
-			bool bSecondCheckbox = (_tcslen(m_CheckText2)!=0);
+			bool bSecondCheckbox = (m_CheckText2[0] != 0);
 			//Rectangles for getting the positions
 			checkbox = CreateWindowEx(	0,
 				_T("BUTTON"),
@@ -288,37 +296,38 @@ int CBrowseFolder::BrowseCallBackProc(HWND hwnd, UINT uMsg, LPARAM lParam, LPARA
 				return 0;
 
 			//Gets the dimensions of the windows
-			GetWindowRect(hwnd,&Dialog);
-			GetWindowRect(ListView,&ListViewRect);
+			const int controlHeight = ::GetSystemMetrics(SM_CYMENUCHECK) + 4;
+			RECT listViewRect;
+			GetWindowRect(ListView, &listViewRect);
 			POINT pt;
-			pt.x = ListViewRect.left;
-			pt.y = ListViewRect.top;
+			pt.x = listViewRect.left;
+			pt.y = listViewRect.top;
 			ScreenToClient(hwnd, &pt);
-			ListViewRect.top = pt.y;
-			ListViewRect.left = pt.x;
-			pt.x = ListViewRect.right;
-			pt.y = ListViewRect.bottom;
+			listViewRect.top = pt.y;
+			listViewRect.left = pt.x;
+			pt.x = listViewRect.right;
+			pt.y = listViewRect.bottom;
 			ScreenToClient(hwnd, &pt);
-			ListViewRect.bottom = pt.y;
-			ListViewRect.right = pt.x;
+			listViewRect.bottom = pt.y;
+			listViewRect.right = pt.x;
 			//Sets the list view controls dimensions
-			SetWindowPos(ListView,0,ListViewRect.left,
-				bSecondCheckbox ? ListViewRect.top+40 : ListViewRect.top+20,
-				(ListViewRect.right-ListViewRect.left),
-				bSecondCheckbox ? (ListViewRect.bottom - ListViewRect.top)-40 : (ListViewRect.bottom - ListViewRect.top)-20,
+			SetWindowPos(ListView, 0, listViewRect.left,
+				bSecondCheckbox ? listViewRect.top + (2 * controlHeight) : listViewRect.top + controlHeight,
+				(listViewRect.right - listViewRect.left),
+				bSecondCheckbox ? (listViewRect.bottom - listViewRect.top) - (2 * controlHeight) : (listViewRect.bottom - listViewRect.top) - controlHeight,
 				SWP_NOZORDER);
 			//Sets the window positions of checkbox and dialog controls
-			SetWindowPos(checkbox,HWND_BOTTOM,ListViewRect.left,
-				ListViewRect.top,
-				(ListViewRect.right-ListViewRect.left),
-				14,
+			SetWindowPos(checkbox, HWND_BOTTOM, listViewRect.left,
+				listViewRect.top,
+				(listViewRect.right - listViewRect.left),
+				controlHeight,
 				SWP_NOZORDER);
 			if (bSecondCheckbox)
 			{
-				SetWindowPos(checkbox2,HWND_BOTTOM,ListViewRect.left,
-					ListViewRect.top+20,
-					(ListViewRect.right-ListViewRect.left),
-					14,
+				SetWindowPos(checkbox2, HWND_BOTTOM, listViewRect.left,
+					listViewRect.top + controlHeight,
+					(listViewRect.right - listViewRect.left),
+					controlHeight,
 					SWP_NOZORDER);
 			}
 			HWND label = FindWindowEx(hwnd, NULL, _T("STATIC"), NULL);
@@ -351,7 +360,7 @@ int CBrowseFolder::BrowseCallBackProc(HWND hwnd, UINT uMsg, LPARAM lParam, LPARA
 			}
 			// send a resize message to the resized list view control. Otherwise it won't show
 			// up properly until the user resizes the window!
-			SendMessage(ListView, WM_SIZE, SIZE_RESTORED, MAKELONG(ListViewRect.right-ListViewRect.left, bSecondCheckbox ? (ListViewRect.bottom - ListViewRect.top)-40 : (ListViewRect.bottom - ListViewRect.top)-20));
+			SendMessage(ListView, WM_SIZE, SIZE_RESTORED, MAKELONG(listViewRect.right - listViewRect.left, bSecondCheckbox ? (listViewRect.bottom - listViewRect.top) - 40 : (listViewRect.bottom - listViewRect.top) - 20));
 		}
 
 		// now set the default directory
@@ -361,11 +370,15 @@ int CBrowseFolder::BrowseCallBackProc(HWND hwnd, UINT uMsg, LPARAM lParam, LPARA
 	{
 		// Set the status window to the currently selected path.
 		TCHAR szDir[MAX_PATH] = {0};
-		if (SHGetPathFromIDList((LPITEMIDLIST)lParam, szDir))
+		if (SHGetPathFromIDList((PCIDLIST_ABSOLUTE)lParam, szDir))
 		{
 			SendMessage(hwnd,BFFM_SETSTATUSTEXT, 0, (LPARAM)szDir);
 		}
+		else
+			return BFFM_VALIDATEFAILED;
 	}
+	if (uMsg == BFFM_VALIDATEFAILED)
+		return 1; // DONT_DISMISS
 
 	return 0;
 }

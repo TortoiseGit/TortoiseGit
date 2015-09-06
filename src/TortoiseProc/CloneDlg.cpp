@@ -171,7 +171,7 @@ BOOL CCloneDlg::OnInitDialog()
 		SHAutoComplete(window->m_hWnd, SHACF_FILESYSTEM);
 
 	this->m_BrowseUrl.AddEntry(CString(MAKEINTRESOURCE(IDS_PROC_CLONE_DIR)));
-	this->m_BrowseUrl.AddEntry(CString(MAKEINTRESOURCE(IDS_PROC_CLONE_WEB)));
+	this->m_BrowseUrl.AddEntry(CString(MAKEINTRESOURCE(IDS_REPOBROWSE_OPEN)));
 	m_BrowseUrl.SetCurrentEntry(m_regBrowseUrl);
 
 	m_PuttyKeyCombo.SetPathHistory(TRUE);
@@ -269,8 +269,15 @@ void CCloneDlg::OnBnClickedCloneBrowseUrl()
 	{
 		CString str;
 		m_URLCombo.GetWindowText(str);
-		ShellExecute(NULL, _T("open"), str.Trim(), NULL,NULL, SW_SHOW);
-		return ;
+		str.Trim();
+		if (str.IsEmpty())
+		{
+			CMessageBox::Show(GetSafeHwnd(), IDS_PROC_CLONE_URLDIREMPTY, IDS_APPNAME, MB_ICONERROR);
+			return;
+		}
+		if (CAppUtils::ExploreTo(GetSafeHwnd(), str) && (int)ShellExecute(nullptr, _T("open"), str, nullptr, nullptr, SW_SHOW) <= 32)
+			MessageBox(CFormatMessageWrapper(), _T("TortoiseGit"), MB_ICONERROR);
+		return;
 	}
 
 	this->m_URLCombo.GetWindowTextW(strCloneDirectory);
