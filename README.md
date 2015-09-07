@@ -3,12 +3,14 @@ TortoiseGit - The coolest Interface to Git Version Control
 
 TortoiseGit is a Windows Shell Interface to Git and based on TortoiseSVN. It's open source and can fully be build with freely available software.
 
-TortoiseGit supports you by regular tasks, such as committing, showing logs, diffing two versions, creating branches and tags, creating patches and so on (see our [Screenshots](https://code.google.com/p/tortoisegit/wiki/Screenshots) or [documentation](https://tortoisegit.org/docs/tortoisegit/)).
+TortoiseGit supports you by regular tasks, such as committing, showing logs, diffing two versions, creating branches and tags, creating patches and so on (see our [Screenshots](https://tortoisegit.org/about/screenshots/) or [documentation](https://tortoisegit.org/docs/)).
 
 * Website: [tortoisegit.org](https://tortoisegit.org)
 * Download: [tortoisegit.org/download](https://tortoisegit.org/download)
-* Manual: [tortoisegit.org/docs/tortoisegit/](https://tortoisegit.org/docs/tortoisegit/)
+* Documentation: [tortoisegit.org/docs/](https://tortoisegit.org/docs/)
+* Support: [tortoisegit.org/support/](https://tortoisegit.org/support/)
 * Issue tracker: [tortoisegit.org/issues](https://tortoisegit.org/issues)
+* Contibute: [tortoisegit.org/contribute/](https://tortoisegit.org/contribute/)
 * Mailing lists: [tortoisegit-announce](https://groups.google.com/group/tortoisegit-announce),
                  [tortoisegit-users](https://groups.google.com/group/tortoisegit-users) and
                  [tortoisegit-dev](https://groups.google.com/group/tortoisegit-dev)
@@ -38,7 +40,7 @@ How Can I Contribute?
 
 You're welcome to contribute to this project! There are several aspects you can help on:
 
-* improving our [documentation](https://tortoisegit.org/docs/tortoisegit/) (see [doc/readme.txt](doc/readme.txt) file and [doc](doc) folder),
+* improving our [documentation](https://tortoisegit.org/docs/) (see [doc/readme.txt](doc/readme.txt) file and [doc](doc) folder),
 * [translations](Languages/README.txt),
 * testing [preview releases](https://download.tortoisegit.org/tgit/previews/),
 * helping other users on the mailing lists,
