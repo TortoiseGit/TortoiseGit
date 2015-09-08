@@ -745,7 +745,10 @@ stdstring CShellExt::WriteFileListToTempFile()
 								0);
 
 	if (!file)
+	{
+		MessageBox(nullptr, L"Could not create temporary file. Please check (the permissions of) your temp-folder: " + CString(tempFile.get()), L"TortoiseGit", MB_ICONERROR);
 		return stdstring();
+	}
 
 	DWORD written = 0;
 	if (files_.empty())

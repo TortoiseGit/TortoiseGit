@@ -15,6 +15,7 @@ Released: unreleased
  * Fixed issue #2492: ssh key not used for new remote after clone
  * Fixed issue #2582: Taskbar icon color differs when drive letter is uppercase/lowercase
  * Fixed issue #2580: Clone dialog: Dir/Web button is confusing
+ * Fixed issue #2558: Can't create a new temp file/folder after upgrading to Win10
 
 = Release 1.8.15.0 =
 Released: 2015-08-02
