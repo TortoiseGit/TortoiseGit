@@ -1,0 +1,1 @@
+Overlay icon theme created by Charles Milette for TortoiseGit
