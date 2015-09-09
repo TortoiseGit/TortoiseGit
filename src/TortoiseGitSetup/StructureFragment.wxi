@@ -1068,6 +1068,20 @@
 									<File Id="F__MufWin7UnversionedIcon" Name="UnversionedIcon.ico" DiskId="1" Source="..\Resources\Icons\MufWin7\UnversionedIcon.ico" />
 								</Component>
 							</Directory>
+
+							<Directory Id="D__iconswin10" Name="Win10" >
+								<Component Id="C__iconswin10" Guid="$(var.GuidIconsWin10)" Win64="$(var.Win64YesNo)">
+									<File Id="F__Win10ConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\Win10\ConflictIcon.ico" KeyPath="yes" />
+									<File Id="F__Win10InSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\Win10\NormalIcon.ico" />
+									<File Id="F__Win10ModifiedIcon" Name="ModifiedIcon.ico" DiskId="1" Source="..\Resources\Icons\Win10\ModifiedIcon.ico" />
+									<File Id="F__Win10ReadOnlyIcon" Name="ReadOnlyIcon.ico" DiskId="1" Source="..\Resources\Icons\Win10\ReadOnlyIcon.ico" />
+									<File Id="F__Win10DeletedIcon" Name="DeletedIcon.ico" DiskId="1" Source="..\Resources\Icons\Win10\DeletedIcon.ico" />
+									<File Id="F__Win10LockedIcon" Name="LockedIcon.ico" DiskId="1" Source="..\Resources\Icons\Win10\LockedIcon.ico" />
+									<File Id="F__Win10AddedIcon" Name="AddedIcon.ico" DiskId="1" Source="..\Resources\Icons\Win10\AddedIcon.ico" />
+									<File Id="F__Win10IgnoredIcon" Name="IgnoredIcon.ico" DiskId="1" Source="..\Resources\Icons\Win10\IgnoredIcon.ico" />
+									<File Id="F__Win10UnversionedIcon" Name="UnversionedIcon.ico" DiskId="1" Source="..\Resources\Icons\Win10\UnversionedIcon.ico" />
+								</Component>
+							</Directory>
 						</Directory>
 					</Directory>
 				</Directory>

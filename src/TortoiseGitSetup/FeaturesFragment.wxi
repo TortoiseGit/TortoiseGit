@@ -79,6 +79,7 @@
 			<ComponentRef Id="C__iconsblip" />
 			<ComponentRef Id="C__iconsblipclean" />
 			<ComponentRef Id="C__iconsmufwin7" />
+			<ComponentRef Id="C__iconswin10" />
 		</Feature>
 
 		<?if $(var.IncludeCrashReportDll) = 1 ?>
