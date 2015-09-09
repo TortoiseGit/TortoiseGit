@@ -20,6 +20,7 @@ Released: unreleased
  * Fixed issue #2558: Can't create a new temp file/folder after upgrading to Win10
  * Fixed issue #2581: Blame is slow on big files
  * Fixed issue #2567: Log performance slow on huge repository
+ * Fixed issue #2585: Language pack files aren't deleted after removing TortoiseGit 
 
 = Release 1.8.15.0 =
 Released: 2015-08-02

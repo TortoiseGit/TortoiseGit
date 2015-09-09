@@ -99,6 +99,7 @@
 
 	<?define GuidDictionaryENGB="03B4BF1F-7CBB-4f14-BE09-5DAA6F38B976"?>
 	<?define GuidDictionaryENUS="5E7DDA35-1078-40c1-8428-14808AF7DB96"?>
+	<?define GuidRemoveLanguagePacks="829F637B-F9E9-4724-B363-F104D54C5C5C"?>
 
 	<?define GuidDiffScripts="A4FB4DC3-489C-4144-A286-C2693356E04A"?>
 
@@ -176,6 +177,7 @@
 
 	<?define GuidDictionaryENGB="7218599E-4140-429f-855A-D82B59ED34F9"?>
 	<?define GuidDictionaryENUS="B3FD2F77-B14C-448f-8D82-4B21F16711D6"?>
+	<?define GuidRemoveLanguagePacks="5B4D96EE-E7B9-46C8-BB36-B38E6EB83478"?>
 
 	<?define GuidDiffScripts="FAF533BB-06AC-4ff1-97D6-4D71E6D8F6C6"?>
 

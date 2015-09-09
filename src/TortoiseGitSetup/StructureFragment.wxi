@@ -879,6 +879,18 @@
 						<RegistryValue Root="HKMU" Key="Software\Classes\unified_diff_file\shell\open\command" Value="[INSTALLDIR]bin\TortoiseGitUDiff.exe /patchfile:&quot;%1&quot;" Type="string" />
 					</Component>
 
+					<Component Id="C_LanguagePacks" Guid="$(var.GuidRemoveLanguagePacks)" Win64="$(var.Win64YesNo)" >
+						<!--	When a language pack is installed, it copies files into the [INSTALLDIR]Languages folder.
+								We could add here RemoveFile-Elements for each and every one of the possible
+								language packs, but using the WiX utility RemoveFolderEx is in this case the better option.
+								To use RemoveFolderEx, we have to use a property with the path of the language folder, so
+								to get such a property we save that path to a registry key and read that key into the property.
+								-->
+						<RegistryKey Root="HKLM" Key="Software\[Manufacturer]" />
+						<RegistryValue Root="HKLM" Key="Software\[Manufacturer]" Name="LanguageFolderPath" Type="string" Value="[INSTALLDIR]Languages" />
+						<RemoveFolderEx Id='CleanupApplicationFolder' On="uninstall" Property="LANGUAGEFOLDER" xmlns="http://schemas.microsoft.com/wix/UtilExtension" />
+					</Component>
+
 					<Component Id="C__PlainSettingsShortcuts" Guid="$(var.GuidPlainSettingsShortcuts)" Win64="$(var.Win64YesNo)">
 						<RegistryValue Root="HKCU" Key="Software\TortoiseGit" KeyPath="yes" Name="TortoiseGit" Value="TortoiseGit" Type="string" />
 						<Condition><![CDATA[NOT VersionNT64]]></Condition>
