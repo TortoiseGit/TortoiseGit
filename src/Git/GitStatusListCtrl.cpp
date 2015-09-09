@@ -1643,6 +1643,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				if (GetSelectedCount() == 1 && (m_dwContextMenus & GITSLC_POPCONFLICT)/*&&(entry->textstatus == git_wc_status_conflicted)*/)
 				{
 					popup.AppendMenuIcon(IDGITLC_EDITCONFLICT, IDS_MENUCONFLICT, IDI_CONFLICT);
+					popup.SetDefaultItem(IDGITLC_EDITCONFLICT, FALSE);
 				}
 				if (m_dwContextMenus & GITSLC_POPRESOLVE)
 				{
@@ -1689,7 +1690,8 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					else
 						popup.AppendMenuIcon(IDGITLC_COMPARE, IDS_LOG_COMPAREWITHBASE, IDI_DIFF);
 
-					popup.SetDefaultItem(IDGITLC_COMPARE, FALSE);
+					if (!(wcStatus & (CTGitPath::LOGACTIONS_UNMERGED)) || GetSelectedCount() != 1)
+						popup.SetDefaultItem(IDGITLC_COMPARE, FALSE);
 					bEntryAdded = true;
 				}
 
@@ -3376,6 +3378,7 @@ void CGitStatusListCtrl::OnNMReturn(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 		return;
 	if (!CheckMultipleDiffs())
 		return;
+	bool needsRefresh = false;
 	POSITION pos = GetFirstSelectedItemPosition();
 	while ( pos )
 	{
@@ -3389,6 +3392,14 @@ void CGitStatusListCtrl::OnNMReturn(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 		{
 			OpenFile(file, OPEN);
 		}
+		else if ((file->m_Action & CTGitPath::LOGACTIONS_UNMERGED))
+		{
+			if (CAppUtils::ConflictEdit(*file, false, m_bIsRevertTheirMy, GetLogicalParent() ? GetLogicalParent()->GetSafeHwnd() : nullptr))
+			{
+				CString conflictedFile = g_Git.CombinePath(file);
+				needsRefresh = needsRefresh || !PathFileExists(conflictedFile);
+			}
+		}
 		else if ((file->m_Action & CTGitPath::LOGACTIONS_MISSING) && file->m_Action != (CTGitPath::LOGACTIONS_MISSING | CTGitPath::LOGACTIONS_DELETED) && file->m_Action != (CTGitPath::LOGACTIONS_MISSING | CTGitPath::LOGACTIONS_DELETED | CTGitPath::LOGACTIONS_MODIFIED))
 			continue;
 		else
@@ -3399,6 +3410,8 @@ void CGitStatusListCtrl::OnNMReturn(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 				StartDiff(index);
 		}
 	}
+	if (needsRefresh && NULL != GetLogicalParent() && NULL != GetLogicalParent()->GetSafeHwnd())
+		GetLogicalParent()->SendMessage(GITSLNM_NEEDSREFRESH);
 }
 
 void CGitStatusListCtrl::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)

@@ -7,6 +7,7 @@ Released: unreleased
  * Fixed issue #2568: Add Fast Forward Only option to the merge dialog (--ff-only)
  * Fixed issue #2579: Add option to retry push after failed push followed by rebase
  * Fixed issue #2583: No overlay icon theme for Windows 10
+ * Fixed issue #2578: Resolve Dialog <enter> should open "Edit conflicts"
 
 == Bug Fixes ==
  * TortoiseGitMerge highlights wrong line in case of file starts with LF+CRLF
