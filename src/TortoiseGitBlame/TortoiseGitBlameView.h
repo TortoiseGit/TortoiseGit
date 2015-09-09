@@ -238,9 +238,6 @@ public:
 	CTortoiseGitBlameData	m_data;
 	std::vector<int>		m_lineToLogIndex;
 
-	void StringExpand(LPSTR str) const;
-	void StringExpand(LPWSTR str) const;
-
 	CLogDataVector *		GetLogData();
 
 	BOOL m_bShowLine;

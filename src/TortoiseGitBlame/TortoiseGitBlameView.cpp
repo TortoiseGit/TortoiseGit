@@ -1,7 +1,6 @@
 // TortoiseGitBlame - a Viewer for Git Blames
 
 // Copyright (C) 2008-2015 - TortoiseGit
-// Copyright (C) 2010-2013 Sven Strickroth <email@cs-ware.de>
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
 
 // Copyright (C)2003 Don HO <donho@altern.org>
@@ -1043,37 +1042,6 @@ void CTortoiseGitBlameView::DrawLocatorBar(HDC hDC)
 		::ExtTextOut(hDC, 0, 0, ETO_OPAQUE, &lineRect, NULL, 0, NULL);
 	}
 
-}
-
-void CTortoiseGitBlameView::StringExpand(LPSTR str) const
-{
-	char * cPos = str;
-	do
-	{
-		cPos = strchr(cPos, '\n');
-		if (cPos)
-		{
-			memmove(cPos+1, cPos, strlen(cPos)*sizeof(char));
-			*cPos = '\r';
-			++cPos;
-			++cPos;
-		}
-	} while (cPos != NULL);
-}
-void CTortoiseGitBlameView::StringExpand(LPWSTR str) const
-{
-	wchar_t * cPos = str;
-	do
-	{
-		cPos = wcschr(cPos, '\n');
-		if (cPos)
-		{
-			memmove(cPos+1, cPos, wcslen(cPos)*sizeof(wchar_t));
-			*cPos = '\r';
-			++cPos;
-			++cPos;
-		}
-	} while (cPos != NULL);
 }
 
 void CTortoiseGitBlameView::SetupLexer(CString filename)
