@@ -215,14 +215,14 @@ bool CPicture::Load(tstring sFilePathName)
 									if (((BYTE*)lpIconDir->idEntries > (BYTE*)lpIconDir) && 
 										(((BYTE*)lpIconDir->idEntries) + (lpIconDir->idCount * sizeof(ICONDIRENTRY)) < ((BYTE*)lpIconDir) + fileinfo.nFileSizeLow))
 									{
-										m_Width = lpIconDir->idEntries[0].bWidth;
-										m_Height = lpIconDir->idEntries[0].bHeight;
+										m_Width = lpIconDir->idEntries[0].bWidth == 0 ? 256 : lpIconDir->idEntries[0].bWidth;
+										m_Height = lpIconDir->idEntries[0].bHeight == 0 ? 256 : lpIconDir->idEntries[0].bHeight;
 										bResult = true;
 										for (int i=0; i<lpIconDir->idCount; ++i)
 										{
 											hIcons[i] = (HICON)LoadImage(NULL, sFilePathName.c_str(), IMAGE_ICON,
-																		 lpIconDir->idEntries[i].bWidth,
-																		 lpIconDir->idEntries[i].bHeight,
+																		 lpIconDir->idEntries[i].bWidth == 0 ? 256 : lpIconDir->idEntries[i].bWidth,
+																		 lpIconDir->idEntries[i].bHeight == 0 ? 256 : lpIconDir->idEntries[i].bHeight,
 																		 LR_LOADFROMFILE);
 											if (hIcons[i] == NULL)
 											{
