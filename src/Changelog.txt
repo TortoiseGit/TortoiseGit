@@ -19,6 +19,7 @@ Released: unreleased
  * Fixed issue #2580: Clone dialog: Dir/Web button is confusing
  * Fixed issue #2558: Can't create a new temp file/folder after upgrading to Win10
  * Fixed issue #2581: Blame is slow on big files
+ * Fixed issue #2567: Log performance slow on huge repository
 
 = Release 1.8.15.0 =
 Released: 2015-08-02
