@@ -1574,20 +1574,14 @@ void CTortoiseGitBlameView::UpdateInfo(int Encode)
 	int numberOfLines = m_data.GetNumberOfLines();
 	if (numberOfLines > 0)
 	{
-		for (int i = 0; i < numberOfLines - 1; ++i)
+		CStringA text;
+		for (int i = 0; i < numberOfLines; ++i)
 		{
-			SendEditor(SCI_REPLACESEL, 0, (LPARAM)(LPCSTR)m_data.GetUtf8Line(i));
-			SendEditor(SCI_REPLACESEL, 0, (LPARAM)(LPCSTR)"\n\0\0\0");
+			text += m_data.GetUtf8Line(i);
+			text += '\n';
 		}
-		{
-			// as it will add another line number in scintilla which has no counter part in the blame output
-			// prevent carriage return and line feed for the last line
-			CStringA s = m_data.GetUtf8Line(numberOfLines - 1);
-			int length = s.GetLength();
-			if (length > 0 && s.GetAt(length - 1) == '\r')
-				s.Truncate(length - 1);
-			SendEditor(SCI_REPLACESEL, 0, (LPARAM)(LPCSTR)s);
-		}
+		text.TrimRight("\r\n");
+		SendEditor(SCI_REPLACESEL, 0, (LPARAM)(LPCSTR)text);
 	}
 
 	{

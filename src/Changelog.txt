@@ -17,6 +17,7 @@ Released: unreleased
  * Fixed issue #2582: Taskbar icon color differs when drive letter is uppercase/lowercase
  * Fixed issue #2580: Clone dialog: Dir/Web button is confusing
  * Fixed issue #2558: Can't create a new temp file/folder after upgrading to Win10
+ * Fixed issue #2581: Blame is slow on big files
 
 = Release 1.8.15.0 =
 Released: 2015-08-02
