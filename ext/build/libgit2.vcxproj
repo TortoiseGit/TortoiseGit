@@ -171,9 +171,6 @@
     <ClCompile Include="..\libgit2\src\tsort.c" />
     <ClCompile Include="..\libgit2\src\util.c" />
     <ClCompile Include="..\libgit2\src\vector.c" />
-    <ClCompile Include="..\libgit2\src\win32\buffer.c">
-      <ObjectFileName>$(IntDir)buffer_win32.obj</ObjectFileName>
-    </ClCompile>
     <ClCompile Include="..\libgit2\src\win32\dir.c" />
     <ClCompile Include="..\libgit2\src\win32\error.c" />
     <ClCompile Include="..\libgit2\src\win32\findfile.c" />
@@ -191,6 +188,7 @@
     <ClCompile Include="..\libgit2\src\transports\smart_pkt.c" />
     <ClCompile Include="..\libgit2\src\transports\smart_protocol.c" />
     <ClCompile Include="..\libgit2\src\transports\winhttp.c" />
+    <ClCompile Include="..\libgit2\src\win32\w32_buffer.c" />
     <ClCompile Include="..\libgit2\src\win32\w32_util.c" />
     <ClCompile Include="..\libgit2\src\xdiff\xdiffi.c" />
     <ClCompile Include="..\libgit2\src\xdiff\xemit.c" />
@@ -284,6 +282,7 @@
     <ClInclude Include="..\libgit2\src\global.h" />
     <ClInclude Include="..\libgit2\src\hash.h" />
     <ClInclude Include="..\libgit2\src\hash\hash_common_crypto.h" />
+    <ClInclude Include="..\libgit2\src\idxmap.h" />
     <ClInclude Include="..\libgit2\src\ignore.h" />
     <ClInclude Include="..\libgit2\src\index.h" />
     <ClInclude Include="..\libgit2\src\integer.h" />
@@ -332,6 +331,7 @@
     <ClInclude Include="..\libgit2\src\tag.h" />
     <ClInclude Include="..\libgit2\src\thread-utils.h" />
     <ClInclude Include="..\libgit2\src\trace.h" />
+    <ClInclude Include="..\libgit2\src\transaction.h" />
     <ClInclude Include="..\libgit2\src\transports\auth.h" />
     <ClInclude Include="..\libgit2\src\transports\auth_negotiate.h" />
     <ClInclude Include="..\libgit2\src\transports\cred.h" />
@@ -339,7 +339,6 @@
     <ClInclude Include="..\libgit2\src\tree.h" />
     <ClInclude Include="..\libgit2\src\util.h" />
     <ClInclude Include="..\libgit2\src\vector.h" />
-    <ClInclude Include="..\libgit2\src\win32\buffer.h" />
     <ClInclude Include="..\libgit2\src\win32\dir.h" />
     <ClInclude Include="..\libgit2\src\win32\error.h" />
     <ClInclude Include="..\libgit2\src\win32\findfile.h" />
@@ -348,6 +347,7 @@
     <ClInclude Include="..\libgit2\src\win32\path_w32.h" />
     <ClInclude Include="..\libgit2\src\win32\reparse.h" />
     <ClInclude Include="..\libgit2\src\win32\version.h" />
+    <ClInclude Include="..\libgit2\src\win32\w32_buffer.h" />
     <ClInclude Include="..\libgit2\src\win32\w32_util.h" />
     <ClInclude Include="..\libgit2\src\xdiff\xdiff.h" />
     <ClInclude Include="..\libgit2\src\xdiff\xdiffi.h" />

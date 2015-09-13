@@ -21,6 +21,7 @@ Released: unreleased
  * Fixed issue #2581: Blame is slow on big files
  * Fixed issue #2567: Log performance slow on huge repository
  * Fixed issue #2585: Language pack files aren't deleted after removing TortoiseGit 
+ * Fixed issue #2553: Git cleanup fails for renamed submodules
 
 = Release 1.8.15.0 =
 Released: 2015-08-02
