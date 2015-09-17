@@ -53,12 +53,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\scintilla\lexers\LexBatch.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexBibTeX.cxx" />
+    <ClCompile Include="..\scintilla\lexers\LexDiff.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexDMAP.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexDMIS.cxx" />
+    <ClCompile Include="..\scintilla\lexers\LexErrorList.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexHex.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexKVIrc.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexLaTeX.cxx" />
+    <ClCompile Include="..\scintilla\lexers\LexMake.cxx" />
+    <ClCompile Include="..\scintilla\lexers\LexNull.cxx" />
+    <ClCompile Include="..\scintilla\lexers\LexProps.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexRegistry.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexRust.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexSTTXT.cxx" />
@@ -145,7 +151,6 @@
     <ClCompile Include="..\scintilla\lexers\LexNsis.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexOpal.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexOScript.cxx" />
-    <ClCompile Include="..\scintilla\lexers\LexOthers.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexPascal.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexPB.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexPerl.cxx" />
@@ -193,6 +198,7 @@
     <ClCompile Include="..\scintilla\win32\ScintillaWin.cxx" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\scintilla\include\Sci_Position.h" />
     <ClInclude Include="..\scintilla\lexlib\CharacterCategory.h" />
     <ClInclude Include="..\scintilla\src\AutoComplete.h" />
     <ClInclude Include="..\scintilla\src\CallTip.h" />
@@ -215,6 +221,7 @@
     <ClInclude Include="..\scintilla\src\MarginView.h" />
     <ClInclude Include="..\scintilla\src\Partitioning.h" />
     <ClInclude Include="..\scintilla\src\PerLine.h" />
+    <ClInclude Include="..\scintilla\src\Position.h" />
     <ClInclude Include="..\scintilla\src\PositionCache.h" />
     <ClInclude Include="..\scintilla\src\RESearch.h" />
     <ClInclude Include="..\scintilla\src\RunStyles.h" />

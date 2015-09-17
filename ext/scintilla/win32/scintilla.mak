@@ -113,6 +113,7 @@ LEXOBJS=\
 	$(DIR_O)\LexBaan.obj \
 	$(DIR_O)\LexBash.obj \
 	$(DIR_O)\LexBasic.obj \
+	$(DIR_O)\LexBatch.obj \
 	$(DIR_O)\LexBibTeX.obj \
 	$(DIR_O)\LexBullant.obj \
 	$(DIR_O)\LexCaml.obj \
@@ -126,11 +127,13 @@ LEXOBJS=\
 	$(DIR_O)\LexCsound.obj \
 	$(DIR_O)\LexCSS.obj \
 	$(DIR_O)\LexD.obj \
+	$(DIR_O)\LexDiff.obj \
 	$(DIR_O)\LexDMAP.obj \
 	$(DIR_O)\LexDMIS.obj \
 	$(DIR_O)\LexECL.obj \
 	$(DIR_O)\LexEiffel.obj \
 	$(DIR_O)\LexErlang.obj \
+	$(DIR_O)\LexErrorList.obj \
 	$(DIR_O)\LexEScript.obj \
 	$(DIR_O)\LexFlagship.obj \
 	$(DIR_O)\LexForth.obj \
@@ -148,6 +151,7 @@ LEXOBJS=\
 	$(DIR_O)\LexLout.obj \
 	$(DIR_O)\LexLua.obj \
 	$(DIR_O)\LexMagik.obj \
+	$(DIR_O)\LexMake.obj \
 	$(DIR_O)\LexMarkdown.obj \
 	$(DIR_O)\LexMatlab.obj \
 	$(DIR_O)\LexMetapost.obj \
@@ -158,9 +162,9 @@ LEXOBJS=\
 	$(DIR_O)\LexMySQL.obj \
 	$(DIR_O)\LexNimrod.obj \
 	$(DIR_O)\LexNsis.obj \
+	$(DIR_O)\LexNull.obj \
 	$(DIR_O)\LexOpal.obj \
 	$(DIR_O)\LexOScript.obj \
-	$(DIR_O)\LexOthers.obj \
 	$(DIR_O)\LexPascal.obj \
 	$(DIR_O)\LexPB.obj \
 	$(DIR_O)\LexPerl.obj \
@@ -170,6 +174,7 @@ LEXOBJS=\
 	$(DIR_O)\LexPowerPro.obj \
 	$(DIR_O)\LexPowerShell.obj \
 	$(DIR_O)\LexProgress.obj \
+	$(DIR_O)\LexProps.obj \
 	$(DIR_O)\LexPS.obj \
 	$(DIR_O)\LexPython.obj \
 	$(DIR_O)\LexR.obj \
@@ -252,6 +257,7 @@ $(DIR_O)\ScintillaWinS.obj: ScintillaWin.cxx
 # All lexers depend on this set of headers
 LEX_HEADERS= \
 	../include/ILexer.h \
+	../include/Sci_Position.h \
 	../include/Scintilla.h \
 	../include/SciLexer.h \
 	../lexlib/WordList.h \
@@ -267,6 +273,7 @@ LEX_HEADERS= \
 $(DIR_O)\Accessor.obj: \
 	../lexlib/Accessor.cxx \
 	../include/ILexer.h \
+	../include/Sci_Position.h \
 	../include/Scintilla.h \
 	../include/SciLexer.h \
 	../lexlib/PropSetSimple.h \
@@ -277,13 +284,17 @@ $(DIR_O)\AutoComplete.obj: \
 	../src/AutoComplete.cxx \
 	../include/Platform.h \
 	../include/Scintilla.h \
+	../include/Sci_Position.h \
 	../lexlib/CharacterSet.h \
+	../src/Position.h \
 	../src/AutoComplete.h
 $(DIR_O)\CallTip.obj: \
 	../src/CallTip.cxx \
 	../include/Platform.h \
 	../include/Scintilla.h \
+	../include/Sci_Position.h \
 	../lexlib/StringCopy.h \
+	../src/Position.h \
 	../src/CallTip.h
 $(DIR_O)\CaseConvert.obj: \
 	../src/CaseConvert.cxx \
@@ -299,6 +310,7 @@ $(DIR_O)\CaseFolder.obj: \
 $(DIR_O)\Catalogue.obj: \
 	../src/Catalogue.cxx \
 	../include/ILexer.h \
+	../include/Sci_Position.h \
 	../include/Scintilla.h \
 	../include/SciLexer.h \
 	../lexlib/LexerModule.h \
@@ -307,6 +319,8 @@ $(DIR_O)\CellBuffer.obj: \
 	../src/CellBuffer.cxx \
 	../include/Platform.h \
 	../include/Scintilla.h \
+	../include/Sci_Position.h \
+	../src/Position.h \
 	../src/SplitVector.h \
 	../src/Partitioning.h \
 	../src/CellBuffer.h \
@@ -324,6 +338,7 @@ $(DIR_O)\CharClassify.obj: \
 $(DIR_O)\ContractionState.obj: \
 	../src/ContractionState.cxx \
 	../include/Platform.h \
+	../src/Position.h \
 	../src/SplitVector.h \
 	../src/Partitioning.h \
 	../src/RunStyles.h \
@@ -332,6 +347,8 @@ $(DIR_O)\Decoration.obj: \
 	../src/Decoration.cxx \
 	../include/Platform.h \
 	../include/Scintilla.h \
+	../include/Sci_Position.h \
+	../src/Position.h \
 	../src/SplitVector.h \
 	../src/Partitioning.h \
 	../src/RunStyles.h \
@@ -340,8 +357,10 @@ $(DIR_O)\Document.obj: \
 	../src/Document.cxx \
 	../include/Platform.h \
 	../include/ILexer.h \
+	../include/Sci_Position.h \
 	../include/Scintilla.h \
 	../lexlib/CharacterSet.h \
+	../src/Position.h \
 	../src/SplitVector.h \
 	../src/Partitioning.h \
 	../src/RunStyles.h \
@@ -352,13 +371,16 @@ $(DIR_O)\Document.obj: \
 	../src/CaseFolder.h \
 	../src/Document.h \
 	../src/RESearch.h \
-	../src/UniConversion.h
+	../src/UniConversion.h \
+	../src/UnicodeFromUTF8.h
 $(DIR_O)\EditModel.obj: \
 	../src/EditModel.cxx \
 	../include/Platform.h \
 	../include/ILexer.h \
+	../include/Sci_Position.h \
 	../include/Scintilla.h \
 	../lexlib/StringCopy.h \
+	../src/Position.h \
 	../src/SplitVector.h \
 	../src/Partitioning.h \
 	../src/RunStyles.h \
@@ -382,13 +404,16 @@ $(DIR_O)\Editor.obj: \
 	../src/Editor.cxx \
 	../include/Platform.h \
 	../include/ILexer.h \
+	../include/Sci_Position.h \
 	../include/Scintilla.h \
 	../lexlib/StringCopy.h \
+	../src/Position.h \
 	../src/SplitVector.h \
 	../src/Partitioning.h \
 	../src/RunStyles.h \
 	../src/ContractionState.h \
 	../src/CellBuffer.h \
+	../src/PerLine.h \
 	../src/KeyMap.h \
 	../src/Indicator.h \
 	../src/XPM.h \
@@ -410,13 +435,16 @@ $(DIR_O)\EditView.obj: \
 	../src/EditView.cxx \
 	../include/Platform.h \
 	../include/ILexer.h \
+	../include/Sci_Position.h \
 	../include/Scintilla.h \
 	../lexlib/StringCopy.h \
+	../src/Position.h \
 	../src/SplitVector.h \
 	../src/Partitioning.h \
 	../src/RunStyles.h \
 	../src/ContractionState.h \
 	../src/CellBuffer.h \
+	../src/PerLine.h \
 	../src/KeyMap.h \
 	../src/Indicator.h \
 	../src/XPM.h \
@@ -437,6 +465,7 @@ $(DIR_O)\ExternalLexer.obj: \
 	../src/ExternalLexer.cxx \
 	../include/Platform.h \
 	../include/ILexer.h \
+	../include/Sci_Position.h \
 	../include/Scintilla.h \
 	../include/SciLexer.h \
 	../lexlib/LexerModule.h \
@@ -446,12 +475,14 @@ $(DIR_O)\Indicator.obj: \
 	../src/Indicator.cxx \
 	../include/Platform.h \
 	../include/Scintilla.h \
+	../include/Sci_Position.h \
 	../src/Indicator.h \
 	../src/XPM.h
 $(DIR_O)\KeyMap.obj: \
 	../src/KeyMap.cxx \
 	../include/Platform.h \
 	../include/Scintilla.h \
+	../include/Sci_Position.h \
 	../src/KeyMap.h
 
 #++Autogenerated -- run scripts/LexGen.py to regenerate
@@ -483,6 +514,8 @@ $(DIR_O)\LexBash.obj: ..\lexers\LexBash.cxx $(LEX_HEADERS)
 
 $(DIR_O)\LexBasic.obj: ..\lexers\LexBasic.cxx $(LEX_HEADERS)
 
+$(DIR_O)\LexBatch.obj: ..\lexers\LexBatch.cxx $(LEX_HEADERS)
+
 $(DIR_O)\LexBibTeX.obj: ..\lexers\LexBibTeX.cxx $(LEX_HEADERS)
 
 $(DIR_O)\LexBullant.obj: ..\lexers\LexBullant.cxx $(LEX_HEADERS)
@@ -509,6 +542,8 @@ $(DIR_O)\LexCSS.obj: ..\lexers\LexCSS.cxx $(LEX_HEADERS)
 
 $(DIR_O)\LexD.obj: ..\lexers\LexD.cxx $(LEX_HEADERS)
 
+$(DIR_O)\LexDiff.obj: ..\lexers\LexDiff.cxx $(LEX_HEADERS)
+
 $(DIR_O)\LexDMAP.obj: ..\lexers\LexDMAP.cxx $(LEX_HEADERS)
 
 $(DIR_O)\LexDMIS.obj: ..\lexers\LexDMIS.cxx $(LEX_HEADERS)
@@ -518,6 +553,8 @@ $(DIR_O)\LexECL.obj: ..\lexers\LexECL.cxx $(LEX_HEADERS)
 $(DIR_O)\LexEiffel.obj: ..\lexers\LexEiffel.cxx $(LEX_HEADERS)
 
 $(DIR_O)\LexErlang.obj: ..\lexers\LexErlang.cxx $(LEX_HEADERS)
+
+$(DIR_O)\LexErrorList.obj: ..\lexers\LexErrorList.cxx $(LEX_HEADERS)
 
 $(DIR_O)\LexEScript.obj: ..\lexers\LexEScript.cxx $(LEX_HEADERS)
 
@@ -553,6 +590,8 @@ $(DIR_O)\LexLua.obj: ..\lexers\LexLua.cxx $(LEX_HEADERS)
 
 $(DIR_O)\LexMagik.obj: ..\lexers\LexMagik.cxx $(LEX_HEADERS)
 
+$(DIR_O)\LexMake.obj: ..\lexers\LexMake.cxx $(LEX_HEADERS)
+
 $(DIR_O)\LexMarkdown.obj: ..\lexers\LexMarkdown.cxx $(LEX_HEADERS)
 
 $(DIR_O)\LexMatlab.obj: ..\lexers\LexMatlab.cxx $(LEX_HEADERS)
@@ -573,11 +612,11 @@ $(DIR_O)\LexNimrod.obj: ..\lexers\LexNimrod.cxx $(LEX_HEADERS)
 
 $(DIR_O)\LexNsis.obj: ..\lexers\LexNsis.cxx $(LEX_HEADERS)
 
+$(DIR_O)\LexNull.obj: ..\lexers\LexNull.cxx $(LEX_HEADERS)
+
 $(DIR_O)\LexOpal.obj: ..\lexers\LexOpal.cxx $(LEX_HEADERS)
 
 $(DIR_O)\LexOScript.obj: ..\lexers\LexOScript.cxx $(LEX_HEADERS)
-
-$(DIR_O)\LexOthers.obj: ..\lexers\LexOthers.cxx $(LEX_HEADERS)
 
 $(DIR_O)\LexPascal.obj: ..\lexers\LexPascal.cxx $(LEX_HEADERS)
 
@@ -596,6 +635,8 @@ $(DIR_O)\LexPowerPro.obj: ..\lexers\LexPowerPro.cxx $(LEX_HEADERS)
 $(DIR_O)\LexPowerShell.obj: ..\lexers\LexPowerShell.cxx $(LEX_HEADERS)
 
 $(DIR_O)\LexProgress.obj: ..\lexers\LexProgress.cxx $(LEX_HEADERS)
+
+$(DIR_O)\LexProps.obj: ..\lexers\LexProps.cxx $(LEX_HEADERS)
 
 $(DIR_O)\LexPS.obj: ..\lexers\LexPS.cxx $(LEX_HEADERS)
 
@@ -657,6 +698,7 @@ $(DIR_O)\LexYAML.obj: ..\lexers\LexYAML.cxx $(LEX_HEADERS)
 $(DIR_O)\LexerBase.obj: \
 	../lexlib/LexerBase.cxx \
 	../include/ILexer.h \
+	../include/Sci_Position.h \
 	../include/Scintilla.h \
 	../include/SciLexer.h \
 	../lexlib/PropSetSimple.h \
@@ -668,6 +710,7 @@ $(DIR_O)\LexerBase.obj: \
 $(DIR_O)\LexerModule.obj: \
 	../lexlib/LexerModule.cxx \
 	../include/ILexer.h \
+	../include/Sci_Position.h \
 	../include/Scintilla.h \
 	../include/SciLexer.h \
 	../lexlib/PropSetSimple.h \
@@ -680,6 +723,7 @@ $(DIR_O)\LexerModule.obj: \
 $(DIR_O)\LexerNoExceptions.obj: \
 	../lexlib/LexerNoExceptions.cxx \
 	../include/ILexer.h \
+	../include/Sci_Position.h \
 	../include/Scintilla.h \
 	../include/SciLexer.h \
 	../lexlib/PropSetSimple.h \
@@ -692,6 +736,7 @@ $(DIR_O)\LexerNoExceptions.obj: \
 $(DIR_O)\LexerSimple.obj: \
 	../lexlib/LexerSimple.cxx \
 	../include/ILexer.h \
+	../include/Sci_Position.h \
 	../include/Scintilla.h \
 	../include/SciLexer.h \
 	../lexlib/PropSetSimple.h \
@@ -705,6 +750,7 @@ $(DIR_O)\LineMarker.obj: \
 	../src/LineMarker.cxx \
 	../include/Platform.h \
 	../include/Scintilla.h \
+	../include/Sci_Position.h \
 	../lexlib/StringCopy.h \
 	../src/XPM.h \
 	../src/LineMarker.h
@@ -712,8 +758,10 @@ $(DIR_O)\MarginView.obj: \
 	../src/MarginView.cxx \
 	../include/Platform.h \
 	../include/ILexer.h \
+	../include/Sci_Position.h \
 	../include/Scintilla.h \
 	../lexlib/StringCopy.h \
+	../src/Position.h \
 	../src/SplitVector.h \
 	../src/Partitioning.h \
 	../src/RunStyles.h \
@@ -739,6 +787,8 @@ $(DIR_O)\PerLine.obj: \
 	../src/PerLine.cxx \
 	../include/Platform.h \
 	../include/Scintilla.h \
+	../include/Sci_Position.h \
+	../src/Position.h \
 	../src/SplitVector.h \
 	../src/Partitioning.h \
 	../src/CellBuffer.h \
@@ -754,7 +804,9 @@ $(DIR_O)\PositionCache.obj: \
 	../src/PositionCache.cxx \
 	../include/Platform.h \
 	../include/ILexer.h \
+	../include/Sci_Position.h \
 	../include/Scintilla.h \
+	../src/Position.h \
 	../src/SplitVector.h \
 	../src/Partitioning.h \
 	../src/RunStyles.h \
@@ -778,12 +830,15 @@ $(DIR_O)\PropSetSimple.obj: \
 	../lexlib/PropSetSimple.h
 $(DIR_O)\RESearch.obj: \
 	../src/RESearch.cxx \
+	../src/Position.h \
 	../src/CharClassify.h \
 	../src/RESearch.h
 $(DIR_O)\RunStyles.obj: \
 	../src/RunStyles.cxx \
 	../include/Platform.h \
 	../include/Scintilla.h \
+	../include/Sci_Position.h \
+	../src/Position.h \
 	../src/SplitVector.h \
 	../src/Partitioning.h \
 	../src/RunStyles.h
@@ -791,8 +846,10 @@ $(DIR_O)\ScintillaBase.obj: \
 	../src/ScintillaBase.cxx \
 	../include/Platform.h \
 	../include/ILexer.h \
+	../include/Sci_Position.h \
 	../include/Scintilla.h \
 	../lexlib/PropSetSimple.h \
+	../src/Position.h \
 	../src/SplitVector.h \
 	../src/Partitioning.h \
 	../src/RunStyles.h \
@@ -821,8 +878,10 @@ $(DIR_O)\ScintillaBaseL.obj: \
 	../src/ScintillaBase.cxx \
 	../include/Platform.h \
 	../include/ILexer.h \
+	../include/Sci_Position.h \
 	../include/Scintilla.h \
 	../lexlib/PropSetSimple.h \
+	../src/Position.h \
 	../src/SplitVector.h \
 	../src/Partitioning.h \
 	../src/RunStyles.h \
@@ -851,8 +910,10 @@ $(DIR_O)\ScintillaWin.obj: \
 	ScintillaWin.cxx \
 	../include/Platform.h \
 	../include/ILexer.h \
+	../include/Sci_Position.h \
 	../include/Scintilla.h \
 	../lexlib/StringCopy.h \
+	../src/Position.h \
 	../src/SplitVector.h \
 	../src/Partitioning.h \
 	../src/RunStyles.h \
@@ -885,8 +946,10 @@ $(DIR_O)\ScintillaWinL.obj: \
 	ScintillaWin.cxx \
 	../include/Platform.h \
 	../include/ILexer.h \
+	../include/Sci_Position.h \
 	../include/Scintilla.h \
 	../lexlib/StringCopy.h \
+	../src/Position.h \
 	../src/SplitVector.h \
 	../src/Partitioning.h \
 	../src/RunStyles.h \
@@ -919,8 +982,10 @@ $(DIR_O)\ScintillaWinS.obj: \
 	ScintillaWin.cxx \
 	../include/Platform.h \
 	../include/ILexer.h \
+	../include/Sci_Position.h \
 	../include/Scintilla.h \
 	../lexlib/StringCopy.h \
+	../src/Position.h \
 	../src/SplitVector.h \
 	../src/Partitioning.h \
 	../src/RunStyles.h \
@@ -953,15 +1018,19 @@ $(DIR_O)\Selection.obj: \
 	../src/Selection.cxx \
 	../include/Platform.h \
 	../include/Scintilla.h \
+	../include/Sci_Position.h \
+	../src/Position.h \
 	../src/Selection.h
 $(DIR_O)\Style.obj: \
 	../src/Style.cxx \
 	../include/Platform.h \
 	../include/Scintilla.h \
+	../include/Sci_Position.h \
 	../src/Style.h
 $(DIR_O)\StyleContext.obj: \
 	../lexlib/StyleContext.cxx \
 	../include/ILexer.h \
+	../include/Sci_Position.h \
 	../lexlib/LexAccessor.h \
 	../lexlib/Accessor.h \
 	../lexlib/StyleContext.h
@@ -972,6 +1041,8 @@ $(DIR_O)\ViewStyle.obj: \
 	../src/ViewStyle.cxx \
 	../include/Platform.h \
 	../include/Scintilla.h \
+	../include/Sci_Position.h \
+	../src/Position.h \
 	../src/SplitVector.h \
 	../src/Partitioning.h \
 	../src/RunStyles.h \
@@ -989,4 +1060,6 @@ $(DIR_O)\XPM.obj: \
 	../include/Platform.h \
 	../src/XPM.h
 $(DIR_O)\HanjaDic: \
-	./HanjaDic.h
+	HanjaDic.cxx \
+	../src/UniConversion.h \
+	HanjaDic.h
