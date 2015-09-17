@@ -52,6 +52,7 @@
 #ifdef SCI_LEXER
 #include "LexerModule.h"
 #endif
+#include "Position.h"
 #include "SplitVector.h"
 #include "Partitioning.h"
 #include "RunStyles.h"
@@ -109,6 +110,12 @@
 #define SC_INDICATOR_TARGET INDIC_IME+1
 #define SC_INDICATOR_CONVERTED INDIC_IME+2
 #define SC_INDICATOR_UNKNOWN INDIC_IME_MAX
+
+#ifndef SCS_CAP_SETRECONVERTSTRING
+#define SCS_CAP_SETRECONVERTSTRING 0x00000004
+#define SCS_QUERYRECONVERTSTRING 0x00020000
+#define SCS_SETRECONVERTSTRING 0x00010000
+#endif
 
 typedef BOOL (WINAPI *TrackMouseEventSig)(LPTRACKMOUSEEVENT);
 typedef UINT_PTR (WINAPI *SetCoalescableTimerSig)(HWND hwnd, UINT_PTR nIDEvent,
@@ -182,6 +189,23 @@ public:
 	DropTarget();
 };
 
+namespace {
+
+class IMContext {
+	HWND hwnd;
+public:
+	HIMC hIMC;
+	IMContext(HWND hwnd_) :
+		hwnd(hwnd_), hIMC(::ImmGetContext(hwnd_)) {
+	}
+	~IMContext() {
+		if (hIMC)
+			::ImmReleaseContext(hwnd, hIMC);
+	}
+};
+
+}
+
 /**
  */
 class ScintillaWin :
@@ -235,10 +259,10 @@ class ScintillaWin :
 
 	static sptr_t DirectFunction(
 		    sptr_t ptr, UINT iMessage, uptr_t wParam, sptr_t lParam);
-	static sptr_t PASCAL SWndProc(
-		    HWND hWnd, UINT iMessage, WPARAM wParam, sptr_t lParam);
-	static sptr_t PASCAL CTWndProc(
-		    HWND hWnd, UINT iMessage, WPARAM wParam, sptr_t lParam);
+	static LRESULT PASCAL SWndProc(
+		    HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam);
+	static LRESULT PASCAL CTWndProc(
+		    HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam);
 
 	enum { invalidTimerID, standardTimerID, idleTimerID, fineTimerStart };
 
@@ -296,6 +320,7 @@ class ScintillaWin :
 	// DBCS
 	void ImeStartComposition();
 	void ImeEndComposition();
+	LRESULT ImeOnReconvert(LPARAM lParam);
 
 	void GetIntelliMouseParameters();
 	virtual void CopyToClipboard(const SelectionText &selectedText);
@@ -705,7 +730,7 @@ int ScintillaWin::EncodedFromUTF8(char *utf8, char *encoded) const {
 	}
 }
 
-LRESULT ScintillaWin::WndPaint(uptr_t wParam) {
+sptr_t ScintillaWin::WndPaint(uptr_t wParam) {
 	//ElapsedTime et;
 
 	// Redirect assertions to debug output and save current state
@@ -777,10 +802,10 @@ LRESULT ScintillaWin::WndPaint(uptr_t wParam) {
 
 sptr_t ScintillaWin::HandleCompositionWindowed(uptr_t wParam, sptr_t lParam) {
 	if (lParam & GCS_RESULTSTR) {
-		HIMC hIMC = ::ImmGetContext(MainHWND());
-		if (hIMC) {
+		IMContext imc(MainHWND());
+		if (imc.hIMC) {
 			wchar_t wcs[maxLenInputIME];
-			LONG bytes = ::ImmGetCompositionStringW(hIMC,
+			LONG bytes = ::ImmGetCompositionStringW(imc.hIMC,
 				GCS_RESULTSTR, wcs, (maxLenInputIME-1)*2);
 			int wides = bytes / 2;
 			if (IsUnicodeMode()) {
@@ -803,8 +828,7 @@ sptr_t ScintillaWin::HandleCompositionWindowed(uptr_t wParam, sptr_t lParam) {
 			CompForm.dwStyle = CFS_POINT;
 			CompForm.ptCurrentPos.x = static_cast<int>(pos.x);
 			CompForm.ptCurrentPos.y = static_cast<int>(pos.y);
-			::ImmSetCompositionWindow(hIMC, &CompForm);
-			::ImmReleaseContext(MainHWND(), hIMC);
+			::ImmSetCompositionWindow(imc.hIMC, &CompForm);
 		}
 		return 0;
 	}
@@ -841,16 +865,15 @@ void ScintillaWin::DrawImeIndicator(int indicator, int len) {
 }
 
 void ScintillaWin::SetCandidateWindowPos() {
-	HIMC hIMC = ::ImmGetContext(MainHWND());
-	if (hIMC) {
+	IMContext imc(MainHWND());
+	if (imc.hIMC) {
 		Point pos = PointMainCaret();
 		CANDIDATEFORM CandForm;
 		CandForm.dwIndex = 0;
 		CandForm.dwStyle = CFS_CANDIDATEPOS;
 		CandForm.ptCurrentPos.x = static_cast<int>(pos.x);
 		CandForm.ptCurrentPos.y = static_cast<int>(pos.y + vs.lineHeight);
-		::ImmSetCandidateWindow(hIMC, &CandForm);
-		::ImmReleaseContext(MainHWND(), hIMC);
+		::ImmSetCandidateWindow(imc.hIMC, &CandForm);
 	}
 }
 
@@ -922,15 +945,14 @@ void ScintillaWin::EscapeHanja() {
 
 	std::wstring uniChar = StringDecode(oneChar, CodePageOfDocument());
 
-	HIMC hIMC=ImmGetContext(MainHWND());
-	if (hIMC) {
+	IMContext imc(MainHWND());
+	if (imc.hIMC) {
 		// Set the candidate box position since IME may show it.
 		SetCandidateWindowPos();
 		// IME_ESC_HANJA_MODE appears to receive the first character only.
-		if (ImmEscapeW(GetKeyboardLayout(0), hIMC, IME_ESC_HANJA_MODE, &uniChar[0])) { 
+		if (ImmEscapeW(GetKeyboardLayout(0), imc.hIMC, IME_ESC_HANJA_MODE, &uniChar[0])) {
 			SetSelection (currentPos, currentPos + oneCharLen);
 		}
-		::ImmReleaseContext(MainHWND(), hIMC);
 	}
 }
 
@@ -952,8 +974,8 @@ sptr_t ScintillaWin::HandleCompositionInline(uptr_t, sptr_t lParam) {
 	// Copy & paste by johnsonj with a lot of helps of Neil.
 	// Great thanks for my foreruners, jiniya and BLUEnLIVE.
 
-	HIMC hIMC = ::ImmGetContext(MainHWND());
-	if (!hIMC) {
+	IMContext imc(MainHWND());
+	if (!imc.hIMC) {
 		return 0;
 	}
 
@@ -962,7 +984,7 @@ sptr_t ScintillaWin::HandleCompositionInline(uptr_t, sptr_t lParam) {
 	} else {
 		// No tentative undo means start of this composition so
 		// fill in any virtual spaces.
-		FillVirtualSpace();
+		ClearBeforeTentativeStart();
 	}
 
 	view.imeCaretBlockOverride = false;
@@ -970,12 +992,11 @@ sptr_t ScintillaWin::HandleCompositionInline(uptr_t, sptr_t lParam) {
 	if (lParam & GCS_COMPSTR) {
 		wchar_t wcs[maxLenInputIME] = { 0 };
 		long bytes = ::ImmGetCompositionStringW
-			(hIMC, GCS_COMPSTR, wcs, maxLenInputIME);
+			(imc.hIMC, GCS_COMPSTR, wcs, maxLenInputIME);
 		unsigned int wcsLen = bytes / 2;
 
 		if ((wcsLen == 0) || (wcsLen >= maxLenInputIME)) {
 			ShowCaretAtCurrentPosition();
-			::ImmReleaseContext(MainHWND(), hIMC);
 			return 0;
 		}
 
@@ -986,10 +1007,10 @@ sptr_t ScintillaWin::HandleCompositionInline(uptr_t, sptr_t lParam) {
 		unsigned int imeCursorPos = 0;
 
 		if (lParam & GCS_COMPATTR) {
-			ImmGetCompositionStringW(hIMC, GCS_COMPATTR, compAttr, sizeof(compAttr));
+			ImmGetCompositionStringW(imc.hIMC, GCS_COMPATTR, compAttr, sizeof(compAttr));
 		}
 		if (lParam & GCS_CURSORPOS) {
-			imeCursorPos = ImmGetCompositionStringW(hIMC, GCS_CURSORPOS, NULL, 0);
+			imeCursorPos = ImmGetCompositionStringW(imc.hIMC, GCS_CURSORPOS, NULL, 0);
 		}
 
 		// Display character by character.
@@ -1018,7 +1039,7 @@ sptr_t ScintillaWin::HandleCompositionInline(uptr_t, sptr_t lParam) {
 
 			// Record compstr character positions for moving IME carets.
 			numBytes += oneCharLen;
-			imeCharPos[i + 1] = numBytes;
+			imeCharPos[i + ucWidth] = numBytes;
 
 			// Draw an indicator on the character.
 			int indicator = SC_INDICATOR_UNKNOWN;
@@ -1047,7 +1068,7 @@ sptr_t ScintillaWin::HandleCompositionInline(uptr_t, sptr_t lParam) {
 	} else if (lParam & GCS_RESULTSTR) {
 		wchar_t wcs[maxLenInputIME] = { 0 };
 		long bytes = ::ImmGetCompositionStringW
-			(hIMC, GCS_RESULTSTR, wcs, maxLenInputIME);
+			(imc.hIMC, GCS_RESULTSTR, wcs, maxLenInputIME);
 		unsigned int wcsLen = bytes / 2;
 
 		for (size_t i = 0; i < wcsLen;) {
@@ -1068,9 +1089,9 @@ sptr_t ScintillaWin::HandleCompositionInline(uptr_t, sptr_t lParam) {
 			i += ucWidth;
 		}
 	}
+	EnsureCaretVisible();
 	SetCandidateWindowPos();
 	ShowCaretAtCurrentPosition();
-	::ImmReleaseContext(MainHWND(), hIMC);
 	return 0;
 }
 
@@ -1318,9 +1339,8 @@ sptr_t ScintillaWin::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam
 
 		case WM_LBUTTONDOWN: {
 			// For IME, set the composition string as the result string.
-			HIMC hIMC = ::ImmGetContext(MainHWND());
-			::ImmNotifyIME(hIMC, NI_COMPOSITIONSTR, CPS_COMPLETE, 0);
-			::ImmReleaseContext(MainHWND(), hIMC);
+			IMContext imc(MainHWND());
+			::ImmNotifyIME(imc.hIMC, NI_COMPOSITIONSTR, CPS_COMPLETE, 0);
 			//
 			//Platform::DebugPrintf("Buttdown %d %x %x %x %x %x\n",iMessage, wParam, lParam,
 			//	Platform::IsKeyDown(VK_SHIFT),
@@ -1453,6 +1473,13 @@ sptr_t ScintillaWin::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam
 				return ::DefWindowProc(MainHWND(), iMessage, wParam, lParam);
 			}
 
+		case WM_IME_REQUEST: {
+			if  (wParam == IMR_RECONVERTSTRING) {
+				return ImeOnReconvert(lParam);
+			}
+			return ::DefWindowProc(MainHWND(), iMessage, wParam, lParam);
+		}
+
 		case WM_KEYUP:
 			//Platform::DebugPrintf("S keyup %d %x %x\n",iMessage, wParam, lParam);
 			return ::DefWindowProc(MainHWND(), iMessage, wParam, lParam);
@@ -1477,10 +1504,9 @@ sptr_t ScintillaWin::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam
 					DestroySystemCaret();
 				}
 				// Explicitly complete any IME composition
-				HIMC hIMC = ImmGetContext(MainHWND());
-				if (hIMC) {
-					::ImmNotifyIME(hIMC, NI_COMPOSITIONSTR, CPS_COMPLETE, 0);
-					::ImmReleaseContext(MainHWND(), hIMC);
+				IMContext imc(MainHWND());
+				if (imc.hIMC) {
+					::ImmNotifyIME(imc.hIMC, NI_COMPOSITIONSTR, CPS_COMPLETE, 0);
 				}
 			}
 			break;
@@ -2577,14 +2603,14 @@ DropTarget::DropTarget() {
 void ScintillaWin::ImeStartComposition() {
 	if (caret.active) {
 		// Move IME Window to current caret position
-		HIMC hIMC = ::ImmGetContext(MainHWND());
+		IMContext imc(MainHWND());
 		Point pos = PointMainCaret();
 		COMPOSITIONFORM CompForm;
 		CompForm.dwStyle = CFS_POINT;
 		CompForm.ptCurrentPos.x = static_cast<int>(pos.x);
 		CompForm.ptCurrentPos.y = static_cast<int>(pos.y);
 
-		::ImmSetCompositionWindow(hIMC, &CompForm);
+		::ImmSetCompositionWindow(imc.hIMC, &CompForm);
 
 		// Set font of IME window to same as surrounded text.
 		if (stylesValid) {
@@ -2611,9 +2637,8 @@ void ScintillaWin::ImeStartComposition() {
 				UTF16FromUTF8(fontName, strlen(fontName)+1, lf.lfFaceName, LF_FACESIZE);
 			}
 
-			::ImmSetCompositionFontW(hIMC, &lf);
+			::ImmSetCompositionFontW(imc.hIMC, &lf);
 		}
-		::ImmReleaseContext(MainHWND(), hIMC);
 		// Caret is displayed in IME window. So, caret in Scintilla is useless.
 		DropCaret();
 	}
@@ -2622,6 +2647,88 @@ void ScintillaWin::ImeStartComposition() {
 /** Called when IME Window closed. */
 void ScintillaWin::ImeEndComposition() {
 	ShowCaretAtCurrentPosition();
+}
+
+LRESULT ScintillaWin::ImeOnReconvert(LPARAM lParam) {
+	// Reconversion on windows limits within one line without eol.
+	// Look around:   baseStart  <--  (|mainStart|  -- mainEnd)  --> baseEnd.
+	const int mainStart = sel.RangeMain().Start().Position();
+	const int mainEnd = sel.RangeMain().End().Position();
+	const int curLine = pdoc->LineFromPosition(mainStart);
+	if (curLine != pdoc->LineFromPosition(mainEnd))
+		return 0;
+	const int baseStart = pdoc->LineStart(curLine);
+	const int baseEnd = pdoc->LineEnd(curLine);
+	if ((baseStart == baseEnd) || (mainEnd > baseEnd))
+		return 0;
+
+	const int codePage = CodePageOfDocument();
+	const std::wstring rcFeed = StringDecode(RangeText(baseStart, baseEnd), codePage);
+	const int rcFeedLen = static_cast<int>(rcFeed.length()) * sizeof(wchar_t);
+	const int rcSize = sizeof(RECONVERTSTRING) + rcFeedLen + sizeof(wchar_t);
+
+	RECONVERTSTRING *rc = (RECONVERTSTRING *)lParam;
+	if (!rc)
+		return rcSize; // Immediately be back with rcSize of memory block.
+
+	wchar_t *rcFeedStart = (wchar_t*)(rc + 1);
+	memcpy(rcFeedStart, &rcFeed[0], rcFeedLen);
+
+	std::string rcCompString = RangeText(mainStart, mainEnd);
+	std::wstring rcCompWstring = StringDecode(rcCompString, codePage);
+	std::string rcCompStart = RangeText(baseStart, mainStart);
+	std::wstring rcCompWstart = StringDecode(rcCompStart, codePage);
+
+	// Map selection to dwCompStr.
+	// No selection assumes current caret as rcCompString without length.
+	rc->dwVersion = 0; // It should be absolutely 0.
+	rc->dwStrLen = (DWORD)static_cast<int>(rcFeed.length());
+	rc->dwStrOffset = sizeof(RECONVERTSTRING);
+	rc->dwCompStrLen = (DWORD)static_cast<int>(rcCompWstring.length());
+	rc->dwCompStrOffset = (DWORD)static_cast<int>(rcCompWstart.length()) * sizeof(wchar_t);
+	rc->dwTargetStrLen = rc->dwCompStrLen;
+	rc->dwTargetStrOffset =rc->dwCompStrOffset; 
+
+	IMContext imc(MainHWND());
+	if (!imc.hIMC)
+		return 0;
+
+	if (!::ImmSetCompositionStringW(imc.hIMC, SCS_QUERYRECONVERTSTRING, rc, rcSize, NULL, 0))
+		return 0;
+
+	// No selection asks IME to fill target fields with its own value.
+	int tgWlen = rc->dwTargetStrLen;
+	int tgWstart = rc->dwTargetStrOffset / sizeof(wchar_t);
+
+	std::string tgCompStart = StringEncode(rcFeed.substr(0, tgWstart), codePage);
+	std::string tgComp = StringEncode(rcFeed.substr(tgWstart, tgWlen), codePage);
+
+	// No selection needs to adjust reconvert start position for IME set. 
+	int adjust = static_cast<int>(tgCompStart.length() - rcCompStart.length());
+	int docCompLen = static_cast<int>(tgComp.length());
+
+	// Make place for next composition string to sit in.
+	for (size_t r=0; r<sel.Count(); r++) {
+		int rBase = sel.Range(r).Start().Position();
+		int docCompStart = rBase + adjust;
+
+		if (inOverstrike) { // the docCompLen of bytes will be overstriked.
+			sel.Range(r).caret.SetPosition(docCompStart);
+			sel.Range(r).anchor.SetPosition(docCompStart);
+		} else {
+			// Ensure docCompStart+docCompLen be not beyond lineEnd.
+			// since docCompLen by byte might break eol.
+			int lineEnd = pdoc->LineEnd(pdoc->LineFromPosition(rBase));
+			int overflow = (docCompStart + docCompLen) - lineEnd;
+			if (overflow > 0) {
+				pdoc->DeleteChars(docCompStart, docCompLen - overflow);
+			} else {
+				pdoc->DeleteChars(docCompStart, docCompLen);
+			}
+		}
+	}
+	// Immediately Target Input or candidate box choice with GCS_COMPSTR.
+	return rcSize;
 }
 
 void ScintillaWin::GetIntelliMouseParameters() {
@@ -3136,8 +3243,8 @@ BOOL ScintillaWin::DestroySystemCaret() {
 	return retval;
 }
 
-sptr_t PASCAL ScintillaWin::CTWndProc(
-    HWND hWnd, UINT iMessage, WPARAM wParam, sptr_t lParam) {
+LRESULT PASCAL ScintillaWin::CTWndProc(
+	HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam) {
 	// Find C++ object associated with window.
 	ScintillaWin *sciThis = reinterpret_cast<ScintillaWin *>(PointerFromWindow(hWnd));
 	try {
@@ -3254,8 +3361,8 @@ sptr_t __stdcall Scintilla_DirectFunction(
 	return sci->WndProc(iMessage, wParam, lParam);
 }
 
-sptr_t PASCAL ScintillaWin::SWndProc(
-    HWND hWnd, UINT iMessage, WPARAM wParam, sptr_t lParam) {
+LRESULT PASCAL ScintillaWin::SWndProc(
+	HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam) {
 	//Platform::DebugPrintf("S W:%x M:%x WP:%x L:%x\n", hWnd, iMessage, wParam, lParam);
 
 	// Find C++ object associated with window.
