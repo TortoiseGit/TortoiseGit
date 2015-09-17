@@ -150,9 +150,9 @@ int CSetOverlayHandlers::GetInstalledOverlays()
 			rc = RegEnumKeyEx(hKey, i, value, &size, NULL, NULL, NULL, &last_write_time);
 			if (rc == ERROR_SUCCESS)
 			{
-				for (int i = 0; value[i]; i++)
+				for (int j = 0; value[j]; ++j)
 				{
-					value[i] = towlower(value[i]);
+					value[j] = (wchar_t)towlower(value[j]);
 				}
 				if (wcsstr(&value[0], L"tortoise") == 0)
 				{
