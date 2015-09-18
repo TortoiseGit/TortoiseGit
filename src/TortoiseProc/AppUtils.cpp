@@ -296,6 +296,12 @@ BOOL CAppUtils::StartExtMerge(
 			com = _T("\"") + com + _T("\"");
 			com = com + _T(" /base:%base /theirs:%theirs /mine:%mine /result:%merged");
 			com = com + _T(" /basetitle:%bname /theirstitle:%tname /minetitle:%yname");
+			if (resolveMsgHwnd)
+			{
+				CString s;
+				s.Format(L" /resolvemsghwnd:%I64d", (__int64)resolveMsgHwnd);
+				com += s;
+			}
 		}
 		else
 		{

@@ -19,6 +19,7 @@
 #define IDS_DUALIMAGEINFOTT             112
 #define IDS_ALPHABUTTONTT               113
 #define IDS_SELECT                      114
+#define IDS_MARKASRESOLVED              115
 #define IDD_OPEN                        130
 #define IDR_TORTOISEIDIFF               131
 #define IDI_OVERLAP                     134

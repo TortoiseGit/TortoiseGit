@@ -1,5 +1,6 @@
 // TortoiseIDiff - an image diff viewer in TortoiseSVN
 
+// Copyright (C) 2015 - TortoiseGit
 // Copyright (C) 2006-2007, 2009, 2011-2013, 2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -66,6 +67,9 @@ public:
         , hwndTB(0)
         , hToolbarImgList(NULL)
         , bSelectionMode(false)
+        , resolveMsgWnd(nullptr)
+        , resolveMsgLParam(NULL)
+        , resolveMsgWParam(NULL)
     {
         SetWindowTitle((LPCTSTR)ResString(hResource, IDS_APP_TITLE));
     };
@@ -154,5 +158,10 @@ protected:
     std::map<FileType, std::wstring>    selectionPaths;
     std::map<FileType, std::wstring>    selectionTitles;
     std::wstring                        selectionResult;
+
+public:
+    HWND			resolveMsgWnd;
+    WPARAM			resolveMsgWParam;
+    LPARAM			resolveMsgLParam;
 };
 

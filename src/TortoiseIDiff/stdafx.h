@@ -11,8 +11,15 @@
 
 #include "../targetver.h"
 
-// Windows Header Files:
-#include <windows.h>
+
+#define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS	// some CString constructors will be explicit
+
+// turns off MFC's hiding of some common and often safely ignored warning messages
+#define _AFX_ALL_WARNINGS
+
+#include <afx.h>
+#include <ShlObj.h>
+#include <Shlwapi.h>
 
 // C RunTime Header Files
 #include <stdlib.h>
@@ -22,6 +29,12 @@
 #include <comdef.h>
 
 #include "MyMemDC.h"
+
+#pragma warning(push)
+#pragma warning(disable: 4510 4512 4610)
+#include "git2.h"
+#pragma warning(pop)
+#include "SmartLibgit2Ref.h"
 
 #ifdef _WIN64
 #   define APP_X64_STRING   "x64"

@@ -29,6 +29,7 @@
   <PropertyGroup Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
+    <UseOfMfc>Dynamic</UseOfMfc>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'" Label="Configuration">
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -39,7 +40,7 @@
   <PropertyGroup Label="UserMacros" />
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>$(ProjectDir);..\Utils;..\Utils\MiscUI;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);..\Utils;..\Utils\MiscUI;..\..\ext\libgit2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies>gdiplus.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -52,9 +53,11 @@
     <ClCompile Include="..\Utils\MiscUI\BaseWindow.cpp" />
     <ClCompile Include="..\Utils\MiscUI\hyperlink_base.cpp" />
     <ClCompile Include="..\Utils\MiscUI\Picture.cpp" />
+    <ClCompile Include="..\Utils\PathUtils.cpp" />
     <ClCompile Include="..\Utils\Registry.cpp" />
     <ClCompile Include="..\Utils\SysInfo.cpp" />
     <ClCompile Include="..\Utils\TaskbarUUID.cpp" />
+    <ClCompile Include="..\Utils\UnicodeUtils.cpp" />
     <ClCompile Include="AboutDlg.cpp" />
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="NiceTrackbar.cpp" />
@@ -73,9 +76,11 @@
     <ClInclude Include="..\Utils\MiscUI\MyMemDC.h" />
     <ClInclude Include="..\Utils\MiscUI\Picture.h" />
     <ClInclude Include="..\Utils\MiscUI\ResString.h" />
+    <ClInclude Include="..\Utils\PathUtils.h" />
     <ClInclude Include="..\Utils\registry.h" />
     <ClInclude Include="..\Utils\SysInfo.h" />
     <ClInclude Include="..\Utils\TaskbarUUID.h" />
+    <ClInclude Include="..\Utils\UnicodeUtils.h" />
     <ClInclude Include="AboutDlg.h" />
     <ClInclude Include="MainWindow.h" />
     <ClInclude Include="NiceTrackbar.h" />
@@ -109,6 +114,11 @@
   <ItemGroup>
     <None Include="..\Resources\pan.cur" />
     <None Include="..\Resources\pandown.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\ext\build\libgit2.vcxproj">
+      <Project>{2b4f366c-93ba-491e-87af-5ef7b37f75f7}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

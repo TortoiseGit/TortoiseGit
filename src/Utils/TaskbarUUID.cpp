@@ -79,7 +79,7 @@ std::wstring GetTaskIDPerUUID(LPCTSTR uuid /*= NULL */)
     return id;
 }
 
-#ifdef _MFC_VER
+#ifdef __AFXWIN_H__
 extern CString g_sGroupingUUID;
 extern CString g_sGroupingIcon;
 extern bool g_bGroupingRemoveIcon;
@@ -94,7 +94,7 @@ void SetUUIDOverlayIcon( HWND hWnd )
             std::wstring uuid;
             std::wstring sicon;
             bool bRemoveicon = false;
-#ifdef _MFC_VER
+#ifdef __AFXWIN_H__
             uuid = g_sGroupingUUID;
             sicon = g_sGroupingIcon;
             bRemoveicon = g_bGroupingRemoveIcon;

@@ -3915,7 +3915,7 @@ msgstr ""
 msgid "Do you want to load the changed files?"
 msgstr ""
 
-#. Resource IDs: (5100)
+#. Resource IDs: (115, 5100)
 #, c-format
 msgid "Do you want to mark the file\n%s\nas resolved?"
 msgstr ""

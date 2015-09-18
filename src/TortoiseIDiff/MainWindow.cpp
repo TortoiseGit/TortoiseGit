@@ -1,5 +1,6 @@
 // TortoiseIDiff - an image diff viewer in TortoiseSVN
 
+// Copyright (C) 2015 - TortoiseGit
 // Copyright (C) 2006-2013, 2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -23,6 +24,7 @@
 #include "MainWindow.h"
 #include "AboutDlg.h"
 #include "TaskbarUUID.h"
+#include "PathUtils.h"
 
 #pragma comment(lib, "comctl32.lib")
 
@@ -738,24 +740,79 @@ LRESULT CMainWindow::DoCommand(int id, LPARAM lParam)
     case SELECTBUTTON_ID:
         {
             HWND hSource = (HWND)lParam;
+            FileType resolveWith;
             if (picWindow1 == hSource)
+                resolveWith = FileTypeMine;
+            else if (picWindow2 == hSource)
+                resolveWith = FileTypeBase;
+            else if (picWindow3 == hSource)
+                resolveWith = FileTypeTheirs;
+            else
+                break;
+
+            if (selectionResult.empty())
             {
-                if (!selectionResult.empty())
-                    CopyFile(selectionPaths[FileTypeMine].c_str(), selectionResult.c_str(), FALSE);
-                PostQuitMessage(FileTypeMine);
+                PostQuitMessage(resolveWith);
+                break;
             }
-            if (picWindow2 == hSource)
+
+            CopyFile(selectionPaths[resolveWith].c_str(), selectionResult.c_str(), FALSE);
+
+            CAutoBuf projectRoot;
+            if (git_repository_discover(projectRoot, CUnicodeUtils::GetUTF8(selectionResult.c_str()), FALSE, nullptr) < 0 && strstr(projectRoot->ptr, "/.git/"))
             {
-                if (!selectionResult.empty())
-                    CopyFile(selectionPaths[FileTypeBase].c_str(), selectionResult.c_str(), FALSE);
-                PostQuitMessage(FileTypeBase);
+                PostQuitMessage(resolveWith);
+                break;
             }
-            if (picWindow3 == hSource)
+
+            CAutoRepository repository(projectRoot->ptr);
+            if (!repository)
             {
-                if (!selectionResult.empty())
-                    CopyFile(selectionPaths[FileTypeTheirs].c_str(), selectionResult.c_str(), FALSE);
-                PostQuitMessage(FileTypeTheirs);
+                PostQuitMessage(resolveWith);
+                break;
             }
+
+            CStringA subpath = CUnicodeUtils::GetUTF8(selectionResult.c_str()).Mid((int)strlen(projectRoot->ptr) - 5); /* 5 = len(".git/") */
+
+            CAutoIndex index;
+            if (git_repository_index(index.GetPointer(), repository) || git_index_get_bypath(index, CUnicodeUtils::GetUTF8(subpath), 1) == nullptr)
+            {
+                PostQuitMessage(resolveWith);
+                break;
+            }
+
+            CString sTemp;
+            sTemp.Format(ResString(hResource, IDS_MARKASRESOLVED), (LPCTSTR)CPathUtils::GetFileNameFromPath(selectionResult.c_str()));
+            if (MessageBox(m_hwnd, sTemp, _T("TortoiseGitMerge"), MB_YESNO | MB_ICONQUESTION) != IDYES)
+                break;
+
+            CString cmd;
+            cmd.Format(_T("\"%sTortoiseGitProc.exe\" /command:resolve /path:\"%s\" /closeonend:1 /noquestion /skipcheck /silent"), (LPCTSTR)CPathUtils::GetAppDirectory(), selectionResult.c_str());
+            if (resolveMsgWnd)
+            {
+                CString s;
+                s.Format(L" /resolvemsghwnd:%I64d /resolvemsgwparam:%I64d /resolvemsglparam:%I64d", (__int64)resolveMsgWnd, (__int64)resolveMsgWParam, (__int64)resolveMsgLParam);
+                cmd += s;
+            }
+
+            STARTUPINFO startup = { 0 };
+            PROCESS_INFORMATION process = { 0 };
+            startup.cb = sizeof(startup);
+
+            if (!CreateProcess(nullptr, cmd.GetBuffer(), nullptr, nullptr, FALSE, 0, nullptr, nullptr, &startup, &process))
+            {
+                cmd.ReleaseBuffer();
+                PostQuitMessage(resolveWith);
+                break;
+            }
+            cmd.ReleaseBuffer();
+
+            AllowSetForegroundWindow(process.dwProcessId);
+
+            CloseHandle(process.hThread);
+            CloseHandle(process.hProcess);
+
+            PostQuitMessage(resolveWith);
         }
         break;
     case IDM_EXIT:

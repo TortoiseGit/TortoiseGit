@@ -16,7 +16,7 @@
 //
 // This class implements a memory Device Context
 
-#ifdef _MFC_VER
+#ifdef __AFXWIN_H__
 class CMyMemDC : public CDC
 {
 public:

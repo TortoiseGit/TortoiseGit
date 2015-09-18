@@ -1,5 +1,6 @@
 // TortoiseIDiff - an image diff viewer in TortoiseSVN and TortoiseGit
 
+// Copyright (C) 2015 - TortoiseGit
 // Copyright (C) 2006-2007, 2010-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -48,6 +49,8 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
     hResource = langDLL.Init(_T("TortoiseIDiff"), langId);
     if (hResource == NULL)
         hResource = hInstance;
+
+    git_libgit2_init();
 
     CCmdLineParser parser(lpCmdLine);
 
@@ -111,6 +114,9 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
         mainWindow->SetSelectionImage(FileTypeTheirs, parser.GetVal(L"theirs"), parser.HasVal(L"theirstitle") ? parser.GetVal(L"theirstitle") : L"");
     if (parser.HasVal(L"result"))
         mainWindow->SetSelectionResult(parser.GetVal(L"result"));
+    mainWindow->resolveMsgWnd = parser.HasVal(L"resolvemsghwnd") ? (HWND)parser.GetLongLongVal(L"resolvemsghwnd") : 0;
+    mainWindow->resolveMsgWParam = parser.HasVal(L"resolvemsgwparam") ? (WPARAM)parser.GetLongLongVal(L"resolvemsgwparam") : 0;
+    mainWindow->resolveMsgLParam = parser.HasVal(L"resolvemsglparam") ? (LPARAM)parser.GetLongLongVal(L"resolvemsglparam") : 0;
     if (mainWindow->RegisterAndCreateWindow())
     {
         HACCEL hAccelTable = LoadAccelerators(hResource, MAKEINTRESOURCE(IDR_TORTOISEIDIFF));
@@ -154,5 +160,6 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
     DestroyCursor(curHand);
     DestroyCursor(curHandDown);
     CoUninitialize();
+    git_libgit2_shutdown();
     return 1;
 }
