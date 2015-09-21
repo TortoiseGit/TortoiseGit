@@ -61,3 +61,38 @@ TEST(CStringUtils, LinesWrap)
 	splittedline = CStringUtils::LinesWrap(longline, 80);
 	EXPECT_STREQ(_T("The commit comment is not properly formatted.\nFormat:\n  Field 1 : Field 2 : Field 3\nWhere:\nField 1 - Team Name|Triage|Merge|Goal\nField 2 - V1 Backlog Item ID|Triage Number|SVNBranch|Goal Name\nField 3 - Description of change\nExamples:\n\nTeam Gamma : B-12345 : Changed some code\n  Triage : 123 : Fixed production release bug\n  Merge : sprint0812 : Merged sprint0812 into prod\n  Goal : Implement Pre-Commit Hook : Commit message hook impl"), splittedline);
 }
+
+TEST(CStringUtils, RemoveAccelerators)
+{
+	CString empty;
+	CStringUtils::RemoveAccelerators(empty);
+	EXPECT_TRUE(empty.IsEmpty());
+
+	CString text1 = L"&Accellerator";
+	CStringUtils::RemoveAccelerators(text1);
+	EXPECT_STREQ(L"Accellerator", text1);
+
+	CString text1a = L"Ac&cellerator";
+	CStringUtils::RemoveAccelerators(text1a);
+	EXPECT_STREQ(L"Accellerator", text1a);
+
+	CString text2 = L"Accellerator&";
+	CStringUtils::RemoveAccelerators(text2);
+	EXPECT_STREQ(L"Accellerator", text2);
+
+	CString text3 = L"Some & text";
+	CStringUtils::RemoveAccelerators(text3);
+	EXPECT_STREQ(L"Some & text", text3);
+
+	CString text4 = L"&&Accellerator";
+	CStringUtils::RemoveAccelerators(text4);
+	EXPECT_STREQ(L"&Accellerator", text4);
+
+	CString text5 = L"Acce&&&llerator";
+	CStringUtils::RemoveAccelerators(text5);
+	EXPECT_STREQ(L"Acce&llerator", text5);
+
+	CString text6 = L"Some & te&xt";
+	CStringUtils::RemoveAccelerators(text6);
+	EXPECT_STREQ(L"Some & text", text6);
+}

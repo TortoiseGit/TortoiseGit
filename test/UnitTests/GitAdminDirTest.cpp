@@ -219,3 +219,140 @@ TEST(CGitAdminDir, HasAdminDir_ReferencedRepo)
 	EXPECT_TRUE(GitAdminDir::HasAdminDir(tmpDir.GetTempDir(), &repoRoot));
 	EXPECT_STREQ(tmpDir.GetTempDir(), repoRoot);
 }
+
+TEST(CGitAdminDir, IsWorkingTreeOrBareRepo)
+{
+	CAutoTempDir tmpDir;
+
+	EXPECT_FALSE(GitAdminDir::IsWorkingTreeOrBareRepo(tmpDir.GetTempDir()));
+
+	CAutoRepository repo = nullptr;
+	ASSERT_TRUE(git_repository_init(repo.GetPointer(), CUnicodeUtils::GetUTF8(tmpDir.GetTempDir()), true) == 0);
+
+	EXPECT_TRUE(GitAdminDir::IsWorkingTreeOrBareRepo(tmpDir.GetTempDir()));
+}
+
+TEST(CGitAdminDir, IsWorkingTreeOrBareRepo_normalRepo)
+{
+	CAutoTempDir tmpDir;
+
+	EXPECT_FALSE(GitAdminDir::IsWorkingTreeOrBareRepo(tmpDir.GetTempDir()));
+
+	CAutoRepository repo = nullptr;
+	ASSERT_TRUE(git_repository_init(repo.GetPointer(), CUnicodeUtils::GetUTF8(tmpDir.GetTempDir()), false) == 0);
+
+	EXPECT_TRUE(GitAdminDir::IsWorkingTreeOrBareRepo(tmpDir.GetTempDir()));
+
+	EXPECT_FALSE(GitAdminDir::IsWorkingTreeOrBareRepo(tmpDir.GetTempDir() + _T("\\.git")));
+
+	EXPECT_FALSE(GitAdminDir::IsWorkingTreeOrBareRepo(tmpDir.GetTempDir() + _T("\\.git\\objects")));
+}
+
+TEST(CGitAdminDir, IsWorkingTreeOrBareRepo_ReferencedRepo)
+{
+	CAutoTempDir tmpDir;
+
+	CString gitFile = tmpDir.GetTempDir() + L"\\.git";
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)gitFile, L"gitdir: dontcare"));
+
+	EXPECT_TRUE(GitAdminDir::IsWorkingTreeOrBareRepo(tmpDir.GetTempDir()));
+}
+
+TEST(CGitAdminDir, ReadGitLink)
+{
+	CAutoTempDir tmpDir;
+
+	CString gitFile = tmpDir.GetTempDir() + L"\\.git";
+	EXPECT_STREQ(L"", GitAdminDir::ReadGitLink(L"C:\\somerepo", gitFile));
+
+	EXPECT_TRUE(::CreateDirectory(gitFile, nullptr));
+	EXPECT_STREQ(L"", GitAdminDir::ReadGitLink(L"C:\\somerepo", gitFile));
+	EXPECT_TRUE(::RemoveDirectory(gitFile));
+
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)gitFile, L"broken"));
+	EXPECT_STREQ(L"", GitAdminDir::ReadGitLink(L"C:\\somerepo", gitFile));
+
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)gitFile, L"gitdir: dontcare"));
+	EXPECT_STREQ(L"dontcare", GitAdminDir::ReadGitLink(L"C:\\somerepo", gitFile));
+
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)gitFile, L"gitdir: ./dontcare"));
+	EXPECT_STREQ(L"C:\\somerepo\\dontcare", GitAdminDir::ReadGitLink(L"C:\\somerepo", gitFile));
+
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)gitFile, L"gitdir: .dontcare"));
+	EXPECT_STREQ(L"C:\\somerepo\\.dontcare", GitAdminDir::ReadGitLink(L"C:\\somerepo", gitFile));
+
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)gitFile, L"gitdir: ..dontcare"));
+	EXPECT_STREQ(L"C:\\somerepo\\..dontcare", GitAdminDir::ReadGitLink(L"C:\\somerepo", gitFile));
+
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)gitFile, L"gitdir: ../.git/modules/dontcare"));
+	EXPECT_STREQ(L"C:\\.git\\modules\\dontcare", GitAdminDir::ReadGitLink(L"C:\\somerepo", gitFile));
+}
+
+TEST(CGitAdminDir, GetGitTopDir)
+{
+	CAutoTempDir tmpDir;
+
+	EXPECT_STREQ(L"", GitAdminDir::GetGitTopDir(tmpDir.GetTempDir()));
+
+	CString gitFile = tmpDir.GetTempDir() + L"\\.git";
+	CString testFile = tmpDir.GetTempDir() + L"\\.git\\test";
+	EXPECT_TRUE(::CreateDirectory(gitFile, nullptr));
+	EXPECT_STREQ(L"", GitAdminDir::GetGitTopDir(gitFile));
+	EXPECT_STREQ(L"", GitAdminDir::GetGitTopDir(gitFile + L"\\test"));
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)testFile, L"something"));
+	EXPECT_STREQ(L"", GitAdminDir::GetGitTopDir(gitFile + L"\\test"));
+	EXPECT_TRUE(::DeleteFile(testFile));
+	EXPECT_TRUE(::RemoveDirectory(gitFile));
+
+	// should not matter whether .git is a directory or file
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)gitFile, L"gitdir: dontcare"));
+
+	EXPECT_STREQ(tmpDir.GetTempDir(), GitAdminDir::GetGitTopDir(gitFile));
+	EXPECT_STREQ(tmpDir.GetTempDir(), GitAdminDir::GetGitTopDir(tmpDir.GetTempDir()));
+	testFile = tmpDir.GetTempDir() + L"\\test";
+	EXPECT_STREQ(tmpDir.GetTempDir(), GitAdminDir::GetGitTopDir(testFile));
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)testFile, L"something"));
+	EXPECT_STREQ(tmpDir.GetTempDir(), GitAdminDir::GetGitTopDir(testFile));
+
+	EXPECT_TRUE(::CreateDirectory(tmpDir.GetTempDir() + L"\\subdir", nullptr));
+	EXPECT_STREQ(tmpDir.GetTempDir(), GitAdminDir::GetGitTopDir(tmpDir.GetTempDir() + L"\\subdir"));
+	testFile = tmpDir.GetTempDir() + L"\\subdir\\test";
+	EXPECT_STREQ(tmpDir.GetTempDir(), GitAdminDir::GetGitTopDir(testFile));
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)testFile, L"something"));
+	EXPECT_STREQ(tmpDir.GetTempDir(), GitAdminDir::GetGitTopDir(testFile));
+
+	// make subdir a nested repository
+	gitFile = tmpDir.GetTempDir() + L"\\subdir\\.git";
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)gitFile, L"gitdir: dontcare"));
+	EXPECT_STREQ(tmpDir.GetTempDir() + L"\\subdir", GitAdminDir::GetGitTopDir(tmpDir.GetTempDir() + L"\\subdir"));
+	EXPECT_STREQ(tmpDir.GetTempDir() + L"\\subdir", GitAdminDir::GetGitTopDir(testFile));
+}
+
+TEST(CGitAdminDir, GetSuperProjectRoot)
+{
+	CAutoTempDir tmpDir;
+
+	EXPECT_STREQ(L"", GitAdminDir::GetSuperProjectRoot(tmpDir.GetTempDir()));
+
+	EXPECT_TRUE(::CreateDirectory(tmpDir.GetTempDir() + L"\\.git", nullptr));
+	EXPECT_STREQ(L"", GitAdminDir::GetSuperProjectRoot(tmpDir.GetTempDir()));
+
+	EXPECT_TRUE(::CreateDirectory(tmpDir.GetTempDir() + L"\\subdir", nullptr));
+	EXPECT_STREQ(L"", GitAdminDir::GetSuperProjectRoot(tmpDir.GetTempDir()));
+
+	CString gitmodules = tmpDir.GetTempDir() + L"\\.gitmodules";
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)gitmodules, L"something"));
+	EXPECT_STREQ(tmpDir.GetTempDir(), GitAdminDir::GetSuperProjectRoot(tmpDir.GetTempDir()));
+	EXPECT_STREQ(tmpDir.GetTempDir(), GitAdminDir::GetSuperProjectRoot(tmpDir.GetTempDir() + L"\\subdir"));
+
+	// make subdir a nested repository
+	EXPECT_TRUE(::CreateDirectory(tmpDir.GetTempDir() + L"\\subdir\\.git", nullptr));
+	EXPECT_STREQ(L"", GitAdminDir::GetSuperProjectRoot(tmpDir.GetTempDir() + L"\\subdir"));
+
+	EXPECT_TRUE(::DeleteFile(gitmodules));
+	EXPECT_STREQ(L"", GitAdminDir::GetSuperProjectRoot(tmpDir.GetTempDir() + L"\\subdir"));
+
+	gitmodules = tmpDir.GetTempDir() + L"\\subdir\\.gitmodules";
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)gitmodules, L"something"));
+	EXPECT_STREQ(tmpDir.GetTempDir() + L"\\subdir", GitAdminDir::GetSuperProjectRoot(tmpDir.GetTempDir() + L"\\subdir"));
+}

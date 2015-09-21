@@ -265,5 +265,8 @@
     <ClCompile Include="..\..\src\TortoiseProc\GitLogCache.cpp">
       <Filter>TortoiseProc</Filter>
     </ClCompile>
+    <ClCompile Include="GitHashTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

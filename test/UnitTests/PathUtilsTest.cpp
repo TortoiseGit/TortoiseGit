@@ -49,3 +49,21 @@ TEST(CPathUtils, ParseTests)
 	test = _T("d:\\testpath with spaces");
 	EXPECT_TRUE(CPathUtils::ParsePathInString(test).Compare(_T("d:\\testpath with spaces")) == 0);
 }
+
+TEST(CPathUtils, MakeSureDirectoryPathExists)
+{
+	CAutoTempDir tmpDir;
+	EXPECT_TRUE(PathIsDirectory(tmpDir.GetTempDir()));
+	EXPECT_FALSE(PathFileExists(tmpDir.GetTempDir() + L"\\sub"));
+	EXPECT_FALSE(PathIsDirectory(tmpDir.GetTempDir() + L"\\sub"));
+
+	EXPECT_TRUE(CPathUtils::MakeSureDirectoryPathExists(tmpDir.GetTempDir() + L"\\sub\\sub\\dir"));
+	EXPECT_TRUE(PathIsDirectory(tmpDir.GetTempDir() + L"\\sub"));
+	EXPECT_TRUE(PathIsDirectory(tmpDir.GetTempDir() + L"\\sub\\sub"));
+	EXPECT_TRUE(PathIsDirectory(tmpDir.GetTempDir() + L"\\sub\\sub\\dir"));
+
+	EXPECT_TRUE(CPathUtils::MakeSureDirectoryPathExists(tmpDir.GetTempDir() + L"\\sub/asub/adir"));
+	EXPECT_TRUE(PathIsDirectory(tmpDir.GetTempDir() + L"\\sub"));
+	EXPECT_TRUE(PathIsDirectory(tmpDir.GetTempDir() + L"\\sub\\asub"));
+	EXPECT_TRUE(PathIsDirectory(tmpDir.GetTempDir() + L"\\sub\\asub\\adir"));
+}

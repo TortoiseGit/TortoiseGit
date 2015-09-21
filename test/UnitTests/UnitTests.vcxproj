@@ -132,6 +132,7 @@
     <ClCompile Include="CmdLineParserTest.cpp" />
     <ClCompile Include="GitAdminDirTest.cpp" />
     <ClCompile Include="GitByteArrayTest.cpp" />
+    <ClCompile Include="GitHashTest.cpp" />
     <ClCompile Include="GitIndexTest.cpp" />
     <ClCompile Include="GitRevLoglistTest.cpp" />
     <ClCompile Include="GitRevRefBrowseTest.cpp" />
