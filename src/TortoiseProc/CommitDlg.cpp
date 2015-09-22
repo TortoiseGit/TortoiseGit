@@ -891,7 +891,7 @@ void CCommitDlg::OnOK()
 		}
 	}
 
-	if (bAddSuccess && m_bWarnDetachedHead && CheckHeadDetach())
+	if (bAddSuccess && m_bWarnDetachedHead && CAppUtils::CheckHeadDetach())
 		bAddSuccess = false;
 
 	m_sBugID.Trim();
@@ -2530,23 +2530,6 @@ void CCommitDlg::OnHdnItemchangedFilelist(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 {
 	*pResult = 0;
 	TRACE("Item Changed\r\n");
-}
-
-int CCommitDlg::CheckHeadDetach()
-{
-	CString output;
-	if (CGit::GetCurrentBranchFromFile(g_Git.m_CurrentDir, output))
-	{
-		int retval = CMessageBox::Show(NULL, IDS_PROC_COMMIT_DETACHEDWARNING, IDS_APPNAME, MB_YESNOCANCEL | MB_ICONWARNING);
-		if(retval == IDYES)
-		{
-			if (CAppUtils::CreateBranchTag(FALSE, NULL, true) == FALSE)
-				return 1;
-		}
-		else if (retval == IDCANCEL)
-			return 1;
-	}
-	return 0;
 }
 
 void CCommitDlg::OnBnClickedCommitAmenddiff()

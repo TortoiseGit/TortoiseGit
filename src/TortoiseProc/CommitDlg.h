@@ -164,8 +164,6 @@ protected:
 	BOOL				m_bSetAuthor;
 	CString				m_sAuthor;
 
-	int					CheckHeadDetach();
-
 private:
 	CWinThread*			m_pThread;
 	std::map<CString, int>	m_autolist;

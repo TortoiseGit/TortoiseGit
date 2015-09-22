@@ -997,6 +997,7 @@ void CRebaseDlg::OnBnClickedContinue()
 	if( m_RebaseStage == REBASE_DONE)
 	{
 		OnOK();
+		CAppUtils::CheckHeadDetach(m_OrigHEADBranch);
 		CheckRestoreStash();
 		return;
 	}
