@@ -349,7 +349,8 @@
 						represents the number of commits between the beginning of time and the selected commit.
 						This number is NOT guaranteed to be unique, especially if you alter the history (e.g., using rebase) or
 						use several branches at the same time. It can be seen "kinda unique" per branch in case you don't alter its history
-						(e.g. by rebasing, resetting) and only commit or merge other branches on it.
+						(e.g. by rebasing, resetting) and only commit or merge other branches on it. This number is only displayed
+						for first-parent commits and not for commits on non-fast-forward merges (here duplicate numbers could occur).
 						See <ulink url="https://gcc.gnu.org/ml/gcc/2015-08/msg00148.html">
 							<citetitle>https://gcc.gnu.org/ml/gcc/2015-08/msg00148.html</citetitle>
 						</ulink>
