@@ -1538,6 +1538,8 @@
 #define IDS_PROGRESSIMPORT              1907
 #define IDS_PROGRESSREVISIONTEXT        1908
 #define IDC_STATIC_PRUNE                1909
+#define IDC_SHOWREVCOUNTER              1910
+#define IDS_SETTINGS_SHOWREVCOUNTER_TT  1911
 #define IDS_INPUT_REMOVEONE             2014
 #define IDS_INPUT_REMOVEMORE            2015
 #define IDS_MENUREFRESH                 2150
@@ -1882,6 +1884,7 @@
 #define IDC_USER_PASSWORD               9693
 #define IDS_PROGRS_TITLE_CLONE          9694
 #define IDS_GITACTION_UPDATE_REF        9697
+#define IDS_REV_COUNTER                 9698
 #define ID_VIEW_ZOOMIN                  32772
 #define ID_VIEW_ZOOMOUT                 32773
 #define IDM_SHOWFINDBAR                 32787

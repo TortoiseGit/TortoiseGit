@@ -94,6 +94,7 @@ CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
 	m_regbShowGravatar = CRegDWORD(_T("Software\\TortoiseGit\\LogDialog\\ShowGravatar\\") + str, m_bShowGravatar);
 	m_bShowGravatar = !!m_regbShowGravatar;
 	m_bShowDescribe = !!CRegDWORD(_T("Software\\TortoiseGit\\ShowDescribe"));
+	m_bShowBranchRevNo = !!CRegDWORD(_T("Software\\TortoiseGit\\ShowBranchRevisionNumber"), FALSE);
 }
 
 CLogDlg::~CLogDlg()
@@ -778,8 +779,24 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 					out_describe = _T("Describe: ") + result + _T("\r\n");
 			}
 
+			CString out_counter;
+			if (m_bShowBranchRevNo && !pLogEntry->m_CommitHash.IsEmpty())
+			{
+				auto lanes = pLogEntry->m_Lanes;
+				bool isFirstParentCommit = !lanes.empty() && Lanes::isActive(lanes[0]);
+
+				if (isFirstParentCommit)
+				{
+					CString rev_counter, rev_err;
+					if (g_Git.Run(_T("git.exe rev-list --count --first-parent " + pLogEntry->m_CommitHash.ToString()), &rev_counter, &rev_err, CP_UTF8))
+						CMessageBox::Show(GetSafeHwnd(), L"Could not get rev count\n" + rev_counter + L"\n" + rev_err, _T("TortoiseGit"), MB_ICONERROR);
+					else
+						out_counter = _T(", ") + CString(MAKEINTRESOURCE(IDS_REV_COUNTER)) + _T(": ") + rev_counter.Trim();
+				}
+			}
+
 			// set the log message text
-			pMsgView->SetWindowText(CString(MAKEINTRESOURCE(IDS_HASH)) + _T(": ") + pLogEntry->m_CommitHash.ToString() + _T("\r\n") + out_describe + _T("\r\n"));
+			pMsgView->SetWindowText(CString(MAKEINTRESOURCE(IDS_HASH)) + _T(": ") + pLogEntry->m_CommitHash.ToString() + out_counter + _T("\r\n") + out_describe + _T("\r\n"));
 			// turn bug ID's into links if the bugtraq: properties have been set
 			// and we can find a match of those in the log message
 

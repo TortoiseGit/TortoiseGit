@@ -7881,6 +7881,10 @@ msgstr ""
 msgid "Retrying in 2 seconds..."
 msgstr ""
 
+#. Resource IDs: (9698)
+msgid "Branch RevNo"
+msgstr ""
+
 #. Resource IDs: (175, 1230, 3663)
 msgid "Revert"
 msgstr ""
@@ -8765,6 +8769,14 @@ msgstr ""
 
 #. Resource IDs: (20309)
 msgid "Show previous change of selected commit\nShow previous"
+msgstr ""
+
+#. Resource IDs: (1910)
+msgid "Display branch revision number"
+msgstr ""
+
+#. Resource IDs: (1911)
+msgid "Show branch revision number (git rev-list --count --first-parent) in log dialog and after a push to a remote branch; this is not guaranteed to be unique, please see help"
 msgstr ""
 
 #. Resource IDs: (20030)

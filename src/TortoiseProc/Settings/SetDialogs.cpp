@@ -39,6 +39,7 @@ CSetDialogs::CSetDialogs()
 	, m_bDrawBranchesTagsOnRightSide(FALSE)
 	, m_bEnableGravatar(FALSE)
 	, m_bShowDescribe(FALSE)
+	, m_bShowBranchRevNo(FALSE)
 	, m_DescribeStrategy(GIT_DESCRIBE_DEFAULT)
 	, m_DescribeAbbreviatedSize(GIT_DESCRIBE_DEFAULT_ABBREVIATED_SIZE)
 	, m_bDescribeAlwaysLong(FALSE)
@@ -60,6 +61,7 @@ CSetDialogs::CSetDialogs()
 	m_regGravatarUrl = CRegString(_T("Software\\TortoiseGit\\GravatarUrl"), _T("http://www.gravatar.com/avatar/%HASH%?d=identicon"));
 	m_regDrawBranchesTagsOnRightSide = CRegDWORD(_T("Software\\TortoiseGit\\DrawTagsBranchesOnRightSide"), FALSE);
 	m_regShowDescribe = CRegDWORD(_T("Software\\TortoiseGit\\ShowDescribe"), FALSE);
+	m_regShowBranchRevNo = CRegDWORD(_T("Software\\TortoiseGit\\ShowBranchRevisionNumber"), FALSE);
 	m_regDescribeStrategy = CRegDWORD(_T("Software\\TortoiseGit\\DescribeStrategy"), GIT_DESCRIBE_DEFAULT);
 	m_regDescribeAbbreviatedSize = CRegDWORD(_T("Software\\TortoiseGit\\DescribeAbbreviatedSize"), GIT_DESCRIBE_DEFAULT_ABBREVIATED_SIZE);
 	m_regDescribeAlwaysLong = CRegDWORD(_T("Software\\TortoiseGit\\DescribeAlwaysLong"), FALSE);
@@ -97,6 +99,7 @@ void CSetDialogs::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_GRAVATARURL, m_cGravatarUrl);
 	DDX_Check(pDX, IDC_RIGHTSIDEBRANCHESTAGS, m_bDrawBranchesTagsOnRightSide);
 	DDX_Check(pDX, IDC_SHOWDESCRIBE, m_bShowDescribe);
+	DDX_Check(pDX, IDC_SHOWREVCOUNTER, m_bShowBranchRevNo);
 	DDX_CBIndex(pDX, IDC_DESCRIBESTRATEGY, m_DescribeStrategy);
 	DDX_Control(pDX, IDC_DESCRIBESTRATEGY, m_cDescribeStrategy);
 	DDX_Text(pDX, IDC_DESCRIBEABBREVIATEDSIZE, m_DescribeAbbreviatedSize);
@@ -122,6 +125,7 @@ BEGIN_MESSAGE_MAP(CSetDialogs, ISettingsPropPage)
 	ON_EN_CHANGE(IDC_GRAVATARURL, OnChange)
 	ON_BN_CLICKED(IDC_RIGHTSIDEBRANCHESTAGS, OnChange)
 	ON_BN_CLICKED(IDC_SHOWDESCRIBE, OnChange)
+	ON_BN_CLICKED(IDC_SHOWREVCOUNTER, OnChange)
 	ON_CBN_SELCHANGE(IDC_DESCRIBESTRATEGY, OnChange)
 	ON_EN_CHANGE(IDC_DESCRIBEABBREVIATEDSIZE, OnChange)
 	ON_BN_CLICKED(IDC_DESCRIBEALWAYSLONG, OnChange)
@@ -146,6 +150,7 @@ BOOL CSetDialogs::OnInitDialog()
 	AdjustControlSize(IDC_ENABLEGRAVATAR);
 	AdjustControlSize(IDC_RIGHTSIDEBRANCHESTAGS);
 	AdjustControlSize(IDC_SHOWDESCRIBE);
+	AdjustControlSize(IDC_SHOWREVCOUNTER);
 	AdjustControlSize(IDC_DESCRIBEALWAYSLONG);
 	AdjustControlSize(IDC_FULLCOMMITMESSAGEONLOGLINE);
 
@@ -165,6 +170,7 @@ BOOL CSetDialogs::OnInitDialog()
 	m_GravatarUrl = m_regGravatarUrl;
 	m_bDrawBranchesTagsOnRightSide = m_regDrawBranchesTagsOnRightSide;
 	m_bShowDescribe = m_regShowDescribe;
+	m_bShowBranchRevNo = m_regShowBranchRevNo;
 	m_DescribeStrategy = m_regDescribeStrategy;
 	m_DescribeAbbreviatedSize = m_regDescribeAbbreviatedSize;
 	m_bDescribeAlwaysLong = m_regDescribeAlwaysLong;
@@ -185,6 +191,7 @@ BOOL CSetDialogs::OnInitDialog()
 	m_tooltips.AddTool(IDC_ENABLEGRAVATAR, IDS_SETTINGS_ENABLEGRAVATAR_TT);
 	m_tooltips.AddTool(IDC_GRAVATARURL, IDS_SETTINGS_GRAVATARURL_TT);
 	m_tooltips.AddTool(IDC_SHOWDESCRIBE, IDS_SETTINGS_SHOWDESCRIBE_TT);
+	m_tooltips.AddTool(IDC_SHOWREVCOUNTER, IDS_SETTINGS_SHOWREVCOUNTER_TT);
 	m_tooltips.AddTool(IDC_DESCRIBESTRATEGY, IDS_SETTINGS_DESCRIBESTRATEGY_TT);
 	m_tooltips.AddTool(IDC_DESCRIBEABBREVIATEDSIZE, IDS_SETTINGS_DESCRIBEABBREVIATEDSIZE_TT);
 	m_tooltips.AddTool(IDC_DESCRIBEALWAYSLONG, IDS_SETTINGS_DESCRIBEALWAYSLONG_TT);
@@ -305,6 +312,7 @@ BOOL CSetDialogs::OnApply()
 	Store(m_GravatarUrl, m_regGravatarUrl);
 	Store(m_bDrawBranchesTagsOnRightSide, m_regDrawBranchesTagsOnRightSide);
 	Store(m_bShowDescribe, m_regShowDescribe);
+	Store(m_bShowBranchRevNo, m_regShowBranchRevNo);
 	Store(m_DescribeStrategy, m_regDescribeStrategy);
 	Store(m_DescribeAbbreviatedSize, m_regDescribeAbbreviatedSize);
 	Store(m_bDescribeAlwaysLong, m_regDescribeAlwaysLong);
