@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008-2015 - TortoiseGit
-// Copyright (C) 2003-2008, 2013-2014 - TortoiseSVN
+// Copyright (C) 2003-2008, 2013-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -4625,8 +4625,9 @@ BOOL CGitStatusListCtrl::OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LR
 						{ ASSOCCLASS_STAR, NULL, NULL },
 						{ ASSOCCLASS_FOLDER, NULL, NULL },
 					};
-					IQueryAssociations * pIQueryAssociations;
-					pfnAssocCreateForClasses(rgAssocItem, ARRAYSIZE(rgAssocItem), IID_IQueryAssociations, (void**)&pIQueryAssociations);
+					IQueryAssociations* pIQueryAssociations = nullptr;
+					if (FAILED(pfnAssocCreateForClasses(rgAssocItem, ARRAYSIZE(rgAssocItem), IID_IQueryAssociations, (void**)&pIQueryAssociations)))
+						pIQueryAssociations = nullptr; // not a problem, it works without this
 
 					g_pFolderhook = new CIShellFolderHook(g_psfDesktopFolder, targetList);
 					LPCONTEXTMENU icm1 = nullptr;
@@ -4675,7 +4676,8 @@ BOOL CGitStatusListCtrl::OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LR
 							}
 						}
 					}
-					pIQueryAssociations->Release();
+					if (pIQueryAssociations)
+						pIQueryAssociations->Release();
 				}
 			}
 			if (g_IContext3)
