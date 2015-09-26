@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2012-2014 - TortoiseGit
-// Copyright (C) 2003-2008, 2013-2014 - TortoiseSVN
+// Copyright (C) 2003-2008, 2013-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -421,9 +421,9 @@ CString CPathUtils::GetVersionFromFile(const CString & p_strFilename)
 
 	if (dwBufferSize > 0)
 	{
-		LPVOID pBuffer = (void*) malloc(dwBufferSize);
+		auto pBuffer = std::make_unique<BYTE[]>(dwBufferSize);
 
-		if (pBuffer != (void*) NULL)
+		if (pBuffer)
 		{
 			UINT        nInfoSize = 0,
 						nFixedLength = 0;
@@ -435,10 +435,10 @@ CString CPathUtils::GetVersionFromFile(const CString & p_strFilename)
 			GetFileVersionInfo((LPTSTR)(LPCTSTR)p_strFilename,
 				dwReserved,
 				dwBufferSize,
-				pBuffer);
+				pBuffer.get());
 
 			// Check the current language
-			VerQueryValue(	pBuffer,
+			VerQueryValue(pBuffer.get(),
 				_T("\\VarFileInfo\\Translation"),
 				&lpFixedPointer,
 				&nFixedLength);
@@ -447,13 +447,12 @@ CString CPathUtils::GetVersionFromFile(const CString & p_strFilename)
 			strLangProductVersion.Format(_T("\\StringFileInfo\\%04x%04x\\ProductVersion"),
 				lpTransArray[0].wLanguageID, lpTransArray[0].wCharacterSet);
 
-			VerQueryValue(pBuffer,
+			VerQueryValue(pBuffer.get(),
 				(LPTSTR)(LPCTSTR)strLangProductVersion,
 				(LPVOID *)&lpVersion,
 				&nInfoSize);
 			if (nInfoSize && lpVersion)
 				strReturn = (LPCTSTR)lpVersion;
-			free(pBuffer);
 		}
 	}
 

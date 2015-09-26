@@ -1764,14 +1764,13 @@ int CStatGraphDlg::GetEncoderClsid(const WCHAR* format, CLSID* pClsid)
 	UINT  num = 0;          // number of image encoders
 	UINT  size = 0;         // size of the image encoder array in bytes
 
-	ImageCodecInfo* pImageCodecInfo = NULL;
-
 	if (GetImageEncodersSize(&num, &size)!=Ok)
 		return -1;
 	if (size == 0)
 		return -1;  // Failure
 
-	pImageCodecInfo = (ImageCodecInfo*)(malloc(size));
+	auto pMem = std::make_unique<BYTE[]>(size);
+	auto pImageCodecInfo = (ImageCodecInfo*)(pMem.get());
 	if (pImageCodecInfo == NULL)
 		return -1;  // Failure
 
@@ -1782,12 +1781,10 @@ int CStatGraphDlg::GetEncoderClsid(const WCHAR* format, CLSID* pClsid)
 			if (wcscmp(pImageCodecInfo[j].MimeType, format) == 0)
 			{
 				*pClsid = pImageCodecInfo[j].Clsid;
-				free(pImageCodecInfo);
 				return j;  // Success
 			}
 		}
 	}
-	free (pImageCodecInfo);
 	return -1;  // Failure
 }
 
