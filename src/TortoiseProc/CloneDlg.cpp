@@ -275,7 +275,7 @@ void CCloneDlg::OnBnClickedCloneBrowseUrl()
 			CMessageBox::Show(GetSafeHwnd(), IDS_PROC_CLONE_URLDIREMPTY, IDS_APPNAME, MB_ICONERROR);
 			return;
 		}
-		if (CAppUtils::ExploreTo(GetSafeHwnd(), str) && (int)ShellExecute(nullptr, _T("open"), str, nullptr, nullptr, SW_SHOW) <= 32)
+		if (CAppUtils::ExploreTo(GetSafeHwnd(), str) && (INT_PTR)ShellExecute(nullptr, _T("open"), str, nullptr, nullptr, SW_SHOW) <= 32)
 			MessageBox(CFormatMessageWrapper(), _T("TortoiseGit"), MB_ICONERROR);
 		return;
 	}

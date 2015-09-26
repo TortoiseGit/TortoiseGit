@@ -220,7 +220,7 @@ void CGitRefCompareList::OnContextMenu(CWnd *pWnd, CPoint point)
 void CGitRefCompareList::OnContextMenuList(CWnd * /*pWnd*/, CPoint point)
 {
 	int selIndex = GetSelectionMark();
-	if (selIndex < 0 || selIndex >= m_RefList.size())
+	if (selIndex < 0 || (size_t)selIndex >= m_RefList.size())
 		return;
 
 	CString refName = m_RefList[selIndex].fullName;

@@ -229,7 +229,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 					}
 					else
 					{
-						if(cmd > r1->m_ParentHash.size())
+						if ((size_t)cmd > r1->m_ParentHash.size())
 						{
 							CString str;
 							str.Format(IDS_PROC_NOPARENT, cmd);
@@ -998,7 +998,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				if (GetSelectedCount() == 1)
 				{
 					parent = cmd >> 16;
-					if (parent > pSelLogEntry->m_ParentHash.size())
+					if ((size_t)parent > pSelLogEntry->m_ParentHash.size())
 					{
 						CString str;
 						str.Format(IDS_PROC_NOPARENT, parent);

@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2012 - TortoiseSVN
-// Copyright (C) 2013-2014 - TortoiseGit
+// Copyright (C) 2013-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -206,7 +206,7 @@ int CHistoryCombo::InsertEntry(const CString& combostring, INT_PTR pos)
 void CHistoryCombo::SetList(const STRING_VECTOR& list)
 {
 	Reset();
-	for (int i = 0; i < list.size(); ++i)
+	for (size_t i = 0; i < list.size(); ++i)
 	{
 		CString combostring = list[i];
 		combostring.Replace('\r', ' ');

@@ -99,7 +99,7 @@ static void SelectLanguage(CComboBox &combobox, LONG langueage)
 {
 	for (int i = 0; i < combobox.GetCount(); ++i)
 	{
-		if (combobox.GetItemData(i) == langueage)
+		if (combobox.GetItemData(i) == (DWORD)langueage)
 		{
 			combobox.SetCurSel(i);
 			break;

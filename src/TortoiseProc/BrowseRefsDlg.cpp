@@ -1144,7 +1144,7 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 		{
 			CDeleteRemoteTagDlg deleteRemoteTagDlg;
 			int remoteInx = selection >> 16;
-			if (remoteInx < 0 || remoteInx >= remotes.size())
+			if (remoteInx < 0 || (size_t)remoteInx >= remotes.size())
 				return;
 			deleteRemoteTagDlg.m_sRemote = remotes[remoteInx];
 			deleteRemoteTagDlg.DoModal();

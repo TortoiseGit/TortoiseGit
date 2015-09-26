@@ -3655,7 +3655,7 @@ int CAppUtils::ExploreTo(HWND hwnd, CString path)
 			break;
 		path = path.Left(pos);
 	} while (!PathFileExists(path));
-	return (int)ShellExecute(hwnd, _T("explore"), path, nullptr, nullptr, SW_SHOW) > 32 ? 0 : -1;
+	return (INT_PTR)ShellExecute(hwnd, _T("explore"), path, nullptr, nullptr, SW_SHOW) > 32 ? 0 : -1;
 }
 
 int CAppUtils::ResolveConflict(CTGitPath& path, resolve_with resolveWith)

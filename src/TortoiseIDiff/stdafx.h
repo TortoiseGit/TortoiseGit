@@ -18,7 +18,10 @@
 #define _AFX_ALL_WARNINGS
 
 #include <afx.h>
+#pragma warning(push)
+#pragma warning(disable: 4091)
 #include <ShlObj.h>
+#pragma warning(pop)
 #include <Shlwapi.h>
 
 // C RunTime Header Files

@@ -932,7 +932,7 @@ void CGitProgressList::OnContextMenu(CWnd* pWnd, CPoint point)
 
 	int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this, 0);
 
-	if (cmd <= 0 || cmd > actions.size())
+	if (cmd <= 0 || (size_t)cmd > actions.size())
 		return;
 
 	theApp.DoWaitCursor(1);

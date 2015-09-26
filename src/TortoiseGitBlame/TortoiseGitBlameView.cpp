@@ -1643,7 +1643,7 @@ CString CTortoiseGitBlameView::ResolveCommitFile(const CString& path)
 
 COLORREF CTortoiseGitBlameView::GetLineColor(int line)
 {
-	if (m_colorage && line >= 0 && line < m_lineToLogIndex.size())
+	if (m_colorage && line >= 0 && (size_t)line < m_lineToLogIndex.size())
 	{
 		int logIndex = m_lineToLogIndex[line];
 		if (logIndex >= 0)

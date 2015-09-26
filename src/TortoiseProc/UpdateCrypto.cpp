@@ -504,7 +504,7 @@ static int parse_public_key(const uint8_t *p_key_data, size_t i_key_len, public_
 		int i_packet_len = scalar_number(pos, i_header_len);
 		pos += i_header_len;
 
-		if (pos + i_packet_len > max_pos || i_packet_len < 0 || i_packet_len > i_key_len)
+		if (pos + i_packet_len > max_pos || i_packet_len < 0 || (size_t)i_packet_len > i_key_len)
 			goto error;
 
 		switch (i_type)
