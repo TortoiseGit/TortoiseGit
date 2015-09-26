@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2006, 2009-2012, 2014 - TortoiseSVN
+// Copyright (C) 2003-2006, 2009-2012, 2014-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -147,6 +147,10 @@ int _tmain(int argc, _TCHAR* argv[])
 		_ftprintf(stdout, L"-rtl  : change the controls to RTL reading\n");
 		_ftprintf(stdout, L"-adjusteols : if the msgid string has \\r\\n eols, enforce those for the translation too.\n");
 		_ftprintf(stdout, L"\n");
+		_ftprintf(stdout, L"Note: when extracting resources, C-resource header files can be specified\n");
+		_ftprintf(stdout, L"like this: <resource.dll>*<resource.h>*<resource.h>*...\n");
+		_ftprintf(stdout, L"If a resource header file is specified, the defines are used in the po file\n");
+		_ftprintf(stdout, L"as hints instead of the plain control ID number.\n");
 	}
 
 	return 0;

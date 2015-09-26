@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2007, 2012 - TortoiseSVN
+// Copyright (C) 2003-2007, 2012, 2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -16,6 +16,9 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #pragma once
+#include <string>
+#include <algorithm>
+#include <functional>
 
 /**
  * \ingroup ResText
@@ -31,3 +34,44 @@ public:
 	static void Error();
 	static void SearchReplace(std::wstring& str, const std::wstring& toreplace, const std::wstring& replacewith);
 };
+
+
+// trim from start
+inline std::string &ltrim(std::string &s)
+{
+	s.erase(s.begin(), std::find_if(s.begin(), s.end(), std::not1(std::ptr_fun<int, int>(isspace))));
+	return s;
+}
+
+// trim from end
+inline std::string &rtrim(std::string &s)
+{
+	s.erase(std::find_if(s.rbegin(), s.rend(), std::not1(std::ptr_fun<int, int>(isspace))).base(), s.end());
+	return s;
+}
+
+// trim from both ends
+inline std::string &trim(std::string &s)
+{
+	return ltrim(rtrim(s));
+}
+
+// trim from start
+inline std::wstring &ltrim(std::wstring &s)
+{
+	s.erase(s.begin(), std::find_if(s.begin(), s.end(), std::not1(std::ptr_fun<wint_t, int>(iswspace))));
+	return s;
+}
+
+// trim from end
+inline std::wstring &rtrim(std::wstring &s)
+{
+	s.erase(std::find_if(s.rbegin(), s.rend(), std::not1(std::ptr_fun<wint_t, int>(iswspace))).base(), s.end());
+	return s;
+}
+
+// trim from both ends
+inline std::wstring &trim(std::wstring &s)
+{
+	return ltrim(rtrim(s));
+}

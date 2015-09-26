@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2007, 2011-2012, 2014 - TortoiseSVN
+// Copyright (C) 2003-2007, 2011-2012, 2014-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -117,12 +117,17 @@ private:
 
 	void    ReplaceStr(LPCWSTR src, WORD * dest, size_t * count, int * translated, int * def);
 
+	size_t  ScanHeaderFile(const std::wstring& filepath);
+	void    InsertResourceIDs(LPCWSTR lpType, INT_PTR mainId, RESOURCEENTRY& entry, INT_PTR id, LPCWSTR infotext);
+
 	HMODULE         m_hResDll;
 	HANDLE          m_hUpdateRes;
 	CPOFile         m_StringEntries;
 	std::map<WORD, MENUENTRY> m_MenuEntries;
 	std::map<WORD, MENUENTRY>::iterator pME_iter;
 	std::wstring    sDestFile;
+	std::map<INT_PTR, std::wstring> m_currentHeaderDataDialogs;
+	std::map<INT_PTR, std::wstring> m_currentHeaderDataStrings;
 	BOOL            m_bQuiet;
 
 	bool            m_bRTL;
