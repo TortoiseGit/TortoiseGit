@@ -782,8 +782,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 			CString out_counter;
 			if (m_bShowBranchRevNo && !pLogEntry->m_CommitHash.IsEmpty())
 			{
-				auto lanes = pLogEntry->m_Lanes;
-				bool isFirstParentCommit = !lanes.empty() && Lanes::isActive(lanes[0]);
+				bool isFirstParentCommit = !pLogEntry->m_Lanes.empty() && Lanes::isActive(pLogEntry->m_Lanes[0]);
 
 				if (isFirstParentCommit)
 				{
