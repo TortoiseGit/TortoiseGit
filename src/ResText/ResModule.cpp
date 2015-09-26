@@ -26,6 +26,7 @@
 #define RT_RIBBON MAKEINTRESOURCE(28)
 #endif
 
+
 #define MYERROR {CUtils::Error(); return FALSE;}
 
 static const WORD * AlignWORD(const WORD * pWord)
@@ -34,6 +35,7 @@ static const WORD * AlignWORD(const WORD * pWord)
 	res += ((((UINT_PTR)pWord + 3) & ~3) - (UINT_PTR)pWord) / sizeof(WORD);
 	return res;
 }
+
 
 CResModule::CResModule(void)
 	: m_bTranslatedStrings(0)
@@ -71,36 +73,36 @@ BOOL CResModule::ExtractResources(std::vector<std::wstring> filelist, LPCTSTR lp
 		// fill in the std::map with all translatable entries
 
 		if (!m_bQuiet)
-			_ftprintf(stdout, _T("Extracting StringTable...."));
+			_ftprintf(stdout, L"Extracting StringTable....");
 		EnumResourceNames(m_hResDll, RT_STRING,  EnumResNameCallback, (LONG_PTR)this);
 		if (!m_bQuiet)
-			_ftprintf(stdout, _T("%4Iu Strings\n"), m_StringEntries.size()-nEntries);
+			_ftprintf(stdout, L"%4Iu Strings\n", m_StringEntries.size()-nEntries);
 		nEntries = m_StringEntries.size();
 
 		if (!m_bQuiet)
-			_ftprintf(stdout, _T("Extracting Dialogs........"));
+			_ftprintf(stdout, L"Extracting Dialogs........");
 		EnumResourceNames(m_hResDll, RT_DIALOG,  EnumResNameCallback, (LONG_PTR)this);
 		if (!m_bQuiet)
-			_ftprintf(stdout, _T("%4Iu Strings\n"), m_StringEntries.size()-nEntries);
+			_ftprintf(stdout, L"%4Iu Strings\n", m_StringEntries.size()-nEntries);
 		nEntries = m_StringEntries.size();
 
 		if (!m_bQuiet)
-			_ftprintf(stdout, _T("Extracting Menus.........."));
+			_ftprintf(stdout, L"Extracting Menus..........");
 		EnumResourceNames(m_hResDll, RT_MENU,    EnumResNameCallback, (LONG_PTR)this);
 		if (!m_bQuiet)
-			_ftprintf(stdout, _T("%4Iu Strings\n"), m_StringEntries.size()-nEntries);
+			_ftprintf(stdout, L"%4Iu Strings\n", m_StringEntries.size()-nEntries);
 		nEntries = m_StringEntries.size();
 		if (!m_bQuiet)
-			_ftprintf(stdout, _T("Extracting Accelerators..."));
+			_ftprintf(stdout, L"Extracting Accelerators...");
 		EnumResourceNames(m_hResDll, RT_ACCELERATOR, EnumResNameCallback, (LONG_PTR)this);
 		if (!m_bQuiet)
-			_ftprintf(stdout, _T("%4Iu Accelerators\n"), m_StringEntries.size()-nEntries);
+			_ftprintf(stdout, L"%4Iu Accelerators\n", m_StringEntries.size()-nEntries);
 		nEntries = m_StringEntries.size();
 		if (!m_bQuiet)
-			_ftprintf(stdout, _T("Extracting Ribbons........"));
+			_ftprintf(stdout, L"Extracting Ribbons........");
 		EnumResourceNames(m_hResDll, RT_RIBBON, EnumResNameCallback, (LONG_PTR)this);
 		if (!m_bQuiet)
-			_ftprintf(stdout, _T("%4Iu Strings\n"), m_StringEntries.size()-nEntries);
+			_ftprintf(stdout, L"%4Iu Strings\n", m_StringEntries.size()-nEntries);
 		nEntries = m_StringEntries.size();
 
 		// parse a probably existing file and update the translations which are
@@ -124,31 +126,31 @@ BOOL CResModule::ExtractResources(LPCTSTR lpszSrcLangDllPath, LPCTSTR lpszPoFile
 	// fill in the std::map with all translatable entries
 
 	if (!m_bQuiet)
-		_ftprintf(stdout, _T("Extracting StringTable...."));
+		_ftprintf(stdout, L"Extracting StringTable....");
 	EnumResourceNames(m_hResDll, RT_STRING,  EnumResNameCallback, (LONG_PTR)this);
 	if (!m_bQuiet)
-		_ftprintf(stdout, _T("%4Iu Strings\n"), m_StringEntries.size());
+		_ftprintf(stdout, L"%4Iu Strings\n", m_StringEntries.size());
 	nEntries = m_StringEntries.size();
 
 	if (!m_bQuiet)
-		_ftprintf(stdout, _T("Extracting Dialogs........"));
+		_ftprintf(stdout, L"Extracting Dialogs........");
 	EnumResourceNames(m_hResDll, RT_DIALOG,  EnumResNameCallback, (LONG_PTR)this);
 	if (!m_bQuiet)
-		_ftprintf(stdout, _T("%4Iu Strings\n"), m_StringEntries.size()-nEntries);
+		_ftprintf(stdout, L"%4Iu Strings\n", m_StringEntries.size()-nEntries);
 	nEntries = m_StringEntries.size();
 
 	if (!m_bQuiet)
-		_ftprintf(stdout, _T("Extracting Menus.........."));
+		_ftprintf(stdout, L"Extracting Menus..........");
 	EnumResourceNames(m_hResDll, RT_MENU,    EnumResNameCallback, (LONG_PTR)this);
 	if (!m_bQuiet)
-		_ftprintf(stdout, _T("%4Iu Strings\n"), m_StringEntries.size()-nEntries);
+		_ftprintf(stdout, L"%4Iu Strings\n", m_StringEntries.size()-nEntries);
 	nEntries = m_StringEntries.size();
 
 	if (!m_bQuiet)
-		_ftprintf(stdout, _T("Extracting Accelerators..."));
+		_ftprintf(stdout, L"Extracting Accelerators...");
 	EnumResourceNames(m_hResDll, RT_ACCELERATOR, EnumResNameCallback, (LONG_PTR)this);
 	if (!m_bQuiet)
-		_ftprintf(stdout, _T("%4Iu Accelerators\n"), m_StringEntries.size()-nEntries);
+		_ftprintf(stdout, L"%4Iu Accelerators\n", m_StringEntries.size()-nEntries);
 	nEntries = m_StringEntries.size();
 
 	// parse a probably existing file and update the translations which are
@@ -217,34 +219,34 @@ BOOL CResModule::CreateTranslatedResources(LPCTSTR lpszSrcLangDllPath, LPCTSTR l
 
 
 	if (!m_bQuiet)
-		_ftprintf(stdout, _T("Translating StringTable..."));
+		_ftprintf(stdout, L"Translating StringTable...");
 	bRes = EnumResourceNames(m_hResDll, RT_STRING, EnumResNameWriteCallback, (LONG_PTR)this);
 	if (!m_bQuiet)
-		_ftprintf(stdout, _T("%4d translated, %4d not translated\n"), m_bTranslatedStrings, m_bDefaultStrings);
+		_ftprintf(stdout, L"%4d translated, %4d not translated\n", m_bTranslatedStrings, m_bDefaultStrings);
 
 	if (!m_bQuiet)
-		_ftprintf(stdout, _T("Translating Dialogs......."));
+		_ftprintf(stdout, L"Translating Dialogs.......");
 	bRes = EnumResourceNames(m_hResDll, RT_DIALOG, EnumResNameWriteCallback, (LONG_PTR)this);
 	if (!m_bQuiet)
-		_ftprintf(stdout, _T("%4d translated, %4d not translated\n"), m_bTranslatedDialogStrings, m_bDefaultDialogStrings);
+		_ftprintf(stdout, L"%4d translated, %4d not translated\n", m_bTranslatedDialogStrings, m_bDefaultDialogStrings);
 
 	if (!m_bQuiet)
-		_ftprintf(stdout, _T("Translating Menus........."));
+		_ftprintf(stdout, L"Translating Menus.........");
 	bRes = EnumResourceNames(m_hResDll, RT_MENU, EnumResNameWriteCallback, (LONG_PTR)this);
 	if (!m_bQuiet)
-		_ftprintf(stdout, _T("%4d translated, %4d not translated\n"), m_bTranslatedMenuStrings, m_bDefaultMenuStrings);
+		_ftprintf(stdout, L"%4d translated, %4d not translated\n", m_bTranslatedMenuStrings, m_bDefaultMenuStrings);
 
 	if (!m_bQuiet)
-		_ftprintf(stdout, _T("Translating Accelerators.."));
+		_ftprintf(stdout, L"Translating Accelerators..");
 	bRes = EnumResourceNames(m_hResDll, RT_ACCELERATOR, EnumResNameWriteCallback, (LONG_PTR)this);
 	if (!m_bQuiet)
-		_ftprintf(stdout, _T("%4d translated, %4d not translated\n"), m_bTranslatedAcceleratorStrings, m_bDefaultAcceleratorStrings);
+		_ftprintf(stdout, L"%4d translated, %4d not translated\n", m_bTranslatedAcceleratorStrings, m_bDefaultAcceleratorStrings);
 
 	if (!m_bQuiet)
-		_ftprintf(stdout, _T("Translating Ribbons......."));
+		_ftprintf(stdout, L"Translating Ribbons.......");
 	bRes = EnumResourceNames(m_hResDll, RT_RIBBON, EnumResNameWriteCallback, (LONG_PTR)this);
 	if (!m_bQuiet)
-		_ftprintf(stdout, _T("%4d translated, %4d not translated\n"), m_bTranslatedRibbonTexts, m_bDefaultRibbonTexts);
+		_ftprintf(stdout, L"%4d translated, %4d not translated\n", m_bTranslatedRibbonTexts, m_bDefaultRibbonTexts);
 	bRes = TRUE;
 	if (!EndUpdateResource(m_hUpdateRes, !bRes))
 		MYERROR;
@@ -259,9 +261,9 @@ DONE_ERROR:
 
 BOOL CResModule::ExtractString(LPCTSTR lpszType)
 {
-	HRSRC		hrsrc = FindResource(m_hResDll, lpszType, RT_STRING);
-	HGLOBAL		hglStringTable;
-	LPWSTR		p;
+	HRSRC       hrsrc = FindResource(m_hResDll, lpszType, RT_STRING);
+	HGLOBAL     hglStringTable;
+	LPWSTR      p;
 
 	if (!hrsrc)
 		MYERROR;
@@ -273,7 +275,7 @@ BOOL CResModule::ExtractString(LPCTSTR lpszType)
 
 	if (p == NULL)
 		goto DONE_ERROR;
-	/*	[Block of 16 strings.  The strings are Pascal style with a WORD
+	/*  [Block of 16 strings.  The strings are Pascal style with a WORD
 	length preceding the string.  16 strings are always written, even
 	if not all slots are full.  Any slots in the block with no string
 	have a zero WORD for the length.]
@@ -297,7 +299,7 @@ BOOL CResModule::ExtractString(LPCTSTR lpszType)
 			RESOURCEENTRY entry = m_StringEntries[str];
 			entry.resourceIDs.insert(((INT_PTR)lpszType - 1) * 16 + i);
 			if (wcschr(str.c_str(), '%'))
-				entry.flag = _T("#, c-format");
+				entry.flag = L"#, c-format";
 			m_StringEntries[str] = entry;
 		}
 		delete [] pBuf;
@@ -314,9 +316,9 @@ DONE_ERROR:
 
 BOOL CResModule::ReplaceString(LPCTSTR lpszType, WORD wLanguage)
 {
-	HRSRC		hrsrc = FindResourceEx(m_hResDll, RT_STRING, lpszType, wLanguage);
-	HGLOBAL		hglStringTable;
-	LPWSTR		p;
+	HRSRC       hrsrc = FindResourceEx(m_hResDll, RT_STRING, lpszType, wLanguage);
+	HGLOBAL     hglStringTable;
+	LPWSTR      p;
 
 	if (!hrsrc)
 		MYERROR;
@@ -328,7 +330,7 @@ BOOL CResModule::ReplaceString(LPCTSTR lpszType, WORD wLanguage)
 
 	if (p == NULL)
 		goto DONE_ERROR;
-/*	[Block of 16 strings.  The strings are Pascal style with a WORD
+/*  [Block of 16 strings.  The strings are Pascal style with a WORD
 	length preceding the string.  16 strings are always written, even
 	if not all slots are full.  Any slots in the block with no string
 	have a zero WORD for the length.]
@@ -425,9 +427,9 @@ DONE_ERROR:
 
 BOOL CResModule::ExtractMenu(LPCTSTR lpszType)
 {
-	HRSRC		hrsrc = FindResource(m_hResDll, lpszType, RT_MENU);
-	HGLOBAL		hglMenuTemplate;
-	WORD		version, offset;
+	HRSRC       hrsrc = FindResource(m_hResDll, lpszType, RT_MENU);
+	HGLOBAL     hglMenuTemplate;
+	WORD        version, offset;
 	const WORD *p, *p0;
 
 	if (!hrsrc)
@@ -496,14 +498,14 @@ DONE_ERROR:
 
 BOOL CResModule::ReplaceMenu(LPCTSTR lpszType, WORD wLanguage)
 {
-	HRSRC		hrsrc = FindResourceEx(m_hResDll, RT_MENU, lpszType, wLanguage);
-	HGLOBAL		hglMenuTemplate;
-	WORD		version, offset;
-	LPWSTR		p;
+	HRSRC       hrsrc = FindResourceEx(m_hResDll, RT_MENU, lpszType, wLanguage);
+	HGLOBAL     hglMenuTemplate;
+	WORD        version, offset;
+	LPWSTR      p;
 	WORD *p0;
 
 	if (!hrsrc)
-		MYERROR;	//just the language wasn't found
+		MYERROR;    //just the language wasn't found
 
 	hglMenuTemplate = LoadResource(m_hResDll, hrsrc);
 
@@ -516,8 +518,8 @@ BOOL CResModule::ReplaceMenu(LPCTSTR lpszType, WORD wLanguage)
 		MYERROR;
 
 	//struct MenuHeader {
-	//	WORD   wVersion;           // Currently zero
-	//	WORD   cbHeaderSize;       // Also zero
+	//  WORD   wVersion;           // Currently zero
+	//  WORD   cbHeaderSize;       // Also zero
 	//};
 
 	// MENUEX resource
@@ -543,7 +545,7 @@ BOOL CResModule::ReplaceMenu(LPCTSTR lpszType, WORD wLanguage)
 				goto DONE_ERROR;
 			WORD * newMenu = new WORD[nMem + (nMem % 2)+2];
 			SecureZeroMemory(newMenu, (nMem + (nMem % 2)+2)*2);
-			size_t index = 2;		// MenuHeader has 2 WORDs zero
+			size_t index = 2;       // MenuHeader has 2 WORDs zero
 			if (!CountMemReplaceMenuResource((WORD *)p, &index, newMenu))
 			{
 				delete [] newMenu;
@@ -575,7 +577,7 @@ BOOL CResModule::ReplaceMenu(LPCTSTR lpszType, WORD wLanguage)
 			WORD * newMenu = new WORD[nMem + (nMem % 2) + 4];
 			SecureZeroMemory(newMenu, (nMem + (nMem % 2) + 4) * 2);
 			CopyMemory(newMenu, p0, 2 * sizeof(WORD) + sizeof(DWORD));
-			size_t index = 4;		// MenuExHeader has 2 x WORD + 1 x DWORD
+			size_t index = 4;       // MenuExHeader has 2 x WORD + 1 x DWORD
 			if (!CountMemReplaceMenuExResource((WORD *)(p0 + offset), &index, newMenu))
 			{
 				delete [] newMenu;
@@ -616,13 +618,13 @@ const WORD* CResModule::ParseMenuResource(const WORD * res)
 	WORD        id = 0;
 
 	//struct PopupMenuItem {
-	//	WORD   fItemFlags;
-	//	WCHAR  szItemText[];
+	//  WORD   fItemFlags;
+	//  WCHAR  szItemText[];
 	//};
 	//struct NormalMenuItem {
-	//	WORD   fItemFlags;
-	//	WORD   wMenuID;
-	//	WCHAR  szItemText[];
+	//  WORD   fItemFlags;
+	//  WORD   wMenuID;
+	//  WCHAR  szItemText[];
 	//};
 
 	do
@@ -631,11 +633,11 @@ const WORD* CResModule::ParseMenuResource(const WORD * res)
 		res++;
 		if (!(flags & MF_POPUP))
 		{
-			id = GET_WORD(res);	//normal menu item
+			id = GET_WORD(res); //normal menu item
 			res++;
 		}
 		else
-			id = (WORD)-1;			//popup menu item
+			id = (WORD)-1;          //popup menu item
 
 		LPCWSTR str = (LPCWSTR)res;
 		size_t l = wcslen(str)+1;
@@ -645,7 +647,7 @@ const WORD* CResModule::ParseMenuResource(const WORD * res)
 		{
 			TCHAR * pBuf = new TCHAR[MAX_STRING_LENGTH];
 			SecureZeroMemory(pBuf, MAX_STRING_LENGTH * sizeof(TCHAR));
-			_tcscpy(pBuf, str);
+			wcscpy(pBuf, str);
 			CUtils::StringExtend(pBuf);
 
 			std::wstring wstr = std::wstring(pBuf);
@@ -663,7 +665,7 @@ const WORD* CResModule::ParseMenuResource(const WORD * res)
 		{
 			TCHAR * pBuf = new TCHAR[MAX_STRING_LENGTH];
 			SecureZeroMemory(pBuf, MAX_STRING_LENGTH * sizeof(TCHAR));
-			_tcscpy(pBuf, str);
+			wcscpy(pBuf, str);
 			CUtils::StringExtend(pBuf);
 
 			std::wstring wstr = std::wstring(pBuf);
@@ -671,7 +673,7 @@ const WORD* CResModule::ParseMenuResource(const WORD * res)
 			entry.resourceIDs.insert(id);
 
 			TCHAR szTempBuf[1024] = { 0 };
-			_stprintf(szTempBuf, _T("#: MenuEntry; ID:%u"), id);
+			swprintf(szTempBuf, L"#: MenuEntry; ID:%u", id);
 			MENUENTRY menu_entry;
 			menu_entry.wID = id;
 			menu_entry.reference = szTempBuf;
@@ -687,17 +689,17 @@ const WORD* CResModule::ParseMenuResource(const WORD * res)
 
 const WORD* CResModule::CountMemReplaceMenuResource(const WORD * res, size_t * wordcount, WORD * newMenu)
 {
-	WORD		flags;
-	WORD		id = 0;
+	WORD        flags;
+	WORD        id = 0;
 
 	//struct PopupMenuItem {
-	//	WORD   fItemFlags;
-	//	WCHAR  szItemText[];
+	//  WORD   fItemFlags;
+	//  WCHAR  szItemText[];
 	//};
 	//struct NormalMenuItem {
-	//	WORD   fItemFlags;
-	//	WORD   wMenuID;
-	//	WCHAR  szItemText[];
+	//  WORD   fItemFlags;
+	//  WORD   wMenuID;
+	//  WCHAR  szItemText[];
 	//};
 
 	do
@@ -710,7 +712,7 @@ const WORD* CResModule::CountMemReplaceMenuResource(const WORD * res, size_t * w
 			newMenu[(*wordcount)++] = flags;
 		if (!(flags & MF_POPUP))
 		{
-			id = GET_WORD(res);	//normal menu item
+			id = GET_WORD(res); //normal menu item
 			res++;
 			if (newMenu == NULL)
 				(*wordcount)++;
@@ -718,7 +720,7 @@ const WORD* CResModule::CountMemReplaceMenuResource(const WORD * res, size_t * w
 				newMenu[(*wordcount)++] = id;
 		}
 		else
-			id = (WORD)-1;			//popup menu item
+			id = (WORD)-1;          //popup menu item
 
 		if (flags & MF_POPUP)
 		{
@@ -784,7 +786,7 @@ const WORD* CResModule::ParseMenuExResource(const WORD * res)
 				menuId = (WORD)-1;
 			TCHAR * pBuf = new TCHAR[MAX_STRING_LENGTH];
 			SecureZeroMemory(pBuf, MAX_STRING_LENGTH * sizeof(TCHAR));
-			_tcscpy(pBuf, str);
+			wcscpy(pBuf, str);
 			CUtils::StringExtend(pBuf);
 
 			std::wstring wstr = std::wstring(pBuf);
@@ -794,7 +796,7 @@ const WORD* CResModule::ParseMenuExResource(const WORD * res)
 
 			entry.resourceIDs.insert(menuId);
 			TCHAR szTempBuf[1024] = { 0 };
-			_stprintf(szTempBuf, _T("#: MenuExPopupEntry; ID:%lu"), menuId);
+			swprintf(szTempBuf, L"#: MenuExPopupEntry; ID:%lu", menuId);
 			MENUENTRY menu_entry;
 			menu_entry.wID = (WORD)menuId;
 			menu_entry.reference = szTempBuf;
@@ -809,7 +811,7 @@ const WORD* CResModule::ParseMenuExResource(const WORD * res)
 		{
 			TCHAR * pBuf = new TCHAR[MAX_STRING_LENGTH];
 			SecureZeroMemory(pBuf, MAX_STRING_LENGTH * sizeof(TCHAR));
-			_tcscpy(pBuf, str);
+			wcscpy(pBuf, str);
 			CUtils::StringExtend(pBuf);
 
 			std::wstring wstr = std::wstring(pBuf);
@@ -817,7 +819,7 @@ const WORD* CResModule::ParseMenuExResource(const WORD * res)
 			entry.resourceIDs.insert(menuId);
 
 			TCHAR szTempBuf[1024] = { 0 };
-			_stprintf(szTempBuf, _T("#: MenuExEntry; ID:%lu"), menuId);
+			swprintf(szTempBuf, L"#: MenuExEntry; ID:%lu", menuId);
 			MENUENTRY menu_entry;
 			menu_entry.wID = (WORD)menuId;
 			menu_entry.reference = szTempBuf;
@@ -907,11 +909,11 @@ const WORD* CResModule::CountMemReplaceMenuExResource(const WORD * res, size_t *
 
 BOOL CResModule::ExtractAccelerator(LPCTSTR lpszType)
 {
-	HRSRC		hrsrc = FindResource(m_hResDll, lpszType, RT_ACCELERATOR);
-	HGLOBAL		hglAccTable;
-	WORD		fFlags, wAnsi, wID;
-	const WORD*	p;
-	bool		bEnd(false);
+	HRSRC       hrsrc = FindResource(m_hResDll, lpszType, RT_ACCELERATOR);
+	HGLOBAL     hglAccTable;
+	WORD        fFlags, wAnsi, wID;
+	const WORD* p;
+	bool        bEnd(false);
 
 	if (!hrsrc)
 		MYERROR;
@@ -929,10 +931,10 @@ BOOL CResModule::ExtractAccelerator(LPCTSTR lpszType)
 	/*
 	struct ACCELTABLEENTRY
 	{
-		WORD fFlags;		FVIRTKEY, FSHIFT, FCONTROL, FALT, 0x80 - Last in a table
-		WORD wAnsi;			ANSI character
-		WORD wId;			Keyboard accelerator passed to windows
-		WORD padding;		# bytes added to ensure aligned to DWORD boundary
+		WORD fFlags;        FVIRTKEY, FSHIFT, FCONTROL, FALT, 0x80 - Last in a table
+		WORD wAnsi;         ANSI character
+		WORD wId;           Keyboard accelerator passed to windows
+		WORD padding;       # bytes added to ensure aligned to DWORD boundary
 	};
 	*/
 
@@ -947,7 +949,7 @@ BOOL CResModule::ExtractAccelerator(LPCTSTR lpszType)
 		p++;  // Skip over padding
 
 		if ((fFlags & 0x80) == 0x80)
-		{				// 0x80
+		{               // 0x80
 			bEnd = true;
 		}
 
@@ -973,7 +975,7 @@ BOOL CResModule::ExtractAccelerator(LPCTSTR lpszType)
 		// Since "filter" and "find" are most likely translated to words starting
 		// with different letters, we need to have a separate accelerator entry
 		// for each of those
-		_stprintf(pBuf.get(), _T("ID:%u:"), wID);
+		swprintf(pBuf.get(), L"ID:%u:", wID);
 
 		// EXACTLY 5 characters long "ACS+X"
 		// V = Virtual key (or blank if not used)
@@ -982,40 +984,40 @@ BOOL CResModule::ExtractAccelerator(LPCTSTR lpszType)
 		// S = Shift key   (or blank if not used)
 		// X = upper case character
 		// e.g. "V CS+Q" == Ctrl + Shift + 'Q'
-		if ((fFlags & FVIRTKEY) == FVIRTKEY) 		// 0x01
-			_tcscat(pBuf.get(), _T("V"));
+		if ((fFlags & FVIRTKEY) == FVIRTKEY)        // 0x01
+			wcscat(pBuf.get(), L"V");
 		else
-			_tcscat(pBuf.get(), _T(" "));
+			wcscat(pBuf.get(), L" ");
 
-		if ((fFlags & FALT) == FALT) 				// 0x10
-			_tcscat(pBuf.get(), _T("A"));
+		if ((fFlags & FALT) == FALT)                // 0x10
+			wcscat(pBuf.get(), L"A");
 		else
-			_tcscat(pBuf.get(), _T(" "));
+			wcscat(pBuf.get(), L" ");
 
-		if ((fFlags & FCONTROL) == FCONTROL) 		// 0x08
-			_tcscat(pBuf.get(), _T("C"));
+		if ((fFlags & FCONTROL) == FCONTROL)        // 0x08
+			wcscat(pBuf.get(), L"C");
 		else
-			_tcscat(pBuf.get(), _T(" "));
+			wcscat(pBuf.get(), L" ");
 
-		if ((fFlags & FSHIFT) == FSHIFT) 			// 0x04
-			_tcscat(pBuf.get(), _T("S"));
+		if ((fFlags & FSHIFT) == FSHIFT)            // 0x04
+			wcscat(pBuf.get(), L"S");
 		else
-			_tcscat(pBuf.get(), _T(" "));
+			wcscat(pBuf.get(), L" ");
 
-		_stprintf(pBuf2.get(), _T("%s+%c"), pBuf.get(), wAnsi);
+		swprintf(pBuf2.get(), L"%s+%c", pBuf.get(), wAnsi);
 
 		std::wstring wstr = std::wstring(pBuf2.get());
 		RESOURCEENTRY AKey_entry = m_StringEntries[wstr];
 
 		TCHAR szTempBuf[1024] = { 0 };
 		SecureZeroMemory(szTempBuf, sizeof (szTempBuf));
-		std::wstring wmenu = _T("");
+		std::wstring wmenu = L"";
 		pME_iter = m_MenuEntries.find(wID);
 		if (pME_iter != m_MenuEntries.end())
 		{
 			wmenu = pME_iter->second.msgstr;
 		}
-		_stprintf(szTempBuf, _T("#. Accelerator Entry for Menu ID:%u; '%s'"), wID, wmenu.c_str());
+		swprintf(szTempBuf, L"#. Accelerator Entry for Menu ID:%u; '%s'", wID, wmenu.c_str());
 		AKey_entry.automaticcomments.push_back(std::wstring(szTempBuf));
 
 		m_StringEntries[wstr] = AKey_entry;
@@ -1033,12 +1035,12 @@ DONE_ERROR:
 
 BOOL CResModule::ReplaceAccelerator(LPCTSTR lpszType, WORD wLanguage)
 {
-	LPACCEL		lpaccelNew;			// pointer to new accelerator table
-	HACCEL		haccelOld;			// handle to old accelerator table
-	int			cAccelerators;		// number of accelerators in table
-	HGLOBAL		hglAccTableNew;
-	const WORD*	p;
-	int			i;
+	LPACCEL     lpaccelNew;         // pointer to new accelerator table
+	HACCEL      haccelOld;          // handle to old accelerator table
+	int         cAccelerators;      // number of accelerators in table
+	HGLOBAL     hglAccTableNew;
+	const WORD* p;
+	int         i;
 
 	haccelOld = LoadAccelerators(m_hResDll, lpszType);
 
@@ -1073,30 +1075,30 @@ BOOL CResModule::ReplaceAccelerator(LPCTSTR lpszType, WORD wLanguage)
 		SecureZeroMemory(pBuf.get(), 1024 * sizeof(WCHAR));
 		SecureZeroMemory(pBuf2.get(), 1024 * sizeof(WCHAR));
 
-		_stprintf(pBuf.get(), _T("ID:%d:"), lpaccelNew[i].cmd);
+		swprintf(pBuf.get(), L"ID:%d:", lpaccelNew[i].cmd);
 
 		// get original key combination
-		if ((lpaccelNew[i].fVirt & FVIRTKEY) == FVIRTKEY) 		// 0x01
-			_tcscat(pBuf.get(), _T("V"));
+		if ((lpaccelNew[i].fVirt & FVIRTKEY) == FVIRTKEY)       // 0x01
+			wcscat(pBuf.get(), L"V");
 		else
-			_tcscat(pBuf.get(), _T(" "));
+			wcscat(pBuf.get(), L" ");
 
-		if ((lpaccelNew[i].fVirt & FALT) == FALT) 				// 0x10
-			_tcscat(pBuf.get(), _T("A"));
+		if ((lpaccelNew[i].fVirt & FALT) == FALT)               // 0x10
+			wcscat(pBuf.get(), L"A");
 		else
-			_tcscat(pBuf.get(), _T(" "));
+			wcscat(pBuf.get(), L" ");
 
-		if ((lpaccelNew[i].fVirt & FCONTROL) == FCONTROL) 		// 0x08
-			_tcscat(pBuf.get(), _T("C"));
+		if ((lpaccelNew[i].fVirt & FCONTROL) == FCONTROL)       // 0x08
+			wcscat(pBuf.get(), L"C");
 		else
-			_tcscat(pBuf.get(), _T(" "));
+			wcscat(pBuf.get(), L" ");
 
-		if ((lpaccelNew[i].fVirt & FSHIFT) == FSHIFT) 			// 0x04
-			_tcscat(pBuf.get(), _T("S"));
+		if ((lpaccelNew[i].fVirt & FSHIFT) == FSHIFT)           // 0x04
+			wcscat(pBuf.get(), L"S");
 		else
-			_tcscat(pBuf.get(), _T(" "));
+			wcscat(pBuf.get(), L" ");
 
-		_stprintf(pBuf2.get(), _T("%s+%c"), pBuf.get(), lpaccelNew[i].key);
+		swprintf(pBuf2.get(), L"%s+%c", pBuf.get(), lpaccelNew[i].key);
 
 		// Is it there?
 		std::map<std::wstring, RESOURCEENTRY>::iterator pAK_iter = m_StringEntries.find(pBuf2.get());
@@ -1109,25 +1111,25 @@ BOOL CResModule::ReplaceAccelerator(LPCTSTR lpszType, WORD wLanguage)
 			wtemp = wtemp.substr(wtemp.find_last_of(':')+1);
 			if (wtemp.size() != 6)
 				continue;
-			if (wtemp.compare(0, 1, _T("V")) == 0)
+			if (wtemp.compare(0, 1, L"V") == 0)
 				xfVirt |= FVIRTKEY;
-			else if (wtemp.compare(0, 1, _T(" ")) != 0)
-				continue;	// not a space - user must have made a mistake when translating
-			if (wtemp.compare(1, 1, _T("A")) == 0)
+			else if (wtemp.compare(0, 1, L" ") != 0)
+				continue;   // not a space - user must have made a mistake when translating
+			if (wtemp.compare(1, 1, L"A") == 0)
 				xfVirt |= FALT;
-			else if (wtemp.compare(1, 1, _T(" ")) != 0)
-				continue;	// not a space - user must have made a mistake when translating
-			if (wtemp.compare(2, 1, _T("C")) == 0)
+			else if (wtemp.compare(1, 1, L" ") != 0)
+				continue;   // not a space - user must have made a mistake when translating
+			if (wtemp.compare(2, 1, L"C") == 0)
 				xfVirt |= FCONTROL;
-			else if (wtemp.compare(2, 1, _T(" ")) != 0)
-				continue;	// not a space - user must have made a mistake when translating
-			if (wtemp.compare(3, 1, _T("S")) == 0)
+			else if (wtemp.compare(2, 1, L" ") != 0)
+				continue;   // not a space - user must have made a mistake when translating
+			if (wtemp.compare(3, 1, L"S") == 0)
 				xfVirt |= FSHIFT;
-			else if (wtemp.compare(3, 1, _T(" ")) != 0)
-				continue;	// not a space - user must have made a mistake when translating
-			if (wtemp.compare(4, 1, _T("+")) == 0)
+			else if (wtemp.compare(3, 1, L" ") != 0)
+				continue;   // not a space - user must have made a mistake when translating
+			if (wtemp.compare(4, 1, L"+") == 0)
 			{
-				_stscanf(wtemp.substr(5, 1).c_str(), _T("%c"), &xkey);
+				_stscanf(wtemp.substr(5, 1).c_str(), L"%c", &xkey);
 				lpaccelNew[i].fVirt = xfVirt;
 				lpaccelNew[i].key = (DWORD)xkey;
 			}
@@ -1139,6 +1141,8 @@ BOOL CResModule::ReplaceAccelerator(LPCTSTR lpszType, WORD wLanguage)
 
 	// Create the new accelerator table
 	hglAccTableNew = LocalAlloc(LPTR, cAccelerators * 4 * sizeof(WORD));
+	if (hglAccTableNew == NULL)
+		goto DONE_ERROR;
 	p = (WORD *)hglAccTableNew;
 	lpaccelNew[cAccelerators-1].fVirt |= 0x80;
 	for (i = 0; i < cAccelerators; i++)
@@ -1175,13 +1179,13 @@ DONE_ERROR:
 
 BOOL CResModule::ExtractDialog(LPCTSTR lpszType)
 {
-	const WORD*	lpDlg;
-	const WORD*	lpDlgItem;
-	DIALOGINFO	dlg;
-	DLGITEMINFO	dlgItem;
-	WORD		bNumControls;
-	HRSRC		hrsrc;
-	HGLOBAL		hGlblDlgTemplate;
+	const WORD* lpDlg;
+	const WORD* lpDlgItem;
+	DIALOGINFO  dlg;
+	DLGITEMINFO dlgItem;
+	WORD        bNumControls;
+	HRSRC       hrsrc;
+	HGLOBAL     hGlblDlgTemplate;
 
 	hrsrc = FindResource(m_hResDll, lpszType, RT_DIALOG);
 
@@ -1204,7 +1208,7 @@ BOOL CResModule::ExtractDialog(LPCTSTR lpszType)
 	{
 		TCHAR * pBuf = new TCHAR[MAX_STRING_LENGTH];
 		SecureZeroMemory(pBuf, MAX_STRING_LENGTH * sizeof(TCHAR));
-		_tcscpy(pBuf, dlg.caption);
+		wcscpy(pBuf, dlg.caption);
 		CUtils::StringExtend(pBuf);
 
 		std::wstring wstr = std::wstring(pBuf);
@@ -1224,9 +1228,9 @@ BOOL CResModule::ExtractDialog(LPCTSTR lpszType)
 		lpDlgItem = GetControlInfo((WORD *) lpDlgItem, &dlgItem, dlg.dialogEx, &bCode);
 
 		if (bCode == FALSE)
-			_tcscpy(szTitle, dlgItem.windowName);
+			wcsncpy(szTitle, dlgItem.windowName, _countof(szTitle) - 1);
 
-		if (_tcslen(szTitle) > 0)
+		if (wcslen(szTitle) > 0)
 		{
 			CUtils::StringExtend(szTitle);
 
@@ -1245,9 +1249,9 @@ BOOL CResModule::ExtractDialog(LPCTSTR lpszType)
 
 BOOL CResModule::ReplaceDialog(LPCTSTR lpszType, WORD wLanguage)
 {
-	const WORD*	lpDlg;
-	HRSRC		hrsrc;
-	HGLOBAL		hGlblDlgTemplate;
+	const WORD* lpDlg;
+	HRSRC       hrsrc;
+	HGLOBAL     hGlblDlgTemplate;
 
 	hrsrc = FindResourceEx(m_hResDll, RT_DIALOG, lpszType, wLanguage);
 
@@ -1308,7 +1312,7 @@ const WORD* CResModule::GetDialogInfo(const WORD * pTemplate, LPDIALOGINFO lpDlg
 	lpDlgInfo->style = GET_DWORD(p);
 	p += 2;
 
-	if (lpDlgInfo->style == 0xffff0001)	// DIALOGEX resource
+	if (lpDlgInfo->style == 0xffff0001) // DIALOGEX resource
 	{
 		lpDlgInfo->dialogEx = TRUE;
 		lpDlgInfo->helpId   = GET_DWORD(p);
@@ -1467,7 +1471,7 @@ const WORD* CResModule::GetControlInfo(const WORD* p, LPDLGITEMINFO lpDlgItemInf
 		p += wcslen((LPCWSTR) p) + 1;
 	}
 
-	if (GET_WORD(p) == 0xffff)	// an integer ID?
+	if (GET_WORD(p) == 0xffff)  // an integer ID?
 	{
 		*bIsID = TRUE;
 		lpDlgItemInfo->windowName = (LPCTSTR) (UINT_PTR) GET_WORD(p + 1);
@@ -1509,18 +1513,18 @@ const WORD * CResModule::CountMemReplaceDialogResource(const WORD * res, size_t 
 		(*wordcount) += 2;
 	}
 
-	if (style == 0xffff0001)	// DIALOGEX resource
+	if (style == 0xffff0001)    // DIALOGEX resource
 	{
 		bEx = TRUE;
 		if (newDialog)
 		{
-			newDialog[(*wordcount)++] = GET_WORD(res++);	//help id
-			newDialog[(*wordcount)++] = GET_WORD(res++);	//help id
-			newDialog[(*wordcount)++] = GET_WORD(res++);	//exStyle
-			newDialog[(*wordcount)++] = GET_WORD(res++);	//exStyle
+			newDialog[(*wordcount)++] = GET_WORD(res++);    //help id
+			newDialog[(*wordcount)++] = GET_WORD(res++);    //help id
+			newDialog[(*wordcount)++] = GET_WORD(res++);    //exStyle
+			newDialog[(*wordcount)++] = GET_WORD(res++);    //exStyle
 			style = GET_DWORD(res);
-			newDialog[(*wordcount)++] = GET_WORD(res++);	//style
-			newDialog[(*wordcount)++] = GET_WORD(res++);	//style
+			newDialog[(*wordcount)++] = GET_WORD(res++);    //style
+			newDialog[(*wordcount)++] = GET_WORD(res++);    //style
 		}
 		else
 		{
@@ -1535,11 +1539,11 @@ const WORD * CResModule::CountMemReplaceDialogResource(const WORD * res, size_t 
 		bEx = FALSE;
 		if (newDialog)
 		{
-			newDialog[(*wordcount)++] = GET_WORD(res++);	//exStyle
-			newDialog[(*wordcount)++] = GET_WORD(res++);	//exStyle
+			newDialog[(*wordcount)++] = GET_WORD(res++);    //exStyle
+			newDialog[(*wordcount)++] = GET_WORD(res++);    //exStyle
 			//style = GET_DWORD(res);
-			//newDialog[(*wordcount)++] = GET_WORD(res++);	//style
-			//newDialog[(*wordcount)++] = GET_WORD(res++);	//style
+			//newDialog[(*wordcount)++] = GET_WORD(res++);  //style
+			//newDialog[(*wordcount)++] = GET_WORD(res++);  //style
 		}
 		else
 		{
@@ -1690,8 +1694,8 @@ const WORD* CResModule::ReplaceControlInfo(const WORD * res, size_t * wordcount,
 	{
 		if (newDialog)
 		{
-			newDialog[(*wordcount)++] = GET_WORD(res++);	//helpid
-			newDialog[(*wordcount)++] = GET_WORD(res++);	//helpid
+			newDialog[(*wordcount)++] = GET_WORD(res++);    //helpid
+			newDialog[(*wordcount)++] = GET_WORD(res++);    //helpid
 		}
 		else
 		{
@@ -1702,8 +1706,8 @@ const WORD* CResModule::ReplaceControlInfo(const WORD * res, size_t * wordcount,
 	if (newDialog)
 	{
 		LONG * exStyle = (LONG*)&newDialog[(*wordcount)];
-		newDialog[(*wordcount)++] = GET_WORD(res++);	//exStyle
-		newDialog[(*wordcount)++] = GET_WORD(res++);	//exStyle
+		newDialog[(*wordcount)++] = GET_WORD(res++);    //exStyle
+		newDialog[(*wordcount)++] = GET_WORD(res++);    //exStyle
 		if (m_bRTL)
 			*exStyle |= WS_EX_RTLREADING;
 	}
@@ -1715,8 +1719,8 @@ const WORD* CResModule::ReplaceControlInfo(const WORD * res, size_t * wordcount,
 
 	if (newDialog)
 	{
-		newDialog[(*wordcount)++] = GET_WORD(res++);	//style
-		newDialog[(*wordcount)++] = GET_WORD(res++);	//style
+		newDialog[(*wordcount)++] = GET_WORD(res++);    //style
+		newDialog[(*wordcount)++] = GET_WORD(res++);    //style
 	}
 	else
 	{
@@ -1725,22 +1729,22 @@ const WORD* CResModule::ReplaceControlInfo(const WORD * res, size_t * wordcount,
 	}
 
 	if (newDialog)
-		newDialog[(*wordcount)] = GET_WORD(res);	//x
+		newDialog[(*wordcount)] = GET_WORD(res);    //x
 	res++;
 	(*wordcount)++;
 
 	if (newDialog)
-		newDialog[(*wordcount)] = GET_WORD(res);	//y
+		newDialog[(*wordcount)] = GET_WORD(res);    //y
 	res++;
 	(*wordcount)++;
 
 	if (newDialog)
-		newDialog[(*wordcount)] = GET_WORD(res);	//cx
+		newDialog[(*wordcount)] = GET_WORD(res);    //cx
 	res++;
 	(*wordcount)++;
 
 	if (newDialog)
-		newDialog[(*wordcount)] = GET_WORD(res);	//cy
+		newDialog[(*wordcount)] = GET_WORD(res);    //cy
 	res++;
 	(*wordcount)++;
 
@@ -1766,7 +1770,7 @@ const WORD* CResModule::ReplaceControlInfo(const WORD * res, size_t * wordcount,
 		(*wordcount)++;
 	}
 
-	if (GET_WORD(res) == 0xffff)	//classID
+	if (GET_WORD(res) == 0xffff)    //classID
 	{
 		if (newDialog)
 		{
@@ -1787,7 +1791,7 @@ const WORD* CResModule::ReplaceControlInfo(const WORD * res, size_t * wordcount,
 		res += wcslen((LPCWSTR) res) + 1;
 	}
 
-	if (GET_WORD(res) == 0xffff)	// an integer ID?
+	if (GET_WORD(res) == 0xffff)    // an integer ID?
 	{
 		if (newDialog)
 		{
@@ -1868,7 +1872,7 @@ BOOL CResModule::ExtractRibbon(LPCTSTR lpszType)
 		RESOURCEENTRY entry = m_StringEntries[str];
 		entry.resourceIDs.insert(std::stoi(strIdVal));
 		if (wcschr(str.c_str(), '%'))
-			entry.flag = _T("#, c-format");
+			entry.flag = L"#, c-format";
 		m_StringEntries[str] = entry;
 		m_bDefaultRibbonTexts++;
 	}
@@ -1887,7 +1891,7 @@ BOOL CResModule::ExtractRibbon(LPCTSTR lpszType)
 		RESOURCEENTRY entry = m_StringEntries[ret];
 		entry.resourceIDs.insert((INT_PTR)lpszType);
 		if (wcschr(ret.c_str(), '%'))
-			entry.flag = _T("#, c-format");
+			entry.flag = L"#, c-format";
 		m_StringEntries[ret] = entry;
 		m_bDefaultRibbonTexts++;
 	}
@@ -1932,9 +1936,9 @@ BOOL CResModule::ReplaceRibbon(LPCTSTR lpszType, WORD wLanguage)
 	{
 		std::string str = (*it)[1];
 		size_t slen = str.size();
-		std::unique_ptr<wchar_t[]> bufw2(new wchar_t[slen * 4 + 1]);
-		SecureZeroMemory(bufw2.get(), (slen * 4 + 1)*sizeof(wchar_t));
-		MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, bufw2.get(), (int)slen * 4);
+		std::unique_ptr<wchar_t[]> bufw2(new wchar_t[slen*4 + 1]);
+		SecureZeroMemory(bufw2.get(), (slen*4 + 1)*sizeof(wchar_t));
+		MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, bufw2.get(), (int)slen*4);
 		std::wstring ret = bufw2.get();
 
 		RESOURCEENTRY entry = m_StringEntries[ret];
@@ -1942,7 +1946,13 @@ BOOL CResModule::ReplaceRibbon(LPCTSTR lpszType, WORD wLanguage)
 
 		if (entry.msgstr.size())
 		{
-			CUtils::SearchReplace(ssw, ret, L"<TEXT>" + entry.msgstr + L"</TEXT>");
+			std::unique_ptr<wchar_t[]> sbuf(new wchar_t[entry.msgstr.size() + 10]);
+			wcscpy(sbuf.get(), entry.msgstr.c_str());
+			CUtils::StringCollapse(sbuf.get());
+			std::wstring sreplace = L"<TEXT>";
+			sreplace += sbuf.get();
+			sreplace += L"</TEXT>";
+			CUtils::SearchReplace(ssw, ret, sreplace);
 			m_bTranslatedRibbonTexts++;
 		}
 		else
@@ -1954,9 +1964,9 @@ BOOL CResModule::ReplaceRibbon(LPCTSTR lpszType, WORD wLanguage)
 	{
 		std::string str = (*it)[1];
 		size_t slen = str.size();
-		std::unique_ptr<wchar_t[]> bufw2(new wchar_t[slen * 4 + 1]);
-		SecureZeroMemory(bufw2.get(), (slen * 4 + 1)*sizeof(wchar_t));
-		MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, bufw2.get(), (int)slen * 4);
+		std::unique_ptr<wchar_t[]> bufw2(new wchar_t[slen*4 + 1]);
+		SecureZeroMemory(bufw2.get(), (slen*4 + 1)*sizeof(wchar_t));
+		MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, bufw2.get(), (int)slen*4);
 		std::wstring ret = bufw2.get();
 
 		RESOURCEENTRY entry = m_StringEntries[ret];
@@ -1964,7 +1974,13 @@ BOOL CResModule::ReplaceRibbon(LPCTSTR lpszType, WORD wLanguage)
 
 		if (entry.msgstr.size())
 		{
-			CUtils::SearchReplace(ssw, ret, L"</ELEMENT_NAME><NAME>" + entry.msgstr + L"</NAME>");
+			std::unique_ptr<wchar_t[]> sbuf(new wchar_t[entry.msgstr.size() + 10]);
+			wcscpy(sbuf.get(), entry.msgstr.c_str());
+			CUtils::StringCollapse(sbuf.get());
+			std::wstring sreplace = L"</ELEMENT_NAME><NAME>";
+			sreplace += sbuf.get();
+			sreplace += L"</NAME>";
+			CUtils::SearchReplace(ssw, ret, sreplace);
 			m_bTranslatedRibbonTexts++;
 		}
 		else

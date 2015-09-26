@@ -49,14 +49,14 @@ BOOL CPOFile::ParseFile(LPCTSTR szPath, BOOL bUpdateExisting, bool bAdjustEOLs)
 	m_bAdjustEOLs = bAdjustEOLs;
 
 	if (!m_bQuiet)
-		_ftprintf(stdout, _T("parsing file %s...\n"), szPath);
+		_ftprintf(stdout, L"parsing file %s...\n", szPath);
 
 	int nEntries = 0;
 	int nDeleted = 0;
 	int nTranslated = 0;
 	//since stream classes still expect the filepath in char and not wchar_t
 	//we need to convert the filepath to multibyte
-	char filepath[MAX_PATH+1];
+	char filepath[MAX_PATH + 1] = { 0 };
 	SecureZeroMemory(filepath, sizeof(filepath));
 	WideCharToMultiByte(CP_ACP, NULL, szPath, -1, filepath, _countof(filepath)-1, NULL, NULL);
 
@@ -65,7 +65,7 @@ BOOL CPOFile::ParseFile(LPCTSTR szPath, BOOL bUpdateExisting, bool bAdjustEOLs)
 	File.open(filepath);
 	if (!File.good())
 	{
-		_ftprintf(stderr, _T("can't open input file %s\n"), szPath);
+		_ftprintf(stderr, L"can't open input file %s\n", szPath);
 		return FALSE;
 	}
 	std::unique_ptr<TCHAR[]> line(new TCHAR[2*MAX_STRING_LENGTH]);
@@ -76,30 +76,30 @@ BOOL CPOFile::ParseFile(LPCTSTR szPath, BOOL bUpdateExisting, bool bAdjustEOLs)
 		if (line.get()[0]==0)
 		{
 			//empty line means end of entry!
-			RESOURCEENTRY resEntry;
+			RESOURCEENTRY resEntry = {0};
 			std::wstring msgid;
 			int type = 0;
 			for (std::vector<std::wstring>::iterator I = entry.begin(); I != entry.end(); ++I)
 			{
-				if (_tcsncmp(I->c_str(), _T("# "), 2)==0)
+				if (wcsncmp(I->c_str(), L"# ", 2)==0)
 				{
 					//user comment
 					resEntry.translatorcomments.push_back(I->c_str());
 					type = 0;
 				}
-				if (_tcsncmp(I->c_str(), _T("#."), 2)==0)
+				if (wcsncmp(I->c_str(), L"#.", 2)==0)
 				{
 					//automatic comments
 					resEntry.automaticcomments.push_back(I->c_str());
 					type = 0;
 				}
-				if (_tcsncmp(I->c_str(), _T("#,"), 2)==0)
+				if (wcsncmp(I->c_str(), L"#,", 2)==0)
 				{
 					//flag
 					resEntry.flag = I->c_str();
 					type = 0;
 				}
-				if (_tcsncmp(I->c_str(), _T("msgid"), 5)==0)
+				if (wcsncmp(I->c_str(), L"msgid", 5)==0)
 				{
 					//message id
 					msgid = I->c_str();
@@ -111,7 +111,7 @@ BOOL CPOFile::ParseFile(LPCTSTR szPath, BOOL bUpdateExisting, bool bAdjustEOLs)
 						nEntries++;
 					type = 1;
 				}
-				if (_tcsncmp(I->c_str(), _T("msgstr"), 6)==0)
+				if (wcsncmp(I->c_str(), L"msgstr", 6)==0)
 				{
 					//message string
 					resEntry.msgstr = I->c_str();
@@ -120,7 +120,7 @@ BOOL CPOFile::ParseFile(LPCTSTR szPath, BOOL bUpdateExisting, bool bAdjustEOLs)
 						nTranslated++;
 					type = 2;
 				}
-				if (_tcsncmp(I->c_str(), _T("\""), 1)==0)
+				if (wcsncmp(I->c_str(), L"\"", 1)==0)
 				{
 					if (type == 1)
 					{
@@ -165,9 +165,9 @@ BOOL CPOFile::ParseFile(LPCTSTR szPath, BOOL bUpdateExisting, bool bAdjustEOLs)
 	printf(File.getloc().name().c_str());
 	File.close();
 	RESOURCEENTRY emptyentry = {0};
-	(*this)[std::wstring(_T(""))] = emptyentry;
+	(*this)[std::wstring(L"")] = emptyentry;
 	if (!m_bQuiet)
-		_ftprintf(stdout, _T("%d Entries found, %d were already translated and %d got deleted\n"), nEntries, nTranslated, nDeleted);
+		_ftprintf(stdout, L"%d Entries found, %d were already translated and %d got deleted\n", nEntries, nTranslated, nDeleted);
 	return TRUE;
 }
 
@@ -175,7 +175,7 @@ BOOL CPOFile::SaveFile(LPCTSTR szPath, LPCTSTR lpszHeaderFile)
 {
 	//since stream classes still expect the filepath in char and not wchar_t
 	//we need to convert the filepath to multibyte
-	char filepath[MAX_PATH+1];
+	char filepath[MAX_PATH + 1] = { 0 };
 	int nEntries = 0;
 	SecureZeroMemory(filepath, sizeof(filepath));
 	WideCharToMultiByte(CP_ACP, NULL, szPath, -1, filepath, _countof(filepath)-1, NULL, NULL);
@@ -198,41 +198,41 @@ BOOL CPOFile::SaveFile(LPCTSTR szPath, LPCTSTR lpszHeaderFile)
 	}
 	else
 	{
-		File << _T("# SOME DESCRIPTIVE TITLE.\n");
-		File << _T("# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER\n");
-		File << _T("# This file is distributed under the same license as the PACKAGE package.\n");
-		File << _T("# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.\n");
-		File << _T("#\n");
-		File << _T("#, fuzzy\n");
-		File << _T("msgid \"\"\n");
-		File << _T("msgstr \"\"\n");
-		File << _T("\"Project-Id-Version: PACKAGE VERSION\\n\"\n");
-		File << _T("\"Report-Msgid-Bugs-To: \\n\"\n");
-		File << _T("\"POT-Creation-Date: 1900-01-01 00:00+0000\\n\"\n");
-		File << _T("\"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\\n\"\n");
-		File << _T("\"Last-Translator: FULL NAME <EMAIL@ADDRESS>\\n\"\n");
-		File << _T("\"Language-Team: LANGUAGE <LL@li.org>\\n\"\n");
-		File << _T("\"MIME-Version: 1.0\\n\"\n");
-		File << _T("\"Content-Type: text/plain; charset=UTF-8\\n\"\n");
-		File << _T("\"Content-Transfer-Encoding: 8bit\\n\"\n\n");
+		File << L"# SOME DESCRIPTIVE TITLE.\n";
+		File << L"# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER\n";
+		File << L"# This file is distributed under the same license as the PACKAGE package.\n";
+		File << L"# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.\n";
+		File << L"#\n";
+		File << L"#, fuzzy\n";
+		File << L"msgid \"\"\n";
+		File << L"msgstr \"\"\n";
+		File << L"\"Project-Id-Version: PACKAGE VERSION\\n\"\n";
+		File << L"\"Report-Msgid-Bugs-To: \\n\"\n";
+		File << L"\"POT-Creation-Date: 1900-01-01 00:00+0000\\n\"\n";
+		File << L"\"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\\n\"\n";
+		File << L"\"Last-Translator: FULL NAME <EMAIL@ADDRESS>\\n\"\n";
+		File << L"\"Language-Team: LANGUAGE <LL@li.org>\\n\"\n";
+		File << L"\"MIME-Version: 1.0\\n\"\n";
+		File << L"\"Content-Type: text/plain; charset=UTF-8\\n\"\n";
+		File << L"\"Content-Transfer-Encoding: 8bit\\n\"\n\n";
 	}
-	File << _T("\n");
-	File << _T("# msgid/msgstr fields for Accelerator keys\n");
-	File << _T("# Format is: \"ID:xxxxxx:VACS+X\" where:\n");
-	File << _T("#    ID:xxxxx = the menu ID corresponding to the accelerator\n");
-	File << _T("#    V = Virtual key (or blank if not used) - nearly always set!\n");
-	File << _T("#    A = Alt key     (or blank if not used)\n");
-	File << _T("#    C = Ctrl key    (or blank if not used)\n");
-	File << _T("#    S = Shift key   (or blank if not used)\n");
-	File << _T("#    X = upper case character\n");
-	File << _T("# e.g. \"V CS+Q\" == Ctrl + Shift + 'Q'\n");
-	File << _T("\n");
-	File << _T("# ONLY Accelerator Keys with corresponding alphanumeric characters can be\n");
-	File << _T("# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.\n");
-	File << _T("\n");
-	File << _T("# ONLY change the msgstr field. Do NOT change any other.\n");
-	File << _T("# If you do not want to change an Accelerator Key, copy msgid to msgstr\n");
-	File << _T("\n");
+	File << L"\n";
+	File << L"# msgid/msgstr fields for Accelerator keys\n";
+	File << L"# Format is: \"ID:xxxxxx:VACS+X\" where:\n";
+	File << L"#    ID:xxxxx = the menu ID corresponding to the accelerator\n";
+	File << L"#    V = Virtual key (or blank if not used) - nearly always set!\n";
+	File << L"#    A = Alt key     (or blank if not used)\n";
+	File << L"#    C = Ctrl key    (or blank if not used)\n";
+	File << L"#    S = Shift key   (or blank if not used)\n";
+	File << L"#    X = upper case character\n";
+	File << L"# e.g. \"V CS+Q\" == Ctrl + Shift + 'Q'\n";
+	File << L"\n";
+	File << L"# ONLY Accelerator Keys with corresponding alphanumeric characters can be\n";
+	File << L"# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.\n";
+	File << L"\n";
+	File << L"# ONLY change the msgstr field. Do NOT change any other.\n";
+	File << L"# If you do not want to change an Accelerator Key, copy msgid to msgstr\n";
+	File << L"\n";
 
 	for (std::map<std::wstring, RESOURCEENTRY>::iterator I = this->begin(); I != this->end(); ++I)
 	{
@@ -244,36 +244,36 @@ BOOL CPOFile::SaveFile(LPCTSTR szPath, LPCTSTR lpszHeaderFile)
 		RESOURCEENTRY entry = I->second;
 		for (std::vector<std::wstring>::iterator II = entry.automaticcomments.begin(); II != entry.automaticcomments.end(); ++II)
 		{
-			File << II->c_str() << _T("\n");
+			File << II->c_str() << L"\n";
 		}
 		for (std::vector<std::wstring>::iterator II = entry.translatorcomments.begin(); II != entry.translatorcomments.end(); ++II)
 		{
-			File << II->c_str() << _T("\n");
+			File << II->c_str() << L"\n";
 		}
 		if (!I->second.resourceIDs.empty())
 		{
-			File << _T("#. Resource IDs: (");
+			File << L"#. Resource IDs: (";
 
 			std::set<INT_PTR>::const_iterator II = I->second.resourceIDs.begin();
 			File << (*II);
 			++II;
 			while (II != I->second.resourceIDs.end())
 			{
-				File << _T(", ");
+				File << L", ";
 				File << (*II);
 				++II;
 			};
-			File << _T(")\n");
+			File << L")\n";
 		}
 		if (I->second.flag.length() > 0)
-			File << (I->second.flag.c_str()) << _T("\n");
-		File << (_T("msgid \"")) << (I->first.c_str()) << _T("\"\n");
-		File << (_T("msgstr \"")) << (I->second.msgstr.c_str()) << _T("\"\n\n");
+			File << (I->second.flag.c_str()) << L"\n";
+		File << (L"msgid \"") << (I->first.c_str()) << L"\"\n";
+		File << (L"msgstr \"") << (I->second.msgstr.c_str()) << L"\"\n\n";
 		nEntries++;
 	}
 	File.close();
 	if (!m_bQuiet)
-		_ftprintf(stdout, _T("File %s saved, containing %d entries\n"), szPath, nEntries);
+		_ftprintf(stdout, L"File %s saved, containing %d entries\n", szPath, nEntries);
 	return TRUE;
 }
 
@@ -315,4 +315,3 @@ void CPOFile::AdjustEOLs(std::wstring& str)
 	}
 	str.swap(result);
 }
-

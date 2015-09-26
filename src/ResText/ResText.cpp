@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2006, 2009-2012 - TortoiseSVN
+// Copyright (C) 2003-2006, 2009-2012, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -52,26 +52,26 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	for (std::vector<tstring>::iterator I = switches.begin(); I != switches.end(); ++I)
 	{
-		if (_tcscmp(I->c_str(), _T("?"))==0)
+		if (wcscmp(I->c_str(), L"?")==0)
 			bShowHelp = true;
-		if (_tcscmp(I->c_str(), _T("help"))==0)
+		if (wcscmp(I->c_str(), L"help")==0)
 			bShowHelp = true;
-		if (_tcscmp(I->c_str(), _T("quiet"))==0)
+		if (wcscmp(I->c_str(), L"quiet")==0)
 			bQuiet = true;
-		if (_tcscmp(I->c_str(), _T("noupdate"))==0)
+		if (wcscmp(I->c_str(), L"noupdate")==0)
 			bNoUpdate = true;
-		if (_tcscmp(I->c_str(), _T("rtl"))==0)
+		if (wcscmp(I->c_str(), L"rtl")==0)
 			bRTL = true;
-		if (_tcscmp(I->c_str(), _T("useheaderfile"))==0)
+		if (wcscmp(I->c_str(), L"useheaderfile")==0)
 			bUseHeader = true;
-		if (_tcscmp(I->c_str(), _T("adjusteols"))==0)
+		if (wcscmp(I->c_str(), L"adjusteols")==0)
 			bAdjustEOLs = true;
 	}
 	std::vector<tstring>::iterator arg = arguments.begin();
 
 	if (arg != arguments.end())
 	{
-		if (_tcscmp(arg->c_str(), _T("extract"))==0)
+		if (wcscmp(arg->c_str(), L"extract")==0)
 		{
 			tstring sPoFile;
 			tstring sHeaderFile;
@@ -93,7 +93,7 @@ int _tmain(int argc, _TCHAR* argv[])
 				return -1;
 			bShowHelp = false;
 		}
-		else if (_tcscmp(arg->c_str(), _T("apply"))==0)
+		else if (wcscmp(arg->c_str(), L"apply")==0)
 		{
 			tstring sSrcDllFile;
 			tstring sDstDllFile;
@@ -102,7 +102,7 @@ int _tmain(int argc, _TCHAR* argv[])
 			++arg;
 			if (!PathFileExists(arg->c_str()))
 			{
-				_ftprintf(stderr, _T("the resource dll <%s> does not exist!\n"), arg->c_str());
+				_ftprintf(stderr, L"the resource dll <%s> does not exist!\n", arg->c_str());
 				return -1;
 			}
 			sSrcDllFile = tstring(arg->c_str());
@@ -111,14 +111,14 @@ int _tmain(int argc, _TCHAR* argv[])
 			++arg;
 			if (!PathFileExists(arg->c_str()))
 			{
-				_ftprintf(stderr, _T("the po-file <%s> does not exist!\n"), arg->c_str());
+				_ftprintf(stderr, L"the po-file <%s> does not exist!\n", arg->c_str());
 				return -1;
 			}
 			sPoFile = tstring(arg->c_str());
 			++arg;
 			if (arg != arguments.end())
 			{
-				wLang = (WORD)_ttoi(arg->c_str());
+				wLang = (WORD)_wtoi(arg->c_str());
 			}
 			CResModule module;
 			module.SetQuiet(bQuiet);
@@ -133,20 +133,20 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	if (bShowHelp)
 	{
-		_ftprintf(stdout, _T("usage:\n"));
-		_ftprintf(stdout, _T("\n"));
-		_ftprintf(stdout, _T("ResText extract <resource.dll> [<resource.dll> ...] [-useheaderfile <headerfile>] <po-file> [-quiet] [-noupdate]\n"));
-		_ftprintf(stdout, _T("Extracts all strings from the resource dll and writes them to the po-file\n"));
-		_ftprintf(stdout, _T("-useheaderfile: the content of the header file instead of a default header\n"));
-		_ftprintf(stdout, _T("-quiet: don't print progress messages\n"));
-		_ftprintf(stdout, _T("-noupdate: overwrite the po-file\n"));
-		_ftprintf(stdout, _T("\n"));
-		_ftprintf(stdout, _T("ResText apply <src resource.dll> <dst resource.dll> <po-file> [langID] [-quiet][-rtl]\n"));
-		_ftprintf(stdout, _T("Replaces all strings in the dst resource.dll with the po-file translations\n"));
-		_ftprintf(stdout, _T("-quiet: don't print progress messages\n"));
-		_ftprintf(stdout, _T("-rtl  : change the controls to RTL reading\n"));
-		_ftprintf(stdout, _T("-adjusteols : if the msgid string has \\r\\n eols, enforce those for the translation too.\n"));
-		_ftprintf(stdout, _T("\n"));
+		_ftprintf(stdout, L"usage:\n");
+		_ftprintf(stdout, L"\n");
+		_ftprintf(stdout, L"ResText extract <resource.dll> [<resource.dll> ...] [-useheaderfile <headerfile>] <po-file> [-quiet] [-noupdate]\n");
+		_ftprintf(stdout, L"Extracts all strings from the resource dll and writes them to the po-file\n");
+		_ftprintf(stdout, L"-useheaderfile: the content of the header file instead of a default header\n");
+		_ftprintf(stdout, L"-quiet: don't print progress messages\n");
+		_ftprintf(stdout, L"-noupdate: overwrite the po-file\n");
+		_ftprintf(stdout, L"\n");
+		_ftprintf(stdout, L"ResText apply <src resource.dll> <dst resource.dll> <po-file> [langID] [-quiet][-rtl]\n");
+		_ftprintf(stdout, L"Replaces all strings in the dst resource.dll with the po-file translations\n");
+		_ftprintf(stdout, L"-quiet: don't print progress messages\n");
+		_ftprintf(stdout, L"-rtl  : change the controls to RTL reading\n");
+		_ftprintf(stdout, L"-adjusteols : if the msgid string has \\r\\n eols, enforce those for the translation too.\n");
+		_ftprintf(stdout, L"\n");
 	}
 
 	return 0;
