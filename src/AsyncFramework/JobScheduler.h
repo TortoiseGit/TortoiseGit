@@ -273,15 +273,14 @@ private:
 
         CThreadPool();
 
+        // prevent cloning
+        CThreadPool(const CThreadPool&) = delete;
+        CThreadPool& operator=(const CThreadPool&) = delete;
+
         /// remove one entry from \ref starving container.
         /// Return NULL, if container was empty
 
         CJobScheduler* SelectStarving();
-
-        /// no copy support
-
-        CThreadPool(const CThreadPool& rhs);
-        CThreadPool& operator=(const CThreadPool& rhs);
 
     public:
 

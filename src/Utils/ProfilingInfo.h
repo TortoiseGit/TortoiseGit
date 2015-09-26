@@ -2,7 +2,7 @@
 
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2008 - TortoiseSVN
+// Copyright (C) 2003-2008, 2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -170,6 +170,9 @@ private:
 
     CProfilingInfo();
     ~CProfilingInfo(void);
+    // prevent cloning
+    CProfilingInfo(const CProfilingInfo&) = delete;
+    CProfilingInfo& operator=(const CProfilingInfo&) = delete;
 
 	/// create report
 
