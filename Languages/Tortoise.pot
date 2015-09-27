@@ -302,11 +302,11 @@ msgstr ""
 msgid "&Abort"
 msgstr ""
 
-#. Resource IDs: (57664 - Menu)
+#. Resource IDs: (ID_APP_ABOUT - Menu)
 msgid "&About TortoiseGitBlame..."
 msgstr ""
 
-#. Resource IDs: (57664 - Menu)
+#. Resource IDs: (ID_APP_ABOUT - Menu)
 msgid "&About TortoiseGitMerge..."
 msgstr ""
 
@@ -462,7 +462,7 @@ msgstr ""
 msgid "&Clean up..."
 msgstr ""
 
-#. Resource IDs: (57632 - Menu)
+#. Resource IDs: (ID_EDIT_CLEAR - Menu)
 msgid "&Clear"
 msgstr ""
 
@@ -510,7 +510,7 @@ msgstr ""
 msgid "&Continue"
 msgstr ""
 
-#. Resource IDs: (57634 - Menu, Dialog IDD_SETTINGSBUGTRAQ: Control id 1471, Dialog IDD_SETTINGSHOOKS: Control id 1367, IDS_EDIT_COPY)
+#. Resource IDs: (Dialog IDD_SETTINGSBUGTRAQ: Control id 1471, Dialog IDD_SETTINGSHOOKS: Control id 1367, IDS_EDIT_COPY, ID_EDIT_COPY - Menu)
 msgid "&Copy"
 msgstr ""
 
@@ -518,7 +518,7 @@ msgstr ""
 msgid "&Copy Button Image"
 msgstr ""
 
-#. Resource IDs: (57634 - Menu)
+#. Resource IDs: (ID_EDIT_COPY - Menu)
 msgid "&Copy\tCtrl+C"
 msgstr ""
 
@@ -658,7 +658,7 @@ msgstr ""
 msgid "&Find"
 msgstr ""
 
-#. Resource IDs: (32787 - Menu, 57636 - Menu)
+#. Resource IDs: (32787 - Menu, ID_EDIT_FIND - Menu)
 msgid "&Find\tCtrl+F"
 msgstr ""
 
@@ -722,7 +722,7 @@ msgstr ""
 msgid "&Help"
 msgstr ""
 
-#. Resource IDs: (57667 - Menu, 57670 - Menu)
+#. Resource IDs: (ID_HELP - Menu, ID_HELP_FINDER - Menu)
 msgid "&Help Topics"
 msgstr ""
 
@@ -956,7 +956,7 @@ msgstr ""
 msgid "&Open Git for Windows WebSite"
 msgstr ""
 
-#. Resource IDs: (57601 - Menu, ID_FILE_OPEN - Menu)
+#. Resource IDs: (ID_FILE_OPEN - Menu)
 msgid "&Open...\tCtrl+O"
 msgstr ""
 
@@ -976,7 +976,7 @@ msgstr ""
 msgid "&Password:"
 msgstr ""
 
-#. Resource IDs: (57637 - Menu, IDS_EDIT_PASTE, IDS_MENUCLIPPASTE, IDS_SCIEDIT_PASTE)
+#. Resource IDs: (IDS_EDIT_PASTE, IDS_MENUCLIPPASTE, IDS_SCIEDIT_PASTE, ID_EDIT_PASTE - Menu)
 msgid "&Paste"
 msgstr ""
 
@@ -1204,7 +1204,7 @@ msgstr ""
 msgid "&Stash"
 msgstr ""
 
-#. Resource IDs: (59393 - Menu)
+#. Resource IDs: (ID_VIEW_STATUS_BAR - Menu)
 msgid "&Status Bar"
 msgstr ""
 
@@ -1248,7 +1248,7 @@ msgstr ""
 msgid "&Timeout in seconds to stop the auto-completion parsing"
 msgstr ""
 
-#. Resource IDs: (59392 - Menu)
+#. Resource IDs: (ID_VIEW_TOOLBAR - Menu)
 msgid "&Toolbar"
 msgstr ""
 
@@ -1288,7 +1288,7 @@ msgstr ""
 msgid "&URL:"
 msgstr ""
 
-#. Resource IDs: (57643 - Menu, IDS_SCIEDIT_UNDO)
+#. Resource IDs: (IDS_SCIEDIT_UNDO, ID_EDIT_UNDO - Menu)
 msgid "&Undo"
 msgstr ""
 
@@ -1544,7 +1544,7 @@ msgstr ""
 msgid "<new changelist>"
 msgstr ""
 
-#. Resource IDs: (59392 - Menu)
+#. Resource IDs: (ID_VIEW_TOOLBAR - Menu)
 msgid "<placeholder>"
 msgstr ""
 
@@ -4026,7 +4026,7 @@ msgstr ""
 msgid "E&xclude paths:"
 msgstr ""
 
-#. Resource IDs: (105 - Menu, 57665 - Menu)
+#. Resource IDs: (105 - Menu, ID_APP_EXIT - Menu)
 msgid "E&xit"
 msgstr ""
 
@@ -4658,7 +4658,7 @@ msgstr ""
 msgid "Filter: "
 msgstr ""
 
-#. Resource IDs: (57636 - Menu, Dialog IDD_FIND: Control id 139, Dialog IDD_FIND: Control id 20100, ID_EDIT_FIND - Ribbon name)
+#. Resource IDs: (Dialog IDD_FIND: Control id 139, Dialog IDD_FIND: Control id 20100, ID_EDIT_FIND - Menu, ID_EDIT_FIND - Ribbon name)
 msgid "Find"
 msgstr ""
 
@@ -6803,7 +6803,7 @@ msgstr ""
 msgid "Only this item"
 msgstr ""
 
-#. Resource IDs: (57601 - Menu, 61440, ID_FILE_OPEN - Ribbon name)
+#. Resource IDs: (61440, ID_FILE_OPEN - Menu, ID_FILE_OPEN - Ribbon name)
 msgid "Open"
 msgstr ""
 
@@ -7492,7 +7492,7 @@ msgstr ""
 msgid "Recent"
 msgstr ""
 
-#. Resource IDs: (57616 - Menu)
+#. Resource IDs: (ID_FILE_MRU_FILE1 - Menu)
 msgid "Recent File"
 msgstr ""
 
@@ -8129,11 +8129,11 @@ msgstr ""
 msgid "Sample text:"
 msgstr ""
 
-#. Resource IDs: (57603 - Menu, ID_FILE_SAVE - Ribbon name)
+#. Resource IDs: (ID_FILE_SAVE - Menu, ID_FILE_SAVE - Ribbon name)
 msgid "Save"
 msgstr ""
 
-#. Resource IDs: (57604 - Menu, IDS_REPOBROWSE_SAVEAS)
+#. Resource IDs: (IDS_REPOBROWSE_SAVEAS, ID_FILE_SAVE_AS - Menu)
 msgid "Save &as..."
 msgstr ""
 
