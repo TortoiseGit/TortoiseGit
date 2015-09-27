@@ -128,6 +128,7 @@ private:
 	std::wstring    sDestFile;
 	std::map<INT_PTR, std::wstring> m_currentHeaderDataDialogs;
 	std::map<INT_PTR, std::wstring> m_currentHeaderDataStrings;
+	std::map<INT_PTR, std::wstring> m_currentHeaderDataMenus;
 	BOOL            m_bQuiet;
 
 	bool            m_bRTL;
