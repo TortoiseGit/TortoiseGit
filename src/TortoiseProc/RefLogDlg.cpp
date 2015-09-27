@@ -119,7 +119,10 @@ void CRefLogDlg::OnBnClickedOk()
 }
 void CRefLogDlg::OnBnClickedClearStash()
 {
-	if (CMessageBox::Show(this->GetSafeHwnd(), IDS_PROC_DELETEALLSTASH, IDS_APPNAME, 2, IDI_QUESTION, IDS_DELETEBUTTON, IDS_ABORTBUTTON) == 1)
+	size_t count = m_RefList.m_arShownList.GetCount();
+	CString msg;
+	msg.Format(IDS_PROC_DELETEALLSTASH, count);
+	if (CMessageBox::Show(this->GetSafeHwnd(), msg, _T("TortoiseGit"), 2, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_DELETEBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 1)
 	{
 		CString cmdOut;
 		if (g_Git.Run(_T("git.exe stash clear"), &cmdOut, CP_UTF8))

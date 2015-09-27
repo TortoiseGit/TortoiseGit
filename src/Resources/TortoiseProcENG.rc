@@ -4128,7 +4128,7 @@ BEGIN
                             "The branch ""%s"" is a <i>remote</i> branch.\n\nDo you really want to <ct=0x0000FF>delete</ct> it?"
     IDS_PROC_DELETEREMOTEBRANCH_LOCALREMOTE "&Delete remote && local"
     IDS_PROC_DELETEREMOTEBRANCH_LOCAL "Delete &local"
-    IDS_PROC_DELETEALLSTASH "<ct=0x0000FF>Do you really want to delete <b>ALL</b> stash?</ct>"
+    IDS_PROC_DELETEALLSTASH "<ct=0x0000FF>Do you really want to delete <b>ALL %d</b> stash?</ct>"
     IDS_PROC_DELETEBRANCHTAG 
                             "Do you really want to <ct=0x0000FF>delete</ct> <b>%s</b>?"
 END

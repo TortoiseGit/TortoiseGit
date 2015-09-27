@@ -931,7 +931,12 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				}
 				else if (CGit::GetShortName(*branch, shortname, _T("refs/stash")))
 				{
-					if (CMessageBox::Show(NULL, IDS_PROC_DELETEALLSTASH, IDS_APPNAME, 2, IDI_QUESTION, IDS_DELETEBUTTON, IDS_ABORTBUTTON) == 1)
+					CString err;
+					std::vector<GitRevLoglist> stashList;
+					size_t count = !GitRevLoglist::GetRefLog(*branch, stashList, err) ? stashList.size() : 0;
+					CString msg;
+					msg.Format(IDS_PROC_DELETEALLSTASH, count);
+					if (CMessageBox::Show(NULL, msg, _T("TortoiseGit"), 2, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_DELETEBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 1)
 					{
 						CString sCmd;
 						sCmd.Format(_T("git.exe stash clear"));

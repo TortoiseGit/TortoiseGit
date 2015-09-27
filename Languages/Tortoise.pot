@@ -1496,7 +1496,7 @@ msgid "<ct=0x0000FF>Current HEAD Detached</ct>, you are working on (no branch).\
 msgstr ""
 
 #. Resource IDs: (1118)
-msgid "<ct=0x0000FF>Do you really want to delete <b>ALL</b> stash?</ct>"
+msgid "<ct=0x0000FF>Do you really want to delete <b>ALL %d</b> stash?</ct>"
 msgstr ""
 
 #. Resource IDs: (1143)
