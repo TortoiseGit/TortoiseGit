@@ -1971,7 +1971,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 						popup.AppendMenuIcon(ID_STASH_SAVE, IDS_MENUSTASHSAVE, IDI_COMMIT);
 				}
 
-				if (CTGitPath(g_Git.m_CurrentDir).HasStashDir() && (pSelLogEntry->m_CommitHash.IsEmpty() || isStash))
+				if ((pSelLogEntry->m_CommitHash.IsEmpty() || isStash) && CTGitPath(g_Git.m_CurrentDir).HasStashDir())
 				{
 					if (m_ContextMenuMask&GetContextMenuBit(ID_STASH_POP))
 						popup.AppendMenuIcon(ID_STASH_POP, IDS_MENUSTASHPOP, IDI_RELOCATE);
