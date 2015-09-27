@@ -31,8 +31,8 @@ private:
 	CShellUpdater(void);
 	~CShellUpdater(void);
 	// prevent cloning
-	CShellUpdater(const CShellUpdater&) = delete;
-	CShellUpdater& operator=(const CShellUpdater&) = delete;
+	CShellUpdater(const CShellUpdater&);
+	CShellUpdater& operator=(const CShellUpdater&);
 public:
 	static CShellUpdater& Instance();
 

@@ -69,6 +69,9 @@ private:
 	{
 		delete m_pInstance;
 	}
+	// prevent cloning
+	CTraceToOutputDebugString(const CTraceToOutputDebugString&);
+	CTraceToOutputDebugString& operator=(const CTraceToOutputDebugString&);
 
 	DWORD m_LastTick;
 	bool    m_bActive;

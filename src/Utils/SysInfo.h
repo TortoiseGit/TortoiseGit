@@ -29,8 +29,8 @@ private:
     SysInfo(void);
     ~SysInfo(void);
 	// prevent cloning
-	SysInfo(const SysInfo&) = delete;
-	SysInfo& operator=(const SysInfo&) = delete;
+	SysInfo(const SysInfo&);
+	SysInfo& operator=(const SysInfo&);
 public:
     static const SysInfo& Instance();
 

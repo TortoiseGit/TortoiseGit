@@ -32,8 +32,8 @@ private:
 	CTempFiles(void);
 	~CTempFiles(void);
 	// prevent cloning
-	CTempFiles(const CTempFiles&) = delete;
-	CTempFiles& operator=(const CTempFiles&) = delete;
+	CTempFiles(const CTempFiles&);
+	CTempFiles& operator=(const CTempFiles&);
 public:
 	static CTempFiles& Instance();
 

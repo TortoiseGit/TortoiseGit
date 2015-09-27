@@ -84,8 +84,8 @@ private:
 	CHooks();
 	~CHooks();
 	// prevent cloning
-	CHooks(const CHooks&) = delete;
-	CHooks& operator=(const CHooks&) = delete;
+	CHooks(const CHooks&);
+	CHooks& operator=(const CHooks&);
 
 	static void AddPathParam(CString& sCmd, const CTGitPathList& pathList);
 	static void AddCWDParam(CString& sCmd, const CString& workingTree);

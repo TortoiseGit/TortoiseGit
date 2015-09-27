@@ -2169,7 +2169,7 @@ size_t CResModule::ScanHeaderFile(const std::wstring & filepath)
 
 	// open the file and read the contents
 	DWORD reqLen = GetFullPathName(filepath.c_str(), 0, NULL, NULL);
-	auto wcfullPath = std::make_unique<TCHAR[]>(reqLen + 1);
+	std::unique_ptr<TCHAR[]> wcfullPath(new TCHAR[reqLen + 1]);
 	GetFullPathName(filepath.c_str(), reqLen, wcfullPath.get(), NULL);
 	std::wstring fullpath = wcfullPath.get();
 

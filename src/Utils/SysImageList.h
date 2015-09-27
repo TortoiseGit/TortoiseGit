@@ -36,8 +36,8 @@ private:
 	CSysImageList();
 	~CSysImageList();
 	// prevent cloning
-	CSysImageList(const CSysImageList&) = delete;
-	CSysImageList& operator=(const CSysImageList&) = delete;
+	CSysImageList(const CSysImageList&);
+	CSysImageList& operator=(const CSysImageList&);
 
 // Singleton specific operations
 public:

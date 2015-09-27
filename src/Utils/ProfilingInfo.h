@@ -171,8 +171,8 @@ private:
     CProfilingInfo();
     ~CProfilingInfo(void);
     // prevent cloning
-    CProfilingInfo(const CProfilingInfo&) = delete;
-    CProfilingInfo& operator=(const CProfilingInfo&) = delete;
+    CProfilingInfo(const CProfilingInfo&);
+    CProfilingInfo& operator=(const CProfilingInfo&);
 
 	/// create report
 
