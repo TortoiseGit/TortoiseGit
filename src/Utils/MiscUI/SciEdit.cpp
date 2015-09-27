@@ -119,7 +119,7 @@ static LPBYTE Icon2Image(HICON hIcon)
 	infoheader.bmiHeader.biCompression = BI_RGB;
 	infoheader.bmiHeader.biSizeImage = size;
 
-	std::unique_ptr<BYTE> ptrb(new BYTE[(size * 2 + height * width * 4)]);
+	std::unique_ptr<BYTE[]> ptrb(new BYTE[(size * 2 + height * width * 4)]);
 	LPBYTE pixelsIconRGB = ptrb.get();
 	LPBYTE alphaPixels = pixelsIconRGB + size;
 	HDC hDC = CreateCompatibleDC(nullptr);

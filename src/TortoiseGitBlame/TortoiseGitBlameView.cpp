@@ -1834,7 +1834,7 @@ void CTortoiseGitBlameView::OnEditFind()
 	if (m_TextView.Call(SCI_GETSELECTIONSTART) != m_TextView.Call(SCI_GETSELECTIONEND))
 	{
 		LRESULT bufsize = m_TextView.Call(SCI_GETSELECTIONEND) - m_TextView.Call(SCI_GETSELECTIONSTART);
-		std::unique_ptr<char> linebuf(new char[bufsize + 1]);
+		std::unique_ptr<char[]> linebuf(new char[bufsize + 1]);
 		SecureZeroMemory(linebuf.get(), bufsize + 1);
 		SendEditor(SCI_GETSELTEXT, 0, (LPARAM)linebuf.get());
 		oneline = m_TextView.StringFromControl(linebuf.get());
