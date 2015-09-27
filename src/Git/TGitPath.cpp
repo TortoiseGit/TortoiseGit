@@ -26,6 +26,7 @@
 #include "Git.h"
 #include "../TortoiseShell/Globals.h"
 #include "StringUtils.h"
+#include "SmartHandle.h"
 #include "../Resources/LoglistCommonResource.h"
 #include <memory>
 
@@ -862,7 +863,70 @@ bool CTGitPath::HasStashDir() const
 	CString dotGitPath;
 	GitAdminDir::GetAdminDirPath(topdir, dotGitPath);
 
-	return !!PathFileExists(dotGitPath + _T("\\refs\\stash"));
+	if (!!PathFileExists(dotGitPath + _T("refs\\stash")))
+		return true;
+
+	CAutoFile hfile = CreateFile(dotGitPath + _T("packed-refs"), GENERIC_READ, 
+		FILE_SHARE_READ | FILE_SHARE_DELETE | FILE_SHARE_WRITE, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+	if (!hfile)
+		return false;
+
+	DWORD filesize = ::GetFileSize(hfile, nullptr);
+	if (filesize == 0)
+		return false;
+
+	DWORD size = 0;
+	std::unique_ptr<char[]> buff(new char[filesize + 1]);
+	ReadFile(hfile, buff.get(), filesize, &size, nullptr);
+	buff.get()[filesize] = '\0';
+
+	if (size != filesize)
+		return false;
+
+	for (DWORD i = 0; i < filesize;)
+	{
+		if (buff[i] == '#' || buff[i] == '^')
+		{
+			while (buff[i] != '\n')
+			{
+				++i;
+				if (i == filesize)
+					break;
+			}
+			++i;
+		}
+
+		if (i >= filesize)
+			break;
+
+		while (buff[i] != ' ')
+		{
+			++i;
+			if (i == filesize)
+				break;
+		}
+
+		++i;
+		if (i >= filesize)
+			break;
+
+		if (i <= filesize - 10 && (buff[i + 10] == '\n' || buff[i + 10] == '\0') && !strncmp("refs/stash", buff.get() + i, 10))
+			return true;
+		while (buff[i] != '\n')
+		{
+			++i;
+			if (i == filesize)
+				break;
+		}
+
+		while (buff[i] == '\n')
+		{
+			++i;
+			if (i == filesize)
+				break;
+		}
+	}
+	return false;
 }
 bool CTGitPath::HasGitSVNDir() const
 {
