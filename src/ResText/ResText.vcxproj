@@ -52,6 +52,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\Utils\UnicodeUtils.cpp" />
     <ClCompile Include="codecvt.cpp">
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
@@ -65,6 +66,7 @@
     <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Utils\UnicodeUtils.h" />
     <ClInclude Include="codecvt.h" />
     <ClInclude Include="POFile.h" />
     <ClInclude Include="ResModule.h" />
