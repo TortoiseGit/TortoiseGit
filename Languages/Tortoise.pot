@@ -1632,7 +1632,7 @@ msgstr ""
 msgid "Aborts a running merge."
 msgstr ""
 
-#. Resource IDs: (57664 - Ribbon name)
+#. Resource IDs: (ID_APP_ABOUT - Ribbon name)
 msgid "About"
 msgstr ""
 
@@ -1943,7 +1943,7 @@ msgstr ""
 msgid "Apply unified diff"
 msgstr ""
 
-#. Resource IDs: (10012, 10012 - Ribbon name, ID_VIEW_APPLOOK_OFF_2007_AQUA - Menu)
+#. Resource IDs: (10012, ID_VIEW_APPLOOK_OFF_2007_AQUA - Menu, ID_VIEW_APPLOOK_OFF_2007_AQUA - Ribbon name)
 msgid "Aqua Style"
 msgstr ""
 
@@ -2206,7 +2206,7 @@ msgstr ""
 msgid "Bitmap\na bitmap"
 msgstr ""
 
-#. Resource IDs: (10010, 10010 - Ribbon name, ID_VIEW_APPLOOK_OFF_2007_BLACK - Menu)
+#. Resource IDs: (10010, ID_VIEW_APPLOOK_OFF_2007_BLACK - Menu, ID_VIEW_APPLOOK_OFF_2007_BLACK - Ribbon name)
 msgid "Black Style"
 msgstr ""
 
@@ -2234,7 +2234,7 @@ msgstr ""
 msgid "Blocks"
 msgstr ""
 
-#. Resource IDs: (10009, 10009 - Ribbon name, ID_VIEW_APPLOOK_OFF_2007_BLUE - Menu)
+#. Resource IDs: (10009, ID_VIEW_APPLOOK_OFF_2007_BLUE - Menu, ID_VIEW_APPLOOK_OFF_2007_BLUE - Ribbon name)
 msgid "Blue Style"
 msgstr ""
 
@@ -2792,7 +2792,7 @@ msgstr ""
 msgid "Close the active window and prompts to save the documents"
 msgstr ""
 
-#. Resource IDs: (32870 - Ribbon name, ID_VIEW_COLLAPSED - Menu)
+#. Resource IDs: (ID_VIEW_COLLAPSED - Menu, ID_VIEW_COLLAPSED - Ribbon name)
 msgid "Collapse"
 msgstr ""
 
@@ -2947,7 +2947,7 @@ msgstr ""
 msgid "Compare two files"
 msgstr ""
 
-#. Resource IDs: (32871 - Ribbon name, ID_VIEW_COMPAREWHITESPACES - Menu)
+#. Resource IDs: (ID_VIEW_COMPAREWHITESPACES - Menu, ID_VIEW_COMPAREWHITESPACES - Ribbon name)
 msgid "Compare whitespaces"
 msgstr ""
 
@@ -3081,7 +3081,7 @@ msgstr ""
 msgid "Copied"
 msgstr ""
 
-#. Resource IDs: (16991, 57634 - Ribbon name, IDS_PATHACTIONS_COPY, IDS_PROGRS_TITLE_COPY)
+#. Resource IDs: (16991, IDS_PATHACTIONS_COPY, IDS_PROGRS_TITLE_COPY, ID_EDIT_COPY - Ribbon name)
 msgid "Copy"
 msgstr ""
 
@@ -3331,7 +3331,7 @@ msgstr ""
 msgid "Create a shallow clone with a history truncated to the specified number of revisions. A shallow repository has a number of limitations (you cannot clone or fetch from it, nor push from nor into it), but is adequate if you are only interested in the recent history of a large project with a long history, and would want to send in fixes as patches."
 msgstr ""
 
-#. Resource IDs: (32828 - Ribbon name, ID_EDIT_CREATEUNIFIEDDIFFFILE - Menu)
+#. Resource IDs: (ID_EDIT_CREATEUNIFIEDDIFFFILE - Menu, ID_EDIT_CREATEUNIFIEDDIFFFILE - Ribbon name)
 msgid "Create patch file"
 msgstr ""
 
@@ -4146,7 +4146,7 @@ msgstr ""
 msgid "Empty"
 msgstr ""
 
-#. Resource IDs: (32976 - Ribbon name)
+#. Resource IDs: (ID_EDIT_ENABLE - Ribbon name)
 msgid "Enable Edit"
 msgstr ""
 
@@ -4352,7 +4352,7 @@ msgstr ""
 msgid "Existing"
 msgstr ""
 
-#. Resource IDs: (57665 - Ribbon name, Dialog IDD_AUTOTEXTTESTDLG: Control id 2)
+#. Resource IDs: (Dialog IDD_AUTOTEXTTESTDLG: Control id 2, ID_APP_EXIT - Ribbon name)
 msgid "Exit"
 msgstr ""
 
@@ -4658,7 +4658,7 @@ msgstr ""
 msgid "Filter: "
 msgstr ""
 
-#. Resource IDs: (57636 - Menu, 57636 - Ribbon name, Dialog IDD_FIND: Control id 139, Dialog IDD_FIND: Control id 20100)
+#. Resource IDs: (57636 - Menu, Dialog IDD_FIND: Control id 139, Dialog IDD_FIND: Control id 20100, ID_EDIT_FIND - Ribbon name)
 msgid "Find"
 msgstr ""
 
@@ -5082,7 +5082,7 @@ msgstr ""
 msgid "Go to the previous inline difference\nPrevious inline difference"
 msgstr ""
 
-#. Resource IDs: (32893 - Ribbon name, ID_EDIT_GOTOLINE - Menu)
+#. Resource IDs: (ID_EDIT_GOTOLINE - Menu, ID_EDIT_GOTOLINE - Ribbon name)
 msgid "Goto Line"
 msgstr ""
 
@@ -5134,7 +5134,7 @@ msgstr ""
 msgid "Hebrew"
 msgstr ""
 
-#. Resource IDs: (57670 - Ribbon name, Dialog IDD_ADD: Control id 9, Dialog IDD_ADD_REMOTE: Control id 9, Dialog IDD_APPLY_PATCH_LIST: Control id 9, Dialog IDD_BISECTSTART: Control id 9, Dialog IDD_CLEAN: Control id 9, Dialog IDD_CLONE: Control id 9, Dialog IDD_COMMITDLG: Control id 9, Dialog IDD_CREATEREPO: Control id 9, Dialog IDD_DIALOG_BROWSE_REFS: Control id 9, Dialog IDD_EXPORT: Control id 9, Dialog IDD_FORMAT_PATCH: Control id 9, Dialog IDD_GITSWITCH: Control id 9, Dialog IDD_IGNORE: Control id 9, Dialog IDD_LOGMESSAGE: Control id 9, Dialog IDD_MERGE: Control id 9, Dialog IDD_MERGEABORT: Control id 9, Dialog IDD_NEW_BRANCH_TAG: Control id 9, Dialog IDD_OPENDLG: Control id 9, Dialog IDD_PULLFETCH: Control id 9, Dialog IDD_PUSH: Control id 9, Dialog IDD_REBASE: Control id 9, Dialog IDD_REFLOG: Control id 9, Dialog IDD_REPOSITORY_BROWSER: Control id 9, Dialog IDD_REQUESTPULL: Control id 9, Dialog IDD_RESET: Control id 9, Dialog IDD_RESOLVE: Control id 9, Dialog IDD_RESOLVESUBMODULECONFLICT: Control id 9, Dialog IDD_RESOLVE_CONFLICT: Control id 9, Dialog IDD_REVERT: Control id 9, Dialog IDD_SENDMAIL: Control id 9, Dialog IDD_SETTINGSBUGTRAQADV: Control id 9, Dialog IDD_SETTINGSHOOKCONFIG: Control id 9, Dialog IDD_STASH: Control id 9, Dialog IDD_SUBMODULE_ADD: Control id 9, Dialog IDD_SUBMODULE_UPDATE: Control id 9, Dialog IDD_SVNDCOMMITTYPE: Control id 9, Dialog IDD_SYNC: Control id 9, IDS_MSGBOX_HELP)
+#. Resource IDs: (Dialog IDD_ADD: Control id 9, Dialog IDD_ADD_REMOTE: Control id 9, Dialog IDD_APPLY_PATCH_LIST: Control id 9, Dialog IDD_BISECTSTART: Control id 9, Dialog IDD_CLEAN: Control id 9, Dialog IDD_CLONE: Control id 9, Dialog IDD_COMMITDLG: Control id 9, Dialog IDD_CREATEREPO: Control id 9, Dialog IDD_DIALOG_BROWSE_REFS: Control id 9, Dialog IDD_EXPORT: Control id 9, Dialog IDD_FORMAT_PATCH: Control id 9, Dialog IDD_GITSWITCH: Control id 9, Dialog IDD_IGNORE: Control id 9, Dialog IDD_LOGMESSAGE: Control id 9, Dialog IDD_MERGE: Control id 9, Dialog IDD_MERGEABORT: Control id 9, Dialog IDD_NEW_BRANCH_TAG: Control id 9, Dialog IDD_OPENDLG: Control id 9, Dialog IDD_PULLFETCH: Control id 9, Dialog IDD_PUSH: Control id 9, Dialog IDD_REBASE: Control id 9, Dialog IDD_REFLOG: Control id 9, Dialog IDD_REPOSITORY_BROWSER: Control id 9, Dialog IDD_REQUESTPULL: Control id 9, Dialog IDD_RESET: Control id 9, Dialog IDD_RESOLVE: Control id 9, Dialog IDD_RESOLVESUBMODULECONFLICT: Control id 9, Dialog IDD_RESOLVE_CONFLICT: Control id 9, Dialog IDD_REVERT: Control id 9, Dialog IDD_SENDMAIL: Control id 9, Dialog IDD_SETTINGSBUGTRAQADV: Control id 9, Dialog IDD_SETTINGSHOOKCONFIG: Control id 9, Dialog IDD_STASH: Control id 9, Dialog IDD_SUBMODULE_ADD: Control id 9, Dialog IDD_SUBMODULE_UPDATE: Control id 9, Dialog IDD_SVNDCOMMITTYPE: Control id 9, Dialog IDD_SYNC: Control id 9, IDS_MSGBOX_HELP, ID_HELP - Ribbon name)
 msgid "Help"
 msgstr ""
 
@@ -5178,7 +5178,7 @@ msgstr ""
 msgid "Hide unchanged refs in Ref Compare List"
 msgstr ""
 
-#. Resource IDs: (32817 - Ribbon name, ID_VIEW_SHOWFILELIST - Menu)
+#. Resource IDs: (ID_VIEW_SHOWFILELIST - Menu, ID_VIEW_SHOWFILELIST - Ribbon name)
 msgid "Hide/Show the patch file list"
 msgstr ""
 
@@ -5530,7 +5530,7 @@ msgstr ""
 msgid "Ignore %d items by &extension"
 msgstr ""
 
-#. Resource IDs: (32896 - Ribbon name, ID_VIEW_IGNORECOMMENTS - Menu)
+#. Resource IDs: (ID_VIEW_IGNORECOMMENTS - Menu, ID_VIEW_IGNORECOMMENTS - Ribbon name)
 msgid "Ignore Comments"
 msgstr ""
 
@@ -5546,7 +5546,7 @@ msgstr ""
 msgid "Ignore all space"
 msgstr ""
 
-#. Resource IDs: (32873 - Ribbon name, ID_VIEW_IGNOREALLWHITESPACECHANGES - Menu)
+#. Resource IDs: (ID_VIEW_IGNOREALLWHITESPACECHANGES - Menu, ID_VIEW_IGNOREALLWHITESPACECHANGES - Ribbon name)
 msgid "Ignore all whitespace changes"
 msgstr ""
 
@@ -5586,7 +5586,7 @@ msgstr ""
 msgid "Ignore whitespace"
 msgstr ""
 
-#. Resource IDs: (32872 - Ribbon name, ID_VIEW_IGNOREWHITESPACECHANGES - Menu)
+#. Resource IDs: (ID_VIEW_IGNOREWHITESPACECHANGES - Menu, ID_VIEW_IGNOREWHITESPACECHANGES - Ribbon name)
 msgid "Ignore whitespace changes"
 msgstr ""
 
@@ -5693,11 +5693,11 @@ msgstr ""
 msgid "Initialized empty Git repository in %s."
 msgstr ""
 
-#. Resource IDs: (32889 - Ribbon name, ID_VIEW_INLINEDIFF - Menu)
+#. Resource IDs: (ID_VIEW_INLINEDIFF - Menu, ID_VIEW_INLINEDIFF - Ribbon name)
 msgid "Inline diff"
 msgstr ""
 
-#. Resource IDs: (32825 - Ribbon name, ID_VIEW_INLINEDIFFWORD - Menu)
+#. Resource IDs: (ID_VIEW_INLINEDIFFWORD - Menu, ID_VIEW_INLINEDIFFWORD - Ribbon name)
 msgid "Inline diff word-wise"
 msgstr ""
 
@@ -5897,7 +5897,7 @@ msgstr ""
 msgid "Line Tool\nLine"
 msgstr ""
 
-#. Resource IDs: (32853 - Ribbon name, ID_VIEW_LINEDIFFBAR - Menu)
+#. Resource IDs: (ID_VIEW_LINEDIFFBAR - Menu, ID_VIEW_LINEDIFFBAR - Ribbon name)
 msgid "Line diff bar"
 msgstr ""
 
@@ -5992,7 +5992,7 @@ msgstr ""
 msgid "Location where the contents of the\nselected revision of the repository will be saved to."
 msgstr ""
 
-#. Resource IDs: (32854 - Ribbon name, ID_VIEW_LOCATORBAR - Menu)
+#. Resource IDs: (ID_VIEW_LOCATORBAR - Menu, ID_VIEW_LOCATORBAR - Ribbon name)
 msgid "Locator Bar"
 msgstr ""
 
@@ -6082,7 +6082,7 @@ msgstr ""
 msgid "Manage Remotes"
 msgstr ""
 
-#. Resource IDs: (32808 - Ribbon name, IDS_SVNPROGRESS_MENUMARKASRESOLVED, ID_EDIT_MARKASRESOLVED - Menu)
+#. Resource IDs: (IDS_SVNPROGRESS_MENUMARKASRESOLVED, ID_EDIT_MARKASRESOLVED - Menu, ID_EDIT_MARKASRESOLVED - Ribbon name)
 msgid "Mark as resolved"
 msgstr ""
 
@@ -6436,15 +6436,15 @@ msgstr ""
 msgid "Next Page\nNext Page"
 msgstr ""
 
-#. Resource IDs: (32804 - Ribbon name, ID_NAVIGATE_NEXTCONFLICT - Menu)
+#. Resource IDs: (ID_NAVIGATE_NEXTCONFLICT - Menu, ID_NAVIGATE_NEXTCONFLICT - Ribbon name)
 msgid "Next conflict"
 msgstr ""
 
-#. Resource IDs: (32779 - Ribbon name, ID_NAVIGATE_NEXTDIFFERENCE - Menu)
+#. Resource IDs: (ID_NAVIGATE_NEXTDIFFERENCE - Menu, ID_NAVIGATE_NEXTDIFFERENCE - Ribbon name)
 msgid "Next difference"
 msgstr ""
 
-#. Resource IDs: (32875 - Ribbon name, ID_NAVIGATE_NEXTINLINEDIFF - Menu)
+#. Resource IDs: (ID_NAVIGATE_NEXTINLINEDIFF - Menu, ID_NAVIGATE_NEXTINLINEDIFF - Ribbon name)
 msgid "Next inline difference"
 msgstr ""
 
@@ -6735,11 +6735,11 @@ msgstr ""
 msgid "OLE initialization failed.  Make sure that the OLE libraries are the correct version."
 msgstr ""
 
-#. Resource IDs: (10006, 10006 - Ribbon name, ID_VIEW_APPLOOK_OFF_2003 - Menu)
+#. Resource IDs: (10006, ID_VIEW_APPLOOK_OFF_2003 - Menu, ID_VIEW_APPLOOK_OFF_2003 - Ribbon name)
 msgid "Office 2003"
 msgstr ""
 
-#. Resource IDs: (10008 - Ribbon name, 65535 - PopupMenu)
+#. Resource IDs: (65535 - PopupMenu, ID_OFFICE2007 - Ribbon name)
 msgid "Office 2007"
 msgstr ""
 
@@ -6747,7 +6747,7 @@ msgstr ""
 msgid "Office 2007 colors"
 msgstr ""
 
-#. Resource IDs: (10004, 10004 - Ribbon name, ID_VIEW_APPLOOK_OFF_XP - Menu)
+#. Resource IDs: (10004, ID_VIEW_APPLOOK_OFF_XP - Menu, ID_VIEW_APPLOOK_OFF_XP - Ribbon name)
 msgid "Office XP"
 msgstr ""
 
@@ -6803,7 +6803,7 @@ msgstr ""
 msgid "Only this item"
 msgstr ""
 
-#. Resource IDs: (57601 - Menu, 57601 - Ribbon name, 61440)
+#. Resource IDs: (57601 - Menu, 61440, ID_FILE_OPEN - Ribbon name)
 msgid "Open"
 msgstr ""
 
@@ -6979,7 +6979,7 @@ msgstr ""
 msgid "Password:"
 msgstr ""
 
-#. Resource IDs: (57637 - Ribbon name)
+#. Resource IDs: (ID_EDIT_PASTE - Ribbon name)
 msgid "Paste"
 msgstr ""
 
@@ -7221,15 +7221,15 @@ msgstr ""
 msgid "Previous Version"
 msgstr ""
 
-#. Resource IDs: (32802 - Ribbon name, ID_NAVIGATE_PREVIOUSCONFLICT - Menu)
+#. Resource IDs: (ID_NAVIGATE_PREVIOUSCONFLICT - Menu, ID_NAVIGATE_PREVIOUSCONFLICT - Ribbon name)
 msgid "Previous conflict"
 msgstr ""
 
-#. Resource IDs: (32780 - Ribbon name, ID_NAVIGATE_PREVIOUSDIFFERENCE - Menu)
+#. Resource IDs: (ID_NAVIGATE_PREVIOUSDIFFERENCE - Menu, ID_NAVIGATE_PREVIOUSDIFFERENCE - Ribbon name)
 msgid "Previous difference"
 msgstr ""
 
-#. Resource IDs: (32876 - Ribbon name, ID_NAVIGATE_PREVINLINEDIFF - Menu)
+#. Resource IDs: (ID_NAVIGATE_PREVINLINEDIFF - Menu, ID_NAVIGATE_PREVINLINEDIFF - Ribbon name)
 msgid "Previous inline difference"
 msgstr ""
 
@@ -7524,7 +7524,7 @@ msgstr ""
 msgid "Recursive"
 msgstr ""
 
-#. Resource IDs: (57644 - Ribbon name)
+#. Resource IDs: (ID_EDIT_REDO - Ribbon name)
 msgid "Redo"
 msgstr ""
 
@@ -7568,7 +7568,7 @@ msgstr ""
 msgid "Refreshing..."
 msgstr ""
 
-#. Resource IDs: (500, 500 - Ribbon name, 65535 - PopupMenu, Dialog IDD_REGEXFILTER: Control id 165)
+#. Resource IDs: (500, 65535 - PopupMenu, Dialog IDD_REGEXFILTER: Control id 165, ID_REGEXFILTER - Ribbon name)
 msgid "Regex Filter"
 msgstr ""
 
@@ -7593,7 +7593,7 @@ msgstr ""
 msgid "Relative Times in log"
 msgstr ""
 
-#. Resource IDs: (32794 - Ribbon name, ID_FILE_RELOAD - Menu)
+#. Resource IDs: (ID_FILE_RELOAD - Menu, ID_FILE_RELOAD - Ribbon name)
 msgid "Reload"
 msgstr ""
 
@@ -8129,7 +8129,7 @@ msgstr ""
 msgid "Sample text:"
 msgstr ""
 
-#. Resource IDs: (57603 - Menu, 57603 - Ribbon name)
+#. Resource IDs: (57603 - Menu, ID_FILE_SAVE - Ribbon name)
 msgid "Save"
 msgstr ""
 
@@ -8187,7 +8187,7 @@ msgstr ""
 msgid "Save and include\nYour changes are saved and the marked blocks are included"
 msgstr ""
 
-#. Resource IDs: (57604 - Ribbon name, IDS_ASKFORSAVEAS)
+#. Resource IDs: (IDS_ASKFORSAVEAS, ID_FILE_SAVE_AS - Ribbon name)
 msgid "Save as"
 msgstr ""
 
@@ -8495,7 +8495,7 @@ msgstr ""
 msgid "Setting properties..."
 msgstr ""
 
-#. Resource IDs: (32782 - Ribbon name, Dialog IDD_PROPPAGE: Control id 1017, IDS_SETTINGSTITLE, ID_VIEW_OPTIONS - Menu)
+#. Resource IDs: (Dialog IDD_PROPPAGE: Control id 1017, IDS_SETTINGSTITLE, ID_VIEW_OPTIONS - Menu, ID_VIEW_OPTIONS - Ribbon name)
 msgid "Settings"
 msgstr ""
 
@@ -8611,7 +8611,7 @@ msgstr ""
 msgid "Show Screen&Tips on toolbars"
 msgstr ""
 
-#. Resource IDs: (32774 - Ribbon name, ID_VIEW_WHITESPACES - Menu)
+#. Resource IDs: (ID_VIEW_WHITESPACES - Menu, ID_VIEW_WHITESPACES - Ribbon name)
 msgid "Show Whitespaces"
 msgstr ""
 
@@ -8854,7 +8854,7 @@ msgstr ""
 msgid "Significant contributions by: (see Git repository for a complete list)"
 msgstr ""
 
-#. Resource IDs: (10011, 10011 - Ribbon name, ID_VIEW_APPLOOK_OFF_2007_SILVER - Menu)
+#. Resource IDs: (10011, ID_VIEW_APPLOOK_OFF_2007_SILVER - Menu, ID_VIEW_APPLOOK_OFF_2007_SILVER - Ribbon name)
 msgid "Silver Style"
 msgstr ""
 
@@ -9031,7 +9031,7 @@ msgstr ""
 msgid "Status"
 msgstr ""
 
-#. Resource IDs: (59393 - Ribbon name)
+#. Resource IDs: (ID_VIEW_STATUS_BAR - Ribbon name)
 msgid "Status Bar"
 msgstr ""
 
@@ -9075,7 +9075,7 @@ msgstr ""
 msgid "Strip lines starting with \"#\" in commit message"
 msgstr ""
 
-#. Resource IDs: (10000 - Ribbon name, 65535 - PopupMenu)
+#. Resource IDs: (65535 - PopupMenu, IDC_STYLEBUTTON - Ribbon name)
 msgid "Style"
 msgstr ""
 
@@ -9157,7 +9157,7 @@ msgstr ""
 msgid "Switch back to the previous window pane\nPrevious Pane"
 msgstr ""
 
-#. Resource IDs: (32775 - Ribbon name, ID_VIEW_ONEWAYDIFF - Menu)
+#. Resource IDs: (ID_VIEW_ONEWAYDIFF - Menu, ID_VIEW_ONEWAYDIFF - Ribbon name)
 msgid "Switch between single and double pane view"
 msgstr ""
 
@@ -9165,7 +9165,7 @@ msgstr ""
 msgid "Switch between single and double pane view\nSwitch between single and double pane view"
 msgstr ""
 
-#. Resource IDs: (32811 - Ribbon name, ID_VIEW_SWITCHLEFT - Menu)
+#. Resource IDs: (ID_VIEW_SWITCHLEFT - Menu, ID_VIEW_SWITCHLEFT - Ribbon name)
 msgid "Switch left and right view"
 msgstr ""
 
@@ -9905,7 +9905,7 @@ msgstr ""
 msgid "Uncheck"
 msgstr ""
 
-#. Resource IDs: (57643 - Ribbon name)
+#. Resource IDs: (ID_EDIT_UNDO - Ribbon name)
 msgid "Undo"
 msgstr ""
 
@@ -10027,19 +10027,19 @@ msgstr ""
 msgid "Use &other text block"
 msgstr ""
 
-#. Resource IDs: (32820 - Ribbon name, ID_EDIT_USEMYBLOCK - Menu)
+#. Resource IDs: (ID_EDIT_USEMYBLOCK - Menu, ID_EDIT_USEMYBLOCK - Ribbon name)
 msgid "Use 'mine' text block"
 msgstr ""
 
-#. Resource IDs: (32822 - Ribbon name, ID_EDIT_USEMINETHENTHEIRBLOCK - Menu)
+#. Resource IDs: (ID_EDIT_USEMINETHENTHEIRBLOCK - Menu, ID_EDIT_USEMINETHENTHEIRBLOCK - Ribbon name)
 msgid "Use 'mine' text block then 'theirs'"
 msgstr ""
 
-#. Resource IDs: (32819 - Ribbon name, ID_EDIT_USETHEIRBLOCK - Menu)
+#. Resource IDs: (ID_EDIT_USETHEIRBLOCK - Menu, ID_EDIT_USETHEIRBLOCK - Ribbon name)
 msgid "Use 'theirs' text block"
 msgstr ""
 
-#. Resource IDs: (32821 - Ribbon name, ID_EDIT_USETHEIRTHENMYBLOCK - Menu)
+#. Resource IDs: (ID_EDIT_USETHEIRTHENMYBLOCK - Menu, ID_EDIT_USETHEIRTHENMYBLOCK - Ribbon name)
 msgid "Use 'theirs' text block then 'mine'"
 msgstr ""
 
@@ -10075,7 +10075,7 @@ msgstr ""
 msgid "Use all content from the left view\nUse left file"
 msgstr ""
 
-#. Resource IDs: (32857 - Ribbon name, ID_EDIT_USEBLOCKFROMLEFTBEFORERIGHT - Menu)
+#. Resource IDs: (ID_EDIT_USEBLOCKFROMLEFTBEFORERIGHT - Menu, ID_EDIT_USEBLOCKFROMLEFTBEFORERIGHT - Ribbon name)
 msgid "Use block from left before right"
 msgstr ""
 
@@ -10083,7 +10083,7 @@ msgstr ""
 msgid "Use block from left view before block from right view\nUse block from left before right"
 msgstr ""
 
-#. Resource IDs: (32859 - Ribbon name, ID_EDIT_USEBLOCKFROMRIGHTBEFORELEFT - Menu)
+#. Resource IDs: (ID_EDIT_USEBLOCKFROMRIGHTBEFORELEFT - Menu, ID_EDIT_USEBLOCKFROMRIGHTBEFORELEFT - Ribbon name)
 msgid "Use block from right before left"
 msgstr ""
 
@@ -10103,11 +10103,11 @@ msgstr ""
 msgid "Use configured server"
 msgstr ""
 
-#. Resource IDs: (32855 - Ribbon name, ID_EDIT_USELEFTBLOCK - Menu)
+#. Resource IDs: (ID_EDIT_USELEFTBLOCK - Menu, ID_EDIT_USELEFTBLOCK - Ribbon name)
 msgid "Use left block"
 msgstr ""
 
-#. Resource IDs: (32856 - Ribbon name, ID_EDIT_USELEFTFILE - Menu)
+#. Resource IDs: (ID_EDIT_USELEFTFILE - Menu, ID_EDIT_USELEFTFILE - Ribbon name)
 msgid "Use left file"
 msgstr ""
 
@@ -10294,7 +10294,7 @@ msgstr ""
 msgid "View .tgitconfig"
 msgstr ""
 
-#. Resource IDs: (32898 - Ribbon name)
+#. Resource IDs: (ID_VIEW_BARS - Ribbon name)
 msgid "View Bars"
 msgstr ""
 
@@ -10322,11 +10322,11 @@ msgstr ""
 msgid "Visit our website"
 msgstr ""
 
-#. Resource IDs: (10007, 10007 - Ribbon name, ID_VIEW_APPLOOK_VS_2005 - Menu)
+#. Resource IDs: (10007, ID_VIEW_APPLOOK_VS_2005 - Menu, ID_VIEW_APPLOOK_VS_2005 - Ribbon name)
 msgid "Visual Studio 2005"
 msgstr ""
 
-#. Resource IDs: (10002, 10002 - Ribbon name, ID_VIEW_APPLOOK_VS_2008 - Menu)
+#. Resource IDs: (10002, ID_VIEW_APPLOOK_VS_2008 - Menu, ID_VIEW_APPLOOK_VS_2008 - Ribbon name)
 msgid "Visual Studio 2008"
 msgstr ""
 
@@ -10423,15 +10423,15 @@ msgstr ""
 msgid "Windows"
 msgstr ""
 
-#. Resource IDs: (10003, 10003 - Ribbon name, ID_VIEW_APPLOOK_WIN_2000 - Menu)
+#. Resource IDs: (10003, ID_VIEW_APPLOOK_WIN_2000 - Menu, ID_VIEW_APPLOOK_WIN_2000 - Ribbon name)
 msgid "Windows 2000"
 msgstr ""
 
-#. Resource IDs: (10001, 10001 - Ribbon name, ID_VIEW_APPLOOK_WIN7 - Menu)
+#. Resource IDs: (10001, ID_VIEW_APPLOOK_WIN7 - Menu, ID_VIEW_APPLOOK_WIN7 - Ribbon name)
 msgid "Windows 7"
 msgstr ""
 
-#. Resource IDs: (10005, 10005 - Ribbon name, ID_VIEW_APPLOOK_WIN_XP - Menu)
+#. Resource IDs: (10005, ID_VIEW_APPLOOK_WIN_XP - Menu, ID_VIEW_APPLOOK_WIN_XP - Ribbon name)
 msgid "Windows XP"
 msgstr ""
 
@@ -10491,7 +10491,7 @@ msgstr ""
 msgid "Working dir changes"
 msgstr ""
 
-#. Resource IDs: (32881 - Ribbon name, ID_VIEW_WRAPLONGLINES - Menu)
+#. Resource IDs: (ID_VIEW_WRAPLONGLINES - Menu, ID_VIEW_WRAPLONGLINES - Ribbon name)
 msgid "Wrap long lines"
 msgstr ""
 

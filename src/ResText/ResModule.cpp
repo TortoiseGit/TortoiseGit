@@ -1882,6 +1882,14 @@ BOOL CResModule::ExtractRibbon(LPCTSTR lpszType)
 	{
 		size_t len;
 
+		std::string str1 = (*it)[1];
+		len = str1.size();
+		std::unique_ptr<wchar_t[]> bufw1(new wchar_t[len * 4 + 1]);
+		SecureZeroMemory(bufw1.get(), (len * 4 + 1) * sizeof(wchar_t));
+		MultiByteToWideChar(CP_UTF8, 0, str1.c_str(), -1, bufw1.get(), (int)len * 4);
+		std::wstring strIdNameVal = bufw1.get();
+		strIdNameVal += L" - Ribbon name";
+
 		std::string str2 = (*it)[2];
 		len = str2.size();
 		std::unique_ptr<wchar_t[]> bufw2(new wchar_t[len * 4 + 1]);
@@ -1897,7 +1905,7 @@ BOOL CResModule::ExtractRibbon(LPCTSTR lpszType)
 		std::wstring str = bufw3.get();
 
 		RESOURCEENTRY entry = m_StringEntries[str];
-		InsertResourceIDs(RT_RIBBON, 0, entry, std::stoi(strIdVal), L" - Ribbon name");
+		InsertResourceIDs(RT_RIBBON, 0, entry, std::stoi(strIdVal), strIdNameVal.c_str());
 		if (wcschr(str.c_str(), '%'))
 			entry.flag = L"#, c-format";
 		m_StringEntries[str] = entry;
@@ -2278,6 +2286,8 @@ void CResModule::InsertResourceIDs(LPCWSTR lpType, INT_PTR mainId, RESOURCEENTRY
 		else
 			entry.resourceIDs.insert(NumToStr(id) + infotext);
 	}
+	else if (lpType == RT_RIBBON && infotext && wcsstr(infotext, L"ID") == infotext)
+			entry.resourceIDs.insert(infotext);
 	else
 		entry.resourceIDs.insert(NumToStr(id) + infotext);
 }
