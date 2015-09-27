@@ -590,14 +590,47 @@ int CBaseView::GetMaxLineLength()
 	{
 		m_nMaxLineLength = 0;
 		int nLineCount = GetLineCount();
+		if (nLineCount == 1)
+			return GetLineLengthWithTabsConverted(0);
 		for (int i=0; i<nLineCount; i++)
 		{
-			int nActualLength = GetLineLength(i);
+			int nActualLength = GetLineLengthWithTabsConverted(i);
 			if (m_nMaxLineLength < nActualLength)
 				m_nMaxLineLength = nActualLength;
 		}
 	}
 	return m_nMaxLineLength;
+}
+
+int CBaseView::GetLineLengthWithTabsConverted(int index)
+{
+	if (m_pViewData == NULL)
+		return 0;
+	if (m_pViewData->GetCount() == 0)
+		return 0;
+	if ((int)m_Screen2View.size() <= index)
+		return 0;
+	CString sLine;
+	if (m_pMainFrame->m_bWrapLines)
+		sLine = GetLineChars(index);
+	else
+	{
+		int viewLine = GetViewLineForScreen(index);
+		sLine = m_pViewData->GetLine(viewLine);
+	}
+	int tabCount = 0;
+	wchar_t* pChar = (LPWSTR)(LPCWSTR)sLine;
+	auto nLineLength = sLine.GetLength();
+	for (int i = 0; i < nLineLength; ++i)
+	{
+		if (*pChar == '\t')
+			++tabCount;
+		++pChar;
+	}
+	// GetTabSize() - 1 because the tabs are already counted
+	nLineLength = nLineLength + (tabCount * (GetTabSize() - 1));
+	ASSERT(nLineLength >= 0);
+	return nLineLength;
 }
 
 int CBaseView::GetLineLength(int index)
