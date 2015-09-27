@@ -472,7 +472,7 @@ public:
 	BOOL HasGITAdminDir(LPCTSTR path, BOOL bIsDir, CString *ProjectTopDir = NULL)
 	{
 		size_t len = _tcslen(path);
-		std::unique_ptr<TCHAR[]> buf(new TCHAR[len + 1]);
+		auto buf = std::make_unique<TCHAR[]>(len + 1);
 		_tcscpy_s(buf.get(), len + 1, path);
 		if (! bIsDir)
 		{

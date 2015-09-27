@@ -2263,7 +2263,7 @@ void CRebaseDlg::OnBnClickedButtonDown2()
 	pos = m_CommitList.GetFirstSelectedItemPosition();
 	bool changed = false;
 	// use an array to store all selected item indexes; the user won't select too much items
-	std::unique_ptr<int[]> indexes(new int[m_CommitList.GetSelectedCount()]);
+	auto indexes = std::make_unique<int[]>(m_CommitList.GetSelectedCount());
 	int i = 0;
 	while(pos)
 	{

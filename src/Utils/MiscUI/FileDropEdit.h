@@ -37,7 +37,7 @@ public:
 			if(medium.pstm != NULL)
 			{
 				const int BUF_SIZE = 10000;
-				std::unique_ptr<char[]> buff(new char[BUF_SIZE+1]);
+				auto buff = std::make_unique<char[]>(BUF_SIZE + 1);
 				ULONG cbRead=0;
 				HRESULT hr = medium.pstm->Read(buff.get(), BUF_SIZE, &cbRead);
 				if (SUCCEEDED(hr) && (cbRead > 0) && (cbRead < BUF_SIZE))
@@ -68,7 +68,7 @@ public:
 			if(medium.pstm != NULL)
 			{
 				const int BUF_SIZE = 10000;
-				std::unique_ptr<WCHAR[]> buff(new WCHAR[BUF_SIZE+1]);
+				auto buff = std::make_unique<WCHAR[]>(BUF_SIZE + 1);
 				ULONG cbRead=0;
 				HRESULT hr = medium.pstm->Read(buff.get(), BUF_SIZE, &cbRead);
 				if (SUCCEEDED(hr) && (cbRead > 0) && (cbRead < BUF_SIZE))

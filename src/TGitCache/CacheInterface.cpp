@@ -48,7 +48,7 @@ CString GetCacheID()
 		GetTokenInformation(token, TokenStatistics, NULL, 0, &len);
 		if (len >= sizeof (TOKEN_STATISTICS))
 		{
-			std::unique_ptr<BYTE[]> data (new BYTE[len]);
+			auto data = std::make_unique<BYTE[]>(len);
 			GetTokenInformation(token, TokenStatistics, data.get(), len, &len);
 			LUID uid = ((PTOKEN_STATISTICS)data.get())->AuthenticationId;
 			t.Format(_T("-%08x%08x"), uid.HighPart, uid.LowPart);

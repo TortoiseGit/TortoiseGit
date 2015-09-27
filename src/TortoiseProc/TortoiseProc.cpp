@@ -397,7 +397,7 @@ BOOL CTortoiseProcApp::InitInstance()
 		DWORD len = GetCurrentDirectory(0, NULL);
 		if (len)
 		{
-			std::unique_ptr<TCHAR[]> originalCurrentDirectory(new TCHAR[len]);
+			auto originalCurrentDirectory = std::make_unique<TCHAR[]>(len);
 			if (GetCurrentDirectory(len, originalCurrentDirectory.get()))
 			{
 				sOrigCWD = originalCurrentDirectory.get();
@@ -516,7 +516,7 @@ BOOL CTortoiseProcApp::InitInstance()
 	// apps might still be needing the recent ones.
 	{
 		DWORD len = GetTortoiseGitTempPath(0, NULL);
-		std::unique_ptr<TCHAR[]> path(new TCHAR[len + 100]);
+		auto path = std::make_unique<TCHAR[]>(len + 100);
 		len = GetTortoiseGitTempPath (len + 100, path.get());
 		if (len != 0)
 		{

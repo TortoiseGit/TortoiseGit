@@ -298,7 +298,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		m_wndRibbonStatusBar.AddElement(new CMFCRibbonStatusBarPane(ID_SEPARATOR, CString(MAKEINTRESOURCE(AFX_IDS_IDLEMESSAGE)), TRUE), L"");
 
 		CString sTooltip(MAKEINTRESOURCE(IDS_ENCODING_COMBO_TOOLTIP));
-		std::unique_ptr<CMFCRibbonButtonsGroup> apBtnGroupLeft(new CMFCRibbonButtonsGroup);
+		auto apBtnGroupLeft = std::make_unique<CMFCRibbonButtonsGroup>();
 		apBtnGroupLeft->SetID(ID_INDICATOR_LEFTVIEW);
 		apBtnGroupLeft->AddButton(new CMFCRibbonStatusBarPane(ID_SEPARATOR,   CString(MAKEINTRESOURCE(IDS_STATUSBAR_LEFTVIEW)), TRUE));
 		CMFCRibbonButton * pButton = new CMFCRibbonButton(ID_INDICATOR_LEFTVIEWCOMBOENCODING, L"");
@@ -314,7 +314,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		apBtnGroupLeft->AddButton(new CMFCRibbonStatusBarPane(ID_INDICATOR_LEFTVIEW,   L"", TRUE));
 		m_wndRibbonStatusBar.AddExtendedElement(apBtnGroupLeft.release(), L"");
 
-		std::unique_ptr<CMFCRibbonButtonsGroup> apBtnGroupRight(new CMFCRibbonButtonsGroup);
+		auto apBtnGroupRight = std::make_unique<CMFCRibbonButtonsGroup>();
 		apBtnGroupRight->SetID(ID_INDICATOR_RIGHTVIEW);
 		apBtnGroupRight->AddButton(new CMFCRibbonStatusBarPane(ID_SEPARATOR,   CString(MAKEINTRESOURCE(IDS_STATUSBAR_RIGHTVIEW)), TRUE));
 		pButton = new CMFCRibbonButton(ID_INDICATOR_RIGHTVIEWCOMBOENCODING, L"");
@@ -1208,42 +1208,6 @@ void CMainFrame::OnSize(UINT nType, int cx, int cy)
 		m_bCheckReload = false;
 		CheckForReload();
 	}
-#if _MSC_VER < 1800
-	// workaround for ribbon interface when the task bar is on the left or top
-	// The bug has been fixed in VS2013
-	// http://connect.microsoft.com/VisualStudio/feedback/details/791229/cmfcribbonbar-app-does-not-maximize-correctly-if-windows-7-taskbar-is-docked-on-left
-	if (nType == SIZE_MAXIMIZED)
-	{
-		HMONITOR hMon = MonitorFromWindow(this->m_hWnd, MONITOR_DEFAULTTONEAREST);
-		MONITORINFOEX mix;
-		mix.cbSize = sizeof(MONITORINFOEX);
-		bool primary = true;    // assume primary monitor
-		CRect rect(0, 0, 0, 0);
-		if (GetMonitorInfo(hMon, &mix))
-		{
-			primary = (mix.dwFlags == MONITORINFOF_PRIMARY);
-			rect = mix.rcWork;
-		}
-		else
-		{
-			::SystemParametersInfo(SPI_GETWORKAREA, 0, &rect, 0);
-		}
-		if (primary)
-		{
-			WINDOWPLACEMENT wp;
-			GetWindowPlacement(&wp);
-			if (wp.ptMaxPosition.x || wp.ptMaxPosition.y)
-			{
-				wp.ptMaxPosition.x = wp.ptMaxPosition.y = 0;
-				SetWindowPlacement(&wp);
-			}
-		}
-		else
-		{
-			MoveWindow(rect);
-		}
-	}
-#endif
 }
 
 void CMainFrame::OnViewWhitespaces()

@@ -180,7 +180,7 @@ CString GitAdminDir::ReadGitLink(const CString& topDir, const CString& dotGitPat
 		return _T("");
 
 	int size = 65536;
-	std::unique_ptr<char[]> buffer(new char[size]);
+	auto buffer = std::make_unique<char[]>(size);
 	int length = (int)fread(buffer.get(), sizeof(char), size, pFile);
 	CStringA gitPathA(buffer.get(), length);
 	if (length < 8 || gitPathA.Left(8) != "gitdir: ")

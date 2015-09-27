@@ -537,7 +537,7 @@ void CCheckForUpdatesDlg::FillChangelog(CAutoConfig& versioncheck, bool official
 	CStdioFile file;
 	if (file.Open(tempchangelogfile, CFile::modeRead | CFile::typeBinary))
 	{
-		std::unique_ptr<BYTE[]> buf(new BYTE[(UINT)file.GetLength()]);
+		auto buf = std::make_unique<BYTE[]>((UINT)file.GetLength());
 		UINT read = file.Read(buf.get(), (UINT)file.GetLength());
 		bool skipBom = read >= 3 && buf[0] == 0xEF && buf[1] == 0xBB && buf[2] == 0xBF;
 		CGit::StringAppend(&temp, buf.get() + (skipBom ? 3 : 0), CP_UTF8, read - (skipBom ? 3 : 0));
@@ -862,8 +862,7 @@ CString CCheckForUpdatesDlg::GetWinINetError(DWORD err)
 	CString readableError = CFormatMessageWrapper(err);
 	if (readableError.IsEmpty())
 	{
-		static const CString modules[] = { _T("wininet.dll"), _T("urlmon.dll") };
-		for (const auto& module : modules)
+		for (const CString& module : { _T("wininet.dll"), _T("urlmon.dll") })
 		{
 			LPTSTR buffer;
 			FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_IGNORE_INSERTS | FORMAT_MESSAGE_FROM_HMODULE, GetModuleHandle(module), err, 0, (LPTSTR)&buffer, 0, NULL);

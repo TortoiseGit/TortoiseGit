@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009,2012-2014 - TortoiseGit
+// Copyright (C) 2009,2012-2015 - TortoiseGit
 // Copyright (C) 2008,2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -77,7 +77,7 @@ void CBugTraqAssociations::Load(LPCTSTR uuid /* = nullptr */, LPCTSTR params /* 
 
 			DWORD cbParameters = 0;
 			RegQueryValueEx(hk2, _T("Parameters"), NULL, NULL, (LPBYTE)NULL, &cbParameters);
-			std::unique_ptr<TCHAR[]> szParameters(new TCHAR[cbParameters + 1]);
+			auto szParameters = std::make_unique<TCHAR[]>(cbParameters + 1);
 			RegQueryValueEx(hk2, _T("Parameters"), NULL, NULL, (LPBYTE)szParameters.get(), &cbParameters);
 			szParameters.get()[cbParameters] = 0;
 			m_inner.push_back(new CBugTraqAssociation(szWorkingCopy, provider_clsid, LookupProviderName(provider_clsid), szParameters.get()));

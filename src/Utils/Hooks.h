@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2014 - TortoiseGit
+// Copyright (C) 2011-2015 - TortoiseGit
 // Copyright (C) 2006-2008, 2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -84,8 +84,8 @@ private:
 	CHooks();
 	~CHooks();
 	// prevent cloning
-	CHooks(const CHooks&);
-	CHooks& operator=(const CHooks&);
+	CHooks(const CHooks&) = delete;
+	CHooks& operator=(const CHooks&) = delete;
 
 	static void AddPathParam(CString& sCmd, const CTGitPathList& pathList);
 	static void AddCWDParam(CString& sCmd, const CString& workingTree);

@@ -409,7 +409,7 @@ int CGitHeadFileList::GetPackRef(const CString &gitdir)
 		return -1;
 
 	DWORD size = 0;
-	std::unique_ptr<char[]> buff(new char[filesize]);
+	auto buff = std::make_unique<char[]>(filesize);
 	ReadFile(hfile, buff.get(), filesize, &size, nullptr);
 
 	if (size != filesize)

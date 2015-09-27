@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2014 - TortoiseGit
+// Copyright (C) 2013-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -166,7 +166,7 @@ resend:
 		}
 
 		DWORD downloaded; // size of the downloaded data
-		std::unique_ptr<TCHAR[]> buff(new TCHAR[size + 1]);
+		auto buff = std::make_unique<TCHAR[]>(size + 1);
 		if (!InternetReadFile(hResourceHandle, (LPVOID)buff.get(), size, &downloaded))
 		{
 			DWORD err = GetLastError();

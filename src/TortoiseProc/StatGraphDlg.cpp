@@ -1769,7 +1769,7 @@ int CStatGraphDlg::GetEncoderClsid(const WCHAR* format, CLSID* pClsid)
 	if (size == 0)
 		return -1;  // Failure
 
-	std::unique_ptr<BYTE[]> pMem(new BYTE[size]);
+	auto pMem = std::make_unique<BYTE[]>(size);
 	auto pImageCodecInfo = (ImageCodecInfo*)(pMem.get());
 	if (pImageCodecInfo == NULL)
 		return -1;  // Failure

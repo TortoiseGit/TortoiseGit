@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2014 - TortoiseGit
+// Copyright (C) 2012-2015 - TortoiseGit
 // Copyright (C) 2003-2008, 2013-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -24,8 +24,8 @@
 BOOL CPathUtils::MakeSureDirectoryPathExists(LPCTSTR path)
 {
 	size_t len = _tcslen(path) + 10;
-	std::unique_ptr<TCHAR[]> buf(new TCHAR[len]);
-	std::unique_ptr<TCHAR[]> internalpathbuf(new TCHAR[len]);
+	auto buf = std::make_unique<TCHAR[]>(len);
+	auto internalpathbuf = std::make_unique<TCHAR[]>(len);
 	TCHAR * pPath = internalpathbuf.get();
 	SECURITY_ATTRIBUTES attribs = { 0 };
 	attribs.nLength = sizeof(SECURITY_ATTRIBUTES);
@@ -265,7 +265,7 @@ CString CPathUtils::GetLongPathname(const CString& path)
 		ret = GetFullPathName(path, 0, NULL, NULL);
 		if (ret)
 		{
-			std::unique_ptr<TCHAR[]> pathbuf(new TCHAR[ret + 1]);
+			auto pathbuf = std::make_unique<TCHAR[]>(ret + 1);
 			if ((ret = GetFullPathName(path, ret, pathbuf.get(), NULL)) != 0)
 				sRet = CString(pathbuf.get(), ret);
 		}
@@ -275,7 +275,7 @@ CString CPathUtils::GetLongPathname(const CString& path)
 		ret = ::GetLongPathName(pathbufcanonicalized, NULL, 0);
 		if (ret == 0)
 			return path;
-		std::unique_ptr<TCHAR[]> pathbuf(new TCHAR[ret + 2]);
+		auto pathbuf = std::make_unique<TCHAR[]>(ret + 2);
 		ret = ::GetLongPathName(pathbufcanonicalized, pathbuf.get(), ret + 1);
 		sRet = CString(pathbuf.get(), ret);
 	}
@@ -284,7 +284,7 @@ CString CPathUtils::GetLongPathname(const CString& path)
 		ret = ::GetLongPathName(path, NULL, 0);
 		if (ret == 0)
 			return path;
-		std::unique_ptr<TCHAR[]> pathbuf(new TCHAR[ret + 2]);
+		auto pathbuf = std::make_unique<TCHAR[]>(ret + 2);
 		ret = ::GetLongPathName(path, pathbuf.get(), ret + 1);
 		sRet = CString(pathbuf.get(), ret);
 	}
@@ -373,7 +373,7 @@ CString CPathUtils::GetLocalAppDataDirectory()
 
 CStringA CPathUtils::PathUnescape(const CStringA& path)
 {
-	std::unique_ptr<char[]> urlabuf (new char[path.GetLength() + 1]);
+	auto urlabuf = std::make_unique<char[]>(path.GetLength() + 1);
 
 	strcpy_s(urlabuf.get(), path.GetLength()+1, path);
 	Unescape(urlabuf.get());
@@ -418,7 +418,7 @@ CString CPathUtils::GetVersionFromFile(const CString & p_strFilename)
 
 	if (dwBufferSize > 0)
 	{
-		std::unique_ptr<BYTE[]> pBuffer(new BYTE[dwBufferSize]);
+		auto pBuffer = std::make_unique<BYTE[]>(dwBufferSize);
 
 		if (pBuffer)
 		{

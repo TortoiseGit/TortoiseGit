@@ -2158,9 +2158,8 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 	// register filter only once
 	if (!git_filter_lookup("filter"))
 	{
-		static const CString binDirPrefixes[] = { L"\\..\\usr\\bin", L"\\..\\bin", L"" };
 		CString sh;
-		for (const auto& binDirPrefix : binDirPrefixes)
+		for (const CString& binDirPrefix : { L"\\..\\usr\\bin", L"\\..\\bin", L"" })
 		{
 			CString possibleShExe = CGit::ms_LastMsysGitDir + binDirPrefix + L"\\sh.exe";
 			if (PathFileExists(possibleShExe))

@@ -460,7 +460,7 @@ CDiffData::DoTwoWayDiff(const CString& sBaseFilename, const CString& sYourFilena
 
 	// arbitrary length of 500
 	static const int maxstringlengthforwhitespacecheck = 500;
-	auto s1 = std::unique_ptr<wchar_t[]>(new wchar_t[maxstringlengthforwhitespacecheck]);
+	auto s1 = std::make_unique<wchar_t[]>(maxstringlengthforwhitespacecheck);
 	while (tempdiff)
 	{
 		if (tempdiff->type == svn_diff__type_common)

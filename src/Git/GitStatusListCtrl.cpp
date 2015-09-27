@@ -121,7 +121,7 @@ HRESULT STDMETHODCALLTYPE CIShellFolderHook::GetUIObjectOf(HWND hwndOwner, UINT 
 			nLength += 1; // '\0' separator
 		}
 		int nBufferSize = sizeof(DROPFILES) + ((nLength + 5)*sizeof(TCHAR));
-		std::unique_ptr<char[]> pBuffer(new char[nBufferSize]);
+		auto pBuffer = std::make_unique<char[]>(nBufferSize);
 		SecureZeroMemory(pBuffer.get(), nBufferSize);
 		DROPFILES* df = (DROPFILES*)pBuffer.get();
 		df->pFiles = sizeof(DROPFILES);
@@ -4483,7 +4483,7 @@ void CGitStatusListCtrl::DeleteSelectedFiles()
 	}
 	filelist += _T("|");
 	int len = filelist.GetLength();
-	std::unique_ptr<TCHAR[]> buf(new TCHAR[len + 2]);
+	auto buf = std::make_unique<TCHAR[]>(len + 2);
 	_tcscpy_s(buf.get(), len + 2, filelist);
 	CStringUtils::PipesToNulls(buf.get(), len + 2);
 	SHFILEOPSTRUCT fileop;
@@ -4585,14 +4585,14 @@ BOOL CGitStatusListCtrl::OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LR
 				PIDLIST_RELATIVE pidl = nullptr;
 
 				int bufsize = 1024;
-				std::unique_ptr<WCHAR[]> filepath(new WCHAR[bufsize]);
+				auto filepath = std::make_unique<WCHAR[]>(bufsize);
 				for (int i = 0; i < nItems; i++)
 				{
 					CString fullPath = g_Git.CombinePath(targetList[i].GetWinPath());
 					if (bufsize < fullPath.GetLength())
 					{
 						bufsize = fullPath.GetLength() + 3;
-						filepath = std::unique_ptr<WCHAR[]>(new WCHAR[bufsize]);
+						filepath = std::make_unique<WCHAR[]>(bufsize);
 					}
 					wcscpy_s(filepath.get(), bufsize, fullPath);
 					if (SUCCEEDED(g_psfDesktopFolder->ParseDisplayName(nullptr, 0, filepath.get(), nullptr, &pidl, nullptr)))

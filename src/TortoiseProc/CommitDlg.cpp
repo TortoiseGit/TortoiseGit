@@ -1743,7 +1743,7 @@ void CCommitDlg::ScanFile(const CString& sFilePath, const CString& sRegex, const
 			return;
 		}
 		// allocate memory to hold file contents
-		std::unique_ptr<char[]> buffer(new char[size]);
+		auto buffer = std::make_unique<char[]>(size);
 		DWORD readbytes;
 		if (!ReadFile(hFile, buffer.get(), size, &readbytes, NULL))
 			return;
@@ -1760,7 +1760,7 @@ void CCommitDlg::ScanFile(const CString& sFilePath, const CString& sRegex, const
 		if ((opts & IS_TEXT_UNICODE_NOT_UNICODE_MASK) || (opts == 0))
 		{
 			const int ret = MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, (LPCSTR)buffer.get(), readbytes, NULL, 0);
-			std::unique_ptr<wchar_t[]> pWideBuf(new wchar_t[ret]);
+			auto pWideBuf = std::make_unique<wchar_t[]>(ret);
 			const int ret2 = MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, (LPCSTR)buffer.get(), readbytes, pWideBuf.get(), ret);
 			if (ret2 == ret)
 				sFileContent = std::wstring(pWideBuf.get(), ret);

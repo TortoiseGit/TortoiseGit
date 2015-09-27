@@ -411,7 +411,7 @@ void CBaseView::UpdateStatusBar()
 			if ((m_nStatusBarID == ID_INDICATOR_BOTTOMVIEW) && (IsViewGood(this)))
 			{
 				m_pwndRibbonStatusBar->RemoveElement(ID_INDICATOR_BOTTOMVIEW);
-				std::unique_ptr<CMFCRibbonButtonsGroup> apBtnGroupBottom(new CMFCRibbonButtonsGroup);
+				auto apBtnGroupBottom = std::make_unique<CMFCRibbonButtonsGroup>();
 				apBtnGroupBottom->SetID(ID_INDICATOR_BOTTOMVIEW);
 				apBtnGroupBottom->AddButton(new CMFCRibbonStatusBarPane(ID_SEPARATOR,   CString(MAKEINTRESOURCE(IDS_STATUSBAR_BOTTOMVIEW)), TRUE));
 				CMFCRibbonButton * pButton = new CMFCRibbonButton(ID_INDICATOR_BOTTOMVIEWCOMBOENCODING, L"");
@@ -1923,7 +1923,7 @@ void CBaseView::DrawTextLine(
 				if (nLeft < 0)
 				{
 					int fit = nTextLength;
-					std::unique_ptr<int[]> posBuffer(new int[fit]);
+					auto posBuffer = std::make_unique<int[]>(fit);
 					GetTextExtentExPoint(pDC->GetSafeHdc(), p_zBlockText, nTextLength, INT_MAX, &fit, posBuffer.get(), &Size);
 					int lower = 0, upper = fit - 1;
 					do
@@ -3710,7 +3710,7 @@ int CBaseView::CalcColFromPoint(int xpos, int lineIndex)
 	{
 		CString text = ExpandChars(GetLineChars(lineIndex), 0);
 		int fit = text.GetLength();
-		std::unique_ptr<int[]> posBuffer(new int[fit]);
+		auto posBuffer = std::make_unique<int[]>(fit);
 		pDC->SelectObject(GetFont()); // is this right font ?
 		SIZE size;
 		GetTextExtentExPoint(pDC->GetSafeHdc(), text, fit, INT_MAX, &fit, posBuffer.get(), &size);

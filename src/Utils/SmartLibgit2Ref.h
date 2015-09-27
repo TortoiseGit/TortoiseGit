@@ -30,8 +30,7 @@ class CSmartBuffer : public FreeFunction
 public:
 	CSmartBuffer()
 	{
-		HandleType tmp = { 0 };
-		m_Ref = tmp;
+		m_Ref = { 0 };
 	}
 
 	operator HandleType*()
@@ -50,8 +49,8 @@ public:
 	}
 
 private:
-	CSmartBuffer(const CSmartBuffer& that);
-	CSmartBuffer& operator=(const CSmartBuffer& that);
+	CSmartBuffer(const CSmartBuffer&) = delete;
+	CSmartBuffer& operator=(const CSmartBuffer&) = delete;
 
 protected:
 	HandleType m_Ref;
@@ -144,8 +143,8 @@ public:
 	}
 
 private:
-	CSmartLibgit2Ref(const CSmartLibgit2Ref& that);
-	CSmartLibgit2Ref& operator=(const CSmartLibgit2Ref& that);
+	CSmartLibgit2Ref(const CSmartLibgit2Ref&) = delete;
+	CSmartLibgit2Ref& operator=(const CSmartLibgit2Ref&) = delete;
 
 protected:
 	virtual void FreeRef() = 0;
@@ -199,8 +198,8 @@ public:
 	}
 
 private:
-	CAutoRepository(const CAutoRepository& that);
-	CAutoRepository& operator=(const CAutoRepository& that);
+	CAutoRepository(const CAutoRepository&) = delete;
+	CAutoRepository& operator=(const CAutoRepository&) = delete;
 
 protected:
 	int Open(const CString& gitDir)
@@ -230,8 +229,8 @@ public:
 	}
 
 private:
-	CAutoSubmodule(const CAutoSubmodule& that);
-	CAutoSubmodule& operator=(const CAutoSubmodule& that);
+	CAutoSubmodule(const CAutoSubmodule&) = delete;
+	CAutoSubmodule& operator=(const CAutoSubmodule&) = delete;
 
 protected:
 	virtual void FreeRef()
@@ -256,8 +255,8 @@ public:
 	}
 
 private:
-	CAutoCommit(const CAutoCommit& that);
-	CAutoCommit& operator=(const CAutoCommit& that);
+	CAutoCommit(const CAutoCommit&) = delete;
+	CAutoCommit& operator=(const CAutoCommit&) = delete;
 
 protected:
 	virtual void FreeRef()
@@ -287,8 +286,8 @@ public:
 	}
 
 private:
-	CAutoTree(const CAutoTree& that);
-	CAutoTree& operator=(const CAutoTree& that);
+	CAutoTree(const CAutoTree&) = delete;
+	CAutoTree& operator=(const CAutoTree&) = delete;
 
 protected:
 	virtual void FreeRef()
@@ -308,8 +307,8 @@ public:
 	}
 
 private:
-	CAutoObject(const CAutoObject& that);
-	CAutoObject& operator=(const CAutoObject& that);
+	CAutoObject(const CAutoObject&) = delete;
+	CAutoObject& operator=(const CAutoObject&) = delete;
 
 protected:
 	virtual void FreeRef()
@@ -329,8 +328,8 @@ public:
 	}
 
 private:
-	CAutoBlob(const CAutoBlob& that);
-	CAutoBlob& operator=(const CAutoBlob& that);
+	CAutoBlob(const CAutoBlob&) = delete;
+	CAutoBlob& operator=(const CAutoBlob&) = delete;
 
 protected:
 	virtual void FreeRef()
@@ -408,8 +407,8 @@ public:
 	}
 
 private:
-	CAutoConfig(const CAutoConfig& that);
-	CAutoConfig& operator=(const CAutoConfig& that);
+	CAutoConfig(const CAutoConfig&) = delete;
+	CAutoConfig& operator=(const CAutoConfig&) = delete;
 
 protected:
 	virtual void FreeRef()
@@ -434,8 +433,8 @@ public:
 	}
 
 private:
-	CAutoReference(const CAutoReference& that);
-	CAutoReference& operator=(const CAutoReference& that);
+	CAutoReference(const CAutoReference&) = delete;
+	CAutoReference& operator=(const CAutoReference&) = delete;
 
 protected:
 	virtual void FreeRef()
@@ -455,8 +454,8 @@ public:
 	}
 
 private:
-	CAutoTreeEntry(const CAutoTreeEntry& that);
-	CAutoTreeEntry& operator=(const CAutoTreeEntry& that);
+	CAutoTreeEntry(const CAutoTreeEntry&) = delete;
+	CAutoTreeEntry& operator=(const CAutoTreeEntry&) = delete;
 
 protected:
 	virtual void FreeRef()
@@ -476,8 +475,8 @@ public:
 	}
 
 private:
-	CAutoDiff(const CAutoDiff& that);
-	CAutoDiff& operator=(const CAutoDiff& that);
+	CAutoDiff(const CAutoDiff&) = delete;
+	CAutoDiff& operator=(const CAutoDiff&) = delete;
 
 protected:
 	virtual void FreeRef()
@@ -497,8 +496,8 @@ public:
 	}
 
 private:
-	CAutoPatch(const CAutoPatch& that);
-	CAutoPatch& operator=(const CAutoPatch& that);
+	CAutoPatch(const CAutoPatch&) = delete;
+	CAutoPatch& operator=(const CAutoPatch&) = delete;
 
 protected:
 	virtual void FreeRef()
@@ -518,8 +517,8 @@ public:
 	}
 
 private:
-	CAutoDiffStats(const CAutoDiffStats& that);
-	CAutoDiffStats& operator=(const CAutoDiffStats& that);
+	CAutoDiffStats(const CAutoDiffStats&) = delete;
+	CAutoDiffStats& operator=(const CAutoDiffStats&) = delete;
 
 protected:
 	virtual void FreeRef()
@@ -560,8 +559,8 @@ public:
 	}
 
 private:
-	CAutoRemote(const CAutoRemote& that);
-	CAutoRemote& operator=(const CAutoRemote& that);
+	CAutoRemote(const CAutoRemote&) = delete;
+	CAutoRemote& operator=(const CAutoRemote&) = delete;
 
 protected:
 	virtual void FreeRef()
@@ -581,8 +580,8 @@ public:
 	}
 
 private:
-	CAutoReflog(const CAutoReflog& that);
-	CAutoReflog& operator=(const CAutoReflog& that);
+	CAutoReflog(const CAutoReflog&) = delete;
+	CAutoReflog& operator=(const CAutoReflog&) = delete;
 
 protected:
 	virtual void FreeRef()
@@ -602,8 +601,8 @@ public:
 	}
 
 private:
-	CAutoRevwalk(const CAutoRevwalk& that);
-	CAutoRevwalk& operator=(const CAutoRevwalk& that);
+	CAutoRevwalk(const CAutoRevwalk&) = delete;
+	CAutoRevwalk& operator=(const CAutoRevwalk&) = delete;
 
 protected:
 	virtual void FreeRef()
@@ -623,8 +622,8 @@ public:
 	}
 
 private:
-	CAutoBranchIterator(const CAutoBranchIterator& that) ;
-	CAutoBranchIterator& operator=(const CAutoBranchIterator& that);
+	CAutoBranchIterator(const CAutoBranchIterator&) = delete;
+	CAutoBranchIterator& operator=(const CAutoBranchIterator&) = delete;
 
 protected:
 	virtual void FreeRef()
@@ -644,8 +643,8 @@ public:
 	}
 
 private:
-	CAutoDescribeResult(const CAutoDescribeResult& that);
-	CAutoDescribeResult& operator=(const CAutoDescribeResult& that);
+	CAutoDescribeResult(const CAutoDescribeResult&) = delete;
+	CAutoDescribeResult& operator=(const CAutoDescribeResult&) = delete;
 
 protected:
 	virtual void FreeRef()
@@ -665,8 +664,8 @@ public:
 	}
 
 private:
-	CAutoStatusList(const CAutoStatusList& that);
-	CAutoStatusList& operator=(const CAutoStatusList& that);
+	CAutoStatusList(const CAutoStatusList&) = delete;
+	CAutoStatusList& operator=(const CAutoStatusList&) = delete;
 
 protected:
 	virtual void FreeRef()

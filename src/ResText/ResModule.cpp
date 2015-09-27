@@ -985,8 +985,8 @@ BOOL CResModule::ExtractAccelerator(LPCTSTR lpszType)
 			(wAnsi >= 0x3A && wAnsi <= 0x40))
 			continue;
 
-		std::unique_ptr<WCHAR[]> pBuf(new WCHAR[1024]);
-		std::unique_ptr<WCHAR[]> pBuf2(new WCHAR[1024]);
+		auto pBuf = std::make_unique<WCHAR[]>(1024);
+		auto pBuf2 = std::make_unique<WCHAR[]>(1024);
 		SecureZeroMemory(pBuf.get(), 1024 * sizeof(WCHAR));
 		SecureZeroMemory(pBuf2.get(), 1024 * sizeof(WCHAR));
 
@@ -1090,8 +1090,8 @@ BOOL CResModule::ReplaceAccelerator(LPCTSTR lpszType, WORD wLanguage)
 	BYTE xfVirt;
 	wchar_t xkey;
 	static const size_t BufferSize = 1024;
-	std::unique_ptr<WCHAR[]> pBuf(new WCHAR[BufferSize]);
-	std::unique_ptr<WCHAR[]> pBuf2(new WCHAR[BufferSize]);
+	auto pBuf = std::make_unique<WCHAR[]>(BufferSize);
+	auto pBuf2 = std::make_unique<WCHAR[]>(BufferSize);
 	for (i = 0; i < cAccelerators; i++)
 	{
 		if ((lpaccelNew[i].key < 0x30) ||
@@ -1884,7 +1884,7 @@ BOOL CResModule::ExtractRibbon(LPCTSTR lpszType)
 
 		std::string str1 = (*it)[1];
 		len = str1.size();
-		std::unique_ptr<wchar_t[]> bufw1(new wchar_t[len * 4 + 1]);
+		auto bufw1 = std::make_unique<wchar_t[]>(len * 4 + 1);
 		SecureZeroMemory(bufw1.get(), (len * 4 + 1) * sizeof(wchar_t));
 		MultiByteToWideChar(CP_UTF8, 0, str1.c_str(), -1, bufw1.get(), (int)len * 4);
 		std::wstring strIdNameVal = bufw1.get();
@@ -1892,14 +1892,14 @@ BOOL CResModule::ExtractRibbon(LPCTSTR lpszType)
 
 		std::string str2 = (*it)[2];
 		len = str2.size();
-		std::unique_ptr<wchar_t[]> bufw2(new wchar_t[len * 4 + 1]);
+		auto bufw2 = std::make_unique<wchar_t[]>(len * 4 + 1);
 		SecureZeroMemory(bufw2.get(), (len * 4 + 1)*sizeof(wchar_t));
 		MultiByteToWideChar(CP_UTF8, 0, str2.c_str(), -1, bufw2.get(), (int)len * 4);
 		std::wstring strIdVal = bufw2.get();
 
 		std::string str3 = (*it)[3];
 		len = str3.size();
-		std::unique_ptr<wchar_t[]> bufw3(new wchar_t[len * 4 + 1]);
+		auto bufw3 = std::make_unique<wchar_t[]>(len * 4 + 1);
 		SecureZeroMemory(bufw3.get(), (len * 4 + 1)*sizeof(wchar_t));
 		MultiByteToWideChar(CP_UTF8, 0, str3.c_str(), -1, bufw3.get(), (int)len * 4);
 		std::wstring str = bufw3.get();
@@ -1919,7 +1919,7 @@ BOOL CResModule::ExtractRibbon(LPCTSTR lpszType)
 	{
 		std::string str = (*it)[1];
 		size_t len = str.size();
-		std::unique_ptr<wchar_t[]> bufw(new wchar_t[len*4 + 1]);
+		auto bufw = std::make_unique<wchar_t[]>(len * 4 + 1);
 		SecureZeroMemory(bufw.get(), (len*4 + 1)*sizeof(wchar_t));
 		MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, bufw.get(), (int)len*4);
 		std::wstring ret = bufw.get();
@@ -1959,7 +1959,7 @@ BOOL CResModule::ReplaceRibbon(LPCTSTR lpszType, WORD wLanguage)
 
 	std::string ss = std::string((const char*)p, sizeres);
 	size_t len = ss.size();
-	std::unique_ptr<wchar_t[]> bufw(new wchar_t[len*4 + 1]);
+	auto bufw = std::make_unique<wchar_t[]>(len * 4 + 1);
 	SecureZeroMemory(bufw.get(), (len*4 + 1)*sizeof(wchar_t));
 	MultiByteToWideChar(CP_UTF8, 0, ss.c_str(), -1, bufw.get(), (int)len*4);
 	std::wstring ssw = bufw.get();
@@ -1971,7 +1971,7 @@ BOOL CResModule::ReplaceRibbon(LPCTSTR lpszType, WORD wLanguage)
 	{
 		std::string str = (*it)[1];
 		size_t slen = str.size();
-		std::unique_ptr<wchar_t[]> bufw2(new wchar_t[slen*4 + 1]);
+		auto bufw2 = std::make_unique<wchar_t[]>(slen * 4 + 1);
 		SecureZeroMemory(bufw2.get(), (slen*4 + 1)*sizeof(wchar_t));
 		MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, bufw2.get(), (int)slen*4);
 		std::wstring ret = bufw2.get();
@@ -1981,7 +1981,7 @@ BOOL CResModule::ReplaceRibbon(LPCTSTR lpszType, WORD wLanguage)
 
 		if (entry.msgstr.size())
 		{
-			std::unique_ptr<wchar_t[]> sbuf(new wchar_t[entry.msgstr.size() + 10]);
+			auto sbuf = std::make_unique<wchar_t[]>(entry.msgstr.size() + 10);
 			wcscpy(sbuf.get(), entry.msgstr.c_str());
 			CUtils::StringCollapse(sbuf.get());
 			std::wstring sreplace = L"<TEXT>";
@@ -1999,7 +1999,7 @@ BOOL CResModule::ReplaceRibbon(LPCTSTR lpszType, WORD wLanguage)
 	{
 		std::string str = (*it)[1];
 		size_t slen = str.size();
-		std::unique_ptr<wchar_t[]> bufw2(new wchar_t[slen*4 + 1]);
+		auto bufw2 = std::make_unique<wchar_t[]>(slen * 4 + 1);
 		SecureZeroMemory(bufw2.get(), (slen*4 + 1)*sizeof(wchar_t));
 		MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, bufw2.get(), (int)slen*4);
 		std::wstring ret = bufw2.get();
@@ -2009,7 +2009,7 @@ BOOL CResModule::ReplaceRibbon(LPCTSTR lpszType, WORD wLanguage)
 
 		if (entry.msgstr.size())
 		{
-			std::unique_ptr<wchar_t[]> sbuf(new wchar_t[entry.msgstr.size() + 10]);
+			auto sbuf = std::make_unique<wchar_t[]>(entry.msgstr.size() + 10);
 			wcscpy(sbuf.get(), entry.msgstr.c_str());
 			CUtils::StringCollapse(sbuf.get());
 			std::wstring sreplace = L"</ELEMENT_NAME><NAME>";
@@ -2022,7 +2022,7 @@ BOOL CResModule::ReplaceRibbon(LPCTSTR lpszType, WORD wLanguage)
 			m_bDefaultRibbonTexts++;
 	}
 
-	std::unique_ptr<char[]> buf(new char[ssw.size()*4 + 1]);
+	auto buf = std::make_unique<char[]>(ssw.size() * 4 + 1);
 	int lengthIncTerminator = WideCharToMultiByte(CP_UTF8, 0, ssw.c_str(), -1, buf.get(), (int)len*4, NULL, NULL);
 
 
@@ -2169,7 +2169,7 @@ size_t CResModule::ScanHeaderFile(const std::wstring & filepath)
 
 	// open the file and read the contents
 	DWORD reqLen = GetFullPathName(filepath.c_str(), 0, NULL, NULL);
-	std::unique_ptr<TCHAR[]> wcfullPath(new TCHAR[reqLen + 1]);
+	auto wcfullPath = std::make_unique<TCHAR[]>(reqLen + 1);
 	GetFullPathName(filepath.c_str(), reqLen, wcfullPath.get(), NULL);
 	std::wstring fullpath = wcfullPath.get();
 

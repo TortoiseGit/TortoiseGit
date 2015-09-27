@@ -77,7 +77,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
     curHand = (HCURSOR)LoadImage(hInst, MAKEINTRESOURCE(IDC_PANCUR), IMAGE_CURSOR, 0, 0, LR_DEFAULTSIZE);
     curHandDown = (HCURSOR)LoadImage(hInst, MAKEINTRESOURCE(IDC_PANDOWNCUR), IMAGE_CURSOR, 0, 0, LR_DEFAULTSIZE);
 
-    std::unique_ptr<CMainWindow> mainWindow(new CMainWindow(hResource));
+    auto mainWindow = std::make_unique<CMainWindow>(hResource);
     mainWindow->SetRegistryPath(_T("Software\\TortoiseGit\\TortoiseIDiffWindowPos"));
     std::wstring leftfile = parser.HasVal(_T("left")) ? parser.GetVal(_T("left")) : _T("");
     std::wstring rightfile = parser.HasVal(_T("right")) ? parser.GetVal(_T("right")) : _T("");

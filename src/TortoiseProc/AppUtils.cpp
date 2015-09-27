@@ -636,11 +636,11 @@ BOOL CAppUtils::StartTextViewer(CString file)
 	viewer = txtexe;
 
 	DWORD len = ExpandEnvironmentStrings(viewer, NULL, 0);
-	std::unique_ptr<TCHAR[]> buf(new TCHAR[len + 1]);
+	auto buf = std::make_unique<TCHAR[]>(len + 1);
 	ExpandEnvironmentStrings(viewer, buf.get(), len);
 	viewer = buf.get();
 	len = ExpandEnvironmentStrings(file, NULL, 0);
-	std::unique_ptr<TCHAR[]> buf2(new TCHAR[len + 1]);
+	auto buf2 = std::make_unique<TCHAR[]>(len + 1);
 	ExpandEnvironmentStrings(file, buf2.get(), len);
 	file = buf2.get();
 	file = _T("\"")+file+_T("\"");
@@ -935,8 +935,7 @@ namespace {
 	{
 		if (!PathIsURLW(sText))
 			return false;
-		static const CString prefixes[] = { L"http://", L"https://", L"git://", L"ftp://", L"file://", L"mailto:" };
-		for (const auto& prefix : prefixes)
+		for (const CString& prefix : { L"http://", L"https://", L"git://", L"ftp://", L"file://", L"mailto:" })
 		{
 			if (sText.Find(prefix) == 0 && sText.GetLength() != prefix.GetLength())
 				return true;

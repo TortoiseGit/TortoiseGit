@@ -58,8 +58,8 @@ namespace soap_helpers
 
         std::shared_ptr<void> m_data;
     };
-#define SOAP_STRUCT(Str, Var) auto __SOAP_NEW_FN_##Str = soap_new_##Str; auto __SOAP_DELETE_FN_##Str = soap_delete_##Str; soap_helpers::SoapStuct<Str> Var(&m_webService, __SOAP_NEW_FN_##Str, __SOAP_DELETE_FN_##Str)
-#define SOAP_SHARED_STRUCT(Str, Var) auto __SOAP_NEW_FN_##Str = soap_new_##Str; auto __SOAP_DELETE_FN_##Str = soap_delete_##Str; std::shared_ptr<soap_helpers::SoapStuct<Str>> Var(new soap_helpers::SoapStuct<Str>(&m_webService, __SOAP_NEW_FN_##Str, __SOAP_DELETE_FN_##Str))
+#define SOAP_STRUCT(Str, Var) soap_helpers::SoapStuct<Str> Var(&m_webService, soap_new_##Str, soap_delete_##Str)
+#define SOAP_SHARED_STRUCT(Str, Var) std::shared_ptr<soap_helpers::SoapStuct<Str>> Var(new soap_helpers::SoapStuct<Str>(&m_webService, soap_new_##Str, soap_delete_##Str))
 }
 
 namespace doctor_dump

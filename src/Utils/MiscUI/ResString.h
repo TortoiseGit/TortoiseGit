@@ -33,7 +33,7 @@ public:
 		str.clear();
 		do
 		{
-			std::unique_ptr<wchar_t[]> buf(new wchar_t[bufsize]);
+			auto buf = std::make_unique<wchar_t[]>(bufsize);
 			int ret = ::LoadString(hInstance, resId, buf.get(), bufsize);
 			if (ret == (bufsize-1))
 				bufsize *= 2;

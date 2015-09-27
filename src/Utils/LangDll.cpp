@@ -102,7 +102,7 @@ bool CLangDll::DoVersionStringsMatch(LPCTSTR sVer, LPCTSTR langDll) const
 
 	if (dwBufferSize > 0)
 	{
-		std::unique_ptr<BYTE[]> pBuffer(new BYTE[dwBufferSize]);
+		auto pBuffer = std::make_unique<BYTE[]>(dwBufferSize);
 
 		if (pBuffer)
 		{

@@ -40,10 +40,10 @@ private:
 	scope_exit_t& operator=(const scope_exit_t&);
 
 	// Prohibit new/delete.
-	void* operator new(size_t);
-	void* operator new[](size_t);
-	void operator delete(void*);
-	void operator delete[](void*);
+	void* operator new(size_t) = delete;
+	void* operator new[](size_t) = delete;
+	void operator delete(void*) = delete;
+	void operator delete[](void*) = delete;
 
 	const D func;
 };

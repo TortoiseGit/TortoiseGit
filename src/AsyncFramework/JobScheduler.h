@@ -274,8 +274,8 @@ private:
         CThreadPool();
 
         // prevent cloning
-        CThreadPool(const CThreadPool&);
-        CThreadPool& operator=(const CThreadPool&);
+        CThreadPool(const CThreadPool&) = delete;
+        CThreadPool& operator=(const CThreadPool&) = delete;
 
         /// remove one entry from \ref starving container.
         /// Return NULL, if container was empty

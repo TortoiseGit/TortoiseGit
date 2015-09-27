@@ -198,15 +198,15 @@ UINT CProgressDlg::RunCmdList(CWnd* pWnd, STRING_VECTOR& cmdlist, STRING_VECTOR&
 	std::vector<std::unique_ptr<CBlockCacheForPath>> cacheBlockList;
 	std::vector<std::unique_ptr<CGit>> gitList;
 	if (dirlist.empty())
-		cacheBlockList.push_back(std::unique_ptr<CBlockCacheForPath>(new CBlockCacheForPath(git->m_CurrentDir)));
+		cacheBlockList.push_back(std::make_unique<CBlockCacheForPath>(git->m_CurrentDir));
 	else
 	{
 		for (const auto& dir : dirlist)
 		{
 			CGit *pGit = new CGit;
 			pGit->m_CurrentDir = dir;
-			gitList.push_back(std::unique_ptr<CGit>(pGit));
-			cacheBlockList.push_back(std::unique_ptr<CBlockCacheForPath>(new CBlockCacheForPath(dir)));
+			gitList.push_back(std::make_unique<CGit>(*pGit));
+			cacheBlockList.push_back(std::make_unique<CBlockCacheForPath>(dir));
 		}
 	}
 

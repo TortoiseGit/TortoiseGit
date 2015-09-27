@@ -41,7 +41,7 @@ END_MESSAGE_MAP()
 
 void CFileDropEdit::PreSubclassWindow()
 {
-	m_pDropTarget.reset (new CFileDropTarget (m_hWnd));
+	m_pDropTarget = std::make_unique<CFileDropTarget>(m_hWnd);
 	RegisterDragDrop(m_hWnd, m_pDropTarget.get());
 	// create the supported formats:
 	FORMATETC ftetc={0};

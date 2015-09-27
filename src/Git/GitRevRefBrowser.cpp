@@ -24,9 +24,8 @@
 #include "Git.h"
 #include "GitRevRefBrowser.h"
 
-GitRevRefBrowser::GitRevRefBrowser()
+GitRevRefBrowser::GitRevRefBrowser() : GitRev()
 {
-	GitRev();
 }
 
 void GitRevRefBrowser::Clear()

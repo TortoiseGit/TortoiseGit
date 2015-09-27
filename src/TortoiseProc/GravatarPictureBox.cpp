@@ -290,7 +290,7 @@ resend:
 			return INET_E_DOWNLOAD_FAILURE;
 
 		DWORD downloaded; // size of the downloaded data
-		std::unique_ptr<TCHAR[]> buff(new TCHAR[size + 1]);
+		auto buff = std::make_unique<TCHAR[]>(size + 1);
 		if (!InternetReadFile(hResourceHandle, (LPVOID)buff.get(), size, &downloaded))
 			return INET_E_DOWNLOAD_FAILURE;
 

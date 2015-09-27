@@ -93,8 +93,8 @@ public:
 	}
 
 private:
-	CSmartHandle(const CSmartHandle& that);
-	CSmartHandle& operator=(const CSmartHandle& that);
+	CSmartHandle(const CSmartHandle&) = delete;
+	CSmartHandle& operator=(const CSmartHandle&) = delete;
 
 protected:
 	bool CleanUp()

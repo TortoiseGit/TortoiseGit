@@ -1305,7 +1305,7 @@ void CPicWindow::Paint(HWND hwnd)
             SetBkColor(memDC, transparentColor);
             if (bShowInfo)
             {
-               std::unique_ptr<TCHAR[]> infostring(new TCHAR[8192]);
+                auto infostring = std::make_unique<TCHAR[]>(8192);
                 BuildInfoString(infostring.get(), 8192, false);
                 // set the font
                 NONCLIENTMETRICS metrics = {0};

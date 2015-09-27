@@ -580,7 +580,7 @@ static int LoadSignature(const CString &signatureFilename, signature_packet_t *p
 		return -1;
 
 	int size = 65536;
-	std::unique_ptr<unsigned char[]> buffer(new unsigned char[size]);
+	auto buffer = std::make_unique<unsigned char[]>(size);
 	int length = (int)fread(buffer.get(), sizeof(char), size, pFile);
 	fclose(pFile);
 	if (length < 8)
@@ -589,7 +589,7 @@ static int LoadSignature(const CString &signatureFilename, signature_packet_t *p
 	// is unpacking needed?
 	if ((uint8_t)buffer[0] < 0x80)
 	{
-		std::unique_ptr<unsigned char[]> unpacked(new unsigned char[size]);
+		auto unpacked = std::make_unique<unsigned char[]>(size);
 		size = pgp_unarmor((char *)buffer.get(), length, unpacked.get(), length);
 
 		if (size < 2)
@@ -820,7 +820,7 @@ static int check_hash(HCRYPTHASH hHash, signature_packet_t *p_sig)
 	if (!CryptGetHashParam(hHash, HP_HASHSIZE, (BYTE *)&hashLen, &hashLenLen, 0))
 		return -1;
 
-	std::unique_ptr<BYTE[]> pHash(new BYTE[hashLen]);
+	auto pHash = std::make_unique<BYTE[]>(hashLen);
 	CryptGetHashParam(hHash, HP_HASHVAL, pHash.get(), &hashLen, 0);
 
 	if (pHash.get()[0] != p_sig->hash_verification[0] || pHash.get()[1] != p_sig->hash_verification[1])
@@ -861,7 +861,7 @@ static int verify_signature_rsa(HCRYPTPROV hCryptProv, HCRYPTHASH hHash, public_
 	 * thus, use i_n_len as buffer length (pSig; it's safe as i_n_len cannot be longer than the buffer),
 	 * but do not copy/reverse NULs at the end of p_sig.algo_specific.rsa.s into pSig
 	 */
-	std::unique_ptr<BYTE[]> pSig(new BYTE[i_n_len]);
+	auto pSig = std::make_unique<BYTE[]>(i_n_len);
 	SecureZeroMemory(pSig.get(), i_n_len);
 	memcpy(pSig.get(), p_sig.algo_specific.rsa.s + 2, i_s_len);
 	std::reverse(pSig.get(), pSig.get() + i_s_len);
@@ -953,7 +953,7 @@ static public_key_t *download_key(const uint8_t *p_longid, const uint8_t *p_sign
 		return nullptr;
 
 	int size = 65536;
-	std::unique_ptr<char[]> buffer(new char[size]);
+	auto buffer = std::make_unique<char[]>(size);
 	FILE * pFile = _tfsopen(tempfile, _T("rb"), SH_DENYWR);
 	if (pFile)
 	{

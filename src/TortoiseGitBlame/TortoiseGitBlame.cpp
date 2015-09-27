@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2014 - TortoiseGit
+// Copyright (C) 2008-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -89,7 +89,7 @@ BOOL CTortoiseGitBlameApp::InitInstance()
 		DWORD len = GetCurrentDirectory(0, NULL);
 		if (len)
 		{
-			std::unique_ptr<TCHAR[]> originalCurrentDirectory(new TCHAR[len]);
+			auto originalCurrentDirectory = std::make_unique<TCHAR[]>(len);
 			if (GetCurrentDirectory(len, originalCurrentDirectory.get()))
 			{
 				sOrigCWD = originalCurrentDirectory.get();

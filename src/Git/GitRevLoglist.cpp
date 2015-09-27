@@ -25,9 +25,8 @@
 
 typedef CComCritSecLock<CComCriticalSection> CAutoLocker;
 
-GitRevLoglist::GitRevLoglist(void)
+GitRevLoglist::GitRevLoglist(void) : GitRev()
 {
-	GitRev();
 	m_Action = 0;
 	m_RebaseAction = 0;
 	m_IsFull = FALSE;

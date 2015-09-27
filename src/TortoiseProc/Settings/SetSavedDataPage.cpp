@@ -277,7 +277,7 @@ void CSetSavedDataPage::OnBnClickedTempfileclear()
 
 	int count = 0;
 	DWORD len = GetTortoiseGitTempPath(0, NULL);
-	std::unique_ptr<TCHAR[]> path(new TCHAR[len + 100]);
+	auto path = std::make_unique<TCHAR[]>(len + 100);
 	len = GetTortoiseGitTempPath(len + 100, path.get());
 	if (len != 0)
 	{
@@ -326,7 +326,7 @@ void CSetSavedDataPage::DeleteViaShell(LPCTSTR path, UINT progressText)
 	CString p(path);
 	p += L"||";
 	int len = p.GetLength();
-	std::unique_ptr<TCHAR[]> buf(new TCHAR[len + 2]);
+	auto buf = std::make_unique<TCHAR[]>(len + 2);
 	wcscpy_s(buf.get(), len + 2, p);
 	CStringUtils::PipesToNulls(buf.get(), len);
 

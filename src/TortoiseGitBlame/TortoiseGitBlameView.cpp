@@ -578,7 +578,7 @@ CString CTortoiseGitBlameView::GetAppDirectory()
 	do
 	{
 		bufferlen += MAX_PATH;		// MAX_PATH is not the limit here!
-		std::unique_ptr<TCHAR[]> pBuf(new TCHAR[bufferlen]);
+		auto pBuf = std::make_unique<TCHAR[]>(bufferlen);
 		len = GetModuleFileName(NULL, pBuf.get(), bufferlen);
 		path = CString(pBuf.get(), len);
 	} while(len == bufferlen);
@@ -1828,7 +1828,7 @@ void CTortoiseGitBlameView::OnEditFind()
 	if (m_TextView.Call(SCI_GETSELECTIONSTART) != m_TextView.Call(SCI_GETSELECTIONEND))
 	{
 		LRESULT bufsize = m_TextView.Call(SCI_GETSELECTIONEND) - m_TextView.Call(SCI_GETSELECTIONSTART);
-		std::unique_ptr<char[]> linebuf(new char[bufsize + 1]);
+		auto linebuf = std::make_unique<char[]>(bufsize + 1);
 		SecureZeroMemory(linebuf.get(), bufsize + 1);
 		SendEditor(SCI_GETSELTEXT, 0, (LPARAM)linebuf.get());
 		oneline = m_TextView.StringFromControl(linebuf.get());

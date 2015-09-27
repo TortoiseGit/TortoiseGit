@@ -103,7 +103,7 @@ void CGitStatusCache::Create()
 							goto error;
 						}
 						sKey.ReleaseBuffer(value);
-						std::unique_ptr<CCachedDirectory> cacheddir (new CCachedDirectory());
+						auto cacheddir = std::make_unique<CCachedDirectory>();
 						if (!cacheddir.get() || !cacheddir->LoadFromDisk(pFile))
 						{
 							cacheddir.reset();

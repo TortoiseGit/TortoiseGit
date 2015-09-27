@@ -98,6 +98,6 @@ private:
 	CDiffColors(void);
 	~CDiffColors(void);
 	// prevent cloning
-	CDiffColors(const CDiffColors&);
-	CDiffColors& operator=(const CDiffColors&);
+	CDiffColors(const CDiffColors&) = delete;
+	CDiffColors& operator=(const CDiffColors&) = delete;
 };
