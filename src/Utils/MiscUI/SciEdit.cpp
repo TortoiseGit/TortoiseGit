@@ -268,7 +268,7 @@ void CSciEdit::SetIcon(const std::map<int, UINT> &icons)
 	for (auto icon : icons)
 	{
 		auto hIcon = (HICON)::LoadImage(AfxGetInstanceHandle(), MAKEINTRESOURCE(icon.second), IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
-		std::unique_ptr<BYTE> bytes(Icon2Image(hIcon));
+		std::unique_ptr<UINT[]> bytes((LPUINT)Icon2Image(hIcon));
 		DestroyIcon(hIcon);
 		Call(SCI_REGISTERRGBAIMAGE, icon.first, (LPARAM)bytes.get());
 	}
