@@ -93,7 +93,7 @@ CSciEdit::~CSciEdit(void)
 		delete pThesaur;
 }
 
-static LPBYTE Icon2Image(HICON hIcon)
+static std::unique_ptr<UINT[]> Icon2Image(HICON hIcon)
 {
 	if (hIcon == nullptr)
 		return nullptr;
@@ -138,7 +138,7 @@ static LPBYTE Icon2Image(HICON hIcon)
 	}
 
 	DeleteDC(hDC);
-	UINT* imagePixels = new UINT[height * width];
+	std::unique_ptr<UINT[]> imagePixels(new UINT[height * width]);
 	int lsSrc = width * 3;
 	int vsDest = height - 1;
 	for (int y = 0; y < height; y++)
@@ -158,7 +158,7 @@ static LPBYTE Icon2Image(HICON hIcon)
 				| ((alphaPixels[currentSrcPos] ? 0 : 0xff) << 24))) & 0xffffffff);
 		}
 	}
-	return (LPBYTE)imagePixels;
+	return imagePixels;
 }
 
 void CSciEdit::Init(LONG lLanguage, BOOL bLoadSpellCheck)
@@ -268,7 +268,7 @@ void CSciEdit::SetIcon(const std::map<int, UINT> &icons)
 	for (auto icon : icons)
 	{
 		auto hIcon = (HICON)::LoadImage(AfxGetInstanceHandle(), MAKEINTRESOURCE(icon.second), IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
-		std::unique_ptr<UINT[]> bytes((LPUINT)Icon2Image(hIcon));
+		auto bytes = Icon2Image(hIcon);
 		DestroyIcon(hIcon);
 		Call(SCI_REGISTERRGBAIMAGE, icon.first, (LPARAM)bytes.get());
 	}
