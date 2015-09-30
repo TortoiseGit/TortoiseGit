@@ -55,8 +55,13 @@ bool DaemonCommand::Execute()
 		ip = CUnicodeUtils::GetUnicode(str);
 	}
 
+	CString basePath(g_Git.m_CurrentDir);
+	basePath.TrimRight(L"\\");
+	if (basePath.GetLength() == 2)
+		basePath += L"\\.";
+
 	CString cmd;
-	cmd.Format(_T("git.exe daemon --verbose --export-all --base-path=\"%s\""), (LPCTSTR)g_Git.m_CurrentDir);
+	cmd.Format(_T("git.exe daemon --verbose --export-all --base-path=\"%s\""), (LPCTSTR)basePath);
 	CProgressDlg progDlg;
 	progDlg.m_GitCmd = cmd;
 	progDlg.m_PreText = _T("git://") + ip + _T("/");
