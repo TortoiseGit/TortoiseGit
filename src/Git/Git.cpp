@@ -1748,7 +1748,7 @@ int CGit::GetRemoteTags(const CString& remote, STRING_VECTOR& list)
 		git_remote_callbacks callbacks = GIT_REMOTE_CALLBACKS_INIT;
 		callbacks.credentials = g_Git2CredCallback;
 		callbacks.certificate_check = g_Git2CheckCertificateCallback;
-		if (git_remote_connect(gitremote, GIT_DIRECTION_FETCH, &callbacks) < 0)
+		if (git_remote_connect(gitremote, GIT_DIRECTION_FETCH, &callbacks, nullptr) < 0)
 			return -1;
 
 		const git_remote_head** heads = nullptr;
