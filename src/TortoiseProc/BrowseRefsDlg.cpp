@@ -358,7 +358,7 @@ CShadowTree* CShadowTree::FindLeaf(CString partialRefName)
 	else
 	{
 		//Not a leaf. Search all nodes.
-		for(TShadowTreeMap::iterator itShadowTree = m_ShadowTree.begin(); itShadowTree != m_ShadowTree.end(); ++itShadowTree)
+		for (auto itShadowTree = m_ShadowTree.begin(); itShadowTree != m_ShadowTree.end(); ++itShadowTree)
 		{
 			CShadowTree* pSubtree = itShadowTree->second.FindLeaf(partialRefName);
 			if(pSubtree != NULL)
@@ -734,7 +734,7 @@ bool CBrowseRefsDlg::ConfirmDeleteRef(VectorPShadowTree& leafs)
 
 bool CBrowseRefsDlg::DoDeleteRefs(VectorPShadowTree& leafs)
 {
-	for(VectorPShadowTree::iterator i = leafs.begin(); i != leafs.end(); ++i)
+	for (auto i = leafs.cbegin(); i != leafs.cend(); ++i)
 		if(!DoDeleteRef((*i)->GetRefName()))
 			return false;
 	return true;
@@ -1276,7 +1276,7 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 
 bool CBrowseRefsDlg::AreAllFrom(VectorPShadowTree& leafs, const wchar_t* from)
 {
-	for(VectorPShadowTree::iterator i = leafs.begin(); i != leafs.end(); ++i)
+	for (auto i = leafs.cbegin(); i != leafs.cend(); ++i)
 		if(!(*i)->IsFrom(from))
 			return false;
 	return true;

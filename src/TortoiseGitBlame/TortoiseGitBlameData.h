@@ -80,9 +80,9 @@ public:
 	void GetHashes(std::set<CGitHash>& hashes)
 	{
 		hashes.clear();
-		for (auto it = m_Hash.begin(); it != m_Hash.end(); ++it)
+		for (const auto& hash : m_Hash)
 		{
-			hashes.insert(*it);
+			hashes.insert(hash);
 		}
 	}
 
@@ -113,13 +113,13 @@ public:
 
 	bool ContainsOnlyFilename(const CString &filename) const;
 
-	GitRevLoglist* GetRev(int line, CGitHashMap & hashToRev)
+	GitRevLoglist* GetRev(int line, CGitHashMap& hashToRev)
 	{
 		return GetRevForHash(hashToRev, GetHash(line));
 	}
 
 private:
-	static GitRevLoglist* GetRevForHash(CGitHashMap& HashToRev, CGitHash& hash, CString* err = nullptr);
+	static GitRevLoglist* GetRevForHash(CGitHashMap& HashToRev, const CGitHash& hash, CString* err = nullptr);
 	static CString UnquoteFilename(CStringA& s);
 
 	std::vector<CGitHash>		m_Hash;

@@ -762,9 +762,9 @@ stdstring CShellExt::WriteFileListToTempFile()
 		::WriteFile (file, _T("\n"), 2, &written, 0);
 	}
 
-	for (std::vector<stdstring>::iterator I = files_.begin(); I != files_.end(); ++I)
+	for (const auto& file_ : files_)
 	{
-		::WriteFile (file, I->c_str(), (DWORD)I->size()*sizeof(TCHAR), &written, 0);
+		::WriteFile(file, file_.c_str(), (DWORD)file_.size() * sizeof(TCHAR), &written, 0);
 		::WriteFile (file, _T("\n"), 2, &written, 0);
 	}
 	return retFilePath;
@@ -932,9 +932,9 @@ STDMETHODIMP CShellExt::QueryContextMenu_Wrap(HMENU hMenu,
 			return S_OK;	// nothing selected - we don't have a menu to show
 		// check whether a selected entry is an UID - those are namespace extensions
 		// which we can't handle
-		for (std::vector<stdstring>::const_iterator it = files_.begin(); it != files_.end(); ++it)
+		for (const auto& file : files_)
 		{
-			if (_tcsncmp(it->c_str(), _T("::{"), 3)==0)
+			if (_tcsncmp(file.c_str(), _T("::{"), 3)==0)
 				return S_OK;
 		}
 	}
@@ -1373,7 +1373,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 					gitCmd += files_.front();
 				else if (files_.size() == 2)
 				{
-					std::vector<stdstring>::iterator I = files_.begin();
+					auto I = files_.cbegin();
 					gitCmd += *I;
 					++I;
 					gitCmd += _T("\" /path2:\"");
@@ -1859,7 +1859,7 @@ STDMETHODIMP CShellExt::HandleMenuMsg2_Wrap(UINT uMsg, WPARAM wParam, LPARAM lPa
 			// we have the char the user pressed, now search that char in all our
 			// menu items
 			std::vector<UINT_PTR> accmenus;
-			for (std::map<UINT_PTR, UINT_PTR>::iterator It = mySubMenuMap.begin(); It != mySubMenuMap.end(); ++It)
+			for (auto It = mySubMenuMap.cbegin(); It != mySubMenuMap.cend(); ++It)
 			{
 				LPCTSTR resource = GetMenuTextFromResource((int)mySubMenuMap[It->first]);
 				if (resource == NULL)
@@ -1899,7 +1899,7 @@ STDMETHODIMP CShellExt::HandleMenuMsg2_Wrap(UINT uMsg, WPARAM wParam, LPARAM lPa
 				MENUITEMINFO mif;
 				mif.cbSize = sizeof(MENUITEMINFO);
 				mif.fMask = MIIM_STATE;
-				for (std::vector<UINT_PTR>::iterator it = accmenus.begin(); it != accmenus.end(); ++it)
+				for (auto it = accmenus.cbegin(); it != accmenus.cend(); ++it)
 				{
 					GetMenuItemInfo((HMENU)lParam, (UINT)*it, TRUE, &mif);
 					if (mif.fState == MFS_HILITE)
@@ -2001,7 +2001,7 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 		return false;
 	UINT icon = bShowIcons ? IDI_IGNORE : 0;
 
-	std::vector<stdstring>::iterator I = files_.begin();
+	auto I = files_.cbegin();
 	if (_tcsrchr(I->c_str(), '\\'))
 		_tcscpy_s(ignorepath, MAX_PATH, _tcsrchr(I->c_str(), '\\')+1);
 	else

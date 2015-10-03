@@ -78,9 +78,9 @@ int CTortoiseGitBlameData::GetEncode(int *bomoffset)
 {
 	int encoding = 0;
 	BYTE_VECTOR rawAll;
-	for (auto it = m_RawLines.begin(), it_end = m_RawLines.end(); it != it_end; ++it)
+	for (const auto& rawBytes : m_RawLines)
 	{
-		rawAll.append(&(*it)[0], it->size());
+		rawAll.append(&rawBytes[0], rawBytes.size());
 	}
 	encoding = GetEncode(&rawAll[0], (int)rawAll.size(), bomoffset);
 	return encoding;
@@ -213,9 +213,8 @@ void CTortoiseGitBlameData::ParseBlameOutput(BYTE_VECTOR &data, CGitHashMap & Ha
 		pos = lineEnd + 1;
 	}
 
-	for (auto it = hashes.begin(), it_end = hashes.end(); it != it_end; ++it)
+	for (const auto& hash2 : hashes)
 	{
-		CGitHash hash2 = *it;
 		CString err;
 		GitRev* pRev = GetRevForHash(HashToRev, hash2, &err);
 		if (pRev)
@@ -250,10 +249,10 @@ int CTortoiseGitBlameData::UpdateEncoding(int encode)
 	if (encoding==0)
 	{
 		BYTE_VECTOR all;
-		for (auto it = m_RawLines.begin(); it != m_RawLines.end(); ++it)
+		for (const auto& rawLine : m_RawLines)
 		{
-			if (!it->empty())
-				all.append(&(*it)[0], it->size());
+			if (!rawLine.empty())
+				all.append(&rawLine[0], rawLine.size());
 		}
 		encoding = GetEncode(&all[0], (int)all.size(), &bomoffset);
 	}
@@ -457,15 +456,15 @@ int CTortoiseGitBlameData::FindFirstLineWrapAround(SearchDirection direction, co
 
 bool CTortoiseGitBlameData::ContainsOnlyFilename(const CString &filename) const
 {
-	for (auto it = m_Filenames.cbegin(); it != m_Filenames.cend(); ++it)
+	for (const auto& name : m_Filenames)
 	{
-		if (filename != *it)
+		if (filename != name)
 			return false;
 	}
 	return true;
 }
 
-GitRevLoglist* CTortoiseGitBlameData::GetRevForHash(CGitHashMap& HashToRev, CGitHash& hash, CString* err)
+GitRevLoglist* CTortoiseGitBlameData::GetRevForHash(CGitHashMap& HashToRev, const CGitHash& hash, CString* err)
 {
 	auto it = HashToRev.find(hash);
 	if (it == HashToRev.end())

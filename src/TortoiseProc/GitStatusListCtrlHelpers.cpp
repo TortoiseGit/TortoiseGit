@@ -60,7 +60,7 @@ PropertyList::operator= (const char* rhs)
 
 void PropertyList::GetPropertyNames (std::set<CString>& names)
 {
-	for ( CIT iter = properties.begin(), end = properties.end()
+	for (CIT iter = properties.cbegin(), end = properties.cend()
 		; iter != end
 		; ++iter)
 	{
@@ -221,9 +221,9 @@ bool ColumnManager::IsVisible (int column) const
 int ColumnManager::GetInvisibleCount() const
 {
 	int invisibleCount = 0;
-	for (std::vector<ColumnInfo>::const_iterator it = columns.begin(); it != columns.end(); ++it)
+	for (const auto& column : columns)
 	{
-		if (!it->visible)
+		if (!column.visible)
 			invisibleCount++;
 	}
 	return invisibleCount;
@@ -325,14 +325,14 @@ void ColumnManager::ColumnMoved (int column, int position)
 	if (visiblePosition < columnCount - 1)
 	{
 		// the new position (visiblePosition) is the column id w/o the moved column
-		gridColumnOrder.erase(std::find(gridColumnOrder.begin(), gridColumnOrder.end(), index));
+		gridColumnOrder.erase(std::find(gridColumnOrder.cbegin(), gridColumnOrder.cend(), index));
 		next = gridColumnOrder[visiblePosition];
 	}
 
 	// move logical column index just in front of that "next" column
 
-	columnOrder.erase (std::find ( columnOrder.begin(), columnOrder.end(), index));
-	columnOrder.insert ( std::find ( columnOrder.begin(), columnOrder.end(), next), index);
+	columnOrder.erase(std::find(columnOrder.cbegin(), columnOrder.cend(), index));
+	columnOrder.insert(std::find(columnOrder.cbegin(), columnOrder.cend(), next), index);
 
 	// make sure, invisible columns are still put in front of all others
 
@@ -382,7 +382,7 @@ void ColumnManager::RemoveUnusedProps()
 		if (iter == validIndices.end())
 		{
 			control->DeleteColumn (static_cast<int>(i-1));
-			columns.erase (columns.begin() + i-1);
+			columns.erase(columns.cbegin() + i - 1);
 		}
 		else
 		{
@@ -398,7 +398,7 @@ void ColumnManager::RemoveUnusedProps()
 			= validIndices.find (columnOrder[i-1]);
 
 		if (iter == validIndices.end())
-			columnOrder.erase (columnOrder.begin() + i-1);
+			columnOrder.erase(columnOrder.cbegin() + i - 1);
 		else
 			columnOrder[i-1] = iter->second;
 	}
@@ -410,7 +410,7 @@ void ColumnManager::ResetColumns (DWORD defaultColumns)
 {
 	// update internal data
 
-	std::sort (columnOrder.begin(), columnOrder.end());
+	std::sort(columnOrder.begin(), columnOrder.end());
 
 	for (size_t i = 0, count = columns.size(); i < count; ++i)
 	{
@@ -528,7 +528,7 @@ void ColumnManager::ApplyColumnOrder()
 	SecureZeroMemory (order, sizeof (order));
 
 	std::vector<int> gridColumnOrder = GetGridColumnOrder();
-	std::copy (gridColumnOrder.begin(), gridColumnOrder.end(), stdext::checked_array_iterator<int*>(&order[0], sizeof(order)));
+	std::copy(gridColumnOrder.cbegin(), gridColumnOrder.cend(), stdext::checked_array_iterator<int*>(&order[0], sizeof(order)));
 
 	// we must have placed all columns or something is really fishy ..
 

@@ -57,14 +57,14 @@ public:
 	void SplitBlock(int pos) /// insert colormark with same value as previous position defines
 	{
 		std::map<int, linecolors_t>::const_iterator it = this->upper_bound(pos);
-		if (it != this->begin())
+		if (it != this->cbegin())
 		{
-			if ((it == this->end()) || (it->first != pos))
+			if ((it == this->cend()) || (it->first != pos))
 			{
 				SetColor(pos, (--it)->second);
 			}
 		}
-		else if (it != this->end())
+		else if (it != this->cend())
 		{
 			 SetColor(pos, it->second);
 		}

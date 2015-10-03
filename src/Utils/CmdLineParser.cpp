@@ -162,7 +162,7 @@ CCmdLineParser::CValsMap::const_iterator CCmdLineParser::findKey(LPCTSTR sKey) c
 BOOL CCmdLineParser::HasKey(LPCTSTR sKey) const
 {
 	CValsMap::const_iterator it = findKey(sKey);
-	if(it == m_valueMap.end())
+	if (it == m_valueMap.cend())
 		return false;
 	return true;
 }
@@ -171,7 +171,7 @@ BOOL CCmdLineParser::HasKey(LPCTSTR sKey) const
 BOOL CCmdLineParser::HasVal(LPCTSTR sKey) const
 {
 	CValsMap::const_iterator it = findKey(sKey);
-	if(it == m_valueMap.end())
+	if (it == m_valueMap.cend())
 		return false;
 	if(it->second.empty())
 		return false;
@@ -181,7 +181,7 @@ BOOL CCmdLineParser::HasVal(LPCTSTR sKey) const
 LPCTSTR CCmdLineParser::GetVal(LPCTSTR sKey) const
 {
 	CValsMap::const_iterator it = findKey(sKey);
-	if (it == m_valueMap.end())
+	if (it == m_valueMap.cend())
 		return 0;
 	return it->second.c_str();
 }
@@ -189,7 +189,7 @@ LPCTSTR CCmdLineParser::GetVal(LPCTSTR sKey) const
 LONG CCmdLineParser::GetLongVal(LPCTSTR sKey) const
 {
 	CValsMap::const_iterator it = findKey(sKey);
-	if (it == m_valueMap.end())
+	if (it == m_valueMap.cend())
 		return 0;
 	return _tstol(it->second.c_str());
 }
@@ -197,19 +197,19 @@ LONG CCmdLineParser::GetLongVal(LPCTSTR sKey) const
 __int64 CCmdLineParser::GetLongLongVal(LPCTSTR sKey) const
 {
 	CValsMap::const_iterator it = findKey(sKey);
-	if (it == m_valueMap.end())
+	if (it == m_valueMap.cend())
 		return 0;
 	return _ttoi64(it->second.c_str());
 }
 
 CCmdLineParser::ITERPOS CCmdLineParser::begin() const
 {
-	return m_valueMap.begin();
+	return m_valueMap.cbegin();
 }
 
 CCmdLineParser::ITERPOS CCmdLineParser::getNext(ITERPOS& pos, stdstring& sKey, stdstring& sValue) const
 {
-	if (m_valueMap.end() == pos)
+	if (m_valueMap.cend() == pos)
 	{
 		sKey.clear();
 		return pos;
@@ -224,5 +224,5 @@ CCmdLineParser::ITERPOS CCmdLineParser::getNext(ITERPOS& pos, stdstring& sKey, s
 
 BOOL CCmdLineParser::isLast(const ITERPOS& pos) const
 {
-	return (pos == m_valueMap.end());
+	return (pos == m_valueMap.cend());
 }

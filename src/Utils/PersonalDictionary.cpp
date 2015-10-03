@@ -112,9 +112,9 @@ bool CPersonalDictionary::Save()
 	SecureZeroMemory(filepath, sizeof(filepath));
 	WideCharToMultiByte(CP_ACP, NULL, path, -1, filepath, MAX_PATH, NULL, NULL);
 	File.open(filepath, std::ios_base::binary);
-	for (std::set<CString>::iterator it = dict.begin(); it != dict.end(); ++it)
+	for (const auto& line : dict)
 	{
-		File << (LPCTSTR)*it << _T("\n");
+		File << (LPCTSTR)line << _T("\n");
 	}
 	File.close();
 	return true;

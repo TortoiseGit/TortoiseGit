@@ -348,17 +348,17 @@ public:
 	{
 		Locker lock(m_critSec);
 		ExcludeContextValid();
-		for (std::vector<stdstring>::iterator I = excontextvector.begin(); I != excontextvector.end(); ++I)
+		for (const auto& exPath : excontextvector)
 		{
-			if (I->empty())
+			if (exPath.empty())
 				continue;
-			if (!I->empty() && I->at(I->size()-1)=='*')
+			if (exPath.at(exPath.size() - 1) == '*')
 			{
-				stdstring str = I->substr(0, I->size()-1);
+				stdstring str = exPath.substr(0, exPath.size() - 1);
 				if (_tcsnicmp(str.c_str(), path, str.size())==0)
 					return FALSE;
 			}
-			else if (_tcsicmp(I->c_str(), path)==0)
+			else if (_tcsicmp(exPath.c_str(), path) == 0)
 				return FALSE;
 		}
 		return TRUE;
@@ -367,22 +367,22 @@ public:
 	{
 		Locker lock(m_critSec);
 		IncludeListValid();
-		for (std::vector<stdstring>::iterator I = invector.begin(); I != invector.end(); ++I)
+		for (const auto& pathAllowed : invector)
 		{
-			if (I->empty())
+			if (pathAllowed.empty())
 				continue;
-			if (I->at(I->size()-1)=='*')
+			if (pathAllowed.at(pathAllowed.size() - 1) == '*')
 			{
-				stdstring str = I->substr(0, I->size()-1);
+				stdstring str = pathAllowed.substr(0, pathAllowed.size() - 1);
 				if (_tcsnicmp(str.c_str(), path, str.size())==0)
 					return TRUE;
 				if (!str.empty() && (str.at(str.size()-1) == '\\') && (_tcsnicmp(str.c_str(), path, str.size()-1)==0))
 					return TRUE;
 			}
-			else if (_tcsicmp(I->c_str(), path)==0)
+			else if (_tcsicmp(pathAllowed.c_str(), path) == 0)
 				return TRUE;
-			else if ((I->at(I->size()-1) == '\\') &&
-				((_tcsnicmp(I->c_str(), path, I->size())==0) || (_tcsicmp(I->c_str(), path)==0)) )
+			else if ((pathAllowed.at(pathAllowed.size() - 1) == '\\') &&
+				((_tcsnicmp(pathAllowed.c_str(), path, pathAllowed.size()) == 0) || (_tcsicmp(pathAllowed.c_str(), path) == 0)))
 				return TRUE;
 
 		}
@@ -445,17 +445,17 @@ public:
 			return FALSE;
 
 		ExcludeListValid();
-		for (std::vector<stdstring>::iterator I = exvector.begin(); I != exvector.end(); ++I)
+		for (const auto& exPath : exvector)
 		{
-			if (I->empty())
+			if (exPath.empty())
 				continue;
-			if (I->size() && I->at(I->size()-1)=='*')
+			if (exPath.at(exPath.size() - 1) == '*')
 			{
-				stdstring str = I->substr(0, I->size()-1);
+				stdstring str = exPath.substr(0, exPath.size() - 1);
 				if (_tcsnicmp(str.c_str(), path, str.size())==0)
 					return FALSE;
 			}
-			else if (_tcsicmp(I->c_str(), path)==0)
+			else if (_tcsicmp(exPath.c_str(), path) == 0)
 				return FALSE;
 		}
 		return TRUE;

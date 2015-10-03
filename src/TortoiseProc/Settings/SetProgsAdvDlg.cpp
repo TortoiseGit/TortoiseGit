@@ -75,7 +75,7 @@ int CSetProgsAdvDlg::SaveData()
 		}
 
 		// Add or update new or changed values
-		for (TOOL_MAP::iterator it = m_Tools.begin(); it != m_Tools.end() ; ++it)
+		for (auto it = m_Tools.cbegin(); it != m_Tools.cend() ; ++it)
 		{
 			CString ext = it->first;
 			CString new_value = it->second;
@@ -106,7 +106,7 @@ void CSetProgsAdvDlg::DoDataExchange(CDataExchange* pDX)
 	else
 	{
 		m_ToolListCtrl.DeleteAllItems();
-		for (TOOL_MAP::iterator it = m_Tools.begin(); it != m_Tools.end() ; ++it)
+		for (auto it = m_Tools.cbegin(); it != m_Tools.cend() ; ++it)
 		{
 			CString ext = it->first;
 			CString value = it->second;

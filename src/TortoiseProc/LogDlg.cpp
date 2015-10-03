@@ -1791,9 +1791,9 @@ void CLogDlg::OnEnLinkMsgview(NMHDR *pNMHDR, LRESULT *pResult)
 		msg.Replace(_T("\r\n"), _T("\n"));
 		url = msg.Mid(pEnLink->chrg.cpMin, pEnLink->chrg.cpMax-pEnLink->chrg.cpMin);
 		auto findResult = m_LogList.m_ProjectProperties.FindBugIDPositions(msg);
-		if (std::find_if(findResult.begin(), findResult.end(), 
+		if (std::find_if(findResult.cbegin(), findResult.cend(), 
 			[=] (const CHARRANGE &cr) -> bool { return cr.cpMin == pEnLink->chrg.cpMin && cr.cpMax == pEnLink->chrg.cpMax; }
-		) != findResult.end())
+		) != findResult.cend())
 		{
 			url = m_LogList.m_ProjectProperties.GetBugIDUrl(url);
 			url = GetAbsoluteUrlFromRelativeUrl(url);

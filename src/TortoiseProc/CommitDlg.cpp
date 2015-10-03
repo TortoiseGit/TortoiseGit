@@ -1674,7 +1674,7 @@ void CCommitDlg::GetAutocompletionList()
 	sSnippetFile += _T("snippet.txt");
 	if (PathFileExists(sSnippetFile))
 		ParseSnippetFile(sSnippetFile, m_snippet);
-	for (auto snip : m_snippet)
+	for (const auto& snip : m_snippet)
 		m_autolist.insert(std::make_pair(snip.first, AUTOCOMPLETE_SNIPPET));
 
 	DWORD starttime = GetTickCount();
@@ -1792,7 +1792,7 @@ void CCommitDlg::ScanFile(const CString& sFilePath, const CString& sRegex, const
 			regexmap[sExt] = regCheck;
 		}
 		const std::tr1::wsregex_iterator end;
-		for (std::tr1::wsregex_iterator it(sFileContent.begin(), sFileContent.end(), regCheck); it != end; ++it)
+		for (std::tr1::wsregex_iterator it(sFileContent.cbegin(), sFileContent.cend(), regCheck); it != end; ++it)
 		{
 			const std::tr1::wsmatch match = *it;
 			for (size_t i = 1; i < match.size(); ++i)
@@ -2618,7 +2618,7 @@ void CCommitDlg::RestoreFiles(bool doNotAsk)
 {
 	if (!m_ListCtrl.m_restorepaths.empty() && (doNotAsk || CMessageBox::Show(m_hWnd, IDS_PROC_COMMIT_RESTOREFILES, IDS_APPNAME, 2, IDI_QUESTION, IDS_PROC_COMMIT_RESTOREFILES_RESTORE, IDS_PROC_COMMIT_RESTOREFILES_KEEP) == 1))
 	{
-		for (std::map<CString, CString>::iterator it = m_ListCtrl.m_restorepaths.begin(); it != m_ListCtrl.m_restorepaths.end(); ++it)
+		for (auto it = m_ListCtrl.m_restorepaths.cbegin(); it != m_ListCtrl.m_restorepaths.cend(); ++it)
 			CopyFile(it->second, g_Git.CombinePath(it->first), FALSE);
 		m_ListCtrl.m_restorepaths.clear();
 	}

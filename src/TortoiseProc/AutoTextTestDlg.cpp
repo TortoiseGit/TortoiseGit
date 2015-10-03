@@ -81,7 +81,7 @@ void CAutoTextTestDlg::OnBnClickedAutotextscan()
 			std::tr1::wregex regCheck;
 			regCheck = std::tr1::wregex(m_sRegex, std::tr1::regex_constants::icase | std::tr1::regex_constants::ECMAScript);
 			const std::tr1::wsregex_iterator end;
-			for (std::tr1::wsregex_iterator it(s.begin(), s.end(), regCheck); it != end; ++it)
+			for (std::tr1::wsregex_iterator it(s.cbegin(), s.cend(), regCheck); it != end; ++it)
 			{
 				const std::tr1::wsmatch match = *it;
 				for (size_t i=1; i<match.size(); ++i)
@@ -98,9 +98,9 @@ void CAutoTextTestDlg::OnBnClickedAutotextscan()
 				}
 			}
 			timer.Stop();
-			for (std::set<CString>::iterator it = autolist.begin(); it != autolist.end(); ++it)
+			for (const auto& append : autolist)
 			{
-				m_sResult += *it;
+				m_sResult += append;
 				m_sResult += _T("\r\n");
 			}
 			m_sTimingLabel.Format(_T("Parse time: %ld uSecs"), timer.GetMusecsTaken());

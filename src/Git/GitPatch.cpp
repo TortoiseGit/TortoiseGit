@@ -94,9 +94,9 @@ int GitPatch::Init(const CString& patchfile, const CString& targetpath, CSysProg
 		bool found = false;
 		for (m_nStrip = 0; m_nStrip < STRIP_LIMIT; ++m_nStrip)
 		{
-			for (std::vector<PathRejects>::iterator it = m_filePaths.begin(); it != m_filePaths.end(); ++it)
+			for (const auto& filepath : m_filePaths)
 			{
-				if (Strip(it->path).IsEmpty())
+				if (Strip(filepath.path).IsEmpty())
 				{
 					found = true;
 					m_nStrip--;
@@ -209,7 +209,7 @@ bool GitPatch::PatchFile(int nIndex, CString &datapath)
 	pr.props = false;
 	// only add this entry if it hasn't been added already
 	bool bExists = false;
-	for (auto it = m_filePaths.rbegin(); it != m_filePaths.rend(); ++it)
+	for (auto it = m_filePaths.crbegin(); it != m_filePaths.crend(); ++it)
 	{
 		if (it->path.Compare(pr.path) == 0)
 		{
@@ -255,17 +255,17 @@ bool GitPatch::PatchPath(const CString& path)
 
 int GitPatch::GetPatchResult(const CString& sPath, CString& sSavePath, CString& sRejectPath, CString &sBasePath) const
 {
-	for (std::vector<PathRejects>::const_iterator it = m_filePaths.begin(); it != m_filePaths.end(); ++it)
+	for (const auto filePath : m_filePaths)
 	{
-		if (Strip(it->path).CompareNoCase(sPath)==0)
+		if (Strip(filePath.path).CompareNoCase(sPath) == 0)
 		{
-			sSavePath = it->resultPath;
-			sBasePath = it->basePath;
-			if (it->rejects > 0)
-				sRejectPath = it->rejectsPath;
+			sSavePath = filePath.resultPath;
+			sBasePath = filePath.basePath;
+			if (filePath.rejects > 0)
+				sRejectPath = filePath.rejectsPath;
 			else
 				sRejectPath.Empty();
-			return it->rejects;
+			return filePath.rejects;
 		}
 	}
 	return -1;

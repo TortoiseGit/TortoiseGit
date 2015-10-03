@@ -1811,7 +1811,7 @@ int CGit::DeleteRemoteRefs(const CString& sRemote, const STRING_VECTOR& list)
 		callbacks.credentials = g_Git2CredCallback;
 		callbacks.certificate_check = g_Git2CheckCertificateCallback;
 		std::vector<CStringA> refspecs;
-		for (auto ref : list)
+		for (const auto& ref : list)
 			refspecs.push_back(CUnicodeUtils::GetUTF8(_T(":") + ref));
 
 		std::vector<char*> vc;
@@ -1825,7 +1825,7 @@ int CGit::DeleteRemoteRefs(const CString& sRemote, const STRING_VECTOR& list)
 	else
 	{
 		CMassiveGitTaskBase mgtPush(_T("push ") + sRemote, FALSE);
-		for (auto ref : list)
+		for (const auto& ref : list)
 		{
 			CString refspec = _T(":") + ref;
 			mgtPush.AddFile(refspec);
@@ -2126,8 +2126,8 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 
 	CString msysGitDir;
 	PathCanonicalize(CStrBuf(msysGitDir, MAX_PATH), CGit::ms_LastMsysGitDir + _T("\\..\\"));
-	static CString prefixes[] = { L"mingw64\\etc", L"mingw32\\etc", L"etc" };
-	static int prefixes_len[] = { 8, 8, 0 };
+	static const CString prefixes[] = { L"mingw64\\etc", L"mingw32\\etc", L"etc" };
+	static const int prefixes_len[] = { 8, 8, 0 };
 	for (int i = 0; i < _countof(prefixes); ++i)
 	{
 #ifndef _WIN64
@@ -2168,9 +2168,9 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 	// register filter only once
 	if (!git_filter_lookup("filter"))
 	{
-		static CString binDirPrefixes[] = { L"\\..\\usr\\bin", L"\\..\\bin", L"" };
+		static const CString binDirPrefixes[] = { L"\\..\\usr\\bin", L"\\..\\bin", L"" };
 		CString sh;
-		for (const CString& binDirPrefix : binDirPrefixes)
+		for (const auto& binDirPrefix : binDirPrefixes)
 		{
 			CString possibleShExe = CGit::ms_LastMsysGitDir + binDirPrefix + L"\\sh.exe";
 			if (PathFileExists(possibleShExe))

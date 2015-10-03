@@ -63,7 +63,7 @@ CStatusCacheEntry::CStatusCacheEntry(const git_wc_status2_t* pGitStatus, __int64
 		m_discardAtTime = GetTickCount()+cachetimeout;
 }
 
-bool CStatusCacheEntry::SaveToDisk(FILE * pFile)
+bool CStatusCacheEntry::SaveToDisk(FILE* pFile) const
 {
 #define WRITEVALUETOFILE(x) if (fwrite(&x, sizeof(x), 1, pFile)!=1) return false;
 #define WRITESTRINGTOFILE(x) if (x.IsEmpty()) {value=0;WRITEVALUETOFILE(value);}else{value=x.GetLength();WRITEVALUETOFILE(value);if (fwrite((LPCSTR)x, sizeof(char), value, pFile)!=value) return false;}

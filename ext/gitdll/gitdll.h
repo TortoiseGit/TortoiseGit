@@ -121,7 +121,7 @@ GITDLL_API int git_close_log(GIT_LOG handle);
  *  @param	hash	[in] hash
  *	@return		0	success
  */
-GITDLL_API int git_get_commit_from_hash(GIT_COMMIT *commit, GIT_HASH hash);
+GITDLL_API int git_get_commit_from_hash(GIT_COMMIT* commit, const GIT_HASH hash);
 GITDLL_API int git_parse_commit(GIT_COMMIT *commit);
 
 GITDLL_API int git_get_commit_first_parent(GIT_COMMIT *commit,GIT_COMMIT_LIST *list);

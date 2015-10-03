@@ -935,8 +935,8 @@ namespace {
 	{
 		if (!PathIsURLW(sText))
 			return false;
-		CString prefixes[] = { L"http://", L"https://", L"git://", L"ftp://", L"file://", L"mailto:" };
-		for (const CString& prefix : prefixes)
+		static const CString prefixes[] = { L"http://", L"https://", L"git://", L"ftp://", L"file://", L"mailto:" };
+		for (const auto& prefix : prefixes)
 		{
 			if (sText.Find(prefix) == 0 && sText.GetLength() != prefix.GetLength())
 				return true;
@@ -1117,13 +1117,13 @@ bool CAppUtils::SetupDiffScripts(bool force, const CString& type)
 			e->Delete();
 		}
 
-		for (std::set<CString>::const_iterator it = extensions.begin(); it != extensions.end(); ++it)
+		for (const auto& extension : extensions)
 		{
 			if (type.IsEmpty() || (type.Compare(_T("Diff")) == 0))
 			{
 				if (filename.Left(5).CompareNoCase(_T("diff-")) == 0)
 				{
-					CRegString diffreg = CRegString(_T("Software\\TortoiseGit\\DiffTools\\") + *it);
+					CRegString diffreg = CRegString(_T("Software\\TortoiseGit\\DiffTools\\") + extension);
 					CString diffregstring = diffreg;
 					if (force || (diffregstring.IsEmpty()) || (diffregstring.Find(filename) >= 0))
 						diffreg = _T("wscript.exe \"") + file + _T("\" %base %mine") + kind;
@@ -1133,7 +1133,7 @@ bool CAppUtils::SetupDiffScripts(bool force, const CString& type)
 			{
 				if (filename.Left(6).CompareNoCase(_T("merge-"))==0)
 				{
-					CRegString diffreg = CRegString(_T("Software\\TortoiseGit\\MergeTools\\") + *it);
+					CRegString diffreg = CRegString(_T("Software\\TortoiseGit\\MergeTools\\") + extension);
 					CString diffregstring = diffreg;
 					if (force || (diffregstring.IsEmpty()) || (diffregstring.Find(filename) >= 0))
 						diffreg = _T("wscript.exe \"") + file + _T("\" %merged %theirs %mine %base") + kind;
@@ -2575,12 +2575,9 @@ static bool DoFetch(const CString& url, const bool fetchAllRemotes, const bool l
 			STRING_VECTOR list;
 			g_Git.GetRemoteList(list);
 
-			STRING_VECTOR::const_iterator it = list.begin();
-			while (it != list.end())
+			for (const auto& remote : list)
 			{
-				CString remote(*it);
 				CAppUtils::LaunchPAgent(NULL, &remote);
-				++it;
 			}
 		}
 		else

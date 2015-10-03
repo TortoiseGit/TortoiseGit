@@ -115,8 +115,8 @@ void Lanes::setMerge(const CGitHashList& parents) {
 	t = NODE;
 
 	int rangeStart = activeLane, rangeEnd = activeLane;
-	CGitHashList::const_iterator it(parents.begin());
-	for (++it; it != parents.end(); ++it) { // skip first parent
+	CGitHashList::const_iterator it(parents.cbegin());
+	for (++it; it != parents.cend(); ++it) { // skip first parent
 
 		int idx = findNextSha(*it, 0);
 		if (idx != -1) {

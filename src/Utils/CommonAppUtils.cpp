@@ -317,9 +317,8 @@ void CCommonAppUtils::SetCharFormat(CWnd* window, DWORD mask , DWORD effects, co
 	format.dwEffects = effects;
 	format.crTextColor = effects;
 
-	for (std::vector<CHARRANGE>::const_iterator iter = positions.begin(), end = positions.end(); iter != end; ++iter)
+	for (const auto& range : positions)
 	{
-		CHARRANGE range = *iter;
 		window->SendMessage(EM_EXSETSEL, NULL, (LPARAM)&range);
 		window->SendMessage(EM_SETCHARFORMAT, SCF_SELECTION, (LPARAM)&format);
 	}

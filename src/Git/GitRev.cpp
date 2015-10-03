@@ -186,7 +186,7 @@ void GitRev::DbgPrint()
 	ATLTRACE(_T("\n"));
 }
 
-int GitRev::GetParentFromHash(CGitHash &hash)
+int GitRev::GetParentFromHash(const CGitHash& hash)
 {
 	CAutoLocker lock(g_Git.m_critGitDllSec);
 
@@ -215,7 +215,7 @@ int GitRev::GetParentFromHash(CGitHash &hash)
 	return 0;
 }
 
-int GitRev::GetCommitFromHash(CGitHash &hash)
+int GitRev::GetCommitFromHash(const CGitHash& hash)
 {
 	CAutoLocker lock(g_Git.m_critGitDllSec);
 
@@ -224,7 +224,7 @@ int GitRev::GetCommitFromHash(CGitHash &hash)
 	return GetCommitFromHash_withoutLock(hash);
 }
 
-int GitRev::GetCommitFromHash_withoutLock(CGitHash &hash)
+int GitRev::GetCommitFromHash_withoutLock(const CGitHash& hash)
 {
 	GIT_COMMIT commit;
 	try

@@ -29,8 +29,8 @@ CIconMenu::CIconMenu(void) : CMenu()
 
 CIconMenu::~CIconMenu(void)
 {
-	for (auto it = iconhandles.cbegin(); it != iconhandles.cend(); ++it)
-		DestroyIcon(it->second);
+	for (const auto& iconhandle : iconhandles)
+		DestroyIcon(iconhandle.second);
 }
 
 BOOL CIconMenu::CreateMenu()

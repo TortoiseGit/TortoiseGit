@@ -204,7 +204,7 @@ UINT CProgressDlg::RunCmdList(CWnd* pWnd, STRING_VECTOR& cmdlist, STRING_VECTOR&
 		cacheBlockList.push_back(std::unique_ptr<CBlockCacheForPath>(new CBlockCacheForPath(git->m_CurrentDir)));
 	else
 	{
-		for (auto dir : dirlist)
+		for (const auto& dir : dirlist)
 		{
 			CGit *pGit = new CGit;
 			pGit->m_CurrentDir = dir;
@@ -419,8 +419,8 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 
 				if (!m_PostCmdList.empty())
 				{
-					for (auto it = m_PostCmdList.cbegin(); it != m_PostCmdList.cend(); ++it)
-						m_ctrlPostCmd.AddEntry((*it).icon, (*it).label);
+					for (const auto& entry : m_PostCmdList)
+						m_ctrlPostCmd.AddEntry(entry.icon, entry.label);
 					GetDlgItem(IDC_PROGRESS_BUTTON1)->ShowWindow(SW_SHOW);
 				}
 			}
@@ -450,7 +450,7 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 
 			if(m_BufStart>1000)
 			{
-				m_Databuf.erase(m_Databuf.begin(), m_Databuf.begin()+m_BufStart);
+				m_Databuf.erase(m_Databuf.cbegin(), m_Databuf.cbegin() + m_BufStart);
 				m_BufStart =0;
 			}
 			m_Databuf.m_critSec.Unlock();

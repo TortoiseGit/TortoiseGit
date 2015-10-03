@@ -81,7 +81,7 @@ size_t UniqueQueue<T>::Push(const T &value)
 	{
 		// value is already in the queue: we don't allow duplicates
 		// so just move the existing value to the end of the queue
-		for (std::deque<UniqueQueueStruct>::iterator qIt = m_Queue.begin(); qIt != m_Queue.end(); ++qIt)
+		for (auto qIt = m_Queue.cbegin(); qIt != m_Queue.cend(); ++qIt)
 		{
 			if (qIt->priority == it->second)
 			{
@@ -110,9 +110,9 @@ size_t UniqueQueue<T>::Push(const T &value)
 			m_QueueTMap.clear();
 			m_Queue.clear();
 
-			for (std::map<T, size_t>::const_iterator tempIt = tempQueue.begin(); tempIt != tempQueue.end(); ++tempIt)
+			for (auto tempIt = tempQueue.cbegin(); tempIt != tempQueue.cend(); ++tempIt)
 			{
-				m_QueueTMap.insert(m_QueueTMap.end(), std::map<T, size_t>::value_type(tempIt->first, m_highestValue));
+				m_QueueTMap.insert(m_QueueTMap.cend(), std::map<T, size_t>::value_type(tempIt->first, m_highestValue));
 				UniqueQueueStruct s2;
 				s2.priority = m_highestValue++;
 				s2.value = tempIt->first;
@@ -146,7 +146,7 @@ size_t UniqueQueue<T>::erase(const T &value)
 	std::map<T, size_t>::iterator it = m_QueueTMap.find(value);
 	if (it != m_QueueTMap.end())
 	{
-		for (std::deque<UniqueQueueStruct>::iterator qIt = m_Queue.begin(); qIt != m_Queue.end(); ++qIt)
+		for (auto qIt = m_Queue.cbegin(); qIt != m_Queue.cend(); ++qIt)
 		{
 			if (qIt->priority == it->second)
 			{

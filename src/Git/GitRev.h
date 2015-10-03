@@ -123,8 +123,8 @@ public:
 	int GetCommitFromHash(git_repository* repo, const CGitHash& hash);
 	int GetCommit(git_repository* repo, const CString& Rev);
 
-	int GetParentFromHash(CGitHash &hash);
-	int GetCommitFromHash(CGitHash &hash);
+	int GetParentFromHash(const CGitHash& hash);
+	int GetCommitFromHash(const CGitHash& hash);
 	int GetCommit(const CString& rev);
 
 	CString GetLastErr() { return m_sErr; }
@@ -132,5 +132,5 @@ public:
 	void DbgPrint();
 
 private:
-	int GetCommitFromHash_withoutLock(CGitHash &hash);
+	int GetCommitFromHash_withoutLock(const CGitHash& hash);
 };

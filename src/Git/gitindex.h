@@ -104,7 +104,7 @@ public:
 		thePath.MakeLower();
 		CAutoLocker lock(m_critIndexSec);
 		std::vector<CString> toRemove;
-		for (auto it = this->begin(); it != this->end(); ++it)
+		for (auto it = this->cbegin(); it != this->cend(); ++it)
 		{
 			if ((*it).first.Find(thePath) == 0)
 				toRemove.push_back((*it).first);
@@ -240,7 +240,7 @@ public:
 		thePath.MakeLower();
 		CAutoLocker lock(m_critTreeSec);
 		std::vector<CString> toRemove;
-		for (auto it = this->begin(); it != this->end(); ++it)
+		for (auto it = this->cbegin(); it != this->cend(); ++it)
 		{
 			if ((*it).first.Find(thePath) == 0)
 				toRemove.push_back((*it).first);
@@ -271,7 +271,7 @@ public:
 	CString m_CaseFileName;
 };
 
-static bool SortCGitFileName(CGitFileName& item1, CGitFileName& item2)
+static bool SortCGitFileName(const CGitFileName& item1, const CGitFileName& item2)
 {
 	return item1.m_FileName.Compare(item2.m_FileName) < 0;
 }

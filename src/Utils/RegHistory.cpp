@@ -45,18 +45,18 @@ bool CRegHistory::AddEntry(LPCTSTR szText)
 	{
 		if (_tcscmp(szText, m_arEntries[i].c_str())==0)
 		{
-			m_arEntries.erase(m_arEntries.begin() + i);
-			m_arEntries.insert(m_arEntries.begin(), szText);
+			m_arEntries.erase(m_arEntries.cbegin() + i);
+			m_arEntries.insert(m_arEntries.cbegin(), szText);
 			return false;
 		}
 	}
-	m_arEntries.insert(m_arEntries.begin(), szText);
+	m_arEntries.insert(m_arEntries.cbegin(), szText);
 	return true;
 }
 
 void CRegHistory::RemoveEntry(int pos)
 {
-	m_arEntries.erase(m_arEntries.begin() + pos);
+	m_arEntries.erase(m_arEntries.cbegin() + pos);
 }
 
 size_t CRegHistory::Load(LPCTSTR lpszSection, LPCTSTR lpszKeyPrefix)

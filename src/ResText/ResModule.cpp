@@ -76,7 +76,7 @@ CResModule::~CResModule(void)
 
 BOOL CResModule::ExtractResources(std::vector<std::wstring> filelist, LPCTSTR lpszPOFilePath, BOOL bNoUpdate, LPCTSTR lpszHeaderFile)
 {
-	for (std::vector<std::wstring>::iterator I = filelist.begin(); I != filelist.end(); ++I)
+	for (auto I = filelist.cbegin(); I != filelist.cend(); ++I)
 	{
 		std::wstring filepath = *I;
 		m_currentHeaderDataDialogs.clear();
@@ -1878,7 +1878,7 @@ BOOL CResModule::ExtractRibbon(LPCTSTR lpszType)
 	const std::regex regRevMatch("<ID><NAME>([^<]+)</NAME><VALUE>([^<]+)</VALUE></ID><TEXT>([^<]+)</TEXT>");
 	std::string ss = std::string((const char*)p, sizeres);
 	const std::sregex_iterator end;
-	for (std::sregex_iterator it(ss.begin(), ss.end(), regRevMatch); it != end; ++it)
+	for (std::sregex_iterator it(ss.cbegin(), ss.cend(), regRevMatch); it != end; ++it)
 	{
 		size_t len;
 
@@ -1915,7 +1915,7 @@ BOOL CResModule::ExtractRibbon(LPCTSTR lpszType)
 	// extract all </ELEMENT_NAME><NAME>blahblah</NAME> elements
 
 	const std::regex regRevMatchName("</ELEMENT_NAME><NAME>([^<]+)</NAME>");
-	for (std::sregex_iterator it(ss.begin(), ss.end(), regRevMatchName); it != end; ++it)
+	for (std::sregex_iterator it(ss.cbegin(), ss.cend(), regRevMatchName); it != end; ++it)
 	{
 		std::string str = (*it)[1];
 		size_t len = str.size();
@@ -1967,7 +1967,7 @@ BOOL CResModule::ReplaceRibbon(LPCTSTR lpszType, WORD wLanguage)
 
 	const std::regex regRevMatch("<TEXT>([^<]+)</TEXT>");
 	const std::sregex_iterator end;
-	for (std::sregex_iterator it(ss.begin(), ss.end(), regRevMatch); it != end; ++it)
+	for (std::sregex_iterator it(ss.cbegin(), ss.cend(), regRevMatch); it != end; ++it)
 	{
 		std::string str = (*it)[1];
 		size_t slen = str.size();
@@ -1995,7 +1995,7 @@ BOOL CResModule::ReplaceRibbon(LPCTSTR lpszType, WORD wLanguage)
 	}
 
 	const std::regex regRevMatchName("</ELEMENT_NAME><NAME>([^<]+)</NAME>");
-	for (std::sregex_iterator it(ss.begin(), ss.end(), regRevMatchName); it != end; ++it)
+	for (std::sregex_iterator it(ss.cbegin(), ss.cend(), regRevMatchName); it != end; ++it)
 	{
 		std::string str = (*it)[1];
 		size_t slen = str.size();

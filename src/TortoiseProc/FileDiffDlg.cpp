@@ -1201,9 +1201,9 @@ void CFileDiffDlg::Filter(CString sFilterText)
 			m_arFilteredList.push_back((CTGitPath*)&(m_arFileList[i]));
 		}
 	}
-	for (std::vector<CTGitPath*>::const_iterator it = m_arFilteredList.begin(); it != m_arFilteredList.end(); ++it)
+	for (const auto path : m_arFilteredList)
 	{
-		AddEntry(*it);
+		AddEntry(path);
 	}
 }
 

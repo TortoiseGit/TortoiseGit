@@ -245,12 +245,12 @@ std::vector<CHARRANGE> ProjectProperties::FindBugIDPositions(const CString& msg)
 				AutoUpdateRegex();
 				const std::tr1::wsregex_iterator end;
 				std::wstring s = msg;
-				for (std::tr1::wsregex_iterator it(s.begin(), s.end(), regCheck); it != end; ++it)
+				for (std::tr1::wsregex_iterator it(s.cbegin(), s.cend(), regCheck); it != end; ++it)
 				{
 					// (*it)[0] is the matched string
 					std::wstring matchedString = (*it)[0];
 					ptrdiff_t matchpos = it->position(0);
-					for (std::tr1::wsregex_iterator it2(matchedString.begin(), matchedString.end(), regBugID); it2 != end; ++it2)
+					for (std::tr1::wsregex_iterator it2(matchedString.cbegin(), matchedString.cend(), regBugID); it2 != end; ++it2)
 					{
 						ATLTRACE(_T("matched id : %s\n"), (*it2)[0].str().c_str());
 						ptrdiff_t matchposID = it2->position(0);
@@ -268,7 +268,7 @@ std::vector<CHARRANGE> ProjectProperties::FindBugIDPositions(const CString& msg)
 				AutoUpdateRegex();
 				const std::tr1::wsregex_iterator end;
 				std::wstring s = msg;
-				for (std::tr1::wsregex_iterator it(s.begin(), s.end(), regCheck); it != end; ++it)
+				for (std::tr1::wsregex_iterator it(s.cbegin(), s.cend(), regCheck); it != end; ++it)
 				{
 					const std::tr1::wsmatch match = *it;
 					// we define group 1 as the whole issue text and
@@ -276,7 +276,7 @@ std::vector<CHARRANGE> ProjectProperties::FindBugIDPositions(const CString& msg)
 					if (match.size() >= 2)
 					{
 						ATLTRACE(_T("matched id : %s\n"), std::wstring(match[1]).c_str());
-						CHARRANGE range = {(LONG)(match[1].first-s.begin()), (LONG)(match[1].second-s.begin())};
+						CHARRANGE range = {(LONG)(match[1].first - s.cbegin()), (LONG)(match[1].second - s.cbegin())};
 						result.push_back(range);
 					}
 				}
@@ -365,9 +365,9 @@ std::set<CString> ProjectProperties::FindBugIDs (const CString& msg)
 	std::vector<CHARRANGE> positions = FindBugIDPositions(msg);
 	std::set<CString> bugIDs;
 
-	for (std::vector<CHARRANGE>::iterator iter = positions.begin(), end = positions.end(); iter != end; ++iter)
+	for (const auto& pos : positions)
 	{
-		bugIDs.insert(msg.Mid(iter->cpMin, iter->cpMax - iter->cpMin));
+		bugIDs.insert(msg.Mid(pos.cpMin, pos.cpMax - pos.cpMin));
 	}
 
 	return bugIDs;
@@ -380,14 +380,14 @@ CString ProjectProperties::FindBugID(const CString& msg)
 	{
 		std::vector<CHARRANGE> positions = FindBugIDPositions(msg);
 		std::set<CString, num_compare> bugIDs;
-		for (std::vector<CHARRANGE>::iterator iter = positions.begin(), end = positions.end(); iter != end; ++iter)
+		for (const auto& pos : positions)
 		{
-			bugIDs.insert(msg.Mid(iter->cpMin, iter->cpMax - iter->cpMin));
+			bugIDs.insert(msg.Mid(pos.cpMin, pos.cpMax - pos.cpMin));
 		}
 
-		for (std::set<CString, num_compare>::iterator it = bugIDs.begin(); it != bugIDs.end(); ++it)
+		for (const auto& id : bugIDs)
 		{
-			sRet += *it;
+			sRet += id;
 			sRet += _T(" ");
 		}
 		sRet.Trim();

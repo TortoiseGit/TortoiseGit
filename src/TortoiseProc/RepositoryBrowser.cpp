@@ -566,7 +566,7 @@ void CRepositoryBrowser::FillListCtrlForTreeNode(HTREEITEM treeNode)
 
 void CRepositoryBrowser::FillListCtrlForShadowTree(CShadowFilesTree* pTree)
 {
-	for (TShadowFilesTreeMap::iterator itShadowTree = pTree->m_ShadowTree.begin(); itShadowTree != pTree->m_ShadowTree.end(); ++itShadowTree)
+	for (auto itShadowTree = pTree->m_ShadowTree.cbegin(); itShadowTree != pTree->m_ShadowTree.cend(); ++itShadowTree)
 	{
 		int icon = m_nIconFolder;
 		if (!(*itShadowTree).second.m_bFolder && !(*itShadowTree).second.m_bSubmodule)
@@ -637,7 +637,7 @@ void CRepositoryBrowser::UpdateInfoLabel()
 			if (pTree != nullptr)
 			{
 				size_t files = 0, submodules = 0;
-				for (TShadowFilesTreeMap::iterator itShadowTree = pTree->m_ShadowTree.begin(); itShadowTree != pTree->m_ShadowTree.end(); ++itShadowTree)
+				for (auto itShadowTree = pTree->m_ShadowTree.cbegin(); itShadowTree != pTree->m_ShadowTree.cend(); ++itShadowTree)
 				{
 					if (!(*itShadowTree).second.m_bFolder && !(*itShadowTree).second.m_bSubmodule)
 						++files;
@@ -847,7 +847,7 @@ void CRepositoryBrowser::ShowContextMenu(CPoint point, TShadowFilesTreeList &sel
 	case eCmd_Revert:
 		{
 			int count = 0;
-			for (TShadowFilesTreeList::iterator itShadowTree = selectedLeafs.begin(); itShadowTree != selectedLeafs.end(); ++itShadowTree)
+			for (auto itShadowTree = selectedLeafs.cbegin(); itShadowTree != selectedLeafs.cend(); ++itShadowTree)
 			{
 				if (RevertItemToVersion((*itShadowTree)->GetFullName()))
 					++count;
@@ -865,7 +865,7 @@ void CRepositoryBrowser::ShowContextMenu(CPoint point, TShadowFilesTreeList &sel
 	case eCmd_CopyPath:
 		{
 			CString sClipboard;
-			for (TShadowFilesTreeList::iterator itShadowTree = selectedLeafs.begin(); itShadowTree != selectedLeafs.end(); ++itShadowTree)
+			for (auto itShadowTree = selectedLeafs.cbegin(); itShadowTree != selectedLeafs.cend(); ++itShadowTree)
 			{
 				sClipboard += (*itShadowTree)->m_sName + _T("\r\n");
 			}

@@ -699,7 +699,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				CRebaseDlg dlg;
 				auto refList = m_HashMap[pSelLogEntry->m_CommitHash];
 				dlg.m_Upstream = refList.empty() ? pSelLogEntry->m_CommitHash.ToString() : refList.front();
-				for (auto ref : refList)
+				for (const auto& ref : refList)
 				{
 					if (ref.Left(11) == _T("refs/heads/"))
 					{
@@ -759,7 +759,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 					refsToDelete.push_back(ref);
 				}
 
-				for (auto revIt = refsToDelete.rbegin(); revIt != refsToDelete.rend(); ++revIt)
+				for (auto revIt = refsToDelete.crbegin(); revIt != refsToDelete.crend(); ++revIt)
 				{
 					CString ref = *revIt;
 					CString sCmd, out;

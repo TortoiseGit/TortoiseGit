@@ -63,7 +63,7 @@ public:
 
 	void Init();
 
-	int AddEntry(git_repository* repo, CString ref, CGitHash *oldHash, CGitHash *newHash);
+	int AddEntry(git_repository* repo, const CString& ref, const CGitHash* oldHash, const CGitHash* newHash);
 	void Show();
 	void Clear();
 

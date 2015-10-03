@@ -1423,7 +1423,7 @@ const CTGitPath& CTGitPathList::operator[](INT_PTR index) const
 bool CTGitPathList::AreAllPathsFiles() const
 {
 	// Look through the vector for any directories - if we find them, return false
-	return std::find_if(m_paths.begin(), m_paths.end(), std::mem_fun_ref(&CTGitPath::IsDirectory)) == m_paths.end();
+	return std::find_if(m_paths.cbegin(), m_paths.cend(), std::mem_fun_ref(&CTGitPath::IsDirectory)) == m_paths.end();
 }
 
 
@@ -1465,10 +1465,9 @@ bool CTGitPathList::WriteToFile(const CString& sFilename, bool bANSI /* = false 
 		if (bANSI)
 		{
 			CStdioFile file(sFilename, CFile::typeText | CFile::modeReadWrite | CFile::modeCreate);
-			PathVector::const_iterator it;
-			for(it = m_paths.begin(); it != m_paths.end(); ++it)
+			for (const auto& path : m_paths)
 			{
-				CStringA line = CStringA(it->GetGitPathString()) + '\n';
+				CStringA line = CStringA(path.GetGitPathString()) + '\n';
 				file.Write(line, line.GetLength());
 			}
 			file.Close();
@@ -1476,10 +1475,9 @@ bool CTGitPathList::WriteToFile(const CString& sFilename, bool bANSI /* = false 
 		else
 		{
 			CStdioFile file(sFilename, CFile::typeBinary | CFile::modeReadWrite | CFile::modeCreate);
-			PathVector::const_iterator it;
-			for(it = m_paths.begin(); it != m_paths.end(); ++it)
+			for (const auto& path : m_paths)
 			{
-				file.WriteString(it->GetGitPathString()+_T("\n"));
+				file.WriteString(path.GetGitPathString() + _T("\n"));
 			}
 			file.Close();
 		}
@@ -1512,12 +1510,11 @@ void CTGitPathList::LoadFromAsteriskSeparatedString(const CString& sPathString)
 CString CTGitPathList::CreateAsteriskSeparatedString() const
 {
 	CString sRet;
-	PathVector::const_iterator it;
-	for(it = m_paths.begin(); it != m_paths.end(); ++it)
+	for (const auto& path : m_paths)
 	{
 		if (!sRet.IsEmpty())
 			sRet += _T("*");
-		sRet += it->GetWinPathString();
+		sRet += path.GetWinPathString();
 	}
 	return sRet;
 }
@@ -1527,15 +1524,14 @@ bool
 CTGitPathList::AreAllPathsFilesInOneDirectory() const
 {
 	// Check if all the paths are files and in the same directory
-	PathVector::const_iterator it;
 	m_commonBaseDirectory.Reset();
-	for(it = m_paths.begin(); it != m_paths.end(); ++it)
+	for (const auto& path : m_paths)
 	{
-		if(it->IsDirectory())
+		if (path.IsDirectory())
 		{
 			return false;
 		}
-		const CTGitPath& baseDirectory = it->GetDirectory();
+		const CTGitPath& baseDirectory = path.GetDirectory();
 		if(m_commonBaseDirectory.IsEmpty())
 		{
 			m_commonBaseDirectory = baseDirectory;
@@ -1554,10 +1550,9 @@ CTGitPath CTGitPathList::GetCommonDirectory() const
 {
 	if (m_commonBaseDirectory.IsEmpty())
 	{
-		PathVector::const_iterator it;
-		for(it = m_paths.begin(); it != m_paths.end(); ++it)
+		for (const auto& path : m_paths)
 		{
-			const CTGitPath& baseDirectory = it->GetDirectory();
+			const CTGitPath& baseDirectory = path.GetDirectory();
 			if(m_commonBaseDirectory.IsEmpty())
 			{
 				m_commonBaseDirectory = baseDirectory;
@@ -1572,10 +1567,9 @@ CTGitPath CTGitPathList::GetCommonDirectory() const
 	}
 	// since we only checked strings, not paths,
 	// we have to make sure now that we really return a *path* here
-	PathVector::const_iterator iter;
-	for(iter = m_paths.begin(); iter != m_paths.end(); ++iter)
+	for (const auto& path : m_paths)
 	{
-		if (!m_commonBaseDirectory.IsAncestorOf(*iter))
+		if (!m_commonBaseDirectory.IsAncestorOf(path))
 		{
 			m_commonBaseDirectory = m_commonBaseDirectory.GetContainingDirectory();
 			break;
@@ -1598,7 +1592,7 @@ CTGitPath CTGitPathList::GetCommonRoot() const
 	int rootLength = root.GetLength();
 
 	// determine common path string prefix
-	for (PathVector::const_iterator it = m_paths.begin() + 1; it != m_paths.end(); ++it)
+	for (auto it = m_paths.cbegin() + 1; it != m_paths.cend(); ++it)
 	{
 		CString path = it->GetWinPathString() + _T('\\');
 
@@ -1633,7 +1627,7 @@ void CTGitPathList::DeleteAllFiles(bool bTrash, bool bFilesOnly, bool bShowError
 	SortByPathname(true); // nested ones first
 
 	CString sPaths;
-	for (it = m_paths.begin(); it != m_paths.end(); ++it)
+	for (it = m_paths.cbegin(); it != m_paths.cend(); ++it)
 	{
 		if ((it->Exists()) && ((it->IsDirectory() != bFilesOnly) || !bFilesOnly))
 		{

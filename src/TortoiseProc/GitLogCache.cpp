@@ -86,13 +86,13 @@ CLogCache::~CLogCache()
 	CloseDataHandles();
 }
 
-GitRevLoglist* CLogCache::GetCacheData(CGitHash& hash)
+GitRevLoglist* CLogCache::GetCacheData(const CGitHash& hash)
 {
 	m_HashMap[hash].m_CommitHash=hash;
 	return &m_HashMap[hash];
 }
 
-ULONGLONG CLogCache::GetOffset(CGitHash &hash,SLogCacheIndexFile *pData)
+ULONGLONG CLogCache::GetOffset(const CGitHash& hash, SLogCacheIndexFile* pData)
 {
 
 	if(pData==NULL)
@@ -223,7 +223,7 @@ int CLogCache::FetchCacheIndex(CString GitDir)
 
 }
 
-int CLogCache::SaveOneItem(GitRevLoglist& Rev, LONG offset)
+int CLogCache::SaveOneItem(const GitRevLoglist& Rev, LONG offset)
 {
 	if(!Rev.m_IsDiffFiles)
 		return -1;
@@ -463,7 +463,7 @@ int CLogCache::SaveCache()
 		SetFilePointer(m_DataFile,0,0,2);
 		SetFilePointer(m_IndexFile,0,0,2);
 
-		for (auto i = m_HashMap.begin(); i != m_HashMap.end(); ++i)
+		for (auto i = m_HashMap.cbegin(); i != m_HashMap.cend(); ++i)
 		{
 			if(this->GetOffset((*i).second.m_CommitHash,pIndex) ==0 || bIsRebuild)
 			{

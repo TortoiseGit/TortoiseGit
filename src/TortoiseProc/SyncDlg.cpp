@@ -425,7 +425,7 @@ void CSyncDlg::FetchComplete()
 	{
 		STRING_VECTOR remotes;
 		g_Git.GetRemoteList(remotes);
-		if (std::find(remotes.begin(), remotes.end(), remote) == remotes.end())
+		if (std::find(remotes.cbegin(), remotes.cend(), remote) == remotes.cend())
 			remote.Empty();
 	}
 	m_ctrlRemoteBranch.GetWindowText(remotebranch);
@@ -1309,7 +1309,7 @@ LRESULT CSyncDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 
 		if (m_BufStart > 1000)
 		{
-			m_Databuf.erase(m_Databuf.begin(), m_Databuf.begin() + m_BufStart);
+			m_Databuf.erase(m_Databuf.cbegin(), m_Databuf.cbegin() + m_BufStart);
 			m_BufStart = 0;
 		}
 		m_Databuf.m_critSec.Unlock();
@@ -1321,9 +1321,9 @@ LRESULT CSyncDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 static std::map<CString, CGitHash> * HashMapToRefMap(MAP_HASH_NAME &map)
 {
 	auto rmap = new std::map<CString, CGitHash>();
-	for (auto mit = map.begin(); mit != map.end(); ++mit)
+	for (auto mit = map.cbegin(); mit != map.cend(); ++mit)
 	{
-		for (auto rit = mit->second.begin(); rit != mit->second.end(); ++rit)
+		for (auto rit = mit->second.cbegin(); rit != mit->second.cend(); ++rit)
 		{
 			rmap->insert(std::make_pair(*rit, mit->first));
 		}
@@ -1354,10 +1354,10 @@ void CSyncDlg::FillNewRefMap()
 
 	auto oldRefMap = HashMapToRefMap(m_oldHashMap);
 	auto newRefMap = HashMapToRefMap(m_newHashMap);
-	for (auto oit = oldRefMap->begin(); oit != oldRefMap->end(); ++oit)
+	for (auto oit = oldRefMap->cbegin(); oit != oldRefMap->cend(); ++oit)
 	{
 		bool found = false;
-		for (auto nit = newRefMap->begin(); nit != newRefMap->end(); ++nit)
+		for (auto nit = newRefMap->cbegin(); nit != newRefMap->cend(); ++nit)
 		{
 			// changed ref
 			if (oit->first == nit->first)
@@ -1373,10 +1373,10 @@ void CSyncDlg::FillNewRefMap()
 			m_refList.AddEntry(repo, oit->first, &oit->second, nullptr);
 		}
 	}
-	for (auto nit = newRefMap->begin(); nit != newRefMap->end(); ++nit)
+	for (auto nit = newRefMap->cbegin(); nit != newRefMap->cend(); ++nit)
 	{
 		bool found = false;
-		for (auto oit = oldRefMap->begin(); oit != oldRefMap->end(); ++oit)
+		for (auto oit = oldRefMap->cbegin(); oit != oldRefMap->cend(); ++oit)
 		{
 			if (oit->first == nit->first)
 			{

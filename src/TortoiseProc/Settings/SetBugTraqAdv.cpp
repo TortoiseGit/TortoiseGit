@@ -70,7 +70,7 @@ BOOL CSetBugTraqAdv::OnInitDialog()
 		return TRUE;
 	}
 
-	for (std::vector<CBugTraqProvider>::const_iterator it = providers.begin(); it != providers.end(); ++it)
+	for (auto it = providers.cbegin(); it != providers.cend(); ++it)
 	{
 		int index = m_cProviderCombo.AddString(it->name);
 		m_cProviderCombo.SetItemDataPtr(index, new CBugTraqProvider(*it));

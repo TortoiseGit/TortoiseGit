@@ -172,7 +172,7 @@ bool CGitStatusCache::SaveCache()
 			WRITEVALUETOFILE(value);
 			value = (int)m_pInstance->m_directoryCache.size();
 			WRITEVALUETOFILE(value);
-			for (CCachedDirectory::CachedDirMap::iterator I = m_pInstance->m_directoryCache.begin(); I != m_pInstance->m_directoryCache.end(); ++I)
+			for (auto I = m_pInstance->m_directoryCache.cbegin(); I != m_pInstance->m_directoryCache.cend(); ++I)
 			{
 				if (I->second == NULL)
 				{
@@ -285,16 +285,16 @@ void CGitStatusCache::Refresh()
 //	m_pInstance->m_svnHelp.ReloadConfig();
 	if (!m_pInstance->m_directoryCache.empty())
 	{
-		CCachedDirectory::CachedDirMap::iterator I = m_pInstance->m_directoryCache.begin();
-		for (/* no init */; I != m_pInstance->m_directoryCache.end(); ++I)
+		auto I = m_pInstance->m_directoryCache.cbegin();
+		for (/* no init */; I != m_pInstance->m_directoryCache.cend(); ++I)
 		{
 			if (m_shellCache.IsPathAllowed(I->first.GetWinPath()))
 				I->second->RefreshMostImportant();
 			else
 			{
 				CGitStatusCache::Instance().RemoveCacheForPath(I->first);
-				I = m_pInstance->m_directoryCache.begin();
-				if (I == m_pInstance->m_directoryCache.end())
+				I = m_pInstance->m_directoryCache.cbegin();
+				if (I == m_pInstance->m_directoryCache.cend())
 					break;
 			}
 		}
@@ -304,7 +304,7 @@ void CGitStatusCache::Refresh()
 bool CGitStatusCache::IsPathGood(const CTGitPath& path)
 {
 	AutoLocker lock(m_NoWatchPathCritSec);
-	for (std::map<CTGitPath, DWORD>::const_iterator it = m_NoWatchPaths.begin(); it != m_NoWatchPaths.end(); ++it)
+	for (auto it = m_NoWatchPaths.cbegin(); it != m_NoWatchPaths.cend(); ++it)
 	{
 		// the ticks check is necessary here, because RemoveTimedoutBlocks is only called within the FolderCrawler loop
 		// and we might miss update calls
@@ -356,7 +356,7 @@ bool CGitStatusCache::RemoveTimedoutBlocks()
 	DWORD currentTicks = GetTickCount();
 	AutoLocker lock(m_NoWatchPathCritSec);
 	std::vector<CTGitPath> toRemove;
-	for (std::map<CTGitPath, DWORD>::const_iterator it = m_NoWatchPaths.begin(); it != m_NoWatchPaths.end(); ++it)
+	for (auto it = m_NoWatchPaths.cbegin(); it != m_NoWatchPaths.cend(); ++it)
 	{
 		if (currentTicks > it->second)
 		{
@@ -365,7 +365,7 @@ bool CGitStatusCache::RemoveTimedoutBlocks()
 	}
 	if (!toRemove.empty())
 	{
-		for (std::vector<CTGitPath>::const_iterator it = toRemove.begin(); it != toRemove.end(); ++it)
+		for (auto it = toRemove.cbegin(); it != toRemove.cend(); ++it)
 		{
 			ret = ret || UnBlockPath(*it);
 		}

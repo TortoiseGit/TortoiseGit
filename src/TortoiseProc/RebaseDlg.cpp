@@ -922,7 +922,7 @@ static bool IsLocalBranch(CString ref)
 {
 	STRING_VECTOR list;
 	g_Git.GetBranchList(list, nullptr, CGit::BRANCH_LOCAL);
-	return std::find(list.begin(), list.end(), ref) != list.end();
+	return std::find(list.cbegin(), list.cend(), ref) != list.cend();
 }
 
 int CRebaseDlg::FinishRebase()

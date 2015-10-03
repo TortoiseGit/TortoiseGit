@@ -214,7 +214,7 @@ int git_parse_commit(GIT_COMMIT *commit)
 	return 0;
 }
 
-int git_get_commit_from_hash(GIT_COMMIT *commit, GIT_HASH hash)
+int git_get_commit_from_hash(GIT_COMMIT* commit, const GIT_HASH hash)
 {
 	int ret = 0;
 

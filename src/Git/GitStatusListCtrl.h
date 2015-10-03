@@ -319,8 +319,7 @@ public:
 
 				popup.AppendMenu(MF_SEPARATOR);
 
-				typedef std::map<CString, int>::const_iterator CIT;
-				for ( CIT iter = sortedProps.begin(), end = sortedProps.end()
+				for (auto iter = sortedProps.cbegin(), end = sortedProps.cend()
 					; iter != end
 					; ++iter)
 				{

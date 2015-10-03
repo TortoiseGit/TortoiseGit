@@ -169,7 +169,7 @@ std::string CProfilingInfo::GetReport() const
               , "line", "name", "file");
     result += lineBuffer;
 
-    for ( TRecords::const_iterator iter = records.begin(), end = records.end()
+    for (auto iter = records.cbegin(), end = records.cend()
         ; iter != end
         ; ++iter)
     {

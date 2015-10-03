@@ -157,7 +157,7 @@ protected:
 		return TRUE;
 	}
 
-	int SaveOneItem(GitRevLoglist& Rev, LONG offset);
+	int SaveOneItem(const GitRevLoglist& Rev, LONG offset);
 
 	CString m_GitDir;
 	int RebuildCacheFile();
@@ -167,11 +167,11 @@ public:
 	~CLogCache();
 	int FetchCacheIndex(CString GitDir);
 	int LoadOneItem(GitRevLoglist& Rev, ULONGLONG offset);
-	ULONGLONG GetOffset(CGitHash &hash, SLogCacheIndexFile *pData =NULL);
+	ULONGLONG GetOffset(const CGitHash& hash, SLogCacheIndexFile* pData = nullptr);
 
 	CGitHashMap m_HashMap;
 
-	GitRevLoglist* GetCacheData(CGitHash& hash);
+	GitRevLoglist* GetCacheData(const CGitHash& hash);
 	int SaveCache();
 
 	int ClearAllParent();

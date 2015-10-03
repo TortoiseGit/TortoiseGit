@@ -240,7 +240,7 @@ bool CSettingGitRemote::IsRemoteCollideWithRefspec(CString remote)
 	CheckRefspecStruct crs = { CUnicodeUtils::GetUTF8(remote), false };
 	CAutoConfig config(true);
 	git_config_add_file_ondisk(config, CGit::GetGitPathStringA(g_Git.GetGitLocalConfig()), GIT_CONFIG_LEVEL_LOCAL, FALSE);
-	char *patterns[] = { "remote\\..*\\.fetch", "svn-remote\\..*\\.fetch", "svn-remote\\..*\\.branches", "svn-remote\\..*\\.tags" };
+	static const char* patterns[] = { "remote\\..*\\.fetch", "svn-remote\\..*\\.fetch", "svn-remote\\..*\\.branches", "svn-remote\\..*\\.tags" };
 	for (auto pattern : patterns)
 	{
 		git_config_foreach_match(config, pattern, CheckRemoteCollideWithRefspec, &crs);

@@ -459,7 +459,7 @@ void CCheckForUpdatesDlg::FillDownloads(CAutoConfig& versioncheck, const CString
 			sLang2 += _T(")");
 		}
 
-		bool installed = std::find(languagePacks->installedLangs.begin(), languagePacks->installedLangs.end(), loc) != languagePacks->installedLangs.end();
+		bool installed = std::find(languagePacks->installedLangs.cbegin(), languagePacks->installedLangs.cend(), loc) != languagePacks->installedLangs.cend();
 		LangPack pack = { sLang, sLang2, loc, langs.Mid(5), installed };
 		languagePacks->availableLangs.push_back(pack);
 
@@ -473,7 +473,7 @@ void CCheckForUpdatesDlg::FillDownloads(CAutoConfig& versioncheck, const CString
 	versioncheck.GetString(_T("tortoisegit.languagepackfilename"), filenamePattern);
 	if (filenamePattern.IsEmpty())
 		filenamePattern = _T("TortoiseGit-LanguagePack-%1!s!-%2!s!bit-%3!s!.msi");
-	for (auto langs : languagePacks.availableLangs)
+	for (const auto& langs : languagePacks.availableLangs)
 	{
 		int pos = m_ctrlFiles.InsertItem(m_ctrlFiles.GetItemCount(), langs.m_PackName);
 		m_ctrlFiles.SetItemText(pos, 1, langs.m_LangName);
@@ -863,8 +863,8 @@ CString CCheckForUpdatesDlg::GetWinINetError(DWORD err)
 	CString readableError = CFormatMessageWrapper(err);
 	if (readableError.IsEmpty())
 	{
-		CString modules[] = { _T("wininet.dll"), _T("urlmon.dll") };
-		for (auto module : modules)
+		static const CString modules[] = { _T("wininet.dll"), _T("urlmon.dll") };
+		for (const auto& module : modules)
 		{
 			LPTSTR buffer;
 			FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_IGNORE_INSERTS | FORMAT_MESSAGE_FROM_HMODULE, GetModuleHandle(module), err, 0, (LPTSTR)&buffer, 0, NULL);

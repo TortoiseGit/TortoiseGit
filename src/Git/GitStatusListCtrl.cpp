@@ -551,7 +551,7 @@ BOOL CGitStatusListCtrl::GetStatus ( const CTGitPathList* pathList
 				if (m_arStatusArray[i]->GetPath().IsEquivalentTo(m_ConflictFileList[cind]))
 				{
 					delete m_arStatusArray[i];
-					m_arStatusArray.erase(m_arStatusArray.begin()+i);
+					m_arStatusArray.erase(m_arStatusArray.cbegin() + i);
 					break;
 				}
 			}
@@ -1981,7 +1981,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 							// find the changelist names
 							bool bNeedSeparator = true;
 							int cmdID = IDSVNLC_MOVETOCS;
-							for (std::map<CString, int>::const_iterator it = m_changelists.begin(); it != m_changelists.end(); ++it)
+							for (auto it = m_changelists.cbegin(); it != m_changelists.cend(); ++it)
 							{
 								if ((entry->changelist.Compare(it->first))&&(it->first.Compare(SVNSLC_IGNORECHANGELIST)))
 								{
@@ -2600,7 +2600,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					CString sChangelist;
 					int cmdID = IDSVNLC_MOVETOCS;
 					SetRedraw(FALSE);
-					for (std::map<CString, int>::const_iterator it = m_changelists.begin(); it != m_changelists.end(); ++it)
+					for (auto it = m_changelists.cbegin(); it != m_changelists.cend(); ++it)
 					{
 						if ((it->first.Compare(SVNSLC_IGNORECHANGELIST))&&(entry->changelist.Compare(it->first)))
 						{
@@ -3276,7 +3276,7 @@ void CGitStatusListCtrl::RemoveListEntry(int index)
 	Locker lock(m_critSec);
 	DeleteItem(index);
 
-	m_arStatusArray.erase(m_arStatusArray.begin()+index);
+	m_arStatusArray.erase(m_arStatusArray.cbegin() + index);
 
 #if 0
 	delete m_arStatusArray[m_arListArray[index]];
@@ -3903,7 +3903,7 @@ bool CGitStatusListCtrl::PrepareGroups(bool bForce /* = false */)
 	grp.uAlign = LVGA_HEADER_LEFT;
 	InsertGroup(groupindex++, &grp);
 
-	for (std::map<CString,int>::iterator it = m_changelists.begin(); it != m_changelists.end(); ++it)
+	for (auto it = m_changelists.cbegin(); it != m_changelists.cend(); ++it)
 	{
 		if (it->first.Compare(SVNSLC_IGNORECHANGELIST)!=0)
 		{
@@ -4389,7 +4389,7 @@ int CGitStatusListCtrl::RevertSelectedItemToVersion(bool parent)
 	}
 
 	out.Empty();
-	for (auto it = versionMap.begin(); it != versionMap.end(); ++it)
+	for (auto it = versionMap.cbegin(); it != versionMap.cend(); ++it)
 	{
 		CString versionEntry;
 		versionEntry.Format(IDS_STATUSLIST_FILESREVERTED, it->second, (LPCTSTR)it->first);

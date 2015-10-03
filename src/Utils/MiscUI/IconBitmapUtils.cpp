@@ -42,11 +42,8 @@ IconBitmapUtils::IconBitmapUtils()
 
 IconBitmapUtils::~IconBitmapUtils()
 {
-    std::map<UINT, HBITMAP>::iterator it;
-    for (it = bitmaps.begin(); it != bitmaps.end(); ++it)
-    {
-        ::DeleteObject(it->second);
-    }
+	for (const auto& bitmap : bitmaps)
+		::DeleteObject(bitmap.second);
     bitmaps.clear();
     if (hUxTheme)
         FreeLibrary(hUxTheme);

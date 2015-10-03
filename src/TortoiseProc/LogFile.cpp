@@ -107,9 +107,9 @@ bool CLogFile::Close()
 		if (retrycounter == 0)
 			return false;
 
-		for (std::list<CString>::const_iterator it = m_lines.begin(); it != m_lines.end(); ++it)
+		for (const auto& line : m_lines)
 		{
-			file.WriteString(*it);
+			file.WriteString(line);
 			file.WriteString(_T("\n"));
 		}
 		file.Close();

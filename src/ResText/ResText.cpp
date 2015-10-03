@@ -50,7 +50,7 @@ int _tmain(int argc, _TCHAR* argv[])
 		}
 	}
 
-	for (std::vector<tstring>::iterator I = switches.begin(); I != switches.end(); ++I)
+	for (auto I = switches.cbegin(); I != switches.cend(); ++I)
 	{
 		if (wcscmp(I->c_str(), L"?")==0)
 			bShowHelp = true;
@@ -67,9 +67,9 @@ int _tmain(int argc, _TCHAR* argv[])
 		if (wcscmp(I->c_str(), L"adjusteols")==0)
 			bAdjustEOLs = true;
 	}
-	std::vector<tstring>::iterator arg = arguments.begin();
+	auto arg = arguments.cbegin();
 
-	if (arg != arguments.end())
+	if (arg != arguments.cend())
 	{
 		if (wcscmp(arg->c_str(), L"extract")==0)
 		{

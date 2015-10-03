@@ -54,31 +54,31 @@ BOOL CCachedDirectory::SaveToDisk(FILE * pFile)
 	value = (int)m_entryCache.size();
 	WRITEVALUETOFILE(value);	// size of the cache map
 	// now iterate through the maps and save every entry.
-	for (CacheEntryMap::iterator I = m_entryCache.begin(); I != m_entryCache.end(); ++I)
+	for (const auto& entry : m_entryCache)
 	{
-		const CString& key = I->first;
+		const CString& key = entry.first;
 		value = key.GetLength();
 		WRITEVALUETOFILE(value);
 		if (value)
 		{
 			if (fwrite((LPCTSTR)key, sizeof(TCHAR), value, pFile)!=value)
 				return false;
-			if (!I->second.SaveToDisk(pFile))
+			if (!entry.second.SaveToDisk(pFile))
 				return false;
 		}
 	}
 	value = (int)m_childDirectories.size();
 	WRITEVALUETOFILE(value);
-	for (ChildDirStatus::iterator I = m_childDirectories.begin(); I != m_childDirectories.end(); ++I)
+	for (const auto& entry : m_childDirectories)
 	{
-		const CString& path = I->first.GetWinPathString();
+		const CString& path = entry.first.GetWinPathString();
 		value = path.GetLength();
 		WRITEVALUETOFILE(value);
 		if (value)
 		{
 			if (fwrite((LPCTSTR)path, sizeof(TCHAR), value, pFile)!=value)
 				return false;
-			git_wc_status_kind status = I->second;
+			git_wc_status_kind status = entry.second;
 			WRITEVALUETOFILE(status);
 		}
 	}

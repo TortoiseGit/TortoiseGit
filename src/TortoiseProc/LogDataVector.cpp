@@ -191,14 +191,14 @@ struct SortByParentDate
 	{
 		if (pLhs->m_CommitHash == pRhs->m_CommitHash)
 			return false;
-		for (auto it = pLhs->m_ParentHash.begin(); it != pLhs->m_ParentHash.end(); ++it)
+		for (const auto& hash : pLhs->m_ParentHash)
 		{
-			if (*it == pRhs->m_CommitHash)
+			if (hash == pRhs->m_CommitHash)
 				return true;
 		}
-		for (auto it = pRhs->m_ParentHash.begin(); it != pRhs->m_ParentHash.end(); ++it)
+		for (const auto& hash : pRhs->m_ParentHash)
 		{
-			if (*it == pLhs->m_CommitHash)
+			if (hash == pLhs->m_CommitHash)
 				return false;
 		}
 		return pLhs->GetCommitterDate()>pRhs->GetCommitterDate();
@@ -220,10 +220,8 @@ int CLogDataVector::Fill(std::set<CGitHash>& hashes)
 
 	std::set<GitRevLoglist*, SortByParentDate> revs;
 
-	for (auto it = hashes.begin(); it != hashes.end(); ++it)
+	for (const auto& hash : hashes)
 	{
-		CGitHash hash = *it;
-
 		GIT_COMMIT commit;
 		try
 		{
@@ -251,9 +249,8 @@ int CLogDataVector::Fill(std::set<CGitHash>& hashes)
 		revs.insert(pRev);
 	}
 
-	for (auto it = revs.begin(); it != revs.end(); ++it)
+	for (const auto& pRev : revs)
 	{
-		GitRev *pRev = *it;
 		this->push_back(pRev->m_CommitHash);
 		m_HashMap[pRev->m_CommitHash] = (int)size() - 1;
 	}

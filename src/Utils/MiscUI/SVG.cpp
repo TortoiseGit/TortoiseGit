@@ -44,9 +44,9 @@ bool SVG::Save( const CString& path )
 	if (!WriteFile(hFile, header, (DWORD)header.GetLength(), &dwWritten, NULL))
 		return false;
 
-	for (std::vector<CStringA>::const_iterator it = objects.begin(); it != objects.end(); ++it)
+	for (const auto& object : objects)
 	{
-		if (!WriteFile(hFile, *it, (DWORD)it->GetLength(), &dwWritten, NULL))
+		if (!WriteFile(hFile, object, (DWORD)object.GetLength(), &dwWritten, NULL))
 			return false;
 		if (!WriteFile(hFile, "\r\n", (DWORD)2, &dwWritten, NULL))
 			return false;

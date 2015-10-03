@@ -1548,7 +1548,7 @@ CString FindSVNRev(const CString& msg)
 		const std::tr1::wsregex_iterator end;
 		std::wstring s = msg;
 		std::tr1::wregex regex1(_T("^\\s*git-svn-id:\\s+(.*)\\@(\\d+)\\s([a-f\\d\\-]+)$"));
-		for (std::tr1::wsregex_iterator it(s.begin(), s.end(), regex1); it != end; ++it)
+		for (std::tr1::wsregex_iterator it(s.cbegin(), s.cend(), regex1); it != end; ++it)
 		{
 			const std::tr1::wsmatch match = *it;
 			if (match.size() == 4)
@@ -1558,7 +1558,7 @@ CString FindSVNRev(const CString& msg)
 			}
 		}
 		std::tr1::wregex regex2(_T("^\\s*git-svn-id:\\s(\\d+)\\@([a-f\\d\\-]+)$"));
-		for (std::tr1::wsregex_iterator it(s.begin(), s.end(), regex2); it != end; ++it)
+		for (std::tr1::wsregex_iterator it(s.cbegin(), s.cend(), regex2); it != end; ++it)
 		{
 			const std::tr1::wsmatch match = *it;
 			if (match.size() == 3)
@@ -2600,7 +2600,7 @@ int CGitLogListBase::BeginFetchLog()
 
 	if(m_bShowWC)
 	{
-		this->m_logEntries.insert(m_logEntries.begin(),this->m_wcRev.m_CommitHash);
+		this->m_logEntries.insert(m_logEntries.cbegin(), m_wcRev.m_CommitHash);
 		ResetWcRev();
 		this->m_LogCache.m_HashMap[m_wcRev.m_CommitHash]=m_wcRev;
 	}
@@ -3029,12 +3029,12 @@ void CGitLogListBase::FetchRemoteList()
 void CGitLogListBase::FetchTrackingBranchList()
 {
 	m_TrackingMap.clear();
-	for (MAP_HASH_NAME::iterator it = m_HashMap.begin(); it != m_HashMap.end(); ++it)
+	for (auto it = m_HashMap.cbegin(); it != m_HashMap.cend(); ++it)
 	{
-		for (size_t j = 0; j < it->second.size(); ++j)
+		for (const auto& ref : it->second)
 		{
 			CString branchName;
-			if (CGit::GetShortName(it->second[j], branchName, _T("refs/heads/")))
+			if (CGit::GetShortName(ref, branchName, _T("refs/heads/")))
 			{
 				CString pullRemote, pullBranch;
 				g_Git.GetRemoteTrackedBranch(branchName, pullRemote, pullBranch);
@@ -3193,9 +3193,9 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRevLoglist* pRev, std::tr1::
 		if (m_SelectedFilters & LOGFILTER_REFNAME)
 		{
 			STRING_VECTOR refs = m_HashMap[pRev->m_CommitHash];
-			for (auto it = refs.cbegin(); it != refs.cend(); ++it)
+			for (const auto& ref : refs)
 			{
-				if (std::regex_search(std::wstring((LPCTSTR)*it), pat, flags))
+				if (std::regex_search(std::wstring(ref), pat, flags))
 				{
 					return TRUE;
 				}

@@ -87,7 +87,7 @@ void CGitRefCompareList::Init()
 	SetWindowTheme(m_hWnd, L"Explorer", NULL);
 }
 
-int CGitRefCompareList::AddEntry(git_repository *repo, CString ref, CGitHash *oldHash, CGitHash *newHash)
+int CGitRefCompareList::AddEntry(git_repository* repo, const CString& ref, const CGitHash* oldHash, const CGitHash* newHash)
 {
 	RefEntry entry;
 	entry.fullName = ref;
@@ -177,24 +177,24 @@ void CGitRefCompareList::Show()
 	DeleteAllItems();
 	std::sort(m_RefList.begin(), m_RefList.end(), SortPredicate);
 	int index = 0;
-	for (auto entry = m_RefList.begin(); entry != m_RefList.end(); ++entry)
+	for (const auto& entry : m_RefList)
 	{
-		if (entry->changeType == ChangeType::Same && m_bHideUnchanged)
+		if (entry.changeType == ChangeType::Same && m_bHideUnchanged)
 			continue;
 
 		int nImage = -1;
-		if (entry->refType == CGit::REF_TYPE::LOCAL_BRANCH)
+		if (entry.refType == CGit::REF_TYPE::LOCAL_BRANCH)
 			nImage = 1;
-		else if (entry->refType == CGit::REF_TYPE::REMOTE_BRANCH)
+		else if (entry.refType == CGit::REF_TYPE::REMOTE_BRANCH)
 			nImage = 2;
-		else if (entry->refType == CGit::REF_TYPE::TAG)
+		else if (entry.refType == CGit::REF_TYPE::TAG)
 			nImage = 0;
-		InsertItem(index, entry->shortName, nImage);
-		SetItemText(index, colChange, entry->change);
-		SetItemText(index, colOldHash, entry->oldHash);
-		SetItemText(index, colOldMessage, entry->oldMessage);
-		SetItemText(index, colNewHash, entry->newHash);
-		SetItemText(index, colNewMessage, entry->newMessage);
+		InsertItem(index, entry.shortName, nImage);
+		SetItemText(index, colChange, entry.change);
+		SetItemText(index, colOldHash, entry.oldHash);
+		SetItemText(index, colOldMessage, entry.oldMessage);
+		SetItemText(index, colNewHash, entry.newHash);
+		SetItemText(index, colNewMessage, entry.newMessage);
 		index++;
 	}
 }

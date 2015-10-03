@@ -132,10 +132,10 @@ BOOL CGitPropertyPage::PageProc (HWND /*hwnd*/, UINT uMessage, WPARAM wParam, LP
 
 					bool changed = false;
 
-					for (auto it = filenames.cbegin(); it < filenames.cend(); ++it)
+					for (const auto& filename : filenames)
 					{
 						CTGitPath file;
-						file.SetFromWin(CString(it->c_str()).Mid(stripLength));
+						file.SetFromWin(CString(filename.c_str()).Mid(stripLength));
 						CStringA pathA = CUnicodeUtils::GetMulti(file.GetGitPathString(), CP_UTF8);
 						size_t idx;
 						if (!git_index_find(&idx, index, pathA))
@@ -607,9 +607,9 @@ void CGitPropertyPage::InitWorkfileView()
 			++stripLength;
 
 		bool allAreFiles = true;
-		for (auto it = filenames.cbegin(); it < filenames.cend(); ++it)
+		for (const auto& filename : filenames)
 		{
-			if (PathIsDirectory(it->c_str()))
+			if (PathIsDirectory(filename.c_str()))
 			{
 				allAreFiles = false;
 				break;
@@ -627,10 +627,10 @@ void CGitPropertyPage::InitWorkfileView()
 				if (git_repository_index(index.GetPointer(), repository))
 					break;
 
-				for (auto it = filenames.cbegin(); it < filenames.cend(); ++it)
+				for (const auto& filename : filenames)
 				{
 					CTGitPath file;
-					file.SetFromWin(CString(it->c_str()).Mid(stripLength));
+					file.SetFromWin(CString(filename.c_str()).Mid(stripLength));
 					CStringA pathA = CUnicodeUtils::GetMulti(file.GetGitPathString(), CP_UTF8);
 					size_t idx;
 					if (!git_index_find(&idx, index, pathA))
@@ -737,7 +737,10 @@ STDMETHODIMP CShellExt::AddPages_Wrap(LPFNADDPROPSHEETPAGE lpfnAddPage, LPARAM l
 {
 	CString ProjectTopDir;
 
-	for (std::vector<stdstring>::iterator I = files_.begin(); I != files_.end(); ++I)
+	if (files_.empty())
+		return S_OK;
+
+	for (const auto file_ : files_)
 	{
 		/*
 		GitStatus svn = GitStatus();
@@ -747,14 +750,11 @@ STDMETHODIMP CShellExt::AddPages_Wrap(LPFNADDPROPSHEETPAGE lpfnAddPage, LPARAM l
 		if (svn.status->entry == NULL)
 			return S_OK;
 		*/
-		if( CTGitPath(I->c_str()).HasAdminDir(&ProjectTopDir))
+		if (CTGitPath(file_.c_str()).HasAdminDir(&ProjectTopDir))
 			break;
 		else
 			return S_OK;
 	}
-
-	if (files_.empty())
-		return S_OK;
 
 	LoadLangDll();
 	PROPSHEETPAGE psp;

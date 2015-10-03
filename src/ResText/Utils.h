@@ -39,14 +39,14 @@ public:
 // trim from start
 inline std::string &ltrim(std::string &s)
 {
-	s.erase(s.begin(), std::find_if(s.begin(), s.end(), std::not1(std::ptr_fun<int, int>(isspace))));
+	s.erase(s.cbegin(), std::find_if(s.cbegin(), s.cend(), std::not1(std::ptr_fun<int, int>(isspace))));
 	return s;
 }
 
 // trim from end
 inline std::string &rtrim(std::string &s)
 {
-	s.erase(std::find_if(s.rbegin(), s.rend(), std::not1(std::ptr_fun<int, int>(isspace))).base(), s.end());
+	s.erase(std::find_if(s.crbegin(), s.crend(), std::not1(std::ptr_fun<int, int>(isspace))).base(), s.cend());
 	return s;
 }
 
@@ -59,14 +59,14 @@ inline std::string &trim(std::string &s)
 // trim from start
 inline std::wstring &ltrim(std::wstring &s)
 {
-	s.erase(s.begin(), std::find_if(s.begin(), s.end(), std::not1(std::ptr_fun<wint_t, int>(iswspace))));
+	s.erase(s.cbegin(), std::find_if(s.cbegin(), s.cend(), std::not1(std::ptr_fun<wint_t, int>(iswspace))));
 	return s;
 }
 
 // trim from end
 inline std::wstring &rtrim(std::wstring &s)
 {
-	s.erase(std::find_if(s.rbegin(), s.rend(), std::not1(std::ptr_fun<wint_t, int>(iswspace))).base(), s.end());
+	s.erase(std::find_if(s.crbegin(), s.crend(), std::not1(std::ptr_fun<wint_t, int>(iswspace))).base(), s.cend());
 	return s;
 }
 

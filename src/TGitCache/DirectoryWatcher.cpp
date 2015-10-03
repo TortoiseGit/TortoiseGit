@@ -519,7 +519,7 @@ void CDirectoryWatcher::WorkerThread()
 					}
 					if (!notifyPaths.empty())
 					{
-						for (std::list<CTGitPath>::const_iterator nit = notifyPaths.begin(); nit != notifyPaths.end(); ++nit)
+						for (auto nit = notifyPaths.cbegin(); nit != notifyPaths.cend(); ++nit)
 						{
 							m_FolderCrawler->AddPathForUpdate(*nit);
 						}
@@ -551,7 +551,7 @@ void CDirectoryWatcher::CloseWatchHandles()
 {
 	AutoLocker lock(m_critSec);
 
-	for (TInfoMap::iterator I = watchInfoMap.begin(); I != watchInfoMap.end(); ++I)
+	for (auto I = watchInfoMap.cbegin(); I != watchInfoMap.cend(); ++I)
 		if (I->second)
 			I->second->CloseDirectoryHandle();
 
@@ -590,7 +590,7 @@ CTGitPath CDirectoryWatcher::CloseInfoMap(HANDLE hDir)
 	if (watchInfoMap.empty())
 		return path;
 
-	for (TInfoMap::iterator I = watchInfoMap.begin(); I != watchInfoMap.end(); ++I)
+	for (auto I = watchInfoMap.cbegin(); I != watchInfoMap.cend(); ++I)
 	{
 		CDirectoryWatcher::CDirWatchInfo * info = I->second;
 
