@@ -193,8 +193,6 @@ public:
 	static bool Push(const CString& selectLocalBranch = CString());
 	static bool RequestPull(const CString& endrevision = _T(""), const CString& repositoryUrl = _T(""), bool bIsMainWnd = false);
 
-	static bool CreateMultipleDirectory(const CString &dir);
-
 	static void RemoveTrailSlash(CString &path);
 
 	static bool CheckUserData();

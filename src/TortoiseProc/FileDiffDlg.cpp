@@ -714,7 +714,7 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 						// we cannot export directories or folders
 						if (fd->m_Action == CTGitPath::LOGACTIONS_DELETED || fd->IsDirectory())
 							continue;
-						CAppUtils::CreateMultipleDirectory(m_strExportDir + _T("\\") + fd->GetContainingDirectory().GetWinPathString());
+						CPathUtils::MakeSureDirectoryPathExists(m_strExportDir + _T("\\") + fd->GetContainingDirectory().GetWinPathString());
 						CString filename = m_strExportDir + _T("\\") + fd->GetWinPathString();
 						if(m_rev1.m_CommitHash.ToString() == GIT_REV_ZERO)
 						{
