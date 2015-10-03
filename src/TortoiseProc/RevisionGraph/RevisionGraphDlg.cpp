@@ -197,8 +197,7 @@ BOOL CRevisionGraphDlg::InitializeToolbar()
 					 , _T("200%")
 					 , NULL};
 
-	COMBOBOXEXITEM cbei;
-	SecureZeroMemory(&cbei, sizeof cbei);
+	COMBOBOXEXITEM cbei = { 0 };
 	cbei.mask = CBEIF_TEXT;
 
 	for (TCHAR** text = texts; *text != NULL; ++text)

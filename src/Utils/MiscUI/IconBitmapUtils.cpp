@@ -209,8 +209,7 @@ HRESULT IconBitmapUtils::Create32BitHBITMAP(HDC hdc, const SIZE *psize, __deref_
 
     *phBmp = NULL;
 
-    BITMAPINFO bmi;
-    SecureZeroMemory(&bmi, sizeof(bmi));
+    BITMAPINFO bmi = { 0 };
     bmi.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
     bmi.bmiHeader.biPlanes = 1;
     bmi.bmiHeader.biCompression = BI_RGB;
@@ -279,8 +278,7 @@ bool IconBitmapUtils::HasAlpha(__in Gdiplus::ARGB *pargb, SIZE& sizImage, int cx
 
 HRESULT IconBitmapUtils::ConvertToPARGB32(HDC hdc, __inout Gdiplus::ARGB *pargb, HBITMAP hbmp, SIZE& sizImage, int cxRow) const
 {
-    BITMAPINFO bmi;
-    SecureZeroMemory(&bmi, sizeof(bmi));
+    BITMAPINFO bmi = { 0 };
     bmi.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
     bmi.bmiHeader.biPlanes = 1;
     bmi.bmiHeader.biCompression = BI_RGB;

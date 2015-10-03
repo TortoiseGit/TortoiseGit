@@ -21,10 +21,10 @@
 
 static DWORD VerifyServerCertificate(PCCERT_CONTEXT pServerCert, PTSTR pwszServerName, DWORD dwCertFlags)
 {
-	HTTPSPolicyCallbackData polHttps;
-	CERT_CHAIN_POLICY_PARA PolicyPara;
-	CERT_CHAIN_POLICY_STATUS PolicyStatus;
-	CERT_CHAIN_PARA ChainPara;
+	HTTPSPolicyCallbackData polHttps = { 0 };
+	CERT_CHAIN_POLICY_PARA PolicyPara = { 0 };
+	CERT_CHAIN_POLICY_STATUS PolicyStatus = { 0 };
+	CERT_CHAIN_PARA ChainPara = { 0 };
 	PCCERT_CHAIN_CONTEXT pChainContext = nullptr;
 	DWORD Status;
 	LPSTR rgszUsages[] = { szOID_PKIX_KP_SERVER_AUTH, szOID_SERVER_GATED_CRYPTO, szOID_SGC_NETSCAPE };
@@ -38,7 +38,6 @@ static DWORD VerifyServerCertificate(PCCERT_CONTEXT pServerCert, PTSTR pwszServe
 	}
 
 	// Build certificate chain.
-	SecureZeroMemory(&ChainPara, sizeof(ChainPara));
 	ChainPara.cbSize = sizeof(ChainPara);
 	ChainPara.RequestedUsage.dwType = USAGE_MATCH_TYPE_OR;
 	ChainPara.RequestedUsage.Usage.cUsageIdentifier = cUsages;
@@ -51,17 +50,14 @@ static DWORD VerifyServerCertificate(PCCERT_CONTEXT pServerCert, PTSTR pwszServe
 	}
 
 	// Validate certificate chain.
-	SecureZeroMemory(&polHttps, sizeof(HTTPSPolicyCallbackData));
 	polHttps.cbStruct = sizeof(HTTPSPolicyCallbackData);
 	polHttps.dwAuthType = AUTHTYPE_SERVER;
 	polHttps.fdwChecks = dwCertFlags;
 	polHttps.pwszServerName = pwszServerName;
 
-	SecureZeroMemory(&PolicyPara, sizeof(PolicyPara));
 	PolicyPara.cbSize = sizeof(PolicyPara);
 	PolicyPara.pvExtraPolicyPara = &polHttps;
 
-	SecureZeroMemory(&PolicyStatus, sizeof(PolicyStatus));
 	PolicyStatus.cbSize = sizeof(PolicyStatus);
 
 	if (!CertVerifyCertificateChainPolicy(CERT_CHAIN_POLICY_SSL, pChainContext, &PolicyPara, &PolicyStatus))

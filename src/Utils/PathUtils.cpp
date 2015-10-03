@@ -27,10 +27,7 @@ BOOL CPathUtils::MakeSureDirectoryPathExists(LPCTSTR path)
 	std::unique_ptr<TCHAR[]> buf(new TCHAR[len]);
 	std::unique_ptr<TCHAR[]> internalpathbuf(new TCHAR[len]);
 	TCHAR * pPath = internalpathbuf.get();
-	SECURITY_ATTRIBUTES attribs;
-
-	SecureZeroMemory(&attribs, sizeof(SECURITY_ATTRIBUTES));
-
+	SECURITY_ATTRIBUTES attribs = { 0 };
 	attribs.nLength = sizeof(SECURITY_ATTRIBUTES);
 	attribs.bInheritHandle = FALSE;
 

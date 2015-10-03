@@ -1558,10 +1558,9 @@ void CGitStatusListCtrl::OnContextMenuGroup(CWnd * /*pWnd*/, CPoint point)
 					// go through all items and check/uncheck those assigned to the group
 					// but block the OnLvnItemChanged handler
 					m_bBlock = true;
-					LVITEM lv;
 					for (int i=0; i<GetItemCount(); ++i)
 					{
-						SecureZeroMemory(&lv, sizeof(LVITEM));
+						LVITEM lv = { 0 };
 						lv.mask = LVIF_GROUPID;
 						lv.iItem = i;
 						GetItem(&lv);

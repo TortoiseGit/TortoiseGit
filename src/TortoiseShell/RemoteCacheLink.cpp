@@ -141,8 +141,7 @@ void CRemoteCacheLink::CloseCommandPipe()
 	{
 		// now tell the cache we don't need it's command thread anymore
 		DWORD cbWritten;
-		TGITCacheCommand cmd;
-		SecureZeroMemory(&cmd, sizeof(TGITCacheCommand));
+		TGITCacheCommand cmd = { 0 };
 		cmd.command = TGITCACHECOMMAND_END;
 		WriteFile(
 			m_hCommandPipe,         // handle to pipe
@@ -257,8 +256,7 @@ bool CRemoteCacheLink::ReleaseLockForPath(const CTGitPath& path)
 	if (m_hCommandPipe)
 	{
 		DWORD cbWritten;
-		TGITCacheCommand cmd;
-		SecureZeroMemory(&cmd, sizeof(TGITCacheCommand));
+		TGITCacheCommand cmd = { 0 };
 		cmd.command = TGITCACHECOMMAND_RELEASE;
 		wcsncpy_s(cmd.path, path.GetDirectory().GetWinPath(), _countof(cmd.path) - 1);
 		BOOL fSuccess = WriteFile(

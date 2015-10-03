@@ -51,8 +51,7 @@ bool CPersonalDictionary::Load()
 	_tcscat_s(path, MAX_PATH, _T(".dic"));
 
 	std::wifstream File;
-	char filepath[MAX_PATH+1];
-	SecureZeroMemory(filepath, sizeof(filepath));
+	char filepath[MAX_PATH + 1] = { 0 };
 	WideCharToMultiByte(CP_ACP, NULL, path, -1, filepath, MAX_PATH, NULL, NULL);
 	File.open(filepath);
 	if (!File.good())
@@ -108,8 +107,7 @@ bool CPersonalDictionary::Save()
 	_tcscat_s(path, MAX_PATH, _T(".dic"));
 
 	std::wofstream File;
-	char filepath[MAX_PATH+1];
-	SecureZeroMemory(filepath, sizeof(filepath));
+	char filepath[MAX_PATH + 1] = { 0 };
 	WideCharToMultiByte(CP_ACP, NULL, path, -1, filepath, MAX_PATH, NULL, NULL);
 	File.open(filepath, std::ios_base::binary);
 	for (const auto& line : dict)

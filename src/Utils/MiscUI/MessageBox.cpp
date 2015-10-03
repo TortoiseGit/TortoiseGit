@@ -580,13 +580,12 @@ CSize CMessageBox::GetTextSize(const CString& str)
 
 CSize CMessageBox::GetIconSize(HICON hIcon)
 {
-	ICONINFO ii;
 	CSize sz (0, 0);
 
 	if (hIcon != NULL)
 	{
+		ICONINFO ii = { 0 };
 		//get icon dimensions
-		::SecureZeroMemory(&ii, sizeof(ICONINFO));
 		if (::GetIconInfo(hIcon, &ii))
 		{
 			sz.cx = (DWORD)(ii.xHotspot * 2);

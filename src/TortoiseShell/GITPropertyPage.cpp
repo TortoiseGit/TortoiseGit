@@ -757,8 +757,7 @@ STDMETHODIMP CShellExt::AddPages_Wrap(LPFNADDPROPSHEETPAGE lpfnAddPage, LPARAM l
 	}
 
 	LoadLangDll();
-	PROPSHEETPAGE psp;
-	SecureZeroMemory(&psp, sizeof(PROPSHEETPAGE));
+	PROPSHEETPAGE psp = { 0 };
 	HPROPSHEETPAGE hPage;
 	CGitPropertyPage *sheetpage = new (std::nothrow) CGitPropertyPage(files_);
 

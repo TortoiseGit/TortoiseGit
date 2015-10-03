@@ -92,8 +92,7 @@ bool SendCacheCommand(BYTE command, const WCHAR * path /* = NULL */)
 		NULL))		// don't set maximum time
 	{
 		DWORD cbWritten;
-		TGITCacheCommand cmd;
-		SecureZeroMemory(&cmd, sizeof(TGITCacheCommand));
+		TGITCacheCommand cmd = { 0 };
 		cmd.command = command;
 		if (path)
 			_tcsncpy_s(cmd.path, path, _TRUNCATE);

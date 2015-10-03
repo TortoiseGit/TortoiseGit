@@ -496,8 +496,7 @@ void CGitLogListBase::ResizeAllListCtrlCols()
 
 void CGitLogListBase::FillBackGround(HDC hdc, DWORD_PTR Index, CRect &rect)
 {
-	LVITEM rItem;
-	SecureZeroMemory(&rItem, sizeof(LVITEM));
+	LVITEM rItem = { 0 };
 	rItem.mask  = LVIF_STATE;
 	rItem.iItem = (int)Index;
 	rItem.stateMask = LVIS_SELECTED | LVIS_FOCUSED;
@@ -581,8 +580,7 @@ void CGitLogListBase::DrawTagBranchMessage(HDC hdc, CRect &rect, INT_PTR index, 
 {
 	GitRevLoglist* data = (GitRevLoglist*)m_arShownList.SafeGetAt(index);
 	CRect rt=rect;
-	LVITEM rItem;
-	SecureZeroMemory(&rItem, sizeof(LVITEM));
+	LVITEM rItem = { 0 };
 	rItem.mask  = LVIF_STATE;
 	rItem.iItem = (int)index;
 	rItem.stateMask = LVIS_SELECTED | LVIS_FOCUSED;
@@ -1089,8 +1087,7 @@ void CGitLogListBase::DrawGraph(HDC hdc,CRect &rect,INT_PTR index)
 		return;
 
 	CRect rt=rect;
-	LVITEM rItem;
-	SecureZeroMemory(&rItem, sizeof(LVITEM));
+	LVITEM rItem = { 0 };
 	rItem.mask  = LVIF_STATE;
 	rItem.iItem = (int)index;
 	rItem.stateMask = LVIS_SELECTED | LVIS_FOCUSED;

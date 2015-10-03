@@ -1006,11 +1006,9 @@ void CRevisionGraphWnd::SaveGraphAs(CString sSavePath)
 			rect = GetGraphRect();
 			rect.bottom = (LONG)(float(rect.Height()) * m_fZoomFactor);
 			rect.right = (LONG)(float(rect.Width()) * m_fZoomFactor);
-			BITMAPINFO bmi;
+			BITMAPINFO bmi = { 0 };
 			HBITMAP hbm;
 			LPBYTE pBits;
-			// Initialize header to 0s.
-			SecureZeroMemory(&bmi, sizeof(bmi));
 			// Fill out the fields you care about.
 			bmi.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
 			bmi.bmiHeader.biWidth = rect.Width();
