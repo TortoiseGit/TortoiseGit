@@ -47,6 +47,7 @@ extern int die_is_recursing_dll(void);
 
 extern void free_all_pack();
 extern void reset_git_env();
+extern void drop_attr_stack();
 extern void invalidate_ref_cache(const char* submodule);
 extern void cmd_log_init(int argc, const char** argv, const char* prefix, struct rev_info* rev, struct setup_revision_opt* opt);
 extern int estimate_commit_count(struct rev_info* rev, struct commit_list* list);
@@ -101,6 +102,7 @@ int git_init()
 
 	git_extract_argv0_path(path);
 	reset_git_env();
+	drop_attr_stack();
 	g_prefix = setup_git_directory();
 	git_config(git_default_config, NULL);
 
