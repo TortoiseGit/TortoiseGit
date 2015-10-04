@@ -1,6 +1,7 @@
 version: '{branch}.{build}'
 skip_tags: true
 init:
+- git version
 - git config --global user.email "dummy@example.com"
 - git config --global user.name "Dummy Name"
 build_script:
