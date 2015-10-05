@@ -1857,7 +1857,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					if (!m_sMarkForDiffFilename.IsEmpty())
 					{
 						CString diffWith;
-						if (filepath && filepath->GetGitPathString() == m_sMarkForDiffFilename)
+						if (filepath->GetGitPathString() == m_sMarkForDiffFilename)
 							diffWith = m_sMarkForDiffVersion;
 						else
 						{
@@ -2080,17 +2080,12 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				break;
 
 			case IDGITLC_PREPAREDIFF:
-				if (!filepath)
-					return;
 				m_sMarkForDiffFilename = filepath->GetGitPathString();
 				m_sMarkForDiffVersion = m_CurrentVersion;
 				break;
 
 			case IDGITLC_PREPAREDIFF_COMPARE:
 				{
-					if (!filepath)
-						return;
-
 					CTGitPath savedFile(m_sMarkForDiffFilename);
 					CGitDiff::Diff(filepath, &savedFile, m_CurrentVersion, m_sMarkForDiffVersion);
 				}
