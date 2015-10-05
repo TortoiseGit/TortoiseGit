@@ -273,11 +273,8 @@ void CGitBlameLogList::GetParentHash(GitRevLoglist* pRev, int index, CGitHash& p
 						// ignore (action & CTGitPath::LOGACTIONS_DELETED), should never happen as the file must exist
 						if (action & (CTGitPath::LOGACTIONS_MODIFIED | CTGitPath::LOGACTIONS_REPLACED))
 						{
-							if (parentNo == (file.m_ParentNo & PARENT_MASK))
-							{
-								if (parentNo >= 0 && (size_t)parentNo < pRev->m_ParentHash.size())
-									parentFilenames.push_back( (action & CTGitPath::LOGACTIONS_REPLACED) ? file.GetGitOldPathString() : file.GetGitPathString());
-							}
+							if (parentNo == (file.m_ParentNo & PARENT_MASK) && (size_t)parentNo < pRev->m_ParentHash.size())
+								parentFilenames.push_back( (action & CTGitPath::LOGACTIONS_REPLACED) ? file.GetGitOldPathString() : file.GetGitPathString());
 						}
 					}
 				}
