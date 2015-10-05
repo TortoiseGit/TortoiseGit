@@ -255,7 +255,7 @@ bool GitPatch::PatchPath(const CString& path)
 
 int GitPatch::GetPatchResult(const CString& sPath, CString& sSavePath, CString& sRejectPath, CString &sBasePath) const
 {
-	for (const auto filePath : m_filePaths)
+	for (const auto& filePath : m_filePaths)
 	{
 		if (Strip(filePath.path).CompareNoCase(sPath) == 0)
 		{
