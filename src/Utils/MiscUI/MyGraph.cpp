@@ -857,7 +857,7 @@ void MyGraph::DrawLegend(CDC& dc)
 	// Get the height of each label.
 	LOGFONT lf = { 0 };
 	VERIFY(fontLegend.GetLogFont(&lf));
-	int nLabelHeight(abs(lf.lfHeight));
+	int nLabelHeight = min(1, abs(lf.lfHeight));
 
 	// Get number of legend entries
 	int nLegendEntries = max(1, GetMaxSeriesSize());
