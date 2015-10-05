@@ -33,6 +33,7 @@ CLocatorBar::CLocatorBar() : CPaneDialog()
 	, m_pCacheBitmap(NULL)
 	, m_regUseFishEye(_T("Software\\TortoiseGitMerge\\UseFishEye"), TRUE)
 	, m_nLines(-1)
+	, m_minWidth(0)
 {
 }
 
