@@ -10852,6 +10852,18 @@ msgstr ""
 msgid "line: %d(+) %d(-) files: %s = %ld\n%s = %ld\n%s = %ld\n%s = %ld\n%s = %ld\n%s = %ld"
 msgstr ""
 
+#. Resource IDs: (IDS_SYSTEM_GCM)
+msgid "manager - all Windows users"
+msgstr ""
+
+#. Resource IDs: (IDS_GLOBAL_GCM)
+msgid "manager - current Windows user"
+msgstr ""
+
+#. Resource IDs: (IDS_LOCAL_GCM)
+msgid "manager - this repository only"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_PULLFETCH: Control id 1494)
 msgid "master"
 msgstr ""

@@ -35,9 +35,12 @@ namespace SimpleCredentialType
 	static int None;
 	static int LocalWincred;
 	static int LocalWinstore;
+	static int LocalGCM;
 	static int GlobalWincred;
 	static int GlobalWinstore;
+	static int GlobalGCM;
 	static int SystemWincred;
+	static int SystemGCM;
 
 	static void Init()
 	{
@@ -45,9 +48,12 @@ namespace SimpleCredentialType
 		None = -1;
 		LocalWincred = -1;
 		LocalWinstore = -1;
+		LocalGCM = -1;
 		GlobalWincred = -1;
 		GlobalWinstore = -1;
+		GlobalGCM = -1;
 		SystemWincred = -1;
+		SystemGCM = -1;
 	}
 }
 
@@ -135,6 +141,13 @@ static bool WinstoreExists()
 	return !!PathFileExists(GetWinstorePath());
 }
 
+static bool GCMExists()
+{
+	CString path = CGit::ms_MsysGitRootDir;
+	path.Append(_T("libexec\\git-core\\git-credential-manager.exe"));
+	return !!PathFileExists(path);
+}
+
 static CStringA RegexEscape(CStringA str)
 {
 	CStringA result;
@@ -180,15 +193,20 @@ BOOL CSettingGitCredential::OnInitDialog()
 		((CComboBox*) GetDlgItem(IDC_COMBO_HELPER))->AddString(_T("wincred"));
 	if (WinstoreExists())
 		((CComboBox*) GetDlgItem(IDC_COMBO_HELPER))->AddString(GetWinstorePath());
+	if (GCMExists())
+		((CComboBox*)GetDlgItem(IDC_COMBO_HELPER))->AddString(_T("manager"));
 
 	SimpleCredentialType::Init();
 	AddSimpleCredential(SimpleCredentialType::Advanced, CString(MAKEINTRESOURCE(IDS_ADVANCED)));
 	AddSimpleCredential(SimpleCredentialType::None, CString(MAKEINTRESOURCE(IDS_NONE)));
 	AddSimpleCredential(SimpleCredentialType::LocalWincred, CString(MAKEINTRESOURCE(IDS_LOCAL_WINCRED)), hasLocal && WincredExists());
 	AddSimpleCredential(SimpleCredentialType::LocalWinstore, CString(MAKEINTRESOURCE(IDS_LOCAL_WINSTORE)), hasLocal && WinstoreExists());
+	AddSimpleCredential(SimpleCredentialType::LocalGCM, CString(MAKEINTRESOURCE(IDS_LOCAL_GCM)), hasLocal && GCMExists());
 	AddSimpleCredential(SimpleCredentialType::GlobalWincred, CString(MAKEINTRESOURCE(IDS_GLOBAL_WINCRED)), WincredExists());
 	AddSimpleCredential(SimpleCredentialType::GlobalWinstore, CString(MAKEINTRESOURCE(IDS_GLOBAL_WINSTORE)), WinstoreExists());
+	AddSimpleCredential(SimpleCredentialType::GlobalGCM, CString(MAKEINTRESOURCE(IDS_GLOBAL_GCM)), GCMExists());
 	AddSimpleCredential(SimpleCredentialType::SystemWincred, CString(MAKEINTRESOURCE(IDS_SYSTEM_WINCRED)), WincredExists());
+	AddSimpleCredential(SimpleCredentialType::SystemGCM, CString(MAKEINTRESOURCE(IDS_SYSTEM_GCM)), GCMExists());
 
 	LoadList();
 
@@ -447,6 +465,11 @@ void CSettingGitCredential::LoadList()
 			m_ctrlSimpleCredential.SetCurSel(SimpleCredentialType::LocalWinstore);
 			return;
 		}
+		else if (value == _T("manager"))
+		{
+			m_ctrlSimpleCredential.SetCurSel(SimpleCredentialType::LocalGCM);
+			return;
+		}
 	}
 
 	if (prefix == _T("G") || prefix == _T("X"))
@@ -461,6 +484,11 @@ void CSettingGitCredential::LoadList()
 			m_ctrlSimpleCredential.SetCurSel(SimpleCredentialType::GlobalWinstore);
 			return;
 		}
+		else if (value == _T("manager"))
+		{
+			m_ctrlSimpleCredential.SetCurSel(SimpleCredentialType::GlobalGCM);
+			return;
+		}
 	}
 
 	if (prefix == _T("S"))
@@ -468,6 +496,11 @@ void CSettingGitCredential::LoadList()
 		if (value == _T("wincred"))
 		{
 			m_ctrlSimpleCredential.SetCurSel(SimpleCredentialType::SystemWincred);
+			return;
+		}
+		else if (value == _T("manager"))
+		{
+			m_ctrlSimpleCredential.SetCurSel(SimpleCredentialType::SystemGCM);
 			return;
 		}
 	}
@@ -551,12 +584,18 @@ static int DeleteOtherKeys(int type)
 		match = _T("L\ncredential.helper\nwincred");
 	else if (type == SimpleCredentialType::LocalWinstore)
 		match = _T("L\ncredential.helper\n") + GetWinstorePath();
+	else if (type == SimpleCredentialType::LocalGCM)
+		match = _T("L\ncredential.helper\nmanager");
 	else if (type == SimpleCredentialType::GlobalWincred)
 		match = _T("G\ncredential.helper\nwincred");
 	else if (type == SimpleCredentialType::GlobalWinstore)
 		match = _T("G\ncredential.helper\n") + GetWinstorePath();
+	else if (type == SimpleCredentialType::GlobalGCM)
+		match = _T("G\ncredential.helper\nmanager");
 	else if (type == SimpleCredentialType::SystemWincred)
 		match = _T("S\ncredential.helper\nwincred");
+	else if (type == SimpleCredentialType::SystemGCM)
+		match = _T("S\ncredential.helper\nmanager");
 
 	CAutoConfig config(true);
 	git_config_add_file_ondisk(config, CGit::GetGitPathStringA(g_Git.GetGitLocalConfig()), GIT_CONFIG_LEVEL_LOCAL, FALSE);
@@ -619,6 +658,11 @@ bool SaveSimpleCredential(int type)
 		configLevel = CONFIG_LOCAL;
 		value = GetWinstorePath();
 	}
+	else if (type == SimpleCredentialType::LocalGCM)
+	{
+		configLevel = CONFIG_LOCAL;
+		value = _T("manager");
+	}
 	else if (type == SimpleCredentialType::GlobalWincred)
 	{
 		configLevel = CONFIG_GLOBAL;
@@ -629,10 +673,20 @@ bool SaveSimpleCredential(int type)
 		configLevel = CONFIG_GLOBAL;
 		value = GetWinstorePath();
 	}
+	else if (type == SimpleCredentialType::GlobalGCM)
+	{
+		configLevel = CONFIG_GLOBAL;
+		value = _T("manager");
+	}
 	else if (type == SimpleCredentialType::SystemWincred)
 	{
 		configLevel = CONFIG_SYSTEM;
 		value = _T("wincred");
+	}
+	else if (type == SimpleCredentialType::SystemGCM)
+	{
+		configLevel = CONFIG_SYSTEM;
+		value = _T("manager");
 	}
 	else
 	{
@@ -661,6 +715,12 @@ BOOL CSettingGitCredential::OnApply()
 
 	int type = m_ctrlSimpleCredential.GetCurSel();
 	if (type == SimpleCredentialType::SystemWincred && !CAppUtils::IsAdminLogin())
+	{
+		RunUAC();
+		EndDialog(0);
+		return FALSE;
+	}
+	if (type == SimpleCredentialType::SystemGCM && !CAppUtils::IsAdminLogin())
 	{
 		RunUAC();
 		EndDialog(0);

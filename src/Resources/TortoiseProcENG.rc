@@ -4716,6 +4716,13 @@ BEGIN
     IDS_MERGEBUTTON         "&Merge"
     IDS_REBASEBUTTON        "&Rebase"
     IDS_RESTORE_FROM_INDEX  "R&estore this file from index"
+    IDS_LOCAL_GCM           "manager - this repository only"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_GLOBAL_GCM          "manager - current Windows user"
+    IDS_SYSTEM_GCM          "manager - all Windows users"
 END
 
 #endif    // English (U.S.) resources
