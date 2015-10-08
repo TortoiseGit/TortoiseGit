@@ -1852,7 +1852,7 @@ void CMainFrame::OnFileSaveAs()
 			FileSaveAs();
 			break;
 		case 204: // continue resolving
-			if (m_pwndBottomView)
+			if (IsViewGood(m_pwndBottomView))
 			{
 				m_pwndBottomView->GoToLine(CheckResolved());
 			}
@@ -3405,14 +3405,14 @@ void CMainFrame::BuildRegexSubitems(CMFCPopupMenu* pMenuPopup)
 			if (pButton)
 			{
 				pButton->RemoveAllSubItems();
-				pButton->AddSubItem(new CMFCRibbonButton(ID_REGEXFILTER + 1, CString(MAKEINTRESOURCE(IDS_CONFIGUREREGEXES)), 47));
+				pButton->AddSubItem(new CMFCRibbonButton(ID_REGEXFILTER + 1, CString(MAKEINTRESOURCE(IDS_CONFIGUREREGEXES)), 47, 47));
 
 				if (!sections.empty())
 					pButton->AddSubItem(new CMFCRibbonSeparator(TRUE));
 				int cmdIndex = 2;
 				for (const auto& section : sections)
 				{
-					pButton->AddSubItem(new CMFCRibbonButton(ID_REGEXFILTER + cmdIndex, section, 46));
+					pButton->AddSubItem(new CMFCRibbonButton(ID_REGEXFILTER + cmdIndex, section, 46, 46));
 					cmdIndex++;
 				}
 			}
