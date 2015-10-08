@@ -1,6 +1,6 @@
 // TortoiseSVN - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2006, 2009 - TortoiseSVN
+// Copyright (C) 2003-2006, 2009, 2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -150,7 +150,7 @@ UINT CCacheDlg::TestThread()
 	DWORD endticks = GetTickCount();
 
 	CString sEndText;
-	sEndText.Format(_T("%s  - %d ms"), sEnd, endticks-startticks);
+	sEndText.Format(_T("%s  - %ld ms"), sEnd, endticks-startticks);
 
 	GetDlgItem(IDC_ENDTIME)->SetWindowText(sEndText);
 
@@ -456,7 +456,7 @@ UINT CCacheDlg::WatchTestThread()
 	DWORD endticks = GetTickCount();
 
 	CString sEndText;
-	sEndText.Format(_T("%s  - %d ms"), sEnd, endticks-startticks);
+	sEndText.Format(_T("%s  - %ld ms"), sEnd, endticks-startticks);
 
 	GetDlgItem(IDC_ENDTIME)->SetWindowText(sEndText);
 
