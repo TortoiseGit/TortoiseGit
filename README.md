@@ -10,7 +10,7 @@ TortoiseGit supports you by regular tasks, such as committing, showing logs, dif
 * Documentation: [tortoisegit.org/docs/](https://tortoisegit.org/docs/)
 * Support: [tortoisegit.org/support/](https://tortoisegit.org/support/)
 * Issue tracker: [tortoisegit.org/issues](https://tortoisegit.org/issues)
-* Contibute: [tortoisegit.org/contribute/](https://tortoisegit.org/contribute/)
+* Contribute: [tortoisegit.org/contribute/](https://tortoisegit.org/contribute/)
 * Mailing lists: [tortoisegit-announce](https://groups.google.com/group/tortoisegit-announce),
                  [tortoisegit-users](https://groups.google.com/group/tortoisegit-users) and
                  [tortoisegit-dev](https://groups.google.com/group/tortoisegit-dev)
