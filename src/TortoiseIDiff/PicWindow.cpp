@@ -886,7 +886,7 @@ void CPicWindow::OnMouseWheel(short fwKeys, short zDelta)
         InvalidateRect(*this, NULL, FALSE);
         SetWindowPos(*this, NULL, 0, 0, 0, 0, SWP_FRAMECHANGED|SWP_NOSIZE|SWP_NOREPOSITION|SWP_NOMOVE);
         UpdateWindow(*this);
-        if (bLinkedPositions && pTheOtherPic)
+        if ((bLinkedPositions || bOverlap) && pTheOtherPic)
         {
             pTheOtherPic->nHScrollPos = nHScrollPos;
             pTheOtherPic->nVScrollPos = nVScrollPos;
@@ -952,6 +952,10 @@ void CPicWindow::SetZoom(int Zoom, bool centermouse, bool inzoom)
 
     if (pTheOtherPic && !inzoom)
     {
+        if (bOverlap)
+        {
+            pTheOtherPic->SetZoom(Zoom, centermouse, true);
+        }
         if (bFitHeights)
         {
             m_linkedHeight = 0;
