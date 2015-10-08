@@ -239,6 +239,7 @@ protected:
 	static bool		HasPrevInlineDiff(CBaseView* view);
 	static bool		HasNextInlineDiff(CBaseView* view);
 	void			BuildRegexSubitems(CMFCPopupMenu* pMenuPopup = nullptr);
+	bool			AdjustUnicodeTypeForLoad(CFileTextLines::UnicodeType& type);
 
 protected:
 	CMFCStatusBar	m_wndStatusBar;

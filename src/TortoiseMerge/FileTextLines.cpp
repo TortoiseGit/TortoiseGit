@@ -52,6 +52,7 @@ UINT64 inline DwordSwapBytes(UINT64 nValue)
 
 CFileTextLines::CFileTextLines(void)
 	: m_bNeedsConversion(false)
+	, m_bKeepEncoding(false)
 {
 	m_SaveParams.m_UnicodeType = CFileTextLines::AUTOTYPE;
 	m_SaveParams.m_LineEndings = EOL_AUTOLINE;
@@ -209,7 +210,8 @@ BOOL CFileTextLines::Load(const CString& sFilePath, int lengthHint /* = 0*/)
 {
 	WCHAR exceptionError[1000] = {0};
 	m_SaveParams.m_LineEndings = EOL_AUTOLINE;
-	m_SaveParams.m_UnicodeType = CFileTextLines::AUTOTYPE;
+	if (!m_bKeepEncoding)
+		m_SaveParams.m_UnicodeType = CFileTextLines::AUTOTYPE;
 	RemoveAll();
 	if(lengthHint != 0)
 	{
@@ -277,9 +279,9 @@ BOOL CFileTextLines::Load(const CString& sFilePath, int lengthHint /* = 0*/)
 	if (m_SaveParams.m_UnicodeType == CFileTextLines::AUTOTYPE)
 	{
 		m_SaveParams.m_UnicodeType = this->CheckUnicodeType((LPVOID)oFile, dwReadBytes);
-		// enforce conversion for all but ASCII and UTF8 type
-		m_bNeedsConversion = (m_SaveParams.m_UnicodeType!=CFileTextLines::UTF8)&&(m_SaveParams.m_UnicodeType!=CFileTextLines::ASCII);
 	}
+	// enforce conversion for all but ASCII and UTF8 type
+	m_bNeedsConversion = (m_SaveParams.m_UnicodeType != CFileTextLines::UTF8) && (m_SaveParams.m_UnicodeType != CFileTextLines::ASCII);
 
 	// we may have to convert the file content - CString is UTF16LE
 	try

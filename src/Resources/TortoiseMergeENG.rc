@@ -743,6 +743,12 @@ END
 
 STRINGTABLE
 BEGIN
+    IDS_ENCODING_COMBO_TOOLTIP 
+                            "Encoding\nConvert to the specified encoding\nHold down the Ctrl key to reload the file with the specified encoding."
+END
+
+STRINGTABLE
+BEGIN
     IDS_FIND_COUNT          "Count: %u matches."
 END
 

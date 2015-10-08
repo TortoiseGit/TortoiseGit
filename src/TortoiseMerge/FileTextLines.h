@@ -1,6 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2006-2007, 2012-2014 - TortoiseSVN
+// Copyright (C) 2006-2007, 2012-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -154,6 +154,8 @@ public:
 	const CString&	GetAt(int index) const { return CStdFileLineArray::GetAt(index).sLine; }
 	EOL				GetLineEnding(int index) const { return CStdFileLineArray::GetAt(index).eEnding; }
 	void			SetSaveParams(const SaveParams& sp) { m_SaveParams = sp; }
+	SaveParams		GetSaveParams() const { return m_SaveParams; }
+	void			KeepEncoding(bool bKeep = true) { m_bKeepEncoding = bKeep; }
 	//void				SetLineEnding(int index, EOL ending) { CStdFileLineArray::GetAt(index).eEnding = ending; }
 
 	static const wchar_t * GetEncodingName(UnicodeType);
@@ -177,6 +179,7 @@ private:
 private:
 	CString				m_sErrorString;
 	bool				m_bNeedsConversion;
+	bool				m_bKeepEncoding;
 	SaveParams			m_SaveParams;
 	CString				m_sCommentLine;
 	CString				m_sCommentBlockStart;
