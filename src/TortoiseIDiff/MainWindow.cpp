@@ -476,10 +476,10 @@ LRESULT CMainWindow::DoCommand(int id, LPARAM lParam)
             TBBUTTONINFO tbi;
             tbi.cbSize = sizeof(TBBUTTONINFO);
             tbi.dwMask = TBIF_STATE;
-            tbi.fsState = ((m_BlendType == CPicWindow::BLEND_ALPHA) && bOverlap) ? TBSTATE_CHECKED : 0;
+            tbi.fsState = bOverlap ? TBSTATE_CHECKED | TBSTATE_ENABLED : TBSTATE_ENABLED;
             SendMessage(hwndTB, TB_SETBUTTONINFO, ID_VIEW_OVERLAPIMAGES, (LPARAM)&tbi);
 
-            tbi.fsState = (m_BlendType == CPicWindow::BLEND_ALPHA) ? TBSTATE_CHECKED : 0;
+            tbi.fsState = ((m_BlendType == CPicWindow::BLEND_ALPHA) && bOverlap) ? TBSTATE_CHECKED : 0;
             if (bOverlap)
                 tbi.fsState |= TBSTATE_ENABLED;
             else
@@ -557,7 +557,7 @@ LRESULT CMainWindow::DoCommand(int id, LPARAM lParam)
         {
             static COLORREF customColors[16] = {0};
             CHOOSECOLOR ccDlg;
-            memset(&ccDlg, 0, sizeof(ccDlg));
+            SecureZeroMemory(&ccDlg, sizeof(ccDlg));
             ccDlg.lStructSize = sizeof(ccDlg);
             ccDlg.hwndOwner = m_hwnd;
             ccDlg.rgbResult = transparentColor;
@@ -1020,7 +1020,6 @@ LRESULT CMainWindow::Splitter_OnLButtonUp(HWND hwnd, UINT /*iMsg*/, WPARAM /*wPa
 
 LRESULT CMainWindow::Splitter_OnMouseMove(HWND hwnd, UINT /*iMsg*/, WPARAM wParam, LPARAM lParam)
 {
-    HDC hdc;
     RECT rect;
     RECT clientrect;
 
@@ -1058,7 +1057,7 @@ LRESULT CMainWindow::Splitter_OnMouseMove(HWND hwnd, UINT /*iMsg*/, WPARAM wPara
 
     if ((wParam & MK_LBUTTON) && ((bVertical && (pt.y != oldy)) || (!bVertical && (pt.x != oldx))))
     {
-        hdc = GetWindowDC(hwnd);
+        HDC hdc = GetWindowDC(hwnd);
 
         if (bVertical)
         {
@@ -1130,7 +1129,7 @@ BOOL CALLBACK CMainWindow::OpenDlgProc(HWND hwndDlg, UINT message, WPARAM wParam
             break;
         case IDOK:
             {
-                TCHAR path[MAX_PATH] = {0};
+                TCHAR path[MAX_PATH] = { 0 };
                 if (!GetDlgItemText(hwndDlg, IDC_LEFTIMAGE, path, _countof(path)))
                     *path = 0;
                 leftpicpath = path;
