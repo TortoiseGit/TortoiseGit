@@ -6995,12 +6995,12 @@ msgstr ""
 msgid "Paste &last commit message"
 msgstr ""
 
-#. Resource IDs: (IDS_COMMITDLG_POPUP_LOGHISTORY)
-msgid "Paste &recent message..."
-msgstr ""
-
 #. Resource IDs: (16908)
 msgid "Paste Tool\nPaste"
+msgstr ""
+
+#. Resource IDs: (IDS_COMMITDLG_POPUP_LOGHISTORY)
+msgid "Paste r&ecent message..."
 msgstr ""
 
 #. Resource IDs: (IDS_MENUDESCCLIPPASTE)
