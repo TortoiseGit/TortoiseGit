@@ -4190,6 +4190,10 @@ msgstr ""
 msgid "Encoding"
 msgstr ""
 
+#. Resource IDs: (IDS_ENCODING_COMBO_TOOLTIP)
+msgid "Encoding\nConvert to the specified encoding\nHold down the Ctrl key to reload the file with the specified encoding."
+msgstr ""
+
 #. Resource IDs: (61866)
 #, c-format
 msgid "Encountered a hardware I/O error while accessing %1."
