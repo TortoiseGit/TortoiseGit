@@ -29,5 +29,5 @@ bool TagCommand::Execute()
 	if(base.IsEmpty())
 		p=NULL;
 
-	return CAppUtils::CreateBranchTag(TRUE,p);
+	return CAppUtils::CreateBranchTag(true, p, false, parser.HasVal(L"name") ? parser.GetVal(L"name") : nullptr);
 }

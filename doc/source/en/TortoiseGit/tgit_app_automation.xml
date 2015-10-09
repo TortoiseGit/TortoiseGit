@@ -604,6 +604,16 @@ Don't touch these lines:
 							</entry>
 						</row>
 						-->
+						<row>
+							<entry condition="pot">:tag</entry>
+							<entry>
+								Opens the <link linkend="tgit-dug-branchtag">Create Tag dialog</link>. The <option>/path</option> specifies the
+								repository folder.
+								Additional options can be set:
+								<option>/rev:"ref"</option> tags on the specified ref/commit,
+								<option>/name:"tag_name"</option> fills the Tag name in Create Tag dialog.
+							</entry>
+						</row>
 					</tbody>
 				</tgroup>
 			</table>

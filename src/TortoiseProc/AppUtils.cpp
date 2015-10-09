@@ -1185,14 +1185,17 @@ bool CAppUtils::Export(const CString* BashHash, const CTGitPath* orgPath)
 	return false;
 }
 
-bool CAppUtils::CreateBranchTag(bool IsTag, const CString* CommitHash, bool switch_new_brach)
+bool CAppUtils::CreateBranchTag(bool isTag /*true*/, const CString* commitHash /*nullptr*/, bool switchNewBranch /*false*/, LPCTSTR name /*nullptr*/)
 {
 	CCreateBranchTagDlg dlg;
-	dlg.m_bIsTag=IsTag;
-	dlg.m_bSwitch=switch_new_brach;
+	dlg.m_bIsTag = isTag;
+	dlg.m_bSwitch = switchNewBranch;
 
-	if(CommitHash)
-		dlg.m_initialRefName = *CommitHash;
+	if (commitHash)
+		dlg.m_initialRefName = *commitHash;
+
+	if (name)
+		dlg.m_BranchTagName = name;
 
 	if(dlg.DoModal()==IDOK)
 	{
@@ -1207,7 +1210,7 @@ bool CAppUtils::CreateBranchTag(bool IsTag, const CString* CommitHash, bool swit
 		if(dlg.m_bForce)
 			force=_T(" -f ");
 
-		if(IsTag)
+		if (isTag)
 		{
 			CString sign;
 			if(dlg.m_bSign)
@@ -1246,7 +1249,7 @@ bool CAppUtils::CreateBranchTag(bool IsTag, const CString* CommitHash, bool swit
 			CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
 			return FALSE;
 		}
-		if( !IsTag  &&  dlg.m_bSwitch )
+		if (!isTag && dlg.m_bSwitch)
 		{
 			// it is a new branch and the user has requested to switch to it
 			PerformSwitch(dlg.m_BranchTagName);
