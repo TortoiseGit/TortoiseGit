@@ -1276,7 +1276,7 @@ void CRebaseDlg::OnBnClickedContinue()
 			dlg.m_bSelectFilesForCommit = true;
 			dlg.m_bCommitAmend = isFirst && (m_RebaseStage != REBASE_SQUASH_EDIT); //  do not amend on squash_edit stage, we need a normal commit there
 			CTGitPathList gpl;
-			gpl.AddPath(CTGitPath(g_Git.m_CurrentDir));
+			gpl.AddPath(CTGitPath());
 			dlg.m_pathList = gpl;
 			dlg.m_bAmendDiffToLastCommit = !m_bSplitCommit;
 			dlg.m_bNoPostActions = true;
