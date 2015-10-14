@@ -3750,6 +3750,8 @@ BEGIN
     IDS_PROC_GITCONFIG_NOMSYSGIT 
                             "Git directory not set (see ""General"" settings page)."
     IDS_PROC_CLONE_DIR      "&Browse..."
+    IDS_GITEXEERROR_NOMESSAGE 
+                            """%s"" exited with an error, however, without generating any output such as an error message."
     IDS_PROC_CLONE_URLDIREMPTY "URL and directory must not be empty."
     IDS_PROC_COMMIT_SHOWPATCH "View Patch>>"
     IDS_PROC_COMMIT_HIDEPATCH "Hide Patch<<"

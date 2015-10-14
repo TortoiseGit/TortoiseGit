@@ -405,6 +405,7 @@
 #define IDC_STATBUTTON                  1132
 #define IDC_PATCH_TO_CLIPBOARD          1132
 #define IDC_LOG                         1132
+#define IDS_GITEXEERROR_NOMESSAGE       1132
 #define IDC_GRAPHCOMBO                  1133
 #define IDS_PROC_CLONE_URLDIREMPTY      1133
 #define IDC_GRAPHTYPELABEL              1134

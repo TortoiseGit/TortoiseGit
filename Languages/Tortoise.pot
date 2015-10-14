@@ -10692,6 +10692,11 @@ msgstr ""
 msgid "\"%s\" contains a git submodule. It is likely that this doesn't work any more on the destination after copying.\nDo you want to delete the .git-entry and add all files to the top repository or ignore this possible issue and keep it?"
 msgstr ""
 
+#. Resource IDs: (IDS_GITEXEERROR_NOMESSAGE)
+#, c-format
+msgid "\"%s\" exited with an error, however, without generating any output such as an error message."
+msgstr ""
+
 #. Resource IDs: (IDS_PROC_REFINVALID)
 #, c-format
 msgid "\"%s\" is invalid."
