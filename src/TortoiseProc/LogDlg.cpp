@@ -156,6 +156,7 @@ BEGIN_MESSAGE_MAP(CLogDlg, CResizableStandAloneDialog)
 	ON_COMMAND(IDC_LOG_JUMPDOWN, &CLogDlg::OnBnClickedJumpDown)
 	ON_COMMAND(ID_GO_UP, &CLogDlg::OnBnClickedJumpUp)
 	ON_COMMAND(ID_GO_DOWN, &CLogDlg::OnBnClickedJumpDown)
+	ON_COMMAND(ID_EXITCLEARFILTER, OnExitClearFilter)
 	ON_BN_CLICKED(IDC_WALKBEHAVIOUR, OnBnClickedWalkBehaviour)
 	ON_BN_CLICKED(IDC_VIEW, OnBnClickedView)
 	ON_BN_CLICKED(IDC_WHOLE_PROJECT, OnBnClickShowWholeProject)
@@ -3318,4 +3319,14 @@ LRESULT CLogDlg::OnRefreshSelection(WPARAM /*wParam*/, LPARAM /*lParam*/)
 		m_LogList.SetItemState(selMark, LVIS_SELECTED, LVIS_SELECTED);
 	}
 	return 0;
+}
+
+void CLogDlg::OnExitClearFilter()
+{
+	if (!m_LogList.m_sFilterText.IsEmpty())
+	{
+		OnClickedCancelFilter(NULL, NULL);
+		return;
+	}
+	SendMessage(WM_CLOSE);
 }

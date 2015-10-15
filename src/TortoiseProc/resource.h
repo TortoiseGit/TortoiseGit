@@ -1957,6 +1957,7 @@
 #define ID_GO_BACKWARD_SELECT           32871
 #define ID_GO_FORWARD_SELECT            32872
 #define ID_SELECT_SEARCHFIELD           32873
+#define ID_EXITCLEARFILTER              32874
 
 // Next default values for new objects
 // 
