@@ -888,7 +888,7 @@ BOOL CSciEdit::PreTranslateMessage(MSG* pMsg)
 		{
 		case VK_SPACE:
 			{
-				if (GetKeyState(VK_CONTROL) & 0x8000)
+				if ((GetKeyState(VK_CONTROL) & 0x8000) && ((GetKeyState(VK_MENU) & 0x8000) == 0))
 				{
 					DoAutoCompletion(1);
 					return TRUE;
@@ -898,7 +898,7 @@ BOOL CSciEdit::PreTranslateMessage(MSG* pMsg)
 		case VK_TAB:
 			// The TAB cannot be handled in OnKeyDown because it is too late by then.
 			{
-				if (GetKeyState(VK_CONTROL)&0x8000)
+				if ((GetKeyState(VK_CONTROL) & 0x8000) && ((GetKeyState(VK_MENU) & 0x8000) == 0))
 				{
 					//Ctrl-Tab was pressed, this means we should provide the user with
 					//a list of possible spell checking alternatives to the word under
