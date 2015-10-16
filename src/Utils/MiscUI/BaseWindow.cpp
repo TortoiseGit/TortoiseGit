@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2009, 2012-2013 - TortoiseSVN
+// Copyright (C) 2003-2009, 2012-2013, 2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -83,8 +83,8 @@ LRESULT CALLBACK CWindow::stWinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, L
     {
         switch (uMsg)
         {
-        case WM_ACTIVATE:
-            if ((wParam == WA_ACTIVE) && (!pWnd->bWindowRestored) && (!pWnd->sRegistryPath.empty()))
+		case WM_CREATE:
+			if ((!pWnd->bWindowRestored) && (!pWnd->sRegistryPath.empty()))
             {
                 WINDOWPLACEMENT wpl = {0};
                 DWORD size = sizeof(wpl);
