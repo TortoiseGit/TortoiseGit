@@ -145,9 +145,9 @@ bool CAppUtils::StashSave(const CString& msg, bool showPull, bool pullShowPush, 
 				return;
 
 			if (showPull)
-				postCmdList.push_back(PostCmd(IDI_PULL, IDS_MENUPULL, [&]{ CAppUtils::Pull(pullShowPush, true); }));
+				postCmdList.emplace_back(IDI_PULL, IDS_MENUPULL, [&]{ CAppUtils::Pull(pullShowPush, true); });
 			if (showMerge)
-				postCmdList.push_back(PostCmd(IDI_MERGE, IDS_MENUMERGE, [&]{ CAppUtils::Merge(&mergeRev, true); }));
+				postCmdList.emplace_back(IDI_MERGE, IDS_MENUMERGE, [&]{ CAppUtils::Merge(&mergeRev, true); });
 		};
 		return (progress.DoModal() == IDOK);
 	}
@@ -1171,7 +1171,7 @@ bool CAppUtils::Export(const CString* BashHash, const CTGitPath* orgPath)
 		{
 			if (status)
 				return;
-			postCmdList.push_back(PostCmd(IDI_EXPLORER, IDS_STATUSLIST_CONTEXT_EXPLORE, [&]{ CAppUtils::ExploreTo(hWndExplorer, dlg.m_strFile); }));
+			postCmdList.emplace_back(IDI_EXPLORER, IDS_STATUSLIST_CONTEXT_EXPLORE, [&]{ CAppUtils::ExploreTo(hWndExplorer, dlg.m_strFile); });
 		};
 
 		CGit git;
@@ -1328,35 +1328,35 @@ bool CAppUtils::PerformSwitch(const CString& ref, bool bForce /* false */, const
 			CTGitPath gitPath = g_Git.m_CurrentDir;
 			if (gitPath.HasSubmodules())
 			{
-				postCmdList.push_back(PostCmd(IDI_UPDATE, IDS_PROC_SUBMODULESUPDATE, [&]
+				postCmdList.emplace_back(IDI_UPDATE, IDS_PROC_SUBMODULESUPDATE, [&]
 				{
 					CString sCmd;
 					sCmd.Format(_T("/command:subupdate /bkpath:\"%s\""), (LPCTSTR)g_Git.m_CurrentDir);
 					RunTortoiseGitProc(sCmd);
-				}));
+				});
 			}
 			if (hasBranch)
-				postCmdList.push_back(PostCmd(IDI_MERGE, IDS_MENUMERGE, [&]{ Merge(&currentBranch); }));
+				postCmdList.emplace_back(IDI_MERGE, IDS_MENUMERGE, [&]{ Merge(&currentBranch); });
 
 
 			CString newBranch;
 			if (!CGit::GetCurrentBranchFromFile(g_Git.m_CurrentDir, newBranch))
-				postCmdList.push_back(PostCmd(IDI_PULL, IDS_MENUPULL, [&]{ Pull(); }));
+				postCmdList.emplace_back(IDI_PULL, IDS_MENUPULL, [&]{ Pull(); });
 
-			postCmdList.push_back(PostCmd(IDI_COMMIT, IDS_MENUCOMMIT, []{
+			postCmdList.emplace_back(IDI_COMMIT, IDS_MENUCOMMIT, []{
 				CTGitPathList pathlist;
 				CTGitPathList selectedlist;
 				pathlist.AddPath(CTGitPath());
 				bool bSelectFilesForCommit = !!DWORD(CRegStdDWORD(_T("Software\\TortoiseGit\\SelectFilesForCommit"), TRUE));
 				CString str;
 				Commit(CString(), false, str, pathlist, selectedlist, bSelectFilesForCommit);
-			}));
+			});
 		}
 		else
 		{
-			postCmdList.push_back(PostCmd(IDI_REFRESH, IDS_MSGBOX_RETRY, [&]{ PerformSwitch(ref, bForce, sNewBranch, bBranchOverride, bTrack, bMerge); }));
+			postCmdList.emplace_back(IDI_REFRESH, IDS_MSGBOX_RETRY, [&]{ PerformSwitch(ref, bForce, sNewBranch, bBranchOverride, bTrack, bMerge); });
 			if (!bMerge)
-				postCmdList.push_back(PostCmd(IDI_SWITCH, IDS_SWITCH_WITH_MERGE, [&]{ PerformSwitch(ref, bForce, sNewBranch, bBranchOverride, bTrack, true); }));
+				postCmdList.emplace_back(IDI_SWITCH, IDS_SWITCH_WITH_MERGE, [&]{ PerformSwitch(ref, bForce, sNewBranch, bBranchOverride, bTrack, true); });
 		}
 	};
 
@@ -1560,19 +1560,19 @@ static bool Reset(const CString& resetTo, int resetType)
 	{
 		if (status)
 		{
-			postCmdList.push_back(PostCmd(IDI_REFRESH, IDS_MSGBOX_RETRY, [&]{ Reset(resetTo, resetType); }));
+			postCmdList.emplace_back(IDI_REFRESH, IDS_MSGBOX_RETRY, [&]{ Reset(resetTo, resetType); });
 			return;
 		}
 
 		CTGitPath gitPath = g_Git.m_CurrentDir;
 		if (gitPath.HasSubmodules() && resetType == 2)
 		{
-			postCmdList.push_back(PostCmd(IDI_UPDATE, IDS_PROC_SUBMODULESUPDATE, [&]
+			postCmdList.emplace_back(IDI_UPDATE, IDS_PROC_SUBMODULESUPDATE, [&]
 			{
 				CString sCmd;
 				sCmd.Format(_T("/command:subupdate /bkpath:\"%s\""), (LPCTSTR)g_Git.m_CurrentDir);
 				CAppUtils::RunTortoiseGitProc(sCmd);
-			}));
+			});
 		}
 	};
 
@@ -2463,44 +2463,44 @@ bool CAppUtils::Pull(bool showPush, bool showStashPop)
 		{
 			if (status)
 			{
-				postCmdList.push_back(PostCmd(IDI_PULL, IDS_MENUPULL, [&]{ Pull(); }));
-				postCmdList.push_back(PostCmd(IDI_COMMIT, IDS_MENUSTASHSAVE, [&]{ StashSave(_T(""), true); }));
+				postCmdList.emplace_back(IDI_PULL, IDS_MENUPULL, [&]{ Pull(); });
+				postCmdList.emplace_back(IDI_COMMIT, IDS_MENUSTASHSAVE, [&]{ StashSave(_T(""), true); });
 				return;
 			}
 
 			if (showStashPop)
-				postCmdList.push_back(PostCmd(IDI_RELOCATE, IDS_MENUSTASHPOP, []{ StashPop(); }));
+				postCmdList.emplace_back(IDI_RELOCATE, IDS_MENUSTASHPOP, []{ StashPop(); });
 
 			if (g_Git.GetHash(hashNew, _T("HEAD")))
 				MessageBox(nullptr, g_Git.GetGitLastErr(_T("Could not get HEAD hash after pulling.")), _T("TortoiseGit"), MB_ICONERROR);
 			else
 			{
-				postCmdList.push_back(PostCmd(IDI_DIFF, IDS_PROC_PULL_DIFFS, [&]
+				postCmdList.emplace_back(IDI_DIFF, IDS_PROC_PULL_DIFFS, [&]
 				{
 					CFileDiffDlg dlg;
 					dlg.SetDiff(NULL, hashNew.ToString(), hashOld.ToString());
 					dlg.DoModal();
-				}));
-				postCmdList.push_back(PostCmd(IDI_LOG, IDS_PROC_PULL_LOG, [&]
+				});
+				postCmdList.emplace_back(IDI_LOG, IDS_PROC_PULL_LOG, [&]
 				{
 					CLogDlg dlg;
 					dlg.SetParams(CTGitPath(_T("")), CTGitPath(_T("")), _T(""), hashOld.ToString() + _T("..") + hashNew.ToString(), 0);
 					dlg.DoModal();
-				}));
+				});
 			}
 
 			if (showPush)
-				postCmdList.push_back(PostCmd(IDI_PUSH, IDS_MENUPUSH, []{ Push(); }));
+				postCmdList.emplace_back(IDI_PUSH, IDS_MENUPUSH, []{ Push(); });
 
 			CTGitPath gitPath = g_Git.m_CurrentDir;
 			if (gitPath.HasSubmodules())
 			{
-				postCmdList.push_back(PostCmd(IDI_UPDATE, IDS_PROC_SUBMODULESUPDATE, []
+				postCmdList.emplace_back(IDI_UPDATE, IDS_PROC_SUBMODULESUPDATE, []
 				{
 					CString sCmd;
 					sCmd.Format(_T("/command:subupdate /bkpath:\"%s\""), (LPCTSTR)g_Git.m_CurrentDir);
 					CAppUtils::RunTortoiseGitProc(sCmd);
-				}));
+				});
 			}
 		};
 
@@ -2637,18 +2637,18 @@ static bool DoFetch(const CString& url, const bool fetchAllRemotes, const bool l
 	{
 		if (status)
 		{
-			postCmdList.push_back(PostCmd(IDI_REFRESH, IDS_MSGBOX_RETRY, [&]{ DoFetch(url, fetchAllRemotes, loadPuttyAgent, prune, bDepth, nDepth, fetchTags, remoteBranch, runRebase); }));
+			postCmdList.emplace_back(IDI_REFRESH, IDS_MSGBOX_RETRY, [&]{ DoFetch(url, fetchAllRemotes, loadPuttyAgent, prune, bDepth, nDepth, fetchTags, remoteBranch, runRebase); });
 			return;
 		}
 
-		postCmdList.push_back(PostCmd(IDI_LOG, IDS_MENULOG, []
+		postCmdList.emplace_back(IDI_LOG, IDS_MENULOG, []
 		{
 			CString cmd = _T("/command:log");
 			cmd += _T(" /path:\"") + g_Git.m_CurrentDir + _T("\"");
 			CAppUtils::RunTortoiseGitProc(cmd);
-		}));
+		});
 
-		postCmdList.push_back(PostCmd(IDI_REVERT, IDS_PROC_RESET, []
+		postCmdList.emplace_back(IDI_REVERT, IDS_PROC_RESET, []
 		{
 			CString pullRemote, pullBranch;
 			g_Git.GetRemoteTrackedBranchForHEAD(pullRemote, pullBranch);
@@ -2656,12 +2656,12 @@ static bool DoFetch(const CString& url, const bool fetchAllRemotes, const bool l
 			if (!pullRemote.IsEmpty() && !pullBranch.IsEmpty())
 				defaultUpstream.Format(_T("remotes/%s/%s"), (LPCTSTR)pullRemote, (LPCTSTR)pullBranch);
 			CAppUtils::GitReset(&defaultUpstream, 2);
-		}));
+		});
 
-		postCmdList.push_back(PostCmd(IDI_PULL, IDS_MENUFETCH, []{ CAppUtils::Fetch(); }));
+		postCmdList.emplace_back(IDI_PULL, IDS_MENUFETCH, []{ CAppUtils::Fetch(); });
 
 		if (!runRebase && !GitAdminDir::IsBareRepo(g_Git.m_CurrentDir))
-			postCmdList.push_back(PostCmd(IDI_REBASE, IDS_MENUREBASE, [&]{ runRebase = false; CAppUtils::RebaseAfterFetch(); }));
+			postCmdList.emplace_back(IDI_REBASE, IDS_MENUREBASE, [&]{ runRebase = false; CAppUtils::RebaseAfterFetch(); });
 	};
 
 	progress.m_GitCmd = cmd;
@@ -2707,12 +2707,12 @@ static bool DoFetch(const CString& url, const bool fetchAllRemotes, const bool l
 						if (status && g_Git.HasWorkingTreeConflicts())
 						{
 							// there are conflict files
-							postCmdList.push_back(PostCmd(IDI_RESOLVE, IDS_PROGRS_CMD_RESOLVE, []
+							postCmdList.emplace_back(IDI_RESOLVE, IDS_PROGRS_CMD_RESOLVE, []
 							{
 								CString sCmd;
 								sCmd.Format(_T("/command:commit /path:\"%s\""), g_Git.m_CurrentDir);
 								CAppUtils::RunTortoiseGitProc(sCmd);
-							}));
+							});
 						}
 					};
 					return mergeProgress.DoModal() == IDOK;
@@ -2849,24 +2849,24 @@ bool CAppUtils::Push(const CString& selectLocalBranch)
 				bool rejected = progress.GetLogText().Find(_T("! [rejected]")) > 0;
 				if (rejected)
 				{
-					postCmdList.push_back(PostCmd(IDI_PULL, IDS_MENUPULL, []{ Pull(true); }));
-					postCmdList.push_back(PostCmd(IDI_PULL, IDS_MENUFETCH, [&]{ Fetch(dlg.m_bPushAllRemotes ? _T("") : dlg.m_URL, !!dlg.m_bPushAllRemotes); }));
+					postCmdList.emplace_back(IDI_PULL, IDS_MENUPULL, []{ Pull(true); });
+					postCmdList.emplace_back(IDI_PULL, IDS_MENUFETCH, [&]{ Fetch(dlg.m_bPushAllRemotes ? _T("") : dlg.m_URL, !!dlg.m_bPushAllRemotes); });
 				}
-				postCmdList.push_back(PostCmd(IDI_PUSH, IDS_MENUPUSH, [&]{ Push(selectLocalBranch); }));
+				postCmdList.emplace_back(IDI_PUSH, IDS_MENUPUSH, [&]{ Push(selectLocalBranch); });
 				return;
 			}
 
-			postCmdList.push_back(PostCmd(IDS_PROC_REQUESTPULL, [&]{ RequestPull(dlg.m_BranchRemoteName); }));
-			postCmdList.push_back(PostCmd(IDI_PUSH, IDS_MENUPUSH, [&]{ Push(selectLocalBranch); }));
-			postCmdList.push_back(PostCmd(IDI_SWITCH, IDS_MENUSWITCH, [&]{ Switch(); }));
+			postCmdList.emplace_back(IDS_PROC_REQUESTPULL, [&]{ RequestPull(dlg.m_BranchRemoteName); });
+			postCmdList.emplace_back(IDI_PUSH, IDS_MENUPUSH, [&]{ Push(selectLocalBranch); });
+			postCmdList.emplace_back(IDI_SWITCH, IDS_MENUSWITCH, [&]{ Switch(); });
 			if (!superprojectRoot.IsEmpty())
 			{
-				postCmdList.push_back(PostCmd(IDI_COMMIT, IDS_PROC_COMMIT_SUPERPROJECT, [&]
+				postCmdList.emplace_back(IDI_COMMIT, IDS_PROC_COMMIT_SUPERPROJECT, [&]
 				{
 					CString sCmd;
 					sCmd.Format(_T("/command:commit /path:\"%s\""), (LPCTSTR)superprojectRoot);
 					RunTortoiseGitProc(sCmd);
-				}));
+				});
 			}
 		};
 
@@ -3251,35 +3251,35 @@ BOOL CAppUtils::Merge(const CString* commit, bool showStashPop)
 				{
 					// there are conflict files
 
-					postCmdList.push_back(PostCmd(IDI_RESOLVE, IDS_PROGRS_CMD_RESOLVE, []
+					postCmdList.emplace_back(IDI_RESOLVE, IDS_PROGRS_CMD_RESOLVE, []
 					{
 						CString sCmd;
 						sCmd.Format(_T("/command:commit /path:\"%s\""), (LPCTSTR)g_Git.m_CurrentDir);
 						CAppUtils::RunTortoiseGitProc(sCmd);
-					}));
+					});
 				}
 
-				postCmdList.push_back(PostCmd(IDI_COMMIT, IDS_MENUSTASHSAVE, [&]{ CAppUtils::StashSave(_T(""), false, false, true, g_Git.FixBranchName(dlg.m_VersionName)); }));
+				postCmdList.emplace_back(IDI_COMMIT, IDS_MENUSTASHSAVE, [&]{ CAppUtils::StashSave(_T(""), false, false, true, g_Git.FixBranchName(dlg.m_VersionName)); });
 				return;
 			}
 
 			if (showStashPop)
-				postCmdList.push_back(PostCmd(IDI_RELOCATE, IDS_MENUSTASHPOP, []{ StashPop(); }));
+				postCmdList.emplace_back(IDI_RELOCATE, IDS_MENUSTASHPOP, []{ StashPop(); });
 
 			if (dlg.m_bNoCommit)
 			{
-				postCmdList.push_back(PostCmd(IDI_COMMIT, IDS_MENUCOMMIT, []
+				postCmdList.emplace_back(IDI_COMMIT, IDS_MENUCOMMIT, []
 				{
 					CString sCmd;
 					sCmd.Format(_T("/command:commit /path:\"%s\""), (LPCTSTR)g_Git.m_CurrentDir);
 					CAppUtils::RunTortoiseGitProc(sCmd);
-				}));
+				});
 				return;
 			}
 
 			if (dlg.m_bIsBranch && dlg.m_VersionName.Find(L"remotes/") == -1) // do not ask to remove remote branches
 			{
-				postCmdList.push_back(PostCmd(IDI_DELETE, IDS_PROC_REMOVEBRANCH, [&]
+				postCmdList.emplace_back(IDI_DELETE, IDS_PROC_REMOVEBRANCH, [&]
 				{
 					CString msg;
 					msg.Format(IDS_PROC_DELETEBRANCHTAG, dlg.m_VersionName);
@@ -3290,14 +3290,14 @@ BOOL CAppUtils::Merge(const CString* commit, bool showStashPop)
 						if (g_Git.Run(cmd, &out, CP_UTF8))
 							MessageBox(nullptr, out, _T("TortoiseGit"), MB_OK);
 					}
-				}));
+				});
 			}
 			if (dlg.m_bIsBranch)
-				postCmdList.push_back(PostCmd(IDI_PUSH, IDS_MENUPUSH, []{ Push(); }));
+				postCmdList.emplace_back(IDI_PUSH, IDS_MENUPUSH, []{ Push(); });
 
 			BOOL hasGitSVN = CTGitPath(g_Git.m_CurrentDir).GetAdminDirMask() & ITEMIS_GITSVN;
 			if (hasGitSVN)
-				postCmdList.push_back(PostCmd(IDI_COMMIT, IDS_MENUSVNDCOMMIT, []{ SVNDCommit(); }));
+				postCmdList.emplace_back(IDI_COMMIT, IDS_MENUSVNDCOMMIT, []{ SVNDCommit(); });
 		};
 
 		Prodlg.DoModal();
@@ -3524,12 +3524,12 @@ bool CAppUtils::BisectStart(const CString& lastGood, const CString& firstBad, bo
 			CTGitPath path(g_Git.m_CurrentDir);
 			if (path.HasSubmodules())
 			{
-				postCmdList.push_back(PostCmd(IDI_UPDATE, IDS_PROC_SUBMODULESUPDATE, []
+				postCmdList.emplace_back(IDI_UPDATE, IDS_PROC_SUBMODULESUPDATE, []
 				{
 					CString sCmd;
 					sCmd.Format(_T("/command:subupdate /bkpath:\"%s\""), (LPCTSTR)g_Git.m_CurrentDir);
 					CAppUtils::RunTortoiseGitProc(sCmd);
-				}));
+				});
 			}
 		};
 

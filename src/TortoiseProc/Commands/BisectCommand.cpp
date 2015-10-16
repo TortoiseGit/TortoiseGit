@@ -65,16 +65,16 @@ bool BisectCommand::Execute()
 
 			if (path.HasSubmodules())
 			{
-				postCmdList.push_back(PostCmd(IDI_UPDATE, IDS_PROC_SUBMODULESUPDATE, []
+				postCmdList.emplace_back(IDI_UPDATE, IDS_PROC_SUBMODULESUPDATE, []
 				{
 					CString sCmd;
 					sCmd.Format(_T("/command:subupdate /bkpath:\"%s\""), (LPCTSTR)g_Git.m_CurrentDir);
 					CAppUtils::RunTortoiseGitProc(sCmd);
-				}));
+				});
 			}
 
 			if (!this->parser.HasKey(_T("reset")))
-				postCmdList.push_back(PostCmd(IDS_MENUBISECTRESET, []{ CAppUtils::RunTortoiseGitProc(_T("/command:bisect /reset")); }));
+				postCmdList.emplace_back(IDS_MENUBISECTRESET, []{ CAppUtils::RunTortoiseGitProc(_T("/command:bisect /reset")); });
 		};
 
 		INT_PTR ret = progress.DoModal();

@@ -1048,7 +1048,7 @@ T& CKeyList<T>::GetAt (int index) const
         typename T::StringT indexKey = key + _T ('\\') + buffer;
 
         T* newElement = new T (indexKey, GetDefault (index), false, base);
-        iter = elements.insert (std::make_pair (index, newElement)).first;
+        iter = elements.emplace(index, newElement).first;
     }
 
     return *iter->second;

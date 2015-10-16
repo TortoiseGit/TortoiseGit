@@ -226,20 +226,20 @@ static bool DoCleanUp(const CTGitPathList& pathList, int cleanType, bool bDir, b
 		progress.m_PostCmdCallback = [&](DWORD status, PostCmdList& postCmdList)
 		{
 			if (status)
-				postCmdList.push_back(PostCmd(IDS_MSGBOX_RETRY, [&]{ DoCleanUp(pathList, cleanType, bDir, bSubmodules, bDryRun, bNoRecycleBin); }));
+				postCmdList.emplace_back(IDS_MSGBOX_RETRY, [&]{ DoCleanUp(pathList, cleanType, bDir, bSubmodules, bDryRun, bNoRecycleBin); });
 
 			if (status || !bDryRun)
 				return;
 
 			if (bNoRecycleBin)
 			{
-				postCmdList.push_back(PostCmd(IDS_CLEAN_NO_RECYCLEBIN, [&]{ DoCleanUp(pathList, cleanType, bDir, bSubmodules, FALSE, TRUE); }));
-				postCmdList.push_back(PostCmd(IDS_CLEAN_TO_RECYCLEBIN, [&]{ DoCleanUp(pathList, cleanType, bDir, bSubmodules, FALSE, FALSE); }));
+				postCmdList.emplace_back(IDS_CLEAN_NO_RECYCLEBIN, [&]{ DoCleanUp(pathList, cleanType, bDir, bSubmodules, FALSE, TRUE); });
+				postCmdList.emplace_back(IDS_CLEAN_TO_RECYCLEBIN, [&]{ DoCleanUp(pathList, cleanType, bDir, bSubmodules, FALSE, FALSE); });
 			}
 			else
 			{
-				postCmdList.push_back(PostCmd(IDS_CLEAN_TO_RECYCLEBIN, [&]{ DoCleanUp(pathList, cleanType, bDir, bSubmodules, FALSE, FALSE); }));
-				postCmdList.push_back(PostCmd(IDS_CLEAN_NO_RECYCLEBIN, [&]{ DoCleanUp(pathList, cleanType, bDir, bSubmodules, FALSE, TRUE); }));
+				postCmdList.emplace_back(IDS_CLEAN_TO_RECYCLEBIN, [&]{ DoCleanUp(pathList, cleanType, bDir, bSubmodules, FALSE, FALSE); });
+				postCmdList.emplace_back(IDS_CLEAN_NO_RECYCLEBIN, [&]{ DoCleanUp(pathList, cleanType, bDir, bSubmodules, FALSE, TRUE); });
 			}
 		};
 

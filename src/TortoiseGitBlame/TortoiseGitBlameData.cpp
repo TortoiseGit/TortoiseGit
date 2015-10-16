@@ -186,7 +186,7 @@ void CTortoiseGitBlameData::ParseBlameOutput(BYTE_VECTOR &data, CGitHashMap & Ha
 							int filenameEnd = lineEnd;
 							CStringA filenameA = CStringA((LPCSTR)&data[filenameBegin], filenameEnd - filenameBegin);
 							filename = UnquoteFilename(filenameA);
-							auto r = hashToFilename.insert(std::make_pair(hash, filename));
+							auto r = hashToFilename.emplace(hash, filename);
 							if (!r.second)
 							{
 								r.first->second = filename;
@@ -225,8 +225,8 @@ void CTortoiseGitBlameData::ParseBlameOutput(BYTE_VECTOR &data, CGitHashMap & Ha
 		else
 		{
 			MessageBox(nullptr, err, _T("TortoiseGit"), MB_ICONERROR);
-			authors.push_back(CString());
-			dates.push_back(CString());
+			authors.emplace_back();
+			dates.emplace_back();
 		}
 	}
 
@@ -475,7 +475,7 @@ GitRevLoglist* CTortoiseGitBlameData::GetRevForHash(CGitHashMap& HashToRev, cons
 			*err = rev.GetLastErr();
 			return nullptr;
 		}
-		it = HashToRev.insert(std::make_pair(hash, rev)).first;
+		it = HashToRev.emplace(hash, rev).first;
 	}
 	return &(it->second);
 }

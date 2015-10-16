@@ -68,7 +68,7 @@ int GitRevRefBrowser::GetGitRevRefMap(MAP_REF_GITREVREFBROWSER& map, CString& er
 		if (wcsncmp(refName, L"refs/heads/", 11) == 0)
 			ref.m_Description = descriptions[refName.Mid(11)];
 
-		map.insert(std::make_pair(refName, ref));
+		map.emplace(refName, ref);
 	}
 
 	return 0;

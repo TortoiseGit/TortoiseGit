@@ -732,7 +732,7 @@ void CSciEdit::DoAutoCompletion(int nMinPrefixLength)
 				continue;
 			else if (compare == 0)
 			{
-				wordset.insert(std::make_pair(lowerit->first, lowerit->second));
+				wordset.emplace(lowerit->first, lowerit->second);
 			}
 			else
 			{

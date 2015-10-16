@@ -452,12 +452,12 @@ void CSyncDlg::FetchComplete()
 				if (status && g_Git.HasWorkingTreeConflicts())
 				{
 					// there are conflict files
-					postCmdList.push_back(PostCmd(IDI_RESOLVE, IDS_PROGRS_CMD_RESOLVE, []
+					postCmdList.emplace_back(IDI_RESOLVE, IDS_PROGRS_CMD_RESOLVE, []
 					{
 						CString sCmd;
 						sCmd.Format(_T("/command:commit /path:\"%s\""), g_Git.m_CurrentDir);
 						CAppUtils::RunTortoiseGitProc(sCmd);
-					}));
+					});
 				}
 			};
 			mergeProgress.DoModal();

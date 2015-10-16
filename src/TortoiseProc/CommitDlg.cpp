@@ -996,12 +996,12 @@ void CCommitDlg::OnOK()
 				return;
 
 			if (IsGitSVN)
-				postCmdList.push_back(PostCmd(IDI_COMMIT, IDS_MENUSVNDCOMMIT, [&]{ m_PostCmd = GIT_POSTCOMMIT_CMD_DCOMMIT; }));
+				postCmdList.emplace_back(IDI_COMMIT, IDS_MENUSVNDCOMMIT, [&]{ m_PostCmd = GIT_POSTCOMMIT_CMD_DCOMMIT; });
 
-			postCmdList.push_back(PostCmd(IDI_PUSH, IDS_MENUPUSH, [&]{ m_PostCmd = GIT_POSTCOMMIT_CMD_PUSH; }));
-			postCmdList.push_back(PostCmd(IDI_PULL, IDS_MENUPULL, [&]{ m_PostCmd = GIT_POSTCOMMIT_CMD_PULL; }));
-			postCmdList.push_back(PostCmd(IDI_COMMIT, IDS_PROC_COMMIT_RECOMMIT, [&]{ m_PostCmd = GIT_POSTCOMMIT_CMD_RECOMMIT; }));
-			postCmdList.push_back(PostCmd(IDI_TAG, IDS_MENUTAG, [&]{ m_PostCmd = GIT_POSTCOMMIT_CMD_CREATETAG; }));
+			postCmdList.emplace_back(IDI_PUSH, IDS_MENUPUSH, [&]{ m_PostCmd = GIT_POSTCOMMIT_CMD_PUSH; });
+			postCmdList.emplace_back(IDI_PULL, IDS_MENUPULL, [&]{ m_PostCmd = GIT_POSTCOMMIT_CMD_PULL; });
+			postCmdList.emplace_back(IDI_COMMIT, IDS_PROC_COMMIT_RECOMMIT, [&]{ m_PostCmd = GIT_POSTCOMMIT_CMD_RECOMMIT; });
+			postCmdList.emplace_back(IDI_TAG, IDS_MENUTAG, [&]{ m_PostCmd = GIT_POSTCOMMIT_CMD_CREATETAG; });
 		};
 
 		m_PostCmd = GIT_POSTCOMMIT_CMD_NOTHING;
@@ -1675,7 +1675,7 @@ void CCommitDlg::GetAutocompletionList()
 	if (PathFileExists(sSnippetFile))
 		ParseSnippetFile(sSnippetFile, m_snippet);
 	for (const auto& snip : m_snippet)
-		m_autolist.insert(std::make_pair(snip.first, AUTOCOMPLETE_SNIPPET));
+		m_autolist.emplace(snip.first, AUTOCOMPLETE_SNIPPET);
 
 	DWORD starttime = GetTickCount();
 
@@ -1699,7 +1699,7 @@ void CCommitDlg::GetAutocompletionList()
 			continue;
 
 		CString sPartPath =path->GetGitPathString();
-		m_autolist.insert(std::make_pair(sPartPath, AUTOCOMPLETE_FILENAME));
+		m_autolist.emplace(sPartPath, AUTOCOMPLETE_FILENAME);
 
 		int pos = 0;
 		int lastPos = 0;
@@ -1707,7 +1707,7 @@ void CCommitDlg::GetAutocompletionList()
 		{
 			++pos;
 			lastPos = pos;
-			m_autolist.insert(std::make_pair(sPartPath.Mid(pos), AUTOCOMPLETE_FILENAME));
+			m_autolist.emplace(sPartPath.Mid(pos), AUTOCOMPLETE_FILENAME);
 		}
 
 		// Last inserted entry is a file name.
@@ -1716,7 +1716,7 @@ void CCommitDlg::GetAutocompletionList()
 		{
 			int dotPos = sPartPath.ReverseFind('.');
 			if ((dotPos >= 0) && (dotPos > lastPos))
-				m_autolist.insert(std::make_pair(sPartPath.Mid(lastPos, dotPos - lastPos), AUTOCOMPLETE_FILENAME));
+				m_autolist.emplace(sPartPath.Mid(lastPos, dotPos - lastPos), AUTOCOMPLETE_FILENAME);
 		}
 
 		if (path->m_Action == CTGitPath::LOGACTIONS_UNVER && !CRegDWORD(_T("Software\\TortoiseGit\\AutocompleteParseUnversioned"), FALSE))
@@ -1799,7 +1799,7 @@ void CCommitDlg::ScanFile(const CString& sFilePath, const CString& sRegex, const
 			{
 				if (match[i].second-match[i].first)
 				{
-					m_autolist.insert(std::make_pair(std::wstring(match[i]).c_str(), AUTOCOMPLETE_PROGRAMCODE));
+					m_autolist.emplace(std::wstring(match[i]).c_str(), AUTOCOMPLETE_PROGRAMCODE);
 				}
 			}
 		}

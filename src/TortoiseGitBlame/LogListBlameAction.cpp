@@ -178,7 +178,7 @@ void CGitBlameLogList::GetPaths(const CGitHash& hash, std::vector<CTGitPath>& pa
 			}
 			for (auto it = filenames.cbegin(); it != filenames.cend(); ++it)
 			{
-				paths.push_back(CTGitPath(*it));
+				paths.emplace_back(*it);
 			}
 		}
 		if (paths.empty())

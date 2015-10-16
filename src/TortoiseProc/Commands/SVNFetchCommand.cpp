@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2014 - TortoiseGit
+// Copyright (C) 2008-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -73,19 +73,19 @@ bool SVNFetchCommand::Execute()
 		if (upstreamOldHash == upstreamNewHash)
 			return;
 
-		postCmdList.push_back(PostCmd(IDI_DIFF, _T("Fetched Diff"), [&]
+		postCmdList.emplace_back(IDI_DIFF, _T("Fetched Diff"), [&]
 		{
 			CLogDlg dlg;
 			dlg.SetParams(CTGitPath(_T("")), CTGitPath(_T("")), _T(""), upstreamOldHash.ToString() + _T("..") + upstreamNewHash.ToString(), 0);
 			dlg.DoModal();
-		}));
+		});
 
-		postCmdList.push_back(PostCmd(IDI_LOG, _T("Fetched Log"), [&]
+		postCmdList.emplace_back(IDI_LOG, _T("Fetched Log"), [&]
 		{
 			CFileDiffDlg dlg;
 			dlg.SetDiff(NULL, upstreamNewHash.ToString(), upstreamOldHash.ToString());
 			dlg.DoModal();
-		}));
+		});
 	};
 
 	INT_PTR userResponse = progress.DoModal();

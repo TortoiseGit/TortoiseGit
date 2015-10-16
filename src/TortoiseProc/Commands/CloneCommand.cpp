@@ -181,7 +181,7 @@ bool CloneCommand::Execute()
 		{
 			if (status)
 			{
-				postCmdList.push_back(PostCmd(IDI_REFRESH, IDS_MSGBOX_RETRY, [&] { retry = true; }));
+				postCmdList.emplace_back(IDI_REFRESH, IDS_MSGBOX_RETRY, [&]{ retry = true; });
 				return;
 			}
 
@@ -190,14 +190,14 @@ bool CloneCommand::Execute()
 			if (dlg.m_bAutoloadPuttyKeyFile) // do this here, since it might be needed for actions performed in Log
 				StorePuttyKey(dlg.m_Directory, dlg.m_bOrigin && !dlg.m_strOrigin.IsEmpty() ? dlg.m_strOrigin : _T("origin"), dlg.m_strPuttyKeyFile);
 
-			postCmdList.push_back(PostCmd(IDI_LOG, IDS_MENULOG, [&]
+			postCmdList.emplace_back(IDI_LOG, IDS_MENULOG, [&]
 			{
 				CString cmd = _T("/command:log");
 				cmd += _T(" /path:\"") + dlg.m_Directory + _T("\"");
 				CAppUtils::RunTortoiseGitProc(cmd);
-			}));
+			});
 
-			postCmdList.push_back(PostCmd(IDI_EXPLORER, IDS_STATUSLIST_CONTEXT_EXPLORE, [&]{ CAppUtils::ExploreTo(hWndExplorer, dlg.m_Directory); }));
+			postCmdList.emplace_back(IDI_EXPLORER, IDS_STATUSLIST_CONTEXT_EXPLORE, [&]{ CAppUtils::ExploreTo(hWndExplorer, dlg.m_Directory); });
 		};
 
 		// Handle Git SVN-clone

@@ -94,7 +94,7 @@ int CSysImageList::GetPathIconIndex(const CTGitPath& filePath) const
 	{
 		// We don't have this extension in the map
 		int iconIndex = GetFileIconIndex(filePath.GetFilename());
-		it = m_indexCache.insert(it, std::make_pair(strExtension, iconIndex));
+		it = m_indexCache.emplace_hint(it, strExtension, iconIndex);
 	}
 	// We must have found it
 	return it->second;

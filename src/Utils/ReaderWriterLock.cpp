@@ -388,7 +388,7 @@ bool CReaderWriterLock::AcquireReaderLock(DWORD dwTimeout)
         // There is NO WRITER on this RW object
         // Current thread is going to be a READER
         ++m_impl.m_iNumOfReaderEntered;
-        m_map.insert(std::make_pair(dwCurrentThreadId, READER_RECURRENCE_UNIT));
+        m_map.emplace(dwCurrentThreadId, READER_RECURRENCE_UNIT);
 
         m_impl.LeaveCS();
         return TRUE;
@@ -403,7 +403,7 @@ bool CReaderWriterLock::AcquireReaderLock(DWORD dwTimeout)
     bool blCanRead = m_impl._ReaderWait(dwTimeout);
     if(blCanRead)
     {
-        m_map.insert(std::make_pair(dwCurrentThreadId, READER_RECURRENCE_UNIT));
+		m_map.emplace(dwCurrentThreadId, READER_RECURRENCE_UNIT);
     }
     m_impl.LeaveCS();
 
@@ -479,7 +479,7 @@ bool CReaderWriterLock::AcquireWriterLock(DWORD dwTimeout)
             // This RW object is not owned by any thread
             // --> it's safe to make this thread to be WRITER
             ++m_impl.m_iNumOfWriter;
-            m_map.insert(std::make_pair(dwCurrentThreadId, WRITER_RECURRENCE_UNIT));
+			m_map.emplace(dwCurrentThreadId, WRITER_RECURRENCE_UNIT);
             m_impl.LeaveCS();
             return TRUE;
         }
@@ -494,7 +494,7 @@ bool CReaderWriterLock::AcquireWriterLock(DWORD dwTimeout)
         if(blCanWrite)
         {
             m_impl.EnterCS();
-            m_map.insert(std::make_pair(dwCurrentThreadId, WRITER_RECURRENCE_UNIT));
+			m_map.emplace(dwCurrentThreadId, WRITER_RECURRENCE_UNIT);
         }
         m_impl.LeaveCS();
     }
