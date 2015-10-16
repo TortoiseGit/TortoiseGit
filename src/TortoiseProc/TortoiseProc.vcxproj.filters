@@ -617,9 +617,6 @@
     <ClCompile Include="GitStatusListCtrlHelpers.cpp">
       <Filter>Git</Filter>
     </ClCompile>
-    <ClCompile Include="PatchListCtrl.cpp">
-      <Filter>Git</Filter>
-    </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
@@ -904,6 +901,9 @@
     </ClCompile>
     <ClCompile Include="FindBar.cpp">
       <Filter>Commands\Commit</Filter>
+    </ClCompile>
+    <ClCompile Include="PatchListCtrl.cpp">
+      <Filter>Commands\Patch</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1351,9 +1351,6 @@
     <ClInclude Include="..\Git\GitStatusListCtrl.h">
       <Filter>Git</Filter>
     </ClInclude>
-    <ClInclude Include="PatchListCtrl.h">
-      <Filter>Git</Filter>
-    </ClInclude>
     <ClInclude Include="Resource.h">
       <Filter>Utils</Filter>
     </ClInclude>
@@ -1677,6 +1674,9 @@
     </ClInclude>
     <ClInclude Include="FindBar.h">
       <Filter>Commands\Commit</Filter>
+    </ClInclude>
+    <ClInclude Include="PatchListCtrl.h">
+      <Filter>Commands\Patch</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
