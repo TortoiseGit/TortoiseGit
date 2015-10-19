@@ -29,6 +29,7 @@ Released: unreleased
  * Fixed issue #2553: Git cleanup fails for renamed submodules
  * Fixed issue #2598: Git Daemon error with root path (as "D:\")
  * Fixed issue #2615: Error during Rebase Edit/Split on a root path
+ * Fixed issue #2528: Unreadably long message box when failing to read a file in a new project
 
 = Release 1.8.15.0 =
 Released: 2015-08-02

@@ -368,6 +368,8 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 		this->DialogEnableWindow(IDOK,TRUE);
 
 		m_GitStatus = (DWORD)lParam;
+		if (m_GitCmd.IsEmpty() && m_GitCmdList.empty())
+			m_GitStatus = (DWORD)-1;
 
 		// detect crashes of perl when performing git svn actions
 		if (m_GitStatus == 0 && m_GitCmd.Find(_T(" svn ")) > 1)
@@ -392,7 +394,8 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 				err.Format(_T("\r\n\r\n%s (%lu ms @ %s)\r\n"), (LPCTSTR)log, tickSpent, (LPCTSTR)strEndTime);
 			else
 				err.Format(_T("\r\n\r\n%s\r\n"), (LPCTSTR)log);
-			InsertColorText(this->m_Log, err, RGB(255,0,0));
+			if (!m_GitCmd.IsEmpty() && !m_GitCmdList.empty())
+				InsertColorText(this->m_Log, err, RGB(255,0,0));
 			if (CRegDWORD(_T("Software\\TortoiseGit\\NoSounds"), FALSE) == FALSE)
 				PlaySound((LPCTSTR)SND_ALIAS_SYSTEMEXCLAMATION, NULL, SND_ALIAS_ID | SND_ASYNC);
 		}

@@ -20,6 +20,7 @@
 
 #include "stdafx.h"
 #include "MassiveGitTask.h"
+#include "ProgressDlg.h"
 
 CMassiveGitTask::CMassiveGitTask(CString gitParameters, BOOL isPath, bool ignoreErrors)
 	: CMassiveGitTaskBase(gitParameters, isPath, ignoreErrors)
@@ -37,7 +38,14 @@ void CMassiveGitTask::ReportError(const CString& out)
 	if (m_NotifyCallbackInstance)
 		m_NotifyCallbackInstance->ReportError(out);
 	else
-		CMassiveGitTaskBase::ReportError(out);
+	{
+		CProgressDlg dlg;
+		dlg.m_PreText = L"git.exe ";
+		dlg.m_PreText += GetParams();
+		dlg.m_PreText += L" [...]\r\n\r\n";
+		dlg.m_PreText += out;
+		dlg.DoModal();
+	}
 }
 
 void CMassiveGitTask::ReportProgress(const CTGitPath& path, int index)

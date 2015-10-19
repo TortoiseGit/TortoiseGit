@@ -39,6 +39,7 @@ protected:
 	virtual void			ReportError(const CString &out);
 	virtual void			ReportProgress(const CTGitPath& /*path*/, int /*index*/) { }
 	virtual void			ReportUserCanceled() { }
+	CString					GetParams() { return m_sParams; }
 private:
 	CString					GetListItem(int index);
 	bool					m_bUnused;
