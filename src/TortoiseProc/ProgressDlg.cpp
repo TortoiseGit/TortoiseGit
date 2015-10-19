@@ -316,8 +316,8 @@ UINT CProgressDlg::RunCmdList(CWnd* pWnd, STRING_VECTOR& cmdlist, STRING_VECTOR&
 
 UINT CProgressDlg::ProgressThread()
 {
-
-	m_GitCmdList.push_back(m_GitCmd);
+	if (!m_GitCmd.IsEmpty())
+		m_GitCmdList.push_back(m_GitCmd);
 
 	CString *pfilename;
 
