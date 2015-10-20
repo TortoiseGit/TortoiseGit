@@ -3207,6 +3207,14 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRevLoglist* pRev, std::tr1::
 			}
 		}
 
+		if (m_SelectedFilters & LOGFILTER_ANNOTATEDTAG)
+		{
+			if (std::regex_search(std::wstring(GetTagInfo(pRev)), pat, flags))
+			{
+				return TRUE;
+			}
+		}
+
 		if (m_SelectedFilters & LOGFILTER_PATHS)
 		{
 			CTGitPathList *pathList=NULL;
@@ -3325,6 +3333,17 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRevLoglist* pRev, std::tr1::
 		{
 			sRev = pRev->m_CommitHash.ToString();
 			if ((sRev.Find(find) >= 0))
+			{
+				return result;
+			}
+		}
+
+		if (m_SelectedFilters & LOGFILTER_ANNOTATEDTAG)
+		{
+			CString msg = GetTagInfo(pRev);
+			if (!m_bFilterCaseSensitively)
+				msg = msg.MakeLower();
+			if ((msg.Find(find) >= 0))
 			{
 				return result;
 			}
