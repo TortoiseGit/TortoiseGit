@@ -2097,6 +2097,9 @@ LRESULT CLogDlg::OnClickedInfoIcon(WPARAM wParam, LPARAM lParam)
 		temp.LoadString(IDS_LOG_FILTER_REFNAME);
 		popup.AppendMenu(LOGMENUFLAGS(LOGFILTER_REFNAME), LOGFILTER_REFNAME, temp);
 
+		temp.LoadString(IDS_NOTES);
+		popup.AppendMenu(LOGMENUFLAGS(LOGFILTER_NOTES), LOGFILTER_NOTES, temp);
+
 		if (m_LogList.m_bShowBugtraqColumn == TRUE) {
 			temp.LoadString(IDS_LOG_FILTER_BUGIDS);
 			popup.AppendMenu(LOGMENUFLAGS(LOGFILTER_BUGID), LOGFILTER_BUGID, temp);
@@ -2245,6 +2248,13 @@ void CLogDlg::SetFilterCueText()
 		if (temp.ReverseFind(_T(' ')) != temp.GetLength() - 1)
 			temp += _T(", ");
 		temp += CString(MAKEINTRESOURCE(IDS_LOG_FILTER_REFNAME));
+	}
+
+	if (m_LogList.m_SelectedFilters & LOGFILTER_NOTES)
+	{
+		if (temp.ReverseFind(_T(' ')) != temp.GetLength() - 1)
+			temp += _T(", ");
+		temp += CString(MAKEINTRESOURCE(IDS_NOTES));
 	}
 
 	if (m_LogList.m_bShowBugtraqColumn && m_LogList.m_SelectedFilters & LOGFILTER_BUGID)
