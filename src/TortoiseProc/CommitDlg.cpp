@@ -1083,7 +1083,7 @@ void CCommitDlg::OnOK()
 				}
 			}
 		}
-		RestoreFiles(progress.m_GitStatus == 0);
+		RestoreFiles(progress.m_GitStatus == 0, false);
 		if (((DWORD)CRegStdDWORD(_T("Software\\TortoiseGit\\ReaddUnselectedAddedFilesAfterCommit"), TRUE)) == TRUE)
 		{
 			BOOL cancel = FALSE;
@@ -1362,6 +1362,8 @@ void CCommitDlg::OnCancel()
 			InterlockedExchange(&m_bThreadRunning, FALSE);
 		}
 	}
+	if (!RestoreFiles())
+		return;
 	UpdateData();
 	m_sBugID.Trim();
 	m_sLogMessage = m_cLogMessage.GetText();
@@ -1382,7 +1384,6 @@ void CCommitDlg::OnCancel()
 		m_History.AddEntry(m_sLogMessage);
 		m_History.Save();
 	}
-	RestoreFiles();
 	SaveSplitterPos();
 	CResizableStandAloneDialog::OnCancel();
 }
@@ -2614,14 +2615,25 @@ void CCommitDlg::OnBnClickedCheckNewBranch()
 	}
 }
 
-void CCommitDlg::RestoreFiles(bool doNotAsk)
+bool CCommitDlg::RestoreFiles(bool doNotAsk, bool allowCancel)
 {
-	if (!m_ListCtrl.m_restorepaths.empty() && (doNotAsk || CMessageBox::Show(m_hWnd, IDS_PROC_COMMIT_RESTOREFILES, IDS_APPNAME, 2, IDI_QUESTION, IDS_PROC_COMMIT_RESTOREFILES_RESTORE, IDS_PROC_COMMIT_RESTOREFILES_KEEP) == 1))
+	if (m_ListCtrl.m_restorepaths.empty())
+		return true;
+
+	if (!doNotAsk)
 	{
-		for (auto it = m_ListCtrl.m_restorepaths.cbegin(); it != m_ListCtrl.m_restorepaths.cend(); ++it)
-			CopyFile(it->second, g_Git.CombinePath(it->first), FALSE);
-		m_ListCtrl.m_restorepaths.clear();
+		auto ret = CMessageBox::Show(m_hWnd, IDS_PROC_COMMIT_RESTOREFILES, IDS_APPNAME, 2, IDI_QUESTION, IDS_PROC_COMMIT_RESTOREFILES_RESTORE, IDS_PROC_COMMIT_RESTOREFILES_KEEP, allowCancel ? IDS_MSGBOX_CANCEL : 0);
+		if (ret == 3)
+			return false;
+		if (ret == 2)
+			return true;
 	}
+
+	for (const auto& item : m_ListCtrl.m_restorepaths)
+		CopyFile(item.second, g_Git.CombinePath(item.first), FALSE);
+	m_ListCtrl.m_restorepaths.clear();
+
+	return true;
 }
 
 void CCommitDlg::UpdateCheckLinks()
