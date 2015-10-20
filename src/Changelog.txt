@@ -14,6 +14,7 @@ Released: unreleased
  * Fixed issue #2604: Tag using TortoiseGitProc.exe /command:tag should accept a tag name argument
  * Fixed issue #2609: Start scrolling the log from the bottom of the window rather than the top when finishing the progress
  * Fixed issue #2608: Need a cancel option when cancelling a "restore after commit"
+ * Fixed issue #2531: Can't filter message in annotated tag or text in notes
 
 == Bug Fixes ==
  * TortoiseGitMerge highlights wrong line in case of file starts with LF+CRLF

@@ -3187,6 +3187,14 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRevLoglist* pRev, std::tr1::
 			}
 		}
 
+		if (m_SelectedFilters & LOGFILTER_NOTES)
+		{
+			if (std::regex_search(std::wstring(pRev->m_Notes), pat, flags))
+			{
+				return TRUE;
+			}
+		}
+
 		if (m_SelectedFilters & LOGFILTER_REFNAME)
 		{
 			STRING_VECTOR refs = m_HashMap[pRev->m_CommitHash];
@@ -3196,6 +3204,14 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRevLoglist* pRev, std::tr1::
 				{
 					return TRUE;
 				}
+			}
+		}
+
+		if (m_SelectedFilters & LOGFILTER_ANNOTATEDTAG)
+		{
+			if (std::regex_search(std::wstring(GetTagInfo(pRev)), pat, flags))
+			{
+				return TRUE;
 			}
 		}
 
@@ -3302,10 +3318,32 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRevLoglist* pRev, std::tr1::
 			}
 		}
 
+		if (m_SelectedFilters & LOGFILTER_NOTES)
+		{
+			CString msg = pRev->m_Notes;
+			if (!m_bFilterCaseSensitively)
+				msg = msg.MakeLower();
+			if ((msg.Find(find) >= 0))
+			{
+				return result;
+			}
+		}
+
 		if (m_SelectedFilters & LOGFILTER_REVS)
 		{
 			sRev = pRev->m_CommitHash.ToString();
 			if ((sRev.Find(find) >= 0))
+			{
+				return result;
+			}
+		}
+
+		if (m_SelectedFilters & LOGFILTER_ANNOTATEDTAG)
+		{
+			CString msg = GetTagInfo(pRev);
+			if (!m_bFilterCaseSensitively)
+				msg = msg.MakeLower();
+			if ((msg.Find(find) >= 0))
 			{
 				return result;
 			}
