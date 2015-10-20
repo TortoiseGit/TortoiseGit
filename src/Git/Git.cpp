@@ -1356,6 +1356,7 @@ int addto_list_each_ref_fn(const char *refname, const unsigned char * /*sha1*/, 
 
 int CGit::GetTagList(STRING_VECTOR &list)
 {
+	size_t prevCount = list.size();
 	if (this->m_IsUseLibGit2)
 	{
 		CAutoRepository repo(GetGitRepository());
@@ -1373,7 +1374,7 @@ int CGit::GetTagList(STRING_VECTOR &list)
 			list.push_back(CUnicodeUtils::GetUnicode(tagName));
 		}
 
-		std::sort(list.begin(), list.end(), g_bSortTagsReversed ? LogicalCompareReversedPredicate : LogicalComparePredicate);
+		std::sort(list.begin() + prevCount, list.end(), g_bSortTagsReversed ? LogicalCompareReversedPredicate : LogicalComparePredicate);
 
 		return 0;
 	}
@@ -1392,7 +1393,7 @@ int CGit::GetTagList(STRING_VECTOR &list)
 				if (!one.IsEmpty())
 					list.push_back(one);
 			}
-			std::sort(list.begin(), list.end(), g_bSortTagsReversed ? LogicalCompareReversedPredicate : LogicalComparePredicate);
+			std::sort(list.begin() + prevCount, list.end(), g_bSortTagsReversed ? LogicalCompareReversedPredicate : LogicalComparePredicate);
 		}
 		else if (ret == 1 && IsInitRepos())
 			return 0;
@@ -1581,6 +1582,7 @@ CString CGit::DerefFetchHead()
 
 int CGit::GetBranchList(STRING_VECTOR &list,int *current,BRANCH_TYPE type)
 {
+	size_t prevCount = list.size();
 	int ret = 0;
 	CString cur;
 	bool headIsDetached = false;
@@ -1672,7 +1674,7 @@ int CGit::GetBranchList(STRING_VECTOR &list,int *current,BRANCH_TYPE type)
 	if(type & BRANCH_FETCH_HEAD && !DerefFetchHead().IsEmpty())
 		list.push_back(L"FETCH_HEAD");
 
-	std::sort(list.begin(), list.end(), LogicalCompareBranchesPredicate);
+	std::sort(list.begin() + prevCount, list.end(), LogicalCompareBranchesPredicate);
 
 	if (current && !headIsDetached)
 	{
@@ -1691,6 +1693,7 @@ int CGit::GetBranchList(STRING_VECTOR &list,int *current,BRANCH_TYPE type)
 
 int CGit::GetRemoteList(STRING_VECTOR &list)
 {
+	size_t prevCount = list.size();
 	if (this->m_IsUseLibGit2)
 	{
 		CAutoRepository repo(GetGitRepository());
@@ -1707,7 +1710,7 @@ int CGit::GetRemoteList(STRING_VECTOR &list)
 			list.push_back(CUnicodeUtils::GetUnicode(remote));
 		}
 
-		std::sort(list.begin(), list.end(), LogicalComparePredicate);
+		std::sort(list.begin() + prevCount, list.end(), LogicalComparePredicate);
 
 		return 0;
 	}
@@ -1734,6 +1737,7 @@ int CGit::GetRemoteList(STRING_VECTOR &list)
 
 int CGit::GetRemoteTags(const CString& remote, STRING_VECTOR& list)
 {
+	size_t prevCount = list.size();
 	if (UsingLibGit2(GIT_CMD_FETCH))
 	{
 		CAutoRepository repo(GetGitRepository());
@@ -1767,7 +1771,7 @@ int CGit::GetRemoteTags(const CString& remote, STRING_VECTOR& list)
 				continue;
 			list.push_back(shortname);
 		}
-		std::sort(list.begin(), list.end(), g_bSortTagsReversed ? LogicalCompareReversedPredicate : LogicalComparePredicate);
+		std::sort(list.begin() + prevCount, list.end(), g_bSortTagsReversed ? LogicalCompareReversedPredicate : LogicalComparePredicate);
 		return 0;
 	}
 
@@ -1789,7 +1793,7 @@ int CGit::GetRemoteTags(const CString& remote, STRING_VECTOR& list)
 		if (!one.IsEmpty())
 			list.push_back(one);
 	}
-	std::sort(list.begin(), list.end(), g_bSortTagsReversed ? LogicalCompareReversedPredicate : LogicalComparePredicate);
+	std::sort(list.begin() + prevCount, list.end(), g_bSortTagsReversed ? LogicalCompareReversedPredicate : LogicalComparePredicate);
 	return 0;
 }
 
@@ -1847,6 +1851,7 @@ int libgit2_addto_list_each_ref_fn(git_reference *ref, void *payload)
 
 int CGit::GetRefList(STRING_VECTOR &list)
 {
+	size_t prevCount = list.size();
 	if (this->m_IsUseLibGit2)
 	{
 		CAutoRepository repo(GetGitRepository());
@@ -1856,7 +1861,7 @@ int CGit::GetRefList(STRING_VECTOR &list)
 		if (git_reference_foreach(repo, libgit2_addto_list_each_ref_fn, &list))
 			return -1;
 
-		std::sort(list.begin(), list.end(), LogicalComparePredicate);
+		std::sort(list.begin() + prevCount, list.end(), LogicalComparePredicate);
 
 		return 0;
 	}
@@ -1881,7 +1886,7 @@ int CGit::GetRefList(STRING_VECTOR &list)
 						list.push_back(name);
 				}
 			}
-			std::sort(list.begin(), list.end(), LogicalComparePredicate);
+			std::sort(list.begin() + prevCount, list.end(), LogicalComparePredicate);
 		}
 		else if (ret == 1 && IsInitRepos())
 			return 0;
