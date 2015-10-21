@@ -207,7 +207,7 @@ BOOL CCommitDlg::OnInitDialog()
 			GetCommitTemplate(m_sLogMessage);
 
 		CString dotGitPath;
-		GitAdminDir::GetAdminDirPath(g_Git.m_CurrentDir, dotGitPath);
+		GitAdminDir::GetWorktreeAdminDirPath(g_Git.m_CurrentDir, dotGitPath);
 		CGit::LoadTextFile(dotGitPath + L"SQUASH_MSG", m_sLogMessage);
 		CGit::LoadTextFile(dotGitPath + L"MERGE_MSG", m_sLogMessage);
 	}
@@ -1290,7 +1290,7 @@ UINT CCommitDlg::StatusThread()
 	DialogEnableWindow(IDC_CHECKSUBMODULES, false);
 
 	CString dotGitPath;
-	GitAdminDir::GetAdminDirPath(g_Git.m_CurrentDir, dotGitPath);
+	GitAdminDir::GetWorktreeAdminDirPath(g_Git.m_CurrentDir, dotGitPath);
 	if (PathFileExists(dotGitPath + L"CHERRY_PICK_HEAD"))
 	{
 		GetDlgItem(IDC_COMMIT_AMENDDIFF)->ShowWindow(SW_HIDE);

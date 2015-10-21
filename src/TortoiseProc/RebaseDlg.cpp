@@ -2302,7 +2302,7 @@ LRESULT CRebaseDlg::OnRebaseUpdateUI(WPARAM,LPARAM)
 		if (m_IsCherryPick)
 		{
 			CString dotGitPath;
-			GitAdminDir::GetAdminDirPath(g_Git.m_CurrentDir, dotGitPath);
+			GitAdminDir::GetWorktreeAdminDirPath(g_Git.m_CurrentDir, dotGitPath);
 			// vanilla git also re-uses MERGE_MSG on conflict (listing all conflicted files)
 			// and it's also needed for cherry-pick in order to get cherry-picked-from included on conflicts
 			CGit::LoadTextFile(dotGitPath + L"MERGE_MSG", logMessage);

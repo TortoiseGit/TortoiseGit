@@ -116,7 +116,7 @@ int CLogCache::FetchCacheIndex(CString GitDir)
 	if (!m_bEnabled)
 		return 0;
 
-	if (!GitAdminDir::GetAdminDirPath(GitDir, m_GitDir))
+	if (!GitAdminDir::GetWorktreeAdminDirPath(GitDir, m_GitDir))
 		return -1;
 
 	int ret = -1;

@@ -132,7 +132,42 @@ bool GitAdminDir::HasAdminDir(const CString& path, bool bDir, CString* ProjectTo
  * Returns the .git-path (if .git is a file, read the repository path and return it)
  * adminDir always ends with "\"
  */
-bool GitAdminDir::GetAdminDirPath(const CString &projectTopDir, CString& adminDir)
+bool GitAdminDir::GetAdminDirPath(const CString& projectTopDir, CString& adminDir, bool* isWorktree)
+{
+	CString wtAdminDir;
+	if (!GetWorktreeAdminDirPath(projectTopDir, wtAdminDir))
+		return false;
+
+	CString pathToCommonDir = wtAdminDir + L"commondir";
+	if (!PathFileExists(pathToCommonDir))
+	{
+		adminDir = wtAdminDir;
+		if (isWorktree)
+			*isWorktree = false;
+		return true;
+	}
+
+	CAutoFILE pFile = _wfsopen(pathToCommonDir, L"rb", SH_DENYWR);
+	if (!pFile)
+		return false;
+
+	int size = 65536;
+	CStringA commonDirA;
+	int length = (int)fread(commonDirA.GetBufferSetLength(size), sizeof(char), size, pFile);
+	commonDirA.ReleaseBuffer(length);
+	CString commonDir = CUnicodeUtils::GetUnicode(commonDirA);
+	commonDir.TrimRight(L"\r\n");
+	commonDir.Replace(L'/', L'\\');
+	if (PathIsRelative(commonDir))
+		adminDir = wtAdminDir + commonDir;
+	else
+		adminDir = commonDir;
+	if (isWorktree)
+		*isWorktree = true;
+	return true;
+}
+
+bool GitAdminDir::GetWorktreeAdminDirPath(const CString& projectTopDir, CString& adminDir)
 {
 	if (IsBareRepo(projectTopDir))
 	{
