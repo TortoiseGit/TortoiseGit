@@ -100,6 +100,8 @@ public:
 	 * Optimizing wrapper around CompareNoCase.
 	 */
 	static int FastCompareNoCase (const CStringW& lhs, const CStringW& rhs);
+
+	static void ParseEmailAddress(CString mailaddress, CString& parsedAddress, CString* parsedName = nullptr);
 #endif
 	/**
 	 * Writes the string \text to the file \path, either in utf16 or utf8 encoding,

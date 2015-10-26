@@ -96,3 +96,85 @@ TEST(CStringUtils, RemoveAccelerators)
 	CStringUtils::RemoveAccelerators(text6);
 	EXPECT_STREQ(L"Some & text", text6);
 }
+
+TEST(CStringUtils, ParseEmailAddress)
+{
+	CString mail, name;
+	CStringUtils::ParseEmailAddress(_T(""), mail, &name);
+	EXPECT_STREQ(_T(""), mail);
+	EXPECT_STREQ(_T(""), name);
+
+	CStringUtils::ParseEmailAddress(_T(" "), mail, &name);
+	EXPECT_STREQ(_T(""), mail);
+	EXPECT_STREQ(_T(""), name);
+
+	mail.Empty();
+	CStringUtils::ParseEmailAddress(_T("test@example.com "), mail);
+	EXPECT_STREQ(_T("test@example.com"), mail);
+
+	mail.Empty();
+	CStringUtils::ParseEmailAddress(_T(" test@example.com"), mail);
+	EXPECT_STREQ(_T("test@example.com"), mail);
+
+	mail.Empty();
+	CStringUtils::ParseEmailAddress(_T("test@example.com"), mail);
+	EXPECT_STREQ(_T("test@example.com"), mail);
+
+	mail.Empty();
+	CStringUtils::ParseEmailAddress(_T("John Doe <johndoe>"), mail);
+	EXPECT_STREQ(_T("johndoe"), mail);
+
+	mail.Empty();
+	name.Empty();
+	CStringUtils::ParseEmailAddress(_T("test@example.com"), mail, &name);
+	EXPECT_STREQ(_T("test@example.com"), mail);
+	EXPECT_STREQ(_T("test@example.com"), name);
+
+	mail.Empty();
+	name.Empty();
+	CStringUtils::ParseEmailAddress(_T("<test@example.com>"), mail, &name);
+	EXPECT_STREQ(_T("test@example.com"), mail);
+	EXPECT_STREQ(_T("test@example.com"), name);
+
+	mail.Empty();
+	name.Empty();
+	CStringUtils::ParseEmailAddress(_T("John Doe <test@example.com>"), mail, &name);
+	EXPECT_STREQ(_T("test@example.com"), mail);
+	EXPECT_STREQ(_T("John Doe"), name);
+
+	mail.Empty();
+	name.Empty();
+	CStringUtils::ParseEmailAddress(_T("\"John Doe\" <test@example.com>"), mail, &name);
+	EXPECT_STREQ(_T("test@example.com"), mail);
+	EXPECT_STREQ(_T("John Doe"), name);
+
+	mail.Empty();
+	name.Empty();
+	CStringUtils::ParseEmailAddress(_T("<test@example.com"), mail, &name);
+	EXPECT_STREQ(_T("test@example.com"), mail);
+	EXPECT_STREQ(_T("test@example.com"), name);
+
+	mail.Empty();
+	name.Empty();
+	CStringUtils::ParseEmailAddress(_T("test@example.com>"), mail, &name);
+	EXPECT_STREQ(_T("test@example.com"), mail);
+	EXPECT_STREQ(_T("test@example.com"), name);
+
+	mail.Empty();
+	name.Empty();
+	CStringUtils::ParseEmailAddress(_T("John Doe <johndoe>"), mail, &name);
+	EXPECT_STREQ(_T("johndoe"), mail);
+	EXPECT_STREQ(_T("John Doe"), name);
+
+	mail.Empty();
+	name.Empty();
+	CStringUtils::ParseEmailAddress(_T("john.doe@example.com (John Doe)"), mail, &name);
+	EXPECT_STREQ(_T("john.doe@example.com"), mail);
+	EXPECT_STREQ(_T("John Doe"), name);
+
+	mail.Empty();
+	name.Empty();
+	CStringUtils::ParseEmailAddress(_T("John (zzz) Doe <john.doe@example.com> (Comment)"), mail, &name);
+	EXPECT_STREQ(_T("john.doe@example.com"), mail);
+	EXPECT_STREQ(_T("John (zzz) Doe (Comment)"), name);
+}

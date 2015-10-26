@@ -48,6 +48,19 @@
 
 typedef std::map<std::string, std::string> TStrStrMap;
 
+typedef struct MailAddress
+{
+	std::string email;
+	std::string name;
+
+	MailAddress() {};
+
+	MailAddress(const CString& email, const CString& name)
+	: email((CStringA)email)
+	, name((CStringA)name)
+	{}
+} MailAddress;
+
 // ===========================================================================
 // CMailMsg
 // 
@@ -78,11 +91,10 @@ public:
 	CString GetLastErrorMsg(){ return m_sErrorMsg; }
 
 protected:
-	std::string					m_from;                       // From <address,name>
-	std::string					m_fromname;                   // From <address,name>
-	std::vector<std::string>	m_to;                         // To receipients
+	MailAddress					m_from;
+	std::vector<MailAddress>	m_to;                         // To receipients
 	TStrStrMap					m_attachments;                // Attachment <file,title>
-	std::vector<std::string>	m_cc;                         // CC receipients
+	std::vector<MailAddress>	m_cc;                         // CC receipients
 	std::string					m_sSubject;                   // EMail subject
 	std::string					m_sMessage;                   // EMail message
 

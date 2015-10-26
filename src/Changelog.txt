@@ -32,6 +32,7 @@ Released: unreleased
  * Fixed issue #2598: Git Daemon error with root path (as "D:\")
  * Fixed issue #2615: Error during Rebase Edit/Split on a root path
  * Fixed issue #2528: Unreadably long message box when failing to read a file in a new project
+ * Fixed issue #2560: Problems with MS Outlook and "Name" <john@example.com> formatted email-addresses
 
 = Release 1.8.15.0 =
 Released: 2015-08-02

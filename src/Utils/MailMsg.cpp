@@ -50,6 +50,7 @@
 #include "stdafx.h"
 #include "MailMsg.h"
 #include "UnicodeUtils.h"
+#include "StringUtils.h"
 
 CMailMsg::CMailMsg()
 {
@@ -68,20 +69,21 @@ CMailMsg::~CMailMsg()
 
 void CMailMsg::SetFrom(const CString& sAddress, const CString& sName)
 {  
-	m_from = CUnicodeUtils::GetUTF8(L"SMTP:" + sAddress);
-	m_fromname = CUnicodeUtils::GetUTF8(sName);
+	m_from.email = CUnicodeUtils::GetUTF8(L"SMTP:" + sAddress);
+	m_from.name = CUnicodeUtils::GetUTF8(sName);
 }
 
-static void addAdresses(std::vector<std::string>& recipients, const CString& sAddresses)
+static void addAdresses(std::vector<MailAddress>& recipients, const CString& sAddresses)
 {
 	int start = 0;
 	while (start >= 0)
 	{
 		CString address = sAddresses.Tokenize(_T(";"), start);
-		address = address.Trim();
+		CString name;
+		CStringUtils::ParseEmailAddress(address, address, &name);
 		if (address.IsEmpty())
 			continue;
-		recipients.push_back((std::string)CUnicodeUtils::GetUTF8(L"SMTP:" + address));
+		recipients.emplace_back(L"SMTP:" + address, name);
 	}
 }
 
@@ -245,8 +247,8 @@ BOOL CMailMsg::Send()
 	// set from
 	pRecipients[0].ulReserved = 0;
 	pRecipients[0].ulRecipClass = MAPI_ORIG;
-	pRecipients[0].lpszAddress = (LPSTR)m_from.c_str();
-	pRecipients[0].lpszName = (LPSTR)m_fromname.c_str();
+	pRecipients[0].lpszAddress = (LPSTR)m_from.email.c_str();
+	pRecipients[0].lpszName = (LPSTR)m_from.name.c_str();
 	pRecipients[0].ulEIDSize = 0;
 	pRecipients[0].lpEntryID = NULL;
 
@@ -256,8 +258,8 @@ BOOL CMailMsg::Send()
 		++nIndex;
 		pRecipients[nIndex].ulReserved = 0;
 		pRecipients[nIndex].ulRecipClass = MAPI_TO;
-		pRecipients[nIndex].lpszAddress = (LPSTR)m_to.at(i).c_str();
-		pRecipients[nIndex].lpszName = (LPSTR)m_to.at(i).c_str() + 5;
+		pRecipients[nIndex].lpszAddress = (LPSTR)m_to.at(i).email.c_str();
+		pRecipients[nIndex].lpszName = (LPSTR)m_to.at(i).name.c_str();
 		pRecipients[nIndex].ulEIDSize = 0;
 		pRecipients[nIndex].lpEntryID = NULL;
 	}
@@ -268,8 +270,8 @@ BOOL CMailMsg::Send()
 		++nIndex;
 		pRecipients[nIndex].ulReserved = 0;
 		pRecipients[nIndex].ulRecipClass = MAPI_CC;
-		pRecipients[nIndex].lpszAddress = (LPSTR)m_cc.at(i).c_str();
-		pRecipients[nIndex].lpszName = (LPSTR)m_cc.at(i).c_str() + 5;
+		pRecipients[nIndex].lpszAddress = (LPSTR)m_cc.at(i).email.c_str();
+		pRecipients[nIndex].lpszName = (LPSTR)m_cc.at(i).name.c_str();
 		pRecipients[nIndex].ulEIDSize = 0;
 		pRecipients[nIndex].lpEntryID = NULL;
 	}

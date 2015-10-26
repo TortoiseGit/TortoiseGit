@@ -1,5 +1,6 @@
-// TortoiseSVN - a Windows shell extension for easy version control
+// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2015 - TortoiseGit
 // Copyright (C) 2003-2011, 2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -428,6 +429,100 @@ int CStringUtils::FastCompareNoCase (const CStringW& lhs, const CStringW& rhs)
 	// must be equal (both ended with a 0)
 
 	return 0;
+}
+
+static void cleanup_space(CString& string)
+{
+	for (int pos = 0; pos < string.GetLength(); ++pos)
+	{
+		if (_istspace(string[pos])) {
+			string.SetAt(pos ,_T(' '));
+			int cnt;
+			for (cnt = 0; _istspace(string[pos + cnt + 1]); ++cnt);
+			string.Delete(pos + 1, cnt);
+		}
+	}
+}
+
+static void get_sane_name(CString* out, const CString* name, const CString& email)
+{
+	const CString* src = name;
+	if (name->GetLength() < 3 || 60 < name->GetLength() || _tcschr(*name, _T('@')) || _tcschr(*name, _T('<')) || _tcschr(*name, _T('>')))
+		src = &email;
+	else if (name == out)
+		return;
+	*out = *src;
+}
+
+static void parse_bogus_from(const CString& mailaddress, CString& parsedAddress, CString* parsedName)
+{
+	/* John Doe <johndoe> */
+
+	int bra = mailaddress.Find(L"<");
+	if (bra < 0)
+		return;
+	int ket = mailaddress.Find(L">");
+	if (ket < 0)
+		return;
+
+	parsedAddress = mailaddress.Mid(bra + 1, ket - bra - 1);
+
+	if (parsedName)
+	{
+		*parsedName = mailaddress.Left(bra).Trim();
+		get_sane_name(parsedName, parsedName, parsedAddress);
+	}
+}
+
+void CStringUtils::ParseEmailAddress(CString mailaddress, CString& parsedAddress, CString* parsedName)
+{
+	auto buf = mailaddress.GetBuffer();
+	auto at = _tcschr(buf, _T('@'));
+	if (!at)
+	{
+		parse_bogus_from(mailaddress, parsedAddress, parsedName);
+		return;
+	}
+
+	/* Pick up the string around '@', possibly delimited with <>
+	 * pair; that is the email part.
+	 */
+	while (at > buf)
+	{
+		auto c = at[-1];
+		if (_istspace(c))
+			break;
+		if (c == _T('<')) {
+			at[-1] = _T(' ');
+			break;
+		}
+		at--;
+	}
+
+	mailaddress.ReleaseBuffer();
+	size_t el = _tcscspn(at, _T(" \n\t\r\v\f>"));
+	parsedAddress = mailaddress.Mid((int)(at - buf), (int)el);
+	mailaddress.Delete((int)(at - buf), (int)(el + (at[el] ? 1 : 0)));
+
+	/* The remainder is name.  It could be
+	 *
+	 * - "John Doe <john.doe@xz>"			(a), or
+	 * - "john.doe@xz (John Doe)"			(b), or
+	 * - "John (zzz) Doe <john.doe@xz> (Comment)"	(c)
+	 *
+	 * but we have removed the email part, so
+	 *
+	 * - remove extra spaces which could stay after email (case 'c'), and
+	 * - trim from both ends, possibly removing the () pair at the end
+	 *   (cases 'b' and 'c').
+	 */
+	cleanup_space(mailaddress);
+	mailaddress.Trim();
+	if (!mailaddress.IsEmpty() && ((mailaddress[0] == _T('(') && mailaddress[mailaddress.GetLength() - 1] == _T(')')) || (mailaddress[0] == _T('"') && mailaddress[mailaddress.GetLength() - 1] == _T('"'))))
+		mailaddress = mailaddress.Mid(1, mailaddress.GetLength() - 2);
+
+	if (parsedName)
+		get_sane_name(parsedName, &mailaddress, parsedAddress);
 }
 #endif // #if defined(CSTRING_AVAILABLE) || defined(_MFC_VER)
 
