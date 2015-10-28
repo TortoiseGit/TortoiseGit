@@ -2,13 +2,13 @@
 //
 // TortoiseSVN Diff script for Excel files
 //
-// Copyright (C) 2004-2008 the TortoiseSVN team
+// Copyright (C) 2004-2008, 2012-2015 the TortoiseSVN team
 // This file is distributed under the same license as TortoiseSVN
 //
 // Last commit by:
-// $Author$
-// $Date$
-// $Rev$
+// $Author: steveking $
+// $Date: 2015-10-26 20:01:19 +0100 (Mo, 26 Okt 2015) $
+// $Rev: 26930 $
 //
 // Authors:
 // Hiroki Najima <h.najima at gmail.com>, 2013
@@ -45,7 +45,7 @@ var vOffice2003 = 11;
 
 // ----- main -----
 
-var aWarningMessages = Array();
+var aWarningMessages = [];
 
 var objArgs = WScript.Arguments;
 if (objArgs.length < 2)
@@ -142,13 +142,16 @@ var objSpecialWorkbook = objExcelApp.Workbooks.Add;
 var length = objNewWorkbook.Worksheets.Count;
 for (var i = 1; i <= length; i++)
 {
-    var objBaseWorksheet = objBaseWorkbook.Worksheets(i);
+    var objBaseWorksheet = null;
+    if (i <= objBaseWorkbook.Worksheets.Count)
+        objBaseWorksheet = objBaseWorkbook.Worksheets(i);
     var objNewWorksheet = objNewWorkbook.Worksheets(i);
 
-    UnhideWorksheet(objBaseWorksheet);
+    if (objBaseWorksheet != null)
+        UnhideWorksheet(objBaseWorksheet);
     UnhideWorksheet(objNewWorksheet);
 
-    if (!bFastMode)
+    if (!bFastMode && (objBaseWorksheet != null))
     {
         objBaseWorkbook.Sheets(i).Copy(null, objNewWorkbook.Sheets(objNewWorkbook.Sheets.Count));
         var objDummyWorksheet = objNewWorkbook.Sheets(objNewWorkbook.Sheets.Count);
@@ -170,7 +173,7 @@ for (var i = 1; i <= length; i++)
     {
         objNewWorksheet.Cells.FormatConditions.Delete();
         var sFormula;
-        if (bFastMode)
+        if (bFastMode && (objBaseWorksheet != null))
         {
             sFormula = "=INDIRECT(\"" + ToAbsoluteReference(objBaseWorksheet) + "!\"&ADDRESS(ROW(),COLUMN()))";
         }
@@ -186,7 +189,7 @@ for (var i = 1; i <= length; i++)
 
 // Close the special workbook quietly
 objSpecialWorkbook.Saved = true;
-objSpecialWorkbook.Close;
+objSpecialWorkbook.Close();
 
 // Activate first Worksheet
 objBaseWorkbook.Sheets(1).Activate();
@@ -248,23 +251,21 @@ function UnhideWorksheet(objWorksheet)
             }
         }
     }
+    else if (objWorksheet.Parent.ProtectStructure)
+    {
+        StoreWarning("Unable to unhide " +
+            ToAbsoluteReference(objWorksheet) +
+            " because the Workbook's structure is protected.");
+    }
     else
     {
-        if (objWorksheet.Parent.ProtectStructure)
+        objWorksheet.Visible = true;
+        if (fExcelVersion >= vOffice2003)
         {
-            StoreWarning("Unable to unhide " +
-                ToAbsoluteReference(objWorksheet) +
-                " because the Workbook's structure is protected.");
-        }
-        else
-        {
-            objWorksheet.Visible = true;
-            if (fExcelVersion >= vOffice2003)
-            {
-                objWorksheet.Tab.ColorIndex = 10;   // 10:Green RGB(0,128,0)
-            }
+            objWorksheet.Tab.ColorIndex = 10;   // 10:Green RGB(0,128,0)
         }
     }
+
 }
 
 // Generate Absolute Reference Formula of Worksheet.
@@ -278,10 +279,10 @@ function ToAbsoluteReference(objWorksheet)
 function convertFormula(sFormula)
 {
     var worksheet = objSpecialWorkbook.Sheets(1);
-    var original_content = worksheet.Cells(1,1).Formula;
-    worksheet.Cells(1,1).Formula = sFormula;
-    sFormula = worksheet.Cells(1,1).FormulaLocal;
-    worksheet.Cells(1,1).Formula = original_content;
+    var originalContent = worksheet.Cells(1, 1).Formula;
+    worksheet.Cells(1, 1).Formula = sFormula;
+    sFormula = worksheet.Cells(1, 1).FormulaLocal;
+    worksheet.Cells(1, 1).Formula = originalContent;
     return sFormula;
 }
 
@@ -300,14 +301,14 @@ function ShowWarning()
         return;
     }
     var sMessage = "The following warnings occurred while processing.\n";
-    for (var i = 0; i < aWarningMessages.length; i++)
+    for (var j = 0; j < aWarningMessages.length; j++)
     {
-        if (i >= 10)
+        if (j >= 10)
         {
-            sMessage += "... And more " + (aWarningMessages.length - i) + " messages";
+            sMessage += "... And more " + (aWarningMessages.length - j) + " messages";
             break;
         }
-        sMessage += "[" + (i + 1) + "] " + aWarningMessages[i] + "\n";
+        sMessage += "[" + (j + 1) + "] " + aWarningMessages[j] + "\n";
     }
     MsgBox(sMessage, vbExclamation, "Warning");
 }
