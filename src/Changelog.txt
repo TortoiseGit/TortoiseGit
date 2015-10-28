@@ -34,6 +34,7 @@ Released: unreleased
  * Fixed issue #2528: Unreadably long message box when failing to read a file in a new project
  * Fixed issue #2560: Problems with MS Outlook and "Name" <john@example.com> formatted email-addresses
  * Fixed issue #2624: Encoding issues when using suggested words from spell checker
+ * Fixed issue #2602: templatedir not respected if directory starts with dot
 
 = Release 1.8.15.0 =
 Released: 2015-08-02
