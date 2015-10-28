@@ -277,8 +277,8 @@
 			# is the comment character. Use escape sequences \t \r \n \\.
 		</para>
 		<para>
-			You can add your name and email address to end of log message by click
-			<guibutton>Sign</guibutton>
+			You can add your name and email address to the end of the log message by clicking
+			<guibutton>Add Signed-off-by</guibutton>
 		</para>
 		<para>
 			You can clear all stored commit messages from the <guilabel>Saved data</guilabel>
