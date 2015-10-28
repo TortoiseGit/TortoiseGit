@@ -8,7 +8,7 @@
 	</indexterm>
 	<para>
 		Push Change to the other repository. You must push change to bare repository. 
-		If you push change to repository with working tree, there are unexpected result.
+		If you push change to repository with working tree, there are unexpected results.
 	</para>
 	<para>
 		<menuchoice>
@@ -24,7 +24,7 @@
 	<sect2>
 		<title>Branch</title>
 		<para>
-			<guilabel>Local:</guilabel> The source branch which will push to other repository.
+			<guilabel>Local:</guilabel> The source branch which will be pushed to the other repository.
 		</para>
 		<para>
 			<guilabel>Remote:</guilabel> The remote branch of the other repository. 
