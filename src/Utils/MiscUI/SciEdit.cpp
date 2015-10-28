@@ -161,7 +161,7 @@ static std::unique_ptr<UINT[]> Icon2Image(HICON hIcon)
 	return imagePixels;
 }
 
-void CSciEdit::Init(LONG lLanguage, BOOL bLoadSpellCheck)
+void CSciEdit::Init(LONG lLanguage)
 {
 	//Setup the direct access data
 	m_DirectFunction = SendMessage(SCI_GETDIRECTFUNCTION, 0, 0);
@@ -201,7 +201,7 @@ void CSciEdit::Init(LONG lLanguage, BOOL bLoadSpellCheck)
 	// look for dictionary files and use them if found
 	long langId = GetUserDefaultLCID();
 
-	if(bLoadSpellCheck)
+	if (lLanguage >= 0)
 	{
 		if ((lLanguage != 0)||(((DWORD)CRegStdDWORD(_T("Software\\TortoiseGit\\Spellchecker"), FALSE))==FALSE))
 		{

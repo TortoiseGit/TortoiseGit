@@ -285,7 +285,7 @@ int CTortoiseGitBlameView::OnCreate(LPCREATESTRUCT lpcs)
 		TRACE0("Failed to create view\n");
 		return -1; // fail to create
 	}
-	m_TextView.Init(0,FALSE);
+	m_TextView.Init(-1);
 	m_TextView.ShowWindow( SW_SHOW);
 	CreateFont();
 	SendEditor(SCI_SETREADONLY, TRUE);

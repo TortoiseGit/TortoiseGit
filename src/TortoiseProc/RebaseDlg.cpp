@@ -195,7 +195,7 @@ BOOL CRebaseDlg::OnInitDialog()
 		TRACE0("Failed to create output windows\n");
 		return -1;      // fail to create
 	}
-	m_wndOutputRebase.Init(0, FALSE);
+	m_wndOutputRebase.Init(-1);
 	m_wndOutputRebase.Call(SCI_SETREADONLY, TRUE);
 
 	m_tooltips.AddTool(IDC_REBASE_CHECK_FORCE,IDS_REBASE_FORCE_TT);

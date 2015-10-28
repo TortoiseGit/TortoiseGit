@@ -154,7 +154,7 @@ BOOL CImportPatchDlg::OnInitDialog()
 		TRACE0("Failed to create output windows\n");
 		return -1;      // fail to create
 	}
-	m_wndOutput.Init(-1, FALSE);
+	m_wndOutput.Init(-1);
 	m_wndOutput.Call(SCI_SETREADONLY, TRUE);
 
 	m_tooltips.AddTool(IDC_CHECK_3WAY,IDS_AM_3WAY_TT);

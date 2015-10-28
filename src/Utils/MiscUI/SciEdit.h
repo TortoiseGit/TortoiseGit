@@ -84,7 +84,10 @@ public:
 	 * method!
 	 */
 	void		Init(const ProjectProperties& props);
-	void		Init(LONG lLanguage = 0,BOOL bLoadSpellCheck=TRUE);
+	/** Initialize the scintilla control.
+	 * lLanguage for initialiring spell checker: 0 = auto-detect language, -1 disable, or language code
+	 */
+	void		Init(LONG lLanguage = 0);
 	void		SetIcon(const std::map<int, UINT> &icons);
 	/**
 	 * Execute a scintilla command, e.g. SCI_GETLINE.
