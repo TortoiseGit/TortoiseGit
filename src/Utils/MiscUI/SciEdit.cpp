@@ -508,20 +508,8 @@ void CSciEdit::SetAutoCompletionList(const std::map<CString, int>& list, TCHAR s
 BOOL CSciEdit::IsMisspelled(const CString& sWord)
 {
 	// convert the string from the control to the encoding of the spell checker module.
-	CStringA sWordA;
-	if (m_spellcodepage)
-	{
-		char * buf;
-		buf = sWordA.GetBuffer(sWord.GetLength()*4 + 1);
-		int lengthIncTerminator =
-			WideCharToMultiByte(m_spellcodepage, 0, sWord, -1, buf, sWord.GetLength()*4, NULL, NULL);
-		if (lengthIncTerminator == 0)
-			return FALSE;	// converting to the codepage failed, assume word is spelled correctly
-		sWordA.ReleaseBuffer(lengthIncTerminator-1);
-	}
-	else
-		sWordA = CStringA(sWord);
-	sWordA.Trim("\'\".,");
+	CStringA sWordA = GetWordForSpellChecker(sWord);
+
 	// words starting with a digit are treated as correctly spelled
 	if (_istdigit(sWord.GetAt(0)))
 		return FALSE;
@@ -551,7 +539,7 @@ BOOL CSciEdit::IsMisspelled(const CString& sWord)
 						return FALSE;
 					return TRUE;
 				}
-				sWordA = CStringA(sWord.Mid(wordstart, wordend-wordstart));
+				sWordA = GetWordForSpellChecker(sWord.Mid(wordstart, wordend - wordstart));
 				if ((sWordA.GetLength() > 2)&&(!pChecker->spell(sWordA)))
 				{
 					return TRUE;
@@ -657,13 +645,13 @@ void CSciEdit::SuggestSpellingAlternatives()
 	if (word.IsEmpty())
 		return;
 	char ** wlst = nullptr;
-	int ns = pChecker->suggest(&wlst, CStringA(word));
+	int ns = pChecker->suggest(&wlst, GetWordForSpellChecker(word));
 	if (ns > 0)
 	{
 		CString suggestions;
 		for (int i=0; i < ns; i++)
 		{
-			suggestions.AppendFormat(_T("%s%c%d%c"), (LPCTSTR)CString(wlst[i]), m_typeSeparator, AUTOCOMPLETE_SPELLING, m_separator);
+			suggestions.AppendFormat(_T("%s%c%d%c"), (LPCTSTR)GetWordFromSpellChecker(wlst[i]), m_typeSeparator, AUTOCOMPLETE_SPELLING, m_separator);
 			free(wlst[i]);
 		}
 		free(wlst);
@@ -968,7 +956,7 @@ void CSciEdit::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 		}
 		else
 			sWord = GetWordUnderCursor();
-		CStringA worda = CStringA(sWord);
+		CStringA worda = GetWordForSpellChecker(sWord);
 
 		int nCorrections = 1;
 		bool bSpellAdded = false;
@@ -984,7 +972,7 @@ void CSciEdit::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 				for (int i=0; i < ns; i++)
 				{
 					bSpellAdded = true;
-					CString sug = CString(wlst[i]);
+					CString sug = GetWordFromSpellChecker(wlst[i]);
 					popup.InsertMenu((UINT)-1, 0, nCorrections++, sug);
 					free(wlst[i]);
 				}
@@ -1497,6 +1485,45 @@ bool CSciEdit::IsUrl(const CStringA& sText)
 			return true;
 	}
 	return false;
+}
+
+CStringA CSciEdit::GetWordForSpellChecker(const CString& sWord)
+{
+	// convert the string from the control to the encoding of the spell checker module.
+	CStringA sWordA;
+	if (m_spellcodepage)
+	{
+		char * buf = sWordA.GetBuffer(sWord.GetLength() * 4 + 1);
+		int lengthIncTerminator = WideCharToMultiByte(m_spellcodepage, 0, sWord, -1, buf, sWord.GetLength() * 4, NULL, NULL);
+		if (lengthIncTerminator == 0)
+			return ""; // converting to the codepage failed
+		sWordA.ReleaseBuffer(lengthIncTerminator - 1);
+	}
+	else
+		sWordA = CStringA(sWord);
+
+	sWordA.Trim("\'\".,");
+
+	return sWordA;
+}
+
+CString CSciEdit::GetWordFromSpellChecker(const CStringA& sWordA)
+{
+	CString sWord;
+	if (m_spellcodepage)
+	{
+		wchar_t * buf = sWord.GetBuffer(sWordA.GetLength() * 2);
+		int lengthIncTerminator = MultiByteToWideChar(m_spellcodepage, 0, sWordA, -1, buf, sWordA.GetLength() * 2);
+		if (lengthIncTerminator == 0)
+			return L"";
+		sWord.ReleaseBuffer(lengthIncTerminator - 1);
+	}
+	else
+		sWord = CString(sWordA);
+
+	sWord.Trim(L"\'\".,");
+
+	return sWord;
 }
 
 bool CSciEdit::IsUTF8(LPVOID pBuffer, size_t cb)
