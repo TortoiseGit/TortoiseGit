@@ -361,7 +361,7 @@ BOOL CSciEdit::LoadDictionaries(LONG lLanguageID)
 	if (pChecker)
 	{
 		const char * encoding = pChecker->get_dic_encoding();
-		CTraceToOutputDebugString::Instance()(__FUNCTION__ ": %s\n", (LPCTSTR)encoding);
+		CTraceToOutputDebugString::Instance()(__FUNCTION__ ": %s\n", encoding);
 		int n = _countof(enc2locale);
 		m_spellcodepage = 0;
 		for (int i = 0; i < n; i++)
