@@ -99,7 +99,7 @@ BOOL CResizableWndState::SaveWindowRect(LPCTSTR pszName, BOOL bRectOnly)
  *  
  *  @return Returns @a TRUE if successful, @a FALSE otherwise
  */
-BOOL CResizableWndState::LoadWindowRect(LPCTSTR pszName, BOOL bRectOnly)
+BOOL CResizableWndState::LoadWindowRect(LPCTSTR pszName, BOOL bRectOnly, BOOL bHorzResize, BOOL bVertResize)
 {
 	CString data, id;
 	WINDOWPLACEMENT wp;
@@ -123,9 +123,9 @@ BOOL CResizableWndState::LoadWindowRect(LPCTSTR pszName, BOOL bRectOnly)
 		&rc.right, &rc.bottom, &wp.showCmd, &wp.flags,
 		&wp.ptMinPosition.x, &wp.ptMinPosition.y) == 8)
 	{
-		if (rc.bottom - rc.top < min_height)
+		if ((!bVertResize) || (rc.bottom - rc.top < min_height))
 			rc.bottom = rc.top + min_height;
-		if (rc.right - rc.left < min_width)
+		if ((!bHorzResize) || (rc.right - rc.left < min_width))
 			rc.right = rc.left + min_width;
 		if (bRectOnly)	// restore size/pos only
 		{

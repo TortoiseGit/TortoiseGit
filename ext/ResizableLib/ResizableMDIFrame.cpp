@@ -69,7 +69,7 @@ void CResizableMDIFrame::OnGetMinMaxInfo(MINMAXINFO FAR* lpMMI)
 
 // NOTE: this must be called after setting the layout
 //       to have the view and its controls displayed properly
-BOOL CResizableMDIFrame::EnableSaveRestore(LPCTSTR pszSection, BOOL bRectOnly)
+BOOL CResizableMDIFrame::EnableSaveRestore(LPCTSTR pszSection, BOOL bRectOnly, BOOL bHorzResize, BOOL bVertResize)
 {
 	m_sSection = pszSection;
 
@@ -77,7 +77,7 @@ BOOL CResizableMDIFrame::EnableSaveRestore(LPCTSTR pszSection, BOOL bRectOnly)
 	m_bRectOnly = bRectOnly;
 
 	// restore immediately
-	return LoadWindowRect(pszSection, bRectOnly);
+	return LoadWindowRect(pszSection, bRectOnly, bHorzResize, bVertResize);
 }
 
 void CResizableMDIFrame::OnDestroy() 

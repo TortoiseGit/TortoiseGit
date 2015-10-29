@@ -54,7 +54,7 @@ public:
 protected:
 	virtual ~CResizableMDIChild();
 
-	BOOL EnableSaveRestore(LPCTSTR pszSection, BOOL bRectOnly = FALSE);
+	BOOL EnableSaveRestore(LPCTSTR pszSection, BOOL bRectOnly = FALSE, BOOL bHorzResize = TRUE, BOOL bVertResize = TRUE);
 
 	virtual CWnd* GetResizableWnd() const
 	{

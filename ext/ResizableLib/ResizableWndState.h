@@ -45,7 +45,7 @@ class CResizableWndState : public CResizableState
 protected:
 
 	//! @brief Load and set the window position and size
-	BOOL LoadWindowRect(LPCTSTR pszName, BOOL bRectOnly);
+	BOOL LoadWindowRect(LPCTSTR pszName, BOOL bRectOnly, BOOL bHorzResize, BOOL bVertResize);
 
 	//! @brief Save the current window position and size
 	BOOL SaveWindowRect(LPCTSTR pszName, BOOL bRectOnly);

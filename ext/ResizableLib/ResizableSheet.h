@@ -91,7 +91,7 @@ protected:
 
 	// section to use in app's profile
 	void EnableSaveRestore(LPCTSTR pszSection, BOOL bRectOnly = FALSE,
-		BOOL bWithPage = FALSE);
+		BOOL bWithPage = FALSE, BOOL bHorzResize = TRUE, BOOL bVertResize = TRUE);
 	int GetMinWidth();	// minimum width to display all buttons
 
 

@@ -493,7 +493,7 @@ int CResizableSheetEx::GetMinWidth()
 
 // NOTE: this must be called after all the other settings
 //       to have the window and its controls displayed properly
-void CResizableSheetEx::EnableSaveRestore(LPCTSTR pszSection, BOOL bRectOnly, BOOL bWithPage)
+void CResizableSheetEx::EnableSaveRestore(LPCTSTR pszSection, BOOL bRectOnly, BOOL bWithPage, BOOL bHorzResize, BOOL bVertResize)
 {
 	m_sSection = pszSection;
 	m_bSavePage = bWithPage;
@@ -502,7 +502,7 @@ void CResizableSheetEx::EnableSaveRestore(LPCTSTR pszSection, BOOL bRectOnly, BO
 	m_bRectOnly = bRectOnly;
 
 	// restore immediately
-	LoadWindowRect(pszSection, bRectOnly);
+	LoadWindowRect(pszSection, bRectOnly, bHorzResize, bVertResize);
 	if (bWithPage)
 	{
 		LoadPage(pszSection);

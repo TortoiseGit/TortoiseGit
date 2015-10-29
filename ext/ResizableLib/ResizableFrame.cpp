@@ -67,7 +67,7 @@ void CResizableFrame::OnGetMinMaxInfo(MINMAXINFO FAR* lpMMI)
 
 // NOTE: this must be called after setting the layout
 //       to have the view and its controls displayed properly
-BOOL CResizableFrame::EnableSaveRestore(LPCTSTR pszSection, BOOL bRectOnly)
+BOOL CResizableFrame::EnableSaveRestore(LPCTSTR pszSection, BOOL bRectOnly, BOOL bHorzResize, BOOL bVertResize)
 {
 	m_sSection = pszSection;
 
@@ -75,7 +75,7 @@ BOOL CResizableFrame::EnableSaveRestore(LPCTSTR pszSection, BOOL bRectOnly)
 	m_bRectOnly = bRectOnly;
 
 	// restore immediately
-	return LoadWindowRect(pszSection, bRectOnly);
+	return LoadWindowRect(pszSection, bRectOnly, bHorzResize, bVertResize);
 }
 
 void CResizableFrame::OnDestroy() 

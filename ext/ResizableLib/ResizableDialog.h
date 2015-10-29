@@ -77,7 +77,7 @@ private:
 // callable from derived classes
 protected:
 	// section to use in app's profile
-	void EnableSaveRestore(LPCTSTR pszSection, BOOL bRectOnly = FALSE);
+	void EnableSaveRestore(LPCTSTR pszSection, BOOL bRectOnly = FALSE, BOOL bHorzResize = TRUE, BOOL bVertResize = TRUE);
 
 	virtual CWnd* GetResizableWnd() const
 	{

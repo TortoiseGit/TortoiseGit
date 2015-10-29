@@ -87,7 +87,7 @@ void CResizableMDIChild::OnSize(UINT nType, int cx, int cy)
 
 // NOTE: this must be called after setting the layout
 //       to have the view and its controls displayed properly
-BOOL CResizableMDIChild::EnableSaveRestore(LPCTSTR pszSection, BOOL bRectOnly)
+BOOL CResizableMDIChild::EnableSaveRestore(LPCTSTR pszSection, BOOL bRectOnly, BOOL bHorzResize, BOOL bVertResize)
 {
 	m_sSection = pszSection;
 
@@ -95,7 +95,7 @@ BOOL CResizableMDIChild::EnableSaveRestore(LPCTSTR pszSection, BOOL bRectOnly)
 	m_bRectOnly = bRectOnly;
 
 	// restore immediately
-	return LoadWindowRect(pszSection, bRectOnly);
+	return LoadWindowRect(pszSection, bRectOnly, bHorzResize, bVertResize);
 }
 
 void CResizableMDIChild::OnDestroy() 
