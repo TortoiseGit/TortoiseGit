@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2006,2008 - TortoiseSVN
+// Copyright (C) 2003-2006, 2008-2010, 2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -140,13 +140,12 @@ private:
 	 * Converts the colors of the source picture (perhaps with color tables) to true color values.
 	 */
 	COLORREF GetShiftedColor(COLORREF color,int shift);
+	int NormalizeColor(long color) const;
 
 	int			m_iLightModifier;
 	int			m_iWidth;
 	int			m_iHeight;
 
-	int*		m_iBuffer1;
-	int*		m_iBuffer2;
-
+	std::unique_ptr<int[]>	m_iBuffer1;
+	std::unique_ptr<int[]>	m_iBuffer2;
 };
-

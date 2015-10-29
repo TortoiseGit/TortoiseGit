@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2006 - Stefan Kueng
+// Copyright (C) 2003-2006, 2009-2010, 2012-2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -21,12 +21,8 @@
 
 #include <math.h>
 
-
 CWaterEffect::CWaterEffect()
 {
-	m_iBuffer1 = NULL;
-	m_iBuffer2 = NULL;
-
 	m_iWidth = 0;
 	m_iHeight = 0;
 
@@ -37,25 +33,12 @@ CWaterEffect::CWaterEffect()
 
 CWaterEffect::~CWaterEffect()
 {
-	// free memory
-	if (m_iBuffer1 != NULL)
-		delete [] m_iBuffer1;
-	if (m_iBuffer2 != NULL)
-		delete [] m_iBuffer2;
-
-	m_iBuffer1 = NULL;
-	m_iBuffer2 = NULL;
 }
 
 void CWaterEffect::Create(int iWidth, int iHeight)
 {
-	if (m_iBuffer1 != NULL)
-		delete [] m_iBuffer1;
-	if (m_iBuffer2 != NULL)
-		delete [] m_iBuffer2;
-
-	m_iBuffer1 = new int[(iWidth*iHeight)];
-	m_iBuffer2 = new int[(iWidth*iHeight)];
+	m_iBuffer1.reset (new int[iWidth*iHeight]);
+	m_iBuffer2.reset (new int[iWidth*iHeight]);
 
 	m_iWidth = iWidth;
 	m_iHeight = iHeight;
@@ -68,35 +51,26 @@ void CWaterEffect::Create(int iWidth, int iHeight)
 
 void CWaterEffect::Blob(int x, int y, int radius, int height, int page)
 {
-	int rquad;
-	int cx, cy, cyq;
-	int left, top, right, bottom;
-
 	int *pNew;
-	int *pOld;
 
 	if (page == 0)
 	{
-		pNew = &m_iBuffer1[0];
-		pOld = &m_iBuffer2[0];
+		pNew = m_iBuffer1.get();
 	}
 	else
 	{
-		pNew = &m_iBuffer2[0];
-		pOld = &m_iBuffer1[0];
+		pNew = m_iBuffer2.get();
 	}
-
-	rquad = radius * radius;
 
 	if (x<0)
 		x = 1 + radius + rand() % (m_iWidth - 2 * radius - 1);
 	if (y<0)
 		y = 1 + radius + rand() % (m_iHeight - 2 * radius - 1);
 
-	left = -radius;
-	right = radius;
-	top = -radius;
-	bottom = radius;
+	int left = -radius;
+	int right = radius;
+	int top = -radius;
+	int bottom = radius;
 
 	// clip edges
 	if (x - radius < 1)
@@ -108,10 +82,11 @@ void CWaterEffect::Blob(int x, int y, int radius, int height, int page)
 	if (y + radius > m_iHeight-1)
 		bottom-= (y+radius-m_iHeight+1);
 
-	for(cy = top; cy < bottom; cy++)
+	const int rquad = radius * radius;
+	for(int cy = top; cy < bottom; cy++)
 	{
-		cyq = cy*cy;
-		for(cx = left; cx < right; cx++)
+		const int cyq = cy*cy;
+		for(int cx = left; cx < right; cx++)
 		{
 			if (cx*cx + cyq < rquad)
 			{
@@ -124,8 +99,8 @@ void CWaterEffect::Blob(int x, int y, int radius, int height, int page)
 void CWaterEffect::ClearWater()
 {
 	// clear height fields
-	memset(m_iBuffer1,0, (m_iWidth*m_iHeight)*sizeof(int));
-	memset(m_iBuffer2,0, (m_iWidth*m_iHeight)*sizeof(int));
+	SecureZeroMemory(m_iBuffer1.get(), (m_iWidth*m_iHeight)*sizeof(int));
+	SecureZeroMemory(m_iBuffer2.get(), (m_iWidth*m_iHeight)*sizeof(int));
 }
 
 void CWaterEffect::Render(DWORD* pSrcImage, DWORD* pTargetImage)
@@ -136,47 +111,43 @@ void CWaterEffect::Render(DWORD* pSrcImage, DWORD* pTargetImage)
 
 	//change the field from 0 to 1 and vice versa
 	m_iHpage ^= 1;
-
 }
 
 void CWaterEffect::CalcWater(int npage, int density)
 {
-	int newh;
-	int count = m_iWidth + 1;
 	int *pNew;
 	int *pOld;
 
 	if (npage == 0)
 	{
-		pNew = &m_iBuffer1[0];
-		pOld = &m_iBuffer2[0];
+		pNew = m_iBuffer1.get();
+		pOld = m_iBuffer2.get();
 	}
 	else
 	{
-		pNew = &m_iBuffer2[0];
-		pOld = &m_iBuffer1[0];
+		pNew = m_iBuffer2.get();
+		pOld = m_iBuffer1.get();
 	}
-
-	int x, y;
 
 	// a description of the algorithm and an implementation
 	// in 'pseudocode' can be found here:
 	// http://freespace.virgin.net/hugo.elias/graphics/x_water.htm
-	for (y = (m_iHeight-1)*m_iWidth; count < y; count += 2)
+	int count = m_iWidth + 1;
+	for (int y = (m_iHeight-1)*m_iWidth; count < y; count += 2)
 	{
-		for (x = count+m_iWidth-2; count < x; count++)
+		for (int x = count+m_iWidth-2; count < x; count++)
 		{
 			// use eight pixels
-			newh = ((pOld[count + m_iWidth]
-					+ pOld[count - m_iWidth]
-					+ pOld[count + 1]
-					+ pOld[count - 1]
-					+ pOld[count - m_iWidth - 1]
-					+ pOld[count - m_iWidth + 1]
-					+ pOld[count + m_iWidth - 1]
-					+ pOld[count + m_iWidth + 1]
-					) >> 2 )
-					- pNew[count];
+			const int newh = ((pOld[count + m_iWidth]
+								+ pOld[count - m_iWidth]
+								+ pOld[count + 1]
+								+ pOld[count - 1]
+								+ pOld[count - m_iWidth - 1]
+								+ pOld[count - m_iWidth + 1]
+								+ pOld[count + m_iWidth - 1]
+								+ pOld[count + m_iWidth + 1]
+								) >> 2 )
+								- pNew[count];
 
 			pNew[count] = newh - (newh >> density);
 		}
@@ -186,45 +157,41 @@ void CWaterEffect::CalcWater(int npage, int density)
 void CWaterEffect::SmoothWater(int npage)
 {
 	//flatten and spread the waves
-	int newh;
-	int count = m_iWidth + 1;
-
 	int *pNew;
 	int *pOld;
 
 	if (npage == 0)
 	{
-		pNew = &m_iBuffer1[0];
-		pOld = &m_iBuffer2[0];
+		pNew = m_iBuffer1.get();
+		pOld = m_iBuffer2.get();
 	}
 	else
 	{
-		pNew = &m_iBuffer2[0];
-		pOld = &m_iBuffer1[0];
+		pNew = m_iBuffer2.get();
+		pOld = m_iBuffer1.get();
 	}
-
-	int x, y;
 
 	// a description of the algorithm and an implementation
 	// in 'pseudocode' can be found here:
 	// http://freespace.virgin.net/hugo.elias/graphics/x_water.htm
-	for(y=1; y<m_iHeight-1; y++)
+	int count = m_iWidth + 1;
+	for(int y=1; y<m_iHeight-1; y++)
 	{
-		for(x=1; x<m_iWidth-1; x++)
+		for(int x=1; x<m_iWidth-1; x++)
 		{
-		  newh = ((pOld[count + m_iWidth]
-					+ pOld[count - m_iWidth]
-					+ pOld[count + 1]
-					+ pOld[count - 1]
-					+ pOld[count - m_iWidth - 1]
-					+ pOld[count - m_iWidth + 1]
-					+ pOld[count + m_iWidth - 1]
-					+ pOld[count + m_iWidth + 1]
-					) >> 3 )
-					+ pNew[count];
+			const int newh = ((pOld[count + m_iWidth]
+							+ pOld[count - m_iWidth]
+							+ pOld[count + 1]
+							+ pOld[count - 1]
+							+ pOld[count - m_iWidth - 1]
+							+ pOld[count - m_iWidth + 1]
+							+ pOld[count + m_iWidth - 1]
+							+ pOld[count + m_iWidth + 1]
+							) >> 3 )
+							+ pNew[count];
 
-		  pNew[count] = newh>>1;
-		  count++;
+			pNew[count] = newh>>1;
+			count++;
 		}
 		count += 2;
 	}
@@ -275,20 +242,22 @@ void CWaterEffect::DrawWater(int /*page*/, int /*LightModifier*/, DWORD* pSrcIma
 
 COLORREF CWaterEffect::GetShiftedColor(COLORREF color, int shift)
 {
-	long R;
-	long G;
-	long B;
-	int ir;
-	int ig;
-	int ib;
+	const long R = GetRValue(color)-shift;
+	const long G = GetGValue(color)-shift;
+	const long B = GetBValue(color)-shift;
 
-	R = GetRValue(color)-shift;
-	G = GetGValue(color)-shift;
-	B = GetBValue(color)-shift;
-
-	ir = (R < 0) ? 0 : (R > 255) ? 255 : R;
-	ig = (G < 0) ? 0 : (G > 255) ? 255 : G;
-	ib = (B < 0) ? 0 : (B > 255) ? 255 : B;
+	const int ir = NormalizeColor(R);
+	const int ig = NormalizeColor(G);
+	const int ib = NormalizeColor(B);
 
 	return RGB(ir,ig,ib);
+}
+
+int CWaterEffect::NormalizeColor(long color) const
+{
+	if(color < 0)
+		return 0;
+	if(color > 255)
+		return 255;
+	return color;
 }

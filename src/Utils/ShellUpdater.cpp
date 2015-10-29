@@ -105,78 +105,71 @@ void CShellUpdater::UpdateShell()
 
 
 	if (!hPipe)
-	{
-		// The pipe connected; change to message-read mode.
-		DWORD dwMode;
+		return;
 
-		dwMode = PIPE_READMODE_MESSAGE;
-		if(SetNamedPipeHandleState(
+	// The pipe connected; change to message-read mode.
+	DWORD dwMode = PIPE_READMODE_MESSAGE;
+	if (!SetNamedPipeHandleState(
 			hPipe,    // pipe handle
 			&dwMode,  // new pipe mode
-			NULL,     // don't set maximum bytes
-			NULL))    // don't set maximum time
-		{
-			CTGitPath path;
-			for(int nPath = 0; nPath < m_pathsForUpdating.GetCount(); ++nPath)
-			{
-				path.SetFromWin(g_Git.CombinePath(m_pathsForUpdating[nPath]));
-				CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Cache Item Update for %s (%d)\n"), (LPCTSTR)path.GetWinPathString(), GetTickCount());
-				if (!path.IsDirectory())
-				{
-					// send notifications to the shell for changed files - folders are updated by the cache itself.
-					SHChangeNotify(SHCNE_UPDATEITEM, SHCNF_PATH | SHCNF_FLUSHNOWAIT, path.GetWinPath(), NULL);
-				}
-				DWORD cbWritten;
-				TGITCacheCommand cmd;
-				cmd.command = TGITCACHECOMMAND_CRAWL;
-				wcsncpy_s(cmd.path, path.GetDirectory().GetWinPath(), _countof(cmd.path) - 1);
-				BOOL fSuccess = WriteFile(
-					hPipe,			// handle to pipe
-					&cmd,			// buffer to write from
-					sizeof(cmd),	// number of bytes to write
-					&cbWritten,		// number of bytes written
-					NULL);			// not overlapped I/O
+			nullptr,  // don't set maximum bytes
+			nullptr)) // don't set maximum time
+	{
+		CTraceToOutputDebugString::Instance()(__FUNCTION__ ": SetNamedPipeHandleState failed");
+		return;
+	}
 
-				if (! fSuccess || sizeof(cmd) != cbWritten)
-				{
-					DisconnectNamedPipe(hPipe);
-					return;
-				}
-			}
-			if (!hPipe)
-			{
-				// now tell the cache we don't need it's command thread anymore
-				DWORD cbWritten;
-				TGITCacheCommand cmd;
-				cmd.command = TGITCACHECOMMAND_END;
-				WriteFile(
-					hPipe,			// handle to pipe
-					&cmd,			// buffer to write from
-					sizeof(cmd),	// number of bytes to write
-					&cbWritten,		// number of bytes written
-					NULL);			// not overlapped I/O
-				DisconnectNamedPipe(hPipe);
-			}
-		}
-		else
+	CTGitPath path;
+	for (int nPath = 0; nPath < m_pathsForUpdating.GetCount(); ++nPath)
+	{
+		path.SetFromWin(g_Git.CombinePath(m_pathsForUpdating[nPath]));
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Cache Item Update for %s (%d)\n"), (LPCTSTR)path.GetWinPathString(), GetTickCount());
+		if (!path.IsDirectory())
 		{
-			CTraceToOutputDebugString::Instance()(__FUNCTION__ ": SetNamedPipeHandleState failed");
+			// send notifications to the shell for changed files - folders are updated by the cache itself.
+			SHChangeNotify(SHCNE_UPDATEITEM, SHCNF_PATH | SHCNF_FLUSHNOWAIT, path.GetWinPath(), nullptr);
+		}
+		DWORD cbWritten;
+		TGITCacheCommand cmd;
+		cmd.command = TGITCACHECOMMAND_CRAWL;
+		wcsncpy_s(cmd.path, path.GetDirectory().GetWinPath(), _countof(cmd.path) - 1);
+		BOOL fSuccess = WriteFile(
+			hPipe,			// handle to pipe
+			&cmd,			// buffer to write from
+			sizeof(cmd),	// number of bytes to write
+			&cbWritten,		// number of bytes written
+			nullptr);		// not overlapped I/O
+
+		if (!fSuccess || sizeof(cmd) != cbWritten)
+		{
+			DisconnectNamedPipe(hPipe);
+			return;
 		}
 	}
+
+	// now tell the cache we don't need it's command thread anymore
+	DWORD cbWritten;
+	TGITCacheCommand cmd;
+	cmd.command = TGITCACHECOMMAND_END;
+	WriteFile(
+		hPipe,			// handle to pipe
+		&cmd,			// buffer to write from
+		sizeof(cmd),	// number of bytes to write
+		&cbWritten,		// number of bytes written
+		nullptr);		// not overlapped I/O
+	DisconnectNamedPipe(hPipe);
 }
 
 bool CShellUpdater::RebuildIcons()
 {
 	const int BUFFER_SIZE = 1024;
-	TCHAR *buf = NULL;
+	TCHAR buf[BUFFER_SIZE] = { 0 };
 	HKEY hRegKey = 0;
 	DWORD dwRegValue;
 	DWORD dwRegValueTemp;
 	DWORD dwSize;
 	DWORD_PTR dwResult;
 	LONG lRegResult;
-	std::wstring sRegValueName;
-	int iDefaultIconSize;
 	bool bResult = false;
 
 	lRegResult = RegOpenKeyEx(HKEY_CURRENT_USER, _T("Control Panel\\Desktop\\WindowMetrics"),
@@ -184,21 +177,17 @@ bool CShellUpdater::RebuildIcons()
 	if (lRegResult != ERROR_SUCCESS)
 		goto Cleanup;
 
-	buf = new TCHAR[BUFFER_SIZE];
-	if(buf == NULL)
-		goto Cleanup;
-
 	// we're going to change the Shell Icon Size value
-	sRegValueName = _T("Shell Icon Size");
+	const TCHAR* sRegValueName = _T("Shell Icon Size");
 
 	// Read registry value
 	dwSize = BUFFER_SIZE;
-	lRegResult = RegQueryValueEx(hRegKey, sRegValueName.c_str(), NULL, NULL,
+	lRegResult = RegQueryValueEx(hRegKey, sRegValueName, NULL, NULL,
 		(LPBYTE) buf, &dwSize);
 	if (lRegResult != ERROR_FILE_NOT_FOUND)
 	{
 		// If registry key doesn't exist create it using system current setting
-		iDefaultIconSize = ::GetSystemMetrics(SM_CXICON);
+		int iDefaultIconSize = ::GetSystemMetrics(SM_CXICON);
 		if (0 == iDefaultIconSize)
 			iDefaultIconSize = 32;
 		_sntprintf_s(buf, BUFFER_SIZE, BUFFER_SIZE, _T("%d"), iDefaultIconSize);
@@ -211,7 +200,7 @@ bool CShellUpdater::RebuildIcons()
 	dwRegValueTemp = dwRegValue-1;
 
 	dwSize = _sntprintf_s(buf, BUFFER_SIZE, BUFFER_SIZE, _T("%lu"), dwRegValueTemp) + sizeof(TCHAR);
-	lRegResult = RegSetValueEx(hRegKey, sRegValueName.c_str(), 0, REG_SZ,
+	lRegResult = RegSetValueEx(hRegKey, sRegValueName, 0, REG_SZ,
 		(LPBYTE) buf, dwSize);
 	if (lRegResult != ERROR_SUCCESS)
 		goto Cleanup;
@@ -223,7 +212,7 @@ bool CShellUpdater::RebuildIcons()
 
 	// Reset registry value
 	dwSize = _sntprintf_s(buf, BUFFER_SIZE, BUFFER_SIZE, _T("%lu"), dwRegValue) + sizeof(TCHAR);
-	lRegResult = RegSetValueEx(hRegKey, sRegValueName.c_str(), 0, REG_SZ,
+	lRegResult = RegSetValueEx(hRegKey, sRegValueName, 0, REG_SZ,
 		(LPBYTE) buf, dwSize);
 	if(lRegResult != ERROR_SUCCESS)
 		goto Cleanup;
@@ -239,11 +228,5 @@ Cleanup:
 	{
 		RegCloseKey(hRegKey);
 	}
-	if (buf != NULL)
-	{
-		delete [] buf;
-	}
-
 	return bResult;
-
 }
