@@ -35,6 +35,7 @@ Released: unreleased
  * Fixed issue #2560: Problems with MS Outlook and "Name" <john@example.com> formatted email-addresses
  * Fixed issue #2624: Encoding issues when using suggested words from spell checker
  * Fixed issue #2602: templatedir not respected if directory starts with dot
+ * Fixed issue #2622: TortoiseGit shows context menu for two unversioned files even if told not to do so
 
 = Release 1.8.15.0 =
 Released: 2015-08-02
