@@ -87,10 +87,7 @@ CCommitDlg::CCommitDlg(CWnd* pParent /*=NULL*/)
 
 CCommitDlg::~CCommitDlg()
 {
-	if(m_pThread != NULL)
-	{
-		delete m_pThread;
-	}
+	delete m_pThread;
 }
 
 void CCommitDlg::DoDataExchange(CDataExchange* pDX)

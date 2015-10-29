@@ -71,10 +71,7 @@ CProgressDlg::CProgressDlg(CWnd* pParent /*=NULL*/)
 
 CProgressDlg::~CProgressDlg()
 {
-	if(m_pThread != NULL)
-	{
-		delete m_pThread;
-	}
+	delete m_pThread;
 }
 
 void CProgressDlg::DoDataExchange(CDataExchange* pDX)

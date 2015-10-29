@@ -68,10 +68,7 @@ CGitProgressList::~CGitProgressList()
 	{
 		delete m_arData[i];
 	}
-	if(m_pThread != NULL)
-	{
-		delete m_pThread;
-	}
+	delete m_pThread;
 }
 
 

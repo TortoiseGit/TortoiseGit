@@ -137,8 +137,7 @@ void CCheckForUpdatesDlg::OnDestroy()
 	for (int i = 0; i < m_ctrlFiles.GetItemCount(); ++i)
 		delete (CUpdateListCtrl::Entry *)m_ctrlFiles.GetItemData(i);
 
-	if (m_updateDownloader)
-		delete m_updateDownloader;
+	delete m_updateDownloader;
 
 	CStandAloneDialog::OnDestroy();
 }

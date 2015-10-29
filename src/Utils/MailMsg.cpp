@@ -309,11 +309,9 @@ BOOL CMailMsg::Send()
 		m_sErrorMsg.Format(_T("MAPISendMail has failed with code %lu."), status);
 	}
 
-	if (pRecipients)
-		delete [] pRecipients;
+	delete[] pRecipients;
 
-	if (nAttachments)
-		delete [] pAttachments;
+	delete[] pAttachments;
 
 	return (SUCCESS_SUCCESS == status);
 }

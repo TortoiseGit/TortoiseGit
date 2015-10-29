@@ -199,11 +199,8 @@ CTortoiseGitBlameView::~CTortoiseGitBlameView()
 		DeleteObject(m_italicfont);
 
 #ifdef USE_TEMPFILENAME
-	if(m_Buffer)
-	{
-		delete m_Buffer;
-		m_Buffer=NULL;
-	}
+	delete m_Buffer;
+	m_Buffer = nullptr;
 #endif
 }
 struct EncodingUnit
@@ -1579,11 +1576,8 @@ void CTortoiseGitBlameView::UpdateInfo(int Encode)
 	}
 
 #ifdef USE_TEMPFILENAME
-	if(m_Buffer)
-	{
-		delete m_Buffer;
-		m_Buffer=NULL;
-	}
+	delete m_Buffer;
+	m_Buffer = nullptr;
 
 	CFile file;
 	file.Open(this->GetDocument()->m_TempFileName,CFile::modeRead);
