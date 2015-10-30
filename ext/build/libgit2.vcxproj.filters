@@ -835,9 +835,6 @@
     <ClInclude Include="..\libgit2\src\khash.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\libgit2\src\merge_file.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\libgit2\src\object.h">
       <Filter>Header Files</Filter>
     </ClInclude>

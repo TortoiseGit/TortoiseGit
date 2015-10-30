@@ -290,7 +290,6 @@
     <ClInclude Include="..\libgit2\src\khash.h" />
     <ClInclude Include="..\libgit2\src\map.h" />
     <ClInclude Include="..\libgit2\src\merge.h" />
-    <ClInclude Include="..\libgit2\src\merge_file.h" />
     <ClInclude Include="..\libgit2\src\message.h" />
     <ClInclude Include="..\libgit2\src\mwindow.h" />
     <ClInclude Include="..\libgit2\src\netops.h" />
