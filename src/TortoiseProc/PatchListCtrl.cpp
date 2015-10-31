@@ -164,7 +164,8 @@ int CPatchListCtrl::LaunchProc(const CString& command)
 
 	file.Close();
 
-	CString cmd = command;
+	CString cmd = _T("/command:");
+	cmd += command;
 	cmd +=_T(" /pathfile:\"");
 	cmd += tempfile;
 	cmd += _T("\" /deletepathfile");
