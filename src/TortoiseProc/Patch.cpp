@@ -36,7 +36,7 @@ int CSendMailPatch::SendAsSingleMail(CTGitPath &path, CGitProgressList * instanc
 
 	CString pathfile(path.GetWinPathString());
 	CPatch patch;
-	if (patch.Parse(pathfile))
+	if (patch.Parse(pathfile, !m_bAttachment))
 	{
 		instance->ReportError(_T("Could not open/parse ") + pathfile);
 		return -2;
@@ -61,7 +61,7 @@ int CSendMailPatch::SendAsCombinedMail(CTGitPathList &list, CGitProgressList * i
 	for (int i = 0; i < list.GetCount(); ++i)
 	{
 		CPatch patch;
-		if (patch.Parse((CString &)list[i].GetWinPathString()))
+		if (patch.Parse((CString&)list[i].GetWinPathString(), !m_bAttachment))
 		{
 			instance->ReportError(_T("Could not open/parse ") + list[i].GetWinPathString());
 			return -2;
@@ -96,10 +96,8 @@ CPatch::~CPatch()
 {
 }
 
-int CPatch::Parse(CString &pathfile)
+int CPatch::Parse(CString& pathfile, bool parseBody)
 {
-	CString str;
-
 	m_PathFile = pathfile;
 
 	CFile PatchFile;
@@ -140,6 +138,9 @@ int CPatch::Parse(CString &pathfile)
 				CGit::StringAppend(&m_Subject, (BYTE*)(LPCSTR)one, CP_UTF8, one.GetLength());
 			}
 		}
+
+		if (!parseBody)
+			return 0;
 
 		if (start + 1 < m_Body.GetLength())
 			CGit::StringAppend(&m_strBody, (BYTE*)(LPCSTR)m_Body + start + 1, CP_UTF8, m_Body.GetLength() - start - 1);

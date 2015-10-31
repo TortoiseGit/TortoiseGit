@@ -38,7 +38,7 @@ public:
 	CPatch();
 	~CPatch(void);
 
-	int			Parse(CString &pathfile);
+	int			Parse(CString& pathfile, bool parseBody);
 	CString		m_Author;
 	CString		m_Date;
 	CString		m_Subject;
