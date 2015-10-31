@@ -25,7 +25,7 @@
 
 class CAppUtils;
 
-CSendMail::CSendMail(CString &To, CString &CC, bool bAttachment)
+CSendMail::CSendMail(const CString& To, const CString& CC, bool bAttachment)
 {
 	m_sSenderName = g_Git.GetUserName();
 	m_sSenderMail = g_Git.GetUserEmail();
@@ -38,7 +38,7 @@ CSendMail::~CSendMail(void)
 {
 }
 
-int CSendMail::SendMail(const CTGitPath &item, CGitProgressList * instance, CString &FromName, CString &FromMail, CString &To, CString &CC, CString &subject, CString &body, CStringArray &attachments)
+int CSendMail::SendMail(const CTGitPath &item, CGitProgressList * instance, const CString& FromName, const CString& FromMail, const CString& To, const CString& CC, const CString &subject, const CString& body, CStringArray &attachments)
 {
 	ASSERT(instance);
 	int retry = 0;
@@ -73,7 +73,7 @@ int CSendMail::SendMail(const CTGitPath &item, CGitProgressList * instance, CStr
 	return -1;
 }
 
-int CSendMail::SendMail(CString &FromName, CString &FromMail, CString &To, CString &CC, CString &subject, CString &body, CStringArray &attachments, CString *errortext)
+int CSendMail::SendMail(const CString& FromName, const CString& FromMail, const CString& To, const CString& CC, const CString& subject, const CString& body, CStringArray &attachments, CString *errortext)
 {
 	if (CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\DeliveryType"), SEND_MAIL_MAPI) == SEND_MAIL_MAPI)
 	{
@@ -137,7 +137,7 @@ int CSendMail::SendMail(CString &FromName, CString &FromMail, CString &To, CStri
 	}
 }
 
-CSendMailCombineable::CSendMailCombineable(CString &To, CString &CC, CString &subject, bool bAttachment, bool bCombine)
+CSendMailCombineable::CSendMailCombineable(const CString& To, const CString& CC, const CString& subject, bool bAttachment, bool bCombine)
 	: CSendMail(To, CC, bAttachment)
 	, m_sSubject(subject)
 	, m_bCombine(bCombine)
@@ -148,7 +148,7 @@ CSendMailCombineable::~CSendMailCombineable()
 {
 }
 
-int CSendMailCombineable::Send(CTGitPathList &list, CGitProgressList * instance)
+int CSendMailCombineable::Send(const CTGitPathList& list, CGitProgressList* instance)
 {
 	if (m_bCombine)
 	{
@@ -160,7 +160,7 @@ int CSendMailCombineable::Send(CTGitPathList &list, CGitProgressList * instance)
 		for (int i = 0; i < list.GetCount(); ++i)
 		{
 			instance->SetItemProgress(i);
-			if (SendAsSingleMail((CTGitPath &)list[i], instance))
+			if (SendAsSingleMail((CTGitPath&)list[i], instance))
 				return -1;
 		}
 		instance->SetItemProgress(list.GetCount() + 1);
@@ -187,7 +187,7 @@ int GetFileContents(CString &filename, CString &content)
 		return -1;
 }
 
-int CSendMailCombineable::SendAsSingleMail(CTGitPath &path, CGitProgressList * instance)
+int CSendMailCombineable::SendAsSingleMail(const CTGitPath& path, CGitProgressList* instance)
 {
 	ASSERT(instance);
 
@@ -206,7 +206,7 @@ int CSendMailCombineable::SendAsSingleMail(CTGitPath &path, CGitProgressList * i
 	return SendMail(path, instance, m_sSenderName, m_sSenderMail, m_sTo, m_sCC, m_sSubject, body, attachments);
 }
 
-int CSendMailCombineable::SendAsCombinedMail(CTGitPathList &list, CGitProgressList * instance)
+int CSendMailCombineable::SendAsCombinedMail(const CTGitPathList &list, CGitProgressList* instance)
 {
 	ASSERT(instance);
 

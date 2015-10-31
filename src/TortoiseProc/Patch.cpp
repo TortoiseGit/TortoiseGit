@@ -21,7 +21,7 @@
 #include "stdafx.h"
 #include "Patch.h"
 
-CSendMailPatch::CSendMailPatch(CString &To, CString &CC, CString &subject, bool bAttachment, bool bCombine)
+CSendMailPatch::CSendMailPatch(const CString& To, const CString& CC, const CString& subject, bool bAttachment, bool bCombine)
 	: CSendMailCombineable(To, CC, subject, bAttachment, bCombine)
 {
 }
@@ -30,7 +30,7 @@ CSendMailPatch::~CSendMailPatch()
 {
 }
 
-int CSendMailPatch::SendAsSingleMail(CTGitPath &path, CGitProgressList * instance)
+int CSendMailPatch::SendAsSingleMail(const CTGitPath& path, CGitProgressList* instance)
 {
 	ASSERT(instance);
 
@@ -52,7 +52,7 @@ int CSendMailPatch::SendAsSingleMail(CTGitPath &path, CGitProgressList * instanc
 	return SendMail(path, instance, m_sSenderName, m_sSenderMail, m_sTo, m_sCC, patch.m_Subject, body, attachments);
 }
 
-int CSendMailPatch::SendAsCombinedMail(CTGitPathList &list, CGitProgressList * instance)
+int CSendMailPatch::SendAsCombinedMail(const CTGitPathList &list, CGitProgressList* instance)
 {
 	ASSERT(instance);
 
@@ -96,7 +96,7 @@ CPatch::~CPatch()
 {
 }
 
-int CPatch::Parse(CString& pathfile, bool parseBody)
+int CPatch::Parse(const CString& pathfile, bool parseBody)
 {
 	m_PathFile = pathfile;
 
