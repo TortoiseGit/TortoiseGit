@@ -1980,6 +1980,8 @@ void CMainFrame::OnViewOptions()
 
 void CMainFrame::OnClose()
 {
+	if (!IsWindowEnabled())
+		return; // just in case someone sends a WM_CLOSE to the main window while another window (dialog,...) is open
 	if (CheckForSave(CHFSR_CLOSE)!=IDCANCEL)
 	{
 		WINDOWPLACEMENT wp;
