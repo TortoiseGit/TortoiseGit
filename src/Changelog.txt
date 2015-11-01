@@ -1,5 +1,5 @@
 ﻿= Release 1.8.16.0 =
-Released: unreleased
+Released: 2015-11-01
 
 == Features ==
  * Updated libgit to version 2.5.0 
@@ -15,6 +15,13 @@ Released: unreleased
  * Fixed issue #2609: Start scrolling the log from the bottom of the window rather than the top when finishing the progress
  * Fixed issue #2608: Need a cancel option when cancelling a "restore after commit"
  * Fixed issue #2531: Can't filter message in annotated tag or text in notes
+ * LogDlg: Clear filter on escape (if set) or exit dialog
+ * TortoiseGitMerge: Allow to change file encoding
+ * TortoiseGitMerge: Move all commands to the first view to avoid having to switch views
+ * Add find bar to patch viewer
+ * Added some new OverlayIcon styles (especially for Windows 10)
+ * Update PuTTY binaries to 0.65
+ * Update TortoiseOverlays to 1.1.4-26626
 
 == Bug Fixes ==
  * TortoiseGitMerge highlights wrong line in case of file starts with LF+CRLF
@@ -32,6 +39,7 @@ Released: unreleased
  * Fixed issue #2598: Git Daemon error with root path (as "D:\")
  * Fixed issue #2615: Error during Rebase Edit/Split on a root path
  * Fixed issue #2528: Unreadably long message box when failing to read a file in a new project
+ * TGitCache: Fix possible deadlock and performance optimizations
  * Fixed issue #2560: Problems with MS Outlook and "Name" <john@example.com> formatted email-addresses
  * Fixed issue #2624: Encoding issues when using suggested words from spell checker
  * Fixed issue #2602: templatedir not respected if directory starts with dot
