@@ -30,7 +30,7 @@ First, you need to install the compiler package:
 Next you might need to install some utilities/programs:
 *  If you want to build the MSI installer you need WiX3.9 (http://wix.codeplex.com/)
 *  For building the docs you need NAnt (http://nant.sourceforge.net/) and
-   http://code.google.com/p/tortoisesvn/downloads/detail?name=Tools-1.8.0.7z
+   https://sourceforge.net/projects/tortoisesvn/files/build%20tools/
    See doc/readme.txt for more details on building the docs.
 
 Get external source code
@@ -45,7 +45,7 @@ Run
 to download all linked repositories (submodules) automatically.
 Alternatively, you can download submodules when cloning the main project with single command.
 
-    git clone --recursive https://code.google.com/p/tortoisegit/
+    git clone --recursive https://gitlab.com/tortoisegit/tortoisegit.git
 
 Building the packages
 ---------------------
