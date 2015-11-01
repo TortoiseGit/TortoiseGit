@@ -36,12 +36,12 @@ Git team. Their translations can be found here:
 https://github.com/gitster/git/tree/master/po
 
 When translating on transifex.com there you might see red symbols in the
-original text such as "⇥", "⏎", "↩" (you need an UTF-8 aware editor to
-see the the three different symbols here). DO NOT COPY these into the
-translated text as this might break certain semantics. "⇥" means that a
-tabulator is needed at that position. "⏎" and "↩" indicate that a new
-line should be inserted there. For "⏎" just press enter, "↩" needs
-special attention as well as the tabulator character.
+original text such as "⇥", "⏎", "↩" and "»" (you need an UTF-8 aware
+editor to see the the three different symbols here). DO NOT COPY these
+into the translated text as this might break certain semantics. "»" and
+"⇥" mean that a tabulator is needed at that position. "⏎" and "↩" indicate
+that a new line should be inserted there. For "⏎" just press enter, "↩"
+needs special attention as well as the tabulator character.
 ATTENTION: Right now there is a bug on transifex so that the tabulator
 character and the "↩" new line character cannot be inserted using the
 keyboard. Workaround: Click on "Copy source string" and then carefully
