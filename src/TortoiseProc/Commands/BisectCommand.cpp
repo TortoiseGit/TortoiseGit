@@ -39,46 +39,20 @@ bool BisectCommand::Execute()
 	}
 	else if ((this->parser.HasKey(_T("good")) || this->parser.HasKey(_T("bad")) || this->parser.HasKey(_T("reset"))) && path.IsBisectActive())
 	{
-		CString cmd = _T("git.exe bisect ");
+		CString op;
+		CString ref;
 
 		if (this->parser.HasKey(_T("good")))
-			cmd += _T("good");
+			op = _T("good");
 		else if (this->parser.HasKey(_T("bad")))
-			cmd += _T("bad");
+			op = _T("bad");
 		else if (this->parser.HasKey(_T("reset")))
-			cmd += _T("reset");
+			op = _T("reset");
 
 		if (this->parser.HasKey(_T("ref")) &&! this->parser.HasKey(_T("reset")))
-		{
-			cmd += _T(" ");
-			cmd += this->parser.GetVal(_T("ref"));
-		}
+			ref = this->parser.GetVal(_T("ref"));
 
-		CProgressDlg progress;
-		theApp.m_pMainWnd = &progress;
-		progress.m_GitCmd = cmd;
-
-		progress.m_PostCmdCallback = [&](DWORD status, PostCmdList& postCmdList)
-		{
-			if (status)
-				return;
-
-			if (path.HasSubmodules())
-			{
-				postCmdList.emplace_back(IDI_UPDATE, IDS_PROC_SUBMODULESUPDATE, []
-				{
-					CString sCmd;
-					sCmd.Format(_T("/command:subupdate /bkpath:\"%s\""), (LPCTSTR)g_Git.m_CurrentDir);
-					CAppUtils::RunTortoiseGitProc(sCmd);
-				});
-			}
-
-			if (!this->parser.HasKey(_T("reset")))
-				postCmdList.emplace_back(IDS_MENUBISECTRESET, []{ CAppUtils::RunTortoiseGitProc(_T("/command:bisect /reset")); });
-		};
-
-		INT_PTR ret = progress.DoModal();
-		return ret == IDOK;
+		return CAppUtils::BisectOperation(op, ref);
 	}
 	else
 	{
