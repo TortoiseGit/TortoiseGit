@@ -80,6 +80,7 @@ IDI_REVISIONGRAPH       ICON                    "..\\Resources\\menurevisiongrap
 IDI_DAEMON              ICON                    "..\\Resources\\menudaemon.ico"
 IDI_MERGEABORT          ICON                    "..\\Resources\\menumergeabort.ico"
 IDI_BISECT              ICON                    "..\\Resources\\menubisect.ico"
+IDI_BISECT_RESET        ICON                    "..\\Resources\\menubisectreset.ico"
 #endif    // Neutral resources
 /////////////////////////////////////////////////////////////////////////////
 

@@ -234,6 +234,7 @@
 #define IDI_DAEMON                      5180
 #define IDI_MERGEABORT                  5181
 #define IDI_BISECT                      5182
+#define IDI_BISECT_RESET                5183
 #define IDC_CONFIG_AUTOCRLF             11020
 #define IDC_EDITPROPERTIES              11021
 #define IDC_REPOURLUNESCAPED            11022
