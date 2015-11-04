@@ -1720,6 +1720,16 @@ bool CGitLogListBase::IsStash(const GitRev * pSelLogEntry)
 	return false;
 }
 
+bool CGitLogListBase::IsBisect(const GitRev * pSelLogEntry)
+{
+	for (size_t i = 0; i < m_HashMap[pSelLogEntry->m_CommitHash].size(); ++i)
+	{
+		if (m_HashMap[pSelLogEntry->m_CommitHash][i].Left(12) == _T("refs/bisect/"))
+			return true;
+	}
+	return false;
+}
+
 void CGitLogListBase::GetParentHashes(GitRev *pRev, GIT_REV_LIST &parentHash)
 {
 	if (pRev->m_ParentHash.empty())
@@ -1985,6 +1995,37 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					if (m_ContextMenuMask&GetContextMenuBit(ID_STASH_LIST))
 					{
 						popup.AppendMenuIcon(ID_STASH_LIST, IDS_MENUSTASHLIST, IDI_LOG);
+						requiresSeparator = true;
+					}
+				}
+
+				if (requiresSeparator)
+				{
+					popup.AppendMenu(MF_SEPARATOR, NULL);
+					requiresSeparator = false;
+				}
+
+				if (CTGitPath(g_Git.m_CurrentDir).IsBisectActive())
+				{
+					GitRevLoglist* pFirstEntry = reinterpret_cast<GitRevLoglist*>(m_arShownList.SafeGetAt(FirstSelect));
+					if (m_ContextMenuMask&GetContextMenuBit(ID_BISECTGOOD) && !IsBisect(pFirstEntry))
+					{
+						popup.AppendMenuIcon(ID_BISECTGOOD, IDS_MENUBISECTGOOD, IDI_THUMB_UP);
+						requiresSeparator = true;
+					}
+
+					if (m_ContextMenuMask&GetContextMenuBit(ID_BISECTBAD) && !IsBisect(pFirstEntry))
+					{
+						popup.AppendMenuIcon(ID_BISECTBAD, IDS_MENUBISECTBAD, IDI_THUMB_DOWN);
+						requiresSeparator = true;
+					}
+				}
+
+				if (pSelLogEntry->m_CommitHash.IsEmpty() && CTGitPath(g_Git.m_CurrentDir).IsBisectActive())
+				{
+					if (m_ContextMenuMask&GetContextMenuBit(ID_BISECTRESET))
+					{
+						popup.AppendMenuIcon(ID_BISECTRESET, IDS_MENUBISECTRESET, IDI_BISECT_RESET);
 						requiresSeparator = true;
 					}
 				}

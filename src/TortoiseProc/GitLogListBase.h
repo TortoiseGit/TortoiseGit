@@ -335,6 +335,9 @@ public:
 	ID_MERGE_ABORT,
 	ID_CLEANUP,
 	ID_SUBMODULE_UPDATE,
+	ID_BISECTGOOD,
+	ID_BISECTBAD,
+	ID_BISECTRESET,
 	};
 	enum
 	{
@@ -504,6 +507,7 @@ protected:
 	UINT LogThread();
 	bool IsOnStash(int index);
 	bool IsStash(const GitRev * pSelLogEntry);
+	bool IsBisect(const GitRev * pSelLogEntry);
 	void FetchRemoteList();
 	void FetchTrackingBranchList();
 	void FetchLastLogInfo();
