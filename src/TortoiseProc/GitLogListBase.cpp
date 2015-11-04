@@ -1960,23 +1960,39 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 				}
 
 				if (requiresSeparator)
+				{
 					popup.AppendMenu(MF_SEPARATOR, NULL);
+					requiresSeparator = false;
+				}
 
 				if (pSelLogEntry->m_CommitHash.IsEmpty() && !isMergeActive)
 				{
 					if(m_ContextMenuMask&GetContextMenuBit(ID_STASH_SAVE))
+					{
 						popup.AppendMenuIcon(ID_STASH_SAVE, IDS_MENUSTASHSAVE, IDI_COMMIT);
+						requiresSeparator = true;
+					}
 				}
 
 				if ((pSelLogEntry->m_CommitHash.IsEmpty() || isStash) && CTGitPath(g_Git.m_CurrentDir).HasStashDir())
 				{
 					if (m_ContextMenuMask&GetContextMenuBit(ID_STASH_POP))
+					{
 						popup.AppendMenuIcon(ID_STASH_POP, IDS_MENUSTASHPOP, IDI_RELOCATE);
+						requiresSeparator = true;
+					}
 
 					if (m_ContextMenuMask&GetContextMenuBit(ID_STASH_LIST))
+					{
 						popup.AppendMenuIcon(ID_STASH_LIST, IDS_MENUSTASHLIST, IDI_LOG);
+						requiresSeparator = true;
+					}
+				}
 
+				if (requiresSeparator)
+				{
 					popup.AppendMenu(MF_SEPARATOR, NULL);
+					requiresSeparator = false;
 				}
 
 				if (pSelLogEntry->m_CommitHash.IsEmpty())
