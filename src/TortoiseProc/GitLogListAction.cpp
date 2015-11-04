@@ -833,6 +833,26 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 					Refresh();
 			}
 			break;
+		case ID_BISECTGOOD:
+			{
+				GitRev *first = reinterpret_cast<GitRev*>(m_arShownList.GetAt(FirstSelect));
+				if (CAppUtils::BisectOperation(_T("good"), !first->m_CommitHash.IsEmpty() ? first->m_CommitHash.ToString() : _T("")))
+					Refresh();
+			}
+			break;
+		case ID_BISECTBAD:
+			{
+				GitRev *first = reinterpret_cast<GitRev*>(m_arShownList.GetAt(FirstSelect));
+				if (CAppUtils::BisectOperation(_T("bad"), !first->m_CommitHash.IsEmpty() ? first->m_CommitHash.ToString() : _T("")))
+					Refresh();
+			}
+			break;
+		case ID_BISECTRESET:
+			{
+				if (CAppUtils::BisectOperation(_T("reset")))
+					Refresh();
+			}
+			break;
 		case ID_REPOBROWSE:
 			{
 				CString sCmd;

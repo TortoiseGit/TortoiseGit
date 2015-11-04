@@ -211,6 +211,7 @@ public:
 	static void MarkWindowAsUnpinnable(HWND hWnd);
 
 	static bool BisectStart(const CString& lastGood, const CString& firstBad, bool bIsMainWnd = false);
+	static bool BisectOperation(const CString& op, const CString& ref = _T(""), bool bIsMainWnd = false);
 
 	static int	Git2GetUserPassword(git_cred **out, const char *url, const char *username_from_url, unsigned int allowed_types, void *payload);
 

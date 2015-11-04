@@ -3542,6 +3542,45 @@ bool CAppUtils::BisectStart(const CString& lastGood, const CString& firstBad, bo
 	return false;
 }
 
+bool CAppUtils::BisectOperation(const CString& op, const CString& ref, bool bIsMainWnd)
+{
+	CString cmd = _T("git.exe bisect ") + op;
+
+	if (!ref.IsEmpty())
+	{
+		cmd += _T(" ");
+		cmd += ref;
+	}
+
+	CProgressDlg progress;
+	if (bIsMainWnd)
+		theApp.m_pMainWnd = &progress;
+	progress.m_GitCmd = cmd;
+
+	progress.m_PostCmdCallback = [&](DWORD status, PostCmdList& postCmdList)
+	{
+		if (status)
+			return;
+
+		CTGitPath path = g_Git.m_CurrentDir;
+		if (path.HasSubmodules())
+		{
+			postCmdList.emplace_back(IDI_UPDATE, IDS_PROC_SUBMODULESUPDATE, []
+			{
+				CString sCmd;
+				sCmd.Format(_T("/command:subupdate /bkpath:\"%s\""), (LPCTSTR)g_Git.m_CurrentDir);
+				CAppUtils::RunTortoiseGitProc(sCmd);
+			});
+		}
+
+		if (op != _T("reset"))
+			postCmdList.emplace_back(IDS_MENUBISECTRESET, []{ CAppUtils::RunTortoiseGitProc(_T("/command:bisect /reset")); });
+	};
+
+	INT_PTR ret = progress.DoModal();
+	return ret == IDOK;
+}
+
 int CAppUtils::Git2GetUserPassword(git_cred **out, const char *url, const char *username_from_url, unsigned int /*allowed_types*/, void * /*payload*/)
 {
 	CUserPassword dlg;
