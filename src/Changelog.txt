@@ -1,4 +1,10 @@
-﻿= Release 1.8.16.0 =
+﻿= Release 1.8.17.0 =
+Released: unreleased
+
+== Bug Fixes ==
+ * Fixed issue #2647: TortoiseGitBlame does not display files correctly with mixed line endings (such as CRCRLF)
+
+= Release 1.8.16.0 =
 Released: 2015-11-01
 
 == Features ==

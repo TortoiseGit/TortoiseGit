@@ -203,6 +203,9 @@ void CTortoiseGitBlameData::ParseBlameOutput(BYTE_VECTOR &data, CGitHashMap & Ha
 				if (lineEnd - 1 > lineBegin)
 					line.append(&data[lineBegin + 1], lineEnd-lineBegin - 1);
 
+				while (!line.empty() && line[line.size() - 1] == 13)
+					line.pop_back();
+
 				hashes.push_back(hash);
 				filenames.push_back(filename);
 				originalLineNumbers.push_back(originalLineNumber);
