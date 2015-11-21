@@ -1774,6 +1774,8 @@ void CLogDlg::OnLvnItemchangedLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 		UpdateData(FALSE);
 	}
 	EnableOKButton();
+	if (pNMLV->iItem < 0)
+		return;
 	UpdateLogInfoLabel();
 }
 
