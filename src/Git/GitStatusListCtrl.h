@@ -963,6 +963,7 @@ public:
 
 public:
 	void SetBusy(bool b) {m_bBusy = b; Invalidate();}
+	bool IsBusy() const { return m_bBusy; }
 	void SetHasCheckboxes(bool bHasCheckboxes)
 	{
 		m_bHasCheckboxes = bHasCheckboxes;

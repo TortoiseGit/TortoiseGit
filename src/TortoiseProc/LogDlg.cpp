@@ -1781,6 +1781,8 @@ void CLogDlg::OnLvnItemchangedLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 
 void CLogDlg::OnLvnItemchangedLogmsg(NMHDR * /*pNMHDR*/, LRESULT * /*pResult*/)
 {
+	if (m_ChangedFileListCtrl.IsBusy())
+		return;
 	UpdateLogInfoLabel();
 }
 
