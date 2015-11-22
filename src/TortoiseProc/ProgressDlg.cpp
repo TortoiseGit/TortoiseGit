@@ -377,6 +377,18 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 				m_GitStatus = (DWORD)-1;
 		}
 
+		if (m_PostExecCallback)
+		{
+			CString extraMsg;
+			m_PostExecCallback(m_GitStatus, extraMsg);
+			if (!extraMsg.IsEmpty())
+			{
+				int start = m_Log.GetTextLength();
+				m_Log.SetSel(start, start);
+				m_Log.ReplaceSel(extraMsg);
+			}
+		}
+
 		if(this->m_GitStatus)
 		{
 			if (m_pTaskbarList)

@@ -1354,9 +1354,26 @@ bool CAppUtils::PerformSwitch(const CString& ref, bool bForce /* false */, const
 		}
 		else
 		{
+			if (bMerge && g_Git.HasWorkingTreeConflicts() > 0)
+			{
+				postCmdList.emplace_back(IDI_RESOLVE, IDS_PROGRS_CMD_RESOLVE, []
+				{
+					CString sCmd;
+					sCmd.Format(_T("/command:commit /path:\"%s\""), (LPCTSTR)g_Git.m_CurrentDir);
+					CAppUtils::RunTortoiseGitProc(sCmd);
+				});
+			}
 			postCmdList.emplace_back(IDI_REFRESH, IDS_MSGBOX_RETRY, [&]{ PerformSwitch(ref, bForce, sNewBranch, bBranchOverride, bTrack, bMerge); });
 			if (!bMerge)
 				postCmdList.emplace_back(IDI_SWITCH, IDS_SWITCH_WITH_MERGE, [&]{ PerformSwitch(ref, bForce, sNewBranch, bBranchOverride, bTrack, true); });
+		}
+	};
+	progress.m_PostExecCallback = [&](DWORD& exitCode, CString& extraMsg)
+	{
+		if (bMerge && !exitCode && g_Git.HasWorkingTreeConflicts() > 0)
+		{
+			exitCode = 1; // Treat it as failure
+			extraMsg = _T("Has merge conflict");
 		}
 	};
 

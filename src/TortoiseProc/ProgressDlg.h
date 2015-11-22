@@ -76,6 +76,7 @@ public:
 
 typedef std::vector<PostCmd> PostCmdList;
 typedef std::function<void(DWORD status, PostCmdList&)> PostCmdCallback;
+typedef std::function<void(DWORD& exitCode, CString& extraMsg)> PostExecCallback;
 
 class CProgressDlg : public CResizableStandAloneDialog
 {
@@ -94,6 +95,7 @@ public:
 	CString					m_GitCmd;
 	PostCmdCallback			m_PostCmdCallback;
 	std::vector<CString>	m_GitCmdList;
+	PostExecCallback		m_PostExecCallback; // After executing command line, this callback can modify exit code / display extra message
 	STRING_VECTOR			m_GitDirList;
 	CString					m_PreText;		// optional text to show in log window before running command
 	bool					m_bShowCommand;	// whether to display the command in the log window (default true)
