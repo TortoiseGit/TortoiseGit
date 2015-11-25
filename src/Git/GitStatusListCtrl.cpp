@@ -3443,7 +3443,7 @@ void CGitStatusListCtrl::PreSubclassWindow()
 void CGitStatusListCtrl::OnPaint()
 {
 	LRESULT defres = Default();
-	if ((m_bBusy)||(m_bEmpty))
+	if ((m_bBusy) || (m_bEmpty))
 	{
 		CString str;
 		if (m_bBusy)
@@ -3469,8 +3469,7 @@ void CGitStatusListCtrl::OnPaint()
 
 		CRect rc;
 		GetClientRect(&rc);
-		CHeaderCtrl* pHC;
-		pHC = GetHeaderCtrl();
+		CHeaderCtrl* pHC = GetHeaderCtrl();
 		if (pHC != NULL)
 		{
 			CRect rcH;
@@ -3483,7 +3482,7 @@ void CGitStatusListCtrl::OnPaint()
 
 			memDC.SetTextColor(clrText);
 			memDC.SetBkColor(clrTextBk);
-			memDC.FillSolidRect(rc, clrTextBk);
+			memDC.BitBlt(rc.left, rc.top, rc.Width(), rc.Height(), pDC, rc.left, rc.top, SRCCOPY);
 			rc.top += 10;
 			CGdiObject * oldfont = memDC.SelectStockObject(DEFAULT_GUI_FONT);
 			memDC.DrawText(str, rc, DT_CENTER | DT_VCENTER |

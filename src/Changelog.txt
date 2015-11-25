@@ -6,6 +6,7 @@ Released: unreleased
 
 == Bug Fixes ==
  * Fixed issue #2647: TortoiseGitBlame does not display files correctly with mixed line endings (such as CRCRLF)
+ * Fixed issue #2650: Empty ListViews drawing issue
 
 = Release 1.8.16.0 =
 Released: 2015-11-01
