@@ -1390,6 +1390,7 @@
 #define IDC_LOG_JUMPDOWN                1725
 #define IDC_TEMPFILESCLEAR              1726
 #define IDC_STATIC_TAGOPT               1727
+#define IDC_STOREDDECISIONSCLEAR        1727
 #define IDC_COMBO_TAGOPT                1728
 #define IDC_REV1BTN1                    1729
 #define IDC_CHECK_NORECYCLEBIN          1730
@@ -1516,6 +1517,7 @@
 #define IDC_INCLUDENESTEDREFS           1830
 #define IDC_DEFAULT_NUMBER_OF           1831
 #define IDC_DEFAULT_SCALE               1832
+#define IDC_STOREDDECISIONS             1833
 #define IDS_LOG_FILTER_BY               1850
 #define IDS_LOG_FILTER_PATHS            1851
 #define IDS_LOG_FILTER_AUTHORS          1852
@@ -1965,7 +1967,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        359
 #define _APS_NEXT_COMMAND_VALUE         32874
-#define _APS_NEXT_CONTROL_VALUE         1833
+#define _APS_NEXT_CONTROL_VALUE         1834
 #define _APS_NEXT_SYMED_VALUE           201
 #endif
 #endif

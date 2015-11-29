@@ -187,6 +187,7 @@ BEGIN_MESSAGE_MAP(CSetSavedDataPage, ISettingsPropPage)
 	ON_BN_CLICKED(IDC_ACTIONLOGCLEAR, &CSetSavedDataPage::OnBnClickedActionlogclear)
 	ON_BN_CLICKED(IDC_TEMPFILESCLEAR, &CSetSavedDataPage::OnBnClickedTempfileclear)
 	ON_EN_CHANGE(IDC_MAXLINES, OnModified)
+	ON_BN_CLICKED(IDC_STOREDDECISIONSCLEAR, &CSetSavedDataPage::OnBnClickedStoreddecisionsclear)
 END_MESSAGE_MAP()
 
 void CSetSavedDataPage::OnBnClickedUrlhistclear()
@@ -338,4 +339,33 @@ void CSetSavedDataPage::DeleteViaShell(LPCTSTR path, UINT progressText)
 	fileop.fFlags = FOF_NO_CONNECTED_ELEMENTS | FOF_NOCONFIRMATION;
 	fileop.lpszProgressTitle = progText;
 	SHFileOperation(&fileop);
+}
+
+void CSetSavedDataPage::OnBnClickedStoreddecisionsclear()
+{
+	static const CString tgitvalues[] = {
+		L"OldMsysgitVersionWarning",
+		L"OpenRebaseRemoteBranchUnchanged",
+		L"OpenRebaseRemoteBranchFastForwards",
+		L"DaemonNoSecurityWarning",
+		L"NothingToCommitShowUnversioned",
+		L"NoJumpNotFoundWarning",
+		L"HintHierarchicalConfig",
+		L"TagOptNoTagsWarning",
+		L"NoStashIncludeUntrackedWarning",
+	};
+	for (const auto& value : tgitvalues)
+	{
+		CRegDWORD regkey(_T("Software\\TortoiseGit\\") + value);
+		regkey.removeValue();
+	}
+
+	static const CString tmergevalues[] = {
+		L"DeleteFileWhenEmpty",
+	};
+	for (const auto& value : tgitvalues)
+	{
+		CRegDWORD regkey(_T("Software\\TortoiseGitMerge\\") + value);
+		regkey.removeValue();
+	}
 }

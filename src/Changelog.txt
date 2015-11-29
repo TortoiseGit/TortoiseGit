@@ -3,6 +3,7 @@ Released: unreleased
 
 == Features ==
  * Fixed issue #2641: Commit: Pre-select first item from "Changes made" list
+ * Allow to reset stored decisions (cf. issue #2640)
 
 == Bug Fixes ==
  * Fixed issue #2647: TortoiseGitBlame does not display files correctly with mixed line endings (such as CRCRLF)

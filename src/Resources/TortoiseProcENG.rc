@@ -828,16 +828,18 @@ FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
     LTEXT           "URL history",IDC_URLHISTORY,7,20,226,8
     PUSHBUTTON      "Clear",IDC_URLHISTCLEAR,243,18,50,14
-    LTEXT           "Log messages (Input dialog)",IDC_LOGHISTORY,7,45,226,8
-    PUSHBUTTON      "Clear",IDC_LOGHISTCLEAR,243,43,50,14
-    LTEXT           "Log messages (Show log dialog)",IDC_REPOLOG,7,70,226,8
-    PUSHBUTTON      "Clear",IDC_REPOLOGCLEAR,243,68,50,14
-    LTEXT           "Dialog sizes and positions",IDC_RESIZABLEHISTORY,7,95,226,8
-    PUSHBUTTON      "Clear",IDC_RESIZABLEHISTCLEAR,243,93,50,14
-    LTEXT           "Authentication data",IDC_AUTHHISTORY,7,120,226,8
-    PUSHBUTTON      "Clear",IDC_AUTHHISTCLEAR,243,118,50,14
-    LTEXT           "Temp files (including Gravatar images)",IDC_STATIC,7,148,286,30
-    PUSHBUTTON      "Clear",IDC_TEMPFILESCLEAR,243,146,50,14
+    LTEXT           "Log messages (Input dialog)",IDC_LOGHISTORY,7,42,226,8
+    PUSHBUTTON      "Clear",IDC_LOGHISTCLEAR,243,40,50,14
+    LTEXT           "Log messages (Show log dialog)",IDC_REPOLOG,7,64,226,8
+    PUSHBUTTON      "Clear",IDC_REPOLOGCLEAR,243,62,50,14
+    LTEXT           "Dialog sizes and positions",IDC_RESIZABLEHISTORY,7,86,226,8
+    PUSHBUTTON      "Clear",IDC_RESIZABLEHISTCLEAR,243,84,50,14
+    LTEXT           "Authentication data",IDC_AUTHHISTORY,7,108,226,8
+    PUSHBUTTON      "Clear",IDC_AUTHHISTCLEAR,243,106,50,14
+    LTEXT           "Temp files (including Gravatar images)",IDC_STATIC,7,130,226,10
+    PUSHBUTTON      "Clear",IDC_TEMPFILESCLEAR,243,128,50,14
+    LTEXT           "Stored decisions",IDC_STOREDDECISIONS,7,151,226,10
+    PUSHBUTTON      "Clear",IDC_STOREDDECISIONSCLEAR,243,149,50,14
     GROUPBOX        "Action log",IDC_STATIC,7,173,286,30
     LTEXT           "Max. lines in action log",IDC_STATIC,13,185,120,16
     EDITTEXT        IDC_MAXLINES,139,183,40,14,ES_RIGHT | ES_AUTOHSCROLL
