@@ -1473,7 +1473,10 @@ bool CAppUtils::IgnoreFile(const CTGitPathList& path,bool IsMask)
 				break;
 			case 2:
 				GitAdminDir::GetAdminDirPath(g_Git.m_CurrentDir, ignorefile);
-				ignorefile += _T("info/exclude");
+				ignorefile += _T("info");
+				if (!PathFileExists(ignorefile))
+					CreateDirectory(ignorefile, nullptr);
+				ignorefile += _T("\\exclude");
 				break;
 		}
 
