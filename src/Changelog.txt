@@ -8,6 +8,7 @@ Released: unreleased
 == Bug Fixes ==
  * Fixed issue #2647: TortoiseGitBlame does not display files correctly with mixed line endings (such as CRCRLF)
  * Fixed issue #2650: Empty ListViews drawing issue
+ * Fixed issue #2662: Border line in commit text boxes is shown 2 characters past the specified width
 
 = Release 1.8.16.0 =
 Released: 2015-11-01

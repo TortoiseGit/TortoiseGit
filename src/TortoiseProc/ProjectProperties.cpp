@@ -103,7 +103,7 @@ int ProjectProperties::ReadProps()
 		CString val;
 		val = sPropVal;
 		if (!val.IsEmpty())
-			nLogWidthMarker = _ttoi(val) + 2; // HACK, + 2 needed
+			nLogWidthMarker = _ttoi(val);
 	}
 
 	if (gitconfig.GetString(PROJECTPROPNAME_PROJECTLANGUAGE, sPropVal) == 0)
