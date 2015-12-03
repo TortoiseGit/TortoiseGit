@@ -43,6 +43,7 @@
 #include "HistoryCombo.h"
 #include "gitindex.h"
 #include <math.h>
+#include <random>
 #include "SendMail.h"
 
 #define STRUCT_IOVEC_DEFINED
@@ -601,10 +602,14 @@ void CTortoiseProcApp::CheckUpgrade()
 
 	CMessageBox::RemoveRegistryKey(_T("OldMsysgitVersionWarning"));
 
-	srand((unsigned)time(0));
 	CRegDWORD checkNewerWeekDay = CRegDWORD(_T("Software\\TortoiseGit\\CheckNewerWeekDay"), 0);
-	if (!checkNewerWeekDay.exists())
-		checkNewerWeekDay = rand() % 7;
+	if (!checkNewerWeekDay.exists() || lVersion <= 0x01081000)
+	{
+		std::random_device rd;
+		std::mt19937 mt(rd());
+		std::uniform_int_distribution<int> dist(0, 6);
+		checkNewerWeekDay = dist(mt);
+	}
 
 	// version specific updates
 	if (lVersion <= 0x01080802)
