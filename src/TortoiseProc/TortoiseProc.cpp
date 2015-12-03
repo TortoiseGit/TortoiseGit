@@ -78,7 +78,7 @@ CTortoiseProcApp::CTortoiseProcApp()
 	m_bSaveState = FALSE;
 	retSuccess = false;
 	m_gdiplusToken = NULL;
-#if defined (_WIN64) && _MSC_VER >= 1800
+#if defined (_WIN64) && _MSC_VER == 1800
 	_set_FMA3_enable(0);
 #endif
 }
