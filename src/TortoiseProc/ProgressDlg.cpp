@@ -403,7 +403,7 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 				err.Format(_T("\r\n\r\n%s (%lu ms @ %s)\r\n"), (LPCTSTR)log, tickSpent, (LPCTSTR)strEndTime);
 			else
 				err.Format(_T("\r\n\r\n%s\r\n"), (LPCTSTR)log);
-			if (!m_GitCmd.IsEmpty() && !m_GitCmdList.empty())
+			if (!m_GitCmd.IsEmpty() || !m_GitCmdList.empty())
 				InsertColorText(this->m_Log, err, RGB(255,0,0));
 			if (CRegDWORD(_T("Software\\TortoiseGit\\NoSounds"), FALSE) == FALSE)
 				PlaySound((LPCTSTR)SND_ALIAS_SYSTEMEXCLAMATION, NULL, SND_ALIAS_ID | SND_ASYNC);
