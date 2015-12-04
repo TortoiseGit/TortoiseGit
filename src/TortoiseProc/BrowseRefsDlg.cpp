@@ -1233,14 +1233,7 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 			dlg.m_bUseLogWidth = true;
 			if(dlg.DoModal() == IDOK)
 			{
-				CString key;
-				key.Format(_T("branch.%s.description"), (LPCTSTR)selectedLeafs[0]->GetRefsHeadsName());
-				dlg.m_sInputText.Replace(_T("\r"), _T(""));
-				dlg.m_sInputText.Trim();
-				if (dlg.m_sInputText.IsEmpty())
-					g_Git.UnsetConfigValue(key);
-				else
-					g_Git.SetConfigValue(key, dlg.m_sInputText);
+				CAppUtils::UpdateBranchDescription(selectedLeafs[0]->GetRefsHeadsName(), dlg.m_sInputText);
 				Refresh();
 			}
 		}

@@ -112,8 +112,8 @@ BOOL CCreateBranchTagDlg::OnInitDialog()
 	{
 		sWindowTitle = CString(MAKEINTRESOURCE(IDS_PROGS_TITLE_CREATEBRANCH));
 		this->GetDlgItem(IDC_LABEL_BRANCH)->SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_BRANCH)));
-		this->GetDlgItem(IDC_EDIT_MESSAGE)->EnableWindow(FALSE);
 		this->GetDlgItem(IDC_CHECK_SIGN)->ShowWindow(SW_HIDE);
+		GetDlgItem(IDC_GROUP_MESSAGE)->SetWindowText(CString(MAKEINTRESOURCE(IDS_DESCRIPTION)));
 	}
 
 	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);

@@ -1185,6 +1185,23 @@ bool CAppUtils::Export(const CString* BashHash, const CTGitPath* orgPath)
 	return false;
 }
 
+bool CAppUtils::UpdateBranchDescription(const CString& branch, CString description)
+{
+	if (branch.IsEmpty())
+		return false;
+
+	CString key;
+	key.Format(L"branch.%s.description", (LPCTSTR)branch);
+	description.Replace(L"\r", L"");
+	description.Trim();
+	if (description.IsEmpty())
+		g_Git.UnsetConfigValue(key);
+	else
+		g_Git.SetConfigValue(key, description);
+
+	return true;
+}
+
 bool CAppUtils::CreateBranchTag(bool isTag /*true*/, const CString* commitHash /*nullptr*/, bool switchNewBranch /*false*/, LPCTSTR name /*nullptr*/)
 {
 	CCreateBranchTagDlg dlg;
@@ -1254,6 +1271,8 @@ bool CAppUtils::CreateBranchTag(bool isTag /*true*/, const CString* commitHash /
 			// it is a new branch and the user has requested to switch to it
 			PerformSwitch(dlg.m_BranchTagName);
 		}
+		if (!isTag && !dlg.m_Message.IsEmpty())
+			UpdateBranchDescription(dlg.m_BranchTagName, dlg.m_Message);
 
 		return TRUE;
 	}
