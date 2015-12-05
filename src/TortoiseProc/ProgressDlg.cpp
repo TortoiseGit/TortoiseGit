@@ -610,7 +610,6 @@ void CProgressDlg::RemoveLastLine(CString &str)
 	start=str.ReverseFind(_T('\n'));
 	if(start>0)
 		str=str.Left(start);
-	return;
 }
 // CProgressDlg message handlers
 

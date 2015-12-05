@@ -1680,23 +1680,19 @@ void CSciEdit::SetUDiffStyle()
 int CSciEdit::LoadFromFile(CString &filename)
 {
 	CAutoFILE fp = _tfsopen(filename, _T("rb"), _SH_DENYWR);
-	if (fp)
-	{
-		//SetTitle();
-				char data[4096] = { 0 };
-				size_t lenFile = fread(data, 1, sizeof(data), fp);
-				bool bUTF8 = IsUTF8(data, lenFile);
-				while (lenFile > 0)
-				{
-					Call(SCI_ADDTEXT, lenFile,
-						reinterpret_cast<LPARAM>(static_cast<char *>(data)));
-					lenFile = fread(data, 1, sizeof(data), fp);
-				}
-				Call(SCI_SETCODEPAGE, bUTF8 ? SC_CP_UTF8 : GetACP());
-				return 0;
-	}
-	else
+	if (!fp)
 		return -1;
+
+	char data[4096] = { 0 };
+	size_t lenFile = fread(data, 1, sizeof(data), fp);
+	bool bUTF8 = IsUTF8(data, lenFile);
+	while (lenFile > 0)
+	{
+		Call(SCI_ADDTEXT, lenFile, reinterpret_cast<LPARAM>(static_cast<char *>(data)));
+		lenFile = fread(data, 1, sizeof(data), fp);
+	}
+	Call(SCI_SETCODEPAGE, bUTF8 ? SC_CP_UTF8 : GetACP());
+	return 0;
 }
 
 void CSciEdit::RestyleBugIDs()

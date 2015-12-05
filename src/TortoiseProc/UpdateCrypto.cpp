@@ -575,59 +575,56 @@ error:
 
 static int LoadSignature(const CString &signatureFilename, signature_packet_t *p_sig)
 {
-	FILE * pFile = _tfsopen(signatureFilename, _T("rb"), SH_DENYWR);
-	if (pFile)
+	FILE* pFile = _tfsopen(signatureFilename, _T("rb"), SH_DENYWR);
+	if (!pFile)
+		return -1;
+
+	int size = 65536;
+	std::unique_ptr<unsigned char[]> buffer(new unsigned char[size]);
+	int length = (int)fread(buffer.get(), sizeof(char), size, pFile);
+	fclose(pFile);
+	if (length < 8)
+		return -1;
+
+	// is unpacking needed?
+	if ((uint8_t)buffer[0] < 0x80)
 	{
-		int size = 65536;
-		std::unique_ptr<unsigned char[]> buffer(new unsigned char[size]);
-		int length = 0;
-		if ((length = (int)fread(buffer.get(), sizeof(char), size, pFile)) >= 8)
-		{
-			fclose(pFile);
-			// is unpacking needed?
-			if ((uint8_t)buffer[0] < 0x80)
-			{
-				std::unique_ptr<unsigned char[]> unpacked(new unsigned char[size]);
-				size = pgp_unarmor((char *)buffer.get(), length, unpacked.get(), length);
+		std::unique_ptr<unsigned char[]> unpacked(new unsigned char[size]);
+		size = pgp_unarmor((char *)buffer.get(), length, unpacked.get(), length);
 
-				if (size < 2)
-					return -1;
+		if (size < 2)
+			return -1;
 
-				buffer.swap(unpacked);
-			}
-			else
-				size = length;
-
-			if (packet_type(buffer[0]) != SIGNATURE_PACKET)
-				return -1;
-
-			DWORD i_header_len = packet_header_len(buffer[0]);
-			if ((i_header_len != 1 && i_header_len != 2 && i_header_len != 4) || i_header_len + 1 > (DWORD)size)
-				return -1;
-
-			DWORD i_len = scalar_number((uint8_t *)(buffer.get() + 1), i_header_len);
-			if (i_len + i_header_len + 1 != (DWORD)size)
-				return -1;
-
-			if (parse_signature_packet(p_sig, (uint8_t *)(buffer.get() + 1 + i_header_len), i_len))
-				return -1;
-
-			if (p_sig->type != BINARY_SIGNATURE && p_sig->type != TEXT_SIGNATURE)
-			{
-				if (p_sig->version == 4)
-				{
-					free(p_sig->specific.v4.hashed_data);
-					free(p_sig->specific.v4.unhashed_data);
-				}
-				return -1;
-			}
-
-			return 0;
-		}
-		else
-			fclose(pFile);
+		buffer.swap(unpacked);
 	}
-	return -1;
+	else
+		size = length;
+
+	if (packet_type(buffer[0]) != SIGNATURE_PACKET)
+		return -1;
+
+	DWORD i_header_len = packet_header_len(buffer[0]);
+	if ((i_header_len != 1 && i_header_len != 2 && i_header_len != 4) || i_header_len + 1 > (DWORD)size)
+		return -1;
+
+	DWORD i_len = scalar_number((uint8_t *)(buffer.get() + 1), i_header_len);
+	if (i_len + i_header_len + 1 != (DWORD)size)
+		return -1;
+
+	if (parse_signature_packet(p_sig, (uint8_t *)(buffer.get() + 1 + i_header_len), i_len))
+		return -1;
+
+	if (p_sig->type != BINARY_SIGNATURE && p_sig->type != TEXT_SIGNATURE)
+	{
+		if (p_sig->version == 4)
+		{
+			free(p_sig->specific.v4.hashed_data);
+			free(p_sig->specific.v4.unhashed_data);
+		}
+		return -1;
+	}
+
+	return 0;
 }
 
 static void CryptHashChar(HCRYPTHASH hHash, const int c)
