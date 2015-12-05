@@ -43,6 +43,7 @@ using namespace ATL;
 #pragma warning(pop)
 #include "SmartLibgit2Ref.h"
 
+#include "scope_exit_noexcept.h"
 #include "DebugOutput.h"
 
 typedef CComCritSecLock<CComAutoCriticalSection> AutoLocker;

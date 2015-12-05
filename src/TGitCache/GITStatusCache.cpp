@@ -60,7 +60,6 @@ void CGitStatusCache::Create()
 #define LOADVALUEFROMFILE(x) if (fread(&x, sizeof(x), 1, pFile)!=1) goto exit;
 #define LOADVALUEFROMFILE2(x) if (fread(&x, sizeof(x), 1, pFile)!=1) goto error;
 	unsigned int value = (unsigned int)-1;
-	FILE * pFile = NULL;
 	// find the location of the cache
 	CString path = CPathUtils::GetLocalAppDataDirectory();
 	CString path2;
@@ -78,7 +77,7 @@ void CGitStatusCache::Create()
 		DeleteFile(path2);
 		CopyFile(path, path2, FALSE);
 		DeleteFile(path);
-		pFile = _tfsopen(path2, _T("rb"), _SH_DENYNO);
+		CAutoFILE pFile = _tfsopen(path2, _T("rb"), _SH_DENYWR);
 		if (pFile)
 		{
 			try
@@ -135,15 +134,11 @@ void CGitStatusCache::Create()
 		}
 	}
 exit:
-	if (pFile)
-		fclose(pFile);
 	DeleteFile(path2);
 	m_pInstance->watcher.ClearInfoMap();
 	CTraceToOutputDebugString::Instance()(__FUNCTION__ ": cache loaded from disk successfully!\n");
 	return;
 error:
-	if (pFile)
-		fclose(pFile);
 	DeleteFile(path2);
 	m_pInstance->watcher.ClearInfoMap();
 	Destroy();
@@ -159,13 +154,12 @@ bool CGitStatusCache::SaveCache()
 #define WRITEVALUETOFILE(x) if (fwrite(&x, sizeof(x), 1, pFile)!=1) goto error;
 	unsigned int value = 0;
 	// save the cache to disk
-	FILE * pFile = NULL;
 	// find a location to write the cache to
 	CString path = CPathUtils::GetLocalAppDataDirectory();
 	if (!path.IsEmpty())
 	{
 		path += STATUSCACHEFILENAME;
-		_tfopen_s(&pFile, path, _T("wb"));
+		CAutoFILE pFile = _tfsopen(path, _T("wb"), SH_DENYRW);
 		if (pFile)
 		{
 			value = CACHEDISKVERSION;
@@ -191,13 +185,11 @@ bool CGitStatusCache::SaveCache()
 						goto error;
 				}
 			}
-			fclose(pFile);
 		}
 	}
 	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": cache saved to disk at %s\n"), (LPCTSTR)path);
 	return true;
 error:
-	fclose(pFile);
 	Destroy();
 	DeleteFile(path);
 	return false;

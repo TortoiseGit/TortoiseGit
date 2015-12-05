@@ -365,6 +365,7 @@
     <ClInclude Include="..\Utils\RegHistory.h" />
     <ClInclude Include="..\Utils\registry.h" />
     <ClInclude Include="..\Utils\ShellUpdater.h" />
+    <ClInclude Include="..\Utils\SmartHandle.h" />
     <ClInclude Include="..\Utils\SmartLibgit2Ref.h" />
     <ClInclude Include="..\Utils\StringUtils.h" />
     <ClInclude Include="..\Utils\SysImageList.h" />

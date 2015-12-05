@@ -42,6 +42,7 @@
 #pragma warning(pop)
 #include "SmartLibgit2Ref.h"
 
+#include "scope_exit_noexcept.h"
 #include "SysInfo.h"
 #include "DebugOutput.h"
 

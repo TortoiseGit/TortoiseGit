@@ -297,7 +297,7 @@ int CGit::RunAsync(CString cmd, PROCESS_INFORMATION *piOut, HANDLE *hReadOut, HA
 	}
 
 	STARTUPINFO si = { 0 };
-	PROCESS_INFORMATION pi;
+	PROCESS_INFORMATION pi = { 0 };
 	si.cb=sizeof(STARTUPINFO);
 
 	if (hErrReadOut)
@@ -326,7 +326,6 @@ int CGit::RunAsync(CString cmd, PROCESS_INFORMATION *piOut, HANDLE *hReadOut, HA
 		dwFlags |= DETACHED_PROCESS;
 
 	memset(&this->m_CurrentGitPi,0,sizeof(PROCESS_INFORMATION));
-	memset(&pi, 0, sizeof(PROCESS_INFORMATION));
 
 	if (ms_bMsys2Git && cmd.Find(_T("git")) == 0 && cmd.Find(L"git.exe config ") == -1)
 	{
@@ -847,18 +846,12 @@ int CGit::GetCurrentBranchFromFile(const CString &sProjectRoot, CString &sBranch
 
 	CString sHeadFile = sDotGitPath + _T("HEAD");
 
-	FILE *pFile;
-	_tfopen_s(&pFile, sHeadFile.GetString(), _T("r"));
-
+	CAutoFILE pFile = _tfsopen(sHeadFile.GetString(), _T("r"), SH_DENYWR);
 	if (!pFile)
-	{
 		return -1;
-	}
 
 	char s[256] = {0};
 	fgets(s, sizeof(s), pFile);
-
-	fclose(pFile);
 
 	const char *pfx = "ref: refs/heads/";
 	const int len = 16;//strlen(pfx)
@@ -1134,26 +1127,22 @@ int CGit::RunLogFile(CString cmd, const CString &filename, CString *stdErr)
 	si.cb=sizeof(STARTUPINFO);
 	GetStartupInfo(&si);
 
-	SECURITY_ATTRIBUTES   psa={sizeof(psa),NULL,TRUE};;
+	SECURITY_ATTRIBUTES psa = {sizeof(psa), nullptr, TRUE};
 	psa.bInheritHandle=TRUE;
 
-	HANDLE hReadErr, hWriteErr;
-	if (!CreatePipe(&hReadErr, &hWriteErr, &psa, 0))
+	CAutoGeneralHandle hReadErr, hWriteErr;
+	if (!CreatePipe(hReadErr.GetPointer(), hWriteErr.GetPointer(), &psa, 0))
 	{
 		CString err = CFormatMessageWrapper();
 		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": could not open stderr pipe: %s\n"), (LPCTSTR)err.Trim());
 		return TGIT_GIT_ERROR_OPEN_PIP;
 	}
 
-	HANDLE houtfile=CreateFile(filename,GENERIC_WRITE,FILE_SHARE_READ | FILE_SHARE_WRITE,
-			&psa,CREATE_ALWAYS,FILE_ATTRIBUTE_NORMAL,NULL);
-
-	if (houtfile == INVALID_HANDLE_VALUE)
+	CAutoFile houtfile = CreateFile(filename, GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, &psa, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
+	if (!houtfile)
 	{
 		CString err = CFormatMessageWrapper();
 		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": could not open stdout pipe: %s\n"), (LPCTSTR)err.Trim());
-		CloseHandle(hReadErr);
-		CloseHandle(hWriteErr);
 		return TGIT_GIT_ERROR_OPEN_PIP;
 	}
 
@@ -1174,24 +1163,23 @@ int CGit::RunLogFile(CString cmd, const CString &filename, CString *stdErr)
 		CString err = CFormatMessageWrapper();
 		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": failed to create Process: %s\n"), (LPCTSTR)err.Trim());
 		stdErr = &err;
-		CloseHandle(hReadErr);
-		CloseHandle(hWriteErr);
-		CloseHandle(houtfile);
 		return TGIT_GIT_ERROR_CREATE_PROCESS;
 	}
 
+	CAutoGeneralHandle piThread(pi.hThread);
+	CAutoGeneralHandle piProcess(pi.hProcess);
+
 	BYTE_VECTOR stderrVector;
 	CGitCall_ByteVector pcall(L"", nullptr, &stderrVector);
-	HANDLE thread;
 	ASYNCREADSTDERRTHREADARGS threadArguments;
 	threadArguments.fileHandle = hReadErr;
 	threadArguments.pcall = &pcall;
-	thread = CreateThread(nullptr, 0, AsyncReadStdErrThread, &threadArguments, 0, nullptr);
+	CAutoGeneralHandle thread = CreateThread(nullptr, 0, AsyncReadStdErrThread, &threadArguments, 0, nullptr);
 
 	WaitForSingleObject(pi.hProcess,INFINITE);
 
-	CloseHandle(hWriteErr);
-	CloseHandle(hReadErr);
+	hWriteErr.CloseHandle();
+	hReadErr.CloseHandle();
 
 	if (thread)
 		WaitForSingleObject(thread, INFINITE);
@@ -1209,9 +1197,6 @@ int CGit::RunLogFile(CString cmd, const CString &filename, CString *stdErr)
 	else
 		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": process exited: %d\n"), exitcode);
 
-	CloseHandle(pi.hThread);
-	CloseHandle(pi.hProcess);
-	CloseHandle(houtfile);
 	return exitcode;
 }
 
@@ -2486,8 +2471,7 @@ int CGit::GetOneFile(const CString &Refname, const CTGitPath &path, const CStrin
 		if (git_tree_entry_to_object((git_object**)blob.GetPointer(), repo, entry))
 			return -1;
 
-		FILE *file = nullptr;
-		_tfopen_s(&file, outputfile, _T("wb"));
+		CAutoFILE file = _tfsopen(outputfile, _T("wb"), SH_DENYWR);
 		if (file == nullptr)
 		{
 			giterr_set_str(GITERR_NONE, "Could not create file.");
@@ -2495,18 +2479,12 @@ int CGit::GetOneFile(const CString &Refname, const CTGitPath &path, const CStrin
 		}
 		CAutoBuf buf;
 		if (git_blob_filtered_content(buf, blob, CUnicodeUtils::GetUTF8(path.GetGitPathString()), 0))
-		{
-			fclose(file);
 			return -1;
-		}
 		if (fwrite(buf->ptr, sizeof(char), buf->size, file) != buf->size)
 		{
 			giterr_set_str(GITERR_OS, "Could not write to file.");
-			fclose(file);
-
 			return -1;
 		}
-		fclose(file);
 
 		return 0;
 	}
@@ -3024,13 +3002,10 @@ int CGit::GetUnifiedDiff(const CTGitPath& path, const git_revnum_t& rev1, const 
 {
 	if (UsingLibGit2(GIT_CMD_DIFF))
 	{
-		FILE *file = nullptr;
-		_tfopen_s(&file, patchfile, _T("w"));
-		if (file == nullptr)
+		CAutoFILE file = _tfsopen(patchfile, _T("w"), SH_DENYRW);
+		if (!file)
 			return -1;
-		int ret = GetUnifiedDiffLibGit2(path, rev1, rev2, UnifiedDiffStatToFile, UnifiedDiffToFile, file, bMerge);
-		fclose(file);
-		return ret;
+		return GetUnifiedDiffLibGit2(path, rev1, rev2, UnifiedDiffStatToFile, UnifiedDiffToFile, file, bMerge);
 	}
 	else
 	{
@@ -3169,32 +3144,31 @@ int CGit::DeleteRef(const CString& reference)
 
 bool CGit::LoadTextFile(const CString &filename, CString &msg)
 {
-	if (PathFileExists(filename))
+	if (!PathFileExists(filename))
+		return false;
+
+	CAutoFILE pFile = _tfsopen(filename, _T("r"), SH_DENYWR);
+	if (!pFile)
 	{
-		FILE *pFile = nullptr;
-		_tfopen_s(&pFile, filename, _T("r"));
-		if (pFile)
-		{
-			CStringA str;
-			do
-			{
-				char s[8196] = { 0 };
-				int read = (int)fread(s, sizeof(char), sizeof(s), pFile);
-				if (read == 0)
-					break;
-				str += CStringA(s, read);
-			} while (true);
-			fclose(pFile);
-			msg = CUnicodeUtils::GetUnicode(str);
-			msg.Replace(_T("\r\n"), _T("\n"));
-			msg.TrimRight(_T("\n"));
-			msg += _T("\n");
-		}
-		else
-			::MessageBox(nullptr, _T("Could not open ") + filename, _T("TortoiseGit"), MB_ICONERROR);
+		::MessageBox(nullptr, _T("Could not open ") + filename, _T("TortoiseGit"), MB_ICONERROR);
 		return true; // load no further files
 	}
-	return false;
+
+	CStringA str;
+	do
+	{
+		char s[8196] = { 0 };
+		int read = (int)fread(s, sizeof(char), sizeof(s), pFile);
+		if (read == 0)
+			break;
+		str += CStringA(s, read);
+	} while (true);
+	msg = CUnicodeUtils::GetUnicode(str);
+	msg.Replace(_T("\r\n"), _T("\n"));
+	msg.TrimRight(_T("\n"));
+	msg += _T("\n");
+
+	return true; // load no further files
 }
 
 int CGit::GetWorkingTreeChanges(CTGitPathList& result, bool amend, CTGitPathList* filterlist)

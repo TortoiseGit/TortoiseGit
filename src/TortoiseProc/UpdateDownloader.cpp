@@ -101,14 +101,15 @@ DWORD CUpdateDownloader::DownloadFile(const CString& url, const CString& dest, b
 		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Download of %s failed on InternetConnect: %d\n"), (LPCTSTR)url, err);
 		return err;
 	}
+	SCOPE_EXIT{ InternetCloseHandle(hConnectHandle); };
 	HINTERNET hResourceHandle = HttpOpenRequest(hConnectHandle, nullptr, urlpath, nullptr, nullptr, nullptr, INTERNET_FLAG_KEEP_CONNECTION | (isHttps ? INTERNET_FLAG_SECURE : 0) | (m_bForce ? INTERNET_FLAG_HYPERLINK : 0), 0);
 	if (!hResourceHandle)
 	{
 		DWORD err = GetLastError();
 		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Download of %s failed on HttpOpenRequest: %d\n"), (LPCTSTR)url, err);
-		InternetCloseHandle(hConnectHandle);
 		return err;
 	}
+	SCOPE_EXIT{ InternetCloseHandle(hResourceHandle); };
 
 	if (enableDecoding && SysInfo::Instance().IsVistaOrLater())
 		HttpAddRequestHeaders(hResourceHandle, L"Accept-Encoding: gzip, deflate\r\n", (DWORD)-1, HTTP_ADDREQ_FLAG_ADD);
@@ -125,8 +126,6 @@ resend:
 		{
 			DWORD err = GetLastError();
 			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Download of %s failed: %d, %d\n"), (LPCTSTR)url, httpsendrequest, err);
-			InternetCloseHandle(hResourceHandle);
-			InternetCloseHandle(hConnectHandle);
 			return err;
 		}
 	}
@@ -142,8 +141,6 @@ resend:
 		if (!HttpQueryInfo(hResourceHandle, HTTP_QUERY_STATUS_CODE | HTTP_QUERY_FLAG_NUMBER, (LPVOID)&statusCode, &length, NULL) || statusCode != 200)
 		{
 			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Download of %s returned %d\n"), (LPCTSTR)url, statusCode);
-			InternetCloseHandle(hResourceHandle);
-			InternetCloseHandle(hConnectHandle);
 			if (statusCode == 404)
 				return ERROR_FILE_NOT_FOUND;
 			else if (statusCode == 403)
@@ -155,8 +152,6 @@ resend:
 	CFile destinationFile;
 	if (!destinationFile.Open(dest, CFile::modeCreate | CFile::modeWrite))
 	{
-		InternetCloseHandle(hResourceHandle);
-		InternetCloseHandle(hConnectHandle);
 		return ERROR_ACCESS_DENIED;
 	}
 	DWORD downloadedSum = 0; // sum of bytes downloaded so far
@@ -167,32 +162,23 @@ resend:
 		{
 			DWORD err = GetLastError();
 			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Download of %s failed on InternetQueryDataAvailable: %d\n"), (LPCTSTR)url, err);
-			InternetCloseHandle(hResourceHandle);
-			InternetCloseHandle(hConnectHandle);
 			return err;
 		}
 
 		DWORD downloaded; // size of the downloaded data
-		LPTSTR lpszData = new TCHAR[size + 1];
-		if (!InternetReadFile(hResourceHandle, (LPVOID)lpszData, size, &downloaded))
+		std::unique_ptr<TCHAR[]> buff(new TCHAR[size + 1]);
+		if (!InternetReadFile(hResourceHandle, (LPVOID)buff.get(), size, &downloaded))
 		{
-			delete[] lpszData;
 			DWORD err = GetLastError();
 			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Download of %s failed on InternetReadFile: %d\n"), (LPCTSTR)url, err);
-			InternetCloseHandle(hResourceHandle);
-			InternetCloseHandle(hConnectHandle);
 			return err;
 		}
 
 		if (downloaded == 0)
-		{
-			delete[] lpszData;
 			break;
-		}
 
-		lpszData[downloaded] = '\0';
-		destinationFile.Write(lpszData, downloaded);
-		delete[] lpszData;
+		buff[downloaded] = '\0';
+		destinationFile.Write(buff.get(), downloaded);
 
 		downloadedSum += downloaded;
 
@@ -216,15 +202,11 @@ resend:
 
 		if (::WaitForSingleObject(*m_eventStop, 0) == WAIT_OBJECT_0)
 		{
-			InternetCloseHandle(hResourceHandle);
-			InternetCloseHandle(hConnectHandle);
 			return (DWORD)E_ABORT; // canceled by the user
 		}
 	}
 	while (true);
-	destinationFile.Close();
-	InternetCloseHandle(hResourceHandle);
-	InternetCloseHandle(hConnectHandle);
+
 	if (downloadedSum == 0)
 	{
 		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Download size of %s was zero.\n"), (LPCTSTR)url);

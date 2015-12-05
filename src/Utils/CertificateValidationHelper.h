@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2014 - TortoiseGit
+// Copyright (C) 2013-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -21,62 +21,43 @@
 
 static DWORD VerifyServerCertificate(PCCERT_CONTEXT pServerCert, PTSTR pwszServerName, DWORD dwCertFlags)
 {
-	HTTPSPolicyCallbackData polHttps = { 0 };
-	CERT_CHAIN_POLICY_PARA PolicyPara = { 0 };
-	CERT_CHAIN_POLICY_STATUS PolicyStatus = { 0 };
-	CERT_CHAIN_PARA ChainPara = { 0 };
-	PCCERT_CHAIN_CONTEXT pChainContext = nullptr;
-	DWORD Status;
-	LPSTR rgszUsages[] = { szOID_PKIX_KP_SERVER_AUTH, szOID_SERVER_GATED_CRYPTO, szOID_SGC_NETSCAPE };
+	if (pServerCert == nullptr || pwszServerName == nullptr)
+		return (DWORD)SEC_E_WRONG_PRINCIPAL;
 
+	LPSTR rgszUsages[] = { szOID_PKIX_KP_SERVER_AUTH, szOID_SERVER_GATED_CRYPTO, szOID_SGC_NETSCAPE };
 	DWORD cUsages = sizeof(rgszUsages) / sizeof(LPSTR);
 
-	if (pServerCert == nullptr || pwszServerName == nullptr)
-	{
-		Status = (DWORD)SEC_E_WRONG_PRINCIPAL;
-		goto cleanup;
-	}
-
 	// Build certificate chain.
+	CERT_CHAIN_PARA ChainPara = { 0 };
 	ChainPara.cbSize = sizeof(ChainPara);
 	ChainPara.RequestedUsage.dwType = USAGE_MATCH_TYPE_OR;
 	ChainPara.RequestedUsage.Usage.cUsageIdentifier = cUsages;
 	ChainPara.RequestedUsage.Usage.rgpszUsageIdentifier = rgszUsages;
 
+	PCCERT_CHAIN_CONTEXT pChainContext = nullptr;
 	if (!CertGetCertificateChain(nullptr, pServerCert, nullptr, pServerCert->hCertStore, &ChainPara, 0, nullptr, &pChainContext))
-	{
-		Status = GetLastError();
-		goto cleanup;
-	}
+		return GetLastError();
+	SCOPE_EXIT { CertFreeCertificateChain(pChainContext); };
 
 	// Validate certificate chain.
+	HTTPSPolicyCallbackData polHttps = { 0 };
 	polHttps.cbStruct = sizeof(HTTPSPolicyCallbackData);
 	polHttps.dwAuthType = AUTHTYPE_SERVER;
 	polHttps.fdwChecks = dwCertFlags;
 	polHttps.pwszServerName = pwszServerName;
 
+	CERT_CHAIN_POLICY_PARA PolicyPara = { 0 };
 	PolicyPara.cbSize = sizeof(PolicyPara);
 	PolicyPara.pvExtraPolicyPara = &polHttps;
 
+	CERT_CHAIN_POLICY_STATUS PolicyStatus = { 0 };
 	PolicyStatus.cbSize = sizeof(PolicyStatus);
 
 	if (!CertVerifyCertificateChainPolicy(CERT_CHAIN_POLICY_SSL, pChainContext, &PolicyPara, &PolicyStatus))
-	{
-		Status = GetLastError();
-		goto cleanup;
-	}
+		return GetLastError();
 
 	if (PolicyStatus.dwError)
-	{
-		Status = PolicyStatus.dwError;
-		goto cleanup;
-	}
+		return PolicyStatus.dwError;
 
-	Status = SEC_E_OK;
-
-cleanup:
-	if (pChainContext)
-		CertFreeCertificateChain(pChainContext);
-
-	return Status;
+	return SEC_E_OK;
 }

@@ -21,6 +21,7 @@
 #include "UnicodeUtils.h"
 #include "GitAdminDir.h"
 #include "Git.h"
+#include "SmartHandle.h"
 
 GitAdminDir::GitAdminDir()
 {
@@ -173,7 +174,7 @@ bool GitAdminDir::GetAdminDirPath(const CString &projectTopDir, CString& adminDi
 
 CString GitAdminDir::ReadGitLink(const CString& topDir, const CString& dotGitPath)
 {
-	FILE* pFile = _tfsopen(dotGitPath, _T("r"), SH_DENYWR);
+	CAutoFILE pFile = _tfsopen(dotGitPath, _T("r"), SH_DENYWR);
 
 	if (!pFile)
 		return _T("");
@@ -181,7 +182,6 @@ CString GitAdminDir::ReadGitLink(const CString& topDir, const CString& dotGitPat
 	int size = 65536;
 	std::unique_ptr<char[]> buffer(new char[size]);
 	int length = (int)fread(buffer.get(), sizeof(char), size, pFile);
-	fclose(pFile);
 	CStringA gitPathA(buffer.get(), length);
 	if (length < 8 || gitPathA.Left(8) != "gitdir: ")
 		return _T("");

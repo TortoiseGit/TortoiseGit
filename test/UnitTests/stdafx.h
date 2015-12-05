@@ -43,6 +43,7 @@
 
 #define __WIN32__
 
+#include "scope_exit_noexcept.h"
 #include "DebugOutput.h"
 
 // Header for gtest

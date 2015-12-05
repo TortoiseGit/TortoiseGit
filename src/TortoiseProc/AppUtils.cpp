@@ -3648,12 +3648,12 @@ int CAppUtils::Git2CertificateCheck(git_cert* base_cert, int /*valid*/, const ch
 			return 0;
 
 		PCCERT_CONTEXT pServerCert = CertCreateCertificateContext(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, (BYTE*)cert->data, (DWORD)cert->len);
+		SCOPE_EXIT { CertFreeCertificateContext(pServerCert); };
 
 		DWORD verificationError = VerifyServerCertificate(pServerCert, CUnicodeUtils::GetUnicode(host).GetBuffer(), 0);
 		if (!verificationError)
 		{
 			last_accepted_cert.set(cert);
-			CertFreeCertificateContext(pServerCert);
 			return 0;
 		}
 
@@ -3662,8 +3662,6 @@ int CAppUtils::Git2CertificateCheck(git_cert* base_cert, int /*valid*/, const ch
 
 		CString issuer;
 		CertGetNameString(pServerCert, CERT_NAME_SIMPLE_DISPLAY_TYPE, CERT_NAME_ISSUER_FLAG, nullptr, CStrBuf(issuer, 128), 128);
-
-		CertFreeCertificateContext(pServerCert);
 
 		CCheckCertificateDlg dlg;
 		dlg.cert = cert;

@@ -69,12 +69,9 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 {
 	this->clear();
 
-	m_critRepoSec.Lock();
+	CAutoLocker lock(m_critRepoSec);
 	if (repository.Open(dgitdir))
-	{
-		m_critRepoSec.Unlock();
 		return -1;
-	}
 
 	// add config files
 	CAutoConfig config(true);
@@ -97,7 +94,6 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 	if (git_repository_index(index.GetPointer(), repository))
 	{
 		repository.Free();
-		m_critRepoSec.Unlock();
 		return -1;
 	}
 
@@ -121,8 +117,6 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 
 	CGit::GetFileModifyTime(dgitdir + _T("index"), &this->m_LastModifyTime);
 	std::sort(this->begin(), this->end(), SortIndex);
-
-	m_critRepoSec.Unlock();
 
 	return 0;
 }

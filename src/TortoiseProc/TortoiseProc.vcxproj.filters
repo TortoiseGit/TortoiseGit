@@ -1678,6 +1678,9 @@
     <ClInclude Include="PatchListCtrl.h">
       <Filter>Commands\Patch</Filter>
     </ClInclude>
+    <ClInclude Include="..\Utils\SmartHandle.h">
+      <Filter>Utils\General</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Resources\actionadded.ico">

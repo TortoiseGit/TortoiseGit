@@ -28,6 +28,7 @@
 #define NEED_SIGNING_KEY
 #include "..\version.h"
 #include "TempFile.h"
+#include "SmartHandle.h"
 
 #define packet_type(c) ((c & 0x3c) >> 2)      /* 0x3C = 00111100 */
 #define packet_header_len(c) ((c & 0x03) + 1) /* number of bytes in a packet header */
@@ -743,7 +744,7 @@ static int hash_from_public_key(HCRYPTHASH hHash, public_key_t* p_pkey)
 
 static int hash_from_file(HCRYPTHASH hHash, CString filename, signature_packet_t* p_sig)
 {
-	FILE * pFile = _tfsopen(filename, _T("rb"), SH_DENYWR);
+	CAutoFILE pFile = _tfsopen(filename, _T("rb"), SH_DENYWR);
 	if (!pFile)
 		return -1;
 
@@ -799,7 +800,7 @@ static int hash_from_file(HCRYPTHASH hHash, CString filename, signature_packet_t
 						psz_string++;
 						nlHandling = 3;
 					}
-				
+
 					if (*psz_string == '\n')
 					{
 						psz_string++;
@@ -811,8 +812,6 @@ static int hash_from_file(HCRYPTHASH hHash, CString filename, signature_packet_t
 		else
 			CryptHashData(hHash, (BYTE *)buf, read, 0);
 	}
-
-	fclose(pFile);
 
 	return hash_finish(hHash, p_sig);
 }
@@ -858,6 +857,7 @@ static int verify_signature_rsa(HCRYPTPROV hCryptProv, HCRYPTHASH hHash, public_
 	HCRYPTKEY hPubKey;
 	if (CryptImportKey(hCryptProv, (BYTE*)&rsakey, sizeof(BLOBHEADER) + sizeof(RSAPUBKEY) + i_n_len, 0, 0, &hPubKey) == 0)
 		return -1;
+	SCOPE_EXIT{ CryptDestroyKey(hPubKey); };
 
 	/* i_s_len might be shorter than i_n_len,
 	 * but CrytoAPI requires that both have same length,
@@ -869,12 +869,8 @@ static int verify_signature_rsa(HCRYPTPROV hCryptProv, HCRYPTHASH hHash, public_
 	memcpy(pSig.get(), p_sig.algo_specific.rsa.s + 2, i_s_len);
 	std::reverse(pSig.get(), pSig.get() + i_s_len);
 	if (!CryptVerifySignature(hHash, pSig.get(), i_n_len, hPubKey, nullptr, 0))
-	{
-		CryptDestroyKey(hPubKey);
 		return -1;
-	}
 
-	CryptDestroyKey(hPubKey);
 	return 0;
 }
 
@@ -918,18 +914,16 @@ static int verify_signature_dsa(HCRYPTPROV hCryptProv, HCRYPTHASH hHash, public_
 	if (CryptImportKey(hCryptProv, (BYTE*)&dsakey, sizeof(dsakey), 0, 0, &hPubKey) == 0)
 		return -1;
 
+	SCOPE_EXIT { CryptDestroyKey(hPubKey); };
+
 	unsigned char signature[40] = { 0 };
 	memcpy(signature, p_sig.algo_specific.dsa.r + 2, i_r_len);
 	memcpy(signature + 20, p_sig.algo_specific.dsa.s + 2, i_s_len);
 	std::reverse(signature, signature + i_r_len);
 	std::reverse(signature + 20, signature + 20 + i_s_len);
 	if (!CryptVerifySignature(hHash, signature, sizeof(signature), hPubKey, nullptr, 0))
-	{
-		CryptDestroyKey(hPubKey);
 		return -1;
-	}
 
-	CryptDestroyKey(hPubKey);
 	return 0;
 }
 
@@ -966,17 +960,12 @@ static public_key_t *download_key(const uint8_t *p_longid, const uint8_t *p_sign
 	FILE * pFile = _tfsopen(tempfile, _T("rb"), SH_DENYWR);
 	if (pFile)
 	{
+		SCOPE_EXIT{ fclose(pFile); };
 		int length = 0;
 		if ((length = (int)fread(buffer.get(), sizeof(char), size, pFile)) >= 8)
-		{
-			fclose(pFile);
 			size = length;
-		}
 		else
-		{
-			fclose(pFile);
 			return nullptr;
-		}
 	}
 	else
 		return nullptr;
@@ -1006,31 +995,26 @@ int VerifyIntegrity(const CString &filename, const CString &signatureFilename, C
 	memset(&p_sig, 0, sizeof(signature_packet_t));
 	if (LoadSignature(signatureFilename, &p_sig))
 		return -1;
+	SCOPE_EXIT
+	{
+		if (p_sig.version == 4)
+		{
+			free(p_sig.specific.v4.hashed_data);
+			free(p_sig.specific.v4.unhashed_data);
+		}
+	};
 
 	public_key_t p_pkey;
 	memset(&p_pkey, 0, sizeof(public_key_t));
 	if (parse_public_key(tortoisegit_public_key, sizeof(tortoisegit_public_key), &p_pkey, nullptr))
-	{
-		if (p_sig.version == 4)
-		{
-			free(p_sig.specific.v4.hashed_data);
-			free(p_sig.specific.v4.unhashed_data);
-		}
 		return -1;
-	}
+	SCOPE_EXIT { free(p_pkey.psz_username); };
 	memcpy(p_pkey.longid, tortoisegit_public_key_longid, 8);
 
 	HCRYPTPROV hCryptProv;
 	if (!CryptAcquireContext(&hCryptProv, nullptr, nullptr, map_algo(p_pkey.key.algo), CRYPT_VERIFYCONTEXT))
-	{
-		if (p_sig.version == 4)
-		{
-			free(p_sig.specific.v4.hashed_data);
-			free(p_sig.specific.v4.unhashed_data);
-		}
-		free(p_pkey.psz_username);
 		return -1;
-	}
+	SCOPE_EXIT { CryptReleaseContext(hCryptProv, 0); };
 
 	if (memcmp(p_sig.issuer_longid, p_pkey.longid, 8) != 0)
 	{
@@ -1042,138 +1026,52 @@ int VerifyIntegrity(const CString &filename, const CString &signatureFilename, C
 		UNREFERENCED_PARAMETER(updateDownloader);
 #endif
 		if (!p_new_pkey)
-		{
-			if (p_sig.version == 4)
-			{
-				free(p_sig.specific.v4.hashed_data);
-				free(p_sig.specific.v4.unhashed_data);
-			}
-			free(p_pkey.psz_username);
-			CryptReleaseContext(hCryptProv, 0);
 			return -1;
-		}
+		SCOPE_EXIT
+		{
+			if (p_new_pkey->sig.version == 4)
+			{
+				p_new_pkey->sig.version = 0;
+				free(p_new_pkey->sig.specific.v4.hashed_data);
+				free(p_new_pkey->sig.specific.v4.unhashed_data);
+			}
+			if (p_new_pkey == &p_pkey)
+				return;
+			free(p_new_pkey->psz_username);
+			free(p_new_pkey);
+		};
 
 		HCRYPTHASH hHash;
 		if (!CryptCreateHash(hCryptProv, map_digestalgo(p_sig.digest_algo), 0, 0, &hHash))
-		{
-			if (p_sig.version == 4)
-			{
-				free(p_sig.specific.v4.hashed_data);
-				free(p_sig.specific.v4.unhashed_data);
-			}
-			free(p_pkey.psz_username);
-			CryptReleaseContext(hCryptProv, 0);
-			free(p_new_pkey->psz_username);
-			if (p_new_pkey->sig.version == 4)
-			{
-				free(p_new_pkey->sig.specific.v4.hashed_data);
-				free(p_new_pkey->sig.specific.v4.unhashed_data);
-			}
-			free(p_new_pkey);
 			return -1;
-		}
+		SCOPE_EXIT { CryptDestroyHash(hHash); };
 
 		if (hash_from_public_key(hHash, p_new_pkey))
-		{
-			if (p_sig.version == 4)
-			{
-				free(p_sig.specific.v4.hashed_data);
-				free(p_sig.specific.v4.unhashed_data);
-			}
-			free(p_pkey.psz_username);
-			CryptReleaseContext(hCryptProv, 0);
-			free(p_new_pkey->psz_username);
-			if (p_new_pkey->sig.version == 4)
-			{
-				free(p_new_pkey->sig.specific.v4.hashed_data);
-				free(p_new_pkey->sig.specific.v4.unhashed_data);
-			}
-			free(p_new_pkey);
-			CryptDestroyHash(hHash);
 			return -1;
-		}
 
 		if (check_hash(hHash, &p_new_pkey->sig))
-		{
-			if (p_sig.version == 4)
-			{
-				free(p_sig.specific.v4.hashed_data);
-				free(p_sig.specific.v4.unhashed_data);
-			}
-			free(p_pkey.psz_username);
-			CryptReleaseContext(hCryptProv, 0);
-			free(p_new_pkey->psz_username);
-			if (p_new_pkey->sig.version == 4)
-			{
-				free(p_new_pkey->sig.specific.v4.hashed_data);
-				free(p_new_pkey->sig.specific.v4.unhashed_data);
-			}
-			free(p_new_pkey);
-			CryptDestroyHash(hHash);
 			return -1;
-		}
 
 		if (verify_signature(hCryptProv, hHash, p_pkey, p_new_pkey->sig))
-		{
-			if (p_sig.version == 4)
-			{
-				free(p_sig.specific.v4.hashed_data);
-				free(p_sig.specific.v4.unhashed_data);
-			}
-			free(p_pkey.psz_username);
-			CryptReleaseContext(hCryptProv, 0);
-			free(p_new_pkey->psz_username);
-			if (p_new_pkey->sig.version == 4)
-			{
-				free(p_new_pkey->sig.specific.v4.hashed_data);
-				free(p_new_pkey->sig.specific.v4.unhashed_data);
-			}
-			free(p_new_pkey);
-			CryptDestroyHash(hHash);
 			return -1;
-		}
-		else
-		{
-			CryptDestroyHash(hHash);
-			free(p_pkey.psz_username);
-			p_pkey = *p_new_pkey;
-			if (p_pkey.sig.version == 4)
-			{
-				p_pkey.sig.version = 0;
-				free(p_pkey.sig.specific.v4.hashed_data);
-				free(p_pkey.sig.specific.v4.unhashed_data);
-			}
-			free(p_new_pkey);
-		}
-	}
 
-	int nRetCode = -1;
+		free(p_pkey.psz_username);
+		p_pkey = *p_new_pkey;
+	}
 
 	HCRYPTHASH hHash;
 	if (!CryptCreateHash(hCryptProv, map_digestalgo(p_sig.digest_algo), 0, 0, &hHash))
-		goto error;
+		return -1;
+	SCOPE_EXIT{ CryptDestroyHash(hHash); };
 
 	if (hash_from_file(hHash, filename, &p_sig))
-		goto error;
+		return -1;
 
 	if (check_hash(hHash, &p_sig))
-		goto error;
+		return -1;
 
 	if (verify_signature(hCryptProv, hHash, p_pkey, p_sig))
-		goto error;
+		return -1;
 
-	nRetCode = 0;
-
-error:
-	CryptDestroyHash(hHash);
-	CryptReleaseContext(hCryptProv, 0);
-
-	free(p_pkey.psz_username);
-	if (p_sig.version == 4)
-	{
-		free(p_sig.specific.v4.hashed_data);
-		free(p_sig.specific.v4.unhashed_data);
-	}
-
-	return nRetCode;
+	return 0;
 }

@@ -65,6 +65,7 @@
 
 #define XMESSAGEBOX_APPREGPATH "Software\\TortoiseGitMerge\\"
 
+#include "scope_exit_noexcept.h"
 #include "ProfilingInfo.h"
 #include "CrashReport.h"
 

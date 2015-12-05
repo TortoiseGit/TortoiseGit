@@ -190,6 +190,20 @@ protected:
 	}
 };
 
+template <typename T>
+struct CCloseFILE
+{
+	bool Close(T handle)
+	{
+		return !!fclose(handle);
+	}
+
+protected:
+	~CCloseFILE()
+	{
+	}
+};
+
 
 // Client code (definitions of standard Windows handles).
 typedef CSmartHandle<HANDLE,	CCloseHandle>											CAutoGeneralHandle;
@@ -198,5 +212,4 @@ typedef CSmartHandle<PVOID,		CCloseViewOfFile>										CAutoViewOfFile;
 typedef CSmartHandle<HMODULE,	CCloseLibrary>											CAutoLibrary;
 typedef CSmartHandle<HANDLE,	CCloseHandle, INVALID_HANDLE_VALUE>						CAutoFile;
 typedef CSmartHandle<HANDLE,	CCloseFindFile, INVALID_HANDLE_VALUE>					CAutoFindFile;
-
-
+typedef CSmartHandle<FILE*,		CCloseFILE>												CAutoFILE;

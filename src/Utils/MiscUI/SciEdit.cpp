@@ -25,6 +25,7 @@
 #include "registry.h"
 #include "SciEdit.h"
 #include "SysInfo.h"
+#include "SmartHandle.h"
 #include "../../TortoiseUDiff/UDiffColors.h"
 
 void CSciEditContextMenuInterface::InsertMenuItems(CMenu&, int&) {return;}
@@ -1678,8 +1679,7 @@ void CSciEdit::SetUDiffStyle()
 
 int CSciEdit::LoadFromFile(CString &filename)
 {
-	FILE *fp = NULL;
-	_tfopen_s(&fp, filename, _T("rb"));
+	CAutoFILE fp = _tfsopen(filename, _T("rb"), _SH_DENYWR);
 	if (fp)
 	{
 		//SetTitle();
@@ -1692,7 +1692,6 @@ int CSciEdit::LoadFromFile(CString &filename)
 						reinterpret_cast<LPARAM>(static_cast<char *>(data)));
 					lenFile = fread(data, 1, sizeof(data), fp);
 				}
-				fclose(fp);
 				Call(SCI_SETCODEPAGE, bUTF8 ? SC_CP_UTF8 : GetACP());
 				return 0;
 	}

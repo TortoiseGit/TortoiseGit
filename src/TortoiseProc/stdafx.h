@@ -61,6 +61,7 @@
 #define USE_GDI_GRADIENT
 #define HISTORYCOMBO_WITH_SYSIMAGELIST
 
+#include "scope_exit_noexcept.h"
 #include "ProfilingInfo.h"
 #include "DebugOutput.h"
 #include <afxdhtml.h>

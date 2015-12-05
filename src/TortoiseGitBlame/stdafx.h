@@ -45,8 +45,8 @@
 
 #include <afxcontrolbars.h>     // MFC support for ribbons and control bars
 
+#include "scope_exit_noexcept.h"
 #include "DebugOutput.h"
-
 
 #include <string>
 #include <vector>

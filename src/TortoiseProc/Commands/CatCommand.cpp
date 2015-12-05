@@ -22,6 +22,7 @@
 #include "PathUtils.h"
 #include "Git.h"
 #include "MessageBox.h"
+#include "SmartHandle.h"
 
 bool CatCommand::Execute()
 {
@@ -48,8 +49,7 @@ bool CatCommand::Execute()
 
 		if (git_object_type(obj) == GIT_OBJ_BLOB)
 		{
-			FILE *file = nullptr;
-			_tfopen_s(&file, savepath, _T("w"));
+			CAutoFILE file = _tfsopen(savepath, _T("w"), SH_DENYRW);
 			if (file == nullptr)
 			{
 				::DeleteFile(savepath);
@@ -61,7 +61,6 @@ bool CatCommand::Execute()
 			if (git_blob_filtered_content(buf, (git_blob *)(git_object *)obj, CUnicodeUtils::GetUTF8(cmdLinePath.GetGitPathString()), 0))
 			{
 				::DeleteFile(savepath);
-				fclose(file);
 				CMessageBox::Show(hwndExplorer, g_Git.GetLibGit2LastErr(L"Could not get filtered content."), L"TortoiseGit", MB_ICONERROR);
 				return false;
 			}
@@ -69,11 +68,9 @@ bool CatCommand::Execute()
 			{
 				::DeleteFile(savepath);
 				CString err = CFormatMessageWrapper();
-				fclose(file);
 				CMessageBox::Show(hwndExplorer, _T("Could not write to file: ") + err, L"TortoiseGit", MB_ICONERROR);
 				return false;
 			}
-			fclose(file);
 			return true;
 		}
 
