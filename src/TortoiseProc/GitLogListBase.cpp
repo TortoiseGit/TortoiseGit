@@ -3110,11 +3110,7 @@ void CGitLogListBase::Refresh(BOOL IsCleanFilter)
 
 	ResetWcRev();
 
-	// HACK to hide graph column
-	if (m_ShowMask & CGit::LOG_INFO_FOLLOW)
-		SetColumnWidth(0, 0);
-	else
-		SetColumnWidth(0, m_ColumnManager.GetWidth(0, false));
+	ShowGraphColumn((m_ShowMask & CGit::LOG_INFO_FOLLOW) ? false : true);
 
 	//Update branch and Tag info
 	ReloadHashMap();
