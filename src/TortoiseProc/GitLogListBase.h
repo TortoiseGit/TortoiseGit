@@ -483,7 +483,7 @@ protected:
 		bool singleRemote;
 		bool hasTracking;
 		bool sameName;
-		bool annotatedTag;
+		CGit::REF_TYPE refType;
 	} REFLABEL;
 
 	DECLARE_MESSAGE_MAP()

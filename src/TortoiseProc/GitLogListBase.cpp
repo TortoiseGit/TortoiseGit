@@ -665,7 +665,7 @@ void CGitLogListBase::DrawTagBranch(HDC hdc, CDC& W_Dc, HTHEME hTheme, CRect& re
 		bool singleRemote = refList[i].singleRemote;
 		bool hasTracking = refList[i].hasTracking;
 		bool sameName = refList[i].sameName;
-		bool annotatedTag = refList[i].annotatedTag;
+		CGit::REF_TYPE refType = refList[i].refType;
 
 		//When row selected, ajust label color
 		if (!(IsAppThemed() && SysInfo::Instance().IsVistaOrLater()))
@@ -724,7 +724,7 @@ void CGitLogListBase::DrawTagBranch(HDC hdc, CDC& W_Dc, HTHEME hTheme, CRect& re
 				W_Dc.Draw3dRect(rectEdge, m_Colors.Lighten(colRef, 50), m_Colors.Darken(colRef, 50));
 			}
 
-			if (annotatedTag)
+			if (refType == CGit::REF_TYPE::ANNOTATED_TAG)
 			{
 				rt.right += 8;
 				POINT trianglept[3] = { { rt.right - 8, rt.top }, { rt.right, (rt.top + rt.bottom) / 2 }, { rt.right - 8, rt.bottom } };
@@ -1342,12 +1342,15 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 							refLabel.singleRemote = false;
 							refLabel.hasTracking = false;
 							refLabel.sameName = false;
-							refLabel.annotatedTag = false;
-							if (CGit::GetShortName(str, refLabel.name, _T("refs/heads/")))
+							refLabel.name = CGit::GetShortName(str, &refLabel.refType);
+
+							switch (refLabel.refType)
+							{
+							case CGit::REF_TYPE::LOCAL_BRANCH:
 							{
 								if (!(m_ShowRefMask & LOGLIST_SHOWLOCALBRANCHES))
 									continue;
-								if (refLabel.name == m_CurrentBranch )
+								if (refLabel.name == m_CurrentBranch)
 									refLabel.color = m_Colors.GetColor(CColors::CurrentBranch);
 								else
 									refLabel.color = m_Colors.GetColor(CColors::LocalBranch);
@@ -1395,12 +1398,12 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 										}
 									}
 								}
+								break;
 							}
-							else if (CGit::GetShortName(str, refLabel.name, _T("refs/remotes/")))
+							case CGit::REF_TYPE::REMOTE_BRANCH:
 							{
 								if (!(m_ShowRefMask & LOGLIST_SHOWREMOTEBRANCHES))
 									continue;
-
 								bool found = false;
 								for (size_t j = 0; j < remoteTrackingList.size(); ++j)
 								{
@@ -1422,39 +1425,28 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 										refLabel.singleRemote = true;
 									}
 								}
+								break;
 							}
-							else if (CGit::GetShortName(str, refLabel.name, _T("refs/tags/")))
-							{
+							case CGit::REF_TYPE::ANNOTATED_TAG:
+							case CGit::REF_TYPE::TAG:
 								if (!(m_ShowRefMask & LOGLIST_SHOWTAGS))
 									continue;
 								refLabel.color = m_Colors.GetColor(CColors::Tag);
-								refLabel.annotatedTag = str.Right(3) == _T("^{}");
-							}
-							else if (CGit::GetShortName(str, refLabel.name, _T("refs/stash")))
-							{
+								break;
+							case CGit::REF_TYPE::STASH:
 								if (!(m_ShowRefMask & LOGLIST_SHOWSTASH))
 									continue;
 								refLabel.color = m_Colors.GetColor(CColors::Stash);
-								refLabel.name = _T("stash");
-							}
-							else if (CGit::GetShortName(str, refLabel.name, _T("refs/bisect/")))
-							{
+								break;
+							case CGit::REF_TYPE::BISECT_GOOD:
+							case CGit::REF_TYPE::BISECT_BAD:
 								if (!(m_ShowRefMask & LOGLIST_SHOWBISECT))
 									continue;
-								if (refLabel.name.Find(_T("good")) == 0)
-								{
-									refLabel.color = m_Colors.GetColor(CColors::BisectGood);
-									refLabel.name = _T("good");
-								}
-								if (refLabel.name.Find(_T("bad")) == 0)
-								{
-									refLabel.color = m_Colors.GetColor(CColors::BisectBad);
-									refLabel.name = _T("bad");
-								}
-							}
-							else
+								refLabel.color = (refLabel.refType == CGit::REF_TYPE::BISECT_GOOD) ? m_Colors.GetColor(CColors::BisectGood): m_Colors.GetColor(CColors::BisectBad);
+								break;
+							default:
 								continue;
-
+							}
 							refsToShow.push_back(refLabel);
 						}
 
