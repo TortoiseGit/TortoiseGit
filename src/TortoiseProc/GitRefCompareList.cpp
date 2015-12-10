@@ -187,7 +187,7 @@ void CGitRefCompareList::Show()
 			nImage = 1;
 		else if (entry.refType == CGit::REF_TYPE::REMOTE_BRANCH)
 			nImage = 2;
-		else if (entry.refType == CGit::REF_TYPE::TAG)
+		else if (entry.refType == CGit::REF_TYPE::ANNOTATED_TAG || entry.refType == CGit::REF_TYPE::TAG)
 			nImage = 0;
 		InsertItem(index, entry.shortName, nImage);
 		SetItemText(index, colChange, entry.change);

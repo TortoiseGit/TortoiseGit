@@ -2775,6 +2775,8 @@ CString CGit::GetShortName(const CString& ref, REF_TYPE *out_type)
 	{
 		type = CGit::REMOTE_BRANCH;
 	}
+	else if (str.Right(3) == L"^{}" && CGit::GetShortName(str, shortname, L"refs/tags/"))
+		type = CGit::ANNOTATED_TAG;
 	else if (CGit::GetShortName(str, shortname, _T("refs/tags/")))
 	{
 		type = CGit::TAG;

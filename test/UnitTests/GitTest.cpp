@@ -222,6 +222,14 @@ TEST(CGit, GetShortName)
 	EXPECT_EQ(CGit::TAG, type);
 
 	type = CGit::UNKNOWN;
+	EXPECT_STREQ(_T("release2"), CGit::GetShortName(_T("refs/tags/release2^{}"), &type));
+	EXPECT_EQ(CGit::ANNOTATED_TAG, type);
+
+	type = CGit::UNKNOWN;
+	EXPECT_STREQ(_T("releases/v2"), CGit::GetShortName(_T("refs/tags/releases/v2^{}"), &type));
+	EXPECT_EQ(CGit::ANNOTATED_TAG, type);
+
+	type = CGit::UNKNOWN;
 	EXPECT_STREQ(_T("stash"), CGit::GetShortName(_T("refs/stash"), &type));
 	EXPECT_EQ(CGit::STASH, type);
 
