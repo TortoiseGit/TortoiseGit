@@ -1072,48 +1072,35 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& /*logR
 
 				COLORREF colRef = RGB(224, 224, 224);
 
-
-				if(CGit::GetShortName(str,shortname,_T("refs/heads/")))
+				CGit::REF_TYPE refType;
+				shortname = CGit::GetShortName(str, &refType);
+				switch (refType)
 				{
+				case CGit::REF_TYPE::LOCAL_BRANCH:
 					if (!revGraphUseLocalForCur && shortname == m_CurrentBranch)
 						colRef = m_Colors.GetColor(CColors::CurrentBranch);
 					else
 						colRef = m_Colors.GetColor(CColors::LocalBranch);
-
-				}
-				else if(CGit::GetShortName(str,shortname,_T("refs/remotes/")))
-				{
+					break;
+				case CGit::REF_TYPE::REMOTE_BRANCH:
 					colRef = m_Colors.GetColor(CColors::RemoteBranch);
-				}
-				else if(CGit::GetShortName(str,shortname,_T("refs/tags/")))
-				{
+					break;
+				case CGit::REF_TYPE::ANNOTATED_TAG:
+				case CGit::REF_TYPE::TAG:
 					colRef = m_Colors.GetColor(CColors::Tag);
-				}
-				else if(CGit::GetShortName(str,shortname,_T("refs/stash")))
-				{
+					break;
+				case CGit::REF_TYPE::STASH:
 					colRef = m_Colors.GetColor(CColors::Stash);
-					shortname=_T("stash");
-				}
-				else if(CGit::GetShortName(str,shortname,_T("refs/bisect/")))
-				{
-					if(shortname.Find(_T("good")) == 0)
-					{
-						colRef = m_Colors.GetColor(CColors::BisectGood);
-						shortname = _T("good");
-					}
-
-					if(shortname.Find(_T("bad")) == 0)
-					{
-						colRef = m_Colors.GetColor(CColors::BisectBad);
-						shortname = _T("bad");
-					}
-				}else if(CGit::GetShortName(str,shortname,_T("refs/notes/")))
-				{
+					break;
+				case CGit::REF_TYPE::BISECT_GOOD:
+					colRef = m_Colors.GetColor(CColors::BisectGood);
+					break;
+				case CGit::REF_TYPE::BISECT_BAD:
+					colRef = m_Colors.GetColor(CColors::BisectBad);
+					break;
+				case CGit::REF_TYPE::NOTES:
 					colRef = m_Colors.GetColor(CColors::NoteNode);
-				}
-				else
-				{
-					CGit::GetShortName(str, shortname, _T("refs/"));
+					break;
 				}
 
 				Gdiplus::Color color(GetRValue(colRef), GetGValue(colRef), GetBValue(colRef));
