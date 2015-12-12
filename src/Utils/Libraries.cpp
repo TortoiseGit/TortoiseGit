@@ -65,7 +65,7 @@ void EnsureGitLibrary(bool bCreate /* = true*/)
             return;
     }
 
-    if (SUCCEEDED(pLibrary->SetFolderType(FOLDERTYPEID_GITWC)))
+    if (SUCCEEDED(pLibrary->SetFolderType(SysInfo::Instance().IsWin8OrLater() ? FOLDERTYPEID_Documents : FOLDERTYPEID_GITWC)))
     {
         // create the path for the icon
         CString path;
