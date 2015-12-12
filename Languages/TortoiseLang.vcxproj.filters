@@ -8,10 +8,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Makefile" />
-    <None Include="Tortoise_ko_KR.po">
+    <None Include="Tortoise_ko.po">
       <Filter>Translation Files</Filter>
     </None>
-    <None Include="Tortoise_pl_PL.po">
+    <None Include="Tortoise_pl.po">
       <Filter>Translation Files</Filter>
     </None>
     <None Include="Tortoise_pt_BR.po">
@@ -38,20 +38,23 @@
     <None Include="Tortoise_de.po">
       <Filter>Translation Files</Filter>
     </None>
-    <None Include="Tortoise_es_ES.po">
+    <None Include="Tortoise_es.po">
+      <Filter>Translation Files</Filter>
+    </None>
+    <None Include="Tortoise_fi.po">
       <Filter>Translation Files</Filter>
     </None>
     <None Include="Tortoise_fr.po">
       <Filter>Translation Files</Filter>
     </None>
-    <None Include="Tortoise_it_IT.po">
+    <None Include="Tortoise_it.po">
       <Filter>Translation Files</Filter>
     </None>
     <None Include="Tortoise_ja.po">
       <Filter>Translation Files</Filter>
     </None>
     <None Include="build-lang.cmd" />
-    <None Include="Tortoise_bg_BG.po">
+    <None Include="Tortoise_bg.po">
       <Filter>Translation Files</Filter>
     </None>
     <None Include="Tortoise_ca.po">
@@ -63,7 +66,7 @@
     <None Include="Tortoise_id.po">
       <Filter>Translation Files</Filter>
     </None>
-    <None Include="Tortoise_nl_NL.po">
+    <None Include="Tortoise_nl.po">
       <Filter>Translation Files</Filter>
     </None>
     <None Include="Tortoise_pt_PT.po">

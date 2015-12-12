@@ -138,7 +138,7 @@ Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Lang_pt_BR", "..\Languages\
 		{EC88E7EC-3074-4841-BA45-B938D098EFF6} = {EC88E7EC-3074-4841-BA45-B938D098EFF6}
 	EndProjectSection
 EndProject
-Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Lang_es_ES", "..\Languages\Lang_es_ES.wixproj", "{AD35E207-3793-4A26-82A2-520D7C3C71BB}"
+Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Lang_es", "..\Languages\Lang_es.wixproj", "{AD35E207-3793-4A26-82A2-520D7C3C71BB}"
 	ProjectSection(ProjectDependencies) = postProject
 		{EC88E7EC-3074-4841-BA45-B938D098EFF6} = {EC88E7EC-3074-4841-BA45-B938D098EFF6}
 	EndProjectSection
@@ -168,7 +168,7 @@ Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Lang_cs", "..\Languages\Lan
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TortoiseGitStub", "TortoiseShell\TortoiseStub.vcxproj", "{DB98402B-2CF6-4EC6-89F9-D19365EE8DE3}"
 EndProject
-Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Lang_pl_PL", "..\Languages\Lang_pl_PL.wixproj", "{7A9B0E43-A97C-4771-BE30-1E7D128BAB52}"
+Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Lang_pl", "..\Languages\Lang_pl.wixproj", "{7A9B0E43-A97C-4771-BE30-1E7D128BAB52}"
 	ProjectSection(ProjectDependencies) = postProject
 		{EC88E7EC-3074-4841-BA45-B938D098EFF6} = {EC88E7EC-3074-4841-BA45-B938D098EFF6}
 	EndProjectSection
@@ -184,17 +184,17 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AsyncFramework", "AsyncFram
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TGitMerge", "TGitMerge", "{586BCCB7-619B-4F83-A07B-596F04E5A3E7}"
 EndProject
-Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Lang_nl_NL", "..\Languages\Lang_nl_NL.wixproj", "{C3774955-ADE4-4CF0-92A2-71383C29CECE}"
+Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Lang_nl", "..\Languages\Lang_nl.wixproj", "{C3774955-ADE4-4CF0-92A2-71383C29CECE}"
 	ProjectSection(ProjectDependencies) = postProject
 		{EC88E7EC-3074-4841-BA45-B938D098EFF6} = {EC88E7EC-3074-4841-BA45-B938D098EFF6}
 	EndProjectSection
 EndProject
-Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Lang_bg_BG", "..\Languages\Lang_bg_BG.wixproj", "{3796A881-6668-41C7-88AE-005BB8DC6A8E}"
+Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Lang_bg", "..\Languages\Lang_bg.wixproj", "{3796A881-6668-41C7-88AE-005BB8DC6A8E}"
 	ProjectSection(ProjectDependencies) = postProject
 		{EC88E7EC-3074-4841-BA45-B938D098EFF6} = {EC88E7EC-3074-4841-BA45-B938D098EFF6}
 	EndProjectSection
 EndProject
-Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Lang_ko_KR", "..\Languages\Lang_ko_KR.wixproj", "{CE012F99-AA82-462C-8F7C-F8A946EAF4AE}"
+Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Lang_ko", "..\Languages\Lang_ko.wixproj", "{CE012F99-AA82-462C-8F7C-F8A946EAF4AE}"
 	ProjectSection(ProjectDependencies) = postProject
 		{EC88E7EC-3074-4841-BA45-B938D098EFF6} = {EC88E7EC-3074-4841-BA45-B938D098EFF6}
 	EndProjectSection
@@ -204,7 +204,7 @@ Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Lang_ro", "..\Languages\Lan
 		{EC88E7EC-3074-4841-BA45-B938D098EFF6} = {EC88E7EC-3074-4841-BA45-B938D098EFF6}
 	EndProjectSection
 EndProject
-Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Lang_it_IT", "..\Languages\Lang_it_IT.wixproj", "{BDBF2BDF-5215-40CB-A06D-877833787A8D}"
+Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Lang_it", "..\Languages\Lang_it.wixproj", "{BDBF2BDF-5215-40CB-A06D-877833787A8D}"
 	ProjectSection(ProjectDependencies) = postProject
 		{EC88E7EC-3074-4841-BA45-B938D098EFF6} = {EC88E7EC-3074-4841-BA45-B938D098EFF6}
 	EndProjectSection

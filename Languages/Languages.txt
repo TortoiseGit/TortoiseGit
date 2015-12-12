@@ -24,7 +24,7 @@ nl;	1043;	1;	Dutch;		Dutch;			Nederlands
 fi;	1035;	0;	Finnish;	Finnish;		Finnish
 fr;	1036;	1;	French;		French;			French
 ka;	1079;	0;	English;	Georgian;		Georgian
-ko_KR;	1042;	0;	Korean;		Koran;			Korea
+ko;	1042;	0;	Korean;		Koran;			Korea
 de;	1031;	1;	German;		German;			German
 el;	1032;	0;	Greek;		Greek;			Greek
 hu;	1038;	0;	Hungarian;	Hungarian;		Hungarian
@@ -45,6 +45,6 @@ sl;	1060;	1;	Slovenian;	Slovenian;		Slovenian
 sr_spc;	3098;	0;	Serbian cyrillic;	Serbian cyrillic;	Serbian cyrillic
 sr_spl;	2074;	0;	Serbian latin;	Serbian latin;	Serbian latin
 uk;	1058;	0;	Ukrainian;	Ukrainian;		Ukrainian
-es_ES;	1034;	0;	Spanish;	Spanish, Spain;	Spanish, Spain
+es;	1034;	0;	Spanish;	Spanish;		Spanish
 sv;	1053;	0;	Swedish;	Swedish;		Swedish
 tr;	1055;	0;	Turkish;	Turkish;		Turkish

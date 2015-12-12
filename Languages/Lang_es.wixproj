@@ -1,12 +1,11 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>3.5</ProductVersion>
-    <ProjectGuid>{ce012f99-aa82-462c-8f7c-f8a946eaf4ae}</ProjectGuid>
+    <ProjectGuid>{ad35e207-3793-4a26-82a2-520d7c3c71bb}</ProjectGuid>
     <SchemaVersion>2.0</SchemaVersion>
-    <OutputName>TortoiseGit-LanguagePack-ko_KR</OutputName>
+    <OutputName>TortoiseGit-LanguagePack-es</OutputName>
     <OutputType>Package</OutputType>
     <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' ">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
   </PropertyGroup>
@@ -20,10 +19,10 @@
     <IntermediateOutputPath>..\obj\$(OutputName)\$(Configuration)\</IntermediateOutputPath>
     <WixVariables>
     </WixVariables>
-    <DefineConstants>TSVNHelpFile=0;TMergeHelpFile=0;COUNTRYID=1042;LANGNATIVE=Korean (Korea);</DefineConstants>
+    <DefineConstants>TSVNHelpFile=0;TMergeHelpFile=0;COUNTRYID=1034;LANGNATIVE=Spanish;SPELL=1;</DefineConstants>
     <LinkerAdditionalOptions>-ext WixUIExtension</LinkerAdditionalOptions>
     <SuppressIces>ICE61;ICE82</SuppressIces>
-    <Cultures>ko-KR</Cultures>
+    <Cultures>es-ES</Cultures>
     <SuppressSpecificWarnings>1008</SuppressSpecificWarnings>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
@@ -36,15 +35,18 @@
     <IntermediateOutputPath>..\obj\$(OutputName)\$(Configuration)64\</IntermediateOutputPath>
     <WixVariables>
     </WixVariables>
-    <DefineConstants>TSVNHelpFile=0;TMergeHelpFile=0;COUNTRYID=1042;LANGNATIVE=Korean (Korea);</DefineConstants>
+    <DefineConstants>TSVNHelpFile=0;TMergeHelpFile=0;COUNTRYID=1034;LANGNATIVE=Spanish;SPELL=1;</DefineConstants>
     <LinkerAdditionalOptions>-ext WixUIExtension</LinkerAdditionalOptions>
     <SuppressIces>ICE61;ICE82</SuppressIces>
-    <Cultures>ko-KR</Cultures>
+    <Cultures>es-ES</Cultures>
     <SuppressSpecificWarnings>1008</SuppressSpecificWarnings>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="LanguagePack.wxs" />
     <Compile Include="WixUI_LanguagePacks.wxs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="spell\1034.wxi" />
   </ItemGroup>
   <Import Project="$(WixTargetsPath)" />
   <!--

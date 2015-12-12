@@ -45,19 +45,20 @@
   <ItemGroup>
     <None Include="build-lang.cmd" />
     <None Include="Tortoise.pot" />
-    <None Include="Tortoise_bg_BG.po" />
+    <None Include="Tortoise_bg.po" />
     <None Include="Tortoise_ca.po" />
     <None Include="Tortoise_cs.po" />
     <None Include="Tortoise_de.po" />
-    <None Include="Tortoise_es_ES.po" />
+    <None Include="Tortoise_es.po" />
+    <None Include="Tortoise_fi.po" />
     <None Include="Tortoise_fr.po" />
     <None Include="Tortoise_hu.po" />
     <None Include="Tortoise_id.po" />
-    <None Include="Tortoise_it_IT.po" />
+    <None Include="Tortoise_it.po" />
     <None Include="Tortoise_ja.po" />
-    <None Include="Tortoise_ko_KR.po" />
-    <None Include="Tortoise_nl_NL.po" />
-    <None Include="Tortoise_pl_PL.po" />
+    <None Include="Tortoise_ko.po" />
+    <None Include="Tortoise_nl.po" />
+    <None Include="Tortoise_pl.po" />
     <None Include="Tortoise_pt_BR.po" />
     <None Include="Tortoise_pt_PT.po" />
     <None Include="Tortoise_ro.po" />
