@@ -1225,7 +1225,7 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_TEXTIDENTICAL_MAIN  "The text is identical, but the files do not match!\r\nThe following differences were found:"
+    IDS_TEXTIDENTICAL_MAIN  "The text is identical, but the files do not match!\nThe following differences were found:"
     IDS_TEXTIDENTICAL_WHITESPACE "Whitespace changes (tabs, spaces)"
     IDS_TEXTIDENTICAL_ENCODING "Encoding"
     IDS_TEXTIDENTICAL_EOL   "Newlines"

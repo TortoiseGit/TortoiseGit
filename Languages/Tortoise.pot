@@ -152,12 +152,12 @@ msgstr ""
 
 #. Resource IDs: (IDS_REPOBROWSE_INFO)
 #, c-format
-msgid "%1!s!\r\nShowing %2!d! files, %3!d! submodules and %4!d! folders, %5!d! items in total"
+msgid "%1!s!\nShowing %2!d! files, %3!d! submodules and %4!d! folders, %5!d! items in total"
 msgstr ""
 
 #. Resource IDs: (IDS_REPOBROWSE_INFOFILE)
 #, c-format
-msgid "%1!s!\r\nSize %2!s!"
+msgid "%1!s!\nSize %2!s!"
 msgstr ""
 
 #. Resource IDs: (61744)
@@ -1569,15 +1569,15 @@ msgid "A newer version is available. Please download the current version!"
 msgstr ""
 
 #. Resource IDs: (IDS_SETTINGS_INCLUDELIST_TT)
-msgid "A newline separated list of paths for which icon overlays are shown.\r\nIf you add an '*' char at the end of a path, then all files and subdirs inside that path are included too."
+msgid "A newline separated list of paths for which icon overlays are shown.\nIf you add an '*' char at the end of a path, then all files and subdirs inside that path are included too."
 msgstr ""
 
 #. Resource IDs: (IDS_SETTINGS_EXCLUDECONTEXTLIST_TT)
-msgid "A newline separated list of paths for which no context menu is shown.\r\nIf you add an '*' char at the end of a path, then all files and subdirs inside that path are excluded too.\r\nAn empty list will allow the context menu on all paths."
+msgid "A newline separated list of paths for which no context menu is shown.\nIf you add an '*' char at the end of a path, then all files and subdirs inside that path are excluded too.\nAn empty list will allow the context menu on all paths."
 msgstr ""
 
 #. Resource IDs: (IDS_SETTINGS_EXCLUDELIST_TT)
-msgid "A newline separated list of paths for which no icon overlays are shown.\r\nIf you add an '*' char at the end of a path, then all files and subdirs inside that path are excluded too.\r\nAn empty list will allow overlays on all paths."
+msgid "A newline separated list of paths for which no icon overlays are shown.\nIf you add an '*' char at the end of a path, then all files and subdirs inside that path are excluded too.\nAn empty list will allow overlays on all paths."
 msgstr ""
 
 #. Resource IDs: (61474)
@@ -1593,7 +1593,7 @@ msgid "A tag with this name already exists."
 msgstr ""
 
 #. Resource IDs: (IDS_SETTINGS_DIFFVIEWER_TT)
-msgid "A viewer program for GNU diff files (patch files).\r\nIf you don't have one use NotePad."
+msgid "A viewer program for GNU diff files (patch files).\nIf you don't have one use NotePad."
 msgstr ""
 
 #. Resource IDs: (IDS_ABORTBUTTON)
@@ -1876,12 +1876,12 @@ msgstr ""
 
 #. Resource IDs: (IDS_SETTINGS_EXTDIFF_TT)
 #, c-format
-msgid "An external diff program used\r\nfor comparing different revisions of files\r\n\r\nYou can specify the following parameters to the path:\r\n%base: the base file\r\n%mine: the modified file"
+msgid "An external diff program used\nfor comparing different revisions of files\n\nYou can specify the following parameters to the path:\n%base: the base file\n%mine: the modified file"
 msgstr ""
 
 #. Resource IDs: (IDS_SETTINGS_EXTMERGE_TT)
 #, c-format
-msgid "An external merge program used\r\nto resolve conflicted files.\r\n\r\nYou can specify the following parameters to the path:\r\n%merged: the conflicted file, where to save\r\n%theirs: the file as it is in the repository\r\n%mine: your own file, with your changes\r\n%base: the original file without your changes"
+msgid "An external merge program used\nto resolve conflicted files.\n\nYou can specify the following parameters to the path:\n%merged: the conflicted file, where to save\n%theirs: the file as it is in the repository\n%mine: your own file, with your changes\n%base: the original file without your changes"
 msgstr ""
 
 #. Resource IDs: (61862)
@@ -2111,7 +2111,7 @@ msgid "Auto-close if no merges, adds or deletes"
 msgstr ""
 
 #. Resource IDs: (IDS_SETTINGS_AUTOCOMPLETION_TT)
-msgid "Auto-complete suggests words (usually class or member names)\r\nfrom the files that you have changed as you type a log message."
+msgid "Auto-complete suggests words (usually class or member names)\nfrom the files that you have changed as you type a log message."
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_PULLFETCH: Control id 1505)
@@ -2268,7 +2268,7 @@ msgstr ""
 
 #. Resource IDs: (IDS_REBASE_FASTFORWARD_FMT)
 #, c-format
-msgid "Branch %s behind %s\r\n%s will fastforward to %s"
+msgid "Branch %s behind %s\n%s will fastforward to %s"
 msgstr ""
 
 #. Resource IDs: (IDS_PROC_BRANCH_FF)
@@ -2441,7 +2441,7 @@ msgid "Cancel\nStay with current settings"
 msgstr ""
 
 #. Resource IDs: (IDS_PROC_CANNOTCOMBINE)
-msgid "Cannot combine commits now.\r\nMake sure you are viewing the log of your current branch and no filters are applied."
+msgid "Cannot combine commits now.\nMake sure you are viewing the log of your current branch and no filters are applied."
 msgstr ""
 
 #. Resource IDs: (IDS_B_CANNOTFORCECURRENT)
@@ -2683,7 +2683,7 @@ msgstr ""
 msgid "Cleanup has successfully processed the following paths:\n%s"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_SETTINGSSAVEDDATA: Control id 1273, Dialog IDD_SETTINGSSAVEDDATA: Control id 1275, Dialog IDD_SETTINGSSAVEDDATA: Control id 1276, Dialog IDD_SETTINGSSAVEDDATA: Control id 1279, Dialog IDD_SETTINGSSAVEDDATA: Control id 1281, Dialog IDD_SETTINGSSAVEDDATA: Control id 1427, Dialog IDD_SETTINGSSAVEDDATA: Control id 1726)
+#. Resource IDs: (Dialog IDD_SETTINGSSAVEDDATA: Control id 1273, Dialog IDD_SETTINGSSAVEDDATA: Control id 1275, Dialog IDD_SETTINGSSAVEDDATA: Control id 1276, Dialog IDD_SETTINGSSAVEDDATA: Control id 1279, Dialog IDD_SETTINGSSAVEDDATA: Control id 1281, Dialog IDD_SETTINGSSAVEDDATA: Control id 1427, Dialog IDD_SETTINGSSAVEDDATA: Control id 1726, Dialog IDD_SETTINGSSAVEDDATA: Control id 1727)
 msgid "Clear"
 msgstr ""
 
@@ -2712,7 +2712,7 @@ msgid "Clears cached logs from %ld repositories"
 msgstr ""
 
 #. Resource IDs: (IDS_SETTINGS_CLEARAUTH_TT)
-msgid "Clears the stored authentication.\r\nYou will have to enter your username/password again for all repositories."
+msgid "Clears the stored authentication.\nYou will have to enter your username/password again for all repositories."
 msgstr ""
 
 #. Resource IDs: (IDS_SETTINGS_SAVEDDATA_RESIZABLE_TT)
@@ -3401,7 +3401,7 @@ msgstr ""
 
 #. Resource IDs: (IDS_REBASE_UPTODATE_FMT)
 #, c-format
-msgid "Current branch %s is up to date\r\n\r\n If you want to force the rebase even if the current branch is a descendant of the commit you are rebasing onto, please check below \"Force Rebase\" checkbox."
+msgid "Current branch %s is up to date\n\nIf you want to force the rebase even if the current branch is a descendant of the commit you are rebasing onto, please check below \"Force Rebase\" checkbox."
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_CHECKFORUPDATES: Control id 1113)
@@ -3770,7 +3770,7 @@ msgid "Disable sounds"
 msgstr ""
 
 #. Resource IDs: (IDS_SETTINGS_RECURSIVE_TT)
-msgid "Disable this option if you have really big working trees and experience\r\ntoo much disk access when browsing the working tree."
+msgid "Disable this option if you have really big working trees and experience\ntoo much disk access when browsing the working tree."
 msgstr ""
 
 #. Resource IDs: (IDS_DISABLEUPDATECHECKSBUTTON)
@@ -3858,7 +3858,7 @@ msgid "Do you really want to delete the toolbar '%s'?"
 msgstr ""
 
 #. Resource IDs: (IDS_DISABLEUPDATECHECKS)
-msgid "Do you really want to disable automatic update checks for TortoiseGit?\r\n\r\nAutomatic update checks can be re-enabled in TortoiseGit settings on the General page."
+msgid "Do you really want to disable automatic update checks for TortoiseGit?\n\nAutomatic update checks can be re-enabled in TortoiseGit settings on the General page."
 msgstr ""
 
 #. Resource IDs: (IDS_PROC_MARK_ASSUMEVALID)
@@ -4760,7 +4760,7 @@ msgid "Force push to the selected remote reference and override it without any s
 msgstr ""
 
 #. Resource IDs: (IDS_REBASE_FORCE_TT)
-msgid "Force the rebase even if the current branch is a descendant of the commit you are rebasing onto. \r\nNormally the command will exit with the message \"Current branch is up to date\" in such a situation."
+msgid "Force the rebase even if the current branch is a descendant of the commit you are rebasing onto.\nNormally the command will exit with the message \"Current branch is up to date\" in such a situation."
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_PUSH: Control id 1796)
@@ -5502,7 +5502,7 @@ msgid "If checked, double-clicking on a revision in the log list compares it wit
 msgstr ""
 
 #. Resource IDs: (IDS_SETTINGS_COMMITREOPEN_TT)
-msgid "If checked, the commit dialog will be started again automatically after an error,\r\nwhile preserving your last selection and log message."
+msgid "If checked, the commit dialog will be started again automatically after an error,\nwhile preserving your last selection and log message."
 msgstr ""
 
 #. Resource IDs: (IDS_SETTINGS_CHECKNEWER_TT)
@@ -5514,11 +5514,11 @@ msgid "If enabled, working tree folders which are excluded from\nshowing overlay
 msgstr ""
 
 #. Resource IDs: (IDS_SETTINGS_UNVERSIONEDRECURSE_TT)
-msgid "If set, files inside unversioned folders can be shown in the status control.\r\nThe status control is used for example in the commit dialog."
+msgid "If set, files inside unversioned folders can be shown in the status control.\nThe status control is used for example in the commit dialog."
 msgstr ""
 
 #. Resource IDs: (IDS_SETTINGS_UNVERSIONEDASMODIFIED_TT)
-msgid "If set, then unversioned files will mark the status of the parent directory as modified\r\ni.e. they get the modified overlay icon."
+msgid "If set, then unversioned files will mark the status of the parent directory as modified\ni.e. they get the modified overlay icon."
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_CREATEREPO: Control id 1654)
@@ -6627,7 +6627,7 @@ msgstr ""
 
 #. Resource IDs: (IDS_REBASE_EQUAL_FMT)
 #, c-format
-msgid "Nothing need rebase\r\n%s equal %s"
+msgid "Nothing need rebase\n%s equal %s"
 msgstr ""
 
 #. Resource IDs: (IDS_PROC_NOTHINGTOREBASE)
@@ -7585,7 +7585,7 @@ msgid "Regex:"
 msgstr ""
 
 #. Resource IDs: (IDS_LOG_FILTER_REGEX_TT)
-msgid "Regular expressions filter:\r\n.   : any character\r\nc+   : match character c one or more times\r\nc*   : match character c zero or more times\r\n^   : start of line\r\n$   : end of line\r\n(string){n} : match string n times\r\n(abcd)   : subexpression\r\n[aei0-9]   : match a,e,i and 0..9\r\n[^aei0-9] : anything but a,e,i and 0..9\r\n\r\n\\w   : matches a-z,A-Z,0-9 and _\r\n\\W   : any non-alphanumeric character\r\n\\d   : digits 0-9\r\n\\s   : whitespaces"
+msgid "Regular expressions filter:\n.   : any character\nc+   : match character c one or more times\nc*   : match character c zero or more times\n^   : start of line\n$   : end of line\n(string){n} : match string n times\n(abcd)   : subexpression\n[aei0-9]   : match a,e,i and 0..9\n[^aei0-9] : anything but a,e,i and 0..9\n\n\\w   : matches a-z,A-Z,0-9 and _\n\\W   : any non-alphanumeric character\n\\d   : digits 0-9\n\\s   : whitespaces"
 msgstr ""
 
 #. Resource IDs: (IDS_TITLE_REJECTEDHUNKS)
@@ -8823,7 +8823,7 @@ msgstr ""
 
 #. Resource IDs: (IDS_PROC_LOG_STATS)
 #, c-format
-msgid "Showing %ld revision(s), from revision %s to revision %s - %ld revision(s) selected, %ld file(s) selected\r\n"
+msgid "Showing %ld revision(s), from revision %s to revision %s - %ld revision(s) selected, %ld file(s) selected"
 msgstr ""
 
 #. Resource IDs: (IDS_MENUDESCREVISIONGRAPH)
@@ -9067,6 +9067,10 @@ msgstr ""
 msgid "Stops bisect mode"
 msgstr ""
 
+#. Resource IDs: (Dialog IDD_SETTINGSSAVEDDATA: Control id 1833)
+msgid "Stored decisions"
+msgstr ""
+
 #. Resource IDs: (IDS_MENUDESCDIFFLATER)
 msgid "Stores the path of the file to be used for a diff on a later right-click. Hold down the Ctrl key to remove the last saved path."
 msgstr ""
@@ -9129,7 +9133,7 @@ msgstr ""
 
 #. Resource IDs: (IDS_REPOBROWSE_INFOEXT)
 #, c-format
-msgid "Submodule \"%1!s!\"\r\nRevision %2!s!"
+msgid "Submodule \"%1!s!\"\nRevision %2!s!"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_SUBMODULE_ADD: Control id 1585)
@@ -9450,7 +9454,7 @@ msgid "The local branch name and the remote branch name are empty.\nContinue?"
 msgstr ""
 
 #. Resource IDs: (IDS_B_T_LOCALEMPTY)
-msgid "The local branch/tag name is empty. This results in a remote removal.\r\nContinue?"
+msgid "The local branch/tag name is empty. This results in a remote removal.\nContinue?"
 msgstr ""
 
 #. Resource IDs: (IDS_SETTINGS_MAXACTIONLOGLINES_TT)
@@ -9525,11 +9529,11 @@ msgid "The target folder \n%s\nis not empty!\nAre you sure you want to initializ
 msgstr ""
 
 #. Resource IDs: (IDS_TEXTIDENTICAL_MAIN)
-msgid "The text is identical, but the files do not match!\r\nThe following differences were found:"
+msgid "The text is identical, but the files do not match!\nThe following differences were found:"
 msgstr ""
 
 #. Resource IDs: (IDS_SETTINGS_AUTOCOMPLETIONTIMEOUT_TT)
-msgid "The time in seconds after which the parsing of the selected files stops.\r\nA lower value will make the auto-completion list available sooner,\r\nbut maybe not scan all files."
+msgid "The time in seconds after which the parsing of the selected files stops.\nA lower value will make the auto-completion list available sooner,\nbut maybe not scan all files."
 msgstr ""
 
 #. Resource IDs: (IDS_ERR_NOCOMMONCOPYFROM)
@@ -9703,7 +9707,7 @@ msgstr ""
 
 #. Resource IDs: (IDS_ABOUTVERSION)
 #, c-format
-msgid "TortoiseGit %d.%d.%d.%d %s \r\n%s \r\n"
+msgid "TortoiseGit %d.%d.%d.%d %s\n%s\n"
 msgstr ""
 
 #. Resource IDs: (IDS_ASK_REMOVE_FROM_INDEX)
@@ -10230,7 +10234,7 @@ msgid "User cancelled"
 msgstr ""
 
 #. Resource IDs: (IDS_PROC_NOUSERDATA)
-msgid "User name and email must be set before commit.\r\n Do you want to set these now?"
+msgid "User name and email must be set before commit.\nDo you want to set these now?"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_CLONE: Control id 1650)
@@ -10335,7 +10339,7 @@ msgid "Visual Studio 2008"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGS_CONFIG: Control id 65535)
-msgid "WARNING:\r\nOnly change these settings if you are absolutely sure what you are doing!\r\nTo set the values to their default, delete the value text."
+msgid "WARNING:\nOnly change these settings if you are absolutely sure what you are doing!\nTo set the values to their default, delete the value text."
 msgstr ""
 
 #. Resource IDs: (IDS_SETTINGS_HOOKS_WAITCOL)
@@ -10364,7 +10368,7 @@ msgstr ""
 
 #. Resource IDs: (IDS_PROC_DELETEREF)
 #, c-format
-msgid "Warning: \"%s\" will be permanently deleted. It can <ct=0x0000FF><b>NOT</b></ct> be recovered!\r\n\r\nDo you really want to continue?"
+msgid "Warning: \"%s\" will be permanently deleted. It can <ct=0x0000FF><b>NOT</b></ct> be recovered!\n\nDo you really want to continue?"
 msgstr ""
 
 #. Resource IDs: (65535 - PopupMenu)
@@ -10584,7 +10588,7 @@ msgid "You must select a filename for the zip-file!"
 msgstr ""
 
 #. Resource IDs: (IDS_PROCEXPORTERRFOLDER)
-msgid "You selected a folder.\r\nExports are only possible to a (zip) file."
+msgid "You selected a folder.\nExports are only possible to a (zip) file."
 msgstr ""
 
 #. Resource IDs: (IDS_COMMITDLG_ASKADD)
@@ -10790,7 +10794,7 @@ msgstr ""
 
 #. Resource IDs: (IDS_STATUSLIST_COPYFROM)
 #, c-format
-msgid "copied from\r\n%s - revision %ld"
+msgid "copied from\n%s - revision %ld"
 msgstr ""
 
 #. Resource IDs: (IDS_STATGRAPH_COMMITSBYDATEXDAY)
@@ -10976,7 +10980,7 @@ msgstr ""
 
 #. Resource IDs: (IDS_STATUSLIST_SWITCHEDTO)
 #, c-format
-msgid "switched to\r\n%s"
+msgid "switched to\n%s"
 msgstr ""
 
 #. Resource IDs: (IDS_CARE_SUBMODULE_CHANGES)
