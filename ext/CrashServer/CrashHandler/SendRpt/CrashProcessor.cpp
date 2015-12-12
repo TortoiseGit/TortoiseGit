@@ -1,4 +1,4 @@
-// Copyright 2014 Idol Software, Inc.
+// Copyright 2015 Idol Software, Inc.
 //
 // This file is part of Doctor Dump SDK.
 //
@@ -61,6 +61,7 @@ class UI: public doctor_dump::IUploadProgress
     CWindow* volatile m_progressWindow;
     Translator m_translator;
     bool m_additionalInfoAlreadyApproved;
+    bool m_additionalInfoRejected;
     bool m_serviceMode;
     CStringW m_privacyPolicyUrl;
 
@@ -69,6 +70,7 @@ public:
         : m_progressWindow(NULL)
         , m_translator(config.AppName, config.Company, GetModuleHandle(NULL), IDR_TRANSLATE_INI, config.LangFilePath)
         , m_additionalInfoAlreadyApproved(config.SendAdditionalDataWithoutApproval != FALSE)
+        , m_additionalInfoRejected(false)
         , m_serviceMode(!!config.ServiceMode)
         , m_privacyPolicyUrl(config.PrivacyPolicyUrl)
     {
@@ -116,11 +118,19 @@ public:
         CloseProgressWindow();
 
         if (!m_additionalInfoAlreadyApproved && IDCANCEL == CAskSendFullDumpDlg(m_translator, m_privacyPolicyUrl).DoModal())
+        {
+            m_additionalInfoRejected = true;
             return false;
+        }
 
         m_additionalInfoAlreadyApproved = true;
 
         return true;
+    }
+
+    bool IsSendingAdditionalInfoRejected()
+    {
+        return m_additionalInfoRejected;
     }
 
     bool AskGetSolution(CSolutionDlg::Type type)
@@ -574,7 +584,8 @@ public:
             switch (response->GetResponseType())
             {
             case doctor_dump::Response::HaveSolutionResponseType:
-                ProcessSolution(ui, static_cast<doctor_dump::HaveSolutionResponse&>(*response));
+                if (!ui.IsSendingAdditionalInfoRejected())
+                    ProcessSolution(ui, static_cast<doctor_dump::HaveSolutionResponse&>(*response));
                 goto finish;
 
             case doctor_dump::Response::NeedMiniDumpResponseType:
@@ -624,7 +635,17 @@ public:
             }
         }
 finish:
-        if (!m_config.ServiceMode && !response->urlToProblem.empty() && m_config.OpenProblemInBrowser)
+
+        bool solutionIsUrl = response.get()
+            && response->GetResponseType() == doctor_dump::Response::HaveSolutionResponseType
+            && static_cast<doctor_dump::HaveSolutionResponse&>(*response).type == ns4__HaveSolutionResponse_SolutionType__Url;
+
+        if (!m_config.ServiceMode
+            && !solutionIsUrl
+            // Do not confuse the user with report uploaded page since he rejected to send more data and no private data was sent
+            && !ui.IsSendingAdditionalInfoRejected()
+            && !response->urlToProblem.empty()
+            && m_config.OpenProblemInBrowser)
         {
             CAtlStringW url = response->urlToProblem.c_str();
             if (url.Find(L"http://") == 0 || url.Find(L"https://") == 0)
