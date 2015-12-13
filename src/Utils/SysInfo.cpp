@@ -21,9 +21,6 @@
 
 SysInfo::SysInfo(void)
 {
-    SecureZeroMemory(&inf, sizeof(OSVERSIONINFOEX));
-    inf.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
-    GetVersionEx((OSVERSIONINFO *)&inf);
 }
 
 SysInfo::~SysInfo(void)

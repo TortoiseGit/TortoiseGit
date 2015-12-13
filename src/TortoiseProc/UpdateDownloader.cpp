@@ -48,7 +48,9 @@ CUpdateDownloader::~CUpdateDownloader(void)
 void CUpdateDownloader::BruteforceGetWindowsVersionNumber(OSVERSIONINFOEX& osVersionInfo)
 {
 	osVersionInfo.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
-	GetVersionEx((OSVERSIONINFO *)&osVersionInfo);
+	osVersionInfo.dwMajorVersion = HIBYTE(_WIN32_WINNT_VISTA);
+	osVersionInfo.dwMinorVersion = LOBYTE(_WIN32_WINNT_VISTA);
+	osVersionInfo.dwPlatformId = VER_PLATFORM_WIN32_NT;
 
 	ULONGLONG maskConditioMajor = ::VerSetConditionMask(0, VER_MAJORVERSION, VER_LESS);
 	ULONGLONG maskConditioMinor = ::VerSetConditionMask(0, VER_MINORVERSION, VER_LESS);

@@ -18,7 +18,10 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #pragma once
-
+#include <VersionHelpers.h>
+#ifndef _WIN32_WINNT_WIN10
+#define _WIN32_WINNT_WIN10 0x0A00
+#endif
 
 /**
  * \ingroup Utils
@@ -35,10 +38,7 @@ private:
 public:
     static const SysInfo& Instance();
 
-    DWORD           GetFullVersion() const {return MAKEWORD(inf.dwMinorVersion, inf.dwMajorVersion);}
-    bool            IsWin7OrLater() const {return (GetFullVersion() >= 0x0601);}
-    bool            IsWin8OrLater() const { return (GetFullVersion() >= 0x0602); }
-    bool            IsWin10() const { return (GetFullVersion() == 0xA00); }
-private:
-    OSVERSIONINFOEX         inf;
+	bool            IsWin7OrLater() const { return IsWindows7OrGreater(); }
+	bool            IsWin8OrLater() const { return IsWindows8OrGreater(); }
+	bool            IsWin10() const { return IsWindowsVersionOrGreater(HIBYTE(_WIN32_WINNT_WIN10), LOBYTE(_WIN32_WINNT_WIN10), 0); }
 };
