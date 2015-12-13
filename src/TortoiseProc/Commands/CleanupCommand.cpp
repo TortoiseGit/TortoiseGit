@@ -99,8 +99,8 @@ static int SubmoduleCallback(git_submodule *sm, const char * /*name*/, void *pay
 
 static bool GetSubmodulePathList(SubmodulePayload &payload)
 {
-	CAutoRepository repo;
-	if (repo.Open(payload.basePath))
+	CAutoRepository repo(payload.basePath);
+	if (!repo)
 	{
 		// Silence the warning message, submodule may not be initialized yet.
 		return false;

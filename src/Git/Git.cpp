@@ -1200,11 +1200,9 @@ int CGit::RunLogFile(CString cmd, const CString &filename, CString *stdErr)
 	return exitcode;
 }
 
-git_repository * CGit::GetGitRepository() const
+CAutoRepository CGit::GetGitRepository() const
 {
-	git_repository * repo = nullptr;
-	git_repository_open(&repo, GetGitPathStringA(m_CurrentDir));
-	return repo;
+	return CAutoRepository(GetGitPathStringA(m_CurrentDir));
 }
 
 int CGit::GetHash(git_repository * repo, CGitHash &hash, const CString& friendname, bool skipFastCheck /* = false */)
@@ -2226,7 +2224,7 @@ BOOL CGit::CheckCleanWorkTree(bool stagedOk /* false */)
 {
 	if (UsingLibGit2(GIT_CMD_CHECK_CLEAN_WT))
 	{
-		CAutoRepository repo = GetGitRepository();
+		CAutoRepository repo(GetGitRepository());
 		if (!repo)
 			return FALSE;
 

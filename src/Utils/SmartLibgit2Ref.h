@@ -182,15 +182,15 @@ public:
 		Open(gitDirA);
 	}
 
-	int Open(const CString& gitDir)
+	CAutoRepository(CAutoRepository&& that)
 	{
-		return Open(CUnicodeUtils::GetUTF8(gitDir));
+		m_Ref = that.Detach();
 	}
 
-	int Open(const CStringA& gitDirA)
+	int ReOpen(const CString& gitDir)
 	{
 		CleanUp();
-		return git_repository_open(GetPointer(), gitDirA);
+		return Open(gitDir);
 	}
 
 	~CAutoRepository()
@@ -203,6 +203,16 @@ private:
 	CAutoRepository& operator=(const CAutoRepository& that);
 
 protected:
+	int Open(const CString& gitDir)
+	{
+		return Open(CUnicodeUtils::GetUTF8(gitDir));
+	}
+
+	int Open(const CStringA& gitDirA)
+	{
+		return git_repository_open(GetPointer(), gitDirA);
+	}
+
 	virtual void FreeRef()
 	{
 		git_repository_free(m_Ref);
