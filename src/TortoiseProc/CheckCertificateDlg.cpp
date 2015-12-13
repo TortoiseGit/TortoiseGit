@@ -53,26 +53,26 @@ void CCheckCertificateDlg::OnBnClickedOk()
 static CString getCertificateHash(HCRYPTPROV hCryptProv, ALG_ID algId, BYTE* certificate, size_t len)
 {
 	CString readable = _T("unknown");
-	std::unique_ptr<BYTE[]> pHash(nullptr);
-	HCRYPTHASH hHash = NULL;
 
 	if (!hCryptProv)
-		goto finish;
+		return readable;
 
+	HCRYPTHASH hHash = NULL;
 	if (!CryptCreateHash(hCryptProv, algId, 0, 0, &hHash))
-		goto finish;
+		return readable;
+	SCOPE_EXIT { CryptDestroyHash(hHash); };
 
 	if (!CryptHashData(hHash, certificate, (DWORD)len, 0))
-		goto finish;
+		return readable;
 
 	DWORD hashLen;
 	DWORD hashLenLen = sizeof(DWORD);
 	if (!CryptGetHashParam(hHash, HP_HASHSIZE, (BYTE *)&hashLen, &hashLenLen, 0))
-		goto finish;
+		return readable;
 
-	pHash.reset(new BYTE[hashLen]);
+	std::unique_ptr<BYTE[]> pHash(new BYTE[hashLen]);
 	if (!CryptGetHashParam(hHash, HP_HASHVAL, pHash.get(), &hashLen, 0))
-		goto finish;
+		return readable;
 
 	readable.Empty();
 	for (const BYTE* it = pHash.get(); it < pHash.get() + hashLen; ++it)
@@ -84,10 +84,6 @@ static CString getCertificateHash(HCRYPTPROV hCryptProv, ALG_ID algId, BYTE* cer
 		readable += tmp;
 	}
 
-finish:
-	if (hHash)
-		CryptDestroyHash(hHash);
-
 	return readable;
 }
 
@@ -96,15 +92,18 @@ BOOL CCheckCertificateDlg::OnInitDialog()
 	CStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
-	HCRYPTPROV hCryptProv = 0;
+	HCRYPTPROV hCryptProv = NULL;
 	CryptAcquireContext(&hCryptProv, nullptr, nullptr, PROV_RSA_AES, CRYPT_VERIFYCONTEXT);
+	SCOPE_EXIT
+	{
+		if (hCryptProv)
+			CryptReleaseContext(hCryptProv, 0);
+	};
 	
 	m_sSHA1 = getCertificateHash(hCryptProv, CALG_SHA1, (BYTE*)cert->data, cert->len);
 	m_sSHA256 = getCertificateHash(hCryptProv, CALG_SHA_256, (BYTE*)cert->data, cert->len);
 	if (m_sSHA256.GetLength() > 57)
 		m_sSHA256 = m_sSHA256.Left(57) + L"\r\n" + m_sSHA256.Mid(57);
-
-	CryptReleaseContext(hCryptProv, 0);
 
 	CString error;
 	error.Format(IDS_ERR_SSL_VALIDATE, (LPCTSTR)m_sHostname);
