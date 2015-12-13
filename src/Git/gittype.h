@@ -90,6 +90,9 @@ public:
 
 class CGitGuardedByteArray : public CGitByteArray
 {
+private:
+	CGitGuardedByteArray(const CGitGuardedByteArray&);
+	CGitGuardedByteArray& operator=(const CGitGuardedByteArray&);
 public:
 	CGitGuardedByteArray() { m_critSec.Init(); }
 	~CGitGuardedByteArray() { m_critSec.Term(); }
