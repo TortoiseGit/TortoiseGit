@@ -37,6 +37,7 @@ bool DaemonCommand::Execute()
 		MessageBox(NULL, _T("WSAStartup failed!"), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 		return false;
 	}
+	SCOPE_EXIT { WSACleanup(); };
 
 	char hostName[128] = { 0 };
 	if (gethostname(hostName, sizeof(hostName)) == SOCKET_ERROR)
@@ -45,15 +46,32 @@ bool DaemonCommand::Execute()
 		return false;
 	}
 
-	CString ip = _T("localhost");
-	struct hostent *ipList = gethostbyname(hostName);
-	if (ipList && ipList->h_addr_list && ipList->h_addr_list[0])
+	STRING_VECTOR ips;
+	ADDRINFOA addrinfo = { 0 };
+	addrinfo.ai_family = AF_UNSPEC;
+	PADDRINFOA result = nullptr;
+	GetAddrInfoA(hostName, nullptr, &addrinfo, &result);
+	for (auto ptr = result; ptr != nullptr; ptr = ptr->ai_next)
 	{
-		struct in_addr addr;
-		memcpy(&addr, ipList->h_addr_list[0], sizeof(struct in_addr));
-		CStringA str = inet_ntoa(addr);
-		ip = CUnicodeUtils::GetUnicode(str);
+		if (ptr->ai_family != AF_INET && ptr->ai_family != AF_INET6)
+			continue;
+
+		DWORD ipbufferlength = 46;
+		CString ip;
+		if (WSAAddressToString(ptr->ai_addr, (DWORD)ptr->ai_addrlen, nullptr, CStrBuf(ip, ipbufferlength), &ipbufferlength))
+			continue;
+
+		if (ptr->ai_family == AF_INET6)
+		{
+			if (ip.Left(5) == _T("fe80:")) // strip % interface number at the end
+				ip = ip.Left(ip.Find(_T('%')));
+			ip = _T('[') + ip; // IPv6 addresses needs to be enclosed within braces
+			ip += _T(']');
+		}
+		ips.push_back(ip);
 	}
+	if (result)
+		FreeAddrInfoA(result);
 
 	CString basePath(g_Git.m_CurrentDir);
 	basePath.TrimRight(L"\\");
@@ -64,7 +82,17 @@ bool DaemonCommand::Execute()
 	cmd.Format(_T("git.exe daemon --verbose --export-all --base-path=\"%s\""), (LPCTSTR)basePath);
 	CProgressDlg progDlg;
 	progDlg.m_GitCmd = cmd;
-	progDlg.m_PreText = _T("git://") + ip + _T("/");
+	if (ips.empty())
+		progDlg.m_PreText = _T("git://localhost/");
+	else
+	{
+		for (const auto& ip : ips)
+		{
+			progDlg.m_PreText += _T("git://");
+			progDlg.m_PreText += ip;
+			progDlg.m_PreText += _T("/\n");
+		}
+	}
 	progDlg.DoModal();
 	return true;
 }
