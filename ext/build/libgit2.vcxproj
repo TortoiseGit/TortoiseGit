@@ -348,6 +348,7 @@
     <ClInclude Include="..\libgit2\src\win32\version.h" />
     <ClInclude Include="..\libgit2\src\win32\w32_buffer.h" />
     <ClInclude Include="..\libgit2\src\win32\w32_util.h" />
+    <ClInclude Include="..\libgit2\src\win32\win32-compat.h" />
     <ClInclude Include="..\libgit2\src\xdiff\xdiff.h" />
     <ClInclude Include="..\libgit2\src\xdiff\xdiffi.h" />
     <ClInclude Include="..\libgit2\src\xdiff\xemit.h" />

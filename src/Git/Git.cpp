@@ -2139,6 +2139,7 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": System config = %s\n"), (LPCTSTR)g_Git.GetGitSystemConfig());
 
 	// Configure libgit2 search paths
+	SetLibGit2SearchPath(GIT_CONFIG_LEVEL_PROGRAMDATA, CTGitPath(g_Git.GetGitSystemConfig()).GetContainingDirectory().GetWinPathString());
 	SetLibGit2SearchPath(GIT_CONFIG_LEVEL_SYSTEM, CTGitPath(g_Git.GetGitSystemConfig()).GetContainingDirectory().GetWinPathString());
 	SetLibGit2SearchPath(GIT_CONFIG_LEVEL_GLOBAL, g_Git.GetHomeDirectory());
 	SetLibGit2SearchPath(GIT_CONFIG_LEVEL_XDG, g_Git.GetGitGlobalXDGConfigPath());

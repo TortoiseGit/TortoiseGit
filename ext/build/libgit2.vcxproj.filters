@@ -1063,6 +1063,9 @@
     <ClInclude Include="..\libgit2\src\transaction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\libgit2\src\win32\win32-compat.h">
+      <Filter>Header Files\win32</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\libgit2\src\win32\git2.rc">
