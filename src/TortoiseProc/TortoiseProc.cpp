@@ -612,11 +612,6 @@ void CTortoiseProcApp::CheckUpgrade()
 	}
 
 	// version specific updates
-	if (lVersion <= 0x01080802)
-	{
-		CRegStdDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\ResizableState\\CleanTypeDlgWindowPlacement")).removeValue();
-	}
-
 	if (lVersion <= 0x01080801)
 	{
 		CRegStdDWORD(_T("Software\\TortoiseGit\\StatusColumns\\BrowseRefs")).removeValue();
