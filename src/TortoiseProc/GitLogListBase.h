@@ -518,7 +518,7 @@ protected:
 	virtual INT_PTR OnToolHitTest(CPoint point, TOOLINFO * pTI) const;
 	CString GetToolTipText(int nItem, int nSubItem);
 
-	bool IsMouseOnBranchLabel(const GitRevLoglist* pLogEntry, const POINT& pt, CString& branch);
+	bool IsMouseOnBranchLabel(const GitRevLoglist* pLogEntry, const POINT& pt, CString& branch, size_t* pIndex = nullptr);
 
 	void FillBackGround(HDC hdc, DWORD_PTR Index, CRect &rect);
 	void DrawTagBranchMessage(HDC hdc, CRect &rect, INT_PTR index, std::vector<REFLABEL> &refList);

@@ -863,7 +863,10 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 		case ID_PUSH:
 			{
 				CString guessAssociatedBranch = pSelLogEntry->m_CommitHash;
-				if (!m_HashMap[pSelLogEntry->m_CommitHash].empty() && m_HashMap[pSelLogEntry->m_CommitHash].at(0).Find(_T("refs/heads/")) == 0)
+				CString *branch = (CString*)((CIconMenu*)popmenu)->GetMenuItemData(cmd);
+				if (branch)
+					guessAssociatedBranch = *branch;
+				else if (!m_HashMap[pSelLogEntry->m_CommitHash].empty() && m_HashMap[pSelLogEntry->m_CommitHash].at(0).Find(_T("refs/heads/")) == 0)
 					guessAssociatedBranch = m_HashMap[pSelLogEntry->m_CommitHash].at(0);
 				if (CAppUtils::Push(guessAssociatedBranch))
 					Refresh();

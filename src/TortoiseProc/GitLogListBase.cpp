@@ -2302,7 +2302,21 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 				}
 				if (isLocal || showExtendedMenu)
 				{
-					popup.AppendMenuIcon(ID_PUSH, IDS_LOG_PUSH, IDI_PUSH);
+					CString str;
+					str.LoadString(IDS_LOG_PUSH);
+
+					POINT pt = point;
+					ScreenToClient(&pt);
+					CString branch;
+					size_t index = (size_t)-1;
+					if (IsMouseOnBranchLabel(pSelLogEntry, pt, branch, &index))
+						str.Insert(str.Find(L'.'), L" \"" + branch + L'"');
+
+					popup.AppendMenuIcon(ID_PUSH, str, IDI_PUSH);
+
+					if (index != (size_t)-1 && index < m_HashMap[pSelLogEntry->m_CommitHash].size())
+						popup.SetMenuItemData(ID_PUSH, (ULONG_PTR)&m_HashMap[pSelLogEntry->m_CommitHash][index]);
+
 					bAddSeparator = true;
 				}
 			}
@@ -4392,20 +4406,22 @@ CString CGitLogListBase::GetToolTipText(int nItem, int nSubItem)
 	return CString();
 }
 
-bool CGitLogListBase::IsMouseOnBranchLabel(const GitRevLoglist* pLogEntry, const POINT& pt, CString& branch)
+bool CGitLogListBase::IsMouseOnBranchLabel(const GitRevLoglist* pLogEntry, const POINT& pt, CString& branch, size_t* pIndex /*nullptr*/)
 {
 	if (!pLogEntry)
 		return false;
 
-	for (const auto& abranch : m_HashMap[pLogEntry->m_CommitHash])
+	for (size_t i = 0; i < m_HashMap[pLogEntry->m_CommitHash].size(); ++i)
 	{
-		if (!CGit::GetShortName(abranch, branch, L"refs/heads/"))
+		if (!CGit::GetShortName(m_HashMap[pLogEntry->m_CommitHash][i], branch, L"refs/heads/"))
 			continue;
 
 		const auto branchpos = m_BranchPosMap.find(branch);
 		if (branchpos == m_BranchPosMap.cend() || !branchpos->second.PtInRect(pt))
 			continue;
 
+		if (pIndex)
+			*pIndex = i;
 		return true;
 	}
 	branch.Empty();
