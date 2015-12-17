@@ -419,6 +419,7 @@ public:
 	virtual void ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMenu * menu)=0;
 	void ReloadHashMap()
 	{
+		m_BranchPosMap.clear();
 		m_HashMap.clear();
 
 		if (g_Git.GetMapHashToFriendName(m_HashMap))
@@ -516,6 +517,8 @@ protected:
 	virtual afx_msg BOOL OnToolTipText(UINT id, NMHDR * pNMHDR, LRESULT * pResult);
 	virtual INT_PTR OnToolHitTest(CPoint point, TOOLINFO * pTI) const;
 	CString GetToolTipText(int nItem, int nSubItem);
+
+	bool IsMouseOnBranchLabel(const GitRevLoglist* pLogEntry, const POINT& pt, CString& branch);
 
 	void FillBackGround(HDC hdc, DWORD_PTR Index, CRect &rect);
 	void DrawTagBranchMessage(HDC hdc, CRect &rect, INT_PTR index, std::vector<REFLABEL> &refList);
@@ -636,6 +639,6 @@ protected:
 	FNDRAWTHEMETEXTEX	pfnDrawThemeTextEx;
 	TCHAR               m_wszTip[8192];
 	char                m_szTip[8192];
+	std::map<CString, CRect> m_BranchPosMap; // short name vs branch label position
+	int					m_OldTopIndex;
 };
-
-

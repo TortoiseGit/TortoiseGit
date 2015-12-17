@@ -61,6 +61,7 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	, m_bNoHightlightHead(FALSE)
 	, m_ShowRefMask(LOGLIST_SHOWALLREFS)
 	, m_bFullCommitMessageOnLogLine(false)
+	, m_OldTopIndex(-1)
 {
 	// use the default GUI font, create a copy of it and
 	// change the copy to BOLD (leave the rest of the font
@@ -796,6 +797,9 @@ void CGitLogListBase::DrawTagBranch(HDC hdc, CDC& W_Dc, HTHEME hTheme, CRect& re
 				DrawUpTriangle(hdc, newRect, color, bold);
 			}
 
+			if (refType == CGit::REF_TYPE::LOCAL_BRANCH)
+				m_BranchPosMap[shortname] = rt;
+
 			rt.left = rt.right + 1;
 		}
 		if (brush)
@@ -1268,6 +1272,13 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 
 			if (pLVCD->iSubItem == LOGLIST_MESSAGE)
 			{
+				// If the top index of list is changed, the branch position map is outdated.
+				if (m_OldTopIndex != GetTopIndex())
+				{
+					m_OldTopIndex = GetTopIndex();
+					m_BranchPosMap.clear();
+				}
+
 				if (m_arShownList.GetCount() > (INT_PTR)pLVCD->nmcd.dwItemSpec)
 				{
 					GitRevLoglist* data = (GitRevLoglist*)m_arShownList.SafeGetAt(pLVCD->nmcd.dwItemSpec);
@@ -4244,7 +4255,29 @@ BOOL CGitLogListBase::OnToolTipText(UINT /*id*/, NMHDR* pNMHDR, LRESULT* pResult
 
 	if (lvhitTestInfo.flags & LVHT_ONITEM)
 	{
-		CString strTipText = GetToolTipText(nItem, lvhitTestInfo.iSubItem);
+		// Get branch description first
+		CString strTipText;
+		if (lvhitTestInfo.iSubItem == LOGLIST_MESSAGE)
+		{
+			CString branch;
+			if (IsMouseOnBranchLabel((GitRevLoglist*)m_arShownList.SafeGetAt(nItem), lvhitTestInfo.pt, branch))
+			{
+				MAP_STRING_STRING descriptions;
+				g_Git.GetBranchDescriptions(descriptions);
+				if (descriptions.find(branch) != descriptions.cend())
+				{
+					strTipText.LoadString(IDS_DESCRIPTION);
+					strTipText += L":\n";
+					strTipText += descriptions[branch];
+				}
+			}
+		}
+
+		bool followMousePos = false;
+		if (!strTipText.IsEmpty())
+			followMousePos = true;
+		else
+			strTipText = GetToolTipText(nItem, lvhitTestInfo.iSubItem);
 		if (strTipText.IsEmpty())
 			return FALSE;
 
@@ -4267,6 +4300,8 @@ BOOL CGitLogListBase::OnToolTipText(UINT /*id*/, NMHDR* pNMHDR, LRESULT* pResult
 
 		CRect rect;
 		GetSubItemRect(nItem, lvhitTestInfo.iSubItem, LVIR_LABEL, rect);
+		if (followMousePos)
+			rect.MoveToXY(pt.x, pt.y + 18); // 18: to act like a normal tooltip
 		ClientToScreen(rect);
 		::SetWindowPos(pNMHDR->hwndFrom, HWND_TOP, rect.left, rect.top, 0, 0, SWP_NOACTIVATE|SWP_NOSIZE|SWP_NOOWNERZORDER);
 
@@ -4355,4 +4390,24 @@ CString CGitLogListBase::GetToolTipText(int nItem, int nSubItem)
 		return sToolTipText;
 	}
 	return CString();
+}
+
+bool CGitLogListBase::IsMouseOnBranchLabel(const GitRevLoglist* pLogEntry, const POINT& pt, CString& branch)
+{
+	if (!pLogEntry)
+		return false;
+
+	for (const auto& abranch : m_HashMap[pLogEntry->m_CommitHash])
+	{
+		if (!CGit::GetShortName(abranch, branch, L"refs/heads/"))
+			continue;
+
+		const auto branchpos = m_BranchPosMap.find(branch);
+		if (branchpos == m_BranchPosMap.cend() || !branchpos->second.PtInRect(pt))
+			continue;
+
+		return true;
+	}
+	branch.Empty();
+	return false;
 }
