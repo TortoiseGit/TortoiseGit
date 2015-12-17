@@ -108,22 +108,12 @@ CBrowseFolder::retVal CBrowseFolder::Show(HWND parent, CString& path, const CStr
 		// set the default folder
 		if (SUCCEEDED(hr))
 		{
-			typedef HRESULT (WINAPI *SHCIFPN)(PCWSTR pszPath, IBindCtx * pbc, REFIID riid, void ** ppv);
-
-			CAutoLibrary hLib = AtlLoadSystemLibraryUsingFullPath(L"shell32.dll");
-			if (hLib)
+			IShellItem* psiDefault = nullptr;
+			hr = SHCreateItemFromParsingName(m_sDefaultPath, nullptr, IID_PPV_ARGS(&psiDefault));
+			if (SUCCEEDED(hr))
 			{
-				SHCIFPN pSHCIFPN = (SHCIFPN)GetProcAddress(hLib, "SHCreateItemFromParsingName");
-				if (pSHCIFPN)
-				{
-					IShellItem *psiDefault = 0;
-					hr = pSHCIFPN(m_sDefaultPath, NULL, IID_PPV_ARGS(&psiDefault));
-					if (SUCCEEDED(hr))
-					{
-						hr = pfd->SetFolder(psiDefault);
-						psiDefault->Release();
-					}
-				}
+				hr = pfd->SetFolder(psiDefault);
+				psiDefault->Release();
 			}
 		}
 

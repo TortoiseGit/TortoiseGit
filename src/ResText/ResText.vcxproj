@@ -62,7 +62,6 @@
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="..\Utils\SysInfo.cpp" />
     <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -71,7 +70,6 @@
     <ClInclude Include="POFile.h" />
     <ClInclude Include="ResModule.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="..\Utils\SysInfo.h" />
     <ClInclude Include="Utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

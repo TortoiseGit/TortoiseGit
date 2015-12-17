@@ -276,8 +276,6 @@ CGitStatusListCtrl::CGitStatusListCtrl() : CListCtrl()
 	, m_dwContextMenus(0)
 	, m_nIconFolder(0)
 	, m_nRestoreOvl(0)
-	, pfnSHCreateDefaultContextMenu(nullptr)
-	, pfnAssocCreateForClasses(nullptr)
 	, m_pContextMenu(nullptr)
 	, m_hShellMenu(nullptr)
 {
@@ -287,12 +285,6 @@ CGitStatusListCtrl::CGitStatusListCtrl() : CListCtrl()
 	m_bIsRevertTheirMy = false;
 	m_bNoAutoselectMissing = CRegDWORD(L"Software\\TortoiseGit\\AutoselectMissingFiles", FALSE) == TRUE;
 	this->m_nLineAdded =this->m_nLineDeleted =0;
-	m_ShellDll = AtlLoadSystemLibraryUsingFullPath(_T("Shell32.dll"));
-	if (m_ShellDll)
-	{
-		pfnSHCreateDefaultContextMenu = (FNSHCreateDefaultContextMenu)::GetProcAddress(m_ShellDll, "SHCreateDefaultContextMenu");
-		pfnAssocCreateForClasses = (FNAssocCreateForClasses)::GetProcAddress(m_ShellDll, "AssocCreateForClasses");
-	}
 }
 
 CGitStatusListCtrl::~CGitStatusListCtrl()
@@ -2002,7 +1994,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 			}
 
 			m_hShellMenu = nullptr;
-			if (pfnSHCreateDefaultContextMenu && pfnAssocCreateForClasses && GetSelectedCount() > 0 && !(wcStatus & (CTGitPath::LOGACTIONS_DELETED | CTGitPath::LOGACTIONS_MISSING)) && m_bHasWC && (this->m_CurrentVersion.IsEmpty() || this->m_CurrentVersion == GIT_REV_ZERO) && shellMenu.CreatePopupMenu())
+			if (GetSelectedCount() > 0 && !(wcStatus & (CTGitPath::LOGACTIONS_DELETED | CTGitPath::LOGACTIONS_MISSING)) && m_bHasWC && (this->m_CurrentVersion.IsEmpty() || this->m_CurrentVersion == GIT_REV_ZERO) && shellMenu.CreatePopupMenu())
 			{
 				// insert the shell context menu
 				popup.AppendMenu(MF_SEPARATOR);
@@ -4545,7 +4537,7 @@ BOOL CGitStatusListCtrl::OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LR
 	case WM_INITMENUPOPUP:
 	{
 		HMENU hMenu = (HMENU)wParam;
-		if (pfnSHCreateDefaultContextMenu && pfnAssocCreateForClasses && (hMenu == m_hShellMenu) && (GetMenuItemCount(hMenu) == 0))
+		if ((hMenu == m_hShellMenu) && (GetMenuItemCount(hMenu) == 0))
 		{
 			// the shell submenu is populated only on request, i.e. right
 			// before the submenu is shown
@@ -4619,7 +4611,7 @@ BOOL CGitStatusListCtrl::OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LR
 						{ ASSOCCLASS_FOLDER, NULL, NULL },
 					};
 					IQueryAssociations* pIQueryAssociations = nullptr;
-					if (FAILED(pfnAssocCreateForClasses(rgAssocItem, ARRAYSIZE(rgAssocItem), IID_IQueryAssociations, (void**)&pIQueryAssociations)))
+					if (FAILED(AssocCreateForClasses(rgAssocItem, ARRAYSIZE(rgAssocItem), IID_IQueryAssociations, (void**)&pIQueryAssociations)))
 						pIQueryAssociations = nullptr; // not a problem, it works without this
 
 					g_pFolderhook = new CIShellFolderHook(g_psfDesktopFolder, targetList);
@@ -4631,7 +4623,7 @@ BOOL CGitStatusListCtrl::OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LR
 					dcm.cidl = g_pidlArrayItems;
 					dcm.apidl = (PCUITEMID_CHILD_ARRAY)g_pidlArray;
 					dcm.punkAssociationInfo = pIQueryAssociations;
-					if (SUCCEEDED(pfnSHCreateDefaultContextMenu(&dcm, IID_IContextMenu, (void**)&icm1)))
+					if (SUCCEEDED(SHCreateDefaultContextMenu(&dcm, IID_IContextMenu, (void**)&icm1)))
 					{
 						int iMenuType = 0;  // to know which version of IContextMenu is supported
 						if (icm1)

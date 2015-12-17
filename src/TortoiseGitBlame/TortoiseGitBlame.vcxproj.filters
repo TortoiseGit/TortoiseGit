@@ -69,9 +69,6 @@
     <ClCompile Include="..\Utils\StringUtils.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="..\Utils\SysInfo.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
     <ClCompile Include="..\Utils\TaskbarUUID.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
@@ -228,9 +225,6 @@
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\StringUtils.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Utils\SysInfo.h">
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\TaskbarUUID.h">

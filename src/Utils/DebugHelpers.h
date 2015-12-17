@@ -19,8 +19,8 @@
 #pragma once
 
 #ifdef _DEBUG
-#	define BEGIN_TICK   { DWORD dwTickMeasureBegin = ::GetTickCount();
-#	define END_TICK(s) DWORD dwTickMeasureEnd = ::GetTickCount(); TRACE("%s: tick count = %d\n", s, dwTickMeasureEnd-dwTickMeasureBegin); }
+#	define BEGIN_TICK   { auto dwTickMeasureBegin = ::GetTickCount64();
+#	define END_TICK(s) auto dwTickMeasureEnd = ::GetTickCount64(); TRACE("%s: tick count = %d\n", s, dwTickMeasureEnd-dwTickMeasureBegin); }
 #else
 #	define BEGIN_TICK
 #	define END_TICK(s)

@@ -233,7 +233,7 @@ CStatusCacheEntry CCachedDirectory::GetStatusFromCache(const CTGitPath& path, bo
 		if(itMap != m_entryCache.end())
 		{
 			// We've hit the cache - check for timeout
-			if(!itMap->second.HasExpired((long)GetTickCount()))
+			if (!itMap->second.HasExpired((LONGLONG)GetTickCount64()))
 			{
 				if(itMap->second.DoesFileTimeMatch(path.GetLastWriteTime()))
 				{
@@ -695,8 +695,7 @@ BOOL CCachedDirectory::GetStatusCallback(const CString & path, git_wc_status_kin
 bool
 CCachedDirectory::IsOwnStatusValid() const
 {
-	return m_ownStatus.HasBeenSet() &&
-		   !m_ownStatus.HasExpired(GetTickCount());
+	return m_ownStatus.HasBeenSet() && !m_ownStatus.HasExpired(GetTickCount64());
 }
 
 void CCachedDirectory::Invalidate()
@@ -804,7 +803,7 @@ void CCachedDirectory::RefreshStatus(bool bRecursive)
 	// We also need to check if all our file members have the right date on them
 	CacheEntryMap::iterator itMembers;
 	std::set<CTGitPath> refreshedpaths;
-	DWORD now = GetTickCount();
+	ULONGLONG now = GetTickCount64();
 	if (m_entryCache.empty())
 		return;
 	for (itMembers = m_entryCache.begin(); itMembers != m_entryCache.end(); ++itMembers)

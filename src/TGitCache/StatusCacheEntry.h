@@ -20,8 +20,7 @@
 #pragma once
 
 struct TGITCacheResponse;
-#define CACHETIMEOUT	0x7FFFFFFF
-extern DWORD cachetimeout;
+extern ULONGLONG cachetimeout;
 
 #include "CacheInterface.h"
 
@@ -34,8 +33,8 @@ class CStatusCacheEntry
 public:
 	CStatusCacheEntry();
 	CStatusCacheEntry(const git_wc_status_kind status);
-	CStatusCacheEntry(const git_wc_status2_t* pGitStatus, __int64 lastWriteTime, bool bReadOnly, DWORD validuntil = 0);
-	bool HasExpired(long now) const;
+	CStatusCacheEntry(const git_wc_status2_t* pGitStatus, __int64 lastWriteTime, bool bReadOnly, LONGLONG validuntil = 0);
+	bool HasExpired(LONGLONG now) const;
 	void BuildCacheResponse(TGITCacheResponse& response, DWORD& responseLength) const;
 	bool IsVersioned() const;
 	bool DoesFileTimeMatch(__int64 testTime) const;
@@ -53,7 +52,7 @@ private:
 	void SetAsUnversioned();
 
 private:
-	long				m_discardAtTime;
+	LONGLONG			m_discardAtTime;
 	git_wc_status_kind	m_highestPriorityLocalStatus;
 	git_wc_status2_t	m_GitStatus;
 	__int64				m_lastWriteTime;

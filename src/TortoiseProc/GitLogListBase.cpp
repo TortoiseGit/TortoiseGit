@@ -35,7 +35,6 @@
 #include "GitStatus.h"
 #include "..\TortoiseShell\Resource.h"
 #include "FindDlg.h"
-#include "SysInfo.h"
 
 template < typename Cont, typename Pred>
 void for_each(Cont& c, Pred p)
@@ -168,10 +167,6 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	m_LineWidth = max(1, CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\Graph\\LogLineWidth"), 2));
 	m_NodeSize = max(1, CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\Graph\\LogNodeSize"), 10));
 
-	hUxTheme = AtlLoadSystemLibraryUsingFullPath(_T("UXTHEME.DLL"));
-	if (hUxTheme)
-		pfnDrawThemeTextEx = (FNDRAWTHEMETEXTEX)::GetProcAddress(hUxTheme, "DrawThemeTextEx");
-
 	m_AsyncDiffEvent = ::CreateEvent(NULL, FALSE, TRUE, NULL);
 	m_AsynDiffListLock.Init();
 	StartAsyncDiffThread();
@@ -296,9 +291,6 @@ CGitLogListBase::~CGitLogListBase()
 
 	if(m_AsyncDiffEvent)
 		CloseHandle(m_AsyncDiffEvent);
-
-	if (hUxTheme)
-		FreeLibrary(hUxTheme);
 }
 
 
@@ -520,7 +512,7 @@ void CGitLogListBase::FillBackGround(HDC hdc, DWORD_PTR Index, CRect &rect)
 		else if (action & LOGACTIONS_REBASE_EDIT)
 			brush = ::CreateSolidBrush(RGB(200,200,128));
 	}
-	else if (!(IsAppThemed() && SysInfo::Instance().IsVistaOrLater()))
+	else if (!IsAppThemed())
 	{
 		if (rItem.state & LVIS_SELECTED)
 		{
@@ -597,7 +589,7 @@ void CGitLogListBase::DrawTagBranchMessage(HDC hdc, CRect &rect, INT_PTR index, 
 	W_Dc.Attach(hdc);
 
 	HTHEME hTheme = NULL;
-	if (IsAppThemed() && SysInfo::Instance().IsVistaOrLater())
+	if (IsAppThemed())
 		hTheme = OpenThemeData(m_hWnd, L"Explorer::ListView;ListView");
 
 	SIZE oneSpaceSize;
@@ -618,7 +610,7 @@ void CGitLogListBase::DrawTagBranchMessage(HDC hdc, CRect &rect, INT_PTR index, 
 	CString msg = MessageDisplayStr(data);
 	int action = data->GetRebaseAction();
 	bool skip = !!(action & (LOGACTIONS_REBASE_DONE | LOGACTIONS_REBASE_SKIP));
-	if (IsAppThemed() && pfnDrawThemeTextEx)
+	if (IsAppThemed())
 	{
 		int txtState = LISS_NORMAL;
 		if (rItem.state & LVIS_SELECTED)
@@ -628,7 +620,7 @@ void CGitLogListBase::DrawTagBranchMessage(HDC hdc, CRect &rect, INT_PTR index, 
 		opts.dwSize = sizeof(opts);
 		opts.crText = skip ? RGB(128,128,128) : ::GetSysColor(COLOR_WINDOWTEXT);
 		opts.dwFlags = DTT_TEXTCOLOR;
-		pfnDrawThemeTextEx(hTheme, hdc, LVP_LISTITEM, txtState, msg, -1, DT_NOPREFIX | DT_LEFT | DT_SINGLELINE | DT_VCENTER | DT_END_ELLIPSIS, &rt, &opts);
+		DrawThemeTextEx(hTheme, hdc, LVP_LISTITEM, txtState, msg, -1, DT_NOPREFIX | DT_LEFT | DT_SINGLELINE | DT_VCENTER | DT_END_ELLIPSIS, &rt, &opts);
 	}
 	else
 	{
@@ -675,7 +667,7 @@ void CGitLogListBase::DrawTagBranch(HDC hdc, CDC& W_Dc, HTHEME hTheme, CRect& re
 		CGit::REF_TYPE refType = refList[i].refType;
 
 		//When row selected, ajust label color
-		if (!(IsAppThemed() && SysInfo::Instance().IsVistaOrLater()))
+		if (!IsAppThemed())
 		{
 			if (rItem.state & LVIS_SELECTED)
 				colRef = CColors::MixColors(colRef, ::GetSysColor(COLOR_HIGHLIGHT), 150);
@@ -755,7 +747,7 @@ void CGitLogListBase::DrawTagBranch(HDC hdc, CDC& W_Dc, HTHEME hTheme, CRect& re
 
 			//Draw text inside label
 			bool customColor = (colRef & 0xff) * 30 + ((colRef >> 8) & 0xff) * 59 + ((colRef >> 16) & 0xff) * 11 <= 12800;	// check if dark background
-			if (!customColor && IsAppThemed() && pfnDrawThemeTextEx)
+			if (!customColor && IsAppThemed())
 			{
 				int txtState = LISS_NORMAL;
 				if (rItem.state & LVIS_SELECTED)
@@ -765,7 +757,7 @@ void CGitLogListBase::DrawTagBranch(HDC hdc, CDC& W_Dc, HTHEME hTheme, CRect& re
 				opts.dwSize = sizeof(opts);
 				opts.crText = ::GetSysColor(COLOR_WINDOWTEXT);
 				opts.dwFlags = DTT_TEXTCOLOR;
-				pfnDrawThemeTextEx(hTheme, hdc, LVP_LISTITEM, txtState, shortname, -1, textpos | DT_SINGLELINE | DT_VCENTER, &textRect, &opts);
+				DrawThemeTextEx(hTheme, hdc, LVP_LISTITEM, txtState, shortname, -1, textpos | DT_SINGLELINE | DT_VCENTER, &textRect, &opts);
 			}
 			else
 			{
@@ -1301,7 +1293,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 						int index = (int)pLVCD->nmcd.dwItemSpec;
 						int state = GetItemState(index, LVIS_SELECTED);
 						int txtState = LISS_NORMAL;
-						if (IsAppThemed() && SysInfo::Instance().IsVistaOrLater() && GetHotItem() == (int)index)
+						if (IsAppThemed() && GetHotItem() == (int)index)
 						{
 							if (state & LVIS_SELECTED)
 								txtState = LISS_HOTSELECTED;
@@ -1317,7 +1309,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 						}
 
 						HTHEME hTheme = nullptr;
-						if (IsAppThemed() && SysInfo::Instance().IsVistaOrLater())
+						if (IsAppThemed())
 							hTheme = OpenThemeData(m_hWnd, L"Explorer::ListView;ListView");
 
 						if (hTheme && IsThemeBackgroundPartiallyTransparent(hTheme, LVP_LISTDETAIL, txtState))
@@ -2951,7 +2943,7 @@ UINT CGitLogListBase::LogThread()
 		g_Git.m_critGitDllSec.Unlock();
 
 		GIT_COMMIT commit;
-		t2=t1=GetTickCount();
+		t2 = t1 = GetTickCount64();
 		int oldprecentage = 0;
 		size_t oldsize = m_logEntries.size();
 		std::map<CGitHash, std::set<CGitHash>> commitChildren;
@@ -3061,9 +3053,9 @@ UINT CGitLogListBase::LogThread()
 			if (lastSelectedHashNItem == -1 && hash == m_lastSelectedHash)
 				lastSelectedHashNItem = (int)m_arShownList.GetCount() - 1;
 
-			t2=GetTickCount();
+			t2 = GetTickCount64();
 
-			if(t2-t1>500 || (m_logEntries.size()-oldsize >100))
+			if (t2 - t1 > 500UL || (m_logEntries.size() - oldsize > 100))
 			{
 				//update UI
 				int percent = (int)m_logEntries.size() * 100 / total + GITLOG_START + 1;

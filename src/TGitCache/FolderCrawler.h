@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// External Cache Copyright (C) 2005-2007, 2009-2011 TortoiseSVN
+// External Cache Copyright (C) 2005-2007, 2009-2011, 2014 TortoiseSVN
 // Copyright (C) 2008-2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
@@ -74,12 +74,12 @@ private:
 	// want to start crawling.  This timer is pushed-out for
 	// every shell request, and stops us crawling until
 	// a bit of quiet time has elapsed
-	long m_crawlHoldoffReleasesAt;
+	LONGLONG m_crawlHoldoffReleasesAt;
 	bool m_bItemsAddedSinceLastCrawl;
 	bool m_bPathsAddedSinceLastCrawl;
 
 	CTGitPath m_blockedPath;
-	DWORD m_blockReleasesAt;
+	ULONGLONG m_blockReleasesAt;
 	bool m_bRun;
 
 

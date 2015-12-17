@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2013 - TortoiseSVN
+// Copyright (C) 2003-2014 - TortoiseSVN
 // Copyright (C) 2008-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
@@ -638,7 +638,7 @@ void CCommitDlg::OnOK()
 	}
 
 	CBlockCacheForPath cacheBlock(g_Git.m_CurrentDir);
-	DWORD currentTicks = GetTickCount();
+	ULONGLONG currentTicks = GetTickCount64();
 
 	if (g_Git.UsingLibGit2(CGit::GIT_CMD_COMMIT_UPDATE_INDEX))
 	{
@@ -698,12 +698,12 @@ void CCommitDlg::OnOK()
 
 				if (sysProgressDlg.IsVisible())
 				{
-					if (GetTickCount() - currentTicks > 1000 || j == nListItems - 1 || j == 0)
+					if (GetTickCount64() - currentTicks > 1000UL || j == nListItems - 1 || j == 0)
 					{
 						sysProgressDlg.SetLine(2, entry->GetGitPathString(), true);
 						sysProgressDlg.SetProgress(j, nListItems);
 						AfxGetThread()->PumpMessage(); // process messages, in order to avoid freezing; do not call this too often: this takes time!
-						currentTicks = GetTickCount();
+						currentTicks = GetTickCount64();
 					}
 				}
 
@@ -1648,7 +1648,7 @@ void CCommitDlg::GetAutocompletionList()
 	std::map<CString, CString> mapRegex;
 	CString sRegexFile = CPathUtils::GetAppDirectory();
 	CRegDWORD regtimeout = CRegDWORD(_T("Software\\TortoiseGit\\AutocompleteParseTimeout"), 5);
-	DWORD timeoutvalue = regtimeout*1000;
+	ULONGLONG timeoutvalue = regtimeout * 1000;
 	sRegexFile += _T("autolist.txt");
 	if (!m_bRunThread)
 		return;
@@ -1669,7 +1669,7 @@ void CCommitDlg::GetAutocompletionList()
 	for (const auto& snip : m_snippet)
 		m_autolist.emplace(snip.first, AUTOCOMPLETE_SNIPPET);
 
-	DWORD starttime = GetTickCount();
+	ULONGLONG starttime = GetTickCount64();
 
 	// now we have two arrays of strings, where the first array contains all
 	// file extensions we can use and the second the corresponding regex strings
@@ -1682,7 +1682,7 @@ void CCommitDlg::GetAutocompletionList()
 	for (int i=0; i<nListItems && m_bRunThread; ++i)
 	{
 		// stop parsing after timeout
-		if ((!m_bRunThread) || (GetTickCount() - starttime > timeoutvalue))
+		if ((!m_bRunThread) || (GetTickCount64() - starttime > timeoutvalue))
 			return;
 
 		CTGitPath *path = (CTGitPath*)m_ListCtrl.GetItemData(i);
@@ -1725,7 +1725,7 @@ void CCommitDlg::GetAutocompletionList()
 
 		ScanFile(path->GetWinPathString(), rdata, sExt);
 	}
-	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Auto completion list loaded in %d msec\n"), GetTickCount() - starttime);
+	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Auto completion list loaded in %I64u msec\n"), GetTickCount64() - starttime);
 }
 
 void CCommitDlg::ScanFile(const CString& sFilePath, const CString& sRegex, const CString& sExt)

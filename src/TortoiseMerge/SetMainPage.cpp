@@ -23,7 +23,6 @@
 #include "AppUtils.h"
 #include "PathUtils.h"
 #include "SetMainPage.h"
-#include "SysInfo.h"
 #include "MainFrm.h"
 
 // CSetMainPage dialog
@@ -182,13 +181,6 @@ BOOL CSetMainPage::OnInitDialog()
 	m_bAutoAdd = m_regAutoAdd;
 	m_nMaxInline = m_regMaxInline;
 	m_bUseRibbons = m_regUseRibbons;
-#if _WIN64
-	if (SysInfo::Instance().IsXP())
-	{
-		DialogEnableWindow(IDC_USERIBBONS, FALSE);
-		m_bUseRibbons = FALSE;
-	}
-#endif
 	m_bUseTaskDialog = CTaskDialog::IsSupported() && (DWORD)m_regUseTaskDialog;
 
 	DialogEnableWindow(IDC_FIRSTCONFLICTONLOAD, m_bFirstDiffOnLoad);

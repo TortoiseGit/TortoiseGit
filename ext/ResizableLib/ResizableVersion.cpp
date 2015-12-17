@@ -55,28 +55,6 @@ static _VersionInitializer g_version;
 #include <shlwapi.h>
 
 static DLLVERSIONINFO g_dviCommCtrls;
-static OSVERSIONINFOEX g_osviWindows;
-
-static void CheckOsVersion()
-{
-	// Try calling GetVersionEx using the OSVERSIONINFOEX structure.
-	SecureZeroMemory(&g_osviWindows, sizeof(OSVERSIONINFOEX));
-	g_osviWindows.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
-	if (GetVersionEx((LPOSVERSIONINFO)&g_osviWindows))
-		return;
-	
-	// If that fails, try using the OSVERSIONINFO structure.
-	g_osviWindows.dwOSVersionInfoSize = sizeof (OSVERSIONINFO);
-	if (GetVersionEx((LPOSVERSIONINFO)&g_osviWindows))
-		return;
-
-	// When all the above fails, set values for the worst case
-	g_osviWindows.dwMajorVersion = 4;
-	g_osviWindows.dwMinorVersion = 0;
-	g_osviWindows.dwBuildNumber = 0;
-	g_osviWindows.dwPlatformId = VER_PLATFORM_WIN32_WINDOWS;
-	g_osviWindows.szCSDVersion[0] = TEXT('\0');
-}
 
 static void CheckCommCtrlsVersion()
 {
@@ -114,16 +92,6 @@ static void CheckCommCtrlsVersion()
 //////////////////////////////////////////////////////////////////////
 // Exported global symbols
 
-DWORD realWINVER = 0;
-
-#ifdef _WIN32_WINDOWS
-DWORD real_WIN32_WINDOWS = 0;
-#endif
-
-#ifdef _WIN32_WINNT
-DWORD real_WIN32_WINNT = 0;
-#endif
-
 #ifdef _WIN32_IE
 DWORD real_WIN32_IE = 0;
 #endif
@@ -134,26 +102,6 @@ DWORD real_WIN32_IE = 0;
 void InitRealVersions()
 {
 	CheckCommCtrlsVersion();
-	CheckOsVersion();
-
-	// set real version values
-
-	realWINVER = MAKEWORD(CNV_OS_VER(g_osviWindows.dwMinorVersion),
-		CNV_OS_VER(g_osviWindows.dwMajorVersion));
-
-#ifdef _WIN32_WINDOWS
-	if (g_osviWindows.dwPlatformId == VER_PLATFORM_WIN32_WINDOWS)
-		real_WIN32_WINDOWS = realWINVER;
-	else
-		real_WIN32_WINDOWS = 0;
-#endif
-
-#ifdef _WIN32_WINNT
-	if (g_osviWindows.dwPlatformId == VER_PLATFORM_WIN32_NT)
-		real_WIN32_WINNT = realWINVER;
-	else
-		real_WIN32_WINNT = 0;
-#endif
 
 #ifdef _WIN32_IE
 	switch (g_dviCommCtrls.dwMajorVersion)

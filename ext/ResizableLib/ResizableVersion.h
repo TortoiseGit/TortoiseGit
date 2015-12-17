@@ -28,16 +28,6 @@
 // retrieved and adapted at run-time to be equivalent
 // to preprocessor macros that set the target platform
 
-extern DWORD realWINVER;
-
-#ifdef _WIN32_WINDOWS
-extern DWORD real_WIN32_WINDOWS;
-#endif
-
-#ifdef _WIN32_WINNT
-extern DWORD real_WIN32_WINNT;
-#endif
-
 #ifdef _WIN32_IE
 extern DWORD real_WIN32_IE;
 #endif

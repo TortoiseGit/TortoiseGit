@@ -29,7 +29,6 @@
 #include "UnicodeUtils.h"
 #include "SysImageList.h"
 #include <sys/stat.h>
-#include "SysInfo.h"
 #include "registry.h"
 #include "PathUtils.h"
 #include "StringUtils.h"
@@ -220,11 +219,8 @@ BOOL CRepositoryBrowser::OnInitDialog()
 	CAppUtils::SetListCtrlBackgroundImage(m_RepoList.GetSafeHwnd(), IDI_REPOBROWSER_BKG);
 
 	m_RepoTree.SetImageList(&SYS_IMAGE_LIST(), TVSIL_NORMAL);
-	if (SysInfo::Instance().IsVistaOrLater())
-	{
-		exStyle = TVS_EX_FADEINOUTEXPANDOS | TVS_EX_AUTOHSCROLL | TVS_EX_DOUBLEBUFFER;
-		m_RepoTree.SetExtendedStyle(exStyle, exStyle);
-	}
+	exStyle = TVS_EX_FADEINOUTEXPANDOS | TVS_EX_AUTOHSCROLL | TVS_EX_DOUBLEBUFFER;
+	m_RepoTree.SetExtendedStyle(exStyle, exStyle);
 
 	m_nExternalOvl = SYS_IMAGE_LIST().AddIcon((HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_EXTERNALOVL), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE));
 	m_nExecutableOvl = SYS_IMAGE_LIST().AddIcon((HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_EXECUTABLEOVL), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE));

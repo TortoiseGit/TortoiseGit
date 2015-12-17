@@ -36,7 +36,6 @@
 #include "FormatMessageWrapper.h"
 #include "TaskbarUUID.h"
 #include "RegexFiltersDlg.h"
-#include "SysInfo.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -228,10 +227,6 @@ CMainFrame::CMainFrame()
 	m_bWrapLines = !!(DWORD)m_regWrapLines;
 	m_bInlineDiff = !!m_regInlineDiff;
 	m_bUseRibbons = !!m_regUseRibbons;
-#if _WIN64
-	if (SysInfo::Instance().IsXP())
-		m_bUseRibbons = FALSE;
-#endif
 	m_bUseTaskDialog = CTaskDialog::IsSupported() && (DWORD)m_regUseTaskDialog;
 	CMFCVisualManagerWindows::m_b3DTabsXPTheme = TRUE;
 }

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2008,2011 - TortoiseSVN
+// Copyright (C) 2003-2008,2011, 2014 - TortoiseSVN
 // Copyright (C) 2008-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
@@ -97,7 +97,7 @@ const FileStatusCacheEntry * GitFolderStatus::BuildCache(const CTGitPath& filepa
 				dirstat.status = GitStatus::GetMoreImportant(dirstatus->text_status, dirstatus->prop_status);
 			}
 			m_cache[filepath.GetWinPath()] = dirstat;
-			m_TimeStamp = GetTickCount();
+			m_TimeStamp = GetTickCount64();
 			return &dirstat;
 		}
 	} // if (bIsFolder)
@@ -129,7 +129,7 @@ const FileStatusCacheEntry * GitFolderStatus::BuildCache(const CTGitPath& filepa
 
 	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": building cache for %s - time %d\n"), filepath.GetWinPath(), t2 - t1);
 
-	m_TimeStamp = GetTickCount();
+	m_TimeStamp = GetTickCount64();
 	FileStatusCacheEntry * ret = NULL;
 
 	if (_tcslen(filepath.GetWinPath())==3)
@@ -152,10 +152,10 @@ const FileStatusCacheEntry * GitFolderStatus::BuildCache(const CTGitPath& filepa
 	return &invalidstatus;
 }
 
-DWORD GitFolderStatus::GetTimeoutValue()
+ULONGLONG GitFolderStatus::GetTimeoutValue()
 {
-	DWORD timeout = GITFOLDERSTATUS_CACHETIMEOUT;
-	DWORD factor = (DWORD)m_cache.size() / 200;
+	ULONGLONG timeout = GITFOLDERSTATUS_CACHETIMEOUT;
+	ULONGLONG factor = (ULONGLONG)m_cache.size() / 200UL;
 	if (factor==0)
 		factor = 1;
 	return factor*timeout;
@@ -223,7 +223,7 @@ const FileStatusCacheEntry * GitFolderStatus::GetCachedItem(const CTGitPath& fil
 	if(retVal != NULL)
 	{
 		// We found something in a cache - check that the cache is not timed-out or force-invalidated
-		DWORD now = GetTickCount();
+		ULONGLONG now = GetTickCount64();
 
 		if ((now >= m_TimeStamp)&&((now - m_TimeStamp) > GetTimeoutValue()))
 		{

@@ -864,19 +864,14 @@ void CResizableLayout::HandleNcCalcSize(BOOL bAfterDefault, LPNCCALCSIZE_PARAMS 
 		//		This is especially evident on WinXP when the non-client
 		//		area is rendered with Visual Styles enabled and the
 		//		windows have a non rectangular region.
-#if (_WIN32_WINNT >= 0x0501)
 		//! @todo change rt check to only if themed frame. what about custom wnd region?
-		if (real_WIN32_WINNT >= 0x0501)
+		CWnd* pWnd = GetResizableWnd();
+		DWORD dwStyle = pWnd->GetStyle();
+		if ((dwStyle & (WS_CAPTION|WS_MAXIMIZE)) == WS_CAPTION)
 		{
-			CWnd* pWnd = GetResizableWnd();
-			DWORD dwStyle = pWnd->GetStyle();
-			if ((dwStyle & (WS_CAPTION|WS_MAXIMIZE)) == WS_CAPTION)
-			{
-				m_bNoRecursion = TRUE;
-				pWnd->SetWindowRgn(NULL, FALSE);
-				m_bNoRecursion = FALSE;
-			}
+			m_bNoRecursion = TRUE;
+			pWnd->SetWindowRgn(NULL, FALSE);
+			m_bNoRecursion = FALSE;
 		}
-#endif
 	}
 }

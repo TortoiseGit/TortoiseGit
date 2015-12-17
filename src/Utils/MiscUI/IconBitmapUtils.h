@@ -48,10 +48,5 @@ public:
 
 
 private:
-    HMODULE hUxTheme;
     std::map<UINT, HBITMAP>     bitmaps;
-
-    FN_GetBufferedPaintBits pfnGetBufferedPaintBits;
-    FN_BeginBufferedPaint pfnBeginBufferedPaint;
-    FN_EndBufferedPaint pfnEndBufferedPaint;
 };

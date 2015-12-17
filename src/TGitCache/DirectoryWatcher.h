@@ -113,7 +113,7 @@ private:
 	CTGitPathList			watchedPaths;	///< list of watched paths.
 
 	CTGitPath				blockedPath;
-	DWORD					blockTickCount;
+	ULONGLONG				blockTickCount;
 
 	/**
 	 * \ingroup TGitCache

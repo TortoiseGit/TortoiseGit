@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// External Cache Copyright (C) 2005-2008,2011 - TortoiseSVN
+// External Cache Copyright (C) 2005-2008,2011,2014 - TortoiseSVN
 // Copyright (C) 2008-2014 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
@@ -24,15 +24,13 @@
 #include "registry.h"
 #include "TGitCache.h"
 #include <ShlObj.h>
-#include "SysInfo.h"
-
 
 CFolderCrawler::CFolderCrawler(void)
 {
 	m_hWakeEvent = CreateEvent(NULL,FALSE,FALSE,NULL);
 	m_hTerminationEvent = CreateEvent(NULL,TRUE,FALSE,NULL);
 	m_lCrawlInhibitSet = 0;
-	m_crawlHoldoffReleasesAt = (long)GetTickCount();
+	m_crawlHoldoffReleasesAt = (LONGLONG)GetTickCount64();
 	m_bRun = false;
 	m_bPathsAddedSinceLastCrawl = false;
 	m_bItemsAddedSinceLastCrawl = false;
@@ -150,16 +148,14 @@ void CFolderCrawler::WorkerThread()
 	hWaitHandles[0] = m_hTerminationEvent;
 	hWaitHandles[1] = m_hWakeEvent;
 	CTGitPath workingPath;
-	DWORD currentTicks = 0;
+	ULONGLONG currentTicks = 0;
 
 	for(;;)
 	{
 		bool bRecursive = !!(DWORD)CRegStdDWORD(_T("Software\\TortoiseGit\\RecursiveOverlay"), TRUE);
 
-		if (SysInfo::Instance().IsVistaOrLater())
-		{
-			SetThreadPriority(GetCurrentThread(), THREAD_MODE_BACKGROUND_END);
-		}
+		SetThreadPriority(GetCurrentThread(), THREAD_MODE_BACKGROUND_END);
+
 		DWORD waitResult = WaitForMultipleObjects(_countof(hWaitHandles), hWaitHandles, FALSE, INFINITE);
 
 		// exit event/working loop if the first event (m_hTerminationEvent)
@@ -171,10 +167,7 @@ void CFolderCrawler::WorkerThread()
 			break;
 		}
 
-		if (SysInfo::Instance().IsVistaOrLater())
-		{
-			SetThreadPriority(GetCurrentThread(), THREAD_MODE_BACKGROUND_BEGIN);
-		}
+		SetThreadPriority(GetCurrentThread(), THREAD_MODE_BACKGROUND_BEGIN);
 
 		// If we get here, we've been woken up by something being added to the queue.
 		// However, it's important that we don't do our crawling while
@@ -205,7 +198,7 @@ void CFolderCrawler::WorkerThread()
 				bFirstRunAfterWakeup = false;
 				continue;
 			}
-			if ((m_blockReleasesAt < GetTickCount())&&(!m_blockedPath.IsEmpty()))
+			if ((m_blockReleasesAt < GetTickCount64()) && (!m_blockedPath.IsEmpty()))
 			{
 				CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Crawl stop blocking path %s\n"), m_blockedPath.GetWinPath());
 				m_blockedPath.Reset();
@@ -224,7 +217,7 @@ void CFolderCrawler::WorkerThread()
 				// Nothing left to do
 				break;
 			}
-			currentTicks = GetTickCount();
+			currentTicks = GetTickCount64();
 			if (!m_pathsToUpdate.empty())
 			{
 				{
@@ -484,7 +477,7 @@ void CFolderCrawler::WorkerThread()
 
 bool CFolderCrawler::SetHoldoff(DWORD milliseconds /* = 100*/)
 {
-	long tick = (long)GetTickCount();
+	LONGLONG tick = (LONGLONG)GetTickCount64();
 	bool ret = ((tick - m_crawlHoldoffReleasesAt) > 0);
 	m_crawlHoldoffReleasesAt = tick + milliseconds;
 	return ret;
@@ -495,7 +488,7 @@ void CFolderCrawler::BlockPath(const CTGitPath& path, DWORD ticks)
 	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": block path %s from being crawled\n"), path.GetWinPath());
 	m_blockedPath = path;
 	if (ticks == 0)
-		m_blockReleasesAt = GetTickCount()+10000;
+		m_blockReleasesAt = GetTickCount64() + 10000;
 	else
-		m_blockReleasesAt = GetTickCount()+ticks;
+		m_blockReleasesAt = GetTickCount64() + ticks;
 }

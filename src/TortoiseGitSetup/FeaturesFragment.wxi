@@ -89,7 +89,6 @@
 
 		<?if $(var.IncludeCrashReportDll) = 1 ?>
 		<Feature Id="CrashReporter" Level="1" Title="Crash Reporter" Description="Sends crash dumps to the developers." TypicalDefault="install" InstallDefault="followParent" Absent="allow" AllowAdvertise="no">
-			<Condition Level="0"><![CDATA[(VersionNT <= 501)]]></Condition>
 			<ComponentRef Id="C__crash" />
 		</Feature>
 		<?endif ?>

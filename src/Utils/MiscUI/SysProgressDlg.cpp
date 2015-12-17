@@ -321,8 +321,8 @@ void CSysProgressDlg::Stop()
 				SetFocus(m_hWndFocus);
 			else
 				SetFocus(m_hWndParent);
-			auto start = GetTickCount();
-			while (::IsWindow(m_hWndProgDlg) && ((GetTickCount() - start) < 3000))
+			auto start = GetTickCount64();
+			while (::IsWindow(m_hWndProgDlg) && ((GetTickCount64() - start) < 3000))
 			{
 				MSG msg = { 0 };
 				while (PeekMessage(&msg, m_hWndProgDlg, 0, 0, PM_REMOVE))

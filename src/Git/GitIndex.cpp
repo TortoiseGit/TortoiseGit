@@ -1014,9 +1014,9 @@ int CGitIgnoreList::LoadAllIgnoreFile(const CString &gitdir, const CString &path
 bool CGitIgnoreList::CheckAndUpdateGitSystemConfigPath(bool force)
 {
 	// recheck every 30 seconds
-	if (GetTickCount() - m_dGitSystemConfigPathLastChecked > 30000 || force)
+	if (GetTickCount64() - m_dGitSystemConfigPathLastChecked > 30000UL || force)
 	{
-		m_dGitSystemConfigPathLastChecked = GetTickCount();
+		m_dGitSystemConfigPathLastChecked = GetTickCount64();
 		CString gitSystemConfigPath(CRegString(REG_SYSTEM_GITCONFIGPATH, _T(""), FALSE));
 		if (gitSystemConfigPath != m_sGitSystemConfigPath)
 		{

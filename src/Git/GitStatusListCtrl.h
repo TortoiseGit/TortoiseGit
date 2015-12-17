@@ -24,7 +24,6 @@
 #include "Colors.h"
 #include "LoglistCommonResource.h"
 #include "HintListCtrl.h"
-#include "SmartHandle.h"
 
 #define GIT_WC_ENTRY_WORKING_SIZE_UNKNOWN (-1)
 
@@ -1153,12 +1152,6 @@ private:
 	std::map<CString,bool>		m_mapFilenameToChecked; ///< Remember de-/selected items
 	std::map<CString,bool>		m_mapDirectFiles;
 	CComCriticalSection			m_critSec;
-
-	CAutoLibrary				m_ShellDll;
-	typedef HRESULT(WINAPI* FNSHCreateDefaultContextMenu) (const DEFCONTEXTMENU *pdcm, REFIID riid, void **ppv);
-	FNSHCreateDefaultContextMenu	pfnSHCreateDefaultContextMenu;
-	typedef HRESULT(WINAPI* FNAssocCreateForClasses) (const ASSOCIATIONELEMENT *rgClasses, ULONG cClasses, REFIID riid, void **ppv);
-	FNAssocCreateForClasses			pfnAssocCreateForClasses;
 
 	friend class CGitStatusListCtrlDropTarget;
 public:

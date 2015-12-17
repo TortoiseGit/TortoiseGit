@@ -54,9 +54,6 @@
     <ClCompile Include="..\Utils\StringUtils.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="..\Utils\SysInfo.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
     <ClCompile Include="..\Utils\LangDll.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
@@ -84,9 +81,6 @@
       <Filter>Utils\MiscUI</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\UnicodeUtils.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Utils\SysInfo.h">
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\StringUtils.h">

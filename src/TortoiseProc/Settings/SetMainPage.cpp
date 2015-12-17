@@ -29,7 +29,6 @@
 #include "MessageBox.h"
 #include "GitForWindows.h"
 #include "BrowseFolder.h"
-#include "SysInfo.h"
 #include "Libraries.h"
 
 IMPLEMENT_DYNAMIC(CSetMainPage, ISettingsPropPage)
@@ -93,8 +92,6 @@ BOOL CSetMainPage::OnInitDialog()
 	m_tooltips.AddTool(IDC_MSYSGIT_PATH,IDS_MSYSGIT_PATH_TT);
 	m_tooltips.AddTool(IDC_CHECKNEWERVERSION, IDS_SETTINGS_CHECKNEWER_TT);
 	m_tooltips.AddTool(IDC_CREATELIB, IDS_SETTINGS_CREATELIB_TT);
-
-	GetDlgItem(IDC_CREATELIB)->EnableWindow(SysInfo::Instance().IsWin7OrLater());
 
 	SHAutoComplete(GetDlgItem(IDC_MSYSGIT_PATH)->m_hWnd, SHACF_FILESYSTEM);
 

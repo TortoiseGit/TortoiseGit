@@ -144,7 +144,7 @@ protected:
 
 	bool			m_bAbort;
 	bool			m_bDone;
-	DWORD			m_startTick;
+	ULONGLONG		m_startTick;
 	bool			m_bWantToExit;
 
 	int				m_GitCmdStatus;

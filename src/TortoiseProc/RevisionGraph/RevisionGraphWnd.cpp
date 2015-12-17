@@ -34,7 +34,6 @@
 #include "ChangedDlg.h"
 //#include "RevisionGraph/StandardLayout.h"
 //#include "RevisionGraph/UpsideDownLayout.h"
-#include "SysInfo.h"
 #include "FormatMessageWrapper.h"
 #include "GitRevLoglist.h"
 
@@ -105,7 +104,7 @@ CRevisionGraphWnd::CRevisionGraphWnd()
 	, m_previewWidth(0)
 	, m_previewHeight(0)
 	, m_previewZoom(1)
-	, m_dwTicks(0)
+	, m_ullTicks(0)
 	, m_logEntries(&m_LogCache)
 	, m_bCurrentBranch(false)
 	, m_bLocalBranches(FALSE)
@@ -320,7 +319,7 @@ void CRevisionGraphWnd::Init(CWnd * pParent, LPRECT rect)
 	m_lfBaseFont.lfQuality = DEFAULT_QUALITY;
 	m_lfBaseFont.lfPitchAndFamily = DEFAULT_PITCH;
 
-	m_dwTicks = GetTickCount();
+	m_ullTicks = GetTickCount64();
 
 	m_parent = dynamic_cast<CRevisionGraphDlg*>(pParent);
 }
@@ -845,10 +844,6 @@ CString CRevisionGraphWnd::DisplayableText ( const CString& wholeText
 
 	NONCLIENTMETRICS metrics;
 	metrics.cbSize = sizeof (metrics);
-	if (!SysInfo::Instance().IsVistaOrLater())
-	{
-		metrics.cbSize -= sizeof(int);  // subtract the size of the iPaddedBorderWidth member which is not available on XP
-	}
 	SystemParametersInfo (SPI_GETNONCLIENTMETRICS, metrics.cbSize, &metrics, 0);
 
 	CFont font;

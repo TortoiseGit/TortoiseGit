@@ -53,7 +53,7 @@ CSyncDlg::CSyncDlg(CWnd* pParent /*=NULL*/)
 	m_bDone = false;
 	m_bWantToExit = false;
 	m_GitCmdStatus = -1;
-	m_startTick = GetTickCount();
+	m_startTick = GetTickCount64();
 	m_seq = 0;
 }
 
@@ -1222,7 +1222,7 @@ void CSyncDlg::OnCbnEditchangeComboboxex()
 
 UINT CSyncDlg::ProgressThread()
 {
-	m_startTick = GetTickCount();
+	m_startTick = GetTickCount64();
 	m_bDone = false;
 	STRING_VECTOR list;
 	CProgressDlg::RunCmdList(this, m_GitCmdList, list, true, nullptr, &this->m_bAbort, &this->m_Databuf);
@@ -1247,7 +1247,7 @@ LRESULT CSyncDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 
 	if(wParam == MSG_PROGRESSDLG_END || wParam == MSG_PROGRESSDLG_FAILED)
 	{
-		DWORD tickSpent = GetTickCount() - m_startTick;
+		ULONGLONG tickSpent = GetTickCount64() - m_startTick;
 		CString strEndTime = CLoglistUtils::FormatDateAndTime(CTime::GetCurrentTime(), DATE_SHORTDATE, true, false);
 
 		m_BufStart = 0;
@@ -1271,7 +1271,7 @@ LRESULT CSyncDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 			CString log;
 			log.Format(IDS_PROC_PROGRESS_GITUNCLEANEXIT, exitCode);
 			CString err;
-			err.Format(_T("\r\n\r\n%s (%lu ms @ %s)\r\n"), (LPCTSTR)log, tickSpent, (LPCTSTR)strEndTime);
+			err.Format(_T("\r\n\r\n%s (%I64u ms @ %s)\r\n"), (LPCTSTR)log, tickSpent, (LPCTSTR)strEndTime);
 			CProgressDlg::InsertColorText(this->m_ctrlCmdOut, err, RGB(255,0,0));
 			if (CRegDWORD(_T("Software\\TortoiseGit\\NoSounds"), FALSE) == FALSE)
 				PlaySound((LPCTSTR)SND_ALIAS_SYSTEMEXCLAMATION, NULL, SND_ALIAS_ID | SND_ASYNC);
@@ -1283,7 +1283,7 @@ LRESULT CSyncDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 			CString temp;
 			temp.LoadString(IDS_SUCCESS);
 			CString log;
-			log.Format(_T("\r\n%s (%lu ms @ %s)\r\n"), (LPCTSTR)temp, tickSpent, (LPCTSTR)strEndTime);
+			log.Format(_T("\r\n%s (%I64u ms @ %s)\r\n"), (LPCTSTR)temp, tickSpent, (LPCTSTR)strEndTime);
 			CProgressDlg::InsertColorText(this->m_ctrlCmdOut, log, RGB(0,0,255));
 		}
 		m_GitCmdStatus = exitCode;

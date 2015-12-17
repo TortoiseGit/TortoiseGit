@@ -645,7 +645,7 @@ void CShellExt::InsertGitMenu(BOOL istop, HMENU menu, UINT pos, UINT_PTR id, UIN
 	if (icon)
 	{
 		menuiteminfo.fMask |= MIIM_BITMAP;
-		menuiteminfo.hbmpItem = SysInfo::Instance().IsVistaOrLater() ? m_iconBitmapUtils.IconToBitmapPARGB32(g_hResInst, icon) : HBMMENU_CALLBACK;
+		menuiteminfo.hbmpItem = m_iconBitmapUtils.IconToBitmapPARGB32(g_hResInst, icon);
 	}
 	menuiteminfo.wID = (UINT)id;
 	InsertMenuItem(menu, pos, TRUE, &menuiteminfo);
@@ -1148,7 +1148,7 @@ STDMETHODIMP CShellExt::QueryContextMenu_Wrap(HMENU hMenu,
 	if (uIcon)
 	{
 		menuiteminfo.fMask |= MIIM_BITMAP;
-		menuiteminfo.hbmpItem = SysInfo::Instance().IsVistaOrLater() ? m_iconBitmapUtils.IconToBitmapPARGB32(g_hResInst, uIcon) : HBMMENU_CALLBACK;
+		menuiteminfo.hbmpItem = m_iconBitmapUtils.IconToBitmapPARGB32(g_hResInst, uIcon);
 	}
 	menuiteminfo.hSubMenu = subMenu;
 	menuiteminfo.wID = idCmd++;
@@ -2160,7 +2160,7 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 		if (icon)
 		{
 			menuiteminfo.fMask |= MIIM_BITMAP;
-			menuiteminfo.hbmpItem = SysInfo::Instance().IsVistaOrLater() ? m_iconBitmapUtils.IconToBitmapPARGB32(g_hResInst, icon) : m_iconBitmapUtils.IconToBitmap(g_hResInst, icon);
+			menuiteminfo.hbmpItem = m_iconBitmapUtils.IconToBitmapPARGB32(g_hResInst, icon);
 		}
 		menuiteminfo.fType = MFT_STRING;
 		menuiteminfo.hSubMenu = ignoresubmenu;

@@ -323,7 +323,7 @@ private:
 	// core.excludesfile stuff
 	std::map<CString, CString> m_CoreExcludesfiles;
 	CString m_sGitSystemConfigPath;
-	DWORD m_dGitSystemConfigPathLastChecked;
+	ULONGLONG m_dGitSystemConfigPathLastChecked;
 	CReaderWriterLock	m_coreExcludefilesSharedMutex;
 	// checks if the msysgit path has changed and return true/false
 	// if the path changed, the cache is update

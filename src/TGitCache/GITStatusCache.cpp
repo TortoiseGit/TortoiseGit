@@ -23,7 +23,6 @@
 #include "GitStatusCache.h"
 #include "CacheInterface.h"
 #include <ShlObj.h>
-#include "SysInfo.h"
 #include "PathUtils.h"
 
 //////////////////////////////////////////////////////////////////////////
@@ -224,43 +223,9 @@ CGitStatusCache::CGitStatusCache(void)
 {
 	#define forever DWORD(-1)
 	AutoLocker lock(m_NoWatchPathCritSec);
-	TCHAR path[MAX_PATH] = { 0 };
-	SHGetFolderPath(NULL, CSIDL_COOKIES, NULL, 0, path);
-	m_NoWatchPaths[CTGitPath(CString(path))] = forever;
-	SecureZeroMemory(path, sizeof(path));
-	SHGetFolderPath(NULL, CSIDL_HISTORY, NULL, 0, path);
-	m_NoWatchPaths[CTGitPath(CString(path))] = forever;
-	SecureZeroMemory(path, sizeof(path));
-	SHGetFolderPath(NULL, CSIDL_INTERNET_CACHE, NULL, 0, path);
-	m_NoWatchPaths[CTGitPath(CString(path))] = forever;
-	SecureZeroMemory(path, sizeof(path));
-	SHGetFolderPath(NULL, CSIDL_SYSTEM, NULL, 0, path);
-	m_NoWatchPaths[CTGitPath(CString(path))] = forever;
-	SecureZeroMemory(path, sizeof(path));
-	SHGetFolderPath(NULL, CSIDL_WINDOWS, NULL, 0, path);
-	m_NoWatchPaths[CTGitPath(CString(path))] = forever;
-	if (SysInfo::Instance().IsVistaOrLater())
-	{
-		CAutoLibrary hShell = AtlLoadSystemLibraryUsingFullPath(_T("shell32.dll"));
-		if (hShell)
-		{
-			typedef HRESULT STDAPICALLTYPE SHGetKnownFolderPathFN(__in REFKNOWNFOLDERID rfid, __in DWORD dwFlags, __in_opt HANDLE hToken, __deref_out PWSTR *ppszPath);
-			SHGetKnownFolderPathFN *pfnSHGetKnownFolderPath = (SHGetKnownFolderPathFN*)GetProcAddress(hShell, "SHGetKnownFolderPath");
-			if (pfnSHGetKnownFolderPath)
-			{
-				KNOWNFOLDERID folderids[] = { FOLDERID_Cookies, FOLDERID_History, FOLDERID_InternetCache, FOLDERID_Windows, FOLDERID_CDBurning, FOLDERID_Fonts, FOLDERID_RecycleBinFolder }; //FOLDERID_SearchHistory
-				for (KNOWNFOLDERID folderid : folderids)
-				{
-					PWSTR pszPath = NULL;
-					if (pfnSHGetKnownFolderPath(folderid, KF_FLAG_CREATE, NULL, &pszPath) != S_OK)
-						continue;
-
-					m_NoWatchPaths[CTGitPath(CString(pszPath))] = forever;
-					CoTaskMemFree(pszPath);
-				}
-			}
-		}
-	}
+	KNOWNFOLDERID folderids[] = { FOLDERID_Cookies, FOLDERID_History, FOLDERID_InternetCache, FOLDERID_Windows, FOLDERID_CDBurning, FOLDERID_Fonts, FOLDERID_RecycleBinFolder }; //FOLDERID_SearchHistory
+	for (KNOWNFOLDERID folderid : folderids)
+		m_NoWatchPaths[CTGitPath(GetSpecialFolder(folderid))] = forever;
 	m_bClearMemory = false;
 	m_mostRecentExpiresAt = 0;
 }
@@ -301,7 +266,7 @@ bool CGitStatusCache::IsPathGood(const CTGitPath& path)
 		// the ticks check is necessary here, because RemoveTimedoutBlocks is only called within the FolderCrawler loop
 		// and we might miss update calls
 		// TODO: maybe we also need to check if index.lock and HEAD.lock still exists after a specific timeout (if we miss update notifications for these files too often)
-		if (GetTickCount() < it->second && it->first.IsAncestorOf(path))
+		if (GetTickCount64() < it->second && it->first.IsAncestorOf(path))
 		{
 			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": path not good: %s\n"), it->first.GetWinPath());
 			return false;
@@ -310,7 +275,7 @@ bool CGitStatusCache::IsPathGood(const CTGitPath& path)
 	return true;
 }
 
-bool CGitStatusCache::BlockPath(const CTGitPath& path, DWORD timeout /* = 0 */)
+bool CGitStatusCache::BlockPath(const CTGitPath& path, ULONGLONG timeout /* = 0 */)
 {
 	if (timeout == 0)
 		timeout = BLOCK_PATH_DEFAULT_TIMEOUT;
@@ -318,7 +283,7 @@ bool CGitStatusCache::BlockPath(const CTGitPath& path, DWORD timeout /* = 0 */)
 	if (timeout > BLOCK_PATH_MAX_TIMEOUT)
 		timeout = BLOCK_PATH_MAX_TIMEOUT;
 
-	timeout = GetTickCount() + (timeout * 1000);	// timeout is in seconds, but we need the milliseconds
+	timeout = GetTickCount64() + (timeout * 1000);	// timeout is in seconds, but we need the milliseconds
 
 	AutoLocker lock(m_NoWatchPathCritSec);
 	m_NoWatchPaths[path.GetDirectory()] = timeout;
@@ -330,7 +295,7 @@ bool CGitStatusCache::UnBlockPath(const CTGitPath& path)
 {
 	bool ret = false;
 	AutoLocker lock(m_NoWatchPathCritSec);
-	std::map<CTGitPath, DWORD>::iterator it = m_NoWatchPaths.find(path.GetDirectory());
+	std::map<CTGitPath, ULONGLONG>::iterator it = m_NoWatchPaths.find(path.GetDirectory());
 	if (it != m_NoWatchPaths.end())
 	{
 		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": path removed from no good: %s\n"), it->first.GetWinPath());
@@ -345,7 +310,7 @@ bool CGitStatusCache::UnBlockPath(const CTGitPath& path)
 bool CGitStatusCache::RemoveTimedoutBlocks()
 {
 	bool ret = false;
-	DWORD currentTicks = GetTickCount();
+	ULONGLONG currentTicks = GetTickCount64();
 	AutoLocker lock(m_NoWatchPathCritSec);
 	std::vector<CTGitPath> toRemove;
 	for (auto it = m_NoWatchPaths.cbegin(); it != m_NoWatchPaths.cend(); ++it)
@@ -532,7 +497,7 @@ CStatusCacheEntry CGitStatusCache::GetStatusForPath(const CTGitPath& path, DWORD
 	bool bRecursive = !!(flags & TGITCACHE_FLAGS_RECUSIVE_STATUS);
 
 	// Check a very short-lived 'mini-cache' of the last thing we were asked for.
-	long now = (long)GetTickCount();
+	LONGLONG now = (LONGLONG)GetTickCount64();
 	if(now-m_mostRecentExpiresAt < 0)
 	{
 		if(path.IsEquivalentToWithoutCase(m_mostRecentPath))
@@ -623,4 +588,15 @@ void CGitStatusCache::CloseWatcherHandles(const CTGitPath& path)
 	watcher.CloseHandlesForPath(path);
 	m_folderCrawler.ReleasePathForUpdate(path);
 	CGitStatusCache::Instance().m_GitStatus.ReleasePathsRecursively(path.GetWinPathString());
+}
+
+CString CGitStatusCache::GetSpecialFolder(REFKNOWNFOLDERID rfid)
+{
+	PWSTR pszPath = nullptr;
+	if (SHGetKnownFolderPath(rfid, KF_FLAG_CREATE, nullptr, &pszPath) != S_OK)
+		return CString();
+
+	CString path = pszPath;
+	CoTaskMemFree(pszPath);
+	return path;
 }
