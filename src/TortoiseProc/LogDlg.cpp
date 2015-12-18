@@ -1672,7 +1672,7 @@ BOOL CLogDlg::PreTranslateMessage(MSG* pMsg)
 	}
 	else if (pMsg->message == WM_KEYDOWN && ((pMsg->wParam == 'V' && GetKeyState(VK_CONTROL) < 0) || (pMsg->wParam == VK_INSERT && GetKeyState(VK_SHIFT) < 0 && GetKeyState(VK_CONTROL) >= 0)) && GetKeyState(VK_MENU) >= 0)
 	{
-		if (GetFocus() != GetDlgItem(IDC_SEARCHEDIT))
+		if (GetFocus() != GetDlgItem(IDC_SEARCHEDIT) && GetFocus() != GetDlgItem(IDC_FILTER))
 		{
 			OnPasteGitHash();
 			return TRUE;

@@ -12,6 +12,7 @@ Released: unreleased
  * Fixed issue #2662: Border line in commit text boxes is shown 2 characters past the specified width
  * Fixed issue #2660: No colors in git.exe progress dialog since 1.8.16
  * Fixed issue #2646: Library broken in Windows 10
+ * Fixed issue #2670: LogDlg: cannot paste to "Filter paths"
 
 = Release 1.8.16.0 =
 Released: 2015-11-01
