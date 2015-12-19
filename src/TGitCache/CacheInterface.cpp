@@ -61,10 +61,14 @@ bool SendCacheCommand(BYTE command, const WCHAR * path /* = NULL */)
 {
 	int retrycount = 2;
 	CAutoFile hPipe;
-	do
+	CString pipeName = GetCacheCommandPipeName();
+	for (int retry = 0; retry < 2; ++retry)
 	{
+		if (retry > 0)
+			WaitNamedPipe(pipeName, 50);
+
 		hPipe = CreateFile(
-			GetCacheCommandPipeName(),		// pipe name
+			pipeName,						// pipe name
 			GENERIC_READ |					// read and write access
 			GENERIC_WRITE,
 			0,								// no sharing
@@ -72,10 +76,16 @@ bool SendCacheCommand(BYTE command, const WCHAR * path /* = NULL */)
 			OPEN_EXISTING,					// opens existing pipe
 			FILE_FLAG_OVERLAPPED,			// default attributes
 			NULL);							// no template file
-		retrycount--;
-		if (!hPipe)
-			Sleep(10);
-	} while ((!hPipe) && (retrycount));
+
+		if (!hPipe && GetLastError() == ERROR_PIPE_BUSY)
+		{
+			// TGitCache is running but is busy connecting a different client.
+			// Do not give up immediately but wait for a few milliseconds until
+			// the server has created the next pipe instance
+			continue;
+		}
+		break;
+	}
 
 	if (!hPipe)
 	{
