@@ -57,7 +57,7 @@ BOOL CSetBugTraq::OnInitDialog()
 
 	// clear all previously set header columns
 	m_cBugTraqList.DeleteAllItems();
-	int c = ((CHeaderCtrl*)(m_cBugTraqList.GetDlgItem(0)))->GetItemCount()-1;
+	int c = m_cBugTraqList.GetHeaderCtrl()->GetItemCount() - 1;
 	while (c>=0)
 		m_cBugTraqList.DeleteColumn(c--);
 
@@ -92,7 +92,7 @@ void CSetBugTraq::RebuildBugTraqList()
 		m_cBugTraqList.SetItemData(pos, (DWORD_PTR)*it);
 	}
 
-	int maxcol = ((CHeaderCtrl*)(m_cBugTraqList.GetDlgItem(0)))->GetItemCount()-1;
+	int maxcol = m_cBugTraqList.GetHeaderCtrl()->GetItemCount() - 1;
 	for (int col = 0; col <= maxcol; col++)
 	{
 		m_cBugTraqList.SetColumnWidth(col, LVSCW_AUTOSIZE_USEHEADER);

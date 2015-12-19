@@ -197,7 +197,7 @@ BOOL CSetLookAndFeelPage::OnInitDialog()
 	m_cMenuList.SetExtendedStyle(LVS_EX_CHECKBOXES | LVS_EX_FULLROWSELECT | LVS_EX_DOUBLEBUFFER);
 
 	m_cMenuList.DeleteAllItems();
-	int c = ((CHeaderCtrl*)(m_cMenuList.GetDlgItem(0)))->GetItemCount()-1;
+	int c = m_cMenuList.GetHeaderCtrl()->GetItemCount() - 1;
 	while (c>=0)
 		m_cMenuList.DeleteColumn(c--);
 	m_cMenuList.InsertColumn(0, _T(""));
@@ -217,7 +217,7 @@ BOOL CSetLookAndFeelPage::OnInitDialog()
 
 	m_cMenuList.SetImageList(&m_imgList, LVSIL_SMALL);
 	int mincol = 0;
-	int maxcol = ((CHeaderCtrl*)(m_cMenuList.GetDlgItem(0)))->GetItemCount()-1;
+	int maxcol = m_cMenuList.GetHeaderCtrl()->GetItemCount() - 1;
 	int col;
 	for (col = mincol; col <= maxcol; col++)
 	{
@@ -345,7 +345,7 @@ BOOL CSetExtMenu::OnInitDialog()
 	m_cMenuList.SetExtendedStyle(LVS_EX_CHECKBOXES | LVS_EX_FULLROWSELECT | LVS_EX_DOUBLEBUFFER);
 
 	m_cMenuList.DeleteAllItems();
-	int c = ((CHeaderCtrl*)(m_cMenuList.GetDlgItem(0)))->GetItemCount()-1;
+	int c = m_cMenuList.GetHeaderCtrl()->GetItemCount() - 1;
 	while (c>=0)
 		m_cMenuList.DeleteColumn(c--);
 	m_cMenuList.InsertColumn(0, _T(""));
@@ -365,7 +365,7 @@ BOOL CSetExtMenu::OnInitDialog()
 
 	m_cMenuList.SetImageList(&m_imgList, LVSIL_SMALL);
 	int mincol = 0;
-	int maxcol = ((CHeaderCtrl*)(m_cMenuList.GetDlgItem(0)))->GetItemCount()-1;
+	int maxcol = m_cMenuList.GetHeaderCtrl()->GetItemCount() - 1;
 	int col;
 	for (col = mincol; col <= maxcol; col++)
 	{

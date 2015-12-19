@@ -58,7 +58,7 @@ BOOL CSetHooks::OnInitDialog()
 
 	// clear all previously set header columns
 	m_cHookList.DeleteAllItems();
-	int c = ((CHeaderCtrl*)(m_cHookList.GetDlgItem(0)))->GetItemCount()-1;
+	int c = m_cHookList.GetHeaderCtrl()->GetItemCount() - 1;
 	while (c>=0)
 		m_cHookList.DeleteColumn(c--);
 
@@ -100,7 +100,7 @@ void CSetHooks::RebuildHookList()
 		}
 	}
 
-	int maxcol = ((CHeaderCtrl*)(m_cHookList.GetDlgItem(0)))->GetItemCount()-1;
+	int maxcol = m_cHookList.GetHeaderCtrl()->GetItemCount() - 1;
 	for (int col = 0; col <= maxcol; col++)
 	{
 		m_cHookList.SetColumnWidth(col, LVSCW_AUTOSIZE_USEHEADER);

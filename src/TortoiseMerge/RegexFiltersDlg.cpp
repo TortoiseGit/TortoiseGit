@@ -139,7 +139,7 @@ void CRegexFiltersDlg::SetupListControl()
 	m_RegexList.SetRedraw(false);
 	m_RegexList.DeleteAllItems();
 
-	int c = ((CHeaderCtrl*)(m_RegexList.GetDlgItem(0)))->GetItemCount()-1;
+	int c = m_RegexList.GetHeaderCtrl()->GetItemCount() - 1;
 	while (c>=0)
 		m_RegexList.DeleteColumn(c--);
 	m_RegexList.InsertColumn(0, L"Regex");

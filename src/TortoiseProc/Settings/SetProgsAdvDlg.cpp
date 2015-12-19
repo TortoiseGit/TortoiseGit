@@ -133,7 +133,7 @@ BOOL CSetProgsAdvDlg::OnInitDialog()
 	m_ToolListCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_DOUBLEBUFFER);
 
 	m_ToolListCtrl.DeleteAllItems();
-	int c = ((CHeaderCtrl*)(m_ToolListCtrl.GetDlgItem(0)))->GetItemCount()-1;
+	int c = m_ToolListCtrl.GetHeaderCtrl()->GetItemCount() - 1;
 	while (c>=0)
 		m_ToolListCtrl.DeleteColumn(c--);
 
@@ -147,7 +147,7 @@ BOOL CSetProgsAdvDlg::OnInitDialog()
 
 	m_ToolListCtrl.SetRedraw(FALSE);
 	int mincol = 0;
-	int maxcol = ((CHeaderCtrl*)(m_ToolListCtrl.GetDlgItem(0)))->GetItemCount()-1;
+	int maxcol = m_ToolListCtrl.GetHeaderCtrl()->GetItemCount() - 1;
 	int col;
 	for (col = mincol; col <= maxcol; col++)
 	{

@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008, 2014 - TortoiseSVN
-// Copyright (C) 2008-2014 - TortoiseGit
+// Copyright (C) 2008-2015 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -156,7 +156,7 @@ void ColumnManager::ReadSettings
 
 	// clear all previously set header columns
 
-	int c = ((CHeaderCtrl*)(control->GetDlgItem(0)))->GetItemCount()-1;
+	int c = control->GetHeaderCtrl()->GetItemCount() - 1;
 	while (c>=0)
 		control->DeleteColumn(c--);
 
@@ -533,7 +533,7 @@ void ColumnManager::ApplyColumnOrder()
 	// we must have placed all columns or something is really fishy ..
 
 	assert (gridColumnOrder.size() == columns.size());
-	assert (GetColumnCount() == ((CHeaderCtrl*)(control->GetDlgItem(0)))->GetItemCount());
+	assert(GetColumnCount() == control->GetHeaderCtrl()->GetItemCount());
 
 	// o.k., apply our column ordering
 
