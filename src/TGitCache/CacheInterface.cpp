@@ -139,20 +139,32 @@ bool SendCacheCommand(BYTE command, const WCHAR * path /* = NULL */)
 }
 
 CBlockCacheForPath::CBlockCacheForPath(const WCHAR * aPath)
+	: m_bBlocked(false)
 {
 	wcsncpy_s(path, aPath, _countof(path) - 1);
 
-	SendCacheCommand(TGITCACHECOMMAND_BLOCK, path);
+	if (!SendCacheCommand(TGITCACHECOMMAND_BLOCK, path))
+		return;
+
 	// Wait a short while to make sure the cache has
 	// processed this command. Without this, we risk
 	// executing the svn command before the cache has
 	// blocked the path and already gets change notifications.
 	Sleep(20);
+	m_bBlocked = true;
 }
 
 CBlockCacheForPath::~CBlockCacheForPath()
 {
-	int retry = 3;
-	while (retry-- && !SendCacheCommand(TGITCACHECOMMAND_UNBLOCK, path))
-		Sleep(10);
+	if (!m_bBlocked)
+		return;
+
+	for (int retry = 0; retry < 3; ++retry)
+	{
+		if (retry > 0)
+			Sleep(10);
+
+		if (SendCacheCommand(TGITCACHECOMMAND_UNBLOCK, path))
+			break;
+	}
 }
