@@ -2173,6 +2173,13 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 				break;
 			}
 		}
+
+		// Add %GIT_EXEC_PATH% to %PATH% when launching libgit2 filter executable
+		// It is possible that the filter points to a git subcommand, that is located at libexec\git-core
+		CString gitExecPath = CGit::ms_MsysGitRootDir;
+		gitExecPath.Append(_T("libexec\\git-core"));
+		m_Environment.AddToPath(gitExecPath);
+
 		if (git_filter_register("filter", git_filter_filter_new(sh, m_Environment), GIT_FILTER_DRIVER_PRIORITY))
 			return FALSE;
 	}
