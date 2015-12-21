@@ -797,8 +797,7 @@ void CGitLogListBase::DrawTagBranch(HDC hdc, CDC& W_Dc, HTHEME hTheme, CRect& re
 				DrawUpTriangle(hdc, newRect, color, bold);
 			}
 
-			if (refType == CGit::REF_TYPE::LOCAL_BRANCH)
-				m_BranchPosMap[shortname] = rt;
+			m_RefLabelPosMap[refList[i].fullName] = rt;
 
 			rt.left = rt.right + 1;
 		}
@@ -1272,11 +1271,11 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 
 			if (pLVCD->iSubItem == LOGLIST_MESSAGE)
 			{
-				// If the top index of list is changed, the branch position map is outdated.
+				// If the top index of list is changed, the position map of reference label is outdated.
 				if (m_OldTopIndex != GetTopIndex())
 				{
 					m_OldTopIndex = GetTopIndex();
-					m_BranchPosMap.clear();
+					m_RefLabelPosMap.clear();
 				}
 
 				if (m_arShownList.GetCount() > (INT_PTR)pLVCD->nmcd.dwItemSpec)
@@ -1354,6 +1353,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 							refLabel.hasTracking = false;
 							refLabel.sameName = false;
 							refLabel.name = CGit::GetShortName(str, &refLabel.refType);
+							refLabel.fullName = str;
 
 							switch (refLabel.refType)
 							{
@@ -1403,6 +1403,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 													refLabel.simplifiedName = pullRemote + _T("/");
 												refLabel.sameName = sameName;
 											}
+											refLabel.fullName = defaultUpstream;
 											refsToShow.push_back(refLabel);
 											remoteTrackingList.push_back(defaultUpstream);
 											continue;
@@ -2305,11 +2306,10 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					CString str;
 					str.LoadString(IDS_LOG_PUSH);
 
-					POINT pt = point;
-					ScreenToClient(&pt);
 					CString branch;
 					size_t index = (size_t)-1;
-					if (IsMouseOnBranchLabel(pSelLogEntry, pt, branch, &index))
+					CGit::REF_TYPE type = CGit::REF_TYPE::LOCAL_BRANCH;
+					if (IsMouseOnRefLabelFromPopupMenu(pSelLogEntry, point, type, &branch, &index))
 						str.Insert(str.Find(L'.'), L" \"" + branch + L'"');
 
 					popup.AppendMenuIcon(ID_PUSH, str, IDI_PUSH);
@@ -4274,7 +4274,8 @@ BOOL CGitLogListBase::OnToolTipText(UINT /*id*/, NMHDR* pNMHDR, LRESULT* pResult
 		if (lvhitTestInfo.iSubItem == LOGLIST_MESSAGE)
 		{
 			CString branch;
-			if (IsMouseOnBranchLabel((GitRevLoglist*)m_arShownList.SafeGetAt(nItem), lvhitTestInfo.pt, branch))
+			CGit::REF_TYPE type = CGit::REF_TYPE::LOCAL_BRANCH;
+			if (IsMouseOnRefLabel((GitRevLoglist*)m_arShownList.SafeGetAt(nItem), lvhitTestInfo.pt, type, &branch))
 			{
 				MAP_STRING_STRING descriptions;
 				g_Git.GetBranchDescriptions(descriptions);
@@ -4406,24 +4407,36 @@ CString CGitLogListBase::GetToolTipText(int nItem, int nSubItem)
 	return CString();
 }
 
-bool CGitLogListBase::IsMouseOnBranchLabel(const GitRevLoglist* pLogEntry, const POINT& pt, CString& branch, size_t* pIndex /*nullptr*/)
+bool CGitLogListBase::IsMouseOnRefLabelFromPopupMenu(const GitRevLoglist* pLogEntry, const CPoint& point, CGit::REF_TYPE& type, CString* pShortname /*nullptr*/, size_t* pIndex /*nullptr*/)
+{
+	POINT pt = point;
+	ScreenToClient(&pt);
+	return IsMouseOnRefLabel(pLogEntry, pt, type, pShortname, pIndex);
+}
+
+bool CGitLogListBase::IsMouseOnRefLabel(const GitRevLoglist* pLogEntry, const POINT& pt, CGit::REF_TYPE& type, CString* pShortname /*nullptr*/, size_t* pIndex /*nullptr*/)
 {
 	if (!pLogEntry)
 		return false;
 
 	for (size_t i = 0; i < m_HashMap[pLogEntry->m_CommitHash].size(); ++i)
 	{
-		if (!CGit::GetShortName(m_HashMap[pLogEntry->m_CommitHash][i], branch, L"refs/heads/"))
+		const auto labelpos = m_RefLabelPosMap.find(m_HashMap[pLogEntry->m_CommitHash][i]);
+		if (labelpos == m_RefLabelPosMap.cend() || !labelpos->second.PtInRect(pt))
 			continue;
 
-		const auto branchpos = m_BranchPosMap.find(branch);
-		if (branchpos == m_BranchPosMap.cend() || !branchpos->second.PtInRect(pt))
-			continue;
+		CGit::REF_TYPE foundType;
+		if (pShortname)
+			*pShortname = CGit::GetShortName(m_HashMap[pLogEntry->m_CommitHash][i], &foundType);
+		else
+			CGit::GetShortName(m_HashMap[pLogEntry->m_CommitHash][i], &foundType);
+		if (foundType != type && type != CGit::REF_TYPE::UNKNOWN)
+			return false;
 
+		type = foundType;
 		if (pIndex)
 			*pIndex = i;
 		return true;
 	}
-	branch.Empty();
 	return false;
 }
