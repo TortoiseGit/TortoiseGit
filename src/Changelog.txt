@@ -6,6 +6,7 @@ Released: unreleased
  * Allow to reset stored decisions (cf. issue #2640)
  * Fixed issue #2643: Set branch description on its creation
  * Fixed issue #1629: Have the push dialog opened via right-click in log default to branch that was actually clicked on
+ * Update TortoiseGitPlink to version 0.66
 
 == Bug Fixes ==
  * Fixed issue #2647: TortoiseGitBlame does not display files correctly with mixed line endings (such as CRCRLF)

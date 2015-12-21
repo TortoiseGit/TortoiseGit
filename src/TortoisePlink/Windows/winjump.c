@@ -429,7 +429,11 @@ static IShellLink *make_shell_link(const char *appname,
     ret->lpVtbl->SetPath(ret, app_path);
 
     if (sessionname) {
-        param_string = dupcat("@", sessionname, NULL);
+        /* The leading space is reported to work around a Windows 10
+         * behaviour change in which an argument string starting with
+         * '@' causes the SetArguments method to silently do the wrong
+         * thing. */
+        param_string = dupcat(" @", sessionname, NULL);
     } else {
         param_string = dupstr("");
     }

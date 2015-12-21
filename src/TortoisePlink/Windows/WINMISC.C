@@ -69,6 +69,13 @@ Filename *filename_deserialise(void *vdata, int maxsize, int *used)
     return filename_from_str(data);
 }
 
+char filename_char_sanitise(char c)
+{
+    if (strchr("<>:\"/\\|?*", c))
+        return '.';
+    return c;
+}
+
 #ifndef NO_SECUREZEROMEMORY
 /*
  * Windows implementation of smemclr (see misc.c) using SecureZeroMemory.

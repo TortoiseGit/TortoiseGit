@@ -172,7 +172,7 @@ struct terminal_tag {
 #define ARGS_MAX 32		       /* max # of esc sequence arguments */
 #define ARG_DEFAULT 0		       /* if an arg isn't specified */
 #define def(a,d) ( (a) == ARG_DEFAULT ? (d) : (a) )
-    int esc_args[ARGS_MAX];
+    unsigned esc_args[ARGS_MAX];
     int esc_nargs;
     int esc_query;
 #define ANSI(x,y)	((x)+((y)<<8))
