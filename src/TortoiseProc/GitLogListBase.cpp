@@ -2111,12 +2111,21 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					)
 				{
 					std::vector<const CString*> branchs;
-					for (size_t i = 0; i < m_HashMap[pSelLogEntry->m_CommitHash].size(); ++i)
+					auto addCheck = [&](const CString& ref)
 					{
-						CString ref = m_HashMap[pSelLogEntry->m_CommitHash][i];
-						if(ref.Find(_T("refs/heads/")) == 0 && ref != currentBranch)
+						if (ref.Find(_T("refs/heads/")) != 0 || ref == currentBranch)
+							return;
+						branchs.push_back(&ref);
+					};
+					size_t index = (size_t)-1;
+					CGit::REF_TYPE type = CGit::REF_TYPE::UNKNOWN;
+					if (IsMouseOnRefLabelFromPopupMenu(pSelLogEntry, point, type, nullptr, &index))
+						addCheck(m_HashMap[pSelLogEntry->m_CommitHash][index]);
+					else
+					{
+						for (const auto& ref : m_HashMap[pSelLogEntry->m_CommitHash])
 						{
-							branchs.push_back(&m_HashMap[pSelLogEntry->m_CommitHash][i]);
+							addCheck(ref);
 						}
 					}
 
@@ -2352,10 +2361,22 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 				if( this->m_HashMap.find(pSelLogEntry->m_CommitHash) != m_HashMap.end() )
 				{
 					std::vector<const CString*> branchs;
-					for (size_t i = 0; i < m_HashMap[pSelLogEntry->m_CommitHash].size(); ++i)
+					auto addCheck = [&](const CString& ref)
 					{
-						if(m_HashMap[pSelLogEntry->m_CommitHash][i] != currentBranch)
-							branchs.push_back(&m_HashMap[pSelLogEntry->m_CommitHash][i]);
+						if (ref == currentBranch)
+							return;
+						branchs.push_back(&ref);
+					};
+					size_t index = (size_t)-1;
+					CGit::REF_TYPE type = CGit::REF_TYPE::UNKNOWN;
+					if (IsMouseOnRefLabelFromPopupMenu(pSelLogEntry, point, type, nullptr, &index))
+						addCheck(m_HashMap[pSelLogEntry->m_CommitHash][index]);
+					else
+					{
+						for (const auto& ref : m_HashMap[pSelLogEntry->m_CommitHash])
+						{
+							addCheck(ref);
+						}
 					}
 					CString str;
 					if (branchs.size() == 1)
