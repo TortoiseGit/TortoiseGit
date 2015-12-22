@@ -152,6 +152,78 @@ int CGitLogList::CherryPickFrom(CString from, CString to)
 	return 0;
 }
 
+int CGitLogList::DeleteRef(const CString& ref)
+{
+	CString shortname;
+	if (CGit::GetShortName(ref, shortname, _T("refs/remotes/")))
+	{
+		CString msg;
+		msg.Format(IDS_PROC_DELETEREMOTEBRANCH, (LPCTSTR)ref);
+		int result = CMessageBox::Show(nullptr, msg, _T("TortoiseGit"), 3, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_PROC_DELETEREMOTEBRANCH_LOCALREMOTE)), CString(MAKEINTRESOURCE(IDS_PROC_DELETEREMOTEBRANCH_LOCAL)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON)));
+		if (result == 1)
+		{
+			CString remoteName = shortname.Left(shortname.Find(L'/'));
+			shortname = shortname.Mid(shortname.Find(L'/') + 1);
+			if (CAppUtils::IsSSHPutty())
+				CAppUtils::LaunchPAgent(nullptr, &remoteName);
+
+			CSysProgressDlg sysProgressDlg;
+			sysProgressDlg.SetTitle(CString(MAKEINTRESOURCE(IDS_APPNAME)));
+			sysProgressDlg.SetLine(1, CString(MAKEINTRESOURCE(IDS_DELETING_REMOTE_REFS)));
+			sysProgressDlg.SetLine(2, CString(MAKEINTRESOURCE(IDS_PROGRESSWAIT)));
+			sysProgressDlg.SetShowProgressBar(false);
+			sysProgressDlg.ShowModal(this, true);
+			STRING_VECTOR list;
+			list.push_back(_T("refs/heads/") + shortname);
+			if (g_Git.DeleteRemoteRefs(remoteName, list))
+				CMessageBox::Show(nullptr, g_Git.GetGitLastErr(_T("Could not delete remote ref."), CGit::GIT_CMD_PUSH), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+			sysProgressDlg.Stop();
+			return TRUE;
+		}
+		else if (result == 2)
+		{
+			if (g_Git.DeleteRef(ref))
+			{
+				CMessageBox::Show(nullptr, g_Git.GetGitLastErr(L"Could not delete reference.", CGit::GIT_CMD_DELETETAGBRANCH), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+				return FALSE;
+			}
+			return TRUE;
+		}
+		return FALSE;
+	}
+	else if (CGit::GetShortName(ref, shortname, _T("refs/stash")))
+	{
+		CString err;
+		std::vector<GitRevLoglist> stashList;
+		size_t count = !GitRevLoglist::GetRefLog(ref, stashList, err) ? stashList.size() : 0;
+		CString msg;
+		msg.Format(IDS_PROC_DELETEALLSTASH, count);
+		if (CMessageBox::Show(nullptr, msg, _T("TortoiseGit"), 2, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_DELETEBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 1)
+		{
+			CString sCmd;
+			sCmd.Format(_T("git.exe stash clear"));
+			CString out;
+			if (g_Git.Run(sCmd, &out, CP_UTF8))
+				CMessageBox::Show(nullptr, out, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+			return TRUE;
+		}
+		return FALSE;
+	}
+
+	CString msg;
+	msg.Format(IDS_PROC_DELETEBRANCHTAG, (LPCTSTR)ref);
+	if (CMessageBox::Show(nullptr, msg, _T("TortoiseGit"), 2, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_DELETEBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 1)
+	{
+		if (g_Git.DeleteRef(ref))
+		{
+			CMessageBox::Show(nullptr, g_Git.GetGitLastErr(L"Could not delete reference.", CGit::GIT_CMD_DELETETAGBRANCH), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+			return FALSE;
+		}
+		return TRUE;
+	}
+	return FALSE;
+}
+
 void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMenu *popmenu)
 {
 	POSITION pos = GetFirstSelectedItemPosition();
@@ -929,72 +1001,23 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 					return;
 				}
 				CString shortname;
-				if (CGit::GetShortName(*branch, shortname, _T("refs/remotes/")))
+				if (branch == (CString*)MAKEINTRESOURCE(IDS_ALL))
 				{
-					CString msg;
-					msg.Format(IDS_PROC_DELETEREMOTEBRANCH, (LPCTSTR)*branch);
-					int result = CMessageBox::Show(NULL, msg, _T("TortoiseGit"), 3, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_PROC_DELETEREMOTEBRANCH_LOCALREMOTE)), CString(MAKEINTRESOURCE(IDS_PROC_DELETEREMOTEBRANCH_LOCAL)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON)));
-					if (result == 1)
+					CString currentBranch = L"refs/heads/" + m_CurrentBranch;
+					bool nothingDeleted = true;
+					for (const auto& ref : m_HashMap[pSelLogEntry->m_CommitHash])
 					{
-						CString remoteName = shortname.Left(shortname.Find('/'));
-						shortname = shortname.Mid(shortname.Find('/') + 1);
-						if(CAppUtils::IsSSHPutty())
-							CAppUtils::LaunchPAgent(NULL, &remoteName);
-
-						CSysProgressDlg sysProgressDlg;
-						sysProgressDlg.SetTitle(CString(MAKEINTRESOURCE(IDS_APPNAME)));
-						sysProgressDlg.SetLine(1, CString(MAKEINTRESOURCE(IDS_DELETING_REMOTE_REFS)));
-						sysProgressDlg.SetLine(2, CString(MAKEINTRESOURCE(IDS_PROGRESSWAIT)));
-						sysProgressDlg.SetShowProgressBar(false);
-						sysProgressDlg.ShowModal(this, true);
-						STRING_VECTOR list;
-						list.push_back(_T("refs/heads/") + shortname);
-						if (g_Git.DeleteRemoteRefs(remoteName, list))
-							CMessageBox::Show(NULL, g_Git.GetGitLastErr(_T("Could not delete remote ref."), CGit::GIT_CMD_PUSH), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
-						sysProgressDlg.Stop();
+						if (ref == currentBranch)
+							continue;
+						if (!DeleteRef(ref))
+							break;
+						nothingDeleted = false;
 					}
-					else if (result == 2)
-					{
-						if (g_Git.DeleteRef(*branch))
-						{
-							CMessageBox::Show(nullptr, g_Git.GetGitLastErr(L"Could not delete reference.", CGit::GIT_CMD_DELETETAGBRANCH), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
-							return;
-						}
-					}
-					else
+					if (nothingDeleted)
 						return;
 				}
-				else if (CGit::GetShortName(*branch, shortname, _T("refs/stash")))
-				{
-					CString err;
-					std::vector<GitRevLoglist> stashList;
-					size_t count = !GitRevLoglist::GetRefLog(*branch, stashList, err) ? stashList.size() : 0;
-					CString msg;
-					msg.Format(IDS_PROC_DELETEALLSTASH, count);
-					if (CMessageBox::Show(NULL, msg, _T("TortoiseGit"), 2, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_DELETEBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 1)
-					{
-						CString sCmd;
-						sCmd.Format(_T("git.exe stash clear"));
-						CString out;
-						if (g_Git.Run(sCmd, &out, CP_UTF8))
-							CMessageBox::Show(NULL, out, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
-					}
-					else
-						return;
-				}
-				else
-				{
-					CString msg;
-					msg.Format(IDS_PROC_DELETEBRANCHTAG, (LPCTSTR)*branch);
-					if (CMessageBox::Show(NULL, msg, _T("TortoiseGit"), 2, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_DELETEBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 1)
-					{
-						if (g_Git.DeleteRef(*branch))
-						{
-							CMessageBox::Show(nullptr, g_Git.GetGitLastErr(L"Could not delete reference.", CGit::GIT_CMD_DELETETAGBRANCH), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
-							return;
-						}
-					}
-				}
+				else if (!DeleteRef(*branch))
+					return;
 				this->ReloadHashMap();
 				if (m_pFindDialog)
 					m_pFindDialog->RefreshList();

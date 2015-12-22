@@ -2397,6 +2397,8 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 							submenu.AppendMenuIcon(ID_DELETE + (i << 16), *branchs[i]);
 							submenu.SetMenuItemData(ID_DELETE + (i << 16), (ULONG_PTR)branchs[i]);
 						}
+						submenu.AppendMenuIcon(ID_DELETE + (branchs.size() << 16), IDS_ALL);
+						submenu.SetMenuItemData(ID_DELETE + (branchs.size() << 16), (ULONG_PTR)MAKEINTRESOURCE(IDS_ALL));
 
 						popup.AppendMenuIcon(ID_DELETE,str, IDI_DELETE, submenu.m_hMenu);
 						bAddSeparator = true;
