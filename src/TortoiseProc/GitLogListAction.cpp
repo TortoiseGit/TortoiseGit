@@ -863,7 +863,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 		case ID_PUSH:
 			{
 				CString guessAssociatedBranch = pSelLogEntry->m_CommitHash;
-				CString *branch = (CString*)((CIconMenu*)popmenu)->GetMenuItemData(cmd);
+				CString* branch = popmenu ? (CString*)((CIconMenu*)popmenu)->GetMenuItemData(cmd) : nullptr;
 				if (branch)
 					guessAssociatedBranch = *branch;
 				else if (!m_HashMap[pSelLogEntry->m_CommitHash].empty() && m_HashMap[pSelLogEntry->m_CommitHash].at(0).Find(_T("refs/heads/")) == 0)
@@ -910,7 +910,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			break;
 		case ID_DELETE:
 			{
-				CString *branch = (CString*)((CIconMenu*)popmenu)->GetMenuItemData(cmd);
+				CString* branch = popmenu ? (CString*)((CIconMenu*)popmenu)->GetMenuItemData(cmd) : nullptr;
 				if (!branch)
 				{
 					CMessageBox::Show(NULL,IDS_ERROR_NOREF,IDS_APPNAME,MB_OK|MB_ICONERROR);
