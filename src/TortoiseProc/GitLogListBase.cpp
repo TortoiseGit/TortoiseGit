@@ -2090,7 +2090,14 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 				str.Format(IDS_LOG_POPUP_MERGEREV, (LPCTSTR)g_Git.GetCurrentBranch());
 
 				if (m_ContextMenuMask&GetContextMenuBit(ID_MERGEREV) && !isHeadCommit && m_hasWC && !isMergeActive && !isStash)
+				{
 					popup.AppendMenuIcon(ID_MERGEREV, str, IDI_MERGE);
+
+					size_t index = (size_t)-1;
+					CGit::REF_TYPE type = CGit::REF_TYPE::UNKNOWN;
+					if (IsMouseOnRefLabelFromPopupMenu(pSelLogEntry, point, type, nullptr, &index))
+						popup.SetMenuItemData(ID_MERGEREV, (ULONG_PTR)&m_HashMap[pSelLogEntry->m_CommitHash][index]);
+				}
 
 				str.Format(IDS_RESET_TO_THIS_FORMAT, (LPCTSTR)g_Git.GetCurrentBranch());
 
@@ -2142,10 +2149,23 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 				}
 
 				if (m_ContextMenuMask&GetContextMenuBit(ID_SWITCHTOREV) && !isHeadCommit && m_hasWC && !isStash)
-					popup.AppendMenuIcon(ID_SWITCHTOREV, IDS_SWITCH_TO_THIS , IDI_SWITCH);
+				{
+					popup.AppendMenuIcon(ID_SWITCHTOREV, IDS_SWITCH_TO_THIS, IDI_SWITCH);
+					size_t index = (size_t)-1;
+					CGit::REF_TYPE type = CGit::REF_TYPE::UNKNOWN;
+					if (IsMouseOnRefLabelFromPopupMenu(pSelLogEntry, point, type, nullptr, &index))
+						popup.SetMenuItemData(ID_SWITCHTOREV, (ULONG_PTR)&m_HashMap[pSelLogEntry->m_CommitHash][index]);
+				}
 
 				if (m_ContextMenuMask&GetContextMenuBit(ID_CREATE_BRANCH) && !isStash)
-					popup.AppendMenuIcon(ID_CREATE_BRANCH, IDS_CREATE_BRANCH_AT_THIS , IDI_COPY);
+				{
+					popup.AppendMenuIcon(ID_CREATE_BRANCH, IDS_CREATE_BRANCH_AT_THIS, IDI_COPY);
+
+					size_t index = (size_t)-1;
+					CGit::REF_TYPE type = CGit::REF_TYPE::REMOTE_BRANCH;
+					if (IsMouseOnRefLabelFromPopupMenu(pSelLogEntry, point, type, nullptr, &index))
+						popup.SetMenuItemData(ID_CREATE_BRANCH, (ULONG_PTR)&m_HashMap[pSelLogEntry->m_CommitHash][index]);
+				}
 
 				if (m_ContextMenuMask&GetContextMenuBit(ID_CREATE_TAG) && !isStash)
 					popup.AppendMenuIcon(ID_CREATE_TAG,IDS_CREATE_TAG_AT_THIS , IDI_TAG);

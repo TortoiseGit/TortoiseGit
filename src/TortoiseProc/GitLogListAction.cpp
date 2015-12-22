@@ -434,14 +434,20 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 		case ID_CREATE_BRANCH:
 		case ID_CREATE_TAG:
 			{
+				const CString* branch = popmenu ? (const CString*)((CIconMenu*)popmenu)->GetMenuItemData(cmd & 0xFFFF) : nullptr;
 				CString str = pSelLogEntry->m_CommitHash.ToString();
-				// try to guess remote branch in order to enable tracking
-				for (size_t i = 0; i < m_HashMap[pSelLogEntry->m_CommitHash].size(); ++i)
+				if (branch)
+					str = *branch;
+				else
 				{
-					if (m_HashMap[pSelLogEntry->m_CommitHash][i].Find(_T("refs/remotes/")) == 0)
+					// try to guess remote branch in order to enable tracking
+					for (size_t i = 0; i < m_HashMap[pSelLogEntry->m_CommitHash].size(); ++i)
 					{
-						str = m_HashMap[pSelLogEntry->m_CommitHash][i];
-						break;
+						if (m_HashMap[pSelLogEntry->m_CommitHash][i].Find(_T("refs/remotes/")) == 0)
+						{
+							str = m_HashMap[pSelLogEntry->m_CommitHash][i];
+							break;
+						}
 					}
 				}
 				CAppUtils::CreateBranchTag((cmd&0xFFFF) == ID_CREATE_TAG, &str);
@@ -1011,7 +1017,10 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 		case ID_MERGEREV:
 			{
 				CString str = pSelLogEntry->m_CommitHash.ToString();
-				if (!m_HashMap[pSelLogEntry->m_CommitHash].empty())
+				const CString* branch = popmenu ? (const CString*)((CIconMenu*)popmenu)->GetMenuItemData(cmd & 0xFFFF) : nullptr;
+				if (branch)
+					str = *branch;
+				else if (!m_HashMap[pSelLogEntry->m_CommitHash].empty())
 					str = m_HashMap[pSelLogEntry->m_CommitHash].at(0);
 				// we need an URL to complete this command, so error out if we can't get an URL
 				if(CAppUtils::Merge(&str))
