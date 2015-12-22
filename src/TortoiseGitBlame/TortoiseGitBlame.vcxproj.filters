@@ -284,9 +284,6 @@
     <ClInclude Include="..\TortoiseProc\GitLogListBase.h">
       <Filter>TortoiseGitProc</Filter>
     </ClInclude>
-    <ClInclude Include="GitBlameLogList.h">
-      <Filter>TortoiseGitProc</Filter>
-    </ClInclude>
     <ClInclude Include="..\TortoiseProc\lanes.h">
       <Filter>TortoiseGitProc</Filter>
     </ClInclude>
@@ -337,6 +334,9 @@
     </ClInclude>
     <ClInclude Include="..\Resources\LoglistCommonResource.h">
       <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GitBlameLogList.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
