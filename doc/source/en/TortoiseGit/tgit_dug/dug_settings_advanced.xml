@@ -159,7 +159,7 @@
                 <para>
                     This option determines how the Win7 taskbar icons of the various
                     TortoiseGit dialogs and windows are grouped together. This
-                    option has no effect on Windows XP or Vista!
+                    option has no effect on Windows Vista!
                 </para>
                 <para>
                     <orderedlist>

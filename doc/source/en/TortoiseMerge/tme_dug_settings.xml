@@ -35,7 +35,6 @@
             dialog for multiple choices).
             When unset, traditional message box is used.
             Note that this requires at least Windows Vista.
-            Windows XP is not supported.
             Default is set.
         </para>
         <para>
