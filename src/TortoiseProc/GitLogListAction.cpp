@@ -560,12 +560,8 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				const CString* branch = (const CString*)((CIconMenu*)popmenu)->GetMenuItemData(cmd);
 				if(branch)
 				{
-					CString name;
-					if(branch->Find(_T("refs/heads/")) ==0 )
-						name = branch->Mid(11);
-					else
-						name = *branch;
-
+					CString name = *branch;
+					CGit::GetShortName(*branch, name, L"refs/heads/");
 					CAppUtils::PerformSwitch(name);
 				}
 				ReloadHashMap();
@@ -784,14 +780,8 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				auto refList = m_HashMap[pSelLogEntry->m_CommitHash];
 				dlg.m_Upstream = refList.empty() ? pSelLogEntry->m_CommitHash.ToString() : refList.front();
 				for (const auto& ref : refList)
-				{
-					if (ref.Left(11) == _T("refs/heads/"))
-					{
-						// 11=len("refs/heads/")
-						dlg.m_Upstream = ref.Mid(11);
+					if (CGit::GetShortName(ref, dlg.m_Upstream, L"refs/heads/"))
 						break;
-					}
-				}
 
 				if(dlg.DoModal() == IDOK)
 				{
