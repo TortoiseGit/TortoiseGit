@@ -2102,7 +2102,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					&& (m_ContextMenuMask&GetContextMenuBit(ID_SWITCHBRANCH) && m_hasWC && !isStash)
 					)
 				{
-					std::vector<CString *> branchs;
+					std::vector<const CString*> branchs;
 					for (size_t i = 0; i < m_HashMap[pSelLogEntry->m_CommitHash].size(); ++i)
 					{
 						CString ref = m_HashMap[pSelLogEntry->m_CommitHash][i];
@@ -2331,7 +2331,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 			{
 				if( this->m_HashMap.find(pSelLogEntry->m_CommitHash) != m_HashMap.end() )
 				{
-					std::vector<CString *> branchs;
+					std::vector<const CString*> branchs;
 					for (size_t i = 0; i < m_HashMap[pSelLogEntry->m_CommitHash].size(); ++i)
 					{
 						if(m_HashMap[pSelLogEntry->m_CommitHash][i] != currentBranch)
