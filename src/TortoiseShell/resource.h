@@ -205,6 +205,7 @@
 #define IDC_LAST_AUTHOR                 1008
 #define IDC_HEAD_DATE                   1009
 #define IDC_LAST_DATE                   1010
+#define IDC_SHELL_REMOTE_URL            1011
 #define IDC_SHOWLOG                     1016
 #define IDC_SHOWSETTINGS                1017
 #define IDI_REPOBROWSE                  5145

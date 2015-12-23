@@ -16,6 +16,7 @@ Released: unreleased
  * Update TortoiseGitPlink to version 0.66
  * Fixed issue #943: Allow to use keyboard shortcuts in Git progress dialog (e.g., ALT+R for ReCommit after commit)
  * Fixed issue #2314: Allow to preserve merges on rebase
+ * Fixed issue #2673: Display tracked remote URL in folder properties
 
 == Bug Fixes ==
  * Fixed issue #2647: TortoiseGitBlame does not display files correctly with mixed line endings (such as CRCRLF)

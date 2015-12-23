@@ -556,6 +556,7 @@ void CGitPropertyPage::InitWorkfileView()
 
 	CString branch;
 	CString remotebranch;
+	CString remoteUrl;
 	if (!git_repository_head_detached(repository))
 	{
 		CAutoReference head;
@@ -577,6 +578,13 @@ void CGitPropertyPage::InitWorkfileView()
 			{
 				remotebranch = CUnicodeUtils::GetUnicode(CStringA(upstreambranchname->ptr, (int)upstreambranchname->size));
 				remotebranch = remotebranch.Mid(13); // 13=len("refs/remotes/")
+				int pos = remotebranch.Find(L'/');
+				if (pos > 0)
+				{
+					CString remoteName;
+					remoteName.Format(L"remote.%s.url", remotebranch.Left(pos));
+					config.GetString(remoteName, remoteUrl);
+				}
 			}
 		}
 	}
@@ -595,6 +603,7 @@ void CGitPropertyPage::InitWorkfileView()
 
 	SetDlgItemText(m_hwnd,IDC_SHELL_CURRENT_BRANCH,branch.Trim());
 	SetDlgItemText(m_hwnd,IDC_SHELL_REMOTE_BRANCH, remotebranch);
+	SetDlgItemText(m_hwnd, IDC_SHELL_REMOTE_URL, remoteUrl);
 
 	git_oid oid;
 	CAutoCommit HEADcommit;
