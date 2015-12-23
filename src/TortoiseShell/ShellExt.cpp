@@ -242,12 +242,12 @@ STDMETHODIMP CShellExt::QueryInterface(REFIID riid, LPVOID FAR *ppv)
 
 STDMETHODIMP_(ULONG) CShellExt::AddRef()
 {
-	return ++m_cRef;
+	return InterlockedIncrement(&m_cRef);
 }
 
 STDMETHODIMP_(ULONG) CShellExt::Release()
 {
-	if (--m_cRef)
+	if (InterlockedDecrement(&m_cRef))
 		return m_cRef;
 
 	delete this;
