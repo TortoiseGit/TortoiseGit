@@ -950,8 +950,17 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				const CString* branch = popmenu ? (const CString*)((CIconMenu*)popmenu)->GetMenuItemData(cmd) : nullptr;
 				if (branch)
 					guessAssociatedBranch = *branch;
-				else if (!m_HashMap[pSelLogEntry->m_CommitHash].empty() && m_HashMap[pSelLogEntry->m_CommitHash].at(0).Find(_T("refs/heads/")) == 0)
-					guessAssociatedBranch = m_HashMap[pSelLogEntry->m_CommitHash].at(0);
+				else
+				{
+					for (auto abranch : m_HashMap[pSelLogEntry->m_CommitHash])
+					{
+						if (abranch.Find(L"refs/heads/") == 0)
+						{
+							guessAssociatedBranch = abranch;
+							break;
+						}
+					}
+				}
 				if (CAppUtils::Push(guessAssociatedBranch))
 					Refresh();
 			}
