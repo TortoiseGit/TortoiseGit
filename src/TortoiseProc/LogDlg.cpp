@@ -2827,7 +2827,7 @@ void CLogDlg::OnDtnDropdownDatefrom(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 	// the date control should not show the "today" button
 	CMonthCalCtrl * pCtrl = m_DateFrom.GetMonthCalCtrl();
 	if (pCtrl)
-		SetWindowLongPtr(pCtrl->GetSafeHwnd(), GWL_STYLE, LONG_PTR(pCtrl->GetStyle() | MCS_NOTODAY));
+		pCtrl->ModifyStyle(0, MCS_NOTODAY);
 	*pResult = 0;
 }
 
