@@ -37,6 +37,21 @@
 #include "FindDlg.h"
 #include "SysInfo.h"
 
+template < typename Cont, typename Pred>
+void for_each(Cont& c, Pred p)
+{
+	std::for_each(cbegin(c), cend(c), p);
+}
+
+template<typename T>
+using const_iterator = typename T::const_iterator;
+
+template <typename Cont, typename Pred>
+const_iterator<Cont> find_if(Cont& c, Pred p)
+{
+	return std::find_if(cbegin(c), cend(c), p);
+}
+
 const UINT CGitLogListBase::m_FindDialogMessage = RegisterWindowMessage(FINDMSGSTRING);
 const UINT CGitLogListBase::m_ScrollToMessage = RegisterWindowMessage(_T("TORTOISEGIT_LOG_SCROLLTO"));
 const UINT CGitLogListBase::m_RebaseActionMessage = RegisterWindowMessage(_T("TORTOISEGIT_LOG_REBASEACTION"));
@@ -2122,12 +2137,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					if (IsMouseOnRefLabelFromPopupMenu(pSelLogEntry, point, type, nullptr, &index))
 						addCheck(m_HashMap[pSelLogEntry->m_CommitHash][index]);
 					else
-					{
-						for (const auto& ref : m_HashMap[pSelLogEntry->m_CommitHash])
-						{
-							addCheck(ref);
-						}
-					}
+						for_each(m_HashMap[pSelLogEntry->m_CommitHash], addCheck);
 
 					CString str2;
 					str2.LoadString(IDS_SWITCH_BRANCH);
@@ -2324,12 +2334,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 			if (m_ContextMenuMask&GetContextMenuBit(ID_PUSH) && ((!isStash && !m_HashMap[pSelLogEntry->m_CommitHash].empty()) || showExtendedMenu))
 			{
 				// show the push-option only if the log entry has an associated local branch
-				bool isLocal = false;
-				for (size_t i = 0; isLocal == false && i < m_HashMap[pSelLogEntry->m_CommitHash].size(); ++i)
-				{
-					if (m_HashMap[pSelLogEntry->m_CommitHash][i].Find(_T("refs/heads/")) == 0)
-						isLocal = true;
-				}
+				bool isLocal = find_if(m_HashMap[pSelLogEntry->m_CommitHash], [](const CString& ref) { return ref.Find(_T("refs/heads/")) == 0; }) != m_HashMap[pSelLogEntry->m_CommitHash].cend();
 				if (isLocal || showExtendedMenu)
 				{
 					CString str;
@@ -2372,12 +2377,8 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					if (IsMouseOnRefLabelFromPopupMenu(pSelLogEntry, point, type, nullptr, &index))
 						addCheck(m_HashMap[pSelLogEntry->m_CommitHash][index]);
 					else
-					{
-						for (const auto& ref : m_HashMap[pSelLogEntry->m_CommitHash])
-						{
-							addCheck(ref);
-						}
-					}
+						for_each(m_HashMap[pSelLogEntry->m_CommitHash], addCheck);
+
 					CString str;
 					if (branchs.size() == 1)
 					{

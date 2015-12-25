@@ -43,6 +43,14 @@
 
 IMPLEMENT_DYNAMIC(CGitLogList, CHintListCtrl)
 
+static void GetFirstEntryStartingWith(STRING_VECTOR& heystack, const CString& needle, CString& result)
+{
+	auto it = std::find_if(heystack.cbegin(), heystack.cend(), [&needle](const CString& entry) { return entry.Find(needle) == 0; });
+	if (it == heystack.cend())
+		return;
+	result = *it;
+}
+
 int CGitLogList::RevertSelectedCommits(int parent)
 {
 	CSysProgressDlg progress;
@@ -492,14 +500,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			{
 				CString str=pSelLogEntry->m_CommitHash.ToString();
 				// try to get the tag
-				for (size_t i = 0; i < m_HashMap[pSelLogEntry->m_CommitHash].size(); ++i)
-				{
-					if (m_HashMap[pSelLogEntry->m_CommitHash][i].Find(_T("refs/tags/")) == 0)
-					{
-						str = m_HashMap[pSelLogEntry->m_CommitHash][i];
-						break;
-					}
-				}
+				GetFirstEntryStartingWith(m_HashMap[pSelLogEntry->m_CommitHash], _T("refs/tags/"), str);
 				CAppUtils::Export(&str, &m_Path);
 			}
 			break;
@@ -510,18 +511,9 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				CString str = pSelLogEntry->m_CommitHash.ToString();
 				if (branch)
 					str = *branch;
-				else
-				{
-					// try to guess remote branch in order to enable tracking
-					for (size_t i = 0; i < m_HashMap[pSelLogEntry->m_CommitHash].size(); ++i)
-					{
-						if (m_HashMap[pSelLogEntry->m_CommitHash][i].Find(_T("refs/remotes/")) == 0)
-						{
-							str = m_HashMap[pSelLogEntry->m_CommitHash][i];
-							break;
-						}
-					}
-				}
+				else // try to guess remote branch in order to enable tracking
+					GetFirstEntryStartingWith(m_HashMap[pSelLogEntry->m_CommitHash], _T("refs/remotes/"), str);
+
 				CAppUtils::CreateBranchTag((cmd&0xFFFF) == ID_CREATE_TAG, &str);
 				ReloadHashMap();
 				if (m_pFindDialog)
@@ -536,18 +528,9 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				const CString* branch = popmenu ? (const CString*)((CIconMenu*)popmenu)->GetMenuItemData(cmd & 0xFFFF) : nullptr;
 				if (branch)
 					str = *branch;
-				else
-				{
-					// try to guess remote branch in order to recommend good branch name and tracking
-					for (size_t i = 0; i < m_HashMap[pSelLogEntry->m_CommitHash].size(); ++i)
-					{
-						if (m_HashMap[pSelLogEntry->m_CommitHash][i].Find(_T("refs/remotes/")) == 0)
-						{
-							str = m_HashMap[pSelLogEntry->m_CommitHash][i];
-							break;
-						}
-					}
-				}
+				else // try to guess remote branch in order to recommend good branch name and tracking
+					GetFirstEntryStartingWith(m_HashMap[pSelLogEntry->m_CommitHash], _T("refs/remotes/"), str);
+
 				CAppUtils::Switch(str);
 			}
 			ReloadHashMap();
@@ -941,16 +924,8 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				if (branch)
 					guessAssociatedBranch = *branch;
 				else
-				{
-					for (auto abranch : m_HashMap[pSelLogEntry->m_CommitHash])
-					{
-						if (abranch.Find(L"refs/heads/") == 0)
-						{
-							guessAssociatedBranch = abranch;
-							break;
-						}
-					}
-				}
+					GetFirstEntryStartingWith(m_HashMap[pSelLogEntry->m_CommitHash], _T("refs/heads/"), guessAssociatedBranch);
+
 				if (CAppUtils::Push(guessAssociatedBranch))
 					Refresh();
 			}
