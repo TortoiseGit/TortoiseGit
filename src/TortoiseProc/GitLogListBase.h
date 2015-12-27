@@ -389,7 +389,7 @@ public:
 	static const UINT	m_RebaseActionMessage;
 
 	inline int ShownCountWithStopped() const { return (int)m_arShownList.GetCount() + (m_bStrictStopped ? 1 : 0); }
-	int FetchLogAsync(void * data=NULL);
+	void FetchLogAsync(void* data = nullptr);
 	CThreadSafePtrArray			m_arShownList;
 	void Refresh(BOOL IsCleanFilter=TRUE);
 	void RecalculateShownList(CThreadSafePtrArray * pShownlist);
@@ -439,6 +439,8 @@ public:
 		FetchRemoteList();
 		FetchTrackingBranchList();
 	}
+	void StartAsyncDiffThread();
+	void StartLoadingThread();
 	void SafeTerminateThread()
 	{
 		if (m_LoadingThread!=NULL && InterlockedExchange(&m_bExitThread, TRUE) == FALSE)

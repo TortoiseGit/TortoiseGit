@@ -120,6 +120,8 @@ protected:
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	void Refresh();
+	void StartStatusThread();
+	void StopStatusThread();
 	void GetAutocompletionList();
 	void ScanFile(const CString& sFilePath, const CString& sRegex, const CString& sExt);
 	void DoSize(int delta);

@@ -443,20 +443,7 @@ BOOL CCommitDlg::OnInitDialog()
 
 	m_updatedPathList = m_pathList;
 
-	//first start a thread to obtain the file list with the status without
-	//blocking the dialog
-	InterlockedExchange(&m_bBlock, TRUE);
-	m_pThread = AfxBeginThread(StatusThreadEntry, this, THREAD_PRIORITY_NORMAL,0,CREATE_SUSPENDED);
-	if (m_pThread==NULL)
-	{
-		CMessageBox::Show(this->m_hWnd, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
-		InterlockedExchange(&m_bBlock, FALSE);
-	}
-	else
-	{
-		m_pThread->m_bAutoDelete = FALSE;
-		m_pThread->ResumeThread();
-	}
+	StartStatusThread();
 	CRegDWORD err = CRegDWORD(_T("Software\\TortoiseGit\\ErrorOccurred"), FALSE);
 	CRegDWORD historyhint = CRegDWORD(_T("Software\\TortoiseGit\\HistoryHintShown"), FALSE);
 	if ((((DWORD)err)!=FALSE)&&((((DWORD)historyhint)==FALSE)))
@@ -503,15 +490,7 @@ void CCommitDlg::OnOK()
 	if (m_bThreadRunning)
 	{
 		m_bCancelled = true;
-		InterlockedExchange(&m_bRunThread, FALSE);
-		WaitForSingleObject(m_pThread->m_hThread, 1000);
-		if (m_bThreadRunning)
-		{
-			// we gave the thread a chance to quit. Since the thread didn't
-			// listen to us we have to kill it.
-			TerminateThread(m_pThread->m_hThread, (DWORD)-1);
-			InterlockedExchange(&m_bThreadRunning, FALSE);
-		}
+		StopStatusThread();
 	}
 	this->UpdateData();
 
@@ -1350,17 +1329,7 @@ void CCommitDlg::OnCancel()
 	m_pathwatcher.Stop();
 
 	if (m_bThreadRunning)
-	{
-		InterlockedExchange(&m_bRunThread, FALSE);
-		WaitForSingleObject(m_pThread->m_hThread, 1000);
-		if (m_bThreadRunning)
-		{
-			// we gave the thread a chance to quit. Since the thread didn't
-			// listen to us we have to kill it.
-			TerminateThread(m_pThread->m_hThread, (DWORD)-1);
-			InterlockedExchange(&m_bThreadRunning, FALSE);
-		}
-	}
+		StopStatusThread();
 	if (!RestoreFiles())
 		return;
 	UpdateData();
@@ -1437,18 +1406,35 @@ void CCommitDlg::Refresh()
 	if (m_bThreadRunning)
 		return;
 
+	StartStatusThread();
+}
+
+void CCommitDlg::StartStatusThread()
+{
 	InterlockedExchange(&m_bBlock, TRUE);
-	m_pThread = AfxBeginThread(StatusThreadEntry, this, THREAD_PRIORITY_NORMAL,0,CREATE_SUSPENDED);
-	if (m_pThread==NULL)
+	m_pThread = AfxBeginThread(StatusThreadEntry, this, THREAD_PRIORITY_NORMAL, 0, CREATE_SUSPENDED);
+	if (!m_pThread)
 	{
-		CMessageBox::Show(this->m_hWnd, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
+		CMessageBox::Show(GetSafeHwnd(), IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
 		InterlockedExchange(&m_bBlock, FALSE);
+		return;
 	}
-	else
-	{
-		m_pThread->m_bAutoDelete = FALSE;
-		m_pThread->ResumeThread();
-	}
+
+	m_pThread->m_bAutoDelete = FALSE;
+	m_pThread->ResumeThread();
+}
+
+void CCommitDlg::StopStatusThread()
+{
+	InterlockedExchange(&m_bRunThread, FALSE);
+	WaitForSingleObject(m_pThread->m_hThread, 1000);
+	if (!m_bThreadRunning)
+		return;
+
+	// we gave the thread a chance to quit. Since the thread didn't
+	// listen to us we have to kill it.
+	TerminateThread(m_pThread->m_hThread, (DWORD)-1);
+	InterlockedExchange(&m_bThreadRunning, FALSE);
 }
 
 void CCommitDlg::OnBnClickedShowunversioned()

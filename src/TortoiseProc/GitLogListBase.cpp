@@ -168,22 +168,13 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	m_LineWidth = max(1, CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\Graph\\LogLineWidth"), 2));
 	m_NodeSize = max(1, CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\Graph\\LogNodeSize"), 10));
 
-	m_AsyncThreadExit = FALSE;
-	m_AsyncDiffEvent = ::CreateEvent(NULL,FALSE,TRUE,NULL);
-	m_AsynDiffListLock.Init();
-
 	hUxTheme = AtlLoadSystemLibraryUsingFullPath(_T("UXTHEME.DLL"));
 	if (hUxTheme)
 		pfnDrawThemeTextEx = (FNDRAWTHEMETEXTEX)::GetProcAddress(hUxTheme, "DrawThemeTextEx");
 
-	m_DiffingThread = AfxBeginThread(AsyncThread, this, THREAD_PRIORITY_BELOW_NORMAL, 0, CREATE_SUSPENDED);
-	if (m_DiffingThread ==NULL)
-	{
-		CMessageBox::Show(NULL, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
-		return;
-	}
-	m_DiffingThread->m_bAutoDelete = FALSE;
-	m_DiffingThread->ResumeThread();
+	m_AsyncDiffEvent = ::CreateEvent(NULL, FALSE, TRUE, NULL);
+	m_AsynDiffListLock.Init();
+	StartAsyncDiffThread();
 }
 
 int CGitLogListBase::AsyncDiffThread()
@@ -2850,22 +2841,11 @@ void CGitLogListBase::OnNMDblclkLoglist(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 		DiffSelectedRevWithPrevious();
 }
 
-int CGitLogListBase::FetchLogAsync(void * data)
+void CGitLogListBase::FetchLogAsync(void* data)
 {
 	ReloadHashMap();
 	m_ProcData=data;
-	m_bExitThread=FALSE;
-	InterlockedExchange(&m_bThreadRunning, TRUE);
-	InterlockedExchange(&m_bNoDispUpdates, TRUE);
-	m_LoadingThread = AfxBeginThread(LogThreadEntry, this, THREAD_PRIORITY_LOWEST);
-	if (m_LoadingThread ==NULL)
-	{
-		InterlockedExchange(&m_bThreadRunning, FALSE);
-		InterlockedExchange(&m_bNoDispUpdates, FALSE);
-		CMessageBox::Show(NULL, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
-		return -1;
-	}
-	return 0;
+	StartLoadingThread();
 }
 
 UINT CGitLogListBase::LogThreadEntry(LPVOID pVoid)
@@ -3187,32 +3167,43 @@ void CGitLogListBase::Refresh(BOOL IsCleanFilter)
 			m_sFilterText.Empty();
 		}
 
-		InterlockedExchange(&m_bExitThread,FALSE);
-
-		InterlockedExchange(&m_bThreadRunning, TRUE);
-		InterlockedExchange(&m_bNoDispUpdates, TRUE);
-
 		SafeTerminateAsyncDiffThread();
 		m_AsynDiffListLock.Lock();
 		m_AsynDiffList.clear();
 		m_AsynDiffListLock.Unlock();
-		InterlockedExchange(&m_AsyncThreadExit, FALSE);
-		m_DiffingThread = AfxBeginThread(AsyncThread, this, THREAD_PRIORITY_BELOW_NORMAL, 0, CREATE_SUSPENDED);
-		if (!m_DiffingThread)
-			CMessageBox::Show(nullptr, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
-		else
-		{
-			m_DiffingThread->m_bAutoDelete = FALSE;
-			m_DiffingThread->ResumeThread();
-		}
-		if ((m_LoadingThread = AfxBeginThread(LogThreadEntry, this, THREAD_PRIORITY_LOWEST)) == nullptr)
-		{
-			InterlockedExchange(&m_bThreadRunning, FALSE);
-			InterlockedExchange(&m_bNoDispUpdates, FALSE);
-			CMessageBox::Show(NULL, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
-		}
+		StartAsyncDiffThread();
+		
+		StartLoadingThread();
 	}
 }
+
+void CGitLogListBase::StartAsyncDiffThread()
+{
+	InterlockedExchange(&m_AsyncThreadExit, FALSE);
+	m_DiffingThread = AfxBeginThread(AsyncThread, this, THREAD_PRIORITY_BELOW_NORMAL, 0, CREATE_SUSPENDED);
+	if (!m_DiffingThread)
+	{
+		CMessageBox::Show(nullptr, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
+		return;
+	}
+	m_DiffingThread->m_bAutoDelete = FALSE;
+	m_DiffingThread->ResumeThread();
+}
+
+void CGitLogListBase::StartLoadingThread()
+{
+	m_bExitThread = FALSE;
+	InterlockedExchange(&m_bThreadRunning, TRUE);
+	InterlockedExchange(&m_bNoDispUpdates, TRUE);
+	m_LoadingThread = AfxBeginThread(LogThreadEntry, this, THREAD_PRIORITY_LOWEST);
+	if (!m_LoadingThread)
+	{
+		InterlockedExchange(&m_bThreadRunning, FALSE);
+		InterlockedExchange(&m_bNoDispUpdates, FALSE);
+		CMessageBox::Show(nullptr, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
+	}
+}
+
 bool CGitLogListBase::ValidateRegexp(LPCTSTR regexp_str, std::tr1::wregex& pat, bool bMatchCase /* = false */)
 {
 	try
