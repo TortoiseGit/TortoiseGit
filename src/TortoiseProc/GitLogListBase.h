@@ -604,6 +604,7 @@ public:
 					AfxGetThread()->PumpMessage(); // process messages, so that GetTopIndex and so on in the thread work
 				ret = ::WaitForSingleObject(m_DiffingThread->m_hThread, 100);
 			}
+			delete m_DiffingThread;
 			m_DiffingThread = NULL;
 		}
 	};

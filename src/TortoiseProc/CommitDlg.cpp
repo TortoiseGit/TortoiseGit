@@ -1411,6 +1411,12 @@ void CCommitDlg::Refresh()
 
 void CCommitDlg::StartStatusThread()
 {
+	if (m_pThread)
+	{
+		delete m_pThread;
+		m_pThread = nullptr;
+	}
+
 	InterlockedExchange(&m_bBlock, TRUE);
 	m_pThread = AfxBeginThread(StatusThreadEntry, this, THREAD_PRIORITY_NORMAL, 0, CREATE_SUSPENDED);
 	if (!m_pThread)
