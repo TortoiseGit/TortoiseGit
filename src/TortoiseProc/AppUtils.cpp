@@ -3842,20 +3842,8 @@ bool CAppUtils::ShellOpen(const CString& file, HWND hwnd /*= nullptr */)
 
 bool CAppUtils::ShowOpenWithDialog(const CString& file, HWND hwnd /*= nullptr */)
 {
-	CAutoLibrary hShell = AtlLoadSystemLibraryUsingFullPath(_T("shell32.dll"));
-	if (hShell)
-	{
-		typedef HRESULT STDAPICALLTYPE SHOpenWithDialoFN(_In_opt_ HWND hwndParent, _In_ const OPENASINFO *poainfo);
-		SHOpenWithDialoFN *pfnSHOpenWithDialog = (SHOpenWithDialoFN*)GetProcAddress(hShell, "SHOpenWithDialog");
-		if (pfnSHOpenWithDialog)
-		{
-			OPENASINFO oi = { 0 };
-			oi.pcszFile = file;
-			oi.oaifInFlags = OAIF_EXEC;
-			return SUCCEEDED(pfnSHOpenWithDialog(hwnd, &oi));
-		}
-	}
-	CString cmd = _T("RUNDLL32 Shell32,OpenAs_RunDLL ");
-	cmd += file;
-	return CAppUtils::LaunchApplication(cmd, NULL, false);
+	OPENASINFO oi = { 0 };
+	oi.pcszFile = file;
+	oi.oaifInFlags = OAIF_EXEC;
+	return SUCCEEDED(SHOpenWithDialog(hwnd, &oi));
 }

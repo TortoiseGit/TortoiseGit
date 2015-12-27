@@ -167,10 +167,6 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	m_LineWidth = max(1, CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\Graph\\LogLineWidth"), 2));
 	m_NodeSize = max(1, CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\Graph\\LogNodeSize"), 10));
 
-	hUxTheme = AtlLoadSystemLibraryUsingFullPath(_T("UXTHEME.DLL"));
-	if (hUxTheme)
-		pfnDrawThemeTextEx = (FNDRAWTHEMETEXTEX)::GetProcAddress(hUxTheme, "DrawThemeTextEx");
-
 	m_AsyncDiffEvent = ::CreateEvent(NULL, FALSE, TRUE, NULL);
 	m_AsynDiffListLock.Init();
 	StartAsyncDiffThread();
@@ -295,9 +291,6 @@ CGitLogListBase::~CGitLogListBase()
 
 	if(m_AsyncDiffEvent)
 		CloseHandle(m_AsyncDiffEvent);
-
-	if (hUxTheme)
-		FreeLibrary(hUxTheme);
 }
 
 
@@ -617,7 +610,7 @@ void CGitLogListBase::DrawTagBranchMessage(HDC hdc, CRect &rect, INT_PTR index, 
 	CString msg = MessageDisplayStr(data);
 	int action = data->GetRebaseAction();
 	bool skip = !!(action & (LOGACTIONS_REBASE_DONE | LOGACTIONS_REBASE_SKIP));
-	if (IsAppThemed() && pfnDrawThemeTextEx)
+	if (IsAppThemed())
 	{
 		int txtState = LISS_NORMAL;
 		if (rItem.state & LVIS_SELECTED)
@@ -627,7 +620,7 @@ void CGitLogListBase::DrawTagBranchMessage(HDC hdc, CRect &rect, INT_PTR index, 
 		opts.dwSize = sizeof(opts);
 		opts.crText = skip ? RGB(128,128,128) : ::GetSysColor(COLOR_WINDOWTEXT);
 		opts.dwFlags = DTT_TEXTCOLOR;
-		pfnDrawThemeTextEx(hTheme, hdc, LVP_LISTITEM, txtState, msg, -1, DT_NOPREFIX | DT_LEFT | DT_SINGLELINE | DT_VCENTER | DT_END_ELLIPSIS, &rt, &opts);
+		DrawThemeTextEx(hTheme, hdc, LVP_LISTITEM, txtState, msg, -1, DT_NOPREFIX | DT_LEFT | DT_SINGLELINE | DT_VCENTER | DT_END_ELLIPSIS, &rt, &opts);
 	}
 	else
 	{
@@ -754,7 +747,7 @@ void CGitLogListBase::DrawTagBranch(HDC hdc, CDC& W_Dc, HTHEME hTheme, CRect& re
 
 			//Draw text inside label
 			bool customColor = (colRef & 0xff) * 30 + ((colRef >> 8) & 0xff) * 59 + ((colRef >> 16) & 0xff) * 11 <= 12800;	// check if dark background
-			if (!customColor && IsAppThemed() && pfnDrawThemeTextEx)
+			if (!customColor && IsAppThemed())
 			{
 				int txtState = LISS_NORMAL;
 				if (rItem.state & LVIS_SELECTED)
@@ -764,7 +757,7 @@ void CGitLogListBase::DrawTagBranch(HDC hdc, CDC& W_Dc, HTHEME hTheme, CRect& re
 				opts.dwSize = sizeof(opts);
 				opts.crText = ::GetSysColor(COLOR_WINDOWTEXT);
 				opts.dwFlags = DTT_TEXTCOLOR;
-				pfnDrawThemeTextEx(hTheme, hdc, LVP_LISTITEM, txtState, shortname, -1, textpos | DT_SINGLELINE | DT_VCENTER, &textRect, &opts);
+				DrawThemeTextEx(hTheme, hdc, LVP_LISTITEM, txtState, shortname, -1, textpos | DT_SINGLELINE | DT_VCENTER, &textRect, &opts);
 			}
 			else
 			{
