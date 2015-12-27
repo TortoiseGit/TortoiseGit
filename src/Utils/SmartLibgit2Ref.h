@@ -25,7 +25,7 @@
 * Helper classes for libgit2 references.
 */
 template <typename HandleType, class FreeFunction>
-class CSmartBuffer : public FreeFunction
+class CSmartBuffer
 {
 public:
 	CSmartBuffer()
@@ -45,7 +45,7 @@ public:
 
 	~CSmartBuffer()
 	{
-		Free(&m_Ref);
+		FreeFunction::Free(&m_Ref);
 	}
 
 private:
@@ -58,27 +58,17 @@ protected:
 
 struct CFreeBuf
 {
-protected:
-	void Free(git_buf* ref)
+	static void Free(git_buf* ref)
 	{
 		git_buf_free(ref);
-	}
-
-	~CFreeBuf()
-	{
 	}
 };
 
 struct CFreeStrArray
 {
-protected:
-	void Free(git_strarray* ref)
+	static void Free(git_strarray* ref)
 	{
 		git_strarray_free(ref);
-	}
-
-	~CFreeStrArray()
-	{
 	}
 };
 
@@ -110,15 +100,13 @@ public:
 
 	ReferenceType* Detach()
 	{
-		ReferenceType* p;
-
-		p = m_Ref;
+		ReferenceType* p = m_Ref;
 		m_Ref = nullptr;
 
 		return p;
 	}
 
-	operator ReferenceType*()
+	operator ReferenceType*() const
 	{
 		return m_Ref;
 	}
@@ -132,7 +120,7 @@ public:
 		return &m_Ref;
 	}
 
-	operator bool()
+	operator bool() const
 	{
 		return IsValid();
 	}
@@ -186,10 +174,9 @@ public:
 		m_Ref = that.Detach();
 	}
 
-	int ReOpen(const CString& gitDir)
+	int Open(const CString& gitDir)
 	{
-		CleanUp();
-		return Open(gitDir);
+		return Open(CUnicodeUtils::GetUTF8(gitDir));
 	}
 
 	~CAutoRepository()
@@ -202,11 +189,6 @@ private:
 	CAutoRepository& operator=(const CAutoRepository&) = delete;
 
 protected:
-	int Open(const CString& gitDir)
-	{
-		return Open(CUnicodeUtils::GetUTF8(gitDir));
-	}
-
 	int Open(const CStringA& gitDirA)
 	{
 		return git_repository_open(GetPointer(), gitDirA);

@@ -69,7 +69,7 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 	this->clear();
 
 	CAutoLocker lock(m_critRepoSec);
-	if (repository.ReOpen(dgitdir))
+	if (repository.Open(dgitdir))
 		return -1;
 
 	// add config files
