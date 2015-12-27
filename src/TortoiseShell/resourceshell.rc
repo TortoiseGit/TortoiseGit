@@ -296,10 +296,10 @@ BEGIN
     IDS_MENUDIFFTWO         "Diff Two Commits"
     IDS_MENUDESCDIFFTWO     "Diffs two any commits"
     IDS_MENUDESCIMPORTPATCH "Apply a series of patches from a mailbox"
-    IDS_MENUDESCPULL        "Pull"
-    IDS_MENUDESCPUSH        "Push"
+    IDS_MENUDESCPULL        "Pull (fetch and merge) commits from a remote branch."
+    IDS_MENUDESCPUSH        "Push commits to a remote repository."
     IDS_MENUDESCCLONE       "Clone a repository"
-    IDS_MENUDESCFETCH       "Fetch"
+    IDS_MENUDESCFETCH       "Fetch commits from a remote repository."
     IDS_MENUDELETEIGNOREMULTIPLE "Delete and &ignore %d items by name"
 END
 

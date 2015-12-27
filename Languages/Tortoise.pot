@@ -4547,12 +4547,16 @@ msgstr ""
 msgid "Fetc&h"
 msgstr ""
 
-#. Resource IDs: (IDS_MENUDESCFETCH, IDS_PROGRS_TITLE_FETCH)
+#. Resource IDs: (IDS_PROGRS_TITLE_FETCH)
 msgid "Fetch"
 msgstr ""
 
 #. Resource IDs: (IDS_PROC_SYNC_FETCHREBASE)
 msgid "Fetch && Re&base"
+msgstr ""
+
+#. Resource IDs: (IDS_MENUDESCFETCH)
+msgid "Fetch commits from a remote repository."
 msgstr ""
 
 #. Resource IDs: (IDS_MENUDESCSVNFETCH)
@@ -7329,8 +7333,12 @@ msgstr ""
 msgid "Prune (All remotes)"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_SYNC: Control id 1611, IDS_MENUDESCPULL, IDS_PROGRS_TITLE_PULL)
+#. Resource IDs: (Dialog IDD_SYNC: Control id 1611, IDS_PROGRS_TITLE_PULL)
 msgid "Pull"
+msgstr ""
+
+#. Resource IDs: (IDS_MENUDESCPULL)
+msgid "Pull (fetch and merge) commits from a remote branch."
 msgstr ""
 
 #. Resource IDs: (IDS_PROC_SYNC_PULLWRONGBRANCH)
@@ -7357,7 +7365,7 @@ msgstr ""
 msgid "Pus&h..."
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_PUSH: Control id 303, Dialog IDD_SYNC: Control id 1612, IDS_MENUDESCPUSH)
+#. Resource IDs: (Dialog IDD_PUSH: Control id 303, Dialog IDD_SYNC: Control id 1612)
 msgid "Push"
 msgstr ""
 
@@ -7367,6 +7375,10 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINREMOTE: Control id 65535)
 msgid "Push URL:"
+msgstr ""
+
+#. Resource IDs: (IDS_MENUDESCPUSH)
+msgid "Push commits to a remote repository."
 msgstr ""
 
 #. Resource IDs: (IDS_PROC_SYNC_PUSHNOTES)
