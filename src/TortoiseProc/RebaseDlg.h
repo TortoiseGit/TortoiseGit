@@ -174,6 +174,9 @@ protected:
 	bool				m_bFinishedRebase;
 	bool				m_bStashed;
 
+	std::map<CGitHash, CGitHash> rewrittenCommitsMap;
+	std::vector<CGitHash> forRewrite;
+
 	void AddBranchToolTips(CHistoryCombo *pBranch);
 	void AddLogString(CString str);
 	int StartRebase();

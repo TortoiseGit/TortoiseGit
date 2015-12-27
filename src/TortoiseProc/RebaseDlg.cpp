@@ -1110,6 +1110,7 @@ void CRebaseDlg::OnBnClickedContinue()
 		}
 		m_RebaseStage=REBASE_CONTINUE;
 		curRev->GetRebaseAction() |= CGitLogListBase::LOGACTIONS_REBASE_DONE;
+		forRewrite.push_back(curRev->m_CommitHash);
 		this->UpdateCurrentStatus();
 
 	}
@@ -1258,7 +1259,12 @@ void CRebaseDlg::OnBnClickedContinue()
 			if (CheckNextCommitIsSquash() == 0) // remember commit msg after edit if next commit if squash
 				ResetParentForSquash(str);
 			else
+			{
 				m_SquashMessage.Empty();
+				CGitHash head;
+				g_Git.GetHash(head, _T("HEAD"));
+				rewrittenCommitsMap[curRev->m_CommitHash] = head;
+			}
 		}
 	}
 
@@ -1298,6 +1304,12 @@ void CRebaseDlg::OnBnClickedContinue()
 		this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_LOG);
 		m_RebaseStage = REBASE_CONTINUE;
 		GitRevLoglist* curRev = (GitRevLoglist*)m_CommitList.m_arShownList[m_CurrentRebaseIndex];
+		CGitHash head;
+		g_Git.GetHash(head, _T("HEAD"));
+		rewrittenCommitsMap[curRev->m_CommitHash] = head;
+		for (const auto& hash : forRewrite)
+			rewrittenCommitsMap[hash] = head;
+		forRewrite.clear();
 		curRev->GetRebaseAction() |= CGitLogListBase::LOGACTIONS_REBASE_DONE;
 		this->UpdateCurrentStatus();
 	}
@@ -1355,6 +1367,14 @@ void CRebaseDlg::OnBnClickedContinue()
 			m_SquashMessage.Empty();
 		this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_LOG);
 		m_RebaseStage=REBASE_CONTINUE;
+		CGitHash head;
+		g_Git.GetHash(head, _T("HEAD"));
+		AddLogString(L"HEAD: " + head.ToString());
+		AddLogString(L"oldHash: " + curRev->m_CommitHash.ToString());
+		rewrittenCommitsMap[curRev->m_CommitHash] = head; // we had a reset to parent, so this is not the correct hash
+		for (const auto& hash : forRewrite)
+			rewrittenCommitsMap[hash] = head;
+		forRewrite.clear();
 		curRev->GetRebaseAction() |= CGitLogListBase::LOGACTIONS_REBASE_DONE;
 		this->UpdateCurrentStatus();
 	}
@@ -1680,6 +1700,7 @@ int CRebaseDlg::DoRebase()
 
 	if (mode == CGitLogListBase::LOGACTIONS_REBASE_SKIP)
 	{
+		rewrittenCommitsMap[pRev->m_CommitHash] = CGitHash();
 		pRev->GetRebaseAction() |= CGitLogListBase::LOGACTIONS_REBASE_DONE;
 		return 0;
 	}
@@ -1822,6 +1843,14 @@ int CRebaseDlg::DoRebase()
 			AddLogString(out);
 			if (mode == CGitLogListBase::LOGACTIONS_REBASE_PICK)
 			{
+				if (nocommit.IsEmpty())
+				{
+					CGitHash head;
+					g_Git.GetHash(head, _T("HEAD"));
+					rewrittenCommitsMap[pRev->m_CommitHash] = head;
+				}
+				else
+					forRewrite.push_back(pRev->m_CommitHash);
 				pRev->GetRebaseAction() |= CGitLogListBase::LOGACTIONS_REBASE_DONE;
 				return 0;
 			}
@@ -1839,7 +1868,10 @@ int CRebaseDlg::DoRebase()
 				return -1;
 			}
 			else if (mode == CGitLogListBase::LOGACTIONS_REBASE_SQUASH)
+			{
 				pRev->GetRebaseAction() |= CGitLogListBase::LOGACTIONS_REBASE_DONE;
+				forRewrite.push_back(pRev->m_CommitHash);
+			}
 		}
 
 		return 0;
