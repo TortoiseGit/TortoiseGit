@@ -337,6 +337,8 @@ void CRebaseDlg::SetAllRebaseAction(int action)
 {
 	for (size_t i = 0; i < this->m_CommitList.m_logEntries.size(); ++i)
 	{
+		if (action == CGitLogListBase::LOGACTIONS_REBASE_SQUASH && (i == this->m_CommitList.m_logEntries.size() - 1 || m_CommitList.m_logEntries.GetGitRevAt(i).ParentsCount() != 1))
+			continue;
 		m_CommitList.m_logEntries.GetGitRevAt(i).GetRebaseAction() = action;
 	}
 	m_CommitList.Invalidate();

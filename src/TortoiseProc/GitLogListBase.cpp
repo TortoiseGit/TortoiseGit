@@ -1852,7 +1852,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 		if (m_ContextMenuMask & GetContextMenuBit(ID_REBASE_PICK) && !(pSelLogEntry->GetRebaseAction() & (LOGACTIONS_REBASE_CURRENT | LOGACTIONS_REBASE_DONE)))
 			popup.AppendMenuIcon(ID_REBASE_PICK, IDS_REBASE_PICK, IDI_PICK);
 
-		if (m_ContextMenuMask & GetContextMenuBit(ID_REBASE_SQUASH) && !(pSelLogEntry->GetRebaseAction() & (LOGACTIONS_REBASE_CURRENT | LOGACTIONS_REBASE_DONE)) && FirstSelect != GetItemCount() - 1  && LastSelect != GetItemCount() - 1)
+		if (m_ContextMenuMask & GetContextMenuBit(ID_REBASE_SQUASH) && !(pSelLogEntry->GetRebaseAction() & (LOGACTIONS_REBASE_CURRENT | LOGACTIONS_REBASE_DONE)) && FirstSelect != GetItemCount() - 1 && LastSelect != GetItemCount() - 1 && pSelLogEntry->ParentsCount() == 1)
 			popup.AppendMenuIcon(ID_REBASE_SQUASH, IDS_REBASE_SQUASH, IDI_SQUASH);
 
 		if (m_ContextMenuMask & GetContextMenuBit(ID_REBASE_EDIT) && !(pSelLogEntry->GetRebaseAction() & (LOGACTIONS_REBASE_CURRENT | LOGACTIONS_REBASE_DONE)))
