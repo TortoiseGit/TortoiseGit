@@ -1475,6 +1475,7 @@ BEGIN
     PUSHBUTTON      "Button1",IDC_SPLITALLOPTIONS,7,113,102,14
     PUSHBUTTON      "Up",IDC_BUTTON_UP2,116,113,33,14
     PUSHBUTTON      "Down",IDC_BUTTON_DOWN2,156,113,33,14
+    CONTROL         "preserve merges",IDC_REBASE_CHECK_PRESERVEMERGES,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,195,115,96,10
     CONTROL         "&Force Rebase",IDC_REBASE_CHECK_FORCE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,293,115,116,10
     CONTROL         "add ""cherry picked from""",IDC_CHECK_CHERRYPICKED_FROM,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,293,115,116,9
@@ -4728,6 +4729,8 @@ STRINGTABLE
 BEGIN
     IDS_GLOBAL_GCM          "manager - current Windows user"
     IDS_SYSTEM_GCM          "manager - all Windows users"
+    IDS_REBASE_PRESERVEMERGES_TT 
+                            "This preserves merge commits, however, it has known bugs as re-ordering commits is not working properly (same limitation as for vanilla git rebase), see help."
 END
 
 #endif    // English (U.S.) resources

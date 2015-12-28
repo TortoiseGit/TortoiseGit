@@ -144,6 +144,7 @@ protected:
 	CStatic				m_CtrlStatusText;
 
 	BOOL				m_bForce;
+	BOOL				m_bPreserveMerges;
 	BOOL				m_bAddCherryPickedFrom;
 	BOOL				m_bAutoSkipFailedCommit;
 
