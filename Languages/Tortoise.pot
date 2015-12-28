@@ -9622,6 +9622,10 @@ msgstr ""
 msgid "This operation cannot be started while the log dialog is still loading commits."
 msgstr ""
 
+#. Resource IDs: (IDS_REBASE_PRESERVEMERGES_TT)
+msgid "This preserves merge commits, however, it has known bugs as re-ordering commits is not working properly (same limitation as for vanilla git rebase), see help."
+msgstr ""
+
 #. Resource IDs: (61710)
 #, c-format
 msgid "This program is linked to the missing export %s in the file %s. This machine may have an incompatible version of %s."
@@ -10968,6 +10972,10 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_1: Control id 65535)
 msgid "possible or real conflict/obstructed"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_REBASE: Control id 1608)
+msgid "preserve merges"
 msgstr ""
 
 #. Resource IDs: (61509)

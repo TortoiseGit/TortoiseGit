@@ -144,6 +144,7 @@ protected:
 	CStatic				m_CtrlStatusText;
 
 	BOOL				m_bForce;
+	BOOL				m_bPreserveMerges;
 	BOOL				m_bAddCherryPickedFrom;
 	BOOL				m_bAutoSkipFailedCommit;
 
@@ -173,6 +174,10 @@ protected:
 	REBASE_STAGE		m_RebaseStage;
 	bool				m_bFinishedRebase;
 	bool				m_bStashed;
+
+	std::map<CGitHash, CGitHash> rewrittenCommitsMap;
+	std::vector<CGitHash> forRewrite;
+	std::map<CGitHash, GIT_REV_LIST> droppedCommitsMap;
 
 	void AddBranchToolTips(CHistoryCombo *pBranch);
 	void AddLogString(CString str);

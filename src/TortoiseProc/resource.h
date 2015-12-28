@@ -1241,6 +1241,7 @@
 #define IDC_PARAMSLABEL                 1586
 #define IDC_SUBMODULE_BRANCH            1587
 #define IDC_CHECK_SENDMAIL              1587
+#define IDS_REBASE_PRESERVEMERGES_TT    1587
 #define IDD_REFLOG                      1588
 #define IDC_TREE_REF                    1588
 #define IDD_SUBMODULE_ADD               1589
@@ -1264,6 +1265,7 @@
 #define IDC_REBASE_CHECK_FORCE          1607
 #define IDC_EDIT_DEPTH                  1607
 #define IDC_CHECK_SVN_FROM              1608
+#define IDC_REBASE_CHECK_PRESERVEMERGES 1608
 #define IDC_HANDLERHINT                 1609
 #define IDC_COMBOBOXEX_URL              1610
 #define IDC_BUTTON_PULL                 1611

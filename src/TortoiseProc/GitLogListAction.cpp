@@ -1223,6 +1223,8 @@ void CGitLogList::SetSelectedRebaseAction(int action)
 		index = GetNextSelectedItem(pos);
 		if (((GitRevLoglist*)m_arShownList[index])->GetRebaseAction() & (LOGACTIONS_REBASE_CURRENT | LOGACTIONS_REBASE_DONE) || (index == GetItemCount() - 1 && action == LOGACTIONS_REBASE_SQUASH))
 			continue;
+		if (((GitRevLoglist*)m_arShownList[index])->ParentsCount() > 1 && action == LOGACTIONS_REBASE_SQUASH)
+			continue;
 		((GitRevLoglist*)m_arShownList[index])->GetRebaseAction() = action;
 		CRect rect;
 		this->GetItemRect(index,&rect,LVIR_BOUNDS);
@@ -1244,7 +1246,7 @@ void CGitLogList::SetUnselectedRebaseAction(int action)
 			continue;
 		}
 
-		if (((GitRevLoglist*)m_arShownList[i])->GetRebaseAction() & (LOGACTIONS_REBASE_CURRENT | LOGACTIONS_REBASE_DONE) || (i == GetItemCount() - 1 && action == LOGACTIONS_REBASE_SQUASH))
+		if (((GitRevLoglist*)m_arShownList[i])->GetRebaseAction() & (LOGACTIONS_REBASE_CURRENT | LOGACTIONS_REBASE_DONE) || (i == GetItemCount() - 1 && action == LOGACTIONS_REBASE_SQUASH) || (action == LOGACTIONS_REBASE_SQUASH && ((GitRevLoglist*)m_arShownList[i])->ParentsCount() != 1))
 			continue;
 		((GitRevLoglist*)m_arShownList[i])->GetRebaseAction() = action;
 		CRect rect;
