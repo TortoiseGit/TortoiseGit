@@ -1816,7 +1816,7 @@ int CRebaseDlg::DoRebase()
 					AddLogString(_T("Cannot squash merge commit on rebase."));
 					return -1;
 				}
-				if (!parentRewritten)
+				if (!parentRewritten && nocommit.IsEmpty())
 					cmd.Format(_T("git.exe reset --hard %s"), (LPCTSTR)pRev->m_CommitHash.ToString());
 				else
 				{
@@ -1825,9 +1825,12 @@ int CRebaseDlg::DoRebase()
 						parentString += L" " + parent.ToString();
 					cmd.Format(_T("git.exe checkout %s"), (LPCTSTR)newParents[0].ToString());
 					g_Git.Run(cmd, &out, CP_UTF8);
-					cmd.Format(_T("git.exe merge --no-ff %s"), (LPCTSTR)parentString);
-					g_Git.Run(cmd, &out, CP_UTF8);
-					cmd.Format(_T("git.exe commit --amend -C %s"), (LPCTSTR)pRev->m_CommitHash.ToString());
+					cmd.Format(_T("git.exe merge --no-ff%s %s"), (LPCTSTR)nocommit, (LPCTSTR)parentString);
+					if (nocommit.IsEmpty())
+					{
+						g_Git.Run(cmd, &out, CP_UTF8);
+						cmd.Format(_T("git.exe commit --amend -C %s"), (LPCTSTR)pRev->m_CommitHash.ToString());
+					}
 				}
 			}
 			else
