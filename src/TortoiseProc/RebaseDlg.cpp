@@ -200,6 +200,7 @@ BOOL CRebaseDlg::OnInitDialog()
 		return -1;      // fail to create
 	}
 	m_wndOutputRebase.Init(-1);
+	m_wndOutputRebase.SetFont((CString)CRegString(_T("Software\\TortoiseGit\\LogFontName"), _T("Courier New")), (DWORD)CRegDWORD(_T("Software\\TortoiseGit\\LogFontSize"), 8));
 	m_wndOutputRebase.Call(SCI_SETREADONLY, TRUE);
 
 	m_tooltips.AddTool(IDC_REBASE_CHECK_FORCE,IDS_REBASE_FORCE_TT);
