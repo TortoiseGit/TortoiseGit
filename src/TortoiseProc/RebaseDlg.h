@@ -177,6 +177,7 @@ protected:
 
 	std::map<CGitHash, CGitHash> rewrittenCommitsMap;
 	std::vector<CGitHash> forRewrite;
+	std::map<CGitHash, GIT_REV_LIST> droppedCommitsMap;
 
 	void AddBranchToolTips(CHistoryCombo *pBranch);
 	void AddLogString(CString str);

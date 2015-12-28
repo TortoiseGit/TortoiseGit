@@ -613,6 +613,7 @@ void CRebaseDlg::FetchLogList()
 
 		// Found. Skip it.
 		m_CommitList.m_logEntries.GetGitRevAt(itIx->second).GetRebaseAction() = CGitLogListBase::LOGACTIONS_REBASE_SKIP;
+		droppedCommitsMap[m_CommitList.m_logEntries.GetGitRevAt(itIx->second).m_CommitHash] = m_CommitList.m_logEntries.GetGitRevAt(itIx->second).m_ParentHash;
 		bHasSKip = true;
 	});
 
@@ -1788,6 +1789,14 @@ int CRebaseDlg::DoRebase()
 				{
 					// no part of the rebase process
 					newParents.push_back(parent);
+					continue;
+				}
+				auto droppedCommitParents = droppedCommitsMap.find(parent);
+				if (rewrittenParent->second.IsEmpty() && droppedCommitParents != droppedCommitsMap.cend())
+				{
+					parentRewritten = true;
+					for (const auto& droppedCommitParent : droppedCommitParents->second)
+						possibleParents.push_back(droppedCommitParent);
 					continue;
 				}
 				if (rewrittenParent->second.IsEmpty() && parent == pRev->m_ParentHash[0] && pRev->ParentsCount() > 1)
