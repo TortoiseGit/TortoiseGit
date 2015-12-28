@@ -557,7 +557,7 @@ void CRebaseDlg::FetchLogList()
 	CString refTo   = g_Git.FixBranchName(m_BranchCtrl.GetString());
 	CString range;
 	range.Format(_T("%s..%s"), (LPCTSTR)refFrom, (LPCTSTR)refTo);
-	this->m_CommitList.FillGitLog(nullptr, &range, 0);
+	this->m_CommitList.FillGitLog(nullptr, &range, CGit::LOG_INFO_NO_MERGE);
 
 	if( m_CommitList.GetItemCount() == 0 )
 		m_CommitList.ShowText(CString(MAKEINTRESOURCE(IDS_PROC_NOTHINGTOREBASE)));
