@@ -277,7 +277,7 @@ private:
 	{
 		return static_cast<HCURSOR>(m_hIcon);
 	}
-
+protected:
 	virtual void HtmlHelp(DWORD_PTR dwData, UINT nCmd = 0x000F)
 	{
 		CWinApp* pApp = AfxGetApp();
@@ -296,7 +296,7 @@ private:
 			AfxMessageBox(AFX_IDP_FAILED_TO_LAUNCH_HELP);
 		}
 	}
-
+private:
 	afx_msg LRESULT OnTaskbarButtonCreated(WPARAM /*wParam*/, LPARAM /*lParam*/)
 	{
 		SetUUIDOverlayIcon(m_hWnd);

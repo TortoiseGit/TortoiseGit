@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
+<sect1 id="tgit-dug-cherrypick">
+	<title>Cherry picking</title>
+	<?dbhh topicname="HIDD_REBASECHERRYPICK"?>
+	<indexterm>
+		<primary>Cherry pick</primary>
+	</indexterm>
+	<para>
+		<link linkend="git-cherry-pick(1)">Cherry-picking</link> in TortoiseGit is invoked from the <link linkend="tgit-dug-showlog">Revision Log Dialog</link>. Within this dialog, select the commit(s) to cherry-pick, then right-click on one of the selected commits to pop up the context menu. Select <guilabel>Cherry Pick this commit...</guilabel> (or <guilabel>Cherry Pick select commits...</guilabel> if more than one commit is selected).
+	</para>
+	<para>
+		The Cherry Pick dialog will be shown. <graphic fileref="../images/GitCherryPick.png"/>
+	</para>
+	<para>
+		The Cherry Pick dialog is similar to the <link linkend="tgit-dug-rebase">Rebase dialog</link>. The top table displays one line for each selected commit to cherry-pick. Buttons below it control the actions (Pick, Squash, Edit, Skip) and the order in which multiple commits are picked. Selecting a line shows the files affected by the commit.
+	</para>
+</sect1>

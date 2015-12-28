@@ -103,6 +103,7 @@ BEGIN_MESSAGE_MAP(CRebaseDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_SPLITALLOPTIONS, &CRebaseDlg::OnBnClickedSplitAllOptions)
 	ON_BN_CLICKED(IDC_REBASE_SPLIT_COMMIT, &CRebaseDlg::OnBnClickedRebaseSplitCommit)
 	ON_BN_CLICKED(IDC_BUTTON_ONTO, &CRebaseDlg::OnBnClickedButtonOnto)
+	ON_BN_CLICKED(IDHELP, OnHelp)
 END_MESSAGE_MAP()
 
 void CRebaseDlg::AddRebaseAnchor()
@@ -2601,4 +2602,9 @@ void CRebaseDlg::OnBnClickedButtonOnto()
 		m_tooltips.AddTool(IDC_BUTTON_ONTO, m_Onto);
 	((CButton*)GetDlgItem(IDC_BUTTON_ONTO))->SetCheck(m_Onto.IsEmpty() ? BST_UNCHECKED : BST_CHECKED);
 	FetchLogList();
+}
+
+void CRebaseDlg::OnHelp()
+{
+	HtmlHelp(0x20000 + (m_IsCherryPick ? IDD_REBASECHERRYPICK : IDD_REBASE));
 }

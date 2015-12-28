@@ -122,6 +122,7 @@
 #define IDD_RESET                       317
 #define IDD_REBASE                      318
 #define IDI_GITCONFIG                   319
+#define IDD_REBASECHERRYPICK            319
 #define IDI_GITREMOTE                   320
 #define IDD_SENDMAIL                    320
 #define IDD_SETTINGSMTP                 321

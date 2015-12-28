@@ -196,6 +196,7 @@ protected:
 	afx_msg void OnBnClickedSplitAllOptions();
 	afx_msg void OnBnClickedButtonUp2();
 	afx_msg void OnBnClickedButtonDown2();
+	afx_msg void OnHelp();
 
 	afx_msg LRESULT	OnTaskbarBtnCreated(WPARAM wParam, LPARAM lParam);
 	CComPtr<ITaskbarList3>	m_pTaskbarList;

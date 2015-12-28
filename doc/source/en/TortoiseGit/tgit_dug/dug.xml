@@ -83,6 +83,7 @@
 	<xi:include href="./dug_bisect.xml"/>
 	<xi:include href="./dug_branchtag.xml"/>
 	<xi:include href="./dug_merge.xml"/>
+	<xi:include href="./dug_cherrypick.xml"/>
     <xi:include href="./dug_rebase.xml"/>
     <xi:include href="./dug_conflicts.xml"/>
 
