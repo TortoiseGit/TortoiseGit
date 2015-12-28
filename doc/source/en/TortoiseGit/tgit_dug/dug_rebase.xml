@@ -45,7 +45,7 @@
 	</tip>
 	<important>
 		<para>
-			TortoiseGit currently cannot rebase merge commits (<ulink url="https://tortoisegit.org/issue/2314">issue #2314</ulink>).
+			When preserving merge commits, re-ordering commits cannot be handled properly in all cases, see in known bugs of vanilla git rebase: <xref linkend="git-rebase(1)"/>.
 		</para>
 	</important>
 </sect1>
