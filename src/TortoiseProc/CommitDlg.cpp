@@ -1649,7 +1649,7 @@ void CCommitDlg::GetAutocompletionList()
 	std::map<CString, CString> mapRegex;
 	CString sRegexFile = CPathUtils::GetAppDirectory();
 	CRegDWORD regtimeout = CRegDWORD(_T("Software\\TortoiseGit\\AutocompleteParseTimeout"), 5);
-	ULONGLONG timeoutvalue = regtimeout * 1000;
+	ULONGLONG timeoutvalue = ULONGLONG(DWORD(regtimeout)) * 1000UL;;
 	sRegexFile += _T("autolist.txt");
 	if (!m_bRunThread)
 		return;
