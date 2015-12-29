@@ -554,6 +554,7 @@ protected:
 	HANDLE	m_AsyncDiffEvent;
 	volatile LONG m_AsyncThreadExit;
 	CWinThread*			m_DiffingThread;
+	volatile LONG m_AsyncThreadRunning;
 
 	static int DiffAsync(GitRevLoglist* rev, void* data)
 	{

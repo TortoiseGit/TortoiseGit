@@ -915,6 +915,7 @@ void CCommitDlg::OnOK()
 				if (!sError.IsEmpty())
 				{
 					CMessageBox::Show(m_hWnd, sError, _T("TortoiseGit"), MB_ICONERROR);
+					InterlockedExchange(&m_bBlock, FALSE);
 					return;
 				}
 			}
@@ -930,6 +931,7 @@ void CCommitDlg::OnOK()
 		if (CAppUtils::SaveCommitUnicodeFile(tempfile, m_sLogMessage))
 		{
 			CMessageBox::Show(nullptr, _T("Could not save commit message"), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+			InterlockedExchange(&m_bBlock, FALSE);
 			return;
 		}
 
@@ -1014,8 +1016,6 @@ void CCommitDlg::OnOK()
 			}
 
 			UpdateData(FALSE);
-			this->Refresh();
-			this->BringWindowToTop();
 		}
 
 		::DeleteFile(tempfile);
@@ -1092,6 +1092,11 @@ void CCommitDlg::OnOK()
 
 	if( bCloseCommitDlg )
 		CResizableStandAloneDialog::OnOK();
+	else if (m_PostCmd == GIT_POSTCOMMIT_CMD_RECOMMIT)
+	{
+		this->Refresh();
+		this->BringWindowToTop();
+	}
 
 	CShellUpdater::Instance().Flush();
 }
@@ -1126,10 +1131,6 @@ UINT CCommitDlg::StatusThread()
 	//get the status of all selected file/folders recursively
 	//and show the ones which have to be committed to the user
 	//in a list control.
-	InterlockedExchange(&m_bBlock, TRUE);
-	InterlockedExchange(&m_bThreadRunning, TRUE);// so the main thread knows that this thread is still running
-	InterlockedExchange(&m_bRunThread, TRUE);	// if this is set to FALSE, the thread should stop
-
 	m_pathwatcher.Stop();
 
 	m_ListCtrl.SetBusy(true);
@@ -1411,13 +1412,15 @@ void CCommitDlg::Refresh()
 
 void CCommitDlg::StartStatusThread()
 {
+	if (InterlockedExchange(&m_bBlock, TRUE) != FALSE)
+		return;
+
 	if (m_pThread)
 	{
 		delete m_pThread;
 		m_pThread = nullptr;
 	}
 
-	InterlockedExchange(&m_bBlock, TRUE);
 	m_pThread = AfxBeginThread(StatusThreadEntry, this, THREAD_PRIORITY_NORMAL, 0, CREATE_SUSPENDED);
 	if (!m_pThread)
 	{
@@ -1425,7 +1428,8 @@ void CCommitDlg::StartStatusThread()
 		InterlockedExchange(&m_bBlock, FALSE);
 		return;
 	}
-
+	InterlockedExchange(&m_bThreadRunning, TRUE);// so the main thread knows that this thread is still running
+	InterlockedExchange(&m_bRunThread, TRUE);	// if this is set to FALSE, the thread should stop
 	m_pThread->m_bAutoDelete = FALSE;
 	m_pThread->ResumeThread();
 }

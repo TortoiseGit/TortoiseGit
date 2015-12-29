@@ -76,6 +76,7 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	, m_ShowRefMask(LOGLIST_SHOWALLREFS)
 	, m_bFullCommitMessageOnLogLine(false)
 	, m_OldTopIndex(-1)
+	, m_AsyncThreadRunning(FALSE)
 {
 	// use the default GUI font, create a copy of it and
 	// change the copy to BOLD (leave the rest of the font
@@ -174,7 +175,6 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 
 int CGitLogListBase::AsyncDiffThread()
 {
-	m_AsyncThreadExited = false;
 	while(!m_AsyncThreadExit)
 	{
 		::WaitForSingleObject(m_AsyncDiffEvent, INFINITE);
@@ -206,6 +206,7 @@ int CGitLogListBase::AsyncDiffThread()
 				if (pRev->GetUnRevFiles().FillUnRev(CTGitPath::LOGACTIONS_UNVER, nullptr, &err))
 				{
 					CMessageBox::Show(NULL, _T("Failed to get UnRev file list\n") + err, _T("TortoiseGit"), MB_OK);
+					InterlockedExchange(&m_AsyncThreadRunning, FALSE);
 					return -1;
 				}
 
@@ -251,6 +252,7 @@ int CGitLogListBase::AsyncDiffThread()
 		}
 	}
 	m_AsyncThreadExited = true;
+	InterlockedExchange(&m_AsyncThreadRunning, FALSE);
 	return 0;
 }
 void CGitLogListBase::hideFromContextMenu(unsigned __int64 hideMask, bool exclusivelyShow)
@@ -2871,9 +2873,6 @@ UINT CGitLogListBase::LogThread()
 {
 	::PostMessage(this->GetParent()->m_hWnd,MSG_LOAD_PERCENTAGE,(WPARAM) GITLOG_START,0);
 
-	InterlockedExchange(&m_bThreadRunning, TRUE);
-	InterlockedExchange(&m_bNoDispUpdates, TRUE);
-
 	ULONGLONG  t1,t2;
 
 	if(BeginFetchLog())
@@ -3171,22 +3170,27 @@ void CGitLogListBase::Refresh(BOOL IsCleanFilter)
 
 void CGitLogListBase::StartAsyncDiffThread()
 {
+	if (InterlockedExchange(&m_AsyncThreadRunning, TRUE) != FALSE)
+		return;
 	InterlockedExchange(&m_AsyncThreadExit, FALSE);
 	m_DiffingThread = AfxBeginThread(AsyncThread, this, THREAD_PRIORITY_BELOW_NORMAL, 0, CREATE_SUSPENDED);
 	if (!m_DiffingThread)
 	{
+		InterlockedExchange(&m_AsyncThreadRunning, FALSE);
 		CMessageBox::Show(nullptr, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
 		return;
 	}
+	m_AsyncThreadExited = false;
 	m_DiffingThread->m_bAutoDelete = FALSE;
 	m_DiffingThread->ResumeThread();
 }
 
 void CGitLogListBase::StartLoadingThread()
 {
-	m_bExitThread = FALSE;
-	InterlockedExchange(&m_bThreadRunning, TRUE);
+	if (InterlockedExchange(&m_bThreadRunning, TRUE) != FALSE)
+		return;
 	InterlockedExchange(&m_bNoDispUpdates, TRUE);
+	InterlockedExchange(&m_bExitThread, FALSE);
 	m_LoadingThread = AfxBeginThread(LogThreadEntry, this, THREAD_PRIORITY_LOWEST);
 	if (!m_LoadingThread)
 	{
