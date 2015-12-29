@@ -381,6 +381,8 @@ BOOL CGitStatusListCtrl::GetStatus ( const CTGitPathList* pathList
 	m_bEmpty = false;
 	Invalidate();
 
+	m_bIsRevertTheirMy = g_Git.IsRebaseRunning() > 0;
+
 	Locker lock(m_critSec);
 	int mask= CGitStatusListCtrl::FILELIST_MODIFY;
 	if(bShowIgnores)

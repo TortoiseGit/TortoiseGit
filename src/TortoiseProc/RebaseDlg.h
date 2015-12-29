@@ -189,6 +189,7 @@ protected:
 	int StateAction();
 	int GoNext();
 	void ResetParentForSquash(const CString& commitMessage);
+	void CleanUpRebaseActiveFolder();
 	afx_msg void OnBnClickedButtonReverse();
 	afx_msg void OnBnClickedButtonBrowse();
 	afx_msg void OnBnClickedRebaseCheckForce();

@@ -25,5 +25,5 @@
 bool ConflictEditorCommand::Execute()
 {
 	bool bAlternativeTool = !!parser.HasKey(_T("alternative"));
-	return CAppUtils::ConflictEdit(this->cmdLinePath,bAlternativeTool);
+	return CAppUtils::ConflictEdit(this->cmdLinePath, bAlternativeTool, g_Git.IsRebaseRunning() > 0);
 }

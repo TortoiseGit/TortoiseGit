@@ -954,8 +954,6 @@ public:
 
 	CString						m_sDisplayedBranch; ///< When on LogDialog, what is the current displayed branch
 
-	bool						m_bIsRevertTheirMy;	///< at rebase case, Their and My version is revert.
-
 	CWnd						*m_hwndLogicalParent;
 
 	DECLARE_MESSAGE_MAP()
@@ -987,6 +985,9 @@ private:
 
 	CString m_sMarkForDiffFilename;
 	CString m_sMarkForDiffVersion;
+
+	/* while rebasing, Their and My versios are swapped. */
+	bool						m_bIsRevertTheirMy;
 
 	enum
 	{

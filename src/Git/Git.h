@@ -387,6 +387,7 @@ public:
 	int HasWorkingTreeConflicts();
 	/** Returns 0 if no conflict, if a conflict was found and -1 in case of a failure */
 	int HasWorkingTreeConflicts(git_repository* repo);
+	int IsRebaseRunning();
 	int GetRefList(STRING_VECTOR &list);
 
 	int RefreshGitIndex();

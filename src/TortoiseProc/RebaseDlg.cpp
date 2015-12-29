@@ -106,6 +106,15 @@ BEGIN_MESSAGE_MAP(CRebaseDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDHELP, OnHelp)
 END_MESSAGE_MAP()
 
+void CRebaseDlg::CleanUpRebaseActiveFolder()
+{
+	if (m_IsCherryPick)
+		return;
+	CString adminDir;
+	if (GitAdminDir::GetAdminDirPath(g_Git.m_CurrentDir, adminDir))
+		RemoveDirectory(adminDir + L"tgitrebase.active");
+}
+
 void CRebaseDlg::AddRebaseAnchor()
 {
 	AddAnchor(IDC_REBASE_TAB,TOP_LEFT,BOTTOM_RIGHT);
@@ -851,8 +860,6 @@ void CRebaseDlg::CheckRestoreStash()
 int CRebaseDlg::StartRebase()
 {
 	CString cmd,out;
-	m_FileListCtrl.m_bIsRevertTheirMy = !m_IsCherryPick;
-
 	m_OrigHEADBranch = g_Git.GetCurrentBranch(true);
 
 	m_OrigHEADHash.Empty();
@@ -920,6 +927,7 @@ int CRebaseDlg::VerifyNoConflict()
 		CMessageBox::Show(NULL, IDS_PROGRS_CONFLICTSOCCURED, IDS_APPNAME, MB_OK);
 		return -1;
 	}
+	CleanUpRebaseActiveFolder();
 	return 0;
 
 }
@@ -983,6 +991,7 @@ void CRebaseDlg::OnBnClickedContinue()
 	if( m_RebaseStage == REBASE_DONE)
 	{
 		OnOK();
+		CleanUpRebaseActiveFolder();
 		CheckRestoreStash();
 		return;
 	}
@@ -2002,7 +2011,9 @@ void CRebaseDlg::ListConflictFile()
 	CTGitPath path;
 	list.AddPath(path);
 
-	m_FileListCtrl.m_bIsRevertTheirMy = !m_IsCherryPick;
+	CString adminDir;
+	if (GitAdminDir::GetAdminDirPath(g_Git.m_CurrentDir, adminDir))
+		CreateDirectory(adminDir + L"tgitrebase.active", nullptr);
 
 	this->m_FileListCtrl.GetStatus(&list,true);
 	this->m_FileListCtrl.Show(CTGitPath::LOGACTIONS_UNMERGED|CTGitPath::LOGACTIONS_MODIFIED|CTGitPath::LOGACTIONS_ADDED|CTGitPath::LOGACTIONS_DELETED,
@@ -2199,6 +2210,7 @@ void CRebaseDlg::OnBnClickedAbort()
 	}
 	__super::OnCancel();
 end:
+	CleanUpRebaseActiveFolder();
 	CheckRestoreStash();
 }
 
