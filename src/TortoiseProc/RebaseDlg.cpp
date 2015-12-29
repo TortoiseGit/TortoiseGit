@@ -825,7 +825,7 @@ int CRebaseDlg::CheckRebaseCondition()
 
 	if( !g_Git.CheckCleanWorkTree()  )
 	{
-		if (CMessageBox::Show(NULL, IDS_ERROR_NOCLEAN_STASH, IDS_APPNAME, 1, IDI_QUESTION, IDS_STASHBUTTON, IDS_ABORTBUTTON) == 1)
+		if ((!m_IsCherryPick && g_Git.GetConfigValueBool(L"rebase.autostash")) || CMessageBox::Show(NULL, IDS_ERROR_NOCLEAN_STASH, IDS_APPNAME, 1, IDI_QUESTION, IDS_STASHBUTTON, IDS_ABORTBUTTON) == 1)
 		{
 			CString cmd,out;
 			cmd=_T("git.exe stash");
@@ -852,8 +852,9 @@ int CRebaseDlg::CheckRebaseCondition()
 
 void CRebaseDlg::CheckRestoreStash()
 {
-	if (m_bStashed && CMessageBox::Show(nullptr, IDS_DCOMMIT_STASH_POP, IDS_APPNAME, MB_YESNO | MB_ICONQUESTION) == IDYES)
-		CAppUtils::StashPop();
+	bool autoStash = !m_IsCherryPick && g_Git.GetConfigValueBool(L"rebase.autostash");
+	if (m_bStashed && (autoStash || CMessageBox::Show(nullptr, IDS_DCOMMIT_STASH_POP, IDS_APPNAME, MB_YESNO | MB_ICONQUESTION) == IDYES))
+		CAppUtils::StashPop(autoStash ? 0 : 1);
 	m_bStashed = false;
 }
 

@@ -35,5 +35,5 @@ bool StashApplyCommand::Execute()
 
 bool StashPopCommand::Execute()
 {
-	return !CAppUtils::StashPop(true);
+	return !CAppUtils::StashPop();
 }

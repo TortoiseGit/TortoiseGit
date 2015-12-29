@@ -167,7 +167,13 @@ public:
 	static CString GetMergeTempFile(const CString& str, const CTGitPath& merge);
 	static bool	StashSave(const CString& msg = CString(), bool showPull = false, bool pullShowPush = false, bool showMerge = false, const CString& mergeRev = CString());
 	static bool StashApply(CString ref, bool showChanges = true);
-	static bool	StashPop(bool showChanges = true);
+	/** Execute "stash pop"
+	 * showChanges
+	 *              0: only show info on error (and allow to diff on error)
+	 *              1: allow to open diff dialog on error or success
+	 *              2: only show error or success message
+	 */
+	static bool	StashPop(int showChanges = 1);
 
 	static bool IsSSHPutty();
 

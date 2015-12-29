@@ -207,7 +207,7 @@ bool CAppUtils::StashApply(CString ref, bool showChanges /* true */)
 	return false;
 }
 
-bool CAppUtils::StashPop(bool showChanges /* true */)
+bool CAppUtils::StashPop(int showChanges /* = 1 */)
 {
 	CString cmd,out;
 	cmd=_T("git.exe stash pop ");
@@ -235,7 +235,7 @@ bool CAppUtils::StashPop(bool showChanges /* true */)
 		message.LoadString(IDS_PROC_STASHPOPSUCCESS);
 		if (hasConflicts)
 			message.LoadString(IDS_PROC_STASHPOPFAILEDCONFLICTS);
-		if (showChanges)
+		if (showChanges == 1 || (showChanges == 0 && hasConflicts))
 		{
  			if(CMessageBox::Show(NULL,CString(message + _T("\n") + CString(MAKEINTRESOURCE(IDS_SEECHANGES)))
 				,_T("TortoiseGit"),MB_YESNO|MB_ICONINFORMATION) == IDYES)
@@ -246,11 +246,13 @@ bool CAppUtils::StashPop(bool showChanges /* true */)
 			}
 			return true;
 		}
-		else
+		else if (showChanges > 1)
 		{
 			CMessageBox::Show(NULL, message ,_T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
 			return true;
 		}
+		else if (showChanges == 0)
+			return true;
 	}
 	return false;
 }
