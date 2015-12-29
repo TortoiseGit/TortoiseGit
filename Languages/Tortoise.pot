@@ -9834,6 +9834,10 @@ msgstr ""
 msgid "Tracked Remote Branch:"
 msgstr ""
 
+#. Resource IDs: (Dialog IDD_PROPPAGE: Control id 65535)
+msgid "Tracked Remote URL:"
+msgstr ""
+
 #. Resource IDs: (IDS_TRACKEDBRANCH)
 msgid "Tracked branch"
 msgstr ""

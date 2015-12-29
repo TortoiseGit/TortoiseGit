@@ -97,6 +97,7 @@ protected:
 	void UpdateProgress();
 	void UpdateCurrentStatus();
 	void ListConflictFile();
+	int	RunGitCmdRetryOrAbort(const CString& cmd);
 	int  DoRebase();
 	afx_msg LRESULT OnGitStatusListCtrlNeedsRefresh(WPARAM, LPARAM);
 	void Refresh();

@@ -582,7 +582,7 @@ void CGitPropertyPage::InitWorkfileView()
 				if (pos > 0)
 				{
 					CString remoteName;
-					remoteName.Format(L"remote.%s.url", remotebranch.Left(pos));
+					remoteName.Format(L"remote.%s.url", (LPCTSTR)remotebranch.Left(pos));
 					config.GetString(remoteName, remoteUrl);
 				}
 			}

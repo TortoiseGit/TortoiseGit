@@ -883,18 +883,8 @@ int CRebaseDlg::StartRebase()
 	{
 		cmd.Format(_T("git.exe checkout -f %s --"), (LPCTSTR)m_OrigUpstreamHash.ToString());
 		this->AddLogString(cmd);
-		while (true)
-		{
-			out.Empty();
-			if (g_Git.Run(cmd, &out, CP_UTF8))
-			{
-				this->AddLogString(out);
-				if (CMessageBox::Show(m_hWnd, out + _T("\nRetry?"), _T("TortoiseGit"), MB_YESNO | MB_ICONERROR) != IDYES)
-					return -1;
-			}
-			else
-				break;
-		}
+		if (RunGitCmdRetryOrAbort(cmd))
+			return -1;
 	}
 
 	CString log;
@@ -968,35 +958,15 @@ int CRebaseDlg::FinishRebase()
 	{
 		cmd.Format(_T("git.exe checkout -f -B %s %s --"), (LPCTSTR)m_BranchCtrl.GetString(), (LPCTSTR)head.ToString());
 		AddLogString(cmd);
-		while (true)
-		{
-			out.Empty();
-			if (g_Git.Run(cmd, &out, CP_UTF8))
-			{
-				AddLogString(out);
-				if (CMessageBox::Show(m_hWnd, out + _T("\nRetry?"), _T("TortoiseGit"), MB_YESNO | MB_ICONERROR) != IDYES)
-					return -1;
-			}
-			else
-				break;
-		}
+		if (RunGitCmdRetryOrAbort(cmd))
+			return -1;
 		AddLogString(out);
 	}
 
 	cmd.Format(_T("git.exe reset --hard %s --"), (LPCTSTR)head.ToString());
 	AddLogString(cmd);
-	while (true)
-	{
-		out.Empty();
-		if (g_Git.Run(cmd, &out, CP_UTF8))
-		{
-			AddLogString(out);
-			if (CMessageBox::Show(m_hWnd, out + _T("\nRetry?"), _T("TortoiseGit"), MB_YESNO | MB_ICONERROR) != IDYES)
-				return -1;
-		}
-		else
-			break;
-	}
+	if (RunGitCmdRetryOrAbort(cmd))
+		return -1;
 	AddLogString(out);
 
 	while (m_ctrlTabCtrl.GetTabsNum() > 1)
@@ -1048,19 +1018,8 @@ void CRebaseDlg::OnBnClickedContinue()
 		{
 			cmd.Format(_T("git.exe checkout --no-track -f -B %s %s --"), (LPCTSTR)m_BranchCtrl.GetString(), (LPCTSTR)m_UpstreamCtrl.GetString());
 			AddLogString(cmd);
-			while (true)
-			{
-				out.Empty();
-				if (g_Git.Run(cmd, &out, CP_UTF8))
-				{
-					this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_LOG);
-					AddLogString(out);
-					if (CMessageBox::Show(m_hWnd, out + _T("\nRetry?"), _T("TortoiseGit"), MB_YESNO | MB_ICONERROR) != IDYES)
-						return;
-				}
-				else
-					break;
-			}
+			if (RunGitCmdRetryOrAbort(cmd))
+				return;
 			AddLogString(out);
 			out.Empty();
 		}
@@ -1071,19 +1030,8 @@ void CRebaseDlg::OnBnClickedContinue()
 
 		AddLogString(cmd);
 		this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_LOG);
-		while (true)
-		{
-			out.Empty();
-			if (g_Git.Run(cmd, &out, CP_UTF8))
-			{
-				AddLogString(CString(MAKEINTRESOURCE(IDS_FAIL)));
-				AddLogString(out);
-				if (CMessageBox::Show(m_hWnd, out + _T("\nRetry?"), _T("TortoiseGit"), MB_YESNO | MB_ICONERROR) != IDYES)
-					return;
-			}
-			else
-				break;
-		}
+		if (RunGitCmdRetryOrAbort(cmd))
+			return;
 		AddLogString(out);
 		AddLogString(CString(MAKEINTRESOURCE(IDS_DONE)));
 		m_RebaseStage = REBASE_DONE;
@@ -1278,7 +1226,11 @@ void CRebaseDlg::OnBnClickedContinue()
 			{
 				m_SquashMessage.Empty();
 				CGitHash head;
-				g_Git.GetHash(head, _T("HEAD"));
+				if (g_Git.GetHash(head, _T("HEAD")))
+				{
+					MessageBox(g_Git.GetGitLastErr(_T("Could not get HEAD hash.")), _T("TortoiseGit"), MB_ICONERROR);
+					return;
+				}
 				rewrittenCommitsMap[curRev->m_CommitHash] = head;
 			}
 		}
@@ -1321,7 +1273,11 @@ void CRebaseDlg::OnBnClickedContinue()
 		m_RebaseStage = REBASE_CONTINUE;
 		GitRevLoglist* curRev = (GitRevLoglist*)m_CommitList.m_arShownList[m_CurrentRebaseIndex];
 		CGitHash head;
-		g_Git.GetHash(head, _T("HEAD"));
+		if (g_Git.GetHash(head, _T("HEAD")))
+		{
+			MessageBox(g_Git.GetGitLastErr(_T("Could not get HEAD hash.")), _T("TortoiseGit"), MB_ICONERROR);
+			return;
+		}
 		rewrittenCommitsMap[curRev->m_CommitHash] = head;
 		for (const auto& hash : forRewrite)
 			rewrittenCommitsMap[hash] = head;
@@ -1384,9 +1340,11 @@ void CRebaseDlg::OnBnClickedContinue()
 		this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_LOG);
 		m_RebaseStage=REBASE_CONTINUE;
 		CGitHash head;
-		g_Git.GetHash(head, _T("HEAD"));
-		AddLogString(L"HEAD: " + head.ToString());
-		AddLogString(L"oldHash: " + curRev->m_CommitHash.ToString());
+		if (g_Git.GetHash(head, _T("HEAD")))
+		{
+			MessageBox(g_Git.GetGitLastErr(_T("Could not get HEAD hash.")), _T("TortoiseGit"), MB_ICONERROR);
+			return;
+		}
 		rewrittenCommitsMap[curRev->m_CommitHash] = head; // we had a reset to parent, so this is not the correct hash
 		for (const auto& hash : forRewrite)
 			rewrittenCommitsMap[hash] = head;
@@ -1412,20 +1370,8 @@ void CRebaseDlg::ResetParentForSquash(const CString& commitMessage)
 	// reset parent so that we can do "git cherry-pick --no-commit" w/o introducing an unwanted commit
 	CString cmd = _T("git.exe reset --soft HEAD~1");
 	m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_LOG);
-	while (true)
-	{
-		CString out;
-		if (g_Git.Run(cmd, &out, CP_UTF8))
-		{
-			AddLogString(cmd);
-			AddLogString(CString(MAKEINTRESOURCE(IDS_FAIL)));
-			AddLogString(out);
-			if (CMessageBox::Show(m_hWnd, out + _T("\nRetry?"), _T("TortoiseGit"), MB_YESNO | MB_ICONERROR) != IDYES)
-				return;
-		}
-		else
-			break;
-	}
+	if (RunGitCmdRetryOrAbort(cmd))
+		return;
 }
 int CRebaseDlg::CheckNextCommitIsSquash()
 {
@@ -1812,8 +1758,12 @@ int CRebaseDlg::DoRebase()
 				}
 
 				CGitHash newParent = rewrittenParent->second;
-				if (newParent.IsEmpty())
-					g_Git.GetHash(newParent, _T("HEAD")); // use current HEAD as fallback
+				if (newParent.IsEmpty() && g_Git.GetHash(newParent, _T("HEAD"))) // use current HEAD as fallback
+				{
+					m_RebaseStage = REBASE_ERROR;
+					MessageBox(g_Git.GetGitLastErr(_T("Could not get HEAD hash.")), _T("TortoiseGit"), MB_ICONERROR);
+					return -1;
+				}
 
 				if (newParent != parent)
 					parentRewritten = true;
@@ -1837,11 +1787,22 @@ int CRebaseDlg::DoRebase()
 					for (const auto& parent : newParents)
 						parentString += L" " + parent.ToString();
 					cmd.Format(_T("git.exe checkout %s"), (LPCTSTR)newParents[0].ToString());
-					g_Git.Run(cmd, &out, CP_UTF8);
+					if (RunGitCmdRetryOrAbort(cmd))
+					{
+						m_RebaseStage = REBASE_ERROR;
+						return -1;
+					}
 					cmd.Format(_T("git.exe merge --no-ff%s %s"), (LPCTSTR)nocommit, (LPCTSTR)parentString);
 					if (nocommit.IsEmpty())
 					{
-						g_Git.Run(cmd, &out, CP_UTF8);
+						if (g_Git.Run(cmd, &out, CP_UTF8))
+						{
+							AddLogString(cmd);
+							AddLogString(out);
+							AddLogString(_T("An unrecoverable error occurred."));
+							m_RebaseStage = REBASE_ERROR;
+							return -1;
+						}
 						cmd.Format(_T("git.exe commit --amend -C %s"), (LPCTSTR)pRev->m_CommitHash.ToString());
 					}
 				}
@@ -1851,22 +1812,10 @@ int CRebaseDlg::DoRebase()
 				if (mode != CGitLogListBase::LOGACTIONS_REBASE_SQUASH)
 				{
 					cmd.Format(_T("git.exe checkout %s"), (LPCTSTR)newParents[0].ToString());
-					while (true)
+					if (RunGitCmdRetryOrAbort(cmd))
 					{
-						CString out;
-						if (g_Git.Run(cmd, &out, CP_UTF8))
-						{
-							AddLogString(cmd);
-							AddLogString(CString(MAKEINTRESOURCE(IDS_FAIL)));
-							AddLogString(out);
-							if (CMessageBox::Show(m_hWnd, out + _T("\nRetry?"), _T("TortoiseGit"), MB_YESNO | MB_ICONERROR) != IDYES)
-							{
-								m_RebaseStage = REBASE_ERROR;
-								return -1;
-							}
-						}
-						else
-							break;
+						m_RebaseStage = REBASE_ERROR;
+						return -1;
 					}
 				}
 				cmd.Format(_T("git.exe cherry-pick %s%s %s"), (LPCTSTR)cherryPickedFrom, (LPCTSTR)nocommit, (LPCTSTR)pRev->m_CommitHash.ToString());
@@ -1900,21 +1849,7 @@ int CRebaseDlg::DoRebase()
 					}
 					if (m_bAutoSkipFailedCommit || choose == 1)
 					{
-						bool resetOK = false;
-						while (!resetOK)
-						{
-							out.Empty();
-							if (g_Git.Run(_T("git.exe reset --hard"), &out, CP_UTF8))
-							{
-								AddLogString(out);
-								if (CMessageBox::Show(m_hWnd, _T("Retry?\nUnrecoverable error on cleanup:\n") + out, _T("TortoiseGit"), MB_YESNO | MB_ICONERROR) != IDYES)
-									break;
-							}
-							else
-								resetOK = true;
-						}
-
-						if (resetOK)
+						if (!RunGitCmdRetryOrAbort(_T("git.exe reset --hard")))
 						{
 							pRev->GetRebaseAction() = CGitLogListBase::LOGACTIONS_REBASE_SKIP;
 							m_CommitList.Invalidate();
@@ -1957,7 +1892,12 @@ int CRebaseDlg::DoRebase()
 				if (nocommit.IsEmpty())
 				{
 					CGitHash head;
-					g_Git.GetHash(head, _T("HEAD"));
+					if (g_Git.GetHash(head, _T("HEAD")))
+					{
+						MessageBox(g_Git.GetGitLastErr(_T("Could not get HEAD hash.")), _T("TortoiseGit"), MB_ICONERROR);
+						m_RebaseStage = REBASE_ERROR;
+						return -1;
+					}
 					rewrittenCommitsMap[pRev->m_CommitHash] = head;
 				}
 				else
@@ -2174,8 +2114,7 @@ void CRebaseDlg::OnBnClickedAbort()
 		m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NOPROGRESS);
 
 	m_tooltips.Pop();
-
-	CString cmd,out;
+	
 	if(m_OrigUpstreamHash.IsEmpty())
 	{
 		__super::OnCancel();
@@ -2191,45 +2130,25 @@ void CRebaseDlg::OnBnClickedAbort()
 
 	if(this->m_IsFastForward)
 	{
+		CString cmd;
 		cmd.Format(_T("git.exe reset --hard %s --"), (LPCTSTR)this->m_OrigBranchHash.ToString());
-		while (true)
-		{
-			out.Empty();
-			if (g_Git.Run(cmd, &out, CP_UTF8))
-			{
-				AddLogString(out);
-				if (CMessageBox::Show(m_hWnd, _T("Retry?\nUnrecoverable error on cleanup:\n") + out, _T("TortoiseGit"), MB_YESNO | MB_ICONERROR) != IDYES)
-					break;
-			}
-			else
-				break;
-		}
+		RunGitCmdRetryOrAbort(cmd);
 		__super::OnCancel();
 		goto end;
 	}
 
 	if (m_IsCherryPick) // there are not "branch" at cherry pick mode
 	{
+		CString cmd;
 		cmd.Format(_T("git.exe reset --hard %s --"), (LPCTSTR)m_OrigUpstreamHash.ToString());
-		while (true)
-		{
-			out.Empty();
-			if (g_Git.Run(cmd, &out, CP_UTF8))
-			{
-				AddLogString(out);
-				if (CMessageBox::Show(m_hWnd, _T("Retry?\nUnrecoverable error on cleanup:\n") + out, _T("TortoiseGit"), MB_YESNO | MB_ICONERROR) != IDYES)
-					break;
-			}
-			else
-				break;
-		}
-
+		RunGitCmdRetryOrAbort(cmd);
 		__super::OnCancel();
 		goto end;
 	}
 
 	if (m_OrigHEADBranch == m_BranchCtrl.GetString())
 	{
+		CString cmd, out;
 		if (IsLocalBranch(m_OrigHEADBranch))
 			cmd.Format(_T("git.exe checkout -f -B %s %s --"), (LPCTSTR)m_BranchCtrl.GetString(), (LPCTSTR)m_OrigBranchHash.ToString());
 		else
@@ -2243,21 +2162,11 @@ void CRebaseDlg::OnBnClickedAbort()
 		}
 
 		cmd.Format(_T("git.exe reset --hard %s --"), (LPCTSTR)m_OrigBranchHash.ToString());
-		while (true)
-		{
-			out.Empty();
-			if (g_Git.Run(cmd, &out, CP_UTF8))
-			{
-				AddLogString(out);
-				if (CMessageBox::Show(m_hWnd, _T("Retry?\nUnrecoverable error on cleanup:\n") + out, _T("TortoiseGit"), MB_YESNO | MB_ICONERROR) != IDYES)
-					break;
-			}
-			else
-				break;
-		}
+		RunGitCmdRetryOrAbort(cmd);
 	}
 	else
 	{
+		CString cmd, out;
 		if (m_OrigHEADBranch != g_Git.GetCurrentBranch(true))
 		{
 			if (IsLocalBranch(m_OrigHEADBranch))
@@ -2273,18 +2182,7 @@ void CRebaseDlg::OnBnClickedAbort()
 		}
 
 		cmd.Format(_T("git.exe reset --hard %s --"), (LPCTSTR)m_OrigHEADHash.ToString());
-		while (true)
-		{
-			out.Empty();
-			if (g_Git.Run(cmd, &out, CP_UTF8))
-			{
-				AddLogString(out);
-				if (CMessageBox::Show(m_hWnd, _T("Retry?\nUnrecoverable error on cleanup:\n") + out, _T("TortoiseGit"), MB_YESNO | MB_ICONERROR) != IDYES)
-					break;
-			}
-			else
-				break;
-		}
+		RunGitCmdRetryOrAbort(cmd);
 
 		// restore moved branch
 		if (IsLocalBranch(m_BranchCtrl.GetString()))
@@ -2512,22 +2410,7 @@ LRESULT CRebaseDlg::OnRebaseActionMessage(WPARAM, LPARAM)
 		int mode = pRev->GetRebaseAction() & CGitLogListBase::LOGACTIONS_REBASE_MODE_MASK;
 		if (mode == CGitLogListBase::LOGACTIONS_REBASE_SKIP)
 		{
-			CString out;
-			bool resetOK = false;
-			while (!resetOK)
-			{
-				out.Empty();
-				if (g_Git.Run(_T("git.exe reset --hard"), &out, CP_UTF8))
-				{
-					AddLogString(out);
-					if (CMessageBox::Show(m_hWnd, _T("Retry?\nUnrecoverable error on cleanup:\n") + out, _T("TortoiseGit"), MB_YESNO | MB_ICONERROR) != IDYES)
-						break;
-				}
-				else
-					resetOK = true;
-			}
-
-			if (resetOK)
+			if (!RunGitCmdRetryOrAbort(_T("git.exe reset --hard")))
 			{
 				m_FileListCtrl.Clear();
 				m_RebaseStage = REBASE_CONTINUE;
@@ -2607,4 +2490,24 @@ void CRebaseDlg::OnBnClickedButtonOnto()
 void CRebaseDlg::OnHelp()
 {
 	HtmlHelp(0x20000 + (m_IsCherryPick ? IDD_REBASECHERRYPICK : IDD_REBASE));
+}
+
+int	CRebaseDlg::RunGitCmdRetryOrAbort(const CString& cmd)
+{
+	while (true)
+	{
+		CString out;
+		if (g_Git.Run(cmd, &out, CP_UTF8))
+		{
+			AddLogString(cmd);
+			AddLogString(CString(MAKEINTRESOURCE(IDS_FAIL)));
+			AddLogString(out);
+			CString msg;
+			msg.Format(L"\"%s\" failed.\n%s", (LPCTSTR)cmd, (LPCTSTR)out);
+			if (CMessageBox::Show(GetSafeHwnd(), msg, _T("TortoiseGit"), 1, IDI_ERROR, CString(MAKEINTRESOURCE(IDS_MSGBOX_RETRY)), CString(MAKEINTRESOURCE(IDS_MSGBOX_ABORT))) != 1)
+				return -1;
+		}
+		else
+			return 0;
+	}
 }
