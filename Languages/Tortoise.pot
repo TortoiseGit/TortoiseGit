@@ -622,6 +622,10 @@ msgstr ""
 msgid "&Edit..."
 msgstr ""
 
+#. Resource IDs: (Dialog IDD_REBASE: Control id 1827)
+msgid "&Edit/Split commit"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_SYNC: Control id 1614)
 msgid "&Email Patch"
 msgstr ""
@@ -986,6 +990,10 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROXY: Control id 1414)
 msgid "&Port:"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_REBASE: Control id 1608)
+msgid "&Preserve merges"
 msgstr ""
 
 #. Resource IDs: (17091)
@@ -1354,6 +1362,10 @@ msgstr ""
 
 #. Resource IDs: (IDS_MSGBOX_YES)
 msgid "&Yes"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_REBASE: Control id 1682)
+msgid "&add \"cherry picked from\""
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1657)
@@ -4116,10 +4128,6 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSBUGTRAQ: Control id 1382, Dialog IDD_SETTINGSHOOKS: Control id 1331)
 msgid "Edit..."
-msgstr ""
-
-#. Resource IDs: (Dialog IDD_REBASE: Control id 1827)
-msgid "Edit/Split commit"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 1770, Dialog IDD_SETTINGSBUGTRAQ_CONFIG: Control id 1770, Dialog IDD_SETTINGSDIALOGS3: Control id 1770)
@@ -10743,10 +10751,6 @@ msgstr ""
 msgid "_POPUP_"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_REBASE: Control id 1682)
-msgid "add \"cherry picked from\""
-msgstr ""
-
 #. Resource IDs: (IDS_STATUSADDED)
 msgid "added"
 msgstr ""
@@ -10976,10 +10980,6 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_1: Control id 65535)
 msgid "possible or real conflict/obstructed"
-msgstr ""
-
-#. Resource IDs: (Dialog IDD_REBASE: Control id 1608)
-msgid "preserve merges"
 msgstr ""
 
 #. Resource IDs: (61509)
