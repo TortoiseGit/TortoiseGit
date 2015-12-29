@@ -120,15 +120,6 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 	}
 	else
 	{
-		CString oldTopDir;
-		if (topdir != g_Git.m_CurrentDir && CTGitPath(g_Git.m_CurrentDir).HasAdminDir(&oldTopDir) && oldTopDir != topdir)
-		{
-			CString sMsg;
-			sMsg.Format(IDS_ERR_DIFFENERTPREPO, (LPCTSTR)oldTopDir, (LPCTSTR)topdir);
-			MessageBox(NULL, sMsg, _T("TortoiseGitBlame"), MB_OK | MB_ICONERROR);
-			return FALSE;
-		}
-
 		m_IsGitFile=TRUE;
 		sOrigCWD = g_Git.m_CurrentDir = topdir;
 
