@@ -166,6 +166,7 @@ GITDLL_API int git_free_exclude_list(EXCLUDE_LIST which);
 GITDLL_API int git_get_notes(GIT_HASH hash, char **p_note);
 
 GITDLL_API int git_run_cmd(char *cmd, char *arg);
+GITDLL_API void git_exit_cleanup();
 
 #define REF_ISSYMREF 01
 #define REF_ISPACKED 02

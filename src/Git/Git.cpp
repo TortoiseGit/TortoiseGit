@@ -2442,10 +2442,13 @@ int CGit::RefreshGitIndex()
 		CAutoLocker lock(g_Git.m_critGitDllSec);
 		try
 		{
-			return [] { return git_run_cmd("update-index","update-index -q --refresh"); }();
+			int result = [] { return git_run_cmd("update-index","update-index -q --refresh"); }();
+			git_exit_cleanup();
+			return result;
 
 		}catch(...)
 		{
+			git_exit_cleanup();
 			return -1;
 		}
 

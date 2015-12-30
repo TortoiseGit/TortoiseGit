@@ -48,6 +48,8 @@ extern int die_is_recursing_dll(void);
 extern void free_all_pack();
 extern void reset_git_env();
 extern void drop_attr_stack();
+extern void git_atexit_dispatch();
+extern void git_atexit_clear();
 extern void invalidate_ref_cache(const char* submodule);
 extern void cmd_log_init(int argc, const char** argv, const char* prefix, struct rev_info* rev, struct setup_revision_opt* opt);
 extern int estimate_commit_count(struct rev_info* rev, struct commit_list* list);
@@ -754,6 +756,12 @@ int git_run_cmd(char *cmd, char *arg)
 		}
 	}
 	return -1;
+}
+
+void git_exit_cleanup(void)
+{
+	git_atexit_dispatch();
+	git_atexit_clear();
 }
 
 int git_for_each_reflog_ent(const char *ref, each_reflog_ent_fn fn, void *cb_data)
