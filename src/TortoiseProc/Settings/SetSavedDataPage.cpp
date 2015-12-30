@@ -359,6 +359,7 @@ void CSetSavedDataPage::OnBnClickedStoreddecisionsclear()
 		L"HintHierarchicalConfig",
 		L"TagOptNoTagsWarning",
 		L"NoStashIncludeUntrackedWarning",
+		L"CommitMergeHint",
 	};
 	for (const auto& value : tgitvalues)
 	{

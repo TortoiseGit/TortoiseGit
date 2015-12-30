@@ -1240,6 +1240,7 @@
 #define IDC_BRANCH_CHECK                1586
 #define IDC_SMTP_USER                   1586
 #define IDC_PARAMSLABEL                 1586
+#define IDS_COMMIT_MERGE_HINT           1586
 #define IDC_SUBMODULE_BRANCH            1587
 #define IDC_CHECK_SENDMAIL              1587
 #define IDS_REBASE_PRESERVEMERGES_TT    1587

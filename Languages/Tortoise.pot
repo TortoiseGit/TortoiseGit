@@ -9363,6 +9363,10 @@ msgstr ""
 msgid "The commit message must not be empty."
 msgstr ""
 
+#. Resource IDs: (IDS_COMMIT_MERGE_HINT)
+msgid "The commit you are composing is a special commit. It is a merge commit and, thus contains your changes as well as the changes of a merged branch.\n\nYou should NOT uncheck files unless you know what you are doing.\n\nWhile merging conflicts can occur which need to be resolved manually (i.e., integrate your changes into a file which was also modified on another branch).\n\nSee help for more information."
+msgstr ""
+
 #. Resource IDs: (IDS_GITCREDENTIAL_OVERWRITEHELPER)
 #, c-format
 msgid "The credential helper URL \"%s\" already exists.\nDo you want to overwrite it?"

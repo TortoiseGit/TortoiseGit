@@ -198,13 +198,6 @@ BOOL CCommitDlg::OnInitDialog()
 	}
 	RunStartCommitHook();
 
-	if (CTGitPath(g_Git.m_CurrentDir).IsMergeActive())
-	{
-		DialogEnableWindow(IDC_CHECK_NEWBRANCH, FALSE);
-		m_bCreateNewBranch = FALSE;
-		GetDlgItem(IDC_MERGEACTIVE)->ShowWindow(SW_SHOW);
-	}
-
 	m_regAddBeforeCommit = CRegDWORD(_T("Software\\TortoiseGit\\AddBeforeCommit"), TRUE);
 	m_bShowUnversioned = m_regAddBeforeCommit;
 
@@ -457,6 +450,14 @@ BOOL CCommitDlg::OnInitDialog()
 
 	if (g_Git.GetConfigValueBool(_T("tgit.commitshowpatch")))
 		OnStnClickedViewPatch();
+
+	if (CTGitPath(g_Git.m_CurrentDir).IsMergeActive())
+	{
+		DialogEnableWindow(IDC_CHECK_NEWBRANCH, FALSE);
+		m_bCreateNewBranch = FALSE;
+		GetDlgItem(IDC_MERGEACTIVE)->ShowWindow(SW_SHOW);
+		CMessageBox::ShowCheck(GetSafeHwnd(), IDS_COMMIT_MERGE_HINT, IDS_APPNAME, MB_ICONINFORMATION, L"CommitMergeHint", IDS_MSGBOX_DONOTSHOWAGAIN);
+	}
 
 	return FALSE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE

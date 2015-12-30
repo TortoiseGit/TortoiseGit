@@ -20,6 +20,7 @@ Released: unreleased
  * Fixed issue #2630: TGitBlame: Allow to blame files of different working trees w/o restarting
  * Fixed issue #2679: Unnecessary horizontal scrollbar is shown in case logwidthmarker is set
  * Rebase dialog now honors rebase.autostash=true
+ * Fixed issue #2270: Print a warning on a merge commit, so that changes are not unchecked unintentionally
 
 == Bug Fixes ==
  * Fixed issue #2647: TortoiseGitBlame does not display files correctly with mixed line endings (such as CRCRLF)
