@@ -18,6 +18,7 @@ Released: unreleased
  * Fixed issue #2314: Allow to preserve merges on rebase
  * Fixed issue #2673: Display tracked remote URL in folder properties
  * Fixed issue #2630: TGitBlame: Allow to blame files of different working trees w/o restarting
+ * Fixed issue #2679: Unnecessary horizontal scrollbar is shown in case logwidthmarker is set
 
 == Bug Fixes ==
  * Fixed issue #2647: TortoiseGitBlame does not display files correctly with mixed line endings (such as CRCRLF)

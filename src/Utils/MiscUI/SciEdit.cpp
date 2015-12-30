@@ -250,6 +250,8 @@ void CSciEdit::Init(const ProjectProperties& props)
 		Call(SCI_SETWRAPMODE, SC_WRAP_NONE);
 		Call(SCI_SETEDGEMODE, EDGE_LINE);
 		Call(SCI_SETEDGECOLUMN, props.nLogWidthMarker);
+		Call(SCI_SETSCROLLWIDTHTRACKING, TRUE);
+		Call(SCI_SETSCROLLWIDTH, 1);
 	}
 	else
 	{
@@ -374,6 +376,9 @@ void CSciEdit::SetText(const CString& sText)
 {
 	CStringA sTextA = StringForControl(sText);
 	Call(SCI_SETTEXT, 0, (LPARAM)(LPCSTR)sTextA);
+
+	if (Call(SCI_GETSCROLLWIDTHTRACKING) != 0)
+		Call(SCI_SETSCROLLWIDTH, 1);
 
 	// Scintilla seems to have problems with strings that
 	// aren't terminated by a newline char. Once that char
