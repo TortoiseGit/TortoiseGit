@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2015 - TortoiseGit
+// Copyright (C) 2009-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -156,6 +156,8 @@ CBrowseRefsDlg::CBrowseRefsDlg(CString cmdPath, CWnd* pParent /*=NULL*/)
 	m_cmdPath(cmdPath),
 	m_currSortCol(0),
 	m_currSortDesc(false),
+	m_regCurrSortCol(L"Software\\TortoiseGit\\RefBrowserSortCol", 0),
+	m_regCurrSortDesc(L"Software\\TortoiseGit\\RefBrowserSortDesc", FALSE),
 	m_initialRef(L"HEAD"),
 	m_pickRef_Kind(gPickRef_All),
 	m_pListCtrlRoot(NULL),
@@ -177,10 +179,15 @@ CBrowseRefsDlg::CBrowseRefsDlg(CString cmdPath, CWnd* pParent /*=NULL*/)
 	m_bRelativeTimes = (regRelativeTimes != 0);
 
 	m_regIncludeNestedRefs = CRegDWORD(_T("Software\\TortoiseGit\\RefBrowserIncludeNestedRefs"), TRUE);
+
+	m_currSortCol = m_regCurrSortCol;
+	m_currSortDesc = m_regCurrSortDesc == TRUE;
 }
 
 CBrowseRefsDlg::~CBrowseRefsDlg()
 {
+	m_regCurrSortCol = m_currSortCol;
+	m_regCurrSortDesc = m_currSortDesc;
 }
 
 void CBrowseRefsDlg::DoDataExchange(CDataExchange* pDX)

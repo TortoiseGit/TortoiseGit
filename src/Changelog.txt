@@ -22,6 +22,7 @@ Released: unreleased
  * Rebase dialog now honors rebase.autostash=true
  * Fixed issue #2270: Print a warning on a merge commit, so that changes are not unchecked unintentionally
  * Fixed issue #2310: Add support for notes.rewrite.rebase
+ * Fixed issue #2629: "Browse References Dialog" save sort column + order
 
 == Bug Fixes ==
  * Fixed issue #2647: TortoiseGitBlame does not display files correctly with mixed line endings (such as CRCRLF)
