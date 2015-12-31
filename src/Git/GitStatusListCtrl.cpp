@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2015 - TortoiseGit
+// Copyright (C) 2008-2016 - TortoiseGit
 // Copyright (C) 2003-2008, 2013-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -3455,11 +3455,6 @@ void CGitStatusListCtrl::OnPaint()
 				str = m_sEmpty;
 		}
 		COLORREF clrText = ::GetSysColor(COLOR_WINDOWTEXT);
-		COLORREF clrTextBk;
-		if (IsWindowEnabled())
-			clrTextBk = ::GetSysColor(COLOR_WINDOW);
-		else
-			clrTextBk = ::GetSysColor(COLOR_3DFACE);
 
 		CRect rc;
 		GetClientRect(&rc);
@@ -3475,7 +3470,7 @@ void CGitStatusListCtrl::OnPaint()
 			CMyMemDC memDC(pDC, &rc);
 
 			memDC.SetTextColor(clrText);
-			memDC.SetBkColor(clrTextBk);
+			memDC.SetBkMode(TRANSPARENT);
 			memDC.BitBlt(rc.left, rc.top, rc.Width(), rc.Height(), pDC, rc.left, rc.top, SRCCOPY);
 			rc.top += 10;
 			CGdiObject * oldfont = memDC.SelectStockObject(DEFAULT_GUI_FONT);
