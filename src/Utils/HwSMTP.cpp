@@ -1457,8 +1457,6 @@ CString GetCompatibleString ( LPVOID lpszOrg, BOOL bOrgIsUnicode, int nOrgLength
 		THROW_LAST ();
 	}
 	END_CATCH_ALL
-
-	return _T("");
 }
 
 CString FormatDateTime (COleDateTime &DateTime, LPCTSTR /*pFormat*/)
