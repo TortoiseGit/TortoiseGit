@@ -160,7 +160,7 @@ TEST(CGit, GetFileModifyTime)
 	EXPECT_FALSE(isDir);
 	EXPECT_EQ(25, size);
 	EXPECT_TRUE(time3 >= time);
-	EXPECT_TRUE(time3 - time <= 1 + (GetTickCount64() - ticks) / 1000);
+	EXPECT_TRUE(time3 - time <= 1 + (__int64)(GetTickCount64() - ticks) / 1000);
 }
 
 TEST(CGit, LoadTextFile)
