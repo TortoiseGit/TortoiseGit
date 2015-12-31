@@ -126,6 +126,7 @@ protected:
 	int CheckNextCommitIsSquash();
 	int GetCurrentCommitID();
 	int FinishRebase();
+	void RewriteNotes();
 
 	CMenuButton m_PostButton;
 

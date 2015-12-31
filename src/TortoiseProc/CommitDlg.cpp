@@ -961,6 +961,7 @@ void CCommitDlg::OnOK()
 		if (m_bSetAuthor)
 			author.Format(_T("--author=\"%s\""), (LPCTSTR)m_sAuthor);
 		CString allowEmpty = m_bCommitMessageOnly ? _T("--allow-empty") : _T("");
+		// TODO: make sure notes.amend.rewrite does still work when switching to libgit2
 		cmd.Format(_T("git.exe commit %s %s %s %s -F \"%s\""), (LPCTSTR)author, (LPCTSTR)dateTime, (LPCTSTR)amend, (LPCTSTR)allowEmpty, (LPCTSTR)tempfile);
 
 		CCommitProgressDlg progress;

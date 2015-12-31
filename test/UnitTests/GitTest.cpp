@@ -46,6 +46,24 @@ TEST(CGit, RunGit)
 	ASSERT_FALSE(output.IsEmpty());
 }
 
+TEST(CGit, RunGit_BashPipe)
+{
+	CString tmpfile = GetTempFile();
+	tmpfile.Replace(L"\\", L"/");
+	ASSERT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)tmpfile, L"testing piping..."));
+	SCOPE_EXIT{ ::DeleteFile(tmpfile); };
+	CString pipefile = GetTempFile();
+	pipefile.Replace(L"\\", L"/");
+	CString pipecmd;
+	pipecmd.Format(L"cat < %s", (LPCTSTR)tmpfile);
+	ASSERT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)pipefile, (LPCTSTR)pipecmd));
+	SCOPE_EXIT{ ::DeleteFile(pipefile); };
+	CString output;
+	CGit cgit;
+	ASSERT_EQ(0, cgit.Run(L"bash.exe " + pipefile, &output, CP_UTF8));
+	ASSERT_STREQ(L"testing piping...", output);
+}
+
 TEST(CGit, RunGit_Error)
 {
 	CAutoTempDir tempdir;

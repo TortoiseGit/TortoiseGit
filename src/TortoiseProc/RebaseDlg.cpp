@@ -34,6 +34,7 @@
 #include "Settings\Settings.h"
 #include "MassiveGitTask.h"
 #include "CommitDlg.h"
+#include "StringUtils.h"
 
 // CRebaseDlg dialog
 
@@ -955,6 +956,8 @@ int CRebaseDlg::FinishRebase()
 		return 0;
 	}
 
+	RewriteNotes();
+
 	CGitHash head;
 	if (g_Git.GetHash(head, _T("HEAD")))
 	{
@@ -987,6 +990,37 @@ int CRebaseDlg::FinishRebase()
 
 	return 0;
 }
+
+void CRebaseDlg::RewriteNotes()
+{
+	CString rewrites;
+	for (const auto& entry : rewrittenCommitsMap)
+	{
+		if (entry.second.IsEmpty())
+			continue;
+		rewrites += entry.first.ToString();
+		rewrites += L" ";
+		rewrites += entry.second.ToString();
+		rewrites += L"\n";
+	}
+	if (rewrites.IsEmpty())
+		return;
+	CString tmpfile = GetTempFile();
+	tmpfile.Replace(L"\\", L"/");
+	if (!CStringUtils::WriteStringToTextFile((LPCTSTR)tmpfile, (LPCTSTR)rewrites))
+		return;
+	SCOPE_EXIT{ ::DeleteFile(tmpfile); };
+	CString pipefile = GetTempFile();
+	pipefile.Replace(L"\\", L"/");
+	CString pipecmd;
+	pipecmd.Format(L"git notes copy --for-rewrite=rebase < %s", (LPCTSTR)tmpfile);
+	if (!CStringUtils::WriteStringToTextFile((LPCTSTR)pipefile, (LPCTSTR)pipecmd))
+		return;
+	SCOPE_EXIT{ ::DeleteFile(pipefile); };
+	CString out;
+	g_Git.Run(L"bash.exe " + pipefile, &out, CP_UTF8);
+}
+
 void CRebaseDlg::OnBnClickedContinue()
 {
 	if( m_RebaseStage == REBASE_DONE)

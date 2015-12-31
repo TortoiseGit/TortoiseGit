@@ -339,7 +339,7 @@ int CGit::RunAsync(CString cmd, PROCESS_INFORMATION *piOut, HANDLE *hReadOut, HA
 		cmd.Replace(_T("\""), _T("\\\""));
 		cmd = _T('"') + CGit::ms_LastMsysGitDir + _T("\\bash.exe\" -c \"/bin/") + cmd + _T('"');
 	}
-	else if(cmd.Find(_T("git")) == 0)
+	else if (cmd.Find(_T("git")) == 0 || cmd.Find(_T("bash")) == 0)
 	{
 		int firstSpace = cmd.Find(_T(" "));
 		if (firstSpace > 0)
