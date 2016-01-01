@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2015 - TortoiseGit
+// Copyright (C) 2008-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -149,6 +149,9 @@ BOOL CProgressDlg::OnInitDialog()
 #endif
 	m_Log.SetWindowTextW(InitialText);
 	m_CurrentWork.SetWindowTextW(_T(""));
+
+	if (!m_PreFailText.IsEmpty())
+		InsertColorText(this->m_Log, m_PreFailText, RGB(255, 0, 0));
 
 	EnableSaveRestore(_T("ProgressDlg"));
 

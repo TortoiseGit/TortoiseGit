@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2015 - TortoiseGit
+// Copyright (C) 2008-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -98,6 +98,7 @@ public:
 	PostExecCallback		m_PostExecCallback; // After executing command line, this callback can modify exit code / display extra message
 	STRING_VECTOR			m_GitDirList;
 	CString					m_PreText;		// optional text to show in log window before running command
+	CString					m_PreFailText;	// optional fail text to show in log window
 	bool					m_bShowCommand;	// whether to display the command in the log window (default true)
 	CString					m_LogFile;
 	bool					m_bBufferAll;	// Buffer All to improve speed when there are many file add at commit

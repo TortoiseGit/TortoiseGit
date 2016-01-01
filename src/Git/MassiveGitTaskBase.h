@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2011-2013 - Sven Strickroth <email@cs-ware.de>
-// Copyright (C) 2013-2014 - TortoiseGit
+// Copyright (C) 2013-2014, 2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -36,7 +36,7 @@ public:
 protected:
 	void					SetPaths(const CTGitPathList* pathList);
 	bool					ExecuteCommands(volatile BOOL& cancel);
-	virtual void			ReportError(const CString &out);
+	virtual void			ReportError(const CString &out, int exitCode);
 	virtual void			ReportProgress(const CTGitPath& /*path*/, int /*index*/) { }
 	virtual void			ReportUserCanceled() { }
 	CString					GetParams() { return m_sParams; }

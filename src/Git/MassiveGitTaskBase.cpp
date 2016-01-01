@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2011-2013 - Sven Strickroth <email@cs-ware.de>
-// Copyright (C) 2013-2015 - TortoiseGit
+// Copyright (C) 2013-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -88,9 +88,10 @@ bool CMassiveGitTaskBase::ExecuteCommands(volatile BOOL& cancel)
 
 			CString cmd, out;
 			cmd.Format(_T("git.exe %s %s%s"), (LPCTSTR)m_sParams, m_bIsPath ? _T("--") : _T(""), (LPCTSTR)add);
-			if (g_Git.Run(cmd, &out, CP_UTF8) && !m_bIgnoreErrors)
+			int exitCode = g_Git.Run(cmd, &out, CP_UTF8);
+			if (exitCode && !m_bIgnoreErrors)
 			{
-				ReportError(out);
+				ReportError(out, exitCode);
 				return false;
 			}
 
@@ -117,7 +118,7 @@ bool CMassiveGitTaskBase::ExecuteCommands(volatile BOOL& cancel)
 	return true;
 }
 
-void CMassiveGitTaskBase::ReportError(const CString& out)
+void CMassiveGitTaskBase::ReportError(const CString& out, int /*exitCode*/)
 {
 	MessageBox(NULL, out, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 }
