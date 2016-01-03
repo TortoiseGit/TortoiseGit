@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2015 - TortoiseGit
+// Copyright (C) 2008-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -946,6 +946,15 @@ CString CGit::GetLogCmd(const CString& range, const CTGitPath* path, int mask,
 
 	if(mask& CGit::LOG_INFO_ALL_BRANCH)
 		param += _T(" --all");
+
+	if (mask& CGit::LOG_INFO_BASIC_REFS)
+	{
+		param += _T(" --branches");
+		param += _T(" --tags");
+		param += _T(" --remotes");
+		param += _T(" --glob=stas[h]"); // require at least one glob operator
+		param += _T(" --glob=bisect");
+	}
 
 	if(mask & CGit::LOG_INFO_LOCAL_BRANCHES)
 		param += _T(" --branches");

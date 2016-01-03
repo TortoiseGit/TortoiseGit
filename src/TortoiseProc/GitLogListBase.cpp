@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2015 - TortoiseGit
+// Copyright (C) 2008-2016 - TortoiseGit
 // Copyright (C) 2005-2007 Marco Costalba
 
 // This program is free software; you can redistribute it and/or
@@ -2723,7 +2723,7 @@ int CGitLogListBase::BeginFetchLog()
 		mask &= ~CGit::LOG_INFO_FOLLOW;
 	// follow does not work with all branches 8at least in TGit)
 	if (mask & CGit::LOG_INFO_FOLLOW)
-		mask &= ~CGit::LOG_INFO_ALL_BRANCH | CGit::LOG_INFO_LOCAL_BRANCHES;
+		mask &= ~(CGit::LOG_INFO_ALL_BRANCH | CGit::LOG_INFO_BASIC_REFS | CGit::LOG_INFO_LOCAL_BRANCHES);
 
 	CString cmd = g_Git.GetLogCmd(m_sRange, path, mask, &m_Filter);
 
@@ -2750,7 +2750,7 @@ int CGitLogListBase::BeginFetchLog()
 
 	if (!g_Git.CanParseRev(m_sRange))
 	{
-		if (!(mask & CGit::LOG_INFO_ALL_BRANCH) && !(mask & CGit::LOG_INFO_LOCAL_BRANCHES))
+		if (!(mask & CGit::LOG_INFO_ALL_BRANCH) && !(mask & CGit::LOG_INFO_BASIC_REFS) && !(mask & CGit::LOG_INFO_LOCAL_BRANCHES))
 			return 0;
 
 		// if show all branches, pick any ref as dummy entry ref
@@ -2912,7 +2912,7 @@ UINT CGitLogListBase::LogThread()
 	if (!g_Git.CanParseRev(m_sRange))
 	{
 		// walk revisions if show all branches and there exists any ref
-		if (!(m_ShowMask & CGit::LOG_INFO_ALL_BRANCH) && !(m_ShowMask & CGit::LOG_INFO_LOCAL_BRANCHES))
+		if (!(m_ShowMask & CGit::LOG_INFO_ALL_BRANCH) && !(m_ShowMask & CGit::LOG_INFO_BASIC_REFS) && !(m_ShowMask & CGit::LOG_INFO_LOCAL_BRANCHES))
 			shouldWalk = false;
 		else
 		{

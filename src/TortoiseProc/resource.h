@@ -1246,8 +1246,10 @@
 #define IDS_REBASE_PRESERVEMERGES_TT    1587
 #define IDD_REFLOG                      1588
 #define IDC_TREE_REF                    1588
+#define IDS_PROC_LOG_BASIC_REFS         1588
 #define IDD_SUBMODULE_ADD               1589
 #define IDC_EDIT_NAME                   1589
+#define IDS_PROC_LOG_SELECT_BASIC_REFS  1589
 #define IDC_BUGTRAQ_WARNINGIFNOISSUE    1593
 #define IDC_BUGTRAQ_APPEND              1594
 #define IDC_WARN_NO_SIGNED_OFF_BY       1594

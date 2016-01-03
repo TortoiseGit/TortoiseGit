@@ -23,6 +23,7 @@ Released: unreleased
  * Fixed issue #2270: Print a warning on a merge commit, so that changes are not unchecked unintentionally
  * Fixed issue #2310: Add support for notes.rewrite.rebase
  * Fixed issue #2629: "Browse References Dialog" save sort column + order
+ * Fixed issue #2678: Filter out special ref names in log graph
 
 == Bug Fixes ==
  * Fixed issue #2647: TortoiseGitBlame does not display files correctly with mixed line endings (such as CRCRLF)

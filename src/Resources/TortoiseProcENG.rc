@@ -4733,6 +4733,8 @@ BEGIN
     IDS_COMMIT_MERGE_HINT   "The commit you are composing is a special commit. It is a merge commit and, thus contains your changes as well as the changes of a merged branch.\n\nYou should NOT uncheck files unless you know what you are doing.\n\nWhile merging conflicts can occur which need to be resolved manually (i.e., integrate your changes into a file which was also modified on another branch).\n\nSee help for more information."
     IDS_REBASE_PRESERVEMERGES_TT 
                             "This preserves merge commits, however, it has known bugs as re-ordering commits is not working properly (same limitation as for vanilla git rebase), see help."
+    IDS_PROC_LOG_BASIC_REFS "<Basic Refs>"
+    IDS_PROC_LOG_SELECT_BASIC_REFS "All basic refs"
 END
 
 #endif    // English (U.S.) resources

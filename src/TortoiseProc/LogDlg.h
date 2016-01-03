@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2009 - TortoiseSVN
-// Copyright (C) 2008-2015 - TortoiseGit
+// Copyright (C) 2008-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -45,6 +45,14 @@
 #define FILEFILTER_TIMER	105
 
 typedef int (__cdecl *GENERICCOMPAREFN)(const void * elem1, const void * elem2);
+
+enum AllBranchType
+{
+	None = 0,
+	AllBranches = 1,
+	AllLocalBranches = 2,
+	AllBasicRefs = 3,
+};
 
 /**
  * \ingroup TortoiseProc
@@ -226,7 +234,8 @@ private:
 
 	BOOL				m_iHidePaths;
 	bool				m_bFirstParent;
-	BOOL				m_bAllBranch;
+	BOOL				m_bAllBranch;		// variable for checkbox only
+	AllBranchType		m_AllBranchType;	// variable for actual branch type
 	BOOL				m_bWholeProject;
 	bool				m_bFollowRenames;
 	BOOL				m_bShowUnversioned;

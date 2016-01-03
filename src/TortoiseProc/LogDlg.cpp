@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2009, 2015 - TortoiseSVN
-// Copyright (C) 2008-2015 - TortoiseGit
+// Copyright (C) 2008-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -75,7 +75,18 @@ CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
 
 	m_regbAllBranch=CRegDWORD(str,FALSE);
 
-	m_bAllBranch=m_regbAllBranch;
+	m_AllBranchType = (AllBranchType)(DWORD)m_regbAllBranch;
+	switch (m_AllBranchType)
+	{
+	case AllBranchType::None:
+		m_bAllBranch = FALSE;
+		break;
+	case AllBranchType::AllBranches:
+		m_bAllBranch = TRUE;
+		break;
+	default:
+		m_bAllBranch = BST_INDETERMINATE;
+	}
 
 	str = g_Git.m_CurrentDir;
 	str.Replace(_T(":"),_T("_"));
@@ -100,7 +111,7 @@ CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
 CLogDlg::~CLogDlg()
 {
 
-	m_regbAllBranch = m_bAllBranch;
+	m_regbAllBranch = (DWORD)m_AllBranchType;
 	m_regbShowTags = m_bShowTags;
 	m_regbShowLocalBranches = m_bShowLocalBranches;
 	m_regbShowRemoteBranches = m_bShowRemoteBranches;
@@ -213,7 +224,10 @@ void CLogDlg::SetParams(const CTGitPath& orgPath, const CTGitPath& path, CString
 		range = _T("HEAD");
 
 	if (!(range.IsEmpty() || range == _T("HEAD")))
+	{
 		m_bAllBranch = BST_UNCHECKED;
+		m_AllBranchType = AllBranchType::None;
+	}
 
 	SetRange(range);
 
@@ -321,10 +335,12 @@ BOOL CLogDlg::OnInitDialog()
 	SetFilterCueText();
 
 	m_LogList.m_ShowMask &= ~CGit::LOG_INFO_LOCAL_BRANCHES;
-	if (m_bAllBranch == BST_CHECKED)
+	if (m_AllBranchType == AllBranchType::AllBranches)
 		m_LogList.m_ShowMask|=CGit::LOG_INFO_ALL_BRANCH;
-	else if (m_bAllBranch == BST_INDETERMINATE)
+	else if (m_AllBranchType == AllBranchType::AllLocalBranches)
 		m_LogList.m_ShowMask |= CGit::LOG_INFO_LOCAL_BRANCHES;
+	else if (m_AllBranchType == AllBranchType::AllBasicRefs)
+		m_LogList.m_ShowMask |= CGit::LOG_INFO_BASIC_REFS;
 	else
 		m_LogList.m_ShowMask&=~CGit::LOG_INFO_ALL_BRANCH;
 
@@ -1290,6 +1306,8 @@ void CLogDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 		popup.EnableMenuItem(cnt, fetchHead.IsEmpty());
 		popup.AppendMenuIcon(++cnt, IDS_ALL);
 		popup.EnableMenuItem(cnt, m_bFollowRenames);
+		popup.AppendMenuIcon(++cnt, IDS_PROC_LOG_SELECT_BASIC_REFS);
+		popup.EnableMenuItem(cnt, m_bFollowRenames);
 		popup.AppendMenuIcon(++cnt, IDS_PROC_LOG_SELECT_LOCAL_BRANCHES);
 		popup.EnableMenuItem(cnt, m_bFollowRenames);
 		int offset = ++cnt;
@@ -1314,8 +1332,9 @@ void CLogDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 			return;
 		}
 
-		m_LogList.m_ShowMask &= ~(CGit::LOG_INFO_ALL_BRANCH | CGit::LOG_INFO_LOCAL_BRANCHES);
+		m_LogList.m_ShowMask &= ~(CGit::LOG_INFO_ALL_BRANCH | CGit::LOG_INFO_BASIC_REFS | CGit::LOG_INFO_LOCAL_BRANCHES);
 		m_bAllBranch = BST_UNCHECKED;
+		m_AllBranchType = AllBranchType::None;
 		if (cmd == 2)
 		{
 			SetRange(g_Git.GetCurrentBranch(true));
@@ -1327,11 +1346,19 @@ void CLogDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 		else if (cmd == 4)
 		{
 			m_bAllBranch = BST_CHECKED;
+			m_AllBranchType = AllBranchType::AllBranches;
 			m_LogList.m_ShowMask |= CGit::LOG_INFO_ALL_BRANCH;
 		}
 		else if (cmd == 5)
 		{
 			m_bAllBranch = BST_INDETERMINATE;
+			m_AllBranchType = AllBranchType::AllBasicRefs;
+			m_LogList.m_ShowMask |= CGit::LOG_INFO_BASIC_REFS;
+		}
+		else if (cmd == 6)
+		{
+			m_bAllBranch = BST_INDETERMINATE;
+			m_AllBranchType = AllBranchType::AllLocalBranches;
 			m_LogList.m_ShowMask |= CGit::LOG_INFO_LOCAL_BRANCHES;
 		}
 		else if (cmd >= offset)
@@ -2967,22 +2994,24 @@ void CLogDlg::OnBnClickedAllBranch()
 {
 	// m_bAllBranch is not auto-toggled by MFC, we have to handle it manually (in order to prevent the indeterminate state)
 
-	m_LogList.m_ShowMask &=~ (CGit::LOG_INFO_LOCAL_BRANCHES | CGit::LOG_INFO_ALL_BRANCH);
+	m_LogList.m_ShowMask &=~ (CGit::LOG_INFO_LOCAL_BRANCHES | CGit::LOG_INFO_BASIC_REFS | CGit::LOG_INFO_ALL_BRANCH);
 
 	if (m_bAllBranch)
 	{
 		m_bAllBranch = BST_UNCHECKED;
+		m_AllBranchType = AllBranchType::None;
 		m_ChangedFileListCtrl.m_sDisplayedBranch = m_LogList.GetRange();
 	}
 	else
 	{
 		m_bAllBranch = BST_CHECKED;
+		m_AllBranchType = AllBranchType::AllBranches;
 		m_LogList.m_ShowMask|=CGit::LOG_INFO_ALL_BRANCH;
 		m_ChangedFileListCtrl.m_sDisplayedBranch.Empty();
 	}
 
 	// need to save value here, so that log dialogs started from now on also have AllBranch activated
-	m_regbAllBranch = m_bAllBranch;
+	m_regbAllBranch = (DWORD)m_AllBranchType;
 
 	UpdateData(FALSE);
 
@@ -2997,10 +3026,12 @@ void CLogDlg::OnBnClickedFollowRenames()
 	{
 		m_LogList.m_ShowMask |= CGit::LOG_INFO_FOLLOW;
 		m_LogList.m_ShowMask &=~ CGit::LOG_INFO_LOCAL_BRANCHES;
+		m_LogList.m_ShowMask &= ~CGit::LOG_INFO_BASIC_REFS;
 		if (m_bAllBranch)
 		{
 
 			m_bAllBranch = FALSE;
+			m_AllBranchType = AllBranchType::None;
 			m_LogList.m_ShowMask &=~ CGit::LOG_INFO_ALL_BRANCH;
 		}
 
@@ -3062,8 +3093,9 @@ void CLogDlg::OnBnClickedBrowseRef()
 
 	SetRange(newRef);
 
-	m_LogList.m_ShowMask &= ~(CGit::LOG_INFO_ALL_BRANCH | CGit::LOG_INFO_LOCAL_BRANCHES);
+	m_LogList.m_ShowMask &= ~(CGit::LOG_INFO_ALL_BRANCH | CGit::LOG_INFO_BASIC_REFS | CGit::LOG_INFO_LOCAL_BRANCHES);
 	m_bAllBranch = BST_UNCHECKED;
+	m_AllBranchType = AllBranchType::None;
 	UpdateData(FALSE);
 
 	OnRefresh();
@@ -3075,12 +3107,16 @@ void CLogDlg::ShowStartRef()
 	//Show ref name on top
 	if(!::IsWindow(m_hWnd))
 		return;
-	if (m_LogList.m_ShowMask & (CGit::LOG_INFO_ALL_BRANCH | CGit::LOG_INFO_LOCAL_BRANCHES))
+	if (m_LogList.m_ShowMask & (CGit::LOG_INFO_ALL_BRANCH | CGit::LOG_INFO_BASIC_REFS | CGit::LOG_INFO_LOCAL_BRANCHES))
 	{
-		switch (m_LogList.m_ShowMask & (CGit::LOG_INFO_ALL_BRANCH | CGit::LOG_INFO_LOCAL_BRANCHES))
+		switch (m_LogList.m_ShowMask & (CGit::LOG_INFO_ALL_BRANCH | CGit::LOG_INFO_BASIC_REFS | CGit::LOG_INFO_LOCAL_BRANCHES))
 		{
 		case CGit::LOG_INFO_ALL_BRANCH:
 			m_staticRef.SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_LOG_ALLBRANCHES)));
+			break;
+
+		case CGit::LOG_INFO_BASIC_REFS:
+			m_staticRef.SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_LOG_BASIC_REFS)));
 			break;
 
 		case CGit::LOG_INFO_LOCAL_BRANCHES:
