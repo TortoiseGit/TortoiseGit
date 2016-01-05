@@ -251,7 +251,6 @@ int CGitLogListBase::AsyncDiffThread()
 			}
 		}
 	}
-	m_AsyncThreadExited = true;
 	InterlockedExchange(&m_AsyncThreadRunning, FALSE);
 	return 0;
 }
@@ -3170,19 +3169,16 @@ void CGitLogListBase::Refresh(BOOL IsCleanFilter)
 
 void CGitLogListBase::StartAsyncDiffThread()
 {
+	if (m_AsyncThreadExit)
+		return;
 	if (InterlockedExchange(&m_AsyncThreadRunning, TRUE) != FALSE)
 		return;
-	InterlockedExchange(&m_AsyncThreadExit, FALSE);
-	m_DiffingThread = AfxBeginThread(AsyncThread, this, THREAD_PRIORITY_BELOW_NORMAL, 0, CREATE_SUSPENDED);
+	m_DiffingThread = AfxBeginThread(AsyncThread, this, THREAD_PRIORITY_BELOW_NORMAL);
 	if (!m_DiffingThread)
 	{
 		InterlockedExchange(&m_AsyncThreadRunning, FALSE);
 		CMessageBox::Show(nullptr, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
-		return;
 	}
-	m_AsyncThreadExited = false;
-	m_DiffingThread->m_bAutoDelete = FALSE;
-	m_DiffingThread->ResumeThread();
 }
 
 void CGitLogListBase::StartLoadingThread()

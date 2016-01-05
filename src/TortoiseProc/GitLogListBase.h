@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2015 - TortoiseGit
+// Copyright (C) 2008-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -588,7 +588,6 @@ protected:
 	}
 
 	int AsyncDiffThread();
-	volatile BOOL m_AsyncThreadExited;
 
 public:
 	void SafeTerminateAsyncDiffThread()
@@ -598,15 +597,15 @@ public:
 			::SetEvent(m_AsyncDiffEvent);
 			DWORD ret = WAIT_TIMEOUT;
 			// do not block here, but process messages and ask until the thread ends
-			while (ret == WAIT_TIMEOUT && !m_AsyncThreadExited)
+			while (ret == WAIT_TIMEOUT && m_AsyncThreadRunning)
 			{
 				MSG msg;
 				if (::PeekMessage(&msg, NULL, 0,0, PM_NOREMOVE))
 					AfxGetThread()->PumpMessage(); // process messages, so that GetTopIndex and so on in the thread work
 				ret = ::WaitForSingleObject(m_DiffingThread->m_hThread, 100);
 			}
-			delete m_DiffingThread;
 			m_DiffingThread = NULL;
+			InterlockedExchange(&m_AsyncThreadExit, FALSE);
 		}
 	};
 
