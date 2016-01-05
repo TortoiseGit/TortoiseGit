@@ -2799,6 +2799,16 @@ bool CAppUtils::Push(const CString& selectLocalBranch)
 			}
 		}
 
+		int iRecurseSubmodules = 0;
+		if (GetMsysgitVersion() >= 0x02070000)
+		{
+			CString recurseSubmodules = g_Git.GetConfigValue(_T("push.recurseSubmodules"));
+			if (recurseSubmodules == _T("check"))
+				iRecurseSubmodules = 1;
+			else if (recurseSubmodules == _T("on-demand"))
+				iRecurseSubmodules = 2;
+		}
+
 		CString arg;
 
 		if(dlg.m_bPack)
@@ -2811,9 +2821,11 @@ bool CAppUtils::Push(const CString& selectLocalBranch)
 			arg += _T("--force-with-lease ");
 		if (dlg.m_bSetUpstream)
 			arg += _T("--set-upstream ");
-		if (dlg.m_RecurseSubmodules == 1)
+		if (dlg.m_RecurseSubmodules == 0 && dlg.m_RecurseSubmodules != iRecurseSubmodules)
+			arg += _T("--recurse-submodules=no ");
+		if (dlg.m_RecurseSubmodules == 1 && dlg.m_RecurseSubmodules != iRecurseSubmodules)
 			arg += _T("--recurse-submodules=check ");
-		if (dlg.m_RecurseSubmodules == 2)
+		if (dlg.m_RecurseSubmodules == 2 && dlg.m_RecurseSubmodules != iRecurseSubmodules)
 			arg += _T("--recurse-submodules=on-demand ");
 
 		int ver = CAppUtils::GetMsysgitVersion();

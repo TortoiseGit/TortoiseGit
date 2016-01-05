@@ -194,6 +194,13 @@ BOOL CPushDlg::OnInitDialog()
 	m_tooltips.AddTool(IDC_FORCE, IDS_FORCE_TT);
 	m_tooltips.AddTool(IDC_FORCE_WITH_LEASE, IDS_FORCE_WITH_LEASE_TT);
 
+	CString recurseSubmodules = g_Git.GetConfigValue(_T("push.recurseSubmodules"));
+	if (recurseSubmodules == _T("check"))
+		m_RecurseSubmodules = 1;
+	else if (recurseSubmodules == _T("on-demand"))
+		m_RecurseSubmodules = 2;
+	else
+		m_RecurseSubmodules = 0;
 	m_regRecurseSubmodules = CRegDWORD(
 		CString(_T("Software\\TortoiseGit\\History\\PushRecurseSubmodules\\")) + WorkingDir, m_RecurseSubmodules);
 	m_RecurseSubmodules = m_regRecurseSubmodules;
