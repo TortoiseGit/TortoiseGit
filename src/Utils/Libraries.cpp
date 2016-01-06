@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2012, 2015 - TortoiseGit
-// Copyright (C) 2010-2012 - TortoiseSVN
+// Copyright (C) 2010-2012, 2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -100,15 +100,13 @@ HRESULT OpenShellLibrary(LPWSTR pwszLibraryName, IShellLibrary** ppShellLib)
     HRESULT hr;
     *ppShellLib = NULL;
 
-    IShellItem2* pShellItem = NULL;
+    CComPtr<IShellItem2> pShellItem = NULL;
     hr = GetShellLibraryItem(pwszLibraryName, &pShellItem);
     if (FAILED(hr))
         return hr;
 
     // Get the shell library object from the shell item with a read and write permissions
     hr = SHLoadLibraryFromItem(pShellItem, STGM_READWRITE, IID_PPV_ARGS(ppShellLib));
-
-    pShellItem->Release();
 
     return hr;
 }

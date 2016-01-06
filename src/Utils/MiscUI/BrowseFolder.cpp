@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2014 - TortoiseSVN
+// Copyright (C) 2003-2014, 2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -85,8 +85,8 @@ CBrowseFolder::retVal CBrowseFolder::Show(HWND parent, CString& path, const CStr
 	HRESULT hr;
 
 	// Create a new common open file dialog
-	IFileOpenDialog* pfd = NULL;
-	hr = CoCreateInstance(CLSID_FileOpenDialog, NULL, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&pfd));
+	CComPtr<IFileOpenDialog> pfd;
+	hr = pfd.CoCreateInstance(CLSID_FileOpenDialog, NULL, CLSCTX_INPROC_SERVER);
 	if (SUCCEEDED(hr))
 	{
 		// Set the dialog as a folder picker
@@ -108,19 +108,18 @@ CBrowseFolder::retVal CBrowseFolder::Show(HWND parent, CString& path, const CStr
 		// set the default folder
 		if (SUCCEEDED(hr))
 		{
-			IShellItem* psiDefault = nullptr;
+			CComPtr<IShellItem> psiDefault;
 			hr = SHCreateItemFromParsingName(m_sDefaultPath, nullptr, IID_PPV_ARGS(&psiDefault));
 			if (SUCCEEDED(hr))
 			{
 				hr = pfd->SetFolder(psiDefault);
-				psiDefault->Release();
 			}
 		}
 
 		if (m_CheckText[0] != 0)
 		{
-			IFileDialogCustomize* pfdCustomize = 0;
-			hr = pfd->QueryInterface(IID_PPV_ARGS(&pfdCustomize));
+			CComPtr<IFileDialogCustomize> pfdCustomize;
+			hr = pfd.QueryInterface(&pfdCustomize);
 			if (SUCCEEDED(hr))
 			{
 				pfdCustomize->StartVisualGroup(100, L"");
@@ -130,7 +129,6 @@ CBrowseFolder::retVal CBrowseFolder::Show(HWND parent, CString& path, const CStr
 					pfdCustomize->AddCheckButton(102, m_CheckText2, FALSE);
 				}
 				pfdCustomize->EndVisualGroup();
-				pfdCustomize->Release();
 			}
 		}
 
@@ -138,7 +136,7 @@ CBrowseFolder::retVal CBrowseFolder::Show(HWND parent, CString& path, const CStr
 		if (SUCCEEDED(hr) && SUCCEEDED(hr = pfd->Show(parent)))
 		{
 			// Get the selection from the user
-			IShellItem* psiResult = NULL;
+			CComPtr<IShellItem> psiResult;
 			hr = pfd->GetResult(&psiResult);
 			if (SUCCEEDED(hr))
 			{
@@ -149,15 +147,13 @@ CBrowseFolder::retVal CBrowseFolder::Show(HWND parent, CString& path, const CStr
 					path = pszPath;
 					CoTaskMemFree(pszPath);
 				}
-				psiResult->Release();
 
-				IFileDialogCustomize* pfdCustomize = 0;
-				hr = pfd->QueryInterface(IID_PPV_ARGS(&pfdCustomize));
+				CComPtr<IFileDialogCustomize> pfdCustomize;
+				hr = pfd.QueryInterface(&pfdCustomize);
 				if (SUCCEEDED(hr))
 				{
 					pfdCustomize->GetCheckButtonState(101, &m_bCheck);
 					pfdCustomize->GetCheckButtonState(102, &m_bCheck2);
-					pfdCustomize->Release();
 				}
 			}
 			else
@@ -165,8 +161,6 @@ CBrowseFolder::retVal CBrowseFolder::Show(HWND parent, CString& path, const CStr
 		}
 		else
 			ret = CANCEL;
-
-		pfd->Release();
 	}
 	else
 	{

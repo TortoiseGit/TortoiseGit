@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2006, 2009, 2011-2013, 2015 - TortoiseSVN
+// Copyright (C) 2003-2006, 2009, 2011-2013, 2015-2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -123,10 +123,7 @@ tstring ItemIDList::toString(bool resolveLibraries /*= true*/)
 		(_tcsncmp(ret.c_str(), _T("::{"), 3)==0))
 	{
 		CComPtr<IShellLibrary> plib;
-		hr = CoCreateInstance(CLSID_ShellLibrary,
-									  NULL,
-									  CLSCTX_INPROC_SERVER,
-									  IID_PPV_ARGS(&plib));
+		hr = plib.CoCreateInstance(CLSID_ShellLibrary, nullptr, CLSCTX_INPROC_SERVER);
 		if (SUCCEEDED(hr))
 		{
 			CComPtr<IShellItem> psiLibrary;

@@ -1,7 +1,7 @@
 // TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2013-2015 - TortoiseGit
-// Copyright (C) 2006-2014 - TortoiseSVN
+// Copyright (C) 2006-2014, 2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -337,7 +337,7 @@ BOOL CTortoiseMergeApp::InitInstance()
 
 			{
 				CComPtr<IFileDialogCustomize> pfdCustomize;
-				hr = pfd->QueryInterface(IID_PPV_ARGS(&pfdCustomize));
+				hr = pfd.QueryInterface(&pfdCustomize);
 				if (SUCCEEDED(hr))
 				{
 					// check if there's a unified diff on the clipboard and
