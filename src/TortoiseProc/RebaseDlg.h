@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2015 - TortoiseGit
+// Copyright (C) 2008-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -177,9 +177,9 @@ protected:
 	bool				m_bFinishedRebase;
 	bool				m_bStashed;
 
-	std::map<CGitHash, CGitHash> rewrittenCommitsMap;
-	std::vector<CGitHash> forRewrite;
-	std::map<CGitHash, GIT_REV_LIST> droppedCommitsMap;
+	std::map<CGitHash, CGitHash> m_rewrittenCommitsMap;
+	std::vector<CGitHash> m_forRewrite;
+	std::map<CGitHash, GIT_REV_LIST> m_droppedCommitsMap;
 
 	void AddBranchToolTips(CHistoryCombo *pBranch);
 	void AddLogString(CString str);

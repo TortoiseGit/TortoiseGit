@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2015 - TortoiseGit
+// Copyright (C) 2008-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -627,7 +627,7 @@ void CRebaseDlg::FetchLogList()
 
 		// Found. Skip it.
 		m_CommitList.m_logEntries.GetGitRevAt(itIx->second).GetRebaseAction() = CGitLogListBase::LOGACTIONS_REBASE_SKIP;
-		droppedCommitsMap[m_CommitList.m_logEntries.GetGitRevAt(itIx->second).m_CommitHash] = m_CommitList.m_logEntries.GetGitRevAt(itIx->second).m_ParentHash;
+		m_droppedCommitsMap[m_CommitList.m_logEntries.GetGitRevAt(itIx->second).m_CommitHash] = m_CommitList.m_logEntries.GetGitRevAt(itIx->second).m_ParentHash;
 		bHasSKip = true;
 	});
 
@@ -912,7 +912,7 @@ int CRebaseDlg::StartRebase()
 	this->AddLogString(log);
 	for (int i = 0; i < m_CommitList.GetItemCount(); ++i)
 	{
-		rewrittenCommitsMap[((GitRevLoglist*)m_CommitList.m_arShownList[i])->m_CommitHash] = CGitHash();
+		m_rewrittenCommitsMap[((GitRevLoglist*)m_CommitList.m_arShownList[i])->m_CommitHash] = CGitHash();
 	}
 	return 0;
 }
@@ -994,7 +994,7 @@ int CRebaseDlg::FinishRebase()
 void CRebaseDlg::RewriteNotes()
 {
 	CString rewrites;
-	for (const auto& entry : rewrittenCommitsMap)
+	for (const auto& entry : m_rewrittenCommitsMap)
 	{
 		if (entry.second.IsEmpty())
 			continue;
@@ -1118,7 +1118,7 @@ void CRebaseDlg::OnBnClickedContinue()
 		}
 		m_RebaseStage=REBASE_CONTINUE;
 		curRev->GetRebaseAction() |= CGitLogListBase::LOGACTIONS_REBASE_DONE;
-		forRewrite.push_back(curRev->m_CommitHash);
+		m_forRewrite.push_back(curRev->m_CommitHash);
 		this->UpdateCurrentStatus();
 
 	}
@@ -1275,7 +1275,7 @@ void CRebaseDlg::OnBnClickedContinue()
 					MessageBox(g_Git.GetGitLastErr(_T("Could not get HEAD hash.")), _T("TortoiseGit"), MB_ICONERROR);
 					return;
 				}
-				rewrittenCommitsMap[curRev->m_CommitHash] = head;
+				m_rewrittenCommitsMap[curRev->m_CommitHash] = head;
 			}
 		}
 	}
@@ -1322,10 +1322,10 @@ void CRebaseDlg::OnBnClickedContinue()
 			MessageBox(g_Git.GetGitLastErr(_T("Could not get HEAD hash.")), _T("TortoiseGit"), MB_ICONERROR);
 			return;
 		}
-		rewrittenCommitsMap[curRev->m_CommitHash] = head;
-		for (const auto& hash : forRewrite)
-			rewrittenCommitsMap[hash] = head;
-		forRewrite.clear();
+		m_rewrittenCommitsMap[curRev->m_CommitHash] = head;
+		for (const auto& hash : m_forRewrite)
+			m_rewrittenCommitsMap[hash] = head;
+		m_forRewrite.clear();
 		curRev->GetRebaseAction() |= CGitLogListBase::LOGACTIONS_REBASE_DONE;
 		this->UpdateCurrentStatus();
 	}
@@ -1389,10 +1389,10 @@ void CRebaseDlg::OnBnClickedContinue()
 			MessageBox(g_Git.GetGitLastErr(_T("Could not get HEAD hash.")), _T("TortoiseGit"), MB_ICONERROR);
 			return;
 		}
-		rewrittenCommitsMap[curRev->m_CommitHash] = head; // we had a reset to parent, so this is not the correct hash
-		for (const auto& hash : forRewrite)
-			rewrittenCommitsMap[hash] = head;
-		forRewrite.clear();
+		m_rewrittenCommitsMap[curRev->m_CommitHash] = head; // we had a reset to parent, so this is not the correct hash
+		for (const auto& hash : m_forRewrite)
+			m_rewrittenCommitsMap[hash] = head;
+		m_forRewrite.clear();
 		curRev->GetRebaseAction() |= CGitLogListBase::LOGACTIONS_REBASE_DONE;
 		this->UpdateCurrentStatus();
 	}
@@ -1778,15 +1778,15 @@ int CRebaseDlg::DoRebase()
 				CGitHash parent = *it;
 				possibleParents.erase(it);
 
-				const auto rewrittenParent = rewrittenCommitsMap.find(parent);
-				if (rewrittenParent == rewrittenCommitsMap.cend())
+				const auto rewrittenParent = m_rewrittenCommitsMap.find(parent);
+				if (rewrittenParent == m_rewrittenCommitsMap.cend())
 				{
 					// no part of the rebase process
 					newParents.push_back(parent);
 					continue;
 				}
-				auto droppedCommitParents = droppedCommitsMap.find(parent);
-				if (rewrittenParent->second.IsEmpty() && droppedCommitParents != droppedCommitsMap.cend())
+				auto droppedCommitParents = m_droppedCommitsMap.find(parent);
+				if (rewrittenParent->second.IsEmpty() && droppedCommitParents != m_droppedCommitsMap.cend())
 				{
 					parentRewritten = true;
 					for (const auto& droppedCommitParent : droppedCommitParents->second)
@@ -1942,10 +1942,10 @@ int CRebaseDlg::DoRebase()
 						m_RebaseStage = REBASE_ERROR;
 						return -1;
 					}
-					rewrittenCommitsMap[pRev->m_CommitHash] = head;
+					m_rewrittenCommitsMap[pRev->m_CommitHash] = head;
 				}
 				else
-					forRewrite.push_back(pRev->m_CommitHash);
+					m_forRewrite.push_back(pRev->m_CommitHash);
 				pRev->GetRebaseAction() |= CGitLogListBase::LOGACTIONS_REBASE_DONE;
 				return 0;
 			}
@@ -1965,7 +1965,7 @@ int CRebaseDlg::DoRebase()
 			else if (mode == CGitLogListBase::LOGACTIONS_REBASE_SQUASH)
 			{
 				pRev->GetRebaseAction() |= CGitLogListBase::LOGACTIONS_REBASE_DONE;
-				forRewrite.push_back(pRev->m_CommitHash);
+				m_forRewrite.push_back(pRev->m_CommitHash);
 			}
 		}
 
