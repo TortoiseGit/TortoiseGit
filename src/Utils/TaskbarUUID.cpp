@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2014 - TortoiseGit
+// Copyright (C) 2013-2014, 2016 - TortoiseGit
 // Copyright (C) 2011-2012, 2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -87,108 +87,104 @@ extern bool g_bGroupingRemoveIcon;
 
 void SetUUIDOverlayIcon( HWND hWnd )
 {
-    if (CRegStdDWORD(_T("Software\\TortoiseGit\\GroupTaskbarIconsPerRepo"), 3))
-    {
-        if (CRegStdDWORD(_T("Software\\TortoiseGit\\GroupTaskbarIconsPerRepoOverlay"), TRUE))
-        {
-            std::wstring uuid;
-            std::wstring sicon;
-            bool bRemoveicon = false;
+    if (!CRegStdDWORD(_T("Software\\TortoiseGit\\GroupTaskbarIconsPerRepo"), 3))
+        return;
+
+    if (!CRegStdDWORD(_T("Software\\TortoiseGit\\GroupTaskbarIconsPerRepoOverlay"), TRUE))
+        return;
+
+    std::wstring uuid;
+    std::wstring sicon;
+    bool bRemoveicon = false;
 #ifdef __AFXWIN_H__
-            uuid = g_sGroupingUUID;
-            sicon = g_sGroupingIcon;
-            bRemoveicon = g_bGroupingRemoveIcon;
+    uuid = g_sGroupingUUID;
+    sicon = g_sGroupingIcon;
+    bRemoveicon = g_bGroupingRemoveIcon;
 #else
-            CCmdLineParser parser(GetCommandLine());
-            if (parser.HasVal(L"groupuuid"))
-                uuid = parser.GetVal(L"groupuuid");
+    CCmdLineParser parser(GetCommandLine());
+    if (parser.HasVal(L"groupuuid"))
+        uuid = parser.GetVal(L"groupuuid");
 #endif
-            if (!uuid.empty())
+    if (uuid.empty())
+        return;
+
+    CComPtr<ITaskbarList3> pTaskbarInterface;
+    if (FAILED(pTaskbarInterface.CoCreateInstance(CLSID_TaskbarList, NULL, CLSCTX_INPROC_SERVER)))
+        return;
+
+    int foundUUIDIndex = 0;
+    do
+    {
+        wchar_t buf[MAX_PATH] = { 0 };
+        swprintf_s(buf, _countof(buf), L"%s%d", L"Software\\TortoiseGit\\LastUsedUUIDsForGrouping\\", foundUUIDIndex);
+        CRegStdString r = CRegStdString(buf);
+        std::wstring sr = r;
+        if (sr.empty())
+        {
+            r = uuid + (sicon.empty() ? L"" : (L";" + sicon));
+            break;
+        }
+        size_t sep = sr.find(L';');
+        std::wstring olduuid = sep != std::wstring::npos ? sr.substr(0, sep) : sr;
+        if (olduuid.compare(uuid) == 0)
+        {
+            if (bRemoveicon)
+                r = uuid; // reset icon path in registry
+            else if (!sicon.empty())
+                r = uuid + (sicon.empty() ? L"" : (L";" + sicon));
+            else
+                sicon = sep != std::wstring::npos ? sr.substr(sep + 1) : L"";
+            break;
+        }
+        foundUUIDIndex++;
+    } while (foundUUIDIndex < 20);
+    if (foundUUIDIndex >= 20)
+    {
+        CRegStdString r = CRegStdString(L"Software\\TortoiseGit\\LastUsedUUIDsForGrouping\\1");
+        r.removeKey();
+    }
+
+    HICON icon = nullptr;
+    if (!sicon.empty())
+    {
+        if (sicon.size() >= 4 && !_wcsicmp(sicon.substr(sicon.size() - 4).c_str(), L".ico"))
+            icon = (HICON)::LoadImage(NULL, sicon.c_str(), IMAGE_ICON, 16, 16, LR_LOADFROMFILE | LR_SHARED);
+        else
+        {
+            ULONG_PTR gdiplusToken = 0;
+            Gdiplus::GdiplusStartupInput gdiplusStartupInput;
+            GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, nullptr);
+            if (gdiplusToken)
             {
-                CComPtr<ITaskbarList3> pTaskbarInterface;
-                HRESULT hr = pTaskbarInterface.CoCreateInstance(CLSID_TaskbarList, NULL, CLSCTX_INPROC_SERVER);
-
-                if (SUCCEEDED(hr))
-                {
-                    int foundUUIDIndex = 0;
-                    do
-                    {
-                        wchar_t buf[MAX_PATH] = {0};
-                        swprintf_s(buf, _countof(buf), L"%s%d", L"Software\\TortoiseGit\\LastUsedUUIDsForGrouping\\", foundUUIDIndex);
-                        CRegStdString r = CRegStdString(buf);
-                        std::wstring sr = r;
-                        if (sr.empty())
-                        {
-                            r = uuid + (sicon.empty() ? L"" : (L";"  + sicon));
-                            break;
-                        }
-                        size_t sep = sr.find(L';');
-                        std::wstring olduuid = sep != std::wstring::npos ? sr.substr(0, sep) : sr;
-                        if (olduuid.compare(uuid) == 0)
-                        {
-                            if (bRemoveicon)
-                                r = uuid; // reset icon path in registry
-                            else if (!sicon.empty())
-                                r = uuid + (sicon.empty() ? L"" : (L";"  + sicon));
-                            else
-                                sicon = sep != std::wstring::npos ? sr.substr(sep + 1) : L"";
-                            break;
-                        }
-                        foundUUIDIndex++;
-                    } while (foundUUIDIndex < 20);
-                    if (foundUUIDIndex >= 20)
-                    {
-                        CRegStdString r = CRegStdString(L"Software\\TortoiseGit\\LastUsedUUIDsForGrouping\\1");
-                        r.removeKey();
-                    }
-
-                    HICON icon = nullptr;
-                    if (!sicon.empty())
-                    {
-                        if (sicon.size() >=4 && !_wcsicmp(sicon.substr(sicon.size() - 4).c_str(), L".ico"))
-                        {
-                            icon = (HICON)::LoadImage(NULL, sicon.c_str(), IMAGE_ICON, 16, 16, LR_LOADFROMFILE | LR_SHARED);
-                        }
-                        else
-                        {
-                            ULONG_PTR gdiplusToken = 0;
-                            Gdiplus::GdiplusStartupInput gdiplusStartupInput;
-                            GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, nullptr);
-                            if (gdiplusToken)
-                            {
-                                Gdiplus::Bitmap *pBitmap = new Gdiplus::Bitmap(sicon.c_str(), FALSE);
-                                if (pBitmap->GetLastStatus() == Gdiplus::Status::Ok)
-                                    pBitmap->GetHICON(&icon);
-                                delete pBitmap;
-                                Gdiplus::GdiplusShutdown(gdiplusToken);
-                            }
-                        }
-                    }
-
-                    if (!icon)
-                    {
-                        DWORD colors[6] = {0x80FF0000, 0x80FFFF00, 0x8000FF00, 0x800000FF, 0x80000000, 0x8000FFFF};
-
-                        // AND mask - monochrome - determines which pixels get drawn
-                        BYTE AND[32];
-                        for( int i=0; i<32; i++ )
-                        {
-                            AND[i] = 0xFF;
-                        }
-
-                        // XOR mask - 32bpp ARGB - determines the pixel values
-                        DWORD XOR[256];
-                        for( int i=0; i<256; i++ )
-                        {
-                            XOR[i] = colors[foundUUIDIndex % 6];
-                        }
-
-                        icon = ::CreateIcon(NULL,16,16,1,32,AND,(BYTE*)XOR);
-                    }
-                    pTaskbarInterface->SetOverlayIcon(hWnd, icon, uuid.c_str());
-                    DestroyIcon(icon);
-                }
+                Gdiplus::Bitmap* pBitmap = new Gdiplus::Bitmap(sicon.c_str(), FALSE);
+                if (pBitmap->GetLastStatus() == Gdiplus::Status::Ok)
+                    pBitmap->GetHICON(&icon);
+                delete pBitmap;
+                Gdiplus::GdiplusShutdown(gdiplusToken);
             }
         }
     }
+
+    if (!icon)
+    {
+        DWORD colors[6] = { 0x80FF0000, 0x80FFFF00, 0x8000FF00, 0x800000FF, 0x80000000, 0x8000FFFF };
+
+        // AND mask - monochrome - determines which pixels get drawn
+        BYTE AND[32];
+        for (int i = 0; i<32; i++)
+        {
+            AND[i] = 0xFF;
+        }
+
+        // XOR mask - 32bpp ARGB - determines the pixel values
+        DWORD XOR[256];
+        for (int i = 0; i<256; i++)
+        {
+            XOR[i] = colors[foundUUIDIndex % 6];
+        }
+
+        icon = ::CreateIcon(nullptr, 16, 16, 1, 32, AND, (BYTE*)XOR);
+    }
+    pTaskbarInterface->SetOverlayIcon(hWnd, icon, uuid.c_str());
+    DestroyIcon(icon);
 }

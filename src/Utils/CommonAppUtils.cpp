@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2015 - TortoiseGit
+// Copyright (C) 2008-2013, 2015-2016 - TortoiseGit
 // Copyright (C) 2003-2008,2010 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -39,10 +39,8 @@ bool CCommonAppUtils::LaunchApplication(const CString& sCommandLine, UINT idErrM
 	if (uac)
 	{
 		CString file, param;
-		SHELLEXECUTEINFO shellinfo;
-		memset(&shellinfo, 0, sizeof(shellinfo));
+		SHELLEXECUTEINFO shellinfo = { 0 };
 		shellinfo.cbSize = sizeof(shellinfo);
-		shellinfo.hwnd = NULL;
 		shellinfo.lpVerb = _T("runas");
 		shellinfo.nShow = SW_SHOWNORMAL;
 		shellinfo.fMask = SEE_MASK_NOCLOSEPROCESS;
@@ -95,43 +93,37 @@ bool CCommonAppUtils::LaunchApplication(const CString& sCommandLine, UINT idErrM
 		}
 
 		if (bWaitForStartup)
-		{
 			WaitForInputIdle(shellinfo.hProcess, 10000);
-		}
 
 		CloseHandle(shellinfo.hProcess);
+
+		return true;
 	}
-	else
+
+	STARTUPINFO startup = { 0 };
+	PROCESS_INFORMATION process = { 0 };
+	startup.cb = sizeof(startup);
+
+	CString cleanCommandLine(sCommandLine);
+	if (CreateProcess(nullptr, const_cast<TCHAR*>((LPCTSTR)cleanCommandLine), nullptr, nullptr, FALSE, 0, nullptr, theCWD, &startup, &process) == 0)
 	{
-		STARTUPINFO startup;
-		PROCESS_INFORMATION process;
-		memset(&startup, 0, sizeof(startup));
-		startup.cb = sizeof(startup);
-		memset(&process, 0, sizeof(process));
-
-		CString cleanCommandLine(sCommandLine);
-
-		if (CreateProcess(NULL, const_cast<TCHAR*>((LPCTSTR)cleanCommandLine), NULL, NULL, FALSE, 0, 0, theCWD, &startup, &process)==0)
+		if (idErrMessageFormat)
 		{
-			if(idErrMessageFormat != 0)
-			{
-				CString temp;
-				temp.Format(idErrMessageFormat, (LPCTSTR)CFormatMessageWrapper());
-				MessageBox(NULL, temp, _T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
-			}
-			return false;
+			CString temp;
+			temp.Format(idErrMessageFormat, (LPCTSTR)CFormatMessageWrapper());
+			MessageBox(nullptr, temp, _T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
 		}
-
-		AllowSetForegroundWindow(process.dwProcessId);
-
-		if (bWaitForStartup)
-		{
-			WaitForInputIdle(process.hProcess, 10000);
-		}
-
-		CloseHandle(process.hThread);
-		CloseHandle(process.hProcess);
+		return false;
 	}
+
+	AllowSetForegroundWindow(process.dwProcessId);
+
+	if (bWaitForStartup)
+		WaitForInputIdle(process.hProcess, 10000);
+
+	CloseHandle(process.hThread);
+	CloseHandle(process.hProcess);
+
 	return true;
 }
 
@@ -163,14 +155,13 @@ bool CCommonAppUtils::IsAdminLogin()
 	// Initialize SID.
 	if (!AllocateAndInitializeSid(&ntAuthority, 2, SECURITY_BUILTIN_DOMAIN_RID, DOMAIN_ALIAS_RID_ADMINS, 0, 0, 0, 0, 0, 0, &administratorsGroup))
 		return false;
+	SCOPE_EXIT { FreeSid(administratorsGroup); };
 
 	// Check whether the token is present in admin group.
 	BOOL isInAdminGroup = FALSE;
 	if (!CheckTokenMembership(NULL, administratorsGroup, &isInAdminGroup))
-		isInAdminGroup = FALSE;
+		return false;
 
-	// Free SID and return.
-	FreeSid(administratorsGroup);
 	return !!isInAdminGroup;
 }
 
@@ -184,47 +175,41 @@ bool CCommonAppUtils::SetListCtrlBackgroundImage(HWND hListCtrl, UINT nID, int w
 	HICON hIcon = (HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(nID), IMAGE_ICON, width, height, LR_DEFAULTCOLOR);
 	if (!hIcon)
 		return false;
+	SCOPE_EXIT { DestroyIcon(hIcon); };
 
 	RECT rect = {0};
 	rect.right = width;
 	rect.bottom = height;
-	HBITMAP bmp = NULL;
 
 	HWND desktop = ::GetDesktopWindow();
-	if (desktop)
-	{
-		HDC screen_dev = ::GetDC(desktop);
-		if (screen_dev)
-		{
-			// Create a compatible DC
-			HDC dst_hdc = ::CreateCompatibleDC(screen_dev);
-			if (dst_hdc)
-			{
-				// Create a new bitmap of icon size
-				bmp = ::CreateCompatibleBitmap(screen_dev, rect.right, rect.bottom);
-				if (bmp)
-				{
-					// Select it into the compatible DC
-					HBITMAP old_dst_bmp = (HBITMAP)::SelectObject(dst_hdc, bmp);
-					// Fill the background of the compatible DC with the given color
-					::SetBkColor(dst_hdc, bkColor);
-					::ExtTextOut(dst_hdc, 0, 0, ETO_OPAQUE, &rect, NULL, 0, NULL);
-
-					// Draw the icon into the compatible DC
-					::DrawIconEx(dst_hdc, 0, 0, hIcon, rect.right, rect.bottom, 0, NULL, DI_NORMAL);
-					::SelectObject(dst_hdc, old_dst_bmp);
-				}
-				::DeleteDC(dst_hdc);
-			}
-			::ReleaseDC(desktop, screen_dev);
-		}
-	}
-
-	// Restore settings
-	DestroyIcon(hIcon);
-
-	if (bmp == NULL)
+	if (!desktop)
 		return false;
+
+	HDC screen_dev = ::GetDC(desktop);
+	if (!screen_dev)
+		return false;
+	SCOPE_EXIT { ::ReleaseDC(desktop, screen_dev); };
+
+	// Create a compatible DC
+	HDC dst_hdc = ::CreateCompatibleDC(screen_dev);
+	if (!dst_hdc)
+		return false;
+	SCOPE_EXIT { ::DeleteDC(dst_hdc); };
+
+	// Create a new bitmap of icon size
+	HBITMAP bmp = ::CreateCompatibleBitmap(screen_dev, rect.right, rect.bottom);
+	if (!bmp)
+		return false;
+
+	// Select it into the compatible DC
+	HBITMAP old_dst_bmp = (HBITMAP)::SelectObject(dst_hdc, bmp);
+	// Fill the background of the compatible DC with the given color
+	::SetBkColor(dst_hdc, bkColor);
+	::ExtTextOut(dst_hdc, 0, 0, ETO_OPAQUE, &rect, NULL, 0, NULL);
+
+	// Draw the icon into the compatible DC
+	::DrawIconEx(dst_hdc, 0, 0, hIcon, rect.right, rect.bottom, 0, NULL, DI_NORMAL);
+	::SelectObject(dst_hdc, old_dst_bmp);
 
 	LVBKIMAGE lv;
 	lv.ulFlags = LVBKIF_TYPE_WATERMARK;
@@ -286,17 +271,12 @@ bool CCommonAppUtils::FileOpenSave(CString& path, int * filterindex, UINT title,
 	else
 		ofn.Flags = OFN_OVERWRITEPROMPT | OFN_EXPLORER;
 
-
 	// Display the Open dialog box.
 	bool bRet = false;
 	if (bOpen)
-	{
 		bRet = !!GetOpenFileName(&ofn);
-	}
 	else
-	{
 		bRet = !!GetSaveFileName(&ofn);
-	}
 	SetCurrentDirectory(sOrigCWD);
 	if (bRet)
 	{

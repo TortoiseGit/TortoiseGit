@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2016 - TortoiseGit
 // Copyright (C) 2009-2012, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -28,8 +29,8 @@ IconBitmapUtils::IconBitmapUtils()
 
 IconBitmapUtils::~IconBitmapUtils()
 {
-	for (const auto& bitmap : bitmaps)
-		::DeleteObject(bitmap.second);
+    for (const auto& bitmap : bitmaps)
+        ::DeleteObject(bitmap.second);
     bitmaps.clear();
 }
 
@@ -42,6 +43,7 @@ HBITMAP IconBitmapUtils::IconToBitmap(HINSTANCE hInst, UINT uIcon)
     HICON hIcon = (HICON)LoadImage(hInst, MAKEINTRESOURCE(uIcon), IMAGE_ICON, 12, 12, LR_DEFAULTCOLOR);
     if (!hIcon)
         return NULL;
+    SCOPE_EXIT { DestroyIcon(hIcon); };
 
     RECT rect;
 
@@ -52,46 +54,28 @@ HBITMAP IconBitmapUtils::IconToBitmap(HINSTANCE hInst, UINT uIcon)
 
     HWND desktop = ::GetDesktopWindow();
     if (desktop == NULL)
-    {
-        DestroyIcon(hIcon);
         return NULL;
-    }
 
     HDC screen_dev = ::GetDC(desktop);
     if (screen_dev == NULL)
-    {
-        DestroyIcon(hIcon);
         return NULL;
-    }
+    SCOPE_EXIT { ::ReleaseDC(desktop, screen_dev); };
 
     // Create a compatible DC
     HDC dst_hdc = ::CreateCompatibleDC(screen_dev);
     if (dst_hdc == NULL)
-    {
-        DestroyIcon(hIcon);
-        ::ReleaseDC(desktop, screen_dev);
         return NULL;
-    }
+    SCOPE_EXIT { ::DeleteDC(dst_hdc); };
 
     // Create a new bitmap of icon size
     HBITMAP bmp = ::CreateCompatibleBitmap(screen_dev, rect.right, rect.bottom);
     if (bmp == NULL)
-    {
-        DestroyIcon(hIcon);
-        ::DeleteDC(dst_hdc);
-        ::ReleaseDC(desktop, screen_dev);
         return NULL;
-    }
 
     // Select it into the compatible DC
     HBITMAP old_dst_bmp = (HBITMAP)::SelectObject(dst_hdc, bmp);
     if (old_dst_bmp == NULL)
-    {
-        DestroyIcon(hIcon);
-        ::DeleteDC(dst_hdc);
-        ::ReleaseDC(desktop, screen_dev);
         return NULL;
-    }
 
     // Fill the background of the compatible DC with the white color
     // that is taken by menu routines as transparent
@@ -103,11 +87,8 @@ HBITMAP IconBitmapUtils::IconToBitmap(HINSTANCE hInst, UINT uIcon)
 
     // Restore settings
     ::SelectObject(dst_hdc, old_dst_bmp);
-    ::DeleteDC(dst_hdc);
-    ::ReleaseDC(desktop, screen_dev);
-    DestroyIcon(hIcon);
-    if (bmp)
-        bitmaps.insert(bitmap_it, std::make_pair(uIcon, bmp));
+
+    bitmaps.insert(bitmap_it, std::make_pair(uIcon, bmp));
     return bmp;
 }
 
@@ -140,44 +121,42 @@ HBITMAP IconBitmapUtils::IconToBitmapPARGB32(HICON hIcon)
 
     RECT rcIcon;
     SetRect(&rcIcon, 0, 0, sizIcon.cx, sizIcon.cy);
-    HBITMAP hBmp = NULL;
 
     HDC hdcDest = CreateCompatibleDC(NULL);
-    if (hdcDest)
+    if (!hdcDest)
+        return nullptr;
+    SCOPE_EXIT { DeleteDC(hdcDest); };
+
+    HBITMAP hBmp = nullptr;
+    if (FAILED(Create32BitHBITMAP(hdcDest, &sizIcon, NULL, &hBmp)))
+        return nullptr;
+
+    HBITMAP hbmpOld = (HBITMAP)SelectObject(hdcDest, hBmp);
+    if (!hbmpOld)
+        return hBmp;
+
+    BLENDFUNCTION bfAlpha = { AC_SRC_OVER, 0, 255, AC_SRC_ALPHA };
+    BP_PAINTPARAMS paintParams = { 0 };
+    paintParams.cbSize = sizeof(paintParams);
+    paintParams.dwFlags = BPPF_ERASE;
+    paintParams.pBlendFunction = &bfAlpha;
+
+    HDC hdcBuffer;
+    HPAINTBUFFER hPaintBuffer = BeginBufferedPaint(hdcDest, &rcIcon, BPBF_DIB, &paintParams, &hdcBuffer);
+    if (hPaintBuffer)
     {
-        if (SUCCEEDED(Create32BitHBITMAP(hdcDest, &sizIcon, NULL, &hBmp)))
+        if (DrawIconEx(hdcBuffer, 0, 0, hIcon, sizIcon.cx, sizIcon.cy, 0, NULL, DI_NORMAL))
         {
-            HBITMAP hbmpOld = (HBITMAP)SelectObject(hdcDest, hBmp);
-            if (hbmpOld)
-            {
-                BLENDFUNCTION bfAlpha = { AC_SRC_OVER, 0, 255, AC_SRC_ALPHA };
-                BP_PAINTPARAMS paintParams = {0};
-                paintParams.cbSize = sizeof(paintParams);
-                paintParams.dwFlags = BPPF_ERASE;
-                paintParams.pBlendFunction = &bfAlpha;
-
-                HDC hdcBuffer;
-                HPAINTBUFFER hPaintBuffer = BeginBufferedPaint(hdcDest, &rcIcon, BPBF_DIB, &paintParams, &hdcBuffer);
-                if (hPaintBuffer)
-                {
-                    if (DrawIconEx(hdcBuffer, 0, 0, hIcon, sizIcon.cx, sizIcon.cy, 0, NULL, DI_NORMAL))
-                    {
-                        // If icon did not have an alpha channel we need to convert buffer to PARGB
-                        ConvertBufferToPARGB32(hPaintBuffer, hdcDest, hIcon, sizIcon);
-                    }
-
-                    // This will write the buffer contents to the destination bitmap
-                    EndBufferedPaint(hPaintBuffer, TRUE);
-                }
-
-                SelectObject(hdcDest, hbmpOld);
-            }
+            // If icon did not have an alpha channel we need to convert buffer to PARGB
+            ConvertBufferToPARGB32(hPaintBuffer, hdcDest, hIcon, sizIcon);
         }
 
-        DeleteDC(hdcDest);
+        // This will write the buffer contents to the destination bitmap
+        EndBufferedPaint(hPaintBuffer, TRUE);
     }
 
-    return hBmp;
+    SelectObject(hdcDest, hbmpOld);
+	return hBmp;
 }
 
 HRESULT IconBitmapUtils::Create32BitHBITMAP(HDC hdc, const SIZE *psize, __deref_opt_out void **ppvBits, __out HBITMAP* phBmp) const
@@ -216,26 +195,25 @@ HRESULT IconBitmapUtils::ConvertBufferToPARGB32(HPAINTBUFFER hPaintBuffer, HDC h
     RGBQUAD *prgbQuad;
     int cxRow;
     HRESULT hr = GetBufferedPaintBits(hPaintBuffer, &prgbQuad, &cxRow);
-    if (SUCCEEDED(hr))
+    if (FAILED(hr))
+        return hr;
+
+    Gdiplus::ARGB *pargb = reinterpret_cast<Gdiplus::ARGB *>(prgbQuad);
+    if (HasAlpha(pargb, sizIcon, cxRow))
+        return S_OK;
+
+    ICONINFO info;
+    if (!GetIconInfo(hicon, &info))
+        return S_OK;
+    SCOPE_EXIT
     {
-        Gdiplus::ARGB *pargb = reinterpret_cast<Gdiplus::ARGB *>(prgbQuad);
-        if (!HasAlpha(pargb, sizIcon, cxRow))
-        {
-            ICONINFO info;
-            if (GetIconInfo(hicon, &info))
-            {
-                if (info.hbmMask)
-                {
-                    hr = ConvertToPARGB32(hdc, pargb, info.hbmMask, sizIcon, cxRow);
-                }
+        DeleteObject(info.hbmColor);
+        DeleteObject(info.hbmMask);
+    };
+    if (info.hbmMask)
+        return ConvertToPARGB32(hdc, pargb, info.hbmMask, sizIcon, cxRow);
 
-                DeleteObject(info.hbmColor);
-                DeleteObject(info.hbmMask);
-            }
-        }
-    }
-
-    return hr;
+    return S_OK;
 }
 
 bool IconBitmapUtils::HasAlpha(__in Gdiplus::ARGB *pargb, SIZE& sizImage, int cxRow) const
@@ -272,34 +250,31 @@ HRESULT IconBitmapUtils::ConvertToPARGB32(HDC hdc, __inout Gdiplus::ARGB *pargb,
     void *pvBits = HeapAlloc(hHeap, 0, bmi.bmiHeader.biWidth * 4 * bmi.bmiHeader.biHeight);
     if (pvBits == 0)
         return E_OUTOFMEMORY;
+    SCOPE_EXIT { HeapFree(hHeap, 0, pvBits); };
 
-    HRESULT hr = E_UNEXPECTED;
-    if (GetDIBits(hdc, hbmp, 0, bmi.bmiHeader.biHeight, pvBits, &bmi, DIB_RGB_COLORS) == bmi.bmiHeader.biHeight)
+    if (!GetDIBits(hdc, hbmp, 0, bmi.bmiHeader.biHeight, pvBits, &bmi, DIB_RGB_COLORS) == bmi.bmiHeader.biHeight)
+        return E_UNEXPECTED;
+
+    ULONG cxDelta = cxRow - bmi.bmiHeader.biWidth;
+    Gdiplus::ARGB *pargbMask = static_cast<Gdiplus::ARGB *>(pvBits);
+
+    for (ULONG y = bmi.bmiHeader.biHeight; y; --y)
     {
-        ULONG cxDelta = cxRow - bmi.bmiHeader.biWidth;
-        Gdiplus::ARGB *pargbMask = static_cast<Gdiplus::ARGB *>(pvBits);
-
-        for (ULONG y = bmi.bmiHeader.biHeight; y; --y)
+        for (ULONG x = bmi.bmiHeader.biWidth; x; --x)
         {
-            for (ULONG x = bmi.bmiHeader.biWidth; x; --x)
+            if (*pargbMask++)
             {
-                if (*pargbMask++)
-                {
-                    // transparent pixel
-                    *pargb++ = 0;
-                }
-                else
-                {
-                    // opaque pixel
-                    *pargb++ |= 0xFF000000;
-                }
+                // transparent pixel
+                *pargb++ = 0;
             }
-            pargb += cxDelta;
+            else
+            {
+                // opaque pixel
+                *pargb++ |= 0xFF000000;
+            }
         }
-
-        hr = S_OK;
+        pargb += cxDelta;
     }
-    HeapFree(hHeap, 0, pvBits);
 
-    return hr;
+    return S_OK;
 }
