@@ -180,6 +180,7 @@ protected:
 	std::map<CGitHash, CGitHash> m_rewrittenCommitsMap;
 	std::vector<CGitHash> m_forRewrite;
 	std::map<CGitHash, GIT_REV_LIST> m_droppedCommitsMap;
+	std::vector<CGitHash> m_currentCommits;
 
 	void AddBranchToolTips(CHistoryCombo *pBranch);
 	void AddLogString(CString str);

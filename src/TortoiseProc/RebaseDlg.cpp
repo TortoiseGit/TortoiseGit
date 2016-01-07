@@ -914,6 +914,19 @@ int CRebaseDlg::StartRebase()
 	{
 		m_rewrittenCommitsMap[((GitRevLoglist*)m_CommitList.m_arShownList[i])->m_CommitHash] = CGitHash();
 	}
+	if (m_bPreserveMerges)
+	{
+		CString cmd;
+		cmd.Format(L"git merge-base --all %s %s", (LPCTSTR)m_OrigHEADHash.ToString(), (LPCTSTR)m_OrigUpstreamHash.ToString());
+		g_Git.Run(cmd, [&](const CStringA& line)
+		{
+			CGitHash hash;
+			hash.ConvertFromStrA(line);
+			if (hash.IsEmpty())
+				return;
+			m_rewrittenCommitsMap[hash] = m_OrigUpstreamHash;
+		});
+	}
 	return 0;
 }
 int CRebaseDlg::VerifyNoConflict()
@@ -1771,6 +1784,20 @@ int CRebaseDlg::DoRebase()
 		if (m_bPreserveMerges)
 		{
 			bool parentRewritten = false;
+			CGitHash currentHeadHash;
+			if (g_Git.GetHash(currentHeadHash, _T("HEAD")))
+			{
+				m_RebaseStage = REBASE_ERROR;
+				MessageBox(g_Git.GetGitLastErr(_T("Could not get HEAD hash.")), _T("TortoiseGit"), MB_ICONERROR);
+				return -1;
+			}
+			if (!m_currentCommits.empty())
+			{
+				for (const auto& commit : m_currentCommits)
+					m_rewrittenCommitsMap[commit] = currentHeadHash;
+				m_currentCommits.clear();
+			}
+			m_currentCommits.push_back(pRev->m_CommitHash);
 			GIT_REV_LIST possibleParents = pRev->m_ParentHash;
 			GIT_REV_LIST newParents;
 			for (auto it = possibleParents.cbegin(); it != possibleParents.cend(); it = possibleParents.begin())
@@ -1802,12 +1829,8 @@ int CRebaseDlg::DoRebase()
 				}
 
 				CGitHash newParent = rewrittenParent->second;
-				if (newParent.IsEmpty() && g_Git.GetHash(newParent, _T("HEAD"))) // use current HEAD as fallback
-				{
-					m_RebaseStage = REBASE_ERROR;
-					MessageBox(g_Git.GetGitLastErr(_T("Could not get HEAD hash.")), _T("TortoiseGit"), MB_ICONERROR);
-					return -1;
-				}
+				if (newParent.IsEmpty()) // use current HEAD as fallback
+					newParent = currentHeadHash;
 
 				if (newParent != parent)
 					parentRewritten = true;
