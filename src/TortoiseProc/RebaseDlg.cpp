@@ -916,9 +916,9 @@ int CRebaseDlg::StartRebase()
 	}
 	if (m_bPreserveMerges)
 	{
-		CString cmd;
-		cmd.Format(L"git merge-base --all %s %s", (LPCTSTR)m_OrigHEADHash.ToString(), (LPCTSTR)m_OrigUpstreamHash.ToString());
-		g_Git.Run(cmd, [&](const CStringA& line)
+		CString mergecmd;
+		mergecmd.Format(L"git merge-base --all %s %s", (LPCTSTR)m_OrigHEADHash.ToString(), (LPCTSTR)m_OrigUpstreamHash.ToString());
+		g_Git.Run(mergecmd, [&](const CStringA& line)
 		{
 			CGitHash hash;
 			hash.ConvertFromStrA(line);
