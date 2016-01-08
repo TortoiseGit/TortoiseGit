@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2015 - TortoiseGit
+// Copyright (C) 2008-2016 - TortoiseGit
 // Copyright (C) 2003-2008, 2012-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -69,7 +69,6 @@ CTortoiseProcApp::CTortoiseProcApp()
 	_tputenv(_T("GIT_DIR="));
 	CCrashReport::Instance().AddUserInfoToReport(L"CommandLine", GetCommandLine());
 	EnableHtmlHelp();
-	SYS_IMAGE_LIST();
 	CHooks::Create();
 	git_libgit2_init();
 	CGit::SetGit2CredentialCallback(CAppUtils::Git2GetUserPassword);
@@ -86,7 +85,6 @@ CTortoiseProcApp::CTortoiseProcApp()
 CTortoiseProcApp::~CTortoiseProcApp()
 {
 	CHooks::Destroy();
-	SYS_IMAGE_LIST().Cleanup();
 	git_libgit2_shutdown();
 }
 
@@ -111,7 +109,6 @@ BOOL CTortoiseProcApp::InitInstance()
 	CheckUpgrade();
 	CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerWindows));
 	CMFCButton::EnableWindowsTheming();
-	CHistoryCombo::m_nGitIconIndex = SYS_IMAGE_LIST().AddIcon((HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_GITCONFIG), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE));
 
 	Gdiplus::GdiplusStartupInput gdiplusStartupInput;
 	Gdiplus::GdiplusStartup(&m_gdiplusToken,&gdiplusStartupInput,NULL);
@@ -261,6 +258,8 @@ BOOL CTortoiseProcApp::InitInstance()
 	AfxInitRichEdit5();
 	CWinAppEx::InitInstance();
 	SetRegistryKey(_T("TortoiseGit"));
+	SYS_IMAGE_LIST();
+	CHistoryCombo::m_nGitIconIndex = SYS_IMAGE_LIST().AddIcon((HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_GITCONFIG), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE));
 	AfxGetApp()->m_pszProfileName = _tcsdup(_T("TortoiseProc")); // w/o this ResizableLib will store data under TortoiseGitProc which is not compatible with older versions
 
 	CCmdLineParser parser(AfxGetApp()->m_lpCmdLine);
@@ -744,6 +743,7 @@ void CTortoiseProcApp::DoInitializeJumpList(const CString& appid)
 
 int CTortoiseProcApp::ExitInstance()
 {
+	SYS_IMAGE_LIST().Cleanup();
 	Gdiplus::GdiplusShutdown(m_gdiplusToken);
 
 	CWinAppEx::ExitInstance();
