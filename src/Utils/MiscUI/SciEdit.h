@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2009-2016 - TortoiseGit
 // Copyright (C) 2003-2008, 2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -17,6 +18,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #pragma once
+#include "../SmartHandle.h"
 #include "scintilla.h"
 #include "SciLexer.h"
 #include "hunspell.hxx"
@@ -130,11 +132,11 @@ public:
 
 private:
 	bool IsUTF8(LPVOID pBuffer, size_t cb);
-	HMODULE		m_hModule;
+	CAutoLibrary	m_hModule;
 	LRESULT		m_DirectFunction;
 	LRESULT		m_DirectPointer;
-	Hunspell *	pChecker;
-	MyThes *	pThesaur;
+	std::unique_ptr<Hunspell>	pChecker;
+	std::unique_ptr<MyThes>		pThesaur;
 	UINT		m_spellcodepage;
 	std::map<CString, int> m_autolist;
 	TCHAR		m_separator;

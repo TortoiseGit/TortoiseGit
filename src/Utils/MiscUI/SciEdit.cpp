@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2015 - TortoiseGit
+// Copyright (C) 2009-2016 - TortoiseGit
 // Copyright (C) 2003-2008,2012-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -71,8 +71,6 @@ IMPLEMENT_DYNAMIC(CSciEdit, CWnd)
 
 CSciEdit::CSciEdit(void) : m_DirectFunction(NULL)
 	, m_DirectPointer(NULL)
-	, pChecker(NULL)
-	, pThesaur(NULL)
 	, m_spellcodepage(0)
 	, m_separator(0)
 	, m_typeSeparator(1)
@@ -85,10 +83,6 @@ CSciEdit::CSciEdit(void) : m_DirectFunction(NULL)
 CSciEdit::~CSciEdit(void)
 {
 	m_personalDict.Save();
-	if (m_hModule)
-		::FreeLibrary(m_hModule);
-	delete pChecker;
-	delete pThesaur;
 }
 
 static std::unique_ptr<UINT[]> Icon2Image(HICON hIcon)
@@ -121,21 +115,15 @@ static std::unique_ptr<UINT[]> Icon2Image(HICON hIcon)
 	LPBYTE pixelsIconRGB = ptrb.get();
 	LPBYTE alphaPixels = pixelsIconRGB + size;
 	HDC hDC = CreateCompatibleDC(nullptr);
+	SCOPE_EXIT { DeleteDC(hDC); };
 	HBITMAP hBmpOld = (HBITMAP)SelectObject(hDC, (HGDIOBJ)iconInfo.hbmColor);
 	if (!GetDIBits(hDC, iconInfo.hbmColor, 0, height, (LPVOID)pixelsIconRGB, &infoheader, DIB_RGB_COLORS))
-	{
-		DeleteDC(hDC);
 		return nullptr;
-	}
 
 	SelectObject(hDC, hBmpOld);
 	if (!GetDIBits(hDC, iconInfo.hbmMask, 0,height, (LPVOID)alphaPixels, &infoheader, DIB_RGB_COLORS))
-	{
-		DeleteDC(hDC);
 		return nullptr;
-	}
 
-	DeleteDC(hDC);
 	auto imagePixels = std::make_unique<UINT[]>(height * width);
 	int lsSrc = width * 3;
 	int vsDest = height - 1;
@@ -293,12 +281,12 @@ BOOL CSciEdit::LoadDictionaries(LONG lLanguageID)
 		if ((PathFileExists(sFolderAppData + _T("dic\\") + sFile + _T(".aff"))) &&
 			(PathFileExists(sFolderAppData + _T("dic\\") + sFile + _T(".dic"))))
 		{
-			pChecker = new Hunspell(CStringA(sFolderAppData + _T("dic\\") + sFile + _T(".aff")), CStringA(sFolderAppData + _T("dic\\") + sFile + _T(".dic")));
+			pChecker = std::make_unique<Hunspell>(CStringA(sFolderAppData + _T("dic\\") + sFile + _T(".aff")), CStringA(sFolderAppData + _T("dic\\") + sFile + _T(".dic")));
 		}
 		else if ((PathFileExists(sFolderUp + _T("Languages\\") + sFile + _T(".aff"))) &&
 			(PathFileExists(sFolderUp + _T("Languages\\") + sFile + _T(".dic"))))
 		{
-			pChecker = new Hunspell(CStringA(sFolderUp + _T("Languages\\") + sFile + _T(".aff")), CStringA(sFolderUp + _T("Languages\\") + sFile + _T(".dic")));
+			pChecker = std::make_unique<Hunspell>(CStringA(sFolderUp + _T("Languages\\") + sFile + _T(".aff")), CStringA(sFolderUp + _T("Languages\\") + sFile + _T(".dic")));
 		}
 	}
 #if THESAURUS
@@ -307,12 +295,12 @@ BOOL CSciEdit::LoadDictionaries(LONG lLanguageID)
 		if ((PathFileExists(sFolderAppData + _T("dic\\th_") + sFile + _T("_v2.idx"))) &&
 			(PathFileExists(sFolderAppData + _T("dic\\th_") + sFile + _T("_v2.dat"))))
 		{
-			pThesaur = new MyThes(CStringA(sFolderAppData + _T("dic\\th_") + sFile + _T("_v2.idx")), CStringA(sFolderAppData + _T("dic\\th_") + sFile + _T("_v2.dat")));
+			pThesaur = std::make_unique<MyThes>(CStringA(sFolderAppData + _T("dic\\th_") + sFile + _T("_v2.idx")), CStringA(sFolderAppData + _T("dic\\th_") + sFile + _T("_v2.dat")));
 		}
 		else if ((PathFileExists(sFolderUp + _T("Languages\\th_") + sFile + _T("_v2.idx"))) &&
 			(PathFileExists(sFolderUp + _T("Languages\\th_") + sFile + _T("_v2.dat"))))
 		{
-			pThesaur = new MyThes(CStringA(sFolderUp + _T("Languages\\th_") + sFile + _T("_v2.idx")), CStringA(sFolderUp + _T("Languages\\th_") + sFile + _T("_v2.dat")));
+			pThesaur = std::make_unique<MyThes>(CStringA(sFolderUp + _T("Languages\\th_") + sFile + _T("_v2.idx")), CStringA(sFolderUp + _T("Languages\\th_") + sFile + _T("_v2.dat")));
 		}
 	}
 #endif
