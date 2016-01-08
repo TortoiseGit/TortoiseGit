@@ -252,7 +252,7 @@ HRESULT IconBitmapUtils::ConvertToPARGB32(HDC hdc, __inout Gdiplus::ARGB *pargb,
         return E_OUTOFMEMORY;
     SCOPE_EXIT { HeapFree(hHeap, 0, pvBits); };
 
-    if (!GetDIBits(hdc, hbmp, 0, bmi.bmiHeader.biHeight, pvBits, &bmi, DIB_RGB_COLORS) == bmi.bmiHeader.biHeight)
+    if (GetDIBits(hdc, hbmp, 0, bmi.bmiHeader.biHeight, pvBits, &bmi, DIB_RGB_COLORS) != bmi.bmiHeader.biHeight)
         return E_UNEXPECTED;
 
     ULONG cxDelta = cxRow - bmi.bmiHeader.biWidth;
