@@ -878,7 +878,7 @@ void MyGraph::DrawLegend(CDC& dc)
 		fontLegend.DeleteObject();
 		VERIFY(fontLegend.CreatePointFont(optimalPointFontHeight, _T("Arial"), &dc));
 		VERIFY(fontLegend.GetLogFont(&lf));
-		nLabelHeight = abs(lf.lfHeight);
+		nLabelHeight = max(1, abs(lf.lfHeight));
 	}
 
 	// Calculate maximum number of authors that can be shown with the current label height
