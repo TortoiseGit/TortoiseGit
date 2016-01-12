@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2015 - TortoiseGit
+// Copyright (C) 2013-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -29,7 +29,7 @@ class CGitSettings
 {
 public:
 	CGitSettings()
-	: m_iConfigSource(0)
+	: m_iConfigSource(CFG_SRC_EFFECTIVE)
 	, m_bGlobal(false)
 	, m_bIsBareRepo(false)
 	, m_bHonorProjectConfig(false)
@@ -38,6 +38,14 @@ public:
 
 protected:
 	CComboBox m_cSaveTo;
+	enum
+	{
+		CFG_SRC_EFFECTIVE = 0,
+		CFG_SRC_LOCAL = 1,
+		CFG_SRC_PROJECT = 2,
+		CFG_SRC_GLOBAL = 3,
+		CFG_SRC_SYSTEM = 4,
+	};
 	int		m_iConfigSource;
 	bool	m_bGlobal;
 	bool	m_bIsBareRepo;
@@ -121,12 +129,12 @@ protected:
 	void LoadData()
 	{
 		CAutoConfig config(true);
-		if (!m_bGlobal && (m_iConfigSource == 0 || m_iConfigSource == 1))
+		if (!m_bGlobal && (m_iConfigSource == CFG_SRC_EFFECTIVE || m_iConfigSource == CFG_SRC_LOCAL))
 		{
 			if (git_config_add_file_ondisk(config, CGit::GetGitPathStringA(g_Git.GetGitLocalConfig()), GIT_CONFIG_LEVEL_APP, FALSE)) // this needs to have the highest priority in order to override .tgitconfig settings
 				MessageBox(nullptr, g_Git.GetLibGit2LastErr(), _T("TortoiseGit"), MB_ICONEXCLAMATION);
 		}
-		if ((m_iConfigSource == 0 && m_bHonorProjectConfig) || m_iConfigSource == 2)
+		if ((m_iConfigSource == CFG_SRC_EFFECTIVE && m_bHonorProjectConfig) || m_iConfigSource == CFG_SRC_PROJECT)
 		{
 			if (!m_bIsBareRepo)
 			{
@@ -144,7 +152,7 @@ protected:
 				}
 			}
 		}
-		if (m_iConfigSource == 0 || m_iConfigSource == 3)
+		if (m_iConfigSource == CFG_SRC_EFFECTIVE || m_iConfigSource == CFG_SRC_GLOBAL)
 		{
 			if (git_config_add_file_ondisk(config, CGit::GetGitPathStringA(g_Git.GetGitGlobalConfig()), GIT_CONFIG_LEVEL_GLOBAL, FALSE))
 				MessageBox(nullptr, g_Git.GetLibGit2LastErr(), _T("TortoiseGit"), MB_ICONEXCLAMATION);
@@ -154,7 +162,7 @@ protected:
 					MessageBox(nullptr, g_Git.GetLibGit2LastErr(), _T("TortoiseGit"), MB_ICONEXCLAMATION);
 			}
 		}
-		if (m_iConfigSource == 0 || m_iConfigSource == 4)
+		if (m_iConfigSource == CFG_SRC_EFFECTIVE || m_iConfigSource == CFG_SRC_SYSTEM)
 		{
 			if (git_config_add_file_ondisk(config, CGit::GetGitPathStringA(g_Git.GetGitSystemConfig()), GIT_CONFIG_LEVEL_SYSTEM, FALSE))
 				MessageBox(nullptr, g_Git.GetLibGit2LastErr(), _T("TortoiseGit"), MB_ICONEXCLAMATION);
@@ -167,7 +175,7 @@ protected:
 
 	bool WarnUserSafeToDifferentDestination(int storeTo)
 	{
-		if ((storeTo == IDS_CONFIG_GLOBAL && m_iConfigSource != 3) || (storeTo == IDS_CONFIG_PROJECT && m_iConfigSource != 2) || (storeTo == IDS_CONFIG_LOCAL && m_iConfigSource != 1))
+		if ((storeTo == IDS_CONFIG_GLOBAL && m_iConfigSource != CFG_SRC_GLOBAL) || (storeTo == IDS_CONFIG_PROJECT && m_iConfigSource != CFG_SRC_PROJECT) || (storeTo == IDS_CONFIG_LOCAL && m_iConfigSource != CFG_SRC_LOCAL))
 		{
 			CString dest;
 			dest.LoadString(storeTo);
@@ -259,11 +267,11 @@ protected:
 	afx_msg void OnBnClickedChangedConfigSource() \
 	{ \
 		m_iConfigSource = GetCheckedRadioButton(IDC_RADIO_SETTINGS_EFFECTIVE, IDC_RADIO_SETTINGS_SYSTEM) - IDC_RADIO_SETTINGS_EFFECTIVE; \
-		if (m_iConfigSource == 1) \
+		if (m_iConfigSource == CFG_SRC_LOCAL) \
 			m_cSaveTo.SelectString(0, CString(MAKEINTRESOURCE(IDS_CONFIG_LOCAL))); \
-		else if (m_iConfigSource == 2) \
+		else if (m_iConfigSource == CFG_SRC_PROJECT) \
 			m_cSaveTo.SelectString(0, CString(MAKEINTRESOURCE(IDS_CONFIG_PROJECT))); \
-		else if (m_iConfigSource == 3) \
+		else if (m_iConfigSource == CFG_SRC_GLOBAL) \
 			m_cSaveTo.SelectString(0, CString(MAKEINTRESOURCE(IDS_CONFIG_GLOBAL))); \
 		LoadData(); \
 	}

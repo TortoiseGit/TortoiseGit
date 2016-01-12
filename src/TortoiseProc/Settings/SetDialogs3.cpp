@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2015 - TortoiseGit
+// Copyright (C) 2013-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -121,7 +121,7 @@ void CSetDialogs3::LoadDataImpl(CAutoConfig& config)
 			long longValue = _tcstol(value, &strEnd, 0);
 			if (longValue == 0)
 			{
-				if (m_iConfigSource == 0)
+				if (m_iConfigSource == CFG_SRC_EFFECTIVE)
 					SelectLanguage(m_langCombo, CRegDWORD(_T("Software\\TortoiseGit\\LanguageID"), 1033));
 				else
 					m_langCombo.SetCurSel(1);
@@ -129,7 +129,7 @@ void CSetDialogs3::LoadDataImpl(CAutoConfig& config)
 			else
 				SelectLanguage(m_langCombo, longValue);
 		}
-		else if (m_iConfigSource == 0)
+		else if (m_iConfigSource == CFG_SRC_EFFECTIVE)
 			SelectLanguage(m_langCombo, CRegDWORD(_T("Software\\TortoiseGit\\LanguageID"), 1033));
 		else
 			m_langCombo.SetCurSel(1);
@@ -139,7 +139,7 @@ void CSetDialogs3::LoadDataImpl(CAutoConfig& config)
 		m_LogMinSize.Empty();
 		CString value;
 		m_bInheritLogMinSize = (config.GetString(PROJECTPROPNAME_LOGMINSIZE, value) == GIT_ENOTFOUND);
-		if (!value.IsEmpty() || m_iConfigSource == 0)
+		if (!value.IsEmpty() || m_iConfigSource == CFG_SRC_EFFECTIVE)
 		{
 			int nMinLogSize = _ttoi(value);
 			m_LogMinSize.Format(L"%d", nMinLogSize);
@@ -151,7 +151,7 @@ void CSetDialogs3::LoadDataImpl(CAutoConfig& config)
 		m_Border.Empty();
 		CString value;
 		m_bInheritBorder = (config.GetString(PROJECTPROPNAME_LOGWIDTHLINE, value) == GIT_ENOTFOUND);
-		if (!value.IsEmpty() || m_iConfigSource == 0)
+		if (!value.IsEmpty() || m_iConfigSource == CFG_SRC_EFFECTIVE)
 		{
 			int nLogWidthMarker = _ttoi(value);
 			m_Border.Format(L"%d", nLogWidthMarker);
@@ -210,16 +210,16 @@ BOOL CSetDialogs3::SafeDataImpl(CAutoConfig& config)
 
 void CSetDialogs3::EnDisableControls()
 {
-	GetDlgItem(IDC_LOGMINSIZE)->SendMessage(EM_SETREADONLY, m_iConfigSource == 0, 0);
-	GetDlgItem(IDC_BORDER)->SendMessage(EM_SETREADONLY, m_iConfigSource == 0, 0);
-	GetDlgItem(IDC_LANGCOMBO)->EnableWindow(m_iConfigSource != 0);
-	GetDlgItem(IDC_WARN_NO_SIGNED_OFF_BY)->EnableWindow(m_iConfigSource != 0);
-	GetDlgItem(IDC_COMBO_SETTINGS_SAFETO)->EnableWindow(m_iConfigSource != 0);
-	GetDlgItem(IDC_ICONFILE)->SendMessage(EM_SETREADONLY, m_iConfigSource == 0, 0);
-	GetDlgItem(IDC_ICONFILE_BROWSE)->EnableWindow(m_iConfigSource != 0 && !m_bInheritIconFile);
-	GetDlgItem(IDC_CHECK_INHERIT_LIMIT)->EnableWindow(m_iConfigSource != 0);
-	GetDlgItem(IDC_CHECK_INHERIT_BORDER)->EnableWindow(m_iConfigSource != 0);
-	GetDlgItem(IDC_CHECK_INHERIT_ICONPATH)->EnableWindow(m_iConfigSource != 0);
+	GetDlgItem(IDC_LOGMINSIZE)->SendMessage(EM_SETREADONLY, m_iConfigSource == CFG_SRC_EFFECTIVE, 0);
+	GetDlgItem(IDC_BORDER)->SendMessage(EM_SETREADONLY, m_iConfigSource == CFG_SRC_EFFECTIVE, 0);
+	GetDlgItem(IDC_LANGCOMBO)->EnableWindow(m_iConfigSource != CFG_SRC_EFFECTIVE);
+	GetDlgItem(IDC_WARN_NO_SIGNED_OFF_BY)->EnableWindow(m_iConfigSource != CFG_SRC_EFFECTIVE);
+	GetDlgItem(IDC_COMBO_SETTINGS_SAFETO)->EnableWindow(m_iConfigSource != CFG_SRC_EFFECTIVE);
+	GetDlgItem(IDC_ICONFILE)->SendMessage(EM_SETREADONLY, m_iConfigSource == CFG_SRC_EFFECTIVE, 0);
+	GetDlgItem(IDC_ICONFILE_BROWSE)->EnableWindow(m_iConfigSource != CFG_SRC_EFFECTIVE && !m_bInheritIconFile);
+	GetDlgItem(IDC_CHECK_INHERIT_LIMIT)->EnableWindow(m_iConfigSource != CFG_SRC_EFFECTIVE);
+	GetDlgItem(IDC_CHECK_INHERIT_BORDER)->EnableWindow(m_iConfigSource != CFG_SRC_EFFECTIVE);
+	GetDlgItem(IDC_CHECK_INHERIT_ICONPATH)->EnableWindow(m_iConfigSource != CFG_SRC_EFFECTIVE);
 
 	GetDlgItem(IDC_LOGMINSIZE)->EnableWindow(!m_bInheritLogMinSize);
 	GetDlgItem(IDC_BORDER)->EnableWindow(!m_bInheritBorder);

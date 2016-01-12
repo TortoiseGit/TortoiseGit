@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2015 - TortoiseGit
+// Copyright (C) 2008-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -121,7 +121,7 @@ BOOL CSettingGitConfig::OnInitDialog()
 	if (m_UserName.IsEmpty() && m_UserEmail.IsEmpty())
 	{
 		// preselect "global" and remove check in "inherit" checkboxes if no username and email are set on first open
-		m_iConfigSource = 3;
+		m_iConfigSource = CFG_SRC_GLOBAL;
 		CheckRadioButton(IDC_RADIO_SETTINGS_EFFECTIVE, IDC_RADIO_SETTINGS_SYSTEM, IDC_RADIO_SETTINGS_EFFECTIVE + m_iConfigSource);
 		m_cSaveTo.SelectString(0, CString(MAKEINTRESOURCE(IDS_CONFIG_GLOBAL)));
 		LoadData();
@@ -138,7 +138,7 @@ void CSettingGitConfig::LoadDataImpl(CAutoConfig& config)
 	m_bInheritSigningKey = (config.GetString(_T("user.signingkey"), m_UserSigningKey) == GIT_ENOTFOUND);
 
 	// special handling for UserName and UserEmail, because these can also be defined as environment variables for effective settings
-	if (m_iConfigSource == 0)
+	if (m_iConfigSource == CFG_SRC_EFFECTIVE)
 	{
 		m_UserName = g_Git.GetUserName();
 		m_UserEmail = g_Git.GetUserEmail();
@@ -157,7 +157,7 @@ void CSettingGitConfig::LoadDataImpl(CAutoConfig& config)
 
 	if (git_config_get_bool(&m_bQuotePath, config, "core.quotepath") == GIT_ENOTFOUND)
 	{
-		if (m_iConfigSource == 0)
+		if (m_iConfigSource == CFG_SRC_EFFECTIVE)
 			m_bQuotePath = BST_CHECKED;
 		else
 			m_bQuotePath = BST_INDETERMINATE;
@@ -186,16 +186,16 @@ void CSettingGitConfig::LoadDataImpl(CAutoConfig& config)
 
 void CSettingGitConfig::EnDisableControls()
 {
-	GetDlgItem(IDC_GIT_USERNAME)->SendMessage(EM_SETREADONLY, m_iConfigSource == 0, 0);
-	GetDlgItem(IDC_GIT_USEREMAIL)->SendMessage(EM_SETREADONLY, m_iConfigSource == 0, 0);
-	GetDlgItem(IDC_GIT_USERESINGNINGKEY)->SendMessage(EM_SETREADONLY, m_iConfigSource == 0, 0);
-	GetDlgItem(IDC_CHECK_AUTOCRLF)->EnableWindow(m_iConfigSource != 0);
-	GetDlgItem(IDC_CHECK_QUOTEPATH)->EnableWindow(m_iConfigSource != 0);
-	GetDlgItem(IDC_COMBO_SAFECRLF)->EnableWindow(m_iConfigSource != 0);
-	GetDlgItem(IDC_COMBO_SETTINGS_SAFETO)->EnableWindow(m_iConfigSource != 0);
-	GetDlgItem(IDC_CHECK_INHERIT_NAME)->EnableWindow(m_iConfigSource != 0);
-	GetDlgItem(IDC_CHECK_INHERIT_EMAIL)->EnableWindow(m_iConfigSource != 0);
-	GetDlgItem(IDC_CHECK_INHERIT_KEYID)->EnableWindow(m_iConfigSource != 0);
+	GetDlgItem(IDC_GIT_USERNAME)->SendMessage(EM_SETREADONLY, m_iConfigSource == CFG_SRC_EFFECTIVE, 0);
+	GetDlgItem(IDC_GIT_USEREMAIL)->SendMessage(EM_SETREADONLY, m_iConfigSource == CFG_SRC_EFFECTIVE, 0);
+	GetDlgItem(IDC_GIT_USERESINGNINGKEY)->SendMessage(EM_SETREADONLY, m_iConfigSource == CFG_SRC_EFFECTIVE, 0);
+	GetDlgItem(IDC_CHECK_AUTOCRLF)->EnableWindow(m_iConfigSource != CFG_SRC_EFFECTIVE);
+	GetDlgItem(IDC_CHECK_QUOTEPATH)->EnableWindow(m_iConfigSource != CFG_SRC_EFFECTIVE);
+	GetDlgItem(IDC_COMBO_SAFECRLF)->EnableWindow(m_iConfigSource != CFG_SRC_EFFECTIVE);
+	GetDlgItem(IDC_COMBO_SETTINGS_SAFETO)->EnableWindow(m_iConfigSource != CFG_SRC_EFFECTIVE);
+	GetDlgItem(IDC_CHECK_INHERIT_NAME)->EnableWindow(m_iConfigSource != CFG_SRC_EFFECTIVE);
+	GetDlgItem(IDC_CHECK_INHERIT_EMAIL)->EnableWindow(m_iConfigSource != CFG_SRC_EFFECTIVE);
+	GetDlgItem(IDC_CHECK_INHERIT_KEYID)->EnableWindow(m_iConfigSource != CFG_SRC_EFFECTIVE);
 
 	GetDlgItem(IDC_GIT_USERNAME)->EnableWindow(!m_bInheritUserName);
 	GetDlgItem(IDC_GIT_USEREMAIL)->EnableWindow(!m_bInheritEmail);

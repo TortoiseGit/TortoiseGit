@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2014 - TortoiseGit
+// Copyright (C) 2009-2014, 2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -119,26 +119,26 @@ BOOL CSettingsBugtraqConfig::OnInitDialog()
 
 void CSettingsBugtraqConfig::EnDisableControls()
 {
-	GetDlgItem(IDC_BUGTRAQ_URL)->SendMessage(EM_SETREADONLY, m_iConfigSource == 0, 0);
-	GetDlgItem(IDC_BUGTRAQ_MESSAGE)->SendMessage(EM_SETREADONLY, m_iConfigSource == 0, 0);
-	GetDlgItem(IDC_BUGTRAQ_LABEL)->SendMessage(EM_SETREADONLY, m_iConfigSource == 0, 0);
-	GetDlgItem(IDC_BUGTRAQ_LOGREGEX)->SendMessage(EM_SETREADONLY, m_iConfigSource == 0, 0);
-	GetDlgItem(IDC_UUID32)->SendMessage(EM_SETREADONLY, m_iConfigSource == 0, 0);
-	GetDlgItem(IDC_UUID64)->SendMessage(EM_SETREADONLY, m_iConfigSource == 0, 0);
-	GetDlgItem(IDC_PARAMS)->SendMessage(EM_SETREADONLY, m_iConfigSource == 0, 0);
+	GetDlgItem(IDC_BUGTRAQ_URL)->SendMessage(EM_SETREADONLY, m_iConfigSource == CFG_SRC_EFFECTIVE, 0);
+	GetDlgItem(IDC_BUGTRAQ_MESSAGE)->SendMessage(EM_SETREADONLY, m_iConfigSource == CFG_SRC_EFFECTIVE, 0);
+	GetDlgItem(IDC_BUGTRAQ_LABEL)->SendMessage(EM_SETREADONLY, m_iConfigSource == CFG_SRC_EFFECTIVE, 0);
+	GetDlgItem(IDC_BUGTRAQ_LOGREGEX)->SendMessage(EM_SETREADONLY, m_iConfigSource == CFG_SRC_EFFECTIVE, 0);
+	GetDlgItem(IDC_UUID32)->SendMessage(EM_SETREADONLY, m_iConfigSource == CFG_SRC_EFFECTIVE, 0);
+	GetDlgItem(IDC_UUID64)->SendMessage(EM_SETREADONLY, m_iConfigSource == CFG_SRC_EFFECTIVE, 0);
+	GetDlgItem(IDC_PARAMS)->SendMessage(EM_SETREADONLY, m_iConfigSource == CFG_SRC_EFFECTIVE, 0);
 
-	GetDlgItem(IDC_BUGTRAQ_WARNINGIFNOISSUE)->EnableWindow(m_iConfigSource != 0);
-	GetDlgItem(IDC_BUGTRAQ_APPEND)->EnableWindow(m_iConfigSource != 0);
-	GetDlgItem(IDC_BUGTRAQ_NUMBER)->EnableWindow(m_iConfigSource != 0);
-	GetDlgItem(IDC_COMBO_SETTINGS_SAFETO)->EnableWindow(m_iConfigSource != 0);
-	GetDlgItem(IDC_CHECK_INHERIT_BTURL)->EnableWindow(m_iConfigSource != 0);
-	GetDlgItem(IDC_CHECK_INHERIT_BTMSG)->EnableWindow(m_iConfigSource != 0);
-	GetDlgItem(IDC_CHECK_INHERIT_BTLABEL)->EnableWindow(m_iConfigSource != 0);
-	GetDlgItem(IDC_CHECK_INHERIT_BTREGEXP)->EnableWindow(m_iConfigSource != 0);
-	GetDlgItem(IDC_CHECK_INHERIT_BTUUID32)->EnableWindow(m_iConfigSource != 0);
-	GetDlgItem(IDC_CHECK_INHERIT_BTUUID64)->EnableWindow(m_iConfigSource != 0);
-	GetDlgItem(IDC_CHECK_INHERIT_BTPARAMS)->EnableWindow(m_iConfigSource != 0);
-	GetDlgItem(IDC_TESTBUGTRAQREGEXBUTTON)->EnableWindow(m_iConfigSource != 0 && !m_bInheritLogregex);
+	GetDlgItem(IDC_BUGTRAQ_WARNINGIFNOISSUE)->EnableWindow(m_iConfigSource != CFG_SRC_EFFECTIVE);
+	GetDlgItem(IDC_BUGTRAQ_APPEND)->EnableWindow(m_iConfigSource != CFG_SRC_EFFECTIVE);
+	GetDlgItem(IDC_BUGTRAQ_NUMBER)->EnableWindow(m_iConfigSource != CFG_SRC_EFFECTIVE);
+	GetDlgItem(IDC_COMBO_SETTINGS_SAFETO)->EnableWindow(m_iConfigSource != CFG_SRC_EFFECTIVE);
+	GetDlgItem(IDC_CHECK_INHERIT_BTURL)->EnableWindow(m_iConfigSource != CFG_SRC_EFFECTIVE);
+	GetDlgItem(IDC_CHECK_INHERIT_BTMSG)->EnableWindow(m_iConfigSource != CFG_SRC_EFFECTIVE);
+	GetDlgItem(IDC_CHECK_INHERIT_BTLABEL)->EnableWindow(m_iConfigSource != CFG_SRC_EFFECTIVE);
+	GetDlgItem(IDC_CHECK_INHERIT_BTREGEXP)->EnableWindow(m_iConfigSource != CFG_SRC_EFFECTIVE);
+	GetDlgItem(IDC_CHECK_INHERIT_BTUUID32)->EnableWindow(m_iConfigSource != CFG_SRC_EFFECTIVE);
+	GetDlgItem(IDC_CHECK_INHERIT_BTUUID64)->EnableWindow(m_iConfigSource != CFG_SRC_EFFECTIVE);
+	GetDlgItem(IDC_CHECK_INHERIT_BTPARAMS)->EnableWindow(m_iConfigSource != CFG_SRC_EFFECTIVE);
+	GetDlgItem(IDC_TESTBUGTRAQREGEXBUTTON)->EnableWindow(m_iConfigSource != CFG_SRC_EFFECTIVE && !m_bInheritLogregex);
 
 	GetDlgItem(IDC_BUGTRAQ_URL)->EnableWindow(!m_bInheritURL);
 	GetDlgItem(IDC_BUGTRAQ_MESSAGE)->EnableWindow(!m_bInheritMessage);
@@ -160,7 +160,7 @@ void CSettingsBugtraqConfig::OnChange()
 
 void CSettingsBugtraqConfig::LoadDataImpl(CAutoConfig& config)
 {
-	if (m_iConfigSource == 0)
+	if (m_iConfigSource == CFG_SRC_EFFECTIVE)
 	{
 		// use project properties here, so that we correctly get the default values
 		ProjectProperties props;
