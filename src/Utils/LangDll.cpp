@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2016 - TortoiseGit
 // Copyright (C) 2003-2006, 2008, 2013-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -42,50 +43,49 @@ HINSTANCE CLangDll::Init(LPCTSTR appname, unsigned long langID)
 	_tcscpy_s(sVer, MAX_PATH, _T(STRPRODUCTVER));
 	GetModuleFileName(NULL, langpath, MAX_PATH);
 	TCHAR * pSlash = _tcsrchr(langpath, '\\');
-	if (pSlash)
+	if (!pSlash)
+		return m_hInstance;
+
+	*pSlash = 0;
+	pSlash = _tcsrchr(langpath, '\\');
+	if (!pSlash)
+		return m_hInstance;
+
+	*pSlash = 0;
+	_tcscat_s(langpath, MAX_PATH, _T("\\Languages\\"));
+	assert(m_hInstance == nullptr);
+	do
 	{
-		*pSlash = 0;
-		pSlash = _tcsrchr(langpath, '\\');
-		if (pSlash)
+		_stprintf_s(langdllpath, MAX_PATH, _T("%s%s%lu.dll"), langpath, appname, langID);
+
+		m_hInstance = LoadLibrary(langdllpath);
+
+		if (!DoVersionStringsMatch(sVer, langdllpath))
 		{
-			*pSlash = 0;
-			_tcscat_s(langpath, MAX_PATH, _T("\\Languages\\"));
-			assert(m_hInstance == NULL);
-			do
-			{
-				_stprintf_s(langdllpath, MAX_PATH, _T("%s%s%lu.dll"), langpath, appname, langID);
-
-				m_hInstance = LoadLibrary(langdllpath);
-
-				if (!DoVersionStringsMatch(sVer, langdllpath))
-				{
-					FreeLibrary(m_hInstance);
-					m_hInstance = NULL;
-				}
-				if (m_hInstance == NULL)
-				{
-					DWORD lid = SUBLANGID(langID);
-					lid--;
-					if (lid > 0)
-					{
-						langID = MAKELANGID(PRIMARYLANGID(langID), lid);
-					}
-					else
-						langID = 0;
-				}
-			} while ((m_hInstance == NULL) && (langID != 0));
+			FreeLibrary(m_hInstance);
+			m_hInstance = nullptr;
 		}
-	}
+		if (!m_hInstance)
+		{
+			DWORD lid = SUBLANGID(langID);
+			lid--;
+			if (lid > 0)
+				langID = MAKELANGID(PRIMARYLANGID(langID), lid);
+			else
+				langID = 0;
+		}
+	} while (!m_hInstance && (langID != 0));
+
 	return m_hInstance;
 }
 
 void CLangDll::Close()
 {
-	if (m_hInstance)
-	{
-		FreeLibrary(m_hInstance);
-		m_hInstance = NULL;
-	}
+	if (!m_hInstance)
+		return;
+
+	FreeLibrary(m_hInstance);
+	m_hInstance = nullptr;
 }
 
 bool CLangDll::DoVersionStringsMatch(LPCTSTR sVer, LPCTSTR langDll) const
@@ -96,48 +96,34 @@ bool CLangDll::DoVersionStringsMatch(LPCTSTR sVer, LPCTSTR langDll) const
 		WORD wCharacterSet;
 	};
 
-	bool bReturn = false;
 	DWORD dwReserved = 0;
 	DWORD dwBufferSize = GetFileVersionInfoSize((LPTSTR)langDll,&dwReserved);
 
-	if (dwBufferSize > 0)
-	{
-		auto pBuffer = std::make_unique<BYTE[]>(dwBufferSize);
+	if (dwBufferSize <= 0)
+		return false;
 
-		if (pBuffer)
-		{
-			UINT        nInfoSize = 0,
-				nFixedLength = 0;
-			LPSTR       lpVersion = NULL;
-			VOID*       lpFixedPointer;
-			TRANSARRAY* lpTransArray;
-			TCHAR       strLangProductVersion[MAX_PATH] = {0};
+	auto pBuffer = std::make_unique<BYTE[]>(dwBufferSize);
 
-			GetFileVersionInfo((LPTSTR)langDll,
-				dwReserved,
-				dwBufferSize,
-				pBuffer.get());
+	if (!pBuffer)
+		return false;
 
-			VerQueryValue(pBuffer.get(),
-				_T("\\VarFileInfo\\Translation"),
-				&lpFixedPointer,
-				&nFixedLength);
-			lpTransArray = (TRANSARRAY*) lpFixedPointer;
+	UINT        nInfoSize = 0, nFixedLength = 0;
+	LPSTR       lpVersion = nullptr;
+	VOID*       lpFixedPointer;
+	TRANSARRAY* lpTransArray;
+	TCHAR       strLangProductVersion[MAX_PATH] = { 0 };
 
-			_stprintf_s(strLangProductVersion, MAX_PATH,
-						_T("\\StringFileInfo\\%04x%04x\\ProductVersion"),
-						lpTransArray[0].wLanguageID,
-						lpTransArray[0].wCharacterSet);
+	if (!GetFileVersionInfo((LPTSTR)langDll, dwReserved, dwBufferSize, pBuffer.get()))
+		return false;
 
-			VerQueryValue(pBuffer.get(),
-				(LPTSTR)strLangProductVersion,
-				(LPVOID *)&lpVersion,
-				&nInfoSize);
-			if (lpVersion && nInfoSize)
-				bReturn = (_tcscmp(sVer, (LPCTSTR)lpVersion)==0);
-		}
-	}
+	VerQueryValue(pBuffer.get(), _T("\\VarFileInfo\\Translation"), &lpFixedPointer, &nFixedLength);
+	lpTransArray = (TRANSARRAY*)lpFixedPointer;
 
-	return bReturn;
+	_stprintf_s(strLangProductVersion, MAX_PATH, _T("\\StringFileInfo\\%04x%04x\\ProductVersion"), lpTransArray[0].wLanguageID, lpTransArray[0].wCharacterSet);
+
+	VerQueryValue(pBuffer.get(), (LPTSTR)strLangProductVersion, (LPVOID*)&lpVersion, &nInfoSize);
+	if (lpVersion && nInfoSize)
+		return (_tcscmp(sVer, (LPCTSTR)lpVersion) == 0);
+
+	return false;
 }
-
