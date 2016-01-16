@@ -178,7 +178,7 @@ BOOL CGitPropertyPage::PageProc (HWND /*hwnd*/, UINT uMessage, WPARAM wParam, LP
 							{
 								if (!(e->mode & 0111))
 								{
-									e->mode |= 0111;
+									e->mode = GIT_FILEMODE_BLOB_EXECUTABLE;
 									changed = true;
 								}
 							}
@@ -186,7 +186,7 @@ BOOL CGitPropertyPage::PageProc (HWND /*hwnd*/, UINT uMessage, WPARAM wParam, LP
 							{
 								if (e->mode & 0111)
 								{
-									e->mode &= ~0111;
+									e->mode = GIT_FILEMODE_BLOB;
 									changed = true;
 								}
 							}
@@ -194,7 +194,7 @@ BOOL CGitPropertyPage::PageProc (HWND /*hwnd*/, UINT uMessage, WPARAM wParam, LP
 							{
 								if ((e->mode & GIT_FILEMODE_LINK) != GIT_FILEMODE_LINK)
 								{
-									e->mode |= GIT_FILEMODE_LINK;
+									e->mode = GIT_FILEMODE_LINK;
 									changed = true;
 								}
 							}
@@ -202,7 +202,7 @@ BOOL CGitPropertyPage::PageProc (HWND /*hwnd*/, UINT uMessage, WPARAM wParam, LP
 							{
 								if ((e->mode & GIT_FILEMODE_LINK) == GIT_FILEMODE_LINK)
 								{
-									e->mode &= ~GIT_FILEMODE_LINK;
+									e->mode = GIT_FILEMODE_BLOB;
 									changed = true;
 								}
 							}
