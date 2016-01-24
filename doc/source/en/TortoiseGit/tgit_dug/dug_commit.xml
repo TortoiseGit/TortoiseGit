@@ -318,6 +318,13 @@
 				Learn more in <xref linkend="tgit-dug-bugtracker"/>.
 			</para>
 		</tip>
+		<tip>
+			<title>Adjust the size of message text box</title>
+			<para>
+				Move your mouse to the gap between "Message" group box and 
+				"Changes made" group box, then drag the separator.
+			</para>
+		</tip>
 	</sect2>
 	<!--
 	<sect2 id="tgit-dug-commit-progress">
