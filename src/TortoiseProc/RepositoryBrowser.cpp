@@ -808,7 +808,7 @@ void CRepositoryBrowser::ShowContextMenu(CPoint point, TShadowFilesTreeList &sel
 	case eCmd_ViewLogSubmodule:
 		{
 			CString sCmd;
-			sCmd.Format(_T("/command:log /path:\"%s\\%s\""), (LPCTSTR)g_Git.m_CurrentDir, (LPCTSTR)selectedLeafs.at(0)->GetFullName());
+			sCmd.Format(_T("/command:log /path:\"%s\""), (LPCTSTR)g_Git.CombinePath(selectedLeafs.at(0)->GetFullName()));
 			if (cmd == eCmd_ViewLog && selectedLeafs.at(0)->m_bSubmodule)
 				sCmd += _T(" /submodule");
 			CAppUtils::RunTortoiseGitProc(sCmd);
