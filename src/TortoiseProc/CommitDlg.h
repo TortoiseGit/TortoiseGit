@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
-// Copyright (C) 2008-2015 - TortoiseGit
+// Copyright (C) 2008-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -226,4 +226,14 @@ protected:
 	afx_msg void OnBnClickedCommitAsCommitDate();
 	afx_msg void OnBnClickedCheckNewBranch();
 	afx_msg void OnBnClickedCommitSetauthor();
+
+	CLinkControl		m_CheckAll;
+	CLinkControl		m_CheckNone;
+	CLinkControl		m_CheckUnversioned;
+	CLinkControl		m_CheckVersioned;
+	CLinkControl		m_CheckAdded;
+	CLinkControl		m_CheckDeleted;
+	CLinkControl		m_CheckModified;
+	CLinkControl		m_CheckFiles;
+	CLinkControl		m_CheckSubmodules;
 };

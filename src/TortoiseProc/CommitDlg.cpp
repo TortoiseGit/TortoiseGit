@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2014 - TortoiseSVN
-// Copyright (C) 2008-2015 - TortoiseGit
+// Copyright (C) 2008-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -113,6 +113,15 @@ void CCommitDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_COMMIT_DATEPICKER, m_CommitDate);
 	DDX_Control(pDX, IDC_COMMIT_TIMEPICKER, m_CommitTime);
 	DDX_Control(pDX, IDC_COMMIT_AS_COMMIT_DATE, m_AsCommitDateCtrl);
+	DDX_Control(pDX, IDC_CHECKALL, m_CheckAll);
+	DDX_Control(pDX, IDC_CHECKNONE, m_CheckNone);
+	DDX_Control(pDX, IDC_CHECKUNVERSIONED, m_CheckUnversioned);
+	DDX_Control(pDX, IDC_CHECKVERSIONED, m_CheckVersioned);
+	DDX_Control(pDX, IDC_CHECKADDED, m_CheckAdded);
+	DDX_Control(pDX, IDC_CHECKDELETED, m_CheckDeleted);
+	DDX_Control(pDX, IDC_CHECKMODIFIED, m_CheckModified);
+	DDX_Control(pDX, IDC_CHECKFILES, m_CheckFiles);
+	DDX_Control(pDX, IDC_CHECKSUBMODULES, m_CheckSubmodules);
 }
 
 BEGIN_MESSAGE_MAP(CCommitDlg, CResizableStandAloneDialog)
@@ -323,16 +332,6 @@ BOOL CCommitDlg::OnInitDialog()
 	AdjustControlSize(IDC_NOAUTOSELECTSUBMODULES);
 	AdjustControlSize(IDC_KEEPLISTS);
 	AdjustControlSize(IDC_COMMIT_AS_COMMIT_DATE);
-
-	m_linkControl.ConvertStaticToLink(m_hWnd, IDC_CHECKALL);
-	m_linkControl.ConvertStaticToLink(m_hWnd, IDC_CHECKNONE);
-	m_linkControl.ConvertStaticToLink(m_hWnd, IDC_CHECKUNVERSIONED);
-	m_linkControl.ConvertStaticToLink(m_hWnd, IDC_CHECKVERSIONED);
-	m_linkControl.ConvertStaticToLink(m_hWnd, IDC_CHECKADDED);
-	m_linkControl.ConvertStaticToLink(m_hWnd, IDC_CHECKDELETED);
-	m_linkControl.ConvertStaticToLink(m_hWnd, IDC_CHECKMODIFIED);
-	m_linkControl.ConvertStaticToLink(m_hWnd, IDC_CHECKFILES);
-	m_linkControl.ConvertStaticToLink(m_hWnd, IDC_CHECKSUBMODULES);
 
 	// line up all controls and adjust their sizes.
 #define LINKSPACING 9
