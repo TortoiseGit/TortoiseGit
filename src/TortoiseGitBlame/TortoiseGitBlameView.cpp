@@ -125,8 +125,6 @@ CTortoiseGitBlameView::CTortoiseGitBlameView()
 	wMain = 0;
 	wLocator = 0;
 
-	m_font = 0;
-	m_italicfont = 0;
 	m_blamewidth = 0;
 	m_revwidth = 0;
 	m_datewidth = 0;
@@ -192,11 +190,6 @@ CTortoiseGitBlameView::CTortoiseGitBlameView()
 
 CTortoiseGitBlameView::~CTortoiseGitBlameView()
 {
-	if (m_font)
-		DeleteObject(m_font);
-	if (m_italicfont)
-		DeleteObject(m_italicfont);
-
 #ifdef USE_TEMPFILENAME
 	delete m_Buffer;
 	m_Buffer = nullptr;
@@ -775,7 +768,7 @@ LONG CTortoiseGitBlameView::GetBlameWidth()
 	SIZE width;
 	CreateFont();
 	HDC hDC = this->GetDC()->m_hDC;
-	HFONT oldfont = (HFONT)::SelectObject(hDC, m_font);
+	HFONT oldfont = (HFONT)::SelectObject(hDC, m_font.GetSafeHandle());
 
 	CString shortHash('f', g_Git.GetShortHASHLength() + 1);
 	::GetTextExtentPoint32(hDC, shortHash, g_Git.GetShortHASHLength() + 1, &width);
@@ -851,7 +844,7 @@ LONG CTortoiseGitBlameView::GetBlameWidth()
 
 void CTortoiseGitBlameView::CreateFont()
 {
-	if (m_font)
+	if (m_font.GetSafeHandle())
 		return;
 	LOGFONT lf = {0};
 	lf.lfWeight = 400;
@@ -860,10 +853,10 @@ void CTortoiseGitBlameView::CreateFont()
 	lf.lfCharSet = DEFAULT_CHARSET;
 	CRegStdString fontname = CRegStdString(_T("Software\\TortoiseGit\\BlameFontName"), _T("Courier New"));
 	_tcscpy_s(lf.lfFaceName, 32, ((stdstring)fontname).c_str());
-	m_font = ::CreateFontIndirect(&lf);
+	m_font.CreateFontIndirect(&lf);
 
 	lf.lfItalic = TRUE;
-	m_italicfont = ::CreateFontIndirect(&lf);
+	m_italicfont.CreateFontIndirect(&lf);
 
 	::ReleaseDC(wBlame, hDC);
 }
@@ -872,7 +865,7 @@ void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 {
 	if (hDC == NULL)
 		return;
-	if (m_font == NULL)
+	if (!m_font.GetSafeHandle())
 		return;
 
 	HFONT oldfont = NULL;
@@ -891,9 +884,9 @@ void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 		{
 			 CGitHash hash(m_data.GetHash(i));
 		//	if (mergelines[i])
-		//		oldfont = (HFONT)::SelectObject(hDC, m_italicfont);
+		//		oldfont = (HFONT)::SelectObject(hDC, m_italicfont.GetSafeHwnd());
 		//	else
-				oldfont = (HFONT)::SelectObject(hDC, m_font);
+			 oldfont = (HFONT)::SelectObject(hDC, m_font.GetSafeHandle());
 			::SetBkColor(hDC, m_windowcolor);
 			::SetTextColor(hDC, m_textcolor);
 			if (!hash.IsEmpty())

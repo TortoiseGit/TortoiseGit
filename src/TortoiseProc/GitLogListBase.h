@@ -619,9 +619,9 @@ protected:
 	HICON				m_hDeletedIcon;
 	HICON				m_hFetchIcon;
 
-	HFONT				m_boldFont;
-	HFONT				m_FontItalics;
-	HFONT				m_boldItalicsFont;
+	CFont				m_boldFont;
+	CFont				m_FontItalics;
+	CFont				m_boldItalicsFont;
 
 	CRegDWORD			m_regMaxBugIDColWidth;
 

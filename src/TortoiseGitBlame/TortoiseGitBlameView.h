@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2015 - TortoiseGit
+// Copyright (C) 2008-2013, 2015-2016 - TortoiseGit
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -249,8 +249,8 @@ protected:
 	COLORREF GetLineColor(int line);
 	COLORREF InterColor(COLORREF c1, COLORREF c2, int Slider);
 	CString GetAppDirectory();
-	HFONT					m_font;
-	HFONT					m_italicfont;
+	CFont					m_font;
+	CFont					m_italicfont;
 	LONG					m_blamewidth;
 	LONG					m_revwidth;
 	LONG					m_datewidth;

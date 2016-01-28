@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2013, 2015 - TortoiseGit
+// Copyright (C) 2009-2013, 2015-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -38,14 +38,12 @@ CPatchListCtrl::CPatchListCtrl()
 	LOGFONT lf = {0};
 	GetObject(hFont, sizeof(LOGFONT), &lf);
 	lf.lfWeight = FW_BOLD;
-	m_boldFont = CreateFontIndirect(&lf);
+	m_boldFont.CreateFontIndirect(&lf);
 
 }
 
 CPatchListCtrl::~CPatchListCtrl()
 {
-	if (m_boldFont)
-		DeleteObject(m_boldFont);
 }
 
 
@@ -217,7 +215,7 @@ void CPatchListCtrl::OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult)
 
 			if(data & STATUS_APPLYING)
 			{
-				SelectObject(pNMCD->nmcd.hdc, m_boldFont);
+				SelectObject(pNMCD->nmcd.hdc, m_boldFont.GetSafeHandle());
 				*pResult = CDRF_NOTIFYSUBITEMDRAW | CDRF_NEWFONT;
 			}
 

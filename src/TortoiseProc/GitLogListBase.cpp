@@ -85,12 +85,12 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	LOGFONT lf = {0};
 	GetObject(hFont, sizeof(LOGFONT), &lf);
 	lf.lfWeight = FW_BOLD;
-	m_boldFont = CreateFontIndirect(&lf);
+	m_boldFont.CreateFontIndirect(&lf);
 	lf.lfWeight = FW_DONTCARE;
 	lf.lfItalic = TRUE;
-	m_FontItalics = CreateFontIndirect(&lf);
+	m_FontItalics.CreateFontIndirect(&lf);
 	lf.lfWeight = FW_BOLD;
-	m_boldItalicsFont = CreateFontIndirect(&lf);
+	m_boldItalicsFont.CreateFontIndirect(&lf);
 
 	m_bShowBugtraqColumn=false;
 
@@ -277,15 +277,6 @@ CGitLogListBase::~CGitLogListBase()
 	DestroyIcon(m_hAddedIcon);
 	DestroyIcon(m_hDeletedIcon);
 	m_logEntries.ClearAll();
-
-	if (m_boldFont)
-		DeleteObject(m_boldFont);
-
-	if (m_FontItalics)
-		DeleteObject(m_FontItalics);
-
-	if (m_boldItalicsFont)
-		DeleteObject(m_boldItalicsFont);
 
 	SafeTerminateThread();
 	SafeTerminateAsyncDiffThread();
@@ -1202,16 +1193,16 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 						pLVCD->clrTextBk  = ::GetSysColor(COLOR_WINDOW);
 
 					if (action & LOGACTIONS_REBASE_CURRENT)
-						hGdiObj = m_boldFont;
+						hGdiObj = m_boldFont.GetSafeHandle();
 
 					BOOL isHeadHash = data->m_CommitHash == m_HeadHash && m_bNoHightlightHead == FALSE;
 					BOOL isHighlight = data->m_CommitHash == m_highlight && !m_highlight.IsEmpty();
 					if (isHeadHash && isHighlight)
-						hGdiObj = m_boldItalicsFont;
+						hGdiObj = m_boldItalicsFont.GetSafeHandle();
 					else if (isHeadHash)
-						hGdiObj = m_boldFont;
+						hGdiObj = m_boldFont.GetSafeHandle();
 					else if (isHighlight)
-						hGdiObj = m_FontItalics;
+						hGdiObj = m_FontItalics.GetSafeHandle();
 
 					if (hGdiObj)
 					{
