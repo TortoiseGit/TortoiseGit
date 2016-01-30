@@ -34,6 +34,7 @@ Released: unreleased
  * Fixed issue #2670: LogDlg: cannot paste to "Filter paths"
  * Fixed issue #2676: Swapped Theirs and Mine in Edit conflicts outside of rebase dialog on rebasing
  * Fixed issue #2690: Failed to Show log from repository browser when that repository is located on a drive
+ * Fixed issue #2655: Resolve does not work on multiple selection during deleted-modifed conflict resolution
 
 = Release 1.8.16.0 =
 Released: 2015-11-01

@@ -2315,6 +2315,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				{
 					if (CMessageBox::Show(m_hWnd, IDS_PROC_RESOLVE, IDS_APPNAME, MB_ICONQUESTION | MB_YESNO)==IDYES)
 					{
+						bool needsFullRefresh = false;
 						POSITION pos = GetFirstSelectedItemPosition();
 						while (pos != 0)
 						{
@@ -2330,13 +2331,15 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 							else if (((!this->m_bIsRevertTheirMy) && cmd == IDGITLC_RESOLVEMINE) || ((this->m_bIsRevertTheirMy) && cmd == IDGITLC_RESOLVETHEIRS))
 								resolveWith = CAppUtils::RESOLVE_WITH_MINE;
 							if (CAppUtils::ResolveConflict(*fentry, resolveWith) == 0 && fentry->m_Action & CTGitPath::LOGACTIONS_UNMERGED && CRegDWORD(_T("Software\\TortoiseGit\\RefreshFileListAfterResolvingConflict"), TRUE) == TRUE)
-							{
-								CWnd* pParent = GetLogicalParent();
-								if (pParent && pParent->GetSafeHwnd())
-									pParent->SendMessage(GITSLNM_NEEDSREFRESH);
-								SetRedraw(TRUE);
-								break;
-							}
+								needsFullRefresh = true;
+						}
+						if (needsFullRefresh)
+						{
+							CWnd* pParent = GetLogicalParent();
+							if (pParent && pParent->GetSafeHwnd())
+								pParent->SendMessage(GITSLNM_NEEDSREFRESH);
+							SetRedraw(TRUE);
+							break;
 						}
 						Show(m_dwShow, 0, m_bShowFolders,0,true);
 					}
