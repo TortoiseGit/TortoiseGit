@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2015 - TortoiseGit
+// Copyright (C) 2008-2016 - TortoiseGit
 // Copyright (C) 2003-2011, 2013-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -2388,7 +2388,7 @@ int CAppUtils::SaveCommitUnicodeFile(const CString& filename, CString &message)
 		CFile file(filename, CFile::modeReadWrite | CFile::modeCreate);
 		int cp = CUnicodeUtils::GetCPCode(g_Git.GetConfigValue(_T("i18n.commitencoding")));
 
-		bool stripComments = (CRegDWORD(_T("Software\\TortoiseGit\\StripCommentedLines"), FALSE) == TRUE);
+		bool stripComments = (CRegDWORD(_T("Software\\TortoiseGit\\StripCommentedLines"), TRUE) == TRUE);
 
 		if (CRegDWORD(_T("Software\\TortoiseGit\\SanitizeCommitMsg"), TRUE) == TRUE)
 			message.TrimRight(L" \r\n");

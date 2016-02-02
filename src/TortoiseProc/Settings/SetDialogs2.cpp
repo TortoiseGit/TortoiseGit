@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2015 - TortoiseGit
+// Copyright (C) 2008-2016 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -60,7 +60,7 @@ CSetDialogs2::CSetDialogs2()
 	m_dwMaxHistory = (DWORD)m_regMaxHistory;
 	m_regAutoSelect = CRegDWORD(_T("Software\\TortoiseGit\\SelectFilesForCommit"), TRUE);
 	m_bAutoSelect = (BOOL)(DWORD)m_regAutoSelect;
-	m_regStripCommentedLines = CRegDWORD(_T("Software\\TortoiseGit\\StripCommentedLines"), FALSE);
+	m_regStripCommentedLines = CRegDWORD(_T("Software\\TortoiseGit\\StripCommentedLines"), TRUE);
 	m_bStripCommentedLines = (BOOL)(DWORD)m_regStripCommentedLines;
 	m_regShowGitexeTimings = CRegDWORD(_T("Software\\TortoiseGit\\ShowGitexeTimings"), TRUE);
 	m_bShowGitexeTimings = (BOOL)(DWORD)m_regShowGitexeTimings;

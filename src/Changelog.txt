@@ -7,6 +7,7 @@ Released: unreleased
  * Dropped TGitCacheCheckContent configuration setting, please use TGitCacheCheckContentMaxSize instead (settings will be automatically migrated)
  * Pre- and post-push hooks do not get the path as first parameter any more
  * Git for Windows 1.9.5 or newer is now required
+ * TortoiseGit now strips commented lines (starting with #) on commit messages
 
 == Features ==
  * Fixed issue #2641: Commit: Pre-select first item from "Changes made" list
