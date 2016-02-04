@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2015 - TortoiseGit
+// Copyright (C) 2008-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -52,6 +52,8 @@ public:
 	BOOL		m_IsPull;
 	BOOL		m_bAutoLoad;
 	BOOL		m_bRebase;
+	bool		m_bRebasePreserveMerges;
+	bool		m_bRebaseActivatedInConfigForPull;
 	BOOL		m_bPrune;
 	BOOL		m_bSquash;
 	BOOL		m_bNoFF;
@@ -70,8 +72,6 @@ public:
 protected:
 	CString		m_configPullRemote;
 	CString		m_configPullBranch;
-
-	bool		m_bRebaseActivatedInConfigForPull;
 
 	CHyperLink	m_RemoteManage;
 

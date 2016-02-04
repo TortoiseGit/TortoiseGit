@@ -103,7 +103,7 @@ static struct last_accepted_cert {
 	}
 } last_accepted_cert;
 
-static bool DoFetch(const CString& url, const bool fetchAllRemotes, const bool loadPuttyAgent, const int prune, const bool bDepth, const int nDepth, const int fetchTags, const CString& remoteBranch, boolean runRebase);
+static bool DoFetch(const CString& url, const bool fetchAllRemotes, const bool loadPuttyAgent, const int prune, const bool bDepth, const int nDepth, const int fetchTags, const CString& remoteBranch, int runRebase, const bool rebasePreserveMerges);
 
 CAppUtils::CAppUtils(void)
 {
@@ -2437,7 +2437,8 @@ bool CAppUtils::Pull(bool showPush, bool showStashPop)
 							dlg.m_nDepth,
 							dlg.m_bFetchTags,
 							dlg.m_RemoteBranchName,
-							TRUE); // Rebase after fetching
+							dlg.m_bRebaseActivatedInConfigForPull ? 2 : 1, // Rebase after fetching
+							dlg.m_bRebasePreserveMerges == TRUE); // Preserve merges on rebase
 
 		CString url = dlg.m_RemoteURL;
 
@@ -2494,7 +2495,7 @@ bool CAppUtils::Pull(bool showPush, bool showStashPop)
 		if(ver >= 0x01070203) //above 1.7.0.2
 			cmdRebase += _T("--progress ");
 
-		cmd.Format(_T("git.exe pull -v %s%s%s%s%s%s%s%s\"%s\" %s"), (LPCTSTR)cmdRebase, (LPCTSTR)noff, (LPCTSTR)ffonly, (LPCTSTR)squash, (LPCTSTR)nocommit, (LPCTSTR)depth, (LPCTSTR)notags, (LPCTSTR)prune, (LPCTSTR)url, (LPCTSTR)dlg.m_RemoteBranchName);
+		cmd.Format(_T("git.exe pull --no-rebase -v %s%s%s%s%s%s%s%s\"%s\" %s"), (LPCTSTR)cmdRebase, (LPCTSTR)noff, (LPCTSTR)ffonly, (LPCTSTR)squash, (LPCTSTR)nocommit, (LPCTSTR)depth, (LPCTSTR)notags, (LPCTSTR)prune, (LPCTSTR)url, (LPCTSTR)dlg.m_RemoteBranchName);
 		CProgressDlg progress;
 		progress.m_GitCmd = cmd;
 
@@ -2561,7 +2562,7 @@ bool CAppUtils::Pull(bool showPush, bool showStashPop)
 	return false;
 }
 
-bool CAppUtils::RebaseAfterFetch(const CString& upstream)
+bool CAppUtils::RebaseAfterFetch(const CString& upstream, int rebase, bool preserveMerges)
 {
 	while (true)
 	{
@@ -2572,6 +2573,8 @@ bool CAppUtils::RebaseAfterFetch(const CString& upstream)
 		dlg.m_PostButtonTexts.Add(CString(MAKEINTRESOURCE(IDS_MENUPUSH)));
 		dlg.m_PostButtonTexts.Add(CString(MAKEINTRESOURCE(IDS_MENUDESSENDMAIL)));
 		dlg.m_PostButtonTexts.Add(CString(MAKEINTRESOURCE(IDS_MENUREBASE)));
+		dlg.m_bRebaseAutoStart = (rebase == 2);
+		dlg.m_bPreserveMerges = preserveMerges;
 		INT_PTR response = dlg.DoModal();
 		if (response == IDOK)
 		{
@@ -2609,7 +2612,7 @@ bool CAppUtils::RebaseAfterFetch(const CString& upstream)
 	}
 }
 
-static bool DoFetch(const CString& url, const bool fetchAllRemotes, const bool loadPuttyAgent, const int prune, const bool bDepth, const int nDepth, const int fetchTags, const CString& remoteBranch, boolean runRebase)
+static bool DoFetch(const CString& url, const bool fetchAllRemotes, const bool loadPuttyAgent, const int prune, const bool bDepth, const int nDepth, const int fetchTags, const CString& remoteBranch, int runRebase, const bool rebasePreserveMerges)
 {
 	if (loadPuttyAgent)
 	{
@@ -2677,7 +2680,7 @@ static bool DoFetch(const CString& url, const bool fetchAllRemotes, const bool l
 	{
 		if (status)
 		{
-			postCmdList.emplace_back(IDI_REFRESH, IDS_MSGBOX_RETRY, [&]{ DoFetch(url, fetchAllRemotes, loadPuttyAgent, prune, bDepth, nDepth, fetchTags, remoteBranch, runRebase); });
+			postCmdList.emplace_back(IDI_REFRESH, IDS_MSGBOX_RETRY, [&]{ DoFetch(url, fetchAllRemotes, loadPuttyAgent, prune, bDepth, nDepth, fetchTags, remoteBranch, runRebase, rebasePreserveMerges); });
 			return;
 		}
 
@@ -2729,10 +2732,10 @@ static bool DoFetch(const CString& url, const bool fetchAllRemotes, const bool l
 		{
 			CGitHash remoteBranchHash;
 			g_Git.GetHash(remoteBranchHash, upstream);
-			if (remoteBranchHash == oldUpstreamHash && !oldUpstreamHash.IsEmpty() && CMessageBox::ShowCheck(nullptr, IDS_REBASE_BRANCH_UNCHANGED, IDS_APPNAME, MB_ICONQUESTION | MB_YESNO | MB_DEFBUTTON2, _T("OpenRebaseRemoteBranchUnchanged"), IDS_MSGBOX_DONOTSHOWAGAIN) == IDNO)
+			if (runRebase == 1 && remoteBranchHash == oldUpstreamHash && !oldUpstreamHash.IsEmpty() && CMessageBox::ShowCheck(nullptr, IDS_REBASE_BRANCH_UNCHANGED, IDS_APPNAME, MB_ICONQUESTION | MB_YESNO | MB_DEFBUTTON2, _T("OpenRebaseRemoteBranchUnchanged"), IDS_MSGBOX_DONOTSHOWAGAIN) == IDNO)
 				return userResponse == IDOK;
 
-			if (g_Git.IsFastForward(_T("HEAD"), upstream))
+			if (runRebase == 1 && g_Git.IsFastForward(_T("HEAD"), upstream))
 			{
 				UINT ret = CMessageBox::ShowCheck(nullptr, IDS_REBASE_BRANCH_FF, IDS_APPNAME, 2, IDI_QUESTION, IDS_MERGEBUTTON, IDS_REBASEBUTTON, IDS_ABORTBUTTON, _T("OpenRebaseRemoteBranchFastForwards"), IDS_MSGBOX_DONOTSHOWAGAIN);
 				if (ret == 3)
@@ -2759,7 +2762,7 @@ static bool DoFetch(const CString& url, const bool fetchAllRemotes, const bool l
 				}
 			}
 
-			return CAppUtils::RebaseAfterFetch(upstream);
+			return CAppUtils::RebaseAfterFetch(upstream, runRebase, rebasePreserveMerges);
 		}
 	}
 
@@ -2774,7 +2777,7 @@ bool CAppUtils::Fetch(const CString& remoteName, bool allRemotes)
 	dlg.m_bAllRemotes = allRemotes;
 
 	if(dlg.DoModal()==IDOK)
-		return DoFetch(dlg.m_RemoteURL, dlg.m_bAllRemotes == BST_CHECKED, dlg.m_bAutoLoad == BST_CHECKED, dlg.m_bPrune, dlg.m_bDepth == BST_CHECKED, dlg.m_nDepth, dlg.m_bFetchTags, dlg.m_RemoteBranchName, dlg.m_bRebase == BST_CHECKED);
+		return DoFetch(dlg.m_RemoteURL, dlg.m_bAllRemotes == BST_CHECKED, dlg.m_bAutoLoad == BST_CHECKED, dlg.m_bPrune, dlg.m_bDepth == BST_CHECKED, dlg.m_nDepth, dlg.m_bFetchTags, dlg.m_RemoteBranchName, dlg.m_bRebase == BST_CHECKED ? 1 : 0, FALSE);
 
 	return false;
 }

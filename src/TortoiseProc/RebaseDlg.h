@@ -146,9 +146,9 @@ protected:
 	CStatic				m_CtrlStatusText;
 
 	BOOL				m_bForce;
-	BOOL				m_bPreserveMerges;
 	BOOL				m_bAddCherryPickedFrom;
 	BOOL				m_bAutoSkipFailedCommit;
+	bool				m_bRebaseAutoEnd;
 
 public:
 	CStringArray		m_PostButtonTexts;
@@ -159,7 +159,8 @@ public:
 	CString				m_Onto;
 
 	BOOL				m_IsCherryPick;
-
+	bool				m_bRebaseAutoStart;
+	BOOL				m_bPreserveMerges;
 protected:
 	CSplitterControl	m_wndSplitter;
 	CMFCTabCtrl			m_ctrlTabCtrl;

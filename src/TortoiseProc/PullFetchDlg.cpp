@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2015 - TortoiseGit
+// Copyright (C) 2008-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -40,6 +40,7 @@ CPullFetchDlg::CPullFetchDlg(CWnd* pParent /*=NULL*/)
 	m_regRebase = false;
 	m_bNoFF = false;
 	m_bRebase = FALSE;
+	m_bRebasePreserveMerges = false;
 	m_bSquash = false;
 	m_bNoCommit = false;
 	m_nDepth = 1;
@@ -163,6 +164,26 @@ BOOL CPullFetchDlg::OnInitDialog()
 		{
 			if (config.GetBOOL(_T("pull.rebase"), rebase) == GIT_ENOTFOUND)
 				break;
+			else
+			{
+				CString value;
+				config.GetString(_T("pull.rebase"), value);
+				if (value == _T("preserve"))
+				{
+					rebase = TRUE;
+					m_bRebasePreserveMerges = true;
+				}
+			}
+		}
+		else
+		{
+			CString value;
+			config.GetString(_T("branch.") + g_Git.GetCurrentBranch() + _T(".rebase"), value);
+			if (value == _T("preserve"))
+			{
+				rebase = TRUE;
+				m_bRebasePreserveMerges = true;
+			}
 		}
 		if (!rebase)
 			break;

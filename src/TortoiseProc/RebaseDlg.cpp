@@ -49,6 +49,8 @@ CRebaseDlg::CRebaseDlg(CWnd* pParent /*=NULL*/)
 	, m_bStashed(false)
 	, m_bSplitCommit(FALSE)
 	, m_bPreserveMerges(FALSE)
+	, m_bRebaseAutoStart(false)
+	, m_bRebaseAutoEnd(false)
 {
 	m_RebaseStage=CHOOSE_BRANCH;
 	m_CurrentRebaseIndex=-1;
@@ -329,6 +331,9 @@ BOOL CRebaseDlg::OnInitDialog()
 	else
 		this->m_CurrentRebaseIndex = (int)m_CommitList.m_logEntries.size();
 
+	if (m_bRebaseAutoStart)
+		this->PostMessage(WM_COMMAND, MAKELONG(IDC_REBASE_CONTINUE, BN_CLICKED), (LPARAM)GetDlgItem(IDC_REBASE_CONTINUE)->GetSafeHwnd());
+
 	return TRUE;
 }
 // CRebaseDlg message handlers
@@ -539,10 +544,12 @@ void CRebaseDlg::FetchLogList()
 
 		m_CommitList.ShowText(text);
 		this->GetDlgItem(IDC_REBASE_CONTINUE)->EnableWindow(false);
+		if (m_bRebaseAutoStart)
+			this->PostMessage(WM_COMMAND, MAKELONG(IDC_REBASE_ABORT, BN_CLICKED), (LPARAM)GetDlgItem(IDC_REBASE_CONTINUE)->GetSafeHwnd());
 		return;
 	}
 
-	if (g_Git.IsFastForward(m_BranchCtrl.GetString(), m_UpstreamCtrl.GetString(), &base) && m_Onto.IsEmpty())
+	if (g_Git.IsFastForward(m_BranchCtrl.GetString(), m_UpstreamCtrl.GetString(), &base) && m_Onto.IsEmpty() && !m_bRebaseAutoStart)
 	{
 		//fast forword
 		this->m_IsFastForward=TRUE;
@@ -1001,6 +1008,8 @@ int CRebaseDlg::FinishRebase()
 	m_bStatusWarning = false;
 	m_CtrlStatusText.Invalidate();
 
+	m_bRebaseAutoEnd = m_bRebaseAutoStart;
+
 	return 0;
 }
 
@@ -1094,8 +1103,8 @@ void CRebaseDlg::OnBnClickedContinue()
 		m_RebaseStage = REBASE_DONE;
 		UpdateCurrentStatus();
 		return;
-
 	}
+
 	if( m_RebaseStage == CHOOSE_BRANCH|| m_RebaseStage == CHOOSE_COMMIT_PICK_MODE )
 	{
 		if(CheckRebaseCondition())
@@ -2111,6 +2120,13 @@ LRESULT CRebaseDlg::OnRebaseUpdateUI(WPARAM,LPARAM)
 		return 0;
 	}
 	UpdateCurrentStatus();
+
+	if (m_RebaseStage == REBASE_DONE && m_bRebaseAutoEnd)
+	{
+		m_bRebaseAutoEnd = false;
+		this->PostMessage(WM_COMMAND, MAKELONG(IDC_REBASE_CONTINUE, BN_CLICKED), (LPARAM)GetDlgItem(IDC_REBASE_CONTINUE)->GetSafeHwnd());
+	}
+
 	if (m_RebaseStage == REBASE_DONE && m_pTaskbarList)
 		m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NOPROGRESS); // do not show progress on taskbar any more to show we finished
 	if(m_CurrentRebaseIndex <0)

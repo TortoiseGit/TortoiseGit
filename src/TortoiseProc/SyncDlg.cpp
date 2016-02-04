@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2015 - TortoiseGit
+// Copyright (C) 2008-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -38,6 +38,7 @@ IMPLEMENT_DYNAMIC(CSyncDlg, CResizableStandAloneDialog)
 
 CSyncDlg::CSyncDlg(CWnd* pParent /*=NULL*/)
 	: CResizableStandAloneDialog(CSyncDlg::IDD, pParent)
+	, m_iPullRebase(0)
 {
 	m_CurrentCmd = 0;
 	m_pTooltip=&this->m_tooltips;
@@ -181,6 +182,57 @@ void CSyncDlg::OnBnClickedButtonPull()
 	this->m_ctrlTabCtrl.ShowTab(IDC_IN_CHANGELIST-1,false);
 	this->m_ctrlTabCtrl.ShowTab(IDC_IN_CONFLICT-1,false);
 
+	m_iPullRebase = 0;
+	if (CurrentEntry == 0) // check whether we need to override Pull if pull.rebase is set
+	{
+		CAutoRepository repo(g_Git.GetGitRepository());
+		if (!repo)
+			MessageBox(CGit::GetLibGit2LastErr(_T("Could not open repository.")), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+
+		// Check config branch.<name>.rebase and pull.reabse
+		do
+		{
+			if (!repo)
+				break;
+
+			if (git_repository_head_detached(repo) == 1)
+				break;
+
+			CAutoConfig config(true);
+			if (git_repository_config(config.GetPointer(), repo))
+				break;
+
+			// branch.<name>.rebase overrides pull.rebase
+			if (config.GetBOOL(_T("branch.") + g_Git.GetCurrentBranch() + _T(".rebase"), m_iPullRebase) == GIT_ENOTFOUND)
+			{
+				if (config.GetBOOL(_T("pull.rebase"), m_iPullRebase) == GIT_ENOTFOUND)
+					break;
+				else
+				{
+					CString value;
+					config.GetString(_T("pull.rebase"), value);
+					if (value == _T("preserve"))
+					{
+						m_iPullRebase = 2;
+						break;
+					}
+				}
+			}
+			else
+			{
+				CString value;
+				config.GetString(_T("branch.") + g_Git.GetCurrentBranch() + _T(".rebase"), value);
+				if (value == _T("preserve"))
+				{
+					m_iPullRebase = 2;
+					break;
+				}
+			}
+		} while (0);
+		if (m_iPullRebase > 0)
+			CurrentEntry = 1;
+	}
+
 	///Pull
 	if(CurrentEntry == 0) //Pull
 	{
@@ -195,7 +247,7 @@ void CSyncDlg::OnBnClickedButtonPull()
 				remotebranch.Empty();
 		}
 
-		cmd.Format(_T("git.exe pull -v --progress%s \"%s\" %s"),
+		cmd.Format(_T("git.exe pull -v --no-rebase --progress%s \"%s\" %s"),
 				(LPCTSTR)force,
 				(LPCTSTR)m_strURL,
 				(LPCTSTR)remotebranch);
@@ -404,7 +456,7 @@ void CSyncDlg::FetchComplete()
 	else
 		ShowTab(IDC_REFLIST);
 
-	if (m_GitCmdStatus || m_CurrentCmd != GIT_COMMAND_FETCHANDREBASE)
+	if (m_GitCmdStatus || (m_CurrentCmd != GIT_COMMAND_FETCHANDREBASE && m_iPullRebase == 0))
 	{
 		FetchOutList(true);
 		return;
@@ -424,6 +476,14 @@ void CSyncDlg::FetchComplete()
 	m_ctrlRemoteBranch.GetWindowText(remotebranch);
 	if (!remote.IsEmpty() && !remotebranch.IsEmpty())
 		upstream = _T("remotes/") + remote + _T("/") + remotebranch;
+
+	if (m_iPullRebase > 0)
+	{
+		CAppUtils::RebaseAfterFetch(upstream, m_iPullRebase ? 2 : 0, m_iPullRebase == 2);
+		FillNewRefMap();
+		FetchOutList(true);
+		return;
+	}
 
 	CGitHash remoteBranchHash;
 	g_Git.GetHash(remoteBranchHash, upstream);

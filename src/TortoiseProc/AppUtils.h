@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2015 - TortoiseGit
+// Copyright (C) 2008-2016 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -195,7 +195,8 @@ public:
 	static int  GetLogOutputEncode(CGit *pGit=&g_Git);
 
 	static bool Pull(bool showPush = false, bool showStashPop = false);
-	static bool RebaseAfterFetch(const CString& upstream = _T(""));
+	// rebase = 1: ask user what to do, rebase = 2: run autorebase
+	static bool RebaseAfterFetch(const CString& upstream = _T(""), int rebase = 0, bool preserveMerges = false);
 	static bool Fetch(const CString& remoteName = _T(""), bool allRemotes = false);
 	static bool Push(const CString& selectLocalBranch = CString());
 	static bool RequestPull(const CString& endrevision = _T(""), const CString& repositoryUrl = _T(""), bool bIsMainWnd = false);
