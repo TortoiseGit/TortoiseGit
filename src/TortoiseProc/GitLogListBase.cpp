@@ -77,6 +77,7 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	, m_bFullCommitMessageOnLogLine(false)
 	, m_OldTopIndex(-1)
 	, m_AsyncThreadRunning(FALSE)
+	, m_AsyncThreadExit(FALSE)
 {
 	// use the default GUI font, create a copy of it and
 	// change the copy to BOLD (leave the rest of the font
