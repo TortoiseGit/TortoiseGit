@@ -2390,11 +2390,13 @@ int CAppUtils::SaveCommitUnicodeFile(const CString& filename, CString &message)
 
 		bool stripComments = (CRegDWORD(_T("Software\\TortoiseGit\\StripCommentedLines"), TRUE) == TRUE);
 
-		if (CRegDWORD(_T("Software\\TortoiseGit\\SanitizeCommitMsg"), TRUE) == TRUE)
-			message.TrimRight(L" \r\n");
+		bool sanitize = (CRegDWORD(_T("Software\\TortoiseGit\\SanitizeCommitMsg"), TRUE) == TRUE);
+		if (sanitize)
+			message.Trim(L" \r\n");
 
 		int len = message.GetLength();
 		int start = 0;
+		int emptyLineCnt = 0;
 		while (start >= 0 && start < len)
 		{
 			int oldStart = start;
@@ -2408,6 +2410,17 @@ int CAppUtils::SaveCommitUnicodeFile(const CString& filename, CString &message)
 			if (stripComments && (!line.IsEmpty() && line.GetAt(0) == '#') || (start < 0 && line.IsEmpty()))
 				continue;
 			line.TrimRight(L" \r");
+			if (sanitize)
+			{
+				if (line.IsEmpty())
+				{
+					++emptyLineCnt;
+					continue;
+				}
+				if (emptyLineCnt) // squash multiple newlines
+					file.Write("\n", 1);
+				emptyLineCnt = 0;
+			}
 			CStringA lineA = CUnicodeUtils::GetMulti(line + L"\n", cp);
 			file.Write((LPCSTR)lineA, lineA.GetLength());
 		}
