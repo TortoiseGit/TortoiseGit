@@ -305,10 +305,18 @@ int CLogCache::LoadOneItem(GitRevLoglist& Rev,ULONGLONG offset)
 		CString oldfile;
 
 		if (offset + sizeof(SLogCacheRevFileHeader) > m_DataFileLength)
+		{
+			Rev.m_Action = 0;
+			Rev.m_Files.Clear();
 			return -2;
+		}
 
 		if(!CheckHeader(fileheader))
+		{
+			Rev.m_Action = 0;
+			Rev.m_Files.Clear();
 			return -2;
+		}
 
 		CString file(fileheader->m_FileName, fileheader->m_FileNameSize);
 		if(fileheader->m_OldFileNameSize)
