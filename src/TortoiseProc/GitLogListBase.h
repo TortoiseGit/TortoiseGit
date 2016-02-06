@@ -559,25 +559,30 @@ protected:
 	static int DiffAsync(GitRevLoglist* rev, void* data)
 	{
 		ULONGLONG offset=((CGitLogListBase*)data)->m_LogCache.GetOffset(rev->m_CommitHash);
-		if(!offset)
+		if (!offset || ((CGitLogListBase*)data)->m_LogCache.LoadOneItem(*rev, offset))
 		{
 			((CGitLogListBase*)data)->m_AsynDiffListLock.Lock();
 			((CGitLogListBase*)data)->m_AsynDiffList.push_back(rev);
 			((CGitLogListBase*)data)->m_AsynDiffListLock.Unlock();
 			::SetEvent(((CGitLogListBase*)data)->m_AsyncDiffEvent);
+			return 0;
 		}
-		else
+
+		InterlockedExchange(&rev->m_IsDiffFiles, TRUE);
+		if (!rev->m_IsCommitParsed)
+			return 0;
+		InterlockedExchange(&rev->m_IsFull, TRUE);
+		// we might need to signal that the changed files are now available
+		if (((CGitLogListBase*)data)->GetSelectedCount() == 1)
 		{
-			if(((CGitLogListBase*)data)->m_LogCache.LoadOneItem(*rev,offset))
+			POSITION pos = ((CGitLogListBase*)data)->GetFirstSelectedItemPosition();
+			int nItem = ((CGitLogListBase*)data)->GetNextSelectedItem(pos);
+			if (nItem >= 0)
 			{
-				((CGitLogListBase*)data)->m_AsynDiffListLock.Lock();
-				((CGitLogListBase*)data)->m_AsynDiffList.push_back(rev);
-				((CGitLogListBase*)data)->m_AsynDiffListLock.Unlock();
-				::SetEvent(((CGitLogListBase*)data)->m_AsyncDiffEvent);
+				GitRevLoglist* data2 = (GitRevLoglist*)((CGitLogListBase*)data)->m_arShownList.SafeGetAt(nItem);
+				if (data2 && data2->m_CommitHash == rev->m_CommitHash)
+					((CGitLogListBase*)data)->GetParent()->PostMessage(WM_COMMAND, MSG_FETCHED_DIFF, 0);
 			}
-			InterlockedExchange(&rev->m_IsDiffFiles, TRUE);
-			if (rev->m_IsCommitParsed)
-				InterlockedExchange(&rev->m_IsFull, TRUE);
 		}
 		return 0;
 	}
