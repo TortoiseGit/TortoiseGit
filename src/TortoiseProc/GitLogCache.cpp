@@ -161,9 +161,22 @@ int CLogCache::FetchCacheIndex(CString GitDir)
 			}
 		}
 
+		DWORD indexFileLength = GetFileSize(m_IndexFile, nullptr);
+		if (indexFileLength == INVALID_FILE_SIZE || indexFileLength < sizeof(SLogCacheIndexHeader))
+		{
+			ret = -1;
+			break;
+		}
+
 		if( !CheckHeader(&m_pCacheIndex->m_Header))
 		{
 			ret =-1;
+			break;
+		}
+
+		if (indexFileLength < sizeof(SLogCacheIndexHeader) + m_pCacheIndex->m_Header.m_ItemCount * sizeof(SLogCacheIndexItem))
+		{
+			ret = -1;
 			break;
 		}
 
@@ -195,6 +208,11 @@ int CLogCache::FetchCacheIndex(CString GitDir)
 			}
 		}
 		m_DataFileLength = GetFileSize(m_DataFile, NULL);
+		if (m_DataFileLength == INVALID_FILE_SIZE || m_DataFileLength < sizeof(SLogCacheDataFileHeader))
+		{
+			ret = -1;
+			break;
+		}
 		if(	m_pCacheData == NULL)
 		{
 			m_pCacheData = (BYTE*)MapViewOfFile(m_DataFileMap,FILE_MAP_READ,0,0,0);
@@ -211,6 +229,17 @@ int CLogCache::FetchCacheIndex(CString GitDir)
 			break;
 		}
 
+		if (m_pCacheIndex->m_Header.m_ItemCount != m_pCacheIndex->m_Header.m_ItemCount)
+		{
+			ret = -1;
+			break;
+		}
+
+		if (m_DataFileLength < sizeof(SLogCacheDataFileHeader) + m_pCacheIndex->m_Header.m_ItemCount * sizeof(SLogCacheDataFileHeader))
+		{
+			ret = -1;
+			break;
+		}
 	}while(0);
 
 	if(ret)
@@ -444,7 +473,7 @@ int CLogCache::SaveCache()
 
 			memset(&header,0,sizeof(SLogCacheIndexHeader));
 			DWORD num=0;
-			if((!ReadFile(m_IndexFile,&header, sizeof(SLogCacheIndexHeader),&num,0)) ||
+			if ((!ReadFile(m_IndexFile, &header, sizeof(SLogCacheIndexHeader), &num, 0)) || num != sizeof(SLogCacheIndexHeader) ||
 				!CheckHeader(&header)
 				)
 			{
@@ -456,7 +485,7 @@ int CLogCache::SaveCache()
 		{
 			SLogCacheDataFileHeader datafileheader;
 			DWORD num=0;
-			if((!ReadFile(m_DataFile, &datafileheader, sizeof(SLogCacheDataFileHeader), &num, 0) ||
+			if ((!ReadFile(m_DataFile, &datafileheader, sizeof(SLogCacheDataFileHeader), &num, 0) || num != sizeof(SLogCacheDataFileHeader) ||
 				!CheckHeader(&datafileheader)))
 			{
 				RebuildCacheFile();
