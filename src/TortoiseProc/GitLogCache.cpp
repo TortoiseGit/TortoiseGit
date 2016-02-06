@@ -117,10 +117,10 @@ int CLogCache::FetchCacheIndex(CString GitDir)
 	if (!m_bEnabled)
 		return 0;
 
-	int ret=0;
 	if (!GitAdminDir::GetAdminDirPath(GitDir, m_GitDir))
 		return -1;
 
+	int ret = -1;
 	do
 	{
 		if( m_IndexFile == INVALID_HANDLE_VALUE)
@@ -135,50 +135,32 @@ int CLogCache::FetchCacheIndex(CString GitDir)
 						NULL);
 
 			if( m_IndexFile == INVALID_HANDLE_VALUE)
-			{
-				ret = -1;
-				break;;
-			}
+				break;
 		}
 
 		if( m_IndexFileMap == INVALID_HANDLE_VALUE)
 		{
 			m_IndexFileMap = CreateFileMapping(m_IndexFile, NULL, PAGE_READONLY,0,0,NULL);
 			if( m_IndexFileMap == INVALID_HANDLE_VALUE)
-			{
-				ret = -1;
 				break;
-			}
 		}
 
 		if( m_pCacheIndex == NULL )
 		{
 			m_pCacheIndex = (SLogCacheIndexFile*)MapViewOfFile(m_IndexFileMap,FILE_MAP_READ,0,0,0);
 			if( m_pCacheIndex ==NULL )
-			{
-				ret = -1;
 				break;
-			}
 		}
 
 		DWORD indexFileLength = GetFileSize(m_IndexFile, nullptr);
 		if (indexFileLength == INVALID_FILE_SIZE || indexFileLength < sizeof(SLogCacheIndexHeader))
-		{
-			ret = -1;
 			break;
-		}
 
 		if( !CheckHeader(&m_pCacheIndex->m_Header))
-		{
-			ret =-1;
 			break;
-		}
 
 		if (indexFileLength < sizeof(SLogCacheIndexHeader) + m_pCacheIndex->m_Header.m_ItemCount * sizeof(SLogCacheIndexItem))
-		{
-			ret = -1;
 			break;
-		}
 
 		if(	m_DataFile == INVALID_HANDLE_VALUE )
 		{
@@ -192,59 +174,42 @@ int CLogCache::FetchCacheIndex(CString GitDir)
 						NULL);
 
 			if(m_DataFile == INVALID_HANDLE_VALUE)
-			{
-				ret =-1;
 				break;
-			}
 		}
 
 		if( m_DataFileMap == INVALID_HANDLE_VALUE)
 		{
 			m_DataFileMap = CreateFileMapping(m_DataFile, NULL, PAGE_READONLY,0,0,NULL);
 			if( m_DataFileMap == INVALID_HANDLE_VALUE)
-			{
-				ret = -1;
 				break;
-			}
 		}
 		m_DataFileLength = GetFileSize(m_DataFile, NULL);
 		if (m_DataFileLength == INVALID_FILE_SIZE || m_DataFileLength < sizeof(SLogCacheDataFileHeader))
-		{
-			ret = -1;
 			break;
-		}
+
 		if(	m_pCacheData == NULL)
 		{
 			m_pCacheData = (BYTE*)MapViewOfFile(m_DataFileMap,FILE_MAP_READ,0,0,0);
 			if( m_pCacheData ==NULL )
-			{
-				ret = -1;
 				break;
-			}
 		}
 
 		if(!CheckHeader( (SLogCacheDataFileHeader*)m_pCacheData))
-		{
-			ret = -1;
 			break;
-		}
 
 		if (m_pCacheIndex->m_Header.m_ItemCount != m_pCacheIndex->m_Header.m_ItemCount)
-		{
-			ret = -1;
 			break;
-		}
 
 		if (m_DataFileLength < sizeof(SLogCacheDataFileHeader) + m_pCacheIndex->m_Header.m_ItemCount * sizeof(SLogCacheDataFileHeader))
-		{
-			ret = -1;
 			break;
-		}
+
+		ret = 0;
 	}while(0);
 
 	if(ret)
 	{
 		CloseIndexHandles();
+		CloseDataHandles();
 		::DeleteFile(m_GitDir + INDEX_FILE_NAME);
 		::DeleteFile(m_GitDir + DATA_FILE_NAME);
 	}
@@ -406,7 +371,6 @@ int CLogCache::SaveCache()
 	if (!m_bEnabled)
 		return 0;
 
-	int ret =0;
 	BOOL bIsRebuild=false;
 
 	if (this->m_HashMap.empty()) // is not sufficient, because "working copy changes" are always included
@@ -436,6 +400,7 @@ int CLogCache::SaveCache()
 
 	SLogCacheIndexHeader header;
 	CString file = this->m_GitDir + INDEX_FILE_NAME;
+	int ret = -1;
 	do
 	{
 		m_IndexFile = CreateFile(file,
@@ -447,10 +412,7 @@ int CLogCache::SaveCache()
 						NULL);
 
 		if(m_IndexFile == INVALID_HANDLE_VALUE)
-		{
-			ret = -1;
 			break;
-		}
 
 		file = m_GitDir + DATA_FILE_NAME;
 
@@ -463,11 +425,7 @@ int CLogCache::SaveCache()
 						NULL);
 
 		if(m_DataFile == INVALID_HANDLE_VALUE)
-		{
-			ret = -1;
 			break;
-		}
-
 
 		{
 
@@ -532,22 +490,16 @@ int CLogCache::SaveCache()
 
 		m_IndexFileMap = CreateFileMapping(m_IndexFile, NULL, PAGE_READWRITE,0,0,NULL);
 		if(m_IndexFileMap == INVALID_HANDLE_VALUE)
-		{
-			ret =-1;
 			break;
-		}
 
 		m_pCacheIndex = (SLogCacheIndexFile*)MapViewOfFile(m_IndexFileMap,FILE_MAP_WRITE,0,0,0);
 		if(m_pCacheIndex == NULL)
-		{
-			ret = -1;
 			break;
-		}
 
 		m_pCacheIndex->m_Header.m_ItemCount = header.m_ItemCount;
 		Sort();
 		FlushViewOfFile(m_pCacheIndex,0);
-
+		ret = 0;
 	}while(0);
 
 	this->CloseDataHandles();

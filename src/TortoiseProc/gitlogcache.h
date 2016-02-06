@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2015 - TortoiseGit
+// Copyright (C) 2008-2013, 2015-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -88,8 +88,6 @@ public:
 
 #define INDEX_FILE_NAME _T("tortoisegit.index")
 #define DATA_FILE_NAME _T("tortoisegit.data")
-#define LOCK_FILE_NAME _T("tortoisegit.lock")
-
 
 class CLogCache
 {
