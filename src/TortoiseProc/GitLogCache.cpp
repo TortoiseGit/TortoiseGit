@@ -128,7 +128,7 @@ int CLogCache::FetchCacheIndex(CString GitDir)
 			CString file = m_GitDir + INDEX_FILE_NAME;
 			m_IndexFile = CreateFile(file,
 						GENERIC_READ,
-						FILE_SHARE_READ|FILE_SHARE_DELETE|FILE_SHARE_WRITE,
+						FILE_SHARE_READ | FILE_SHARE_DELETE,
 						NULL,
 						OPEN_EXISTING,
 						FILE_ATTRIBUTE_NORMAL,
@@ -185,7 +185,7 @@ int CLogCache::FetchCacheIndex(CString GitDir)
 			CString file = m_GitDir + DATA_FILE_NAME;
 			m_DataFile = CreateFile(file,
 						GENERIC_READ,
-						FILE_SHARE_READ|FILE_SHARE_DELETE|FILE_SHARE_WRITE,
+						FILE_SHARE_READ | FILE_SHARE_DELETE,
 						NULL,
 						OPEN_EXISTING,
 						FILE_ATTRIBUTE_NORMAL,
