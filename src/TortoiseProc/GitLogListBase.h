@@ -576,7 +576,7 @@ protected:
 				::SetEvent(((CGitLogListBase*)data)->m_AsyncDiffEvent);
 			}
 			InterlockedExchange(&rev->m_IsDiffFiles, TRUE);
-			if(rev->m_IsDiffFiles && rev->m_IsCommitParsed)
+			if (rev->m_IsCommitParsed)
 				InterlockedExchange(&rev->m_IsFull, TRUE);
 		}
 		return 0;

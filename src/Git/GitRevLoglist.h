@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2015 - TortoiseGit
+// Copyright (C) 2008-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -67,7 +67,7 @@ public:
 			int ret = 0;
 			ret = SafeFetchFullInfo(&g_Git);
 			InterlockedExchange(&m_IsDiffFiles, TRUE);
-			if (m_IsDiffFiles && m_IsCommitParsed)
+			if (m_IsCommitParsed)
 				InterlockedExchange(&m_IsFull, TRUE);
 			return ret;
 		}
@@ -113,7 +113,7 @@ protected:
 			ParserFromCommit(&m_GitCommit);
 			InterlockedExchange(&m_IsCommitParsed, TRUE);
 			git_free_commit(&m_GitCommit);
-			if (m_IsDiffFiles && m_IsCommitParsed)
+			if (m_IsDiffFiles)
 				InterlockedExchange(&m_IsFull, TRUE);
 		}
 	}
