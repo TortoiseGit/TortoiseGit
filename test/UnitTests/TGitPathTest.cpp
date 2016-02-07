@@ -868,25 +868,25 @@ TEST(CTGitPath, FillBasedOnIndexFlags)
 	g_Git.m_CurrentDir = tmpDir.GetTempDir();
 
 	CTGitPathList testList;
-	EXPECT_TRUE(testList.FillBasedOnIndexFlags(0) == 0);
+	EXPECT_TRUE(testList.FillBasedOnIndexFlags(0, 0) == 0);
 	EXPECT_EQ(0, testList.GetCount());
 
 	testList.Clear();
-	EXPECT_TRUE(testList.FillBasedOnIndexFlags(GIT_IDXENTRY_VALID) == 0);
+	EXPECT_TRUE(testList.FillBasedOnIndexFlags(GIT_IDXENTRY_VALID, 0) == 0);
 	EXPECT_EQ(3, testList.GetCount());
 	EXPECT_STREQ(_T("a/assume-unchanged"), testList[0].GetGitPathString());
 	EXPECT_STREQ(_T("assume-unchanged"), testList[1].GetGitPathString());
 	EXPECT_STREQ(_T("b/assume-unchanged"), testList[2].GetGitPathString());
 
 	testList.Clear();
-	EXPECT_TRUE(testList.FillBasedOnIndexFlags(GIT_IDXENTRY_SKIP_WORKTREE) == 0);
+	EXPECT_TRUE(testList.FillBasedOnIndexFlags(0, GIT_IDXENTRY_SKIP_WORKTREE) == 0);
 	EXPECT_EQ(3, testList.GetCount());
 	EXPECT_STREQ(_T("a/skip-worktree"), testList[0].GetGitPathString());
 	EXPECT_STREQ(_T("b/skip-worktree"), testList[1].GetGitPathString());
 	EXPECT_STREQ(_T("skip-worktree"), testList[2].GetGitPathString());
 	
 	testList.Clear();
-	EXPECT_TRUE(testList.FillBasedOnIndexFlags(GIT_IDXENTRY_VALID | GIT_IDXENTRY_SKIP_WORKTREE) == 0);
+	EXPECT_TRUE(testList.FillBasedOnIndexFlags(GIT_IDXENTRY_VALID, GIT_IDXENTRY_SKIP_WORKTREE) == 0);
 	EXPECT_EQ(6, testList.GetCount());
 	EXPECT_STREQ(_T("a/assume-unchanged"), testList[0].GetGitPathString());
 	EXPECT_STREQ(_T("a/skip-worktree"), testList[1].GetGitPathString());
@@ -900,7 +900,7 @@ TEST(CTGitPath, FillBasedOnIndexFlags)
 	selectList.AddPath(CTGitPath(_T("assume-unchanged")));
 	selectList.AddPath(CTGitPath(_T("skip-worktree")));
 	selectList.AddPath(CTGitPath(_T("a/skip-worktree")));
-	EXPECT_TRUE(testList.FillBasedOnIndexFlags(GIT_IDXENTRY_VALID | GIT_IDXENTRY_SKIP_WORKTREE, &selectList) == 0);
+	EXPECT_TRUE(testList.FillBasedOnIndexFlags(GIT_IDXENTRY_VALID, GIT_IDXENTRY_SKIP_WORKTREE, &selectList) == 0);
 	EXPECT_EQ(3, testList.GetCount());
 	EXPECT_STREQ(_T("a/skip-worktree"), testList[0].GetGitPathString());
 	EXPECT_STREQ(_T("assume-unchanged"), testList[1].GetGitPathString());
@@ -908,14 +908,14 @@ TEST(CTGitPath, FillBasedOnIndexFlags)
 
 	selectList.Clear();
 	selectList.AddPath(CTGitPath(_T("a")));
-	EXPECT_TRUE(testList.FillBasedOnIndexFlags(GIT_IDXENTRY_VALID | GIT_IDXENTRY_SKIP_WORKTREE, &selectList) == 0);
+	EXPECT_TRUE(testList.FillBasedOnIndexFlags(GIT_IDXENTRY_VALID, GIT_IDXENTRY_SKIP_WORKTREE, &selectList) == 0);
 	EXPECT_EQ(2, testList.GetCount());
 	EXPECT_STREQ(_T("a/assume-unchanged"), testList[0].GetGitPathString());
 	EXPECT_STREQ(_T("a/skip-worktree"), testList[1].GetGitPathString());
 
 	selectList.Clear();
 	selectList.AddPath(CTGitPath(_T("a")));
-	EXPECT_TRUE(testList.FillBasedOnIndexFlags(GIT_IDXENTRY_VALID, &selectList) == 0);
+	EXPECT_TRUE(testList.FillBasedOnIndexFlags(GIT_IDXENTRY_VALID, 0, &selectList) == 0);
 	EXPECT_EQ(1, testList.GetCount());
 	EXPECT_STREQ(_T("a/assume-unchanged"), testList[0].GetGitPathString());
 }

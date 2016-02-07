@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2015 - TortoiseGit
+// Copyright (C) 2008-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -492,7 +492,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir, const CString &subpath, git_
 				{
 					bool skipWorktree = false;
 					*status = git_wc_status_deleted;
-					if (((*it).m_Flags & GIT_IDXENTRY_SKIP_WORKTREE) != 0)
+					if (((*it).m_FlagsExtended & GIT_IDXENTRY_SKIP_WORKTREE) != 0)
 					{
 						skipWorktreeMap[filename] = true;
 						skipWorktree = true;

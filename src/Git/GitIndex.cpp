@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2015 - TortoiseGit
+// Copyright (C) 2008-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -108,7 +108,8 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 		this->at(i).m_FileName = CUnicodeUtils::GetUnicode(e->path);
 		this->at(i).m_FileName.MakeLower();
 		this->at(i).m_ModifyTime = e->mtime.seconds;
-		this->at(i).m_Flags = e->flags | e->flags_extended;
+		this->at(i).m_Flags = e->flags;
+		this->at(i).m_FlagsExtended = e->flags_extended;
 		this->at(i).m_IndexHash = e->id.id;
 		this->at(i).m_Size = e->file_size;
 		m_bHasConflicts |= GIT_IDXENTRY_STAGE(e);
@@ -143,7 +144,7 @@ int CGitIndexList::GetFileStatus(const CString &gitdir, const CString &pathorg, 
 	}
 
 	// skip-worktree has higher priority than assume-valid
-	if (at(index).m_Flags & GIT_IDXENTRY_SKIP_WORKTREE)
+	if (at(index).m_FlagsExtended & GIT_IDXENTRY_SKIP_WORKTREE)
 	{
 		*status = git_wc_status_normal;
 		if (skipWorktree)
@@ -178,7 +179,7 @@ int CGitIndexList::GetFileStatus(const CString &gitdir, const CString &pathorg, 
 
 	if (at(index).m_Flags & GIT_IDXENTRY_STAGEMASK)
 		*status = git_wc_status_conflicted;
-	else if (at(index).m_Flags & GIT_IDXENTRY_INTENT_TO_ADD)
+	else if (at(index).m_FlagsExtended & GIT_IDXENTRY_INTENT_TO_ADD)
 		*status = git_wc_status_added;
 
 	if (pHash)
@@ -237,7 +238,7 @@ int CGitIndexList::GetStatus(const CString& gitdir, CString path, git_wc_status_
 		{
 			*status = git_wc_status_normal;
 			if (callback)
-				callback(CombinePath(gitdir, path), *status, false, pData, ((*it).m_Flags & GIT_IDXENTRY_VALID) && !((*it).m_Flags & GIT_IDXENTRY_SKIP_WORKTREE), ((*it).m_Flags & GIT_IDXENTRY_SKIP_WORKTREE) != 0);
+				callback(CombinePath(gitdir, path), *status, false, pData, ((*it).m_Flags & GIT_IDXENTRY_VALID) && !((*it).m_FlagsExtended & GIT_IDXENTRY_SKIP_WORKTREE), ((*it).m_FlagsExtended & GIT_IDXENTRY_SKIP_WORKTREE) != 0);
 
 			return 0;
 		}

@@ -4048,7 +4048,7 @@ int CGitStatusListCtrl::UpdateIgnoreFileList(CTGitPathList *List)
 
 int CGitStatusListCtrl::UpdateLocalChangesIgnoredFileList(CTGitPathList *list)
 {
-	m_LocalChangesIgnoredFileList.FillBasedOnIndexFlags(GIT_IDXENTRY_VALID | GIT_IDXENTRY_SKIP_WORKTREE, list);
+	m_LocalChangesIgnoredFileList.FillBasedOnIndexFlags(GIT_IDXENTRY_VALID, GIT_IDXENTRY_SKIP_WORKTREE, list);
 	for (int i = 0; i < m_LocalChangesIgnoredFileList.GetCount(); ++i)
 	{
 		CTGitPath * gitpatch = (CTGitPath*)&m_LocalChangesIgnoredFileList[i];

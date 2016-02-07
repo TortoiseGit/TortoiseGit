@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2015 - TortoiseGit
+// Copyright (C) 2008-2016 - TortoiseGit
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -355,7 +355,7 @@ public:
 	int	ParserFromLog(BYTE_VECTOR &log, bool parseDeletes = false);
 	int ParserFromLsFile(BYTE_VECTOR &out,bool staged=true);
 	int FillUnRev(unsigned int Action, CTGitPathList *list = nullptr, CString *err = nullptr);
-	int FillBasedOnIndexFlags(unsigned short flag, CTGitPathList* list = nullptr);
+	int FillBasedOnIndexFlags(unsigned short flag, unsigned short flagextended, CTGitPathList* list = nullptr);
 	int GetAction();
 	/**
 	 * Load from the path argument string, when the 'path' parameter is used

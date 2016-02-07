@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2015 - TortoiseGit
+// Copyright (C) 2008-2016 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -1155,7 +1155,7 @@ int CTGitPathList::FillUnRev(unsigned int action, CTGitPathList *list, CString *
 	}
 	return 0;
 }
-int CTGitPathList::FillBasedOnIndexFlags(unsigned short flag, CTGitPathList* list /*nullptr*/)
+int CTGitPathList::FillBasedOnIndexFlags(unsigned short flag, unsigned short flagextended, CTGitPathList* list /*nullptr*/)
 {
 	Clear();
 	CTGitPath path;
@@ -1179,7 +1179,7 @@ int CTGitPathList::FillBasedOnIndexFlags(unsigned short flag, CTGitPathList* lis
 		{
 			const git_index_entry *e = git_index_get_byindex(index, i);
 
-			if (!e || !((e->flags | e->flags_extended) & flag) || !e->path)
+			if (!e || !((e->flags & flag) || (e->flags_extended & flagextended)) || !e->path)
 				continue;
 
 			CString one = CUnicodeUtils::GetUnicode(e->path);
@@ -1189,9 +1189,9 @@ int CTGitPathList::FillBasedOnIndexFlags(unsigned short flag, CTGitPathList* lis
 
 			//SetFromGit will clear all status
 			path.SetFromGit(one);
-			if ((e->flags | e->flags_extended) & GIT_IDXENTRY_SKIP_WORKTREE)
+			if (e->flags_extended & GIT_IDXENTRY_SKIP_WORKTREE)
 				path.m_Action = CTGitPath::LOGACTIONS_SKIPWORKTREE;
-			else if ((e->flags | e->flags_extended) & GIT_IDXENTRY_VALID)
+			else if (e->flags & GIT_IDXENTRY_VALID)
 				path.m_Action = CTGitPath::LOGACTIONS_ASSUMEVALID;
 			AddPath(path);
 		}
