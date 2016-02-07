@@ -122,7 +122,7 @@ private:
 	CStatic					m_CurrentWork;
 	CWinThread*				m_pThread;
 
-	bool					m_bAbort;
+	volatile bool			m_bAbort;
 	bool					m_bDone;
 	ULONGLONG				m_startTick;
 
@@ -167,7 +167,7 @@ public:
 	/**
 	 *@param dirlist if empty, the current directory of param git is used; otherwise each entry in param cmdlist uses the corresponding entry in param dirlist
 	 */
-	static UINT	RunCmdList(CWnd* pWnd, STRING_VECTOR& cmdlist, STRING_VECTOR& dirlist, bool bShowCommand, CString* pfilename, bool* bAbort, CGitGuardedByteArray* pdata, CGit* git = &g_Git);
+	static UINT	RunCmdList(CWnd* pWnd, STRING_VECTOR& cmdlist, STRING_VECTOR& dirlist, bool bShowCommand, CString* pfilename, volatile bool* bAbort, CGitGuardedByteArray* pdata, CGit* git = &g_Git);
 
 	static void KillProcessTree(DWORD dwProcessId, unsigned int depth = 0);
 

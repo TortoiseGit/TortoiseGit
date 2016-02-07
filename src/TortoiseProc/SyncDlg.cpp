@@ -1281,6 +1281,8 @@ UINT CSyncDlg::ProgressThread()
 
 LRESULT CSyncDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 {
+	if (m_bWantToExit)
+		return 0;
 	if(wParam == MSG_PROGRESSDLG_START)
 	{
 		m_BufStart = 0;
@@ -1499,6 +1501,8 @@ void CSyncDlg::RunPostAction()
 }
 void CSyncDlg::ParserCmdOutput(char ch)
 {
+	if (m_bAbort)
+		return;
 	CProgressDlg::ParserCmdOutput(m_ctrlCmdOut,m_ctrlProgress,m_hWnd,m_pTaskbarList,m_LogText,ch);
 }
 void CSyncDlg::OnBnClickedButtonCommit()
@@ -1549,6 +1553,11 @@ void CSyncDlg::OnCancel()
 	}
 
 	::WaitForSingleObject(g_Git.m_CurrentGitPi.hProcess ,10000);
+	if (m_pThread)
+	{
+		if (::WaitForSingleObject(m_pThread->m_hThread, 5000) == WAIT_TIMEOUT)
+			TerminateThread(m_pThread->m_hThread, (DWORD)-1);
+	}
 	m_tooltips.Pop();
 	CResizableStandAloneDialog::OnCancel();
 }

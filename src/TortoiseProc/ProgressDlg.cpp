@@ -198,7 +198,7 @@ UINT CProgressDlg::ProgressThreadEntry(LPVOID pVoid)
 }
 
 //static function, Share with SyncDialog
-UINT CProgressDlg::RunCmdList(CWnd* pWnd, STRING_VECTOR& cmdlist, STRING_VECTOR& dirlist, bool bShowCommand, CString* pfilename, bool* bAbort, CGitGuardedByteArray* pdata, CGit* git)
+UINT CProgressDlg::RunCmdList(CWnd* pWnd, STRING_VECTOR& cmdlist, STRING_VECTOR& dirlist, bool bShowCommand, CString* pfilename, volatile bool* bAbort, CGitGuardedByteArray* pdata, CGit* git)
 {
 	UINT ret=0;
 
@@ -728,7 +728,11 @@ void CProgressDlg::OnCancel()
 
 	::WaitForSingleObject(m_Git->m_CurrentGitPi.hProcess ,10000);
 	if (m_pThread)
-		::WaitForSingleObject(m_pThread->m_hThread, 5000);
+	{
+		if (::WaitForSingleObject(m_pThread->m_hThread, 5000) == WAIT_TIMEOUT)
+			TerminateThread(m_pThread->m_hThread, (DWORD)-1);
+	}
+
 	WriteLog();
 	CResizableStandAloneDialog::OnCancel();
 }

@@ -142,7 +142,7 @@ protected:
 
 	std::vector<CString> m_GitCmdList;
 
-	bool			m_bAbort;
+	volatile bool	m_bAbort;
 	bool			m_bDone;
 	ULONGLONG		m_startTick;
 	bool			m_bWantToExit;
