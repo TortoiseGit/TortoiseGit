@@ -104,7 +104,6 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 	{
 		const git_index_entry *e = git_index_get_byindex(index, i);
 
-		this->at(i).m_FileName.Empty();
 		this->at(i).m_FileName = CUnicodeUtils::GetUnicode(e->path);
 		this->at(i).m_FileName.MakeLower();
 		this->at(i).m_ModifyTime = e->mtime.seconds;
@@ -415,12 +414,10 @@ int CGitHeadFileList::GetPackRef(const CString &gitdir)
 	if (size != filesize)
 		return -1;
 
-	CString hash;
-	CString ref;
 	for (DWORD i = 0; i < filesize;)
 	{
-		hash.Empty();
-		ref.Empty();
+		CString hash;
+		CString ref;
 		if (buff[i] == '#' || buff[i] == '^')
 		{
 			while (buff[i] != '\n')
@@ -644,7 +641,6 @@ int CGitHeadFileList::CallBack(const unsigned char *sha1, const char *base, int 
 	size_t cur = p->size();
 	p->resize(p->size() + 1);
 	p->at(cur).m_Hash = sha1;
-	p->at(cur).m_FileName.Empty();
 
 	CGit::StringAppend(&p->at(cur).m_FileName, (BYTE*)base, CP_UTF8, baselen);
 	CGit::StringAppend(&p->at(cur).m_FileName, (BYTE*)pathname, CP_UTF8);
