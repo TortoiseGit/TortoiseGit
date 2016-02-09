@@ -1875,6 +1875,14 @@ int CRebaseDlg::DoRebase()
 						{
 							AddLogString(cmd);
 							AddLogString(out);
+							int hasConflicts = g_Git.HasWorkingTreeConflicts();
+							if (hasConflicts > 0)
+							{
+								m_RebaseStage = REBASE_CONFLICT;
+								return -1;
+							}
+							else if (hasConflicts < 0)
+								AddLogString(g_Git.GetGitLastErr(L"Checking for conflicts failed.", CGit::GIT_CMD_CHECKCONFLICTS));
 							AddLogString(_T("An unrecoverable error occurred."));
 							m_RebaseStage = REBASE_ERROR;
 							return -1;
