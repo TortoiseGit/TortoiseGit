@@ -24,6 +24,7 @@ const UINT CLinkControl::LK_LINKITEMCLICKED = ::RegisterWindowMessage(L"LK_LINKI
 
 CLinkControl::CLinkControl(void)
 	: m_bOverControl(false)
+	, m_hLinkCursor(nullptr)
 {
 }
 
@@ -59,7 +60,7 @@ void CLinkControl::PreSubclassWindow()
 		if (hFont)
 			pFont = CFont::FromHandle(hFont);
 	}
-	ASSERT(pFont->GetSafeHandle());
+	ASSERT(pFont && pFont->GetSafeHandle());
 
 	LOGFONT lf;
 	pFont->GetObject(sizeof(lf), &lf);
