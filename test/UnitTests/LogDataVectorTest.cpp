@@ -166,8 +166,8 @@ static void ParserFromLogTests()
 	ASSERT_EQ(23, logDataVector.size());
 	EXPECT_EQ(23, logDataVector.m_HashMap.size());
 	EXPECT_EQ(23, logCache.m_HashMap.size());
-	EXPECT_STREQ(L"4c5c93d2a0b368bc4570d5ec02ab03b9c4334d44", logDataVector.GetGitRevAt(0).m_CommitHash.ToString());
-	EXPECT_STREQ(L"4517b91ee8f7497d40cf93d112f12196a7cec995", logDataVector.GetGitRevAt(11).m_CommitHash.ToString());
+	EXPECT_STREQ(L"60c1373baa174634824a80f7b74428a60e525b43", logDataVector.GetGitRevAt(0).m_CommitHash.ToString());
+	EXPECT_STREQ(L"8eabf9a475b4a15c0f4d2169e5947534dff38037", logDataVector.GetGitRevAt(11).m_CommitHash.ToString());
 	EXPECT_STREQ(L"844309789a13614b52d5e7cbfe6350dd73d1dc72", logDataVector.GetGitRevAt(22).m_CommitHash.ToString());
 
 	logCache.m_HashMap.clear();

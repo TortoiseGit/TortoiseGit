@@ -198,4 +198,5 @@ public:
 	STRING_VECTOR m_SimpleFileList;  /* use for find and filter, no rename detection and line num stat info */
 
 	static int GetRefLog(const CString& ref, std::vector<GitRevLoglist>& refloglist, CString& error);
+	static int DropRefLog(const STRING_VECTOR& refloglist, std::function<void(CString, CString)> errCallback);
 };

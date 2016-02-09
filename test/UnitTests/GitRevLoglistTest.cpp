@@ -413,12 +413,12 @@ TEST(GitRevLoglist, GetAction)
 	EXPECT_EQ(0, rev.GetAction(nullptr));
 }
 
-static void GetReflog()
+static void GetReflog(bool bare)
 {
 	CString err;
 	std::vector<GitRevLoglist> revloglist;
 	EXPECT_EQ(0, GitRevLoglist::GetRefLog(_T("refs/stash"), revloglist, err));
-	EXPECT_EQ(0, revloglist.size());
+	EXPECT_EQ(5, revloglist.size());
 	EXPECT_TRUE(err.IsEmpty());
 
 	EXPECT_EQ(0, GitRevLoglist::GetRefLog(_T("HEAD"), revloglist, err));
@@ -482,14 +482,48 @@ static void GetReflog()
 	//EXPECT_STREQ(_T("email@cs-ware.de"), revloglist[6].GetCommitterEmail());
 	EXPECT_STREQ(_T("2015-03-16 12:51:40"), revloglist[6].GetCommitterDate().FormatGmt(L"%Y-%m-%d %H:%M:%S"));
 	EXPECT_STREQ(_T(""), revloglist[6].GetSubject());
+
+	err.Empty();
+	STRING_VECTOR deleteList;
+	// put reflog entries in any order
+	deleteList.push_back(_T("refs/heads/master@{1}"));
+	if (!bare)
+	{
+		deleteList.push_back(_T("refs/stash@{3}"));
+		deleteList.push_back(_T("refs/stash@{1}"));
+	}
+	deleteList.push_back(_T("refs/heads/master@{4}"));
+	if (!bare)
+	{
+		deleteList.push_back(_T("refs/stash@{0}"));
+		deleteList.push_back(_T("refs/stash@{4}"));
+		deleteList.push_back(_T("refs/stash@{2}"));
+	}
+	EXPECT_EQ(0, GitRevLoglist::DropRefLog(deleteList, [&] (CString refStr, CString errStr) { err.Append(errStr); }));
+
+	err.Empty();
+	EXPECT_EQ(0, GitRevLoglist::GetRefLog(_T("refs/heads/master"), revloglist, err));
+	ASSERT_EQ(5, revloglist.size());
+	EXPECT_TRUE(err.IsEmpty());
+
+	EXPECT_STREQ(_T("moving to 7c3cbfe13a929d2291a574dca45e4fd2d2ac1aa6"), revloglist[0].GetSubject());
+	EXPECT_STREQ(_T("moving to aa5b97f89cea6863222823c8289ce392d06d1691"), revloglist[1].GetSubject());
+	EXPECT_STREQ(_T("Several actions"), revloglist[2].GetSubject());
+	EXPECT_STREQ(_T("forced-update"), revloglist[3].GetSubject());
+	EXPECT_STREQ(_T(""), revloglist[4].GetSubject());
+
+	err.Empty();
+	EXPECT_EQ(0, GitRevLoglist::GetRefLog(_T("refs/stash"), revloglist, err));
+	EXPECT_EQ(bare ? 5 : 0, revloglist.size());
+	EXPECT_TRUE(err.IsEmpty());
 }
 
 TEST_P(GitRevLoglist2CBasicGitWithTestRepoFixture, GetReflog)
 {
-	GetReflog();
+	GetReflog(false);
 }
 
 TEST_P(GitRevLoglist2CBasicGitWithTestRepoBareFixture, GetReflog)
 {
-	GetReflog();
+	GetReflog(true);
 }
