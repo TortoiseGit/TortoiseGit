@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{C0EAFC2C-9A89-43E9-9576-4575B217FA82}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>TGitInstaller</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(SolutionDir)TortoiseGit.toolset.props" />
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Release'" Label="Configuration">
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  <Import Project="$(SolutionDir)TortoiseGit.common.props" />
+  <PropertyGroup Label="UserMacros" />
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>.;..\Utils;..\Git;..\..\ext\libgit2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Optimization Condition="'$(Configuration)'=='Release'">MinSpace</Optimization>
+      <FavorSizeOrSpeed Condition="'$(Configuration)'=='Release'">Size</FavorSizeOrSpeed>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation Condition="'$(Configuration)'=='Release'">false</GenerateDebugInformation>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;Crypt32.lib;shlwapi.lib;wininet.lib;version.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="D:\TortoiseGit\src\TortoiseProc\UpdateCrypto.h" />
+    <ClInclude Include="D:\TortoiseGit\src\TortoiseProc\UpdateDownloader.h" />
+    <ClInclude Include="D:\TortoiseGit\src\Utils\DebugOutput.h" />
+    <ClInclude Include="D:\TortoiseGit\src\Utils\registry.h" />
+    <ClInclude Include="D:\TortoiseGit\src\Utils\scope_exit_noexcept.h" />
+    <ClInclude Include="D:\TortoiseGit\src\Utils\SmartHandle.h" />
+    <ClInclude Include="D:\TortoiseGit\src\Utils\SysInfo.h" />
+    <ClInclude Include="D:\TortoiseGit\src\Utils\UnicodeUtils.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="TGitInstaller.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="D:\TortoiseGit\src\TortoiseProc\UpdateCrypto.cpp" />
+    <ClCompile Include="D:\TortoiseGit\src\TortoiseProc\UpdateDownloader.cpp" />
+    <ClCompile Include="D:\TortoiseGit\src\Utils\DebugOutput.cpp" />
+    <ClCompile Include="D:\TortoiseGit\src\Utils\Registry.cpp" />
+    <ClCompile Include="D:\TortoiseGit\src\Utils\SysInfo.cpp" />
+    <ClCompile Include="D:\TortoiseGit\src\Utils\UnicodeUtils.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="TGitInstaller.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="TGitInstaller.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="D:\TortoiseGit\src\Resources\Tortoise.ico" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

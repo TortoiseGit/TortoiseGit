@@ -27,7 +27,6 @@
 #include <atlenc.h>
 #define NEED_SIGNING_KEY
 #include "..\version.h"
-#include "TempFile.h"
 #include "SmartHandle.h"
 
 #define packet_type(c) ((c & 0x3c) >> 2)      /* 0x3C = 00111100 */
@@ -937,6 +936,68 @@ int verify_signature(HCRYPTPROV hCryptProv, HCRYPTHASH hHash, public_key_t& p_ke
 		return -1;
 }
 
+#ifndef HUNSPELL_STATIC // need better define
+#define BUFSIZE 512
+DWORD GetTortoiseGitTempPath(DWORD nBufferLength, LPTSTR lpBuffer)
+{
+	DWORD result = ::GetTempPath(nBufferLength, lpBuffer);
+	if (result == 0) return 0;
+	if (lpBuffer == NULL || (result + 13 > nBufferLength))
+	{
+		if (lpBuffer)
+			lpBuffer[0] = '\0';
+		return result + 13;
+	}
+
+	_tcscat_s(lpBuffer, nBufferLength, _T("TortoiseGit\\"));
+	CreateDirectory(lpBuffer, NULL);
+
+	return result + 13;
+}
+void GetTempPath(CString &path)
+{
+	TCHAR lpPathBuffer[BUFSIZE] = { 0 };
+	DWORD dwRetVal;
+	DWORD dwBufSize = BUFSIZE;
+	dwRetVal = GetTortoiseGitTempPath(dwBufSize,		// length of the buffer
+		lpPathBuffer);	// buffer for path
+	if (dwRetVal > dwBufSize || (dwRetVal == 0))
+	{
+		path = _T("");
+	}
+	path.Format(_T("%s"), lpPathBuffer);
+}
+CString GetTempFile()
+{
+	TCHAR lpPathBuffer[BUFSIZE] = { 0 };
+	DWORD dwRetVal;
+	DWORD dwBufSize = BUFSIZE;
+	TCHAR szTempName[BUFSIZE] = { 0 };
+	UINT uRetVal;
+
+	dwRetVal = GetTortoiseGitTempPath(dwBufSize,		// length of the buffer
+		lpPathBuffer);	// buffer for path
+	if (dwRetVal > dwBufSize || (dwRetVal == 0))
+	{
+		return _T("");
+	}
+	// Create a temporary file.
+	uRetVal = GetTempFileName(lpPathBuffer,		// directory for tmp files
+		TEXT("Patch"),	// temp file name prefix
+		0,				// create unique name
+		szTempName);	// buffer for name
+
+
+	if (uRetVal == 0)
+	{
+		return _T("");
+	}
+
+	return CString(szTempName);
+
+}
+#endif
+
 #ifndef GTEST_INCLUDE_GTEST_GTEST_H_
 /*
  * download a public key (the last one) from TortoiseGit server, and parse it
@@ -948,7 +1009,7 @@ static public_key_t *download_key(const uint8_t *p_longid, const uint8_t *p_sign
 	CString url;
 	url.Format(L"http://download.tortoisegit.org/keys/%.2X%.2X%.2X%.2X%.2X%.2X%.2X%.2X.asc", p_longid[0], p_longid[1], p_longid[2], p_longid[3], p_longid[4], p_longid[5], p_longid[6], p_longid[7]);
 
-	CString tempfile = CTempFiles::Instance().GetTempFilePath(true).GetWinPathString();
+	CString tempfile = GetTempFile();
 	if (updateDownloader->DownloadFile(url, tempfile, false))
 		return nullptr;
 

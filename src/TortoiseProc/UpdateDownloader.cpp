@@ -18,9 +18,10 @@
 //
 #include "stdafx.h"
 #include "UpdateDownloader.h"
+#include "SmartHandle.h"
 #include "..\version.h"
 
-CUpdateDownloader::CUpdateDownloader(HWND hwnd, bool force, UINT msg, CEvent *eventStop)
+CUpdateDownloader::CUpdateDownloader(HWND hwnd, bool force, UINT msg, HANDLE eventStop)
 : m_hWnd(hwnd)
 , m_bForce(force)
 , m_uiMsg(msg)
@@ -150,8 +151,8 @@ resend:
 		}
 	}
 
-	CFile destinationFile;
-	if (!destinationFile.Open(dest, CFile::modeCreate | CFile::modeWrite))
+	CAutoFILE destinationFile = _tfsopen(dest, _T("wb"), SH_DENYWR);
+	if (!destinationFile)
 	{
 		return ERROR_ACCESS_DENIED;
 	}
@@ -179,7 +180,8 @@ resend:
 			break;
 
 		buff[downloaded] = '\0';
-		destinationFile.Write(buff.get(), downloaded);
+		if (fwrite(buff.get(), sizeof(TCHAR), downloaded, destinationFile) != downloaded)
+			return GetLastError();
 
 		downloadedSum += downloaded;
 
@@ -201,7 +203,7 @@ resend:
 			::SendMessage(m_hWnd, m_uiMsg, 0, reinterpret_cast<LPARAM>(&downloadStatus));
 		}
 
-		if (::WaitForSingleObject(*m_eventStop, 0) == WAIT_OBJECT_0)
+		if (::WaitForSingleObject(m_eventStop, 0) == WAIT_OBJECT_0)
 		{
 			return (DWORD)E_ABORT; // canceled by the user
 		}

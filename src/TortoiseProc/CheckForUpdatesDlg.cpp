@@ -125,7 +125,7 @@ BOOL CCheckForUpdatesDlg::OnInitDialog()
 	m_cLogMessage.SetFont((CString)CRegString(_T("Software\\TortoiseGit\\LogFontName"), _T("Courier New")), (DWORD)CRegDWORD(_T("Software\\TortoiseGit\\LogFontSize"), 8));
 	m_cLogMessage.Call(SCI_SETREADONLY, TRUE);
 
-	m_updateDownloader = new CUpdateDownloader(GetSafeHwnd(), m_bForce == TRUE, WM_USER_DISPLAYSTATUS, &m_eventStop);
+	m_updateDownloader = new CUpdateDownloader(GetSafeHwnd(), m_bForce == TRUE, WM_USER_DISPLAYSTATUS, m_eventStop);
 
 	if (!AfxBeginThread(CheckThreadEntry, this))
 	{

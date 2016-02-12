@@ -20,7 +20,7 @@
 class CUpdateDownloader
 {
 public:
-	CUpdateDownloader(HWND hwnd, bool force = false, UINT msg = 0, CEvent *m_eventStop = nullptr);
+	CUpdateDownloader(HWND hwnd, bool force = false, UINT msg = 0, HANDLE m_eventStop = nullptr);
 	~CUpdateDownloader(void);
 
 	DWORD	DownloadFile(const CString &url, const CString& dest, bool showProgress) const;
@@ -43,5 +43,5 @@ private:
 	HWND	m_hWnd;
 	bool	m_bForce;
 	UINT	m_uiMsg;
-	CEvent	*m_eventStop;
+	HANDLE	m_eventStop;
 };
