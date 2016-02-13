@@ -331,7 +331,7 @@ BOOL CRebaseDlg::OnInitDialog()
 	else
 		this->m_CurrentRebaseIndex = (int)m_CommitList.m_logEntries.size();
 
-	if (m_bRebaseAutoStart)
+	if (GetDlgItem(IDC_REBASE_CONTINUE)->IsWindowEnabled() && m_bRebaseAutoStart)
 		this->PostMessage(WM_COMMAND, MAKELONG(IDC_REBASE_CONTINUE, BN_CLICKED), (LPARAM)GetDlgItem(IDC_REBASE_CONTINUE)->GetSafeHwnd());
 
 	return TRUE;
@@ -549,9 +549,8 @@ void CRebaseDlg::FetchLogList()
 		return;
 	}
 
-	if (g_Git.IsFastForward(m_BranchCtrl.GetString(), m_UpstreamCtrl.GetString(), &base) && m_Onto.IsEmpty() && !m_bRebaseAutoStart)
+	if (g_Git.IsFastForward(m_BranchCtrl.GetString(), m_UpstreamCtrl.GetString(), &base) && m_Onto.IsEmpty())
 	{
-		//fast forword
 		this->m_IsFastForward=TRUE;
 
 		m_CommitList.Clear();
@@ -1102,6 +1101,10 @@ void CRebaseDlg::OnBnClickedContinue()
 		AddLogString(CString(MAKEINTRESOURCE(IDS_DONE)));
 		m_RebaseStage = REBASE_DONE;
 		UpdateCurrentStatus();
+
+		if (m_bRebaseAutoStart)
+			this->PostMessage(WM_COMMAND, MAKELONG(IDC_REBASE_CONTINUE, BN_CLICKED), (LPARAM)GetDlgItem(IDC_REBASE_CONTINUE)->GetSafeHwnd());
+
 		return;
 	}
 
