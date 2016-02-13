@@ -1980,7 +1980,16 @@ int CRebaseDlg::DoRebase()
 							m_RebaseStage = REBASE_ERROR;
 							return -1;
 						}
-						cmd.Format(_T("git.exe commit --amend -C %s"), (LPCTSTR)pRev->m_CommitHash.ToString());
+						CGitHash newHeadHash;
+						if (g_Git.GetHash(newHeadHash, _T("HEAD")))
+						{
+							m_RebaseStage = REBASE_ERROR;
+							MessageBox(g_Git.GetGitLastErr(_T("Could not get HEAD hash.")), _T("TortoiseGit"), MB_ICONERROR);
+							return -1;
+						}
+						// do nothing if already up2date
+						if (currentHeadHash != newHeadHash)
+							cmd.Format(_T("git.exe commit --amend -C %s"), (LPCTSTR)pRev->m_CommitHash.ToString());
 					}
 				}
 			}
