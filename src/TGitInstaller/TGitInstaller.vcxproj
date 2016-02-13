@@ -43,6 +43,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\Utils\DirFileEnum.h" />
+    <ClInclude Include="..\Utils\PathUtils.h" />
     <ClInclude Include="D:\TortoiseGit\src\TortoiseProc\UpdateCrypto.h" />
     <ClInclude Include="D:\TortoiseGit\src\TortoiseProc\UpdateDownloader.h" />
     <ClInclude Include="D:\TortoiseGit\src\Utils\DebugOutput.h" />
@@ -57,6 +59,8 @@
     <ClInclude Include="TGitInstaller.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Utils\DirFileEnum.cpp" />
+    <ClCompile Include="..\Utils\PathUtils.cpp" />
     <ClCompile Include="D:\TortoiseGit\src\TortoiseProc\UpdateCrypto.cpp" />
     <ClCompile Include="D:\TortoiseGit\src\TortoiseProc\UpdateDownloader.cpp" />
     <ClCompile Include="D:\TortoiseGit\src\Utils\DebugOutput.cpp" />

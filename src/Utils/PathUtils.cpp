@@ -19,6 +19,7 @@
 //
 #include "stdafx.h"
 #include "PathUtils.h"
+#include <ShlObj.h>
 #include <memory>
 
 BOOL CPathUtils::MakeSureDirectoryPathExists(LPCTSTR path)

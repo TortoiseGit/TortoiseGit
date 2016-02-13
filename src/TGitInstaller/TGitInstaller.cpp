@@ -8,6 +8,9 @@
 
 #include "UpdateDownloader.h"
 #include "Win7.h"
+#include "DirFileEnum.h"
+#include "PathUtils.h"
+#include "UpdateCrypto.h"
 
 #include <commctrl.h>
 #pragma comment(lib, "comctl32.lib")
@@ -25,6 +28,10 @@
 HINSTANCE hInst;								// Aktuelle Instanz
 TCHAR szTitle[MAX_LOADSTRING];					// Titelleistentext
 TCHAR szWindowClass[MAX_LOADSTRING];			// Klassenname des Hauptfensters
+CUpdateDownloader* m_updateDownloader = nullptr;
+HWND listview;
+
+extern CString GetTempFile();
 
 // Vorwärtsdeklarationen der in diesem Codemodul enthaltenen Funktionen:
 ATOM				MyRegisterClass(HINSTANCE hInstance);
@@ -43,6 +50,7 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	SetDllDirectory(L"");
 
 	InitCommonControls();
+	git_libgit2_init();
 
  	// TODO: Hier Code einfügen.
 	MSG msg;
@@ -72,6 +80,7 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 		}
 	}*/
 
+	git_libgit2_shutdown();
 	return 0;
 }
 
@@ -201,6 +210,158 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	return 0;
 }
 
+
+
+void FillDownloads(CAutoConfig& versioncheck, const CString version)
+{
+	BOOL bIsWow64 = FALSE;
+	CString x86x64 = _T("32");
+	IsWow64Process(GetCurrentProcess(), &bIsWow64);
+	if (bIsWow64)
+		x86x64 = _T("64");
+
+	CString m_sFilesURL;
+	versioncheck.GetString(_T("tortoisegit.baseurl"), m_sFilesURL);
+	if (m_sFilesURL.IsEmpty())
+		m_sFilesURL.Format(_T("http://updater.download.tortoisegit.org/tgit/%s/"), (LPCTSTR)version);
+
+	CString filenamePattern;
+	{
+		LVITEM listItem = { 0 };
+		listItem.mask = LVIF_TEXT | LVIF_PARAM;
+		listItem.iItem = 0;
+		listItem.iSubItem = 0;
+		listItem.pszText = L"TortoiseGit";
+		CString filenameMain;
+		versioncheck.GetString(_T("tortoisegit.mainfilename"), filenamePattern);
+		if (filenamePattern.IsEmpty())
+			filenamePattern = _T("TortoiseGit-%1!s!-%2!s!bit.msi");
+		filenameMain.FormatMessage(filenamePattern, version, x86x64);
+		//listItem.lParam = new CUpdateListCtrl::Entry(filenameMain, CUpdateListCtrl::STATUS_NONE);
+		ListView_InsertItem(listview, &listItem);
+		ListView_SetCheckState(listview, 0, TRUE);
+	}
+
+	struct LangPack
+	{
+		CString m_PackName;
+		CString m_LangName;
+		DWORD m_LocaleID;
+		CString m_LangCode;
+		bool m_Installed;
+	};
+	struct LanguagePacks
+	{
+		std::vector<LangPack> availableLangs;
+		std::vector<DWORD> installedLangs;
+	} languagePacks;
+	{
+		// set up the language selecting combobox
+		/*CString path = CPathUtils::GetAppParentDirectory();
+		path = path + _T("Languages\\");
+		CSimpleFileFind finder(path, _T("*.dll"));
+		while (finder.FindNextFileNoDirectories())
+		{
+			CString file = finder.GetFilePath();
+			CString filename = finder.GetFileName();
+			if (filename.Left(12).CompareNoCase(_T("TortoiseProc")) == 0)
+			{
+				CString sVer = _T(STRPRODUCTVER);
+				sVer = sVer.Left(sVer.ReverseFind('.'));
+				CString sFileVer = CPathUtils::GetVersionFromFile(file);
+				sFileVer = sFileVer.Left(sFileVer.ReverseFind('.'));
+				CString sLoc = filename.Mid(12);
+				sLoc = sLoc.Left(sLoc.GetLength() - 4); // cut off ".dll"
+				if ((sLoc.Left(2) == L"32") && (sLoc.GetLength() > 5))
+					continue;
+				DWORD loc = _tstoi(filename.Mid(12));
+				languagePacks.installedLangs.push_back(loc);
+			}
+		}*/
+	}
+
+	git_config_get_multivar_foreach(versioncheck, "tortoisegit.langs", nullptr, [](const git_config_entry* configentry, void* payload) -> int
+	{
+		LanguagePacks* languagePacks = (LanguagePacks*)payload;
+		CString langs = CUnicodeUtils::GetUnicode(configentry->value);
+
+		int nextTokenPos = langs.Find(_T(";"), 5); // be extensible for the future
+		if (nextTokenPos > 0)
+			langs = langs.Left(nextTokenPos);
+		CString sLang = _T("TortoiseGit Language Pack ") + langs.Mid(5);
+
+		DWORD loc = _tstoi(langs.Mid(0, 4));
+		TCHAR buf[MAX_PATH] = { 0 };
+		GetLocaleInfo(loc, LOCALE_SNATIVELANGNAME, buf, _countof(buf));
+		CString sLang2(buf);
+		GetLocaleInfo(loc, LOCALE_SNATIVECTRYNAME, buf, _countof(buf));
+		if (buf[0])
+		{
+			sLang2 += _T(" (");
+			sLang2 += buf;
+			sLang2 += _T(")");
+		}
+
+		bool installed = std::find(languagePacks->installedLangs.cbegin(), languagePacks->installedLangs.cend(), loc) != languagePacks->installedLangs.cend();
+		LangPack pack = { sLang, sLang2, loc, langs.Mid(5), installed };
+		languagePacks->availableLangs.push_back(pack);
+
+		return 0;
+	}, &languagePacks);
+	std::stable_sort(languagePacks.availableLangs.begin(), languagePacks.availableLangs.end(), [&](const LangPack& a, const LangPack& b) -> int
+	{
+		return (a.m_Installed && !b.m_Installed) ? 1 : (!a.m_Installed && b.m_Installed) ? 0 : (a.m_PackName.Compare(b.m_PackName) < 0);
+	});
+	filenamePattern.Empty();
+	versioncheck.GetString(_T("tortoisegit.languagepackfilename"), filenamePattern);
+	if (filenamePattern.IsEmpty())
+		filenamePattern = _T("TortoiseGit-LanguagePack-%1!s!-%2!s!bit-%3!s!.msi");
+	int cnt = 0;
+	for (auto& langs : languagePacks.availableLangs)
+	{
+		//int pos = m_ctrlFiles.InsertItem(m_ctrlFiles.GetItemCount(), langs.m_PackName);
+		//m_ctrlFiles.SetItemText(pos, 1, langs.m_LangName);
+
+		LVITEM listItem = { 0 };
+		listItem.mask = LVIF_TEXT;
+		listItem.iItem = ++cnt;
+		listItem.iSubItem = 0;
+		listItem.pszText = langs.m_PackName.GetBuffer();
+		ListView_InsertItem(listview, &listItem);
+		langs.m_PackName.ReleaseBuffer();
+		/*listItem.mask |= LVCF_SUBITEM;
+		listItem.iSubItem = 1;
+		listItem.pszText = L"de";
+		ListView_SetItem(listview, &listItem);*/
+
+		CString filename;
+		filename.FormatMessage(filenamePattern, version, x86x64, langs.m_LangCode, langs.m_LocaleID);
+		//m_ctrlFiles.SetItemData(pos, (DWORD_PTR)(new CUpdateListCtrl::Entry(filename, CUpdateListCtrl::STATUS_NONE)));
+
+		/*if (langs.m_Installed)
+			m_ctrlFiles.SetCheck(pos, TRUE);*/
+	}
+	//DialogEnableWindow(IDC_BUTTON_UPDATE, TRUE);
+}
+
+CString GetWinINetError(DWORD err)
+{
+	CString readableError = CFormatMessageWrapper(err);
+	if (readableError.IsEmpty())
+	{
+		for (const CString& module : { _T("wininet.dll"), _T("urlmon.dll") })
+		{
+			LPTSTR buffer;
+			FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_IGNORE_INSERTS | FORMAT_MESSAGE_FROM_HMODULE, GetModuleHandle(module), err, 0, (LPTSTR)&buffer, 0, NULL);
+			readableError = buffer;
+			LocalFree(buffer);
+			if (!readableError.IsEmpty())
+				break;
+		}
+	}
+	return readableError.Trim();
+}
+
 DWORD WINAPI CheckThread(LPVOID lpParameter)
 {
 	HWND hDlg = (HWND)lpParameter;
@@ -208,10 +369,141 @@ DWORD WINAPI CheckThread(LPVOID lpParameter)
 	CString sCheckURL = _T("https://versioncheck.tortoisegit.org/version.txt");
 
 	CAutoConfig versioncheck(true);
+	CString tempfile = GetTempFile();
+	CString errorText, temp;
+	CString ver;
+	DWORD ret = m_updateDownloader->DownloadFile(sCheckURL, tempfile, false);
+	if (!ret)
+	{
+		CString signatureTempfile = GetTempFile();
+		ret = m_updateDownloader->DownloadFile(sCheckURL + SIGNATURE_FILE_ENDING, signatureTempfile, false);
+		if (ret || VerifyIntegrity(tempfile, signatureTempfile, m_updateDownloader))
+		{
+			CString error = _T("Could not verify digital signature.");
+			if (ret)
+				error += _T("\r\nError: ") + GetWinINetError(ret) + _T(" (on ") + sCheckURL + SIGNATURE_FILE_ENDING + _T(")");
+			//SetDlgItemText(IDC_CHECKRESULT, error);
+			DeleteUrlCacheEntry(sCheckURL);
+			DeleteUrlCacheEntry(sCheckURL + SIGNATURE_FILE_ENDING);
+			goto finish;
+		}
+	}
+	else if (ret)
+	{
+		DeleteUrlCacheEntry(sCheckURL);
+		/*if (CRegDWORD(_T("Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings\\GlobalUserOffline"), 0))
+			errorText.LoadString(IDS_OFFLINEMODE); // offline mode enabled
+		else
+			errorText.Format(IDS_CHECKNEWER_NETERROR_FORMAT, (LPCTSTR)(GetWinINetError(ret) + _T(" URL: ") + sCheckURL), ret);
+		SetDlgItemText(IDC_CHECKRESULT, errorText);*/
+		goto finish;
+	}
 
-	/*Sleep(2500);
+	git_config_add_file_ondisk(versioncheck, CUnicodeUtils::GetUTF8(tempfile), GIT_CONFIG_LEVEL_GLOBAL, 0);
+
+	unsigned int major, minor, micro, build;
+	major = minor = micro = build = 0;
+	unsigned __int64 version = 0;
+
+	if (!versioncheck.GetString(_T("tortoisegit.version"), ver))
+	{
+		CString vertemp = ver;
+		major = _ttoi(vertemp);
+		vertemp = vertemp.Mid(vertemp.Find('.') + 1);
+		minor = _ttoi(vertemp);
+		vertemp = vertemp.Mid(vertemp.Find('.') + 1);
+		micro = _ttoi(vertemp);
+		vertemp = vertemp.Mid(vertemp.Find('.') + 1);
+		build = _ttoi(vertemp);
+		version = major;
+		version <<= 16;
+		version += minor;
+		version <<= 16;
+		version += micro;
+		version <<= 16;
+		version += build;
+
+		if (version == 0)
+		{
+			/*temp.LoadString(IDS_CHECKNEWER_NETERROR);
+			SetDlgItemText(IDC_CHECKRESULT, temp);*/
+			goto finish;
+		}
+
+		// another versionstring for the filename can be provided
+		// this is needed for preview releases
+		vertemp.Empty();
+		versioncheck.GetString(_T("tortoisegit.versionstring"), vertemp);
+		if (!vertemp.IsEmpty())
+			ver = vertemp;
+	}
+	else
+	{
+		/*errorText = _T("Could not parse version check file: ") + g_Git.GetLibGit2LastErr();
+		SetDlgItemText(IDC_CHECKRESULT, errorText);*/
+		DeleteUrlCacheEntry(sCheckURL);
+		goto finish;
+	}
+
+	{
+		CString versionstr;
+		versionstr.Format(_T("%u.%u.%u.%u"), major, minor, micro, build);
+		if (versionstr != ver)
+			versionstr += _T(" (") + ver + _T(")");
+		/*temp.Format(IDS_CHECKNEWER_CURRENTVERSION, (LPCTSTR)versionstr);
+		SetDlgItemText(IDC_CURRENTVERSION, temp);*/
+
+			versioncheck.GetString(_T("tortoisegit.infotext"), temp);
+			if (!temp.IsEmpty())
+			{
+				CString tempLink;
+				versioncheck.GetString(_T("tortoisegit.infotexturl"), tempLink);
+				//if (!tempLink.IsEmpty()) // find out the download link-URL, if any
+					//m_sUpdateDownloadLink = tempLink;
+			}
+			//else
+				//temp.LoadString(IDS_CHECKNEWER_NEWERVERSIONAVAILABLE);
+			//SetDlgItemText(IDC_CHECKRESULT, temp);
+
+			FillDownloads(versioncheck, ver);
+
+			// Show download controls
+			/*RECT rectWindow, rectProgress, rectGroupDownloads, rectOKButton;
+			GetWindowRect(&rectWindow);
+			m_progress.GetWindowRect(&rectProgress);
+			GetDlgItem(IDC_GROUP_DOWNLOADS)->GetWindowRect(&rectGroupDownloads);
+			GetDlgItem(IDOK)->GetWindowRect(&rectOKButton);
+			LONG bottomDistance = rectWindow.bottom - rectOKButton.bottom;
+			OffsetRect(&rectOKButton, 0, (rectGroupDownloads.bottom + (rectGroupDownloads.bottom - rectProgress.bottom)) - rectOKButton.top);
+			rectWindow.bottom = rectOKButton.bottom + bottomDistance;
+			MoveWindow(&rectWindow);
+			::MapWindowPoints(NULL, GetSafeHwnd(), (LPPOINT)&rectOKButton, 2);
+			if (CRegDWORD(_T("Software\\TortoiseGit\\VersionCheck"), TRUE) != FALSE && !m_bForce && !m_bShowInfo)
+			{
+				GetDlgItem(IDC_DONOTASKAGAIN)->ShowWindow(SW_SHOW);
+				rectOKButton.left += 60;
+				temp.LoadString(IDS_REMINDMELATER);
+				GetDlgItem(IDOK)->SetWindowText(temp);
+				rectOKButton.right += 160;
+			}
+			GetDlgItem(IDOK)->MoveWindow(&rectOKButton);
+			m_ctrlFiles.ShowWindow(SW_SHOW);
+			GetDlgItem(IDC_GROUP_DOWNLOADS)->ShowWindow(SW_SHOW);
+			CenterWindow();
+			m_bShowInfo = TRUE;*/
+	}
+
+finish:
+	/*if (!m_sUpdateDownloadLink.IsEmpty())
+	{
+		m_link.ShowWindow(SW_SHOW);
+		m_link.SetURL(m_sUpdateDownloadLink);
+	}*/
+	//m_bThreadRunning = FALSE;
+	//DialogEnableWindow(IDOK, TRUE);
+	/*Sleep(2500);*/
 	HWND listview = GetDlgItem(hDlg, IDC_LIST_DOWNLOADS);
-	ShowWindow(listview, SW_SHOW);*/
+	ShowWindow(listview, SW_SHOW);
 	return 0;
 }
 
@@ -224,7 +516,7 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 	case WM_INITDIALOG:
 	{
 		MarkWindowAsUnpinnable(hDlg);
-		HWND listview = GetDlgItem(hDlg, IDC_LIST_DOWNLOADS);
+		listview = GetDlgItem(hDlg, IDC_LIST_DOWNLOADS);
 		ListView_SetExtendedListViewStyle(listview, LVS_EX_DOUBLEBUFFER | LVS_EX_CHECKBOXES);
 		LVCOLUMN column = { 0 };
 		column.cx = 350;
@@ -234,16 +526,6 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 		column.cx = 200;
 		column.iOrder = 1;
 		ListView_InsertColumn(listview, 1, &column);
-		LVITEM listItem = { 0 };
-		listItem.mask = LVIF_TEXT;
-		listItem.iItem = 0;
-		listItem.iSubItem = 0;
-		listItem.pszText = L"TortoiseGit";
-		ListView_InsertItem(listview, &listItem);
-		listItem.mask |= LVCF_SUBITEM;
-		listItem.iSubItem = 1;
-		listItem.pszText = L"de";
-		ListView_SetItem(listview, &listItem);
 		ShowWindow(listview, SW_HIDE);
 
 		// hide download controls
@@ -261,7 +543,7 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 		GetDlgItem(IDOK)->MoveWindow(&rectOKButton);*/
 
 		CAutoGeneralHandle m_eventStop = CreateEvent(nullptr, TRUE, FALSE, nullptr);
-		auto m_updateDownloader = new CUpdateDownloader(hDlg, FALSE, WM_USER_DISPLAYSTATUS, m_eventStop);
+		m_updateDownloader = new CUpdateDownloader(hDlg, FALSE, WM_USER_DISPLAYSTATUS, m_eventStop);
 
 		//https://msdn.microsoft.com/en-us/library/windows/desktop/ms682516%28v=vs.85%29.aspx
 		CAutoGeneralHandle thread = CreateThread(nullptr, 0, CheckThread, hDlg, 0, nullptr);

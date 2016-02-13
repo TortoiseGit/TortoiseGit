@@ -180,7 +180,7 @@ resend:
 			break;
 
 		buff[downloaded] = '\0';
-		if (fwrite(buff.get(), sizeof(TCHAR), downloaded, destinationFile) != downloaded)
+		if (fwrite(buff.get(), sizeof(char), downloaded, destinationFile) != downloaded)
 			return GetLastError();
 
 		downloadedSum += downloaded;

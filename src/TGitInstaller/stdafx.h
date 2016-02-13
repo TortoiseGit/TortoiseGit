@@ -37,6 +37,7 @@
 #include <memory>
 #include <map>
 #include <vector>
+#include <algorithm>
 
 #include "SmartHandle.h"
 

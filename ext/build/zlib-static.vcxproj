@@ -39,6 +39,8 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <Optimization Condition="'$(Configuration)'=='Release'">MinSpace</Optimization>
+      <FavorSizeOrSpeed Condition="'$(Configuration)'=='Release'">Size</FavorSizeOrSpeed>
     </ClCompile>
     <Link>
       <ModuleDefinitionFile>..\zlib\win32\zlib.def</ModuleDefinitionFile>
