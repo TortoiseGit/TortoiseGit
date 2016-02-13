@@ -27,6 +27,8 @@ Released: unreleased
  * Fixed issue #2629: "Browse References Dialog" save sort column + order
  * Fixed issue #2678: Filter out special ref names in log graph
  * Fixed issue #2692: Add support for pull.rebase and branch.name.rebase
+ * Fixed issue #2701: Add and Revert should respect Autoclose settings and not show any dialog boxes
+   Maybe we introduce finer grained auto close levels later.
 
 == Bug Fixes ==
  * Fixed issue #2647: TortoiseGitBlame does not display files correctly with mixed line endings (such as CRCRLF)

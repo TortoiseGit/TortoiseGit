@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2015 - TortoiseGit
+// Copyright (C) 2008-2016 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -42,7 +42,6 @@ public:
 
 
 	void SetCommand(ProgressCommand* cmd) { m_ProgList.SetCommand(cmd); }
-	void SetAutoClose(DWORD ac) {m_dwCloseOnEnd = ac;}
 	void SetOptions(DWORD opts) {m_ProgList.SetOptions(opts);}
 
 	/**
@@ -89,7 +88,7 @@ private:
 	PostCmdList				m_PostCmdList;
 
 	CBrush					m_background_brush;
-	DWORD					m_dwCloseOnEnd;
+	DWORD					m_AutoClose;
 
 	typedef struct {
 		int id;
