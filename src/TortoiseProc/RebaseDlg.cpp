@@ -36,6 +36,7 @@
 #include "CommitDlg.h"
 #include "StringUtils.h"
 #include "Hooks.h"
+#include "LogDlg.h"
 
 // CRebaseDlg dialog
 
@@ -111,6 +112,7 @@ BEGIN_MESSAGE_MAP(CRebaseDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_REBASE_SPLIT_COMMIT, &CRebaseDlg::OnBnClickedRebaseSplitCommit)
 	ON_BN_CLICKED(IDC_BUTTON_ONTO, &CRebaseDlg::OnBnClickedButtonOnto)
 	ON_BN_CLICKED(IDHELP, OnHelp)
+	ON_BN_CLICKED(IDC_BUTTON_ADD, &CRebaseDlg::OnBnClickedButtonAdd)
 END_MESSAGE_MAP()
 
 void CRebaseDlg::CleanUpRebaseActiveFolder()
@@ -134,6 +136,7 @@ void CRebaseDlg::AddRebaseAnchor()
 	AddAnchor(IDC_SPLITALLOPTIONS, TOP_LEFT);
 	AddAnchor(IDC_BUTTON_UP, TOP_LEFT);
 	AddAnchor(IDC_BUTTON_DOWN, TOP_LEFT);
+	AddAnchor(IDC_BUTTON_ADD, TOP_LEFT);
 	AddAnchor(IDC_REBASE_COMBOXEX_UPSTREAM, TOP_CENTER, TOP_RIGHT);
 	AddAnchor(IDC_REBASE_COMBOXEX_BRANCH, TOP_LEFT, TOP_CENTER);
 	AddAnchor(IDC_BUTTON_REVERSE, TOP_CENTER);
@@ -142,8 +145,8 @@ void CRebaseDlg::AddRebaseAnchor()
 	AddAnchor(IDC_REBASE_STATIC_UPSTREAM, TOP_CENTER);
 	AddAnchor(IDC_REBASE_STATIC_BRANCH,TOP_LEFT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
-	AddAnchor(IDC_REBASE_CHECK_FORCE,TOP_RIGHT);
-	AddAnchor(IDC_REBASE_CHECK_PRESERVEMERGES, TOP_LEFT);
+	AddAnchor(IDC_REBASE_CHECK_FORCE, TOP_CENTER, TOP_RIGHT);
+	AddAnchor(IDC_REBASE_CHECK_PRESERVEMERGES, TOP_LEFT, TOP_CENTER);
 	AddAnchor(IDC_CHECK_CHERRYPICKED_FROM, TOP_RIGHT);
 	AddAnchor(IDC_REBASE_SPLIT_COMMIT, BOTTOM_RIGHT);
 	AddAnchor(IDC_REBASE_POST_BUTTON,BOTTOM_LEFT);
@@ -397,6 +400,7 @@ void CRebaseDlg::DoSize(int delta)
 	CSplitterControl::ChangePos(GetDlgItem(IDC_SPLITALLOPTIONS), 0, delta);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_BUTTON_UP), 0, delta);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_BUTTON_DOWN), 0, delta);
+	CSplitterControl::ChangePos(GetDlgItem(IDC_BUTTON_ADD), 0, delta);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_REBASE_CHECK_FORCE),0,delta);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_REBASE_CHECK_PRESERVEMERGES), 0, delta);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_CHECK_CHERRYPICKED_FROM), 0, delta);
@@ -423,6 +427,7 @@ void CRebaseDlg::DoSize(int delta)
 	GetDlgItem(IDC_CHECK_CHERRYPICKED_FROM)->Invalidate();
 	GetDlgItem(IDC_BUTTON_UP)->Invalidate();
 	GetDlgItem(IDC_BUTTON_DOWN)->Invalidate();
+	GetDlgItem(IDC_BUTTON_ADD)->Invalidate();
 }
 
 void CRebaseDlg::SetSplitterRange()
@@ -1663,6 +1668,7 @@ void CRebaseDlg::SetControlEnable()
 		this->GetDlgItem(IDC_SPLITALLOPTIONS)->EnableWindow(TRUE);
 		this->GetDlgItem(IDC_BUTTON_UP)->EnableWindow(TRUE);
 		this->GetDlgItem(IDC_BUTTON_DOWN)->EnableWindow(TRUE);
+		this->GetDlgItem(IDC_BUTTON_ADD)->EnableWindow(!m_bPreserveMerges);
 
 		if(!m_IsCherryPick)
 		{
@@ -1696,6 +1702,7 @@ void CRebaseDlg::SetControlEnable()
 		this->GetDlgItem(IDC_REBASE_CHECK_PRESERVEMERGES)->EnableWindow(FALSE);
 		this->GetDlgItem(IDC_BUTTON_UP)->EnableWindow(FALSE);
 		this->GetDlgItem(IDC_BUTTON_DOWN)->EnableWindow(FALSE);
+		this->GetDlgItem(IDC_BUTTON_ADD)->EnableWindow(FALSE);
 
 		if( m_RebaseStage == REBASE_DONE && (this->m_PostButtonTexts.GetCount() != 0) )
 		{
@@ -2444,6 +2451,7 @@ void CRebaseDlg::OnBnClickedButtonBrowse()
 void CRebaseDlg::OnBnClickedRebaseCheckForce()
 {
 	this->UpdateData();
+	GetDlgItem(IDC_BUTTON_ADD)->EnableWindow(!m_bPreserveMerges);
 	this->FetchLogList();
 }
 
@@ -2743,4 +2751,43 @@ void CRebaseDlg::OnSysColorChange()
 	m_LogMessageCtrl.SetFont(CAppUtils::GetLogFontName(), CAppUtils::GetLogFontSize());
 	m_wndOutputRebase.SetColors(true);
 	m_wndOutputRebase.SetFont(CAppUtils::GetLogFontName(), CAppUtils::GetLogFontSize());
+}
+
+void CRebaseDlg::OnBnClickedButtonAdd()
+{
+	CLogDlg dlg;
+	// tell the dialog to use mode for selecting revisions
+	dlg.SetSelect(true);
+	// allow multi-select
+	dlg.SingleSelection(false);
+	if (dlg.DoModal() != IDOK)
+		return;
+
+	auto selectedHashes = dlg.GetSelectedHash();
+	for (auto it = selectedHashes.crbegin(); it != selectedHashes.crend(); ++it)
+	{
+		GitRevLoglist* pRev = m_CommitList.m_logEntries.m_pLogCache->GetCacheData(*it);
+		if (pRev->GetCommit(*it))
+			return;
+		if (pRev->GetParentFromHash(pRev->m_CommitHash))
+			return;
+		pRev->GetRebaseAction() = CGitLogListBase::LOGACTIONS_REBASE_PICK;
+		if (m_CommitList.m_IsOldFirst)
+		{
+			m_CommitList.m_logEntries.push_back(pRev->m_CommitHash);
+			m_CommitList.m_arShownList.SafeAdd(pRev);
+		}
+		else
+		{
+			m_CommitList.m_logEntries.insert(m_CommitList.m_logEntries.cbegin(), pRev->m_CommitHash);
+			m_CommitList.m_arShownList.SafeAddFront(pRev);
+		}
+	}
+	m_CommitList.SetItemCountEx((int)m_CommitList.m_logEntries.size());
+	m_CommitList.Invalidate();
+
+	if (m_CommitList.m_IsOldFirst)
+		m_CurrentRebaseIndex = -1;
+	else
+		m_CurrentRebaseIndex = (int)m_CommitList.m_logEntries.size();
 }

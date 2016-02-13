@@ -314,7 +314,7 @@ msgstr ""
 msgid "&Activate"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1382)
+#. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1382, Dialog IDD_REBASE: Control id 1382)
 msgid "&Add"
 msgstr ""
 

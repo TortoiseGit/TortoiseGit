@@ -190,6 +190,15 @@ public:
 		erase(begin() + i);
 	}
 
+	void SafeAddFront(GitRevLoglist* newElement)
+	{
+		if (m_critSec)
+			m_critSec->Lock();
+		insert(cbegin(), newElement);
+		if (m_critSec)
+			m_critSec->Unlock();
+	}
+
 	void  SafeRemoveAll()
 	{
 		if(m_critSec)

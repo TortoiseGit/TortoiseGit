@@ -267,4 +267,5 @@ protected:
 	afx_msg LRESULT OnRebaseActionMessage(WPARAM wParam, LPARAM lParam);
 	afx_msg void OnBnClickedRebaseSplitCommit();
 	afx_msg void OnBnClickedButtonOnto();
+	afx_msg void OnBnClickedButtonAdd();
 };

@@ -29,6 +29,7 @@ Released: unreleased
  * Fixed issue #2593: Hitting escape closes the commit window without any attention message
  * Fixed issue #2702: File selection dialog should not open for Add if only files are selected
  * Fixed issue #1749: Create Patch Serial: Remember "Since" branch
+ * Fixed issue #2264: Insert new items into interactive rebase process
 
 == Bug Fixes ==
  * Fixed issue #2837: Layout of overlapping icons settings dialog
