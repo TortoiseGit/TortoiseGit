@@ -6,11 +6,20 @@
 #include <propsys.h>
 #include <PropKey.h>
 
+#include "UpdateDownloader.h"
+#include "Win7.h"
+
 #include <commctrl.h>
 #pragma comment(lib, "comctl32.lib")
 #pragma comment(linker, "\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
 #define MAX_LOADSTRING 100
+
+#define SIGNATURE_FILE_ENDING _T(".rsa.asc")
+
+#define WM_USER_DISPLAYSTATUS	(WM_USER + 1)
+#define WM_USER_ENDDOWNLOAD		(WM_USER + 2)
+#define WM_USER_FILLCHANGELOG	(WM_USER + 3)
 
 // Globale Variablen:
 HINSTANCE hInst;								// Aktuelle Instanz
@@ -192,6 +201,20 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	return 0;
 }
 
+DWORD WINAPI CheckThread(LPVOID lpParameter)
+{
+	HWND hDlg = (HWND)lpParameter;
+
+	CString sCheckURL = _T("https://versioncheck.tortoisegit.org/version.txt");
+
+	CAutoConfig versioncheck(true);
+
+	/*Sleep(2500);
+	HWND listview = GetDlgItem(hDlg, IDC_LIST_DOWNLOADS);
+	ShowWindow(listview, SW_SHOW);*/
+	return 0;
+}
+
 // Meldungshandler für Infofeld.
 INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -199,8 +222,51 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 	switch (message)
 	{
 	case WM_INITDIALOG:
+	{
 		MarkWindowAsUnpinnable(hDlg);
-		::SendMessage(GetDlgItem(hDlg, IDC_LIST_DOWNLOADS), TB_SETEXTENDEDSTYLE, 0, LVS_EX_DOUBLEBUFFER | LVS_EX_CHECKBOXES);
+		HWND listview = GetDlgItem(hDlg, IDC_LIST_DOWNLOADS);
+		ListView_SetExtendedListViewStyle(listview, LVS_EX_DOUBLEBUFFER | LVS_EX_CHECKBOXES);
+		LVCOLUMN column = { 0 };
+		column.cx = 350;
+		column.mask = LVCF_WIDTH;
+		column.iOrder = 0;
+		ListView_InsertColumn(listview, 0, &column);
+		column.cx = 200;
+		column.iOrder = 1;
+		ListView_InsertColumn(listview, 1, &column);
+		LVITEM listItem = { 0 };
+		listItem.mask = LVIF_TEXT;
+		listItem.iItem = 0;
+		listItem.iSubItem = 0;
+		listItem.pszText = L"TortoiseGit";
+		ListView_InsertItem(listview, &listItem);
+		listItem.mask |= LVCF_SUBITEM;
+		listItem.iSubItem = 1;
+		listItem.pszText = L"de";
+		ListView_SetItem(listview, &listItem);
+		ShowWindow(listview, SW_HIDE);
+
+		// hide download controls
+		/*m_ctrlFiles.ShowWindow(SW_HIDE);
+		GetDlgItem(IDC_GROUP_DOWNLOADS)->ShowWindow(SW_HIDE);
+		RECT rectWindow, rectGroupDownloads, rectOKButton;
+		GetWindowRect(&rectWindow);
+		GetDlgItem(IDC_GROUP_DOWNLOADS)->GetWindowRect(&rectGroupDownloads);
+		GetDlgItem(IDOK)->GetWindowRect(&rectOKButton);
+		LONG bottomDistance = rectWindow.bottom - rectOKButton.bottom;
+		OffsetRect(&rectOKButton, 0, rectGroupDownloads.top - rectOKButton.top);
+		rectWindow.bottom = rectOKButton.bottom + bottomDistance;
+		MoveWindow(&rectWindow);
+		::MapWindowPoints(NULL, GetSafeHwnd(), (LPPOINT)&rectOKButton, 2);
+		GetDlgItem(IDOK)->MoveWindow(&rectOKButton);*/
+
+		CAutoGeneralHandle m_eventStop = CreateEvent(nullptr, TRUE, FALSE, nullptr);
+		auto m_updateDownloader = new CUpdateDownloader(hDlg, FALSE, WM_USER_DISPLAYSTATUS, m_eventStop);
+
+		//https://msdn.microsoft.com/en-us/library/windows/desktop/ms682516%28v=vs.85%29.aspx
+		CAutoGeneralHandle thread = CreateThread(nullptr, 0, CheckThread, hDlg, 0, nullptr);
+
+	}
 		return (INT_PTR)TRUE;
 
 	case WM_COMMAND:
@@ -210,7 +276,10 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 			return (INT_PTR)TRUE;
 		}
 		break;
+	case WM_USER_DISPLAYSTATUS:
+		break;
 	}
+
 	return (INT_PTR)FALSE;
 }
 

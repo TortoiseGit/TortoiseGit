@@ -287,6 +287,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RestartExplorer", "Tortoise
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TGitInstaller", "TGitInstaller\TGitInstaller.vcxproj", "{C0EAFC2C-9A89-43E9-9576-4575B217FA82}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libgit2-static", "..\ext\build\libgit2-static.vcxproj", "{2B4F366C-93BA-491E-87AF-5EF7B87E75F7}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zlib-static", "..\ext\build\zlib-static.vcxproj", "{5C6B6A95-2053-4593-9617-C5C176736D5A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -1111,6 +1115,26 @@ Global
 		{C0EAFC2C-9A89-43E9-9576-4575B217FA82}.TortoisePot-Debug|x64.ActiveCfg = Debug|Win32
 		{C0EAFC2C-9A89-43E9-9576-4575B217FA82}.TortoisePot-Release|Win32.ActiveCfg = Release|Win32
 		{C0EAFC2C-9A89-43E9-9576-4575B217FA82}.TortoisePot-Release|x64.ActiveCfg = Release|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B87E75F7}.Debug|Win32.ActiveCfg = Debug|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B87E75F7}.Debug|Win32.Build.0 = Debug|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B87E75F7}.Debug|x64.ActiveCfg = Debug|x64
+		{2B4F366C-93BA-491E-87AF-5EF7B87E75F7}.Release|Win32.ActiveCfg = Release|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B87E75F7}.Release|Win32.Build.0 = Release|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B87E75F7}.Release|x64.ActiveCfg = Release|x64
+		{2B4F366C-93BA-491E-87AF-5EF7B87E75F7}.TortoisePot-Debug|Win32.ActiveCfg = Debug|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B87E75F7}.TortoisePot-Debug|x64.ActiveCfg = Debug|x64
+		{2B4F366C-93BA-491E-87AF-5EF7B87E75F7}.TortoisePot-Release|Win32.ActiveCfg = Release|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B87E75F7}.TortoisePot-Release|x64.ActiveCfg = Release|x64
+		{5C6B6A95-2053-4593-9617-C5C176736D5A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{5C6B6A95-2053-4593-9617-C5C176736D5A}.Debug|Win32.Build.0 = Debug|Win32
+		{5C6B6A95-2053-4593-9617-C5C176736D5A}.Debug|x64.ActiveCfg = Debug|x64
+		{5C6B6A95-2053-4593-9617-C5C176736D5A}.Release|Win32.ActiveCfg = Release|Win32
+		{5C6B6A95-2053-4593-9617-C5C176736D5A}.Release|Win32.Build.0 = Release|Win32
+		{5C6B6A95-2053-4593-9617-C5C176736D5A}.Release|x64.ActiveCfg = Release|x64
+		{5C6B6A95-2053-4593-9617-C5C176736D5A}.TortoisePot-Debug|Win32.ActiveCfg = Debug|Win32
+		{5C6B6A95-2053-4593-9617-C5C176736D5A}.TortoisePot-Debug|x64.ActiveCfg = Debug|x64
+		{5C6B6A95-2053-4593-9617-C5C176736D5A}.TortoisePot-Release|Win32.ActiveCfg = Release|Win32
+		{5C6B6A95-2053-4593-9617-C5C176736D5A}.TortoisePot-Release|x64.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1182,5 +1206,7 @@ Global
 		{46132EB4-193D-43F1-8702-A1B49B7CC404} = {FB607AFD-DD1E-4C6D-8C34-BC00AF725037}
 		{FAF866CE-31FE-44BA-9B2B-9A6FA85778A0} = {FB607AFD-DD1E-4C6D-8C34-BC00AF725037}
 		{1BCD817A-4954-4EC2-AD5C-CC6D9AE3B699} = {97449875-7B08-41B1-AF99-1EBE64AD7939}
+		{2B4F366C-93BA-491E-87AF-5EF7B87E75F7} = {2CB340C3-B2ED-46F4-981E-847747E0A3BF}
+		{5C6B6A95-2053-4593-9617-C5C176736D5A} = {2CB340C3-B2ED-46F4-981E-847747E0A3BF}
 	EndGlobalSection
 EndGlobal
