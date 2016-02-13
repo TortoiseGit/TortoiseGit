@@ -33,6 +33,7 @@ Released: unreleased
  * Fixed issue #2551: Allow to create patches w/o a/ and b/ prefixes
  * Fixed issue #2302: One button to do Commit & push
  * Fixed issue #527: Fix the dialog after commit for us to be able to continue committing
+ * Fixed issue #2697: Display "In Commits" and "In ChangeList" tabs for Fetch&Rebase in Sync dialog
 
 == Bug Fixes ==
  * Fixed issue #2647: TortoiseGitBlame does not display files correctly with mixed line endings (such as CRCRLF)

@@ -383,6 +383,37 @@ void CSyncDlg::OnBnClickedButtonPull()
 	}
 }
 
+void CSyncDlg::ShowInCommits(const CString& friendname)
+{
+	CGitHash newHash;
+
+	if (g_Git.GetHash(newHash, friendname))
+	{
+		MessageBox(g_Git.GetGitLastErr(L"Could not get " + friendname + L" hash."), L"TortoiseGit", MB_ICONERROR);
+		return;
+	}
+
+	if (newHash == m_oldHash)
+	{
+		m_ctrlTabCtrl.ShowTab(IDC_IN_CHANGELIST - 1, false);
+		m_InLogList.ShowText(CString(MAKEINTRESOURCE(IDS_UPTODATE)));
+		m_ctrlTabCtrl.ShowTab(IDC_IN_LOGLIST - 1, true);
+		ShowTab(IDC_REFLIST);
+	}
+	else
+	{
+		m_ctrlTabCtrl.ShowTab(IDC_IN_CHANGELIST - 1, true);
+		m_ctrlTabCtrl.ShowTab(IDC_IN_LOGLIST - 1, true);
+
+		AddDiffFileList(&m_InChangeFileList, &m_arInChangeList, newHash.ToString(), m_oldHash.ToString());
+
+		CString range;
+		range.Format(L"%s..%s", (LPCTSTR)m_oldHash.ToString(), (LPCTSTR)newHash.ToString());
+		m_InLogList.FillGitLog(nullptr, &range, CGit::LOG_INFO_STAT | CGit::LOG_INFO_FILESTATE | CGit::LOG_INFO_SHOW_MERGEDFILE);
+		ShowTab(IDC_IN_LOGLIST);
+	}
+}
+
 void CSyncDlg::PullComplete()
 {
 	EnableControlButton(true);
@@ -423,27 +454,7 @@ void CSyncDlg::PullComplete()
 
 	}
 	else
-	{
-		if(newhash == this->m_oldHash)
-		{
-			this->m_ctrlTabCtrl.ShowTab(IDC_IN_CHANGELIST-1,false);
-			this->m_InLogList.ShowText(CString(MAKEINTRESOURCE(IDS_UPTODATE)));
-			this->m_ctrlTabCtrl.ShowTab(IDC_IN_LOGLIST-1,true);
-			this->ShowTab(IDC_REFLIST);
-		}
-		else
-		{
-			this->m_ctrlTabCtrl.ShowTab(IDC_IN_CHANGELIST-1,true);
-			this->m_ctrlTabCtrl.ShowTab(IDC_IN_LOGLIST-1,true);
-
-			this->AddDiffFileList(&m_InChangeFileList, &m_arInChangeList, newhash.ToString(), m_oldHash.ToString());
-
-			CString range;
-			range.Format(_T("%s..%s"), (LPCTSTR)m_oldHash.ToString(), (LPCTSTR)newhash.ToString());
-			m_InLogList.FillGitLog(nullptr, &range, CGit::LOG_INFO_STAT| CGit::LOG_INFO_FILESTATE | CGit::LOG_INFO_SHOW_MERGEDFILE);
-			this->ShowTab(IDC_IN_LOGLIST);
-		}
-	}
+		ShowInCommits(L"HEAD");
 }
 
 void CSyncDlg::FetchComplete()
@@ -482,13 +493,19 @@ void CSyncDlg::FetchComplete()
 		CAppUtils::RebaseAfterFetch(upstream, m_iPullRebase ? 2 : 0, m_iPullRebase == 2);
 		FillNewRefMap();
 		FetchOutList(true);
+
+		ShowInCommits(L"HEAD");
+
 		return;
 	}
 
 	CGitHash remoteBranchHash;
 	g_Git.GetHash(remoteBranchHash, upstream);
 	if (remoteBranchHash == m_oldRemoteHash && !m_oldRemoteHash.IsEmpty() && CMessageBox::ShowCheck(this->GetSafeHwnd(), IDS_REBASE_BRANCH_UNCHANGED, IDS_APPNAME, MB_ICONQUESTION | MB_YESNO | MB_DEFBUTTON2, _T("OpenRebaseRemoteBranchUnchanged"), IDS_MSGBOX_DONOTSHOWAGAIN) == IDNO)
+	{
+		ShowInCommits(upstream);
 		return;
+	}
 
 	if (g_Git.IsFastForward(_T("HEAD"), upstream))
 	{
@@ -516,6 +533,9 @@ void CSyncDlg::FetchComplete()
 			mergeProgress.DoModal();
 			FillNewRefMap();
 			FetchOutList(true);
+
+			ShowInCommits(L"HEAD");
+
 			return;
 		}
 	}
@@ -523,6 +543,8 @@ void CSyncDlg::FetchComplete()
 	CAppUtils::RebaseAfterFetch(upstream);
 	FillNewRefMap();
 	FetchOutList(true);
+
+	ShowInCommits(L"HEAD");
 }
 
 void CSyncDlg::StashComplete()

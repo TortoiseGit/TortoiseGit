@@ -186,6 +186,7 @@ protected:
 		return;
 	}
 
+	void ShowInCommits(const CString& friendname);
 	void PullComplete();
 	void FetchComplete();
 	void StashComplete();
