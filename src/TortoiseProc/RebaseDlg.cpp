@@ -585,10 +585,63 @@ void CRebaseDlg::FetchLogList()
 	CString refTo   = g_Git.FixBranchName(m_BranchCtrl.GetString());
 	CString range;
 	range.Format(_T("%s..%s"), (LPCTSTR)refFrom, (LPCTSTR)refTo);
-	this->m_CommitList.FillGitLog(nullptr, &range, m_bPreserveMerges ? 0 : CGit::LOG_INFO_NO_MERGE);
+	this->m_CommitList.FillGitLog(nullptr, &range, (m_bPreserveMerges ? 0 : CGit::LOG_INFO_NO_MERGE) | CGit::LOG_ORDER_TOPOORDER);
 
 	if( m_CommitList.GetItemCount() == 0 )
 		m_CommitList.ShowText(CString(MAKEINTRESOURCE(IDS_PROC_NOTHINGTOREBASE)));
+
+	m_rewrittenCommitsMap.clear();
+	if (m_bPreserveMerges)
+	{
+		CGitHash head;
+		if (g_Git.GetHash(head, _T("HEAD")))
+		{
+			AddLogString(CString(MAKEINTRESOURCE(IDS_PROC_NOHEAD)));
+			return;
+		}
+		CGitHash upstreamHash;
+		if (g_Git.GetHash(upstreamHash, m_Onto.IsEmpty() ? m_UpstreamCtrl.GetString() : m_Onto))
+		{
+			MessageBox(g_Git.GetGitLastErr(_T("Could not get hash of \"") + (m_Onto.IsEmpty()) ? m_UpstreamCtrl.GetString() : m_Onto + _T("\".")), _T("TortoiseGit"), MB_ICONERROR);
+			return;
+		}
+		CString mergecmd;
+		mergecmd.Format(L"git merge-base --all %s %s", (LPCTSTR)head.ToString(), (LPCTSTR)upstreamHash.ToString());
+		g_Git.Run(mergecmd, [&](const CStringA& line)
+		{
+			CGitHash hash;
+			hash.ConvertFromStrA(line);
+			if (hash.IsEmpty())
+				return;
+			m_rewrittenCommitsMap[hash] = upstreamHash;
+		});
+
+		std::vector<size_t> toDrop;
+		for (size_t i = m_CommitList.m_arShownList.size(); --i > 0;)
+		{
+			bool preserve = false;
+			GitRevLoglist* pRev = m_CommitList.m_arShownList.SafeGetAt(i);
+			for (const auto& parent : pRev->m_ParentHash)
+			{
+				const auto rewrittenParent = m_rewrittenCommitsMap.find(parent);
+				if (rewrittenParent != m_rewrittenCommitsMap.cend())
+				{
+					preserve = true;
+					break;
+				}
+			}
+			if (preserve)
+				m_rewrittenCommitsMap[pRev->m_CommitHash] = CGitHash();
+			else
+				toDrop.push_back(i);
+		}
+		for (auto it = toDrop.cbegin(); it != toDrop.cend(); ++it)
+		{
+			m_CommitList.m_arShownList.SafeRemoveAt(*it);
+			m_CommitList.m_logEntries.erase(m_CommitList.m_logEntries.begin() + *it);
+		}
+		m_CommitList.SetItemCountEx((int)m_CommitList.m_logEntries.size());
+	}
 
 #if 0
 	if(m_CommitList.m_logEntries[m_CommitList.m_logEntries.size()-1].m_ParentHash.size() >=0 )
@@ -917,23 +970,6 @@ int CRebaseDlg::StartRebase()
 		log.Format(_T("%s\r\n"), (LPCTSTR)CString(MAKEINTRESOURCE(IDS_PROC_REBASE_STARTCHERRYPICK)));
 
 	this->AddLogString(log);
-	for (int i = 0; i < m_CommitList.GetItemCount(); ++i)
-	{
-		m_rewrittenCommitsMap[m_CommitList.m_arShownList.SafeGetAt(i)->m_CommitHash] = CGitHash();
-	}
-	if (m_bPreserveMerges)
-	{
-		CString mergecmd;
-		mergecmd.Format(L"git merge-base --all %s %s", (LPCTSTR)m_OrigHEADHash.ToString(), (LPCTSTR)m_OrigUpstreamHash.ToString());
-		g_Git.Run(mergecmd, [&](const CStringA& line)
-		{
-			CGitHash hash;
-			hash.ConvertFromStrA(line);
-			if (hash.IsEmpty())
-				return;
-			m_rewrittenCommitsMap[hash] = m_OrigUpstreamHash;
-		});
-	}
 	return 0;
 }
 int CRebaseDlg::VerifyNoConflict()

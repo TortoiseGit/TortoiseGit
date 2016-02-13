@@ -172,6 +172,23 @@ public:
 			m_critSec->Unlock();
 	}
 
+	void SafeRemoveAt(size_t i)
+	{
+		if (m_critSec)
+			m_critSec->Lock();
+
+		SCOPE_EXIT
+		{
+			if (m_critSec)
+			m_critSec->Unlock();
+		};
+
+		if (i >= size())
+			return;
+
+		erase(begin() + i);
+	}
+
 	void  SafeRemoveAll()
 	{
 		if(m_critSec)
