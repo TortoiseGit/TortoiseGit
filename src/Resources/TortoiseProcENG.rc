@@ -4735,6 +4735,8 @@ BEGIN
                             "This preserves merge commits, however, it has known bugs as re-ordering commits is not working properly (same limitation as for vanilla git rebase), see help."
     IDS_PROC_LOG_BASIC_REFS "<Basic Refs>"
     IDS_PROC_LOG_SELECT_BASIC_REFS "All basic refs"
+    IDS_CHERRYPICK_MERGECOMMIT 
+                            """%s"" - ""%s""\nis a merge commit.\n\nWhich parent do you want to pick?"
 END
 
 #endif    // English (U.S.) resources

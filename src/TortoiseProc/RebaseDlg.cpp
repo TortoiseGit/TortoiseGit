@@ -288,6 +288,7 @@ BOOL CRebaseDlg::OnInitDialog()
 //	m_CommitList.m_IsOldFirst = TRUE;
 	m_CommitList.m_IsRebaseReplaceGraph = TRUE;
 	m_CommitList.m_bNoHightlightHead = TRUE;
+	m_CommitList.m_bIsCherryPick = !!m_IsCherryPick;
 
 	m_CommitList.InsertGitColumn();
 
@@ -354,7 +355,7 @@ void CRebaseDlg::SetAllRebaseAction(int action)
 {
 	for (size_t i = 0; i < this->m_CommitList.m_logEntries.size(); ++i)
 	{
-		if (action == CGitLogListBase::LOGACTIONS_REBASE_SQUASH && (i == this->m_CommitList.m_logEntries.size() - 1 || m_CommitList.m_logEntries.GetGitRevAt(i).ParentsCount() != 1))
+		if (action == CGitLogListBase::LOGACTIONS_REBASE_SQUASH && (i == this->m_CommitList.m_logEntries.size() - 1 || (!m_IsCherryPick && m_CommitList.m_logEntries.GetGitRevAt(i).ParentsCount() != 1)))
 			continue;
 		m_CommitList.m_logEntries.GetGitRevAt(i).GetRebaseAction() = action;
 	}
@@ -1789,6 +1790,25 @@ int CRebaseDlg::DoRebase()
 		cherryPickedFrom += _T("--allow-empty ");
 	else if (isEmpty < 0)
 		return -1;
+
+	if (m_IsCherryPick && pRev->m_ParentHash.size() > 1)
+	{
+		CString msg;
+		msg.Format(IDS_CHERRYPICK_MERGECOMMIT, (LPCTSTR)pRev->m_CommitHash.ToString(), (LPCTSTR)pRev->GetSubject());
+		CString parent1;
+		parent1.Format(IDS_PARENT, 1);
+		CString parent2;
+		parent2.Format(IDS_PARENT, 2);
+		CString cancel;
+		cancel.LoadString(IDS_MSGBOX_CANCEL);
+		auto ret = CMessageBox::Show(m_hWnd, msg, _T("TortoiseGit"), 3, IDI_QUESTION, parent1, parent2, cancel);
+		if (ret == 3)
+			return - 1;
+
+		CString mergeParam;
+		mergeParam.Format(L"-m %d ", ret);
+		cherryPickedFrom += mergeParam;
+	}
 
 	while (true)
 	{

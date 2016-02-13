@@ -230,6 +230,7 @@ public:
 	BOOL m_bShowBugtraqColumn;
 	BOOL m_bSearchIndex;
 	BOOL m_bCancelled;
+	bool m_bIsCherryPick;
 	unsigned __int64 m_ContextMenuMask;
 
 	bool				m_hasWC;

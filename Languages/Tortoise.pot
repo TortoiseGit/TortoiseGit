@@ -3173,7 +3173,7 @@ msgid "Copying..."
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_ABOUTBOX: Control id 1001)
-msgid "Copyright (C) 2009-2015 TortoiseGit"
+msgid "Copyright (C) 2009-2016 TortoiseGit"
 msgstr ""
 
 #. Resource IDs: (IDS_SPELLEDIT_CORRECTIONS)
@@ -10728,6 +10728,11 @@ msgstr ""
 
 #. Resource IDs: (16009)
 msgid "[Unassigned]"
+msgstr ""
+
+#. Resource IDs: (IDS_CHERRYPICK_MERGECOMMIT)
+#, c-format
+msgid "\"%s\" - \"%s\"\nis a merge commit.\n\nWhich parent do you want to pick?"
 msgstr ""
 
 #. Resource IDs: (IDS_PROC_COPY_REPOSITORY)

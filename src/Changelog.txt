@@ -29,6 +29,7 @@ Released: unreleased
  * Fixed issue #2692: Add support for pull.rebase and branch.name.rebase
  * Fixed issue #2701: Add and Revert should respect Autoclose settings and not show any dialog boxes
    Maybe we introduce finer grained auto close levels later.
+ * Fixed issue #1899: Support cherry-picking merge revisions 
 
 == Bug Fixes ==
  * Fixed issue #2647: TortoiseGitBlame does not display files correctly with mixed line endings (such as CRCRLF)

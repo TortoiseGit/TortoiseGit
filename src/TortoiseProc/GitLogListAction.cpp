@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2015 - TortoiseGit
+// Copyright (C) 2008-2016 - TortoiseGit
 // Copyright (C) 2005-2007 Marco Costalba
 
 // This program is free software; you can redistribute it and/or
@@ -1223,7 +1223,7 @@ void CGitLogList::SetSelectedRebaseAction(int action)
 		index = GetNextSelectedItem(pos);
 		if (((GitRevLoglist*)m_arShownList[index])->GetRebaseAction() & (LOGACTIONS_REBASE_CURRENT | LOGACTIONS_REBASE_DONE) || (index == GetItemCount() - 1 && action == LOGACTIONS_REBASE_SQUASH))
 			continue;
-		if (((GitRevLoglist*)m_arShownList[index])->ParentsCount() > 1 && action == LOGACTIONS_REBASE_SQUASH)
+		if (!m_bIsCherryPick && ((GitRevLoglist*)m_arShownList[index])->ParentsCount() > 1 && action == LOGACTIONS_REBASE_SQUASH)
 			continue;
 		((GitRevLoglist*)m_arShownList[index])->GetRebaseAction() = action;
 		CRect rect;
@@ -1246,7 +1246,7 @@ void CGitLogList::SetUnselectedRebaseAction(int action)
 			continue;
 		}
 
-		if (((GitRevLoglist*)m_arShownList[i])->GetRebaseAction() & (LOGACTIONS_REBASE_CURRENT | LOGACTIONS_REBASE_DONE) || (i == GetItemCount() - 1 && action == LOGACTIONS_REBASE_SQUASH) || (action == LOGACTIONS_REBASE_SQUASH && ((GitRevLoglist*)m_arShownList[i])->ParentsCount() != 1))
+		if (((GitRevLoglist*)m_arShownList[i])->GetRebaseAction() & (LOGACTIONS_REBASE_CURRENT | LOGACTIONS_REBASE_DONE) || (i == GetItemCount() - 1 && action == LOGACTIONS_REBASE_SQUASH) || (!m_bIsCherryPick && action == LOGACTIONS_REBASE_SQUASH && ((GitRevLoglist*)m_arShownList[i])->ParentsCount() != 1))
 			continue;
 		((GitRevLoglist*)m_arShownList[i])->GetRebaseAction() = action;
 		CRect rect;
@@ -1275,7 +1275,7 @@ void CGitLogList::ShiftSelectedRebaseAction()
 			break;
 		case LOGACTIONS_REBASE_EDIT:
 			*action = LOGACTIONS_REBASE_SQUASH;
-			if (index == GetItemCount() - 1)
+			if (index == GetItemCount() - 1 && (m_bIsCherryPick || ((GitRevLoglist*)m_arShownList[index])->m_ParentHash.size() == 1))
 				*action = LOGACTIONS_REBASE_PICK;
 			break;
 		case LOGACTIONS_REBASE_SQUASH:
