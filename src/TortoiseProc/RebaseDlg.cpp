@@ -1319,6 +1319,11 @@ void CRebaseDlg::OnBnClickedContinue()
 			dlg.m_bWholeProject = true;
 			dlg.m_bSelectFilesForCommit = true;
 			dlg.m_bCommitAmend = isFirst && (m_RebaseStage != REBASE_SQUASH_EDIT); //  do not amend on squash_edit stage, we need a normal commit there
+			if (isFirst && m_RebaseStage == REBASE_SQUASH_EDIT)
+			{
+				dlg.SetTime(m_SquashFirstMetaData.time);
+				dlg.SetAuthor(m_SquashFirstMetaData.GetAuthor());
+			}
 			CTGitPathList gpl;
 			gpl.AddPath(CTGitPath());
 			dlg.m_pathList = gpl;
@@ -1378,7 +1383,7 @@ void CRebaseDlg::OnBnClickedContinue()
 		CString out,cmd;
 
 		if(  m_RebaseStage == REBASE_SQUASH_EDIT )
-			cmd.Format(_T("git.exe commit %s-F \"%s\""), (LPCTSTR)m_SquashFirstMetaData, (LPCTSTR)tempfile);
+			cmd.Format(_T("git.exe commit %s-F \"%s\""), (LPCTSTR)m_SquashFirstMetaData.GetAsParam(), (LPCTSTR)tempfile);
 		else
 		{
 			CString options;
@@ -1765,7 +1770,7 @@ int CRebaseDlg::DoRebase()
 	}
 
 	if (nextCommitIsSquash && mode != CGitLogListBase::LOGACTIONS_REBASE_SQUASH)
-		m_SquashFirstMetaData.Format(_T("--date=%s --author=\"%s <%s>\" "), (LPCTSTR)pRev->GetAuthorDate().Format(_T("%Y-%m-%dT%H:%M:%S")), (LPCTSTR)pRev->GetAuthorName(), (LPCTSTR)pRev->GetAuthorEmail());
+		m_SquashFirstMetaData = SquashFirstMetaData(pRev);
 
 	CString log;
 	log.Format(_T("%s %d: %s"), (LPCTSTR)CGitLogListBase::GetRebaseActionName(mode), GetCurrentCommitID(), (LPCTSTR)pRev->m_CommitHash.ToString());

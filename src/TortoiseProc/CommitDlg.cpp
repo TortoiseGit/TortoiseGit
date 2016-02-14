@@ -233,6 +233,17 @@ BOOL CCommitDlg::OnInitDialog()
 
 	SetDlgTitle();
 
+	if (m_bSetAuthor)
+		GetDlgItem(IDC_COMMIT_AUTHORDATA)->ShowWindow(SW_SHOW);
+
+	if (m_bSetCommitDateTime)
+	{
+		m_CommitDate.SetTime(&m_wantCommitTime);
+		m_CommitTime.SetTime(&m_wantCommitTime);
+		GetDlgItem(IDC_COMMIT_DATEPICKER)->ShowWindow(SW_SHOW);
+		GetDlgItem(IDC_COMMIT_TIMEPICKER)->ShowWindow(SW_SHOW);
+	}
+
 	UpdateData(FALSE);
 
 	m_ListCtrl.Init(GITSLC_COLEXT | GITSLC_COLSTATUS | GITSLC_COLADD | GITSLC_COLDEL, _T("CommitDlg"), (GITSLC_POPALL ^ (GITSLC_POPCOMMIT | GITSLC_POPSAVEAS | GITSLC_PREPAREDIFF)), true, true);

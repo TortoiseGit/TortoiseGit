@@ -78,7 +78,18 @@ public:
 
 		m_ctrlShowPatch.Invalidate();
 	}
+	void SetAuthor(CString author)
+	{
+		m_bSetAuthor = TRUE;
+		m_sAuthor = author;
+	}
+	void SetTime(CTime time)
+	{
+		m_bSetCommitDateTime = TRUE;
+		m_wantCommitTime = time;
+	}
 private:
+	CTime m_wantCommitTime;
 	void ReloadHistoryEntries();
 	static UINT StatusThreadEntry(LPVOID pVoid);
 	UINT StatusThread();

@@ -121,7 +121,52 @@ protected:
 	CString GetRebaseModeName(int rebasemode);
 
 	CString m_SquashMessage;
-	CString m_SquashFirstMetaData;
+	struct SquashFirstMetaData
+	{
+		CString name;
+		CString email;
+		CTime time;
+		bool set = false;
+		
+		SquashFirstMetaData()
+			: set(false)
+		{
+		}
+
+		SquashFirstMetaData(GitRev* rev)
+			: set(true)
+		{
+			name = rev->GetAuthorName();
+			email = rev->GetAuthorEmail();
+			time = rev->GetAuthorDate();
+		}
+
+		void Empty()
+		{
+			set = false;
+			name.Empty();
+			email.Empty();
+			time = 0;
+		}
+
+		CString GetAuthor() const
+		{
+			if (!set)
+				return CString();
+			CString temp;
+			temp.Format(L"%s <%s>", name, email);
+			return temp;
+		}
+
+		CString GetAsParam() const
+		{
+			if (!set)
+				return CString();
+			CString temp;
+			temp.Format(_T("--date=%s --author=\"%s\" "), (LPCTSTR)time.Format(_T("%Y-%m-%dT%H:%M:%S")), (LPCTSTR)GetAuthor());
+			return temp;
+		}
+	} m_SquashFirstMetaData;
 
 	int CheckNextCommitIsSquash();
 	int GetCurrentCommitID();
