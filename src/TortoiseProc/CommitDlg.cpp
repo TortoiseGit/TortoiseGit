@@ -1841,11 +1841,7 @@ bool CCommitDlg::HandleMenuItemClick(int cmd, CSciEdit * pSciEdit)
 		// only one revision must be selected however
 		dlg.SingleSelection(true);
 		if (dlg.DoModal() == IDOK)
-		{
-			// get selected hash if any
-			CString selectedHash = dlg.GetSelectedHash();
-			pSciEdit->InsertText(selectedHash);
-		}
+			pSciEdit->InsertText(dlg.GetSelectedHash().at(0).ToString());
 		return true;
 	}
 
@@ -1859,10 +1855,8 @@ bool CCommitDlg::HandleMenuItemClick(int cmd, CSciEdit * pSciEdit)
 		dlg.SingleSelection(true);
 		if (dlg.DoModal() == IDOK)
 		{
-			// get selected hash if any
-			CString selectedHash = dlg.GetSelectedHash();
 			GitRev rev;
-			if (rev.GetCommit(selectedHash))
+			if (rev.GetCommit(dlg.GetSelectedHash().at(0).ToString()))
 			{
 				MessageBox(rev.GetLastErr(), _T("TortoiseGit"), MB_ICONERROR);
 				return false;

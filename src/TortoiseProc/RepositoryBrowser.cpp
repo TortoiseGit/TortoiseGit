@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2015 - TortoiseGit
+// Copyright (C) 2009-2016 - TortoiseGit
 // Copyright (C) 2003-2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -945,8 +945,7 @@ void CRepositoryBrowser::OnBnClickedButtonRevision()
 		dlg.SingleSelection(true);
 		if (dlg.DoModal() == IDOK)
 		{
-			// get selected hash if any
-			m_sRevision = dlg.GetSelectedHash();
+			m_sRevision = dlg.GetSelectedHash().at(0).ToString();
 			Refresh();
 		}
 }

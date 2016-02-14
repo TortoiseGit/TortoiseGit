@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2014 - TortoiseGit
+// Copyright (C) 2008-2014, 2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -95,10 +95,7 @@ protected:
 		dlg.SingleSelection(true);
 		if ( dlg.DoModal() == IDOK )
 		{
-			// get selected hash if any
-			CString selectedHash = dlg.GetSelectedHash();
-			// load into window, do this even if empty so that it is clear that nothing has been selected
-			m_ChooseVersioinVersion.SetWindowText( selectedHash );
+			m_ChooseVersioinVersion.SetWindowText(dlg.GetSelectedHash().at(0).ToString());
 			OnVersionChanged();
 		}
 	}

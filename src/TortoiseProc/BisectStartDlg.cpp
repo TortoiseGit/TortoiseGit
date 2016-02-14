@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2014-2015 TortoiseGit
+// Copyright (C) 2014-2016 TortoiseGit
 
 // with code of PullFetchDlg.cpp
 
@@ -150,10 +150,7 @@ void CBisectStartDlg::OnBnClickedButtonGood()
 	dlg.SingleSelection(true);
 	if (dlg.DoModal() == IDOK)
 	{
-		// get selected hash if any
-		CString selectedHash = dlg.GetSelectedHash();
-		// load into window, do this even if empty so that it is clear that nothing has been selected
-		m_cLastGoodRevision.SetWindowText(selectedHash);
+		m_cLastGoodRevision.SetWindowText(dlg.GetSelectedHash().at(0).ToString());
 		OnChangedRevision();
 	}
 }
@@ -171,10 +168,7 @@ void CBisectStartDlg::OnBnClickedButtonBad()
 	dlg.SingleSelection(true);
 	if (dlg.DoModal() == IDOK)
 	{
-		// get selected hash if any
-		CString selectedHash = dlg.GetSelectedHash();
-		// load into window, do this even if empty so that it is clear that nothing has been selected
-		m_cFirstBadRevision.SetWindowText(selectedHash);
+		m_cFirstBadRevision.SetWindowText(dlg.GetSelectedHash().at(0).ToString());
 		OnChangedRevision();
 	}
 }

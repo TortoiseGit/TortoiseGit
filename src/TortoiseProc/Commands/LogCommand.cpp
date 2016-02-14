@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2007-2008,2011 - TortoiseSVN
-// Copyright (C) 2008-2015 - TortoiseGit
+// Copyright (C) 2008-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -100,7 +100,9 @@ bool LogCommand::Execute()
 	dlg.DoModal();
 	if (parser.HasVal(_T("outfile")))
 	{
-		CString sText = dlg.GetSelectedHash();
+		CString sText;
+		if (!dlg.GetSelectedHash().empty())
+			sText = dlg.GetSelectedHash().at(0).ToString();
 		CStringUtils::WriteStringToTextFile(parser.GetVal(L"outfile"), (LPCTSTR)sText, true);
 	}
 	return true;

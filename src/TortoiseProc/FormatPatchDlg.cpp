@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2014 - TortoiseGit
+// Copyright (C) 2008-2014, 2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -177,10 +177,7 @@ void CFormatPatchDlg::OnBnClickedButtonFrom()
 	dlg.SingleSelection(true);
 	if ( dlg.DoModal() == IDOK )
 	{
-		// get selected hash if any
-		CString selectedHash = dlg.GetSelectedHash();
-		// load into window, do this even if empty so that it is clear that nothing has been selected
-		m_cFrom.AddString(selectedHash);
+		m_cFrom.AddString(dlg.GetSelectedHash().at(0).ToString());
 		CheckRadioButton(IDC_RADIO_SINCE, IDC_RADIO_RANGE, IDC_RADIO_RANGE);
 		OnBnClickedRadio();
 	}
@@ -198,10 +195,7 @@ void CFormatPatchDlg::OnBnClickedButtonTo()
 	dlg.SingleSelection(true);
 	if ( dlg.DoModal() == IDOK )
 	{
-		// get selected hash if any
-		CString selectedHash = dlg.GetSelectedHash();
-		// load into window, do this even if empty so that it is clear that nothing has been selected
-		m_cTo.AddString(selectedHash);
+		m_cTo.AddString(dlg.GetSelectedHash().at(0).ToString());
 		CheckRadioButton(IDC_RADIO_SINCE, IDC_RADIO_RANGE, IDC_RADIO_RANGE);
 		OnBnClickedRadio();
 	}

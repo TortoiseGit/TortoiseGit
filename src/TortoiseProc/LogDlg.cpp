@@ -1510,19 +1510,15 @@ void CLogDlg::OnOK()
 		m_LogList.SafeTerminateThread();
 	}
 	UpdateData();
-	// check that one and only one row is selected
-	if (m_LogList.GetSelectedCount() == 1)
+	// get the selected row(s)
+	POSITION pos = m_LogList.GetFirstSelectedItemPosition();
+	while (pos)
 	{
-		// get the selected row
-		POSITION pos = m_LogList.GetFirstSelectedItemPosition();
 		int selIndex = m_LogList.GetNextSelectedItem(pos);
-		if (selIndex < m_LogList.m_arShownList.size())
-		{
-			// all ok, pick up the revision
-			GitRev* pLogEntry = m_LogList.m_arShownList.SafeGetAt(selIndex);
-			// extract the hash
-			m_sSelectedHash = pLogEntry->m_CommitHash;
-		}
+		GitRev* pLogEntry = m_LogList.m_arShownList.SafeGetAt(selIndex);
+		if (!pLogEntry)
+			continue;
+		m_sSelectedHash.push_back(pLogEntry->m_CommitHash);
 	}
 	UpdateData(FALSE);
 	SaveSplitterPos();

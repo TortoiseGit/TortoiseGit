@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2015 - TortoiseGit
+// Copyright (C) 2008-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -510,10 +510,7 @@ void CPushDlg::OnBnClickedButtonBrowseSourceBranch()
 			dlg.SetSelect(true);
 			if(dlg.DoModal() == IDOK)
 			{
-				if (dlg.GetSelectedHash().IsEmpty())
-					return;
-
-				m_BranchSource.SetWindowText(dlg.GetSelectedHash());
+				m_BranchSource.SetWindowText(dlg.GetSelectedHash().at(0).ToString());
 				OnCbnSelchangeBranchSource();
 			}
 		}

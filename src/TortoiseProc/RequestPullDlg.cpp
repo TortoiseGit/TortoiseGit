@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2014 - TortoiseGit
+// Copyright (C) 2011-2014, 2016 - TortoiseGit
 
 // with code of PullFetchDlg.cpp
 
@@ -152,10 +152,5 @@ void CRequestPullDlg::OnBnClickedButtonLocalBranch()
 	// only one revision must be selected however
 	dlg.SingleSelection(true);
 	if ( dlg.DoModal() == IDOK )
-	{
-		// get selected hash if any
-		CString selectedHash = dlg.GetSelectedHash();
-		// load into window, do this even if empty so that it is clear that nothing has been selected
-		m_cStartRevision.SetWindowText( selectedHash );
-	}
+		m_cStartRevision.SetWindowText(dlg.GetSelectedHash().at(0).ToString());
 }

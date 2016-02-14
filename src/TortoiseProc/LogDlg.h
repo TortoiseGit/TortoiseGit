@@ -80,7 +80,7 @@ public:
 	 * Provides selected commit hash if available, call after OK return from here
 	 * Empty if none
 	**/
-	CString GetSelectedHash(){ return m_sSelectedHash; }
+	std::vector<CGitHash> GetSelectedHash(){ return m_sSelectedHash; }
 
 // Dialog Data
 	enum { IDD = IDD_LOGMESSAGE };
@@ -225,7 +225,7 @@ private:
 	CTGitPath			m_orgPath;
 	CString				m_hightlightRevision;
 
-	CString				m_sSelectedHash;	// set to selected commit hash on OK if appropriate
+	std::vector<CGitHash>	m_sSelectedHash;	// set to selected commit hash on OK if appropriate
 	bool				m_bSelectionMustBeContinuous;
 	bool				m_bSelectionMustBeSingle;
 	bool				m_bCancelled;
