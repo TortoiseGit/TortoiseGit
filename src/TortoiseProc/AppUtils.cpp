@@ -2389,6 +2389,13 @@ int CAppUtils::SaveCommitUnicodeFile(const CString& filename, CString &message)
 		int cp = CUnicodeUtils::GetCPCode(g_Git.GetConfigValue(_T("i18n.commitencoding")));
 
 		bool stripComments = (CRegDWORD(_T("Software\\TortoiseGit\\StripCommentedLines"), TRUE) == TRUE);
+		TCHAR commentChar = L'#';
+		if (stripComments)
+		{
+			CString commentCharValue = g_Git.GetConfigValue(L"core.commentchar");
+			if (!commentCharValue.IsEmpty())
+				commentChar = commentCharValue[0];
+		}
 
 		bool sanitize = (CRegDWORD(_T("Software\\TortoiseGit\\SanitizeCommitMsg"), TRUE) == TRUE);
 		if (sanitize)
@@ -2407,7 +2414,7 @@ int CAppUtils::SaveCommitUnicodeFile(const CString& filename, CString &message)
 				line = line.Left(start - oldStart);
 				++start; // move forward so we don't find the same char again
 			}
-			if (stripComments && (!line.IsEmpty() && line.GetAt(0) == '#') || (start < 0 && line.IsEmpty()))
+			if (stripComments && (!line.IsEmpty() && line.GetAt(0) == commentChar) || (start < 0 && line.IsEmpty()))
 				continue;
 			line.TrimRight(L" \r");
 			if (sanitize)
