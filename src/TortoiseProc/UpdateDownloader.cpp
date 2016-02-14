@@ -167,7 +167,7 @@ resend:
 		}
 
 		DWORD downloaded; // size of the downloaded data
-		auto buff = std::make_unique<TCHAR[]>(size + 1);
+		auto buff = std::make_unique<char[]>(size + 1);
 		if (!InternetReadFile(hResourceHandle, (LPVOID)buff.get(), size, &downloaded))
 		{
 			DWORD err = GetLastError();
