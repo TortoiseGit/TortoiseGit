@@ -3458,6 +3458,11 @@ void CGitStatusListCtrl::OnPaint()
 				str = m_sEmpty;
 		}
 		COLORREF clrText = ::GetSysColor(COLOR_WINDOWTEXT);
+		COLORREF clrTextBk;
+		if (IsWindowEnabled())
+			clrTextBk = ::GetSysColor(COLOR_WINDOW);
+		else
+			clrTextBk = ::GetSysColor(COLOR_3DFACE);
 
 		CRect rc;
 		GetClientRect(&rc);
@@ -3473,7 +3478,7 @@ void CGitStatusListCtrl::OnPaint()
 			CMyMemDC memDC(pDC, &rc);
 
 			memDC.SetTextColor(clrText);
-			memDC.SetBkMode(TRANSPARENT);
+			memDC.SetBkColor(clrTextBk);
 			memDC.BitBlt(rc.left, rc.top, rc.Width(), rc.Height(), pDC, rc.left, rc.top, SRCCOPY);
 			rc.top += 10;
 			CGdiObject * oldfont = memDC.SelectStockObject(DEFAULT_GUI_FONT);
