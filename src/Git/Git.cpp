@@ -1054,7 +1054,7 @@ CString CGit::GetLogCmd(const CString& range, const CTGitPath* path, int mask,
 	}
 
 	DWORD logOrderBy = CRegDWORD(_T("Software\\TortoiseGit\\LogOrderBy"), LOG_ORDER_TOPOORDER);
-	if (logOrderBy == LOG_ORDER_TOPOORDER)
+	if (logOrderBy == LOG_ORDER_TOPOORDER || (mask & CGit::LOG_ORDER_TOPOORDER))
 		param += _T(" --topo-order");
 	else if (logOrderBy == LOG_ORDER_DATEORDER)
 		param += _T(" --date-order");
