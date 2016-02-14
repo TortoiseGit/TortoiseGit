@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2015 - TortoiseGit
+// Copyright (C) 2008-2016 - TortoiseGit
 // Copyright (C) 2003-2011,2014-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -743,9 +743,9 @@ int CStatGraphDlg::GatherData(BOOL fetchdiff, BOOL keepFetchedData)
 
 	GIT_MAILMAP mailmap = nullptr;
 	git_read_mailmap(&mailmap);
-	for (INT_PTR i = 0; i < m_ShowList.GetCount(); ++i)
+	for (size_t i = 0; i < m_ShowList.size(); ++i)
 	{
-		GitRevLoglist* pLogEntry = reinterpret_cast<GitRevLoglist*>(m_ShowList.SafeGetAt(i));
+		GitRevLoglist* pLogEntry = m_ShowList.SafeGetAt(i);
 		int inc, dec, incnewfile, decdeletedfile, files;
 		inc = dec = incnewfile = decdeletedfile = files= 0;
 
@@ -809,7 +809,7 @@ int CStatGraphDlg::GatherData(BOOL fetchdiff, BOOL keepFetchedData)
 		if (progress.IsVisible() && (GetTickCount64() - starttime > 100UL))
 		{
 			progress.FormatNonPathLine(2, _T("%s: %s"), (LPCTSTR)pLogEntry->m_CommitHash.ToString().Left(g_Git.GetShortHASHLength()), (LPCTSTR)pLogEntry->GetSubject());
-			progress.SetProgress64(i, m_ShowList.GetCount());
+			progress.SetProgress64(i, m_ShowList.size());
 			starttime = GetTickCount64();
 		}
 		

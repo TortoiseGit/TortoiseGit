@@ -79,7 +79,7 @@ int CGitLogList::RevertSelectedCommits(int parent)
 	while(pos)
 	{
 		int index = GetNextSelectedItem(pos);
-		GitRev * r1 = reinterpret_cast<GitRev*>(m_arShownList.GetAt(index));
+		GitRev* r1 = m_arShownList.SafeGetAt(index);
 
 		if (progress.IsVisible())
 		{
@@ -239,7 +239,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 	if (indexNext < 0)
 		return;
 
-	GitRevLoglist* pSelLogEntry = reinterpret_cast<GitRevLoglist*>(m_arShownList.GetAt(indexNext));
+	GitRevLoglist* pSelLogEntry = m_arShownList.SafeGetAt(indexNext);
 
 	theApp.DoWaitCursor(1);
 	switch (cmd&0xFFFF)
@@ -265,7 +265,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			break;
 			case ID_GNUDIFF1: // compare with WC, unified
 			{
-				GitRev * r1 = reinterpret_cast<GitRev*>(m_arShownList.GetAt(FirstSelect));
+				GitRev* r1 = m_arShownList.SafeGetAt(FirstSelect);
 				bool bMerge = false, bCombine = false;
 				CString hash2;
 				if(!r1->m_CommitHash.IsEmpty())
@@ -331,16 +331,16 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 
 			case ID_GNUDIFF2: // compare two revisions, unified
 			{
-				GitRev * r1 = reinterpret_cast<GitRev*>(m_arShownList.GetAt(FirstSelect));
-				GitRev * r2 = reinterpret_cast<GitRev*>(m_arShownList.GetAt(LastSelect));
+				GitRev* r1 = m_arShownList.SafeGetAt(FirstSelect);
+				GitRev* r2 = m_arShownList.SafeGetAt(LastSelect);
 				CAppUtils::StartShowUnifiedDiff(nullptr, CTGitPath(), r2->m_CommitHash.ToString(), CTGitPath(), r1->m_CommitHash.ToString());
 			}
 			break;
 
 		case ID_COMPARETWO: // compare two revisions
 			{
-				GitRev * r1 = reinterpret_cast<GitRev*>(m_arShownList.GetAt(FirstSelect));
-				GitRev * r2 = reinterpret_cast<GitRev*>(m_arShownList.GetAt(LastSelect));
+				GitRev* r1 = m_arShownList.SafeGetAt(FirstSelect);
+				GitRev* r2 = m_arShownList.SafeGetAt(LastSelect);
 				if (m_Path.IsDirectory() || !(m_ShowMask & CGit::LOG_INFO_FOLLOW))
 					CGitDiff::DiffCommit(this->m_Path, r1,r2);
 				else
@@ -349,7 +349,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 					// start with 1 (0 = working copy changes)
 					for (int i = 1; i < FirstSelect; ++i)
 					{
-						GitRevLoglist* first = reinterpret_cast<GitRevLoglist*>(m_arShownList.GetAt(i));
+						GitRevLoglist* first = m_arShownList.SafeGetAt(i);
 						CTGitPathList list = first->GetFiles(NULL);
 						const CTGitPath* file = list.LookForGitPath(path1);
 						if (file && !file->GetGitOldPathString().IsEmpty())
@@ -358,7 +358,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 					CString path2 = path1;
 					for (int i = FirstSelect; i < LastSelect; ++i)
 					{
-						GitRevLoglist* first = reinterpret_cast<GitRevLoglist*>(m_arShownList.GetAt(i));
+						GitRevLoglist* first = m_arShownList.SafeGetAt(i);
 						CTGitPathList list = first->GetFiles(NULL);
 						const CTGitPath* file = list.LookForGitPath(path2);
 						if (file && !file->GetGitOldPathString().IsEmpty())
@@ -383,7 +383,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 					// start with 1 (0 = working copy changes)
 					for (int i = 1; i < FirstSelect; ++i)
 					{
-						GitRevLoglist* first = reinterpret_cast<GitRevLoglist*>(m_arShownList.GetAt(i));
+						GitRevLoglist* first = m_arShownList.SafeGetAt(i);
 						CTGitPathList list = first->GetFiles(NULL);
 						const CTGitPath* file = list.LookForGitPath(path1);
 						if (file && !file->GetGitOldPathString().IsEmpty())
@@ -432,14 +432,14 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 						// start with 1 (0 = working copy changes)
 						for (int i = 1; i < indexNext; ++i)
 						{
-							GitRevLoglist* first = reinterpret_cast<GitRevLoglist*>(m_arShownList.GetAt(i));
+							GitRevLoglist* first = m_arShownList.SafeGetAt(i);
 							CTGitPathList list = first->GetFiles(NULL);
 							const CTGitPath* file = list.LookForGitPath(path1);
 							if (file && !file->GetGitOldPathString().IsEmpty())
 								path1 = file->GetGitOldPathString();
 						}
 						CString path2 = path1;
-						GitRevLoglist* first = reinterpret_cast<GitRevLoglist*>(m_arShownList.GetAt(indexNext));
+						GitRevLoglist* first = m_arShownList.SafeGetAt(indexNext);
 						CTGitPathList list = first->GetFiles(NULL);
 						const CTGitPath* file = list.LookForGitPath(path2);
 						if (file && !file->GetGitOldPathString().IsEmpty())
@@ -466,7 +466,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 		case ID_LOG_VIEWRANGE:
 		case ID_LOG_VIEWRANGE_REACHABLEFROMONLYONE:
 			{
-				GitRev* pLastEntry = reinterpret_cast<GitRev*>(m_arShownList.SafeGetAt(LastSelect));
+				GitRev* pLastEntry = m_arShownList.SafeGetAt(LastSelect);
 
 				CString sep = _T("..");
 				if ((cmd & 0xFFFF) == ID_LOG_VIEWRANGE_REACHABLEFROMONLYONE)
@@ -599,8 +599,8 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				}
 			}
 
-			GitRev* pFirstEntry = reinterpret_cast<GitRev*>(m_arShownList.GetAt(FirstSelect));
-			GitRev* pLastEntry = reinterpret_cast<GitRev*>(m_arShownList.GetAt(LastSelect));
+			GitRev* pFirstEntry = m_arShownList.SafeGetAt(FirstSelect);
+			GitRev* pLastEntry = m_arShownList.SafeGetAt(LastSelect);
 			if(pFirstEntry->m_CommitHash != hashFirst || pLastEntry->m_CommitHash != hashLast)
 			{
 				CMessageBox::Show(NULL, IDS_PROC_CANNOTCOMBINE, IDS_APPNAME, MB_OK);
@@ -678,7 +678,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				CCommitDlg dlg;
 				for (int i = FirstSelect; i <= LastSelect; ++i)
 				{
-					GitRev* pRev = reinterpret_cast<GitRev*>(m_arShownList.GetAt(i));
+					GitRev* pRev = m_arShownList.SafeGetAt(i);
 					dlg.m_sLogMessage+=pRev->GetSubject()+_T("\n")+pRev->GetBody();
 					dlg.m_sLogMessage+=_T("\n");
 				}
@@ -741,8 +741,8 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				while(pos2)
 				{
 					int indexNext2 = GetNextSelectedItem(pos2);
-					dlg.m_CommitList.m_logEntries.push_back(((GitRevLoglist*)m_arShownList[indexNext2])->m_CommitHash);
-					dlg.m_CommitList.m_LogCache.m_HashMap[((GitRevLoglist*)m_arShownList[indexNext2])->m_CommitHash] = *(GitRevLoglist*)m_arShownList[indexNext2];
+					dlg.m_CommitList.m_logEntries.push_back(m_arShownList.SafeGetAt(indexNext2)->m_CommitHash);
+					dlg.m_CommitList.m_LogCache.m_HashMap[m_arShownList.SafeGetAt(indexNext2)->m_CommitHash] = *m_arShownList.SafeGetAt(indexNext2);
 					dlg.m_CommitList.m_logEntries.GetGitRevAt(dlg.m_CommitList.m_logEntries.size() - 1).GetRebaseAction() |= LOGACTIONS_REBASE_PICK;
 				}
 
@@ -807,7 +807,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				POSITION pos2 = GetFirstSelectedItemPosition();
 				while (pos2)
 				{
-					CString ref = ((GitRevLoglist*)m_arShownList[GetNextSelectedItem(pos2)])->m_Ref;
+					CString ref = m_arShownList.SafeGetAt(GetNextSelectedItem(pos2))->m_Ref;
 					if (ref.Find(_T("refs/")) == 0)
 						ref = ref.Mid(5);
 					int refpos = ref.ReverseFind('{');
@@ -836,7 +836,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			{
 				CString sCmd = _T("/command:log");
 				sCmd += _T(" /path:\"") + g_Git.m_CurrentDir + _T("\" ");
-				GitRev * r1 = reinterpret_cast<GitRev*>(m_arShownList.GetAt(FirstSelect));
+				GitRev* r1 = m_arShownList.SafeGetAt(FirstSelect);
 				sCmd += _T(" /endrev:") + r1->m_CommitHash.ToString();
 				CAppUtils::RunTortoiseGitProc(sCmd);
 			}
@@ -847,7 +847,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				CString sCmd = _T("/command:formatpatch");
 				sCmd += _T(" /path:\"") + g_Git.m_CurrentDir + _T("\" ");
 
-				GitRev * r1 = reinterpret_cast<GitRev*>(m_arShownList.GetAt(FirstSelect));
+				GitRev* r1 = m_arShownList.SafeGetAt(FirstSelect);
 				GitRev * r2 = NULL;
 				if(select == 1)
 				{
@@ -855,7 +855,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				}
 				else
 				{
-					r2 = reinterpret_cast<GitRev*>(m_arShownList.GetAt(LastSelect));
+					r2 = m_arShownList.SafeGetAt(LastSelect);
 					if( this->m_IsOldFirst )
 					{
 						sCmd += _T(" /startrev:") + r1->m_CommitHash.ToString() + _T("~1");
@@ -875,8 +875,8 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			break;
 		case ID_BISECTSTART:
 			{
-				GitRev * first = reinterpret_cast<GitRev*>(m_arShownList.GetAt(FirstSelect));
-				GitRev * last = reinterpret_cast<GitRev*>(m_arShownList.GetAt(LastSelect));
+				GitRev* first = m_arShownList.SafeGetAt(FirstSelect);
+				GitRev* last = m_arShownList.SafeGetAt(LastSelect);
 				ASSERT(first != NULL && last != NULL);
 
 				CString firstBad = first->m_CommitHash.ToString();
@@ -892,14 +892,14 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			break;
 		case ID_BISECTGOOD:
 			{
-				GitRev *first = reinterpret_cast<GitRev*>(m_arShownList.GetAt(FirstSelect));
+				GitRev* first = m_arShownList.SafeGetAt(FirstSelect);
 				if (CAppUtils::BisectOperation(_T("good"), !first->m_CommitHash.IsEmpty() ? first->m_CommitHash.ToString() : _T("")))
 					Refresh();
 			}
 			break;
 		case ID_BISECTBAD:
 			{
-				GitRev *first = reinterpret_cast<GitRev*>(m_arShownList.GetAt(FirstSelect));
+				GitRev* first = m_arShownList.SafeGetAt(FirstSelect);
 				if (CAppUtils::BisectOperation(_T("bad"), !first->m_CommitHash.IsEmpty() ? first->m_CommitHash.ToString() : _T("")))
 					Refresh();
 			}
@@ -1221,11 +1221,11 @@ void CGitLogList::SetSelectedRebaseAction(int action)
 	while(pos)
 	{
 		index = GetNextSelectedItem(pos);
-		if (((GitRevLoglist*)m_arShownList[index])->GetRebaseAction() & (LOGACTIONS_REBASE_CURRENT | LOGACTIONS_REBASE_DONE) || (index == GetItemCount() - 1 && action == LOGACTIONS_REBASE_SQUASH))
+		if (m_arShownList.SafeGetAt(index)->GetRebaseAction() & (LOGACTIONS_REBASE_CURRENT | LOGACTIONS_REBASE_DONE) || (index == GetItemCount() - 1 && action == LOGACTIONS_REBASE_SQUASH))
 			continue;
-		if (!m_bIsCherryPick && ((GitRevLoglist*)m_arShownList[index])->ParentsCount() > 1 && action == LOGACTIONS_REBASE_SQUASH)
+		if (!m_bIsCherryPick && m_arShownList.SafeGetAt(index)->ParentsCount() > 1 && action == LOGACTIONS_REBASE_SQUASH)
 			continue;
-		((GitRevLoglist*)m_arShownList[index])->GetRebaseAction() = action;
+		m_arShownList.SafeGetAt(index)->GetRebaseAction() = action;
 		CRect rect;
 		this->GetItemRect(index,&rect,LVIR_BOUNDS);
 		this->InvalidateRect(rect);
@@ -1246,9 +1246,9 @@ void CGitLogList::SetUnselectedRebaseAction(int action)
 			continue;
 		}
 
-		if (((GitRevLoglist*)m_arShownList[i])->GetRebaseAction() & (LOGACTIONS_REBASE_CURRENT | LOGACTIONS_REBASE_DONE) || (i == GetItemCount() - 1 && action == LOGACTIONS_REBASE_SQUASH) || (!m_bIsCherryPick && action == LOGACTIONS_REBASE_SQUASH && ((GitRevLoglist*)m_arShownList[i])->ParentsCount() != 1))
+		if (m_arShownList.SafeGetAt(index)->GetRebaseAction() & (LOGACTIONS_REBASE_CURRENT | LOGACTIONS_REBASE_DONE) || (i == GetItemCount() - 1 && action == LOGACTIONS_REBASE_SQUASH) || (!m_bIsCherryPick && action == LOGACTIONS_REBASE_SQUASH && m_arShownList.SafeGetAt(index)->ParentsCount() != 1))
 			continue;
-		((GitRevLoglist*)m_arShownList[i])->GetRebaseAction() = action;
+		m_arShownList.SafeGetAt(i)->GetRebaseAction() = action;
 		CRect rect;
 		this->GetItemRect(i, &rect, LVIR_BOUNDS);
 		this->InvalidateRect(rect);
@@ -1264,7 +1264,7 @@ void CGitLogList::ShiftSelectedRebaseAction()
 	while(pos)
 	{
 		index = GetNextSelectedItem(pos);
-		int *action = &((GitRevLoglist*)m_arShownList[index])->GetRebaseAction();
+		int* action = &(m_arShownList.SafeGetAt(index))->GetRebaseAction();
 		switch (*action)
 		{
 		case LOGACTIONS_REBASE_PICK:
@@ -1275,7 +1275,7 @@ void CGitLogList::ShiftSelectedRebaseAction()
 			break;
 		case LOGACTIONS_REBASE_EDIT:
 			*action = LOGACTIONS_REBASE_SQUASH;
-			if (index == GetItemCount() - 1 && (m_bIsCherryPick || ((GitRevLoglist*)m_arShownList[index])->m_ParentHash.size() == 1))
+			if (index == GetItemCount() - 1 && (m_bIsCherryPick || m_arShownList.SafeGetAt(index)->m_ParentHash.size() == 1))
 				*action = LOGACTIONS_REBASE_PICK;
 			break;
 		case LOGACTIONS_REBASE_SQUASH:

@@ -54,7 +54,7 @@ protected:
 	void				OnFind();
 	CFindReplaceDialog	*m_pFindDialog;
 	static UINT			m_FindDialogMessage;
-	int					m_nSearchLine;
+	size_t				m_nSearchLine;
 
 public:
 	CString			m_CurrentBranch;

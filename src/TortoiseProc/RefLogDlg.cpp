@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2015 - TortoiseGit
+// Copyright (C) 2009-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -105,11 +105,11 @@ void CRefLogDlg::OnBnClickedOk()
 	{
 		// get the selected row
 		POSITION pos = m_RefList.GetFirstSelectedItemPosition();
-		int selIndex = m_RefList.GetNextSelectedItem(pos);
-		if (selIndex < m_RefList.m_arShownList.GetCount())
+		size_t selIndex = m_RefList.GetNextSelectedItem(pos);
+		if (selIndex < m_RefList.m_arShownList.size())
 		{
 			// all ok, pick up the revision
-			GitRev* pLogEntry = reinterpret_cast<GitRev *>(m_RefList.m_arShownList.GetAt(selIndex));
+			GitRev* pLogEntry = m_RefList.m_arShownList.SafeGetAt(selIndex);
 			// extract the hash
 			m_SelectedHash = pLogEntry->m_CommitHash;
 		}
@@ -119,7 +119,7 @@ void CRefLogDlg::OnBnClickedOk()
 }
 void CRefLogDlg::OnBnClickedClearStash()
 {
-	size_t count = m_RefList.m_arShownList.GetCount();
+	size_t count = m_RefList.m_arShownList.size();
 	CString msg;
 	msg.Format(IDS_PROC_DELETEALLSTASH, count);
 	if (CMessageBox::Show(this->GetSafeHwnd(), msg, _T("TortoiseGit"), 2, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_DELETEBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 1)
@@ -150,13 +150,13 @@ void CRefLogDlg::OnCbnSelchangeRef()
 
 	m_RefList.SetItemCountEx((int)m_RefList.m_RevCache.size());
 
-	this->m_RefList.m_arShownList.RemoveAll();
+	this->m_RefList.m_arShownList.clear();
 
 	for (unsigned int i = 0; i < m_RefList.m_RevCache.size(); ++i)
 	{
 		GitRevLoglist* rev = &m_RefList.m_RevCache[i];
 		rev->m_IsFull = TRUE;
-		this->m_RefList.m_arShownList.Add(rev);
+		this->m_RefList.m_arShownList.SafeAdd(rev);
 	}
 
 	m_RefList.SetRedraw(true);
@@ -166,7 +166,7 @@ void CRefLogDlg::OnCbnSelchangeRef()
 	if (ref == _T("refs/stash"))
 	{
 		GetDlgItem(IDC_REFLOG_BUTTONCLEARSTASH)->ShowWindow(SW_SHOW);
-		BOOL enabled = m_RefList.m_arShownList.GetSize() > 0;
+		BOOL enabled = !m_RefList.m_arShownList.empty();
 		GetDlgItem(IDC_REFLOG_BUTTONCLEARSTASH)->EnableWindow(enabled);
 		if (!enabled)
 			GetDlgItem(IDOK)->SetFocus();
@@ -231,7 +231,7 @@ LRESULT CRefLogDlg::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*/)
 {
 	ASSERT(m_pFindDialog != NULL);
 
-	if (m_RefList.m_arShownList.IsEmpty())
+	if (m_RefList.m_arShownList.empty())
 		return 0;
 
 	// If the FR_DIALOGTERM flag is set,
@@ -256,13 +256,13 @@ LRESULT CRefLogDlg::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*/)
 		if (!bCaseSensitive)
 			findString.MakeLower();
 
-		int i = m_nSearchLine;
-		if (i < 0 || i >= m_RefList.m_arShownList.GetCount())
+		size_t i = m_nSearchLine;
+		if (i >= m_RefList.m_arShownList.size())
 			i = 0;
 
 		do
 		{
-			GitRevLoglist* data = (GitRevLoglist*)m_RefList.m_arShownList.SafeGetAt(i);
+			GitRevLoglist* data = m_RefList.m_arShownList.SafeGetAt(i);
 
 			CString str;
 			str += data->m_Ref;
@@ -283,14 +283,14 @@ LRESULT CRefLogDlg::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*/)
 				bFound = true;
 
 			++i;
-			if(!bFound && i >= m_RefList.m_arShownList.GetCount())
+			if(!bFound && i >= m_RefList.m_arShownList.size())
 				i=0;
 		} while (i != m_nSearchLine && (!bFound));
 
 		if (bFound)
 		{
-			m_RefList.SetHotItem(i - 1);
-			m_RefList.EnsureVisible(i - 1, FALSE);
+			m_RefList.SetHotItem((int)i - 1);
+			m_RefList.EnsureVisible((int)i - 1, FALSE);
 			m_nSearchLine = i;
 		}
 		else

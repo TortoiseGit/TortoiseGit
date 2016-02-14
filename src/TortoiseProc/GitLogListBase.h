@@ -141,45 +141,42 @@ private:
 	size_t location;
 };
 
-class CThreadSafePtrArray: public CPtrArray
+class CThreadSafePtrArray : public std::vector<GitRevLoglist*>
 {
 	CComCriticalSection *m_critSec;
 public:
 	CThreadSafePtrArray(CComCriticalSection *section){ m_critSec = section ;}
-	void * SafeGetAt(INT_PTR i)
+	GitRevLoglist* SafeGetAt(size_t i)
 	{
 		if(m_critSec)
 			m_critSec->Lock();
 
-		if( i<0 || i>=GetCount())
+		SCOPE_EXIT
 		{
-			if(m_critSec)
+			if (m_critSec)
 				m_critSec->Unlock();
+		};
 
-			return NULL;
-		}
+		if (i >= size())
+			return nullptr;
 
-		if(m_critSec)
-			m_critSec->Unlock();
-
-		return GetAt(i);
+		return (*this)[i];
 	}
-	INT_PTR SafeAdd(void *newElement)
+
+	void SafeAdd(GitRevLoglist* newElement)
 	{
-		INT_PTR ret;
 		if(m_critSec)
 			m_critSec->Lock();
-		ret = Add(newElement);
+		push_back(newElement);
 		if(m_critSec)
 			m_critSec->Unlock();
-		return ret;
 	}
 
 	void  SafeRemoveAll()
 	{
 		if(m_critSec)
 			m_critSec->Lock();
-		RemoveAll();
+		clear();
 		if(m_critSec)
 			m_critSec->Unlock();
 	}
@@ -389,7 +386,7 @@ public:
 	static const UINT	m_ScrollToMessage;
 	static const UINT	m_RebaseActionMessage;
 
-	inline int ShownCountWithStopped() const { return (int)m_arShownList.GetCount() + (m_bStrictStopped ? 1 : 0); }
+	inline int ShownCountWithStopped() const { return (int)m_arShownList.size() + (m_bStrictStopped ? 1 : 0); }
 	void FetchLogAsync(void* data = nullptr);
 	CThreadSafePtrArray			m_arShownList;
 	void Refresh(BOOL IsCleanFilter=TRUE);

@@ -919,7 +919,7 @@ int CRebaseDlg::StartRebase()
 	this->AddLogString(log);
 	for (int i = 0; i < m_CommitList.GetItemCount(); ++i)
 	{
-		m_rewrittenCommitsMap[((GitRevLoglist*)m_CommitList.m_arShownList[i])->m_CommitHash] = CGitHash();
+		m_rewrittenCommitsMap[m_CommitList.m_arShownList.SafeGetAt(i)->m_CommitHash] = CGitHash();
 	}
 	if (m_bPreserveMerges)
 	{
@@ -1133,7 +1133,7 @@ void CRebaseDlg::OnBnClickedContinue()
 	{
 		if(VerifyNoConflict())
 			return;
-		GitRevLoglist* curRev = (GitRevLoglist*)m_CommitList.m_arShownList[m_CurrentRebaseIndex];
+		GitRevLoglist* curRev = m_CommitList.m_arShownList.SafeGetAt(m_CurrentRebaseIndex);
 		if(this->CheckNextCommitIsSquash())
 		{//next commit is not squash;
 			m_RebaseStage = REBASE_SQUASH_EDIT;
@@ -1154,7 +1154,7 @@ void CRebaseDlg::OnBnClickedContinue()
 		if(VerifyNoConflict())
 			return;
 
-		GitRevLoglist* curRev = (GitRevLoglist*)m_CommitList.m_arShownList[m_CurrentRebaseIndex];
+		GitRevLoglist* curRev = m_CommitList.m_arShownList.SafeGetAt(m_CurrentRebaseIndex);
 		// ***************************************************
 		// ATTENTION: Similar code in CommitDlg.cpp!!!
 		// ***************************************************
@@ -1341,7 +1341,7 @@ void CRebaseDlg::OnBnClickedContinue()
 
 		this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_LOG);
 		m_RebaseStage = REBASE_CONTINUE;
-		GitRevLoglist* curRev = (GitRevLoglist*)m_CommitList.m_arShownList[m_CurrentRebaseIndex];
+		GitRevLoglist* curRev = m_CommitList.m_arShownList.SafeGetAt(m_CurrentRebaseIndex);
 		CGitHash head;
 		if (g_Git.GetHash(head, _T("HEAD")))
 		{
@@ -1359,7 +1359,7 @@ void CRebaseDlg::OnBnClickedContinue()
 	if( m_RebaseStage == REBASE_EDIT ||  m_RebaseStage == REBASE_SQUASH_EDIT )
 	{
 		CString str;
-		GitRevLoglist* curRev = (GitRevLoglist*)m_CommitList.m_arShownList[m_CurrentRebaseIndex];
+		GitRevLoglist* curRev = m_CommitList.m_arShownList.SafeGetAt(m_CurrentRebaseIndex);
 
 		str=this->m_LogMessageCtrl.GetText();
 		if(str.Trim().IsEmpty())
@@ -1459,7 +1459,7 @@ int CRebaseDlg::CheckNextCommitIsSquash()
 		if(index>= m_CommitList.GetItemCount())
 			return -1;
 
-		curRev = (GitRevLoglist*)m_CommitList.m_arShownList[index];
+		curRev = m_CommitList.m_arShownList.SafeGetAt(index);
 
 		if (curRev->GetRebaseAction() & CGitLogListBase::LOGACTIONS_REBASE_SQUASH)
 			return 0;
@@ -1647,14 +1647,12 @@ void CRebaseDlg::UpdateProgress()
 
 	GitRevLoglist* prevRev = nullptr, *curRev = nullptr;
 
-	if( m_CurrentRebaseIndex >= 0 && m_CurrentRebaseIndex< m_CommitList.m_arShownList.GetSize())
-	{
-		curRev = (GitRevLoglist*)m_CommitList.m_arShownList[m_CurrentRebaseIndex];
-	}
+	if (m_CurrentRebaseIndex >= 0 && m_CurrentRebaseIndex < (int)m_CommitList.m_arShownList.size())
+		curRev = m_CommitList.m_arShownList.SafeGetAt(m_CurrentRebaseIndex);
 
-	for (int i = 0; i < m_CommitList.m_arShownList.GetSize(); ++i)
+	for (int i = 0; i < (int)m_CommitList.m_arShownList.size(); ++i)
 	{
-		prevRev = (GitRevLoglist*)m_CommitList.m_arShownList[i];
+		prevRev = m_CommitList.m_arShownList.SafeGetAt(i);
 		if (prevRev->GetRebaseAction() & CGitLogListBase::LOGACTIONS_REBASE_CURRENT)
 		{
 			prevRev->GetRebaseAction() &= ~CGitLogListBase::LOGACTIONS_REBASE_CURRENT;
@@ -1728,7 +1726,7 @@ int CRebaseDlg::DoRebase()
 	if(m_CurrentRebaseIndex >= m_CommitList.GetItemCount() )
 		return 0;
 
-	GitRevLoglist* pRev = (GitRevLoglist*)m_CommitList.m_arShownList[m_CurrentRebaseIndex];
+	GitRevLoglist* pRev = m_CommitList.m_arShownList.SafeGetAt(m_CurrentRebaseIndex);
 	int mode = pRev->GetRebaseAction() & CGitLogListBase::LOGACTIONS_REBASE_MODE_MASK;
 	CString nocommit;
 
@@ -2164,7 +2162,7 @@ LRESULT CRebaseDlg::OnRebaseUpdateUI(WPARAM,LPARAM)
 		return 0;
 	if(m_CurrentRebaseIndex >= m_CommitList.GetItemCount() )
 		return 0;
-	GitRev *curRev=(GitRev*)m_CommitList.m_arShownList[m_CurrentRebaseIndex];
+	GitRev* curRev = m_CommitList.m_arShownList.SafeGetAt(m_CurrentRebaseIndex);
 
 	switch(m_RebaseStage)
 	{
@@ -2477,7 +2475,7 @@ void CRebaseDlg::OnLvnItemchangedLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 		this->m_CommitList.m_nSearchIndex = pNMLV->iItem;
 		if (pNMLV->iSubItem != 0)
 			return;
-		if ((pNMLV->iItem == m_CommitList.m_arShownList.GetCount()))
+		if (pNMLV->iItem == (int)m_CommitList.m_arShownList.size())
 		{
 			// remove the selected state
 			if (pNMLV->uChanged & LVIF_STATE)
@@ -2505,7 +2503,7 @@ void CRebaseDlg::FillLogMessageCtrl()
 	{
 		POSITION pos = m_CommitList.GetFirstSelectedItemPosition();
 		int selIndex = m_CommitList.GetNextSelectedItem(pos);
-		GitRevLoglist* pLogEntry = reinterpret_cast<GitRevLoglist*>(m_CommitList.m_arShownList.SafeGetAt(selIndex));
+		GitRevLoglist* pLogEntry = m_CommitList.m_arShownList.SafeGetAt(selIndex);
 		m_FileListCtrl.UpdateWithGitPathList(pLogEntry->GetFiles(&m_CommitList));
 		m_FileListCtrl.m_CurrentVersion = pLogEntry->m_CommitHash;
 		m_FileListCtrl.Show(GITSLC_SHOWVERSIONED);
@@ -2523,7 +2521,7 @@ LRESULT CRebaseDlg::OnRebaseActionMessage(WPARAM, LPARAM)
 {
 	if (m_RebaseStage == REBASE_ERROR || m_RebaseStage == REBASE_CONFLICT)
 	{
-		GitRevLoglist* pRev = (GitRevLoglist*)m_CommitList.m_arShownList[m_CurrentRebaseIndex];
+		GitRevLoglist* pRev = m_CommitList.m_arShownList.SafeGetAt(m_CurrentRebaseIndex);
 		int mode = pRev->GetRebaseAction() & CGitLogListBase::LOGACTIONS_REBASE_MODE_MASK;
 		if (mode == CGitLogListBase::LOGACTIONS_REBASE_SKIP)
 		{
