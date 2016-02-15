@@ -617,7 +617,7 @@ void CRebaseDlg::FetchLogList()
 		});
 
 		std::vector<size_t> toDrop;
-		for (size_t i = m_CommitList.m_arShownList.size(); --i > 0;)
+		for (size_t i = m_CommitList.m_arShownList.size(); i-- > 0;)
 		{
 			bool preserve = false;
 			GitRevLoglist* pRev = m_CommitList.m_arShownList.SafeGetAt(i);
@@ -650,7 +650,7 @@ void CRebaseDlg::FetchLogList()
 			hash.Trim();
 			nonCherryPicked.emplace_back(hash);
 		});
-		for (size_t i = m_CommitList.m_arShownList.size(); --i > 0;)
+		for (size_t i = m_CommitList.m_arShownList.size(); i-- > 0;)
 		{
 			GitRevLoglist* pRev = m_CommitList.m_arShownList.SafeGetAt(i);
 			pRev->GetRebaseAction() = CGitLogListBase::LOGACTIONS_REBASE_PICK;
