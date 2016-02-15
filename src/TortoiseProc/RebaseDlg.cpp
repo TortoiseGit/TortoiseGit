@@ -546,7 +546,7 @@ void CRebaseDlg::FetchLogList()
 		m_CommitList.ShowText(text);
 		this->GetDlgItem(IDC_REBASE_CONTINUE)->EnableWindow(false);
 		if (m_bRebaseAutoStart)
-			this->PostMessage(WM_COMMAND, MAKELONG(IDC_REBASE_ABORT, BN_CLICKED), (LPARAM)GetDlgItem(IDC_REBASE_CONTINUE)->GetSafeHwnd());
+			PostMessage(WM_COMMAND, MAKELONG(IDC_REBASE_ABORT, BN_CLICKED), (LPARAM)GetDlgItem(IDC_REBASE_ABORT)->GetSafeHwnd());
 		return;
 	}
 
@@ -574,8 +574,10 @@ void CRebaseDlg::FetchLogList()
 			CString text;
 			text.Format(IDS_REBASE_UPTODATE_FMT, (LPCTSTR)m_BranchCtrl.GetString());
 			m_CommitList.ShowText(text);
-			this->GetDlgItem(IDC_REBASE_CONTINUE)->EnableWindow(m_CommitList.GetItemCount());
+			this->GetDlgItem(IDC_REBASE_CONTINUE)->EnableWindow(FALSE);
 			SetContinueButtonText();
+			if (m_bRebaseAutoStart)
+				PostMessage(WM_COMMAND, MAKELONG(IDC_REBASE_ABORT, BN_CLICKED), (LPARAM)GetDlgItem(IDC_REBASE_ABORT)->GetSafeHwnd());
 			return;
 		}
 	}
