@@ -85,3 +85,62 @@ TEST(CPathUtils, MakeSureDirectoryPathExists)
 	EXPECT_TRUE(PathIsDirectory(tmpDir.GetTempDir() + L"\\sub\\asub"));
 	EXPECT_TRUE(PathIsDirectory(tmpDir.GetTempDir() + L"\\sub\\asub\\adir"));
 }
+
+TEST(CPathUtils, EnsureTrailingPathDelimiter)
+{
+	CString tPath;
+	CPathUtils::EnsureTrailingPathDelimiter(tPath);
+	EXPECT_STREQ(tPath, L"");
+
+	tPath = L"C:";
+	CPathUtils::EnsureTrailingPathDelimiter(tPath);
+	EXPECT_STREQ(tPath, L"C:\\");
+
+	tPath = L"C:\\";
+	CPathUtils::EnsureTrailingPathDelimiter(tPath);
+	EXPECT_STREQ(tPath, L"C:\\");
+
+	tPath = L"C:\\my\\path";
+	CPathUtils::EnsureTrailingPathDelimiter(tPath);
+	EXPECT_STREQ(tPath, L"C:\\my\\path\\");
+
+	tPath = L"C:\\my\\path\\";
+	CPathUtils::EnsureTrailingPathDelimiter(tPath);
+	EXPECT_STREQ(tPath, L"C:\\my\\path\\");
+}
+
+TEST(CPathUtils, BuildPathWithPathDelimiter)
+{
+	EXPECT_STREQ(CPathUtils::BuildPathWithPathDelimiter(L""), L"");
+	EXPECT_STREQ(CPathUtils::BuildPathWithPathDelimiter(L"C:"), L"C:\\");
+	EXPECT_STREQ(CPathUtils::BuildPathWithPathDelimiter(L"C:\\"), L"C:\\");
+	EXPECT_STREQ(CPathUtils::BuildPathWithPathDelimiter(L"C:\\my\\path"), L"C:\\my\\path\\");
+	EXPECT_STREQ(CPathUtils::BuildPathWithPathDelimiter(L"C:\\my\\path\\"), L"C:\\my\\path\\");
+}
+
+TEST(CPathUtils, TrimTrailingPathDelimiter)
+{
+	CString tPath;
+	CPathUtils::TrimTrailingPathDelimiter(tPath);
+	EXPECT_STREQ(tPath, L"");
+
+	tPath = L"C:";
+	CPathUtils::TrimTrailingPathDelimiter(tPath);
+	EXPECT_STREQ(tPath, L"C:");
+
+	tPath = L"C:\\";
+	CPathUtils::TrimTrailingPathDelimiter(tPath);
+	EXPECT_STREQ(tPath, L"C:");
+
+	tPath = L"C:\\my\\path";
+	CPathUtils::TrimTrailingPathDelimiter(tPath);
+	EXPECT_STREQ(tPath, L"C:\\my\\path");
+	
+	tPath = L"C:\\my\\path\\";
+	CPathUtils::TrimTrailingPathDelimiter(tPath);
+	EXPECT_STREQ(tPath, L"C:\\my\\path");
+
+	tPath = L"C:\\my\\path\\\\";
+	CPathUtils::TrimTrailingPathDelimiter(tPath);
+	EXPECT_STREQ(tPath, L"C:\\my\\path");
+}

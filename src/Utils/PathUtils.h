@@ -122,6 +122,27 @@ public:
 	 */
 	static CString GetVersionFromFile(const CString & p_strFilename);
 
+	/**
+	 * Ensures that the path ends with a folder separator.
+	 * If the delimiter already exists, no additional delimiter will be added.
+	 * \param path to ensure
+	 */
+	static void EnsureTrailingPathDelimiter(CString& path);
+
+	/**
+	 * Returns a path guaranteeing that a valid path delimiter follows.
+	 * If the delimiter already exists, no additional delimiter will be added.
+	 * \param path to ensure
+	 * \return path including path delimiter
+	 */
+	static CString BuildPathWithPathDelimiter(const CString& path);
+
+	/**
+	 * Trims a possible included trailing folder separator from the provided path.
+	 * \param path to trim
+	 */
+	static void TrimTrailingPathDelimiter(CString& path);
+
 	static CString GetCopyrightForSelf();
 #endif
 };

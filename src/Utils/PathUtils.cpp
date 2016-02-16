@@ -20,6 +20,7 @@
 #include "stdafx.h"
 #include "PathUtils.h"
 #include <memory>
+#include "StringUtils.h"
 
 BOOL CPathUtils::MakeSureDirectoryPathExists(LPCTSTR path)
 {
@@ -547,4 +548,21 @@ CString CPathUtils::PathPatternUnEscape(const CString& path)
 	return result;
 }
 
+CString CPathUtils::BuildPathWithPathDelimiter(const CString& path)
+{
+	CString result(path);
+	EnsureTrailingPathDelimiter(result);
+	return result;
+}
+
+void CPathUtils::EnsureTrailingPathDelimiter(CString& path)
+{
+	if (!path.IsEmpty() && !CStringUtils::EndsWith(path, L'\\'))
+		path.AppendChar(L'\\');
+}
+
+void CPathUtils::TrimTrailingPathDelimiter(CString& path)
+{
+	path.TrimRight(L'\\');
+}
 #endif

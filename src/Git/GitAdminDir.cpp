@@ -22,6 +22,7 @@
 #include "GitAdminDir.h"
 #include "Git.h"
 #include "SmartHandle.h"
+#include "PathUtils.h"
 
 CString GitAdminDir::GetSuperProjectRoot(const CString& path)
 {
@@ -159,9 +160,9 @@ bool GitAdminDir::GetAdminDirPath(const CString& projectTopDir, CString& adminDi
 	commonDir.TrimRight(L"\r\n");
 	commonDir.Replace(L'/', L'\\');
 	if (PathIsRelative(commonDir))
-		adminDir = wtAdminDir + commonDir;
+		adminDir = CPathUtils::BuildPathWithPathDelimiter(wtAdminDir + commonDir);
 	else
-		adminDir = commonDir;
+		adminDir = CPathUtils::BuildPathWithPathDelimiter(commonDir);
 	if (isWorktree)
 		*isWorktree = true;
 	return true;
@@ -171,18 +172,14 @@ bool GitAdminDir::GetWorktreeAdminDirPath(const CString& projectTopDir, CString&
 {
 	if (IsBareRepo(projectTopDir))
 	{
-		adminDir = projectTopDir;
-		adminDir.TrimRight(L'\\');
-		adminDir.AppendChar(L'\\');
+		adminDir = CPathUtils::BuildPathWithPathDelimiter(projectTopDir);
 		return true;
 	}
 
-	CString sDotGitPath = projectTopDir + L'\\' + GetAdminDirName();
+	CString sDotGitPath = CPathUtils::BuildPathWithPathDelimiter(projectTopDir) + GetAdminDirName();
 	if (CTGitPath(sDotGitPath).IsDirectory())
 	{
-		sDotGitPath.TrimRight(L'\\');
-		sDotGitPath.AppendChar(L'\\');
-		adminDir = sDotGitPath;
+		adminDir = CPathUtils::BuildPathWithPathDelimiter(sDotGitPath);
 		return true;
 	}
 	else
@@ -190,7 +187,7 @@ bool GitAdminDir::GetWorktreeAdminDirPath(const CString& projectTopDir, CString&
 		CString result = ReadGitLink(projectTopDir, sDotGitPath);
 		if (result.IsEmpty())
 			return false;
-		adminDir = result + L'\\';
+		adminDir = CPathUtils::BuildPathWithPathDelimiter(result);
 		return true;
 	}
 }
@@ -212,14 +209,14 @@ CString GitAdminDir::ReadGitLink(const CString& topDir, const CString& dotGitPat
 	// trim after converting to UTF-16, because CStringA trim does not work when having UTF-8 chars
 	gitPath = gitPath.Trim().Mid((int)wcslen(L"gitdir: "));
 	gitPath.Replace('/', '\\');
-	gitPath.TrimRight('\\');
 	if (!gitPath.IsEmpty() && gitPath[0] == L'.')
 	{
-		gitPath = topDir + L'\\' + gitPath;
+		gitPath = CPathUtils::BuildPathWithPathDelimiter(topDir) + gitPath;
 		CString adminDir;
 		PathCanonicalize(CStrBuf(adminDir, MAX_PATH), gitPath);
 		return adminDir;
 	}
+	CPathUtils::TrimTrailingPathDelimiter(gitPath);
 	return gitPath;
 }
 
