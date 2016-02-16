@@ -21,6 +21,7 @@
 #include "TortoiseProc.h"
 #include "MessageBox.h"
 #include "ResolveDlg.h"
+#include "PathUtils.h"
 #include "AppUtils.h"
 #include "Git.h"
 
@@ -208,7 +209,7 @@ LRESULT CResolveDlg::OnFileDropped(WPARAM, LPARAM lParam)
 
 	// check whether the dropped file belongs to the very same repository
 	CString projectDir;
-	if (!path.HasAdminDir(&projectDir) || !CTGitPath::ArePathStringsEqual(g_Git.m_CurrentDir, projectDir))
+	if (!path.HasAdminDir(&projectDir) || !CPathUtils::ArePathStringsEqual(g_Git.m_CurrentDir, projectDir))
 		return 0;
 
 	if (!m_resolveListCtrl.HasPath(path))

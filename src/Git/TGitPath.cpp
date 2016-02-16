@@ -501,48 +501,6 @@ CString CTGitPath::GetBaseFilename() const
 	return filename;
 }
 
-bool CTGitPath::ArePathStringsEqual(const CString& sP1, const CString& sP2)
-{
-	int length = sP1.GetLength();
-	if(length != sP2.GetLength())
-	{
-		// Different lengths
-		return false;
-	}
-	// We work from the end of the strings, because path differences
-	// are more likely to occur at the far end of a string
-	LPCTSTR pP1Start = sP1;
-	LPCTSTR pP1 = pP1Start+(length-1);
-	LPCTSTR pP2 = ((LPCTSTR)sP2)+(length-1);
-	while(length-- > 0)
-	{
-		if(_totlower(*pP1--) != _totlower(*pP2--))
-			return false;
-	}
-	return true;
-}
-
-bool CTGitPath::ArePathStringsEqualWithCase(const CString& sP1, const CString& sP2)
-{
-	int length = sP1.GetLength();
-	if(length != sP2.GetLength())
-	{
-		// Different lengths
-		return false;
-	}
-	// We work from the end of the strings, because path differences
-	// are more likely to occur at the far end of a string
-	LPCTSTR pP1Start = sP1;
-	LPCTSTR pP1 = pP1Start+(length-1);
-	LPCTSTR pP2 = ((LPCTSTR)sP2)+(length-1);
-	while(length-- > 0)
-	{
-		if((*pP1--) != (*pP2--))
-			return false;
-	}
-	return true;
-}
-
 bool CTGitPath::IsEmpty() const
 {
 	// Check the backward slash path first, since the chance that this
@@ -561,13 +519,13 @@ bool CTGitPath::IsEquivalentTo(const CTGitPath& rhs) const
 	{
 		// *We've* got a \ path - make sure that the RHS also has a \ path
 		rhs.EnsureBackslashPathSet();
-		return ArePathStringsEqualWithCase(m_sBackslashPath, rhs.m_sBackslashPath);
+		return CPathUtils::ArePathStringsEqualWithCase(m_sBackslashPath, rhs.m_sBackslashPath);
 	}
 	else
 	{
 		// Assume we've got a fwdslash path and make sure that the RHS has one
 		rhs.EnsureFwdslashPathSet();
-		return ArePathStringsEqualWithCase(m_sFwdslashPath, rhs.m_sFwdslashPath);
+		return CPathUtils::ArePathStringsEqualWithCase(m_sFwdslashPath, rhs.m_sFwdslashPath);
 	}
 }
 
@@ -579,13 +537,13 @@ bool CTGitPath::IsEquivalentToWithoutCase(const CTGitPath& rhs) const
 	{
 		// *We've* got a \ path - make sure that the RHS also has a \ path
 		rhs.EnsureBackslashPathSet();
-		return ArePathStringsEqual(m_sBackslashPath, rhs.m_sBackslashPath);
+		return CPathUtils::ArePathStringsEqual(m_sBackslashPath, rhs.m_sBackslashPath);
 	}
 	else
 	{
 		// Assume we've got a fwdslash path and make sure that the RHS has one
 		rhs.EnsureFwdslashPathSet();
-		return ArePathStringsEqual(m_sFwdslashPath, rhs.m_sFwdslashPath);
+		return CPathUtils::ArePathStringsEqual(m_sFwdslashPath, rhs.m_sFwdslashPath);
 	}
 }
 
@@ -594,7 +552,7 @@ bool CTGitPath::IsAncestorOf(const CTGitPath& possibleDescendant) const
 	possibleDescendant.EnsureBackslashPathSet();
 	EnsureBackslashPathSet();
 
-	bool bPathStringsEqual = ArePathStringsEqual(m_sBackslashPath, possibleDescendant.m_sBackslashPath.Left(m_sBackslashPath.GetLength()));
+	bool bPathStringsEqual = CPathUtils::ArePathStringsEqual(m_sBackslashPath, possibleDescendant.m_sBackslashPath.Left(m_sBackslashPath.GetLength()));
 	if (m_sBackslashPath.GetLength() >= possibleDescendant.GetWinPathString().GetLength())
 	{
 		return bPathStringsEqual;
@@ -1631,7 +1589,7 @@ void CTGitPathList::RemoveItem(CTGitPath & path)
 	PathVector::iterator it;
 	for(it = m_paths.begin(); it != m_paths.end(); ++it)
 	{
-		if (CTGitPath::ArePathStringsEqualWithCase(it->GetGitPathString(), path.GetGitPathString()))
+		if (CPathUtils::ArePathStringsEqualWithCase(it->GetGitPathString(), path.GetGitPathString()))
 		{
 			m_paths.erase(it);
 			return;
@@ -1661,7 +1619,7 @@ const CTGitPath* CTGitPathList::LookForGitPath(const CString& path)
 	int i=0;
 	for (i = 0; i < this->GetCount(); ++i)
 	{
-		if (CTGitPath::ArePathStringsEqualWithCase((*this)[i].GetGitPathString(), path))
+		if (CPathUtils::ArePathStringsEqualWithCase((*this)[i].GetGitPathString(), path))
 			return (CTGitPath*)&(*this)[i];
 	}
 	return nullptr;

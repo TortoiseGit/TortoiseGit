@@ -22,6 +22,7 @@
 #include "MessageBox.h"
 #include "RevertDlg.h"
 #include "Git.h"
+#include "PathUtils.h"
 #include "registry.h"
 #include "AppUtils.h"
 
@@ -260,7 +261,7 @@ LRESULT CRevertDlg::OnFileDropped(WPARAM, LPARAM lParam)
 
 	// check whether the dropped file belongs to the very same repository
 	CString projectDir;
-	if (!path.HasAdminDir(&projectDir) || !CTGitPath::ArePathStringsEqual(g_Git.m_CurrentDir, projectDir))
+	if (!path.HasAdminDir(&projectDir) || !CPathUtils::ArePathStringsEqual(g_Git.m_CurrentDir, projectDir))
 		return 0;
 
 	if (!m_RevertList.HasPath(path))

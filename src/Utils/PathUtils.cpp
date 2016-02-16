@@ -565,4 +565,81 @@ void CPathUtils::TrimTrailingPathDelimiter(CString& path)
 {
 	path.TrimRight(L'\\');
 }
+
+CString CPathUtils::ExpandFileName(const CString& path)
+{
+	if (path.IsEmpty())
+		return path;
+
+	DWORD ret = GetFullPathName(path, 0, nullptr, nullptr);
+	if (!ret)
+		return path;
+
+	CString sRet;
+	if (GetFullPathName(path, ret, CStrBuf(sRet, ret), nullptr))
+		return sRet;
+	return path;
+}
+
+CString CPathUtils::NormalizePath(const CString& path)
+{
+	// Account DOS 8.3 file/folder names
+	CString nPath = GetLongPathname(path);
+
+	// Account for ..\ and .\ that may occur in each path
+	nPath = ExpandFileName(nPath);
+
+	nPath.MakeLower();
+
+	TrimTrailingPathDelimiter(nPath);
+
+	return nPath;
+}
+
+bool CPathUtils::IsSamePath(const CString& path1, const CString& path2)
+{
+	return ArePathStringsEqualWithCase(NormalizePath(path1), NormalizePath(path2));
+}
+
+bool CPathUtils::ArePathStringsEqual(const CString& sP1, const CString& sP2)
+{
+	int length = sP1.GetLength();
+	if (length != sP2.GetLength())
+	{
+		// Different lengths
+		return false;
+	}
+	// We work from the end of the strings, because path differences
+	// are more likely to occur at the far end of a string
+	LPCTSTR pP1Start = sP1;
+	LPCTSTR pP1 = pP1Start + (length - 1);
+	LPCTSTR pP2 = ((LPCTSTR)sP2) + (length - 1);
+	while (length-- > 0)
+	{
+		if (_totlower(*pP1--) != _totlower(*pP2--))
+			return false;
+	}
+	return true;
+}
+
+bool CPathUtils::ArePathStringsEqualWithCase(const CString& sP1, const CString& sP2)
+{
+	int length = sP1.GetLength();
+	if (length != sP2.GetLength())
+	{
+		// Different lengths
+		return false;
+	}
+	// We work from the end of the strings, because path differences
+	// are more likely to occur at the far end of a string
+	LPCTSTR pP1Start = sP1;
+	LPCTSTR pP1 = pP1Start + (length - 1);
+	LPCTSTR pP2 = ((LPCTSTR)sP2) + (length - 1);
+	while (length-- > 0)
+	{
+		if ((*pP1--) != (*pP2--))
+			return false;
+	}
+	return true;
+}
 #endif

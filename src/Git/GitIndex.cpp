@@ -21,7 +21,7 @@
 #include "Git.h"
 #include "registry.h"
 #include "UnicodeUtils.h"
-#include "TGitPath.h"
+#include "PathUtils.h"
 #include "gitindex.h"
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -941,7 +941,7 @@ bool CGitIgnoreList::CheckAndUpdateIgnoreFiles(const CString& gitdir, const CStr
 		}
 
 		temp.Truncate(temp.GetLength() - (int)wcslen(L"\\.gitignore"));
-		if (CTGitPath::ArePathStringsEqual(temp, gitdir))
+		if (CPathUtils::ArePathStringsEqual(temp, gitdir))
 		{
 			CString adminDir = g_AdminDirMap.GetAdminDir(temp);
 			CString wcglobalgitignore = adminDir + L"info\\exclude";
@@ -1130,7 +1130,7 @@ int CGitIgnoreList::CheckIgnore(const CString &path, const CString &projectroot,
 
 		temp.Truncate(temp.GetLength() - (int)wcslen(L"\\.gitignore"));
 
-		if (CTGitPath::ArePathStringsEqual(temp, projectroot))
+		if (CPathUtils::ArePathStringsEqual(temp, projectroot))
 		{
 			CString adminDir = g_AdminDirMap.GetAdminDir(temp);
 			CString wcglobalgitignore = adminDir;

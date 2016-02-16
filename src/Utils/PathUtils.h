@@ -143,6 +143,44 @@ public:
 	 */
 	static void TrimTrailingPathDelimiter(CString& path);
 
+	/**
+	 * ExpandFileName converts the relative file name into a fully qualified path name.
+	 * ExpandFileName does not verify that the resulting fully qualified path name 
+	 * refers to an existing file, or even that the resulting path exists.
+	 * \param path to expand
+	 * \return fully qualified path name
+	 */
+	static CString CPathUtils::ExpandFileName(const CString& path);
+
+	/**
+	 * This method will make a path comparable to another path.
+	 * It will do the following:
+	 * 1.) Modify all characters in the path to be lower case
+	 * 2.) Account for ..\'s and .\'s that may occur in the middle of the path and remove them
+	 * 3.) Expand a path that has DOS 8.3 file/folder names
+	 * 4.) Remove the trailing path delimiter at the end
+	 * The function does not account for symlinks at this point in time.
+	 * \param path to normalize
+	 * \return normalized path
+	 */
+	static CString CPathUtils::NormalizePath(const CString& path);
+
+	/**
+	 * Compares two paths and returns true if they are logically the same path.
+	 * The function does not account for symlinks at this point in time.
+	 * \param path1 to compare
+	 * \param path2 to compare
+	 * \return true if they are the same path
+	 */
+	static bool CPathUtils::IsSamePath(const CString& path1, const CString& path2);
+
+	/**
+	 * Checks if two path strings are equal. No conversion of slashes is done!
+	 * \remark for slash-independent comparison, use IsEquivalentTo()
+	 */
+	static bool ArePathStringsEqual(const CString& sP1, const CString& sP2);
+	static bool ArePathStringsEqualWithCase(const CString& sP1, const CString& sP2);
+
 	static CString GetCopyrightForSelf();
 #endif
 };
