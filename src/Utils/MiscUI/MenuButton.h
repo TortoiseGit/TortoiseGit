@@ -94,4 +94,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 	CStringArray m_sEntries;
+
+	CFont m_Font;
+	void FixFont();
 };
