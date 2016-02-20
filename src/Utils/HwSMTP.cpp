@@ -34,7 +34,7 @@ CHwSMTP::CHwSMTP () :
 	m_bMustAuth ( TRUE )
 {
 	m_csPartBoundary = _T( "WC_MAIL_PaRt_BoUnDaRy_05151998" );
-	m_csMIMEContentType = FormatString ( _T( "multipart/mixed; boundary=%s" ), (LPCTSTR)m_csPartBoundary);
+	m_csMIMEContentType.Format(_T("multipart/mixed; boundary=%s"), (LPCTSTR)m_csPartBoundary);
 	m_csNoMIMEText = _T( "This is a multi-part message in MIME format." );
 	//m_csCharSet = _T("\r\n\tcharset=\"iso-8859-1\"\r\n");
 
@@ -768,7 +768,7 @@ BOOL CHwSMTP::SendEmail (
 		m_StrAryAttach.Append ( *pStrAryAttach );
 	}
 	if ( m_StrAryAttach.GetSize() < 1 )
-		m_csMIMEContentType = FormatString(_T("text/plain; %s"), (LPCTSTR)m_csCharSet);
+		m_csMIMEContentType.Format(_T("text/plain; %s"), (LPCTSTR)m_csCharSet);
 
 	// ´´½¨Socket
 	m_SendSock.Close();
@@ -1151,22 +1151,22 @@ BOOL CHwSMTP::SendSubject(const CString &hostname)
 		csSubject += FormatDateTime (tNow, _T("%a, %d %b %y %H:%M:%S %Z"));
 	}
 	csSubject += _T("\r\n");
-	csSubject += FormatString ( _T("From: %s\r\n"), (LPCTSTR)m_csAddrFrom);
+	csSubject.AppendFormat(_T("From: %s\r\n"), (LPCTSTR)m_csAddrFrom);
 
 	if (!m_StrCC.IsEmpty())
-		csSubject += FormatString ( _T("CC: %s\r\n"), (LPCTSTR)m_StrCC);
+		csSubject.AppendFormat(_T("CC: %s\r\n"), (LPCTSTR)m_StrCC);
 
 	if(m_csSender.IsEmpty())
 		m_csSender =  this->m_csAddrFrom;
 
-	csSubject += FormatString ( _T("Sender: %s\r\n"), (LPCTSTR)m_csSender);
+	csSubject.AppendFormat(_T("Sender: %s\r\n"), (LPCTSTR)m_csSender);
 
 	if(this->m_csToList.IsEmpty())
 		m_csToList = m_csReceiverName;
 
-	csSubject += FormatString ( _T("To: %s\r\n"), (LPCTSTR)m_csToList);
+	csSubject.AppendFormat(_T("To: %s\r\n"), (LPCTSTR)m_csToList);
 
-	csSubject += FormatString ( _T("Subject: %s\r\n"), (LPCTSTR)m_csSubject );
+	csSubject.AppendFormat(_T("Subject: %s\r\n"), (LPCTSTR)m_csSubject);
 
 	CString m_ListID;
 	GUID guid;
@@ -1185,10 +1185,8 @@ BOOL CHwSMTP::SendSubject(const CString &hostname)
 		m_csLastError = _T("Could not generate Message-ID");
 		return FALSE;
 	}
-	csSubject += FormatString( _T("Message-ID: <%s@%s>\r\n"), (LPCTSTR)m_ListID, (LPCTSTR)hostname);
-
-	csSubject += FormatString ( _T("X-Mailer: TortoiseGit\r\nMIME-Version: 1.0\r\nContent-Type: %s\r\n\r\n"),
-		(LPCTSTR)m_csMIMEContentType );
+	csSubject.AppendFormat(_T("Message-ID: <%s@%s>\r\n"), (LPCTSTR)m_ListID, (LPCTSTR)hostname);
+	csSubject.AppendFormat(_T("X-Mailer: TortoiseGit\r\nMIME-Version: 1.0\r\nContent-Type: %s\r\n\r\n"), (LPCTSTR)m_csMIMEContentType);
 
 	return Send ( csSubject );
 }
@@ -1199,15 +1197,9 @@ BOOL CHwSMTP::SendBody()
 
 	if ( m_StrAryAttach.GetSize() > 0 )
 	{
-		csTemp.Format ( _T("%s\r\n\r\n"), (LPCTSTR)m_csNoMIMEText );
-		csBody += csTemp;
-
-		csTemp.Format ( _T("--%s\r\n"), (LPCTSTR)m_csPartBoundary );
-		csBody += csTemp;
-
-		csTemp.Format ( _T("Content-Type: text/plain\r\n%sContent-Transfer-Encoding: UTF-8\r\n\r\n"),
-			m_csCharSet );
-		csBody += csTemp;
+		csBody.AppendFormat(_T("%s\r\n\r\n"), (LPCTSTR)m_csNoMIMEText);
+		csBody.AppendFormat(_T("--%s\r\n"), (LPCTSTR)m_csPartBoundary);
+		csBody.AppendFormat(_T("Content-Type: text/plain\r\n%sContent-Transfer-Encoding: UTF-8\r\n\r\n"), m_csCharSet);
 	}
 
 	//csTemp.Format ( _T("%s\r\n"), m_csBody );
@@ -1242,17 +1234,10 @@ BOOL CHwSMTP::SendOnAttach(LPCTSTR lpszFileName)
 	CString csShortFileName = csTemp.GetBuffer(0) + csTemp.ReverseFind ( '\\' );
 	csShortFileName.TrimLeft ( _T("\\") );
 
-	csTemp.Format ( _T("--%s\r\n"), (LPCTSTR)m_csPartBoundary );
-	csAttach += csTemp;
-
-	csTemp.Format ( _T("Content-Type: application/octet-stream; file=%s\r\n"), (LPCTSTR)csShortFileName );
-	csAttach += csTemp;
-
-	csTemp.Format ( _T("Content-Transfer-Encoding: base64\r\n") );
-	csAttach += csTemp;
-
-	csTemp.Format ( _T("Content-Disposition: attachment; filename=%s\r\n\r\n"), (LPCTSTR)csShortFileName );
-	csAttach += csTemp;
+	csAttach.AppendFormat(_T("--%s\r\n"), (LPCTSTR)m_csPartBoundary);
+	csAttach.AppendFormat(_T("Content-Type: application/octet-stream; file=%s\r\n"), (LPCTSTR)csShortFileName);
+	csAttach.AppendFormat(_T("Content-Transfer-Encoding: base64\r\n"));
+	csAttach.AppendFormat(_T("Content-Disposition: attachment; filename=%s\r\n\r\n"), (LPCTSTR)csShortFileName);
 
 	DWORD dwFileSize =  hwGetFileAttr(lpszFileName);
 	if ( dwFileSize > 5*1024*1024 )
@@ -1488,36 +1473,6 @@ CString FormatDateTime (COleDateTime &DateTime, LPCTSTR /*pFormat*/)
 		abs(stTimeZone.Bias*10/6)
 		);
 	return strDate;
-}
-
-CString FormatString ( LPCTSTR lpszStr, ... )
-{
-	TCHAR *buf = NULL;
-	for ( int nBufCount = 1024; nBufCount<5*1024*1024; nBufCount += 1024 )
-	{
-		buf = new TCHAR[nBufCount];
-		if ( !buf )
-		{
-			::AfxThrowMemoryException ();
-		}
-		memset ( buf, 0, nBufCount*sizeof(TCHAR) );
-
-		va_list  va;
-		va_start (va, lpszStr);
-		int nLen = _vsnprintf_hw((TCHAR*)buf, nBufCount, _TRUNCATE, lpszStr, va);
-		va_end(va);
-		if ( nLen <= (int)(nBufCount-sizeof(TCHAR)) )
-			break;
-		delete[] buf; buf = NULL;
-	}
-	if ( !buf )
-	{
-		return _T("");
-	}
-
-	CString csMsg = buf;
-	delete[] buf; buf = NULL;
-	return csMsg;
 }
 
 int hwGetFileAttr ( LPCTSTR lpFileName, OUT CFileStatus *pFileStatus/*=NULL*/ )

@@ -49,7 +49,6 @@ private:
 
 CString GetCompatibleString ( LPVOID lpszOrg, BOOL bOrgIsUnicode, int nOrgLength=-1 );
 CString FormatDateTime ( COleDateTime &DateTime, LPCTSTR pFormat );
-CString FormatString ( LPCTSTR lpszStr, ... );
 int hwGetFileAttr ( LPCTSTR lpFileName, OUT CFileStatus *pFileStatus=NULL );
 CString FormatBytes ( double fBytesNum, BOOL bShowUnit=TRUE, int nFlag=0 );
 BOOL WaitForThreadEnd ( HANDLE *phThread, DWORD dwWaitTime=10*1000 );
