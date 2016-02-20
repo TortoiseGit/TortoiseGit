@@ -956,7 +956,7 @@ BOOL CHwSMTP::GetResponse ( LPCTSTR lpszVerifyCode, int *pnCode/*=NULL*/)
 
 	return TRUE;
 }
-BOOL CHwSMTP::SendBuffer(char *buff,int size)
+BOOL CHwSMTP::SendBuffer(const char* buff, int size)
 {
 	if(size<0)
 		size=(int)strlen(buff);
@@ -1270,7 +1270,7 @@ BOOL CHwSMTP::SendOnAttach(LPCTSTR lpszFileName)
 		return FALSE;
 	}
 
-	if (!SendBuffer(filedata.GetBuffer()))
+	if (!SendBuffer(filedata))
 		return FALSE;
 
 	return TRUE;
