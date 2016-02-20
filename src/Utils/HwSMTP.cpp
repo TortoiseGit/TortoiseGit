@@ -186,15 +186,14 @@ static SECURITY_STATUS ClientHandshakeLoop(CSocket * Socket, PCredHandle phCreds
 	DWORD dwSSPIFlags, dwSSPIOutFlags, cbData, cbIoBuffer;
 	TimeStamp tsExpiry;
 	SECURITY_STATUS scRet;
-	PUCHAR IoBuffer;
 	BOOL fDoRead;
 
 	dwSSPIFlags = ISC_REQ_SEQUENCE_DETECT	| ISC_REQ_REPLAY_DETECT		| ISC_REQ_CONFIDENTIALITY |
 				  ISC_RET_EXTENDED_ERROR	| ISC_REQ_ALLOCATE_MEMORY	| ISC_REQ_STREAM;
 
 	// Allocate data buffer.
-	IoBuffer = new UCHAR[IO_BUFFER_SIZE];
-	if (IoBuffer == nullptr)
+	auto IoBuffer = std::make_unique<UCHAR[]>(IO_BUFFER_SIZE);
+	if (!IoBuffer)
 	{
 		// printf("**** Out of memory (1)\n");
 		return SEC_E_INTERNAL_ERROR;
@@ -211,7 +210,7 @@ static SECURITY_STATUS ClientHandshakeLoop(CSocket * Socket, PCredHandle phCreds
 		{
 			if (fDoRead)
 			{
-				cbData = Socket->Receive(IoBuffer + cbIoBuffer, IO_BUFFER_SIZE - cbIoBuffer, 0);
+				cbData = Socket->Receive(IoBuffer.get() + cbIoBuffer, IO_BUFFER_SIZE - cbIoBuffer, 0);
 				if (cbData == SOCKET_ERROR)
 				{
 					// printf("**** Error %d reading data from server\n", WSAGetLastError());
@@ -235,7 +234,7 @@ static SECURITY_STATUS ClientHandshakeLoop(CSocket * Socket, PCredHandle phCreds
 		// received from the server. Schannel will consume some or all
 		// of this. Leftover data (if any) will be placed in buffer 1 and
 		// given a buffer type of SECBUFFER_EXTRA.
-		InBuffers[0].pvBuffer	= IoBuffer;
+		InBuffers[0].pvBuffer	= IoBuffer.get();
 		InBuffers[0].cbBuffer	= cbIoBuffer;
 		InBuffers[0].BufferType	= SECBUFFER_TOKEN;
 
@@ -306,7 +305,7 @@ static SECURITY_STATUS ClientHandshakeLoop(CSocket * Socket, PCredHandle phCreds
 					return SEC_E_INTERNAL_ERROR;
 				}
 
-				MoveMemory(pExtraData->pvBuffer, IoBuffer + (cbIoBuffer - InBuffers[1].cbBuffer), InBuffers[1].cbBuffer);
+				MoveMemory(pExtraData->pvBuffer, IoBuffer.get() + (cbIoBuffer - InBuffers[1].cbBuffer), InBuffers[1].cbBuffer);
 
 				pExtraData->cbBuffer	= InBuffers[1].cbBuffer;
 				pExtraData->BufferType	= SECBUFFER_TOKEN;
@@ -352,7 +351,7 @@ static SECURITY_STATUS ClientHandshakeLoop(CSocket * Socket, PCredHandle phCreds
 		// Copy any leftover data from the "extra" buffer, and go around again.
 		if ( InBuffers[1].BufferType == SECBUFFER_EXTRA )
 		{
-			MoveMemory(IoBuffer, IoBuffer + (cbIoBuffer - InBuffers[1].cbBuffer), InBuffers[1].cbBuffer);
+			MoveMemory(IoBuffer.get(), IoBuffer.get() + (cbIoBuffer - InBuffers[1].cbBuffer), InBuffers[1].cbBuffer);
 			cbIoBuffer = InBuffers[1].cbBuffer;
 		}
 		else
@@ -362,7 +361,6 @@ static SECURITY_STATUS ClientHandshakeLoop(CSocket * Socket, PCredHandle phCreds
 	// Delete the security context in the case of a fatal error.
 	if (FAILED(scRet))
 		g_pSSPI->DeleteSecurityContext(phContext);
-	delete[] IoBuffer;
 
 	return scRet;
 }
@@ -1245,17 +1243,12 @@ BOOL CHwSMTP::SendOnAttach(LPCTSTR lpszFileName)
 		m_csLastError.Format ( _T("File [%s] too big. File size is : %s"), lpszFileName, FormatBytes(dwFileSize) );
 		return FALSE;
 	}
-	char *pBuf = new char[dwFileSize+1];
-	if ( !pBuf )
-	{
-		::AfxThrowMemoryException ();
-	}
+	auto pBuf = std::make_unique<char[]>(dwFileSize + 1);
+	if (!pBuf)
+		::AfxThrowMemoryException();
 
-	if(!Send ( csAttach ))
-	{
-		delete[] pBuf;
+	if (!Send(csAttach))
 		return FALSE;
-	}
 
 	CFile file;
 	CStringA filedata;
@@ -1264,28 +1257,21 @@ BOOL CHwSMTP::SendOnAttach(LPCTSTR lpszFileName)
 		if ( !file.Open ( lpszFileName, CFile::modeRead ) )
 		{
 			m_csLastError.Format ( _T("Open file [%s] failed"), lpszFileName );			
-			delete[] pBuf;
 			return FALSE;
 		}
-		UINT nFileLen = file.Read ( pBuf, dwFileSize );
-		filedata = EncodeBase64(pBuf, nFileLen);
+		UINT nFileLen = file.Read(pBuf.get(), dwFileSize);
+		filedata = EncodeBase64(pBuf.get(), nFileLen);
 		filedata += _T("\r\n\r\n");
 	}
 	catch (CFileException *e)
 	{
 		e->Delete();
 		m_csLastError.Format ( _T("Read file [%s] failed"), lpszFileName );
-		delete[] pBuf;
 		return FALSE;
 	}
 
-	if(!SendBuffer( filedata.GetBuffer() ))
-	{
-		delete[] pBuf;
+	if (!SendBuffer(filedata.GetBuffer()))
 		return FALSE;
-	}
-
-	delete[] pBuf;
 
 	return TRUE;
 	//return Send ( csAttach );
@@ -1382,13 +1368,12 @@ CString GetCompatibleString ( LPVOID lpszOrg, BOOL bOrgIsUnicode, int nOrgLength
 		{
 			if ( nOrgLength > 0 )
 			{
-				WCHAR *szRet = new WCHAR[nOrgLength+1];
-				if ( !szRet ) return _T("");
-				memset ( szRet, 0, (nOrgLength+1)*sizeof(WCHAR) );
-				memcpy ( szRet, lpszOrg, nOrgLength*sizeof(WCHAR) );
-				CString csRet = szRet;
-				delete[] szRet;
-				return csRet;
+				auto szRet = std::make_unique<WCHAR[]>(nOrgLength + 1);
+				if (!szRet)
+					return _T("");
+				memset(szRet.get(), 0, (nOrgLength + 1) * sizeof(WCHAR));
+				memcpy(szRet.get(), lpszOrg, nOrgLength * sizeof(WCHAR));
+				return CString(szRet.get());
 			}
 			else if ( nOrgLength == 0 )
 				return _T("");
@@ -1399,13 +1384,12 @@ CString GetCompatibleString ( LPVOID lpszOrg, BOOL bOrgIsUnicode, int nOrgLength
 		if ( nOrgLength < 0 )
 			nOrgLength = (int)strlen((const char*)lpszOrg);
 		int nWideCount = nOrgLength + 1;
-		WCHAR *wchar = new WCHAR[nWideCount];
-		if ( !wchar ) return _T("");
-		memset ( wchar, 0, nWideCount*sizeof(WCHAR) );
-		::MultiByteToWideChar(CP_UTF8, 0, (LPCSTR)lpszOrg, nOrgLength, wchar, nWideCount);
-		CString csRet = wchar;
-		delete[] wchar;
-		return csRet;
+		auto wchar = std::make_unique<WCHAR[]>(nWideCount);
+		if (!wchar)
+			return _T("");
+		memset(wchar.get(), 0, nWideCount * sizeof(WCHAR));
+		::MultiByteToWideChar(CP_UTF8, 0, (LPCSTR)lpszOrg, nOrgLength, wchar.get(), nWideCount);
+		return CString(wchar.get());
 #else
 		if ( !bOrgIsUnicode )
 		{

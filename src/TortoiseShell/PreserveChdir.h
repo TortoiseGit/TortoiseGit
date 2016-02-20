@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2016 - TortoiseGit
 // Copyright (C) 2003-2006,2008 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
@@ -17,6 +18,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #pragma once
+#include <memory>
 
 /**
  * \ingroup TortoiseShell
@@ -35,6 +37,6 @@ public:
 	~PreserveChdir();
 
 private:
-	TCHAR  * originalCurrentDirectory;
+	std::unique_ptr<TCHAR[]> m_originalCurrentDirectory;
 };
 

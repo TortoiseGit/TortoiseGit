@@ -312,8 +312,7 @@ void CImportPatchDlg::OnBnClickedButtonDown()
 	POSITION pos;
 	pos = m_cList.GetFirstSelectedItemPosition();
 	// use an array to store all selected item indexes; the user won't select too much items
-	int* indexes = NULL;
-	indexes = new int[m_cList.GetSelectedCount()];
+	auto indexes = std::make_unique<int[]>(m_cList.GetSelectedCount());
 	int i = 0;
 	while(pos)
 	{
@@ -337,8 +336,6 @@ void CImportPatchDlg::OnBnClickedButtonDown()
 			m_cList.SetItemState(index, 0, LVIS_SELECTED);
 		}
 	}
-	delete [] indexes;
-	indexes = NULL;
 }
 
 void CImportPatchDlg::OnBnClickedButtonRemove()

@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2016 - TortoiseGit
 // Copyright (C) 2003-2007 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -22,34 +23,24 @@
 PreserveChdir::PreserveChdir()
 {
 	DWORD len = GetCurrentDirectory(0, NULL);
-	if (len)
-	{
-		originalCurrentDirectory = new TCHAR[len];
-		if (GetCurrentDirectory(len, originalCurrentDirectory)==0)
-		{
-			delete [] originalCurrentDirectory;
-			originalCurrentDirectory = NULL;
-		}
-	}
-	else
-		originalCurrentDirectory = NULL;
+	if (!len)
+		return;
+
+	m_originalCurrentDirectory = std::make_unique<TCHAR[]>(len);
+	if (GetCurrentDirectory(len, m_originalCurrentDirectory.get()) == 0)
+		m_originalCurrentDirectory.reset();
 }
 
 PreserveChdir::~PreserveChdir()
 {
-	if (originalCurrentDirectory)
-	{
-		DWORD len = GetCurrentDirectory(0, NULL);
-		TCHAR * currentDirectory = new TCHAR[len];
+	if (!m_originalCurrentDirectory)
+		return;
 
-		// _tchdir is an expensive function - don't call it unless we really have to
-		GetCurrentDirectory(len, currentDirectory);
-		if(_tcscmp(currentDirectory, originalCurrentDirectory) != 0)
-		{
-			SetCurrentDirectory(originalCurrentDirectory);
-		}
-		delete [] currentDirectory;
-		delete [] originalCurrentDirectory;
-		originalCurrentDirectory = NULL;
-	}
+	DWORD len = GetCurrentDirectory(0, nullptr);
+	auto currentDirectory = std::make_unique<TCHAR[]>(len);
+
+	// _tchdir is an expensive function - don't call it unless we really have to
+	GetCurrentDirectory(len, currentDirectory.get());
+	if (_tcscmp(currentDirectory.get(), m_originalCurrentDirectory.get()) != 0)
+		SetCurrentDirectory(m_originalCurrentDirectory.get());
 }
