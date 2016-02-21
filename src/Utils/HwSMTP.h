@@ -106,9 +106,10 @@ private:
 	BOOL SendHead();
 	BOOL auth();
 	BOOL SendEmail();
+	BOOL Send(const CStringA& data);
 	BOOL Send ( const CString &data );
 	BOOL SendBuffer(const char* buffer, int size = -1);
-	BOOL GetResponse( LPCTSTR lpszVerifyCode, int *pnCode=NULL );
+	BOOL GetResponse(LPCSTR lpszVerifyCode);
 	BOOL m_bConnected;
 	CSocket m_SendSock;
 	CStringArray m_StrAryAttach;

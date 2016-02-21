@@ -798,11 +798,11 @@ BOOL CHwSMTP::SendEmail (
 	}
 
 	if (m_iSecurityLevel == want_tls) {
-		if (!GetResponse(_T("220")))
+		if (!GetResponse("220"))
 			return FALSE;
 		m_bConnected = TRUE;
 		Send(L"STARTTLS\n");
-		if (!GetResponse(_T("220")))
+		if (!GetResponse("220"))
 			return FALSE;
 		m_iSecurityLevel = tls_established;
 	}
@@ -882,7 +882,7 @@ BOOL CHwSMTP::SendEmail (
 
 	if (m_iSecurityLevel <= ssl)
 	{
-		if (!GetResponse(_T("220")))
+		if (!GetResponse("220"))
 			goto cleanup;
 		m_bConnected = TRUE;
 	}
@@ -918,9 +918,9 @@ cleanup:
 	return ret;
 }
 
-BOOL CHwSMTP::GetResponse ( LPCTSTR lpszVerifyCode, int *pnCode/*=NULL*/)
+BOOL CHwSMTP::GetResponse(LPCSTR lpszVerifyCode)
 {
-	if ( !lpszVerifyCode || lstrlen(lpszVerifyCode) < 1 )
+	if (!lpszVerifyCode || strlen(lpszVerifyCode) < 1)
 		return FALSE;
 
 	SECURITY_STATUS scRet = SEC_E_OK;
@@ -946,11 +946,9 @@ BOOL CHwSMTP::GetResponse ( LPCTSTR lpszVerifyCode, int *pnCode/*=NULL*/)
 //	TRACE ( _T("收到服务器回应：%s\n"), szRecvBuf );
 
 	memcpy ( szStatusCode, szRecvBuf, 3 );
-	if ( pnCode ) (*pnCode) = atoi ( szStatusCode );
-
-	if ( strcmp ( szStatusCode, CMultiByteString(lpszVerifyCode).GetBuffer() ) != 0 )
+	if (strcmp(szStatusCode, lpszVerifyCode) != 0)
 	{
-		m_csLastError.Format(_T("Received invalid response: %s"), (LPCTSTR)GetCompatibleString(szRecvBuf, FALSE));
+		m_csLastError.Format(_T("Received invalid response: %s"), (LPCTSTR)CUnicodeUtils::GetUnicode(szRecvBuf));
 		return FALSE;
 	}
 
@@ -991,34 +989,31 @@ BOOL CHwSMTP::SendBuffer(const char* buff, int size)
 // 利用socket发送数据，数据长度不能超过10M
 BOOL CHwSMTP::Send(const CString &str )
 {
-	CMultiByteString cbsData ( str );
+	return Send(CUnicodeUtils::GetUTF8(str));
+}
 
-	TRACE(_T("Send : %s\r\n"), cbsData.GetBuffer());
-	return SendBuffer(cbsData.GetBuffer(), cbsData.GetLength());
+BOOL CHwSMTP::Send(const CStringA &str)
+{
+	TRACE(_T("Send: %s\r\n"), (LPCTSTR)CUnicodeUtils::GetUnicode(str));
+	return SendBuffer(str, str.GetLength());
 }
 
 BOOL CHwSMTP::SendEmail()
 {
-	BOOL bRet = TRUE;
-	char szLocalHostName[64] = {0};
-	gethostname ( (char*)szLocalHostName, sizeof(szLocalHostName) );
+	CStringA hostname;
+	gethostname(CStrBufA(hostname, 64), 64);
 
 	// make sure helo hostname can be interpreted as a FQDN
-	CString hostname(GetCompatibleString(szLocalHostName, FALSE));
-	if (hostname.Find(_T(".")) == -1)
-		hostname += _T(".local");
+	if (hostname.Find(".") == -1)
+		hostname += ".local";
 
 	// hello，握手
-	CString str;
-	str.Format(_T("HELO %s\r\n"), (LPCTSTR)hostname);
-	if ( !Send (  str ))
-	{
+	CStringA str;
+	str.Format("HELO %s\r\n", (LPCSTR)hostname);
+	if (!Send(str))
 		return FALSE;
-	}
-	if ( !GetResponse ( _T("250") ) )
-	{
+	if (!GetResponse("250"))
 		return FALSE;
-	}
 	// 身份验证
 	if ( m_bMustAuth && !auth() )
 	{
@@ -1030,7 +1025,7 @@ BOOL CHwSMTP::SendEmail()
 		return FALSE;
 	}
 	// 发送邮件主题
-	if (!SendSubject(hostname))
+	if (!SendSubject(CUnicodeUtils::GetUnicode(hostname)))
 	{
 		return FALSE;
 	}
@@ -1045,59 +1040,53 @@ BOOL CHwSMTP::SendEmail()
 		return FALSE;
 	}
 	// 结束邮件正文
-	if ( !Send ( CString(_T(".\r\n") ) ) ) return FALSE;
-	if ( !GetResponse ( _T("250") ) )
+	if (!Send(".\r\n"))
+		return FALSE;
+	if (!GetResponse("250"))
 		return FALSE;
 
 	// 退出发送
 	if ( HANDLE_IS_VALID(m_SendSock.m_hSocket) )
-		Send ( CString(_T("QUIT\r\n")) );
+		Send("QUIT\r\n");
 	m_bConnected = FALSE;
 
-	return bRet;
+	return TRUE;
 }
 
-static CStringA EncodeBase64(const char * source, int len)
+static CStringA EncodeBase64(const char* source, int len)
 {
 	int neededLength = Base64EncodeGetRequiredLength(len);
 	CStringA output;
-	if (!Base64Encode((BYTE *)source, len, output.GetBufferSetLength(neededLength), &neededLength))
-	{
-		output.ReleaseBuffer(0);
-		return output;
-	}
-	output.ReleaseBuffer(neededLength);
+	Base64Encode((BYTE*)source, len, CStrBufA(output, neededLength), &neededLength);
 	return output;
+}
+
+static CStringA EncodeBase64(const CString& source)
+{
+	CStringA buf = CUnicodeUtils::GetUTF8(source);
+	return EncodeBase64(buf, buf.GetLength());
 }
 
 BOOL CHwSMTP::auth()
 {
-	int nResponseCode = 0;
-	if ( !Send ( CString(_T("auth login\r\n")) ) ) return FALSE;
-	if ( !GetResponse ( _T("334"), &nResponseCode ) ) return FALSE;
-	if ( nResponseCode != 334 )	// 不需要验证用户名和密码
-		return TRUE;
-
-	CMultiByteString cbsUserName ( m_csUserName ), cbsPasswd ( m_csPasswd );
-	CString csBase64_UserName = GetCompatibleString(EncodeBase64(cbsUserName.GetBuffer(), cbsUserName.GetLength()).GetBuffer(0), FALSE);
-	CString csBase64_Passwd = GetCompatibleString(EncodeBase64(cbsPasswd.GetBuffer(), cbsPasswd.GetLength()).GetBuffer(0), FALSE);
-
-	CString str;
-	str.Format(_T("%s\r\n"), (LPCTSTR)csBase64_UserName);
-	if ( !Send ( str ) )
+	if (!Send("auth login\r\n"))
+		return FALSE;
+	if (!GetResponse("334"))
 		return FALSE;
 
-	if ( !GetResponse ( _T("334") ) )
+	if (!Send(EncodeBase64(m_csUserName)))
+		return FALSE;
+
+	if (!GetResponse("334"))
 	{
 		m_csLastError.Format ( _T("Authentication UserName failed") );
 		return FALSE;
 	}
 
-	str.Format(_T("%s\r\n"), (LPCTSTR)csBase64_Passwd);
-	if ( !Send ( str ) )
+	if (!Send(EncodeBase64(m_csPasswd)))
 		return FALSE;
 
-	if ( !GetResponse ( _T("235") ) )
+	if (!GetResponse("235"))
 	{
 		m_csLastError.Format ( _T("Authentication Password failed") );
 		return FALSE;
@@ -1113,9 +1102,11 @@ BOOL CHwSMTP::SendHead()
 	GetNameAddress(m_csAddrFrom,name,addr);
 
 	str.Format(_T("MAIL From: <%s>\r\n"), (LPCTSTR)addr);
-	if ( !Send ( str  ) ) return FALSE;
+	if (!Send(str))
+		return FALSE;
 
-	if ( !GetResponse ( _T("250") ) ) return FALSE;
+	if (!GetResponse("250"))
+		return FALSE;
 
 	int start=0;
 	while(start>=0)
@@ -1129,12 +1120,16 @@ BOOL CHwSMTP::SendHead()
 		GetNameAddress(one,name,addr);
 
 		str.Format(_T("RCPT TO: <%s>\r\n"), (LPCTSTR)addr);
-		if ( !Send ( str ) ) return FALSE;
-		if ( !GetResponse ( _T("250") ) ) return FALSE;
+		if (!Send(str))
+			return FALSE;
+		if (!GetResponse("250"))
+			return FALSE;
 	}
 
-	if ( !Send ( CString(_T("DATA\r\n") ) ) ) return FALSE;
-	if ( !GetResponse ( CString(_T("354") )) ) return FALSE;
+	if (!Send("DATA\r\n"))
+		return FALSE;
+	if (!GetResponse("354"))
+		return FALSE;
 
 	return TRUE;
 }
@@ -1186,7 +1181,7 @@ BOOL CHwSMTP::SendSubject(const CString &hostname)
 	csSubject.AppendFormat(_T("Message-ID: <%s@%s>\r\n"), (LPCTSTR)m_ListID, (LPCTSTR)hostname);
 	csSubject.AppendFormat(_T("X-Mailer: TortoiseGit\r\nMIME-Version: 1.0\r\nContent-Type: %s\r\n\r\n"), (LPCTSTR)m_csMIMEContentType);
 
-	return Send ( csSubject );
+	return Send(csSubject);
 }
 
 BOOL CHwSMTP::SendBody()
@@ -1204,7 +1199,7 @@ BOOL CHwSMTP::SendBody()
 	csBody += m_csBody;
 	csBody += _T("\r\n");
 
-	return Send ( csBody );
+	return Send(csBody);
 }
 
 BOOL CHwSMTP::SendAttach()
@@ -1274,7 +1269,6 @@ BOOL CHwSMTP::SendOnAttach(LPCTSTR lpszFileName)
 		return FALSE;
 
 	return TRUE;
-	//return Send ( csAttach );
 }
 
 CString CHwSMTP::GetLastErrorText()
@@ -1282,151 +1276,6 @@ CString CHwSMTP::GetLastErrorText()
 	return m_csLastError;
 }
 
-//
-// 将字符串 lpszOrg 转换为多字节的字符串，如果还要使用多字符串的长度，可以用以下方式来使用这个类：
-// CMultiByteString MultiByteString(_T("UNICODE字符串"));
-// printf ( "ANSI 字符串为： %s， 字符个数为： %d ， 长度为： %d字节\n", MultiByteString.GetBuffer(), MultiByteString.GetLength(), MultiByteString.GetSize() );
-//
-CMultiByteString::CMultiByteString( LPCTSTR lpszOrg, int nOrgStringEncodeType/*=STRING_IS_SOFTCODE*/, OUT char *pOutBuf/*=NULL*/, int nOutBufSize/*=0*/ )
-{
-	m_bNewBuffer = FALSE;
-	m_pszData = NULL;
-	m_nDataSize = 0;
-	m_nCharactersNumber = 0;
-	if ( !lpszOrg ) return;
-
-	BOOL bOrgIsUnicode = FALSE;
-	if ( nOrgStringEncodeType == STRING_IS_MULTICHARS ) bOrgIsUnicode = FALSE;
-	else if ( nOrgStringEncodeType == STRING_IS_UNICODE ) bOrgIsUnicode = TRUE;
-	else
-	{
-#ifdef UNICODE
-		bOrgIsUnicode = TRUE;
-#else
-		bOrgIsUnicode = FALSE;
-#endif
-	}
-
-	if ( bOrgIsUnicode )
-	{
-		m_nCharactersNumber = (int)wcslen((WCHAR*)lpszOrg);
-		m_nDataSize = (m_nCharactersNumber + 1) * sizeof(WCHAR);
-	}
-	else
-	{
-		m_nCharactersNumber = (int)strlen((char*)lpszOrg);
-		m_nDataSize = (m_nCharactersNumber + 1) * sizeof(char);
-	}
-
-	if ( pOutBuf && nOutBufSize > 0 )
-	{
-		m_pszData = pOutBuf;
-		m_nDataSize = nOutBufSize;
-	}
-	else
-	{
-		m_pszData = (char*)new BYTE[m_nDataSize];
-		if ( !m_pszData )
-		{
-			::AfxThrowMemoryException ();
-			return;
-		}
-		m_bNewBuffer = TRUE;
-	}
-	memset ( m_pszData, 0, m_nDataSize );
-
-	if ( bOrgIsUnicode )
-	{
-		m_nCharactersNumber = WideCharToMultiByte(CP_UTF8, 0, (LPCWSTR)lpszOrg, m_nCharactersNumber, (LPSTR)m_pszData, m_nDataSize / sizeof(char) - 1, NULL, NULL);
-		if ( m_nCharactersNumber < 1 ) m_nCharactersNumber = (int)strlen ( m_pszData );
-	}
-	else
-	{
-		m_nCharactersNumber = __min ( m_nCharactersNumber, (int)(m_nDataSize/sizeof(char)-1) );
-		strncpy_s(m_pszData, m_nCharactersNumber, (const char*)lpszOrg, m_nCharactersNumber);
-		m_nCharactersNumber = (int)strlen ( m_pszData );
-	}
-	m_nDataSize = ( m_nCharactersNumber + 1 ) * sizeof(char);
-}
-
-CMultiByteString::~CMultiByteString ()
-{
-	if ( m_bNewBuffer && m_pszData )
-	{
-		delete[] m_pszData;
-	}
-}
-
-CString GetCompatibleString ( LPVOID lpszOrg, BOOL bOrgIsUnicode, int nOrgLength/*=-1*/ )
-{
-	if ( !lpszOrg ) return _T("");
-
-	TRY
-	{
-#ifdef UNICODE
-		if ( bOrgIsUnicode )
-		{
-			if ( nOrgLength > 0 )
-			{
-				auto szRet = std::make_unique<WCHAR[]>(nOrgLength + 1);
-				if (!szRet)
-					return _T("");
-				memset(szRet.get(), 0, (nOrgLength + 1) * sizeof(WCHAR));
-				memcpy(szRet.get(), lpszOrg, nOrgLength * sizeof(WCHAR));
-				return CString(szRet.get());
-			}
-			else if ( nOrgLength == 0 )
-				return _T("");
-			else
-				return (LPCTSTR)lpszOrg;
-		}
-
-		if ( nOrgLength < 0 )
-			nOrgLength = (int)strlen((const char*)lpszOrg);
-		int nWideCount = nOrgLength + 1;
-		auto wchar = std::make_unique<WCHAR[]>(nWideCount);
-		if (!wchar)
-			return _T("");
-		memset(wchar.get(), 0, nWideCount * sizeof(WCHAR));
-		::MultiByteToWideChar(CP_UTF8, 0, (LPCSTR)lpszOrg, nOrgLength, wchar.get(), nWideCount);
-		return CString(wchar.get());
-#else
-		if ( !bOrgIsUnicode )
-		{
-			if ( nOrgLength > 0 )
-			{
-				char *szRet = new char[nOrgLength+1];
-				if ( !szRet ) return _T("");
-				memset ( szRet, 0, (nOrgLength+1)*sizeof(char) );
-				memcpy ( szRet, lpszOrg, nOrgLength*sizeof(char) );
-				CString csRet = szRet;
-				delete[] szRet;
-				return csRet;
-			}
-			else if ( nOrgLength == 0 )
-				return _T("");
-			else
-				return (LPCTSTR)lpszOrg;
-		}
-
-		if ( nOrgLength < 0 )
-			nOrgLength = (int)wcslen((WCHAR*)lpszOrg);
-		int nMultiByteCount = nOrgLength + 1;
-		char *szMultiByte = new char[nMultiByteCount];
-		if ( !szMultiByte ) return _T("");
-		memset ( szMultiByte, 0, nMultiByteCount*sizeof(char) );
-		::WideCharToMultiByte(CP_UTF8, 0, (LPCWSTR)lpszOrg, nOrgLength, (LPSTR)szMultiByte, nMultiByteCount, NULL, NULL);
-		CString csRet = szMultiByte;
-		delete[] szMultiByte;
-		return csRet;
-#endif
-	}
-	CATCH_ALL(e)
-	{
-		THROW_LAST ();
-	}
-	END_CATCH_ALL
-}
 
 CString FormatDateTime (COleDateTime &DateTime, LPCTSTR /*pFormat*/)
 {
