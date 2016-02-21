@@ -2475,7 +2475,6 @@ bool CAppUtils::Pull(bool showPush, bool showStashPop)
 			return false;
 		}
 
-		CString cmdRebase;
 		CString noff;
 		CString ffonly;
 		CString squash;
@@ -2505,17 +2504,12 @@ bool CAppUtils::Pull(bool showPush, bool showStashPop)
 		if (dlg.m_bDepth)
 			depth.Format(_T("--depth %d "), dlg.m_nDepth);
 
-		int ver = CAppUtils::GetMsysgitVersion();
-
 		if (dlg.m_bPrune == TRUE)
 			prune = _T("--prune ");
-		else if (dlg.m_bPrune == FALSE && ver >= 0x01080500)
+		else if (dlg.m_bPrune == FALSE)
 			prune = _T("--no-prune ");
 
-		if(ver >= 0x01070203) //above 1.7.0.2
-			cmdRebase += _T("--progress ");
-
-		cmd.Format(_T("git.exe pull --no-rebase -v %s%s%s%s%s%s%s%s\"%s\" %s"), (LPCTSTR)cmdRebase, (LPCTSTR)noff, (LPCTSTR)ffonly, (LPCTSTR)squash, (LPCTSTR)nocommit, (LPCTSTR)depth, (LPCTSTR)notags, (LPCTSTR)prune, (LPCTSTR)url, (LPCTSTR)dlg.m_RemoteBranchName);
+		cmd.Format(_T("git.exe pull --progress --no-rebase -v %s%s%s%s%s%s%s\"%s\" %s"), (LPCTSTR)noff, (LPCTSTR)ffonly, (LPCTSTR)squash, (LPCTSTR)nocommit, (LPCTSTR)depth, (LPCTSTR)notags, (LPCTSTR)prune, (LPCTSTR)url, (LPCTSTR)dlg.m_RemoteBranchName);
 		CProgressDlg progress;
 		progress.m_GitCmd = cmd;
 
@@ -2673,16 +2667,14 @@ static bool DoFetch(const CString& url, const bool fetchAllRemotes, const bool l
 	}
 
 	CString cmd, arg;
-	int ver = CAppUtils::GetMsysgitVersion();
-	if (ver >= 0x01070203) //above 1.7.0.2
-		arg += _T(" --progress");
+	arg = _T(" --progress");
 
 	if (bDepth)
 		arg.AppendFormat(_T(" --depth %d"), nDepth);
 
 	if (prune == TRUE)
 		arg += _T(" --prune");
-	else if (prune == FALSE && ver >= 0x01080500)
+	else if (prune == FALSE)
 		arg += _T(" --no-prune");
 
 	if (fetchTags == 1)
@@ -2832,7 +2824,7 @@ bool CAppUtils::Push(const CString& selectLocalBranch)
 				iRecurseSubmodules = 2;
 		}
 
-		CString arg;
+		CString arg = _T("--progress ");
 
 		if(dlg.m_bPack)
 			arg += _T("--thin ");
@@ -2850,11 +2842,6 @@ bool CAppUtils::Push(const CString& selectLocalBranch)
 			arg += _T("--recurse-submodules=check ");
 		if (dlg.m_RecurseSubmodules == 2 && dlg.m_RecurseSubmodules != iRecurseSubmodules)
 			arg += _T("--recurse-submodules=on-demand ");
-
-		int ver = CAppUtils::GetMsysgitVersion();
-
-		if(ver >= 0x01070203) //above 1.7.0.2
-			arg += _T("--progress ");
 
 		CProgressDlg progress;
 
