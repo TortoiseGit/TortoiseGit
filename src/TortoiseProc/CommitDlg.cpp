@@ -499,6 +499,22 @@ static bool UpdateIndex(CMassiveGitTask &mgt, CSysProgressDlg &sysProgressDlg, i
 	return mgt.Execute(cancel);
 }
 
+static void DoPush()
+{
+	CString head;
+	if (g_Git.GetCurrentBranchFromFile(g_Git.m_CurrentDir, head))
+		return;
+	CString remote, remotebranch;
+	g_Git.GetRemoteTrackedBranchForHEAD(remote, remotebranch);
+	if (remote.IsEmpty() || remotebranch.IsEmpty())
+	{
+		CAppUtils::Push();
+		return;
+	}
+
+	CAppUtils::DoPush(CAppUtils::IsSSHPutty(), false, false, false, false, false, false, head, remote, remotebranch, false, 0);
+}
+
 void CCommitDlg::OnOK()
 {
 	if (m_bBlock)
@@ -1115,7 +1131,7 @@ void CCommitDlg::OnOK()
 	if (bCloseCommitDlg)
 	{
 		if (m_ctrlOkButton.GetCurrentEntry() == 2)
-			CAppUtils::Push();
+			DoPush();
 		CResizableStandAloneDialog::OnOK();
 	}
 	else if (m_PostCmd == GIT_POSTCOMMIT_CMD_RECOMMIT)
