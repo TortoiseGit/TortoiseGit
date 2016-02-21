@@ -940,7 +940,7 @@ msgstr ""
 msgid "&Notepad2"
 msgstr ""
 
-#. Resource IDs: (1, Dialog IDD_COMMITDLG: Control id 1, Dialog IDD_REVGRAPHFILTER: Control id 1, IDS_OKBUTTON)
+#. Resource IDs: (1, Dialog IDD_REVGRAPHFILTER: Control id 1, IDS_OKBUTTON)
 msgid "&OK"
 msgstr ""
 
@@ -1024,7 +1024,7 @@ msgstr ""
 msgid "&Push all branches"
 msgstr ""
 
-#. Resource IDs: (IDS_PROC_COMMIT_RECOMMIT)
+#. Resource IDs: (IDS_COMMIT_RECOMMIT, IDS_PROC_COMMIT_RECOMMIT)
 msgid "&ReCommit"
 msgstr ""
 
@@ -2383,6 +2383,10 @@ msgstr ""
 msgid "C&ommands:"
 msgstr ""
 
+#. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1, IDS_COMMIT_COMMIT)
+msgid "C&ommit"
+msgstr ""
+
 #. Resource IDs: (IDS_LOG_POPUP_COPY)
 msgid "C&reate branch/tag from revision"
 msgstr ""
@@ -2884,6 +2888,10 @@ msgstr ""
 #. Resource IDs: (IDS_REPOBROWSEASKSUBMODULEUPDATE)
 #, c-format
 msgid "Commit %s not found in \"%s\". Update submodule now?"
+msgstr ""
+
+#. Resource IDs: (IDS_COMMIT_COMMITPUSH)
+msgid "Commit && &Push"
 msgstr ""
 
 #. Resource IDs: (IDS_LOG_COMMIT_DATE)

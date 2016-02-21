@@ -122,6 +122,7 @@ void CCommitDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_CHECKMODIFIED, m_CheckModified);
 	DDX_Control(pDX, IDC_CHECKFILES, m_CheckFiles);
 	DDX_Control(pDX, IDC_CHECKSUBMODULES, m_CheckSubmodules);
+	DDX_Control(pDX, IDOK, m_ctrlOkButton);
 }
 
 BEGIN_MESSAGE_MAP(CCommitDlg, CResizableStandAloneDialog)
@@ -468,6 +469,10 @@ BOOL CCommitDlg::OnInitDialog()
 		GetDlgItem(IDC_MERGEACTIVE)->ShowWindow(SW_SHOW);
 		CMessageBox::ShowCheck(GetSafeHwnd(), IDS_COMMIT_MERGE_HINT, IDS_APPNAME, MB_ICONINFORMATION, L"CommitMergeHint", IDS_MSGBOX_DONOTSHOWAGAIN);
 	}
+
+	m_ctrlOkButton.AddEntry(CString(MAKEINTRESOURCE(IDS_COMMIT_COMMIT)));
+	m_ctrlOkButton.AddEntry(CString(MAKEINTRESOURCE(IDS_COMMIT_RECOMMIT)));
+	m_ctrlOkButton.AddEntry(CString(MAKEINTRESOURCE(IDS_COMMIT_COMMITPUSH)));
 
 	return FALSE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
@@ -979,6 +984,8 @@ void CCommitDlg::OnOK()
 		progress.m_GitCmd=cmd;
 		progress.m_bShowCommand = FALSE;	// don't show the commit command
 		progress.m_PreText = out;			// show any output already generated in log window
+		if (m_ctrlOkButton.GetCurrentEntry() > 0)
+			progress.m_AutoClose = GitProgressAutoClose::AUTOCLOSE_IF_NO_ERRORS;
 
 		progress.m_PostCmdCallback = [&](DWORD status, PostCmdList& postCmdList)
 		{
@@ -996,6 +1003,9 @@ void CCommitDlg::OnOK()
 
 		m_PostCmd = GIT_POSTCOMMIT_CMD_NOTHING;
 		progress.DoModal();
+
+		if (m_ctrlOkButton.GetCurrentEntry() == 1)
+			m_PostCmd = GIT_POSTCOMMIT_CMD_RECOMMIT;
 
 		if (progress.m_GitStatus || m_PostCmd == GIT_POSTCOMMIT_CMD_RECOMMIT)
 		{
@@ -1102,8 +1112,12 @@ void CCommitDlg::OnOK()
 
 	SaveSplitterPos();
 
-	if( bCloseCommitDlg )
+	if (bCloseCommitDlg)
+	{
+		if (m_ctrlOkButton.GetCurrentEntry() == 2)
+			CAppUtils::Push();
 		CResizableStandAloneDialog::OnOK();
+	}
 	else if (m_PostCmd == GIT_POSTCOMMIT_CMD_RECOMMIT)
 	{
 		this->Refresh();

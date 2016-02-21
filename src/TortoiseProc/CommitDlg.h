@@ -32,6 +32,7 @@
 #include "Git.h"
 #include "HyperLink.h"
 #include "PatchViewDlg.h"
+#include "MenuButton.h"
 
 #include <regex>
 
@@ -216,6 +217,7 @@ private:
 	CButton				m_AsCommitDateCtrl;
 	CLinkControl		m_linkControl;
 	CString				m_sLogTemplate;
+	CMenuButton			m_ctrlOkButton;
 
 	CBugTraqAssociation	m_bugtraq_association;
 	HACCEL				m_hAccel;
