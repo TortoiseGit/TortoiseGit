@@ -718,7 +718,6 @@ BOOL CHwSMTP::SendEmail (
 		DWORD secLevel
 		)
 {
-	TRACE ( _T("发送邮件：%s,  %s\n"), lpszAddrTo, lpszBody );
 	m_StrAryAttach.RemoveAll();
 
 	m_StrCC += GET_SAFE_STRING(pStrAryCC);
@@ -793,7 +792,6 @@ BOOL CHwSMTP::SendEmail (
 	if ( !m_SendSock.Connect ( m_csSmtpSrvHost, m_nSmtpSrvPort ) )
 	{
 		m_csLastError.Format(_T("Connect to [%s] failed"), (LPCTSTR)m_csSmtpSrvHost);
-		TRACE ( _T("%d\n"), GetLastError() );
 		return FALSE;
 	}
 
@@ -937,14 +935,12 @@ BOOL CHwSMTP::GetResponse(LPCSTR lpszVerifyCode)
 	}
 	else
 		nRet = m_SendSock.Receive(szRecvBuf, sizeof(szRecvBuf));
-	TRACE(_T("Received : %s\r\n"), szRecvBuf);
+	//TRACE(_T("Received : %s\r\n"), szRecvBuf);
 	if (nRet == 0 && m_iSecurityLevel == none || m_iSecurityLevel >= ssl && scRet != SEC_E_OK)
 	{
 		m_csLastError.Format ( _T("Receive TCP data failed") );
 		return FALSE;
 	}
-//	TRACE ( _T("收到服务器回应：%s\n"), szRecvBuf );
-
 	memcpy ( szStatusCode, szRecvBuf, 3 );
 	if (strcmp(szStatusCode, lpszVerifyCode) != 0)
 	{
@@ -994,7 +990,7 @@ BOOL CHwSMTP::Send(const CString &str )
 
 BOOL CHwSMTP::Send(const CStringA &str)
 {
-	TRACE(_T("Send: %s\r\n"), (LPCTSTR)CUnicodeUtils::GetUnicode(str));
+	//TRACE(_T("Send: %s\r\n"), (LPCTSTR)CUnicodeUtils::GetUnicode(str));
 	return SendBuffer(str, str.GetLength());
 }
 
