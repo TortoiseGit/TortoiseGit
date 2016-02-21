@@ -128,7 +128,7 @@ void CRequestPullDlg::OnBnClickedOk()
 
 	if(!g_Git.IsBranchNameValid(m_EndRevision))
 	{
-		CMessageBox::Show(NULL, IDS_B_T_NOTEMPTY, IDS_APPNAME, MB_OK);
+		CMessageBox::Show(GetSafeHwnd(), IDS_B_T_NOTEMPTY, IDS_APPNAME, MB_OK | MB_ICONEXCLAMATION);
 		return;
 	}
 

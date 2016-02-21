@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009,2011-2015 - TortoiseGit
+// Copyright (C) 2009,2011-2016 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -35,7 +35,7 @@ bool DropMoveCommand::Execute()
 
 	if (ProjectTop != g_Git.m_CurrentDir )
 	{
-		CMessageBox::Show(NULL,_T("Target and source must be the same git repository"),_T("TortoiseGit"),MB_OK);
+		MessageBox(hwndExplorer, _T("Target and source must be the same git repository"), _T("TortoiseGit"), MB_OK | MB_ICONEXCLAMATION);
 		return FALSE;
 	}
 

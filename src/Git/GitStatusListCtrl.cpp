@@ -3574,7 +3574,7 @@ void CGitStatusListCtrl::OnBeginDrag(NMHDR* /*pNMHDR*/, LRESULT* pResult)
 			{
 				CString out;
 				out.Format(IDS_STATUSLIST_CHECKOUTFILEFAILED, (LPCTSTR)path->GetGitPathString(), (LPCTSTR)version, (LPCTSTR)tempFile);
-				CMessageBox::Show(nullptr, g_Git.GetGitLastErr(out, CGit::GIT_CMD_GETONEFILE), _T("TortoiseGit"), MB_OK);
+				MessageBox(g_Git.GetGitLastErr(out, CGit::GIT_CMD_GETONEFILE), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 				return;
 			}
 		}
@@ -4020,7 +4020,7 @@ int CGitStatusListCtrl::UpdateUnRevFileList(CTGitPathList *List)
 	CString err;
 	if (m_UnRevFileList.FillUnRev(CTGitPath::LOGACTIONS_UNVER, List, &err))
 	{
-		CMessageBox::Show(NULL, _T("Failed to get UnRev file list\n") + err, _T("TortoiseGit"), MB_OK);
+		CMessageBox::Show(GetSafeHwnd(), _T("Failed to get UnRev file list\n") + err, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 		return -1;
 	}
 
@@ -4038,7 +4038,7 @@ int CGitStatusListCtrl::UpdateIgnoreFileList(CTGitPathList *List)
 	CString err;
 	if (m_IgnoreFileList.FillUnRev(CTGitPath::LOGACTIONS_IGNORE, List, &err))
 	{
-		CMessageBox::Show(NULL, _T("Failed to get Ignore file list\n") + err, _T("TortoiseGit"), MB_OK);
+		CMessageBox::Show(GetSafeHwnd(), _T("Failed to get Ignore file list\n") + err, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 		return -1;
 	}
 

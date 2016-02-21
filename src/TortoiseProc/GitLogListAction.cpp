@@ -603,7 +603,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			GitRev* pLastEntry = m_arShownList.SafeGetAt(LastSelect);
 			if(pFirstEntry->m_CommitHash != hashFirst || pLastEntry->m_CommitHash != hashLast)
 			{
-				CMessageBox::Show(NULL, IDS_PROC_CANNOTCOMBINE, IDS_APPNAME, MB_OK);
+				CMessageBox::Show(nullptr, IDS_PROC_CANNOTCOMBINE, IDS_APPNAME, MB_OK | MB_ICONEXCLAMATION);
 				break;
 			}
 
@@ -622,7 +622,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 
 			if(!g_Git.CheckCleanWorkTree())
 			{
-				CMessageBox::Show(NULL, IDS_PROC_NOCLEAN, IDS_APPNAME, MB_OK);
+				CMessageBox::Show(nullptr, IDS_PROC_NOCLEAN, IDS_APPNAME, MB_OK | MB_ICONEXCLAMATION);
 				break;
 			}
 			CString sCmd, out;
@@ -633,13 +633,13 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				sCmd.Format(_T("git.exe reset --hard %s --"), (LPCTSTR)pFirstEntry->m_CommitHash.ToString());
 				if(g_Git.Run(sCmd, &out, CP_UTF8))
 				{
-					CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
+					MessageBox(out, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 					throw std::exception(CUnicodeUtils::GetUTF8(CString(MAKEINTRESOURCE(IDS_PROC_COMBINE_ERRORSTEP1)) + _T("\r\n\r\n") + out));
 				}
 				sCmd.Format(_T("git.exe reset --mixed %s --"), (LPCTSTR)hashLast.ToString());
 				if(g_Git.Run(sCmd, &out, CP_UTF8))
 				{
-					CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
+					MessageBox(out, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 					throw std::exception(CUnicodeUtils::GetUTF8(CString(MAKEINTRESOURCE(IDS_PROC_COMBINE_ERRORSTEP2)) + _T("\r\n\r\n")+out));
 				}
 
@@ -648,7 +648,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				/* first -z will be omitted by gitdll*/
 				if(g_Git.GetDiffPath(&PathList,&pFirstEntry->m_CommitHash,&hashLast,"-z --stat -r"))
 				{
-					CMessageBox::Show(NULL,_T("Get Diff file list error"),_T("TortoiseGit"),MB_OK);
+					MessageBox(_T("Get Diff file list error"), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 					throw std::exception(CUnicodeUtils::GetUTF8(_T("Could not get changed file list aborting...\r\n\r\n")+out));
 				}
 
@@ -659,7 +659,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 						sCmd.Format(_T("git.exe add -- \"%s\""), (LPCTSTR)PathList[i].GetGitPathString());
 						if (g_Git.Run(sCmd, &out, CP_UTF8))
 						{
-							CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
+							MessageBox(out, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 							throw std::exception(CUnicodeUtils::GetUTF8(_T("Could not add new file aborting...\r\n\r\n")+out));
 
 						}
@@ -669,7 +669,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 						sCmd.Format(_T("git.exe rm -- \"%s\""), (LPCTSTR)PathList[i].GetGitPathString());
 						if (g_Git.Run(sCmd, &out, CP_UTF8))
 						{
-							CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
+							MessageBox(out, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 							throw std::exception(CUnicodeUtils::GetUTF8(_T("Could not rm file aborting...\r\n\r\n")+out));
 						}
 					}
@@ -690,7 +690,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				dlg.m_pathList = gpl;
 				if (lastRevision.ParentsCount() != 1)
 				{
-					CMessageBox::Show(NULL, _T("The following commit dialog can only show changes of oldest commit if it has exactly one parent. This is not the case right now."), _T("TortoiseGit"),MB_OK);
+					MessageBox(_T("The following commit dialog can only show changes of oldest commit if it has exactly one parent. This is not the case right now."), _T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
 					dlg.m_bAmendDiffToLastCommit = TRUE;
 				}
 				else
@@ -719,9 +719,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				sCmd.Format(_T("git.exe reset --hard %s --"), (LPCTSTR)headhash.ToString());
 				out.Empty();
 				if(g_Git.Run(sCmd, &out, CP_UTF8))
-				{
-					CMessageBox::Show(NULL, CString(MAKEINTRESOURCE(IDS_PROC_COMBINE_ERRORRESETHEAD)) + _T("\r\n\r\n") + out, _T("TortoiseGit"), MB_OK);
-				}
+					MessageBox(CString(MAKEINTRESOURCE(IDS_PROC_COMBINE_ERRORRESETHEAD)) + _T("\r\n\r\n") + out, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 			}
 			Refresh();
 		}
@@ -826,7 +824,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 						sCmd.Format(_T("git.exe reflog delete %s"), (LPCTSTR)ref);
 
 					if (g_Git.Run(sCmd, &out, CP_UTF8))
-						CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
+						MessageBox(out, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 
 					::PostMessage(this->GetParent()->m_hWnd,MSG_REFLOG_CHANGED,0,0);
 				}

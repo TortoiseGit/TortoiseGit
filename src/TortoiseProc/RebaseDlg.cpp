@@ -925,7 +925,7 @@ int CRebaseDlg::CheckRebaseCondition()
 			this->AddLogString(cmd);
 			if (g_Git.Run(cmd, &out, CP_UTF8))
 			{
-				CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
+				MessageBox(out, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 				return -1;
 			}
 			m_bStashed = true;
@@ -1014,7 +1014,7 @@ int CRebaseDlg::VerifyNoConflict()
 	}
 	if (hasConflicts)
 	{
-		CMessageBox::Show(NULL, IDS_PROGRS_CONFLICTSOCCURED, IDS_APPNAME, MB_OK);
+		CMessageBox::Show(nullptr, IDS_PROGRS_CONFLICTSOCCURED, IDS_APPNAME, MB_OK | MB_ICONEXCLAMATION);
 		return -1;
 	}
 	CleanUpRebaseActiveFolder();

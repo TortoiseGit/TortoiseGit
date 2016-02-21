@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2015 - TortoiseGit
+// Copyright (C) 2008-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -221,7 +221,7 @@ void CCloneDlg::OnOK()
 	UpdateData(TRUE);
 	if(m_URL.IsEmpty() || m_Directory.IsEmpty())
 	{
-		CMessageBox::Show(NULL, IDS_PROC_CLONE_URLDIREMPTY, IDS_APPNAME, MB_OK);
+		CMessageBox::Show(GetSafeHwnd(), IDS_PROC_CLONE_URLDIREMPTY, IDS_APPNAME, MB_OK | MB_ICONEXCLAMATION);
 		m_bSaving = false;
 		return;
 	}
@@ -272,7 +272,7 @@ void CCloneDlg::OnBnClickedCloneBrowseUrl()
 		str.Trim();
 		if (str.IsEmpty())
 		{
-			CMessageBox::Show(GetSafeHwnd(), IDS_PROC_CLONE_URLDIREMPTY, IDS_APPNAME, MB_ICONERROR);
+			CMessageBox::Show(GetSafeHwnd(), IDS_PROC_CLONE_URLDIREMPTY, IDS_APPNAME, MB_ICONEXCLAMATION);
 			return;
 		}
 		if (CAppUtils::ExploreTo(GetSafeHwnd(), str) && (INT_PTR)ShellExecute(nullptr, _T("open"), str, nullptr, nullptr, SW_SHOW) <= 32)

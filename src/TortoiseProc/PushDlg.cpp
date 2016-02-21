@@ -408,7 +408,7 @@ void CPushDlg::OnBnClickedOk()
 		m_URL=m_Remote.GetString();
 		if (m_URL.IsEmpty())
 		{
-			CMessageBox::Show(NULL, IDS_PROC_GITCONFIG_REMOTEEMPTY, IDS_APPNAME, MB_OK);
+			CMessageBox::Show(GetSafeHwnd(), IDS_PROC_GITCONFIG_REMOTEEMPTY, IDS_APPNAME, MB_OK | MB_ICONEXCLAMATION);
 			return;
 		}
 		m_bPushAllRemotes = (m_Remote.GetCurSel() == 0 && m_Remote.GetCount() > 1);
@@ -435,7 +435,7 @@ void CPushDlg::OnBnClickedOk()
 		}
 		else if (!m_BranchRemoteName.IsEmpty() && !g_Git.IsBranchNameValid(this->m_BranchRemoteName))
 		{
-			CMessageBox::Show(NULL, IDS_B_T_INVALID, IDS_APPNAME, MB_OK);
+			CMessageBox::Show(GetSafeHwnd(), IDS_B_T_INVALID, IDS_APPNAME, MB_OK | MB_ICONEXCLAMATION);
 			return;
 		}
 		else if (!m_BranchSourceName.IsEmpty() && !g_Git.IsBranchTagNameUnique(m_BranchSourceName))

@@ -1925,7 +1925,7 @@ bool CAppUtils::ConflictEdit(const CTGitPath& path, bool /*bAlternativeTool = fa
 
 			if (g_Git.Run(cmd, &out, CP_UTF8))
 			{
-				CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
+				MessageBox(nullptr, out, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 				return FALSE;
 			}
 			return TRUE;
@@ -2964,7 +2964,7 @@ bool CAppUtils::RequestPull(const CString& endrevision, const CString& repositor
 		{
 			CString msg;
 			msg.LoadString(IDS_ERR_PULLREUQESTFAILED);
-			CMessageBox::Show(NULL, msg + _T("\n") + err, _T("TortoiseGit"), MB_OK);
+			MessageBox(nullptr, msg + _T("\n") + err, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 			return false;
 		}
 
@@ -3190,7 +3190,7 @@ BOOL CAppUtils::SVNDCommit()
 			if (g_Git.Run(cmd, &out, CP_UTF8))
 			{
 				sysProgressDlg.Stop();
-				CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
+				MessageBox(nullptr, out,_T("TortoiseGit"), MB_OK | MB_ICONERROR);
 				return false;
 			}
 			sysProgressDlg.Stop();
@@ -3231,7 +3231,7 @@ BOOL CAppUtils::SVNDCommit()
 				if (g_Git.Run(cmd, &out, CP_UTF8))
 				{
 					sysProgressDlg.Stop();
-					CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
+					MessageBox(nullptr, out, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 					return false;
 				}
 				sysProgressDlg.Stop();
@@ -3552,7 +3552,7 @@ bool CAppUtils::BisectStart(const CString& lastGood, const CString& firstBad, bo
 			if (g_Git.Run(cmd, &out, CP_UTF8))
 			{
 				sysProgressDlg.Stop();
-				CMessageBox::Show(NULL, out, _T("TortoiseGit"), MB_OK);
+				MessageBox(nullptr, out, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 				return false;
 			}
 			sysProgressDlg.Stop();
