@@ -788,7 +788,6 @@ BOOL CHwSMTP::SendEmail (
 		m_iSecurityLevel = none;
 	}
 
-	// 连接到服务器
 	if ( !m_SendSock.Connect ( m_csSmtpSrvHost, m_nSmtpSrvPort ) )
 	{
 		m_csLastError.Format(_T("Connect to [%s] failed"), (LPCTSTR)m_csSmtpSrvHost);
@@ -982,7 +981,7 @@ BOOL CHwSMTP::SendBuffer(const char* buff, int size)
 
 	return TRUE;
 }
-// 利用socket发送数据，数据长度不能超过10M
+
 BOOL CHwSMTP::Send(const CString &str )
 {
 	return Send(CUnicodeUtils::GetUTF8(str));
@@ -1003,45 +1002,35 @@ BOOL CHwSMTP::SendEmail()
 	if (hostname.Find(".") == -1)
 		hostname += ".local";
 
-	// hello，握手
 	CStringA str;
 	str.Format("HELO %s\r\n", (LPCSTR)hostname);
 	if (!Send(str))
 		return FALSE;
 	if (!GetResponse("250"))
 		return FALSE;
-	// 身份验证
+
 	if ( m_bMustAuth && !auth() )
-	{
 		return FALSE;
-	}
-	// 发送邮件头
+
 	if ( !SendHead() )
-	{
 		return FALSE;
-	}
-	// 发送邮件主题
+
 	if (!SendSubject(CUnicodeUtils::GetUnicode(hostname)))
-	{
 		return FALSE;
-	}
-	// 发送邮件正文
+
 	if ( !SendBody() )
-	{
 		return FALSE;
-	}
-	// 发送附件
+
 	if ( !SendAttach() )
 	{
 		return FALSE;
 	}
-	// 结束邮件正文
+
 	if (!Send(".\r\n"))
 		return FALSE;
 	if (!GetResponse("250"))
 		return FALSE;
 
-	// 退出发送
 	if ( HANDLE_IS_VALID(m_SendSock.m_hSocket) )
 		Send("QUIT\r\n");
 	m_bConnected = FALSE;
