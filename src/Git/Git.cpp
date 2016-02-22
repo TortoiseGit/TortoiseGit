@@ -203,6 +203,7 @@ CGit g_Git;
 
 CGit::CGit(void)
 {
+	git_libgit2_init();
 	GetCurrentDirectory(MAX_PATH, CStrBuf(m_CurrentDir, MAX_PATH));
 	m_IsGitDllInited = false;
 	m_GitDiff=0;
@@ -231,6 +232,7 @@ CGit::~CGit(void)
 		git_close_diff(m_GitSimpleListDiff);
 		m_GitSimpleListDiff=0;
 	}
+	git_libgit2_shutdown();
 }
 
 bool CGit::IsBranchNameValid(const CString& branchname)
