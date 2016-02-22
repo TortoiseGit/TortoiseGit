@@ -251,6 +251,5 @@ void CFormatPatchDlg::OnBnClickedButtonRef()
 }
 void CFormatPatchDlg::OnBnClickedButtonUnifieddiff()
 {
-	CTGitPath commonDirectory = CTGitPath(g_Git.m_CurrentDir);
-	CAppUtils::StartShowUnifiedDiff(m_hWnd, commonDirectory, GitRev::GetHead(), commonDirectory, GitRev::GetWorkingCopy());
+	CAppUtils::StartShowUnifiedDiff(m_hWnd, CTGitPath(), GitRev::GetHead(), CTGitPath(), GitRev::GetWorkingCopy());
 }

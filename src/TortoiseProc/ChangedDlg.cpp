@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2015 - TortoiseGit
+// Copyright (C) 2008-2016 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -430,7 +430,9 @@ void CChangedDlg::OnBnClickedStash()
 
 void CChangedDlg::OnBnClickedButtonUnifieddiff()
 {
-	CTGitPath commonDirectory = m_bWholeProject ? g_Git.m_CurrentDir : m_pathList.GetCommonRoot().GetDirectory();
+	CTGitPath commonDirectory;
+	if (!m_bWholeProject)
+		commonDirectory = m_pathList.GetCommonRoot().GetDirectory();
 	bool bSingleFile = ((m_pathList.GetCount()==1)&&(!m_pathList[0].IsEmpty())&&(!m_pathList[0].IsDirectory()));
 	if (bSingleFile)
 		commonDirectory = m_pathList[0];
