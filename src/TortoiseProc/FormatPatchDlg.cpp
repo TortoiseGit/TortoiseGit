@@ -33,12 +33,14 @@
 IMPLEMENT_DYNAMIC(CFormatPatchDlg, CHorizontalResizableStandAloneDialog)
 
 CFormatPatchDlg::CFormatPatchDlg(CWnd* pParent /*=NULL*/)
-	: CHorizontalResizableStandAloneDialog(CFormatPatchDlg::IDD, pParent),
-	m_regSendMail(_T("Software\\TortoiseGit\\TortoiseProc\\FormatPatch\\SendMail"),0)
+	: CHorizontalResizableStandAloneDialog(CFormatPatchDlg::IDD, pParent)
+	, m_regSendMail(_T("Software\\TortoiseGit\\TortoiseProc\\FormatPatch\\SendMail"), 0)
+	, m_regNoPrefix(_T("Software\\TortoiseGit\\TortoiseProc\\FormatPatch\\NoPrefix"), FALSE)
 {
 	m_Num=1;
 	this->m_bSendMail = m_regSendMail;
 	this->m_Radio = IDC_RADIO_SINCE;
+	m_bNoPrefix = m_regNoPrefix;
 }
 
 CFormatPatchDlg::~CFormatPatchDlg()
@@ -63,6 +65,7 @@ void CFormatPatchDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_COMBOBOXEX_TO,	m_To);
 
 	DDX_Check(pDX, IDC_CHECK_SENDMAIL, m_bSendMail);
+	DDX_Check(pDX, IDC_CHECK_NOPREFIX, m_bNoPrefix);
 }
 
 
@@ -98,6 +101,7 @@ BOOL CFormatPatchDlg::OnInitDialog()
 	AddAnchor(IDC_BUTTON_FROM,  TOP_RIGHT);
 	AddAnchor(IDC_BUTTON_TO,	TOP_RIGHT);
 	AddAnchor(IDC_CHECK_SENDMAIL,BOTTOM_LEFT);
+	AddAnchor(IDC_CHECK_NOPREFIX, BOTTOM_LEFT);
 	AddAnchor(IDOK,BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL,BOTTOM_RIGHT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
@@ -107,6 +111,7 @@ BOOL CFormatPatchDlg::OnInitDialog()
 	AdjustControlSize(IDC_RADIO_NUM);
 	AdjustControlSize(IDC_RADIO_RANGE);
 	AdjustControlSize(IDC_CHECK_SENDMAIL);
+	AdjustControlSize(IDC_CHECK_NOPREFIX);
 
 	this->AddOthersToAnchor();
 
@@ -210,6 +215,7 @@ void CFormatPatchDlg::OnBnClickedOk()
 	this->m_Radio=GetCheckedRadioButton(IDC_RADIO_SINCE,IDC_RADIO_RANGE);
 
 	m_regSendMail=this->m_bSendMail;
+	m_regNoPrefix = m_bNoPrefix;
 	OnOK();
 }
 
@@ -251,5 +257,7 @@ void CFormatPatchDlg::OnBnClickedButtonRef()
 }
 void CFormatPatchDlg::OnBnClickedButtonUnifieddiff()
 {
-	CAppUtils::StartShowUnifiedDiff(m_hWnd, CTGitPath(), GitRev::GetHead(), CTGitPath(), GitRev::GetWorkingCopy());
+	UpdateData(TRUE);
+	m_regNoPrefix = m_bNoPrefix;
+	CAppUtils::StartShowUnifiedDiff(m_hWnd, CTGitPath(), GitRev::GetHead(), CTGitPath(), GitRev::GetWorkingCopy(), false, false, false, false, false, !!m_bNoPrefix);
 }

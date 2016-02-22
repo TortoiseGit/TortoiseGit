@@ -30,6 +30,7 @@ Released: unreleased
  * Fixed issue #2701: Add and Revert should respect Autoclose settings and not show any dialog boxes
    Maybe we introduce finer grained auto close levels later.
  * Fixed issue #1899: Support cherry-picking merge revisions 
+ * Fixed issue #2551: Allow to create patches w/o a/ and b/ prefixes
 
 == Bug Fixes ==
  * Fixed issue #2647: TortoiseGitBlame does not display files correctly with mixed line endings (such as CRCRLF)

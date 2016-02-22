@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009, 2015 - TortoiseGit
+// Copyright (C) 2009, 2015-2016 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -65,7 +65,8 @@ bool FormatPatchCommand::Execute()
 			break;
 		}
 		dlg.m_Dir.Replace(_T('\\'),_T('/'));
-		cmd.Format(_T("git.exe format-patch -o \"%s\" %s"),
+		cmd.Format(_T("git.exe format-patch%s -o \"%s\" %s"),
+			dlg.m_bNoPrefix ? L" --no-prefix" : L"",
 			(LPCTSTR)dlg.m_Dir,
 			(LPCTSTR)range
 			);

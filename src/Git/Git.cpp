@@ -2846,13 +2846,13 @@ void CGit::SetGit2CertificateCheckCertificate(void* callback)
 	g_Git2CheckCertificateCallback = (git_transport_certificate_check_cb)callback;
 }
 
-CString CGit::GetUnifiedDiffCmd(const CTGitPath& path, const git_revnum_t& rev1, const git_revnum_t& rev2, bool bMerge, bool bCombine, int diffContext)
+CString CGit::GetUnifiedDiffCmd(const CTGitPath& path, const git_revnum_t& rev1, const git_revnum_t& rev2, bool bMerge, bool bCombine, int diffContext, bool bNoPrefix)
 {
 	CString cmd;
 	if (rev2 == GitRev::GetWorkingCopy())
-		cmd.Format(_T("git.exe diff --stat -p %s --"), (LPCTSTR)rev1);
+		cmd.Format(_T("git.exe diff --stat%s -p %s --"), bNoPrefix ? L" --no-prefix" : L"", (LPCTSTR)rev1);
 	else if (rev1 == GitRev::GetWorkingCopy())
-		cmd.Format(_T("git.exe diff -R --stat -p %s --"), (LPCTSTR)rev2);
+		cmd.Format(_T("git.exe diff -R --stat%s %s-p %s --"), bNoPrefix ? L" --no-prefix" : L"", (LPCTSTR)rev2);
 	else
 	{
 		CString merge;
@@ -2865,7 +2865,7 @@ CString CGit::GetUnifiedDiffCmd(const CTGitPath& path, const git_revnum_t& rev1,
 		CString unified;
 		if (diffContext >= 0)
 			unified.Format(_T(" --unified=%d"), diffContext);
-		cmd.Format(_T("git.exe diff-tree -r -p %s %s --stat %s %s --"), (LPCTSTR)merge, (LPCTSTR)unified, (LPCTSTR)rev1, (LPCTSTR)rev2);
+		cmd.Format(_T("git.exe diff-tree -r -p%s%s --stat%s %s %s --"), (LPCTSTR)merge, (LPCTSTR)unified, bNoPrefix ? L" --no-prefix" : L"", (LPCTSTR)rev1, (LPCTSTR)rev2);
 	}
 
 	if (!path.IsEmpty())
@@ -2923,7 +2923,7 @@ static int resolve_to_tree(git_repository *repo, const char *identifier, git_tre
 }
 
 /* use libgit2 get unified diff */
-static int GetUnifiedDiffLibGit2(const CTGitPath& path, const git_revnum_t& revOld, const git_revnum_t& revNew, std::function<void(const git_buf*, void*)> statCallback, git_diff_line_cb callback, void *data, bool /* bMerge */)
+static int GetUnifiedDiffLibGit2(const CTGitPath& path, const git_revnum_t& revOld, const git_revnum_t& revNew, std::function<void(const git_buf*, void*)> statCallback, git_diff_line_cb callback, void* data, bool /* bMerge */, bool bNoPrefix)
 {
 	CStringA tree1 = CUnicodeUtils::GetMulti(revNew, CP_UTF8);
 	CStringA tree2 = CUnicodeUtils::GetMulti(revOld, CP_UTF8);
@@ -2945,6 +2945,11 @@ static int GetUnifiedDiffLibGit2(const CTGitPath& path, const git_revnum_t& revO
 	{
 		opts.pathspec.strings = &buf;
 		opts.pathspec.count = 1;
+	}
+	if (bNoPrefix)
+	{
+		opts.new_prefix = "";
+		opts.old_prefix = "";
 	}
 	CAutoDiff diff;
 
@@ -3018,19 +3023,19 @@ static int GetUnifiedDiffLibGit2(const CTGitPath& path, const git_revnum_t& revO
 	return 0;
 }
 
-int CGit::GetUnifiedDiff(const CTGitPath& path, const git_revnum_t& rev1, const git_revnum_t& rev2, CString patchfile, bool bMerge, bool bCombine, int diffContext)
+int CGit::GetUnifiedDiff(const CTGitPath& path, const git_revnum_t& rev1, const git_revnum_t& rev2, CString patchfile, bool bMerge, bool bCombine, int diffContext, bool bNoPrefix)
 {
 	if (UsingLibGit2(GIT_CMD_DIFF))
 	{
 		CAutoFILE file = _tfsopen(patchfile, _T("w"), SH_DENYRW);
 		if (!file)
 			return -1;
-		return GetUnifiedDiffLibGit2(path, rev1, rev2, UnifiedDiffStatToFile, UnifiedDiffToFile, file, bMerge);
+		return GetUnifiedDiffLibGit2(path, rev1, rev2, UnifiedDiffStatToFile, UnifiedDiffToFile, file, bMerge, bNoPrefix);
 	}
 	else
 	{
 		CString cmd;
-		cmd = GetUnifiedDiffCmd(path, rev1, rev2, bMerge, bCombine, diffContext);
+		cmd = GetUnifiedDiffCmd(path, rev1, rev2, bMerge, bCombine, diffContext, bNoPrefix);
 		return RunLogFile(cmd, patchfile, &gitLastErr);
 	}
 }
@@ -3056,7 +3061,7 @@ static int UnifiedDiffToStringA(const git_diff_delta * /*delta*/, const git_diff
 int CGit::GetUnifiedDiff(const CTGitPath& path, const git_revnum_t& rev1, const git_revnum_t& rev2, CStringA * buffer, bool bMerge, bool bCombine, int diffContext)
 {
 	if (UsingLibGit2(GIT_CMD_DIFF))
-		return GetUnifiedDiffLibGit2(path, rev1, rev2, UnifiedDiffStatToStringA, UnifiedDiffToStringA, buffer, bMerge);
+		return GetUnifiedDiffLibGit2(path, rev1, rev2, UnifiedDiffStatToStringA, UnifiedDiffToStringA, buffer, bMerge, false);
 	else
 	{
 		CString cmd;

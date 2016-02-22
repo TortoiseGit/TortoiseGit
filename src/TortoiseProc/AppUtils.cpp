@@ -1011,13 +1011,14 @@ bool CAppUtils::StartShowUnifiedDiff(HWND hWnd, const CTGitPath& url1, const git
 												bool /*bAlternateDiff*/ /* = false */, bool /*bIgnoreAncestry*/ /* = false */,
 												bool /* blame = false */, 
 												bool bMerge,
-												bool bCombine)
+												bool bCombine,
+												bool bNoPrefix)
 {
 	int diffContext = 0;
 	if (GetMsysgitVersion() > 0x01080100)
 		diffContext = g_Git.GetConfigValueInt32(_T("diff.context"), -1);
 	CString tempfile=GetTempFile();
-	if (g_Git.GetUnifiedDiff(url1, rev1, rev2, tempfile, bMerge, bCombine, diffContext))
+	if (g_Git.GetUnifiedDiff(url1, rev1, rev2, tempfile, bMerge, bCombine, diffContext, bNoPrefix))
 	{
 		CMessageBox::Show(hWnd, g_Git.GetGitLastErr(_T("Could not get unified diff."), CGit::GIT_CMD_DIFF), _T("TortoiseGit"), MB_OK);
 		return false;

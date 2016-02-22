@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2012, 2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -55,6 +55,7 @@ protected:
 	CSpinButtonCtrl		m_spinNum;
 	CEdit		  m_cNum;
 	CRegDWORD	m_regSendMail;
+	CRegDWORD	m_regNoPrefix;
 
 	DECLARE_MESSAGE_MAP()
 public:
@@ -65,4 +66,5 @@ public:
 	CString m_Since;
 	int m_Radio;
 	BOOL m_bSendMail;
+	BOOL m_bNoPrefix;
 };

@@ -6496,6 +6496,10 @@ msgstr ""
 msgid "No HEAD found"
 msgstr ""
 
+#. Resource IDs: (Dialog IDD_FORMAT_PATCH: Control id 1588)
+msgid "No a/ and b/ prefixes"
+msgstr ""
+
 #. Resource IDs: (IDS_ERR_NOCOMMAND)
 msgid "No command specified!\n\nTortoiseGitProc.exe is used by the Shell extension and should not be called directly!"
 msgstr ""

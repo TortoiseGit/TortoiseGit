@@ -1247,6 +1247,7 @@
 #define IDD_REFLOG                      1588
 #define IDC_TREE_REF                    1588
 #define IDS_PROC_LOG_BASIC_REFS         1588
+#define IDC_CHECK_NOPREFIX              1588
 #define IDD_SUBMODULE_ADD               1589
 #define IDC_EDIT_NAME                   1589
 #define IDS_PROC_LOG_SELECT_BASIC_REFS  1589

@@ -152,7 +152,8 @@ public:
 												bool bIgnoreAncestry = false,
 												bool blame  = false,
 												bool bMerge = false,
-												bool bCompact = false);
+												bool bCompact = false,
+												bool bNoPrefix = false);
 
 	static bool Export(const CString* BashHash = nullptr, const CTGitPath* orgPath = nullptr);
 	static bool UpdateBranchDescription(const CString& branch, CString description);
