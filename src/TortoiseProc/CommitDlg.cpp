@@ -39,6 +39,7 @@
 #include "MassiveGitTask.h"
 #include "LogDlg.h"
 #include "BstrSafeVector.h"
+#include "StringUtils.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -81,12 +82,15 @@ CCommitDlg::CCommitDlg(CWnd* pParent /*=NULL*/)
 	, m_nPopupPickCommitMessage(0)
 	, m_hAccel(nullptr)
 	, m_bWarnDetachedHead(true)
+	, m_hAccelOkButton(nullptr)
 {
 	this->m_bCommitAmend=FALSE;
 }
 
 CCommitDlg::~CCommitDlg()
 {
+	if (m_hAccelOkButton)
+		DestroyAcceleratorTable(m_hAccelOkButton);
 	delete m_pThread;
 }
 
@@ -470,14 +474,49 @@ BOOL CCommitDlg::OnInitDialog()
 		CMessageBox::ShowCheck(GetSafeHwnd(), IDS_COMMIT_MERGE_HINT, IDS_APPNAME, MB_ICONINFORMATION, L"CommitMergeHint", IDS_MSGBOX_DONOTSHOWAGAIN);
 	}
 
-	m_ctrlOkButton.AddEntry(CString(MAKEINTRESOURCE(IDS_COMMIT_COMMIT)));
-	m_ctrlOkButton.AddEntry(CString(MAKEINTRESOURCE(IDS_COMMIT_RECOMMIT)));
-	m_ctrlOkButton.AddEntry(CString(MAKEINTRESOURCE(IDS_COMMIT_COMMITPUSH)));
-	m_regLastAction = CRegDWORD(L"Software\\TortoiseGit\\CommitLastAction", 0);
-	m_ctrlOkButton.SetCurrentEntry(m_regLastAction);
+	PrepareOkButton();
 
 	return FALSE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
+}
+
+void CCommitDlg::PrepareOkButton()
+{
+	m_regLastAction = CRegDWORD(L"Software\\TortoiseGit\\CommitLastAction", 0);
+	int i = 0;
+	for (auto labelId : { IDS_COMMIT_COMMIT, IDS_COMMIT_RECOMMIT, IDS_COMMIT_COMMITPUSH })
+	{
+		++i;
+		CString label;
+		label.LoadString(labelId);
+		m_ctrlOkButton.AddEntry(label);
+		TCHAR accellerator = CStringUtils::GetAccellerator(label);
+		if (accellerator == L'\0')
+			continue;
+		++m_accellerators[accellerator].cnt;
+		if (m_accellerators[accellerator].cnt > 1)
+			m_accellerators[accellerator].id = -1;
+		else
+			m_accellerators[accellerator].id = i - 1;
+	}
+	m_ctrlOkButton.SetCurrentEntry(m_regLastAction);
+	if (m_accellerators.size())
+	{
+		LPACCEL lpaccelNew = (LPACCEL)LocalAlloc(LPTR, m_accellerators.size() * sizeof(ACCEL));
+		if (!lpaccelNew)
+			return;
+		SCOPE_EXIT{ LocalFree(lpaccelNew); };
+		i = 0;
+		for (auto& entry : m_accellerators)
+		{
+			lpaccelNew[i].cmd = (WORD)(WM_USER + 1 + entry.second.id);
+			lpaccelNew[i].fVirt = FVIRTKEY | FALT;
+			lpaccelNew[i].key = entry.first;
+			entry.second.wmid = lpaccelNew[i].cmd;
+			++i;
+		}
+		m_hAccelOkButton = CreateAcceleratorTable(lpaccelNew, (int)m_accellerators.size());
+	}
 }
 
 static bool UpdateIndex(CMassiveGitTask &mgt, CSysProgressDlg &sysProgressDlg, int progress, int maxProgress)
@@ -1410,6 +1449,8 @@ BOOL CCommitDlg::PreTranslateMessage(MSG* pMsg)
 		if (ret)
 			return TRUE;
 	}
+	if (m_hAccelOkButton && GetDlgItem(IDOK)->IsWindowEnabled() && TranslateAccelerator(m_hWnd, m_hAccelOkButton, pMsg))
+		return TRUE;
 
 	if (pMsg->message == WM_KEYDOWN)
 	{
@@ -2225,6 +2266,24 @@ LRESULT CCommitDlg::DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 		{
 			SPC_NMHDR* pHdr = (SPC_NMHDR*) lParam;
 			DoSize(pHdr->delta);
+		}
+		break;
+	case WM_COMMAND:
+		if (m_hAccelOkButton && LOWORD(wParam) >= WM_USER && LOWORD(wParam) <= WM_USER + m_accellerators.size())
+		{
+			for (const auto& entry : m_accellerators)
+			{
+				if (entry.second.wmid != LOWORD(wParam))
+					continue;
+				if (entry.second.id == -1)
+					m_ctrlOkButton.PostMessage(WM_KEYDOWN, VK_F4, NULL);
+				else
+				{
+					m_ctrlOkButton.SetCurrentEntry(entry.second.id);
+					OnOK();
+				}
+				return 0;
+			}
 		}
 		break;
 	}
