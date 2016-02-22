@@ -268,6 +268,11 @@ Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Lang_fi", "..\Languages\Lan
 		{EC88E7EC-3074-4841-BA45-B938D098EFF6} = {EC88E7EC-3074-4841-BA45-B938D098EFF6}
 	EndProjectSection
 EndProject
+Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Lang_da", "..\Languages\Lang_da.wixproj", "{46132EB4-193D-43F1-8702-A1B49B7CC404}"
+	ProjectSection(ProjectDependencies) = postProject
+		{EC88E7EC-3074-4841-BA45-B938D098EFF6} = {EC88E7EC-3074-4841-BA45-B938D098EFF6}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -1052,6 +1057,16 @@ Global
 		{4236AEBE-79DF-40AD-8243-8228935F243D}.TortoisePot-Debug|x64.ActiveCfg = Debug|x64
 		{4236AEBE-79DF-40AD-8243-8228935F243D}.TortoisePot-Release|Win32.ActiveCfg = Release|x86
 		{4236AEBE-79DF-40AD-8243-8228935F243D}.TortoisePot-Release|x64.ActiveCfg = Release|x64
+		{46132EB4-193D-43F1-8702-A1B49B7CC404}.Debug|Win32.ActiveCfg = Debug|x86
+		{46132EB4-193D-43F1-8702-A1B49B7CC404}.Debug|x64.ActiveCfg = Debug|x64
+		{46132EB4-193D-43F1-8702-A1B49B7CC404}.Release|Win32.ActiveCfg = Release|x86
+		{46132EB4-193D-43F1-8702-A1B49B7CC404}.Release|Win32.Build.0 = Release|x86
+		{46132EB4-193D-43F1-8702-A1B49B7CC404}.Release|x64.ActiveCfg = Release|x64
+		{46132EB4-193D-43F1-8702-A1B49B7CC404}.Release|x64.Build.0 = Release|x64
+		{46132EB4-193D-43F1-8702-A1B49B7CC404}.TortoisePot-Debug|Win32.ActiveCfg = Debug|x86
+		{46132EB4-193D-43F1-8702-A1B49B7CC404}.TortoisePot-Debug|x64.ActiveCfg = Debug|x64
+		{46132EB4-193D-43F1-8702-A1B49B7CC404}.TortoisePot-Release|Win32.ActiveCfg = Release|x86
+		{46132EB4-193D-43F1-8702-A1B49B7CC404}.TortoisePot-Release|x64.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1120,5 +1135,6 @@ Global
 		{7111D39D-2E5B-4F1A-9F81-6438EBBBEF07} = {FB607AFD-DD1E-4C6D-8C34-BC00AF725037}
 		{F44FFF49-8CEB-40EA-8D8B-5AF6F012314D} = {FB607AFD-DD1E-4C6D-8C34-BC00AF725037}
 		{4236AEBE-79DF-40AD-8243-8228935F243D} = {FB607AFD-DD1E-4C6D-8C34-BC00AF725037}
+		{46132EB4-193D-43F1-8702-A1B49B7CC404} = {FB607AFD-DD1E-4C6D-8C34-BC00AF725037}
 	EndGlobalSection
 EndGlobal

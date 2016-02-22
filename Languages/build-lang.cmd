@@ -11,6 +11,7 @@ call :nmake 1026 bg
 call :nmake 1027 ca
 call :nmake 1028 zh_TW
 call :nmake 1029 cs
+call :nmake 1030 da
 call :nmake 1031 de
 call :nmake 1034 es
 call :nmake 1035 fi
