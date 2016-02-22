@@ -473,6 +473,8 @@ BOOL CCommitDlg::OnInitDialog()
 	m_ctrlOkButton.AddEntry(CString(MAKEINTRESOURCE(IDS_COMMIT_COMMIT)));
 	m_ctrlOkButton.AddEntry(CString(MAKEINTRESOURCE(IDS_COMMIT_RECOMMIT)));
 	m_ctrlOkButton.AddEntry(CString(MAKEINTRESOURCE(IDS_COMMIT_COMMITPUSH)));
+	m_regLastAction = CRegDWORD(L"Software\\TortoiseGit\\CommitLastAction", 0);
+	m_ctrlOkButton.SetCurrentEntry(m_regLastAction);
 
 	return FALSE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
@@ -1020,6 +1022,7 @@ void CCommitDlg::OnOK()
 		m_PostCmd = GIT_POSTCOMMIT_CMD_NOTHING;
 		progress.DoModal();
 
+		m_regLastAction = (int)m_ctrlOkButton.GetCurrentEntry();
 		if (m_ctrlOkButton.GetCurrentEntry() == 1)
 			m_PostCmd = GIT_POSTCOMMIT_CMD_RECOMMIT;
 

@@ -218,6 +218,7 @@ private:
 	CLinkControl		m_linkControl;
 	CString				m_sLogTemplate;
 	CMenuButton			m_ctrlOkButton;
+	CRegDWORD			m_regLastAction;
 
 	CBugTraqAssociation	m_bugtraq_association;
 	HACCEL				m_hAccel;
