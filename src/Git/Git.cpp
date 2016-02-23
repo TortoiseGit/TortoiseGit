@@ -3329,3 +3329,47 @@ int CGit::IsRebaseRunning()
 		return 1;
 	return 0;
 }
+
+int CGit::GetGitVersion(CString* versiondebug, CString* errStr)
+{
+	CString version, err;
+	if (Run(_T("git.exe --version"), &version, &err, CP_UTF8))
+	{
+		if (errStr)
+			*errStr = err;
+		return -1;
+	}
+
+	int start = 0;
+	int ver = 0;
+	if (versiondebug)
+		*versiondebug = version;
+
+	try
+	{
+		CString str = version.Tokenize(_T("."), start);
+		int space = str.ReverseFind(_T(' '));
+		str = str.Mid(space + 1, start);
+		ver = _ttol(str);
+		ver <<= 24;
+
+		version = version.Mid(start);
+		start = 0;
+
+		str = version.Tokenize(_T("."), start);
+		ver |= (_ttol(str) & 0xFF) << 16;
+
+		str = version.Tokenize(_T("."), start);
+		ver |= (_ttol(str) & 0xFF) << 8;
+
+		str = version.Tokenize(_T("."), start);
+		ver |= (_ttol(str) & 0xFF);
+	}
+	catch (...)
+	{
+		if (!ver)
+			return -1;
+	}
+
+	return ver;
+}

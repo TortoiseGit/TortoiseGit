@@ -454,6 +454,8 @@ public:
 
 	int GitRevert(int parent, const CGitHash &hash);
 
+	int GetGitVersion(CString* versiondebug, CString* errStr);
+
 	CString CombinePath(const CString &path) const
 	{
 		if (path.IsEmpty())
