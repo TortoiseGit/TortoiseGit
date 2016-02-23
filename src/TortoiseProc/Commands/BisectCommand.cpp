@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2015 - TortoiseGit
+// Copyright (C) 2008-2013, 2015-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -43,9 +43,9 @@ bool BisectCommand::Execute()
 		CString ref;
 
 		if (this->parser.HasKey(_T("good")))
-			op = _T("good");
+			g_Git.GetBisectTerms(&op, nullptr);
 		else if (this->parser.HasKey(_T("bad")))
-			op = _T("bad");
+			g_Git.GetBisectTerms(nullptr, &op);
 		else if (this->parser.HasKey(_T("reset")))
 			op = _T("reset");
 
