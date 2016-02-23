@@ -1252,7 +1252,10 @@
 #define IDC_EDIT_NAME                   1589
 #define IDS_PROC_LOG_SELECT_BASIC_REFS  1589
 #define IDS_CHERRYPICK_MERGECOMMIT      1590
+#define IDS_COMMIT_COMMIT               1591
+#define IDS_COMMIT_RECOMMIT             1592
 #define IDC_BUGTRAQ_WARNINGIFNOISSUE    1593
+#define IDS_COMMIT_COMMITPUSH           1593
 #define IDC_BUGTRAQ_APPEND              1594
 #define IDC_WARN_NO_SIGNED_OFF_BY       1594
 #define IDC_BUGTRAQ_NUMBER              1595

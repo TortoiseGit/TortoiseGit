@@ -31,6 +31,8 @@ Released: unreleased
    Maybe we introduce finer grained auto close levels later.
  * Fixed issue #1899: Support cherry-picking merge revisions 
  * Fixed issue #2551: Allow to create patches w/o a/ and b/ prefixes
+ * Fixed issue #2302: One button to do Commit & push
+ * Fixed issue #527: Fix the dialog after commit for us to be able to continue committing
 
 == Bug Fixes ==
  * Fixed issue #2647: TortoiseGitBlame does not display files correctly with mixed line endings (such as CRCRLF)

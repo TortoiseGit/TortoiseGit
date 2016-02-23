@@ -39,6 +39,7 @@
 #include "MassiveGitTask.h"
 #include "LogDlg.h"
 #include "BstrSafeVector.h"
+#include "StringUtils.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -81,12 +82,15 @@ CCommitDlg::CCommitDlg(CWnd* pParent /*=NULL*/)
 	, m_nPopupPickCommitMessage(0)
 	, m_hAccel(nullptr)
 	, m_bWarnDetachedHead(true)
+	, m_hAccelOkButton(nullptr)
 {
 	this->m_bCommitAmend=FALSE;
 }
 
 CCommitDlg::~CCommitDlg()
 {
+	if (m_hAccelOkButton)
+		DestroyAcceleratorTable(m_hAccelOkButton);
 	delete m_pThread;
 }
 
@@ -122,6 +126,7 @@ void CCommitDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_CHECKMODIFIED, m_CheckModified);
 	DDX_Control(pDX, IDC_CHECKFILES, m_CheckFiles);
 	DDX_Control(pDX, IDC_CHECKSUBMODULES, m_CheckSubmodules);
+	DDX_Control(pDX, IDOK, m_ctrlOkButton);
 }
 
 BEGIN_MESSAGE_MAP(CCommitDlg, CResizableStandAloneDialog)
@@ -469,8 +474,49 @@ BOOL CCommitDlg::OnInitDialog()
 		CMessageBox::ShowCheck(GetSafeHwnd(), IDS_COMMIT_MERGE_HINT, IDS_APPNAME, MB_ICONINFORMATION, L"CommitMergeHint", IDS_MSGBOX_DONOTSHOWAGAIN);
 	}
 
+	PrepareOkButton();
+
 	return FALSE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
+}
+
+void CCommitDlg::PrepareOkButton()
+{
+	m_regLastAction = CRegDWORD(L"Software\\TortoiseGit\\CommitLastAction", 0);
+	int i = 0;
+	for (auto labelId : { IDS_COMMIT_COMMIT, IDS_COMMIT_RECOMMIT, IDS_COMMIT_COMMITPUSH })
+	{
+		++i;
+		CString label;
+		label.LoadString(labelId);
+		m_ctrlOkButton.AddEntry(label);
+		TCHAR accellerator = CStringUtils::GetAccellerator(label);
+		if (accellerator == L'\0')
+			continue;
+		++m_accellerators[accellerator].cnt;
+		if (m_accellerators[accellerator].cnt > 1)
+			m_accellerators[accellerator].id = -1;
+		else
+			m_accellerators[accellerator].id = i - 1;
+	}
+	m_ctrlOkButton.SetCurrentEntry(m_regLastAction);
+	if (m_accellerators.size())
+	{
+		LPACCEL lpaccelNew = (LPACCEL)LocalAlloc(LPTR, m_accellerators.size() * sizeof(ACCEL));
+		if (!lpaccelNew)
+			return;
+		SCOPE_EXIT{ LocalFree(lpaccelNew); };
+		i = 0;
+		for (auto& entry : m_accellerators)
+		{
+			lpaccelNew[i].cmd = (WORD)(WM_USER + 1 + entry.second.id);
+			lpaccelNew[i].fVirt = FVIRTKEY | FALT;
+			lpaccelNew[i].key = entry.first;
+			entry.second.wmid = lpaccelNew[i].cmd;
+			++i;
+		}
+		m_hAccelOkButton = CreateAcceleratorTable(lpaccelNew, (int)m_accellerators.size());
+	}
 }
 
 static bool UpdateIndex(CMassiveGitTask &mgt, CSysProgressDlg &sysProgressDlg, int progress, int maxProgress)
@@ -492,6 +538,22 @@ static bool UpdateIndex(CMassiveGitTask &mgt, CSysProgressDlg &sysProgressDlg, i
 
 	BOOL cancel = FALSE;
 	return mgt.Execute(cancel);
+}
+
+static void DoPush()
+{
+	CString head;
+	if (g_Git.GetCurrentBranchFromFile(g_Git.m_CurrentDir, head))
+		return;
+	CString remote, remotebranch;
+	g_Git.GetRemoteTrackedBranchForHEAD(remote, remotebranch);
+	if (remote.IsEmpty() || remotebranch.IsEmpty())
+	{
+		CAppUtils::Push();
+		return;
+	}
+
+	CAppUtils::DoPush(CAppUtils::IsSSHPutty(), false, false, false, false, false, false, head, remote, remotebranch, false, 0);
 }
 
 void CCommitDlg::OnOK()
@@ -979,6 +1041,8 @@ void CCommitDlg::OnOK()
 		progress.m_GitCmd=cmd;
 		progress.m_bShowCommand = FALSE;	// don't show the commit command
 		progress.m_PreText = out;			// show any output already generated in log window
+		if (m_ctrlOkButton.GetCurrentEntry() > 0)
+			progress.m_AutoClose = GitProgressAutoClose::AUTOCLOSE_IF_NO_ERRORS;
 
 		progress.m_PostCmdCallback = [&](DWORD status, PostCmdList& postCmdList)
 		{
@@ -996,6 +1060,10 @@ void CCommitDlg::OnOK()
 
 		m_PostCmd = GIT_POSTCOMMIT_CMD_NOTHING;
 		progress.DoModal();
+
+		m_regLastAction = (int)m_ctrlOkButton.GetCurrentEntry();
+		if (m_ctrlOkButton.GetCurrentEntry() == 1)
+			m_PostCmd = GIT_POSTCOMMIT_CMD_RECOMMIT;
 
 		if (progress.m_GitStatus || m_PostCmd == GIT_POSTCOMMIT_CMD_RECOMMIT)
 		{
@@ -1102,8 +1170,12 @@ void CCommitDlg::OnOK()
 
 	SaveSplitterPos();
 
-	if( bCloseCommitDlg )
+	if (bCloseCommitDlg)
+	{
+		if (m_ctrlOkButton.GetCurrentEntry() == 2)
+			DoPush();
 		CResizableStandAloneDialog::OnOK();
+	}
 	else if (m_PostCmd == GIT_POSTCOMMIT_CMD_RECOMMIT)
 	{
 		this->Refresh();
@@ -1377,6 +1449,8 @@ BOOL CCommitDlg::PreTranslateMessage(MSG* pMsg)
 		if (ret)
 			return TRUE;
 	}
+	if (m_hAccelOkButton && GetDlgItem(IDOK)->IsWindowEnabled() && TranslateAccelerator(m_hWnd, m_hAccelOkButton, pMsg))
+		return TRUE;
 
 	if (pMsg->message == WM_KEYDOWN)
 	{
@@ -2192,6 +2266,24 @@ LRESULT CCommitDlg::DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 		{
 			SPC_NMHDR* pHdr = (SPC_NMHDR*) lParam;
 			DoSize(pHdr->delta);
+		}
+		break;
+	case WM_COMMAND:
+		if (m_hAccelOkButton && LOWORD(wParam) >= WM_USER && LOWORD(wParam) <= WM_USER + m_accellerators.size())
+		{
+			for (const auto& entry : m_accellerators)
+			{
+				if (entry.second.wmid != LOWORD(wParam))
+					continue;
+				if (entry.second.id == -1)
+					m_ctrlOkButton.PostMessage(WM_KEYDOWN, VK_F4, NULL);
+				else
+				{
+					m_ctrlOkButton.SetCurrentEntry(entry.second.id);
+					OnOK();
+				}
+				return 0;
+			}
 		}
 		break;
 	}

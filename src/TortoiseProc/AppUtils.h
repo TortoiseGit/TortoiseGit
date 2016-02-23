@@ -199,6 +199,7 @@ public:
 	// rebase = 1: ask user what to do, rebase = 2: run autorebase
 	static bool RebaseAfterFetch(const CString& upstream = _T(""), int rebase = 0, bool preserveMerges = false);
 	static bool Fetch(const CString& remoteName = _T(""), bool allRemotes = false);
+	static bool DoPush(bool autoloadKey, bool pack, bool tags, bool allRemotes, bool allBranches, bool force, bool forceWithLease, const CString& localBranch, const CString& remote, const CString& remoteBranch, bool setUpstream, int recurseSubmodules);
 	static bool Push(const CString& selectLocalBranch = CString());
 	static bool RequestPull(const CString& endrevision = _T(""), const CString& repositoryUrl = _T(""), bool bIsMainWnd = false);
 

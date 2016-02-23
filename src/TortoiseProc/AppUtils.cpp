@@ -2795,147 +2795,153 @@ bool CAppUtils::Fetch(const CString& remoteName, bool allRemotes)
 	return false;
 }
 
+bool CAppUtils::DoPush(bool autoloadKey, bool pack, bool tags, bool allRemotes, bool allBranches, bool force, bool forceWithLease, const CString& localBranch, const CString& remote, const CString& remoteBranch, bool setUpstream, int recurseSubmodules)
+{
+	CString error;
+	DWORD exitcode = 0xFFFFFFFF;
+	if (CHooks::Instance().PrePush(g_Git.m_CurrentDir, exitcode, error))
+	{
+		if (exitcode)
+		{
+			CString temp;
+			temp.Format(IDS_ERR_HOOKFAILED, (LPCTSTR)error);
+			CMessageBox::Show(nullptr, temp, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+			return false;
+		}
+	}
+
+	int iRecurseSubmodules = 0;
+	if (GetMsysgitVersion() >= 0x02070000)
+	{
+		CString recurseSubmodules = g_Git.GetConfigValue(_T("push.recurseSubmodules"));
+		if (recurseSubmodules == _T("check"))
+			iRecurseSubmodules = 1;
+		else if (recurseSubmodules == _T("on-demand"))
+			iRecurseSubmodules = 2;
+	}
+
+	CString arg;
+	if (pack)
+		arg += _T("--thin ");
+	if (tags && !allBranches)
+		arg += _T("--tags ");
+	if (force)
+		arg += _T("--force ");
+	if (forceWithLease)
+		arg += _T("--force-with-lease ");
+	if (setUpstream)
+		arg += _T("--set-upstream ");
+	if (recurseSubmodules == 0 && recurseSubmodules != iRecurseSubmodules)
+		arg += _T("--recurse-submodules=no ");
+	if (recurseSubmodules == 1 && recurseSubmodules != iRecurseSubmodules)
+		arg += _T("--recurse-submodules=check ");
+	if (recurseSubmodules == 2 && recurseSubmodules != iRecurseSubmodules)
+		arg += _T("--recurse-submodules=on-demand ");
+
+	arg += _T("--progress ");
+
+	CProgressDlg progress;
+
+	STRING_VECTOR remotesList;
+	if (allRemotes)
+		g_Git.GetRemoteList(remotesList);
+	else
+		remotesList.push_back(remote);
+
+	for (unsigned int i = 0; i < remotesList.size(); ++i)
+	{
+		if (autoloadKey)
+			CAppUtils::LaunchPAgent(NULL, &remotesList[i]);
+
+		CString cmd;
+		if (allBranches)
+		{
+			cmd.Format(_T("git.exe push --all %s\"%s\""),
+				(LPCTSTR)arg,
+				(LPCTSTR)remotesList[i]);
+
+			if (tags)
+			{
+				progress.m_GitCmdList.push_back(cmd);
+				cmd.Format(_T("git.exe push --tags %s\"%s\""), (LPCTSTR)arg, (LPCTSTR)remotesList[i]);
+			}
+		}
+		else
+		{
+			cmd.Format(_T("git.exe push %s\"%s\" %s"),
+				(LPCTSTR)arg,
+				(LPCTSTR)remotesList[i],
+				(LPCTSTR)localBranch);
+			if (!remoteBranch.IsEmpty())
+			{
+				cmd += L":";
+				cmd += remoteBranch;
+			}
+		}
+		progress.m_GitCmdList.push_back(cmd);
+
+		if (!allBranches && !!CRegDWORD(_T("Software\\TortoiseGit\\ShowBranchRevisionNumber"), FALSE))
+		{
+			cmd.Format(_T("git.exe rev-list --count --first-parent %s"), (LPCTSTR)localBranch);
+			progress.m_GitCmdList.push_back(cmd);
+		}
+	}
+
+	CString superprojectRoot;
+	GitAdminDir::HasAdminDir(g_Git.m_CurrentDir, false, &superprojectRoot);
+	progress.m_PostCmdCallback = [&](DWORD status, PostCmdList& postCmdList)
+	{
+		// need to execute hooks as those might be needed by post action commands
+		DWORD exitcode = 0xFFFFFFFF;
+		CString error;
+		if (CHooks::Instance().PostPush(g_Git.m_CurrentDir, exitcode, error))
+		{
+			if (exitcode)
+			{
+				CString temp;
+				temp.Format(IDS_ERR_HOOKFAILED, (LPCTSTR)error);
+				MessageBox(nullptr, temp, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+			}
+		}
+
+		if (status)
+		{
+			bool rejected = progress.GetLogText().Find(_T("! [rejected]")) > 0;
+			if (rejected)
+			{
+				postCmdList.emplace_back(IDI_PULL, IDS_MENUPULL, []{ Pull(true); });
+				postCmdList.emplace_back(IDI_PULL, IDS_MENUFETCH, [&]{ Fetch(allRemotes ? _T("") : remote, allRemotes); });
+			}
+			postCmdList.emplace_back(IDI_PUSH, IDS_MENUPUSH, [&]{ Push(localBranch); });
+			return;
+		}
+
+		postCmdList.emplace_back(IDS_PROC_REQUESTPULL, [&]{ RequestPull(remoteBranch); });
+		postCmdList.emplace_back(IDI_PUSH, IDS_MENUPUSH, [&]{ Push(localBranch); });
+		postCmdList.emplace_back(IDI_SWITCH, IDS_MENUSWITCH, [&]{ Switch(); });
+		if (!superprojectRoot.IsEmpty())
+		{
+			postCmdList.emplace_back(IDI_COMMIT, IDS_PROC_COMMIT_SUPERPROJECT, [&]
+			{
+				CString sCmd;
+				sCmd.Format(_T("/command:commit /path:\"%s\""), (LPCTSTR)superprojectRoot);
+				RunTortoiseGitProc(sCmd);
+			});
+		}
+	};
+
+	INT_PTR ret = progress.DoModal();
+	return ret == IDOK;
+}
+
 bool CAppUtils::Push(const CString& selectLocalBranch)
 {
 	CPushDlg dlg;
 	dlg.m_BranchSourceName = selectLocalBranch;
 
 	if (dlg.DoModal() == IDOK)
-	{
-		CString error;
-		DWORD exitcode = 0xFFFFFFFF;
-		if (CHooks::Instance().PrePush(g_Git.m_CurrentDir, exitcode, error))
-		{
-			if (exitcode)
-			{
-				CString temp;
-				temp.Format(IDS_ERR_HOOKFAILED, (LPCTSTR)error);
-				CMessageBox::Show(nullptr, temp, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
-				return false;
-			}
-		}
+		return DoPush(!!dlg.m_bAutoLoad, !!dlg.m_bPack, !!dlg.m_bTags, !!dlg.m_bPushAllRemotes, !!dlg.m_bPushAllBranches, !!dlg.m_bForce, !!dlg.m_bForceWithLease, dlg.m_BranchSourceName, dlg.m_URL, dlg.m_BranchRemoteName, !!dlg.m_bSetUpstream, dlg.m_RecurseSubmodules);
 
-		int iRecurseSubmodules = 0;
-		if (GetMsysgitVersion() >= 0x02070000)
-		{
-			CString recurseSubmodules = g_Git.GetConfigValue(_T("push.recurseSubmodules"));
-			if (recurseSubmodules == _T("check"))
-				iRecurseSubmodules = 1;
-			else if (recurseSubmodules == _T("on-demand"))
-				iRecurseSubmodules = 2;
-		}
-
-		CString arg = _T("--progress ");
-
-		if(dlg.m_bPack)
-			arg += _T("--thin ");
-		if(dlg.m_bTags && !dlg.m_bPushAllBranches)
-			arg += _T("--tags ");
-		if(dlg.m_bForce)
-			arg += _T("--force ");
-		if (dlg.m_bForceWithLease)
-			arg += _T("--force-with-lease ");
-		if (dlg.m_bSetUpstream)
-			arg += _T("--set-upstream ");
-		if (dlg.m_RecurseSubmodules == 0 && dlg.m_RecurseSubmodules != iRecurseSubmodules)
-			arg += _T("--recurse-submodules=no ");
-		if (dlg.m_RecurseSubmodules == 1 && dlg.m_RecurseSubmodules != iRecurseSubmodules)
-			arg += _T("--recurse-submodules=check ");
-		if (dlg.m_RecurseSubmodules == 2 && dlg.m_RecurseSubmodules != iRecurseSubmodules)
-			arg += _T("--recurse-submodules=on-demand ");
-
-		CProgressDlg progress;
-
-		STRING_VECTOR remotesList;
-		if (dlg.m_bPushAllRemotes)
-			g_Git.GetRemoteList(remotesList);
-		else
-			remotesList.push_back(dlg.m_URL);
-
-		for (unsigned int i = 0; i < remotesList.size(); ++i)
-		{
-			if (dlg.m_bAutoLoad)
-				CAppUtils::LaunchPAgent(NULL, &remotesList[i]);
-
-			CString cmd;
-			if (dlg.m_bPushAllBranches)
-			{
-				cmd.Format(_T("git.exe push --all %s\"%s\""),
-						(LPCTSTR)arg,
-						(LPCTSTR)remotesList[i]);
-
-				if (dlg.m_bTags)
-				{
-					progress.m_GitCmdList.push_back(cmd);
-					cmd.Format(_T("git.exe push --tags %s\"%s\""), (LPCTSTR)arg, (LPCTSTR)remotesList[i]);
-				}
-			}
-			else
-			{
-				cmd.Format(_T("git.exe push %s\"%s\" %s"),
-						(LPCTSTR)arg,
-						(LPCTSTR)remotesList[i],
-						(LPCTSTR)dlg.m_BranchSourceName);
-				if (!dlg.m_BranchRemoteName.IsEmpty())
-				{
-					cmd += _T(":") + dlg.m_BranchRemoteName;
-				}
-			}
-			progress.m_GitCmdList.push_back(cmd);
-
-			if (!dlg.m_bPushAllBranches && !!CRegDWORD(_T("Software\\TortoiseGit\\ShowBranchRevisionNumber"), FALSE))
-			{
-				cmd.Format(_T("git.exe rev-list --count --first-parent %s"), (LPCTSTR)dlg.m_BranchSourceName);
-				progress.m_GitCmdList.push_back(cmd);
-			}
-		}
-
-		CString superprojectRoot;
-		GitAdminDir::HasAdminDir(g_Git.m_CurrentDir, false, &superprojectRoot);
-		progress.m_PostCmdCallback = [&](DWORD status, PostCmdList& postCmdList)
-		{
-			// need to execute hooks as those might be needed by post action commands
-			DWORD exitcode = 0xFFFFFFFF;
-			CString error;
-			if (CHooks::Instance().PostPush(g_Git.m_CurrentDir, exitcode, error))
-			{
-				if (exitcode)
-				{
-					CString temp;
-					temp.Format(IDS_ERR_HOOKFAILED, (LPCTSTR)error);
-					MessageBox(nullptr, temp, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
-				}
-			}
-
-			if (status)
-			{
-				bool rejected = progress.GetLogText().Find(_T("! [rejected]")) > 0;
-				if (rejected)
-				{
-					postCmdList.emplace_back(IDI_PULL, IDS_MENUPULL, []{ Pull(true); });
-					postCmdList.emplace_back(IDI_PULL, IDS_MENUFETCH, [&]{ Fetch(dlg.m_bPushAllRemotes ? _T("") : dlg.m_URL, !!dlg.m_bPushAllRemotes); });
-				}
-				postCmdList.emplace_back(IDI_PUSH, IDS_MENUPUSH, [&]{ Push(selectLocalBranch); });
-				return;
-			}
-
-			postCmdList.emplace_back(IDS_PROC_REQUESTPULL, [&]{ RequestPull(dlg.m_BranchRemoteName); });
-			postCmdList.emplace_back(IDI_PUSH, IDS_MENUPUSH, [&]{ Push(selectLocalBranch); });
-			postCmdList.emplace_back(IDI_SWITCH, IDS_MENUSWITCH, [&]{ Switch(); });
-			if (!superprojectRoot.IsEmpty())
-			{
-				postCmdList.emplace_back(IDI_COMMIT, IDS_PROC_COMMIT_SUPERPROJECT, [&]
-				{
-					CString sCmd;
-					sCmd.Format(_T("/command:commit /path:\"%s\""), (LPCTSTR)superprojectRoot);
-					RunTortoiseGitProc(sCmd);
-				});
-			}
-		};
-
-		INT_PTR ret = progress.DoModal();
-		return ret == IDOK;
-	}
 	return FALSE;
 }
 
