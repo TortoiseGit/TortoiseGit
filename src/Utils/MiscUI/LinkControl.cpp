@@ -211,13 +211,13 @@ void CLinkControl::OnEnable(BOOL enabled)
 	CStatic::OnEnable(enabled);
 }
 
-BOOL CLinkControl::PreTranslateMessage(MSG * pMsg)
+BOOL CLinkControl::OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pResult)
 {
-	switch (pMsg->message)
+	switch (message)
 	{
 		case BM_CLICK:
 		NotifyParent(LK_LINKITEMCLICKED);
 		break;
 	}
-	return __super::PreTranslateMessage(pMsg);
+	return CStatic::OnWndMsg(message, wParam, lParam, pResult);
 }

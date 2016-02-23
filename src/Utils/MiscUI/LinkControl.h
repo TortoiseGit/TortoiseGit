@@ -29,7 +29,7 @@ public:
 
 protected:
 	virtual void PreSubclassWindow();
-	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	virtual BOOL OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pResult);
 
 private:
 	HCURSOR         m_hLinkCursor;                  // Cursor for hyperlink
