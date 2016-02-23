@@ -26,6 +26,7 @@
 #include "Git.h"
 #include "AppUtils.h"
 #include "BrowseRefsDlg.h"
+#include "MessageBox.h"
 // CPullFetchDlg dialog
 
 IMPLEMENT_DYNAMIC(CPullFetchDlg, CHorizontalResizableStandAloneDialog)
@@ -401,6 +402,12 @@ void CPullFetchDlg::OnBnClickedOk()
 
 		// only store URL in history if it's value was used
 		m_Other.SaveHistory();
+	}
+
+	if (m_bRebase && m_RemoteBranchName.IsEmpty() && m_IsPull)
+	{
+		CMessageBox::Show(GetSafeHwnd(), IDS_PROC_PULL_EMPTYBRANCH, IDS_APPNAME, MB_ICONEXCLAMATION);
+		return;
 	}
 
 	m_RemoteReg = m_Remote.GetString();

@@ -165,7 +165,6 @@ void CSyncDlg::OnBnClickedButtonPull()
 		CAppUtils::LaunchPAgent(NULL,&this->m_strURL);
 	}
 
-	this->SwitchToRun();
 	if (g_Git.GetMapHashToFriendName(m_oldHashMap))
 		MessageBox(g_Git.GetGitLastErr(_T("Could not get all refs.")), _T("TortoiseGit"), MB_ICONERROR);
 
@@ -174,13 +173,6 @@ void CSyncDlg::OnBnClickedButtonPull()
 		force = _T(" --force");
 
 	CString cmd;
-
-	ShowTab(IDC_CMD_LOG);
-
-	this->m_ctrlTabCtrl.ShowTab(IDC_REFLIST-1,true);
-	this->m_ctrlTabCtrl.ShowTab(IDC_IN_LOGLIST-1,false);
-	this->m_ctrlTabCtrl.ShowTab(IDC_IN_CHANGELIST-1,false);
-	this->m_ctrlTabCtrl.ShowTab(IDC_IN_CONFLICT-1,false);
 
 	m_iPullRebase = 0;
 	if (CurrentEntry == 0) // check whether we need to override Pull if pull.rebase is set
@@ -230,8 +222,24 @@ void CSyncDlg::OnBnClickedButtonPull()
 			}
 		} while (0);
 		if (m_iPullRebase > 0)
+		{
 			CurrentEntry = 1;
+			if (m_strRemoteBranch.IsEmpty())
+			{
+				CMessageBox::Show(GetSafeHwnd(), IDS_PROC_PULL_EMPTYBRANCH, IDS_APPNAME, MB_ICONEXCLAMATION);
+				return;
+			}
+		}
 	}
+
+	SwitchToRun();
+
+	ShowTab(IDC_CMD_LOG);
+
+	m_ctrlTabCtrl.ShowTab(IDC_REFLIST - 1, true);
+	m_ctrlTabCtrl.ShowTab(IDC_IN_LOGLIST - 1, false);
+	m_ctrlTabCtrl.ShowTab(IDC_IN_CHANGELIST - 1, false);
+	m_ctrlTabCtrl.ShowTab(IDC_IN_CONFLICT - 1, false);
 
 	///Pull
 	if(CurrentEntry == 0) //Pull
