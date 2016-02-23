@@ -206,10 +206,20 @@ int CGitLogList::DeleteRef(const CString& ref)
 		size_t count = !GitRevLoglist::GetRefLog(ref, stashList, err) ? stashList.size() : 0;
 		CString msg;
 		msg.Format(IDS_PROC_DELETEALLSTASH, count);
-		if (CMessageBox::Show(nullptr, msg, _T("TortoiseGit"), 2, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_DELETEBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 1)
+		int choose = CMessageBox::Show(nullptr, msg, _T("TortoiseGit"), 3, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_DELETEBUTTON)), CString(MAKEINTRESOURCE(IDS_DROPONESTASH)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON)));
+		if (choose == 1)
 		{
 			CString sCmd;
 			sCmd.Format(_T("git.exe stash clear"));
+			CString out;
+			if (g_Git.Run(sCmd, &out, CP_UTF8))
+				CMessageBox::Show(nullptr, out, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+			return TRUE;
+		}
+		else if (choose == 2)
+		{
+			CString sCmd;
+			sCmd.Format(_T("git.exe stash drop refs/stash@{0}"));
 			CString out;
 			if (g_Git.Run(sCmd, &out, CP_UTF8))
 				CMessageBox::Show(nullptr, out, _T("TortoiseGit"), MB_OK | MB_ICONERROR);

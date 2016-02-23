@@ -4741,6 +4741,7 @@ BEGIN
     IDS_COMMIT_COMMIT       "C&ommit"
     IDS_COMMIT_RECOMMIT     "&ReCommit"
     IDS_COMMIT_COMMITPUSH   "Commit && &Push"
+    IDS_DROPONESTASH        "Drop one stash"
 END
 
 #endif    // English (U.S.) resources

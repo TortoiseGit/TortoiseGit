@@ -1258,6 +1258,7 @@
 #define IDS_COMMIT_COMMITPUSH           1593
 #define IDC_BUGTRAQ_APPEND              1594
 #define IDC_WARN_NO_SIGNED_OFF_BY       1594
+#define IDS_DROPONESTASH                1594
 #define IDC_BUGTRAQ_NUMBER              1595
 #define IDC_BUGTRAQ_URL                 1599
 #define IDS_REPOBROWSE_SAVEAS           1600
