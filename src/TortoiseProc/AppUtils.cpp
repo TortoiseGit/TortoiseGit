@@ -2813,10 +2813,10 @@ bool CAppUtils::DoPush(bool autoloadKey, bool pack, bool tags, bool allRemotes, 
 	int iRecurseSubmodules = 0;
 	if (GetMsysgitVersion() >= 0x02070000)
 	{
-		CString recurseSubmodules = g_Git.GetConfigValue(_T("push.recurseSubmodules"));
-		if (recurseSubmodules == _T("check"))
+		CString sRecurseSubmodules = g_Git.GetConfigValue(_T("push.recurseSubmodules"));
+		if (sRecurseSubmodules == _T("check"))
 			iRecurseSubmodules = 1;
-		else if (recurseSubmodules == _T("on-demand"))
+		else if (sRecurseSubmodules == _T("on-demand"))
 			iRecurseSubmodules = 2;
 	}
 
