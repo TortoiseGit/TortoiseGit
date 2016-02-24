@@ -1098,23 +1098,23 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 	{
 	case eCmd_ViewLog:
 		{
-			CLogDlg dlg;
-			dlg.SetRange(g_Git.FixBranchName(selectedLeafs[0]->GetRefName()));
-			dlg.DoModal();
+			CString sCmd;
+			sCmd.Format(_T("/command:log /path:\"%s\" /range:\"%s\""), (LPCTSTR)g_Git.m_CurrentDir, (LPCTSTR)g_Git.FixBranchName(selectedLeafs[0]->GetRefName()));
+			CAppUtils::RunTortoiseGitProc(sCmd);
 		}
 		break;
 	case eCmd_ViewLogRange:
 		{
-			CLogDlg dlg;
-			dlg.SetRange(GetTwoSelectedRefs(selectedLeafs, m_sLastSelected, _T("..")));
-			dlg.DoModal();
+			CString sCmd;
+			sCmd.Format(_T("/command:log /path:\"%s\" /range:\"%s\""), (LPCTSTR)g_Git.m_CurrentDir, (LPCTSTR)GetTwoSelectedRefs(selectedLeafs, m_sLastSelected, _T("..")));
+			CAppUtils::RunTortoiseGitProc(sCmd);
 		}
 		break;
 	case eCmd_ViewLogRangeReachableFromOnlyOne:
 		{
-			CLogDlg dlg;
-			dlg.SetRange(GetTwoSelectedRefs(selectedLeafs, m_sLastSelected, _T("...")));
-			dlg.DoModal();
+			CString sCmd;
+			sCmd.Format(_T("/command:log /path:\"%s\" /range:\"%s\""), (LPCTSTR)g_Git.m_CurrentDir, (LPCTSTR)GetTwoSelectedRefs(selectedLeafs, m_sLastSelected, _T("...")));
+			CAppUtils::RunTortoiseGitProc(sCmd);
 		}
 		break;
 	case eCmd_RepoBrowser:
