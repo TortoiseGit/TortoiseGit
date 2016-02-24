@@ -428,10 +428,6 @@ void CSyncDlg::PullComplete()
 	SwitchToInput();
 	this->FetchOutList(true);
 
-	CGitHash newhash;
-	if (g_Git.GetHash(newhash, _T("HEAD")))
-		MessageBox(g_Git.GetGitLastErr(_T("Could not get HEAD hash after pulling.")), _T("TortoiseGit"), MB_ICONERROR);
-
 	if( this ->m_GitCmdStatus )
 	{
 		int hasConflicts = g_Git.HasWorkingTreeConflicts();
