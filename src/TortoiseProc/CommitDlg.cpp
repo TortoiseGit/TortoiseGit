@@ -2244,7 +2244,8 @@ LRESULT CCommitDlg::OnUpdateOKButton(WPARAM, LPARAM)
 	if (m_bBlock)
 		return 0;
 
-	bool bValidLogSize = !m_cLogMessage.GetText().IsEmpty() && m_cLogMessage.GetText().GetLength() >= m_ProjectProperties.nMinLogSize;
+	CString text = m_cLogMessage.GetText().Trim();
+	bool bValidLogSize = !text.IsEmpty() && text.GetLength() >= m_ProjectProperties.nMinLogSize;
 	bool bAmendOrSelectFilesOrMerge = m_ListCtrl.GetSelected() > 0 || (m_bCommitAmend && m_bAmendDiffToLastCommit) || CTGitPath(g_Git.m_CurrentDir).IsMergeActive();
 
 	DialogEnableWindow(IDOK, bValidLogSize && (m_bCommitMessageOnly || bAmendOrSelectFilesOrMerge));
