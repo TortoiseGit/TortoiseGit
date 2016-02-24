@@ -46,6 +46,7 @@ Released: unreleased
  * Fixed issue #2690: Failed to Show log from repository browser when that repository is located on a drive
  * Fixed issue #2655: Resolve does not work on multiple selection during deleted-modifed conflict resolution
  * Fixed issue #2668: TortoiseGit commit with git-lfs files, show me a error: ".git/index.lock" file exist
+ * Fixed issue #2638: TGitCache crashes on a broken repo (out of bounds read in libgit2)
 
 = Release 1.8.16.0 =
 Released: 2015-11-01
