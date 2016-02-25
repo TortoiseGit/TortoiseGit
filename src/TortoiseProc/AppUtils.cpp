@@ -61,7 +61,7 @@
 #include "BisectStartDlg.h"
 #include "SysProgressDlg.h"
 #include "UserPassword.h"
-#include "Patch.h"
+#include "SendmailPatch.h"
 #include "Globals.h"
 #include "ProgressCommands/ResetProgressCommand.h"
 #include "ProgressCommands/FetchProgressCommand.h"

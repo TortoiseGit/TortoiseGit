@@ -25,6 +25,7 @@
 #include "MessageBox.h"
 #include "AppUtils.h"
 #include "PatchListCtrl.h"
+#include "SendMailPatch.h"
 
 // CSendMailDlg dialog
 

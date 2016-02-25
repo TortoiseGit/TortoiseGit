@@ -139,8 +139,9 @@
     <ClCompile Include="LogFile.cpp" />
     <ClCompile Include="LogOrdering.cpp" />
     <ClCompile Include="MassiveGitTask.cpp" />
-    <ClCompile Include="Patch.cpp" />
+    <ClCompile Include="SendMailPatch.cpp" />
     <ClCompile Include="ProjectProperties.cpp" />
+    <ClCompile Include="SerialPatch.cpp" />
     <ClCompile Include="Settings\SetDialogs2.cpp" />
     <ClCompile Include="Settings\SetDialogs3.cpp" />
     <ClCompile Include="Settings\SettingGitCredential.cpp" />
@@ -402,9 +403,10 @@
     <ClInclude Include="LogFile.h" />
     <ClInclude Include="LogOrdering.h" />
     <ClInclude Include="MassiveGitTask.h" />
-    <ClInclude Include="Patch.h" />
+    <ClInclude Include="SendMailPatch.h" />
     <ClInclude Include="ProjectProperties.h" />
     <ClInclude Include="..\TortoiseShell\resource.h" />
+    <ClInclude Include="SerialPatch.h" />
     <ClInclude Include="Settings\GitSettings.h" />
     <ClInclude Include="Settings\SetDialogs2.h" />
     <ClInclude Include="Settings\SetDialogs3.h" />

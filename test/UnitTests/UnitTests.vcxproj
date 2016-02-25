@@ -79,6 +79,7 @@
     <ClInclude Include="..\..\src\TortoiseProc\lanes.h" />
     <ClInclude Include="..\..\src\TortoiseProc\LogDlgHelper.h" />
     <ClInclude Include="..\..\src\TortoiseProc\ProjectProperties.h" />
+    <ClInclude Include="..\..\src\TortoiseProc\SerialPatch.h" />
     <ClInclude Include="..\..\src\TortoiseProc\UpdateCrypto.h" />
     <ClInclude Include="..\..\src\TortoiseProc\UpdateDownloader.h" />
     <ClInclude Include="..\..\src\Utils\CmdLineParser.h" />
@@ -115,6 +116,7 @@
     <ClCompile Include="..\..\src\TortoiseProc\lanes.cpp" />
     <ClCompile Include="..\..\src\TortoiseProc\LogDataVector.cpp" />
     <ClCompile Include="..\..\src\TortoiseProc\ProjectProperties.cpp" />
+    <ClCompile Include="..\..\src\TortoiseProc\SerialPatch.cpp" />
     <ClCompile Include="..\..\src\TortoiseProc\UpdateCrypto.cpp" />
     <ClCompile Include="..\..\src\Utils\CmdLineParser.cpp" />
     <ClCompile Include="..\..\src\Utils\CommonAppUtils.cpp" />
@@ -141,6 +143,7 @@
     <ClCompile Include="LogDataVectorTest.cpp" />
     <ClCompile Include="PathUtilsTest.cpp" />
     <ClCompile Include="ProjectPropertiesTest.cpp" />
+    <ClCompile Include="SerialPatchTest.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>

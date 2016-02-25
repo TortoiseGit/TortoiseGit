@@ -131,6 +131,9 @@
     <ClInclude Include="..\..\src\TortoiseProc\gitlogcache.h">
       <Filter>TortoiseProc</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\TortoiseProc\SerialPatch.h">
+      <Filter>TortoiseProc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -267,6 +270,12 @@
     </ClCompile>
     <ClCompile Include="GitHashTest.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SerialPatchTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\TortoiseProc\SerialPatch.cpp">
+      <Filter>TortoiseProc</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

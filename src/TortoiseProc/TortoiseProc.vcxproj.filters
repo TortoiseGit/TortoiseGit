@@ -176,9 +176,6 @@
     <ClCompile Include="MassiveGitTask.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="Patch.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
     <ClCompile Include="ProjectProperties.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
@@ -905,6 +902,12 @@
     <ClCompile Include="PatchListCtrl.cpp">
       <Filter>Commands\Patch</Filter>
     </ClCompile>
+    <ClCompile Include="SerialPatch.cpp">
+      <Filter>Commands\SendMail</Filter>
+    </ClCompile>
+    <ClCompile Include="SendMailPatch.cpp">
+      <Filter>Commands\SendMail</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddRemoteDlg.h">
@@ -917,9 +920,6 @@
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="MassiveGitTask.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="Patch.h">
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="ProjectProperties.h">
@@ -1680,6 +1680,12 @@
     </ClInclude>
     <ClInclude Include="..\Utils\SmartHandle.h">
       <Filter>Utils\General</Filter>
+    </ClInclude>
+    <ClInclude Include="SerialPatch.h">
+      <Filter>Commands\SendMail</Filter>
+    </ClInclude>
+    <ClInclude Include="SendMailPatch.h">
+      <Filter>Commands\SendMail</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

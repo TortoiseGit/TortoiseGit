@@ -31,20 +31,3 @@ protected:
 	virtual int SendAsSingleMail(const CTGitPath& path, CGitProgressList* instance);
 	virtual int SendAsCombinedMail(const CTGitPathList& list, CGitProgressList* instance);
 };
-
-class CPatch
-{
-public:
-	CPatch();
-	~CPatch(void);
-
-	int			Parse(const CString& pathfile, bool parseBody);
-	CString		m_Author;
-	CString		m_Date;
-	CString		m_Subject;
-	CStringA	m_Body;
-	CString		m_strBody;
-
-private:
-	CString		m_PathFile;
-};

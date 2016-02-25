@@ -19,7 +19,8 @@
 //
 
 #include "stdafx.h"
-#include "Patch.h"
+#include "SendMailPatch.h"
+#include "SerialPatch.h"
 
 CSendMailPatch::CSendMailPatch(const CString& To, const CString& CC, const CString& subject, bool bAttachment, bool bCombine)
 	: CSendMailCombineable(To, CC, subject, bAttachment, bCombine)
@@ -35,7 +36,7 @@ int CSendMailPatch::SendAsSingleMail(const CTGitPath& path, CGitProgressList* in
 	ASSERT(instance);
 
 	CString pathfile(path.GetWinPathString());
-	CPatch patch;
+	CSerialPatch patch;
 	if (patch.Parse(pathfile, !m_bAttachment))
 	{
 		instance->ReportError(_T("Could not open/parse ") + pathfile);
@@ -60,7 +61,7 @@ int CSendMailPatch::SendAsCombinedMail(const CTGitPathList &list, CGitProgressLi
 	CString body;
 	for (int i = 0; i < list.GetCount(); ++i)
 	{
-		CPatch patch;
+		CSerialPatch patch;
 		if (patch.Parse((CString&)list[i].GetWinPathString(), !m_bAttachment))
 		{
 			instance->ReportError(_T("Could not open/parse ") + list[i].GetWinPathString());
@@ -86,69 +87,4 @@ int CSendMailPatch::SendAsCombinedMail(const CTGitPathList &list, CGitProgressLi
 		}
 	}
 	return SendMail(CTGitPath(), instance, m_sSenderName, m_sSenderMail, m_sTo, m_sCC, m_sSubject, body, attachments);
-}
-
-CPatch::CPatch()
-{
-}
-
-CPatch::~CPatch()
-{
-}
-
-int CPatch::Parse(const CString& pathfile, bool parseBody)
-{
-	m_PathFile = pathfile;
-
-	CFile PatchFile;
-
-	if (!PatchFile.Open(m_PathFile, CFile::modeRead))
-		return -1;
-
-	PatchFile.Read(CStrBufA(m_Body, (UINT)PatchFile.GetLength()), (UINT)PatchFile.GetLength());
-	PatchFile.Close();
-
-	try
-	{
-		int start=0;
-		CStringA one;
-		one=m_Body.Tokenize("\n",start);
-
-		if (start == -1)
-			return -1;
-		one=m_Body.Tokenize("\n",start);
-		if(one.GetLength()>6)
-			CGit::StringAppend(&m_Author, (BYTE*)(LPCSTR)one + 6, CP_UTF8, one.GetLength() - 6);
-
-		if (start == -1)
-			return -1;
-		one=m_Body.Tokenize("\n",start);
-		if(one.GetLength()>6)
-			CGit::StringAppend(&m_Date, (BYTE*)(LPCSTR)one + 6, CP_UTF8, one.GetLength() - 6);
-
-		if (start == -1)
-			return -1;
-		one=m_Body.Tokenize("\n",start);
-		if(one.GetLength()>9)
-		{
-			CGit::StringAppend(&m_Subject, (BYTE*)(LPCSTR)one + 9, CP_UTF8, one.GetLength() - 9);
-			while (m_Body.GetLength() > start && m_Body.GetAt(start) == _T(' '))
-			{
-				one = m_Body.Tokenize("\n", start);
-				CGit::StringAppend(&m_Subject, (BYTE*)(LPCSTR)one, CP_UTF8, one.GetLength());
-			}
-		}
-
-		if (!parseBody)
-			return 0;
-
-		if (start + 1 < m_Body.GetLength())
-			CGit::StringAppend(&m_strBody, (BYTE*)(LPCSTR)m_Body + start + 1, CP_UTF8, m_Body.GetLength() - start - 1);
-	}
-	catch (CException *)
-	{
-		return -1;
-	}
-
-	return 0;
 }

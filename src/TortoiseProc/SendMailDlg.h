@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2015 - TortoiseGit
+// Copyright (C) 2008-2013, 2015-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -22,7 +22,7 @@
 #include "ACEdit.h"
 #include "RegHistory.h"
 #include "TGitPath.h"
-#include "patch.h"
+#include "SerialPatch.h"
 #include "registry.h"
 #include "PatchListCtrl.h"
 
@@ -65,7 +65,7 @@ private:
 	CRegDWORD		m_regAttach;
 	CRegDWORD		m_regCombine;
 
-	std::map<int,CPatch> m_MapPatch;
+	std::map<int, CSerialPatch> m_MapPatch;
 
 	afx_msg void OnBnClickedSendmailCombine();
 	afx_msg void OnBnClickedOk();
