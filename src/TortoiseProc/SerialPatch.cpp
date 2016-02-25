@@ -74,6 +74,16 @@ int CSerialPatch::Parse(const CString& pathfile, bool parseBody)
 		if (!parseBody)
 			return 0;
 
+		while (start > 0)
+		{
+			if (m_Body.Mid(start - 1, 2) == L"\n\n")
+				break;
+			m_Body.Tokenize("\n", start);
+		}
+
+		if (start == -1)
+			return -1;
+
 		if (start + 1 < m_Body.GetLength())
 			CGit::StringAppend(&m_strBody, (BYTE*)(LPCSTR)m_Body + start + 1, CP_UTF8, m_Body.GetLength() - start - 1);
 	}

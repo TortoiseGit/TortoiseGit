@@ -65,4 +65,24 @@ TEST(CSerialPatch, Parse)
 	ASSERT_STREQ(L"[PATCH 2/3] Remove dynamic linking using GetProcAddress() for APIs that are available on Vista now that XP support is no longer needed", parser4.m_Subject);
 	ASSERT_STREQ(patch2, parser4.m_Body);
 	ASSERT_STREQ(CString(patch2body), parser4.m_strBody);
+
+	// utf8 content
+	CStringA patch3header = "From 8bf757a62dab483e738fb0ea20d2240c6d554462 Mon Sep 17 00:00:00 2001\nFrom: Sven Strickroth <email@cs-ware.de>\nDate: Thu, 25 Feb 2016 04:07:55 +0100\nSubject: [PATCH] =?UTF-8?q?=C3=B6d=C3=B6=C3=A4=C3=BC?=\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\n\n";
+	CStringA patch3body = patch1body;
+	CStringA patch3 = patch3header + patch3body;
+	ASSERT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)tmpfile, (LPCTSTR)CString(patch3)));
+	CSerialPatch parser5;
+	ASSERT_EQ(0, parser5.Parse(tmpfile, false));
+	ASSERT_STREQ(L"Sven Strickroth <email@cs-ware.de>", parser5.m_Author);
+	ASSERT_STREQ(L"Thu, 25 Feb 2016 04:07:55 +0100", parser5.m_Date);
+	ASSERT_STREQ(L"[PATCH] =?UTF-8?q?=C3=B6d=C3=B6=C3=A4=C3=BC?=", parser5.m_Subject);
+	ASSERT_STREQ(patch3, parser5.m_Body);
+	ASSERT_TRUE(parser5.m_strBody.IsEmpty());
+	CSerialPatch parser6;
+	ASSERT_EQ(0, parser6.Parse(tmpfile, true));
+	ASSERT_STREQ(L"Sven Strickroth <email@cs-ware.de>", parser6.m_Author);
+	ASSERT_STREQ(L"Thu, 25 Feb 2016 04:07:55 +0100", parser6.m_Date);
+	ASSERT_STREQ(L"[PATCH] =?UTF-8?q?=C3=B6d=C3=B6=C3=A4=C3=BC?=", parser6.m_Subject);
+	ASSERT_STREQ(patch3, parser6.m_Body);
+	ASSERT_STREQ(CString(patch3body), parser6.m_strBody);
 }
