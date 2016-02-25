@@ -85,4 +85,16 @@ TEST(CSerialPatch, Parse)
 	ASSERT_STREQ(L"[PATCH] =?UTF-8?q?=C3=B6d=C3=B6=C3=A4=C3=BC?=", parser6.m_Subject);
 	ASSERT_STREQ(patch3, parser6.m_Body);
 	ASSERT_STREQ(CString(patch3body), parser6.m_strBody);
+
+	// CRLF in headers
+	patch1header.Replace("\n", "\r\n");
+	patch1 = patch1header + patch1body;
+	ASSERT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)tmpfile, (LPCTSTR)CString(patch1)));
+	CSerialPatch parser7;
+	ASSERT_EQ(0, parser7.Parse(tmpfile, true));
+	ASSERT_STREQ(L"Sven Strickroth <email@cs-ware.de>", parser7.m_Author);
+	ASSERT_STREQ(L"Wed, 24 Feb 2016 22:22:49 +0100", parser7.m_Date);
+	ASSERT_STREQ(L"[PATCH] RefBrowse: Start new process for showing log", parser7.m_Subject);
+	ASSERT_STREQ(patch1, parser7.m_Body);
+	ASSERT_STREQ(CString(patch1body), parser7.m_strBody);
 }
