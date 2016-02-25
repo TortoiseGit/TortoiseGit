@@ -213,7 +213,11 @@ BOOL CCommitDlg::OnInitDialog()
 		CGit::LoadTextFile(dotGitPath + _T("SQUASH_MSG"), m_sLogMessage);
 		CGit::LoadTextFile(dotGitPath + _T("MERGE_MSG"), m_sLogMessage);
 	}
-	RunStartCommitHook();
+	if (!RunStartCommitHook())
+	{
+		EndDialog(IDCANCEL);
+		return FALSE;
+	}
 
 	m_regAddBeforeCommit = CRegDWORD(_T("Software\\TortoiseGit\\AddBeforeCommit"), TRUE);
 	m_bShowUnversioned = m_regAddBeforeCommit;
@@ -1168,7 +1172,6 @@ void CCommitDlg::OnOK()
 
 				this->m_sLogMessage.Empty();
 				GetCommitTemplate(m_sLogMessage);
-				RunStartCommitHook();
 				m_cLogMessage.SetText(m_sLogMessage);
 				if (m_bCreateNewBranch)
 				{
@@ -1176,6 +1179,8 @@ void CCommitDlg::OnOK()
 					GetDlgItem(IDC_NEWBRANCH)->ShowWindow(SW_HIDE);
 				}
 				m_bCreateNewBranch = FALSE;
+				if (!RunStartCommitHook())
+					bCloseCommitDlg = true;
 			}
 
 			if (!progress.m_GitStatus)
@@ -2835,7 +2840,7 @@ void CCommitDlg::OnBnClickedCommitSetauthor()
 		GetDlgItem(IDC_COMMIT_AUTHORDATA)->ShowWindow(SW_HIDE);
 }
 
-void CCommitDlg::RunStartCommitHook()
+bool CCommitDlg::RunStartCommitHook()
 {
 	DWORD exitcode = 0xFFFFFFFF;
 	CString error;
@@ -2846,9 +2851,10 @@ void CCommitDlg::RunStartCommitHook()
 			CString temp;
 			temp.Format(IDS_ERR_HOOKFAILED, (LPCTSTR)error);
 			MessageBox(temp, _T("TortoiseGit"), MB_ICONERROR);
-			return;
+			return false;
 		}
 	}
+	return true;
 }
 
 void CCommitDlg::OnSysColorChange()

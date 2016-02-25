@@ -143,7 +143,7 @@ protected:
 	void UpdateCheckLinks();
 	void ParseRegexFile(const CString& sFile, std::map<CString, CString>& mapRegex);
 	void ParseSnippetFile(const CString& sFile, std::map<CString, CString>& mapSnippet);
-	void RunStartCommitHook();
+	bool RunStartCommitHook();
 
 	DECLARE_MESSAGE_MAP()
 
