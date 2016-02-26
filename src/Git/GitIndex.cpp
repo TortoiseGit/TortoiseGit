@@ -87,7 +87,7 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 	// add config files
 	config.New();
 
-	CString projectConfig = dgitdir + L"config";
+	CString projectConfig = g_AdminDirMap.GetAdminDir(dgitdir) + L"config";
 	CString globalConfig = g_Git.GetGitGlobalConfig();
 	CString globalXDGConfig = g_Git.GetGitGlobalXDGConfig();
 	CString systemConfig(CRegString(REG_SYSTEM_GITCONFIGPATH, L"", FALSE));
@@ -140,7 +140,7 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 		m_bHasConflicts |= GIT_IDXENTRY_STAGE(e);
 	}
 
-	CGit::GetFileModifyTime(dgitdir + L"index", &m_LastModifyTime);
+	CGit::GetFileModifyTime(g_AdminDirMap.GetWorktreeAdminDir(dgitdir) + L"index", &m_LastModifyTime);
 	std::sort(this->begin(), this->end(), SortIndex);
 
 	return 0;
@@ -315,7 +315,7 @@ int CGitIndexFileMap::Check(const CString &gitdir, bool *isChanged)
 {
 	__int64 time;
 
-	CString IndexFile = g_AdminDirMap.GetAdminDirConcat(gitdir, L"index");
+	CString IndexFile = g_AdminDirMap.GetWorktreeAdminDirConcat(gitdir, L"index");
 
 	if (CGit::GetFileModifyTime(IndexFile, &time))
 	{
@@ -350,7 +350,7 @@ int CGitIndexFileMap::LoadIndex(const CString &gitdir)
 {
 	SHARED_INDEX_PTR pIndex = std::make_shared<CGitIndexList>();
 
-	if (pIndex->ReadIndex(g_AdminDirMap.GetAdminDir(gitdir)))
+	if (pIndex->ReadIndex(gitdir))
 		return -1;
 
 	this->SafeSet(gitdir, pIndex);
@@ -503,7 +503,7 @@ int CGitHeadFileList::ReadHeadHash(const CString& gitdir)
 {
 	ATLASSERT(m_Gitdir.IsEmpty() && m_HeadFile.IsEmpty());
 
-	m_Gitdir = g_AdminDirMap.GetAdminDir(gitdir);
+	m_Gitdir = g_AdminDirMap.GetWorktreeAdminDir(gitdir);
 
 	m_HeadFile = m_Gitdir;
 	m_HeadFile += L"HEAD";
@@ -546,7 +546,7 @@ int CGitHeadFileList::ReadHeadHash(const CString& gitdir)
 		CString ref = m_HeadRefFile.Trim();
 		int start = 0;
 		ref = ref.Tokenize(L"\n", start);
-		m_HeadRefFile = m_Gitdir + m_HeadRefFile;
+		m_HeadRefFile = g_AdminDirMap.GetAdminDir(gitdir) + m_HeadRefFile;
 		m_HeadRefFile.Replace(L'/', L'\\');
 
 		__int64 time;

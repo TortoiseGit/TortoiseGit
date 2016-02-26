@@ -102,33 +102,53 @@ public:
 	CAutoTempDir m_Dir;
 };
 
-class CBasicGitWithTestRepoFixture : public CBasicGitFixture
+class CBasicGitWithTestRepoCreatorFixture : public CBasicGitFixture
 {
 protected:
-	CBasicGitWithTestRepoFixture(const CString& arepo = L"git-repo1")
+	CBasicGitWithTestRepoCreatorFixture(const CString& arepo = L"git-repo1")
 	{
 		prefix = L"\\.git";
 		m_reponame = arepo;
 	}
 
-	virtual void SetUp()
+	void SetUpTestRepo(CString path)
 	{
-		CBasicGitFixture::SetUp();
 		CString resourcesDir;
 		ASSERT_TRUE(GetResourcesDir(resourcesDir));
+		CPathUtils::TrimTrailingPathDelimiter(path);
+		CreateDirectory(path, nullptr);
+		ASSERT_TRUE(PathIsDirectory(path));
 		if (!prefix.IsEmpty())
-			EXPECT_TRUE(CreateDirectory(m_Dir.GetTempDir() + prefix, nullptr));
+			EXPECT_TRUE(CreateDirectory(path + prefix, nullptr));
 		CString repoDir = resourcesDir + L"\\" + m_reponame;
-		CopyRecursively(repoDir, m_Dir.GetTempDir() + prefix);
-		CString configFile = m_Dir.GetTempDir() + prefix + L"\\config";
+		CopyRecursively(repoDir, path + prefix);
+		CString configFile = path + prefix + L"\\config";
 		CString text;
 		ASSERT_TRUE(CStringUtils::ReadStringFromTextFile(configFile, text));
 		text += L"\n[core]\n  autocrlf = false\n[user]\n  name = User\n  email = user@example.com\n";
 		EXPECT_TRUE(CStringUtils::WriteStringToTextFile(configFile, text));
 	}
+
+	virtual void SetUp()
+	{
+		CBasicGitFixture::SetUp();
+	}
+
 	CString prefix;
 private:
 	CString m_reponame;
+};
+
+class CBasicGitWithTestRepoFixture : public CBasicGitWithTestRepoCreatorFixture
+{
+protected:
+	CBasicGitWithTestRepoFixture() : CBasicGitWithTestRepoCreatorFixture() {};
+	CBasicGitWithTestRepoFixture(const CString& arepo) : CBasicGitWithTestRepoCreatorFixture(arepo) {};
+	virtual void SetUp()
+	{
+		CBasicGitWithTestRepoCreatorFixture::SetUp();
+		SetUpTestRepo(m_Dir.GetTempDir());
+	}
 };
 
 class CBasicGitWithTestRepoBareFixture : public CBasicGitWithTestRepoFixture

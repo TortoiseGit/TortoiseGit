@@ -679,7 +679,7 @@ bool GitStatus::IsExistIndexLockFile(CString sDirName)
 	{
 		if (PathFileExists(CombinePath(sDirName, L".git")))
 		{
-			if (PathFileExists(g_AdminDirMap.GetAdminDirConcat(sDirName, L"index.lock")))
+			if (PathFileExists(g_AdminDirMap.GetWorktreeAdminDirConcat(sDirName, L"index.lock")))
 				return true;
 
 			return false;

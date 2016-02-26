@@ -24,6 +24,7 @@
 #include "ReaderWriterLock.h"
 #include "GitAdminDir.h"
 #include "StringUtils.h"
+#include "PathUtils.h"
 
 class CGitIndex
 {
@@ -434,34 +435,28 @@ class CGitAdminDirMap:public std::map<CString, CString>
 public:
 	CComCriticalSection			m_critIndexSec;
 	std::map<CString, CString>	m_reverseLookup;
+	std::map<CString, CString>	m_WorktreeAdminDirLookup;
 
 	CGitAdminDirMap() { m_critIndexSec.Init(); }
 	~CGitAdminDirMap() { m_critIndexSec.Term(); }
 
 	CString GetAdminDir(const CString &path)
 	{
-		CString thePath(path);
-		thePath.MakeLower();
+		CString thePath(CPathUtils::NormalizePath(path));
 		CAutoLocker lock(m_critIndexSec);
 		auto lookup = find(thePath);
 		if (lookup == cend())
 		{
-			if (PathIsDirectory(path + L"\\.git"))
+			CString adminDir;
+			GitAdminDir::GetAdminDirPath(thePath, adminDir);
+			if (PathIsDirectory(adminDir))
 			{
-				(*this)[thePath] = path + L"\\.git\\";
-				m_reverseLookup[thePath + L"\\.git"] = path;
+				adminDir = CPathUtils::BuildPathWithPathDelimiter(CPathUtils::NormalizePath(adminDir));
+				(*this)[thePath] = adminDir;
+				m_reverseLookup[adminDir] = thePath;
 				return (*this)[thePath];
 			}
-
-			CString result = GitAdminDir::ReadGitLink(path, path + L"\\.git");
-			if (!result.IsEmpty())
-			{
-				(*this)[thePath] = result + L'\\';
-				m_reverseLookup[result.MakeLower()] = path;
-				return (*this)[thePath];
-			}
-
-			return path + L"\\.git\\"; // in case of an error stick to old behavior
+			return thePath + L".git\\"; // in case of an error stick to old behavior
 		}
 
 		return lookup->second;
@@ -486,10 +481,38 @@ public:
 		return result;
 	}
 
+	CString GetWorktreeAdminDir(const CString& path)
+	{
+		CString thePath(CPathUtils::NormalizePath(path));
+		CAutoLocker lock(m_critIndexSec);
+		auto lookup = m_WorktreeAdminDirLookup.find(thePath);
+		if (lookup == m_WorktreeAdminDirLookup.cend())
+		{
+			CString wtadmindir;
+			GitAdminDir::GetWorktreeAdminDirPath(thePath, wtadmindir);
+			if (PathIsDirectory(wtadmindir))
+			{
+				wtadmindir = CPathUtils::BuildPathWithPathDelimiter(CPathUtils::NormalizePath(wtadmindir));
+				m_WorktreeAdminDirLookup[thePath] = wtadmindir;
+				m_reverseLookup[wtadmindir] = thePath;
+				return m_WorktreeAdminDirLookup[thePath];
+			}
+			ATLASSERT(false);
+			return thePath + L".git\\"; // we should never get here
+		}
+		return lookup->second;
+	}
+
+	CString GetWorktreeAdminDirConcat(const CString& path, const CString& subpath)
+	{
+		CString result(GetWorktreeAdminDir(path));
+		result += subpath;
+		return result;
+	}
+
 	CString GetWorkingCopy(const CString &gitDir)
 	{
-		CString path(gitDir);
-		path.MakeLower();
+		CString path(CPathUtils::BuildPathWithPathDelimiter(CPathUtils::NormalizePath(gitDir)));
 		CAutoLocker lock(m_critIndexSec);
 		auto lookup = m_reverseLookup.find(path);
 		if (lookup == m_reverseLookup.cend())
