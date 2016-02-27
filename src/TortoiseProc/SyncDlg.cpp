@@ -115,6 +115,32 @@ void CSyncDlg::EnableControlButton(bool bEnabled)
 }
 // CSyncDlg message handlers
 
+bool CSyncDlg::AskSetTrackedBranch()
+{
+	CString remote, remoteBranch;
+	g_Git.GetRemoteTrackedBranch(m_strLocalBranch, remote, remoteBranch);
+	if (remoteBranch.IsEmpty())
+	{
+		CString temp;
+		temp.Format(IDS_NOTYET_SETTRACKEDBRANCH, (LPCTSTR)m_strLocalBranch, (LPCTSTR)m_strRemoteBranch);
+		BOOL dontShowAgain = FALSE;
+		auto ret = CMessageBox::ShowCheck(GetSafeHwnd(), temp, L"TortoiseGit", MB_ICONQUESTION | MB_YESNOCANCEL, nullptr, CString(MAKEINTRESOURCE(IDS_MSGBOX_DONOTSHOW)), &dontShowAgain);
+		if (dontShowAgain)
+			CRegDWORD(L"Software\\TortoiseGit\\AskSetTrackedBranch") = FALSE;
+		if (ret == IDCANCEL)
+			return false;
+		if (ret == IDYES)
+		{
+			CString key;
+			key.Format(L"branch.%s.remote", (LPCTSTR)m_strLocalBranch);
+			g_Git.SetConfigValue(key, m_strURL);
+			key.Format(L"branch.%s.merge", (LPCTSTR)m_strLocalBranch);
+			g_Git.SetConfigValue(key, L"refs/heads/" + g_Git.StripRefName(m_strRemoteBranch));
+		}
+	}
+	return true;
+}
+
 void CSyncDlg::OnBnClickedButtonPull()
 {
 	int CurrentEntry;
@@ -158,6 +184,12 @@ void CSyncDlg::OnBnClickedButtonPull()
 	{
 		CMessageBox::Show(NULL, IDS_PROC_GITCONFIG_URLEMPTY, IDS_APPNAME, MB_OK | MB_ICONERROR);
 		return;
+	}
+
+	if (!IsURL() && !m_strRemoteBranch.IsEmpty() && CurrentEntry == 0 && CRegDWORD(L"Software\\TortoiseGit\\AskSetTrackedBranch", TRUE) == TRUE)
+	{
+		if (!AskSetTrackedBranch())
+			return;
 	}
 
 	if (m_bAutoLoadPuttyKey && CurrentEntry != 4) // CurrentEntry (Remote Update) handles this on its own)
@@ -601,6 +633,12 @@ void CSyncDlg::OnBnClickedButtonPush()
 	{
 		CMessageBox::Show(NULL, IDS_PROC_GITCONFIG_URLEMPTY, IDS_APPNAME, MB_OK | MB_ICONERROR);
 		return;
+	}
+
+	if (!IsURL() && !m_strRemoteBranch.IsEmpty() && m_ctrlPush.GetCurrentEntry() == 0 && CRegDWORD(L"Software\\TortoiseGit\\AskSetTrackedBranch", TRUE) == TRUE)
+	{
+		if (!AskSetTrackedBranch())
+			return;
 	}
 
 	this->m_regPushButton=(DWORD)this->m_ctrlPush.GetCurrentEntry();

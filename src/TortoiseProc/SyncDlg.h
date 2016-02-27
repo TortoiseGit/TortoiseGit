@@ -221,6 +221,7 @@ protected:
 	virtual void OnOK();
 	void	OnCancel();
 	void	Refresh();
+	bool	AskSetTrackedBranch();
 
 	afx_msg void OnBnClickedButtonSubmodule();
 	afx_msg void OnBnClickedButtonStash();

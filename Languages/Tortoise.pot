@@ -4787,6 +4787,11 @@ msgstr ""
 msgid "For complete history deselect 'Stop on copy/rename'"
 msgstr ""
 
+#. Resource IDs: (IDS_NOTYET_SETTRACKEDBRANCH)
+#, c-format
+msgid "For the current branch \"%s\" no tracked branch is configured.\nDo you want to set the selected branch \"%s\" as tracked branch?\nThis will automatically select it for push and pull in the future."
+msgstr ""
+
 #. Resource IDs: (IDS_PROC_NEWBRANCHTAG_FORCE_TT)
 msgid "Force creation of branch/tag - even if one with same name already exists."
 msgstr ""

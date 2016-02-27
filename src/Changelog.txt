@@ -36,6 +36,7 @@ Released: unreleased
  * Fixed issue #2697: Display "In Commits" and "In ChangeList" tabs for Fetch&Rebase in Sync dialog
  * Fixed issue #2484: Recursive option is not remembered in clone dialog
  * Fixed issue #2259: SyncDlg: Allow to fetch all remote references of a specific remote instead of a single branch (Fetch all refs)
+ * Fixed issue #1130: Sync dialog forgets the remote branch every time (ask whether to store a tracked branch)
 
 == Bug Fixes ==
  * Fixed issue #2647: TortoiseGitBlame does not display files correctly with mixed line endings (such as CRCRLF)
