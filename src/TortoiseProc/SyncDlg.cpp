@@ -121,8 +121,11 @@ bool CSyncDlg::AskSetTrackedBranch()
 	g_Git.GetRemoteTrackedBranch(m_strLocalBranch, remote, remoteBranch);
 	if (remoteBranch.IsEmpty())
 	{
+		remoteBranch = m_strRemoteBranch;
+		if (remoteBranch.IsEmpty())
+			remoteBranch = m_strLocalBranch;
 		CString temp;
-		temp.Format(IDS_NOTYET_SETTRACKEDBRANCH, (LPCTSTR)m_strLocalBranch, (LPCTSTR)m_strRemoteBranch);
+		temp.Format(IDS_NOTYET_SETTRACKEDBRANCH, (LPCTSTR)m_strLocalBranch, (LPCTSTR)remoteBranch);
 		BOOL dontShowAgain = FALSE;
 		auto ret = CMessageBox::ShowCheck(GetSafeHwnd(), temp, L"TortoiseGit", MB_ICONQUESTION | MB_YESNOCANCEL, nullptr, CString(MAKEINTRESOURCE(IDS_MSGBOX_DONOTSHOW)), &dontShowAgain);
 		if (dontShowAgain)
@@ -135,7 +138,7 @@ bool CSyncDlg::AskSetTrackedBranch()
 			key.Format(L"branch.%s.remote", (LPCTSTR)m_strLocalBranch);
 			g_Git.SetConfigValue(key, m_strURL);
 			key.Format(L"branch.%s.merge", (LPCTSTR)m_strLocalBranch);
-			g_Git.SetConfigValue(key, L"refs/heads/" + g_Git.StripRefName(m_strRemoteBranch));
+			g_Git.SetConfigValue(key, L"refs/heads/" + g_Git.StripRefName(remoteBranch));
 		}
 	}
 	return true;
@@ -635,7 +638,7 @@ void CSyncDlg::OnBnClickedButtonPush()
 		return;
 	}
 
-	if (!IsURL() && !m_strRemoteBranch.IsEmpty() && m_ctrlPush.GetCurrentEntry() == 0 && CRegDWORD(L"Software\\TortoiseGit\\AskSetTrackedBranch", TRUE) == TRUE)
+	if (!IsURL() && m_ctrlPush.GetCurrentEntry() == 0 && CRegDWORD(L"Software\\TortoiseGit\\AskSetTrackedBranch", TRUE) == TRUE)
 	{
 		if (!AskSetTrackedBranch())
 			return;
