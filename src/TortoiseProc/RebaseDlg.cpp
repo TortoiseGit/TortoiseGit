@@ -1374,7 +1374,7 @@ void CRebaseDlg::OnBnClickedContinue()
 		}
 	}
 
-	if ((m_RebaseStage == REBASE_EDIT || m_RebaseStage == REBASE_CONTINUE || m_bSplitCommit) && CheckNextCommitIsSquash() && (m_bSplitCommit || !g_Git.CheckCleanWorkTree(true)))
+	if ((m_RebaseStage == REBASE_EDIT || m_RebaseStage == REBASE_CONTINUE || m_bSplitCommit || m_RebaseStage == REBASE_SQUASH_EDIT) && CheckNextCommitIsSquash() && (m_bSplitCommit || !g_Git.CheckCleanWorkTree(true)))
 	{
 		if (!m_bSplitCommit && CMessageBox::Show(nullptr, IDS_PROC_REBASE_CONTINUE_NOTCLEAN, IDS_APPNAME, 1, IDI_ERROR, IDS_MSGBOX_OK, IDS_ABORTBUTTON) == 2)
 			return;
