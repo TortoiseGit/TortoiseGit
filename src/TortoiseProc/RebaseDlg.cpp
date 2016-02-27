@@ -604,7 +604,7 @@ void CRebaseDlg::FetchLogList()
 		CGitHash upstreamHash;
 		if (g_Git.GetHash(upstreamHash, m_Onto.IsEmpty() ? m_UpstreamCtrl.GetString() : m_Onto))
 		{
-			MessageBox(g_Git.GetGitLastErr(_T("Could not get hash of \"") + (m_Onto.IsEmpty()) ? m_UpstreamCtrl.GetString() : m_Onto + _T("\".")), _T("TortoiseGit"), MB_ICONERROR);
+			MessageBox(g_Git.GetGitLastErr(_T("Could not get hash of \"") + (m_Onto.IsEmpty() ? m_UpstreamCtrl.GetString() : m_Onto) + _T("\".")), _T("TortoiseGit"), MB_ICONERROR);
 			return;
 		}
 		CString mergecmd;
