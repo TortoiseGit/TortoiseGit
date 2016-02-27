@@ -34,6 +34,7 @@ Released: unreleased
  * Fixed issue #2302: One button to do Commit & push
  * Fixed issue #527: Fix the dialog after commit for us to be able to continue committing
  * Fixed issue #2697: Display "In Commits" and "In ChangeList" tabs for Fetch&Rebase in Sync dialog
+ * Fixed issue #2484: Recursive option is not remembered in clone dialog
 
 == Bug Fixes ==
  * Fixed issue #2647: TortoiseGitBlame does not display files correctly with mixed line endings (such as CRCRLF)
