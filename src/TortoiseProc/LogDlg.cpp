@@ -1440,7 +1440,9 @@ void CLogDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 		if (pos)
 			selIndex = m_LogList.GetNextSelectedItem(pos);
 
-		GitRevLoglist* pRev = m_LogList.m_arShownList.SafeGetAt(selIndex);
+		GitRevLoglist* pRev = nullptr;
+		if (selIndex >= 0)
+			pRev = m_LogList.m_arShownList.SafeGetAt(selIndex);
 
 		if ((point.x == -1) && (point.y == -1))
 		{
@@ -1463,9 +1465,12 @@ void CLogDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 			popup.AppendMenu(MF_SEPARATOR);
 			sMenuItemText.LoadString(IDS_STATUSLIST_CONTEXT_COPYEXT);
 			popup.AppendMenuIcon(EM_SETSEL, sMenuItemText, IDI_COPYCLIP);
-			popup.AppendMenu(MF_SEPARATOR, NULL);
-			sMenuItemText.LoadString(IDS_EDIT_NOTES);
-			popup.AppendMenuIcon( CGitLogList::ID_EDITNOTE, sMenuItemText, IDI_EDIT);
+			if (pRev && !pRev->m_CommitHash.IsEmpty())
+			{
+				popup.AppendMenu(MF_SEPARATOR, NULL);
+				sMenuItemText.LoadString(IDS_EDIT_NOTES);
+				popup.AppendMenuIcon(CGitLogList::ID_EDITNOTE, sMenuItemText, IDI_EDIT);
+			}
 
 			int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this, 0);
 			switch (cmd)
