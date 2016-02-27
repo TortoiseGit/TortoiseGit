@@ -18,12 +18,12 @@ First, you need to install the compiler package:
 
 *  You need at least VS2012 Professional with Update 4 for
    building the full TortoiseGit package.
-   The TortoiseGit teams uses VS2013 Professional Update 4.
+   The TortoiseGit teams uses VS2013 Professional Update 5.
    Make sure the "Microsoft Foundation Classes for C++" are installed.
    This is the recommended option, but it is not free :-(
 
    If you do not have access to VS Professional you can download the free
-   Visual Studio Community 2013 Edition (http://www.visualstudio.com/en-us/news/vs2013-community-vs.aspx).
+   Visual Studio Community 2013 Edition (https://www.visualstudio.com/en-us/news/vs2013-community-vs).
    This version also allows to fully build the TortoiseGit package if
    "Microsoft Foundation Classes for C++" are selected.
 
