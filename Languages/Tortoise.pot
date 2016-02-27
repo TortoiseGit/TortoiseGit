@@ -4583,6 +4583,10 @@ msgstr ""
 msgid "Fetch && Re&base"
 msgstr ""
 
+#. Resource IDs: (IDS_PROC_SYNC_FETCHALL)
+msgid "Fetch all refs"
+msgstr ""
+
 #. Resource IDs: (IDS_MENUDESCFETCH)
 msgid "Fetch commits from a remote repository."
 msgstr ""

@@ -4744,6 +4744,7 @@ BEGIN
     IDS_DROPONESTASH        "Drop one stash"
     IDS_PROC_PULL_EMPTYBRANCH 
                             "You asked to pull, but did not specify a remote branch."
+    IDS_PROC_SYNC_FETCHALL  "Fetch all refs"
 END
 
 #endif    // English (U.S.) resources

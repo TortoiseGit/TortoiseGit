@@ -160,7 +160,7 @@ void CSyncDlg::OnBnClickedButtonPull()
 		return;
 	}
 
-	if (m_bAutoLoadPuttyKey && CurrentEntry != 3) // CurrentEntry (Remote Update) handles this on its own)
+	if (m_bAutoLoadPuttyKey && CurrentEntry != 4) // CurrentEntry (Remote Update) handles this on its own)
 	{
 		CAppUtils::LaunchPAgent(NULL,&this->m_strURL);
 	}
@@ -277,11 +277,13 @@ void CSyncDlg::OnBnClickedButtonPull()
 	}
 
 	///Fetch
-	if(CurrentEntry == 1 || CurrentEntry ==2 ) //Fetch
+	if (CurrentEntry == 1 || CurrentEntry == 2 || CurrentEntry == 3)
 	{
 		m_oldRemoteHash.Empty();
 		CString remotebranch;
-		if(this->IsURL() || m_strRemoteBranch.IsEmpty())
+		if (CurrentEntry == 3)
+			m_strRemoteBranch.Empty();
+		else if (IsURL() || m_strRemoteBranch.IsEmpty())
 		{
 			remotebranch=this->m_strRemoteBranch;
 
@@ -296,12 +298,12 @@ void CSyncDlg::OnBnClickedButtonPull()
 				remotebranch=m_strRemoteBranch+_T(":")+remotebranch;
 		}
 
-		if(CurrentEntry == 1)
+		if (CurrentEntry == 1 || CurrentEntry == 3)
 			m_CurrentCmd = GIT_COMMAND_FETCH;
 		else
 			m_CurrentCmd = GIT_COMMAND_FETCHANDREBASE;
 
-		if (g_Git.UsingLibGit2(CGit::GIT_CMD_FETCH))
+		if (g_Git.UsingLibGit2(CGit::GIT_CMD_FETCH) && !remotebranch.IsEmpty())
 		{
 			CString refspec;
 			// current libgit2 only supports well formated refspec
@@ -337,7 +339,7 @@ void CSyncDlg::OnBnClickedButtonPull()
 	}
 
 	///Remote Update
-	if(CurrentEntry == 3)
+	if (CurrentEntry == 4)
 	{
 		if (m_bAutoLoadPuttyKey)
 		{
@@ -369,7 +371,7 @@ void CSyncDlg::OnBnClickedButtonPull()
 	}
 
 	///Cleanup stale remote banches
-	if(CurrentEntry == 4)
+	if (CurrentEntry == 5)
 	{
 		m_CurrentCmd = GIT_COMMAND_REMOTE;
 		cmd.Format(_T("git.exe remote prune \"%s\""), (LPCTSTR)m_strURL);
@@ -1000,6 +1002,7 @@ BOOL CSyncDlg::OnInitDialog()
 	this->m_ctrlPull.AddEntry(CString(MAKEINTRESOURCE(IDS_PROC_SYNC_PULL)));
 	this->m_ctrlPull.AddEntry(CString(MAKEINTRESOURCE(IDS_PROC_SYNC_FETCH)));
 	this->m_ctrlPull.AddEntry(CString(MAKEINTRESOURCE(IDS_PROC_SYNC_FETCHREBASE)));
+	this->m_ctrlPull.AddEntry(CString(MAKEINTRESOURCE(IDS_PROC_SYNC_FETCHALL)));
 	this->m_ctrlPull.AddEntry(CString(MAKEINTRESOURCE(IDS_PROC_SYNC_REMOTEUPDATE)));
 	this->m_ctrlPull.AddEntry(CString(MAKEINTRESOURCE(IDS_PROC_SYNC_CLEANUPSTALEBRANCHES)));
 
