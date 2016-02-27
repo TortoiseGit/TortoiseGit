@@ -404,7 +404,7 @@ void CPullFetchDlg::OnBnClickedOk()
 		m_Other.SaveHistory();
 	}
 
-	if (m_bRebase && m_RemoteBranchName.IsEmpty() && m_IsPull)
+	if (m_bRebase && m_RemoteBranch.GetString().IsEmpty() && m_IsPull)
 	{
 		CMessageBox::Show(GetSafeHwnd(), IDS_PROC_PULL_EMPTYBRANCH, IDS_APPNAME, MB_ICONEXCLAMATION);
 		return;
