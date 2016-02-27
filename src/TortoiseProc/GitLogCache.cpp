@@ -197,9 +197,6 @@ int CLogCache::FetchCacheIndex(CString GitDir)
 		if(!CheckHeader( (SLogCacheDataFileHeader*)m_pCacheData))
 			break;
 
-		if (m_pCacheIndex->m_Header.m_ItemCount != m_pCacheIndex->m_Header.m_ItemCount)
-			break;
-
 		if (m_DataFileLength < sizeof(SLogCacheDataFileHeader) + m_pCacheIndex->m_Header.m_ItemCount * sizeof(SLogCacheDataFileHeader))
 			break;
 
