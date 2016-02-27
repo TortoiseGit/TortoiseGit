@@ -1254,7 +1254,7 @@ void CGitLogList::SetUnselectedRebaseAction(int action)
 			continue;
 		}
 
-		if (m_arShownList.SafeGetAt(index)->GetRebaseAction() & (LOGACTIONS_REBASE_CURRENT | LOGACTIONS_REBASE_DONE) || (i == GetItemCount() - 1 && action == LOGACTIONS_REBASE_SQUASH) || (!m_bIsCherryPick && action == LOGACTIONS_REBASE_SQUASH && m_arShownList.SafeGetAt(index)->ParentsCount() != 1))
+		if (m_arShownList.SafeGetAt(i)->GetRebaseAction() & (LOGACTIONS_REBASE_CURRENT | LOGACTIONS_REBASE_DONE) || (i == GetItemCount() - 1 && action == LOGACTIONS_REBASE_SQUASH) || (!m_bIsCherryPick && action == LOGACTIONS_REBASE_SQUASH && m_arShownList.SafeGetAt(i)->ParentsCount() != 1))
 			continue;
 		m_arShownList.SafeGetAt(i)->GetRebaseAction() = action;
 		CRect rect;
