@@ -344,10 +344,11 @@ void CSyncDlg::OnBnClickedButtonPull()
 			// current libgit2 only supports well formated refspec
 			refspec.Format(_T("refs/heads/%s:refs/remotes/%s/%s"), (LPCTSTR)m_strRemoteBranch, (LPCTSTR)m_strURL, (LPCTSTR)m_strRemoteBranch);
 
-			FetchProgressCommand fetchProgressCommand;
-			fetchProgressCommand.SetUrl(m_strURL);
-			fetchProgressCommand.SetRefSpec(refspec);
-			m_GitProgressList.SetCommand(&fetchProgressCommand);
+			progressCommand = std::make_unique<FetchProgressCommand>();
+			FetchProgressCommand* fetchProgressCommand = reinterpret_cast<FetchProgressCommand*>(progressCommand.get());
+			fetchProgressCommand->SetUrl(m_strURL);
+			fetchProgressCommand->SetRefSpec(refspec);
+			m_GitProgressList.SetCommand(progressCommand.get());
 			m_GitProgressList.Init();
 			ShowTab(IDC_CMD_GIT_PROG);
 		}

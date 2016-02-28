@@ -92,6 +92,7 @@ protected:
 	CGitLogList			m_OutLogList;
 	CGitLogList			m_InLogList;
 	CGitProgressList	m_GitProgressList;
+	std::unique_ptr<ProgressCommand>	progressCommand;
 
 	CGitStatusListCtrl	m_OutChangeFileList;
 	CGitStatusListCtrl	m_InChangeFileList;
