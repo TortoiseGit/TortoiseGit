@@ -338,11 +338,11 @@ void CSyncDlg::OnBnClickedButtonPull()
 		else
 			m_CurrentCmd = GIT_COMMAND_FETCHANDREBASE;
 
-		if (g_Git.UsingLibGit2(CGit::GIT_CMD_FETCH) && !remotebranch.IsEmpty())
+		if (g_Git.UsingLibGit2(CGit::GIT_CMD_FETCH))
 		{
 			CString refspec;
-			// current libgit2 only supports well formated refspec
-			refspec.Format(_T("refs/heads/%s:refs/remotes/%s/%s"), (LPCTSTR)m_strRemoteBranch, (LPCTSTR)m_strURL, (LPCTSTR)m_strRemoteBranch);
+			if (!remotebranch.IsEmpty())
+				refspec.Format(_T("refs/heads/%s:refs/remotes/%s/%s"), (LPCTSTR)m_strRemoteBranch, (LPCTSTR)m_strURL, (LPCTSTR)m_strRemoteBranch);
 
 			progressCommand = std::make_unique<FetchProgressCommand>();
 			FetchProgressCommand* fetchProgressCommand = reinterpret_cast<FetchProgressCommand*>(progressCommand.get());
