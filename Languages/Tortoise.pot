@@ -4583,6 +4583,10 @@ msgstr ""
 msgid "Fetch && Re&base"
 msgstr ""
 
+#. Resource IDs: (IDS_PROC_SYNC_FETCHALL)
+msgid "Fetch all refs"
+msgstr ""
+
 #. Resource IDs: (IDS_MENUDESCFETCH)
 msgid "Fetch commits from a remote repository."
 msgstr ""
@@ -4781,6 +4785,11 @@ msgstr ""
 
 #. Resource IDs: (IDS_LOG_STOPONCOPY_HINT)
 msgid "For complete history deselect 'Stop on copy/rename'"
+msgstr ""
+
+#. Resource IDs: (IDS_NOTYET_SETTRACKEDBRANCH)
+#, c-format
+msgid "For the current branch \"%s\" no tracked branch is configured.\nDo you want to set the selected branch \"%s\" as tracked branch?\nThis will automatically select it for push and pull in the future."
 msgstr ""
 
 #. Resource IDs: (IDS_PROC_NEWBRANCHTAG_FORCE_TT)

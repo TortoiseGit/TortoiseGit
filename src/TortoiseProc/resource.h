@@ -1261,6 +1261,8 @@
 #define IDS_DROPONESTASH                1594
 #define IDC_BUGTRAQ_NUMBER              1595
 #define IDS_PROC_PULL_EMPTYBRANCH       1595
+#define IDS_PROC_SYNC_FETCHALL          1596
+#define IDS_NOTYET_SETTRACKEDBRANCH     1597
 #define IDC_BUGTRAQ_URL                 1599
 #define IDS_REPOBROWSE_SAVEAS           1600
 #define IDC_BUGTRAQ_MESSAGE             1600

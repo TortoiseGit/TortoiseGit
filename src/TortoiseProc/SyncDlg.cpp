@@ -115,6 +115,35 @@ void CSyncDlg::EnableControlButton(bool bEnabled)
 }
 // CSyncDlg message handlers
 
+bool CSyncDlg::AskSetTrackedBranch()
+{
+	CString remote, remoteBranch;
+	g_Git.GetRemoteTrackedBranch(m_strLocalBranch, remote, remoteBranch);
+	if (remoteBranch.IsEmpty())
+	{
+		remoteBranch = m_strRemoteBranch;
+		if (remoteBranch.IsEmpty())
+			remoteBranch = m_strLocalBranch;
+		CString temp;
+		temp.Format(IDS_NOTYET_SETTRACKEDBRANCH, (LPCTSTR)m_strLocalBranch, (LPCTSTR)remoteBranch);
+		BOOL dontShowAgain = FALSE;
+		auto ret = CMessageBox::ShowCheck(GetSafeHwnd(), temp, L"TortoiseGit", MB_ICONQUESTION | MB_YESNOCANCEL, nullptr, CString(MAKEINTRESOURCE(IDS_MSGBOX_DONOTSHOW)), &dontShowAgain);
+		if (dontShowAgain)
+			CRegDWORD(L"Software\\TortoiseGit\\AskSetTrackedBranch") = FALSE;
+		if (ret == IDCANCEL)
+			return false;
+		if (ret == IDYES)
+		{
+			CString key;
+			key.Format(L"branch.%s.remote", (LPCTSTR)m_strLocalBranch);
+			g_Git.SetConfigValue(key, m_strURL);
+			key.Format(L"branch.%s.merge", (LPCTSTR)m_strLocalBranch);
+			g_Git.SetConfigValue(key, L"refs/heads/" + g_Git.StripRefName(remoteBranch));
+		}
+	}
+	return true;
+}
+
 void CSyncDlg::OnBnClickedButtonPull()
 {
 	int CurrentEntry;
@@ -160,7 +189,13 @@ void CSyncDlg::OnBnClickedButtonPull()
 		return;
 	}
 
-	if (m_bAutoLoadPuttyKey && CurrentEntry != 3) // CurrentEntry (Remote Update) handles this on its own)
+	if (!IsURL() && !m_strRemoteBranch.IsEmpty() && CurrentEntry == 0 && CRegDWORD(L"Software\\TortoiseGit\\AskSetTrackedBranch", TRUE) == TRUE)
+	{
+		if (!AskSetTrackedBranch())
+			return;
+	}
+
+	if (m_bAutoLoadPuttyKey && CurrentEntry != 4) // CurrentEntry (Remote Update) handles this on its own)
 	{
 		CAppUtils::LaunchPAgent(NULL,&this->m_strURL);
 	}
@@ -277,11 +312,13 @@ void CSyncDlg::OnBnClickedButtonPull()
 	}
 
 	///Fetch
-	if(CurrentEntry == 1 || CurrentEntry ==2 ) //Fetch
+	if (CurrentEntry == 1 || CurrentEntry == 2 || CurrentEntry == 3)
 	{
 		m_oldRemoteHash.Empty();
 		CString remotebranch;
-		if(this->IsURL() || m_strRemoteBranch.IsEmpty())
+		if (CurrentEntry == 3)
+			m_strRemoteBranch.Empty();
+		else if (IsURL() || m_strRemoteBranch.IsEmpty())
 		{
 			remotebranch=this->m_strRemoteBranch;
 
@@ -296,12 +333,12 @@ void CSyncDlg::OnBnClickedButtonPull()
 				remotebranch=m_strRemoteBranch+_T(":")+remotebranch;
 		}
 
-		if(CurrentEntry == 1)
+		if (CurrentEntry == 1 || CurrentEntry == 3)
 			m_CurrentCmd = GIT_COMMAND_FETCH;
 		else
 			m_CurrentCmd = GIT_COMMAND_FETCHANDREBASE;
 
-		if (g_Git.UsingLibGit2(CGit::GIT_CMD_FETCH))
+		if (g_Git.UsingLibGit2(CGit::GIT_CMD_FETCH) && !remotebranch.IsEmpty())
 		{
 			CString refspec;
 			// current libgit2 only supports well formated refspec
@@ -337,7 +374,7 @@ void CSyncDlg::OnBnClickedButtonPull()
 	}
 
 	///Remote Update
-	if(CurrentEntry == 3)
+	if (CurrentEntry == 4)
 	{
 		if (m_bAutoLoadPuttyKey)
 		{
@@ -369,7 +406,7 @@ void CSyncDlg::OnBnClickedButtonPull()
 	}
 
 	///Cleanup stale remote banches
-	if(CurrentEntry == 4)
+	if (CurrentEntry == 5)
 	{
 		m_CurrentCmd = GIT_COMMAND_REMOTE;
 		cmd.Format(_T("git.exe remote prune \"%s\""), (LPCTSTR)m_strURL);
@@ -599,6 +636,12 @@ void CSyncDlg::OnBnClickedButtonPush()
 	{
 		CMessageBox::Show(NULL, IDS_PROC_GITCONFIG_URLEMPTY, IDS_APPNAME, MB_OK | MB_ICONERROR);
 		return;
+	}
+
+	if (!IsURL() && m_ctrlPush.GetCurrentEntry() == 0 && CRegDWORD(L"Software\\TortoiseGit\\AskSetTrackedBranch", TRUE) == TRUE)
+	{
+		if (!AskSetTrackedBranch())
+			return;
 	}
 
 	this->m_regPushButton=(DWORD)this->m_ctrlPush.GetCurrentEntry();
@@ -1000,6 +1043,7 @@ BOOL CSyncDlg::OnInitDialog()
 	this->m_ctrlPull.AddEntry(CString(MAKEINTRESOURCE(IDS_PROC_SYNC_PULL)));
 	this->m_ctrlPull.AddEntry(CString(MAKEINTRESOURCE(IDS_PROC_SYNC_FETCH)));
 	this->m_ctrlPull.AddEntry(CString(MAKEINTRESOURCE(IDS_PROC_SYNC_FETCHREBASE)));
+	this->m_ctrlPull.AddEntry(CString(MAKEINTRESOURCE(IDS_PROC_SYNC_FETCHALL)));
 	this->m_ctrlPull.AddEntry(CString(MAKEINTRESOURCE(IDS_PROC_SYNC_REMOTEUPDATE)));
 	this->m_ctrlPull.AddEntry(CString(MAKEINTRESOURCE(IDS_PROC_SYNC_CLEANUPSTALEBRANCHES)));
 
