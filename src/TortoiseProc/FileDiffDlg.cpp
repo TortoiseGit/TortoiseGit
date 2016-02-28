@@ -557,10 +557,16 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 		popup.AppendMenu(MF_SEPARATOR, NULL);
 		if (!m_bIsBare)
 		{
-			menuText.Format(IDS_FILEDIFF_POPREVERTTOREV, (LPCTSTR)m_rev1.m_CommitHash.ToString().Left(g_Git.GetShortHASHLength()));
-			popup.AppendMenuIcon(ID_REVERT1, menuText, IDI_REVERT);
-			menuText.Format(IDS_FILEDIFF_POPREVERTTOREV, (LPCTSTR)m_rev2.m_CommitHash.ToString().Left(g_Git.GetShortHASHLength()));
-			popup.AppendMenuIcon(ID_REVERT2, menuText, IDI_REVERT);
+			if (!m_rev1.m_CommitHash.IsEmpty())
+			{
+				menuText.Format(IDS_FILEDIFF_POPREVERTTOREV, (LPCTSTR)m_rev1.m_CommitHash.ToString().Left(g_Git.GetShortHASHLength()));
+				popup.AppendMenuIcon(ID_REVERT1, menuText, IDI_REVERT);
+			}
+			if (!m_rev2.m_CommitHash.IsEmpty())
+			{
+				menuText.Format(IDS_FILEDIFF_POPREVERTTOREV, (LPCTSTR)m_rev2.m_CommitHash.ToString().Left(g_Git.GetShortHASHLength()));
+				popup.AppendMenuIcon(ID_REVERT2, menuText, IDI_REVERT);
+			}
 			popup.AppendMenu(MF_SEPARATOR, NULL);
 		}
 		popup.AppendMenuIcon(ID_LOG, IDS_FILEDIFF_LOG, IDI_LOG);
