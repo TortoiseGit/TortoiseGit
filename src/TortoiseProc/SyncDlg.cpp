@@ -1600,11 +1600,14 @@ void CSyncDlg::OnOK()
 void CSyncDlg::OnCancel()
 {
 	m_bAbort = true;
-	if (m_bDone)
+	m_GitProgressList.Cancel();
+	if (m_bDone && !m_GitProgressList.IsRunning())
 	{
 		CResizableStandAloneDialog::OnCancel();
 		return;
 	}
+	if (m_GitProgressList.IsRunning())
+		WaitForSingleObject(m_GitProgressList.m_pThread->m_hThread, 10000);
 
 	if (g_Git.m_CurrentGitPi.hProcess)
 	{
