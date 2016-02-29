@@ -2510,7 +2510,7 @@ bool CAppUtils::Pull(bool showPush, bool showStashPop)
 		else if (dlg.m_bPrune == FALSE)
 			prune = _T("--no-prune ");
 
-		cmd.Format(_T("git.exe pull --progress --no-rebase -v %s%s%s%s%s%s%s\"%s\" %s"), (LPCTSTR)noff, (LPCTSTR)ffonly, (LPCTSTR)squash, (LPCTSTR)nocommit, (LPCTSTR)depth, (LPCTSTR)notags, (LPCTSTR)prune, (LPCTSTR)url, (LPCTSTR)dlg.m_RemoteBranchName);
+		cmd.Format(_T("git.exe pull --progress%s -v %s%s%s%s%s%s%s\"%s\" %s"), CRegDWORD(L"Software\\TortoiseGit\\PullRebaseBehaviorLike1816", FALSE) == FALSE ? L" --no-rebase" : L"", (LPCTSTR)noff, (LPCTSTR)ffonly, (LPCTSTR)squash, (LPCTSTR)nocommit, (LPCTSTR)depth, (LPCTSTR)notags, (LPCTSTR)prune, (LPCTSTR)url, (LPCTSTR)dlg.m_RemoteBranchName);
 		CProgressDlg progress;
 		progress.m_GitCmd = cmd;
 

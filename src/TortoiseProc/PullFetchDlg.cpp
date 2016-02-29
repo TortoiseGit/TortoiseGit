@@ -165,7 +165,7 @@ BOOL CPullFetchDlg::OnInitDialog()
 		{
 			if (config.GetBOOL(_T("pull.rebase"), rebase) == GIT_ENOTFOUND)
 				break;
-			else
+			else if (CRegDWORD(L"Software\\TortoiseGit\\PullRebaseBehaviorLike1816", FALSE) == FALSE)
 			{
 				CString value;
 				config.GetString(_T("pull.rebase"), value);
@@ -176,7 +176,7 @@ BOOL CPullFetchDlg::OnInitDialog()
 				}
 			}
 		}
-		else
+		else if (CRegDWORD(L"Software\\TortoiseGit\\PullRebaseBehaviorLike1816", FALSE) == FALSE)
 		{
 			CString value;
 			config.GetString(_T("branch.") + g_Git.GetCurrentBranch() + _T(".rebase"), value);
@@ -192,7 +192,7 @@ BOOL CPullFetchDlg::OnInitDialog()
 		// Since rebase = true in config, means that "git.exe pull" will ALWAYS rebase without "--rebase".
 		// So, lock it, then let Fetch Rebase do the rest things.
 		m_bRebase = TRUE;
-		m_bRebaseActivatedInConfigForPull = true;
+		m_bRebaseActivatedInConfigForPull = (CRegDWORD(L"Software\\TortoiseGit\\PullRebaseBehaviorLike1816", FALSE) == FALSE);
 	} while (0);
 
 	this->UpdateData(FALSE);

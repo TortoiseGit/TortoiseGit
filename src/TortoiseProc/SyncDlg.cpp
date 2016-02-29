@@ -210,7 +210,7 @@ void CSyncDlg::OnBnClickedButtonPull()
 	CString cmd;
 
 	m_iPullRebase = 0;
-	if (CurrentEntry == 0) // check whether we need to override Pull if pull.rebase is set
+	if (CurrentEntry == 0 && CRegDWORD(L"Software\\TortoiseGit\\PullRebaseBehaviorLike1816", FALSE) == FALSE) // check whether we need to override Pull if pull.rebase is set
 	{
 		CAutoRepository repo(g_Git.GetGitRepository());
 		if (!repo)
@@ -290,7 +290,7 @@ void CSyncDlg::OnBnClickedButtonPull()
 				remotebranch.Empty();
 		}
 
-		cmd.Format(_T("git.exe pull -v --no-rebase --progress%s \"%s\" %s"),
+		cmd.Format(_T("git.exe pull -v --progress%s \"%s\" %s"),
 				(LPCTSTR)force,
 				(LPCTSTR)m_strURL,
 				(LPCTSTR)remotebranch);
