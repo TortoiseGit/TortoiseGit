@@ -1,11 +1,11 @@
-#define FILEVER				1,8,16,0
+#define FILEVER				2,0,0,0
 #define PRODUCTVER			FILEVER
-#define STRFILEVER			"1.8.16.0"
+#define STRFILEVER			"2.0.0.0"
 #define STRPRODUCTVER		STRFILEVER
 
-#define TGIT_VERMAJOR		1
-#define TGIT_VERMINOR		8
-#define TGIT_VERMICRO		16
+#define TGIT_VERMAJOR		2
+#define TGIT_VERMINOR		0
+#define TGIT_VERMICRO		0
 #define TGIT_VERBUILD		0
 #define TGIT_VERDATE		__DATE__
 

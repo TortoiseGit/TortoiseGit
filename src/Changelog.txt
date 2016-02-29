@@ -1,5 +1,5 @@
 ﻿= Release 2.0.0 =
-Released: unreleased
+Released: 2016-02-29
 
 == Changes ==
  * Custom dictionaries are no longer loaded when located in %PROGRAMFILES%\TortoiseGit or %PROGRAMFILES%\TortoiseGit\bin-directory
@@ -9,6 +9,7 @@ Released: unreleased
  * Git for Windows 1.9.5 or newer is now required
  * TortoiseGit now applies the same whitespace and new line sanitizing rules as git core for commit messages by default
  * TortoiseGit now strips commented lines (starting with #) on commit messages by default
+ * We changed the version schema to X.Y.Z, where X is incremented for major changes, Y for every stable release, and Z!=0 represents preview releases
 
 == Features ==
  * Fixed issue #2641: Commit: Pre-select first item from "Changes made" list

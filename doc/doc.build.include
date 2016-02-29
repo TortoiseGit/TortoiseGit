@@ -190,9 +190,9 @@ This will only build the english HTML help file for TortoiseGit
 		        <if test="${not file::exists('../versioninfo.build')}">
 				<echo>Version information set to dummy values</echo>
 				<setenv>
-					<variable name="MajorVersion" value="1" />
-					<variable name="MinorVersion" value="8" />
-					<variable name="MicroVersion" value="16" />
+					<variable name="MajorVersion" value="2" />
+					<variable name="MinorVersion" value="0" />
+					<variable name="MicroVersion" value="0" />
 				</setenv>
 			</if>                                            
 		</if>
