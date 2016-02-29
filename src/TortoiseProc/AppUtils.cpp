@@ -3454,40 +3454,13 @@ int CAppUtils::GetMsysgitVersion()
 	}
 
 	CString err;
-	cmd = _T("git.exe --version");
-	if (g_Git.Run(cmd, &version, &err, CP_UTF8))
+	int ver = g_Git.GetGitVersion(&versiondebug, &err);
+	if (ver < 0)
 	{
 		CMessageBox::Show(NULL, _T("git.exe not correctly set up (") + err + _T(")\nCheck TortoiseGit settings and consult help file for \"Git.exe Path\"."), _T("TortoiseGit"), MB_OK|MB_ICONERROR);
 		return -1;
 	}
 
-	int start=0;
-	int ver = 0;
-
-	versiondebug = version;
-
-	try
-	{
-		CString str=version.Tokenize(_T("."), start);
-		int space = str.ReverseFind(_T(' '));
-		str = str.Mid(space+1,start);
-		ver = _ttol(str);
-		ver <<=24;
-
-		version = version.Mid(start);
-		start = 0;
-
-		str = version.Tokenize(_T("."), start);
-
-		ver |= (_ttol(str) & 0xFF) << 16;
-
-		str = version.Tokenize(_T("."), start);
-		ver |= (_ttol(str) & 0xFF) << 8;
-
-		str = version.Tokenize(_T("."), start);
-		ver |= (_ttol(str) & 0xFF);
-	}
-	catch(...)
 	{
 		if (!ver)
 		{

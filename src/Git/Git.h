@@ -389,6 +389,7 @@ public:
 	/** Returns 0 if no conflict, if a conflict was found and -1 in case of a failure */
 	int HasWorkingTreeConflicts(git_repository* repo);
 	int IsRebaseRunning();
+	void GetBisectTerms(CString* good, CString* bad);
 	int GetRefList(STRING_VECTOR &list);
 
 	int RefreshGitIndex();
@@ -453,6 +454,8 @@ public:
 	int GetUnifiedDiff(const CTGitPath& path, const git_revnum_t& rev1, const git_revnum_t& rev2, CStringA * buffer, bool bMerge, bool bCombine, int diffContext);
 
 	int GitRevert(int parent, const CGitHash &hash);
+
+	int GetGitVersion(CString* versiondebug, CString* errStr);
 
 	CString CombinePath(const CString &path) const
 	{

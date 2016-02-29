@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015 - TortoiseGit
+// Copyright (C) 2015-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -2111,4 +2111,36 @@ TEST_P(CBasicGitWithEmptyRepositoryFixture, GetWorkingTreeChanges)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_ADDED, list[0].m_Action);
 	EXPECT_STREQ(_T("test.txt"), list[1].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_ADDED, list[1].m_Action);
+}
+
+TEST_P(CBasicGitWithTestRepoFixture, GetBisectTerms)
+{
+	if (m_Git.ms_bCygwinGit)
+		return;
+
+	CString good, bad;
+	CString output;
+
+	EXPECT_EQ(0, m_Git.Run(_T("git.exe bisect start"), &output, CP_UTF8));
+	m_Git.GetBisectTerms(&good, &bad);
+	EXPECT_STREQ(_T("good"), good);
+	EXPECT_STREQ(_T("bad"), bad);
+
+	good.Empty();
+	bad.Empty();
+	m_Git.GetBisectTerms(&good, &bad);
+	EXPECT_STREQ(_T("good"), good);
+	EXPECT_STREQ(_T("bad"), bad);
+
+	EXPECT_EQ(0, m_Git.Run(_T("git.exe bisect reset"), &output, CP_UTF8));
+
+	if (m_Git.GetGitVersion(nullptr, nullptr) < 0x02070000)
+		return;
+
+	EXPECT_EQ(0, m_Git.Run(_T("git.exe bisect start --term-good=original --term-bad=changed"), &output, CP_UTF8));
+	m_Git.GetBisectTerms(&good, &bad);
+	EXPECT_STREQ(_T("original"), good);
+	EXPECT_STREQ(_T("changed"), bad);
+
+	EXPECT_EQ(0, m_Git.Run(_T("git.exe bisect reset"), &output, CP_UTF8));
 }
