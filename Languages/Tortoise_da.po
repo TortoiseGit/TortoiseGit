@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2016-02-22 18:39+0000\n"
-"Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
+"PO-Revision-Date: 2016-02-23 22:09+0000\n"
+"Last-Translator: Michael <michael.garde@gmail.com>\n"
 "Language-Team: Danish (http://www.transifex.com/lznuaa/tortoisegit/language/da/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -142,7 +142,7 @@ msgstr "%1!d! År siden"
 #. Resource IDs: (IDS_REPOBROWSE_INFOMULTI)
 #, c-format
 msgid "%1!d! items selected"
-msgstr ""
+msgstr "%1!d! Valgte elementer"
 
 #. Resource IDs: (IDS_MINUTES_AGO)
 #, c-format
@@ -279,12 +279,12 @@ msgstr ""
 #. Resource IDs: (IDS_PROC_EXPORTFOLDERNAME2)
 #, c-format
 msgid "%s\\Export (%d) of %s"
-msgstr ""
+msgstr "%s\\Eksport (%d) af %s"
 
 #. Resource IDs: (IDS_PROC_EXPORTFOLDERNAME)
 #, c-format
 msgid "%s\\Export of %s"
-msgstr ""
+msgstr "%s\\Eksport af %s"
 
 #. Resource IDs: (61585, 61586)
 #, c-format
@@ -4419,6 +4419,10 @@ msgstr ""
 msgid "Drive Types"
 msgstr "Drevtyper"
 
+#. Resource IDs: (IDS_DROPONESTASH)
+msgid "Drop one stash"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_CLEAN: Control id 1731)
 msgid "Dry run"
 msgstr ""
@@ -5240,6 +5244,14 @@ msgstr "Tryk F1 for hjælp. Rul horisontalt med Ctrl+rullehjulet"
 #. Resource IDs: (IDS_LOG_STOPONCOPY_HINT)
 msgid "For complete history deselect 'Stop on copy/rename'"
 msgstr "For at vise komplet historik, skal du fravælge \"Stop ved kopiering/omdøbning\""
+
+#. Resource IDs: (IDS_PULL_SETTRACKEDBRANCH)
+#, c-format
+msgid ""
+"For the current branch \"%s\" no tracked branch is configured.\n"
+"Do you want to set the selected branch \"%s\" as tracked branch?\n"
+"This will automatically select it for push and pull in the future."
+msgstr ""
 
 #. Resource IDs: (IDS_PROC_NEWBRANCHTAG_FORCE_TT)
 msgid ""
@@ -11806,6 +11818,10 @@ msgstr ""
 #. Resource IDs: (IDS_CHECKNEWER_YOURUPTODATE)
 msgid "You already have the latest version installed."
 msgstr "Du har allerede den nyeste version installeret."
+
+#. Resource IDs: (IDS_PROC_PULL_EMPTYBRANCH)
+msgid "You asked to pull, but did not specify a remote branch."
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAYHANDLERS: Control id 65535)
 msgid ""
