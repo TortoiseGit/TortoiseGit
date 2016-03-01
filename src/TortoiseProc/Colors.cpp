@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2007 - TortoiseSVN
-// Copyright (C) 2009-2013 - TortoiseGit
+// Copyright (C) 2009-2013, 2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -22,34 +22,32 @@
 
 CColors::COLOR_DATA CColors::m_ColorArray[]=
 {
-	{Cmd,_T("Software\\TortoiseGit\\Colors\\Cmd"),RGB(100, 100, 100)},
-	{Conflict,_T("Software\\TortoiseGit\\Colors\\Conflict"), RGB(255, 0, 0)},
-	{Modified,_T("Software\\TortoiseGit\\Colors\\Modified"), RGB(0, 50, 160)},
-	{Merged,_T("Software\\TortoiseGit\\Colors\\Merged"), RGB(0, 100, 0)},
-	{Deleted,_T("Software\\TortoiseGit\\Colors\\Deleted"), RGB(100, 0, 0)},
-	{Added,_T("Software\\TortoiseGit\\Colors\\Added"), RGB(100, 0, 100)},
-	{LastCommit,_T("Software\\TortoiseGit\\Colors\\LastCommit"), RGB(100, 100, 100)},
-	{NoteNode,_T("Software\\TortoiseGit\\Colors\\NoteNode"), RGB(160, 160, 0)},
-	{Renamed,_T("Software\\TortoiseGit\\Colors\\Renamed"), RGB(0, 0, 255)},
-	{LastCommitNode,_T("Software\\TortoiseGit\\Colors\\LastCommitNode"), RGB(200, 200, 200)},
-	{PropertyChanged,_T("Software\\TortoiseGit\\Colors\\PropertyChanged"), RGB(0, 50, 160)},
-	{CurrentBranch,_T("Software\\TortoiseGit\\Colors\\CurrentBranch"), RGB(200, 0, 0)},
-	{LocalBranch,_T("Software\\TortoiseGit\\Colors\\LocalBranch"), RGB(0, 195, 0)},
-	{RemoteBranch,_T("Software\\TortoiseGit\\Colors\\RemoteBranch"), RGB(255, 221, 170)},
-	{Tag,_T("Software\\TortoiseGit\\Colors\\Tag"), RGB(255, 255, 0)},
-	{Stash,_T("Software\\TortoiseGit\\Colors\\Stash"), RGB(128, 128, 128)},
-	{BranchLine1,_T("Software\\TortoiseGit\\Colors\\BranchLine1"), RGB(0,0,0)},
-	{BranchLine2,_T("Software\\TortoiseGit\\Colors\\BranchLine2"), RGB(0xFF,0,0)},
-	{BranchLine3,_T("Software\\TortoiseGit\\Colors\\BranchLine3"), RGB(0,0xFF,0)},
-	{BranchLine4,_T("Software\\TortoiseGit\\Colors\\BranchLine4"), RGB(0,0,0xFF)},
-	{BranchLine5,_T("Software\\TortoiseGit\\Colors\\BranchLine5"), RGB(128,128,128)},
-	{BranchLine6,_T("Software\\TortoiseGit\\Colors\\BranchLine6"), RGB(128,128,0)},
-	{BranchLine7,_T("Software\\TortoiseGit\\Colors\\BranchLine7"), RGB(0,128,128)},
-	{BranchLine8,_T("Software\\TortoiseGit\\Colors\\BranchLine8"), RGB(128,0,128)},
-	{BisectGood,_T("Software\\TortoiseGit\\Colors\\BisectGood"), RGB(0,100,200)},
-	{BisectBad, _T("Software\\TortoiseGit\\Colors\\BisectBad"),  RGB(255,0,0)},
-	{COLOR_END,_T("Software\\TortoiseGit\\Colors\\END"),RGB(0,0,0)},
-
+	{ Cmd, CRegDWORD(L"Software\\TortoiseGit\\Colors\\Cmd", RGB(100, 100, 100)) },
+	{ Conflict, CRegDWORD(L"Software\\TortoiseGit\\Colors\\Conflict", RGB(255, 0, 0)) },
+	{ Modified, CRegDWORD(L"Software\\TortoiseGit\\Colors\\Modified", RGB(0, 50, 160)) },
+	{ Merged, CRegDWORD(L"Software\\TortoiseGit\\Colors\\Merged", RGB(0, 100, 0)) },
+	{ Deleted, CRegDWORD(L"Software\\TortoiseGit\\Colors\\Deleted", RGB(100, 0, 0)) },
+	{ Added, CRegDWORD(L"Software\\TortoiseGit\\Colors\\Added", RGB(100, 0, 100)) },
+	{ LastCommit, CRegDWORD(L"Software\\TortoiseGit\\Colors\\LastCommit", RGB(100, 100, 100)) },
+	{ NoteNode, CRegDWORD(L"Software\\TortoiseGit\\Colors\\NoteNode", RGB(160, 160, 0)) },
+	{ Renamed, CRegDWORD(L"Software\\TortoiseGit\\Colors\\Renamed", RGB(0, 0, 255)) },
+	{ LastCommitNode, CRegDWORD(L"Software\\TortoiseGit\\Colors\\LastCommitNode", RGB(200, 200, 200)) },
+	{ PropertyChanged, CRegDWORD(L"Software\\TortoiseGit\\Colors\\PropertyChanged", RGB(0, 50, 160)) },
+	{ CurrentBranch, CRegDWORD(L"Software\\TortoiseGit\\Colors\\CurrentBranch", RGB(200, 0, 0)) },
+	{ LocalBranch, CRegDWORD(L"Software\\TortoiseGit\\Colors\\LocalBranch", RGB(0, 195, 0)) },
+	{ RemoteBranch, CRegDWORD(L"Software\\TortoiseGit\\Colors\\RemoteBranch", RGB(255, 221, 170)) },
+	{ Tag, CRegDWORD(L"Software\\TortoiseGit\\Colors\\Tag", RGB(255, 255, 0)) },
+	{ Stash, CRegDWORD(L"Software\\TortoiseGit\\Colors\\Stash", RGB(128, 128, 128)) },
+	{ BranchLine1, CRegDWORD(L"Software\\TortoiseGit\\Colors\\BranchLine1", RGB(0, 0, 0)) },
+	{ BranchLine2, CRegDWORD(L"Software\\TortoiseGit\\Colors\\BranchLine2", RGB(0xFF, 0, 0)) },
+	{ BranchLine3, CRegDWORD(L"Software\\TortoiseGit\\Colors\\BranchLine3", RGB(0, 0xFF, 0)) },
+	{ BranchLine4, CRegDWORD(L"Software\\TortoiseGit\\Colors\\BranchLine4", RGB(0, 0, 0xFF)) },
+	{ BranchLine5, CRegDWORD(L"Software\\TortoiseGit\\Colors\\BranchLine5", RGB(128, 128, 128)) },
+	{ BranchLine6, CRegDWORD(L"Software\\TortoiseGit\\Colors\\BranchLine6", RGB(128, 128, 0)) },
+	{ BranchLine7, CRegDWORD(L"Software\\TortoiseGit\\Colors\\BranchLine7", RGB(0, 128, 128)) },
+	{ BranchLine8, CRegDWORD(L"Software\\TortoiseGit\\Colors\\BranchLine8", RGB(128, 0, 128)) },
+	{ BisectGood, CRegDWORD(L"Software\\TortoiseGit\\Colors\\BisectGood", RGB(0, 100, 200)) },
+	{ BisectBad, CRegDWORD(L"Software\\TortoiseGit\\Colors\\BisectBad", RGB(255, 0, 0)) },
 };
 
 CColors::CColors(void)
@@ -62,43 +60,22 @@ CColors::~CColors(void)
 
 COLORREF CColors::GetColor(Colors col, bool bDefault /*=true*/)
 {
-	int i=0;
-	while(1)
-	{
-		if(m_ColorArray[i].Color == COLOR_END)
-			return RGB(0,0,0);
-
-		if(m_ColorArray[i].Color == col)
-		{
-			if(bDefault)
-				return m_ColorArray[i].Default;
-			else
-			{
-				CRegDWORD reg(m_ColorArray[i].RegKey,m_ColorArray[i].Default);
-				return (COLORREF)(DWORD) reg;
-			}
-		}
-
-		++i;
-	}
+	if (col == COLOR_END)
+		return RGB(0, 0, 0);
+	if (bDefault)
+		return m_ColorArray[col].RegKey.defaultValue();
+	else
+		return (COLORREF)(DWORD)m_ColorArray[col].RegKey;
 }
 
 void CColors::SetColor(Colors col, COLORREF cr)
 {
-	int i=0;
-	while(1)
+	if (col == COLOR_END)
 	{
-		if(m_ColorArray[i].Color == COLOR_END)
-			break;
-
-		if(m_ColorArray[i].Color == col)
-		{
-			CRegDWORD reg(m_ColorArray[i].RegKey,m_ColorArray[i].Default);
-			reg=cr;
-
-		}
-		++i;
+		ASSERT(FALSE);
+		return;
 	}
+	m_ColorArray[col].RegKey = cr;
 }
 
 
