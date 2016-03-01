@@ -20,7 +20,6 @@
 #include "stdafx.h"
 #include "FormatPatchCommand.h"
 
-#include "MessageBox.h"
 #include "FormatPatchDlg.h"
 #include "Git.h"
 #include "ShellUpdater.h"

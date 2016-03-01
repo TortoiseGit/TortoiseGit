@@ -20,7 +20,6 @@
 #include "stdafx.h"
 #include "PrevDiffCommand.h"
 #include "GitDiff.h"
-#include "GitStatus.h"
 #include "MessageBox.h"
 #include "ChangedDlg.h"
 #include "LogDlgHelper.h"
@@ -28,7 +27,6 @@
 
 bool PrevDiffCommand::Execute()
 {
-	bool bRet = false;
 	//bool bAlternativeTool = !!parser.HasKey(_T("alternative"));
 	if (this->orgCmdLinePath.IsDirectory())
 	{
@@ -38,48 +36,21 @@ bool PrevDiffCommand::Execute()
 		dlg.m_strRev2 = _T("HEAD~1");
 		dlg.m_sFilter = this->cmdLinePath.GetGitPathString();
 
-		//dlg.m_pathList = CTGitPathList(cmdLinePath);
 		dlg.DoModal();
-		bRet = true;
+		return true;
 	}
-	else
+
+	CLogDataVector revs;
+	CLogCache cache;
+	revs.m_pLogCache = &cache;
+	revs.ParserFromLog(&cmdLinePath, 2, CGit::LOG_INFO_ONLY_HASH);
+
+	if (revs.size() != 2)
 	{
-		GitStatus st;
-		st.GetStatus(cmdLinePath);
-
-		if (1)
-		{
-			CString hash;
-			CString logout;
-
-			CLogDataVector revs;
-			CLogCache cache;
-			revs.m_pLogCache=&cache;
-
-			revs.ParserFromLog(&cmdLinePath,2,CGit::LOG_INFO_ONLY_HASH);
-
-			if( revs.size() != 2)
-			{
-				CMessageBox::Show(hwndExplorer, IDS_ERR_NOPREVREVISION, IDS_APPNAME, MB_ICONERROR);
-				bRet = false;
-			}
-			else
-			{
-				CGitDiff diff;
-				bRet = !!diff.Diff(&cmdLinePath,&cmdLinePath, GIT_REV_ZERO, revs.GetGitRevAt(1).m_CommitHash.ToString());
-			}
-		}
-		else
-		{
-			//if (st.GetLastErrorMsg().IsEmpty())
-			{
-				CMessageBox::Show(hwndExplorer, IDS_ERR_NOPREVREVISION, IDS_APPNAME, MB_ICONERROR);
-			}
-			//else
-			//{
-			//	CMessageBox::Show(hWndExplorer, IDS_ERR_NOSTATUS, IDS_APPNAME, MB_ICONERROR);
-			//s}
-		}
+		CMessageBox::Show(hwndExplorer, IDS_ERR_NOPREVREVISION, IDS_APPNAME, MB_ICONERROR);
+		return false;
 	}
-	return bRet;
+
+	CGitDiff diff;
+	return !!diff.Diff(&cmdLinePath, &cmdLinePath, GIT_REV_ZERO, revs.GetGitRevAt(1).m_CommitHash.ToString());
 }
