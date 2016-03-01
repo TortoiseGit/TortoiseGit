@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2015 - TortoiseGit
+// Copyright (C) 2008-2013, 2015-2016 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -31,8 +31,7 @@ bool DropCopyCommand::Execute()
 	CString sDroppath = parser.GetVal(_T("droptarget"));
 	if (CTGitPath(sDroppath).IsAdminDir())
 	{
-		CMessageBox::Show(NULL,_T("Can't drop to .git repository directory\n"),
-							   _T("TortoiseGit"),MB_OK|MB_ICONERROR);
+		MessageBox(hwndExplorer, L"Can't drop to .git repository directory\n", L"TortoiseGit", MB_OK | MB_ICONERROR);
 		return FALSE;
 	}
 	unsigned long count = 0;
@@ -113,7 +112,7 @@ bool DropCopyCommand::Execute()
 				CString output;
 				if (g_Git.Run(cmd, &output, CP_UTF8))
 				{
-					CMessageBox::Show(NULL, output, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
+					MessageBox(hwndExplorer, output, L"TortoiseGit", MB_OK | MB_ICONERROR);
 				}else
 					CShellUpdater::Instance().AddPathForUpdate(fullDropPath);
 			}
@@ -124,7 +123,7 @@ bool DropCopyCommand::Execute()
 			str+=_T("Copy file fail:");
 			str+=sourcePath.GetWinPath();
 
-			CMessageBox::Show(NULL, str, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
+			MessageBox(hwndExplorer, str, L"TortoiseGit", MB_OK | MB_ICONERROR);
 		}
 
 		++count;

@@ -32,7 +32,7 @@ bool SVNRebaseCommand::Execute()
 
 	if(!g_Git.CheckCleanWorkTree())
 	{
-		if (CMessageBox::Show(NULL, g_Git.m_CurrentDir + _T("\r\n") + CString(MAKEINTRESOURCE(IDS_ERROR_NOCLEAN_STASH)), _T("TortoiseGit"), 1, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_STASHBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 1)
+		if (CMessageBox::Show(hwndExplorer, g_Git.m_CurrentDir + L"\r\n" + CString(MAKEINTRESOURCE(IDS_ERROR_NOCLEAN_STASH)), L"TortoiseGit", 1, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_STASHBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 1)
 		{
 			CSysProgressDlg sysProgressDlg;
 			sysProgressDlg.SetTitle(CString(MAKEINTRESOURCE(IDS_APPNAME)));
@@ -80,7 +80,7 @@ bool SVNRebaseCommand::Execute()
 	}
 	else
 	{
-		CMessageBox::Show(NULL, out + L"\n" + err, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
+		MessageBox(hwndExplorer, out + L"\n" + err, L"TortoiseGit", MB_OK | MB_ICONERROR);
 		return false;
 	}
 
@@ -163,7 +163,7 @@ bool SVNRebaseCommand::Execute()
 
 void SVNRebaseCommand::askIfUserWantsToStashPop()
 {
-	if (CMessageBox::Show(NULL, g_Git.m_CurrentDir + _T("\r\n") + CString(MAKEINTRESOURCE(IDS_DCOMMIT_STASH_POP)), _T("TortoiseGit"), MB_YESNO|MB_ICONINFORMATION) == IDYES)
+	if (MessageBox(hwndExplorer, g_Git.m_CurrentDir + L"\r\n" + CString(MAKEINTRESOURCE(IDS_DCOMMIT_STASH_POP)), L"TortoiseGit", MB_YESNO | MB_ICONINFORMATION) == IDYES)
 	{
 		CAppUtils::StashPop();
 	}

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2011, 2016 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -60,7 +60,7 @@ bool PrevDiffCommand::Execute()
 
 			if( revs.size() != 2)
 			{
-				CMessageBox::Show(hWndExplorer, IDS_ERR_NOPREVREVISION, IDS_APPNAME, MB_ICONERROR);
+				CMessageBox::Show(hwndExplorer, IDS_ERR_NOPREVREVISION, IDS_APPNAME, MB_ICONERROR);
 				bRet = false;
 			}
 			else
@@ -73,7 +73,7 @@ bool PrevDiffCommand::Execute()
 		{
 			//if (st.GetLastErrorMsg().IsEmpty())
 			{
-				CMessageBox::Show(hWndExplorer, IDS_ERR_NOPREVREVISION, IDS_APPNAME, MB_ICONERROR);
+				CMessageBox::Show(hwndExplorer, IDS_ERR_NOPREVREVISION, IDS_APPNAME, MB_ICONERROR);
 			}
 			//else
 			//{

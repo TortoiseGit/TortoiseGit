@@ -20,7 +20,6 @@
 #include "BisectCommand.h"
 #include "AppUtils.h"
 #include "ProgressDlg.h"
-#include "MessageBox.h"
 #include "resource.h"
 
 bool BisectCommand::Execute()
@@ -55,8 +54,6 @@ bool BisectCommand::Execute()
 		return CAppUtils::BisectOperation(op, ref);
 	}
 	else
-	{
-		CMessageBox::Show(NULL,_T("Operation unknown or not allowed."), _T("TortoiseGit"), MB_OK|MB_ICONINFORMATION);
-	}
+		MessageBox(hwndExplorer, L"Operation unknown or not allowed.", L"TortoiseGit", MB_OK | MB_ICONINFORMATION);
 	return false;
 }

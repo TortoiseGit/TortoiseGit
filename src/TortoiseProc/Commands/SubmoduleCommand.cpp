@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2009,2012-2015 - TortoiseGit
+// Copyright (C) 2008-2009, 2012-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -72,7 +72,7 @@ bool SubmoduleAddCommand::Execute()
 
 				if (subgit.SetConfigValue(_T("remote.origin.puttykeyfile"), dlg.m_strPuttyKeyFile, CONFIG_LOCAL))
 				{
-					CMessageBox::Show(NULL, _T("Fail set config remote.origin.puttykeyfile"), _T("TortoiseGit"), MB_OK| MB_ICONERROR);
+					CMessageBox::Show(hwndExplorer, L"Fail set config remote.origin.puttykeyfile", L"TortoiseGit", MB_OK | MB_ICONERROR);
 					return FALSE;
 				}
 			}
@@ -99,7 +99,7 @@ bool SubmoduleUpdateCommand::Execute()
 	CString super = GitAdminDir::GetSuperProjectRoot(bkpath);
 	if (super.IsEmpty())
 	{
-		CMessageBox::Show(NULL,IDS_ERR_NOTFOUND_SUPER_PRJECT,IDS_APPNAME,MB_OK|MB_ICONERROR);
+		CMessageBox::Show(hwndExplorer, IDS_ERR_NOTFOUND_SUPER_PRJECT, IDS_APPNAME, MB_OK | MB_ICONERROR);
 		//change current project root to super project
 		return false;
 	}
@@ -178,7 +178,7 @@ bool SubmoduleCommand::Execute(CString cmd,  CString arg)
 	CString super = GitAdminDir::GetSuperProjectRoot(bkpath);
 	if(super.IsEmpty())
 	{
-		CMessageBox::Show(NULL,IDS_ERR_NOTFOUND_SUPER_PRJECT,IDS_APPNAME,MB_OK|MB_ICONERROR);
+		CMessageBox::Show(hwndExplorer, IDS_ERR_NOTFOUND_SUPER_PRJECT, IDS_APPNAME, MB_OK | MB_ICONERROR);
 		//change current project root to super project
 		return false;
 	}

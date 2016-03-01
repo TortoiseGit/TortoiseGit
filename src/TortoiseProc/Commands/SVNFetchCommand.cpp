@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2015 - TortoiseGit
+// Copyright (C) 2008-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -21,7 +21,6 @@
 
 #include "SysProgressDlg.h"
 #include "ProgressDlg.h"
-#include "MessageBox.h"
 #include "Git.h"
 #include "LogDlg.h"
 #include "FileDiffDlg.h"
@@ -45,7 +44,7 @@ bool SVNFetchCommand::Execute()
 	}
 	else
 	{
-		CMessageBox::Show(NULL, _T("Found no SVN remote."), _T("TortoiseGit"), MB_OK|MB_ICONERROR);
+		MessageBox(hwndExplorer, L"Found no SVN remote.", L"TortoiseGit", MB_OK | MB_ICONERROR);
 		return false;
 	}
 
