@@ -482,6 +482,8 @@ BOOL CCommitDlg::OnInitDialog()
 
 void CCommitDlg::PrepareOkButton()
 {
+	if (m_bNoPostActions)
+		return;
 	m_regLastAction = CRegDWORD(L"Software\\TortoiseGit\\CommitLastAction", 0);
 	int i = 0;
 	for (auto labelId : { IDS_COMMIT_COMMIT, IDS_COMMIT_RECOMMIT, IDS_COMMIT_COMMITPUSH })
@@ -1061,7 +1063,8 @@ void CCommitDlg::OnOK()
 		m_PostCmd = GIT_POSTCOMMIT_CMD_NOTHING;
 		progress.DoModal();
 
-		m_regLastAction = (int)m_ctrlOkButton.GetCurrentEntry();
+		if (!m_bNoPostActions)
+			m_regLastAction = (int)m_ctrlOkButton.GetCurrentEntry();
 		if (m_ctrlOkButton.GetCurrentEntry() == 1)
 			m_PostCmd = GIT_POSTCOMMIT_CMD_RECOMMIT;
 
