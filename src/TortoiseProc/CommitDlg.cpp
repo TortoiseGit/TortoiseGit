@@ -548,7 +548,7 @@ static void DoPush()
 	if (g_Git.GetCurrentBranchFromFile(g_Git.m_CurrentDir, head))
 		return;
 	CString remote, remotebranch;
-	g_Git.GetRemoteTrackedBranchForHEAD(remote, remotebranch);
+	g_Git.GetRemotePushBranch(head, remote, remotebranch);
 	if (remote.IsEmpty() || remotebranch.IsEmpty())
 	{
 		CAppUtils::Push();

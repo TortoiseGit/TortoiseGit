@@ -814,6 +814,34 @@ void CGit::GetRemoteTrackedBranchForHEAD(CString& remote, CString& branch)
 	GetRemoteTrackedBranch(StripRefName(refName), remote, branch);
 }
 
+void CGit::GetRemotePushBranch(const CString& localBranch, CString& pushRemote, CString& pushBranch)
+{
+	if (localBranch.IsEmpty())
+		return;
+
+	CString configName;
+
+	configName.Format(L"branch.%s.pushremote", (LPCTSTR)localBranch);
+	pushRemote = g_Git.GetConfigValue(configName);
+	if (pushRemote.IsEmpty())
+	{
+		pushRemote = g_Git.GetConfigValue(L"remote.pushdefault");
+		if (pushRemote.IsEmpty())
+		{
+			configName.Format(L"branch.%s.remote", (LPCTSTR)localBranch);
+			pushRemote = g_Git.GetConfigValue(configName);
+		}
+	}
+
+	configName.Format(L"branch.%s.pushbranch", (LPCTSTR)localBranch);
+	pushBranch = g_Git.GetConfigValue(configName); // do not strip branch name (for gerrit), see issue #1609)
+	if (pushBranch.IsEmpty())
+	{
+		configName.Format(L"branch.%s.merge", (LPCTSTR)localBranch);
+		pushBranch = CGit::StripRefName(g_Git.GetConfigValue(configName));
+	}
+}
+
 CString CGit::GetFullRefName(const CString& shortRefName)
 {
 	CString refName;

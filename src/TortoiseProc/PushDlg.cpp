@@ -289,19 +289,9 @@ void CPushDlg::GetRemoteBranch(CString currentBranch)
 		return;
 	}
 
-	CString configName;
-
-	configName.Format(L"branch.%s.pushremote", (LPCTSTR)currentBranch);
-	CString pushRemote = g_Git.GetConfigValue(configName);
-	if( pushRemote.IsEmpty() )
-	{
-		pushRemote = g_Git.GetConfigValue(L"remote.pushdefault");
-		if (pushRemote.IsEmpty())
-		{
-			configName.Format(L"branch.%s.remote", (LPCTSTR)currentBranch);
-			pushRemote = g_Git.GetConfigValue(configName);
-		}
-	}
+	CString pushRemote;
+	CString pushBranch;
+	g_Git.GetRemotePushBranch(currentBranch, pushRemote, pushBranch);
 
 	CRegString remote(CString(_T("Software\\TortoiseGit\\History\\PushRemote\\")+WorkingDir));
 
@@ -329,15 +319,6 @@ void CPushDlg::GetRemoteBranch(CString currentBranch)
 	else if (!(m_Remote.GetCount() > 1 && m_Remote.GetCurSel() == 0))
 	{
 		m_Remote.SetCurSel(-1);
-	}
-
-	//Select pull-branch from current branch
-	configName.Format(L"branch.%s.pushbranch", (LPCTSTR)currentBranch);
-	CString pushBranch = g_Git.GetConfigValue(configName); // do not strip branch name (for gerrit), see issue #1609)
-	if( pushBranch.IsEmpty() )
-	{
-		configName.Format(L"branch.%s.merge", (LPCTSTR)currentBranch);
-		pushBranch = CGit::StripRefName(g_Git.GetConfigValue(configName));
 	}
 
 	m_BranchRemote.LoadHistory(CString(_T("Software\\TortoiseGit\\History\\RemoteBranch\\"))+WorkingDir, _T("branch"));

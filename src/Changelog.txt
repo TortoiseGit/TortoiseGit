@@ -1,4 +1,10 @@
-﻿= Release 2.0.0 =
+﻿= Release 2.1.0 =
+Released: unreleased
+
+== Bug Fixes ==
+ * Fixed issue #2719: Commit & Push in CommitDlg doesn't respect default remote and pushbranch settings
+
+= Release 2.0.0 =
 Released: 2016-02-29
 
 == Changes ==

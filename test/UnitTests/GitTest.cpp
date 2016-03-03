@@ -545,6 +545,74 @@ TEST_P(CBasicGitWithTestRepoBareFixture, GetRemoteTrackedBranch)
 	GetRemoteTrackedBranch(m_Git);
 }
 
+TEST_P(CBasicGitWithEmptyRepositoryFixture, GetRemotePushBranch)
+{
+	CString remote, branch;
+	m_Git.GetRemotePushBranch(_T("master"), remote, branch);
+	EXPECT_TRUE(remote.IsEmpty());
+	EXPECT_TRUE(branch.IsEmpty());
+
+	m_Git.GetRemotePushBranch(_T("non-existing"), remote, branch);
+	EXPECT_TRUE(remote.IsEmpty());
+	EXPECT_TRUE(branch.IsEmpty());
+}
+
+static void GetRemotePushBranch(CGit& m_Git)
+{
+	CString remote, branch;
+	m_Git.GetRemotePushBranch(_T("master"), remote, branch);
+	EXPECT_STREQ(_T("origin"), remote);
+	EXPECT_STREQ(_T("master"), branch);
+
+	remote.Empty();
+	branch.Empty();
+	m_Git.GetRemotePushBranch(_T("non-existing"), remote, branch);
+	EXPECT_TRUE(remote.IsEmpty());
+	EXPECT_TRUE(branch.IsEmpty());
+
+	CAutoRepository repo(m_Git.GetGitRepository());
+	ASSERT_TRUE(repo.IsValid());
+	CAutoConfig config(repo);
+	ASSERT_TRUE(config.IsValid());
+
+	remote.Empty();
+	branch.Empty();
+	EXPECT_EQ(0, git_config_set_string(config, "remote.pushDefault", "originpush2"));
+	m_Git.GetRemotePushBranch(_T("master"), remote, branch);
+	EXPECT_STREQ(_T("originpush2"), remote);
+	EXPECT_STREQ(_T("master"), branch);
+
+	remote.Empty();
+	branch.Empty();
+	EXPECT_EQ(0, git_config_set_string(config, "branch.master.pushremote", "originpush3"));
+	m_Git.GetRemotePushBranch(_T("master"), remote, branch);
+	EXPECT_STREQ(_T("originpush3"), remote);
+	EXPECT_STREQ(_T("master"), branch);
+
+	remote.Empty();
+	branch.Empty();
+	EXPECT_EQ(0, git_config_set_string(config, "branch.master.pushbranch", "masterbranch2"));
+	m_Git.GetRemotePushBranch(_T("master"), remote, branch);
+	EXPECT_STREQ(_T("originpush3"), remote);
+	EXPECT_STREQ(_T("masterbranch2"), branch);
+
+	remote.Empty();
+	branch.Empty();
+	m_Git.GetRemotePushBranch(_T("non-existing"), remote, branch);
+	EXPECT_STREQ(_T("originpush2"), remote);
+	EXPECT_TRUE(branch.IsEmpty());
+}
+
+TEST_P(CBasicGitWithTestRepoFixture, GetRemotePushBranch)
+{
+	GetRemotePushBranch(m_Git);
+}
+
+TEST_P(CBasicGitWithTestRepoBareFixture, GetRemotePushBranch)
+{
+	GetRemotePushBranch(m_Git);
+}
+
 static void CanParseRev(CGit& m_Git)
 {
 	EXPECT_TRUE(m_Git.CanParseRev(_T("")));
