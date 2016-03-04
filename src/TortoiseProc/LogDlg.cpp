@@ -1177,6 +1177,8 @@ void CLogDlg::OnBnClickedRefresh()
 
 void CLogDlg::Refresh (bool clearfilter /*autoGoOnline*/)
 {
+	if (m_bSelect)
+		DialogEnableWindow(IDOK, FALSE);
 	m_LogList.Refresh(clearfilter);
 	EnableOKButton();
 	ShowStartRef();
@@ -1686,8 +1688,7 @@ BOOL CLogDlg::PreTranslateMessage(MSG* pMsg)
 		if (GetFocus() == GetDlgItem(IDC_SEARCHEDIT))
 		{
 			KillTimer(LOGFILTER_TIMER);
-			m_LogList.Refresh(FALSE);
-			FillLogMessageCtrl(false);
+			Refresh(false);
 		}
 		if (GetFocus() == GetDlgItem(IDC_FILTER))
 		{
@@ -2320,8 +2321,7 @@ void CLogDlg::OnTimer(UINT_PTR nIDEvent)
 	if (nIDEvent == LOGFTIME_TIMER)
 	{
 		KillTimer(LOGFTIME_TIMER);
-		m_LogList.Refresh(FALSE);
-		FillLogMessageCtrl(false);
+		Refresh(false);
 	}
 	else if (nIDEvent == LOG_FILLPATCHVTIMER)
 	{
@@ -2330,8 +2330,7 @@ void CLogDlg::OnTimer(UINT_PTR nIDEvent)
 	else if (nIDEvent == LOGFILTER_TIMER)
 	{
 		KillTimer(LOGFILTER_TIMER);
-		m_LogList.Refresh(FALSE);
-		FillLogMessageCtrl(false);
+		Refresh(false);
 
 #if 0
 		/* we will use git built-in grep to filter log */
