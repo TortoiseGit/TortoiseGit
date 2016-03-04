@@ -149,6 +149,7 @@ void CRequestPullDlg::OnBnClickedButtonLocalBranch()
 	dlg.SetParams(CTGitPath(), CTGitPath(), revision, revision, 0);
 	// tell the dialog to use mode for selecting revisions
 	dlg.SetSelect(true);
+	dlg.ShowWorkingTreeChanges(false);
 	// only one revision must be selected however
 	dlg.SingleSelection(true);
 	if ( dlg.DoModal() == IDOK )

@@ -73,6 +73,7 @@ public:
 	void SetSelect(bool bSelect) {m_bSelect = bSelect;}
 	void ContinuousSelection(bool bCont = true) {m_bSelectionMustBeContinuous = bCont;}
 	void SingleSelection(bool bSingle = true) {m_bSelectionMustBeSingle = bSingle;}
+	void ShowWorkingTreeChanges(bool bShow = false) { m_bShowWC = bShow; }
 	void SetRange(const CString& range);
 	void ShowStartRef();
 	afx_msg LRESULT OnRefLogChanged(WPARAM wParam, LPARAM lParam);
@@ -228,6 +229,7 @@ private:
 	std::vector<CGitHash>	m_sSelectedHash;	// set to selected commit hash on OK if appropriate
 	bool				m_bSelectionMustBeContinuous;
 	bool				m_bSelectionMustBeSingle;
+	bool				m_bShowWC;
 	bool				m_bCancelled;
 
 	CFilterEdit			m_cFileFilter;

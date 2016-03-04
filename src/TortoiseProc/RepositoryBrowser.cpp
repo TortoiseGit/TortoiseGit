@@ -941,6 +941,7 @@ void CRepositoryBrowser::OnBnClickedButtonRevision()
 		dlg.SetParams(CTGitPath(), CTGitPath(), m_sRevision, m_sRevision, 0);
 		// tell the dialog to use mode for selecting revisions
 		dlg.SetSelect(true);
+		dlg.ShowWorkingTreeChanges(false);
 		// only one revision must be selected however
 		dlg.SingleSelection(true);
 		if (dlg.DoModal() == IDOK)

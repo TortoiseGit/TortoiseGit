@@ -1928,6 +1928,7 @@ bool CCommitDlg::HandleMenuItemClick(int cmd, CSciEdit * pSciEdit)
 		dlg.SetSelect(true);
 		// only one revision must be selected however
 		dlg.SingleSelection(true);
+		dlg.ShowWorkingTreeChanges(false);
 		if (dlg.DoModal() == IDOK)
 			pSciEdit->InsertText(dlg.GetSelectedHash().at(0).ToString());
 		return true;
@@ -1941,6 +1942,7 @@ bool CCommitDlg::HandleMenuItemClick(int cmd, CSciEdit * pSciEdit)
 		dlg.SetSelect(true);
 		// only one revision must be selected however
 		dlg.SingleSelection(true);
+		dlg.ShowWorkingTreeChanges(false);
 		if (dlg.DoModal() == IDOK)
 		{
 			GitRev rev;

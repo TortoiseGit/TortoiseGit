@@ -53,6 +53,7 @@ CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
 	, m_bFirstParent(false)
 	, m_bWholeProject(FALSE)
 	, m_iCompressedGraph(0)
+	, m_bShowWC(true)
 
 	, m_bSelectionMustBeContinuous(false)
 
@@ -295,7 +296,8 @@ BOOL CLogDlg::OnInitDialog()
 	m_LogList.DeleteAllItems();
 
 	m_LogList.m_Path=m_path;
-	m_LogList.m_hasWC = m_LogList.m_bShowWC = !GitAdminDir::IsBareRepo(g_Git.m_CurrentDir);
+	m_LogList.m_hasWC = !GitAdminDir::IsBareRepo(g_Git.m_CurrentDir);
+	m_LogList.m_bShowWC = m_LogList.m_hasWC && m_bShowWC;
 	m_LogList.InsertGitColumn();
 
 	if (m_bWholeProject)
