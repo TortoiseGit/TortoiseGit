@@ -7,8 +7,8 @@
     <primary>Sync</primary>
   </indexterm>
   <para>
-	Sync Dialog collect all operation related with remote repository to one dialog. 
-	Sync Dialog included push, pull, fetch, remote update, send patch ...
+	Sync Dialog collects all operations related with remote repository to one dialog. 
+	Sync Dialog includes push, pull, fetch, remote update, submodule update, send patch ...
   </para>
   <para>
 	<menuchoice>
