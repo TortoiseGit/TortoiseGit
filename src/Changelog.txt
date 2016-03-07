@@ -1,6 +1,9 @@
 ﻿= Release 2.1.0 =
 Released: unreleased
 
+== Features ==
+ * Update PuTTY to 0.67
+
 == Bug Fixes ==
  * Fixed issue #2719: Commit & Push in CommitDlg doesn't respect default remote and pushbranch settings
 

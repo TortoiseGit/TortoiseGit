@@ -1202,9 +1202,9 @@ int bignum_bit(Bignum bn, int i)
  */
 void bignum_set_bit(Bignum bn, int bitnum, int value)
 {
-    if (bitnum < 0 || bitnum >= (int)(BIGNUM_INT_BITS * bn[0]))
-	abort();		       /* beyond the end */
-    else {
+    if (bitnum < 0 || bitnum >= (int)(BIGNUM_INT_BITS * bn[0])) {
+        if (value) abort();		       /* beyond the end */
+    } else {
 	int v = bitnum / BIGNUM_INT_BITS + 1;
 	BignumInt mask = (BignumInt)1 << (bitnum % BIGNUM_INT_BITS);
 	if (value)

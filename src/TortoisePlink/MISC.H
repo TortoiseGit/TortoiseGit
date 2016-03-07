@@ -51,6 +51,8 @@ wchar_t *dup_mb_to_wc(int codepage, int flags, const char *string);
 int toint(unsigned);
 
 char *fgetline(FILE *fp);
+int strstartswith(const char *s, const char *t);
+int strendswith(const char *s, const char *t);
 
 void base64_encode_atom(unsigned char *data, int n, char *out);
 int base64_decode_atom(char *atom, unsigned char *out);
@@ -166,5 +168,10 @@ void debug_memdump(void *buf, int len, int L);
 #define PUT_16BIT_MSB_FIRST(cp, value) ( \
   (cp)[0] = (unsigned char)((value) >> 8), \
   (cp)[1] = (unsigned char)(value) )
+
+/* Replace NULL with the empty string, permitting an idiom in which we
+ * get a string (pointer,length) pair that might be NULL,0 and can
+ * then safely say things like printf("%.*s", length, NULLTOEMPTY(ptr)) */
+#define NULLTOEMPTY(s) ((s)?(s):"")
 
 #endif

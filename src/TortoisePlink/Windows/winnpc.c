@@ -79,7 +79,6 @@ Socket new_named_pipe_client(const char *pipename, Plug plug)
         ret = new_error_socket(err, plug);
         sfree(err);
         CloseHandle(pipehandle);
-        sfree(usersid);
         return ret;
     }
 
@@ -89,12 +88,10 @@ Socket new_named_pipe_client(const char *pipename, Plug plug)
         sfree(err);
         CloseHandle(pipehandle);
         LocalFree(psd);
-        sfree(usersid);
         return ret;
     }
 
     LocalFree(psd);
-    sfree(usersid);
 
     return make_handle_socket(pipehandle, pipehandle, plug, TRUE);
 }
