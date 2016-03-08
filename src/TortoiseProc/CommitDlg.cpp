@@ -207,8 +207,8 @@ BOOL CCommitDlg::OnInitDialog()
 
 		CString dotGitPath;
 		GitAdminDir::GetAdminDirPath(g_Git.m_CurrentDir, dotGitPath);
-		bool loadedMsg = !CGit::LoadTextFile(dotGitPath + _T("MERGE_MSG"), m_sLogMessage);
-		loadedMsg = loadedMsg && !CGit::LoadTextFile(dotGitPath + _T("SQUASH_MSG"), m_sLogMessage);
+		CGit::LoadTextFile(dotGitPath + _T("SQUASH_MSG"), m_sLogMessage);
+		CGit::LoadTextFile(dotGitPath + _T("MERGE_MSG"), m_sLogMessage);
 	}
 	RunStartCommitHook();
 

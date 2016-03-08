@@ -3222,7 +3222,7 @@ bool CGit::LoadTextFile(const CString &filename, CString &msg)
 			break;
 		str += CStringA(s, read);
 	} while (true);
-	msg = CUnicodeUtils::GetUnicode(str);
+	msg += CUnicodeUtils::GetUnicode(str);
 	msg.Replace(_T("\r\n"), _T("\n"));
 	msg.TrimRight(_T("\n"));
 	msg += _T("\n");

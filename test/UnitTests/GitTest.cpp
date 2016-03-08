@@ -167,13 +167,19 @@ TEST(CGit, LoadTextFile)
 {
 	CAutoTempDir tempdir;
 
-	CString msg;
+	CString msg = L"something--";
 	EXPECT_FALSE(CGit::LoadTextFile(L"does-not-exist.txt", msg));
+	EXPECT_STREQ(L"something--", msg);
 
 	CString testFile = tempdir.GetTempDir() + L"\\test.txt";
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)testFile, L"this is testing fileöäü."));
 	EXPECT_TRUE(CGit::LoadTextFile(testFile, msg));
-	EXPECT_STREQ(L"this is testing fileöäü.\n", msg);
+	EXPECT_STREQ(L"something--this is testing fileöäü.\n", msg);
+
+	msg.Empty();
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)testFile, L"this is testing\nfileöäü."));
+	EXPECT_TRUE(CGit::LoadTextFile(testFile, msg));
+	EXPECT_STREQ(L"this is testing\nfileöäü.\n", msg);
 
 	msg.Empty();
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)testFile, L"this is\r\ntesting\nfileöäü.\r\n\r\n"));
