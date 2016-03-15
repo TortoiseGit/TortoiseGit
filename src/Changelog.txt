@@ -8,6 +8,7 @@ Released: unreleased
  * Fixed issue #2719: Commit & Push in CommitDlg doesn't respect default remote and pushbranch settings
  * Fixed issue #1902: CommitDlg: Do not lose SQUASH_MSG contents
  * Fixed issue #2732: Commit dialog: Message field should have focus (when patch is shown)
+ * Fixed issue #2730: Pull with rebase with preserve merges not working for noops
 
 = Release 2.0.0 =
 Released: 2016-02-29

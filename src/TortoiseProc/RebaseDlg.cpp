@@ -741,7 +741,7 @@ void CRebaseDlg::FetchLogList()
 	else
 		this->m_CurrentRebaseIndex = (int)m_CommitList.m_logEntries.size();
 
-	this->GetDlgItem(IDC_REBASE_CONTINUE)->EnableWindow(m_CommitList.GetItemCount());
+	this->GetDlgItem(IDC_REBASE_CONTINUE)->EnableWindow(m_bPreserveMerges || m_CommitList.GetItemCount());
 	SetContinueButtonText();
 }
 
