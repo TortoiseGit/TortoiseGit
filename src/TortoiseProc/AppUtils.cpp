@@ -2659,7 +2659,7 @@ static bool DoFetch(const CString& url, const bool fetchAllRemotes, const bool l
 				g_Git.GetRemoteTrackedBranchForHEAD(remote, trackedBranch);
 				if (!remote.IsEmpty() && !trackedBranch.IsEmpty())
 				{
-					upstream = remote + _T("/") + trackedBranch;
+					upstream = L"remotes/" + remote + L"/" + trackedBranch;
 					g_Git.GetHash(oldUpstreamHash, upstream);
 				}
 				break;
