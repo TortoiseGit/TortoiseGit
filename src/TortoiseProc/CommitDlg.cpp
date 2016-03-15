@@ -2561,6 +2561,8 @@ void CCommitDlg::OnStnClickedViewPatch()
 		m_patchViewdlg.SetWindowPos(NULL,rect.right,rect.top,rect.Width(),rect.Height(),
 				SWP_NOACTIVATE | SWP_NOOWNERZORDER | SWP_NOZORDER);
 
+		GetDlgItem(IDC_LOGMESSAGE)->SetFocus();
+
 		ShowViewPatchText(false);
 		FillPatchView();
 	}
