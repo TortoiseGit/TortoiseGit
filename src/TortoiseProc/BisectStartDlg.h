@@ -27,7 +27,7 @@ class CBisectStartDlg : public CHorizontalResizableStandAloneDialog
 	DECLARE_DYNAMIC(CBisectStartDlg)
 
 public:
-	CBisectStartDlg(CWnd* pParent = NULL);   // standard constructor
+	CBisectStartDlg(CWnd* pParent = nullptr);   // standard constructor
 	virtual ~CBisectStartDlg();
 
 	// Dialog Data

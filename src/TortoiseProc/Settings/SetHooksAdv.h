@@ -29,7 +29,7 @@ class CSetHooksAdv : public CResizableStandAloneDialog
 	DECLARE_DYNAMIC(CSetHooksAdv)
 
 public:
-	CSetHooksAdv(CWnd* pParent = NULL);   // standard constructor
+	CSetHooksAdv(CWnd* pParent = nullptr);   // standard constructor
 	virtual ~CSetHooksAdv();
 
 // Dialog Data

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2010-2015 - TortoiseGit
+// Copyright (C) 2010-2016 - TortoiseGit
 // Copyright (C) 2003-2007 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -115,7 +115,7 @@ BOOL CSetProxyPage::OnInitDialog()
 	if (m_SSHClient.IsEmpty())
 	{
 		TCHAR sPlink[MAX_PATH] = {0};
-		GetModuleFileName(NULL, sPlink, _countof(sPlink));
+		GetModuleFileName(nullptr, sPlink, _countof(sPlink));
 		LPTSTR ptr = _tcsrchr(sPlink, _T('\\'));
 		if (ptr)
 		{
@@ -251,7 +251,7 @@ BOOL CSetProxyPage::OnApply()
 
 			if (StringEscape(m_username, &escapedUsername))
 			{
-				::MessageBox(NULL, _T("Could not encode username."), _T("TortoiseGit"), MB_ICONERROR);
+				::MessageBox(nullptr, _T("Could not encode username."), _T("TortoiseGit"), MB_ICONERROR);
 				return FALSE;
 			}
 
@@ -262,7 +262,7 @@ BOOL CSetProxyPage::OnApply()
 				CString escapedPassword;
 				if (StringEscape(m_password, &escapedPassword))
 				{
-					::MessageBox(NULL, _T("Could not encode password."), _T("TortoiseGit"), MB_ICONERROR);
+					::MessageBox(nullptr, _T("Could not encode password."), _T("TortoiseGit"), MB_ICONERROR);
 					return FALSE;
 				}
 				http_proxy += _T(":") + escapedPassword;
@@ -295,7 +295,7 @@ BOOL CSetProxyPage::OnApply()
 void CSetProxyPage::OnBnClickedSshbrowse()
 {
 	CString openPath;
-	if (CAppUtils::FileOpenSave(openPath, NULL, IDS_SETTINGS_SELECTSSH, IDS_PROGRAMSFILEFILTER, true, m_hWnd))
+	if (CAppUtils::FileOpenSave(openPath, nullptr, IDS_SETTINGS_SELECTSSH, IDS_PROGRAMSFILEFILTER, true, m_hWnd))
 	{
 		UpdateData();
 		m_SSHClient = openPath;

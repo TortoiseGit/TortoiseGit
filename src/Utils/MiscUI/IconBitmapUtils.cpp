@@ -42,7 +42,7 @@ HBITMAP IconBitmapUtils::IconToBitmap(HINSTANCE hInst, UINT uIcon)
 
     HICON hIcon = (HICON)LoadImage(hInst, MAKEINTRESOURCE(uIcon), IMAGE_ICON, 12, 12, LR_DEFAULTCOLOR);
     if (!hIcon)
-        return NULL;
+        return nullptr;
     SCOPE_EXIT { DestroyIcon(hIcon); };
 
     RECT rect;
@@ -53,37 +53,37 @@ HBITMAP IconBitmapUtils::IconToBitmap(HINSTANCE hInst, UINT uIcon)
     rect.left = rect.top = 0;
 
     HWND desktop = ::GetDesktopWindow();
-    if (desktop == NULL)
-        return NULL;
+    if (!desktop)
+        return nullptr;
 
     HDC screen_dev = ::GetDC(desktop);
-    if (screen_dev == NULL)
-        return NULL;
+    if (!screen_dev)
+        return nullptr;
     SCOPE_EXIT { ::ReleaseDC(desktop, screen_dev); };
 
     // Create a compatible DC
     HDC dst_hdc = ::CreateCompatibleDC(screen_dev);
-    if (dst_hdc == NULL)
-        return NULL;
+    if (!dst_hdc)
+        return nullptr;
     SCOPE_EXIT { ::DeleteDC(dst_hdc); };
 
     // Create a new bitmap of icon size
     HBITMAP bmp = ::CreateCompatibleBitmap(screen_dev, rect.right, rect.bottom);
-    if (bmp == NULL)
-        return NULL;
+    if (!bmp)
+        return nullptr;
 
     // Select it into the compatible DC
     HBITMAP old_dst_bmp = (HBITMAP)::SelectObject(dst_hdc, bmp);
-    if (old_dst_bmp == NULL)
-        return NULL;
+    if (!old_dst_bmp)
+        return nullptr;
 
     // Fill the background of the compatible DC with the white color
     // that is taken by menu routines as transparent
     ::SetBkColor(dst_hdc, RGB(255, 255, 255));
-    ::ExtTextOut(dst_hdc, 0, 0, ETO_OPAQUE, &rect, NULL, 0, NULL);
+    ::ExtTextOut(dst_hdc, 0, 0, ETO_OPAQUE, &rect, nullptr, 0, nullptr);
 
     // Draw the icon into the compatible DC
-    ::DrawIconEx(dst_hdc, 0, 0, hIcon, rect.right, rect.bottom, 0, NULL, DI_NORMAL);
+    ::DrawIconEx(dst_hdc, 0, 0, hIcon, rect.right, rect.bottom, 0, nullptr, DI_NORMAL);
 
     // Restore settings
     ::SelectObject(dst_hdc, old_dst_bmp);
@@ -113,7 +113,7 @@ HBITMAP IconBitmapUtils::IconToBitmapPARGB32(HINSTANCE hInst, UINT uIcon)
 HBITMAP IconBitmapUtils::IconToBitmapPARGB32(HICON hIcon)
 {
     if (!hIcon)
-        return NULL;
+        return nullptr;
 
     SIZE sizIcon;
     sizIcon.cx = GetSystemMetrics(SM_CXSMICON);
@@ -122,13 +122,13 @@ HBITMAP IconBitmapUtils::IconToBitmapPARGB32(HICON hIcon)
     RECT rcIcon;
     SetRect(&rcIcon, 0, 0, sizIcon.cx, sizIcon.cy);
 
-    HDC hdcDest = CreateCompatibleDC(NULL);
+    HDC hdcDest = CreateCompatibleDC(nullptr);
     if (!hdcDest)
         return nullptr;
     SCOPE_EXIT { DeleteDC(hdcDest); };
 
     HBITMAP hBmp = nullptr;
-    if (FAILED(Create32BitHBITMAP(hdcDest, &sizIcon, NULL, &hBmp)))
+    if (FAILED(Create32BitHBITMAP(hdcDest, &sizIcon, nullptr, &hBmp)))
         return nullptr;
 
     HBITMAP hbmpOld = (HBITMAP)SelectObject(hdcDest, hBmp);
@@ -145,7 +145,7 @@ HBITMAP IconBitmapUtils::IconToBitmapPARGB32(HICON hIcon)
     HPAINTBUFFER hPaintBuffer = BeginBufferedPaint(hdcDest, &rcIcon, BPBF_DIB, &paintParams, &hdcBuffer);
     if (hPaintBuffer)
     {
-        if (DrawIconEx(hdcBuffer, 0, 0, hIcon, sizIcon.cx, sizIcon.cy, 0, NULL, DI_NORMAL))
+        if (DrawIconEx(hdcBuffer, 0, 0, hIcon, sizIcon.cx, sizIcon.cy, 0, nullptr, DI_NORMAL))
         {
             // If icon did not have an alpha channel we need to convert buffer to PARGB
             ConvertBufferToPARGB32(hPaintBuffer, hdcDest, hIcon, sizIcon);
@@ -167,7 +167,7 @@ HRESULT IconBitmapUtils::Create32BitHBITMAP(HDC hdc, const SIZE *psize, __deref_
     if (phBmp == 0)
         return E_POINTER;
 
-    *phBmp = NULL;
+    *phBmp = nullptr;
 
     BITMAPINFO bmi = { 0 };
     bmi.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
@@ -178,16 +178,16 @@ HRESULT IconBitmapUtils::Create32BitHBITMAP(HDC hdc, const SIZE *psize, __deref_
     bmi.bmiHeader.biHeight = psize->cy;
     bmi.bmiHeader.biBitCount = 32;
 
-    HDC hdcUsed = hdc ? hdc : GetDC(NULL);
+    HDC hdcUsed = hdc ? hdc : GetDC(nullptr);
     if (hdcUsed)
     {
-        *phBmp = CreateDIBSection(hdcUsed, &bmi, DIB_RGB_COLORS, ppvBits, NULL, 0);
+        *phBmp = CreateDIBSection(hdcUsed, &bmi, DIB_RGB_COLORS, ppvBits, nullptr, 0);
         if (hdc != hdcUsed)
         {
-            ReleaseDC(NULL, hdcUsed);
+            ReleaseDC(nullptr, hdcUsed);
         }
     }
-    return (NULL == *phBmp) ? E_OUTOFMEMORY : S_OK;
+    return (nullptr == *phBmp) ? E_OUTOFMEMORY : S_OK;
 }
 
 HRESULT IconBitmapUtils::ConvertBufferToPARGB32(HPAINTBUFFER hPaintBuffer, HDC hdc, HICON hicon, SIZE& sizIcon)

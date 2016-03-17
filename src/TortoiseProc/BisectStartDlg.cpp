@@ -29,7 +29,7 @@
 
 IMPLEMENT_DYNAMIC(CBisectStartDlg, CHorizontalResizableStandAloneDialog)
 
-CBisectStartDlg::CBisectStartDlg(CWnd* pParent /*=NULL*/)
+CBisectStartDlg::CBisectStartDlg(CWnd* pParent /*=nullptr*/)
 	: CHorizontalResizableStandAloneDialog(CBisectStartDlg::IDD, pParent)
 {
 }

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013 - TortoiseGit
+// Copyright (C) 2013, 2016 - TortoiseGit
 // Copyright (C) 2003-2006,2012 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
@@ -69,7 +69,7 @@ BOOL CCmdLineParser::Parse(LPCTSTR sCmdLine)
 			break; // ends with delim
 
 		LPCTSTR sVal = _tcspbrk(sArg, m_sValueSep);
-		if(sVal == NULL)
+		if (!sVal)
 		{
 			stdstring Key(sArg);
 			std::transform(Key.begin(), Key.end(), Key.begin(), ::tolower);
@@ -81,7 +81,7 @@ BOOL CCmdLineParser::Parse(LPCTSTR sCmdLine)
 			stdstring Key(sArg, (int)(sVal - sArg));
 			std::transform(Key.begin(), Key.end(), Key.begin(), ::tolower);
 
-			LPCTSTR sQuote(NULL), sEndQuote(NULL);
+			LPCTSTR sQuote(nullptr), sEndQuote(nullptr);
 			if (_tcslen(sVal) > 0)
 			{
 				if (sVal[0] != _T(' '))
@@ -103,7 +103,7 @@ BOOL CCmdLineParser::Parse(LPCTSTR sCmdLine)
 					sQuote = sVal;
 					sEndQuote = sVal;
 				}
-				else if (nextArg != NULL && nextArg < sQuote)
+				else if (nextArg && nextArg < sQuote)
 				{
 					// current key has a value w/o quotes, but next key one has value in quotes
 					sQuote = sVal;
@@ -125,7 +125,7 @@ BOOL CCmdLineParser::Parse(LPCTSTR sCmdLine)
 				}
 			}
 
-			if(sEndQuote == NULL)
+			if (!sEndQuote)
 			{
 				// no end quotes or terminating space, take the rest of the string to its end
 				if (!Key.empty() && sQuote)

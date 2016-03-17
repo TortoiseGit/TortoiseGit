@@ -35,14 +35,17 @@ class CShadowTree
 public:
 	typedef std::map<CString,CShadowTree> TShadowTreeMap;
 
-	CShadowTree():m_hTree(NULL),m_pParent(NULL){}
+	CShadowTree()
+	: m_hTree(nullptr)
+	, m_pParent(nullptr)
+	{}
 
 	CShadowTree*	GetNextSub(CString& nameLeft, bool bCreateIfNotExist);
 
 	bool			IsLeaf()const {return m_ShadowTree.empty();}
 	CString			GetRefName()const
 	{
-		if(m_pParent==NULL)
+		if (!m_pParent)
 			return m_csRefName;
 		return m_pParent->GetRefName()+"/"+m_csRefName;
 	}
@@ -97,7 +100,7 @@ class CBrowseRefsDlg : public CResizableStandAloneDialog
 	DECLARE_DYNAMIC(CBrowseRefsDlg)
 
 public:
-	CBrowseRefsDlg(CString cmdPath, CWnd* pParent = NULL);   // standard constructor
+	CBrowseRefsDlg(CString cmdPath, CWnd* pParent = nullptr);   // standard constructor
 	virtual ~CBrowseRefsDlg();
 
 	enum eCmd
@@ -153,7 +156,7 @@ protected:
 
 	void			Refresh(CString selectRef = CString());
 
-	CShadowTree&	GetTreeNode(CString refName, CShadowTree* pTreePos=NULL, bool bCreateIfNotExist=false);
+	CShadowTree&	GetTreeNode(CString refName, CShadowTree* pTreePos = nullptr, bool bCreateIfNotExist = false);
 
 	void			FillListCtrlForTreeNode(HTREEITEM treeNode);
 

@@ -40,7 +40,7 @@
 
 void SetSortArrowA(CListCtrl * control, int nColumn, bool bAscending)
 {
-	if (control == NULL)
+	if (!control)
 		return;
 
 	// set the sort arrow
@@ -133,7 +133,7 @@ bool CRepositoryBrowser::s_bSortLogical = true;
 
 IMPLEMENT_DYNAMIC(CRepositoryBrowser, CResizableStandAloneDialog)
 
-CRepositoryBrowser::CRepositoryBrowser(CString rev, CWnd* pParent /*=NULL*/)
+CRepositoryBrowser::CRepositoryBrowser(CString rev, CWnd* pParent /*=nullptr*/)
 : CResizableStandAloneDialog(CRepositoryBrowser::IDD, pParent)
 , m_currSortCol(0)
 , m_currSortDesc(false)
@@ -227,8 +227,8 @@ BOOL CRepositoryBrowser::OnInitDialog()
 	m_nSymlinkOvl = SYS_IMAGE_LIST().AddIcon((HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_SYMLINKOVL), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE));
 	// set externaloverlay in SYS_IMAGE_LIST() in Refresh method, so that it is updated after every launch of the logdialog
 
-	SetWindowTheme(m_RepoTree.GetSafeHwnd(), L"Explorer", NULL);
-	SetWindowTheme(m_RepoList.GetSafeHwnd(), L"Explorer", NULL);
+	SetWindowTheme(m_RepoTree.GetSafeHwnd(), L"Explorer", nullptr);
+	SetWindowTheme(m_RepoList.GetSafeHwnd(), L"Explorer", nullptr);
 
 	m_nIconFolder = SYS_IMAGE_LIST().GetDirIconIndex();
 	m_nOpenIconFolder = SYS_IMAGE_LIST().GetDirOpenIconIndex();
@@ -310,7 +310,7 @@ void CRepositoryBrowser::OnNMDblclk_RepoList(NMHDR *pNMHDR, LRESULT *pResult)
 		return;
 
 	CShadowFilesTree * pItem = (CShadowFilesTree *)m_RepoList.GetItemData(pNmItemActivate->iItem);
-	if (pItem == NULL)
+	if (!pItem )
 		return;
 
 	if (!pItem->m_bFolder)
@@ -366,7 +366,7 @@ int CRepositoryBrowser::ReadTreeRecursive(git_repository &repo, const git_tree *
 	for (size_t i = 0; i < count; ++i)
 	{
 		const git_tree_entry *entry = git_tree_entry_byindex(tree, i);
-		if (entry == NULL)
+		if (!entry)
 			continue;
 
 		const int mode = git_tree_entry_filemode(entry);
@@ -524,7 +524,7 @@ void CRepositoryBrowser::OnTvnItemExpandingRepoTree(NMHDR *pNMHDR, LRESULT *pRes
 	*pResult = 0;
 
 	CShadowFilesTree* pTree = (CShadowFilesTree*)(m_RepoTree.GetItemData(pNMTreeView->itemNew.hItem));
-	if (pTree == NULL)
+	if (!pTree)
 	{
 		ASSERT(FALSE);
 		return;
@@ -542,7 +542,7 @@ void CRepositoryBrowser::FillListCtrlForTreeNode(HTREEITEM treeNode)
 	m_RepoList.DeleteAllItems();
 
 	CShadowFilesTree* pTree = (CShadowFilesTree*)(m_RepoTree.GetItemData(treeNode));
-	if (pTree == NULL)
+	if (!pTree)
 	{
 		ASSERT(FALSE);
 		return;
@@ -672,7 +672,7 @@ void CRepositoryBrowser::OnContextMenu_RepoTree(CPoint point)
 	m_RepoTree.ScreenToClient(&clientPoint);
 
 	HTREEITEM hTreeItem = m_RepoTree.HitTest(clientPoint);
-	if (hTreeItem == NULL)
+	if (!hTreeItem)
 		return;
 
 	TShadowFilesTreeList selectedLeafs;
@@ -1175,7 +1175,7 @@ BOOL CRepositoryBrowser::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 				GetDlgItem(IDC_REPOLIST)->GetWindowRect(&rect);
 				if (pt.x < rect.left)
 				{
-					HCURSOR hCur = LoadCursor(NULL, IDC_SIZEWE);
+					HCURSOR hCur = LoadCursor(nullptr, IDC_SIZEWE);
 					SetCursor(hCur);
 					return TRUE;
 				}
@@ -1198,7 +1198,7 @@ void CRepositoryBrowser::FileSaveAs(const CString path)
 
 	CString filename;
 	filename.Format(_T("%s-%s%s"), (LPCTSTR)gitPath.GetBaseFilename(), (LPCTSTR)hash.ToString().Left(g_Git.GetShortHASHLength()), (LPCTSTR)gitPath.GetFileExtension());
-	CFileDialog dlg(FALSE, NULL, filename, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, NULL);
+	CFileDialog dlg(FALSE, nullptr, filename, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, nullptr);
 
 	CString currentpath(g_Git.CombinePath(gitPath.GetContainingDirectory()));
 	dlg.m_ofn.lpstrInitialDir = currentpath;

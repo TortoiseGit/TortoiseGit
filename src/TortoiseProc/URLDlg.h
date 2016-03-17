@@ -32,7 +32,7 @@ class CURLDlg : public CResizableStandAloneDialog
 	DECLARE_DYNAMIC(CURLDlg)
 
 public:
-	CURLDlg(CWnd* pParent = NULL);
+	CURLDlg(CWnd* pParent = nullptr);
 	virtual ~CURLDlg();
 
 	CString m_url;

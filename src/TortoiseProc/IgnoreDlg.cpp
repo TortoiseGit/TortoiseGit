@@ -27,7 +27,7 @@
 
 IMPLEMENT_DYNAMIC(CIgnoreDlg, CStateStandAloneDialog)
 
-CIgnoreDlg::CIgnoreDlg(CWnd* pParent /*=NULL*/)
+CIgnoreDlg::CIgnoreDlg(CWnd* pParent /*=nullptr*/)
 	: CStateStandAloneDialog(CIgnoreDlg::IDD, pParent)
 	, m_IgnoreType(0)
 	, m_IgnoreFile(1)

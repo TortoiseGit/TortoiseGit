@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2015 - TortoiseGit
+// Copyright (C) 2012-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -28,7 +28,7 @@ class CSubmoduleUpdateDlg : public CResizableStandAloneDialog
 	DECLARE_DYNAMIC(CSubmoduleUpdateDlg)
 
 public:
-	CSubmoduleUpdateDlg(CWnd* pParent = NULL);   // standard constructor
+	CSubmoduleUpdateDlg(CWnd* pParent = nullptr);   // standard constructor
 	virtual ~CSubmoduleUpdateDlg();
 
 // Dialog Data

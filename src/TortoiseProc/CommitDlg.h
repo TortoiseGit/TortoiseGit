@@ -60,7 +60,7 @@ class CCommitDlg : public CResizableStandAloneDialog, public CSciEditContextMenu
 	DECLARE_DYNAMIC(CCommitDlg)
 
 public:
-	CCommitDlg(CWnd* pParent = NULL); // standard constructor
+	CCommitDlg(CWnd* pParent = nullptr); // standard constructor
 	virtual ~CCommitDlg();
 
 protected:

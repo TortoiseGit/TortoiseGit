@@ -22,7 +22,7 @@
 #include "AppUtils.h"
 
 IMPLEMENT_DYNAMIC(CToolAssocDlg, CDialog)
-CToolAssocDlg::CToolAssocDlg(const CString& type, bool add, CWnd* pParent /*=NULL*/)
+CToolAssocDlg::CToolAssocDlg(const CString& type, bool add, CWnd* pParent /*=nullptr*/)
 	: CDialog(CToolAssocDlg::IDD, pParent)
 	, m_sType(type)
 	, m_bAdd(add)
@@ -88,7 +88,7 @@ BOOL CToolAssocDlg::PreTranslateMessage(MSG* pMsg)
 void CToolAssocDlg::OnBnClickedToolbrowse()
 {
 	UpdateData(TRUE);
-	if (CAppUtils::FileOpenSave(m_sTool, NULL, IDS_SETTINGS_SELECTDIFF, IDS_PROGRAMSFILEFILTER, true, m_hWnd))
+	if (CAppUtils::FileOpenSave(m_sTool, nullptr, IDS_SETTINGS_SELECTDIFF, IDS_PROGRAMSFILEFILTER, true, m_hWnd))
 	{
 		UpdateData(FALSE);
 	}

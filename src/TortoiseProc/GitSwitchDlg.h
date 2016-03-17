@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2015 - TortoiseGit
+// Copyright (C) 2008-2013, 2015-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -27,7 +27,7 @@ class CGitSwitchDlg : public CHorizontalResizableStandAloneDialog,public CChoose
 	DECLARE_DYNAMIC(CGitSwitchDlg)
 
 public:
-	CGitSwitchDlg(CWnd* pParent = NULL);   // standard constructor
+	CGitSwitchDlg(CWnd* pParent = nullptr);   // standard constructor
 	virtual ~CGitSwitchDlg();
 
 // Dialog Data

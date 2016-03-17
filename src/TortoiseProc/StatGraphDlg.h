@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013 - TortoiseGit
+// Copyright (C) 2013, 2016 - TortoiseGit
 // Copyright (C) 2003-2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -39,7 +39,7 @@ class CMyMetaFileDC : public CMetaFileDC
 public:
 	HGDIOBJ SelectObject(HGDIOBJ hObject)
 	{
-		return (hObject != NULL) ? ::SelectObject(m_hDC, hObject) : NULL;
+		return (hObject != nullptr) ? ::SelectObject(m_hDC, hObject) : nullptr;
 	}
 };
 
@@ -62,7 +62,7 @@ class CStatGraphDlg : public CResizableStandAloneDialog//CResizableStandAloneDia
 	DECLARE_DYNAMIC(CStatGraphDlg)
 
 public:
-	CStatGraphDlg(CWnd* pParent = NULL);
+	CStatGraphDlg(CWnd* pParent = nullptr);
 	virtual ~CStatGraphDlg();
 
 	enum { IDD = IDD_STATGRAPH };

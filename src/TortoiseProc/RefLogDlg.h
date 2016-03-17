@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2013 - TortoiseGit
+// Copyright (C) 2009-2013, 2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -28,7 +28,7 @@ class CRefLogDlg : public CResizableStandAloneDialog
 	DECLARE_DYNAMIC(CRefLogDlg)
 
 public:
-	CRefLogDlg(CWnd* pParent = NULL);   // standard constructor
+	CRefLogDlg(CWnd* pParent = nullptr);   // standard constructor
 	virtual ~CRefLogDlg();
 
 // Dialog Data

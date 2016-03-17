@@ -26,7 +26,7 @@ namespace HighColorTab
 
 	Policy for creating a high color (32 bits) image list. The policy
 	ensure that there is a Win32 image list associated with the CImageList.
-	If this is not the case, a NULL pointer shall be returned.
+	If this is not the case, a nullptr pointer shall be returned.
 
 	Returned image list is wrapped in an std::auto_ptr.
 
@@ -38,7 +38,7 @@ namespace HighColorTab
 	static std::auto_ptr<CImageList> CreateImageList()
 	{
 		std::auto_ptr<CImageList> apILNew( new CImageList() );
-		if( NULL == apILNew.get() )
+		if (apILNew.get())
 		{
 			// ASSERT: The CImageList object creation failed.
 			ASSERT( FALSE );
@@ -82,7 +82,7 @@ namespace HighColorTab
 		// Create the replacement image list via policy.
 		std::auto_ptr<CImageList> apILNew( TListCreator::CreateImageList() );
 
-		bool bSuccess = (NULL != apILNew.get() );
+		bool bSuccess = (nullptr != apILNew.get());
 
 		// Reload the icons from the property pages.
 		int nTotalPageCount = rSheet.GetPageCount();

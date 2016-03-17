@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005-2006,2008,2010,2014 - TortoiseSVN
-// Copyright (C) 2008-2015 - TortoiseGit
+// Copyright (C) 2008-2015, 2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -42,13 +42,13 @@ CGitStatusCache* CGitStatusCache::m_pInstance;
 
 CGitStatusCache& CGitStatusCache::Instance()
 {
-	ATLASSERT(m_pInstance != NULL);
+	ATLASSERT(m_pInstance);
 	return *m_pInstance;
 }
 
 void CGitStatusCache::Create()
 {
-	ATLASSERT(m_pInstance == NULL);
+	ATLASSERT(!m_pInstance);
 	m_pInstance = new CGitStatusCache;
 
 	m_pInstance->watcher.SetFolderCrawler(&m_pInstance->m_folderCrawler);
@@ -167,7 +167,7 @@ bool CGitStatusCache::SaveCache()
 			WRITEVALUETOFILE(value);
 			for (auto I = m_pInstance->m_directoryCache.cbegin(); I != m_pInstance->m_directoryCache.cend(); ++I)
 			{
-				if (I->second == NULL)
+				if (!I->second)
 				{
 					value = 0;
 					WRITEVALUETOFILE(value);
@@ -201,7 +201,7 @@ void CGitStatusCache::Destroy()
 		m_pInstance->Stop();
 		Sleep(100);
 		delete m_pInstance;
-		m_pInstance = NULL;
+		m_pInstance = nullptr;
 	}
 }
 
@@ -344,14 +344,14 @@ void CGitStatusCache::ClearCache()
 	for (CCachedDirectory::CachedDirMap::iterator I = m_directoryCache.begin(); I != m_directoryCache.end(); ++I)
 	{
 		delete I->second;
-		I->second = NULL;
+		I->second = nullptr;
 	}
 	m_directoryCache.clear();
 }
 
 bool CGitStatusCache::RemoveCacheForDirectory(CCachedDirectory * cdir)
 {
-	if (cdir == NULL)
+	if (!cdir)
 		return false;
 
 	typedef std::map<CTGitPath, git_wc_status_kind>  ChildDirStatus;
@@ -403,12 +403,12 @@ void CGitStatusCache::RemoveCacheForPath(const CTGitPath& path)
 	// Stop the crawler starting on a new folder
 	CCrawlInhibitor crawlInhibit(&m_folderCrawler);
 	CCachedDirectory::ItDir itMap;
-	CCachedDirectory * dirtoremove = NULL;
+	CCachedDirectory* dirtoremove = nullptr;
 
 	itMap = m_directoryCache.find(path);
 	if ((itMap != m_directoryCache.end())&&(itMap->second))
 		dirtoremove = itMap->second;
-	if (dirtoremove == NULL)
+	if (!dirtoremove)
 		return;
 	ATLASSERT(path.IsEquivalentToWithoutCase(dirtoremove->m_directoryPath));
 	RemoveCacheForDirectory(dirtoremove);
@@ -428,7 +428,7 @@ CCachedDirectory * CGitStatusCache::GetDirectoryCacheEntry(const CTGitPath& path
 	}
 	else
 	{
-		// if the CCachedDirectory is NULL but the path is in our cache,
+		// if the CCachedDirectory is nullptr but the path is in our cache,
 		// that means that path got invalidated and needs to be treated
 		// as if it never was in our cache. So we remove the last remains
 		// from the cache and start from scratch.
@@ -472,7 +472,7 @@ CCachedDirectory * CGitStatusCache::GetDirectoryCacheEntry(const CTGitPath& path
 				m_bClearMemory = true;
 			}
 		}
-		return NULL;
+		return nullptr;
 	}
 }
 
@@ -487,7 +487,7 @@ CCachedDirectory * CGitStatusCache::GetDirectoryCacheEntryNoCreate(const CTGitPa
 		// We've found this directory in the cache
 		return itMap->second;
 	}
-	return NULL;
+	return nullptr;
 }
 
 /* Fetch is true, means fetch status from */
@@ -521,7 +521,7 @@ CStatusCacheEntry CGitStatusCache::GetStatusForPath(const CTGitPath& path, DWORD
 		if ((dirpath.IsEmpty()) || (!m_shellCache.IsPathAllowed(dirpath.GetWinPath())))
 			dirpath = path.GetDirectory();
 		CCachedDirectory * cachedDir = GetDirectoryCacheEntry(dirpath);
-		if (cachedDir != NULL)
+		if (cachedDir)
 		{
 			//CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": GetStatusForMember %d\n"), bFetch);
 			CStatusCacheEntry entry = cachedDir->GetStatusForMember(path, bRecursive, bFetch);

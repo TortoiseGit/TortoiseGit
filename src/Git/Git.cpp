@@ -40,8 +40,8 @@ typedef CComCritSecLock<CComCriticalSection> CAutoLocker;
 
 static LPCTSTR nextpath(const wchar_t* path, wchar_t* buf, size_t buflen)
 {
-	if (path == NULL || buf == NULL || buflen == 0)
-		return NULL;
+	if (!path || !buf || buflen == 0)
+		return nullptr;
 
 	const wchar_t* base = path;
 	wchar_t term = (*path == L'"') ? *path++ : L';';
@@ -54,7 +54,7 @@ static LPCTSTR nextpath(const wchar_t* path, wchar_t* buf, size_t buflen)
 	while (*path == term || *path == L';')
 		++path;
 
-	return (path != base) ? path : NULL;
+	return (path != base) ? path : nullptr;
 }
 
 static CString FindFileOnPath(const CString& filename, LPCTSTR env, bool wantDirectory = false)
@@ -62,7 +62,7 @@ static CString FindFileOnPath(const CString& filename, LPCTSTR env, bool wantDir
 	TCHAR buf[MAX_PATH] = { 0 };
 
 	// search in all paths defined in PATH
-	while ((env = nextpath(env, buf, MAX_PATH - 1)) != NULL && *buf)
+	while ((env = nextpath(env, buf, MAX_PATH - 1)) != nullptr && *buf)
 	{
 		TCHAR *pfin = buf + _tcslen(buf) - 1;
 
@@ -91,7 +91,7 @@ static CString FindFileOnPath(const CString& filename, LPCTSTR env, bool wantDir
 static BOOL FindGitPath()
 {
 	size_t size;
-	_tgetenv_s(&size, NULL, 0, _T("PATH"));
+	_tgetenv_s(&size, nullptr, 0, _T("PATH"));
 	if (!size)
 		return FALSE;
 
@@ -272,12 +272,11 @@ static bool IsPowerShell(CString cmd)
 
 int CGit::RunAsync(CString cmd, PROCESS_INFORMATION *piOut, HANDLE *hReadOut, HANDLE *hErrReadOut, CString *StdioFile)
 {
-	SECURITY_ATTRIBUTES sa;
 	CAutoGeneralHandle hRead, hWrite, hReadErr, hWriteErr;
 	CAutoGeneralHandle hStdioFile;
 
+	SECURITY_ATTRIBUTES sa = { 0 };
 	sa.nLength = sizeof(SECURITY_ATTRIBUTES);
-	sa.lpSecurityDescriptor=NULL;
 	sa.bInheritHandle=TRUE;
 	if (!CreatePipe(hRead.GetPointer(), hWrite.GetPointer(), &sa, 0))
 	{
@@ -293,10 +292,7 @@ int CGit::RunAsync(CString cmd, PROCESS_INFORMATION *piOut, HANDLE *hReadOut, HA
 	}
 
 	if(StdioFile)
-	{
-		hStdioFile=CreateFile(*StdioFile,GENERIC_WRITE,FILE_SHARE_READ | FILE_SHARE_WRITE,
-								&sa,CREATE_ALWAYS,FILE_ATTRIBUTE_NORMAL,NULL);
-	}
+		hStdioFile = CreateFile(*StdioFile, GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, &sa, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
 
 	STARTUPINFO si = { 0 };
 	PROCESS_INFORMATION pi = { 0 };
@@ -373,7 +369,7 @@ int CGit::RunAsync(CString cmd, PROCESS_INFORMATION *piOut, HANDLE *hReadOut, HA
 //Becuase A2W use stack as internal convert buffer.
 void CGit::StringAppend(CString *str, const BYTE *p, int code,int length)
 {
-	if(str == NULL)
+	if (!str)
 		return ;
 
 	int len ;
@@ -422,7 +418,7 @@ DWORD WINAPI CGit::AsyncReadStdErrThread(LPVOID lpParam)
 
 	DWORD readnumber;
 	BYTE data[CALL_OUTPUT_READ_CHUNK_SIZE];
-	while (ReadFile(pDataArray->fileHandle, data, CALL_OUTPUT_READ_CHUNK_SIZE, &readnumber, NULL))
+	while (ReadFile(pDataArray->fileHandle, data, CALL_OUTPUT_READ_CHUNK_SIZE, &readnumber, nullptr))
 	{
 		if (pDataArray->pcall->OnOutputErrData(data,readnumber))
 			break;
@@ -444,12 +440,12 @@ int CGit::Run(CGitCall* pcall)
 	ASYNCREADSTDERRTHREADARGS threadArguments;
 	threadArguments.fileHandle = hReadErr;
 	threadArguments.pcall = pcall;
-	CAutoGeneralHandle thread = CreateThread(NULL, 0, AsyncReadStdErrThread, &threadArguments, 0, NULL);
+	CAutoGeneralHandle thread = CreateThread(nullptr, 0, AsyncReadStdErrThread, &threadArguments, 0, nullptr);
 
 	DWORD readnumber;
 	BYTE data[CALL_OUTPUT_READ_CHUNK_SIZE];
 	bool bAborted=false;
-	while(ReadFile(hRead,data,CALL_OUTPUT_READ_CHUNK_SIZE,&readnumber,NULL))
+	while (ReadFile(hRead, data, CALL_OUTPUT_READ_CHUNK_SIZE, &readnumber, nullptr))
 	{
 		// TODO: when OnOutputData() returns 'true', abort git-command. Send CTRL-C signal?
 		if(!bAborted)//For now, flush output when command aborted.
@@ -479,7 +475,7 @@ int CGit::Run(CGitCall* pcall)
 class CGitCall_ByteVector : public CGitCall
 {
 public:
-	CGitCall_ByteVector(CString cmd,BYTE_VECTOR* pvector, BYTE_VECTOR* pvectorErr = NULL):CGitCall(cmd),m_pvector(pvector),m_pvectorErr(pvectorErr){}
+	CGitCall_ByteVector(CString cmd,BYTE_VECTOR* pvector, BYTE_VECTOR* pvectorErr = nullptr) : CGitCall(cmd),m_pvector(pvector), m_pvectorErr(pvectorErr) {}
 	virtual bool OnOutputData(const BYTE* data, size_t size)
 	{
 		if (!m_pvector || size == 0)
@@ -633,7 +629,7 @@ CString CGit::GetConfigValue(const CString& name, const CString& def, bool wantB
 		}
 		catch (const char *msg)
 		{
-			::MessageBox(NULL, _T("Could not get config.\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+			::MessageBox(nullptr, _T("Could not get config.\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 			return def;
 		}
 
@@ -695,7 +691,7 @@ int CGit::SetConfigValue(const CString& key, const CString& value, CONFIG_TYPE t
 		}
 		catch (const char *msg)
 		{
-			::MessageBox(NULL, _T("Could not set config.\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+			::MessageBox(nullptr, _T("Could not set config.\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 			return -1;
 		}
 	}
@@ -748,7 +744,7 @@ int CGit::UnsetConfigValue(const CString& key, CONFIG_TYPE type)
 		}
 		catch (const char *msg)
 		{
-			::MessageBox(NULL, _T("Could not unset config.\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+			::MessageBox(nullptr, _T("Could not unset config.\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 			return -1;
 		}
 	}
@@ -847,7 +843,7 @@ CString CGit::GetFullRefName(const CString& shortRefName)
 	CString refName;
 	CString cmd;
 	cmd.Format(L"git.exe rev-parse --symbolic-full-name %s", (LPCTSTR)shortRefName);
-	if (Run(cmd, &refName, NULL, CP_UTF8) != 0)
+	if (Run(cmd, &refName, nullptr, CP_UTF8) != 0)
 		return CString();//Error
 	int iStart = 0;
 	return refName.Tokenize(L"\n", iStart);
@@ -1146,7 +1142,7 @@ DWORD GetTortoiseGitTempPath(DWORD nBufferLength, LPTSTR lpBuffer)
 {
 	DWORD result = ::GetTempPath(nBufferLength, lpBuffer);
 	if (result == 0) return 0;
-	if (lpBuffer == NULL || (result + 13 > nBufferLength))
+	if (!lpBuffer || (result + 13 > nBufferLength))
 	{
 		if (lpBuffer)
 			lpBuffer[0] = '\0';
@@ -1154,7 +1150,7 @@ DWORD GetTortoiseGitTempPath(DWORD nBufferLength, LPTSTR lpBuffer)
 	}
 
 	_tcscat_s(lpBuffer, nBufferLength, _T("TortoiseGit\\"));
-	CreateDirectory(lpBuffer, NULL);
+	CreateDirectory(lpBuffer, nullptr);
 
 	return result + 13;
 }
@@ -1197,7 +1193,7 @@ int CGit::RunLogFile(CString cmd, const CString &filename, CString *stdErr)
 		cmd=CGit::ms_LastMsysGitDir+_T("\\")+cmd;
 
 	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": executing %s\n"), (LPCTSTR)cmd);
-	if(!CreateProcess(NULL,(LPWSTR)cmd.GetString(), NULL,NULL,TRUE,dwFlags,pEnv,(LPWSTR)m_CurrentDir.GetString(),&si,&pi))
+	if (!CreateProcess(nullptr, (LPWSTR)cmd.GetString(), nullptr, nullptr, TRUE, dwFlags, pEnv, (LPWSTR)m_CurrentDir.GetString(), &si, &pi))
 	{
 		CString err = CFormatMessageWrapper();
 		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": failed to create Process: %s\n"), (LPCTSTR)err.Trim());
@@ -1303,7 +1299,7 @@ int CGit::GetHash(CGitHash &hash, const CString& friendname)
 		CString cmd;
 		cmd.Format(_T("git.exe rev-parse %s"), (LPCTSTR)branch);
 		gitLastErr.Empty();
-		int ret = Run(cmd, &gitLastErr, NULL, CP_UTF8);
+		int ret = Run(cmd, &gitLastErr, nullptr, CP_UTF8);
 		hash = CGitHash(gitLastErr.Trim());
 		if (ret == 0)
 			gitLastErr.Empty();
@@ -1404,7 +1400,7 @@ int CGit::GetTagList(STRING_VECTOR &list)
 	{
 		CString cmd, output;
 		cmd=_T("git.exe tag -l");
-		int ret = Run(cmd, &output, NULL, CP_UTF8);
+		int ret = Run(cmd, &output, nullptr, CP_UTF8);
 		if(!ret)
 		{
 			int pos=0;
@@ -1508,7 +1504,7 @@ bool CGit::IsBranchTagNameUnique(const CString& name)
 
 	CString cmd;
 	cmd.Format(_T("git.exe show-ref --tags --heads refs/heads/%s refs/tags/%s"), (LPCTSTR)name, (LPCTSTR)name);
-	int ret = Run(cmd, &output, NULL, CP_UTF8);
+	int ret = Run(cmd, &output, nullptr, CP_UTF8);
 	if (!ret)
 	{
 		int i = 0, pos = 0;
@@ -1556,7 +1552,7 @@ bool CGit::BranchTagExists(const CString& name, bool isBranch /*= true*/)
 	cmd += _T("refs/heads/") + name;
 	cmd += _T(" refs/tags/") + name;
 
-	int ret = Run(cmd, &output, NULL, CP_UTF8);
+	int ret = Run(cmd, &output, nullptr, CP_UTF8);
 	if (!ret)
 	{
 		if (!output.IsEmpty())
@@ -1741,7 +1737,7 @@ int CGit::GetRemoteList(STRING_VECTOR &list)
 		int ret;
 		CString cmd, output;
 		cmd=_T("git.exe remote");
-		ret = Run(cmd, &output, NULL, CP_UTF8);
+		ret = Run(cmd, &output, nullptr, CP_UTF8);
 		if(!ret)
 		{
 			int pos=0;
@@ -1801,7 +1797,7 @@ int CGit::GetRemoteTags(const CString& remote, STRING_VECTOR& list)
 	cmd.Format(_T("git.exe ls-remote -t \"%s\""), (LPCTSTR)remote);
 	if (Run(cmd, &out, &err, CP_UTF8))
 	{
-		MessageBox(NULL, err, _T("TortoiseGit"), MB_ICONERROR);
+		MessageBox(nullptr, err, _T("TortoiseGit"), MB_ICONERROR);
 		return -1;
 	}
 
@@ -1891,7 +1887,7 @@ int CGit::GetRefList(STRING_VECTOR &list)
 	{
 		CString cmd, output;
 		cmd=_T("git.exe show-ref -d");
-		int ret = Run(cmd, &output, NULL, CP_UTF8);
+		int ret = Run(cmd, &output, nullptr, CP_UTF8);
 		if(!ret)
 		{
 			int pos=0;
@@ -1941,7 +1937,7 @@ int libgit2_addto_map_each_ref_fn(git_reference *ref, void *payload)
 	}
 
 	const git_oid * oid = git_object_id(gitObject);
-	if (oid == NULL)
+	if (!oid)
 		return 1;
 
 	CGitHash hash((char *)oid->id);
@@ -1980,7 +1976,7 @@ int CGit::GetMapHashToFriendName(MAP_HASH_NAME &map)
 	{
 		CString cmd, output;
 		cmd=_T("git.exe show-ref -d");
-		int ret = Run(cmd, &output, NULL, CP_UTF8);
+		int ret = Run(cmd, &output, nullptr, CP_UTF8);
 		if(!ret)
 		{
 			int pos=0;
@@ -2109,7 +2105,7 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 
 	// set HOME if not set already
 	size_t homesize;
-	_tgetenv_s(&homesize, NULL, 0, _T("HOME"));
+	_tgetenv_s(&homesize, nullptr, 0, _T("HOME"));
 	if (!homesize)
 		m_Environment.SetEnv(_T("HOME"), GetHomeDirectory());
 
@@ -2126,7 +2122,7 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 	else
 	{
 		TCHAR sPlink[MAX_PATH] = {0};
-		GetModuleFileName(NULL, sPlink, _countof(sPlink));
+		GetModuleFileName(nullptr, sPlink, _countof(sPlink));
 		LPTSTR ptr = _tcsrchr(sPlink, _T('\\'));
 		if (ptr) {
 			_tcscpy_s(ptr + 1, MAX_PATH - (ptr - sPlink + 1), _T("TortoiseGitPlink.exe"));
@@ -2137,7 +2133,7 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 
 	{
 		TCHAR sAskPass[MAX_PATH] = {0};
-		GetModuleFileName(NULL, sAskPass, _countof(sAskPass));
+		GetModuleFileName(nullptr, sAskPass, _countof(sAskPass));
 		LPTSTR ptr = _tcsrchr(sAskPass, _T('\\'));
 		if (ptr)
 		{
@@ -2734,18 +2730,18 @@ int CGit::GetDiffPath(CTGitPathList *PathList, CGitHash *hash1, CGitHash *hash2,
 		return -1;
 	}
 
-	if(diff ==NULL)
+	if (!diff)
 		return -1;
 
 	bool isStat = 0;
-	if(arg == NULL)
+	if (!arg)
 		isStat = true;
 	else
 		isStat = !!strstr(arg, "stat");
 
 	int count=0;
 
-	if(hash2 == NULL)
+	if (!hash2)
 		ret = git_root_diff(diff, hash1->m_hash, &file, &count,isStat);
 	else
 		ret = git_do_diff(diff,hash2->m_hash,hash1->m_hash,&file,&count,isStat);

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2015 - TortoiseGit
+// Copyright (C) 2008-2016 - TortoiseGit
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -161,7 +161,7 @@ public:
 	DWORD m_dwDefaultColumns;
 	/// registry access
 
-	void ReadSettings (DWORD defaultColumns, DWORD hideColumns, const CString& containerName, int ReadSettings, int *withlist=NULL);
+	void ReadSettings (DWORD defaultColumns, DWORD hideColumns, const CString& containerName, int ReadSettings, int* withlist = nullptr);
 	void WriteSettings() const;
 
 	/// read column definitions
@@ -198,7 +198,7 @@ public:
 	void OnColumnResized(NMHDR *pNMHDR, LRESULT *pResult)
 	{
 		LPNMHEADER header = reinterpret_cast<LPNMHEADER>(pNMHDR);
-		if (   (header != NULL)
+		if (header
 			&& (header->iItem >= 0)
 			&& (header->iItem < GetColumnCount()))
 		{
@@ -211,7 +211,7 @@ public:
 	{
 		LPNMHEADER header = reinterpret_cast<LPNMHEADER>(pNMHDR);
 		*pResult = TRUE;
-		if (   (header != NULL)
+		if (header
 			&& (header->iItem >= 0)
 			&& (header->iItem < GetColumnCount())
 			// only allow the reordering if the column was not moved left of the first
@@ -256,14 +256,14 @@ public:
 
 		// columns already marked as "invisible" internally may be (re-)sized to 0
 
-		if (   (phdr->pitem != NULL)
+		if (phdr->pitem
 			&& (phdr->pitem->mask == HDI_WIDTH)
 			&& (phdr->pitem->cxy == 0))
 		{
 			return 0;
 		}
 
-		if (   (phdr->pitem != NULL)
+		if (phdr->pitem
 			&& (phdr->pitem->mask != HDI_WIDTH))
 		{
 			return 0;
@@ -732,7 +732,7 @@ public:
 	 * \param bUpdate TRUE if the remote status is requested too.
 	 * \return TRUE on success.
 	 */
-	BOOL GetStatus ( const CTGitPathList* pathList=NULL
+	BOOL GetStatus (const CTGitPathList* pathList = nullptr
 				   , bool bUpdate = false
 				   , bool bShowIgnores = false
 				   , bool bShowUnRev = false
@@ -1032,7 +1032,7 @@ private:
 
 	/// sends an GitSLNM_CHECKCHANGED notification to the parent
 	void NotifyCheck();
-	CWnd * GetLogicalParent() { return m_hwndLogicalParent != NULL ? m_hwndLogicalParent : this->GetParent(); }
+	CWnd* GetLogicalParent() { return m_hwndLogicalParent ? m_hwndLogicalParent : this->GetParent(); }
 
 	void OnContextMenuList(CWnd * pWnd, CPoint point);
 	void OnContextMenuGroup(CWnd * pWnd, CPoint point);
@@ -1164,12 +1164,12 @@ public:
 		FILELIST_LOCALCHANGESIGNORED = 0x8, // assume valid & skip worktree files
 	};
 private:
-	int UpdateFileList(CTGitPathList *List = NULL);
+	int UpdateFileList(CTGitPathList* List = nullptr);
 public:
-	int UpdateFileList(int mask, bool once=true,CTGitPathList *List=NULL);
+	int UpdateFileList(int mask, bool once = true, CTGitPathList* List = nullptr);
 	int UpdateUnRevFileList(CTGitPathList &list);
-	int UpdateUnRevFileList(CTGitPathList *List=NULL);
-	int UpdateIgnoreFileList(CTGitPathList *List=NULL);
+	int UpdateUnRevFileList(CTGitPathList* List = nullptr);
+	int UpdateIgnoreFileList(CTGitPathList* List = nullptr);
 	int UpdateLocalChangesIgnoredFileList(CTGitPathList* list = nullptr);
 
 	int UpdateWithGitPathList(CTGitPathList &list);

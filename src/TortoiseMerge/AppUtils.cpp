@@ -1,6 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2010-2011,2014-2015 - TortoiseGit
+// Copyright (C) 2010-2011,2014-2016 - TortoiseGit
 // Copyright (C) 2006-2010, 2012-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -44,7 +44,7 @@ CAppUtils::~CAppUtils(void)
 {
 }
 
-BOOL CAppUtils::GetVersionedFile(CString sPath, CString sVersion, CString sSavePath, CSysProgressDlg * progDlg, HWND hWnd /*=NULL*/)
+BOOL CAppUtils::GetVersionedFile(CString sPath, CString sVersion, CString sSavePath, CSysProgressDlg* progDlg, HWND hWnd /*=nullptr*/)
 {
 	CString sSCMPath = CRegString(_T("Software\\TortoiseGitMerge\\SCMPath"), _T(""));
 	if (sSCMPath.IsEmpty())
@@ -61,10 +61,10 @@ BOOL CAppUtils::GetVersionedFile(CString sPath, CString sVersion, CString sSaveP
 	sSCMPath.Replace(_T("%4"), sTemp);
 	// start the external SCM program to fetch the specific version of the file
 	PROCESS_INFORMATION process;
-	if (!CCreateProcessHelper::CreateProcess(NULL, (LPTSTR)(LPCTSTR)sSCMPath, &process))
+	if (!CCreateProcessHelper::CreateProcess(nullptr, (LPTSTR)(LPCTSTR)sSCMPath, &process))
 	{
 		CFormatMessageWrapper errorDetails;
-		MessageBox(NULL, errorDetails, _T("TortoiseGitMerge"), MB_OK | MB_ICONERROR);
+		MessageBox(nullptr, errorDetails, _T("TortoiseGitMerge"), MB_OK | MB_ICONERROR);
 		return FALSE;
 	}
 	DWORD ret = 0;
@@ -95,7 +95,7 @@ bool CAppUtils::CreateUnifiedDiff(const CString& orig, const CString& modified, 
 	int result = g_Git.RunLogFile(cmd, output, &err);
 	if (result != 0 && result != 1 && bShowError)
 	{
-		MessageBox(NULL, _T("Failed to create patch.\n") + err, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+		MessageBox(nullptr, _T("Failed to create patch.\n") + err, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 		return false;
 	}
 	return true;
@@ -103,7 +103,7 @@ bool CAppUtils::CreateUnifiedDiff(const CString& orig, const CString& modified, 
 
 bool CAppUtils::HasClipboardFormat(UINT format)
 {
-	if (OpenClipboard(NULL))
+	if (OpenClipboard(nullptr))
 	{
 		UINT enumFormat = 0;
 		do

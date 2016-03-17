@@ -46,7 +46,7 @@ public:
 	{
 		// this function is to test the crash reporting utility
 		int * a;
-		a = NULL;
+		a = nullptr;
 		*a = 7;
 	}
 };

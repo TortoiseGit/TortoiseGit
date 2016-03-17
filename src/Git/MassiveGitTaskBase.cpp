@@ -120,7 +120,7 @@ bool CMassiveGitTaskBase::ExecuteCommands(volatile BOOL& cancel)
 
 void CMassiveGitTaskBase::ReportError(const CString& out, int /*exitCode*/)
 {
-	MessageBox(NULL, out, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+	MessageBox(nullptr, out, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 }
 
 int CMassiveGitTaskBase::GetListCount()

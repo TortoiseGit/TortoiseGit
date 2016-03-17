@@ -30,7 +30,7 @@ class CResolveDlg : public CResizableStandAloneDialog
 	DECLARE_DYNAMIC(CResolveDlg)
 
 public:
-	CResolveDlg(CWnd* pParent = NULL);   // standard constructor
+	CResolveDlg(CWnd* pParent = nullptr);   // standard constructor
 	virtual ~CResolveDlg();
 
 // Dialog Data

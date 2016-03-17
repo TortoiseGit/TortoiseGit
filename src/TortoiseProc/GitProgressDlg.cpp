@@ -26,7 +26,7 @@
 #include "CmdLineParser.h"
 
 IMPLEMENT_DYNAMIC(CGitProgressDlg, CResizableStandAloneDialog)
-CGitProgressDlg::CGitProgressDlg(CWnd* pParent /*=NULL*/)
+CGitProgressDlg::CGitProgressDlg(CWnd* pParent /*=nullptr*/)
 	: CResizableStandAloneDialog(CGitProgressDlg::IDD, pParent)
 	, m_AutoClose(AUTOCLOSE_NO)
 	, m_hAccel(nullptr)
@@ -185,12 +185,12 @@ BOOL CGitProgressDlg::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 		// only show the wait cursor over the list control
 		if ((pWnd)&&(pWnd == GetDlgItem(IDC_SVNPROGRESS)))
 		{
-			HCURSOR hCur = LoadCursor(NULL, IDC_WAIT);
+			HCURSOR hCur = LoadCursor(nullptr, IDC_WAIT);
 			SetCursor(hCur);
 			return TRUE;
 		}
 	}
-	HCURSOR hCur = LoadCursor(NULL, IDC_ARROW);
+	HCURSOR hCur = LoadCursor(nullptr, IDC_ARROW);
 	SetCursor(hCur);
 	return CResizableStandAloneDialog::OnSetCursor(pWnd, nHitTest, message);
 }

@@ -27,7 +27,7 @@ class CCreateRepoDlg : public CStandAloneDialog
 	DECLARE_DYNCREATE(CCreateRepoDlg)
 
 public:
-	CCreateRepoDlg(CWnd* pParent = NULL);   // standard constructor
+	CCreateRepoDlg(CWnd* pParent = nullptr);   // standard constructor
 	virtual ~CCreateRepoDlg();
 
 // Dialog Data

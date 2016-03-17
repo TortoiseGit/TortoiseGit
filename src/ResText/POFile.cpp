@@ -57,7 +57,7 @@ BOOL CPOFile::ParseFile(LPCTSTR szPath, BOOL bUpdateExisting, bool bAdjustEOLs)
 	//since stream classes still expect the filepath in char and not wchar_t
 	//we need to convert the filepath to multibyte
 	char filepath[MAX_PATH + 1] = { 0 };
-	WideCharToMultiByte(CP_ACP, NULL, szPath, -1, filepath, _countof(filepath)-1, NULL, NULL);
+	WideCharToMultiByte(CP_ACP, 0, szPath, -1, filepath, _countof(filepath) - 1, nullptr, nullptr);
 
 	std::wifstream File;
 	File.imbue(std::locale(std::locale(), new utf8_conversion()));
@@ -176,7 +176,7 @@ BOOL CPOFile::SaveFile(LPCTSTR szPath, LPCTSTR lpszHeaderFile)
 	//we need to convert the filepath to multibyte
 	char filepath[MAX_PATH + 1] = { 0 };
 	int nEntries = 0;
-	WideCharToMultiByte(CP_ACP, NULL, szPath, -1, filepath, _countof(filepath)-1, NULL, NULL);
+	WideCharToMultiByte(CP_ACP, 0, szPath, -1, filepath, _countof(filepath) - 1, nullptr, nullptr);
 
 	std::wofstream File;
 	File.imbue(std::locale(std::locale(), new utf8_conversion()));

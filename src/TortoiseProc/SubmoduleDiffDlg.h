@@ -27,7 +27,7 @@ class CSubmoduleDiffDlg : public CHorizontalResizableStandAloneDialog
 	DECLARE_DYNAMIC(CSubmoduleDiffDlg)
 
 public:
-	CSubmoduleDiffDlg(CWnd* pParent = NULL);
+	CSubmoduleDiffDlg(CWnd* pParent = nullptr);
 	virtual ~CSubmoduleDiffDlg();
 
 	enum { IDD = IDD_DIFFSUBMODULE };

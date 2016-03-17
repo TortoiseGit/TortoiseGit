@@ -33,7 +33,7 @@ extern CString g_sGroupingUUID;
 bool CCommonAppUtils::LaunchApplication(const CString& sCommandLine, UINT idErrMessageFormat, bool bWaitForStartup, CString *cwd, bool uac)
 {
 	CString theCWD = sOrigCWD;
-	if (cwd != NULL)
+	if (cwd)
 		theCWD = *cwd;
 
 	if (uac)
@@ -61,7 +61,7 @@ bool CCommonAppUtils::LaunchApplication(const CString& sCommandLine, UINT idErrM
 				{
 					CString temp;
 					temp.Format(idErrMessageFormat, (LPCTSTR)CFormatMessageWrapper());
-					MessageBox(NULL, temp, _T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
+					MessageBox(nullptr, temp, _T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
 				}
 				return false;
 			}
@@ -87,7 +87,7 @@ bool CCommonAppUtils::LaunchApplication(const CString& sCommandLine, UINT idErrM
 			{
 				CString temp;
 				temp.Format(idErrMessageFormat, (LPCTSTR)CFormatMessageWrapper());
-				MessageBox(NULL, temp, _T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
+				MessageBox(nullptr, temp, _T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
 			}
 			return false;
 		}
@@ -145,7 +145,7 @@ bool CCommonAppUtils::RunTortoiseGitProc(const CString& sCommandLine, bool uac, 
 		sCmd += L"\"";
 	}
 
-	return LaunchApplication(sCmd, NULL, false, NULL, uac);
+	return LaunchApplication(sCmd, NULL, false, nullptr, uac);
 }
 
 bool CCommonAppUtils::IsAdminLogin()
@@ -159,7 +159,7 @@ bool CCommonAppUtils::IsAdminLogin()
 
 	// Check whether the token is present in admin group.
 	BOOL isInAdminGroup = FALSE;
-	if (!CheckTokenMembership(NULL, administratorsGroup, &isInAdminGroup))
+	if (!CheckTokenMembership(nullptr, administratorsGroup, &isInAdminGroup))
 		return false;
 
 	return !!isInAdminGroup;
@@ -205,10 +205,10 @@ bool CCommonAppUtils::SetListCtrlBackgroundImage(HWND hListCtrl, UINT nID, int w
 	HBITMAP old_dst_bmp = (HBITMAP)::SelectObject(dst_hdc, bmp);
 	// Fill the background of the compatible DC with the given color
 	::SetBkColor(dst_hdc, bkColor);
-	::ExtTextOut(dst_hdc, 0, 0, ETO_OPAQUE, &rect, NULL, 0, NULL);
+	::ExtTextOut(dst_hdc, 0, 0, ETO_OPAQUE, &rect, nullptr, 0, nullptr);
 
 	// Draw the icon into the compatible DC
-	::DrawIconEx(dst_hdc, 0, 0, hIcon, rect.right, rect.bottom, 0, NULL, DI_NORMAL);
+	::DrawIconEx(dst_hdc, 0, 0, hIcon, rect.right, rect.bottom, 0, nullptr, DI_NORMAL);
 	::SelectObject(dst_hdc, old_dst_bmp);
 
 	LVBKIMAGE lv;
@@ -255,9 +255,9 @@ bool CCommonAppUtils::FileOpenSave(CString& path, int * filterindex, UINT title,
 	}
 	ofn.nFilterIndex = 1;
 
-	ofn.lpstrFileTitle = NULL;
+	ofn.lpstrFileTitle = nullptr;
 	ofn.nMaxFileTitle = 0;
-	ofn.lpstrInitialDir = NULL;
+	ofn.lpstrInitialDir = nullptr;
 	ofn.lpstrDefExt = defaultExt;
 	CString temp;
 	if (title)

@@ -22,11 +22,11 @@
 
 
 IMPLEMENT_DYNAMIC(CPromptDlg, CDialog)
-CPromptDlg::CPromptDlg(CWnd* pParent /*=NULL*/)
+CPromptDlg::CPromptDlg(CWnd* pParent /*=nullptr*/)
 	: CDialog(CPromptDlg::IDD, pParent)
 	, m_saveCheck(FALSE)
 	, m_hide(FALSE)
-	, m_hParentWnd(NULL)
+	, m_hParentWnd(nullptr)
 {
 }
 
@@ -68,7 +68,7 @@ BOOL CPromptDlg::OnInitDialog()
 	}
 
 	m_pass.SetFocus();
-	if ((m_hParentWnd==NULL)&&(hWndExplorer))
+	if (!m_hParentWnd && hWndExplorer)
 		CenterWindow(CWnd::FromHandle(m_hParentWnd));
 	return FALSE;
 }

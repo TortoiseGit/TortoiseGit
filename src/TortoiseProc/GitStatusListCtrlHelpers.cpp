@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008, 2014 - TortoiseSVN
-// Copyright (C) 2008-2015 - TortoiseGit
+// Copyright (C) 2008-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -41,14 +41,14 @@ PropertyList::operator= (const char* rhs)
 
 	// add all properties in the list
 
-	while ((rhs != NULL) && (*rhs != 0))
+	while (rhs && *rhs)
 	{
 		const char* next = strchr (rhs, ' ');
 
-		CString name (rhs, static_cast<int>(next == NULL ? strlen (rhs) : next - rhs));
+		CString name (rhs, static_cast<int>(!next ? strlen (rhs) : next - rhs));
 		properties.insert (std::make_pair (name, CString()));
 
-		rhs = next == NULL ? NULL : next+1;
+		rhs = !next ? nullptr : next + 1;
 	}
 
 	// done
@@ -120,7 +120,7 @@ void ColumnManager::ReadSettings
 	for (int i = 0; i < maxsize; ++i)
 	{
 		columns[i].index = static_cast<int>(i);
-		if(widthlist==NULL)
+		if (!widthlist)
 			columns[i].width = 0;
 		else
 			columns[i].width = widthlist[i];
@@ -434,7 +434,7 @@ void ColumnManager::ParseWidths (const CString& widths)
 {
 	for (int i = 0, count = widths.GetLength() / 8; i < count; ++i)
 	{
-		long width = _tcstol (widths.Mid (i*8, 8), NULL, 16);
+		long width = _tcstol (widths.Mid (i * 8, 8), nullptr, 16);
 		if (i < (int)itemName.size())
 		{
 			// a standard column
@@ -470,7 +470,7 @@ void ColumnManager::ParseColumnOrder
 
 	for (int i = 0, count = widths.GetLength() / 2; i < count; ++i)
 	{
-		int index = _tcstol (widths.Mid (i*2, 2), NULL, 16);
+		int index = _tcstol (widths.Mid (i * 2, 2), nullptr, 16);
 		if ((index < (int)itemName.size()))
 		{
 			alreadyPlaced.insert (index);

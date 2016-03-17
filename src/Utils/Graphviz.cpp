@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2014 - TortoiseGit
+// Copyright (C) 2013-2014, 2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -106,7 +106,7 @@ void Graphviz::DrawEdge(CString from, CString to)
 bool Graphviz::Save(const CString &path)
 {
 	DWORD dwWritten = 0;
-	CAutoFile hFile = CreateFile(path, GENERIC_WRITE, FILE_SHARE_DELETE, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+	CAutoFile hFile = CreateFile(path, GENERIC_WRITE, FILE_SHARE_DELETE, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
 	if (!hFile)
 		return false;
 
@@ -114,13 +114,13 @@ bool Graphviz::Save(const CString &path)
 	header.Format("digraph G {\r\n\tgraph [rankdir=BT];\r\n\tnode [style=\"filled, rounded\", shape=box, fontname=\"Courier New\", fontsize=9, height=0.26, penwidth=0];\r\n");
 	CStringA footer = "\r\n}";
 
-	if (!WriteFile(hFile, header, (DWORD)header.GetLength(), &dwWritten, NULL))
+	if (!WriteFile(hFile, header, (DWORD)header.GetLength(), &dwWritten, nullptr))
 		return false;
 
 	CStringA contentA = CUnicodeUtils::GetUTF8(content);
-	if (!WriteFile(hFile, contentA, (DWORD)contentA.GetLength(), &dwWritten, NULL))
+	if (!WriteFile(hFile, contentA, (DWORD)contentA.GetLength(), &dwWritten, nullptr))
 		return false;
-	if (!WriteFile(hFile, footer, (DWORD)footer.GetLength(), &dwWritten, NULL))
+	if (!WriteFile(hFile, footer, (DWORD)footer.GetLength(), &dwWritten, nullptr))
 		return false;
 
 	return true;

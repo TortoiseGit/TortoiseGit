@@ -41,7 +41,7 @@ STDMETHODIMP CShellExtClassFactory::QueryInterface(REFIID riid,
 	if(ppv == 0)
 		return E_POINTER;
 
-	*ppv = NULL;
+	*ppv = nullptr;
 
 	// Any interface on this object is the object pointer
 
@@ -77,7 +77,7 @@ STDMETHODIMP CShellExtClassFactory::CreateInstance(LPUNKNOWN pUnkOuter,
 	if(ppvObj == 0)
 		return E_POINTER;
 
-	*ppvObj = NULL;
+	*ppvObj = nullptr;
 
 	// Shell extensions typically don't support aggregation (inheritance)
 
@@ -90,7 +90,7 @@ STDMETHODIMP CShellExtClassFactory::CreateInstance(LPUNKNOWN pUnkOuter,
 
 	CShellExt* pShellExt = new (std::nothrow) CShellExt(m_StateToMake);  //Create the CShellExt object
 
-	if (NULL == pShellExt)
+	if (!pShellExt)
 		return E_OUTOFMEMORY;
 
 	const HRESULT hr = pShellExt->QueryInterface(riid, ppvObj);

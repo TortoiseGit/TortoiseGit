@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2013, 2016 - TortoiseGit
 // Copyright (C) 2003-2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -107,7 +107,7 @@ private:
 	HICON								m_hIcon;
 
 public:
-	CSettings(UINT nIDCaption,CTGitPath *CmdPath=NULL, CWnd* pParentWnd = NULL, UINT iSelectPage = 0);
+	CSettings(UINT nIDCaption, CTGitPath* CmdPath = nullptr, CWnd* pParentWnd = nullptr, UINT iSelectPage = 0);
 	virtual ~CSettings();
 	CString		m_DefaultPage;
 	/**

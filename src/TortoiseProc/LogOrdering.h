@@ -30,7 +30,7 @@ class CLogOrdering : public CDialog
 	DECLARE_DYNAMIC(CLogOrdering)
 
 public:
-	CLogOrdering(CWnd* pParent = NULL);
+	CLogOrdering(CWnd* pParent = nullptr);
 	virtual ~CLogOrdering();
 
 	enum { IDD = IDD_LOGORDERING };

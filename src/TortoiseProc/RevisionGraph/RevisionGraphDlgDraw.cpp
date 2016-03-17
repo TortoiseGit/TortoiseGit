@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2011, 2015 - TortoiseSVN
-// Copyright (C) 2012-2013, 2015 - TortoiseGit
+// Copyright (C) 2012-2013, 2015-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -54,7 +54,7 @@ CFont* CRevisionGraphWnd::GetFont(BOOL bItalic /*= FALSE*/, BOOL bBold /*= FALSE
 		nIndex |= 1;
 	if (bItalic)
 		nIndex |= 2;
-	if (m_apFonts[nIndex] == NULL)
+	if (!m_apFonts[nIndex])
 	{
 		m_apFonts[nIndex] = new CFont;
 		m_lfBaseFont.lfWeight = bBold ? FW_BOLD : FW_NORMAL;
@@ -69,7 +69,7 @@ CFont* CRevisionGraphWnd::GetFont(BOOL bItalic /*= FALSE*/, BOOL bBold /*= FALSE
 		if (!m_apFonts[nIndex]->CreateFontIndirect(&m_lfBaseFont))
 		{
 			delete m_apFonts[nIndex];
-			m_apFonts[nIndex] = NULL;
+			m_apFonts[nIndex] = nullptr;
 			return CWnd::GetFont();
 		}
 	}
@@ -91,7 +91,7 @@ void CRevisionGraphWnd::OnPaint()
 	{
 		CString fetch = CString(MAKEINTRESOURCE(IDS_PROC_LOADING));
 		dc.FillSolidRect(rect, ::GetSysColor(COLOR_APPWORKSPACE));
-		dc.ExtTextOut(20,20,ETO_CLIPPED,NULL,fetch,NULL);
+		dc.ExtTextOut(20, 20, ETO_CLIPPED, nullptr, fetch, nullptr);
 		CWnd::OnPaint();
 		return;
 
@@ -100,7 +100,7 @@ void CRevisionGraphWnd::OnPaint()
 		CString sNoGraphText;
 		sNoGraphText.LoadString(IDS_REVGRAPH_ERR_NOGRAPH);
 		dc.FillSolidRect(rect, RGB(255,255,255));
-		dc.ExtTextOut(20,20,ETO_CLIPPED,NULL,sNoGraphText,NULL);
+		dc.ExtTextOut(20, 20, ETO_CLIPPED, nullptr, sNoGraphText, nullptr);
 		return;
 	}
 
@@ -182,11 +182,11 @@ void CRevisionGraphWnd::DrawRoundedRect (GraphicsDevice& graphics, const Color& 
 		points[0].Y -= radius / 2;
 		path.AddLine (points[7], points[0]);
 
-		if (brush != NULL)
+		if (brush)
 		{
 			graphics.graphics->FillPath (brush, &path);
 		}
-		if (pen != NULL)
+		if (pen)
 			graphics.graphics->DrawPath (pen, &path);
 	}
 	else if (graphics.pSVG)
@@ -217,9 +217,9 @@ void CRevisionGraphWnd::DrawOctangle (GraphicsDevice& graphics, const Color& pen
 
 	if (graphics.graphics)
 	{
-		if (brush != NULL)
+		if (brush)
 			graphics.graphics->FillPolygon (brush, points, POINT_COUNT);
-		if (pen != NULL)
+		if (pen)
 			graphics.graphics->DrawPolygon (pen, points, POINT_COUNT);
 	}
 	else if (graphics.pSVG)
@@ -237,9 +237,9 @@ void CRevisionGraphWnd::DrawShape (GraphicsDevice& graphics, const Color& penCol
 	case TSVNRectangle:
 		if (graphics.graphics)
 		{
-			if (brush != NULL)
+			if (brush)
 				graphics.graphics->FillRectangle (brush, rect);
-			if (pen != NULL)
+			if (pen)
 				graphics.graphics->DrawRectangle (pen, rect);
 		}
 		else if (graphics.pSVG)
@@ -256,9 +256,9 @@ void CRevisionGraphWnd::DrawShape (GraphicsDevice& graphics, const Color& penCol
 	case TSVNEllipse:
 		if (graphics.graphics)
 		{
-			if (brush != NULL)
+			if (brush)
 				graphics.graphics->FillEllipse (brush, rect);
-			if (pen != NULL)
+			if (pen)
 				graphics.graphics->DrawEllipse(pen, rect);
 		}
 		else if (graphics.pSVG)
@@ -382,7 +382,7 @@ isionGraphWnd::GetBranchCover
 			? node.node->GetPrevious()
 			: node.node->GetNext();
 
-		nodeIndex = nextNode == NULL ? NO_INDEX : nextNode->GetIndex();
+		nodeIndex = !nextNode ? NO_INDEX : nextNode->GetIndex();
 	}
 
 	// expand it just a little to make it look nicer
@@ -501,7 +501,7 @@ void CRevisionGraphWnd::DrawGlyph
 		graphics.graphics->DrawImage ( glyphs
 			, target
 			, x, 0.0f, GLYPH_BITMAP_SIZE, GLYPH_BITMAP_SIZE
-			, UnitPixel, NULL, NULL, NULL);
+			, UnitPixel, nullptr, nullptr, nullptr);
 	}
 	else if (graphics.pSVG)
 	{
@@ -695,7 +695,7 @@ void CRevisionGraphWnd::IndicateGlyphDirection
 	{
 		for ( const CVisibleGraphNode::CCopyTarget* branch
 				= node.node->GetFirstCopyTarget()
-			; branch != NULL
+			; branch
 			; branch = branch->next())
 		{
 			RectF branchCover
@@ -737,7 +737,7 @@ void CRevisionGraphWnd::DrawMarker
 {
 	REAL width = 4*this->m_fZoomFactor<1? 1: 4*this->m_fZoomFactor;
 	Pen pen(penColor,width);
-	DrawRoundedRect(graphics, penColor, (int)width, &pen, Color(0,0,0), NULL, noderect);
+	DrawRoundedRect(graphics, penColor, (int)width, &pen, Color(0,0,0), nullptr, noderect);
 	if (num == 1)
 	{
 		// Roman number 1
@@ -1124,7 +1124,7 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& /*logR
 										(REAL)(noderect.Y + this->GetTopBottomMargin()*m_fZoomFactor+ hight*i)),
 						&blackbrush);
 
-					//graphics.graphics->DrawString(shortname.GetBuffer(), shortname.GetLength(), ::new Gdiplus::Font(graphics.pDC->m_hDC), PointF(noderect.X, noderect.Y + hight *i),NULL, NULL);
+					//graphics.graphics->DrawString(shortname.GetBuffer(), shortname.GetLength(), ::new Gdiplus::Font(graphics.pDC->m_hDC), PointF(noderect.X, noderect.Y + hight * i), nullptr, nullptr);
 
 				}
 				else if (graphics.pSVG)
@@ -1202,7 +1202,7 @@ void CRevisionGraphWnd::DrawCurrentNodeGlyphs (GraphicsDevice& graphics, Image* 
 
 void CRevisionGraphWnd::DrawGraph(GraphicsDevice& graphics, const CRect& rect, int nVScrollPos, int nHScrollPos, bool bDirectDraw)
 {
-	CMemDC* memDC = NULL;
+	CMemDC* memDC = nullptr;
 	if (graphics.pDC)
 	{
 		if (!bDirectDraw)
@@ -1332,7 +1332,7 @@ void CRevisionGraphWnd::SetNodeRect(GraphicsDevice& graphics, ogdf::node *pnode,
 			{
 				RectF rect;
 				CString shortref = m_HashMap[rev][i];
-				shortref = CGit::GetShortName(shortref,NULL);
+				shortref = CGit::GetShortName(shortref, nullptr);
 				if(graphics.pDC)
 				{
 					Gdiplus::Font font(fontname, (REAL)m_nFontSize, FontStyleRegular);

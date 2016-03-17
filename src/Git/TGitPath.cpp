@@ -116,9 +116,9 @@ int CTGitPath::ParserAction(git_delta_t action)
 void CTGitPath::SetFromGit(const char* pPath)
 {
 	Reset();
-	if (pPath == NULL)
+	if (!pPath)
 		return;
-	int len = MultiByteToWideChar(CP_UTF8, 0, pPath, -1, NULL, 0);
+	int len = MultiByteToWideChar(CP_UTF8, 0, pPath, -1, nullptr, 0);
 	if (len)
 	{
 		len = MultiByteToWideChar(CP_UTF8, 0, pPath, -1, m_sFwdslashPath.GetBuffer(len+1), len+1);
@@ -649,10 +649,10 @@ bool CTGitPath::IsAncestorOf(const CTGitPath& possibleDescendant) const
 
 // Get a string representing the file path, optionally with a base
 // section stripped off the front.
-CString CTGitPath::GetDisplayString(const CTGitPath* pOptionalBasePath /* = NULL*/) const
+CString CTGitPath::GetDisplayString(const CTGitPath* pOptionalBasePath /* = nullptr*/) const
 {
 	EnsureFwdslashPathSet();
-	if(pOptionalBasePath != NULL)
+	if (pOptionalBasePath)
 	{
 		// Find the length of the base-path without having to do an 'ensure' on it
 		int baseLength = max(pOptionalBasePath->m_sBackslashPath.GetLength(), pOptionalBasePath->m_sFwdslashPath.GetLength());
@@ -1102,7 +1102,7 @@ int CTGitPathList::FillUnRev(unsigned int action, CTGitPathList *list, CString *
 	CTGitPath path;
 
 	int count;
-	if(list==NULL)
+	if (!list)
 		count=1;
 	else
 		count=list->GetCount();
@@ -1115,7 +1115,7 @@ int CTGitPathList::FillUnRev(unsigned int action, CTGitPathList *list, CString *
 		if(action & CTGitPath::LOGACTIONS_IGNORE)
 			ignored= _T(" -i");
 
-		if(list==NULL)
+		if (!list)
 		{
 			cmd=_T("git.exe ls-files --exclude-standard --full-name --others -z");
 			cmd+=ignored;
@@ -1427,7 +1427,7 @@ bool CTGitPathList::LoadFromFile(const CTGitPath& filename)
 		CTraceToOutputDebugString::Instance()(__FUNCTION__ ": CFileException loading target file list\n");
 		TCHAR error[10000] = {0};
 		pE->GetErrorMessage(error, 10000);
-//		CMessageBox::Show(NULL, error, _T("TortoiseGit"), MB_ICONERROR);
+//		CMessageBox::Show(nullptr, error, _T("TortoiseGit"), MB_ICONERROR);
 		pE->Delete();
 		return false;
 	}
@@ -1710,7 +1710,7 @@ const CTGitPath* CTGitPathList::LookForGitPath(const CString& path)
 		if((*this)[i].GetGitPathString() == path )
 			return (CTGitPath*)&(*this)[i];
 	}
-	return NULL;
+	return nullptr;
 }
 CString CTGitPath::GetActionName(int action)
 {

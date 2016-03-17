@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2011 - TortoiseSVN
-// Copyright (C) 2012-2015 - TortoiseGit
+// Copyright (C) 2012-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -239,7 +239,7 @@ protected:
 										// (will be activated only after some delay)
 
 	CString		GetFriendRefName(ogdf::node);
-	STRING_VECTOR		GetFriendRefNames(ogdf::node, CGit::REF_TYPE *refTypes = NULL, int refTypeCount = 0);
+	STRING_VECTOR		GetFriendRefNames(ogdf::node, CGit::REF_TYPE* refTypes = nullptr, int refTypeCount = 0);
 
 	ogdf::Graph	m_Graph;
 	ogdf::GraphAttributes m_GraphAttr;
@@ -301,10 +301,10 @@ private:
 	{
 	public:
 		GraphicsDevice()
-			: pDC(NULL)
-			, graphics(NULL)
-			, pSVG(NULL)
-			, pGraphviz(NULL)
+			: pDC(nullptr)
+			, graphics(nullptr)
+			, pSVG(nullptr)
+			, pGraphviz(nullptr)
 		{
 		}
 		~GraphicsDevice() {}
@@ -337,7 +337,7 @@ private:
 
 	bool			UpdateSelectedEntry (ogdf::node clickedentry);
 	void			AppendMenu (CMenu& popup, UINT title, UINT command, UINT flags = MF_ENABLED);
-	void			AppendMenu (CMenu &popup, CString title, UINT command, CString *extra = NULL, CMenu *submenu = NULL);
+	void			AppendMenu(CMenu& popup, CString title, UINT command, CString* extra = nullptr, CMenu* submenu = nullptr);
 	void			AddGitOps (CMenu& popup);
 	void			AddGraphOps (CMenu& popup, const CVisibleGraphNode * node);
 	CString			GetSelectedURL() const;

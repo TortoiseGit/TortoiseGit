@@ -233,7 +233,7 @@ public:
 
 	int Run(CString cmd, CString* output, int code);
 	int Run(CString cmd, CString* output, CString* outputErr, int code);
-	int Run(CString cmd, BYTE_VECTOR *byte_array, BYTE_VECTOR *byte_arrayErr = NULL);
+	int Run(CString cmd, BYTE_VECTOR* byte_array, BYTE_VECTOR* byte_arrayErr = nullptr);
 	int Run(CGitCall* pcall);
 	int Run(CString cmd, const GitReceiverFunc& recv);
 
@@ -247,14 +247,14 @@ private:
 	CString GetUnifiedDiffCmd(const CTGitPath& path, const git_revnum_t& rev1, const git_revnum_t& rev2, bool bMerge, bool bCombine, int diffContext, bool bNoPrefix = false);
 
 public:
-	int RunAsync(CString cmd, PROCESS_INFORMATION *pi, HANDLE* hRead, HANDLE *hErrReadOut, CString *StdioFile = NULL);
+	int RunAsync(CString cmd, PROCESS_INFORMATION* pi, HANDLE* hRead, HANDLE* hErrReadOut, CString* StdioFile = nullptr);
 	int RunLogFile(CString cmd, const CString &filename, CString *stdErr);
 
-	int GetDiffPath(CTGitPathList *PathList, CGitHash *hash1, CGitHash *hash2, char *arg=NULL);
+	int GetDiffPath(CTGitPathList* PathList, CGitHash* hash1, CGitHash* hash2, char* arg = nullptr);
 
 	int GetGitEncode(TCHAR* configkey);
 
-	bool IsFastForward(const CString &from, const CString &to, CGitHash * commonAncestor = NULL);
+	bool IsFastForward(const CString& from, const CString& to, CGitHash* commonAncestor = nullptr);
 	CString GetConfigValue(const CString& name, const CString& def = CString(), bool wantBool = false);
 	bool GetConfigValueBool(const CString& name, const bool def = false);
 	int GetConfigValueInt32(const CString& name, const int def = 0);

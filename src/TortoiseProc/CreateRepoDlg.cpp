@@ -30,7 +30,7 @@
 
 IMPLEMENT_DYNCREATE(CCreateRepoDlg, CStandAloneDialog)
 
-CCreateRepoDlg::CCreateRepoDlg(CWnd* pParent /*=NULL*/)
+CCreateRepoDlg::CCreateRepoDlg(CWnd* pParent /*=nullptr*/)
 	: CStandAloneDialog(CCreateRepoDlg::IDD, pParent)
 {
 	m_bBare = FALSE;

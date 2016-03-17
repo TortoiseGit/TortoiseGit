@@ -62,8 +62,8 @@ public:
     void SetTransparency(BYTE alpha, COLORREF color = 0xFF000000);
 
     virtual bool Create();
-    virtual bool Create(DWORD dwStyles, HWND hParent = NULL, RECT* rect = NULL);
-    virtual bool CreateEx(DWORD dwExStyles, DWORD dwStyles, HWND hParent = NULL, RECT* rect = NULL, LPCTSTR classname = NULL);
+    virtual bool Create(DWORD dwStyles, HWND hParent = nullptr, RECT* rect = nullptr);
+    virtual bool CreateEx(DWORD dwExStyles, DWORD dwStyles, HWND hParent = nullptr, RECT* rect = nullptr, LPCTSTR classname = nullptr);
 
     //void MsgLoop();
     bool IsWindowClosed() const { return bWindowClosed; };
@@ -81,15 +81,15 @@ protected:
     bool bWindowRestored;
 
     //constructor
-    CWindow(HINSTANCE hInstance, CONST WNDCLASSEX* wcx = NULL)
-        : m_hwnd(NULL)
-        , hResource(NULL)
-        , m_hParent(NULL)
+    CWindow(HINSTANCE hInstance, CONST WNDCLASSEX* wcx = nullptr)
+        : m_hwnd(nullptr)
+        , hResource(nullptr)
+        , m_hParent(nullptr)
         , bWindowClosed(FALSE)
         , bWindowRestored(false)
     {
         hResource = hInstance;
-        if (wcx != NULL)
+        if (wcx)
             RegisterWindow(wcx);
     };
 

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013, 2015 - TortoiseGit
+// Copyright (C) 2013, 2015, 2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -26,7 +26,7 @@
 
 IMPLEMENT_DYNAMIC(CUserPassword, CDialog)
 
-CUserPassword::CUserPassword(CWnd* pParent /*=NULL*/)
+CUserPassword::CUserPassword(CWnd* pParent /*=nullptr*/)
 	: CDialog(CUserPassword::IDD, pParent)
 {
 

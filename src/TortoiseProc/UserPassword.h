@@ -25,7 +25,7 @@ class CUserPassword : public CDialog
 	DECLARE_DYNAMIC(CUserPassword)
 
 public:
-	CUserPassword(CWnd* pParent = NULL);   // standard constructor
+	CUserPassword(CWnd* pParent = nullptr);   // standard constructor
 	virtual ~CUserPassword();
 
 // Dialog Data

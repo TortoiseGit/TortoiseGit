@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008, 2011-2014 - TortoiseGit
+// Copyright (C) 2008, 2011-2014, 2016 - TortoiseGit
 // Copyright (C) 2003-2006,2008 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
@@ -34,7 +34,7 @@ class CChangedDlg : public CResizableStandAloneDialog
 	DECLARE_DYNAMIC(CChangedDlg)
 
 public:
-	CChangedDlg(CWnd* pParent = NULL);   // standard constructor
+	CChangedDlg(CWnd* pParent = nullptr);   // standard constructor
 	virtual ~CChangedDlg();
 
 // Dialog Data

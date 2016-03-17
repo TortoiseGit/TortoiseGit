@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (c) 2003 by Andreas Kapust <info@akinstaller.de>; <http://www.codeproject.com/Articles/2607/AutoComplete-without-IAutoComplete>
-// Copyright (C) 2009,2012-2013,2015 - TortoiseGit
+// Copyright (C) 2009, 2012-2013, 2015-2016 - TortoiseGit
 
 // Licensed under: The Code Project Open License (CPOL); <http://www.codeproject.com/info/cpol10.aspx>
 
@@ -29,7 +29,7 @@ CACEdit::CACEdit()
 {
 	m_iMode = _MODE_STANDARD_;
 	m_iType = -1;
-	m_pEdit = NULL;
+	m_pEdit = nullptr;
 	m_CursorMode = false;
 	m_PrefixChar = 0;
 	m_szDrive[0] = 0;
@@ -95,12 +95,12 @@ void CACEdit::Init()
 	GetWindowRect(rcWnd);
 
 	VERIFY(m_Liste.CreateEx(WS_EX_TOOLWINDOW,
-		szClassName,NULL,
+		szClassName, nullptr,
 		WS_THICKFRAME | WS_CHILD | WS_BORDER |
 		WS_CLIPSIBLINGS | WS_OVERLAPPED,
 		CRect(rcWnd.left, rcWnd.top +20, rcWnd.left+ 200, rcWnd.top+200),
 		GetDesktopWindow(),
-		0x3E8, NULL));
+		0x3E8, nullptr));
 
 	CString m_ClassName;
 	::GetClassName(GetSafeHwnd(), m_ClassName.GetBuffer(32), 32);
@@ -518,7 +518,7 @@ void CACEdit::ReadDirectory(CString m_Dir)
 		m_Dir.Format(_T("%s%s"),m_szDrive, m_szDir);
 	}
 
-	//ist hübscher
+	//ist hÃ¼bscher
 	ch = (TCHAR)towupper(m_Dir.GetAt(0));
 	m_Dir.SetAt(0,ch);
 

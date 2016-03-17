@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (c) 2003 by Andreas Kapust <info@akinstaller.de>; <http://www.codeproject.com/Articles/2607/AutoComplete-without-IAutoComplete>
-// Copyright (C) 2009,2012-2013,2015 - TortoiseGit
+// Copyright (C) 2009, 2012-2013, 2015-2016 - TortoiseGit
 
 // Licensed under: The Code Project Open License (CPOL); <http://www.codeproject.com/info/cpol10.aspx>
 
@@ -31,7 +31,7 @@ static UINT auIDStatusBar[] =
 void DoPaintMessageLoop()
 {
 	MSG message1;
-	while(::PeekMessage(&message1,NULL,WM_PAINT,WM_PAINT, PM_REMOVE))
+	while (::PeekMessage(&message1, nullptr, WM_PAINT, WM_PAINT, PM_REMOVE))
 	{
 		::TranslateMessage(&message1);
 		::DispatchMessage(&message1);
@@ -47,11 +47,11 @@ CACListWnd::CACListWnd()
 	m_ItemHeight = 16;
 	m_lSelItem = -1;
 	m_VisibleItems = 0;
-	m_pEditParent = NULL;
+	m_pEditParent = nullptr;
 	m_LastSize.SetRectEmpty();
 	m_PrefixChar = 0;
 	m_lMode = 0;
-	pFontDC = NULL;
+	pFontDC = nullptr;
 	m_nIDTimer = 0;
 	SecureZeroMemory(&logfont, sizeof(LOGFONT));
 }
@@ -103,7 +103,7 @@ END_MESSAGE_MAP()
 
 
 /////////////////////////////////////////////////////////////////////////////
-// Behandlungsroutinen für Nachrichten CACListWnd
+// Behandlungsroutinen fÃ¼r Nachrichten CACListWnd
 
 void CACListWnd::DrawItem(CDC* pDC,long m_lItem,long width)
 {
@@ -135,7 +135,7 @@ void CACListWnd::OnPaint()
 {
 	CPaintDC dc(this);
 	CRect rcWnd,m_rect, rc;
-	CDC MemDC,*pDC=NULL;
+	CDC MemDC, *pDC = nullptr;
 	CBitmap  m_bitmap, *m_pOldBitmap;
 	int i;
 
@@ -444,7 +444,7 @@ BOOL CACListWnd::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 	GetCursorPos(&ptCursor);
 	ScreenToClient(&ptCursor);
 
-	if(rectClient.PtInRect(ptCursor)) // Vergrößerungs-Cursor
+	if(rectClient.PtInRect(ptCursor)) // VergrÃ¶ÃŸerungs-Cursor
 	{
 		return CWnd::OnSetCursor(pWnd, nHitTest, message);
 	}
@@ -695,7 +695,7 @@ void CACListWnd::OnShowWindow(BOOL bShow, UINT nStatus)
 {
 	if(bShow)
 	{
-		m_nIDTimer = (long)SetTimer( IDTimerInstall, 200, NULL);
+		m_nIDTimer = (long)SetTimer(IDTimerInstall, 200, nullptr);
 		m_pEditParent->GetParent()->GetWindowRect(m_ParentRect);
 	}
 	else
@@ -875,7 +875,7 @@ void CACListWnd::OnGetMinMaxInfo(MINMAXINFO FAR* lpMMI)
 
 
 		// Vers. 1.2
-		if(m_pEditParent != NULL)
+		if (m_pEditParent)
 		{
 			RECT rc;
 			m_pEditParent->GetWindowRect (&rc);

@@ -23,9 +23,9 @@
 
 
 IMPLEMENT_DYNAMIC(CInputDlg, CResizableStandAloneDialog)
-CInputDlg::CInputDlg(CWnd* pParent /*=NULL*/)
+CInputDlg::CInputDlg(CWnd* pParent /*=nullptr*/)
 	: CResizableStandAloneDialog(CInputDlg::IDD, pParent)
-	, m_pProjectProperties(NULL)
+	, m_pProjectProperties(nullptr)
 	, m_iCheck(0)
 	, m_bUseLogWidth(true)
 {
@@ -145,12 +145,8 @@ BOOL CInputDlg::PreTranslateMessage(MSG* pMsg)
 void CInputDlg::OnEnChangeLogmessage()
 {
 	CString sTemp = m_cInput.GetText();
-	if ((!m_bUseLogWidth)||((m_pProjectProperties==NULL)||(sTemp.GetLength() >= m_pProjectProperties->nMinLogSize)))
-	{
+	if (!m_bUseLogWidth || !m_pProjectProperties || sTemp.GetLength() >= m_pProjectProperties->nMinLogSize)
 		DialogEnableWindow(IDOK, TRUE);
-	}
 	else
-	{
 		DialogEnableWindow(IDOK, FALSE);
-	}
 }

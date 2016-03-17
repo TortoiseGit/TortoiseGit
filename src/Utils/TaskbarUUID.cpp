@@ -48,14 +48,14 @@ void SetTaskIDPerUUID()
     }
 }
 
-std::wstring GetTaskIDPerUUID(LPCTSTR uuid /*= NULL */)
+std::wstring GetTaskIDPerUUID(LPCTSTR uuid /*= nullptr */)
 {
     CRegStdDWORD r = CRegStdDWORD(_T("Software\\TortoiseGit\\GroupTaskbarIconsPerRepo"), 3);
     std::wstring id = APPID;
     if ((r < 2)||(r == 3))
     {
         wchar_t buf[MAX_PATH] = {0};
-        GetModuleFileName(NULL, buf, MAX_PATH);
+        GetModuleFileName(nullptr, buf, MAX_PATH);
         std::wstring n = buf;
         n = n.substr(n.find_last_of('\\'));
         id += n;
@@ -109,7 +109,7 @@ void SetUUIDOverlayIcon( HWND hWnd )
         return;
 
     CComPtr<ITaskbarList3> pTaskbarInterface;
-    if (FAILED(pTaskbarInterface.CoCreateInstance(CLSID_TaskbarList, NULL, CLSCTX_INPROC_SERVER)))
+    if (FAILED(pTaskbarInterface.CoCreateInstance(CLSID_TaskbarList, nullptr, CLSCTX_INPROC_SERVER)))
         return;
 
     int foundUUIDIndex = 0;
@@ -148,7 +148,7 @@ void SetUUIDOverlayIcon( HWND hWnd )
     if (!sicon.empty())
     {
         if (sicon.size() >= 4 && !_wcsicmp(sicon.substr(sicon.size() - 4).c_str(), L".ico"))
-            icon = (HICON)::LoadImage(NULL, sicon.c_str(), IMAGE_ICON, 16, 16, LR_LOADFROMFILE | LR_SHARED);
+            icon = (HICON)::LoadImage(nullptr, sicon.c_str(), IMAGE_ICON, 16, 16, LR_LOADFROMFILE | LR_SHARED);
         else
         {
             ULONG_PTR gdiplusToken = 0;

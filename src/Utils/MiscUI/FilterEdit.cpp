@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012, 2014 - TortoiseGit
+// Copyright (C) 2012, 2014, 2016 - TortoiseGit
 // Copyright (C) 2007, 2012-2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -22,16 +22,17 @@
 
 IMPLEMENT_DYNAMIC(CFilterEdit, CEdit)
 
-CFilterEdit::CFilterEdit() : m_hIconCancelNormal(NULL)
-	, m_hIconCancelPressed(NULL)
-	, m_hIconInfo(NULL)
+CFilterEdit::CFilterEdit()
+	: m_hIconCancelNormal(nullptr)
+	, m_hIconCancelPressed(nullptr)
+	, m_hIconInfo(nullptr)
 	, m_bPressed(FALSE)
 	, m_bShowCancelButtonAlways(FALSE)
 	, m_iButtonClickedMessageId(WM_FILTEREDIT_INFOCLICKED)
 	, m_iCancelClickedMessageId(WM_FILTEREDIT_CANCELCLICKED)
-	, m_pValidator(NULL)
+	, m_pValidator(nullptr)
 	, m_backColor(GetSysColor(COLOR_WINDOW))
-	, m_brBack(NULL)
+	, m_brBack(nullptr)
 {
 	m_rcEditArea.SetRect(0, 0, 0, 0);
 	m_rcButtonArea.SetRect(0, 0, 0, 0);
@@ -132,7 +133,7 @@ BOOL CFilterEdit::SetCueBanner(LPCWSTR lpcwText)
 		size_t len = _tcslen(lpcwText);
 		m_pCueBanner.reset(new TCHAR[len + 1]);
 		_tcscpy_s(m_pCueBanner.get(), len + 1, lpcwText);
-		InvalidateRect(NULL, TRUE);
+		InvalidateRect(nullptr, TRUE);
 		return TRUE;
 	}
 	return FALSE;
@@ -202,18 +203,18 @@ BOOL CFilterEdit::OnEraseBkgnd(CDC* pDC)
 		if (!m_bPressed)
 		{
 			DrawIconEx(pDC->GetSafeHdc(), m_rcButtonArea.left, m_rcButtonArea.top, m_hIconCancelNormal,
-				m_sizeCancelIcon.cx, m_sizeCancelIcon.cy, 0, NULL, DI_NORMAL);
+				m_sizeCancelIcon.cx, m_sizeCancelIcon.cy, 0, nullptr, DI_NORMAL);
 		}
 		else
 		{
 			DrawIconEx(pDC->GetSafeHdc(), m_rcButtonArea.left, m_rcButtonArea.top, m_hIconCancelPressed,
-				m_sizeCancelIcon.cx, m_sizeCancelIcon.cy, 0, NULL, DI_NORMAL);
+				m_sizeCancelIcon.cx, m_sizeCancelIcon.cy, 0, nullptr, DI_NORMAL);
 		}
 	}
 	if (m_hIconInfo)
 	{
 		DrawIconEx(pDC->GetSafeHdc(), m_rcInfoArea.left, m_rcInfoArea.top, m_hIconInfo,
-			m_sizeInfoIcon.cx, m_sizeInfoIcon.cy, 0, NULL, DI_NORMAL);
+			m_sizeInfoIcon.cx, m_sizeInfoIcon.cy, 0, nullptr, DI_NORMAL);
 	}
 
 	return TRUE;
@@ -222,7 +223,7 @@ BOOL CFilterEdit::OnEraseBkgnd(CDC* pDC)
 void CFilterEdit::OnLButtonUp(UINT nFlags, CPoint point)
 {
 	m_bPressed = FALSE;
-	InvalidateRect(NULL);
+	InvalidateRect(nullptr);
 	if (m_rcButtonArea.PtInRect(point))
 	{
 		SetWindowText(_T(""));
@@ -250,7 +251,7 @@ void CFilterEdit::OnLButtonUp(UINT nFlags, CPoint point)
 void CFilterEdit::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	m_bPressed = m_rcButtonArea.PtInRect(point);
-	//InvalidateRect(NULL);
+	//InvalidateRect(nullptr);
 	CEdit::OnLButtonDown(nFlags, point);
 }
 
@@ -298,7 +299,7 @@ BOOL CFilterEdit::OnEnChange()
 {
 	// check whether the entered text is valid
 	Validate();
-	InvalidateRect(NULL);
+	InvalidateRect(nullptr);
 	return FALSE;
 }
 
@@ -309,7 +310,7 @@ HBRUSH CFilterEdit::CtlColor(CDC* pDC, UINT /*nCtlColor*/)
 		pDC->SetBkColor(m_backColor);
 		return m_brBack;
 	}
-	return NULL;
+	return nullptr;
 }
 
 void CFilterEdit::ValidateAndRedraw()
@@ -369,7 +370,7 @@ void CFilterEdit::OnPaint()
 
 void CFilterEdit::DrawDimText()
 {
-	if (m_pCueBanner.get() == NULL)
+	if (!m_pCueBanner.get())
 		return;
 	if (GetWindowTextLength())
 		return;
@@ -395,12 +396,12 @@ void CFilterEdit::DrawDimText()
 
 void CFilterEdit::OnEnKillfocus()
 {
-	InvalidateRect(NULL);
+	InvalidateRect(nullptr);
 }
 
 void CFilterEdit::OnEnSetfocus()
 {
-	InvalidateRect(NULL);
+	InvalidateRect(nullptr);
 }
 
 LRESULT CFilterEdit::OnPaste(WPARAM, LPARAM)

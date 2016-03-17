@@ -29,7 +29,7 @@ class CSVNDCommitDlg : public CStandAloneDialog
 	DECLARE_DYNAMIC(CSVNDCommitDlg)
 
 public:
-	CSVNDCommitDlg(CWnd* pParent = NULL);   // standard constructor
+	CSVNDCommitDlg(CWnd* pParent = nullptr);   // standard constructor
 	virtual ~CSVNDCommitDlg();
 
 // Dialog Data

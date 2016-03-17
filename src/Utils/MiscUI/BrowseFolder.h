@@ -56,7 +56,7 @@ public:
 	 * \return one of CANCEL, NOPATH or OK
 	 */
 	CBrowseFolder::retVal Show(HWND parent, CString& path, const CString& sDefaultPath = CString());
-	CBrowseFolder::retVal Show(HWND parent, LPTSTR path, size_t pathlen, LPCTSTR szDefaultPath = NULL);
+	CBrowseFolder::retVal Show(HWND parent, LPTSTR path, size_t pathlen, LPCTSTR szDefaultPath = nullptr);
 
 	/**
 	 * If this is set to true, then the second checkbox gets disabled as soon as the first

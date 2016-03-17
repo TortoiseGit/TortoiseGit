@@ -111,7 +111,7 @@ BOOL CTortoiseProcApp::InitInstance()
 	CMFCButton::EnableWindowsTheming();
 
 	Gdiplus::GdiplusStartupInput gdiplusStartupInput;
-	Gdiplus::GdiplusStartup(&m_gdiplusToken,&gdiplusStartupInput,NULL);
+	Gdiplus::GdiplusStartup(&m_gdiplusToken, &gdiplusStartupInput, nullptr);
 
 	//set the resource dll for the required language
 	CRegDWORD loc = CRegDWORD(_T("Software\\TortoiseGit\\LanguageID"), 1033);
@@ -133,7 +133,7 @@ BOOL CTortoiseProcApp::InitInstance()
 		if (sFileVer == sVer)
 		{
 			HINSTANCE hInst = LoadLibrary(langDll);
-			if (hInst != NULL)
+			if (hInst)
 			{
 				CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Load Language DLL %s\n"), langDll);
 				AfxSetResourceHandle(hInst);
@@ -203,7 +203,7 @@ BOOL CTortoiseProcApp::InitInstance()
 
 	if (!g_Git.CheckMsysGitDir())
 	{
-		UINT ret = CMessageBox::Show(NULL, IDS_PROC_NOMSYSGIT, IDS_APPNAME, 3, IDI_HAND, IDS_PROC_SETMSYSGITPATH, IDS_PROC_GOTOMSYSGITWEBSITE, IDS_ABORTBUTTON);
+		UINT ret = CMessageBox::Show(nullptr, IDS_PROC_NOMSYSGIT, IDS_APPNAME, 3, IDI_HAND, IDS_PROC_SETMSYSGITPATH, IDS_PROC_GOTOMSYSGITWEBSITE, IDS_ABORTBUTTON);
 		if(ret == 2)
 		{
 			ShellExecute(nullptr, _T("open"), _T("https://git-for-windows.github.io/"), nullptr, nullptr, SW_SHOW);
@@ -217,7 +217,7 @@ BOOL CTortoiseProcApp::InitInstance()
 	}
 	if (CAppUtils::GetMsysgitVersion() < 0x01090500)
 	{
-		int ret = CMessageBox::ShowCheck(NULL, IDS_PROC_OLDMSYSGIT, IDS_APPNAME, 1, IDI_EXCLAMATION, IDS_PROC_GOTOMSYSGITWEBSITE, IDS_ABORTBUTTON, IDS_IGNOREBUTTON, _T("OldMsysgitVersionWarning"), IDS_PROC_NOTSHOWAGAINIGNORE);
+		int ret = CMessageBox::ShowCheck(nullptr, IDS_PROC_OLDMSYSGIT, IDS_APPNAME, 1, IDI_EXCLAMATION, IDS_PROC_GOTOMSYSGITWEBSITE, IDS_ABORTBUTTON, IDS_IGNOREBUTTON, _T("OldMsysgitVersionWarning"), IDS_PROC_NOTSHOWAGAINIGNORE);
 		if (ret == 1)
 		{
 			CMessageBox::RemoveRegistryKey(_T("OldMsysgitVersionWarning")); // only store answer if it is "Ignore"
@@ -264,17 +264,15 @@ BOOL CTortoiseProcApp::InitInstance()
 
 	CCmdLineParser parser(AfxGetApp()->m_lpCmdLine);
 
-	hWndExplorer = NULL;
+	hWndExplorer = nullptr;
 	CString sVal = parser.GetVal(_T("hwnd"));
 	if (!sVal.IsEmpty())
 		hWndExplorer = (HWND)_wcstoui64(sVal, nullptr, 16);
 
-	while (GetParent(hWndExplorer)!=NULL)
+	while (GetParent(hWndExplorer))
 		hWndExplorer = GetParent(hWndExplorer);
 	if (!IsWindow(hWndExplorer))
-	{
-		hWndExplorer = NULL;
-	}
+		hWndExplorer = nullptr;
 
 	// if HKCU\Software\TortoiseGit\Debug is not 0, show our command line
 	// in a message box
@@ -301,7 +299,7 @@ BOOL CTortoiseProcApp::InitInstance()
 		}
 		else
 		{
-			CMessageBox::Show(NULL, IDS_ERR_INVALIDPATH, IDS_APPNAME, MB_ICONERROR);
+			CMessageBox::Show(nullptr, IDS_ERR_INVALIDPATH, IDS_APPNAME, MB_ICONERROR);
 			return FALSE;
 		}
 		CString newCmd;
@@ -311,7 +309,7 @@ BOOL CTortoiseProcApp::InitInstance()
 
 	if ( parser.HasKey(_T("path")) && parser.HasKey(_T("pathfile")))
 	{
-		CMessageBox::Show(NULL, IDS_ERR_INVALIDPATH, IDS_APPNAME, MB_ICONERROR);
+		CMessageBox::Show(nullptr, IDS_ERR_INVALIDPATH, IDS_APPNAME, MB_ICONERROR);
 		return FALSE;
 	}
 
@@ -393,7 +391,7 @@ BOOL CTortoiseProcApp::InitInstance()
 
 	// Set CWD to temporary dir, and restore it later
 	{
-		DWORD len = GetCurrentDirectory(0, NULL);
+		DWORD len = GetCurrentDirectory(0, nullptr);
 		if (len)
 		{
 			auto originalCurrentDirectory = std::make_unique<TCHAR[]>(len);
@@ -410,7 +408,7 @@ BOOL CTortoiseProcApp::InitInstance()
 
 	CheckForNewerVersion();
 
-	CAutoGeneralHandle TGitMutex = ::CreateMutex(NULL, FALSE, _T("TortoiseGitProc.exe"));
+	CAutoGeneralHandle TGitMutex = ::CreateMutex(nullptr, FALSE, _T("TortoiseGitProc.exe"));
 	if (!g_Git.SetCurrentDir(cmdLinePath.GetWinPathString(), parser.HasKey(_T("submodule")) == TRUE))
 	{
 		for (int i = 0; i < pathList.GetCount(); ++i)
@@ -514,7 +512,7 @@ BOOL CTortoiseProcApp::InitInstance()
 	// remove them. But only delete 'old' files because some
 	// apps might still be needing the recent ones.
 	{
-		DWORD len = GetTortoiseGitTempPath(0, NULL);
+		DWORD len = GetTortoiseGitTempPath(0, nullptr);
 		auto path = std::make_unique<TCHAR[]>(len + 100);
 		len = GetTortoiseGitTempPath (len + 100, path.get());
 		if (len != 0)
@@ -527,11 +525,11 @@ BOOL CTortoiseProcApp::InitInstance()
 			CString filepath;
 			while (finder.NextFile(filepath, &isDir))
 			{
-				HANDLE hFile = ::CreateFile(filepath, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, isDir ? FILE_FLAG_BACKUP_SEMANTICS : NULL, NULL);
+				HANDLE hFile = ::CreateFile(filepath, GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, isDir ? FILE_FLAG_BACKUP_SEMANTICS : 0, nullptr);
 				if (hFile != INVALID_HANDLE_VALUE)
 				{
 					FILETIME createtime_;
-					if (::GetFileTime(hFile, &createtime_, NULL, NULL))
+					if (::GetFileTime(hFile, &createtime_, nullptr, nullptr))
 					{
 						::CloseHandle(hFile);
 						__int64 createtime = (((_int64)createtime_.dwHighDateTime)<<32) | ((__int64)createtime_.dwLowDateTime);
@@ -668,7 +666,7 @@ void CTortoiseProcApp::CheckUpgrade()
 
 	if (lVersion <= 0x01070600)
 	{
-		CoInitialize(NULL);
+		CoInitialize(nullptr);
 		EnsureGitLibrary();
 		CoUninitialize();
 		CRegStdDWORD(_T("Software\\TortoiseGit\\ConvertBase")).removeValue();
@@ -688,7 +686,7 @@ void CTortoiseProcApp::CheckUpgrade()
 void CTortoiseProcApp::InitializeJumpList(const CString& appid)
 {
 	// for Win7 : use a custom jump list
-	CoInitialize(NULL);
+	CoInitialize(nullptr);
 	SetAppID(appid);
 	DeleteJumpList(appid);
 	DoInitializeJumpList(appid);
@@ -698,7 +696,7 @@ void CTortoiseProcApp::InitializeJumpList(const CString& appid)
 void CTortoiseProcApp::DoInitializeJumpList(const CString& appid)
 {
 	ATL::CComPtr<ICustomDestinationList> pcdl;
-	HRESULT hr = pcdl.CoCreateInstance(CLSID_DestinationList, NULL, CLSCTX_INPROC_SERVER);
+	HRESULT hr = pcdl.CoCreateInstance(CLSID_DestinationList, nullptr, CLSCTX_INPROC_SERVER);
 	if (FAILED(hr))
 		return;
 
@@ -713,7 +711,7 @@ void CTortoiseProcApp::DoInitializeJumpList(const CString& appid)
 		return;
 
 	ATL::CComPtr<IObjectCollection> poc;
-	hr = poc.CoCreateInstance(CLSID_EnumerableObjectCollection, NULL, CLSCTX_INPROC_SERVER);
+	hr = poc.CoCreateInstance(CLSID_EnumerableObjectCollection, nullptr, CLSCTX_INPROC_SERVER);
 	if (FAILED(hr))
 		return;
 

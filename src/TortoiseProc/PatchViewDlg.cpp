@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2015 - TortoiseGit
+// Copyright (C) 2008-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -27,7 +27,7 @@
 
 IMPLEMENT_DYNAMIC(CPatchViewDlg, CDialog)
 
-CPatchViewDlg::CPatchViewDlg(CWnd* pParent /*=NULL*/)
+CPatchViewDlg::CPatchViewDlg(CWnd* pParent /*=nullptr*/)
 	: CDialog(CPatchViewDlg::IDD, pParent)
 	, m_ParentDlg(nullptr)
 	, m_hAccel(nullptr)

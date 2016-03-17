@@ -35,7 +35,7 @@ public:
 
 	/**
 	 * sets the title of the progress dialog box.
-	 * \param szTitle pointer to a NULL-terminated string that contains the dialog box title
+	 * \param szTitle pointer to a nullptr-terminated string that contains the dialog box title
 	 */
 	void SetTitle ( LPCTSTR szTitle );
 	/**
@@ -46,7 +46,7 @@ public:
 	/**
 	 * Displays a message.
 	 * \param dwLine line number on which the text is to be displayed. There are three lines possible, two lines if SetCalculateTime() is set to true.
-	 * \param szText NULL-terminated string that contains the line text.
+	 * \param szText nullptr-terminated string that contains the line text.
 	 * \param bCompactPath set to true if you want the text to be compacted (if it is a path) to fit on the line.
 	 *
 	 * \remark This call should be made *after* the dialog has been shown - this allows
@@ -69,7 +69,7 @@ public:
 #endif
 	/**
 	 * Sets a message to be displayed if the user clicks the cancel button.
-	 * \param szMessage pointer to a NULL-terminated string that contains the message.
+	 * \param szMessage pointer to a nullptr-terminated string that contains the message.
 	 * \remark Even though the user clicks Cancel, the application cannot immediately
 	 * call Stop() to close the dialog box. The application
 	 * must wait until the next time it calls HasUserCancelled() to

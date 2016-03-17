@@ -27,7 +27,7 @@ class CSVNIgnoreTypeDlg : public CStandAloneDialog
 	DECLARE_DYNAMIC(CSVNIgnoreTypeDlg)
 
 public:
-	CSVNIgnoreTypeDlg(CWnd* pParent = NULL);   // standard constructor
+	CSVNIgnoreTypeDlg(CWnd* pParent = nullptr);   // standard constructor
 	virtual ~CSVNIgnoreTypeDlg();
 
 // Dialog Data

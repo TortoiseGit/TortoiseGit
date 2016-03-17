@@ -36,7 +36,7 @@
 
 IMPLEMENT_DYNAMIC(CPushDlg, CHorizontalResizableStandAloneDialog)
 
-CPushDlg::CPushDlg(CWnd* pParent /*=NULL*/)
+CPushDlg::CPushDlg(CWnd* pParent /*=nullptr*/)
 	: CHorizontalResizableStandAloneDialog(CPushDlg::IDD, pParent)
 	, m_bPushAllBranches(FALSE)
 	, m_bForce(FALSE)
@@ -406,12 +406,12 @@ void CPushDlg::OnBnClickedOk()
 
 		if (m_BranchSourceName.IsEmpty() && m_BranchRemoteName.IsEmpty())
 		{
-			if (CMessageBox::Show(NULL, IDS_B_T_BOTHEMPTY, IDS_APPNAME, MB_ICONQUESTION | MB_YESNO) != IDYES)
+			if (CMessageBox::Show(GetSafeHwnd(), IDS_B_T_BOTHEMPTY, IDS_APPNAME, MB_ICONQUESTION | MB_YESNO) != IDYES)
 				return;
 		}
 		if (m_BranchSourceName.IsEmpty() && !m_BranchRemoteName.IsEmpty())
 		{
-			if (CMessageBox::Show(NULL, IDS_B_T_LOCALEMPTY, IDS_APPNAME, MB_ICONEXCLAMATION | MB_YESNO) != IDYES)
+			if (CMessageBox::Show(GetSafeHwnd(), IDS_B_T_LOCALEMPTY, IDS_APPNAME, MB_ICONEXCLAMATION | MB_YESNO) != IDYES)
 				return;
 		}
 		else if (!m_BranchRemoteName.IsEmpty() && !g_Git.IsBranchNameValid(this->m_BranchRemoteName))
@@ -421,7 +421,7 @@ void CPushDlg::OnBnClickedOk()
 		}
 		else if (!m_BranchSourceName.IsEmpty() && !g_Git.IsBranchTagNameUnique(m_BranchSourceName))
 		{
-			CMessageBox::Show(NULL, IDS_B_T_NOT_UNIQUE, IDS_APPNAME, MB_OK | MB_ICONEXCLAMATION);
+			CMessageBox::Show(GetSafeHwnd(), IDS_B_T_NOT_UNIQUE, IDS_APPNAME, MB_OK | MB_ICONEXCLAMATION);
 			return;
 		}
 		else

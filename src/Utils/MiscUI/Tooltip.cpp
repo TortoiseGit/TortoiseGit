@@ -53,26 +53,26 @@ BOOL CToolTips::OnTtnNeedText(NMHDR *pNMHDR, LRESULT *pResult)
 	return FALSE;
 }
 
-BOOL CToolTips::AddTool(CWnd* pWnd, UINT nIDText, LPCRECT lpRectTool /* = NULL */, UINT_PTR nIDTool /* = 0 */)
+BOOL CToolTips::AddTool(CWnd* pWnd, UINT nIDText, LPCRECT lpRectTool /* = nullptr */, UINT_PTR nIDTool /* = 0 */)
 {
 	CString sTemp = LoadTooltip(nIDText);
 	toolTextMap[::GetDlgCtrlID(pWnd->GetSafeHwnd())] = sTemp;
 	return CToolTipCtrl::AddTool(pWnd, LPSTR_TEXTCALLBACK, lpRectTool, nIDTool);
 }
 
-BOOL CToolTips::AddTool(CWnd* pWnd, LPCTSTR lpszText /* = LPSTR_TEXTCALLBACK */, LPCRECT lpRectTool /* = NULL */, UINT_PTR nIDTool /* = 0 */)
+BOOL CToolTips::AddTool(CWnd* pWnd, LPCTSTR lpszText /* = LPSTR_TEXTCALLBACK */, LPCRECT lpRectTool /* = nullptr */, UINT_PTR nIDTool /* = 0 */)
 {
 	if (lpszText != LPSTR_TEXTCALLBACK)
 		toolTextMap[::GetDlgCtrlID(pWnd->GetSafeHwnd())] = CString(lpszText);
 	return CToolTipCtrl::AddTool(pWnd, lpszText, lpRectTool, nIDTool);
 }
 
-void CToolTips::AddTool(int nIdWnd, UINT nIdText, LPCRECT lpRectTool /* = NULL */, UINT_PTR nIDTool /* = 0 */)
+void CToolTips::AddTool(int nIdWnd, UINT nIdText, LPCRECT lpRectTool /* = nullptr */, UINT_PTR nIDTool /* = 0 */)
 {
 	AddTool(((CDialog*)m_pParentWnd)->GetDlgItem(nIdWnd), nIdText, lpRectTool, nIDTool);
 }
 
-void CToolTips::AddTool(int nIdWnd, CString sBalloonTipText, LPCRECT lpRectTool /* = NULL */, UINT_PTR nIDTool /* = 0 */)
+void CToolTips::AddTool(int nIdWnd, CString sBalloonTipText, LPCRECT lpRectTool /* = nullptr */, UINT_PTR nIDTool /* = 0 */)
 {
 	AddTool(((CDialog*)m_pParentWnd)->GetDlgItem(nIdWnd), sBalloonTipText, lpRectTool, nIDTool);
 }
@@ -100,11 +100,11 @@ BOOL CToolTips::ShowBalloon(CWnd *pWnd, UINT nIDText, UINT nIDTitle, UINT icon /
 		CW_USEDEFAULT, CW_USEDEFAULT,
 		CW_USEDEFAULT, CW_USEDEFAULT,
 		pWnd->GetSafeHwnd(),
-		NULL,
-		NULL,
-		NULL
+		nullptr,
+		nullptr,
+		nullptr
 		);
-	if (hwndTT == NULL)
+	if (!hwndTT)
 		return FALSE;
 
 	TOOLINFO ti = { 0 };

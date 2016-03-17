@@ -67,7 +67,7 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	, m_ShowFilter(FILTERSHOW_ALL)
 	, m_bShowWC(false)
 	, m_logEntries(&m_LogCache)
-	, m_pFindDialog(NULL)
+	, m_pFindDialog(nullptr)
 	, m_ColumnManager(this)
 	, m_dwDefaultColumns(0)
 	, m_arShownList(&m_critSec)
@@ -127,7 +127,7 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	m_Filter.m_NumberOfLogs = (DWORD)CRegDWORD(_T("Software\\TortoiseGit\\LogDialog\\NumberOfLogs"), 1);
 
 	m_ShowMask = 0;
-	m_LoadingThread = NULL;
+	m_LoadingThread = nullptr;
 
 	InterlockedExchange(&m_bExitThread,FALSE);
 	m_IsOldFirst = FALSE;
@@ -170,7 +170,7 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	m_LineWidth = max(1, CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\Graph\\LogLineWidth"), 2));
 	m_NodeSize = max(1, CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\Graph\\LogNodeSize"), 10));
 
-	m_AsyncDiffEvent = ::CreateEvent(NULL, FALSE, TRUE, NULL);
+	m_AsyncDiffEvent = ::CreateEvent(nullptr, FALSE, TRUE, nullptr);
 	m_AsynDiffListLock.Init();
 	StartAsyncDiffThread();
 }
@@ -330,7 +330,7 @@ void CGitLogListBase::PreSubclassWindow()
 	SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_SUBITEMIMAGES);
 	// load the icons for the action columns
 //	m_Theme.Open(m_hWnd, L"ListView");
-	SetWindowTheme(m_hWnd, L"Explorer", NULL);
+	SetWindowTheme(m_hWnd, L"Explorer", nullptr);
 	CHintListCtrl::PreSubclassWindow();
 }
 
@@ -496,7 +496,7 @@ void CGitLogListBase::FillBackGround(HDC hdc, DWORD_PTR Index, CRect &rect)
 	GetItem(&rItem);
 
 	GitRevLoglist* pLogEntry = m_arShownList.SafeGetAt(Index);
-	HBRUSH brush = NULL;
+	HBRUSH brush = nullptr;
 
 	if (!(rItem.state & LVIS_SELECTED))
 	{
@@ -516,7 +516,7 @@ void CGitLogListBase::FillBackGround(HDC hdc, DWORD_PTR Index, CRect &rect)
 				brush = ::CreateSolidBrush(::GetSysColor(COLOR_BTNFACE));
 		}
 	}
-	if (brush != NULL)
+	if (brush)
 	{
 		::FillRect(hdc, &rect, brush);
 		::DeleteObject(brush);
@@ -549,7 +549,7 @@ void DrawLightning(HDC hdc, CRect rect, COLORREF color, int bold)
 {
 	HPEN pen = ::CreatePen(PS_SOLID, bold, color);
 	HPEN oldpen = (HPEN)::SelectObject(hdc, pen);
-	::MoveToEx(hdc, rect.left + 7, rect.top, NULL);
+	::MoveToEx(hdc, rect.left + 7, rect.top, nullptr);
 	::LineTo(hdc, rect.left + 1, (rect.top + rect.bottom) / 2);
 	::LineTo(hdc, rect.left + 6, (rect.top + rect.bottom) / 2);
 	::LineTo(hdc, rect.left, rect.bottom);
@@ -561,7 +561,7 @@ void DrawUpTriangle(HDC hdc, CRect rect, COLORREF color, int bold)
 {
 	HPEN pen = ::CreatePen(PS_SOLID, bold, color);
 	HPEN oldpen = (HPEN)::SelectObject(hdc, pen);
-	::MoveToEx(hdc, (rect.left + rect.right) / 2, rect.top, NULL);
+	::MoveToEx(hdc, (rect.left + rect.right) / 2, rect.top, nullptr);
 	::LineTo(hdc, rect.left, rect.bottom);
 	::LineTo(hdc, rect.right, rect.bottom);
 	::LineTo(hdc, (rect.left + rect.right) / 2, rect.top);
@@ -582,7 +582,7 @@ void CGitLogListBase::DrawTagBranchMessage(HDC hdc, CRect &rect, INT_PTR index, 
 	CDC W_Dc;
 	W_Dc.Attach(hdc);
 
-	HTHEME hTheme = NULL;
+	HTHEME hTheme = nullptr;
 	if (IsAppThemed())
 		hTheme = OpenThemeData(m_hWnd, L"Explorer::ListView;ListView");
 
@@ -724,7 +724,7 @@ void CGitLogListBase::DrawTagBranch(HDC hdc, CDC& W_Dc, HTHEME hTheme, CRect& re
 				HRGN hrgn = ::CreatePolygonRgn(trianglept, 3, ALTERNATE);
 				::FillRgn(hdc, hrgn, brush);
 				::DeleteObject(hrgn);
-				::MoveToEx(hdc, trianglept[0].x - 1, trianglept[0].y, NULL);
+				::MoveToEx(hdc, trianglept[0].x - 1, trianglept[0].y, nullptr);
 				HPEN pen;
 				HPEN oldpen = (HPEN)SelectObject(hdc, pen = ::CreatePen(PS_SOLID, 2, m_Colors.Lighten(colRef, 50)));
 				::LineTo(hdc, trianglept[1].x - 1, trianglept[1].y - 1);
@@ -733,7 +733,7 @@ void CGitLogListBase::DrawTagBranch(HDC hdc, CDC& W_Dc, HTHEME hTheme, CRect& re
 				::LineTo(hdc, trianglept[2].x - 1, trianglept[2].y - 1);
 				::DeleteObject(pen);
 				SelectObject(hdc, pen = ::CreatePen(PS_SOLID, 2, colRef));
-				::MoveToEx(hdc, trianglept[0].x - 1, trianglept[2].y - 3, NULL);
+				::MoveToEx(hdc, trianglept[0].x - 1, trianglept[2].y - 3, nullptr);
 				::LineTo(hdc, trianglept[0].x - 1, trianglept[0].y);
 				::DeleteObject(pen);
 				SelectObject(hdc, oldpen);
@@ -1500,29 +1500,29 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 				int action = pLogEntry->GetAction(this);
 				if (!pLogEntry->m_IsDiffFiles)
 				{
-					::DrawIconEx(pLVCD->nmcd.hdc, rect.left + ICONITEMBORDER, rect.top, m_hFetchIcon, iconwidth, iconheight, 0, NULL, DI_NORMAL);
+					::DrawIconEx(pLVCD->nmcd.hdc, rect.left + ICONITEMBORDER, rect.top, m_hFetchIcon, iconwidth, iconheight, 0, nullptr, DI_NORMAL);
 					*pResult = CDRF_SKIPDEFAULT;
 					return;
 				}
 
 				if (action & CTGitPath::LOGACTIONS_MODIFIED)
-					::DrawIconEx(pLVCD->nmcd.hdc, rect.left + ICONITEMBORDER, rect.top, m_hModifiedIcon, iconwidth, iconheight, 0, NULL, DI_NORMAL);
+					::DrawIconEx(pLVCD->nmcd.hdc, rect.left + ICONITEMBORDER, rect.top, m_hModifiedIcon, iconwidth, iconheight, 0, nullptr, DI_NORMAL);
 				++nIcons;
 
 				if (action & (CTGitPath::LOGACTIONS_ADDED | CTGitPath::LOGACTIONS_COPY))
-					::DrawIconEx(pLVCD->nmcd.hdc, rect.left+nIcons*iconwidth + ICONITEMBORDER, rect.top, m_hAddedIcon, iconwidth, iconheight, 0, NULL, DI_NORMAL);
+					::DrawIconEx(pLVCD->nmcd.hdc, rect.left + nIcons * iconwidth + ICONITEMBORDER, rect.top, m_hAddedIcon, iconwidth, iconheight, 0, nullptr, DI_NORMAL);
 				++nIcons;
 
 				if (action & CTGitPath::LOGACTIONS_DELETED)
-					::DrawIconEx(pLVCD->nmcd.hdc, rect.left+nIcons*iconwidth + ICONITEMBORDER, rect.top, m_hDeletedIcon, iconwidth, iconheight, 0, NULL, DI_NORMAL);
+					::DrawIconEx(pLVCD->nmcd.hdc, rect.left + nIcons * iconwidth + ICONITEMBORDER, rect.top, m_hDeletedIcon, iconwidth, iconheight, 0, nullptr, DI_NORMAL);
 				++nIcons;
 
 				if (action & CTGitPath::LOGACTIONS_REPLACED)
-					::DrawIconEx(pLVCD->nmcd.hdc, rect.left+nIcons*iconwidth + ICONITEMBORDER, rect.top, m_hReplacedIcon, iconwidth, iconheight, 0, NULL, DI_NORMAL);
+					::DrawIconEx(pLVCD->nmcd.hdc, rect.left + nIcons * iconwidth + ICONITEMBORDER, rect.top, m_hReplacedIcon, iconwidth, iconheight, 0, nullptr, DI_NORMAL);
 				++nIcons;
 
 				if (action & CTGitPath::LOGACTIONS_UNMERGED)
-					::DrawIconEx(pLVCD->nmcd.hdc, rect.left + nIcons*iconwidth + ICONITEMBORDER, rect.top, m_hConflictedIcon, iconwidth, iconheight, 0, NULL, DI_NORMAL);
+					::DrawIconEx(pLVCD->nmcd.hdc, rect.left + nIcons * iconwidth + ICONITEMBORDER, rect.top, m_hConflictedIcon, iconwidth, iconheight, 0, nullptr, DI_NORMAL);
 				++nIcons;
 
 				*pResult = CDRF_SKIPDEFAULT;
@@ -2444,7 +2444,7 @@ void CGitLogListBase::CopySelectionToClipBoard(int toCopy)
 
 	CString sClipdata;
 	POSITION pos = GetFirstSelectedItemPosition();
-	if (pos != NULL)
+	if (pos)
 	{
 		CString sRev;
 		sRev.LoadString(IDS_LOG_REVISION);
@@ -2530,7 +2530,7 @@ void CGitLogListBase::DiffSelectedRevWithPrevious()
 		LastSelect = GetNextSelectedItem(pos);
 	}
 
-	ContextMenuAction(ID_COMPAREWITHPREVIOUS,FirstSelect,LastSelect, NULL);
+	ContextMenuAction(ID_COMPAREWITHPREVIOUS, FirstSelect, LastSelect, nullptr);
 }
 
 void CGitLogListBase::OnLvnOdfinditemLoglist(NMHDR *pNMHDR, LRESULT *pResult)
@@ -2676,7 +2676,7 @@ int CGitLogListBase::BeginFetchLog()
 
 	CTGitPath *path;
 	if(this->m_Path.IsEmpty())
-		path=NULL;
+		path = nullptr;
 	else
 		path=&this->m_Path;
 
@@ -2974,7 +2974,7 @@ UINT CGitLogListBase::LogThread()
 			pRev->m_GitCommit = commit;
 			InterlockedExchange(&pRev->m_IsCommitParsed, FALSE);
 
-			char *note=NULL;
+			char* note = nullptr;
 			g_Git.m_critGitDllSec.Lock();
 			try
 			{
@@ -3304,7 +3304,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRevLoglist* pRev, std::tr1::
 
 		if (m_SelectedFilters & LOGFILTER_PATHS)
 		{
-			CTGitPathList *pathList=NULL;
+			CTGitPathList* pathList = nullptr;
 			if( pRev->m_IsDiffFiles)
 				pathList = &pRev->GetFiles(this);
 			else
@@ -3450,7 +3450,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRevLoglist* pRev, std::tr1::
 
 		if (m_SelectedFilters & LOGFILTER_PATHS)
 		{
-			CTGitPathList *pathList=NULL;
+			CTGitPathList* pathList = nullptr;
 			if( pRev->m_IsDiffFiles)
 				pathList = &pRev->GetFiles(this);
 			else
@@ -3927,7 +3927,7 @@ void CGitLogListBase::OnDestroy()
 
 		++retry;
 
-		//if(CMessageBox::Show(NULL,_T("Cannot Save Log Cache to Disk. To retry click yes. To give up click no."),_T("TortoiseGit"),
+		//if(CMessageBox::Show(nullptr, _T("Cannot Save Log Cache to Disk. To retry click yes. To give up click no."), _T("TortoiseGit"),
 		//					MB_YESNO) == IDNO)
 		//					break;
 	}
@@ -4013,14 +4013,14 @@ LRESULT CGitLogListBase::OnScrollToMessage(WPARAM itemToSelect, LPARAM /*lParam*
 LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*/)
 {
 
-	ASSERT(m_pFindDialog != NULL);
+	ASSERT(m_pFindDialog);
 	bool bFound = false;
 	int i=0;
 
 	if (m_pFindDialog->IsTerminating())
 	{
 		// invalidate the handle identifying the dialog box.
-		m_pFindDialog = NULL;
+		m_pFindDialog = nullptr;
 		return 0;
 	}
 
@@ -4322,7 +4322,7 @@ BOOL CGitLogListBase::OnToolTipText(UINT /*id*/, NMHDR* pNMHDR, LRESULT* pResult
 		{
 			pTTTA->hinst = nullptr;
 			pTTTA->lpszText = m_szTip;
-			::WideCharToMultiByte(CP_ACP, 0, m_wszTip, -1, m_szTip, 8192, NULL, NULL);
+			::WideCharToMultiByte(CP_ACP, 0, m_wszTip, -1, m_szTip, 8192, nullptr, nullptr);
 		}
 		else
 		{

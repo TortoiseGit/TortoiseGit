@@ -27,7 +27,7 @@ bool BranchCommand::Execute()
 	CString base=parser.GetVal(_T("rev"));
 	CString *p=&base;
 	if(base.IsEmpty())
-		p=NULL;
+		p = nullptr;
 
 	return CAppUtils::CreateBranchTag(FALSE,p);
 }

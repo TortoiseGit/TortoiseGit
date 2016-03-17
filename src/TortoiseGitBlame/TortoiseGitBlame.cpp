@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2015 - TortoiseGit
+// Copyright (C) 2008-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -86,7 +86,7 @@ bool g_bGroupingRemoveIcon = false;
 BOOL CTortoiseGitBlameApp::InitInstance()
 {
 	{
-		DWORD len = GetCurrentDirectory(0, NULL);
+		DWORD len = GetCurrentDirectory(0, nullptr);
 		if (len)
 		{
 			auto originalCurrentDirectory = std::make_unique<TCHAR[]>(len);
@@ -102,7 +102,7 @@ BOOL CTortoiseGitBlameApp::InitInstance()
 	CRegDWORD loc = CRegDWORD(_T("Software\\TortoiseGit\\LanguageID"), 1033);
 	long langId = loc;
 	CString langDll;
-	HINSTANCE hInst = NULL;
+	HINSTANCE hInst = nullptr;
 	do
 	{
 		langDll.Format(_T("%sLanguages\\TortoiseGitBlame%ld.dll"), (LPCTSTR)CPathUtils::GetAppParentDirectory(), langId);
@@ -113,9 +113,9 @@ BOOL CTortoiseGitBlameApp::InitInstance()
 		if (sFileVer.Compare(sVer)!=0)
 		{
 			FreeLibrary(hInst);
-			hInst = NULL;
+			hInst = nullptr;
 		}
-		if (hInst != NULL)
+		if (hInst)
 			AfxSetResourceHandle(hInst);
 		else
 		{
@@ -128,7 +128,7 @@ BOOL CTortoiseGitBlameApp::InitInstance()
 			else
 				langId = 0;
 		}
-	} while ((hInst == NULL) && (langId != 0));
+	} while (!hInst && (langId != 0));
 	TCHAR buf[6] = { 0 };
 	_tcscpy_s(buf, _T("en"));
 	langId = loc;
@@ -192,7 +192,7 @@ BOOL CTortoiseGitBlameApp::InitInstance()
 	CWinAppEx::InitInstance();
 
 	Gdiplus::GdiplusStartupInput gdiplusStartupInput;
-	Gdiplus::GdiplusStartup(&m_gdiplusToken,&gdiplusStartupInput,NULL);
+	Gdiplus::GdiplusStartup(&m_gdiplusToken, &gdiplusStartupInput, nullptr);
 
 	// Initialize OLE libraries
 	if (!AfxOleInit())
@@ -288,7 +288,7 @@ BOOL CAboutDlg::OnInitDialog()
 
 	TCHAR verbuf[1024] = {0};
 	TCHAR maskbuf[1024] = {0};
-	::LoadString(GetModuleHandle(NULL), IDS_VERSION, maskbuf, _countof(maskbuf));
+	::LoadString(GetModuleHandle(nullptr), IDS_VERSION, maskbuf, _countof(maskbuf));
 	_stprintf_s(verbuf, maskbuf, TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD);
 	SetDlgItemText(IDC_VERSION, verbuf);
 

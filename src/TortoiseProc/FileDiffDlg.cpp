@@ -56,7 +56,7 @@ UINT CFileDiffDlg::WM_DISABLEBUTTONS = RegisterWindowMessage(_T("TORTOISEGIT_FIL
 UINT CFileDiffDlg::WM_DIFFFINISHED = RegisterWindowMessage(_T("TORTOISEGIT_FILEDIFF_DIFFFINISHED"));
 
 IMPLEMENT_DYNAMIC(CFileDiffDlg, CResizableStandAloneDialog)
-CFileDiffDlg::CFileDiffDlg(CWnd* pParent /*=NULL*/)
+CFileDiffDlg::CFileDiffDlg(CWnd* pParent /*=nullptr*/)
 	: CResizableStandAloneDialog(CFileDiffDlg::IDD, pParent)
 	, m_bBlame(false)
 	, m_bCancelled(false)
@@ -114,7 +114,7 @@ END_MESSAGE_MAP()
 
 void CFileDiffDlg::SetDiff(const CTGitPath * path, const GitRev &rev1, const GitRev &rev2)
 {
-	if(path!=NULL)
+	if (path)
 	{
 		m_path1 = *path;
 		m_path2 = *path;
@@ -126,7 +126,7 @@ void CFileDiffDlg::SetDiff(const CTGitPath * path, const GitRev &rev1, const Git
 
 void CFileDiffDlg::SetDiff(const CTGitPath * path, const CString &hash1, const CString &hash2)
 {
-	if(path!=NULL)
+	if (path)
 	{
 		m_path1 = *path;
 		m_path2 = *path;
@@ -162,7 +162,7 @@ void CFileDiffDlg::SetDiff(const CTGitPath * path, const CString &hash1, const C
 
 void CFileDiffDlg::SetDiff(const CTGitPath * path, const GitRev &rev1)
 {
-	if(path!=NULL)
+	if (path)
 	{
 		m_path1 = *path;
 		m_path2 = *path;
@@ -288,17 +288,17 @@ BOOL CFileDiffDlg::OnInitDialog()
 	SetURLLabels();
 
 	InterlockedExchange(&m_bThreadRunning, TRUE);
-	if (AfxBeginThread(DiffThreadEntry, this)==NULL)
+	if (!AfxBeginThread(DiffThreadEntry, this))
 	{
 		InterlockedExchange(&m_bThreadRunning, FALSE);
-		CMessageBox::Show(NULL, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
+		CMessageBox::Show(GetSafeHwnd(), IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
 	}
 
 	InterlockedExchange(&m_bLoadingRef, TRUE);
-	if (AfxBeginThread(LoadRefThreadEntry, this)==NULL)
+	if (!AfxBeginThread(LoadRefThreadEntry, this))
 	{
 		InterlockedExchange(&m_bLoadingRef, FALSE);
-		CMessageBox::Show(NULL, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
+		CMessageBox::Show(GetSafeHwnd(), IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
 	}
 
 	this->m_cRev1Btn.AddEntry(CString(MAKEINTRESOURCE(IDS_REFBROWSE)));
@@ -376,7 +376,7 @@ LRESULT CFileDiffDlg::OnDiffFinished(WPARAM, LPARAM)
 		m_cFileList.ShowText(CString(MAKEINTRESOURCE(IDS_COMPAREREV_NODIFF)));
 	m_cFileList.SetRedraw(true);
 
-	InvalidateRect(NULL);
+	InvalidateRect(nullptr);
 	RefreshCursor();
 	EnableInputControl(true);
 	return 0;
@@ -520,7 +520,7 @@ void CFileDiffDlg::OnNMCustomdrawFilelist(NMHDR *pNMHDR, LRESULT *pResult)
 
 UINT CFileDiffDlg::LoadRefThread()
 {
-	g_Git.GetBranchList(m_Reflist,NULL,CGit::BRANCH_ALL_F);
+	g_Git.GetBranchList(m_Reflist, nullptr, CGit::BRANCH_ALL_F);
 	g_Git.GetTagList(m_Reflist);
 
 	this->PostMessage(MSG_REF_LOADED);
@@ -662,7 +662,7 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 					CString temp;
 					CTGitPath savePath;
 					CString pathSave;
-					if (!CAppUtils::FileOpenSave(pathSave, NULL, IDS_REPOBROWSE_SAVEAS, IDS_TEXTFILEFILTER, false, m_hWnd, _T(".txt")))
+					if (!CAppUtils::FileOpenSave(pathSave, nullptr, IDS_REPOBROWSE_SAVEAS, IDS_TEXTFILEFILTER, false, m_hWnd, _T(".txt")))
 					{
 						break;
 					}
@@ -756,11 +756,11 @@ BOOL CFileDiffDlg::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 		return CResizableStandAloneDialog::OnSetCursor(pWnd, nHitTest, message);
 	if (m_bThreadRunning == 0)
 	{
-		HCURSOR hCur = LoadCursor(NULL, IDC_ARROW);
+		HCURSOR hCur = LoadCursor(nullptr, IDC_ARROW);
 		SetCursor(hCur);
 		return CResizableStandAloneDialog::OnSetCursor(pWnd, nHitTest, message);
 	}
-	HCURSOR hCur = LoadCursor(NULL, IDC_WAIT);
+	HCURSOR hCur = LoadCursor(nullptr, IDC_WAIT);
 	SetCursor(hCur);
 	return TRUE;
 }
@@ -1082,10 +1082,10 @@ void CFileDiffDlg::ClickRevButton(CMenuButton *button, GitRev *rev, CACEdit *edi
 	SetURLLabels();
 
 	InterlockedExchange(&m_bThreadRunning, TRUE);
-	if (AfxBeginThread(DiffThreadEntry, this)==NULL)
+	if (!AfxBeginThread(DiffThreadEntry, this))
 	{
 		InterlockedExchange(&m_bThreadRunning, FALSE);
-		CMessageBox::Show(NULL, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
+		CMessageBox::Show(GetSafeHwnd(), IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
 	}
 	KillTimer(IDT_INPUT);
 }
@@ -1099,7 +1099,7 @@ LRESULT CFileDiffDlg::OnClickedCancelFilter(WPARAM /*wParam*/, LPARAM /*lParam*/
 {
 	if (m_bThreadRunning)
 	{
-		SetTimer(IDT_FILTER, 1000, NULL);
+		SetTimer(IDT_FILTER, 1000, nullptr);
 		return 0L;
 	}
 
@@ -1117,7 +1117,7 @@ LRESULT CFileDiffDlg::OnClickedCancelFilter(WPARAM /*wParam*/, LPARAM /*lParam*/
 
 void CFileDiffDlg::OnEnChangeFilter()
 {
-	SetTimer(IDT_FILTER, 1000, NULL);
+	SetTimer(IDT_FILTER, 1000, nullptr);
 }
 
 void CFileDiffDlg::OnTimer(UINT_PTR nIDEvent)
@@ -1182,10 +1182,10 @@ void CFileDiffDlg::OnTimer(UINT_PTR nIDEvent)
 		{
 
 			InterlockedExchange(&m_bThreadRunning, TRUE);
-			if (AfxBeginThread(DiffThreadEntry, this)==NULL)
+			if (!AfxBeginThread(DiffThreadEntry, this))
 			{
 				InterlockedExchange(&m_bThreadRunning, FALSE);
-				CMessageBox::Show(NULL, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
+				CMessageBox::Show(GetSafeHwnd(), IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
 			}
 		}
 	}
@@ -1281,7 +1281,7 @@ LRESULT CFileDiffDlg::OnEnUpdate(WPARAM /*wParam*/, LPARAM lParam)
 
 void CFileDiffDlg::OnTextUpdate(CACEdit * /*pEdit*/)
 {
-	SetTimer(IDT_INPUT, 1000, NULL);
+	SetTimer(IDT_INPUT, 1000, nullptr);
 	this->m_cFileList.ShowText(_T("Wait For input validate version"));
 }
 
@@ -1300,7 +1300,7 @@ int CFileDiffDlg::RevertSelectedItemToVersion(CString rev)
 		cmd.Format(_T("git.exe checkout %s -- \"%s\""), (LPCTSTR)rev, (LPCTSTR)fentry->GetGitPathString());
 		if (g_Git.Run(cmd, &out, CP_UTF8))
 		{
-			if (CMessageBox::Show(NULL, out, _T("TortoiseGit"), 2, IDI_WARNING, CString(MAKEINTRESOURCE(IDS_IGNOREBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)
+			if (CMessageBox::Show(GetSafeHwnd(), out, _T("TortoiseGit"), 2, IDI_WARNING, CString(MAKEINTRESOURCE(IDS_IGNOREBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)
 				break;
 		}
 		else
@@ -1309,7 +1309,7 @@ int CFileDiffDlg::RevertSelectedItemToVersion(CString rev)
 
 	CString out;
 	out.Format(IDS_STATUSLIST_FILESREVERTED, count, (LPCTSTR)rev);
-	CMessageBox::Show(NULL, out, _T("TortoiseGit"), MB_OK);
+	CMessageBox::Show(GetSafeHwnd(), out, _T("TortoiseGit"), MB_OK);
 	return 0;
 }
 

@@ -31,7 +31,7 @@
 
 IMPLEMENT_DYNAMIC(CPullFetchDlg, CHorizontalResizableStandAloneDialog)
 
-CPullFetchDlg::CPullFetchDlg(CWnd* pParent /*=NULL*/)
+CPullFetchDlg::CPullFetchDlg(CWnd* pParent /*=nullptr*/)
 	: CHorizontalResizableStandAloneDialog(CPullFetchDlg::IDD, pParent)
 {
 	m_IsPull=TRUE;

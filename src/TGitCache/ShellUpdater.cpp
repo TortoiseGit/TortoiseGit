@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005-2008 - TortoiseSVN
-// Copyright (C) 2008-2011,2013,2015 - TortoiseGit
+// Copyright (C) 2008-2011,2013,2015-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -24,8 +24,8 @@
 
 CShellUpdater::CShellUpdater(void)
 {
-	m_hWakeEvent = CreateEvent(NULL,FALSE,FALSE,NULL);
-	m_hTerminationEvent = CreateEvent(NULL,TRUE,FALSE,NULL);
+	m_hWakeEvent = CreateEvent(nullptr, FALSE, FALSE, nullptr);
+	m_hTerminationEvent = CreateEvent(nullptr, TRUE, FALSE, nullptr);
 	m_bRunning = FALSE;
 	m_bItemsAddedSinceLastUpdate = false;
 }
@@ -63,7 +63,7 @@ void CShellUpdater::Initialise()
 
 	InterlockedExchange(&m_bRunning, TRUE);
 	unsigned int threadId;
-	m_hThread = (HANDLE)_beginthreadex(NULL,0,ThreadEntry,this,0,&threadId);
+	m_hThread = (HANDLE)_beginthreadex(nullptr, 0, ThreadEntry, this, 0, &threadId);
 	SetThreadPriority(m_hThread, THREAD_PRIORITY_LOWEST);
 }
 
@@ -154,17 +154,17 @@ void CShellUpdater::WorkerThread()
 				// dir is present, we send a notification for that folder.
 				CString admindir = workingPath.GetWinPathString() + _T("\\") + GitAdminDir::GetAdminDirName();
 				if(::PathFileExists(admindir))
-					SHChangeNotify(SHCNE_UPDATEITEM, SHCNF_PATH | SHCNF_FLUSHNOWAIT, (LPCTSTR)admindir, NULL);
+					SHChangeNotify(SHCNE_UPDATEITEM, SHCNF_PATH | SHCNF_FLUSHNOWAIT, (LPCTSTR)admindir, nullptr);
 
-				SHChangeNotify(SHCNE_UPDATEITEM, SHCNF_PATH | SHCNF_FLUSHNOWAIT, workingPath.GetWinPath(), NULL);
+				SHChangeNotify(SHCNE_UPDATEITEM, SHCNF_PATH | SHCNF_FLUSHNOWAIT, workingPath.GetWinPath(), nullptr);
 				// Sending an UPDATEDIR notification somehow overwrites/deletes the UPDATEITEM message. And without
 				// that message, the folder overlays in the current view don't get updated without hitting F5.
 				// Drawback is, without UPDATEDIR, the left tree view isn't always updated...
 
-				SHChangeNotify(SHCNE_UPDATEDIR, SHCNF_PATH | SHCNF_FLUSHNOWAIT, workingPath.GetWinPath(), NULL);
+				SHChangeNotify(SHCNE_UPDATEDIR, SHCNF_PATH | SHCNF_FLUSHNOWAIT, workingPath.GetWinPath(), nullptr);
 			}
 			else
-				SHChangeNotify(SHCNE_UPDATEITEM, SHCNF_PATH | SHCNF_FLUSHNOWAIT, workingPath.GetWinPath(), NULL);
+				SHChangeNotify(SHCNE_UPDATEITEM, SHCNF_PATH | SHCNF_FLUSHNOWAIT, workingPath.GetWinPath(), nullptr);
 		}
 	}
 	_endthread();

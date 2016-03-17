@@ -61,7 +61,7 @@ void CRegHistory::RemoveEntry(int pos)
 
 size_t CRegHistory::Load(LPCTSTR lpszSection, LPCTSTR lpszKeyPrefix)
 {
-	if (lpszSection == NULL || lpszKeyPrefix == NULL || *lpszSection == '\0')
+	if (!lpszSection || !lpszKeyPrefix || *lpszSection == '\0')
 		return (size_t)(-1);
 
 	m_arEntries.clear();

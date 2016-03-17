@@ -31,7 +31,7 @@ class CAddDlg : public CResizableStandAloneDialog
 	DECLARE_DYNAMIC(CAddDlg)
 
 public:
-	CAddDlg(CWnd* pParent = NULL);   // standard constructor
+	CAddDlg(CWnd* pParent = nullptr);   // standard constructor
 	virtual ~CAddDlg();
 
 // Dialog Data

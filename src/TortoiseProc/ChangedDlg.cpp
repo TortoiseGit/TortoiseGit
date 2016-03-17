@@ -30,7 +30,7 @@
 #include "GitStatusListCtrl.h"
 
 IMPLEMENT_DYNAMIC(CChangedDlg, CResizableStandAloneDialog)
-CChangedDlg::CChangedDlg(CWnd* pParent /*=NULL*/)
+CChangedDlg::CChangedDlg(CWnd* pParent /*=nullptr*/)
 	: CResizableStandAloneDialog(CChangedDlg::IDD, pParent)
 	, m_bShowUnversioned(FALSE)
 	, m_iShowUnmodified(0)
@@ -122,9 +122,9 @@ BOOL CChangedDlg::OnInitDialog()
 
 	// first start a thread to obtain the status without
 	// blocking the dialog
-	if (AfxBeginThread(ChangedStatusThreadEntry, this)==NULL)
+	if (!AfxBeginThread(ChangedStatusThreadEntry, this))
 	{
-		CMessageBox::Show(NULL, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
+		CMessageBox::Show(GetSafeHwnd(), IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
 	}
 
 	return TRUE;
@@ -255,9 +255,9 @@ void CChangedDlg::OnBnClickedShowunversioned()
 	{
 		if(m_bShowUnversioned)
 		{
-			if (AfxBeginThread(ChangedStatusThreadEntry, this)==NULL)
+			if (!AfxBeginThread(ChangedStatusThreadEntry, this))
 			{
-				CMessageBox::Show(NULL, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
+				CMessageBox::Show(GetSafeHwnd(), IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
 			}
 		}
 	}
@@ -279,8 +279,8 @@ void CChangedDlg::OnBnClickedShowignored()
 		m_FileListCtrl.Show(UpdateShowFlags());
 	else if (m_bShowIgnored)
 	{
-		if (AfxBeginThread(ChangedStatusThreadEntry, this) == nullptr)
-			CMessageBox::Show(NULL, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
+		if (!AfxBeginThread(ChangedStatusThreadEntry, this))
+			CMessageBox::Show(GetSafeHwnd(), IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
 	}
 	UpdateStatistics();
 }
@@ -292,17 +292,17 @@ void CChangedDlg::OnBnClickedShowlocalchangesignored()
 		m_FileListCtrl.Show(UpdateShowFlags());
 	else if (m_bShowLocalChangesIgnored)
 	{
-		if (AfxBeginThread(ChangedStatusThreadEntry, this) == nullptr)
-			CMessageBox::Show(nullptr, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
+		if (!AfxBeginThread(ChangedStatusThreadEntry, this))
+			CMessageBox::Show(GetSafeHwnd(), IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
 	}
 	UpdateStatistics();
 }
 
 LRESULT CChangedDlg::OnSVNStatusListCtrlNeedsRefresh(WPARAM, LPARAM)
 {
-	if (AfxBeginThread(ChangedStatusThreadEntry, this)==NULL)
+	if (!AfxBeginThread(ChangedStatusThreadEntry, this))
 	{
-		CMessageBox::Show(NULL, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
+		CMessageBox::Show(GetSafeHwnd(), IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
 	}
 	return 0;
 }
@@ -323,9 +323,9 @@ BOOL CChangedDlg::PreTranslateMessage(MSG* pMsg)
 			{
 				if (m_bBlock)
 					return CResizableStandAloneDialog::PreTranslateMessage(pMsg);
-				if (AfxBeginThread(ChangedStatusThreadEntry, this)==NULL)
+				if (!AfxBeginThread(ChangedStatusThreadEntry, this))
 				{
-					CMessageBox::Show(NULL, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
+					CMessageBox::Show(GetSafeHwnd(), IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
 				}
 			}
 			break;
@@ -339,9 +339,9 @@ void CChangedDlg::OnBnClickedRefresh()
 {
 	if (!m_bBlock)
 	{
-		if (AfxBeginThread(ChangedStatusThreadEntry, this)==NULL)
+		if (!AfxBeginThread(ChangedStatusThreadEntry, this))
 		{
-			CMessageBox::Show(NULL, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
+			CMessageBox::Show(GetSafeHwnd(), IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
 		}
 	}
 }

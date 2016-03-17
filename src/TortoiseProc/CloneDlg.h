@@ -29,7 +29,7 @@ class CCloneDlg : public CHorizontalResizableStandAloneDialog
 	DECLARE_DYNCREATE(CCloneDlg)
 
 public:
-	CCloneDlg(CWnd* pParent = NULL);   // standard constructor
+	CCloneDlg(CWnd* pParent = nullptr);   // standard constructor
 	virtual ~CCloneDlg();
 
 // Dialog Data

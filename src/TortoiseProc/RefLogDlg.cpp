@@ -33,9 +33,9 @@ IMPLEMENT_DYNAMIC(CRefLogDlg, CResizableStandAloneDialog)
 
 UINT CRefLogDlg::m_FindDialogMessage = ::RegisterWindowMessage(FINDMSGSTRING);
 
-CRefLogDlg::CRefLogDlg(CWnd* pParent /*=NULL*/)
+CRefLogDlg::CRefLogDlg(CWnd* pParent /*=nullptr*/)
 	: CResizableStandAloneDialog(CRefLogDlg::IDD, pParent)
-	, m_pFindDialog(NULL)
+	, m_pFindDialog(nullptr)
 	, m_nSearchLine(0)
 {
 
@@ -224,12 +224,12 @@ void CRefLogDlg::OnFind()
 {
 	m_nSearchLine = 0;
 	m_pFindDialog = new CFindReplaceDialog();
-	m_pFindDialog->Create(TRUE, _T(""), NULL, FR_DOWN | FR_HIDEWHOLEWORD | FR_HIDEUPDOWN, this);
+	m_pFindDialog->Create(TRUE, _T(""), nullptr, FR_DOWN | FR_HIDEWHOLEWORD | FR_HIDEUPDOWN, this);
 }
 
 LRESULT CRefLogDlg::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*/)
 {
-	ASSERT(m_pFindDialog != NULL);
+	ASSERT(m_pFindDialog);
 
 	if (m_RefList.m_arShownList.empty())
 		return 0;
@@ -238,7 +238,7 @@ LRESULT CRefLogDlg::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*/)
 	// invalidate the handle identifying the dialog box.
 	if (m_pFindDialog->IsTerminating())
 	{
-			m_pFindDialog = NULL;
+			m_pFindDialog = nullptr;
 			return 0;
 	}
 

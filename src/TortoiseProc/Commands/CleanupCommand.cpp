@@ -254,7 +254,7 @@ static bool DoCleanUp(const CTGitPathList& pathList, int cleanType, bool bDir, b
 		sysProgressDlg.SetLine(1, CString(MAKEINTRESOURCE(IDS_PROC_CLEANUP_INFO1)));
 		sysProgressDlg.SetLine(2, CString(MAKEINTRESOURCE(IDS_PROGRESSWAIT)));
 		sysProgressDlg.SetShowProgressBar(false);
-		sysProgressDlg.ShowModeless((HWND)NULL, true);
+		sysProgressDlg.ShowModeless((HWND)nullptr, true);
 
 		bool quotepath = g_Git.GetConfigValueBool(_T("core.quotepath"));
 

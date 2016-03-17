@@ -37,7 +37,7 @@ public:
 
 public:
 
-	CGitProgressDlg(CWnd* pParent = NULL);
+	CGitProgressDlg(CWnd* pParent = nullptr);
 	virtual ~CGitProgressDlg();
 
 

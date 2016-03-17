@@ -48,7 +48,7 @@ class CRevisionGraphDlg : public CResizableStandAloneDialog
 {
 	DECLARE_DYNAMIC(CRevisionGraphDlg)
 public:
-	CRevisionGraphDlg(CWnd* pParent = NULL);	// standard constructor
+	CRevisionGraphDlg(CWnd* pParent = nullptr);	// standard constructor
 	virtual ~CRevisionGraphDlg();
 	enum { IDD = IDD_REVISIONGRAPH };
 

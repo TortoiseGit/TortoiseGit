@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2010-2011, 2013 - TortoiseGit
+// Copyright (C) 2010-2011, 2013, 2016 - TortoiseGit
 // Copyright (C) 2008-2009, 2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -106,9 +106,9 @@ BOOL CIconMenu::AppendMenuIcon(UINT_PTR nIDNewItem, UINT_PTR nNewItem, UINT uIco
 
 void CIconMenu::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 {
-	if ((lpDrawItemStruct==NULL)||(lpDrawItemStruct->CtlType != ODT_MENU))
+	if (!lpDrawItemStruct || lpDrawItemStruct->CtlType != ODT_MENU)
 		return;		//not for a menu
-	HICON hIcon = NULL;
+	HICON hIcon = nullptr;
 	bool bDestroyIcon = true;
 	if (iconhandles.find(lpDrawItemStruct->itemID) != iconhandles.end())
 	{
@@ -117,20 +117,20 @@ void CIconMenu::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 	}
 	else
 		hIcon = (HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(icons[lpDrawItemStruct->itemID]), IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
-	if (hIcon == NULL)
+	if (!hIcon)
 		return;
 	DrawIconEx(lpDrawItemStruct->hDC,
 		lpDrawItemStruct->rcItem.left - 16,
 		lpDrawItemStruct->rcItem.top + (lpDrawItemStruct->rcItem.bottom - lpDrawItemStruct->rcItem.top - 16) / 2,
 		hIcon, 16, 16,
-		0, NULL, DI_NORMAL);
+		0, nullptr, DI_NORMAL);
 	if (bDestroyIcon)
 		DestroyIcon(hIcon);
 }
 
 void CIconMenu::MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct)
 {
-	if (lpMeasureItemStruct==NULL)
+	if (!lpMeasureItemStruct)
 		return;
 	lpMeasureItemStruct->itemWidth += 2;
 	if (lpMeasureItemStruct->itemHeight < 16)

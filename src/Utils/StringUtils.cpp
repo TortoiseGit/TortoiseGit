@@ -25,8 +25,8 @@
 
 int strwildcmp(const char *wild, const char *string)
 {
-	const char *cp = NULL;
-	const char *mp = NULL;
+	const char* cp = nullptr;
+	const char* mp = nullptr;
 	while ((*string) && (*wild != '*'))
 	{
 		if ((*wild != *string) && (*wild != '?'))
@@ -68,8 +68,8 @@ int strwildcmp(const char *wild, const char *string)
 
 int wcswildcmp(const wchar_t *wild, const wchar_t *string)
 {
-	const wchar_t *cp = NULL;
-	const wchar_t *mp = NULL;
+	const wchar_t* cp = nullptr;
+	const wchar_t* mp = nullptr;
 	while ((*string) && (*wild != '*'))
 	{
 		if ((*wild != *string) && (*wild != '?'))
@@ -539,21 +539,21 @@ void CStringUtils::ParseEmailAddress(CString mailaddress, CString& parsedAddress
 bool CStringUtils::WriteStringToTextFile(const std::wstring& path, const std::wstring& text, bool bUTF8 /* = true */)
 {
 	DWORD dwWritten = 0;
-	CAutoFile hFile = CreateFile(path.c_str(), GENERIC_WRITE, FILE_SHARE_DELETE, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+	CAutoFile hFile = CreateFile(path.c_str(), GENERIC_WRITE, FILE_SHARE_DELETE, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
 	if (!hFile)
 		return false;
 
 	if (bUTF8)
 	{
 		std::string buf = CUnicodeUtils::StdGetUTF8(text);
-		if (!WriteFile(hFile, buf.c_str(), (DWORD)buf.length(), &dwWritten, NULL))
+		if (!WriteFile(hFile, buf.c_str(), (DWORD)buf.length(), &dwWritten, nullptr))
 		{
 			return false;
 		}
 	}
 	else
 	{
-		if (!WriteFile(hFile, text.c_str(), (DWORD)text.length(), &dwWritten, NULL))
+		if (!WriteFile(hFile, text.c_str(), (DWORD)text.length(), &dwWritten, nullptr))
 		{
 			return false;
 		}

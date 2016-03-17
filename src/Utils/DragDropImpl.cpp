@@ -39,7 +39,7 @@ STDMETHODIMP CIDataObject::QueryInterface(/* [in] */ REFIID riid,
 {
 	if(ppvObject == 0)
 		return E_POINTER;
-	*ppvObject = NULL;
+	*ppvObject = nullptr;
 	if (IsEqualIID(IID_IUnknown, riid) || IsEqualIID(IID_IDataObject, riid))
 		*ppvObject=static_cast<IDataObject*>(this);
 	/*else if(riid == IID_IAsyncOperation)
@@ -67,11 +67,11 @@ STDMETHODIMP CIDataObject::GetData(
 	/* [unique][in] */ FORMATETC __RPC_FAR *pformatetcIn,
 	/* [out] */ STGMEDIUM __RPC_FAR *pmedium)
 {
-	if(pformatetcIn == NULL)
+	if (!pformatetcIn)
 		return E_INVALIDARG;
-	if(pmedium == NULL)
+	if (!pmedium)
 		return E_POINTER;
-	pmedium->hGlobal = NULL;
+	pmedium->hGlobal = nullptr;
 
 	ATLASSERT(m_StgMedium.GetSize() == m_ArrFormatEtc.GetSize());
 	for(int i=0; i < m_ArrFormatEtc.GetSize(); ++i)
@@ -97,7 +97,7 @@ STDMETHODIMP CIDataObject::GetDataHere(
 STDMETHODIMP CIDataObject::QueryGetData(
 	/* [unique][in] */ FORMATETC __RPC_FAR *pformatetc)
 {
-	if(pformatetc == NULL)
+	if (!pformatetc)
 		return E_INVALIDARG;
 
 	//support others if needed DVASPECT_THUMBNAIL  //DVASPECT_ICON   //DVASPECT_DOCPRINT
@@ -123,7 +123,7 @@ STDMETHODIMP CIDataObject::GetCanonicalFormatEtc(
 	/* [unique][in] */ FORMATETC __RPC_FAR * /*pformatectIn*/,
 	/* [out] */ FORMATETC __RPC_FAR *pformatetcOut)
 {
-	if (pformatetcOut == NULL)
+	if (!pformatetcOut)
 		return E_INVALIDARG;
 	return DATA_S_SAMEFORMATETC;
 }
@@ -133,14 +133,14 @@ STDMETHODIMP CIDataObject::SetData(
 	/* [unique][in] */ STGMEDIUM __RPC_FAR *pmedium,
 	/* [in] */ BOOL fRelease)
 {
-	if(pformatetc == NULL || pmedium == NULL)
+	if (!pformatetc || !pmedium)
 		return E_INVALIDARG;
 
 	ATLASSERT(pformatetc->tymed == pmedium->tymed);
 	FORMATETC* fetc = new (std::nothrow) FORMATETC;
 	STGMEDIUM* pStgMed = new (std::nothrow) STGMEDIUM;
 
-	if(fetc == NULL || pStgMed == NULL)
+	if (!fetc || !pStgMed)
 	{
 		delete fetc;
 		delete pStgMed;
@@ -215,8 +215,8 @@ void CIDataObject::CopyMedium(STGMEDIUM* pMedDest, STGMEDIUM* pMedSrc, FORMATETC
 			break;
 	}
 	pMedDest->tymed = pMedSrc->tymed;
-	pMedDest->pUnkForRelease = NULL;
-	if(pMedSrc->pUnkForRelease != NULL)
+	pMedDest->pUnkForRelease = nullptr;
+	if (pMedSrc->pUnkForRelease)
 	{
 		pMedDest->pUnkForRelease = pMedSrc->pUnkForRelease;
 		pMedSrc->pUnkForRelease->AddRef();
@@ -227,15 +227,15 @@ STDMETHODIMP CIDataObject::EnumFormatEtc(
 	/* [in] */ DWORD dwDirection,
 	/* [out] */ IEnumFORMATETC __RPC_FAR *__RPC_FAR *ppenumFormatEtc)
 {
-	if(ppenumFormatEtc == NULL)
+	if (!ppenumFormatEtc)
 		return E_POINTER;
 
-	*ppenumFormatEtc=NULL;
+	*ppenumFormatEtc = nullptr;
 	switch (dwDirection)
 	{
 		case DATADIR_GET:
 			*ppenumFormatEtc = new (std::nothrow) CEnumFormatEtc(m_ArrFormatEtc);
-			if(*ppenumFormatEtc == NULL)
+			if (!*ppenumFormatEtc)
 				return E_OUTOFMEMORY;
 			(*ppenumFormatEtc)->AddRef();
 			break;
@@ -271,7 +271,7 @@ HRESULT STDMETHODCALLTYPE CIDataObject::EnumDAdvise(
 
 HRESULT CIDataObject::SetDropDescription(DROPIMAGETYPE image, LPCTSTR format, LPCTSTR insert)
 {
-	if(format == NULL || insert == NULL)
+	if (!format || !insert)
 		return E_INVALIDARG;
 
 	FORMATETC fetc = {0};
@@ -315,13 +315,13 @@ STDMETHODIMP CIDropSource::QueryInterface(/* [in] */ REFIID riid,
 	{
 		*ppvObject = static_cast<IDropSource*>(this);
 	}
-	else if (IsEqualIID(riid, IID_IDropSourceNotify) && (pDragSourceNotify != NULL))
+	else if (IsEqualIID(riid, IID_IDropSourceNotify) && pDragSourceNotify)
 	{
 		return pDragSourceNotify->QueryInterface(riid, ppvObject);
 	}
 	else
 	{
-		*ppvObject = NULL;
+		*ppvObject = nullptr;
 		return E_NOINTERFACE;
 	}
 
@@ -408,7 +408,7 @@ STDMETHODIMP CEnumFormatEtc::QueryInterface(REFIID refiid, void FAR* FAR* ppv)
 {
 	if(ppv == 0)
 		return E_POINTER;
-	*ppv = NULL;
+	*ppv = nullptr;
 	if (IID_IUnknown == refiid || IID_IEnumFORMATETC == refiid)
 		*ppv = static_cast<IEnumFORMATETC*>(this);
 	else
@@ -437,12 +437,12 @@ STDMETHODIMP CEnumFormatEtc::Next( ULONG celt,LPFORMATETC lpFormatEtc, ULONG FAR
 {
 	if(celt <= 0)
 		return E_INVALIDARG;
-	if (pceltFetched == NULL && celt != 1) // pceltFetched can be NULL only for 1 item request
+	if (!pceltFetched && celt != 1) // pceltFetched can be nullptr only for 1 item request
 		return E_POINTER;
-	if(lpFormatEtc == NULL)
+	if (!lpFormatEtc)
 		return E_POINTER;
 
-	if (pceltFetched != NULL)
+	if (pceltFetched)
 		*pceltFetched = 0;
 	if (m_iCur >= m_pFmtEtc.GetSize())
 		return S_FALSE;
@@ -453,7 +453,7 @@ STDMETHODIMP CEnumFormatEtc::Next( ULONG celt,LPFORMATETC lpFormatEtc, ULONG FAR
 		*lpFormatEtc++ = m_pFmtEtc[m_iCur++];
 		--cReturn;
 	}
-	if (pceltFetched != NULL)
+	if (pceltFetched)
 		*pceltFetched = celt - cReturn;
 
 	return (cReturn == 0) ? S_OK : S_FALSE;
@@ -475,11 +475,11 @@ STDMETHODIMP CEnumFormatEtc::Reset(void)
 
 STDMETHODIMP CEnumFormatEtc::Clone(IEnumFORMATETC FAR * FAR*ppCloneEnumFormatEtc)
 {
-	if(ppCloneEnumFormatEtc == NULL)
+	if (!ppCloneEnumFormatEtc)
 		return E_POINTER;
 
 	CEnumFormatEtc *newEnum = new (std::nothrow) CEnumFormatEtc(m_pFmtEtc);
-	if(newEnum ==NULL)
+	if (!newEnum)
 		return E_OUTOFMEMORY;
   newEnum->AddRef();
 	newEnum->m_iCur = m_iCur;
@@ -493,22 +493,20 @@ STDMETHODIMP CEnumFormatEtc::Clone(IEnumFORMATETC FAR * FAR*ppCloneEnumFormatEtc
 CIDropTarget::CIDropTarget(HWND hTargetWnd):
 	m_hTargetWnd(hTargetWnd),
 	m_cRefCount(0), m_bAllowDrop(false),
-	m_pDropTargetHelper(NULL), m_pSupportedFrmt(NULL),
-	m_pIDataObject(NULL)
+	m_pDropTargetHelper(nullptr),
+	m_pSupportedFrmt(nullptr),
+	m_pIDataObject(nullptr)
 {
-	if(FAILED(CoCreateInstance(CLSID_DragDropHelper,NULL,CLSCTX_INPROC_SERVER,
-					IID_IDropTargetHelper,(LPVOID*)&m_pDropTargetHelper)))
-	{
-		m_pDropTargetHelper = NULL;
-	}
+	if (FAILED(CoCreateInstance(CLSID_DragDropHelper, nullptr, CLSCTX_INPROC_SERVER, IID_IDropTargetHelper, (LPVOID*)&m_pDropTargetHelper)))
+		m_pDropTargetHelper = nullptr;
 }
 
 CIDropTarget::~CIDropTarget()
 {
-	if(m_pDropTargetHelper != NULL)
+	if (m_pDropTargetHelper)
 	{
 		m_pDropTargetHelper->Release();
-		m_pDropTargetHelper = NULL;
+		m_pDropTargetHelper = nullptr;
 	}
 }
 
@@ -517,7 +515,7 @@ HRESULT STDMETHODCALLTYPE CIDropTarget::QueryInterface( /* [in] */ REFIID riid,
 {
 	if(ppvObject == 0)
 		return E_POINTER;
-	*ppvObject = NULL;
+	*ppvObject = nullptr;
 	if (IID_IUnknown == riid || IID_IDropTarget == riid)
 		*ppvObject = static_cast<IDropTarget*>(this);
 	else
@@ -584,7 +582,7 @@ HRESULT STDMETHODCALLTYPE CIDropTarget::DragEnter(
 	/* [in] */ POINTL pt,
 	/* [out][in] */ DWORD __RPC_FAR *pdwEffect)
 {
-	if(pDataObj == NULL)
+	if (!pDataObj)
 		return E_INVALIDARG;
 	if(pdwEffect == 0)
 		return E_POINTER;
@@ -595,7 +593,7 @@ HRESULT STDMETHODCALLTYPE CIDropTarget::DragEnter(
 	if(m_pDropTargetHelper)
 		m_pDropTargetHelper->DragEnter(m_hTargetWnd, pDataObj, (LPPOINT)&pt, *pdwEffect);
 
-	m_pSupportedFrmt = NULL;
+	m_pSupportedFrmt = nullptr;
 	for(int i =0; i<m_formatetc.GetSize(); ++i)
 	{
 		m_bAllowDrop = (pDataObj->QueryGetData(&m_formatetc[i]) == S_OK);
@@ -629,9 +627,9 @@ HRESULT STDMETHODCALLTYPE CIDropTarget::DragLeave( void)
 		m_pDropTargetHelper->DragLeave();
 
 	m_bAllowDrop = false;
-	m_pSupportedFrmt = NULL;
+	m_pSupportedFrmt = nullptr;
 	m_pIDataObject->Release();
-	m_pIDataObject = NULL;
+	m_pIDataObject = nullptr;
 	return S_OK;
 }
 
@@ -640,7 +638,7 @@ HRESULT STDMETHODCALLTYPE CIDropTarget::Drop(
 	/* [in] */ DWORD grfKeyState, /* [in] */ POINTL pt,
 	/* [out][in] */ DWORD __RPC_FAR *pdwEffect)
 {
-	if (pDataObj == NULL)
+	if (!pDataObj)
 		return E_INVALIDARG;
 	if(pdwEffect == 0)
 		return E_POINTER;
@@ -650,7 +648,7 @@ HRESULT STDMETHODCALLTYPE CIDropTarget::Drop(
 
 	if(QueryDrop(grfKeyState, pdwEffect))
 	{
-		if(m_bAllowDrop && m_pSupportedFrmt != NULL)
+		if (m_bAllowDrop && m_pSupportedFrmt)
 		{
 			STGMEDIUM medium;
 			if(pDataObj->GetData(m_pSupportedFrmt, &medium) == S_OK)
@@ -662,10 +660,10 @@ HRESULT STDMETHODCALLTYPE CIDropTarget::Drop(
 	}
 	m_bAllowDrop=false;
 	*pdwEffect = DROPEFFECT_NONE;
-	m_pSupportedFrmt = NULL;
+	m_pSupportedFrmt = nullptr;
 	if (m_pIDataObject) // just in case we get a drop without first receiving DragEnter()
 		m_pIDataObject->Release();
-	m_pIDataObject = NULL;
+	m_pIDataObject = nullptr;
 	return S_OK;
 }
 

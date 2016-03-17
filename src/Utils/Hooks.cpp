@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2015 - TortoiseGit
+// Copyright (C) 2011-2016 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -37,7 +37,7 @@ CHooks::~CHooks()
 
 bool CHooks::Create()
 {
-	if (m_pInstance == NULL)
+	if (!m_pInstance)
 		m_pInstance = new CHooks();
 	CRegString reghooks(_T("Software\\TortoiseGit\\hooks"));
 	CString strhooks = reghooks;
@@ -366,7 +366,7 @@ DWORD CHooks::RunScript(CString cmd, LPCTSTR currentDir, CString& error, bool bW
 		return (DWORD)-1;
 	}
 
-	hRedir = CreateFile(szErr, GENERIC_READ, FILE_SHARE_WRITE, 0, OPEN_EXISTING, 0, 0);
+	hRedir = CreateFile(szErr, GENERIC_READ, FILE_SHARE_WRITE, nullptr, OPEN_EXISTING, 0, nullptr);
 
 	if (!hRedir)
 	{
@@ -375,7 +375,7 @@ DWORD CHooks::RunScript(CString cmd, LPCTSTR currentDir, CString& error, bool bW
 	}
 
 	GetTempFileName(szTempPath, _T("git"), 0, szOutput);
-	hOut   = CreateFile(szOutput, GENERIC_WRITE, FILE_SHARE_READ, &sa, CREATE_ALWAYS, FILE_ATTRIBUTE_TEMPORARY,	0);
+	hOut   = CreateFile(szOutput, GENERIC_WRITE, FILE_SHARE_READ, &sa, CREATE_ALWAYS, FILE_ATTRIBUTE_TEMPORARY, nullptr);
 
 	if (!hOut)
 	{
@@ -413,7 +413,7 @@ DWORD CHooks::RunScript(CString cmd, LPCTSTR currentDir, CString& error, bool bW
 		char buf[256] = { 0 };
 		do
 		{
-			while (ReadFile(hRedir, &buf, sizeof(buf)-1, &dw, NULL))
+			while (ReadFile(hRedir, &buf, sizeof(buf) - 1, &dw, nullptr))
 			{
 				if (dw == 0)
 					break;
@@ -423,7 +423,7 @@ DWORD CHooks::RunScript(CString cmd, LPCTSTR currentDir, CString& error, bool bW
 		} while (WaitForSingleObject(pi.hProcess, 0) != WAIT_OBJECT_0);
 
 		// perform any final flushing
-		while (ReadFile(hRedir, &buf, sizeof(buf)-1, &dw, NULL))
+		while (ReadFile(hRedir, &buf, sizeof(buf) - 1, &dw, nullptr))
 		{
 			if (dw == 0)
 				break;

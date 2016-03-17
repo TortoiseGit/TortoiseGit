@@ -26,7 +26,7 @@ class CDeleteRemoteTagDlg : public CHorizontalResizableStandAloneDialog
 	DECLARE_DYNAMIC(CDeleteRemoteTagDlg)
 
 public:
-	CDeleteRemoteTagDlg(CWnd* pParent = NULL);   // standard constructor
+	CDeleteRemoteTagDlg(CWnd* pParent = nullptr);   // standard constructor
 	virtual ~CDeleteRemoteTagDlg();
 
 // Dialog Data

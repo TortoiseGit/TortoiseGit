@@ -42,7 +42,7 @@ class CRebaseDlg : public CResizableStandAloneDialog
 	DECLARE_DYNAMIC(CRebaseDlg)
 
 public:
-	CRebaseDlg(CWnd* pParent = NULL); // standard constructor
+	CRebaseDlg(CWnd* pParent = nullptr); // standard constructor
 	virtual ~CRebaseDlg();
 
 // Dialog Data

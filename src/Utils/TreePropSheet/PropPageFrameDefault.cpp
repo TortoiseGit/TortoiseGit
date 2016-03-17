@@ -74,7 +74,7 @@ CWnd* CPropPageFrameDefault::GetWnd()
 }
 
 
-void CPropPageFrameDefault::SetCaption(LPCTSTR lpszCaption, HICON hIcon /*= NULL*/)
+void CPropPageFrameDefault::SetCaption(LPCTSTR lpszCaption, HICON hIcon /*= nullptr*/)
 {
 	CPropPageFrame::SetCaption(lpszCaption, hIcon);
 
@@ -216,7 +216,7 @@ void CPropPageFrameDefault::FillGradientRectH(CDC *pDc, const RECT &rect, COLORR
 	double	dG = (double)GetGValue(clrLeft);
 	double	dB = (double)GetBValue(clrLeft);
 
-	CPen	*pPrevPen = NULL;
+	CPen* pPrevPen = nullptr;
 	for (int x = rect.left; x <= rect.right; ++x)
 	{
 		CPen	Pen(PS_SOLID, 1, RGB((BYTE)dR, (BYTE)dG, (BYTE)dB));
@@ -251,7 +251,7 @@ BOOL CPropPageFrameDefault::OnEraseBkgnd(CDC* pDC)
 		{
 			CRect	rect;
 			GetClientRect(rect);
-			DrawThemeBackground(hTheme, pDC->m_hDC, 0, 0, rect, NULL);
+			DrawThemeBackground(hTheme, pDC->m_hDC, 0, 0, rect, nullptr);
 			CloseThemeData(hTheme);
 		}
 		return TRUE;

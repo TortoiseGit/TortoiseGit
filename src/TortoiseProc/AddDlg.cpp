@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2015 - TortoiseGit
+// Copyright (C) 2008-2016 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -27,7 +27,7 @@
 #define REFRESHTIMER   100
 
 IMPLEMENT_DYNAMIC(CAddDlg, CResizableStandAloneDialog)
-CAddDlg::CAddDlg(CWnd* pParent /*=NULL*/)
+CAddDlg::CAddDlg(CWnd* pParent /*=nullptr*/)
 	: CResizableStandAloneDialog(CAddDlg::IDD, pParent)
 	, m_bThreadRunning(FALSE)
 	, m_bCancelled(false)
@@ -91,7 +91,7 @@ BOOL CAddDlg::OnInitDialog()
 
 	//first start a thread to obtain the file list with the status without
 	//blocking the dialog
-	if(AfxBeginThread(AddThreadEntry, this) == NULL)
+	if (!AfxBeginThread(AddThreadEntry, this))
 	{
 		CMessageBox::Show(this->m_hWnd, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
 	}
@@ -191,7 +191,7 @@ BOOL CAddDlg::PreTranslateMessage(MSG* pMsg)
 
 LRESULT CAddDlg::OnSVNStatusListCtrlNeedsRefresh(WPARAM, LPARAM)
 {
-	if(AfxBeginThread(AddThreadEntry, this) == NULL)
+	if (!AfxBeginThread(AddThreadEntry, this))
 	{
 		CMessageBox::Show(this->m_hWnd, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
 	}
@@ -246,7 +246,7 @@ LRESULT CAddDlg::OnFileDropped(WPARAM, LPARAM lParam)
 	}
 
 	// Always start the timer, since the status of an existing item might have changed
-	SetTimer(REFRESHTIMER, 200, NULL);
+	SetTimer(REFRESHTIMER, 200, nullptr);
 	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Item %s dropped, timer started\n"), path.GetWinPath());
 	return 0;
 }
@@ -255,7 +255,7 @@ void CAddDlg::Refresh()
 {
 	if (!m_bThreadRunning)
 	{
-		if(AfxBeginThread(AddThreadEntry, this) == NULL)
+		if (!AfxBeginThread(AddThreadEntry, this))
 		{
 			CMessageBox::Show(this->m_hWnd, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
 		}
@@ -271,7 +271,7 @@ void CAddDlg::OnTimer(UINT_PTR nIDEvent)
 	case REFRESHTIMER:
 		if (m_bThreadRunning)
 		{
-			SetTimer(REFRESHTIMER, 200, NULL);
+			SetTimer(REFRESHTIMER, 200, nullptr);
 			CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Wait some more before refreshing\n");
 		}
 		else

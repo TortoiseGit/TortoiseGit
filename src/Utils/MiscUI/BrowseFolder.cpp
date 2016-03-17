@@ -25,10 +25,10 @@
 
 BOOL CBrowseFolder::m_bCheck = FALSE;
 BOOL CBrowseFolder::m_bCheck2 = FALSE;
-WNDPROC CBrowseFolder::CBProc = NULL;
-HWND CBrowseFolder::checkbox = NULL;
-HWND CBrowseFolder::checkbox2 = NULL;
-HWND CBrowseFolder::ListView = NULL;
+WNDPROC CBrowseFolder::CBProc = nullptr;
+HWND CBrowseFolder::checkbox = nullptr;
+HWND CBrowseFolder::checkbox2 = nullptr;
+HWND CBrowseFolder::ListView = nullptr;
 TCHAR CBrowseFolder::m_CheckText[200];
 TCHAR CBrowseFolder::m_CheckText2[200];
 CString CBrowseFolder::m_sDefaultPath;
@@ -37,7 +37,7 @@ bool CBrowseFolder::m_DisableCheckbox2WhenCheckbox1IsChecked = false;
 
 CBrowseFolder::CBrowseFolder(void)
 :	m_style(0),
-	m_root(NULL)
+	m_root(nullptr)
 {
 	SecureZeroMemory(m_displayName, sizeof(m_displayName));
 	SecureZeroMemory(m_title, sizeof(m_title));
@@ -49,7 +49,7 @@ CBrowseFolder::~CBrowseFolder(void)
 }
 
 //show the dialog
-CBrowseFolder::retVal CBrowseFolder::Show(HWND parent, LPTSTR path, size_t pathlen, LPCTSTR szDefaultPath /* = NULL */)
+CBrowseFolder::retVal CBrowseFolder::Show(HWND parent, LPTSTR path, size_t pathlen, LPCTSTR szDefaultPath /* = nullptr */)
 {
 	CString temp;
 	temp = path;
@@ -84,7 +84,7 @@ CBrowseFolder::retVal CBrowseFolder::Show(HWND parent, CString& path, const CStr
 
 	// Create a new common open file dialog
 	CComPtr<IFileOpenDialog> pfd;
-	if (FAILED(pfd.CoCreateInstance(CLSID_FileOpenDialog, NULL, CLSCTX_INPROC_SERVER)))
+	if (FAILED(pfd.CoCreateInstance(CLSID_FileOpenDialog, nullptr, CLSCTX_INPROC_SERVER)))
 	{
 		BROWSEINFO browseInfo = {};
 		browseInfo.hwndOwner = parent;
@@ -224,9 +224,9 @@ int CBrowseFolder::BrowseCallBackProc(HWND hwnd, UINT uMsg, LPARAM lParam, LPARA
 				0,100,100,50,
 				hwnd,
 				0,
-				NULL,
-				NULL);
-			if (checkbox == NULL)
+				nullptr,
+				nullptr);
+			if (!checkbox)
 				return 0;
 
 			if (bSecondCheckbox)
@@ -239,17 +239,17 @@ int CBrowseFolder::BrowseCallBackProc(HWND hwnd, UINT uMsg, LPARAM lParam, LPARA
 					0,100,100,50,
 					hwnd,
 					0,
-					NULL,
-					NULL);
-				if (checkbox2 == NULL)
+					nullptr,
+					nullptr);
+				if (!checkbox2)
 					return 0;
 			}
 
-			ListView = FindWindowEx(hwnd,NULL,_T("SysTreeView32"),NULL);
-			if (ListView == NULL)
-				ListView = FindWindowEx(hwnd,NULL,_T("SHBrowseForFolder ShellNameSpace Control"),NULL);
+			ListView = FindWindowEx(hwnd, nullptr, _T("SysTreeView32"), nullptr);
+			if (!ListView)
+				ListView = FindWindowEx(hwnd, nullptr, _T("SHBrowseForFolder ShellNameSpace Control"), nullptr);
 
-			if (ListView == NULL)
+			if (!ListView)
 				return 0;
 
 			//Gets the dimensions of the windows
@@ -287,7 +287,7 @@ int CBrowseFolder::BrowseCallBackProc(HWND hwnd, UINT uMsg, LPARAM lParam, LPARA
 					controlHeight,
 					SWP_NOZORDER);
 			}
-			HWND label = FindWindowEx(hwnd, NULL, _T("STATIC"), NULL);
+			HWND label = FindWindowEx(hwnd, nullptr, _T("STATIC"), nullptr);
 			if (label)
 			{
 				HFONT hFont = (HFONT)::SendMessage(label, WM_GETFONT, 0, 0);

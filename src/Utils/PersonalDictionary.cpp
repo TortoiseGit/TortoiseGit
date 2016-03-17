@@ -52,7 +52,7 @@ bool CPersonalDictionary::Load()
 
 	std::wifstream File;
 	char filepath[MAX_PATH + 1] = { 0 };
-	WideCharToMultiByte(CP_ACP, NULL, path, -1, filepath, MAX_PATH, NULL, NULL);
+	WideCharToMultiByte(CP_ACP, 0, path, -1, filepath, MAX_PATH, nullptr, nullptr);
 	File.open(filepath);
 	if (!File.good())
 	{
@@ -108,7 +108,7 @@ bool CPersonalDictionary::Save()
 
 	std::wofstream File;
 	char filepath[MAX_PATH + 1] = { 0 };
-	WideCharToMultiByte(CP_ACP, NULL, path, -1, filepath, MAX_PATH, NULL, NULL);
+	WideCharToMultiByte(CP_ACP, 0, path, -1, filepath, MAX_PATH, nullptr, nullptr);
 	File.open(filepath, std::ios_base::binary);
 	for (const auto& line : dict)
 	{

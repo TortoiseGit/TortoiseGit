@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2013, 2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -104,11 +104,11 @@ void COutputWnd::OnSize(UINT nType, int cx, int cy)
 	// Tab control should cover the whole client area:
 	if (m_Gravatar.IsGravatarEnabled())
 	{
-		m_LogList.SetWindowPos(NULL, -1, -1, cx - 80, cy, SWP_NOMOVE | SWP_NOACTIVATE | SWP_NOZORDER);
-		m_Gravatar.SetWindowPos(NULL, cx - 80, 0, 80, 80, SWP_NOACTIVATE | SWP_NOZORDER);
+		m_LogList.SetWindowPos(nullptr, -1, -1, cx - 80, cy, SWP_NOMOVE | SWP_NOACTIVATE | SWP_NOZORDER);
+		m_Gravatar.SetWindowPos(nullptr, cx - 80, 0, 80, 80, SWP_NOACTIVATE | SWP_NOZORDER);
 		return;
 	}
-	m_LogList.SetWindowPos(NULL, -1, -1, cx, cy, SWP_NOMOVE | SWP_NOACTIVATE | SWP_NOZORDER);
+	m_LogList.SetWindowPos(nullptr, -1, -1, cx, cy, SWP_NOMOVE | SWP_NOACTIVATE | SWP_NOZORDER);
 }
 
 void COutputWnd::AdjustHorzScroll(CListBox& wndListBox)
@@ -219,7 +219,7 @@ void COutputList::OnViewOutput()
 	CDockablePane* pParentBar = DYNAMIC_DOWNCAST(CDockablePane, GetOwner());
 	CMDIFrameWndEx* pMainFrame = DYNAMIC_DOWNCAST(CMDIFrameWndEx, GetTopLevelFrame());
 
-	if (pMainFrame != NULL && pParentBar != NULL)
+	if (pMainFrame && pParentBar)
 	{
 		pMainFrame->SetFocus();
 		pMainFrame->ShowPane(pParentBar, FALSE, FALSE, FALSE);

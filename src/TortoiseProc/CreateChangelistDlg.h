@@ -28,7 +28,7 @@ class CCreateChangelistDlg : public CDialog
 	DECLARE_DYNAMIC(CCreateChangelistDlg)
 
 public:
-	CCreateChangelistDlg(CWnd* pParent = NULL);   // standard constructor
+	CCreateChangelistDlg(CWnd* pParent = nullptr);   // standard constructor
 	virtual ~CCreateChangelistDlg();
 
 	enum { IDD = IDD_CREATECHANGELIST };

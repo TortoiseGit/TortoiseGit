@@ -30,7 +30,7 @@ class CPullFetchDlg : public CHorizontalResizableStandAloneDialog
 	DECLARE_DYNAMIC(CPullFetchDlg)
 
 public:
-	CPullFetchDlg(CWnd* pParent = NULL);   // standard constructor
+	CPullFetchDlg(CWnd* pParent = nullptr);   // standard constructor
 	virtual ~CPullFetchDlg();
 
 // Dialog Data

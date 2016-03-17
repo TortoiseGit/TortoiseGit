@@ -70,7 +70,7 @@ public:
 	void SetFromGit(const char* pPath);
 	void SetFromGit(const char* pPath, bool bIsDirectory);
 	void SetFromGit(const TCHAR* pPath, bool bIsDirectory);
-	void SetFromGit(const CString& sPath,CString *OldPath=NULL);
+	void SetFromGit(const CString& sPath, CString* OldPath = nullptr);
 
 	/**
 	 * Set the path as UNICODE with backslashes
@@ -167,7 +167,7 @@ public:
 	 * section stripped off the front
 	 * Returns a string with fwdslash paths
 	 */
-	CString GetDisplayString(const CTGitPath* pOptionalBasePath = NULL) const;
+	CString GetDisplayString(const CTGitPath* pOptionalBasePath = nullptr) const;
 	/**
 	 * Compares two paths. Slash format is irrelevant.
 	 */

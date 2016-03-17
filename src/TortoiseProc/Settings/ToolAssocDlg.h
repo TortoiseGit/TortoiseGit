@@ -29,7 +29,7 @@ class CToolAssocDlg : public CDialog
 	DECLARE_DYNAMIC(CToolAssocDlg)
 
 public:
-	CToolAssocDlg(const CString& type, bool add, CWnd* pParent = NULL);
+	CToolAssocDlg(const CString& type, bool add, CWnd* pParent = nullptr);
 	virtual ~CToolAssocDlg();
 
 	enum { IDD = IDD_TOOLASSOC };

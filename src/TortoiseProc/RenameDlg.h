@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2006, 2009-2010, 2013 - TortoiseSVN
+// Copyright (C) 2003-2006, 2009-2010, 2013, 2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -29,7 +29,7 @@ class CRenameDlg : public CHorizontalResizableStandAloneDialog
 	DECLARE_DYNAMIC(CRenameDlg)
 
 public:
-	CRenameDlg(CWnd* pParent = NULL);
+	CRenameDlg(CWnd* pParent = nullptr);
 	virtual ~CRenameDlg();
 
 	void SetInputValidator(IInputValidator * validator) { m_pInputValidator = validator; }

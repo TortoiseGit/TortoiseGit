@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2015 - TortoiseGit
+// Copyright (C) 2008-2013, 2015-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -31,7 +31,7 @@
 
 IMPLEMENT_DYNAMIC(CSubmoduleAddDlg, CHorizontalResizableStandAloneDialog)
 
-CSubmoduleAddDlg::CSubmoduleAddDlg(CWnd* pParent /*=NULL*/)
+CSubmoduleAddDlg::CSubmoduleAddDlg(CWnd* pParent /*=nullptr*/)
 	: CHorizontalResizableStandAloneDialog(CSubmoduleAddDlg::IDD, pParent)
 	, m_bBranch(FALSE)
 	, m_bForce(FALSE)
@@ -197,7 +197,7 @@ void CSubmoduleAddDlg::OnOK()
 void CSubmoduleAddDlg::OnBnClickedPuttykeyfileBrowse()
 {
 	UpdateData();
-	CFileDialog dlg(TRUE, NULL, NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, CString(MAKEINTRESOURCE(IDS_PUTTYKEYFILEFILTER)));
+	CFileDialog dlg(TRUE, nullptr, nullptr, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, CString(MAKEINTRESOURCE(IDS_PUTTYKEYFILEFILTER)));
 	if (dlg.DoModal()==IDOK)
 	{
 		m_PuttyKeyCombo.SetWindowText(dlg.GetPathName());

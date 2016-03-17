@@ -36,7 +36,7 @@
 
 IMPLEMENT_DYNAMIC(CSyncDlg, CResizableStandAloneDialog)
 
-CSyncDlg::CSyncDlg(CWnd* pParent /*=NULL*/)
+CSyncDlg::CSyncDlg(CWnd* pParent /*=nullptr*/)
 	: CResizableStandAloneDialog(CSyncDlg::IDD, pParent)
 	, m_iPullRebase(0)
 {
@@ -48,7 +48,7 @@ CSyncDlg::CSyncDlg(CWnd* pParent /*=NULL*/)
 	m_bForce=false;
 	m_bBlock = false;
 	m_BufStart = 0;
-	m_pThread = NULL;
+	m_pThread = nullptr;
 	m_bAbort = false;
 	m_bDone = false;
 	m_bWantToExit = false;
@@ -178,14 +178,14 @@ void CSyncDlg::OnBnClickedButtonPull()
 		}
 		if (localBranchHash != m_oldHash)
 		{
-			CMessageBox::Show(NULL, IDS_PROC_SYNC_PULLWRONGBRANCH, IDS_APPNAME, MB_OK | MB_ICONERROR);
+			CMessageBox::Show(GetSafeHwnd(), IDS_PROC_SYNC_PULLWRONGBRANCH, IDS_APPNAME, MB_OK | MB_ICONERROR);
 			return;
 		}
 	}
 
 	if(this->m_strURL.IsEmpty())
 	{
-		CMessageBox::Show(NULL, IDS_PROC_GITCONFIG_URLEMPTY, IDS_APPNAME, MB_OK | MB_ICONERROR);
+		CMessageBox::Show(GetSafeHwnd(), IDS_PROC_GITCONFIG_URLEMPTY, IDS_APPNAME, MB_OK | MB_ICONERROR);
 		return;
 	}
 
@@ -197,7 +197,7 @@ void CSyncDlg::OnBnClickedButtonPull()
 
 	if (m_bAutoLoadPuttyKey && CurrentEntry != 4) // CurrentEntry (Remote Update) handles this on its own)
 	{
-		CAppUtils::LaunchPAgent(NULL,&this->m_strURL);
+		CAppUtils::LaunchPAgent(nullptr, &m_strURL);
 	}
 
 	if (g_Git.GetMapHashToFriendName(m_oldHashMap))
@@ -299,7 +299,7 @@ void CSyncDlg::OnBnClickedButtonPull()
 		m_GitCmdList.push_back(cmd);
 
 		m_pThread = AfxBeginThread(ProgressThreadEntry, this, THREAD_PRIORITY_NORMAL,0,CREATE_SUSPENDED);
-		if (m_pThread==NULL)
+		if (!m_pThread)
 		{
 		//		ReportError(CString(MAKEINTRESOURCE(IDS_ERR_THREADSTARTFAILED)));
 		}
@@ -362,7 +362,7 @@ void CSyncDlg::OnBnClickedButtonPull()
 			m_GitCmdList.push_back(cmd);
 
 			m_pThread = AfxBeginThread(ProgressThreadEntry, this, THREAD_PRIORITY_NORMAL,0,CREATE_SUSPENDED);
-			if (m_pThread==NULL)
+			if (!m_pThread)
 			{
 			//		ReportError(CString(MAKEINTRESOURCE(IDS_ERR_THREADSTARTFAILED)));
 			}
@@ -383,7 +383,7 @@ void CSyncDlg::OnBnClickedButtonPull()
 			if (!g_Git.GetRemoteList(list))
 			{
 				for (size_t i = 0; i < list.size(); ++i)
-					CAppUtils::LaunchPAgent(NULL, &list[i]);
+					CAppUtils::LaunchPAgent(nullptr, &list[i]);
 			}
 		}
 
@@ -394,7 +394,7 @@ void CSyncDlg::OnBnClickedButtonPull()
 		InterlockedExchange(&m_bBlock, TRUE);
 
 		m_pThread = AfxBeginThread(ProgressThreadEntry, this, THREAD_PRIORITY_NORMAL,0,CREATE_SUSPENDED);
-		if (m_pThread==NULL)
+		if (!m_pThread)
 		{
 		//		ReportError(CString(MAKEINTRESOURCE(IDS_ERR_THREADSTARTFAILED)));
 			InterlockedExchange(&m_bBlock, FALSE);
@@ -416,7 +416,7 @@ void CSyncDlg::OnBnClickedButtonPull()
 		InterlockedExchange(&m_bBlock, TRUE);
 
 		m_pThread = AfxBeginThread(ProgressThreadEntry, this, THREAD_PRIORITY_NORMAL,0,CREATE_SUSPENDED);
-		if (m_pThread==NULL)
+		if (!m_pThread)
 		{
 		//		ReportError(CString(MAKEINTRESOURCE(IDS_ERR_THREADSTARTFAILED)));
 			InterlockedExchange(&m_bBlock, FALSE);
@@ -635,7 +635,7 @@ void CSyncDlg::OnBnClickedButtonPush()
 
 	if(this->m_strURL.IsEmpty())
 	{
-		CMessageBox::Show(NULL, IDS_PROC_GITCONFIG_URLEMPTY, IDS_APPNAME, MB_OK | MB_ICONERROR);
+		CMessageBox::Show(GetSafeHwnd(), IDS_PROC_GITCONFIG_URLEMPTY, IDS_APPNAME, MB_OK | MB_ICONERROR);
 		return;
 	}
 
@@ -663,7 +663,7 @@ void CSyncDlg::OnBnClickedButtonPush()
 		{
 			CString temp;
 			temp.Format(IDS_ERR_HOOKFAILED, (LPCTSTR)error);
-			CMessageBox::Show(NULL,temp,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+			CMessageBox::Show(GetSafeHwnd(), temp, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 			return ;
 		}
 	}
@@ -698,11 +698,11 @@ void CSyncDlg::OnBnClickedButtonPush()
 
 	if(this->m_bAutoLoadPuttyKey)
 	{
-		CAppUtils::LaunchPAgent(NULL,&this->m_strURL);
+		CAppUtils::LaunchPAgent(nullptr, &m_strURL);
 	}
 
 	m_pThread = AfxBeginThread(ProgressThreadEntry, this, THREAD_PRIORITY_NORMAL,0,CREATE_SUSPENDED);
-	if (m_pThread==NULL)
+	if (!m_pThread)
 	{
 //		ReportError(CString(MAKEINTRESOURCE(IDS_ERR_THREADSTARTFAILED)));
 	}
@@ -734,7 +734,7 @@ void CSyncDlg::OnBnClickedButtonApply()
 
 			if (g_Git.Run(cmd, &output, CP_UTF8))
 			{
-				CMessageBox::Show(NULL,output,_T("TortoiseGit"),MB_OK);
+				CMessageBox::Show(GetSafeHwnd(), output, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 
 				err=1;
 				break;
@@ -804,7 +804,7 @@ void CSyncDlg::OnBnClickedButtonEmail()
 
 	if (g_Git.Run(cmd, &out, &err, CP_UTF8))
 	{
-		CMessageBox::Show(NULL, out + L"\n" + err, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
+		CMessageBox::Show(GetSafeHwnd(), out + L"\n" + err, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 		return ;
 	}
 
@@ -1333,7 +1333,7 @@ bool CSyncDlg::IsURL()
 }
 void CSyncDlg::OnCbnEditchangeComboboxex()
 {
-	SetTimer(IDT_INPUT, 1000, NULL);
+	SetTimer(IDT_INPUT, 1000, nullptr);
 	this->m_OutLogList.ShowText(CString(MAKEINTRESOURCE(IDS_PROC_SYNC_WAINTINPUT)));
 
 	//this->FetchOutList();
@@ -1395,7 +1395,7 @@ LRESULT CSyncDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 			err.Format(_T("\r\n\r\n%s (%I64u ms @ %s)\r\n"), (LPCTSTR)log, tickSpent, (LPCTSTR)strEndTime);
 			CProgressDlg::InsertColorText(this->m_ctrlCmdOut, err, RGB(255,0,0));
 			if (CRegDWORD(_T("Software\\TortoiseGit\\NoSounds"), FALSE) == FALSE)
-				PlaySound((LPCTSTR)SND_ALIAS_SYSTEMEXCLAMATION, NULL, SND_ALIAS_ID | SND_ASYNC);
+				PlaySound((LPCTSTR)SND_ALIAS_SYSTEMEXCLAMATION, nullptr, SND_ALIAS_ID | SND_ASYNC);
 		}
 		else
 		{
@@ -1672,7 +1672,7 @@ void CSyncDlg::OnBnClickedButtonSubmodule()
 	m_CurrentCmd = GIT_COMMAND_SUBMODULE;
 
 	m_pThread = AfxBeginThread(ProgressThreadEntry, this, THREAD_PRIORITY_NORMAL,0,CREATE_SUSPENDED);
-	if (m_pThread==NULL)
+	if (!m_pThread)
 	{
 //		ReportError(CString(MAKEINTRESOURCE(IDS_ERR_THREADSTARTFAILED)));
 	}

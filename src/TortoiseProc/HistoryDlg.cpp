@@ -24,10 +24,10 @@
 
 
 IMPLEMENT_DYNAMIC(CHistoryDlg, CResizableStandAloneDialog)
-CHistoryDlg::CHistoryDlg(CWnd* pParent /*=NULL*/)
+CHistoryDlg::CHistoryDlg(CWnd* pParent /*=nullptr*/)
 	: CResizableStandAloneDialog(CHistoryDlg::IDD, pParent)
 {
-	m_history = NULL;
+	m_history = nullptr;
 }
 
 CHistoryDlg::~CHistoryDlg()

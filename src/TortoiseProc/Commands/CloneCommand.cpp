@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2015 - TortoiseGit
+// Copyright (C) 2008-2016 - TortoiseGit
 // Copyright (C) 2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -79,7 +79,7 @@ bool CloneCommand::Execute()
 		if (orgCmdLinePath.IsEmpty())
 		{
 			cloneDirectory.SetFromWin(sOrigCWD, true);
-			DWORD len = ::GetTempPath(0, NULL);
+			DWORD len = ::GetTempPath(0, nullptr);
 			auto tszPath = std::make_unique<TCHAR[]>(len);
 			::GetTempPath(len, tszPath.get());
 			if (_tcsncicmp(cloneDirectory.GetWinPath(), tszPath.get(), len-2 /* \\ and \0 */) == 0)

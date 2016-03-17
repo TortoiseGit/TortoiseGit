@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2006 - Stefan Kueng
-// Copyright (C) 2012-2015 - TortoiseGit
+// Copyright (C) 2012-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -26,7 +26,7 @@
 
 IMPLEMENT_DYNAMIC(CRevGraphFilterDlg, CDialog)
 
-CRevGraphFilterDlg::CRevGraphFilterDlg(CWnd* pParent /*=NULL*/)
+CRevGraphFilterDlg::CRevGraphFilterDlg(CWnd* pParent /*=nullptr*/)
 	: CDialog(CRevGraphFilterDlg::IDD, pParent)
 	, m_bCurrentBranch(FALSE)
 	, m_bLocalBranches(FALSE)

@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2010, 2012 - TortoiseSVN
-// Copyright (C) 2008-2012,2014 - TortoiseGit
+// Copyright (C) 2008-2012, 2014, 2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -25,11 +25,11 @@
 #include "gitindex.h"
 
 volatile LONG		g_cRefThisDll = 0;				///< reference count of this DLL.
-HINSTANCE			g_hmodThisDll = NULL;			///< handle to this DLL itself.
+HINSTANCE			g_hmodThisDll = nullptr;		///< handle to this DLL itself.
 ShellCache			g_ShellCache;					///< caching of registry entries, ...
 DWORD				g_langid;
 ULONGLONG			g_langTimeout = 0;
-HINSTANCE			g_hResInst = NULL;
+HINSTANCE			g_hResInst = nullptr;
 stdstring			g_filepath;
 git_wc_status_kind	g_filestatus = git_wc_status_none;	///< holds the corresponding status to the file/dir above
 bool				g_readonlyoverlay = false;
@@ -63,7 +63,7 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID /* lpReserved */)
 
 	bool bInShellTest = false;
 	TCHAR buf[MAX_PATH + 1] = {0};		// MAX_PATH ok, the test really is for debugging anyway.
-	DWORD pathLength = GetModuleFileName(NULL, buf, MAX_PATH);
+	DWORD pathLength = GetModuleFileName(nullptr, buf, MAX_PATH);
 	if(pathLength >= 14)
 	{
 		if (pathLength >= 24 && _tcsicmp(&buf[pathLength - 24], _T("\\TortoiseGitExplorer.exe")) == 0)
@@ -93,10 +93,8 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID /* lpReserved */)
 	// behavior and even may create dependency loops in the dll load order.
 	if (dwReason == DLL_PROCESS_ATTACH)
 	{
-		if (g_hmodThisDll == NULL)
-		{
+		if (!g_hmodThisDll)
 			g_csGlobalCOMGuard.Init();
-		}
 
 		// Extension DLL one-time initialization
 		g_hmodThisDll = hInstance;
@@ -125,7 +123,7 @@ STDAPI DllGetClassObject(REFCLSID rclsid, REFIID riid, LPVOID *ppvOut)
 {
 	if (ppvOut == 0)
 		return E_POINTER;
-	*ppvOut = NULL;
+	*ppvOut = nullptr;
 
 	FileState state = FileStateInvalid;
 	if (IsEqualIID(rclsid, CLSID_Tortoisegit_UPTODATE))
@@ -154,7 +152,7 @@ STDAPI DllGetClassObject(REFCLSID rclsid, REFIID riid, LPVOID *ppvOut)
 	if (state != FileStateInvalid)
 	{
 		CShellExtClassFactory *pcf = new (std::nothrow) CShellExtClassFactory(state);
-		if (pcf == NULL)
+		if (!pcf)
 			return E_OUTOFMEMORY;
 		// refcount currently set to 0
 		git_libgit2_init();

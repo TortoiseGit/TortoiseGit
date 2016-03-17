@@ -54,8 +54,8 @@
 
 CMailMsg::CMailMsg()
 {
-	m_hMapi					= NULL;
-	m_lpMapiSendMail		= NULL;
+	m_hMapi					= nullptr;
+	m_lpMapiSendMail		= nullptr;
 	m_bReady				= FALSE;
 	m_bShowComposeDialog	= FALSE;
 }
@@ -211,14 +211,14 @@ CString CMailMsg::GetEmailClientName()
 
 BOOL CMailMsg::Send()
 {
-	if(m_lpMapiSendMail==NULL)
+	if (!m_lpMapiSendMail)
 		return FALSE;
 
 	TStrStrMap::iterator	p;
 	int						nIndex = 0;
-	MapiRecipDesc*			pRecipients = NULL;
+	MapiRecipDesc*			pRecipients = nullptr;
 	int						nAttachments = 0;
-	MapiFileDesc*			pAttachments = NULL;
+	MapiFileDesc*			pAttachments = nullptr;
 	ULONG					status = 0;
 	MapiMessage				message;
 
@@ -250,7 +250,7 @@ BOOL CMailMsg::Send()
 	pRecipients[0].lpszAddress = (LPSTR)m_from.email.c_str();
 	pRecipients[0].lpszName = (LPSTR)m_from.name.c_str();
 	pRecipients[0].ulEIDSize = 0;
-	pRecipients[0].lpEntryID = NULL;
+	pRecipients[0].lpEntryID = nullptr;
 
 	// add to recipients
 	for (size_t i = 0; i < m_to.size(); ++i)
@@ -261,7 +261,7 @@ BOOL CMailMsg::Send()
 		pRecipients[nIndex].lpszAddress = (LPSTR)m_to.at(i).email.c_str();
 		pRecipients[nIndex].lpszName = (LPSTR)m_to.at(i).name.c_str();
 		pRecipients[nIndex].ulEIDSize = 0;
-		pRecipients[nIndex].lpEntryID = NULL;
+		pRecipients[nIndex].lpEntryID = nullptr;
 	}
 
 	// add cc receipients
@@ -273,7 +273,7 @@ BOOL CMailMsg::Send()
 		pRecipients[nIndex].lpszAddress = (LPSTR)m_cc.at(i).email.c_str();
 		pRecipients[nIndex].lpszName = (LPSTR)m_cc.at(i).name.c_str();
 		pRecipients[nIndex].ulEIDSize = 0;
-		pRecipients[nIndex].lpEntryID = NULL;
+		pRecipients[nIndex].lpEntryID = nullptr;
 	}
 
 	nIndex=0;
@@ -286,23 +286,23 @@ BOOL CMailMsg::Send()
 		pAttachments[nIndex].nPosition		= 0xFFFFFFFF;
 		pAttachments[nIndex].lpszPathName	= (LPSTR)p->first.c_str();
 		pAttachments[nIndex].lpszFileName	= (LPSTR)p->second.c_str();
-		pAttachments[nIndex].lpFileType		= NULL;
+		pAttachments[nIndex].lpFileType		= nullptr;
 	}
 
 	message.ulReserved						= 0;
 	message.lpszSubject						= (LPSTR)m_sSubject.c_str();
 	message.lpszNoteText					= (LPSTR)m_sMessage.c_str();
-	message.lpszMessageType					= NULL;
-	message.lpszDateReceived				= NULL;
-	message.lpszConversationID				= NULL;
+	message.lpszMessageType					= nullptr;
+	message.lpszDateReceived				= nullptr;
+	message.lpszConversationID				= nullptr;
 	message.flFlags							= 0;
 	message.lpOriginator					= pRecipients;
 	message.nRecipCount						= (ULONG)(m_to.size() + m_cc.size());
 	message.lpRecips						= &pRecipients[1];
 	message.nFileCount						= nAttachments;
-	message.lpFiles							= nAttachments ? pAttachments : NULL;
+	message.lpFiles							= nAttachments ? pAttachments : nullptr;
 
-	status = m_lpMapiSendMail(NULL, 0, &message, (m_bShowComposeDialog?MAPI_DIALOG:0)|MAPI_LOGON_UI, 0);
+	status = m_lpMapiSendMail(NULL, 0, &message, (m_bShowComposeDialog ? MAPI_DIALOG : 0) | MAPI_LOGON_UI, 0);
 
 	if(status!=SUCCESS_SUCCESS)
 	{

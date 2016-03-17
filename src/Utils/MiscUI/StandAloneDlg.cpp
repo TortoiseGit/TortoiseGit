@@ -27,7 +27,7 @@ BEGIN_TEMPLATE_MESSAGE_MAP(CStandAloneDialogTmpl, BaseType, BaseType)
 END_MESSAGE_MAP()
 
 IMPLEMENT_DYNAMIC(CStandAloneDialog, CStandAloneDialogTmpl<CDialog>)
-CStandAloneDialog::CStandAloneDialog(UINT nIDTemplate, CWnd* pParentWnd /*= NULL*/)
+CStandAloneDialog::CStandAloneDialog(UINT nIDTemplate, CWnd* pParentWnd /*= nullptr*/)
 : CStandAloneDialogTmpl<CDialog>(nIDTemplate, pParentWnd)
 {
 }
@@ -35,7 +35,7 @@ BEGIN_MESSAGE_MAP(CStandAloneDialog, CStandAloneDialogTmpl<CDialog>)
 END_MESSAGE_MAP()
 
 IMPLEMENT_DYNAMIC(CStateStandAloneDialog, CStandAloneDialogTmpl<CStateDialog>)
-CStateStandAloneDialog::CStateStandAloneDialog(UINT nIDTemplate, CWnd* pParentWnd /*= NULL*/)
+CStateStandAloneDialog::CStateStandAloneDialog(UINT nIDTemplate, CWnd* pParentWnd /*= nullptr*/)
 : CStandAloneDialogTmpl<CStateDialog>(nIDTemplate, pParentWnd)
 {
 }
@@ -44,7 +44,7 @@ BEGIN_MESSAGE_MAP(CStateStandAloneDialog, CStandAloneDialogTmpl<CStateDialog>)
 END_MESSAGE_MAP()
 
 IMPLEMENT_DYNAMIC(CResizableStandAloneDialog, CDialog)
-CResizableStandAloneDialog::CResizableStandAloneDialog(UINT nIDTemplate, CWnd* pParentWnd /*= NULL*/)
+CResizableStandAloneDialog::CResizableStandAloneDialog(UINT nIDTemplate, CWnd* pParentWnd /*= nullptr*/)
 	: CStandAloneDialogTmpl<CResizableDialog>(nIDTemplate, pParentWnd)
 	, m_bVertical(false)
 	, m_bHorizontal(false)

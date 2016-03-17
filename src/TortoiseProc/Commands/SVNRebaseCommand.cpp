@@ -40,7 +40,7 @@ bool SVNRebaseCommand::Execute()
 			sysProgressDlg.SetLine(2, CString(MAKEINTRESOURCE(IDS_PROGRESSWAIT)));
 			sysProgressDlg.SetShowProgressBar(false);
 			sysProgressDlg.SetCancelMsg(IDS_PROGRS_INFOFAILED);
-			sysProgressDlg.ShowModeless((HWND)NULL, true);
+			sysProgressDlg.ShowModeless((HWND)nullptr, true);
 
 			CString cmd,out;
 			cmd=_T("git.exe stash");

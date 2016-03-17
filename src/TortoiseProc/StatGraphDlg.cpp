@@ -54,7 +54,7 @@ private:
 
 
 IMPLEMENT_DYNAMIC(CStatGraphDlg, CResizableStandAloneDialog)
-CStatGraphDlg::CStatGraphDlg(CWnd* pParent /*=NULL*/)
+CStatGraphDlg::CStatGraphDlg(CWnd* pParent /*=nullptr*/)
 : CResizableStandAloneDialog(CStatGraphDlg::IDD, pParent)
 , m_bStacked(FALSE)
 , m_GraphType(MyGraph::Bar)
@@ -71,7 +71,7 @@ CStatGraphDlg::CStatGraphDlg(CWnd* pParent /*=NULL*/)
 , m_nTotalLinesNew(0)
 , m_nTotalLinesDel(0)
 , m_bDiffFetched(FALSE)
-, m_ShowList(NULL)
+, m_ShowList(nullptr)
 , m_minDate(0)
 , m_maxDate(0)
 , m_nTotalFileChanges(0)
@@ -112,7 +112,7 @@ void CStatGraphDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CStatGraphDlg, CResizableStandAloneDialog)
 	ON_CBN_SELCHANGE(IDC_GRAPHCOMBO, OnCbnSelchangeGraphcombo)
 	ON_WM_HSCROLL()
-	ON_NOTIFY(TTN_NEEDTEXT, NULL, OnNeedText)
+	ON_NOTIFY(TTN_NEEDTEXT, nullptr, OnNeedText)
 	ON_BN_CLICKED(IDC_AUTHORSCASESENSITIVE, &CStatGraphDlg::AuthorsCaseSensitiveChanged)
 	ON_BN_CLICKED(IDC_SORTBYCOMMITCOUNT, &CStatGraphDlg::SortModeChanged)
 	ON_BN_CLICKED(IDC_GRAPHBARBUTTON, &CStatGraphDlg::OnBnClickedGraphbarbutton)
@@ -567,7 +567,7 @@ public:
 		, m_lineDel(0)
 		{}
 		CCommitPointer(const CCommitPointer& P_Right)
-		: m_cont(NULL)
+		: m_cont(nullptr)
 		, m_place(0)
 		, m_Date(0)
 		, m_Changes(0)
@@ -621,7 +621,7 @@ public:
 		DWORD		 GetLineDel()	const {return IsPointer() ? (*m_cont->m_lineDel)[m_place] : m_lineDel;}
 		CString		 GetAuthor()	const {return IsPointer() ? (*m_cont->m_parAuthors)[m_place] : m_csAuthor;}
 
-		bool		IsPointer() const {return m_cont != NULL;}
+		bool		IsPointer() const { return m_cont != nullptr; }
 		//When pointer
 		CDateSorter* m_cont;
 		int			 m_place;
@@ -775,7 +775,7 @@ int CStatGraphDlg::GatherData(BOOL fetchdiff, BOOL keepFetchedData)
 
 		if (fetchdiff && (pLogEntry->m_ParentHash.size() <= 1))
 		{
-			CTGitPathList &list = pLogEntry->GetFiles(NULL);
+			CTGitPathList& list = pLogEntry->GetFiles(nullptr);
 			files = list.GetCount();
 
 			for (int j = 0; j < files; j++)
@@ -981,14 +981,14 @@ bool  CStatGraphDlg::PreViewStat(bool fShowLabels)
 	return true;
 }
 
-MyGraphSeries *CStatGraphDlg::PreViewGraph(__in UINT GraphTitle, __in UINT YAxisLabel, __in UINT XAxisLabel /*= NULL*/)
+MyGraphSeries *CStatGraphDlg::PreViewGraph(__in UINT GraphTitle, __in UINT YAxisLabel, __in UINT XAxisLabel /*= nullptr*/)
 {
 	if(!PreViewStat(false))
-		return NULL;
+		return nullptr;
 
 	// We need at least one author
 	if (m_authorNames.empty())
-		return NULL;
+		return nullptr;
 
 	// Add a single series to the chart
 	MyGraphSeries * graphData = new MyGraphSeries();
@@ -1015,7 +1015,7 @@ void CStatGraphDlg::ShowPercentageOfAuthorship()
 	MyGraphSeries * graphData = PreViewGraph(IDS_STATGRAPH_PERCENTAGE_OF_AUTHORSHIP,
 		IDS_STATGRAPH_PERCENTAGE_OF_AUTHORSHIPY,
 		IDS_STATGRAPH_COMMITSBYAUTHORMOREX);
-	if(graphData == NULL) return;
+	if (!graphData) return;
 
 	// Find out which authors are to be shown and which are to be skipped.
 	std::list<tstring> authors;
@@ -1050,7 +1050,7 @@ void CStatGraphDlg::ShowCommitsByAuthor()
 	MyGraphSeries * graphData = PreViewGraph(IDS_STATGRAPH_COMMITSBYAUTHOR,
 		IDS_STATGRAPH_COMMITSBYAUTHORY,
 		IDS_STATGRAPH_COMMITSBYAUTHORX);
-	if(graphData == NULL) return;
+	if (!graphData) return;
 
 	// Find out which authors are to be shown and which are to be skipped.
 	std::list<tstring> authors;
@@ -1661,7 +1661,7 @@ void CStatGraphDlg::SaveGraph(CString sFilename)
 	{
 		// save the graph as an enhanced meta file
 		CMyMetaFileDC wmfDC;
-		wmfDC.CreateEnhanced(NULL, sFilename, NULL, _T("TortoiseGit\0Statistics\0\0"));
+		wmfDC.CreateEnhanced(nullptr, sFilename, nullptr, _T("TortoiseGit\0Statistics\0\0"));
 		wmfDC.SetAttribDC(GetDC()->GetSafeHdc());
 		RedrawGraph();
 		m_graph.DrawGraph(wmfDC);
@@ -1698,10 +1698,10 @@ void CStatGraphDlg::SaveGraph(CString sFilename)
 			GdiplusStartupInput gdiplusStartupInput;
 			ULONG_PTR gdiplusToken;
 			CString sErrormessage;
-			if (GdiplusStartup( &gdiplusToken, &gdiplusStartupInput, NULL )==Ok)
+			if (GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, nullptr) == Ok)
 			{
 				{
-					Bitmap bitmap(hbm, NULL);
+					Bitmap bitmap(hbm, nullptr);
 					if (bitmap.GetLastStatus()==Ok)
 					{
 						// Get the CLSID of the encoder.
@@ -1724,7 +1724,7 @@ void CStatGraphDlg::SaveGraph(CString sFilename)
 						if (ret >= 0)
 						{
 							CStringW tfile = CStringW(sFilename);
-							bitmap.Save(tfile, &encoderClsid, NULL);
+							bitmap.Save(tfile, &encoderClsid, nullptr);
 						}
 						else
 						{
@@ -1771,7 +1771,7 @@ int CStatGraphDlg::GetEncoderClsid(const WCHAR* format, CLSID* pClsid)
 
 	auto pMem = std::make_unique<BYTE[]>(size);
 	auto pImageCodecInfo = (ImageCodecInfo*)(pMem.get());
-	if (pImageCodecInfo == NULL)
+	if (!pImageCodecInfo)
 		return -1;  // Failure
 
 	if (GetImageEncoders(num, size, pImageCodecInfo)==Ok)

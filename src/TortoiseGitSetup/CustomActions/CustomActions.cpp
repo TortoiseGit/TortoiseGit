@@ -43,7 +43,7 @@ UINT __stdcall TerminateCache(MSIHANDLE /*hModule*/)
 	HWND hWnd = FindWindow(TGIT_CACHE_WINDOW_NAME, TGIT_CACHE_WINDOW_NAME);
 	if (hWnd)
 	{
-		PostMessage(hWnd, WM_CLOSE, NULL, NULL);
+		PostMessage(hWnd, WM_CLOSE, nullptr, nullptr);
 		for (int i=0; i<10; ++i)
 		{
 			Sleep(500);
@@ -64,12 +64,12 @@ UINT __stdcall TerminateCache(MSIHANDLE /*hModule*/)
 
 UINT __stdcall OpenDonatePage(MSIHANDLE /*hModule*/)
 {
-	ShellExecute(NULL, _T("open"), _T("https://tortoisegit.org/donate"), NULL,NULL, SW_SHOW);
+	ShellExecute(nullptr, _T("open"), _T("https://tortoisegit.org/donate"), nullptr, nullptr, SW_SHOW);
 	return ERROR_SUCCESS;
 }
 
 UINT __stdcall MsgBox(MSIHANDLE /*hModule*/)
 {
-	MessageBox(NULL, _T("CustomAction \"MsgBox\" running"), _T("Installer"), MB_ICONINFORMATION);
+	MessageBox(nullptr, _T("CustomAction \"MsgBox\" running"), _T("Installer"), MB_ICONINFORMATION);
 	return ERROR_SUCCESS;
 }

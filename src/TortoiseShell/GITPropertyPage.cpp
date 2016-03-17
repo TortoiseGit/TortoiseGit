@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
-// Copyright (C) 2008-2015 - TortoiseGit
+// Copyright (C) 2008-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -63,8 +63,7 @@ UINT CALLBACK PropPageCallbackProc ( HWND /*hwnd*/, UINT uMsg, LPPROPSHEETPAGE p
 	if (PSPCB_RELEASE == uMsg)
 	{
 		CGitPropertyPage* sheetpage = (CGitPropertyPage*) ppsp->lParam;
-		if (sheetpage != NULL)
-			delete sheetpage;
+		delete sheetpage;
 	}
 	return 1;
 }
@@ -75,7 +74,7 @@ const UINT CGitPropertyPage::m_UpdateLastCommit = RegisterWindowMessage(_T("TORT
 CGitPropertyPage::CGitPropertyPage(const std::vector<stdstring> &newFilenames)
 	:filenames(newFilenames)
 	,m_bChanged(false)
-	, m_hwnd(NULL)
+	, m_hwnd(nullptr)
 {
 }
 
@@ -302,7 +301,7 @@ void CGitPropertyPage::RunCommand(const tstring& command)
 		return;
 	}
 
-	MessageBox(NULL, CFormatMessageWrapper(), _T("TortoiseGitProc launch failed"), MB_OK | MB_ICONINFORMATION);
+	MessageBox(nullptr, CFormatMessageWrapper(), _T("TortoiseGitProc launch failed"), MB_OK | MB_ICONERROR);
 }
 
 void CGitPropertyPage::Time64ToTimeString(__time64_t time, TCHAR * buf, size_t buflen) const
@@ -330,10 +329,10 @@ void CGitPropertyPage::Time64ToTimeString(__time64_t time, TCHAR * buf, size_t b
 		systime.wSecond = (WORD)newtime.tm_sec;
 		systime.wYear = (WORD)newtime.tm_year+1900;
 		if (CRegStdDWORD(_T("Software\\TortoiseGit\\LogDateFormat")) == 1)
-			GetDateFormat(locale, DATE_SHORTDATE, &systime, NULL, datebuf, MAX_STRING_LENGTH);
+			GetDateFormat(locale, DATE_SHORTDATE, &systime, nullptr, datebuf, MAX_STRING_LENGTH);
 		else
-			GetDateFormat(locale, DATE_LONGDATE, &systime, NULL, datebuf, MAX_STRING_LENGTH);
-		GetTimeFormat(locale, 0, &systime, NULL, timebuf, MAX_STRING_LENGTH);
+			GetDateFormat(locale, DATE_LONGDATE, &systime, nullptr, datebuf, MAX_STRING_LENGTH);
+		GetTimeFormat(locale, 0, &systime, nullptr, timebuf, MAX_STRING_LENGTH);
 		*buf = '\0';
 		_tcsncat_s(buf, buflen, datebuf, MAX_STRING_LENGTH-1);
 		_tcsncat_s(buf, buflen, _T(" "), MAX_STRING_LENGTH-1);
@@ -457,7 +456,7 @@ static git_commit* FindFileRecentCommit(git_repository* repository, const CStrin
 
 void CGitPropertyPage::DisplayCommit(const git_commit* commit, UINT hashLabel, UINT subjectLabel, UINT authorLabel, UINT dateLabel)
 {
-	if (commit == NULL)
+	if (!commit)
 	{
 		SetDlgItemText(m_hwnd, hashLabel, _T(""));
 		SetDlgItemText(m_hwnd, subjectLabel, _T(""));
@@ -468,7 +467,7 @@ void CGitPropertyPage::DisplayCommit(const git_commit* commit, UINT hashLabel, U
 
 	int encode = CP_UTF8;
 	const char * encodingString = git_commit_message_encoding(commit);
-	if (encodingString != NULL)
+	if (encodingString)
 		encode = CUnicodeUtils::GetCPCode(CUnicodeUtils::GetUnicode(encodingString));
 
 	const git_signature * author = git_commit_author(commit);
@@ -756,7 +755,7 @@ STDMETHODIMP CShellExt::AddPages_Wrap(LPFNADDPROPSHEETPAGE lpfnAddPage, LPARAM l
 		if (svn.GetStatus(CTGitPath(I->c_str())) == (-2))
 			return S_OK;			// file/directory not under version control
 
-		if (svn.status->entry == NULL)
+		if (!svn.status->entry)
 			return S_OK;
 		*/
 		if (CTGitPath(file_.c_str()).HasAdminDir(&ProjectTopDir))
@@ -783,7 +782,7 @@ STDMETHODIMP CShellExt::AddPages_Wrap(LPFNADDPROPSHEETPAGE lpfnAddPage, LPARAM l
 
 	hPage = CreatePropertySheetPage (&psp);
 
-	if (hPage != NULL)
+	if (hPage)
 	{
 		if (!lpfnAddPage (hPage, lParam))
 		{

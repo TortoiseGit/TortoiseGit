@@ -30,7 +30,7 @@ class CSetProgsAdvDlg : public CResizableStandAloneDialog
 	DECLARE_DYNAMIC(CSetProgsAdvDlg)
 
 public:
-	CSetProgsAdvDlg(const CString& type, CWnd* pParent = NULL);
+	CSetProgsAdvDlg(const CString& type, CWnd* pParent = nullptr);
 	virtual ~CSetProgsAdvDlg();
 
 	enum { IDD = IDD_SETTINGSPROGSADV };

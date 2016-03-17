@@ -1,6 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2009-2013, 2015 - TortoiseGit
+// Copyright (C) 2009-2013, 2015-2016 - TortoiseGit
 // Copyright (C) 2012-2013 - Sven Strickroth <email@cs-ware.de>
 // Copyright (C) 2004-2009,2011-2014 - TortoiseSVN
 
@@ -65,8 +65,8 @@ BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
 
 	int state = 0;
 	int nIndex = 0;
-	Chunks * chunks = NULL;
-	Chunk * chunk = NULL;
+	Chunks* chunks = nullptr;
+	Chunk* chunk = nullptr;
 	int nAddLineCount = 0;
 	int nRemoveLineCount = 0;
 	int nContextLineCount = 0;
@@ -171,7 +171,7 @@ BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
 				{
 					if (sLine.Find(_T("@@")) == 0)
 					{
-						if (chunks != NULL)
+						if (chunks)
 						{
 							nIndex--;
 							state = 4;
@@ -341,7 +341,7 @@ BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
 						chunks->chunks.Add(chunk);
 					else
 						delete chunk;
-					chunk = NULL;
+					chunk = nullptr;
 					nAddLineCount = 0;
 					nContextLineCount = 0;
 					nRemoveLineCount = 0;
@@ -402,7 +402,7 @@ errorcleanup:
 
 BOOL CPatch::OpenUnifiedDiffFile(const CString& filename)
 {
-	CCrashReport::Instance().AddFile2(filename, NULL, _T("unified diff file"), CR_AF_MAKE_FILE_COPY);
+	CCrashReport::Instance().AddFile2(filename, nullptr, _T("unified diff file"), CR_AF_MAKE_FILE_COPY);
 
 	CFileTextLines PatchLines;
 	if (!PatchLines.Load(filename))
@@ -492,7 +492,7 @@ int CPatch::PatchFile(const int strip, int nIndex, const CString& sPatchPath, co
 	CString sPatchFile = sBaseFile.IsEmpty() ? sPath : sBaseFile;
 	if (PathFileExists(sPatchFile))
 	{
-		CCrashReport::Instance().AddFile2(sPatchFile, NULL, _T("File to patch"), CR_AF_MAKE_FILE_COPY);
+		CCrashReport::Instance().AddFile2(sPatchFile, nullptr, _T("File to patch"), CR_AF_MAKE_FILE_COPY);
 	}
 	CFileTextLines PatchLines;
 	CFileTextLines PatchLinesResult;

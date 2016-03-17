@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005-2008, 2011-2012 - TortoiseSVN
-// Copyright (C) 2008-2014 - TortoiseGit
+// Copyright (C) 2008-2014, 2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -32,7 +32,7 @@ extern CGitAdminDirMap g_AdminDirMap;
 CDirectoryWatcher::CDirectoryWatcher(void)
 	: m_bRunning(TRUE)
 	, m_bCleaned(FALSE)
-	, m_FolderCrawler(NULL)
+	, m_FolderCrawler(nullptr)
 	, blockTickCount(0)
 {
 	// enable the required privileges for this process
@@ -49,17 +49,17 @@ CDirectoryWatcher::CDirectoryWatcher(void)
 		{
 			TOKEN_PRIVILEGES tp = { 1 };
 
-			if (LookupPrivilegeValue(NULL, arPrivelegeNames[i], &tp.Privileges[0].Luid))
+			if (LookupPrivilegeValue(nullptr, arPrivelegeNames[i], &tp.Privileges[0].Luid))
 			{
 				tp.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
 
-				AdjustTokenPrivileges(hToken, FALSE, &tp, sizeof(tp), NULL, NULL);
+				AdjustTokenPrivileges(hToken, FALSE, &tp, sizeof(tp), nullptr, nullptr);
 			}
 		}
 	}
 
 	unsigned int threadId = 0;
-	m_hThread = (HANDLE)_beginthreadex(NULL,0,ThreadEntry,this,0,&threadId);
+	m_hThread = (HANDLE)_beginthreadex(nullptr, 0, ThreadEntry, this, 0, &threadId);
 }
 
 CDirectoryWatcher::~CDirectoryWatcher(void)
@@ -251,10 +251,10 @@ unsigned int CDirectoryWatcher::ThreadEntry(void* pContext)
 void CDirectoryWatcher::WorkerThread()
 {
 	DWORD numBytes;
-	CDirWatchInfo * pdi = NULL;
+	CDirWatchInfo* pdi = nullptr;
 	LPOVERLAPPED lpOverlapped;
 	WCHAR buf[READ_DIR_CHANGE_BUFFER_SIZE] = {0};
-	WCHAR * pFound = NULL;
+	WCHAR* pFound = nullptr;
 	while (m_bRunning)
 	{
 		CleanupWatchInfo();
@@ -262,7 +262,7 @@ void CDirectoryWatcher::WorkerThread()
 		{
 			// Any incoming notifications?
 
-			pdi = NULL;
+			pdi = nullptr;
 			numBytes = 0;
 			InterlockedExchange(&m_bCleaned, FALSE);
 			if ((!m_hCompPort)
@@ -299,11 +299,11 @@ void CDirectoryWatcher::WorkerThread()
 					CAutoFile hDir = CreateFile(watchedPath.GetWinPath(),
 											FILE_LIST_DIRECTORY,
 											FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
-											NULL, //security attributes
+											nullptr, //security attributes
 											OPEN_EXISTING,
 											FILE_FLAG_BACKUP_SEMANTICS | //required privileges: SE_BACKUP_NAME and SE_RESTORE_NAME.
 											FILE_FLAG_OVERLAPPED,
-											NULL);
+											nullptr);
 					if (!hDir)
 					{
 						// this could happen if a watched folder has been removed/renamed
@@ -341,7 +341,7 @@ void CDirectoryWatcher::WorkerThread()
 
 
 					HANDLE port = CreateIoCompletionPort(pDirInfo->m_hDir, m_hCompPort, (ULONG_PTR)pDirInfo, 0);
-					if (port == NULL)
+					if (!port)
 					{
 						CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": CreateIoCompletionPort failed. Can't watch directory %s\n"), watchedPath.GetWinPath());
 
@@ -352,7 +352,7 @@ void CDirectoryWatcher::WorkerThread()
 						ClearInfoMap();
 						CleanupWatchInfo();
 						delete pDirInfo;
-						pDirInfo = NULL;
+						pDirInfo = nullptr;
 
 						watchedPaths.RemovePath(watchedPath);
 						break;
@@ -366,7 +366,7 @@ void CDirectoryWatcher::WorkerThread()
 												FILE_NOTIFY_CHANGE_FILE_NAME | FILE_NOTIFY_CHANGE_DIR_NAME | FILE_NOTIFY_CHANGE_LAST_WRITE,
 												&numBytes,// not used
 												&pDirInfo->m_Overlapped,
-												NULL))  //no completion routine!
+												nullptr))  //no completion routine!
 					{
 						CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": ReadDirectoryChangesW failed. Can't watch directory %s\n"), watchedPath.GetWinPath());
 
@@ -377,7 +377,7 @@ void CDirectoryWatcher::WorkerThread()
 						ClearInfoMap();
 						CleanupWatchInfo();
 						delete pDirInfo;
-						pDirInfo = NULL;
+						pDirInfo = nullptr;
 						watchedPaths.RemovePath(watchedPath);
 						break;
 					}
@@ -438,7 +438,7 @@ void CDirectoryWatcher::WorkerThread()
 
 							if (m_FolderCrawler)
 							{
-								if ((pFound = wcsstr(buf, L"\\tmp")) != NULL)
+								if ((pFound = wcsstr(buf, L"\\tmp")) != nullptr)
 								{
 									pFound += 4;
 									if (((*pFound)=='\\')||((*pFound)=='\0'))
@@ -446,7 +446,7 @@ void CDirectoryWatcher::WorkerThread()
 										continue;
 									}
 								}
-								if ((pFound = wcsstr(buf, L":\\RECYCLER\\")) != NULL)
+								if ((pFound = wcsstr(buf, L":\\RECYCLER\\")) != nullptr)
 								{
 									if ((pFound-buf) < 5)
 									{
@@ -454,7 +454,7 @@ void CDirectoryWatcher::WorkerThread()
 										continue;
 									}
 								}
-								if ((pFound = wcsstr(buf, L":\\$Recycle.Bin\\")) != NULL)
+								if ((pFound = wcsstr(buf, L":\\$Recycle.Bin\\")) != nullptr)
 								{
 									if ((pFound-buf) < 5)
 									{
@@ -462,7 +462,7 @@ void CDirectoryWatcher::WorkerThread()
 										continue;
 									}
 								}
-								if (wcsstr(buf, L".tmp") != NULL)
+								if (wcsstr(buf, L".tmp"))
 								{
 									// assume files with a .tmp extension are not versioned and interesting,
 									// so ignore them.
@@ -471,7 +471,7 @@ void CDirectoryWatcher::WorkerThread()
 
 								CTGitPath path;
 								bool isIndex = false;
-								if ((pFound = wcsstr(buf, L".git")) != NULL)
+								if ((pFound = wcsstr(buf, L".git")) != nullptr)
 								{
 									// omit repository data change except .git/index.lock- or .git/HEAD.lock-files
 									if ((ULONG_PTR)pnotify - (ULONG_PTR)pdi->m_Buffer > READ_DIR_CHANGE_BUFFER_SIZE)
@@ -479,12 +479,12 @@ void CDirectoryWatcher::WorkerThread()
 
 									path = g_AdminDirMap.GetWorkingCopy(CTGitPath(buf).GetContainingDirectory().GetWinPathString());
 
-									if ((wcsstr(pFound, L"index.lock") != NULL || wcsstr(pFound, L"HEAD.lock") != NULL) && pnotify->Action == FILE_ACTION_ADDED)
+									if ((wcsstr(pFound, L"index.lock") || wcsstr(pFound, L"HEAD.lock")) && pnotify->Action == FILE_ACTION_ADDED)
 									{
 										CGitStatusCache::Instance().BlockPath(path);
 										continue;
 									}
-									else if (((wcsstr(pFound, L"index.lock") != NULL || wcsstr(pFound, L"HEAD.lock") != NULL) && pnotify->Action == FILE_ACTION_REMOVED) || (((wcsstr(pFound, L"index") != NULL && wcsstr(pFound, L"index.lock") == NULL) || (wcsstr(pFound, L"HEAD") != NULL && wcsstr(pFound, L"HEAD.lock") != NULL)) && pnotify->Action == FILE_ACTION_MODIFIED) || ((wcsstr(pFound, L"index.lock") == NULL || wcsstr(pFound, L"HEAD.lock") != NULL) && pnotify->Action == FILE_ACTION_RENAMED_NEW_NAME))
+									else if (((wcsstr(pFound, L"index.lock") || wcsstr(pFound, L"HEAD.lock")) && pnotify->Action == FILE_ACTION_REMOVED) || (((wcsstr(pFound, L"index") && !wcsstr(pFound, L"index.lock")) || (wcsstr(pFound, L"HEAD") && wcsstr(pFound, L"HEAD.lock"))) && pnotify->Action == FILE_ACTION_MODIFIED) || ((!wcsstr(pFound, L"index.lock") || wcsstr(pFound, L"HEAD.lock")) && pnotify->Action == FILE_ACTION_RENAMED_NEW_NAME))
 									{
 										isIndex = true;
 										CGitStatusCache::Instance().BlockPath(path, 1);
@@ -515,7 +515,7 @@ void CDirectoryWatcher::WorkerThread()
 							FILE_NOTIFY_CHANGE_FILE_NAME | FILE_NOTIFY_CHANGE_DIR_NAME | FILE_NOTIFY_CHANGE_LAST_WRITE,
 							&numBytes,// not used
 							&pdi->m_Overlapped,
-							NULL); //no completion routine!
+							nullptr); //no completion routine!
 					}
 					if (!notifyPaths.empty())
 					{
@@ -567,7 +567,7 @@ void CDirectoryWatcher::ClearInfoMap()
 		for (TInfoMap::iterator I = watchInfoMap.begin(); I != watchInfoMap.end(); ++I)
 		{
 			CDirectoryWatcher::CDirWatchInfo * info = I->second;
-			I->second = NULL;
+			I->second = nullptr;
 			ScheduleForDeletion (info);
 		}
 		watchInfoMap.clear();
@@ -612,7 +612,7 @@ bool CDirectoryWatcher::CloseHandlesForPath(const CTGitPath& path)
 	for (TInfoMap::iterator I = watchInfoMap.begin(); I != watchInfoMap.end(); ++I)
 	{
 		CDirectoryWatcher::CDirWatchInfo * info = I->second;
-		I->second = NULL;
+		I->second = nullptr;
 		CTGitPath p = CTGitPath(info->m_DirPath);
 		if (path.IsAncestorOf(p))
 		{
@@ -635,7 +635,7 @@ CDirectoryWatcher::CDirWatchInfo::CDirWatchInfo(HANDLE hDir, const CTGitPath& Di
 	m_DirPath = m_DirName.GetWinPathString();
 	if (m_DirPath.GetAt(m_DirPath.GetLength()-1) != '\\')
 		m_DirPath += _T("\\");
-	m_hDevNotify = NULL;
+	m_hDevNotify = nullptr;
 }
 
 CDirectoryWatcher::CDirWatchInfo::~CDirWatchInfo()
@@ -650,7 +650,7 @@ bool CDirectoryWatcher::CDirWatchInfo::CloseDirectoryHandle()
 	if (m_hDevNotify)
 	{
 		UnregisterDeviceNotification(m_hDevNotify);
-		m_hDevNotify = NULL;
+		m_hDevNotify = nullptr;
 	}
 	return b;
 }

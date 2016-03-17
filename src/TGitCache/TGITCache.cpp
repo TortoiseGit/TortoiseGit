@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005 - 2006,2010 - Will Dean, Stefan Kueng
-// Copyright (C) 2008-2014 - TortoiseGit
+// Copyright (C) 2008-2014, 2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -89,12 +89,12 @@ void DebugOutputLastError()
 		FORMAT_MESSAGE_ALLOCATE_BUFFER |
 		FORMAT_MESSAGE_FROM_SYSTEM |
 		FORMAT_MESSAGE_IGNORE_INSERTS,
-		NULL,
+		nullptr,
 		GetLastError(),
 		MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // Default language
 		(LPTSTR) &lpMsgBuf,
 		0,
-		NULL ))
+		nullptr))
 	{
 		return;
 	}
@@ -155,7 +155,7 @@ int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR lp
 	SetDllDirectory(L"");
 	git_libgit2_init();
 	HandleCommandLine(lpCmdLine);
-	CAutoGeneralHandle hReloadProtection = ::CreateMutex(NULL, FALSE, GetCacheMutexName());
+	CAutoGeneralHandle hReloadProtection = ::CreateMutex(nullptr, FALSE, GetCacheMutexName());
 
 	if ((!hReloadProtection) || (GetLastError() == ERROR_ALREADY_EXISTS))
 	{
@@ -174,23 +174,16 @@ int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR lp
 	TCHAR szWindowClass[] = {TGIT_CACHE_WINDOW_NAME};
 
 	// create a hidden window to receive window messages.
-	WNDCLASSEX wcex;
+	WNDCLASSEX wcex = { 0 };
 	wcex.cbSize = sizeof(WNDCLASSEX);
 	wcex.style			= CS_HREDRAW | CS_VREDRAW;
 	wcex.lpfnWndProc	= (WNDPROC)WndProc;
-	wcex.cbClsExtra		= 0;
-	wcex.cbWndExtra		= 0;
 	wcex.hInstance		= hInstance;
-	wcex.hIcon			= 0;
-	wcex.hCursor		= 0;
-	wcex.hbrBackground	= 0;
-	wcex.lpszMenuName	= NULL;
 	wcex.lpszClassName	= szWindowClass;
-	wcex.hIconSm		= 0;
 	RegisterClassEx(&wcex);
-	hWndHidden = CreateWindow(TGIT_CACHE_WINDOW_NAME, TGIT_CACHE_WINDOW_NAME, WS_CAPTION, 0, 0, 800, 300, NULL, 0, hInstance, 0);
+	hWndHidden = CreateWindow(TGIT_CACHE_WINDOW_NAME, TGIT_CACHE_WINDOW_NAME, WS_CAPTION, 0, 0, 800, 300, nullptr, 0, hInstance, 0);
 	hTrayWnd = hWndHidden;
-	if (hWndHidden == NULL)
+	if (!hWndHidden)
 	{
 		return 0;
 	}
@@ -218,12 +211,12 @@ int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR lp
 		Shell_NotifyIcon(NIM_ADD,&niData);
 		// free icon handle
 		if(niData.hIcon && DestroyIcon(niData.hIcon))
-			niData.hIcon = NULL;
+			niData.hIcon = nullptr;
 	}
 
 	// Create a thread which waits for incoming pipe connections
 	CAutoGeneralHandle hPipeThread = CreateThread(
-		NULL,              // no security attribute
+		nullptr,           // no security attribute
 		0,                 // default stack size
 		PipeThread,
 		(LPVOID) &bRun,    // thread parameter
@@ -238,7 +231,7 @@ int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR lp
 
 	// Create a thread which waits for incoming pipe connections
 	CAutoGeneralHandle hCommandWaitThread = CreateThread(
-		NULL,              // no security attribute
+		nullptr,           // no security attribute
 		0,                 // default stack size
 		CommandWaitThread,
 		(LPVOID) &bRun,    // thread parameter
@@ -254,7 +247,7 @@ int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR lp
 	// loop to handle window messages.
 	while (bRun)
 	{
-		BOOL bLoopRet = GetMessage(&msg, NULL, 0, 0);
+		BOOL bLoopRet = GetMessage(&msg, nullptr, 0, 0);
 		if ((bLoopRet != -1)&&(bLoopRet != 0))
 		{
 			DispatchMessage(&msg);
@@ -310,7 +303,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 					InsertMenu(hMenu, (UINT)-1, MF_BYPOSITION, TRAYPOP_ENABLE, enabled ? _T("Disable Status Cache") : _T("Enable Status Cache"));
 					InsertMenu(hMenu, (UINT)-1, MF_BYPOSITION, TRAYPOP_EXIT, _T("Exit"));
 					SetForegroundWindow(hWnd);
-					TrackPopupMenu(hMenu, TPM_BOTTOMALIGN, pt.x, pt.y, 0, hWnd, NULL);
+					TrackPopupMenu(hMenu, TPM_BOTTOMALIGN, pt.x, pt.y, 0, hWnd, nullptr);
 					DestroyMenu(hMenu);
 				}
 			}
@@ -390,7 +383,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			CTraceToOutputDebugString::Instance()(__FUNCTION__ ": WM_CLOSE/DESTROY/ENDSESSION/QUIT\n");
 			if (niData.hWnd)
 			{
-				niData.hIcon = (HICON)LoadImage(GetModuleHandle(NULL),
+				niData.hIcon = (HICON)LoadImage(GetModuleHandle(nullptr),
 					MAKEINTRESOURCE(IDI_TGITCACHE_STOPPING),
 					IMAGE_ICON,
 					GetSystemMetrics(SM_CXSMICON),
@@ -524,7 +517,7 @@ DWORD WINAPI PipeThread(LPVOID lpvParam)
 			BUFSIZE,                  // output buffer size
 			BUFSIZE,                  // input buffer size
 			NMPWAIT_USE_DEFAULT_WAIT, // client time-out
-			NULL);					  // NULL DACL
+			nullptr);				  // nullptr DACL
 
 		if (!hPipe)
 		{
@@ -536,12 +529,12 @@ DWORD WINAPI PipeThread(LPVOID lpvParam)
 		// Wait for the client to connect; if it succeeds,
 		// the function returns a nonzero value. If the function returns
 		// zero, GetLastError returns ERROR_PIPE_CONNECTED.
-		fConnected = ConnectNamedPipe(hPipe, NULL) ? TRUE : (GetLastError() == ERROR_PIPE_CONNECTED);
+		fConnected = ConnectNamedPipe(hPipe, nullptr) ? TRUE : (GetLastError() == ERROR_PIPE_CONNECTED);
 		if (fConnected)
 		{
 			// Create a thread for this client.
 			CAutoGeneralHandle hInstanceThread = CreateThread(
-				NULL,              // no security attribute
+				nullptr,           // no security attribute
 				0,                 // default stack size
 				InstanceThread,
 				(HANDLE) hPipe,    // thread parameter
@@ -597,7 +590,7 @@ DWORD WINAPI CommandWaitThread(LPVOID lpvParam)
 			BUFSIZE,                  // output buffer size
 			BUFSIZE,                  // input buffer size
 			NMPWAIT_USE_DEFAULT_WAIT, // client time-out
-			NULL);                // NULL DACL
+			nullptr);                 // nullptr DACL
 
 		if (!hPipe)
 		{
@@ -609,12 +602,12 @@ DWORD WINAPI CommandWaitThread(LPVOID lpvParam)
 		// Wait for the client to connect; if it succeeds,
 		// the function returns a nonzero value. If the function returns
 		// zero, GetLastError returns ERROR_PIPE_CONNECTED.
-		fConnected = ConnectNamedPipe(hPipe, NULL) ? TRUE : (GetLastError() == ERROR_PIPE_CONNECTED);
+		fConnected = ConnectNamedPipe(hPipe, nullptr) ? TRUE : (GetLastError() == ERROR_PIPE_CONNECTED);
 		if (fConnected)
 		{
 			// Create a thread for this client.
 			CAutoGeneralHandle hCommandThread = CreateThread(
-				NULL,              // no security attribute
+				nullptr,           // no security attribute
 				0,                 // default stack size
 				CommandThread,
 				(HANDLE) hPipe,    // thread parameter
@@ -667,7 +660,7 @@ DWORD WINAPI InstanceThread(LPVOID lpvParam)
 			&request,    // buffer to receive data
 			sizeof(request), // size of buffer
 			&cbBytesRead, // number of bytes read
-			NULL);        // not overlapped I/O
+			nullptr);        // not overlapped I/O
 
 		if (! fSuccess || cbBytesRead == 0)
 		{
@@ -688,7 +681,7 @@ DWORD WINAPI InstanceThread(LPVOID lpvParam)
 			&response,      // buffer to write from
 			responseLength, // number of bytes to write
 			&cbWritten,   // number of bytes written
-			NULL);        // not overlapped I/O
+			nullptr);        // not overlapped I/O
 
 		if (! fSuccess || responseLength != cbWritten)
 		{
@@ -733,7 +726,7 @@ DWORD WINAPI CommandThread(LPVOID lpvParam)
 			&command,			// buffer to receive data
 			sizeof(command),	// size of buffer
 			&cbBytesRead,		// number of bytes read
-			NULL);				// not overlapped I/O
+			nullptr);			// not overlapped I/O
 
 		if (! fSuccess || cbBytesRead == 0)
 		{

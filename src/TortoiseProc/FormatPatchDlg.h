@@ -30,7 +30,7 @@ class CFormatPatchDlg : public CHorizontalResizableStandAloneDialog
 	DECLARE_DYNAMIC(CFormatPatchDlg)
 
 public:
-	CFormatPatchDlg(CWnd* pParent = NULL);   // standard constructor
+	CFormatPatchDlg(CWnd* pParent = nullptr);   // standard constructor
 	virtual ~CFormatPatchDlg();
 
 // Dialog Data

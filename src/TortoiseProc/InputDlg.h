@@ -30,7 +30,7 @@ class CInputDlg : public CResizableStandAloneDialog
 	DECLARE_DYNAMIC(CInputDlg)
 
 public:
-	CInputDlg(CWnd* pParent = NULL);
+	CInputDlg(CWnd* pParent = nullptr);
 	virtual ~CInputDlg();
 
 	enum { IDD = IDD_INPUTDLG };

@@ -29,7 +29,7 @@ class CHistoryDlg : public CResizableStandAloneDialog
 {
 	DECLARE_DYNAMIC(CHistoryDlg)
 public:
-	CHistoryDlg(CWnd* pParent = NULL);   // standard constructor
+	CHistoryDlg(CWnd* pParent = nullptr);   // standard constructor
 	virtual ~CHistoryDlg();
 
 	/// Returns the text of the selected entry.

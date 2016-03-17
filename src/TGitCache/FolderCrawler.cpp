@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005-2008,2011,2014 - TortoiseSVN
-// Copyright (C) 2008-2014 - TortoiseGit
+// Copyright (C) 2008-2014, 2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -27,8 +27,8 @@
 
 CFolderCrawler::CFolderCrawler(void)
 {
-	m_hWakeEvent = CreateEvent(NULL,FALSE,FALSE,NULL);
-	m_hTerminationEvent = CreateEvent(NULL,TRUE,FALSE,NULL);
+	m_hWakeEvent = CreateEvent(nullptr, FALSE, FALSE, nullptr);
+	m_hTerminationEvent = CreateEvent(nullptr, TRUE, FALSE, nullptr);
 	m_lCrawlInhibitSet = 0;
 	m_crawlHoldoffReleasesAt = (LONGLONG)GetTickCount64();
 	m_bRun = false;
@@ -70,7 +70,7 @@ void CFolderCrawler::Initialise()
 
 	m_bRun = true;
 	unsigned int threadId;
-	m_hThread = (HANDLE)_beginthreadex(NULL,0,ThreadEntry,this,0,&threadId);
+	m_hThread = (HANDLE)_beginthreadex(nullptr, 0, ThreadEntry, this, 0, &threadId);
 	SetThreadPriority(m_hThread, THREAD_PRIORITY_BELOW_NORMAL);
 }
 
@@ -303,7 +303,7 @@ void CFolderCrawler::WorkerThread()
 						if (nCurrentCrawledpathIndex >= MAX_CRAWLEDPATHS)
 							nCurrentCrawledpathIndex = 0;
 					}
-					InvalidateRect(hWndHidden, NULL, FALSE);
+					InvalidateRect(hWndHidden, nullptr, FALSE);
 					{
 						CAutoReadLock readLock(CGitStatusCache::Instance().GetGuard());
 						// Invalidate the cache of this folder, to make sure its status is fetched again.
@@ -358,7 +358,7 @@ void CFolderCrawler::WorkerThread()
 						if (nCurrentCrawledpathIndex >= MAX_CRAWLEDPATHS)
 							nCurrentCrawledpathIndex = 0;
 					}
-					InvalidateRect(hWndHidden, NULL, FALSE);
+					InvalidateRect(hWndHidden, nullptr, FALSE);
 					// HasAdminDir() already checks if the path points to a dir
 					DWORD flags = TGITCACHE_FLAGS_FOLDERISKNOWN;
 					flags |= (workingPath.IsDirectory() ? TGITCACHE_FLAGS_ISFOLDER : 0);
@@ -433,7 +433,7 @@ void CFolderCrawler::WorkerThread()
 					if (nCurrentCrawledpathIndex >= MAX_CRAWLEDPATHS)
 						nCurrentCrawledpathIndex = 0;
 				}
-				InvalidateRect(hWndHidden, NULL, FALSE);
+				InvalidateRect(hWndHidden, nullptr, FALSE);
 				{
 					CAutoReadLock readLock(CGitStatusCache::Instance().GetGuard());
 					// Now, we need to visit this folder, to make sure that we know its 'most important' status
@@ -454,7 +454,7 @@ void CFolderCrawler::WorkerThread()
 							CAutoWriteLock writeLock(CGitStatusCache::Instance().GetGuard());
 							CGitStatusCache::Instance().RemoveCacheForPath(workingPath);
 							// now cacheDir is invalid because it got deleted in the RemoveCacheForPath() call above.
-							cachedDir = NULL;
+							cachedDir = nullptr;
 						}
 					}
 					if (cachedDir)

@@ -29,7 +29,7 @@
 
 IMPLEMENT_DYNAMIC(CCreateBranchTagDlg, CResizableStandAloneDialog)
 
-CCreateBranchTagDlg::CCreateBranchTagDlg(CWnd* pParent /*=NULL*/)
+CCreateBranchTagDlg::CCreateBranchTagDlg(CWnd* pParent /*=nullptr*/)
 	: CResizableStandAloneDialog(CCreateBranchTagDlg::IDD, pParent)
 	, m_bForce(FALSE)
 	, CChooseVersion(this)

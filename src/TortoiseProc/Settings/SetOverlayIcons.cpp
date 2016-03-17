@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011,2013-2014 - TortoiseGit
+// Copyright (C) 2008-2011, 2013-2014, 2016 - TortoiseGit
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -119,7 +119,7 @@ BOOL CSetOverlayIcons::OnInitDialog()
 	m_sReadOnly.LoadString(IDS_SETTINGS_READONLYNAME);
 	m_sLocked.LoadString(IDS_SETTINGS_LOCKEDNAME);
 
-	SetWindowTheme(m_hWnd, L"Explorer", NULL);
+	SetWindowTheme(m_hWnd, L"Explorer", nullptr);
 
 	ShowIconSet(true);
 
@@ -150,31 +150,31 @@ void CSetOverlayIcons::ShowIconSet(bool bSmallIcons)
 
 	CImageList * pImageList = bSmallIcons ? &m_ImageList : &m_ImageListBig;
 	int pixelsize = (bSmallIcons ? 16 : 32);
-	HICON hNormalOverlay = (HICON)LoadImage(NULL, sIconSetPath+_T("\\NormalIcon.ico"), IMAGE_ICON, pixelsize, pixelsize, LR_LOADFROMFILE);
+	HICON hNormalOverlay = (HICON)LoadImage(nullptr, sIconSetPath + _T("\\NormalIcon.ico"), IMAGE_ICON, pixelsize, pixelsize, LR_LOADFROMFILE);
 	index = pImageList->Add(hNormalOverlay);
 	VERIFY(pImageList->SetOverlayImage(index, 1));
-	HICON hModifiedOverlay = (HICON)LoadImage(NULL, sIconSetPath+_T("\\ModifiedIcon.ico"), IMAGE_ICON, pixelsize, pixelsize, LR_LOADFROMFILE);
+	HICON hModifiedOverlay = (HICON)LoadImage(nullptr, sIconSetPath + _T("\\ModifiedIcon.ico"), IMAGE_ICON, pixelsize, pixelsize, LR_LOADFROMFILE);
 	index = pImageList->Add(hModifiedOverlay);
 	VERIFY(pImageList->SetOverlayImage(index, 2));
-	HICON hConflictedOverlay = (HICON)LoadImage(NULL, sIconSetPath+_T("\\ConflictIcon.ico"), IMAGE_ICON, pixelsize, pixelsize, LR_LOADFROMFILE);
+	HICON hConflictedOverlay = (HICON)LoadImage(nullptr, sIconSetPath + _T("\\ConflictIcon.ico"), IMAGE_ICON, pixelsize, pixelsize, LR_LOADFROMFILE);
 	index = pImageList->Add(hConflictedOverlay);
 	VERIFY(pImageList->SetOverlayImage(index, 3));
-	HICON hReadOnlyOverlay = (HICON)LoadImage(NULL, sIconSetPath+_T("\\ReadOnlyIcon.ico"), IMAGE_ICON, pixelsize, pixelsize, LR_LOADFROMFILE);
+	HICON hReadOnlyOverlay = (HICON)LoadImage(nullptr, sIconSetPath + _T("\\ReadOnlyIcon.ico"), IMAGE_ICON, pixelsize, pixelsize, LR_LOADFROMFILE);
 	index = pImageList->Add(hReadOnlyOverlay);
 	VERIFY(pImageList->SetOverlayImage(index, 4));
-	HICON hDeletedOverlay = (HICON)LoadImage(NULL, sIconSetPath+_T("\\DeletedIcon.ico"), IMAGE_ICON, pixelsize, pixelsize, LR_LOADFROMFILE);
+	HICON hDeletedOverlay = (HICON)LoadImage(nullptr, sIconSetPath + _T("\\DeletedIcon.ico"), IMAGE_ICON, pixelsize, pixelsize, LR_LOADFROMFILE);
 	index = pImageList->Add(hDeletedOverlay);
 	VERIFY(pImageList->SetOverlayImage(index, 5));
-	HICON hLockedOverlay = (HICON)LoadImage(NULL, sIconSetPath+_T("\\LockedIcon.ico"), IMAGE_ICON, pixelsize, pixelsize, LR_LOADFROMFILE);
+	HICON hLockedOverlay = (HICON)LoadImage(nullptr, sIconSetPath + _T("\\LockedIcon.ico"), IMAGE_ICON, pixelsize, pixelsize, LR_LOADFROMFILE);
 	index = pImageList->Add(hLockedOverlay);
 	VERIFY(pImageList->SetOverlayImage(index, 6));
-	HICON hAddedOverlay = (HICON)LoadImage(NULL, sIconSetPath+_T("\\AddedIcon.ico"), IMAGE_ICON, pixelsize, pixelsize, LR_LOADFROMFILE);
+	HICON hAddedOverlay = (HICON)LoadImage(nullptr, sIconSetPath + _T("\\AddedIcon.ico"), IMAGE_ICON, pixelsize, pixelsize, LR_LOADFROMFILE);
 	index = pImageList->Add(hAddedOverlay);
 	VERIFY(pImageList->SetOverlayImage(index, 7));
-	HICON hIgnoredOverlay = (HICON)LoadImage(NULL, sIconSetPath+_T("\\IgnoredIcon.ico"), IMAGE_ICON, pixelsize, pixelsize, LR_LOADFROMFILE);
+	HICON hIgnoredOverlay = (HICON)LoadImage(nullptr, sIconSetPath + _T("\\IgnoredIcon.ico"), IMAGE_ICON, pixelsize, pixelsize, LR_LOADFROMFILE);
 	index = pImageList->Add(hIgnoredOverlay);
 	VERIFY(pImageList->SetOverlayImage(index, 8));
-	HICON hUnversionedOverlay = (HICON)LoadImage(NULL, sIconSetPath+_T("\\UnversionedIcon.ico"), IMAGE_ICON, pixelsize, pixelsize, LR_LOADFROMFILE);
+	HICON hUnversionedOverlay = (HICON)LoadImage(nullptr, sIconSetPath + _T("\\UnversionedIcon.ico"), IMAGE_ICON, pixelsize, pixelsize, LR_LOADFROMFILE);
 	index = pImageList->Add(hUnversionedOverlay);
 	VERIFY(pImageList->SetOverlayImage(index, 9));
 

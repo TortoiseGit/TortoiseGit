@@ -26,7 +26,7 @@
 
 IMPLEMENT_DYNAMIC(CSetHooksAdv, CResizableStandAloneDialog)
 
-CSetHooksAdv::CSetHooksAdv(CWnd* pParent /*=NULL*/)
+CSetHooksAdv::CSetHooksAdv(CWnd* pParent /*=nullptr*/)
 	: CResizableStandAloneDialog(CSetHooksAdv::IDD, pParent)
 	, m_bWait(FALSE)
 	, m_bHide(FALSE)
@@ -167,7 +167,7 @@ void CSetHooksAdv::OnBnClickedHookcommandbrowse()
 	if (!PathFileExists(sCmdLine))
 		sCmdLine.Empty();
 	// Display the Open dialog box.
-	if (CAppUtils::FileOpenSave(sCmdLine, NULL, IDS_SETTINGS_HOOKS_SELECTSCRIPTFILE, IDS_COMMONFILEFILTER, true, m_hWnd))
+	if (CAppUtils::FileOpenSave(sCmdLine, nullptr, IDS_SETTINGS_HOOKS_SELECTSCRIPTFILE, IDS_COMMONFILEFILTER, true, m_hWnd))
 	{
 		m_sCommandLine = sCmdLine;
 		UpdateData(FALSE);

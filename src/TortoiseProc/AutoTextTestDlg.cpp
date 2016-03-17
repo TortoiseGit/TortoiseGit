@@ -28,7 +28,7 @@
 
 IMPLEMENT_DYNAMIC(CAutoTextTestDlg, CDialog)
 
-CAutoTextTestDlg::CAutoTextTestDlg(CWnd* pParent /*=NULL*/)
+CAutoTextTestDlg::CAutoTextTestDlg(CWnd* pParent /*=nullptr*/)
 	: CDialog(CAutoTextTestDlg::IDD, pParent)
 {
 

@@ -49,12 +49,12 @@ inline void CFormatMessageWrapper::obtainMessage(DWORD errorCode)
     result = FormatMessage (FORMAT_MESSAGE_ALLOCATE_BUFFER |
                             FORMAT_MESSAGE_FROM_SYSTEM |
                             FORMAT_MESSAGE_IGNORE_INSERTS,
-                            NULL,
+                            nullptr,
                             errorCode,
                             MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // Default language
                             (LPTSTR) &buffer,
                             0,
-                            NULL
+                            nullptr
                             );
 }
 

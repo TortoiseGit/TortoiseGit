@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012, 2015 - TortoiseGit
+// Copyright (C) 2012, 2015-2016 - TortoiseGit
 // Copyright (C) 2010-2012, 2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -51,7 +51,7 @@ void EnsureGitLibrary(bool bCreate /* = true*/)
     if (bIsWow64)
         return;
 
-    CComPtr<IShellLibrary> pLibrary = NULL;
+    CComPtr<IShellLibrary> pLibrary;
     if (FAILED(OpenShellLibrary(L"Git", &pLibrary)))
     {
         if (!bCreate)
@@ -60,7 +60,7 @@ void EnsureGitLibrary(bool bCreate /* = true*/)
             return;
 
         // Save the new library under the user's Libraries folder.
-        CComPtr<IShellItem> pSavedTo = NULL;
+        CComPtr<IShellItem> pSavedTo;
         if (FAILED(pLibrary->SaveInKnownFolder(FOLDERID_UsersLibraries, L"Git", LSF_OVERRIDEEXISTING, &pSavedTo)))
             return;
     }
@@ -92,15 +92,15 @@ void EnsureGitLibrary(bool bCreate /* = true*/)
  * \param ppShellLib
  * If the open operation succeeds, ppShellLib outputs the IShellLibrary
  * interface of the shell library object. The caller is responsible for calling
- * Release on the shell library. If the function fails, NULL is returned from
+ * Release on the shell library. If the function fails, nullptr is returned from
  * *ppShellLib.
  */
 HRESULT OpenShellLibrary(LPWSTR pwszLibraryName, IShellLibrary** ppShellLib)
 {
     HRESULT hr;
-    *ppShellLib = NULL;
+    *ppShellLib = nullptr;
 
-    CComPtr<IShellItem2> pShellItem = NULL;
+    CComPtr<IShellItem2> pShellItem;
     hr = GetShellLibraryItem(pwszLibraryName, &pShellItem);
     if (FAILED(hr))
         return hr;
@@ -120,12 +120,12 @@ HRESULT OpenShellLibrary(LPWSTR pwszLibraryName, IShellLibrary** ppShellLib)
  * \param ppShellItem
  * If the operation succeeds, ppShellItem outputs the IShellItem2 interface
  * that represents the library. The caller is responsible for calling
- * Release on the shell item. If the function fails, NULL is returned from
+ * Release on the shell item. If the function fails, nullptr is returned from
  * *ppShellItem.
  */
 HRESULT GetShellLibraryItem(LPWSTR pwszLibraryName, IShellItem2** ppShellItem)
 {
-    *ppShellItem = NULL;
+    *ppShellItem = nullptr;
 
     // Create the real library file name
     WCHAR wszRealLibraryName[MAX_PATH] = {0};

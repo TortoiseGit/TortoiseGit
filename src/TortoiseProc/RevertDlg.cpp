@@ -28,7 +28,7 @@
 #define REFRESHTIMER   100
 
 IMPLEMENT_DYNAMIC(CRevertDlg, CResizableStandAloneDialog)
-CRevertDlg::CRevertDlg(CWnd* pParent /*=NULL*/)
+CRevertDlg::CRevertDlg(CWnd* pParent /*=nullptr*/)
 	: CResizableStandAloneDialog(CRevertDlg::IDD, pParent)
 	, m_bSelectAll(TRUE)
 	, m_bThreadRunning(FALSE)
@@ -301,7 +301,7 @@ LRESULT CRevertDlg::OnFileDropped(WPARAM, LPARAM lParam)
 	}
 
 	// Always start the timer, since the status of an existing item might have changed
-	SetTimer(REFRESHTIMER, 200, NULL);
+	SetTimer(REFRESHTIMER, 200, nullptr);
 	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Item %s dropped, timer started\n"), path.GetWinPath());
 	return 0;
 }
@@ -313,7 +313,7 @@ void CRevertDlg::OnTimer(UINT_PTR nIDEvent)
 	case REFRESHTIMER:
 		if (m_bThreadRunning)
 		{
-			SetTimer(REFRESHTIMER, 200, NULL);
+			SetTimer(REFRESHTIMER, 200, nullptr);
 			CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Wait some more before refreshing\n");
 		}
 		else

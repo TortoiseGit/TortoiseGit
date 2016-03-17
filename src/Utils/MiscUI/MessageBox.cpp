@@ -24,7 +24,7 @@
 #include "SmartHandle.h"
 
 CMessageBox::CMessageBox(void)
-	: m_hIcon(NULL)
+	: m_hIcon(nullptr)
 	, m_uButton1Ret(1)
 	, m_uButton2Ret(2)
 	, m_uButton3Ret(3)
@@ -44,7 +44,7 @@ CMessageBox::~CMessageBox(void)
 		::DestroyIcon(m_hIcon);
 }
 
-UINT CMessageBox::ShowCheck(HWND hWnd, UINT nMessage, UINT nCaption, int nDef, LPCTSTR icon, UINT nButton1, UINT nButton2, UINT nButton3, LPCTSTR lpRegistry, UINT nCheckMessage/* = NULL*/, BOOL *bChecked)
+UINT CMessageBox::ShowCheck(HWND hWnd, UINT nMessage, UINT nCaption, int nDef, LPCTSTR icon, UINT nButton1, UINT nButton2, UINT nButton3, LPCTSTR lpRegistry, UINT nCheckMessage/* = nullptr*/, BOOL* bChecked)
 {
 	CString sButton1;
 	CString sButton2;
@@ -61,7 +61,7 @@ UINT CMessageBox::ShowCheck(HWND hWnd, UINT nMessage, UINT nCaption, int nDef, L
 	return CMessageBox::ShowCheck(hWnd, sMessage, sCaption, nDef, icon, sButton1, sButton2, sButton3, lpRegistry, nCheckMsg, bChecked);
 }
 
-UINT CMessageBox::ShowCheck(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, int nDef, LPCTSTR icon, LPCTSTR lpButton1, LPCTSTR lpButton2, LPCTSTR lpButton3, LPCTSTR lpRegistry, LPCTSTR lpCheckMessage/* = NULL*/, BOOL *bChecked)
+UINT CMessageBox::ShowCheck(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, int nDef, LPCTSTR icon, LPCTSTR lpButton1, LPCTSTR lpButton2, LPCTSTR lpButton3, LPCTSTR lpRegistry, LPCTSTR lpCheckMessage/* = nullptr*/, BOOL* bChecked)
 {
 	//check the registry if we have to show the box or just return with the last used return value
 	//this would be the case if the user pressed "do not show again".
@@ -78,7 +78,7 @@ UINT CMessageBox::ShowCheck(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, int
 	{
 		int size = sizeof(dwRetVal);
 		DWORD type;
-		if (RegQueryValueEx(hKey, lpRegistry, NULL, &type, (BYTE*) &dwRetVal,(LPDWORD) &size)==ERROR_SUCCESS)
+		if (RegQueryValueEx(hKey, lpRegistry, nullptr, &type, (BYTE*)&dwRetVal,(LPDWORD)&size) == ERROR_SUCCESS)
 		{
 			ASSERT(type==REG_DWORD);
 			RegCloseKey(hKey);
@@ -94,7 +94,7 @@ UINT CMessageBox::ShowCheck(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, int
 	CMessageBox box;
 	box.m_bShowCheck = TRUE;
 	box.m_sRegistryValue = lpRegistry;
-	if (lpCheckMessage == NULL)
+	if (!lpCheckMessage)
 	{
 #ifndef IDS_MSGBOX_DONOTSHOWAGAIN
 		box.m_sCheckbox = _T("do not show again");
@@ -111,31 +111,31 @@ UINT CMessageBox::ShowCheck(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, int
 	box.m_sButton2 = lpButton2;
 	box.m_sButton3 = lpButton3;
 	box.m_hIcon = (HICON)::LoadImage(AfxGetResourceHandle(), icon, IMAGE_ICON, 0, 0, LR_DEFAULTSIZE);
-	if (box.m_hIcon == NULL)
-		box.m_hIcon = (HICON)::LoadImage(NULL, icon, IMAGE_ICON, 0, 0, LR_SHARED | LR_DEFAULTSIZE);
+	if (!box.m_hIcon)
+		box.m_hIcon = (HICON)::LoadImage(nullptr, icon, IMAGE_ICON, 0, 0, LR_SHARED | LR_DEFAULTSIZE);
 	else
 		box.m_bDestroyIcon = TRUE;
 	if (!IsWindow(hWnd))
-		hWnd = NULL;
+		hWnd = nullptr;
 	int result = box.GoModal(CWnd::FromHandle(hWnd), lpCaption, lpMessage, nDef);
 	if (bChecked)
 		*bChecked = box.m_bChecked;
 	return result;
 }
 
-UINT CMessageBox::Show(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, int nDef, LPCTSTR icon, LPCTSTR lpButton1, LPCTSTR lpButton2/* = NULL*/, LPCTSTR lpButton3/* = NULL*/)
+UINT CMessageBox::Show(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, int nDef, LPCTSTR icon, LPCTSTR lpButton1, LPCTSTR lpButton2/* = nullptr*/, LPCTSTR lpButton3/* = nullptr*/)
 {
 	CMessageBox box;
 	box.m_sButton1 = lpButton1;
 	box.m_sButton2 = lpButton2;
 	box.m_sButton3 = lpButton3;
 	box.m_hIcon = (HICON)::LoadImage(AfxGetResourceHandle(), icon, IMAGE_ICON, 0, 0, LR_DEFAULTSIZE);
-	if (box.m_hIcon == NULL)
-		box.m_hIcon = (HICON)::LoadImage(NULL, icon, IMAGE_ICON, 0, 0, LR_SHARED | LR_DEFAULTSIZE);
+	if (!box.m_hIcon)
+		box.m_hIcon = (HICON)::LoadImage(nullptr, icon, IMAGE_ICON, 0, 0, LR_SHARED | LR_DEFAULTSIZE);
 	else
 		box.m_bDestroyIcon = TRUE;
 	if (!IsWindow(hWnd))
-		hWnd = NULL;
+		hWnd = nullptr;
 	return box.GoModal(CWnd::FromHandle(hWnd), lpCaption, lpMessage, nDef);
 }
 
@@ -183,7 +183,7 @@ UINT CMessageBox::ShowCheck(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, UIN
 	{
 		int size = sizeof(dwRetVal);
 		DWORD type;
-		if (RegQueryValueEx(hKey, lpRegistry, NULL, &type, (BYTE*) &dwRetVal,(LPDWORD) &size)==ERROR_SUCCESS)
+		if (RegQueryValueEx(hKey, lpRegistry, nullptr, &type, (BYTE*)&dwRetVal,(LPDWORD)&size) == ERROR_SUCCESS)
 		{
 			ASSERT(type==REG_DWORD);
 			RegCloseKey(hKey);
@@ -199,7 +199,7 @@ UINT CMessageBox::ShowCheck(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, UIN
 	CMessageBox box;
 	box.m_bShowCheck = TRUE;
 	box.m_sRegistryValue = lpRegistry;
-	if (lpCheckMessage == NULL)
+	if (!lpCheckMessage)
 	{
 #ifndef IDS_MSGBOX_DONOTSHOWAGAIN
 		box.m_sCheckbox = _T("do not show again");
@@ -213,7 +213,7 @@ UINT CMessageBox::ShowCheck(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, UIN
 		box.m_sCheckbox = lpCheckMessage;
 	box.m_bChecked = bChecked ? *bChecked : FALSE;
 	if (!IsWindow(hWnd))
-		hWnd = NULL;
+		hWnd = nullptr;
 	int result = box.GoModal(CWnd::FromHandle(hWnd), lpCaption, lpMessage, box.FillBoxStandard(uType));
 	if (bChecked)
 		*bChecked = box.m_bChecked;
@@ -234,7 +234,7 @@ UINT CMessageBox::Show(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, UINT uTy
 	CMessageBox box;
 
 	if (!IsWindow(hWnd))
-		hWnd = NULL;
+		hWnd = nullptr;
 	if (sHelpPath)
 		box.SetHelpPath(sHelpPath);
 	return box.GoModal(CWnd::FromHandle(hWnd), lpCaption, lpMessage, box.FillBoxStandard(uType));
@@ -249,7 +249,7 @@ UINT CMessageBox::Show(HWND hWnd, UINT nMessage, UINT nCaption, UINT uType, UINT
 	sCaption.LoadString(nCaption);
 
 	if (!IsWindow(hWnd))
-		hWnd = NULL;
+		hWnd = nullptr;
 	box.SetHelpID(nHelpID);
 
 	return box.GoModal(CWnd::FromHandle(hWnd), sCaption, sMessage, box.FillBoxStandard(uType));
@@ -283,19 +283,19 @@ int CMessageBox::FillBoxStandard(UINT uType)
 	switch (uType & 0xf0)
 	{
 	case MB_ICONEXCLAMATION:
-		m_hIcon = (HICON)::LoadImage(NULL, IDI_EXCLAMATION, IMAGE_ICON, 0, 0, LR_SHARED | LR_DEFAULTSIZE);
+		m_hIcon = (HICON)::LoadImage(nullptr, IDI_EXCLAMATION, IMAGE_ICON, 0, 0, LR_SHARED | LR_DEFAULTSIZE);
 		::MessageBeep(MB_ICONEXCLAMATION);
 		break;
 	case MB_ICONASTERISK:
-		m_hIcon = (HICON)::LoadImage(NULL, IDI_ASTERISK, IMAGE_ICON, 0, 0, LR_SHARED | LR_DEFAULTSIZE);
+		m_hIcon = (HICON)::LoadImage(nullptr, IDI_ASTERISK, IMAGE_ICON, 0, 0, LR_SHARED | LR_DEFAULTSIZE);
 		::MessageBeep(MB_ICONASTERISK);
 		break;
 	case MB_ICONQUESTION:
-		m_hIcon = (HICON)::LoadImage(NULL, IDI_QUESTION, IMAGE_ICON, 0, 0, LR_SHARED | LR_DEFAULTSIZE);
+		m_hIcon = (HICON)::LoadImage(nullptr, IDI_QUESTION, IMAGE_ICON, 0, 0, LR_SHARED | LR_DEFAULTSIZE);
 		::MessageBeep(MB_ICONQUESTION);
 		break;
 	case MB_ICONHAND:
-		m_hIcon = (HICON)::LoadImage(NULL, IDI_HAND, IMAGE_ICON, 0, 0, LR_SHARED | LR_DEFAULTSIZE);
+		m_hIcon = (HICON)::LoadImage(nullptr, IDI_HAND, IMAGE_ICON, 0, 0, LR_SHARED | LR_DEFAULTSIZE);
 		::MessageBeep(MB_ICONHAND);
 		break;
 	}
@@ -504,7 +504,7 @@ UINT CMessageBox::GoModal(CWnd * pWnd, const CString& title, const CString& msg,
 	if (pDC)
 		hdc = pDC->m_hDC;
 	else
-		hdc = ::GetDC(NULL);
+		hdc = ::GetDC(nullptr);
 	if (!hdc)
 	{
 		HWND hw = pWnd ? pWnd->m_hWnd : nullptr;
@@ -545,7 +545,7 @@ void CMessageBox::SetRegistryValue(const CString& sValue, DWORD value)
 #endif
 	DWORD disp;
 	HKEY hKey;
-	if (RegCreateKeyEx(HKEY_CURRENT_USER, path, 0, _T(""), REG_OPTION_NON_VOLATILE, KEY_WRITE, NULL, &hKey, &disp)!=ERROR_SUCCESS)
+	if (RegCreateKeyEx(HKEY_CURRENT_USER, path, 0, _T(""), REG_OPTION_NON_VOLATILE, KEY_WRITE, nullptr, &hKey, &disp) != ERROR_SUCCESS)
 	{
 		return;
 	}
@@ -582,7 +582,7 @@ CSize CMessageBox::GetIconSize(HICON hIcon)
 {
 	CSize sz (0, 0);
 
-	if (hIcon != NULL)
+	if (hIcon)
 	{
 		ICONINFO ii = { 0 };
 		//get icon dimensions
@@ -690,11 +690,11 @@ void CMessageBox::OnPaint()
 
 	//OnDrawBackground();
 	drawrect.DeflateRect(MESSAGEBOX_BORDERMARGINX, MESSAGEBOX_BORDERMARGINY);
-	if (m_hIcon != NULL)
+	if (m_hIcon)
 	{
 		DrawIconEx(memDC.m_hDC, drawrect.left, drawrect.top +
 			((drawrect.Height() - m_szAllButtons.cy - MESSAGEBOX_TEXTBUTTONMARGIN - m_szIcon.cy) / 2),
-			m_hIcon, m_szIcon.cx, m_szIcon.cy, 0, NULL, DI_NORMAL);
+			m_hIcon, m_szIcon.cx, m_szIcon.cy, 0, nullptr, DI_NORMAL);
 
 		drawrect.left += m_szIcon.cx + MESSAGEBOX_ICONMARGIN;
 	}
@@ -733,7 +733,7 @@ void CMessageBox::OnLButtonUp(UINT nFlags, CPoint point)
 	if (IsPointOverALink(point))
 	{
 		CString url = GetLinkForPoint(point);
-		ShellExecute(NULL, _T("open"), url, NULL,NULL, 0);
+		ShellExecute(nullptr, _T("open"), url, nullptr, nullptr, SW_HIDE);
 	}
 
 	__super::OnLButtonUp(nFlags, point);
@@ -767,16 +767,16 @@ void CMessageBox::OnButton2()
 	if ((m_uButton2Ret == IDHELP)&&(!m_sHelpPath.IsEmpty()))
 	{
 		typedef HWND (WINAPI* FPHH)(HWND, LPCWSTR, UINT, DWORD);
-		FPHH pHtmlHelp=NULL; // Function pointer
+		FPHH pHtmlHelp = nullptr; // Function pointer
 		CAutoLibrary hInstHtmlHelp = AtlLoadSystemLibraryUsingFullPath(_T("HHCtrl.ocx"));
-		HWND hHelp = NULL;
-		if (hInstHtmlHelp != NULL)
+		HWND hHelp = nullptr;
+		if (hInstHtmlHelp)
 		{
 			(FARPROC&)pHtmlHelp = GetProcAddress(hInstHtmlHelp, "HtmlHelpW");
 			if (pHtmlHelp)
 				hHelp = pHtmlHelp(m_hWnd, (LPCTSTR)m_sHelpPath, HH_DISPLAY_TOPIC, NULL);
 		}
-		if (hHelp == NULL)
+		if (!hHelp)
 			::MessageBox(m_hWnd, _T("could not show help file"), _T("Help"), MB_ICONERROR);
 	}
 	else if (m_uButton2Ret == IDHELP)
@@ -801,16 +801,16 @@ void CMessageBox::OnButton3()
 	if ((m_uButton3Ret == IDHELP)&&(!m_sHelpPath.IsEmpty()))
 	{
 		typedef HWND (WINAPI* FPHH)(HWND, LPCWSTR, UINT, DWORD);
-		FPHH pHtmlHelp=NULL; // Function pointer
+		FPHH pHtmlHelp = nullptr; // Function pointer
 		CAutoLibrary hInstHtmlHelp = AtlLoadSystemLibraryUsingFullPath(_T("HHCtrl.ocx"));
-		HWND hHelp = NULL;
-		if (hInstHtmlHelp != NULL)
+		HWND hHelp = nullptr;
+		if (hInstHtmlHelp)
 		{
 			(FARPROC&)pHtmlHelp = GetProcAddress(hInstHtmlHelp, "HtmlHelpW");
 			if (pHtmlHelp)
 				hHelp = pHtmlHelp(m_hWnd, (LPCTSTR)m_sHelpPath, HH_DISPLAY_TOPIC, NULL);
 		}
-		if (hHelp == NULL)
+		if (!hHelp)
 			::MessageBox(m_hWnd, _T("could not show help file"), _T("Help"), MB_ICONERROR);
 	}
 	else if (m_uButton3Ret == IDHELP)

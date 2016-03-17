@@ -27,7 +27,7 @@ class CResetDlg : public CHorizontalResizableStandAloneDialog, public CChooseVer
 	DECLARE_DYNAMIC(CResetDlg)
 
 public:
-	CResetDlg(CWnd* pParent = NULL);   // standard constructor
+	CResetDlg(CWnd* pParent = nullptr);   // standard constructor
 	virtual ~CResetDlg();
 
 // Dialog Data

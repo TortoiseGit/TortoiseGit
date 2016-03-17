@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2014 - TortoiseGit
+// Copyright (C) 2009-2014, 2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -33,8 +33,8 @@ class CShadowFilesTree
 {
 public:
 	CShadowFilesTree()
-	: m_hTree(NULL)
-	, m_pParent(NULL)
+	: m_hTree(nullptr)
+	, m_pParent(nullptr)
 	, m_bFolder(false)
 	, m_bLoaded(true)
 	, m_bSubmodule(false)
@@ -59,7 +59,7 @@ public:
 
 	CString	GetFullName() const
 	{
-		if (m_pParent == NULL)
+		if (!m_pParent)
 			return m_sName;
 
 		CString parentPath = m_pParent->GetFullName();
@@ -76,7 +76,7 @@ class CRepositoryBrowser : public CResizableStandAloneDialog
 	DECLARE_DYNAMIC(CRepositoryBrowser)
 
 public:
-	CRepositoryBrowser(CString rev, CWnd* pParent = NULL);	// standard constructor
+	CRepositoryBrowser(CString rev, CWnd* pParent = nullptr);	// standard constructor
 	virtual ~CRepositoryBrowser();
 
 	// Dialog Data

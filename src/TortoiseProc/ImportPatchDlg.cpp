@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2015 - TortoiseGit
+// Copyright (C) 2008-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -32,7 +32,7 @@
 
 IMPLEMENT_DYNAMIC(CImportPatchDlg, CResizableStandAloneDialog)
 
-CImportPatchDlg::CImportPatchDlg(CWnd* pParent /*=NULL*/)
+CImportPatchDlg::CImportPatchDlg(CWnd* pParent /*=nullptr*/)
 	: CResizableStandAloneDialog(CImportPatchDlg::IDD, pParent)
 	, m_LoadingThread(FALSE)
 {
@@ -195,7 +195,7 @@ BOOL CImportPatchDlg::OnInitDialog()
 		int delta = yPos - rectSplitter.top;
 		if ((rcLogMsg.bottom + delta > rcLogMsg.top)&&(rcLogMsg.bottom + delta < rcFileList.bottom - 30))
 		{
-			m_wndSplitter.SetWindowPos(NULL, 0, yPos, 0, 0, SWP_NOSIZE);
+			m_wndSplitter.SetWindowPos(nullptr, 0, yPos, 0, 0, SWP_NOSIZE);
 			DoSize(delta);
 		}
 	}
@@ -247,10 +247,7 @@ void CImportPatchDlg::OnLbnSelchangeListPatch()
 
 void CImportPatchDlg::OnBnClickedButtonAdd()
 {
-	CFileDialog dlg(TRUE,NULL,
-					NULL,
-					OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT|OFN_ALLOWMULTISELECT,
-					CString(MAKEINTRESOURCE(IDS_PATCHFILEFILTER)));
+	CFileDialog dlg(TRUE, nullptr, nullptr, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_ALLOWMULTISELECT, CString(MAKEINTRESOURCE(IDS_PATCHFILEFILTER)));
 	dlg.m_ofn.nMaxFile = 65536;
 	auto path = std::make_unique<TCHAR[]>(dlg.m_ofn.nMaxFile);
 	SecureZeroMemory(path.get(), dlg.m_ofn.nMaxFile);
@@ -387,7 +384,7 @@ UINT CImportPatchDlg::PatchThread()
 				if (m_pTaskbarList)
 					m_pTaskbarList->SetProgressState(m_hWnd, TBPF_ERROR);
 
-				int ret = CMessageBox::Show(NULL, IDS_PROC_APPLYPATCH_REBASEDIRFOUND,
+				int ret = CMessageBox::Show(nullptr, IDS_PROC_APPLYPATCH_REBASEDIRFOUND,
 												  IDS_APPNAME,
 												   1, IDI_ERROR, IDS_ABORTBUTTON, IDS_SKIPBUTTON, IDS_RESOLVEDBUTTON);
 
@@ -524,10 +521,10 @@ void CImportPatchDlg::OnBnClickedOk()
 	EnableInputCtrl(false);
 	InterlockedExchange(&m_bThreadRunning, TRUE);
 	InterlockedExchange(&this->m_bExitThread, FALSE);
-	if ( (m_LoadingThread=AfxBeginThread(ThreadEntry, this)) ==NULL)
+	if ((m_LoadingThread = AfxBeginThread(ThreadEntry, this)) == nullptr)
 	{
 		InterlockedExchange(&m_bThreadRunning, FALSE);
-		CMessageBox::Show(NULL, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
+		CMessageBox::Show(GetSafeHwnd(), IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
 	}
 
 }
@@ -633,7 +630,7 @@ void CImportPatchDlg::OnBnClickedCancel()
 		CTGitPath path;
 		path.SetFromWin(g_Git.m_CurrentDir);
 		if(path.HasRebaseApply())
-			if(CMessageBox::Show(NULL, IDS_PROC_APPLYPATCH_GITAMACTIVE, IDS_APPNAME, MB_YESNO | MB_ICONQUESTION) == IDYES)
+			if (CMessageBox::Show(GetSafeHwnd(), IDS_PROC_APPLYPATCH_GITAMACTIVE, IDS_APPNAME, MB_YESNO | MB_ICONQUESTION) == IDYES)
 			{
 				CString output;
 				if (g_Git.Run(_T("git.exe am --abort"), &output, CP_UTF8))

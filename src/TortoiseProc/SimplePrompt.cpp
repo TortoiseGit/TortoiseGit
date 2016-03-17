@@ -21,10 +21,10 @@
 #include "SimplePrompt.h"
 
 IMPLEMENT_DYNAMIC(CSimplePrompt, CDialog)
-CSimplePrompt::CSimplePrompt(CWnd* pParent /*=NULL*/)
+CSimplePrompt::CSimplePrompt(CWnd* pParent /*=nullptr*/)
 	: CDialog(CSimplePrompt::IDD, pParent)
 	, m_bSaveAuthentication(FALSE)
-	, m_hParentWnd(NULL)
+	, m_hParentWnd(nullptr)
 {
 }
 
@@ -50,7 +50,7 @@ BOOL CSimplePrompt::OnInitDialog()
 	CDialog::OnInitDialog();
 
 	GetDlgItem(IDC_USEREDIT)->SetFocus();
-	if ((m_hParentWnd==NULL)&&(hWndExplorer))
+	if (!m_hParentWnd && hWndExplorer)
 		CenterWindow(CWnd::FromHandle(m_hParentWnd));
 	return FALSE;
 }

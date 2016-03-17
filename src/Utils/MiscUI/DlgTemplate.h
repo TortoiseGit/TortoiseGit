@@ -28,7 +28,7 @@ public:
 		dialogTemplate = 0;
 	};
     CDlgTemplate(LPCTSTR caption, DWORD style, short x, short y, short w, short h,
-        LPCTSTR font = NULL, LONG fontSize = 8)
+        LPCTSTR font = nullptr, LONG fontSize = 8)
     {
 
         usedBufferLength = sizeof(DLGTEMPLATE );
@@ -227,7 +227,7 @@ protected:
     void AppendString(LPCTSTR string)
     {
 #ifndef _UNICODE
-        int length = MultiByteToWideChar(CP_ACP, 0, string, -1, NULL, 0);
+        int length = MultiByteToWideChar(CP_ACP, 0, string, -1, nullptr, 0);
 #else
 		int length = (int)wcslen(string)+1;
 #endif

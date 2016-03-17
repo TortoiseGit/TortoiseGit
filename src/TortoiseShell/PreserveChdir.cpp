@@ -22,7 +22,7 @@
 
 PreserveChdir::PreserveChdir()
 {
-	DWORD len = GetCurrentDirectory(0, NULL);
+	DWORD len = GetCurrentDirectory(0, nullptr);
 	if (!len)
 		return;
 

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2010, 2012, 2014-2015 - TortoiseSVN
+// Copyright (C) 2010, 2012, 2014-2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -147,7 +147,7 @@ int CSetOverlayHandlers::GetInstalledOverlays()
 		{
 			DWORD size = _countof(value);
 			FILETIME last_write_time;
-			rc = RegEnumKeyEx(hKey, i, value, &size, NULL, NULL, NULL, &last_write_time);
+			rc = RegEnumKeyEx(hKey, i, value, &size, nullptr, nullptr, nullptr, &last_write_time);
 			if (rc == ERROR_SUCCESS)
 			{
 				for (int j = 0; value[j]; ++j)
@@ -164,7 +164,7 @@ int CSetOverlayHandlers::GetInstalledOverlays()
 					// but better be safe than sorry using _countof instead of sizeof
 					if (SHGetValue(HKEY_LOCAL_MACHINE,
 						keystring,
-						NULL,
+						nullptr,
 						&dwType, value, &dwSize) == ERROR_SUCCESS)
 					{
 						if ((dwSize > 10)&&(value[0] == '{'))

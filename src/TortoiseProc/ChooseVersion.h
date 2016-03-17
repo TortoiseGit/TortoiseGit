@@ -242,10 +242,10 @@ protected:
 
 		InterlockedExchange(&m_bLoadingThreadRunning, TRUE);
 
-		if ( (m_pLoadingThread=AfxBeginThread(LoadingThreadEntry, this)) ==NULL)
+		if ((m_pLoadingThread = AfxBeginThread(LoadingThreadEntry, this)) == nullptr)
 		{
 			InterlockedExchange(&m_bLoadingThreadRunning, FALSE);
-			CMessageBox::Show(NULL, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
+			CMessageBox::Show(nullptr, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
 		}
 	}
 	void WaitForFinishLoading()

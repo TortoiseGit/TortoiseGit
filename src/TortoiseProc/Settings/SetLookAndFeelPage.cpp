@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2015 - TortoiseGit
+// Copyright (C) 2011-2016 - TortoiseGit
 // Copyright (C) 2003-2008, 2011, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -80,7 +80,7 @@ void SetMenuItemCheck(CListCtrl *list, unsigned __int64 mask, CButton *selectAll
 		selectAll->SetCheck(BST_INDETERMINATE);
 }
 
-unsigned __int64 GetMenuListMask(CListCtrl *list, CButton *selectAll = NULL)
+unsigned __int64 GetMenuListMask(CListCtrl* list, CButton* selectAll = nullptr)
 {
 	unsigned __int64 mask = 0;
 	bool allChecked = true;
@@ -202,7 +202,7 @@ BOOL CSetLookAndFeelPage::OnInitDialog()
 		m_cMenuList.DeleteColumn(c--);
 	m_cMenuList.InsertColumn(0, _T(""));
 
-	SetWindowTheme(m_hWnd, L"Explorer", NULL);
+	SetWindowTheme(m_hWnd, L"Explorer", nullptr);
 
 	m_cMenuList.SetRedraw(false);
 
@@ -350,7 +350,7 @@ BOOL CSetExtMenu::OnInitDialog()
 		m_cMenuList.DeleteColumn(c--);
 	m_cMenuList.InsertColumn(0, _T(""));
 
-	SetWindowTheme(m_cMenuList.GetSafeHwnd(), L"Explorer", NULL);
+	SetWindowTheme(m_cMenuList.GetSafeHwnd(), L"Explorer", nullptr);
 
 	m_cMenuList.SetRedraw(false);
 

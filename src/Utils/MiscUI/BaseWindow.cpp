@@ -121,27 +121,27 @@ bool CWindow::Create()
     rect.right = 600;
     rect.bottom = 400;
 
-    return Create(WS_OVERLAPPEDWINDOW | WS_VISIBLE, NULL, &rect);
+    return Create(WS_OVERLAPPEDWINDOW | WS_VISIBLE, nullptr, &rect);
 }
 
-bool CWindow::Create(DWORD dwStyles, HWND hParent /* = NULL */, RECT* rect /* = NULL */)
+bool CWindow::Create(DWORD dwStyles, HWND hParent /* = nullptr */, RECT* rect /* = nullptr */)
 {
     return CreateEx(0, dwStyles, hParent, rect);
 }
 
-bool CWindow::CreateEx(DWORD dwExStyles, DWORD dwStyles, HWND hParent /* = NULL */, RECT* rect /* = NULL */, LPCTSTR classname /* = NULL */)
+bool CWindow::CreateEx(DWORD dwExStyles, DWORD dwStyles, HWND hParent /* = nullptr */, RECT* rect /* = nullptr */, LPCTSTR classname /* = nullptr */)
 {
     // send the this pointer as the window creation parameter
-    if (rect == NULL)
-        m_hwnd = CreateWindowEx(dwExStyles, classname ? classname : sClassName.c_str(), sWindowTitle.c_str(), dwStyles, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, hParent, NULL, hResource, (void *)this);
+    if (!rect)
+        m_hwnd = CreateWindowEx(dwExStyles, classname ? classname : sClassName.c_str(), sWindowTitle.c_str(), dwStyles, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, hParent, nullptr, hResource, (void*)this);
     else
     {
         m_hwnd = CreateWindowEx(dwExStyles, classname ? classname : sClassName.c_str(), sWindowTitle.c_str(), dwStyles, rect->left, rect->top,
-            rect->right - rect->left, rect->bottom - rect->top, hParent, NULL, hResource,
+            rect->right - rect->left, rect->bottom - rect->top, hParent, nullptr, hResource,
             (void *)this);
     }
     m_hParent = hParent;
-    return (m_hwnd != NULL);
+    return (m_hwnd != nullptr);
 }
 
 void CWindow::SetTransparency(BYTE alpha, COLORREF color /* = 0xFF000000 */)

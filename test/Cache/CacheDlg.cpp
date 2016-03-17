@@ -30,7 +30,7 @@
 #endif
 
 
-CCacheDlg::CCacheDlg(CWnd* pParent /*=NULL*/)
+CCacheDlg::CCacheDlg(CWnd* pParent /*=nullptr*/)
 : CDialog(CCacheDlg::IDD, pParent)
 , m_sRootPath(_T(""))
 , m_hPipe(INVALID_HANDLE_VALUE)
@@ -175,10 +175,10 @@ bool CCacheDlg::EnsurePipeOpen()
 		GENERIC_READ |					// read and write access
 		GENERIC_WRITE,
 		0,								// no sharing
-		NULL,							// default security attributes
+		nullptr,						// default security attributes
 		OPEN_EXISTING,				// opens existing pipe
 		FILE_FLAG_OVERLAPPED,			// default attributes
-		NULL);							// no template file
+		nullptr);						// no template file
 
 	if (m_hPipe == INVALID_HANDLE_VALUE && GetLastError() == ERROR_PIPE_BUSY)
 	{
@@ -192,10 +192,10 @@ bool CCacheDlg::EnsurePipeOpen()
 				GENERIC_READ |					// read and write access
 				GENERIC_WRITE,
 				0,								// no sharing
-				NULL,							// default security attributes
+				nullptr,						// default security attributes
 				OPEN_EXISTING,				// opens existing pipe
 				FILE_FLAG_OVERLAPPED,			// default attributes
-				NULL);							// no template file
+				nullptr);						// no template file
 		}
 	}
 
@@ -209,8 +209,8 @@ bool CCacheDlg::EnsurePipeOpen()
 		if(!SetNamedPipeHandleState(
 			m_hPipe,    // pipe handle
 			&dwMode,  // new pipe mode
-			NULL,     // don't set maximum bytes
-			NULL))    // don't set maximum time
+			nullptr,  // don't set maximum bytes
+			nullptr)) // don't set maximum time
 		{
 			ATLTRACE("SetNamedPipeHandleState failed");
 			CloseHandle(m_hPipe);
@@ -218,7 +218,7 @@ bool CCacheDlg::EnsurePipeOpen()
 			return false;
 		}
 		// create an unnamed (=local) manual reset event for use in the overlapped structure
-		m_hEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
+		m_hEvent = CreateEvent(nullptr, TRUE, FALSE, nullptr);
 		if (m_hEvent)
 			return true;
 		ATLTRACE("CreateEvent failed");
@@ -252,7 +252,7 @@ bool CCacheDlg::GetStatusFromRemoteCache(const CTGitPath& Path, bool bRecursive)
 		memset(&process, 0, sizeof(process));
 
 		CString sCachePath = _T("TGitCache.exe");
-		if (CreateProcess(sCachePath.GetBuffer(sCachePath.GetLength()+1), _T(""), NULL, NULL, FALSE, 0, 0, 0, &startup, &process)==0)
+		if (CreateProcess(sCachePath.GetBuffer(sCachePath.GetLength() + 1), _T(""), nullptr, nullptr, FALSE, 0, nullptr, nullptr, &startup, &process) == 0)
 		{
 			// It's not appropriate to do a message box here, because there may be hundreds of calls
 			sCachePath.ReleaseBuffer();
@@ -334,10 +334,10 @@ void CCacheDlg::RemoveFromCache(const CString& path)
 		GENERIC_READ |					// read and write access 
 		GENERIC_WRITE, 
 		0,								// no sharing 
-		NULL,							// default security attributes
+		nullptr,						// default security attributes
 		OPEN_EXISTING,					// opens existing pipe 
 		FILE_FLAG_OVERLAPPED,			// default attributes 
-		NULL);							// no template file 
+		nullptr);						// no template file 
 
 
 	if (hPipe != INVALID_HANDLE_VALUE) 
@@ -442,7 +442,7 @@ UINT CCacheDlg::WatchTestThread()
 		{
 			filepath.Format(_T("__MyDummyFolder%d"), i);
 			CreateDirectory(m_sRootPath+_T("\\")+filepath, NULL);
-			HANDLE hFile = CreateFile(m_sRootPath+_T("\\")+filepath+_T("\\file"), GENERIC_READ, FILE_SHARE_READ, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+			HANDLE hFile = CreateFile(m_sRootPath+_T("\\")+filepath+_T("\\file"), GENERIC_READ, FILE_SHARE_READ, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
 			CloseHandle(hFile);
 			SHChangeNotify(SHCNE_UPDATEITEM, SHCNF_PATH | SHCNF_FLUSHNOWAIT, m_sRootPath+_T("\\")+filepath+_T("\\file"), NULL);
 		}
@@ -473,7 +473,7 @@ UINT CCacheDlg::WatchTestThread()
 void CCacheDlg::TouchFile(const CString& path)
 {
 	SetFileAttributes(path, FILE_ATTRIBUTE_NORMAL);
-	HANDLE hFile = CreateFile(path, GENERIC_WRITE, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+	HANDLE hFile = CreateFile(path, GENERIC_WRITE, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
 	if (hFile == INVALID_HANDLE_VALUE)
 		return;
 

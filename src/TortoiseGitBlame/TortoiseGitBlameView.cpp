@@ -1,6 +1,6 @@
 // TortoiseGitBlame - a Viewer for Git Blames
 
-// Copyright (C) 2008-2015 - TortoiseGit
+// Copyright (C) 2008-2016 - TortoiseGit
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
 
 // Copyright (C)2003 Don HO <donho@altern.org>
@@ -162,7 +162,7 @@ CTortoiseGitBlameView::CTortoiseGitBlameView()
 	m_bBlameOuputContainsOtherFilenames = FALSE;
 
 	m_FindDialogMessage = ::RegisterWindowMessage(FINDMSGSTRING);
-	m_pFindDialog = NULL;
+	m_pFindDialog = nullptr;
 	// get short/long datetime setting from registry
 	DWORD RegUseShortDateFormat = CRegDWORD(_T("Software\\TortoiseGit\\LogDateFormat"), TRUE);
 	if ( RegUseShortDateFormat )
@@ -184,7 +184,7 @@ CTortoiseGitBlameView::CTortoiseGitBlameView()
 	m_sMessage.LoadString(IDS_LOG_MESSAGE);
 
 #ifdef USE_TEMPFILENAME
-	m_Buffer = NULL;
+	m_Buffer = nullptr;
 #endif
 }
 
@@ -385,7 +385,7 @@ void CTortoiseGitBlameView::OnRButtonUp(UINT /*nFlags*/, CPoint point)
 		try
 		{
 			CTGitPath path(m_data.GetFilename(line));
-			const CTGitPathList & files = pRev->GetFiles(NULL);
+			const CTGitPathList& files = pRev->GetFiles(nullptr);
 			for (int j = 0, j_size = files.GetCount(); j < j_size; ++j)
 			{
 				const CTGitPath &file =  files[j];
@@ -571,7 +571,7 @@ CString CTortoiseGitBlameView::GetAppDirectory()
 	{
 		bufferlen += MAX_PATH;		// MAX_PATH is not the limit here!
 		auto pBuf = std::make_unique<TCHAR[]>(bufferlen);
-		len = GetModuleFileName(NULL, pBuf.get(), bufferlen);
+		len = GetModuleFileName(nullptr, pBuf.get(), bufferlen);
 		path = CString(pBuf.get(), len);
 	} while(len == bufferlen);
 
@@ -863,12 +863,12 @@ void CTortoiseGitBlameView::CreateFont()
 
 void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 {
-	if (hDC == NULL)
+	if (!hDC)
 		return;
 	if (!m_font.GetSafeHandle())
 		return;
 
-	HFONT oldfont = NULL;
+	HFONT oldfont = nullptr;
 	int line = (int)SendEditor(SCI_GETFIRSTVISIBLELINE);
 	int linesonscreen = (int)SendEditor(SCI_LINESONSCREEN);
 	int height = (int)SendEditor(SCI_TEXTHEIGHT);
@@ -955,12 +955,12 @@ void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 				brush.lbColor = m_textcolor;
 				brush.lbHatch = 0;
 				brush.lbStyle = BS_SOLID;
-				HPEN pen = ExtCreatePen(PS_SOLID | PS_GEOMETRIC, 2, &brush, 0, NULL);
+				HPEN pen = ExtCreatePen(PS_SOLID | PS_GEOMETRIC, 2, &brush, 0, nullptr);
 				HGDIOBJ hPenOld = SelectObject(hDC, pen);
 				RECT rc2 = rc;
 				rc2.top = (LONG)Y;
 				rc2.bottom = (LONG)(Y + height);
-				::MoveToEx(hDC, rc2.left, rc2.top, NULL);
+				::MoveToEx(hDC, rc2.left, rc2.top, nullptr);
 				::LineTo(hDC, rc2.right, rc2.top);
 				::LineTo(hDC, rc2.right, rc2.bottom);
 				::LineTo(hDC, rc2.left, rc2.bottom);
@@ -984,7 +984,7 @@ void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 
 void CTortoiseGitBlameView::DrawLocatorBar(HDC hDC)
 {
-	if (hDC == NULL)
+	if (!hDC)
 		return;
 
 	int line = (int)SendEditor(SCI_GETFIRSTVISIBLELINE);
@@ -1014,7 +1014,7 @@ void CTortoiseGitBlameView::DrawLocatorBar(HDC hDC)
 		SetBkColor(hDC, cr);
 		lineRect.top = (LONG)Y;
 		lineRect.bottom = ((currentLine + 1) * height / numberOfLines);
-		::ExtTextOut(hDC, 0, 0, ETO_OPAQUE, &lineRect, NULL, 0, NULL);
+		::ExtTextOut(hDC, 0, 0, ETO_OPAQUE, &lineRect, nullptr, 0, nullptr);
 		Y = lineRect.bottom;
 	}
 
@@ -1024,10 +1024,10 @@ void CTortoiseGitBlameView::DrawLocatorBar(HDC hDC)
 		SetBkColor(hDC, blackColor);
 		lineRect.top = (LONG)line * height / numberOfLines;
 		lineRect.bottom = lineRect.top+1;
-		::ExtTextOut(hDC, 0, 0, ETO_OPAQUE, &lineRect, NULL, 0, NULL);
+		::ExtTextOut(hDC, 0, 0, ETO_OPAQUE, &lineRect, nullptr, 0, nullptr);
 		lineRect.top = (LONG)(line + linesonscreen) * height / numberOfLines;
 		lineRect.bottom = lineRect.top+1;
-		::ExtTextOut(hDC, 0, 0, ETO_OPAQUE, &lineRect, NULL, 0, NULL);
+		::ExtTextOut(hDC, 0, 0, ETO_OPAQUE, &lineRect, nullptr, 0, nullptr);
 	}
 
 }
@@ -1686,7 +1686,7 @@ void CTortoiseGitBlameView::OnLButtonDown(UINT nFlags,CPoint point)
 		{
 			m_SelectedHash.Empty();
 		}
-		//::InvalidateRect( NULL, FALSE);
+		//::InvalidateRect(nullptr, FALSE);
 		this->Invalidate();
 		this->m_TextView.Invalidate();
 
@@ -1829,7 +1829,7 @@ void CTortoiseGitBlameView::OnEditFind()
 	if (theApp.GetInt(_T("FindMatchCase")))
 		flags |= FR_MATCHCASE;
 
-	m_pFindDialog->Create(TRUE, oneline, NULL, flags, this);
+	m_pFindDialog->Create(TRUE, oneline, nullptr, flags, this);
 }
 
 void CTortoiseGitBlameView::OnEditGoto()
@@ -1843,13 +1843,13 @@ void CTortoiseGitBlameView::OnEditGoto()
 
 LRESULT CTortoiseGitBlameView::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*/)
 {
-	ASSERT(m_pFindDialog != NULL);
+	ASSERT(m_pFindDialog);
 
 	// If the FR_DIALOGTERM flag is set,
 	// invalidate the handle identifying the dialog box.
 	if (m_pFindDialog->IsTerminating())
 	{
-			m_pFindDialog = NULL;
+			m_pFindDialog = nullptr;
 			return 0;
 	}
 

@@ -134,8 +134,8 @@ public:
 	int GetFileStatus(const CString &gitdir,const CString &path,git_wc_status_kind * status,
 							BOOL IsFull=false, BOOL IsRecursive=false,
 							FILL_STATUS_CALLBACK callback = nullptr,
-							void *pData=NULL,CGitHash *pHash=NULL,
-							bool isLoadUpdatedIndex = true, bool * assumeValid = NULL, bool * skipWorktree = NULL);
+							void* pData = nullptr, CGitHash* pHash = nullptr,
+							bool isLoadUpdatedIndex = true, bool* assumeValid = nullptr, bool* skipWorktree = nullptr);
 
 	int IsUnderVersionControl(const CString &gitdir,
 							  CString path,
@@ -282,16 +282,16 @@ public:
 	CGitIgnoreItem()
 	{
 		m_LastModifyTime =0;
-		m_pExcludeList =NULL;
-		m_buffer = NULL;
+		m_pExcludeList = nullptr;
+		m_buffer = nullptr;
 	}
 	~CGitIgnoreItem()
 	{
 		if(m_pExcludeList)
 			git_free_exclude_list(m_pExcludeList);
 		free(m_buffer);
-		m_pExcludeList=NULL;
-		m_buffer = NULL;
+		m_pExcludeList= nullptr;
+		m_buffer = nullptr;
 	}
 	__time64_t  m_LastModifyTime;
 	CStringA m_BaseDir;
@@ -351,7 +351,7 @@ int GetRangeInSortVector(const T &vector, LPCTSTR pstr, int len, int *start, int
 	{
 		return -1;
 	}
-	if(start == 0 || end == NULL)
+	if (start == 0 || !end)
 		return -1;
 
 	*start=*end=-1;

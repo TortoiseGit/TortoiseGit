@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015 - TortoiseGit
+// Copyright (C) 2015-2016 - TortoiseGit
 // Copyright (C) 2005-2006, 2009-2010 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -138,7 +138,7 @@ inline void CDirFileEnum::PushStack(const CString& sDirName)
 }
 
 CDirFileEnum::CDirFileEnum(const CString& sDirName) :
-   m_seStack(NULL),
+   m_seStack(nullptr),
    m_bIsNew(TRUE)
 {
    PushStack(sDirName);
@@ -146,7 +146,8 @@ CDirFileEnum::CDirFileEnum(const CString& sDirName) :
 
 CDirFileEnum::~CDirFileEnum()
 {
-   while (m_seStack != NULL) {
+   while (m_seStack)
+   {
       PopStack();
    }
 }
@@ -169,10 +170,8 @@ BOOL CDirFileEnum::NextFile(CString &sResult, bool* pbIsDirectory, bool bRecurse
    if (m_seStack)
    {
       sResult = m_seStack->GetFilePath();
-      if(pbIsDirectory != NULL)
-      {
+      if (pbIsDirectory)
           *pbIsDirectory = m_seStack->IsDirectory();
-      }
       return TRUE;
    } else {
       return FALSE;

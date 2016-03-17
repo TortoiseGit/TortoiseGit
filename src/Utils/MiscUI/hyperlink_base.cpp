@@ -65,8 +65,8 @@ static CGlobalAtom ga;
  */
 COLORREF CHyperLink::g_crLinkColor     = RGB(  0,   0, 255);   // Blue;
 COLORREF CHyperLink::g_crVisitedColor  = RGB( 128,  0, 128);   // Purple;
-HCURSOR  CHyperLink::g_hLinkCursor     = NULL;
-HFONT    CHyperLink::g_UnderlineFont   = NULL;
+HCURSOR  CHyperLink::g_hLinkCursor     = nullptr;
+HFONT    CHyperLink::g_UnderlineFont   = nullptr;
 int      CHyperLink::g_counter         = 0;
 
 /*
@@ -84,9 +84,9 @@ CHyperLink::CHyperLink(void)
 {
     m_bOverControl      = FALSE;                // Cursor not yet over control
     m_bVisited          = FALSE;                // Hasn't been visited yet.
-	m_StdFont           = NULL;
-	m_pfnOrigCtlProc    = NULL;
-    m_strURL            = NULL;
+	m_StdFont           = nullptr;
+	m_pfnOrigCtlProc    = nullptr;
+    m_strURL            = nullptr;
 }
 
 CHyperLink::~CHyperLink(void)
@@ -109,7 +109,7 @@ BOOL CHyperLink::ConvertStaticToHyperlink(HWND hwndCtl, LPCTSTR strURL)
 	// Subclass the parent so we can color the controls as we desire.
 
 	HWND hwndParent = GetParent(hwndCtl);
-	if (NULL != hwndParent)
+	if (hwndParent)
 	{
 		WNDPROC pfnOrigProc = (WNDPROC) GetWindowLongPtr(hwndParent, GWLP_WNDPROC);
 		if (pfnOrigProc != _HyperlinkParentProc)
@@ -293,7 +293,7 @@ LRESULT CALLBACK CHyperLink::_HyperlinkProc(HWND hwnd, UINT message,
 				pHyperLink->m_bOverControl = TRUE;
 				SendMessage(hwnd, WM_SETFONT,
 					        (WPARAM)CHyperLink::g_UnderlineFont, FALSE);
-				InvalidateRect(hwnd, NULL, FALSE);
+				InvalidateRect(hwnd, nullptr, FALSE);
 				pHyperLink->OnSelect();
 				SetCapture(hwnd);
 			}
@@ -310,7 +310,7 @@ LRESULT CALLBACK CHyperLink::_HyperlinkProc(HWND hwnd, UINT message,
 			pHyperLink->OnDeselect();
 			SendMessage(hwnd, WM_SETFONT,
 				        (WPARAM)pHyperLink->m_StdFont, FALSE);
-			InvalidateRect(hwnd, NULL, FALSE);
+			InvalidateRect(hwnd, nullptr, FALSE);
 			return 0;
 		}
 	case WM_KEYUP:
@@ -377,7 +377,7 @@ void CHyperLink::createUnderlineFont(void)
  */
 void CHyperLink::createLinkCursor(void)
 {
-	g_hLinkCursor = ::LoadCursor(NULL, IDC_HAND); // Load Windows' hand cursor
+	g_hLinkCursor = ::LoadCursor(nullptr, IDC_HAND); // Load Windows' hand cursor
 	if( !g_hLinkCursor )    // if not available, use the standard Arrow cursor
     {
 		/*
@@ -386,6 +386,6 @@ void CHyperLink::createLinkCursor(void)
 		 * I consider that if a user is happy with 10 years old OS, he won't bother to have
 		 * an arrow cursor.
 		 */
-		g_hLinkCursor = ::LoadCursor(NULL, IDC_ARROW);
+		g_hLinkCursor = ::LoadCursor(nullptr, IDC_ARROW);
 	}
 }

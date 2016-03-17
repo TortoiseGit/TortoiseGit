@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011, 2015 - TortoiseGit
+// Copyright (C) 2011, 2015-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -23,7 +23,7 @@
 class CHorizontalResizableStandAloneDialog : public CResizableStandAloneDialog
 {
 public:
-	CHorizontalResizableStandAloneDialog(UINT nIDTemplate, CWnd* pParentWnd = NULL);
+	CHorizontalResizableStandAloneDialog(UINT nIDTemplate, CWnd* pParentWnd = nullptr);
 
 private:
 	DECLARE_DYNAMIC(CHorizontalResizableStandAloneDialog)

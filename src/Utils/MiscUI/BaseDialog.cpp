@@ -39,7 +39,7 @@ void CDialog::InitDialog(HWND hwndDlg, UINT iconID)
 	RECT rc, rcDlg, rcOwner;
 
 	hwndOwner = ::GetParent(hwndDlg);
-	if (hwndOwner == NULL)
+	if (!hwndOwner)
 		hwndOwner = ::GetDesktopWindow();
 
 	GetWindowRect(hwndOwner, &rcOwner);

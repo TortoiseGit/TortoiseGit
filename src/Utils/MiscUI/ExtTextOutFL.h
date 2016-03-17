@@ -27,7 +27,7 @@
 HRESULT TextOutFL(HDC hdc, int x, int y, LPCWSTR psz, int cch)
 {
 	ATL::CComPtr<IMLangFontLink2> pfl;
-	HRESULT hr = pfl.CoCreateInstance(CLSID_CMultiLanguage, NULL, CLSCTX_ALL);
+	HRESULT hr = pfl.CoCreateInstance(CLSID_CMultiLanguage, nullptr, CLSCTX_ALL);
 	if (FAILED(hr))
 		return hr;
 
@@ -86,7 +86,7 @@ HRESULT TextOutFL(HDC hdc, int x, int y, LPCWSTR psz, int cch)
 	if (!(dwAlignOrig & TA_UPDATECP))
 	{
 		SetTextAlign(hdc, dwAlignOrig);
-		MoveToEx(hdc, ptOrig.x, ptOrig.y, NULL);
+		MoveToEx(hdc, ptOrig.x, ptOrig.y, nullptr);
 	}
 
 	return hr;

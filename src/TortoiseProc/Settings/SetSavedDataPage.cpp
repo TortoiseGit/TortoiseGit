@@ -68,7 +68,7 @@ BOOL CSetSavedDataPage::OnInitDialog()
 	CRegistryKey regloghist(_T("Software\\TortoiseGit\\History"));
 	CStringList loghistlist;
 	regloghist.getSubKeys(loghistlist);
-	for (POSITION pos = loghistlist.GetHeadPosition(); pos != NULL; )
+	for (POSITION pos = loghistlist.GetHeadPosition(); pos; )
 	{
 		CString sHistName = loghistlist.GetNext(pos);
 		if (sHistName.Left(6).CompareNoCase(_T("commit")) == 0 || sHistName.Left(5).CompareNoCase(_T("merge")) == 0)
@@ -88,7 +88,7 @@ BOOL CSetSavedDataPage::OnInitDialog()
 			regurlhistlist.getSubKeys(urlhistlistmain);
 			regurlhistlist.getValues(urlhistlistmainvalues);
 			nUrlHistItems += urlhistlistmainvalues.GetCount();
-			for (POSITION urlpos = urlhistlistmain.GetHeadPosition(); urlpos != NULL; )
+			for (POSITION urlpos = urlhistlistmain.GetHeadPosition(); urlpos; )
 			{
 				CString sWCUID = urlhistlistmain.GetNext(urlpos);
 				nUrlHistWC++;
@@ -208,7 +208,7 @@ void CSetSavedDataPage::OnBnClickedLoghistclear()
 	CRegistryKey reg(_T("Software\\TortoiseGit\\History"));
 	CStringList histlist;
 	reg.getSubKeys(histlist);
-	for (POSITION pos = histlist.GetHeadPosition(); pos != NULL; )
+	for (POSITION pos = histlist.GetHeadPosition(); pos; )
 	{
 		CString sHist = histlist.GetNext(pos);
 		if (sHist.Left(6).CompareNoCase(_T("commit"))==0)
@@ -282,7 +282,7 @@ void CSetSavedDataPage::OnBnClickedTempfileclear()
 		return;
 
 	int count = 0;
-	DWORD len = GetTortoiseGitTempPath(0, NULL);
+	DWORD len = GetTortoiseGitTempPath(0, nullptr);
 	auto path = std::make_unique<TCHAR[]>(len + 100);
 	len = GetTortoiseGitTempPath(len + 100, path.get());
 	if (len != 0)
@@ -341,7 +341,7 @@ void CSetSavedDataPage::DeleteViaShell(LPCTSTR path, UINT progressText)
 	fileop.hwnd = m_hWnd;
 	fileop.wFunc = FO_DELETE;
 	fileop.pFrom = buf.get();
-	fileop.pTo = NULL;
+	fileop.pTo = nullptr;
 	fileop.fFlags = FOF_NO_CONNECTED_ELEMENTS | FOF_NOCONFIRMATION;
 	fileop.lpszProgressTitle = progText;
 	SHFileOperation(&fileop);

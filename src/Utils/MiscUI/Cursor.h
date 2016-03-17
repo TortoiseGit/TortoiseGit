@@ -75,7 +75,7 @@ public:
 		//first restore possible old cursor before setting new one
 		Restore();
 		//try to load system cursor
-		HCURSOR NewCursor = ::LoadCursor(NULL, CursorName);
+		HCURSOR NewCursor = ::LoadCursor(nullptr, CursorName);
 		if(!NewCursor)
 			//try to load application cursor
 			NewCursor = ::LoadCursor(AfxGetResourceHandle(), CursorName);
@@ -100,7 +100,7 @@ public:
 		if(m_bInitialized)
 		{
 			::SetCursor(m_hOldCursor);
-			m_hOldCursor = NULL;
+			m_hOldCursor = nullptr;
 		}
 		m_bInitialized = FALSE;
 	}

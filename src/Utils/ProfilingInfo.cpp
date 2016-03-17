@@ -105,7 +105,7 @@ CProfilingInfo::~CProfilingInfo(void)
 		// write profile to file
 
 		TCHAR buffer [MAX_PATH] = {0};
-		if (GetModuleFileNameEx (GetCurrentProcess(), NULL, buffer, MAX_PATH) > 0)
+		if (GetModuleFileNameEx(GetCurrentProcess(), nullptr, buffer, MAX_PATH) > 0)
 			try
 			{
 				std::wstring fileName (buffer);

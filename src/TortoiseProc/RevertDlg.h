@@ -32,7 +32,7 @@ class CRevertDlg : public CResizableStandAloneDialog
 	DECLARE_DYNAMIC(CRevertDlg)
 
 public:
-	CRevertDlg(CWnd* pParent = NULL);   // standard constructor
+	CRevertDlg(CWnd* pParent = nullptr);   // standard constructor
 	virtual ~CRevertDlg();
 
 	enum { IDD = IDD_REVERT };

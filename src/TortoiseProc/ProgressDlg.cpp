@@ -40,7 +40,7 @@
 
 IMPLEMENT_DYNAMIC(CProgressDlg, CResizableStandAloneDialog)
 
-CProgressDlg::CProgressDlg(CWnd* pParent /*=NULL*/)
+CProgressDlg::CProgressDlg(CWnd* pParent /*=nullptr*/)
 	: CResizableStandAloneDialog(CProgressDlg::IDD, pParent)
 	, m_bShowCommand(true)
 	, m_bAbort(false)
@@ -50,7 +50,7 @@ CProgressDlg::CProgressDlg(CWnd* pParent /*=NULL*/)
 	, m_Git(&g_Git)
 	, m_hAccel(nullptr)
 {
-	m_pThread = NULL;
+	m_pThread = nullptr;
 	m_bBufferAll=false;
 	m_GitStatus = (DWORD)-1;
 	int autoClose = CRegDWORD(_T("Software\\TortoiseGit\\AutoCloseGitProgress"), 0);
@@ -156,7 +156,7 @@ BOOL CProgressDlg::OnInitDialog()
 	EnableSaveRestore(_T("ProgressDlg"));
 
 	m_pThread = AfxBeginThread(ProgressThreadEntry, this, THREAD_PRIORITY_NORMAL,0,CREATE_SUSPENDED);
-	if (m_pThread==NULL)
+	if (!m_pThread)
 	{
 		CMessageBox::Show(this->m_hWnd, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
 		DialogEnableWindow(IDCANCEL, TRUE);
@@ -268,7 +268,7 @@ UINT CProgressDlg::RunCmdList(CWnd* pWnd, STRING_VECTOR& cmdlist, STRING_VECTOR&
 		char lastByte = '\0';
 		char byte;
 		CString output;
-		while(ReadFile(hRead,&byte,1,&readnumber,NULL))
+		while (ReadFile(hRead, &byte, 1, &readnumber, nullptr))
 		{
 			if(pdata)
 			{
@@ -326,7 +326,7 @@ UINT CProgressDlg::ProgressThread()
 	CString *pfilename;
 
 	if(m_LogFile.IsEmpty())
-		pfilename=NULL;
+		pfilename = nullptr;
 	else
 		pfilename=&m_LogFile;
 
@@ -413,7 +413,7 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 			if (!m_GitCmd.IsEmpty() || !m_GitCmdList.empty())
 				InsertColorText(this->m_Log, err, RGB(255,0,0));
 			if (CRegDWORD(_T("Software\\TortoiseGit\\NoSounds"), FALSE) == FALSE)
-				PlaySound((LPCTSTR)SND_ALIAS_SYSTEMEXCLAMATION, NULL, SND_ALIAS_ID | SND_ASYNC);
+				PlaySound((LPCTSTR)SND_ALIAS_SYSTEMEXCLAMATION, nullptr, SND_ALIAS_ID | SND_ASYNC);
 		}
 		else {
 			if (m_pTaskbarList)

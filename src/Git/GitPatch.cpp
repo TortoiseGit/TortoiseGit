@@ -1,6 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2012-2013, 2015 - TortoiseGit
+// Copyright (C) 2012-2013, 2015-2016 - TortoiseGit
 // Copyright (C) 2010-2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -34,7 +34,7 @@ GitPatch::GitPatch()
 	: m_nStrip(0)
 	, m_bSuccessfullyPatched(false)
 	, m_nRejected(0)
-	, m_pProgDlg(NULL)
+	, m_pProgDlg(nullptr)
 	, m_patch()
 {
 }
@@ -86,7 +86,7 @@ int GitPatch::Init(const CString& patchfile, const CString& targetpath, CSysProg
 		return 0;
 	}
 
-	m_pProgDlg = NULL;
+	m_pProgDlg = nullptr;
 
 	if ((m_nRejected > ((int)m_filePaths.size() / 3)) && !m_testPath.IsEmpty())
 	{

@@ -69,7 +69,7 @@ void CHintListCtrl::OnPaint()
 		{
 			CHeaderCtrl* pHC;
 			pHC = pListCtrl->GetHeaderCtrl();
-			if (pHC != NULL)
+			if (pHC)
 			{
 				CRect rcH;
 				rcH.SetRectEmpty();

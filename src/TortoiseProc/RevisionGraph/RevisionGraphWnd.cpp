@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2012, 2015 - TortoiseSVN
-// Copyright (C) 2012-2015 - TortoiseGit
+// Copyright (C) 2012-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -84,10 +84,10 @@ enum RevisionGraphContextMenuCommands
 
 CRevisionGraphWnd::CRevisionGraphWnd()
 	: CWnd()
-	, m_SelectedEntry1(NULL)
-	, m_SelectedEntry2(NULL)
+	, m_SelectedEntry1(nullptr)
+	, m_SelectedEntry2(nullptr)
 	, m_HeadNode(nullptr)
-	, m_pDlgTip(NULL)
+	, m_pDlgTip(nullptr)
 	, m_nFontSize(12)
 	, m_bTweakTrunkColors(true)
 	, m_bTweakTagsColors(true)
@@ -95,8 +95,8 @@ CRevisionGraphWnd::CRevisionGraphWnd()
 	, m_ptRubberEnd(0,0)
 	, m_ptMoveCanvas(0,0)
 	, m_bShowOverview(false)
-	, m_parent (NULL)
-	, m_hoverIndex (NULL)
+	, m_parent(nullptr)
+	, m_hoverIndex(nullptr)
 	, m_hoverGlyphs (0)
 	, m_tooltipIndex(nullptr)
 	, m_showHoverGlyphs (false)
@@ -110,7 +110,7 @@ CRevisionGraphWnd::CRevisionGraphWnd()
 	, m_bLocalBranches(FALSE)
 {
 	memset(&m_lfBaseFont, 0, sizeof(LOGFONT));
-	std::fill_n(m_apFonts, MAXFONTS, (CFont*)NULL);
+	std::fill_n(m_apFonts, MAXFONTS, nullptr);
 
 	WNDCLASS wndcls;
 	HINSTANCE hInst = AfxGetInstanceHandle();
@@ -122,10 +122,10 @@ CRevisionGraphWnd::CRevisionGraphWnd()
 		wndcls.lpfnWndProc	  = ::DefWindowProc;
 		wndcls.cbClsExtra	   = wndcls.cbWndExtra = 0;
 		wndcls.hInstance		= hInst;
-		wndcls.hIcon			= NULL;
+		wndcls.hIcon			= nullptr;
 		wndcls.hCursor		  = AfxGetApp()->LoadStandardCursor(IDC_ARROW);
 		wndcls.hbrBackground	= (HBRUSH) (COLOR_WINDOW + 1);
-		wndcls.lpszMenuName	 = NULL;
+		wndcls.lpszMenuName	 = nullptr;
 		wndcls.lpszClassName	= REVGRAPH_CLASSNAME;
 
 		RegisterClass(&wndcls);
@@ -242,12 +242,12 @@ CRevisionGraphWnd::~CRevisionGraphWnd()
 {
 	for (int i = 0; i < MAXFONTS; ++i)
 	{
-		if (m_apFonts[i] != NULL)
+		if (m_apFonts[i])
 		{
 			m_apFonts[i]->DeleteObject();
 			delete m_apFonts[i];
 		}
-		m_apFonts[i] = NULL;
+		m_apFonts[i] = nullptr;
 	}
 	delete m_pDlgTip;
 	m_Graph.clear();
@@ -291,10 +291,10 @@ void CRevisionGraphWnd::Init(CWnd * pParent, LPRECT rect)
 		wndcls.lpfnWndProc	  = ::DefWindowProc;
 		wndcls.cbClsExtra	   = wndcls.cbWndExtra = 0;
 		wndcls.hInstance		= hInst;
-		wndcls.hIcon			= NULL;
+		wndcls.hIcon			= nullptr;
 		wndcls.hCursor		  = AfxGetApp()->LoadStandardCursor(IDC_ARROW);
 		wndcls.hbrBackground	= (HBRUSH) (COLOR_WINDOW + 1);
-		wndcls.lpszMenuName	 = NULL;
+		wndcls.lpszMenuName	 = nullptr;
 		wndcls.lpszClassName	= REVGRAPH_CLASSNAME;
 
 		RegisterClass(&wndcls);
@@ -359,7 +359,7 @@ node CRevisionGraphWnd::GetHitNode (CPoint point, CSize /*border*/) const
 			 return v;
 		 }
 	}
-	return NULL;
+	return nullptr;
 }
 
 DWORD CRevisionGraphWnd::GetHoverGlyphs (CPoint /*point*/) const
@@ -410,17 +410,17 @@ DWORD CRevisionGraphWnd::GetHoverGlyphs (CPoint /*point*/) const
 
 
 	if (rightGlyphArea.PtInRect (logCoordinates))
-		result = base->GetFirstCopyTarget() != NULL
+		result = base->GetFirstCopyTarget()
 			   ? CGraphNodeStates::COLLAPSED_RIGHT | CGraphNodeStates::SPLIT_RIGHT
 			   : 0;
 
 	if (topGlyphArea.PtInRect (logCoordinates))
-		result = base->GetSource() != NULL
+		result = base->GetSource()
 			   ? CGraphNodeStates::COLLAPSED_ABOVE | CGraphNodeStates::SPLIT_ABOVE
 			   : 0;
 
 	if (bottomGlyphArea.PtInRect (logCoordinates))
-		result = base->GetNext() != NULL
+		result = base->GetNext()
 			   ? CGraphNodeStates::COLLAPSED_BELOW | CGraphNodeStates::SPLIT_BELOW
 			   : 0;
 
@@ -454,7 +454,7 @@ const CRevisionGraphState::SVisibleGlyph* CRevisionGraphWnd::GetHitGlyph (CPoint
 		}
 	}
 
-	return NULL;
+	return nullptr;
 }
 #endif
 void CRevisionGraphWnd::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
@@ -580,14 +580,14 @@ void CRevisionGraphWnd::OnLButtonDown(UINT nFlags, CPoint point)
 		const CRevisionGraphState::SVisibleGlyph* hitGlyph
 			= GetHitGlyph (point);
 
-		if (hitGlyph != NULL)
+		if (hitGlyph)
 		{
 			ToggleNodeFlag (hitGlyph->node, hitGlyph->state);
 			return __super::OnLButtonDown(nFlags, point);
 		}
 #endif
 		node nodeIndex = GetHitNode (point);
-		if (nodeIndex != NULL)
+		if (nodeIndex)
 		{
 			if (bControl)
 			{
@@ -596,13 +596,13 @@ void CRevisionGraphWnd::OnLButtonDown(UINT nFlags, CPoint point)
 					if (m_SelectedEntry2)
 					{
 						m_SelectedEntry1 = m_SelectedEntry2;
-						m_SelectedEntry2 = NULL;
+						m_SelectedEntry2 = nullptr;
 					}
 					else
-						m_SelectedEntry1 = NULL;
+						m_SelectedEntry1 = nullptr;
 				}
 				else if (m_SelectedEntry2 == nodeIndex)
-					m_SelectedEntry2 = NULL;
+					m_SelectedEntry2 = nullptr;
 				else if (m_SelectedEntry1)
 					m_SelectedEntry2 = nodeIndex;
 				else
@@ -611,10 +611,10 @@ void CRevisionGraphWnd::OnLButtonDown(UINT nFlags, CPoint point)
 			else
 			{
 				if (m_SelectedEntry1 == nodeIndex)
-					m_SelectedEntry1 = NULL;
+					m_SelectedEntry1 = nullptr;
 				else
 					m_SelectedEntry1 = nodeIndex;
-				m_SelectedEntry2 = NULL;
+				m_SelectedEntry2 = nullptr;
 			}
 			bHit = true;
 			Invalidate(FALSE);
@@ -623,8 +623,8 @@ void CRevisionGraphWnd::OnLButtonDown(UINT nFlags, CPoint point)
 
 	if ((!bHit)&&(!bControl)&&(!bOverview))
 	{
-		m_SelectedEntry1 = NULL;
-		m_SelectedEntry2 = NULL;
+		m_SelectedEntry1 = nullptr;
+		m_SelectedEntry2 = nullptr;
 		m_bIsCanvasMove = true;
 		Invalidate(FALSE);
 		if (m_bShowOverview && m_OverviewRect.PtInRect(point))
@@ -633,7 +633,7 @@ void CRevisionGraphWnd::OnLButtonDown(UINT nFlags, CPoint point)
 	m_ptMoveCanvas = point;
 
 	UINT uEnable = MF_BYCOMMAND;
-	if ((m_SelectedEntry1 != NULL)&&(m_SelectedEntry2 != NULL))
+	if (m_SelectedEntry1 && m_SelectedEntry2)
 		uEnable |= MF_ENABLED;
 	else
 		uEnable |= MF_GRAYED;
@@ -642,7 +642,7 @@ void CRevisionGraphWnd::OnLButtonDown(UINT nFlags, CPoint point)
 	EnableMenuItem(GetParent()->GetMenu()->m_hMenu, ID_VIEW_UNIFIEDDIFF, uEnable);
 
 	uEnable = MF_BYCOMMAND;
-	if ((m_SelectedEntry1 != NULL)&&(m_SelectedEntry2 == NULL))
+	if (m_SelectedEntry1 && !m_SelectedEntry2)
 		uEnable |= MF_ENABLED;
 	else
 		uEnable |= MF_GRAYED;
@@ -742,10 +742,10 @@ INT_PTR CRevisionGraphWnd::OnToolHitTest(CPoint point, TOOLINFO* pTI) const
 		return -1;
 	}
 
-	if (nodeIndex == NULL)
+	if (!nodeIndex)
 		return -1;
 
-//	if ((GetHoverGlyphs (point) != 0) || (GetHitGlyph (point) != NULL))
+//	if ((GetHoverGlyphs (point) != 0) || (GetHitGlyph (point) != nullptr))
 //		return -1;
 
 	pTI->hwnd = this->m_hWnd;
@@ -831,7 +831,7 @@ CString CRevisionGraphWnd::DisplayableText ( const CString& wholeText
 										   , const CSize& tooltipSize)
 {
 	CDC* dc = GetDC();
-	if (dc == NULL)
+	if (!dc)
 	{
 		// no access to the device context -> truncate hard at 1000 chars
 
@@ -934,7 +934,7 @@ void CRevisionGraphWnd::SaveGraphAs(CString sSavePath)
 	{
 		// save the graph as an enhanced metafile
 		CMetaFileDC wmfDC;
-		wmfDC.CreateEnhanced(NULL, sSavePath, NULL, _T("TortoiseGit\0Revision Graph\0\0"));
+		wmfDC.CreateEnhanced(nullptr, sSavePath, nullptr, _T("TortoiseGit\0Revision Graph\0\0"));
 		float fZoom = m_fZoomFactor;
 		m_fZoomFactor = DEFAULT_ZOOM;
 		DoZoom(m_fZoomFactor);
@@ -1013,7 +1013,7 @@ void CRevisionGraphWnd::SaveGraphAs(CString sSavePath)
 			bmi.bmiHeader.biCompression = BI_RGB;
 
 			// Create the surface.
-			hbm = CreateDIBSection(ddc.m_hDC, &bmi, DIB_RGB_COLORS,(void **)&pBits, NULL, 0);
+			hbm = CreateDIBSection(ddc.m_hDC, &bmi, DIB_RGB_COLORS,(void**)&pBits, nullptr, 0);
 			if (hbm==0)
 			{
 				CMessageBox::Show(m_hWnd, IDS_REVGRAPH_ERR_NOMEMORY, IDS_APPNAME, MB_ICONERROR);
@@ -1027,7 +1027,7 @@ void CRevisionGraphWnd::SaveGraphAs(CString sSavePath)
 			// now use GDI+ to save the picture
 			CLSID encoderClsid;
 			{
-				Bitmap bitmap(hbm, NULL);
+				Bitmap bitmap(hbm, nullptr);
 				if (bitmap.GetLastStatus()==Ok)
 				{
 					// Get the CLSID of the encoder.
@@ -1050,7 +1050,7 @@ void CRevisionGraphWnd::SaveGraphAs(CString sSavePath)
 					if (ret >= 0)
 					{
 						CStringW tfile = CStringW(sSavePath);
-						bitmap.Save(tfile, &encoderClsid, NULL);
+						bitmap.Save(tfile, &encoderClsid, nullptr);
 					}
 					else
 					{
@@ -1118,15 +1118,15 @@ void CRevisionGraphWnd::OnMouseHWheel(UINT nFlags, short zDelta, CPoint pt)
 
 bool CRevisionGraphWnd::UpdateSelectedEntry (node clickedentry)
 {
-	if ((m_SelectedEntry1 == NULL)&&(clickedentry == NULL))
+	if (!m_SelectedEntry1 && !clickedentry)
 		return false;
 
-	if (m_SelectedEntry1 == NULL)
+	if (!m_SelectedEntry1)
 	{
 		m_SelectedEntry1 = clickedentry;
 		Invalidate(FALSE);
 	}
-	if ((m_SelectedEntry2 == NULL)&&(clickedentry != m_SelectedEntry1))
+	if (!m_SelectedEntry2 && clickedentry != m_SelectedEntry1)
 	{
 		m_SelectedEntry1 = clickedentry;
 		Invalidate(FALSE);
@@ -1136,7 +1136,7 @@ bool CRevisionGraphWnd::UpdateSelectedEntry (node clickedentry)
 		if ((m_SelectedEntry2 != clickedentry)&&(m_SelectedEntry1 != clickedentry))
 			return false;
 	}
-	if (m_SelectedEntry1 == NULL)
+	if (!m_SelectedEntry1)
 		return false;
 
 	return true;
@@ -1180,7 +1180,7 @@ void CRevisionGraphWnd::AppendMenu(CMenu &popup, CString title, UINT command, CS
 	mii.cbSize = sizeof(MENUITEMINFO);
 	mii.fMask = MIIM_STRING | MIIM_ID | (extra ? MIIM_DATA : 0) | (submenu ? MIIM_SUBMENU : 0);
 	mii.wID = command;
-	mii.hSubMenu = submenu ? submenu->m_hMenu : NULL;
+	mii.hSubMenu = submenu ? submenu->m_hMenu : nullptr;
 	mii.dwItemData = (ULONG_PTR)extra;
 	mii.dwTypeData = title.GetBuffer();
 	InsertMenuItem(popup, popup.GetMenuItemCount(), TRUE, &mii);
@@ -1192,7 +1192,7 @@ void CRevisionGraphWnd::AddGraphOps (CMenu& /*popup*/, const CVisibleGraphNode *
 #if 0
 	CSyncPointer<CGraphNodeStates> nodeStates (m_state.GetNodeStates());
 
-	if (node == NULL)
+	if (!node)
 	{
 		DWORD state = nodeStates->GetCombinedFlags();
 		if (state != 0)
@@ -1256,7 +1256,7 @@ void CRevisionGraphWnd::AddGraphOps (CMenu& /*popup*/, const CVisibleGraphNode *
 CString CRevisionGraphWnd::GetSelectedURL() const
 {
 #if 0
-	if (m_SelectedEntry1 == NULL)
+	if (!m_SelectedEntry1)
 		return CString();
 
 	CString URL = m_state.GetRepositoryRoot()
@@ -1279,7 +1279,7 @@ CString CRevisionGraphWnd::GetWCURL() const
 	const SVNInfoData * status
 		= info.GetFirstFileInfo (path, SVNRev(), SVNRev());
 
-	return status == NULL ? CString() : status->url;
+	return !status ? CString() : status->url;
 #endif
 	return CString();
 }
@@ -1287,12 +1287,12 @@ CString CRevisionGraphWnd::GetWCURL() const
 void CRevisionGraphWnd::DoShowLog()
 {
 
-	if(m_SelectedEntry1 == NULL)
+	if (!m_SelectedEntry1)
 		return;
 
 	CString sCmd;
 
-	if(m_SelectedEntry2 != NULL)
+	if(m_SelectedEntry2)
 		sCmd.Format(_T("/command:log %s /startrev:%s /endrev:%s"),
 			this->m_sPath.IsEmpty() ?  _T("") : (LPCTSTR)(_T("/path:\"") + this->m_sPath + _T("\"")),
 			(LPCTSTR)this->m_logEntries[m_SelectedEntry1->index()].ToString(),
@@ -1374,7 +1374,7 @@ void CRevisionGraphWnd::DoSwitchToHead()
 
 void CRevisionGraphWnd::DoBrowseRepo()
 {
-	if (m_SelectedEntry1 == NULL)
+	if (!m_SelectedEntry1)
 		return;
 
 	CString sCmd;
@@ -1407,7 +1407,7 @@ void CRevisionGraphWnd::ToggleNodeFlag (const CVisibleGraphNode * /*node*/, DWOR
 
 void CRevisionGraphWnd::DoCopyRefs()
 {
-	if (m_SelectedEntry1 == NULL)
+	if (!m_SelectedEntry1)
 		return;
 
 	STRING_VECTOR list = GetFriendRefNames(m_SelectedEntry1);
@@ -1469,7 +1469,7 @@ void CRevisionGraphWnd::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 			switchMenu.CreatePopupMenu();
 			for (size_t i = 0; i < branchNames.size(); ++i)
 				AppendMenu(switchMenu, branchNames[i], ID_SWITCH + ((int)(i + 1) << 16), &branchNames[i]);
-			AppendMenu(popup, CString(MAKEINTRESOURCE(IDS_SWITCH_BRANCH)), ID_SWITCH, NULL, &switchMenu);
+			AppendMenu(popup, CString(MAKEINTRESOURCE(IDS_SWITCH_BRANCH)), ID_SWITCH, nullptr, &switchMenu);
 		}
 
 		AppendMenu(popup, IDS_COPY_REF_NAMES, ID_COPYREFS);
@@ -1500,15 +1500,15 @@ void CRevisionGraphWnd::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 	switch (cmd & 0xFFFF)
 	{
 	case ID_COMPAREREVS:
-		if (m_SelectedEntry1 != NULL)
+		if (m_SelectedEntry1)
 			CompareRevs(false);
 		break;
 	case ID_UNIDIFFREVS:
-		if (m_SelectedEntry1 != NULL)
+		if (m_SelectedEntry1)
 			UnifiedDiffRevs(false);
 		break;
 	case ID_UNIDIFFHEADS:
-		if (m_SelectedEntry1 != NULL)
+		if (m_SelectedEntry1)
 			UnifiedDiffRevs(true);
 		break;
 	case ID_SHOWLOG:
@@ -1522,7 +1522,7 @@ void CRevisionGraphWnd::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 		mii.fMask |= MIIM_DATA;
 		GetMenuItemInfo(popup, cmd, FALSE, &mii);
 		CString *rev = (CString *)mii.dwItemData;
-		if (rev != NULL)
+		if (rev)
 		{
 			DoSwitch(*rev);
 			m_parent->UpdateFullHistory();
@@ -1536,25 +1536,25 @@ void CRevisionGraphWnd::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 		DoBrowseRepo();
 		break;
 	case ID_COMPAREHEADS:
-		if (m_SelectedEntry1 != NULL)
+		if (m_SelectedEntry1)
 			CompareRevs(_T("HEAD"));
 		break;
 	case ID_COMPAREWT:
-		if (m_SelectedEntry1 != NULL)
+		if (m_SelectedEntry1)
 			CompareRevs(CGitHash().ToString());
 		break;
 
 #if 0
 	case ID_COMPAREREVS:
-		if (m_SelectedEntry1 != NULL)
+		if (m_SelectedEntry1)
 			CompareRevs(false);
 		break;
 	case ID_UNIDIFFREVS:
-		if (m_SelectedEntry1 != NULL)
+		if (m_SelectedEntry1)
 			UnifiedDiffRevs(false);
 		break;
 	case ID_UNIDIFFHEADS:
-		if (m_SelectedEntry1 != NULL)
+		if (m_SelectedEntry1)
 			UnifiedDiffRevs(true);
 		break;
 	case ID_SHOWLOG:
@@ -1635,9 +1635,9 @@ void CRevisionGraphWnd::OnMouseMove(UINT nFlags, CPoint point)
 			const CRevisionGraphState::SVisibleGlyph* hitGlyph
 				= GetHitGlyph (clientPoint);
 			const CFullGraphNode* glyphNode
-				= hitGlyph ? hitGlyph->node->GetBase() : NULL;
+				= hitGlyph ? hitGlyph->node->GetBase() : nullptr;
 
-			const CFullGraphNode* hoverNode = NULL;
+			const CFullGraphNode* hoverNode = nullptr;
 			if (m_hoverIndex != NO_INDEX)
 			{
 				CSyncPointer<const ILayoutNodeList> nodeList (m_state.GetNodes());
@@ -1645,14 +1645,14 @@ void CRevisionGraphWnd::OnMouseMove(UINT nFlags, CPoint point)
 					hoverNode = nodeList->GetNode (m_hoverIndex).node->GetBase();
 			}
 
-			//bool onHoverNodeGlyph = (hoverNode != NULL) && (glyphNode == hoverNode);
+			//bool onHoverNodeGlyph = hoverNode && (glyphNode == hoverNode);
 			if (   !m_hoverIndex
 				&& (   (m_hoverIndex != GetHitNode (clientPoint))))
 			{
 				m_showHoverGlyphs = false;
 
 				KillTimer (GLYPH_HOVER_EVENT);
-				SetTimer (GLYPH_HOVER_EVENT, GLYPH_HOVER_DELAY, NULL);
+				SetTimer(GLYPH_HOVER_EVENT, GLYPH_HOVER_DELAY, nullptr);
 
 				Invalidate(FALSE);
 			}
@@ -1682,7 +1682,7 @@ BOOL CRevisionGraphWnd::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 	CRect viewRect = GetViewRect();
 
 	LPTSTR cursorID = IDC_ARROW;
-	HINSTANCE resourceHandle = NULL;
+	HINSTANCE resourceHandle = nullptr;
 
 	if ((nHitTest == HTCLIENT)&&(pWnd == this)&&(viewRect.Width())&&(viewRect.Height())&&(message))
 	{

@@ -37,7 +37,7 @@
 #define WM_TGIT_REFRESH_SELECTION   (WM_APP + 1)
 
 IMPLEMENT_DYNAMIC(CLogDlg, CResizableStandAloneDialog)
-CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
+CLogDlg::CLogDlg(CWnd* pParent /*=nullptr*/)
 	: CResizableStandAloneDialog(CLogDlg::IDD, pParent)
 	, m_wParam(0)
 	, m_nSortColumn(0)
@@ -58,10 +58,10 @@ CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
 	, m_bSelectionMustBeContinuous(false)
 
 	, m_bCancelled(FALSE)
-	, m_pNotifyWindow(NULL)
+	, m_pNotifyWindow(nullptr)
 
 	, m_bAscending(FALSE)
-	, m_hAccel(NULL)
+	, m_hAccel(nullptr)
 	, m_bNavigatingWithSelect(false)
 {
 	m_bFilterWithRegex = !!CRegDWORD(_T("Software\\TortoiseGit\\UseRegexFilter"), FALSE);
@@ -386,7 +386,7 @@ BOOL CLogDlg::OnInitDialog()
 
 		if ((rcLogList.bottom + delta > rcLogList.top)&&(rcLogList.bottom + delta < rcChgMsg.bottom - 30))
 		{
-			m_wndSplitter1.SetWindowPos(NULL, rectSplitter.left, yPos1, 0, 0, SWP_NOSIZE);
+			m_wndSplitter1.SetWindowPos(nullptr, rectSplitter.left, yPos1, 0, 0, SWP_NOSIZE);
 			DoSizeV1(delta);
 		}
 	}
@@ -399,7 +399,7 @@ BOOL CLogDlg::OnInitDialog()
 
 		if ((rcChgMsg.top + delta < rcChgMsg.bottom)&&(rcChgMsg.top + delta > rcLogList.top + 30))
 		{
-			m_wndSplitter2.SetWindowPos(NULL, rectSplitter.left, yPos2, 0, 0, SWP_NOSIZE);
+			m_wndSplitter2.SetWindowPos(nullptr, rectSplitter.left, yPos2, 0, 0, SWP_NOSIZE);
 			DoSizeV2(delta);
 		}
 	}
@@ -1551,7 +1551,7 @@ void CLogDlg::OnOK()
 		int selIndex = m_LogList.GetSelectionMark();
 		if (selIndex >= 0)
 		{
-			PLOGENTRYDATA pLogEntry = NULL;
+			PLOGENTRYDATA pLogEntry = nullptr;
 			POSITION pos = m_LogList.GetFirstSelectedItemPosition();
 			pLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.SafeGetAt(m_LogList.GetNextSelectedItem(pos)));
 			m_selectedRevs.AddRevision(pLogEntry->Rev);
@@ -1739,7 +1739,7 @@ BOOL CLogDlg::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 			(pWnd == GetDlgItem(IDC_MSGVIEW))||
 			(pWnd == GetDlgItem(IDC_LOGMSG))))
 		{
-			HCURSOR hCur = LoadCursor(NULL, IDC_WAIT);
+			HCURSOR hCur = LoadCursor(nullptr, IDC_WAIT);
 			SetCursor(hCur);
 			return TRUE;
 		}
@@ -1747,7 +1747,7 @@ BOOL CLogDlg::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 	if ((pWnd) && (pWnd == GetDlgItem(IDC_MSGVIEW)))
 		return CResizableStandAloneDialog::OnSetCursor(pWnd, nHitTest, message);
 
-	HCURSOR hCur = LoadCursor(NULL, IDC_ARROW);
+	HCURSOR hCur = LoadCursor(nullptr, IDC_ARROW);
 	SetCursor(hCur);
 	return CResizableStandAloneDialog::OnSetCursor(pWnd, nHitTest, message);
 }
@@ -1835,7 +1835,7 @@ void CLogDlg::OnEnLinkMsgview(NMHDR *pNMHDR, LRESULT *pResult)
 		if (::PathIsURL(url))
 		{
 			if (pEnLink->msg == WM_LBUTTONUP)
-				ShellExecute(this->m_hWnd, _T("open"), url, NULL, NULL, SW_SHOWDEFAULT);
+				ShellExecute(this->m_hWnd, _T("open"), url, nullptr, nullptr, SW_SHOWDEFAULT);
 			else
 			{
 				static RECT prevRect = { 0 };
@@ -2197,7 +2197,7 @@ LRESULT CLogDlg::OnClickedInfoIcon(WPARAM wParam, LPARAM lParam)
 			CRegDWORD(_T("Software\\TortoiseGit\\SelectedLogFilters")) = m_LogList.m_SelectedFilters;
 			// Reload only if a search text is entered
 			if (m_LogList.HasFilterText())
-				SetTimer(LOGFILTER_TIMER, 1000, NULL);
+				SetTimer(LOGFILTER_TIMER, 1000, nullptr);
 		}
 	}
 	return 0L;
@@ -2315,7 +2315,7 @@ bool CLogDlg::Validate(LPCTSTR string)
 
 void CLogDlg::OnEnChangeFileFilter()
 {
-	SetTimer(FILEFILTER_TIMER, 1000, NULL);
+	SetTimer(FILEFILTER_TIMER, 1000, nullptr);
 }
 
 void CLogDlg::OnTimer(UINT_PTR nIDEvent)
@@ -2339,7 +2339,7 @@ void CLogDlg::OnTimer(UINT_PTR nIDEvent)
 		if (this->IsThreadRunning())
 		{
 			// thread still running! So just restart the timer.
-			SetTimer(LOGFILTER_TIMER, 1000, NULL);
+			SetTimer(LOGFILTER_TIMER, 1000, nullptr);
 			return;
 		}
 		CWnd * focusWnd = GetFocus();
@@ -2409,12 +2409,12 @@ void CLogDlg::OnDtnDatetimechangeDateto(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 		if (time.GetTime() != m_LogList.m_Filter.m_To)
 		{
 			m_LogList.m_Filter.m_To = (DWORD)time.GetTime();
-			SetTimer(LOGFTIME_TIMER, 10, NULL);
+			SetTimer(LOGFTIME_TIMER, 10, nullptr);
 		}
 	}
 	catch (...)
 	{
-		CMessageBox::Show(NULL,_T("Invalidate Parameter"),_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+		CMessageBox::Show(GetSafeHwnd(), _T("Invalidate Parameter"), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 	}
 
 	*pResult = 0;
@@ -2445,12 +2445,12 @@ void CLogDlg::OnDtnDatetimechangeDatefrom(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 			if (CFilterData::SHOW_LAST_SEL_DATE == (DWORD)CRegDWORD(_T("Software\\TortoiseGit\\LogDialog\\NumberOfLogsScale"), CFilterData::SHOW_NO_LIMIT))
 				m_regLastSelectedFromDate = time.Format(L"%Y-%m-%d");
 
-			SetTimer(LOGFTIME_TIMER, 10, NULL);
+			SetTimer(LOGFTIME_TIMER, 10, nullptr);
 		}
 	}
 	catch (...)
 	{
-		CMessageBox::Show(NULL,_T("Invalidate Parameter"),_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+		CMessageBox::Show(GetSafeHwnd(), _T("Invalidate Parameter"), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 	}
 
 	*pResult = 0;
@@ -2783,7 +2783,7 @@ void CLogDlg::SortShownListArray()
 
 void CLogDlg::SetSortArrow(CListCtrl * control, int nColumn, bool bAscending)
 {
-	if (control == NULL)
+	if (!control)
 		return;
 	// set the sort arrow
 	CHeaderCtrl * pHeader = control->GetHeaderCtrl();
@@ -2986,7 +2986,7 @@ void CLogDlg::OnEnChangeSearchedit()
 		return;
 	}
 	if (Validate(m_LogList.m_sFilterText))
-		SetTimer(LOGFILTER_TIMER, 1000, NULL);
+		SetTimer(LOGFILTER_TIMER, 1000, nullptr);
 	else
 		KillTimer(LOGFILTER_TIMER);
 
@@ -3136,7 +3136,7 @@ void CLogDlg::ShowStartRef()
 	{
 		showStartRef.Empty();
 		//Ref name is HEAD
-		if (g_Git.Run(L"git.exe symbolic-ref HEAD", &showStartRef, NULL, CP_UTF8))
+		if (g_Git.Run(L"git.exe symbolic-ref HEAD", &showStartRef, nullptr, CP_UTF8))
 			showStartRef.LoadString(IDS_PROC_LOG_NOBRANCH);
 		showStartRef.Trim(L"\r\n\t ");
 	}

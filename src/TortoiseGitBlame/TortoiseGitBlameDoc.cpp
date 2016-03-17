@@ -143,7 +143,7 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 		}
 		catch (char * libgiterr)
 		{
-			MessageBox(NULL, CString(libgiterr), _T("TortoiseGitBlame"), MB_ICONERROR);
+			MessageBox(nullptr, CString(libgiterr), _T("TortoiseGitBlame"), MB_ICONERROR);
 			return FALSE;
 		}
 
@@ -211,10 +211,10 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 		m_GitPath = path;
 
 		CTortoiseGitBlameView *pView=DYNAMIC_DOWNCAST(CTortoiseGitBlameView,GetMainFrame()->GetActiveView());
-		if(pView == NULL)
+		if (!pView)
 		{
 			CWnd* pWnd = GetMainFrame()->GetDescendantWindow(AFX_IDW_PANE_FIRST, TRUE);
-			if (pWnd != NULL && pWnd->IsKindOf(RUNTIME_CLASS(CTortoiseGitBlameView)))
+			if (pWnd && pWnd->IsKindOf(RUNTIME_CLASS(CTortoiseGitBlameView)))
 			{
 				pView = (CTortoiseGitBlameView*)pWnd;
 			}

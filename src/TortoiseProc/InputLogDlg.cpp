@@ -28,9 +28,9 @@
 
 IMPLEMENT_DYNAMIC(CInputLogDlg, CResizableStandAloneDialog)
 
-CInputLogDlg::CInputLogDlg(CWnd* pParent /*=NULL*/)
+CInputLogDlg::CInputLogDlg(CWnd* pParent /*=nullptr*/)
 	: CResizableStandAloneDialog(CInputLogDlg::IDD, pParent)
-	, m_pProjectProperties(NULL)
+	, m_pProjectProperties(nullptr)
 {
 
 }
@@ -57,7 +57,7 @@ BOOL CInputLogDlg::OnInitDialog()
 	CResizableStandAloneDialog::OnInitDialog();
 
 #ifdef DEBUG
-	if (m_pProjectProperties == NULL)
+	if (!m_pProjectProperties)
 		TRACE("InputLogDlg: project properties not set\n");
 	if (m_sActionText.IsEmpty())
 		TRACE("InputLogDlg: action text not set\n");
@@ -150,14 +150,10 @@ void CInputLogDlg::OnEnChangeLogmessage()
 void CInputLogDlg::UpdateOKButton()
 {
 	CString sTemp = m_cInput.GetText();
-	if (((m_pProjectProperties==NULL)||(sTemp.GetLength() >= m_pProjectProperties->nMinLogSize)))
-	{
+	if (!m_pProjectProperties || sTemp.GetLength() >= m_pProjectProperties->nMinLogSize)
 		DialogEnableWindow(IDOK, TRUE);
-	}
 	else
-	{
 		DialogEnableWindow(IDOK, FALSE);
-	}
 }
 
 void CInputLogDlg::OnBnClickedHistory()

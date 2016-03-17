@@ -52,13 +52,13 @@ UINT CCommitDlg::WM_UPDATEOKBUTTON = RegisterWindowMessage(_T("TORTOISEGIT_COMMI
 UINT CCommitDlg::WM_UPDATEDATAFALSE = RegisterWindowMessage(_T("TORTOISEGIT_COMMIT_UPDATEDATAFALSE"));
 
 IMPLEMENT_DYNAMIC(CCommitDlg, CResizableStandAloneDialog)
-CCommitDlg::CCommitDlg(CWnd* pParent /*=NULL*/)
+CCommitDlg::CCommitDlg(CWnd* pParent /*=nullptr*/)
 	: CResizableStandAloneDialog(CCommitDlg::IDD, pParent)
 	, m_bShowUnversioned(FALSE)
 	, m_bBlock(FALSE)
 	, m_bThreadRunning(FALSE)
 	, m_bRunThread(FALSE)
-	, m_pThread(NULL)
+	, m_pThread(nullptr)
 	, m_bWholeProject(FALSE)
 	, m_bWholeProject2(FALSE)
 	, m_bKeepChangeList(TRUE)
@@ -431,7 +431,7 @@ BOOL CCommitDlg::OnInitDialog()
 		int delta = yPos - rectSplitter.top;
 		if ((rcLogMsg.bottom + delta > rcLogMsg.top)&&(rcLogMsg.bottom + delta < rcFileList.bottom - 30))
 		{
-			m_wndSplitter.SetWindowPos(NULL, rectSplitter.left, yPos, 0, 0, SWP_NOSIZE);
+			m_wndSplitter.SetWindowPos(nullptr, rectSplitter.left, yPos, 0, 0, SWP_NOSIZE);
 			DoSize(delta);
 		}
 	}
@@ -961,7 +961,7 @@ void CCommitDlg::OnOK()
 	}
 
 	// now let the bugtraq plugin check the commit message
-	CComPtr<IBugTraqProvider2> pProvider2 = NULL;
+	CComPtr<IBugTraqProvider2> pProvider2;
 	if (m_BugTraqProvider)
 	{
 		HRESULT hr = m_BugTraqProvider.QueryInterface(&pProvider2);
@@ -1105,7 +1105,7 @@ void CCommitDlg::OnOK()
 
 		if (m_BugTraqProvider && progress.m_GitStatus == 0)
 		{
-			CComPtr<IBugTraqProvider2> pProvider = NULL;
+			CComPtr<IBugTraqProvider2> pProvider;
 			HRESULT hr = m_BugTraqProvider.QueryInterface(&pProvider);
 			if (SUCCEEDED(hr))
 			{
@@ -1132,12 +1132,12 @@ void CCommitDlg::OnOK()
 				{
 					CString sErr = temp;
 					if (!sErr.IsEmpty())
-						CMessageBox::Show(NULL,(sErr),_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+						CMessageBox::Show(GetSafeHwnd(), sErr, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 					else
 					{
 						COMError ce(hr);
 						sErr.Format(IDS_ERR_FAILEDISSUETRACKERCOM, ce.GetSource().c_str(), ce.GetMessageAndDescription().c_str());
-						CMessageBox::Show(NULL,(sErr),_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+						CMessageBox::Show(GetSafeHwnd(), sErr, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 					}
 				}
 			}
@@ -1263,7 +1263,7 @@ UINT CCommitDlg::StatusThread()
 	m_ListCtrl.m_bDoNotAutoselectSubmodules = (m_bDoNotAutoselectSubmodules == TRUE);
 
 	if(m_bWholeProject || m_bWholeProject2)
-		pList=NULL;
+		pList = nullptr;
 	else
 		pList = &m_pathList;
 
@@ -1312,7 +1312,7 @@ UINT CCommitDlg::StatusThread()
 	{
 		CString temp;
 		temp.LoadString(IDS_COMMITDLG_NOTHINGTOCOMMITUNVERSIONED);
-		if (CMessageBox::ShowCheck(m_hWnd, temp, _T("TortoiseGit"), MB_ICONINFORMATION | MB_YESNO, _T("NothingToCommitShowUnversioned"), NULL)==IDYES)
+		if (CMessageBox::ShowCheck(m_hWnd, temp, _T("TortoiseGit"), MB_ICONINFORMATION | MB_YESNO, _T("NothingToCommitShowUnversioned"), nullptr) == IDYES)
 		{
 			m_bShowUnversioned = TRUE;
 			GetDlgItem(IDC_SHOWUNVERSIONED)->SendMessage(BM_SETCHECK, BST_CHECKED);
@@ -1548,7 +1548,7 @@ void CCommitDlg::OnBnClickedShowunversioned()
 		if(dwShow & GITSLC_SHOWUNVERSIONED)
 		{
 			if (m_bWholeProject || m_bWholeProject2)
-				m_ListCtrl.GetStatus(NULL,false,false,true);
+				m_ListCtrl.GetStatus(nullptr, false, false, true);
 			else
 				m_ListCtrl.GetStatus(&this->m_pathList,false,false,true);
 		}
@@ -1649,7 +1649,7 @@ LRESULT CCommitDlg::OnFileDropped(WPARAM, LPARAM /*lParam*/)
 	}
 
 	// Always start the timer, since the status of an existing item might have changed
-	SetTimer(REFRESHTIMER, 200, NULL);
+	SetTimer(REFRESHTIMER, 200, nullptr);
 	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Item %s dropped, timer started\n"), path.GetWinPath());
 #endif
 	return 0;
@@ -1777,7 +1777,7 @@ void CCommitDlg::GetAutocompletionList()
 
 		CTGitPath *path = (CTGitPath*)m_ListCtrl.GetItemData(i);
 
-		if(path == NULL)
+		if (!path)
 			continue;
 
 		CString sPartPath =path->GetGitPathString();
@@ -1823,10 +1823,10 @@ void CCommitDlg::ScanFile(const CString& sFilePath, const CString& sRegex, const
 	static std::map<CString, std::tr1::wregex> regexmap;
 
 	std::wstring sFileContent;
-	CAutoFile hFile = CreateFile(sFilePath, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, NULL, NULL);
+	CAutoFile hFile = CreateFile(sFilePath, GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, 0, nullptr);
 	if (hFile)
 	{
-		DWORD size = GetFileSize(hFile, NULL);
+		DWORD size = GetFileSize(hFile, nullptr);
 		if (size > CRegDWORD(_T("Software\\TortoiseGit\\AutocompleteParseMaxSize"), 300000L))
 		{
 			// no files bigger than 300k
@@ -1835,7 +1835,7 @@ void CCommitDlg::ScanFile(const CString& sFilePath, const CString& sRegex, const
 		// allocate memory to hold file contents
 		auto buffer = std::make_unique<char[]>(size);
 		DWORD readbytes;
-		if (!ReadFile(hFile, buffer.get(), size, &readbytes, NULL))
+		if (!ReadFile(hFile, buffer.get(), size, &readbytes, nullptr))
 			return;
 		int opts = 0;
 		IsTextUnicode(buffer.get(), readbytes, &opts);
@@ -1849,7 +1849,7 @@ void CCommitDlg::ScanFile(const CString& sFilePath, const CString& sRegex, const
 		}
 		if ((opts & IS_TEXT_UNICODE_NOT_UNICODE_MASK) || (opts == 0))
 		{
-			const int ret = MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, (LPCSTR)buffer.get(), readbytes, NULL, 0);
+			const int ret = MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, (LPCSTR)buffer.get(), readbytes, nullptr, 0);
 			auto pWideBuf = std::make_unique<wchar_t[]>(ret);
 			const int ret2 = MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, (LPCSTR)buffer.get(), readbytes, pWideBuf.get(), ret);
 			if (ret2 == ret)
@@ -2024,7 +2024,7 @@ void CCommitDlg::OnTimer(UINT_PTR nIDEvent)
 	case REFRESHTIMER:
 		if (m_bThreadRunning)
 		{
-			SetTimer(REFRESHTIMER, 200, NULL);
+			SetTimer(REFRESHTIMER, 200, nullptr);
 			CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Wait some more before refreshing\n");
 		}
 		else
@@ -2077,7 +2077,7 @@ void CCommitDlg::OnBnClickedBugtraqbutton()
 	m_tooltips.Pop();	// hide the tooltips
 	CString sMsg = m_cLogMessage.GetText();
 
-	if (m_BugTraqProvider == NULL)
+	if (!m_BugTraqProvider)
 		return;
 
 	ATL::CComBSTR parameters(m_bugtraq_association.GetParameters());
@@ -2091,7 +2091,7 @@ void CCommitDlg::OnBnClickedBugtraqbutton()
 	ATL::CComBSTR temp;
 
 	// first try the IBugTraqProvider2 interface
-	CComPtr<IBugTraqProvider2> pProvider2 = NULL;
+	CComPtr<IBugTraqProvider2> pProvider2;
 	HRESULT hr = m_BugTraqProvider.QueryInterface(&pProvider2);
 	bool bugIdOutSet = false;
 	if (SUCCEEDED(hr))
@@ -2142,7 +2142,7 @@ void CCommitDlg::OnBnClickedBugtraqbutton()
 	else
 	{
 		// if IBugTraqProvider2 failed, try IBugTraqProvider
-		CComPtr<IBugTraqProvider> pProvider = NULL;
+		CComPtr<IBugTraqProvider> pProvider;
 		hr = m_BugTraqProvider.QueryInterface(&pProvider);
 		if (FAILED(hr))
 		{
@@ -2181,7 +2181,7 @@ void CCommitDlg::FillPatchView(bool onlySetTimer)
 		KillTimer(FILLPATCHVTIMER);
 		if (onlySetTimer)
 		{
-			SetTimer(FILLPATCHVTIMER, 100, NULL);
+			SetTimer(FILLPATCHVTIMER, 100, nullptr);
 			return;
 		}
 
@@ -2494,7 +2494,7 @@ void CCommitDlg::OnBnClickedWholeProject()
 	if (!m_bBlock)
 	{
 		if (m_bWholeProject || m_bWholeProject2)
-			m_ListCtrl.GetStatus(NULL,true,false,true);
+			m_ListCtrl.GetStatus(nullptr, true, false, true);
 		else
 			m_ListCtrl.GetStatus(&this->m_pathList,true,false,true);
 
@@ -2558,7 +2558,7 @@ void CCommitDlg::OnStnClickedViewPatch()
 
 		m_patchViewdlg.ShowWindow(SW_SHOW);
 
-		m_patchViewdlg.SetWindowPos(NULL,rect.right,rect.top,rect.Width(),rect.Height(),
+		m_patchViewdlg.SetWindowPos(nullptr, rect.right, rect.top, rect.Width(), rect.Height(),
 				SWP_NOACTIVATE | SWP_NOOWNERZORDER | SWP_NOZORDER);
 
 		GetDlgItem(IDC_LOGMESSAGE)->SetFocus();
@@ -2590,7 +2590,7 @@ void CCommitDlg::OnMoving(UINT fwSide, LPRECT pRect)
 			GetWindowRect(&thisrect);
 			if (patchrect.left == thisrect.right)
 			{
-				m_patchViewdlg.SetWindowPos(NULL, patchrect.left - (thisrect.left - pRect->left), patchrect.top - (thisrect.top - pRect->top),
+				m_patchViewdlg.SetWindowPos(nullptr, patchrect.left - (thisrect.left - pRect->left), patchrect.top - (thisrect.top - pRect->top),
 					0, 0, SWP_NOACTIVATE | SWP_NOOWNERZORDER | SWP_NOSIZE | SWP_NOZORDER);
 			}
 		}
@@ -2636,10 +2636,10 @@ int CCommitDlg::CheckHeadDetach()
 	CString output;
 	if (CGit::GetCurrentBranchFromFile(g_Git.m_CurrentDir, output))
 	{
-		int retval = CMessageBox::Show(NULL, IDS_PROC_COMMIT_DETACHEDWARNING, IDS_APPNAME, MB_YESNOCANCEL | MB_ICONWARNING);
+		int retval = CMessageBox::Show(nullptr, IDS_PROC_COMMIT_DETACHEDWARNING, IDS_APPNAME, MB_YESNOCANCEL | MB_ICONWARNING);
 		if(retval == IDYES)
 		{
-			if (CAppUtils::CreateBranchTag(FALSE, NULL, true) == FALSE)
+			if (CAppUtils::CreateBranchTag(FALSE, nullptr, true) == FALSE)
 				return 1;
 		}
 		else if (retval == IDCANCEL)

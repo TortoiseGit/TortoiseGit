@@ -27,7 +27,7 @@
 
 CLangDll::CLangDll()
 {
-	m_hInstance = NULL;
+	m_hInstance = nullptr;
 }
 
 CLangDll::~CLangDll()
@@ -41,7 +41,7 @@ HINSTANCE CLangDll::Init(LPCTSTR appname, unsigned long langID)
 	TCHAR langdllpath[MAX_PATH] = {0};
 	TCHAR sVer[MAX_PATH] = {0};
 	_tcscpy_s(sVer, MAX_PATH, _T(STRPRODUCTVER));
-	GetModuleFileName(NULL, langpath, MAX_PATH);
+	GetModuleFileName(nullptr, langpath, MAX_PATH);
 	TCHAR * pSlash = _tcsrchr(langpath, '\\');
 	if (!pSlash)
 		return m_hInstance;

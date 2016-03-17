@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2015 - TortoiseGit
+// Copyright (C) 2008-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -30,7 +30,7 @@ class CCleanTypeDlg : public CStateStandAloneDialog
 	DECLARE_DYNAMIC(CCleanTypeDlg)
 
 public:
-	CCleanTypeDlg(CWnd* pParent = NULL);   // standard constructor
+	CCleanTypeDlg(CWnd* pParent = nullptr);   // standard constructor
 	virtual ~CCleanTypeDlg();
 
 // Dialog Data

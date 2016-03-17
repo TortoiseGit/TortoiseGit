@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2012 - TortoiseSVN
-// Copyright (C) 2012-2015 - TortoiseGit
+// Copyright (C) 2012-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -43,9 +43,9 @@ static char THIS_FILE[] = __FILE__;
 using namespace Gdiplus;
 
 IMPLEMENT_DYNAMIC(CRevisionGraphDlg, CResizableStandAloneDialog)
-CRevisionGraphDlg::CRevisionGraphDlg(CWnd* pParent /*=NULL*/)
+CRevisionGraphDlg::CRevisionGraphDlg(CWnd* pParent /*=nullptr*/)
 	: CResizableStandAloneDialog(CRevisionGraphDlg::IDD, pParent)
-	, m_hAccel(NULL)
+	, m_hAccel(nullptr)
 	, m_bFetchLogs(true)
 	, m_fZoomFactor(DEFAULT_ZOOM)
 	, m_bVisible(true)
@@ -53,7 +53,7 @@ CRevisionGraphDlg::CRevisionGraphDlg(CWnd* pParent /*=NULL*/)
 	// GDI+ initialization
 
 	GdiplusStartupInput input;
-	GdiplusStartup (&m_gdiPlusToken, &input, NULL);
+	GdiplusStartup(&m_gdiPlusToken, &input, nullptr);
 
 	// restore option state
 
@@ -195,12 +195,12 @@ BOOL CRevisionGraphDlg::InitializeToolbar()
 					 , _T("75%")
 					 , _T("100%")
 					 , _T("200%")
-					 , NULL};
+					 , nullptr};
 
 	COMBOBOXEXITEM cbei = { 0 };
 	cbei.mask = CBEIF_TEXT;
 
-	for (TCHAR** text = texts; *text != NULL; ++text)
+	for (TCHAR** text = texts; *text; ++text)
 	{
 		cbei.pszText = *text;
 		m_ToolBar.m_ZoomCombo.InsertItem(&cbei);
@@ -278,7 +278,7 @@ BOOL CRevisionGraphDlg::OnInitDialog()
 
 bool CRevisionGraphDlg::UpdateData()
 {
-	CoInitialize(NULL);
+	CoInitialize(nullptr);
 
 	if (!m_Graph.FetchRevisionData (m_Graph.m_sPath, nullptr, m_pTaskbarList, m_hWnd))
 	{
@@ -541,7 +541,7 @@ void CRevisionGraphDlg::SetOption (UINT /*controlID*/)
 {
 #if 0
 	CMenu * pMenu = GetMenu();
-	if (pMenu == NULL)
+	if (!pMenu)
 		return;
 
 	int tbstate = m_ToolBar.GetToolBarCtrl().GetState(controlID);
@@ -580,7 +580,7 @@ BOOL CRevisionGraphDlg::ToggleOption (UINT controlID)
 	}
 
 	CMenu * pMenu = GetMenu();
-	if (pMenu == NULL)
+	if (!pMenu)
 		return FALSE;
 
 	// actually toggle the option
@@ -815,13 +815,13 @@ void CRevisionGraphDlg::OnViewFilter()
 		int tbstate = m_ToolBar.GetToolBarCtrl().GetState(ID_VIEW_FILTER);
 		if (m_Graph.m_bCurrentBranch || m_Graph.m_bLocalBranches || !m_Graph.m_FromRev.IsEmpty() || !m_Graph.m_ToRev.IsEmpty())
 		{
-			if (pMenu != NULL)
+			if (!pMenu)
 				pMenu->CheckMenuItem(ID_VIEW_FILTER, MF_BYCOMMAND | MF_CHECKED);
 			m_ToolBar.GetToolBarCtrl().SetState(ID_VIEW_FILTER, tbstate | TBSTATE_CHECKED);
 		}
 		else
 		{
-			if (pMenu != NULL)
+			if (!pMenu)
 				pMenu->CheckMenuItem(ID_VIEW_FILTER, MF_BYCOMMAND | MF_UNCHECKED);
 			m_ToolBar.GetToolBarCtrl().SetState(ID_VIEW_FILTER, tbstate & (~TBSTATE_CHECKED));
 		}
@@ -837,7 +837,7 @@ void CRevisionGraphDlg::OnViewFilter()
 void CRevisionGraphDlg::OnViewShowoverview()
 {
 	CMenu * pMenu = GetMenu();
-	if (pMenu == NULL)
+	if (!pMenu)
 		return;
 	int tbstate = m_ToolBar.GetToolBarCtrl().GetState(ID_VIEW_SHOWOVERVIEW);
 	UINT state = pMenu->GetMenuState(ID_VIEW_SHOWOVERVIEW, MF_BYCOMMAND);
@@ -862,7 +862,7 @@ void CRevisionGraphDlg::OnViewShowoverview()
 void CRevisionGraphDlg::UpdateOptionAvailability (UINT id, bool available)
 {
 	CMenu * pMenu = GetMenu();
-	if (pMenu == NULL)
+	if (!pMenu)
 		return;
 
 	pMenu->EnableMenuItem (id, available ? MF_ENABLED : MF_GRAYED);

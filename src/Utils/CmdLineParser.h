@@ -71,7 +71,7 @@ public:
 	 * Creates a CCmdLineParser object and parses the parameters in.
 	 * \param sCmdLine the command line
 	 */
-	CCmdLineParser(LPCTSTR sCmdLine = NULL);
+	CCmdLineParser(LPCTSTR sCmdLine = nullptr);
 	virtual ~CCmdLineParser();
 
 	/**
@@ -119,7 +119,7 @@ public:
 	BOOL HasVal(LPCTSTR sKey) const;
 
 	/**
-	 * Reads the value for a key. If the key has no value then NULL is returned.
+	 * Reads the value for a key. If the key has no value then nullptr is returned.
 	 * \param sKey the key to get the value from
 	 * \return the value string of the key
 	 */

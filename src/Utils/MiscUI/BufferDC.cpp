@@ -5,7 +5,7 @@ IMPLEMENT_DYNAMIC(CBufferDC, CPaintDC)
 
 CBufferDC::CBufferDC(CWnd* pWnd) : CPaintDC(pWnd)
 {
-	if (pWnd != NULL && CPaintDC::m_hDC != NULL)
+	if (pWnd && CPaintDC::m_hDC)
 	{
 		m_hOutputDC    = CPaintDC::m_hDC;
 		m_hAttributeDC = CPaintDC::m_hAttribDC;
@@ -69,7 +69,7 @@ void CBufferDC::Flush()
 
 UINT CBufferDC::SetBoundsRect( LPCRECT lpRectBounds, UINT flags )
 {
-	if (lpRectBounds != NULL)
+	if (lpRectBounds)
 	{
 		if (m_ClientRect.right  - m_ClientRect.left > lpRectBounds->right  - lpRectBounds->left ||
 			m_ClientRect.bottom - m_ClientRect.top  > lpRectBounds->bottom - lpRectBounds->top)
@@ -101,12 +101,12 @@ UINT CBufferDC::SetBoundsRect( LPCRECT lpRectBounds, UINT flags )
 
 		HBITMAP old = (HBITMAP)::SelectObject(m_hMemoryDC, bmp);
 
-		if (old != NULL && old != m_hPaintBitmap)
+		if (old && old != m_hPaintBitmap)
 		{
 			::DeleteObject(old);
 		}
 
-		if (m_hPaintBitmap != NULL)
+		if (m_hPaintBitmap)
 		{
 			::DeleteObject(m_hPaintBitmap);
 		}

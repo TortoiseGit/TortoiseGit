@@ -61,12 +61,12 @@ CString CLoglistUtils::FormatDateAndTime(const CTime& cTime, DWORD option, bool 
 
 			TCHAR buf[100] = { 0 };
 
-			GetDateFormat(LOCALE_USER_DEFAULT, option, &sysTime, NULL, buf, _countof(buf) - 1);
+			GetDateFormat(LOCALE_USER_DEFAULT, option, &sysTime, nullptr, buf, _countof(buf) - 1);
 			CString datetime = buf;
 			if (bIncludeTime)
 			{
 				datetime += _T(" ");
-				GetTimeFormat(LOCALE_USER_DEFAULT, 0, &sysTime, NULL, buf, _countof(buf) - 1);
+				GetTimeFormat(LOCALE_USER_DEFAULT, 0, &sysTime, nullptr, buf, _countof(buf) - 1);
 				datetime += buf;
 			}
 			return datetime;

@@ -31,7 +31,7 @@ static char THIS_FILE[] = __FILE__;
 
 CHyperLink::CHyperLink()
 {
-	m_hLinkCursor		= NULL;					// No cursor as	yet
+	m_hLinkCursor		= nullptr;				// No cursor as	yet
 	m_crLinkColor		= RGB(	0,	 0,	238);	// Blue
 	m_crHoverColor		= RGB(255,	 0,	  0);	// Red
 	m_bOverControl		= FALSE;				// Cursor not yet over control
@@ -79,7 +79,7 @@ void CHyperLink::PreSubclassWindow()
 	if (!pFont)
 	{
 		HFONT hFont = (HFONT)GetStockObject(DEFAULT_GUI_FONT);
-		if (hFont == NULL)
+		if (!hFont)
 			hFont = (HFONT) GetStockObject(ANSI_VAR_FONT);
 		if (hFont)
 			pFont = CFont::FromHandle(hFont);
@@ -147,7 +147,7 @@ void CHyperLink::OnMouseMove(UINT nFlags, CPoint point)
 			SetFont(&m_UnderlineFont);
 		Invalidate();
 
-		SetTimer(m_nTimerID, 100, NULL);
+		SetTimer(m_nTimerID, 100, nullptr);
 	}
 	CStatic::OnMouseMove(nFlags, point);
 }
@@ -257,13 +257,13 @@ int CHyperLink::GetUnderline() const
 // It loads a "hand" cursor from the winhlp32.exe module
 void CHyperLink::SetDefaultCursor()
 {
-	if (m_hLinkCursor == NULL)
+	if (!m_hLinkCursor)
 	{
 		// first try the windows hand cursor (not available on NT4)
 #ifndef OCR_HAND
 #	define OCR_HAND 32649
 #endif
-		HCURSOR hHandCursor = (HCURSOR)::LoadImage(NULL, MAKEINTRESOURCE(OCR_HAND), IMAGE_CURSOR, 0, 0, LR_DEFAULTSIZE | LR_SHARED);
+		HCURSOR hHandCursor = (HCURSOR)::LoadImage(nullptr, MAKEINTRESOURCE(OCR_HAND), IMAGE_CURSOR, 0, 0, LR_DEFAULTSIZE | LR_SHARED);
 		if (hHandCursor)
 		{
 			m_hLinkCursor = hHandCursor;
@@ -287,5 +287,5 @@ void CHyperLink::SetDefaultCursor()
 
 HINSTANCE CHyperLink::GotoURL(LPCTSTR url)
 {
-	return ShellExecute(NULL, _T("open"), url, NULL,NULL, SW_SHOW);
+	return ShellExecute(nullptr, _T("open"), url, nullptr, nullptr, SW_SHOW);
 }

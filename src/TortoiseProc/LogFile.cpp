@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008, 2013-2014 - TortoiseGit
+// Copyright (C) 2008, 2013-2014, 2016 - TortoiseGit
 // Copyright (C) 2007 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -130,9 +130,9 @@ bool CLogFile::AddTimeLine()
 	m_lines.push_back(sLine);
 	// now add the time string
 	TCHAR datebuf[4096] = {0};
-	GetDateFormat(LOCALE_USER_DEFAULT, DATE_SHORTDATE, NULL, NULL, datebuf, 4096);
+	GetDateFormat(LOCALE_USER_DEFAULT, DATE_SHORTDATE, nullptr, nullptr, datebuf, 4096);
 	sLine = datebuf;
-	GetTimeFormat(LOCALE_USER_DEFAULT, 0, NULL, NULL, datebuf, 4096);
+	GetTimeFormat(LOCALE_USER_DEFAULT, 0, nullptr, nullptr, datebuf, 4096);
 	sLine += _T(" - ");
 	sLine += datebuf;
 	sLine += _T(" - ");

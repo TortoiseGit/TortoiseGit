@@ -277,7 +277,7 @@ BOOL CSetDialogs3::OnApply()
 
 BOOL CSetDialogs3::EnumLocalesProc(LPTSTR lpLocaleString)
 {
-	DWORD langID = _tcstol(lpLocaleString, NULL, 16);
+	DWORD langID = _tcstol(lpLocaleString, nullptr, 16);
 	g_langs.push_back(langID);
 	return TRUE;
 }

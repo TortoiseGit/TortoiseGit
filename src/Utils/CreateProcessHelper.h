@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2016 - TortoiseGit
 // Copyright (C) 2009-2010 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -45,14 +46,11 @@ inline bool CCreateProcessHelper::CreateProcess(LPCTSTR applicationName,
     LPTSTR commandLine, LPCTSTR currentDirectory,
     LPPROCESS_INFORMATION processInfo)
 {
-    STARTUPINFO startupInfo;
-    memset(&startupInfo, 0, sizeof(STARTUPINFO));
+	STARTUPINFO startupInfo = { 0 };
     startupInfo.cb = sizeof(STARTUPINFO);
 
     memset(processInfo, 0, sizeof(PROCESS_INFORMATION));
-    const BOOL result = ::CreateProcess( applicationName,
-                    commandLine, NULL, NULL, FALSE, 0, 0, currentDirectory,
-                    &startupInfo, processInfo );
+    const BOOL result = ::CreateProcess(applicationName, commandLine, nullptr, nullptr, FALSE, 0, nullptr, currentDirectory, &startupInfo, processInfo);
     return result != 0;
 }
 

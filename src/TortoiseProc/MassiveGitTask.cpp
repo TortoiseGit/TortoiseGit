@@ -24,7 +24,7 @@
 
 CMassiveGitTask::CMassiveGitTask(CString gitParameters, BOOL isPath, bool ignoreErrors)
 	: CMassiveGitTaskBase(gitParameters, isPath, ignoreErrors)
-	, m_NotifyCallbackInstance(NULL)
+	, m_NotifyCallbackInstance(nullptr)
 	, m_NotifyCallbackAction(CGitProgressList::WC_File_NotificationData::git_wc_notify_add)
 {
 }

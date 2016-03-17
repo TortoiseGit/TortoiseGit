@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2015 - TortoiseGit
+// Copyright (C) 2013-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -224,7 +224,7 @@ void CGravatar::GravatarThread()
 				CAutoLocker lock(m_gravatarLock);
 				if (m_email == email && !ret)
 				{
-					CAutoFile hFile = CreateFile(tempFile, FILE_READ_ATTRIBUTES | FILE_WRITE_ATTRIBUTES, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+					CAutoFile hFile = CreateFile(tempFile, FILE_READ_ATTRIBUTES | FILE_WRITE_ATTRIBUTES, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
 					FILETIME creationTime = {};
 					GetFileTime(hFile, &creationTime, nullptr, nullptr);
 					uint64_t delta = 7 * 24 * 60 * 60 * 10000000LL;
@@ -269,7 +269,7 @@ resend:
 
 	DWORD statusCode = 0;
 	DWORD length = sizeof(statusCode);
-	if (!HttpQueryInfo(hResourceHandle, HTTP_QUERY_STATUS_CODE | HTTP_QUERY_FLAG_NUMBER, (LPVOID)&statusCode, &length, NULL) || statusCode != 200)
+	if (!HttpQueryInfo(hResourceHandle, HTTP_QUERY_STATUS_CODE | HTTP_QUERY_FLAG_NUMBER, (LPVOID)&statusCode, &length, nullptr) || statusCode != 200)
 	{
 		if (statusCode == 404)
 			return ERROR_FILE_NOT_FOUND;

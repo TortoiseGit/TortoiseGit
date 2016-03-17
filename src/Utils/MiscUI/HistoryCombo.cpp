@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2012 - TortoiseSVN
-// Copyright (C) 2013-2015 - TortoiseGit
+// Copyright (C) 2013-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -35,7 +35,7 @@ CHistoryCombo::CHistoryCombo(BOOL bAllowSortStyle /*=FALSE*/ )
 	m_bAllowSortStyle = bAllowSortStyle;
 	m_bURLHistory = FALSE;
 	m_bPathHistory = FALSE;
-	m_hWndToolTip = NULL;
+	m_hWndToolTip = nullptr;
 	m_ttShown = FALSE;
 	m_bDyn = FALSE;
 	m_bWantReturn = FALSE;
@@ -222,7 +222,7 @@ void CHistoryCombo::SetList(const STRING_VECTOR& list)
 
 CString CHistoryCombo::LoadHistory(LPCTSTR lpszSection, LPCTSTR lpszKeyPrefix)
 {
-	if (lpszSection == NULL || lpszKeyPrefix == NULL || *lpszSection == '\0')
+	if (!lpszSection || !lpszKeyPrefix || *lpszSection == '\0')
 		return _T("");
 
 	m_sSection = lpszSection;
@@ -358,7 +358,7 @@ void CHistoryCombo::SetURLHistory(BOOL bURLHistory)
 		HWND hwndEdit;
 		// use for ComboEx
 		hwndEdit = (HWND)::SendMessage(this->m_hWnd, CBEM_GETEDITCONTROL, 0, 0);
-		if (NULL == hwndEdit)
+		if (!hwndEdit)
 		{
 			// Try the unofficial way of getting the edit control CWnd*
 			CWnd* pWnd = this->GetDlgItem(1001);
@@ -385,17 +385,11 @@ void CHistoryCombo::SetPathHistory(BOOL bPathHistory)
 		HWND hwndEdit;
 		// use for ComboEx
 		hwndEdit = (HWND)::SendMessage(this->m_hWnd, CBEM_GETEDITCONTROL, 0, 0);
-		if (NULL == hwndEdit)
+		if (!hwndEdit)
 		{
-			//if not, try the old standby
-			if(hwndEdit==NULL)
-			{
-				CWnd* pWnd = this->GetDlgItem(1001);
-				if(pWnd)
-				{
-					hwndEdit = pWnd->GetSafeHwnd();
-				}
-			}
+			CWnd* pWnd = this->GetDlgItem(1001);
+			if (pWnd)
+				hwndEdit = pWnd->GetSafeHwnd();
 		}
 		if (hwndEdit)
 			SHAutoComplete(hwndEdit, SHACF_FILESYSTEM);
@@ -540,8 +534,8 @@ void CHistoryCombo::OnMouseMove(UINT nFlags, CPoint point)
 				::SendMessage(m_hWndToolTip, TTM_UPDATETIPTEXT, 0, (LPARAM) &m_ToolInfo);
 				::SendMessage(m_hWndToolTip, TTM_TRACKPOSITION, 0, (LPARAM)MAKELONG(rectClient.left, rectClient.top));
 				::SendMessage(m_hWndToolTip, TTM_TRACKACTIVATE, TRUE, (LPARAM)(LPTOOLINFO) &m_ToolInfo);
-				SetTimer(1, 80, NULL);
-				SetTimer(2, 2000, NULL);
+				SetTimer(1, 80, nullptr);
+				SetTimer(2, 2000, nullptr);
 				m_ttShown = TRUE;
 			}
 		}
@@ -596,16 +590,16 @@ void CHistoryCombo::CreateToolTip()
 	// create tooltip
 	m_hWndToolTip = ::CreateWindowEx(NULL,
 		TOOLTIPS_CLASS,
-		NULL,
+		nullptr,
 		TTS_NOPREFIX | TTS_ALWAYSTIP,
 		CW_USEDEFAULT,
 		CW_USEDEFAULT,
 		CW_USEDEFAULT,
 		CW_USEDEFAULT,
 		m_hWnd,
-		NULL,
-		NULL,
-		NULL);
+		nullptr,
+		nullptr,
+		nullptr);
 
 	// initialize tool info struct
 	memset(&m_ToolInfo, 0, sizeof(m_ToolInfo));

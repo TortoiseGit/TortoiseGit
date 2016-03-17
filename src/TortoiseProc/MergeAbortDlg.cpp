@@ -29,7 +29,7 @@
 
 IMPLEMENT_DYNAMIC(CMergeAbortDlg, CStateStandAloneDialog)
 
-CMergeAbortDlg::CMergeAbortDlg(CWnd* pParent /*=NULL*/)
+CMergeAbortDlg::CMergeAbortDlg(CWnd* pParent /*=nullptr*/)
 	: CStateStandAloneDialog(CMergeAbortDlg::IDD, pParent)
 	, m_ResetType(1)
 {

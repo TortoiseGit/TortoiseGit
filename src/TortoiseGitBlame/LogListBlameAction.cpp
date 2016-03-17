@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2015 - TortoiseGit
+// Copyright (C) 2008-2013, 2015-2016 - TortoiseGit
 // Copyright (C) 2011-2013 Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
@@ -156,7 +156,7 @@ void CGitBlameLogList::ContextMenuAction(int cmd, int /*FirstSelect*/, int /*Las
 			RunTortoiseGitProcWithCurrentRev(_T("repobrowser"), pRev, ((CMainFrame*)::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName());
 			break;
 		default:
-			//CMessageBox::Show(NULL,_T("Have not implemented"),_T("TortoiseGit"),MB_OK);
+			//CMessageBox::Show(nullptr, _T("Have not implemented"), _T("TortoiseGit"), MB_OK);
 			break;
 	} // switch (cmd)
 }
@@ -202,7 +202,7 @@ void CGitBlameLogList::GetParentNumbers(GitRevLoglist* pRev, const std::vector<C
 
 	try
 	{
-		const CTGitPathList& files = pRev->GetFiles(NULL);
+		const CTGitPathList& files = pRev->GetFiles(nullptr);
 		for (int j=0, j_size = files.GetCount(); j < j_size; ++j)
 		{
 			const CTGitPath &file =  files[j];
@@ -257,7 +257,7 @@ void CGitBlameLogList::GetParentHash(GitRevLoglist* pRev, int index, CGitHash& p
 
 	try
 	{
-		const CTGitPathList& files = pRev->GetFiles(NULL);
+		const CTGitPathList& files = pRev->GetFiles(nullptr);
 		for (int j = 0, j_size = files.GetCount(); j < j_size; ++j)
 		{
 			const CTGitPath &file =  files[j];

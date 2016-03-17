@@ -31,8 +31,8 @@ class CSetBugTraqAdv : public CResizableStandAloneDialog
 	DECLARE_DYNAMIC(CSetBugTraqAdv)
 
 public:
-	CSetBugTraqAdv(CWnd* pParent = NULL);
-	CSetBugTraqAdv(const CBugTraqAssociation &assoc, CWnd* pParent = NULL);
+	CSetBugTraqAdv(CWnd* pParent = nullptr);
+	CSetBugTraqAdv(const CBugTraqAssociation &assoc, CWnd* pParent = nullptr);
 	virtual ~CSetBugTraqAdv();
 
 	CBugTraqAssociation GetAssociation() const;

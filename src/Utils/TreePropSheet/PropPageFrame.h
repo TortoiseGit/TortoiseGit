@@ -67,7 +67,7 @@ public:
 	@param rect
 		Position and size of the window to create.
 	@param pwndParent
-		Parent window. (Never be NULL).
+		Parent window. (Never be nullptr).
 	@param nID
 		Window id.
 
@@ -120,7 +120,7 @@ public:
 	@param hIcon
 		Icon to display for the caption.
 	*/
-	virtual void SetCaption(LPCTSTR lpszCaption, HICON hIcon = NULL);
+	virtual void SetCaption(LPCTSTR lpszCaption, HICON hIcon = nullptr);
 
 	/**
 	Returns the caption, that has been set most recently using the
@@ -128,14 +128,14 @@ public:
 
 	@param pIcon
 		Pointer to a HICON variable, that should receive the handle of
-		the currently set icon or NULL, if there is no icon or a NULL
+		the currently set icon or nullptr, if there is no icon or a nullptr
 		pointer, if the caller is not interested in the icon.
 
 	@return
 		The text that has been set most recently using the SetCaption()
 		method.
 	*/
-	CString GetCaption(HICON *pIcon = NULL) const;
+	CString GetCaption(HICON* pIcon = nullptr) const;
 
 	/**
 	Sets the text to display.
@@ -265,10 +265,10 @@ protected:
 
 	@param lpRect
 		Pointer to the rectangular area, that should be marked for
-		repainting or NULL, if the whole client area should be marked
+		repainting or nullptr, if the whole client area should be marked
 		for repainting.
 	*/
-	void SafeUpdateWindow(LPCRECT lpRect = NULL);
+	void SafeUpdateWindow(LPCRECT lpRect = nullptr);
 
 // Properties
 private:
@@ -282,7 +282,7 @@ private:
 	CString m_strCaption;
 
 	/**
-	Icon to display in the caption or NULL if no icon should be
+	Icon to display in the caption or nullptr if no icon should be
 	displayed.
 	*/
 	HICON m_hCaptionIcon;
@@ -301,6 +301,6 @@ private:
 /////////////////////////////////////////////////////////////////////////////
 
 //{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ fügt unmittelbar vor der vorhergehenden Zeile zusätzliche Deklarationen ein.
+// Microsoft Visual C++ fÃ¼gt unmittelbar vor der vorhergehenden Zeile zusÃ¤tzliche Deklarationen ein.
 
 #endif // AFX_PROPPAGEFRAME_H__B968548B_F0B4_4C35_85DD_C44242A9D368__INCLUDED_

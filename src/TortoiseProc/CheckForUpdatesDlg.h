@@ -36,7 +36,7 @@ class CCheckForUpdatesDlg : public CStandAloneDialog
 	DECLARE_DYNAMIC(CCheckForUpdatesDlg)
 
 public:
-	CCheckForUpdatesDlg(CWnd* pParent = NULL);   // standard constructor
+	CCheckForUpdatesDlg(CWnd* pParent = nullptr);   // standard constructor
 	virtual ~CCheckForUpdatesDlg();
 
 	enum { IDD = IDD_CHECKFORUPDATES };

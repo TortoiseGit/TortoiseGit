@@ -26,7 +26,7 @@
 
 CShellUpdater::CShellUpdater(void)
 {
-	m_hInvalidationEvent = CreateEvent(NULL, FALSE, FALSE, _T("TortoiseGitCacheInvalidationEvent"));
+	m_hInvalidationEvent = CreateEvent(nullptr, FALSE, FALSE, _T("TortoiseGitCacheInvalidationEvent"));
 }
 
 CShellUpdater::~CShellUpdater(void)
@@ -98,10 +98,10 @@ void CShellUpdater::UpdateShell()
 		GENERIC_READ |					// read and write access
 		GENERIC_WRITE,
 		0,								// no sharing
-		NULL,							// default security attributes
+		nullptr,						// default security attributes
 		OPEN_EXISTING,					// opens existing pipe
 		FILE_FLAG_OVERLAPPED,			// default attributes
-		NULL);							// no template file
+		nullptr);						// no template file
 
 
 	if (!hPipe)
@@ -182,7 +182,7 @@ bool CShellUpdater::RebuildIcons()
 
 	// Read registry value
 	dwSize = BUFFER_SIZE;
-	lRegResult = RegQueryValueEx(hRegKey, sRegValueName, NULL, NULL,
+	lRegResult = RegQueryValueEx(hRegKey, sRegValueName, nullptr, nullptr,
 		(LPBYTE) buf, &dwSize);
 	if (lRegResult != ERROR_FILE_NOT_FOUND)
 	{

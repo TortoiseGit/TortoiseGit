@@ -107,7 +107,7 @@ HRESULT STDMETHODCALLTYPE CIShellFolderHook::GetUIObjectOf(HWND hwndOwner, UINT 
 {
 	if (InlineIsEqualGUID(riid, IID_IDataObject))
 	{
-		HRESULT hres = m_iSF->GetUIObjectOf(hwndOwner, cidl, apidl, IID_IDataObject, NULL, ppv);
+		HRESULT hres = m_iSF->GetUIObjectOf(hwndOwner, cidl, apidl, IID_IDataObject, nullptr, ppv);
 		if (FAILED(hres))
 			return hres;
 
@@ -220,14 +220,14 @@ END_MESSAGE_MAP()
 
 CGitStatusListCtrl::CGitStatusListCtrl() : CListCtrl()
 	//, m_HeadRev(GitRev::REV_HEAD)
-	, m_pbCanceled(NULL)
-	, m_pStatLabel(NULL)
-	, m_pSelectButton(NULL)
-	, m_pConfirmButton(NULL)
+	, m_pbCanceled(nullptr)
+	, m_pStatLabel(nullptr)
+	, m_pSelectButton(nullptr)
+	, m_pConfirmButton(nullptr)
 	, m_bBusy(false)
 	, m_bEmpty(false)
 	, m_bShowIgnores(false)
-	, m_pDropTarget(NULL)
+	, m_pDropTarget(nullptr)
 	, m_bIgnoreRemoveOnly(false)
 	, m_bCheckChildrenWithParent(false)
 	, m_bUnversionedLast(true)
@@ -249,7 +249,7 @@ CGitStatusListCtrl::CGitStatusListCtrl() : CListCtrl()
 	, m_bDoNotAutoselectSubmodules(false)
 	, m_bNoAutoselectMissing(false)
 	, m_bHasWC(true)
-	, m_hwndLogicalParent(NULL)
+	, m_hwndLogicalParent(nullptr)
 	, m_bHasUnversionedItems(FALSE)
 	, m_nTargetCount(0)
 	, m_bHasExternals(false)
@@ -325,7 +325,7 @@ void CGitStatusListCtrl::Init(DWORD dwColumns, const CString& sColumnInfoContain
 	SetRedraw(false);
 	SetExtendedStyle(exStyle);
 
-	SetWindowTheme(m_hWnd, L"Explorer", NULL);
+	SetWindowTheme(m_hWnd, L"Explorer", nullptr);
 
 	m_nIconFolder = SYS_IMAGE_LIST().GetDirIconIndex();
 	m_nRestoreOvl = SYS_IMAGE_LIST().AddIcon((HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_RESTOREOVL), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE));
@@ -349,7 +349,7 @@ void CGitStatusListCtrl::Init(DWORD dwColumns, const CString& sColumnInfoContain
 
 	// enable file drops
 #if 0
-	if (m_pDropTarget == NULL)
+	if (!m_pDropTarget)
 	{
 		m_pDropTarget = new CGitStatusListCtrlDropTarget(this);
 		RegisterDragDrop(m_hWnd,m_pDropTarget);
@@ -525,7 +525,7 @@ BOOL CGitStatusListCtrl::GetStatus ( const CTGitPathList* pathList
 				// of a parent path.
 				// this check is only done for file paths, because folder paths could be included already
 				// but not recursively
-				if (sortedPathList[nTarget].IsDirectory() || GetListEntry(sortedPathList[nTarget]) == NULL)
+				if (sortedPathList[nTarget].IsDirectory() || !GetListEntry(sortedPathList[nTarget]))
 				{
 					if(!FetchStatusForSingleTarget(config, status, sortedPathList[nTarget], bUpdate, sUUID,
 						arExtPaths, false, git_depth_infinity, bShowIgnores))
@@ -1163,7 +1163,7 @@ void CGitStatusListCtrl::AddEntry(CTGitPath * GitPath, WORD /*langID*/, int list
 
 bool CGitStatusListCtrl::SetItemGroup(int item, int groupindex)
 {
-//	if ((m_dwContextMenus & SVNSLC_POPCHANGELISTS) == NULL)
+//	if (!(m_dwContextMenus & SVNSLC_POPCHANGELISTS))
 //		return false;
 	if (groupindex < 0)
 		return false;
@@ -1213,7 +1213,7 @@ BOOL CGitStatusListCtrl::OnLvnItemchanged(NMHDR *pNMHDR, LRESULT *pResult)
 	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
 	*pResult = 0;
 	CWnd* pParent = GetLogicalParent();
-	if (NULL != pParent && NULL != pParent->GetSafeHwnd())
+	if (pParent && pParent->GetSafeHwnd())
 	{
 		pParent->SendMessage(GITSLNM_ITEMCHANGED, pNMLV->iItem);
 	}
@@ -1288,8 +1288,8 @@ void CGitStatusListCtrl::CheckEntry(int index, int /*nListItems*/)
 	Locker lock(m_critSec);
 	//FileEntry * entry = GetListEntry(index);
 	CTGitPath *path=(CTGitPath*)GetItemData(index);
-	ASSERT(path != NULL);
-	if (path == NULL)
+	ASSERT(path);
+	if (!path)
 		return;
 	m_mapFilenameToChecked[path->GetGitPathString()] = true;
 	SetCheck(index, TRUE);
@@ -1305,8 +1305,8 @@ void CGitStatusListCtrl::CheckEntry(int index, int /*nListItems*/)
 		for (int i=0; i< nListItems; ++i)
 		{
 			FileEntry * testEntry = GetListEntry(i);
-			ASSERT(testEntry != NULL);
-			if (testEntry == NULL)
+			ASSERT(testEntry);
+			if (!testEntry)
 				continue;
 			if (!testEntry->checked)
 			{
@@ -1333,8 +1333,8 @@ void CGitStatusListCtrl::CheckEntry(int index, int /*nListItems*/)
 		for (int i=0; i<nListItems; ++i)
 		{
 			FileEntry * testEntry = GetListEntry(i);
-			ASSERT(testEntry != NULL);
-			if (testEntry == NULL)
+			ASSERT(testEntry);
+			if (!testEntry)
 				continue;
 			if (!testEntry->checked)
 			{
@@ -1363,8 +1363,8 @@ void CGitStatusListCtrl::UncheckEntry(int index, int /*nListItems*/)
 {
 	Locker lock(m_critSec);
 	CTGitPath *path=(CTGitPath*)GetItemData(index);
-	ASSERT(path != NULL);
-	if (path == NULL)
+	ASSERT(path);
+	if (!path)
 		return;
 	SetCheck(index, FALSE);
 	m_mapFilenameToChecked[path->GetGitPathString()] = false;
@@ -1387,8 +1387,8 @@ void CGitStatusListCtrl::UncheckEntry(int index, int /*nListItems*/)
 		for (int i=0; i<nListItems; i++)
 		{
 			FileEntry * testEntry = GetListEntry(i);
-			ASSERT(testEntry != NULL);
-			if (testEntry == NULL)
+			ASSERT(testEntry);
+			if (!testEntry)
 				continue;
 			if (testEntry->checked)
 			{
@@ -1466,7 +1466,7 @@ int CGitStatusListCtrl::GetGroupFromPoint(POINT * ppt)
 {
 	// the point must be relative to the upper left corner of the control
 
-	if (ppt == NULL)
+	if (!ppt)
 		return -1;
 	if (!IsGroupViewEnabled())
 		return -1;
@@ -1615,8 +1615,8 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 
 		filepath = (CTGitPath * )GetItemData(selIndex);
 
-		ASSERT(filepath != NULL);
-		if (filepath == NULL)
+		ASSERT(filepath);
+		if (!filepath)
 			return;
 
 		//const CTGitPath& filepath = entry->path;
@@ -1732,7 +1732,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					int index = GetNextSelectedItem(pos);
 					if (index >= 0)
 					{
-						CTGitPath * entry2 = NULL;
+						CTGitPath* entry2 = nullptr;
 						entry2 = (CTGitPath*)GetItemData(index);
 						bool firstEntryExistsAndIsFile = entry2 && !entry2->IsDirectory();
 						index = GetNextSelectedItem(pos);
@@ -2092,8 +2092,8 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					{
 						int index = GetNextSelectedItem(pos);
 						CTGitPath * entry2 = (CTGitPath * )GetItemData(index);
-						ASSERT(entry2 != NULL);
-						if (entry2 == NULL || entry2->IsDirectory())
+						ASSERT(entry2);
+						if (!entry2 || entry2->IsDirectory())
 							continue;
 						if (m_restorepaths.find(entry2->GetWinPathString()) != m_restorepaths.end())
 							continue;
@@ -2120,8 +2120,8 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					{
 						int index = GetNextSelectedItem(pos);
 						CTGitPath * entry2 = (CTGitPath * )GetItemData(index);
-						ASSERT(entry2 != NULL);
-						if (entry2 == NULL)
+						ASSERT(entry2);
+						if (!entry2)
 							continue;
 						if (m_restorepaths.find(entry2->GetWinPathString()) == m_restorepaths.end())
 							continue;
@@ -2179,17 +2179,17 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 			case IDGITLC_COMPARETWOFILES:
 				{
 					POSITION pos = GetFirstSelectedItemPosition();
-					CTGitPath * firstfilepath = NULL, * secondfilepath = NULL;
+					CTGitPath* firstfilepath = nullptr, *secondfilepath = nullptr;
 					if (pos)
 					{
 						firstfilepath = (CTGitPath * )GetItemData(GetNextSelectedItem(pos));
-						ASSERT(firstfilepath != NULL);
-						if (firstfilepath == NULL)
+						ASSERT(firstfilepath);
+						if (!firstfilepath)
 							break;
 
 						secondfilepath = (CTGitPath * )GetItemData(GetNextSelectedItem(pos));
-						ASSERT(secondfilepath != NULL);
-						if (secondfilepath == NULL)
+						ASSERT(secondfilepath);
+						if (!secondfilepath)
 							break;
 
 						CString sCmd;
@@ -2258,7 +2258,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						m_mapFilenameToChecked.erase(((CTGitPath*)GetItemData(index))->GetGitPathString());
 					}
 
-					if (NULL != GetLogicalParent() && NULL != GetLogicalParent()->GetSafeHwnd())
+					if (GetLogicalParent() && GetLogicalParent()->GetSafeHwnd())
 						GetLogicalParent()->SendMessage(GITSLNM_NEEDSREFRESH);
 
 					SetRedraw(TRUE);
@@ -2304,7 +2304,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					if (CAppUtils::ConflictEdit(*filepath, false, m_bIsRevertTheirMy, GetLogicalParent() ? GetLogicalParent()->GetSafeHwnd() : nullptr))
 					{
 						CString conflictedFile = g_Git.CombinePath(filepath);
-						if (!PathFileExists(conflictedFile) && NULL != GetLogicalParent() && NULL != GetLogicalParent()->GetSafeHwnd())
+						if (!PathFileExists(conflictedFile) && GetLogicalParent() && GetLogicalParent()->GetSafeHwnd())
 							GetLogicalParent()->SendMessage(GITSLNM_NEEDSREFRESH);
 					}
 				}
@@ -2323,7 +2323,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 							int index;
 							index = GetNextSelectedItem(pos);
 							CTGitPath * fentry =(CTGitPath*) this->GetItemData(index);
-							if(fentry == NULL)
+							if (!fentry)
 								continue;
 
 							CAppUtils::resolve_with resolveWith = CAppUtils::RESOLVE_WITH_CURRENT;
@@ -2358,7 +2358,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 
 					SetRedraw(FALSE);
 					CWnd* pParent = GetLogicalParent();
-					if (NULL != pParent && NULL != pParent->GetSafeHwnd())
+					if (pParent && pParent->GetSafeHwnd())
 					{
 						pParent->SendMessage(GITSLNM_NEEDSREFRESH);
 					}
@@ -2378,7 +2378,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 
 					SetRedraw(FALSE);
 					CWnd* pParent = GetLogicalParent();
-					if (NULL != pParent && NULL != pParent->GetSafeHwnd())
+					if (pParent && pParent->GetSafeHwnd())
 					{
 						pParent->SendMessage(GITSLNM_NEEDSREFRESH);
 					}
@@ -2397,7 +2397,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 
 					SetRedraw(FALSE);
 					CWnd *pParent = GetLogicalParent();
-					if (NULL != pParent && NULL != pParent->GetSafeHwnd())
+					if (pParent && pParent->GetSafeHwnd())
 						pParent->SendMessage(GITSLNM_NEEDSREFRESH);
 
 					SetRedraw(TRUE);
@@ -2518,7 +2518,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 							Show(m_dwShow, 0, m_bShowFolders,updateStatusList,true);
 							NotifyCheck();
 #else
-							if (updateStatusList && nullptr != GetLogicalParent() && nullptr != GetLogicalParent()->GetSafeHwnd())
+							if (updateStatusList && GetLogicalParent() && GetLogicalParent()->GetSafeHwnd())
 								GetLogicalParent()->SendMessage(GITSLNM_NEEDSREFRESH);
 #endif
 						}
@@ -2566,7 +2566,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					commandline += tempFile.GetWinPathString();
 					commandline += _T("\"");
 					commandline += _T(" /deletepathfile");
-					CAppUtils::LaunchApplication(commandline, NULL, false);
+					CAppUtils::LaunchApplication(commandline, nullptr, false);
 				}
 				break;
 			case IDSVNLC_CREATEIGNORECS:
@@ -2643,7 +2643,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 			//if (iItemCountAfterMenuCmd != iItemCountBeforeMenuCmd)
 			//{
 			//	CWnd* pParent = GetParent();
-			//	if (NULL != pParent && NULL != pParent->GetSafeHwnd())
+			//	if (pParent && pParent->GetSafeHwnd())
 			//	{
 			//		pParent->SendMessage(SVNSLNM_ITEMCOUNTCHANGED);
 			//	}
@@ -2753,7 +2753,7 @@ void CGitStatusListCtrl::OnNMDblclk(NMHDR *pNMHDR, LRESULT *pResult)
 		if (CAppUtils::ConflictEdit(*file, false, m_bIsRevertTheirMy, GetLogicalParent() ? GetLogicalParent()->GetSafeHwnd() : nullptr))
 		{
 			CString conflictedFile = g_Git.CombinePath(file);
-			if (!PathFileExists(conflictedFile) && NULL != GetLogicalParent() && NULL != GetLogicalParent()->GetSafeHwnd())
+			if (!PathFileExists(conflictedFile) && GetLogicalParent() && GetLogicalParent()->GetSafeHwnd())
 				GetLogicalParent()->SendMessage(GITSLNM_NEEDSREFRESH);
 		}
 	}
@@ -2774,7 +2774,7 @@ void CGitStatusListCtrl::StartDiffTwo(int fileindex)
 		return;
 
 	auto ptr = (CTGitPath*)GetItemData(fileindex);
-	if (ptr == nullptr)
+	if (!ptr)
 		return;
 	CTGitPath file1 = *ptr;
 
@@ -2796,7 +2796,7 @@ void CGitStatusListCtrl::StartDiffWC(int fileindex)
 		return;
 
 	auto ptr = (CTGitPath*)GetItemData(fileindex);
-	if (ptr == nullptr)
+	if (!ptr)
 		return;
 	CTGitPath file1 = *ptr;
 	file1.m_Action = 0; // reset action, so that diff is not started as added/deleted file; see issue #1757
@@ -2811,7 +2811,7 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 		return;
 
 	auto ptr = (CTGitPath*)GetItemData(fileindex);
-	if (ptr == nullptr)
+	if (!ptr)
 		return;
 	CTGitPath file1 = *ptr;
 	CTGitPath file2;
@@ -2911,9 +2911,7 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 				}
 
 				if(g_Git.GetOneFile(m_CurrentVersion, file1, (CString&)merge.GetWinPathString()))
-				{
-					CMessageBox::Show(NULL, IDS_STATUSLIST_FAILEDGETMERGEFILE, IDS_APPNAME, MB_OK | MB_ICONERROR);
-				}
+					CMessageBox::Show(GetSafeHwnd(), IDS_STATUSLIST_FAILEDGETMERGEFILE, IDS_APPNAME, MB_OK | MB_ICONERROR);
 
 				if(parent1>=0)
 				{
@@ -2921,9 +2919,7 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 					str.Format(_T("%s^%d"), (LPCTSTR)this->m_CurrentVersion, parent1 + 1);
 
 					if(g_Git.GetOneFile(str, file1, (CString&)mine.GetWinPathString()))
-					{
-						CMessageBox::Show(NULL, IDS_STATUSLIST_FAILEDGETMERGEFILE, IDS_APPNAME, MB_OK | MB_ICONERROR);
-					}
+						CMessageBox::Show(GetSafeHwnd(), IDS_STATUSLIST_FAILEDGETMERGEFILE, IDS_APPNAME, MB_OK | MB_ICONERROR);
 				}
 
 				if(parent2>=0)
@@ -2932,9 +2928,7 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 					str.Format(_T("%s^%d"), (LPCTSTR)this->m_CurrentVersion, parent2 + 1);
 
 					if(g_Git.GetOneFile(str, file1, (CString&)theirs.GetWinPathString()))
-					{
-						CMessageBox::Show(NULL, IDS_STATUSLIST_FAILEDGETMERGEFILE, IDS_APPNAME, MB_OK | MB_ICONERROR);
-					}
+						CMessageBox::Show(GetSafeHwnd(), IDS_STATUSLIST_FAILEDGETMERGEFILE, IDS_APPNAME, MB_OK | MB_ICONERROR);
 				}
 
 				if(parent1>=0 && parent2>=0)
@@ -2943,15 +2937,10 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 					cmd.Format(_T("git.exe merge-base %s^%d %s^%d"), (LPCTSTR)this->m_CurrentVersion, parent1 + 1,
 						this->m_CurrentVersion,parent2+1);
 
-					if (g_Git.Run(cmd, &output, NULL, CP_UTF8))
-					{
-					}
-					else
+					if (!g_Git.Run(cmd, &output, nullptr, CP_UTF8))
 					{
 						if(g_Git.GetOneFile(output.Left(40), file1, (CString&)base.GetWinPathString()))
-						{
-							CMessageBox::Show(NULL, IDS_STATUSLIST_FAILEDGETBASEFILE, IDS_APPNAME, MB_OK | MB_ICONERROR);
-						}
+							CMessageBox::Show(GetSafeHwnd(), IDS_STATUSLIST_FAILEDGETBASEFILE, IDS_APPNAME, MB_OK | MB_ICONERROR);
 					}
 				}
 				CAppUtils::StartExtMerge(base, theirs, mine, merge,_T("BASE"),_T("REMOTE"),_T("LOCAL"));
@@ -3050,7 +3039,7 @@ CString CGitStatusListCtrl::GetCommonDirectory(bool bStrict)
 	{
 		CTGitPath baseDirectory,*p= (CTGitPath*)this->GetItemData(i);
 		ASSERT(p);
-		if(p==NULL)
+		if (!p)
 			continue;
 		baseDirectory = p->GetDirectory();
 
@@ -3088,9 +3077,9 @@ void CGitStatusListCtrl::SelectAll(bool bSelect, bool /*bIncludeNoCommits*/)
 	for (int i=0; i<nListItems; ++i)
 	{
 		//FileEntry * entry = GetListEntry(i);
-		//ASSERT(entry != NULL);
+		//ASSERT(entry);
 		CTGitPath *path = (CTGitPath *) GetItemData(i);
-		if (path == NULL)
+		if (!path)
 			continue;
 		//if ((bIncludeNoCommits)||(entry->GetChangeList().Compare(SVNSLC_IGNORECHANGELIST)))
 		SetEntryCheck(path,i,bSelect);
@@ -3116,7 +3105,7 @@ void CGitStatusListCtrl::Check(DWORD dwCheck, bool check)
 	for (int i = 0; i < nListItems; ++i)
 	{
 		CTGitPath *entry = (CTGitPath *) GetItemData(i);
-		if (entry == NULL)
+		if (!entry)
 			continue;
 
 		DWORD showFlags = entry->m_Action;
@@ -3193,7 +3182,7 @@ void CGitStatusListCtrl::OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult)
 
 				//FileEntry * entry = GetListEntry((int)pLVCD->nmcd.dwItemSpec);
 				CTGitPath *entry=(CTGitPath *)GetItemData((int)pLVCD->nmcd.dwItemSpec);
-				if (entry == NULL)
+				if (!entry)
 					return;
 
 				// coloring
@@ -3253,11 +3242,11 @@ BOOL CGitStatusListCtrl::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 		return CListCtrl::OnSetCursor(pWnd, nHitTest, message);
 	if (!m_bBlock)
 	{
-		HCURSOR hCur = LoadCursor(NULL, IDC_ARROW);
+		HCURSOR hCur = LoadCursor(nullptr, IDC_ARROW);
 		SetCursor(hCur);
 		return CListCtrl::OnSetCursor(pWnd, nHitTest, message);
 	}
-	HCURSOR hCur = LoadCursor(NULL, IDC_WAIT);
+	HCURSOR hCur = LoadCursor(nullptr, IDC_WAIT);
 	SetCursor(hCur);
 	return TRUE;
 }
@@ -3298,8 +3287,8 @@ void CGitStatusListCtrl::SetCheckOnAllDescendentsOf(const FileEntry* parentEntry
 	for (int j=0; j< nListItems ; ++j)
 	{
 		FileEntry * childEntry = GetListEntry(j);
-		ASSERT(childEntry != NULL);
-		if (childEntry == NULL || childEntry == parentEntry)
+		ASSERT(childEntry);
+		if (!childEntry || childEntry == parentEntry)
 			continue;
 		if (childEntry->checked != bCheck)
 		{
@@ -3329,7 +3318,7 @@ void CGitStatusListCtrl::WriteCheckedNamesToPathList(CTGitPathList& pathList)
 	for (int i = 0; i< nListItems; ++i)
 	{
 		CTGitPath * entry = (CTGitPath*)GetItemData(i);
-		ASSERT(entry != NULL);
+		ASSERT(entry);
 		if (entry->m_Checked)
 		{
 			pathList.AddPath(*entry);
@@ -3402,7 +3391,7 @@ void CGitStatusListCtrl::OnNMReturn(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 				StartDiff(index);
 		}
 	}
-	if (needsRefresh && NULL != GetLogicalParent() && NULL != GetLogicalParent()->GetSafeHwnd())
+	if (needsRefresh && GetLogicalParent() && GetLogicalParent()->GetSafeHwnd())
 		GetLogicalParent()->SendMessage(GITSLNM_NEEDSREFRESH);
 }
 
@@ -3435,7 +3424,7 @@ void CGitStatusListCtrl::PreSubclassWindow()
 {
 	CListCtrl::PreSubclassWindow();
 	EnableToolTips(TRUE);
-	SetWindowTheme(GetSafeHwnd(), L"Explorer", NULL);
+	SetWindowTheme(GetSafeHwnd(), L"Explorer", nullptr);
 }
 
 void CGitStatusListCtrl::OnPaint()
@@ -3468,7 +3457,7 @@ void CGitStatusListCtrl::OnPaint()
 		CRect rc;
 		GetClientRect(&rc);
 		CHeaderCtrl* pHC = GetHeaderCtrl();
-		if (pHC != NULL)
+		if (pHC)
 		{
 			CRect rcH;
 			pHC->GetItemRect(0, &rcH);
@@ -3565,7 +3554,7 @@ void CGitStatusListCtrl::OnBeginDrag(NMHDR* /*pNMHDR*/, LRESULT* pResult)
 			{
 				tempDir = GetTempFile();
 				::DeleteFile(tempDir);
-				::CreateDirectory(tempDir, NULL);
+				::CreateDirectory(tempDir, nullptr);
 				bTempDirCreated = true;
 			}
 			tempFile = tempDir + _T("\\") + path->GetWinPathString();
@@ -3706,7 +3695,7 @@ bool CGitStatusListCtrl::CopySelectedEntriesToClipboard(DWORD dwCols)
 	while ((index = GetNextSelectedItem(pos)) >= 0)
 	{
 		CTGitPath * entry = (CTGitPath*)GetItemData(index);
-		if(entry == NULL)
+		if (!entry)
 			continue;
 
 		sClipboard += entry->GetWinPathString();
@@ -3933,7 +3922,7 @@ bool CGitStatusListCtrl::PrepareGroups(bool bForce /* = false */)
 void CGitStatusListCtrl::NotifyCheck()
 {
 	CWnd* pParent = GetLogicalParent();
-	if (NULL != pParent && NULL != pParent->GetSafeHwnd())
+	if (pParent && pParent->GetSafeHwnd())
 	{
 		pParent->SendMessage(GITSLNM_CHECKCHANGED, m_nSelected);
 	}
@@ -3959,7 +3948,7 @@ int CGitStatusListCtrl::UpdateFileList(CTGitPathList *list)
 			{
 				CString message;
 				message.Format(IDS_ASK_REMOVE_FROM_INDEX, gitpatch->GetWinPath());
-				deleteFromIndex = CMessageBox::ShowCheck(m_hWnd, message, _T("TortoiseGit"), 1, IDI_EXCLAMATION, CString(MAKEINTRESOURCE(IDS_RESTORE_FROM_INDEX)), CString(MAKEINTRESOURCE(IDS_REMOVE_FROM_INDEX)), CString(MAKEINTRESOURCE(IDS_IGNOREBUTTON)), NULL, CString(MAKEINTRESOURCE(IDS_DO_SAME_FOR_REST)), &bDeleteChecked);
+				deleteFromIndex = CMessageBox::ShowCheck(GetSafeHwnd(), message, _T("TortoiseGit"), 1, IDI_EXCLAMATION, CString(MAKEINTRESOURCE(IDS_RESTORE_FROM_INDEX)), CString(MAKEINTRESOURCE(IDS_REMOVE_FROM_INDEX)), CString(MAKEINTRESOURCE(IDS_IGNOREBUTTON)), nullptr, CString(MAKEINTRESOURCE(IDS_DO_SAME_FOR_REST)), &bDeleteChecked);
 			}
 			if (deleteFromIndex == 1)
 			{
@@ -4122,11 +4111,11 @@ bool CGitStatusListCtrlDropTarget::OnDrop(FORMATETC* pFmtEtc, STGMEDIUM& medium,
 	if(pFmtEtc->cfFormat == CF_HDROP && medium.tymed == TYMED_HGLOBAL)
 	{
 		HDROP hDrop = (HDROP)GlobalLock(medium.hGlobal);
-		if(hDrop != NULL)
+		if (hDrop)
 		{
 			TCHAR szFileName[MAX_PATH] = {0};
 
-			UINT cFiles = DragQueryFile(hDrop, 0xFFFFFFFF, NULL, 0);
+			UINT cFiles = DragQueryFile(hDrop, 0xFFFFFFFF, nullptr, 0);
 
 			POINT clientpoint;
 			clientpoint.x = pt.x;
@@ -4172,7 +4161,7 @@ bool CGitStatusListCtrlDropTarget::OnDrop(FORMATETC* pFmtEtc, STGMEDIUM& medium,
 							else
 							{
 								HWND hParentWnd = GetParent(m_hTargetWnd);
-								if (hParentWnd != NULL)
+								if (hParentWnd)
 									::SendMessage(hParentWnd, CSVNStatusListCtrl::SVNSLNM_ADDFILE, 0, (LPARAM)changelistItems[l].GetWinPath());
 							}
 						}
@@ -4202,7 +4191,7 @@ bool CGitStatusListCtrlDropTarget::OnDrop(FORMATETC* pFmtEtc, STGMEDIUM& medium,
 							else
 							{
 								HWND hParentWnd = GetParent(m_hTargetWnd);
-								if (hParentWnd != NULL)
+								if (hParentWnd)
 									::SendMessage(hParentWnd, CSVNStatusListCtrl::SVNSLNM_ADDFILE, 0, (LPARAM)changelistItems[l].GetWinPath());
 							}
 						}
@@ -4219,7 +4208,7 @@ bool CGitStatusListCtrlDropTarget::OnDrop(FORMATETC* pFmtEtc, STGMEDIUM& medium,
 				{
 					DragQueryFile(hDrop, i, szFileName, sizeof(szFileName));
 					HWND hParentWnd = GetParent(m_hTargetWnd);
-					if (hParentWnd != NULL)
+					if (hParentWnd)
 						::SendMessage(hParentWnd, CSVNStatusListCtrl::SVNSLNM_ADDFILE, 0, (LPARAM)szFileName);
 				}
 			}
@@ -4297,10 +4286,7 @@ void CGitStatusListCtrl::FileSaveAs(CTGitPath *path)
 {
 	CString filename;
 	filename.Format(_T("%s-%s%s"), (LPCTSTR)path->GetBaseFilename(), (LPCTSTR)this->m_CurrentVersion.Left(g_Git.GetShortHASHLength()), (LPCTSTR)path->GetFileExtension());
-	CFileDialog dlg(FALSE,NULL,
-					filename,
-					OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
-					NULL);
+	CFileDialog dlg(FALSE, nullptr, filename, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, nullptr);
 
 	CString currentpath = g_Git.CombinePath(path->GetContainingDirectory());
 	dlg.m_ofn.lpstrInitialDir = currentpath;
@@ -4406,7 +4392,7 @@ void CGitStatusListCtrl::OpenFile(CTGitPath*filepath,int mode)
 		GetTempFileName(temppath, filepath->GetBaseFilename(), 0, szTempName);
 		CString temp(szTempName);
 		DeleteFile(szTempName);
-		CreateDirectory(szTempName, NULL);
+		CreateDirectory(szTempName, nullptr);
 		file.Format(_T("%s\\%s_%s%s"),
 					(LPCTSTR)temp,
 					(LPCTSTR)filepath->GetBaseFilename(),
@@ -4488,7 +4474,7 @@ void CGitStatusListCtrl::DeleteSelectedFiles()
 	fileop.hwnd = this->m_hWnd;
 	fileop.wFunc = FO_DELETE;
 	fileop.pFrom = buf.get();
-	fileop.pTo = NULL;
+	fileop.pTo = nullptr;
 	fileop.fFlags = FOF_NO_CONNECTED_ELEMENTS | ((GetAsyncKeyState(VK_SHIFT) & 0x8000) ? 0 : FOF_ALLOWUNDO);
 	fileop.lpszProgressTitle = _T("deleting file");
 	int result = SHFileOperation(&fileop);
@@ -4508,8 +4494,8 @@ void CGitStatusListCtrl::DeleteSelectedFiles()
 		}
 
 		SetRedraw(FALSE);
-		POSITION pos2 = NULL;
-		while ((pos2 = GetFirstSelectedItemPosition()) != 0)
+		POSITION pos2 = nullptr;
+		while ((pos2 = GetFirstSelectedItemPosition()) != nullptr)
 		{
 			int index2 = GetNextSelectedItem(pos2);
 			if (GetCheck(index2))
@@ -4610,11 +4596,11 @@ BOOL CGitStatusListCtrl::OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LR
 
 					ASSOCIATIONELEMENT const rgAssocItem[] =
 					{
-						{ ASSOCCLASS_PROGID_STR, NULL, ext },
-						{ ASSOCCLASS_SYSTEM_STR, NULL, ext },
-						{ ASSOCCLASS_APP_STR, NULL, ext },
-						{ ASSOCCLASS_STAR, NULL, NULL },
-						{ ASSOCCLASS_FOLDER, NULL, NULL },
+						{ ASSOCCLASS_PROGID_STR, nullptr, ext },
+						{ ASSOCCLASS_SYSTEM_STR, nullptr, ext },
+						{ ASSOCCLASS_APP_STR, nullptr, ext },
+						{ ASSOCCLASS_STAR, nullptr, nullptr },
+						{ ASSOCCLASS_FOLDER, nullptr, nullptr },
 					};
 					IQueryAssociations* pIQueryAssociations = nullptr;
 					if (FAILED(AssocCreateForClasses(rgAssocItem, ARRAYSIZE(rgAssocItem), IID_IQueryAssociations, (void**)&pIQueryAssociations)))

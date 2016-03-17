@@ -65,7 +65,7 @@ class CLogDlg : public CResizableStandAloneDialog, IFilterEditValidator, IHasPat
 	friend class CStoreSelection;
 
 public:
-	CLogDlg(CWnd* pParent = NULL); // standard constructor
+	CLogDlg(CWnd* pParent = nullptr); // standard constructor
 	virtual ~CLogDlg();
 	void SetParams(const CTGitPath& orgPath, const CTGitPath& path, CString hightlightRevision, CString range, DWORD limit, int limitScale = -1);
 	void SetFilter(const CString& findstr, LONG findtype, bool findregex);

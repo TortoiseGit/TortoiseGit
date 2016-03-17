@@ -22,7 +22,7 @@
 #include "URLDlg.h"
 
 IMPLEMENT_DYNAMIC(CURLDlg, CResizableStandAloneDialog)
-CURLDlg::CURLDlg(CWnd* pParent /*=NULL*/)
+CURLDlg::CURLDlg(CWnd* pParent /*=nullptr*/)
 	: CResizableStandAloneDialog(CURLDlg::IDD, pParent)
 {
 	m_height = 0;

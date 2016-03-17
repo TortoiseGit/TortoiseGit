@@ -29,7 +29,7 @@
 
 IMPLEMENT_DYNCREATE(CCloneDlg, CHorizontalResizableStandAloneDialog)
 
-CCloneDlg::CCloneDlg(CWnd* pParent /*=NULL*/)
+CCloneDlg::CCloneDlg(CWnd* pParent /*=nullptr*/)
 	: CHorizontalResizableStandAloneDialog(CCloneDlg::IDD, pParent)
 {
 	m_bRecursive = FALSE;
@@ -147,7 +147,7 @@ BOOL CCloneDlg::OnInitDialog()
 	if (m_Directory.IsEmpty())
 	{
 		TCHAR szPath[MAX_PATH] = {0};
-		if (SUCCEEDED(SHGetFolderPath(NULL, CSIDL_PERSONAL | CSIDL_FLAG_CREATE, NULL, SHGFP_TYPE_CURRENT, szPath)))
+		if (SUCCEEDED(SHGetFolderPath(nullptr, CSIDL_PERSONAL | CSIDL_FLAG_CREATE, nullptr, SHGFP_TYPE_CURRENT, szPath)))
 			m_Directory = szPath;
 	}
 	m_bRecursive = m_regCloneRecursive;
@@ -305,10 +305,7 @@ void CCloneDlg::OnBnClickedCloneDirBrowse()
 
 void CCloneDlg::OnBnClickedPuttykeyfileBrowse()
 {
-	CFileDialog dlg(TRUE,NULL,
-					NULL,
-					OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
-					CString(MAKEINTRESOURCE(IDS_PUTTYKEYFILEFILTER)));
+	CFileDialog dlg(TRUE, nullptr, nullptr, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, CString(MAKEINTRESOURCE(IDS_PUTTYKEYFILEFILTER)));
 
 	this->UpdateData();
 	if(dlg.DoModal()==IDOK)

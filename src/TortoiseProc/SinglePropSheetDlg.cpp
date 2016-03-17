@@ -30,7 +30,7 @@ using namespace TreePropSheet;
 
 IMPLEMENT_DYNAMIC(CSinglePropSheetDlg, CTreePropSheet)
 
-CSinglePropSheetDlg::CSinglePropSheetDlg(const TCHAR* szCaption, ISettingsPropPage* pThePropPage, CWnd* pParent /*=NULL*/)
+CSinglePropSheetDlg::CSinglePropSheetDlg(const TCHAR* szCaption, ISettingsPropPage* pThePropPage, CWnd* pParent /*=nullptr*/)
 :	CTreePropSheet(szCaption,pParent),// CSinglePropSheetDlg::IDD, pParent),
 	m_pThePropPage(pThePropPage)
 {

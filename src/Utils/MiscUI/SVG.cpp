@@ -33,7 +33,7 @@ SVG::~SVG()
 bool SVG::Save( const CString& path )
 {
 	DWORD dwWritten = 0;
-	CAutoFile hFile = CreateFile(path, GENERIC_WRITE, FILE_SHARE_DELETE, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+	CAutoFile hFile = CreateFile(path, GENERIC_WRITE, FILE_SHARE_DELETE, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
 	if (!hFile)
 		return false;
 
@@ -41,17 +41,17 @@ bool SVG::Save( const CString& path )
 	header.Format("<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" width=\"%d\" height=\"%d\" viewBox=\"0 0 %d %d\">\r\n", viewportWidth, viewportHeight, viewportWidth, viewportHeight);
 	CStringA footer = "\r\n</svg>";
 
-	if (!WriteFile(hFile, header, (DWORD)header.GetLength(), &dwWritten, NULL))
+	if (!WriteFile(hFile, header, (DWORD)header.GetLength(), &dwWritten, nullptr))
 		return false;
 
 	for (const auto& object : objects)
 	{
-		if (!WriteFile(hFile, object, (DWORD)object.GetLength(), &dwWritten, NULL))
+		if (!WriteFile(hFile, object, (DWORD)object.GetLength(), &dwWritten, nullptr))
 			return false;
-		if (!WriteFile(hFile, "\r\n", (DWORD)2, &dwWritten, NULL))
+		if (!WriteFile(hFile, "\r\n", (DWORD)2, &dwWritten, nullptr))
 			return false;
 	}
-	if (!WriteFile(hFile, footer, (DWORD)footer.GetLength(), &dwWritten, NULL))
+	if (!WriteFile(hFile, footer, (DWORD)footer.GetLength(), &dwWritten, nullptr))
 		return false;
 
 	return true;

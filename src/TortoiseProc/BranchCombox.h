@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2015 - TortoiseGit
+// Copyright (C) 2009-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -32,7 +32,7 @@ public:
 		m_LocalBranchFilter = gPickRef_Head;
 		m_RemoteBranchFilter = gPickRef_Remote;
 		m_DialogName=_T("sync");
-		m_pTooltip=NULL;
+		m_pTooltip = nullptr;
 	}
 protected:
 	CHistoryCombo m_ctrlLocalBranch;
@@ -185,7 +185,7 @@ protected:
 		if(this->m_RegKeyRemoteBranch.IsEmpty())
 		{
 			list.clear();
-			g_Git.GetBranchList(list, NULL, CGit::BRANCH_REMOTE);
+			g_Git.GetBranchList(list, nullptr, CGit::BRANCH_REMOTE);
 
 			m_ctrlRemoteBranch.SetList(list);
 

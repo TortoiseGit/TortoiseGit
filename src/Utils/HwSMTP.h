@@ -75,11 +75,11 @@ public:
 		LPCTSTR lpszSubject,
 		LPCTSTR lpszBody,
 		LPCTSTR lpszCharSet,						// 字符集类型，例如：繁体中文这里应输入"big5"，简体中文时输入"gb2312"
-		CStringArray *pStrAryAttach=NULL,
-		LPCTSTR pStrAryCC=NULL,
+		CStringArray* pStrAryAttach = nullptr,
+		LPCTSTR pStrAryCC = nullptr,
 		UINT nSmtpSrvPort=25,
-		LPCTSTR pSend = NULL,
-		LPCTSTR pToList = NULL,
+		LPCTSTR pSend = nullptr,
+		LPCTSTR pToList = nullptr,
 		DWORD secLevel = SECURITY_LEVEL::none
 		);
 	BOOL SendSpeedEmail
@@ -89,9 +89,9 @@ public:
 			LPCTSTR lpszSubject,
 			LPCTSTR lpszBody,
 			LPCTSTR lpszCharSet,						// 字符集类型，例如：繁体中文这里应输入"big5"，简体中文时输入"gb2312"
-			CStringArray *pStrAryAttach=NULL,
-			LPCTSTR pStrAryCC=NULL,
-			LPCTSTR pSend = NULL
+			CStringArray* pStrAryAttach = nullptr,
+			LPCTSTR pStrAryCC = nullptr,
+			LPCTSTR pSend = nullptr
 		);
 	CHwSMTP();
 	virtual ~CHwSMTP();

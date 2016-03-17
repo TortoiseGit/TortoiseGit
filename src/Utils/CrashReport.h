@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013 - TortoiseGit
-// Copyright (C) 2012 - 2014 - TortoiseSVN
+// Copyright (C) 2013, 2016 - TortoiseGit
+// Copyright (C) 2012-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -36,7 +36,7 @@ __forceinline HMODULE get_my_module_handle(void)
 	MEMORY_BASIC_INFORMATION memory_basic_information;
 	if (!VirtualQuery(&s_module_marker, &memory_basic_information, sizeof(memory_basic_information)))
 	{
-		return NULL;
+		return nullptr;
 	}
 	return (HMODULE)memory_basic_information.AllocationBase;
 }
@@ -100,7 +100,7 @@ public:
 	//! \return Return \b true if crash handling was enabled.
 	bool InitCrashHandler(
 		ApplicationInfo* applicationInfo,   //!< [in] Pointer to the ApplicationInfo structure that identifies your application.
-		HandlerSettings* handlerSettings,   //!< [in] Pointer to the HandlerSettings structure that customizes crash handling behavior. This parameter can be \b NULL.
+		HandlerSettings* handlerSettings,   //!< [in] Pointer to the HandlerSettings structure that customizes crash handling behavior. This parameter can be \b nullptr.
 		BOOL    ownProcess = TRUE           //!< [in] If you own the process your code running in set this option to \b TRUE. If don't (for example you write
 											//!<      a plugin to some external application) set this option to \b FALSE. In that case you need to explicitly
 											//!<      catch exceptions. See \ref SendReport for more information.
@@ -162,7 +162,7 @@ public:
 	//! \note This function is thread safe.
 	bool AddFileToReport(
 		LPCWSTR path,                       //!< [in] Path to the file, that will be added to the report.
-		LPCWSTR reportFileName /* = NULL */ //!< [in] Filename that will be used in report for this file. If parameter is \b NULL, original name from path will be used.
+		LPCWSTR reportFileName /* = nullptr */ //!< [in] Filename that will be used in report for this file. If parameter is \b nullptr, original name from path will be used.
 		) throw()
 	{
 		if (!m_AddFileToReport)
@@ -240,7 +240,7 @@ public:
 	}
 
 	//! To send a report about violated assertion you can throw exception with this exception code
-	//! using: \code RaiseException(CrashHandler::ExceptionAssertionViolated, 0, 0, NULL); \endcode
+	//! using: \code RaiseException(CrashHandler::ExceptionAssertionViolated, 0, 0, nullptr); \endcode
 	//! Execution will continue after report will be sent (EXCEPTION_CONTINUE_EXECUTION would be used).
 	//! You may pass grouping string as first parameter (see \a SkipDoctorDump_SendAssertionViolated).
 	//! \note If you called CrashHandler constructor and crshhndl.dll was missing you still may using this exception.
@@ -252,7 +252,7 @@ public:
 	//! \sa ExceptionAssertionViolated
 	//! \note Functions containing "SkipDoctorDump" will be ignored in stack parsing.
 	void SkipDoctorDump_SendAssertionViolated(
-		LPCSTR dumpGroup = NULL     //!< [in] All dumps with that group will be separated from dumps with same stack but another group. Set parameter to \b NULL if no grouping is required.
+		LPCSTR dumpGroup = nullptr     //!< [in] All dumps with that group will be separated from dumps with same stack but another group. Set parameter to \b nullptr if no grouping is required.
 		) const
 	{
 		if (!m_bWorking)
@@ -260,31 +260,31 @@ public:
 		if (dumpGroup)
 			::RaiseException(CrashHandler::ExceptionAssertionViolated, 0, 1, reinterpret_cast<ULONG_PTR*>(&dumpGroup));
 		else
-			::RaiseException(CrashHandler::ExceptionAssertionViolated, 0, 0, NULL);
+			::RaiseException(CrashHandler::ExceptionAssertionViolated, 0, 0, nullptr);
 	}
 
 private:
-	bool LoadDll(LPCWSTR crashHandlerPath = NULL) throw()
+	bool LoadDll(LPCWSTR crashHandlerPath = nullptr) throw()
 	{
 		m_bLoaded = false;
 		m_bWorking = false;
 		m_bSkipAssertsAdded = false;
-		m_InitCrashHandler = NULL;
-		m_SendReport = NULL;
-		m_IsReadyToExit = NULL;
-		m_SetCustomInfo = NULL;
-		m_AddUserInfoToReport = NULL;
-		m_RemoveUserInfoFromReport = NULL;
-		m_AddFileToReport = NULL;
-		m_RemoveFileFromReport = NULL;
-		m_GetVersionFromApp = NULL;
-		m_GetVersionFromFile = NULL;
+		m_InitCrashHandler = nullptr;
+		m_SendReport = nullptr;
+		m_IsReadyToExit = nullptr;
+		m_SetCustomInfo = nullptr;
+		m_AddUserInfoToReport = nullptr;
+		m_RemoveUserInfoFromReport = nullptr;
+		m_AddFileToReport = nullptr;
+		m_RemoveFileFromReport = nullptr;
+		m_GetVersionFromApp = nullptr;
+		m_GetVersionFromFile = nullptr;
 
 		// hCrashHandlerDll should not be unloaded, crash may appear even after return from main().
 		// So hCrashHandlerDll is not saved after construction.
 		BOOL bIsWow = FALSE;
 		IsWow64Process(GetCurrentProcess(), &bIsWow);
-		HMODULE hCrashHandlerDll = NULL;
+		HMODULE hCrashHandlerDll = nullptr;
 		if (bIsWow == FALSE)
 		{
 			if (crashHandlerPath == nullptr)
@@ -309,7 +309,7 @@ private:
 			else
 				hCrashHandlerDll = ::LoadLibraryW(crashHandlerPath);
 		}
-		if (hCrashHandlerDll != NULL)
+		if (hCrashHandlerDll)
 		{
 			m_InitCrashHandler = (pfnInitCrashHandler) GetProcAddress(hCrashHandlerDll, "InitCrashHandler");
 			m_SendReport = (pfnSendReport) GetProcAddress(hCrashHandlerDll, "SendReport");
@@ -365,7 +365,7 @@ private:
 	typedef void (*pfnSetCustomInfo)(LPCWSTR text);
 	typedef void (*pfnAddUserInfoToReport)(LPCWSTR key, LPCWSTR value);
 	typedef void (*pfnRemoveUserInfoFromReport)(LPCWSTR key);
-	typedef void (*pfnAddFileToReport)(LPCWSTR path, LPCWSTR reportFileName /* = NULL */);
+	typedef void (*pfnAddFileToReport)(LPCWSTR path, LPCWSTR reportFileName /* = nullptr */);
 	typedef void (*pfnRemoveFileFromReport)(LPCWSTR path);
 	typedef BOOL (*pfnGetVersionFromApp)(ApplicationInfo* appInfo);
 	typedef BOOL (*pfnGetVersionFromFile)(LPCWSTR path, ApplicationInfo* appInfo);

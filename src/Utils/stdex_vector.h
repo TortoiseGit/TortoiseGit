@@ -81,22 +81,22 @@ namespace stdex {
 
 		/**
 		 * Conversion operator returns pointer to the immutable item at the
-		 * beginning of this array of NULL if the array is empty.
+		 * beginning of this array of nullptr if the array is empty.
 		 * @param i The index of the value to return a reference to.
-		 * @return A pointer to an immutable item or NULL.
+		 * @return A pointer to an immutable item or nullptr.
 		 */
 		inline operator const_pointer () const {
-			return empty() ? NULL : &operator[](0);
+			return empty() ? nullptr : &operator[](0);
 		}
 
 		/**
 		 * Conversion operator returns pointer to the item at the beginning of
-		 * this array of NULL if the array is empty.
+		 * this array of nullptr if the array is empty.
 		 * @param i The index of the value to return a reference to.
-		 * @return A pointer to an item or NULL.
+		 * @return A pointer to an item or nullptr.
 		 */
 		inline operator pointer () {
-			return empty() ? NULL : &operator[](0);
+			return empty() ? nullptr : &operator[](0);
 		}
 
 	};

@@ -32,7 +32,7 @@
 
 IMPLEMENT_DYNAMIC(CFormatPatchDlg, CHorizontalResizableStandAloneDialog)
 
-CFormatPatchDlg::CFormatPatchDlg(CWnd* pParent /*=NULL*/)
+CFormatPatchDlg::CFormatPatchDlg(CWnd* pParent /*=nullptr*/)
 	: CHorizontalResizableStandAloneDialog(CFormatPatchDlg::IDD, pParent)
 	, m_regSendMail(_T("Software\\TortoiseGit\\TortoiseProc\\FormatPatch\\SendMail"), 0)
 	, m_regNoPrefix(_T("Software\\TortoiseGit\\TortoiseProc\\FormatPatch\\NoPrefix"), FALSE)
@@ -124,7 +124,7 @@ BOOL CFormatPatchDlg::OnInitDialog()
 	m_cDir.AddString(g_Git.m_CurrentDir);
 
 	STRING_VECTOR list;
-	g_Git.GetBranchList(list,NULL,CGit::BRANCH_ALL_F);
+	g_Git.GetBranchList(list, nullptr, CGit::BRANCH_ALL_F);
 	m_cSince.SetMaxHistoryItems((int)list.size());
 	m_cSince.SetList(list);
 

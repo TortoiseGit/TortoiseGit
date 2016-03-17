@@ -26,7 +26,7 @@ class CIgnoreDlg : public CStateStandAloneDialog
 	DECLARE_DYNAMIC(CIgnoreDlg)
 
 public:
-	CIgnoreDlg(CWnd* pParent = NULL);   // standard constructor
+	CIgnoreDlg(CWnd* pParent = nullptr);   // standard constructor
 	virtual ~CIgnoreDlg();
 
 // Dialog Data

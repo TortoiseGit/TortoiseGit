@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2015 - TortoiseGit
+// Copyright (C) 2008-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -139,10 +139,7 @@ void CSettingGitRemote::OnTimer(UINT_PTR nIDEvent)
 
 void CSettingGitRemote::OnBnClickedButtonBrowse()
 {
-	CFileDialog dlg(TRUE,NULL,
-					NULL,
-					OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
-					CString(MAKEINTRESOURCE(IDS_PUTTYKEYFILEFILTER)));
+	CFileDialog dlg(TRUE, nullptr, nullptr, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, CString(MAKEINTRESOURCE(IDS_PUTTYKEYFILEFILTER)));
 
 	this->UpdateData();
 	INT_PTR ret = dlg.DoModal();
@@ -161,12 +158,12 @@ void CSettingGitRemote::OnBnClickedButtonAdd()
 
 	if(m_strRemote.IsEmpty())
 	{
-		CMessageBox::Show(NULL, IDS_PROC_GITCONFIG_REMOTEEMPTY, IDS_APPNAME, MB_OK |  MB_ICONERROR);
+		CMessageBox::Show(nullptr, IDS_PROC_GITCONFIG_REMOTEEMPTY, IDS_APPNAME, MB_OK |  MB_ICONERROR);
 		return;
 	}
 	if(m_strUrl.IsEmpty())
 	{
-		CMessageBox::Show(NULL, IDS_PROC_GITCONFIG_URLEMPTY, IDS_APPNAME, MB_OK | MB_ICONERROR);
+		CMessageBox::Show(nullptr, IDS_PROC_GITCONFIG_URLEMPTY, IDS_APPNAME, MB_OK | MB_ICONERROR);
 		return;
 	}
 
@@ -175,7 +172,7 @@ void CSettingGitRemote::OnBnClickedButtonAdd()
 	{
 		CString msg;
 		msg.Format(IDS_PROC_GITCONFIG_OVERWRITEREMOTE, (LPCTSTR)m_strRemote);
-		if(CMessageBox::Show(NULL, msg, _T("TortoiseGit"), MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2) == IDYES)
+		if (CMessageBox::Show(nullptr, msg, _T("TortoiseGit"), MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2) == IDYES)
 		{
 			m_ChangedMask &= ~REMOTE_NAME;
 		}
@@ -245,7 +242,7 @@ void CSettingGitRemote::OnLbnSelchangeListRemote()
 
 	if(m_ChangedMask)
 	{
-		if(CMessageBox::Show(NULL, IDS_PROC_GITCONFIG_SAVEREMOTE, IDS_APPNAME, 1, IDI_QUESTION, IDS_SAVEBUTTON, IDS_DISCARDBUTTON) == 1)
+		if (CMessageBox::Show(nullptr, IDS_PROC_GITCONFIG_SAVEREMOTE, IDS_APPNAME, 1, IDI_QUESTION, IDS_SAVEBUTTON, IDS_DISCARDBUTTON) == 1)
 			OnApply();
 	}
 	SetModified(FALSE);
@@ -395,7 +392,7 @@ BOOL CSettingGitRemote::Save(CString key,CString value)
 		{
 			CString msg;
 			msg.Format(IDS_PROC_SAVECONFIGFAILED, (LPCTSTR)cmd, (LPCTSTR)value);
-			CMessageBox::Show(NULL, msg, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+			CMessageBox::Show(nullptr, msg, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 			return FALSE;
 		}
 		return TRUE;
@@ -405,7 +402,7 @@ BOOL CSettingGitRemote::Save(CString key,CString value)
 	{
 		CString msg;
 		msg.Format(IDS_PROC_SAVECONFIGFAILED, (LPCTSTR)cmd, (LPCTSTR)value);
-		CMessageBox::Show(NULL, msg, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+		CMessageBox::Show(nullptr, msg, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 		return FALSE;
 	}
 	return TRUE;
@@ -421,7 +418,7 @@ BOOL CSettingGitRemote::SaveGeneral(CString key, CString value)
 		{
 			CString msg;
 			msg.Format(IDS_PROC_SAVECONFIGFAILED, (LPCTSTR)key, (LPCTSTR)value);
-			CMessageBox::Show(NULL, msg, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+			CMessageBox::Show(nullptr, msg, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 			return FALSE;
 		}
 		return TRUE;
@@ -431,7 +428,7 @@ BOOL CSettingGitRemote::SaveGeneral(CString key, CString value)
 	{
 		CString msg;
 		msg.Format(IDS_PROC_SAVECONFIGFAILED, (LPCTSTR)key, (LPCTSTR)value);
-		CMessageBox::Show(NULL, msg, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+		CMessageBox::Show(nullptr, msg, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 		return FALSE;
 	}
 
@@ -468,7 +465,7 @@ BOOL CSettingGitRemote::OnApply()
 
 	if (m_ChangedMask && m_strRemote.Trim().IsEmpty())
 	{
-		CMessageBox::Show(NULL, IDS_PROC_GITCONFIG_REMOTEEMPTY, IDS_APPNAME, MB_OK | MB_ICONERROR);
+		CMessageBox::Show(nullptr, IDS_PROC_GITCONFIG_REMOTEEMPTY, IDS_APPNAME, MB_OK | MB_ICONERROR);
 		return FALSE;
 	}
 
@@ -477,12 +474,12 @@ BOOL CSettingGitRemote::OnApply()
 		//Add Remote
 		if(m_strRemote.IsEmpty())
 		{
-			CMessageBox::Show(NULL, IDS_PROC_GITCONFIG_REMOTEEMPTY, IDS_APPNAME, MB_OK |  MB_ICONERROR);
+			CMessageBox::Show(nullptr, IDS_PROC_GITCONFIG_REMOTEEMPTY, IDS_APPNAME, MB_OK | MB_ICONERROR);
 			return FALSE;
 		}
 		if(m_strUrl.IsEmpty())
 		{
-			CMessageBox::Show(NULL, IDS_PROC_GITCONFIG_URLEMPTY, IDS_APPNAME, MB_OK | MB_ICONERROR);
+			CMessageBox::Show(nullptr, IDS_PROC_GITCONFIG_URLEMPTY, IDS_APPNAME, MB_OK | MB_ICONERROR);
 			return FALSE;
 		}
 
@@ -504,7 +501,7 @@ BOOL CSettingGitRemote::OnApply()
 		cmd.Format(_T("git.exe remote add \"%s\" \"%s\""), (LPCTSTR)m_strRemote, (LPCTSTR)m_strUrl);
 		if (g_Git.Run(cmd, &out, CP_UTF8))
 		{
-			CMessageBox::Show(NULL,out,_T("TorotiseGit"),MB_OK|MB_ICONERROR);
+			CMessageBox::Show(nullptr, out, _T("TorotiseGit"), MB_OK | MB_ICONERROR);
 			return FALSE;
 		}
 		m_ChangedMask &= ~REMOTE_URL;
@@ -512,7 +509,7 @@ BOOL CSettingGitRemote::OnApply()
 		m_ctrlRemoteList.SetCurSel(m_ctrlRemoteList.AddString(m_strRemote));
 		GetDlgItem(IDC_BUTTON_ADD)->EnableWindow(TRUE);
 		GetDlgItem(IDC_BUTTON_RENAME_REMOTE)->EnableWindow(TRUE);
-		if (!m_bNoFetch && CMessageBox::Show(NULL, IDS_SETTINGS_FETCH_ADDEDREMOTE, IDS_APPNAME, MB_ICONQUESTION | MB_YESNO) == IDYES)
+		if (!m_bNoFetch && CMessageBox::Show(nullptr, IDS_SETTINGS_FETCH_ADDEDREMOTE, IDS_APPNAME, MB_ICONQUESTION | MB_YESNO) == IDYES)
 			CCommonAppUtils::RunTortoiseGitProc(_T("/command:fetch /path:\"") + g_Git.m_CurrentDir + _T("\" /remote:\"") + m_strRemote + _T("\""));
 	}
 	if(m_ChangedMask & REMOTE_URL)
@@ -576,13 +573,13 @@ void CSettingGitRemote::OnBnClickedButtonRemove()
 		m_ctrlRemoteList.GetText(index,str);
 		CString msg;
 		msg.Format(IDS_WARN_REMOVE, (LPCTSTR)str);
-		if(CMessageBox::Show(NULL, msg, _T("TortoiseGit"), MB_YESNO | MB_ICONQUESTION) == IDYES)
+		if (CMessageBox::Show(nullptr, msg, _T("TortoiseGit"), MB_YESNO | MB_ICONQUESTION) == IDYES)
 		{
 			CString cmd,out;
 			cmd.Format(_T("git.exe remote rm %s"), (LPCTSTR)str);
 			if (g_Git.Run(cmd, &out, CP_UTF8))
 			{
-				CMessageBox::Show(NULL, out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+				CMessageBox::Show(nullptr, out,_T("TortoiseGit"), MB_OK | MB_ICONERROR);
 				return;
 			}
 
@@ -605,7 +602,7 @@ void CSettingGitRemote::OnBnClickedButtonRenameRemote()
 		cmd.Format(_T("git.exe remote rename %s %s"), (LPCTSTR)oldRemote, (LPCTSTR)newRemote);
 		if (g_Git.Run(cmd, &out, CP_UTF8))
 		{
-			CMessageBox::Show(NULL, out,_T("TortoiseGit"), MB_OK | MB_ICONERROR);
+			CMessageBox::Show(nullptr, out, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 			return;
 		}
 

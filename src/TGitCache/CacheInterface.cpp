@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2007,2009-2012 - TortoiseSVN
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2008-2013, 2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -45,7 +45,7 @@ CString GetCacheID()
 	if(result)
 	{
 		DWORD len = 0;
-		GetTokenInformation(token, TokenStatistics, NULL, 0, &len);
+		GetTokenInformation(token, TokenStatistics, nullptr, 0, &len);
 		if (len >= sizeof (TOKEN_STATISTICS))
 		{
 			auto data = std::make_unique<BYTE[]>(len);
@@ -57,7 +57,7 @@ CString GetCacheID()
 	return t;
 }
 
-bool SendCacheCommand(BYTE command, const WCHAR * path /* = NULL */)
+bool SendCacheCommand(BYTE command, const WCHAR* path /* = nullptr */)
 {
 	int retrycount = 2;
 	CAutoFile hPipe;
@@ -72,10 +72,10 @@ bool SendCacheCommand(BYTE command, const WCHAR * path /* = NULL */)
 			GENERIC_READ |					// read and write access
 			GENERIC_WRITE,
 			0,								// no sharing
-			NULL,							// default security attributes
+			nullptr,						// default security attributes
 			OPEN_EXISTING,					// opens existing pipe
 			FILE_FLAG_OVERLAPPED,			// default attributes
-			NULL);							// no template file
+			nullptr);						// no template file
 
 		if (!hPipe && GetLastError() == ERROR_PIPE_BUSY)
 		{
@@ -98,8 +98,8 @@ bool SendCacheCommand(BYTE command, const WCHAR * path /* = NULL */)
 	if (SetNamedPipeHandleState(
 		hPipe,		// pipe handle
 		&dwMode,	// new pipe mode
-		NULL,		// don't set maximum bytes
-		NULL))		// don't set maximum time
+		nullptr,	// don't set maximum bytes
+		nullptr))	// don't set maximum time
 	{
 		DWORD cbWritten;
 		TGITCacheCommand cmd = { 0 };
@@ -116,7 +116,7 @@ bool SendCacheCommand(BYTE command, const WCHAR * path /* = NULL */)
 				&cmd,			// buffer to write from
 				sizeof(cmd),	// number of bytes to write
 				&cbWritten,		// number of bytes written
-				NULL);			// not overlapped I/O
+				nullptr);		// not overlapped I/O
 			retrycount--;
 			if (! fSuccess || sizeof(cmd) != cbWritten)
 				Sleep(10);
@@ -136,7 +136,7 @@ bool SendCacheCommand(BYTE command, const WCHAR * path /* = NULL */)
 			&cmd,			// buffer to write from
 			sizeof(cmd),	// number of bytes to write
 			&cbWritten,		// number of bytes written
-			NULL);			// not overlapped I/O
+			nullptr);		// not overlapped I/O
 		DisconnectNamedPipe(hPipe);
 	}
 	else

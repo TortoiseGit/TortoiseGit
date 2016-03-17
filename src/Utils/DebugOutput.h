@@ -25,7 +25,7 @@ class CTraceToOutputDebugString
 public:
 	static CTraceToOutputDebugString& Instance()
 	{
-		if (m_pInstance == NULL)
+		if (!m_pInstance)
 			m_pInstance = new CTraceToOutputDebugString;
 		return *m_pInstance;
 	}

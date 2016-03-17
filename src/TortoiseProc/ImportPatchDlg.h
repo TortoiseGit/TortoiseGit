@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011, 2015 - TortoiseGit
+// Copyright (C) 2008-2011, 2015-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -37,7 +37,7 @@ class CImportPatchDlg : public CResizableStandAloneDialog
 	DECLARE_DYNAMIC(CImportPatchDlg)
 
 public:
-	CImportPatchDlg(CWnd* pParent = NULL);   // standard constructor
+	CImportPatchDlg(CWnd* pParent = nullptr);   // standard constructor
 	virtual ~CImportPatchDlg();
 
 	// Dialog Data
@@ -62,13 +62,13 @@ protected:
 
 	void SafeTerminateThread()
 	{
-		if(m_LoadingThread!=NULL)
+		if (m_LoadingThread)
 		{
 			InterlockedExchange(&m_bExitThread,TRUE);
 			DWORD ret =::WaitForSingleObject(m_LoadingThread->m_hThread,20000);
 			if(ret == WAIT_TIMEOUT)
 				::TerminateThread(m_LoadingThread,0);
-			m_LoadingThread = NULL;
+			m_LoadingThread = nullptr;
 			InterlockedExchange(&m_bThreadRunning, FALSE);
 		}
 	};

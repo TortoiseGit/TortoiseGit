@@ -26,7 +26,7 @@ class CMergeAbortDlg : public CStateStandAloneDialog
 	DECLARE_DYNAMIC(CMergeAbortDlg)
 
 public:
-	CMergeAbortDlg(CWnd* pParent = NULL);   // standard constructor
+	CMergeAbortDlg(CWnd* pParent = nullptr);   // standard constructor
 	virtual ~CMergeAbortDlg();
 
 // Dialog Data

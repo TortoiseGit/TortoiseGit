@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015 - TortoiseGit
+// Copyright (C) 2015-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -27,9 +27,9 @@ UINT CFindBar::WM_FINDRESET = RegisterWindowMessage(_T("TORTOISEGIT_PATCHVIEW_FI
 
 IMPLEMENT_DYNAMIC(CFindBar, CDialog)
 
-CFindBar::CFindBar(CWnd* pParent /*=NULL*/)
+CFindBar::CFindBar(CWnd* pParent /*=nullptr*/)
 : CDialog(CFindBar::IDD, pParent)
-, m_hIcon(NULL)
+, m_hIcon(nullptr)
 , m_bMatchCase(false)
 {
 }

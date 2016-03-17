@@ -40,7 +40,7 @@ public:
 		// show an explanation about what TSVN is (shell extension) and open up an explorer window
 		CMessageBox::Show(hwndExplorer, IDS_PROC_RTFM, IDS_APPNAME, MB_ICONINFORMATION);
 		TCHAR path[MAX_PATH] = {0};
-		SHGetFolderPath(hwndExplorer, CSIDL_PERSONAL, NULL, SHGFP_TYPE_CURRENT, path);
+		SHGetFolderPath(hwndExplorer, CSIDL_PERSONAL, nullptr, SHGFP_TYPE_CURRENT, path);
 		CAppUtils::ExploreTo(hwndExplorer, path);
 		return true;
 	}

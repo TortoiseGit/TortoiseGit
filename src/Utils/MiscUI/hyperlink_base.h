@@ -68,9 +68,9 @@ private:
 		 * No need to call DestroyCursor() for cursors acquired through
 		 * LoadCursor().
 		 */
-		g_hLinkCursor   = NULL;
+		g_hLinkCursor   = nullptr;
 		DeleteObject(g_UnderlineFont);
-		g_UnderlineFont = NULL;
+		g_UnderlineFont = nullptr;
 	}
 
 	void Navigate(void);

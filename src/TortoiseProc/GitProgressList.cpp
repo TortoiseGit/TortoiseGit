@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2015 - TortoiseGit
+// Copyright (C) 2008-2016 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -38,7 +38,7 @@ IMPLEMENT_DYNAMIC(CGitProgressList, CListCtrl)
 
 CGitProgressList::CGitProgressList():CListCtrl()
 	, m_bCancelled(FALSE)
-	, m_pThread(NULL)
+	, m_pThread(nullptr)
 	, m_bErrorsOccurred(false)
 	, m_options(ProgOptNone)
 	, m_bSetTitle(false)
@@ -386,7 +386,7 @@ void CGitProgressList::ReportUserCanceled()
 void CGitProgressList::ReportError(const CString& sError)
 {
 	if (CRegDWORD(_T("Software\\TortoiseGit\\NoSounds"), FALSE) == FALSE)
-		PlaySound((LPCTSTR)SND_ALIAS_SYSTEMEXCLAMATION, NULL, SND_ALIAS_ID | SND_ASYNC);
+		PlaySound((LPCTSTR)SND_ALIAS_SYSTEMEXCLAMATION, nullptr, SND_ALIAS_ID | SND_ASYNC);
 	ReportString(sError, CString(MAKEINTRESOURCE(IDS_ERR_ERROR)), m_Colors.GetColor(CColors::Conflict));
 	m_bErrorsOccurred = true;
 }
@@ -394,14 +394,14 @@ void CGitProgressList::ReportError(const CString& sError)
 void CGitProgressList::ReportWarning(const CString& sWarning)
 {
 	if (CRegDWORD(_T("Software\\TortoiseGit\\NoSounds"), FALSE) == FALSE)
-		PlaySound((LPCTSTR)SND_ALIAS_SYSTEMDEFAULT, NULL, SND_ALIAS_ID | SND_ASYNC);
+		PlaySound((LPCTSTR)SND_ALIAS_SYSTEMDEFAULT, nullptr, SND_ALIAS_ID | SND_ASYNC);
 	ReportString(sWarning, CString(MAKEINTRESOURCE(IDS_WARN_WARNING)), m_Colors.GetColor(CColors::Conflict));
 }
 
 void CGitProgressList::ReportNotification(const CString& sNotification)
 {
 	if (CRegDWORD(_T("Software\\TortoiseGit\\NoSounds"), FALSE) == FALSE)
-		PlaySound((LPCTSTR)SND_ALIAS_SYSTEMDEFAULT, NULL, SND_ALIAS_ID | SND_ASYNC);
+		PlaySound((LPCTSTR)SND_ALIAS_SYSTEMDEFAULT, nullptr, SND_ALIAS_ID | SND_ASYNC);
 	ReportString(sNotification, CString(MAKEINTRESOURCE(IDS_WARN_NOTE)));
 }
 
@@ -600,7 +600,7 @@ void CGitProgressList::OnLvnGetdispinfoSvnprogress(NMHDR *pNMHDR, LRESULT *pResu
 						int cWidth = GetColumnWidth(1);
 						cWidth = max(12, cWidth-12);
 						CDC * pDC = GetDC();
-						if (pDC != NULL)
+						if (pDC)
 						{
 							CFont * pFont = pDC->SelectObject(GetFont());
 							PathCompactPath(pDC->GetSafeHdc(), m_columnbuf, cWidth);
@@ -648,8 +648,8 @@ void CGitProgressList::OnNMCustomdrawSvnprogress(NMHDR *pNMHDR, LRESULT *pResult
 			return;
 		}
 		const NotificationData * data = m_arData[pLVCD->nmcd.dwItemSpec];
-		ASSERT(data != NULL);
-		if (data == NULL)
+		ASSERT(data);
+		if (!data)
 			return;
 
 		// Store the color back in the NMLVCUSTOMDRAW struct.
@@ -792,7 +792,7 @@ int CGitProgressList::UpdateProgress(const git_transfer_progress* stat)
 	if (m_pProgressLabelCtrl)
 		m_pProgressLabelCtrl->SetWindowText(progText);
 
-	SetTimer(TRANSFERTIMER, 2000, NULL);
+	SetTimer(TRANSFERTIMER, 2000, nullptr);
 
 	return 0;
 }
@@ -999,10 +999,8 @@ void CGitProgressList::Init()
 	InsertColumn(1, temp);
 
 	m_pThread = AfxBeginThread(ProgressThreadEntry, this, THREAD_PRIORITY_NORMAL,0,CREATE_SUSPENDED);
-	if (m_pThread==NULL)
-	{
+	if (!m_pThread)
 		ReportError(CString(MAKEINTRESOURCE(IDS_ERR_THREADSTARTFAILED)));
-	}
 	else
 	{
 		m_pThread->m_bAutoDelete = FALSE;
@@ -1013,7 +1011,7 @@ void CGitProgressList::Init()
 	// text gets added.
 	ResizeColumns();
 
-	SetTimer(VISIBLETIMER, 300, NULL);
+	SetTimer(VISIBLETIMER, 300, nullptr);
 }
 
 
@@ -1059,7 +1057,7 @@ BOOL CGitProgressList::PreTranslateMessage(MSG* pMsg)
 					//Ctrl-C -> copy to clipboard
 					CString sClipdata;
 					POSITION pos = GetFirstSelectedItemPosition();
-					if (pos != NULL)
+					if (pos)
 					{
 						while (pos)
 						{

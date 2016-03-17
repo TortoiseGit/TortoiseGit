@@ -26,7 +26,7 @@
  */
 template <typename HandleType,
 	template <class> class CloseFunction,
-	HandleType NULL_VALUE = NULL>
+	HandleType NULL_VALUE = nullptr>
 class CSmartHandle
 {
 public:

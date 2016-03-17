@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2011 - TortoiseSVN
-// Copyright (C) 2012-2015 - TortoiseGit
+// Copyright (C) 2012-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -175,7 +175,7 @@ int CRevisionGraphWnd::GetEncoderClsid(const WCHAR* format, CLSID* pClsid)
 		return -1;  // Failure
 
 	ImageCodecInfo* pImageCodecInfo = (ImageCodecInfo*)(malloc(size));
-	if(pImageCodecInfo == NULL)
+	if (!pImageCodecInfo)
 		return -1;  // Failure
 
 	if (GetImageEncoders(num, size, pImageCodecInfo)==Ok)
@@ -291,7 +291,7 @@ bool CRevisionGraphWnd::AnalyzeRevisionData()
 {
 #if 0
 	CSyncPointer<const CFullGraph> fullGraph (m_state.GetFullGraph());
-	if ((fullGraph.get() != NULL) && (fullGraph->GetNodeCount() > 0))
+	if (fullGraph.get() != nullptr && (fullGraph->GetNodeCount() > 0))
 	{
 		// filter graph
 
@@ -323,14 +323,14 @@ bool CRevisionGraphWnd::AnalyzeRevisionData()
 		m_state.SetAnalysisResult (visibleGraph, newLayout);
 	}
 
-	return m_state.GetNodes().get() != NULL;
+	return m_state.GetNodes().get() != nullptr;
 #endif
 	return true;
 }
 
 bool CRevisionGraphWnd::IsUpdateJobRunning() const
 {
-	return (updateJob.get() != NULL) && !updateJob->IsDone();
+	return (updateJob.get() != nullptr) && !updateJob->IsDone();
 }
 
 bool CRevisionGraphWnd::GetShowOverview() const
@@ -386,7 +386,7 @@ void CRevisionGraphWnd::GetSelected
 
 CString	CRevisionGraphWnd::GetFriendRefName(ogdf::node v)
 {
-	if(v == NULL)
+	if (!v)
 		return CString();
 	CGitHash hash = this->m_logEntries[v->index()];
 	if(this->m_HashMap.find(hash) == m_HashMap.end())
@@ -402,7 +402,7 @@ CString	CRevisionGraphWnd::GetFriendRefName(ogdf::node v)
 
 STRING_VECTOR CRevisionGraphWnd::GetFriendRefNames(ogdf::node v, CGit::REF_TYPE *refTypes, int refTypeCount)
 {
-	if (v == NULL)
+	if (!v)
 		return STRING_VECTOR();
 	CGitHash hash = m_logEntries[v->index()];
 	if (m_HashMap.find(hash) == m_HashMap.end())
@@ -419,7 +419,7 @@ STRING_VECTOR CRevisionGraphWnd::GetFriendRefNames(ogdf::node v, CGit::REF_TYPE 
 		{
 			CGit::REF_TYPE refType;
 			CString shortName = CGit::GetShortName(all[i], &refType);
-			if (refTypes == NULL)
+			if (!refTypes)
 				list.push_back(shortName);
 			else
 			{
@@ -434,8 +434,8 @@ STRING_VECTOR CRevisionGraphWnd::GetFriendRefNames(ogdf::node v, CGit::REF_TYPE 
 
 void CRevisionGraphWnd::CompareRevs(const CString& revTo)
 {
-	ASSERT(m_SelectedEntry1 != NULL);
-	ASSERT(!revTo.IsEmpty() || m_SelectedEntry2 != NULL);
+	ASSERT(m_SelectedEntry1);
+	ASSERT(!revTo.IsEmpty() || m_SelectedEntry2);
 
 //	bool alternativeTool = !!(GetAsyncKeyState(VK_SHIFT) & 0x8000);
 
@@ -452,8 +452,8 @@ void CRevisionGraphWnd::CompareRevs(const CString& revTo)
 
 void CRevisionGraphWnd::UnifiedDiffRevs(bool bHead)
 {
-	ASSERT(m_SelectedEntry1 != NULL);
-	ASSERT(bHead || m_SelectedEntry2 != NULL);
+	ASSERT(m_SelectedEntry1);
+	ASSERT(bHead || m_SelectedEntry2);
 
 	bool alternativeTool = !!(GetAsyncKeyState(VK_SHIFT) & 0x8000);
 	CAppUtils::StartShowUnifiedDiff(m_hWnd, CString(), GetFriendRefName(m_SelectedEntry1), CString(),
@@ -473,12 +473,12 @@ void CRevisionGraphWnd::DoZoom (float fZoomFactor, bool updateScrollbars)
 
 	for (int i = 0; i < MAXFONTS; ++i)
 	{
-		if (m_apFonts[i] != NULL)
+		if (m_apFonts[i])
 		{
 			m_apFonts[i]->DeleteObject();
 			delete m_apFonts[i];
 		}
-		m_apFonts[i] = NULL;
+		m_apFonts[i] = nullptr;
 	}
 
 	if (updateScrollbars)

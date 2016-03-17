@@ -81,8 +81,8 @@ class /*AFX_EXT_CLASS*/ CTreePropSheet : public CPropertySheet
 // Construction/Destruction
 public:
 	CTreePropSheet();
-	CTreePropSheet(UINT nIDCaption, CWnd* pParentWnd = NULL, UINT iSelectPage = 0);
-	CTreePropSheet(LPCTSTR pszCaption, CWnd* pParentWnd = NULL, UINT iSelectPage = 0);
+	CTreePropSheet(UINT nIDCaption, CWnd* pParentWnd = nullptr, UINT iSelectPage = 0);
+	CTreePropSheet(LPCTSTR pszCaption, CWnd* pParentWnd = nullptr, UINT iSelectPage = 0);
 	virtual ~CTreePropSheet();
 
 // Operations
@@ -192,7 +192,7 @@ public:
 
 	/**
 	Returns a pointer to the tree control, when the sheet is in
-	tree view mode, NULL otherwise.
+	tree view mode, nullptr otherwise.
 	*/
 	CTreeCtrl* GetPageTreeControl();
 
@@ -251,7 +251,7 @@ public:
 
 	@return
 		TRUE on success, FALSE if the PSP_USEHICON flag was not set or
-		if the icon handle was NULL.
+		if the icon handle was nullptr.
 	*/
 	static BOOL DestroyPageIcon(CPropertyPage *pPage);
 
@@ -348,7 +348,7 @@ protected:
 
 	/**
 	Returns the page tree item, that representates the specified page
-	or NULL, if no such icon exists.
+	or nullptr, if no such icon exists.
 
 	@param nPage
 		Zero based page index, for which the item to retrieve.
@@ -475,6 +475,6 @@ private:
 /////////////////////////////////////////////////////////////////////////////
 
 //{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ fügt unmittelbar vor der vorhergehenden Zeile zusätzliche Deklarationen ein.
+// Microsoft Visual C++ fÃ¼gt unmittelbar vor der vorhergehenden Zeile zusÃ¤tzliche Deklarationen ein.
 
 #endif // AFX_TREEPROPSHEET_H__50695CFB_FCE4_4188_ADB4_BF05A5488E41__INCLUDED_

@@ -147,7 +147,7 @@ DWORD CRegBaseCommon<S>::removeKey()
     m_exists = false;
     m_read = true;
 
-    HKEY hKey = NULL;
+    HKEY hKey = nullptr;
     RegOpenKeyEx (m_base, GetPlainString (m_path), 0, KEY_WRITE|m_sam, &hKey);
     return SHDeleteKey(m_base, GetPlainString (m_path));
 }
@@ -158,7 +158,7 @@ LONG CRegBaseCommon<S>::removeValue()
     m_exists = false;
     m_read = true;
 
-    HKEY hKey = NULL;
+    HKEY hKey = nullptr;
     RegOpenKeyEx(m_base, GetPlainString (m_path), 0, KEY_WRITE|m_sam, &hKey);
     return RegDeleteValue(hKey, GetPlainString (m_key));
 }
@@ -424,7 +424,7 @@ void CRegTypedBase<T, Base>::read()
     m_value = m_defaultvalue;
     m_exists = false;
 
-    HKEY hKey = NULL;
+    HKEY hKey = nullptr;
     if ((LastError = RegOpenKeyEx (m_base, GetPlainString (m_path), 0, STANDARD_RIGHTS_READ|KEY_QUERY_VALUE|m_sam, &hKey))==ERROR_SUCCESS)
     {
 
@@ -447,10 +447,10 @@ void CRegTypedBase<T, Base>::read()
 template<class T, class Base>
 void CRegTypedBase<T, Base>::write()
 {
-    HKEY hKey = NULL;
+    HKEY hKey = nullptr;
 
     DWORD disp = 0;
-    if ((LastError = RegCreateKeyEx(m_base, GetPlainString (m_path), 0, _T(""), REG_OPTION_NON_VOLATILE, KEY_WRITE|m_sam, NULL, &hKey, &disp))!=ERROR_SUCCESS)
+    if ((LastError = RegCreateKeyEx(m_base, GetPlainString(m_path), 0, _T(""), REG_OPTION_NON_VOLATILE, KEY_WRITE | m_sam, nullptr, &hKey, &disp)) != ERROR_SUCCESS)
     {
         return;
     }
@@ -613,7 +613,7 @@ void CRegDWORDCommon<Base>::InternalRead (HKEY hKey, DWORD& value)
 {
     DWORD size = sizeof(value);
     DWORD type = 0;
-    if ((LastError = RegQueryValueEx(hKey, GetPlainString (m_key), NULL, &type, (BYTE*) &value, &size))==ERROR_SUCCESS)
+    if ((LastError = RegQueryValueEx(hKey, GetPlainString(m_key), nullptr, &type, (BYTE*)&value, &size)) == ERROR_SUCCESS)
     {
         ASSERT(type==REG_DWORD);
     }
@@ -725,12 +725,12 @@ void CRegStringCommon<Base>::InternalRead (HKEY hKey, typename Base::StringT& va
 {
     DWORD size = 0;
     DWORD type = 0;
-    LastError = RegQueryValueEx(hKey, GetPlainString (m_key), NULL, &type, NULL, &size);
+    LastError = RegQueryValueEx(hKey, GetPlainString(m_key), nullptr, &type, nullptr, &size);
 
     if (LastError == ERROR_SUCCESS)
     {
         auto pStr = std::make_unique<TCHAR[]>(size);
-        if ((LastError = RegQueryValueEx(hKey, GetPlainString (m_key), NULL, &type, (BYTE*) pStr.get(), &size))==ERROR_SUCCESS)
+        if ((LastError = RegQueryValueEx(hKey, GetPlainString(m_key), nullptr, &type, (BYTE*)pStr.get(), &size)) == ERROR_SUCCESS)
         {
             ASSERT(type==REG_SZ || type==REG_EXPAND_SZ);
             value = StringT (pStr.get());

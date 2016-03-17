@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011,2013-2015 - TortoiseGit
+// Copyright (C) 2008-2011, 2013-2016 - TortoiseGit
 // Copyright (C) 2003-2007,2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -135,7 +135,7 @@ void CSettingsProgsDiff::OnBnClickedExtdiffOn()
 
 void CSettingsProgsDiff::OnBnClickedExtdiffbrowse()
 {
-	if (CAppUtils::FileOpenSave(m_sDiffPath, NULL, IDS_SETTINGS_SELECTDIFF, IDS_PROGRAMSFILEFILTER, true, m_hWnd))
+	if (CAppUtils::FileOpenSave(m_sDiffPath, nullptr, IDS_SETTINGS_SELECTDIFF, IDS_PROGRAMSFILEFILTER, true, m_hWnd))
 	{
 		UpdateData(FALSE);
 		SetModified();
@@ -193,7 +193,7 @@ void CSettingsProgsDiff::OnEnChangeDiffviewer()
 
 void CSettingsProgsDiff::OnBnClickedDiffviewerbrowse()
 {
-	if (CAppUtils::FileOpenSave(m_sDiffViewerPath, NULL, IDS_SETTINGS_SELECTDIFFVIEWER, IDS_PROGRAMSFILEFILTER, true, m_hWnd))
+	if (CAppUtils::FileOpenSave(m_sDiffViewerPath, nullptr, IDS_SETTINGS_SELECTDIFFVIEWER, IDS_PROGRAMSFILEFILTER, true, m_hWnd))
 	{
 		UpdateData(FALSE);
 		SetModified();

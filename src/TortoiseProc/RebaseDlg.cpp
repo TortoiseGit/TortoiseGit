@@ -40,7 +40,7 @@
 
 IMPLEMENT_DYNAMIC(CRebaseDlg, CResizableStandAloneDialog)
 
-CRebaseDlg::CRebaseDlg(CWnd* pParent /*=NULL*/)
+CRebaseDlg::CRebaseDlg(CWnd* pParent /*=nullptr*/)
 	: CResizableStandAloneDialog(CRebaseDlg::IDD, pParent)
 	, m_bAddCherryPickedFrom(FALSE)
 	, m_bStatusWarning(false)
@@ -266,7 +266,7 @@ BOOL CRebaseDlg::OnInitDialog()
 		int delta = yPos - rectSplitter.top;
 		if ((rcLogMsg.bottom + delta > rcLogMsg.top)&&(rcLogMsg.bottom + delta < rcFileList.bottom - 30))
 		{
-			m_wndSplitter.SetWindowPos(NULL, 0, yPos, 0, 0, SWP_NOSIZE);
+			m_wndSplitter.SetWindowPos(nullptr, 0, yPos, 0, 0, SWP_NOSIZE);
 			DoSize(delta);
 		}
 	}
@@ -467,7 +467,7 @@ void CRebaseDlg::LoadBranchInfo()
 	else
 		m_BranchCtrl.AddString(g_Git.GetCurrentBranch(true));
 	list.clear();
-	g_Git.GetBranchList(list, NULL, CGit::BRANCH_ALL_F);
+	g_Git.GetBranchList(list, nullptr, CGit::BRANCH_ALL_F);
 	g_Git.GetTagList(list);
 	m_UpstreamCtrl.SetList(list);
 
@@ -918,7 +918,7 @@ int CRebaseDlg::CheckRebaseCondition()
 
 	if( !g_Git.CheckCleanWorkTree()  )
 	{
-		if ((!m_IsCherryPick && g_Git.GetConfigValueBool(L"rebase.autostash")) || CMessageBox::Show(NULL, IDS_ERROR_NOCLEAN_STASH, IDS_APPNAME, 1, IDI_QUESTION, IDS_STASHBUTTON, IDS_ABORTBUTTON) == 1)
+		if ((!m_IsCherryPick && g_Git.GetConfigValueBool(L"rebase.autostash")) || CMessageBox::Show(GetSafeHwnd(), IDS_ERROR_NOCLEAN_STASH, IDS_APPNAME, 1, IDI_QUESTION, IDS_STASHBUTTON, IDS_ABORTBUTTON) == 1)
 		{
 			CString cmd,out;
 			cmd=_T("git.exe stash");
@@ -946,7 +946,7 @@ int CRebaseDlg::CheckRebaseCondition()
 void CRebaseDlg::CheckRestoreStash()
 {
 	bool autoStash = !m_IsCherryPick && g_Git.GetConfigValueBool(L"rebase.autostash");
-	if (m_bStashed && (autoStash || CMessageBox::Show(nullptr, IDS_DCOMMIT_STASH_POP, IDS_APPNAME, MB_YESNO | MB_ICONQUESTION) == IDYES))
+	if (m_bStashed && (autoStash || CMessageBox::Show(GetSafeHwnd(), IDS_DCOMMIT_STASH_POP, IDS_APPNAME, MB_YESNO | MB_ICONQUESTION) == IDYES))
 		CAppUtils::StashPop(autoStash ? 0 : 1);
 	m_bStashed = false;
 }
@@ -1297,7 +1297,7 @@ void CRebaseDlg::OnBnClickedContinue()
 			AddLogString(out);
 			if(!g_Git.CheckCleanWorkTree())
 			{
-				CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+				CMessageBox::Show(GetSafeHwnd(), out, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 				return;
 			}
 		}
@@ -1310,13 +1310,13 @@ void CRebaseDlg::OnBnClickedContinue()
 		{
 			if (str.Trim().IsEmpty())
 			{
-				CMessageBox::Show(NULL, IDS_PROC_COMMITMESSAGE_EMPTY,IDS_APPNAME, MB_OK | MB_ICONERROR);
+				CMessageBox::Show(GetSafeHwnd(), IDS_PROC_COMMITMESSAGE_EMPTY,IDS_APPNAME, MB_OK | MB_ICONERROR);
 				return;
 			}
 			CString tempfile = ::GetTempFile();
 			if (CAppUtils::SaveCommitUnicodeFile(tempfile, str))
 			{
-				CMessageBox::Show(nullptr, _T("Could not save commit message"), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+				CMessageBox::Show(GetSafeHwnd(), _T("Could not save commit message"), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 				return;
 			}
 
@@ -1329,7 +1329,7 @@ void CRebaseDlg::OnBnClickedContinue()
 				AddLogString(out);
 				if (!g_Git.CheckCleanWorkTree())
 				{
-					CMessageBox::Show(NULL, out, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+					CMessageBox::Show(GetSafeHwnd(), out, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 					return;
 				}
 			}
@@ -1376,7 +1376,7 @@ void CRebaseDlg::OnBnClickedContinue()
 
 	if ((m_RebaseStage == REBASE_EDIT || m_RebaseStage == REBASE_CONTINUE || m_bSplitCommit || m_RebaseStage == REBASE_SQUASH_EDIT) && CheckNextCommitIsSquash() && (m_bSplitCommit || !g_Git.CheckCleanWorkTree(true)))
 	{
-		if (!m_bSplitCommit && CMessageBox::Show(nullptr, IDS_PROC_REBASE_CONTINUE_NOTCLEAN, IDS_APPNAME, 1, IDI_ERROR, IDS_MSGBOX_OK, IDS_ABORTBUTTON) == 2)
+		if (!m_bSplitCommit && CMessageBox::Show(GetSafeHwnd(), IDS_PROC_REBASE_CONTINUE_NOTCLEAN, IDS_APPNAME, 1, IDI_ERROR, IDS_MSGBOX_OK, IDS_ABORTBUTTON) == 2)
 			return;
 		BOOL isFirst = TRUE;
 		do
@@ -1437,14 +1437,14 @@ void CRebaseDlg::OnBnClickedContinue()
 		str=this->m_LogMessageCtrl.GetText();
 		if(str.Trim().IsEmpty())
 		{
-			CMessageBox::Show(NULL, IDS_PROC_COMMITMESSAGE_EMPTY,IDS_APPNAME, MB_OK | MB_ICONERROR);
+			CMessageBox::Show(GetSafeHwnd(), IDS_PROC_COMMITMESSAGE_EMPTY,IDS_APPNAME, MB_OK | MB_ICONERROR);
 				return;
 		}
 
 		CString tempfile=::GetTempFile();
 		if (CAppUtils::SaveCommitUnicodeFile(tempfile, str))
 		{
-			CMessageBox::Show(nullptr, _T("Could not save commit message"), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+			CMessageBox::Show(GetSafeHwnd(), _T("Could not save commit message"), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 			return;
 		}
 
@@ -1467,7 +1467,7 @@ void CRebaseDlg::OnBnClickedContinue()
 		{
 			if(!g_Git.CheckCleanWorkTree())
 			{
-				CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+				CMessageBox::Show(GetSafeHwnd(), out, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 				return;
 			}
 		}
@@ -1500,10 +1500,10 @@ void CRebaseDlg::OnBnClickedContinue()
 	InterlockedExchange(&m_bThreadRunning, TRUE);
 	SetControlEnable();
 
-	if (AfxBeginThread(RebaseThreadEntry, this)==NULL)
+	if (!AfxBeginThread(RebaseThreadEntry, this))
 	{
 		InterlockedExchange(&m_bThreadRunning, FALSE);
-		CMessageBox::Show(NULL, _T("Create Rebase Thread Fail"), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+		CMessageBox::Show(GetSafeHwnd(), _T("Create Rebase Thread Fail"), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 		SetControlEnable();
 	}
 }
@@ -1854,7 +1854,7 @@ int CRebaseDlg::DoRebase()
 	if (m_bAddCherryPickedFrom)
 		cherryPickedFrom = _T("-x ");
 	else if (!m_IsCherryPick && nocommit.IsEmpty())
-		cherryPickedFrom = _T("--ff "); // for issue #1833: "If the current HEAD is the same as the parent of the cherry-pick’ed commit, then a fast forward to this commit will be performed."
+		cherryPickedFrom = _T("--ff "); // for issue #1833: "If the current HEAD is the same as the parent of the cherry-picked commit, then a fast forward to this commit will be performed."
 
 	int isEmpty = IsCommitEmpty(pRev->m_CommitHash);
 	if (isEmpty == 1)
@@ -2028,7 +2028,7 @@ int CRebaseDlg::DoRebase()
 					int choose = -1;
 					if (!m_bAutoSkipFailedCommit)
 					{
-						choose = CMessageBox::ShowCheck(m_hWnd, IDS_CHERRYPICKFAILEDSKIP, IDS_APPNAME, 1, IDI_QUESTION, IDS_SKIPBUTTON, IDS_MSGBOX_RETRY, IDS_MSGBOX_CANCEL, NULL, IDS_DO_SAME_FOR_REST, &m_bAutoSkipFailedCommit);
+						choose = CMessageBox::ShowCheck(GetSafeHwnd(), IDS_CHERRYPICKFAILEDSKIP, IDS_APPNAME, 1, IDI_QUESTION, IDS_SKIPBUTTON, IDS_MSGBOX_RETRY, IDS_MSGBOX_CANCEL, nullptr, IDS_DO_SAME_FOR_REST, &m_bAutoSkipFailedCommit);
 						if (choose == 2)
 						{
 							m_bAutoSkipFailedCommit = FALSE;
@@ -2322,7 +2322,7 @@ void CRebaseDlg::OnBnClickedAbort()
 		goto end;
 	}
 
-	if(CMessageBox::Show(NULL, IDS_PROC_REBASE_ABORT, IDS_APPNAME, MB_YESNO) != IDYES)
+	if (CMessageBox::Show(GetSafeHwnd(), IDS_PROC_REBASE_ABORT, IDS_APPNAME, MB_YESNO) != IDYES)
 		goto end;
 
 	if(this->m_IsFastForward)

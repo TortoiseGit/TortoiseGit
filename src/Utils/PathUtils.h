@@ -80,13 +80,13 @@ public:
 	 * Returns the path to the installation folder, in our case the TortoiseSVN/bin folder.
 	 * \remark the path returned has a trailing backslash
 	 */
-	static CString GetAppDirectory(HMODULE hMod = NULL);
+	static CString GetAppDirectory(HMODULE hMod = nullptr);
 
 	/**
 	 * Returns the path to the installation parent folder, in our case the TortoiseSVN folder.
 	 * \remark the path returned has a trailing backslash
 	 */
-	static CString GetAppParentDirectory(HMODULE hMod = NULL);
+	static CString GetAppParentDirectory(HMODULE hMod = nullptr);
 
 	/**
 	 * Returns the path to the application data folder, in our case the %APPDATA%TortoiseSVN folder.

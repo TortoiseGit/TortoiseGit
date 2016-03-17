@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2015 - TortoiseGit
+// Copyright (C) 2008-2013, 2015-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -31,7 +31,7 @@
 
 IMPLEMENT_DYNAMIC(CSendMailDlg, CResizableStandAloneDialog)
 
-CSendMailDlg::CSendMailDlg(CWnd* pParent /*=NULL*/)
+CSendMailDlg::CSendMailDlg(CWnd* pParent /*=nullptr*/)
 	: CResizableStandAloneDialog(CSendMailDlg::IDD, pParent)
 	, m_bCustomSubject(FALSE)
 
@@ -153,7 +153,7 @@ void CSendMailDlg::OnBnClickedOk()
 
 	if (m_To.IsEmpty() && m_CC.IsEmpty() && CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\DeliveryType"), SEND_MAIL_MAPI) != SEND_MAIL_MAPI)
 	{
-		CMessageBox::Show(NULL,IDS_ERR_ADDRESS_NO_EMPTY,IDS_APPNAME,MB_OK|MB_ICONERROR);
+		CMessageBox::Show(GetSafeHwnd(), IDS_ERR_ADDRESS_NO_EMPTY, IDS_APPNAME, MB_OK | MB_ICONEXCLAMATION);
 		return;
 	}
 	int start =0;

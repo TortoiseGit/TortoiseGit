@@ -24,10 +24,10 @@
 COMError::COMError(HRESULT hr)
 {
 	_com_error e(hr);
-	IErrorInfo *pIErrorInfo = NULL;
+	IErrorInfo *pIErrorInfo = nullptr;
 	GetErrorInfo(0, &pIErrorInfo);
 
-	if (pIErrorInfo == NULL)
+	if (!pIErrorInfo)
 	{
 		e = _com_error(hr);
 		message = e.ErrorMessage();
@@ -37,13 +37,13 @@ COMError::COMError(HRESULT hr)
 		e = _com_error(hr, pIErrorInfo);
 		message = e.ErrorMessage();
 		IErrorInfo *ptrIErrorInfo = e.ErrorInfo();
-		if (ptrIErrorInfo != NULL)
+		if (ptrIErrorInfo)
 		{
 			// IErrorInfo Interface located
 			description = (WCHAR *)e.Description();
 			source = (WCHAR *)e.Source();
 			GUID tmpGuid = e.GUID();
-			RPC_WSTR guidStr = NULL;
+			RPC_WSTR guidStr = nullptr;
 			// must link in Rpcrt4.lib for UuidToString
 			UuidToString(&tmpGuid, &guidStr);
 			uuid = (WCHAR*)guidStr;

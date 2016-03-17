@@ -28,7 +28,7 @@
 #include "Git.h"
 
 //IMPLEMENT_DYNAMIC(CAboutDlg, CStandAloneDialog)
-CAboutDlg::CAboutDlg(CWnd* pParent /*=NULL*/)
+CAboutDlg::CAboutDlg(CWnd* pParent /*=nullptr*/)
 	: CStandAloneDialog(CAboutDlg::IDD, pParent)
 {
 }
@@ -110,8 +110,8 @@ BOOL CAboutDlg::OnInitDialog()
 	m_renderDest.Create32BitFromPicture(&tmpPic,468,64);
 
 	m_waterEffect.Create(468,64);
-	SetTimer(ID_EFFECTTIMER, 40, NULL);
-	SetTimer(ID_DROPTIMER, 1500, NULL);
+	SetTimer(ID_EFFECTTIMER, 40, nullptr);
+	SetTimer(ID_DROPTIMER, 1500, nullptr);
 
 	m_cWebLink.SetURL(_T("https://tortoisegit.org/"));
 	m_cSupportLink.SetURL(_T("https://tortoisegit.org/donate"));

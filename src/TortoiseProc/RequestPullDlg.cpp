@@ -29,7 +29,7 @@
 
 IMPLEMENT_DYNAMIC(CRequestPullDlg, CHorizontalResizableStandAloneDialog)
 
-CRequestPullDlg::CRequestPullDlg(CWnd* pParent /*=NULL*/)
+CRequestPullDlg::CRequestPullDlg(CWnd* pParent /*=nullptr*/)
 	: CHorizontalResizableStandAloneDialog(CRequestPullDlg::IDD, pParent)
 	, m_regSendMail(_T("Software\\TortoiseGit\\TortoiseProc\\RequestPull\\SendMail"), FALSE)
 {
@@ -76,7 +76,7 @@ BOOL CRequestPullDlg::OnInitDialog()
 	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);
 
 	STRING_VECTOR list;
-	g_Git.GetBranchList(list, NULL, CGit::BRANCH_ALL);
+	g_Git.GetBranchList(list, nullptr, CGit::BRANCH_ALL);
 	m_cStartRevision.SetMaxHistoryItems(0x7FFFFFFF);
 	m_cStartRevision.SetList(list);
 

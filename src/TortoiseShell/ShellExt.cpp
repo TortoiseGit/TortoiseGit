@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2015 - TortoiseGit
+// Copyright (C) 2011-2016 - TortoiseGit
 // Copyright (C) 2003-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -71,7 +71,7 @@ void LoadLangDll()
 		g_langid = g_ShellCache.GetLangID();
 		DWORD langId = g_langid;
 		TCHAR langDll[MAX_PATH*4] = {0};
-		HINSTANCE hInst = NULL;
+		HINSTANCE hInst = nullptr;
 		TCHAR langdir[MAX_PATH] = {0};
 		char langdirA[MAX_PATH] = {0};
 		if (GetModuleFileName(g_hmodThisDll, langdir, _countof(langdir))==0)
@@ -116,11 +116,11 @@ void LoadLangDll()
 			{
 				LPVOID pBuffer = (void*) malloc(dwBufferSize);
 
-				if (pBuffer != (void*) NULL)
+				if (pBuffer)
 				{
 					UINT        nInfoSize = 0;
 					UINT        nFixedLength = 0;
-					LPSTR       lpVersion = NULL;
+					LPSTR       lpVersion = nullptr;
 					VOID*       lpFixedPointer;
 					TRANSARRAY* lpTransArray;
 					TCHAR       strLangProductVersion[MAX_PATH] = {0};
@@ -152,14 +152,14 @@ void LoadLangDll()
 						}
 					}
 					free(pBuffer);
-				} // if (pBuffer != (void*) NULL)
+				} // if (pBuffer)
 			} // if (dwBufferSize > 0)
 			else
 				versionmatch = FALSE;
 
 			if (versionmatch)
 				hInst = LoadLibrary(langDll);
-			if (hInst != NULL)
+			if (hInst)
 			{
 				if (g_hResInst != g_hmodThisDll)
 					FreeLibrary(g_hResInst);
@@ -176,8 +176,8 @@ void LoadLangDll()
 				else
 					langId = 0;
 			}
-		} while ((hInst == NULL) && (langId != 0));
-		if (hInst == NULL)
+		} while (!hInst && langId != 0);
+		if (!hInst)
 		{
 			// either the dll for the selected language is not present, or
 			// it is the wrong version.
@@ -201,7 +201,7 @@ STDMETHODIMP CShellExt::QueryInterface(REFIID riid, LPVOID FAR *ppv)
 	if(ppv == 0)
 		return E_POINTER;
 
-	*ppv = NULL;
+	*ppv = nullptr;
 
 	if (IsEqualIID(riid, IID_IShellExtInit) || IsEqualIID(riid, IID_IUnknown))
 	{

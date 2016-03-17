@@ -26,7 +26,7 @@ class CDeleteConflictDlg : public CStandAloneDialog
 	DECLARE_DYNAMIC(CDeleteConflictDlg)
 
 public:
-	CDeleteConflictDlg(CWnd* pParent = NULL);   // standard constructor
+	CDeleteConflictDlg(CWnd* pParent = nullptr);   // standard constructor
 	virtual ~CDeleteConflictDlg();
 
 // Dialog Data

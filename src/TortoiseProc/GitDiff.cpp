@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
-// Copyright (C) 2008-2015 - TortoiseGit
+// Copyright (C) 2008-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -49,7 +49,7 @@ int CGitDiff::SubmoduleDiffNull(const CTGitPath * pPath, const git_revnum_t &rev
 	CString output, err;
 	if (g_Git.Run(cmd, &output, &err, CP_UTF8))
 	{
-		CMessageBox::Show(NULL, output + L"\n" + err, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
+		CMessageBox::Show(nullptr, output + L"\n" + err, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 		return -1;
 	}
 
@@ -87,9 +87,9 @@ int CGitDiff::SubmoduleDiffNull(const CTGitPath * pPath, const git_revnum_t &rev
 	}
 
 	if (rev1 != GIT_REV_ZERO)
-		CMessageBox::Show(NULL, _T("ls-tree output format error"), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+		CMessageBox::Show(nullptr, _T("ls-tree output format error"), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 	else
-		CMessageBox::Show(NULL, _T("ls-files output format error"), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+		CMessageBox::Show(nullptr, _T("ls-files output format error"), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 	return -1;
 }
 
@@ -102,7 +102,7 @@ int CGitDiff::DiffNull(const CTGitPath *pPath, git_revnum_t rev1, bool bIsAdd, i
 		CGitHash rev1Hash;
 		if (g_Git.GetHash(rev1Hash, rev1)) // make sure we have a HASH here, otherwise filenames might be invalid
 		{
-			MessageBox(NULL, g_Git.GetGitLastErr(_T("Could not get hash of \"") + rev1 + _T("\".")), _T("TortoiseGit"), MB_ICONERROR);
+			MessageBox(nullptr, g_Git.GetGitLastErr(_T("Could not get hash of \"") + rev1 + _T("\".")), _T("TortoiseGit"), MB_ICONERROR);
 			return -1;
 		}
 		rev1 = rev1Hash.ToString();
@@ -129,7 +129,7 @@ int CGitDiff::DiffNull(const CTGitPath *pPath, git_revnum_t rev1, bool bIsAdd, i
 		GetTempFileName(temppath, pPath->GetBaseFilename(), 0, szTempName);
 		CString temp(szTempName);
 		DeleteFile(szTempName);
-		CreateDirectory(szTempName, NULL);
+		CreateDirectory(szTempName, nullptr);
 		file1.Format(_T("%s\\%s-%s%s"),
 				(LPCTSTR)temp,
 				(LPCTSTR)pPath->GetBaseFilename(),
@@ -202,7 +202,7 @@ int CGitDiff::SubmoduleDiff(const CTGitPath * pPath, const CTGitPath * /*pPath2*
 		CString output, err;
 		if (g_Git.Run(cmd, &output, &err, CP_UTF8))
 		{
-			CMessageBox::Show(NULL, output + L"\n" + err, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
+			CMessageBox::Show(nullptr, output + L"\n" + err, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 			return -1;
 		}
 
@@ -214,7 +214,7 @@ int CGitDiff::SubmoduleDiff(const CTGitPath * pPath, const CTGitPath * /*pPath2*
 			cmd.Format(_T("git.exe diff -- \"%s\""), (LPCTSTR)pPath->GetGitPathString());
 			if (g_Git.Run(cmd, &output, &err, CP_UTF8))
 			{
-				CMessageBox::Show(NULL, output + _T("\n") + err, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+				CMessageBox::Show(nullptr, output + _T("\n") + err, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 				return -1;
 			}
 
@@ -236,7 +236,7 @@ int CGitDiff::SubmoduleDiff(const CTGitPath * pPath, const CTGitPath * /*pPath2*
 		int oldstart = output.Find(_T("-Subproject commit"),start);
 		if(oldstart<0)
 		{
-			CMessageBox::Show(NULL,_T("Subproject Diff Format error") ,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+			CMessageBox::Show(nullptr, _T("Subproject Diff Format error"), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 			return -1;
 		}
 		oldhash = output.Mid(oldstart+ CString(_T("-Subproject commit")).GetLength()+1,40);
@@ -244,7 +244,7 @@ int CGitDiff::SubmoduleDiff(const CTGitPath * pPath, const CTGitPath * /*pPath2*
 		int newstart = output.Find(_T("+Subproject commit"),start);
 		if (newstart < 0)
 		{
-			CMessageBox::Show(NULL,_T("Subproject Diff Format error") ,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+			CMessageBox::Show(nullptr, _T("Subproject Diff Format error"), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 			return -1;
 		}
 		newhash = output.Mid(newstart+ CString(_T("+Subproject commit")).GetLength()+1,40);
@@ -260,13 +260,13 @@ int CGitDiff::SubmoduleDiff(const CTGitPath * pPath, const CTGitPath * /*pPath2*
 		{
 			CString err;
 			CGit::StringAppend(&err, &errBytes[0], CP_UTF8);
-			CMessageBox::Show(NULL,err,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+			CMessageBox::Show(nullptr, err, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 			return -1;
 		}
 
 		if (bytes.size() < 15 + 2 * GIT_HASH_SIZE + 1 + 2 * GIT_HASH_SIZE)
 		{
-			CMessageBox::Show(NULL, _T("git diff-tree gives invalid output"), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+			CMessageBox::Show(nullptr, _T("git diff-tree gives invalid output"), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 			return -1;
 		}
 		CGit::StringAppend(&oldhash, &bytes[15], CP_UTF8, 2 * GIT_HASH_SIZE);
@@ -379,7 +379,7 @@ int CGitDiff::Diff(const CTGitPath * pPath, const CTGitPath * pPath2, git_revnum
 		CGitHash rev1Hash;
 		if (g_Git.GetHash(rev1Hash, rev1))
 		{
-			MessageBox(NULL, g_Git.GetGitLastErr(_T("Could not get hash of \"") + rev1 + _T("\".")), _T("TortoiseGit"), MB_ICONERROR);
+			MessageBox(nullptr, g_Git.GetGitLastErr(_T("Could not get hash of \"") + rev1 + _T("\".")), _T("TortoiseGit"), MB_ICONERROR);
 			return -1;
 		}
 		rev1 = rev1Hash.ToString();
@@ -389,7 +389,7 @@ int CGitDiff::Diff(const CTGitPath * pPath, const CTGitPath * pPath2, git_revnum
 		CGitHash rev2Hash;
 		if (g_Git.GetHash(rev2Hash, rev2))
 		{
-			MessageBox(NULL, g_Git.GetGitLastErr(_T("Could not get hash of \"") + rev2 + _T("\".")), _T("TortoiseGit"), MB_ICONERROR);
+			MessageBox(nullptr, g_Git.GetGitLastErr(_T("Could not get hash of \"") + rev2 + _T("\".")), _T("TortoiseGit"), MB_ICONERROR);
 			return -1;
 		}
 		rev2 = rev2Hash.ToString();
@@ -419,7 +419,7 @@ int CGitDiff::Diff(const CTGitPath * pPath, const CTGitPath * pPath2, git_revnum
 		GetTempFileName(temppath, pPath->GetBaseFilename(), 0, szTempName);
 		CString temp(szTempName);
 		DeleteFile(szTempName);
-		CreateDirectory(szTempName, NULL);
+		CreateDirectory(szTempName, nullptr);
 		// use original file extension, an external diff tool might need it
 		file1.Format(_T("%s\\%s-%s-right%s"),
 				(LPCTSTR)temp,
@@ -444,9 +444,9 @@ int CGitDiff::Diff(const CTGitPath * pPath, const CTGitPath * pPath2, git_revnum
 		{
 			CString sMsg;
 			sMsg.Format(IDS_PROC_DIFFERROR_FILENOTINWORKINGTREE, (LPCTSTR)file1);
-			if (MessageBox(NULL, sMsg, _T("TortoiseGit"), MB_ICONEXCLAMATION | MB_YESNO) != IDYES)
+			if (MessageBox(nullptr, sMsg, _T("TortoiseGit"), MB_ICONEXCLAMATION | MB_YESNO) != IDYES)
 				return 1;
-			if (!CCommonAppUtils::FileOpenSave(file1, NULL, IDS_SELECTFILE, IDS_COMMONFILEFILTER, true))
+			if (!CCommonAppUtils::FileOpenSave(file1, nullptr, IDS_SELECTFILE, IDS_COMMONFILEFILTER, true))
 				return 1;
 			title1.Format(IDS_DIFF_WCNAME, (LPCTSTR)CTGitPath(file1).GetUIFileOrDirectoryName());
 		}
@@ -460,7 +460,7 @@ int CGitDiff::Diff(const CTGitPath * pPath, const CTGitPath * pPath2, git_revnum
 		GetTempFileName(temppath, pPath2->GetBaseFilename(), 0, szTempName);
 		CString temp(szTempName);
 		DeleteFile(szTempName);
-		CreateDirectory(szTempName, NULL);
+		CreateDirectory(szTempName, nullptr);
 		CTGitPath fileName = *pPath2;
 		if (pPath2->m_Action & CTGitPath::LOGACTIONS_REPLACED)
 			fileName = CTGitPath(pPath2->GetGitOldPathString());
@@ -520,7 +520,7 @@ int CGitDiff::DiffCommit(const CTGitPath &path1, const CTGitPath &path2, const G
 	if (path1.GetWinPathString().IsEmpty())
 	{
 		CFileDiffDlg dlg;
-		dlg.SetDiff(NULL, *r1, *r2);
+		dlg.SetDiff(nullptr, *r1, *r2);
 		dlg.DoModal();
 	}
 	else if (path1.IsDirectory())
@@ -547,7 +547,7 @@ int CGitDiff::DiffCommit(const CTGitPath &path1, const CTGitPath &path2, const C
 	if (path1.GetWinPathString().IsEmpty())
 	{
 		CFileDiffDlg dlg;
-		dlg.SetDiff(NULL, r1, r2);
+		dlg.SetDiff(nullptr, r1, r2);
 		dlg.DoModal();
 	}
 	else if (path1.IsDirectory())

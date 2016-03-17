@@ -64,11 +64,11 @@ LPCSHITEMID ItemIDList::get(int index) const
 {
 	int count = 0;
 
-	if (item_ == NULL)
-		return NULL;
+	if (!item_)
+		return nullptr;
 	LPCSHITEMID ptr = &item_->mkid;
-	if (ptr == NULL)
-		return NULL;
+	if (!ptr)
+		return nullptr;
 	while (ptr->cb != 0)
 	{
 		if (count == index)

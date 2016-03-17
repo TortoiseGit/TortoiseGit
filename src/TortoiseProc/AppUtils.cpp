@@ -170,7 +170,7 @@ bool CAppUtils::StashApply(CString ref, bool showChanges /* true */)
 	sysProgressDlg.SetLine(2, CString(MAKEINTRESOURCE(IDS_PROGRESSWAIT)));
 	sysProgressDlg.SetShowProgressBar(false);
 	sysProgressDlg.SetCancelMsg(IDS_PROGRS_INFOFAILED);
-	sysProgressDlg.ShowModeless((HWND)NULL, true);
+	sysProgressDlg.ShowModeless((HWND)nullptr, true);
 
 	int ret = g_Git.Run(cmd, &out, CP_UTF8);
 
@@ -178,9 +178,7 @@ bool CAppUtils::StashApply(CString ref, bool showChanges /* true */)
 
 	bool hasConflicts = (out.Find(_T("CONFLICT")) >= 0);
 	if (ret && !(ret == 1 && hasConflicts))
-	{
-		CMessageBox::Show(NULL, CString(MAKEINTRESOURCE(IDS_PROC_STASHAPPLYFAILED)) + _T("\n") + out, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
-	}
+		CMessageBox::Show(nullptr, CString(MAKEINTRESOURCE(IDS_PROC_STASHAPPLYFAILED)) + _T("\n") + out, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 	else
 	{
 		CString message;
@@ -189,8 +187,7 @@ bool CAppUtils::StashApply(CString ref, bool showChanges /* true */)
 			message.LoadString(IDS_PROC_STASHAPPLYFAILEDCONFLICTS);
 		if (showChanges)
 		{
-			if(CMessageBox::Show(NULL,message + _T("\n") + CString(MAKEINTRESOURCE(IDS_SEECHANGES))
-				,_T("TortoiseGit"),MB_YESNO|MB_ICONINFORMATION) == IDYES)
+			if (CMessageBox::Show(nullptr, message + _T("\n") + CString(MAKEINTRESOURCE(IDS_SEECHANGES)), _T("TortoiseGit"), MB_YESNO | MB_ICONINFORMATION) == IDYES)
 			{
 				CChangedDlg dlg;
 				dlg.m_pathList.AddPath(CTGitPath());
@@ -200,7 +197,7 @@ bool CAppUtils::StashApply(CString ref, bool showChanges /* true */)
 		}
 		else
 		{
-			CMessageBox::Show(NULL, message ,_T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
+			CMessageBox::Show(nullptr, message ,_T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
 			return true;
 		}
 	}
@@ -218,7 +215,7 @@ bool CAppUtils::StashPop(int showChanges /* = 1 */)
 	sysProgressDlg.SetLine(2, CString(MAKEINTRESOURCE(IDS_PROGRESSWAIT)));
 	sysProgressDlg.SetShowProgressBar(false);
 	sysProgressDlg.SetCancelMsg(IDS_PROGRS_INFOFAILED);
-	sysProgressDlg.ShowModeless((HWND)NULL, true);
+	sysProgressDlg.ShowModeless((HWND)nullptr, true);
 
 	int ret = g_Git.Run(cmd, &out, CP_UTF8);
 
@@ -226,9 +223,7 @@ bool CAppUtils::StashPop(int showChanges /* = 1 */)
 
 	bool hasConflicts = (out.Find(_T("CONFLICT")) >= 0);
 	if (ret && !(ret == 1 && hasConflicts))
-	{
-		CMessageBox::Show(NULL,CString(MAKEINTRESOURCE(IDS_PROC_STASHPOPFAILED)) + _T("\n") + out, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
-	}
+		CMessageBox::Show(nullptr, CString(MAKEINTRESOURCE(IDS_PROC_STASHPOPFAILED)) + _T("\n") + out, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 	else
 	{
 		CString message;
@@ -237,8 +232,7 @@ bool CAppUtils::StashPop(int showChanges /* = 1 */)
 			message.LoadString(IDS_PROC_STASHPOPFAILEDCONFLICTS);
 		if (showChanges == 1 || (showChanges == 0 && hasConflicts))
 		{
- 			if(CMessageBox::Show(NULL,CString(message + _T("\n") + CString(MAKEINTRESOURCE(IDS_SEECHANGES)))
-				,_T("TortoiseGit"),MB_YESNO|MB_ICONINFORMATION) == IDYES)
+ 			if (CMessageBox::Show(nullptr, CString(message + _T("\n") + CString(MAKEINTRESOURCE(IDS_SEECHANGES))), _T("TortoiseGit"), MB_YESNO | MB_ICONINFORMATION) == IDYES)
 			{
 				CChangedDlg dlg;
 				dlg.m_pathList.AddPath(CTGitPath());
@@ -248,7 +242,7 @@ bool CAppUtils::StashPop(int showChanges /* = 1 */)
 		}
 		else if (showChanges > 1)
 		{
-			CMessageBox::Show(NULL, message ,_T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
+			CMessageBox::Show(nullptr, message, _T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
 			return true;
 		}
 		else if (showChanges == 0)
@@ -637,11 +631,11 @@ BOOL CAppUtils::StartTextViewer(CString file)
 	CRegString txtexe = CRegString(viewer, _T(""), FALSE, HKEY_CLASSES_ROOT);
 	viewer = txtexe;
 
-	DWORD len = ExpandEnvironmentStrings(viewer, NULL, 0);
+	DWORD len = ExpandEnvironmentStrings(viewer, nullptr, 0);
 	auto buf = std::make_unique<TCHAR[]>(len + 1);
 	ExpandEnvironmentStrings(viewer, buf.get(), len);
 	viewer = buf.get();
-	len = ExpandEnvironmentStrings(file, NULL, 0);
+	len = ExpandEnvironmentStrings(file, nullptr, 0);
 	auto buf2 = std::make_unique<TCHAR[]>(len + 1);
 	ExpandEnvironmentStrings(file, buf2.get(), len);
 	file = buf2.get();
@@ -674,10 +668,10 @@ BOOL CAppUtils::StartTextViewer(CString file)
 BOOL CAppUtils::CheckForEmptyDiff(const CTGitPath& sDiffPath)
 {
 	DWORD length = 0;
-	CAutoFile hFile = ::CreateFile(sDiffPath.GetWinPath(), GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, NULL, NULL);
+	CAutoFile hFile = ::CreateFile(sDiffPath.GetWinPath(), GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, nullptr, OPEN_EXISTING, 0, nullptr);
 	if (!hFile)
 		return TRUE;
-	length = ::GetFileSize(hFile, NULL);
+	length = ::GetFileSize(hFile, nullptr);
 	if (length < 4)
 		return TRUE;
 	return FALSE;
@@ -687,9 +681,9 @@ BOOL CAppUtils::CheckForEmptyDiff(const CTGitPath& sDiffPath)
 void CAppUtils::CreateFontForLogs(CFont& fontToCreate)
 {
 	LOGFONT logFont;
-	HDC hScreenDC = ::GetDC(NULL);
+	HDC hScreenDC = ::GetDC(nullptr);
 	logFont.lfHeight			= -MulDiv((DWORD)CRegDWORD(_T("Software\\TortoiseGit\\LogFontSize"), 8), GetDeviceCaps(hScreenDC, LOGPIXELSY), 72);
-	::ReleaseDC(NULL, hScreenDC);
+	::ReleaseDC(nullptr, hScreenDC);
 	logFont.lfWidth				= 0;
 	logFont.lfEscapement		= 0;
 	logFont.lfOrientation		= 0;
@@ -710,15 +704,12 @@ bool CAppUtils::LaunchPAgent(const CString* keyfile, const CString* pRemote)
 {
 	CString key,remote;
 	CString cmd,out;
-	if( pRemote == NULL)
-	{
+	if (!pRemote)
 		remote=_T("origin");
-	}
 	else
-	{
 		remote=*pRemote;
-	}
-	if(keyfile == NULL)
+
+	if (!keyfile)
 	{
 		cmd.Format(_T("remote.%s.puttykeyfile"), (LPCTSTR)remote);
 		key = g_Git.GetConfigValue(cmd);
@@ -760,7 +751,7 @@ bool CAppUtils::LaunchPAgent(const CString* keyfile, const CString* pRemote)
 
 	if( i== 10*60*5)
 	{
-		CMessageBox::Show(NULL, IDS_ERR_PAEGENTTIMEOUT, IDS_APPNAME, MB_OK | MB_ICONERROR);
+		CMessageBox::Show(nullptr, IDS_ERR_PAEGENTTIMEOUT, IDS_APPNAME, MB_OK | MB_ICONERROR);
 	}
 	::DeleteFile(tempfile);
 	return true;
@@ -775,7 +766,7 @@ bool CAppUtils::LaunchAlternativeEditor(const CString& filename, bool uac)
 	CString sCmd;
 	sCmd.Format(_T("\"%s\" \"%s\""), (LPCTSTR)editTool, (LPCTSTR)filename);
 
-	LaunchApplication(sCmd, NULL, false, NULL, uac);
+	LaunchApplication(sCmd, 0, false, nullptr, uac);
 	return true;
 }
 bool CAppUtils::LaunchRemoteSetting()
@@ -816,7 +807,7 @@ bool CAppUtils::LaunchTortoiseBlame(const CString& sBlameFile, const CString& Re
 bool CAppUtils::FormatTextInRichEditControl(CWnd * pWnd)
 {
 	CString sText;
-	if (pWnd == NULL)
+	if (!pWnd)
 		return false;
 	bool bStyled = false;
 	pWnd->GetWindowText(sText);
@@ -1054,7 +1045,7 @@ bool CAppUtils::StartShowUnifiedDiff(HWND hWnd, const CTGitPath& url1, const git
 		sCmd += buf;
 	}
 
-	return CAppUtils::LaunchApplication(sCmd, NULL, false);
+	return CAppUtils::LaunchApplication(sCmd, 0, false);
 #endif
 	return TRUE;
 }
@@ -1265,7 +1256,7 @@ bool CAppUtils::CreateBranchTag(bool isTag /*true*/, const CString* commitHash /
 		CString out;
 		if(g_Git.Run(cmd,&out,CP_UTF8))
 		{
-			CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
+			CMessageBox::Show(nullptr, out, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 			return FALSE;
 		}
 		if (!isTag && dlg.m_bSwitch)
@@ -1454,7 +1445,7 @@ bool CAppUtils::OpenIgnoreFile(CIgnoreFile &file, const CString& filename)
 	file.ResetState();
 	if (!file.Open(filename, CFile::modeCreate | CFile::modeReadWrite | CFile::modeNoTruncate | CFile::typeBinary))
 	{
-		CMessageBox::Show(NULL, filename + _T(" Open Failure"), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+		CMessageBox::Show(nullptr, filename + _T(" Open Failure"), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 		return false;
 	}
 
@@ -1723,7 +1714,7 @@ bool CAppUtils::ConflictEdit(const CTGitPath& path, bool /*bAlternativeTool = fa
 	// now look for the other required files
 	//GitStatus stat;
 	//stat.GetStatus(merge);
-	//if (stat.status == NULL)
+	//if (stat.status == nullptr)
 	//	return false;
 
 	BYTE_VECTOR vector;
@@ -1804,7 +1795,7 @@ bool CAppUtils::ConflictEdit(const CTGitPath& path, bool /*bAlternativeTool = fa
 	CTGitPathList list;
 	if (list.ParserFromLsFile(vector))
 	{
-		CMessageBox::Show(NULL, _T("Parse ls-files failed!"), _T("TortoiseGit"), MB_OK);
+		CMessageBox::Show(nullptr, _T("Parse ls-files failed!"), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 		return FALSE;
 	}
 
@@ -1878,9 +1869,7 @@ bool CAppUtils::ConflictEdit(const CTGitPath& path, bool /*bAlternativeTool = fa
 				::MoveFileEx(file,outfile,MOVEFILE_REPLACE_EXISTING|MOVEFILE_COPY_ALLOWED);
 			}
 			else
-			{
-				CMessageBox::Show(NULL, output + L"\n" + err, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
-			}
+				CMessageBox::Show(nullptr, output + L"\n" + err, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 	}
 
 	if(b_local && b_remote )
@@ -2211,7 +2200,7 @@ bool CAppUtils::IsSSHPutty()
 
 CString CAppUtils::GetClipboardLink(const CString &skipGitPrefix, int paramsCount)
 {
-	if (!OpenClipboard(NULL))
+	if (!OpenClipboard(nullptr))
 		return CString();
 
 	CString sClipboardText;
@@ -2297,7 +2286,7 @@ CString CAppUtils::ChooseRepository(const CString* path)
 
 	browseFolder.SetInfo(title);
 
-	if (browseFolder.Show(NULL, strCloneDirectory) == CBrowseFolder::OK)
+	if (browseFolder.Show(nullptr, strCloneDirectory) == CBrowseFolder::OK)
 	{
 		regLastResopitory = strCloneDirectory;
 		return strCloneDirectory;
@@ -2365,7 +2354,7 @@ bool CAppUtils::SendPatchMail(const CString& cmd, const CString& formatpatchoutp
 	}
 	else
 	{
-		CMessageBox::Show(NULL, IDS_ERR_NOPATCHES, IDS_APPNAME, MB_ICONINFORMATION);
+		CMessageBox::Show(nullptr, IDS_ERR_NOPATCHES, IDS_APPNAME, MB_ICONINFORMATION);
 		return true;
 	}
 }
@@ -2465,14 +2454,14 @@ bool CAppUtils::Pull(bool showPush, bool showStashPop)
 
 		if (dlg.m_bAutoLoad)
 		{
-			CAppUtils::LaunchPAgent(NULL, &dlg.m_RemoteURL);
+			CAppUtils::LaunchPAgent(nullptr, &dlg.m_RemoteURL);
 		}
 
 		CString cmd;
 		CGitHash hashOld;
 		if (g_Git.GetHash(hashOld, _T("HEAD")))
 		{
-			MessageBox(NULL, g_Git.GetGitLastErr(_T("Could not get HEAD hash.")), _T("TortoiseGit"), MB_ICONERROR);
+			MessageBox(nullptr, g_Git.GetGitLastErr(_T("Could not get HEAD hash.")), _T("TortoiseGit"), MB_ICONERROR);
 			return false;
 		}
 
@@ -2534,7 +2523,7 @@ bool CAppUtils::Pull(bool showPush, bool showStashPop)
 				postCmdList.emplace_back(IDI_DIFF, IDS_PROC_PULL_DIFFS, [&]
 				{
 					CFileDiffDlg dlg;
-					dlg.SetDiff(NULL, hashNew.ToString(), hashOld.ToString());
+					dlg.SetDiff(nullptr, hashNew.ToString(), hashOld.ToString());
 					dlg.DoModal();
 				});
 				postCmdList.emplace_back(IDI_LOG, IDS_PROC_PULL_LOG, [&]
@@ -2562,7 +2551,7 @@ bool CAppUtils::Pull(bool showPush, bool showStashPop)
 
 		INT_PTR ret = progress.DoModal();
 
-		if (ret == IDOK && progress.m_GitStatus == 1 && progress.m_LogText.Find(_T("CONFLICT")) >= 0 && CMessageBox::Show(NULL, IDS_SEECHANGES, IDS_APPNAME, MB_YESNO | MB_ICONINFORMATION) == IDYES)
+		if (ret == IDOK && progress.m_GitStatus == 1 && progress.m_LogText.Find(_T("CONFLICT")) >= 0 && CMessageBox::Show(nullptr, IDS_SEECHANGES, IDS_APPNAME, MB_YESNO | MB_ICONINFORMATION) == IDYES)
 		{
 			CChangedDlg changeddlg;
 			changeddlg.m_pathList.AddPath(CTGitPath());
@@ -2613,7 +2602,7 @@ bool CAppUtils::RebaseAfterFetch(const CString& upstream, int rebase, bool prese
 				(LPCTSTR)g_Git.FixBranchName(dlg.m_Branch));
 			if (g_Git.Run(cmd, &out, &err, CP_UTF8))
 			{
-				CMessageBox::Show(NULL, out + L"\n" + err, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+				CMessageBox::Show(nullptr, out + L"\n" + err, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 				return false;
 			}
 			CAppUtils::SendPatchMail(cmd, out);
@@ -2638,11 +2627,11 @@ static bool DoFetch(const CString& url, const bool fetchAllRemotes, const bool l
 
 			for (const auto& remote : list)
 			{
-				CAppUtils::LaunchPAgent(NULL, &remote);
+				CAppUtils::LaunchPAgent(nullptr, &remote);
 			}
 		}
 		else
-			CAppUtils::LaunchPAgent(NULL, &url);
+			CAppUtils::LaunchPAgent(nullptr, &url);
 	}
 
 	CString upstream = _T("FETCH_HEAD");
@@ -2849,7 +2838,7 @@ bool CAppUtils::DoPush(bool autoloadKey, bool pack, bool tags, bool allRemotes, 
 	for (unsigned int i = 0; i < remotesList.size(); ++i)
 	{
 		if (autoloadKey)
-			CAppUtils::LaunchPAgent(NULL, &remotesList[i]);
+			CAppUtils::LaunchPAgent(nullptr, &remotesList[i]);
 
 		CString cmd;
 		if (allBranches)
@@ -2958,12 +2947,12 @@ bool CAppUtils::RequestPull(const CString& endrevision, const CString& repositor
 		sysProgressDlg.SetLine(1, CString(MAKEINTRESOURCE(IDS_PROC_CREATINGPULLREUQEST)));
 		sysProgressDlg.SetLine(2, CString(MAKEINTRESOURCE(IDS_PROGRESSWAIT)));
 		sysProgressDlg.SetShowProgressBar(false);
-		sysProgressDlg.ShowModeless((HWND)NULL, true);
+		sysProgressDlg.ShowModeless((HWND)nullptr, true);
 
 		CString tempFileName = GetTempFile();
 		CString err;
 		DeleteFile(tempFileName);
-		CreateDirectory(tempFileName, NULL);
+		CreateDirectory(tempFileName, nullptr);
 		tempFileName += _T("\\pullrequest.txt");
 		if (g_Git.RunLogFile(cmd, tempFileName, &err))
 		{
@@ -2975,7 +2964,7 @@ bool CAppUtils::RequestPull(const CString& endrevision, const CString& repositor
 
 		if (sysProgressDlg.HasUserCancelled())
 		{
-			CMessageBox::Show(NULL, IDS_USERCANCELLED, IDS_APPNAME, MB_OK);
+			CMessageBox::Show(nullptr, IDS_USERCANCELLED, IDS_APPNAME, MB_OK);
 			::DeleteFile(tempFileName);
 			return false;
 		}
@@ -3044,7 +3033,7 @@ bool CAppUtils::CheckUserData()
 {
 	while(g_Git.GetUserName().IsEmpty() || g_Git.GetUserEmail().IsEmpty())
 	{
-		if(CMessageBox::Show(NULL, IDS_PROC_NOUSERDATA, IDS_APPNAME, MB_YESNO| MB_ICONERROR) == IDYES)
+		if (CMessageBox::Show(nullptr, IDS_PROC_NOUSERDATA, IDS_APPNAME, MB_YESNO | MB_ICONERROR) == IDYES)
 		{
 			CTGitPath path(g_Git.m_CurrentDir);
 			CSettings dlg(IDS_PROC_SETTINGS_TITLE,&path);
@@ -3171,7 +3160,7 @@ BOOL CAppUtils::SVNDCommit()
 				{
 					CString msg;
 					msg.Format(IDS_PROC_SAVECONFIGFAILED, _T("svn.rmdir"), gitSetting);
-					CMessageBox::Show(NULL, msg, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+					CMessageBox::Show(nullptr, msg, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 				}
 			}
 		}
@@ -3180,7 +3169,7 @@ BOOL CAppUtils::SVNDCommit()
 	BOOL IsStash = false;
 	if(!g_Git.CheckCleanWorkTree())
 	{
-		if (CMessageBox::Show(NULL, IDS_ERROR_NOCLEAN_STASH, IDS_APPNAME, 1, IDI_QUESTION, IDS_STASHBUTTON, IDS_ABORTBUTTON) == 1)
+		if (CMessageBox::Show(nullptr, IDS_ERROR_NOCLEAN_STASH, IDS_APPNAME, 1, IDI_QUESTION, IDS_STASHBUTTON, IDS_ABORTBUTTON) == 1)
 		{
 			CSysProgressDlg sysProgressDlg;
 			sysProgressDlg.SetTitle(CString(MAKEINTRESOURCE(IDS_APPNAME)));
@@ -3188,7 +3177,7 @@ BOOL CAppUtils::SVNDCommit()
 			sysProgressDlg.SetLine(2, CString(MAKEINTRESOURCE(IDS_PROGRESSWAIT)));
 			sysProgressDlg.SetShowProgressBar(false);
 			sysProgressDlg.SetCancelMsg(IDS_PROGRS_INFOFAILED);
-			sysProgressDlg.ShowModeless((HWND)NULL, true);
+			sysProgressDlg.ShowModeless((HWND)nullptr, true);
 
 			CString cmd,out;
 			cmd=_T("git.exe stash");
@@ -3221,7 +3210,7 @@ BOOL CAppUtils::SVNDCommit()
 	{
 		if( IsStash)
 		{
-			if(CMessageBox::Show(NULL,IDS_DCOMMIT_STASH_POP,IDS_APPNAME,MB_YESNO|MB_ICONINFORMATION)==IDYES)
+			if (CMessageBox::Show(nullptr, IDS_DCOMMIT_STASH_POP, IDS_APPNAME, MB_YESNO | MB_ICONINFORMATION) == IDYES)
 			{
 				CSysProgressDlg sysProgressDlg;
 				sysProgressDlg.SetTitle(CString(MAKEINTRESOURCE(IDS_APPNAME)));
@@ -3229,7 +3218,7 @@ BOOL CAppUtils::SVNDCommit()
 				sysProgressDlg.SetLine(2, CString(MAKEINTRESOURCE(IDS_PROGRESSWAIT)));
 				sysProgressDlg.SetShowProgressBar(false);
 				sysProgressDlg.SetCancelMsg(IDS_PROGRS_INFOFAILED);
-				sysProgressDlg.ShowModeless((HWND)NULL, true);
+				sysProgressDlg.ShowModeless((HWND)nullptr, true);
 
 				CString cmd,out;
 				cmd=_T("git.exe stash pop");
@@ -3410,17 +3399,12 @@ void CAppUtils::EditNote(GitRevLoglist* rev)
 		try
 		{
 			if (git_run_cmd("notes", CUnicodeUtils::GetMulti(cmd, CP_UTF8).GetBuffer()))
-			{
-				CMessageBox::Show(NULL, IDS_PROC_FAILEDSAVINGNOTES, IDS_APPNAME, MB_OK | MB_ICONERROR);
-
-			}
+				CMessageBox::Show(nullptr, IDS_PROC_FAILEDSAVINGNOTES, IDS_APPNAME, MB_OK | MB_ICONERROR);
 			else
-			{
 				rev->m_Notes = dlg.m_sInputText;
-			}
 		}catch(...)
 		{
-			CMessageBox::Show(NULL, IDS_PROC_FAILEDSAVINGNOTES, IDS_APPNAME, MB_OK | MB_ICONERROR);
+			CMessageBox::Show(nullptr, IDS_PROC_FAILEDSAVINGNOTES, IDS_APPNAME, MB_OK | MB_ICONERROR);
 		}
 		::DeleteFile(tempfile);
 
@@ -3455,14 +3439,14 @@ int CAppUtils::GetMsysgitVersion()
 	int ver = g_Git.GetGitVersion(&versiondebug, &err);
 	if (ver < 0)
 	{
-		CMessageBox::Show(NULL, _T("git.exe not correctly set up (") + err + _T(")\nCheck TortoiseGit settings and consult help file for \"Git.exe Path\"."), _T("TortoiseGit"), MB_OK|MB_ICONERROR);
+		CMessageBox::Show(nullptr, _T("git.exe not correctly set up (") + err + _T(")\nCheck TortoiseGit settings and consult help file for \"Git.exe Path\"."), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 		return -1;
 	}
 
 	{
 		if (!ver)
 		{
-			CMessageBox::Show(NULL, _T("Could not parse git.exe version number: \"") + versiondebug + _T("\""), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+			CMessageBox::Show(nullptr, _T("Could not parse git.exe version number: \"") + versiondebug + _T("\""), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 			return -1;
 		}
 	}
@@ -3515,7 +3499,7 @@ bool CAppUtils::BisectStart(const CString& lastGood, const CString& firstBad, bo
 {
 	if (!g_Git.CheckCleanWorkTree())
 	{
-		if (CMessageBox::Show(NULL, IDS_ERROR_NOCLEAN_STASH, IDS_APPNAME, 1, IDI_QUESTION, IDS_STASHBUTTON, IDS_ABORTBUTTON) == 1)
+		if (CMessageBox::Show(nullptr, IDS_ERROR_NOCLEAN_STASH, IDS_APPNAME, 1, IDI_QUESTION, IDS_STASHBUTTON, IDS_ABORTBUTTON) == 1)
 		{
 			CSysProgressDlg sysProgressDlg;
 			sysProgressDlg.SetTitle(CString(MAKEINTRESOURCE(IDS_APPNAME)));
@@ -3523,7 +3507,7 @@ bool CAppUtils::BisectStart(const CString& lastGood, const CString& firstBad, bo
 			sysProgressDlg.SetLine(2, CString(MAKEINTRESOURCE(IDS_PROGRESSWAIT)));
 			sysProgressDlg.SetShowProgressBar(false);
 			sysProgressDlg.SetCancelMsg(IDS_PROGRS_INFOFAILED);
-			sysProgressDlg.ShowModeless((HWND)NULL, true);
+			sysProgressDlg.ShowModeless((HWND)nullptr, true);
 
 			CString cmd, out;
 			cmd = _T("git.exe stash");
@@ -3835,7 +3819,7 @@ int CAppUtils::ResolveConflict(CTGitPath& path, resolve_with resolveWith)
 
 bool CAppUtils::ShellOpen(const CString& file, HWND hwnd /*= nullptr */)
 {
-	if ((INT_PTR)ShellExecute(hwnd, NULL, file, NULL, NULL, SW_SHOW) > HINSTANCE_ERROR)
+	if ((INT_PTR)ShellExecute(hwnd, nullptr, file, nullptr, nullptr, SW_SHOW) > HINSTANCE_ERROR)
 		return true;
 
 	return ShowOpenWithDialog(file, hwnd);

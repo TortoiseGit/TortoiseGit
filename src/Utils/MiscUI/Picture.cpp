@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015 - TortoiseGit
+// Copyright (C) 2015-2016 - TortoiseGit
 // Copyright (C) 2003-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -37,21 +37,21 @@
 #define HIMETRIC_INCH 2540
 
 CPicture::CPicture()
-	: m_IPicture(NULL)
+	: m_IPicture(nullptr)
 	, m_Height(0)
 	, m_Weight(0)
 	, m_Width(0)
-	, pBitmap(NULL)
+	, pBitmap(nullptr)
 	, bHaveGDIPlus(false)
 	, m_ip(InterpolationModeDefault)
-	, hIcons(NULL)
-	, lpIcons(NULL)
+	, hIcons(nullptr)
+	, lpIcons(nullptr)
 	, nCurrentIcon(0)
 	, bIsIcon(false)
 	, bIsTiff(false)
 	, m_nSize(0)
 	, m_ColorDepth(0)
-	, hGlobal(NULL)
+	, hGlobal(nullptr)
 	, gdiplusToken(NULL)
 {
 }
@@ -67,10 +67,10 @@ CPicture::~CPicture()
 
 void CPicture::FreePictureData()
 {
-	if (m_IPicture != NULL)
+	if (m_IPicture)
 	{
 		m_IPicture->Release();
-		m_IPicture = NULL;
+		m_IPicture = nullptr;
 		m_Height = 0;
 		m_Weight = 0;
 		m_Width = 0;
@@ -87,7 +87,7 @@ void CPicture::FreePictureData()
 			}
 		}
 		delete [] hIcons;
-		hIcons = NULL;
+		hIcons = nullptr;
 	}
 	delete [] lpIcons;
 	lpIcons = nullptr;
@@ -98,7 +98,7 @@ void CPicture::FreePictureData()
 // Util function to ease loading of FreeImage library
 static FARPROC s_GetProcAddressEx(HMODULE hDll, const char* procName, bool& valid)
 {
-	FARPROC proc = NULL;
+	FARPROC proc = nullptr;
 
 	if (valid)
 	{
@@ -126,7 +126,7 @@ bool CPicture::Load(tstring sFilePathName)
 {
 	bool bResult = false;
 	bIsIcon = false;
-	lpIcons = NULL;
+	lpIcons = nullptr;
 	//CFile PictureFile;
 	//CFileException e;
 	FreePictureData(); // Important - Avoid Leaks...
@@ -137,7 +137,7 @@ bool CPicture::Load(tstring sFilePathName)
 
 	// Load & initialize the GDI+ library if available
 	HMODULE hGdiPlusLib = AtlLoadSystemLibraryUsingFullPath(_T("gdiplus.dll"));
-	if (hGdiPlusLib && GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL) == Ok)
+	if (hGdiPlusLib && GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, nullptr) == Ok)
 	{
 		bHaveGDIPlus = true;
 	}
@@ -157,7 +157,7 @@ bool CPicture::Load(tstring sFilePathName)
 		if (pBitmap->GetLastStatus() != Ok)
 		{
 			delete pBitmap;
-			pBitmap = NULL;
+			pBitmap = nullptr;
 		}
 
 		// gdiplus only loads the first icon found in an icon file
@@ -173,8 +173,8 @@ bool CPicture::Load(tstring sFilePathName)
 		// file extension for ".ico".
 		auto lowerfilename = sFilePathName;
 		std::transform(lowerfilename.begin(), lowerfilename.end(), lowerfilename.begin(), ::tolower);
-		bIsIcon = (guid == ImageFormatIcon) || (wcsstr(lowerfilename.c_str(), L".ico") != NULL) || (wcsstr(lowerfilename.c_str(), L".cur") != NULL);
-		bIsTiff = (guid == ImageFormatTIFF) || (wcsstr(lowerfilename.c_str(), L".tiff") != NULL);
+		bIsIcon = (guid == ImageFormatIcon) || (wcsstr(lowerfilename.c_str(), L".ico")) || (wcsstr(lowerfilename.c_str(), L".cur"));
+		bIsTiff = (guid == ImageFormatTIFF) || (wcsstr(lowerfilename.c_str(), L".tiff"));
 		m_Name = sFilePathName;
 
 		if (bIsIcon)
@@ -184,11 +184,11 @@ bool CPicture::Load(tstring sFilePathName)
 			{
 				// Cleanup first...
 				delete (pBitmap);
-				pBitmap = NULL;
+				pBitmap = nullptr;
 				bIsIcon = true;
 			}
 
-			CAutoFile hFile = CreateFile(sFilePathName.c_str(), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+			CAutoFile hFile = CreateFile(sFilePathName.c_str(), GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
 			if (hFile)
 			{
 				BY_HANDLE_FILE_INFORMATION fileinfo;
@@ -196,7 +196,7 @@ bool CPicture::Load(tstring sFilePathName)
 				{
 					lpIcons = new BYTE[fileinfo.nFileSizeLow];
 					DWORD readbytes;
-					if (ReadFile(hFile, lpIcons, fileinfo.nFileSizeLow, &readbytes, NULL))
+					if (ReadFile(hFile, lpIcons, fileinfo.nFileSizeLow, &readbytes, nullptr))
 					{
 						// we have the icon. Now gather the information we need later
 						if (readbytes >= sizeof(ICONDIR))
@@ -221,15 +221,15 @@ bool CPicture::Load(tstring sFilePathName)
 										bResult = true;
 										for (int i=0; i<lpIconDir->idCount; ++i)
 										{
-											hIcons[i] = (HICON)LoadImage(NULL, sFilePathName.c_str(), IMAGE_ICON,
+											hIcons[i] = (HICON)LoadImage(nullptr, sFilePathName.c_str(), IMAGE_ICON,
 																		 lpIconDir->idEntries[i].bWidth == 0 ? 256 : lpIconDir->idEntries[i].bWidth,
 																		 lpIconDir->idEntries[i].bHeight == 0 ? 256 : lpIconDir->idEntries[i].bHeight,
 																		 LR_LOADFROMFILE);
-											if (hIcons[i] == NULL)
+											if (hIcons[i] == nullptr)
 											{
 												// if the icon couldn't be loaded, the data is most likely corrupt
 												delete [] lpIcons;
-												lpIcons = NULL;
+												lpIcons = nullptr;
 												bResult = false;
 												break;
 											}
@@ -239,28 +239,28 @@ bool CPicture::Load(tstring sFilePathName)
 								catch (...)
 								{
 									delete [] lpIcons;
-									lpIcons = NULL;
+									lpIcons = nullptr;
 									bResult = false;
 								}
 							}
 							else
 							{
 								delete [] lpIcons;
-								lpIcons = NULL;
+								lpIcons = nullptr;
 								bResult = false;
 							}
 						}
 						else
 						{
 							delete [] lpIcons;
-							lpIcons = NULL;
+							lpIcons = nullptr;
 							bResult = false;
 						}
 					}
 					else
 					{
 						delete [] lpIcons;
-						lpIcons = NULL;
+						lpIcons = nullptr;
 					}
 				}
 			}
@@ -292,15 +292,15 @@ bool CPicture::Load(tstring sFilePathName)
 			typedef unsigned	(__stdcall *FreeImage_GetHeight_t)(void* dib);
 			typedef void		(__stdcall *FreeImage_ConvertToRawBits_t)(BYTE *bits, void *dib, int pitch, unsigned bpp, unsigned red_mask, unsigned green_mask, unsigned blue_mask, BOOL topdown);
 
-			//FreeImage_GetVersion_t FreeImage_GetVersion = NULL;
-			FreeImage_GetFileType_t FreeImage_GetFileType = NULL;
-			FreeImage_GetFIFFromFilename_t FreeImage_GetFIFFromFilename = NULL;
-			FreeImage_Load_t FreeImage_Load = NULL;
-			FreeImage_Unload_t FreeImage_Unload = NULL;
-			//FreeImage_GetColorType_t FreeImage_GetColorType = NULL;
-			FreeImage_GetWidth_t FreeImage_GetWidth = NULL;
-			FreeImage_GetHeight_t FreeImage_GetHeight = NULL;
-			FreeImage_ConvertToRawBits_t  FreeImage_ConvertToRawBits = NULL;
+			//FreeImage_GetVersion_t FreeImage_GetVersion = nullptr;
+			FreeImage_GetFileType_t FreeImage_GetFileType = nullptr;
+			FreeImage_GetFIFFromFilename_t FreeImage_GetFIFFromFilename = nullptr;
+			FreeImage_Load_t FreeImage_Load = nullptr;
+			FreeImage_Unload_t FreeImage_Unload = nullptr;
+			//FreeImage_GetColorType_t FreeImage_GetColorType = nullptr;
+			FreeImage_GetWidth_t FreeImage_GetWidth = nullptr;
+			FreeImage_GetHeight_t FreeImage_GetHeight = nullptr;
+			FreeImage_ConvertToRawBits_t  FreeImage_ConvertToRawBits = nullptr;
 
 			if (hFreeImageLib)
 			{
@@ -366,31 +366,31 @@ bool CPicture::Load(tstring sFilePathName)
 								else    // Failed to lock the destination Bitmap
 								{
 									delete pBitmap;
-									pBitmap = NULL;
+									pBitmap = nullptr;
 								}
 							}
 							else    // Bitmap allocation failed
 							{
 								delete pBitmap;
-								pBitmap = NULL;
+								pBitmap = nullptr;
 							}
 
 							FreeImage_Unload(dib);
-							dib = NULL;
+							dib = nullptr;
 						}
 					}
 				}
 
 				FreeLibrary(hFreeImageLib);
-				hFreeImageLib = NULL;
+				hFreeImageLib = nullptr;
 			}
 		}
 	}
 	else    // GDI+ Unavailable...
 	{
 		int nSize = 0;
-		pBitmap = NULL;
-		CAutoFile hFile = CreateFile(sFilePathName.c_str(), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_HIDDEN, NULL);
+		pBitmap = nullptr;
+		CAutoFile hFile = CreateFile(sFilePathName.c_str(), GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_HIDDEN, nullptr);
 		if (hFile)
 		{
 			BY_HANDLE_FILE_INFORMATION fileinfo;
@@ -398,7 +398,7 @@ bool CPicture::Load(tstring sFilePathName)
 			{
 				BYTE * buffer = new BYTE[fileinfo.nFileSizeLow];
 				DWORD readbytes;
-				if (ReadFile(hFile, buffer, fileinfo.nFileSizeLow, &readbytes, NULL))
+				if (ReadFile(hFile, buffer, fileinfo.nFileSizeLow, &readbytes, nullptr))
 				{
 					if (LoadPictureData(buffer, readbytes))
 					{
@@ -415,7 +415,7 @@ bool CPicture::Load(tstring sFilePathName)
 		m_Name = sFilePathName;
 		m_Weight = nSize; // Update Picture Size Info...
 
-		if(m_IPicture != NULL) // Do Not Try To Read From Memory That Does Not Exist...
+		if (m_IPicture) // Do Not Try To Read From Memory That Does Not Exist...
 		{
 			m_IPicture->get_Height(&m_Height);
 			m_IPicture->get_Width(&m_Width);
@@ -433,7 +433,7 @@ bool CPicture::Load(tstring sFilePathName)
 
 	if ((bResult)&&(m_nSize == 0))
 	{
-		CAutoFile hFile = CreateFile(sFilePathName.c_str(), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_HIDDEN, NULL);
+		CAutoFile hFile = CreateFile(sFilePathName.c_str(), GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_HIDDEN, nullptr);
 		if (hFile)
 		{
 			BY_HANDLE_FILE_INFORMATION fileinfo;
@@ -455,24 +455,24 @@ bool CPicture::LoadPictureData(BYTE *pBuffer, int nSize)
 
 	HGLOBAL hGlobalMem = GlobalAlloc(GMEM_MOVEABLE, nSize);
 
-	if(hGlobalMem == NULL)
+	if (!hGlobalMem)
 	{
 		return(false);
 	}
 
 	void* pData = GlobalLock(hGlobalMem);
-	if (pData == NULL)
+	if (!pData)
 		return false;
 	memcpy(pData, pBuffer, nSize);
 	GlobalUnlock(hGlobalMem);
 
-	IStream* pStream = NULL;
+	IStream* pStream = nullptr;
 
 	if ((CreateStreamOnHGlobal(hGlobalMem, true, &pStream) == S_OK)&&(pStream))
 	{
 		HRESULT hr = OleLoadPicture(pStream, nSize, false, IID_IPicture, (LPVOID *)&m_IPicture);
 		pStream->Release();
-		pStream = NULL;
+		pStream = nullptr;
 
 		bResult = hr == S_OK;
 	}
@@ -484,14 +484,14 @@ bool CPicture::LoadPictureData(BYTE *pBuffer, int nSize)
 
 bool CPicture::Show(HDC hDC, RECT DrawRect)
 {
-	if (hDC == NULL)
+	if (!hDC)
 		return false;
 	if (bIsIcon && lpIcons)
 	{
-		::DrawIconEx(hDC, DrawRect.left, DrawRect.top, hIcons[nCurrentIcon], DrawRect.right-DrawRect.left, DrawRect.bottom-DrawRect.top, 0, NULL, DI_NORMAL);
+		::DrawIconEx(hDC, DrawRect.left, DrawRect.top, hIcons[nCurrentIcon], DrawRect.right - DrawRect.left, DrawRect.bottom - DrawRect.top, 0, nullptr, DI_NORMAL);
 		return true;
 	}
-	if ((m_IPicture == NULL)&&(pBitmap == NULL))
+	if (!m_IPicture && !pBitmap)
 		return false;
 
 	if (m_IPicture)
@@ -533,7 +533,7 @@ bool CPicture::Show(HDC hDC, RECT DrawRect)
 
 bool CPicture::UpdateSizeOnDC(HDC hDC)
 {
-	if(hDC == NULL || m_IPicture == NULL) { m_Height = 0; m_Width = 0; return(false); };
+	if (!hDC || !m_IPicture) { m_Height = 0; m_Width = 0; return(false); };
 
 	m_IPicture->get_Height(&m_Height);
 	m_IPicture->get_Width(&m_Width);
@@ -559,9 +559,9 @@ UINT CPicture::GetColorDepth() const
 	// try first with WIC to get the pixel format since GDI+ often returns 32-bit even if it's not
 	// Create the image factory.
 	UINT bpp = 0;
-	IWICImagingFactory * pFactory = NULL;
+	IWICImagingFactory* pFactory = nullptr;
 	HRESULT hr = CoCreateInstance(CLSID_WICImagingFactory,
-									NULL,
+									nullptr,
 									CLSCTX_INPROC_SERVER,
 									IID_IWICImagingFactory,
 									(LPVOID*) &pFactory);
@@ -569,30 +569,30 @@ UINT CPicture::GetColorDepth() const
 	// Create a decoder from the file.
 	if (SUCCEEDED(hr))
 	{
-		IWICBitmapDecoder * pDecoder = NULL;
+		IWICBitmapDecoder* pDecoder = nullptr;
 		hr = pFactory->CreateDecoderFromFilename(m_Name.c_str(),
-													NULL,
+													nullptr,
 													GENERIC_READ,
 													WICDecodeMetadataCacheOnDemand,
 													&pDecoder);
 		if (SUCCEEDED(hr))
 		{
-			IWICBitmapFrameDecode * pBitmapFrameDecode = NULL;
+			IWICBitmapFrameDecode* pBitmapFrameDecode = nullptr;
 			hr = pDecoder->GetFrame(0, &pBitmapFrameDecode);
 			if (SUCCEEDED(hr))
 			{
-				IWICBitmapSource * pSource = NULL;
+				IWICBitmapSource* pSource = nullptr;
 				pSource = pBitmapFrameDecode;
 				pSource->AddRef();
 				WICPixelFormatGUID pixelFormat;
 				hr = pSource->GetPixelFormat(&pixelFormat);
 				if (SUCCEEDED(hr))
 				{
-					IWICComponentInfo * piCompInfo = NULL;
+					IWICComponentInfo* piCompInfo = nullptr;
 					hr = pFactory->CreateComponentInfo(pixelFormat, &piCompInfo);
 					if (SUCCEEDED(hr))
 					{
-						IWICPixelFormatInfo * piPixelFormatInfo = NULL;
+						IWICPixelFormatInfo* piPixelFormatInfo = nullptr;
 						hr = piCompInfo->QueryInterface(IID_IWICPixelFormatInfo,(LPVOID *) &piPixelFormatInfo);
 						if (SUCCEEDED(hr))
 						{
@@ -649,7 +649,7 @@ UINT CPicture::GetNumberOfFrames(int dimension)
 	{
 		return 1;
 	}
-	if (pBitmap == NULL)
+	if (!pBitmap)
 		return 0;
 	UINT count = pBitmap->GetFrameDimensionsCount();
 	GUID* pDimensionIDs = (GUID*)malloc(sizeof(GUID)*count);
@@ -681,7 +681,7 @@ long CPicture::SetActiveFrame(UINT frame)
 		m_Width = GetWidth();
 		return 0;
 	}
-	if (pBitmap == NULL)
+	if (!pBitmap)
 		return 0;
 	UINT count = 0;
 	count = pBitmap->GetFrameDimensionsCount();

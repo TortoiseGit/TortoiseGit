@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2012, 2014-2015 - TortoiseSVN
-// Copyright (C) 2008-2015 - TortoiseGit
+// Copyright (C) 2008-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -71,7 +71,7 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 	{
 		STGMEDIUM medium;
 		FORMATETC fmte = {(CLIPFORMAT)g_shellidlist,
-			(DVTARGETDEVICE FAR *)NULL,
+			nullptr,
 			DVASPECT_CONTENT,
 			-1,
 			TYMED_HGLOBAL};
@@ -87,7 +87,7 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 					return S_OK;
 				}
 
-				FORMATETC etc = { CF_HDROP, NULL, DVASPECT_CONTENT, -1, TYMED_HGLOBAL };
+				FORMATETC etc = { CF_HDROP, nullptr, DVASPECT_CONTENT, -1, TYMED_HGLOBAL };
 				STGMEDIUM stg = { TYMED_HGLOBAL };
 				if ( FAILED( pDataObj->GetData ( &etc, &stg )))
 				{
@@ -97,20 +97,20 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 
 
 				HDROP drop = (HDROP)GlobalLock(stg.hGlobal);
-				if ( NULL == drop )
+				if (!drop)
 				{
 					ReleaseStgMedium ( &stg );
 					ReleaseStgMedium ( &medium );
 					return E_INVALIDARG;
 				}
 
-				int count = DragQueryFile(drop, (UINT)-1, NULL, 0);
+				int count = DragQueryFile(drop, (UINT)-1, nullptr, 0);
 				if (count == 1)
 					itemStates |= ITEMIS_ONLYONE;
 				for (int i = 0; i < count; i++)
 				{
 					// find the path length in chars
-					UINT len = DragQueryFile(drop, i, NULL, 0);
+					UINT len = DragQueryFile(drop, i, nullptr, 0);
 					if (len == 0)
 						continue;
 					auto szFileName = std::make_unique<TCHAR[]>(len + 1);
@@ -677,12 +677,11 @@ void CShellExt::InsertGitMenu(BOOL istop, HMENU menu, UINT pos, UINT_PTR id, UIN
 
 bool CShellExt::WriteClipboardPathsToTempFile(stdstring& tempfile)
 {
-	bool bRet = true;
 	tempfile = stdstring();
 	//write all selected files and paths to a temporary file
 	//for TortoiseGitProc.exe to read out again.
 	DWORD written = 0;
-	DWORD pathlength = GetTortoiseGitTempPath(0, NULL);
+	DWORD pathlength = GetTortoiseGitTempPath(0, nullptr);
 	auto path = std::make_unique<TCHAR[]>(pathlength + 1);
 	auto tempFile = std::make_unique<TCHAR[]>(pathlength + 100);
 	GetTortoiseGitTempPath(pathlength+1, path.get());
@@ -692,48 +691,49 @@ bool CShellExt::WriteClipboardPathsToTempFile(stdstring& tempfile)
 	CAutoFile file = ::CreateFile(tempFile.get(),
 		GENERIC_WRITE,
 		FILE_SHARE_READ,
-		0,
+		nullptr,
 		CREATE_ALWAYS,
 		FILE_ATTRIBUTE_TEMPORARY,
-		0);
+		nullptr);
 
 	if (!file)
 		return false;
 
 	if (!IsClipboardFormatAvailable(CF_HDROP))
 		return false;
-	if (!OpenClipboard(NULL))
+	if (!OpenClipboard(nullptr))
 		return false;
 
 	stdstring sClipboardText;
 	HGLOBAL hglb = GetClipboardData(CF_HDROP);
-	HDROP hDrop = (HDROP)GlobalLock(hglb);
-	if(hDrop != NULL)
+	SCOPE_EXIT
 	{
-		TCHAR szFileName[MAX_PATH] = {0};
-		UINT cFiles = DragQueryFile(hDrop, 0xFFFFFFFF, NULL, 0);
-		for(UINT i = 0; i < cFiles; ++i)
-		{
-			DragQueryFile(hDrop, i, szFileName, _countof(szFileName));
-			stdstring filename = szFileName;
-			::WriteFile (file, filename.c_str(), (DWORD)filename.size()*sizeof(TCHAR), &written, 0);
-			::WriteFile (file, _T("\n"), 2, &written, 0);
-		}
-		GlobalUnlock(hDrop);
+		GlobalUnlock(hglb);
+		CloseClipboard();
+	};
+	HDROP hDrop = (HDROP)GlobalLock(hglb);
+	if (!hDrop)
+		return false;
+	SCOPE_EXIT { GlobalUnlock(hDrop); };
+
+	TCHAR szFileName[MAX_PATH] = {0};
+	UINT cFiles = DragQueryFile(hDrop, 0xFFFFFFFF, nullptr, 0);
+	for(UINT i = 0; i < cFiles; ++i)
+	{
+		DragQueryFile(hDrop, i, szFileName, _countof(szFileName));
+		stdstring filename = szFileName;
+		::WriteFile (file, filename.c_str(), (DWORD)filename.size()*sizeof(TCHAR), &written, 0);
+		::WriteFile (file, _T("\n"), 2, &written, 0);
 	}
-	else bRet = false;
-	GlobalUnlock(hglb);
-
-	CloseClipboard();
-
-	return bRet;
+	
+	return true;
 }
 
 stdstring CShellExt::WriteFileListToTempFile()
 {
 	//write all selected files and paths to a temporary file
 	//for TortoiseGitProc.exe to read out again.
-	DWORD pathlength = GetTortoiseGitTempPath(0, NULL);
+	DWORD pathlength = GetTortoiseGitTempPath(0, nullptr);
 	auto path = std::make_unique<TCHAR[]>(pathlength + 1);
 	auto tempFile = std::make_unique<TCHAR[]>(pathlength + 100);
 	GetTortoiseGitTempPath(pathlength + 1, path.get());
@@ -743,10 +743,10 @@ stdstring CShellExt::WriteFileListToTempFile()
 	CAutoFile file = ::CreateFile (tempFile.get(),
 								GENERIC_WRITE,
 								FILE_SHARE_READ,
-								0,
+								nullptr,
 								CREATE_ALWAYS,
 								FILE_ATTRIBUTE_TEMPORARY,
-								0);
+								nullptr);
 
 	if (!file)
 	{
@@ -848,7 +848,7 @@ STDMETHODIMP CShellExt::QueryDropContext(UINT uFlags, UINT idCmdFirst, HMENU hMe
 
 	// separator
 	if (idCmd != idCmdFirst)
-		InsertMenu(hMenu, indexMenu++, MF_SEPARATOR|MF_BYPOSITION, 0, NULL);
+		InsertMenu(hMenu, indexMenu++, MF_SEPARATOR | MF_BYPOSITION, 0, nullptr);
 
 	TweakMenu(hMenu);
 
@@ -1008,7 +1008,7 @@ STDMETHODIMP CShellExt::QueryContextMenu_Wrap(HMENU hMenu,
 	bool bMenuEntryAdded = false;
 	bool bMenuEmpty = true;
 	// insert separator at start
-	InsertMenu(hMenu, indexMenu++, MF_SEPARATOR|MF_BYPOSITION, 0, NULL); idCmd++;
+	InsertMenu(hMenu, indexMenu++, MF_SEPARATOR | MF_BYPOSITION, 0, nullptr); idCmd++;
 	bool bShowIcons = !!DWORD(CRegStdDWORD(_T("Software\\TortoiseGit\\ShowContextMenuIcons"), TRUE));
 
 	while (menuInfo[menuIndex].command != ShellMenuLastEntry)
@@ -1046,7 +1046,7 @@ STDMETHODIMP CShellExt::QueryContextMenu_Wrap(HMENU hMenu,
 					{
 						bAddSeparator = false;
 						bMenuEntryAdded = false;
-						InsertMenu(subMenu, indexSubMenu++, MF_SEPARATOR|MF_BYPOSITION, 0, NULL);
+						InsertMenu(subMenu, indexSubMenu++, MF_SEPARATOR|MF_BYPOSITION, 0, nullptr);
 						idCmd++;
 					}
 
@@ -1089,7 +1089,7 @@ STDMETHODIMP CShellExt::QueryContextMenu_Wrap(HMENU hMenu,
 		if (idCmd - idCmdFirst > 0)
 		{
 			//separator after
-			InsertMenu(hMenu, indexMenu++, MF_SEPARATOR|MF_BYPOSITION, 0, NULL); idCmd++;
+			InsertMenu(hMenu, indexMenu++, MF_SEPARATOR | MF_BYPOSITION, 0, nullptr); idCmd++;
 		}
 		TweakMenu(hMenu);
 
@@ -1155,7 +1155,7 @@ STDMETHODIMP CShellExt::QueryContextMenu_Wrap(HMENU hMenu,
 	InsertMenuItem(hMenu, indexMenu++, TRUE, &menuiteminfo);
 
 	//separator after
-	InsertMenu(hMenu, indexMenu++, MF_SEPARATOR|MF_BYPOSITION, 0, NULL); idCmd++;
+	InsertMenu(hMenu, indexMenu++, MF_SEPARATOR | MF_BYPOSITION, 0, nullptr); idCmd++;
 
 	TweakMenu(hMenu);
 
@@ -1223,7 +1223,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 {
 	PreserveChdir preserveChdir;
 	HRESULT hr = E_INVALIDARG;
-	if (lpcmi == NULL)
+	if (!lpcmi)
 		return hr;
 
 	if (!files_.empty() || !folder_.empty())
@@ -1533,12 +1533,12 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 					// if there's a patch file in the clipboard, we save it
 					// to a temporary file and tell TortoiseGitMerge to use that one
 					UINT cFormat = RegisterClipboardFormat(_T("TGIT_UNIFIEDDIFF"));
-					if ((cFormat)&&(OpenClipboard(NULL)))
+					if (cFormat && OpenClipboard(nullptr))
 					{
 						HGLOBAL hglb = GetClipboardData(cFormat);
 						LPCSTR lpstr = (LPCSTR)GlobalLock(hglb);
 
-						DWORD len = GetTortoiseGitTempPath(0, NULL);
+						DWORD len = GetTortoiseGitTempPath(0, nullptr);
 						auto path = std::make_unique<TCHAR[]>(len + 1);
 						auto tempF = std::make_unique<TCHAR[]>(len + 100);
 						GetTortoiseGitTempPath(len + 1, path.get());
@@ -1807,7 +1807,7 @@ STDMETHODIMP CShellExt::HandleMenuMsg2_Wrap(UINT uMsg, WPARAM wParam, LPARAM lPa
 	PreserveChdir preserveChdir;
 
 	LRESULT res;
-	if (pResult == NULL)
+	if (!pResult)
 		pResult = &res;
 	*pResult = FALSE;
 
@@ -1817,7 +1817,7 @@ STDMETHODIMP CShellExt::HandleMenuMsg2_Wrap(UINT uMsg, WPARAM wParam, LPARAM lPa
 	case WM_MEASUREITEM:
 		{
 			MEASUREITEMSTRUCT* lpmis = (MEASUREITEMSTRUCT*)lParam;
-			if (lpmis==NULL)
+			if (!lpmis)
 				break;
 			lpmis->itemWidth = 16;
 			lpmis->itemHeight = 16;
@@ -1828,19 +1828,19 @@ STDMETHODIMP CShellExt::HandleMenuMsg2_Wrap(UINT uMsg, WPARAM wParam, LPARAM lPa
 		{
 			LPCTSTR resource;
 			DRAWITEMSTRUCT* lpdis = (DRAWITEMSTRUCT*)lParam;
-			if ((lpdis==NULL)||(lpdis->CtlType != ODT_MENU))
+			if (!lpdis || lpdis->CtlType != ODT_MENU)
 				return S_OK;		//not for a menu
 			resource = GetMenuTextFromResource((int)myIDMap[lpdis->itemID]);
-			if (resource == NULL)
+			if (!resource)
 				return S_OK;
 			HICON hIcon = (HICON)LoadImage(g_hResInst, resource, IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
-			if (hIcon == NULL)
+			if (!hIcon)
 				return S_OK;
 			DrawIconEx(lpdis->hDC,
 				lpdis->rcItem.left,
 				lpdis->rcItem.top + (lpdis->rcItem.bottom - lpdis->rcItem.top - 16) / 2,
 				hIcon, 16, 16,
-				0, NULL, DI_NORMAL);
+				0, nullptr, DI_NORMAL);
 			DestroyIcon(hIcon);
 			*pResult = TRUE;
 		}
@@ -1859,11 +1859,11 @@ STDMETHODIMP CShellExt::HandleMenuMsg2_Wrap(UINT uMsg, WPARAM wParam, LPARAM lPa
 			for (auto It = mySubMenuMap.cbegin(); It != mySubMenuMap.cend(); ++It)
 			{
 				LPCTSTR resource = GetMenuTextFromResource((int)mySubMenuMap[It->first]);
-				if (resource == NULL)
+				if (!resource)
 					continue;
 				szItem = stringtablebuffer;
 				TCHAR * amp = _tcschr(szItem, '&');
-				if (amp == NULL)
+				if (!amp)
 					continue;
 				amp++;
 				int ampChar = LOWORD(*amp);
@@ -1924,7 +1924,7 @@ STDMETHODIMP CShellExt::HandleMenuMsg2_Wrap(UINT uMsg, WPARAM wParam, LPARAM lPa
 LPCTSTR CShellExt::GetMenuTextFromResource(int id)
 {
 	TCHAR textbuf[255] = { 0 };
-	LPCTSTR resource = NULL;
+	LPCTSTR resource = nullptr;
 	unsigned __int64 layout = g_ShellCache.GetMenuLayout();
 	space = 6;
 
@@ -1958,19 +1958,19 @@ LPCTSTR CShellExt::GetMenuTextFromResource(int id)
 		}
 		menuIndex++;
 	}
-	return NULL;
+	return nullptr;
 }
 
 bool CShellExt::IsIllegalFolder(std::wstring folder, int * cslidarray)
 {
 	int i=0;
 	TCHAR buf[MAX_PATH] = {0};	//MAX_PATH ok, since SHGetSpecialFolderPath doesn't return the required buffer length!
-	LPITEMIDLIST pidl = NULL;
+	LPITEMIDLIST pidl = nullptr;
 	while (cslidarray[i])
 	{
 		++i;
-		pidl = NULL;
-		if (SHGetFolderLocation(NULL, cslidarray[i-1], NULL, 0, &pidl)!=S_OK)
+		pidl = nullptr;
+		if (SHGetFolderLocation(nullptr, cslidarray[i - 1], nullptr, 0, &pidl) != S_OK)
 			continue;
 		if (!SHGetPathFromIDList(pidl, buf))
 		{
@@ -1989,7 +1989,7 @@ bool CShellExt::IsIllegalFolder(std::wstring folder, int * cslidarray)
 
 bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, HMENU subMenu, UINT &indexMenu, int &indexSubMenu, unsigned __int64 topmenu, bool bShowIcons, UINT /*uFlags*/)
 {
-	HMENU ignoresubmenu = NULL;
+	HMENU ignoresubmenu = nullptr;
 	int indexignoresub = 0;
 	bool bShowIgnoreMenu = false;
 	TCHAR maskbuf[MAX_PATH] = {0};		// MAX_PATH is ok, since this only holds a filename
@@ -2037,7 +2037,7 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 			if ((p!=-1) &&
 				((ignoredprops.compare(maskbuf)==0) || (ignoredprops.find('\n', p)==p+_tcslen(maskbuf)+1) || (ignoredprops.rfind('\n', p)==p-1)))
 			{
-				if (ignoresubmenu==NULL)
+				if (!ignoresubmenu)
 					ignoresubmenu = CreateMenu();
 
 				InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, maskbuf);
@@ -2198,7 +2198,7 @@ void CShellExt::RunCommand(const tstring& path, const tstring& command, LPCTSTR 
 		return;
 	}
 
-	MessageBox(NULL, CFormatMessageWrapper(), errorMessage, MB_OK | MB_ICONINFORMATION);
+	MessageBox(nullptr, CFormatMessageWrapper(), errorMessage, MB_OK | MB_ICONERROR);
 }
 
 bool CShellExt::ShouldInsertItem(const MenuInfo& item) const

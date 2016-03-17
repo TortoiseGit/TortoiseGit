@@ -82,7 +82,7 @@ class CProgressDlg : public CResizableStandAloneDialog
 {
 	DECLARE_DYNAMIC(CProgressDlg)
 public:
-	CProgressDlg(CWnd* pParent = NULL); // standard constructor
+	CProgressDlg(CWnd* pParent = nullptr); // standard constructor
 	virtual ~CProgressDlg();
 
 private:
@@ -162,7 +162,7 @@ private:
 
 public:
 	static void	ParserCmdOutput(CRichEditCtrl &log,CProgressCtrl &progressctrl,HWND m_hWnd,CComPtr<ITaskbarList3> m_pTaskbarList,
-									CStringA &oneline, char ch,CWnd *CurrentWork=NULL);
+									CStringA& oneline, char ch, CWnd* CurrentWork = nullptr);
 
 	/**
 	 *@param dirlist if empty, the current directory of param git is used; otherwise each entry in param cmdlist uses the corresponding entry in param dirlist
@@ -192,7 +192,7 @@ private:
 class CCommitProgressDlg:public CProgressDlg
 {
 public:
-	CCommitProgressDlg(CWnd* pParent = NULL):CProgressDlg(pParent)
+	CCommitProgressDlg(CWnd* pParent = nullptr) : CProgressDlg(pParent)
 	{
 	}
 

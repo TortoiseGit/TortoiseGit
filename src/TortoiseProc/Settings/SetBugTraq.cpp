@@ -71,7 +71,7 @@ BOOL CSetBugTraq::OnInitDialog()
 	temp.LoadString(IDS_SETTINGS_BUGTRAQ_PARAMETERSCOL);
 	m_cBugTraqList.InsertColumn(2, temp);
 
-	SetWindowTheme(m_hWnd, L"Explorer", NULL);
+	SetWindowTheme(m_hWnd, L"Explorer", nullptr);
 
 	RebuildBugTraqList();
 

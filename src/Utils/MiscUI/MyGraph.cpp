@@ -109,7 +109,7 @@ void MyGraphSeries::SetTipRegion(int nGroup, CRgn* prgn)
 	ASSERT_VALID(prgn);
 
 	// If there is an existing region, delete it.
-	CRgn* prgnOld = NULL;
+	CRgn* prgnOld = nullptr;
 
 	if (nGroup < m_oaRegions.GetSize())
 	{
@@ -118,7 +118,7 @@ void MyGraphSeries::SetTipRegion(int nGroup, CRgn* prgn)
 	}
 
 	delete prgnOld;
-	prgnOld = NULL;
+	prgnOld = nullptr;
 
 	// Add the new region.
 	m_oaRegions.SetAtGrow(nGroup, prgn);
@@ -1599,7 +1599,7 @@ CPoint MyGraph::WedgeEndFromDegrees(double degrees, const CPoint& ptCenter,
 															 UINT uiMsgAllowed /* = WM_NULL */ )
 {
 	MSG msg = { 0 };
-	while (::PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
+	while (::PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
 
 		// Do painting only.
 		if (bOnlyDrawing  &&  WM_PAINT == msg.message)  {

@@ -388,7 +388,7 @@ public:
 	void DiffSelectedRevWithPrevious();
 	bool IsSelectionContinuous();
 	int  BeginFetchLog();
-	int  FillGitLog(CTGitPath *path, CString *range = NULL, int infomask = CGit::LOG_INFO_STAT| CGit::LOG_INFO_FILESTATE | CGit::LOG_INFO_SHOW_MERGEDFILE);
+	int  FillGitLog(CTGitPath* path, CString* range = nullptr, int infomask = CGit::LOG_INFO_STAT | CGit::LOG_INFO_FILESTATE | CGit::LOG_INFO_SHOW_MERGEDFILE);
 	int  FillGitLog(std::set<CGitHash>& hashes);
 	CString MessageDisplayStr(GitRev* pLogEntry);
 	BOOL IsMatchFilter(bool bRegex, GitRevLoglist* pRev, std::tr1::wregex& pat);
@@ -458,14 +458,14 @@ public:
 	void StartLoadingThread();
 	void SafeTerminateThread()
 	{
-		if (m_LoadingThread!=NULL && InterlockedExchange(&m_bExitThread, TRUE) == FALSE)
+		if (m_LoadingThread && InterlockedExchange(&m_bExitThread, TRUE) == FALSE)
 		{
 			DWORD ret = WAIT_TIMEOUT;
 			for (int i = 0; i < 200 && m_bThreadRunning; ++i)
 				ret =::WaitForSingleObject(m_LoadingThread->m_hThread, 100);
 			if (ret == WAIT_TIMEOUT && m_bThreadRunning)
 				::TerminateThread(m_LoadingThread, 0);
-			m_LoadingThread = NULL;
+			m_LoadingThread = nullptr;
 		}
 	};
 
@@ -554,7 +554,7 @@ protected:
 
 	void paintGraphLane(HDC hdc,int laneHeight, int type, int x1, int x2,
 									  const COLORREF& col,const COLORREF& activeColor, int top) ;
-	void DrawLine(HDC hdc, int x1, int y1, int x2, int y2){::MoveToEx(hdc,x1,y1,NULL);::LineTo(hdc,x2,y2);}
+	void DrawLine(HDC hdc, int x1, int y1, int x2, int y2){ ::MoveToEx(hdc, x1, y1, nullptr); ::LineTo(hdc, x2, y2); }
 	/**
 	* Save column widths to the registry
 	*/
@@ -620,11 +620,11 @@ public:
 			while (ret == WAIT_TIMEOUT && m_AsyncThreadRunning)
 			{
 				MSG msg;
-				if (::PeekMessage(&msg, NULL, 0,0, PM_NOREMOVE))
+				if (::PeekMessage(&msg, nullptr, 0,0, PM_NOREMOVE))
 					AfxGetThread()->PumpMessage(); // process messages, so that GetTopIndex and so on in the thread work
 				ret = ::WaitForSingleObject(m_DiffingThread->m_hThread, 100);
 			}
-			m_DiffingThread = NULL;
+			m_DiffingThread = nullptr;
 			InterlockedExchange(&m_AsyncThreadExit, FALSE);
 		}
 	};

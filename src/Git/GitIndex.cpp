@@ -164,7 +164,7 @@ int CGitIndexList::GetFileStatus(const CString &gitdir, const CString &pathorg, 
 		git_oid actual;
 		CStringA fileA = CUnicodeUtils::GetMulti(pathorg, CP_UTF8);
 		m_critRepoSec.Lock(); // prevent concurrent access to repository instance and especially filter-lists
-		if (!git_repository_hashfile(&actual, repository, fileA, GIT_OBJ_BLOB, NULL) && !git_oid_cmp(&actual, (const git_oid*)at(index).m_IndexHash.m_hash))
+		if (!git_repository_hashfile(&actual, repository, fileA, GIT_OBJ_BLOB, nullptr) && !git_oid_cmp(&actual, (const git_oid*)at(index).m_IndexHash.m_hash))
 		{
 			at(index).m_ModifyTime = time;
 			*status = git_wc_status_normal;
@@ -252,7 +252,7 @@ int CGitIndexList::GetStatus(const CString& gitdir, CString path, git_wc_status_
 		if (skipWorktree)
 			*skipWorktree = false;
 
-		GetFileStatus(gitdir, (*it).m_FileName, status, time, filesize, callback, pData, NULL, assumeValid, skipWorktree);
+		GetFileStatus(gitdir, (*it).m_FileName, status, time, filesize, callback, pData, nullptr, assumeValid, skipWorktree);
 
 		// if a file is assumed valid, we need to inform the caller, otherwise the assumevalid flag might not get to the explorer on first open of a repository
 		if (callback && assumeValid && skipWorktree && (*assumeValid || *skipWorktree))
@@ -289,7 +289,7 @@ int CGitIndexFileMap::Check(const CString &gitdir, bool *isChanged)
 	SHARED_INDEX_PTR pIndex;
 	pIndex = this->SafeGet(gitdir);
 
-	if (pIndex.get() == NULL)
+	if (!pIndex)
 	{
 		if(isChanged)
 			*isChanged = true;
@@ -329,7 +329,7 @@ int CGitIndexFileMap::GetFileStatus(const CString &gitdir, const CString &path, 
 	CheckAndUpdate(gitdir, isLoadUpdatedIndex);
 
 	SHARED_INDEX_PTR pIndex = this->SafeGet(gitdir);
-	if (pIndex.get())
+	if (pIndex)
 		pIndex->GetStatus(gitdir, path, status, IsFull, IsRecursive, callback, pData, pHash, assumeValid, skipWorktree);
 	else
 	{
@@ -358,7 +358,7 @@ int CGitIndexFileMap::IsUnderVersionControl(const CString& gitdir, CString subpa
 
 	SHARED_INDEX_PTR pIndex = this->SafeGet(gitdir);
 
-	if (pIndex.get())
+	if (pIndex)
 	{
 		if (isDir)
 			*isVersion = (SearchInSortVector(*pIndex, subpath, subpath.GetLength()) >= 0);
@@ -663,7 +663,7 @@ int ReadTreeRecursive(git_repository &repo, const git_tree * tree, const CString
 	for (size_t i = 0; i < count; ++i)
 	{
 		const git_tree_entry *entry = git_tree_entry_byindex(tree, i);
-		if (entry == NULL)
+		if (!entry)
 			continue;
 		int mode = git_tree_entry_filemode(entry);
 		if( CallBack(git_tree_entry_id(entry)->id,
@@ -677,9 +677,9 @@ int ReadTreeRecursive(git_repository &repo, const git_tree * tree, const CString
 		{
 			if(mode&S_IFDIR)
 			{
-				git_object *object = NULL;
+				git_object* object = nullptr;
 				git_tree_entry_to_object(&object, &repo, entry);
-				if (object == NULL)
+				if (!object)
 					continue;
 				CStringA parent = base;
 				parent += git_tree_entry_name(entry);
@@ -724,7 +724,7 @@ int CGitIgnoreItem::FetchIgnoreList(const CString &projectroot, const CString &f
 	if (this->m_pExcludeList)
 	{
 		git_free_exclude_list(m_pExcludeList);
-		m_pExcludeList=NULL;
+		m_pExcludeList = nullptr;
 	}
 	free(m_buffer);
 	m_buffer = nullptr;
@@ -766,7 +766,7 @@ int CGitIgnoreItem::FetchIgnoreList(const CString &projectroot, const CString &f
 		return -1;
 
 	DWORD size = 0;
-	if (!ReadFile(hfile, m_buffer, filesize, &size, NULL))
+	if (!ReadFile(hfile, m_buffer, filesize, &size, nullptr))
 	{
 		free(m_buffer);
 		m_buffer = nullptr;

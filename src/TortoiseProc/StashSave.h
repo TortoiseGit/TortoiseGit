@@ -29,7 +29,7 @@ class CStashSaveDlg : public CHorizontalResizableStandAloneDialog
 	DECLARE_DYNAMIC(CStashSaveDlg)
 
 public:
-	CStashSaveDlg(CWnd* pParent = NULL);   // standard constructor
+	CStashSaveDlg(CWnd* pParent = nullptr);   // standard constructor
 	virtual ~CStashSaveDlg();
 
 // Dialog Data

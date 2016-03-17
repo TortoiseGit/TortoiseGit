@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2014 - TortoiseGit
+// Copyright (C) 2012-2014, 2016 - TortoiseGit
 // Copyright (C) 2007, 2009, 2013-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -24,11 +24,11 @@
 
 const HINSTANCE NIL = (HINSTANCE)((char*)(0)-1);
 
-static HINSTANCE hInst = NULL;
+static HINSTANCE hInst = nullptr;
 
-static HINSTANCE hTortoiseGit = NULL;
-static LPFNGETCLASSOBJECT pDllGetClassObject = NULL;
-static LPFNCANUNLOADNOW pDllCanUnloadNow = NULL;
+static HINSTANCE hTortoiseGit = nullptr;
+static LPFNGETCLASSOBJECT pDllGetClassObject = nullptr;
+static LPFNCANUNLOADNOW pDllCanUnloadNow = nullptr;
 
 static BOOL DebugActive(void)
 {
@@ -52,7 +52,7 @@ static BOOL DebugActive(void)
 		Result = RegOpenKeyEx(HKEY_LOCAL_MACHINE, TGitRootKey, 0, KEY_READ, &hKey);
 		if (Result == ERROR_SUCCESS)
 		{
-			Result = RegQueryValueEx(hKey, ExplorerOnlyValue, NULL, &Type, (BYTE *)&bDebug, &Len);
+			Result = RegQueryValueEx(hKey, ExplorerOnlyValue, nullptr, &Type, (BYTE*)&bDebug, &Len);
 			if ((Result == ERROR_SUCCESS) && (Type == REG_DWORD) && (Len == sizeof(DWORD)) && bDebug)
 			{
 				TRACE(_T("DebugActive() - debug active\n"));
@@ -94,13 +94,13 @@ static BOOL WantRealVersion(void)
 	Result = RegOpenKeyEx(HKEY_CURRENT_USER, TGitRootKey, 0, KEY_READ, &hKey);
 	if (Result == ERROR_SUCCESS)
 	{
-		Result = RegQueryValueEx(hKey, ExplorerOnlyValue, NULL, &Type, (BYTE *)&bExplorerOnly, &Len);
+		Result = RegQueryValueEx(hKey, ExplorerOnlyValue, nullptr, &Type, (BYTE*)&bExplorerOnly, &Len);
 		if ((Result == ERROR_SUCCESS) && (Type == REG_DWORD) && (Len == sizeof(DWORD)) && bExplorerOnly)
 		{
 			TRACE(_T("WantRealVersion() - Explorer Only\n"));
 
 			// check if the current process is in fact the explorer
-			Len = GetModuleFileName(NULL, ModuleName, _countof(ModuleName));
+			Len = GetModuleFileName(nullptr, ModuleName, _countof(ModuleName));
 			if (Len)
 			{
 				TRACE(_T("Process is %s\n"), ModuleName);
@@ -150,7 +150,7 @@ static void LoadRealLibrary(void)
 	// which is for our debug purposes an instance of usually TortoiseProc. That way we can force the load
 	// of the debug dlls.
 	if (DebugActive())
-		hUseInst = NULL;
+		hUseInst = nullptr;
 	Len = GetModuleFileName(hUseInst, ModuleName, _countof(ModuleName));
 	if (!Len)
 	{
@@ -182,7 +182,7 @@ static void LoadRealLibrary(void)
 #endif
 	TRACE(_T("LoadRealLibrary() - Load %s\n"), ModuleName);
 
-	hTortoiseGit = LoadLibraryEx(ModuleName, NULL, LOAD_WITH_ALTERED_SEARCH_PATH);
+	hTortoiseGit = LoadLibraryEx(ModuleName, nullptr, LOAD_WITH_ALTERED_SEARCH_PATH);
 	if (!hTortoiseGit)
 	{
 		TRACE(_T("LoadRealLibrary() - Fail\n"));
@@ -191,10 +191,10 @@ static void LoadRealLibrary(void)
 	}
 
 	TRACE(_T("LoadRealLibrary() - Success\n"));
-	pDllGetClassObject = NULL;
-	pDllCanUnloadNow = NULL;
+	pDllGetClassObject = nullptr;
+	pDllCanUnloadNow = nullptr;
 	pDllGetClassObject = (LPFNGETCLASSOBJECT)GetProcAddress(hTortoiseGit, GetClassObject);
-	if (pDllGetClassObject == NULL)
+	if (!pDllGetClassObject)
 	{
 		TRACE(_T("LoadRealLibrary() - Fail\n"));
 		FreeLibrary(hTortoiseGit);
@@ -202,7 +202,7 @@ static void LoadRealLibrary(void)
 		return;
 	}
 	pDllCanUnloadNow = (LPFNCANUNLOADNOW)GetProcAddress(hTortoiseGit, CanUnloadNow);
-	if (pDllCanUnloadNow == NULL)
+	if (!pDllCanUnloadNow)
 	{
 		TRACE(_T("LoadRealLibrary() - Fail\n"));
 		FreeLibrary(hTortoiseGit);
@@ -219,9 +219,9 @@ static void UnloadRealLibrary(void)
 	if (hTortoiseGit != NIL)
 		FreeLibrary(hTortoiseGit);
 
-	hTortoiseGit = NULL;
-	pDllGetClassObject = NULL;
-	pDllCanUnloadNow = NULL;
+	hTortoiseGit = nullptr;
+	pDllGetClassObject = nullptr;
+	pDllCanUnloadNow = nullptr;
 }
 
 BOOL WINAPI DllMain(HINSTANCE hInstance, DWORD Reason, LPVOID /*Reserved*/)
@@ -233,7 +233,7 @@ BOOL WINAPI DllMain(HINSTANCE hInstance, DWORD Reason, LPVOID /*Reserved*/)
 
 	BOOL bInShellTest = FALSE;
 	TCHAR buf[MAX_PATH + 1] = {0};       // MAX_PATH ok, the test really is for debugging anyway.
-	DWORD pathLength = GetModuleFileName(NULL, buf, MAX_PATH);
+	DWORD pathLength = GetModuleFileName(nullptr, buf, MAX_PATH);
 
 	if (pathLength >= 14)
 	{
@@ -281,7 +281,7 @@ STDAPI DllGetClassObject(REFCLSID rclsid, REFIID riid, LPVOID *ppv)
 	if (!pDllGetClassObject)
 	{
 		if (ppv)
-			*ppv = NULL;
+			*ppv = nullptr;
 
 		TRACE(_T("DllGetClassObject() - Bypass\n"));
 		return CLASS_E_CLASSNOTAVAILABLE;

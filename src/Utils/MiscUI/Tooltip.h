@@ -40,19 +40,19 @@ public:
 		SetDelayTime (TTDT_AUTOPOP, 30000);
 		return bRet;
 	}
-	CToolTips() : CToolTipCtrl(), m_pParentWnd(NULL) {}
+	CToolTips() : CToolTipCtrl(), m_pParentWnd(nullptr) {}
 	virtual ~CToolTips() {}
 
-	BOOL AddTool(CWnd* pWnd, UINT nIDText, LPCRECT lpRectTool = NULL, UINT_PTR nIDTool = 0);
-	BOOL AddTool(CWnd* pWnd, LPCTSTR lpszText = LPSTR_TEXTCALLBACK, LPCRECT lpRectTool = NULL, UINT_PTR nIDTool = 0);
-	void AddTool(int nIdWnd, UINT nIdText, LPCRECT lpRectTool = NULL, UINT_PTR nIDTool = 0);
-	void AddTool(int nIdWnd, CString sBalloonTipText, LPCRECT lpRectTool = NULL, UINT_PTR nIDTool = 0);
+	BOOL AddTool(CWnd* pWnd, UINT nIDText, LPCRECT lpRectTool = nullptr, UINT_PTR nIDTool = 0);
+	BOOL AddTool(CWnd* pWnd, LPCTSTR lpszText = LPSTR_TEXTCALLBACK, LPCRECT lpRectTool = nullptr, UINT_PTR nIDTool = 0);
+	void AddTool(int nIdWnd, UINT nIdText, LPCRECT lpRectTool = nullptr, UINT_PTR nIDTool = 0);
+	void AddTool(int nIdWnd, CString sBalloonTipText, LPCRECT lpRectTool = nullptr, UINT_PTR nIDTool = 0);
 	void DelTool(CWnd* pWnd, UINT_PTR nIDTool = 0);
 	void DelTool(int nIdWnd, UINT_PTR nIDTool = 0);
 
 	static BOOL ShowBalloon(CWnd* pWnd, UINT nIDText, UINT nIDTitle, UINT icon = 0);
 	void ShowBalloon(int nIdWnd, UINT nIdText, UINT nIDTitle, UINT icon = 0);
-	void RelayEvent(LPMSG lpMsg, CWnd * dlgWnd = NULL);
+	void RelayEvent(LPMSG lpMsg, CWnd* dlgWnd = nullptr);
 
 	DECLARE_MESSAGE_MAP()
 	afx_msg BOOL OnTtnNeedText(NMHDR *pNMHDR, LRESULT *pResult);

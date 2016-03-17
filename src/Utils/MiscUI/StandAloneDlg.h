@@ -40,7 +40,7 @@
 template <typename BaseType> class CStandAloneDialogTmpl : public BaseType
 {
 protected:
-	CStandAloneDialogTmpl(UINT nIDTemplate, CWnd* pParentWnd = NULL) : BaseType(nIDTemplate, pParentWnd)
+	CStandAloneDialogTmpl(UINT nIDTemplate, CWnd* pParentWnd = nullptr) : BaseType(nIDTemplate, pParentWnd)
 	{
 		m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 		m_nResizeBlock = 0;
@@ -119,7 +119,7 @@ protected:
 	BOOL DialogEnableWindow(UINT nID, BOOL bEnable)
 	{
 		CWnd * pwndDlgItem = GetDlgItem(nID);
-		if (pwndDlgItem == NULL)
+		if (!pwndDlgItem)
 			return FALSE;
 		if (bEnable)
 			return pwndDlgItem->EnableWindow(bEnable);
@@ -150,7 +150,7 @@ protected:
 		RECT controlrect;
 		RECT controlrectorig;
 		pwndDlgItem->GetWindowRect(&controlrect);
-		::MapWindowPoints(NULL, GetSafeHwnd(), (LPPOINT)&controlrect, 2);
+		::MapWindowPoints(nullptr, GetSafeHwnd(), (LPPOINT)&controlrect, 2);
 		controlrectorig = controlrect;
 		if (pDC)
 		{
@@ -196,7 +196,7 @@ protected:
 		RECT controlrect;
 		RECT controlrectorig;
 		pwndDlgItem->GetWindowRect(&controlrect);
-		::MapWindowPoints(NULL, GetSafeHwnd(), (LPPOINT)&controlrect, 2);
+		::MapWindowPoints(nullptr, GetSafeHwnd(), (LPPOINT)&controlrect, 2);
 		controlrect.right += 200;   // in case the control needs to be bigger than it currently is (e.g., due to translations)
 		controlrectorig = controlrect;
 
@@ -282,7 +282,7 @@ protected:
 	{
 		CWinApp* pApp = AfxGetApp();
 		ASSERT_VALID(pApp);
-		ASSERT(pApp->m_pszHelpFilePath != NULL);
+		ASSERT(pApp->m_pszHelpFilePath);
 		// to call HtmlHelp the m_fUseHtmlHelp must be set in
 		// the application's constructor
 		ASSERT(pApp->m_eHelpType == afxHTMLHelp);
@@ -314,12 +314,12 @@ public:
 	, m_bEnableSaveRestore(false)
 	, m_bRectOnly(false)
 	{}
-	CStateDialog(UINT nIDTemplate, CWnd* pParentWnd = NULL)
+	CStateDialog(UINT nIDTemplate, CWnd* pParentWnd = nullptr)
 	: CDialog(nIDTemplate, pParentWnd)
 	, m_bEnableSaveRestore(false)
 	, m_bRectOnly(false)
 	{}
-	CStateDialog(LPCTSTR lpszTemplateName, CWnd* pParentWnd = NULL)
+	CStateDialog(LPCTSTR lpszTemplateName, CWnd* pParentWnd = nullptr)
 	: CDialog(lpszTemplateName, pParentWnd)
 	, m_bEnableSaveRestore(false)
 	, m_bRectOnly(false)
@@ -371,7 +371,7 @@ protected:
 class CResizableStandAloneDialog : public CStandAloneDialogTmpl<CResizableDialog>
 {
 public:
-	CResizableStandAloneDialog(UINT nIDTemplate, CWnd* pParentWnd = NULL);
+	CResizableStandAloneDialog(UINT nIDTemplate, CWnd* pParentWnd = nullptr);
 
 private:
 	DECLARE_DYNAMIC(CResizableStandAloneDialog)
@@ -394,7 +394,7 @@ private:
 class CStandAloneDialog : public CStandAloneDialogTmpl<CDialog>
 {
 public:
-	CStandAloneDialog(UINT nIDTemplate, CWnd* pParentWnd = NULL);
+	CStandAloneDialog(UINT nIDTemplate, CWnd* pParentWnd = nullptr);
 protected:
 	DECLARE_MESSAGE_MAP()
 private:
@@ -404,7 +404,7 @@ private:
 class CStateStandAloneDialog : public CStandAloneDialogTmpl<CStateDialog>
 {
 public:
-	CStateStandAloneDialog(UINT nIDTemplate, CWnd* pParentWnd = NULL);
+	CStateStandAloneDialog(UINT nIDTemplate, CWnd* pParentWnd = nullptr);
 protected:
 	DECLARE_MESSAGE_MAP()
 private:

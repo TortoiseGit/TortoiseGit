@@ -107,7 +107,7 @@ CTGitPath CTempFiles::CreateTempPath (bool bRemoveAtEnd, const CTGitPath& path, 
 		}
 		else
 		{
-			CAutoFile hFile = CreateFile(tempfile.GetWinPath(), GENERIC_READ, FILE_SHARE_READ, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_TEMPORARY, NULL);
+			CAutoFile hFile = CreateFile(tempfile.GetWinPath(), GENERIC_READ, FILE_SHARE_READ, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_TEMPORARY, nullptr);
 			if (!hFile)
 			{
 				if (GetLastError() != ERROR_ALREADY_EXISTS)

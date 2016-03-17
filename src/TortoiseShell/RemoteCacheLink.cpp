@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2014 - TortoiseGit
+// Copyright (C) 2009-2014, 2016 - TortoiseGit
 // Copyright (C) 2003-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -62,10 +62,10 @@ bool CRemoteCacheLink::InternalEnsurePipeOpen ( CAutoFile& hPipe
 							GENERIC_READ |                  // read and write access
 							GENERIC_WRITE,
 							0,                              // no sharing
-							NULL,                           // default security attributes
+							nullptr,                        // default security attributes
 							OPEN_EXISTING,                  // opens existing pipe
 							FILE_FLAG_OVERLAPPED,           // default attributes
-							NULL);                          // no template file
+							nullptr);                       // no template file
 		if ((!hPipe) && (GetLastError() == ERROR_PIPE_BUSY))
 		{
 			// TGitCache is running but is busy connecting a different client.
@@ -87,8 +87,8 @@ bool CRemoteCacheLink::InternalEnsurePipeOpen ( CAutoFile& hPipe
 		if(!SetNamedPipeHandleState(
 			hPipe,    // pipe handle
 			&dwMode,  // new pipe mode
-			NULL,     // don't set maximum bytes
-			NULL))    // don't set maximum time
+			nullptr,  // don't set maximum bytes
+			nullptr)) // don't set maximum time
 		{
 			CTraceToOutputDebugString::Instance()(__FUNCTION__ ": SetNamedPipeHandleState failed");
 			hPipe.CloseHandle();
@@ -108,7 +108,7 @@ bool CRemoteCacheLink::EnsurePipeOpen()
 		if (m_hEvent)
 			return true;
 
-		m_hEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
+		m_hEvent = CreateEvent(nullptr, TRUE, FALSE, nullptr);
 		if (m_hEvent)
 			return true;
 
@@ -148,7 +148,7 @@ void CRemoteCacheLink::CloseCommandPipe()
 			&cmd,           // buffer to write from
 			sizeof(cmd),    // number of bytes to write
 			&cbWritten,     // number of bytes written
-			NULL);          // not overlapped I/O
+			nullptr);       // not overlapped I/O
 		DisconnectNamedPipe(m_hCommandPipe);
 		m_hCommandPipe.CloseHandle();
 	}
@@ -264,7 +264,7 @@ bool CRemoteCacheLink::ReleaseLockForPath(const CTGitPath& path)
 			&cmd,           // buffer to write from
 			sizeof(cmd),    // number of bytes to write
 			&cbWritten,     // number of bytes written
-			NULL);          // not overlapped I/O
+			nullptr);       // not overlapped I/O
 		if (! fSuccess || sizeof(cmd) != cbWritten)
 		{
 			CloseCommandPipe();
@@ -287,14 +287,14 @@ DWORD CRemoteCacheLink::GetProcessIntegrityLevel() const
 		// Get the Integrity level.
 		DWORD dwLengthNeeded;
 		if (!GetTokenInformation(hToken, TokenIntegrityLevel,
-			NULL, 0, &dwLengthNeeded))
+			nullptr, 0, &dwLengthNeeded))
 		{
 			DWORD dwError = GetLastError();
 			if (dwError == ERROR_INSUFFICIENT_BUFFER)
 			{
 				PTOKEN_MANDATORY_LABEL pTIL =
 					(PTOKEN_MANDATORY_LABEL)LocalAlloc(0, dwLengthNeeded);
-				if (pTIL != NULL)
+				if (pTIL)
 				{
 					if (GetTokenInformation(hToken, TokenIntegrityLevel,
 						pTIL, dwLengthNeeded, &dwLengthNeeded))
@@ -314,7 +314,7 @@ DWORD CRemoteCacheLink::GetProcessIntegrityLevel() const
 bool CRemoteCacheLink::RunTGitCacheProcess()
 {
 	const CString sCachePath = GetTGitCachePath();
-	if (!CCreateProcessHelper::CreateProcessDetached(sCachePath, NULL))
+	if (!CCreateProcessHelper::CreateProcessDetached(sCachePath, nullptr))
 	{
 		// It's not appropriate to do a message box here, because there may be hundreds of calls
 		CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Failed to start cache\n");

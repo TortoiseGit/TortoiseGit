@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
-// Copyright (C) 2008-2015 - TortoiseGit
+// Copyright (C) 2008-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -26,7 +26,7 @@
 
 
 IMPLEMENT_DYNAMIC(CExportDlg, CHorizontalResizableStandAloneDialog)
-CExportDlg::CExportDlg(CWnd* pParent /*=NULL*/)
+CExportDlg::CExportDlg(CWnd* pParent /*=nullptr*/)
 	: CHorizontalResizableStandAloneDialog(CExportDlg::IDD, pParent)
 	, CChooseVersion(this)
 	, m_bWholeProject(FALSE)
@@ -101,7 +101,7 @@ BOOL CExportDlg::OnInitDialog()
 
 	SHAutoComplete(GetDlgItem(IDC_EXPORTFILE)->m_hWnd, SHACF_FILESYSTEM);
 
-	if ((m_pParentWnd==NULL)&&(hWndExplorer))
+	if (!m_pParentWnd && hWndExplorer)
 		CenterWindow(CWnd::FromHandle(hWndExplorer));
 	EnableSaveRestore(_T("ExportDlg"));
 	return TRUE;
@@ -125,19 +125,19 @@ void CExportDlg::OnOK()
 	{
 		if(::PathIsDirectory(m_strFile))
 		{
-			CMessageBox::Show(NULL, IDS_PROCEXPORTERRFOLDER, IDS_APPNAME, MB_OK | MB_ICONERROR);
+			CMessageBox::Show(GetSafeHwnd(), IDS_PROCEXPORTERRFOLDER, IDS_APPNAME, MB_OK | MB_ICONERROR);
 			return;
 		}
 		CString sMessage;
 		sMessage.Format(IDS_PROC_OVERWRITE_CONFIRM, (LPCTSTR)m_strFile);
-		if (CMessageBox::Show(NULL, sMessage, _T("TortoiseGit"), MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2) != IDYES)
+		if (CMessageBox::Show(GetSafeHwnd(), sMessage, _T("TortoiseGit"), MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2) != IDYES)
 		{
 			return ;
 		}
 	}
 	else if (m_strFile.IsEmpty())
 	{
-		CMessageBox::Show(NULL, IDS_PROC_NOZIPFILE, IDS_APPNAME, MB_OK | MB_ICONERROR);
+		CMessageBox::Show(GetSafeHwnd(), IDS_PROC_NOZIPFILE, IDS_APPNAME, MB_OK | MB_ICONERROR);
 		return;
 	}
 

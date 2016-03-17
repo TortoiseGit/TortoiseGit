@@ -23,10 +23,10 @@ public:
 	// constructor sets up the memory DC
 	CMyMemDC(CDC* pDC, bool bTempOnly = false, int nOffset = 0) : CDC()
     {
-		ASSERT(pDC != NULL);
+		ASSERT(pDC);
 
 		m_pDC = pDC;
-		m_pOldBitmap = NULL;
+		m_pOldBitmap = nullptr;
         m_bMyMemDC = ((!pDC->IsPrinting()) && (!GetSystemMetrics(SM_REMOTESESSION)));
 		m_bTempOnly = bTempOnly;
 
@@ -50,16 +50,16 @@ public:
 
 	CMyMemDC(CDC* pDC, const CRect* pRect) : CDC()
 	{
-		ASSERT(pDC != NULL);
+		ASSERT(pDC);
 
 		// Some initialization
 		m_pDC = pDC;
-		m_pOldBitmap = NULL;
+		m_pOldBitmap = nullptr;
 		m_bMyMemDC = !pDC->IsPrinting();
 		m_bTempOnly = false;
 
 		// Get the rectangle to draw
-		if (pRect == NULL) {
+		if (!pRect) {
 			pDC->GetClipBox(&m_rect);
 		} else {
 			m_rect = *pRect;
@@ -106,7 +106,7 @@ public:
 			// All we need to do is replace the DC with an illegal value,
 			// this keeps us from accidentally deleting the handles associated with
 			// the CDC that was passed to the constructor.
-            m_hDC = m_hAttribDC = NULL;
+			m_hDC = m_hAttribDC = nullptr;
 		}
 	}
 
@@ -133,14 +133,14 @@ public:
 	CMyMemDC(HDC hDC, bool bTempOnly = false)
 	{
 		m_hDC = hDC;
-		m_hOldBitmap = NULL;
+		m_hOldBitmap = nullptr;
 		m_bTempOnly = bTempOnly;
 
 		GetClipBox(m_hDC, &m_rect);
 		m_hMyMemDC = ::CreateCompatibleDC(m_hDC);
 		m_hBitmap = CreateCompatibleBitmap(m_hDC, m_rect.right - m_rect.left, m_rect.bottom - m_rect.top);
 		m_hOldBitmap = (HBITMAP)SelectObject(m_hMyMemDC, m_hBitmap);
-		SetWindowOrgEx(m_hMyMemDC, m_rect.left, m_rect.top, NULL);
+		SetWindowOrgEx(m_hMyMemDC, m_rect.left, m_rect.top, nullptr);
 	}
 
 	// Destructor copies the contents of the mem DC to the original DC
@@ -161,7 +161,7 @@ public:
 			// the CDC that was passed to the constructor.
 			DeleteObject(m_hBitmap);
 			DeleteDC(m_hMyMemDC);
-			m_hMyMemDC = NULL;
+			m_hMyMemDC = nullptr;
 		}
 	}
 

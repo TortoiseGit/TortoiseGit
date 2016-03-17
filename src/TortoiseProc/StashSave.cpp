@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2015 - TortoiseGit
+// Copyright (C) 2011-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -26,7 +26,7 @@
 
 IMPLEMENT_DYNAMIC(CStashSaveDlg, CHorizontalResizableStandAloneDialog)
 
-CStashSaveDlg::CStashSaveDlg(CWnd* pParent /*=NULL*/)
+CStashSaveDlg::CStashSaveDlg(CWnd* pParent /*=nullptr*/)
 	: CHorizontalResizableStandAloneDialog(CStashSaveDlg::IDD, pParent)
 	, m_bIncludeUntracked(FALSE)
 	, m_bAll(FALSE)

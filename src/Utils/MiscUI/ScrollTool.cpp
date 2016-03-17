@@ -43,23 +43,23 @@ bool CScrollTool::Init(LPPOINT pos, bool bRightAligned /* = false */)
 		// create the tooltip window
 		if (!CreateEx(NULL,
 					 TOOLTIPS_CLASS,
-					 NULL,
+					 nullptr,
 					 TTS_NOPREFIX | TTS_ALWAYSTIP,
 					 CW_USEDEFAULT,
 					 CW_USEDEFAULT,
 					 CW_USEDEFAULT,
 					 CW_USEDEFAULT,
-					 NULL,
-					 NULL,
-					 NULL))
+					 nullptr,
+					 nullptr,
+					 nullptr))
 		{
 			return false;
 		}
 
 		ti.cbSize = sizeof(TOOLINFO);
 		ti.uFlags = TTF_TRACK;
-		ti.hwnd = NULL;
-		ti.hinst = NULL;
+		ti.hwnd = nullptr;
+		ti.hinst = nullptr;
 		ti.uId = 0;
 		ti.lpszText = _T(" ");
 

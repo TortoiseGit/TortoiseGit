@@ -24,7 +24,7 @@ class CCheckCertificateDlg : public CStandAloneDialog
 {
 	DECLARE_DYNAMIC(CCheckCertificateDlg)
 public:
-	CCheckCertificateDlg(CWnd* pParent = NULL);   // standard constructor
+	CCheckCertificateDlg(CWnd* pParent = nullptr);   // standard constructor
 
 	// Dialog Data
 	enum { IDD = IDD_CERTCHECK };

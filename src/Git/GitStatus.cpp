@@ -33,7 +33,7 @@ CGitHeadFileMap g_HeadFileMap;
 CGitIgnoreList  g_IgnoreList;
 
 GitStatus::GitStatus()
-	: status(NULL)
+	: status(nullptr)
 {
 	m_status.assumeValid = m_status.skipWorktree = false;
 	m_status.prop_status = m_status.text_status = git_wc_status_none;
@@ -85,7 +85,7 @@ git_wc_status_kind GitStatus::GetAllStatus(const CTGitPath& path, git_depth_t de
 	}
 	else
 	{
-		err = GetFileStatus(sProjectRoot, sSubPath, &statuskind, isfull, false, isfull, NULL, NULL, assumeValid, skipWorktree);
+		err = GetFileStatus(sProjectRoot, sSubPath, &statuskind, isfull, false, isfull, nullptr, nullptr, assumeValid, skipWorktree);
 	}
 
 	return statuskind;
@@ -151,7 +151,7 @@ void GitStatus::GetStatus(const CTGitPath& path, bool /*update*/ /* = false */, 
 
 	int err = 0;
 
-	LPCTSTR lpszSubPath = NULL;
+	LPCTSTR lpszSubPath = nullptr;
 	CString sSubPath;
 	CString s = path.GetWinPathString();
 	if (s.GetLength() > sProjectRoot.GetLength())
@@ -179,7 +179,7 @@ void GitStatus::GetStatus(const CTGitPath& path, bool /*update*/ /* = false */, 
 	// Error present if function is not under version control
 	if (err)
 	{
-		status = NULL;
+		status = nullptr;
 		return;
 	}
 

@@ -206,7 +206,7 @@ void CSciEdit::Init(LONG lLanguage)
 						langId = 0;
 					else
 						langId = 1033;
-				} while ((langId)&&((pChecker==NULL)||(pThesaur==NULL)));
+				} while (langId && (!pChecker || !pThesaur));
 			}
 		}
 	}
@@ -276,7 +276,7 @@ BOOL CSciEdit::LoadDictionaries(LONG lLanguageID)
 	sFile += _T("_");
 	GetLocaleInfo(MAKELCID(lLanguageID, SORT_DEFAULT), LOCALE_SISO3166CTRYNAME, buf, _countof(buf));
 	sFile += buf;
-	if (pChecker==NULL)
+	if (!pChecker)
 	{
 		if ((PathFileExists(sFolderAppData + _T("dic\\") + sFile + _T(".aff"))) &&
 			(PathFileExists(sFolderAppData + _T("dic\\") + sFile + _T(".dic"))))
@@ -290,7 +290,7 @@ BOOL CSciEdit::LoadDictionaries(LONG lLanguageID)
 		}
 	}
 #if THESAURUS
-	if (pThesaur==NULL)
+	if (!pThesaur)
 	{
 		if ((PathFileExists(sFolderAppData + _T("dic\\th_") + sFile + _T("_v2.idx"))) &&
 			(PathFileExists(sFolderAppData + _T("dic\\th_") + sFile + _T("_v2.dat"))))
@@ -503,7 +503,7 @@ BOOL CSciEdit::IsMisspelled(const CString& sWord)
 
 void CSciEdit::CheckSpelling(int startpos, int endpos)
 {
-	if (pChecker == NULL)
+	if (!pChecker)
 		return;
 
 	TEXTRANGEA textrange;
@@ -587,7 +587,7 @@ void CSciEdit::CheckSpelling(int startpos, int endpos)
 
 void CSciEdit::SuggestSpellingAlternatives()
 {
-	if (pChecker == NULL)
+	if (!pChecker)
 		return;
 	CString word = GetWordUnderCursor(true);
 	Call(SCI_SETCURRENTPOS, Call(SCI_WORDSTARTPOSITION, Call(SCI_GETCURRENTPOS), TRUE));
@@ -781,7 +781,7 @@ BOOL CSciEdit::OnChildNotify(UINT message, WPARAM wParam, LPARAM lParam, LRESULT
 				if (!url.IsEmpty())
 				{
 					if (lpnmhdr->code == SCN_HOTSPOTCLICK)
-						ShellExecute(GetParent()->GetSafeHwnd(), _T("open"), url, NULL, NULL, SW_SHOWDEFAULT);
+						ShellExecute(GetParent()->GetSafeHwnd(), _T("open"), url, nullptr, nullptr, SW_SHOWDEFAULT);
 					else
 					{
 						CStringA sTextA = StringForControl(url);
@@ -1442,7 +1442,7 @@ CStringA CSciEdit::GetWordForSpellChecker(const CString& sWord)
 	if (m_spellcodepage)
 	{
 		char * buf = sWordA.GetBuffer(sWord.GetLength() * 4 + 1);
-		int lengthIncTerminator = WideCharToMultiByte(m_spellcodepage, 0, sWord, -1, buf, sWord.GetLength() * 4, NULL, NULL);
+		int lengthIncTerminator = WideCharToMultiByte(m_spellcodepage, 0, sWord, -1, buf, sWord.GetLength() * 4, nullptr, nullptr);
 		if (lengthIncTerminator == 0)
 			return ""; // converting to the codepage failed
 		sWordA.ReleaseBuffer(lengthIncTerminator - 1);

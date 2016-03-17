@@ -26,7 +26,7 @@ class CSubmoduleResolveConflictDlg : public CHorizontalResizableStandAloneDialog
 	DECLARE_DYNAMIC(CSubmoduleResolveConflictDlg)
 
 public:
-	CSubmoduleResolveConflictDlg(CWnd* pParent = NULL);
+	CSubmoduleResolveConflictDlg(CWnd* pParent = nullptr);
 	virtual ~CSubmoduleResolveConflictDlg();
 
 	enum { IDD = IDD_RESOLVESUBMODULECONFLICT };

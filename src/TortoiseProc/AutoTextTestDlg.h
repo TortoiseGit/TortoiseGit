@@ -27,7 +27,7 @@ class CAutoTextTestDlg : public CDialog
 	DECLARE_DYNAMIC(CAutoTextTestDlg)
 
 public:
-	CAutoTextTestDlg(CWnd* pParent = NULL);		// standard constructor
+	CAutoTextTestDlg(CWnd* pParent = nullptr);		// standard constructor
 	virtual ~CAutoTextTestDlg();
 
 // Dialog Data

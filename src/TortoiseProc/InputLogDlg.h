@@ -29,7 +29,7 @@ class CInputLogDlg : public CResizableStandAloneDialog
 	DECLARE_DYNAMIC(CInputLogDlg)
 
 public:
-	CInputLogDlg(CWnd* pParent = NULL);   // standard constructor
+	CInputLogDlg(CWnd* pParent = nullptr);   // standard constructor
 	virtual ~CInputLogDlg();
 
 	void SetProjectProperties(ProjectProperties * pProps) {m_pProjectProperties = pProps;}

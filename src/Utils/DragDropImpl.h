@@ -46,7 +46,7 @@ public:
 		}
 		else
 		{
-			*ppvObject = NULL;
+			*ppvObject = nullptr;
 			return E_NOINTERFACE;
 		}
 
@@ -114,7 +114,10 @@ public:
 	CDragSourceNotify* pDragSourceNotify;
 
 
-	CIDropSource():m_cRefCount(0),m_bDropped(false),m_pIDataObj(NULL)
+	CIDropSource()
+	: m_cRefCount(0)
+	, m_bDropped(false)
+	, m_pIDataObj(nullptr)
 	{
 		pDragSourceNotify = new CDragSourceNotify();
 		pDragSourceNotify->AddRef();
@@ -124,12 +127,12 @@ public:
 		if (m_pIDataObj)
 		{
 			m_pIDataObj->Release();
-			m_pIDataObj = NULL;
+			m_pIDataObj = nullptr;
 		}
 		if (pDragSourceNotify)
 		{
 			pDragSourceNotify->Release();
-			pDragSourceNotify = NULL;
+			pDragSourceNotify = nullptr;
 		}
 	}
 	//IUnknown
@@ -295,34 +298,34 @@ class CDragSourceHelper
 public:
 	CDragSourceHelper()
 	{
-		pDragSourceHelper = NULL;
-		pDragSourceHelper2 = NULL;
+		pDragSourceHelper = nullptr;
+		pDragSourceHelper2 = nullptr;
 		if(FAILED(CoCreateInstance(CLSID_DragDropHelper,
-						NULL,
+						nullptr,
 						CLSCTX_INPROC_SERVER,
 						IID_IDragSourceHelper2,
 						(void**)&pDragSourceHelper2)))
 		{
-			pDragSourceHelper2 = NULL;
+			pDragSourceHelper2 = nullptr;
 			if(FAILED(CoCreateInstance(CLSID_DragDropHelper,
-				NULL,
+				nullptr,
 				CLSCTX_INPROC_SERVER,
 				IID_IDragSourceHelper,
 				(void**)&pDragSourceHelper)))
-				pDragSourceHelper = NULL;
+				pDragSourceHelper = nullptr;
 		}
 	}
 	virtual ~CDragSourceHelper()
 	{
-		if( pDragSourceHelper2!= NULL )
+		if (pDragSourceHelper2)
 		{
 			pDragSourceHelper2->Release();
-			pDragSourceHelper2=NULL;
+			pDragSourceHelper2 = nullptr;
 		}
-		if( pDragSourceHelper!= NULL )
+		if (pDragSourceHelper)
 		{
 			pDragSourceHelper->Release();
-			pDragSourceHelper=NULL;
+			pDragSourceHelper = nullptr;
 		}
 	}
 
@@ -335,7 +338,7 @@ public:
 		COLORREF crColorKey=GetSysColor(COLOR_WINDOW)// color of the window used for transparent effect.
 		)
 	{
-		if((pDragSourceHelper == NULL)&&(pDragSourceHelper2 == NULL))
+		if (!pDragSourceHelper && !pDragSourceHelper2)
 			return E_FAIL;
 
 		if ((allowDropDescription)&&(pDragSourceHelper2))
@@ -352,19 +355,19 @@ public:
 		di.ptOffset.y = pt.y - rc.top;
 		if (pDragSourceHelper2)
 			return pDragSourceHelper2->InitializeFromBitmap(&di, pDataObject);
-		if (pDragSourceHelper == NULL)
+		if (!pDragSourceHelper)
 			return E_FAIL;
 		return pDragSourceHelper->InitializeFromBitmap(&di, pDataObject);
 	}
 	HRESULT InitializeFromWindow(HWND hwnd, POINT& pt, IDataObject* pDataObject, BOOL allowDropDescription=TRUE)
 	{
-		if((pDragSourceHelper == NULL)&&(pDragSourceHelper2 == NULL))
+		if (!pDragSourceHelper && !pDragSourceHelper2)
 			return E_FAIL;
 		if ((allowDropDescription)&&(pDragSourceHelper2))
 			pDragSourceHelper2->SetFlags(DSH_ALLOWDROPDESCRIPTIONTEXT);
 		if (pDragSourceHelper2)
 			return pDragSourceHelper2->InitializeFromWindow(hwnd, &pt, pDataObject);
-		if (pDragSourceHelper == NULL)
+		if (!pDragSourceHelper)
 			return E_FAIL;
 		return pDragSourceHelper->InitializeFromWindow(hwnd, &pt, pDataObject);
 	}

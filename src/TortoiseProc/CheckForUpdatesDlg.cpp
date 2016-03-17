@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
-// Copyright (C) 2008-2015 - TortoiseGit
+// Copyright (C) 2008-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -42,12 +42,12 @@
 #define WM_USER_FILLCHANGELOG	(WM_USER + 3)
 
 IMPLEMENT_DYNAMIC(CCheckForUpdatesDlg, CStandAloneDialog)
-CCheckForUpdatesDlg::CCheckForUpdatesDlg(CWnd* pParent /*=NULL*/)
+CCheckForUpdatesDlg::CCheckForUpdatesDlg(CWnd* pParent /*=nullptr*/)
 	: CStandAloneDialog(CCheckForUpdatesDlg::IDD, pParent)
 	, m_bShowInfo(FALSE)
 	, m_bForce(FALSE)
 	, m_bVisible(FALSE)
-	, m_pDownloadThread(NULL)
+	, m_pDownloadThread(nullptr)
 	, m_bThreadRunning(FALSE)
 	, m_updateDownloader(nullptr)
 {
@@ -107,7 +107,7 @@ BOOL CCheckForUpdatesDlg::OnInitDialog()
 	OffsetRect(&rectOKButton, 0, rectGroupDownloads.top - rectOKButton.top);
 	rectWindow.bottom = rectOKButton.bottom + bottomDistance;
 	MoveWindow(&rectWindow);
-	::MapWindowPoints(NULL, GetSafeHwnd(), (LPPOINT)&rectOKButton, 2);
+	::MapWindowPoints(nullptr, GetSafeHwnd(), (LPPOINT)&rectOKButton, 2);
 	GetDlgItem(IDOK)->MoveWindow(&rectOKButton);
 
 	temp.LoadString(IDS_STATUSLIST_COLFILE);
@@ -123,12 +123,12 @@ BOOL CCheckForUpdatesDlg::OnInitDialog()
 
 	m_updateDownloader = new CUpdateDownloader(GetSafeHwnd(), m_bForce == TRUE, WM_USER_DISPLAYSTATUS, &m_eventStop);
 
-	if (AfxBeginThread(CheckThreadEntry, this)==NULL)
+	if (!AfxBeginThread(CheckThreadEntry, this))
 	{
-		CMessageBox::Show(NULL, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
+		CMessageBox::Show(nullptr, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
 	}
 
-	SetTimer(100, 1000, NULL);
+	SetTimer(100, 1000, nullptr);
 	return TRUE;
 }
 
@@ -144,7 +144,7 @@ void CCheckForUpdatesDlg::OnDestroy()
 
 void CCheckForUpdatesDlg::OnOK()
 {
-	if (m_bThreadRunning || m_pDownloadThread != NULL)
+	if (m_bThreadRunning || m_pDownloadThread)
 		return; // Don't exit while downloading
 
 	CStandAloneDialog::OnOK();
@@ -152,7 +152,7 @@ void CCheckForUpdatesDlg::OnOK()
 
 void CCheckForUpdatesDlg::OnCancel()
 {
-	if (m_bThreadRunning || m_pDownloadThread != NULL)
+	if (m_bThreadRunning || m_pDownloadThread)
 		return; // Don't exit while downloading
 	CStandAloneDialog::OnCancel();
 }
@@ -327,7 +327,7 @@ UINT CCheckForUpdatesDlg::CheckThread()
 			OffsetRect(&rectOKButton, 0, (rectGroupDownloads.bottom + (rectGroupDownloads.bottom - rectProgress.bottom)) - rectOKButton.top);
 			rectWindow.bottom = rectOKButton.bottom + bottomDistance;
 			MoveWindow(&rectWindow);
-			::MapWindowPoints(NULL, GetSafeHwnd(), (LPPOINT)&rectOKButton, 2);
+			::MapWindowPoints(nullptr, GetSafeHwnd(), (LPPOINT)&rectOKButton, 2);
 			if (CRegDWORD(_T("Software\\TortoiseGit\\VersionCheck"), TRUE) != FALSE && !m_bForce && !m_bShowInfo)
 			{
 				GetDlgItem(IDC_DONOTASKAGAIN)->ShowWindow(SW_SHOW);
@@ -572,7 +572,7 @@ void CCheckForUpdatesDlg::OnWindowPosChanging(WINDOWPOS* lpwndpos)
 
 BOOL CCheckForUpdatesDlg::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 {
-	HCURSOR hCur = LoadCursor(NULL, IDC_ARROW);
+	HCURSOR hCur = LoadCursor(nullptr, IDC_ARROW);
 	SetCursor(hCur);
 	return CStandAloneDialogTmpl<CDialog>::OnSetCursor(pWnd, nHitTest, message);
 }
@@ -581,7 +581,7 @@ void CCheckForUpdatesDlg::OnBnClickedButtonUpdate()
 {
 	CString title;
 	m_ctrlUpdate.GetWindowText(title);
-	if (m_pDownloadThread == NULL && title == CString(MAKEINTRESOURCE(IDS_PROC_DOWNLOAD)))
+	if (!m_pDownloadThread && title == CString(MAKEINTRESOURCE(IDS_PROC_DOWNLOAD)))
 	{
 		bool isOneSelected = false;
 		for (int i = 0; i < (int)m_ctrlFiles.GetItemCount(); ++i)
@@ -598,7 +598,7 @@ void CCheckForUpdatesDlg::OnBnClickedButtonUpdate()
 		m_eventStop.ResetEvent();
 
 		m_pDownloadThread = ::AfxBeginThread(DownloadThreadEntry, this, THREAD_PRIORITY_NORMAL, 0, CREATE_SUSPENDED);
-		if (m_pDownloadThread != NULL)
+		if (m_pDownloadThread)
 		{
 			m_pDownloadThread->m_bAutoDelete = FALSE;
 			m_pDownloadThread->ResumeThread();
@@ -606,9 +606,7 @@ void CCheckForUpdatesDlg::OnBnClickedButtonUpdate()
 			GetDlgItem(IDC_BUTTON_UPDATE)->SetWindowText(CString(MAKEINTRESOURCE(IDS_ABORTBUTTON)));
 		}
 		else
-		{
-			CMessageBox::Show(NULL, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
-		}
+			CMessageBox::Show(GetSafeHwnd(), IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
 	}
 	else if (title == CString(MAKEINTRESOURCE(IDS_ABORTBUTTON)))
 	{
@@ -624,14 +622,12 @@ void CCheckForUpdatesDlg::OnBnClickedButtonUpdate()
 			{
 				CUpdateListCtrl::Entry *data = (CUpdateListCtrl::Entry *)m_ctrlFiles.GetItemData(i);
 				if (m_ctrlFiles.GetCheck(i) == TRUE)
-					ShellExecute(NULL, _T("open"), folder + data->m_filename, NULL, NULL, SW_SHOWNORMAL);
+					ShellExecute(GetSafeHwnd(), _T("open"), folder + data->m_filename, nullptr, nullptr, SW_SHOWNORMAL);
 			}
 			CStandAloneDialog::OnOK();
 		}
 		else if (m_ctrlUpdate.GetCurrentEntry() == 1)
-		{
-			ShellExecute(NULL, _T("open"), folder, NULL, NULL, SW_SHOWNORMAL);
-		}
+			ShellExecute(GetSafeHwnd(), _T("open"), folder, nullptr, nullptr, SW_SHOWNORMAL);
 
 		m_ctrlUpdate.SetCurrentEntry(0);
 	}
@@ -739,7 +735,7 @@ UINT CCheckForUpdatesDlg::DownloadThread()
 
 LRESULT CCheckForUpdatesDlg::OnEndDownload(WPARAM, LPARAM)
 {
-	ASSERT(m_pDownloadThread != NULL);
+	ASSERT(m_pDownloadThread);
 
 	// wait until the thread terminates
 	DWORD dwExitCode;
@@ -750,7 +746,7 @@ LRESULT CCheckForUpdatesDlg::OnEndDownload(WPARAM, LPARAM)
 	::GetExitCodeThread(m_pDownloadThread->m_hThread, &dwExitCode);
 
 	delete m_pDownloadThread;
-	m_pDownloadThread = NULL;
+	m_pDownloadThread = nullptr;
 
 	m_progress.ShowWindow(SW_HIDE);
 
@@ -771,7 +767,7 @@ LRESULT CCheckForUpdatesDlg::OnEndDownload(WPARAM, LPARAM)
 		tmp.LoadString(IDS_ERR_FAILEDUPDATEDOWNLOAD);
 		if (!m_sErrors.IsEmpty())
 			tmp += _T("\r\n\r\nErrors:\r\n") + m_sErrors;
-		CMessageBox::Show(NULL, tmp, _T("TortoiseGit"), MB_ICONERROR);
+		CMessageBox::Show(nullptr, tmp, _T("TortoiseGit"), MB_ICONERROR);
 		if (m_pTaskbarList)
 			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NOPROGRESS);
 	}
@@ -781,7 +777,7 @@ LRESULT CCheckForUpdatesDlg::OnEndDownload(WPARAM, LPARAM)
 
 LRESULT CCheckForUpdatesDlg::OnFillChangelog(WPARAM, LPARAM lParam)
 {
-	ASSERT(lParam != NULL);
+	ASSERT(lParam);
 
 	LPCTSTR changelog = reinterpret_cast<LPCTSTR>(lParam);
 	m_cLogMessage.Call(SCI_SETREADONLY, FALSE);
@@ -810,7 +806,7 @@ CString CCheckForUpdatesDlg::GetDownloadsDirectory()
 LRESULT CCheckForUpdatesDlg::OnDisplayStatus(WPARAM, LPARAM lParam)
 {
 	const CUpdateDownloader::DOWNLOADSTATUS *const pDownloadStatus = reinterpret_cast<CUpdateDownloader::DOWNLOADSTATUS *>(lParam);
-	if (pDownloadStatus != NULL)
+	if (pDownloadStatus)
 	{
 		ASSERT(::AfxIsValidAddress(pDownloadStatus, sizeof(CUpdateDownloader::DOWNLOADSTATUS)));
 
@@ -841,7 +837,7 @@ CString CCheckForUpdatesDlg::GetWinINetError(DWORD err)
 		for (const CString& module : { _T("wininet.dll"), _T("urlmon.dll") })
 		{
 			LPTSTR buffer;
-			FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_IGNORE_INSERTS | FORMAT_MESSAGE_FROM_HMODULE, GetModuleHandle(module), err, 0, (LPTSTR)&buffer, 0, NULL);
+			FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_IGNORE_INSERTS | FORMAT_MESSAGE_FROM_HMODULE, GetModuleHandle(module), err, 0, (LPTSTR)&buffer, 0, nullptr);
 			readableError = buffer;
 			LocalFree(buffer);
 			if (!readableError.IsEmpty())

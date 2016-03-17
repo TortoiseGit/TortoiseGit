@@ -71,7 +71,7 @@ static int SplitRemoteBranchName(CString ref, CString &remote, CString &branch)
 
 void SetSortArrow(CListCtrl * control, int nColumn, bool bAscending)
 {
-	if (control == NULL)
+	if (!control)
 		return;
 	// set the sort arrow
 	CHeaderCtrl * pHeader = control->GetHeaderCtrl();
@@ -151,7 +151,7 @@ public:
 
 IMPLEMENT_DYNAMIC(CBrowseRefsDlg, CResizableStandAloneDialog)
 
-CBrowseRefsDlg::CBrowseRefsDlg(CString cmdPath, CWnd* pParent /*=NULL*/)
+CBrowseRefsDlg::CBrowseRefsDlg(CString cmdPath, CWnd* pParent /*=nullptr*/)
 :	CResizableStandAloneDialog(CBrowseRefsDlg::IDD, pParent),
 	m_cmdPath(cmdPath),
 	m_currSortCol(0),
@@ -160,7 +160,7 @@ CBrowseRefsDlg::CBrowseRefsDlg(CString cmdPath, CWnd* pParent /*=NULL*/)
 	m_regCurrSortDesc(L"Software\\TortoiseGit\\RefBrowserSortDesc", FALSE),
 	m_initialRef(L"HEAD"),
 	m_pickRef_Kind(gPickRef_All),
-	m_pListCtrlRoot(NULL),
+	m_pListCtrlRoot(nullptr),
 	m_bHasWC(true),
 	m_SelectedFilters(LOGFILTER_ALL),
 	m_ColumnManager(&m_ListRefLeafs),
@@ -337,10 +337,10 @@ CShadowTree* CShadowTree::GetNextSub(CString& nameLeft, bool bCreateIfNotExist)
 		nameLeft=nameLeft.Mid(posSlash+1);
 	}
 	if(nameSub.IsEmpty())
-		return NULL;
+		return nullptr;
 
 	if(!bCreateIfNotExist && m_ShadowTree.find(nameSub)==m_ShadowTree.end())
-		return NULL;
+		return nullptr;
 
 	CShadowTree& nextNode=m_ShadowTree[nameSub];
 	nextNode.m_csRefName=nameSub;
@@ -353,7 +353,7 @@ CShadowTree* CShadowTree::FindLeaf(CString partialRefName)
 	if(IsLeaf())
 	{
 		if(m_csRefName.GetLength() > partialRefName.GetLength())
-			return NULL;
+			return nullptr;
 		if(partialRefName.Right(m_csRefName.GetLength()) == m_csRefName)
 		{
 			//Match of leaf name. Try match on total name.
@@ -368,11 +368,11 @@ CShadowTree* CShadowTree::FindLeaf(CString partialRefName)
 		for (auto itShadowTree = m_ShadowTree.begin(); itShadowTree != m_ShadowTree.end(); ++itShadowTree)
 		{
 			CShadowTree* pSubtree = itShadowTree->second.FindLeaf(partialRefName);
-			if(pSubtree != NULL)
+			if (pSubtree)
 				return pSubtree; //Found
 		}
 	}
-	return NULL;//Not found
+	return nullptr; //Not found
 }
 
 CString CBrowseRefsDlg::GetSelectedRef(bool onlyIfLeaf, bool pickFirstSelIfMultiSel)
@@ -406,7 +406,7 @@ CString CBrowseRefsDlg::GetSelectedRef(bool onlyIfLeaf, bool pickFirstSelIfMulti
 	{
 		//Tree ctrl selection?
 		HTREEITEM hTree=m_RefTreeCtrl.GetSelectedItem();
-		if(hTree!=NULL)
+		if (hTree)
 		{
 			CShadowTree* pTree=(CShadowTree*)m_RefTreeCtrl.GetItemData(hTree);
 			return pTree->GetRefName();
@@ -440,7 +440,7 @@ void CBrowseRefsDlg::Refresh(CString selectRef)
 	m_ListRefLeafs.DeleteAllItems();
 	m_TreeRoot.m_ShadowTree.clear();
 	m_TreeRoot.m_csRefName = "refs";
-	m_TreeRoot.m_hTree=m_RefTreeCtrl.InsertItem(L"refs",NULL,NULL);
+	m_TreeRoot.m_hTree = m_RefTreeCtrl.InsertItem(L"refs", nullptr, nullptr);
 	m_RefTreeCtrl.SetItemData(m_TreeRoot.m_hTree,(DWORD_PTR)&m_TreeRoot);
 
 	CString err;
@@ -497,15 +497,15 @@ bool CBrowseRefsDlg::SelectRef(CString refName, bool bExactMatch)
 	if (_wcsnicmp(refName, L"refs", 4) != 0)
 		return false; // Not a ref name
 
-	CShadowTree& treeLeafHead=GetTreeNode(refName,NULL,false);
-	if(treeLeafHead.m_hTree != NULL)
+	CShadowTree& treeLeafHead = GetTreeNode(refName, nullptr, false);
+	if (treeLeafHead.m_hTree)
 	{
 		//Not a leaf. Select tree node and return
 		m_RefTreeCtrl.Select(treeLeafHead.m_hTree,TVGN_CARET);
 		return true;
 	}
 
-	if(treeLeafHead.m_pParent==NULL)
+	if (!treeLeafHead.m_pParent)
 		return false; //Weird... should not occur.
 
 	//This is the current head.
@@ -526,7 +526,7 @@ bool CBrowseRefsDlg::SelectRef(CString refName, bool bExactMatch)
 
 CShadowTree& CBrowseRefsDlg::GetTreeNode(CString refName, CShadowTree* pTreePos, bool bCreateIfNotExist)
 {
-	if(pTreePos==NULL)
+	if (!pTreePos)
 	{
 		if(_wcsnicmp(refName, L"refs/", 5) == 0)
 			refName=refName.Mid(5);
@@ -536,7 +536,7 @@ CShadowTree& CBrowseRefsDlg::GetTreeNode(CString refName, CShadowTree* pTreePos,
 		return *pTreePos;//Found leaf
 
 	CShadowTree* pNextTree=pTreePos->GetNextSub(refName,bCreateIfNotExist);
-	if(pNextTree==NULL)
+	if (!pNextTree)
 	{
 		//Should not occur when all ref-names are valid and bCreateIfNotExist is true.
 		ASSERT(!bCreateIfNotExist);
@@ -547,10 +547,10 @@ CShadowTree& CBrowseRefsDlg::GetTreeNode(CString refName, CShadowTree* pTreePos,
 	{
 		//When the refName is not empty, this node is not a leaf, so lets add it to the tree control.
 		//Leafs are for the list control.
-		if(pNextTree->m_hTree==NULL)
+		if (!pNextTree->m_hTree)
 		{
 			//New tree. Create node in control.
-			pNextTree->m_hTree=m_RefTreeCtrl.InsertItem(pNextTree->m_csRefName,pTreePos->m_hTree,NULL);
+			pNextTree->m_hTree = m_RefTreeCtrl.InsertItem(pNextTree->m_csRefName, pTreePos->m_hTree, nullptr);
 			m_RefTreeCtrl.SetItemData(pNextTree->m_hTree,(DWORD_PTR)pNextTree);
 		}
 	}
@@ -572,7 +572,7 @@ void CBrowseRefsDlg::FillListCtrlForTreeNode(HTREEITEM treeNode)
 	m_ListRefLeafs.DeleteAllItems();
 
 	CShadowTree* pTree=(CShadowTree*)(m_RefTreeCtrl.GetItemData(treeNode));
-	if(pTree==NULL)
+	if (!pTree)
 	{
 		ASSERT(FALSE);
 		return;
@@ -592,7 +592,7 @@ void CBrowseRefsDlg::FillListCtrlForShadowTree(CShadowTree* pTree, CString refNa
 		if (!positive)
 			filter = filter.Mid(1);
 		CString ref = refNamePrefix + pTree->m_csRefName;
-		if (!(pTree->m_csRefName.IsEmpty() || pTree->m_csRefName == "refs" && pTree->m_pParent == NULL) && IsMatchFilter(pTree, ref, filter, positive))
+		if (!(pTree->m_csRefName.IsEmpty() || pTree->m_csRefName == "refs" && !pTree->m_pParent) && IsMatchFilter(pTree, ref, filter, positive))
 		{
 			int indexItem = m_ListRefLeafs.InsertItem(m_ListRefLeafs.GetItemCount(), L"");
 
@@ -763,7 +763,7 @@ bool CBrowseRefsDlg::DoDeleteRef(CString completeRefName)
 			return false;
 
 		if (CAppUtils::IsSSHPutty())
-			CAppUtils::LaunchPAgent(NULL, &remoteName);
+			CAppUtils::LaunchPAgent(nullptr, &remoteName);
 
 		CSysProgressDlg sysProgressDlg;
 		sysProgressDlg.SetTitle(CString(MAKEINTRESOURCE(IDS_APPNAME)));
@@ -806,7 +806,7 @@ bool CBrowseRefsDlg::DoDeleteRef(CString completeRefName)
 CString CBrowseRefsDlg::GetFullRefName(CString partialRefName)
 {
 	CShadowTree* pLeaf = m_TreeRoot.FindLeaf(partialRefName);
-	if(pLeaf == NULL)
+	if (!pLeaf)
 		return CString();
 	return pLeaf->GetRefName();
 }
@@ -830,7 +830,7 @@ void CBrowseRefsDlg::OnContextMenu_RefTreeCtrl(CPoint point)
 	m_RefTreeCtrl.ScreenToClient(&clientPoint);
 
 	HTREEITEM hTreeItem=m_RefTreeCtrl.HitTest(clientPoint);
-	if(hTreeItem!=NULL)
+	if (hTreeItem)
 		m_RefTreeCtrl.Select(hTreeItem,TVGN_CARET);
 
 	VectorPShadowTree tree;
@@ -1036,7 +1036,7 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 	}
 
 
-	if(hTreePos!=NULL && selectedLeafs.empty())
+	if (hTreePos && selectedLeafs.empty())
 	{
 		CShadowTree* pTree=(CShadowTree*)m_RefTreeCtrl.GetItemData(hTreePos);
 		if(pTree->IsFrom(L"refs/remotes"))
@@ -1172,7 +1172,7 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 	case eCmd_Rename:
 		{
 			POSITION pos = m_ListRefLeafs.GetFirstSelectedItemPosition();
-			if(pos != NULL)
+			if (pos)
 				m_ListRefLeafs.EditLabel(m_ListRefLeafs.GetNextSelectedItem(pos));
 		}
 		break;
@@ -1192,7 +1192,7 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 		break;
 	case eCmd_CreateBranch:
 		{
-			CString *commitHash = NULL;
+			CString* commitHash = nullptr;
 			if (selectedLeafs.size() == 1)
 				commitHash = &(selectedLeafs[0]->m_csRefHash);
 			CAppUtils::CreateBranchTag(false, commitHash);
@@ -1221,7 +1221,7 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 		{
 			CFileDiffDlg dlg;
 			dlg.SetDiff(
-				NULL,
+				nullptr,
 				selectedLeafs[1]->GetRefName() + L"^{}",
 				selectedLeafs[0]->GetRefName() + L"^{}");
 			dlg.DoModal();
@@ -1306,7 +1306,7 @@ BOOL CBrowseRefsDlg::PreTranslateMessage(MSG* pMsg)
 				if(pMsg->hwnd == m_ListRefLeafs.m_hWnd)
 				{
 					POSITION pos = m_ListRefLeafs.GetFirstSelectedItemPosition();
-					if(pos != NULL)
+					if (pos)
 						m_ListRefLeafs.EditLabel(m_ListRefLeafs.GetNextSelectedItem(pos));
 				}
 			}
@@ -1390,7 +1390,7 @@ void CBrowseRefsDlg::OnNMDblclkListRefLeafs(NMHDR * /*pNMHDR*/, LRESULT *pResult
 
 CString CBrowseRefsDlg::PickRef(bool /*returnAsHash*/, CString initialRef, int pickRef_Kind, bool pickMultipleRefsOrRange)
 {
-	CBrowseRefsDlg dlg(CString(),NULL);
+	CBrowseRefsDlg dlg(CString(), nullptr);
 
 	if(initialRef.IsEmpty())
 		initialRef = L"HEAD";
@@ -1444,7 +1444,7 @@ void CBrowseRefsDlg::OnLvnEndlabeleditListRefLeafs(NMHDR *pNMHDR, LRESULT *pResu
 	NMLVDISPINFO *pDispInfo = reinterpret_cast<NMLVDISPINFO*>(pNMHDR);
 	*pResult = FALSE;
 
-	if(pDispInfo->item.pszText == NULL)
+	if (!pDispInfo->item.pszText)
 		return; //User canceled changing
 
 	CShadowTree* pTree=(CShadowTree*)m_ListRefLeafs.GetItemData(pDispInfo->item.iItem);
@@ -1466,7 +1466,7 @@ void CBrowseRefsDlg::OnLvnEndlabeleditListRefLeafs(NMHDR *pNMHDR, LRESULT *pResu
 	CString origName = pTree->GetRefName().Mid(11);
 
 	CString newName;
-	if(m_pListCtrlRoot != NULL)
+	if (m_pListCtrlRoot)
 		newName = m_pListCtrlRoot->GetRefName() + L'/';
 	newName += pDispInfo->item.pszText;
 
@@ -1511,7 +1511,7 @@ void CBrowseRefsDlg::OnLvnBeginlabeleditListRefLeafs(NMHDR *pNMHDR, LRESULT *pRe
 
 void CBrowseRefsDlg::OnEnChangeEditFilter()
 {
-	SetTimer(IDT_FILTER, 1000, NULL);
+	SetTimer(IDT_FILTER, 1000, nullptr);
 }
 
 void CBrowseRefsDlg::OnTimer(UINT_PTR nIDEvent)
@@ -1562,7 +1562,7 @@ LRESULT CBrowseRefsDlg::OnClickedInfoIcon(WPARAM /*wParam*/, LPARAM lParam)
 			else
 				m_SelectedFilters ^= selection;
 			SetFilterCueText();
-			SetTimer(IDT_FILTER, 1000, NULL);
+			SetTimer(IDT_FILTER, 1000, nullptr);
 		}
 	}
 	return 0L;

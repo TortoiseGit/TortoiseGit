@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013 - TortoiseGit
+// Copyright (C) 2013, 2016 - TortoiseGit
 // External Cache Copyright (C) 2007-2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -21,7 +21,8 @@
 #include "Dbt.h"
 #include "PathWatcher.h"
 
-CPathWatcher::CPathWatcher(void) : m_hCompPort(NULL)
+CPathWatcher::CPathWatcher(void)
+	: m_hCompPort(nullptr)
 	, m_bRunning(TRUE)
 	, m_bLimitReached(false)
 {
@@ -38,17 +39,17 @@ CPathWatcher::CPathWatcher(void) : m_hCompPort(NULL)
 		{
 			TOKEN_PRIVILEGES tp = { 1 };
 
-			if (LookupPrivilegeValue(NULL, arPrivelegeNames[i],  &tp.Privileges[0].Luid))
+			if (LookupPrivilegeValue(nullptr, arPrivelegeNames[i], &tp.Privileges[0].Luid))
 			{
 				tp.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
 
-				AdjustTokenPrivileges(hToken, FALSE, &tp, sizeof(tp), NULL, NULL);
+				AdjustTokenPrivileges(hToken, FALSE, &tp, sizeof(tp), nullptr, nullptr);
 			}
 		}
 	}
 
 	unsigned int threadId = 0;
-	m_hThread = (HANDLE)_beginthreadex(NULL,0,ThreadEntry,this,0,&threadId);
+	m_hThread = (HANDLE)_beginthreadex(nullptr, 0, ThreadEntry, this, 0, &threadId);
 }
 
 CPathWatcher::~CPathWatcher(void)
@@ -63,7 +64,7 @@ void CPathWatcher::Stop()
 	InterlockedExchange(&m_bRunning, FALSE);
 	if (m_hCompPort)
 	{
-		PostQueuedCompletionStatus(m_hCompPort, 0, NULL, NULL);
+		PostQueuedCompletionStatus(m_hCompPort, 0, NULL, nullptr);
 		m_hCompPort.CloseHandle();
 	}
 
@@ -185,7 +186,7 @@ unsigned int CPathWatcher::ThreadEntry(void* pContext)
 void CPathWatcher::WorkerThread()
 {
 	DWORD numBytes;
-	CDirWatchInfo * pdi = NULL;
+	CDirWatchInfo* pdi = nullptr;
 	LPOVERLAPPED lpOverlapped;
 	const int bufferSize = MAX_PATH * 4;
 	TCHAR buf[bufferSize] = {0};
@@ -217,11 +218,11 @@ void CPathWatcher::WorkerThread()
 					CAutoFile hDir = CreateFile(watchedPaths[i].GetWinPath(),
 												FILE_LIST_DIRECTORY,
 												FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
-												NULL, //security attributes
+												nullptr, //security attributes
 												OPEN_EXISTING,
 												FILE_FLAG_BACKUP_SEMANTICS | //required privileges: SE_BACKUP_NAME and SE_RESTORE_NAME.
 												FILE_FLAG_OVERLAPPED,
-												NULL);
+												nullptr);
 					if (!hDir)
 					{
 						// this could happen if a watched folder has been removed/renamed
@@ -234,12 +235,12 @@ void CPathWatcher::WorkerThread()
 
 					CDirWatchInfo * pDirInfo = new CDirWatchInfo(hDir.Detach(), watchedPaths[i]); // the new CDirWatchInfo object owns the handle now
 					m_hCompPort = CreateIoCompletionPort(pDirInfo->m_hDir, m_hCompPort, (ULONG_PTR)pDirInfo, 0);
-					if (m_hCompPort == NULL)
+					if (!m_hCompPort)
 					{
 						AutoLocker lock(m_critSec);
 						ClearInfoMap();
 						delete pDirInfo;
-						pDirInfo = NULL;
+						pDirInfo = nullptr;
 						watchedPaths.RemovePath(watchedPaths[i]);
 						i--; if (i<0) i=0;
 						break;
@@ -251,12 +252,12 @@ void CPathWatcher::WorkerThread()
 												FILE_NOTIFY_CHANGE_FILE_NAME | FILE_NOTIFY_CHANGE_DIR_NAME | FILE_NOTIFY_CHANGE_LAST_WRITE,
 												&numBytes,// not used
 												&pDirInfo->m_Overlapped,
-												NULL))	//no completion routine!
+												nullptr))	//no completion routine!
 					{
 						AutoLocker lock(m_critSec);
 						ClearInfoMap();
 						delete pDirInfo;
-						pDirInfo = NULL;
+						pDirInfo = nullptr;
 						watchedPaths.RemovePath(watchedPaths[i]);
 						i--; if (i<0) i=0;
 						break;
@@ -321,7 +322,7 @@ continuewatching:
 												FILE_NOTIFY_CHANGE_FILE_NAME | FILE_NOTIFY_CHANGE_DIR_NAME | FILE_NOTIFY_CHANGE_LAST_WRITE,
 												&numBytes,// not used
 												&pdi->m_Overlapped,
-												NULL))	//no completion routine!
+												nullptr))	//no completion routine!
 					{
 						// Since the call to ReadDirectoryChangesW failed, just
 						// wait a while. We don't want to have this thread
@@ -346,7 +347,7 @@ void CPathWatcher::ClearInfoMap()
 		{
 			CPathWatcher::CDirWatchInfo * info = I->second;
 			delete info;
-			info = NULL;
+			info = nullptr;
 		}
 	}
 	watchInfoMap.clear();

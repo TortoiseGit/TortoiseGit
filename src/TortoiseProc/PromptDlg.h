@@ -32,7 +32,7 @@ class CPromptDlg : public CDialog
 	DECLARE_DYNAMIC(CPromptDlg)
 
 public:
-	CPromptDlg(CWnd* pParent = NULL);
+	CPromptDlg(CWnd* pParent = nullptr);
 	virtual ~CPromptDlg();
 
 	void	SetHide(BOOL hide);

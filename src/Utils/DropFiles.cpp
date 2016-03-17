@@ -22,7 +22,7 @@
 
 CDropFiles::CDropFiles()
 {
-	m_pBuffer = NULL;
+	m_pBuffer = nullptr;
 	m_nBufferSize = 0;
 }
 
@@ -48,7 +48,7 @@ bool CDropFiles::IsEmpty() const
 
 void CDropFiles::CreateBuffer()
 {
-	ASSERT(m_pBuffer == NULL);
+	ASSERT(!m_pBuffer);
 	ASSERT(m_nBufferSize == 0);
 	ASSERT(!m_arFiles.IsEmpty());
 
@@ -102,5 +102,5 @@ void CDropFiles::CreateStructure()
 	memcpy( ::GlobalLock(hMem), GetBuffer(), GetBufferSize() );
 	::GlobalUnlock(hMem);
 	dropData.CacheGlobalData( CF_HDROP, hMem );
-	dropData.DoDragDrop(DROPEFFECT_COPY|DROPEFFECT_MOVE|DROPEFFECT_LINK,NULL);
+	dropData.DoDragDrop(DROPEFFECT_COPY | DROPEFFECT_MOVE | DROPEFFECT_LINK, nullptr);
 }

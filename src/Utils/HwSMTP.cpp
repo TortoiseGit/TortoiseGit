@@ -138,9 +138,9 @@ BOOL CHwSMTP::SendSpeedEmail
 		DNS_STATUS status = 
 		DnsQuery(itr1->first ,
 						DNS_TYPE_MX,DNS_QUERY_STANDARD,
-						NULL,			//Contains DNS server IP address.
+						nullptr,		//Contains DNS server IP address.
 						&pDnsRecord,	//Resource record that contains the response.
-						NULL
+						nullptr
 						);
 		if (status)
 		{
@@ -163,13 +163,13 @@ BOOL CHwSMTP::SendSpeedEmail
 		while(pNext)
 		{
 			if(pNext->wType == DNS_TYPE_MX)
-				if(SendEmail(pNext->Data.MX.pNameExchange,NULL,NULL,false,
+				if (SendEmail(pNext->Data.MX.pNameExchange, nullptr, nullptr, false,
 					lpszAddrFrom,to,lpszSubject,lpszBody,lpszCharSet,pStrAryAttach,pStrAryCC,
 					25,pSend,lpszAddrTo))
 					break;
 			pNext=pNext->pNext;
 		}
-		if(pNext == NULL)
+		if (!pNext)
 			ret = false;
 
 		if (pDnsRecord)
@@ -246,7 +246,7 @@ static SECURITY_STATUS ClientHandshakeLoop(CSocket * Socket, PCredHandle phCreds
 		InBuffer.pBuffers		= InBuffers;
 		InBuffer.ulVersion		= SECBUFFER_VERSION;
 
-		// Set up the output buffers. These are initialized to NULL
+		// Set up the output buffers. These are initialized to nullptr
 		// so as to make it less likely we'll attempt to free random
 		// garbage later.
 		OutBuffers[0].pvBuffer	= nullptr;
@@ -710,8 +710,8 @@ BOOL CHwSMTP::SendEmail (
 		LPCTSTR lpszSubject,
 		LPCTSTR lpszBody,
 		LPCTSTR lpszCharSet,						// 字符集类型，例如：繁体中文这里应输入"big5"，简体中文时输入"gb2312"
-		CStringArray *pStrAryAttach/*=NULL*/,
-		LPCTSTR pStrAryCC/*=NULL*/,
+		CStringArray* pStrAryAttach/*=nullptr*/,
+		LPCTSTR pStrAryCC/*=nullptr*/,
 		UINT nSmtpSrvPort,/*=25*/
 		LPCTSTR pSender,
 		LPCTSTR pToList,
@@ -1293,7 +1293,7 @@ CString FormatDateTime (COleDateTime &DateTime, LPCTSTR /*pFormat*/)
 	return strDate;
 }
 
-int hwGetFileAttr ( LPCTSTR lpFileName, OUT CFileStatus *pFileStatus/*=NULL*/ )
+int hwGetFileAttr(LPCTSTR lpFileName, OUT CFileStatus* pFileStatus/*=nullptr*/)
 {
 	if ( !lpFileName || lstrlen(lpFileName) < 1 ) return -1;
 

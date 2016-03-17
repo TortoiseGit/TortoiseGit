@@ -194,7 +194,7 @@ BOOL CSettingsAdvanced::OnInitDialog()
 	while (c >= 0)
 		m_ListCtrl.DeleteColumn(c--);
 
-	SetWindowTheme(m_ListCtrl.GetSafeHwnd(), L"Explorer", NULL);
+	SetWindowTheme(m_ListCtrl.GetSafeHwnd(), L"Explorer", nullptr);
 
 	CString temp;
 	temp.LoadString(IDS_SETTINGS_CONF_VALUECOL);
@@ -305,7 +305,7 @@ void CSettingsAdvanced::OnLvnEndlabeledit(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	NMLVDISPINFO *pDispInfo = reinterpret_cast<NMLVDISPINFO*>(pNMHDR);
 	*pResult = 0;
-	if (pDispInfo->item.pszText == NULL)
+	if (!pDispInfo->item.pszText)
 		return;
 
 	bool allowEdit = false;

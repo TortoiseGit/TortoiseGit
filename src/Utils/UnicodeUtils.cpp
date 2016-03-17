@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2014 - TortoiseGit
+// Copyright (C) 2009-2014, 2016 - TortoiseGit
 // Copyright (C) 2003-2006, 2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -195,7 +195,7 @@ int CUnicodeUtils::GetCPCode(const CString &codename)
 		{57011, _T("x-iscii-pa")},// ISCII Punjabi
 		{65000, _T("utf-7")},// Unicode (UTF-7)
 		{65001, _T("utf-8")},// Unicode (UTF-8)
-		{0,NULL}
+		{0, nullptr}
 
 	};
 	static CodeMap *p=map;
@@ -203,7 +203,7 @@ int CUnicodeUtils::GetCPCode(const CString &codename)
 		return CP_UTF8;
 	CString code(codename);
 	code.MakeLower();
-	while(p->m_CodeName != NULL)
+	while (p->m_CodeName)
 	{
 		CString str = p->m_CodeName;
 		str=str.MakeLower();
@@ -229,7 +229,7 @@ CStringA CUnicodeUtils::GetMulti(const CStringW& string,int acp)
 	if (len==0)
 		return retVal;
 	buf = retVal.GetBuffer(len*4 + 1);
-	int lengthIncTerminator = WideCharToMultiByte(acp, 0, string, -1, buf, len*4, NULL, NULL);
+	int lengthIncTerminator = WideCharToMultiByte(acp, 0, string, -1, buf, len * 4, nullptr, nullptr);
 	retVal.ReleaseBuffer(lengthIncTerminator-1);
 	return retVal;
 }
@@ -290,7 +290,7 @@ std::string CUnicodeUtils::StdGetUTF8(const wide_string& wide)
 		return std::string();
 	int size = len*4;
 	char * narrow = new char[size];
-	int ret = WideCharToMultiByte(CP_UTF8, 0, wide.c_str(), len, narrow, size-1, NULL, NULL);
+	int ret = WideCharToMultiByte(CP_UTF8, 0, wide.c_str(), len, narrow, size - 1, nullptr, nullptr);
 	narrow[ret] = 0;
 	std::string sRet = std::string(narrow);
 	delete [] narrow;
@@ -326,7 +326,7 @@ std::string WideToMultibyte(const wide_string& wide)
 std::string WideToUTF8(const wide_string& wide)
 {
 	char * narrow = new char[wide.length()*3+2];
-	int ret = (int)WideCharToMultiByte(CP_UTF8, 0, wide.c_str(), (int)wide.size(), narrow, (int)wide.length()*3 - 1, NULL, NULL);
+	int ret = (int)WideCharToMultiByte(CP_UTF8, 0, wide.c_str(), (int)wide.size(), narrow, (int)wide.length() * 3 - 1, nullptr, nullptr);
 	narrow[ret] = 0;
 	std::string str = narrow;
 	delete[] narrow;
@@ -340,7 +340,7 @@ wide_string MultibyteToWide(const std::string& multibyte)
 		return wide_string();
 
 	wchar_t * wide = new wchar_t[multibyte.length()*2+2];
-	if (wide == NULL)
+	if (!wide)
 		return wide_string();
 	int ret = (int)MultiByteToWideChar(CP_ACP, 0, multibyte.c_str(), (int)multibyte.size(), wide, (int)length*2 - 1);
 	wide[ret] = 0;
@@ -356,7 +356,7 @@ wide_string UTF8ToWide(const std::string& multibyte)
 		return wide_string();
 
 	wchar_t * wide = new wchar_t[length*2+2];
-	if (wide == NULL)
+	if (!wide)
 		return wide_string();
 	int ret = (int)MultiByteToWideChar(CP_UTF8, 0, multibyte.c_str(), (int)multibyte.size(), wide, (int)length*2 - 1);
 	wide[ret] = 0;
@@ -394,7 +394,7 @@ int LoadStringEx(HINSTANCE hInstance, UINT uID, LPTSTR lpBuffer, int nBufferMax,
 #endif
 	int ret;
 
-	if (lpBuffer == NULL)
+	if (!lpBuffer)
 		return 0;
 	lpBuffer[0] = 0;
 	HRSRC hResource =  FindResourceEx(hInstance, RT_STRING, MAKEINTRESOURCE(((uID>>4)+1)), wLanguage);

@@ -25,7 +25,7 @@
 
 IMPLEMENT_DYNAMIC(CCreateChangelistDlg, CDialog)
 
-CCreateChangelistDlg::CCreateChangelistDlg(CWnd* pParent /*=NULL*/)
+CCreateChangelistDlg::CCreateChangelistDlg(CWnd* pParent /*=nullptr*/)
 	: CDialog(CCreateChangelistDlg::IDD, pParent)
 {
 

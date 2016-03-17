@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2015 - TortoiseGit
+// Copyright (C) 2012-2016 - TortoiseGit
 // Copyright (C) 2003-2008, 2013-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -71,20 +71,20 @@ void CPathUtils::Unescape(char * psz)
 			}
 
 			char nValue = '?';
-			const char * pszLow = NULL;
-			const char * pszHigh = NULL;
+			const char* pszLow = nullptr;
+			const char* pszHigh = nullptr;
 			++pszSource;
 
 			*pszSource = (char) toupper(*pszSource);
 			pszHigh = strchr(szHex, *pszSource);
 
-			if (pszHigh != NULL)
+			if (pszHigh)
 			{
 				++pszSource;
 				*pszSource = (char) toupper(*pszSource);
 				pszLow = strchr(szHex, *pszSource);
 
-				if (pszLow != NULL)
+				if (pszLow)
 				{
 					nValue = (char) (((pszHigh - szHex) << 4) +
 						(pszLow - szHex));
@@ -262,17 +262,17 @@ CString CPathUtils::GetLongPathname(const CString& path)
 	CString sRet;
 	if (!PathIsURL(path) && PathIsRelative(path))
 	{
-		ret = GetFullPathName(path, 0, NULL, NULL);
+		ret = GetFullPathName(path, 0, nullptr, nullptr);
 		if (ret)
 		{
 			auto pathbuf = std::make_unique<TCHAR[]>(ret + 1);
-			if ((ret = GetFullPathName(path, ret, pathbuf.get(), NULL)) != 0)
+			if ((ret = GetFullPathName(path, ret, pathbuf.get(), nullptr)) != 0)
 				sRet = CString(pathbuf.get(), ret);
 		}
 	}
 	else if (PathCanonicalize(pathbufcanonicalized, path))
 	{
-		ret = ::GetLongPathName(pathbufcanonicalized, NULL, 0);
+		ret = ::GetLongPathName(pathbufcanonicalized, nullptr, 0);
 		if (ret == 0)
 			return path;
 		auto pathbuf = std::make_unique<TCHAR[]>(ret + 2);
@@ -281,7 +281,7 @@ CString CPathUtils::GetLongPathname(const CString& path)
 	}
 	else
 	{
-		ret = ::GetLongPathName(path, NULL, 0);
+		ret = ::GetLongPathName(path, nullptr, 0);
 		if (ret == 0)
 			return path;
 		auto pathbuf = std::make_unique<TCHAR[]>(ret + 2);
@@ -320,7 +320,7 @@ CString CPathUtils::ParsePathInString(const CString& Str)
 	return sToken;
 }
 
-CString CPathUtils::GetAppDirectory(HMODULE hMod /* = NULL */)
+CString CPathUtils::GetAppDirectory(HMODULE hMod /* = nullptr */)
 {
     CString path;
     DWORD len = 0;
@@ -337,7 +337,7 @@ CString CPathUtils::GetAppDirectory(HMODULE hMod /* = NULL */)
     return GetLongPathname(path);
 }
 
-CString CPathUtils::GetAppParentDirectory(HMODULE hMod /* = NULL */)
+CString CPathUtils::GetAppParentDirectory(HMODULE hMod /* = nullptr */)
 {
     CString path = GetAppDirectory(hMod);
     path = path.Left(path.ReverseFind('\\'));
@@ -355,7 +355,7 @@ CString CPathUtils::GetAppDataDirectory()
 	CoTaskMemFree(pszPath);
 	path += L"\\TortoiseGit";
 	if (!PathIsDirectory(path))
-		CreateDirectory(path, NULL);
+		CreateDirectory(path, nullptr);
 
 	path += _T('\\');
 	return path;
@@ -370,7 +370,7 @@ CString CPathUtils::GetLocalAppDataDirectory()
 	CoTaskMemFree(pszPath);
 	path += L"\\TortoiseGit";
 	if (!PathIsDirectory(path))
-		CreateDirectory(path, NULL);
+		CreateDirectory(path, nullptr);
 
 	path += _T('\\');
 	return path;
@@ -394,7 +394,7 @@ CStringW CPathUtils::PathUnescape(const CStringW& path)
 	if (len==0)
 		return CStringW();
 	buf = patha.GetBuffer(len*4 + 1);
-	int lengthIncTerminator = WideCharToMultiByte(CP_UTF8, 0, path, -1, buf, len*4, NULL, NULL);
+	int lengthIncTerminator = WideCharToMultiByte(CP_UTF8, 0, path, -1, buf, len * 4, nullptr, nullptr);
 	patha.ReleaseBuffer(lengthIncTerminator-1);
 
 	patha = PathUnescape(patha);
@@ -429,7 +429,7 @@ CString CPathUtils::GetVersionFromFile(const CString & p_strFilename)
 		{
 			UINT        nInfoSize = 0,
 						nFixedLength = 0;
-			LPSTR       lpVersion = NULL;
+			LPSTR       lpVersion = nullptr;
 			VOID*       lpFixedPointer;
 			TRANSARRAY* lpTransArray;
 			CString     strLangProductVersion;

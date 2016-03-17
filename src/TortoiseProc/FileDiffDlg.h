@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2015 - TortoiseGit
+// Copyright (C) 2008-2016 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -45,7 +45,7 @@ class CFileDiffDlg : public CResizableStandAloneDialog
 {
 	DECLARE_DYNAMIC(CFileDiffDlg)
 public:
-	CFileDiffDlg(CWnd* pParent = NULL);
+	CFileDiffDlg(CWnd* pParent = nullptr);
 	virtual ~CFileDiffDlg();
 
 	void SetDiff(const CTGitPath * path, const GitRev &rev1, const GitRev &rev2);

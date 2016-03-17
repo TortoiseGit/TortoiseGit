@@ -150,7 +150,7 @@ inline void CRecordProfileEvent::Stop()
 	if (record)
 	{
 		record->Add (__rdtsc() - start);
-		record = NULL;
+		record = nullptr;
 	}
 }
 

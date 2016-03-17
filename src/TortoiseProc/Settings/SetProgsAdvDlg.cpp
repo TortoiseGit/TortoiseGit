@@ -23,7 +23,7 @@
 #include "AppUtils.h"
 
 IMPLEMENT_DYNAMIC(CSetProgsAdvDlg, CResizableStandAloneDialog)
-CSetProgsAdvDlg::CSetProgsAdvDlg(const CString& type, CWnd* pParent /*=NULL*/)
+CSetProgsAdvDlg::CSetProgsAdvDlg(const CString& type, CWnd* pParent /*=nullptr*/)
 	: CResizableStandAloneDialog(CSetProgsAdvDlg::IDD, pParent)
 	, m_sType(type)
 	, m_regToolKey(_T("Software\\TortoiseGit\\") + type + _T("Tools"))
@@ -44,7 +44,7 @@ void CSetProgsAdvDlg::LoadData()
 		CStringList values;
 		if (m_regToolKey.getValues(values))
 		{
-			for (POSITION pos = values.GetHeadPosition(); pos != NULL; )
+			for (POSITION pos = values.GetHeadPosition(); pos; )
 			{
 				CString ext = values.GetNext(pos);
 				m_Tools[ext] = CRegString(m_regToolKey.m_path + _T("\\") + ext);
@@ -63,7 +63,7 @@ int CSetProgsAdvDlg::SaveData()
 		CStringList values;
 		if (m_regToolKey.getValues(values))
 		{
-			for (POSITION pos = values.GetHeadPosition(); pos != NULL; )
+			for (POSITION pos = values.GetHeadPosition(); pos; )
 			{
 				CString ext = values.GetNext(pos);
 				if (m_Tools.find(ext) == m_Tools.end())
@@ -137,7 +137,7 @@ BOOL CSetProgsAdvDlg::OnInitDialog()
 	while (c>=0)
 		m_ToolListCtrl.DeleteColumn(c--);
 
-	SetWindowTheme(m_ToolListCtrl.GetSafeHwnd(), L"Explorer", NULL);
+	SetWindowTheme(m_ToolListCtrl.GetSafeHwnd(), L"Explorer", nullptr);
 
 	CString temp;
 	temp.LoadString(IDS_PROGS_EXTCOL);

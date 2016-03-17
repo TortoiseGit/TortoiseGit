@@ -59,7 +59,7 @@ int CGitLogList::RevertSelectedCommits(int parent)
 #if 0
 	if(!g_Git.CheckCleanWorkTree())
 	{
-		CMessageBox::Show(NULL, IDS_PROC_NOCLEAN, IDS_APPNAME, MB_OK);
+		CMessageBox::Show(nullptr, IDS_PROC_NOCLEAN, IDS_APPNAME, MB_OK);
 
 	}
 #endif
@@ -98,14 +98,9 @@ int CGitLogList::RevertSelectedCommits(int parent)
 			str.LoadString(IDS_SVNACTION_FAILEDREVERT);
 			str = g_Git.GetGitLastErr(str, CGit::GIT_CMD_REVERT);
 			if( GetSelectedCount() == 1)
-				CMessageBox::Show(NULL, str, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
-			else
-			{
-				if(CMessageBox::Show(NULL, str, _T("TortoiseGit"),2 , IDI_ERROR, CString(MAKEINTRESOURCE(IDS_SKIPBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)
-				{
-					return ret;
-				}
-			}
+				CMessageBox::Show(nullptr, str, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+			else if (CMessageBox::Show(nullptr, str, _T("TortoiseGit"), 2, IDI_ERROR, CString(MAKEINTRESOURCE(IDS_SKIPBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)
+				return ret;
 		}
 		else
 		{
@@ -360,7 +355,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 					for (int i = 1; i < FirstSelect; ++i)
 					{
 						GitRevLoglist* first = m_arShownList.SafeGetAt(i);
-						CTGitPathList list = first->GetFiles(NULL);
+						CTGitPathList list = first->GetFiles(nullptr);
 						const CTGitPath* file = list.LookForGitPath(path1);
 						if (file && !file->GetGitOldPathString().IsEmpty())
 							path1 = file->GetGitOldPathString();
@@ -369,7 +364,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 					for (int i = FirstSelect; i < LastSelect; ++i)
 					{
 						GitRevLoglist* first = m_arShownList.SafeGetAt(i);
-						CTGitPathList list = first->GetFiles(NULL);
+						CTGitPathList list = first->GetFiles(nullptr);
 						const CTGitPath* file = list.LookForGitPath(path2);
 						if (file && !file->GetGitOldPathString().IsEmpty())
 							path2 = file->GetGitOldPathString();
@@ -394,7 +389,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 					for (int i = 1; i < FirstSelect; ++i)
 					{
 						GitRevLoglist* first = m_arShownList.SafeGetAt(i);
-						CTGitPathList list = first->GetFiles(NULL);
+						CTGitPathList list = first->GetFiles(nullptr);
 						const CTGitPath* file = list.LookForGitPath(path1);
 						if (file && !file->GetGitOldPathString().IsEmpty())
 							path1 = file->GetGitOldPathString();
@@ -443,14 +438,14 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 						for (int i = 1; i < indexNext; ++i)
 						{
 							GitRevLoglist* first = m_arShownList.SafeGetAt(i);
-							CTGitPathList list = first->GetFiles(NULL);
+							CTGitPathList list = first->GetFiles(nullptr);
 							const CTGitPath* file = list.LookForGitPath(path1);
 							if (file && !file->GetGitOldPathString().IsEmpty())
 								path1 = file->GetGitOldPathString();
 						}
 						CString path2 = path1;
 						GitRevLoglist* first = m_arShownList.SafeGetAt(indexNext);
-						CTGitPathList list = first->GetFiles(NULL);
+						CTGitPathList list = first->GetFiles(nullptr);
 						const CTGitPath* file = list.LookForGitPath(path2);
 						if (file && !file->GetGitOldPathString().IsEmpty())
 							path2 = file->GetGitOldPathString();
@@ -460,7 +455,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				}
 				else
 				{
-					CMessageBox::Show(NULL, IDS_PROC_NOPREVIOUSVERSION, IDS_APPNAME, MB_OK);
+					CMessageBox::Show(nullptr, IDS_PROC_NOPREVIOUSVERSION, IDS_APPNAME, MB_OK);
 				}
 				//if (PromptShown())
 				//{
@@ -725,7 +720,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			}
 			catch(std::exception& e)
 			{
-				CMessageBox::Show(NULL, CUnicodeUtils::GetUnicode(CStringA(e.what())), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+				CMessageBox::Show(nullptr, CUnicodeUtils::GetUnicode(CStringA(e.what())), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 				sCmd.Format(_T("git.exe reset --hard %s --"), (LPCTSTR)headhash.ToString());
 				out.Empty();
 				if(g_Git.Run(sCmd, &out, CP_UTF8))
@@ -808,7 +803,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				else
 					str.Format(IDS_PROC_DELETEREF, (LPCTSTR)pSelLogEntry->m_Ref);
 
-				if (CMessageBox::Show(NULL, str, _T("TortoiseGit"), 1, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_DELETEBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)
+				if (CMessageBox::Show(nullptr, str, _T("TortoiseGit"), 1, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_DELETEBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)
 					return;
 
 				std::vector<CString> refsToDelete;
@@ -856,7 +851,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				sCmd += _T(" /path:\"") + g_Git.m_CurrentDir + _T("\" ");
 
 				GitRev* r1 = m_arShownList.SafeGetAt(FirstSelect);
-				GitRev * r2 = NULL;
+				GitRev* r2 = nullptr;
 				if(select == 1)
 				{
 					sCmd += _T(" /startrev:") + r1->m_CommitHash.ToString();
@@ -885,7 +880,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			{
 				GitRev* first = m_arShownList.SafeGetAt(FirstSelect);
 				GitRev* last = m_arShownList.SafeGetAt(LastSelect);
-				ASSERT(first != NULL && last != NULL);
+				ASSERT(first && last);
 
 				CString firstBad = first->m_CommitHash.ToString();
 				if (!m_HashMap[first->m_CommitHash].empty())
@@ -979,7 +974,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				const CString* branch = popmenu ? (const CString*)((CIconMenu*)popmenu)->GetMenuItemData(cmd) : nullptr;
 				if (!branch)
 				{
-					CMessageBox::Show(NULL,IDS_ERROR_NOREF,IDS_APPNAME,MB_OK|MB_ICONERROR);
+					CMessageBox::Show(nullptr, IDS_ERROR_NOREF, IDS_APPNAME, MB_OK | MB_ICONERROR);
 					return;
 				}
 				CString shortname;
@@ -1078,7 +1073,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			}
 			break;
 		default:
-			//CMessageBox::Show(NULL,_T("Have not implemented"),_T("TortoiseGit"),MB_OK);
+			//CMessageBox::Show(nullptr, _T("Have not implemented"), _T("TortoiseGit"), MB_OK);
 			break;
 #if 0
 
@@ -1131,7 +1126,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 					if (!Cat(m_path, revSelected, revSelected, tempfile))
 					{
 						progDlg.Stop();
-						SetAndClearProgressInfo((HWND)NULL);
+						SetAndClearProgressInfo(nullptr);
 						CMessageBox::Show(this->m_hWnd, GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
 						EnableOKButton();
 						break;
@@ -1141,7 +1136,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				if (bSuccess)
 				{
 					progDlg.Stop();
-					SetAndClearProgressInfo((HWND)NULL);
+					SetAndClearProgressInfo(nullptr);
 					SetFileAttributes(tempfile.GetWinPath(), FILE_ATTRIBUTE_READONLY);
 					if (!bOpenWith)
 						CAppUtils::ShellOpen(tempfile.GetWinPath(), GetSafeHwnd());
@@ -1189,7 +1184,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				sCmd.Format(_T("%s /command:export /path:\"%s\" /revision:%ld"),
 					(LPCTSTR)(CPathUtils::GetAppDirectory()+_T("TortoiseGitProc.exe")),
 					(LPCTSTR)pathURL, (LONG)revSelected);
-				CAppUtils::LaunchApplication(sCmd, NULL, false);
+				CAppUtils::LaunchApplication(sCmd, nullptr, false);
 			}
 			break;
 		case ID_VIEWREV:
@@ -1198,7 +1193,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				url = GetAbsoluteUrlFromRelativeUrl(url);
 				url.Replace(_T("%REVISION%"), revSelected.ToString());
 				if (!url.IsEmpty())
-					ShellExecute(this->m_hWnd, _T("open"), url, NULL, NULL, SW_SHOWDEFAULT);
+					ShellExecute(this->m_hWnd, _T("open"), url, nullptr, nullptr, SW_SHOWDEFAULT);
 			}
 			break;
 		case ID_VIEWPATHREV:
@@ -1211,7 +1206,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				url.Replace(_T("%REVISION%"), revSelected.ToString());
 				url.Replace(_T("%PATH%"), relurl);
 				if (!url.IsEmpty())
-					ShellExecute(this->m_hWnd, _T("open"), url, NULL, NULL, SW_SHOWDEFAULT);
+					ShellExecute(this->m_hWnd, _T("open"), url, nullptr, nullptr, SW_SHOWDEFAULT);
 			}
 			break;
 #endif

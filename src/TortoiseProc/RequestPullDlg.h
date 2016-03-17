@@ -29,7 +29,7 @@ class CRequestPullDlg : public CHorizontalResizableStandAloneDialog
 	DECLARE_DYNAMIC(CRequestPullDlg)
 
 public:
-	CRequestPullDlg(CWnd* pParent = NULL);   // standard constructor
+	CRequestPullDlg(CWnd* pParent = nullptr);   // standard constructor
 	virtual ~CRequestPullDlg();
 
 	// Dialog Data

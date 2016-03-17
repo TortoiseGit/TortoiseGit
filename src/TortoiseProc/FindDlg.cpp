@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2015 - TortoiseGit
+// Copyright (C) 2011-2016 - TortoiseGit
 // Copyright (C) 2006 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
@@ -26,7 +26,7 @@
 
 IMPLEMENT_DYNAMIC(CFindDlg, CResizableStandAloneDialog)
 
-CFindDlg::CFindDlg(CWnd* pParent /*=NULL*/)
+CFindDlg::CFindDlg(CWnd* pParent /*=nullptr*/)
 	: CResizableStandAloneDialog(CFindDlg::IDD, pParent)
 	, m_bTerminating(false)
 	, m_bFindNext(false)
@@ -74,7 +74,7 @@ void CFindDlg::OnCancel()
 	m_bTerminating = true;
 
 	CWnd *parent = m_pParent;
-	if(parent == NULL)
+	if (!parent)
 		parent = GetParent();
 
 	if (parent)
@@ -103,7 +103,7 @@ void CFindDlg::OnOK()
 	m_FindString = m_FindCombo.GetString();
 
 	CWnd *parent = m_pParent;
-	if(parent == NULL)
+	if (!parent)
 		parent = GetParent();
 
 	if (parent)
@@ -195,7 +195,7 @@ void CFindDlg::OnNMClickListRef(NMHDR *pNMHDR, LRESULT *pResult)
 	this->m_bIsRef =true;
 
 	CWnd *parent = m_pParent;
-	if(parent == NULL)
+	if (!parent)
 		parent = GetParent();
 
 	if (parent)
@@ -208,7 +208,7 @@ void CFindDlg::OnNMClickListRef(NMHDR *pNMHDR, LRESULT *pResult)
 
 void CFindDlg::OnEnChangeEditFilter()
 {
-	SetTimer(IDT_FILTER, 1000, NULL);
+	SetTimer(IDT_FILTER, 1000, nullptr);
 }
 
 void CFindDlg::OnTimer(UINT_PTR nIDEvent)

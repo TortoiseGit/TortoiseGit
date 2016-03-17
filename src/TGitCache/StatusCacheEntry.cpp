@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005-2006,2008,2014 - TortoiseSVN
-// Copyright (C) 2008-2014 - TortoiseGit
+// Copyright (C) 2008-2014, 2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -105,7 +105,7 @@ bool CStatusCacheEntry::LoadFromDisk(FILE * pFile)
 		LOADVALUEFROMFILE(m_GitStatus.text_status);
 		LOADVALUEFROMFILE(m_GitStatus.assumeValid);
 		LOADVALUEFROMFILE(m_GitStatus.skipWorktree);
-//		m_GitStatus.entry = NULL;
+//		m_GitStatus.entry = nullptr;
 		m_discardAtTime = GetTickCount64() + cachetimeout;
 	}
 	catch ( CAtlException )
@@ -117,7 +117,7 @@ bool CStatusCacheEntry::LoadFromDisk(FILE * pFile)
 
 void CStatusCacheEntry::SetStatus(const git_wc_status2_t* pGitStatus)
 {
-	if(pGitStatus == NULL)
+	if (!pGitStatus)
 	{
 		SetAsUnversioned();
 	}

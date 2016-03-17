@@ -29,11 +29,11 @@ CLogCache::CLogCache()
 {
 	m_IndexFile = INVALID_HANDLE_VALUE;
 	m_IndexFileMap = INVALID_HANDLE_VALUE;
-	m_pCacheIndex = NULL;
+	m_pCacheIndex = nullptr;
 
 	m_DataFile = INVALID_HANDLE_VALUE;
 	m_DataFileMap = INVALID_HANDLE_VALUE;
-	m_pCacheData = NULL;
+	m_pCacheData = nullptr;
 	m_DataFileLength = 0;
 	m_bEnabled = CRegDWORD(_T("Software\\TortoiseGit\\EnableLogCache"), TRUE);
 }
@@ -43,7 +43,7 @@ void CLogCache::CloseDataHandles()
 	if(m_pCacheData)
 	{
 		UnmapViewOfFile(m_pCacheData);
-		m_pCacheData=NULL;
+		m_pCacheData = nullptr;
 	}
 	if (m_DataFileMap != INVALID_HANDLE_VALUE)
 	{
@@ -62,7 +62,7 @@ void CLogCache::CloseIndexHandles()
 	if(m_pCacheIndex)
 	{
 		UnmapViewOfFile(m_pCacheIndex);
-		m_pCacheIndex = NULL;
+		m_pCacheIndex = nullptr;
 	}
 
 	if (m_IndexFileMap != INVALID_HANDLE_VALUE)
@@ -95,7 +95,7 @@ GitRevLoglist* CLogCache::GetCacheData(const CGitHash& hash)
 ULONGLONG CLogCache::GetOffset(const CGitHash& hash, SLogCacheIndexFile* pData)
 {
 
-	if(pData==NULL)
+	if (!pData)
 		pData = m_pCacheIndex;
 
 	if(pData == 0)
@@ -129,10 +129,10 @@ int CLogCache::FetchCacheIndex(CString GitDir)
 			m_IndexFile = CreateFile(file,
 						GENERIC_READ,
 						FILE_SHARE_READ | FILE_SHARE_DELETE,
-						NULL,
+						nullptr,
 						OPEN_EXISTING,
 						FILE_ATTRIBUTE_NORMAL,
-						NULL);
+						nullptr);
 
 			if( m_IndexFile == INVALID_HANDLE_VALUE)
 				break;
@@ -140,15 +140,15 @@ int CLogCache::FetchCacheIndex(CString GitDir)
 
 		if( m_IndexFileMap == INVALID_HANDLE_VALUE)
 		{
-			m_IndexFileMap = CreateFileMapping(m_IndexFile, NULL, PAGE_READONLY,0,0,NULL);
+			m_IndexFileMap = CreateFileMapping(m_IndexFile, nullptr, PAGE_READONLY, 0, 0, nullptr);
 			if( m_IndexFileMap == INVALID_HANDLE_VALUE)
 				break;
 		}
 
-		if( m_pCacheIndex == NULL )
+		if (!m_pCacheIndex)
 		{
 			m_pCacheIndex = (SLogCacheIndexFile*)MapViewOfFile(m_IndexFileMap,FILE_MAP_READ,0,0,0);
-			if( m_pCacheIndex ==NULL )
+			if (!m_pCacheIndex)
 				break;
 		}
 
@@ -168,10 +168,10 @@ int CLogCache::FetchCacheIndex(CString GitDir)
 			m_DataFile = CreateFile(file,
 						GENERIC_READ,
 						FILE_SHARE_READ | FILE_SHARE_DELETE,
-						NULL,
+						nullptr,
 						OPEN_EXISTING,
 						FILE_ATTRIBUTE_NORMAL,
-						NULL);
+						nullptr);
 
 			if(m_DataFile == INVALID_HANDLE_VALUE)
 				break;
@@ -179,18 +179,18 @@ int CLogCache::FetchCacheIndex(CString GitDir)
 
 		if( m_DataFileMap == INVALID_HANDLE_VALUE)
 		{
-			m_DataFileMap = CreateFileMapping(m_DataFile, NULL, PAGE_READONLY,0,0,NULL);
+			m_DataFileMap = CreateFileMapping(m_DataFile, nullptr, PAGE_READONLY, 0, 0, nullptr);
 			if( m_DataFileMap == INVALID_HANDLE_VALUE)
 				break;
 		}
-		m_DataFileLength = GetFileSize(m_DataFile, NULL);
+		m_DataFileLength = GetFileSize(m_DataFile, nullptr);
 		if (m_DataFileLength == INVALID_FILE_SIZE || m_DataFileLength < sizeof(SLogCacheDataFileHeader))
 			break;
 
-		if(	m_pCacheData == NULL)
+		if (!m_pCacheData)
 		{
 			m_pCacheData = (BYTE*)MapViewOfFile(m_DataFileMap,FILE_MAP_READ,0,0,0);
-			if( m_pCacheData ==NULL )
+			if (!m_pCacheData)
 				break;
 		}
 
@@ -272,7 +272,7 @@ int CLogCache::SaveOneItem(const GitRevLoglist& Rev, LONG offset)
 
 int CLogCache::LoadOneItem(GitRevLoglist& Rev,ULONGLONG offset)
 {
-	if(m_pCacheData == NULL)
+	if (!m_pCacheData)
 		return -1;
 
 	if (offset + sizeof(SLogCacheRevItemHeader) > m_DataFileLength)
@@ -379,12 +379,12 @@ int CLogCache::SaveCache()
 	if (this->m_pCacheIndex && m_pCacheIndex->m_Header.m_ItemCount == 0) // check for empty log list (issue #915)
 		return 0;
 
-	SLogCacheIndexFile *pIndex =  NULL;
+	SLogCacheIndexFile* pIndex = nullptr;
 	if(this->m_pCacheIndex)
 	{
 		pIndex = (SLogCacheIndexFile *)malloc(sizeof(SLogCacheIndexFile)
 					+sizeof(SLogCacheIndexItem) * (m_pCacheIndex->m_Header.m_ItemCount) );
-		if(pIndex ==NULL)
+		if (!pIndex)
 			return -1;
 
 		memcpy(pIndex,this->m_pCacheIndex,
@@ -403,10 +403,10 @@ int CLogCache::SaveCache()
 		m_IndexFile = CreateFile(file,
 						GENERIC_READ|GENERIC_WRITE,
 						0,
-						NULL,
+						nullptr,
 						OPEN_ALWAYS,
 						FILE_ATTRIBUTE_NORMAL,
-						NULL);
+						nullptr);
 
 		if(m_IndexFile == INVALID_HANDLE_VALUE)
 			break;
@@ -416,10 +416,10 @@ int CLogCache::SaveCache()
 		m_DataFile = CreateFile(file,
 						GENERIC_READ|GENERIC_WRITE,
 						0,
-						NULL,
+						nullptr,
 						OPEN_ALWAYS,
 						FILE_ATTRIBUTE_NORMAL,
-						NULL);
+						nullptr);
 
 		if(m_DataFile == INVALID_HANDLE_VALUE)
 			break;
@@ -485,12 +485,12 @@ int CLogCache::SaveCache()
 		}
 		FlushFileBuffers(m_IndexFile);
 
-		m_IndexFileMap = CreateFileMapping(m_IndexFile, NULL, PAGE_READWRITE,0,0,NULL);
+		m_IndexFileMap = CreateFileMapping(m_IndexFile, nullptr, PAGE_READWRITE, 0, 0, nullptr);
 		if(m_IndexFileMap == INVALID_HANDLE_VALUE)
 			break;
 
 		m_pCacheIndex = (SLogCacheIndexFile*)MapViewOfFile(m_IndexFileMap,FILE_MAP_WRITE,0,0,0);
-		if(m_pCacheIndex == NULL)
+		if (!m_pCacheIndex)
 			break;
 
 		m_pCacheIndex->m_Header.m_ItemCount = header.m_ItemCount;

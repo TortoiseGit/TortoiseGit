@@ -31,7 +31,7 @@ class CSendMailDlg : public CResizableStandAloneDialog
 	DECLARE_DYNAMIC(CSendMailDlg)
 
 public:
-	CSendMailDlg(CWnd* pParent = NULL);   // standard constructor
+	CSendMailDlg(CWnd* pParent = nullptr);   // standard constructor
 	virtual ~CSendMailDlg();
 
 // Dialog Data

@@ -46,7 +46,7 @@ class CSyncDlg : public CResizableStandAloneDialog,public CBranchCombox
 	DECLARE_DYNAMIC(CSyncDlg)
 
 public:
-	CSyncDlg(CWnd* pParent = NULL);   // standard constructor
+	CSyncDlg(CWnd* pParent = nullptr);   // standard constructor
 	virtual ~CSyncDlg();
 
 // Dialog Data

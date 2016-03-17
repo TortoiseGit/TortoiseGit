@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2015 - TortoiseGit
+// Copyright (C) 2011-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -33,9 +33,9 @@ class CFindDlg : public CResizableStandAloneDialog
 	DECLARE_DYNAMIC(CFindDlg)
 
 public:
-	CFindDlg(CWnd* pParent = NULL);   // standard constructor
+	CFindDlg(CWnd* pParent = nullptr);   // standard constructor
 	virtual ~CFindDlg();
-	void Create(CWnd * pParent = NULL) {m_pParent = pParent; CDialog::Create(IDD, pParent);ShowWindow(SW_SHOW);UpdateWindow();}
+	void Create(CWnd* pParent = nullptr) { m_pParent = pParent; CDialog::Create(IDD, pParent); ShowWindow(SW_SHOW); UpdateWindow(); }
 
 	bool IsTerminating() {return m_bTerminating;}
 	bool FindNext() {return m_bFindNext;}
