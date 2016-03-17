@@ -5,6 +5,7 @@ Released: unreleased
  * Update PuTTY to 0.67
  * Fixed issue #2733: Hide commit button after file add when invoked from commit dialog
  * Fixed issue #2734: When pull.rebase is set, start rebase just after fetch, not after OK button
+ * Fixed issue #2731: Improved autolist.txt regex for C# files
 
 == Bug Fixes ==
  * Fixed issue #2719: Commit & Push in CommitDlg doesn't respect default remote and pushbranch settings
