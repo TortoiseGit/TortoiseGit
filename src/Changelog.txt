@@ -4,6 +4,7 @@ Released: unreleased
 == Features ==
  * Update PuTTY to 0.67
  * Fixed issue #2733: Hide commit button after file add when invoked from commit dialog
+ * Fixed issue #2734: When pull.rebase is set, start rebase just after fetch, not after OK button
 
 == Bug Fixes ==
  * Fixed issue #2719: Commit & Push in CommitDlg doesn't respect default remote and pushbranch settings

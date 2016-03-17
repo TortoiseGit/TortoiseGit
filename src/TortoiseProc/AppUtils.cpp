@@ -2721,7 +2721,6 @@ static bool DoFetch(const CString& url, const bool fetchAllRemotes, const bool l
 	};
 
 	progress.m_GitCmd = cmd;
-	INT_PTR userResponse;
 
 	if (g_Git.UsingLibGit2(CGit::GIT_CMD_FETCH))
 	{
@@ -2734,52 +2733,51 @@ static bool DoFetch(const CString& url, const bool fetchAllRemotes, const bool l
 		fetchProgressCommand.SetAutoTag(fetchTags == 1 ? GIT_REMOTE_DOWNLOAD_TAGS_ALL : fetchTags == 2 ? GIT_REMOTE_DOWNLOAD_TAGS_AUTO : GIT_REMOTE_DOWNLOAD_TAGS_NONE);
 		if (!fetchAllRemotes)
 			fetchProgressCommand.SetRefSpec(remoteBranch);
-		userResponse = gitdlg.DoModal();
-		return userResponse == IDOK;
+		return gitdlg.DoModal() == IDOK;
 	}
 
-	userResponse = progress.DoModal();
-	if (!progress.m_GitStatus)
+	progress.m_PostExecCallback = [&](DWORD& exitCode, CString& extraMsg)
 	{
-		if (runRebase)
+		if (exitCode || !runRebase)
+			return;
+
+		CGitHash remoteBranchHash;
+		g_Git.GetHash(remoteBranchHash, upstream);
+		if (runRebase == 1 && remoteBranchHash == oldUpstreamHash && !oldUpstreamHash.IsEmpty() && CMessageBox::ShowCheck(nullptr, IDS_REBASE_BRANCH_UNCHANGED, IDS_APPNAME, MB_ICONQUESTION | MB_YESNO | MB_DEFBUTTON2, L"OpenRebaseRemoteBranchUnchanged", IDS_MSGBOX_DONOTSHOWAGAIN) == IDNO)
+			return;
+
+		if (runRebase == 1 && g_Git.IsFastForward(L"HEAD", upstream))
 		{
-			CGitHash remoteBranchHash;
-			g_Git.GetHash(remoteBranchHash, upstream);
-			if (runRebase == 1 && remoteBranchHash == oldUpstreamHash && !oldUpstreamHash.IsEmpty() && CMessageBox::ShowCheck(nullptr, IDS_REBASE_BRANCH_UNCHANGED, IDS_APPNAME, MB_ICONQUESTION | MB_YESNO | MB_DEFBUTTON2, _T("OpenRebaseRemoteBranchUnchanged"), IDS_MSGBOX_DONOTSHOWAGAIN) == IDNO)
-				return userResponse == IDOK;
-
-			if (runRebase == 1 && g_Git.IsFastForward(_T("HEAD"), upstream))
+			UINT ret = CMessageBox::ShowCheck(nullptr, IDS_REBASE_BRANCH_FF, IDS_APPNAME, 2, IDI_QUESTION, IDS_MERGEBUTTON, IDS_REBASEBUTTON, IDS_ABORTBUTTON, L"OpenRebaseRemoteBranchFastForwards", IDS_MSGBOX_DONOTSHOWAGAIN);
+			if (ret == 3)
+				return;
+			if (ret == 1)
 			{
-				UINT ret = CMessageBox::ShowCheck(nullptr, IDS_REBASE_BRANCH_FF, IDS_APPNAME, 2, IDI_QUESTION, IDS_MERGEBUTTON, IDS_REBASEBUTTON, IDS_ABORTBUTTON, _T("OpenRebaseRemoteBranchFastForwards"), IDS_MSGBOX_DONOTSHOWAGAIN);
-				if (ret == 3)
-					return userResponse == IDOK;
-				if (ret == 1)
+				CProgressDlg mergeProgress;
+				mergeProgress.m_GitCmd = L"git.exe merge --ff-only " + upstream;
+				mergeProgress.m_AutoClose = AUTOCLOSE_IF_NO_ERRORS;
+				mergeProgress.m_PostCmdCallback = [](DWORD status, PostCmdList& postCmdList)
 				{
-					CProgressDlg mergeProgress;
-					mergeProgress.m_GitCmd = _T("git.exe merge --ff-only ") + upstream;
-					mergeProgress.m_AutoClose = AUTOCLOSE_IF_NO_ERRORS;
-					mergeProgress.m_PostCmdCallback = [](DWORD status, PostCmdList& postCmdList)
+					if (status && g_Git.HasWorkingTreeConflicts())
 					{
-						if (status && g_Git.HasWorkingTreeConflicts())
+						// there are conflict files
+						postCmdList.emplace_back(IDI_RESOLVE, IDS_PROGRS_CMD_RESOLVE, []
 						{
-							// there are conflict files
-							postCmdList.emplace_back(IDI_RESOLVE, IDS_PROGRS_CMD_RESOLVE, []
-							{
-								CString sCmd;
-								sCmd.Format(_T("/command:commit /path:\"%s\""), g_Git.m_CurrentDir);
-								CAppUtils::RunTortoiseGitProc(sCmd);
-							});
-						}
-					};
-					return mergeProgress.DoModal() == IDOK;
-				}
+							CString sCmd;
+							sCmd.Format(L"/command:commit /path:\"%s\"", g_Git.m_CurrentDir);
+							CAppUtils::RunTortoiseGitProc(sCmd);
+						});
+					}
+				};
+				mergeProgress.DoModal();
+				return;
 			}
-
-			return CAppUtils::RebaseAfterFetch(upstream, runRebase, rebasePreserveMerges);
 		}
-	}
 
-	return userResponse == IDOK;
+		CAppUtils::RebaseAfterFetch(upstream, runRebase, rebasePreserveMerges);
+	};
+
+	return progress.DoModal() == IDOK;
 }
 
 bool CAppUtils::Fetch(const CString& remoteName, bool allRemotes)
