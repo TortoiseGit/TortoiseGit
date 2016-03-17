@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2015 - TortoiseGit
+// Copyright (C) 2011-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -82,6 +82,9 @@ bool AddProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, int&
 	}
 
 	CShellUpdater::Instance().AddPathsForUpdate(m_targetPathList);
+
+	if (!m_bShowCommitButtonAfterAdd)
+		return true;
 
 	m_PostCmdCallback = [](DWORD status, PostCmdList& postCmdList)
 	{

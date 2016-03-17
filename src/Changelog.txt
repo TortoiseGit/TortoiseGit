@@ -3,6 +3,7 @@ Released: unreleased
 
 == Features ==
  * Update PuTTY to 0.67
+ * Fixed issue #2733: Hide commit button after file add when invoked from commit dialog
 
 == Bug Fixes ==
  * Fixed issue #2719: Commit & Push in CommitDlg doesn't respect default remote and pushbranch settings

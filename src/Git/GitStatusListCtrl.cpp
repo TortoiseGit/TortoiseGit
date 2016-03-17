@@ -2245,6 +2245,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					CGitProgressDlg progDlg;
 					AddProgressCommand addCommand;
 					progDlg.SetCommand(&addCommand);
+					addCommand.SetShowCommitButtonAfterAdd((m_dwContextMenus & GITSLC_POPCOMMIT) != 0);
 					addCommand.SetPathList(paths);
 					progDlg.SetItemCount(paths.GetCount());
 					progDlg.DoModal();

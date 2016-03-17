@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2014 - TortoiseGit
+// Copyright (C) 2014, 2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -20,6 +20,14 @@
 
 class AddProgressCommand : public ProgressCommand
 {
+protected:
+	bool m_bShowCommitButtonAfterAdd;
 public:
 	virtual bool Run(CGitProgressList* list, CString& sWindowTitle, int& m_itemCountTotal, int& m_itemCount);
+
+	AddProgressCommand()
+		: m_bShowCommitButtonAfterAdd(true)
+	{}
+
+	void SetShowCommitButtonAfterAdd(bool b) { m_bShowCommitButtonAfterAdd = b; }
 };
