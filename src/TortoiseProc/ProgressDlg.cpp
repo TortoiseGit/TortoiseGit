@@ -745,8 +745,7 @@ void CProgressDlg::KillProcessTree(DWORD dwProcessId, unsigned int depth)
 	if (!dwProcessId || depth > 20)
 		return;
 
-	PROCESSENTRY32 pe;
-	memset(&pe, 0, sizeof(PROCESSENTRY32));
+	PROCESSENTRY32 pe = { 0 };
 	pe.dwSize = sizeof(PROCESSENTRY32);
 
 	CAutoGeneralHandle hSnap = ::CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);

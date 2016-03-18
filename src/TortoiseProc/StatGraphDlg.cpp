@@ -305,7 +305,6 @@ BOOL CStatGraphDlg::OnInitDialog()
 	LCID locale = bUseSystemLocale ? MAKELCID(MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), SORT_DEFAULT) : m_locale;
 
 	TCHAR langBuf[11] = { 0 };
-	memset(langBuf, 0, sizeof(langBuf));
 	GetLocaleInfo(locale, LOCALE_IDATE, langBuf, _countof(langBuf));
 
 	m_langOrder = _ttoi(langBuf);

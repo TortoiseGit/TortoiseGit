@@ -671,8 +671,7 @@ void CGitLogListBase::DrawTagBranch(HDC hdc, CDC& W_Dc, HTHEME hTheme, CRect& re
 
 		if (!shortname.IsEmpty() && (rt.left < rect.right))
 		{
-			SIZE size;
-			memset(&size,0,sizeof(SIZE));
+			SIZE size = { 0 };
 			GetTextExtentPoint32(hdc, shortname, shortname.GetLength(), &size);
 
 			rt.SetRect(rt.left, rt.top, rt.left + size.cx, rt.bottom);

@@ -556,8 +556,7 @@ LRESULT CMainWindow::DoCommand(int id, LPARAM lParam)
     case ID_VIEW_TRANSPARENTCOLOR:
         {
             static COLORREF customColors[16] = {0};
-            CHOOSECOLOR ccDlg;
-            SecureZeroMemory(&ccDlg, sizeof(ccDlg));
+            CHOOSECOLOR ccDlg = { 0 };
             ccDlg.lStructSize = sizeof(ccDlg);
             ccDlg.hwndOwner = m_hwnd;
             ccDlg.rgbResult = transparentColor;

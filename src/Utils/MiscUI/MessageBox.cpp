@@ -485,8 +485,7 @@ UINT CMessageBox::GoModal(CWnd * pWnd, const CString& title, const CString& msg,
 	};
 	const UINT cbProperSize = sizeof(OLD_NONCLIENTMETRICS);
 
-	NONCLIENTMETRICS ncm;
-	memset(&ncm,0,sizeof(NONCLIENTMETRICS));
+	NONCLIENTMETRICS ncm = { 0 };
 	ncm.cbSize = cbProperSize;
 	SystemParametersInfo(SPI_GETNONCLIENTMETRICS, sizeof(NONCLIENTMETRICS), &ncm, 0);
 

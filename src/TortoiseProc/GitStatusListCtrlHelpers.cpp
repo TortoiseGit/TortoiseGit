@@ -524,8 +524,7 @@ void ColumnManager::ApplyColumnOrder()
 {
 	// extract order of used columns from order of all columns
 
-	int order[GITSLC_MAXCOLUMNCOUNT+1];
-	SecureZeroMemory (order, sizeof (order));
+	int order[GITSLC_MAXCOLUMNCOUNT + 1] = { 0 };
 
 	std::vector<int> gridColumnOrder = GetGridColumnOrder();
 	std::copy(gridColumnOrder.cbegin(), gridColumnOrder.cend(), stdext::checked_array_iterator<int*>(&order[0], sizeof(order)));

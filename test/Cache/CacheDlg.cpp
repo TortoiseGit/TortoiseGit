@@ -245,11 +245,9 @@ bool CCacheDlg::GetStatusFromRemoteCache(const CTGitPath& Path, bool bRecursive)
 {
 	if(!EnsurePipeOpen())
 	{
-		STARTUPINFO startup;
-		PROCESS_INFORMATION process;
-		memset(&startup, 0, sizeof(startup));
+		STARTUPINFO startup = { 0 };
+		PROCESS_INFORMATION process = { 0 };
 		startup.cb = sizeof(startup);
-		memset(&process, 0, sizeof(process));
 
 		CString sCachePath = _T("TGitCache.exe");
 		if (CreateProcess(sCachePath.GetBuffer(sCachePath.GetLength() + 1), _T(""), nullptr, nullptr, FALSE, 0, nullptr, nullptr, &startup, &process) == 0)

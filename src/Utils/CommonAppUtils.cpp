@@ -290,8 +290,7 @@ bool CCommonAppUtils::FileOpenSave(CString& path, int * filterindex, UINT title,
 
 void CCommonAppUtils::SetCharFormat(CWnd* window, DWORD mask , DWORD effects, const std::vector<CHARRANGE>& positions)
 {
-	CHARFORMAT2 format;
-	SecureZeroMemory(&format, sizeof(CHARFORMAT2));
+	CHARFORMAT2 format = {};
 	format.cbSize = sizeof(CHARFORMAT2);
 	format.dwMask = mask;
 	format.dwEffects = effects;
@@ -306,8 +305,7 @@ void CCommonAppUtils::SetCharFormat(CWnd* window, DWORD mask , DWORD effects, co
 
 void CCommonAppUtils::SetCharFormat(CWnd* window, DWORD mask, DWORD effects )
 {
-	CHARFORMAT2 format;
-	SecureZeroMemory(&format, sizeof(CHARFORMAT2));
+	CHARFORMAT2 format = {};
 	format.cbSize = sizeof(CHARFORMAT2);
 	format.dwMask = mask;
 	format.dwEffects = effects;

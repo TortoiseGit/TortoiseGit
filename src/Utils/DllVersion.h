@@ -62,8 +62,7 @@ inline HRESULT GetShellVersion(
 {
 	ATLENSURE(pdwMajor && pdwMinor);
 
-	DLLVERSIONINFO dvi;
-	memset(&dvi, 0, sizeof(dvi));
+	DLLVERSIONINFO dvi = { 0 };
 	dvi.cbSize = sizeof(dvi);
 	HRESULT hRet = GetDllVersion(_T("shell32.dll"), &dvi);
 

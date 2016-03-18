@@ -249,9 +249,8 @@ void CImportPatchDlg::OnBnClickedButtonAdd()
 {
 	CFileDialog dlg(TRUE, nullptr, nullptr, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_ALLOWMULTISELECT, CString(MAKEINTRESOURCE(IDS_PATCHFILEFILTER)));
 	dlg.m_ofn.nMaxFile = 65536;
-	auto path = std::make_unique<TCHAR[]>(dlg.m_ofn.nMaxFile);
-	SecureZeroMemory(path.get(), dlg.m_ofn.nMaxFile);
-	dlg.m_ofn.lpstrFile = path.get();
+	TCHAR path[65536] = { 0 };
+	dlg.m_ofn.lpstrFile = path;
 	INT_PTR ret = dlg.DoModal();
 	SetCurrentDirectory(g_Git.m_CurrentDir);
 	if (ret == IDOK)

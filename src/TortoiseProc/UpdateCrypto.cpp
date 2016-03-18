@@ -988,8 +988,7 @@ static public_key_t *download_key(const uint8_t *p_longid, const uint8_t *p_sign
 
 int VerifyIntegrity(const CString &filename, const CString &signatureFilename, CUpdateDownloader *updateDownloader)
 {
-	signature_packet_t p_sig;
-	memset(&p_sig, 0, sizeof(signature_packet_t));
+	signature_packet_t p_sig = { 0 };
 	if (LoadSignature(signatureFilename, &p_sig))
 		return -1;
 	SCOPE_EXIT
@@ -1001,8 +1000,7 @@ int VerifyIntegrity(const CString &filename, const CString &signatureFilename, C
 		}
 	};
 
-	public_key_t p_pkey;
-	memset(&p_pkey, 0, sizeof(public_key_t));
+	public_key_t p_pkey = { 0 };
 	if (parse_public_key(tortoisegit_public_key, sizeof(tortoisegit_public_key), &p_pkey, nullptr))
 		return -1;
 	SCOPE_EXIT { free(p_pkey.psz_username); };

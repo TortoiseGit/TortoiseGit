@@ -312,8 +312,7 @@ void CDirectoryWatcher::WorkerThread()
 						break;
 					}
 
-					DEV_BROADCAST_HANDLE NotificationFilter;
-					SecureZeroMemory(&NotificationFilter, sizeof(NotificationFilter));
+					DEV_BROADCAST_HANDLE NotificationFilter = { 0 };
 					NotificationFilter.dbch_size = sizeof(DEV_BROADCAST_HANDLE);
 					NotificationFilter.dbch_devicetype = DBT_DEVTYP_HANDLE;
 					NotificationFilter.dbch_handle = hDir;

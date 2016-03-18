@@ -1175,8 +1175,7 @@ void CRevisionGraphWnd::AppendMenu(CMenu &popup, CString title, UINT command, CS
 	}
 
 	// actually add the new item
-	MENUITEMINFO mii;
-	memset(&mii, 0, sizeof(mii));
+	MENUITEMINFO mii = { 0 };
 	mii.cbSize = sizeof(MENUITEMINFO);
 	mii.fMask = MIIM_STRING | MIIM_ID | (extra ? MIIM_DATA : 0) | (submenu ? MIIM_SUBMENU : 0);
 	mii.wID = command;
@@ -1516,8 +1515,7 @@ void CRevisionGraphWnd::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 		break;
 	case ID_SWITCH:
 	{
-		MENUITEMINFO mii;
-		memset(&mii, 0, sizeof(mii));
+		MENUITEMINFO mii = { 0 };
 		mii.cbSize = sizeof(mii);
 		mii.fMask |= MIIM_DATA;
 		GetMenuItemInfo(popup, cmd, FALSE, &mii);
