@@ -542,7 +542,11 @@ int CGit::Run(CString cmd, CString* output, CString* outputErr, int code)
 class CGitCallCb : public CGitCall
 {
 public:
-	CGitCallCb(CString cmd, const GitReceiverFunc& recv): CGitCall(cmd), m_recv(recv) {}
+	CGitCallCb(CString cmd, const GitReceiverFunc& recv, BYTE_VECTOR* pvectorErr = nullptr)
+	: CGitCall(cmd)
+	, m_recv(recv)
+	, m_pvectorErr(pvectorErr)
+	{}
 
 	virtual bool OnOutputData(const BYTE* data, size_t size) override
 	{
@@ -563,9 +567,14 @@ public:
 		return false;
 	}
 
-	virtual bool OnOutputErrData(const BYTE*, size_t) override
+	virtual bool OnOutputErrData(const BYTE* data, size_t size) override
 	{
-		return false; // Ignore error output for now
+		if (!m_pvectorErr || size == 0)
+			return false;
+		size_t oldsize = m_pvectorErr->size();
+		m_pvectorErr->resize(m_pvectorErr->size() + size);
+		memcpy(&*(m_pvectorErr->begin() + oldsize), data, size);
+		return false;
 	}
 
 	virtual void OnEnd() override
@@ -578,10 +587,21 @@ public:
 private:
 	GitReceiverFunc m_recv;
 	CStringA m_buffer;
+	BYTE_VECTOR* m_pvectorErr;
 };
 
-int CGit::Run(CString cmd, const GitReceiverFunc& recv)
+int CGit::Run(CString cmd, const GitReceiverFunc& recv, CString* outputErr)
 {
+	if (outputErr)
+	{
+		BYTE_VECTOR vectorErr;
+		CGitCallCb call(cmd, recv, &vectorErr);
+		int ret = Run(&call);
+		vectorErr.push_back(0);
+		StringAppend(outputErr, &(vectorErr[0]));
+		return ret;
+	}
+
 	CGitCallCb call(cmd, recv);
 	return Run(&call);
 }
@@ -1762,22 +1782,19 @@ int CGit::GetRemoteTags(const CString& remote, STRING_VECTOR& list)
 		return 0;
 	}
 
-	CString cmd, out;
+	CString cmd;
 	cmd.Format(_T("git.exe ls-remote -t \"%s\""), (LPCTSTR)remote);
 	gitLastErr = cmd + L'\n';
-	if (Run(cmd, &out, &gitLastErr, CP_UTF8))
-		return -1;
-
-	int pos = 0;
-	while (pos >= 0)
+	if (Run(cmd, [&](CStringA lineA)
 	{
-		CString one = out.Tokenize(_T("\n"), pos).Mid(51).Trim(); // sha1, tab + refs/tags/
+		lineA = lineA.Mid(51); // sha1, tab + refs/tags/
 		// dot not include annotated tags twice; this works, because an annotated tag appears twice (one normal tag and one with ^{} at the end)
-		if (one.Find(_T("^{}")) >= 1)
-			continue;
-		if (!one.IsEmpty())
-			list.push_back(one);
-	}
+		if (lineA.Find("^{}") >= 1)
+			return;
+		if (!lineA.IsEmpty())
+			list.push_back(CUnicodeUtils::GetUnicode(lineA));
+	}, &gitLastErr))
+		return -1;
 	std::sort(list.begin() + prevCount, list.end(), g_bSortTagsReversed ? LogicalCompareReversedPredicate : LogicalComparePredicate);
 	return 0;
 }

@@ -235,7 +235,7 @@ public:
 	int Run(CString cmd, CString* output, CString* outputErr, int code);
 	int Run(CString cmd, BYTE_VECTOR* byte_array, BYTE_VECTOR* byte_arrayErr = nullptr);
 	int Run(CGitCall* pcall);
-	int Run(CString cmd, const GitReceiverFunc& recv);
+	int Run(CString cmd, const GitReceiverFunc& recv, CString* outputErr = nullptr);
 
 private:
 	static DWORD WINAPI AsyncReadStdErrThread(LPVOID lpParam);
