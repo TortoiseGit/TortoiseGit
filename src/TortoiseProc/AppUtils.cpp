@@ -2725,7 +2725,7 @@ static bool DoFetch(const CString& url, const bool fetchAllRemotes, const bool l
 		return gitdlg.DoModal() == IDOK;
 	}
 
-	progress.m_PostExecCallback = [&](DWORD& exitCode, CString& extraMsg)
+	progress.m_PostExecCallback = [&](DWORD& exitCode, CString&)
 	{
 		if (exitCode || !runRebase)
 			return;
