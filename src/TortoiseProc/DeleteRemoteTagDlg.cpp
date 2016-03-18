@@ -93,7 +93,11 @@ void CDeleteRemoteTagDlg::Refresh()
 	sysProgressDlg.SetLine(2, CString(MAKEINTRESOURCE(IDS_PROGRESSWAIT)));
 	sysProgressDlg.SetShowProgressBar(false);
 	sysProgressDlg.ShowModal(this, true);
-	g_Git.GetRemoteTags(m_sRemote, m_taglist);
+	if (g_Git.GetRemoteTags(m_sRemote, m_taglist))
+	{
+		sysProgressDlg.Stop();
+		MessageBox(g_Git.GetGitLastErr(L"Could not retrieve remote tags.", CGit::GIT_CMD_FETCH), L"TortoiseGit", MB_ICONERROR);
+	}
 	sysProgressDlg.Stop();
 	BringWindowToTop();
 

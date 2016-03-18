@@ -1762,13 +1762,11 @@ int CGit::GetRemoteTags(const CString& remote, STRING_VECTOR& list)
 		return 0;
 	}
 
-	CString cmd, out, err;
+	CString cmd, out;
 	cmd.Format(_T("git.exe ls-remote -t \"%s\""), (LPCTSTR)remote);
-	if (Run(cmd, &out, &err, CP_UTF8))
-	{
-		MessageBox(nullptr, err, _T("TortoiseGit"), MB_ICONERROR);
+	gitLastErr = cmd + L'\n';
+	if (Run(cmd, &out, &gitLastErr, CP_UTF8))
 		return -1;
-	}
 
 	int pos = 0;
 	while (pos >= 0)
