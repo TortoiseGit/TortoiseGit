@@ -38,7 +38,7 @@ namespace HighColorTab
 	static std::auto_ptr<CImageList> CreateImageList()
 	{
 		std::auto_ptr<CImageList> apILNew( new CImageList() );
-		if (apILNew.get())
+		if (!apILNew.get())
 		{
 			// ASSERT: The CImageList object creation failed.
 			ASSERT( FALSE );
