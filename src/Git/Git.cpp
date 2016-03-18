@@ -766,9 +766,7 @@ int CGit::UnsetConfigValue(const CString& key, CONFIG_TYPE type)
 		cmd.Format(_T("git.exe config %s --unset %s"), (LPCTSTR)option, (LPCTSTR)key);
 		CString out;
 		if (Run(cmd, &out, nullptr, CP_UTF8))
-		{
 			return -1;
-		}
 	}
 	return 0;
 }
@@ -1398,21 +1396,14 @@ int CGit::GetTagList(STRING_VECTOR &list)
 	}
 	else
 	{
-		CString cmd, output;
-		cmd=_T("git.exe tag -l");
-		int ret = Run(cmd, &output, nullptr, CP_UTF8);
-		if(!ret)
+		int ret = Run(L"git.exe tag -l", [&](const CStringA& lineA)
 		{
-			int pos=0;
-			CString one;
-			while( pos>=0 )
-			{
-				one=output.Tokenize(_T("\n"),pos);
-				if (!one.IsEmpty())
-					list.push_back(one);
-			}
+			if (lineA.IsEmpty())
+				return;
+			list.push_back(CUnicodeUtils::GetUnicode(lineA));
+		});
+		if (!ret)
 			std::sort(list.begin() + prevCount, list.end(), g_bSortTagsReversed ? LogicalCompareReversedPredicate : LogicalComparePredicate);
-		}
 		else if (ret == 1 && IsInitRepos())
 			return 0;
 		return ret;
@@ -1500,24 +1491,18 @@ bool CGit::IsBranchTagNameUnique(const CString& name)
 		return false;
 	}
 	// else
-	CString output;
-
 	CString cmd;
 	cmd.Format(_T("git.exe show-ref --tags --heads refs/heads/%s refs/tags/%s"), (LPCTSTR)name, (LPCTSTR)name);
-	int ret = Run(cmd, &output, nullptr, CP_UTF8);
-	if (!ret)
-	{
-		int i = 0, pos = 0;
-		while (pos >= 0)
-		{
-			if (!output.Tokenize(_T("\n"), pos).IsEmpty())
-				++i;
-		}
-		if (i >= 2)
-			return false;
-	}
 
-	return true;
+	int refCnt = 0;
+	Run(cmd, [&](const CStringA& lineA)
+	{
+		if (lineA.IsEmpty())
+			return;
+		++refCnt;
+	});
+
+	return (refCnt <= 1);
 }
 
 bool CGit::BranchTagExists(const CString& name, bool isBranch /*= true*/)
@@ -1648,44 +1633,40 @@ int CGit::GetBranchList(STRING_VECTOR &list,int *current,BRANCH_TYPE type)
 	}
 	else
 	{
-		CString cmd, output;
-		cmd = _T("git.exe branch --no-color");
+		CString cmd = L"git.exe branch --no-color";
 
 		if ((type & BRANCH_ALL) == BRANCH_ALL)
 			cmd += _T(" -a");
 		else if (type & BRANCH_REMOTE)
 			cmd += _T(" -r");
 
-		ret = Run(cmd, &output, nullptr, CP_UTF8);
-		if (!ret)
+		ret = Run(cmd, [&](CStringA lineA)
 		{
-			int pos = 0;
-			CString one;
-			while (pos >= 0)
-			{
-				one = output.Tokenize(_T("\n"), pos);
-				one.Trim(L" \r\n\t");
-				if (one.Find(L" -> ") >= 0 || one.IsEmpty())
-					continue; // skip something like: refs/origin/HEAD -> refs/origin/master
-				if (one[0] == _T('*'))
-				{
-					one = one.Mid(2);
-					cur = one;
+			lineA.Trim(" \r\n\t");
+			if (lineA.IsEmpty())
+				return;
+			if (lineA.Find(" -> ") >= 0)
+				return; // skip something like: refs/origin/HEAD -> refs/origin/master
 
-					// check whether HEAD is detached
-					CString currentHead;
-					if (one.Left(1) == _T("(") && GetCurrentBranchFromFile(m_CurrentDir, currentHead) == 1)
-					{
-						headIsDetached = true;
-						continue;
-					}
+			CString branch = CUnicodeUtils::GetUnicode(lineA);
+			if (lineA[0] == '*')
+			{
+				branch = branch.Mid(2);
+				cur = branch;
+
+				// check whether HEAD is detached
+				CString currentHead;
+				if (branch[0] == L'(' && GetCurrentBranchFromFile(m_CurrentDir, currentHead) == 1)
+				{
+					headIsDetached = true;
+					return;
 				}
-				if ((type & BRANCH_REMOTE) != 0 && (type & BRANCH_LOCAL) == 0)
-					one = _T("remotes/") + one;
-				list.push_back(one);
 			}
-		}
-		else if (ret == 1 && IsInitRepos())
+			if ((type & BRANCH_REMOTE) != 0 && (type & BRANCH_LOCAL) == 0)
+				branch = L"remotes/" + branch;
+			list.push_back(branch);
+		});
+		if (ret == 1 && IsInitRepos())
 			return 0;
 	}
 
@@ -1732,25 +1713,13 @@ int CGit::GetRemoteList(STRING_VECTOR &list)
 
 		return 0;
 	}
-	else
+
+	return Run(L"git.exe remote", [&](const CStringA& lineA)
 	{
-		int ret;
-		CString cmd, output;
-		cmd=_T("git.exe remote");
-		ret = Run(cmd, &output, nullptr, CP_UTF8);
-		if(!ret)
-		{
-			int pos=0;
-			CString one;
-			while( pos>=0 )
-			{
-				one=output.Tokenize(_T("\n"),pos);
-				if (!one.IsEmpty())
-					list.push_back(one);
-			}
-		}
-		return ret;
-	}
+		if (lineA.IsEmpty())
+			return;
+		list.push_back(CUnicodeUtils::GetUnicode(lineA));
+	});
 }
 
 int CGit::GetRemoteTags(const CString& remote, STRING_VECTOR& list)
@@ -1883,33 +1852,23 @@ int CGit::GetRefList(STRING_VECTOR &list)
 
 		return 0;
 	}
-	else
+
+	int ret = Run(L"git.exe show-ref -d", [&](const CStringA& lineA)
 	{
-		CString cmd, output;
-		cmd=_T("git.exe show-ref -d");
-		int ret = Run(cmd, &output, nullptr, CP_UTF8);
-		if(!ret)
-		{
-			int pos=0;
-			CString one;
-			while( pos>=0 )
-			{
-				one=output.Tokenize(_T("\n"),pos);
-				int start=one.Find(_T(" "),0);
-				if(start>0)
-				{
-					CString name;
-					name=one.Right(one.GetLength()-start-1);
-					if (list.empty() || name != *list.crbegin() + _T("^{}"))
-						list.push_back(name);
-				}
-			}
-			std::sort(list.begin() + prevCount, list.end(), LogicalComparePredicate);
-		}
-		else if (ret == 1 && IsInitRepos())
-			return 0;
-		return ret;
-	}
+		int start = lineA.Find(L' ');
+		ASSERT(start == 40);
+		if (start <= 0)
+			return;
+
+		CString name = CUnicodeUtils::GetUnicode(lineA.Mid(start + 1));
+		if (list.empty() || name != *list.crbegin() + _T("^{}"))
+			list.push_back(name);
+	});
+	if (!ret)
+		std::sort(list.begin() + prevCount, list.end(), LogicalComparePredicate);
+	else if (ret == 1 && IsInitRepos())
+		return 0;
+	return ret;
 }
 
 typedef struct map_each_ref_payload {
@@ -1972,35 +1931,22 @@ int CGit::GetMapHashToFriendName(MAP_HASH_NAME &map)
 
 		return GetMapHashToFriendName(repo, map);
 	}
-	else
+
+	int ret = Run(L"git.exe show-ref -d", [&](const CStringA& lineA)
 	{
-		CString cmd, output;
-		cmd=_T("git.exe show-ref -d");
-		int ret = Run(cmd, &output, nullptr, CP_UTF8);
-		if(!ret)
-		{
-			int pos=0;
-			CString one;
-			while( pos>=0 )
-			{
-				one=output.Tokenize(_T("\n"),pos);
-				int start=one.Find(_T(" "),0);
-				if(start>0)
-				{
-					CString name;
-					name=one.Right(one.GetLength()-start-1);
+		int start = lineA.Find(L' ');
+		ASSERT(start == 40);
+		if (start <= 0)
+			return;
 
-					CString hash;
-					hash=one.Left(start);
+		CGitHash hash;
+		hash.ConvertFromStrA(lineA.Left(start));
+		map[hash].push_back(CUnicodeUtils::GetUnicode(lineA.Mid(start + 1)));
+	});
 
-					map[CGitHash(hash)].push_back(name);
-				}
-			}
-		}
-		else if (ret == 1 && IsInitRepos())
-			return 0;
-		return ret;
-	}
+	if (ret == 1 && IsInitRepos())
+		return 0;
+	return ret;
 }
 
 int CGit::GetBranchDescriptions(MAP_STRING_STRING& map)
@@ -3133,9 +3079,7 @@ int CGit::GitRevert(int parent, const CGitHash &hash)
 		cmd.Format(_T("git.exe revert --no-edit --no-commit %s%s"), (LPCTSTR)merge, (LPCTSTR)hash.ToString());
 		gitLastErr = cmd + _T("\n");
 		if (Run(cmd, &gitLastErr, CP_UTF8))
-		{
 			return -1;
-		}
 		else
 		{
 			gitLastErr.Empty();
