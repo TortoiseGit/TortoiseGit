@@ -71,6 +71,21 @@ namespace ConfigType
 	}
 }
 
+static CString ConfigLevelToKey(git_config_level_t level)
+{
+	switch (level)
+	{
+	case GIT_CONFIG_LEVEL_SYSTEM:
+		return L"S";
+	case GIT_CONFIG_LEVEL_XDG:
+		return L"X";
+	case GIT_CONFIG_LEVEL_GLOBAL:
+		return L"G";
+	default:
+		return L"L";
+	}
+}
+
 // CSettingGitCredential dialog
 
 IMPLEMENT_DYNAMIC(CSettingGitCredential, ISettingsPropPage)
@@ -365,7 +380,7 @@ void CSettingGitCredential::OnBnClickedCheckUsehttppath()
 
 static int GetCredentialDefaultUrlCallback(const git_config_entry *entry, void *payload)
 {
-	CString display = entry->level == GIT_CONFIG_LEVEL_SYSTEM ? _T("S") : entry->level == GIT_CONFIG_LEVEL_XDG ? _T("X") : entry->level == GIT_CONFIG_LEVEL_GLOBAL ? _T("G") : _T("L");
+	CString display = ConfigLevelToKey(entry->level);
 	((STRING_VECTOR *)payload)->push_back(display);
 	return 0;
 }
@@ -377,7 +392,7 @@ static int GetCredentialUrlCallback(const git_config_entry *entry, void *payload
 	int pos2 = name.ReverseFind(_T('.'));
 	CString url = name.Mid(pos1 + 1, pos2 - pos1 - 1);
 	CString display;
-	display.Format(_T("%s:%s"), entry->level == GIT_CONFIG_LEVEL_SYSTEM ? _T("S") : entry->level == GIT_CONFIG_LEVEL_XDG ? _T("X") : entry->level == GIT_CONFIG_LEVEL_GLOBAL ? _T("G") : _T("L"), url);
+	display.Format(_T("%s:%s"), (LPCTSTR)ConfigLevelToKey(entry->level), url);
 	((STRING_VECTOR *)payload)->push_back(display);
 	return 0;
 }
@@ -393,9 +408,8 @@ static int GetCredentialAnyEntryCallback(const git_config_entry *entry, void *pa
 {
 	CString name = CUnicodeUtils::GetUnicode(entry->name);
 	CString value = CUnicodeUtils::GetUnicode(entry->value);
-	CString display = entry->level == GIT_CONFIG_LEVEL_SYSTEM ? _T("S") : entry->level == GIT_CONFIG_LEVEL_XDG ? _T("X") : entry->level == GIT_CONFIG_LEVEL_GLOBAL ? _T("G") : _T("L");
 	CString text;
-	text.Format(_T("%s\n%s\n%s"), (LPCTSTR)display, (LPCTSTR)name, (LPCTSTR)value);
+	text.Format(_T("%s\n%s\n%s"), (LPCTSTR)ConfigLevelToKey(entry->level), (LPCTSTR)name, (LPCTSTR)value);
 	((STRING_VECTOR *)payload)->push_back(text);
 	return 0;
 }
