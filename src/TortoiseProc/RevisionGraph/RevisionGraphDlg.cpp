@@ -815,13 +815,13 @@ void CRevisionGraphDlg::OnViewFilter()
 		int tbstate = m_ToolBar.GetToolBarCtrl().GetState(ID_VIEW_FILTER);
 		if (m_Graph.m_bCurrentBranch || m_Graph.m_bLocalBranches || !m_Graph.m_FromRev.IsEmpty() || !m_Graph.m_ToRev.IsEmpty())
 		{
-			if (!pMenu)
+			if (pMenu)
 				pMenu->CheckMenuItem(ID_VIEW_FILTER, MF_BYCOMMAND | MF_CHECKED);
 			m_ToolBar.GetToolBarCtrl().SetState(ID_VIEW_FILTER, tbstate | TBSTATE_CHECKED);
 		}
 		else
 		{
-			if (!pMenu)
+			if (pMenu)
 				pMenu->CheckMenuItem(ID_VIEW_FILTER, MF_BYCOMMAND | MF_UNCHECKED);
 			m_ToolBar.GetToolBarCtrl().SetState(ID_VIEW_FILTER, tbstate & (~TBSTATE_CHECKED));
 		}

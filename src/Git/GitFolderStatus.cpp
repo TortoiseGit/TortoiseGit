@@ -58,7 +58,7 @@ const FileStatusCacheEntry * GitFolderStatus::BuildCache(const CTGitPath& filepa
 	if (g_ShellCache.BlockStatus())
 	{
 		CAutoGeneralHandle TGitMutex = ::CreateMutex(nullptr, FALSE, _T("TortoiseGitProc.exe"));
-		if (!TGitMutex)
+		if (TGitMutex != nullptr)
 		{
 			if (::GetLastError() == ERROR_ALREADY_EXISTS)
 			{
