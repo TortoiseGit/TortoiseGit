@@ -13,6 +13,7 @@
 #include "FormatMessageWrapper.h"
 #include <atlenc.h>
 #include "AppUtils.h"
+#include "PathUtils.h"
 
 #define IO_BUFFER_SIZE 0x10000
 
@@ -1206,11 +1207,8 @@ BOOL CHwSMTP::SendAttach()
 BOOL CHwSMTP::SendOnAttach(LPCTSTR lpszFileName)
 {
 	ASSERT ( lpszFileName );
-	CString csAttach, csTemp;
-
-	csTemp = lpszFileName;
-	CString csShortFileName = csTemp.GetBuffer(0) + csTemp.ReverseFind ( '\\' );
-	csShortFileName.TrimLeft ( _T("\\") );
+	CString csAttach;
+	CString csShortFileName = CPathUtils::GetFileNameFromPath(lpszFileName);
 
 	csAttach.AppendFormat(_T("--%s\r\n"), (LPCTSTR)m_csPartBoundary);
 	csAttach.AppendFormat(_T("Content-Type: application/octet-stream; file=%s\r\n"), (LPCTSTR)csShortFileName);
