@@ -863,8 +863,7 @@ CString CGit::GetFullRefName(const CString& shortRefName)
 	cmd.Format(L"git.exe rev-parse --symbolic-full-name %s", (LPCTSTR)shortRefName);
 	if (Run(cmd, &refName, nullptr, CP_UTF8) != 0)
 		return CString();//Error
-	int iStart = 0;
-	return refName.Tokenize(L"\n", iStart);
+	return refName.TrimRight();
 }
 
 CString CGit::StripRefName(CString refName)
@@ -873,8 +872,7 @@ CString CGit::StripRefName(CString refName)
 		refName = refName.Mid(11);
 	else if(wcsncmp(refName, L"refs/", 5) == 0)
 		refName = refName.Mid(5);
-	int start =0;
-	return refName.Tokenize(_T("\n"),start);
+	return refName.TrimRight();
 }
 
 int CGit::GetCurrentBranchFromFile(const CString &sProjectRoot, CString &sBranchOut, bool fallback)
