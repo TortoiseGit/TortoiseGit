@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015 - TortoiseGit
+// Copyright (C) 2015-2016 - TortoiseGit
 // Copyright (C) 2003-2008, 2013-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -25,29 +25,47 @@ TEST(CPathUtils, UnescapeTest)
 {
 	CString test(_T("file:///d:/REpos1/uCOS-100/Trunk/name%20with%20spaces/NewTest%20%%20NewTest"));
 	CString test2 = CPathUtils::PathUnescape(test);
-	EXPECT_TRUE(test2.Compare(_T("file:///d:/REpos1/uCOS-100/Trunk/name with spaces/NewTest % NewTest")) == 0);
+	EXPECT_STREQ(L"file:///d:/REpos1/uCOS-100/Trunk/name with spaces/NewTest % NewTest", test2);
 	CStringA test3 = CPathUtils::PathEscape("file:///d:/REpos1/uCOS-100/Trunk/name with spaces/NewTest % NewTest");
-	EXPECT_TRUE(test3.Compare("file:///d:/REpos1/uCOS-100/Trunk/name%20with%20spaces/NewTest%20%%20NewTest") == 0);
+	EXPECT_STREQ("file:///d:/REpos1/uCOS-100/Trunk/name%20with%20spaces/NewTest%20%%20NewTest", test3);
+}
+
+TEST(CPathUtils, GetFileNameFromPath)
+{
+	CString test(L"d:\\test\\filename.ext");
+	EXPECT_STREQ(L"filename.ext", CPathUtils::GetFileNameFromPath(test));
+	test = L"filename.ext";
+	EXPECT_STREQ(L"filename.ext", CPathUtils::GetFileNameFromPath(test));
+	test = L"d:/test/filename";
+	EXPECT_STREQ(L"filename", CPathUtils::GetFileNameFromPath(test));
+	test = L"d:\\test\\filename";
+	EXPECT_STREQ(L"filename", CPathUtils::GetFileNameFromPath(test));
+	test = L"filename";
+	EXPECT_STREQ(L"filename", CPathUtils::GetFileNameFromPath(test));
+	test.Empty();
+	EXPECT_TRUE(CPathUtils::GetFileNameFromPath(test).IsEmpty());
 }
 
 TEST(CPathUtils, ExtTest)
 {
-	CString test(_T("d:\\test\filename.ext"));
-	EXPECT_TRUE(CPathUtils::GetFileExtFromPath(test).Compare(_T(".ext")) == 0);
+	CString test(L"d:\\test\\filename.ext");
+	EXPECT_STREQ(L".ext", CPathUtils::GetFileExtFromPath(test));
 	test = _T("filename.ext");
-	EXPECT_TRUE(CPathUtils::GetFileExtFromPath(test).Compare(_T(".ext")) == 0);
-	test = _T("d:\\test\filename");
+	EXPECT_STREQ(L".ext", CPathUtils::GetFileExtFromPath(test));
+	test = L"d:\\test\\filename";
 	EXPECT_TRUE(CPathUtils::GetFileExtFromPath(test).IsEmpty());
 	test = _T("filename");
+	EXPECT_TRUE(CPathUtils::GetFileExtFromPath(test).IsEmpty());
+	test.Empty();
 	EXPECT_TRUE(CPathUtils::GetFileExtFromPath(test).IsEmpty());
 }
 
 TEST(CPathUtils, ParseTests)
 {
 	CString test(_T("test 'd:\\testpath with spaces' test"));
-	EXPECT_TRUE(CPathUtils::ParsePathInString(test).Compare(_T("d:\\testpath with spaces")) == 0);
+	EXPECT_STREQ(L"d:\\testpath with spaces", CPathUtils::ParsePathInString(test));
 	test = _T("d:\\testpath with spaces");
-	EXPECT_TRUE(CPathUtils::ParsePathInString(test).Compare(_T("d:\\testpath with spaces")) == 0);
+	EXPECT_STREQ(L"d:\\testpath with spaces", CPathUtils::ParsePathInString(test));
 }
 
 TEST(CPathUtils, MakeSureDirectoryPathExists)
