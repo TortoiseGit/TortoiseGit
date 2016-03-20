@@ -37,7 +37,7 @@ CIDataObject::~CIDataObject()
 STDMETHODIMP CIDataObject::QueryInterface(/* [in] */ REFIID riid,
 /* [iid_is][out] */ void __RPC_FAR *__RPC_FAR *ppvObject)
 {
-	if(ppvObject == 0)
+	if (!ppvObject)
 		return E_POINTER;
 	*ppvObject = nullptr;
 	if (IsEqualIID(IID_IUnknown, riid) || IsEqualIID(IID_IDataObject, riid))
@@ -282,7 +282,7 @@ HRESULT CIDataObject::SetDropDescription(DROPIMAGETYPE image, LPCTSTR format, LP
 
 	STGMEDIUM medium = {0};
 	medium.hGlobal = GlobalAlloc(GHND, sizeof(DROPDESCRIPTION));
-	if(medium.hGlobal == 0)
+	if (!medium.hGlobal)
 		return E_OUTOFMEMORY;
 
 	DROPDESCRIPTION* pDropDescription = (DROPDESCRIPTION*)GlobalLock(medium.hGlobal);
@@ -406,7 +406,7 @@ m_cRefCount(0),m_iCur(0)
 
 STDMETHODIMP CEnumFormatEtc::QueryInterface(REFIID refiid, void FAR* FAR* ppv)
 {
-	if(ppv == 0)
+	if (!ppv)
 		return E_POINTER;
 	*ppv = nullptr;
 	if (IID_IUnknown == refiid || IID_IEnumFORMATETC == refiid)
@@ -513,7 +513,7 @@ CIDropTarget::~CIDropTarget()
 HRESULT STDMETHODCALLTYPE CIDropTarget::QueryInterface( /* [in] */ REFIID riid,
 						/* [iid_is][out] */ void __RPC_FAR *__RPC_FAR *ppvObject)
 {
-	if(ppvObject == 0)
+	if (!ppvObject)
 		return E_POINTER;
 	*ppvObject = nullptr;
 	if (IID_IUnknown == riid || IID_IDropTarget == riid)
@@ -584,7 +584,7 @@ HRESULT STDMETHODCALLTYPE CIDropTarget::DragEnter(
 {
 	if (!pDataObj)
 		return E_INVALIDARG;
-	if(pdwEffect == 0)
+	if (!pdwEffect)
 		return E_POINTER;
 
 	pDataObj->AddRef();
@@ -613,7 +613,7 @@ HRESULT STDMETHODCALLTYPE CIDropTarget::DragOver(
 		/* [in] */ POINTL pt,
 		/* [out][in] */ DWORD __RPC_FAR *pdwEffect)
 {
-	if(pdwEffect == 0)
+	if (!pdwEffect)
 		return E_POINTER;
 	if(m_pDropTargetHelper)
 		m_pDropTargetHelper->DragOver((LPPOINT)&pt, *pdwEffect);
@@ -640,7 +640,7 @@ HRESULT STDMETHODCALLTYPE CIDropTarget::Drop(
 {
 	if (!pDataObj)
 		return E_INVALIDARG;
-	if(pdwEffect == 0)
+	if (!pdwEffect)
 		return E_POINTER;
 
 	if(m_pDropTargetHelper)
