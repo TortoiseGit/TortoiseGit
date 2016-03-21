@@ -43,7 +43,7 @@ UINT __stdcall TerminateCache(MSIHANDLE /*hModule*/)
 	HWND hWnd = FindWindow(TGIT_CACHE_WINDOW_NAME, TGIT_CACHE_WINDOW_NAME);
 	if (hWnd)
 	{
-		PostMessage(hWnd, WM_CLOSE, nullptr, nullptr);
+		PostMessage(hWnd, WM_CLOSE, (WPARAM)nullptr, (LPARAM)nullptr);
 		for (int i=0; i<10; ++i)
 		{
 			Sleep(500);
