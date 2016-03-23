@@ -13,6 +13,7 @@ Released: unreleased
  * Fixed issue #2732: Commit dialog: Message field should have focus (when patch is shown)
  * Fixed issue #2730: Pull with rebase with preserve merges not working for noops
  * Fixed issue #2740: Order of compared references in revision graph is labelled inverted
+ * Fixed issue #2728: Cherry Pick is not working in case of conflict and empty message
 
 = Release 2.0.0 =
 Released: 2016-02-29

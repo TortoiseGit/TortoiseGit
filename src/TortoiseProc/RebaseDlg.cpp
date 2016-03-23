@@ -1288,7 +1288,7 @@ void CRebaseDlg::OnBnClickedContinue()
 
 		CString out =_T("");
 		CString cmd;
-		cmd.Format(_T("git.exe commit -C %s"), (LPCTSTR)curRev->m_CommitHash.ToString());
+		cmd.Format(_T("git.exe commit --allow-empty-message -C %s"), (LPCTSTR)curRev->m_CommitHash.ToString());
 
 		AddLogString(cmd);
 
