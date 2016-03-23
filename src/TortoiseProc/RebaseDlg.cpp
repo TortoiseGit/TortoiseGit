@@ -1347,7 +1347,7 @@ void CRebaseDlg::OnBnClickedContinue()
 		CString str = m_LogMessageCtrl.GetText().Trim();
 		if (str != (curRev->GetSubject() + L'\n' + curRev->GetBody()).Trim())
 		{
-			if (str.Trim().IsEmpty())
+			if (str.IsEmpty())
 			{
 				CMessageBox::Show(GetSafeHwnd(), IDS_PROC_COMMITMESSAGE_EMPTY,IDS_APPNAME, MB_OK | MB_ICONERROR);
 				return;
