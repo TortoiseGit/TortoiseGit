@@ -48,7 +48,6 @@
 #include "EditModel.h"
 #include "MarginView.h"
 #include "EditView.h"
-#include "Editor.h"
 
 #ifdef SCI_NAMESPACE
 using namespace Scintilla;
@@ -192,7 +191,6 @@ EditView::EditView() {
 	tabArrowHeight = 4;
 	customDrawTabArrow = NULL;
 	customDrawWrapMarker = NULL;
-	editor = NULL;
 }
 
 EditView::~EditView() {
@@ -1686,17 +1684,7 @@ void EditView::DrawLine(Surface *surface, const EditModel &model, const ViewStyl
 	}
 
 	// See if something overrides the line background color.
-	ColourOptional background = vsDraw.Background(model.pdoc->GetMark(line), model.caret.active, ll->containsCaret);
-	SCNotification scn = { 0 };
-	scn.nmhdr.code = SCN_GETBKCOLOR;
-	scn.line = line;
-	scn.lParam = -1;
-	if (editor)
-		((Editor*)editor)->NotifyParent(&scn);
-	if (scn.lParam != -1) {
-		background.Set(scn.lParam);
-		background.isSet = true;
-	}
+	const ColourOptional background = vsDraw.Background(model.pdoc->GetMark(line), model.caret.active, ll->containsCaret);
 
 	const int posLineStart = model.pdoc->LineStart(line);
 
@@ -1756,7 +1744,7 @@ static void DrawFoldLines(Surface *surface, const EditModel &model, const ViewSt
 	const int level = model.pdoc->GetLevel(line);
 	const int levelNext = model.pdoc->GetLevel(line + 1);
 	if ((level & SC_FOLDLEVELHEADERFLAG) &&
-		((level & SC_FOLDLEVELNUMBERMASK) < (levelNext & SC_FOLDLEVELNUMBERMASK))) {
+		(LevelNumber(level) < LevelNumber(levelNext))) {
 		// Paint the line above the fold
 		if ((expanded && (model.foldFlags & SC_FOLDFLAG_LINEBEFORE_EXPANDED))
 			||
