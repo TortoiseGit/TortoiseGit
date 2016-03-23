@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2015 - TortoiseGit
+// Copyright (C) 2008-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -196,6 +196,7 @@ const char *get_windows_home_directory(void);
 
 GITDLL_API const wchar_t *wget_windows_home_directory(void);
 GITDLL_API const wchar_t *wget_msysgit_etc(void);
+GITDLL_API const wchar_t *wget_program_data_config(void);
 
 typedef void *GIT_MAILMAP;
 

@@ -2176,9 +2176,15 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": ms_LastMsysGitDir = %s\n"), (LPCTSTR)CGit::ms_LastMsysGitDir);
 	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": ms_MsysGitRootDir = %s\n"), (LPCTSTR)CGit::ms_MsysGitRootDir);
 	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": System config = %s\n"), (LPCTSTR)g_Git.GetGitSystemConfig());
+	if (!ms_bCygwinGit && !ms_bMsys2Git)
+	{
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": ProgramData config = %s\n", (LPCTSTR)g_Git.GetGitProgramDataConfig());
+		SetLibGit2SearchPath(GIT_CONFIG_LEVEL_PROGRAMDATA, CTGitPath(g_Git.GetGitProgramDataConfig()).GetContainingDirectory().GetWinPathString());
+	}
+	else
+		SetLibGit2SearchPath(GIT_CONFIG_LEVEL_PROGRAMDATA, CTGitPath(g_Git.GetGitSystemConfig()).GetContainingDirectory().GetWinPathString());
 
 	// Configure libgit2 search paths
-	SetLibGit2SearchPath(GIT_CONFIG_LEVEL_PROGRAMDATA, CTGitPath(g_Git.GetGitSystemConfig()).GetContainingDirectory().GetWinPathString());
 	SetLibGit2SearchPath(GIT_CONFIG_LEVEL_SYSTEM, CTGitPath(g_Git.GetGitSystemConfig()).GetContainingDirectory().GetWinPathString());
 	SetLibGit2SearchPath(GIT_CONFIG_LEVEL_GLOBAL, g_Git.GetHomeDirectory());
 	SetLibGit2SearchPath(GIT_CONFIG_LEVEL_XDG, g_Git.GetGitGlobalXDGConfigPath());
@@ -2259,6 +2265,12 @@ CString CGit::GetGitGlobalXDGConfigPath() const
 CString CGit::GetGitGlobalXDGConfig() const
 {
 	return g_Git.GetGitGlobalXDGConfigPath() + _T("\\config");
+}
+
+CString CGit::GetGitProgramDataConfig() const
+{
+	const wchar_t* programdataConfig = wget_program_data_config();
+	return CString(programdataConfig);
 }
 
 CString CGit::GetGitSystemConfig() const
