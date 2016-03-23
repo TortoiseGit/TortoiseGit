@@ -2389,7 +2389,7 @@ int CAppUtils::SaveCommitUnicodeFile(const CString& filename, CString &message)
 		CFile file(filename, CFile::modeReadWrite | CFile::modeCreate);
 		int cp = CUnicodeUtils::GetCPCode(g_Git.GetConfigValue(_T("i18n.commitencoding")));
 
-		bool stripComments = (CRegDWORD(_T("Software\\TortoiseGit\\StripCommentedLines"), TRUE) == TRUE);
+		bool stripComments = (CRegDWORD(_T("Software\\TortoiseGit\\StripCommentedLines"), FALSE) == TRUE);
 		TCHAR commentChar = L'#';
 		if (stripComments)
 		{

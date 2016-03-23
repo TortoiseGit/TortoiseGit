@@ -1,6 +1,9 @@
 ﻿= Release 2.1.0 =
 Released: unreleased
 
+== Changes ==
+ * We disabled the stripping of comments on commit messages by default
+
 == Features ==
  * Update PuTTY to 0.67
  * Fixed issue #2733: Hide commit button after file add when invoked from commit dialog
@@ -14,6 +17,7 @@ Released: unreleased
  * Fixed issue #2730: Pull with rebase with preserve merges not working for noops
  * Fixed issue #2740: Order of compared references in revision graph is labelled inverted
  * Fixed issue #2728: Cherry Pick is not working in case of conflict and empty message
+ * Fixed issue #2715: Cannot commit with a commit message starting with a hash (#) character
 
 = Release 2.0.0 =
 Released: 2016-02-29

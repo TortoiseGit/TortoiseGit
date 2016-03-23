@@ -60,7 +60,7 @@ CSetDialogs2::CSetDialogs2()
 	m_dwMaxHistory = (DWORD)m_regMaxHistory;
 	m_regAutoSelect = CRegDWORD(_T("Software\\TortoiseGit\\SelectFilesForCommit"), TRUE);
 	m_bAutoSelect = (BOOL)(DWORD)m_regAutoSelect;
-	m_regStripCommentedLines = CRegDWORD(_T("Software\\TortoiseGit\\StripCommentedLines"), TRUE);
+	m_regStripCommentedLines = CRegDWORD(_T("Software\\TortoiseGit\\StripCommentedLines"), FALSE);
 	m_bStripCommentedLines = (BOOL)(DWORD)m_regStripCommentedLines;
 	m_regShowGitexeTimings = CRegDWORD(_T("Software\\TortoiseGit\\ShowGitexeTimings"), TRUE);
 	m_bShowGitexeTimings = (BOOL)(DWORD)m_regShowGitexeTimings;
