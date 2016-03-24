@@ -153,7 +153,7 @@ void CSyncDlg::OnBnClickedButtonPull()
 	this->m_bAbort=false;
 	this->m_GitCmdList.clear();
 	m_ctrlCmdOut.SetWindowTextW(_T(""));
-	m_LogText = "";
+	m_LogText.Empty();
 
 	this->UpdateData();
 	UpdateCombox();
@@ -631,7 +631,7 @@ void CSyncDlg::OnBnClickedButtonPush()
 	this->UpdateData();
 	UpdateCombox();
 	m_ctrlCmdOut.SetWindowTextW(_T(""));
-	m_LogText = "";
+	m_LogText.Empty();
 
 	if(this->m_strURL.IsEmpty())
 	{
@@ -1641,7 +1641,7 @@ void CSyncDlg::OnBnClickedButtonSubmodule()
 	this->UpdateData();
 	UpdateCombox();
 	m_ctrlCmdOut.SetWindowTextW(_T(""));
-	m_LogText = "";
+	m_LogText.Empty();
 
 	this->m_regSubmoduleButton = (DWORD)this->m_ctrlSubmodule.GetCurrentEntry();
 
@@ -1688,7 +1688,7 @@ void CSyncDlg::OnBnClickedButtonStash()
 	UpdateData();
 	UpdateCombox();
 	m_ctrlCmdOut.SetWindowTextW(_T(""));
-	m_LogText = "";
+	m_LogText.Empty();
 
 	SwitchToRun();
 

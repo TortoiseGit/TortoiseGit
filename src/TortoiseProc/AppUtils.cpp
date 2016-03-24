@@ -520,10 +520,10 @@ bool CAppUtils::StartExtDiff(
 			if (bCommentedOut)
 				viewer.Delete(0); // uncomment
 			else
-				viewer = "";
+				viewer.Empty();
 		}
 		else if (bCommentedOut)
-			viewer = "";
+			viewer.Empty();
 	}
 
 	bool bInternal = viewer.IsEmpty();

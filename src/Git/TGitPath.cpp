@@ -446,8 +446,8 @@ void CTGitPath::Reset()
 	m_sFwdslashPath.Empty();
 	m_sUTF8FwdslashPath.Empty();
 	this->m_Action=0;
-	this->m_StatAdd=_T("");
-	this->m_StatDel=_T("");
+	this->m_StatAdd.Empty();
+	this->m_StatDel.Empty();
 	m_ParentNo=0;
 	ATLASSERT(IsEmpty());
 }

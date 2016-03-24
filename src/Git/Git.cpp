@@ -1107,9 +1107,7 @@ void GetTempPath(CString &path)
 	dwRetVal = GetTortoiseGitTempPath(dwBufSize,		// length of the buffer
 							lpPathBuffer);	// buffer for path
 	if (dwRetVal > dwBufSize || (dwRetVal == 0))
-	{
-		path=_T("");
-	}
+		path.Empty();
 	path.Format(_T("%s"),lpPathBuffer);
 }
 CString GetTempFile()

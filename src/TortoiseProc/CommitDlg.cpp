@@ -1014,7 +1014,7 @@ void CCommitDlg::OnOK()
 
 		BOOL IsGitSVN = path.GetAdminDirMask() & ITEMIS_GITSVN;
 
-		out =_T("");
+		out.Empty();
 		CString amend;
 		if(this->m_bCommitAmend)
 		{
