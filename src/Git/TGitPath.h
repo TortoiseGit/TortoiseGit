@@ -248,9 +248,6 @@ public:
 	 */
 	bool IsAdminDir() const;
 
-	void SetCustomData(LPARAM lp) {m_customData = lp;}
-	LPARAM GetCustomData() const {return m_customData;}
-
 	/**
 	 * Checks if the path or URL is valid on Windows.
 	 * A path is valid if conforms to the specs in the windows API.
@@ -320,7 +317,6 @@ private:
 	mutable bool m_bIsWCRoot;
 	mutable bool m_bExists;
 	mutable bool m_bExistsKnown;
-	mutable LPARAM m_customData;
 	mutable bool m_bIsSpecialDirectoryKnown;
 	mutable bool m_bIsSpecialDirectory;
 
