@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2011, 2015 - TortoiseSVN
-// Copyright (C) 2012-2013, 2015 - TortoiseGit
+// Copyright (C) 2012-2013, 2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -1020,9 +1020,9 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& /*logR
 
 		// draw the revision text
 		CGitHash hash = this->m_logEntries[v->index()];
-		double hight = noderect.Height / (m_HashMap[hash].size()?m_HashMap[hash].size():1);
+		double hight = noderect.Height / (!m_HashMap[hash].empty() ? m_HashMap[hash].size() : 1);
 
-		if(m_HashMap.find(hash) == m_HashMap.end() || m_HashMap[hash].size() == 0)
+		if (m_HashMap.find(hash) == m_HashMap.end() || m_HashMap[hash].empty())
 		{
 			Color background;
 			background.SetFromCOLORREF (GetSysColor(COLOR_WINDOW));

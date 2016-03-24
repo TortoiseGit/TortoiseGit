@@ -4554,7 +4554,7 @@ BOOL CGitStatusListCtrl::OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LR
 			}
 			CTGitPathList targetList;
 			FillListOfSelectedItemPaths(targetList);
-			if (targetList.GetCount() > 0)
+			if (!targetList.IsEmpty())
 			{
 				// get IShellFolder interface of Desktop (root of shell namespace)
 				if (g_psfDesktopFolder)
