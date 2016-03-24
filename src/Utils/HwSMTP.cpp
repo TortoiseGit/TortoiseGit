@@ -1181,6 +1181,9 @@ BOOL CHwSMTP::SendBody()
 		csBody.AppendFormat(_T("Content-Type: text/plain\r\n%sContent-Transfer-Encoding: UTF-8\r\n\r\n"), m_csCharSet);
 	}
 
+	m_csBody.Replace(L"\n.\n", L"\n..\n");
+	m_csBody.Replace(L"\n.\r\n", L"\n..\r\n");
+
 	//csTemp.Format ( _T("%s\r\n"), m_csBody );
 	csBody += m_csBody;
 	csBody += _T("\r\n");
