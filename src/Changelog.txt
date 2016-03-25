@@ -18,6 +18,7 @@ Released: unreleased
  * Fixed issue #2730: Pull with rebase with preserve merges not working for noops
  * Fixed issue #2728: Cherry Pick is not working in case of conflict and empty message
  * Fixed issue #2715: Cannot commit with a commit message starting with a hash (#) character
+ * Updated libgit to 2.5.5 which includes fixes for CVE-2016-2315 and CVE-2016-2324
 
 = Release 2.0.0 =
 Released: 2016-02-29
