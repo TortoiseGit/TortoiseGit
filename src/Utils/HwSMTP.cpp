@@ -14,6 +14,7 @@
 #include <atlenc.h>
 #include "AppUtils.h"
 #include "PathUtils.h"
+#include "StringUtils.h"
 
 #define IO_BUFFER_SIZE 0x10000
 
@@ -55,41 +56,13 @@ CHwSMTP::~CHwSMTP()
 {
 }
 
-void CHwSMTP::GetNameAddress(CString &in, CString &name,CString &address)
+CString CHwSMTP::GetServerAddress(const CString& in)
 {
-	int start,end;
-	start=in.Find(_T('<'));
-	end=in.Find(_T('>'));
+	CString email;
+	CStringUtils::ParseEmailAddress(in, email);
 
-	if(start >=0 && end >=0)
-	{
-		name=in.Left(start);
-		address=in.Mid(start+1,end-start-1);
-	}
-	else
-		address=in;
-}
-
-CString CHwSMTP::GetServerAddress(CString &email)
-{
-	CString str;
-	int start,end;
-
-	start = email.Find(_T("<"));
-	end = email.Find(_T(">"));
-
-	if(start>=0 && end >=0)
-	{
-		str=email.Mid(start+1,end-start-1);
-	}
-	else
-	{
-		str=email;
-	}
-
-	start = str.Find(_T('@'));
-	return str.Mid(start+1);
-
+	int start = email.Find(L'@');
+	return email.Mid(start + 1);
 }
 
 BOOL CHwSMTP::SendSpeedEmail
@@ -1084,8 +1057,8 @@ BOOL CHwSMTP::auth()
 BOOL CHwSMTP::SendHead()
 {
 	CString str;
-	CString name,addr;
-	GetNameAddress(m_csAddrFrom,name,addr);
+	CString addr;
+	CStringUtils::ParseEmailAddress(m_csAddrFrom, addr);
 
 	str.Format(_T("MAIL From: <%s>\r\n"), (LPCTSTR)addr);
 	if (!Send(str))
@@ -1102,8 +1075,7 @@ BOOL CHwSMTP::SendHead()
 		if(one.IsEmpty())
 			continue;
 
-
-		GetNameAddress(one,name,addr);
+		CStringUtils::ParseEmailAddress(one, addr);
 
 		str.Format(_T("RCPT TO: <%s>\r\n"), (LPCTSTR)addr);
 		if (!Send(str))

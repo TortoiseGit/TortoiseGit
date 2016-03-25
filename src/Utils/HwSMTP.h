@@ -97,8 +97,7 @@ public:
 	virtual ~CHwSMTP();
 
 protected:
-	CString GetServerAddress(CString &email);
-	void GetNameAddress(CString &in, CString &name,CString &address);
+	CString GetServerAddress(const CString& in);
 
 private:
 	BOOL SendSubject(const CString &hostname);
