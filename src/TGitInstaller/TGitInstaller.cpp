@@ -209,6 +209,46 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	return 0;
 }
 
+static const wchar_t *escapes = L"ntb\"\\";
+static const wchar_t *escaped = L"\n\t\b\"\\";
+static CString GetConfigValue(const wchar_t* ptr)
+{
+	if (!ptr)
+		return L"";
+
+	CString value;
+	{
+		CStrBuf working(value, wcslen(ptr));
+		wchar_t *fixed = working;
+		const wchar_t* esc;
+		bool quoted = false;
+
+		while (*ptr) {
+			if (*ptr == '"')
+				quoted = !quoted;
+			else if (*ptr != '\\')
+			{
+				if (!quoted && (*ptr == '#' || *ptr == ';'))
+					break;
+				*fixed++ = *ptr;
+			}
+			else
+			{
+				/* backslash, check the next char */
+				++ptr;
+				if ((esc = wcschr(escapes, *ptr)) != nullptr)
+					*fixed++ = escaped[esc - escapes];
+				else
+					return L"";
+			}
+			++ptr;
+		}
+		*fixed = L'\0';
+	}
+
+	return value;
+}
+
 void FillDownloads(CSimpleIni& versioncheck, const CString version)
 {
 	BOOL bIsWow64 = FALSE;
@@ -217,7 +257,7 @@ void FillDownloads(CSimpleIni& versioncheck, const CString version)
 	if (bIsWow64)
 		x86x64 = _T("64");
 
-	CString m_sFilesURL = versioncheck.GetValue(L"tortoisegit", L"baseurl");
+	CString m_sFilesURL = GetConfigValue(versioncheck.GetValue(L"tortoisegit", L"baseurl"));
 	if (m_sFilesURL.IsEmpty())
 		m_sFilesURL.Format(_T("http://updater.download.tortoisegit.org/tgit/%s/"), (LPCTSTR)version);
 
@@ -228,7 +268,7 @@ void FillDownloads(CSimpleIni& versioncheck, const CString version)
 		listItem.iItem = 0;
 		listItem.iSubItem = 0;
 		listItem.pszText = L"TortoiseGit";
-		CString filenameMain = versioncheck.GetValue(L"tortoisegit", L"mainfilename");
+		CString filenameMain = GetConfigValue(versioncheck.GetValue(L"tortoisegit", L"mainfilename"));
 		if (filenamePattern.IsEmpty())
 			filenamePattern = _T("TortoiseGit-%1!s!-%2!s!bit.msi");
 		filenameMain.FormatMessage(filenamePattern, version, x86x64);
@@ -279,9 +319,9 @@ void FillDownloads(CSimpleIni& versioncheck, const CString version)
 	versioncheck.GetAllValues(L"tortoisegit", L"langs", values);
 	for (const auto& value : values)
 	{
-		CString langs(value);
-		langs.Trim(L'"');
-
+		CString langs(GetConfigValue(value));
+		if (langs.IsEmpty())
+			continue;
 		int nextTokenPos = langs.Find(_T(";"), 5); // be extensible for the future
 		if (nextTokenPos > 0)
 			langs = langs.Left(nextTokenPos);
@@ -307,7 +347,7 @@ void FillDownloads(CSimpleIni& versioncheck, const CString version)
 	{
 		return (a.m_Installed && !b.m_Installed) ? 1 : (!a.m_Installed && b.m_Installed) ? 0 : (a.m_PackName.Compare(b.m_PackName) < 0);
 	});
-	filenamePattern = versioncheck.GetValue(L"tortoisegit", L"languagepackfilename");
+	filenamePattern = GetConfigValue(versioncheck.GetValue(L"tortoisegit", L"languagepackfilename"));
 	if (filenamePattern.IsEmpty())
 		filenamePattern = _T("TortoiseGit-LanguagePack-%1!s!-%2!s!bit-%3!s!.msi");
 	int cnt = 0;
@@ -399,7 +439,7 @@ DWORD WINAPI CheckThread(LPVOID lpParameter)
 	major = minor = micro = build = 0;
 	unsigned __int64 version = 0;
 
-	ver = versioncheck.GetValue(L"tortoisegit", L"version");
+	ver = GetConfigValue(versioncheck.GetValue(L"tortoisegit", L"version"));
 	if (!ver.IsEmpty())
 	{
 		CString vertemp = ver;
@@ -428,7 +468,7 @@ DWORD WINAPI CheckThread(LPVOID lpParameter)
 		// another versionstring for the filename can be provided
 		// this is needed for preview releases
 		vertemp.Empty();
-		vertemp = versioncheck.GetValue(L"tortoisegit", L"versionstring");
+		vertemp = GetConfigValue(versioncheck.GetValue(L"tortoisegit", L"versionstring"));
 		if (!vertemp.IsEmpty())
 			ver = vertemp;
 	}
@@ -448,10 +488,10 @@ DWORD WINAPI CheckThread(LPVOID lpParameter)
 		/*temp.Format(IDS_CHECKNEWER_CURRENTVERSION, (LPCTSTR)versionstr);
 		SetDlgItemText(IDC_CURRENTVERSION, temp);*/
 
-			temp = versioncheck.GetValue(L"tortoisegit", L"infotext");
+			temp = GetConfigValue(versioncheck.GetValue(L"tortoisegit", L"infotext"));
 			if (!temp.IsEmpty())
 			{
-				CString tempLink = versioncheck.GetValue(L"tortoisegit", L"infotexturl");
+				CString tempLink = GetConfigValue(versioncheck.GetValue(L"tortoisegit", L"infotexturl"));
 				//if (!tempLink.IsEmpty()) // find out the download link-URL, if any
 					//m_sUpdateDownloadLink = tempLink;
 			}
