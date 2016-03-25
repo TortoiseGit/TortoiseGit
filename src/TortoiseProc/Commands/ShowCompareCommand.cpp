@@ -36,5 +36,5 @@ bool ShowCompareCommand::Execute()
 	if (unified)
 		return !!CAppUtils::StartShowUnifiedDiff(nullptr, CTGitPath(), rev1, CTGitPath(), rev2);
 	else
-		return !!CGitDiff::DiffCommit(cmdLinePath, rev1, rev2);
+		return !!CGitDiff::DiffCommit(cmdLinePath, rev2, rev1);
 }

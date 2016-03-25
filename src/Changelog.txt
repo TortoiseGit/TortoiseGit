@@ -16,7 +16,6 @@ Released: unreleased
  * Fixed issue #1902: CommitDlg: Do not lose SQUASH_MSG contents
  * Fixed issue #2732: Commit dialog: Message field should have focus (when patch is shown)
  * Fixed issue #2730: Pull with rebase with preserve merges not working for noops
- * Fixed issue #2740: Order of compared references in revision graph is labelled inverted
  * Fixed issue #2728: Cherry Pick is not working in case of conflict and empty message
  * Fixed issue #2715: Cannot commit with a commit message starting with a hash (#) character
 
