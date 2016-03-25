@@ -45,6 +45,7 @@
   <ItemGroup>
     <ClInclude Include="..\Utils\DirFileEnum.h" />
     <ClInclude Include="..\Utils\PathUtils.h" />
+    <ClInclude Include="..\Utils\SimpleIni.h" />
     <ClInclude Include="D:\TortoiseGit\src\TortoiseProc\UpdateCrypto.h" />
     <ClInclude Include="D:\TortoiseGit\src\TortoiseProc\UpdateDownloader.h" />
     <ClInclude Include="D:\TortoiseGit\src\Utils\DebugOutput.h" />
@@ -77,11 +78,6 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="D:\TortoiseGit\src\Resources\Tortoise.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\ext\build\libgit2-static.vcxproj">
-      <Project>{2b4f366c-93ba-491e-87af-5ef7b87e75f7}</Project>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
