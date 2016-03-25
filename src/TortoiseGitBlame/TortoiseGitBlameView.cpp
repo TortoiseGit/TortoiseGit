@@ -481,13 +481,12 @@ void CTortoiseGitBlameView::ContextMenuAction(int cmd, GitRev *pRev, GIT_REV_LIS
 			CString path = ResolveCommitFile(parentFilename[index]);
 			CString endrev = parentHashWithFile[index].ToString();
 			int line = m_data.GetOriginalLineNumber(m_MouseLine);
-			CString lineNumber;
-			lineNumber.Format(_T("%d"), line);
 
 			CString procCmd = _T("/path:\"") + path + _T("\" ");
 			procCmd += _T(" /command:blame");
 			procCmd += _T(" /endrev:") + endrev;
-			procCmd += _T(" /line:") + lineNumber;
+			procCmd += L" /line:";
+			procCmd.AppendFormat(L"%d", line);
 
 			CCommonAppUtils::RunTortoiseGitProc(procCmd);
 		}

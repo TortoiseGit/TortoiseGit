@@ -26,26 +26,15 @@ void Graphviz::DrawNode(CString id, CString text, CString fontName, int fontSize
 	content.Append(_T("\t"));
 	content.Append(id);
 
-	CString format;
-	format.Format(_T(" [label=\"%s\""), (LPCTSTR)text);
-	content.Append(format);
+	content.AppendFormat(L" [label=\"%s\"", (LPCTSTR)text);
 	if (m_defaultFontName != fontName)
-	{
-		format.Format(_T(", fontname=\"%s\""), (LPCTSTR)fontName);
-		content.Append(format);
-	}
+		content.AppendFormat(L", fontname=\"%s\"", (LPCTSTR)fontName);
 
 	if (m_defaultFontSize != fontSize)
-	{
-		format.Format(_T(", fontsize=\"%d\""), fontSize);
-		content.Append(format);
-	}
+		content.AppendFormat(L", fontsize=\"%d\"", fontSize);
 
 	if (m_defaultBackColor.GetValue() != backColor.GetValue())
-	{
-		format.Format(_T(", color=\"#%06X\""), backColor.GetValue() & 0xffffff);
-		content.Append(format);
-	}
+		content.AppendFormat(L", color=\"#%06X\"", backColor.GetValue() & 0xffffff);
 
 	content.Append(_T("];\r\n"));
 }
@@ -61,17 +50,15 @@ void Graphviz::BeginDrawTableNode(CString id, CString fontName, int fontSize, in
 	bool hasAttr = false;
 	if (m_defaultFontName != fontName)
 	{
-		format.Format(_T("fontname=\"%s\""), (LPCTSTR)fontName);
-		content.Append(format);
+		content.AppendFormat(L"fontname=\"%s\"", (LPCTSTR)fontName);
 		hasAttr = true;
 	}
 
 	if (m_defaultFontSize != fontSize)
 	{
 		if (hasAttr)
-			content.Append(_T(", "));
-		format.Format(_T("fontsize=\"%d\""), fontSize);
-		content.Append(format);
+			content.Append(L", ");
+		content.AppendFormat(L"fontsize=\"%d\"", fontSize);
 		hasAttr = true;
 	}
 		
@@ -84,9 +71,7 @@ void Graphviz::BeginDrawTableNode(CString id, CString fontName, int fontSize, in
 
 void Graphviz::DrawTableNode(CString text, Gdiplus::Color backColor)
 {
-	CString format;
-	format.Format(_T("\t<tr><td port=\"f%d\" bgcolor=\"#%06X\">%s</td></tr>\r\n"), m_tableNodeNum++, backColor.GetValue() & 0xffffff, (LPCTSTR)text);
-	content.Append(format);
+	content.AppendFormat(L"\t<tr><td port=\"f%d\" bgcolor=\"#%06X\">%s</td></tr>\r\n", m_tableNodeNum++, backColor.GetValue() & 0xffffff, (LPCTSTR)text);
 }
 
 void Graphviz::EndDrawTableNode()

@@ -1104,8 +1104,7 @@ void CStatGraphDlg::ShowByDate(int stringx, int title, IntervalDataMap &data)
 	tstring othersName;
 	if (!others.empty())
 	{
-		temp.Format(_T(" (%Iu)"), others.size());
-		sOthers += temp;
+		sOthers.AppendFormat(L" (%Iu)", others.size());
 		othersName = (LPCWSTR)sOthers;
 		authorGraphMap[othersName] = m_graph.AppendGroup(sOthers);
 	}
@@ -1856,11 +1855,8 @@ void CStatGraphDlg::DrawOthers(const std::list<tstring> &others, MyGraphSeries *
 	for (std::list<tstring>::const_iterator it = others.begin(); it != others.end(); ++it)
 		nCommits += RollPercentageOfAuthorship(map[*it]);
 
-	CString temp;
-	temp.Format(_T(" (%Iu)"), others.size());
-
 	CString sOthers(MAKEINTRESOURCE(IDS_STATGRAPH_OTHERGROUP));
-	sOthers += temp;
+	sOthers.AppendFormat(L" (%Iu)", others.size());
 	int group = m_graph.AppendGroup(sOthers);
 	graphData->SetData(group, (int)nCommits);
 }

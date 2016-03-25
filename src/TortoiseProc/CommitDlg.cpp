@@ -1953,7 +1953,6 @@ bool CCommitDlg::HandleMenuItemClick(int cmd, CSciEdit * pSciEdit)
 			CTGitPath * entry = (CTGitPath*)m_ListCtrl.GetItemData(i);
 			if (entry&&entry->m_Checked)
 			{
-				CString line;
 				CString status = entry->GetActionName();
 				if(entry->m_Action & CTGitPath::LOGACTIONS_UNVER)
 					status = _T("Add"); // I18N TODO
@@ -1963,8 +1962,7 @@ bool CCommitDlg::HandleMenuItemClick(int cmd, CSciEdit * pSciEdit)
 				if (m_ProjectProperties.bFileListInEnglish)
 					langID = 1033;
 
-				line.Format(_T("%-10s %s\r\n"),status , (LPCTSTR)m_ListCtrl.GetItemText(i,0));
-				logmsg += line;
+				logmsg.AppendFormat(L"%-10s %s\r\n", (LPCTSTR)status, (LPCTSTR)m_ListCtrl.GetItemText(i, 0));
 			}
 		}
 		pSciEdit->InsertText(logmsg);

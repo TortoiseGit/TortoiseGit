@@ -200,13 +200,8 @@ CStringA CPathUtils::PathEscape(const CStringA& path)
 			// no escaping needed for that char
 			ret2 += (unsigned char)path[i];
 		}
-		else
-		{
-			// char needs escaping
-			CStringA temp;
-			temp.Format("%%%02X", (unsigned char)c);
-			ret2 += temp;
-		}
+		else // char needs escaping
+			ret2.AppendFormat("%%%02X", (unsigned char)c);
 	}
 	CStringA ret;
 	for (i=0; ret2[i]; ++i)
@@ -217,13 +212,8 @@ CStringA CPathUtils::PathEscape(const CStringA& path)
 			// no escaping needed for that char
 			ret += (unsigned char)ret2[i];
 		}
-		else
-		{
-			// char needs escaping
-			CStringA temp;
-			temp.Format("%%%02X", (unsigned char)c);
-			ret += temp;
-		}
+		else // char needs escaping
+			ret.AppendFormat("%%%02X", (unsigned char)c);
 	}
 
 	if ((ret.Left(11).Compare("file:///%5C") == 0) && (ret.Find('%', 12) < 0))

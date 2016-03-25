@@ -2421,10 +2421,8 @@ void CGitLogListBase::CopySelectionToClipBoard(int toCopy)
 					sPaths += ((CTGitPath&)pLogEntry->GetFiles(this)[cpPathIndex]).GetActionName() + _T(": ") + pLogEntry->GetFiles(this)[cpPathIndex].GetGitPathString();
 					if (((CTGitPath&)pLogEntry->GetFiles(this)[cpPathIndex]).m_Action & (CTGitPath::LOGACTIONS_REPLACED|CTGitPath::LOGACTIONS_COPY) && !((CTGitPath&)pLogEntry->GetFiles(this)[cpPathIndex]).GetGitOldPathString().IsEmpty())
 					{
-						CString rename;
-						rename.Format(from, (LPCTSTR)((CTGitPath&)pLogEntry->GetFiles(this)[cpPathIndex]).GetGitOldPathString());
-						sPaths += _T(' ');
-						sPaths += rename;
+						sPaths += L' ';
+						sPaths.AppendFormat(from, (LPCTSTR)((CTGitPath&)pLogEntry->GetFiles(this)[cpPathIndex]).GetGitOldPathString());
 					}
 					sPaths += _T("\r\n");
 				}

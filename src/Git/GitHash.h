@@ -115,12 +115,8 @@ public:
 	CString ToString() const
 	{
 		CString str;
-		CString a;
 		for (int i = 0; i < GIT_HASH_SIZE; ++i)
-		{
-			a.Format(_T("%02x"),m_hash[i]);
-			str+=a;
-		}
+			str.AppendFormat(L"%02x", m_hash[i]);
 		return str;
 	}
 	operator CString () const

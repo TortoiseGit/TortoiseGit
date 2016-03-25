@@ -1037,43 +1037,31 @@ CString CGit::GetLogCmd(const CString& range, const CTGitPath* path, int mask,
 			}
 			Filter->m_From = (DWORD)time.GetTime() - (Filter->m_NumberOfLogs * substract);
 		}
-		CString st1;
 		if (Filter->m_NumberOfLogsScale == CFilterData::SHOW_LAST_N_COMMITS)
-			st1.Format(_T(" -n%ld"), Filter->m_NumberOfLogs);
+			param.AppendFormat(L" -n%ld", Filter->m_NumberOfLogs);
 		else if (Filter->m_NumberOfLogsScale >= CFilterData::SHOW_LAST_SEL_DATE  && Filter->m_From > 0)
-			st1.Format(_T(" --max-age=%I64u"), Filter->m_From);
-		param += st1;
+			param.AppendFormat(L" --max-age=%I64u", Filter->m_From);
 	}
 
 	if( Filter && (Filter->m_To != -1))
-	{
-		CString st2;
-		st2.Format(_T(" --min-age=%I64u"), Filter->m_To);
-		param += st2;
-	}
+		param.AppendFormat(L" --min-age=%I64u", Filter->m_To);
 
 	bool isgrep = false;
 	if( Filter && (!Filter->m_Author.IsEmpty()))
 	{
-		CString st1;
-		st1.Format(_T(" --author=\"%s\"" ), (LPCTSTR)Filter->m_Author);
-		param += st1;
+		param.AppendFormat(L" --author=\"%s\"", (LPCTSTR)Filter->m_Author);
 		isgrep = true;
 	}
 
 	if( Filter && (!Filter->m_Committer.IsEmpty()))
 	{
-		CString st1;
-		st1.Format(_T(" --committer=\"%s\"" ), (LPCTSTR)Filter->m_Author);
-		param += st1;
+		param.AppendFormat(L" --committer=\"%s\"", (LPCTSTR)Filter->m_Author);
 		isgrep = true;
 	}
 
 	if( Filter && (!Filter->m_MessageFilter.IsEmpty()))
 	{
-		CString st1;
-		st1.Format(_T(" --grep=\"%s\"" ), (LPCTSTR)Filter->m_MessageFilter);
-		param += st1;
+		param.AppendFormat(L" --grep=\"%s\"", (LPCTSTR)Filter->m_MessageFilter);
 		isgrep = true;
 	}
 

@@ -266,8 +266,8 @@ BOOL CSetProxyPage::OnApply()
 
 		if(m_serverport)
 		{
-			temp.Format(_T("%u"), m_serverport);
-			http_proxy  += _T(":")+temp;
+			http_proxy += L':';
+			http_proxy.AppendFormat(L"%u", m_serverport);
 		}
 	}
 

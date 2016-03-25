@@ -288,11 +288,7 @@ BOOL CAppUtils::StartExtMerge(
 			com = com + _T(" /base:%base /theirs:%theirs /mine:%mine /result:%merged");
 			com = com + _T(" /basetitle:%bname /theirstitle:%tname /minetitle:%yname");
 			if (resolveMsgHwnd)
-			{
-				CString s;
-				s.Format(L" /resolvemsghwnd:%I64d", (__int64)resolveMsgHwnd);
-				com += s;
-			}
+				com.AppendFormat(L" /resolvemsghwnd:%I64d", (__int64)resolveMsgHwnd);
 		}
 		else
 		{
@@ -304,11 +300,7 @@ BOOL CAppUtils::StartExtMerge(
 			com = com + _T(" /basename:%bname /theirsname:%tname /minename:%yname /mergedname:%mname");
 			com += _T(" /saverequired");
 			if (resolveMsgHwnd)
-			{
-				CString s;
-				s.Format(L" /resolvemsghwnd:%I64d", (__int64)resolveMsgHwnd);
-				com += s;
-			}
+				com.AppendFormat(L" /resolvemsghwnd:%I64d", (__int64)resolveMsgHwnd);
 			if (bDeleteBaseTheirsMineOnClose)
 				com += _T(" /deletebasetheirsmineonclose");
 		}
@@ -552,11 +544,7 @@ bool CAppUtils::StartExtDiff(
 		viewer += _T(" /readonly");
 
 	if (jumpToLine > 0)
-	{
-		CString temp;
-		temp.Format(_T(" /line:%d"), jumpToLine);
-		viewer += temp;
-	}
+		viewer.AppendFormat(L" /line:%d", jumpToLine);
 
 	return LaunchApplication(viewer, IDS_ERR_EXTDIFFSTART, flags.bWait);
 }
@@ -3176,11 +3164,7 @@ BOOL CAppUtils::Merge(const CString* commit, bool showStashPop)
 			args += _T(" --no-commit");
 
 		if (dlg.m_bLog)
-		{
-			CString fmt;
-			fmt.Format(_T(" --log=%d"), dlg.m_nLog);
-			args += fmt;
-		}
+			args.AppendFormat(L" --log=%d", dlg.m_nLog);
 
 		if (!dlg.m_MergeStrategy.IsEmpty())
 		{

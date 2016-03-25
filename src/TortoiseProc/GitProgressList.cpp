@@ -1056,10 +1056,7 @@ BOOL CGitProgressList::PreTranslateMessage(MSG* pMsg)
 							CString sAction = GetItemText(nItem, 0);
 							CString sPath = GetItemText(nItem, 1);
 							CString sMime = GetItemText(nItem, 2);
-							CString sLogCopyText;
-							sLogCopyText.Format(_T("%s: %s  %s\r\n"),
-								(LPCTSTR)sAction, (LPCTSTR)sPath, (LPCTSTR)sMime);
-							sClipdata +=  sLogCopyText;
+							sClipdata.AppendFormat(L"%s: %s  %s\r\n", (LPCTSTR)sAction, (LPCTSTR)sPath, (LPCTSTR)sMime);
 						}
 						CStringUtils::WriteAsciiStringToClipboard(sClipdata);
 					}

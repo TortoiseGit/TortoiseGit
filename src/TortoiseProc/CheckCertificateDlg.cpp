@@ -76,15 +76,9 @@ static CString getCertificateHash(HCRYPTPROV hCryptProv, ALG_ID algId, BYTE* cer
 
 	readable.Empty();
 	for (const BYTE* it = pHash.get(); it < pHash.get() + hashLen; ++it)
-	{
-		CString tmp;
-		tmp.Format(L"%02X", *it);
-		if (!readable.IsEmpty())
-			readable += L":";
-		readable += tmp;
-	}
+		readable.AppendFormat(L"%02X:", *it);
 
-	return readable;
+	return readable.TrimRight(L":");
 }
 
 BOOL CCheckCertificateDlg::OnInitDialog()

@@ -1862,9 +1862,7 @@ int CRebaseDlg::DoRebase()
 		if (ret == 3)
 			return - 1;
 
-		CString mergeParam;
-		mergeParam.Format(L"-m %d ", ret);
-		cherryPickedFrom += mergeParam;
+		cherryPickedFrom.AppendFormat(L"-m %d ", ret);
 	}
 
 	while (true)

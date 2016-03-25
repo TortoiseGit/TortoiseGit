@@ -1059,10 +1059,9 @@ void CGitStatusListCtrl::AddEntry(CTGitPath * GitPath, WORD /*langID*/, int list
 	{
 		if (!abbreviateRenamings)
 		{
+			entryname += L' ';
 			// relative path
-			CString rename;
-			rename.Format(from, (LPCTSTR)GitPath->GetGitOldPathString());
-			entryname += _T(" ") + rename;
+			entryname.AppendFormat(from, (LPCTSTR)GitPath->GetGitOldPathString());
 		}
 		else
 		{
