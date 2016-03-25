@@ -4747,6 +4747,7 @@ BEGIN
     IDS_PROC_SYNC_FETCHALL  "Fetch all refs"
     IDS_NOTYET_SETTRACKEDBRANCH 
                             "For the current branch ""%s"" no tracked branch is configured.\nDo you want to set the selected branch ""%s"" as tracked branch?\nThis will automatically select it for push and pull in the future."
+    IDS_PROC_DIFF_BASE      "Base"
 END
 
 #endif    // English (U.S.) resources
