@@ -1673,6 +1673,10 @@ void CCommitDlg::ParseRegexFile(const CString& sFile, std::map<CString, CString>
 		CStdioFile file(sFile, CFile::typeText | CFile::modeRead | CFile::shareDenyWrite);
 		while (m_bRunThread && file.ReadString(strLine))
 		{
+			if (strLine.IsEmpty())
+				continue;
+			if (strLine.Left(1) == L'#')
+				continue;
 			int eqpos = strLine.Find('=');
 			CString rgx;
 			rgx = strLine.Mid(eqpos+1).Trim();
