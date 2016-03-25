@@ -1,5 +1,11 @@
-# sample snippets: remove the leading # sign to enable that snippet
-# you may also add entries to %APPDATA%\TortoiseGit\snippet.txt which does not require admin rights
+# This file is maintained by the TortoiseGit team
+#
+# Here you can enter keys and texts for autocompletion on the commit dialog
+#
+# sample snippets: remove the leading # sign to enable a snippet
+#
+# Custom additions should go to %APPDATA%\TortoiseGit\snippet.txt
+# for this you don't need admin rights and changes won't get overridden automatically
 #fixed=Fixed issue #: 
 #tidy=Tidy up source code
 #drop=Drop unused code
