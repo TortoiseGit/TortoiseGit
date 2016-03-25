@@ -486,6 +486,48 @@ static void parse_bogus_from(const CString& mailaddress, CString& parsedAddress,
 
 void CStringUtils::ParseEmailAddress(CString mailaddress, CString& parsedAddress, CString* parsedName)
 {
+	if (parsedName)
+		parsedName->Empty();
+
+	mailaddress = mailaddress.Trim();
+	if (mailaddress.IsEmpty())
+	{
+		parsedAddress.Empty();
+		return;
+	}
+
+	if (mailaddress.Left(1) == L'"')
+	{
+		mailaddress = mailaddress.TrimLeft();
+		bool escaped = false;
+		bool opened = true;
+		for (int i = 1; i < mailaddress.GetLength(); ++i)
+		{
+			if (mailaddress[i] == L'"')
+			{
+				if (!escaped)
+				{
+					opened = !opened;
+					if (!opened)
+					{
+						if (parsedName)
+							*parsedName = mailaddress.Mid(1, i - 1);
+						mailaddress = mailaddress.Mid(i);
+						break;
+					}
+				}
+				else
+				{
+					escaped = false;
+					mailaddress.Delete(i - 1);
+					--i;
+				}
+			}
+			else if (mailaddress[i] == L'\\')
+				escaped = !escaped;
+		}
+	}
+
 	auto buf = mailaddress.GetBuffer();
 	auto at = _tcschr(buf, _T('@'));
 	if (!at)
@@ -531,7 +573,7 @@ void CStringUtils::ParseEmailAddress(CString mailaddress, CString& parsedAddress
 	if (!mailaddress.IsEmpty() && ((mailaddress[0] == _T('(') && mailaddress[mailaddress.GetLength() - 1] == _T(')')) || (mailaddress[0] == _T('"') && mailaddress[mailaddress.GetLength() - 1] == _T('"'))))
 		mailaddress = mailaddress.Mid(1, mailaddress.GetLength() - 2);
 
-	if (parsedName)
+	if (parsedName && parsedName->IsEmpty())
 		get_sane_name(parsedName, &mailaddress, parsedAddress);
 }
 #endif // #if defined(CSTRING_AVAILABLE) || defined(_MFC_VER)
