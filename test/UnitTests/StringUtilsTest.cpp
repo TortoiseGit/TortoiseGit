@@ -183,11 +183,12 @@ TEST(CStringUtils, IsPlainReadableASCII)
 {
 	EXPECT_TRUE(CStringUtils::IsPlainReadableASCII(L""));
 	EXPECT_TRUE(CStringUtils::IsPlainReadableASCII(L" 1234,#+*.:-&!\\<>|\"$%&/()=567890abcdefSBDUDB[](!}~"));
-	EXPECT_FALSE(CStringUtils::IsPlainReadableASCII(L"⌂"));
+	EXPECT_FALSE(CStringUtils::IsPlainReadableASCII(L"\n"));
+	EXPECT_FALSE(CStringUtils::IsPlainReadableASCII(L"\u2302"));
 	EXPECT_FALSE(CStringUtils::IsPlainReadableASCII(L"é"));
-	EXPECT_FALSE(CStringUtils::IsPlainReadableASCII(L"═"));
+	EXPECT_FALSE(CStringUtils::IsPlainReadableASCII(L"\u2550"));
 	EXPECT_FALSE(CStringUtils::IsPlainReadableASCII(L"ä"));
 	EXPECT_FALSE(CStringUtils::IsPlainReadableASCII(L"€"));
-	EXPECT_FALSE(CStringUtils::IsPlainReadableASCII(L"國"));
-	EXPECT_FALSE(CStringUtils::IsPlainReadableASCII(L"立"));
+	EXPECT_FALSE(CStringUtils::IsPlainReadableASCII(L"\u570B"));
+	EXPECT_FALSE(CStringUtils::IsPlainReadableASCII(L"\u7ACB"));
 }
