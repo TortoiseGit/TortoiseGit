@@ -43,7 +43,7 @@ int APIENTRY _tWinMain(HINSTANCE /*hInstance*/,
 				break;
 			}
 	}
-	HANDLE handle = CreateFile(lpCmdLine, GENERIC_READ | GENERIC_WRITE, 0, nullptr, OPEN_ALWAYS, 0, nullptr);
+	HANDLE handle = CreateFile(lpCmdLine, GENERIC_READ | GENERIC_WRITE, 0, nullptr, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
 	if(handle == INVALID_HANDLE_VALUE)
 		return -1;
 	CloseHandle(handle);
