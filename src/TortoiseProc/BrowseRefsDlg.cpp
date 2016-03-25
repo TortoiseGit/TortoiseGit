@@ -913,9 +913,6 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 			else
 				fetchFromCmd.Format(IDS_PROC_BROWSEREFS_FETCHFROM, (LPCTSTR)remoteName);
 		}
-		else if(selectedLeafs[0]->IsFrom(L"refs/tags/"))
-		{
-		}
 
 		CString temp;
 		temp.LoadString(IDS_MENULOG);

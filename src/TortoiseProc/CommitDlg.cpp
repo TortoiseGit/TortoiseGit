@@ -2126,13 +2126,13 @@ void CCommitDlg::OnBnClickedBugtraqbutton()
 				HRESULT hr2 = SafeArrayAccessData(revPropValues, (void HUGEP**)&pbRevValues);
 				if (SUCCEEDED(hr2))
 				{
-					if (revPropNames->rgsabound->cElements == revPropValues->rgsabound->cElements)
-					{
-						for (ULONG i = 0; i < revPropNames->rgsabound->cElements; ++i)
-						{
+//					if (revPropNames->rgsabound->cElements == revPropValues->rgsabound->cElements)
+//					{
+//						for (ULONG i = 0; i < revPropNames->rgsabound->cElements; ++i)
+//						{
 //							m_revProps[pbRevNames[i]] = pbRevValues[i];
-						}
-					}
+//						}
+//					}
 					SafeArrayUnaccessData(revPropValues);
 				}
 				SafeArrayUnaccessData(revPropNames);
