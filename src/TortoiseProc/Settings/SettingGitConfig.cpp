@@ -101,6 +101,9 @@ BOOL CSettingGitConfig::OnInitDialog()
 	else
 		this->GetDlgItem(IDC_EDITLOCALGITCONFIG)->EnableWindow(FALSE);
 
+	if (m_bGlobal)
+		this->GetDlgItem(IDC_EDITTGITCONFIG)->EnableWindow(FALSE);
+
 	if (m_bIsBareRepo)
 	{
 		this->GetDlgItem(IDC_EDITLOCALGITCONFIG)->SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_GITCONFIG_EDITLOCALGONCFIG)));
