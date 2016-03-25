@@ -88,7 +88,6 @@ void SVG::RoundedRectangle( int x, int y, int width, int height, Gdiplus::Color 
 			sObj += tmp;
 			tmp.Format("h %d a %d %d 0 0 1 %d %d z ", - width + 2* radius, radius,radius, -radius, -radius);
 			sObj += tmp;
-
 		}else
 		{
 			tmp.Format("V %d h %d z ", y+height, -width); 

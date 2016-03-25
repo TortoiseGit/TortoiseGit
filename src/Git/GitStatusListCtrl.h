@@ -232,9 +232,7 @@ public:
 			return;
 
 		if (IsVisible (phdr->iItem))
-		{
 			return;
-		}
 		*pResult = 1;
 	}
 
@@ -243,16 +241,12 @@ public:
 		LPNMHEADER phdr = reinterpret_cast<LPNMHEADER>(pNMHDR);
 		*pResult = 0;
 		if ((phdr->iItem < 0)||(phdr->iItem >= (int)itemName.size()))
-		{
 			return 0;
-		}
 
 		// visible columns may be modified
 
 		if (IsVisible (phdr->iItem))
-		{
 			return 0;
-		}
 
 		// columns already marked as "invisible" internally may be (re-)sized to 0
 
@@ -334,18 +328,14 @@ public:
 
 			int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, pWnd, 0);
 			if ((cmd >= 1)&&(cmd < columnCount))
-			{
 				SetVisible (cmd, !IsVisible(cmd));
-			}
 			else if (cmd == columnCount)
 			{
 				pWnd->GetParent()->SendMessage(LVM_ENABLEGROUPVIEW, !isGroundEnable, NULL);
 				//EnableGroupView(!isGroundEnable);
 			}
 			else if (cmd == columnCount+1)
-			{
 				RemoveUnusedProps();
-			}
 			else if (cmd == columnCount+2)
 			{
 				temp.LoadString(IDS_CONFIRMRESETCOLUMNORDER);
@@ -419,7 +409,6 @@ private:
 	std::vector<int> columnOrder;
 
 	std::vector<int> itemName;
-
 };
 
 /**

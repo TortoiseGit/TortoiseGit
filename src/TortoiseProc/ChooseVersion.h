@@ -270,7 +270,6 @@ public:
 	{
 		m_pWin=win;
 	};
-
 };
 
 #define CHOOSE_VERSION_DDX \

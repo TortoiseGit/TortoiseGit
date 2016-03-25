@@ -31,7 +31,6 @@ IMPLEMENT_DYNAMIC(CAutoTextTestDlg, CDialog)
 CAutoTextTestDlg::CAutoTextTestDlg(CWnd* pParent /*=nullptr*/)
 	: CDialog(CAutoTextTestDlg::IDD, pParent)
 {
-
 }
 
 CAutoTextTestDlg::~CAutoTextTestDlg()
@@ -46,7 +45,6 @@ void CAutoTextTestDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_TIMINGLABEL, m_sTimingLabel);
 	DDX_Control(pDX, IDC_AUTOTEXTCONTENT, m_cContent);
 }
-
 
 BEGIN_MESSAGE_MAP(CAutoTextTestDlg, CDialog)
 	ON_BN_CLICKED(IDC_AUTOTEXTSCAN, &CAutoTextTestDlg::OnBnClickedAutotextscan)

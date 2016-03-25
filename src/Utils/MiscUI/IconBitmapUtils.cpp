@@ -224,9 +224,7 @@ bool IconBitmapUtils::HasAlpha(__in Gdiplus::ARGB *pargb, SIZE& sizImage, int cx
         for (ULONG x = sizImage.cx; x; --x)
         {
             if (*pargb++ & 0xFF000000)
-            {
                 return true;
-            }
         }
 
         pargb += cxDelta;

@@ -262,7 +262,6 @@ void CTortoiseGitBlameView::OnChangeEncode(UINT nId)
 }
 int CTortoiseGitBlameView::OnCreate(LPCREATESTRUCT lpcs)
 {
-
 	CRect rect,rect1;
 	this->GetWindowRect(&rect1);
 	rect.left=m_blamewidth+LOCATOR_WIDTH;
@@ -282,12 +281,10 @@ int CTortoiseGitBlameView::OnCreate(LPCREATESTRUCT lpcs)
 
 	::AfxGetApp()->GetMainWnd();
 	return CView::OnCreate(lpcs);
-
 }
 
 void CTortoiseGitBlameView::OnSize(UINT /*nType*/, int cx, int cy)
 {
-
 	CRect rect;
 	rect.left=m_blamewidth;
 	rect.right=cx;
@@ -295,7 +292,6 @@ void CTortoiseGitBlameView::OnSize(UINT /*nType*/, int cx, int cy)
 	rect.bottom=cy;
 
 	m_TextView.MoveWindow(&rect);
-
 }
 BOOL CTortoiseGitBlameView::PreCreateWindow(CREATESTRUCT& cs)
 {
@@ -668,9 +664,7 @@ bool CTortoiseGitBlameView::DoSearch(CTortoiseGitBlameData::SearchDirection dire
 		m_SelectedLine = i;
 	}
 	else
-	{
 		::MessageBox(m_pFindDialog && m_pFindDialog->GetSafeHwnd() ? m_pFindDialog->GetSafeHwnd() : wMain, _T("\"") + m_sFindText + _T("\" ") + CString(MAKEINTRESOURCE(IDS_NOTFOUND)), _T("TortoiseGitBlame"), MB_ICONINFORMATION);
-	}
 
 	return true;
 }
@@ -839,7 +833,6 @@ LONG CTortoiseGitBlameView::GetBlameWidth()
 	m_blamewidth = pt.x;
 	//::ReleaseDC(wBlame, hDC);
 	return blamewidth;
-
 }
 
 void CTortoiseGitBlameView::CreateFont()
@@ -1029,7 +1022,6 @@ void CTortoiseGitBlameView::DrawLocatorBar(HDC hDC)
 		lineRect.bottom = lineRect.top+1;
 		::ExtTextOut(hDC, 0, 0, ETO_OPAQUE, &lineRect, nullptr, 0, nullptr);
 	}
-
 }
 
 void CTortoiseGitBlameView::SetupLexer(CString filename)
@@ -1424,7 +1416,6 @@ xor virtual while __file__ __line__ __sleep __wakeup")).GetBuffer()));
 		SetupCppLexer();
 	}
 	SendEditor(SCI_COLOURISE, 0, -1);
-
 }
 
 void CTortoiseGitBlameView::SetupCppLexer()
@@ -1658,7 +1649,6 @@ void CTortoiseGitBlameView::OnSciPainted(NMHDR *,LRESULT *)
 
 void CTortoiseGitBlameView::OnLButtonDown(UINT nFlags,CPoint point)
 {
-
 	int line = (int)SendEditor(SCI_GETFIRSTVISIBLELINE);
 	int height = (int)SendEditor(SCI_TEXTHEIGHT);
 	line = line + (int)(point.y/height);
@@ -2119,9 +2109,7 @@ void CTortoiseGitBlameView::OnUpdateViewCopyToClipboard(CCmdUI *pCmdUI)
 {
 	CWnd * wnd = GetFocus();
 	if (wnd == GetLogList())
-	{
 		pCmdUI->Enable(GetLogList()->GetSelectedCount() > 0);
-	}
 	else if (wnd)
 	{
 		if (CString(wnd->GetRuntimeClass()->m_lpszClassName) == _T("CMFCPropertyGridCtrl"))

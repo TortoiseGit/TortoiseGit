@@ -294,9 +294,7 @@ public:
 			b = true;
 		}
 		if(m_CurrentDir.GetLength() == 2 && m_CurrentDir[1] == _T(':')) //C: D:
-		{
 			m_CurrentDir += _T('\\');
-		}
 		return b;
 	}
 	CString m_CurrentDir;

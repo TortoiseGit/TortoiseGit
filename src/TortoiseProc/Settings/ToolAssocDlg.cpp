@@ -42,9 +42,7 @@ void CToolAssocDlg::DoDataExchange(CDataExchange* pDX)
 	if (pDX->m_bSaveAndValidate)
 	{
 		if (m_sExtension.Find('/')<0)
-		{
 			m_sExtension.TrimLeft(_T("*"));
-		}
 	}
 }
 
@@ -89,7 +87,5 @@ void CToolAssocDlg::OnBnClickedToolbrowse()
 {
 	UpdateData(TRUE);
 	if (CAppUtils::FileOpenSave(m_sTool, nullptr, IDS_SETTINGS_SELECTDIFF, IDS_PROGRAMSFILEFILTER, true, m_hWnd))
-	{
 		UpdateData(FALSE);
-	}
 }

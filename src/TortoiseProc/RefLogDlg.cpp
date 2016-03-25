@@ -38,7 +38,6 @@ CRefLogDlg::CRefLogDlg(CWnd* pParent /*=nullptr*/)
 	, m_pFindDialog(nullptr)
 	, m_nSearchLine(0)
 {
-
 }
 
 CRefLogDlg::~CRefLogDlg()

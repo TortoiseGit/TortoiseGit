@@ -94,7 +94,6 @@ CSettingGitCredential::CSettingGitCredential()
 	: ISettingsPropPage(CSettingGitCredential::IDD)
 	, m_bUseHttpPath(FALSE)
 {
-
 	m_ChangedMask = 0;
 }
 
@@ -296,9 +295,7 @@ BOOL CSettingGitCredential::IsUrlExist(CString &text)
 	{
 		m_ctrlUrlList.GetText(i, str);
 		if (str == text)
-		{
 			return true;
-		}
 	}
 	return false;
 }
@@ -534,19 +531,15 @@ CString CSettingGitCredential::Load(CString key)
 	CAutoConfig config(true);
 	int sel = m_ctrlConfigType.GetCurSel();
 	if (sel == ConfigType::Local)
-	{
 		git_config_add_file_ondisk(config, CGit::GetGitPathStringA(g_Git.GetGitLocalConfig()), GIT_CONFIG_LEVEL_LOCAL, FALSE);
-	}
 	else if (sel == ConfigType::Global)
 	{
 		git_config_add_file_ondisk(config, CGit::GetGitPathStringA(g_Git.GetGitGlobalConfig()), GIT_CONFIG_LEVEL_GLOBAL, FALSE);
 		git_config_add_file_ondisk(config, CGit::GetGitPathStringA(g_Git.GetGitGlobalXDGConfig()), GIT_CONFIG_LEVEL_XDG, FALSE);
 	}
 	else if (sel == ConfigType::System)
-	{
 		git_config_add_file_ondisk(config, CGit::GetGitPathStringA(g_Git.GetGitSystemConfig()), GIT_CONFIG_LEVEL_SYSTEM, FALSE);
-	}
-	
+
 	CStringA cmdA = CUnicodeUtils::GetUTF8(cmd);
 	CStringA valueA;
 	git_config_entry* entry;
@@ -703,9 +696,7 @@ bool SaveSimpleCredential(int type)
 		value = _T("manager");
 	}
 	else
-	{
 		return true;
-	}
 
 	// workaround gitdll bug
 	// TODO: switch to libgit2

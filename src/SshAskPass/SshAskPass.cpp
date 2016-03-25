@@ -78,13 +78,9 @@ int APIENTRY _tWinMain(HINSTANCE	/*hInstance*/,
 	if(bYesNo)
 	{
 		if (::MessageBox(nullptr, g_Prompt, _T("TortoiseGit - git CLI stdin wrapper"), MB_YESNO | MB_ICONQUESTION) == IDYES)
-		{
 			_tprintf(_T("yes"));
-		}
 		else
-		{
 			_tprintf(_T("no"));
-		}
 		return 0;
 	}
 	else

@@ -46,5 +46,4 @@ public:
 	CString		m_sRealm;
 	BOOL		m_bSaveAuthentication;
 	HWND		m_hParentWnd;
-
 };

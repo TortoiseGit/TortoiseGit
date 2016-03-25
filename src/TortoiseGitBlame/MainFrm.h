@@ -27,7 +27,6 @@
 
 class CMainFrame : public CFrameWndEx
 {
-
 protected: // create from serialization only
 	CMainFrame();
 	DECLARE_DYNCREATE(CMainFrame)
@@ -35,13 +34,7 @@ protected: // create from serialization only
 	{
 		CFrameWndEx::OnUpdateFrameTitle( bAddToTitle);
 	};
-// Attributes
-public:
 
-// Operations
-public:
-
-// Overrides
 public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	virtual BOOL LoadFrame(UINT nIDResource, DWORD dwDefaultStyle = WS_OVERLAPPEDWINDOW | FWS_ADDTOTITLE, CWnd* pParentWnd = nullptr, CCreateContext* pContext = nullptr);

@@ -109,7 +109,6 @@ HRESULT CreateSeparatorLink(IShellLink **ppsl)
 
 bool IsItemInArray(IShellItem *psi, IObjectArray *poaRemoved)
 {
-
 	UINT cItems;
 	if (FAILED(poaRemoved->GetCount(&cItems)))
 		return false;

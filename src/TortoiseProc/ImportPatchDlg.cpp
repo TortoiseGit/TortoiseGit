@@ -51,7 +51,6 @@ CImportPatchDlg::CImportPatchDlg(CWnd* pParent /*=nullptr*/)
 
 CImportPatchDlg::~CImportPatchDlg()
 {
-
 }
 
 void CImportPatchDlg::DoDataExchange(CDataExchange* pDX)
@@ -297,7 +296,6 @@ void CImportPatchDlg::OnBnClickedButtonUp()
 			m_cList.SetItemState(index, 0, LVIS_SELECTED);
 		}
 	}
-
 }
 
 void CImportPatchDlg::OnBnClickedButtonDown()
@@ -311,9 +309,7 @@ void CImportPatchDlg::OnBnClickedButtonDown()
 	auto indexes = std::make_unique<int[]>(m_cList.GetSelectedCount());
 	int i = 0;
 	while(pos)
-	{
 		indexes[i++] = m_cList.GetNextSelectedItem(pos);
-	}
 
 	// don't move any item if the last selected item is the last item in the m_CommitList
 	// (that would change the order of the selected items)
@@ -525,7 +521,6 @@ void CImportPatchDlg::OnBnClickedOk()
 		InterlockedExchange(&m_bThreadRunning, FALSE);
 		CMessageBox::Show(GetSafeHwnd(), IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
 	}
-
 }
 
 void CImportPatchDlg::DoSize(int delta)
@@ -588,9 +583,7 @@ void CImportPatchDlg::SaveSplitterPos()
 		ScreenToClient(&rectSplitter);
 		regPos = rectSplitter.top;
 	}
-
 }
-
 
 void CImportPatchDlg::EnableInputCtrl(BOOL b)
 {
@@ -654,7 +647,6 @@ BOOL CImportPatchDlg::PreTranslateMessage(MSG* pMsg)
 	{
 		switch (pMsg->wParam)
 		{
-
 		/* Avoid TAB control destroy but dialog exist*/
 		case VK_ESCAPE:
 		case VK_CANCEL:

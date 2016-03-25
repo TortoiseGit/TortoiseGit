@@ -76,9 +76,7 @@ bool CreateRepositoryCommand::Execute()
 		CString message;
 		message.Format(IDS_WARN_GITINIT_FOLDERNOTEMPTY, (LPCTSTR)folder);
 		if (dlg.m_bBare && PathIsDirectory(folder) && !PathIsDirectoryEmpty(folder) && CMessageBox::Show(hwndExplorer, message, _T("TortoiseGit"), 1, IDI_ERROR, CString(MAKEINTRESOURCE(IDS_ABORTBUTTON)), CString(MAKEINTRESOURCE(IDS_PROCEEDBUTTON))) == 1)
-		{
 			return false;
-		}
 
 		git_repository_init_options options = GIT_REPOSITORY_INIT_OPTIONS_INIT;
 		options.flags = GIT_REPOSITORY_INIT_MKPATH | GIT_REPOSITORY_INIT_EXTERNAL_TEMPLATE;

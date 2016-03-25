@@ -197,7 +197,6 @@ public:
 		if(m_critSec)
 			m_critSec->Unlock();
 	}
-
 };
 
 class CGitLogListBase : public CHintListCtrl

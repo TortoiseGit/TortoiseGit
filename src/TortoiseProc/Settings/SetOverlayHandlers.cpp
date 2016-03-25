@@ -151,9 +151,7 @@ int CSetOverlayHandlers::GetInstalledOverlays()
 			if (rc == ERROR_SUCCESS)
 			{
 				for (int j = 0; value[j]; ++j)
-				{
 					value[j] = (wchar_t)towlower(value[j]);
-				}
 				if (wcsstr(&value[0], L"tortoise") == 0)
 				{
 					// check if there's a 'default' entry with a guid

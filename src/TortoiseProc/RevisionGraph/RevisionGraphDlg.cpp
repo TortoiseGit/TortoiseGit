@@ -751,9 +751,7 @@ BOOL CRevisionGraphDlg::OnToolTipNotify(UINT /*id*/, NMHDR *pNMHDR, LRESULT *pRe
 	}
 
 	if (nID != 0) // will be zero on a separator
-	{
 		strTipText.LoadString (static_cast<UINT>(nID));
-	}
 
 	*pResult = 0;
 	if (strTipText.IsEmpty())
@@ -782,7 +780,6 @@ BOOL CRevisionGraphDlg::OnToolTipNotify(UINT /*id*/, NMHDR *pNMHDR, LRESULT *pRe
 
 void CRevisionGraphDlg::OnViewFilter()
 {
-
 /*	CSyncPointer<CAllRevisionGraphOptions>
 		options (m_Graph.m_state.GetOptions());
 
@@ -801,7 +798,6 @@ void CRevisionGraphDlg::OnViewFilter()
 
 	if (dlg.DoModal()==IDOK)
 	{
-
 		// user pressed OK to dismiss the dialog, which means
 		// we have to accept the new filter settings and apply them
 
@@ -829,9 +825,7 @@ void CRevisionGraphDlg::OnViewFilter()
 		// re-run query
 
 		StartWorkerThread();
-
 	}
-
 }
 
 void CRevisionGraphDlg::OnViewShowoverview()
@@ -894,8 +888,6 @@ void CRevisionGraphDlg::UpdateOptionAvailability()
 void CRevisionGraphDlg::OnWindowPosChanging(WINDOWPOS* lpwndpos)
 {
 	if (!m_bVisible)
-	{
 		lpwndpos->flags &= ~SWP_SHOWWINDOW;
-	}
 	CResizableStandAloneDialog::OnWindowPosChanging(lpwndpos);
 }

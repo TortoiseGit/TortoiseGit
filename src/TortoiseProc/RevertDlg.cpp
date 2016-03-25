@@ -93,9 +93,7 @@ BOOL CRevertDlg::OnInitDialog()
 	// first start a thread to obtain the file list with the status without
 	// blocking the dialog
 	if (AfxBeginThread(RevertThreadEntry, this)==0)
-	{
 		CMessageBox::Show(this->m_hWnd, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
-	}
 	InterlockedExchange(&m_bThreadRunning, TRUE);
 
 	return TRUE;
@@ -151,9 +149,7 @@ void CRevertDlg::OnOK()
 	for (int i=0; i<m_RevertList.GetItemCount(); ++i)
 	{
 		if (!m_RevertList.GetCheck(i))
-		{
 			m_bRecursive = FALSE;
-		}
 		else
 		{
 			m_selectedPathList.AddPath(*(CTGitPath*)m_RevertList.GetItemData(i));
@@ -175,9 +171,7 @@ void CRevertDlg::OnOK()
 		}
 	}
 	if (!m_bRecursive)
-	{
 		m_RevertList.WriteCheckedNamesToPathList(m_pathList);
-	}
 	m_selectedPathList.SortByPathname();
 
 	CResizableStandAloneDialog::OnOK();
@@ -218,9 +212,7 @@ BOOL CRevertDlg::PreTranslateMessage(MSG* pMsg)
 				if (GetAsyncKeyState(VK_CONTROL)&0x8000)
 				{
 					if ( GetDlgItem(IDOK)->IsWindowEnabled() )
-					{
 						PostMessage(WM_COMMAND, IDOK);
-					}
 					return TRUE;
 				}
 			}
@@ -230,9 +222,7 @@ BOOL CRevertDlg::PreTranslateMessage(MSG* pMsg)
 				if (!m_bThreadRunning)
 				{
 					if (AfxBeginThread(RevertThreadEntry, this)==0)
-					{
 						CMessageBox::Show(this->m_hWnd, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
-					}
 					else
 						InterlockedExchange(&m_bThreadRunning, TRUE);
 				}
@@ -247,9 +237,7 @@ BOOL CRevertDlg::PreTranslateMessage(MSG* pMsg)
 LRESULT CRevertDlg::OnSVNStatusListCtrlNeedsRefresh(WPARAM, LPARAM)
 {
 	if (AfxBeginThread(RevertThreadEntry, this)==0)
-	{
 		CMessageBox::Show(this->m_hWnd, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
-	}
 	return 0;
 }
 

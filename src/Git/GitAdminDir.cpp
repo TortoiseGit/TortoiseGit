@@ -53,7 +53,6 @@ CString GitAdminDir::GetSuperProjectRoot(const CString& path)
 	}while(projectroot.ReverseFind('\\')>0);
 
 	return _T("");
-
 }
 
 CString GitAdminDir::GetGitTopDir(const CString& path)
@@ -92,23 +91,17 @@ bool GitAdminDir::HasAdminDir(const CString& path, bool bDir, CString* ProjectTo
 	}
 
 	// a .git dir or anything inside it should be left out, only interested in working copy files -- Myagi
-	{
 	int n = 0;
 	for (;;)
 	{
 		n = sDirName.Find(_T("\\.git"), n);
 		if (n < 0)
-		{
 			break;
-		}
 
 		// check for actual .git dir (and not .gitignore or something else), continue search if false match
 		n += 5;
 		if (sDirName[n] == _T('\\') || sDirName[n] == 0)
-		{
 			return false;
-		}
-	}
 	}
 
 	for (;;)
@@ -138,7 +131,6 @@ bool GitAdminDir::HasAdminDir(const CString& path, bool bDir, CString* ProjectTo
 	}
 
 	return false;
-
 }
 /**
  * Returns the .git-path (if .git is a file, read the repository path and return it)

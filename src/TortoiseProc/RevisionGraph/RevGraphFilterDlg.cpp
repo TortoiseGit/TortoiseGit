@@ -31,7 +31,6 @@ CRevGraphFilterDlg::CRevGraphFilterDlg(CWnd* pParent /*=nullptr*/)
 	, m_bCurrentBranch(FALSE)
 	, m_bLocalBranches(FALSE)
 {
-
 }
 
 CRevGraphFilterDlg::~CRevGraphFilterDlg()
@@ -164,9 +163,7 @@ void CRevGraphFilterDlg::OnBnClickedCurrentBranch()
 		UpdateData(FALSE);
 	}
 	else
-	{
 		GetDlgItem(IDC_LOCAL_BRANCHES)->EnableWindow(TRUE);
-	}
 }
 
 void CRevGraphFilterDlg::OnBnClickedLocalBranches()
@@ -179,7 +176,5 @@ void CRevGraphFilterDlg::OnBnClickedLocalBranches()
 		UpdateData(FALSE);
 	}
 	else
-	{
 		GetDlgItem(IDC_CURRENT_BRANCH)->EnableWindow(TRUE);
-	}
 }

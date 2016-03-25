@@ -111,9 +111,7 @@ bool CMassiveGitTaskBase::ExecuteCommands(volatile BOOL& cancel)
 			}
 		}
 		else
-		{
 			maxLength += 3 + GetListItem(i).GetLength();
-		}
 	}
 	return true;
 }

@@ -182,9 +182,7 @@ void CPropertiesWnd::InitPropList()
 	pGroup1->AddSubItem(m_Body);
 
 	for (int i = 0; i < pGroup1->GetSubItemsCount(); ++i)
-	{
 		pGroup1->GetSubItem(i)->AllowEdit(FALSE);
-	}
 
 	m_wndPropList.AddProperty(pGroup1);
 	m_BaseInfoGroup=pGroup1;

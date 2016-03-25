@@ -34,7 +34,6 @@ IMPLEMENT_DYNAMIC(CSendMailDlg, CResizableStandAloneDialog)
 CSendMailDlg::CSendMailDlg(CWnd* pParent /*=nullptr*/)
 	: CResizableStandAloneDialog(CSendMailDlg::IDD, pParent)
 	, m_bCustomSubject(FALSE)
-
 	, m_regAttach(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\Attach"),0)
 	, m_regCombine(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\Combine"),0)
 {
@@ -207,9 +206,7 @@ void CSendMailDlg::UpdateSubject()
 			GetDlgItem(IDC_SENDMAIL_SUBJECT)->SetWindowText(m_MapPatch[index].m_Subject);
 		}
 		else
-		{
 			GetDlgItem(IDC_SENDMAIL_SUBJECT)->SetWindowText(_T(""));
-		}
 	}
 }
 

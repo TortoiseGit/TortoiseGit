@@ -65,9 +65,7 @@ bool CLogFile::Open(const CTGitPath& logfile)
 			return false;
 
 		while (file.ReadString(strLine))
-		{
 			m_lines.push_back(strLine);
-		}
 		file.Close();
 	}
 	catch (CFileException* pE)
@@ -146,7 +144,5 @@ void CLogFile::AdjustSize()
 	DWORD maxlines = m_maxlines;
 
 	while (m_lines.size() > maxlines)
-	{
 		m_lines.pop_front();
-	}
 }

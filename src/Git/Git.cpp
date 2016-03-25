@@ -363,7 +363,6 @@ int CGit::RunAsync(CString cmd, PROCESS_INFORMATION *piOut, HANDLE *hReadOut, HA
 	if(hErrReadOut)
 		*hErrReadOut = hReadErr.Detach();
 	return 0;
-
 }
 //Must use sperate function to convert ANSI str to union code string
 //Becuase A2W use stack as internal convert buffer.
@@ -393,9 +392,7 @@ BOOL CGit::CanParseRev(CString ref)
 
 	CString cmdout;
 	if (Run(_T("git.exe rev-parse --revs-only ") + ref, &cmdout, CP_UTF8))
-	{
 		return FALSE;
-	}
 	if(cmdout.IsEmpty())
 		return FALSE;
 
@@ -496,7 +493,6 @@ public:
 	}
 	BYTE_VECTOR* m_pvector;
 	BYTE_VECTOR* m_pvectorErr;
-
 };
 int CGit::Run(CString cmd,BYTE_VECTOR *vector, BYTE_VECTOR *vectorErr)
 {
@@ -697,7 +693,6 @@ int CGit::SetConfigValue(const CString& key, const CString& value, CONFIG_TYPE t
 		try
 		{
 			CheckAndInitDll();
-
 		}catch(...)
 		{
 		}
@@ -736,9 +731,7 @@ int CGit::SetConfigValue(const CString& key, const CString& value, CONFIG_TYPE t
 		cmd.Format(_T("git.exe config %s %s \"%s\""), (LPCTSTR)option, (LPCTSTR)key, (LPCTSTR)mangledValue);
 		CString out;
 		if (Run(cmd, &out, nullptr, CP_UTF8))
-		{
 			return -1;
-		}
 	}
 	return 0;
 }
@@ -798,12 +791,9 @@ CString CGit::GetCurrentBranch(bool fallback)
 
 	int result = GetCurrentBranchFromFile(m_CurrentDir, output, fallback);
 	if (result != 0 && ((result == 1 && !fallback) || result != 1))
-	{
 		return _T("(no branch)");
-	}
 	else
 		return output;
-
 }
 
 void CGit::GetRemoteTrackedBranch(const CString& localBranch, CString& pullRemote, CString& pullBranch)
@@ -1119,9 +1109,7 @@ void GetTempPath(CString &path)
 	dwRetVal = GetTortoiseGitTempPath(dwBufSize,		// length of the buffer
 							lpPathBuffer);	// buffer for path
 	if (dwRetVal > dwBufSize || (dwRetVal == 0))
-	{
 		path=_T("");
-	}
 	path.Format(_T("%s"),lpPathBuffer);
 }
 CString GetTempFile()
@@ -1135,23 +1123,17 @@ CString GetTempFile()
 	dwRetVal = GetTortoiseGitTempPath(dwBufSize,		// length of the buffer
 							lpPathBuffer);	// buffer for path
 	if (dwRetVal > dwBufSize || (dwRetVal == 0))
-	{
 		return _T("");
-	}
 	 // Create a temporary file.
 	uRetVal = GetTempFileName(lpPathBuffer,		// directory for tmp files
 								TEXT("Patch"),	// temp file name prefix
 								0,				// create unique name
 								szTempName);	// buffer for name
 
-
 	if (uRetVal == 0)
-	{
 		return _T("");
-	}
 
 	return CString(szTempName);
-
 }
 
 DWORD GetTortoiseGitTempPath(DWORD nBufferLength, LPTSTR lpBuffer)
@@ -1370,9 +1352,7 @@ int CGit::GetCommitDiffList(const CString &rev1, const CString &rev2, CTGitPathL
 			cmd.Format(_T("git.exe diff -r -R --raw -C -M --numstat -z %s %s --"), (LPCTSTR)ignore, (LPCTSTR)rev1);
 	}
 	else
-	{
 		cmd.Format(_T("git.exe diff-tree -r --raw -C -M --numstat -z %s %s %s --"), (LPCTSTR)ignore, (LPCTSTR)rev2, (LPCTSTR)rev1);
-	}
 
 	BYTE_VECTOR out;
 	if (Run(cmd, &out))
@@ -2053,9 +2033,7 @@ int CGit::FindAndSetGitExePath(BOOL bFallback)
 BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 {
 	if (m_bInitialized)
-	{
 		return TRUE;
-	}
 
 	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": CheckMsysGitDir(%d)\n"), bFallback);
 	this->m_Environment.clear();
@@ -2396,9 +2374,7 @@ bool CGit::IsFastForward(const CString &from, const CString &to, CGitHash * comm
 	cmd.Format(_T("git.exe merge-base %s %s"), (LPCTSTR)FixBranchName(to), (LPCTSTR)FixBranchName(from));
 
 	if (Run(cmd, &base, &gitLastErr, CP_UTF8))
-	{
 		return false;
-	}
 	basehash = base.Trim();
 
 	GetHash(hash, from);
@@ -2567,9 +2543,7 @@ CString CEnvironment::GetEnv(const TCHAR *name)
 		int start =0;
 		CString sname = str.Tokenize(_T("="),start);
 		if(sname.CompareNoCase(name) == 0)
-		{
 			return &(*this)[i+start];
-		}
 		i+=str.GetLength();
 	}
 	return _T("");
@@ -2584,9 +2558,7 @@ void CEnvironment::SetEnv(const TCHAR *name, const TCHAR* value)
 		int start =0;
 		CString sname = str.Tokenize(_T("="),start);
 		if(sname.CompareNoCase(name) == 0)
-		{
 			break;
-		}
 		i+=str.GetLength();
 	}
 
@@ -2637,7 +2609,6 @@ void CEnvironment::SetEnv(const TCHAR *name, const TCHAR* value)
 		++i;
 		it= begin()+i;
 	}
-
 }
 
 void CEnvironment::AddToPath(CString value)
@@ -2763,20 +2734,13 @@ CString CGit::GetShortName(const CString& ref, REF_TYPE *out_type)
 	REF_TYPE type = CGit::UNKNOWN;
 
 	if (CGit::GetShortName(str, shortname, _T("refs/heads/")))
-	{
 		type = CGit::LOCAL_BRANCH;
-
-	}
 	else if (CGit::GetShortName(str, shortname, _T("refs/remotes/")))
-	{
 		type = CGit::REMOTE_BRANCH;
-	}
 	else if (str.Right(3) == L"^{}" && CGit::GetShortName(str, shortname, L"refs/tags/"))
 		type = CGit::ANNOTATED_TAG;
 	else if (CGit::GetShortName(str, shortname, _T("refs/tags/")))
-	{
 		type = CGit::TAG;
-	}
 	else if (CGit::GetShortName(str, shortname, _T("refs/stash")))
 	{
 		type = CGit::STASH;
@@ -2801,13 +2765,9 @@ CString CGit::GetShortName(const CString& ref, REF_TYPE *out_type)
 		}
 	}
 	else if (CGit::GetShortName(str, shortname, _T("refs/notes/")))
-	{
 		type = CGit::NOTES;
-	}
 	else if (CGit::GetShortName(str, shortname, _T("refs/")))
-	{
 		type = CGit::UNKNOWN;
-	}
 	else
 	{
 		type = CGit::UNKNOWN;
@@ -3309,7 +3269,7 @@ int CGit::IsRebaseRunning()
 	CString adminDir;
 	if (!GitAdminDir::GetAdminDirPath(g_Git.m_CurrentDir, adminDir))
 		return -1;
-		
+
 	if (PathIsDirectory(adminDir + L"rebase-apply") || PathIsDirectory(adminDir + L"tgitrebase.active"))
 		return 1;
 	return 0;

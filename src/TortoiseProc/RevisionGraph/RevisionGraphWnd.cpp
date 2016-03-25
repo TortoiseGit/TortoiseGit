@@ -213,7 +213,6 @@ CRevisionGraphWnd::CRevisionGraphWnd()
 
 	node v;
 	forall_nodes(v,m_Graph) {
-
 		TRACE(_T("node  x %f y %f %f %f\n"),/* m_GraphAttr.idNode(v), */
 			m_GraphAttr.x(v),
 			m_GraphAttr.y(v),
@@ -564,7 +563,6 @@ void CRevisionGraphWnd::OnSize(UINT nType, int cx, int cy)
 
 void CRevisionGraphWnd::OnLButtonDown(UINT nFlags, CPoint point)
 {
-
 	if (IsUpdateJobRunning())
 		return __super::OnLButtonDown(nFlags, point);
 
@@ -729,7 +727,6 @@ bool CRevisionGraphWnd::CancelMouseZoom()
 
 INT_PTR CRevisionGraphWnd::OnToolHitTest(CPoint point, TOOLINFO* pTI) const
 {
-
 	if (IsUpdateJobRunning())
 		return -1;
 
@@ -921,14 +918,12 @@ CString CRevisionGraphWnd::TooltipText(node index)
 		str += _T("\n");
 		str += rev->GetBody();
 		return str;
-
 	}else
 		return CString();
 }
 
 void CRevisionGraphWnd::SaveGraphAs(CString sSavePath)
 {
-
 	CString extension = CPathUtils::GetFileExtFromPath(sSavePath);
 	if (extension.CompareNoCase(_T(".wmf"))==0)
 	{
@@ -1053,22 +1048,16 @@ void CRevisionGraphWnd::SaveGraphAs(CString sSavePath)
 						bitmap.Save(tfile, &encoderClsid, nullptr);
 					}
 					else
-					{
 						sErrormessage.Format(IDS_REVGRAPH_ERR_NOENCODER, (LPCTSTR)CPathUtils::GetFileExtFromPath(sSavePath));
-					}
 				}
 				else
-				{
 					sErrormessage.LoadString(IDS_REVGRAPH_ERR_NOBITMAP);
-				}
 			}
 			dc.SelectObject(oldbm);
 			DeleteObject(hbm);
 			dc.DeleteDC();
 			if (!sErrormessage.IsEmpty())
-			{
 				::MessageBox(m_hWnd, sErrormessage, _T("TortoiseGit"), MB_ICONERROR);
-			}
 		}
 		catch (CException * pE)
 		{
@@ -1078,7 +1067,6 @@ void CRevisionGraphWnd::SaveGraphAs(CString sSavePath)
 			::MessageBox(m_hWnd, szErrorMsg, _T("TortoiseGit"), MB_ICONERROR);
 		}
 	}
-
 }
 
 BOOL CRevisionGraphWnd::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
@@ -1285,7 +1273,6 @@ CString CRevisionGraphWnd::GetWCURL() const
 
 void CRevisionGraphWnd::DoShowLog()
 {
-
 	if (!m_SelectedEntry1)
 		return;
 
@@ -1302,7 +1289,6 @@ void CRevisionGraphWnd::DoShowLog()
 			(LPCTSTR)this->m_logEntries[m_SelectedEntry1->index()].ToString());
 
 	CAppUtils::RunTortoiseGitProc(sCmd);
-
 }
 
 void CRevisionGraphWnd::DoCheckForModification()
@@ -1433,9 +1419,7 @@ void CRevisionGraphWnd::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 	node nodeIndex = GetHitNode (clientpoint);
 
 	if ( !UpdateSelectedEntry (nodeIndex))
-	{
 		return;
-	}
 
 	CMenu popup;
 	if (!popup.CreatePopupMenu())
@@ -1596,16 +1580,12 @@ void CRevisionGraphWnd::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 		break;
 #endif
 	}
-
 }
 
 void CRevisionGraphWnd::OnMouseMove(UINT nFlags, CPoint point)
 {
-
 	if (IsUpdateJobRunning())
-	{
 		return __super::OnMouseMove(nFlags, point);
-	}
 	if (!m_bIsCanvasMove)
 	{
 		if (m_bShowOverview && (m_OverviewRect.PtInRect(point))&&(nFlags & MK_LBUTTON))
@@ -1717,9 +1697,7 @@ void CRevisionGraphWnd::OnTimer (UINT_PTR nIDEvent)
 		Invalidate (FALSE);
 	}
 	else
-	{
 		__super::OnTimer (nIDEvent);
-	}
 }
 
 LRESULT CRevisionGraphWnd::OnWorkerThreadDone(WPARAM, LPARAM)

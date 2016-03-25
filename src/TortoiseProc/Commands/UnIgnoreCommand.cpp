@@ -31,9 +31,7 @@ bool UnIgnoreCommand::Execute()
 	{
 		CString name = CPathUtils::PathPatternEscape(pathList[nPath].GetFileOrDirectoryName());
 		if (parser.HasKey(_T("onlymask")))
-		{
 			name = _T("*")+pathList[nPath].GetFileExtension();
-		}
 		filelist += name + _T("\n");
 		CTSVNPath parentfolder = pathList[nPath].GetContainingDirectory();
 		SVNProperties props(parentfolder, SVNRev::REV_WC, false);

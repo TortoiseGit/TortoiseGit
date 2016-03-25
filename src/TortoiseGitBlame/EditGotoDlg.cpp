@@ -33,7 +33,6 @@ CEditGotoDlg::CEditGotoDlg(CWnd* pParent /*=nullptr*/)
 	: CDialog(CEditGotoDlg::IDD, pParent)
 	, m_LineNumber(0)
 {
-
 }
 
 CEditGotoDlg::~CEditGotoDlg()

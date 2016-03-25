@@ -172,14 +172,10 @@ void CGitBlameLogList::GetPaths(const CGitHash& hash, std::vector<CTGitPath>& pa
 			for (int i = 0; i < numberOfLines; ++i)
 			{
 				if (pView->m_data.GetHash(i) == hash)
-				{
 					filenames.insert(pView->m_data.GetFilename(i));
-				}
 			}
 			for (auto it = filenames.cbegin(); it != filenames.cend(); ++it)
-			{
 				paths.emplace_back(*it);
-			}
 		}
 		if (paths.empty())
 		{

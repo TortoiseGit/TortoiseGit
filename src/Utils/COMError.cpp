@@ -56,5 +56,4 @@ COMError::COMError(HRESULT hr)
 
 COMError::~COMError()
 {
-
 }

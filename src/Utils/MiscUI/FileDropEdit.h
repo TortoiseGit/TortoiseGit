@@ -134,7 +134,6 @@ public:
 		}
 		return true; //let base free the medium
 	}
-
 };
 
 

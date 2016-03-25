@@ -30,9 +30,7 @@ const TCHAR CCmdLineParser::m_sValueSep[] = _T(" :"); // don't forget space!!
 CCmdLineParser::CCmdLineParser(LPCTSTR sCmdLine)
 {
 	if(sCmdLine)
-	{
 		Parse(sCmdLine);
-	}
 }
 
 CCmdLineParser::~CCmdLineParser()

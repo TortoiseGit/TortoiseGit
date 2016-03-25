@@ -151,9 +151,7 @@ CSendMailCombineable::~CSendMailCombineable()
 int CSendMailCombineable::Send(const CTGitPathList& list, CGitProgressList* instance)
 {
 	if (m_bCombine)
-	{
 		return SendAsCombinedMail(list, instance);
-	}
 	else
 	{
 		instance->SetItemCountTotal(list.GetCount() + 1);
@@ -215,9 +213,7 @@ int CSendMailCombineable::SendAsCombinedMail(const CTGitPathList &list, CGitProg
 	for (int i = 0; i < list.GetCount(); ++i)
 	{
 		if (m_bAttachment)
-		{
 			attachments.Add(list[i].GetWinPathString());
-		}
 		else
 		{
 			CString filename(list[i].GetWinPathString());

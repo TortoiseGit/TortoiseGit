@@ -55,22 +55,16 @@ int RemoteProgressCommand::RemoteUpdatetipsCallback(const char* refname, const g
 	if (!git_oid_iszero(oldOid) && !git_oid_iszero(newOid))
 	{
 		if (git_oid_equal(oldOid, newOid))
-		{
 			change.LoadString(IDS_SAME);
-		}
 		else
 		{
 			size_t ahead = 0, behind = 0;
 			if (!git_graph_ahead_behind(&ahead, &behind, ptr->repo, newOid, oldOid))
 			{
 				if (ahead > 0 && behind == 0)
-				{
 					change.Format(IDS_FORWARDN, ahead);
-				}
 				else if (ahead == 0 && behind > 0)
-				{
 					change.Format(IDS_REWINDN, behind);
-				}
 				else
 				{
 					git_commit* oldCommit, * newCommit;

@@ -94,9 +94,7 @@ int ProjectProperties::ReadProps()
 		sCheckRe = sCheckRe.Left(sCheckRe.Find('\n')).Trim();
 	}
 	if (!sCheckRe.IsEmpty())
-	{
 		sCheckRe = sCheckRe.Trim();
-	}
 
 	if (gitconfig.GetString(PROJECTPROPNAME_LOGWIDTHLINE, sPropVal) == 0)
 	{
@@ -176,9 +174,7 @@ CString ProjectProperties::GetBugIDFromLog(CString& msg)
 				sBugLine = msg;
 		}
 		if (sBugLine.IsEmpty() && (msg.ReverseFind('\n') < 0))
-		{
 			sBugLine = msg.Mid(msg.ReverseFind('\n')+1);
-		}
 		if (sBugLine.Left(sFirstPart.GetLength()).Compare(sFirstPart)!=0)
 			sBugLine.Empty();
 		if (sBugLine.Right(sLastPart.GetLength()).Compare(sLastPart)!=0)
@@ -238,7 +234,6 @@ std::vector<CHARRANGE> ProjectProperties::FindBugIDPositions(const CString& msg)
 	{
 		if (!sBugIDRe.IsEmpty())
 		{
-
 			// match with two regex strings (without grouping!)
 			try
 			{
@@ -366,9 +361,7 @@ std::set<CString> ProjectProperties::FindBugIDs (const CString& msg)
 	std::set<CString> bugIDs;
 
 	for (const auto& pos : positions)
-	{
 		bugIDs.insert(msg.Mid(pos.cpMin, pos.cpMax - pos.cpMin));
-	}
 
 	return bugIDs;
 }
@@ -381,9 +374,7 @@ CString ProjectProperties::FindBugID(const CString& msg)
 		std::vector<CHARRANGE> positions = FindBugIDPositions(msg);
 		std::set<CString, num_compare> bugIDs;
 		for (const auto& pos : positions)
-		{
 			bugIDs.insert(msg.Mid(pos.cpMin, pos.cpMax - pos.cpMin));
-		}
 
 		for (const auto& id : bugIDs)
 		{
@@ -426,9 +417,7 @@ BOOL ProjectProperties::CheckBugID(const CString& sID)
 		{
 			c = sID.GetAt(i);
 			if ((c < '0')&&(c != ',')&&(c != ' '))
-			{
 				return FALSE;
-			}
 			if (c > '9')
 				return FALSE;
 		}

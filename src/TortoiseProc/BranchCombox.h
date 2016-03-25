@@ -58,9 +58,7 @@ protected:
 		defaultUpstream.Format(L"remotes/%s/%s", (LPCTSTR)pullRemote, (LPCTSTR)pullBranch);
 		int found = m_ctrlRemoteBranch.FindStringExact(0, defaultUpstream);
 		if(found >= 0)
-		{
 			m_ctrlRemoteBranch.SetCurSel(found);
-		}
 		else if(!pullBranch.IsEmpty())
 		{
 			int index=m_ctrlRemoteBranch.FindStringExact(0,pullBranch);
@@ -70,9 +68,7 @@ protected:
 				m_ctrlRemoteBranch.SetCurSel(index);
 		}
 		else
-		{
 			m_ctrlRemoteBranch.SetCurSel(-1);
-		}
 
 		this->AddBranchToolTips(&this->m_ctrlLocalBranch,this->m_pTooltip);
 
@@ -188,7 +184,6 @@ protected:
 			g_Git.GetBranchList(list, nullptr, CGit::BRANCH_REMOTE);
 
 			m_ctrlRemoteBranch.SetList(list);
-
 		}
 		else
 		{
@@ -197,13 +192,9 @@ protected:
 		}
 
 		if(!this->m_strLocalBranch.IsEmpty())
-		{
 			m_ctrlLocalBranch.AddString(m_strLocalBranch);
-		}
 		else
-		{
 			m_ctrlLocalBranch.SetCurSel(current);
-		}
 
 		if(!m_strRemoteBranch.IsEmpty())
 		{
@@ -211,9 +202,7 @@ protected:
 			m_ctrlRemoteBranch.SetCurSel(m_ctrlRemoteBranch.GetCount()-1);
 		}
 		else
-		{
 			CbnSelchangeLocalBranch();
-		}
 
 		this->LocalBranchChange();
 		this->RemoteBranchChange();

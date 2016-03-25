@@ -117,9 +117,7 @@ int CGitDiff::DiffNull(const CTGitPath *pPath, git_revnum_t rev1, bool bIsAdd, i
 		// refresh if result = 1
 		CTGitPath path = *pPath;
 		while ((result = SubmoduleDiffNull(&path, rev1)) == 1)
-		{
 			path.SetFromGit(pPath->GetGitPathString());
-		}
 		return result;
 	}
 
@@ -145,9 +143,7 @@ int CGitDiff::DiffNull(const CTGitPath *pPath, git_revnum_t rev1, bool bIsAdd, i
 		}
 	}
 	else
-	{
 		file1 = g_Git.CombinePath(pPath);
-	}
 
 	// preserve FileExtension, needed especially for diffing deleted images (detection on new filename extension)
 	CString tempfile=::GetTempFile() + pPath->GetFileExtension();
@@ -488,13 +484,9 @@ int CGitDiff::Diff(const CTGitPath * pPath, const CTGitPath * pPath2, git_revnum
 	}
 
 	if (pPath->m_Action == pPath->LOGACTIONS_ADDED)
-	{
 		CGitDiff::DiffNull(pPath, rev1, true, jumpToLine);
-	}
 	else if (pPath->m_Action == pPath->LOGACTIONS_DELETED)
-	{
 		CGitDiff::DiffNull(pPath, rev2, false, jumpToLine);
-	}
 	else
 	{
 		CAppUtils::DiffFlags flags;
@@ -530,9 +522,7 @@ int CGitDiff::DiffCommit(const CTGitPath &path1, const CTGitPath &path2, const G
 		dlg.DoModal();
 	}
 	else
-	{
 		Diff(&path1, &path2, r1->m_CommitHash.ToString(), r2->m_CommitHash.ToString());
-	}
 	return 0;
 }
 
@@ -540,7 +530,6 @@ int CGitDiff::DiffCommit(const CTGitPath &path, const CString &r1, const CString
 {
 	return DiffCommit(path, path, r1, r2);
 }
-
 
 int CGitDiff::DiffCommit(const CTGitPath &path1, const CTGitPath &path2, const CString &r1, const CString &r2)
 {
@@ -557,8 +546,6 @@ int CGitDiff::DiffCommit(const CTGitPath &path1, const CTGitPath &path2, const C
 		dlg.DoModal();
 	}
 	else
-	{
 		Diff(&path1, &path2, r1, r2);
-	}
 	return 0;
 }

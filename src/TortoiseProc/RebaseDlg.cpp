@@ -272,10 +272,7 @@ BOOL CRebaseDlg::OnInitDialog()
 	}
 
 	if (this->m_RebaseStage == CHOOSE_BRANCH && !m_IsCherryPick)
-	{
 		this->LoadBranchInfo();
-
-	}
 	else
 	{
 		this->m_BranchCtrl.EnableWindow(FALSE);
@@ -413,7 +410,6 @@ void CRebaseDlg::DoSize(int delta)
 	this->m_CommitList.Invalidate();
 	this->m_FileListCtrl.Invalidate();
 	this->m_LogMessageCtrl.Invalidate();
-
 }
 
 void CRebaseDlg::SetSplitterRange()
@@ -474,9 +470,7 @@ void CRebaseDlg::LoadBranchInfo()
 	AddBranchToolTips(&m_BranchCtrl);
 
 	if(!m_Upstream.IsEmpty())
-	{
 		m_UpstreamCtrl.AddString(m_Upstream);
-	}
 	else
 	{
 		//Select pull-remote from current branch
@@ -833,9 +827,7 @@ BOOL CRebaseDlg::PreTranslateMessage(MSG*pMsg)
 			{
 				// select all entries
 				for (int i = 0; i < m_CommitList.GetItemCount(); ++i)
-				{
 					m_CommitList.SetItemState(i, LVIS_SELECTED, LVIS_SELECTED);
-				}
 				return TRUE;
 			}
 			break;
@@ -1019,7 +1011,6 @@ int CRebaseDlg::VerifyNoConflict()
 	}
 	CleanUpRebaseActiveFolder();
 	return 0;
-
 }
 
 static bool IsLocalBranch(CString ref)
@@ -1208,13 +1199,11 @@ void CRebaseDlg::OnBnClickedContinue()
 			this->OnRebaseUpdateUI(0,0);
 			this->UpdateCurrentStatus();
 			return ;
-
 		}
 		m_RebaseStage=REBASE_CONTINUE;
 		curRev->GetRebaseAction() |= CGitLogListBase::LOGACTIONS_REBASE_DONE;
 		m_forRewrite.push_back(curRev->m_CommitHash);
 		this->UpdateCurrentStatus();
-
 	}
 
 	if( m_RebaseStage == REBASE_CONFLICT )
@@ -1507,6 +1496,7 @@ void CRebaseDlg::OnBnClickedContinue()
 		SetControlEnable();
 	}
 }
+
 void CRebaseDlg::ResetParentForSquash(const CString& commitMessage)
 {
 	m_SquashMessage = commitMessage;
@@ -1516,6 +1506,7 @@ void CRebaseDlg::ResetParentForSquash(const CString& commitMessage)
 	if (RunGitCmdRetryOrAbort(cmd))
 		return;
 }
+
 int CRebaseDlg::CheckNextCommitIsSquash()
 {
 	int index;
@@ -1549,8 +1540,8 @@ int CRebaseDlg::CheckNextCommitIsSquash()
 	} while(curRev->GetRebaseAction() & CGitLogListBase::LOGACTIONS_REBASE_SKIP);
 
 	return -1;
-
 }
+
 int CRebaseDlg::GoNext()
 {
 	if(m_CommitList.m_IsOldFirst)
@@ -1558,8 +1549,8 @@ int CRebaseDlg::GoNext()
 	else
 		--m_CurrentRebaseIndex;
 	return 0;
-
 }
+
 int CRebaseDlg::StateAction()
 {
 	switch(this->m_RebaseStage)
@@ -1765,14 +1756,9 @@ void CRebaseDlg::AddLogString(CString str)
 int CRebaseDlg::GetCurrentCommitID()
 {
 	if(m_CommitList.m_IsOldFirst)
-	{
 		return this->m_CurrentRebaseIndex+1;
-
-	}
 	else
-	{
 		return m_CommitList.GetItemCount()-m_CurrentRebaseIndex;
-	}
 }
 
 int CRebaseDlg::IsCommitEmpty(const CGitHash& hash)
@@ -2140,7 +2126,6 @@ int CRebaseDlg::RebaseThread()
 				break;
 			}
 			m_RebaseStage = REBASE_CONTINUE;
-
 		}
 		else if( m_RebaseStage == REBASE_CONTINUE )
 		{
@@ -2150,30 +2135,22 @@ int CRebaseDlg::RebaseThread()
 			{
 				ret = 0;
 				m_RebaseStage = REBASE_FINISH;
-
 			}
 			else
 			{
 				ret = DoRebase();
-
 				if( ret )
-				{
 					break;
-				}
 			}
-
 		}
 		else if( m_RebaseStage == REBASE_FINISH )
 		{
 			SendMessage(MSG_REBASE_UPDATE_UI);
 			m_RebaseStage = REBASE_DONE;
 			break;
-
 		}
 		else
-		{
 			break;
-		}
 		this->PostMessage(MSG_REBASE_UPDATE_UI);
 	}
 
@@ -2301,10 +2278,12 @@ LRESULT CRebaseDlg::OnRebaseUpdateUI(WPARAM,LPARAM)
 	}
 	return 0;
 }
+
 void CRebaseDlg::OnCancel()
 {
 	OnBnClickedAbort();
 }
+
 void CRebaseDlg::OnBnClickedAbort()
 {
 	if (m_pTaskbarList)
@@ -2505,9 +2484,7 @@ void CRebaseDlg::OnBnClickedButtonDown2()
 	auto indexes = std::make_unique<int[]>(m_CommitList.GetSelectedCount());
 	int i = 0;
 	while(pos)
-	{
 		indexes.get()[i++] = m_CommitList.GetNextSelectedItem(pos);
-	}
 	// don't move any item if the last selected item is the last item in the m_CommitList
 	// (that would change the order of the selected items)
 	if (!moveToBottom && indexes.get()[m_CommitList.GetSelectedCount() - 1] >= m_CommitList.GetItemCount() - 1)
@@ -2569,14 +2546,10 @@ void CRebaseDlg::OnLvnItemchangedLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 			return;
 		}
 		if (pNMLV->uChanged & LVIF_STATE)
-		{
 			FillLogMessageCtrl();
-		}
 	}
 	else
-	{
 		FillLogMessageCtrl();
-	}
 }
 
 void CRebaseDlg::FillLogMessageCtrl()

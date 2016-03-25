@@ -231,9 +231,7 @@ BOOL CFileDiffDlg::OnInitDialog()
 	int maxcol = m_cFileList.GetHeaderCtrl()->GetItemCount() - 1;
 	int col;
 	for (col = mincol; col <= maxcol; col++)
-	{
 		m_cFileList.SetColumnWidth(col,LVSCW_AUTOSIZE_USEHEADER);
-	}
 
 	m_cFileList.SetRedraw(true);
 
@@ -367,9 +365,7 @@ LRESULT CFileDiffDlg::OnDiffFinished(WPARAM, LPARAM)
 	int maxcol = m_cFileList.GetHeaderCtrl()->GetItemCount() - 1;
 	int col;
 	for (col = mincol; col <= maxcol; ++col)
-	{
 		m_cFileList.SetColumnWidth(col, LVSCW_AUTOSIZE_USEHEADER);
-	}
 
 	m_cFileList.ClearText();
 	if (m_arFileList.IsEmpty())
@@ -458,7 +454,6 @@ void CFileDiffDlg::OnNMDblclkFilelist(NMHDR *pNMHDR, LRESULT *pResult)
 
 void CFileDiffDlg::OnLvnGetInfoTipFilelist(NMHDR *pNMHDR, LRESULT *pResult)
 {
-
 	LPNMLVGETINFOTIP pGetInfoTip = reinterpret_cast<LPNMLVGETINFOTIP>(pNMHDR);
 	if (pGetInfoTip->iItem >= (int)m_arFilteredList.size())
 		return;
@@ -775,10 +770,8 @@ void CFileDiffDlg::OnEnSetfocusSecondurl()
 	GetDlgItem(IDC_SECONDURL)->HideCaret();
 }
 
-
 void CFileDiffDlg::OnBnClickedSwitchleftright()
 {
-
 	if (m_bThreadRunning)
 		return;
 
@@ -822,7 +815,6 @@ void CFileDiffDlg::OnBnClickedSwitchleftright()
 
 void CFileDiffDlg::SetURLLabels(int mask)
 {
-
 //	m_cRev1Btn.SetWindowText(m_rev1.m_CommitHash.ToString().Left(6));
 //	m_cRev2Btn.SetWindowText(m_rev2.m_CommitHash.ToString().Left(6));
 
@@ -832,7 +824,6 @@ void CFileDiffDlg::SetURLLabels(int mask)
 		if (!m_rev1.m_CommitHash.IsEmpty())
 			m_tooltips.AddTool(IDC_FIRSTURL,
 				CLoglistUtils::FormatDateAndTime(m_rev1.GetAuthorDate(), DATE_SHORTDATE) + _T("  ") + m_rev1.GetAuthorName());
-
 	}
 
 	if(mask &0x2)
@@ -848,13 +839,9 @@ void CFileDiffDlg::SetURLLabels(int mask)
 
 	if( (mask&0x3) == 0x3 && !m_rev1.m_CommitHash.IsEmpty() && !m_rev2.m_CommitHash.IsEmpty())
 		if(m_rev2.GetCommitterDate() > m_rev1.GetCommitterDate())
-		{
 			this->GetDlgItem(IDC_REV2GROUP)->SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_FILEDIFF_VERSION2BASENEWER)));
-		}
 		else if (m_rev2.GetCommitterDate() < m_rev1.GetCommitterDate())
-		{
 			this->GetDlgItem(IDC_REV1GROUP)->SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_FILEDIFF_VERSION1NEWER)));
-		}
 }
 
 void CFileDiffDlg::ClearURLabels(int mask)
@@ -885,9 +872,7 @@ BOOL CFileDiffDlg::PreTranslateMessage(MSG* pMsg)
 				{
 					// select all entries
 					for (int i=0; i<m_cFileList.GetItemCount(); ++i)
-					{
 						m_cFileList.SetItemState(i, LVIS_SELECTED, LVIS_SELECTED);
-					}
 					return TRUE;
 				}
 			}
@@ -976,9 +961,7 @@ void CFileDiffDlg::OnHdnItemclickFilelist(NMHDR *pNMHDR, LRESULT *pResult)
 void CFileDiffDlg::Sort()
 {
 	if(m_arFileList.GetCount() < 2)
-	{
 		return;
-	}
 
 	std::sort(m_arFileList.m_paths.begin(), m_arFileList.m_paths.end(), &CFileDiffDlg::SortCompare);
 }
@@ -1073,7 +1056,6 @@ void CFileDiffDlg::ClickRevButton(CMenuButton *button, GitRev *rev, CACEdit *edi
 				return;
 
 			edit->SetWindowText(dlg.m_SelectedHash);
-
 		}
 		else
 			return;
@@ -1180,7 +1162,6 @@ void CFileDiffDlg::OnTimer(UINT_PTR nIDEvent)
 
 		if(mask == 0x3)
 		{
-
 			InterlockedExchange(&m_bThreadRunning, TRUE);
 			if (!AfxBeginThread(DiffThreadEntry, this))
 			{
@@ -1202,14 +1183,10 @@ void CFileDiffDlg::Filter(CString sFilterText)
 		CString sPath = m_arFileList[i].GetGitPathString();
 		sPath.MakeLower();
 		if (sPath.Find(sFilterText) >= 0)
-		{
 			m_arFilteredList.push_back((CTGitPath*)&(m_arFileList[i]));
-		}
 	}
 	for (const auto path : m_arFilteredList)
-	{
 		AddEntry(path);
-	}
 }
 
 void CFileDiffDlg::CopySelectionToClipboard(BOOL isFull)
@@ -1224,10 +1201,7 @@ void CFileDiffDlg::CopySelectionToClipboard(BOOL isFull)
 		sTextForClipboard += _T("\t");
 
 		if(!isFull)
-		{
 			sTextForClipboard += _T("\r\n");
-
-		}
 		else
 		{
 			sTextForClipboard += m_cFileList.GetItemText(index, 1);

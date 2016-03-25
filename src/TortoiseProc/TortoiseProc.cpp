@@ -144,9 +144,7 @@ BOOL CTortoiseProcApp::InitInstance()
 			DWORD lid = SUBLANGID(langId);
 			lid--;
 			if (lid > 0)
-			{
 				langId = MAKELANGID(PRIMARYLANGID(langId), lid);
-			}
 			else
 				langId = 0;
 		}
@@ -192,9 +190,7 @@ BOOL CTortoiseProcApp::InitInstance()
 		DWORD lid = SUBLANGID(langId);
 		lid--;
 		if (lid > 0)
-		{
 			langId = MAKELANGID(PRIMARYLANGID(langId), lid);
-		}
 		else
 			langId = 0;
 	} while (langId);
@@ -283,9 +279,7 @@ BOOL CTortoiseProcApp::InitInstance()
 	{
 		CString url = parser.GetVal(_T("urlhandler"));
 		if (url.Find(_T("tgit://clone/")) == 0)
-		{
 			url = url.Mid(13); // 21 = "tgit://clone/".GetLength()
-		}
 		else if (url.Find(_T("github-windows://openRepo/")) == 0)
 		{
 			url = url.Mid(26); // 26 = "github-windows://openRepo/".GetLength()
@@ -294,9 +288,7 @@ BOOL CTortoiseProcApp::InitInstance()
 				url = url.Left(questioMark);
 		}
 		else if (url.Find(_T("smartgit://cloneRepo/")) == 0)
-		{
 			url = url.Mid(21); // 21 = "smartgit://cloneRepo/".GetLength()
-		}
 		else
 		{
 			CMessageBox::Show(nullptr, IDS_ERR_INVALIDPATH, IDS_APPNAME, MB_ICONERROR);
@@ -319,7 +311,6 @@ BOOL CTortoiseProcApp::InitInstance()
 		g_sGroupingUUID = parser.GetVal(L"groupuuid");
 	if ( parser.HasKey(_T("pathfile")) )
 	{
-
 		CString sPathfileArgument = CPathUtils::GetLongPathname(parser.GetVal(_T("pathfile")));
 
 		cmdLinePath.SetFromUnknown(sPathfileArgument);
@@ -337,7 +328,6 @@ BOOL CTortoiseProcApp::InitInstance()
 	}
 	else
 	{
-
 		CString sPathArgument = CPathUtils::GetLongPathname(parser.GetVal(_T("path")));
 		if (parser.HasKey(_T("expaths")))
 		{

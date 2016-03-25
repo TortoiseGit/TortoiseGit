@@ -78,7 +78,6 @@ void CLogCache::CloseIndexHandles()
 		CloseHandle(m_IndexFile);
 		m_IndexFile=INVALID_HANDLE_VALUE;
 	}
-
 }
 CLogCache::~CLogCache()
 {
@@ -94,7 +93,6 @@ GitRevLoglist* CLogCache::GetCacheData(const CGitHash& hash)
 
 ULONGLONG CLogCache::GetOffset(const CGitHash& hash, SLogCacheIndexFile* pData)
 {
-
 	if (!pData)
 		pData = m_pCacheIndex;
 
@@ -211,7 +209,6 @@ int CLogCache::FetchCacheIndex(CString GitDir)
 		::DeleteFile(m_GitDir + DATA_FILE_NAME);
 	}
 	return ret;
-
 }
 
 int CLogCache::SaveOneItem(const GitRevLoglist& Rev, LONG offset)
@@ -311,9 +308,7 @@ int CLogCache::LoadOneItem(GitRevLoglist& Rev,ULONGLONG offset)
 
 		CString file(fileheader->m_FileName, fileheader->m_FileNameSize);
 		if(fileheader->m_OldFileNameSize)
-		{
 			oldfile = CString(fileheader->m_FileName + fileheader->m_FileNameSize, fileheader->m_OldFileNameSize);
-		}
 		path.SetFromGit(file,&oldfile);
 
 		path.m_ParentNo = fileheader ->m_ParentNo;
@@ -425,7 +420,6 @@ int CLogCache::SaveCache()
 			break;
 
 		{
-
 			memset(&header,0,sizeof(SLogCacheIndexHeader));
 			DWORD num=0;
 			if ((!ReadFile(m_IndexFile, &header, sizeof(SLogCacheIndexHeader), &num, 0)) || num != sizeof(SLogCacheIndexHeader) ||
@@ -506,15 +500,11 @@ int CLogCache::SaveCache()
 	return ret;
 }
 
-
-
 void CLogCache::Sort()
 {
 	if(this->m_pCacheIndex)
-	{
 		qsort(m_pCacheIndex->m_Item, m_pCacheIndex->m_Header.m_ItemCount,sizeof(SLogCacheIndexItem), Compare);
 	}
-}
 
 int CLogCache::ClearAllParent()
 {
@@ -529,7 +519,5 @@ int CLogCache::ClearAllParent()
 void CLogCache::ClearAllLanes()
 {
 	for (auto i = m_HashMap.begin(); i != m_HashMap.end(); ++i)
-	{
 		(*i).second.m_Lanes.clear();
-	}
 }

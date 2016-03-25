@@ -98,9 +98,7 @@ BOOL CSettingsProgsDiff::OnApply()
 {
 	UpdateData();
 	if (m_iExtDiff == 0 && !m_sDiffPath.IsEmpty() && m_sDiffPath.Left(1) != _T("#"))
-	{
 		m_sDiffPath = _T("#") + m_sDiffPath;
-	}
 	m_regDiffPath = m_sDiffPath;
 
 	m_dlgAdvDiff.SaveData();

@@ -205,7 +205,6 @@ void CMainFrame::SetDockingWindowIcons(BOOL bHiColorIcons)
 
 	HICON hPropertiesBarIcon = (HICON) ::LoadImage(::AfxGetResourceHandle(), MAKEINTRESOURCE(bHiColorIcons ? IDI_PROPERTIES_WND_HC : IDI_PROPERTIES_WND), IMAGE_ICON, ::GetSystemMetrics(SM_CXSMICON), ::GetSystemMetrics(SM_CYSMICON), 0);
 	m_wndProperties.SetIcon(hPropertiesBarIcon, FALSE);
-
 }
 
 // CMainFrame diagnostics
@@ -241,9 +240,7 @@ LRESULT CMainFrame::OnToolbarCreateNew(WPARAM wp,LPARAM lp)
 {
 	LRESULT lres = CFrameWndEx::OnToolbarCreateNew(wp,lp);
 	if (lres == 0)
-	{
 		return 0;
-	}
 
 	CMFCToolBar* pUserToolbar = (CMFCToolBar*)lres;
 	ASSERT_VALID(pUserToolbar);
@@ -338,9 +335,7 @@ BOOL CMainFrame::LoadFrame(UINT nIDResource, DWORD dwDefaultStyle, CWnd* pParent
 	// base class does the real work
 
 	if (!CFrameWndEx::LoadFrame(nIDResource, dwDefaultStyle, pParentWnd, pContext))
-	{
 		return FALSE;
-	}
 
 	// enable customization button for all user toolbars
 	BOOL bNameValid;
@@ -352,9 +347,7 @@ BOOL CMainFrame::LoadFrame(UINT nIDResource, DWORD dwDefaultStyle, CWnd* pParent
 	{
 		CMFCToolBar* pUserToolbar = GetUserToolBarByIndex(i);
 		if (pUserToolbar)
-		{
 			pUserToolbar->EnableCustomizeButton(TRUE, ID_VIEW_CUSTOMIZE, strCustomize);
-		}
 	}
 
 	return TRUE;

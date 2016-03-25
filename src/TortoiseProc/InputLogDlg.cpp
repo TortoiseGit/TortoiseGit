@@ -32,7 +32,6 @@ CInputLogDlg::CInputLogDlg(CWnd* pParent /*=nullptr*/)
 	: CResizableStandAloneDialog(CInputLogDlg::IDD, pParent)
 	, m_pProjectProperties(nullptr)
 {
-
 }
 
 CInputLogDlg::~CInputLogDlg()
@@ -130,9 +129,7 @@ BOOL CInputLogDlg::PreTranslateMessage(MSG* pMsg)
 				if (GetAsyncKeyState(VK_CONTROL)&0x8000)
 				{
 					if ( GetDlgItem(IDOK)->IsWindowEnabled() )
-					{
 						PostMessage(WM_COMMAND, IDOK);
-					}
 				}
 			}
 			break;

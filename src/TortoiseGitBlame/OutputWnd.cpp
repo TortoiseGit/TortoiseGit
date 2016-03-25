@@ -141,8 +141,8 @@ int COutputWnd::LoadHistory(CString filename, CString revision, bool follow)
 		return -1;
 	m_LogList.UpdateProjectProperties();
 	return 0;
-
 }
+
 int COutputWnd::LoadHistory(std::set<CGitHash>& hashes)
 {
 	m_LogList.Clear();
@@ -151,8 +151,8 @@ int COutputWnd::LoadHistory(std::set<CGitHash>& hashes)
 		return -1;
 	m_LogList.UpdateProjectProperties();
 	return 0;
-
 }
+
 void COutputWnd::OnLvnItemchangedLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
@@ -224,7 +224,5 @@ void COutputList::OnViewOutput()
 		pMainFrame->SetFocus();
 		pMainFrame->ShowPane(pParentBar, FALSE, FALSE, FALSE);
 		pMainFrame->RecalcLayout();
-
 	}
 }
-

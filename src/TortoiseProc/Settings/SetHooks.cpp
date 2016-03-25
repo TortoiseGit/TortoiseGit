@@ -27,7 +27,6 @@ IMPLEMENT_DYNAMIC(CSetHooks, ISettingsPropPage)
 CSetHooks::CSetHooks()
 	: ISettingsPropPage(CSetHooks::IDD)
 {
-
 }
 
 CSetHooks::~CSetHooks()
@@ -102,15 +101,12 @@ void CSetHooks::RebuildHookList()
 
 	int maxcol = m_cHookList.GetHeaderCtrl()->GetItemCount() - 1;
 	for (int col = 0; col <= maxcol; col++)
-	{
 		m_cHookList.SetColumnWidth(col, LVSCW_AUTOSIZE_USEHEADER);
-	}
 	m_cHookList.SetRedraw(true);
 }
 
 void CSetHooks::OnBnClickedRemovebutton()
 {
-
 	// traversing from the end to the beginning so that the indices are not skipped
 	int index = m_cHookList.GetItemCount()-1;
 	while (index >= 0)
@@ -126,12 +122,10 @@ void CSetHooks::OnBnClickedRemovebutton()
 		}
 		index--;
 	}
-
 }
 
 void CSetHooks::OnBnClickedEditbutton()
 {
-
 	if (m_cHookList.GetSelectedCount() > 1)
 		return;
 	POSITION pos = m_cHookList.GetFirstSelectedItemPosition();
@@ -153,7 +147,6 @@ void CSetHooks::OnBnClickedEditbutton()
 			SetModified();
 		}
 	}
-
 }
 
 void CSetHooks::OnBnClickedAddbutton()

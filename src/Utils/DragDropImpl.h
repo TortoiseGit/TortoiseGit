@@ -32,18 +32,12 @@ public:
 	HRESULT STDMETHODCALLTYPE QueryInterface(REFIID riid, void** ppvObject)
 	{
 		if(!ppvObject)
-		{
 			return E_POINTER;
-		}
 
 		if (IsEqualIID(riid, IID_IUnknown))
-		{
 			*ppvObject = static_cast<IUnknown*>(this);
-		}
 		else if (IsEqualIID(riid, IID_IDropSourceNotify))
-		{
 			*ppvObject = static_cast<IDropSourceNotify*>(this);
-		}
 		else
 		{
 			*ppvObject = nullptr;
@@ -77,7 +71,6 @@ public:
 	{
 		return S_OK;
 	}
-
 };
 
 

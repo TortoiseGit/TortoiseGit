@@ -45,7 +45,6 @@ void GitRev::Clear()
 	m_Subject.Empty();
 	m_CommitHash.Empty();
 	m_sErr.Empty();
-
 }
 
 int GitRev::ParserParentFromCommit(GIT_COMMIT *commit)
@@ -56,9 +55,7 @@ int GitRev::ParserParentFromCommit(GIT_COMMIT *commit)
 
 	git_get_commit_first_parent(commit,&list);
 	while(git_get_commit_next_parent(&list,parent)==0)
-	{
 		m_ParentHash.emplace_back((char*)parent);
-	}
 	return 0;
 }
 

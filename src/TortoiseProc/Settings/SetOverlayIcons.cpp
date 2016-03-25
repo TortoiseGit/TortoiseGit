@@ -314,9 +314,7 @@ void CSetOverlayIcons::OnCbnSelchangeIconsetcombo()
 	ShowIconSet(bSmallIcons);
 	m_selIndex = m_cIconSet.GetCurSel();
 	if (m_selIndex != CB_ERR)
-	{
 		m_cIconSet.GetLBText(m_selIndex, m_sIconSet);
-	}
 	if (m_sIconSet.CompareNoCase(m_sOriginalIconSet)!=0)
 		SetModified();
 }

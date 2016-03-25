@@ -256,7 +256,6 @@ BOOL CAppUtils::StartExtMerge(
 	const CString& basename, const CString& theirname, const CString& yourname, const CString& mergedname, bool bReadOnly,
 	HWND resolveMsgHwnd, bool bDeleteBaseTheirsMineOnClose)
 {
-
 	CRegString regCom = CRegString(_T("Software\\TortoiseGit\\Merge"));
 	CString ext = mergedfile.GetFileExtension();
 	CString com = regCom;
@@ -267,16 +266,12 @@ BOOL CAppUtils::StartExtMerge(
 		// is there an extension specific merge tool?
 		CRegString mergetool(_T("Software\\TortoiseGit\\MergeTools\\") + ext.MakeLower());
 		if (!CString(mergetool).IsEmpty())
-		{
 			com = mergetool;
-		}
 	}
 	// is there a filename specific merge tool?
 	CRegString mergetool(_T("Software\\TortoiseGit\\MergeTools\\.") + mergedfile.GetFilename().MakeLower());
 	if (!CString(mergetool).IsEmpty())
-	{
 		com = mergetool;
-	}
 
 	if (com.IsEmpty()||(com.Left(1).Compare(_T("#"))==0))
 	{
@@ -368,9 +363,7 @@ BOOL CAppUtils::StartExtMerge(
 			com.Replace(_T("%bname"), _T(""));
 		}
 		else
-		{
 			com.Replace(_T("%bname"), _T("\"") + basefile.GetUIFileOrDirectoryName() + _T("\""));
-		}
 	}
 	else
 		com.Replace(_T("%bname"), _T("\"") + basename + _T("\""));
@@ -382,9 +375,7 @@ BOOL CAppUtils::StartExtMerge(
 			com.Replace(_T("%tname"), _T(""));
 		}
 		else
-		{
 			com.Replace(_T("%tname"), _T("\"") + theirfile.GetUIFileOrDirectoryName() + _T("\""));
-		}
 	}
 	else
 		com.Replace(_T("%tname"), _T("\"") + theirname + _T("\""));
@@ -396,9 +387,7 @@ BOOL CAppUtils::StartExtMerge(
 			com.Replace(_T("%yname"), _T(""));
 		}
 		else
-		{
 			com.Replace(_T("%yname"), _T("\"") + yourfile.GetUIFileOrDirectoryName() + _T("\""));
-		}
 	}
 	else
 		com.Replace(_T("%yname"), _T("\"") + yourname + _T("\""));
@@ -410,9 +399,7 @@ BOOL CAppUtils::StartExtMerge(
 			com.Replace(_T("%mname"), _T(""));
 		}
 		else
-		{
 			com.Replace(_T("%mname"), _T("\"") + mergedfile.GetUIFileOrDirectoryName() + _T("\""));
-		}
 	}
 	else
 		com.Replace(_T("%mname"), _T("\"") + mergedname + _T("\""));
@@ -451,9 +438,7 @@ BOOL CAppUtils::StartExtPatch(const CTGitPath& patchfile, const CTGitPath& dir, 
 		viewer += L"\"";
 	}
 	if(!LaunchApplication(viewer, IDS_ERR_DIFFVIEWSTART, !!bWait))
-	{
 		return FALSE;
-	}
 	return TRUE;
 }
 
@@ -543,13 +528,9 @@ bool CAppUtils::StartExtDiff(
 		viewer += _T(" \"")+file2+_T("\"");
 	}
 	if (viewer.Find(_T("%base")) >= 0)
-	{
 		viewer.Replace(_T("%base"),  _T("\"")+file1+_T("\""));
-	}
 	if (viewer.Find(_T("%mine")) >= 0)
-	{
 		viewer.Replace(_T("%mine"),  _T("\"")+file2+_T("\""));
-	}
 
 	if (sName1.IsEmpty())
 		viewer.Replace(_T("%bname"), _T("\"") + file1 + _T("\""));
@@ -611,14 +592,10 @@ BOOL CAppUtils::StartUnifiedDiffViewer(const CString& patchfile, const CString& 
 	else
 		viewer += _T(" \"") + patchfile + _T("\"");
 	if (viewer.Find(_T("%title")) >= 0)
-	{
 		viewer.Replace(_T("%title"), title);
-	}
 
 	if(!LaunchApplication(viewer, IDS_ERR_DIFFVIEWSTART, !!bWait))
-	{
 		return FALSE;
-	}
 	return TRUE;
 }
 
@@ -641,27 +618,17 @@ BOOL CAppUtils::StartTextViewer(CString file)
 	file = buf2.get();
 	file = _T("\"")+file+_T("\"");
 	if (viewer.IsEmpty())
-	{
 		return CAppUtils::ShowOpenWithDialog(file) ? TRUE : FALSE;
-	}
 	if (viewer.Find(_T("\"%1\"")) >= 0)
-	{
 		viewer.Replace(_T("\"%1\""), file);
-	}
 	else if (viewer.Find(_T("%1")) >= 0)
-	{
 		viewer.Replace(_T("%1"),  file);
-	}
 	else
-	{
 		viewer += _T(" ");
 		viewer += file;
-	}
 
 	if(!LaunchApplication(viewer, IDS_ERR_TEXTVIEWSTART, false))
-	{
 		return FALSE;
-	}
 	return TRUE;
 }
 
@@ -675,7 +642,6 @@ BOOL CAppUtils::CheckForEmptyDiff(const CTGitPath& sDiffPath)
 	if (length < 4)
 		return TRUE;
 	return FALSE;
-
 }
 
 void CAppUtils::CreateFontForLogs(CFont& fontToCreate)
@@ -750,9 +716,7 @@ bool CAppUtils::LaunchPAgent(const CString* keyfile, const CString* pRemote)
 	}
 
 	if( i== 10*60*5)
-	{
 		CMessageBox::Show(nullptr, IDS_ERR_PAEGENTTIMEOUT, IDS_APPNAME, MB_OK | MB_ICONERROR);
-	}
 	::DeleteFile(tempfile);
 	return true;
 }
@@ -1065,13 +1029,9 @@ bool CAppUtils::SetupDiffScripts(bool force, const CString& type)
 		extensions.insert(ext);
 		CString kind;
 		if (file.Right(3).CompareNoCase(_T("vbs"))==0)
-		{
 			kind = _T(" //E:vbscript");
-		}
 		if (file.Right(2).CompareNoCase(_T("js"))==0)
-		{
 			kind = _T(" //E:javascript");
-		}
 		// open the file, read the first line and find possible extensions
 		// this script can handle
 		try
@@ -1304,13 +1264,9 @@ bool CAppUtils::PerformSwitch(const CString& ref, bool bForce /* false */, const
 
 	if(!sNewBranch.IsEmpty()){
 		if (bBranchOverride)
-		{
 			branch.Format(_T("-B %s "), (LPCTSTR)sNewBranch);
-		}
 		else
-		{
 			branch.Format(_T("-b %s "), (LPCTSTR)sNewBranch);
-		}
 		if (bTrack == TRUE)
 			track = _T("--track ");
 		else if (bTrack == FALSE)
@@ -1408,9 +1364,7 @@ public:
 			char buf[3] = { 0, 0, 0 };
 			Read(buf, 3);
 			if (memcpy(buf, utf8bom, sizeof(utf8bom)))
-			{
 				SeekToBegin();
-			}
 		}
 
 		CStringA strA;
@@ -1516,13 +1470,9 @@ bool CAppUtils::IgnoreFile(const CTGitPathList& path,bool IsMask)
 					ignorePattern += _T("/");
 				}
 				if (IsMask)
-				{
 					ignorePattern += _T("*") + path[i].GetFileExtension();
-				}
 				else
-				{
 					ignorePattern += path[i].GetFileOrDirectoryName();
-				}
 
 				// escape [ and ] so that files get ignored correctly
 				ignorePattern.Replace(_T("["), _T("\\["));
@@ -1723,9 +1673,7 @@ bool CAppUtils::ConflictEdit(const CTGitPath& path, bool /*bAlternativeTool = fa
 	cmd.Format(_T("git.exe ls-files -u -t -z -- \"%s\""), (LPCTSTR)merge.GetGitPathString());
 
 	if (g_Git.Run(cmd, &vector))
-	{
 		return FALSE;
-	}
 
 	if (merge.IsDirectory())
 	{
@@ -1879,7 +1827,6 @@ bool CAppUtils::ConflictEdit(const CTGitPath& path, bool /*bAlternativeTool = fa
 			bRet = !!CAppUtils::StartExtMerge(base, mine, theirs, merge, _T("BASE"), _T("REMOTE"), _T("LOCAL"), CString(), false, resolveMsgHwnd, true);
 		else
 			bRet = !!CAppUtils::StartExtMerge(base, theirs, mine, merge, _T("BASE"), _T("REMOTE"), _T("LOCAL"), CString(), false, resolveMsgHwnd, true);
-
 	}
 	else
 	{
@@ -1907,9 +1854,7 @@ bool CAppUtils::ConflictEdit(const CTGitPath& path, bool /*bAlternativeTool = fa
 		{
 			CString out;
 			if(dlg.m_bIsDelete)
-			{
 				cmd.Format(_T("git.exe rm -- \"%s\""), (LPCTSTR)merge.GetGitPathString());
-			}
 			else
 				cmd.Format(_T("git.exe add -- \"%s\""), (LPCTSTR)merge.GetGitPathString());
 
@@ -1954,9 +1899,7 @@ bool CAppUtils::ConflictEdit(const CTGitPath& path, bool /*bAlternativeTool = fa
 			bConflictData = true;
 		}
 		else
-		{
 			mine = merge;
-		}
 		if (bConflictData)
 			bRet = !!CAppUtils::StartExtMerge(CAppUtils::MergeFlags().AlternativeTool(bAlternativeTool),
 												base, theirs, mine, merge);
@@ -2013,9 +1956,7 @@ bool CAppUtils::ConflictEdit(const CTGitPath& path, bool /*bAlternativeTool = fa
 					bConflictData = true;
 				}
 				else
-				{
 					mine = merge;
-				}
 				if (bConflictData)
 					bRet = !!CAppUtils::StartExtMerge(CAppUtils::MergeFlags().AlternativeTool(bAlternativeTool),
 														base, theirs, mine, merge);
@@ -2192,9 +2133,7 @@ bool CAppUtils::IsSSHPutty()
 	CString sshclient=g_Git.m_Environment.GetEnv(_T("GIT_SSH"));
 	sshclient=sshclient.MakeLower();
 	if(sshclient.Find(_T("plink.exe"),0)>=0)
-	{
 		return true;
-	}
 	return false;
 }
 
@@ -2277,9 +2216,7 @@ CString CAppUtils::ChooseRepository(const CString* path)
 	if(path)
 		strCloneDirectory=*path;
 	else
-	{
 		strCloneDirectory = regLastResopitory;
-	}
 
 	CString title;
 	title.LoadString(IDS_CHOOSE_REPOSITORY);
@@ -2292,9 +2229,7 @@ CString CAppUtils::ChooseRepository(const CString* path)
 		return strCloneDirectory;
 	}
 	else
-	{
 		return CString();
-	}
 }
 
 bool CAppUtils::SendPatchMail(CTGitPathList& list, bool bIsMainWnd)
@@ -2349,9 +2284,7 @@ bool CAppUtils::SendPatchMail(const CString& cmd, const CString& formatpatchoutp
 		list.AddPath(path);
 	}
 	if (!list.IsEmpty())
-	{
 		return SendPatchMail(list, bIsMainWnd);
-	}
 	else
 	{
 		CMessageBox::Show(nullptr, IDS_ERR_NOPATCHES, IDS_APPNAME, MB_ICONINFORMATION);
@@ -2367,9 +2300,7 @@ int CAppUtils::GetLogOutputEncode(CGit *pGit)
 	if(output.IsEmpty())
 		return CUnicodeUtils::GetCPCode(pGit->GetConfigValue(_T("i18n.commitencoding")));
 	else
-	{
 		return CUnicodeUtils::GetCPCode(output);
-	}
 }
 int CAppUtils::SaveCommitUnicodeFile(const CString& filename, CString &message)
 {
@@ -2453,9 +2384,7 @@ bool CAppUtils::Pull(bool showPush, bool showStashPop)
 		CString url = dlg.m_RemoteURL;
 
 		if (dlg.m_bAutoLoad)
-		{
 			CAppUtils::LaunchPAgent(nullptr, &dlg.m_RemoteURL);
-		}
 
 		CString cmd;
 		CGitHash hashOld;
@@ -2581,9 +2510,7 @@ bool CAppUtils::RebaseAfterFetch(const CString& upstream, int rebase, bool prese
 		dlg.m_bPreserveMerges = preserveMerges;
 		INT_PTR response = dlg.DoModal();
 		if (response == IDOK)
-		{
 			return true;
-		}
 		else if (response == IDC_REBASE_POST_BUTTON)
 		{
 			CString cmd = _T("/command:log");
@@ -2626,9 +2553,7 @@ static bool DoFetch(const CString& url, const bool fetchAllRemotes, const bool l
 			g_Git.GetRemoteList(list);
 
 			for (const auto& remote : list)
-			{
 				CAppUtils::LaunchPAgent(nullptr, &remote);
-			}
 		}
 		else
 			CAppUtils::LaunchPAgent(nullptr, &url);
@@ -3134,28 +3059,21 @@ BOOL CAppUtils::Commit(const CString& bugid, BOOL bWholeProject, CString &sLogMs
 	return true;
 }
 
-
 BOOL CAppUtils::SVNDCommit()
 {
 	CSVNDCommitDlg dcommitdlg;
 	CString gitSetting = g_Git.GetConfigValue(_T("svn.rmdir"));
 	if (gitSetting.IsEmpty()) {
 		if (dcommitdlg.DoModal() != IDOK)
-		{
 			return false;
-		}
 		else
 		{
 			if (dcommitdlg.m_remember)
 			{
 				if (dcommitdlg.m_rmdir)
-				{
 					gitSetting = _T("true");
-				}
 				else
-				{
 					gitSetting = _T("false");
-				}
 				if(g_Git.SetConfigValue(_T("svn.rmdir"),gitSetting))
 				{
 					CString msg;
@@ -3192,20 +3110,14 @@ BOOL CAppUtils::SVNDCommit()
 			IsStash =true;
 		}
 		else
-		{
 			return false;
-		}
 	}
 
 	CProgressDlg progress;
 	if (dcommitdlg.m_rmdir)
-	{
 		progress.m_GitCmd=_T("git.exe svn dcommit --rmdir");
-	}
 	else
-	{
 		progress.m_GitCmd=_T("git.exe svn dcommit");
-	}
 	if(progress.DoModal()==IDOK && progress.m_GitStatus == 0)
 	{
 		if( IsStash)
@@ -3231,9 +3143,7 @@ BOOL CAppUtils::SVNDCommit()
 				sysProgressDlg.Stop();
 			}
 			else
-			{
 				return false;
-			}
 		}
 		return TRUE;
 	}
@@ -3555,8 +3465,6 @@ bool CAppUtils::BisectStart(const CString& lastGood, const CString& firstBad, bo
 				});
 			}
 		};
-
-		
 
 		INT_PTR ret = progress.DoModal();
 		return ret == IDOK;

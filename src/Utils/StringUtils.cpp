@@ -30,9 +30,7 @@ int strwildcmp(const char *wild, const char *string)
 	while ((*string) && (*wild != '*'))
 	{
 		if ((*wild != *string) && (*wild != '?'))
-		{
 			return 0;
-		}
 		++wild;
 		++string;
 	}
@@ -41,9 +39,7 @@ int strwildcmp(const char *wild, const char *string)
 		if (*wild == '*')
 		{
 			if (!*++wild)
-			{
 				return 1;
-			}
 			mp = wild;
 			cp = string+1;
 		}
@@ -60,9 +56,7 @@ int strwildcmp(const char *wild, const char *string)
 	}
 
 	while (*wild == '*')
-	{
 		++wild;
-	}
 	return !*wild;
 }
 
@@ -73,9 +67,7 @@ int wcswildcmp(const wchar_t *wild, const wchar_t *string)
 	while ((*string) && (*wild != '*'))
 	{
 		if ((*wild != *string) && (*wild != '?'))
-		{
 			return 0;
-		}
 		++wild;
 		++string;
 	}
@@ -84,9 +76,7 @@ int wcswildcmp(const wchar_t *wild, const wchar_t *string)
 		if (*wild == '*')
 		{
 			if (!*++wild)
-			{
 				return 1;
-			}
 			mp = wild;
 			cp = string+1;
 		}
@@ -103,9 +93,7 @@ int wcswildcmp(const wchar_t *wild, const wchar_t *string)
 	}
 
 	while (*wild == '*')
-	{
 		++wild;
-	}
 	return !*wild;
 }
 

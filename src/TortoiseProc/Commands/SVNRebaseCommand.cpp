@@ -164,7 +164,5 @@ bool SVNRebaseCommand::Execute()
 void SVNRebaseCommand::askIfUserWantsToStashPop()
 {
 	if (MessageBox(hwndExplorer, g_Git.m_CurrentDir + L"\r\n" + CString(MAKEINTRESOURCE(IDS_DCOMMIT_STASH_POP)), L"TortoiseGit", MB_YESNO | MB_ICONINFORMATION) == IDYES)
-	{
 		CAppUtils::StashPop();
-	}
 }

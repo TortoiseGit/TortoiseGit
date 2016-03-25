@@ -80,7 +80,6 @@ LPCSHITEMID ItemIDList::get(int index) const
 		ptr = (LPCSHITEMID) byte;
 	}
 	return ptr;
-
 }
 
 tstring ItemIDList::toString(bool resolveLibraries /*= true*/)

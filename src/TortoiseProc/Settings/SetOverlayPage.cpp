@@ -259,9 +259,7 @@ BOOL CSetOverlayPage::OnApply()
 		// close the possible running cache process
 		HWND hWnd = ::FindWindow(TGIT_CACHE_WINDOW_NAME, TGIT_CACHE_WINDOW_NAME);
 		if (hWnd)
-		{
 			::PostMessage(hWnd, WM_CLOSE, NULL, NULL);
-		}
 		m_restart = Restart_None;
 	}
 	SetModified(FALSE);

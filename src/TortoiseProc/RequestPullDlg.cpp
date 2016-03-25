@@ -96,15 +96,12 @@ BOOL CRequestPullDlg::OnInitDialog()
 	m_cRepositoryURL.LoadHistory(_T("Software\\TortoiseGit\\History\\RequestPull"), _T("url"));
 	m_RegRepositoryURL = CRegString(_T("Software\\TortoiseGit\\History\\RequestPull\\")+WorkingDir+_T("\\repositoryurl"));
 	if(m_RepositoryURL.IsEmpty())
-	{
 		m_RepositoryURL = m_RegRepositoryURL;
-	}
 	m_cRepositoryURL.SetWindowTextW(m_RepositoryURL);
 
 	m_RegEndRevision = CRegString(_T("Software\\TortoiseGit\\History\\RequestPull\\")+WorkingDir+_T("\\endrevision"), _T("HEAD"));
-	if(m_EndRevision.IsEmpty()) {
+	if (m_EndRevision.IsEmpty())
 		m_EndRevision = m_RegEndRevision;
-	}
 	m_cEndRevision.SetWindowTextW(m_EndRevision);
 
 	this->UpdateData(FALSE);

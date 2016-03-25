@@ -167,9 +167,7 @@ BOOL CTortoiseGitBlameApp::InitInstance()
 		DWORD lid = SUBLANGID(langId);
 		lid--;
 		if (lid > 0)
-		{
 			langId = MAKELANGID(PRIMARYLANGID(langId), lid);
-		}
 		else
 			langId = 0;
 	} while (langId);

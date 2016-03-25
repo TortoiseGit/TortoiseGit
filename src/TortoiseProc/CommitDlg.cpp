@@ -1017,9 +1017,7 @@ void CCommitDlg::OnOK()
 		out =_T("");
 		CString amend;
 		if(this->m_bCommitAmend)
-		{
 			amend=_T("--amend");
-		}
 		CString dateTime;
 		if (m_bSetCommitDateTime)
 		{
@@ -1471,9 +1469,7 @@ BOOL CCommitDlg::PreTranslateMessage(MSG* pMsg)
 				if (GetAsyncKeyState(VK_CONTROL)&0x8000)
 				{
 					if ( GetDlgItem(IDOK)->IsWindowEnabled() )
-					{
 						PostMessage(WM_COMMAND, IDOK);
-					}
 					return TRUE;
 				}
 				if ( GetFocus()==GetDlgItem(IDC_BUGID) )
@@ -1840,13 +1836,9 @@ void CCommitDlg::ScanFile(const CString& sFilePath, const CString& sRegex, const
 		int opts = 0;
 		IsTextUnicode(buffer.get(), readbytes, &opts);
 		if (opts & IS_TEXT_UNICODE_NULL_BYTES)
-		{
 			return;
-		}
 		if (opts & IS_TEXT_UNICODE_UNICODE_MASK)
-		{
 			sFileContent = std::wstring((wchar_t*)buffer.get(), readbytes / sizeof(WCHAR));
-		}
 		if ((opts & IS_TEXT_UNICODE_NOT_UNICODE_MASK) || (opts == 0))
 		{
 			const int ret = MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, (LPCSTR)buffer.get(), readbytes, nullptr, 0);
@@ -1857,13 +1849,10 @@ void CCommitDlg::ScanFile(const CString& sFilePath, const CString& sRegex, const
 		}
 	}
 	if (sFileContent.empty() || !m_bRunThread)
-	{
 		return;
-	}
 
 	try
 	{
-
 		std::tr1::wregex regCheck;
 		std::map<CString, std::tr1::wregex>::const_iterator regIt;
 		if ((regIt = regexmap.find(sExt)) != regexmap.end())
@@ -1880,9 +1869,7 @@ void CCommitDlg::ScanFile(const CString& sFilePath, const CString& sRegex, const
 			for (size_t i = 1; i < match.size(); ++i)
 			{
 				if (match[i].second-match[i].first)
-				{
 					m_autolist.emplace(std::wstring(match[i]).c_str(), AUTOCOMPLETE_PROGRAMCODE);
-				}
 			}
 		}
 	}
@@ -2058,9 +2045,7 @@ void CCommitDlg::OnBnClickedHistory()
 	{
 		CString sBugID = m_ProjectProperties.FindBugID(sMsg);
 		if ((!sBugID.IsEmpty()) && ((GetDlgItem(IDC_BUGID)->IsWindowVisible())))
-		{
 			SetDlgItemText(IDC_BUGID, sBugID);
-		}
 		if (m_sLogTemplate.Compare(m_cLogMessage.GetText()) != 0)
 			m_cLogMessage.InsertText(sMsg, !m_cLogMessage.GetText().IsEmpty());
 		else
@@ -2069,7 +2054,6 @@ void CCommitDlg::OnBnClickedHistory()
 
 	SendMessage(WM_UPDATEOKBUTTON);
 	GetDlgItem(IDC_LOGMESSAGE)->SetFocus();
-
 }
 
 void CCommitDlg::OnBnClickedBugtraqbutton()
@@ -2166,9 +2150,7 @@ void CCommitDlg::OnBnClickedBugtraqbutton()
 	{
 		CString sBugID = m_ProjectProperties.FindBugID(m_sLogMessage);
 		if (!sBugID.IsEmpty() && !bugIdOutSet)
-		{
 			SetDlgItemText(IDC_BUGID, sBugID);
-		}
 	}
 
 	m_cLogMessage.SetFocus();
@@ -2595,7 +2577,6 @@ void CCommitDlg::OnMoving(UINT fwSide, LPRECT pRect)
 			}
 		}
 	}
-
 }
 
 void CCommitDlg::OnSizing(UINT fwSide, LPRECT pRect)
@@ -2613,13 +2594,9 @@ void CCommitDlg::OnSizing(UINT fwSide, LPRECT pRect)
 			patchrect.right-= (thisrect.right - pRect->right);
 
 			if(	patchrect.bottom == thisrect.bottom)
-			{
 				patchrect.bottom -= (thisrect.bottom - pRect->bottom);
-			}
 			if(	patchrect.top == thisrect.top)
-			{
 				patchrect.top -=  thisrect.top-pRect->top;
-			}
 			m_patchViewdlg.MoveWindow(patchrect);
 		}
 	}

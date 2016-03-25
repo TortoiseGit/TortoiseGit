@@ -32,7 +32,6 @@ class SubmoduleCommand:public Command
 {
 public:
 	virtual bool Execute(CString cmd,CString arg=_T(""));
-
 };
 
 class SubmoduleUpdateCommand : public Command

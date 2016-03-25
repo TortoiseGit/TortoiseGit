@@ -170,9 +170,7 @@ void LoadLangDll()
 				DWORD lid = SUBLANGID(langId);
 				lid--;
 				if (lid > 0)
-				{
 					langId = MAKELANGID(PRIMARYLANGID(langId), lid);
-				}
 				else
 					langId = 0;
 			}
@@ -204,37 +202,21 @@ STDMETHODIMP CShellExt::QueryInterface(REFIID riid, LPVOID FAR *ppv)
 	*ppv = nullptr;
 
 	if (IsEqualIID(riid, IID_IShellExtInit) || IsEqualIID(riid, IID_IUnknown))
-	{
 		*ppv = static_cast<LPSHELLEXTINIT>(this);
-	}
 	else if (IsEqualIID(riid, IID_IContextMenu))
-	{
 		*ppv = static_cast<LPCONTEXTMENU>(this);
-	}
 	else if (IsEqualIID(riid, IID_IContextMenu2))
-	{
 		*ppv = static_cast<LPCONTEXTMENU2>(this);
-	}
 	else if (IsEqualIID(riid, IID_IContextMenu3))
-	{
 		*ppv = static_cast<LPCONTEXTMENU3>(this);
-	}
 	else if (IsEqualIID(riid, IID_IShellIconOverlayIdentifier))
-	{
 		*ppv = static_cast<IShellIconOverlayIdentifier*>(this);
-	}
 	else if (IsEqualIID(riid, IID_IShellPropSheetExt))
-	{
 		*ppv = static_cast<LPSHELLPROPSHEETEXT>(this);
-	}
 	else if (IsEqualIID(riid, IID_IShellCopyHook))
-	{
 		*ppv = static_cast<ICopyHook*>(this);
-	}
 	else
-	{
 		return E_NOINTERFACE;
-	}
 
 	AddRef();
 	return S_OK;

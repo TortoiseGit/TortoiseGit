@@ -238,9 +238,7 @@ BOOL CSettingsAdvanced::OnInitDialog()
 	int maxcol = m_ListCtrl.GetHeaderCtrl()->GetItemCount() - 1;
 	int col;
 	for (col = mincol; col <= maxcol; ++col)
-	{
 		m_ListCtrl.SetColumnWidth(col, LVSCW_AUTOSIZE_USEHEADER);
-	}
 	int arr[2] = {1,0};
 	m_ListCtrl.SetColumnOrderArray(2, arr);
 	m_ListCtrl.SetRedraw(TRUE);
@@ -265,9 +263,7 @@ BOOL CSettingsAdvanced::OnApply()
 				{
 					DWORD newValue = sValue.Compare(_T("true")) == 0;
 					if (DWORD(s) != newValue)
-					{
 						s = newValue;
-					}
 				}
 			}
 			break;
@@ -275,18 +271,14 @@ BOOL CSettingsAdvanced::OnApply()
 			{
 				CRegDWORD s(_T("Software\\TortoiseGit\\") + settings[i].sName, settings[i].def.l);
 				if (DWORD(_tstol(sValue)) != DWORD(s))
-				{
 					s = _tstol(sValue);
-				}
 			}
 			break;
 		case SettingTypeString:
 			{
 				CRegString s(_T("Software\\TortoiseGit\\") + settings[i].sName, settings[i].def.s);
 				if (sValue.Compare(CString(s)))
-				{
 					s = sValue;
-				}
 			}
 		}
 

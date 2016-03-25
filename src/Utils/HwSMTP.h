@@ -142,6 +142,5 @@ private:
 	CString m_csMIMEContentType;
 	CString m_csPartBoundary;
 	CString m_csNoMIMEText;
-
 };
 #endif // !defined(AFX_HwSMTP_H__633A52B7_1CBE_41D7_BDA3_188D98D692AF__INCLUDED_)

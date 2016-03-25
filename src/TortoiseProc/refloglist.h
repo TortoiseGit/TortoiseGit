@@ -41,5 +41,4 @@ public:
 protected:
 	virtual void OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult);
 	virtual void OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult);
-
 };

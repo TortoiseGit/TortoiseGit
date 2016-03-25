@@ -236,9 +236,7 @@ STDMETHODIMP CShellExt::IsMemberOf_Wrap(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 						if (g_ShellCache.HasGITAdminDir(pPath, TRUE))
 						{
 							if ((!g_ShellCache.IsRecursive()) && (!g_ShellCache.IsFolderOverlay()))
-							{
 								status = git_wc_status_normal;
-							}
 							else
 							{
 								s = m_CachedStatus.GetFullStatus(CTGitPath(pPath), TRUE);
@@ -246,9 +244,7 @@ STDMETHODIMP CShellExt::IsMemberOf_Wrap(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 							}
 						}
 						else
-						{
 							status = git_wc_status_none;
-						}
 					}
 					else
 					{
@@ -271,18 +267,12 @@ STDMETHODIMP CShellExt::IsMemberOf_Wrap(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 				if (PathIsDirectory(pPath))
 				{
 					if (g_ShellCache.HasGITAdminDir(pPath, TRUE))
-					{
 						status = git_wc_status_normal;
-					}
 					else
-					{
 						status = git_wc_status_none;
-					}
 				}
 				else
-				{
 					status = git_wc_status_none;
-				}
 			}
 			break;
 		}

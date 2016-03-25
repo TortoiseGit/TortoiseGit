@@ -48,13 +48,9 @@ public:
 								if(WinPath.Left(g_Git.m_CurrentDir.GetLength())==g_Git.m_CurrentDir)
 								{
 									if(g_Git.m_CurrentDir[g_Git.m_CurrentDir.GetLength()-1] == _T('\\'))
-									{
 										cmdLinePath.SetFromWin( WinPath.Right(WinPath.GetLength()-g_Git.m_CurrentDir.GetLength()));
-									}
 									else
-									{
 										cmdLinePath.SetFromWin( WinPath.Right(WinPath.GetLength()-g_Git.m_CurrentDir.GetLength()-1));
-									}
 								}
 								orgPathList = plist;
 								for (int i = 0; i < plist.GetCount(); ++i)
@@ -64,13 +60,9 @@ public:
 									if(WinPath.Left(g_Git.m_CurrentDir.GetLength())==g_Git.m_CurrentDir)
 									{
 										if(g_Git.m_CurrentDir[g_Git.m_CurrentDir.GetLength()-1] == _T('\\'))
-										{
 											p.SetFromWin( WinPath.Right(WinPath.GetLength()-g_Git.m_CurrentDir.GetLength()));
-										}
 										else
-										{
 											p.SetFromWin( WinPath.Right(WinPath.GetLength()-g_Git.m_CurrentDir.GetLength()-1));
-										}
 									}
 									else
 										p=plist[i];

@@ -177,7 +177,6 @@ void CGitProgressDlg::OnCancel()
 	m_ProgList.Cancel();
 }
 
-
 BOOL CGitProgressDlg::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 {
 	if (!GetDlgItem(IDOK)->IsWindowEnabled())
@@ -220,8 +219,6 @@ BOOL CGitProgressDlg::PreTranslateMessage(MSG* pMsg)
 	return __super::PreTranslateMessage(pMsg);
 }
 
-
-
 void CGitProgressDlg::OnEnSetfocusInfotext()
 {
 	CString sTemp;
@@ -229,7 +226,6 @@ void CGitProgressDlg::OnEnSetfocusInfotext()
 	if (sTemp.IsEmpty())
 		GetDlgItem(IDC_INFOTEXT)->HideCaret();
 }
-
 
 LRESULT CGitProgressDlg::OnCtlColorStatic(WPARAM wParam, LPARAM lParam)
 {
@@ -319,6 +315,7 @@ LRESULT	CGitProgressDlg::OnCmdEnd(WPARAM /*wParam*/, LPARAM /*lParam*/)
 
 	return 0;
 }
+
 LRESULT	CGitProgressDlg::OnCmdStart(WPARAM /*wParam*/, LPARAM /*lParam*/)
 {
 	DialogEnableWindow(IDOK, FALSE);

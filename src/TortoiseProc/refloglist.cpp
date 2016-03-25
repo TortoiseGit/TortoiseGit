@@ -66,7 +66,6 @@ void CRefLogList::InsertRefLogColumn()
 	m_ColumnManager.ReadSettings(m_dwDefaultColumns,0, m_ColumnRegKey+_T("loglist"), _countof(normal), with);
 
 	SetRedraw(true);
-
 }
 
 void CRefLogList::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)

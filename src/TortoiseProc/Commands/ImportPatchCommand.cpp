@@ -66,15 +66,11 @@ bool ImportPatchCommand::Execute()
 	for(int i = 0 ; i < this->orgPathList.GetCount(); ++i)
 	{
 		if(!orgPathList[i].IsDirectory())
-		{
 			dlg.m_PathList.AddPath(orgPathList[i]);
-		}
 	}
 
 	if(dlg.DoModal()==IDOK)
-	{
 		return TRUE;
-	}
 
 	return FALSE;
 }

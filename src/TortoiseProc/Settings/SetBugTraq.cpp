@@ -94,9 +94,7 @@ void CSetBugTraq::RebuildBugTraqList()
 
 	int maxcol = m_cBugTraqList.GetHeaderCtrl()->GetItemCount() - 1;
 	for (int col = 0; col <= maxcol; col++)
-	{
 		m_cBugTraqList.SetColumnWidth(col, LVSCW_AUTOSIZE_USEHEADER);
-	}
 	m_cBugTraqList.SetRedraw(true);
 }
 

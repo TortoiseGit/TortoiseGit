@@ -39,7 +39,6 @@ CPatchListCtrl::CPatchListCtrl()
 	GetObject(hFont, sizeof(LOGFONT), &lf);
 	lf.lfWeight = FW_BOLD;
 	m_boldFont.CreateFontIndirect(&lf);
-
 }
 
 CPatchListCtrl::~CPatchListCtrl()
@@ -108,7 +107,6 @@ void CPatchListCtrl::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 		{
 		case MENU_VIEWPATCH:
 			{
-
 				CString path=GetItemText(index,0);
 				CTGitPath gitpath;
 				gitpath.SetFromWin(path);
@@ -177,7 +175,6 @@ void CPatchListCtrl::OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult)
 
 	*pResult = 0;
 
-
 	switch (pNMCD->nmcd.dwDrawStage)
 	{
 	case CDDS_PREPAINT:
@@ -196,9 +193,7 @@ void CPatchListCtrl::OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult)
 
 			DWORD_PTR data = this->GetItemData((int)pNMCD->nmcd.dwItemSpec);
 			if(data & (STATUS_APPLY_FAIL | STATUS_APPLY_SUCCESS | STATUS_APPLY_SKIP))
-			{
 				pNMCD->clrTextBk = RGB(200,200,200);
-			}
 
 			switch(data & STATUS_MASK)
 			{

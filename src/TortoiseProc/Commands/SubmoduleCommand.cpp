@@ -164,9 +164,7 @@ bool SubmoduleCommand::Execute(CString cmd,  CString arg)
 	CString bkpath;
 
 	if(parser.HasKey(_T("bkpath")))
-	{
 		bkpath=parser.GetVal(_T("bkpath"));
-	}
 	else
 	{
 		bkpath=this->orgPathList[0].GetWinPathString();

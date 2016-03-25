@@ -79,7 +79,6 @@ void CSyncDlg::DoDataExchange(CDataExchange* pDX)
 	BRANCH_COMBOX_DDX;
 }
 
-
 BEGIN_MESSAGE_MAP(CSyncDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_BUTTON_PULL, &CSyncDlg::OnBnClickedButtonPull)
 	ON_BN_CLICKED(IDC_BUTTON_PUSH, &CSyncDlg::OnBnClickedButtonPush)
@@ -101,7 +100,6 @@ BEGIN_MESSAGE_MAP(CSyncDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_LOG, &CSyncDlg::OnBnClickedLog)
 	ON_WM_DESTROY()
 END_MESSAGE_MAP()
-
 
 void CSyncDlg::EnableControlButton(bool bEnabled)
 {
@@ -809,7 +807,6 @@ void CSyncDlg::OnBnClickedButtonEmail()
 	}
 
 	CAppUtils::SendPatchMail(cmd,out);
-
 }
 void CSyncDlg::ShowProgressCtrl(bool bShow)
 {
@@ -1191,7 +1188,6 @@ BOOL CSyncDlg::PreTranslateMessage(MSG* pMsg)
 	{
 		switch (pMsg->wParam)
 		{
-
 		case VK_F5:
 			{
 				if (m_bBlock)
@@ -1319,7 +1315,6 @@ void CSyncDlg::FetchOutList(bool force)
 		this->m_OutLocalBranch=localbranch;
 		this->m_OutRemoteBranch=remotebranch;
 	}
-
 }
 
 bool CSyncDlg::IsURL()
@@ -1331,6 +1326,7 @@ bool CSyncDlg::IsURL()
 	else
 		return false;
 }
+
 void CSyncDlg::OnCbnEditchangeComboboxex()
 {
 	SetTimer(IDT_INPUT, 1000, nullptr);
@@ -1348,7 +1344,6 @@ UINT CSyncDlg::ProgressThread()
 	InterlockedExchange(&m_bBlock, FALSE);
 	return 0;
 }
-
 
 LRESULT CSyncDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 {
@@ -1490,9 +1485,7 @@ void CSyncDlg::FillNewRefMap()
 		}
 		// deleted ref
 		if (!found)
-		{
 			m_refList.AddEntry(repo, oit->first, &oit->second, nullptr);
-		}
 	}
 	for (auto nit = newRefMap->cbegin(); nit != newRefMap->cend(); ++nit)
 	{
@@ -1507,9 +1500,7 @@ void CSyncDlg::FillNewRefMap()
 		}
 		// new ref
 		if (!found)
-		{
 			m_refList.AddEntry(repo, nit->first, nullptr, &nit->second);
-		}
 	}
 	delete oldRefMap;
 	delete newRefMap;
@@ -1543,13 +1534,9 @@ void CSyncDlg::RunPostAction()
 		this->FetchOutList(true);
 	}
 	else if (this->m_CurrentCmd == GIT_COMMAND_PULL)
-	{
 		PullComplete();
-	}
 	else if (this->m_CurrentCmd == GIT_COMMAND_FETCH || this->m_CurrentCmd == GIT_COMMAND_FETCHANDREBASE)
-	{
 		FetchComplete();
-	}
 	else if (this->m_CurrentCmd == GIT_COMMAND_SUBMODULE)
 	{
 		//this->m_ctrlCmdOut.SetSel(-1,-1);
@@ -1559,9 +1546,7 @@ void CSyncDlg::RunPostAction()
 		SwitchToInput();
 	}
 	else if (this->m_CurrentCmd == GIT_COMMAND_STASH)
-	{
 		StashComplete();
-	}
 	else if (this->m_CurrentCmd == GIT_COMMAND_REMOTE)
 	{
 		this->FetchOutList(true);
@@ -1615,13 +1600,9 @@ void CSyncDlg::OnCancel()
 		if (dwConfirmKillProcess && CMessageBox::Show(m_hWnd, IDS_PROC_CONFIRMKILLPROCESS, IDS_APPNAME, MB_YESNO | MB_ICONQUESTION) != IDYES)
 			return;
 		if (::GenerateConsoleCtrlEvent(CTRL_C_EVENT, 0))
-		{
 			::WaitForSingleObject(g_Git.m_CurrentGitPi.hProcess, 10000);
-		}
 		else
-		{
 			GetLastError();
-		}
 
 		CProgressDlg::KillProcessTree(g_Git.m_CurrentGitPi.dwProcessId);
 	}

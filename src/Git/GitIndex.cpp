@@ -853,9 +853,7 @@ bool CGitIgnoreList::CheckFileChanged(const CString &path)
 
 	// file not exist but cache exist
 	if ((ret != 0) && (cacheExist))
-	{
 		return true;
-	}
 	// file exist and cache exist
 
 	{

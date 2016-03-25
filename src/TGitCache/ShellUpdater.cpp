@@ -42,9 +42,7 @@ void CShellUpdater::Stop()
 	{
 		SetEvent(m_hTerminationEvent);
 		if(WaitForSingleObject(m_hThread, 200) != WAIT_OBJECT_0)
-		{
 			CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Error terminating shell updater thread\n");
-		}
 	}
 	m_hThread.CloseHandle();
 	m_hTerminationEvent.CloseHandle();

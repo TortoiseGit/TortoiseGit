@@ -180,7 +180,6 @@ BOOL CCachedDirectory::LoadFromDisk(FILE * pFile)
 		return false;
 	}
 	return true;
-
 }
 
 
@@ -251,7 +250,6 @@ CStatusCacheEntry CCachedDirectory::GetStatusFromCache(const CTGitPath& path, bo
 		CGitStatusCache::Instance().AddFolderForCrawling(path.GetContainingDirectory());
 		return CStatusCacheEntry();
 	}
-
 }
 
 CStatusCacheEntry CCachedDirectory::GetStatusFromGit(const CTGitPath &path, CString sProjectRoot)
@@ -282,7 +280,6 @@ CStatusCacheEntry CCachedDirectory::GetStatusFromGit(const CTGitPath &path, CStr
 
 		if (isDir)
 		{
-
 			CCachedDirectory * dirEntry = CGitStatusCache::Instance().GetDirectoryCacheEntry(path,
 											false); /* we needn't watch untracked directory*/
 
@@ -352,7 +349,6 @@ CStatusCacheEntry CCachedDirectory::GetStatusFromGit(const CTGitPath &path, CStr
 			return GetCacheStatusForMember(path);
 		return CStatusCacheEntry(m_ownStatus);
 	}
-
 }
 
 /// bFetch is true, fetch all status, call by crawl.
@@ -578,7 +574,6 @@ CCachedDirectory::AddEntry(const CTGitPath& path, const git_wc_status2_t* pGitSt
 	}
 }
 
-
 CString
 CCachedDirectory::GetCacheKey(const CTGitPath& path)
 {
@@ -758,7 +753,6 @@ void CCachedDirectory::UpdateCurrentStatus()
 		}
 	}
 }
-
 
 // Receive a notification from a child that its status has changed
 void CCachedDirectory::UpdateChildDirectoryStatus(const CTGitPath& childDir, git_wc_status_kind childStatus)

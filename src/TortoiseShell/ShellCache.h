@@ -478,9 +478,7 @@ public:
 		{
 			TCHAR * ptr = _tcsrchr(buf.get(), '\\');
 			if (ptr != 0)
-			{
 				*ptr = 0;
-			}
 		}
 		if ((GetTickCount64() - ADMINDIRTIMEOUT) < admindirticker)
 		{
@@ -571,9 +569,7 @@ private:
 				pos = excludeliststr.find(_T("\n"), pos_ant);
 			}
 			if (!excludeliststr.empty())
-			{
 				exvector.push_back(excludeliststr.substr(pos_ant, excludeliststr.size()-1));
-			}
 			excludeliststr = (stdstring)excludelist;
 		}
 	}
@@ -598,9 +594,7 @@ private:
 				pos = includeliststr.find(_T("\n"), pos_ant);
 			}
 			if (!includeliststr.empty())
-			{
 				invector.push_back(includeliststr.substr(pos_ant, includeliststr.size()-1));
-			}
 			includeliststr = (stdstring)includelist;
 		}
 	}

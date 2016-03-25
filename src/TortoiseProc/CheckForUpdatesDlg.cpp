@@ -555,9 +555,7 @@ void CCheckForUpdatesDlg::OnTimer(UINT_PTR nIDEvent)
 				ShowWindow(SW_SHOWNORMAL);
 			}
 			else
-			{
 				EndDialog(0);
-			}
 		}
 	}
 	CStandAloneDialog::OnTimer(nIDEvent);

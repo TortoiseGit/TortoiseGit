@@ -21,7 +21,6 @@
 #include <vector>
 
 namespace stdex {
-
 	/**
 	 * Subclass of the STL's vector class that allows the class to be used more
 	 * freely in place of a C-style array.
@@ -29,7 +28,6 @@ namespace stdex {
 	 */
 	template <class T, class Al = std::allocator<T> >
 	class vector : public std::vector<T, Al> {
-
 	  public:
 
 		/**
@@ -98,7 +96,5 @@ namespace stdex {
 		inline operator pointer () {
 			return empty() ? nullptr : &operator[](0);
 		}
-
 	};
-
 }

@@ -154,7 +154,6 @@ UINT CMessageBox::Show(HWND hWnd, UINT nMessage, UINT nCaption, int nDef, LPCTST
 	return CMessageBox::Show(hWnd, sMessage, sCaption, nDef, icon, sButton1, sButton2, sButton3);
 }
 
-
 UINT CMessageBox::ShowCheck(HWND hWnd, UINT nMessage, UINT nCaption, UINT uType, LPCTSTR lpRegistry, UINT nCheckMessage, BOOL *bChecked)
 {
 	CString sMessage;
@@ -635,7 +634,6 @@ CSize CMessageBox::GetButtonSize()
 	GetDlgItem(IDC_MESSAGEBOX_BUTTON2)->MoveWindow(0, 0, sz2.cx, sz2.cy);
 	GetDlgItem(IDC_MESSAGEBOX_BUTTON3)->MoveWindow(0, 0, sz3.cx, sz3.cy);
 
-
 	sz.cx = sz1.cx + sz2.cx + sz3.cx + (nButtons * MESSAGEBOX_BUTTONMARGIN);
 	sz.cy = max(sz1.cy, sz2.cy);
 	sz.cy = max(sz.cy, sz3.cy);
@@ -665,7 +663,6 @@ END_MESSAGE_MAP()
 void CMessageBox::OnPaint()
 {
 	CPaintDC dc(this); // device context for painting
-
 
 	CRect rect;
 	CRect drawrect;
@@ -698,9 +695,7 @@ void CMessageBox::OnPaint()
 		drawrect.left += m_szIcon.cx + MESSAGEBOX_ICONMARGIN;
 	}
 
-
 	DrawHTML(&memDC, drawrect, m_sMessage, m_LogFont);
-
 
 	//Copy the memory device context back into the original DC.
 	dc.BitBlt(rect.left, rect.top, rect.Width(), rect.Height(), &memDC, 0,0, SRCCOPY);
@@ -709,20 +704,14 @@ void CMessageBox::OnPaint()
 	memDC.SelectObject(pOldBitmap);
 	memDC.DeleteDC();
 	bitmap.DeleteObject();
-
-
 }
 
 void CMessageBox::OnMouseMove(UINT nFlags, CPoint point)
 {
 	if (IsPointOverALink(point))
-	{
 		m_Cursor.SetCursor(IDC_HAND);
-	}
 	else
-	{
 		m_Cursor.Restore();
-	}
 
 	__super::OnMouseMove(nFlags, point);
 }
@@ -746,9 +735,7 @@ void CMessageBox::OnButton1()
 		SetRegistryValue(m_sRegistryValue, m_uButton1Ret);
 	}
 	else
-	{
 		m_bChecked = FALSE;
-	}
 	EndDialog(m_uButton1Ret);
 }
 
@@ -760,9 +747,7 @@ void CMessageBox::OnButton2()
 		SetRegistryValue(m_sRegistryValue, m_uButton2Ret);
 	}
 	else
-	{
 		m_bChecked = FALSE;
-	}
 	if ((m_uButton2Ret == IDHELP)&&(!m_sHelpPath.IsEmpty()))
 	{
 		typedef HWND (WINAPI* FPHH)(HWND, LPCWSTR, UINT, DWORD);
@@ -779,9 +764,7 @@ void CMessageBox::OnButton2()
 			::MessageBox(m_hWnd, _T("could not show help file"), _T("Help"), MB_ICONERROR);
 	}
 	else if (m_uButton2Ret == IDHELP)
-	{
 		OnHelp();
-	}
 	else
 		EndDialog(m_uButton2Ret);
 }
@@ -794,9 +777,7 @@ void CMessageBox::OnButton3()
 		SetRegistryValue(m_sRegistryValue, m_uButton3Ret);
 	}
 	else
-	{
 		m_bChecked = FALSE;
-	}
 	if ((m_uButton3Ret == IDHELP)&&(!m_sHelpPath.IsEmpty()))
 	{
 		typedef HWND (WINAPI* FPHH)(HWND, LPCWSTR, UINT, DWORD);
@@ -813,9 +794,7 @@ void CMessageBox::OnButton3()
 			::MessageBox(m_hWnd, _T("could not show help file"), _T("Help"), MB_ICONERROR);
 	}
 	else if (m_uButton3Ret == IDHELP)
-	{
 		OnHelp();
-	}
 	else
 		EndDialog(m_uButton3Ret);
 }
@@ -998,9 +977,4 @@ BOOL CMessageBox::PreTranslateMessage(MSG* pMsg)
 
 	return __super::PreTranslateMessage(pMsg);
 }
-
-
-
-
-
 

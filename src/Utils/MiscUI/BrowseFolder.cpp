@@ -192,7 +192,6 @@ void CBrowseFolder::SetCheckBoxText2(LPCTSTR checktext)
 
 void CBrowseFolder::SetFont(HWND hwnd,LPTSTR FontName,int FontSize)
 {
-
 	HFONT hf;
 	LOGFONT lf={0};
 	HDC hdc=GetDC(hwnd);
@@ -205,7 +204,6 @@ void CBrowseFolder::SetFont(HWND hwnd,LPTSTR FontName,int FontSize)
 	SetBkMode(hdc,OPAQUE);
 	SendMessage(hwnd,WM_SETFONT,(WPARAM)hf,TRUE);
 	ReleaseDC(hwnd,hdc);
-
 }
 
 int CBrowseFolder::BrowseCallBackProc(HWND hwnd, UINT uMsg, LPARAM lParam, LPARAM /*lpData*/)
@@ -328,9 +326,7 @@ int CBrowseFolder::BrowseCallBackProc(HWND hwnd, UINT uMsg, LPARAM lParam, LPARA
 		// Set the status window to the currently selected path.
 		TCHAR szDir[MAX_PATH] = {0};
 		if (SHGetPathFromIDList((PCIDLIST_ABSOLUTE)lParam, szDir))
-		{
 			SendMessage(hwnd,BFFM_SETSTATUSTEXT, 0, (LPARAM)szDir);
-		}
 		else
 			return BFFM_VALIDATEFAILED;
 	}
@@ -346,9 +342,7 @@ LRESULT CBrowseFolder::CheckBoxSubclassProc(HWND hwnd,UINT uMsg,WPARAM wParam,LP
 	{
 		m_bCheck = (SendMessage(hwnd,BM_GETCHECK,0,0)==BST_UNCHECKED);
 		if (m_bCheck && m_DisableCheckbox2WhenCheckbox1IsChecked)
-		{
 			::EnableWindow(checkbox2, !m_bCheck);
-		}
 		else
 			::EnableWindow(checkbox2, true);
 	}
@@ -360,9 +354,7 @@ LRESULT CBrowseFolder::CheckBoxSubclassProc(HWND hwnd,UINT uMsg,WPARAM wParam,LP
 LRESULT CBrowseFolder::CheckBoxSubclassProc2(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 {
 	if (uMsg == WM_LBUTTONUP)
-	{
 		m_bCheck2 = (SendMessage(hwnd,BM_GETCHECK,0,0)==BST_UNCHECKED);
-	}
 
 	return CallWindowProc(CBProc, hwnd, uMsg,
 		wParam, lParam);

@@ -28,7 +28,6 @@ IMPLEMENT_DYNAMIC(CCreateChangelistDlg, CDialog)
 CCreateChangelistDlg::CCreateChangelistDlg(CWnd* pParent /*=nullptr*/)
 	: CDialog(CCreateChangelistDlg::IDD, pParent)
 {
-
 }
 
 CCreateChangelistDlg::~CCreateChangelistDlg()
@@ -41,11 +40,9 @@ void CCreateChangelistDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_NAME, m_sName);
 }
 
-
 BEGIN_MESSAGE_MAP(CCreateChangelistDlg, CDialog)
 	ON_EN_CHANGE(IDC_NAME, &CCreateChangelistDlg::OnEnChangeName)
 END_MESSAGE_MAP()
-
 
 // CCreateChangelistDlg message handlers
 

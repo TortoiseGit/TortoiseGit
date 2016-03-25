@@ -32,7 +32,6 @@ CGotoLineDlg::CGotoLineDlg(CWnd* pParent /*=NULL*/)
 	, m_nLow(-1)
 	, m_nHigh(-1)
 {
-
 }
 
 CGotoLineDlg::~CGotoLineDlg()

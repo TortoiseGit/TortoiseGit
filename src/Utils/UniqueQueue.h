@@ -70,7 +70,6 @@ UniqueQueue<T>::UniqueQueue()
 template <class T>
 UniqueQueue<T>::~UniqueQueue()
 {
-
 }
 
 template <class T>

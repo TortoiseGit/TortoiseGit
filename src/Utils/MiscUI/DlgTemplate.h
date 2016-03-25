@@ -18,7 +18,6 @@
 //
 class CDlgTemplate
 {
-
 public:
 
 	CDlgTemplate()
@@ -30,7 +29,6 @@ public:
     CDlgTemplate(LPCTSTR caption, DWORD style, short x, short y, short w, short h,
         LPCTSTR font = nullptr, LONG fontSize = 8)
     {
-
         usedBufferLength = sizeof(DLGTEMPLATE );
         totalBufferLength = usedBufferLength;
 
@@ -67,7 +65,6 @@ public:
     void AddComponent(LPCTSTR type, LPCTSTR caption, DWORD style, DWORD exStyle,
         short x, short y, short w, short h, WORD id)
     {
-
         DLGITEMTEMPLATE item;
 
         item.style = style;
@@ -90,73 +87,60 @@ public:
         //increment the component count
 
         dialogTemplate->cdit++;
-
     }
 
     void AddButton(LPCTSTR caption, DWORD style, DWORD exStyle, short x, short y,
         short w, short h, WORD id)
     {
-
         AddStandardComponent(0x0080, caption, style, exStyle, x, y, w, h, id);
 
         WORD creationDataLength = 0;
         AppendData(&creationDataLength, sizeof(WORD));
-
     }
 
     void AddEditBox(LPCTSTR caption, DWORD style, DWORD exStyle, short x, short y,
         short w, short h, WORD id)
     {
-
         AddStandardComponent(0x0081, caption, style, exStyle, x, y, w, h, id);
 
         WORD creationDataLength = 0;
         AppendData(&creationDataLength, sizeof(WORD));
-
     }
 
     void AddStatic(LPCTSTR caption, DWORD style, DWORD exStyle, short x, short y,
         short w, short h, WORD id)
     {
-
         AddStandardComponent(0x0082, caption, style, exStyle, x, y, w, h, id);
 
         WORD creationDataLength = 0;
         AppendData(&creationDataLength, sizeof(WORD));
-
     }
 
     void AddListBox(LPCTSTR caption, DWORD style, DWORD exStyle, short x, short y,
         short w, short h, WORD id)
     {
-
         AddStandardComponent(0x0083, caption, style, exStyle, x, y, w, h, id);
 
         WORD creationDataLength = 0;
         AppendData(&creationDataLength, sizeof(WORD));
-
     }
 
     void AddScrollBar(LPCTSTR caption, DWORD style, DWORD exStyle, short x, short y,
         short w, short h, WORD id)
     {
-
         AddStandardComponent(0x0084, caption, style, exStyle, x, y, w, h, id);
 
         WORD creationDataLength = 0;
         AppendData(&creationDataLength, sizeof(WORD));
-
     }
 
     void AddComboBox(LPCTSTR caption, DWORD style, DWORD exStyle, short x, short y,
         short w, short h, WORD id)
     {
-
         AddStandardComponent(0x0085, caption, style, exStyle, x, y, w, h, id);
 
         WORD creationDataLength = 0;
         AppendData(&creationDataLength, sizeof(WORD));
-
     }
 
     /**
@@ -180,7 +164,6 @@ protected:
     void AddStandardComponent(WORD type, LPCTSTR caption, DWORD style,
         DWORD exStyle, short x, short y, short w, short h, WORD id)
     {
-
         DLGITEMTEMPLATE item;
 
         // DWORD align the beginning of the component data
@@ -208,12 +191,10 @@ protected:
         // Increment the component count
 
         dialogTemplate->cdit++;
-
     }
 
     void AlignData(int size)
     {
-
         int paddingSize = usedBufferLength % size;
 
         if (paddingSize != 0)
@@ -221,7 +202,6 @@ protected:
             EnsureSpace(paddingSize);
             usedBufferLength += paddingSize;
         }
-
     }
 
     void AppendString(LPCTSTR string)
@@ -246,20 +226,16 @@ protected:
 
     void AppendData(void* data, int dataLength)
     {
-
         EnsureSpace(dataLength);
 
         memcpy((char*)dialogTemplate + usedBufferLength, data, dataLength);
         usedBufferLength += dataLength;
-
     }
 
     void EnsureSpace(int length)
     {
-
         if (length + usedBufferLength > totalBufferLength)
         {
-
             totalBufferLength += length * 2;
 
             void* newBuffer = malloc(totalBufferLength);
@@ -267,9 +243,7 @@ protected:
 
             free(dialogTemplate);
             dialogTemplate = (DLGTEMPLATE*)newBuffer;
-
         }
-
     }
 
 private:
@@ -278,5 +252,4 @@ private:
 
     int totalBufferLength;
     int usedBufferLength;
-
 };

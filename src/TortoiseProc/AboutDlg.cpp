@@ -160,9 +160,7 @@ void CAboutDlg::OnMouseMove(UINT nFlags, CPoint point)
 			m_waterEffect.Blob(point.x -15,point.y,10,1600,m_waterEffect.m_iHpage);
 		else
 			m_waterEffect.Blob(point.x -15,point.y,5,50,m_waterEffect.m_iHpage);
-
 	}
-
 
 	CStandAloneDialog::OnMouseMove(nFlags, point);
 }

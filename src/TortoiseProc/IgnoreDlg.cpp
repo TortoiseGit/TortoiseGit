@@ -32,7 +32,6 @@ CIgnoreDlg::CIgnoreDlg(CWnd* pParent /*=nullptr*/)
 	, m_IgnoreType(0)
 	, m_IgnoreFile(1)
 {
-
 }
 
 CIgnoreDlg::~CIgnoreDlg()

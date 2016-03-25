@@ -241,13 +241,9 @@ void CSettingsTBlame::UpdateDependencies()
 	BOOL enableDetectMovedOrCopiedLinesNumCharactersWithinFile = FALSE;
 	BOOL enableDetectMovedOrCopiedLinesNumCharactersFromFiles = FALSE;
 	if (m_dwDetectMovedOrCopiedLines == BLAME_DETECT_MOVED_OR_COPIED_LINES_WITHIN_FILE)
-	{
 		enableDetectMovedOrCopiedLinesNumCharactersWithinFile = TRUE;
-	}
 	if (m_dwDetectMovedOrCopiedLines == BLAME_DETECT_MOVED_OR_COPIED_LINES_FROM_MODIFIED_FILES || m_dwDetectMovedOrCopiedLines == BLAME_DETECT_MOVED_OR_COPIED_LINES_FROM_EXISTING_FILES_AT_FILE_CREATION || m_dwDetectMovedOrCopiedLines == BLAME_DETECT_MOVED_OR_COPIED_LINES_FROM_EXISTING_FILES)
-	{
 		enableDetectMovedOrCopiedLinesNumCharactersFromFiles = TRUE;
-	}
 	BOOL enableShowCompleteLog = FALSE;
 	BOOL enableFollowRenames = FALSE;
 	if (BlameIsLimitedToOneFilename(m_dwDetectMovedOrCopiedLines))

@@ -55,7 +55,6 @@ void CRevisionGraphWnd::InitView()
 
 void CRevisionGraphWnd::BuildPreview()
 {
-
 	m_Preview.DeleteObject();
 	if (!m_bShowOverview)
 		return;
@@ -103,7 +102,6 @@ void CRevisionGraphWnd::BuildPreview()
 	dc.DeleteDC();
 
 	DoZoom (origZoom, false);
-
 }
 
 void CRevisionGraphWnd::SetScrollbar (int bar, int newPos, int clientMax, int graphMax)
@@ -126,7 +124,6 @@ void CRevisionGraphWnd::SetScrollbar (int bar, int newPos, int clientMax, int gr
 	ScrollInfo.nTrackPos = pos;
 
 	SetScrollInfo(bar, &ScrollInfo);
-
 }
 
 void CRevisionGraphWnd::SetScrollbars (int nVert, int nHorz)
@@ -352,7 +349,6 @@ void CRevisionGraphWnd::GetSelected
 	, GitRev& rev
 	, GitRev& peg)
 {
-
 	CString repoRoot = m_state.GetRepositoryRoot();
 
 	// get path and revision
@@ -380,7 +376,6 @@ void CRevisionGraphWnd::GetSelected
 		if (head && !peg.IsValid())
 			peg = node->GetRevision();
 	}
-
 }
 #endif
 
@@ -397,7 +392,6 @@ CString	CRevisionGraphWnd::GetFriendRefName(ogdf::node v)
 		return hash.ToString();
 	else
 		return m_HashMap[hash][0];
-
 }
 
 STRING_VECTOR CRevisionGraphWnd::GetFriendRefNames(ogdf::node v, CGit::REF_TYPE *refTypes, int refTypeCount)
@@ -447,7 +441,6 @@ void CRevisionGraphWnd::CompareRevs(const CString& revTo)
 			!revTo.IsEmpty() ? (LPCTSTR)revTo : (LPCTSTR)GetFriendRefName(m_SelectedEntry2));
 
 	CAppUtils::RunTortoiseGitProc(sCmd);
-
 }
 
 void CRevisionGraphWnd::UnifiedDiffRevs(bool bHead)
@@ -459,7 +452,6 @@ void CRevisionGraphWnd::UnifiedDiffRevs(bool bHead)
 	CAppUtils::StartShowUnifiedDiff(m_hWnd, CString(), GetFriendRefName(m_SelectedEntry1), CString(),
 		bHead? _T("HEAD"):GetFriendRefName(m_SelectedEntry2),
 		alternativeTool);
-
 }
 
 void CRevisionGraphWnd::DoZoom (float fZoomFactor, bool updateScrollbars)

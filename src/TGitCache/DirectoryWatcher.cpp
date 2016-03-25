@@ -170,13 +170,9 @@ bool CDirectoryWatcher::AddPath(const CTGitPath& path, bool bCloseInfoMap)
 				if ((len > 1)&&(len < minlen))
 				{
 					if (sPath.GetAt(len)=='\\')
-					{
 						newroot = CTGitPath(sPath.Left(len));
-					}
 					else if (watched.GetAt(len)=='\\')
-					{
 						newroot = CTGitPath(watched.Left(len));
-					}
 				}
 				break;
 			}
@@ -188,13 +184,9 @@ bool CDirectoryWatcher::AddPath(const CTGitPath& path, bool bCloseInfoMap)
 				if (watched.GetLength() > minlen)
 				{
 					if (watched.GetAt(len)=='\\')
-					{
 						newroot = path;
-					}
 					else if (sPath.GetLength() == 3 && sPath[1] == ':')
-					{
 						newroot = path;
-					}
 				}
 			}
 			else
@@ -202,13 +194,9 @@ bool CDirectoryWatcher::AddPath(const CTGitPath& path, bool bCloseInfoMap)
 				if (sPath.GetLength() > minlen)
 				{
 					if (sPath.GetAt(len)=='\\')
-					{
 						newroot = CTGitPath(watched);
-					}
 					else if (watched.GetLength() == 3 && watched[1] == ':')
-					{
 						newroot = CTGitPath(watched);
-					}
 				}
 			}
 		}
@@ -430,9 +418,7 @@ void CDirectoryWatcher::WorkerThread()
 							_tcsncpy_s(buf, pdi->m_DirPath, _countof(buf) - 1);
 							errno_t err = _tcsncat_s(buf + pdi->m_DirPath.GetLength(), READ_DIR_CHANGE_BUFFER_SIZE-pdi->m_DirPath.GetLength(), pnotify->FileName, min(READ_DIR_CHANGE_BUFFER_SIZE-pdi->m_DirPath.GetLength(), pnotify->FileNameLength/sizeof(TCHAR)));
 							if (err == STRUNCATE)
-							{
 								continue;
-							}
 							buf[(pnotify->FileNameLength/sizeof(TCHAR))+pdi->m_DirPath.GetLength()] = 0;
 
 							if (m_FolderCrawler)
@@ -441,9 +427,7 @@ void CDirectoryWatcher::WorkerThread()
 								{
 									pFound += 4;
 									if (((*pFound)=='\\')||((*pFound)=='\0'))
-									{
 										continue;
-									}
 								}
 								if ((pFound = wcsstr(buf, L":\\RECYCLER\\")) != nullptr)
 								{
@@ -489,9 +473,7 @@ void CDirectoryWatcher::WorkerThread()
 										CGitStatusCache::Instance().BlockPath(path, 1);
 									}
 									else
-									{
 										continue;
-									}
 								}
 								else
 									path.SetFromUnknown(buf);

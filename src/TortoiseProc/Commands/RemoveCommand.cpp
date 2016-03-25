@@ -82,13 +82,9 @@ bool RemoveCommand::Execute()
 				{
 					CString msg, yes, no, yestoall;
 					if (pathList[nPath].IsDirectory())
-					{
 						msg.Format(IDS_PROC_REMOVEFORCEFOLDER, pathList[nPath].GetWinPath());
-					}
 					else
-					{
 						msg.Format(IDS_PROC_REMOVEFORCE, (LPCTSTR)svn.GetLastErrorMessage());
-					}
 					yes.LoadString(IDS_MSGBOX_YES);
 					no.LoadString(IDS_MSGBOX_NO);
 					yestoall.LoadString(IDS_PROC_YESTOALL);
@@ -100,9 +96,7 @@ bool RemoveCommand::Execute()
 						CTSVNPath delPath = removePathList[0];
 						delPath.Delete(true);
 						if (!svn.Remove(removePathList, TRUE, parser.HasKey(_T("keep"))))
-						{
 							CMessageBox::Show(hwndExplorer, svn.GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
-						}
 						else
 							bRet = true;
 					}
@@ -131,13 +125,9 @@ bool RemoveCommand::Execute()
 		return false;
 
 	if (keepLocal)
-	{
 		format= _T("git.exe rm -r -f --cached -- \"%s\"");
-	}
 	else
-	{
 		format=_T("git.exe rm -r -f -- \"%s\"");
-	}
 
 	CString output;
 	CString cmd;

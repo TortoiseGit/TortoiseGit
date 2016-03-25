@@ -464,17 +464,13 @@ void CPullFetchDlg::OnBnClickedCheckFfonly()
 		GetDlgItem(IDC_CHECK_FFONLY)->EnableWindow(FALSE);
 	}
 	else
-	{
 		GetDlgItem(IDC_CHECK_FFONLY)->EnableWindow(TRUE);
-	}
 	if (m_bFFonly)
 	{
 		m_bNoFF = FALSE;
 		GetDlgItem(IDC_CHECK_NOFF)->EnableWindow(FALSE);
 	}
 	else
-	{
 		GetDlgItem(IDC_CHECK_NOFF)->EnableWindow(TRUE);
-	}
 	UpdateData(FALSE);
 }

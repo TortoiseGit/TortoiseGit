@@ -222,7 +222,6 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 			} // if (m_State == FileStateDropHandler)
 			else
 			{
-
 				//Enumerate PIDLs which the user has selected
 				CIDA* cida = (CIDA*)GlobalLock(medium.hGlobal);
 				ItemIDList parent( GetPIDLFolder (cida));
@@ -381,7 +380,6 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 	// get folder background
 	if (pIDFolder)
 	{
-
 		ItemIDList list(pIDFolder);
 		folder_ = list.toString();
 		git_wc_status_kind status = git_wc_status_none;
@@ -482,7 +480,6 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 		itemStates |= ITEMIS_TWO;
 	if ((files_.size() == 1)&&(g_ShellCache.IsContextPathAllowed(files_.front().c_str())))
 	{
-
 		itemStates |= ITEMIS_ONLYONE;
 		if (m_State != FileStateDropHandler)
 		{
@@ -1031,9 +1028,7 @@ STDMETHODIMP CShellExt::QueryContextMenu_Wrap(HMENU hMenu,
 			if (menuInfo[menuIndex].menuID & menuex)
 			{
 				if( !(itemStates & ITEMIS_EXTENDED) )
-				{
 					bInsertMenu = false;
-				}
 			}
 
 			if (menuInfo[menuIndex].menuID & (~menumask))
@@ -1407,9 +1402,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 					}
 				}
 				else
-				{
 					gitCmd.clear();
-				}
 				break;
 			case ShellMenuPrevDiff:
 				AddPathCommand(gitCmd, L"prevdiff", true);
@@ -1475,13 +1468,9 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				break;
 			case ShellMenuShowChanged:
 				if (files_.size() > 1)
-				{
 					AddPathFileCommand(gitCmd, L"repostatus");
-				}
 				else
-				{
 					AddPathCommand(gitCmd, L"repostatus", true);
-				}
 				break;
 			case ShellMenuRepoBrowse:
 				AddPathCommand(gitCmd, L"repobrowser", false);
@@ -1678,7 +1667,6 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 		} // if (id_it != myIDMap.end() && id_it->first == idCmd)
 	} // if (files_.empty() || folder_.empty())
 	return hr;
-
 }
 
 // This is for the status bar and things like that:

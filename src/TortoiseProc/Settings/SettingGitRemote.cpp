@@ -40,7 +40,6 @@ CSettingGitRemote::CSettingGitRemote()
 	, m_bPruneAll(FALSE)
 	, m_bPushDefault(FALSE)
 {
-
 	m_ChangedMask = 0;
 }
 
@@ -61,7 +60,6 @@ void CSettingGitRemote::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_CHECK_PRUNEALL, m_bPruneAll);
 	DDX_Check(pDX, IDC_CHECK_PUSHDEFAULT, m_bPushDefault);
 }
-
 
 BEGIN_MESSAGE_MAP(CSettingGitRemote, CPropertyPage)
 	ON_WM_TIMER()
@@ -173,9 +171,7 @@ void CSettingGitRemote::OnBnClickedButtonAdd()
 		CString msg;
 		msg.Format(IDS_PROC_GITCONFIG_OVERWRITEREMOTE, (LPCTSTR)m_strRemote);
 		if (CMessageBox::Show(nullptr, msg, _T("TortoiseGit"), MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2) == IDYES)
-		{
 			m_ChangedMask &= ~REMOTE_NAME;
-		}
 		else
 			return;
 	}
@@ -190,9 +186,7 @@ BOOL CSettingGitRemote::IsRemoteExist(CString &remote)
 	{
 		m_ctrlRemoteList.GetText(i,str);
 		if(str == remote)
-		{
 			return true;
-		}
 	}
 	return false;
 }
@@ -299,7 +293,6 @@ void CSettingGitRemote::OnLbnSelchangeListRemote()
 	GetDlgItem(IDC_BUTTON_REMOVE)->EnableWindow(TRUE);
 	GetDlgItem(IDC_BUTTON_RENAME_REMOTE)->EnableWindow(TRUE);
 	this->UpdateData(FALSE);
-
 }
 
 void CSettingGitRemote::OnEnChangeEditRemote()

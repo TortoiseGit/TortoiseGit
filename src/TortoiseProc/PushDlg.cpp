@@ -317,9 +317,7 @@ void CPushDlg::GetRemoteBranch(CString currentBranch)
 		m_Remote.SetCurSel(0);
 	// select no remote if no push-remote is specified AND push to all remotes is not selected
 	else if (!(m_Remote.GetCount() > 1 && m_Remote.GetCurSel() == 0))
-	{
 		m_Remote.SetCurSel(-1);
-	}
 
 	m_BranchRemote.LoadHistory(CString(_T("Software\\TortoiseGit\\History\\RemoteBranch\\"))+WorkingDir, _T("branch"));
 	if( !pushBranch.IsEmpty() )
@@ -395,9 +393,7 @@ void CPushDlg::OnBnClickedOk()
 		m_bPushAllRemotes = (m_Remote.GetCurSel() == 0 && m_Remote.GetCount() > 1);
 	}
 	if( GetCheckedRadioButton(IDC_RD_REMOTE,IDC_RD_URL) == IDC_RD_URL)
-	{
 		m_URL=m_RemoteURL.GetString();
-	}
 
 	if (!m_bPushAllBranches)
 	{

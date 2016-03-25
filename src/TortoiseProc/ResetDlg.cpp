@@ -35,7 +35,6 @@ CResetDlg::CResetDlg(CWnd* pParent /*=nullptr*/)
 	, CChooseVersion(this)
 	, m_ResetType(1)
 {
-
 }
 
 CResetDlg::~CResetDlg()
@@ -48,13 +47,11 @@ void CResetDlg::DoDataExchange(CDataExchange* pDX)
 	CHOOSE_VERSION_DDX;
 }
 
-
 BEGIN_MESSAGE_MAP(CResetDlg, CHorizontalResizableStandAloneDialog)
 	CHOOSE_VERSION_EVENT
 	ON_BN_CLICKED(IDC_SHOW_MODIFIED_FILES, &CResetDlg::OnBnClickedShowModifiedFiles)
 	ON_WM_DESTROY()
 END_MESSAGE_MAP()
-
 
 // CResetDlg message handlers
 BOOL CResetDlg::OnInitDialog()

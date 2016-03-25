@@ -124,9 +124,7 @@ bool CloneCommand::Execute()
 			originStr = _T(" --origin ") + dlg.m_strOrigin;
 
 		if(dlg.m_bAutoloadPuttyKeyFile)
-		{
 			CAppUtils::LaunchPAgent(&dlg.m_strPuttyKeyFile);
-		}
 
 		CAppUtils::RemoveTrailSlash(dlg.m_Directory);
 		if (!dlg.m_bSVN)
@@ -153,9 +151,7 @@ bool CloneCommand::Execute()
 
 		CString depth;
 		if (dlg.m_bDepth)
-		{
 			depth.Format(_T(" --depth %d"),dlg.m_nDepth);
-		}
 
 		CString cmd;
 		cmd.Format(_T("git.exe clone --progress%s%s%s%s%s -v%s \"%s\" \"%s\""),

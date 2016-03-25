@@ -29,9 +29,7 @@ bool IgnoreCommand::Execute()
 	bool bmask=false;
 
 	if(parser.HasKey(_T("onlymask")))
-	{
 		bmask=true;
-	}
 
 	bool ret = CAppUtils::IgnoreFile(pathList,bmask);
 	if (!ret)
@@ -44,27 +42,21 @@ bool IgnoreCommand::Execute()
 		CString format;
 
 		if(CMessageBox::Show(hwndExplorer, IDS_PROC_KEEPFILELOCAL, IDS_APPNAME, MB_ICONERROR|MB_YESNO) == IDYES)
-		{
 			format = _T("git.exe rm --cache -r -f -- \"%s\"");
-		}
 		else
-		{
 			format=_T("git.exe rm -r -f -- \"%s\"");
-		}
 
 		CString output;
 		CString cmd;
 		int nPath;
 		for (nPath = 0; nPath < pathList.GetCount(); ++nPath)
 		{
-
 			cmd.Format(format, (LPCTSTR)pathList[nPath].GetGitPathString());
 			if (g_Git.Run(cmd, &output, CP_UTF8))
 			{
 				key = MessageBox(hwndExplorer, output, _T("TortoiseGit"), MB_ICONERROR | MB_OKCANCEL);
 				if(key == IDCANCEL)
 					return FALSE;
-
 			}
 		}
 

@@ -61,9 +61,7 @@ const FileStatusCacheEntry * GitFolderStatus::BuildCache(const CTGitPath& filepa
 		if (TGitMutex != nullptr)
 		{
 			if (::GetLastError() == ERROR_ALREADY_EXISTS)
-			{
 				return &invalidstatus;
-			}
 		}
 	}
 
@@ -114,9 +112,7 @@ const FileStatusCacheEntry * GitFolderStatus::BuildCache(const CTGitPath& filepa
 		git_depth_t depth = git_depth_infinity;
 
 		if (g_ShellCache.GetCacheType() == ShellCache::dll)
-		{
 			depth = git_depth_empty;
-		}
 
 		t1 = ::GetCurrentTime();
 		status = m_GitStatus.GetAllStatus(filepath, depth, &assumeValid, &skipWorktree);

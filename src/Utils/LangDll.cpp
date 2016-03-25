@@ -32,7 +32,6 @@ CLangDll::CLangDll()
 
 CLangDll::~CLangDll()
 {
-
 }
 
 HINSTANCE CLangDll::Init(LPCTSTR appname, unsigned long langID)

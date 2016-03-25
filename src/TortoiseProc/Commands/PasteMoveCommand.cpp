@@ -62,9 +62,7 @@ bool PasteMoveCommand::Execute()
 			dlg.m_name = name;
 			dlg.m_windowtitle.Format(IDS_PROC_NEWNAMEMOVE, (LPCTSTR)name);
 			if (dlg.DoModal() != IDOK)
-			{
 				return FALSE;
-			}
 			destPath.SetFromWin(sDroppath+_T("\\")+dlg.m_name);
 		}
 		CString top;

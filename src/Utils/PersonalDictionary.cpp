@@ -111,9 +111,7 @@ bool CPersonalDictionary::Save()
 	WideCharToMultiByte(CP_ACP, 0, path, -1, filepath, MAX_PATH, nullptr, nullptr);
 	File.open(filepath, std::ios_base::binary);
 	for (const auto& line : dict)
-	{
 		File << (LPCTSTR)line << _T("\n");
-	}
 	File.close();
 	return true;
 }

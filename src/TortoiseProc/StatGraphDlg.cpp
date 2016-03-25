@@ -701,7 +701,6 @@ public:
 	{
 		return P_Left.GetDate() > P_Right.GetDate(); //Last date first
 	}
-
 };
 
 int CStatGraphDlg::GatherData(BOOL fetchdiff, BOOL keepFetchedData)
@@ -755,9 +754,7 @@ int CStatGraphDlg::GatherData(BOOL fetchdiff, BOOL keepFetchedData)
 
 		CString strAuthor = pLogEntry->GetAuthorName();
 		if (strAuthor.IsEmpty())
-		{
 			strAuthor.LoadString(IDS_STATGRAPH_EMPTYAUTHOR);
-		}
 		if (mailmap)
 		{
 			CStringA email2A = CUnicodeUtils::GetUTF8(pLogEntry->GetAuthorEmail());
@@ -926,7 +923,6 @@ int CStatGraphDlg::GatherData(BOOL fetchdiff, BOOL keepFetchedData)
 	// extract the information to be shown.
 
 	return 0;
-
 }
 
 void CStatGraphDlg::FilterSkippedAuthors(std::list<tstring>& included_authors,
@@ -1726,27 +1722,19 @@ void CStatGraphDlg::SaveGraph(CString sFilename)
 							bitmap.Save(tfile, &encoderClsid, nullptr);
 						}
 						else
-						{
 							sErrormessage.Format(IDS_REVGRAPH_ERR_NOENCODER, (LPCTSTR)CPathUtils::GetFileExtFromPath(sFilename));
-						}
 					}
 					else
-					{
 						sErrormessage.LoadString(IDS_REVGRAPH_ERR_NOBITMAP);
-					}
 				}
 				GdiplusShutdown(gdiplusToken);
 			}
 			else
-			{
 				sErrormessage.LoadString(IDS_REVGRAPH_ERR_GDIINIT);
-			}
 			dc.SelectObject(oldbm);
 			dc.DeleteDC();
 			if (!sErrormessage.IsEmpty())
-			{
 				::MessageBox(m_hWnd, sErrormessage, _T("TortoiseGit"), MB_ICONERROR);
-			}
 		}
 		catch (CException * pE)
 		{
@@ -1794,25 +1782,15 @@ void CStatGraphDlg::StoreCurrentGraphType()
 	// encode the current chart type
 	DWORD statspage = graphtype*10;
 	if ((m_GraphType == MyGraph::Bar)&&(m_bStacked))
-	{
 		statspage += 1;
-	}
 	if ((m_GraphType == MyGraph::Bar)&&(!m_bStacked))
-	{
 		statspage += 2;
-	}
 	if ((m_GraphType == MyGraph::Line)&&(m_bStacked))
-	{
 		statspage += 3;
-	}
 	if ((m_GraphType == MyGraph::Line)&&(!m_bStacked))
-	{
 		statspage += 4;
-	}
 	if (m_GraphType == MyGraph::PieChart)
-	{
 		statspage += 5;
-	}
 
 	// store current chart type in registry
 	CRegDWORD lastStatsPage(_T("Software\\TortoiseGit\\LastViewedStatsPage"), 0);
@@ -1876,9 +1854,7 @@ void CStatGraphDlg::DrawOthers(const std::list<tstring> &others, MyGraphSeries *
 {
 	int  nCommits = 0;
 	for (std::list<tstring>::const_iterator it = others.begin(); it != others.end(); ++it)
-	{
 		nCommits += RollPercentageOfAuthorship(map[*it]);
-	}
 
 	CString temp;
 	temp.Format(_T(" (%Iu)"), others.size());

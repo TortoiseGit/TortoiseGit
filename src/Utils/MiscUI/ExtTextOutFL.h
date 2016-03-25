@@ -49,14 +49,10 @@ HRESULT TextOutFL(HDC hdc, int x, int y, LPCWSTR psz, int cch)
 			long cchActual;
 			hr = pfl->GetStrCodePages(psz, cch, dwFontCodePages, &dwActualCodePages, &cchActual);
 			if (FAILED(hr))
-			{
 				break;
-			}
 
 			if (dwActualCodePages & dwFontCodePages)
-			{
 				TextOut(hdc, 0, 0, psz, cchActual);
-			}
 			else
 			{
 				HFONT hfLinked;
@@ -95,8 +91,6 @@ HRESULT TextOutFL(HDC hdc, int x, int y, LPCWSTR psz, int cch)
 void TextOutTryFL(HDC hdc, int x, int y, LPCWSTR psz, int cch)
 {
 	if (FAILED(TextOutFL(hdc, x, y, psz, cch)))
-	{
 		TextOut(hdc, x, y, psz, cch);
-	}
 }
 

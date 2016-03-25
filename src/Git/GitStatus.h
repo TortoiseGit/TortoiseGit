@@ -52,7 +52,6 @@ typedef enum type_git_wc_status_kind
 	git_wc_status_conflicted,
 	git_wc_status_obstructed,
 	git_wc_status_unknown,
-
 }git_wc_status_kind;
 
 typedef enum

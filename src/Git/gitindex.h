@@ -348,9 +348,7 @@ template<class T>
 int GetRangeInSortVector(const T &vector, LPCTSTR pstr, int len, int *start, int *end, int pos)
 {
 	if( pos < 0)
-	{
 		return -1;
-	}
 	if (start == 0 || !end)
 		return -1;
 

@@ -184,9 +184,7 @@ int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR lp
 	hWndHidden = CreateWindow(TGIT_CACHE_WINDOW_NAME, TGIT_CACHE_WINDOW_NAME, WS_CAPTION, 0, 0, 800, 300, nullptr, 0, hInstance, 0);
 	hTrayWnd = hWndHidden;
 	if (!hWndHidden)
-	{
 		return 0;
-	}
 	if (CRegStdDWORD(_T("Software\\TortoiseGit\\CacheTrayIcon"), FALSE)==TRUE)
 	{
 		SecureZeroMemory(&niData,sizeof(NOTIFYICONDATA));
@@ -224,9 +222,7 @@ int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR lp
 		&dwThreadId);      // returns thread ID
 
 	if (!hPipeThread)
-	{
 		return 0;
-	}
 	else hPipeThread.CloseHandle();
 
 	// Create a thread which waits for incoming pipe connections
@@ -239,19 +235,14 @@ int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR lp
 		&dwThreadId);      // returns thread ID
 
 	if (!hCommandWaitThread)
-	{
 		return 0;
-	}
-
 
 	// loop to handle window messages.
 	while (bRun)
 	{
 		BOOL bLoopRet = GetMessage(&msg, nullptr, 0, 0);
 		if ((bLoopRet != -1)&&(bLoopRet != 0))
-		{
 			DispatchMessage(&msg);
-		}
 	}
 
 	bRun = false;
@@ -473,19 +464,13 @@ VOID GetAnswerToRequest(const TGITCacheRequest* pRequest, TGITCacheResponse* pRe
 	CTGitPath path;
 	*pResponseLength = 0;
 	if(pRequest->flags & TGITCACHE_FLAGS_FOLDERISKNOWN)
-	{
 		path.SetFromWin(pRequest->path, !!(pRequest->flags & TGITCACHE_FLAGS_ISFOLDER));
-	}
 	else
-	{
 		path.SetFromWin(pRequest->path);
-	}
 
 	CAutoReadWeakLock readLock(CGitStatusCache::Instance().GetGuard(), 2000);
 	if (readLock.IsAcquired())
-	{
 		CGitStatusCache::Instance().GetStatusForPath(path, pRequest->flags, false).BuildCacheResponse(*pReply, *pResponseLength);
-	}
 	else
 	{
 		CStatusCacheEntry entry;

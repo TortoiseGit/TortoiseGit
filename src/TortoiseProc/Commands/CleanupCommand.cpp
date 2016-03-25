@@ -39,9 +39,7 @@ static CString UnescapeQuotePath(CString s)
 			i += 3;
 		}
 		else
-		{
 			t += s[i];
-		}
 	}
 
 	return CUnicodeUtils::GetUnicode(t);

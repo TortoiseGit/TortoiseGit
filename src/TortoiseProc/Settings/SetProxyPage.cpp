@@ -38,7 +38,6 @@ CSetProxyPage::CSetProxyPage()
 	m_regPassword = CRegString(_T("Software\\TortoiseGit\\Git\\Servers\\global\\http-proxy-password"), _T(""));
 	m_regSSHClient = CRegString(_T("Software\\TortoiseGit\\SSH"));
 	m_SSHClient = m_regSSHClient;
-
 }
 
 CSetProxyPage::~CSetProxyPage()
@@ -92,9 +91,8 @@ HRESULT StringUnescape(const CString& str_in, CString* unescaped_string) {
 	DWORD buf_len = INTERNET_MAX_URL_LENGTH + 1;
 	ATL::CComBSTR temp(str_in);
 	HRESULT hr = ::UrlUnescape(temp, unescaped_string->GetBufferSetLength(buf_len), &buf_len, 0);
-	if (SUCCEEDED(hr)) {
+	if (SUCCEEDED(hr))
 		unescaped_string->ReleaseBuffer();
-	}
 
 	return hr;
 }
@@ -179,9 +177,7 @@ BOOL CSetProxyPage::OnInitDialog()
 		}
 
 		if(port<0)
-		{
 			m_serverport= 0;
-		}
 		else
 			m_serverport = _ttoi(proxy.Mid(port+1));
 
@@ -200,13 +196,9 @@ void CSetProxyPage::OnBnClickedEnable()
 {
 	UpdateData();
 	if (m_isEnabled)
-	{
 		EnableGroup(TRUE);
-	}
 	else
-	{
 		EnableGroup(FALSE);
-	}
 	SetModified();
 }
 
@@ -280,13 +272,9 @@ BOOL CSetProxyPage::OnApply()
 	}
 
 	if (m_isEnabled)
-	{
 		g_Git.SetConfigValue(_T("http.proxy"),http_proxy,CONFIG_GLOBAL);
-	}
 	else
-	{
 		g_Git.UnsetConfigValue(_T("http.proxy"), CONFIG_GLOBAL);
-	}
 	m_regSSHClient = m_SSHClient;
 	SetModified(FALSE);
 	return ISettingsPropPage::OnApply();

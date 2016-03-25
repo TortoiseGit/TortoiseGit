@@ -122,9 +122,7 @@ unsigned __int64 ClickedSelectAll(CListCtrl *list, CButton *selectAll)
 	theApp.DoWaitCursor(1);
 
 	for (int i = 0; i < list->GetItemCount(); i++)
-	{
 		list->SetCheck(i, state == BST_CHECKED);
-	}
 
 	unsigned __int64 mask = GetMenuListMask(list);
 
@@ -220,9 +218,7 @@ BOOL CSetLookAndFeelPage::OnInitDialog()
 	int maxcol = m_cMenuList.GetHeaderCtrl()->GetItemCount() - 1;
 	int col;
 	for (col = mincol; col <= maxcol; col++)
-	{
 		m_cMenuList.SetColumnWidth(col,LVSCW_AUTOSIZE_USEHEADER);
-	}
 	m_cMenuList.SetRedraw(true);
 
 	UpdateData(FALSE);
@@ -278,9 +274,7 @@ void CSetLookAndFeelPage::OnLvnItemchangedMenulist(NMHDR * /*pNMHDR*/, LRESULT *
 		return;
 	SetModified(TRUE);
 	if (m_cMenuList.GetItemCount() > 0)
-	{
 		m_topmenu = GetMenuListMask(&m_cMenuList, (CButton*)GetDlgItem(IDC_SELECTALL));
-	}
 	*pResult = 0;
 }
 
@@ -293,8 +287,6 @@ void CSetLookAndFeelPage::OnEnChangeNocontextpaths()
 {
 	SetModified();
 }
-
-
 
 // Set Extmenu class
 #include "SetExtMenu.h"
@@ -312,7 +304,6 @@ CSetExtMenu::CSetExtMenu()
 
 	m_extmenu = unsigned __int64(DWORD(m_regExtmenuhigh))<<32;
 	m_extmenu |= unsigned __int64(DWORD(m_regExtmenu));
-
 }
 
 CSetExtMenu::~CSetExtMenu()
@@ -325,13 +316,11 @@ void CSetExtMenu::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_MENULIST, m_cMenuList);
 }
 
-
 BEGIN_MESSAGE_MAP(CSetExtMenu, ISettingsPropPage)
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_MENULIST, OnLvnItemchangedMenulist)
 	ON_BN_CLICKED(IDC_SELECTALL, OnBnClickedSelectall)
 	ON_BN_CLICKED(IDC_RESTORE, OnBnClickedRestoreDefaults)
 END_MESSAGE_MAP()
-
 
 BOOL CSetExtMenu::OnInitDialog()
 {
@@ -368,9 +357,7 @@ BOOL CSetExtMenu::OnInitDialog()
 	int maxcol = m_cMenuList.GetHeaderCtrl()->GetItemCount() - 1;
 	int col;
 	for (col = mincol; col <= maxcol; col++)
-	{
 		m_cMenuList.SetColumnWidth(col,LVSCW_AUTOSIZE_USEHEADER);
-	}
 	m_cMenuList.SetRedraw(true);
 
 	UpdateData(FALSE);
@@ -416,9 +403,7 @@ void CSetExtMenu::OnLvnItemchangedMenulist(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 
 	SetModified(TRUE);
 	if (m_cMenuList.GetItemCount() > 0)
-	{
 		m_extmenu = GetMenuListMask(&m_cMenuList, (CButton*)GetDlgItem(IDC_SELECTALL));
-	}
 	*pResult = 0;
 }
 

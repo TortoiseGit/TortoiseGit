@@ -151,9 +151,7 @@ DWORD CRegistryKey::createKey()
     DWORD disp;
     DWORD rc = RegCreateKeyEx(m_base, m_path, 0, _T(""), REG_OPTION_NON_VOLATILE, KEY_WRITE | m_sam, nullptr, &m_hKey, &disp);
     if (rc != ERROR_SUCCESS)
-    {
         return rc;
-    }
     return RegCloseKey(m_hKey);
 }
 
@@ -175,9 +173,7 @@ bool CRegistryKey::getValues(CStringList& values)
             DWORD size = _countof(value);
             rc = RegEnumValue(m_hKey, i, value, &size, nullptr, nullptr, nullptr, nullptr);
             if (rc == ERROR_SUCCESS)
-            {
                 values.AddTail(value);
-            }
         }
     }
 
@@ -197,9 +193,7 @@ bool CRegistryKey::getSubKeys(CStringList& subkeys)
             FILETIME last_write_time;
             rc = RegEnumKeyEx(m_hKey, i, value, &size, nullptr, nullptr, nullptr, &last_write_time);
             if (rc == ERROR_SUCCESS)
-            {
                 subkeys.AddTail(value);
-            }
         }
     }
 

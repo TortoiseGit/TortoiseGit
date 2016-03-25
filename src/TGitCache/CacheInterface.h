@@ -43,7 +43,6 @@ typedef enum git_node_kind_t
 	git_node_file,
 	git_node_dir,
 	git_node_unknown,
-
 }git_node_kind;
 
 /**

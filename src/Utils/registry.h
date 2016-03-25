@@ -427,7 +427,6 @@ void CRegTypedBase<T, Base>::read()
     HKEY hKey = nullptr;
     if ((LastError = RegOpenKeyEx (m_base, GetPlainString (m_path), 0, STANDARD_RIGHTS_READ|KEY_QUERY_VALUE|m_sam, &hKey))==ERROR_SUCCESS)
     {
-
         T value = m_defaultvalue;
         InternalRead (hKey, value);
 

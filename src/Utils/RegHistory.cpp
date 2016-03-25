@@ -78,9 +78,7 @@ size_t CRegHistory::Load(LPCTSTR lpszSection, LPCTSTR lpszKeyPrefix)
 		_stprintf_s(sKey, 4096, _T("%s\\%s%d"), lpszSection, lpszKeyPrefix, n++);
 		sText = CRegStdString(sKey);
 		if (!sText.empty())
-		{
 			m_arEntries.push_back(sText);
-		}
 	} while (!sText.empty() && n < m_nMaxHistoryItems);
 
 	return m_arEntries.size();

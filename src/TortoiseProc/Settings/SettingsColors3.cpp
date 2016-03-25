@@ -44,9 +44,7 @@ void CSettingsColors3::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_COLOR_LINE8, m_cLine[7]);
 	DDX_Control(pDX, IDC_LOGGRAPHLINEWIDTH, m_LogGraphLineWidth);
 	DDX_Control(pDX, IDC_LOGGRAPHNODESIZE, m_LogGraphNodeSize);
-
 }
-
 
 BEGIN_MESSAGE_MAP(CSettingsColors3, ISettingsPropPage)
 	ON_BN_CLICKED(IDC_RESTORE, OnBnClickedRestore)
@@ -101,9 +99,7 @@ BOOL CSettingsColors3::OnInitDialog()
 void CSettingsColors3::OnBnClickedRestore()
 {
 	for(int i=0;i<8;i++)
-	{
 		m_cLine[i].SetColor(m_Colors.GetColor((CColors::Colors)(CColors::BranchLine1+i), true));
-	}
 	m_LogGraphLineWidth.SelectString(-1, _T("2"));
 	m_LogGraphNodeSize.SelectString(-1, _T("10"));
 	SetModified(TRUE);

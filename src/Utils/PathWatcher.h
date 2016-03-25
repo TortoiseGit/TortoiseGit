@@ -129,5 +129,4 @@ private:
 	std::map<HANDLE, CDirWatchInfo *> watchInfoMap;
 
 	HDEVNOTIFY		m_hdev;
-
 };

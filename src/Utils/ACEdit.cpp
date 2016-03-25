@@ -107,9 +107,7 @@ void CACEdit::Init()
 	m_ClassName.ReleaseBuffer();
 
 	if (m_ClassName.Compare(_T("Edit")) == 0)
-	{
 		m_iType = _EDIT_;
-	}
 	else
 	{
 		if (m_ClassName.Compare(_T("ComboBox")) == 0)
@@ -466,9 +464,7 @@ LRESULT CACEdit::OnUpdateFromList(WPARAM lParam, LPARAM /*wParam*/)
 	UpdateData(true);
 
 	if(lParam == WM_KEYDOWN)
-	{
 		HandleKey(VK_DOWN,true);
-	}
 	return 0;
 }
 
@@ -575,7 +571,6 @@ void CACEdit::ReadDirectory(CString m_Dir)
 	}
 	FoundFiles.Close();
 	return;
-
 }
 
 /*********************************************************************/

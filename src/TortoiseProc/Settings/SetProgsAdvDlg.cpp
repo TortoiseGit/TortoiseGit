@@ -150,9 +150,7 @@ BOOL CSetProgsAdvDlg::OnInitDialog()
 	int maxcol = m_ToolListCtrl.GetHeaderCtrl()->GetItemCount() - 1;
 	int col;
 	for (col = mincol; col <= maxcol; col++)
-	{
 		m_ToolListCtrl.SetColumnWidth(col,LVSCW_AUTOSIZE_USEHEADER);
-	}
 	m_ToolListCtrl.SetRedraw(TRUE);
 
 	temp.LoadString(m_sType == _T("Diff") ? IDS_DLGTITLE_ADV_DIFF : IDS_DLGTITLE_ADV_MERGE);
@@ -179,9 +177,7 @@ int CSetProgsAdvDlg::AddExtension(const CString& ext, const CString& tool)
 	// Note: list control automatically sorts entries
 	int index = m_ToolListCtrl.InsertItem(0, ext);
 	if (index >= 0)
-	{
 		m_ToolListCtrl.SetItemText(index, 1, tool);
-	}
 	return index;
 }
 

@@ -137,14 +137,12 @@ void CIconMenu::MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct)
 
 BOOL CIconMenu::SetMenuItemData(UINT_PTR nIDNewItem, LONG_PTR data)
 {
-
 	MENUITEMINFO menuinfo ={0};
 	menuinfo.cbSize = sizeof(menuinfo);
 	GetMenuItemInfo((UINT)nIDNewItem, &menuinfo);
 	menuinfo.dwItemData =data;
 	menuinfo.fMask |= MIIM_DATA;
 	return SetMenuItemInfo((UINT)nIDNewItem ,&menuinfo);
-
 }
 
 LONG_PTR CIconMenu::GetMenuItemData(UINT_PTR nIDNewItem)

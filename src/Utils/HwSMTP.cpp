@@ -77,7 +77,6 @@ BOOL CHwSMTP::SendSpeedEmail
 			LPCTSTR	pSend
 		)
 {
-
 	BOOL ret=true;
 	CString To;
 	To += GET_SAFE_STRING(lpszAddrTo);
@@ -1323,17 +1322,11 @@ CString FormatBytes ( double fBytesNum, BOOL bShowUnit/*=TRUE*/, int nFlag/*=0*/
 			csRes.Format ( _T("%.2f%s"), fBytesNum, bShowUnit?_T(" B"):_T("") );
 	}
 	else if ( nFlag == 1 )
-	{
 		csRes.Format ( _T("%.2f%s"), fBytesNum / 1024.0, bShowUnit?_T(" K"):_T("") );
-	}
 	else if ( nFlag == 2 )
-	{
 		csRes.Format ( _T("%.2f%s"), fBytesNum / (1024.0*1024.0), bShowUnit?_T(" M"):_T("") );
-	}
 	else if ( nFlag == 3 )
-	{
 		csRes.Format ( _T("%.2f%s"), fBytesNum / (1024.0*1024.0*1024.0), bShowUnit?_T(" G"):_T("") );
-	}
 
 	return csRes;
 }

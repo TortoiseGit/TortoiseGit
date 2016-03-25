@@ -168,7 +168,6 @@ void CSettings::RemovePropPages()
 	delete m_pBugtraqConfig;
 	delete m_pExtMenu;
 	delete m_pAdvanced;
-
 }
 
 void CSettings::HandleRestart()
@@ -245,97 +244,51 @@ BOOL CSettings::OnInitDialog()
 		this->m_pGitRemote->m_bNoFetch = true;
 	}
 	else if (this->m_DefaultPage == _T("gitconfig"))
-	{
 		this->SetActivePage(this->m_pGitConfig);
-	}
 	else if (this->m_DefaultPage == _T("gitcredential"))
-	{
 		this->SetActivePage(this->m_pGitCredential);
-	}
 	else if (this->m_DefaultPage == _T("main"))
-	{
 		this->SetActivePage(this->m_pMainPage);
-	}
 	else if (this->m_DefaultPage == _T("overlay"))
-	{
 		this->SetActivePage(this->m_pOverlayPage);
-	}
 	else if (this->m_DefaultPage == _T("overlays"))
-	{
 		this->SetActivePage(this->m_pOverlaysPage);
-	}
 	else if (this->m_DefaultPage == _T("overlayshandlers"))
-	{
 		this->SetActivePage(this->m_pOverlayHandlersPage);
-	}
 	else if (this->m_DefaultPage == _T("proxy"))
-	{
 		this->SetActivePage(this->m_pProxyPage);
-	}
 	else if (this->m_DefaultPage == _T("smtp"))
-	{
 		this->SetActivePage(this->m_pSMTPPage);
-	}
 	else if (this->m_DefaultPage == _T("diff"))
-	{
 		this->SetActivePage(this->m_pProgsDiffPage);
-	}
 	else if (this->m_DefaultPage == _T("merge"))
-	{
 		this->SetActivePage(this->m_pProgsMergePage);
-	}
 	else if (this->m_DefaultPage == _T("alternativeeditor"))
-	{
 		this->SetActivePage(this->m_pProgsAlternativeEditor);
-	}
 	else if (this->m_DefaultPage == _T("look"))
-	{
 		this->SetActivePage(this->m_pLookAndFeelPage);
-	}
 	else if (this->m_DefaultPage == _T("dialog"))
-	{
 		this->SetActivePage(this->m_pDialogsPage);
-	}
 	else if (this->m_DefaultPage == _T("dialog2"))
-	{
 		this->SetActivePage(this->m_pDialogsPage2);
-	}
 	else if (this->m_DefaultPage == _T("dialog3"))
-	{
 		this->SetActivePage(this->m_pDialogsPage3);
-	}
 	else if (this->m_DefaultPage == _T("color1"))
-	{
 		this->SetActivePage(this->m_pColorsPage);
-	}
 	else if (this->m_DefaultPage == _T("color2"))
-	{
 		this->SetActivePage(this->m_pColorsPage2);
-	}
 	else if (this->m_DefaultPage == _T("color3"))
-	{
 		this->SetActivePage(this->m_pColorsPage3);
-	}
 	else if (this->m_DefaultPage == _T("save"))
-	{
 		this->SetActivePage(this->m_pSavedPage);
-	}
 	else if (this->m_DefaultPage == _T("advanced"))
-	{
 		this->SetActivePage(this->m_pAdvanced);
-	}
 	else if (this->m_DefaultPage == _T("blame"))
-	{
 		this->SetActivePage(this->m_pTBlamePage);
-	}
 	else if (this->m_DefaultPage == _T("udiff"))
-	{
 		this->SetActivePage(this->m_pUDiffPage);
-	}
 	else if (GitAdminDir::IsWorkingTreeOrBareRepo(g_Git.m_CurrentDir))
-	{
 		this->SetActivePage(this->m_pGitConfig);
-	}
 	return bResult;
 }
 

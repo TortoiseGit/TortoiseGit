@@ -65,9 +65,7 @@ CGitProgressList::CGitProgressList():CListCtrl()
 CGitProgressList::~CGitProgressList()
 {
 	for (size_t i = 0; i < m_arData.size(); ++i)
-	{
 		delete m_arData[i];
-	}
 	delete m_pThread;
 }
 
@@ -820,9 +818,7 @@ void CGitProgressList::OnTimer(UINT_PTR nIDEvent)
 void CGitProgressList::Sort()
 {
 	if(m_arData.size() < 2)
-	{
 		return;
-	}
 
 	// We need to sort the blocks which lie between the auxiliary entries
 	// This is so that any aux data stays where it was
@@ -862,9 +858,7 @@ bool CGitProgressList::SortCompare(const NotificationData * pData1, const Notifi
 
 	// Sort by path if everything else is equal
 	if (result == 0)
-	{
 		result = CTGitPath::Compare(pData1->path, pData2->path);
-	}
 
 	if (!m_bAscending)
 		result = -result;
@@ -1030,7 +1024,6 @@ void CGitProgressList::OnClose()
 	CListCtrl::OnClose();
 }
 
-
 BOOL CGitProgressList::PreTranslateMessage(MSG* pMsg)
 {
 	if (pMsg->message == WM_KEYDOWN)
@@ -1042,9 +1035,7 @@ BOOL CGitProgressList::PreTranslateMessage(MSG* pMsg)
 				// Ctrl-A -> select all
 				SetSelectionMark(0);
 				for (int i=0; i<GetItemCount(); ++i)
-				{
 					SetItemState(i, LVIS_SELECTED, LVIS_SELECTED);
-				}
 			}
 		}
 		if ((pMsg->wParam == 'C')||(pMsg->wParam == VK_INSERT))

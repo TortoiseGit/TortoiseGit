@@ -251,7 +251,6 @@ void CCloneDlg::OnOK()
 	this->m_PuttyKeyCombo.GetWindowText(m_strPuttyKeyFile);
 	CResizableDialog::OnOK();
 	m_bSaving = false;
-
 }
 
 void CCloneDlg::OnCancel()
@@ -312,7 +311,6 @@ void CCloneDlg::OnBnClickedPuttykeyfileBrowse()
 	{
 		this->m_PuttyKeyCombo.SetWindowText( dlg.GetPathName() );
 	}
-
 }
 
 void CCloneDlg::OnBnClickedPuttykeyAutoload()
@@ -391,7 +389,6 @@ void CCloneDlg::OnCbnEditchangeUrlcombo()
 	else
 		m_bAutoloadPuttyKeyFile = m_regUseSSHKey && CAppUtils::IsSSHPutty();
 
-
 	this->UpdateData(FALSE);
 }
 
@@ -406,13 +403,9 @@ void CCloneDlg::OnBnClickedCheckSvn()
 
 		str.TrimRight(L"\\/");
 		if(str.GetLength()>=5 && (str.Right(5).MakeLower() == _T("trunk") ))
-		{
 			this->m_bSVNBranch=this->m_bSVNTags=this->m_bSVNTrunk = FALSE;
-		}
 		else
-		{
 			this->m_bSVNBranch=this->m_bSVNTags=this->m_bSVNTrunk = TRUE;
-		}
 		m_bDepth = false;
 		m_bBare = false;
 		m_bRecursive = false;

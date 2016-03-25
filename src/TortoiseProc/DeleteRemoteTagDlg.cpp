@@ -102,9 +102,7 @@ void CDeleteRemoteTagDlg::Refresh()
 	BringWindowToTop();
 
 	for (int i = 0; i < (int)m_taglist.size(); ++i)
-	{
 		m_ctrlTags.InsertItem(i, m_taglist[i]);
-	}
 
 	DialogEnableWindow(IDOK, FALSE);
 }
@@ -120,9 +118,7 @@ void CDeleteRemoteTagDlg::OnBnClickedSelectall()
 		m_SelectAll.SetCheck(state);
 	}
 	if (state == BST_UNCHECKED)
-	{
 		m_ctrlTags.SetItemState(-1, 0, LVIS_SELECTED);
-	}
 	else
 	{
 		for (int i = 0; i < m_ctrlTags.GetItemCount(); ++i)

@@ -85,9 +85,7 @@ BOOL CExportDlg::OnInitDialog()
 	this->AddOthersToAnchor();
 	InitChooseVersion();
 	if (m_initialRefName.IsEmpty() || m_initialRefName == _T("HEAD"))
-	{
 		SetDefaultChoose(IDC_RADIO_HEAD);
-	}
 	else if (m_initialRefName.Left(10) == _T("refs/tags/"))
 		SetDefaultChoose(IDC_RADIO_TAGS);
 
@@ -131,9 +129,7 @@ void CExportDlg::OnOK()
 		CString sMessage;
 		sMessage.Format(IDS_PROC_OVERWRITE_CONFIRM, (LPCTSTR)m_strFile);
 		if (CMessageBox::Show(GetSafeHwnd(), sMessage, _T("TortoiseGit"), MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2) != IDYES)
-		{
 			return ;
-		}
 	}
 	else if (m_strFile.IsEmpty())
 	{

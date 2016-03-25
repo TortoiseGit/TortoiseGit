@@ -56,9 +56,7 @@ void CSysProgressDlg::SetTitle(LPCTSTR szTitle)
 {
 	USES_CONVERSION;
 	if (IsValid())
-	{
 		m_pIDlg->SetTitle(T2COLE(szTitle));
-	}
 }
 void CSysProgressDlg::SetTitle ( UINT idTitle)
 {
@@ -69,9 +67,7 @@ void CSysProgressDlg::SetLine(DWORD dwLine, LPCTSTR szText, bool bCompactPath /*
 {
 	USES_CONVERSION;
 	if (IsValid())
-	{
 		m_pIDlg->SetLine(dwLine, T2COLE(szText), bCompactPath, nullptr);
-	}
 }
 
 #ifdef _MFC_VER
@@ -85,25 +81,19 @@ void CSysProgressDlg::SetCancelMsg(LPCTSTR szMessage)
 {
 	USES_CONVERSION;
 	if (IsValid())
-	{
 		m_pIDlg->SetCancelMsg(T2COLE(szMessage), nullptr);
-	}
 }
 
 void CSysProgressDlg::SetAnimation(HINSTANCE hinst, UINT uRsrcID)
 {
 	if (IsValid())
-	{
 		m_pIDlg->SetAnimation(hinst, uRsrcID);
-	}
 }
 #ifdef _MFC_VER
 void CSysProgressDlg::SetAnimation(UINT uRsrcID)
 {
 	if (IsValid())
-	{
 		m_pIDlg->SetAnimation(AfxGetResourceHandle(), uRsrcID);
-	}
 }
 #endif
 void CSysProgressDlg::SetTime(bool bTime /* = true */)
@@ -255,17 +245,13 @@ HRESULT CSysProgressDlg::ShowModeless(HWND hWndParent, BOOL immediately)
 void CSysProgressDlg::SetProgress(DWORD dwProgress, DWORD dwMax)
 {
 	if (IsValid())
-	{
 		m_pIDlg->SetProgress(dwProgress, dwMax);
-	}
 }
 
 void CSysProgressDlg::SetProgress64(ULONGLONG u64Progress, ULONGLONG u64ProgressMax)
 {
 	if (IsValid())
-	{
 		m_pIDlg->SetProgress64(u64Progress, u64ProgressMax);
-	}
 }
 
 bool CSysProgressDlg::HasUserCancelled()
@@ -340,7 +326,5 @@ void CSysProgressDlg::Stop()
 void CSysProgressDlg::ResetTimer()
 {
 	if (IsValid())
-	{
 		m_pIDlg->Timer(PDTIMER_RESET, nullptr);
-	}
 }

@@ -416,5 +416,4 @@ private:
 	int				GetEncoderClsid(const WCHAR* format, CLSID* pClsid);
 	void			DrawRubberBand();
 	void	SetNodeRect(GraphicsDevice& graphics, ogdf::node *pnode, CGitHash rev, int mode = 0);
-
 };

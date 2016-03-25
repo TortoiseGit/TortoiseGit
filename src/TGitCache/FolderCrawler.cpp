@@ -49,9 +49,7 @@ void CFolderCrawler::Stop()
 	{
 		SetEvent(m_hTerminationEvent);
 		if (m_hThread.IsValid() && WaitForSingleObject(m_hThread, 4000) != WAIT_OBJECT_0)
-		{
 			CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Error terminating crawler thread\n");
-		}
 	}
 	m_hThread.CloseHandle();
 	m_hTerminationEvent.CloseHandle();

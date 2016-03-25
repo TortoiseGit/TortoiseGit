@@ -317,9 +317,7 @@ const_hookiterator CHooks::FindItem(hooktype t, const CString& workingTree) cons
 		key.path = path;
 		auto it = find(key);
 		if (it != end())
-		{
 			return it;
-		}
 		path = path.GetContainingDirectory();
 	} while(!path.IsEmpty());
 	// look for a script with a path as '*'

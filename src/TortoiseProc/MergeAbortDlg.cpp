@@ -33,7 +33,6 @@ CMergeAbortDlg::CMergeAbortDlg(CWnd* pParent /*=nullptr*/)
 	: CStateStandAloneDialog(CMergeAbortDlg::IDD, pParent)
 	, m_ResetType(1)
 {
-
 }
 
 CMergeAbortDlg::~CMergeAbortDlg()

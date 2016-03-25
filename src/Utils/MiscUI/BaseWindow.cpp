@@ -166,8 +166,7 @@ void CWindow::SetTransparency(BYTE alpha, COLORREF color /* = 0xFF000000 */)
         flags = LWA_ALPHA;
     }
     else
-    {
         flags = LWA_COLORKEY;
-    }
+
     SetLayeredWindowAttributes(*this, col, alpha, flags);
 }

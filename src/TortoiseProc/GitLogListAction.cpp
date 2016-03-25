@@ -58,10 +58,7 @@ int CGitLogList::RevertSelectedCommits(int parent)
 
 #if 0
 	if(!g_Git.CheckCleanWorkTree())
-	{
 		CMessageBox::Show(nullptr, IDS_PROC_NOCLEAN, IDS_APPNAME, MB_OK);
-
-	}
 #endif
 
 	if (this->GetSelectedCount() > 1)
@@ -103,9 +100,7 @@ int CGitLogList::RevertSelectedCommits(int parent)
 				return ret;
 		}
 		else
-		{
 			ret =0;
-		}
 
 		if (progress.HasUserCancelled())
 			break;
@@ -140,16 +135,12 @@ int CGitLogList::CherryPickFrom(CString from, CString to)
 			progress.SetProgress64(logs.size() - i, logs.size());
 		}
 		if (progress.HasUserCancelled())
-		{
 			throw std::exception(CUnicodeUtils::GetUTF8(CString(MAKEINTRESOURCE(IDS_USERCANCELLED))));
-		}
 		CString cmd,out;
 		cmd.Format(_T("git.exe cherry-pick %s"), (LPCTSTR)logs.GetGitRevAt(i).m_CommitHash.ToString());
 		out.Empty();
 		if(g_Git.Run(cmd,&out,CP_UTF8))
-		{
 			throw std::exception(CUnicodeUtils::GetUTF8(CString(MAKEINTRESOURCE(IDS_PROC_CHERRYPICKFAILED)) + _T(":\r\n\r\n") + out));
-		}
 	}
 
 	return 0;
@@ -666,7 +657,6 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 						{
 							MessageBox(out, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 							throw std::exception(CUnicodeUtils::GetUTF8(_T("Could not add new file aborting...\r\n\r\n")+out));
-
 						}
 					}
 					if(PathList[i].m_Action & CTGitPath::LOGACTIONS_DELETED)
@@ -1010,9 +1000,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				if (m_nSearchIndex < 0)
 					m_nSearchIndex = 0;
 				if (m_pFindDialog)
-				{
 					break;
-				}
 				else
 				{
 					m_pFindDialog = new CFindDlg();

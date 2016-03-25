@@ -111,9 +111,7 @@ BOOL CProgressDlg::OnInitDialog()
 	{
 		ChangeWindowMessageFilterExDFN *pfnChangeWindowMessageFilterEx = (ChangeWindowMessageFilterExDFN*)GetProcAddress(hUser, "ChangeWindowMessageFilterEx");
 		if (pfnChangeWindowMessageFilterEx)
-		{
 			pfnChangeWindowMessageFilterEx(m_hWnd, WM_TASKBARBTNCREATED, MSGFLT_ALLOW, &cfs);
-		}
 	}
 	m_pTaskbarList.Release();
 	if (FAILED(m_pTaskbarList.CoCreateInstance(CLSID_TaskbarList)))
@@ -138,14 +136,10 @@ BOOL CProgressDlg::OnInitDialog()
 
 	CString InitialText;
 	if ( !m_PreText.IsEmpty() )
-	{
 		InitialText = m_PreText + _T("\r\n");
-	}
 #if 0
 	if (m_bShowCommand && (!m_GitCmd.IsEmpty() ))
-	{
 		InitialText += m_GitCmd+_T("\r\n\r\n");
-	}
 #endif
 	m_Log.SetWindowTextW(InitialText);
 	m_CurrentWork.SetWindowTextW(_T(""));
@@ -632,12 +626,9 @@ void CProgressDlg::ParserCmdOutput(CRichEditCtrl &log,CProgressCtrl &progressctr
 		}
 
 		oneline="";
-
 	}
 	else
-	{
 		oneline+=ch;
-	}
 }
 void CProgressDlg::RemoveLastLine(CString &str)
 {

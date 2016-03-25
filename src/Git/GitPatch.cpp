@@ -116,16 +116,13 @@ int GitPatch::Init(const CString& patchfile, const CString& targetpath, CSysProg
 		m_nRejected = 0;
 
 		if (!ApplyPatches())
-		{
 			m_filePaths.clear();
-		}
 	}
 	return (int)m_filePaths.size();
 }
 
 bool GitPatch::ApplyPatches()
 {
-	
 	for (int i = 0; i < m_patch.GetNumberOfFiles(); ++i)
 	{
 		if (!PatchFile(i, m_targetpath))
@@ -164,14 +161,12 @@ bool GitPatch::PatchFile(int nIndex, CString &datapath)
 		{
 			if (sVersion.IsEmpty())
 			{
-				m_errorStr.Empty();
 				m_errorStr.Format(IDS_ERR_MAINFRAME_FILECONFLICTNOVERSION, (LPCTSTR)sFilePath);
 				return false; // cannot apply patch which does not apply cleanly w/o git information in patch file.
 			}
 			sBaseFile = CTempFiles::Instance().GetTempFilePathString();
 			if (!CAppUtils::GetVersionedFile(sFilePath, sVersion, sBaseFile, m_pProgDlg))
 			{
-				m_errorStr.Empty();
 				m_errorStr.Format(IDS_ERR_MAINFRAME_FILEVERSIONNOTFOUND, (LPCTSTR)sVersion, (LPCTSTR)sFilePath);
 
 				return false;
@@ -229,9 +224,7 @@ CString GitPatch::GetPatchRejects(int nIndex) const
 	if (nIndex < 0)
 		return _T("");
 	if (nIndex < (int)m_filePaths.size())
-	{
 		return m_filePaths[nIndex].rejectsPath;
-	}
 
 	return _T("");
 }
@@ -384,9 +377,7 @@ CString GitPatch::Strip(const CString& filename) const
 	{
 		// Remove windows drive letter "c:"
 		if (s.GetLength()>2 && s[1]==':')
-		{
 			s = s.Mid(2);
-		}
 
 		for (int nStrip = 1; nStrip <= m_nStrip; ++nStrip)
 		{

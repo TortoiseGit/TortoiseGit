@@ -14,7 +14,6 @@
 
 
 void Lanes::init(const CGitHash& expectedSha) {
-
 	clear();
 	activeLane = 0;
 	setBoundary(false);
@@ -23,7 +22,6 @@ void Lanes::init(const CGitHash& expectedSha) {
 }
 
 void Lanes::clear() {
-
 	typeVec.clear();
 	nextShaVec.clear();
 }
@@ -41,7 +39,6 @@ void Lanes::setBoundary(bool b) {
 }
 
 bool Lanes::isFork(const CGitHash& sha, bool& isDiscontinuity) {
-
 	int pos = findNextSha(sha, 0);
 	isDiscontinuity = (activeLane != pos);
 	if (pos == -1) // new branch case
@@ -61,7 +58,6 @@ bool Lanes::isFork(const CGitHash& sha, bool& isDiscontinuity) {
 }
 
 void Lanes::setFork(const CGitHash& sha) {
-
 	int rangeStart, rangeEnd, idx;
 	rangeStart = rangeEnd = idx = findNextSha(sha, 0);
 
@@ -88,7 +84,6 @@ void Lanes::setFork(const CGitHash& sha) {
 		endT = TAIL_R;
 
 	for (int i = rangeStart + 1; i < rangeEnd; ++i) {
-
 		int& t = typeVec[i];
 
 		if (t == NOT_ACTIVE)
@@ -120,15 +115,12 @@ void Lanes::setMerge(const CGitHashList& parents) {
 
 		int idx = findNextSha(*it, 0);
 		if (idx != -1) {
-
 			if (idx > rangeEnd) {
-
 				rangeEnd = idx;
 				endJoinWasACross = typeVec[idx] == CROSS;
 			}
 
 			if (idx < rangeStart) {
-
 				rangeStart = idx;
 				startJoinWasACross = typeVec[idx] == CROSS;
 			}
@@ -160,7 +152,6 @@ void Lanes::setMerge(const CGitHashList& parents) {
 		endT = HEAD_R;
 
 	for (int i = rangeStart + 1; i < rangeEnd; ++i) {
-
 		int& t2 = typeVec[i];
 
 		if (t2 == NOT_ACTIVE)
@@ -175,20 +166,17 @@ void Lanes::setMerge(const CGitHashList& parents) {
 }
 
 void Lanes::setInitial() {
-
 	int& t = typeVec[activeLane];
 	if (!IS_NODE(t) && t != APPLIED)
 		t = (boundary ? BOUNDARY : INITIAL);
 }
 
 void Lanes::setApplied() {
-
 	// applied patches are not merges, nor forks
 	typeVec[activeLane] = APPLIED; // TODO test with boundaries
 }
 
 void Lanes::changeActiveLane(const CGitHash& sha) {
-
 	int& t = typeVec[activeLane];
 	if (t == INITIAL || isBoundary(t))
 		t = EMPTY;
@@ -207,12 +195,10 @@ void Lanes::changeActiveLane(const CGitHash& sha) {
 }
 
 void Lanes::afterMerge() {
-
 	if (boundary)
 		return; // will be reset by changeActiveLane()
 
 	for (unsigned int i = 0; i < typeVec.size(); ++i) {
-
 		int& t = typeVec[i];
 
 		if (isHead(t) || isJoin(t) || t == CROSS)
@@ -227,9 +213,7 @@ void Lanes::afterMerge() {
 }
 
 void Lanes::afterFork() {
-
 	for (unsigned int i = 0; i < typeVec.size(); ++i) {
-
 		int& t = typeVec[i];
 
 		if (t == CROSS)
@@ -248,22 +232,18 @@ void Lanes::afterFork() {
 }
 
 bool Lanes::isBranch() {
-
 	return (typeVec[activeLane] == BRANCH);
 }
 
 void Lanes::afterBranch() {
-
 	typeVec[activeLane] = ACTIVE; // TODO test with boundaries
 }
 
 void Lanes::afterApplied() {
-
 	typeVec[activeLane] = ACTIVE; // TODO test with boundaries
 }
 
 void Lanes::nextParent(const CGitHash& sha) {
-
 	if(boundary)
 		nextShaVec[activeLane].Empty();
 	else
@@ -271,7 +251,6 @@ void Lanes::nextParent(const CGitHash& sha) {
 }
 
 int Lanes::findNextSha(const CGitHash& next, int pos) {
-
 	for (unsigned int i = pos; i < nextShaVec.size(); ++i)
 		if (nextShaVec[i] == next)
 			return i;
@@ -279,7 +258,6 @@ int Lanes::findNextSha(const CGitHash& next, int pos) {
 }
 
 int Lanes::findType(int type, int pos) {
-
 	for (unsigned int i = pos; i < typeVec.size(); ++i)
 		if (typeVec[i] == type)
 			return i;
@@ -287,7 +265,6 @@ int Lanes::findType(int type, int pos) {
 }
 
 int Lanes::add(int type, const CGitHash& next, int pos, bool& wasEmptyCross) {
-
 	wasEmptyCross = false;
 	// first check empty lanes starting from pos
 	if (pos < (int)typeVec.size()) {

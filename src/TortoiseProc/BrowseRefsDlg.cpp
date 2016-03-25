@@ -432,9 +432,7 @@ void CBrowseRefsDlg::Refresh(CString selectRef)
 		}
 	}
 	else
-	{
 		selectRef = GetSelectedRef(false, true);
-	}
 
 	m_RefTreeCtrl.DeleteAllItems();
 	m_ListRefLeafs.DeleteAllItems();
@@ -610,7 +608,6 @@ void CBrowseRefsDlg::FillListCtrlForShadowTree(CShadowTree* pTree, CString refNa
 	}
 	else
 	{
-
 		CString csThisName;
 		if (!isFirstLevel && !m_bIncludeNestedRefs)
 			return;
@@ -731,13 +728,10 @@ bool CBrowseRefsDlg::ConfirmDeleteRef(VectorPShadowTree& leafs)
 			csMessage.Format(IDS_PROC_DELETEBRANCHTAG, (LPCTSTR)tagToDelete);
 		}
 		else
-		{
 			csMessage.Format(IDS_PROC_DELETENREFS, leafs.size());
-		}
 	}
 
 	return CMessageBox::Show(m_hWnd, csMessage, _T("TortoiseGit"), MB_YESNO | mbIcon) == IDYES;
-
 }
 
 bool CBrowseRefsDlg::DoDeleteRefs(VectorPShadowTree& leafs)
@@ -1492,7 +1486,6 @@ void CBrowseRefsDlg::OnLvnEndlabeleditListRefLeafs(NMHDR *pNMHDR, LRESULT *pResu
 //	CString W_csPopup;W_csPopup.Format8(L"Ref: %s. New name: %s. With path: %s", pTree->GetRefName(), pDispInfo->item.pszText, newName);
 
 //	AfxMessageBox(W_csPopup);
-
 }
 
 void CBrowseRefsDlg::OnLvnBeginlabeleditListRefLeafs(NMHDR *pNMHDR, LRESULT *pResult)
@@ -1623,7 +1616,6 @@ void CBrowseRefsDlg::UpdateInfoLabel()
 	temp.FormatMessage(IDS_REFBROWSE_INFO, m_ListRefLeafs.GetItemCount(), m_ListRefLeafs.GetSelectedCount());
 	SetDlgItemText(IDC_INFOLABEL, temp);
 }
-
 
 void CBrowseRefsDlg::OnBnClickedIncludeNestedRefs()
 {

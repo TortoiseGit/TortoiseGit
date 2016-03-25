@@ -106,7 +106,6 @@ void CGradient::DrawGDI(CDC * pDC, CRect rect, COLORREF colorStart, COLORREF col
 		pDC->GradientFill(vert, 2, &gRect, 1, GRADIENT_FILL_RECT_H);
 	else
 		pDC->GradientFill(vert, 2, &gRect, 1, GRADIENT_FILL_RECT_V);
-
 }
 
 void CGradient::DrawGDI(CDC * pDC, CRect rect, COLORREF colorStart, COLORREF colorMid, COLORREF colorEnd, BOOL bHorz/* = TRUE*/)

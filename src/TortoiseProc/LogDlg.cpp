@@ -111,7 +111,6 @@ CLogDlg::CLogDlg(CWnd* pParent /*=nullptr*/)
 
 CLogDlg::~CLogDlg()
 {
-
 	m_regbAllBranch = (DWORD)m_AllBranchType;
 	m_regbShowTags = m_bShowTags;
 	m_regbShowLocalBranches = m_bShowLocalBranches;
@@ -584,9 +583,7 @@ void CLogDlg::SetDlgTitle()
 		GetWindowText(m_sTitle);
 
 	if (m_LogList.m_Path.IsEmpty() || m_orgPath.GetWinPathString().IsEmpty())
-	{
 		CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, m_sTitle);
-	}
 	else
 		CAppUtils::SetWindowTitle(m_hWnd, m_orgPath.GetWinPathString(), m_sTitle);
 }
@@ -596,9 +593,7 @@ void CLogDlg::CheckRegexpTooltip()
 	CWnd *pWnd = GetDlgItem(IDC_SEARCHEDIT);
 	// Since tooltip describes regexp features, show it only if regexps are enabled.
 	if (m_bFilterWithRegex)
-	{
 		m_tooltips.AddTool(pWnd, IDS_LOG_FILTER_REGEX_TT);
-	}
 	else
 		m_tooltips.DelTool(pWnd);
 }
@@ -628,13 +623,9 @@ bool LookLikeGitHash(const CString& msg, int &pos)
 	for (; pos < msg.GetLength(); ++pos)
 	{
 		if (msg[pos] >= '0' && msg[pos] <= '9' || msg[pos] >= 'a' && msg[pos] <= 'f')
-		{
 			c++;
-		}
 		else
-		{
 			return c >= g_Git.GetShortHASHLength() && c <= GIT_HASH_SIZE * 2 && msg[pos] != '@';
-		}
 	}
 	return c >= g_Git.GetShortHASHLength() && c <= GIT_HASH_SIZE * 2;
 }
@@ -691,9 +682,7 @@ std::vector<CHARRANGE> FindGitHashPositions(const CString& msg, int offset)
 			++offset;
 		}
 		else
-		{
 			++offset;
-		}
 	}
 
 	return result;
@@ -961,7 +950,6 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 	else
 		SetSortArrow(&m_ChangedFileListCtrl, -1, false);
 	m_ChangedFileListCtrl.SetRedraw(TRUE);
-
 }
 
 void CLogDlg::FillPatchView(bool onlySetTimer)
@@ -1228,7 +1216,6 @@ void CLogDlg::OnCancel()
 
 void CLogDlg::CopyChangedSelectionToClipBoard()
 {
-
 	POSITION posLogList = m_LogList.GetFirstSelectedItemPosition();
 	if (posLogList == nullptr)
 		return;	// nothing is selected, get out of here
@@ -1284,7 +1271,6 @@ void CLogDlg::CopyChangedSelectionToClipBoard()
 #endif
 	sPaths.Trim();
 	CStringUtils::WriteAsciiStringToClipboard(sPaths, GetSafeHwnd());
-
 }
 
 void CLogDlg::OnContextMenu(CWnd* pWnd, CPoint point)
@@ -2161,7 +2147,6 @@ LRESULT CLogDlg::OnClickedInfoIcon(WPARAM wParam, LPARAM lParam)
 		int selection = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this, 0);
 		if (selection != 0)
 		{
-
 			if (selection == LOGFILTER_REGEX)
 			{
 				m_bFilterWithRegex = !m_bFilterWithRegex;
@@ -2326,9 +2311,7 @@ void CLogDlg::OnTimer(UINT_PTR nIDEvent)
 		Refresh(false);
 	}
 	else if (nIDEvent == LOG_FILLPATCHVTIMER)
-	{
 		FillPatchView();
-	}
 	else if (nIDEvent == LOGFILTER_TIMER)
 	{
 		KillTimer(LOGFILTER_TIMER);
@@ -2422,7 +2405,6 @@ void CLogDlg::OnDtnDatetimechangeDateto(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 
 void CLogDlg::OnDtnDatetimechangeDatefrom(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 {
-
 	try
 	{
 		CTime _time;
@@ -2814,7 +2796,6 @@ void CLogDlg::OnBnClickedHidepaths()
 
 void CLogDlg::UpdateLogInfoLabel()
 {
-
 	CGitHash rev1 ;
 	CGitHash rev2 ;
 	long selectedrevs = 0;
@@ -2989,7 +2970,6 @@ void CLogDlg::OnEnChangeSearchedit()
 		SetTimer(LOGFILTER_TIMER, 1000, nullptr);
 	else
 		KillTimer(LOGFILTER_TIMER);
-
 }
 
 void CLogDlg::OnBnClickedAllBranch()
@@ -3031,12 +3011,10 @@ void CLogDlg::OnBnClickedFollowRenames()
 		m_LogList.m_ShowMask &= ~CGit::LOG_INFO_BASIC_REFS;
 		if (m_bAllBranch)
 		{
-
 			m_bAllBranch = FALSE;
 			m_AllBranchType = AllBranchType::None;
 			m_LogList.m_ShowMask &=~ CGit::LOG_INFO_ALL_BRANCH;
 		}
-
 	}
 	else
 		m_LogList.m_ShowMask &= ~CGit::LOG_INFO_FOLLOW;
@@ -3322,7 +3300,6 @@ void CLogDlg::OnBnClickedFirstParent()
 	OnRefresh();
 
 	FillLogMessageCtrl(false);
-
 }
 
 void CLogDlg::OnBnClickShowWholeProject()
@@ -3344,7 +3321,6 @@ void CLogDlg::OnBnClickShowWholeProject()
 	OnRefresh();
 
 	FillLogMessageCtrl(false);
-
 }
 
 LRESULT CLogDlg::OnRefLogChanged(WPARAM /*wParam*/, LPARAM /*lParam*/)

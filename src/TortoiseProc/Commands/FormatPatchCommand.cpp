@@ -37,7 +37,6 @@ bool FormatPatchCommand::Execute()
 	{
 		dlg.m_Since=startval;
 		dlg.m_Radio = IDC_RADIO_SINCE;
-
 	}
 	else if( (!endval.IsEmpty()) && (!startval.IsEmpty()))
 	{
@@ -80,9 +79,7 @@ bool FormatPatchCommand::Execute()
 		if(!progress.m_GitStatus)
 		{
 			if(dlg.m_bSendMail)
-			{
 				CAppUtils::SendPatchMail(cmd, progress.m_LogText, true);
-			}
 		}
 		return !progress.m_GitStatus;
 	}

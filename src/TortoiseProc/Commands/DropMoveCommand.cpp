@@ -59,9 +59,7 @@ bool DropMoveCommand::Execute()
 			renDlg.m_windowtitle.LoadString(IDS_PROC_MOVERENAME);
 			renDlg.m_name = pathList[0].GetFileOrDirectoryName();
 			if (renDlg.DoModal() != IDOK)
-			{
 				return FALSE;
-			}
 			sNewName = renDlg.m_name;
 		} while(sNewName.IsEmpty() || PathFileExists(droppath + sNewName));
 	}
@@ -90,9 +88,7 @@ bool DropMoveCommand::Execute()
 			dlg.m_name = name;
 			dlg.m_windowtitle.Format(IDS_PROC_NEWNAMEMOVE, (LPCTSTR)name);
 			if (dlg.DoModal() != IDOK)
-			{
 				return FALSE;
-			}
 			destPath.SetFromWin(droppath + dlg.m_name);
 		}
 		CString cmd,out;

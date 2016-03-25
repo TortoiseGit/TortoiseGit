@@ -316,16 +316,12 @@ bool CGitStatusCache::RemoveTimedoutBlocks()
 	for (auto it = m_NoWatchPaths.cbegin(); it != m_NoWatchPaths.cend(); ++it)
 	{
 		if (currentTicks > it->second)
-		{
 			toRemove.push_back(it->first);
-		}
 	}
 	if (!toRemove.empty())
 	{
 		for (auto it = toRemove.cbegin(); it != toRemove.cend(); ++it)
-		{
 			ret = ret || UnBlockPath(*it);
-		}
 	}
 
 	return ret;
@@ -383,9 +379,7 @@ bool CGitStatusCache::RemoveCacheForDirectory(CCachedDirectory * cdir)
 			{
 				// just in case (see TortoiseSVN issue #255)
 				if (itMap->second == cdir)
-				{
 					m_directoryCache.erase(itMap);
-				}
 				else
 					RemoveCacheForDirectory(itMap->second);
 			}
@@ -501,9 +495,7 @@ CStatusCacheEntry CGitStatusCache::GetStatusForPath(const CTGitPath& path, DWORD
 	if(now-m_mostRecentExpiresAt < 0)
 	{
 		if(path.IsEquivalentToWithoutCase(m_mostRecentPath))
-		{
 			return m_mostRecentStatus;
-		}
 	}
 	{
 		AutoLocker lock(m_critSec);

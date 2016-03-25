@@ -84,9 +84,7 @@ git_wc_status_kind GitStatus::GetAllStatus(const CTGitPath& path, git_depth_t de
 			statuskind = git_wc_status_modified;
 	}
 	else
-	{
 		err = GetFileStatus(sProjectRoot, sSubPath, &statuskind, isfull, false, isfull, nullptr, nullptr, assumeValid, skipWorktree);
-	}
 
 	return statuskind;
 }
@@ -318,9 +316,7 @@ int GitStatus::GetFileList(CString path, std::vector<CGitFileName> &list)
 		filename.m_FileName.MakeLower();
 
 		if(data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
-		{
 			filename.m_FileName += _T('/');
-		}
 
 		list.push_back(filename);
 

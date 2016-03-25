@@ -92,9 +92,7 @@ BOOL CAddDlg::OnInitDialog()
 	//first start a thread to obtain the file list with the status without
 	//blocking the dialog
 	if (!AfxBeginThread(AddThreadEntry, this))
-	{
 		CMessageBox::Show(this->m_hWnd, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
-	}
 	InterlockedExchange(&m_bThreadRunning, TRUE);
 
 	return TRUE;
@@ -148,9 +146,7 @@ UINT CAddDlg::AddThread()
 	m_bCancelled = false;
 	m_addListCtrl.Clear();
 	if (!m_addListCtrl.GetStatus(&m_pathList, false, m_bIncludeIgnored != FALSE, true))
-	{
 		m_addListCtrl.SetEmptyString(m_addListCtrl.GetLastErrorMessage());
-	}
 	unsigned int dwShow = GITSLC_SHOWUNVERSIONED | GITSLC_SHOWDIRECTFILES | GITSLC_SHOWREMOVEDANDPRESENT;
 	if (m_bIncludeIgnored)
 		dwShow |= GITSLC_SHOWIGNORED;
@@ -171,9 +167,7 @@ BOOL CAddDlg::PreTranslateMessage(MSG* pMsg)
 				if (GetAsyncKeyState(VK_CONTROL)&0x8000)
 				{
 					if ( GetDlgItem(IDOK)->IsWindowEnabled() )
-					{
 						PostMessage(WM_COMMAND, IDOK);
-					}
 					return TRUE;
 				}
 			}
@@ -192,9 +186,7 @@ BOOL CAddDlg::PreTranslateMessage(MSG* pMsg)
 LRESULT CAddDlg::OnSVNStatusListCtrlNeedsRefresh(WPARAM, LPARAM)
 {
 	if (!AfxBeginThread(AddThreadEntry, this))
-	{
 		CMessageBox::Show(this->m_hWnd, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
-	}
 	return 0;
 }
 
@@ -256,9 +248,7 @@ void CAddDlg::Refresh()
 	if (!m_bThreadRunning)
 	{
 		if (!AfxBeginThread(AddThreadEntry, this))
-		{
 			CMessageBox::Show(this->m_hWnd, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
-		}
 		else
 			InterlockedExchange(&m_bThreadRunning, TRUE);
 	}

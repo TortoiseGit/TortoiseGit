@@ -199,9 +199,7 @@ void CSciEdit::Init(LONG lLanguage)
 					DWORD lid = SUBLANGID(langId);
 					lid--;
 					if (lid > 0)
-					{
 						langId = MAKELANGID(PRIMARYLANGID(langId), lid);
-					}
 					else if (langId == 1033)
 						langId = 0;
 					else
@@ -313,9 +311,7 @@ BOOL CSciEdit::LoadDictionaries(LONG lLanguageID)
 		for (int i = 0; i < n; i++)
 		{
 			if (strcmp(encoding,enc2locale[i].def_enc) == 0)
-			{
 				m_spellcodepage = atoi(enc2locale[i].cp);
-			}
 		}
 		m_personalDict.Init(lLanguageID);
 	}
@@ -407,9 +403,7 @@ CString CSciEdit::GetWordUnderCursor(bool bSelectWord)
 	textrange.lpstrText = textbuffer.get();
 	Call(SCI_GETTEXTRANGE, 0, (LPARAM)&textrange);
 	if (bSelectWord)
-	{
 		Call(SCI_SETSEL, textrange.chrg.cpMin, textrange.chrg.cpMax);
-	}
 	CString sRet = StringFromControl(textbuffer.get());
 	return sRet;
 }
@@ -490,9 +484,7 @@ BOOL CSciEdit::IsMisspelled(const CString& sWord)
 				}
 				sWordA = GetWordForSpellChecker(sWord.Mid(wordstart, wordend - wordstart));
 				if ((sWordA.GetLength() > 2)&&(!pChecker->spell(sWordA)))
-				{
 					return TRUE;
-				}
 				wordstart = wordend;
 				wordend++;
 			}
@@ -668,13 +660,9 @@ void CSciEdit::DoAutoCompletion(int nMinPrefixLength)
 			if (compare>0)
 				continue;
 			else if (compare == 0)
-			{
 				wordset.emplace(lowerit->first, lowerit->second);
-			}
 			else
-			{
 				break;
-			}
 		}
 	}
 
@@ -707,9 +695,7 @@ BOOL CSciEdit::OnChildNotify(UINT message, WPARAM wParam, LPARAM lParam, LRESULT
 				if ((lpSCN->ch < 32)&&(lpSCN->ch != 13)&&(lpSCN->ch != 10))
 					Call(SCI_DELETEBACK);
 				else
-				{
 					DoAutoCompletion(m_nAutoCompleteMinChars);
-				}
 				return TRUE;
 			}
 			break;
@@ -1555,7 +1541,6 @@ void CSciEdit::SetAStyle(int style, COLORREF fore, COLORREF back, int size, cons
 	if (face)
 		Call(SCI_STYLESETFONT, style, reinterpret_cast<LPARAM>(face));
 }
-
 
 void CSciEdit::SetUDiffStyle()
 {

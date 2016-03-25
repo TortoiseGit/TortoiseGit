@@ -256,9 +256,7 @@ void CChangedDlg::OnBnClickedShowunversioned()
 		if(m_bShowUnversioned)
 		{
 			if (!AfxBeginThread(ChangedStatusThreadEntry, this))
-			{
 				CMessageBox::Show(GetSafeHwnd(), IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
-			}
 		}
 	}
 	UpdateStatistics();
@@ -301,9 +299,7 @@ void CChangedDlg::OnBnClickedShowlocalchangesignored()
 LRESULT CChangedDlg::OnSVNStatusListCtrlNeedsRefresh(WPARAM, LPARAM)
 {
 	if (!AfxBeginThread(ChangedStatusThreadEntry, this))
-	{
 		CMessageBox::Show(GetSafeHwnd(), IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
-	}
 	return 0;
 }
 
@@ -340,9 +336,7 @@ void CChangedDlg::OnBnClickedRefresh()
 	if (!m_bBlock)
 	{
 		if (!AfxBeginThread(ChangedStatusThreadEntry, this))
-		{
 			CMessageBox::Show(GetSafeHwnd(), IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
-		}
 	}
 }
 
@@ -368,7 +362,6 @@ void CChangedDlg::UpdateStatistics()
 	temp.Replace(_T(" = "), _T("="));
 	temp.Replace(_T("\n"), _T(", "));
 	SetDlgItemText(IDC_INFOLABEL, temp);
-
 }
 
 void CChangedDlg::OnBnClickedCommit()

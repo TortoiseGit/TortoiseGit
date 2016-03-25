@@ -27,7 +27,6 @@
 
 bool DropCopyCommand::Execute()
 {
-
 	CString sDroppath = parser.GetVal(_T("droptarget"));
 	if (CTGitPath(sDroppath).IsAdminDir())
 	{
@@ -47,9 +46,7 @@ bool DropCopyCommand::Execute()
 			renDlg.m_windowtitle.LoadString(IDS_PROC_COPYRENAME);
 			renDlg.m_name = pathList[0].GetFileOrDirectoryName();
 			if (renDlg.DoModal() != IDOK)
-			{
 				return FALSE;
-			}
 			sNewName = renDlg.m_name;
 		} while(sNewName.IsEmpty() || PathFileExists(sDroppath+_T("\\")+sNewName));
 	}
@@ -77,9 +74,7 @@ bool DropCopyCommand::Execute()
 			CRenameDlg dlg;
 			dlg.m_windowtitle.Format(IDS_PROC_NEWNAMECOPY, (LPCTSTR)sourcePath.GetUIFileOrDirectoryName());
 			if (dlg.DoModal() != IDOK)
-			{
 				return FALSE;
-			}
 			// rebuild the progress dialog
 			progress.EnsureValid();
 			progress.SetTitle(IDS_PROC_COPYING);
@@ -111,9 +106,8 @@ bool DropCopyCommand::Execute()
 
 				CString output;
 				if (g_Git.Run(cmd, &output, CP_UTF8))
-				{
 					MessageBox(hwndExplorer, output, L"TortoiseGit", MB_OK | MB_ICONERROR);
-				}else
+				else
 					CShellUpdater::Instance().AddPathForUpdate(fullDropPath);
 			}
 

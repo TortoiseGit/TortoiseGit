@@ -513,9 +513,7 @@ BOOL CGitStatusListCtrl::GetStatus ( const CTGitPathList* pathList
 				}
 			}
 			if(!FetchStatusForSingleTarget(config, status, sortedPathList.GetCommonDirectory(), bUpdate, sUUID, arExtPaths, true, depth, bShowIgnoresRight))
-			{
 				bRet = FALSE;
-			}
 		}
 		else
 		{
@@ -637,19 +635,13 @@ void CGitStatusListCtrl::Show(unsigned int dwShow, unsigned int dwCheck /*=0*/, 
 	{
 		m_arStatusArray.clear();
 		for (int i = 0; i < m_StatusFileList.GetCount(); ++i)
-		{
 			m_arStatusArray.push_back((CTGitPath*)&m_StatusFileList[i]);
-		}
 
 		for (int i = 0; i < m_UnRevFileList.GetCount(); ++i)
-		{
 			m_arStatusArray.push_back((CTGitPath*)&m_UnRevFileList[i]);
-		}
 
 		for (int i = 0; i < m_IgnoreFileList.GetCount(); ++i)
-		{
 			m_arStatusArray.push_back((CTGitPath*)&m_IgnoreFileList[i]);
-		}
 	}
 	PrepareGroups();
 	if (m_nSortedColumn >= 0)
@@ -665,9 +657,7 @@ void CGitStatusListCtrl::Show(unsigned int dwShow, unsigned int dwCheck /*=0*/, 
 		CTGitPath* entry = ((CTGitPath*)m_arStatusArray[i]);
 		CString path = entry->GetGitPathString();
 		if (!m_mapFilenameToChecked.empty() && m_mapFilenameToChecked.find(path) != m_mapFilenameToChecked.end())
-		{
 			entry->m_Checked=m_mapFilenameToChecked[path];
-		}
 		else if (!UseStoredCheckStatus)
 		{
 			bool autoSelectSubmodules = !(entry->IsDirectory() && m_bDoNotAutoselectSubmodules);
@@ -720,9 +710,7 @@ void CGitStatusListCtrl::Show(unsigned int dwShow, unsigned int dwCheck /*=0*/, 
 		for (int i=0;GetTopIndex() != nTopIndex;i++)
 		{
 			if ( !EnsureVisible(nTopIndex+i,false) )
-			{
 				break;
-			}
 		}
 	}
 #endif
@@ -861,9 +849,7 @@ void CGitStatusListCtrl::Show(unsigned int dwShow, unsigned int dwCheck /*=0*/, 
 		for (int i=0;GetTopIndex() != nTopIndex;i++)
 		{
 			if ( !EnsureVisible(nTopIndex+i,false) )
-			{
 				break;
-			}
 		}
 	}
 
@@ -873,7 +859,6 @@ void CGitStatusListCtrl::Show(unsigned int dwShow, unsigned int dwCheck /*=0*/, 
 	m_bEmpty = (GetItemCount() == 0);
 	Invalidate();
 #endif
-
 }
 
 void CGitStatusListCtrl::Show(unsigned int /*dwShow*/, const CTGitPathList& checkedList, bool /*bShowFolders*/ /* = true */)
@@ -1000,9 +985,7 @@ void CGitStatusListCtrl::Show(unsigned int /*dwShow*/, const CTGitPathList& chec
 		for (int i=0;GetTopIndex() != nTopIndex;i++)
 		{
 			if ( !EnsureVisible(nTopIndex+i,false) )
-			{
 				break;
-			}
 		}
 	}
 
@@ -1012,7 +995,6 @@ void CGitStatusListCtrl::Show(unsigned int /*dwShow*/, const CTGitPathList& chec
 	m_bEmpty = (GetItemCount() == 0);
 	Invalidate();
 #endif
-
 }
 int CGitStatusListCtrl::GetColumnIndex(int mask)
 {
@@ -1092,17 +1074,11 @@ void CGitStatusListCtrl::AddEntry(CTGitPath * GitPath, WORD /*langID*/, int list
 			if (!commonRoot.IsEmpty())
 				commonRoot += _T("/");
 			if (old.GetFileOrDirectoryName() == GitPath->GetFileOrDirectoryName() && old.GetContainingDirectory().GetGitPathString() != "" && GitPath->GetContainingDirectory().GetGitPathString())
-			{
 				entryname = commonRoot + _T("{") + GitPath->GetGitOldPathString().Mid(commonRoot.GetLength(), old.GetGitPathString().GetLength() - commonRoot.GetLength() - old.GetFileOrDirectoryName().GetLength() - 1) + _T(" => ") + GitPath->GetGitPathString().Mid(commonRoot.GetLength(), GitPath->GetGitPathString().GetLength() - commonRoot.GetLength() - old.GetFileOrDirectoryName().GetLength() - 1) +  _T("}/") + old.GetFileOrDirectoryName();
-			}
 			else if (!commonRoot.IsEmpty())
-			{
 				entryname = commonRoot + _T("{") + GitPath->GetGitOldPathString().Mid(commonRoot.GetLength()) + _T(" => ") + GitPath->GetGitPathString().Mid(commonRoot.GetLength()) + _T("}");
-			}
 			else
-			{
 				entryname = GitPath->GetGitOldPathString().Mid(commonRoot.GetLength()) + _T(" => ") + GitPath->GetGitPathString().Mid(commonRoot.GetLength());
-			}
 		}
 	}
 
@@ -1152,13 +1128,9 @@ void CGitStatusListCtrl::AddEntry(CTGitPath * GitPath, WORD /*langID*/, int list
 	else if( GitPath->m_Action & CTGitPath::LOGACTIONS_UNVER)
 		SetItemGroup(index,1);
 	else
-	{
 		SetItemGroup(index, GitPath->m_ParentNo&(PARENT_MASK|MERGE_MASK));
-	}
 
 	m_bBlock = FALSE;
-
-
 }
 
 bool CGitStatusListCtrl::SetItemGroup(int item, int groupindex)
@@ -1214,9 +1186,7 @@ BOOL CGitStatusListCtrl::OnLvnItemchanged(NMHDR *pNMHDR, LRESULT *pResult)
 	*pResult = 0;
 	CWnd* pParent = GetLogicalParent();
 	if (pParent && pParent->GetSafeHwnd())
-	{
 		pParent->SendMessage(GITSLNM_ITEMCHANGED, pNMLV->iItem);
-	}
 
 	if ((pNMLV->uNewState==0)||(pNMLV->uNewState & LVIS_SELECTED)||(pNMLV->uNewState & LVIS_FOCUSED))
 		return FALSE;
@@ -1324,9 +1294,7 @@ void CGitStatusListCtrl::CheckEntry(int index, int /*nListItems*/)
 		// if a deleted folder gets checked, we have to check all
 		// children of that folder too.
 		if (entry->path.IsDirectory())
-		{
 			SetCheckOnAllDescendentsOf(entry, true);
-		}
 
 		// if a deleted file or folder gets checked, we have to
 		// check all parents of this item too.
@@ -1414,7 +1382,6 @@ void CGitStatusListCtrl::UncheckEntry(int index, int /*nListItems*/)
 }
 bool CGitStatusListCtrl::BuildStatistics()
 {
-
 	bool bRefetchStatus = false;
 
 	// now gather some statistics
@@ -1589,7 +1556,6 @@ void CGitStatusListCtrl::OnContextMenuGroup(CWnd * /*pWnd*/, CPoint point)
 
 void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 {
-
 	//WORD langID = (WORD)CRegStdDWORD(_T("Software\\TortoiseGit\\LanguageID"), GetUserDefaultLangID());
 
 	bool bShift = !!(GetAsyncKeyState(VK_SHIFT) & 0x8000);
@@ -1639,9 +1605,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					popup.SetDefaultItem(IDGITLC_EDITCONFLICT, FALSE);
 				}
 				if (m_dwContextMenus & GITSLC_POPRESOLVE)
-				{
 					popup.AppendMenuIcon(IDGITLC_RESOLVECONFLICT, IDS_STATUSLIST_CONTEXT_RESOLVED, IDI_RESOLVE);
-				}
 				if ((m_dwContextMenus & GITSLC_POPRESOLVE)/*&&(entry->textstatus == git_wc_status_conflicted)*/)
 				{
 					popup.AppendMenuIcon(IDGITLC_RESOLVETHEIRS, IDS_SVNPROGRESS_MENUUSETHEIRS, IDI_RESOLVE);
@@ -1667,9 +1631,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						}
 					}
 					if (m_dwContextMenus & GITSLC_POPCOMMIT)
-					{
 						popup.AppendMenuIcon(IDGITLC_COMMIT, IDS_STATUSLIST_CONTEXT_COMMIT, IDI_COMMIT);
-					}
 				}
 			}
 
@@ -1717,9 +1679,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						popup.SetDefaultItem(IDGITLC_COMPARETWOREVISIONS, FALSE);
 					}
 					if (m_dwContextMenus & this->GetContextMenuBit(IDGITLC_GNUDIFF2REVISIONS))
-					{
 						popup.AppendMenuIcon(IDGITLC_GNUDIFF2REVISIONS, IDS_LOG_POPUP_GNUDIFF, IDI_DIFF);
-					}
 				}
 			}
 
@@ -1749,29 +1709,19 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 			if ( (GetSelectedCount() >0 ) && (!(wcStatus & (CTGitPath::LOGACTIONS_UNVER | CTGitPath::LOGACTIONS_IGNORE))) && m_bHasWC)
 			{
 				if ((m_dwContextMenus & GITSLC_POPCOMMIT) && (this->m_CurrentVersion.IsEmpty() || this->m_CurrentVersion == GIT_REV_ZERO) && !(wcStatus & (CTGitPath::LOGACTIONS_SKIPWORKTREE | CTGitPath::LOGACTIONS_ASSUMEVALID)))
-				{
 					popup.AppendMenuIcon(IDGITLC_COMMIT, IDS_STATUSLIST_CONTEXT_COMMIT, IDI_COMMIT);
-				}
 
 				if ((m_dwContextMenus & GITSLC_POPREVERT) && (this->m_CurrentVersion.IsEmpty() || this->m_CurrentVersion == GIT_REV_ZERO))
-				{
 					popup.AppendMenuIcon(IDGITLC_REVERT, IDS_MENUREVERT, IDI_REVERT);
-				}
 
 				if ((m_dwContextMenus & GITSLC_POPSKIPWORKTREE) && (this->m_CurrentVersion.IsEmpty() || this->m_CurrentVersion == GIT_REV_ZERO) && !(wcStatus & (CTGitPath::LOGACTIONS_ADDED | CTGitPath::LOGACTIONS_UNMERGED | CTGitPath::LOGACTIONS_SKIPWORKTREE)))
-				{
 					popup.AppendMenuIcon(IDGITLC_SKIPWORKTREE, IDS_STATUSLIST_SKIPWORKTREE);
-				}
 
 				if ((m_dwContextMenus & GITSLC_POPASSUMEVALID) && (this->m_CurrentVersion.IsEmpty() || this->m_CurrentVersion == GIT_REV_ZERO) && !(wcStatus & (CTGitPath::LOGACTIONS_ADDED | CTGitPath::LOGACTIONS_DELETED | CTGitPath::LOGACTIONS_UNMERGED | CTGitPath::LOGACTIONS_ASSUMEVALID)))
-				{
 					popup.AppendMenuIcon(IDGITLC_ASSUMEVALID, IDS_MENUASSUMEVALID);
-				}
 
 				if ((m_dwContextMenus & GITLC_POPUNSETIGNORELOCALCHANGES) && (this->m_CurrentVersion.IsEmpty() || this->m_CurrentVersion == GIT_REV_ZERO) && (wcStatus & (CTGitPath::LOGACTIONS_SKIPWORKTREE | CTGitPath::LOGACTIONS_ASSUMEVALID)))
-				{
 					popup.AppendMenuIcon(IDGITLC_UNSETIGNORELOCALCHANGES, IDS_STATUSLIST_UNSETIGNORELOCALCHANGES);
-				}
 
 				if (m_dwContextMenus & GITSLC_POPRESTORE && !filepath->IsDirectory())
 				{
@@ -1798,21 +1748,13 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				&&(!(wcStatus & CTGitPath::LOGACTIONS_IGNORE)))
 			{
 				if (m_dwContextMenus & GITSLC_POPSHOWLOG)
-				{
 					popup.AppendMenuIcon(IDGITLC_LOG, IDS_REPOBROWSE_SHOWLOG, IDI_LOG);
-				}
 				if (m_dwContextMenus & GITSLC_POPSHOWLOGSUBMODULE && filepath->IsDirectory())
-				{
 					popup.AppendMenuIcon(IDGITLC_LOGSUBMODULE, IDS_LOG_SUBMODULE, IDI_LOG);
-				}
 				if (m_dwContextMenus & GITSLC_POPSHOWLOGOLDNAME && (wcStatus & (CTGitPath::LOGACTIONS_REPLACED|CTGitPath::LOGACTIONS_COPY) && !filepath->GetGitOldPathString().IsEmpty()))
-				{
 					popup.AppendMenuIcon(IDGITLC_LOGOLDNAME, IDS_STATUSLIST_SHOWLOGOLDNAME, IDI_LOG);
-				}
 				if (m_dwContextMenus & GITSLC_POPBLAME && ! filepath->IsDirectory() && !(wcStatus & CTGitPath::LOGACTIONS_DELETED) && m_bHasWC)
-				{
 					popup.AppendMenuIcon(IDGITLC_BLAME, IDS_MENUBLAME, IDI_BLAME);
-				}
 			}
 
 			if (GetSelectedCount() > 0)
@@ -1825,9 +1767,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 			if ( (GetSelectedCount() == 1) )
 			{
 				if (m_dwContextMenus & this->GetContextMenuBit(IDGITLC_SAVEAS) && ! filepath->IsDirectory() && !(wcStatus & CTGitPath::LOGACTIONS_DELETED))
-				{
 					popup.AppendMenuIcon(IDGITLC_SAVEAS, IDS_LOG_POPUP_SAVE, IDI_SAVEAS);
-				}
 
 				if (m_dwContextMenus & GITSLC_POPOPEN && !filepath->IsDirectory() && !(wcStatus & (CTGitPath::LOGACTIONS_DELETED | CTGitPath::LOGACTIONS_MISSING)))
 				{
@@ -1840,9 +1780,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				}
 
 				if (m_dwContextMenus & GITSLC_POPEXPLORE && !(wcStatus & CTGitPath::LOGACTIONS_DELETED) && m_bHasWC)
-				{
 					popup.AppendMenuIcon(IDGITLC_EXPLORE, IDS_STATUSLIST_CONTEXT_EXPLORE, IDI_EXPLORER);
-				}
 
 				if (m_dwContextMenus & GITSLC_PREPAREDIFF && !(wcStatus & CTGitPath::LOGACTIONS_DELETED))
 				{
@@ -1867,9 +1805,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 			if (GetSelectedCount() > 0)
 			{
 //				if (((wcStatus == git_wc_status_unversioned)||(wcStatus == git_wc_status_ignored))&&(m_dwContextMenus & SVNSLC_POPDELETE))
-//				{
 //					popup.AppendMenuIcon(IDSVNLC_DELETE, IDS_MENUREMOVE, IDI_DELETE);
-//				}
 //				if ((wcStatus != Git_wc_status_unversioned)&&(wcStatus != git_wc_status_ignored)&&(wcStatus != Git_wc_status_deleted)&&(wcStatus != Git_wc_status_added)&&(m_dwContextMenus & GitSLC_POPDELETE))
 //				{
 //					if (bShift)
@@ -1880,15 +1816,12 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				if ((wcStatus & (CTGitPath::LOGACTIONS_UNVER | CTGitPath::LOGACTIONS_IGNORE | CTGitPath::LOGACTIONS_MISSING))/*||(wcStatus == git_wc_status_deleted)*/)
 				{
 					if (m_dwContextMenus & GITSLC_POPDELETE)
-					{
 						popup.AppendMenuIcon(IDGITLC_DELETE, IDS_MENUREMOVE, IDI_DELETE);
-					}
 				}
 				if ( (wcStatus & CTGitPath::LOGACTIONS_UNVER || wcStatus & CTGitPath::LOGACTIONS_DELETED) )
 				{
 					if (m_dwContextMenus & GITSLC_POPIGNORE)
 					{
-
 						CTGitPathList ignorelist;
 						FillListOfSelectedItemPaths(ignorelist);
 						//check if all selected entries have the same extension
@@ -1924,13 +1857,9 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						{
 							CString temp;
 							if (ignorelist.GetCount()==1)
-							{
 								temp.LoadString(IDS_MENUIGNORE);
-							}
 							else
-							{
 								temp.Format(IDS_MENUIGNOREMULTIPLE, ignorelist.GetCount());
-							}
 							popup.AppendMenuIcon(IDGITLC_IGNORE, temp, IDI_IGNORE);
 							temp.Format(IDS_MENUIGNOREMULTIPLEMASK, ignorelist.GetCount());
 							popup.AppendMenuIcon(IDGITLC_IGNOREMASK, temp, IDI_IGNORE);
@@ -1954,9 +1883,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					// changelist commands
 					size_t numChangelists = GetNumberOfChangelistsInSelection();
 					if (numChangelists > 0)
-					{
 						popup.AppendMenuIcon(IDSVNLC_REMOVEFROMCS, IDS_STATUSLIST_CONTEXT_REMOVEFROMCS);
-					}
 					if ((!entry->IsFolder())&&(changelistSubMenu.CreateMenu()))
 					{
 						CString temp;
@@ -2254,9 +2181,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					POSITION pos = GetFirstSelectedItemPosition();
 					int index;
 					while ((index = GetNextSelectedItem(pos)) >= 0)
-					{
 						m_mapFilenameToChecked.erase(((CTGitPath*)GetItemData(index))->GetGitPathString());
-					}
 
 					if (GetLogicalParent() && GetLogicalParent()->GetSafeHwnd())
 						GetLogicalParent()->SendMessage(GITSLNM_NEEDSREFRESH);
@@ -2470,9 +2395,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 							revertToCommit = _T("HEAD~1");
 						CString err;
 						if (g_Git.Revert(revertToCommit, targetList, err))
-						{
 							CMessageBox::Show(this->m_hWnd, _T("Revert failed:\n") + err, _T("TortoiseGit"), MB_ICONERROR);
-						}
 						else
 						{
 							bool updateStatusList = false;
@@ -2576,9 +2499,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				{
 					CCreateChangelistDlg dlg;
 					if (dlg.DoModal() == IDOK)
-					{
 						CreateChangeList(dlg.m_sName);
-					}
 				}
 				break;
 			default:
@@ -2597,9 +2518,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						if ((it->first.Compare(SVNSLC_IGNORECHANGELIST))&&(entry->changelist.Compare(it->first)))
 						{
 							if (cmd == cmdID)
-							{
 								sChangelist = it->first;
-							}
 							cmdID++;
 						}
 					}
@@ -2626,9 +2545,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 							}
 						}
 						else
-						{
 							CMessageBox::Show(m_hWnd, git.GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
-						}
 					}
 					SetRedraw(TRUE);
 				}
@@ -2650,7 +2567,6 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 			//}
 		} // if (popup.CreatePopupMenu())
 	} // if (selIndex >= 0)
-
 }
 
 void CGitStatusListCtrl::SetGitIndexFlagsForSelectedFiles(UINT message, BOOL assumevalid, BOOL skipworktree)
@@ -2719,20 +2635,16 @@ void CGitStatusListCtrl::OnContextMenuHeader(CWnd * pWnd, CPoint point)
 
 void CGitStatusListCtrl::OnContextMenu(CWnd* pWnd, CPoint point)
 {
-
 	if (pWnd == this)
 	{
 		OnContextMenuList(pWnd, point);
 	} // if (pWnd == this)
 	else if (pWnd == GetHeaderCtrl())
-	{
 		OnContextMenuHeader(pWnd, point);
-	}
 }
 
 void CGitStatusListCtrl::OnNMDblclk(NMHDR *pNMHDR, LRESULT *pResult)
 {
-
 	Locker lock(m_critSec);
 	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
 	*pResult = 0;
@@ -2766,7 +2678,6 @@ void CGitStatusListCtrl::OnNMDblclk(NMHDR *pNMHDR, LRESULT *pResult)
 		else
 			StartDiff(pNMLV->iItem);
 	}
-
 }
 void CGitStatusListCtrl::StartDiffTwo(int fileindex)
 {
@@ -2784,8 +2695,8 @@ void CGitStatusListCtrl::StartDiffTwo(int fileindex)
 		CGitDiff::DiffNull(&file1, m_Rev2, false);
 	else
 		CGitDiff::Diff(&file1, &file1, m_Rev1, m_Rev2);
-
 }
+
 void CGitStatusListCtrl::StartDiffWC(int fileindex)
 {
 	if(fileindex<0)
@@ -2802,7 +2713,6 @@ void CGitStatusListCtrl::StartDiffWC(int fileindex)
 	file1.m_Action = 0; // reset action, so that diff is not started as added/deleted file; see issue #1757
 
 	CGitDiff::Diff(&file1,&file1, GIT_REV_ZERO, m_CurrentVersion);
-
 }
 
 void CGitStatusListCtrl::StartDiff(int fileindex)
@@ -2816,13 +2726,9 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 	CTGitPath file1 = *ptr;
 	CTGitPath file2;
 	if(file1.m_Action & (CTGitPath::LOGACTIONS_REPLACED|CTGitPath::LOGACTIONS_COPY))
-	{
 		file2.SetFromGit(file1.GetGitOldPathString());
-	}
 	else
-	{
 		file2=file1;
-	}
 
 	if(this->m_CurrentVersion.IsEmpty() || m_CurrentVersion== GIT_REV_ZERO)
 	{
@@ -2851,10 +2757,7 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 			fromwhere = m_CurrentVersion+_T("~2");
 		bool revfail = !!g_Git.GetHash(hash, fromwhere);
 		if (revfail || (file1.m_Action & file1.LOGACTIONS_ADDED))
-		{
 			CGitDiff::DiffNull(&file1,m_CurrentVersion,true);
-
-		}
 		else if (file1.m_Action & file1.LOGACTIONS_DELETED)
 		{
 			if (file1.m_ParentNo > 0)
@@ -2866,7 +2769,6 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 		{
 			if( file1.m_ParentNo & MERGE_MASK)
 			{
-
 				CTGitPath base, theirs, mine, merge;
 
 				CString temppath;
@@ -2899,13 +2801,9 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 						else
 						{
 							if(parent1<0)
-							{
 								parent1 = m_arStatusArray[i]->m_ParentNo & PARENT_MASK;
-							}
 							else if (parent2 <0)
-							{
 								parent2 = m_arStatusArray[i]->m_ParentNo & PARENT_MASK;
-							}
 						}
 					}
 				}
@@ -2944,19 +2842,14 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 					}
 				}
 				CAppUtils::StartExtMerge(base, theirs, mine, merge,_T("BASE"),_T("REMOTE"),_T("LOCAL"));
-
 			}
 			else
 			{
 				CString str;
 				if( (file1.m_ParentNo&PARENT_MASK) == 0)
-				{
 					str = _T("~1");
-				}
 				else
-				{
 					str.Format(_T("^%d"), (file1.m_ParentNo&PARENT_MASK)+1);
-				}
 				CGitDiff::Diff(&file1,&file2,
 					m_CurrentVersion,
 					m_CurrentVersion+str);
@@ -3000,9 +2893,7 @@ CString CGitStatusListCtrl::GetStatisticsString(bool simple)
 	CString sStats;
 	sStats.Format(IDS_COMMITDLG_STATISTICSFORMAT, m_nSelected, GetItemCount());
 	if (m_pStatLabel)
-	{
 		m_pStatLabel->SetWindowText(sStats);
-	}
 
 	if (m_pSelectButton)
 	{
@@ -3015,13 +2906,9 @@ CString CGitStatusListCtrl::GetStatisticsString(bool simple)
 	}
 
 	if (m_pConfirmButton)
-	{
 		m_pConfirmButton->EnableWindow(m_nSelected>0);
-	}
 
 	return sToolTip;
-
-
 }
 
 CString CGitStatusListCtrl::GetCommonDirectory(bool bStrict)
@@ -3044,9 +2931,7 @@ CString CGitStatusListCtrl::GetCommonDirectory(bool bStrict)
 		baseDirectory = p->GetDirectory();
 
 		if(commonBaseDirectory.IsEmpty())
-		{
 			commonBaseDirectory = baseDirectory;
-		}
 		else
 		{
 			if (commonBaseDirectory.GetWinPathString().GetLength() > baseDirectory.GetWinPathString().GetLength())
@@ -3058,7 +2943,6 @@ CString CGitStatusListCtrl::GetCommonDirectory(bool bStrict)
 	}
 	return g_Git.CombinePath(commonBaseDirectory);
 }
-
 
 void CGitStatusListCtrl::SelectAll(bool bSelect, bool /*bIncludeNoCommits*/)
 {
@@ -3179,7 +3063,6 @@ void CGitStatusListCtrl::OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult)
 
 			if (m_arStatusArray.size() > (DWORD_PTR)pLVCD->nmcd.dwItemSpec)
 			{
-
 				//FileEntry * entry = GetListEntry((int)pLVCD->nmcd.dwItemSpec);
 				CTGitPath *entry=(CTGitPath *)GetItemData((int)pLVCD->nmcd.dwItemSpec);
 				if (!entry)
@@ -3194,40 +3077,21 @@ void CGitStatusListCtrl::OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult)
 				// green  : merged (or potential merges)
 				// red    : conflicts or sure conflicts
 				if(entry->m_Action & CTGitPath::LOGACTIONS_GRAY)
-				{
 					crText = RGB(128,128,128);
-
-				}
 				else if(entry->m_Action & CTGitPath::LOGACTIONS_UNMERGED)
-				{
 					crText = m_Colors.GetColor(CColors::Conflict);
-
-				}
 				else if(entry->m_Action & (CTGitPath::LOGACTIONS_MODIFIED))
-				{
 					crText = m_Colors.GetColor(CColors::Modified);
-
-				}
 				else if(entry->m_Action & (CTGitPath::LOGACTIONS_ADDED|CTGitPath::LOGACTIONS_COPY))
-				{
 					crText = m_Colors.GetColor(CColors::Added);
-				}
 				else if(entry->m_Action & CTGitPath::LOGACTIONS_DELETED)
-				{
 					crText = m_Colors.GetColor(CColors::Deleted);
-				}
 				else if(entry->m_Action & CTGitPath::LOGACTIONS_REPLACED)
-				{
 					crText = m_Colors.GetColor(CColors::Renamed);
-				}
 				else if(entry->m_Action & CTGitPath::LOGACTIONS_MERGED)
-				{
 					crText = m_Colors.GetColor(CColors::Merged);
-				}
 				else
-				{
 					crText = GetSysColor(COLOR_WINDOWTEXT);
-				}
 				// Store the color back in the NMLVCUSTOMDRAW struct.
 				pLVCD->clrText = crText;
 			}
@@ -3253,7 +3117,6 @@ BOOL CGitStatusListCtrl::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 
 void CGitStatusListCtrl::RemoveListEntry(int index)
 {
-
 	Locker lock(m_critSec);
 	DeleteItem(index);
 
@@ -3282,7 +3145,6 @@ void CGitStatusListCtrl::SetEntryCheck(CTGitPath* pEntry, int listboxIndex, bool
 #if 0
 void CGitStatusListCtrl::SetCheckOnAllDescendentsOf(const FileEntry* parentEntry, bool bCheck)
 {
-
 	int nListItems = GetItemCount();
 	for (int j=0; j< nListItems ; ++j)
 	{
@@ -3296,23 +3158,17 @@ void CGitStatusListCtrl::SetCheckOnAllDescendentsOf(const FileEntry* parentEntry
 			{
 				SetEntryCheck(childEntry,j,bCheck);
 				if(bCheck)
-				{
 					m_nSelected++;
-				}
 				else
-				{
 					m_nSelected--;
-				}
 			}
 		}
 	}
-
 }
 #endif
 
 void CGitStatusListCtrl::WriteCheckedNamesToPathList(CTGitPathList& pathList)
 {
-
 	pathList.Clear();
 	int nListItems = GetItemCount();
 	for (int i = 0; i< nListItems; ++i)
@@ -3320,12 +3176,9 @@ void CGitStatusListCtrl::WriteCheckedNamesToPathList(CTGitPathList& pathList)
 		CTGitPath * entry = (CTGitPath*)GetItemData(i);
 		ASSERT(entry);
 		if (entry->m_Checked)
-		{
 			pathList.AddPath(*entry);
-		}
 	}
 	pathList.SortByPathname();
-
 }
 
 
@@ -3370,9 +3223,7 @@ void CGitStatusListCtrl::OnNMReturn(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 		if (file == nullptr)
 			return;
 		if (file->m_Action & (CTGitPath::LOGACTIONS_UNVER | CTGitPath::LOGACTIONS_IGNORE))
-		{
 			OpenFile(file, OPEN);
-		}
 		else if ((file->m_Action & CTGitPath::LOGACTIONS_UNMERGED))
 		{
 			if (CAppUtils::ConflictEdit(*file, false, m_bIsRevertTheirMy, GetLogicalParent() ? GetLogicalParent()->GetSafeHwnd() : nullptr))
@@ -3620,9 +3471,7 @@ BOOL CGitStatusListCtrl::PreTranslateMessage(MSG* pMsg)
 				{
 					// select all entries
 					for (int i=0; i<GetItemCount(); ++i)
-					{
 						SetItemState(i, LVIS_SELECTED, LVIS_SELECTED);
-					}
 					return TRUE;
 				}
 			}
@@ -3661,7 +3510,6 @@ BOOL CGitStatusListCtrl::PreTranslateMessage(MSG* pMsg)
 
 bool CGitStatusListCtrl::CopySelectedEntriesToClipboard(DWORD dwCols)
 {
-
 	static HINSTANCE hResourceHandle(AfxGetResourceHandle());
 //	WORD langID = (WORD)CRegStdDWORD(_T("Software\\TortoiseGit\\LanguageID"), GetUserDefaultLangID());
 
@@ -3700,18 +3548,12 @@ bool CGitStatusListCtrl::CopySelectedEntriesToClipboard(DWORD dwCols)
 
 		sClipboard += entry->GetWinPathString();
 		if (selection & GITSLC_COLFILENAME)
-		{
 			sClipboard += _T("\t")+entry->GetFileOrDirectoryName();
-		}
 		if (selection & GITSLC_COLEXT)
-		{
 			sClipboard += _T("\t")+entry->GetFileExtension();
-		}
 
 		if (selection & GITSLC_COLSTATUS)
-		{
 			sClipboard += _T("\t")+entry->GetActionName();
-		}
 #if 0
 		if (selection & SVNSLC_COLDATE)
 		{
@@ -3737,13 +3579,9 @@ bool CGitStatusListCtrl::CopySelectedEntriesToClipboard(DWORD dwCols)
 		}
 #endif
 		if (selection & GITSLC_COLADD)
-		{
 			sClipboard += _T("\t")+entry->m_StatAdd;
-		}
 		if (selection & GITSLC_COLDEL)
-		{
 			sClipboard += _T("\t")+entry->m_StatDel;
-		}
 
 		sClipboard += _T("\r\n");
 	}
@@ -3770,7 +3608,6 @@ size_t CGitStatusListCtrl::GetNumberOfChangelistsInSelection()
 
 bool CGitStatusListCtrl::PrepareGroups(bool bForce /* = false */)
 {
-
 	bool bHasGroups=false;
 	int	max =0;
 
@@ -3840,7 +3677,6 @@ bool CGitStatusListCtrl::PrepareGroups(bool bForce /* = false */)
 			grp.iGroupId = groupindex;
 			grp.uAlign = LVGA_HEADER_LEFT;
 			InsertGroup(groupindex++, &grp);
-
 
 			{
 				_tcsncpy_s(groupname, 1024, (LPCTSTR)CString(MAKEINTRESOURCE(IDS_STATUSLIST_GROUP_NOTVERSIONEDFILES)), 1023);
@@ -4104,6 +3940,7 @@ bool CGitStatusListCtrl::CheckMultipleDiffs()
 	}
 	return true;
 }
+
 //////////////////////////////////////////////////////////////////////////
 #if 0
 bool CGitStatusListCtrlDropTarget::OnDrop(FORMATETC* pFmtEtc, STGMEDIUM& medium, DWORD * /*pdwEffect*/, POINTL pt)
@@ -4167,9 +4004,7 @@ bool CGitStatusListCtrlDropTarget::OnDrop(FORMATETC* pFmtEtc, STGMEDIUM& medium,
 						}
 					}
 					else
-					{
 						CMessageBox::Show(m_pSVNStatusListCtrl->m_hWnd, git.GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
-					}
 				}
 				else
 				{
@@ -4197,9 +4032,7 @@ bool CGitStatusListCtrlDropTarget::OnDrop(FORMATETC* pFmtEtc, STGMEDIUM& medium,
 						}
 					}
 					else
-					{
 						CMessageBox::Show(m_pSVNStatusListCtrl->m_hWnd, git.GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
-					}
 				}
 			}
 			else
@@ -4217,6 +4050,7 @@ bool CGitStatusListCtrlDropTarget::OnDrop(FORMATETC* pFmtEtc, STGMEDIUM& medium,
 	}
 	return true; //let base free the medium
 }
+
 HRESULT STDMETHODCALLTYPE CSVNStatusListCtrlDropTarget::DragOver(DWORD grfKeyState, POINTL pt, DWORD __RPC_FAR *pdwEffect)
 {
 	CIDropTarget::DragOver(grfKeyState, pt, pdwEffect);
@@ -4228,13 +4062,9 @@ HRESULT STDMETHODCALLTYPE CSVNStatusListCtrlDropTarget::DragOver(DWORD grfKeySta
 		clientpoint.y = pt.y;
 		ScreenToClient(m_hTargetWnd, &clientpoint);
 		if ((m_pSVNStatusListCtrl->IsGroupViewEnabled())&&(m_pSVNStatusListCtrl->GetGroupFromPoint(&clientpoint) >= 0))
-		{
 			*pdwEffect = DROPEFFECT_MOVE;
-		}
 		else if ((!m_pSVNStatusListCtrl->m_bFileDropsEnabled)||(m_pSVNStatusListCtrl->m_bOwnDrag))
-		{
 			*pdwEffect = DROPEFFECT_NONE;
-		}
 	}
 	return S_OK;
 }f
@@ -4304,7 +4134,6 @@ void CGitStatusListCtrl::FileSaveAs(CTGitPath *path)
 				MessageBox(CFormatMessageWrapper(), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 				return;
 			}
-
 		}
 		else
 		{
@@ -4316,7 +4145,6 @@ void CGitStatusListCtrl::FileSaveAs(CTGitPath *path)
 			}
 		}
 	}
-
 }
 
 int CGitStatusListCtrl::RevertSelectedItemToVersion(bool parent)
@@ -4381,9 +4209,7 @@ void CGitStatusListCtrl::OpenFile(CTGitPath*filepath,int mode)
 {
 	CString file;
 	if(this->m_CurrentVersion.IsEmpty() || m_CurrentVersion == GIT_REV_ZERO)
-	{
 		file = g_Git.CombinePath(filepath);
-	}
 	else
 	{
 		CString temppath;
@@ -4427,9 +4253,7 @@ void CGitStatusListCtrl::DeleteSelectedFiles()
 	POSITION pos = GetFirstSelectedItemPosition();
 	int index;
 	while ((index = GetNextSelectedItem(pos)) >= 0)
-	{
 		selectIndex.push_back(index);
-	}
 
 	CAutoRepository repo = g_Git.GetGitRepository();
 	if (!repo)
@@ -4540,7 +4364,7 @@ BOOL CGitStatusListCtrl::OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LR
 			}
 			CTGitPathList targetList;
 			FillListOfSelectedItemPaths(targetList);
-			if (targetList.GetCount() > 0)
+			if (!targetList.IsEmpty())
 			{
 				// get IShellFolder interface of Desktop (root of shell namespace)
 				if (g_psfDesktopFolder)

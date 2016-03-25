@@ -250,7 +250,6 @@ void CACListWnd::SetScroller()
 
 		m_VertBar.SetScrollPos(m_lTopIndex,true);
 	}
-
 }
 
 /*********************************************************************/
@@ -715,7 +714,6 @@ void CACListWnd::OnShowWindow(BOOL bShow, UINT nStatus)
 
 void CACListWnd::OnNcLButtonDown(UINT nHitTest, CPoint point)
 {
-
 	if(OnNcHitTest(point) == HTBOTTOMRIGHT)
 		GetWindowRect(m_LastSize);
 	CWnd::OnNcLButtonDown(nHitTest, point);

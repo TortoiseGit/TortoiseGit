@@ -63,7 +63,6 @@ void CSubmoduleUpdateDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_CHECK_SUBMODULE_REMOTE, m_bRemote);
 }
 
-
 BEGIN_MESSAGE_MAP(CSubmoduleUpdateDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_SELECTALL, OnBnClickedSelectall)
 	ON_BN_CLICKED(IDC_WHOLE_PROJECT, OnBnClickedShowWholeProject)
@@ -77,9 +76,7 @@ static int SubmoduleCallback(git_submodule *sm, const char * /*name*/, void *pay
 	STRING_VECTOR *prefixList = *((STRING_VECTOR **)payload + 1);
 	CString path = CUnicodeUtils::GetUnicode(git_submodule_path(sm));
 	if (prefixList->empty())
-	{
 		list->push_back(path);
-	}
 	else
 	{
 		for (size_t i = 0; i < prefixList->size(); ++i)

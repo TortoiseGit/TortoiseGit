@@ -23,7 +23,6 @@
 
 bool SettingsCommand::Execute()
 {
-
 	CString defaultpage = parser.GetVal(_T("page"));
 
 	CSettings dlg(IDS_PROC_SETTINGS_TITLE,&orgCmdLinePath);

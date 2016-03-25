@@ -38,7 +38,6 @@ typedef CComCritSecLock<CComCriticalSection> CAutoLocker;
 
 void CLogDataVector::ClearAll()
 {
-
 	clear();
 	m_HashMap.clear();
 	m_Lns.clear();
@@ -46,9 +45,7 @@ void CLogDataVector::ClearAll()
 	m_FirstFreeLane=0;
 	m_Lns.clear();
 	if (m_pLogCache)
-	{
 		m_pLogCache->ClearAllLanes();
-	}
 }
 
 //CLogDataVector Class
@@ -90,9 +87,7 @@ int CLogDataVector::ParserFromLog(CTGitPath* path, DWORD count, DWORD infomask, 
 	{
 		CAutoLocker lock(g_Git.m_critGitDllSec);
 		if (git_open_log(&handle,CUnicodeUtils::GetMulti(cmd, CP_UTF8).GetBuffer()))
-		{
 			return -1;
-		}
 	}
 	catch (char* msg)
 	{
@@ -174,7 +169,6 @@ int CLogDataVector::ParserFromLog(CTGitPath* path, DWORD count, DWORD infomask, 
 		this->push_back(pRev->m_CommitHash);
 
 		m_HashMap[pRev->m_CommitHash] = (int)size() - 1;
-
 	}
 
 	{
@@ -227,9 +221,7 @@ int CLogDataVector::Fill(std::set<CGitHash>& hashes)
 		{
 			CAutoLocker lock(g_Git.m_critGitDllSec);
 			if (git_get_commit_from_hash(&commit, hash.m_hash))
-			{
 				return -1;
-			}
 		}
 		catch (char * msg)
 		{
@@ -277,7 +269,6 @@ void CLogDataVector::setLane(CGitHash& sha)
 //	const ShaVect& shaVec(fh->revOrder);
 
 	for (int cnt = (int)size(); i < cnt; ++i) {
-
 		GitRevLoglist* r = &this->GetGitRevAt(i);
 		CGitHash curSha=r->m_CommitHash;
 
@@ -298,7 +289,6 @@ void CLogDataVector::setLane(CGitHash& sha)
 	const ShaVect& shaVec(fh->revOrder);
 
 	for (uint cnt = shaVec.count(); i < cnt; ++i) {
-
 		const ShaString& curSha = shaVec[i];
 		Rev* r = m_HashMap[curSha]const_cast<Rev*>(revLookup(curSha, fh));
 		if (r->lanes.count() == 0)
@@ -310,7 +300,6 @@ void CLogDataVector::setLane(CGitHash& sha)
 	fh->firstFreeLane = ++i;
 #endif
 }
-
 
 void CLogDataVector::updateLanes(GitRevLoglist& c, Lanes& lns, CGitHash& sha)
 {

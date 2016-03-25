@@ -113,7 +113,6 @@ BOOL CSetHooksAdv::OnInitDialog()
 
 void CSetHooksAdv::OnOK()
 {
-
 	UpdateData();
 	int cursel = m_cHookTypeCombo.GetCurSel();
 	key.htype = unknown_hook;
@@ -146,7 +145,6 @@ void CSetHooksAdv::OnOK()
 
 void CSetHooksAdv::OnBnClickedHookbrowse()
 {
-
 	UpdateData();
 	CBrowseFolder browser;
 	CString sPath;
@@ -157,7 +155,6 @@ void CSetHooksAdv::OnBnClickedHookbrowse()
 		m_sPath = sPath;
 		UpdateData(FALSE);
 	}
-
 }
 
 void CSetHooksAdv::OnBnClickedHookcommandbrowse()

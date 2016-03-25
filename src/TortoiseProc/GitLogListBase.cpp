@@ -245,9 +245,7 @@ int CGitLogListBase::AsyncDiffThread()
 						GitRevLoglist* data = m_arShownList.SafeGetAt(nItem);
 						if(data)
 							if(data->m_CommitHash == pRev->m_CommitHash)
-							{
 								this->GetParent()->PostMessage(WM_COMMAND, MSG_FETCHED_DIFF, 0);
-							}
 					}
 				}
 			}
@@ -259,13 +257,9 @@ int CGitLogListBase::AsyncDiffThread()
 void CGitLogListBase::hideFromContextMenu(unsigned __int64 hideMask, bool exclusivelyShow)
 {
 	if (exclusivelyShow)
-	{
 		m_ContextMenuMask &= hideMask;
-	}
 	else
-	{
 		m_ContextMenuMask &= ~hideMask;
-	}
 }
 
 CGitLogListBase::~CGitLogListBase()
@@ -314,9 +308,7 @@ END_MESSAGE_MAP()
 void CGitLogListBase::MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct)
 {
 	//if (m_nRowHeight>0)
-	{
 		lpMeasureItemStruct->itemHeight = 50;
-	}
 }
 
 int CGitLogListBase:: OnCreate(LPCREATESTRUCT lpCreateStruct)
@@ -406,9 +398,7 @@ void CGitLogListBase::InsertGitColumn()
 		m_dwDefaultColumns |= GIT_LOG_REBASE;
 	}
 	else
-	{
 		hideColumns |= GIT_LOG_REBASE;
-	}
 
 	if(this->m_IsIDReplaceAction)
 	{
@@ -417,17 +407,11 @@ void CGitLogListBase::InsertGitColumn()
 		m_dwDefaultColumns |= GIT_LOG_HASH;
 	}
 	else
-	{
 		hideColumns |= GIT_LOG_ID;
-	}
 	if(this->m_bShowBugtraqColumn)
-	{
 		m_dwDefaultColumns |= GIT_LOGLIST_BUG;
-	}
 	else
-	{
 		hideColumns |= GIT_LOGLIST_BUG;
-	}
 	if (CTGitPath(g_Git.m_CurrentDir).HasGitSVNDir())
 		m_dwDefaultColumns |= GIT_LOGLIST_SVNREV;
 	else
@@ -463,29 +447,19 @@ void CGitLogListBase::ResizeAllListCtrlCols()
 			{
 				// no saved value, setup sensible defaults
 				if (col == this->LOGLIST_MESSAGE)
-				{
 					cx = LOGLIST_MESSAGE_MIN;
-				}
 				else
-				{
 					cx = ICONITEMBORDER+16*4;
-				}
 			}
 			if (cx < nMinimumWidth)
-			{
 				cx = nMinimumWidth;
-			}
 			else if (cx > nMaximumWidth)
-			{
 				cx = nMaximumWidth;
-			}
 
 			SetColumnWidth(col, cx);
 		}
 	}
-
 }
-
 
 void CGitLogListBase::FillBackGround(HDC hdc, DWORD_PTR Index, CRect &rect)
 {
@@ -697,9 +671,7 @@ void CGitLogListBase::DrawTagBranch(HDC hdc, CDC& W_Dc, HTHEME hTheme, CRect& re
 				rt.right += 8;
 
 			if (hasTracking)
-			{
 				DrawTrackingRoundRect(hdc, rt, brush, m_Colors.Darken(colRef, 100));
-			}
 			else
 			{
 				//Fill interior of ref label
@@ -799,7 +771,6 @@ void CGitLogListBase::DrawTagBranch(HDC hdc, CDC& W_Dc, HTHEME hTheme, CRect& re
 }
 
 static COLORREF blend(const COLORREF& col1, const COLORREF& col2, int amount = 128) {
-
 	// Returns ((256 - amount)*col1 + amount*col2) / 256;
 	return RGB(((256 - amount)*GetRValue(col1)   + amount*GetRValue(col2)  ) / 256,
 					((256 - amount)*GetGValue(col1) + amount*GetGValue(col2) ) / 256,
@@ -873,7 +844,6 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, i
 	}
 	case Lanes::JOIN_L:
 	{
-
 		Gdiplus::LinearGradientBrush gradient(
 								Gdiplus::Point(P_270),
 								Gdiplus::Point(x2+1, h+top-1),
@@ -893,7 +863,6 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, i
 	case Lanes::TAIL:
 	case Lanes::TAIL_R:
 	{
-
 		Gdiplus::LinearGradientBrush gradient(
 								Gdiplus::Point(x1-2, h+top-2),
 								Gdiplus::Point(P_90),
@@ -1111,7 +1080,6 @@ void CGitLogListBase::DrawGraph(HDC hdc,CRect &rect,INT_PTR index)
 
 	for (unsigned int i = 0; i < laneNum && x2 < maxWidth; ++i)
 	{
-
 		int x1 = x2;
 		x2 += lw;
 
@@ -1125,7 +1093,6 @@ void CGitLogListBase::DrawGraph(HDC hdc,CRect &rect,INT_PTR index)
 
 #if 0
 	for (UINT i = 0; i < laneNum && x2 < maxWidth; ++i) {
-
 		int x1 = x2;
 		x2 += lw;
 
@@ -1145,12 +1112,10 @@ void CGitLogListBase::DrawGraph(HDC hdc,CRect &rect,INT_PTR index)
 			paintGraphLane(hdc, rect.Height(),ln, x1, x2, m_LineColors[col % Lanes::COLORS_NUM],rect.top);
 	}
 #endif
-
 }
 
 void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 {
-
 	NMLVCUSTOMDRAW* pLVCD = reinterpret_cast<NMLVCUSTOMDRAW*>( pNMHDR );
 	// Take the default processing unless we set this to something else below.
 	*pResult = CDRF_DODEFAULT;
@@ -1608,14 +1573,9 @@ void CGitLogListBase::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 
 	CString temp;
 	if(m_IsOldFirst)
-	{
 		temp.Format(_T("%d"),pItem->iItem+1);
-
-	}
 	else
-	{
 		temp.Format(_T("%d"), m_arShownList.size() - pItem->iItem);
-	}
 
 	// Which column?
 	switch (pItem->iSubItem)
@@ -1734,11 +1694,8 @@ void CGitLogListBase::GetParentHashes(GitRev *pRev, GIT_REV_LIST &parentHash)
 
 void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 {
-
 	if (pWnd == GetHeaderCtrl())
-	{
 		return m_ColumnManager.OnContextMenuHeader(pWnd,point,!!IsGroupViewEnabled());
-	}
 
 	int selIndex = GetSelectionMark();
 	if (selIndex < 0)
@@ -2174,9 +2131,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 				if (m_ContextMenuMask&GetContextMenuBit(ID_REVERTREV) && m_hasWC && !isMergeActive && !isStash)
 				{
 					if (parentHash.size() == 1)
-					{
 						popup.AppendMenuIcon(ID_REVERTREV, IDS_LOG_POPUP_REVERTREV, IDI_REVERT);
-					}
 					else if (parentHash.size() > 1)
 					{
 						revertmenu.CreatePopupMenu();
@@ -2196,7 +2151,6 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 
 				popup.AppendMenu(MF_SEPARATOR, NULL);
 			}
-
 		}
 
 		if(!pSelLogEntry->m_Ref.IsEmpty())
@@ -2237,9 +2191,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 			}
 
 			if (m_hasWC)
-			{
 				bAddSeparator = true;
-			}
 
 			if (m_ContextMenuMask&GetContextMenuBit(ID_REVERTREV) && m_hasWC && !isMergeActive)
 					popup.AppendMenuIcon(ID_REVERTREV, IDS_LOG_POPUP_REVERTREVS, IDI_REVERT);
@@ -2407,7 +2359,6 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 
 //		EnableOKButton();
 	} // if (popup.CreatePopupMenu())
-
 }
 
 bool CGitLogListBase::IsSelectionContinuous()
@@ -2440,7 +2391,6 @@ bool CGitLogListBase::IsSelectionContinuous()
 
 void CGitLogListBase::CopySelectionToClipBoard(int toCopy)
 {
-
 	CString sClipdata;
 	POSITION pos = GetFirstSelectedItemPosition();
 	if (pos)
@@ -2513,7 +2463,6 @@ void CGitLogListBase::CopySelectionToClipBoard(int toCopy)
 		}
 		CStringUtils::WriteAsciiStringToClipboard(sClipdata, GetSafeHwnd());
 	}
-
 }
 
 void CGitLogListBase::DiffSelectedRevWithPrevious()
@@ -2525,9 +2474,7 @@ void CGitLogListBase::DiffSelectedRevWithPrevious()
 	POSITION pos = GetFirstSelectedItemPosition();
 	FirstSelect = GetNextSelectedItem(pos);
 	while(pos)
-	{
 		LastSelect = GetNextSelectedItem(pos);
-	}
 
 	ContextMenuAction(ID_COMPAREWITHPREVIOUS, FirstSelect, LastSelect, nullptr);
 }
@@ -2613,7 +2560,6 @@ int CGitLogListBase::FillGitLog(CTGitPath *path, CString *range, int info)
 		{
 			m_logEntries.GetGitRevAt(m_logEntries.size()-i-1).m_IsFull=TRUE;
 			this->m_arShownList.SafeAdd(&m_logEntries.GetGitRevAt(m_logEntries.size()-i-1));
-
 		}
 		else
 		{
@@ -2627,7 +2573,6 @@ int CGitLogListBase::FillGitLog(CTGitPath *path, CString *range, int info)
 	if(path)
 		m_Path=*path;
 	return 0;
-
 }
 
 int CGitLogListBase::FillGitLog(std::set<CGitHash>& hashes)
@@ -2795,9 +2740,7 @@ BOOL CGitLogListBase::PreTranslateMessage(MSG* pMsg)
 	{
 		// select all entries
 		for (int i=0; i<GetItemCount(); ++i)
-		{
 			SetItemState(i, LVIS_SELECTED, LVIS_SELECTED);
-		}
 		return TRUE;
 	}
 
@@ -3008,9 +2951,7 @@ UINT CGitLogListBase::LogThread()
 					const CGitHash &parentHash = pRev->m_ParentHash[i];
 					auto it = commitChildren.find(parentHash);
 					if (it == commitChildren.end())
-					{
 						it = commitChildren.insert(make_pair(parentHash, std::set<CGitHash>())).first;
-					}
 					it->second.insert(pRev->m_CommitHash);
 				}
 			}
@@ -3113,9 +3054,7 @@ void CGitLogListBase::FetchTrackingBranchList()
 				CString pullRemote, pullBranch;
 				g_Git.GetRemoteTrackedBranch(branchName, pullRemote, pullBranch);
 				if (!pullRemote.IsEmpty() && !pullBranch.IsEmpty())
-				{
 					m_TrackingMap[branchName] = std::make_pair(pullRemote, pullBranch);
-				}
 			}
 		}
 	}
@@ -3214,9 +3153,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRevLoglist* pRev, std::tr1::
 
 				ATLTRACE(_T("bugID = \"%s\"\n"), (LPCTSTR)sBugIds);
 				if (std::regex_search(std::wstring(sBugIds), pat, flags))
-				{
 					return TRUE;
-				}
 			}
 		}
 
@@ -3224,44 +3161,32 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRevLoglist* pRev, std::tr1::
 		{
 			ATLTRACE(_T("messge = \"%s\"\n"), (LPCTSTR)pRev->GetSubject());
 			if (std::regex_search(std::wstring((LPCTSTR)pRev->GetSubject()), pat, flags))
-			{
 				return TRUE;
-			}
 		}
 
 		if (m_SelectedFilters & LOGFILTER_MESSAGES)
 		{
 			ATLTRACE(_T("messge = \"%s\"\n"), (LPCTSTR)pRev->GetBody());
 			if (std::regex_search(std::wstring((LPCTSTR)pRev->GetBody()), pat, flags))
-			{
 					return TRUE;
-			}
 		}
 
 		if (m_SelectedFilters & LOGFILTER_AUTHORS)
 		{
 			if (std::regex_search(std::wstring(pRev->GetAuthorName()), pat, flags))
-			{
 				return TRUE;
-			}
 
 			if (std::regex_search(std::wstring(pRev->GetCommitterName()), pat, flags))
-			{
 				return TRUE;
-			}
 		}
 
 		if (m_SelectedFilters & LOGFILTER_EMAILS)
 		{
 			if (std::regex_search(std::wstring(pRev->GetAuthorEmail()), pat, flags))
-			{
 				return TRUE;
-			}
 
 			if (std::regex_search(std::wstring(pRev->GetCommitterEmail()), pat, flags))
-			{
 				return TRUE;
-			}
 		}
 
 		if (m_SelectedFilters & LOGFILTER_REVS)
@@ -3276,9 +3201,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRevLoglist* pRev, std::tr1::
 		if (m_SelectedFilters & LOGFILTER_NOTES)
 		{
 			if (std::regex_search(std::wstring(pRev->m_Notes), pat, flags))
-			{
 				return TRUE;
-			}
 		}
 
 		if (m_SelectedFilters & LOGFILTER_REFNAME)
@@ -3287,18 +3210,14 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRevLoglist* pRev, std::tr1::
 			for (const auto& ref : refs)
 			{
 				if (std::regex_search(std::wstring(ref), pat, flags))
-				{
 					return TRUE;
-				}
 			}
 		}
 
 		if (m_SelectedFilters & LOGFILTER_ANNOTATEDTAG)
 		{
 			if (std::regex_search(std::wstring(GetTagInfo(pRev)), pat, flags))
-			{
 				return TRUE;
-			}
 		}
 
 		if (m_SelectedFilters & LOGFILTER_PATHS)
@@ -3316,21 +3235,15 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRevLoglist* pRev, std::tr1::
 				for (INT_PTR cpPathIndex = 0; cpPathIndex < pathList->GetCount(); ++cpPathIndex)
 				{
 					if (std::regex_search(std::wstring((LPCTSTR)pathList->m_paths.at(cpPathIndex).GetGitOldPathString()), pat, flags))
-					{
 						return true;
-					}
 					if (std::regex_search(std::wstring((LPCTSTR)pathList->m_paths.at(cpPathIndex).GetGitPathString()), pat, flags))
-					{
 						return true;
-					}
 				}
 
 			for (size_t i = 0; i < pRev->m_SimpleFileList.size(); ++i)
 			{
 				if (std::regex_search(std::wstring((LPCTSTR)pRev->m_SimpleFileList[i]), pat, flags))
-				{
 					return true;
-				}
 			}
 		}
 	}
@@ -3352,9 +3265,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRevLoglist* pRev, std::tr1::
 				if (!m_bFilterCaseSensitively)
 					sBugIds.MakeLower();
 				if ((sBugIds.Find(find) >= 0))
-				{
 					return result;
-				}
 			}
 		}
 
@@ -3365,9 +3276,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRevLoglist* pRev, std::tr1::
 			if (!m_bFilterCaseSensitively)
 				msg = msg.MakeLower();
 			if ((msg.Find(find) >= 0))
-			{
 				return result;
-			}
 		}
 
 		if (m_SelectedFilters & LOGFILTER_MESSAGES)
@@ -3377,9 +3286,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRevLoglist* pRev, std::tr1::
 			if (!m_bFilterCaseSensitively)
 				msg = msg.MakeLower();
 			if ((msg.Find(find) >= 0))
-			{
 				return result;
-			}
 		}
 
 		if (m_SelectedFilters & LOGFILTER_AUTHORS)
@@ -3388,9 +3295,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRevLoglist* pRev, std::tr1::
 			if (!m_bFilterCaseSensitively)
 				msg = msg.MakeLower();
 			if ((msg.Find(find) >= 0))
-			{
 				return result;
-			}
 		}
 
 		if (m_SelectedFilters & LOGFILTER_EMAILS)
@@ -3399,9 +3304,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRevLoglist* pRev, std::tr1::
 			if (!m_bFilterCaseSensitively)
 				msg = msg.MakeLower();
 			if ((msg.Find(find) >= 0))
-			{
 				return result;
-			}
 		}
 
 		if (m_SelectedFilters & LOGFILTER_NOTES)
@@ -3410,18 +3313,14 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRevLoglist* pRev, std::tr1::
 			if (!m_bFilterCaseSensitively)
 				msg = msg.MakeLower();
 			if ((msg.Find(find) >= 0))
-			{
 				return result;
-			}
 		}
 
 		if (m_SelectedFilters & LOGFILTER_REVS)
 		{
 			sRev = pRev->m_CommitHash.ToString();
 			if ((sRev.Find(find) >= 0))
-			{
 				return result;
-			}
 		}
 
 		if (m_SelectedFilters & LOGFILTER_ANNOTATEDTAG)
@@ -3430,9 +3329,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRevLoglist* pRev, std::tr1::
 			if (!m_bFilterCaseSensitively)
 				msg = msg.MakeLower();
 			if ((msg.Find(find) >= 0))
-			{
 				return result;
-			}
 		}
 
 		if (m_SelectedFilters & LOGFILTER_REFNAME)
@@ -3441,9 +3338,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRevLoglist* pRev, std::tr1::
 			for (auto it = refs.cbegin(); it != refs.cend(); ++it)
 			{
 				if (it->Find(find) >= 0)
-				{
 					return result;
-				}
 			}
 		}
 
@@ -3465,16 +3360,12 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRevLoglist* pRev, std::tr1::
 					if (!m_bFilterCaseSensitively)
 						path.MakeLower();
 					if ((path.Find(find)>=0))
-					{
 						return result;
-					}
 					path = cpath->GetGitPathString();
 					if (!m_bFilterCaseSensitively)
 						path.MakeLower();
 					if ((path.Find(find)>=0))
-					{
 						return result;
-					}
 				}
 
 			for (size_t i = 0; i < pRev->m_SimpleFileList.size(); ++i)
@@ -3483,9 +3374,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRevLoglist* pRev, std::tr1::
 				if (!m_bFilterCaseSensitively)
 					path.MakeLower();
 				if ((path.Find(find)>=0))
-				{
 					return result;
-				}
 			}
 		}
 	} // else (from if (bRegex))
@@ -3594,7 +3483,6 @@ CString CGitLogListBase::GetTagInfo(GitRev* pLogEntry)
 
 void CGitLogListBase::RecalculateShownList(CThreadSafePtrArray * pShownlist)
 {
-
 	pShownlist->SafeRemoveAll();
 
 	std::tr1::wregex pat;//(_T("Remove"), tr1::regex_constants::icase);
@@ -3828,7 +3716,6 @@ void CGitLogListBase::RecalculateShownList(CThreadSafePtrArray * pShownlist)
 			}
 		} // else (from if (bRegex))
 	} // for (DWORD i=0; i<m_logEntries.size(); ++i)
-
 }
 
 BOOL CGitLogListBase::IsEntryInDateRange(int /*i*/)
@@ -3851,6 +3738,7 @@ BOOL CGitLogListBase::IsEntryInDateRange(int /*i*/)
 
 //	return TRUE;
 }
+
 void CGitLogListBase::StartFilter()
 {
 	InterlockedExchange(&m_bNoDispUpdates, TRUE);
@@ -3862,11 +3750,10 @@ void CGitLogListBase::StartFilter()
 	SetItemCountEx(ShownCountWithStopped());
 	RedrawItems(0, ShownCountWithStopped());
 	Invalidate();
-
 }
+
 void CGitLogListBase::RemoveFilter()
 {
-
 	InterlockedExchange(&m_bNoDispUpdates, TRUE);
 
 	m_arShownList.SafeRemoveAll();
@@ -3884,13 +3771,9 @@ void CGitLogListBase::RemoveFilter()
 	for (DWORD i=0; i<m_logEntries.size(); ++i)
 	{
 		if(this->m_IsOldFirst)
-		{
 			m_arShownList.SafeAdd(&m_logEntries.GetGitRevAt(m_logEntries.size()-i-1));
-		}
 		else
-		{
 			m_arShownList.SafeAdd(&m_logEntries.GetGitRevAt(i));
-		}
 	}
 //	InterlockedExchange(&m_bNoDispUpdates, FALSE);
 	DeleteAllItems();
@@ -3906,7 +3789,6 @@ void CGitLogListBase::Clear()
 	DeleteAllItems();
 
 	m_logEntries.ClearAll();
-
 }
 
 void CGitLogListBase::OnDestroy()
@@ -4011,7 +3893,6 @@ LRESULT CGitLogListBase::OnScrollToMessage(WPARAM itemToSelect, LPARAM /*lParam*
 }
 LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*/)
 {
-
 	ASSERT(m_pFindDialog);
 	bool bFound = false;
 	int i=0;
@@ -4143,9 +4024,7 @@ LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*
 					str += pLogEntry->m_SimpleFileList[j];
 					str += _T('\n');
 				}
-
 			}
-
 
 			if (bRegex)
 			{
@@ -4164,7 +4043,6 @@ LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*
 						bFound = true;
 						break;
 					}
-
 				}
 				else
 				{

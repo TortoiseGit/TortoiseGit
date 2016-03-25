@@ -365,7 +365,6 @@ protected:
 	};
 
 	DECLARE_MESSAGE_MAP()
-
 };
 
 class CResizableStandAloneDialog : public CStandAloneDialogTmpl<CResizableDialog>

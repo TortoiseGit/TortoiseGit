@@ -32,7 +32,6 @@ void TRACE(LPCTSTR str, ...)
 	_vstprintf_s(buf, 20*1024, str, ap);
 	OutputDebugString(buf);
 	va_end(ap);
-
 };
 #else
 void TRACE(LPCTSTR str, ...) {UNREFERENCED_PARAMETER(str);}

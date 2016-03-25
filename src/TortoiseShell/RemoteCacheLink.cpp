@@ -56,7 +56,6 @@ bool CRemoteCacheLink::InternalEnsurePipeOpen ( CAutoFile& hPipe
 
 	while (!hPipe && tryleft--)
 	{
-
 		hPipe = CreateFile(
 							pipeName,                       // pipe name
 							GENERIC_READ |                  // read and write access
@@ -72,9 +71,7 @@ bool CRemoteCacheLink::InternalEnsurePipeOpen ( CAutoFile& hPipe
 			// Do not give up immediately but wait for a few milliseconds until
 			// the server has created the next pipe instance
 			if (!WaitNamedPipe (pipeName, 50))
-			{
 				continue;
-			}
 		}
 	}
 
@@ -194,9 +191,7 @@ bool CRemoteCacheLink::GetStatusFromRemoteCache(const CTGitPath& Path, TGITCache
 	TGITCacheRequest request;
 	request.flags = TGITCACHE_FLAGS_NONOTIFICATIONS;
 	if(bRecursive)
-	{
 		request.flags |= TGITCACHE_FLAGS_RECUSIVE_STATUS;
-	}
 	wcsncpy_s(request.path, Path.GetWinPath(), _countof(request.path) - 1);
 	SecureZeroMemory(&m_Overlapped, sizeof(OVERLAPPED));
 	m_Overlapped.hEvent = m_hEvent;
@@ -232,9 +227,7 @@ bool CRemoteCacheLink::GetStatusFromRemoteCache(const CTGitPath& Path, TGITCache
 		// Wait for it to finish
 		DWORD dwWait = WaitForSingleObject(m_hEvent, 10000);
 		if (dwWait == WAIT_OBJECT_0)
-		{
 			fSuccess = GetOverlappedResult(m_hPipe, &m_Overlapped, &nBytesRead, FALSE);
-		}
 		else
 		{
 			// the cache didn't respond!
@@ -243,9 +236,7 @@ bool CRemoteCacheLink::GetStatusFromRemoteCache(const CTGitPath& Path, TGITCache
 	}
 
 	if (fSuccess)
-	{
 		return true;
-	}
 	ClosePipe();
 	return false;
 }

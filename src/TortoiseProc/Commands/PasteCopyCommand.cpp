@@ -64,9 +64,7 @@ bool PasteCopyCommand::Execute()
 			CRenameDlg dlg;
 			dlg.m_windowtitle.Format(IDS_PROC_NEWNAMECOPY, (LPCTSTR)sourcePath.GetUIFileOrDirectoryName());
 			if (dlg.DoModal() != IDOK)
-			{
 				return FALSE;
-			}
 			// rebuild the progress dialog
 			progress.EnsureValid();
 			progress.SetTitle(IDS_PROC_COPYING);

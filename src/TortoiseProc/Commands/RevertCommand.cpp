@@ -30,7 +30,6 @@ bool RevertCommand::Execute()
 	dlg.m_pathList = pathList;
 	if (dlg.DoModal() == IDOK)
 	{
-
 		CGitProgressDlg progDlg;
 		theApp.m_pMainWnd = &progDlg;
 

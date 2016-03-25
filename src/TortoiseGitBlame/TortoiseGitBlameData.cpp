@@ -79,9 +79,7 @@ int CTortoiseGitBlameData::GetEncode(int *bomoffset)
 	int encoding = 0;
 	BYTE_VECTOR rawAll;
 	for (const auto& rawBytes : m_RawLines)
-	{
 		rawAll.append(&rawBytes[0], rawBytes.size());
-	}
 	encoding = GetEncode(&rawAll[0], (int)rawAll.size(), bomoffset);
 	return encoding;
 }
@@ -406,9 +404,7 @@ int CTortoiseGitBlameData::FindFirstLineWrapAround(SearchDirection direction, co
 	}
 	CString whatNormalized(what);
 	if (!bCaseSensitive)
-	{
 		whatNormalized.MakeLower();
-	}
 
 	CStringA whatNormalizedUtf8 = CUnicodeUtils::GetUTF8(whatNormalized);
 

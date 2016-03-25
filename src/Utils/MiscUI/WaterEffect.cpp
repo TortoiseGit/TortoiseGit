@@ -46,7 +46,6 @@ void CWaterEffect::Create(int iWidth, int iHeight)
 	ClearWater();
 
 	m_iHpage = 0;
-
 }
 
 void CWaterEffect::Blob(int x, int y, int radius, int height, int page)
@@ -54,13 +53,9 @@ void CWaterEffect::Blob(int x, int y, int radius, int height, int page)
 	int *pNew;
 
 	if (page == 0)
-	{
 		pNew = m_iBuffer1.get();
-	}
 	else
-	{
 		pNew = m_iBuffer2.get();
-	}
 
 	if (x<0)
 		x = 1 + radius + rand() % (m_iWidth - 2 * radius - 1);
@@ -89,9 +84,7 @@ void CWaterEffect::Blob(int x, int y, int radius, int height, int page)
 		for(int cx = left; cx < right; cx++)
 		{
 			if (cx*cx + cyq < rquad)
-			{
 				pNew[m_iWidth*(cy+y) + (cx+x)] += height;
-			}
 		}
 	}
 }

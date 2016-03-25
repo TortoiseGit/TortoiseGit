@@ -67,17 +67,11 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID /* lpReserved */)
 	if(pathLength >= 14)
 	{
 		if (pathLength >= 24 && _tcsicmp(&buf[pathLength - 24], _T("\\TortoiseGitExplorer.exe")) == 0)
-		{
 			bInShellTest = true;
-		}
 		if ((_tcsicmp(&buf[pathLength-14], _T("\\ShellTest.exe"))) == 0)
-		{
 			bInShellTest = true;
-		}
 		if ((_tcsicmp(&buf[pathLength-13], _T("\\verclsid.exe"))) == 0)
-		{
 			bInShellTest = true;
-		}
 	}
 
 	if (!::IsDebuggerPresent() && !bInShellTest)
@@ -163,5 +157,4 @@ STDAPI DllGetClassObject(REFCLSID rclsid, REFIID riid, LPVOID *ppvOut)
 	}
 
 	return CLASS_E_CLASSNOTAVAILABLE;
-
 }

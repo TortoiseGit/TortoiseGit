@@ -188,7 +188,6 @@ int MyGraphSeries::GetNonZeroElementCount() const
 	int nCount(0);
 
 	for (int nGroup = 0; nGroup < m_dwaValues.GetSize(); ++nGroup) {
-
 		if (m_dwaValues.GetAt(nGroup)) {
 			++nCount;
 		}
@@ -597,7 +596,6 @@ int MyGraph::LookupLabel(const CString& sLabel) const
 	_ASSERTE(! sLabel.IsEmpty());
 
 	for (int nGroup = 0; nGroup < m_saLegendLabels.GetSize(); ++nGroup) {
-
 		if (0 == sLabel.CompareNoCase(m_saLegendLabels.GetAt(nGroup))) {
 			return nGroup;
 		}
@@ -655,7 +653,6 @@ int MyGraph::AppendGroup(const CString& sLabel)
 	POSITION pos(m_olMyGraphSeries.GetHeadPosition());
 
 	while (pos) {
-
 		MyGraphSeries* pSeries = m_olMyGraphSeries.GetNext(pos);
 		ASSERT_VALID(pSeries);
 
@@ -911,7 +908,6 @@ void MyGraph::DrawLegend(CDC& dc)
 		skipped_row = nShownAuthors-2;
 	// Draw each group's label and bar.
 	for (int nGroup = 0; nGroup < nShownAuthors; ++nGroup) {
-
 		int nLabelTop(m_rcLegend.top + (nGroup * nLabelHeight) +
 			(GAP_PIXELS / 2));
 
@@ -977,7 +973,6 @@ void MyGraph::DrawAxes(CDC& dc) const
 	dc.MoveTo(m_ptOrigin);
 
 	if (m_saLegendLabels.GetSize()) {
-
 		VERIFY(dc.LineTo(m_ptOrigin.x +
 			(m_nXAxisWidth - m_rcLegend.Width() - (GAP_PIXELS * 2)),
 			m_ptOrigin.y));
@@ -1070,19 +1065,16 @@ void MyGraph::DrawAxes(CDC& dc) const
 	int nSeries(0);
 
 	while (pos) {
-
 		MyGraphSeries* pSeries = m_olMyGraphSeries.GetNext(pos);
 		ASSERT_VALID(pSeries);
 
 		// Ignore unpopulated series if bar chart.
 		if (m_eGraphType != MyGraph::Bar  ||
 			0 < pSeries->GetNonZeroElementCount()) {
-
 			// Get the spacing of the series.
 			int nSeriesSpace(0);
 
 			if (m_saLegendLabels.GetSize()) {
-
 				nSeriesSpace =
 					(m_nXAxisWidth - m_rcLegend.Width() - (GAP_PIXELS * 2)) /
 					(m_eGraphType == MyGraph::Bar ?
@@ -1155,13 +1147,11 @@ void MyGraph::DrawSeriesBar(CDC& dc) const
 	int nSeries(0);
 
 	while (pos) {
-
 		MyGraphSeries* pSeries = m_olMyGraphSeries.GetNext(pos);
 		ASSERT_VALID(pSeries);
 
 		// Ignore unpopulated series.
 		if (0 < pSeries->GetNonZeroElementCount()) {
-
 			// Draw each bar; empty bars are not drawn.
 			double runningLeft(m_ptOrigin.x + (nSeries + 1) * seriesSpace -
 				maxSeriesPlotSize);
@@ -1169,9 +1159,7 @@ void MyGraph::DrawSeriesBar(CDC& dc) const
 		double stackAccumulator(0.0);
 
 			for (int nGroup = 0; nGroup < GetMaxSeriesSize(); ++nGroup) {
-
 				if (pSeries->GetData(nGroup)) {
-
 					int nMaxDataValue(GetMaxDataValue()); 
 					nMaxDataValue = max(nMaxDataValue, 1);
 					double barTop = m_ptOrigin.y - (double)m_nYAxisHeight *
@@ -1230,12 +1218,10 @@ void MyGraph::DrawSeriesLine(CDC& dc) const
 	int dataLastLoc(0);
 
 	for (int nGroup = 0; nGroup < GetMaxSeriesSize(); nGroup++) {
-
 		// How much space does each series get (includes inter series space)?
 		int nSeriesSpace(0);
 
 		if (m_saLegendLabels.GetSize()) {
-
 			nSeriesSpace = (m_nXAxisWidth - m_rcLegend.Width() - (GAP_PIXELS * 2)) /
 				(int)m_olMyGraphSeries.GetCount();
 		}
@@ -1268,7 +1254,6 @@ void MyGraph::DrawSeriesLine(CDC& dc) const
 		ASSERT_VALID(pPenOld);
 
 		for (int nSeries = 0; nSeries < m_olMyGraphSeries.GetCount(); ++nSeries) {
-
 			MyGraphSeries* pSeries = m_olMyGraphSeries.GetNext(pos);
 			ASSERT_VALID(pSeries);
 
@@ -1288,7 +1273,6 @@ void MyGraph::DrawSeriesLine(CDC& dc) const
 
 			// Draw line back to last data member.
 			if (nSeries > 0 && (pSeries->GetData(nGroup)!=0 || dataLastLoc != 0)) {
-
 				dc.MoveTo(ptLastLoc.x, ptLastLoc.y - 1);
 				VERIFY(dc.LineTo(ptLoc.x - 1, ptLoc.y - 1));
 			}
@@ -1353,7 +1337,6 @@ void MyGraph::DrawSeriesLineStacked(CDC& dc) const
 
 	// Iterate the groups.
 	for (int nGroup = 0; nGroup < GetMaxSeriesSize(); nGroup++) {
-
 		// Build objects.
 		COLORREF crGroup(m_dwaColors.GetAt(nGroup));
 		CBrush br(crGroup);
@@ -1388,7 +1371,6 @@ void MyGraph::DrawSeriesLineStacked(CDC& dc) const
 		// Iterate the series, construct upper part of polygon and upadte stack accumulator
 		POSITION pos(m_olMyGraphSeries.GetHeadPosition());
 		for (int nSeries = 0; nSeries < nSeriesCount; ++nSeries) {
-
 			MyGraphSeries* pSeries = m_olMyGraphSeries.GetNext(pos);
 			ASSERT_VALID(pSeries);
 
@@ -1476,13 +1458,11 @@ void MyGraph::DrawSeriesPie(CDC& dc) const
 	POSITION pos(m_olMyGraphSeries.GetHeadPosition());
 
 	while (pos) {
-
 		MyGraphSeries* pSeries = m_olMyGraphSeries.GetNext(pos);
 		ASSERT_VALID(pSeries);
 
 		// Don't leave a space for empty pies.
 		if (0 < pSeries->GetNonZeroElementCount()) {
-
 			// Locate this pie.
 			CPoint ptCenter;
 			ptCenter.x = xOrigin + (nSeriesSpace * nPie) + nSeriesSpace / 2;
@@ -1508,10 +1488,8 @@ void MyGraph::DrawSeriesPie(CDC& dc) const
 			double dRunningWedgeTotal(0.0);
 
 			for (int nGroup = 0; nGroup < m_saLegendLabels.GetSize(); ++nGroup) {
-
 				// Ignore empty wedges.
 				if (0 < pSeries->GetData(nGroup)) {
-
 					// Get the degrees of this wedge.
 					dRunningWedgeTotal += pSeries->GetData(nGroup);
 					double dPercent(dRunningWedgeTotal * 100.0 / dPieTotal);
@@ -1536,7 +1514,6 @@ void MyGraph::DrawSeriesPie(CDC& dc) const
 					// so we just skip them instead.
 					int distance = abs(ptStart.x-ptEnd.x) + abs(ptStart.y-ptEnd.y);
 					if (drawEmptyWedges || distance > 1) {
-
 						// Draw wedge.
 						COLORREF crWedge(m_dwaColors.GetAt(nGroup));
 						CBrush br(crWedge);
@@ -1600,7 +1577,6 @@ CPoint MyGraph::WedgeEndFromDegrees(double degrees, const CPoint& ptCenter,
 {
 	MSG msg = { 0 };
 	while (::PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
-
 		// Do painting only.
 		if (bOnlyDrawing  &&  WM_PAINT == msg.message)  {
 			::TranslateMessage(&msg);

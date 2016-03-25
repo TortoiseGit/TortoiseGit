@@ -31,7 +31,6 @@ CSVNIgnoreTypeDlg::CSVNIgnoreTypeDlg(CWnd* pParent /*=nullptr*/)
 : CStandAloneDialog(CSVNIgnoreTypeDlg::IDD, pParent)
 	, m_SVNIgnoreType(0)
 {
-
 }
 
 CSVNIgnoreTypeDlg::~CSVNIgnoreTypeDlg()
@@ -44,10 +43,8 @@ void CSVNIgnoreTypeDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Radio(pDX, IDC_RADIO_EXCLUDE, m_SVNIgnoreType);
 }
 
-
 BEGIN_MESSAGE_MAP(CSVNIgnoreTypeDlg, CStandAloneDialog)
 END_MESSAGE_MAP()
-
 
 // CSVNIgnoreTypeDlg message handlers
 

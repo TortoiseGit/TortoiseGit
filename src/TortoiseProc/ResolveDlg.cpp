@@ -141,9 +141,7 @@ UINT CResolveDlg::ResolveThread()
 
 	m_resolveListCtrl.Clear();
 	if (!m_resolveListCtrl.GetStatus(&m_pathList))
-	{
 		m_resolveListCtrl.SetEmptyString(m_resolveListCtrl.GetLastErrorMessage());
-	}
 	m_resolveListCtrl.Show(GITSLC_SHOWCONFLICTED|GITSLC_SHOWINEXTERNALS, GITSLC_SHOWCONFLICTED);
 
 	InterlockedExchange(&m_bThreadRunning, FALSE);
@@ -161,9 +159,7 @@ BOOL CResolveDlg::PreTranslateMessage(MSG* pMsg)
 				if (GetAsyncKeyState(VK_CONTROL)&0x8000)
 				{
 					if ( GetDlgItem(IDOK)->IsWindowEnabled() )
-					{
 						PostMessage(WM_COMMAND, IDOK);
-					}
 					return TRUE;
 				}
 			}
@@ -173,9 +169,7 @@ BOOL CResolveDlg::PreTranslateMessage(MSG* pMsg)
 				if (!m_bThreadRunning)
 				{
 					if (!AfxBeginThread(ResolveThreadEntry, this))
-					{
 						CMessageBox::Show(this->m_hWnd, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
-					}
 					else
 						InterlockedExchange(&m_bThreadRunning, TRUE);
 				}
@@ -190,9 +184,7 @@ BOOL CResolveDlg::PreTranslateMessage(MSG* pMsg)
 LRESULT CResolveDlg::OnSVNStatusListCtrlNeedsRefresh(WPARAM, LPARAM)
 {
 	if (!AfxBeginThread(ResolveThreadEntry, this))
-	{
 		CMessageBox::Show(this->m_hWnd, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
-	}
 	return 0;
 }
 
