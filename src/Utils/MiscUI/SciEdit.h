@@ -78,7 +78,7 @@ public:
 	CSciEdit(void);
 	~CSciEdit(void);
 
-		void				SetAStyle(int style, COLORREF fore, COLORREF back=::GetSysColor(COLOR_WINDOW), int size=-1, const char *face=0);
+	void				SetAStyle(int style, COLORREF fore, COLORREF back = ::GetSysColor(COLOR_WINDOW), int size = -1, const char* face = nullptr);
 	void SetUDiffStyle();
 
 	/**

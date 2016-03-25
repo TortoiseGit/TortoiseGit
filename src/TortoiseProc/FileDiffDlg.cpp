@@ -525,7 +525,7 @@ UINT CFileDiffDlg::LoadRefThread()
 
 void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 {
-	if ((pWnd==0)||(pWnd != &m_cFileList))
+	if (!pWnd || pWnd != &m_cFileList)
 		return;
 	if (m_cFileList.GetSelectedCount() == 0)
 		return;

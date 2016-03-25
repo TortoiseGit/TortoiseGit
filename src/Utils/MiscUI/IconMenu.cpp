@@ -65,7 +65,7 @@ BOOL CIconMenu::SetMenuStyle(void)
 	return TRUE;
 }
 
-BOOL CIconMenu::AppendMenuIcon(UINT_PTR nIDNewItem, LPCTSTR lpszNewItem, UINT uIcon /* = 0 */, HMENU hsubmenu /* = 0 */)
+BOOL CIconMenu::AppendMenuIcon(UINT_PTR nIDNewItem, LPCTSTR lpszNewItem, UINT uIcon /* = 0 */, HMENU hsubmenu /* = nullptr */)
 {
 	TCHAR menutextbuffer[255] = {0};
 	_tcscpy_s(menutextbuffer, lpszNewItem);
@@ -94,7 +94,7 @@ BOOL CIconMenu::AppendMenuIcon(UINT_PTR nIDNewItem, LPCTSTR lpszNewItem, UINT uI
 	return InsertMenuItem((UINT)nIDNewItem, &info);
 }
 
-BOOL CIconMenu::AppendMenuIcon(UINT_PTR nIDNewItem, UINT_PTR nNewItem, UINT uIcon /* = 0 */, HMENU hsubmenu /* = 0 */)
+BOOL CIconMenu::AppendMenuIcon(UINT_PTR nIDNewItem, UINT_PTR nNewItem, UINT uIcon /* = 0 */, HMENU hsubmenu /* = nullptr */)
 {
 	CString temp;
 	temp.LoadString((UINT)nNewItem);

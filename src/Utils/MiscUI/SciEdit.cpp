@@ -1215,7 +1215,7 @@ bool CSciEdit::FindStyleChars(const char * line, char styler, int& start, int& e
 		return false;
 	// find ending marker
 	bFoundMarker = false;
-	while (line[i] != 0)
+	while (line[i])
 	{
 		if (line[i] == styler)
 		{

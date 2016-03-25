@@ -1009,7 +1009,7 @@ void CRevisionGraphWnd::SaveGraphAs(CString sSavePath)
 
 			// Create the surface.
 			hbm = CreateDIBSection(ddc.m_hDC, &bmi, DIB_RGB_COLORS,(void**)&pBits, nullptr, 0);
-			if (hbm==0)
+			if (!hbm)
 			{
 				CMessageBox::Show(m_hWnd, IDS_REVGRAPH_ERR_NOMEMORY, IDS_APPNAME, MB_ICONERROR);
 				return;

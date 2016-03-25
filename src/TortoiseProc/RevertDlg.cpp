@@ -92,7 +92,7 @@ BOOL CRevertDlg::OnInitDialog()
 
 	// first start a thread to obtain the file list with the status without
 	// blocking the dialog
-	if (AfxBeginThread(RevertThreadEntry, this)==0)
+	if (AfxBeginThread(RevertThreadEntry, this) == nullptr)
 		CMessageBox::Show(this->m_hWnd, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
 	InterlockedExchange(&m_bThreadRunning, TRUE);
 
@@ -221,7 +221,7 @@ BOOL CRevertDlg::PreTranslateMessage(MSG* pMsg)
 			{
 				if (!m_bThreadRunning)
 				{
-					if (AfxBeginThread(RevertThreadEntry, this)==0)
+					if (AfxBeginThread(RevertThreadEntry, this) == nullptr)
 						CMessageBox::Show(this->m_hWnd, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
 					else
 						InterlockedExchange(&m_bThreadRunning, TRUE);
@@ -236,7 +236,7 @@ BOOL CRevertDlg::PreTranslateMessage(MSG* pMsg)
 
 LRESULT CRevertDlg::OnSVNStatusListCtrlNeedsRefresh(WPARAM, LPARAM)
 {
-	if (AfxBeginThread(RevertThreadEntry, this)==0)
+	if (AfxBeginThread(RevertThreadEntry, this) == nullptr)
 		CMessageBox::Show(this->m_hWnd, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
 	return 0;
 }

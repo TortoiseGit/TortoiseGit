@@ -159,7 +159,7 @@ public:
 	 * Checks whether this object was created successfully. If the return value is false then
 	 * you MUST NOT use the current instance of this class.
 	 */
-	bool IsValid() const { return m_pIDlg != 0; }
+	bool IsValid() const { return m_pIDlg != nullptr; }
 
 	/**
 	 * Checks whether the window is shown.

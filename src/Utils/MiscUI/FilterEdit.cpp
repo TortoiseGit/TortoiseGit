@@ -101,7 +101,7 @@ BOOL CFilterEdit::SetCancelBitmaps(UINT uCancelNormal, UINT uCancelPressed, BOOL
 	m_hIconCancelNormal = (HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(uCancelNormal), IMAGE_ICON, 0, 0, LR_DEFAULTCOLOR);
 	m_hIconCancelPressed = (HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(uCancelPressed), IMAGE_ICON, 0, 0, LR_DEFAULTCOLOR);
 
-	if ((m_hIconCancelNormal == 0) || (m_hIconCancelPressed == 0))
+	if (!m_hIconCancelNormal || !m_hIconCancelPressed)
 		return FALSE;
 
 	m_sizeCancelIcon = GetIconSize(m_hIconCancelNormal);
@@ -117,7 +117,7 @@ BOOL CFilterEdit::SetInfoIcon(UINT uInfo)
 
 	m_hIconInfo = (HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(uInfo), IMAGE_ICON, 0, 0, LR_DEFAULTCOLOR);
 
-	if (m_hIconInfo == 0)
+	if (!m_hIconInfo)
 		return FALSE;
 
 	m_sizeInfoIcon = GetIconSize(m_hIconInfo);

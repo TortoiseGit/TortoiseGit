@@ -152,7 +152,7 @@ int CSetOverlayHandlers::GetInstalledOverlays()
 			{
 				for (int j = 0; value[j]; ++j)
 					value[j] = (wchar_t)towlower(value[j]);
-				if (wcsstr(&value[0], L"tortoise") == 0)
+				if (!wcsstr(&value[0], L"tortoise"))
 				{
 					// check if there's a 'default' entry with a guid
 					_tcscpy_s(keystring, _T("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\ShellIconOverlayIdentifiers\\"));

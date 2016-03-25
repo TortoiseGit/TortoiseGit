@@ -161,10 +161,10 @@ HBITMAP IconBitmapUtils::IconToBitmapPARGB32(HICON hIcon)
 
 HRESULT IconBitmapUtils::Create32BitHBITMAP(HDC hdc, const SIZE *psize, __deref_opt_out void **ppvBits, __out HBITMAP* phBmp) const
 {
-    if (psize == 0)
+    if (!psize)
         return E_INVALIDARG;
 
-    if (phBmp == 0)
+    if (!phBmp)
         return E_POINTER;
 
     *phBmp = nullptr;
@@ -246,7 +246,7 @@ HRESULT IconBitmapUtils::ConvertToPARGB32(HDC hdc, __inout Gdiplus::ARGB *pargb,
 
     HANDLE hHeap = GetProcessHeap();
     void *pvBits = HeapAlloc(hHeap, 0, bmi.bmiHeader.biWidth * 4 * bmi.bmiHeader.biHeight);
-    if (pvBits == 0)
+    if (!pvBits)
         return E_OUTOFMEMORY;
     SCOPE_EXIT { HeapFree(hHeap, 0, pvBits); };
 

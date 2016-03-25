@@ -48,7 +48,7 @@ int ItemIDList::size() const
 		if (item_)
 		{
 			LPCSHITEMID ptr = &item_->mkid;
-			while (ptr != 0 && ptr->cb != 0)
+			while (ptr && ptr->cb != 0)
 			{
 				++count_;
 				LPBYTE byte = (LPBYTE) ptr;
@@ -95,7 +95,7 @@ tstring ItemIDList::toString(bool resolveLibraries /*= true*/)
 
 	STRRET name;
 	TCHAR* szDisplayName = nullptr;
-	if ((parentFolder != 0)&&(item_ != 0))
+	if (parentFolder && item_ != 0)
 	{
 		if (FAILED(parentFolder->GetDisplayNameOf(item_, SHGDN_NORMAL | SHGDN_FORPARSING, &name)))
 			return ret;

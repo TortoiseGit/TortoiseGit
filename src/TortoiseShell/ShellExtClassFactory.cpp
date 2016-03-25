@@ -38,7 +38,7 @@ CShellExtClassFactory::~CShellExtClassFactory()
 STDMETHODIMP CShellExtClassFactory::QueryInterface(REFIID riid,
 												   LPVOID FAR *ppv)
 {
-	if(ppv == 0)
+	if (!ppv)
 		return E_POINTER;
 
 	*ppv = nullptr;
@@ -74,7 +74,7 @@ STDMETHODIMP CShellExtClassFactory::CreateInstance(LPUNKNOWN pUnkOuter,
 												   REFIID riid,
 												   LPVOID *ppvObj)
 {
-	if(ppvObj == 0)
+	if (!ppvObj)
 		return E_POINTER;
 
 	*ppvObj = nullptr;

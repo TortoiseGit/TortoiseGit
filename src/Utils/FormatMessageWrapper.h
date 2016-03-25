@@ -60,10 +60,10 @@ inline void CFormatMessageWrapper::obtainMessage(DWORD errorCode)
 
 inline void CFormatMessageWrapper::release()
 {
-    if(buffer != 0)
+    if (buffer)
     {
         LocalFree(buffer);
-        buffer = 0;
+        buffer = nullptr;
     }
 
     result = 0;

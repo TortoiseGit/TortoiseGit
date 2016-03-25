@@ -22,7 +22,7 @@
 
 // Singleton constructor and destructor (private)
 
-CSysImageList * CSysImageList::instance = 0;
+CSysImageList* CSysImageList::instance = nullptr;
 
 CSysImageList::CSysImageList()
 {
@@ -47,7 +47,7 @@ CSysImageList::~CSysImageList()
 
 CSysImageList& CSysImageList::GetInstance()
 {
-	if (instance == 0)
+	if (!instance)
 		instance = new CSysImageList;
 	return *instance;
 }
@@ -55,7 +55,7 @@ CSysImageList& CSysImageList::GetInstance()
 void CSysImageList::Cleanup()
 {
 	delete instance;
-	instance = 0;
+	instance = nullptr;
 }
 
 // Operations

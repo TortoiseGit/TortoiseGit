@@ -196,7 +196,7 @@ void LoadLangDll()
 
 STDMETHODIMP CShellExt::QueryInterface(REFIID riid, LPVOID FAR *ppv)
 {
-	if(ppv == 0)
+	if (!ppv)
 		return E_POINTER;
 
 	*ppv = nullptr;
@@ -240,7 +240,7 @@ STDMETHODIMP_(ULONG) CShellExt::Release()
 // IPersistFile members
 STDMETHODIMP CShellExt::GetClassID(CLSID *pclsid)
 {
-	if(pclsid == 0)
+	if (!pclsid)
 		return E_POINTER;
 	*pclsid = CLSID_Tortoisegit_UNCONTROLLED;
 	return S_OK;

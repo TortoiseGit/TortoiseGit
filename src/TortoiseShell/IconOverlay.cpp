@@ -44,11 +44,11 @@ STDMETHODIMP CShellExt::GetOverlayInfo(LPWSTR pwszIconFile, int cchMax, int* pIn
 
 STDMETHODIMP CShellExt::GetOverlayInfo_Wrap(LPWSTR pwszIconFile, int cchMax, int* pIndex, DWORD* pdwFlags)
 {
-	if(pwszIconFile == 0)
+	if (!pwszIconFile)
 		return E_POINTER;
-	if(pIndex == 0)
+	if (!pIndex)
 		return E_POINTER;
-	if(pdwFlags == 0)
+	if (!pdwFlags)
 		return E_POINTER;
 	if(cchMax < 1)
 		return E_INVALIDARG;
@@ -94,7 +94,7 @@ STDMETHODIMP CShellExt::GetPriority(int *pPriority)
 
 STDMETHODIMP CShellExt::GetPriority_Wrap(int *pPriority)
 {
-	if (pPriority == 0)
+	if (!pPriority)
 		return E_POINTER;
 
 	switch (m_State)

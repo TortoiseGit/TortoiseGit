@@ -559,10 +559,10 @@ bool CMainWindow::Initialize()
 		CW_USEDEFAULT, CW_USEDEFAULT,
 		CW_USEDEFAULT, CW_USEDEFAULT,
 		*this,
-		0,
+		nullptr,
 		hResource,
-		0);
-	if (m_hWndEdit == NULL)
+		nullptr);
+	if (!m_hWndEdit)
 		return false;
 
 	RECT rect;

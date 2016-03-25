@@ -20,7 +20,7 @@
 
 class CBstrSafeVector {
 public:
-    CBstrSafeVector() : controlled( 0 ) {}
+    CBstrSafeVector() : controlled(nullptr) {}
     CBstrSafeVector( ULONG count );
     ~CBstrSafeVector() { release(); }
 
@@ -58,7 +58,7 @@ inline HRESULT CBstrSafeVector::PutElement( LONG index, const CString& value )
 
 inline void CBstrSafeVector::release()
 {
-    if(controlled == 0)
+    if (!controlled)
         return;
     SafeArrayDestroy(controlled);
     controlled = 0;

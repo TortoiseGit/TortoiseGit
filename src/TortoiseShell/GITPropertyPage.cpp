@@ -49,7 +49,7 @@ BOOL CALLBACK PageProc (HWND hwnd, UINT uMessage, WPARAM wParam, LPARAM lParam)
 	else
 		sheetpage = (CGitPropertyPage*) GetWindowLongPtr (hwnd, GWLP_USERDATA);
 
-	if (sheetpage != 0L)
+	if (sheetpage)
 		return sheetpage->PageProc(hwnd, uMessage, wParam, lParam);
 	else
 		return FALSE;

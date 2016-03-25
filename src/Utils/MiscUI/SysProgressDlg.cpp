@@ -182,7 +182,7 @@ HRESULT CSysProgressDlg::ShowModal(HWND hWndParent, BOOL immediately /* = true *
 	if (!IsValid())
 		return E_FAIL;
 	m_hWndParent = hWndParent;
-	auto winId = GetWindowThreadProcessId(m_hWndParent, 0);
+	auto winId = GetWindowThreadProcessId(m_hWndParent, nullptr);
 	auto threadId = GetCurrentThreadId();
 	if (winId != threadId)
 		AttachThreadInput(winId, threadId, TRUE);
@@ -216,7 +216,7 @@ HRESULT CSysProgressDlg::ShowModeless(HWND hWndParent, BOOL immediately)
 	if (!IsValid())
 		return E_FAIL;
 	m_hWndParent = hWndParent;
-	auto winId = GetWindowThreadProcessId(m_hWndParent, 0);
+	auto winId = GetWindowThreadProcessId(m_hWndParent, nullptr);
 	auto threadId = GetCurrentThreadId();
 	if (winId != threadId)
 		AttachThreadInput(winId, threadId, TRUE);

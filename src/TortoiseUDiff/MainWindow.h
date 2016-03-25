@@ -60,7 +60,7 @@ protected:
 	bool                Initialize();
 
 private:
-	void                SetAStyle(int style, COLORREF fore, COLORREF back=::GetSysColor(COLOR_WINDOW), int size=-1, const char *face=0);
+	void                SetAStyle(int style, COLORREF fore, COLORREF back = ::GetSysColor(COLOR_WINDOW), int size = -1, const char* face = nullptr);
 	bool                IsUTF8(LPVOID pBuffer, size_t cb);
 	void                InitEditor();
 	void                SetupWindow(bool bUTF8);

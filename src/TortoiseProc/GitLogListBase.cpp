@@ -2488,7 +2488,7 @@ void CGitLogListBase::OnLvnOdfinditemLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 		return;
 	if (pFindInfo->iStart < 0 || pFindInfo->iStart >= (int)m_arShownList.size())
 		return;
-	if (pFindInfo->lvfi.psz == 0)
+	if (!pFindInfo->lvfi.psz)
 		return;
 #if 0
 	CString sCmp = pFindInfo->lvfi.psz;
