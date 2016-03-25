@@ -109,7 +109,7 @@ int CSendMail::SendMail(const CString& FromName, const CString& FromMail, const 
 	else
 	{
 		CString sender;
-		sender.Format(_T("%s <%s>"), (LPCTSTR)FromName, (LPCTSTR)FromMail);
+		sender.Format(_T("%s <%s>"), (LPCTSTR)CHwSMTP::GetEncodedHeader(FromName), (LPCTSTR)FromMail);
 
 		CHwSMTP mail;
 		if (CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\DeliveryType"), SEND_MAIL_SMTP_CONFIGURED) == SEND_MAIL_SMTP_CONFIGURED)

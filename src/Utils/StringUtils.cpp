@@ -441,6 +441,16 @@ int CStringUtils::FastCompareNoCase (const CStringW& lhs, const CStringW& rhs)
 	return 0;
 }
 
+bool CStringUtils::IsPlainReadableASCII(const CString& text)
+{
+	for (int i = 0; i < text.GetLength(); ++i)
+	{
+		if (text[i] < 32 || text[i] >= 127)
+			return false;
+	}
+	return true;
+}
+
 static void cleanup_space(CString& string)
 {
 	for (int pos = 0; pos < string.GetLength(); ++pos)

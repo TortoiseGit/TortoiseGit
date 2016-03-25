@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2015 - TortoiseGit
 // Copyright (C) 2003-2011 - TortoiseSVN
@@ -177,4 +177,17 @@ TEST(CStringUtils, ParseEmailAddress)
 	CStringUtils::ParseEmailAddress(_T("John (zzz) Doe <john.doe@example.com> (Comment)"), mail, &name);
 	EXPECT_STREQ(_T("john.doe@example.com"), mail);
 	EXPECT_STREQ(_T("John (zzz) Doe (Comment)"), name);
+}
+
+TEST(CStringUtils, IsPlainReadableASCII)
+{
+	EXPECT_TRUE(CStringUtils::IsPlainReadableASCII(L""));
+	EXPECT_TRUE(CStringUtils::IsPlainReadableASCII(L" 1234,#+*.:-&!\\<>|\"$%&/()=567890abcdefSBDUDB[](!}~"));
+	EXPECT_FALSE(CStringUtils::IsPlainReadableASCII(L"⌂"));
+	EXPECT_FALSE(CStringUtils::IsPlainReadableASCII(L"é"));
+	EXPECT_FALSE(CStringUtils::IsPlainReadableASCII(L"═"));
+	EXPECT_FALSE(CStringUtils::IsPlainReadableASCII(L"ä"));
+	EXPECT_FALSE(CStringUtils::IsPlainReadableASCII(L"€"));
+	EXPECT_FALSE(CStringUtils::IsPlainReadableASCII(L"國"));
+	EXPECT_FALSE(CStringUtils::IsPlainReadableASCII(L"立"));
 }

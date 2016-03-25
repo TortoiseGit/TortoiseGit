@@ -14,6 +14,7 @@
 #include <atlenc.h>
 #include "AppUtils.h"
 #include "PathUtils.h"
+#include "StringUtils.h"
 
 #define IO_BUFFER_SIZE 0x10000
 
@@ -1043,7 +1044,8 @@ static CStringA EncodeBase64(const char* source, int len)
 {
 	int neededLength = Base64EncodeGetRequiredLength(len);
 	CStringA output;
-	Base64Encode((BYTE*)source, len, CStrBufA(output, neededLength), &neededLength);
+	if (Base64Encode((BYTE*)source, len, CStrBufA(output, neededLength), &neededLength, ATL_BASE64_FLAG_NOCRLF))
+		output.Truncate(neededLength);
 	return output;
 }
 
@@ -1053,6 +1055,14 @@ static CStringA EncodeBase64(const CString& source)
 	return EncodeBase64(buf, buf.GetLength());
 }
 
+CString CHwSMTP::GetEncodedHeader(const CString& text)
+{
+	if (CStringUtils::IsPlainReadableASCII(text))
+		return text;
+
+	return L"=?UTF-8?B?" + CUnicodeUtils::GetUnicode(EncodeBase64(text)) + L"?=";
+}
+
 BOOL CHwSMTP::auth()
 {
 	if (!Send("auth login\r\n"))
@@ -1060,7 +1070,7 @@ BOOL CHwSMTP::auth()
 	if (!GetResponse("334"))
 		return FALSE;
 
-	if (!Send(EncodeBase64(m_csUserName)))
+	if (!Send(EncodeBase64(m_csUserName) + "\r\n"))
 		return FALSE;
 
 	if (!GetResponse("334"))
@@ -1069,7 +1079,7 @@ BOOL CHwSMTP::auth()
 		return FALSE;
 	}
 
-	if (!Send(EncodeBase64(m_csPasswd)))
+	if (!Send(EncodeBase64(m_csPasswd) + "\r\n"))
 		return FALSE;
 
 	if (!GetResponse("235"))
@@ -1145,7 +1155,7 @@ BOOL CHwSMTP::SendSubject(const CString &hostname)
 
 	csSubject.AppendFormat(_T("To: %s\r\n"), (LPCTSTR)m_csToList);
 
-	csSubject.AppendFormat(_T("Subject: %s\r\n"), (LPCTSTR)m_csSubject);
+	csSubject.AppendFormat(_T("Subject: %s\r\n"), (LPCTSTR)GetEncodedHeader(m_csSubject));
 
 	CString m_ListID;
 	GUID guid;

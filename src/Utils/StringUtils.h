@@ -108,6 +108,8 @@ public:
 	static int FastCompareNoCase (const CStringW& lhs, const CStringW& rhs);
 
 	static void ParseEmailAddress(CString mailaddress, CString& parsedAddress, CString* parsedName = nullptr);
+
+	static bool IsPlainReadableASCII(const CString& text);
 #endif
 	/**
 	 * Writes the string \text to the file \path, either in utf16 or utf8 encoding,
