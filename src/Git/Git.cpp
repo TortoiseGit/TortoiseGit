@@ -2896,7 +2896,7 @@ CString CGit::GetUnifiedDiffCmd(const CTGitPath& path, const git_revnum_t& rev1,
 	if (rev2 == GitRev::GetWorkingCopy())
 		cmd.Format(_T("git.exe diff --stat%s -p %s --"), bNoPrefix ? L" --no-prefix" : L"", (LPCTSTR)rev1);
 	else if (rev1 == GitRev::GetWorkingCopy())
-		cmd.Format(_T("git.exe diff -R --stat%s %s-p %s --"), bNoPrefix ? L" --no-prefix" : L"", (LPCTSTR)rev2);
+		cmd.Format(_T("git.exe diff -R --stat%s -p %s --"), bNoPrefix ? L" --no-prefix" : L"", (LPCTSTR)rev2);
 	else
 	{
 		CString merge;
