@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
-// Copyright (C) 2009-2015 - TortoiseGit
+// Copyright (C) 2009-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -91,6 +91,8 @@ BOOL CAboutDlg::OnInitDialog()
 			out += _T("; with msys2 hack");
 		else if (CGit::ms_bCygwinGit)
 			out += _T("; with cygwin hack");
+		else
+			out += L"; " + g_Git.GetGitProgramDataConfig();
 		out += _T(")");
 	}
 

@@ -394,7 +394,8 @@ Don't touch these lines:
 								a dialog with a list of files that have changed (filtered by a possibly entered subpath) or if 
 								the path point to a file starts the diff viewer for 
 								those the file in the different revisions.
-								Use <option>/revision1:xxx</option> and <option>/revision2:xxx</option> to specify the revisions to compare.
+								Use <option>/revision1:xxx</option> and <option>/revision2:xxx</option> to specify the revisions to compare,
+								whereas <option>/revision1:xxx</option> indicates the base revision to compare with.
 								</para>
 							</entry>
 						</row>

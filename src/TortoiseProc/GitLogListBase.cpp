@@ -2688,7 +2688,7 @@ int CGitLogListBase::BeginFetchLog()
 		STRING_VECTOR list;
 		if (g_Git.GetRefList(list))
 			MessageBox(g_Git.GetGitLastErr(_T("Could not get all refs.")), _T("TortoiseGit"), MB_ICONERROR);
-		if (list.size() == 0)
+		if (list.empty())
 			return 0;
 
 		cmd = g_Git.GetLogCmd(list[0], path, mask, &m_Filter);
@@ -2848,7 +2848,7 @@ UINT CGitLogListBase::LogThread()
 			STRING_VECTOR list;
 			if (g_Git.GetRefList(list))
 				MessageBox(g_Git.GetGitLastErr(_T("Could not get all refs.")), _T("TortoiseGit"), MB_ICONERROR);
-			if (list.size() == 0)
+			if (list.empty())
 				shouldWalk = false;
 		}
 	}

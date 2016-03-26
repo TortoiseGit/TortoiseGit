@@ -1,3 +1,7 @@
+# This file is maintained by the TortoiseGit team
+#
+# Custom additions should go to %APPDATA%\TortoiseGit\autolist.txt
+# for this you don't need admin rights and changes won't get overridden automatically
 .asm = ^([\w]+):
 .au3, .auh = Func\s+([\w]+)|\$([\w]+)
 .bas, .frm, .cls = ^\s*(?:(?:Public (?:Default )?|Private )?(?:Sub|Function|Property Get|Property Set|Property Let) ?)(\w+)\(|^Attribute VB_Name = "(\w+)"

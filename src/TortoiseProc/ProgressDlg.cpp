@@ -625,7 +625,7 @@ void CProgressDlg::ParserCmdOutput(CRichEditCtrl &log,CProgressCtrl &progressctr
 			}
 		}
 
-		oneline="";
+		oneline.Empty();
 	}
 	else
 		oneline+=ch;

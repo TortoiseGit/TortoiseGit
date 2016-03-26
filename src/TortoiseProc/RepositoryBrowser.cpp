@@ -338,7 +338,7 @@ void CRepositoryBrowser::Refresh()
 	m_RepoTree.DeleteAllItems();
 	m_RepoList.DeleteAllItems();
 	m_TreeRoot.m_ShadowTree.clear();
-	m_TreeRoot.m_sName = "";
+	m_TreeRoot.m_sName.Empty();
 	m_TreeRoot.m_bFolder = true;
 
 	TVINSERTSTRUCT tvinsert = {0};

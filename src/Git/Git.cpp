@@ -1097,7 +1097,7 @@ void GetTempPath(CString &path)
 	dwRetVal = GetTortoiseGitTempPath(dwBufSize,		// length of the buffer
 							lpPathBuffer);	// buffer for path
 	if (dwRetVal > dwBufSize || (dwRetVal == 0))
-		path=_T("");
+		path.Empty();
 	path.Format(_T("%s"),lpPathBuffer);
 }
 CString GetTempFile()
@@ -2097,9 +2097,15 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": ms_LastMsysGitDir = %s\n"), (LPCTSTR)CGit::ms_LastMsysGitDir);
 	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": ms_MsysGitRootDir = %s\n"), (LPCTSTR)CGit::ms_MsysGitRootDir);
 	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": System config = %s\n"), (LPCTSTR)g_Git.GetGitSystemConfig());
+	if (!ms_bCygwinGit && !ms_bMsys2Git)
+	{
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": ProgramData config = %s\n", (LPCTSTR)g_Git.GetGitProgramDataConfig());
+		SetLibGit2SearchPath(GIT_CONFIG_LEVEL_PROGRAMDATA, CTGitPath(g_Git.GetGitProgramDataConfig()).GetContainingDirectory().GetWinPathString());
+	}
+	else
+		SetLibGit2SearchPath(GIT_CONFIG_LEVEL_PROGRAMDATA, CTGitPath(g_Git.GetGitSystemConfig()).GetContainingDirectory().GetWinPathString());
 
 	// Configure libgit2 search paths
-	SetLibGit2SearchPath(GIT_CONFIG_LEVEL_PROGRAMDATA, CTGitPath(g_Git.GetGitSystemConfig()).GetContainingDirectory().GetWinPathString());
 	SetLibGit2SearchPath(GIT_CONFIG_LEVEL_SYSTEM, CTGitPath(g_Git.GetGitSystemConfig()).GetContainingDirectory().GetWinPathString());
 	SetLibGit2SearchPath(GIT_CONFIG_LEVEL_GLOBAL, g_Git.GetHomeDirectory());
 	SetLibGit2SearchPath(GIT_CONFIG_LEVEL_XDG, g_Git.GetGitGlobalXDGConfigPath());
@@ -2180,6 +2186,12 @@ CString CGit::GetGitGlobalXDGConfigPath() const
 CString CGit::GetGitGlobalXDGConfig() const
 {
 	return g_Git.GetGitGlobalXDGConfigPath() + _T("\\config");
+}
+
+CString CGit::GetGitProgramDataConfig() const
+{
+	const wchar_t* programdataConfig = wget_program_data_config();
+	return CString(programdataConfig);
 }
 
 CString CGit::GetGitSystemConfig() const
@@ -2789,7 +2801,7 @@ CString CGit::GetUnifiedDiffCmd(const CTGitPath& path, const git_revnum_t& rev1,
 	if (rev2 == GitRev::GetWorkingCopy())
 		cmd.Format(_T("git.exe diff --stat%s -p %s --"), bNoPrefix ? L" --no-prefix" : L"", (LPCTSTR)rev1);
 	else if (rev1 == GitRev::GetWorkingCopy())
-		cmd.Format(_T("git.exe diff -R --stat%s %s-p %s --"), bNoPrefix ? L" --no-prefix" : L"", (LPCTSTR)rev2);
+		cmd.Format(_T("git.exe diff -R --stat%s -p %s --"), bNoPrefix ? L" --no-prefix" : L"", (LPCTSTR)rev2);
 	else
 	{
 		CString merge;

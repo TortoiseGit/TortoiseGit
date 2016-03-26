@@ -75,6 +75,8 @@ static CString ConfigLevelToKey(git_config_level_t level)
 {
 	switch (level)
 	{
+	case GIT_CONFIG_LEVEL_PROGRAMDATA:
+		return L"P";
 	case GIT_CONFIG_LEVEL_SYSTEM:
 		return L"S";
 	case GIT_CONFIG_LEVEL_XDG:
@@ -327,7 +329,7 @@ void CSettingGitCredential::OnLbnSelchangeListUrl()
 	m_ctrlUrlList.GetText(index, text);
 	int pos = text.Find(_T(':'));
 	CString prefix = pos >= 0 ? text.Left(pos) : text.Left(1);
-	m_ctrlConfigType.SetCurSel(prefix == _T("S") ? ConfigType::System : prefix == _T("X") ? ConfigType::Global : prefix == _T("G") ? ConfigType::Global : ConfigType::Local);
+	m_ctrlConfigType.SetCurSel((prefix == L"S" || prefix == L"P") ? ConfigType::System : prefix == L"X" ? ConfigType::Global : prefix == L"G" ? ConfigType::Global : ConfigType::Local);
 	m_strUrl = pos >= 0 ? text.Mid(pos + 1) : _T("");
 
 	m_strHelper = Load(_T("helper"));
@@ -430,6 +432,8 @@ void CSettingGitCredential::LoadList()
 	git_config_add_file_ondisk(config, CGit::GetGitPathStringA(g_Git.GetGitGlobalConfig()), GIT_CONFIG_LEVEL_GLOBAL, FALSE);
 	git_config_add_file_ondisk(config, CGit::GetGitPathStringA(g_Git.GetGitGlobalXDGConfig()), GIT_CONFIG_LEVEL_XDG, FALSE);
 	git_config_add_file_ondisk(config, CGit::GetGitPathStringA(g_Git.GetGitSystemConfig()), GIT_CONFIG_LEVEL_SYSTEM, FALSE);
+	if (!g_Git.ms_bCygwinGit && !g_Git.ms_bMsys2Git)
+		git_config_add_file_ondisk(config, CGit::GetGitPathStringA(g_Git.GetGitProgramDataConfig()), GIT_CONFIG_LEVEL_PROGRAMDATA, FALSE);
 
 	STRING_VECTOR defaultList, urlList;
 	git_config_foreach_match(config, "credential\\.helper", GetCredentialDefaultUrlCallback, &defaultList);
@@ -502,7 +506,7 @@ void CSettingGitCredential::LoadList()
 		}
 	}
 
-	if (prefix == _T("S"))
+	if (prefix == L"S" || prefix == L"P")
 	{
 		if (value == _T("wincred"))
 		{
@@ -616,7 +620,7 @@ static int DeleteOtherKeys(int type)
 	{
 		int pos = 0;
 		CString prefix = list[i].Tokenize(_T("\n"), pos);
-		if (prefix == _T("S") && !CAppUtils::IsAdminLogin())
+		if ((prefix == L"S" || prefix == L"P") && !CAppUtils::IsAdminLogin())
 		{
 			RunUAC();
 			return -1;
@@ -635,7 +639,7 @@ static int DeleteOtherKeys(int type)
 			int pos = 0;
 			CString prefix = list[i].Tokenize(_T("\n"), pos);
 			CString key = list[i].Tokenize(_T("\n"), pos);
-			CONFIG_TYPE configLevel = prefix == _T("S") ? CONFIG_SYSTEM : prefix == _T("G") || prefix == _T("X") ? CONFIG_GLOBAL : CONFIG_LOCAL;
+			CONFIG_TYPE configLevel = (prefix == L"S" || prefix == L"P") ? CONFIG_SYSTEM : prefix == L"G" || prefix == L"X" ? CONFIG_GLOBAL : CONFIG_LOCAL;
 			if (g_Git.UnsetConfigValue(key, configLevel))
 			{
 				CString msg;
@@ -829,6 +833,7 @@ void CSettingGitCredential::OnBnClickedButtonRemove()
 				git_config_add_file_ondisk(config, CGit::GetGitPathStringA(g_Git.GetGitGlobalXDGConfig()), GIT_CONFIG_LEVEL_XDG, FALSE);
 				break;
 				}
+			case L'P':
 			case _T('S'):
 				{
 				if (!CAppUtils::IsAdminLogin())
@@ -839,6 +844,8 @@ void CSettingGitCredential::OnBnClickedButtonRemove()
 				}
 				configLevel = CONFIG_SYSTEM;
 				git_config_add_file_ondisk(config, CGit::GetGitPathStringA(g_Git.GetGitSystemConfig()), GIT_CONFIG_LEVEL_SYSTEM, FALSE);
+				if (!g_Git.ms_bCygwinGit && !g_Git.ms_bMsys2Git)
+					git_config_add_file_ondisk(config, CGit::GetGitPathStringA(g_Git.GetGitProgramDataConfig()), GIT_CONFIG_LEVEL_PROGRAMDATA, FALSE);
 				break;
 				}
 			}

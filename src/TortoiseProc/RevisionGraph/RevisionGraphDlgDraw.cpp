@@ -730,7 +730,19 @@ void CRevisionGraphWnd::DrawMarker
 		REAL y1 = max(1, 25 * this->m_fZoomFactor);
 		REAL y2 = max(1, 5 * this->m_fZoomFactor);
 		if(graphics.graphics)
+		{
 			graphics.graphics->DrawLine(&pen, noderect.X + x, noderect.Y - y1, noderect.X + x, noderect.Y - y2);
+			if (m_SelectedEntry2)
+			{
+				CString base(L'(');
+				base.AppendFormat(IDS_PROC_DIFF_BASE);
+				base += L')';
+				SolidBrush blackbrush(penColor);
+				CString fontname = CRegString(L"Software\\TortoiseGit\\LogFontName", L"Courier New");
+				Gdiplus::Font font(fontname, (REAL)m_nFontSize, FontStyleRegular);
+				graphics.graphics->DrawString(base, base.GetLength(), &font, Gdiplus::PointF(noderect.X + x + width, noderect.Y - y1), &blackbrush);
+			}
+		}
 	}
 	else if (num == 2)
 	{
@@ -992,9 +1004,9 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& /*logR
 
 		// draw the revision text
 		CGitHash hash = this->m_logEntries[v->index()];
-		double hight = noderect.Height / (m_HashMap[hash].size()?m_HashMap[hash].size():1);
+		double hight = noderect.Height / (!m_HashMap[hash].empty() ? m_HashMap[hash].size() : 1);
 
-		if(m_HashMap.find(hash) == m_HashMap.end() || m_HashMap[hash].size() == 0)
+		if (m_HashMap.find(hash) == m_HashMap.end() || m_HashMap[hash].empty())
 		{
 			Color background;
 			background.SetFromCOLORREF (GetSysColor(COLOR_WINDOW));

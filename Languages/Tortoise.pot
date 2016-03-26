@@ -2182,7 +2182,7 @@ msgstr ""
 msgid "Bar Graph"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_RESOLVESUBMODULECONFLICT: Control id 1385)
+#. Resource IDs: (Dialog IDD_RESOLVESUBMODULECONFLICT: Control id 1385, IDS_PROC_DIFF_BASE)
 msgid "Base"
 msgstr ""
 

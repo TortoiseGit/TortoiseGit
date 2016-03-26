@@ -150,7 +150,9 @@ void CShellUpdater::WorkerThread()
 				// first send a notification about a sub folder change, so explorer doesn't discard
 				// the folder notification. Since we only know for sure that the git admin
 				// dir is present, we send a notification for that folder.
-				CString admindir = workingPath.GetWinPathString() + _T("\\") + GitAdminDir::GetAdminDirName();
+				CString admindir(workingPath.GetWinPathString());
+				admindir += L'\\';
+				admindir += GitAdminDir::GetAdminDirName();
 				if(::PathFileExists(admindir))
 					SHChangeNotify(SHCNE_UPDATEITEM, SHCNF_PATH | SHCNF_FLUSHNOWAIT, (LPCTSTR)admindir, nullptr);
 

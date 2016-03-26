@@ -95,6 +95,7 @@ public:
 		);
 	CHwSMTP();
 	virtual ~CHwSMTP();
+	static CString CHwSMTP::GetEncodedHeader(const CString& text);
 
 protected:
 	CString GetServerAddress(const CString& in);

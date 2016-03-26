@@ -411,11 +411,6 @@ void CFolderCrawler::WorkerThread()
 						continue;
 					}
 				}
-				if (DWORD(workingPath.GetCustomData()) >= currentTicks)
-				{
-					Sleep(50);
-					continue;
-				}
 				if ((!m_blockedPath.IsEmpty())&&(m_blockedPath.IsAncestorOf(workingPath)))
 					continue;
 				if (!CGitStatusCache::Instance().IsPathAllowed(workingPath))

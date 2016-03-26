@@ -23,8 +23,8 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2016-02-23 21:07+0000\n"
-"Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
+"PO-Revision-Date: 2016-03-14 15:05+0000\n"
+"Last-Translator: Simone Mazzotti <simone.mazzotti@imagovision.it>\n"
 "Language-Team: Italian (http://www.transifex.com/lznuaa/tortoisegit/language/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -3057,7 +3057,7 @@ msgstr ""
 
 #. Resource IDs: (IDS_MENUCLONE)
 msgid "Clone..."
-msgstr "Facciendo clone..."
+msgstr "Clone..."
 
 #. Resource IDs: (16032, 16105, 17023, 2, Dialog IDD_DELETEREMOTETAG: Control
 #. id 2, Dialog IDD_GITPROGRESS: Control id 1, Dialog IDD_SYNC: Control id 1)
@@ -3691,7 +3691,7 @@ msgid ""
 "clone or fetch from it, nor push from nor into it), but is adequate if you "
 "are only interested in the recent history of a large project with a long "
 "history, and would want to send in fixes as patches."
-msgstr ""
+msgstr "Creare un duplicato superficiale con una storia troncata al numero specificato di revisioni. Un repository superficiale ha una serie di limitazioni (non è possibile clonare o recuperare da esso, né pushare da o in esso), ma è utile se siete solo interessati alla storia recente di un progetto di grandi dimensioni con una lunga storia e volete inviare correzioni come patch."
 
 #. Resource IDs: (ID_EDIT_CREATEUNIFIEDDIFFFILE - Menu,
 #. ID_EDIT_CREATEUNIFIEDDIFFFILE - Ribbon name)
@@ -11544,7 +11544,7 @@ msgstr "Versione 1"
 
 #. Resource IDs: (IDS_PROC_FILEDIFF_VERSION1NEWER)
 msgid "Version 1 (Newer commit time)"
-msgstr ""
+msgstr "Versione 1 (tempo di commit più recente)"
 
 #. Resource IDs: (Dialog IDD_DIFFFILES: Control id 1645,
 #. IDS_PROC_FILEDIFF_VERSION2BASE)
@@ -11553,7 +11553,7 @@ msgstr "Version 2 (Base)"
 
 #. Resource IDs: (IDS_PROC_FILEDIFF_VERSION2BASENEWER)
 msgid "Version 2 (Base) (Newer commit time)"
-msgstr ""
+msgstr "Versione 2 (Base) (tempo di commit più recente)"
 
 #. Resource IDs: (Dialog IDD_ABOUT: Control id 1075)
 msgid "Version Information"
@@ -11569,7 +11569,7 @@ msgstr "Versionato"
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "Vietnamese"
-msgstr ""
+msgstr "Vietnamita"
 
 #. Resource IDs: (156 - Ribbon element)
 msgid "View"
@@ -11577,11 +11577,11 @@ msgstr "Visualizza"
 
 #. Resource IDs: (IDS_PROC_GITCONFIG_VIEWTGITCONFIG)
 msgid "View .tgitconfig"
-msgstr ""
+msgstr "Visualizza .tgitconfig"
 
 #. Resource IDs: (ID_VIEW_BARS - Ribbon name)
 msgid "View Bars"
-msgstr ""
+msgstr "Visualizza barre"
 
 #. Resource IDs: (Dialog IDD_PATCH_VIEW: Control id 328, IDS_MENU_VIEWPATCH)
 msgid "View Patch"
@@ -11659,7 +11659,7 @@ msgstr ""
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "Western European"
-msgstr ""
+msgstr "Europeo occidentale"
 
 #. Resource IDs: (IDS_SETTINGS_HIDEMENUS_TT)
 msgid ""
@@ -11671,25 +11671,25 @@ msgstr "Quando attivato, tieni premuto il tasto SHIFT e il tasto destro del mous
 msgid ""
 "When applying a patch, ignore changes in whitespace in context lines if "
 "necessary"
-msgstr ""
+msgstr "Quando si applica una patch, ignorare le modifiche nello spazio vuoto in righe di contesto se necessario."
 
 #. Resource IDs: (IDS_SETTINGS_CONFIRMKILLPROCESS_TT)
 msgid ""
 "When closing a progress dialog with a running git process, ask for "
 "confirmation before killing it"
-msgstr ""
+msgstr "Quando si chiude una finestra di avanzamento con un processo in esecuzione di git, chiedi conferma prima di chiuderla."
 
 #. Resource IDs: (IDS_SETTINGS_ENABLEDRAGCONTEXTMENU_TT)
 msgid ""
 "When enabled, TortoiseGit move context menu items will be available when "
 "dragging folders / files"
-msgstr ""
+msgstr "Quando è abilitato, le voci del menu contestuale di TortoiseGit movibili saranno disponibili quando si trascinano cartelle / file"
 
 #. Resource IDs: (IDS_SORTTAGSREVERSED_TT)
 msgid ""
 "When enabled, larger version numbers come first. It is because latest "
 "versions are usually more useful."
-msgstr ""
+msgstr "Quando è abilitato, i numeri più grandi di versione vengono prima. Questo perché le ultime versioni sono di solito più utili."
 
 #. Resource IDs: (IDS_SETTINGS_SELECTFILESONCOMMIT_TT)
 msgid ""
@@ -11702,23 +11702,23 @@ msgid ""
 "When the patch does not apply cleanly, fall back on 3-way merge if the patch"
 " records the identity of blobs it is supposed to apply to and we have those "
 "blobs available locally."
-msgstr ""
+msgstr "Quando la patch non si applica in modo pulito, ripiega sul merge a 3 vie se la patch registra l'identità di BLOB che si suppone di applicare e abbiamo quei BLOB disponibili localmente."
 
 #. Resource IDs: (IDS_B_T_PREFILL_ORIGIN)
 msgid ""
 "When you type the URL, the remote name will be automatically filled with "
 "\"origin\" if the remote name is empty, so you do not have to."
-msgstr ""
+msgstr "Quando si digita l'URL, il nome remoto sarà automaticamente riempito con \"origin\" se esso è vuoto, quindi non è necessario."
 
 #. Resource IDs: (IDS_SETTINGS_DESCRIBESTRATEGY_TT)
 msgid "Whether to reference only annotated tags, all tags or all refs"
-msgstr ""
+msgstr "Se fare riferimento solo ai tag annotati, a tutti i tag o a tutti i riferimenti"
 
 #. Resource IDs: (IDS_DAEMON_SECURITY_WARN)
 msgid ""
 "While running daemon, all data of this repository is exposed without "
 "authentication and/or encryption."
-msgstr ""
+msgstr "Durante l'esecuzione di daemon, tutti i dati di questo repository sono esposti senza autenticazione e/o crittografia."
 
 #. Resource IDs: (IDS_TEXTIDENTICAL_WHITESPACE)
 msgid "Whitespace changes (tabs, spaces)"
@@ -11831,7 +11831,7 @@ msgstr "Si sta già utilizzando la versione più recente."
 
 #. Resource IDs: (IDS_PROC_PULL_EMPTYBRANCH)
 msgid "You asked to pull, but did not specify a remote branch."
-msgstr ""
+msgstr "Hai chiesto un \"pull\", ma non hai specificato un ramo remoto."
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAYHANDLERS: Control id 65535)
 msgid ""
@@ -11858,14 +11858,14 @@ msgstr "È possibile impostare questa proprietà solo per i file e non per le ca
 
 #. Resource IDs: (IDS_PROC_BROWSEREFS_NOCHANGEOFTYPE)
 msgid "You cannot change the type of this ref with a rename."
-msgstr ""
+msgstr "Non è possibile modificare il tipo di questo riferimento con una ridenominazione."
 
 #. Resource IDs: (IDS_PROC_OLDMSYSGIT)
 msgid ""
 "You have an old version of Git for Windows (https://git-for-windows.github.io/) installed which contains security issues.\n"
 "\n"
 "You should consider an upgrade to 1.9.5+."
-msgstr ""
+msgstr "È installata una vecchia versione di Git per Windows (https://git-for-windows.github.io/), che potrebbe contenere problemi di sicurezza.\n\nSi dovrebbe considerare un aggiornamento a 1.9.5 +."
 
 #. Resource IDs: (IDS_STASHSAVE_INCLUDEUNTRACKED)
 msgid ""
@@ -11875,7 +11875,7 @@ msgstr ""
 
 #. Resource IDs: (IDS_WARNMARKEDBLOCKS)
 msgid "You have marked changed blocks. How should those blocks be saved?"
-msgstr ""
+msgstr "Hai segnato dei blocchi modificati. Come dovrebbero essere salvati quei blocchi?"
 
 #. Resource IDs: (IDS_PROPSNOTSAVED)
 msgid ""
@@ -11905,16 +11905,16 @@ msgstr ""
 msgid ""
 "You marked some files as \"Restore after commit\".\n"
 "Do you want to restore them now? You might lose all changes to this file after marking it."
-msgstr ""
+msgstr "Alcuni file sono stati contrassegnati come \"Ripristino dopo il commit\".\nSi desidera ripristinarli adesso? Tutte le modifiche fatte a questi file dopo la loro marcatura andranno perse."
 
 #. Resource IDs: (16024)
 #, c-format
 msgid "You may define up to %d tools."
-msgstr "E' possibile definire fino a %d barre."
+msgstr "È possibile definire fino a %d barre."
 
 #. Resource IDs: (IDS_COMMITDLG_NOMESSAGE)
 msgid "You must enter a log message for the commit"
-msgstr "Devi registrare un messagio per il commit"
+msgstr "È necessario immettere un messaggio di log per il commit."
 
 #. Resource IDs: (IDS_SETTINGS_RESTARTSYSTEM)
 msgid "You must restart your system for the changes to take effect."
@@ -11922,19 +11922,19 @@ msgstr "È necessario riavviare il sistema affinchè i cambiamenti abbiano effet
 
 #. Resource IDs: (IDS_PROC_NOZIPFILE)
 msgid "You must select a filename for the zip-file!"
-msgstr ""
+msgstr "È necessario selezionare un nome per il file zip!"
 
 #. Resource IDs: (IDS_PROCEXPORTERRFOLDER)
 msgid ""
 "You selected a folder.\n"
 "Exports are only possible to a (zip) file."
-msgstr ""
+msgstr "È stato selezionato un folder.\nLe esportazioni sono possibili solo in un file (zip)."
 
 #. Resource IDs: (IDS_COMMITDLG_ASKADD)
 msgid ""
 "You selected an unversioned file.\n"
 "The file will be added to version control when you commit."
-msgstr "È stato selezionato un file senza versione.\nIl file verrà aggiunto alla versione quando si procederà all'invio."
+msgstr "È stato selezionato un file senza versione.\nIl file verrà aggiunto al controllo della versione quando verrà eseguito il commit."
 
 #. Resource IDs: (16002)
 msgid "You should enter a text!"
@@ -11949,7 +11949,7 @@ msgstr "Va inserita un'immagine!"
 msgid ""
 "You've changed the icon set from <i>%s</i> to <i>%s</i>.\n"
 "That change won't take effect until you restart your computer or logoff and logon again!"
-msgstr "Hai cambiato il set di icone da <i>%s</i> a <i>%s</i>.\nIl cambiamento non avrà effetto fino al prossimo riavvio del compiuter o fino alla prossima disconnessione dell'utente."
+msgstr "Hai cambiato il set di icone da <i>%s</i> a <i>%s</i>.\nIl cambiamento non avrà effetto fino al prossimo riavvio del computer o fino alla prossima disconnessione dell'utente!"
 
 #. Resource IDs: (IDS_COMMITDLG_HISTORYHINT_TT)
 msgid ""
@@ -12025,7 +12025,7 @@ msgstr "Zoom per adattare in altezza"
 
 #. Resource IDs: (32810)
 msgid "Zoom to fit in width"
-msgstr "Zoom per adatta in larghezza"
+msgstr "Zoom per adattare in larghezza"
 
 #. Resource IDs: (17114)
 msgid "[Default]"
@@ -12042,21 +12042,21 @@ msgid ""
 "is a merge commit.\n"
 "\n"
 "Which parent do you want to pick?"
-msgstr ""
+msgstr "\"%s\" - \"%s\"\nè un'operazione di commit di tipo merge.\n\nQuale genitore si desidera prendere?"
 
 #. Resource IDs: (IDS_PROC_COPY_REPOSITORY)
 #, c-format
 msgid ""
 "\"%s\" contains a git repository. It will not work as a submodule out of the box.\n"
 "Do you want to delete the .git-entry and add all files to the top repository or keep it as a separate repository in a subdirectory?"
-msgstr ""
+msgstr "\"%s\" contiene un repository git. Non funzionerà come un sottomodulo fuori dal box.\nSi desidera eliminare la voce di git e aggiungere tutti i file nel repository superiore o tenerlo come un repository separato in una sottodirectory?"
 
 #. Resource IDs: (IDS_PROC_COPY_SUBMODULE)
 #, c-format
 msgid ""
 "\"%s\" contains a git submodule. It is likely that this doesn't work any more on the destination after copying.\n"
 "Do you want to delete the .git-entry and add all files to the top repository or ignore this possible issue and keep it?"
-msgstr ""
+msgstr "\"%s\" contiene un sottomodulo git. È probabile che questo non funzioni più sulla destinazione dopo la copia.\nSi desidera eliminare la voce di git e aggiungere tutti i file nel repository superiore o ignorare l'allarme e tenerlo?"
 
 #. Resource IDs: (IDS_GITEXEERROR_NOMESSAGE)
 #, c-format
@@ -12079,7 +12079,7 @@ msgstr "\"%s\" non è un repository git"
 msgid ""
 "\"git am\" is still in apply mode.\n"
 "Do you want to abort?"
-msgstr ""
+msgstr "\"git am\" è ancora in modalità applicazione.\nVuoi interrompere?"
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "_POPUP_"
@@ -12116,7 +12116,7 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_ABOUT: Control id 65535)
 msgid "based on TortoiseSVN (http://www.tortoisesvn.net/)"
-msgstr ""
+msgstr "basato su TortoiseSVN (http://www.tortoisesvn.net/)"
 
 #. Resource IDs: (Dialog IDD_SETTINGSBUGTRAQ_CONFIG: Control id 65535)
 msgid "bugtraq.append"
@@ -12180,7 +12180,7 @@ msgstr "dummy"
 
 #. Resource IDs: (Dialog IDD_SENDMAIL: Control id 1580)
 msgid "eMail settings"
-msgstr ""
+msgstr "impostazioni eMail"
 
 #. Resource IDs: (IDS_PROC_EXPORT_4)
 #, c-format
@@ -12198,7 +12198,7 @@ msgstr "esterno"
 #. Resource IDs: (IDS_PROC_PROGRESS_GITUNCLEANEXIT)
 #, c-format
 msgid "git did not exit cleanly (exit code %d)"
-msgstr ""
+msgstr "git non è stato chiuso in modo pulito (codice uscita %d)"
 
 #. Resource IDs: (IDS_STATUSIGNORED)
 msgid "ignored"
@@ -12334,7 +12334,7 @@ msgstr "su %1"
 
 #. Resource IDs: (IDS_STATE_PATCHED)
 msgid "patched"
-msgstr ""
+msgstr "patchato"
 
 #. Resource IDs: (61888)
 msgid "pixels"
@@ -12354,7 +12354,7 @@ msgstr "trimestre"
 
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_1: Control id 65535)
 msgid "renamed"
-msgstr ""
+msgstr "rinominato"
 
 #. Resource IDs: (IDS_STATUSREPLACED)
 msgid "replaced"

@@ -101,6 +101,9 @@ BOOL CSettingGitConfig::OnInitDialog()
 	else
 		this->GetDlgItem(IDC_EDITLOCALGITCONFIG)->EnableWindow(FALSE);
 
+	if (m_bGlobal)
+		this->GetDlgItem(IDC_EDITTGITCONFIG)->EnableWindow(FALSE);
+
 	if (m_bIsBareRepo)
 	{
 		this->GetDlgItem(IDC_EDITLOCALGITCONFIG)->SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_GITCONFIG_EDITLOCALGONCFIG)));
@@ -296,6 +299,8 @@ void CSettingGitConfig::OnBnClickedEditsystemgitconfig()
 	}
 	// use alternative editor because of LineEndings
 	CAppUtils::LaunchAlternativeEditor(filename, true);
+	if (!g_Git.ms_bCygwinGit && !g_Git.ms_bMsys2Git && PathFileExists(g_Git.GetGitProgramDataConfig()))
+		CAppUtils::LaunchAlternativeEditor(g_Git.GetGitProgramDataConfig(), true);
 }
 
 void CSettingGitConfig::OnBnClickedViewsystemgitconfig()
@@ -308,4 +313,6 @@ void CSettingGitConfig::OnBnClickedViewsystemgitconfig()
 	}
 	// use alternative editor because of LineEndings
 	CAppUtils::LaunchAlternativeEditor(filename);
+	if (!g_Git.ms_bCygwinGit && !g_Git.ms_bMsys2Git && PathFileExists(g_Git.GetGitProgramDataConfig()))
+		CAppUtils::LaunchAlternativeEditor(g_Git.GetGitProgramDataConfig());
 }

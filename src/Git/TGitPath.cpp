@@ -47,7 +47,6 @@ CTGitPath::CTGitPath(void)
 	, m_bExistsKnown(false)
 	, m_bLastWriteTimeKnown(0)
 	, m_lastWriteTime(0)
-	, m_customData(NULL)
 	, m_bIsSpecialDirectoryKnown(false)
 	, m_bIsSpecialDirectory(false)
 	, m_bIsWCRootKnown(false)
@@ -417,8 +416,8 @@ void CTGitPath::Reset()
 	m_sFwdslashPath.Empty();
 	m_sUTF8FwdslashPath.Empty();
 	this->m_Action=0;
-	this->m_StatAdd=_T("");
-	this->m_StatDel=_T("");
+	this->m_StatAdd.Empty();
+	this->m_StatDel.Empty();
 	m_ParentNo=0;
 	ATLASSERT(IsEmpty());
 }

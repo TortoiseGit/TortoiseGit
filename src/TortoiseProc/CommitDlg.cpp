@@ -1014,7 +1014,7 @@ void CCommitDlg::OnOK()
 
 		BOOL IsGitSVN = path.GetAdminDirMask() & ITEMIS_GITSVN;
 
-		out =_T("");
+		out.Empty();
 		CString amend;
 		if(this->m_bCommitAmend)
 			amend=_T("--amend");
@@ -1669,6 +1669,10 @@ void CCommitDlg::ParseRegexFile(const CString& sFile, std::map<CString, CString>
 		CStdioFile file(sFile, CFile::typeText | CFile::modeRead | CFile::shareDenyWrite);
 		while (m_bRunThread && file.ReadString(strLine))
 		{
+			if (strLine.IsEmpty())
+				continue;
+			if (strLine.Left(1) == L'#')
+				continue;
 			int eqpos = strLine.Find('=');
 			CString rgx;
 			rgx = strLine.Mid(eqpos+1).Trim();
@@ -2108,13 +2112,13 @@ void CCommitDlg::OnBnClickedBugtraqbutton()
 				HRESULT hr2 = SafeArrayAccessData(revPropValues, (void HUGEP**)&pbRevValues);
 				if (SUCCEEDED(hr2))
 				{
-					if (revPropNames->rgsabound->cElements == revPropValues->rgsabound->cElements)
-					{
-						for (ULONG i = 0; i < revPropNames->rgsabound->cElements; ++i)
-						{
+//					if (revPropNames->rgsabound->cElements == revPropValues->rgsabound->cElements)
+//					{
+//						for (ULONG i = 0; i < revPropNames->rgsabound->cElements; ++i)
+//						{
 //							m_revProps[pbRevNames[i]] = pbRevValues[i];
-						}
-					}
+//						}
+//					}
 					SafeArrayUnaccessData(revPropValues);
 				}
 				SafeArrayUnaccessData(revPropNames);

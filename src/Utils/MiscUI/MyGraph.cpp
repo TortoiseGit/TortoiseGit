@@ -174,7 +174,7 @@ int MyGraphSeries::GetAverageDataValue() const
 		nTotal += static_cast<int> (m_dwaValues.GetAt(nGroup));
 	}
 
-	if (m_dwaValues.GetSize() == 0)
+	if (m_dwaValues.IsEmpty())
 		return 0;
 
 	return nTotal / (int)m_dwaValues.GetSize();

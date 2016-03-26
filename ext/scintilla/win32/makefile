@@ -31,7 +31,7 @@ ifneq "$(shell g++ -c CheckD2D.cxx 2>&1)" ""
 D2DFLAGS=-DDISABLE_D2D
 endif
 
-CXXBASEFLAGS=--std=c++0x -Wall -pedantic $(INCLUDEDIRS) $(D2DFLAGS)
+CXXBASEFLAGS=--std=gnu++0x -Wall -pedantic $(INCLUDEDIRS) $(D2DFLAGS)
 
 ifdef CXX11_REGEX
 REFLAGS=-DCXX11_REGEX
@@ -96,7 +96,7 @@ BASEOBJS = \
 
 SOBJS = ScintillaWin.o ScintillaBase.o $(BASEOBJS)
 
-$(COMPONENT): $(SOBJS)
+$(COMPONENT): $(SOBJS) Scintilla.def
 	$(CXX) $(LDFLAGS) -o $@ $(STRIPFLAG) $(SOBJS) $(CXXFLAGS) $(LIBS)
 
 LOBJS = \
@@ -112,7 +112,7 @@ LOBJS = \
 	WordList.o \
 	$(BASEOBJS) \
 	$(LEXOBJS)
-$(LEXCOMPONENT): $(LOBJS)
+$(LEXCOMPONENT): $(LOBJS) Scintilla.def
 	$(CXX) $(LDFLAGS) -o $@ $(STRIPFLAG) $(LOBJS) $(CXXFLAGS) $(LIBS)
 
 $(LEXLIB): $(LEXOBJS)

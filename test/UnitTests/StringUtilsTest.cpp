@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015 - TortoiseGit
+// Copyright (C) 2015-2016 - TortoiseGit
 // Copyright (C) 2003-2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -213,4 +213,18 @@ TEST(CStringUtils, ParseEmailAddress)
 	CStringUtils::ParseEmailAddress(_T("<test@example.com> \"John Doe\""), mail, &name);
 	EXPECT_STREQ(_T("test@example.com"), mail);
 	EXPECT_STREQ(_T("John Doe"), name);
+}
+
+TEST(CStringUtils, IsPlainReadableASCII)
+{
+	EXPECT_TRUE(CStringUtils::IsPlainReadableASCII(L""));
+	EXPECT_TRUE(CStringUtils::IsPlainReadableASCII(L" 1234,#+*.:-&!\\<>|\"$%&/()=567890abcdefSBDUDB[](!}~"));
+	EXPECT_FALSE(CStringUtils::IsPlainReadableASCII(L"\n"));
+	EXPECT_FALSE(CStringUtils::IsPlainReadableASCII(L"\u2302"));
+	EXPECT_FALSE(CStringUtils::IsPlainReadableASCII(L"é"));
+	EXPECT_FALSE(CStringUtils::IsPlainReadableASCII(L"\u2550"));
+	EXPECT_FALSE(CStringUtils::IsPlainReadableASCII(L"ä"));
+	EXPECT_FALSE(CStringUtils::IsPlainReadableASCII(L"€"));
+	EXPECT_FALSE(CStringUtils::IsPlainReadableASCII(L"\u570B"));
+	EXPECT_FALSE(CStringUtils::IsPlainReadableASCII(L"\u7ACB"));
 }

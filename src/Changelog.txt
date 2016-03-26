@@ -1,19 +1,26 @@
 ﻿= Release 2.1.0 =
-Released: unreleased
+Released: 2016-03-26
+
+== Changes ==
+ * We disabled the stripping of comments on commit messages by default again (see issue #2715)
 
 == Features ==
  * Update PuTTY to 0.67
  * Fixed issue #2733: Hide commit button after file add when invoked from commit dialog
  * Fixed issue #2734: When pull.rebase is set, start rebase just after fetch, not after OK button
  * Fixed issue #2731: Improved autolist.txt regex for C# files
+ * Update libgit2 to 0.24.0
+ * Update Scintilla to 3.6.4
 
 == Bug Fixes ==
  * Fixed issue #2719: Commit & Push in CommitDlg doesn't respect default remote and pushbranch settings
  * Fixed issue #1902: CommitDlg: Do not lose SQUASH_MSG contents
  * Fixed issue #2732: Commit dialog: Message field should have focus (when patch is shown)
  * Fixed issue #2730: Pull with rebase with preserve merges not working for noops
- * Fixed issue #2740: Order of compared references in revision graph is labelled inverted
  * Fixed issue #2728: Cherry Pick is not working in case of conflict and empty message
+ * Fixed issue #2715: Cannot commit with a commit message starting with a hash (#) character
+ * Updated libgit to 2.5.5 which includes fixes for CVE-2016-2315 and CVE-2016-2324
+ * Fix the the credential helper settings dialog
 
 = Release 2.0.0 =
 Released: 2016-02-29

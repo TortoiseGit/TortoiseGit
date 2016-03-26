@@ -30,12 +30,28 @@ PSecurityFunctionTable g_pSSPI;
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
+static CString GetGUID()
+{
+	CString sGuid;
+	GUID guid;
+	if (CoCreateGuid(&guid) == S_OK)
+	{
+		RPC_WSTR guidStr;
+		if (UuidToString(&guid, &guidStr) == RPC_S_OK)
+		{
+			sGuid = (LPTSTR)guidStr;
+			RpcStringFree(&guidStr);
+		}
+	}
+	return sGuid;
+}
+
 CHwSMTP::CHwSMTP () :
 	m_bConnected ( FALSE ),
 	m_nSmtpSrvPort ( 25 ),
 	m_bMustAuth ( TRUE )
 {
-	m_csPartBoundary = _T( "WC_MAIL_PaRt_BoUnDaRy_05151998" );
+	m_csPartBoundary = L"NextPart_" + GetGUID();
 	m_csMIMEContentType.Format(_T("multipart/mixed; boundary=%s"), (LPCTSTR)m_csPartBoundary);
 	m_csNoMIMEText = _T( "This is a multi-part message in MIME format." );
 	//m_csCharSet = _T("\r\n\tcharset=\"iso-8859-1\"\r\n");
@@ -1015,7 +1031,8 @@ static CStringA EncodeBase64(const char* source, int len)
 {
 	int neededLength = Base64EncodeGetRequiredLength(len);
 	CStringA output;
-	Base64Encode((BYTE*)source, len, CStrBufA(output, neededLength), &neededLength);
+	if (Base64Encode((BYTE*)source, len, CStrBufA(output, neededLength), &neededLength, ATL_BASE64_FLAG_NOCRLF))
+		output.Truncate(neededLength);
 	return output;
 }
 
@@ -1025,6 +1042,14 @@ static CStringA EncodeBase64(const CString& source)
 	return EncodeBase64(buf, buf.GetLength());
 }
 
+CString CHwSMTP::GetEncodedHeader(const CString& text)
+{
+	if (CStringUtils::IsPlainReadableASCII(text))
+		return text;
+
+	return L"=?UTF-8?B?" + CUnicodeUtils::GetUnicode(EncodeBase64(text)) + L"?=";
+}
+
 BOOL CHwSMTP::auth()
 {
 	if (!Send("auth login\r\n"))
@@ -1032,7 +1057,7 @@ BOOL CHwSMTP::auth()
 	if (!GetResponse("334"))
 		return FALSE;
 
-	if (!Send(EncodeBase64(m_csUserName)))
+	if (!Send(EncodeBase64(m_csUserName) + "\r\n"))
 		return FALSE;
 
 	if (!GetResponse("334"))
@@ -1041,7 +1066,7 @@ BOOL CHwSMTP::auth()
 		return FALSE;
 	}
 
-	if (!Send(EncodeBase64(m_csPasswd)))
+	if (!Send(EncodeBase64(m_csPasswd) + "\r\n"))
 		return FALSE;
 
 	if (!GetResponse("235"))
@@ -1116,20 +1141,9 @@ BOOL CHwSMTP::SendSubject(const CString &hostname)
 
 	csSubject.AppendFormat(_T("To: %s\r\n"), (LPCTSTR)m_csToList);
 
-	csSubject.AppendFormat(_T("Subject: %s\r\n"), (LPCTSTR)m_csSubject);
+	csSubject.AppendFormat(_T("Subject: %s\r\n"), (LPCTSTR)GetEncodedHeader(m_csSubject));
 
-	CString m_ListID;
-	GUID guid;
-	HRESULT hr = CoCreateGuid(&guid);
-	if (hr == S_OK)
-	{
-		RPC_WSTR guidStr;
-		if (UuidToString(&guid, &guidStr) == RPC_S_OK)
-		{
-			m_ListID = (LPTSTR)guidStr;
-			RpcStringFree(&guidStr);
-		}
-	}
+	CString m_ListID(GetGUID());
 	if (m_ListID.IsEmpty())
 	{
 		m_csLastError = _T("Could not generate Message-ID");

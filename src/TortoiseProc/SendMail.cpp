@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2015 - TortoiseGit
+// Copyright (C) 2008-2013, 2015-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -109,7 +109,7 @@ int CSendMail::SendMail(const CString& FromName, const CString& FromMail, const 
 	else
 	{
 		CString sender;
-		sender.Format(_T("%s <%s>"), (LPCTSTR)FromName, (LPCTSTR)FromMail);
+		sender.Format(_T("%s <%s>"), (LPCTSTR)CHwSMTP::GetEncodedHeader(FromName), (LPCTSTR)FromMail);
 
 		CHwSMTP mail;
 		if (CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\DeliveryType"), SEND_MAIL_SMTP_CONFIGURED) == SEND_MAIL_SMTP_CONFIGURED)
