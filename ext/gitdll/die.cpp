@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011,2013 - TortoiseGit
+// Copyright (C) 2008-2011, 2013, 2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -41,6 +41,16 @@ void die(const char *err, ...)
 	va_start(params, err);
 	die_dll(err, params);
 	// va_end(params); // we never come here
+}
+
+extern "C" void handle_error(const char*, va_list)
+{
+// ignore for now
+}
+
+extern "C" void handle_warning(const char*, va_list)
+{
+// ignore for now
 }
 
 extern "C" void vc_exit(int code)

@@ -1,4 +1,10 @@
-﻿= Release 2.1.0 =
+﻿= Release 2.2.0 =
+Released: unreleased
+
+== Bug Fixes ==
+ * Fixed issue #2745: TortoiseGit 2.1 crashes on broken git config 
+
+= Release 2.1.0 =
 Released: 2016-03-26
 
 == Changes ==

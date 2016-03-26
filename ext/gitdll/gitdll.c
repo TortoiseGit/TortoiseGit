@@ -43,6 +43,8 @@ extern char g_last_error[];
 const char * g_prefix;
 
 extern void die_dll(const char *err, va_list params);
+extern void handle_error(const char* err, va_list params);
+extern void handle_warning(const char* warn, va_list params);
 extern int die_is_recursing_dll(void);
 
 extern void free_all_pack();
@@ -64,6 +66,8 @@ extern int for_each_ref_in(const char* prefix, each_ref_fn fn, void* cb_data);
 void dll_entry()
 {
 	set_die_routine(die_dll);
+	set_error_routine(handle_error);
+	set_warn_routine(handle_warning);
 	set_die_is_recursing_routine(die_is_recursing_dll);
 }
 
