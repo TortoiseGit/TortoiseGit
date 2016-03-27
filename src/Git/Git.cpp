@@ -2026,7 +2026,6 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": CheckMsysGitDir(%d)\n"), bFallback);
 	this->m_Environment.clear();
 	m_Environment.CopyProcessEnvironment();
-	m_Environment.SetEnv(_T("GIT_DIR"), nullptr); // Remove %GIT_DIR% before executing git.exe
 
 	// set HOME if not set already
 	size_t homesize;
