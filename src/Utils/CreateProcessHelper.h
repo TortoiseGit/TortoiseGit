@@ -50,7 +50,7 @@ inline bool CCreateProcessHelper::CreateProcess(LPCTSTR applicationName,
     startupInfo.cb = sizeof(STARTUPINFO);
 
     memset(processInfo, 0, sizeof(PROCESS_INFORMATION));
-    const BOOL result = ::CreateProcess(applicationName, commandLine, nullptr, nullptr, FALSE, 0, nullptr, currentDirectory, &startupInfo, processInfo);
+    const BOOL result = ::CreateProcess(applicationName, commandLine, nullptr, nullptr, FALSE, CREATE_UNICODE_ENVIRONMENT, nullptr, currentDirectory, &startupInfo, processInfo);
     return result != 0;
 }
 

@@ -1,6 +1,6 @@
 // TortoiseIDiff - an image diff viewer in TortoiseSVN
 
-// Copyright (C) 2015 - TortoiseGit
+// Copyright (C) 2015-2016 - TortoiseGit
 // Copyright (C) 2006-2013, 2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -798,7 +798,7 @@ LRESULT CMainWindow::DoCommand(int id, LPARAM lParam)
             PROCESS_INFORMATION process = { 0 };
             startup.cb = sizeof(startup);
 
-            if (!CreateProcess(nullptr, cmd.GetBuffer(), nullptr, nullptr, FALSE, 0, nullptr, nullptr, &startup, &process))
+            if (!CreateProcess(nullptr, cmd.GetBuffer(), nullptr, nullptr, FALSE, CREATE_UNICODE_ENVIRONMENT, nullptr, nullptr, &startup, &process))
             {
                 cmd.ReleaseBuffer();
                 PostQuitMessage(resolveWith);

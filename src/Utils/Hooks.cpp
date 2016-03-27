@@ -391,7 +391,7 @@ DWORD CHooks::RunScript(CString cmd, LPCTSTR currentDir, CString& error, bool bW
 	si.wShowWindow = bShow ? SW_SHOW : SW_HIDE;
 
 	PROCESS_INFORMATION pi = { 0 };
-	if (!CreateProcess(nullptr, cmd.GetBuffer(), nullptr, nullptr, TRUE, 0, nullptr, currentDir, &si, &pi))
+	if (!CreateProcess(nullptr, cmd.GetBuffer(), nullptr, nullptr, TRUE, CREATE_UNICODE_ENVIRONMENT, nullptr, currentDir, &si, &pi))
 	{
 		const DWORD err = GetLastError();  // preserve the CreateProcess error
 		error = CFormatMessageWrapper(err);

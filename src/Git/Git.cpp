@@ -311,7 +311,7 @@ int CGit::RunAsync(CString cmd, PROCESS_INFORMATION *piOut, HANDLE *hReadOut, HA
 	si.dwFlags=STARTF_USESTDHANDLES|STARTF_USESHOWWINDOW;
 
 	LPTSTR pEnv = m_Environment;
-	DWORD dwFlags = pEnv ? CREATE_UNICODE_ENVIRONMENT : 0;
+	DWORD dwFlags = CREATE_UNICODE_ENVIRONMENT;
 
 	dwFlags |= CREATE_NEW_PROCESS_GROUP;
 
@@ -1173,7 +1173,7 @@ int CGit::RunLogFile(CString cmd, const CString &filename, CString *stdErr)
 	si.hStdError = hWriteErr;
 
 	LPTSTR pEnv = m_Environment;
-	DWORD dwFlags = pEnv ? CREATE_UNICODE_ENVIRONMENT : 0;
+	DWORD dwFlags = CREATE_UNICODE_ENVIRONMENT;
 
 	if(cmd.Find(_T("git")) == 0)
 		cmd=CGit::ms_LastMsysGitDir+_T("\\")+cmd;

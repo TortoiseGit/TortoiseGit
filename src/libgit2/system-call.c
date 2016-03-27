@@ -180,7 +180,7 @@ int command_start(wchar_t *cmd, COMMAND_HANDLE *commandHandle, LPWSTR* pEnv, DWO
 	si.wShowWindow = SW_HIDE;
 	si.dwFlags = STARTF_USESTDHANDLES | STARTF_USESHOWWINDOW;
 
-	if (!CreateProcessW(NULL, cmd, NULL, NULL, TRUE, (pEnv && *pEnv ? CREATE_UNICODE_ENVIRONMENT : 0) | flags, pEnv ? *pEnv : NULL, NULL, &si, &pi)) {
+	if (!CreateProcessW(NULL, cmd, NULL, NULL, TRUE, CREATE_UNICODE_ENVIRONMENT | flags, pEnv ? *pEnv : NULL, NULL, &si, &pi)) {
 		giterr_set(GITERR_OS, "Could not start external tool");
 		CloseHandle(hReadOut);
 		CloseHandle(hWriteOut);

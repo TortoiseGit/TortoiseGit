@@ -22,7 +22,6 @@
 #include "CommonAppUtils.h"
 #include "PathUtils.h"
 #include "StringUtils.h"
-#include "CreateProcessHelper.h"
 #include "FormatMessageWrapper.h"
 #include "registry.h"
 #include "SelectFileFilter.h"
@@ -105,7 +104,7 @@ bool CCommonAppUtils::LaunchApplication(const CString& sCommandLine, UINT idErrM
 	startup.cb = sizeof(startup);
 
 	CString cleanCommandLine(sCommandLine);
-	if (CreateProcess(nullptr, const_cast<TCHAR*>((LPCTSTR)cleanCommandLine), nullptr, nullptr, FALSE, 0, nullptr, theCWD, &startup, &process) == 0)
+	if (CreateProcess(nullptr, const_cast<TCHAR*>((LPCTSTR)cleanCommandLine), nullptr, nullptr, FALSE, CREATE_UNICODE_ENVIRONMENT, nullptr, theCWD, &startup, &process) == 0)
 	{
 		if (idErrMessageFormat)
 		{
