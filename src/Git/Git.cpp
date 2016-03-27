@@ -2505,6 +2505,7 @@ int CGit::GetOneFile(const CString &Refname, const CTGitPath &path, const CStrin
 void CEnvironment::clear()
 {
 	__super::clear();
+	baseptr = nullptr;
 }
 
 bool CEnvironment::empty()
@@ -2519,6 +2520,11 @@ CEnvironment::operator LPTSTR()
 	return &__super::at(0);
 }
 
+CEnvironment::operator LPWSTR*()
+{
+	return &baseptr;
+}
+
 void CEnvironment::CopyProcessEnvironment()
 {
 	if (!empty())
@@ -2530,6 +2536,7 @@ void CEnvironment::CopyProcessEnvironment()
 
 	push_back(_T('\0'));
 	push_back(_T('\0'));
+	baseptr = &__super::at(0);
 
 	FreeEnvironmentStrings(porig);
 }
@@ -2589,6 +2596,10 @@ void CEnvironment::SetEnv(const TCHAR *name, const TCHAR* value)
 	if (value == nullptr) // remove the variable
 	{
 		this->erase(it);
+		if (empty())
+			baseptr = nullptr;
+		else
+			baseptr = &__super::at(0);
 		return;
 	}
 
@@ -2609,6 +2620,7 @@ void CEnvironment::SetEnv(const TCHAR *name, const TCHAR* value)
 		++i;
 		it= begin()+i;
 	}
+	baseptr = &__super::at(0);
 }
 
 void CEnvironment::AddToPath(CString value)

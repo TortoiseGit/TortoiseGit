@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2014 TortoiseGit
+// Copyright (C) 2014, 2016 TortoiseGit
 // Copyright (C) the libgit2 contributors. All rights reserved.
 //               - based on libgit2/src/transports/ssh.c
 
@@ -45,7 +45,7 @@ typedef struct {
 	ssh_stream *current_stream;
 	char *cmd_uploadpack;
 	char *cmd_receivepack;
-	LPWSTR pEnv;
+	LPWSTR* pEnv;
 	LPWSTR sshtoolpath;
 } ssh_subtransport;
 
@@ -530,7 +530,7 @@ static void _ssh_free(git_smart_subtransport *subtransport)
 }
 
 int git_smart_subtransport_ssh_wintunnel(
-	git_smart_subtransport **out, git_transport *owner, LPCWSTR sshtoolpath, LPWSTR pEnv)
+	git_smart_subtransport **out, git_transport *owner, LPCWSTR sshtoolpath, LPWSTR* pEnv)
 {
 	ssh_subtransport *t;
 

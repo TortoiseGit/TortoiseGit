@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2014 TortoiseGit
+// Copyright (C) 2014, 2016 TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -34,7 +34,7 @@
 
 struct filter_filter {
 	git_filter	f;
-	LPWSTR		pEnv;
+	LPWSTR*		pEnv;
 	LPWSTR		shexepath;
 };
 
@@ -284,7 +284,7 @@ static void filter_free(git_filter *self)
 	git__free(self);
 }
 
-git_filter *git_filter_filter_new(LPCWSTR shexepath, LPWSTR pEnv)
+git_filter *git_filter_filter_new(LPCWSTR shexepath, LPWSTR* pEnv)
 {
 	struct filter_filter *f = git__calloc(1, sizeof(struct filter_filter));
 

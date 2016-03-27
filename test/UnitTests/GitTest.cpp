@@ -1128,21 +1128,33 @@ TEST_P(CBasicGitWithEmptyRepositoryFixture, CheckCleanWorkTree)
 TEST(CGit, CEnvironment)
 {
 	CEnvironment env;
+	wchar_t** basePtr = env;
+	ASSERT_TRUE(basePtr);
+	EXPECT_FALSE(*basePtr);
 	EXPECT_TRUE(env.empty());
 	env.SetEnv(_T("not-found"), nullptr);
+	EXPECT_FALSE(static_cast<wchar_t*>(env));
 	EXPECT_STREQ(_T(""), env.GetEnv(L"test"));
 	env.SetEnv(L"key1", L"value1");
 	EXPECT_STREQ(_T("value1"), env.GetEnv(L"key1"));
 	EXPECT_STREQ(_T("value1"), env.GetEnv(L"kEy1")); // check case insensitivity
+	EXPECT_TRUE(*basePtr);
+	EXPECT_EQ(static_cast<wchar_t*>(env), *basePtr);
 	EXPECT_FALSE(env.empty());
 	EXPECT_STREQ(_T("value1"), env.GetEnv(L"key1"));
 	env.SetEnv(L"key1", nullptr); // delete first
+	EXPECT_FALSE(*basePtr);
+	EXPECT_EQ(static_cast<wchar_t*>(env), *basePtr);
 	EXPECT_TRUE(env.empty());
 	env.SetEnv(L"key1", L"value1");
 	EXPECT_STREQ(_T("value1"), env.GetEnv(L"key1"));
+	EXPECT_TRUE(*basePtr);
+	EXPECT_EQ(static_cast<wchar_t*>(env), *basePtr);
+	EXPECT_FALSE(env.empty());
 	env.SetEnv(L"key2", L"value2");
 	EXPECT_STREQ(_T("value1"), env.GetEnv(L"key1"));
 	EXPECT_STREQ(_T("value2"), env.GetEnv(L"key2"));
+	EXPECT_EQ(static_cast<wchar_t*>(env), *basePtr);
 	env.SetEnv(_T("not-found"), nullptr);
 	EXPECT_STREQ(_T("value1"), env.GetEnv(L"key1"));
 	EXPECT_STREQ(_T("value2"), env.GetEnv(L"key2"));
@@ -1178,10 +1190,15 @@ TEST(CGit, CEnvironment)
 	EXPECT_STREQ(_T("value4a"), env.GetEnv(L"key4"));
 	EXPECT_STREQ(_T("value5a"), env.GetEnv(L"key5"));
 	env.clear();
+	EXPECT_FALSE(*basePtr);
 	EXPECT_TRUE(env.empty());
 	EXPECT_STREQ(_T(""), env.GetEnv(L"key4"));
 	env.CopyProcessEnvironment();
 	EXPECT_STREQ(windir, env.GetEnv(L"windir"));
+	EXPECT_TRUE(*basePtr);
+
+	// make sure baseptr always points to current values
+	EXPECT_EQ(static_cast<wchar_t*>(env), *basePtr);
 
 	env.clear();
 	CString path = L"c:\\windows;c:\\windows\\system32";
@@ -1213,6 +1230,22 @@ TEST(CGit, CEnvironment)
 	env.AddToPath(L"c:\\test");
 	path += L"c:\\test";
 	EXPECT_STREQ(path, env.GetEnv(L"PATH"));
+
+	// also test copy constructor
+	CEnvironment env2(env);
+	EXPECT_EQ(static_cast<wchar_t*>(env2), *static_cast<wchar_t**>(env2));
+	EXPECT_NE(static_cast<wchar_t*>(env2), *basePtr);
+
+	// also test assignment operation
+	CEnvironment env3a;
+	basePtr = env3a;
+	env3a.SetEnv(L"something", L"else");
+	CEnvironment env3b;
+	env3b = env3a;
+	EXPECT_FALSE(env3b.empty());
+	EXPECT_EQ(static_cast<wchar_t**>(env3a), basePtr);
+	EXPECT_EQ(static_cast<wchar_t*>(env3a), *basePtr);
+	EXPECT_NE(static_cast<wchar_t*>(env3b), *basePtr);
 }
 
 static void GetOneFile(CGit& m_Git)

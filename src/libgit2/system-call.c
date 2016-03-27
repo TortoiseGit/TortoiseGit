@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2014 TortoiseGit
+// Copyright (C) 2014, 2016 TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -130,7 +130,7 @@ void command_init(COMMAND_HANDLE *commandHandle)
 	commandHandle->asyncReadOutThread = INVALID_HANDLE_VALUE;
 }
 
-int command_start(wchar_t *cmd, COMMAND_HANDLE *commandHandle, LPWSTR pEnv, DWORD flags)
+int command_start(wchar_t *cmd, COMMAND_HANDLE *commandHandle, LPWSTR* pEnv, DWORD flags)
 {
 	SECURITY_ATTRIBUTES sa;
 	HANDLE hReadOut = INVALID_HANDLE_VALUE, hWriteOut = INVALID_HANDLE_VALUE, hReadIn = INVALID_HANDLE_VALUE, hWriteIn = INVALID_HANDLE_VALUE, hReadError = INVALID_HANDLE_VALUE, hWriteError = INVALID_HANDLE_VALUE;
@@ -180,7 +180,7 @@ int command_start(wchar_t *cmd, COMMAND_HANDLE *commandHandle, LPWSTR pEnv, DWOR
 	si.wShowWindow = SW_HIDE;
 	si.dwFlags = STARTF_USESTDHANDLES | STARTF_USESHOWWINDOW;
 
-	if (!CreateProcessW(NULL, cmd, NULL, NULL, TRUE, (pEnv ? CREATE_UNICODE_ENVIRONMENT : 0) | flags, pEnv, NULL, &si, &pi)) {
+	if (!CreateProcessW(NULL, cmd, NULL, NULL, TRUE, (pEnv && *pEnv ? CREATE_UNICODE_ENVIRONMENT : 0) | flags, pEnv ? *pEnv : NULL, NULL, &si, &pi)) {
 		giterr_set(GITERR_OS, "Could not start external tool");
 		CloseHandle(hReadOut);
 		CloseHandle(hWriteOut);

@@ -91,6 +91,17 @@ class CTGitPath;
 class CEnvironment : protected std::vector<TCHAR>
 {
 public:
+	CEnvironment() : baseptr(nullptr) {}
+	CEnvironment(const CEnvironment& env) : std::vector<TCHAR>(env)
+	{
+		baseptr = &__super::at(0);
+	}
+	CEnvironment& operator =(const CEnvironment& env)
+	{
+		__super::operator=(env);
+		baseptr = &__super::at(0);
+		return *this;
+	}
 	void CopyProcessEnvironment();
 	CString GetEnv(const TCHAR *name);
 	void SetEnv(const TCHAR* name, const TCHAR* value);
@@ -98,6 +109,10 @@ public:
 	void clear();
 	bool empty();
 	operator LPTSTR();
+	operator LPWSTR*();
+	LPWSTR baseptr;
+	CEnvironment(CEnvironment&& env) = delete;
+	CEnvironment& operator =(CEnvironment&& env) = delete;
 };
 class CGit
 {
