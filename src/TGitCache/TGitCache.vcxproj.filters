@@ -176,6 +176,9 @@
     <ClInclude Include="..\Git\GitForWindows.h">
       <Filter>Git</Filter>
     </ClInclude>
+    <ClInclude Include="..\Utils\CreateProcessHelper.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="TGitCache.rc">

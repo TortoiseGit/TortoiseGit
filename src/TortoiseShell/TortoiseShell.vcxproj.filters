@@ -226,6 +226,9 @@
     <ClInclude Include="..\TGitCache\CacheInterface.h">
       <Filter>TGitCache</Filter>
     </ClInclude>
+    <ClInclude Include="..\Utils\CreateProcessHelper.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Resources\checkout.ico">

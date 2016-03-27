@@ -563,6 +563,9 @@
     <ClInclude Include="..\Utils\SysImageList.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="..\Utils\CreateProcessHelper.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resources\download.avi">

@@ -156,6 +156,7 @@
     <ClInclude Include="..\Git\MassiveGitTaskBase.h" />
     <ClInclude Include="..\Git\TGitPath.h" />
     <ClInclude Include="..\TGitCache\CacheInterface.h" />
+    <ClInclude Include="..\Utils\CreateProcessHelper.h" />
     <ClInclude Include="..\Utils\DebugOutput.h" />
     <ClInclude Include="..\Utils\MiscUI\IconBitmapUtils.h" />
     <ClInclude Include="..\Utils\ReaderWriterLock.h" />

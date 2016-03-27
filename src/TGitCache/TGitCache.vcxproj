@@ -77,6 +77,7 @@
     <ClInclude Include="..\Git\Git.h" />
     <ClInclude Include="..\Git\GitForWindows.h" />
     <ClInclude Include="..\Git\MassiveGitTaskBase.h" />
+    <ClInclude Include="..\Utils\CreateProcessHelper.h" />
     <ClInclude Include="..\Utils\DebugOutput.h" />
     <ClInclude Include="CachedDirectory.h" />
     <ClInclude Include="CacheInterface.h" />
