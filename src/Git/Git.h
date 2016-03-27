@@ -70,6 +70,7 @@ class CGitCall
 public:
 	CGitCall(){}
 	CGitCall(CString cmd):m_Cmd(cmd){}
+	virtual ~CGitCall() {}
 
 	CString			GetCmd()const{return m_Cmd;}
 	void			SetCmd(CString cmd){m_Cmd=cmd;}

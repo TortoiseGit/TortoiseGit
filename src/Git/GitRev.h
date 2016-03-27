@@ -96,7 +96,7 @@ public:
 		return m_Body;
 	}
 
-	~GitRev(void);
+	virtual ~GitRev(void);
 
 	enum
 	{
