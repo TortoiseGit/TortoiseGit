@@ -277,5 +277,8 @@
     <ClCompile Include="..\..\src\TortoiseProc\SerialPatch.cpp">
       <Filter>TortoiseProc</Filter>
     </ClCompile>
+    <ClCompile Include="libgitTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

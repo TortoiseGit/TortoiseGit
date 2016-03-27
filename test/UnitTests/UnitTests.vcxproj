@@ -140,6 +140,7 @@
     <ClCompile Include="GitRevTest.cpp" />
     <ClCompile Include="GitTest.cpp" />
     <ClCompile Include="libgit2Test.cpp" />
+    <ClCompile Include="libgitTest.cpp" />
     <ClCompile Include="LogDataVectorTest.cpp" />
     <ClCompile Include="PathUtilsTest.cpp" />
     <ClCompile Include="ProjectPropertiesTest.cpp" />
