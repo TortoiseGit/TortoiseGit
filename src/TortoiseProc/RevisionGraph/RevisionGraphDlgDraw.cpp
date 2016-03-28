@@ -169,8 +169,10 @@ void CRevisionGraphWnd::DrawRoundedRect (GraphicsDevice& graphics, const Color& 
 			path.AddArc (points[5].X, points[4].Y, radius, radius, 0, 90);
 			path.AddArc (points[7].X, points[7].Y, radius, radius, 90, 90);
 		}else
+		{
 			path.AddLine(points[3].X, points[3].Y, points[4].X, points[5].Y);
 			path.AddLine(points[4].X, points[5].Y, points[7].X, points[6].Y);
+		}
 
 		points[0].Y -= radius / 2;
 		path.AddLine (points[7], points[0]);
