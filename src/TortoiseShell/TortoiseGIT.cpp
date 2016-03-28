@@ -30,7 +30,7 @@ ShellCache			g_ShellCache;					///< caching of registry entries, ...
 DWORD				g_langid;
 ULONGLONG			g_langTimeout = 0;
 HINSTANCE			g_hResInst = nullptr;
-stdstring			g_filepath;
+tstring				g_filepath;
 git_wc_status_kind	g_filestatus = git_wc_status_none;	///< holds the corresponding status to the file/dir above
 bool				g_readonlyoverlay = false;
 bool				g_lockedoverlay = false;

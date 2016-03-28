@@ -36,7 +36,7 @@ extern	ShellCache			g_ShellCache;			// caching of registry entries, ...
 extern	DWORD				g_langid;
 extern	ULONGLONG			g_langTimeout;
 extern	HINSTANCE			g_hResInst;
-extern	stdstring			g_filepath;
+extern	tstring				g_filepath;
 extern	git_wc_status_kind	g_filestatus;			///< holds the corresponding status to the file/dir above
 extern	bool				g_readonlyoverlay;		///< whether to show the read only overlay or not
 extern	bool				g_lockedoverlay;		///< whether to show the locked overlay or not
@@ -79,17 +79,17 @@ protected:
 	//std::map<int,std::string> verbMap;
 	std::map<UINT_PTR, UINT_PTR>	myIDMap;
 	std::map<UINT_PTR, UINT_PTR>	mySubMenuMap;
-	std::map<stdstring, UINT_PTR> myVerbsMap;
-	std::map<UINT_PTR, stdstring> myVerbsIDMap;
-	stdstring	folder_;
-	std::vector<stdstring> files_;
+	std::map<tstring, UINT_PTR> myVerbsMap;
+	std::map<UINT_PTR, tstring> myVerbsIDMap;
+	tstring	 folder_;
+	std::vector<tstring> files_;
 	DWORD itemStates;				///< see the globals.h file for the ITEMIS_* defines
 	DWORD itemStatesFolder;			///< used for states of the folder_ (folder background and/or drop target folder)
-	stdstring uuidSource;
-	stdstring uuidTarget;
+	tstring uuidSource;
+	tstring uuidTarget;
 	int space;
 	TCHAR stringtablebuffer[255];
-	stdstring ignoredprops;
+	tstring ignoredprops;
 	CRegStdString		regDiffLater;
 
 	GitFolderStatus		m_CachedStatus;		// status cache
@@ -104,8 +104,8 @@ protected:
 private:
 	void			InsertGitMenu(BOOL istop, HMENU menu, UINT pos, UINT_PTR id, UINT stringid, UINT icon, UINT idCmdFirst, GitCommands com, UINT uFlags);
 	bool			InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, HMENU subMenu, UINT &indexMenu, int &indexSubMenu, unsigned __int64 topmenu, bool bShowIcons, UINT uFlags);
-	stdstring		WriteFileListToTempFile();
-	bool			WriteClipboardPathsToTempFile(stdstring& tempfile);
+	tstring			WriteFileListToTempFile();
+	bool			WriteClipboardPathsToTempFile(tstring& tempfile);
 	LPCTSTR			GetMenuTextFromResource(int id);
 	bool			ShouldInsertItem(const MenuInfo& pair) const;
 	bool			ShouldEnableMenu(const YesNoPair& pair) const;

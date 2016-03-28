@@ -69,7 +69,7 @@ UINT CALLBACK PropPageCallbackProc ( HWND /*hwnd*/, UINT uMsg, LPPROPSHEETPAGE p
 // *********************** CGitPropertyPage *************************
 const UINT CGitPropertyPage::m_UpdateLastCommit = RegisterWindowMessage(_T("TORTOISEGIT_PROP_UPDATELASTCOMMIT"));
 
-CGitPropertyPage::CGitPropertyPage(const std::vector<stdstring> &newFilenames)
+CGitPropertyPage::CGitPropertyPage(const std::vector<tstring>& newFilenames)
 	:filenames(newFilenames)
 	,m_bChanged(false)
 	, m_hwnd(nullptr)

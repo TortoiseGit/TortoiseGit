@@ -68,13 +68,13 @@ private:
 	void				ClearCache();
 
 	int					m_nCounter;
-	typedef std::map<stdstring, FileStatusCacheEntry> FileStatusMap;
+	typedef std::map<tstring, FileStatusCacheEntry> FileStatusMap;
 	FileStatusMap			m_cache;
 	ULONGLONG				m_TimeStamp;
 	FileStatusCacheEntry	dirstat;
 	git_wc_status2_t *		dirstatus;
 
-	stdstring		sCacheKey;
+	tstring					sCacheKey;
 
 	CAutoGeneralHandle	m_hInvalidationEvent;
 

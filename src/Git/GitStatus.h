@@ -18,19 +18,9 @@
 //
 
 #pragma once
-
 #include "TGitPath.h"
 
 class CGitFileName;
-
-#pragma warning (push,1)
-typedef std::basic_string<wchar_t> wide_string;
-#ifdef UNICODE
-#	define stdstring wide_string
-#else
-#	define stdstring std::string
-#endif
-#pragma warning (pop)
 
 #include "TGitPath.h"
 #include "GitHash.h"

@@ -354,7 +354,7 @@ public:
 				continue;
 			if (exPath.at(exPath.size() - 1) == '*')
 			{
-				stdstring str = exPath.substr(0, exPath.size() - 1);
+				tstring str = exPath.substr(0, exPath.size() - 1);
 				if (_tcsnicmp(str.c_str(), path, str.size())==0)
 					return FALSE;
 			}
@@ -373,7 +373,7 @@ public:
 				continue;
 			if (pathAllowed.at(pathAllowed.size() - 1) == '*')
 			{
-				stdstring str = pathAllowed.substr(0, pathAllowed.size() - 1);
+				tstring str = pathAllowed.substr(0, pathAllowed.size() - 1);
 				if (_tcsnicmp(str.c_str(), path, str.size())==0)
 					return TRUE;
 				if (!str.empty() && (str.at(str.size()-1) == '\\') && (_tcsnicmp(str.c_str(), path, str.size()-1)==0))
@@ -451,7 +451,7 @@ public:
 				continue;
 			if (exPath.at(exPath.size() - 1) == '*')
 			{
-				stdstring str = exPath.substr(0, exPath.size() - 1);
+				tstring str = exPath.substr(0, exPath.size() - 1);
 				if (_tcsnicmp(str.c_str(), path, str.size())==0)
 					return FALSE;
 			}
@@ -482,7 +482,7 @@ public:
 		}
 		if ((GetTickCount64() - ADMINDIRTIMEOUT) < admindirticker)
 		{
-			std::map<stdstring, AdminDir_s>::iterator iter;
+			std::map<tstring, AdminDir_s>::iterator iter;
 			sAdminDirCacheKey.assign(buf.get());
 			if ((iter = admindircache.find(sAdminDirCacheKey)) != admindircache.end())
 			{
@@ -528,15 +528,15 @@ private:
 			Locker lock(m_critSec);
 			excontextticker = GetTickCount64();
 			nocontextpaths.read();
-			if (excludecontextstr.compare((stdstring)nocontextpaths)==0)
+			if (excludecontextstr.compare((tstring)nocontextpaths) == 0)
 				return;
-			excludecontextstr = (stdstring)nocontextpaths;
+			excludecontextstr = (tstring)nocontextpaths;
 			excontextvector.clear();
 			size_t pos = 0, pos_ant = 0;
 			pos = excludecontextstr.find(_T("\n"), pos_ant);
-			while (pos != stdstring::npos)
+			while (pos != tstring::npos)
 			{
-				stdstring token = excludecontextstr.substr(pos_ant, pos-pos_ant);
+				tstring token = excludecontextstr.substr(pos_ant, pos - pos_ant);
 				excontextvector.push_back(token);
 				pos_ant = pos+1;
 				pos = excludecontextstr.find(_T("\n"), pos_ant);
@@ -545,7 +545,7 @@ private:
 			{
 				excontextvector.push_back(excludecontextstr.substr(pos_ant, excludecontextstr.size()-1));
 			}
-			excludecontextstr = (stdstring)nocontextpaths;
+			excludecontextstr = (tstring)nocontextpaths;
 		}
 	}
 	void ExcludeListValid()
@@ -555,22 +555,22 @@ private:
 			Locker lock(m_critSec);
 			excludelistticker = GetTickCount64();
 			excludelist.read();
-			if (excludeliststr.compare((stdstring)excludelist)==0)
+			if (excludeliststr.compare((tstring)excludelist) == 0)
 				return;
-			excludeliststr = (stdstring)excludelist;
+			excludeliststr = (tstring)excludelist;
 			exvector.clear();
 			size_t pos = 0, pos_ant = 0;
 			pos = excludeliststr.find(_T("\n"), pos_ant);
-			while (pos != stdstring::npos)
+			while (pos != tstring::npos)
 			{
-				stdstring token = excludeliststr.substr(pos_ant, pos-pos_ant);
+				tstring token = excludeliststr.substr(pos_ant, pos - pos_ant);
 				exvector.push_back(token);
 				pos_ant = pos+1;
 				pos = excludeliststr.find(_T("\n"), pos_ant);
 			}
 			if (!excludeliststr.empty())
 				exvector.push_back(excludeliststr.substr(pos_ant, excludeliststr.size()-1));
-			excludeliststr = (stdstring)excludelist;
+			excludeliststr = (tstring)excludelist;
 		}
 	}
 	void IncludeListValid()
@@ -580,29 +580,29 @@ private:
 			Locker lock(m_critSec);
 			includelistticker = GetTickCount64();
 			includelist.read();
-			if (includeliststr.compare((stdstring)includelist)==0)
+			if (includeliststr.compare((tstring)includelist)==0)
 				return;
-			includeliststr = (stdstring)includelist;
+			includeliststr = (tstring)includelist;
 			invector.clear();
 			size_t pos = 0, pos_ant = 0;
 			pos = includeliststr.find(_T("\n"), pos_ant);
-			while (pos != stdstring::npos)
+			while (pos != tstring::npos)
 			{
-				stdstring token = includeliststr.substr(pos_ant, pos-pos_ant);
+				tstring token = includeliststr.substr(pos_ant, pos - pos_ant);
 				invector.push_back(token);
 				pos_ant = pos+1;
 				pos = includeliststr.find(_T("\n"), pos_ant);
 			}
 			if (!includeliststr.empty())
 				invector.push_back(includeliststr.substr(pos_ant, includeliststr.size()-1));
-			includeliststr = (stdstring)includelist;
+			includeliststr = (tstring)includelist;
 		}
 	}
 
 	struct AdminDir_s
 	{
 		BOOL bHasAdminDir;
-		stdstring sProjectRoot;
+		tstring sProjectRoot;
 	};
 public:
 	CRegStdDWORD cachetype;
@@ -635,11 +635,11 @@ public:
 	CRegStdDWORD excludedasnormal;
 	CRegStdString excludelist;
 	CRegStdDWORD hidemenusforunversioneditems;
-	stdstring excludeliststr;
-	std::vector<stdstring> exvector;
+	tstring excludeliststr;
+	std::vector<tstring> exvector;
 	CRegStdString includelist;
-	stdstring includeliststr;
-	std::vector<stdstring> invector;
+	tstring includeliststr;
+	std::vector<tstring> invector;
 	ULONGLONG cachetypeticker;
 	ULONGLONG recursiveticker;
 	ULONGLONG folderoverlayticker;
@@ -665,11 +665,11 @@ public:
 	TCHAR drivetypepathcache[MAX_PATH];		// MAX_PATH ok.
 	TCHAR szDecSep[5];
 	TCHAR szThousandsSep[5];
-	std::map<stdstring, AdminDir_s> admindircache;
-	stdstring sAdminDirCacheKey;
+	std::map<tstring, AdminDir_s> admindircache;
+	tstring sAdminDirCacheKey;
 	CRegStdString nocontextpaths;
-	stdstring excludecontextstr;
-	std::vector<stdstring> excontextvector;
+	tstring excludecontextstr;
+	std::vector<tstring> excontextvector;
 	ULONGLONG excontextticker;
 	ULONGLONG admindirticker;
 	CComCriticalSection m_critSec;

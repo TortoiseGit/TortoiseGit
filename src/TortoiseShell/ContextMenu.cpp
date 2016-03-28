@@ -64,7 +64,7 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 	uuidTarget.clear();
 	itemStates = 0;
 	itemStatesFolder = 0;
-	stdstring statuspath;
+	tstring statuspath;
 	git_wc_status_kind fetchedstatus = git_wc_status_none;
 	// get selected files/folders
 	if (pDataObj)
@@ -116,7 +116,7 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 					auto szFileName = std::make_unique<TCHAR[]>(len + 1);
 					if (0 == DragQueryFile(drop, i, szFileName.get(), len + 1))
 						continue;
-					stdstring str = stdstring(szFileName.get());
+					tstring str = tstring(szFileName.get());
 					if ((!str.empty()) && (g_ShellCache.IsContextPathAllowed(szFileName.get())))
 					{
 						{
@@ -231,7 +231,7 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 				for (int i = 0; i < count; ++i)
 				{
 					ItemIDList child (GetPIDLItem (cida, i), &parent);
-					stdstring str = child.toString();
+					tstring str = child.toString();
 					if ((str.empty() == false)&&(g_ShellCache.IsContextPathAllowed(str.c_str())))
 					{
 						//check if our menu is requested for a git admin directory
@@ -655,7 +655,7 @@ void CShellExt::InsertGitMenu(BOOL istop, HMENU menu, UINT pos, UINT_PTR id, UIN
 	}
 	LoadString(g_hResInst, stringid, verbsbuffer, _countof(verbsbuffer));
 	_tcscat_s(menutextbuffer, 255, verbsbuffer);
-	stdstring verb = stdstring(menutextbuffer);
+	tstring verb = tstring(menutextbuffer);
 	if (verb.find('&') != -1)
 	{
 		verb.erase(verb.find('&'),1);
@@ -672,9 +672,9 @@ void CShellExt::InsertGitMenu(BOOL istop, HMENU menu, UINT pos, UINT_PTR id, UIN
 		mySubMenuMap[pos] = com;
 }
 
-bool CShellExt::WriteClipboardPathsToTempFile(stdstring& tempfile)
+bool CShellExt::WriteClipboardPathsToTempFile(tstring& tempfile)
 {
-	tempfile = stdstring();
+	tempfile = tstring();
 	//write all selected files and paths to a temporary file
 	//for TortoiseGitProc.exe to read out again.
 	DWORD written = 0;
@@ -683,7 +683,7 @@ bool CShellExt::WriteClipboardPathsToTempFile(stdstring& tempfile)
 	auto tempFile = std::make_unique<TCHAR[]>(pathlength + 100);
 	GetTortoiseGitTempPath(pathlength+1, path.get());
 	GetTempFileName(path.get(), _T("git"), 0, tempFile.get());
-	tempfile = stdstring(tempFile.get());
+	tempfile = tstring(tempFile.get());
 
 	CAutoFile file = ::CreateFile(tempFile.get(),
 		GENERIC_WRITE,
@@ -701,7 +701,7 @@ bool CShellExt::WriteClipboardPathsToTempFile(stdstring& tempfile)
 	if (!OpenClipboard(nullptr))
 		return false;
 
-	stdstring sClipboardText;
+	tstring sClipboardText;
 	HGLOBAL hglb = GetClipboardData(CF_HDROP);
 	SCOPE_EXIT
 	{
@@ -718,7 +718,7 @@ bool CShellExt::WriteClipboardPathsToTempFile(stdstring& tempfile)
 	for(UINT i = 0; i < cFiles; ++i)
 	{
 		DragQueryFile(hDrop, i, szFileName, _countof(szFileName));
-		stdstring filename = szFileName;
+		tstring filename = szFileName;
 		::WriteFile (file, filename.c_str(), (DWORD)filename.size()*sizeof(TCHAR), &written, 0);
 		::WriteFile (file, _T("\n"), 2, &written, 0);
 	}
@@ -726,7 +726,7 @@ bool CShellExt::WriteClipboardPathsToTempFile(stdstring& tempfile)
 	return true;
 }
 
-stdstring CShellExt::WriteFileListToTempFile()
+tstring CShellExt::WriteFileListToTempFile()
 {
 	//write all selected files and paths to a temporary file
 	//for TortoiseGitProc.exe to read out again.
@@ -735,7 +735,7 @@ stdstring CShellExt::WriteFileListToTempFile()
 	auto tempFile = std::make_unique<TCHAR[]>(pathlength + 100);
 	GetTortoiseGitTempPath(pathlength + 1, path.get());
 	GetTempFileName(path.get(), _T("git"), 0, tempFile.get());
-	stdstring retFilePath = stdstring(tempFile.get());
+	tstring retFilePath = tstring(tempFile.get());
 
 	CAutoFile file = ::CreateFile (tempFile.get(),
 								GENERIC_WRITE,
@@ -748,7 +748,7 @@ stdstring CShellExt::WriteFileListToTempFile()
 	if (!file)
 	{
 		MessageBox(nullptr, L"Could not create temporary file. Please check (the permissions of) your temp-folder: " + CString(tempFile.get()), L"TortoiseGit", MB_ICONERROR);
-		return stdstring();
+		return tstring();
 	}
 
 	DWORD written = 0;
@@ -1227,8 +1227,8 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 
 		if (HIWORD(lpcmi->lpVerb))
 		{
-			stdstring verb = stdstring(MultibyteToWide(lpcmi->lpVerb));
-			std::map<stdstring, UINT_PTR>::const_iterator verb_it = myVerbsMap.lower_bound(verb);
+			tstring verb = tstring(MultibyteToWide(lpcmi->lpVerb));
+			std::map<tstring, UINT_PTR>::const_iterator verb_it = myVerbsMap.lower_bound(verb);
 			if (verb_it != myVerbsMap.end() && verb_it->first == verb)
 				idCmd = verb_it->second;
 			else
@@ -1249,8 +1249,8 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 			//
 			//* path is a path to a single file/directory for commands which only act on single items (log, checkout, ...)
 			//* pathfile is a path to a temporary file which contains a list of file paths
-			stdstring gitCmd = _T(" /command:");
-			stdstring tempfile;
+			tstring gitCmd = _T(" /command:");
+			tstring tempfile;
 			switch (id_it->second)
 			{
 				//#region case
@@ -1728,14 +1728,14 @@ STDMETHODIMP CShellExt::GetCommandString_Wrap(UINT_PTR idCmd,
 		}
 	case GCS_HELPTEXTW:
 		{
-			wide_string help = desc;
+			std::wstring help = desc;
 			lstrcpynW((LPWSTR)pszName, help.c_str(), cchMax - 1);
 			hr = S_OK;
 			break;
 		}
 	case GCS_VERBA:
 		{
-			std::map<UINT_PTR, stdstring>::const_iterator verb_id_it = myVerbsIDMap.lower_bound(idCmd);
+			std::map<UINT_PTR, tstring>::const_iterator verb_id_it = myVerbsIDMap.lower_bound(idCmd);
 			if (verb_id_it != myVerbsIDMap.end() && verb_id_it->first == idCmd)
 			{
 				std::string help = WideToMultibyte(verb_id_it->second);
@@ -1746,10 +1746,10 @@ STDMETHODIMP CShellExt::GetCommandString_Wrap(UINT_PTR idCmd,
 		break;
 	case GCS_VERBW:
 		{
-			std::map<UINT_PTR, stdstring>::const_iterator verb_id_it = myVerbsIDMap.lower_bound(idCmd);
+			std::map<UINT_PTR, tstring>::const_iterator verb_id_it = myVerbsIDMap.lower_bound(idCmd);
 			if (verb_id_it != myVerbsIDMap.end() && verb_id_it->first == idCmd)
 			{
-				wide_string help = verb_id_it->second;
+				std::wstring help = verb_id_it->second;
 				CTraceToOutputDebugString::Instance()(__FUNCTION__ ": verb : %ws\n", help.c_str());
 				lstrcpynW((LPWSTR)pszName, help.c_str(), cchMax - 1);
 				hr = S_OK;
@@ -2008,7 +2008,7 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 		{
 			ignoresubmenu = CreateMenu();
 			InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, ignorepath);
-			stdstring verb = stdstring(ignorepath);
+			tstring verb = tstring(ignorepath);
 			myVerbsMap[verb] = idCmd - idCmdFirst;
 			myVerbsMap[verb] = idCmd;
 			myVerbsIDMap[idCmd - idCmdFirst] = verb;
@@ -2029,7 +2029,7 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 					ignoresubmenu = CreateMenu();
 
 				InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, maskbuf);
-				stdstring verb = stdstring(maskbuf);
+				tstring verb = tstring(maskbuf);
 				myVerbsMap[verb] = idCmd - idCmdFirst;
 				myVerbsMap[verb] = idCmd;
 				myVerbsIDMap[idCmd - idCmdFirst] = verb;
@@ -2057,7 +2057,7 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 				{
 					_tcscat_s(maskbuf, MAX_PATH, _tcsrchr(ignorepath, '.'));
 					InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, maskbuf);
-					stdstring verb = stdstring(maskbuf);
+					tstring verb = tstring(maskbuf);
 					myVerbsMap[verb] = idCmd - idCmdFirst;
 					myVerbsMap[verb] = idCmd;
 					myVerbsIDMap[idCmd - idCmdFirst] = verb;
@@ -2077,7 +2077,7 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 				{
 					_tcscat_s(maskbuf, MAX_PATH, _tcsrchr(ignorepath, '.'));
 					InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, maskbuf);
-					stdstring verb = stdstring(maskbuf);
+					tstring verb = tstring(maskbuf);
 					myVerbsMap[verb] = idCmd - idCmdFirst;
 					myVerbsMap[verb] = idCmd;
 					myVerbsIDMap[idCmd - idCmdFirst] = verb;
@@ -2094,7 +2094,7 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 				MAKESTRING(IDS_MENUDELETEIGNOREMULTIPLE);
 				_stprintf_s(ignorepath, MAX_PATH, stringtablebuffer, files_.size());
 				InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, ignorepath);
-				stdstring verb = stdstring(ignorepath);
+				tstring verb = tstring(ignorepath);
 				myVerbsMap[verb] = idCmd - idCmdFirst;
 				myVerbsMap[verb] = idCmd;
 				myVerbsIDMap[idCmd - idCmdFirst] = verb;
@@ -2105,7 +2105,7 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 				MAKESTRING(IDS_MENUDELETEIGNOREMULTIPLEMASK);
 				_stprintf_s(ignorepath, MAX_PATH, stringtablebuffer, files_.size());
 				InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, ignorepath);
-				verb = stdstring(ignorepath);
+				verb = tstring(ignorepath);
 				myVerbsMap[verb] = idCmd - idCmdFirst;
 				myVerbsMap[verb] = idCmd;
 				myVerbsIDMap[idCmd - idCmdFirst] = verb;
@@ -2118,7 +2118,7 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 				MAKESTRING(IDS_MENUIGNOREMULTIPLE);
 				_stprintf_s(ignorepath, MAX_PATH, stringtablebuffer, files_.size());
 				InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, ignorepath);
-				stdstring verb = stdstring(ignorepath);
+				tstring verb = tstring(ignorepath);
 				myVerbsMap[verb] = idCmd - idCmdFirst;
 				myVerbsMap[verb] = idCmd;
 				myVerbsIDMap[idCmd - idCmdFirst] = verb;
@@ -2129,7 +2129,7 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 				MAKESTRING(IDS_MENUIGNOREMULTIPLEMASK);
 				_stprintf_s(ignorepath, MAX_PATH, stringtablebuffer, files_.size());
 				InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, ignorepath);
-				verb = stdstring(ignorepath);
+				verb = tstring(ignorepath);
 				myVerbsMap[verb] = idCmd - idCmdFirst;
 				myVerbsMap[verb] = idCmd;
 				myVerbsIDMap[idCmd - idCmdFirst] = verb;

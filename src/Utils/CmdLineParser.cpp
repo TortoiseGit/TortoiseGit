@@ -40,7 +40,7 @@ CCmdLineParser::~CCmdLineParser()
 
 BOOL CCmdLineParser::Parse(LPCTSTR sCmdLine)
 {
-	const stdstring sEmpty = _T("");			//use this as a value if no actual value is given in commandline
+	const tstring sEmpty = _T("");			//use this as a value if no actual value is given in commandline
 	int nArgs = 0;
 
 	if(!sCmdLine)
@@ -69,14 +69,14 @@ BOOL CCmdLineParser::Parse(LPCTSTR sCmdLine)
 		LPCTSTR sVal = _tcspbrk(sArg, m_sValueSep);
 		if (!sVal)
 		{
-			stdstring Key(sArg);
+			tstring Key(sArg);
 			std::transform(Key.begin(), Key.end(), Key.begin(), ::tolower);
 			m_valueMap.insert(CValsMap::value_type(Key, sEmpty));
 			break;
 		}
 		else
 		{
-			stdstring Key(sArg, (int)(sVal - sArg));
+			tstring Key(sArg, (int)(sVal - sArg));
 			std::transform(Key.begin(), Key.end(), Key.begin(), ::tolower);
 
 			LPCTSTR sQuote(nullptr), sEndQuote(nullptr);
@@ -128,7 +128,7 @@ BOOL CCmdLineParser::Parse(LPCTSTR sCmdLine)
 				// no end quotes or terminating space, take the rest of the string to its end
 				if (!Key.empty() && sQuote)
 				{
-					stdstring csVal(sQuote);
+					tstring csVal(sQuote);
 					m_valueMap.insert(CValsMap::value_type(Key, csVal));
 				}
 				break;
@@ -138,7 +138,7 @@ BOOL CCmdLineParser::Parse(LPCTSTR sCmdLine)
 				// end quote
 				if(!Key.empty())
 				{
-					stdstring csVal(sQuote, (int)(sEndQuote - sQuote));
+					tstring csVal(sQuote, (int)(sEndQuote - sQuote));
 					m_valueMap.insert(CValsMap::value_type(Key, csVal));
 				}
 				sCurrent = _tcsinc(sEndQuote);
@@ -152,7 +152,7 @@ BOOL CCmdLineParser::Parse(LPCTSTR sCmdLine)
 
 CCmdLineParser::CValsMap::const_iterator CCmdLineParser::findKey(LPCTSTR sKey) const
 {
-	stdstring s(sKey);
+	tstring s(sKey);
 	std::transform(s.begin(), s.end(), s.begin(), ::tolower);
 	return m_valueMap.find(s);
 }
@@ -205,7 +205,7 @@ CCmdLineParser::ITERPOS CCmdLineParser::begin() const
 	return m_valueMap.cbegin();
 }
 
-CCmdLineParser::ITERPOS CCmdLineParser::getNext(ITERPOS& pos, stdstring& sKey, stdstring& sValue) const
+CCmdLineParser::ITERPOS CCmdLineParser::getNext(ITERPOS& pos, tstring& sKey, tstring& sValue) const
 {
 	if (m_valueMap.cend() == pos)
 	{
