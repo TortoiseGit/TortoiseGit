@@ -1435,6 +1435,16 @@ TEST_P(CBasicGitWithTestRepoFixture, Config)
 	CString gitConfig = m_Git.m_CurrentDir + L"\\.git\\config";
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)gitConfig, L"[booltest]\nistrue"));
 	EXPECT_EQ(true, m_Git.GetConfigValueBool(L"booltest.istrue"));
+
+	// test includes from %HOME% specified as ~/
+	EXPECT_STREQ(L"not-found", g_Git.GetConfigValue(L"test.fromincluded", L"not-found"));
+	EXPECT_EQ(0, m_Git.SetConfigValue(L"include.path", L"~/a-path-that-should-not-exist.gconfig"));
+	EXPECT_STREQ(L"~/a-path-that-should-not-exist.gconfig", g_Git.GetConfigValue(L"include.path", L"not-found"));
+	CString testFile = g_Git.GetHomeDirectory() + _T("\\a-path-that-should-not-exist.gconfig");
+	ASSERT_FALSE(PathFileExists(testFile)); // make sure we don't override a file by mistake ;)
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)testFile, L"[test]\nfromincluded=yeah-this-is-included\n"));
+	EXPECT_STREQ(L"yeah-this-is-included", g_Git.GetConfigValue(L"test.fromincluded", L"not-found"));
+	EXPECT_TRUE(::DeleteFile(testFile));
 }
 
 TEST_P(CBasicGitWithTestRepoFixture, GetWorkingTreeChanges)
