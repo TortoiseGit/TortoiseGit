@@ -46,12 +46,16 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\tgit\builtin\am.c" />
     <ClCompile Include="..\tgit\builtin\check-mailmap.c" />
     <ClCompile Include="..\tgit\builtin\get-tar-commit-id.c" />
     <ClCompile Include="..\tgit\builtin\interpret-trailers.c" />
+    <ClCompile Include="..\tgit\builtin\pull.c" />
     <ClCompile Include="..\tgit\builtin\repack.c" />
     <ClCompile Include="..\tgit\builtin\verify-commit.c" />
-    <ClCompile Include="..\tgit\builtin\worktree.c" />
+    <ClCompile Include="..\tgit\builtin\worktree.c">
+      <ObjectFileName>$(IntDir)BuildIn%(Filename).obj</ObjectFileName>
+    </ClCompile>
     <ClCompile Include="..\tgit\compat\msvc.c" />
     <ClCompile Include="..\tgit\block-sha1\sha1.c" />
     <ClCompile Include="..\tgit\compat\basename.c" />
@@ -71,7 +75,6 @@
     <ClCompile Include="..\tgit\compat\strtoimax.c" />
     <ClCompile Include="..\tgit\compat\strtoumax.c" />
     <ClCompile Include="..\tgit\compat\win32mmap.c" />
-    <ClCompile Include="..\tgit\compat\winansi.c" />
     <ClCompile Include="..\tgit\abspath.c" />
     <ClCompile Include="..\tgit\advice.c" />
     <ClCompile Include="..\tgit\alias.c" />
@@ -169,8 +172,10 @@
     <ClCompile Include="..\tgit\quote.c" />
     <ClCompile Include="..\tgit\reachable.c" />
     <ClCompile Include="..\tgit\read-cache.c" />
+    <ClCompile Include="..\tgit\ref-filter.c" />
     <ClCompile Include="..\tgit\reflog-walk.c" />
     <ClCompile Include="..\tgit\refs.c" />
+    <ClCompile Include="..\tgit\refs\files-backend.c" />
     <ClCompile Include="..\tgit\remote.c" />
     <ClCompile Include="..\tgit\replace_object.c" />
     <ClCompile Include="..\tgit\rerere.c" />
@@ -193,9 +198,11 @@
     <ClCompile Include="..\tgit\strbuf.c" />
     <ClCompile Include="..\tgit\streaming.c" />
     <ClCompile Include="..\tgit\string-list.c" />
+    <ClCompile Include="..\tgit\submodule-config.c" />
     <ClCompile Include="..\tgit\submodule.c" />
     <ClCompile Include="..\tgit\symlinks.c" />
     <ClCompile Include="..\tgit\tag.c" />
+    <ClCompile Include="..\tgit\tempfile.c" />
     <ClCompile Include="..\tgit\trace.c" />
     <ClCompile Include="..\tgit\transport-helper.c" />
     <ClCompile Include="..\tgit\transport.c" />
@@ -214,6 +221,7 @@
     <ClCompile Include="..\tgit\versioncmp.c" />
     <ClCompile Include="..\tgit\walker.c" />
     <ClCompile Include="..\tgit\wildmatch.c" />
+    <ClCompile Include="..\tgit\worktree.c" />
     <ClCompile Include="..\tgit\wrapper.c" />
     <ClCompile Include="..\tgit\write_or_die.c" />
     <ClCompile Include="..\tgit\ws.c" />
@@ -420,8 +428,10 @@
     <ClInclude Include="..\tgit\progress.h" />
     <ClInclude Include="..\tgit\quote.h" />
     <ClInclude Include="..\tgit\reachable.h" />
+    <ClInclude Include="..\tgit\ref-filter.h" />
     <ClInclude Include="..\tgit\reflog-walk.h" />
     <ClInclude Include="..\tgit\refs.h" />
+    <ClInclude Include="..\tgit\refs\refs-internal.h" />
     <ClInclude Include="..\tgit\remote.h" />
     <ClInclude Include="..\tgit\rerere.h" />
     <ClInclude Include="..\tgit\revision.h" />
@@ -437,8 +447,10 @@
     <ClInclude Include="..\tgit\strbuf.h" />
     <ClInclude Include="..\tgit\streaming.h" />
     <ClInclude Include="..\tgit\string-list.h" />
+    <ClInclude Include="..\tgit\submodule-config.h" />
     <ClInclude Include="..\tgit\tag.h" />
     <ClInclude Include="..\tgit\tar.h" />
+    <ClInclude Include="..\tgit\tempfile.h" />
     <ClInclude Include="..\tgit\thread-utils.h" />
     <ClInclude Include="..\tgit\transport.h" />
     <ClInclude Include="..\tgit\tree-walk.h" />
@@ -451,6 +463,7 @@
     <ClInclude Include="..\tgit\version.h" />
     <ClInclude Include="..\tgit\walker.h" />
     <ClInclude Include="..\tgit\wildmatch.h" />
+    <ClInclude Include="..\tgit\worktree.h" />
     <ClInclude Include="..\tgit\wt-status.h" />
     <ClInclude Include="..\tgit\xdiff-interface.h" />
     <ClInclude Include="..\tgit\compat\mingw.h" />

@@ -152,7 +152,7 @@ int git_parse_commit(GIT_COMMIT *commit)
 
 	p= (struct commit *)commit->m_pGitCommit;
 
-	memcpy(commit->m_hash,p->object.sha1,GIT_HASH_SIZE);
+	memcpy(commit->m_hash, p->object.oid.hash, GIT_HASH_SIZE);
 
 	commit->m_Encode = NULL;
 	commit->m_EncodeSize = 0;
@@ -256,7 +256,7 @@ int git_get_commit_next_parent(GIT_COMMIT_LIST *list, GIT_HASH hash)
 		return -1;
 
 	if(hash)
-		memcpy(hash, l->item->object.sha1, GIT_HASH_SIZE);
+		memcpy(hash, l->item->object.oid.hash, GIT_HASH_SIZE);
 
 	*list = (GIT_COMMIT_LIST *)l->next;
 	return 0;
@@ -1021,7 +1021,7 @@ int get_set_config(const char *key, const char *value, CONFIG_TYPE type)
 	if(!config_exclusive_filename)
 		return -1;
 
-	ret = git_config_set_multivar_in_file(config_exclusive_filename, key, value, NULL, 0);
+	ret = git_config_set_multivar_in_file_gently(config_exclusive_filename, key, value, NULL, 0);
 	free(config_exclusive_filename);
 	return ret;
 }

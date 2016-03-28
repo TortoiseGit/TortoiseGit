@@ -27,6 +27,9 @@
     <Filter Include="Header Files\ewah">
       <UniqueIdentifier>{50d6f856-35ed-4e73-a2d1-ef4c334be249}</UniqueIdentifier>
     </Filter>
+    <Filter Include="git\refs">
+      <UniqueIdentifier>{bb065187-02fc-455a-851f-1f7109cba5ec}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\tgit\compat\msvc.c">
@@ -84,9 +87,6 @@
       <Filter>compat</Filter>
     </ClCompile>
     <ClCompile Include="..\tgit\compat\win32mmap.c">
-      <Filter>compat</Filter>
-    </ClCompile>
-    <ClCompile Include="..\tgit\compat\winansi.c">
       <Filter>compat</Filter>
     </ClCompile>
     <ClCompile Include="..\tgit\abspath.c">
@@ -842,6 +842,27 @@
     <ClCompile Include="..\tgit\ewah\ewah_rlw.c">
       <Filter>git\ewah</Filter>
     </ClCompile>
+    <ClCompile Include="..\tgit\builtin\am.c">
+      <Filter>BuildIn</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\builtin\pull.c">
+      <Filter>BuildIn</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\ref-filter.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\submodule-config.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\tempfile.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\refs\files-backend.c">
+      <Filter>git\refs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\worktree.c">
+      <Filter>git</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\tgit\compat\msvc.h">
@@ -1164,6 +1185,21 @@
     </ClInclude>
     <ClInclude Include="..\tgit\ewah\ewok_rlw.h">
       <Filter>Header Files\ewah</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\ref-filter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\submodule-config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\tempfile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\refs\refs-internal.h">
+      <Filter>git\refs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\worktree.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
