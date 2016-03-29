@@ -649,15 +649,16 @@ void CProgressDlg::WriteLog() const
 		LPCTSTR psz_string = text;
 		while (*psz_string)
 		{
+			size_t i_len = wcscspn(psz_string, L"\r\n");
+			logfile.AddLine(CString(psz_string, (int)i_len));
+			psz_string += i_len;
 			if (*psz_string == '\r')
 			{
 				++psz_string;
-				continue;
+				if (*psz_string == '\n')
+					++psz_string;
 			}
-			size_t i_len = wcscspn(psz_string, L"\n");
-			logfile.AddLine(CString(psz_string, (int)i_len));
-			psz_string += i_len;
-			if (*psz_string == '\n')
+			else if (*psz_string == '\n')
 				++psz_string;
 		}
 		if (m_bAbort)
