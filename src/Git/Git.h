@@ -100,7 +100,10 @@ public:
 	CEnvironment& operator =(const CEnvironment& env)
 	{
 		__super::operator=(env);
-		baseptr = &__super::at(0);
+		if (empty())
+			baseptr = nullptr;
+		else
+			baseptr = &__super::at(0);
 		return *this;
 	}
 	void CopyProcessEnvironment();
