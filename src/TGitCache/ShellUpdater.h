@@ -48,7 +48,7 @@ private:
 	CAutoGeneralHandle m_hTerminationEvent;
 	CAutoGeneralHandle m_hWakeEvent;
 
-	bool m_bItemsAddedSinceLastUpdate;
+	volatile bool m_bItemsAddedSinceLastUpdate;
 	volatile LONG m_bRunning;
 };
 
