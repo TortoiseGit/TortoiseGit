@@ -156,7 +156,7 @@ void CShellUpdater::WorkerThread()
 				// that message, the folder overlays in the current view don't get updated without hitting F5.
 				// Drawback is, without UPDATEDIR, the left tree view isn't always updated...
 
-				SHChangeNotify(SHCNE_UPDATEDIR, SHCNF_PATH | SHCNF_FLUSHNOWAIT, workingPath.GetWinPath(), nullptr);
+				//SHChangeNotify(SHCNE_UPDATEDIR, SHCNF_PATH | SHCNF_FLUSHNOWAIT, workingPath.GetWinPath(), nullptr);
 			}
 			else
 				SHChangeNotify(SHCNE_UPDATEITEM, SHCNF_PATH | SHCNF_FLUSHNOWAIT, workingPath.GetWinPath(), nullptr);
