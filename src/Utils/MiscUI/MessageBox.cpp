@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2013 - TortoiseGit
+// Copyright (C) 2012-2016 - TortoiseGit
 // Copyright (C) 2003-2008,2010 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -688,8 +688,8 @@ void CMessageBox::OnPaint()
 	drawrect.DeflateRect(MESSAGEBOX_BORDERMARGINX, MESSAGEBOX_BORDERMARGINY);
 	if (m_hIcon)
 	{
-		DrawIconEx(memDC.m_hDC, drawrect.left, drawrect.top +
-			((drawrect.Height() - m_szAllButtons.cy - MESSAGEBOX_TEXTBUTTONMARGIN - m_szIcon.cy) / 2),
+		DrawIconEx(memDC.m_hDC, drawrect.left, max(drawrect.top, drawrect.top +
+			((drawrect.Height() - m_szAllButtons.cy - MESSAGEBOX_TEXTBUTTONMARGIN - m_szIcon.cy) / 2)),
 			m_hIcon, m_szIcon.cx, m_szIcon.cy, 0, nullptr, DI_NORMAL);
 
 		drawrect.left += m_szIcon.cx + MESSAGEBOX_ICONMARGIN;
@@ -828,6 +828,7 @@ BOOL CMessageBox::OnInitDialog()
 	rect.bottom += szButtons.cy;
 	rect.bottom += 2*MESSAGEBOX_BORDERMARGINY + MESSAGEBOX_TEXTBUTTONMARGIN;
 	rect.bottom += GetSystemMetrics(SM_CYCAPTION);
+	rect.bottom += 2 * GetSystemMetrics(SM_CYFIXEDFRAME);
 	rect.bottom += 2*GetSystemMetrics(SM_CYBORDER);
 
 	MoveWindow(rect);

@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2013-2016 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -30,7 +31,7 @@
 #define MESSAGEBOX_BUTTONMARGIN 5
 #define MESSAGEBOX_ICONMARGIN 15
 #define MESSAGEBOX_BORDERMARGINX 10
-#define MESSAGEBOX_BORDERMARGINY 5
+#define MESSAGEBOX_BORDERMARGINY 10
 #define MESSAGEBOX_TEXTBUTTONMARGIN 15
 #define MESSAGEBOX_BUTTONCHECKMARGIN 5
 #define MESSAGEBOX_BUTTONX 20
