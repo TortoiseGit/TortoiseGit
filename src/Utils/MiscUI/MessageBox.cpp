@@ -693,6 +693,8 @@ void CMessageBox::OnPaint()
 			m_hIcon, m_szIcon.cx, m_szIcon.cy, 0, nullptr, DI_NORMAL);
 
 		drawrect.left += m_szIcon.cx + MESSAGEBOX_ICONMARGIN;
+		if (m_szIcon.cy > m_szText.cy)
+			drawrect.top += (m_szIcon.cy - m_szText.cy) / 2;
 	}
 
 	DrawHTML(&memDC, drawrect, m_sMessage, m_LogFont);
@@ -813,13 +815,13 @@ BOOL CMessageBox::OnInitDialog()
 	CRect rect(0, 0, 0, 0);
 
 	//determine the required size of the message box
-	CSize szText = GetTextSize(m_sMessage);
+	m_szText = GetTextSize(m_sMessage);
 	CSize szIcon = GetIconSize(m_hIcon);
 	CSize szButtons = GetButtonSize();
 
 	CSize szIconText;
-	szIconText.cx = szText.cx + szIcon.cx + ((szIcon.cx == 0) ? MESSAGEBOX_ICONMARGIN : (2*MESSAGEBOX_ICONMARGIN));
-	szIconText.cy = max(szIcon.cy, szText.cy);
+	szIconText.cx = m_szText.cx + szIcon.cx + ((szIcon.cx == 0) ? MESSAGEBOX_ICONMARGIN : (2 * MESSAGEBOX_ICONMARGIN));
+	szIconText.cy = max(szIcon.cy, m_szText.cy);
 
 	rect.right = max(szButtons.cx, szIconText.cx);
 	rect.right += 2*GetSystemMetrics(SM_CXBORDER);

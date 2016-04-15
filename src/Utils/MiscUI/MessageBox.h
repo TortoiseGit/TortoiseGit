@@ -439,6 +439,7 @@ protected:
 	CSize m_szIcon;
 	CSize m_szAllButtons;
 	CSize m_szButtons;
+	CSize m_szText;
 
 	BOOL m_bShowCheck;
 	CString m_sRegistryValue;
