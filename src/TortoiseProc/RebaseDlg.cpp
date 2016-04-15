@@ -2165,9 +2165,12 @@ void CRebaseDlg::ListConflictFile()
 	CTGitPath path;
 	list.AddPath(path);
 
-	CString adminDir;
-	if (GitAdminDir::GetAdminDirPath(g_Git.m_CurrentDir, adminDir))
-		CreateDirectory(adminDir + L"tgitrebase.active", nullptr);
+	if (!m_IsCherryPick)
+	{
+		CString adminDir;
+		if (GitAdminDir::GetAdminDirPath(g_Git.m_CurrentDir, adminDir))
+			CreateDirectory(adminDir + L"tgitrebase.active", nullptr);
+	}
 
 	this->m_FileListCtrl.GetStatus(&list,true);
 	this->m_FileListCtrl.Show(CTGitPath::LOGACTIONS_UNMERGED|CTGitPath::LOGACTIONS_MODIFIED|CTGitPath::LOGACTIONS_ADDED|CTGitPath::LOGACTIONS_DELETED,
