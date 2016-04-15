@@ -28,28 +28,28 @@ namespace HighColorTab
 	ensure that there is a Win32 image list associated with the CImageList.
 	If this is not the case, a nullptr pointer shall be returned.
 
-	Returned image list is wrapped in an std::auto_ptr.
+	Returned image list is wrapped in an std::unique_ptr.
 
 	\sa UpdateImageListFull  */
 	struct CHighColorListCreator
 	{
 	/*! Create the image list.
-		\retval std::auto_ptr<CImageList> Not null if success. */
-	static std::auto_ptr<CImageList> CreateImageList()
+		\retval std::unique_ptr<CImageList> Not null if success. */
+	static std::unique_ptr<CImageList> CreateImageList()
 	{
-		std::auto_ptr<CImageList> apILNew( new CImageList() );
+		auto apILNew = std::make_unique<CImageList>();
 		if (!apILNew.get())
 		{
 			// ASSERT: The CImageList object creation failed.
 			ASSERT( FALSE );
-			return std::auto_ptr<CImageList>();
+			return std::unique_ptr<CImageList>();
 		}
 
 		if( 0 == apILNew->Create( 16, 16, ILC_COLOR32|ILC_MASK, 0, 1 ) )
 		{
 			// ASSERT: The image list (Win32) creation failed.
 			ASSERT( FALSE );
-			return std::auto_ptr<CImageList>();
+			return std::unique_ptr<CImageList>();
 		}
 
 		return apILNew;
@@ -62,7 +62,7 @@ namespace HighColorTab
 
 	This method provides full customization via policy over image list creation. The policy
 	must have a method with the signature:
-	<code>static std::auto_ptr<CImageList> CreateImageList()</code>
+	<code>static std::unique_ptr<CImageList> CreateImageList()</code>
 
 	\author Yves Tkaczyk (yves@tkaczyk.net)
 	\date 02/2004 */
@@ -80,7 +80,7 @@ namespace HighColorTab
 		}
 
 		// Create the replacement image list via policy.
-		std::auto_ptr<CImageList> apILNew( TListCreator::CreateImageList() );
+		std::unique_ptr<CImageList> apILNew(TListCreator::CreateImageList());
 
 		bool bSuccess = (nullptr != apILNew.get());
 
