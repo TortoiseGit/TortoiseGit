@@ -230,18 +230,19 @@ UINT CMessageBox::Show(HWND hWnd, UINT nMessage, UINT nCaption, UINT uType, LPCT
 
 UINT CMessageBox::Show(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, UINT uType, LPCTSTR sHelpPath)
 {
-	CMessageBox box;
-
 	if (!IsWindow(hWnd))
 		hWnd = nullptr;
 	if (sHelpPath)
+	{
+		CMessageBox box;
 		box.SetHelpPath(sHelpPath);
-	return box.GoModal(CWnd::FromHandle(hWnd), lpCaption, lpMessage, box.FillBoxStandard(uType));
+		return box.GoModal(CWnd::FromHandle(hWnd), lpCaption, lpMessage, box.FillBoxStandard(uType));
+	}
+	return ::MessageBox(hWnd, lpMessage, lpCaption, uType);
 }
 
 UINT CMessageBox::Show(HWND hWnd, UINT nMessage, UINT nCaption, UINT uType, UINT nHelpID)
 {
-	CMessageBox box;
 	CString sMessage;
 	CString sCaption;
 	sMessage.LoadString(nMessage);
@@ -249,9 +250,14 @@ UINT CMessageBox::Show(HWND hWnd, UINT nMessage, UINT nCaption, UINT uType, UINT
 
 	if (!IsWindow(hWnd))
 		hWnd = nullptr;
-	box.SetHelpID(nHelpID);
+	if (nHelpID)
+	{
+		CMessageBox box;
+		box.SetHelpID(nHelpID);
+		return box.GoModal(CWnd::FromHandle(hWnd), sCaption, sMessage, box.FillBoxStandard(uType));
+	}
 
-	return box.GoModal(CWnd::FromHandle(hWnd), sCaption, sMessage, box.FillBoxStandard(uType));
+	return ::MessageBox(hWnd, sMessage, sCaption, uType);
 }
 
 bool CMessageBox::RemoveRegistryKey(LPCTSTR lpRegistry)
