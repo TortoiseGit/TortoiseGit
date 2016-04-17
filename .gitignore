@@ -6,6 +6,7 @@
 *.ncb
 *.opensdf
 *.opendb
+*.VC.db
 *.patch
 *.sdf
 *.suo
