@@ -22,6 +22,9 @@
 #include "messagebox.h"
 #include "ClipboardHelper.h"
 #include "SmartHandle.h"
+#include <afxtaskdialog.h>
+
+#define BTN_OFFSET 100 // use an offset in order to not interfere with IDYES and so on...
 
 CMessageBox::CMessageBox(void)
 	: m_hIcon(nullptr)
@@ -91,6 +94,37 @@ UINT CMessageBox::ShowCheck(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, int
 		}
 	}
 
+	if (CTaskDialog::IsSupported())
+	{
+		CTaskDialog taskdlg(lpMessage, L"", lpCaption, 0, TDF_USE_COMMAND_LINKS | TDF_POSITION_RELATIVE_TO_WINDOW);
+		taskdlg.AddCommandControl(BTN_OFFSET + 1, lpButton1);
+		if (lpButton2 && *lpButton2)
+			taskdlg.AddCommandControl(BTN_OFFSET + 2, lpButton2);
+		if (lpButton3 && *lpButton3)
+			taskdlg.AddCommandControl(BTN_OFFSET + 3, lpButton3);
+		taskdlg.SetDefaultCommandControl(BTN_OFFSET + nDef);
+		taskdlg.SetMainIcon(icon);
+		if (!lpCheckMessage)
+		{
+#ifndef IDS_MSGBOX_DONOTSHOWAGAIN
+			taskdlg.SetVerificationCheckboxText(L"do not show again");
+#else
+			CString m_i18l;
+			m_i18l.LoadString(IDS_MSGBOX_DONOTSHOWAGAIN);
+			taskdlg.SetVerificationCheckboxText(m_i18l);
+#endif
+		}
+		else
+			taskdlg.SetVerificationCheckboxText(lpCheckMessage);
+		int result = (int)taskdlg.DoModal(hWnd) - BTN_OFFSET;
+		if (bChecked)
+			*bChecked = taskdlg.GetVerificationCheckboxState();
+		if (lpRegistry && *lpRegistry && taskdlg.GetVerificationCheckboxState())
+			SetRegistryValue(lpRegistry, result);
+
+		return result;
+	}
+
 	CMessageBox box;
 	box.m_bShowCheck = TRUE;
 	box.m_sRegistryValue = lpRegistry;
@@ -125,6 +159,18 @@ UINT CMessageBox::ShowCheck(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, int
 
 UINT CMessageBox::Show(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, int nDef, LPCTSTR icon, LPCTSTR lpButton1, LPCTSTR lpButton2/* = nullptr*/, LPCTSTR lpButton3/* = nullptr*/)
 {
+	if (CTaskDialog::IsSupported())
+	{
+		CTaskDialog taskdlg(lpMessage, L"", lpCaption, 0, TDF_USE_COMMAND_LINKS | TDF_POSITION_RELATIVE_TO_WINDOW);
+		taskdlg.AddCommandControl(BTN_OFFSET + 1, lpButton1);
+		if (lpButton2 && *lpButton2)
+			taskdlg.AddCommandControl(BTN_OFFSET + 2, lpButton2);
+		if (lpButton3 && *lpButton3)
+			taskdlg.AddCommandControl(BTN_OFFSET + 3, lpButton3);
+		taskdlg.SetDefaultCommandControl(BTN_OFFSET + nDef);
+		taskdlg.SetMainIcon(icon);
+		return (UINT)taskdlg.DoModal(hWnd) - BTN_OFFSET;
+	}
 	CMessageBox box;
 	box.m_sButton1 = lpButton1;
 	box.m_sButton2 = lpButton2;
@@ -193,6 +239,98 @@ UINT CMessageBox::ShowCheck(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, UIN
 		{
 			RegCloseKey(hKey);
 		}
+	}
+	if (CTaskDialog::IsSupported() && !(uType & MB_HELP) && !((uType & 0xf) == MB_ABORTRETRYIGNORE) && !((uType & 0xf) == MB_CANCELTRYCONTINUE))
+	{
+		CTaskDialog taskdlg(lpMessage, L"", lpCaption, 0,  TDF_POSITION_RELATIVE_TO_WINDOW);
+		// set up icon
+		switch (uType & 0xf0)
+		{
+		case MB_ICONEXCLAMATION:
+			taskdlg.SetMainIcon(IDI_EXCLAMATION);
+			break;
+		case MB_ICONASTERISK:
+			taskdlg.SetMainIcon(IDI_ASTERISK);
+			break;
+		case MB_ICONQUESTION:
+			taskdlg.SetMainIcon(IDI_QUESTION);
+			break;
+		case MB_ICONHAND:
+			taskdlg.SetMainIcon(IDI_HAND);
+			break;
+		}
+		// set up the buttons
+		switch (uType & 0xf)
+		{
+		case MB_ABORTRETRYIGNORE:
+			ASSERT(FALSE);
+			break;
+		case MB_CANCELTRYCONTINUE:
+			ASSERT(FALSE);
+			break;
+		case MB_OKCANCEL:
+			taskdlg.SetCommonButtons(TDCBF_OK_BUTTON | TDCBF_CANCEL_BUTTON);
+			switch (uType & 0xf00)
+			{
+			case MB_DEFBUTTON2:
+				taskdlg.SetDefaultCommandControl(IDCANCEL);
+				break;
+			}
+			break;
+		case MB_RETRYCANCEL:
+			taskdlg.SetCommonButtons(TDCBF_RETRY_BUTTON | TDCBF_CANCEL_BUTTON);
+			switch (uType & 0xf00)
+			{
+			case MB_DEFBUTTON2:
+				taskdlg.SetDefaultCommandControl(IDCANCEL);
+				break;
+			}
+			break;
+		case MB_YESNO:
+			taskdlg.SetCommonButtons(TDCBF_YES_BUTTON | TDCBF_NO_BUTTON);
+			switch (uType & 0xf00)
+			{
+			case MB_DEFBUTTON2:
+				taskdlg.SetDefaultCommandControl(IDNO);
+				break;
+			}
+			break;
+		case MB_YESNOCANCEL:
+			taskdlg.SetCommonButtons(TDCBF_YES_BUTTON | TDCBF_NO_BUTTON | TDCBF_CANCEL_BUTTON);
+			switch (uType & 0xf00)
+			{
+			case MB_DEFBUTTON2:
+				taskdlg.SetDefaultCommandControl(IDNO);
+				break;
+			case MB_DEFBUTTON3:
+				taskdlg.SetDefaultCommandControl(IDCANCEL);
+				break;
+			}
+			break;
+		case MB_OK:
+		default:
+			taskdlg.SetCommonButtons(TDCBF_OK_BUTTON);
+		}
+
+		if (!lpCheckMessage)
+		{
+#ifndef IDS_MSGBOX_DONOTSHOWAGAIN
+			taskdlg.SetVerificationCheckboxText(L"do not show again");
+#else
+			CString m_i18l;
+			m_i18l.LoadString(IDS_MSGBOX_DONOTSHOWAGAIN);
+			taskdlg.SetVerificationCheckboxText(m_i18l);
+#endif
+		}
+		else
+			taskdlg.SetVerificationCheckboxText(lpCheckMessage);
+		int result = (int)taskdlg.DoModal(hWnd) - BTN_OFFSET;
+		if (bChecked)
+			*bChecked = taskdlg.GetVerificationCheckboxState();
+		if (lpRegistry && *lpRegistry && taskdlg.GetVerificationCheckboxState())
+			SetRegistryValue(lpRegistry, result);
+
+		return result;
 	}
 
 	CMessageBox box;
