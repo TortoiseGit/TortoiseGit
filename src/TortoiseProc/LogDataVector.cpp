@@ -67,7 +67,7 @@ int CLogDataVector::ParserFromLog(CTGitPath* path, DWORD count, DWORD infomask, 
 		filter.m_NumberOfLogs = count;
 		filter.m_NumberOfLogsScale = CFilterData::SHOW_LAST_N_COMMITS;
 	}
-	CString cmd = g_Git.GetLogCmd(gitrange, path, infomask, &filter);
+	CString cmd = g_Git.GetLogCmd(gitrange, path, infomask, &filter, m_logOrderBy);
 
 	if (!g_Git.CanParseRev(gitrange))
 		return -1;

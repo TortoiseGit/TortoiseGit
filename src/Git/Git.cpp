@@ -960,8 +960,7 @@ int CGit::BuildOutputFormat(CString &format,bool IsFull)
 	return 0;
 }
 
-CString CGit::GetLogCmd(const CString& range, const CTGitPath* path, int mask,
-						CFilterData *Filter)
+CString CGit::GetLogCmd(const CString& range, const CTGitPath* path, int mask, CFilterData* Filter, int logOrderBy)
 {
 	CString param;
 
@@ -1073,7 +1072,6 @@ CString CGit::GetLogCmd(const CString& range, const CTGitPath* path, int mask,
 		param += _T(" --regexp-ignore-case --extended-regexp");
 	}
 
-	DWORD logOrderBy = CRegDWORD(_T("Software\\TortoiseGit\\LogOrderBy"), LOG_ORDER_TOPOORDER);
 	if (logOrderBy == LOG_ORDER_TOPOORDER || (mask & CGit::LOG_ORDER_TOPOORDER))
 		param += _T(" --topo-order");
 	else if (logOrderBy == LOG_ORDER_DATEORDER)

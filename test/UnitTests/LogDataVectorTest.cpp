@@ -45,6 +45,7 @@ INSTANTIATE_TEST_CASE_P(CLogDataVector, CLogDataVectorCBasicGitWithEmptyBareRepo
 TEST(CLogDataVector, Empty)
 {
 	CLogDataVector logDataVector;
+	logDataVector.m_logOrderBy = CGit::LOG_ORDER_TOPOORDER;
 
 	EXPECT_EQ(0, logDataVector.size());
 	EXPECT_EQ(0, logDataVector.m_HashMap.size());
@@ -138,6 +139,7 @@ static void ParserFromLogTests()
 {
 	CLogCache logCache;
 	CLogDataVector logDataVector;
+	logDataVector.m_logOrderBy = CGit::LOG_ORDER_TOPOORDER;
 	logDataVector.SetLogCache(&logCache);
 
 	EXPECT_EQ(0, logDataVector.ParserFromLog());
@@ -160,7 +162,6 @@ static void ParserFromLogTests()
 	EXPECT_STREQ(L"49ecdfff36bfe2b9b499b33e5034f427e2fa54dd", logDataVector.GetGitRevAt(2).m_CommitHash.ToString());
 	EXPECT_STREQ(L"560deea87853158b22d0c0fd73f60a458d47838a", logDataVector.GetGitRevAt(4).m_CommitHash.ToString());
 
-	EXPECT_EQ(CGit::LOG_ORDER_TOPOORDER, (DWORD)CRegDWORD(_T("Software\\TortoiseGit\\LogOrderBy"), CGit::LOG_ORDER_TOPOORDER)); // this dependency on user settings needs to be fixed!
 	logCache.m_HashMap.clear();
 	logDataVector.ClearAll();
 	EXPECT_EQ(0, logDataVector.ParserFromLog(nullptr, 0, CGit::LOG_INFO_ALL_BRANCH));
@@ -263,6 +264,7 @@ static void ParserFromLogTests_EmptyRepo()
 {
 	CLogCache logCache;
 	CLogDataVector logDataVector;
+	logDataVector.m_logOrderBy = CGit::LOG_ORDER_TOPOORDER;
 	logDataVector.SetLogCache(&logCache);
 	EXPECT_EQ(-1, logDataVector.ParserFromLog());
 	EXPECT_EQ(0, logDataVector.size());
@@ -284,6 +286,7 @@ static void FillTests()
 {
 	CLogCache logCache;
 	CLogDataVector logDataVector;
+	logDataVector.m_logOrderBy = CGit::LOG_ORDER_TOPOORDER;
 	logDataVector.SetLogCache(&logCache);
 
 	std::set<CGitHash> hashes;
