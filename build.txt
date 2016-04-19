@@ -60,4 +60,4 @@ Open Developer Command Prompt for VS2013
     MSBuild TortoiseGit.sln /p:Configuration=Release;Platform=x64
 
 If you want to build the installer package, make sure you build the Win32 configuration before the x64 one
-Also, build the docs before before the installer packages (or copy existing TortoiseGit_en.chm and TortoiseMerge_en.chm files into the doc/output folder).
+Also, build the docs before the installer packages (or copy existing TortoiseGit_en.chm and TortoiseMerge_en.chm files into the doc/output folder).
