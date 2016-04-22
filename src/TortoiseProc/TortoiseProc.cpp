@@ -113,11 +113,6 @@ BOOL CTortoiseProcApp::InitInstance()
 	//set the resource dll for the required language
 	CRegDWORD loc = CRegDWORD(_T("Software\\TortoiseGit\\LanguageID"), 1033);
 	long langId = loc;
-	{
-		CString langStr;
-		langStr.Format(_T("%ld"), langId);
-		CCrashReport::Instance().AddUserInfoToReport(L"LanguageID", langStr);
-	}
 	CString langDll;
 	CStringA langpath = CStringA(CPathUtils::GetAppParentDirectory());
 	langpath += "Languages";
@@ -146,6 +141,11 @@ BOOL CTortoiseProcApp::InitInstance()
 				langId = 0;
 		}
 	} while (langId != 0);
+	{
+		CString langStr;
+		langStr.Format(_T("%ld"), langId);
+		CCrashReport::Instance().AddUserInfoToReport(L"LanguageID", langStr);
+	}
 	TCHAR buf[6] = { 0 };
 	_tcscpy_s(buf, _T("en"));
 	langId = loc;

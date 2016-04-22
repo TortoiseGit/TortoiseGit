@@ -126,6 +126,11 @@ BOOL CTortoiseGitBlameApp::InitInstance()
 				langId = 0;
 		}
 	} while (!hInst && (langId != 0));
+	{
+		CString langStr;
+		langStr.Format(_T("%ld"), langId);
+		CCrashReport::Instance().AddUserInfoToReport(L"LanguageID", langStr);
+	}
 	TCHAR buf[6] = { 0 };
 	_tcscpy_s(buf, _T("en"));
 	langId = loc;

@@ -1,6 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2013-2015 - TortoiseGit
+// Copyright (C) 2013-2016 - TortoiseGit
 // Copyright (C) 2006-2014, 2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -139,6 +139,11 @@ BOOL CTortoiseMergeApp::InitInstance()
 				langId = 0;
 		}
 	} while ((hInst == NULL) && (langId != 0));
+	{
+		CString langStr;
+		langStr.Format(_T("%ld"), langId);
+		CCrashReport::Instance().AddUserInfoToReport(L"LanguageID", langStr);
+	}
 	TCHAR buf[6] = { 0 };
 	_tcscpy_s(buf, _T("en"));
 	langId = loc;
