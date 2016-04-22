@@ -228,7 +228,7 @@ BOOL CTortoiseProcApp::InitInstance()
 		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Registering Crash Report ...\n"));
 		CCrashReport::Instance().AddUserInfoToReport(L"msysGitDir", CGit::ms_LastMsysGitDir);
 		CString versionString;
-		versionString.Format(_T("%d"), CGit::ms_LastMsysGitVersion);
+		versionString.Format(_T("%X"), CGit::ms_LastMsysGitVersion);
 		CCrashReport::Instance().AddUserInfoToReport(L"msysGitVersion", versionString);
 	}
 
