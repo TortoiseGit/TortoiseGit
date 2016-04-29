@@ -98,6 +98,11 @@
 			Subversion tags never exist on trunk, so such tags are not reachable from branch heads.
 		</para>
 		<para>
+			<guilabel>Push Default</guilabel>
+			Selecting this means to always push to this remote.
+			Default is false.
+		</para>
+		<para>
 			<guilabel>Prune</guilabel>
 			This sets remote.name.prune config, which controls the default prune option of remote tracking branches of the specified remote.
 			Default is false.

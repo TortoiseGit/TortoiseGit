@@ -7,6 +7,7 @@ Released: unreleased
 == Bug Fixes ==
  * Fixed issue #2745: TortoiseGit 2.1 crashes on broken git config 
  * Fixed issue #2759: Swapped THEIRS and MINE in cherry-pick conflict dialogs and context menus
+ * Fixed issue #2767: The online help of Settings->Git->Remote should explain the "Push Default" checkbox
 
 = Release 2.1.0 =
 Released: 2016-03-26
