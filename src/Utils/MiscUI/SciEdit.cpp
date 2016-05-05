@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2009-2016 - TortoiseGit
-// Copyright (C) 2003-2008,2012-2015 - TortoiseSVN
+// Copyright (C) 2003-2008,2012-2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -713,6 +713,26 @@ BOOL CSciEdit::OnChildNotify(UINT message, WPARAM wParam, LPARAM lParam, LRESULT
 				}
 				return TRUE;
 			}
+		case SCN_STYLENEEDED:
+		{
+			int startpos = (int)Call(SCI_GETENDSTYLED);
+			int endpos = ((SCNotification*)lpnmhdr)->position;
+
+			int startwordpos = (int)Call(SCI_WORDSTARTPOSITION, startpos, true);
+			int endwordpos = (int)Call(SCI_WORDENDPOSITION, endpos, true);
+
+			MarkEnteredBugID(startwordpos, endwordpos);
+			if (m_bDoStyle)
+				StyleEnteredText(startwordpos, endwordpos);
+
+			StyleURLs(startwordpos, endwordpos);
+			CheckSpelling(startwordpos, endwordpos);
+
+			// Tell scintilla editor that we styled all requested range.
+			Call(SCI_STARTSTYLING, endwordpos);
+			Call(SCI_SETSTYLING, 0, 0);
+		}
+		break;
 		case SCN_MODIFIED:
 		{
 			if (lpSCN->modificationType & (SC_MOD_INSERTTEXT | SC_MOD_DELETETEXT))
@@ -726,16 +746,8 @@ BOOL CSciEdit::OnChildNotify(UINT message, WPARAM wParam, LPARAM lParam, LRESULT
 				// always use the bigger range
 				firstpos = min(firstpos, pos1);
 				lastpos = max(lastpos, pos2);
-				MarkEnteredBugID(firstpos, lastpos);
-				if (m_bDoStyle)
-					StyleEnteredText(firstpos, lastpos);
 
-				int startpos = (int)Call(SCI_WORDSTARTPOSITION, firstpos, true);
-				int endpos = (int)Call(SCI_WORDENDPOSITION, lastpos, true);
-				StyleURLs(startpos, endpos);
-				CheckSpelling(startpos, endpos);
 				WrapLines(firstpos, lastpos);
-				Call(SCI_COLOURISE, startpos, endpos);
 			}
 			break;
 		}
