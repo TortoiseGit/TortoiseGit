@@ -60,6 +60,7 @@
     <ClCompile Include="..\scintilla\lexers\LexDMIS.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexErrorList.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexHex.cxx" />
+    <ClCompile Include="..\scintilla\lexers\LexJSON.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexKVIrc.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexLaTeX.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexMake.cxx" />
