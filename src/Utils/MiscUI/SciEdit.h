@@ -26,6 +26,7 @@
 #include "ProjectProperties.h"
 #include "PersonalDictionary.h"
 #include <regex>
+#include "LruCache.h"
 
 #define AUTOCOMPLETE_SPELLING		0
 #define AUTOCOMPLETE_FILENAME		1
@@ -148,6 +149,7 @@ private:
 	CPersonalDictionary m_personalDict;
 	bool		m_bDoStyle;
 	int			m_nAutoCompleteMinChars;
+	LruCache<std::wstring, BOOL> m_SpellingCache;
 	static bool IsValidURLChar(unsigned char ch);
 protected:
 	virtual BOOL OnChildNotify(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pLResult);

@@ -1690,6 +1690,9 @@
     <ClInclude Include="..\Utils\CreateProcessHelper.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="..\Utils\LruCache.h">
+      <Filter>Utils\General</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Resources\actionadded.ico">

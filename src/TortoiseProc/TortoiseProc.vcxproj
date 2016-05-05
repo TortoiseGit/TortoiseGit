@@ -337,6 +337,7 @@
     <ClInclude Include="..\Utils\JumpListHelpers.h" />
     <ClInclude Include="..\Utils\LangDll.h" />
     <ClInclude Include="..\Utils\Libraries.h" />
+    <ClInclude Include="..\Utils\LruCache.h" />
     <ClInclude Include="..\Utils\MailMsg.h" />
     <ClInclude Include="..\Utils\MiscUI\BrowseFolder.h" />
     <ClInclude Include="..\Utils\MiscUI\BufferDC.h" />

@@ -332,6 +332,9 @@
     <ClInclude Include="GitBlameLogList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\Utils\LruCache.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Resources\blameres\output_wnd.ico">
