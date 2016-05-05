@@ -15,7 +15,7 @@
 <blockquote>
 <literallayout><emphasis>git merge-file</emphasis> [-L &lt;current-name&gt; [-L &lt;base-name&gt; [-L &lt;other-name&gt;]]]
         [--ours|--theirs|--union] [-p|--stdout] [-q|--quiet] [--marker-size=&lt;n&gt;]
-        &lt;current-file&gt; &lt;base-file&gt; &lt;other-file&gt;</literallayout>
+        [--[no-]diff3] &lt;current-file&gt; &lt;base-file&gt; &lt;other-file&gt;</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-merge-file(1)__description">
@@ -41,7 +41,8 @@ however, these conflicts are resolved favouring lines from <emphasis>&lt;current
 lines from <emphasis>&lt;other-file&gt;</emphasis>, or lines from both respectively.  The length of the
 conflict markers can be given with the <emphasis>--marker-size</emphasis> option.</simpara>
 <simpara>The exit value of this program is negative on error, and the number of
-conflicts otherwise. If the merge was clean, the exit value is 0.</simpara>
+conflicts otherwise (truncated to 127 if there are more than that many
+conflicts). If the merge was clean, the exit value is 0.</simpara>
 <simpara><emphasis>git merge-file</emphasis> is designed to be a minimal clone of RCS <emphasis>merge</emphasis>; that is, it
 implements all of RCS <emphasis>merge</emphasis>'s functionality which is needed by
 <xref linkend="git(1)" />.</simpara>
@@ -82,6 +83,16 @@ implements all of RCS <emphasis>merge</emphasis>'s functionality which is needed
 <listitem>
 <simpara>
         Quiet; do not warn about conflicts.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--diff3
+</term>
+<listitem>
+<simpara>
+        Show conflicts in "diff3" style.
 </simpara>
 </listitem>
 </varlistentry>

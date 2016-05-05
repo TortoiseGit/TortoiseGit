@@ -13,8 +13,7 @@ Generating git docbook documentation: (done on Debian SID)
     (\w)--(\w)=\1&#8212;\2
     (\w)'(\w)=\1&#8217;\2
 - make xml
-- take *.xml files (skip git-tools.xml)
-- after generation change everyday.xml: article-id to everyday
+- take *.xml files
 
 diff --git a/Documentation/Makefile b/Documentation/Makefile
 index 9ad6a6a..adfe07a 100644
@@ -29,22 +28,15 @@ index 9ad6a6a..adfe07a 100644
  man: man1 man5 man7
  man1: $(DOC_MAN1)
  man5: $(DOC_MAN5)
-@@ -257,13 +259,13 @@ manpage-base-url.xsl: manpage-base-url.xsl.in
+@@ -330,7 +332,7 @@ manpage-base-url.xsl: manpage-base-url.xsl.in
  
- %.xml : %.txt
+ %.xml : %.txt asciidoc.conf
  	$(QUIET_ASCIIDOC)$(RM) $@+ $@ && \
--	$(ASCIIDOC) -b docbook -d manpage -f asciidoc.conf \
-+	$(ASCIIDOC) -b docbook -d article -f asciidoc.conf \
- 		$(ASCIIDOC_EXTRA) -agit_version=$(GIT_VERSION) -o $@+ $< && \
+-	$(TXT_TO_XML) -d manpage -o $@+ $< && \
++	$(TXT_TO_XML) -d article -o $@+ $< && \
  	mv $@+ $@
  
  user-manual.xml: user-manual.txt user-manual.conf
- 	$(QUIET_ASCIIDOC)$(RM) $@+ $@ && \
--	$(ASCIIDOC) $(ASCIIDOC_EXTRA) -b docbook -d book -o $@+ $< && \
-+	$(ASCIIDOC) $(ASCIIDOC_EXTRA) -b docbook -d article -o $@+ $< && \
- 	mv $@+ $@
- 
- technical/api-index.txt: technical/api-index-skel.txt \
 diff --git a/Documentation/asciidoc.conf b/Documentation/asciidoc.conf
 index 1273a85..5223c99
 --- a/Documentation/asciidoc.conf
@@ -225,14 +217,3 @@ index d87294d..704f2cc
 +</literallayout><simpara></simpara>
 +{title#}</example>
 +endif::doctype-manpage[]
-diff --git a/Documentation/user-manual.txt b/Documentation/user-manual.txt
-index 1b94207..49a0a9c 100644
---- a/Documentation/user-manual.txt
-+++ b/Documentation/user-manual.txt
-@@ -1,5 +1,5 @@
- Git User's Manual (for version 1.5.3 or newer)
--______________________________________________
-+==============================================
- 
- 
- Git is a fast distributed revision control system.

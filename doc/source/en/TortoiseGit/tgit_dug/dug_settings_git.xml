@@ -99,7 +99,7 @@
 		</para>
 		<para>
 			<guilabel>Push Default</guilabel>
-			Selecting this means to always push to this remote.
+			Selecting this means to always push to this remote (cf. <xref linkend="git-config(1)"/>)
 			Default is false.
 		</para>
 		<para>

@@ -13,7 +13,7 @@
 <simplesect id="git-unpack-objects(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git unpack-objects</emphasis> [-n] [-q] [-r] [--strict] &lt;pack-file</literallayout>
+<literallayout><emphasis>git unpack-objects</emphasis> [-n] [-q] [-r] [--strict]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-unpack-objects(1)__description">
@@ -22,8 +22,8 @@
 the objects contained within and writing them into the repository in
 "loose" (one object per file) format.</simpara>
 <simpara>Objects that already exist in the repository will <emphasis role="strong">not</emphasis> be unpacked
-from the pack-file.  Therefore, nothing will be unpacked if you use
-this command on a pack-file that exists within the target repository.</simpara>
+from the packfile.  Therefore, nothing will be unpacked if you use
+this command on a packfile that exists within the target repository.</simpara>
 <simpara>See <xref linkend="git-repack(1)" /> for options to generate
 new packs and replace existing ones.</simpara>
 </simplesect>

@@ -193,7 +193,7 @@ version
 </term>
 <listitem>
 <simpara>
-        The git repository browser.  Shows branches, commit history
+        The Git repository browser.  Shows branches, commit history
         and file differences.  gitk is the utility started by
         <emphasis>git gui</emphasis>'s Repository Visualize actions.
 </simpara>

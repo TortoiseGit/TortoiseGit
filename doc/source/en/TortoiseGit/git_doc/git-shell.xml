@@ -13,23 +13,92 @@
 <simplesect id="git-shell(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git shell</emphasis> [-c &lt;command&gt; &lt;argument&gt;]</literallayout>
+<literallayout><emphasis>chsh</emphasis> -s $(command -v git-shell) &lt;user&gt;
+<emphasis>git clone</emphasis> &lt;user&gt;<emphasis>@localhost:/path/to/repo.git</emphasis>
+<emphasis>ssh</emphasis> &lt;user&gt;<emphasis>@localhost</emphasis></literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-shell(1)__description">
 <title>DESCRIPTION</title>
-<simpara>A login shell for SSH accounts to provide restricted Git access. When
-<emphasis>-c</emphasis> is given, the program executes &lt;command&gt; non-interactively;
-&lt;command&gt; can be one of <emphasis>git receive-pack</emphasis>, <emphasis>git upload-pack</emphasis>, <emphasis>git
-upload-archive</emphasis>, <emphasis>cvs server</emphasis>, or a command in COMMAND_DIR. The shell
-is started in interactive mode when no arguments are given; in this
-case, COMMAND_DIR must exist, and any of the executables in it can be
-invoked.</simpara>
-<simpara><emphasis>cvs server</emphasis> is a special command which executes git-cvsserver.</simpara>
-<simpara>COMMAND_DIR is the path "$HOME/git-shell-commands". The user must have
-read and execute permissions to the directory in order to execute the
-programs in it. The programs are executed with a cwd of $HOME, and
-&lt;argument&gt; is parsed as a command-line string.</simpara>
+<simpara>This is a login shell for SSH accounts to provide restricted Git access.
+It permits execution only of server-side Git commands implementing the
+pull/push functionality, plus custom commands present in a subdirectory
+named <emphasis>git-shell-commands</emphasis> in the user's home directory.</simpara>
+</simplesect>
+<simplesect id="git-shell(1)__commands">
+<title>COMMANDS</title>
+<simpara><emphasis>git shell</emphasis> accepts the following commands after the <emphasis>-c</emphasis> option:</simpara>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>git receive-pack &lt;argument&gt;</emphasis>
+</term>
+<term>
+<emphasis>git upload-pack &lt;argument&gt;</emphasis>
+</term>
+<term>
+<emphasis>git upload-archive &lt;argument&gt;</emphasis>
+</term>
+<listitem>
+<simpara>
+        Call the corresponding server-side command to support
+        the client's <emphasis>git push</emphasis>, <emphasis>git fetch</emphasis>, or <emphasis>git archive --remote</emphasis>
+        request.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>cvs server</emphasis>
+</term>
+<listitem>
+<simpara>
+        Imitate a CVS server.  See <xref linkend="git-cvsserver(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+<simpara>If a <emphasis>~/git-shell-commands</emphasis> directory is present, <emphasis>git shell</emphasis> will
+also handle other, custom commands by running
+"<emphasis>git-shell-commands/&lt;command&gt; &lt;arguments&gt;</emphasis>" from the user's home
+directory.</simpara>
+</simplesect>
+<simplesect id="git-shell(1)__interactive_use">
+<title>INTERACTIVE USE</title>
+<simpara>By default, the commands above can be executed only with the <emphasis>-c</emphasis>
+option; the shell is not interactive.</simpara>
+<simpara>If a <emphasis>~/git-shell-commands</emphasis> directory is present, <emphasis>git shell</emphasis>
+can also be run interactively (with no arguments).  If a <emphasis>help</emphasis>
+command is present in the <emphasis>git-shell-commands</emphasis> directory, it is
+run to provide the user with an overview of allowed actions.  Then a
+"git&gt; " prompt is presented at which one can enter any of the
+commands from the <emphasis>git-shell-commands</emphasis> directory, or <emphasis>exit</emphasis> to close
+the connection.</simpara>
+<simpara>Generally this mode is used as an administrative interface to allow
+users to list repositories they have access to, create, delete, or
+rename repositories, or change repository descriptions and
+permissions.</simpara>
+<simpara>If a <emphasis>no-interactive-login</emphasis> command exists, then it is run and the
+interactive shell is aborted.</simpara>
+</simplesect>
+<simplesect id="git-shell(1)__example">
+<title>EXAMPLE</title>
+<simpara>To disable interactive logins, displaying a greeting instead:</simpara>
+<screen>$ chsh -s /usr/bin/git-shell
+$ mkdir $HOME/git-shell-commands
+$ cat &gt;$HOME/git-shell-commands/no-interactive-login &lt;&lt;\EOF
+#!/bin/sh
+printf '%s\n' "Hi $USER! You've successfully authenticated, but I do not"
+printf '%s\n' "provide interactive shell access."
+exit 128
+EOF
+$ chmod +x $HOME/git-shell-commands/no-interactive-login</screen>
+</simplesect>
+<simplesect id="git-shell(1)__see_also">
+<title>SEE ALSO</title>
+<simpara>ssh(1),
+<xref linkend="git-daemon(1)" />,
+contrib/git-shell-commands/README</simpara>
 </simplesect>
 <simplesect id="git-shell(1)__git">
 <title>GIT</title>

@@ -8,7 +8,7 @@
 </indexterm>
 <simplesect id="gitweb.conf(5)__name">
 <title>NAME</title>
-<simpara>gitweb.conf - Gitweb (git web interface) configuration file</simpara>
+<simpara>gitweb.conf - Gitweb (Git web interface) configuration file</simpara>
 </simplesect>
 <simplesect id="gitweb.conf(5)__synopsis">
 <title>SYNOPSIS</title>
@@ -81,7 +81,7 @@ stops declaring it.</simpara>
 <simpara>You can include other configuration file using read_config_file()
 subroutine.  For example, one might want to put gitweb configuration
 related to access control for viewing repositories via Gitolite (one
-of git repository management tools) in a separate file, e.g. in
+of Git repository management tools) in a separate file, e.g. in
 <emphasis>/etc/gitweb-gitolite.conf</emphasis>.  To include it, put</simpara>
 <screen>read_config_file("/etc/gitweb-gitolite.conf");</screen>
 <simpara>somewhere in gitweb configuration file used, e.g. in per-installation
@@ -104,7 +104,7 @@ and installing gitweb.</simpara>
 <section id="gitweb.conf(5)__location_of_repositories">
 <title>Location of repositories</title>
 <simpara>The configuration variables described below control how gitweb finds
-git repositories, and how repositories are displayed and accessed.</simpara>
+Git repositories, and how repositories are displayed and accessed.</simpara>
 <simpara>See also "Repositories" and later subsections in <xref linkend="gitweb(1)" /> manpage.</simpara>
 <variablelist>
 <varlistentry>
@@ -152,7 +152,7 @@ $project_maxdepth
 <listitem>
 <simpara>
         If <emphasis>$projects_list</emphasis> variable is unset, gitweb will recursively
-        scan filesystem for git repositories.  The <emphasis>$project_maxdepth</emphasis>
+        scan filesystem for Git repositories.  The <emphasis>$project_maxdepth</emphasis>
         is used to limit traversing depth, relative to <emphasis>$projectroot</emphasis>
         (starting point); it means that directories which are further
         from <emphasis>$projectroot</emphasis> than <emphasis>$project_maxdepth</emphasis> will be skipped.
@@ -197,7 +197,7 @@ $export_auth_hook
 <simpara>though the above might be done by using <emphasis>$export_ok</emphasis> instead</simpara>
 <screen>our $export_ok = "git-daemon-export-ok";</screen>
 <simpara>If not set (default), it means that this feature is disabled.</simpara>
-<simpara>See also more involved example in "Controlling access to git repositories"
+<simpara>See also more involved example in "Controlling access to Git repositories"
 subsection on <xref linkend="gitweb(1)" /> manpage.</simpara>
 </listitem>
 </varlistentry>
@@ -233,11 +233,11 @@ $GIT
 <listitem>
 <simpara>
         Core git executable to use.  By default set to <emphasis>$GIT_BINDIR/git</emphasis>, which
-        in turn is by default set to <emphasis>$(bindir)/git</emphasis>.  If you use git installed
+        in turn is by default set to <emphasis>$(bindir)/git</emphasis>.  If you use Git installed
         from a binary package, you should usually set this to "/usr/bin/git".
         This can just be "git" if your web server has a sensible PATH; from
         security point of view it is better to use absolute path to git binary.
-        If you have multiple git versions installed it can be used to choose
+        If you have multiple Git versions installed it can be used to choose
         which one to use.  Must be (correctly) set for gitweb to be able to
         work.
 </simpara>
@@ -251,7 +251,7 @@ $mimetypes_file
 <simpara>
         File to use for (filename extension based) guessing of MIME types before
         trying <emphasis>/etc/mime.types</emphasis>.  <emphasis role="strong">NOTE</emphasis> that this path, if relative, is taken
-        as relative to the current git repository, not to CGI script.  If unset,
+        as relative to the current Git repository, not to CGI script.  If unset,
         only <emphasis>/etc/mime.types</emphasis> is used (if present on filesystem).  If no mimetypes
         file is found, mimetype guessing based on extension of file is disabled.
         Unset by default.
@@ -392,11 +392,35 @@ $home_link_str
         used as the first component of gitweb's "breadcrumb trail":
         <emphasis>&lt;home link&gt; / &lt;project&gt; / &lt;action&gt;</emphasis>.  Can be set at build time using
         the <emphasis>GITWEB_HOME_LINK_STR</emphasis> variable.  By default it is set to "projects",
-        as this link leads to the list of projects.  Other popular choice it to
-        set it to the name of site.
+        as this link leads to the list of projects.  Another popular choice is to
+        set it to the name of site.  Note that it is treated as raw HTML so it
+        should not be set from untrusted sources.
 </simpara>
 </listitem>
 </varlistentry>
+<varlistentry>
+<term>
+@extra_breadcrumbs
+</term>
+<listitem>
+<simpara>
+        Additional links to be added to the start of the breadcrumb trail before
+        the home link, to pages that are logically "above" the gitweb projects
+        list, such as the organization and department which host the gitweb
+        server. Each element of the list is a reference to an array, in which
+        element 0 is the link text (equivalent to <emphasis>$home_link_str</emphasis>) and element
+        1 is the target URL (equivalent to <emphasis>$home_link</emphasis>).
+</simpara>
+<simpara>For example, the following setting produces a breadcrumb trail like
+"home / dev / projects / &#8230;" where "projects" is the home link.</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+<screen>    our @extra_breadcrumbs = (
+      [ 'home' =&gt; 'https://www.example.org/' ],
+      [ 'dev'  =&gt; 'https://dev.example.org/' ],
+    );</screen>
+<variablelist>
 <varlistentry>
 <term>
 $logo_url
@@ -408,8 +432,8 @@ $logo_label
 <simpara>
         URI and label (title) for the Git logo link (or your site logo,
         if you chose to use different logo image). By default, these both
-        refer to git homepage, <ulink url="http://git-scm.com">http://git-scm.com</ulink>[]; in the past, they pointed
-        to git documentation at <ulink url="http://www.kernel.org">http://www.kernel.org</ulink>[].
+        refer to Git homepage, <ulink url="http://git-scm.com">http://git-scm.com</ulink>[]; in the past, they pointed
+        to Git documentation at <ulink url="http://www.kernel.org">http://www.kernel.org</ulink>[].
 </simpara>
 </listitem>
 </varlistentry>
@@ -578,7 +602,7 @@ $fallback_encoding
         detection.
 </simpara>
 <simpara><emphasis role="strong">Note</emphasis> that rename and especially copy detection can be quite
-CPU-intensive.  Note also that non git tools can have problems with
+CPU-intensive.  Note also that non Git tools can have problems with
 patches generated with options mentioned above, especially when they
 involve file copies ('-C') or criss-cross renames ('-B').</simpara>
 </listitem>
@@ -600,7 +624,7 @@ affects how "summary" pages look like, or load limiting).</simpara>
 </term>
 <listitem>
 <simpara>
-        List of git base URLs.  These URLs are used to generate URLs
+        List of Git base URLs.  These URLs are used to generate URLs
         describing from where to fetch a project, which are shown on
         project summary page.  The full fetch URL is "<emphasis>$git_base_url/$project</emphasis>",
         for each element of this list. You can set up multiple base URLs
@@ -612,7 +636,7 @@ file, or as values of multi-value <emphasis>gitweb.url</emphasis> configuration 
 project config.  Per-repository configuration takes precedence over value
 composed from <emphasis>@git_base_url_list</emphasis> elements and project name.</simpara>
 <simpara>You can setup one single value (single entry/item in this list) at build
-time by setting the <emphasis>GITWEB_BASE_URL</emphasis> built-time configuration variable.
+time by setting the <emphasis>GITWEB_BASE_URL</emphasis> build-time configuration variable.
 By default it is set to (), i.e. an empty list.  This means that gitweb
 would not try to create project URL (to fetch) from project name.</simpara>
 </listitem>
@@ -623,7 +647,7 @@ $projects_list_group_categories
 </term>
 <listitem>
 <simpara>
-        Whether to enables the grouping of projects by category on the project
+        Whether to enable the grouping of projects by category on the project
         list page. The category of a project is determined by the
         <emphasis>$GIT_DIR/category</emphasis> file or the <emphasis>gitweb.category</emphasis> variable in each
         repository's configuration.  Disabled by default (set to 0).
@@ -828,12 +852,12 @@ override
 <listitem>
 <simpara>
         If this field has a true value then the given feature is
-        overriddable, which means that it can be configured
+        overridable, which means that it can be configured
         (or enabled/disabled) on a per-repository basis.
 </simpara>
 <simpara>Usually given "&lt;feature&gt;" is configurable via the <emphasis>gitweb.&lt;feature&gt;</emphasis>
-config variable in the per-repository git configuration file.</simpara>
-<simpara><emphasis role="strong">Note</emphasis> that no feature is overriddable by default.</simpara>
+config variable in the per-repository Git configuration file.</simpara>
+<simpara><emphasis role="strong">Note</emphasis> that no feature is overridable by default.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -937,7 +961,7 @@ show-sizes
         I/O.  Enabled by default.
 </simpara>
 <simpara>This feature can be configured on a per-repository basis via
-repository's <emphasis>gitweb.showsizes</emphasis> configuration variable (boolean).</simpara>
+repository's <emphasis>gitweb.showSizes</emphasis> configuration variable (boolean).</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -1069,7 +1093,7 @@ filesystem (i.e. "$projectroot/$project"), <emphasis>%h</emphasis> to the curren
 ('h gitweb parameter) and %b` to the current hash base
 ('hb gitweb parameter); %%` expands to '%.</simpara>
 <simpara>For example, at the time this page was written, the <ulink url="http://repo.or.cz">http://repo.or.cz</ulink>[]
-git hosting site set it to the following to enable graphical log
+Git hosting site set it to the following to enable graphical log
 (using the third party tool <emphasis role="strong">git-browser</emphasis>):</simpara>
 <screen>$feature{'actions'}{'default'} =
         [ ('graphiclog', '/git-browser/by-commit.html?r=%n', 'summary')];</screen>
@@ -1084,10 +1108,10 @@ timed
 </term>
 <listitem>
 <simpara>
-        Enable displaying how much time and how many git commands it took to
+        Enable displaying how much time and how many Git commands it took to
         generate and display each page in the page footer (at the bottom of
         page).  For example the footer might contain: "This page took 6.53325
-        seconds and 13 git commands to generate."  Disabled by default.
+        seconds and 13 Git commands to generate."  Disabled by default.
 </simpara>
 <simpara>Project specific override is not supported.</simpara>
 </listitem>
@@ -1098,25 +1122,57 @@ javascript-timezone
 </term>
 <listitem>
 <simpara>
-        Enable and configure the ability to change a common timezone for dates
+        Enable and configure the ability to change a common time zone for dates
         in gitweb output via JavaScript.  Dates in gitweb output include
         authordate and committerdate in "commit", "commitdiff" and "log"
         views, and taggerdate in "tag" view.  Enabled by default.
 </simpara>
-<simpara>The value is a list of three values: a default timezone (for if the client
-hasn't selected some other timezone and saved it in a cookie), a name of cookie
-where to store selected timezone, and a CSS class used to mark up
+<simpara>The value is a list of three values: a default time zone (for if the client
+hasn't selected some other time zone and saved it in a cookie), a name of cookie
+where to store selected time zone, and a CSS class used to mark up
 dates for manipulation.  If you want to turn this feature off, set "default"
 to empty list: <emphasis>[]</emphasis>.</simpara>
-<simpara>Typical gitweb config files will only change starting (default) timezone,
+<simpara>Typical gitweb config files will only change starting (default) time zone,
 and leave other elements at their default values:</simpara>
 <screen>$feature{'javascript-timezone'}{'default'}[0] = "utc";</screen>
 <simpara>The example configuration presented here is guaranteed to be backwards
 and forward compatible.</simpara>
-<simpara>Timezone values can be "local" (for local timezone that browser uses), "utc"
+<simpara>Time zone values can be "local" (for local time zone that browser uses), "utc"
 (what gitweb uses when JavaScript or this feature is disabled), or numerical
-timezones in the form of "+/-HHMM", such as "+0200".</simpara>
+time zones in the form of "+/-HHMM", such as "+0200".</simpara>
 <simpara>Project specific override is not supported.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+extra-branch-refs
+</term>
+<listitem>
+<simpara>
+        List of additional directories under "refs" which are going to
+        be used as branch refs. For example if you have a gerrit setup
+        where all branches under refs/heads/ are official,
+        push-after-review ones and branches under refs/sandbox/,
+        refs/wip and refs/other are user ones where permissions are
+        much wider, then you might want to set this variable as
+        follows:
+</simpara>
+<screen>$feature{'extra-branch-refs'}{'default'} =
+        ['sandbox', 'wip', 'other'];</screen>
+<simpara>This feature can be configured on per-repository basis after setting
+$feature{<emphasis>extra-branch-refs</emphasis>}{<emphasis>override</emphasis>} to true, via repository's
+<emphasis>gitweb.extraBranchRefs</emphasis> configuration variable, which contains a
+space separated list of refs. An example:</simpara>
+<screen>[gitweb]
+        extraBranchRefs = sandbox wip other</screen>
+<simpara>The gitweb.extraBranchRefs is actually a multi-valued configuration
+variable, so following example is also correct and the result is the
+same as of the snippet above:</simpara>
+<screen>[gitweb]
+        extraBranchRefs = sandbox
+        extraBranchRefs = wip other</screen>
+<simpara>It is an error to specify a ref that does not pass "git check-ref-format"
+scrutiny. Duplicated values are filtered.</simpara>
 </listitem>
 </varlistentry>
 </variablelist>
@@ -1134,12 +1190,19 @@ $feature{'pickaxe'}{'override'} = 1;</literallayout>
 <literallayout class="monospaced">$feature{'snapshot'}{'default'} = ['zip', 'tgz'];
 $feature{'snapshot'}{'override'} = 1;</literallayout>
 <simpara>If you allow overriding for the snapshot feature, you can specify which
-snapshot formats are globally disabled. You can also add any command line
+snapshot formats are globally disabled. You can also add any command-line
 options you want (such as setting the compression level). For instance, you
 can disable Zip compressed snapshots and set <emphasis role="strong">gzip</emphasis>(1) to run at level 6 by
 adding the following lines to your gitweb configuration file:</simpara>
 <literallayout class="monospaced">$known_snapshot_formats{'zip'}{'disabled'} = 1;
 $known_snapshot_formats{'tgz'}{'compressor'} = ['gzip','-6'];</literallayout>
+</simplesect>
+<simplesect id="gitweb.conf(5)__bugs">
+<title>BUGS</title>
+<simpara>Debugging would be easier if the fallback configuration file
+(<emphasis>/etc/gitweb.conf</emphasis>) and environment variable to override its location
+(<emphasis>GITWEB_CONFIG_SYSTEM</emphasis>) had names reflecting their "fallback" role.
+The current names are kept to avoid breaking working setups.</simpara>
 </simplesect>
 <simplesect id="gitweb.conf(5)__environment">
 <title>ENVIRONMENT</title>

@@ -24,7 +24,7 @@ The program supports clients fetching using both the smart HTTP protocol
 and the backwards-compatible dumb HTTP protocol, as well as clients
 pushing using the smart HTTP protocol.</simpara>
 <simpara>It verifies that the directory has the magic file
-"git-daemon-export-ok", and it will refuse to export any git directory
+"git-daemon-export-ok", and it will refuse to export any Git directory
 that hasn't explicitly been marked for export this way (unless the
 GIT_HTTP_EXPORT_ALL environmental variable is set).</simpara>
 <simpara>By default, only the <emphasis>upload-pack</emphasis> service is enabled, which serves
@@ -109,13 +109,40 @@ Apache 2.x
 SetEnv GIT_HTTP_EXPORT_ALL
 ScriptAlias /git/ /usr/libexec/git-core/git-http-backend/</screen>
 <simpara>To enable anonymous read access but authenticated write access,
-require authorization with a LocationMatch directive:</simpara>
+require authorization for both the initial ref advertisement (which we
+detect as a push via the service parameter in the query string), and the
+receive-pack invocation itself:</simpara>
+<screen>RewriteCond %{QUERY_STRING} service=git-receive-pack [OR]
+RewriteCond %{REQUEST_URI} /git-receive-pack$
+RewriteRule ^/git/ - [E=AUTHREQUIRED:yes]
+
+&lt;LocationMatch "^/git/"&gt;
+        Order Deny,Allow
+        Deny from env=AUTHREQUIRED
+
+        AuthType Basic
+        AuthName "Git Access"
+        Require group committers
+        Satisfy Any
+        ...
+&lt;/LocationMatch&gt;</screen>
+<simpara>If you do not have <emphasis>mod_rewrite</emphasis> available to match against the query
+string, it is sufficient to just protect <emphasis>git-receive-pack</emphasis> itself,
+like:</simpara>
 <screen>&lt;LocationMatch "^/git/.*/git-receive-pack$"&gt;
         AuthType Basic
         AuthName "Git Access"
         Require group committers
         ...
 &lt;/LocationMatch&gt;</screen>
+<simpara>In this mode, the server will not request authentication until the
+client actually starts the object negotiation phase of the push, rather
+than during the initial contact.  For this reason, you must also enable
+the <emphasis>http.receivepack</emphasis> config option in any repositories that should
+accept a push. The default behavior, if <emphasis>http.receivepack</emphasis> is not set,
+is to reject any pushes by unauthenticated users; the initial request
+will therefore report <emphasis>403 Forbidden</emphasis> to the client, without even giving
+an opportunity for authentication.</simpara>
 <simpara>To require authentication for both reads and writes, use a Location
 directive around the repository, or one of its parent directories:</simpara>
 <screen>&lt;Location /git/private&gt;
@@ -173,6 +200,46 @@ ScriptAliasMatch \
 ScriptAlias /git/ /var/www/cgi-bin/gitweb.cgi/</screen>
 </listitem>
 </varlistentry>
+<varlistentry>
+<term>
+Lighttpd
+</term>
+<listitem>
+<simpara>
+        Ensure that <emphasis>mod_cgi</emphasis>, <emphasis>mod_alias</emphasis>, <emphasis>mod_auth</emphasis>, <emphasis>mod_setenv</emphasis> are
+        loaded, then set <emphasis>GIT_PROJECT_ROOT</emphasis> appropriately and redirect
+        all requests to the CGI:
+</simpara>
+<screen>alias.url += ( "/git" =&gt; "/usr/lib/git-core/git-http-backend" )
+$HTTP["url"] =~ "^/git" {
+        cgi.assign = ("" =&gt; "")
+        setenv.add-environment = (
+                "GIT_PROJECT_ROOT" =&gt; "/var/www/git",
+                "GIT_HTTP_EXPORT_ALL" =&gt; ""
+        )
+}</screen>
+<simpara>To enable anonymous read access but authenticated write access:</simpara>
+<screen>$HTTP["querystring"] =~ "service=git-receive-pack" {
+        include "git-auth.conf"
+}
+$HTTP["url"] =~ "^/git/.*/git-receive-pack$" {
+        include "git-auth.conf"
+}</screen>
+<simpara>where <emphasis>git-auth.conf</emphasis> looks something like:</simpara>
+<screen>auth.require = (
+        "/" =&gt; (
+                "method" =&gt; "basic",
+                "realm" =&gt; "Git Access",
+                "require" =&gt; "valid-user"
+               )
+)
+# ...and set up auth.backend here</screen>
+<simpara>To require authentication for both reads and writes:</simpara>
+<screen>$HTTP["url"] =~ "^/git/private" {
+        include "git-auth.conf"
+}</screen>
+</listitem>
+</varlistentry>
 </variablelist>
 </simplesect>
 <simplesect id="git-http-backend(1)__environment">
@@ -214,20 +281,20 @@ REQUEST_METHOD
 <simpara>The GIT_HTTP_EXPORT_ALL environmental variable may be passed to
 <emphasis>git-http-backend</emphasis> to bypass the check for the "git-daemon-export-ok"
 file in each repository before allowing export of that repository.</simpara>
+<simpara>The <emphasis>GIT_HTTP_MAX_REQUEST_BUFFER</emphasis> environment variable (or the
+<emphasis>http.maxRequestBuffer</emphasis> config variable) may be set to change the
+largest ref negotiation request that git will handle during a fetch; any
+fetch requiring a larger buffer will not succeed.  This value should not
+normally need to be changed, but may be helpful if you are fetching from
+a repository with an extremely large number of refs.  The value can be
+specified with a unit (e.g., <emphasis>100M</emphasis> for 100 megabytes). The default is
+10 megabytes.</simpara>
 <simpara>The backend process sets GIT_COMMITTER_NAME to <emphasis>$REMOTE_USER</emphasis> and
 GIT_COMMITTER_EMAIL to <emphasis>${REMOTE_USER}@http.${REMOTE_ADDR}</emphasis>,
 ensuring that any reflogs created by <emphasis>git-receive-pack</emphasis> contain some
 identifying information of the remote user who performed the push.</simpara>
 <simpara>All CGI environment variables are available to each of the hooks
 invoked by the <emphasis>git-receive-pack</emphasis>.</simpara>
-</simplesect>
-<simplesect id="git-http-backend(1)__author">
-<title>Author</title>
-<simpara>Written by Shawn O. Pearce &lt;<ulink url="mailto:spearce@spearce.org">spearce@spearce.org</ulink>&gt;.</simpara>
-</simplesect>
-<simplesect id="git-http-backend(1)__documentation">
-<title>Documentation</title>
-<simpara>Documentation by Shawn O. Pearce &lt;<ulink url="mailto:spearce@spearce.org">spearce@spearce.org</ulink>&gt;.</simpara>
 </simplesect>
 <simplesect id="git-http-backend(1)__git">
 <title>GIT</title>

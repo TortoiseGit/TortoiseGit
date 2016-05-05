@@ -13,7 +13,7 @@
 <simplesect id="git-fmt-merge-msg(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git fmt-merge-msg</emphasis> [-m &lt;message&gt;] [--log[=&lt;n&gt;] | --no-log] &lt;$GIT_DIR/FETCH_HEAD
+<literallayout><emphasis>git fmt-merge-msg</emphasis> [-m &lt;message&gt;] [--log[=&lt;n&gt;] | --no-log]
 <emphasis>git fmt-merge-msg</emphasis> [-m &lt;message&gt;] [--log[=&lt;n&gt;] | --no-log] -F &lt;file&gt;</literallayout>
 </blockquote>
 </simplesect>
@@ -55,10 +55,7 @@ automatically invoking <emphasis>git merge</emphasis>.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---summary
-</term>
-<term>
---no-summary
+--[no-]summary
 </term>
 <listitem>
 <simpara>
@@ -137,6 +134,13 @@ merge.summary
 </listitem>
 </varlistentry>
 </variablelist>
+</simplesect>
+<simplesect id="git-fmt-merge-msg(1)__example">
+<title>EXAMPLE</title>
+<simpara>$ git fetch origin master
+$ git fmt-merge-msg --log &lt;$GIT_DIR/FETCH_HEAD</simpara>
+<simpara>Print a log message describing a merge of the "master" branch from
+the "origin" remote.</simpara>
 </simplesect>
 <simplesect id="git-fmt-merge-msg(1)__see_also">
 <title>SEE ALSO</title>

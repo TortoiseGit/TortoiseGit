@@ -18,13 +18,14 @@
                    [(--attach|--inline)[=&lt;boundary&gt;] | --no-attach]
                    [-s | --signoff]
                    [--signature=&lt;signature&gt; | --no-signature]
+                   [--signature-file=&lt;file&gt;]
                    [-n | --numbered | -N | --no-numbered]
                    [--start-number &lt;n&gt;] [--numbered-files]
                    [--in-reply-to=Message-Id] [--suffix=.&lt;sfx&gt;]
                    [--ignore-if-in-upstream]
-                   [--subject-prefix=Subject-Prefix]
+                   [--subject-prefix=Subject-Prefix] [(--reroll-count|-v) &lt;n&gt;]
                    [--to=&lt;email&gt;] [--cc=&lt;email&gt;]
-                   [--cover-letter] [--quiet] [--notes[=&lt;ref&gt;]]
+                   [--[no-]cover-letter] [--quiet] [--notes[=&lt;ref&gt;]]
                    [&lt;common diff options&gt;]
                    [ &lt;since&gt; | &lt;revision range&gt; ]</literallayout>
 </blockquote>
@@ -64,7 +65,11 @@ will only be numbers, without the first line of the commit appended.
 The names of the output files are printed to standard
 output, unless the <emphasis>--stdout</emphasis> option is specified.</simpara>
 <simpara>If <emphasis>-o</emphasis> is specified, output files are created in &lt;dir&gt;.  Otherwise
-they are created in the current working directory.</simpara>
+they are created in the current working directory. The default path
+can be set with the <emphasis>format.outputDirectory</emphasis> configuration option.
+The <emphasis>-o</emphasis> option takes precedence over <emphasis>format.outputDirectory</emphasis>.
+To store patches in the current working directory even when
+<emphasis>format.outputDirectory</emphasis> points elsewhere, use <emphasis>-o .</emphasis>.</simpara>
 <simpara>By default, the subject of a single patch is "[PATCH] " followed by
 the concatenation of lines from the commit message up to the first blank
 line (see the DISCUSSION section of <xref linkend="git-commit(1)" />).</simpara>
@@ -135,6 +140,63 @@ reference.</simpara>
 <simpara>
         Generate a diff using the "histogram diff" algorithm.
 </simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--diff-algorithm={patience|minimal|histogram|myers}
+</term>
+<listitem>
+<simpara>
+        Choose a diff algorithm. The variants are as follows:
+</simpara>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>default</emphasis>, <emphasis>myers</emphasis>
+</term>
+<listitem>
+<simpara>
+        The basic greedy diff algorithm. Currently, this is the default.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>minimal</emphasis>
+</term>
+<listitem>
+<simpara>
+        Spend extra time to make sure the smallest possible diff is
+        produced.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>patience</emphasis>
+</term>
+<listitem>
+<simpara>
+        Use "patience diff" algorithm when generating patches.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>histogram</emphasis>
+</term>
+<listitem>
+<simpara>
+        This algorithm extends the patience algorithm to "support
+        low-occurrence common elements".
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+<simpara>For instance, if you configured diff.algorithm variable to a
+non-default value and want to use the default one, then you
+have to use <emphasis>--diff-algorithm=default</emphasis> option.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -354,7 +416,7 @@ few lines that happen to match textually as the context, but as a
 single deletion of everything old followed by a single insertion of
 everything new, and the number <emphasis>m</emphasis> controls this aspect of the -B
 option (defaults to 60%). <emphasis>-B/70%</emphasis> specifies that less than 30% of the
-original should remain in the result for git to consider it a total
+original should remain in the result for Git to consider it a total
 rewrite (i.e. otherwise the resulting patch will be a series of
 deletion and insertion mixed together with context lines).</simpara>
 <simpara>When used with -M, a totally-rewritten file is also considered as the
@@ -378,13 +440,13 @@ another file.</simpara>
         Detect renames.
         If <emphasis>n</emphasis> is specified, it is a threshold on the similarity
         index (i.e. amount of addition/deletions compared to the
-        file's size). For example, <emphasis>-M90%</emphasis> means git should consider a
+        file's size). For example, <emphasis>-M90%</emphasis> means Git should consider a
         delete/add pair to be a rename if more than 90% of the file
         hasn't changed.  Without a <emphasis>%</emphasis> sign, the number is to be read as
         a fraction, with a decimal point before it.  I.e., <emphasis>-M5</emphasis> becomes
         0.5, and is thus the same as <emphasis>-M50%</emphasis>.  Similarly, <emphasis>-M05</emphasis> is
         the same as <emphasis>-M5%</emphasis>.  To limit detection to exact renames, use
-        <emphasis>-M100%</emphasis>.
+        <emphasis>-M100%</emphasis>.  The default similarity index is 50%.
 </simpara>
 </listitem>
 </varlistentry>
@@ -429,7 +491,7 @@ another file.</simpara>
 <simpara>
         Omit the preimage for deletes, i.e. print only the header but not
         the diff between the preimage and <emphasis>/dev/null</emphasis>. The resulting patch
-        is not meant to be applied with <emphasis>patch</emphasis> nor <emphasis>git apply</emphasis>; this is
+        is not meant to be applied with <emphasis>patch</emphasis> or <emphasis>git apply</emphasis>; this is
         solely for people who want to just concentrate on reviewing the
         text after the change. In addition, the output obviously lack
         enough information to apply such a patch in reverse, even manually,
@@ -461,6 +523,9 @@ of a delete/create pair.</simpara>
 <simpara>
         Output the patch in the order specified in the
         &lt;orderfile&gt;, which has one shell glob pattern per line.
+        This overrides the <emphasis>diff.orderFile</emphasis> configuration variable
+        (see <xref linkend="git-config(1)" />).  To cancel <emphasis>diff.orderFile</emphasis>,
+        use <emphasis>-O/dev/null</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -514,6 +579,16 @@ of a delete/create pair.</simpara>
         Ignore whitespace when comparing lines.  This ignores
         differences even if one line has whitespace where the other
         line has none.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--ignore-blank-lines
+</term>
+<listitem>
+<simpara>
+        Ignore changes whose lines are all blank.
 </simpara>
 </listitem>
 </varlistentry>
@@ -590,7 +665,7 @@ of a delete/create pair.</simpara>
 <listitem>
 <simpara>
         Ignore changes to submodules in the diff generation. &lt;when&gt; can be
-        either "none", "untracked", "dirty" or "all", which is the default
+        either "none", "untracked", "dirty" or "all", which is the default.
         Using "none" will consider the submodule modified when it either contains
         untracked or modified files or its HEAD differs from the commit recorded
         in the superproject and can be used to override any settings of the
@@ -733,6 +808,7 @@ of a delete/create pair.</simpara>
 <simpara>
         Add <emphasis>Signed-off-by:</emphasis> line to the commit message, using
         the committer identity of yourself.
+        See the signoff option in <xref linkend="git-commit(1)" /> for more information.
 </simpara>
 </listitem>
 </varlistentry>
@@ -850,6 +926,24 @@ will want to ensure that threading is disabled for <emphasis>git send-email</emp
 </varlistentry>
 <varlistentry>
 <term>
+-v &lt;n&gt;
+</term>
+<term>
+--reroll-count=&lt;n&gt;
+</term>
+<listitem>
+<simpara>
+        Mark the series as the &lt;n&gt;-th iteration of the topic. The
+        output filenames have <emphasis>v&lt;n&gt;</emphasis> prepended to them, and the
+        subject prefix ("PATCH" by default, but configurable via the
+        <emphasis>--subject-prefix</emphasis> option) has ` v&lt;n&gt;` appended to it.  E.g.
+        <emphasis>--reroll-count=4</emphasis> may produce <emphasis>v4-0001-add-makefile.patch</emphasis>
+        file that has "Subject: [PATCH v4 1/20] Add makefile" in it.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --to=&lt;email&gt;
 </term>
 <listitem>
@@ -876,6 +970,29 @@ will want to ensure that threading is disabled for <emphasis>git send-email</emp
 </varlistentry>
 <varlistentry>
 <term>
+--from
+</term>
+<term>
+--from=&lt;ident&gt;
+</term>
+<listitem>
+<simpara>
+        Use <emphasis>ident</emphasis> in the <emphasis>From:</emphasis> header of each commit email. If the
+        author ident of the commit is not textually identical to the
+        provided <emphasis>ident</emphasis>, place a <emphasis>From:</emphasis> header in the body of the
+        message with the original author. If no <emphasis>ident</emphasis> is given, use
+        the committer ident.
+</simpara>
+<simpara>Note that this option is only useful if you are actually sending the
+emails and want to identify yourself as the sender, but retain the
+original author (and <emphasis>git am</emphasis> will correctly pick up the in-body
+header). Note also that <emphasis>git send-email</emphasis> already handles this
+transformation for you, and this option should not be used if you are
+feeding the result to <emphasis>git send-email</emphasis>.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --add-header=&lt;header&gt;
 </term>
 <listitem>
@@ -891,12 +1008,12 @@ will want to ensure that threading is disabled for <emphasis>git send-email</emp
 </varlistentry>
 <varlistentry>
 <term>
---cover-letter
+--[no-]cover-letter
 </term>
 <listitem>
 <simpara>
         In addition to the patches, generate a cover letter file
-        containing the shortlog and the overall diffstat.  You can
+        containing the branch description, shortlog and the overall diffstat.  You can
         fill in a description in the file before sending it out.
 </simpara>
 </listitem>
@@ -914,7 +1031,7 @@ will want to ensure that threading is disabled for <emphasis>git send-email</emp
 the commit that does not belong to the commit log message proper,
 and include it with the patch submission. While one can simply write
 these explanations after <emphasis>format-patch</emphasis> has run but before sending,
-keeping them as git notes allows them to be maintained between versions
+keeping them as Git notes allows them to be maintained between versions
 of the patch series (but see the discussion of the <emphasis>notes.rewrite</emphasis>
 configuration options in <xref linkend="git-notes(1)" /> to use this workflow).</simpara>
 </listitem>
@@ -927,8 +1044,18 @@ configuration options in <xref linkend="git-notes(1)" /> to use this workflow).<
 <simpara>
         Add a signature to each message produced. Per RFC 3676 the signature
         is separated from the body by a line with '-- ' on it. If the
-        signature option is omitted the signature defaults to the git version
+        signature option is omitted the signature defaults to the Git version
         number.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--signature-file=&lt;file&gt;
+</term>
+<listitem>
+<simpara>
+        Works just like --signature except the signature is read from a file.
 </simpara>
 </listitem>
 </varlistentry>
@@ -949,6 +1076,9 @@ you can use <emphasis>--suffix=-patch</emphasis> to get <emphasis>0001-descripti
 </varlistentry>
 <varlistentry>
 <term>
+-q
+</term>
+<term>
 --quiet
 </term>
 <listitem>
@@ -967,6 +1097,17 @@ you can use <emphasis>--suffix=-patch</emphasis> to get <emphasis>0001-descripti
         display a notice that those files changed.  Patches generated
         using this option cannot be applied properly, but they are
         still useful for code review.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--zero-commit
+</term>
+<listitem>
+<simpara>
+  Output an all-zero hash in each patch's From header instead
+  of the hash of the commit.
 </simpara>
 </listitem>
 </varlistentry>
@@ -994,13 +1135,14 @@ outputting more than one patch, add "To" or "Cc:" headers, configure
 attachments, and sign off patches with configuration variables.</simpara>
 <screen>[format]
         headers = "Organization: git-foo\n"
-        subjectprefix = CHANGE
+        subjectPrefix = CHANGE
         suffix = .txt
         numbered = auto
         to = &lt;email&gt;
         cc = &lt;email&gt;
         attach [ = mime-boundary-string ]
-        signoff = true</screen>
+        signOff = true
+        coverletter = auto</screen>
 </simplesect>
 <simplesect id="git-format-patch(1)__discussion">
 <title>DISCUSSION</title>
@@ -1142,7 +1284,7 @@ section of <xref linkend="git-imap-send(1)" />.</simpara>
 <title>Thunderbird</title>
 <simpara>By default, Thunderbird will both wrap emails as well as flag
 them as being <emphasis>format=flowed</emphasis>, both of which will make the
-resulting email unusable by git.</simpara>
+resulting email unusable by Git.</simpara>
 <simpara>There are three different approaches: use an add-on to turn off line wraps,
 configure Thunderbird to not mangle patches, or use
 an external editor to keep Thunderbird from mangling the patches.</simpara>
@@ -1175,7 +1317,8 @@ Edit..Preferences..Composition, wrap plain text messages at 0</simpara>
 <simpara>In Thunderbird 3:
 Edit..Preferences..Advanced..Config Editor.  Search for
 "mail.wrap_long_lines".
-Toggle it to make sure it is set to <emphasis>false</emphasis>.</simpara>
+Toggle it to make sure it is set to <emphasis>false</emphasis>. Also, search for
+"mailnews.wraplength" and set the value to 0.</simpara>
 </listitem>
 <listitem>
 <simpara>
@@ -1307,8 +1450,8 @@ The same as the previous one:
 <simpara>Additionally, it detects and handles renames and complete rewrites
 intelligently to produce a renaming patch.  A renaming patch reduces
 the amount of text output, and generally makes it easier to review.
-Note that non-git "patch" programs won't understand renaming patches, so
-use it only when you know the recipient uses git to apply your patch.</simpara>
+Note that non-Git "patch" programs won't understand renaming patches, so
+use it only when you know the recipient uses Git to apply your patch.</simpara>
 </listitem>
 <listitem>
 <simpara>

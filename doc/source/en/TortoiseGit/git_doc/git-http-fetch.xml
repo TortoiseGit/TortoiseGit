@@ -8,7 +8,7 @@
 </indexterm>
 <simplesect id="git-http-fetch(1)__name">
 <title>NAME</title>
-<simpara>git-http-fetch - Download from a remote git repository via HTTP</simpara>
+<simpara>git-http-fetch - Download from a remote Git repository via HTTP</simpara>
 </simplesect>
 <simplesect id="git-http-fetch(1)__synopsis">
 <title>SYNOPSIS</title>
@@ -18,7 +18,7 @@
 </simplesect>
 <simplesect id="git-http-fetch(1)__description">
 <title>DESCRIPTION</title>
-<simpara>Downloads a remote git repository via HTTP.</simpara>
+<simpara>Downloads a remote Git repository via HTTP.</simpara>
 <simpara><emphasis role="strong">NOTE</emphasis>: use of this command without -a is deprecated.  The -a
 behaviour will become the default in a future release.</simpara>
 </simplesect>

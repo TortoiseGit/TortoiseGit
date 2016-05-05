@@ -14,9 +14,9 @@
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git fetch-pack</emphasis> [--all] [--quiet|-q] [--keep|-k] [--thin] [--include-tag]
-                                [--upload-pack=&lt;git-upload-pack&gt;]
-                                [--depth=&lt;n&gt;] [--no-progress]
-                                [-v] [&lt;host&gt;:]&lt;directory&gt; [&lt;refs&gt;&#8230;]</literallayout>
+        [--upload-pack=&lt;git-upload-pack&gt;]
+        [--depth=&lt;n&gt;] [--no-progress]
+        [-v] &lt;repository&gt; [&lt;refs&gt;&#8230;]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-fetch-pack(1)__description">
@@ -151,6 +151,8 @@ be in a separate packet, and the list must end with a flush packet.</simpara>
 <listitem>
 <simpara>
         Limit fetching to ancestor-chains not longer than n.
+        <emphasis>git-upload-pack</emphasis> treats the special depth 2147483647 as
+        infinite even if there is an ancestor-chain that long.
 </simpara>
 </listitem>
 </varlistentry>
@@ -166,6 +168,17 @@ be in a separate packet, and the list must end with a flush packet.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+--check-self-contained-and-connected
+</term>
+<listitem>
+<simpara>
+        Output "connectivity-ok" if the received pack is
+        self-contained and connected.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 -v
 </term>
 <listitem>
@@ -176,23 +189,11 @@ be in a separate packet, and the list must end with a flush packet.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
-&lt;host&gt;
+&lt;repository&gt;
 </term>
 <listitem>
 <simpara>
-        A remote host that houses the repository.  When this
-        part is specified, <emphasis>git-upload-pack</emphasis> is invoked via
-        ssh.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
-&lt;directory&gt;
-</term>
-<listitem>
-<simpara>
-        The repository to sync from.
+        The URL to the remote repository.
 </simpara>
 </listitem>
 </varlistentry>
@@ -206,9 +207,16 @@ be in a separate packet, and the list must end with a flush packet.</simpara>
         $GIT_DIR (e.g. "HEAD", "refs/heads/master").  When
         unspecified, update from all heads the remote side has.
 </simpara>
+<simpara>If the remote has enabled the options <emphasis>uploadpack.allowTipSHA1InWant</emphasis> or
+<emphasis>uploadpack.allowReachableSHA1InWant</emphasis>, they may alternatively be 40-hex
+sha1s present on the remote.</simpara>
 </listitem>
 </varlistentry>
 </variablelist>
+</simplesect>
+<simplesect id="git-fetch-pack(1)__see_also">
+<title>SEE ALSO</title>
+<simpara><xref linkend="git-fetch(1)" /></simpara>
 </simplesect>
 <simplesect id="git-fetch-pack(1)__git">
 <title>GIT</title>

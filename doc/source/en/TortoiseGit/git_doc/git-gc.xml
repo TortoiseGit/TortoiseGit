@@ -13,7 +13,7 @@
 <simplesect id="git-gc(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git gc</emphasis> [--aggressive] [--auto] [--quiet] [--prune=&lt;date&gt; | --no-prune]</literallayout>
+<literallayout><emphasis>git gc</emphasis> [--aggressive] [--auto] [--quiet] [--prune=&lt;date&gt; | --no-prune] [--force]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-gc(1)__description">
@@ -65,10 +65,10 @@ exceeds the value of the <emphasis>gc.auto</emphasis> configuration variable, th
 all loose objects are combined into a single pack using
 <emphasis>git repack -d -l</emphasis>.  Setting the value of <emphasis>gc.auto</emphasis> to 0
 disables automatic packing of loose objects.</simpara>
-<simpara>If the number of packs exceeds the value of <emphasis>gc.autopacklimit</emphasis>,
+<simpara>If the number of packs exceeds the value of <emphasis>gc.autoPackLimit</emphasis>,
 then existing packs (except those marked with a <emphasis>.keep</emphasis> file)
 are consolidated into a single pack by using the <emphasis>-A</emphasis> option of
-<emphasis>git repack</emphasis>. Setting <emphasis>gc.autopacklimit</emphasis> to 0 disables
+<emphasis>git repack</emphasis>. Setting <emphasis>gc.autoPackLimit</emphasis> to 0 disables
 automatic consolidation of packs.</simpara>
 </listitem>
 </varlistentry>
@@ -79,8 +79,12 @@ automatic consolidation of packs.</simpara>
 <listitem>
 <simpara>
         Prune loose objects older than date (default is 2 weeks ago,
-        overridable by the config variable <emphasis>gc.pruneExpire</emphasis>).  This
-        option is on by default.
+        overridable by the config variable <emphasis>gc.pruneExpire</emphasis>).
+        --prune=all prunes loose objects regardless of their age (do
+        not use --prune=all unless you know exactly what you are doing.
+        Unless the repository is quiescent, you will lose newly created
+        objects that haven't been anchored with the refs and end up
+        corrupting your repository).  --prune is on by default.
 </simpara>
 </listitem>
 </varlistentry>
@@ -101,6 +105,17 @@ automatic consolidation of packs.</simpara>
 <listitem>
 <simpara>
         Suppress all progress reports.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--force
+</term>
+<listitem>
+<simpara>
+        Force <emphasis>git gc</emphasis> to run even if there may be another <emphasis>git gc</emphasis>
+        instance running on this repository.
 </simpara>
 </listitem>
 </varlistentry>
@@ -126,14 +141,14 @@ example, this sets non-default expiry values only to remote-tracking
 branches:</simpara>
 <screen>[gc "refs/remotes/*"]
         reflogExpire = never
-        reflogexpireUnreachable = 3 days</screen>
-<simpara>The optional configuration variable <emphasis>gc.rerereresolved</emphasis> indicates
+        reflogExpireUnreachable = 3 days</screen>
+<simpara>The optional configuration variable <emphasis>gc.rerereResolved</emphasis> indicates
 how long records of conflicted merge you resolved earlier are
 kept.  This defaults to 60 days.</simpara>
-<simpara>The optional configuration variable <emphasis>gc.rerereunresolved</emphasis> indicates
+<simpara>The optional configuration variable <emphasis>gc.rerereUnresolved</emphasis> indicates
 how long records of conflicted merge you have not resolved are
 kept.  This defaults to 15 days.</simpara>
-<simpara>The optional configuration variable <emphasis>gc.packrefs</emphasis> determines if
+<simpara>The optional configuration variable <emphasis>gc.packRefs</emphasis> determines if
 <emphasis>git gc</emphasis> runs <emphasis>git pack-refs</emphasis>. This can be set to "notbare" to enable
 it within all non-bare repos or it can be set to a boolean value.
 This defaults to true.</simpara>
@@ -143,6 +158,8 @@ the repository when the --aggressive option is specified.  The larger
 the value, the more time is spent optimizing the delta compression.  See
 the documentation for the --window' option in <xref linkend="git-repack(1)" /> for
 more details.  This defaults to 250.</simpara>
+<simpara>Similarly, the optional configuration variable <emphasis>gc.aggressiveDepth</emphasis>
+controls --depth option in <xref linkend="git-repack(1)" />. This defaults to 250.</simpara>
 <simpara>The optional configuration variable <emphasis>gc.pruneExpire</emphasis> controls how old
 the unreferenced loose objects have to be before they are pruned.  The
 default is "2 weeks ago".</simpara>

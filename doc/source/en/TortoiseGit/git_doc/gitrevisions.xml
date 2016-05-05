@@ -8,7 +8,7 @@
 </indexterm>
 <simplesect id="gitrevisions(7)__name">
 <title>NAME</title>
-<simpara>gitrevisions - specifying revisions and ranges for git</simpara>
+<simpara>gitrevisions - specifying revisions and ranges for Git</simpara>
 </simplesect>
 <simplesect id="gitrevisions(7)__synopsis">
 <title>SYNOPSIS</title>
@@ -28,7 +28,7 @@ revision parameters which denote other objects than commits, e.g. blobs
 <simplesect id="gitrevisions(7)__specifying_revisions">
 <title>SPECIFYING REVISIONS</title>
 <simpara>A revision parameter <emphasis>&lt;rev&gt;</emphasis> typically, but not necessarily, names a
-commit object.  It uses what is called an <emphasis>extended SHA1</emphasis>
+commit object.  It uses what is called an <emphasis>extended SHA-1</emphasis>
 syntax.  Here are various ways to spell object names.  The
 ones listed near the end of this list name trees and
 blobs contained in a commit.</simpara>
@@ -39,7 +39,7 @@ blobs contained in a commit.</simpara>
 </term>
 <listitem>
 <simpara>
-  The full SHA1 object name (40-byte hexadecimal string), or
+  The full SHA-1 object name (40-byte hexadecimal string), or
   a leading substring that is unique within the repository.
   E.g. dae86e1950b1277e545cee180551750029cfe735 and dae86e both
   name the same commit object if there is no other object in
@@ -68,7 +68,7 @@ blobs contained in a commit.</simpara>
   A symbolic ref name.  E.g. <emphasis>master</emphasis> typically means the commit
   object referenced by <emphasis>refs/heads/master</emphasis>.  If you
   happen to have both <emphasis>heads/master</emphasis> and <emphasis>tags/master</emphasis>, you can
-  explicitly say <emphasis>heads/master</emphasis> to tell git which one you mean.
+  explicitly say <emphasis>heads/master</emphasis> to tell Git which one you mean.
   When ambiguous, a <emphasis>&lt;refname&gt;</emphasis> is disambiguated by taking the
   first match in the following rules:
 </simpara>
@@ -117,10 +117,20 @@ when you run <emphasis>git merge</emphasis>.
 when you run <emphasis>git cherry-pick</emphasis>.</simpara>
 <simpara>Note that any of the <emphasis>refs/*</emphasis> cases above may come either from
 the <emphasis>$GIT_DIR/refs</emphasis> directory or from the <emphasis>$GIT_DIR/packed-refs</emphasis> file.
-While the ref name encoding is unspecified, UTF-8 is prefered as
+While the ref name encoding is unspecified, UTF-8 is preferred as
 some output processing may assume ref names in UTF-8.</simpara>
 </listitem>
 </orderedlist>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>@</emphasis>
+</term>
+<listitem>
+<simpara>
+  <emphasis>@</emphasis> alone is a shortcut for <emphasis>HEAD</emphasis>.
+</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -176,21 +186,50 @@ some output processing may assume ref names in UTF-8.</simpara>
 </term>
 <listitem>
 <simpara>
-  The construct <emphasis>@{-&lt;n&gt;}</emphasis> means the &lt;n&gt;th branch checked out
+  The construct <emphasis>@{-&lt;n&gt;}</emphasis> means the &lt;n&gt;th branch/commit checked out
   before the current one.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-<emphasis>&lt;refname&gt;@{upstream}</emphasis>, e.g. <emphasis>master@{upstream}</emphasis>, <emphasis>@{u}</emphasis>
+<emphasis>&lt;branchname&gt;@{upstream}</emphasis>, e.g. <emphasis>master@{upstream}</emphasis>, <emphasis>@{u}</emphasis>
 </term>
 <listitem>
 <simpara>
-  The suffix <emphasis>@{upstream}</emphasis> to a ref (short form <emphasis>&lt;refname&gt;@{u}</emphasis>) refers to
-  the branch the ref is set to build on top of.  A missing ref defaults
-  to the current branch.
+  The suffix <emphasis>@{upstream}</emphasis> to a branchname (short form <emphasis>&lt;branchname&gt;@{u}</emphasis>)
+  refers to the branch that the branch specified by branchname is set to build on
+  top of (configured with <emphasis>branch.&lt;name&gt;.remote</emphasis> and
+  <emphasis>branch.&lt;name&gt;.merge</emphasis>).  A missing branchname defaults to the
+  current one.
 </simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>&lt;branchname&gt;@{push}</emphasis>, e.g. <emphasis>master@{push}</emphasis>, <emphasis>@{push}</emphasis>
+</term>
+<listitem>
+<simpara>
+  The suffix <emphasis>@{push}</emphasis> reports the branch "where we would push to" if
+  <emphasis>git push</emphasis> were run while <emphasis>branchname</emphasis> was checked out (or the current
+  <emphasis>HEAD</emphasis> if no branchname is specified). Since our push destination is
+  in a remote repository, of course, we report the local tracking branch
+  that corresponds to that branch (i.e., something in <emphasis>refs/remotes/</emphasis>).
+</simpara>
+<simpara>Here's an example to make it more clear:</simpara>
+<screen>$ git config push.default current
+$ git config remote.pushdefault myfork
+$ git checkout -b mybranch origin/master
+
+$ git rev-parse --symbolic-full-name @{upstream}
+refs/remotes/origin/master
+
+$ git rev-parse --symbolic-full-name @{push}
+refs/remotes/myfork/mybranch</screen>
+<simpara>Note in the example that we set up a triangular workflow, where we pull
+from one location and push to another. In a non-triangular workflow,
+<emphasis>@{push}</emphasis> is the same as <emphasis>@{upstream}</emphasis>, and there is no need for it.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -230,12 +269,22 @@ some output processing may assume ref names in UTF-8.</simpara>
 <listitem>
 <simpara>
   A suffix <emphasis>&#94;</emphasis> followed by an object type name enclosed in
-  brace pair means the object
-  could be a tag, and dereference the tag recursively until an
-  object of that type is found or the object cannot be
-  dereferenced anymore (in which case, barf).  <emphasis>&lt;rev&gt;&#94;0</emphasis>
+  brace pair means dereference the object at <emphasis>&lt;rev&gt;</emphasis> recursively until
+  an object of type <emphasis>&lt;type&gt;</emphasis> is found or the object cannot be
+  dereferenced anymore (in which case, barf).
+  For example, if <emphasis>&lt;rev&gt;</emphasis> is a commit-ish, <emphasis>&lt;rev&gt;&#94;{commit}</emphasis>
+  describes the corresponding commit object.
+  Similarly, if <emphasis>&lt;rev&gt;</emphasis> is a tree-ish, <emphasis>&lt;rev&gt;&#94;{tree}</emphasis>
+  describes the corresponding tree object.
+  <emphasis>&lt;rev&gt;&#94;0</emphasis>
   is a short-hand for <emphasis>&lt;rev&gt;&#94;{commit}</emphasis>.
 </simpara>
+<simpara><emphasis>rev&#94;{object}</emphasis> can be used to make sure <emphasis>rev</emphasis> names an
+object that exists, without requiring <emphasis>rev</emphasis> to be a tag, and
+without dereferencing <emphasis>rev</emphasis>; because a tag is already an object,
+it does not have to be dereferenced even once to get to an object.</simpara>
+<simpara><emphasis>rev&#94;{tag}</emphasis> can be used to ensure that <emphasis>rev</emphasis> identifies an
+existing tag object.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -274,11 +323,12 @@ some output processing may assume ref names in UTF-8.</simpara>
   A colon, followed by a slash, followed by a text, names
   a commit whose commit message matches the specified regular expression.
   This name returns the youngest matching commit which is
-  reachable from any ref.  If the commit message starts with a
-  <emphasis>!</emphasis> you have to repeat that;  the special sequence <emphasis>:/!</emphasis>,
-  followed by something else than <emphasis>!</emphasis>, is reserved for now.
-  The regular expression can match any part of the commit message. To
-  match messages starting with a string, one can use e.g. <emphasis>:/^foo</emphasis>.
+  reachable from any ref. The regular expression can match any part of the
+  commit message. To match messages starting with a string, one can use
+  e.g. <emphasis>:/^foo</emphasis>. The special sequence <emphasis>:/!</emphasis> is reserved for modifiers to what
+  is matched. <emphasis>:/!-foo</emphasis> performs a negative match, while <emphasis>:/!!foo</emphasis> matches a
+  literal <emphasis>!</emphasis> character, followed by <emphasis>foo</emphasis>. Any other sequence beginning with
+  <emphasis>:/!</emphasis> is reserved for now.
 </simpara>
 </listitem>
 </varlistentry>
@@ -403,7 +453,8 @@ all of its parents.</simpara>
 <listitem>
 <simpara>
         Include commits that are reachable from &lt;rev2&gt; but exclude
-        those that are reachable from &lt;rev1&gt;.
+        those that are reachable from &lt;rev1&gt;.  When either &lt;rev1&gt; or
+        &lt;rev2&gt; is omitted, it defaults to <emphasis>HEAD</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -414,7 +465,8 @@ all of its parents.</simpara>
 <listitem>
 <simpara>
         Include commits that are reachable from either &lt;rev1&gt; or
-        &lt;rev2&gt; but exclude those that are reachable from both.
+        &lt;rev2&gt; but exclude those that are reachable from both.  When
+        either &lt;rev1&gt; or &lt;rev2&gt; is omitted, it defaults to <emphasis>HEAD</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>

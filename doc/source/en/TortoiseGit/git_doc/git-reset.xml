@@ -13,26 +13,26 @@
 <simplesect id="git-reset(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git reset</emphasis> [-q] [&lt;commit&gt;] [--] &lt;paths&gt;&#8230;
-<emphasis>git reset</emphasis> (--patch | -p) [&lt;commit&gt;] [--] [&lt;paths&gt;&#8230;]
-<emphasis>git reset</emphasis> [--soft | --mixed | --hard | --merge | --keep] [-q] [&lt;commit&gt;]</literallayout>
+<literallayout><emphasis>git reset</emphasis> [-q] [&lt;tree-ish&gt;] [--] &lt;paths&gt;&#8230;
+<emphasis>git reset</emphasis> (--patch | -p) [&lt;tree-ish&gt;] [--] [&lt;paths&gt;&#8230;]
+<emphasis>git reset</emphasis> [--soft | --mixed [-N] | --hard | --merge | --keep] [-q] [&lt;commit&gt;]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-reset(1)__description">
 <title>DESCRIPTION</title>
-<simpara>In the first and second form, copy entries from &lt;commit&gt; to the index.
+<simpara>In the first and second form, copy entries from &lt;tree-ish&gt; to the index.
 In the third form, set the current branch head (HEAD) to &lt;commit&gt;, optionally
-modifying index and working tree to match.  The &lt;commit&gt; defaults to HEAD
-in all forms.</simpara>
+modifying index and working tree to match.  The &lt;tree-ish&gt;/&lt;commit&gt; defaults
+to HEAD in all forms.</simpara>
 <variablelist>
 <varlistentry>
 <term>
-<emphasis>git reset</emphasis> [-q] [&lt;commit&gt;] [--] &lt;paths&gt;&#8230;
+<emphasis>git reset</emphasis> [-q] [&lt;tree-ish&gt;] [--] &lt;paths&gt;&#8230;
 </term>
 <listitem>
 <simpara>
         This form resets the index entries for all &lt;paths&gt; to their
-        state at &lt;commit&gt;.  (It does not affect the working tree, nor
+        state at &lt;tree-ish&gt;.  (It does not affect the working tree or
         the current branch.)
 </simpara>
 <simpara>This means that <emphasis>git reset &lt;paths&gt;</emphasis> is the opposite of <emphasis>git add
@@ -47,12 +47,12 @@ working tree in one go.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
-<emphasis>git reset</emphasis> (--patch | -p) [&lt;commit&gt;] [--] [&lt;paths&gt;&#8230;]
+<emphasis>git reset</emphasis> (--patch | -p) [&lt;tree-ish&gt;] [--] [&lt;paths&gt;&#8230;]
 </term>
 <listitem>
 <simpara>
         Interactively select hunks in the difference between the index
-        and &lt;commit&gt; (defaults to HEAD).  The chosen hunks are applied
+        and &lt;tree-ish&gt; (defaults to HEAD).  The chosen hunks are applied
         in reverse to the index.
 </simpara>
 <simpara>This means that <emphasis>git reset -p</emphasis> is the opposite of <emphasis>git add -p</emphasis>, i.e.
@@ -78,7 +78,7 @@ section of <xref linkend="git-add(1)" /> to learn how to operate the <emphasis>-
 </term>
 <listitem>
 <simpara>
-        Does not touch the index file nor the working tree at all (but
+        Does not touch the index file or the working tree at all (but
         resets the head to &lt;commit&gt;, just like all modes do). This leaves
         all your changed files "Changes to be committed", as <emphasis>git status</emphasis>
         would put it.
@@ -95,6 +95,8 @@ section of <xref linkend="git-add(1)" /> to learn how to operate the <emphasis>-
         are preserved but not marked for commit) and reports what has not
         been updated. This is the default action.
 </simpara>
+<simpara>If <emphasis>-N</emphasis> is specified, removed paths are marked as intent-to-add (see
+<xref linkend="git-add(1)" />).</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -194,7 +196,7 @@ Somebody asks you to pull, and the changes sounds worthy of merging.
 <para>
 However, you already dirtied the index (i.e. your index does
 not match the HEAD commit).  But you know the pull you are going
-to make does not affect frotz.c nor filfre.c, so you revert the
+to make does not affect frotz.c or filfre.c, so you revert the
 index changes for these two files.  Your changes in working tree
 remain there.
 </para>

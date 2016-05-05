@@ -18,7 +18,7 @@
 </simplesect>
 <simplesect id="git-rev-parse(1)__description">
 <title>DESCRIPTION</title>
-<simpara>Many git porcelainish commands take mixture of flags
+<simpara>Many Git porcelainish commands take mixture of flags
 (i.e. parameters that begin with a dash <emphasis>-</emphasis>) and parameters
 meant for the underlying <emphasis>git rev-list</emphasis> command they use internally
 and flags and parameters for the other commands they use
@@ -27,6 +27,9 @@ distinguish between them.</simpara>
 </simplesect>
 <simplesect id="git-rev-parse(1)__options">
 <title>OPTIONS</title>
+<section id="git-rev-parse(1)__operation_modes">
+<title>Operation Modes</title>
+<simpara>Each of these options must appear first on the command line.</simpara>
 <variablelist>
 <varlistentry>
 <term>
@@ -38,6 +41,23 @@ distinguish between them.</simpara>
 </simpara>
 </listitem>
 </varlistentry>
+<varlistentry>
+<term>
+--sq-quote
+</term>
+<listitem>
+<simpara>
+        Use <emphasis>git rev-parse</emphasis> in shell quoting mode (see SQ-QUOTE
+        section below). In contrast to the <emphasis>--sq</emphasis> option below, this
+        mode does only quoting. Nothing else is done to command input.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</section>
+<section id="git-rev-parse(1)__options_for_parseopt">
+<title>Options for --parseopt</title>
+<variablelist>
 <varlistentry>
 <term>
 --keep-dashdash
@@ -63,16 +83,20 @@ distinguish between them.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---sq-quote
+--stuck-long
 </term>
 <listitem>
 <simpara>
-        Use <emphasis>git rev-parse</emphasis> in shell quoting mode (see SQ-QUOTE
-        section below). In contrast to the <emphasis>--sq</emphasis> option below, this
-        mode does only quoting. Nothing else is done to command input.
+        Only meaningful in <emphasis>--parseopt</emphasis> mode. Output the options in their
+        long form if available, and with their arguments stuck.
 </simpara>
 </listitem>
 </varlistentry>
+</variablelist>
+</section>
+<section id="git-rev-parse(1)__options_for_filtering">
+<title>Options for Filtering</title>
+<variablelist>
 <varlistentry>
 <term>
 --revs-only
@@ -115,6 +139,11 @@ distinguish between them.</simpara>
 </simpara>
 </listitem>
 </varlistentry>
+</variablelist>
+</section>
+<section id="git-rev-parse(1)__options_for_output">
+<title>Options for Output</title>
+<variablelist>
 <varlistentry>
 <term>
 --default &lt;arg&gt;
@@ -128,13 +157,42 @@ distinguish between them.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+--prefix &lt;arg&gt;
+</term>
+<listitem>
+<simpara>
+        Behave as if <emphasis>git rev-parse</emphasis> was invoked from the <emphasis>&lt;arg&gt;</emphasis>
+        subdirectory of the working tree.  Any relative filenames are
+        resolved as if they are prefixed by <emphasis>&lt;arg&gt;</emphasis> and will be printed
+        in that form.
+</simpara>
+<simpara>This can be used to convert arguments to a command run in a subdirectory
+so that they can still be used after moving to the top-level of the
+repository.  For example:</simpara>
+<screen>prefix=$(git rev-parse --show-prefix)
+cd "$(git rev-parse --show-toplevel)"
+eval "set -- $(git rev-parse --sq --prefix "$prefix" "$@")"</screen>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --verify
 </term>
 <listitem>
 <simpara>
-        The parameter given must be usable as a single, valid
-        object name.  Otherwise barf and abort.
+        Verify that exactly one parameter is provided, and that it
+        can be turned into a raw 20-byte SHA-1 that can be used to
+        access the object database. If so, emit it to the standard
+        output; otherwise, error out.
 </simpara>
+<simpara>If you want to make sure that the output actually names an object in
+your object database and/or can be used as a specific type of object
+you require, you can add the <emphasis>^{type}</emphasis> peeling operator to the parameter.
+For example, <emphasis>git rev-parse "$VAR^{commit}"</emphasis> will make sure <emphasis>$VAR</emphasis>
+names an existing object that is a commit-ish (i.e. a commit, or an
+annotated tag that points at a commit).  To make sure that <emphasis>$VAR</emphasis>
+names an existing object of any type, <emphasis>git rev-parse "$VAR^{object}"</emphasis>
+can be used.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -149,6 +207,7 @@ distinguish between them.</simpara>
         Only meaningful in <emphasis>--verify</emphasis> mode. Do not output an error
         message if the first argument is not a valid object name;
         instead exit with non-zero status silently.
+        SHA-1s for valid object names are printed to stdout on success.
 </simpara>
 </listitem>
 </varlistentry>
@@ -182,11 +241,38 @@ distinguish between them.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+--abbrev-ref[=(strict|loose)]
+</term>
+<listitem>
+<simpara>
+        A non-ambiguous short name of the objects name.
+        The option core.warnAmbiguousRefs is used to select the strict
+        abbreviation mode.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--short
+</term>
+<term>
+--short=number
+</term>
+<listitem>
+<simpara>
+        Instead of outputting the full SHA-1 values of object names try to
+        abbreviate them to a shorter unique name. When no length is specified
+        7 is used. The minimum length is 4.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --symbolic
 </term>
 <listitem>
 <simpara>
-        Usually the object names are output in SHA1 form (with
+        Usually the object names are output in SHA-1 form (with
         possible <emphasis>&#94;</emphasis> prefix); this option makes them output in a
         form as close to the original input as possible.
 </simpara>
@@ -207,31 +293,11 @@ distinguish between them.</simpara>
 </simpara>
 </listitem>
 </varlistentry>
-<varlistentry>
-<term>
---abbrev-ref[=(strict|loose)]
-</term>
-<listitem>
-<simpara>
-        A non-ambiguous short name of the objects name.
-        The option core.warnAmbiguousRefs is used to select the strict
-        abbreviation mode.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
---disambiguate=&lt;prefix&gt;
-</term>
-<listitem>
-<simpara>
-        Show every object whose name begins with the given prefix.
-        The &lt;prefix&gt; must be at least 4 hexadecimal digits long to
-        avoid listing each and every object in the repository by
-        mistake.
-</simpara>
-</listitem>
-</varlistentry>
+</variablelist>
+</section>
+<section id="git-rev-parse(1)__options_for_objects">
+<title>Options for Objects</title>
+<variablelist>
 <varlistentry>
 <term>
 --all
@@ -279,35 +345,52 @@ shown.  If the pattern does not contain a globbing character (<emphasis>?</empha
 </varlistentry>
 <varlistentry>
 <term>
---show-toplevel
+--exclude=&lt;glob-pattern&gt;
 </term>
 <listitem>
 <simpara>
-        Show the absolute path of the top-level directory.
+        Do not include refs matching <emphasis>&lt;glob-pattern&gt;</emphasis> that the next <emphasis>--all</emphasis>,
+        <emphasis>--branches</emphasis>, <emphasis>--tags</emphasis>, <emphasis>--remotes</emphasis>, or <emphasis>--glob</emphasis> would otherwise
+        consider. Repetitions of this option accumulate exclusion patterns
+        up to the next <emphasis>--all</emphasis>, <emphasis>--branches</emphasis>, <emphasis>--tags</emphasis>, <emphasis>--remotes</emphasis>, or
+        <emphasis>--glob</emphasis> option (other options or arguments do not clear
+        accumulated patterns).
 </simpara>
+<simpara>The patterns given should not begin with <emphasis>refs/heads</emphasis>, <emphasis>refs/tags</emphasis>, or
+<emphasis>refs/remotes</emphasis> when applied to <emphasis>--branches</emphasis>, <emphasis>--tags</emphasis>, or <emphasis>--remotes</emphasis>,
+respectively, and they must begin with <emphasis>refs/</emphasis> when applied to <emphasis>--glob</emphasis>
+or <emphasis>--all</emphasis>. If a trailing <emphasis>/&#42;</emphasis> is intended, it must be given
+explicitly.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---show-prefix
+--disambiguate=&lt;prefix&gt;
 </term>
 <listitem>
 <simpara>
-        When the command is invoked from a subdirectory, show the
-        path of the current directory relative to the top-level
-        directory.
+        Show every object whose name begins with the given prefix.
+        The &lt;prefix&gt; must be at least 4 hexadecimal digits long to
+        avoid listing each and every object in the repository by
+        mistake.
 </simpara>
 </listitem>
 </varlistentry>
+</variablelist>
+</section>
+<section id="git-rev-parse(1)__options_for_files">
+<title>Options for Files</title>
+<variablelist>
 <varlistentry>
 <term>
---show-cdup
+--local-env-vars
 </term>
 <listitem>
 <simpara>
-        When the command is invoked from a subdirectory, show the
-        path of the top-level directory relative to the current
-        directory (typically a sequence of "../", or an empty string).
+        List the GIT_* environment variables that are local to the
+        repository (e.g. GIT_DIR or GIT_WORK_TREE, but not GIT_EDITOR).
+        Only the names of the variables are listed, not their value,
+        even if they are set.
 </simpara>
 </listitem>
 </varlistentry>
@@ -322,8 +405,18 @@ shown.  If the pattern does not contain a globbing character (<emphasis>?</empha
         relative to the current working directory.
 </simpara>
 <simpara>If <emphasis>$GIT_DIR</emphasis> is not defined and the current directory
-is not detected to lie in a git repository or work tree
+is not detected to lie in a Git repository or work tree
 print a message to stderr and exit with nonzero status.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--git-common-dir
+</term>
+<listitem>
+<simpara>
+        Show <emphasis>$GIT_COMMON_DIR</emphasis> if defined, else <emphasis>$GIT_DIR</emphasis>.
+</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -360,32 +453,81 @@ print a message to stderr and exit with nonzero status.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---local-env-vars
+--resolve-git-dir &lt;path&gt;
 </term>
 <listitem>
 <simpara>
-        List the GIT_* environment variables that are local to the
-        repository (e.g. GIT_DIR or GIT_WORK_TREE, but not GIT_EDITOR).
-        Only the names of the variables are listed, not their value,
-        even if they are set.
+        Check if &lt;path&gt; is a valid repository or a gitfile that
+        points at a valid repository, and print the location of the
+        repository.  If &lt;path&gt; is a gitfile then the resolved path
+        to the real repository is printed.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---short
-</term>
-<term>
---short=number
+--git-path &lt;path&gt;
 </term>
 <listitem>
 <simpara>
-        Instead of outputting the full SHA1 values of object names try to
-        abbreviate them to a shorter unique name. When no length is specified
-        7 is used. The minimum length is 4.
+        Resolve "$GIT_DIR/&lt;path&gt;" and takes other path relocation
+        variables such as $GIT_OBJECT_DIRECTORY,
+        $GIT_INDEX_FILE&#8230; into account. For example, if
+        $GIT_OBJECT_DIRECTORY is set to /foo/bar then "git rev-parse
+        --git-path objects/abc" returns /foo/bar/abc.
 </simpara>
 </listitem>
 </varlistentry>
+<varlistentry>
+<term>
+--show-cdup
+</term>
+<listitem>
+<simpara>
+        When the command is invoked from a subdirectory, show the
+        path of the top-level directory relative to the current
+        directory (typically a sequence of "../", or an empty string).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--show-prefix
+</term>
+<listitem>
+<simpara>
+        When the command is invoked from a subdirectory, show the
+        path of the current directory relative to the top-level
+        directory.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--show-toplevel
+</term>
+<listitem>
+<simpara>
+        Show the absolute path of the top-level directory.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--shared-index-path
+</term>
+<listitem>
+<simpara>
+        Show the path to the shared index file in split index mode, or
+        empty if not in split-index mode.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</section>
+<section id="git-rev-parse(1)__other_options">
+<title>Other Options</title>
+<variablelist>
 <varlistentry>
 <term>
 --since=datestring
@@ -424,24 +566,13 @@ print a message to stderr and exit with nonzero status.</simpara>
 </simpara>
 </listitem>
 </varlistentry>
-<varlistentry>
-<term>
---resolve-git-dir &lt;path&gt;
-</term>
-<listitem>
-<simpara>
-        Check if &lt;path&gt; is a valid git-dir or a git-file pointing to a valid
-        git-dir. If &lt;path&gt; is a valid git-dir the resolved path to git-dir will
-        be printed.
-</simpara>
-</listitem>
-</varlistentry>
 </variablelist>
+</section>
 </simplesect>
 <simplesect id="git-rev-parse(1)__specifying_revisions">
 <title>SPECIFYING REVISIONS</title>
 <simpara>A revision parameter <emphasis>&lt;rev&gt;</emphasis> typically, but not necessarily, names a
-commit object.  It uses what is called an <emphasis>extended SHA1</emphasis>
+commit object.  It uses what is called an <emphasis>extended SHA-1</emphasis>
 syntax.  Here are various ways to spell object names.  The
 ones listed near the end of this list name trees and
 blobs contained in a commit.</simpara>
@@ -452,7 +583,7 @@ blobs contained in a commit.</simpara>
 </term>
 <listitem>
 <simpara>
-  The full SHA1 object name (40-byte hexadecimal string), or
+  The full SHA-1 object name (40-byte hexadecimal string), or
   a leading substring that is unique within the repository.
   E.g. dae86e1950b1277e545cee180551750029cfe735 and dae86e both
   name the same commit object if there is no other object in
@@ -481,7 +612,7 @@ blobs contained in a commit.</simpara>
   A symbolic ref name.  E.g. <emphasis>master</emphasis> typically means the commit
   object referenced by <emphasis>refs/heads/master</emphasis>.  If you
   happen to have both <emphasis>heads/master</emphasis> and <emphasis>tags/master</emphasis>, you can
-  explicitly say <emphasis>heads/master</emphasis> to tell git which one you mean.
+  explicitly say <emphasis>heads/master</emphasis> to tell Git which one you mean.
   When ambiguous, a <emphasis>&lt;refname&gt;</emphasis> is disambiguated by taking the
   first match in the following rules:
 </simpara>
@@ -530,10 +661,20 @@ when you run <emphasis>git merge</emphasis>.
 when you run <emphasis>git cherry-pick</emphasis>.</simpara>
 <simpara>Note that any of the <emphasis>refs/*</emphasis> cases above may come either from
 the <emphasis>$GIT_DIR/refs</emphasis> directory or from the <emphasis>$GIT_DIR/packed-refs</emphasis> file.
-While the ref name encoding is unspecified, UTF-8 is prefered as
+While the ref name encoding is unspecified, UTF-8 is preferred as
 some output processing may assume ref names in UTF-8.</simpara>
 </listitem>
 </orderedlist>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>@</emphasis>
+</term>
+<listitem>
+<simpara>
+  <emphasis>@</emphasis> alone is a shortcut for <emphasis>HEAD</emphasis>.
+</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -589,21 +730,50 @@ some output processing may assume ref names in UTF-8.</simpara>
 </term>
 <listitem>
 <simpara>
-  The construct <emphasis>@{-&lt;n&gt;}</emphasis> means the &lt;n&gt;th branch checked out
+  The construct <emphasis>@{-&lt;n&gt;}</emphasis> means the &lt;n&gt;th branch/commit checked out
   before the current one.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-<emphasis>&lt;refname&gt;@{upstream}</emphasis>, e.g. <emphasis>master@{upstream}</emphasis>, <emphasis>@{u}</emphasis>
+<emphasis>&lt;branchname&gt;@{upstream}</emphasis>, e.g. <emphasis>master@{upstream}</emphasis>, <emphasis>@{u}</emphasis>
 </term>
 <listitem>
 <simpara>
-  The suffix <emphasis>@{upstream}</emphasis> to a ref (short form <emphasis>&lt;refname&gt;@{u}</emphasis>) refers to
-  the branch the ref is set to build on top of.  A missing ref defaults
-  to the current branch.
+  The suffix <emphasis>@{upstream}</emphasis> to a branchname (short form <emphasis>&lt;branchname&gt;@{u}</emphasis>)
+  refers to the branch that the branch specified by branchname is set to build on
+  top of (configured with <emphasis>branch.&lt;name&gt;.remote</emphasis> and
+  <emphasis>branch.&lt;name&gt;.merge</emphasis>).  A missing branchname defaults to the
+  current one.
 </simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>&lt;branchname&gt;@{push}</emphasis>, e.g. <emphasis>master@{push}</emphasis>, <emphasis>@{push}</emphasis>
+</term>
+<listitem>
+<simpara>
+  The suffix <emphasis>@{push}</emphasis> reports the branch "where we would push to" if
+  <emphasis>git push</emphasis> were run while <emphasis>branchname</emphasis> was checked out (or the current
+  <emphasis>HEAD</emphasis> if no branchname is specified). Since our push destination is
+  in a remote repository, of course, we report the local tracking branch
+  that corresponds to that branch (i.e., something in <emphasis>refs/remotes/</emphasis>).
+</simpara>
+<simpara>Here's an example to make it more clear:</simpara>
+<screen>$ git config push.default current
+$ git config remote.pushdefault myfork
+$ git checkout -b mybranch origin/master
+
+$ git rev-parse --symbolic-full-name @{upstream}
+refs/remotes/origin/master
+
+$ git rev-parse --symbolic-full-name @{push}
+refs/remotes/myfork/mybranch</screen>
+<simpara>Note in the example that we set up a triangular workflow, where we pull
+from one location and push to another. In a non-triangular workflow,
+<emphasis>@{push}</emphasis> is the same as <emphasis>@{upstream}</emphasis>, and there is no need for it.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -643,12 +813,22 @@ some output processing may assume ref names in UTF-8.</simpara>
 <listitem>
 <simpara>
   A suffix <emphasis>&#94;</emphasis> followed by an object type name enclosed in
-  brace pair means the object
-  could be a tag, and dereference the tag recursively until an
-  object of that type is found or the object cannot be
-  dereferenced anymore (in which case, barf).  <emphasis>&lt;rev&gt;&#94;0</emphasis>
+  brace pair means dereference the object at <emphasis>&lt;rev&gt;</emphasis> recursively until
+  an object of type <emphasis>&lt;type&gt;</emphasis> is found or the object cannot be
+  dereferenced anymore (in which case, barf).
+  For example, if <emphasis>&lt;rev&gt;</emphasis> is a commit-ish, <emphasis>&lt;rev&gt;&#94;{commit}</emphasis>
+  describes the corresponding commit object.
+  Similarly, if <emphasis>&lt;rev&gt;</emphasis> is a tree-ish, <emphasis>&lt;rev&gt;&#94;{tree}</emphasis>
+  describes the corresponding tree object.
+  <emphasis>&lt;rev&gt;&#94;0</emphasis>
   is a short-hand for <emphasis>&lt;rev&gt;&#94;{commit}</emphasis>.
 </simpara>
+<simpara><emphasis>rev&#94;{object}</emphasis> can be used to make sure <emphasis>rev</emphasis> names an
+object that exists, without requiring <emphasis>rev</emphasis> to be a tag, and
+without dereferencing <emphasis>rev</emphasis>; because a tag is already an object,
+it does not have to be dereferenced even once to get to an object.</simpara>
+<simpara><emphasis>rev&#94;{tag}</emphasis> can be used to ensure that <emphasis>rev</emphasis> identifies an
+existing tag object.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -687,11 +867,12 @@ some output processing may assume ref names in UTF-8.</simpara>
   A colon, followed by a slash, followed by a text, names
   a commit whose commit message matches the specified regular expression.
   This name returns the youngest matching commit which is
-  reachable from any ref.  If the commit message starts with a
-  <emphasis>!</emphasis> you have to repeat that;  the special sequence <emphasis>:/!</emphasis>,
-  followed by something else than <emphasis>!</emphasis>, is reserved for now.
-  The regular expression can match any part of the commit message. To
-  match messages starting with a string, one can use e.g. <emphasis>:/^foo</emphasis>.
+  reachable from any ref. The regular expression can match any part of the
+  commit message. To match messages starting with a string, one can use
+  e.g. <emphasis>:/^foo</emphasis>. The special sequence <emphasis>:/!</emphasis> is reserved for modifiers to what
+  is matched. <emphasis>:/!-foo</emphasis> performs a negative match, while <emphasis>:/!!foo</emphasis> matches a
+  literal <emphasis>!</emphasis> character, followed by <emphasis>foo</emphasis>. Any other sequence beginning with
+  <emphasis>:/!</emphasis> is reserved for now.
 </simpara>
 </listitem>
 </varlistentry>
@@ -816,7 +997,8 @@ all of its parents.</simpara>
 <listitem>
 <simpara>
         Include commits that are reachable from &lt;rev2&gt; but exclude
-        those that are reachable from &lt;rev1&gt;.
+        those that are reachable from &lt;rev1&gt;.  When either &lt;rev1&gt; or
+        &lt;rev2&gt; is omitted, it defaults to <emphasis>HEAD</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -827,7 +1009,8 @@ all of its parents.</simpara>
 <listitem>
 <simpara>
         Include commits that are reachable from either &lt;rev1&gt; or
-        &lt;rev2&gt; but exclude those that are reachable from both.
+        &lt;rev2&gt; but exclude those that are reachable from both.  When
+        either &lt;rev1&gt; or &lt;rev2&gt; is omitted, it defaults to <emphasis>HEAD</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -884,21 +1067,21 @@ below for an example.</simpara>
 <title>Input Format</title>
 <simpara><emphasis>git rev-parse --parseopt</emphasis> input format is fully text based. It has two parts,
 separated by a line that contains only <emphasis>--</emphasis>. The lines before the separator
-(should be more than one) are used for the usage.
+(should be one or more) are used for the usage.
 The lines after the separator describe the options.</simpara>
 <simpara>Each line of options has this format:</simpara>
-<screen>&lt;opt_spec&gt;&lt;flags&gt;* SP+ help LF</screen>
+<screen>&lt;opt-spec&gt;&lt;flags&gt;*&lt;arg-hint&gt;? SP+ help LF</screen>
 <variablelist>
 <varlistentry>
 <term>
-<emphasis>&lt;opt_spec&gt;</emphasis>
+<emphasis>&lt;opt-spec&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
         its format is the short option character, then the long option name
         separated by a comma. Both parts are not required, though at least one
-        is necessary. <emphasis>h,help</emphasis>, <emphasis>dry-run</emphasis> and <emphasis>f</emphasis> are all three correct
-        <emphasis>&lt;opt_spec&gt;</emphasis>.
+        is necessary. May not contain any of the <emphasis>&lt;flags&gt;</emphasis> characters.
+        <emphasis>h,help</emphasis>, <emphasis>dry-run</emphasis> and <emphasis>f</emphasis> are examples of correct <emphasis>&lt;opt-spec&gt;</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -918,7 +1101,9 @@ Use <emphasis>=</emphasis> if the option takes an argument.
 </listitem>
 <listitem>
 <simpara>
-Use <emphasis>?</emphasis> to mean that the option is optional (though its use is discouraged).
+Use <emphasis>?</emphasis> to mean that the option takes an optional argument. You
+          probably want to use the <emphasis>--stuck-long</emphasis> mode to be able to
+          unambiguously parse the optional argument.
 </simpara>
 </listitem>
 <listitem>
@@ -934,6 +1119,19 @@ Use <emphasis>!</emphasis> to not make the corresponding negated long option ava
 </simpara>
 </listitem>
 </itemizedlist>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>&lt;arg-hint&gt;</emphasis>
+</term>
+<listitem>
+<simpara>
+        <emphasis>&lt;arg-hint&gt;</emphasis>, if specified, is used as a name of the argument in the
+        help output, for options that take arguments. <emphasis>&lt;arg-hint&gt;</emphasis> is
+        terminated by the first whitespace.  It is customary to use a
+        dash to separate words in a multi-word argument hint.
+</simpara>
 </listitem>
 </varlistentry>
 </variablelist>
@@ -954,11 +1152,30 @@ h,help    show the help
 
 foo       some nifty option --foo
 bar=      some cool option --bar with an argument
+baz=arg   another cool option --baz with a named argument
+qux?path  qux may take a path argument but has meaning by itself
 
   An option group Header
 C?        option C with an optional argument"
 
 eval "$(echo "$OPTS_SPEC" | git rev-parse --parseopt -- "$@" || echo exit $?)"</screen>
+</section>
+<section id="git-rev-parse(1)__usage_text">
+<title>Usage text</title>
+<simpara>When <emphasis>"$@"</emphasis> is <emphasis>-h</emphasis> or <emphasis>--help</emphasis> in the above example, the following
+usage text would be shown:</simpara>
+<screen>usage: some-command [options] &lt;args&gt;...
+
+    some-command does foo and bar!
+
+    -h, --help            show the help
+    --foo                 some nifty option --foo
+    --bar ...             some cool option --bar with an argument
+    --baz &lt;arg&gt;           another cool option --baz with a named argument
+    --qux[=&lt;path&gt;]        qux may take a path argument but has meaning by itself
+
+An option group Header
+    -C[...]               option C with an optional argument</screen>
 </section>
 </simplesect>
 <simplesect id="git-rev-parse(1)__sq_quote">
@@ -996,12 +1213,12 @@ Print the object name of the current commit:
 <simpara>
 Print the commit object name from the revision in the $REV shell variable:
 </simpara>
-<screen>$ git rev-parse --verify $REV</screen>
+<screen>$ git rev-parse --verify $REV^{commit}</screen>
 <simpara>This will error out if $REV is empty or not a valid revision.</simpara>
 </listitem>
 <listitem>
 <simpara>
-Same as above:
+Similar to above:
 </simpara>
 <screen>$ git rev-parse --default master --verify $REV</screen>
 <simpara>but if $REV is empty, the commit object name from master will be printed.</simpara>

@@ -13,7 +13,7 @@
 <simplesect id="git-mergetool(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git mergetool</emphasis> [--tool=&lt;tool&gt;] [-y|--no-prompt|--prompt] [&lt;file&gt;&#8230;]</literallayout>
+<literallayout><emphasis>git mergetool</emphasis> [--tool=&lt;tool&gt;] [-y | --[no-]prompt] [&lt;file&gt;&#8230;]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-mergetool(1)__description">
@@ -94,6 +94,9 @@ success of the resolution after the custom tool has exited.</simpara>
 <simpara>
         Don't prompt before each invocation of the merge resolution
         program.
+        This is the default if the merge resolution program is
+        explicitly specified with the <emphasis>--tool</emphasis> option or with the
+        <emphasis>merge.tool</emphasis> configuration variable.
 </simpara>
 </listitem>
 </varlistentry>
@@ -103,9 +106,8 @@ success of the resolution after the custom tool has exited.</simpara>
 </term>
 <listitem>
 <simpara>
-        Prompt before each invocation of the merge resolution program.
-        This is the default behaviour; the option is provided to
-        override any configuration settings.
+        Prompt before each invocation of the merge resolution program
+        to give the user a chance to skip the path.
 </simpara>
 </listitem>
 </varlistentry>

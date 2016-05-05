@@ -14,7 +14,8 @@
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git merge</emphasis> [-n] [--stat] [--no-commit] [--squash] [--[no-]edit]
-        [-s &lt;strategy&gt;] [-X &lt;strategy-option&gt;]
+        [-s &lt;strategy&gt;] [-X &lt;strategy-option&gt;] [-S[&lt;keyid&gt;]]
+        [--[no-]allow-unrelated-histories]
         [--[no-]rerere-autoupdate] [-m &lt;msg&gt;] [&lt;commit&gt;&#8230;]
 <emphasis>git merge</emphasis> &lt;msg&gt; HEAD &lt;commit&gt;&#8230;
 <emphasis>git merge</emphasis> --abort</literallayout>
@@ -50,8 +51,8 @@ if there were uncommitted changes when the merge started (and
 especially if those changes were further modified after the merge
 was started), <emphasis>git merge --abort</emphasis> will in some cases be unable to
 reconstruct the original (pre-merge) changes. Therefore:</simpara>
-<simpara><emphasis role="strong">Warning</emphasis>: Running <emphasis>git merge</emphasis> with uncommitted changes is
-discouraged: while possible, it leaves you in a state that is hard to
+<simpara><emphasis role="strong">Warning</emphasis>: Running <emphasis>git merge</emphasis> with non-trivial uncommitted changes is
+discouraged: while possible, it may leave you in a state that is hard to
 back out of in the case of a conflict.</simpara>
 </simplesect>
 <simplesect id="git-merge(1)__options">
@@ -79,6 +80,9 @@ inspect and further tweak the merge result before committing.</simpara>
 --edit
 </term>
 <term>
+-e
+</term>
+<term>
 --no-edit
 </term>
 <listitem>
@@ -87,9 +91,10 @@ inspect and further tweak the merge result before committing.</simpara>
         further edit the auto-generated merge message, so that the user
         can explain and justify the merge. The <emphasis>--no-edit</emphasis> option can be
         used to accept the auto-generated message (this is generally
-        discouraged). The <emphasis>--edit</emphasis> option is still useful if you are
-        giving a draft message with the <emphasis>-m</emphasis> option from the command line
-        and want to edit it in the editor.
+        discouraged).
+The <emphasis>--edit</emphasis> (or <emphasis>-e</emphasis>) option is still useful if you are
+giving a draft message with the <emphasis>-m</emphasis> option from the command line
+and want to edit it in the editor.
 </simpara>
 <simpara>Older scripts may depend on the historical behaviour of not allowing the
 user to edit the merge log message. They will see an editor opened when
@@ -117,7 +122,8 @@ set to <emphasis>no</emphasis> at the beginning of them.</simpara>
 <listitem>
 <simpara>
         Create a merge commit even when the merge resolves as a
-        fast-forward.
+        fast-forward.  This is the default behaviour when merging an
+        annotated (and possibly signed) tag.
 </simpara>
 </listitem>
 </varlistentry>
@@ -178,14 +184,13 @@ merge.</simpara>
 </term>
 <listitem>
 <simpara>
-        Produce the working tree and index state as if a real
-        merge happened (except for the merge information),
-        but do not actually make a commit or
-        move the <emphasis>HEAD</emphasis>, nor record <emphasis>$GIT_DIR/MERGE_HEAD</emphasis> to
-        cause the next <emphasis>git commit</emphasis> command to create a merge
-        commit.  This allows you to create a single commit on
-        top of the current branch whose effect is the same as
-        merging another branch (or more in case of an octopus).
+        Produce the working tree and index state as if a real merge
+        happened (except for the merge information), but do not actually
+        make a commit, move the <emphasis>HEAD</emphasis>, or record <emphasis>$GIT_DIR/MERGE_HEAD</emphasis>
+        (to cause the next <emphasis>git commit</emphasis> command to create a merge
+        commit).  This allows you to create a single commit on top of
+        the current branch whose effect is the same as merging another
+        branch (or more in case of an octopus).
 </simpara>
 <simpara>With --no-squash perform the merge and commit the result. This
 option can be used to override --squash.</simpara>
@@ -219,6 +224,20 @@ option can be used to override --squash.</simpara>
 <simpara>
         Pass merge strategy specific option through to the merge
         strategy.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--verify-signatures
+</term>
+<term>
+--no-verify-signatures
+</term>
+<listitem>
+<simpara>
+        Verify that the commits being merged have good and trusted GPG signatures
+        and abort the merge in case they do not.
 </simpara>
 </listitem>
 </varlistentry>
@@ -280,6 +299,36 @@ option can be used to override --squash.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+--allow-unrelated-histories
+</term>
+<listitem>
+<simpara>
+        By default, <emphasis>git merge</emphasis> command refuses to merge histories
+        that do not share a common ancestor.  This option can be
+        used to override this safety when merging histories of two
+        projects that started their lives independently. As that is
+        a very rare occasion, no configuration variable to enable
+        this by default exists and will not be added.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-S[&lt;keyid&gt;]
+</term>
+<term>
+--gpg-sign[=&lt;keyid&gt;]
+</term>
+<listitem>
+<simpara>
+        GPG-sign the resulting merge commit. The <emphasis>keyid</emphasis> argument is
+        optional and defaults to the committer identity; if specified,
+        it must be stuck to the option without a space.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 -m &lt;msg&gt;
 </term>
 <listitem>
@@ -291,15 +340,12 @@ option can be used to override --squash.</simpara>
 will be appended to the specified message.</simpara>
 <simpara>The <emphasis>git fmt-merge-msg</emphasis> command can be
 used to give a good default for automated <emphasis>git merge</emphasis>
-invocations.</simpara>
+invocations. The automated message can include the branch description.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---rerere-autoupdate
-</term>
-<term>
---no-rerere-autoupdate
+--[no-]rerere-autoupdate
 </term>
 <listitem>
 <simpara>
@@ -335,10 +381,12 @@ commit or stash your changes before running <emphasis>git merge</emphasis>.</sim
         Specifying more than one commit will create a merge with
         more than two parents (affectionately called an Octopus merge).
 </simpara>
-<simpara>If no commit is given from the command line, and if <emphasis>merge.defaultToUpstream</emphasis>
-configuration variable is set, merge the remote-tracking branches
-that the current branch is configured to use as its upstream.
+<simpara>If no commit is given from the command line, merge the remote-tracking
+branches that the current branch is configured to use as its upstream.
 See also the configuration section of this manual page.</simpara>
+<simpara>When <emphasis>FETCH_HEAD</emphasis> (and no other commit) is specified, the branches
+recorded in the <emphasis>.git/FETCH_HEAD</emphasis> file by the previous invocation
+of <emphasis>git fetch</emphasis> for merging are merged to the current branch.</simpara>
 </listitem>
 </varlistentry>
 </variablelist>
@@ -421,6 +469,23 @@ No other changes are made.  In particular, the local
 <simpara>If you tried a merge which resulted in complex conflicts and
 want to start over, you can recover with <emphasis>git merge --abort</emphasis>.</simpara>
 </simplesect>
+<simplesect id="git-merge(1)__merging_tag">
+<title>MERGING TAG</title>
+<simpara>When merging an annotated (and possibly signed) tag, Git always
+creates a merge commit even if a fast-forward merge is possible, and
+the commit message template is prepared with the tag message.
+Additionally, if the tag is signed, the signature check is reported
+as a comment in the message template. See also <xref linkend="git-tag(1)" />.</simpara>
+<simpara>When you want to just integrate with the work leading to the commit
+that happens to be tagged, e.g. synchronizing with an upstream
+release point, you may not want to make an unnecessary merge commit.</simpara>
+<simpara>In such a case, you can "unwrap" the tag yourself before feeding it
+to <emphasis>git merge</emphasis>, or pass <emphasis>--ff-only</emphasis> when you do not have any work on
+your own. e.g.</simpara>
+<screen>git fetch origin
+git merge v1.2.3^0
+git merge --ff-only v1.2.3</screen>
+</simplesect>
 <simplesect id="git-merge(1)__how_conflicts_are_presented">
 <title>HOW CONFLICTS ARE PRESENTED</title>
 <simpara>During a merge, the working tree files are updated to reflect the result
@@ -428,9 +493,9 @@ of the merge.  Among the changes made to the common ancestor's version,
 non-overlapping ones (that is, you changed an area of the file while the
 other side left that area intact, or vice versa) are incorporated in the
 final result verbatim.  When both sides made changes to the same area,
-however, git cannot randomly pick one side over the other, and asks you to
+however, Git cannot randomly pick one side over the other, and asks you to
 resolve it by leaving what both sides did to that area.</simpara>
-<simpara>By default, git uses the same style as the one used by the "merge" program
+<simpara>By default, Git uses the same style as the one used by the "merge" program
 from the RCS suite to present such a conflicted hunk, like this:</simpara>
 <screen>Here are lines that are either unchanged from the common
 ancestor, or cleanly resolved because only one side changed.
@@ -449,7 +514,7 @@ area.  You cannot tell how many lines are deleted and replaced with
 Barbie's remark on your side.  The only thing you can tell is that your
 side wants to say it is hard and you'd prefer to go shopping, while the
 other side wants to claim it is easy.</simpara>
-<simpara>An alternative style can be used by setting the "merge.conflictstyle"
+<simpara>An alternative style can be used by setting the "merge.conflictStyle"
 configuration variable to "diff3".  In "diff3" style, the above conflict
 may look like this:</simpara>
 <screen>Here are lines that are either unchanged from the common
@@ -555,10 +620,10 @@ release/version name would be acceptable.</simpara>
 </simplesect>
 <simplesect id="git-merge(1)__merge_strategies">
 <title>MERGE STRATEGIES</title>
-<simpara>The merge mechanism (<emphasis>git-merge</emphasis> and <emphasis>git-pull</emphasis> commands) allows the
+<simpara>The merge mechanism (<emphasis>git merge</emphasis> and <emphasis>git pull</emphasis> commands) allows the
 backend <emphasis>merge strategies</emphasis> to be chosen with <emphasis>-s</emphasis> option.  Some strategies
 can also take their own options, which can be passed by giving <emphasis>-X&lt;option&gt;</emphasis>
-arguments to <emphasis>git-merge</emphasis> and/or <emphasis>git-pull</emphasis>.</simpara>
+arguments to <emphasis>git merge</emphasis> and/or <emphasis>git pull</emphasis>.</simpara>
 <variablelist>
 <varlistentry>
 <term>
@@ -586,7 +651,7 @@ recursive
         merged tree of the common ancestors and uses that as
         the reference tree for the 3-way merge.  This has been
         reported to result in fewer merge conflicts without
-        causing mis-merges by tests done on actual merge commits
+        causing mismerges by tests done on actual merge commits
         taken from Linux 2.6 kernel development history.
         Additionally this can detect and handle merges involving
         renames.  This is the default merge strategy when
@@ -631,6 +696,19 @@ patience
         matching lines (e.g., braces from distinct functions).  Use
         this when the branches to be merged have diverged wildly.
         See also <xref linkend="git-diff(1)" /> <emphasis>--patience</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+diff-algorithm=[patience|minimal|histogram|myers]
+</term>
+<listitem>
+<simpara>
+        Tells <emphasis>merge-recursive</emphasis> to use a different diff algorithm, which
+        can help avoid mismerges that occur due to unimportant matching
+        lines (such as braces from distinct functions).  See also
+        <xref linkend="git-diff(1)" /> <emphasis>--diff-algorithm</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -701,12 +779,34 @@ no-renormalize
 </varlistentry>
 <varlistentry>
 <term>
+no-renames
+</term>
+<listitem>
+<simpara>
+        Turn off rename detection.
+        See also <xref linkend="git-diff(1)" /> <emphasis>--no-renames</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+find-renames[=&lt;n&gt;]
+</term>
+<listitem>
+<simpara>
+        Turn on rename detection, optionally setting the similarity
+        threshold.  This is the default.
+        See also <xref linkend="git-diff(1)" /> <emphasis>--find-renames</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 rename-threshold=&lt;n&gt;
 </term>
 <listitem>
 <simpara>
-        Controls the similarity threshold used for rename detection.
-        See also <xref linkend="git-diff(1)" /> <emphasis>-M</emphasis>.
+        Deprecated synonym for <emphasis>find-renames=&lt;n&gt;</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -771,13 +871,20 @@ subtree
 </listitem>
 </varlistentry>
 </variablelist>
+<simpara>With the strategies that use 3-way merge (including the default, <emphasis>recursive</emphasis>),
+if a change is made on both branches, but later reverted on one of the
+branches, that change will be present in the merged result; some people find
+this behavior confusing.  It occurs because only the heads and the merge base
+are considered when performing a merge, not the individual commits.  The merge
+algorithm therefore considers the reverted change as no change at all, and
+substitutes the changed version instead.</simpara>
 </simplesect>
 <simplesect id="git-merge(1)__configuration">
 <title>CONFIGURATION</title>
 <variablelist>
 <varlistentry>
 <term>
-merge.conflictstyle
+merge.conflictStyle
 </term>
 <listitem>
 <simpara>
@@ -813,14 +920,26 @@ merge.ff
 </term>
 <listitem>
 <simpara>
-        By default, git does not create an extra merge commit when merging
+        By default, Git does not create an extra merge commit when merging
         a commit that is a descendant of the current commit. Instead, the
         tip of the current branch is fast-forwarded. When set to <emphasis>false</emphasis>,
-        this variable tells git to create an extra merge commit in such
+        this variable tells Git to create an extra merge commit in such
         a case (equivalent to giving the <emphasis>--no-ff</emphasis> option from the command
         line). When set to <emphasis>only</emphasis>, only such fast-forward merges are
         allowed (equivalent to giving the <emphasis>--ff-only</emphasis> option from the
         command line).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+merge.branchdesc
+</term>
+<listitem>
+<simpara>
+        In addition to branch names, populate the log message with
+        the branch description text associated with them.  Defaults
+        to false.
 </simpara>
 </listitem>
 </varlistentry>
@@ -855,10 +974,10 @@ merge.renormalize
 </term>
 <listitem>
 <simpara>
-        Tell git that canonical representation of files in the
+        Tell Git that canonical representation of files in the
         repository has changed over time (e.g. earlier commits record
         text files with CRLF line endings, but recent ones use LF line
-        endings).  In such a repository, git can convert the data
+        endings).  In such a repository, Git can convert the data
         recorded in commits to a canonical form before performing a
         merge to reduce unnecessary conflicts.  For more information,
         see section "Merging branches with differing checkin/checkout
@@ -883,13 +1002,133 @@ merge.tool
 </term>
 <listitem>
 <simpara>
-        Controls which merge resolution program is used by
-        <xref linkend="git-mergetool(1)" />.  Valid built-in values are: "araxis",
-        "bc3", "diffuse", "ecmerge", "emerge", "gvimdiff", "kdiff3", "meld",
-        "opendiff", "p4merge", "tkdiff", "tortoisemerge", "vimdiff"
-        and "xxdiff".  Any other value is treated is custom merge tool
-        and there must be a corresponding mergetool.&lt;tool&gt;.cmd option.
+        Controls which merge tool is used by <xref linkend="git-mergetool(1)" />.
+        The list below shows the valid built-in values.
+        Any other value is treated as a custom merge tool and requires
+        that a corresponding mergetool.&lt;tool&gt;.cmd variable is defined.
 </simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+araxis
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+bc
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+bc3
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+codecompare
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+deltawalker
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+diffmerge
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+diffuse
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+ecmerge
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+emerge
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+examdiff
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+gvimdiff
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+gvimdiff2
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+gvimdiff3
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+kdiff3
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+meld
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+opendiff
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+p4merge
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+tkdiff
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+tortoisemerge
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+vimdiff
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+vimdiff2
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+vimdiff3
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+winmerge
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+xxdiff
+</simpara>
+</listitem>
+</itemizedlist>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -943,7 +1182,7 @@ merge.&lt;driver&gt;.recursive
 </varlistentry>
 <varlistentry>
 <term>
-branch.&lt;name&gt;.mergeoptions
+branch.&lt;name&gt;.mergeOptions
 </term>
 <listitem>
 <simpara>

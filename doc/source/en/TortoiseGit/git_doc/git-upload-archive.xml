@@ -19,10 +19,50 @@
 <simplesect id="git-upload-archive(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Invoked by <emphasis>git archive --remote</emphasis> and sends a generated archive to the
-other end over the git protocol.</simpara>
+other end over the Git protocol.</simpara>
 <simpara>This command is usually not invoked directly by the end user.  The UI
 for the protocol is on the <emphasis>git archive</emphasis> side, and the program pair
 is meant to be used to get an archive from a remote repository.</simpara>
+</simplesect>
+<simplesect id="git-upload-archive(1)__security">
+<title>SECURITY</title>
+<simpara>In order to protect the privacy of objects that have been removed from
+history but may not yet have been pruned, <emphasis>git-upload-archive</emphasis> avoids
+serving archives for commits and trees that are not reachable from the
+repository's refs.  However, because calculating object reachability is
+computationally expensive, <emphasis>git-upload-archive</emphasis> implements a stricter
+but easier-to-check set of rules:</simpara>
+<orderedlist numeration="arabic">
+<listitem>
+<simpara>
+Clients may request a commit or tree that is pointed to directly by
+     a ref. E.g., <emphasis>git archive --remote=origin v1.0</emphasis>.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Clients may request a sub-tree within a commit or tree using the
+     <emphasis>ref:path</emphasis> syntax. E.g., <emphasis>git archive --remote=origin v1.0:Documentation</emphasis>.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Clients may <emphasis>not</emphasis> use other sha1 expressions, even if the end
+     result is reachable. E.g., neither a relative commit like <emphasis>master^</emphasis>
+     nor a literal sha1 like <emphasis>abcd1234</emphasis> is allowed, even if the result
+     is reachable from the refs.
+</simpara>
+</listitem>
+</orderedlist>
+<simpara>Note that rule 3 disallows many cases that do not have any privacy
+implications. These rules are subject to change in future versions of
+git, and the server accessed by <emphasis>git archive --remote</emphasis> may or may not
+follow these exact rules.</simpara>
+<simpara>If the config option <emphasis>uploadArchive.allowUnreachable</emphasis> is true, these
+rules are ignored, and clients may use arbitrary sha1 expressions.
+This is useful if you do not care about the privacy of unreachable
+objects, or if your object database is already publicly available for
+access via non-smart-http.</simpara>
 </simplesect>
 <simplesect id="git-upload-archive(1)__options">
 <title>OPTIONS</title>

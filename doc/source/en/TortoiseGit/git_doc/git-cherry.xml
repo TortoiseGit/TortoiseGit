@@ -8,7 +8,7 @@
 </indexterm>
 <simplesect id="git-cherry(1)__name">
 <title>NAME</title>
-<simpara>git-cherry - Find commits not merged upstream</simpara>
+<simpara>git-cherry - Find commits yet to be applied to upstream</simpara>
 </simplesect>
 <simplesect id="git-cherry(1)__synopsis">
 <title>SYNOPSIS</title>
@@ -18,30 +18,15 @@
 </simplesect>
 <simplesect id="git-cherry(1)__description">
 <title>DESCRIPTION</title>
-<simpara>The changeset (or "diff") of each commit between the fork-point and &lt;head&gt;
-is compared against each commit between the fork-point and &lt;upstream&gt;.
-The commits are compared with their <emphasis>patch id</emphasis>, obtained from
-the <emphasis>git patch-id</emphasis> program.</simpara>
-<simpara>Every commit that doesn't exist in the &lt;upstream&gt; branch
-has its id (sha1) reported, prefixed by a symbol.  The ones that have
-equivalent change already
-in the &lt;upstream&gt; branch are prefixed with a minus (-) sign, and those
-that only exist in the &lt;head&gt; branch are prefixed with a plus (+) symbol:</simpara>
-<literallayout class="monospaced">           __*__*__*__*__&gt; &lt;upstream&gt;
-          /
-fork-point
-          \__+__+__-__+__+__-__+__&gt; &lt;head&gt;</literallayout>
-<simpara>If a &lt;limit&gt; has been given then the commits along the &lt;head&gt; branch up
-to and including &lt;limit&gt; are not reported:</simpara>
-<literallayout class="monospaced">           __*__*__*__*__&gt; &lt;upstream&gt;
-          /
-fork-point
-          \__*__*__&lt;limit&gt;__-__+__&gt; &lt;head&gt;</literallayout>
-<simpara>Because <emphasis>git cherry</emphasis> compares the changeset rather than the commit id
-(sha1), you can use <emphasis>git cherry</emphasis> to find out if a commit you made locally
-has been applied &lt;upstream&gt; under a different commit id.  For example,
-this will happen if you're feeding patches &lt;upstream&gt; via email rather
-than pushing or pulling commits directly.</simpara>
+<simpara>Determine whether there are commits in <emphasis>&lt;head&gt;..&lt;upstream&gt;</emphasis> that are
+equivalent to those in the range <emphasis>&lt;limit&gt;..&lt;head&gt;</emphasis>.</simpara>
+<simpara>The equivalence test is based on the diff, after removing whitespace
+and line numbers.  git-cherry therefore detects when commits have been
+"copied" by means of <xref linkend="git-cherry-pick(1)" />, <xref linkend="git-am(1)" /> or
+<xref linkend="git-rebase(1)" />.</simpara>
+<simpara>Outputs the SHA1 of every commit in <emphasis>&lt;limit&gt;..&lt;head&gt;</emphasis>, prefixed with
+<emphasis>-</emphasis> for commits that have an equivalent in &lt;upstream&gt;, and <emphasis>+</emphasis> for
+commits that do not.</simpara>
 </simplesect>
 <simplesect id="git-cherry(1)__options">
 <title>OPTIONS</title>
@@ -52,7 +37,7 @@ than pushing or pulling commits directly.</simpara>
 </term>
 <listitem>
 <simpara>
-        Verbose.
+        Show the commit subjects next to the SHA1s.
 </simpara>
 </listitem>
 </varlistentry>
@@ -62,8 +47,8 @@ than pushing or pulling commits directly.</simpara>
 </term>
 <listitem>
 <simpara>
-        Upstream branch to compare against.
-        Defaults to the first tracked remote branch, if available.
+        Upstream branch to search for equivalent commits.
+        Defaults to the upstream branch of HEAD.
 </simpara>
 </listitem>
 </varlistentry>
@@ -88,6 +73,76 @@ than pushing or pulling commits directly.</simpara>
 </listitem>
 </varlistentry>
 </variablelist>
+</simplesect>
+<simplesect id="git-cherry(1)__examples">
+<title>EXAMPLES</title>
+<section id="git-cherry(1)__patch_workflows">
+<title>Patch workflows</title>
+<simpara>git-cherry is frequently used in patch-based workflows (see
+<xref linkend="gitworkflows(7)" />) to determine if a series of patches has been
+applied by the upstream maintainer.  In such a workflow you might
+create and send a topic branch like this:</simpara>
+<screen>$ git checkout -b topic origin/master
+# work and create some commits
+$ git format-patch origin/master
+$ git send-email ... 00*</screen>
+<simpara>Later, you can see whether your changes have been applied by saying
+(still on <emphasis>topic</emphasis>):</simpara>
+<screen>$ git fetch  # update your notion of origin/master
+$ git cherry -v</screen>
+</section>
+<section id="git-cherry(1)__concrete_example">
+<title>Concrete example</title>
+<simpara>In a situation where topic consisted of three commits, and the
+maintainer applied two of them, the situation might look like:</simpara>
+<screen>$ git log --graph --oneline --decorate --boundary origin/master...topic
+* 7654321 (origin/master) upstream tip commit
+[... snip some other commits ...]
+* cccc111 cherry-pick of C
+* aaaa111 cherry-pick of A
+[... snip a lot more that has happened ...]
+| * cccc000 (topic) commit C
+| * bbbb000 commit B
+| * aaaa000 commit A
+|/
+o 1234567 branch point</screen>
+<simpara>In such cases, git-cherry shows a concise summary of what has yet to
+be applied:</simpara>
+<screen>$ git cherry origin/master topic
+- cccc000... commit C
++ bbbb000... commit B
+- aaaa000... commit A</screen>
+<simpara>Here, we see that the commits A and C (marked with <emphasis>-</emphasis>) can be
+dropped from your <emphasis>topic</emphasis> branch when you rebase it on top of
+<emphasis>origin/master</emphasis>, while the commit B (marked with <emphasis>+</emphasis>) still needs to
+be kept so that it will be sent to be applied to <emphasis>origin/master</emphasis>.</simpara>
+</section>
+<section id="git-cherry(1)__using_a_limit">
+<title>Using a limit</title>
+<simpara>The optional &lt;limit&gt; is useful in cases where your topic is based on
+other work that is not in upstream.  Expanding on the previous
+example, this might look like:</simpara>
+<screen>$ git log --graph --oneline --decorate --boundary origin/master...topic
+* 7654321 (origin/master) upstream tip commit
+[... snip some other commits ...]
+* cccc111 cherry-pick of C
+* aaaa111 cherry-pick of A
+[... snip a lot more that has happened ...]
+| * cccc000 (topic) commit C
+| * bbbb000 commit B
+| * aaaa000 commit A
+| * 0000fff (base) unpublished stuff F
+[... snip ...]
+| * 0000aaa unpublished stuff A
+|/
+o 1234567 merge-base between upstream and topic</screen>
+<simpara>By specifying <emphasis>base</emphasis> as the limit, you can avoid listing commits
+between <emphasis>base</emphasis> and <emphasis>topic</emphasis>:</simpara>
+<screen>$ git cherry origin/master topic base
+- cccc000... commit C
++ bbbb000... commit B
+- aaaa000... commit A</screen>
+</section>
 </simplesect>
 <simplesect id="git-cherry(1)__see_also">
 <title>SEE ALSO</title>

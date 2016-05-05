@@ -13,16 +13,18 @@
 <simplesect id="git-blame(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git blame</emphasis> [-c] [-b] [-l] [--root] [-t] [-f] [-n] [-s] [-e] [-p] [-w] [--incremental] [-L n,m]
-            [-S &lt;revs-file&gt;] [-M] [-C] [-C] [-C] [--since=&lt;date&gt;] [--abbrev=&lt;n&gt;]
-            [&lt;rev&gt; | --contents &lt;file&gt; | --reverse &lt;rev&gt;] [--] &lt;file&gt;</literallayout>
+<literallayout><emphasis>git blame</emphasis> [-c] [-b] [-l] [--root] [-t] [-f] [-n] [-s] [-e] [-p] [-w] [--incremental]
+            [-L &lt;range&gt;] [-S &lt;revs-file&gt;] [-M] [-C] [-C] [-C] [--since=&lt;date&gt;]
+            [--progress] [--abbrev=&lt;n&gt;] [&lt;rev&gt; | --contents &lt;file&gt; | --reverse &lt;rev&gt;]
+            [--] &lt;file&gt;</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-blame(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Annotates each line in the given file with information from the revision which
 last modified the line. Optionally, start annotating from the given revision.</simpara>
-<simpara>The command can also limit the range of lines annotated.</simpara>
+<simpara>When specified one or more times, <emphasis>-L</emphasis> restricts annotation to the requested
+lines.</simpara>
 <simpara>The origin of lines is automatically followed across whole-file
 renames (currently there is no option to turn the rename-following
 off). To follow lines moved from one file to another, or to follow
@@ -31,11 +33,12 @@ lines that were copied and pasted from another file, etc., see the
 <simpara>The report does not tell you anything about lines which have been deleted or
 replaced; you need to use a tool such as <emphasis>git diff</emphasis> or the "pickaxe"
 interface briefly mentioned in the following paragraph.</simpara>
-<simpara>Apart from supporting file annotation, git also supports searching the
+<simpara>Apart from supporting file annotation, Git also supports searching the
 development history for when a code snippet occurred in a change. This makes it
 possible to track when a code snippet was added to a file, moved or copied
 between files, and eventually deleted or replaced. It works by searching for
-a text string in the diff. A small example:</simpara>
+a text string in the diff. A small example of the pickaxe interface
+that searches for <emphasis>blame_usage</emphasis>:</simpara>
 <screen>$ git log --pretty=oneline -S'blame_usage'
 5040f17eba15504bad66b14a645bddd9b015ebb7 blame -S &lt;ancestry-file&gt;
 ea4c7f9bf69e781dd0cd88d2bccb2bf5cc15c9a7 git-blame: Make the output</screen>
@@ -61,7 +64,7 @@ ea4c7f9bf69e781dd0cd88d2bccb2bf5cc15c9a7 git-blame: Make the output</screen>
 <listitem>
 <simpara>
         Do not treat root commits as boundaries.  This can also be
-        controlled via the <emphasis>blame.showroot</emphasis> config option.
+        controlled via the <emphasis>blame.showRoot</emphasis> config option.
 </simpara>
 </listitem>
 </varlistentry>
@@ -79,11 +82,17 @@ ea4c7f9bf69e781dd0cd88d2bccb2bf5cc15c9a7 git-blame: Make the output</screen>
 <term>
 -L &lt;start&gt;,&lt;end&gt;
 </term>
+<term>
+-L :&lt;funcname&gt;
+</term>
 <listitem>
 <simpara>
-        Annotate only the given line range.  &lt;start&gt; and &lt;end&gt; can take
-        one of these forms:
+        Annotate only the given line range. May be specified multiple times.
+        Overlapping ranges are allowed.
 </simpara>
+<simpara>&lt;start&gt; and &lt;end&gt; are optional. -L &lt;start&gt; or -L &lt;start&gt;, spans from
+&lt;start&gt; to end of file. -L ,&lt;end&gt; spans from start of file to &lt;end&gt;.</simpara>
+<simpara>&lt;start&gt; and &lt;end&gt; can take one of these forms:</simpara>
 <itemizedlist>
 <listitem>
 <simpara>
@@ -97,7 +106,10 @@ absolute line number (lines count from 1).</simpara>
 /regex/
 </simpara>
 <simpara>This form will use the first line matching the given
-POSIX regex.  If &lt;end&gt; is a regex, it will search
+POSIX regex. If &lt;start&gt; is a regex, it will search from the end of
+the previous <emphasis>-L</emphasis> range, if any, otherwise from the start of file.
+If &lt;start&gt; is ^/regex/, it will search from the start of file.
+If &lt;end&gt; is a regex, it will search
 starting at the line given by &lt;start&gt;.</simpara>
 </listitem>
 <listitem>
@@ -108,6 +120,12 @@ starting at the line given by &lt;start&gt;.</simpara>
 of lines before or after the line given by &lt;start&gt;.</simpara>
 </listitem>
 </itemizedlist>
+<simpara>If :&lt;funcname&gt; is given in place of &lt;start&gt; and &lt;end&gt;, it is a
+regular expression that denotes the range from the first funcname line
+that matches &lt;funcname&gt;, up to the next funcname line. :&lt;funcname&gt;
+searches from the end of the previous <emphasis>-L</emphasis> range, if any, otherwise
+from the start of file. ^:&lt;funcname&gt; searches from the start of
+file.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -224,12 +242,25 @@ of lines before or after the line given by &lt;start&gt;.</simpara>
 </term>
 <listitem>
 <simpara>
-        The value is one of the following alternatives:
-        {relative,local,default,iso,rfc,short}. If --date is not
+        Specifies the format used to output dates. If --date is not
         provided, the value of the blame.date config variable is
         used. If the blame.date config variable is also not set, the
-        iso format is used. For more information, See the discussion
+        iso format is used. For supported values, see the discussion
         of the --date option at <xref linkend="git-log(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--[no-]progress
+</term>
+<listitem>
+<simpara>
+        Progress status is reported on the standard error stream
+        by default when it is attached to a terminal. This flag
+        enables progress reporting even if not attached to a
+        terminal. Can't use <emphasis>--progress</emphasis> together with <emphasis>--porcelain</emphasis>
+        or <emphasis>--incremental</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -250,7 +281,7 @@ of lines before or after the line given by &lt;start&gt;.</simpara>
         running extra passes of inspection.
 </simpara>
 <simpara>&lt;num&gt; is optional but it is the lower bound on the number of
-alphanumeric characters that git must detect as moving/copying
+alphanumeric characters that Git must detect as moving/copying
 within a file for it to associate those lines with the parent
 commit. The default value is 20.</simpara>
 </listitem>
@@ -271,7 +302,7 @@ commit. The default value is 20.</simpara>
         looks for copies from other files in any commit.
 </simpara>
 <simpara>&lt;num&gt; is optional but it is the lower bound on the number of
-alphanumeric characters that git must detect as moving/copying
+alphanumeric characters that Git must detect as moving/copying
 between files for it to associate those lines with the parent
 commit. And the default value is 40. If there are more than one
 <emphasis>-C</emphasis> options given, the &lt;num&gt; argument of the last <emphasis>-C</emphasis> will
@@ -362,6 +393,8 @@ take effect.</simpara>
 <listitem>
 <simpara>
         Show the author email instead of author name (Default: off).
+        This can also be controlled via the <emphasis>blame.showEmail</emphasis> config
+        option.
 </simpara>
 </listitem>
 </varlistentry>
@@ -424,7 +457,7 @@ at least once for each commit:</simpara>
 <listitem>
 <simpara>
 the author name ("author"), email ("author-mail"), time
-  ("author-time"), and timezone ("author-tz"); similarly
+  ("author-time"), and time zone ("author-tz"); similarly
   for committer.
 </simpara>
 </listitem>
@@ -458,7 +491,9 @@ sort | uniq -c | sort -rn</literallayout>
 <title>SPECIFYING RANGES</title>
 <simpara>Unlike <emphasis>git blame</emphasis> and <emphasis>git annotate</emphasis> in older versions of git, the extent
 of the annotation can be limited to both line ranges and revision
-ranges.  When you are interested in finding the origin for
+ranges. The <emphasis>-L</emphasis> option, which limits annotation to a range of lines, may be
+specified multiple times.</simpara>
+<simpara>When you are interested in finding the origin for
 lines 40-60 for file <emphasis>foo</emphasis>, you can use the <emphasis>-L</emphasis> option like so
 (they mean the same thing -- both ask for 21 lines starting at
 line 40):</simpara>
@@ -533,7 +568,8 @@ commit commentary), a blame viewer will not care.</simpara></note>
 <simplesect id="git-blame(1)__mapping_authors">
 <title>MAPPING AUTHORS</title>
 <simpara>If the file <emphasis>.mailmap</emphasis> exists at the toplevel of the repository, or at
-the location pointed to by the mailmap.file configuration option, it
+the location pointed to by the mailmap.file or mailmap.blob
+configuration options, it
 is used to map author and committer names and email addresses to
 canonical real names and email addresses.</simpara>
 <simpara>In the simple form, each line in the file consists of the canonical

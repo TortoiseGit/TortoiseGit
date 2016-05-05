@@ -8,12 +8,15 @@
 </indexterm>
 <simplesect id="git-send-pack(1)__name">
 <title>NAME</title>
-<simpara>git-send-pack - Push objects over git protocol to another repository</simpara>
+<simpara>git-send-pack - Push objects over Git protocol to another repository</simpara>
 </simplesect>
 <simplesect id="git-send-pack(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git send-pack</emphasis> [--all] [--dry-run] [--force] [--receive-pack=&lt;git-receive-pack&gt;] [--verbose] [--thin] [&lt;host&gt;:]&lt;directory&gt; [&lt;ref&gt;&#8230;]</literallayout>
+<literallayout><emphasis>git send-pack</emphasis> [--all] [--dry-run] [--force] [--receive-pack=&lt;git-receive-pack&gt;]
+                [--verbose] [--thin] [--atomic]
+                [--[no-]signed|--sign=(true|false|if-asked)]
+                [&lt;host&gt;:]&lt;directory&gt; [&lt;ref&gt;&#8230;]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-send-pack(1)__description">
@@ -58,6 +61,22 @@ updates it from the current repository, sending named refs.</simpara>
         Instead of explicitly specifying which refs to update,
         update all heads that locally exist.
 </simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--stdin
+</term>
+<listitem>
+<simpara>
+        Take the list of refs from stdin, one per line. If there
+        are refs specified on the command line in addition to this
+        option, then the refs from stdin are processed after those
+        on the command line.
+</simpara>
+<simpara>If <emphasis>--stateless-rpc</emphasis> is specified together with this option then
+the list of refs must be in packet format (pkt-line). Each ref must
+be in a separate packet, and the list must end with a flush packet.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -107,6 +126,38 @@ updates it from the current repository, sending named refs.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+--atomic
+</term>
+<listitem>
+<simpara>
+        Use an atomic transaction for updating the refs. If any of the refs
+        fails to update then the entire push will fail without changing any
+        refs.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--[no-]signed
+</term>
+<term>
+--sign=(true|false|if-asked)
+</term>
+<listitem>
+<simpara>
+        GPG-sign the push request to update refs on the receiving
+        side, to allow it to be checked by the hooks and/or be
+        logged.  If <emphasis>false</emphasis> or <emphasis>--no-signed</emphasis>, no signing will be
+        attempted.  If <emphasis>true</emphasis> or <emphasis>--signed</emphasis>, the push will fail if the
+        server does not support signed pushes.  If set to <emphasis>if-asked</emphasis>,
+        sign if and only if the server supports signed pushes.  The push
+        will also fail if the actual call to <emphasis>gpg --sign</emphasis> fails.  See
+        <xref linkend="git-receive-pack(1)" /> for the details on the receiving end.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 &lt;host&gt;
 </term>
 <listitem>
@@ -148,7 +199,8 @@ the remote side.  You cannot specify any <emphasis>&lt;ref&gt;</emphasis> if you
 this flag.</simpara>
 <simpara>Without <emphasis>--all</emphasis> and without any <emphasis>&lt;ref&gt;</emphasis>, the heads that exist
 both on the local side and on the remote side are updated.</simpara>
-<simpara>When one or more <emphasis>&lt;ref&gt;</emphasis> are specified explicitly, it can be either a
+<simpara>When one or more <emphasis>&lt;ref&gt;</emphasis> are specified explicitly (whether on the
+command line or via <emphasis>--stdin</emphasis>), it can be either a
 single pattern, or a pair of such pattern separated by a colon
 ":" (this means that a ref name cannot have a colon in it).  A
 single pattern <emphasis>&lt;name&gt;</emphasis> is just a shorthand for <emphasis>&lt;name&gt;:&lt;name&gt;</emphasis>.</simpara>

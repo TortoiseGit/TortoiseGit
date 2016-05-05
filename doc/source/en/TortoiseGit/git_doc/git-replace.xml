@@ -14,18 +14,24 @@
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git replace</emphasis> [-f] &lt;object&gt; &lt;replacement&gt;
+<emphasis>git replace</emphasis> [-f] --edit &lt;object&gt;
+<emphasis>git replace</emphasis> [-f] --graft &lt;commit&gt; [&lt;parent&gt;&#8230;]
 <emphasis>git replace</emphasis> -d &lt;object&gt;&#8230;
-<emphasis>git replace</emphasis> -l [&lt;pattern&gt;]</literallayout>
+<emphasis>git replace</emphasis> [--format=&lt;format&gt;] [-l [&lt;pattern&gt;]]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-replace(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Adds a <emphasis>replace</emphasis> reference in <emphasis>refs/replace/</emphasis> namespace.</simpara>
-<simpara>The name of the <emphasis>replace</emphasis> reference is the SHA1 of the object that is
-replaced. The content of the <emphasis>replace</emphasis> reference is the SHA1 of the
+<simpara>The name of the <emphasis>replace</emphasis> reference is the SHA-1 of the object that is
+replaced. The content of the <emphasis>replace</emphasis> reference is the SHA-1 of the
 replacement object.</simpara>
+<simpara>The replaced object and the replacement object must be of the same type.
+This restriction can be bypassed using <emphasis>-f</emphasis>.</simpara>
 <simpara>Unless <emphasis>-f</emphasis> is given, the <emphasis>replace</emphasis> reference must not yet exist.</simpara>
-<simpara>Replacement references will be used by default by all git commands
+<simpara>There is no other restriction on the replaced and replacement objects.
+Merge commits can be replaced by non-merge commits and vice versa.</simpara>
+<simpara>Replacement references will be used by default by all Git commands
 except those doing reachability traversal (prune, pack transfer and
 fsck).</simpara>
 <simpara>It is possible to disable use of replacement references for any
@@ -45,6 +51,9 @@ achieve the same effect as the <emphasis>--no-replace-objects</emphasis> option.
 <term>
 -f
 </term>
+<term>
+--force
+</term>
 <listitem>
 <simpara>
         If an existing replace ref for the same object exists, it will
@@ -56,6 +65,9 @@ achieve the same effect as the <emphasis>--no-replace-objects</emphasis> option.
 <term>
 -d
 </term>
+<term>
+--delete
+</term>
 <listitem>
 <simpara>
         Delete existing replace refs for the given objects.
@@ -64,7 +76,57 @@ achieve the same effect as the <emphasis>--no-replace-objects</emphasis> option.
 </varlistentry>
 <varlistentry>
 <term>
+--edit &lt;object&gt;
+</term>
+<listitem>
+<simpara>
+        Edit an object's content interactively. The existing content
+        for &lt;object&gt; is pretty-printed into a temporary file, an
+        editor is launched on the file, and the result is parsed to
+        create a new object of the same type as &lt;object&gt;. A
+        replacement ref is then created to replace &lt;object&gt; with the
+        newly created object. See <xref linkend="git-var(1)" /> for details about
+        how the editor will be chosen.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--raw
+</term>
+<listitem>
+<simpara>
+        When editing, provide the raw object contents rather than
+        pretty-printed ones. Currently this only affects trees, which
+        will be shown in their binary form. This is harder to work with,
+        but can help when repairing a tree that is so corrupted it
+        cannot be pretty-printed. Note that you may need to configure
+        your editor to cleanly read and write binary data.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--graft &lt;commit&gt; [&lt;parent&gt;&#8230;]
+</term>
+<listitem>
+<simpara>
+        Create a graft commit. A new commit is created with the same
+        content as &lt;commit&gt; except that its parents will be
+        [&lt;parent&gt;&#8230;] instead of &lt;commit&gt;'s parents. A replacement ref
+        is then created to replace &lt;commit&gt; with the newly created
+        commit. See contrib/convert-grafts-to-replace-refs.sh for an
+        example script based on this option that can convert grafts to
+        replace refs.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 -l &lt;pattern&gt;
+</term>
+<term>
+--list &lt;pattern&gt;
 </term>
 <listitem>
 <simpara>
@@ -75,7 +137,56 @@ achieve the same effect as the <emphasis>--no-replace-objects</emphasis> option.
 </simpara>
 </listitem>
 </varlistentry>
+<varlistentry>
+<term>
+--format=&lt;format&gt;
+</term>
+<listitem>
+<simpara>
+        When listing, use the specified &lt;format&gt;, which can be one of
+        <emphasis>short</emphasis>, <emphasis>medium</emphasis> and <emphasis>long</emphasis>. When omitted, the format
+        defaults to <emphasis>short</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
 </variablelist>
+</simplesect>
+<simplesect id="git-replace(1)__formats">
+<title>FORMATS</title>
+<simpara>The following format are available:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+<emphasis>short</emphasis>:
+        &lt;replaced sha1&gt;
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>medium</emphasis>:
+        &lt;replaced sha1&gt; &#8594; &lt;replacement sha1&gt;
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>long</emphasis>:
+        &lt;replaced sha1&gt; (&lt;replaced type&gt;) &#8594; &lt;replacement sha1&gt; (&lt;replacement type&gt;)
+</simpara>
+</listitem>
+</itemizedlist>
+</simplesect>
+<simplesect id="git-replace(1)__creating_replacement_objects">
+<title>CREATING REPLACEMENT OBJECTS</title>
+<simpara><xref linkend="git-filter-branch(1)" />, <xref linkend="git-hash-object(1)" /> and
+<xref linkend="git-rebase(1)" />, among other git commands, can be used to create
+replacement objects from existing objects. The <emphasis>--edit</emphasis> option can
+also be used with <emphasis>git replace</emphasis> to create a replacement object by
+editing an existing object.</simpara>
+<simpara>If you want to replace many blobs, trees or commits that are part of a
+string of commits, you may just want to create a replacement string of
+commits and then only replace the commit at the tip of the target
+string of commits with the commit at the tip of the replacement string
+of commits.</simpara>
 </simplesect>
 <simplesect id="git-replace(1)__bugs">
 <title>BUGS</title>
@@ -84,14 +195,17 @@ replace them will not work properly. And using <emphasis>git reset --hard</empha
 go back to a replaced commit will move the branch to the replacement
 commit instead of the replaced commit.</simpara>
 <simpara>There may be other problems when using <emphasis>git rev-list</emphasis> related to
-pending objects. And of course things may break if an object of one
-type is replaced by an object of another type (for example a blob
-replaced by a commit).</simpara>
+pending objects.</simpara>
 </simplesect>
 <simplesect id="git-replace(1)__see_also">
 <title>SEE ALSO</title>
-<simpara><xref linkend="git-tag(1)" />
+<simpara><xref linkend="git-hash-object(1)" />
+<xref linkend="git-filter-branch(1)" />
+<xref linkend="git-rebase(1)" />
+<xref linkend="git-tag(1)" />
 <xref linkend="git-branch(1)" />
+<xref linkend="git-commit(1)" />
+<xref linkend="git-var(1)" />
 <xref linkend="git(1)" /></simpara>
 </simplesect>
 <simplesect id="git-replace(1)__git">

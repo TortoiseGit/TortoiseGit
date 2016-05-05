@@ -39,7 +39,7 @@ allowing the file to be removed from just the index.</simpara>
 <listitem>
 <simpara>
         Files to remove.  Fileglobs (e.g. <emphasis>*.c</emphasis>) can be given to
-        remove all matching files.  If you want git to expand
+        remove all matching files.  If you want Git to expand
         file glob characters, you may need to shell-escape them.
         A leading directory name
         (e.g. <emphasis>dir</emphasis> to remove <emphasis>dir/file1</emphasis> and <emphasis>dir/file2</emphasis>) can be
@@ -142,8 +142,8 @@ allowing the file to be removed from just the index.</simpara>
 <title>DISCUSSION</title>
 <simpara>The &lt;file&gt; list given to the command can be exact pathnames,
 file glob patterns, or leading directory names.  The command
-removes only the paths that are known to git.  Giving the name of
-a file that you have not told git about does not remove that file.</simpara>
+removes only the paths that are known to Git.  Giving the name of
+a file that you have not told Git about does not remove that file.</simpara>
 <simpara>File globbing matches across directory boundaries.  Thus, given
 two directories <emphasis>d</emphasis> and <emphasis>d2</emphasis>, there is a difference between
 using <emphasis>git rm 'd*'</emphasis> and <emphasis>git rm 'd/*'</emphasis>, as the former will
@@ -187,20 +187,25 @@ your working tree is dirty so that you cannot use <emphasis>git commit -a</empha
 use the following command:</simpara>
 <screen>git diff --name-only --diff-filter=D -z | xargs -0 git rm --cached</screen>
 </section>
-<section id="git-rm(1)__submodules">
-<title>Submodules</title>
+</simplesect>
+<simplesect id="git-rm(1)__submodules">
+<title>SUBMODULES</title>
 <simpara>Only submodules using a gitfile (which means they were cloned
-with a git version 1.7.8 or newer) will be removed from the work
+with a Git version 1.7.8 or newer) will be removed from the work
 tree, as their repository lives inside the .git directory of the
 superproject. If a submodule (or one of those nested inside it)
 still uses a .git directory, <emphasis>git rm</emphasis> will fail - no matter if forced
-or not - to protect the submodule's history.</simpara>
+or not - to protect the submodule's history. If it exists the
+submodule.&lt;name&gt; section in the <xref linkend="gitmodules(5)" /> file will also
+be removed and that file will be staged (unless --cached or -n are used).</simpara>
 <simpara>A submodule is considered up-to-date when the HEAD is the same as
 recorded in the index, no tracked files are modified and no untracked
 files that aren't ignored are present in the submodules work tree.
 Ignored files are deemed expendable and won't stop a submodule's work
 tree from being removed.</simpara>
-</section>
+<simpara>If you only want to remove the local checkout of a submodule from your
+work tree without committing the removal,
+use <xref linkend="git-submodule(1)" /> <emphasis>deinit</emphasis> instead.</simpara>
 </simplesect>
 <simplesect id="git-rm(1)__examples">
 <title>EXAMPLES</title>
@@ -215,7 +220,7 @@ tree from being removed.</simpara>
         <emphasis>Documentation</emphasis> directory and any of its subdirectories.
 </simpara>
 <simpara>Note that the asterisk <emphasis>*</emphasis> is quoted from the shell in this
-example; this lets git, and not the shell, expand the pathnames
+example; this lets Git, and not the shell, expand the pathnames
 of files and subdirectories under the <emphasis>Documentation/</emphasis> directory.</simpara>
 </listitem>
 </varlistentry>
@@ -232,6 +237,15 @@ of files and subdirectories under the <emphasis>Documentation/</emphasis> direct
 </listitem>
 </varlistentry>
 </variablelist>
+</simplesect>
+<simplesect id="git-rm(1)__bugs">
+<title>BUGS</title>
+<simpara>Each time a superproject update removes a populated submodule
+(e.g. when switching between commits before and after the removal) a
+stale submodule checkout will remain in the old location. Removing the
+old directory is only safe when it uses a gitfile, as otherwise the
+history of the submodule will be deleted too. This step will be
+obsolete when recursive submodule update has been implemented.</simpara>
 </simplesect>
 <simplesect id="git-rm(1)__see_also">
 <title>SEE ALSO</title>

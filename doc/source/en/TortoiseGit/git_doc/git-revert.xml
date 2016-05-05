@@ -13,7 +13,7 @@
 <simplesect id="git-revert(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git revert</emphasis> [--edit | --no-edit] [-n] [-m parent-number] [-s] &lt;commit&gt;&#8230;
+<literallayout><emphasis>git revert</emphasis> [--[no-]edit] [-n] [-m parent-number] [-s] [-S[&lt;keyid&gt;]] &lt;commit&gt;&#8230;
 <emphasis>git revert</emphasis> --continue
 <emphasis>git revert</emphasis> --quit
 <emphasis>git revert</emphasis> --abort</literallayout>
@@ -86,7 +86,7 @@ both will discard uncommitted changes in your working directory.</simpara>
 brought in by the merge.  As a result, later merges will only bring in tree
 changes introduced by commits that are not ancestors of the previously
 reverted merge.  This may or may not be what you want.</simpara>
-<simpara>See the link:howto/revert-a-faulty-merge.txt[revert-a-faulty-merge How-To] for
+<simpara>See the link:howto/revert-a-faulty-merge.html[revert-a-faulty-merge How-To] for
 more details.</simpara>
 </listitem>
 </varlistentry>
@@ -125,6 +125,21 @@ effect to your index in a row.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+-S[&lt;keyid&gt;]
+</term>
+<term>
+--gpg-sign[=&lt;keyid&gt;]
+</term>
+<listitem>
+<simpara>
+        GPG-sign commits. The <emphasis>keyid</emphasis> argument is optional and
+        defaults to the committer identity; if specified, it must be
+        stuck to the option without a space.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 -s
 </term>
 <term>
@@ -133,6 +148,7 @@ effect to your index in a row.</simpara>
 <listitem>
 <simpara>
         Add Signed-off-by line at the end of the commit message.
+        See the signoff option in <xref linkend="git-commit(1)" /> for more information.
 </simpara>
 </listitem>
 </varlistentry>

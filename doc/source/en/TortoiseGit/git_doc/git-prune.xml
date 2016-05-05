@@ -26,7 +26,9 @@ objects specified on the command line, and prunes all unpacked
 objects unreachable from any of these head objects from the object database.
 In addition, it
 prunes the unpacked objects that are also found in packs by
-running <emphasis>git prune-packed</emphasis>.</simpara>
+running <emphasis>git prune-packed</emphasis>.
+It also removes entries from .git/shallow that are not reachable by
+any ref.</simpara>
 <simpara>Note that unreachable, packed objects will remain.  If this is
 not desired, see <xref linkend="git-repack(1)" />.</simpara>
 </simplesect>
@@ -96,10 +98,10 @@ not desired, see <xref linkend="git-repack(1)" />.</simpara>
 </simplesect>
 <simplesect id="git-prune(1)__example">
 <title>EXAMPLE</title>
-<simpara>To prune objects not used by your repository nor another that
+<simpara>To prune objects not used by your repository or another that
 borrows from your repository via its
 <emphasis>.git/objects/info/alternates</emphasis>:</simpara>
-<screen>$ git prune $(cd ../another &amp;&amp; $(git rev-parse --all))</screen>
+<screen>$ git prune $(cd ../another &amp;&amp; git rev-parse --all)</screen>
 </simplesect>
 <simplesect id="git-prune(1)__notes">
 <title>Notes</title>

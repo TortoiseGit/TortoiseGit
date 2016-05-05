@@ -8,13 +8,14 @@
 </indexterm>
 <simplesect id="git-checkout(1)__name">
 <title>NAME</title>
-<simpara>git-checkout - Checkout a branch or paths to the working tree</simpara>
+<simpara>git-checkout - Switch branches or restore working tree files</simpara>
 </simplesect>
 <simplesect id="git-checkout(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git checkout</emphasis> [-q] [-f] [-m] [&lt;branch&gt;]
-<emphasis>git checkout</emphasis> [-q] [-f] [-m] [--detach] [&lt;commit&gt;]
+<emphasis>git checkout</emphasis> [-q] [-f] [-m] --detach [&lt;branch&gt;]
+<emphasis>git checkout</emphasis> [-q] [-f] [-m] [--detach] &lt;commit&gt;
 <emphasis>git checkout</emphasis> [-q] [-f] [-m] [[-b|-B|--orphan] &lt;new_branch&gt;] [&lt;start_point&gt;]
 <emphasis>git checkout</emphasis> [-f|--ours|--theirs|-m|--conflict=&lt;style&gt;] [&lt;tree-ish&gt;] [--] &lt;paths&gt;&#8230;
 <emphasis>git checkout</emphasis> [-p|--patch] [&lt;tree-ish&gt;] [--] [&lt;paths&gt;&#8230;]</literallayout>
@@ -75,7 +76,7 @@ successful.</simpara>
 <emphasis>git checkout</emphasis> --detach [&lt;branch&gt;]
 </term>
 <term>
-<emphasis>git checkout</emphasis> &lt;commit&gt;
+<emphasis>git checkout</emphasis> [--detach] &lt;commit&gt;
 </term>
 <listitem>
 <simpara>
@@ -86,10 +87,10 @@ successful.</simpara>
         tree will be the state recorded in the commit plus the local
         modifications.
 </simpara>
-<simpara>Passing <emphasis>--detach</emphasis> forces this behavior in the case of a &lt;branch&gt; (without
-the option, giving a branch name to the command would check out the branch,
-instead of detaching HEAD at it), or the current commit,
-if no &lt;branch&gt; is specified.</simpara>
+<simpara>When the &lt;commit&gt; argument is a branch name, the <emphasis>--detach</emphasis> option can
+be used to detach HEAD at the tip of the branch (<emphasis>git checkout
+&lt;branch&gt;</emphasis> would check out that branch without detaching HEAD).</simpara>
+<simpara>Omitting &lt;branch&gt; detaches HEAD at the tip of the current branch.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -107,6 +108,9 @@ if no &lt;branch&gt; is specified.</simpara>
         (i.e.  commit, tag or tree) to update the index for the given
         paths before updating the working tree.
 </simpara>
+<simpara><emphasis>git checkout</emphasis> with &lt;paths&gt; or <emphasis>--patch</emphasis> is used to restore modified or
+deleted paths to their original contents from the index or replace paths
+with the contents from a named &lt;tree-ish&gt; (most often a commit-ish).</simpara>
 <simpara>The index may contain unmerged entries because of a previous failed merge.
 By default, if you try to check out such an entry from the index, the
 checkout operation will fail and nothing will be checked out.
@@ -131,6 +135,19 @@ file can be discarded to re-create the original conflicted merge result.</simpar
 <listitem>
 <simpara>
         Quiet, suppress feedback messages.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--[no-]progress
+</term>
+<listitem>
+<simpara>
+        Progress status is reported on the standard error stream
+        by default when it is attached to a terminal, unless <emphasis>--quiet</emphasis>
+        is specified. This flag enables progress reporting even if not
+        attached to a terminal, regardless of <emphasis>--quiet</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -163,6 +180,19 @@ entries; instead, unmerged entries are ignored.</simpara>
         When checking out paths from the index, check out stage #2
         (<emphasis>ours</emphasis>) or #3 (<emphasis>theirs</emphasis>) for unmerged paths.
 </simpara>
+<simpara>Note that during <emphasis>git rebase</emphasis> and <emphasis>git pull --rebase</emphasis>, <emphasis>ours</emphasis> and
+<emphasis>theirs</emphasis> may appear swapped; <emphasis>--ours</emphasis> gives the version from the
+branch the changes are rebased onto, while <emphasis>--theirs</emphasis> gives the
+version from the branch that holds your work that is being rebased.</simpara>
+<simpara>This is because <emphasis>rebase</emphasis> is used in a workflow that treats the
+history at the remote as the shared canonical one, and treats the
+work done on the branch you are rebasing as the third-party work to
+be integrated, and you are temporarily assuming the role of the
+keeper of the canonical history during the rebase.  As the keeper of
+the canonical history, you need to view the history from the remote
+as <emphasis>ours</emphasis> (i.e. "our shared canonical history"), while what you did
+on your side branch as <emphasis>theirs</emphasis> (i.e. "one contributor's work on top
+of it").</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -202,9 +232,9 @@ entries; instead, unmerged entries are ignored.</simpara>
         "--track" in <xref linkend="git-branch(1)" /> for details.
 </simpara>
 <simpara>If no <emphasis>-b</emphasis> option is given, the name of the new branch will be
-derived from the remote-tracking branch.  If "remotes/" or "refs/remotes/"
-is prefixed it is stripped away, and then the part up to the
-next slash (which would be the nickname of the remote) is removed.
+derived from the remote-tracking branch, by looking at the local part of
+the refspec configured for the corresponding remote, and then stripping
+the initial part up to the "*".
 This would tell us to use "hack" as the local branch when branching
 off of "origin/hack" (or "remotes/origin/hack", or even
 "refs/remotes/origin/hack").  If the given name has no slash, or the above
@@ -219,7 +249,7 @@ explicitly give a name with <emphasis>-b</emphasis> in such a case.</simpara>
 <listitem>
 <simpara>
         Do not set up "upstream" configuration, even if the
-        branch.autosetupmerge configuration variable is true.
+        branch.autoSetupMerge configuration variable is true.
 </simpara>
 </listitem>
 </varlistentry>
@@ -279,6 +309,19 @@ working tree, by copying them from elsewhere, extracting a tarball, etc.</simpar
 </varlistentry>
 <varlistentry>
 <term>
+--ignore-skip-worktree-bits
+</term>
+<listitem>
+<simpara>
+        In sparse checkout mode, <emphasis>git checkout -- &lt;paths&gt;</emphasis> would
+        update only entries matched by &lt;paths&gt; and sparse patterns
+        in $GIT_DIR/info/sparse-checkout. This option ignores
+        the sparse patterns and adds back any files in &lt;paths&gt;.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 -m
 </term>
 <term>
@@ -311,7 +354,7 @@ the conflicted merge in the specified paths.</simpara>
 <simpara>
         The same as --merge option above, but changes the way the
         conflicting hunks are presented, overriding the
-        merge.conflictstyle configuration variable.  Possible values are
+        merge.conflictStyle configuration variable.  Possible values are
         "merge" (default) and "diff3" (in addition to what is shown by
         "merge" style, shows the original contents).
 </simpara>
@@ -338,6 +381,19 @@ section of <xref linkend="git-add(1)" /> to learn how to operate the <emphasis>-
 </varlistentry>
 <varlistentry>
 <term>
+--ignore-other-worktrees
+</term>
+<listitem>
+<simpara>
+        <emphasis>git checkout</emphasis> refuses when the wanted ref is already checked
+        out by another worktree. This option makes it check the ref
+        out anyway. In other words, the ref can be held by more than one
+        worktree.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 &lt;branch&gt;
 </term>
 <listitem>
@@ -348,8 +404,8 @@ section of <xref linkend="git-add(1)" /> to learn how to operate the <emphasis>-
         commit, your HEAD becomes "detached" and you are no longer on
         any branch (see below for details).
 </simpara>
-<simpara>As a special case, the <emphasis>"@{-N}"</emphasis> syntax for the N-th last branch
-checks out the branch (instead of detaching).  You may also specify
+<simpara>As a special case, the <emphasis>"@{-N}"</emphasis> syntax for the N-th last branch/commit
+checks out branches (instead of detaching).  You may also specify
 <emphasis>-</emphasis> which is synonymous with <emphasis>"@{-1}"</emphasis>.</simpara>
 <simpara>As a further special case, you may use <emphasis>"A...B"</emphasis> as a shortcut for the
 merge base of <emphasis>A</emphasis> and <emphasis>B</emphasis> if there is exactly one merge base. You can
@@ -458,7 +514,7 @@ a---b---c---d  branch 'master' (refers to commit 'd')
     ^
     |
   tag 'v2.0' (refers to commit 'b')</screen>
-<simpara>In fact, we can perform all the normal git operations. But, let's look
+<simpara>In fact, we can perform all the normal Git operations. But, let's look
 at what happens when we then checkout master:</simpara>
 <screen>$ git checkout master
 
@@ -471,7 +527,7 @@ a---b---c---d  branch 'master' (refers to commit 'd')
   tag 'v2.0' (refers to commit 'b')</screen>
 <simpara>It is important to realize that at this point nothing refers to commit
 <emphasis>f</emphasis>. Eventually commit <emphasis>f</emphasis> (and by extension commit <emphasis>e</emphasis>) will be deleted
-by the routine git garbage collection process, unless we create a reference
+by the routine Git garbage collection process, unless we create a reference
 before that happens. If we have not yet moved away from commit <emphasis>f</emphasis>,
 any of these will create a reference to it:</simpara>
 <screen>$ git checkout -b foo   <co id="git-checkout_CO1-1"/>

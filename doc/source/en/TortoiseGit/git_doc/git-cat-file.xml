@@ -13,8 +13,8 @@
 <simplesect id="git-cat-file(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git cat-file</emphasis> (-t | -s | -e | -p | &lt;type&gt; | --textconv ) &lt;object&gt;
-<emphasis>git cat-file</emphasis> (--batch | --batch-check) &lt; &lt;list-of-objects&gt;</literallayout>
+<literallayout><emphasis>git cat-file</emphasis> (-t [--allow-unknown-type]| -s [--allow-unknown-type]| -e | -p | &lt;type&gt; | --textconv ) &lt;object&gt;
+<emphasis>git cat-file</emphasis> (--batch | --batch-check) [--follow-symlinks]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-cat-file(1)__description">
@@ -24,7 +24,7 @@ the repository. The type is required unless <emphasis>-t</emphasis> or <emphasis
 object type, or <emphasis>-s</emphasis> is used to find the object size, or <emphasis>--textconv</emphasis> is used
 (which implies type "blob").</simpara>
 <simpara>In the second form, a list of objects (separated by linefeeds) is provided on
-stdin, and the SHA1, type, and size of each object is printed on stdout.</simpara>
+stdin, and the SHA-1, type, and size of each object is printed on stdout.</simpara>
 </simplesect>
 <simplesect id="git-cat-file(1)__options">
 <title>OPTIONS</title>
@@ -106,7 +106,7 @@ stdin, and the SHA1, type, and size of each object is printed on stdout.</simpar
 <listitem>
 <simpara>
         Show the content as transformed by a textconv filter. In this case,
-        &lt;object&gt; has be of the form &lt;treeish&gt;:&lt;path&gt;, or :&lt;path&gt; in order
+        &lt;object&gt; has be of the form &lt;tree-ish&gt;:&lt;path&gt;, or :&lt;path&gt; in order
         to apply the filter to the content recorded in the index at &lt;path&gt;.
 </simpara>
 </listitem>
@@ -115,10 +115,14 @@ stdin, and the SHA1, type, and size of each object is printed on stdout.</simpar
 <term>
 --batch
 </term>
+<term>
+--batch=&lt;format&gt;
+</term>
 <listitem>
 <simpara>
-        Print the SHA1, type, size, and contents of each object provided on
-        stdin. May not be combined with any other options or arguments.
+        Print object information and contents for each object provided
+        on stdin.  May not be combined with any other options or arguments.
+        See the section <emphasis>BATCH OUTPUT</emphasis> below for details.
 </simpara>
 </listitem>
 </varlistentry>
@@ -126,11 +130,95 @@ stdin, and the SHA1, type, and size of each object is printed on stdout.</simpar
 <term>
 --batch-check
 </term>
+<term>
+--batch-check=&lt;format&gt;
+</term>
 <listitem>
 <simpara>
-        Print the SHA1, type, and size of each object provided on stdin. May not
-        be combined with any other options or arguments.
+        Print object information for each object provided on stdin.  May
+        not be combined with any other options or arguments.  See the
+        section <emphasis>BATCH OUTPUT</emphasis> below for details.
 </simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--batch-all-objects
+</term>
+<listitem>
+<simpara>
+        Instead of reading a list of objects on stdin, perform the
+        requested batch operation on all objects in the repository and
+        any alternate object stores (not just reachable objects).
+        Requires <emphasis>--batch</emphasis> or <emphasis>--batch-check</emphasis> be specified. Note that
+        the objects are visited in order sorted by their hashes.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--buffer
+</term>
+<listitem>
+<simpara>
+        Normally batch output is flushed after each object is output, so
+        that a process can interactively read and write from
+        <emphasis>cat-file</emphasis>. With this option, the output uses normal stdio
+        buffering; this is much more efficient when invoking
+        <emphasis>--batch-check</emphasis> on a large number of objects.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--allow-unknown-type
+</term>
+<listitem>
+<simpara>
+        Allow -s or -t to query broken/corrupt objects of unknown type.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--follow-symlinks
+</term>
+<listitem>
+<simpara>
+        With --batch or --batch-check, follow symlinks inside the
+        repository when requesting objects with extended SHA-1
+        expressions of the form tree-ish:path-in-tree.  Instead of
+        providing output about the link itself, provide output about
+        the linked-to object.  If a symlink points outside the
+        tree-ish (e.g. a link to /foo or a root-level link to ../foo),
+        the portion of the link which is outside the tree will be
+        printed.
+</simpara>
+<simpara>This option does not (currently) work correctly when an object in the
+index is specified (e.g. <emphasis>:link</emphasis> instead of <emphasis>HEAD:link</emphasis>) rather than
+one in the tree.</simpara>
+<simpara>This option cannot (currently) be used unless <emphasis>--batch</emphasis> or
+<emphasis>--batch-check</emphasis> is used.</simpara>
+<simpara>For example, consider a git repository containing:</simpara>
+<literallayout class="monospaced">f: a file containing "hello\n"
+link: a symlink to f
+dir/link: a symlink to ../f
+plink: a symlink to ../f
+alink: a symlink to /etc/passwd</literallayout>
+<simpara>For a regular file <emphasis>f</emphasis>, <emphasis>echo HEAD:f | git cat-file --batch</emphasis> would print</simpara>
+<literallayout class="monospaced">ce013625030ba8dba906f756967f9e9ca394464a blob 6</literallayout>
+<simpara>And <emphasis>echo HEAD:link | git cat-file --batch --follow-symlinks</emphasis> would
+print the same thing, as would <emphasis>HEAD:dir/link</emphasis>, as they both point at
+<emphasis>HEAD:f</emphasis>.</simpara>
+<simpara>Without <emphasis>--follow-symlinks</emphasis>, these would print data about the symlink
+itself.  In the case of <emphasis>HEAD:link</emphasis>, you would see</simpara>
+<literallayout class="monospaced">4d1ae35ba2c8ec712fa2a379db44ad639ca277bd blob 1</literallayout>
+<simpara>Both <emphasis>plink</emphasis> and <emphasis>alink</emphasis> point outside the tree, so they would
+respectively print:</simpara>
+<literallayout class="monospaced">symlink 4
+../f</literallayout>
+<literallayout class="monospaced">symlink 11
+/etc/passwd</literallayout>
 </listitem>
 </varlistentry>
 </variablelist>
@@ -143,16 +231,136 @@ stdin, and the SHA1, type, and size of each object is printed on stdout.</simpar
 <simpara>If <emphasis>-p</emphasis> is specified, the contents of &lt;object&gt; are pretty-printed.</simpara>
 <simpara>If &lt;type&gt; is specified, the raw (though uncompressed) contents of the &lt;object&gt;
 will be returned.</simpara>
-<simpara>If <emphasis>--batch</emphasis> is specified, output of the following form is printed for each
-object specified on stdin:</simpara>
+</simplesect>
+<simplesect id="git-cat-file(1)__batch_output">
+<title>BATCH OUTPUT</title>
+<simpara>If <emphasis>--batch</emphasis> or <emphasis>--batch-check</emphasis> is given, <emphasis>cat-file</emphasis> will read objects
+from stdin, one per line, and print information about them. By default,
+the whole line is considered as an object, as if it were fed to
+<xref linkend="git-rev-parse(1)" />.</simpara>
+<simpara>You can specify the information shown for each object by using a custom
+<emphasis>&lt;format&gt;</emphasis>. The <emphasis>&lt;format&gt;</emphasis> is copied literally to stdout for each
+object, with placeholders of the form <emphasis>%(atom)</emphasis> expanded, followed by a
+newline. The available atoms are:</simpara>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>objectname</emphasis>
+</term>
+<listitem>
+<simpara>
+        The 40-hex object name of the object.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>objecttype</emphasis>
+</term>
+<listitem>
+<simpara>
+        The type of of the object (the same as <emphasis>cat-file -t</emphasis> reports).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>objectsize</emphasis>
+</term>
+<listitem>
+<simpara>
+        The size, in bytes, of the object (the same as <emphasis>cat-file -s</emphasis>
+        reports).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>objectsize:disk</emphasis>
+</term>
+<listitem>
+<simpara>
+        The size, in bytes, that the object takes up on disk. See the
+        note about on-disk sizes in the <emphasis>CAVEATS</emphasis> section below.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>deltabase</emphasis>
+</term>
+<listitem>
+<simpara>
+        If the object is stored as a delta on-disk, this expands to the
+        40-hex sha1 of the delta base object. Otherwise, expands to the
+        null sha1 (40 zeroes). See <emphasis>CAVEATS</emphasis> below.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>rest</emphasis>
+</term>
+<listitem>
+<simpara>
+        If this atom is used in the output string, input lines are split
+        at the first whitespace boundary. All characters before that
+        whitespace are considered to be the object name; characters
+        after that first run of whitespace (i.e., the "rest" of the
+        line) are output in place of the <emphasis>%(rest)</emphasis> atom.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+<simpara>If no format is specified, the default format is <emphasis>%(objectname)
+%(objecttype) %(objectsize)</emphasis>.</simpara>
+<simpara>If <emphasis>--batch</emphasis> is specified, the object information is followed by the
+object contents (consisting of <emphasis>%(objectsize)</emphasis> bytes), followed by a
+newline.</simpara>
+<simpara>For example, <emphasis>--batch</emphasis> without a custom format would produce:</simpara>
 <screen>&lt;sha1&gt; SP &lt;type&gt; SP &lt;size&gt; LF
 &lt;contents&gt; LF</screen>
-<simpara>If <emphasis>--batch-check</emphasis> is specified, output of the following form is printed for
-each object specified on stdin:</simpara>
-<screen>&lt;sha1&gt; SP &lt;type&gt; SP &lt;size&gt; LF</screen>
-<simpara>For both <emphasis>--batch</emphasis> and <emphasis>--batch-check</emphasis>, output of the following form is printed
-for each object specified on stdin that does not exist in the repository:</simpara>
+<simpara>Whereas <emphasis>--batch-check='%(objectname) %(objecttype)'</emphasis> would produce:</simpara>
+<screen>&lt;sha1&gt; SP &lt;type&gt; LF</screen>
+<simpara>If a name is specified on stdin that cannot be resolved to an object in
+the repository, then <emphasis>cat-file</emphasis> will ignore any custom format and print:</simpara>
 <screen>&lt;object&gt; SP missing LF</screen>
+<simpara>If --follow-symlinks is used, and a symlink in the repository points
+outside the repository, then <emphasis>cat-file</emphasis> will ignore any custom format
+and print:</simpara>
+<screen>symlink SP &lt;size&gt; LF
+&lt;symlink&gt; LF</screen>
+<simpara>The symlink will either be absolute (beginning with a /), or relative
+to the tree root.  For instance, if dir/link points to ../../foo, then
+&lt;symlink&gt; will be ../foo.  &lt;size&gt; is the size of the symlink in bytes.</simpara>
+<simpara>If --follow-symlinks is used, the following error messages will be
+displayed:</simpara>
+<screen>&lt;object&gt; SP missing LF</screen>
+<simpara>is printed when the initial symlink requested does not exist.</simpara>
+<screen>dangling SP &lt;size&gt; LF
+&lt;object&gt; LF</screen>
+<simpara>is printed when the initial symlink exists, but something that
+it (transitive-of) points to does not.</simpara>
+<screen>loop SP &lt;size&gt; LF
+&lt;object&gt; LF</screen>
+<simpara>is printed for symlink loops (or any symlinks that
+require more than 40 link resolutions to resolve).</simpara>
+<screen>notdir SP &lt;size&gt; LF
+&lt;object&gt; LF</screen>
+<simpara>is printed when, during symlink resolution, a file is used as a
+directory name.</simpara>
+</simplesect>
+<simplesect id="git-cat-file(1)__caveats">
+<title>CAVEATS</title>
+<simpara>Note that the sizes of objects on disk are reported accurately, but care
+should be taken in drawing conclusions about which refs or objects are
+responsible for disk usage. The size of a packed non-delta object may be
+much larger than the size of objects which delta against it, but the
+choice of which object is the base and which is the delta is arbitrary
+and is subject to change during a repack.</simpara>
+<simpara>Note also that multiple copies of an object may be present in the object
+database; in this case, it is undefined which copy's size or delta base
+will be reported.</simpara>
 </simplesect>
 <simplesect id="git-cat-file(1)__git">
 <title>GIT</title>

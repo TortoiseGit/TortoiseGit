@@ -8,7 +8,7 @@
 </indexterm>
 <simplesect id="gittutorial(7)__name">
 <title>NAME</title>
-<simpara>gittutorial - A tutorial introduction to git (for version 1.5.1 or newer)</simpara>
+<simpara>gittutorial - A tutorial introduction to Git</simpara>
 </simplesect>
 <simplesect id="gittutorial(7)__synopsis">
 <title>SYNOPSIS</title>
@@ -18,9 +18,9 @@
 </simplesect>
 <simplesect id="gittutorial(7)__description">
 <title>DESCRIPTION</title>
-<simpara>This tutorial explains how to import a new project into git, make
+<simpara>This tutorial explains how to import a new project into Git, make
 changes to it, and share changes with other developers.</simpara>
-<simpara>If you are instead primarily interested in using git to fetch a project,
+<simpara>If you are instead primarily interested in using Git to fetch a project,
 for example, to test the latest version, you may prefer to start with
 the first two chapters of link:user-manual.html[The Git User's Manual].</simpara>
 <simpara>First, note that you can get documentation for a command such as
@@ -30,7 +30,7 @@ the first two chapters of link:user-manual.html[The Git User's Manual].</simpara
 <screen>$ git help log</screen>
 <simpara>With the latter, you can use the manual viewer of your choice; see
 <xref linkend="git-help(1)" /> for more information.</simpara>
-<simpara>It is a good idea to introduce yourself to git with your name and
+<simpara>It is a good idea to introduce yourself to Git with your name and
 public email address before doing any operation.  The easiest
 way to do so is:</simpara>
 <screen>$ git config --global user.name "Your Name Comes Here"
@@ -39,7 +39,7 @@ $ git config --global user.email you@yourdomain.example.com</screen>
 <simplesect id="gittutorial(7)__importing_a_new_project">
 <title>Importing a new project</title>
 <simpara>Assume you have a tarball project.tar.gz with your initial work.  You
-can place it under git revision control as follows.</simpara>
+can place it under Git revision control as follows.</simpara>
 <screen>$ tar xzf project.tar.gz
 $ cd project
 $ git init</screen>
@@ -47,15 +47,15 @@ $ git init</screen>
 <screen>Initialized empty Git repository in .git/</screen>
 <simpara>You've now initialized the working directory--you may notice a new
 directory created, named ".git".</simpara>
-<simpara>Next, tell git to take a snapshot of the contents of all files under the
+<simpara>Next, tell Git to take a snapshot of the contents of all files under the
 current directory (note the <emphasis>.</emphasis>), with <emphasis>git add</emphasis>:</simpara>
 <screen>$ git add .</screen>
-<simpara>This snapshot is now stored in a temporary staging area which git calls
+<simpara>This snapshot is now stored in a temporary staging area which Git calls
 the "index".  You can permanently store the contents of the index in the
 repository with <emphasis>git commit</emphasis>:</simpara>
 <screen>$ git commit</screen>
 <simpara>This will prompt you for a commit message.  You've now stored the first
-version of your project in git.</simpara>
+version of your project in Git.</simpara>
 </simplesect>
 <simplesect id="gittutorial(7)__making_changes">
 <title>Making changes</title>
@@ -68,14 +68,14 @@ using <emphasis>git diff</emphasis> with the --cached option:</simpara>
 you've made but not yet added to the index.)  You can also get a brief
 summary of the situation with <emphasis>git status</emphasis>:</simpara>
 <screen>$ git status
-# On branch master
-# Changes to be committed:
-#   (use "git reset HEAD &lt;file&gt;..." to unstage)
-#
-#       modified:   file1
-#       modified:   file2
-#       modified:   file3
-#</screen>
+On branch master
+Changes to be committed:
+Your branch is up-to-date with 'origin/master'.
+  (use "git reset HEAD &lt;file&gt;..." to unstage)
+
+        modified:   file1
+        modified:   file2
+        modified:   file3</screen>
 <simpara>If you need to make any further adjustments, do so now, and then add any
 newly modified content to the index.  Finally, commit your changes with:</simpara>
 <screen>$ git commit</screen>
@@ -90,7 +90,7 @@ begin the commit message with a single short (less than 50 character)
 line summarizing the change, followed by a blank line and then a more
 thorough description. The text up to the first blank line in a commit
 message is treated as the commit title, and that title is used
-throughout git.  For example, <xref linkend="git-format-patch(1)" /> turns a
+throughout Git.  For example, <xref linkend="git-format-patch(1)" /> turns a
 commit into email, and it uses the title on the Subject line and the
 rest of the commit in the body.</simpara>
 </simplesect>
@@ -115,7 +115,7 @@ each step</simpara>
 </simplesect>
 <simplesect id="gittutorial(7)__managing_branches">
 <title>Managing branches</title>
-<simpara>A single git repository can maintain multiple branches of
+<simpara>A single Git repository can maintain multiple branches of
 development.  To create a new branch named "experimental", use</simpara>
 <screen>$ git branch experimental</screen>
 <simpara>If you now run</simpara>
@@ -161,8 +161,8 @@ delete the branch with</simpara>
 out.</simpara>
 </simplesect>
 <simplesect id="gittutorial(7)__using_git_for_collaboration">
-<title>Using git for collaboration</title>
-<simpara>Suppose that Alice has started a new project with a git repository in
+<title>Using Git for collaboration</title>
+<simpara>Suppose that Alice has started a new project with a Git repository in
 /home/alice/project, and that Bob, who has a home directory on the
 same machine, wants to contribute.</simpara>
 <simpara>Bob begins with:</simpara>
@@ -187,7 +187,7 @@ from a remote branch, then merges them into the current branch.</simpara>
 initiating this "pull".  If Bob's work conflicts with what Alice did since
 their histories forked, Alice will use her working tree and the index to
 resolve conflicts, and existing local changes will interfere with the
-conflict resolution process (git will still perform the fetch but will
+conflict resolution process (Git will still perform the fetch but will
 refuse to merge --- Alice will have to get rid of her local changes in
 some way and pull again when this happens).</simpara>
 <simpara>Alice can peek at what Bob did without merging first, using the "fetch"
@@ -245,7 +245,7 @@ regardless of what else is given on the command line.</simpara>
 <simpara>Later, Bob can update his repo with Alice's latest changes using</simpara>
 <screen>bob$ git pull</screen>
 <simpara>Note that he doesn't need to give the path to Alice's repository;
-when Bob cloned Alice's repository, git stored the location of her
+when Bob cloned Alice's repository, Git stored the location of her
 repository in the repository configuration, and that location is
 used for pulls:</simpara>
 <screen>bob$ git config --get remote.origin.url
@@ -260,7 +260,7 @@ name "origin/master":</simpara>
 <simpara>If Bob later decides to work from a different host, he can still
 perform clones and pulls using the ssh protocol:</simpara>
 <screen>bob$ git clone alice.org:/home/alice/project myrepo</screen>
-<simpara>Alternatively, git has a native protocol, or can use rsync or http;
+<simpara>Alternatively, Git has a native protocol, or can use http;
 see <xref linkend="git-pull(1)" /> for details.</simpara>
 <simpara>Git can also be used in a CVS-like mode, with a central repository
 that various users push changes to; see <xref linkend="git-push(1)" /> and
@@ -301,7 +301,7 @@ $ git show HEAD^2 # show the second parent of HEAD</screen>
 share this name with other people (for example, to identify a release
 version), you should create a "tag" object, and perhaps sign it; see
 <xref linkend="git-tag(1)" /> for details.</simpara>
-<simpara>Any git command that needs to know a commit can take any of these
+<simpara>Any Git command that needs to know a commit can take any of these
 names.  For example:</simpara>
 <screen>$ git diff v2.5 HEAD     # compare the current HEAD to v2.5
 $ git branch stable v2.5 # start a new branch named "stable" based
@@ -323,8 +323,8 @@ project, so</simpara>
 <simpara>If you leave out the commit name, <emphasis>git grep</emphasis> will search any of the
 files it manages in your current directory.  So</simpara>
 <screen>$ git grep "hello"</screen>
-<simpara>is a quick way to search just the files that are tracked by git.</simpara>
-<simpara>Many git commands also take sets of commits, which can be specified
+<simpara>is a quick way to search just the files that are tracked by Git.</simpara>
+<simpara>Many Git commands also take sets of commits, which can be specified
 in a number of ways.  Here are some examples with <emphasis>git log</emphasis>:</simpara>
 <screen>$ git log v2.5..v2.6            # commits between v2.5 and v2.6
 $ git log v2.5..                # commits since v2.5
@@ -346,7 +346,7 @@ list.  When the history has lines of development that diverged and
 then merged back together, the order in which <emphasis>git log</emphasis> presents
 those commits is meaningless.</simpara>
 <simpara>Most projects with multiple contributors (such as the Linux kernel,
-or git itself) have frequent merges, and <emphasis>gitk</emphasis> does a better job of
+or Git itself) have frequent merges, and <emphasis>gitk</emphasis> does a better job of
 visualizing their history.  For example,</simpara>
 <screen>$ gitk --since="2 weeks ago" drivers/</screen>
 <simpara>allows you to browse any commits from the last 2 weeks of commits
@@ -364,7 +364,7 @@ of the file:</simpara>
 <title>Next Steps</title>
 <simpara>This tutorial should be enough to perform basic distributed revision
 control for your projects.  However, to fully understand the depth
-and power of git you need to understand two simple ideas on which it
+and power of Git you need to understand two simple ideas on which it
 is based:</simpara>
 <itemizedlist>
 <listitem>
@@ -384,7 +384,7 @@ The index file is a cache of the state of a directory tree,
 </itemizedlist>
 <simpara>Part two of this tutorial explains the object
 database, the index file, and a few other odds and ends that you'll
-need to make the most of git. You can find it at <xref linkend="gittutorial-2(7)" />.</simpara>
+need to make the most of Git. You can find it at <xref linkend="gittutorial-2(7)" />.</simpara>
 <simpara>If you don't want to continue with that right away, a few other
 digressions that may be interesting at this point are:</simpara>
 <itemizedlist>
@@ -414,7 +414,7 @@ digressions that may be interesting at this point are:</simpara>
 </listitem>
 <listitem>
 <simpara>
-link:everyday.html[Everyday GIT with 20 Commands Or So]
+<xref linkend="giteveryday(7)" />: Everyday Git with 20 Commands Or So.
 </simpara>
 </listitem>
 <listitem>
@@ -432,7 +432,7 @@ link:everyday.html[Everyday GIT with 20 Commands Or So]
 <xref linkend="gitglossary(7)" />,
 <xref linkend="git-help(1)" />,
 <xref linkend="gitworkflows(7)" />,
-link:everyday.html[Everyday git],
+<xref linkend="giteveryday(7)" />,
 link:user-manual.html[The Git User's Manual]</simpara>
 </simplesect>
 <simplesect id="gittutorial(7)__git">

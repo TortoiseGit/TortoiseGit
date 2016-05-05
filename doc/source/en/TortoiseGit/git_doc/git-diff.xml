@@ -23,8 +23,8 @@
 <simplesect id="git-diff(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Show changes between the working tree and the index or a tree, changes
-between the index and a tree, changes between two trees, or changes
-between two files on disk.</simpara>
+between the index and a tree, changes between two trees, changes between
+two blob objects, or changes between two files on disk.</simpara>
 <variablelist>
 <varlistentry>
 <term>
@@ -34,13 +34,25 @@ between two files on disk.</simpara>
 <simpara>
         This form is to view the changes you made relative to
         the index (staging area for the next commit).  In other
-        words, the differences are what you <emphasis>could</emphasis> tell git to
+        words, the differences are what you <emphasis>could</emphasis> tell Git to
         further add to the index but you still haven't.  You can
         stage these changes by using <xref linkend="git-add(1)" />.
 </simpara>
-<simpara>If exactly two paths are given and at least one points outside
-the current repository, <emphasis>git diff</emphasis> will compare the two files /
-directories. This behavior can be forced by --no-index.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>git diff</emphasis> --no-index [--options] [--] [&lt;path&gt;&#8230;]
+</term>
+<listitem>
+<simpara>
+        This form is to compare the given two paths on the
+        filesystem.  You can omit the <emphasis>--no-index</emphasis> option when
+        running the command in a working tree controlled by Git and
+        at least one of the paths points outside the working tree,
+        or when running the command outside a working tree
+        controlled by Git.
+</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -53,7 +65,7 @@ directories. This behavior can be forced by --no-index.</simpara>
         commit relative to the named &lt;commit&gt;.  Typically you
         would want comparison with the latest commit, so if you
         do not give &lt;commit&gt;, it defaults to HEAD.
-        If HEAD does not exist (e.g. unborned branches) and
+        If HEAD does not exist (e.g. unborn branches) and
         &lt;commit&gt; is not given, it shows all staged changes.
         --staged is a synonym of --cached.
 </simpara>
@@ -81,17 +93,6 @@ directories. This behavior can be forced by --no-index.</simpara>
 <simpara>
         This is to view the changes between two arbitrary
         &lt;commit&gt;.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
-<emphasis>git diff</emphasis> [options] &lt;blob&gt; &lt;blob&gt;
-</term>
-<listitem>
-<simpara>
-        This form is to view the differences between the raw
-        contents of two blob objects.
 </simpara>
 </listitem>
 </varlistentry>
@@ -132,6 +133,19 @@ However, "diff" is about comparing two <emphasis>endpoints</emphasis>, not range
 and the range notations ("&lt;commit&gt;..&lt;commit&gt;" and
 "&lt;commit&gt;...&lt;commit&gt;") do not mean a range as defined in the
 "SPECIFYING RANGES" section in <xref linkend="gitrevisions(7)" />.</simpara>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>git diff</emphasis> [options] &lt;blob&gt; &lt;blob&gt;
+</term>
+<listitem>
+<simpara>
+        This form is to view the differences between the raw
+        contents of two blob objects.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
 </simplesect>
 <simplesect id="git-diff(1)__options">
 <title>OPTIONS</title>
@@ -149,7 +163,21 @@ and the range notations ("&lt;commit&gt;..&lt;commit&gt;" and
 <listitem>
 <simpara>
         Generate patch (see section on generating patches).
-         This is the default.
+        This is the default.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-s
+</term>
+<term>
+--no-patch
+</term>
+<listitem>
+<simpara>
+        Suppress diff output. Useful for commands like <emphasis>git show</emphasis> that
+        show the patch by default, or to cancel the effect of <emphasis>--patch</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -174,8 +202,7 @@ and the range notations ("&lt;commit&gt;..&lt;commit&gt;" and
 </term>
 <listitem>
 <simpara>
-        Generate the raw format.
-        
+        Generate the diff in raw format.
 </simpara>
 </listitem>
 </varlistentry>
@@ -218,6 +245,63 @@ and the range notations ("&lt;commit&gt;..&lt;commit&gt;" and
 <simpara>
         Generate a diff using the "histogram diff" algorithm.
 </simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--diff-algorithm={patience|minimal|histogram|myers}
+</term>
+<listitem>
+<simpara>
+        Choose a diff algorithm. The variants are as follows:
+</simpara>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>default</emphasis>, <emphasis>myers</emphasis>
+</term>
+<listitem>
+<simpara>
+        The basic greedy diff algorithm. Currently, this is the default.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>minimal</emphasis>
+</term>
+<listitem>
+<simpara>
+        Spend extra time to make sure the smallest possible diff is
+        produced.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>patience</emphasis>
+</term>
+<listitem>
+<simpara>
+        Use "patience diff" algorithm when generating patches.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>histogram</emphasis>
+</term>
+<listitem>
+<simpara>
+        This algorithm extends the patience algorithm to "support
+        low-occurrence common elements".
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+<simpara>For instance, if you configured diff.algorithm variable to a
+non-default value and want to use the default one, then you
+have to use <emphasis>--diff-algorithm=default</emphasis> option.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -439,8 +523,8 @@ any of those replacements occurred.</simpara>
 <listitem>
 <simpara>
         Show colored diff.
-        The value must be <emphasis>always</emphasis> (the default for <emphasis>&lt;when&gt;</emphasis>), <emphasis>never</emphasis>, or <emphasis>auto</emphasis>.
-        The default value is <emphasis>never</emphasis>.
+        <emphasis>--color</emphasis> (i.e. without <emphasis>=&lt;when&gt;</emphasis>) is the same as <emphasis>--color=always</emphasis>.
+        <emphasis>&lt;when&gt;</emphasis> can be one of <emphasis>always</emphasis>, <emphasis>never</emphasis>, or <emphasis>auto</emphasis>.
         It can be changed by the <emphasis>color.ui</emphasis> and <emphasis>color.diff</emphasis>
         configuration settings.
 </simpara>
@@ -539,6 +623,8 @@ differences.  You may want to append <emphasis>|[^[:space:]]</emphasis> to your 
 expression to make sure that it matches all non-whitespace characters.
 A match that contains a newline is silently truncated(!) at the
 newline.</simpara>
+<simpara>For example, <emphasis>--word-diff-regex=.</emphasis> will treat each character as a word
+and, correspondingly, show differences character by character.</simpara>
 <simpara>The regex can also be set via a diff driver or configuration option, see
 <xref linkend="gitattributes(1)" /> or <xref linkend="git-config(1)" />.  Giving it explicitly
 overrides any diff driver or configuration setting.  Diff drivers
@@ -573,14 +659,30 @@ override configuration settings.</simpara>
 </term>
 <listitem>
 <simpara>
-        Warn if changes introduce whitespace errors.  What are
-        considered whitespace errors is controlled by <emphasis>core.whitespace</emphasis>
+        Warn if changes introduce conflict markers or whitespace errors.
+        What are considered whitespace errors is controlled by <emphasis>core.whitespace</emphasis>
         configuration.  By default, trailing whitespaces (including
         lines that solely consist of whitespaces) and a space character
         that is immediately followed by a tab character inside the
         initial indent of the line are considered whitespace errors.
         Exits with non-zero status if problems are found. Not compatible
         with --exit-code.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--ws-error-highlight=&lt;kind&gt;
+</term>
+<listitem>
+<simpara>
+        Highlight whitespace errors on lines specified by &lt;kind&gt;
+        in the color specified by <emphasis>color.diff.whitespace</emphasis>.  &lt;kind&gt;
+        is a comma separated list of <emphasis>old</emphasis>, <emphasis>new</emphasis>, <emphasis>context</emphasis>.  When
+        this option is not given, only whitespace errors in <emphasis>new</emphasis>
+        lines are highlighted.  E.g. <emphasis>--ws-error-highlight=new,old</emphasis>
+        highlights whitespace errors on both deleted and added lines.
+        <emphasis>all</emphasis> can be used as a short-hand for <emphasis>old,new,context</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -640,7 +742,7 @@ few lines that happen to match textually as the context, but as a
 single deletion of everything old followed by a single insertion of
 everything new, and the number <emphasis>m</emphasis> controls this aspect of the -B
 option (defaults to 60%). <emphasis>-B/70%</emphasis> specifies that less than 30% of the
-original should remain in the result for git to consider it a total
+original should remain in the result for Git to consider it a total
 rewrite (i.e. otherwise the resulting patch will be a series of
 deletion and insertion mixed together with context lines).</simpara>
 <simpara>When used with -M, a totally-rewritten file is also considered as the
@@ -664,13 +766,13 @@ another file.</simpara>
         Detect renames.
         If <emphasis>n</emphasis> is specified, it is a threshold on the similarity
         index (i.e. amount of addition/deletions compared to the
-        file's size). For example, <emphasis>-M90%</emphasis> means git should consider a
+        file's size). For example, <emphasis>-M90%</emphasis> means Git should consider a
         delete/add pair to be a rename if more than 90% of the file
         hasn't changed.  Without a <emphasis>%</emphasis> sign, the number is to be read as
         a fraction, with a decimal point before it.  I.e., <emphasis>-M5</emphasis> becomes
         0.5, and is thus the same as <emphasis>-M50%</emphasis>.  Similarly, <emphasis>-M05</emphasis> is
         the same as <emphasis>-M5%</emphasis>.  To limit detection to exact renames, use
-        <emphasis>-M100%</emphasis>.
+        <emphasis>-M100%</emphasis>.  The default similarity index is 50%.
 </simpara>
 </listitem>
 </varlistentry>
@@ -715,7 +817,7 @@ another file.</simpara>
 <simpara>
         Omit the preimage for deletes, i.e. print only the header but not
         the diff between the preimage and <emphasis>/dev/null</emphasis>. The resulting patch
-        is not meant to be applied with <emphasis>patch</emphasis> nor <emphasis>git apply</emphasis>; this is
+        is not meant to be applied with <emphasis>patch</emphasis> or <emphasis>git apply</emphasis>; this is
         solely for people who want to just concentrate on reviewing the
         text after the change. In addition, the output obviously lack
         enough information to apply such a patch in reverse, even manually,
@@ -764,11 +866,15 @@ of a delete/create pair.</simpara>
 </term>
 <listitem>
 <simpara>
-        Look for differences that introduce or remove an instance of
-        &lt;string&gt;. Note that this is different than the string simply
-        appearing in diff output; see the <emphasis>pickaxe</emphasis> entry in
-        <xref linkend="gitdiffcore(7)" /> for more details.
+        Look for differences that change the number of occurrences of
+        the specified string (i.e. addition/deletion) in a file.
+        Intended for the scripter's use.
 </simpara>
+<simpara>It is useful when you're looking for an exact block of code (like a
+struct), and want to know the history of that block since it first
+came into being: use the feature iteratively to feed the interesting
+block in the preimage back into <emphasis>-S</emphasis>, and keep going until you get the
+very first version of the block.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -777,9 +883,20 @@ of a delete/create pair.</simpara>
 </term>
 <listitem>
 <simpara>
-        Look for differences whose added or removed line matches
-        the given &lt;regex&gt;.
+        Look for differences whose patch text contains added/removed
+        lines that match &lt;regex&gt;.
 </simpara>
+<simpara>To illustrate the difference between <emphasis>-S&lt;regex&gt; --pickaxe-regex</emphasis> and
+<emphasis>-G&lt;regex&gt;</emphasis>, consider a commit with the following diff in the same
+file:</simpara>
+<screen>+    return !regexec(regexp, two-&gt;ptr, 1, &amp;regmatch, 0);
+...
+-    hit = !regexec(regexp, mf2.ptr, 1, &amp;regmatch, 0);</screen>
+<simpara>While <emphasis>git log -G"regexec\(regexp"</emphasis> will show this commit, <emphasis>git log
+-S"regexec\(regexp" --pickaxe-regex</emphasis> will not (because the number of
+occurrences of that string did not change).</simpara>
+<simpara>See the <emphasis>pickaxe</emphasis> entry in <xref linkend="gitdiffcore(7)" /> for more
+information.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -800,8 +917,8 @@ of a delete/create pair.</simpara>
 </term>
 <listitem>
 <simpara>
-        Make the &lt;string&gt; not a plain string but an extended POSIX
-        regex to match.
+        Treat the &lt;string&gt; given to <emphasis>-S</emphasis> as an extended POSIX regular
+        expression to match.
 </simpara>
 </listitem>
 </varlistentry>
@@ -813,6 +930,9 @@ of a delete/create pair.</simpara>
 <simpara>
         Output the patch in the order specified in the
         &lt;orderfile&gt;, which has one shell glob pattern per line.
+        This overrides the <emphasis>diff.orderFile</emphasis> configuration variable
+        (see <xref linkend="git-config(1)" />).  To cancel <emphasis>diff.orderFile</emphasis>,
+        use <emphasis>-O/dev/null</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -892,6 +1012,16 @@ of a delete/create pair.</simpara>
         Ignore whitespace when comparing lines.  This ignores
         differences even if one line has whitespace where the other
         line has none.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--ignore-blank-lines
+</term>
+<listitem>
+<simpara>
+        Ignore changes whose lines are all blank.
 </simpara>
 </listitem>
 </varlistentry>
@@ -990,7 +1120,7 @@ of a delete/create pair.</simpara>
 <listitem>
 <simpara>
         Ignore changes to submodules in the diff generation. &lt;when&gt; can be
-        either "none", "untracked", "dirty" or "all", which is the default
+        either "none", "untracked", "dirty" or "all", which is the default.
         Using "none" will consider the submodule modified when it either contains
         untracked or modified files or its HEAD differs from the commit recorded
         in the superproject and can be used to override any settings of the
@@ -1233,7 +1363,8 @@ X: "unknown" change type (most probably a bug, please report it)
 </itemizedlist>
 <simpara>Status letters C and R are always followed by a score (denoting the
 percentage of similarity between the source and target of the move or
-copy), and are the only ones to be so.</simpara>
+copy).  Status letter M may be followed by a score (denoting the
+percentage of dissimilarity) for file rewrites.</simpara>
 <simpara>&lt;sha1&gt; is shown as all 0's if a file is new on the filesystem
 and it is out of sync with the index.</simpara>
 <simpara>Example:</simpara>
@@ -1357,10 +1488,10 @@ rename to a</literallayout>
 </simplesect>
 <simplesect id="git-diff(1)__combined_diff_format">
 <title>combined diff format</title>
-<simpara>Any diff-generating command can take the -c` or <emphasis>--cc</emphasis> option to
+<simpara>Any diff-generating command can take the <emphasis>-c</emphasis> or <emphasis>--cc</emphasis> option to
 produce a <emphasis>combined diff</emphasis> when showing a merge. This is the default
 format when showing merges with <xref linkend="git-diff(1)" /> or
-<xref linkend="git-show(1)" />. Note also that you can give the `-m option to any
+<xref linkend="git-show(1)" />. Note also that you can give the <emphasis>-m</emphasis> option to any
 of these commands to force generation of diffs with individual parents
 of a merge.</simpara>
 <simpara>A <emphasis>combined diff</emphasis> format looks like this:</simpara>
@@ -1455,7 +1586,7 @@ added, from the point of view of that parent).</simpara>
 <simpara>In the above example output, the function signature was changed
 from both files (hence two <emphasis>-</emphasis> removals from both file1 and
 file2, plus <emphasis>++</emphasis> to mean one line that was added does not appear
-in either file1 nor file2).  Also eight other lines are the same
+in either file1 or file2).  Also eight other lines are the same
 from file1 but do not appear in file2 (hence prefixed with <emphasis>+</emphasis>).</simpara>
 <simpara>When shown by <emphasis>git diff-tree -c</emphasis>, it compares the parents of a
 merge commit with the merge result (i.e. file1..fileN are the
@@ -1671,8 +1802,8 @@ $ git diff arch/i386 include/asm-i386   <co id="git-diff_CO4-3"/></screen>
 <calloutlist>
 <callout arearefs="git-diff_CO4-1">
 <para>
-Show only modification, rename and copy, but not addition
-nor deletion.
+Show only modification, rename, and copy, but not addition
+or deletion.
 </para>
 </callout>
 <callout arearefs="git-diff_CO4-2">

@@ -101,10 +101,6 @@
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="git-column(1)__author">
-<title>Author</title>
-<simpara>Written by Nguyen Thai Ngoc Duy &lt;<ulink url="mailto:pclouds@gmail.com">pclouds@gmail.com</ulink>&gt;</simpara>
-</simplesect>
 <simplesect id="git-column(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>

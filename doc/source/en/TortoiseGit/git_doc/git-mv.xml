@@ -18,7 +18,7 @@
 </simplesect>
 <simplesect id="git-mv(1)__description">
 <title>DESCRIPTION</title>
-<simpara>This script is used to move or rename a file, directory or symlink.</simpara>
+<simpara>Move or rename a file, directory or symlink.</simpara>
 <literallayout class="monospaced">git mv [-v] [-f] [-n] [-k] &lt;source&gt; &lt;destination&gt;
 git mv [-v] [-f] [-n] [-k] &lt;source&gt; ... &lt;destination directory&gt;</literallayout>
 <simpara>In the first form, it renames &lt;source&gt;, which must exist and be either
@@ -52,7 +52,7 @@ committed.</simpara>
 <simpara>
         Skip move or rename actions which would lead to an error
         condition. An error happens when a source is neither existing nor
-        controlled by GIT, or when it would overwrite an existing
+        controlled by Git, or when it would overwrite an existing
         file unless <emphasis>-f</emphasis> is given.
 </simpara>
 </listitem>
@@ -84,6 +84,26 @@ committed.</simpara>
 </listitem>
 </varlistentry>
 </variablelist>
+</simplesect>
+<simplesect id="git-mv(1)__submodules">
+<title>SUBMODULES</title>
+<simpara>Moving a submodule using a gitfile (which means they were cloned
+with a Git version 1.7.8 or newer) will update the gitfile and
+core.worktree setting to make the submodule work in the new location.
+It also will attempt to update the submodule.&lt;name&gt;.path setting in
+the <xref linkend="gitmodules(5)" /> file and stage that file (unless -n is used).</simpara>
+</simplesect>
+<simplesect id="git-mv(1)__bugs">
+<title>BUGS</title>
+<simpara>Each time a superproject update moves a populated submodule (e.g. when
+switching between commits before and after the move) a stale submodule
+checkout will remain in the old location and an empty directory will
+appear in the new location. To populate the submodule again in the new
+location the user will have to run "git submodule update"
+afterwards. Removing the old directory is only safe when it uses a
+gitfile, as otherwise the history of the submodule will be deleted
+too. Both steps will be obsolete when recursive submodule update has
+been implemented.</simpara>
 </simplesect>
 <simplesect id="git-mv(1)__git">
 <title>GIT</title>

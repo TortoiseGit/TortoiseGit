@@ -41,7 +41,20 @@
 <listitem>
 <simpara>
         Generate patch (see section on generating patches).
-        
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-s
+</term>
+<term>
+--no-patch
+</term>
+<listitem>
+<simpara>
+        Suppress diff output. Useful for commands like <emphasis>git show</emphasis> that
+        show the patch by default, or to cancel the effect of <emphasis>--patch</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -66,8 +79,8 @@
 </term>
 <listitem>
 <simpara>
-        Generate the raw format.
-         This is the default.
+        Generate the diff in raw format.
+        This is the default.
 </simpara>
 </listitem>
 </varlistentry>
@@ -110,6 +123,63 @@
 <simpara>
         Generate a diff using the "histogram diff" algorithm.
 </simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--diff-algorithm={patience|minimal|histogram|myers}
+</term>
+<listitem>
+<simpara>
+        Choose a diff algorithm. The variants are as follows:
+</simpara>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>default</emphasis>, <emphasis>myers</emphasis>
+</term>
+<listitem>
+<simpara>
+        The basic greedy diff algorithm. Currently, this is the default.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>minimal</emphasis>
+</term>
+<listitem>
+<simpara>
+        Spend extra time to make sure the smallest possible diff is
+        produced.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>patience</emphasis>
+</term>
+<listitem>
+<simpara>
+        Use "patience diff" algorithm when generating patches.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>histogram</emphasis>
+</term>
+<listitem>
+<simpara>
+        This algorithm extends the patience algorithm to "support
+        low-occurrence common elements".
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+<simpara>For instance, if you configured diff.algorithm variable to a
+non-default value and want to use the default one, then you
+have to use <emphasis>--diff-algorithm=default</emphasis> option.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -331,8 +401,8 @@ any of those replacements occurred.</simpara>
 <listitem>
 <simpara>
         Show colored diff.
-        The value must be <emphasis>always</emphasis> (the default for <emphasis>&lt;when&gt;</emphasis>), <emphasis>never</emphasis>, or <emphasis>auto</emphasis>.
-        The default value is <emphasis>never</emphasis>.
+        <emphasis>--color</emphasis> (i.e. without <emphasis>=&lt;when&gt;</emphasis>) is the same as <emphasis>--color=always</emphasis>.
+        <emphasis>&lt;when&gt;</emphasis> can be one of <emphasis>always</emphasis>, <emphasis>never</emphasis>, or <emphasis>auto</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -428,6 +498,8 @@ differences.  You may want to append <emphasis>|[^[:space:]]</emphasis> to your 
 expression to make sure that it matches all non-whitespace characters.
 A match that contains a newline is silently truncated(!) at the
 newline.</simpara>
+<simpara>For example, <emphasis>--word-diff-regex=.</emphasis> will treat each character as a word
+and, correspondingly, show differences character by character.</simpara>
 <simpara>The regex can also be set via a diff driver or configuration option, see
 <xref linkend="gitattributes(1)" /> or <xref linkend="git-config(1)" />.  Giving it explicitly
 overrides any diff driver or configuration setting.  Diff drivers
@@ -462,14 +534,30 @@ override configuration settings.</simpara>
 </term>
 <listitem>
 <simpara>
-        Warn if changes introduce whitespace errors.  What are
-        considered whitespace errors is controlled by <emphasis>core.whitespace</emphasis>
+        Warn if changes introduce conflict markers or whitespace errors.
+        What are considered whitespace errors is controlled by <emphasis>core.whitespace</emphasis>
         configuration.  By default, trailing whitespaces (including
         lines that solely consist of whitespaces) and a space character
         that is immediately followed by a tab character inside the
         initial indent of the line are considered whitespace errors.
         Exits with non-zero status if problems are found. Not compatible
         with --exit-code.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--ws-error-highlight=&lt;kind&gt;
+</term>
+<listitem>
+<simpara>
+        Highlight whitespace errors on lines specified by &lt;kind&gt;
+        in the color specified by <emphasis>color.diff.whitespace</emphasis>.  &lt;kind&gt;
+        is a comma separated list of <emphasis>old</emphasis>, <emphasis>new</emphasis>, <emphasis>context</emphasis>.  When
+        this option is not given, only whitespace errors in <emphasis>new</emphasis>
+        lines are highlighted.  E.g. <emphasis>--ws-error-highlight=new,old</emphasis>
+        highlights whitespace errors on both deleted and added lines.
+        <emphasis>all</emphasis> can be used as a short-hand for <emphasis>old,new,context</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -529,7 +617,7 @@ few lines that happen to match textually as the context, but as a
 single deletion of everything old followed by a single insertion of
 everything new, and the number <emphasis>m</emphasis> controls this aspect of the -B
 option (defaults to 60%). <emphasis>-B/70%</emphasis> specifies that less than 30% of the
-original should remain in the result for git to consider it a total
+original should remain in the result for Git to consider it a total
 rewrite (i.e. otherwise the resulting patch will be a series of
 deletion and insertion mixed together with context lines).</simpara>
 <simpara>When used with -M, a totally-rewritten file is also considered as the
@@ -553,13 +641,13 @@ another file.</simpara>
         Detect renames.
         If <emphasis>n</emphasis> is specified, it is a threshold on the similarity
         index (i.e. amount of addition/deletions compared to the
-        file's size). For example, <emphasis>-M90%</emphasis> means git should consider a
+        file's size). For example, <emphasis>-M90%</emphasis> means Git should consider a
         delete/add pair to be a rename if more than 90% of the file
         hasn't changed.  Without a <emphasis>%</emphasis> sign, the number is to be read as
         a fraction, with a decimal point before it.  I.e., <emphasis>-M5</emphasis> becomes
         0.5, and is thus the same as <emphasis>-M50%</emphasis>.  Similarly, <emphasis>-M05</emphasis> is
         the same as <emphasis>-M5%</emphasis>.  To limit detection to exact renames, use
-        <emphasis>-M100%</emphasis>.
+        <emphasis>-M100%</emphasis>.  The default similarity index is 50%.
 </simpara>
 </listitem>
 </varlistentry>
@@ -604,7 +692,7 @@ another file.</simpara>
 <simpara>
         Omit the preimage for deletes, i.e. print only the header but not
         the diff between the preimage and <emphasis>/dev/null</emphasis>. The resulting patch
-        is not meant to be applied with <emphasis>patch</emphasis> nor <emphasis>git apply</emphasis>; this is
+        is not meant to be applied with <emphasis>patch</emphasis> or <emphasis>git apply</emphasis>; this is
         solely for people who want to just concentrate on reviewing the
         text after the change. In addition, the output obviously lack
         enough information to apply such a patch in reverse, even manually,
@@ -653,11 +741,15 @@ of a delete/create pair.</simpara>
 </term>
 <listitem>
 <simpara>
-        Look for differences that introduce or remove an instance of
-        &lt;string&gt;. Note that this is different than the string simply
-        appearing in diff output; see the <emphasis>pickaxe</emphasis> entry in
-        <xref linkend="gitdiffcore(7)" /> for more details.
+        Look for differences that change the number of occurrences of
+        the specified string (i.e. addition/deletion) in a file.
+        Intended for the scripter's use.
 </simpara>
+<simpara>It is useful when you're looking for an exact block of code (like a
+struct), and want to know the history of that block since it first
+came into being: use the feature iteratively to feed the interesting
+block in the preimage back into <emphasis>-S</emphasis>, and keep going until you get the
+very first version of the block.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -666,9 +758,20 @@ of a delete/create pair.</simpara>
 </term>
 <listitem>
 <simpara>
-        Look for differences whose added or removed line matches
-        the given &lt;regex&gt;.
+        Look for differences whose patch text contains added/removed
+        lines that match &lt;regex&gt;.
 </simpara>
+<simpara>To illustrate the difference between <emphasis>-S&lt;regex&gt; --pickaxe-regex</emphasis> and
+<emphasis>-G&lt;regex&gt;</emphasis>, consider a commit with the following diff in the same
+file:</simpara>
+<screen>+    return !regexec(regexp, two-&gt;ptr, 1, &amp;regmatch, 0);
+...
+-    hit = !regexec(regexp, mf2.ptr, 1, &amp;regmatch, 0);</screen>
+<simpara>While <emphasis>git log -G"regexec\(regexp"</emphasis> will show this commit, <emphasis>git log
+-S"regexec\(regexp" --pickaxe-regex</emphasis> will not (because the number of
+occurrences of that string did not change).</simpara>
+<simpara>See the <emphasis>pickaxe</emphasis> entry in <xref linkend="gitdiffcore(7)" /> for more
+information.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -689,8 +792,8 @@ of a delete/create pair.</simpara>
 </term>
 <listitem>
 <simpara>
-        Make the &lt;string&gt; not a plain string but an extended POSIX
-        regex to match.
+        Treat the &lt;string&gt; given to <emphasis>-S</emphasis> as an extended POSIX regular
+        expression to match.
 </simpara>
 </listitem>
 </varlistentry>
@@ -702,6 +805,9 @@ of a delete/create pair.</simpara>
 <simpara>
         Output the patch in the order specified in the
         &lt;orderfile&gt;, which has one shell glob pattern per line.
+        This overrides the <emphasis>diff.orderFile</emphasis> configuration variable
+        (see <xref linkend="git-config(1)" />).  To cancel <emphasis>diff.orderFile</emphasis>,
+        use <emphasis>-O/dev/null</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -781,6 +887,16 @@ of a delete/create pair.</simpara>
         Ignore whitespace when comparing lines.  This ignores
         differences even if one line has whitespace where the other
         line has none.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--ignore-blank-lines
+</term>
+<listitem>
+<simpara>
+        Ignore changes whose lines are all blank.
 </simpara>
 </listitem>
 </varlistentry>
@@ -879,7 +995,7 @@ of a delete/create pair.</simpara>
 <listitem>
 <simpara>
         Ignore changes to submodules in the diff generation. &lt;when&gt; can be
-        either "none", "untracked", "dirty" or "all", which is the default
+        either "none", "untracked", "dirty" or "all", which is the default.
         Using "none" will consider the submodule modified when it either contains
         untracked or modified files or its HEAD differs from the commit recorded
         in the superproject and can be used to override any settings of the
@@ -1053,10 +1169,13 @@ commits (but not trees).</simpara>
 <simpara>
         Pretty-print the contents of the commit logs in a given format,
         where <emphasis>&lt;format&gt;</emphasis> can be one of <emphasis>oneline</emphasis>, <emphasis>short</emphasis>, <emphasis>medium</emphasis>,
-        <emphasis>full</emphasis>, <emphasis>fuller</emphasis>, <emphasis>email</emphasis>, <emphasis>raw</emphasis> and <emphasis>format:&lt;string&gt;</emphasis>.  See
-        the "PRETTY FORMATS" section for some additional details for each
-        format.  When omitted, the format defaults to <emphasis>medium</emphasis>.
+        <emphasis>full</emphasis>, <emphasis>fuller</emphasis>, <emphasis>email</emphasis>, <emphasis>raw</emphasis>, <emphasis>format:&lt;string&gt;</emphasis>
+        and <emphasis>tformat:&lt;string&gt;</emphasis>.  When <emphasis>&lt;format&gt;</emphasis> is none of the above,
+        and has <emphasis>%placeholder</emphasis> in it, it acts as if
+        <emphasis>--pretty=tformat:&lt;format&gt;</emphasis> were given.
 </simpara>
+<simpara>See the "PRETTY FORMATS" section for some additional details for each
+format.  When <emphasis>=&lt;format&gt;</emphasis> part is omitted, it defaults to <emphasis>medium</emphasis>.</simpara>
 <simpara>Note: you can specify the default pretty format in the repository
 configuration (see <xref linkend="git-config(1)" />).</simpara>
 </listitem>
@@ -1101,7 +1220,7 @@ people using 80-column terminals.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---encoding[=&lt;encoding&gt;]
+--encoding=&lt;encoding&gt;
 </term>
 <listitem>
 <simpara>
@@ -1109,28 +1228,56 @@ people using 80-column terminals.</simpara>
         in their encoding header; this option can be used to tell the
         command to re-code the commit log message in the encoding
         preferred by the user.  For non plumbing commands this
-        defaults to UTF-8.
+        defaults to UTF-8. Note that if an object claims to be encoded
+        in <emphasis>X</emphasis> and we are outputting in <emphasis>X</emphasis>, we will output the object
+        verbatim; this means that invalid sequences in the original
+        commit may be copied to the output.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---notes[=&lt;ref&gt;]
+--expand-tabs=&lt;n&gt;
+</term>
+<term>
+--expand-tabs
+</term>
+<term>
+--no-expand-tabs
+</term>
+<listitem>
+<simpara>
+        Perform a tab expansion (replace each tab with enough spaces
+        to fill to the next display column that is multiple of <emphasis>&lt;n&gt;</emphasis>)
+        in the log message before showing it in the output.
+        <emphasis>--expand-tabs</emphasis> is a short-hand for <emphasis>--expand-tabs=8</emphasis>, and
+        <emphasis>--no-expand-tabs</emphasis> is a short-hand for <emphasis>--expand-tabs=0</emphasis>,
+        which disables tab expansion.
+</simpara>
+<simpara>By default, tabs are expanded in pretty formats that indent the log
+message by 4 spaces (i.e.  <emphasis>medium</emphasis>, which is the default, <emphasis>full</emphasis>,
+and <emphasis>fuller</emphasis>).</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--notes[=&lt;treeish&gt;]
 </term>
 <listitem>
 <simpara>
         Show the notes (see <xref linkend="git-notes(1)" />) that annotate the
         commit, when showing the commit log message.  This is the default
         for <emphasis>git log</emphasis>, <emphasis>git show</emphasis> and <emphasis>git whatchanged</emphasis> commands when
-        there is no <emphasis>--pretty</emphasis>, <emphasis>--format</emphasis> nor <emphasis>--oneline</emphasis> option given
+        there is no <emphasis>--pretty</emphasis>, <emphasis>--format</emphasis>, or <emphasis>--oneline</emphasis> option given
         on the command line.
 </simpara>
 <simpara>By default, the notes shown are from the notes refs listed in the
 <emphasis>core.notesRef</emphasis> and <emphasis>notes.displayRef</emphasis> variables (or corresponding
 environment overrides). See <xref linkend="git-config(1)" /> for more details.</simpara>
-<simpara>With an optional <emphasis>&lt;ref&gt;</emphasis> argument, show this notes ref instead of the
-default notes ref(s). The ref is taken to be in <emphasis>refs/notes/</emphasis> if it
-is not qualified.</simpara>
+<simpara>With an optional <emphasis>&lt;treeish&gt;</emphasis> argument, use the treeish to find the notes
+to display.  The treeish can specify the full refname when it begins
+with <emphasis>refs/notes/</emphasis>; when it begins with <emphasis>notes/</emphasis>, <emphasis>refs/</emphasis> and otherwise
+<emphasis>refs/notes/</emphasis> is prefixed to form a full name of the ref.</simpara>
 <simpara>Multiple --notes options can be combined to control which notes are
 being displayed. Examples: "--notes=foo" will show only notes from
 "refs/notes/foo"; "--notes=foo --notes" will show both notes from
@@ -1153,7 +1300,7 @@ being displayed. Examples: "--notes=foo" will show only notes from
 </varlistentry>
 <varlistentry>
 <term>
---show-notes[=&lt;ref&gt;]
+--show-notes[=&lt;treeish&gt;]
 </term>
 <term>
 --[no-]standard-notes
@@ -1314,11 +1461,14 @@ Subject: [PATCH] &lt;title line&gt;</literallayout>
 <emphasis>raw</emphasis>
 </simpara>
 <simpara>The <emphasis>raw</emphasis> format shows the entire commit exactly as
-stored in the commit object.  Notably, the SHA1s are
+stored in the commit object.  Notably, the SHA-1s are
 displayed in full, regardless of whether --abbrev or
 --no-abbrev are used, and <emphasis>parents</emphasis> information show the
-true parent commits, without taking grafts nor history
-simplification into account.</simpara>
+true parent commits, without taking grafts or history
+simplification into account. Note that this format affects the way
+commits are displayed, but not the way the diff is shown e.g. with
+<emphasis>git log --raw</emphasis>. To get full object names in a raw diff format,
+use <emphasis>--no-abbrev</emphasis>.</simpara>
 </listitem>
 <listitem>
 <simpara>
@@ -1371,7 +1521,8 @@ The title was &gt;&gt;t4119: test autocomputing -p&lt;n&gt; for traditional diff
 </listitem>
 <listitem>
 <simpara>
-<emphasis>%aN</emphasis>: author name (respecting .mailmap, see <xref linkend="git-shortlog(1)" /> or <xref linkend="git-blame(1)" />)
+<emphasis>%aN</emphasis>: author name (respecting .mailmap, see <xref linkend="git-shortlog(1)" />
+  or <xref linkend="git-blame(1)" />)
 </simpara>
 </listitem>
 <listitem>
@@ -1381,7 +1532,8 @@ The title was &gt;&gt;t4119: test autocomputing -p&lt;n&gt; for traditional diff
 </listitem>
 <listitem>
 <simpara>
-<emphasis>%aE</emphasis>: author email (respecting .mailmap, see <xref linkend="git-shortlog(1)" /> or <xref linkend="git-blame(1)" />)
+<emphasis>%aE</emphasis>: author email (respecting .mailmap, see
+  <xref linkend="git-shortlog(1)" /> or <xref linkend="git-blame(1)" />)
 </simpara>
 </listitem>
 <listitem>
@@ -1406,7 +1558,12 @@ The title was &gt;&gt;t4119: test autocomputing -p&lt;n&gt; for traditional diff
 </listitem>
 <listitem>
 <simpara>
-<emphasis>%ai</emphasis>: author date, ISO 8601 format
+<emphasis>%ai</emphasis>: author date, ISO 8601-like format
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%aI</emphasis>: author date, strict ISO 8601 format
 </simpara>
 </listitem>
 <listitem>
@@ -1416,7 +1573,8 @@ The title was &gt;&gt;t4119: test autocomputing -p&lt;n&gt; for traditional diff
 </listitem>
 <listitem>
 <simpara>
-<emphasis>%cN</emphasis>: committer name (respecting .mailmap, see <xref linkend="git-shortlog(1)" /> or <xref linkend="git-blame(1)" />)
+<emphasis>%cN</emphasis>: committer name (respecting .mailmap, see
+  <xref linkend="git-shortlog(1)" /> or <xref linkend="git-blame(1)" />)
 </simpara>
 </listitem>
 <listitem>
@@ -1426,12 +1584,13 @@ The title was &gt;&gt;t4119: test autocomputing -p&lt;n&gt; for traditional diff
 </listitem>
 <listitem>
 <simpara>
-<emphasis>%cE</emphasis>: committer email (respecting .mailmap, see <xref linkend="git-shortlog(1)" /> or <xref linkend="git-blame(1)" />)
+<emphasis>%cE</emphasis>: committer email (respecting .mailmap, see
+  <xref linkend="git-shortlog(1)" /> or <xref linkend="git-blame(1)" />)
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-<emphasis>%cd</emphasis>: committer date
+<emphasis>%cd</emphasis>: committer date (format respects --date= option)
 </simpara>
 </listitem>
 <listitem>
@@ -1451,12 +1610,22 @@ The title was &gt;&gt;t4119: test autocomputing -p&lt;n&gt; for traditional diff
 </listitem>
 <listitem>
 <simpara>
-<emphasis>%ci</emphasis>: committer date, ISO 8601 format
+<emphasis>%ci</emphasis>: committer date, ISO 8601-like format
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%cI</emphasis>: committer date, strict ISO 8601 format
 </simpara>
 </listitem>
 <listitem>
 <simpara>
 <emphasis>%d</emphasis>: ref names, like the --decorate option of <xref linkend="git-log(1)" />
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%D</emphasis>: ref names without the " (", ")" wrapping.
 </simpara>
 </listitem>
 <listitem>
@@ -1496,12 +1665,18 @@ The title was &gt;&gt;t4119: test autocomputing -p&lt;n&gt; for traditional diff
 </listitem>
 <listitem>
 <simpara>
-<emphasis>%G?</emphasis>: show either "G" for Good or "B" for Bad for a signed commit
+<emphasis>%G?</emphasis>: show "G" for a Good signature, "B" for a Bad signature, "U" for a good,
+  untrusted signature and "N" for no signature
 </simpara>
 </listitem>
 <listitem>
 <simpara>
 <emphasis>%GS</emphasis>: show the name of the signer for a signed commit
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%GK</emphasis>: show the key used to sign a signed commit
 </simpara>
 </listitem>
 <listitem>
@@ -1521,7 +1696,8 @@ The title was &gt;&gt;t4119: test autocomputing -p&lt;n&gt; for traditional diff
 </listitem>
 <listitem>
 <simpara>
-<emphasis>%gN</emphasis>: reflog identity name (respecting .mailmap, see <xref linkend="git-shortlog(1)" /> or <xref linkend="git-blame(1)" />)
+<emphasis>%gN</emphasis>: reflog identity name (respecting .mailmap, see
+  <xref linkend="git-shortlog(1)" /> or <xref linkend="git-blame(1)" />)
 </simpara>
 </listitem>
 <listitem>
@@ -1531,7 +1707,8 @@ The title was &gt;&gt;t4119: test autocomputing -p&lt;n&gt; for traditional diff
 </listitem>
 <listitem>
 <simpara>
-<emphasis>%gE</emphasis>: reflog identity email (respecting .mailmap, see <xref linkend="git-shortlog(1)" /> or <xref linkend="git-blame(1)" />)
+<emphasis>%gE</emphasis>: reflog identity email (respecting .mailmap, see
+  <xref linkend="git-shortlog(1)" /> or <xref linkend="git-blame(1)" />)
 </simpara>
 </listitem>
 <listitem>
@@ -1561,7 +1738,12 @@ The title was &gt;&gt;t4119: test autocomputing -p&lt;n&gt; for traditional diff
 </listitem>
 <listitem>
 <simpara>
-<emphasis>%C(&#8230;)</emphasis>: color specification, as described in color.branch.* config option
+<emphasis>%C(&#8230;)</emphasis>: color specification, as described in color.branch.* config option;
+  adding <emphasis>auto,</emphasis> at the beginning will emit color only when colors are
+  enabled for log output (by <emphasis>color.diff</emphasis>, <emphasis>color.ui</emphasis>, or <emphasis>--color</emphasis>, and
+  respecting the <emphasis>auto</emphasis> settings of the former if we are going to a
+  terminal). <emphasis>auto</emphasis> alone (i.e. <emphasis>%C(auto)</emphasis>) will turn on auto coloring
+  on the next placeholders until the color is switched again.
 </simpara>
 </listitem>
 <listitem>
@@ -1590,14 +1772,49 @@ The title was &gt;&gt;t4119: test autocomputing -p&lt;n&gt; for traditional diff
   <xref linkend="git-shortlog(1)" />.
 </simpara>
 </listitem>
+<listitem>
+<simpara>
+<emphasis>%&lt;(&lt;N&gt;[,trunc|ltrunc|mtrunc])</emphasis>: make the next placeholder take at
+  least N columns, padding spaces on the right if necessary.
+  Optionally truncate at the beginning (ltrunc), the middle (mtrunc)
+  or the end (trunc) if the output is longer than N columns.
+  Note that truncating only works correctly with N &gt;= 2.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%&lt;|(&lt;N&gt;)</emphasis>: make the next placeholder take at least until Nth
+  columns, padding spaces on the right if necessary
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%&gt;(&lt;N&gt;)</emphasis>, <emphasis>%&gt;|(&lt;N&gt;)</emphasis>: similar to <emphasis>%&lt;(&lt;N&gt;)</emphasis>, <emphasis>%&lt;|(&lt;N&gt;)</emphasis>
+  respectively, but padding spaces on the left
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%&gt;&gt;(&lt;N&gt;)</emphasis>, <emphasis>%&gt;&gt;|(&lt;N&gt;)</emphasis>: similar to <emphasis>%&gt;(&lt;N&gt;)</emphasis>, <emphasis>%&gt;|(&lt;N&gt;)</emphasis>
+  respectively, except that if the next placeholder takes more spaces
+  than given and there are spaces on its left, use those spaces
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%&gt;&lt;(&lt;N&gt;)</emphasis>, <emphasis>%&gt;&lt;|(&lt;N&gt;)</emphasis>: similar to <emphasis>% &lt;(&lt;N&gt;)</emphasis>, <emphasis>%&lt;|(&lt;N&gt;)</emphasis>
+  respectively, but padding both sides (i.e. the text is centered)
+</simpara>
+</listitem>
 </itemizedlist>
 </listitem>
 </itemizedlist>
 <note><simpara>Some placeholders may depend on other options given to the
 revision traversal engine. For example, the <emphasis>%g*</emphasis> reflog options will
 insert an empty string unless we are traversing reflog entries (e.g., by
-<emphasis>git log -g</emphasis>). The <emphasis>%d</emphasis> placeholder will use the "short" decoration
-format if <emphasis>--decorate</emphasis> was not already provided on the command line.</simpara></note>
+<emphasis>git log -g</emphasis>). The <emphasis>%d</emphasis> and <emphasis>%D</emphasis> placeholders will use the "short"
+decoration format if <emphasis>--decorate</emphasis> was not already provided on the command
+line.</simpara></note>
 <simpara>If you add a <emphasis>+</emphasis> (plus sign) after <emphasis>%</emphasis> of a placeholder, a line-feed
 is inserted immediately before the expansion if and only if the
 placeholder expands to a non-empty string.</simpara>
@@ -1848,7 +2065,8 @@ X: "unknown" change type (most probably a bug, please report it)
 </itemizedlist>
 <simpara>Status letters C and R are always followed by a score (denoting the
 percentage of similarity between the source and target of the move or
-copy), and are the only ones to be so.</simpara>
+copy).  Status letter M may be followed by a score (denoting the
+percentage of dissimilarity) for file rewrites.</simpara>
 <simpara>&lt;sha1&gt; is shown as all 0's if a file is new on the filesystem
 and it is out of sync with the index.</simpara>
 <simpara>Example:</simpara>
@@ -1972,10 +2190,10 @@ rename to a</literallayout>
 </simplesect>
 <simplesect id="git-diff-tree(1)__combined_diff_format">
 <title>combined diff format</title>
-<simpara>Any diff-generating command can take the -c` or <emphasis>--cc</emphasis> option to
+<simpara>Any diff-generating command can take the <emphasis>-c</emphasis> or <emphasis>--cc</emphasis> option to
 produce a <emphasis>combined diff</emphasis> when showing a merge. This is the default
 format when showing merges with <xref linkend="git-diff(1)" /> or
-<xref linkend="git-show(1)" />. Note also that you can give the `-m option to any
+<xref linkend="git-show(1)" />. Note also that you can give the <emphasis>-m</emphasis> option to any
 of these commands to force generation of diffs with individual parents
 of a merge.</simpara>
 <simpara>A <emphasis>combined diff</emphasis> format looks like this:</simpara>
@@ -2070,7 +2288,7 @@ added, from the point of view of that parent).</simpara>
 <simpara>In the above example output, the function signature was changed
 from both files (hence two <emphasis>-</emphasis> removals from both file1 and
 file2, plus <emphasis>++</emphasis> to mean one line that was added does not appear
-in either file1 nor file2).  Also eight other lines are the same
+in either file1 or file2).  Also eight other lines are the same
 from file1 but do not appear in file2 (hence prefixed with <emphasis>+</emphasis>).</simpara>
 <simpara>When shown by <emphasis>git diff-tree -c</emphasis>, it compares the parents of a
 merge commit with the merge result (i.e. file1..fileN are the

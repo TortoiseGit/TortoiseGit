@@ -12,7 +12,7 @@
 		<xi:include href="./gittutorial-2.xml"/>
 		<xi:include href="./gitcore-tutorial.xml"/>
 		<xi:include href="./gitcvs-migration.xml"/>
-		<xi:include href="./everyday.xml"/>
+		<xi:include href="./giteveryday.xml"/>
 	</sect1>
 	<sect1 id="git-command" xmlns:xi="http://www.w3.org/2001/XInclude">
 		<title>Git Command Reference</title>
@@ -29,6 +29,8 @@
 		<xi:include href="./git-bundle.xml"/>
 		<xi:include href="./git-cat-file.xml"/>
 		<xi:include href="./git-check-attr.xml"/>
+		<xi:include href="./git-check-ignore.xml"/>
+		<xi:include href="./git-check-mailmap.xml"/>
 		<xi:include href="./git-check-ref-format.xml"/>
 		<xi:include href="./git-checkout-index.xml"/>
 		<xi:include href="./git-checkout.xml"/>
@@ -80,8 +82,8 @@
 		<xi:include href="./git-init-db.xml"/>
 		<xi:include href="./git-init.xml"/>
 		<xi:include href="./git-instaweb.xml"/>
+		<xi:include href="./git-interpret-trailers.xml"/>
 		<xi:include href="./git-log.xml"/>
-		<xi:include href="./git-lost-found.xml"/>
 		<xi:include href="./git-ls-files.xml"/>
 		<xi:include href="./git-ls-remote.xml"/>
 		<xi:include href="./git-ls-tree.xml"/>
@@ -106,7 +108,6 @@
 		<xi:include href="./git-pack-refs.xml"/>
 		<xi:include href="./git-parse-remote.xml"/>
 		<xi:include href="./git-patch-id.xml"/>
-		<xi:include href="./git-peek-remote.xml"/>
 		<xi:include href="./git-prune-packed.xml"/>
 		<xi:include href="./git-prune.xml"/>
 		<xi:include href="./git-pull.xml"/>
@@ -119,12 +120,10 @@
 		<xi:include href="./git-relink.xml"/>
 		<xi:include href="./git-remote-ext.xml"/>
 		<xi:include href="./git-remote-fd.xml"/>
-		<xi:include href="./git-remote-helpers.xml"/>
 		<xi:include href="./git-remote-testgit.xml"/>
 		<xi:include href="./git-remote.xml"/>
 		<xi:include href="./git-repack.xml"/>
 		<xi:include href="./git-replace.xml"/>
-		<xi:include href="./git-repo-config.xml"/>
 		<xi:include href="./git-request-pull.xml"/>
 		<xi:include href="./git-rerere.xml"/>
 		<xi:include href="./git-reset.xml"/>
@@ -151,7 +150,6 @@
 		<xi:include href="./git-svn.xml"/>
 		<xi:include href="./git-symbolic-ref.xml"/>
 		<xi:include href="./git-tag.xml"/>
-		<xi:include href="./git-tar-tree.xml"/>
 		<xi:include href="./git-unpack-file.xml"/>
 		<xi:include href="./git-unpack-objects.xml"/>
 		<xi:include href="./git-update-index.xml"/>
@@ -160,10 +158,12 @@
 		<xi:include href="./git-upload-archive.xml"/>
 		<xi:include href="./git-upload-pack.xml"/>
 		<xi:include href="./git-var.xml"/>
+		<xi:include href="./git-verify-commit.xml"/>
 		<xi:include href="./git-verify-pack.xml"/>
 		<xi:include href="./git-verify-tag.xml"/>
 		<xi:include href="./git-web--browse.xml"/>
 		<xi:include href="./git-whatchanged.xml"/>
+		<xi:include href="./git-worktree.xml"/>
 		<xi:include href="./git-write-tree.xml"/>
 	</sect1>
 	<sect1 id="git-misc" xmlns:xi="http://www.w3.org/2001/XInclude">
@@ -177,6 +177,7 @@
 		<xi:include href="./gitk.xml"/>
 		<xi:include href="./gitmodules.xml"/>
 		<xi:include href="./gitnamespaces.xml"/>
+		<xi:include href="./gitremote-helpers.xml"/>
 		<xi:include href="./gitrepository-layout.xml"/>
 		<xi:include href="./gitrevisions.xml"/>
 		<xi:include href="./gitweb.xml"/>

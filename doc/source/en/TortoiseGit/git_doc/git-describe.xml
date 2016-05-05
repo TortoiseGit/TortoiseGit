@@ -8,12 +8,12 @@
 </indexterm>
 <simplesect id="git-describe(1)__name">
 <title>NAME</title>
-<simpara>git-describe - Show the most recent tag that is reachable from a commit</simpara>
+<simpara>git-describe - Describe a commit using the most recent tag reachable from it</simpara>
 </simplesect>
 <simplesect id="git-describe(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git describe</emphasis> [--all] [--tags] [--contains] [--abbrev=&lt;n&gt;] &lt;committish&gt;&#8230;
+<literallayout><emphasis>git describe</emphasis> [--all] [--tags] [--contains] [--abbrev=&lt;n&gt;] [&lt;commit-ish&gt;&#8230;]
 <emphasis>git describe</emphasis> [--all] [--tags] [--contains] [--abbrev=&lt;n&gt;] --dirty[=&lt;mark&gt;]</literallayout>
 </blockquote>
 </simplesect>
@@ -33,11 +33,11 @@ see the -a and -s options to <xref linkend="git-tag(1)" />.</simpara>
 <variablelist>
 <varlistentry>
 <term>
-&lt;committish&gt;&#8230;
+&lt;commit-ish&gt;&#8230;
 </term>
 <listitem>
 <simpara>
-        Committish object names to describe.
+        Commit-ish object names to describe.  Defaults to HEAD if omitted.
 </simpara>
 </listitem>
 </varlistentry>
@@ -109,7 +109,7 @@ see the -a and -s options to <xref linkend="git-tag(1)" />.</simpara>
 <listitem>
 <simpara>
         Instead of considering only the 10 most recent tags as
-        candidates to describe the input committish consider
+        candidates to describe the input commit-ish consider
         up to &lt;n&gt; candidates.  Increasing &lt;n&gt; above 10 will take
         slightly longer but may produce a more accurate result.
         An &lt;n&gt; of 0 will cause only exact matches to be output.
@@ -161,8 +161,9 @@ see the -a and -s options to <xref linkend="git-tag(1)" />.</simpara>
 </term>
 <listitem>
 <simpara>
-        Only consider tags matching the given pattern (can be used to avoid
-        leaking private tags made from the repository).
+        Only consider tags matching the given <emphasis>glob(7)</emphasis> pattern,
+        excluding the "refs/tags/" prefix.  This can be used to avoid
+        leaking private tags from the repository.
 </simpara>
 </listitem>
 </varlistentry>
@@ -173,6 +174,18 @@ see the -a and -s options to <xref linkend="git-tag(1)" />.</simpara>
 <listitem>
 <simpara>
         Show uniquely abbreviated commit object as fallback.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--first-parent
+</term>
+<listitem>
+<simpara>
+        Follow only the first parent commit upon seeing a merge commit.
+        This is useful when you wish to not match tags on branches merged
+        in the history of the target commit.
 </simpara>
 </listitem>
 </varlistentry>
@@ -210,13 +223,13 @@ closest tagname without any suffix:</simpara>
 tags/v1.0.0</literallayout>
 <simpara>Note that the suffix you get if you type these commands today may be
 longer than what Linus saw above when he ran these commands, as your
-git repository may have new commits whose object names begin with
+Git repository may have new commits whose object names begin with
 975b that did not exist back then, and "-g975b" suffix alone may not
 be sufficient to disambiguate these commits.</simpara>
 </simplesect>
 <simplesect id="git-describe(1)__search_strategy">
 <title>SEARCH STRATEGY</title>
-<simpara>For each committish supplied, <emphasis>git describe</emphasis> will first look for
+<simpara>For each commit-ish supplied, <emphasis>git describe</emphasis> will first look for
 a tag which tags exactly that commit.  Annotated tags will always
 be preferred over lightweight tags, and tags with newer dates will
 always be preferred over tags with older dates.  If an exact match
@@ -224,9 +237,11 @@ is found, its name will be output and searching will stop.</simpara>
 <simpara>If an exact match was not found, <emphasis>git describe</emphasis> will walk back
 through the commit history to locate an ancestor commit which
 has been tagged.  The ancestor's tag will be output along with an
-abbreviation of the input committish's SHA1.</simpara>
+abbreviation of the input commit-ish's SHA-1. If <emphasis>--first-parent</emphasis> was
+specified then the walk will only consider the first parent of each
+commit.</simpara>
 <simpara>If multiple tags were found during the walk then the tag which
-has the fewest commits different from the input committish will be
+has the fewest commits different from the input commit-ish will be
 selected and output.  Here fewest commits different is defined as
 the number of commits which would be shown by <emphasis>git log tag..input</emphasis>
 will be the smallest number of commits possible.</simpara>

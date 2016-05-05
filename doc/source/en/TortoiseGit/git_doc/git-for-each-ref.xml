@@ -14,7 +14,9 @@
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git for-each-ref</emphasis> [--count=&lt;count&gt;] [--shell|--perl|--python|--tcl]
-                   [(--sort=&lt;key&gt;)&#8230;] [--format=&lt;format&gt;] [&lt;pattern&gt;&#8230;]</literallayout>
+                   [(--sort=&lt;key&gt;)&#8230;] [--format=&lt;format&gt;] [&lt;pattern&gt;&#8230;]
+                   [--points-at &lt;object&gt;] [(--merged | --no-merged) [&lt;object&gt;]]
+                   [--contains [&lt;object&gt;]]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-for-each-ref(1)__description">
@@ -109,6 +111,49 @@ host language allowing their direct evaluation in that language.</simpara>
 </simpara>
 </listitem>
 </varlistentry>
+<varlistentry>
+<term>
+--points-at &lt;object&gt;
+</term>
+<listitem>
+<simpara>
+        Only list refs which points at the given object.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--merged [&lt;object&gt;]
+</term>
+<listitem>
+<simpara>
+        Only list refs whose tips are reachable from the
+        specified commit (HEAD if not specified).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--no-merged [&lt;object&gt;]
+</term>
+<listitem>
+<simpara>
+        Only list refs whose tips are not reachable from the
+        specified commit (HEAD if not specified).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--contains [&lt;object&gt;]
+</term>
+<listitem>
+<simpara>
+        Only list refs which contain the specified commit (HEAD if not
+        specified).
+</simpara>
+</listitem>
+</varlistentry>
 </variablelist>
 </simplesect>
 <simplesect id="git-for-each-ref(1)__field_names">
@@ -127,7 +172,11 @@ refname
         The name of the ref (the part after $GIT_DIR/).
         For a non-ambiguous short name of the ref append <emphasis>:short</emphasis>.
         The option core.warnAmbiguousRefs is used to select the strict
-        abbreviation mode.
+        abbreviation mode. If <emphasis>strip=&lt;N&gt;</emphasis> is appended, strips <emphasis>&lt;N&gt;</emphasis>
+        slash-separated path components from the front of the refname
+        (e.g., <emphasis>%(refname:strip=2)</emphasis> turns <emphasis>refs/tags/foo</emphasis> into <emphasis>foo</emphasis>.
+        <emphasis>&lt;N&gt;</emphasis> must be a positive integer.  If a displayed ref has fewer
+        components than <emphasis>&lt;N&gt;</emphasis>, the command aborts with an error.
 </simpara>
 </listitem>
 </varlistentry>
@@ -170,7 +219,68 @@ upstream
 <simpara>
         The name of a local ref which can be considered upstream
         from the displayed ref. Respects <emphasis>:short</emphasis> in the same way as
-        <emphasis>refname</emphasis> above.
+        <emphasis>refname</emphasis> above.  Additionally respects <emphasis>:track</emphasis> to show
+        "[ahead N, behind M]" and <emphasis>:trackshort</emphasis> to show the terse
+        version: "&gt;" (ahead), "&lt;" (behind), "&lt;&gt;" (ahead and behind),
+        or "=" (in sync).  Has no effect if the ref does not have
+        tracking information associated with it.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+push
+</term>
+<listitem>
+<simpara>
+        The name of a local ref which represents the <emphasis>@{push}</emphasis> location
+        for the displayed ref. Respects <emphasis>:short</emphasis>, <emphasis>:track</emphasis>, and
+        <emphasis>:trackshort</emphasis> options as <emphasis>upstream</emphasis> does. Produces an empty
+        string if no <emphasis>@{push}</emphasis> ref is configured.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+HEAD
+</term>
+<listitem>
+<simpara>
+        <emphasis>*</emphasis> if HEAD matches current ref (the checked out branch), ' '
+        otherwise.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+color
+</term>
+<listitem>
+<simpara>
+        Change output color.  Followed by <emphasis>:&lt;colorname&gt;</emphasis>, where names
+        are described in <emphasis>color.branch.*</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+align
+</term>
+<listitem>
+<simpara>
+        Left-, middle-, or right-align the content between
+        %(align:&#8230;) and %(end). The "align:" is followed by
+        <emphasis>width=&lt;width&gt;</emphasis> and <emphasis>position=&lt;position&gt;</emphasis> in any order
+        separated by a comma, where the <emphasis>&lt;position&gt;</emphasis> is either left,
+        right or middle, default being left and <emphasis>&lt;width&gt;</emphasis> is the total
+        length of the content with alignment. For brevity, the
+        "width=" and/or "position=" prefixes may be omitted, and bare
+        &lt;width&gt; and &lt;position&gt; used instead.  For instance,
+        <emphasis>%(align:&lt;width&gt;,&lt;position&gt;)</emphasis>. If the contents length is more
+        than the width then no alignment is performed. If used with
+        <emphasis>--quote</emphasis> everything in between %(align:&#8230;) and %(end) is
+        quoted, but if nested then only the topmost level performs
+        quoting.
 </simpara>
 </listitem>
 </varlistentry>
@@ -178,6 +288,10 @@ upstream
 <simpara>In addition to the above, for commit and tag objects, the header
 field names (<emphasis>tree</emphasis>, <emphasis>parent</emphasis>, <emphasis>object</emphasis>, <emphasis>type</emphasis>, and <emphasis>tag</emphasis>) can
 be used to specify the value in the header field.</simpara>
+<simpara>For commit and tag objects, the special <emphasis>creatordate</emphasis> and <emphasis>creator</emphasis>
+fields will correspond to the appropriate date or name-email-date tuple
+from the <emphasis>committer</emphasis> or <emphasis>tagger</emphasis> fields depending on the object type.
+These are intended for working on a mix of annotated and lightweight tags.</simpara>
 <simpara>Fields that have name-email-date tuple as its value (<emphasis>author</emphasis>,
 <emphasis>committer</emphasis>, and <emphasis>tagger</emphasis>) can be suffixed with <emphasis>name</emphasis>, <emphasis>email</emphasis>,
 and <emphasis>date</emphasis> to extract the named component.</simpara>
@@ -185,17 +299,19 @@ and <emphasis>date</emphasis> to extract the named component.</simpara>
 Its first line is <emphasis>contents:subject</emphasis>, where subject is the concatenation
 of all lines of the commit message up to the first blank line.  The next
 line is <emphasis>contents:body</emphasis>, where body is all of the lines after the first
-blank line.  Finally, the optional GPG signature is <emphasis>contents:signature</emphasis>.</simpara>
-<simpara>For sorting purposes, fields with numeric values sort in numeric
-order (<emphasis>objectsize</emphasis>, <emphasis>authordate</emphasis>, <emphasis>committerdate</emphasis>, <emphasis>taggerdate</emphasis>).
+blank line.  The optional GPG signature is <emphasis>contents:signature</emphasis>.  The
+first <emphasis>N</emphasis> lines of the message is obtained using <emphasis>contents:lines=N</emphasis>.</simpara>
+<simpara>For sorting purposes, fields with numeric values sort in numeric order
+(<emphasis>objectsize</emphasis>, <emphasis>authordate</emphasis>, <emphasis>committerdate</emphasis>, <emphasis>creatordate</emphasis>, <emphasis>taggerdate</emphasis>).
 All other fields are used to sort in their byte-value order.</simpara>
+<simpara>There is also an option to sort by versions, this can be done by using
+the fieldname <emphasis>version:refname</emphasis> or its alias <emphasis>v:refname</emphasis>.</simpara>
 <simpara>In any case, a field name that refers to a field inapplicable to
 the object referred by the ref does not cause an error.  It
 returns an empty string instead.</simpara>
 <simpara>As a special case for the date-type fields, you may specify a format for
-the date by adding one of <emphasis>:default</emphasis>, <emphasis>:relative</emphasis>, <emphasis>:short</emphasis>, <emphasis>:local</emphasis>,
-<emphasis>:iso8601</emphasis> or <emphasis>:rfc2822</emphasis> to the end of the fieldname; e.g.
-<emphasis>%(taggerdate:relative)</emphasis>.</simpara>
+the date by adding <emphasis>:</emphasis> followed by date format name (see the
+values the <emphasis>--date</emphasis> option to <xref linkend=":git-rev-list(1)" /> takes).</simpara>
 </simplesect>
 <simplesect id="git-for-each-ref(1)__examples">
 <title>EXAMPLES</title>
@@ -271,13 +387,9 @@ eval=`git for-each-ref --shell --format="$fmt" \
         refs/tags`
 eval "$eval"</screen>
 </simplesect>
-<simplesect id="git-for-each-ref(1)__author">
-<title>Author</title>
-<simpara>Written by Junio C Hamano &lt;<ulink url="mailto:gitster@pobox.com">gitster@pobox.com</ulink>&gt;.</simpara>
-</simplesect>
-<simplesect id="git-for-each-ref(1)__documentation">
-<title>Documentation</title>
-<simpara>Documentation by Junio C Hamano and the git-list &lt;<ulink url="mailto:git@vger.kernel.org">git@vger.kernel.org</ulink>&gt;.</simpara>
+<simplesect id="git-for-each-ref(1)__see_also">
+<title>SEE ALSO</title>
+<simpara><xref linkend="git-show-ref(1)" /></simpara>
 </simplesect>
 <simplesect id="git-for-each-ref(1)__git">
 <title>GIT</title>

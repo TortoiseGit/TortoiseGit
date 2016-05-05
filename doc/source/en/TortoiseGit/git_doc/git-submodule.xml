@@ -14,24 +14,40 @@
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git submodule</emphasis> [--quiet] add [-b &lt;branch&gt;] [-f|--force] [--name &lt;name&gt;]
-              [--reference &lt;repository&gt;] [--] &lt;repository&gt; [&lt;path&gt;]
+              [--reference &lt;repository&gt;] [--depth &lt;depth&gt;] [--] &lt;repository&gt; [&lt;path&gt;]
 <emphasis>git submodule</emphasis> [--quiet] status [--cached] [--recursive] [--] [&lt;path&gt;&#8230;]
 <emphasis>git submodule</emphasis> [--quiet] init [--] [&lt;path&gt;&#8230;]
-<emphasis>git submodule</emphasis> [--quiet] update [--init] [-N|--no-fetch] [--rebase]
-              [--reference &lt;repository&gt;] [--merge] [--recursive] [--] [&lt;path&gt;&#8230;]
+<emphasis>git submodule</emphasis> [--quiet] deinit [-f|--force] [--] &lt;path&gt;&#8230;
+<emphasis>git submodule</emphasis> [--quiet] update [--init] [--remote] [-N|--no-fetch]
+              [-f|--force] [--rebase|--merge] [--reference &lt;repository&gt;]
+              [--depth &lt;depth&gt;] [--recursive] [--jobs &lt;n&gt;] [--] [&lt;path&gt;&#8230;]
 <emphasis>git submodule</emphasis> [--quiet] summary [--cached|--files] [(-n|--summary-limit) &lt;n&gt;]
               [commit] [--] [&lt;path&gt;&#8230;]
 <emphasis>git submodule</emphasis> [--quiet] foreach [--recursive] &lt;command&gt;
-<emphasis>git submodule</emphasis> [--quiet] sync [--] [&lt;path&gt;&#8230;]</literallayout>
+<emphasis>git submodule</emphasis> [--quiet] sync [--recursive] [--] [&lt;path&gt;&#8230;]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-submodule(1)__description">
 <title>DESCRIPTION</title>
-<simpara>Submodules allow foreign repositories to be embedded within
-a dedicated subdirectory of the source tree, always pointed
-at a particular commit.</simpara>
-<simpara>They are not to be confused with remotes, which are meant mainly
-for branches of the same project; submodules are meant for
+<simpara>Inspects, updates and manages submodules.</simpara>
+<simpara>A submodule allows you to keep another Git repository in a subdirectory
+of your repository. The other repository has its own history, which does not
+interfere with the history of the current repository. This can be used to
+have external dependencies such as third party libraries for example.</simpara>
+<simpara>When cloning or pulling a repository containing submodules however,
+these will not be checked out by default; the <emphasis>init</emphasis> and <emphasis>update</emphasis>
+subcommands will maintain submodules checked out and at
+appropriate revision in your working tree.</simpara>
+<simpara>Submodules are composed from a so-called <emphasis>gitlink</emphasis> tree entry
+in the main repository that refers to a particular commit object
+within the inner repository that is completely separate.
+A record in the <emphasis>.gitmodules</emphasis> (see <xref linkend="gitmodules(5)" />) file at the
+root of the source tree assigns a logical name to the submodule and
+describes the default URL the submodule shall be cloned from.
+The logical name can be used for overriding this URL within your
+local repository configuration (see <emphasis>submodule init</emphasis>).</simpara>
+<simpara>Submodules are not to be confused with remotes, which are other
+repositories of the same project; submodules are meant for
 different projects you would like to make part of your source tree,
 while the history of the two projects still stays completely
 independent and you cannot modify the contents of the submodule
@@ -42,26 +58,6 @@ add a remote for the other project and use the <emphasis>subtree</emphasis> merg
 instead of treating the other project as a submodule. Directories
 that come from both projects can be cloned and checked out as a whole
 if you choose to go that route.</simpara>
-<simpara>Submodules are composed from a so-called <emphasis>gitlink</emphasis> tree entry
-in the main repository that refers to a particular commit object
-within the inner repository that is completely separate.
-A record in the <emphasis>.gitmodules</emphasis> (see <xref linkend="gitmodules(5)" />) file at the
-root of the source tree assigns a logical name to the submodule and
-describes the default URL the submodule shall be cloned from.
-The logical name can be used for overriding this URL within your
-local repository configuration (see <emphasis>submodule init</emphasis>).</simpara>
-<simpara>This command will manage the tree entries and contents of the
-gitmodules file for you, as well as inspect the status of your
-submodules and update them.
-When adding a new submodule to the tree, the <emphasis>add</emphasis> subcommand
-is to be used.  However, when pulling a tree containing submodules,
-these will not be checked out by default;
-the <emphasis>init</emphasis> and <emphasis>update</emphasis> subcommands will maintain submodules
-checked out and at appropriate revision in your working tree.
-You can briefly inspect the up-to-date status of your submodules
-using the <emphasis>status</emphasis> subcommand and get a detailed overview of the
-difference between the index and checkouts using the <emphasis>summary</emphasis>
-subcommand.</simpara>
 </simplesect>
 <simplesect id="git-submodule(1)__commands">
 <title>COMMANDS</title>
@@ -80,7 +76,9 @@ add
 argument &lt;path&gt; is the relative location for the cloned submodule
 to exist in the superproject. If &lt;path&gt; is not given, the
 "humanish" part of the source repository is used ("repo" for
-"/path/to/repo.git" and "foo" for "host.xz:foo/.git").</simpara>
+"/path/to/repo.git" and "foo" for "host.xz:foo/.git").
+The &lt;path&gt; is also used as the submodule's logical name in its
+configuration entries unless <emphasis>--name</emphasis> is used to specify a logical name.</simpara>
 <simpara>&lt;repository&gt; is the URL of the new submodule's origin repository.
 This may be either an absolute URL, or (if it begins with ./
 or ../), the location relative to the superproject's origin
@@ -95,7 +93,7 @@ working directory is used instead.</simpara>
 <simpara>&lt;path&gt; is the relative location for the cloned submodule to
 exist in the superproject. If &lt;path&gt; does not exist, then the
 submodule is created by cloning from the named URL. If &lt;path&gt; does
-exist and is already a valid git repository, then this is added
+exist and is already a valid Git repository, then this is added
 to the changeset without cloning. This second form is provided
 to ease creating a new submodule from scratch, and presumes
 the user will later push the submodule to the given URL.</simpara>
@@ -136,8 +134,10 @@ init
 </term>
 <listitem>
 <simpara>
-        Initialize the submodules, i.e. register each submodule name
-        and url found in .gitmodules into .git/config.
+        Initialize the submodules recorded in the index (which were
+        added and committed elsewhere) by copying submodule
+        names and urls from .gitmodules to .git/config.
+        Optional &lt;path&gt; arguments limit which submodules will be initialized.
         It will also copy the value of <emphasis>submodule.$name.update</emphasis> into
         .git/config.
         The key used in .git/config is <emphasis>submodule.$name.url</emphasis>.
@@ -152,26 +152,100 @@ init
 </varlistentry>
 <varlistentry>
 <term>
-update
+deinit
 </term>
 <listitem>
 <simpara>
-        Update the registered submodules, i.e. clone missing submodules and
-        checkout the commit specified in the index of the containing repository.
-        This will make the submodules HEAD be detached unless <emphasis>--rebase</emphasis> or
-        <emphasis>--merge</emphasis> is specified or the key <emphasis>submodule.$name.update</emphasis> is set to
-        <emphasis>rebase</emphasis>, <emphasis>merge</emphasis> or <emphasis>none</emphasis>. <emphasis>none</emphasis> can be overridden by specifying
-        <emphasis>--checkout</emphasis>.
+        Unregister the given submodules, i.e. remove the whole
+        <emphasis>submodule.$name</emphasis> section from .git/config together with their work
+        tree. Further calls to <emphasis>git submodule update</emphasis>, <emphasis>git submodule foreach</emphasis>
+        and <emphasis>git submodule sync</emphasis> will skip any unregistered submodules until
+        they are initialized again, so use this command if you don't want to
+        have a local checkout of the submodule in your work tree anymore. If
+        you really want to remove a submodule from the repository and commit
+        that use <xref linkend="git-rm(1)" /> instead.
 </simpara>
+<simpara>If <emphasis>--force</emphasis> is specified, the submodule's work tree will be removed even if
+it contains local modifications.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+update
+</term>
+<listitem>
+<simpara>Update the registered submodules to match what the superproject
+expects by cloning missing submodules and updating the working tree of
+the submodules. The "updating" can be done in several ways depending
+on command line options and the value of <emphasis>submodule.&lt;name&gt;.update</emphasis>
+configuration variable. Supported update procedures are:</simpara>
+<variablelist>
+<varlistentry>
+<term>
+checkout
+</term>
+<listitem>
+<simpara>
+the commit recorded in the superproject will be
+            checked out in the submodule on a detached HEAD. This is
+            done when <emphasis>--checkout</emphasis> option is given, or no option is
+            given, and <emphasis>submodule.&lt;name&gt;.update</emphasis> is unset, or if it is
+            set to <emphasis>checkout</emphasis>.
+</simpara>
+<simpara>If <emphasis>--force</emphasis> is specified, the submodule will be checked out (using
+<emphasis>git checkout --force</emphasis> if appropriate), even if the commit specified
+in the index of the containing repository already matches the commit
+checked out in the submodule.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+rebase
+</term>
+<listitem>
+<simpara>
+the current branch of the submodule will be rebased
+            onto the commit recorded in the superproject. This is done
+            when <emphasis>--rebase</emphasis> option is given, or no option is given, and
+            <emphasis>submodule.&lt;name&gt;.update</emphasis> is set to <emphasis>rebase</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+merge
+</term>
+<listitem>
+<simpara>
+the commit recorded in the superproject will be merged
+            into the current branch in the submodule. This is done
+            when <emphasis>--merge</emphasis> option is given, or no option is given, and
+            <emphasis>submodule.&lt;name&gt;.update</emphasis> is set to <emphasis>merge</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+custom command
+</term>
+<listitem>
+<simpara>
+arbitrary shell command that takes a single
+            argument (the sha1 of the commit recorded in the
+            superproject) is executed. This is done when no option is
+            given, and <emphasis>submodule.&lt;name&gt;.update</emphasis> has the form of
+            <emphasis>!command</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+<simpara>When no option is given and <emphasis>submodule.&lt;name&gt;.update</emphasis> is set to <emphasis>none</emphasis>,
+the submodule is not updated.</simpara>
 <simpara>If the submodule is not yet initialized, and you just want to use the
 setting as stored in .gitmodules, you can automatically initialize the
 submodule with the <emphasis>--init</emphasis> option.</simpara>
 <simpara>If <emphasis>--recursive</emphasis> is specified, this command will recurse into the
 registered submodules, and update any nested submodules within.</simpara>
-<simpara>If <emphasis>--force</emphasis> is specified, the submodule will be checked out (using
-<emphasis>git checkout --force</emphasis> if appropriate), even if the commit specified in the
-index of the containing repository already matches the commit checked out in
-the submodule.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -235,6 +309,8 @@ sync
 </simpara>
 <simpara>"git submodule sync" synchronizes all submodules while
 "git submodule sync -- A" synchronizes submodule "A" only.</simpara>
+<simpara>If <emphasis>--recursive</emphasis> is specified, this command will recurse into the
+registered submodules, and sync any nested submodules within.</simpara>
 </listitem>
 </varlistentry>
 </variablelist>
@@ -265,6 +341,8 @@ sync
 <listitem>
 <simpara>
         Branch of repository to add as submodule.
+        The name of the branch is recorded as <emphasis>submodule.&lt;name&gt;.branch</emphasis> in
+        <emphasis>.gitmodules</emphasis> for <emphasis>update --remote</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -277,12 +355,16 @@ sync
 </term>
 <listitem>
 <simpara>
-        This option is only valid for add and update commands.
+        This option is only valid for add, deinit and update commands.
         When running add, allow adding an otherwise ignored submodule path.
-        When running update, throw away local changes in submodules when
-        switching to a different commit; and always run a checkout operation
-        in the submodule, even if the commit listed in the index of the
-        containing repository matches the commit checked out in the submodule.
+        When running deinit the submodule work trees will be removed even if
+        they contain local changes.
+        When running update (only effective with the checkout procedure),
+        throw away local changes in submodules when switching to a
+        different commit; and always run a checkout operation in the
+        submodule, even if the commit listed in the index of the
+        containing repository matches the commit checked out in the
+        submodule.
 </simpara>
 </listitem>
 </varlistentry>
@@ -329,6 +411,41 @@ sync
 </varlistentry>
 <varlistentry>
 <term>
+--remote
+</term>
+<listitem>
+<simpara>
+        This option is only valid for the update command.  Instead of using
+        the superproject's recorded SHA-1 to update the submodule, use the
+        status of the submodule's remote-tracking branch.  The remote used
+        is branch's remote (<emphasis>branch.&lt;name&gt;.remote</emphasis>), defaulting to <emphasis>origin</emphasis>.
+        The remote branch used defaults to <emphasis>master</emphasis>, but the branch name may
+        be overridden by setting the <emphasis>submodule.&lt;name&gt;.branch</emphasis> option in
+        either <emphasis>.gitmodules</emphasis> or <emphasis>.git/config</emphasis> (with <emphasis>.git/config</emphasis> taking
+        precedence).
+</simpara>
+<simpara>This works for any of the supported update procedures (<emphasis>--checkout</emphasis>,
+<emphasis>--rebase</emphasis>, etc.).  The only change is the source of the target SHA-1.
+For example, <emphasis>submodule update --remote --merge</emphasis> will merge upstream
+submodule changes into the submodules, while <emphasis>submodule update
+--merge</emphasis> will merge superproject gitlink changes into the submodules.</simpara>
+<simpara>In order to ensure a current tracking branch state, <emphasis>update --remote</emphasis>
+fetches the submodule's remote repository before calculating the
+SHA-1.  If you don't want to fetch, you should use <emphasis>submodule update
+--remote --no-fetch</emphasis>.</simpara>
+<simpara>Use this option to integrate changes from the upstream subproject with
+your submodule's current HEAD.  Alternatively, you can run <emphasis>git pull</emphasis>
+from the submodule, which is equivalent except for the remote branch
+name: <emphasis>update --remote</emphasis> uses the default upstream repository and
+<emphasis>submodule.&lt;name&gt;.branch</emphasis>, while <emphasis>git pull</emphasis> uses the submodule's
+<emphasis>branch.&lt;name&gt;.merge</emphasis>.  Prefer <emphasis>submodule.&lt;name&gt;.branch</emphasis> if you want
+to distribute the default upstream branch with the superproject and
+<emphasis>branch.&lt;name&gt;.merge</emphasis> if you want a more native feel while working in
+the submodule itself.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 -N
 </term>
 <term>
@@ -338,6 +455,22 @@ sync
 <simpara>
         This option is only valid for the update command.
         Don't fetch new objects from the remote site.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--checkout
+</term>
+<listitem>
+<simpara>
+        This option is only valid for the update command.
+        Checkout the commit recorded in the superproject on a detached HEAD
+        in the submodule. This is the default behavior, the main use of
+        this option is to override <emphasis>submodule.$name.update</emphasis> when set to
+        a value other than <emphasis>checkout</emphasis>.
+        If the key <emphasis>submodule.$name.update</emphasis> is either not explicitly set or
+        set to <emphasis>checkout</emphasis>, this option is implicit.
 </simpara>
 </listitem>
 </varlistentry>
@@ -418,10 +551,37 @@ for <xref linkend="git-clone(1)" />'s <emphasis>--reference</emphasis> and <emph
 </term>
 <listitem>
 <simpara>
-        This option is only valid for foreach, update and status commands.
+        This option is only valid for foreach, update, status and sync commands.
         Traverse submodules recursively. The operation is performed not
         only in the submodules of the current repo, but also
         in any nested submodules inside those submodules (and so on).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--depth
+</term>
+<listitem>
+<simpara>
+        This option is valid for add and update commands. Create a <emphasis>shallow</emphasis>
+        clone with a history truncated to the specified number of revisions.
+        See <xref linkend="git-clone(1)" />
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-j &lt;n&gt;
+</term>
+<term>
+--jobs &lt;n&gt;
+</term>
+<listitem>
+<simpara>
+        This option is only valid for the update command.
+        Clone new submodules in parallel with as many jobs.
+        Defaults to the <emphasis>submodule.fetchJobs</emphasis> option.
 </simpara>
 </listitem>
 </varlistentry>

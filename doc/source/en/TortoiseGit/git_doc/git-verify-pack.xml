@@ -8,7 +8,7 @@
 </indexterm>
 <simplesect id="git-verify-pack(1)__name">
 <title>NAME</title>
-<simpara>git-verify-pack - Validate packed git archive files</simpara>
+<simpara>git-verify-pack - Validate packed Git archive files</simpara>
 </simplesect>
 <simplesect id="git-verify-pack(1)__synopsis">
 <title>SYNOPSIS</title>
@@ -18,7 +18,7 @@
 </simplesect>
 <simplesect id="git-verify-pack(1)__description">
 <title>DESCRIPTION</title>
-<simpara>Reads given idx file for packed git archive created with the
+<simpara>Reads given idx file for packed Git archive created with the
 <emphasis>git pack-objects</emphasis> command and verifies idx file and the
 corresponding pack file.</simpara>
 </simplesect>
@@ -78,9 +78,9 @@ corresponding pack file.</simpara>
 <simplesect id="git-verify-pack(1)__output_format">
 <title>OUTPUT FORMAT</title>
 <simpara>When specifying the -v option the format used is:</simpara>
-<literallayout class="monospaced">SHA1 type size size-in-pack-file offset-in-packfile</literallayout>
+<literallayout class="monospaced">SHA-1 type size size-in-packfile offset-in-packfile</literallayout>
 <simpara>for objects that are not deltified in the pack, and</simpara>
-<literallayout class="monospaced">SHA1 type size size-in-packfile offset-in-packfile depth base-SHA1</literallayout>
+<literallayout class="monospaced">SHA-1 type size size-in-packfile offset-in-packfile depth base-SHA-1</literallayout>
 <simpara>for objects that are deltified.</simpara>
 </simplesect>
 <simplesect id="git-verify-pack(1)__git">

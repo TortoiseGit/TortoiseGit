@@ -13,7 +13,7 @@
 <simplesect id="git-count-objects(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git count-objects</emphasis> [-v]</literallayout>
+<literallayout><emphasis>git count-objects</emphasis> [-v] [-H | --human-readable]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-count-objects(1)__description">
@@ -33,11 +33,30 @@ them, to help you decide when it is a good time to repack.</simpara>
 </term>
 <listitem>
 <simpara>
-        In addition to the number of loose objects and disk
-        space consumed, it reports the number of in-pack
-        objects, number of packs, disk space consumed by those packs,
-        and number of objects that can be removed by running
-        <emphasis>git prune-packed</emphasis>.
+        Report in more detail:
+</simpara>
+<simpara>count: the number of loose objects</simpara>
+<simpara>size: disk space consumed by loose objects, in KiB (unless -H is specified)</simpara>
+<simpara>in-pack: the number of in-pack objects</simpara>
+<simpara>size-pack: disk space consumed by the packs, in KiB (unless -H is specified)</simpara>
+<simpara>prune-packable: the number of loose objects that are also present in
+the packs. These objects could be pruned using <emphasis>git prune-packed</emphasis>.</simpara>
+<simpara>garbage: the number of files in object database that are neither valid loose
+objects nor valid packs</simpara>
+<simpara>size-garbage: disk space consumed by garbage files, in KiB (unless -H is
+specified)</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-H
+</term>
+<term>
+--human-readable
+</term>
+<listitem>
+<simpara>
+Print sizes in human readable format
 </simpara>
 </listitem>
 </varlistentry>

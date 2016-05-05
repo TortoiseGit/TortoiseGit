@@ -153,7 +153,7 @@ restart
         httpd = apache2 -f
         port = 4321
         browser = konqueror
-        modulepath = /usr/lib/apache2/modules</screen>
+        modulePath = /usr/lib/apache2/modules</screen>
 <simpara>If the configuration variable <emphasis>instaweb.browser</emphasis> is not set,
 <emphasis>web.browser</emphasis> will be used instead if it is defined. See
 <xref linkend="git-web&#45;&#45;browse(1)" /> for more information about this.</simpara>

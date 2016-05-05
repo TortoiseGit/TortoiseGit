@@ -16,7 +16,7 @@
 </simplesect>
 <simplesect id="gitmodules(5)__description">
 <title>DESCRIPTION</title>
-<simpara>The <emphasis>.gitmodules</emphasis> file, located in the top-level directory of a git
+<simpara>The <emphasis>.gitmodules</emphasis> file, located in the top-level directory of a Git
 working tree, is a text file with a syntax matching the requirements
 of <xref linkend="git-config(1)" />.</simpara>
 <simpara>The file contains one subsection per submodule, and the subsection value
@@ -31,7 +31,7 @@ submodule.&lt;name&gt;.path
 </term>
 <listitem>
 <simpara>
-        Defines the path, relative to the top-level directory of the git
+        Defines the path, relative to the top-level directory of the Git
         working tree, where the submodule is expected to be checked out.
         The path name must not end with a <emphasis>/</emphasis>. All submodule paths must
         be unique within the .gitmodules file.
@@ -51,24 +51,37 @@ submodule.&lt;name&gt;.url
 </simpara>
 </listitem>
 </varlistentry>
+</variablelist>
+<simpara>In addition, there are a number of optional keys:</simpara>
+<variablelist>
 <varlistentry>
 <term>
 submodule.&lt;name&gt;.update
 </term>
 <listitem>
 <simpara>
-        Defines what to do when the submodule is updated by the superproject.
-        If <emphasis>checkout</emphasis> (the default), the new commit specified in the
-        superproject will be checked out in the submodule on a detached HEAD.
-        If <emphasis>rebase</emphasis>, the current branch of the submodule will be rebased onto
-        the commit specified in the superproject. If <emphasis>merge</emphasis>, the commit
-        specified in the superproject will be merged into the current branch
-        in the submodule.
-        If <emphasis>none</emphasis>, the submodule with name <emphasis>$name</emphasis> will not be updated
-        by default.
+        Defines the default update procedure for the named submodule,
+        i.e. how the submodule is updated by "git submodule update"
+        command in the superproject. This is only used by <emphasis>git
+        submodule init</emphasis> to initialize the configuration variable of
+        the same name. Allowed values here are <emphasis>checkout</emphasis>, <emphasis>rebase</emphasis>,
+        <emphasis>merge</emphasis> or <emphasis>none</emphasis>. See description of <emphasis>update</emphasis> command in
+        <xref linkend="git-submodule(1)" /> for their meaning. Note that the
+        <emphasis>!command</emphasis> form is intentionally ignored here for security
+        reasons.
 </simpara>
-<literallayout class="monospaced">This config option is overridden if 'git submodule update' is given
-the '--merge', '--rebase' or '--checkout' options.</literallayout>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+submodule.&lt;name&gt;.branch
+</term>
+<listitem>
+<simpara>
+        A remote branch name for tracking updates in the upstream submodule.
+        If the option is not specified, it defaults to <emphasis>master</emphasis>.  See the
+        <emphasis>--remote</emphasis> documentation in <xref linkend="git-submodule(1)" /> for details.
+</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -94,7 +107,9 @@ submodule.&lt;name&gt;.ignore
 <simpara>
         Defines under what circumstances "git status" and the diff family show
         a submodule as modified. When set to "all", it will never be considered
-        modified, "dirty" will ignore all changes to the submodules work tree and
+        modified (but will nonetheless show up in the output of status and
+        commit when it has been staged), "dirty" will ignore all changes
+        to the submodules work tree and
         takes only differences between the HEAD of the submodule and the commit
         recorded in the superproject into account. "untracked" will additionally
         let submodules with modified tracked files in their work tree show up.
@@ -104,7 +119,8 @@ submodule.&lt;name&gt;.ignore
         the superproject, the setting there will override the one found in
         .gitmodules.
         Both settings can be overridden on the command line by using the
-        "--ignore-submodule" option.
+        "--ignore-submodule" option. The <emphasis>git submodule</emphasis> commands are not
+        affected by this setting.
 </simpara>
 </listitem>
 </varlistentry>

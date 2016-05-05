@@ -14,7 +14,7 @@
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git archive</emphasis> [--format=&lt;fmt&gt;] [--list] [--prefix=&lt;prefix&gt;/] [&lt;extra&gt;]
-              [-o | --output=&lt;file&gt;] [--worktree-attributes]
+              [-o &lt;file&gt; | --output=&lt;file&gt;] [--worktree-attributes]
               [--remote=&lt;repo&gt; [--exec=&lt;git-upload-archive&gt;]] &lt;tree-ish&gt;
               [&lt;path&gt;&#8230;]</literallayout>
 </blockquote>
@@ -106,7 +106,8 @@ comment.</simpara>
 </term>
 <listitem>
 <simpara>
-        Look for attributes in .gitattributes in working directory too.
+        Look for attributes in .gitattributes files in the working tree
+        as well (see <xref linkend="git-archive(1)_ATTRIBUTES"/>).
 </simpara>
 </listitem>
 </varlistentry>
@@ -128,7 +129,10 @@ comment.</simpara>
 <listitem>
 <simpara>
         Instead of making a tar archive from the local repository,
-        retrieve a tar archive from a remote repository.
+        retrieve a tar archive from a remote repository. Note that the
+        remote repository may place restrictions on which sha1
+        expressions may be allowed in <emphasis>&lt;tree-ish&gt;</emphasis>. See
+        <xref linkend="git-upload-archive(1)" /> for details.
 </simpara>
 </listitem>
 </varlistentry>
@@ -248,7 +252,7 @@ tar.&lt;format&gt;.remote
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="git-archive(1)__attributes">
+<simplesect id="git-archive(1)_ATTRIBUTES">
 <title>ATTRIBUTES</title>
 <variablelist>
 <varlistentry>
@@ -268,7 +272,7 @@ export-subst
 </term>
 <listitem>
 <simpara>
-        If the attribute export-subst is set for a file then git will
+        If the attribute export-subst is set for a file then Git will
         expand several placeholders when adding this file to an archive.
         See <xref linkend="gitattributes(5)" /> for details.
 </simpara>

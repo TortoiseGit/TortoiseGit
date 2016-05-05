@@ -19,8 +19,8 @@
 </simplesect>
 <simplesect id="git-cvsexportcommit(1)__description">
 <title>DESCRIPTION</title>
-<simpara>Exports a commit from GIT to a CVS checkout, making it easier
-to merge patches from a git repository into a CVS repository.</simpara>
+<simpara>Exports a commit from Git to a CVS checkout, making it easier
+to merge patches from a Git repository into a CVS repository.</simpara>
 <simpara>Specify the name of a CVS checkout using the -w switch or execute it
 from the root of the CVS working copy. In the latter case GIT_DIR must
 be defined. See examples below.</simpara>
@@ -139,7 +139,7 @@ parent the changeset should be done against.</simpara>
 <simpara>
         Specify the location of the CVS checkout to use for the export. This
         option does not require GIT_DIR to be set before execution if the
-        current directory is within a git repository.  The default is the
+        current directory is within a Git repository.  The default is the
         value of <emphasis>cvsexportcommit.cvsdir</emphasis>.
 </simpara>
 </listitem>

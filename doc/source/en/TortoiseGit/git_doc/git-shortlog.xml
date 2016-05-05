@@ -13,8 +13,8 @@
 <simplesect id="git-shortlog(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout>git log --pretty=short | <emphasis>git shortlog</emphasis> [-h] [-n] [-s] [-e] [-w]
-<emphasis>git shortlog</emphasis> [-n|--numbered] [-s|--summary] [-e|--email] [-w[&lt;width&gt;[,&lt;indent1&gt;[,&lt;indent2&gt;]]]] &lt;commit&gt;&#8230;</literallayout>
+<literallayout>git log --pretty=short | <emphasis>git shortlog</emphasis> [&lt;options&gt;]
+<emphasis>git shortlog</emphasis> [&lt;options&gt;] [&lt;revision range&gt;] [[--] &lt;path&gt;&#8230;]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-shortlog(1)__description">
@@ -30,19 +30,6 @@ reference to the current repository.</simpara>
 <simplesect id="git-shortlog(1)__options">
 <title>OPTIONS</title>
 <variablelist>
-<varlistentry>
-<term>
--h
-</term>
-<term>
---help
-</term>
-<listitem>
-<simpara>
-        Print a short usage message and exit.
-</simpara>
-</listitem>
-</varlistentry>
 <varlistentry>
 <term>
 -n
@@ -108,6 +95,37 @@ reference to the current repository.</simpara>
         and subsequent lines are indented by <emphasis>indent2</emphasis> spaces. <emphasis>width</emphasis>,
         <emphasis>indent1</emphasis>, and <emphasis>indent2</emphasis> default to 76, 6 and 9 respectively.
 </simpara>
+<simpara>If width is <emphasis>0</emphasis> (zero) then indent the lines of the output without wrapping
+them.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+&lt;revision range&gt;
+</term>
+<listitem>
+<simpara>
+        Show only commits in the specified revision range.  When no
+        &lt;revision range&gt; is specified, it defaults to <emphasis>HEAD</emphasis> (i.e. the
+        whole history leading to the current commit).  <emphasis>origin..HEAD</emphasis>
+        specifies all the commits reachable from the current commit
+        (i.e. <emphasis>HEAD</emphasis>), but not from <emphasis>origin</emphasis>. For a complete list of
+        ways to spell &lt;revision range&gt;, see the "Specifying Ranges"
+        section of <xref linkend="gitrevisions(7)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+[--] &lt;path&gt;&#8230;
+</term>
+<listitem>
+<simpara>
+        Consider only commits that are enough to explain how the files
+        that match the specified paths came to be.
+</simpara>
+<simpara>Paths may need to be prefixed with "-- " to separate them from
+options or the revision range, when confusion arises.</simpara>
 </listitem>
 </varlistentry>
 </variablelist>
@@ -118,7 +136,8 @@ reference to the current repository.</simpara>
 person in the shortlog, where their name and/or email address was
 spelled differently.</simpara>
 <simpara>If the file <emphasis>.mailmap</emphasis> exists at the toplevel of the repository, or at
-the location pointed to by the mailmap.file configuration option, it
+the location pointed to by the mailmap.file or mailmap.blob
+configuration options, it
 is used to map author and committer names and email addresses to
 canonical real names and email addresses.</simpara>
 <simpara>In the simple form, each line in the file consists of the canonical

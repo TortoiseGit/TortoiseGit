@@ -8,7 +8,7 @@
 </indexterm>
 <simplesect id="githooks(5)__name">
 <title>NAME</title>
-<simpara>githooks - Hooks used by git</simpara>
+<simpara>githooks - Hooks used by Git</simpara>
 </simplesect>
 <simplesect id="githooks(5)__synopsis">
 <title>SYNOPSIS</title>
@@ -85,13 +85,13 @@ given); <emphasis>template</emphasis> (if a <emphasis>-t</emphasis> option was g
 configuration option <emphasis>commit.template</emphasis> is set); <emphasis>merge</emphasis> (if the
 commit is a merge or a <emphasis>.git/MERGE_MSG</emphasis> file exists); <emphasis>squash</emphasis>
 (if a <emphasis>.git/SQUASH_MSG</emphasis> file exists); or <emphasis>commit</emphasis>, followed by
-a commit SHA1 (if a <emphasis>-c</emphasis>, <emphasis>-C</emphasis> or <emphasis>--amend</emphasis> option was given).</simpara>
+a commit SHA-1 (if a <emphasis>-c</emphasis>, <emphasis>-C</emphasis> or <emphasis>--amend</emphasis> option was given).</simpara>
 <simpara>If the exit status is non-zero, <emphasis>git commit</emphasis> will abort.</simpara>
 <simpara>The purpose of the hook is to edit the message file in place, and
 it is not suppressed by the <emphasis>--no-verify</emphasis> option.  A non-zero exit
 means a failure of the hook and aborts the commit.  It should not
 be used as replacement for pre-commit hook.</simpara>
-<simpara>The sample <emphasis>prepare-commit-msg</emphasis> hook that comes with git comments
+<simpara>The sample <emphasis>prepare-commit-msg</emphasis> hook that comes with Git comments
 out the <emphasis>Conflicts:</emphasis> part of a merge's commit message.</simpara>
 </section>
 <section id="githooks(5)__commit_msg">
@@ -117,8 +117,11 @@ the outcome of <emphasis>git commit</emphasis>.</simpara>
 </section>
 <section id="githooks(5)__pre_rebase">
 <title>pre-rebase</title>
-<simpara>This hook is called by <emphasis>git rebase</emphasis> and can be used to prevent a branch
-from getting rebased.</simpara>
+<simpara>This hook is called by <emphasis>git rebase</emphasis> and can be used to prevent a
+branch from getting rebased.  The hook may be called with one or
+two parameters.  The first parameter is the upstream from which
+the series was forked.  The second parameter is the branch being
+rebased, and is not set when rebasing the current branch.</simpara>
 </section>
 <section id="githooks(5)__post_checkout">
 <title>post-checkout</title>
@@ -144,8 +147,30 @@ This hook cannot affect the outcome of <emphasis>git merge</emphasis> and is not
 if the merge failed due to conflicts.</simpara>
 <simpara>This hook can be used in conjunction with a corresponding pre-commit hook to
 save and restore any form of metadata associated with the working tree
-(eg: permissions/ownership, ACLS, etc).  See contrib/hooks/setgitperms.perl
+(e.g.: permissions/ownership, ACLS, etc).  See contrib/hooks/setgitperms.perl
 for an example of how to do this.</simpara>
+</section>
+<section id="githooks(5)__pre_push">
+<title>pre-push</title>
+<simpara>This hook is called by <emphasis>git push</emphasis> and can be used to prevent a push from taking
+place.  The hook is called with two parameters which provide the name and
+location of the destination remote, if a named remote is not being used both
+values will be the same.</simpara>
+<simpara>Information about what is to be pushed is provided on the hook's standard
+input with lines of the form:</simpara>
+<literallayout class="monospaced">&lt;local ref&gt; SP &lt;local sha1&gt; SP &lt;remote ref&gt; SP &lt;remote sha1&gt; LF</literallayout>
+<simpara>For instance, if the command <literal>git push origin master:foreign</literal> were run the
+hook would receive a line like the following:</simpara>
+<literallayout class="monospaced">refs/heads/master 67890 refs/heads/foreign 12345</literallayout>
+<simpara>although the full, 40-character SHA-1s would be supplied.  If the foreign ref
+does not yet exist the <emphasis>&lt;remote SHA-1&gt;</emphasis> will be 40 <emphasis>0</emphasis>.  If a ref is to be
+deleted, the <emphasis>&lt;local ref&gt;</emphasis> will be supplied as <emphasis>(delete)</emphasis> and the <emphasis>&lt;local
+SHA-1&gt;</emphasis> will be 40 <emphasis>0</emphasis>.  If the local commit was specified by something other
+than a name which could be expanded (such as <emphasis>HEAD~</emphasis>, or a SHA-1) it will be
+supplied as it was originally given.</simpara>
+<simpara>If this hook exits with a non-zero status, <emphasis>git push</emphasis> will abort without
+pushing anything.  Information about why the push is rejected may be sent
+to the user by writing to standard error.</simpara>
 </section>
 <section id="githooks(5)_pre-receive">
 <title>pre-receive</title>
@@ -191,7 +216,7 @@ the old object name stored in the ref,
 </listitem>
 <listitem>
 <simpara>
-and the new objectname to be stored in the ref.
+and the new object name to be stored in the ref.
 </simpara>
 </listitem>
 </itemizedlist>
@@ -236,7 +261,7 @@ names.</simpara>
 for the user.</simpara>
 <simpara>The default <emphasis>post-receive</emphasis> hook is empty, but there is
 a sample script <emphasis>post-receive-email</emphasis> provided in the <emphasis>contrib/hooks</emphasis>
-directory in git distribution, which implements sending commit
+directory in Git distribution, which implements sending commit
 emails.</simpara>
 </section>
 <section id="githooks(5)_post-update">
@@ -258,11 +283,37 @@ them.</simpara>
 <simpara>When enabled, the default <emphasis>post-update</emphasis> hook runs
 <emphasis>git update-server-info</emphasis> to keep the information used by dumb
 transports (e.g., HTTP) up-to-date.  If you are publishing
-a git repository that is accessible via HTTP, you should
+a Git repository that is accessible via HTTP, you should
 probably enable this hook.</simpara>
 <simpara>Both standard output and standard error output are forwarded to
 <emphasis>git send-pack</emphasis> on the other end, so you can simply <emphasis>echo</emphasis> messages
 for the user.</simpara>
+</section>
+<section id="githooks(5)__push_to_checkout">
+<title>push-to-checkout</title>
+<simpara>This hook is invoked by <emphasis>git-receive-pack</emphasis> on the remote repository,
+which happens when a <emphasis>git push</emphasis> is done on a local repository, when
+the push tries to update the branch that is currently checked out
+and the <emphasis>receive.denyCurrentBranch</emphasis> configuration variable is set to
+<emphasis>updateInstead</emphasis>.  Such a push by default is refused if the working
+tree and the index of the remote repository has any difference from
+the currently checked out commit; when both the working tree and the
+index match the current commit, they are updated to match the newly
+pushed tip of the branch.  This hook is to be used to override the
+default behaviour.</simpara>
+<simpara>The hook receives the commit with which the tip of the current
+branch is going to be updated.  It can exit with a non-zero status
+to refuse the push (when it does so, it must not modify the index or
+the working tree).  Or it can make any necessary changes to the
+working tree and to the index to bring them to the desired state
+when the tip of the current branch is updated to the new commit, and
+exit with a zero status.</simpara>
+<simpara>For example, the hook can simply run <emphasis>git read-tree -u -m HEAD "$1"</emphasis>
+in order to emulate <emphasis>git fetch</emphasis> that is run in the reverse direction
+with <emphasis>git push</emphasis>, as the two-tree form of <emphasis>read-tree -u -m</emphasis> is
+essentially the same as <emphasis>git checkout</emphasis> that switches branches while
+keeping the local changes in the working tree that do not interfere
+with the difference between the branches.</simpara>
 </section>
 <section id="githooks(5)__pre_auto_gc">
 <title>pre-auto-gc</title>
@@ -284,7 +335,7 @@ format</simpara>
 preceding SP is also omitted.  Currently, no commands pass any
 <emphasis>extra-info</emphasis>.</simpara>
 <simpara>The hook always runs after the automatic note copying (see
-"notes.rewrite.&lt;command&gt;" in linkgit:git-config.txt) has happened, and
+"notes.rewrite.&lt;command&gt;" in <xref linkend="git-config(1)" />) has happened, and
 thus has access to these notes.</simpara>
 <simpara>The following command-specific comments apply:</simpara>
 <variablelist>

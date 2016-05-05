@@ -8,12 +8,12 @@
 </indexterm>
 <simplesect id="gitk(1)__name">
 <title>NAME</title>
-<simpara>gitk - The git repository browser</simpara>
+<simpara>gitk - The Git repository browser</simpara>
 </simplesect>
 <simplesect id="gitk(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>gitk</emphasis> [&lt;option&gt;&#8230;] [&lt;revs&gt;] [--] [&lt;path&gt;&#8230;]</literallayout>
+<literallayout><emphasis>gitk</emphasis> [&lt;options&gt;] [&lt;revision range&gt;] [--] [&lt;path&gt;&#8230;]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="gitk(1)__description">
@@ -21,27 +21,49 @@
 <simpara>Displays changes in a repository or a selected set of commits. This includes
 visualizing the commit graph, showing information related to each commit, and
 the files in the trees of each revision.</simpara>
-<simpara>Historically, gitk was the first repository browser. It's written in tcl/tk
-and started off in a separate repository but was later merged into the main
-git repository.</simpara>
 </simplesect>
 <simplesect id="gitk(1)__options">
 <title>OPTIONS</title>
-<simpara>To control which revisions to show, the command takes options applicable to
-the <emphasis>git rev-list</emphasis> command (see <xref linkend="git-rev-list(1)" />).
-This manual page describes only the most
-frequently used options.</simpara>
+<simpara>To control which revisions to show, gitk supports most options
+applicable to the <emphasis>git rev-list</emphasis> command.  It also supports a few
+options applicable to the <emphasis>git diff-*</emphasis> commands to control how the
+changes each commit introduces are shown.  Finally, it supports some
+gitk-specific options.</simpara>
+<simpara>gitk generally only understands options with arguments in the
+<emphasis>sticked</emphasis> form (see <xref linkend="gitcli(7)" />) due to limitations in the
+command-line parser.</simpara>
+<section id="gitk(1)__rev_list_options_and_arguments">
+<title>rev-list options and arguments</title>
+<simpara>This manual page describes only the most frequently used options.  See
+<xref linkend="git-rev-list(1)" /> for a complete list.</simpara>
 <variablelist>
 <varlistentry>
 <term>
--n &lt;number&gt;
-</term>
-<term>
---max-count=&lt;number&gt;
+--all
 </term>
 <listitem>
 <simpara>
-        Limits the number of commits to show.
+        Show all refs (branches, tags, etc.).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--branches[=&lt;pattern&gt;]
+</term>
+<term>
+--tags[=&lt;pattern&gt;]
+</term>
+<term>
+--remotes[=&lt;pattern&gt;]
+</term>
+<listitem>
+<simpara>
+        Pretend as if all the branches (tags, remote branches, resp.)
+        are listed on the command line as <emphasis>&lt;commit&gt;</emphasis>. If <emphasis>&lt;pattern&gt;</emphasis>
+        is given, limit refs to ones matching given shell glob. If
+        pattern lacks <emphasis>?</emphasis>, <emphasis>&#42;</emphasis>, or <emphasis>[</emphasis>, <emphasis>/&#42;</emphasis> at the
+        end is implied.
 </simpara>
 </listitem>
 </varlistentry>
@@ -67,11 +89,11 @@ frequently used options.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---all
+--date-order
 </term>
 <listitem>
 <simpara>
-        Show all branches.
+        Sort commits by date when possible.
 </simpara>
 </listitem>
 </varlistentry>
@@ -90,32 +112,116 @@ frequently used options.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---argscmd=&lt;command&gt;
+--left-right
 </term>
 <listitem>
 <simpara>
-        Command to be run each time gitk has to determine the list of
-        &lt;revs&gt; to show.  The command is expected to print on its standard
-        output a list of additional revs to be shown, one per line.
-        Use this instead of explicitly specifying &lt;revs&gt; if the set of
-        commits to show may vary between refreshes.
+        Mark which side of a symmetric diff a commit is reachable
+        from.  Commits from the left side are prefixed with a <emphasis>&lt;</emphasis>
+        symbol and those from the right with a <emphasis>&gt;</emphasis> symbol.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---select-commit=&lt;ref&gt;
+--full-history
 </term>
 <listitem>
 <simpara>
-        Automatically select the specified commit after loading the graph.
-        Default behavior is equivalent to specifying <emphasis>--select-commit=HEAD</emphasis>.
+        When filtering history with <emphasis>&lt;path&gt;&#8230;</emphasis>, does not prune some
+        history.  (See "History simplification" in <xref linkend="git-log(1)" />
+        for a more detailed explanation.)
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-&lt;revs&gt;
+--simplify-merges
+</term>
+<listitem>
+<simpara>
+        Additional option to <emphasis>--full-history</emphasis> to remove some needless
+        merges from the resulting history, as there are no selected
+        commits contributing to this merge.  (See "History
+        simplification" in <xref linkend="git-log(1)" /> for a more detailed
+        explanation.)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--ancestry-path
+</term>
+<listitem>
+<simpara>
+        When given a range of commits to display
+        (e.g. <emphasis>commit1..commit2</emphasis> or <emphasis>commit2 &#94;commit1</emphasis>), only
+        display commits that exist directly on the ancestry chain
+        between the <emphasis>commit1</emphasis> and <emphasis>commit2</emphasis>, i.e. commits that are
+        both descendants of <emphasis>commit1</emphasis>, and ancestors of <emphasis>commit2</emphasis>.
+        (See "History simplification" in <xref linkend="git-log(1)" /> for a more
+        detailed explanation.)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-L&lt;start&gt;,&lt;end&gt;:&lt;file&gt;
+</term>
+<term>
+-L:&lt;funcname&gt;:&lt;file&gt;
+</term>
+<listitem>
+<simpara>
+        Trace the evolution of the line range given by "&lt;start&gt;,&lt;end&gt;"
+        (or the function name regex &lt;funcname&gt;) within the &lt;file&gt;.  You may
+        not give any pathspec limiters.  This is currently limited to
+        a walk starting from a single revision, i.e., you may only
+        give zero or one positive revision arguments.
+        You can specify this option more than once.
+</simpara>
+<simpara><emphasis role="strong">Note:</emphasis> gitk (unlike <xref linkend="git-log(1)" />) currently only understands
+this option if you specify it "glued together" with its argument.  Do
+<emphasis role="strong">not</emphasis> put a space after <emphasis>-L</emphasis>.</simpara>
+<simpara>&lt;start&gt; and &lt;end&gt; can take one of these forms:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+number
+</simpara>
+<simpara>If &lt;start&gt; or &lt;end&gt; is a number, it specifies an
+absolute line number (lines count from 1).</simpara>
+</listitem>
+<listitem>
+<simpara>
+/regex/
+</simpara>
+<simpara>This form will use the first line matching the given
+POSIX regex. If &lt;start&gt; is a regex, it will search from the end of
+the previous <emphasis>-L</emphasis> range, if any, otherwise from the start of file.
+If &lt;start&gt; is ^/regex/, it will search from the start of file.
+If &lt;end&gt; is a regex, it will search
+starting at the line given by &lt;start&gt;.</simpara>
+</listitem>
+<listitem>
+<simpara>
++offset or -offset
+</simpara>
+<simpara>This is only valid for &lt;end&gt; and will specify a number
+of lines before or after the line given by &lt;start&gt;.</simpara>
+</listitem>
+</itemizedlist>
+<simpara>If :&lt;funcname&gt; is given in place of &lt;start&gt; and &lt;end&gt;, it is a
+regular expression that denotes the range from the first funcname line
+that matches &lt;funcname&gt;, up to the next funcname line. :&lt;funcname&gt;
+searches from the end of the previous <emphasis>-L</emphasis> range, if any, otherwise
+from the start of file. ^:&lt;funcname&gt; searches from the start of
+file.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+&lt;revision range&gt;
 </term>
 <listitem>
 <simpara>
@@ -141,6 +247,38 @@ frequently used options.</simpara>
 </listitem>
 </varlistentry>
 </variablelist>
+</section>
+<section id="gitk(1)__gitk_specific_options">
+<title>gitk-specific options</title>
+<variablelist>
+<varlistentry>
+<term>
+--argscmd=&lt;command&gt;
+</term>
+<listitem>
+<simpara>
+        Command to be run each time gitk has to determine the revision
+        range to show.  The command is expected to print on its
+        standard output a list of additional revisions to be shown,
+        one per line.  Use this instead of explicitly specifying a
+        <emphasis>&lt;revision range&gt;</emphasis> if the set of commits to show may vary
+        between refreshes.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--select-commit=&lt;ref&gt;
+</term>
+<listitem>
+<simpara>
+        Select the specified commit after loading the graph.
+        Default behavior is equivalent to specifying <emphasis>--select-commit=HEAD</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</section>
 </simplesect>
 <simplesect id="gitk(1)__examples">
 <title>Examples</title>
@@ -183,8 +321,28 @@ gitk --max-count=100 --all -- Makefile
 </simplesect>
 <simplesect id="gitk(1)__files">
 <title>Files</title>
-<simpara>Gitk creates the .gitk file in your $HOME directory to store preferences
-such as display options, font, and colors.</simpara>
+<simpara>User configuration and preferences are stored at:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+<emphasis>$XDG_CONFIG_HOME/git/gitk</emphasis> if it exists, otherwise
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>$HOME/.gitk</emphasis> if it exists
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara>If neither of the above exist then <emphasis>$XDG_CONFIG_HOME/git/gitk</emphasis> is created and
+used by default. If <emphasis>$XDG_CONFIG_HOME</emphasis> is not set it defaults to
+<emphasis>$HOME/.config</emphasis> in all cases.</simpara>
+</simplesect>
+<simplesect id="gitk(1)__history">
+<title>History</title>
+<simpara>Gitk was the first graphical repository browser. It's written in
+tcl/tk and started off in a separate repository but was later merged
+into the main Git repository.</simpara>
 </simplesect>
 <simplesect id="gitk(1)__see_also">
 <title>SEE ALSO</title>
@@ -206,7 +364,7 @@ such as display options, font, and colors.</simpara>
 <listitem>
 <simpara>
         A repository browser written in Python using Gtk. It's based on
-        <emphasis>bzrk(1)</emphasis> and distributed in the contrib area of the git repository.
+        <emphasis>bzrk(1)</emphasis> and distributed in the contrib area of the Git repository.
 </simpara>
 </listitem>
 </varlistentry>
@@ -216,7 +374,7 @@ such as display options, font, and colors.</simpara>
 </term>
 <listitem>
 <simpara>
-        A minimal repository browser and git tool output highlighter written
+        A minimal repository browser and Git tool output highlighter written
         in C using Ncurses.
 </simpara>
 </listitem>

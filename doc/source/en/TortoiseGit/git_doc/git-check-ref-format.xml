@@ -23,13 +23,13 @@
 <title>DESCRIPTION</title>
 <simpara>Checks if a given <emphasis>refname</emphasis> is acceptable, and exits with a non-zero
 status if it is not.</simpara>
-<simpara>A reference is used in git to specify branches and tags.  A
+<simpara>A reference is used in Git to specify branches and tags.  A
 branch head is stored in the <emphasis>refs/heads</emphasis> hierarchy, while
 a tag is stored in the <emphasis>refs/tags</emphasis> hierarchy of the ref namespace
 (typically in <emphasis>$GIT_DIR/refs/heads</emphasis> and <emphasis>$GIT_DIR/refs/tags</emphasis>
 directories or, as entries in file <emphasis>$GIT_DIR/packed-refs</emphasis>
 if refs are packed by <emphasis>git gc</emphasis>).</simpara>
-<simpara>git imposes the following rules on how references are named:</simpara>
+<simpara>Git imposes the following rules on how references are named:</simpara>
 <orderedlist numeration="arabic">
 <listitem>
 <simpara>
@@ -84,13 +84,18 @@ They cannot contain a sequence <emphasis>@{</emphasis>.
 </listitem>
 <listitem>
 <simpara>
+They cannot be the single character <emphasis>@</emphasis>.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
 They cannot contain a <emphasis>\</emphasis>.
 </simpara>
 </listitem>
 </orderedlist>
 <simpara>These rules make it easy for shell script based tools to parse
 reference names, pathname expansion by the shell when a reference name is used
-unquoted (by mistake), and also avoids ambiguities in certain
+unquoted (by mistake), and also avoid ambiguities in certain
 reference name expressions (see <xref linkend="gitrevisions(7)" />):</simpara>
 <orderedlist numeration="arabic">
 <listitem>
@@ -131,10 +136,7 @@ typed the branch name.</simpara>
 <variablelist>
 <varlistentry>
 <term>
---allow-onelevel
-</term>
-<term>
---no-allow-onelevel
+--[no-]allow-onelevel
 </term>
 <listitem>
 <simpara>
@@ -153,8 +155,8 @@ typed the branch name.</simpara>
         Interpret &lt;refname&gt; as a reference name pattern for a refspec
         (as used with remote repositories).  If this option is
         enabled, &lt;refname&gt; is allowed to contain a single <emphasis>*</emphasis>
-        in place of a one full pathname component (e.g.,
-        <emphasis>foo/*/bar</emphasis> but not <emphasis>foo/bar*</emphasis>).
+        in the refspec (e.g., <emphasis>foo/bar*/baz</emphasis> or <emphasis>foo/bar*baz/</emphasis>
+        but not <emphasis>foo/bar*/baz*</emphasis>).
 </simpara>
 </listitem>
 </varlistentry>

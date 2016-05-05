@@ -8,7 +8,7 @@
 </indexterm>
 <simplesect id="gitworkflows(7)__name">
 <title>NAME</title>
-<simpara>gitworkflows - An overview of recommended workflows with git</simpara>
+<simpara>gitworkflows - An overview of recommended workflows with Git</simpara>
 </simplesect>
 <simplesect id="gitworkflows(7)__synopsis">
 <title>SYNOPSIS</title>
@@ -224,9 +224,9 @@ will therefore not be included in your feature release.</simpara>
 tag to the tip of <emphasis>master</emphasis> indicating the release version:</simpara>
 <example>
 <title>Release tagging</title>
-<simpara><emphasis>git tag -s -m "GIT X.Y.Z" vX.Y.Z master</emphasis></simpara>
+<simpara><emphasis>git tag -s -m "Git X.Y.Z" vX.Y.Z master</emphasis></simpara>
 </example>
-<simpara>You need to push the new tag to a public git server (see
+<simpara>You need to push the new tag to a public Git server (see
 "DISTRIBUTED WORKFLOWS" below). This makes the tag available to
 others tracking your project. The push could also trigger a
 post-update hook to perform release-related items such as building

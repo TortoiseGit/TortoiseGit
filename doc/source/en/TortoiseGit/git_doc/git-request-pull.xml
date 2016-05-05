@@ -18,8 +18,14 @@
 </simplesect>
 <simplesect id="git-request-pull(1)__description">
 <title>DESCRIPTION</title>
-<simpara>Summarizes the changes between two commits to the standard output, and includes
-the given URL in the generated summary.</simpara>
+<simpara>Generate a request asking your upstream project to pull changes into
+their tree.  The request, printed to the standard output,
+begins with the branch description, summarizes
+the changes and indicates from where they can be pulled.</simpara>
+<simpara>The upstream project is expected to have the commit named by
+<emphasis>&lt;start&gt;</emphasis> and the output asks it to integrate the changes you made
+since that commit, up to the commit named by <emphasis>&lt;end&gt;</emphasis>, by visiting
+the repository named by <emphasis>&lt;url&gt;</emphasis>.</simpara>
 </simplesect>
 <simplesect id="git-request-pull(1)__options">
 <title>OPTIONS</title>
@@ -30,7 +36,7 @@ the given URL in the generated summary.</simpara>
 </term>
 <listitem>
 <simpara>
-        Show patch text
+        Include patch text in the output.
 </simpara>
 </listitem>
 </varlistentry>
@@ -40,7 +46,8 @@ the given URL in the generated summary.</simpara>
 </term>
 <listitem>
 <simpara>
-        Commit to start at.
+        Commit to start at.  This names a commit that is already in
+        the upstream history.
 </simpara>
 </listitem>
 </varlistentry>
@@ -50,7 +57,7 @@ the given URL in the generated summary.</simpara>
 </term>
 <listitem>
 <simpara>
-        URL to include in the summary.
+        The repository URL to be pulled from.
 </simpara>
 </listitem>
 </varlistentry>
@@ -60,11 +67,34 @@ the given URL in the generated summary.</simpara>
 </term>
 <listitem>
 <simpara>
-        Commit to end at; defaults to HEAD.
+        Commit to end at (defaults to HEAD).  This names the commit
+        at the tip of the history you are asking to be pulled.
 </simpara>
+<simpara>When the repository named by <emphasis>&lt;url&gt;</emphasis> has the commit at a tip of a
+ref that is different from the ref you have locally, you can use the
+<emphasis>&lt;local&gt;:&lt;remote&gt;</emphasis> syntax, to have its local name, a colon <emphasis>:</emphasis>, and
+its remote name.</simpara>
 </listitem>
 </varlistentry>
 </variablelist>
+</simplesect>
+<simplesect id="git-request-pull(1)__example">
+<title>EXAMPLE</title>
+<simpara>Imagine that you built your work on your <emphasis>master</emphasis> branch on top of
+the <emphasis>v1.0</emphasis> release, and want it to be integrated to the project.
+First you push that change to your public repository for others to
+see:</simpara>
+<literallayout class="monospaced">git push https://git.ko.xz/project master</literallayout>
+<simpara>Then, you run this command:</simpara>
+<literallayout class="monospaced">git request-pull v1.0 https://git.ko.xz/project master</literallayout>
+<simpara>which will produce a request to the upstream, summarizing the
+changes between the <emphasis>v1.0</emphasis> release and your <emphasis>master</emphasis>, to pull it
+from your public repository.</simpara>
+<simpara>If you pushed your change to a branch whose name is different from
+the one you have locally, e.g.</simpara>
+<literallayout class="monospaced">git push https://git.ko.xz/project master:for-linus</literallayout>
+<simpara>then you can ask that to be pulled with</simpara>
+<literallayout class="monospaced">git request-pull v1.0 https://git.ko.xz/project master:for-linus</literallayout>
 </simplesect>
 <simplesect id="git-request-pull(1)__git">
 <title>GIT</title>

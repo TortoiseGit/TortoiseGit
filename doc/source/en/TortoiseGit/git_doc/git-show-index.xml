@@ -13,16 +13,17 @@
 <simplesect id="git-show-index(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git show-index</emphasis> &lt; idx-file</literallayout>
+<literallayout><emphasis>git show-index</emphasis></literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-show-index(1)__description">
 <title>DESCRIPTION</title>
-<simpara>Reads given idx file for packed git archive created with
-<emphasis>git pack-objects</emphasis> command, and dumps its contents.</simpara>
+<simpara>Read the idx file for a Git packfile created with
+<emphasis>git pack-objects</emphasis> command from the standard input, and
+dump its contents.</simpara>
 <simpara>The information it outputs is subset of what you can get from
 <emphasis>git verify-pack -v</emphasis>; this command only shows the packfile
-offset and SHA1 of each object.</simpara>
+offset and SHA-1 of each object.</simpara>
 </simplesect>
 <simplesect id="git-show-index(1)__git">
 <title>GIT</title>

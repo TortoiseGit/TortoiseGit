@@ -13,7 +13,7 @@
 <simplesect id="git-imap-send(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git imap-send</emphasis></literallayout>
+<literallayout><emphasis>git imap-send</emphasis> [-v] [-q] [--[no-]curl]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-imap-send(1)__description">
@@ -26,6 +26,61 @@ in which emails have the fields "From", "Date", and "Subject" in
 that order.</simpara>
 <simpara>Typical usage is something like:</simpara>
 <simpara>git format-patch --signoff --stdout --attach origin | git imap-send</simpara>
+</simplesect>
+<simplesect id="git-imap-send(1)__options">
+<title>OPTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+-v
+</term>
+<term>
+--verbose
+</term>
+<listitem>
+<simpara>
+        Be verbose.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-q
+</term>
+<term>
+--quiet
+</term>
+<listitem>
+<simpara>
+        Be quiet.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--curl
+</term>
+<listitem>
+<simpara>
+        Use libcurl to communicate with the IMAP server, unless tunneling
+        into it.  Ignored if Git was built without the USE_CURL_FOR_IMAP_SEND
+        option set.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--no-curl
+</term>
+<listitem>
+<simpara>
+        Talk to the IMAP server using git's own IMAP routines instead of
+        using libcurl.  Ignored if Git was built with the NO_OPENSSL option
+        set.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
 </simplesect>
 <simplesect id="git-imap-send(1)__configuration">
 <title>CONFIGURATION</title>
@@ -42,7 +97,7 @@ imap.folder
 <simpara>
         The folder to drop the mails into, which is typically the Drafts
         folder. For example: "INBOX.Drafts", "INBOX/Drafts" or
-        "[Gmail]/Drafts". Required to use imap-send.
+        "[Gmail]/Drafts". Required.
 </simpara>
 </listitem>
 </varlistentry>
@@ -54,7 +109,7 @@ imap.tunnel
 <simpara>
         Command used to setup a tunnel to the IMAP server through which
         commands will be piped instead of using a direct network connection
-        to the server. Required when imap.host is not set to use imap-send.
+        to the server. Required when imap.host is not set.
 </simpara>
 </listitem>
 </varlistentry>
@@ -66,8 +121,7 @@ imap.host
 <simpara>
         A URL identifying the server. Use a <emphasis>imap://</emphasis> prefix for non-secure
         connections and a <emphasis>imaps://</emphasis> prefix for secure connections.
-        Ignored when imap.tunnel is set, but required to use imap-send
-        otherwise.
+        Ignored when imap.tunnel is set, but required otherwise.
 </simpara>
 </listitem>
 </varlistentry>
@@ -136,7 +190,10 @@ imap.authMethod
 <listitem>
 <simpara>
         Specify authenticate method for authentication with IMAP server.
-        Current supported method is <emphasis>CRAM-MD5</emphasis> only.
+        If Git was built with the NO_CURL option, or if your curl version is older
+        than 7.34.0, or if you're running git-imap-send with the <emphasis>--no-curl</emphasis>
+        option, the only supported method is <emphasis>CRAM-MD5</emphasis>. If this is not set
+        then <emphasis>git imap-send</emphasis> uses the basic IMAP plaintext LOGIN command.
 </simpara>
 </listitem>
 </varlistentry>

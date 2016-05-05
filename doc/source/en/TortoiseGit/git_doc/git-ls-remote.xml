@@ -13,8 +13,9 @@
 <simplesect id="git-ls-remote(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git ls-remote</emphasis> [--heads] [--tags]  [-u &lt;exec&gt; | --upload-pack &lt;exec&gt;]
-              [--exit-code] &lt;repository&gt; [&lt;refs&gt;&#8230;]</literallayout>
+<literallayout><emphasis>git ls-remote</emphasis> [--heads] [--tags] [--refs] [--upload-pack=&lt;exec&gt;]
+              [-q | --quiet] [--exit-code] [--get-url]
+              [--symref] [&lt;repository&gt; [&lt;refs&gt;&#8230;]]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-ls-remote(1)__description">
@@ -49,8 +50,28 @@ commit IDs.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--u &lt;exec&gt;
+--refs
 </term>
+<listitem>
+<simpara>
+        Do not show peeled tags or pseudorefs like HEAD in the output.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-q
+</term>
+<term>
+--quiet
+</term>
+<listitem>
+<simpara>
+        Do not print remote URL to stderr.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
 <term>
 --upload-pack=&lt;exec&gt;
 </term>
@@ -90,13 +111,26 @@ commit IDs.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+--symref
+</term>
+<listitem>
+<simpara>
+        In addition to the object pointed by it, show the underlying
+        ref pointed by it when showing a symbolic ref.  Currently,
+        upload-pack only shows the symref HEAD, so it will be the only
+        one shown by ls-remote.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 &lt;repository&gt;
 </term>
 <listitem>
 <simpara>
-        Location of the repository.  The shorthand defined in
-        $GIT_DIR/branches/ can be used. Use "." (dot) to list references in
-        the local repository.
+        The "remote" repository to query.  This parameter can be
+        either a URL or the name of a remote (see the GIT URLS and
+        REMOTES sections of <xref linkend="git-fetch(1)" />).
 </simpara>
 </listitem>
 </varlistentry>
@@ -126,9 +160,8 @@ c5db5456ae3b0873fc659c19fafdde22313cc441        refs/tags/v0.99.2
 $ git ls-remote http://www.kernel.org/pub/scm/git/git.git master pu rc
 5fe978a5381f1fbad26a80e682ddd2a401966740        refs/heads/master
 c781a84b5204fb294c9ccc79f8b3baceeb32c061        refs/heads/pu
-b1d096f2926c4e37c9c0b6a7bf2119bedaa277cb        refs/heads/rc
-$ echo http://www.kernel.org/pub/scm/git/git.git &gt;.git/branches/public
-$ git ls-remote --tags public v\*
+$ git remote add korg http://www.kernel.org/pub/scm/git/git.git
+$ git ls-remote --tags korg v\*
 d6602ec5194c87b0fc87103ca4d67251c76f233a        refs/tags/v0.99
 f25a265a342aed6041ab0cc484224d9ca54b6f41        refs/tags/v0.99.1
 c5db5456ae3b0873fc659c19fafdde22313cc441        refs/tags/v0.99.2

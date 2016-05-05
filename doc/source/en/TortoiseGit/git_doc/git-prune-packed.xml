@@ -18,7 +18,7 @@
 </simplesect>
 <simplesect id="git-prune-packed(1)__description">
 <title>DESCRIPTION</title>
-<simpara>This program searches the <emphasis>$GIT_OBJECT_DIR</emphasis> for all objects that currently
+<simpara>This program searches the <emphasis>$GIT_OBJECT_DIRECTORY</emphasis> for all objects that currently
 exist in a pack file as well as the independent object directories.</simpara>
 <simpara>All such extra objects are removed.</simpara>
 <simpara>A pack is a collection of objects, individually compressed, with delta

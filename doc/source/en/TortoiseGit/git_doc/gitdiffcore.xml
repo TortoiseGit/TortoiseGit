@@ -121,7 +121,7 @@ it changes it to:</simpara>
 <simpara>For the purpose of breaking a filepair, diffcore-break examines
 the extent of changes between the contents of the files before
 and after modification (i.e. the contents that have "bcd1234&#8230;"
-and "0123456&#8230;" as their SHA1 content ID, in the above
+and "0123456&#8230;" as their SHA-1 content ID, in the above
 example).  The amount of deletion of original contents and
 insertion of new material are added together, and if it exceeds
 the "break score", the filepair is broken into two.  The break
@@ -217,21 +217,30 @@ version prefixed with <emphasis>+</emphasis>.</simpara>
 </simplesect>
 <simplesect id="gitdiffcore(7)__diffcore_pickaxe_for_detecting_addition_deletion_of_specified_string">
 <title>diffcore-pickaxe: For Detecting Addition/Deletion of Specified String</title>
-<simpara>This transformation is used to find filepairs that represent
-changes that touch a specified string, and is controlled by the
--S option and the <emphasis>--pickaxe-all</emphasis> option to the <emphasis>git diff-*</emphasis>
-commands.</simpara>
-<simpara>When diffcore-pickaxe is in use, it checks if there are
-filepairs whose "result" side and whose "origin" side have
-different number of specified string.  Such a filepair represents
-"the string appeared in this changeset".  It also checks for the
-opposite case that loses the specified string.</simpara>
-<simpara>When <emphasis>--pickaxe-all</emphasis> is not in effect, diffcore-pickaxe leaves
-only such filepairs that touch the specified string in its
-output.  When <emphasis>--pickaxe-all</emphasis> is used, diffcore-pickaxe leaves all
-filepairs intact if there is such a filepair, or makes the
-output empty otherwise.  The latter behaviour is designed to
-make reviewing of the changes in the context of the whole
+<simpara>This transformation limits the set of filepairs to those that change
+specified strings between the preimage and the postimage in a certain
+way.  -S&lt;block of text&gt; and -G&lt;regular expression&gt; options are used to
+specify different ways these strings are sought.</simpara>
+<simpara>"-S&lt;block of text&gt;" detects filepairs whose preimage and postimage
+have different number of occurrences of the specified block of text.
+By definition, it will not detect in-file moves.  Also, when a
+changeset moves a file wholesale without affecting the interesting
+string, diffcore-rename kicks in as usual, and <emphasis>-S</emphasis> omits the filepair
+(since the number of occurrences of that string didn't change in that
+rename-detected filepair).  When used with <emphasis>--pickaxe-regex</emphasis>, treat
+the &lt;block of text&gt; as an extended POSIX regular expression to match,
+instead of a literal string.</simpara>
+<simpara>"-G&lt;regular expression&gt;" (mnemonic: grep) detects filepairs whose
+textual diff has an added or a deleted line that matches the given
+regular expression.  This means that it will detect in-file (or what
+rename-detection considers the same file) moves, which is noise.  The
+implementation runs diff twice and greps, and this can be quite
+expensive.</simpara>
+<simpara>When <emphasis>-S</emphasis> or <emphasis>-G</emphasis> are used without <emphasis>--pickaxe-all</emphasis>, only filepairs
+that match their respective criterion are kept in the output.  When
+<emphasis>--pickaxe-all</emphasis> is used, if even one filepair matches their respective
+criterion in a changeset, the entire changeset is kept.  This behavior
+is designed to make reviewing changes in the context of the whole
 changeset easier.</simpara>
 </simplesect>
 <simplesect id="gitdiffcore(7)__diffcore_order_for_sorting_the_output_based_on_filenames">
@@ -243,7 +252,7 @@ changeset easier.</simpara>
 pattern.  Filepairs that match a glob pattern on an earlier line
 in the file are output before ones that match a later line, and
 filepairs that do not match any glob pattern are output last.</simpara>
-<simpara>As an example, a typical orderfile for the core git probably
+<simpara>As an example, a typical orderfile for the core Git probably
 would look like this:</simpara>
 <screen>README
 Makefile

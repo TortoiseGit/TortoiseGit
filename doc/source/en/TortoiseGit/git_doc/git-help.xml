@@ -8,26 +8,32 @@
 </indexterm>
 <simplesect id="git-help(1)__name">
 <title>NAME</title>
-<simpara>git-help - display help information about git</simpara>
+<simpara>git-help - Display help information about Git</simpara>
 </simplesect>
 <simplesect id="git-help(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git help</emphasis> [-a|--all|-i|--info|-m|--man|-w|--web] [COMMAND]</literallayout>
+<literallayout><emphasis>git help</emphasis> [-a|--all] [-g|--guide]
+           [-i|--info|-m|--man|-w|--web] [COMMAND|GUIDE]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-help(1)__description">
 <title>DESCRIPTION</title>
-<simpara>With no options and no COMMAND given, the synopsis of the <emphasis>git</emphasis>
-command and a list of the most commonly used git commands are printed
+<simpara>With no options and no COMMAND or GUIDE given, the synopsis of the <emphasis>git</emphasis>
+command and a list of the most commonly used Git commands are printed
 on the standard output.</simpara>
-<simpara>If the option <emphasis>--all</emphasis> or <emphasis>-a</emphasis> is given, then all available commands are
+<simpara>If the option <emphasis>--all</emphasis> or <emphasis>-a</emphasis> is given, all available commands are
 printed on the standard output.</simpara>
-<simpara>If a git command is named, a manual page for that command is brought
-up. The <emphasis>man</emphasis> program is used by default for this purpose, but this
-can be overridden by other options or configuration variables.</simpara>
+<simpara>If the option <emphasis>--guide</emphasis> or <emphasis>-g</emphasis> is given, a list of the useful
+Git guides is also printed on the standard output.</simpara>
+<simpara>If a command, or a guide, is given, a manual page for that command or
+guide is brought up. The <emphasis>man</emphasis> program is used by default for this
+purpose, but this can be overridden by other options or configuration
+variables.</simpara>
 <simpara>Note that <emphasis>git --help ...</emphasis> is identical to <emphasis>git help ...</emphasis> because the
 former is internally converted into the latter.</simpara>
+<simpara>To display the <xref linkend="git(1)" /> man page, use <emphasis>git help git</emphasis>.</simpara>
+<simpara>This page can be displayed with <emphasis>git help help</emphasis> or <emphasis>git help --help</emphasis></simpara>
 </simplesect>
 <simplesect id="git-help(1)__options">
 <title>OPTIONS</title>
@@ -42,7 +48,21 @@ former is internally converted into the latter.</simpara>
 <listitem>
 <simpara>
         Prints all the available commands on the standard output. This
-        option supersedes any other option.
+        option overrides any given command or guide name.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-g
+</term>
+<term>
+--guides
+</term>
+<listitem>
+<simpara>
+        Prints a list of useful guides on the standard output. This
+        option overrides any given command or guide name.
 </simpara>
 </listitem>
 </varlistentry>
@@ -103,9 +123,9 @@ these config variables is set, the <emphasis>git web&#45;&#45;browse</emphasis> 
 <title>CONFIGURATION VARIABLES</title>
 <section id="git-help(1)__help_format">
 <title>help.format</title>
-<simpara>If no command line option is passed, the <emphasis>help.format</emphasis> configuration
+<simpara>If no command-line option is passed, the <emphasis>help.format</emphasis> configuration
 variable will be checked. The following values are supported for this
-variable; they make <emphasis>git help</emphasis> behave as their corresponding command
+variable; they make <emphasis>git help</emphasis> behave as their corresponding command-
 line option:</simpara>
 <itemizedlist>
 <listitem>
@@ -128,14 +148,14 @@ line option:</simpara>
 <section id="git-help(1)__help_browser_web_browser_and_browser_lt_tool_gt_path">
 <title>help.browser, web.browser and browser.&lt;tool&gt;.path</title>
 <simpara>The <emphasis>help.browser</emphasis>, <emphasis>web.browser</emphasis> and <emphasis>browser.&lt;tool&gt;.path</emphasis> will also
-be checked if the <emphasis>web</emphasis> format is chosen (either by command line
+be checked if the <emphasis>web</emphasis> format is chosen (either by command-line
 option or configuration variable). See <emphasis>-w|--web</emphasis> in the OPTIONS
 section above and <xref linkend="git-web&#45;&#45;browse(1)" />.</simpara>
 </section>
 <section id="git-help(1)__man_viewer">
 <title>man.viewer</title>
-<simpara>The <emphasis>man.viewer</emphasis> config variable will be checked if the <emphasis>man</emphasis> format
-is chosen. The following values are currently supported:</simpara>
+<simpara>The <emphasis>man.viewer</emphasis> configuration variable will be checked if the <emphasis>man</emphasis>
+format is chosen. The following values are currently supported:</simpara>
 <itemizedlist>
 <listitem>
 <simpara>
@@ -164,7 +184,7 @@ listed in the configuration file.</simpara>
 <screen>        [man]
                 viewer = konqueror
                 viewer = woman</screen>
-<simpara>will try to use konqueror first. But this may fail (for example if
+<simpara>will try to use konqueror first. But this may fail (for example, if
 DISPLAY is not set) and in that case emacs' woman mode will be tried.</simpara>
 <simpara>If everything fails, or if no viewer is configured, the viewer specified
 in the GIT_MAN_VIEWER environment variable will be tried.  If that

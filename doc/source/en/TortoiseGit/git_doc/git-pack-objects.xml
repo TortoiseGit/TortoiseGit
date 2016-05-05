@@ -17,7 +17,7 @@
         [--no-reuse-delta] [--delta-base-offset] [--non-empty]
         [--local] [--incremental] [--window=&lt;n&gt;] [--depth=&lt;n&gt;]
         [--revs [--unpacked | --all]] [--stdout | base-name]
-        [--keep-true-parents] &lt; object-list</literallayout>
+        [--shallow] [--keep-true-parents] &lt; object-list</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-pack-objects(1)__description">
@@ -36,7 +36,7 @@ each object that a delta depends upon must be present within the pack.</simpara>
 objects in the pack. Placing both the index file (.idx) and the packed
 archive (.pack) in the pack/ subdirectory of $GIT_OBJECT_DIRECTORY (or
 any of the directories on $GIT_ALTERNATE_OBJECT_DIRECTORIES)
-enables git to read from the pack archive.</simpara>
+enables Git to read from the pack archive.</simpara>
 <simpara>The <emphasis>git unpack-objects</emphasis> command can read the packed archive and
 expand the objects contained in the pack into "one-file
 one-object" format; this is typically done by the smart-pull
@@ -55,9 +55,8 @@ base-name
         Write into a pair of files (.pack and .idx), using
         &lt;base-name&gt; to determine the name of the created file.
         When this option is used, the two files are written in
-        &lt;base-name&gt;-&lt;SHA1&gt;.{pack,idx} files.  &lt;SHA1&gt; is a hash
-        of the sorted object names to make the resulting filename
-        based on the pack content, and written to the standard
+        &lt;base-name&gt;-&lt;SHA-1&gt;.{pack,idx} files.  &lt;SHA-1&gt; is a hash
+        based on the pack content and is written to the standard
         output of the command.
 </simpara>
 </listitem>
@@ -84,6 +83,8 @@ base-name
         the same way as <emphasis>git rev-list</emphasis> with the <emphasis>--objects</emphasis> flag
         uses its <emphasis>commit</emphasis> arguments to build the list of objects it
         outputs.  The objects on the resulting list are packed.
+        Besides revisions, <emphasis>--not</emphasis> or <emphasis>--shallow &lt;SHA-1&gt;</emphasis> lines are
+        also accepted.
 </simpara>
 </listitem>
 </varlistentry>
@@ -120,7 +121,7 @@ base-name
 <simpara>
         Include unasked-for annotated tags if the object they
         reference was included in the resulting packfile.  This
-        can be useful to send new tags to native git clients.
+        can be useful to send new tags to native Git clients.
 </simpara>
 </listitem>
 </varlistentry>
@@ -332,9 +333,21 @@ base-name
         option only makes sense in conjunction with --stdout.
 </simpara>
 <simpara>Note: A thin pack violates the packed archive format by omitting
-required objects and is thus unusable by git without making it
+required objects and is thus unusable by Git without making it
 self-contained. Use <emphasis>git index-pack --fix-thin</emphasis>
 (see <xref linkend="git-index-pack(1)" />) to restore the self-contained property.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--shallow
+</term>
+<listitem>
+<simpara>
+        Optimize a pack that will be provided to a client with a shallow
+        repository.  This option, combined with --thin, can result in a
+        smaller pack at the cost of speed.
+</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -345,7 +358,7 @@ self-contained. Use <emphasis>git index-pack --fix-thin</emphasis>
 <simpara>
         A packed archive can express the base object of a delta as
         either a 20-byte object name or as an offset in the
-        stream, but ancient versions of git don't understand the
+        stream, but ancient versions of Git don't understand the
         latter.  By default, <emphasis>git pack-objects</emphasis> only uses the
         former format for better compatibility.  This option
         allows the command to use the latter format for
@@ -355,7 +368,7 @@ self-contained. Use <emphasis>git index-pack --fix-thin</emphasis>
 </simpara>
 <simpara>Note: Porcelain commands such as <emphasis>git gc</emphasis> (see <xref linkend="git-gc(1)" />),
 <emphasis>git repack</emphasis> (see <xref linkend="git-repack(1)" />) pass this option by default
-in modern git when they put objects in your repository into pack files.
+in modern Git when they put objects in your repository into pack files.
 So does <emphasis>git bundle</emphasis> (see <xref linkend="git-bundle(1)" />) when it creates a bundle.</simpara>
 </listitem>
 </varlistentry>
@@ -371,7 +384,7 @@ So does <emphasis>git bundle</emphasis> (see <xref linkend="git-bundle(1)" />) w
         This is meant to reduce packing time on multiprocessor machines.
         The required amount of memory for the delta search window is
         however multiplied by the number of threads.
-        Specifying 0 will cause git to auto-detect the number of CPU's
+        Specifying 0 will cause Git to auto-detect the number of CPU's
         and set the number of threads accordingly.
 </simpara>
 </listitem>

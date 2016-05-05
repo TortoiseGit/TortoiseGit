@@ -38,6 +38,60 @@ the frontend program in use.</simpara>
 <variablelist>
 <varlistentry>
 <term>
+--force
+</term>
+<listitem>
+<simpara>
+        Force updating modified existing branches, even if doing
+        so would cause commits to be lost (as the new commit does
+        not contain the old commit).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--quiet
+</term>
+<listitem>
+<simpara>
+        Disable all non-fatal output, making fast-import silent when it
+        is successful.  This option disables the output shown by
+        --stats.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--stats
+</term>
+<listitem>
+<simpara>
+        Display some basic statistics about the objects fast-import has
+        created, the packfiles they were stored into, and the
+        memory used by fast-import during this run.  Showing this output
+        is currently the default, but can be disabled with --quiet.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+<section id="git-fast-import(1)__options_for_frontends">
+<title>Options for Frontends</title>
+<variablelist>
+<varlistentry>
+<term>
+--cat-blob-fd=&lt;fd&gt;
+</term>
+<listitem>
+<simpara>
+        Write responses to <emphasis>get-mark</emphasis>, <emphasis>cat-blob</emphasis>, and <emphasis>ls</emphasis> queries to the
+        file descriptor &lt;fd&gt; instead of <emphasis>stdout</emphasis>.  Allows <emphasis>progress</emphasis>
+        output intended for the end-user to be separated from other
+        output.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --date-format=&lt;fmt&gt;
 </term>
 <listitem>
@@ -51,73 +105,22 @@ the frontend program in use.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--- done
+--done
 </term>
 <listitem>
 <simpara>
-        Terminate with error if there is no <emphasis>done</emphasis> command at the
-        end of the stream.
+        Terminate with error if there is no <emphasis>done</emphasis> command at the end of
+        the stream.  This option might be useful for detecting errors
+        that cause the frontend to terminate before it has started to
+        write a stream.
 </simpara>
 </listitem>
 </varlistentry>
-<varlistentry>
-<term>
---force
-</term>
-<listitem>
-<simpara>
-        Force updating modified existing branches, even if doing
-        so would cause commits to be lost (as the new commit does
-        not contain the old commit).
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
---max-pack-size=&lt;n&gt;
-</term>
-<listitem>
-<simpara>
-        Maximum size of each output packfile.
-        The default is unlimited.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
---big-file-threshold=&lt;n&gt;
-</term>
-<listitem>
-<simpara>
-        Maximum size of a blob that fast-import will attempt to
-        create a delta for, expressed in bytes.  The default is 512m
-        (512 MiB).  Some importers may wish to lower this on systems
-        with constrained memory.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
---depth=&lt;n&gt;
-</term>
-<listitem>
-<simpara>
-        Maximum delta depth, for blob and tree deltification.
-        Default is 10.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
---active-branches=&lt;n&gt;
-</term>
-<listitem>
-<simpara>
-        Maximum number of branches to maintain active at once.
-        See Memory Utilization below for details.  Default is 5.
-</simpara>
-</listitem>
-</varlistentry>
+</variablelist>
+</section>
+<section id="git-fast-import(1)__locations_of_marks_files">
+<title>Locations of Marks Files</title>
+<variablelist>
 <varlistentry>
 <term>
 --export-marks=&lt;file&gt;
@@ -162,7 +165,7 @@ the frontend program in use.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---relative-marks
+--[no-]relative-marks
 </term>
 <listitem>
 <simpara>
@@ -173,44 +176,47 @@ the frontend program in use.</simpara>
         to the .git/info/fast-import directory. However, other
         importers may use a different location.
 </simpara>
+<simpara>Relative and non-relative marks may be combined by interweaving
+--(no-)-relative-marks with the --(import|export)-marks= options.</simpara>
 </listitem>
 </varlistentry>
+</variablelist>
+</section>
+<section id="git-fast-import(1)__performance_and_compression_tuning">
+<title>Performance and Compression Tuning</title>
+<variablelist>
 <varlistentry>
 <term>
---no-relative-marks
+--active-branches=&lt;n&gt;
 </term>
 <listitem>
 <simpara>
-        Negates a previous --relative-marks. Allows for combining
-        relative and non-relative marks by interweaving
-        --(no-)-relative-marks with the --(import|export)-marks=
-        options.
+        Maximum number of branches to maintain active at once.
+        See Memory Utilization below for details.  Default is 5.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---cat-blob-fd=&lt;fd&gt;
+--big-file-threshold=&lt;n&gt;
 </term>
 <listitem>
 <simpara>
-        Write responses to <emphasis>cat-blob</emphasis> and <emphasis>ls</emphasis> queries to the
-        file descriptor &lt;fd&gt; instead of <emphasis>stdout</emphasis>.  Allows <emphasis>progress</emphasis>
-        output intended for the end-user to be separated from other
-        output.
+        Maximum size of a blob that fast-import will attempt to
+        create a delta for, expressed in bytes.  The default is 512m
+        (512 MiB).  Some importers may wish to lower this on systems
+        with constrained memory.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---done
+--depth=&lt;n&gt;
 </term>
 <listitem>
 <simpara>
-        Require a <emphasis>done</emphasis> command at the end of the stream.
-        This option might be useful for detecting errors that
-        cause the frontend to terminate before it has started to
-        write a stream.
+        Maximum delta depth, for blob and tree deltification.
+        Default is 10.
 </simpara>
 </listitem>
 </varlistentry>
@@ -232,30 +238,17 @@ the frontend program in use.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---quiet
+--max-pack-size=&lt;n&gt;
 </term>
 <listitem>
 <simpara>
-        Disable all non-fatal output, making fast-import silent when it
-        is successful.  This option disables the output shown by
-        --stats.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
---stats
-</term>
-<listitem>
-<simpara>
-        Display some basic statistics about the objects fast-import has
-        created, the packfiles they were stored into, and the
-        memory used by fast-import during this run.  Showing this output
-        is currently the default, but can be disabled with --quiet.
+        Maximum size of each output packfile.
+        The default is unlimited.
 </simpara>
 </listitem>
 </varlistentry>
 </variablelist>
+</section>
 </simplesect>
 <simplesect id="git-fast-import(1)__performance">
 <title>Performance</title>
@@ -342,7 +335,7 @@ frontend and useful when inspecting a fast-import data stream.</simpara>
 <title>Date Formats</title>
 <simpara>The following date formats are supported.  A frontend should select
 the format it will use for this import by passing the format name
-in the --date-format=&lt;fmt&gt; command line option.</simpara>
+in the --date-format=&lt;fmt&gt; command-line option.</simpara>
 <variablelist>
 <varlistentry>
 <term>
@@ -365,7 +358,7 @@ advisement to help formatting routines display the timestamp.</simpara>
 <simpara>If the local offset is not available in the source material, use
 +0000, or the most common local offset.  For example many
 organizations have a CVS repository which has only ever been accessed
-by users who are located in the same location and timezone.  In this
+by users who are located in the same location and time zone.  In this
 case a reasonable offset from UTC could be assumed.</simpara>
 <simpara>Unlike the <emphasis>rfc2822</emphasis> format, this format is very strict.  Any
 variation in formatting will cause fast-import to reject the value.</simpara>
@@ -388,7 +381,7 @@ these cases Git will still be able to obtain the correct date from
 the malformed string.  There are also some types of malformed
 strings which Git will parse wrong, and yet consider valid.
 Seriously malformed strings will be rejected.</simpara>
-<simpara>Unlike the <emphasis>raw</emphasis> format above, the timezone/UTC offset information
+<simpara>Unlike the <emphasis>raw</emphasis> format above, the time zone/UTC offset information
 contained in an RFC 2822 date string is used to adjust the date
 value to UTC prior to storage.  Therefore it is important that
 this information be as accurate as possible.</simpara>
@@ -408,13 +401,13 @@ ambiguity in parsing.</simpara>
 </term>
 <listitem>
 <simpara>
-        Always use the current time and timezone.  The literal
+        Always use the current time and time zone.  The literal
         <emphasis>now</emphasis> must always be supplied for <emphasis>&lt;when&gt;</emphasis>.
 </simpara>
-<simpara>This is a toy format.  The current time and timezone of this system
+<simpara>This is a toy format.  The current time and time zone of this system
 is always copied into the identity string at the time it is being
 created by fast-import.  There is no way to specify a different time or
-timezone.</simpara>
+time zone.</simpara>
 <simpara>This particular format is supplied as it's short to implement and
 may be useful to a process that wants to create a new commit
 right now, without needing to use a working directory or
@@ -517,7 +510,19 @@ and control the current import process.  More detailed discussion
 <simpara>
         Marks the end of the stream. This command is optional
         unless the <emphasis>done</emphasis> feature was requested using the
-        <emphasis>--done</emphasis> command line option or <emphasis>feature done</emphasis> command.
+        <emphasis>--done</emphasis> command-line option or <emphasis>feature done</emphasis> command.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>get-mark</emphasis>
+</term>
+<listitem>
+<simpara>
+        Causes fast-import to print the SHA-1 corresponding to a mark
+        to the file descriptor set with <emphasis>--cat-blob-fd</emphasis>, or <emphasis>stdout</emphasis> if
+        unspecified.
 </simpara>
 </listitem>
 </varlistentry>
@@ -551,8 +556,8 @@ and control the current import process.  More detailed discussion
 </term>
 <listitem>
 <simpara>
-        Require that fast-import supports the specified feature, or
-        abort if it does not.
+        Enable the specified feature. This requires that fast-import
+        supports the specified feature, and aborts if it does not.
 </simpara>
 </listitem>
 </varlistentry>
@@ -579,8 +584,8 @@ change to the project.</simpara>
         ('author' (SP &lt;name&gt;)? SP LT &lt;email&gt; GT SP &lt;when&gt; LF)?
         'committer' (SP &lt;name&gt;)? SP LT &lt;email&gt; GT SP &lt;when&gt; LF
         data
-        ('from' SP &lt;committish&gt; LF)?
-        ('merge' SP &lt;committish&gt; LF)?
+        ('from' SP &lt;commit-ish&gt; LF)?
+        ('merge' SP &lt;commit-ish&gt; LF)?
         (filemodify | filedelete | filecopy | filerename | filedeleteall | notemodify)*
         LF?</literallayout>
 <simpara>where <emphasis>&lt;ref&gt;</emphasis> is the name of the branch to make the commit on.
@@ -627,7 +632,7 @@ the email address from the other fields in the line.  Note that
 <emphasis>&lt;name&gt;</emphasis> and <emphasis>&lt;email&gt;</emphasis> are free-form and may contain any sequence
 of bytes, except <emphasis>LT</emphasis>, <emphasis>GT</emphasis> and <emphasis>LF</emphasis>.  <emphasis>&lt;name&gt;</emphasis> is typically UTF-8 encoded.</simpara>
 <simpara>The time of the change is specified by <emphasis>&lt;when&gt;</emphasis> using the date format
-that was selected by the --date-format=&lt;fmt&gt; command line option.
+that was selected by the --date-format=&lt;fmt&gt; command-line option.
 See Date Formats above for the set of supported formats, and
 their syntax.</simpara>
 </section>
@@ -648,8 +653,8 @@ Omitting the <emphasis>from</emphasis> command on existing branches is usually d
 as the current commit on that branch is automatically assumed to
 be the first ancestor of the new commit.</simpara>
 <simpara>As <emphasis>LF</emphasis> is not valid in a Git refname or SHA-1 expression, no
-quoting or escaping syntax is supported within <emphasis>&lt;committish&gt;</emphasis>.</simpara>
-<simpara>Here <emphasis>&lt;committish&gt;</emphasis> is any of the following:</simpara>
+quoting or escaping syntax is supported within <emphasis>&lt;commit-ish&gt;</emphasis>.</simpara>
+<simpara>Here <emphasis>&lt;commit-ish&gt;</emphasis> is any of the following:</simpara>
 <itemizedlist>
 <listitem>
 <simpara>
@@ -680,6 +685,12 @@ Any valid Git SHA-1 expression that resolves to a commit.  See
   SPECIFYING REVISIONS in <xref linkend="gitrevisions(7)" /> for details.
 </simpara>
 </listitem>
+<listitem>
+<simpara>
+The special null SHA-1 (40 zeros) specifies that the branch is to be
+  removed.
+</simpara>
+</listitem>
 </itemizedlist>
 <simpara>The special case of restarting an incremental import from the
 current branch value should be written as:</simpara>
@@ -699,12 +710,8 @@ If the <emphasis>from</emphasis> command is
 omitted when creating a new branch, the first <emphasis>merge</emphasis> commit will be
 the first ancestor of the current commit, and the branch will start
 out with no files.  An unlimited number of <emphasis>merge</emphasis> commands per
-commit are permitted by fast-import, thereby establishing an n-way merge.
-However Git's other tools never create commits with more than 15
-additional ancestors (forming a 16-way merge).  For this reason
-it is suggested that frontends do not use more than 15 <emphasis>merge</emphasis>
-commands per commit; 16, if starting a new, empty branch.</simpara>
-<simpara>Here <emphasis>&lt;committish&gt;</emphasis> is any of the commit specification expressions
+commit are permitted by fast-import, thereby establishing an n-way merge.</simpara>
+<simpara>Here <emphasis>&lt;commit-ish&gt;</emphasis> is any of the commit specification expressions
 also accepted by <emphasis>from</emphasis> (see above).</simpara>
 </section>
 <section id="git-fast-import(1)__emphasis_filemodify_emphasis">
@@ -891,8 +898,8 @@ paths for a commit are encouraged to do so.</simpara>
 <section id="git-fast-import(1)__emphasis_notemodify_emphasis">
 <title><emphasis>notemodify</emphasis></title>
 <simpara>Included in a <emphasis>commit</emphasis> <emphasis>&lt;notes_ref&gt;</emphasis> command to add a new note
-annotating a <emphasis>&lt;committish&gt;</emphasis> or change this annotation contents.
-Internally it is similar to filemodify 100644 on <emphasis>&lt;committish&gt;</emphasis>
+annotating a <emphasis>&lt;commit-ish&gt;</emphasis> or change this annotation contents.
+Internally it is similar to filemodify 100644 on <emphasis>&lt;commit-ish&gt;</emphasis>
 path (maybe split into subdirectories). It's not advised to
 use any other commands to write to the <emphasis>&lt;notes_ref&gt;</emphasis> tree except
 <emphasis>filedeleteall</emphasis> to delete all existing notes in this tree.
@@ -909,7 +916,7 @@ External data format
         <emphasis>blob</emphasis> command.  The frontend just needs to connect it to the
         commit that is to be annotated.
 </simpara>
-<literallayout class="monospaced">        'N' SP &lt;dataref&gt; SP &lt;committish&gt; LF</literallayout>
+<literallayout class="monospaced">        'N' SP &lt;dataref&gt; SP &lt;commit-ish&gt; LF</literallayout>
 <simpara>Here <emphasis>&lt;dataref&gt;</emphasis> can be either a mark reference (<emphasis>:&lt;idnum&gt;</emphasis>)
 set by a prior <emphasis>blob</emphasis> command, or a full 40-byte SHA-1 of an
 existing Git blob object.</simpara>
@@ -925,13 +932,13 @@ Inline data format
         The frontend wants to supply it as part of this modify
         command.
 </simpara>
-<literallayout class="monospaced">        'N' SP 'inline' SP &lt;committish&gt; LF
+<literallayout class="monospaced">        'N' SP 'inline' SP &lt;commit-ish&gt; LF
         data</literallayout>
 <simpara>See below for a detailed description of the <emphasis>data</emphasis> command.</simpara>
 </listitem>
 </varlistentry>
 </variablelist>
-<simpara>In both formats <emphasis>&lt;committish&gt;</emphasis> is any of the commit specification
+<simpara>In both formats <emphasis>&lt;commit-ish&gt;</emphasis> is any of the commit specification
 expressions also accepted by <emphasis>from</emphasis> (see above).</simpara>
 </section>
 </section>
@@ -956,7 +963,7 @@ to another object simply by reusing the same <emphasis>&lt;idnum&gt;</emphasis> 
 <simpara>Creates an annotated tag referring to a specific commit.  To create
 lightweight (non-annotated) tags see the <emphasis>reset</emphasis> command below.</simpara>
 <literallayout class="monospaced">        'tag' SP &lt;name&gt; LF
-        'from' SP &lt;committish&gt; LF
+        'from' SP &lt;commit-ish&gt; LF
         'tagger' (SP &lt;name&gt;)? SP LT &lt;email&gt; GT SP &lt;when&gt; LF
         data</literallayout>
 <simpara>where <emphasis>&lt;name&gt;</emphasis> is the name of the tag to create.</simpara>
@@ -991,9 +998,9 @@ a specific revision.  The reset command allows a frontend to issue
 a new <emphasis>from</emphasis> command for an existing branch, or to create a new
 branch from an existing commit without creating a new commit.</simpara>
 <literallayout class="monospaced">        'reset' SP &lt;ref&gt; LF
-        ('from' SP &lt;committish&gt; LF)?
+        ('from' SP &lt;commit-ish&gt; LF)?
         LF?</literallayout>
-<simpara>For a detailed description of <emphasis>&lt;ref&gt;</emphasis> and <emphasis>&lt;committish&gt;</emphasis> see above
+<simpara>For a detailed description of <emphasis>&lt;ref&gt;</emphasis> and <emphasis>&lt;commit-ish&gt;</emphasis> see above
 under <emphasis>commit</emphasis> and <emphasis>from</emphasis>.</simpara>
 <simpara>The <emphasis>LF</emphasis> after the command is optional (it used to be required).</simpara>
 <simpara>The <emphasis>reset</emphasis> command can also be used to create lightweight
@@ -1118,6 +1125,20 @@ remove the leading part of the line, for example:</simpara>
 inform the reader when the <emphasis>checkpoint</emphasis> has been completed and it
 can safely access the refs that fast-import updated.</simpara>
 </section>
+<section id="git-fast-import(1)__emphasis_get_mark_emphasis">
+<title><emphasis>get-mark</emphasis></title>
+<simpara>Causes fast-import to print the SHA-1 corresponding to a mark to
+stdout or to the file descriptor previously arranged with the
+<emphasis>--cat-blob-fd</emphasis> argument. The command otherwise has no impact on the
+current import; its purpose is to retrieve SHA-1s that later commits
+might want to refer to in their commit messages.</simpara>
+<literallayout class="monospaced">        'get-mark' SP ':' &lt;idnum&gt; LF</literallayout>
+<simpara>This command can be used anywhere in the stream that comments are
+accepted.  In particular, the <emphasis>get-mark</emphasis> command can be used in the
+middle of a commit but not in the middle of a <emphasis>data</emphasis> command.</simpara>
+<simpara>See Responses To Commands below for details about how to read
+this output safely.</simpara>
+</section>
 <section id="git-fast-import(1)__emphasis_cat_blob_emphasis">
 <title><emphasis>cat-blob</emphasis></title>
 <simpara>Causes fast-import to print a blob to a file descriptor previously
@@ -1185,7 +1206,8 @@ Reading from a named tree
 <literallayout class="monospaced">&lt;mode&gt; SP ('blob' | 'tree' | 'commit') SP &lt;dataref&gt; HT &lt;path&gt; LF</literallayout>
 </informalexample>
 <simpara>The &lt;dataref&gt; represents the blob, tree, or commit object at &lt;path&gt;
-and can be used in later <emphasis>cat-blob</emphasis>, <emphasis>filemodify</emphasis>, or <emphasis>ls</emphasis> commands.</simpara>
+and can be used in later <emphasis>get-mark</emphasis>, <emphasis>cat-blob</emphasis>, <emphasis>filemodify</emphasis>, or
+<emphasis>ls</emphasis> commands.</simpara>
 <simpara>If there is no file or subtree at that path, <emphasis>git fast-import</emphasis> will
 instead report</simpara>
 <informalexample>
@@ -1246,6 +1268,9 @@ import-marks-if-exists
 </varlistentry>
 <varlistentry>
 <term>
+get-mark
+</term>
+<term>
 cat-blob
 </term>
 <term>
@@ -1253,7 +1278,8 @@ ls
 </term>
 <listitem>
 <simpara>
-        Require that the backend support the <emphasis>cat-blob</emphasis> or <emphasis>ls</emphasis> command.
+        Require that the backend support the <emphasis>get-mark</emphasis>, <emphasis>cat-blob</emphasis>,
+        or <emphasis>ls</emphasis> command respectively.
         Versions of fast-import not supporting the specified command
         will exit with a message indicating so.
         This lets the import error out early with a clear message,
@@ -1305,7 +1331,7 @@ without the leading <emphasis>--</emphasis> and is treated in the same way.</sim
 <simpara>Option commands must be the first commands on the input (not counting
 feature commands), to give an option command after any non-option
 command is an error.</simpara>
-<simpara>The following commandline options change import semantics and may therefore
+<simpara>The following command-line options change import semantics and may therefore
 not be passed as option:</simpara>
 <itemizedlist>
 <listitem>
@@ -1339,7 +1365,7 @@ force
 <title><emphasis>done</emphasis></title>
 <simpara>If the <emphasis>done</emphasis> feature is not in use, treated as if EOF was read.
 This can be used to tell fast-import to finish early.</simpara>
-<simpara>If the <emphasis>--done</emphasis> command line option or <emphasis>feature done</emphasis> command is
+<simpara>If the <emphasis>--done</emphasis> command-line option or <emphasis>feature done</emphasis> command is
 in use, the <emphasis>done</emphasis> command is mandatory and marks the end of the
 stream.</simpara>
 </section>
@@ -1363,10 +1389,10 @@ bidirectional pipes:</simpara>
 frontend &lt;fast-import-output |
 git fast-import &gt;fast-import-output</literallayout>
 </informalexample>
-<simpara>A frontend set up this way can use <emphasis>progress</emphasis>, <emphasis>ls</emphasis>, and <emphasis>cat-blob</emphasis>
-commands to read information from the import in progress.</simpara>
+<simpara>A frontend set up this way can use <emphasis>progress</emphasis>, <emphasis>get-mark</emphasis>, <emphasis>ls</emphasis>, and
+<emphasis>cat-blob</emphasis> commands to read information from the import in progress.</simpara>
 <simpara>To avoid deadlock, such frontends must completely consume any
-pending output from <emphasis>progress</emphasis>, <emphasis>ls</emphasis>, and <emphasis>cat-blob</emphasis> before
+pending output from <emphasis>progress</emphasis>, <emphasis>ls</emphasis>, <emphasis>get-mark</emphasis>, and <emphasis>cat-blob</emphasis> before
 performing writes to fast-import that might block.</simpara>
 </simplesect>
 <simplesect id="git-fast-import(1)__crash_reports">
@@ -1642,6 +1668,10 @@ packfile early, simulating a <emphasis>checkpoint</emphasis> command.  The impat
 operator can use this facility to peek at the objects and refs from an
 import in progress, at the cost of some added running time and worse
 compression.</simpara>
+</simplesect>
+<simplesect id="git-fast-import(1)__see_also">
+<title>SEE ALSO</title>
+<simpara><xref linkend="git-fast-export(1)" /></simpara>
 </simplesect>
 <simplesect id="git-fast-import(1)__git">
 <title>GIT</title>

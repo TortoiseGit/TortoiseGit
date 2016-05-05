@@ -44,13 +44,14 @@
              [ --right-only ]
              [ --cherry-mark ]
              [ --cherry-pick ]
-             [ --encoding[=&lt;encoding&gt;] ]
+             [ --encoding=&lt;encoding&gt; ]
              [ --(author|committer|grep)=&lt;pattern&gt; ]
              [ --regexp-ignore-case | -i ]
              [ --extended-regexp | -E ]
              [ --fixed-strings | -F ]
-             [ --date=(local|relative|default|iso|rfc|short) ]
-             [ [--objects | --objects-edge] [ --unpacked ] ]
+             [ --date=&lt;format&gt;]
+             [ [ --objects | --objects-edge | --objects-edge-aggressive ]
+               [ --unpacked ] ]
              [ --pretty | --header ]
              [ --bisect ]
              [ --bisect-vars ]
@@ -59,6 +60,8 @@
              [ --reverse ]
              [ --walk-reflogs ]
              [ --no-walk ] [ --do-walk ]
+             [ --count ]
+             [ --use-bitmap-index ]
              &lt;commit&gt;&#8230; [ -- &lt;paths&gt;&#8230; ]</literallayout>
 </blockquote>
 </simplesect>
@@ -88,7 +91,7 @@ for merges.  The resulting set of commits is the symmetric difference
 between the two operands.  The following two commands are equivalent:</simpara>
 <screen>        $ git rev-list A B --not $(git merge-base --all A B)
         $ git rev-list A...B</screen>
-<simpara><emphasis>rev-list</emphasis> is a very essential git command, since it
+<simpara><emphasis>rev-list</emphasis> is a very essential Git command, since it
 provides the ability to build and traverse commit ancestry graphs. For
 this reason, it has a lot of different options that enables it to be
 used by commands as different as <emphasis>git bisect</emphasis> and
@@ -216,8 +219,6 @@ ordering and formatting options, such as <emphasis>--reverse</emphasis>.</simpar
         matches any of the given patterns are chosen (but see
         <emphasis>--all-match</emphasis>).
 </simpara>
-<simpara>When <emphasis>--show-notes</emphasis> is in effect, the message from the notes as
-if it is part of the log message.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -226,8 +227,19 @@ if it is part of the log message.</simpara>
 </term>
 <listitem>
 <simpara>
-        Limit the commits output to ones that match all given --grep,
+        Limit the commits output to ones that match all given <emphasis>--grep</emphasis>,
         instead of ones that match at least one.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--invert-grep
+</term>
+<listitem>
+<simpara>
+        Limit the commits output to ones with log message that do not
+        match the pattern specified with <emphasis>--grep=&lt;pattern&gt;</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -240,7 +252,8 @@ if it is part of the log message.</simpara>
 </term>
 <listitem>
 <simpara>
-        Match the regexp limiting patterns without regard to letters case.
+        Match the regular expression limiting patterns without regard to letter
+        case.
 </simpara>
 </listitem>
 </varlistentry>
@@ -289,7 +302,7 @@ if it is part of the log message.</simpara>
 </term>
 <listitem>
 <simpara>
-        Consider the limiting patterns to be Perl-compatible regexp.
+        Consider the limiting patterns to be Perl-compatible regular expressions.
         Requires libpcre to be compiled in.
 </simpara>
 </listitem>
@@ -340,7 +353,7 @@ if it is part of the log message.</simpara>
 </term>
 <listitem>
 <simpara>
-        Show only commits which have at least (or at most) that many
+        Show only commits which have at least (or at most) that many parent
         commits. In particular, <emphasis>--max-parents=1</emphasis> is the same as <emphasis>--no-merges</emphasis>,
         <emphasis>--min-parents=2</emphasis> is the same as <emphasis>--merges</emphasis>.  <emphasis>--max-parents=0</emphasis>
         gives all root commits and <emphasis>--min-parents=3</emphasis> all octopus merges.
@@ -362,7 +375,8 @@ parents) and <emphasis>--max-parents=-1</emphasis> (negative numbers denote no u
         because merges into a topic branch tend to be only about
         adjusting to updated upstream from time to time, and
         this option allows you to ignore the individual commits
-        brought in to your history by such a merge.
+        brought in to your history by such a merge. Cannot be
+        combined with --bisect.
 </simpara>
 </listitem>
 </varlistentry>
@@ -442,6 +456,37 @@ parents) and <emphasis>--max-parents=-1</emphasis> (negative numbers denote no u
 </varlistentry>
 <varlistentry>
 <term>
+--exclude=&lt;glob-pattern&gt;
+</term>
+<listitem>
+<simpara>
+        Do not include refs matching <emphasis>&lt;glob-pattern&gt;</emphasis> that the next <emphasis>--all</emphasis>,
+        <emphasis>--branches</emphasis>, <emphasis>--tags</emphasis>, <emphasis>--remotes</emphasis>, or <emphasis>--glob</emphasis> would otherwise
+        consider. Repetitions of this option accumulate exclusion patterns
+        up to the next <emphasis>--all</emphasis>, <emphasis>--branches</emphasis>, <emphasis>--tags</emphasis>, <emphasis>--remotes</emphasis>, or
+        <emphasis>--glob</emphasis> option (other options or arguments do not clear
+        accumulated patterns).
+</simpara>
+<simpara>The patterns given should not begin with <emphasis>refs/heads</emphasis>, <emphasis>refs/tags</emphasis>, or
+<emphasis>refs/remotes</emphasis> when applied to <emphasis>--branches</emphasis>, <emphasis>--tags</emphasis>, or <emphasis>--remotes</emphasis>,
+respectively, and they must begin with <emphasis>refs/</emphasis> when applied to <emphasis>--glob</emphasis>
+or <emphasis>--all</emphasis>. If a trailing <emphasis>/&#42;</emphasis> is intended, it must be given
+explicitly.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--reflog
+</term>
+<listitem>
+<simpara>
+        Pretend as if all objects mentioned by reflogs are listed on the
+        command line as <emphasis>&lt;commit&gt;</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --ignore-missing
 </term>
 <listitem>
@@ -474,7 +519,7 @@ parents) and <emphasis>--max-parents=-1</emphasis> (negative numbers denote no u
         is primarily meant to allow the caller to
         test the exit status to see if a range of objects is fully
         connected (or not).  It is faster than redirecting stdout
-        to /dev/null as the output does not have to be formatted.
+        to <emphasis>/dev/null</emphasis> as the output does not have to be formatted.
 </simpara>
 </listitem>
 </varlistentry>
@@ -496,15 +541,15 @@ parents) and <emphasis>--max-parents=-1</emphasis> (negative numbers denote no u
 <listitem>
 <simpara>
         Omit any commit that introduces the same change as
-        another commit on the "other side" when the set of
+        another commit on the other side when the set of
         commits are limited with symmetric difference.
 </simpara>
 <simpara>For example, if you have two branches, <emphasis>A</emphasis> and <emphasis>B</emphasis>, a usual way
 to list all commits on only one side of them is with
 <emphasis>--left-right</emphasis> (see the example below in the description of
-the <emphasis>--left-right</emphasis> option).  It however shows the commits that were cherry-picked
-from the other branch (for example, "3rd on b" may be cherry-picked
-from branch A).  With this option, such pairs of commits are
+the <emphasis>--left-right</emphasis> option). However, it shows the commits that were
+cherry-picked from the other branch (for example, 3rd on b may be
+cherry-picked from branch A). With this option, such pairs of commits are
 excluded from the output.</simpara>
 </listitem>
 </varlistentry>
@@ -555,9 +600,9 @@ list.</simpara>
         reflog entries from the most recent one to older ones.
         When this option is used you cannot specify commits to
         exclude (that is, <emphasis>&#94;commit</emphasis>, <emphasis>commit1..commit2</emphasis>,
-        nor <emphasis>commit1...commit2</emphasis> notations cannot be used).
+        and <emphasis>commit1...commit2</emphasis> notations cannot be used).
 </simpara>
-<simpara>With <emphasis>--pretty</emphasis> format other than oneline (for obvious reasons),
+<simpara>With <emphasis>--pretty</emphasis> format other than <emphasis>oneline</emphasis> (for obvious reasons),
 this causes the output to have two extra lines of information
 taken from the reflog.  By default, <emphasis>commit@{Nth}</emphasis> notation is
 used in the output.  When the starting commit is specified as
@@ -585,8 +630,20 @@ See also <xref linkend="git-reflog(1)" />.</simpara>
 </term>
 <listitem>
 <simpara>
-        Output uninteresting commits at the boundary, which are usually
-        not shown.
+        Output excluded boundary commits. Boundary commits are
+        prefixed with <emphasis>-</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--use-bitmap-index
+</term>
+<listitem>
+<simpara>
+        Try to speed up the traversal using the pack bitmap index (if
+        one is available). Note that when traversing with <emphasis>--objects</emphasis>,
+        trees and blobs will not have their associated path printed.
 </simpara>
 </listitem>
 </varlistentry>
@@ -702,24 +759,24 @@ filtered for <emphasis>foo</emphasis>, they look different and equal, respective
 <simpara>In the following, we will always refer to the same example history to
 illustrate the differences between simplification settings.  We assume
 that you are filtering for a file <emphasis>foo</emphasis> in this commit graph:</simpara>
-<screen>          .-A---M---N---O---P
-         /     /   /   /   /
-        I     B   C   D   E
-         \   /   /   /   /
-          `-------------'</screen>
-<simpara>The horizontal line of history A---P is taken to be the first parent of
+<screen>          .-A---M---N---O---P---Q
+         /     /   /   /   /   /
+        I     B   C   D   E   Y
+         \   /   /   /   /   /
+          `-------------'   X</screen>
+<simpara>The horizontal line of history A---Q is taken to be the first parent of
 each merge.  The commits are:</simpara>
 <itemizedlist>
 <listitem>
 <simpara>
 <emphasis>I</emphasis> is the initial commit, in which <emphasis>foo</emphasis> exists with contents
-  "asdf", and a file <emphasis>quux</emphasis> exists with contents "quux".  Initial
+  asdf, and a file <emphasis>quux</emphasis> exists with contents quux. Initial
   commits are compared to an empty tree, so <emphasis>I</emphasis> is !TREESAME.
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-In <emphasis>A</emphasis>, <emphasis>foo</emphasis> contains just "foo".
+In <emphasis>A</emphasis>, <emphasis>foo</emphasis> contains just foo.
 </simpara>
 </listitem>
 <listitem>
@@ -730,27 +787,33 @@ In <emphasis>A</emphasis>, <emphasis>foo</emphasis> contains just "foo".
 </listitem>
 <listitem>
 <simpara>
-<emphasis>C</emphasis> does not change <emphasis>foo</emphasis>, but its merge <emphasis>N</emphasis> changes it to "foobar",
+<emphasis>C</emphasis> does not change <emphasis>foo</emphasis>, but its merge <emphasis>N</emphasis> changes it to foobar,
   so it is not TREESAME to any parent.
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-<emphasis>D</emphasis> sets <emphasis>foo</emphasis> to "baz".  Its merge <emphasis>O</emphasis> combines the strings from
-  <emphasis>N</emphasis> and <emphasis>D</emphasis> to "foobarbaz"; i.e., it is not TREESAME to any parent.
+<emphasis>D</emphasis> sets <emphasis>foo</emphasis> to baz. Its merge <emphasis>O</emphasis> combines the strings from
+  <emphasis>N</emphasis> and <emphasis>D</emphasis> to foobarbaz; i.e., it is not TREESAME to any parent.
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-<emphasis>E</emphasis> changes <emphasis>quux</emphasis> to "xyzzy", and its merge <emphasis>P</emphasis> combines the
-  strings to "quux xyzzy".  Despite appearing interesting, <emphasis>P</emphasis> is
-  TREESAME to all parents.
+<emphasis>E</emphasis> changes <emphasis>quux</emphasis> to xyzzy, and its merge <emphasis>P</emphasis> combines the
+  strings to quux xyzzy. <emphasis>P</emphasis> is TREESAME to <emphasis>O</emphasis>, but not to <emphasis>E</emphasis>.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>X</emphasis> is an independent root commit that added a new file <emphasis>side</emphasis>, and <emphasis>Y</emphasis>
+  modified it. <emphasis>Y</emphasis> is TREESAME to <emphasis>X</emphasis>. Its merge <emphasis>Q</emphasis> added <emphasis>side</emphasis> to <emphasis>P</emphasis>, and
+  <emphasis>Q</emphasis> is TREESAME to <emphasis>P</emphasis>, but not to <emphasis>Y</emphasis>.
 </simpara>
 </listitem>
 </itemizedlist>
 <simpara><emphasis>rev-list</emphasis> walks backwards through history, including or excluding
 commits based on whether <emphasis>--full-history</emphasis> and/or parent rewriting
-(via <emphasis>--parents</emphasis> or <emphasis>--children</emphasis>) are used.  The following settings
+(via <emphasis>--parents</emphasis> or <emphasis>--children</emphasis>) are used. The following settings
 are available.</simpara>
 <variablelist>
 <varlistentry>
@@ -774,7 +837,7 @@ Default mode
 available, removed <emphasis>B</emphasis> from consideration entirely.  <emphasis>C</emphasis> was
 considered via <emphasis>N</emphasis>, but is TREESAME.  Root commits are compared to an
 empty tree, so <emphasis>I</emphasis> is !TREESAME.</simpara>
-<simpara>Parent/child relations are only visible with --parents, but that does
+<simpara>Parent/child relations are only visible with <emphasis>--parents</emphasis>, but that does
 not affect the commits selected in default mode, so we have shown the
 parent lines.</simpara>
 </listitem>
@@ -791,8 +854,8 @@ parent lines.</simpara>
         included, this does not imply that the merge itself is!  In
         the example, we get
 </simpara>
-<screen>        I  A  B  N  D  O</screen>
-<simpara><emphasis>P</emphasis> and <emphasis>M</emphasis> were excluded because they are TREESAME to a parent.  <emphasis>E</emphasis>,
+<screen>        I  A  B  N  D  O  P  Q</screen>
+<simpara><emphasis>M</emphasis> was excluded because it is TREESAME to both parents.  <emphasis>E</emphasis>,
 <emphasis>C</emphasis> and <emphasis>B</emphasis> were all walked, but only <emphasis>B</emphasis> was !TREESAME, so the others
 do not appear.</simpara>
 <simpara>Note that without parent rewriting, it is not really possible to talk
@@ -812,7 +875,7 @@ them disconnected.</simpara>
 <simpara>Merges are always included.  However, their parent list is rewritten:
 Along each parent, prune away commits that are not included
 themselves.  This results in</simpara>
-<screen>          .-A---M---N---O---P
+<screen>          .-A---M---N---O---P---Q
          /     /   /   /   /
         I     B   /   D   /
          \   /   /   /   /
@@ -820,7 +883,7 @@ themselves.  This results in</simpara>
 <simpara>Compare to <emphasis>--full-history</emphasis> without rewriting above.  Note that <emphasis>E</emphasis>
 was pruned away because it is TREESAME, but the parent list of P was
 rewritten to contain <emphasis>E</emphasis>'s parent <emphasis>I</emphasis>.  The same happened for <emphasis>C</emphasis> and
-<emphasis>N</emphasis>.  Note also that <emphasis>P</emphasis> was included despite being TREESAME.</simpara>
+<emphasis>N</emphasis>, and <emphasis>X</emphasis>, <emphasis>Y</emphasis> and <emphasis>Q</emphasis>.</simpara>
 </listitem>
 </varlistentry>
 </variablelist>
@@ -871,8 +934,9 @@ Set <emphasis>C'</emphasis> to <emphasis>C</emphasis>.
 <listitem>
 <simpara>
 Replace each parent <emphasis>P</emphasis> of <emphasis>C'</emphasis> with its simplification <emphasis>P'</emphasis>.  In
-  the process, drop parents that are ancestors of other parents, and
-  remove duplicates.
+  the process, drop parents that are ancestors of other parents or that are
+  root commits TREESAME to an empty tree, and remove duplicates, but take care
+  to never drop all parents that we are TREESAME to.
 </simpara>
 </listitem>
 <listitem>
@@ -890,7 +954,7 @@ If after this parent rewriting, <emphasis>C'</emphasis> is a root or merge commi
         I     B       D
          \   /       /
           `---------'</screen>
-<simpara>Note the major differences in <emphasis>N</emphasis> and <emphasis>P</emphasis> over <emphasis>--full-history</emphasis>:</simpara>
+<simpara>Note the major differences in <emphasis>N</emphasis>, <emphasis>P</emphasis>, and <emphasis>Q</emphasis> over <emphasis>--full-history</emphasis>:</simpara>
 <itemizedlist>
 <listitem>
 <simpara>
@@ -902,6 +966,13 @@ If after this parent rewriting, <emphasis>C'</emphasis> is a root or merge commi
 <simpara>
 <emphasis>P</emphasis>'s parent list similarly had <emphasis>I</emphasis> removed.  <emphasis>P</emphasis> was then
   removed completely, because it had one parent and is TREESAME.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>Q</emphasis>'s parent list had <emphasis>Y</emphasis> simplified to <emphasis>X</emphasis>. <emphasis>X</emphasis> was then removed, because it
+  was a TREESAME root. <emphasis>Q</emphasis> was then removed completely, because it had one
+  parent and is TREESAME.
 </simpara>
 </listitem>
 </itemizedlist>
@@ -917,9 +988,9 @@ If after this parent rewriting, <emphasis>C'</emphasis> is a root or merge commi
 <listitem>
 <simpara>
         Limit the displayed commits to those directly on the ancestry
-        chain between the "from" and "to" commits in the given commit
-        range. I.e. only display commits that are ancestor of the "to"
-        commit, and descendants of the "from" commit.
+        chain between the from and to commits in the given commit
+        range. I.e. only display commits that are ancestor of the to
+        commit and descendants of the from commit.
 </simpara>
 <simpara>As an example use case, consider the following commit history:</simpara>
 <screen>            D---E-------F
@@ -930,7 +1001,7 @@ If after this parent rewriting, <emphasis>C'</emphasis> is a root or merge commi
 <simpara>A regular <emphasis>D..M</emphasis> computes the set of commits that are ancestors of <emphasis>M</emphasis>,
 but excludes the ones that are ancestors of <emphasis>D</emphasis>. This is useful to see
 what happened to the history leading to <emphasis>M</emphasis> since <emphasis>D</emphasis>, in the sense
-that "what does <emphasis>M</emphasis> have that did not exist in <emphasis>D</emphasis>". The result in this
+that what does <emphasis>M</emphasis> have that did not exist in <emphasis>D</emphasis>. The result in this
 example would be all the commits, except <emphasis>A</emphasis> and <emphasis>B</emphasis> (and <emphasis>D</emphasis> itself,
 of course).</simpara>
 <simpara>When we want to find out what commits in <emphasis>M</emphasis> are contaminated with the
@@ -963,16 +1034,13 @@ commits are marked as TREESAME (subject to be simplified away).</simpara>
 </term>
 <listitem>
 <simpara>
-Limit output to the one commit object which is roughly halfway between
-included and excluded commits. Note that the bad bisection ref
-<emphasis>refs/bisect/bad</emphasis> is added to the included commits (if it
-exists) and the good bisection refs <emphasis>refs/bisect/good-*</emphasis> are
-added to the excluded commits (if they exist). Thus, supposing there
-are no refs in <emphasis>refs/bisect/</emphasis>, if
+        Limit output to the one commit object which is roughly halfway between
+        included and excluded commits. Note that the bad bisection ref
+        <emphasis>refs/bisect/bad</emphasis> is added to the included commits (if it
+        exists) and the good bisection refs <emphasis>refs/bisect/good-*</emphasis> are
+        added to the excluded commits (if they exist). Thus, supposing there
+        are no refs in <emphasis>refs/bisect/</emphasis>, if
 </simpara>
-</listitem>
-</varlistentry>
-</variablelist>
 <screen>        $ git rev-list --bisect foo ^bar ^baz</screen>
 <simpara>outputs <emphasis>midpoint</emphasis>, the output of the two commands</simpara>
 <screen>        $ git rev-list foo ^midpoint
@@ -980,24 +1048,25 @@ are no refs in <emphasis>refs/bisect/</emphasis>, if
 <simpara>would be of roughly the same length.  Finding the change which
 introduces a regression is thus reduced to a binary search: repeatedly
 generate and test new 'midpoint's until the commit chain is of length
-one.</simpara>
-<variablelist>
+one. Cannot be combined with --first-parent.</simpara>
+</listitem>
+</varlistentry>
 <varlistentry>
 <term>
 --bisect-vars
 </term>
 <listitem>
 <simpara>
-This calculates the same as <emphasis>--bisect</emphasis>, except that refs in
-<emphasis>refs/bisect/</emphasis> are not used, and except that this outputs
-text ready to be eval'ed by the shell. These lines will assign the
-name of the midpoint revision to the variable <emphasis>bisect_rev</emphasis>, and the
-expected number of commits to be tested after <emphasis>bisect_rev</emphasis> is tested
-to <emphasis>bisect_nr</emphasis>, the expected number of commits to be tested if
-<emphasis>bisect_rev</emphasis> turns out to be good to <emphasis>bisect_good</emphasis>, the expected
-number of commits to be tested if <emphasis>bisect_rev</emphasis> turns out to be bad to
-<emphasis>bisect_bad</emphasis>, and the number of commits we are bisecting right now to
-<emphasis>bisect_all</emphasis>.
+        This calculates the same as <emphasis>--bisect</emphasis>, except that refs in
+        <emphasis>refs/bisect/</emphasis> are not used, and except that this outputs
+        text ready to be eval'ed by the shell. These lines will assign the
+        name of the midpoint revision to the variable <emphasis>bisect_rev</emphasis>, and the
+        expected number of commits to be tested after <emphasis>bisect_rev</emphasis> is tested
+        to <emphasis>bisect_nr</emphasis>, the expected number of commits to be tested if
+        <emphasis>bisect_rev</emphasis> turns out to be good to <emphasis>bisect_good</emphasis>, the expected
+        number of commits to be tested if <emphasis>bisect_rev</emphasis> turns out to be bad to
+        <emphasis>bisect_bad</emphasis>, and the number of commits we are bisecting right now to
+        <emphasis>bisect_all</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -1007,11 +1076,11 @@ number of commits to be tested if <emphasis>bisect_rev</emphasis> turns out to b
 </term>
 <listitem>
 <simpara>
-This outputs all the commit objects between the included and excluded
-commits, ordered by their distance to the included and excluded
-commits. Refs in <emphasis>refs/bisect/</emphasis> are not used. The farthest
-from them is displayed first. (This is the only one displayed by
-<emphasis>--bisect</emphasis>.)
+        This outputs all the commit objects between the included and excluded
+        commits, ordered by their distance to the included and excluded
+        commits. Refs in <emphasis>refs/bisect/</emphasis> are not used. The farthest
+        from them is displayed first. (This is the only one displayed by
+        <emphasis>--bisect</emphasis>.)
 </simpara>
 <simpara>This is useful because it makes it easy to choose a good commit to
 test when you want to avoid to test some of them for some reason (they
@@ -1035,6 +1104,17 @@ after all the sorted commit objects, there will be the same text as if
 <simpara>
         Show no parents before all of its children are shown, but
         otherwise show commits in the commit timestamp order.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--author-date-order
+</term>
+<listitem>
+<simpara>
+        Show no parents before all of its children are shown, but
+        otherwise show commits in the author timestamp order.
 </simpara>
 </listitem>
 </varlistentry>
@@ -1076,7 +1156,7 @@ together.</simpara>
 </section>
 <section id="git-rev-list(1)__object_traversal">
 <title>Object Traversal</title>
-<simpara>These options are mostly targeted for packing of git repositories.</simpara>
+<simpara>These options are mostly targeted for packing of Git repositories.</simpara>
 <variablelist>
 <varlistentry>
 <term>
@@ -1085,9 +1165,9 @@ together.</simpara>
 <listitem>
 <simpara>
         Print the object IDs of any object referenced by the listed
-        commits.  <emphasis>--objects foo ^bar</emphasis> thus means "send me
+        commits.  <emphasis>--objects foo ^bar</emphasis> thus means send me
         all object IDs which I need to download if I have the commit
-        object <emphasis>bar</emphasis>, but not <emphasis>foo</emphasis>".
+        object <emphasis>bar</emphasis> but not <emphasis>foo</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -1098,10 +1178,34 @@ together.</simpara>
 <listitem>
 <simpara>
         Similar to <emphasis>--objects</emphasis>, but also print the IDs of excluded
-        commits prefixed with a "-" character.  This is used by
-        <xref linkend="git-pack-objects(1)" /> to build "thin" pack, which records
+        commits prefixed with a - character.  This is used by
+        <xref linkend="git-pack-objects(1)" /> to build a thin pack, which records
         objects in deltified form based on objects contained in these
         excluded commits to reduce network traffic.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--objects-edge-aggressive
+</term>
+<listitem>
+<simpara>
+        Similar to <emphasis>--objects-edge</emphasis>, but it tries harder to find excluded
+        commits at the cost of increased time.  This is used instead of
+        <emphasis>--objects-edge</emphasis> to build thin packs for shallow repositories.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--indexed-objects
+</term>
+<listitem>
+<simpara>
+        Pretend as if all trees and blobs used by the index are listed
+        on the command line.  Note that you probably want to use
+        <emphasis>--objects</emphasis>, too.
 </simpara>
 </listitem>
 </varlistentry>
@@ -1124,10 +1228,11 @@ together.</simpara>
 <simpara>
         Only show the given commits, but do not traverse their ancestors.
         This has no effect if a range is specified. If the argument
-        "unsorted" is given, the commits are show in the order they were
-        given on the command line. Otherwise (if "sorted" or no argument
-        was given), the commits are show in reverse chronological order
+        <emphasis>unsorted</emphasis> is given, the commits are shown in the order they were
+        given on the command line. Otherwise (if <emphasis>sorted</emphasis> or no argument
+        was given), the commits are shown in reverse chronological order
         by commit time.
+        Cannot be combined with <emphasis>--graph</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -1137,7 +1242,7 @@ together.</simpara>
 </term>
 <listitem>
 <simpara>
-        Overrides a previous --no-walk.
+        Overrides a previous <emphasis>--no-walk</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -1160,10 +1265,13 @@ more specialized family of commit log tools: <xref linkend="git-log(1)" />,
 <simpara>
         Pretty-print the contents of the commit logs in a given format,
         where <emphasis>&lt;format&gt;</emphasis> can be one of <emphasis>oneline</emphasis>, <emphasis>short</emphasis>, <emphasis>medium</emphasis>,
-        <emphasis>full</emphasis>, <emphasis>fuller</emphasis>, <emphasis>email</emphasis>, <emphasis>raw</emphasis> and <emphasis>format:&lt;string&gt;</emphasis>.  See
-        the "PRETTY FORMATS" section for some additional details for each
-        format.  When omitted, the format defaults to <emphasis>medium</emphasis>.
+        <emphasis>full</emphasis>, <emphasis>fuller</emphasis>, <emphasis>email</emphasis>, <emphasis>raw</emphasis>, <emphasis>format:&lt;string&gt;</emphasis>
+        and <emphasis>tformat:&lt;string&gt;</emphasis>.  When <emphasis>&lt;format&gt;</emphasis> is none of the above,
+        and has <emphasis>%placeholder</emphasis> in it, it acts as if
+        <emphasis>--pretty=tformat:&lt;format&gt;</emphasis> were given.
 </simpara>
+<simpara>See the "PRETTY FORMATS" section for some additional details for each
+format.  When <emphasis>=&lt;format&gt;</emphasis> part is omitted, it defaults to <emphasis>medium</emphasis>.</simpara>
 <simpara>Note: you can specify the default pretty format in the repository
 configuration (see <xref linkend="git-config(1)" />).</simpara>
 </listitem>
@@ -1208,7 +1316,7 @@ people using 80-column terminals.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---encoding[=&lt;encoding&gt;]
+--encoding=&lt;encoding&gt;
 </term>
 <listitem>
 <simpara>
@@ -1216,60 +1324,35 @@ people using 80-column terminals.</simpara>
         in their encoding header; this option can be used to tell the
         command to re-code the commit log message in the encoding
         preferred by the user.  For non plumbing commands this
-        defaults to UTF-8.
+        defaults to UTF-8. Note that if an object claims to be encoded
+        in <emphasis>X</emphasis> and we are outputting in <emphasis>X</emphasis>, we will output the object
+        verbatim; this means that invalid sequences in the original
+        commit may be copied to the output.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---notes[=&lt;ref&gt;]
+--expand-tabs=&lt;n&gt;
+</term>
+<term>
+--expand-tabs
+</term>
+<term>
+--no-expand-tabs
 </term>
 <listitem>
 <simpara>
-        Show the notes (see <xref linkend="git-notes(1)" />) that annotate the
-        commit, when showing the commit log message.  This is the default
-        for <emphasis>git log</emphasis>, <emphasis>git show</emphasis> and <emphasis>git whatchanged</emphasis> commands when
-        there is no <emphasis>--pretty</emphasis>, <emphasis>--format</emphasis> nor <emphasis>--oneline</emphasis> option given
-        on the command line.
+        Perform a tab expansion (replace each tab with enough spaces
+        to fill to the next display column that is multiple of <emphasis>&lt;n&gt;</emphasis>)
+        in the log message before showing it in the output.
+        <emphasis>--expand-tabs</emphasis> is a short-hand for <emphasis>--expand-tabs=8</emphasis>, and
+        <emphasis>--no-expand-tabs</emphasis> is a short-hand for <emphasis>--expand-tabs=0</emphasis>,
+        which disables tab expansion.
 </simpara>
-<simpara>By default, the notes shown are from the notes refs listed in the
-<emphasis>core.notesRef</emphasis> and <emphasis>notes.displayRef</emphasis> variables (or corresponding
-environment overrides). See <xref linkend="git-config(1)" /> for more details.</simpara>
-<simpara>With an optional <emphasis>&lt;ref&gt;</emphasis> argument, show this notes ref instead of the
-default notes ref(s). The ref is taken to be in <emphasis>refs/notes/</emphasis> if it
-is not qualified.</simpara>
-<simpara>Multiple --notes options can be combined to control which notes are
-being displayed. Examples: "--notes=foo" will show only notes from
-"refs/notes/foo"; "--notes=foo --notes" will show both notes from
-"refs/notes/foo" and from the default notes ref(s).</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
---no-notes
-</term>
-<listitem>
-<simpara>
-        Do not show notes. This negates the above <emphasis>--notes</emphasis> option, by
-        resetting the list of notes refs from which notes are shown.
-        Options are parsed in the order given on the command line, so e.g.
-        "--notes --notes=foo --no-notes --notes=bar" will only show notes
-        from "refs/notes/bar".
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
---show-notes[=&lt;ref&gt;]
-</term>
-<term>
---[no-]standard-notes
-</term>
-<listitem>
-<simpara>
-        These options are deprecated. Use the above --notes/--no-notes
-        options instead.
-</simpara>
+<simpara>By default, tabs are expanded in pretty formats that indent the log
+message by 4 spaces (i.e.  <emphasis>medium</emphasis>, which is the default, <emphasis>full</emphasis>,
+and <emphasis>fuller</emphasis>).</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -1295,24 +1378,65 @@ being displayed. Examples: "--notes=foo" will show only notes from
 </varlistentry>
 <varlistentry>
 <term>
---date=(relative|local|default|iso|rfc|short|raw)
+--date=&lt;format&gt;
 </term>
 <listitem>
 <simpara>
         Only takes effect for dates shown in human-readable format, such
-        as when using "--pretty". <emphasis>log.date</emphasis> config variable sets a default
-        value for log command's --date option.
+        as when using <emphasis>--pretty</emphasis>. <emphasis>log.date</emphasis> config variable sets a default
+        value for the log command's <emphasis>--date</emphasis> option. By default, dates
+        are shown in the original time zone (either committer's or
+        author's). If <emphasis>-local</emphasis> is appended to the format (e.g.,
+        <emphasis>iso-local</emphasis>), the user's local time zone is used instead.
 </simpara>
 <simpara><emphasis>--date=relative</emphasis> shows dates relative to the current time,
-e.g. "2 hours ago".</simpara>
-<simpara><emphasis>--date=local</emphasis> shows timestamps in user's local timezone.</simpara>
-<simpara><emphasis>--date=iso</emphasis> (or <emphasis>--date=iso8601</emphasis>) shows timestamps in ISO 8601 format.</simpara>
+e.g. 2 hours ago. The <emphasis>-local</emphasis> option cannot be used with
+<emphasis>--raw</emphasis> or <emphasis>--relative</emphasis>.</simpara>
+<simpara><emphasis>--date=local</emphasis> is an alias for <emphasis>--date=default-local</emphasis>.</simpara>
+<simpara><emphasis>--date=iso</emphasis> (or <emphasis>--date=iso8601</emphasis>) shows timestamps in a ISO 8601-like format.
+The differences to the strict ISO 8601 format are:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+a space instead of the <emphasis>T</emphasis> date/time delimiter
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+a space between time and time zone
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+no colon between hours and minutes of the time zone
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara><emphasis>--date=iso-strict</emphasis> (or <emphasis>--date=iso8601-strict</emphasis>) shows timestamps in strict
+ISO 8601 format.</simpara>
 <simpara><emphasis>--date=rfc</emphasis> (or <emphasis>--date=rfc2822</emphasis>) shows timestamps in RFC 2822
-format, often found in E-mail messages.</simpara>
-<simpara><emphasis>--date=short</emphasis> shows only date but not time, in <emphasis>YYYY-MM-DD</emphasis> format.</simpara>
-<simpara><emphasis>--date=raw</emphasis> shows the date in the internal raw git format <emphasis>%s %z</emphasis> format.</simpara>
-<simpara><emphasis>--date=default</emphasis> shows timestamps in the original timezone
-(either committer's or author's).</simpara>
+format, often found in email messages.</simpara>
+<simpara><emphasis>--date=short</emphasis> shows only the date, but not the time, in <emphasis>YYYY-MM-DD</emphasis> format.</simpara>
+<simpara><emphasis>--date=raw</emphasis> shows the date in the internal raw Git format <emphasis>%s %z</emphasis> format.</simpara>
+<simpara><emphasis>--date=format:...</emphasis> feeds the format <emphasis>...</emphasis> to your system <emphasis>strftime</emphasis>.
+Use <emphasis>--date=format:%c</emphasis> to show the date in your system locale's
+preferred format.  See the <emphasis>strftime</emphasis> manual for a complete list of
+format placeholders. When using <emphasis>-local</emphasis>, the correct syntax is
+<emphasis>--date=format-local:...</emphasis>.</simpara>
+<simpara><emphasis>--date=default</emphasis> is the default format, and is similar to
+<emphasis>--date=rfc2822</emphasis>, with a few exceptions:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+there is no comma after the day-of-week
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+the time zone is omitted when the local time zone is used
+</simpara>
+</listitem>
+</itemizedlist>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -1396,10 +1520,25 @@ format, often found in E-mail messages.</simpara>
         on the left hand side of the output.  This may cause extra lines
         to be printed in between commits, in order for the graph history
         to be drawn properly.
+        Cannot be combined with <emphasis>--no-walk</emphasis>.
 </simpara>
 <simpara>This enables parent rewriting, see <emphasis>History Simplification</emphasis> below.</simpara>
 <simpara>This implies the <emphasis>--topo-order</emphasis> option by default, but the
 <emphasis>--date-order</emphasis> option may also be specified.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--show-linear-break[=&lt;barrier&gt;]
+</term>
+<listitem>
+<simpara>
+        When --graph is not used, all history branches are flattened
+        which can make it hard to see that the two consecutive commits
+        do not belong to a linear branch. This option puts a barrier
+        in between them in that case. If <emphasis>&lt;barrier&gt;</emphasis> is specified, it
+        is the string that will be shown instead of the default one.
+</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -1501,11 +1640,14 @@ Subject: [PATCH] &lt;title line&gt;</literallayout>
 <emphasis>raw</emphasis>
 </simpara>
 <simpara>The <emphasis>raw</emphasis> format shows the entire commit exactly as
-stored in the commit object.  Notably, the SHA1s are
+stored in the commit object.  Notably, the SHA-1s are
 displayed in full, regardless of whether --abbrev or
 --no-abbrev are used, and <emphasis>parents</emphasis> information show the
-true parent commits, without taking grafts nor history
-simplification into account.</simpara>
+true parent commits, without taking grafts or history
+simplification into account. Note that this format affects the way
+commits are displayed, but not the way the diff is shown e.g. with
+<emphasis>git log --raw</emphasis>. To get full object names in a raw diff format,
+use <emphasis>--no-abbrev</emphasis>.</simpara>
 </listitem>
 <listitem>
 <simpara>
@@ -1558,7 +1700,8 @@ The title was &gt;&gt;t4119: test autocomputing -p&lt;n&gt; for traditional diff
 </listitem>
 <listitem>
 <simpara>
-<emphasis>%aN</emphasis>: author name (respecting .mailmap, see <xref linkend="git-shortlog(1)" /> or <xref linkend="git-blame(1)" />)
+<emphasis>%aN</emphasis>: author name (respecting .mailmap, see <xref linkend="git-shortlog(1)" />
+  or <xref linkend="git-blame(1)" />)
 </simpara>
 </listitem>
 <listitem>
@@ -1568,7 +1711,8 @@ The title was &gt;&gt;t4119: test autocomputing -p&lt;n&gt; for traditional diff
 </listitem>
 <listitem>
 <simpara>
-<emphasis>%aE</emphasis>: author email (respecting .mailmap, see <xref linkend="git-shortlog(1)" /> or <xref linkend="git-blame(1)" />)
+<emphasis>%aE</emphasis>: author email (respecting .mailmap, see
+  <xref linkend="git-shortlog(1)" /> or <xref linkend="git-blame(1)" />)
 </simpara>
 </listitem>
 <listitem>
@@ -1593,7 +1737,12 @@ The title was &gt;&gt;t4119: test autocomputing -p&lt;n&gt; for traditional diff
 </listitem>
 <listitem>
 <simpara>
-<emphasis>%ai</emphasis>: author date, ISO 8601 format
+<emphasis>%ai</emphasis>: author date, ISO 8601-like format
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%aI</emphasis>: author date, strict ISO 8601 format
 </simpara>
 </listitem>
 <listitem>
@@ -1603,7 +1752,8 @@ The title was &gt;&gt;t4119: test autocomputing -p&lt;n&gt; for traditional diff
 </listitem>
 <listitem>
 <simpara>
-<emphasis>%cN</emphasis>: committer name (respecting .mailmap, see <xref linkend="git-shortlog(1)" /> or <xref linkend="git-blame(1)" />)
+<emphasis>%cN</emphasis>: committer name (respecting .mailmap, see
+  <xref linkend="git-shortlog(1)" /> or <xref linkend="git-blame(1)" />)
 </simpara>
 </listitem>
 <listitem>
@@ -1613,12 +1763,13 @@ The title was &gt;&gt;t4119: test autocomputing -p&lt;n&gt; for traditional diff
 </listitem>
 <listitem>
 <simpara>
-<emphasis>%cE</emphasis>: committer email (respecting .mailmap, see <xref linkend="git-shortlog(1)" /> or <xref linkend="git-blame(1)" />)
+<emphasis>%cE</emphasis>: committer email (respecting .mailmap, see
+  <xref linkend="git-shortlog(1)" /> or <xref linkend="git-blame(1)" />)
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-<emphasis>%cd</emphasis>: committer date
+<emphasis>%cd</emphasis>: committer date (format respects --date= option)
 </simpara>
 </listitem>
 <listitem>
@@ -1638,12 +1789,22 @@ The title was &gt;&gt;t4119: test autocomputing -p&lt;n&gt; for traditional diff
 </listitem>
 <listitem>
 <simpara>
-<emphasis>%ci</emphasis>: committer date, ISO 8601 format
+<emphasis>%ci</emphasis>: committer date, ISO 8601-like format
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%cI</emphasis>: committer date, strict ISO 8601 format
 </simpara>
 </listitem>
 <listitem>
 <simpara>
 <emphasis>%d</emphasis>: ref names, like the --decorate option of <xref linkend="git-log(1)" />
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%D</emphasis>: ref names without the " (", ")" wrapping.
 </simpara>
 </listitem>
 <listitem>
@@ -1673,22 +1834,23 @@ The title was &gt;&gt;t4119: test autocomputing -p&lt;n&gt; for traditional diff
 </listitem>
 <listitem>
 <simpara>
-<emphasis>%N</emphasis>: commit notes
-</simpara>
-</listitem>
-<listitem>
-<simpara>
 <emphasis>%GG</emphasis>: raw verification message from GPG for a signed commit
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-<emphasis>%G?</emphasis>: show either "G" for Good or "B" for Bad for a signed commit
+<emphasis>%G?</emphasis>: show "G" for a Good signature, "B" for a Bad signature, "U" for a good,
+  untrusted signature and "N" for no signature
 </simpara>
 </listitem>
 <listitem>
 <simpara>
 <emphasis>%GS</emphasis>: show the name of the signer for a signed commit
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%GK</emphasis>: show the key used to sign a signed commit
 </simpara>
 </listitem>
 <listitem>
@@ -1708,7 +1870,8 @@ The title was &gt;&gt;t4119: test autocomputing -p&lt;n&gt; for traditional diff
 </listitem>
 <listitem>
 <simpara>
-<emphasis>%gN</emphasis>: reflog identity name (respecting .mailmap, see <xref linkend="git-shortlog(1)" /> or <xref linkend="git-blame(1)" />)
+<emphasis>%gN</emphasis>: reflog identity name (respecting .mailmap, see
+  <xref linkend="git-shortlog(1)" /> or <xref linkend="git-blame(1)" />)
 </simpara>
 </listitem>
 <listitem>
@@ -1718,7 +1881,8 @@ The title was &gt;&gt;t4119: test autocomputing -p&lt;n&gt; for traditional diff
 </listitem>
 <listitem>
 <simpara>
-<emphasis>%gE</emphasis>: reflog identity email (respecting .mailmap, see <xref linkend="git-shortlog(1)" /> or <xref linkend="git-blame(1)" />)
+<emphasis>%gE</emphasis>: reflog identity email (respecting .mailmap, see
+  <xref linkend="git-shortlog(1)" /> or <xref linkend="git-blame(1)" />)
 </simpara>
 </listitem>
 <listitem>
@@ -1748,7 +1912,12 @@ The title was &gt;&gt;t4119: test autocomputing -p&lt;n&gt; for traditional diff
 </listitem>
 <listitem>
 <simpara>
-<emphasis>%C(&#8230;)</emphasis>: color specification, as described in color.branch.* config option
+<emphasis>%C(&#8230;)</emphasis>: color specification, as described in color.branch.* config option;
+  adding <emphasis>auto,</emphasis> at the beginning will emit color only when colors are
+  enabled for log output (by <emphasis>color.diff</emphasis>, <emphasis>color.ui</emphasis>, or <emphasis>--color</emphasis>, and
+  respecting the <emphasis>auto</emphasis> settings of the former if we are going to a
+  terminal). <emphasis>auto</emphasis> alone (i.e. <emphasis>%C(auto)</emphasis>) will turn on auto coloring
+  on the next placeholders until the color is switched again.
 </simpara>
 </listitem>
 <listitem>
@@ -1777,14 +1946,49 @@ The title was &gt;&gt;t4119: test autocomputing -p&lt;n&gt; for traditional diff
   <xref linkend="git-shortlog(1)" />.
 </simpara>
 </listitem>
+<listitem>
+<simpara>
+<emphasis>%&lt;(&lt;N&gt;[,trunc|ltrunc|mtrunc])</emphasis>: make the next placeholder take at
+  least N columns, padding spaces on the right if necessary.
+  Optionally truncate at the beginning (ltrunc), the middle (mtrunc)
+  or the end (trunc) if the output is longer than N columns.
+  Note that truncating only works correctly with N &gt;= 2.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%&lt;|(&lt;N&gt;)</emphasis>: make the next placeholder take at least until Nth
+  columns, padding spaces on the right if necessary
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%&gt;(&lt;N&gt;)</emphasis>, <emphasis>%&gt;|(&lt;N&gt;)</emphasis>: similar to <emphasis>%&lt;(&lt;N&gt;)</emphasis>, <emphasis>%&lt;|(&lt;N&gt;)</emphasis>
+  respectively, but padding spaces on the left
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%&gt;&gt;(&lt;N&gt;)</emphasis>, <emphasis>%&gt;&gt;|(&lt;N&gt;)</emphasis>: similar to <emphasis>%&gt;(&lt;N&gt;)</emphasis>, <emphasis>%&gt;|(&lt;N&gt;)</emphasis>
+  respectively, except that if the next placeholder takes more spaces
+  than given and there are spaces on its left, use those spaces
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%&gt;&lt;(&lt;N&gt;)</emphasis>, <emphasis>%&gt;&lt;|(&lt;N&gt;)</emphasis>: similar to <emphasis>% &lt;(&lt;N&gt;)</emphasis>, <emphasis>%&lt;|(&lt;N&gt;)</emphasis>
+  respectively, but padding both sides (i.e. the text is centered)
+</simpara>
+</listitem>
 </itemizedlist>
 </listitem>
 </itemizedlist>
 <note><simpara>Some placeholders may depend on other options given to the
 revision traversal engine. For example, the <emphasis>%g*</emphasis> reflog options will
 insert an empty string unless we are traversing reflog entries (e.g., by
-<emphasis>git log -g</emphasis>). The <emphasis>%d</emphasis> placeholder will use the "short" decoration
-format if <emphasis>--decorate</emphasis> was not already provided on the command line.</simpara></note>
+<emphasis>git log -g</emphasis>). The <emphasis>%d</emphasis> and <emphasis>%D</emphasis> placeholders will use the "short"
+decoration format if <emphasis>--decorate</emphasis> was not already provided on the command
+line.</simpara></note>
 <simpara>If you add a <emphasis>+</emphasis> (plus sign) after <emphasis>%</emphasis> of a placeholder, a line-feed
 is inserted immediately before the expansion if and only if the
 placeholder expands to a non-empty string.</simpara>

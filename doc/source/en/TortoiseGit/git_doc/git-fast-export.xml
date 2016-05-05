@@ -40,7 +40,7 @@ into <emphasis>git fast-import</emphasis>.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---signed-tags=(verbatim|warn|strip|abort)
+--signed-tags=(verbatim|warn|warn-strip|strip|abort)
 </term>
 <listitem>
 <simpara>
@@ -49,9 +49,11 @@ into <emphasis>git fast-import</emphasis>.</simpara>
         when excluding revisions) the signatures will not match.
 </simpara>
 <simpara>When asking to <emphasis>abort</emphasis> (which is the default), this program will die
-when encountering a signed tag.  With <emphasis>strip</emphasis>, the tags will be made
-unsigned, with <emphasis>verbatim</emphasis>, they will be silently exported
-and with <emphasis>warn</emphasis>, they will be exported, but you will see a warning.</simpara>
+when encountering a signed tag.  With <emphasis>strip</emphasis>, the tags will silently
+be made unsigned, with <emphasis>warn-strip</emphasis> they will be made unsigned but a
+warning will be displayed, with <emphasis>verbatim</emphasis>, they will be silently
+exported and with <emphasis>warn</emphasis>, they will be exported, but you will see a
+warning.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -102,6 +104,8 @@ produced incorrect results if you gave these options.</simpara>
         incremental runs.  As &lt;file&gt; is only opened and truncated
         at completion, the same path can also be safely given to
         --import-marks.
+        The file will not be written if no new object has been
+        marked/exported.
 </simpara>
 </listitem>
 </varlistentry>
@@ -175,15 +179,38 @@ marks the same across runs.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+--anonymize
+</term>
+<listitem>
+<simpara>
+        Anonymize the contents of the repository while still retaining
+        the shape of the history and stored tree.  See the section on
+        <emphasis>ANONYMIZING</emphasis> below.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--refspec
+</term>
+<listitem>
+<simpara>
+        Apply the specified refspec to each ref exported. Multiple of them can
+        be specified.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 [&lt;git-rev-list-args&gt;&#8230;]
 </term>
 <listitem>
 <simpara>
-       A list of arguments, acceptable to <emphasis>git rev-parse</emphasis> and
-       <emphasis>git rev-list</emphasis>, that specifies the specific objects and references
-       to export.  For example, <emphasis>master~10..master</emphasis> causes the
-       current master reference to be exported along with all objects
-       added since its 10th ancestor commit.
+        A list of arguments, acceptable to <emphasis>git rev-parse</emphasis> and
+        <emphasis>git rev-list</emphasis>, that specifies the specific objects and references
+        to export.  For example, <emphasis>master~10..master</emphasis> causes the
+        current master reference to be exported along with all objects
+        added since its 10th ancestor commit.
 </simpara>
 </listitem>
 </varlistentry>
@@ -204,11 +231,55 @@ UTF-8, it would be a one-to-one mirror.</simpara>
 referenced by that revision range contains the string
 <emphasis>refs/heads/master</emphasis>.</simpara>
 </simplesect>
+<simplesect id="git-fast-export(1)__anonymizing">
+<title>ANONYMIZING</title>
+<simpara>If the <emphasis>--anonymize</emphasis> option is given, git will attempt to remove all
+identifying information from the repository while still retaining enough
+of the original tree and history patterns to reproduce some bugs. The
+goal is that a git bug which is found on a private repository will
+persist in the anonymized repository, and the latter can be shared with
+git developers to help solve the bug.</simpara>
+<simpara>With this option, git will replace all refnames, paths, blob contents,
+commit and tag messages, names, and email addresses in the output with
+anonymized data.  Two instances of the same string will be replaced
+equivalently (e.g., two commits with the same author will have the same
+anonymized author in the output, but bear no resemblance to the original
+author string). The relationship between commits, branches, and tags is
+retained, as well as the commit timestamps (but the commit messages and
+refnames bear no resemblance to the originals). The relative makeup of
+the tree is retained (e.g., if you have a root tree with 10 files and 3
+trees, so will the output), but their names and the contents of the
+files will be replaced.</simpara>
+<simpara>If you think you have found a git bug, you can start by exporting an
+anonymized stream of the whole repository:</simpara>
+<screen>$ git fast-export --anonymize --all &gt;anon-stream</screen>
+<simpara>Then confirm that the bug persists in a repository created from that
+stream (many bugs will not, as they really do depend on the exact
+repository contents):</simpara>
+<screen>$ git init anon-repo
+$ cd anon-repo
+$ git fast-import &lt;../anon-stream
+$ ... test your bug ...</screen>
+<simpara>If the anonymized repository shows the bug, it may be worth sharing
+<emphasis>anon-stream</emphasis> along with a regular bug report. Note that the anonymized
+stream compresses very well, so gzipping it is encouraged. If you want
+to examine the stream to see that it does not contain any private data,
+you can peruse it directly before sending. You may also want to try:</simpara>
+<screen>$ perl -pe 's/\d+/X/g' &lt;anon-stream | sort -u | less</screen>
+<simpara>which shows all of the unique lines (with numbers converted to "X", to
+collapse "User 0", "User 1", etc into "User X"). This produces a much
+smaller output, and it is usually easy to quickly confirm that there is
+no private data in the stream.</simpara>
+</simplesect>
 <simplesect id="git-fast-export(1)__limitations">
 <title>Limitations</title>
 <simpara>Since <emphasis>git fast-import</emphasis> cannot tag trees, you will not be
-able to export the linux-2.6.git repository completely, as it contains
+able to export the linux.git repository completely, as it contains
 a tag referencing a tree instead of a commit.</simpara>
+</simplesect>
+<simplesect id="git-fast-export(1)__see_also">
+<title>SEE ALSO</title>
+<simpara><xref linkend="git-fast-import(1)" /></simpara>
 </simplesect>
 <simplesect id="git-fast-export(1)__git">
 <title>GIT</title>

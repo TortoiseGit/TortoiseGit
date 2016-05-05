@@ -19,7 +19,7 @@
 <simplesect id="git-merge-index(1)__description">
 <title>DESCRIPTION</title>
 <simpara>This looks up the &lt;file&gt;(s) in the index and, if there are any merge
-entries, passes the SHA1 hash for those files as arguments 1, 2, 3 (empty
+entries, passes the SHA-1 hash for those files as arguments 1, 2, 3 (empty
 argument if no file), and &lt;file&gt; as argument 4.  File modes for the three
 files are passed as arguments 5, 6 and 7.</simpara>
 </simplesect>
@@ -75,11 +75,11 @@ files are passed as arguments 5, 6 and 7.</simpara>
 <simpara>If <emphasis>git merge-index</emphasis> is called with multiple &lt;file&gt;s (or -a) then it
 processes them in turn only stopping if merge returns a non-zero exit
 code.</simpara>
-<simpara>Typically this is run with a script calling git's imitation of
+<simpara>Typically this is run with a script calling Git's imitation of
 the <emphasis>merge</emphasis> command from the RCS package.</simpara>
 <simpara>A sample script called <emphasis>git merge-one-file</emphasis> is included in the
 distribution.</simpara>
-<simpara>ALERT ALERT ALERT! The git "merge object order" is different from the
+<simpara>ALERT ALERT ALERT! The Git "merge object order" is different from the
 RCS <emphasis>merge</emphasis> program merge object order. In the above ordering, the
 original is first. But the argument order to the 3-way merge program
 <emphasis>merge</emphasis> is to have the original in the middle. Don't ask me why.</simpara>

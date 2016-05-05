@@ -13,12 +13,12 @@
 <simplesect id="git-repack(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git repack</emphasis> [-a] [-A] [-d] [-f] [-F] [-l] [-n] [-q] [--window=&lt;n&gt;] [--depth=&lt;n&gt;]</literallayout>
+<literallayout><emphasis>git repack</emphasis> [-a] [-A] [-d] [-f] [-F] [-l] [-n] [-q] [-b] [--window=&lt;n&gt;] [--depth=&lt;n&gt;]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-repack(1)__description">
 <title>DESCRIPTION</title>
-<simpara>This script is used to combine all objects that do not currently
+<simpara>This command is used to combine all objects that do not currently
 reside in a "pack", into a pack.  It can also be used to re-organize
 existing packs into a single, more efficient pack.</simpara>
 <simpara>A pack is a collection of objects, individually compressed, with
@@ -190,6 +190,38 @@ other objects in that pack they already have locally.</simpara>
 </simpara>
 </listitem>
 </varlistentry>
+<varlistentry>
+<term>
+-b
+</term>
+<term>
+--write-bitmap-index
+</term>
+<listitem>
+<simpara>
+        Write a reachability bitmap index as part of the repack. This
+        only makes sense when used with <emphasis>-a</emphasis> or <emphasis>-A</emphasis>, as the bitmaps
+        must be able to refer to all reachable objects. This option
+        overrides the setting of <emphasis>pack.writeBitmaps</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--pack-kept-objects
+</term>
+<listitem>
+<simpara>
+        Include objects in <emphasis>.keep</emphasis> files when repacking.  Note that we
+        still do not delete <emphasis>.keep</emphasis> packs after <emphasis>pack-objects</emphasis> finishes.
+        This means that we may duplicate objects, but this makes the
+        option safe to use when there are concurrent pushes or fetches.
+        This option is generally only useful if you are writing bitmaps
+        with <emphasis>-b</emphasis> or <emphasis>pack.writeBitmaps</emphasis>, as it ensures that the
+        bitmapped packfile has the necessary objects.
+</simpara>
+</listitem>
+</varlistentry>
 </variablelist>
 </simplesect>
 <simplesect id="git-repack(1)__configuration">
@@ -198,7 +230,7 @@ other objects in that pack they already have locally.</simpara>
 <emphasis>git pack-objects</emphasis>; this typically results in slightly smaller packs,
 but the generated packs are incompatible with versions of Git older than
 version 1.4.4. If you need to share your repository with such ancient Git
-versions, either directly or via the dumb http or rsync protocol, then you
+versions, either directly or via the dumb http protocol, then you
 need to set the configuration variable <emphasis>repack.UseDeltaBaseOffset</emphasis> to
 "false" and repack. Access from old Git versions over the native protocol
 is unaffected by this option as the conversion is performed on the fly

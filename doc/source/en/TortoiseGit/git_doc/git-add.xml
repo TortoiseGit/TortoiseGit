@@ -13,10 +13,10 @@
 <simplesect id="git-add(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git add</emphasis> [-n] [-v] [--force | -f] [--interactive | -i] [--patch | -p]
-          [--edit | -e] [--all | [--update | -u]] [--intent-to-add | -N]
-          [--refresh] [--ignore-errors] [--ignore-missing] [--]
-          [&lt;filepattern&gt;&#8230;]</literallayout>
+<literallayout><emphasis>git add</emphasis> [--verbose | -v] [--dry-run | -n] [--force | -f] [--interactive | -i] [--patch | -p]
+          [--edit | -e] [--[no-]all | --[no-]ignore-removal | [--update | -u]]
+          [--intent-to-add | -N] [--refresh] [--ignore-errors] [--ignore-missing]
+          [--] [&lt;pathspec&gt;&#8230;]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-add(1)__description">
@@ -29,7 +29,7 @@ only part of the changes made to the working tree files applied, or
 remove paths that do not exist in the working tree anymore.</simpara>
 <simpara>The "index" holds a snapshot of the content of the working tree, and it
 is this snapshot that is taken as the contents of the next commit.  Thus
-after making any changes to the working directory, and before running
+after making any changes to the working tree, and before running
 the commit command, you must use the <emphasis>add</emphasis> command to add any new or
 modified files to the index.</simpara>
 <simpara>This command can be performed multiple times before a commit.  It only
@@ -52,15 +52,21 @@ commit.</simpara>
 <variablelist>
 <varlistentry>
 <term>
-&lt;filepattern&gt;&#8230;
+&lt;pathspec&gt;&#8230;
 </term>
 <listitem>
 <simpara>
         Files to add content from.  Fileglobs (e.g. <emphasis>*.c</emphasis>) can
         be given to add all matching files.  Also a
         leading directory name (e.g. <emphasis>dir</emphasis> to add <emphasis>dir/file1</emphasis>
-        and <emphasis>dir/file2</emphasis>) can be given to add all files in the
-        directory, recursively.
+        and <emphasis>dir/file2</emphasis>) can be given to update the index to
+        match the current state of the directory as a whole (e.g.
+        specifying <emphasis>dir</emphasis> will record not just a file <emphasis>dir/file1</emphasis>
+        modified in the working tree, a file <emphasis>dir/file2</emphasis> added to
+        the working tree, but also a file <emphasis>dir/file3</emphasis> removed from
+        the working tree.  Note that older versions of Git used
+        to ignore removed files; use <emphasis>--no-all</emphasis> option if you want
+        to add modified or new files but ignore removed ones.
 </simpara>
 </listitem>
 </varlistentry>
@@ -141,7 +147,10 @@ See Interactive mode for details.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--e, --edit
+-e
+</term>
+<term>
+--edit
 </term>
 <listitem>
 <simpara>
@@ -165,16 +174,14 @@ apply to the index. See EDITING PATCHES below.</simpara>
 </term>
 <listitem>
 <simpara>
-        Only match &lt;filepattern&gt; against already tracked files in
-        the index rather than the working tree. That means that it
-        will never stage new files, but that it will stage modified
-        new contents of tracked files and that it will remove files
-        from the index if the corresponding files in the working tree
-        have been removed.
+        Update the index just where it already has an entry matching
+        &lt;pathspec&gt;.  This removes as well as modifies index entries to
+        match the working tree, but adds no new files.
 </simpara>
-<simpara>If no &lt;filepattern&gt; is given, default to "."; in other words,
-update all tracked files in the current directory and its
-subdirectories.</simpara>
+<simpara>If no &lt;pathspec&gt; is given when <emphasis>-u</emphasis> option is used, all
+tracked files in the entire working tree are updated (old versions
+of Git used to limit the update to the current directory and its
+subdirectories).</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -184,13 +191,39 @@ subdirectories.</simpara>
 <term>
 --all
 </term>
+<term>
+--no-ignore-removal
+</term>
 <listitem>
 <simpara>
-        Like <emphasis>-u</emphasis>, but match &lt;filepattern&gt; against files in the
-        working tree in addition to the index. That means that it
-        will find new files as well as staging modified content and
-        removing files that are no longer in the working tree.
+        Update the index not only where the working tree has a file
+        matching &lt;pathspec&gt; but also where the index already has an
+        entry.  This adds, modifies, and removes index entries to
+        match the working tree.
 </simpara>
+<simpara>If no &lt;pathspec&gt; is given when <emphasis>-A</emphasis> option is used, all
+files in the entire working tree are updated (old versions
+of Git used to limit the update to the current directory and its
+subdirectories).</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--no-all
+</term>
+<term>
+--ignore-removal
+</term>
+<listitem>
+<simpara>
+        Update the index by adding new files that are unknown to the
+        index and files modified in the working tree, but ignore
+        files that have been removed from the working tree.  This
+        option is a no-op when no &lt;pathspec&gt; is used.
+</simpara>
+<simpara>This option is primarily to help users who are used to older
+versions of Git, whose "git add &lt;pathspec&gt;&#8230;" was a synonym
+for "git add --no-all &lt;pathspec&gt;&#8230;", i.e. ignored removed files.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -264,7 +297,7 @@ subdirectories.</simpara>
 </simplesect>
 <simplesect id="git-add(1)__configuration">
 <title>Configuration</title>
-<simpara>The optional configuration variable <emphasis>core.excludesfile</emphasis> indicates a path to a
+<simpara>The optional configuration variable <emphasis>core.excludesFile</emphasis> indicates a path to a
 file containing patterns of file names to exclude from git-add, similar to
 $GIT_DIR/info/exclude.  Patterns in the exclude file are used in addition to
 those in info/exclude.  See <xref linkend="gitignore(5)" />.</simpara>
@@ -399,9 +432,9 @@ patch
 </simpara>
 <literallayout class="monospaced">y - stage this hunk
 n - do not stage this hunk
-q - quit; do not stage this hunk nor any of the remaining ones
+q - quit; do not stage this hunk or any of the remaining ones
 a - stage this hunk and all later hunks in the file
-d - do not stage this hunk nor any of the later hunks in the file
+d - do not stage this hunk or any of the later hunks in the file
 g - select a hunk to go to
 / - search for a hunk matching the given regex
 j - leave this hunk undecided, see next undecided hunk
@@ -414,7 +447,7 @@ e - manually edit the current hunk
 <simpara>After deciding the fate for all hunks, if there is any hunk
 that was chosen, the index is updated with the selected hunks.</simpara>
 <simpara>You can omit having to type return here, by setting the configuration
-variable <emphasis>interactive.singlekey</emphasis> to <emphasis>true</emphasis>.</simpara>
+variable <emphasis>interactive.singleKey</emphasis> to <emphasis>true</emphasis>.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>

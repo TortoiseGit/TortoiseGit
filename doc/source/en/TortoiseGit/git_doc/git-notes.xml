@@ -14,12 +14,12 @@
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git notes</emphasis> [list [&lt;object&gt;]]
-<emphasis>git notes</emphasis> add [-f] [-F &lt;file&gt; | -m &lt;msg&gt; | (-c | -C) &lt;object&gt;] [&lt;object&gt;]
+<emphasis>git notes</emphasis> add [-f] [--allow-empty] [-F &lt;file&gt; | -m &lt;msg&gt; | (-c | -C) &lt;object&gt;] [&lt;object&gt;]
 <emphasis>git notes</emphasis> copy [-f] ( --stdin | &lt;from-object&gt; &lt;to-object&gt; )
-<emphasis>git notes</emphasis> append [-F &lt;file&gt; | -m &lt;msg&gt; | (-c | -C) &lt;object&gt;] [&lt;object&gt;]
-<emphasis>git notes</emphasis> edit [&lt;object&gt;]
+<emphasis>git notes</emphasis> append [--allow-empty] [-F &lt;file&gt; | -m &lt;msg&gt; | (-c | -C) &lt;object&gt;] [&lt;object&gt;]
+<emphasis>git notes</emphasis> edit [--allow-empty] [&lt;object&gt;]
 <emphasis>git notes</emphasis> show [&lt;object&gt;]
-<emphasis>git notes</emphasis> merge [-v | -q] [-s &lt;strategy&gt; ] &lt;notes_ref&gt;
+<emphasis>git notes</emphasis> merge [-v | -q] [-s &lt;strategy&gt; ] &lt;notes-ref&gt;
 <emphasis>git notes</emphasis> merge --commit [-v | -q]
 <emphasis>git notes</emphasis> merge --abort [-v | -q]
 <emphasis>git notes</emphasis> remove [--ignore-missing] [--stdin] [&lt;object&gt;&#8230;]
@@ -142,7 +142,7 @@ merge
         any) into the current notes ref (called "local").
 </simpara>
 <simpara>If conflicts arise and a strategy for automatically resolving
-conflicting notes (see the -s/--strategy option) is not given,
+conflicting notes (see the "NOTES MERGE STRATEGIES" section) is not given,
 the "manual" resolver is used. This resolver checks out the
 conflicting notes in a special worktree (<emphasis>.git/NOTES_MERGE_WORKTREE</emphasis>),
 and instructs the user to manually resolve the conflicts there.
@@ -268,13 +268,26 @@ get-ref
 </varlistentry>
 <varlistentry>
 <term>
+--allow-empty
+</term>
+<listitem>
+<simpara>
+        Allow an empty note object to be stored. The default behavior is
+        to automatically remove empty notes.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --ref &lt;ref&gt;
 </term>
 <listitem>
 <simpara>
         Manipulate the notes tree in &lt;ref&gt;.  This overrides
         <emphasis>GIT_NOTES_REF</emphasis> and the "core.notesRef" configuration.  The ref
-        is taken to be in <emphasis>refs/notes/</emphasis> if it is not qualified.
+        specifies the full refname when it begins with <emphasis>refs/notes/</emphasis>; when it
+        begins with <emphasis>notes/</emphasis>, <emphasis>refs/</emphasis> and otherwise <emphasis>refs/notes/</emphasis> is prefixed
+        to form a full name of the ref.
 </simpara>
 </listitem>
 </varlistentry>
@@ -327,6 +340,7 @@ get-ref
         When merging notes, resolve notes conflicts using the given
         strategy. The following strategies are recognized: "manual"
         (default), "ours", "theirs", "union" and "cat_sort_uniq".
+        This option overrides the "notes.mergeStrategy" configuration setting.
         See the "NOTES MERGE STRATEGIES" section below for more
         information on each notes merge strategy.
 </simpara>
@@ -420,6 +434,8 @@ conflicts in that work tree.
 When done, the user can either finalize the merge with
 <emphasis>git notes merge --commit</emphasis>, or abort the merge with
 <emphasis>git notes merge --abort</emphasis>.</simpara>
+<simpara>Users may select an automated merge strategy from among the following using
+either -s/--strategy option or configuring notes.mergeStrategy accordingly:</simpara>
 <simpara>"ours" automatically resolves conflicting notes in favor of the local
 version (i.e. the current notes ref).</simpara>
 <simpara>"theirs" automatically resolves notes conflicts in favor of the remote
@@ -453,7 +469,7 @@ Notes:
 arbitrary files using <emphasis>git hash-object</emphasis>:</simpara>
 <screen>$ cc *.c
 $ blob=$(git hash-object -w a.out)
-$ git notes --ref=built add -C "$blob" HEAD</screen>
+$ git notes --ref=built add --allow-empty -C "$blob" HEAD</screen>
 <simpara>(You cannot simply use <emphasis>git notes --ref=built add -F a.out HEAD</emphasis>
 because that is not binary-safe.)
 Of course, it doesn't make much sense to display non-text-format notes
@@ -473,6 +489,33 @@ core.notesRef
         <emphasis>refs/notes/commits</emphasis>.  Must be an unabbreviated ref name.
         This setting can be overridden through the environment and
         command line.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+notes.mergeStrategy
+</term>
+<listitem>
+<simpara>
+        Which merge strategy to choose by default when resolving notes
+        conflicts.  Must be one of <emphasis>manual</emphasis>, <emphasis>ours</emphasis>, <emphasis>theirs</emphasis>, <emphasis>union</emphasis>, or
+        <emphasis>cat_sort_uniq</emphasis>.  Defaults to <emphasis>manual</emphasis>.  See "NOTES MERGE STRATEGIES"
+        section above for more information on each strategy.
+</simpara>
+<simpara>This setting can be overridden by passing the <emphasis>--strategy</emphasis> option.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+notes.&lt;name&gt;.mergeStrategy
+</term>
+<listitem>
+<simpara>
+        Which merge strategy to choose when doing a notes merge into
+        refs/notes/&lt;name&gt;.  This overrides the more general
+        "notes.mergeStrategy".  See the "NOTES MERGE STRATEGIES" section above
+        for more information on each available strategy.
 </simpara>
 </listitem>
 </varlistentry>
@@ -515,7 +558,8 @@ notes.rewriteMode
 <simpara>
         When copying notes during a rewrite, what to do if the target
         commit already has a note.  Must be one of <emphasis>overwrite</emphasis>,
-        <emphasis>concatenate</emphasis>, and <emphasis>ignore</emphasis>.  Defaults to <emphasis>concatenate</emphasis>.
+        <emphasis>concatenate</emphasis>, <emphasis>cat_sort_uniq</emphasis>, or <emphasis>ignore</emphasis>.  Defaults to
+        <emphasis>concatenate</emphasis>.
 </simpara>
 <simpara>This setting can be overridden with the <emphasis>GIT_NOTES_REWRITE_MODE</emphasis>
 environment variable.</simpara>
@@ -577,7 +621,7 @@ does not match any refs is silently ignored.</simpara>
 <simpara>
         When copying notes during a rewrite, what to do if the target
         commit already has a note.
-        Must be one of <emphasis>overwrite</emphasis>, <emphasis>concatenate</emphasis>, and <emphasis>ignore</emphasis>.
+        Must be one of <emphasis>overwrite</emphasis>, <emphasis>concatenate</emphasis>, <emphasis>cat_sort_uniq</emphasis>, or <emphasis>ignore</emphasis>.
         This overrides the <emphasis>core.rewriteMode</emphasis> setting.
 </simpara>
 </listitem>
@@ -597,15 +641,6 @@ on the <emphasis>notes.rewrite.&lt;command&gt;</emphasis> and <emphasis>notes.re
 </listitem>
 </varlistentry>
 </variablelist>
-</simplesect>
-<simplesect id="git-notes(1)__author">
-<title>Author</title>
-<simpara>Written by Johannes Schindelin &lt;<ulink url="mailto:johannes.schindelin@gmx.de">johannes.schindelin@gmx.de</ulink>&gt; and
-Johan Herland &lt;<ulink url="mailto:johan@herland.net">johan@herland.net</ulink>&gt;</simpara>
-</simplesect>
-<simplesect id="git-notes(1)__documentation">
-<title>Documentation</title>
-<simpara>Documentation by Johannes Schindelin and Johan Herland</simpara>
 </simplesect>
 <simplesect id="git-notes(1)__git">
 <title>GIT</title>

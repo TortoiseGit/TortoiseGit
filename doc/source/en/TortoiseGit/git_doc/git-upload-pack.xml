@@ -34,7 +34,7 @@ repository.  For push operations, see <emphasis>git send-pack</emphasis>.</simpa
 </term>
 <listitem>
 <simpara>
-        Do not try &lt;directory&gt;/.git/ if &lt;directory&gt; is no git directory.
+        Do not try &lt;directory&gt;/.git/ if &lt;directory&gt; is no Git directory.
 </simpara>
 </listitem>
 </varlistentry>

@@ -8,7 +8,7 @@
 </indexterm>
 <simplesect id="gittutorial-2(7)__name">
 <title>NAME</title>
-<simpara>gittutorial-2 - A tutorial introduction to git: part two</simpara>
+<simpara>gittutorial-2 - A tutorial introduction to Git: part two</simpara>
 </simplesect>
 <simplesect id="gittutorial-2(7)__synopsis">
 <title>SYNOPSIS</title>
@@ -20,12 +20,12 @@
 <title>DESCRIPTION</title>
 <simpara>You should work through <xref linkend="gittutorial(7)" /> before reading this tutorial.</simpara>
 <simpara>The goal of this tutorial is to introduce two fundamental pieces of
-git's architecture--the object database and the index file--and to
+Git's architecture--the object database and the index file--and to
 provide the reader with everything necessary to understand the rest
-of the git documentation.</simpara>
+of the Git documentation.</simpara>
 </simplesect>
 <simplesect id="gittutorial-2(7)__the_git_object_database">
-<title>The git object database</title>
+<title>The Git object database</title>
 <simpara>Let's start a new project and create a small amount of history:</simpara>
 <screen>$ mkdir test-project
 $ cd test-project
@@ -41,22 +41,22 @@ $ echo 'hello world!' &gt;file.txt
 $ git commit -a -m "add emphasis"
 [master c4d59f3] add emphasis
  1 file changed, 1 insertion(+), 1 deletion(-)</screen>
-<simpara>What are the 7 digits of hex that git responded to the commit with?</simpara>
+<simpara>What are the 7 digits of hex that Git responded to the commit with?</simpara>
 <simpara>We saw in part one of the tutorial that commits have names like this.
-It turns out that every object in the git history is stored under
-a 40-digit hex name.  That name is the SHA1 hash of the object's
-contents; among other things, this ensures that git will never store
-the same data twice (since identical data is given an identical SHA1
-name), and that the contents of a git object will never change (since
+It turns out that every object in the Git history is stored under
+a 40-digit hex name.  That name is the SHA-1 hash of the object's
+contents; among other things, this ensures that Git will never store
+the same data twice (since identical data is given an identical SHA-1
+name), and that the contents of a Git object will never change (since
 that would change the object's name as well). The 7 char hex strings
 here are simply the abbreviation of such 40 character long strings.
 Abbreviations can be used everywhere where the 40 character strings
 can be used, so long as they are unambiguous.</simpara>
 <simpara>It is expected that the content of the commit object you created while
-following the example above generates a different SHA1 hash than
+following the example above generates a different SHA-1 hash than
 the one shown above because the commit object records the time when
 it was created and the name of the person performing the commit.</simpara>
-<simpara>We can ask git about this particular object with the <emphasis>cat-file</emphasis>
+<simpara>We can ask Git about this particular object with the <emphasis>cat-file</emphasis>
 command. Don't copy the 40 hex digits from this example but use those
 from your own version. Note that you can shorten it to only a few
 characters to save yourself typing all 40 hex digits:</simpara>
@@ -72,20 +72,20 @@ initial commit</screen>
 a file.  In addition, a tree can also refer to other tree objects,
 thus creating a directory hierarchy.  You can examine the contents of
 any tree using ls-tree (remember that a long enough initial portion
-of the SHA1 will also work):</simpara>
+of the SHA-1 will also work):</simpara>
 <screen>$ git ls-tree 92b8b694
 100644 blob 3b18e512dba79e4c8300dd08aeb37f8e728b8dad    file.txt</screen>
-<simpara>Thus we see that this tree has one file in it.  The SHA1 hash is a
+<simpara>Thus we see that this tree has one file in it.  The SHA-1 hash is a
 reference to that file's data:</simpara>
 <screen>$ git cat-file -t 3b18e512
 blob</screen>
 <simpara>A "blob" is just file data, which we can also examine with cat-file:</simpara>
 <screen>$ git cat-file blob 3b18e512
 hello world</screen>
-<simpara>Note that this is the old file data; so the object that git named in
+<simpara>Note that this is the old file data; so the object that Git named in
 its response to the initial tree was a tree with a snapshot of the
 directory state that was recorded by the first commit.</simpara>
-<simpara>All of these objects are stored under their SHA1 names inside the git
+<simpara>All of these objects are stored under their SHA-1 names inside the Git
 directory:</simpara>
 <screen>$ find .git/objects/
 .git/objects/
@@ -112,7 +112,7 @@ from .git/HEAD:</simpara>
 ref: refs/heads/master</screen>
 <simpara>As you can see, this tells us which branch we're currently on, and it
 tells us this by naming a file under the .git directory, which itself
-contains a SHA1 name referring to a commit object, which we can
+contains a SHA-1 name referring to a commit object, which we can
 examine with cat-file:</simpara>
 <screen>$ cat .git/refs/heads/master
 c4d59f390b9cfd4318117afde11d601c1085f241
@@ -146,7 +146,7 @@ branches.</simpara>
 <simpara>Besides blobs, trees, and commits, the only remaining type of object
 is a "tag", which we won't discuss here; refer to <xref linkend="git-tag(1)" />
 for details.</simpara>
-<simpara>So now we know how git uses the object database to represent a
+<simpara>So now we know how Git uses the object database to represent a
 project's history:</simpara>
 <itemizedlist>
 <listitem>
@@ -183,7 +183,7 @@ The name of the current branch is stored in .git/HEAD.
 </itemizedlist>
 <simpara>Note, by the way, that lots of commands take a tree as an argument.
 But as we can see above, a tree can be referred to in many different
-ways--by the SHA1 name for that tree, by the name of a commit that
+ways--by the SHA-1 name for that tree, by the name of a commit that
 refers to the tree, by the name of a branch whose head refers to that
 tree, etc.--and most such commands can accept any of these names.</simpara>
 <simpara>In command synopses, the word "tree-ish" is sometimes used to
@@ -296,17 +296,17 @@ goodbye, world</screen>
 <simpara>The "status" command is a useful way to get a quick summary of the
 situation:</simpara>
 <screen>$ git status
-# On branch master
-# Changes to be committed:
-#   (use "git reset HEAD &lt;file&gt;..." to unstage)
-#
-#       new file: closing.txt
-#
-# Changes not staged for commit:
-#   (use "git add &lt;file&gt;..." to update what will be committed)
-#
-#       modified: file.txt
-#</screen>
+On branch master
+Changes to be committed:
+  (use "git reset HEAD &lt;file&gt;..." to unstage)
+
+        new file:   closing.txt
+
+Changes not staged for commit:
+  (use "git add &lt;file&gt;..." to update what will be committed)
+  (use "git checkout -- &lt;file&gt;..." to discard changes in working directory)
+
+        modified:   file.txt</screen>
 <simpara>Since the current state of closing.txt is cached in the index file,
 it is listed as "Changes to be committed".  Since file.txt has
 changes in the working directory that aren't reflected in the index,
@@ -326,17 +326,17 @@ pages for details.</simpara>
 <title>What next?</title>
 <simpara>At this point you should know everything necessary to read the man
 pages for any of the git commands; one good place to start would be
-with the commands mentioned in link:everyday.html[Everyday git].  You
+with the commands mentioned in <xref linkend="giteveryday(7)" />.  You
 should be able to find any unknown jargon in <xref linkend="gitglossary(7)" />.</simpara>
 <simpara>The link:user-manual.html[Git User's Manual] provides a more
-comprehensive introduction to git.</simpara>
+comprehensive introduction to Git.</simpara>
 <simpara><xref linkend="gitcvs-migration(7)" /> explains how to
-import a CVS repository into git, and shows how to use git in a
+import a CVS repository into Git, and shows how to use Git in a
 CVS-like way.</simpara>
-<simpara>For some interesting examples of git use, see the
+<simpara>For some interesting examples of Git use, see the
 link:howto-index.html[howtos].</simpara>
-<simpara>For git developers, <xref linkend="gitcore-tutorial(7)" /> goes
-into detail on the lower-level git mechanisms involved in, for
+<simpara>For Git developers, <xref linkend="gitcore-tutorial(7)" /> goes
+into detail on the lower-level Git mechanisms involved in, for
 example, creating a new commit.</simpara>
 </simplesect>
 <simplesect id="gittutorial-2(7)__see_also">
@@ -346,7 +346,7 @@ example, creating a new commit.</simpara>
 <xref linkend="gitcore-tutorial(7)" />,
 <xref linkend="gitglossary(7)" />,
 <xref linkend="git-help(1)" />,
-link:everyday.html[Everyday git],
+<xref linkend="giteveryday(7)" />,
 link:user-manual.html[The Git User's Manual]</simpara>
 </simplesect>
 <simplesect id="gittutorial-2(7)__git">

@@ -13,13 +13,15 @@
 <simplesect id="git-stripspace(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git stripspace</emphasis> [-s | --strip-comments] &lt; input</literallayout>
+<literallayout><emphasis>git stripspace</emphasis> [-s | --strip-comments]
+<emphasis>git stripspace</emphasis> [-c | --comment-lines]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-stripspace(1)__description">
 <title>DESCRIPTION</title>
-<simpara>Clean the input in the manner used by <emphasis>git</emphasis> for text such as commit
-messages, notes, tags and branch descriptions.</simpara>
+<simpara>Read text, such as commit messages, notes, tags and branch
+descriptions, from the standard input and clean it in the manner
+used by Git.</simpara>
 <simpara>With no arguments, this will:</simpara>
 <itemizedlist>
 <listitem>
@@ -61,7 +63,22 @@ the repository.</simpara>
 </term>
 <listitem>
 <simpara>
-        Skip and remove all lines starting with <emphasis>#</emphasis>.
+        Skip and remove all lines starting with comment character (default <emphasis>#</emphasis>).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-c
+</term>
+<term>
+--comment-lines
+</term>
+<listitem>
+<simpara>
+        Prepend comment character and blank to each line. Lines will automatically
+        be terminated with a newline. On empty lines, only the comment character
+        will be prepended.
 </simpara>
 </listitem>
 </varlistentry>

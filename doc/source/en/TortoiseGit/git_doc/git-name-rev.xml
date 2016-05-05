@@ -14,7 +14,7 @@
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git name-rev</emphasis> [--tags] [--refs=&lt;pattern&gt;]
-               ( --all | --stdin | &lt;committish&gt;&#8230; )</literallayout>
+               ( --all | --stdin | &lt;commit-ish&gt;&#8230; )</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-name-rev(1)__description">
@@ -41,7 +41,8 @@ format parsable by <emphasis>git rev-parse</emphasis>.</simpara>
 </term>
 <listitem>
 <simpara>
-        Only use refs whose names match a given shell pattern.
+        Only use refs whose names match a given shell pattern.  The pattern
+        can be one of branch name, tag name or fully qualified ref name.
 </simpara>
 </listitem>
 </varlistentry>
@@ -61,8 +62,10 @@ format parsable by <emphasis>git rev-parse</emphasis>.</simpara>
 </term>
 <listitem>
 <simpara>
-        Read from stdin, append "(&lt;rev_name&gt;)" to all sha1's of nameable
-        commits, and pass to stdout
+        Transform stdin by substituting all the 40-character SHA-1
+        hexes (say $hex) with "$hex ($rev_name)".  When used with
+        --name-only, substitute with "$rev_name", omitting $hex
+        altogether.  Intended for the scripter's use.
 </simpara>
 </listitem>
 </varlistentry>

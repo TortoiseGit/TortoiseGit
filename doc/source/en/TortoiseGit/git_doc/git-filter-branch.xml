@@ -24,7 +24,7 @@
 </simplesect>
 <simplesect id="git-filter-branch(1)__description">
 <title>DESCRIPTION</title>
-<simpara>Lets you rewrite git revision history by rewriting the branches mentioned
+<simpara>Lets you rewrite Git revision history by rewriting the branches mentioned
 in the &lt;rev-list options&gt;, applying custom filters on each revision.
 Those filters can modify each tree (e.g. removing a file or running
 a perl rewrite on all files) or information about each commit.
@@ -34,7 +34,7 @@ information) will be preserved.</simpara>
 command line (e.g. if you pass <emphasis>a..b</emphasis>, only <emphasis>b</emphasis> will be rewritten).
 If you specify no filters, the commits will be recommitted without any
 changes, which would normally have no effect.  Nevertheless, this may be
-useful in the future for compensating for some git bugs or such,
+useful in the future for compensating for some Git bugs or such,
 therefore such a usage is permitted.</simpara>
 <simpara><emphasis role="strong">NOTE</emphasis>: This command honors <emphasis>.git/info/grafts</emphasis> file and refs in
 the <emphasis>refs/replace/</emphasis> namespace.
@@ -62,9 +62,11 @@ argument is always evaluated in the shell context using the <emphasis>eval</emph
 Prior to that, the $GIT_COMMIT environment variable will be set to contain
 the id of the commit being rewritten.  Also, GIT_AUTHOR_NAME,
 GIT_AUTHOR_EMAIL, GIT_AUTHOR_DATE, GIT_COMMITTER_NAME, GIT_COMMITTER_EMAIL,
-and GIT_COMMITTER_DATE are set according to the current commit.  The values
-of these variables after the filters have run, are used for the new commit.
-If any evaluation of &lt;command&gt; returns a non-zero exit status, the whole
+and GIT_COMMITTER_DATE are taken from the current commit and exported to
+the environment, in order to affect the author and committer identities of
+the replacement commit created by <xref linkend="git-commit-tree(1)" /> after the
+filters have run.</simpara>
+<simpara>If any evaluation of &lt;command&gt; returns a non-zero exit status, the whole
 operation will be aborted.</simpara>
 <simpara>A <emphasis>map</emphasis> function is available that takes an "original sha1 id" argument
 and outputs a "rewritten sha1 id" if the commit has been already
@@ -366,6 +368,22 @@ of which is a merge), use this command:</simpara>
         cat &amp;&amp;
         echo "Acked-by: Bugs Bunny &lt;bunny@bugzilla.org&gt;"
 ' HEAD~10..HEAD</screen>
+<simpara>The <emphasis>--env-filter</emphasis> option can be used to modify committer and/or author
+identity.  For example, if you found out that your commits have the wrong
+identity due to a misconfigured user.email, you can make a correction,
+before publishing the project, like this:</simpara>
+<screen>git filter-branch --env-filter '
+        if test "$GIT_AUTHOR_EMAIL" = "root@localhost"
+        then
+                GIT_AUTHOR_EMAIL=john@example.com
+                export GIT_AUTHOR_EMAIL
+        fi
+        if test "$GIT_COMMITTER_EMAIL" = "root@localhost"
+        then
+                GIT_COMMITTER_EMAIL=john@example.com
+                export GIT_COMMITTER_EMAIL
+        fi
+' -- --all</screen>
 <simpara>To restrict rewriting to only part of the history, specify a revision
 range in addition to the new branch name.  The new branch name will
 point to the top-most revision that a <emphasis>git rev-list</emphasis> of this range
@@ -388,11 +406,11 @@ git filter-branch ... D..H --not C</screen>
 </simplesect>
 <simplesect id="git-filter-branch(1)__checklist_for_shrinking_a_repository">
 <title>Checklist for Shrinking a Repository</title>
-<simpara>git-filter-branch is often used to get rid of a subset of files,
+<simpara>git-filter-branch can be used to get rid of a subset of files,
 usually with some combination of <emphasis>--index-filter</emphasis> and
 <emphasis>--subdirectory-filter</emphasis>.  People expect the resulting repository to
 be smaller than the original, but you need a few more steps to
-actually make it smaller, because git tries hard not to lose your
+actually make it smaller, because Git tries hard not to lose your
 objects until you tell it to.  First make sure that:</simpara>
 <itemizedlist>
 <listitem>
@@ -442,6 +460,47 @@ Expire all reflogs with <emphasis>git reflog expire --expire=now --all</emphasis
 Garbage collect all unreferenced objects with <emphasis>git gc --prune=now</emphasis>
   (or if your git-gc is not new enough to support arguments to
   <emphasis>--prune</emphasis>, use <emphasis>git repack -ad; git prune</emphasis> instead).
+</simpara>
+</listitem>
+</itemizedlist>
+</simplesect>
+<simplesect id="git-filter-branch(1)__notes">
+<title>Notes</title>
+<simpara>git-filter-branch allows you to make complex shell-scripted rewrites
+of your Git history, but you probably don't need this flexibility if
+you're simply <emphasis>removing unwanted data</emphasis> like large files or passwords.
+For those operations you may want to consider
+<ulink url="http://rtyley.github.io/bfg-repo-cleaner/[The">http://rtyley.github.io/bfg-repo-cleaner/[The</ulink> BFG Repo-Cleaner],
+a JVM-based alternative to git-filter-branch, typically at least
+10-50x faster for those use-cases, and with quite different
+characteristics:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+Any particular version of a file is cleaned exactly <emphasis>once</emphasis>. The BFG,
+  unlike git-filter-branch, does not give you the opportunity to
+  handle a file differently based on where or when it was committed
+  within your history. This constraint gives the core performance
+  benefit of The BFG, and is well-suited to the task of cleansing bad
+  data - you don't care <emphasis>where</emphasis> the bad data is, you just want it
+  <emphasis>gone</emphasis>.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+By default The BFG takes full advantage of multi-core machines,
+  cleansing commit file-trees in parallel. git-filter-branch cleans
+  commits sequentially (i.e. in a single-threaded manner), though it
+  <emphasis>is</emphasis> possible to write filters that include their own parallelism,
+  in the scripts executed against each commit.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+The <ulink url="http://rtyley.github.io/bfg-repo-cleaner/#examples[command">http://rtyley.github.io/bfg-repo-cleaner/#examples[command</ulink> options]
+  are much more restrictive than git-filter branch, and dedicated just
+  to the tasks of removing unwanted data- e.g:
+  <emphasis>--strip-blobs-bigger-than 1M</emphasis>.
 </simpara>
 </listitem>
 </itemizedlist>

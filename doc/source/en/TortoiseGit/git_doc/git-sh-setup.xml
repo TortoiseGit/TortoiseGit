@@ -8,7 +8,7 @@
 </indexterm>
 <simplesect id="git-sh-setup(1)__name">
 <title>NAME</title>
-<simpara>git-sh-setup - Common git shell script setup code</simpara>
+<simpara>git-sh-setup - Common Git shell script setup code</simpara>
 </simplesect>
 <simplesect id="git-sh-setup(1)__synopsis">
 <title>SYNOPSIS</title>
@@ -23,7 +23,7 @@ This documentation is meant for people who are studying the
 Porcelain-ish scripts and/or are writing new ones.</simpara>
 <simpara>The <emphasis>git sh-setup</emphasis> scriptlet is designed to be sourced (using
 <emphasis>.</emphasis>) by other shell scripts to set up some variables pointing at
-the normal git directories and a few helper shell functions.</simpara>
+the normal Git directories and a few helper shell functions.</simpara>
 <simpara>Before sourcing it, your script should set up a few variables;
 <emphasis>USAGE</emphasis> (and <emphasis>LONG_USAGE</emphasis>, if any) is used to define message
 given by <emphasis>usage()</emphasis> shell function.  <emphasis>SUBDIRECTORY_OK</emphasis> can be set
@@ -62,9 +62,11 @@ set_reflog_action
 </term>
 <listitem>
 <simpara>
-        set the message that will be recorded to describe the
-        end-user action in the reflog, when the script updates a
-        ref.
+        Set GIT_REFLOG_ACTION environment to a given string (typically
+        the name of the program) unless it is already set.  Whenever
+        the script runs a <emphasis>git</emphasis> command that updates refs, a reflog
+        entry is created using the value of this string to leave the
+        record of what command updated the ref.
 </simpara>
 </listitem>
 </varlistentry>
@@ -148,6 +150,19 @@ get_author_ident_from_commit
 <simpara>
         outputs code for use with eval to set the GIT_AUTHOR_NAME,
         GIT_AUTHOR_EMAIL and GIT_AUTHOR_DATE variables for a given commit.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+create_virtual_base
+</term>
+<listitem>
+<simpara>
+        modifies the first file so only lines in common with the
+        second file remain. If there is insufficient common material,
+        then the first file is left empty. The result is suitable
+        as a virtual base input for a 3-way merge.
 </simpara>
 </listitem>
 </varlistentry>

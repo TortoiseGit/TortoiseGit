@@ -61,6 +61,139 @@ each refname are the object names for the refname before and after
 the update.  Refs to be created will have sha1-old equal to 0{40},
 while refs to be deleted will have sha1-new equal to 0{40}, otherwise
 sha1-old and sha1-new should be valid objects in the repository.</simpara>
+<simpara>When accepting a signed push (see <xref linkend="git-push(1)" />), the signed
+push certificate is stored in a blob and an environment variable
+<emphasis>GIT_PUSH_CERT</emphasis> can be consulted for its object name.  See the
+description of <emphasis>post-receive</emphasis> hook for an example.  In addition, the
+certificate is verified using GPG and the result is exported with
+the following environment variables:</simpara>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>GIT_PUSH_CERT_SIGNER</emphasis>
+</term>
+<listitem>
+<simpara>
+        The name and the e-mail address of the owner of the key that
+        signed the push certificate.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>GIT_PUSH_CERT_KEY</emphasis>
+</term>
+<listitem>
+<simpara>
+        The GPG key ID of the key that signed the push certificate.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>GIT_PUSH_CERT_STATUS</emphasis>
+</term>
+<listitem>
+<simpara>
+        The status of GPG verification of the push certificate,
+        using the same mnemonic as used in <emphasis>%G?</emphasis> format of <emphasis>git log</emphasis>
+        family of commands (see <xref linkend="git-log(1)" />).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>GIT_PUSH_CERT_NONCE</emphasis>
+</term>
+<listitem>
+<simpara>
+        The nonce string the process asked the signer to include
+        in the push certificate.  If this does not match the value
+        recorded on the "nonce" header in the push certificate, it
+        may indicate that the certificate is a valid one that is
+        being replayed from a separate "git push" session.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>GIT_PUSH_CERT_NONCE_STATUS</emphasis>
+</term>
+<listitem>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>UNSOLICITED</emphasis>
+</term>
+<listitem>
+<simpara>
+        "git push --signed" sent a nonce when we did not ask it to
+        send one.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>MISSING</emphasis>
+</term>
+<listitem>
+<simpara>
+        "git push --signed" did not send any nonce header.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>BAD</emphasis>
+</term>
+<listitem>
+<simpara>
+        "git push --signed" sent a bogus nonce.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>OK</emphasis>
+</term>
+<listitem>
+<simpara>
+        "git push --signed" sent the nonce we asked it to send.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>SLOP</emphasis>
+</term>
+<listitem>
+<simpara>
+        "git push --signed" sent a nonce different from what we
+        asked it to send now, but in a previous session.  See
+        <emphasis>GIT_PUSH_CERT_NONCE_SLOP</emphasis> environment variable.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>GIT_PUSH_CERT_NONCE_SLOP</emphasis>
+</term>
+<listitem>
+<simpara>
+        "git push --signed" sent a nonce different from what we
+        asked it to send now, but in a different session whose
+        starting time is different by this many seconds from the
+        current session.  Only meaningful when
+        <emphasis>GIT_PUSH_CERT_NONCE_STATUS</emphasis> says <emphasis>SLOP</emphasis>.
+        Also read about <emphasis>receive.certNonceSlop</emphasis> variable in
+        <xref linkend="git-config(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
 <simpara>This hook is called before any refname is updated and before any
 fast-forward checks are performed.</simpara>
 <simpara>If the pre-receive hook exits with a non-zero exit status no updates
@@ -101,9 +234,13 @@ the update.  Refs that were created will have sha1-old equal to
 0{40}, while refs that were deleted will have sha1-new equal to
 0{40}, otherwise sha1-old and sha1-new should be valid objects in
 the repository.</simpara>
+<simpara>The <emphasis>GIT_PUSH_CERT*</emphasis> environment variables can be inspected, just as
+in <emphasis>pre-receive</emphasis> hook, after accepting a signed push.</simpara>
 <simpara>Using this hook, it is easy to generate mails describing the updates
 to the repository.  This example script sends one mail message per
-ref listing the commits pushed to the repository:</simpara>
+ref listing the commits pushed to the repository, and logs the push
+certificates of signed pushes with good signatures to a logger
+service:</simpara>
 <literallayout class="monospaced">#!/bin/sh
 # mail out commit update information.
 while read oval nval ref
@@ -118,6 +255,14 @@ do
         fi |
         mail -s "Changes to ref $ref" commit-list@mydomain
 done
+# log signed push certificate, if any
+if test -n "${GIT_PUSH_CERT-}" &amp;&amp; test ${GIT_PUSH_CERT_STATUS} = G
+then
+        (
+                echo expected nonce is ${GIT_PUSH_NONCE}
+                git cat-file blob ${GIT_PUSH_CERT}
+        ) | mail -s "push certificate from $GIT_PUSH_CERT_SIGNER" push-log@mydomain
+fi
 exit 0</literallayout>
 <simpara>The exit code from this hook invocation is ignored, however a
 non-zero exit code will generate an error message.</simpara>

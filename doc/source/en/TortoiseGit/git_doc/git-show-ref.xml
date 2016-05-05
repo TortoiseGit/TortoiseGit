@@ -16,7 +16,7 @@
 <literallayout><emphasis>git show-ref</emphasis> [-q|--quiet] [--verify] [--head] [-d|--dereference]
              [-s|--hash[=&lt;n&gt;]] [--abbrev[=&lt;n&gt;]] [--tags]
              [--heads] [--] [&lt;pattern&gt;&#8230;]
-<emphasis>git show-ref</emphasis> --exclude-existing[=&lt;pattern&gt;] &lt; ref-list</literallayout>
+<emphasis>git show-ref</emphasis> --exclude-existing[=&lt;pattern&gt;]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-show-ref(1)__description">
@@ -25,8 +25,10 @@
 commit IDs. Results can be filtered using a pattern and tags can be
 dereferenced into object IDs. Additionally, it can be used to test whether a
 particular ref exists.</simpara>
-<simpara>The --exclude-existing form is a filter that does the inverse, it shows the
-refs from stdin that don't exist in the local repository.</simpara>
+<simpara>By default, shows the tags, heads, and remote refs.</simpara>
+<simpara>The --exclude-existing form is a filter that does the inverse. It reads
+refs from stdin, one ref per line, and shows those that don't exist in
+the local repository.</simpara>
 <simpara>Use of this utility is encouraged in favor of directly accessing files under
 the <emphasis>.git</emphasis> directory.</simpara>
 </simplesect>
@@ -39,7 +41,7 @@ the <emphasis>.git</emphasis> directory.</simpara>
 </term>
 <listitem>
 <simpara>
-        Show the HEAD reference.
+        Show the HEAD reference, even if it would normally be filtered out.
 </simpara>
 </listitem>
 </varlistentry>
@@ -52,9 +54,9 @@ the <emphasis>.git</emphasis> directory.</simpara>
 </term>
 <listitem>
 <simpara>
-        Limit to only "refs/heads" and "refs/tags", respectively.  These
-        options are not mutually exclusive; when given both, references stored
-        in "refs/heads" and "refs/tags" are displayed.
+        Limit to "refs/heads" and "refs/tags", respectively.  These options
+        are not mutually exclusive; when given both, references stored in
+        "refs/heads" and "refs/tags" are displayed.
 </simpara>
 </listitem>
 </varlistentry>
@@ -81,8 +83,8 @@ the <emphasis>.git</emphasis> directory.</simpara>
 </term>
 <listitem>
 <simpara>
-        Only show the SHA1 hash, not the reference name. When combined with
-        --dereference the dereferenced tag will still be shown after the SHA1.
+        Only show the SHA-1 hash, not the reference name. When combined with
+        --dereference the dereferenced tag will still be shown after the SHA-1.
 </simpara>
 </listitem>
 </varlistentry>
@@ -149,7 +151,7 @@ the <emphasis>.git</emphasis> directory.</simpara>
         Show references matching one or more patterns. Patterns are matched from
         the end of the full name, and only complete parts are matched, e.g.
         <emphasis>master</emphasis> matches <emphasis>refs/heads/master</emphasis>, <emphasis>refs/remotes/origin/master</emphasis>,
-        <emphasis>refs/tags/jedi/master</emphasis> but not <emphasis>refs/heads/mymaster</emphasis> nor
+        <emphasis>refs/tags/jedi/master</emphasis> but not <emphasis>refs/heads/mymaster</emphasis> or
         <emphasis>refs/remotes/master/jedi</emphasis>.
 </simpara>
 </listitem>
@@ -209,7 +211,8 @@ flag, so you can do</simpara>
 </simplesect>
 <simplesect id="git-show-ref(1)__see_also">
 <title>SEE ALSO</title>
-<simpara><xref linkend="git-ls-remote(1)" />,
+<simpara><xref linkend="git-for-each-ref(1)" />,
+<xref linkend="git-ls-remote(1)" />,
 <xref linkend="git-update-ref(1)" />,
 <xref linkend="gitrepository-layout(5)" /></simpara>
 </simplesect>

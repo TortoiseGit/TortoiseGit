@@ -8,7 +8,7 @@
 </indexterm>
 <simplesect id="gitcvs-migration(7)__name">
 <title>NAME</title>
-<simpara>gitcvs-migration - git for CVS users</simpara>
+<simpara>gitcvs-migration - Git for CVS users</simpara>
 </simplesect>
 <simplesect id="gitcvs-migration(7)__synopsis">
 <title>SYNOPSIS</title>
@@ -23,7 +23,7 @@ a full copy of the project history, and no repository is inherently more
 important than any other.  However, you can emulate the CVS model by
 designating a single shared repository which people can synchronize with;
 this document explains how to do that.</simpara>
-<simpara>Some basic familiarity with git is required. Having gone through
+<simpara>Some basic familiarity with Git is required. Having gone through
 <xref linkend="gittutorial(7)" /> and
 <xref linkend="gitglossary(7)" /> should be sufficient.</simpara>
 </simplesect>
@@ -63,7 +63,7 @@ other than <emphasis>master</emphasis>.</simpara>
 </simplesect>
 <simplesect id="gitcvs-migration(7)__setting_up_a_shared_repository">
 <title>Setting Up a Shared Repository</title>
-<simpara>We assume you have already created a git repository for your project,
+<simpara>We assume you have already created a Git repository for your project,
 possibly created from scratch or from a tarball (see
 <xref linkend="gittutorial(7)" />), or imported from an already existing CVS
 repository (see the next section).</simpara>
@@ -78,7 +78,7 @@ $ git --bare fetch /home/alice/myproject master:master</screen>
 easy way to do this is to give all the team members ssh access to the
 machine where the repository is hosted.  If you don't want to give them a
 full shell on the machine, there is a restricted shell which only allows
-users to do git pushes and pulls; see <xref linkend="git-shell(1)" />.</simpara>
+users to do Git pushes and pulls; see <xref linkend="git-shell(1)" />.</simpara>
 <simpara>Put all the committers in the same group, and make the repository
 writable by that group:</simpara>
 <screen>$ chgrp -R $group /pub/my-repo.git</screen>
@@ -88,18 +88,18 @@ they create are writable and searchable by other group members.</simpara>
 <simplesect id="gitcvs-migration(7)__importing_a_cvs_archive">
 <title>Importing a CVS archive</title>
 <simpara>First, install version 2.1 or higher of cvsps from
-link:http://www.cobite.com/cvsps/[<ulink url="http://www.cobite.com/cvsps/">http://www.cobite.com/cvsps/</ulink>] and make
+<ulink url="http://www.cobite.com/cvsps/[<ulink url="http://www.cobite.com/cvsps/">http://www.cobite.com/cvsps/</ulink>">http://www.cobite.com/cvsps/[<ulink url="http://www.cobite.com/cvsps/">http://www.cobite.com/cvsps/</ulink></ulink>] and make
 sure it is in your path.  Then cd to a checked out CVS working directory
 of the project you are interested in and run <xref linkend="git-cvsimport(1)" />:</simpara>
 <screen>$ git cvsimport -C &lt;destination&gt; &lt;module&gt;</screen>
-<simpara>This puts a git archive of the named CVS module in the directory
+<simpara>This puts a Git archive of the named CVS module in the directory
 &lt;destination&gt;, which will be created if necessary.</simpara>
 <simpara>The import checks out from CVS every revision of every file.  Reportedly
 cvsimport can average some twenty revisions per second, so for a
 medium-sized project this should not take more than a couple of minutes.
 Larger projects or remote repositories may take longer.</simpara>
-<simpara>The main trunk is stored in the git branch named <emphasis>origin</emphasis>, and additional
-CVS branches are stored in git branches with the same names.  The most
+<simpara>The main trunk is stored in the Git branch named <emphasis>origin</emphasis>, and additional
+CVS branches are stored in Git branches with the same names.  The most
 recent version of the main trunk is also left checked out on the <emphasis>master</emphasis>
 branch, so you can start adding your own changes right away.</simpara>
 <simpara>The import is incremental, so if you call it again next month it will
@@ -118,20 +118,20 @@ incremental imports.</simpara>
 points.  You can use these, for example, to send all commits to the shared
 repository to a mailing list.  See <xref linkend="githooks(5)" />.</simpara>
 <simpara>You can enforce finer grained permissions using update hooks.  See
-link:howto/update-hook-example.txt[Controlling access to branches using
+link:howto/update-hook-example.html[Controlling access to branches using
 update hooks].</simpara>
 </simplesect>
 <simplesect id="gitcvs-migration(7)__providing_cvs_access_to_a_git_repository">
-<title>Providing CVS Access to a git Repository</title>
-<simpara>It is also possible to provide true CVS access to a git repository, so
+<title>Providing CVS Access to a Git Repository</title>
+<simpara>It is also possible to provide true CVS access to a Git repository, so
 that developers can still use CVS; see <xref linkend="git-cvsserver(1)" /> for
 details.</simpara>
 </simplesect>
 <simplesect id="gitcvs-migration(7)__alternative_development_models">
 <title>Alternative Development Models</title>
 <simpara>CVS users are accustomed to giving a group of developers commit access to
-a common repository.  As we've seen, this is also possible with git.
-However, the distributed nature of git allows other development models,
+a common repository.  As we've seen, this is also possible with Git.
+However, the distributed nature of Git allows other development models,
 and you may want to first consider whether one of them might be a better
 fit for your project.</simpara>
 <simpara>For example, you can choose a single person to maintain the project's
@@ -151,7 +151,7 @@ repositories without the need for a central maintainer.</simpara>
 <xref linkend="gittutorial-2(7)" />,
 <xref linkend="gitcore-tutorial(7)" />,
 <xref linkend="gitglossary(7)" />,
-link:everyday.html[Everyday Git],
+<xref linkend="giteveryday(7)" />,
 link:user-manual.html[The Git User's Manual]</simpara>
 </simplesect>
 <simplesect id="gitcvs-migration(7)__git">

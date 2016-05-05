@@ -18,7 +18,7 @@
 </simplesect>
 <simplesect id="git-difftool(1)__description">
 <title>DESCRIPTION</title>
-<simpara><emphasis>git difftool</emphasis> is a git command that allows you to compare and edit files
+<simpara><emphasis>git difftool</emphasis> is a Git command that allows you to compare and edit files
 between revisions using common diff tools.  <emphasis>git difftool</emphasis> is a frontend
 to <emphasis>git diff</emphasis> and accepts the same options and arguments. See
 <xref linkend="git-diff(1)" />.</simpara>
@@ -115,18 +115,17 @@ with custom merge tool commands and has the same value as <emphasis>$MERGED</emp
 </varlistentry>
 <varlistentry>
 <term>
---symlinks
-</term>
-<term>
---no-symlinks
+--[no-]symlinks
 </term>
 <listitem>
 <simpara>
         <emphasis>git difftool</emphasis>'s default behavior is create symlinks to the
-        working tree when run in <emphasis>--dir-diff</emphasis> mode.
+        working tree when run in <emphasis>--dir-diff</emphasis> mode and the right-hand
+        side of the comparison yields the same content as the file in
+        the working tree.
 </simpara>
-<literallayout class="monospaced">Specifying `--no-symlinks` instructs 'git difftool' to create
-copies instead.  `--no-symlinks` is the default on Windows.</literallayout>
+<simpara>Specifying <emphasis>--no-symlinks</emphasis> instructs <emphasis>git difftool</emphasis> to create copies
+instead.  <emphasis>--no-symlinks</emphasis> is the default on Windows.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -158,6 +157,21 @@ copies instead.  `--no-symlinks` is the default on Windows.</literallayout>
         the default diff tool will be read from the configured
         <emphasis>diff.guitool</emphasis> variable instead of <emphasis>diff.tool</emphasis>.
 </simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--[no-]trust-exit-code
+</term>
+<listitem>
+<simpara>
+        <emphasis>git-difftool</emphasis> invokes a diff tool individually on each file.
+        Errors reported by the diff tool are ignored by default.
+        Use <emphasis>--trust-exit-code</emphasis> to make <emphasis>git-difftool</emphasis> exit when an
+        invoked diff tool returns a non-zero exit code.
+</simpara>
+<simpara><emphasis>git-difftool</emphasis> will forward the exit code of the invoked tool when
+<emphasis>--trust-exit-code</emphasis> is used.</simpara>
 </listitem>
 </varlistentry>
 </variablelist>
@@ -218,6 +232,17 @@ difftool.prompt
 <simpara>
         Prompt before each invocation of the diff tool.
 </simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+difftool.trustExitCode
+</term>
+<listitem>
+<simpara>
+        Exit difftool if the invoked diff tool returns a non-zero exit status.
+</simpara>
+<simpara>See the <emphasis>--trust-exit-code</emphasis> option above for more details.</simpara>
 </listitem>
 </varlistentry>
 </variablelist>

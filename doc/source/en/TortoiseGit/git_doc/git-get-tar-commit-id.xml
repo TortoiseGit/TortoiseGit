@@ -13,16 +13,17 @@
 <simplesect id="git-get-tar-commit-id(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git get-tar-commit-id</emphasis> &lt; &lt;tarfile&gt;</literallayout>
+<literallayout><emphasis>git get-tar-commit-id</emphasis></literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-get-tar-commit-id(1)__description">
 <title>DESCRIPTION</title>
-<simpara>Acts as a filter, extracting the commit ID stored in archives created by
-<emphasis>git archive</emphasis>.  It reads only the first 1024 bytes of input, thus its
-runtime is not influenced by the size of &lt;tarfile&gt; very much.</simpara>
+<simpara>Read a tar archive created by <emphasis>git archive</emphasis> from the standard input
+and extract the commit ID stored in it.  It reads only the first
+1024 bytes of input, thus its runtime is not influenced by the size
+of the tar archive very much.</simpara>
 <simpara>If no commit ID is found, <emphasis>git get-tar-commit-id</emphasis> quietly exists with a
-return code of 1.  This can happen if &lt;tarfile&gt; had not been created
+return code of 1.  This can happen if the archive had not been created
 using <emphasis>git archive</emphasis> or if the first parameter of <emphasis>git archive</emphasis> had been
 a tree ID instead of a commit ID or tag.</simpara>
 </simplesect>

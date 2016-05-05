@@ -8,22 +8,23 @@
 </indexterm>
 <simplesect id="git-remote(1)__name">
 <title>NAME</title>
-<simpara>git-remote - manage set of tracked repositories</simpara>
+<simpara>git-remote - Manage set of tracked repositories</simpara>
 </simplesect>
 <simplesect id="git-remote(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git remote</emphasis> [-v | --verbose]
-<emphasis>git remote add</emphasis> [-t &lt;branch&gt;] [-m &lt;master&gt;] [-f] [--tags|--no-tags] [--mirror=&lt;fetch|push&gt;] &lt;name&gt; &lt;url&gt;
+<emphasis>git remote add</emphasis> [-t &lt;branch&gt;] [-m &lt;master&gt;] [-f] [--[no-]tags] [--mirror=&lt;fetch|push&gt;] &lt;name&gt; &lt;url&gt;
 <emphasis>git remote rename</emphasis> &lt;old&gt; &lt;new&gt;
 <emphasis>git remote remove</emphasis> &lt;name&gt;
-<emphasis>git remote set-head</emphasis> &lt;name&gt; (-a | -d | &lt;branch&gt;)
+<emphasis>git remote set-head</emphasis> &lt;name&gt; (-a | --auto | -d | --delete | &lt;branch&gt;)
 <emphasis>git remote set-branches</emphasis> [--add] &lt;name&gt; &lt;branch&gt;&#8230;
+<emphasis>git remote get-url</emphasis> [--push] [--all] &lt;name&gt;
 <emphasis>git remote set-url</emphasis> [--push] &lt;name&gt; &lt;newurl&gt; [&lt;oldurl&gt;]
 <emphasis>git remote set-url --add</emphasis> [--push] &lt;name&gt; &lt;newurl&gt;
 <emphasis>git remote set-url --delete</emphasis> [--push] &lt;name&gt; &lt;url&gt;
-<emphasis>git remote</emphasis> [-v | --verbose] <emphasis>show</emphasis> [-n] &lt;name&gt;
-<emphasis>git remote prune</emphasis> [-n | --dry-run] &lt;name&gt;
+<emphasis>git remote</emphasis> [-v | --verbose] <emphasis>show</emphasis> [-n] &lt;name&gt;&#8230;
+<emphasis>git remote prune</emphasis> [-n | --dry-run] &lt;name&gt;&#8230;
 <emphasis>git remote</emphasis> [-v | --verbose] <emphasis>update</emphasis> [-p | --prune] [(&lt;group&gt; | &lt;remote&gt;)&#8230;]</literallayout>
 </blockquote>
 </simplesect>
@@ -71,6 +72,8 @@ the remote information is set up.</simpara>
 remote repository.</simpara>
 <simpara>With <emphasis>--no-tags</emphasis> option, <emphasis>git fetch &lt;name&gt;</emphasis> does not import tags from
 the remote repository.</simpara>
+<simpara>By default, only tags on fetched branches are imported
+(see <xref linkend="git-fetch(1)" />).</simpara>
 <simpara>With <emphasis>-t &lt;branch&gt;</emphasis> option, instead of the default glob
 refspec for the remote to track all branches under
 the <emphasis>refs/remotes/&lt;name&gt;/</emphasis> namespace, a refspec to track only <emphasis>&lt;branch&gt;</emphasis>
@@ -129,8 +132,8 @@ branch. For example, if the default branch for <emphasis>origin</emphasis> is se
 <emphasis>master</emphasis>, then <emphasis>origin</emphasis> may be specified wherever you would normally
 specify <emphasis>origin/master</emphasis>.
 </simpara>
-<simpara>With <emphasis>-d</emphasis>, the symbolic ref <emphasis>refs/remotes/&lt;name&gt;/HEAD</emphasis> is deleted.</simpara>
-<simpara>With <emphasis>-a</emphasis>, the remote is queried to determine its <emphasis>HEAD</emphasis>, then the
+<simpara>With <emphasis>-d</emphasis> or <emphasis>--delete</emphasis>, the symbolic ref <emphasis>refs/remotes/&lt;name&gt;/HEAD</emphasis> is deleted.</simpara>
+<simpara>With <emphasis>-a</emphasis> or <emphasis>--auto</emphasis>, the remote is queried to determine its <emphasis>HEAD</emphasis>, then the
 symbolic-ref <emphasis>refs/remotes/&lt;name&gt;/HEAD</emphasis> is set to the same branch. e.g., if the remote
 <emphasis>HEAD</emphasis> is pointed at <emphasis>next</emphasis>, "<emphasis>git remote set-head origin -a</emphasis>" will set
 the symbolic-ref <emphasis>refs/remotes/origin/HEAD</emphasis> to <emphasis>refs/remotes/origin/next</emphasis>. This will
@@ -160,19 +163,38 @@ branches, adds to that list.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+<emphasis>get-url</emphasis>
+</term>
+<listitem>
+<simpara>
+Retrieves the URLs for a remote. Configurations for <emphasis>insteadOf</emphasis> and
+<emphasis>pushInsteadOf</emphasis> are expanded here. By default, only the first URL is listed.
+</simpara>
+<simpara>With <emphasis>--push</emphasis>, push URLs are queried rather than fetch URLs.</simpara>
+<simpara>With <emphasis>--all</emphasis>, all URLs for the remote will be listed.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 <emphasis>set-url</emphasis>
 </term>
 <listitem>
 <simpara>
-Changes URL remote points to. Sets first URL remote points to matching
+Changes URLs for the remote. Sets first URL for remote &lt;name&gt; that matches
 regex &lt;oldurl&gt; (first URL if no &lt;oldurl&gt; is given) to &lt;newurl&gt;. If
-&lt;oldurl&gt; doesn't match any URL, error occurs and nothing is changed.
+&lt;oldurl&gt; doesn't match any URL, an error occurs and nothing is changed.
 </simpara>
 <simpara>With <emphasis>--push</emphasis>, push URLs are manipulated instead of fetch URLs.</simpara>
-<simpara>With <emphasis>--add</emphasis>, instead of changing some URL, new URL is added.</simpara>
-<simpara>With <emphasis>--delete</emphasis>, instead of changing some URL, all URLs matching
-regex &lt;url&gt; are deleted. Trying to delete all non-push URLs is an
-error.</simpara>
+<simpara>With <emphasis>--add</emphasis>, instead of changing existing URLs, new URL is added.</simpara>
+<simpara>With <emphasis>--delete</emphasis>, instead of changing existing URLs, all URLs matching
+regex &lt;url&gt; are deleted for remote &lt;name&gt;.  Trying to delete all
+non-push URLs is an error.</simpara>
+<simpara>Note that the push URL and the fetch URL, even though they can
+be set differently, must still refer to the same place.  What you
+pushed to the push URL should be what you would see if you
+immediately fetched from the fetch URL.  If you are trying to
+fetch from one place (e.g. your upstream) and push to another (e.g.
+your publishing repository), use two separate remotes.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -236,18 +258,25 @@ Add a new remote, fetch, and check out a branch from it
 <screen>$ git remote
 origin
 $ git branch -r
-origin/master
-$ git remote add linux-nfs git://linux-nfs.org/pub/linux/nfs-2.6.git
+  origin/HEAD -&gt; origin/master
+  origin/master
+$ git remote add staging git://git.kernel.org/.../gregkh/staging.git
 $ git remote
-linux-nfs
 origin
-$ git fetch
-* refs/remotes/linux-nfs/master: storing branch 'master' ...
-  commit: bf81b46
+staging
+$ git fetch staging
+...
+From git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/staging
+ * [new branch]      master     -&gt; staging/master
+ * [new branch]      staging-linus -&gt; staging/staging-linus
+ * [new branch]      staging-next -&gt; staging/staging-next
 $ git branch -r
-origin/master
-linux-nfs/master
-$ git checkout -b nfs linux-nfs/master
+  origin/HEAD -&gt; origin/master
+  origin/master
+  staging/master
+  staging/staging-linus
+  staging/staging-next
+$ git checkout -b staging staging/master
 ...</screen>
 </listitem>
 <listitem>

@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<sect2 lang="en" id="git-check-ignore(1)">
+    <title>git-check-ignore(1)</title>
+<indexterm>
+<primary>git-check-ignore(1)</primary>
+</indexterm>
+<simplesect id="git-check-ignore(1)__name">
+<title>NAME</title>
+<simpara>git-check-ignore - Debug gitignore / exclude files</simpara>
+</simplesect>
+<simplesect id="git-check-ignore(1)__synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git check-ignore</emphasis> [options] pathname&#8230;
+<emphasis>git check-ignore</emphasis> [options] --stdin</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="git-check-ignore(1)__description">
+<title>DESCRIPTION</title>
+<simpara>For each pathname given via the command-line or from a file via
+<emphasis>--stdin</emphasis>, check whether the file is excluded by .gitignore (or other
+input files to the exclude mechanism) and output the path if it is
+excluded.</simpara>
+<simpara>By default, tracked files are not shown at all since they are not
+subject to exclude rules; but see --no-index.</simpara>
+</simplesect>
+<simplesect id="git-check-ignore(1)__options">
+<title>OPTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+-q, --quiet
+</term>
+<listitem>
+<simpara>
+        Don't output anything, just set exit status.  This is only
+        valid with a single pathname.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-v, --verbose
+</term>
+<listitem>
+<simpara>
+        Also output details about the matching pattern (if any)
+        for each given pathname. For precedence rules within and
+        between exclude sources, see <xref linkend="gitignore(5)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--stdin
+</term>
+<listitem>
+<simpara>
+        Read pathnames from the standard input, one per line,
+        instead of from the command-line.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-z
+</term>
+<listitem>
+<simpara>
+        The output format is modified to be machine-parseable (see
+        below).  If <emphasis>--stdin</emphasis> is also given, input paths are separated
+        with a NUL character instead of a linefeed character.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-n, --non-matching
+</term>
+<listitem>
+<simpara>
+        Show given paths which don't match any pattern.  This only
+        makes sense when <emphasis>--verbose</emphasis> is enabled, otherwise it would
+        not be possible to distinguish between paths which match a
+        pattern and those which don't.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--no-index
+</term>
+<listitem>
+<simpara>
+        Don't look in the index when undertaking the checks. This can
+        be used to debug why a path became tracked by e.g. <emphasis>git add .</emphasis>
+        and was not ignored by the rules as expected by the user or when
+        developing patterns including negation to match a path previously
+        added with <emphasis>git add -f</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="git-check-ignore(1)__output">
+<title>OUTPUT</title>
+<simpara>By default, any of the given pathnames which match an ignore pattern
+will be output, one per line.  If no pattern matches a given path,
+nothing will be output for that path; this means that path will not be
+ignored.</simpara>
+<simpara>If <emphasis>--verbose</emphasis> is specified, the output is a series of lines of the form:</simpara>
+<simpara>&lt;source&gt; &lt;COLON&gt; &lt;linenum&gt; &lt;COLON&gt; &lt;pattern&gt; &lt;HT&gt; &lt;pathname&gt;</simpara>
+<simpara>&lt;pathname&gt; is the path of a file being queried, &lt;pattern&gt; is the
+matching pattern, &lt;source&gt; is the pattern's source file, and &lt;linenum&gt;
+is the line number of the pattern within that source.  If the pattern
+contained a <emphasis>!</emphasis> prefix or <emphasis>/</emphasis> suffix, it will be preserved in the
+output.  &lt;source&gt; will be an absolute path when referring to the file
+configured by <emphasis>core.excludesFile</emphasis>, or relative to the repository root
+when referring to <emphasis>.git/info/exclude</emphasis> or a per-directory exclude file.</simpara>
+<simpara>If <emphasis>-z</emphasis> is specified, the pathnames in the output are delimited by the
+null character; if <emphasis>--verbose</emphasis> is also specified then null characters
+are also used instead of colons and hard tabs:</simpara>
+<simpara>&lt;source&gt; &lt;NULL&gt; &lt;linenum&gt; &lt;NULL&gt; &lt;pattern&gt; &lt;NULL&gt; &lt;pathname&gt; &lt;NULL&gt;</simpara>
+<simpara>If <emphasis>-n</emphasis> or <emphasis>--non-matching</emphasis> are specified, non-matching pathnames will
+also be output, in which case all fields in each output record except
+for &lt;pathname&gt; will be empty.  This can be useful when running
+non-interactively, so that files can be incrementally streamed to
+STDIN of a long-running check-ignore process, and for each of these
+files, STDOUT will indicate whether that file matched a pattern or
+not.  (Without this option, it would be impossible to tell whether the
+absence of output for a given file meant that it didn't match any
+pattern, or that the output hadn't been generated yet.)</simpara>
+<simpara>Buffering happens as documented under the <emphasis>GIT_FLUSH</emphasis> option in
+<xref linkend="git(1)" />.  The caller is responsible for avoiding deadlocks
+caused by overfilling an input buffer or reading from an empty output
+buffer.</simpara>
+</simplesect>
+<simplesect id="git-check-ignore(1)__exit_status">
+<title>EXIT STATUS</title>
+<variablelist>
+<varlistentry>
+<term>
+0
+</term>
+<listitem>
+<simpara>
+        One or more of the provided paths is ignored.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+1
+</term>
+<listitem>
+<simpara>
+        None of the provided paths are ignored.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+128
+</term>
+<listitem>
+<simpara>
+        A fatal error was encountered.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="git-check-ignore(1)__see_also">
+<title>SEE ALSO</title>
+<simpara><xref linkend="gitignore(5)" />
+<xref linkend="gitconfig(5)" />
+<xref linkend="git-ls-files(1)" /></simpara>
+</simplesect>
+<simplesect id="git-check-ignore(1)__git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</sect2>

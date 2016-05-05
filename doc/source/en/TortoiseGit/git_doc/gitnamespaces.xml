@@ -31,7 +31,7 @@ provides similar support for avoiding duplicates, but alternates do not
 prevent duplication between new objects added to the repositories
 without ongoing maintenance, while namespaces do.</simpara>
 <simpara>To specify a namespace, set the <emphasis>GIT_NAMESPACE</emphasis> environment variable to
-the namespace.  For each ref namespace, git stores the corresponding
+the namespace.  For each ref namespace, Git stores the corresponding
 refs in a directory under <emphasis>refs/namespaces/</emphasis>.  For example,
 <emphasis>GIT_NAMESPACE=foo</emphasis> will store refs under <emphasis>refs/namespaces/foo/</emphasis>.  You
 can also specify namespaces via the <emphasis>--namespace</emphasis> option to

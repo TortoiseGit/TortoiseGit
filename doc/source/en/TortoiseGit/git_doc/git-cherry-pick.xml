@@ -13,7 +13,8 @@
 <simplesect id="git-cherry-pick(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git cherry-pick</emphasis> [--edit] [-n] [-m parent-number] [-s] [-x] [--ff] &lt;commit&gt;&#8230;
+<literallayout><emphasis>git cherry-pick</emphasis> [--edit] [-n] [-m parent-number] [-s] [-x] [--ff]
+                  [-S[&lt;keyid&gt;]] &lt;commit&gt;&#8230;
 <emphasis>git cherry-pick</emphasis> --continue
 <emphasis>git cherry-pick</emphasis> --quit
 <emphasis>git cherry-pick</emphasis> --abort</literallayout>
@@ -178,6 +179,22 @@ effect to your index in a row.</simpara>
 <listitem>
 <simpara>
         Add Signed-off-by line at the end of the commit message.
+        See the signoff option in <xref linkend="git-commit(1)" /> for more information.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-S[&lt;keyid&gt;]
+</term>
+<term>
+--gpg-sign[=&lt;keyid&gt;]
+</term>
+<listitem>
+<simpara>
+        GPG-sign commits. The <emphasis>keyid</emphasis> argument is optional and
+        defaults to the committer identity; if specified, it must be
+        stuck to the option without a space.
 </simpara>
 </listitem>
 </varlistentry>
@@ -233,7 +250,8 @@ effect to your index in a row.</simpara>
 <simpara>
         If a commit being cherry picked duplicates a commit already in the
         current history, it will become empty.  By default these
-        redundant commits are ignored.  This option overrides that behavior and
+        redundant commits cause <emphasis>cherry-pick</emphasis> to stop so the user can
+        examine the commit. This option overrides that behavior and
         creates an empty commit object.  Implies <emphasis>--allow-empty</emphasis>.
 </simpara>
 </listitem>

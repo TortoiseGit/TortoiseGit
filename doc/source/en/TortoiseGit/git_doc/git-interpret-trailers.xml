@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<sect2 lang="en" id="git-interpret-trailers(1)">
+    <title>git-interpret-trailers(1)</title>
+<indexterm>
+<primary>git-interpret-trailers(1)</primary>
+</indexterm>
+<simplesect id="git-interpret-trailers(1)__name">
+<title>NAME</title>
+<simpara>git-interpret-trailers - help add structured information into commit messages</simpara>
+</simplesect>
+<simplesect id="git-interpret-trailers(1)__synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git interpret-trailers</emphasis> [--in-place] [--trim-empty] [(--trailer &lt;token&gt;[(=|:)&lt;value&gt;])&#8230;] [&lt;file&gt;&#8230;]</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="git-interpret-trailers(1)__description">
+<title>DESCRIPTION</title>
+<simpara>Help adding <emphasis>trailers</emphasis> lines, that look similar to RFC 822 e-mail
+headers, at the end of the otherwise free-form part of a commit
+message.</simpara>
+<simpara>This command reads some patches or commit messages from either the
+&lt;file&gt; arguments or the standard input if no &lt;file&gt; is specified. Then
+this command applies the arguments passed using the <emphasis>--trailer</emphasis>
+option, if any, to the commit message part of each input file. The
+result is emitted on the standard output.</simpara>
+<simpara>Some configuration variables control the way the <emphasis>--trailer</emphasis> arguments
+are applied to each commit message and the way any existing trailer in
+the commit message is changed. They also make it possible to
+automatically add some trailers.</simpara>
+<simpara>By default, a <emphasis>&lt;token&gt;=&lt;value&gt;</emphasis> or <emphasis>&lt;token&gt;:&lt;value&gt;</emphasis> argument given
+using <emphasis>--trailer</emphasis> will be appended after the existing trailers only if
+the last trailer has a different (&lt;token&gt;, &lt;value&gt;) pair (or if there
+is no existing trailer). The &lt;token&gt; and &lt;value&gt; parts will be trimmed
+to remove starting and trailing whitespace, and the resulting trimmed
+&lt;token&gt; and &lt;value&gt; will appear in the message like this:</simpara>
+<screen>token: value</screen>
+<simpara>This means that the trimmed &lt;token&gt; and &lt;value&gt; will be separated by
+<emphasis>': '</emphasis> (one colon followed by one space).</simpara>
+<simpara>By default the new trailer will appear at the end of all the existing
+trailers. If there is no existing trailer, the new trailer will appear
+after the commit message part of the output, and, if there is no line
+with only spaces at the end of the commit message part, one blank line
+will be added before the new trailer.</simpara>
+<simpara>Existing trailers are extracted from the input message by looking for
+a group of one or more lines that contain a colon (by default), where
+the group is preceded by one or more empty (or whitespace-only) lines.
+The group must either be at the end of the message or be the last
+non-whitespace lines before a line that starts with <emphasis>---</emphasis>. Such three
+minus signs start the patch part of the message.</simpara>
+<simpara>When reading trailers, there can be whitespaces before and after the
+token, the separator and the value. There can also be whitespaces
+inside the token and the value.</simpara>
+<simpara>Note that <emphasis>trailers</emphasis> do not follow and are not intended to follow many
+rules for RFC 822 headers. For example they do not follow the line
+folding rules, the encoding rules and probably many other rules.</simpara>
+</simplesect>
+<simplesect id="git-interpret-trailers(1)__options">
+<title>OPTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+--in-place
+</term>
+<listitem>
+<simpara>
+        Edit the files in place.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--trim-empty
+</term>
+<listitem>
+<simpara>
+        If the &lt;value&gt; part of any trailer contains only whitespace,
+        the whole trailer will be removed from the resulting message.
+        This applies to existing trailers as well as new trailers.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--trailer &lt;token&gt;[(=|:)&lt;value&gt;]
+</term>
+<listitem>
+<simpara>
+        Specify a (&lt;token&gt;, &lt;value&gt;) pair that should be applied as a
+        trailer to the input messages. See the description of this
+        command.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="git-interpret-trailers(1)__configuration_variables">
+<title>CONFIGURATION VARIABLES</title>
+<variablelist>
+<varlistentry>
+<term>
+trailer.separators
+</term>
+<listitem>
+<simpara>
+        This option tells which characters are recognized as trailer
+        separators. By default only <emphasis>:</emphasis> is recognized as a trailer
+        separator, except that <emphasis>=</emphasis> is always accepted on the command
+        line for compatibility with other git commands.
+</simpara>
+<simpara>The first character given by this option will be the default character
+used when another separator is not specified in the config for this
+trailer.</simpara>
+<simpara>For example, if the value for this option is "%=$", then only lines
+using the format <emphasis>&lt;token&gt;&lt;sep&gt;&lt;value&gt;</emphasis> with &lt;sep&gt; containing <emphasis>%</emphasis>, <emphasis>=</emphasis>
+or <emphasis>$</emphasis> and then spaces will be considered trailers. And <emphasis>%</emphasis> will be
+the default separator used, so by default trailers will appear like:
+<emphasis>&lt;token&gt;% &lt;value&gt;</emphasis> (one percent sign and one space will appear between
+the token and the value).</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+trailer.where
+</term>
+<listitem>
+<simpara>
+        This option tells where a new trailer will be added.
+</simpara>
+<simpara>This can be <emphasis>end</emphasis>, which is the default, <emphasis>start</emphasis>, <emphasis>after</emphasis> or <emphasis>before</emphasis>.</simpara>
+<simpara>If it is <emphasis>end</emphasis>, then each new trailer will appear at the end of the
+existing trailers.</simpara>
+<simpara>If it is <emphasis>start</emphasis>, then each new trailer will appear at the start,
+instead of the end, of the existing trailers.</simpara>
+<simpara>If it is <emphasis>after</emphasis>, then each new trailer will appear just after the
+last trailer with the same &lt;token&gt;.</simpara>
+<simpara>If it is <emphasis>before</emphasis>, then each new trailer will appear just before the
+first trailer with the same &lt;token&gt;.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+trailer.ifexists
+</term>
+<listitem>
+<simpara>
+        This option makes it possible to choose what action will be
+        performed when there is already at least one trailer with the
+        same &lt;token&gt; in the message.
+</simpara>
+<simpara>The valid values for this option are: <emphasis>addIfDifferentNeighbor</emphasis> (this
+is the default), <emphasis>addIfDifferent</emphasis>, <emphasis>add</emphasis>, <emphasis>overwrite</emphasis> or <emphasis>doNothing</emphasis>.</simpara>
+<simpara>With <emphasis>addIfDifferentNeighbor</emphasis>, a new trailer will be added only if no
+trailer with the same (&lt;token&gt;, &lt;value&gt;) pair is above or below the line
+where the new trailer will be added.</simpara>
+<simpara>With <emphasis>addIfDifferent</emphasis>, a new trailer will be added only if no trailer
+with the same (&lt;token&gt;, &lt;value&gt;) pair is already in the message.</simpara>
+<simpara>With <emphasis>add</emphasis>, a new trailer will be added, even if some trailers with
+the same (&lt;token&gt;, &lt;value&gt;) pair are already in the message.</simpara>
+<simpara>With <emphasis>replace</emphasis>, an existing trailer with the same &lt;token&gt; will be
+deleted and the new trailer will be added. The deleted trailer will be
+the closest one (with the same &lt;token&gt;) to the place where the new one
+will be added.</simpara>
+<simpara>With <emphasis>doNothing</emphasis>, nothing will be done; that is no new trailer will be
+added if there is already one with the same &lt;token&gt; in the message.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+trailer.ifmissing
+</term>
+<listitem>
+<simpara>
+        This option makes it possible to choose what action will be
+        performed when there is not yet any trailer with the same
+        &lt;token&gt; in the message.
+</simpara>
+<simpara>The valid values for this option are: <emphasis>add</emphasis> (this is the default) and
+<emphasis>doNothing</emphasis>.</simpara>
+<simpara>With <emphasis>add</emphasis>, a new trailer will be added.</simpara>
+<simpara>With <emphasis>doNothing</emphasis>, nothing will be done.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+trailer.&lt;token&gt;.key
+</term>
+<listitem>
+<simpara>
+        This <emphasis>key</emphasis> will be used instead of &lt;token&gt; in the trailer. At
+        the end of this key, a separator can appear and then some
+        space characters. By default the only valid separator is <emphasis>:</emphasis>,
+        but this can be changed using the <emphasis>trailer.separators</emphasis> config
+        variable.
+</simpara>
+<simpara>If there is a separator, then the key will be used instead of both the
+&lt;token&gt; and the default separator when adding the trailer.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+trailer.&lt;token&gt;.where
+</term>
+<listitem>
+<simpara>
+        This option takes the same values as the <emphasis>trailer.where</emphasis>
+        configuration variable and it overrides what is specified by
+        that option for trailers with the specified &lt;token&gt;.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+trailer.&lt;token&gt;.ifexist
+</term>
+<listitem>
+<simpara>
+        This option takes the same values as the <emphasis>trailer.ifexist</emphasis>
+        configuration variable and it overrides what is specified by
+        that option for trailers with the specified &lt;token&gt;.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+trailer.&lt;token&gt;.ifmissing
+</term>
+<listitem>
+<simpara>
+        This option takes the same values as the <emphasis>trailer.ifmissing</emphasis>
+        configuration variable and it overrides what is specified by
+        that option for trailers with the specified &lt;token&gt;.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+trailer.&lt;token&gt;.command
+</term>
+<listitem>
+<simpara>
+        This option can be used to specify a shell command that will
+        be called to automatically add or modify a trailer with the
+        specified &lt;token&gt;.
+</simpara>
+<simpara>When this option is specified, the behavior is as if a special
+<emphasis>&lt;token&gt;=&lt;value&gt;</emphasis> argument were added at the beginning of the command
+line, where &lt;value&gt; is taken to be the standard output of the
+specified command with any leading and trailing whitespace trimmed
+off.</simpara>
+<simpara>If the command contains the <emphasis>$ARG</emphasis> string, this string will be
+replaced with the &lt;value&gt; part of an existing trailer with the same
+&lt;token&gt;, if any, before the command is launched.</simpara>
+<simpara>If some <emphasis>&lt;token&gt;=&lt;value&gt;</emphasis> arguments are also passed on the command
+line, when a <emphasis>trailer.&lt;token&gt;.command</emphasis> is configured, the command will
+also be executed for each of these arguments. And the &lt;value&gt; part of
+these arguments, if any, will be used to replace the <emphasis>$ARG</emphasis> string in
+the command.</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="git-interpret-trailers(1)__examples">
+<title>EXAMPLES</title>
+<itemizedlist>
+<listitem>
+<simpara>
+Configure a <emphasis>sign</emphasis> trailer with a <emphasis>Signed-off-by</emphasis> key, and then
+  add two of these trailers to a message:
+</simpara>
+<screen>$ git config trailer.sign.key "Signed-off-by"
+$ cat msg.txt
+subject
+
+message
+$ cat msg.txt | git interpret-trailers --trailer 'sign: Alice &lt;alice@example.com&gt;' --trailer 'sign: Bob &lt;bob@example.com&gt;'
+subject
+
+message
+
+Signed-off-by: Alice &lt;alice@example.com&gt;
+Signed-off-by: Bob &lt;bob@example.com&gt;</screen>
+</listitem>
+<listitem>
+<simpara>
+Use the <emphasis>--in-place</emphasis> option to edit a message file in place:
+</simpara>
+<screen>$ cat msg.txt
+subject
+
+message
+
+Signed-off-by: Bob &lt;bob@example.com&gt;
+$ git interpret-trailers --trailer 'Acked-by: Alice &lt;alice@example.com&gt;' --in-place msg.txt
+$ cat msg.txt
+subject
+
+message
+
+Signed-off-by: Bob &lt;bob@example.com&gt;
+Acked-by: Alice &lt;alice@example.com&gt;</screen>
+</listitem>
+<listitem>
+<simpara>
+Extract the last commit as a patch, and add a <emphasis>Cc</emphasis> and a
+  <emphasis>Reviewed-by</emphasis> trailer to it:
+</simpara>
+<screen>$ git format-patch -1
+0001-foo.patch
+$ git interpret-trailers --trailer 'Cc: Alice &lt;alice@example.com&gt;' --trailer 'Reviewed-by: Bob &lt;bob@example.com&gt;' 0001-foo.patch &gt;0001-bar.patch</screen>
+</listitem>
+<listitem>
+<simpara>
+Configure a <emphasis>sign</emphasis> trailer with a command to automatically add a
+  'Signed-off-by: ' with the author information only if there is no
+  'Signed-off-by: ' already, and show how it works:
+</simpara>
+<screen>$ git config trailer.sign.key "Signed-off-by: "
+$ git config trailer.sign.ifmissing add
+$ git config trailer.sign.ifexists doNothing
+$ git config trailer.sign.command 'echo "$(git config user.name) &lt;$(git config user.email)&gt;"'
+$ git interpret-trailers &lt;&lt;EOF
+&gt; EOF
+
+Signed-off-by: Bob &lt;bob@example.com&gt;
+$ git interpret-trailers &lt;&lt;EOF
+&gt; Signed-off-by: Alice &lt;alice@example.com&gt;
+&gt; EOF
+
+Signed-off-by: Alice &lt;alice@example.com&gt;</screen>
+</listitem>
+<listitem>
+<simpara>
+Configure a <emphasis>fix</emphasis> trailer with a key that contains a <emphasis>#</emphasis> and no
+  space after this character, and show how it works:
+</simpara>
+<screen>$ git config trailer.separators ":#"
+$ git config trailer.fix.key "Fix #"
+$ echo "subject" | git interpret-trailers --trailer fix=42
+subject
+
+Fix #42</screen>
+</listitem>
+<listitem>
+<simpara>
+Configure a <emphasis>see</emphasis> trailer with a command to show the subject of a
+  commit that is related, and show how it works:
+</simpara>
+<screen>$ git config trailer.see.key "See-also: "
+$ git config trailer.see.ifExists "replace"
+$ git config trailer.see.ifMissing "doNothing"
+$ git config trailer.see.command "git log -1 --oneline --format=\"%h (%s)\" --abbrev-commit --abbrev=14 \$ARG"
+$ git interpret-trailers &lt;&lt;EOF
+&gt; subject
+&gt;
+&gt; message
+&gt;
+&gt; see: HEAD~2
+&gt; EOF
+subject
+
+message
+
+See-also: fe3187489d69c4 (subject of related commit)</screen>
+</listitem>
+<listitem>
+<simpara>
+Configure a commit template with some trailers with empty values
+  (using sed to show and keep the trailing spaces at the end of the
+  trailers), then configure a commit-msg hook that uses
+  <emphasis>git interpret-trailers</emphasis> to remove trailers with empty values and
+  to add a <emphasis>git-version</emphasis> trailer:
+</simpara>
+<screen>$ sed -e 's/ Z$/ /' &gt;commit_template.txt &lt;&lt;EOF
+&gt; ***subject***
+&gt;
+&gt; ***message***
+&gt;
+&gt; Fixes: Z
+&gt; Cc: Z
+&gt; Reviewed-by: Z
+&gt; Signed-off-by: Z
+&gt; EOF
+$ git config commit.template commit_template.txt
+$ cat &gt;.git/hooks/commit-msg &lt;&lt;EOF
+&gt; #!/bin/sh
+&gt; git interpret-trailers --trim-empty --trailer "git-version: \$(git describe)" "\$1" &gt; "\$1.new"
+&gt; mv "\$1.new" "\$1"
+&gt; EOF
+$ chmod +x .git/hooks/commit-msg</screen>
+</listitem>
+</itemizedlist>
+</simplesect>
+<simplesect id="git-interpret-trailers(1)__see_also">
+<title>SEE ALSO</title>
+<simpara><xref linkend="git-commit(1)" />, <xref linkend="git-format-patch(1)" />, <xref linkend="git-config(1)" /></simpara>
+</simplesect>
+<simplesect id="git-interpret-trailers(1)__git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</sect2>

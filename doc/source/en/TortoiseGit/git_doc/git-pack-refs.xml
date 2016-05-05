@@ -35,8 +35,8 @@ file and used if found.</simpara>
 <simpara>Subsequent updates to branches always create new files under
 <emphasis>$GIT_DIR/refs</emphasis> directory hierarchy.</simpara>
 <simpara>A recommended practice to deal with a repository with too many
-refs is to pack its refs with <emphasis>--all --prune</emphasis> once, and
-occasionally run <emphasis>git pack-refs --prune</emphasis>.  Tags are by
+refs is to pack its refs with <emphasis>--all</emphasis> once, and
+occasionally run <emphasis>git pack-refs</emphasis>.  Tags are by
 definition stationary and are not expected to change.  Branch
 heads will be packed with the initial <emphasis>pack-refs --all</emphasis>, but
 only the currently active branch heads will become unpacked,

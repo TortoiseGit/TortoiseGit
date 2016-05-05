@@ -16,6 +16,7 @@
 <literallayout><emphasis>git ls-files</emphasis> [-z] [-t] [-v]
                 (--[cached|deleted|others|ignored|stage|unmerged|killed|modified])*
                 (-[c|d|o|i|s|u|k|m])*
+                [--eol]
                 [-x &lt;pattern&gt;|--exclude=&lt;pattern&gt;]
                 [-X &lt;file&gt;|--exclude-from=&lt;file&gt;]
                 [--exclude-per-directory=&lt;file&gt;]
@@ -220,7 +221,7 @@ shown:</simpara>
 </term>
 <listitem>
 <simpara>
-        Add the standard git exclusions: .git/info/exclude, .gitignore
+        Add the standard Git exclusions: .git/info/exclude, .gitignore
         in each directory, and the user's global exclusion file.
 </simpara>
 </listitem>
@@ -389,6 +390,28 @@ other
 </varlistentry>
 <varlistentry>
 <term>
+--eol
+</term>
+<listitem>
+<simpara>
+        Show &lt;eolinfo&gt; and &lt;eolattr&gt; of files.
+        &lt;eolinfo&gt; is the file content identification used by Git when
+        the "text" attribute is "auto" (or not set and core.autocrlf is not false).
+        &lt;eolinfo&gt; is either "-text", "none", "lf", "crlf", "mixed" or "".
+</simpara>
+<simpara>"" means the file is not a regular file, it is not in the index or
+not accessible in the working tree.</simpara>
+<simpara>&lt;eolattr&gt; is the attribute that is used when checking out or committing,
+it is either "", "-text", "text", "text=auto", "text eol=lf", "text eol=crlf".
+Note: Currently Git does not support "text=auto eol=lf" or "text=auto eol=crlf",
+that may change in the future.</simpara>
+<simpara>Both the &lt;eolinfo&gt; in the index ("i/&lt;eolinfo&gt;")
+and in the working tree ("w/&lt;eolinfo&gt;") are shown for regular files,
+followed by the  ("attr/&lt;eolattr&gt;").</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --
 </term>
 <listitem>
@@ -415,9 +438,11 @@ other
 <simpara><emphasis>git ls-files</emphasis> just outputs the filenames unless <emphasis>--stage</emphasis> is specified in
 which case it outputs:</simpara>
 <literallayout class="monospaced">[&lt;tag&gt; ]&lt;mode&gt; &lt;object&gt; &lt;stage&gt; &lt;file&gt;</literallayout>
+<simpara><emphasis>git ls-files --eol</emphasis> will show
+        i/&lt;eolinfo&gt;&lt;SPACES&gt;w/&lt;eolinfo&gt;&lt;SPACES&gt;attr/&lt;eolattr&gt;&lt;SPACE*&gt;&lt;TAB&gt;&lt;file&gt;</simpara>
 <simpara><emphasis>git ls-files --unmerged</emphasis> and <emphasis>git ls-files --stage</emphasis> can be used to examine
 detailed information on unmerged paths.</simpara>
-<simpara>For an unmerged path, instead of recording a single mode/SHA1 pair,
+<simpara>For an unmerged path, instead of recording a single mode/SHA-1 pair,
 the index records up to three such pairs; one from tree O in stage
 1, A in stage 2, and B in stage 3.  This information can be used by
 the user (or the porcelain) to see what should eventually be recorded at the
@@ -436,21 +461,21 @@ specifies the format of exclude patterns.</simpara>
 <orderedlist numeration="arabic">
 <listitem>
 <simpara>
-The command line flag --exclude=&lt;pattern&gt; specifies a
+The command-line flag --exclude=&lt;pattern&gt; specifies a
      single pattern.  Patterns are ordered in the same order
      they appear in the command line.
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-The command line flag --exclude-from=&lt;file&gt; specifies a
+The command-line flag --exclude-from=&lt;file&gt; specifies a
      file containing a list of patterns.  Patterns are ordered
      in the same order they appear in the file.
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-The command line flag --exclude-per-directory=&lt;name&gt; specifies
+The command-line flag --exclude-per-directory=&lt;name&gt; specifies
      a name of the file in each directory <emphasis>git ls-files</emphasis>
      examines, normally <emphasis>.gitignore</emphasis>.  Files in deeper
      directories take precedence.  Patterns are ordered in the

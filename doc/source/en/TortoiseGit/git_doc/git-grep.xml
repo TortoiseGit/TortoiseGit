@@ -13,7 +13,7 @@
 <simplesect id="git-grep(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git grep</emphasis> [-a | --text] [-I] [-i | --ignore-case] [-w | --word-regexp]
+<literallayout><emphasis>git grep</emphasis> [-a | --text] [-I] [--textconv] [-i | --ignore-case] [-w | --word-regexp]
            [-v | --invert-match] [-h|-H] [--full-name]
            [-E | --extended-regexp] [-G | --basic-regexp]
            [-P | --perl-regexp]
@@ -27,9 +27,10 @@
            [--break] [--heading] [-p | --show-function]
            [-A &lt;post-context&gt;] [-B &lt;pre-context&gt;] [-C &lt;context&gt;]
            [-W | --function-context]
+           [--threads &lt;num&gt;]
            [-f &lt;file&gt;] [-e] &lt;pattern&gt;
            [--and|--or|--not|(|)|-e &lt;pattern&gt;&#8230;]
-           [ [--exclude-standard] [--cached | --no-index | --untracked] | &lt;tree&gt;&#8230;]
+           [ [--[no-]exclude-standard] [--cached | --no-index | --untracked] | &lt;tree&gt;&#8230;]
            [--] [&lt;pathspec&gt;&#8230;]</literallayout>
 </blockquote>
 </simplesect>
@@ -78,6 +79,38 @@ grep.extendedRegexp
 </simpara>
 </listitem>
 </varlistentry>
+<varlistentry>
+<term>
+grep.threads
+</term>
+<listitem>
+<simpara>
+        Number of grep worker threads to use.  If unset (or set to 0),
+        8 threads are used by default (for now).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+grep.fullName
+</term>
+<listitem>
+<simpara>
+        If set to true, enable <emphasis>--full-name</emphasis> option by default.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+grep.fallbackToNoIndex
+</term>
+<listitem>
+<simpara>
+        If set to true, fall back to git grep --no-index if git grep
+        is executed outside of a git repository.  Defaults to false.
+</simpara>
+</listitem>
+</varlistentry>
 </variablelist>
 </simplesect>
 <simplesect id="git-grep(1)__options">
@@ -100,7 +133,7 @@ grep.extendedRegexp
 </term>
 <listitem>
 <simpara>
-        Search files in the current directory that is not managed by git.
+        Search files in the current directory that is not managed by Git.
 </simpara>
 </listitem>
 </varlistentry>
@@ -148,6 +181,27 @@ grep.extendedRegexp
 <listitem>
 <simpara>
         Process binary files as if they were text.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--textconv
+</term>
+<listitem>
+<simpara>
+        Honor textconv filter settings.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--no-textconv
+</term>
+<listitem>
+<simpara>
+        Do not honor textconv filter settings.
+        This is the default.
 </simpara>
 </listitem>
 </varlistentry>
@@ -335,17 +389,20 @@ grep.extendedRegexp
 </varlistentry>
 <varlistentry>
 <term>
--O [&lt;pager&gt;]
+-O[&lt;pager&gt;]
 </term>
 <term>
---open-files-in-pager [&lt;pager&gt;]
+--open-files-in-pager[=&lt;pager&gt;]
 </term>
 <listitem>
 <simpara>
         Open the matching files in the pager (not the output of <emphasis>grep</emphasis>).
         If the pager happens to be "less" or "vi", and the user
         specified only one pattern, the first file is positioned at
-        the first match automatically.
+        the first match automatically. The <emphasis>pager</emphasis> argument is
+        optional; if specified, it must be stuck to the option
+        without a space. If <emphasis>pager</emphasis> is unspecified, the default pager
+        will be used (see <emphasis>core.pager</emphasis> in <xref linkend="git-config(1)" />).
 </simpara>
 </listitem>
 </varlistentry>
@@ -496,6 +553,17 @@ grep.extendedRegexp
         function name up to the one before the next function name,
         effectively showing the whole function in which the match was
         found.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--threads &lt;num&gt;
+</term>
+<listitem>
+<simpara>
+        Number of grep worker threads to use.
+        See <emphasis>grep.threads</emphasis> in <emphasis>CONFIGURATION</emphasis> for more information.
 </simpara>
 </listitem>
 </varlistentry>

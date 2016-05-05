@@ -8,7 +8,7 @@
 </indexterm>
 <simplesect id="git-pull(1)__name">
 <title>NAME</title>
-<simpara>git-pull - Fetch from and merge with another repository or a local branch</simpara>
+<simpara>git-pull - Fetch from and integrate with another repository or a local branch</simpara>
 </simplesect>
 <simplesect id="git-pull(1)__synopsis">
 <title>SYNOPSIS</title>
@@ -38,19 +38,21 @@ as set by <xref linkend="git-branch(1)" /> <emphasis>--track</emphasis>.</simpar
 "<emphasis>master</emphasis>":</simpara>
 <screen>          A---B---C master on origin
          /
-    D---E---F---G master</screen>
+    D---E---F---G master
+        ^
+        origin/master in your repository</screen>
 <simpara>Then "<emphasis>git pull</emphasis>" will fetch and replay the changes from the remote
 <emphasis>master</emphasis> branch since it diverged from the local <emphasis>master</emphasis> (i.e., <emphasis>E</emphasis>)
 until its current commit (<emphasis>C</emphasis>) on top of <emphasis>master</emphasis> and record the
 result in a new commit along with the names of the two parent commits
 and a log message from the user describing the changes.</simpara>
-<screen>          A---B---C remotes/origin/master
+<screen>          A---B---C origin/master
          /         \
     D---E---F---G---H master</screen>
 <simpara>See <xref linkend="git-merge(1)" /> for details, including how conflicts
 are presented and handled.</simpara>
-<simpara>In git 1.7.0 or later, to cancel a conflicting merge, use
-<emphasis>git reset --merge</emphasis>.  <emphasis role="strong">Warning</emphasis>: In older versions of git, running <emphasis>git pull</emphasis>
+<simpara>In Git 1.7.0 or later, to cancel a conflicting merge, use
+<emphasis>git reset --merge</emphasis>.  <emphasis role="strong">Warning</emphasis>: In older versions of Git, running <emphasis>git pull</emphasis>
 with uncommitted changes is discouraged: while possible, it leaves you
 in a state that may be hard to back out of in the case of a conflict.</simpara>
 <simpara>If any of the remote changes overlap with local uncommitted changes,
@@ -60,8 +62,6 @@ pulling or stash them away with <xref linkend="git-stash(1)" />.</simpara>
 </simplesect>
 <simplesect id="git-pull(1)__options">
 <title>OPTIONS</title>
-<simpara>Options meant for <emphasis>git pull</emphasis> itself and the underlying <emphasis>git merge</emphasis>
-must be given before the options meant for <emphasis>git fetch</emphasis>.</simpara>
 <variablelist>
 <varlistentry>
 <term>
@@ -100,7 +100,7 @@ must be given before the options meant for <emphasis>git fetch</emphasis>.</simp
         This option controls if new commits of all populated submodules should
         be fetched too (see <xref linkend="git-config(1)" /> and <xref linkend="gitmodules(5)" />).
         That might be necessary to get the data needed for merging submodule
-        commits, a feature git learned in 1.7.3. Notice that the result of a
+        commits, a feature Git learned in 1.7.3. Notice that the result of a
         merge will not be checked out in the submodule, "git submodule update"
         has to be called afterwards to bring the work tree up to date with the
         merge result.
@@ -133,6 +133,9 @@ inspect and further tweak the merge result before committing.</simpara>
 --edit
 </term>
 <term>
+-e
+</term>
+<term>
 --no-edit
 </term>
 <listitem>
@@ -141,9 +144,7 @@ inspect and further tweak the merge result before committing.</simpara>
         further edit the auto-generated merge message, so that the user
         can explain and justify the merge. The <emphasis>--no-edit</emphasis> option can be
         used to accept the auto-generated message (this is generally
-        discouraged). The <emphasis>--edit</emphasis> option is still useful if you are
-        giving a draft message with the <emphasis>-m</emphasis> option from the command line
-        and want to edit it in the editor.
+        discouraged).
 </simpara>
 <simpara>Older scripts may depend on the historical behaviour of not allowing the
 user to edit the merge log message. They will see an editor opened when
@@ -171,7 +172,8 @@ set to <emphasis>no</emphasis> at the beginning of them.</simpara>
 <listitem>
 <simpara>
         Create a merge commit even when the merge resolves as a
-        fast-forward.
+        fast-forward.  This is the default behaviour when merging an
+        annotated (and possibly signed) tag.
 </simpara>
 </listitem>
 </varlistentry>
@@ -232,14 +234,13 @@ merge.</simpara>
 </term>
 <listitem>
 <simpara>
-        Produce the working tree and index state as if a real
-        merge happened (except for the merge information),
-        but do not actually make a commit or
-        move the <emphasis>HEAD</emphasis>, nor record <emphasis>$GIT_DIR/MERGE_HEAD</emphasis> to
-        cause the next <emphasis>git commit</emphasis> command to create a merge
-        commit.  This allows you to create a single commit on
-        top of the current branch whose effect is the same as
-        merging another branch (or more in case of an octopus).
+        Produce the working tree and index state as if a real merge
+        happened (except for the merge information), but do not actually
+        make a commit, move the <emphasis>HEAD</emphasis>, or record <emphasis>$GIT_DIR/MERGE_HEAD</emphasis>
+        (to cause the next <emphasis>git commit</emphasis> command to create a merge
+        commit).  This allows you to create a single commit on top of
+        the current branch whose effect is the same as merging another
+        branch (or more in case of an octopus).
 </simpara>
 <simpara>With --no-squash perform the merge and commit the result. This
 option can be used to override --squash.</simpara>
@@ -278,6 +279,20 @@ option can be used to override --squash.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+--verify-signatures
+</term>
+<term>
+--no-verify-signatures
+</term>
+<listitem>
+<simpara>
+        Verify that the commits being merged have good and trusted GPG signatures
+        and abort the merge in case they do not.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --summary
 </term>
 <term>
@@ -292,64 +307,39 @@ option can be used to override --squash.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--q
-</term>
-<term>
---quiet
+--allow-unrelated-histories
 </term>
 <listitem>
 <simpara>
-        Operate quietly. Implies --no-progress.
+        By default, <emphasis>git merge</emphasis> command refuses to merge histories
+        that do not share a common ancestor.  This option can be
+        used to override this safety when merging histories of two
+        projects that started their lives independently. As that is
+        a very rare occasion, no configuration variable to enable
+        this by default exists and will not be added.
 </simpara>
 </listitem>
 </varlistentry>
-<varlistentry>
-<term>
--v
-</term>
-<term>
---verbose
-</term>
-<listitem>
-<simpara>
-        Be verbose.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
---progress
-</term>
-<term>
---no-progress
-</term>
-<listitem>
-<simpara>
-        Turn progress on/off explicitly. If neither is specified,
-        progress is shown if standard error is connected to a terminal.
-        Note that not all merge strategies may support progress
-        reporting.
-</simpara>
-</listitem>
-</varlistentry>
-</variablelist>
-<variablelist>
 <varlistentry>
 <term>
 -r
 </term>
 <term>
---rebase
+--rebase[=false|true|preserve|interactive]
 </term>
 <listitem>
 <simpara>
-        Rebase the current branch on top of the upstream branch after
-        fetching.  If there is a remote-tracking branch corresponding to
-        the upstream branch and the upstream branch was rebased since last
-        fetched, the rebase uses that information to avoid rebasing
-        non-local changes.
+        When true, rebase the current branch on top of the upstream
+        branch after fetching. If there is a remote-tracking branch
+        corresponding to the upstream branch and the upstream branch
+        was rebased since last fetched, the rebase uses that information
+        to avoid rebasing non-local changes.
 </simpara>
-<simpara>See <emphasis>pull.rebase</emphasis>, <emphasis>branch.&lt;name&gt;.rebase</emphasis> and <emphasis>branch.autosetuprebase</emphasis> in
+<simpara>When set to preserve, rebase with the <emphasis>--preserve-merges</emphasis> option passed
+to <emphasis>git rebase</emphasis> so that locally created merge commits will not be flattened.</simpara>
+<simpara>When false, merge the current branch into the upstream branch.</simpara>
+<simpara>When <emphasis>interactive</emphasis>, enable the interactive mode of rebase.</simpara>
+<simpara>See <emphasis>pull.rebase</emphasis>, <emphasis>branch.&lt;name&gt;.rebase</emphasis> and <emphasis>branch.autoSetupRebase</emphasis> in
 <xref linkend="git-config(1)" /> if you want to make <emphasis>git pull</emphasis> always use
 <emphasis>--rebase</emphasis> instead of merging.</simpara>
 <note><simpara>This is a potentially <emphasis>dangerous</emphasis> mode of operation.
@@ -366,6 +356,23 @@ unless you have read <xref linkend="git-rebase(1)" /> carefully.</simpara></note
 <simpara>
         Override earlier --rebase.
 </simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--autostash
+</term>
+<term>
+--no-autostash
+</term>
+<listitem>
+<simpara>
+        Before starting rebase, stash local modifications away (see
+        <xref linkend="git-stash(1)" />) if needed, and apply the stash when
+        done. <emphasis>--no-autostash</emphasis> is useful to override the <emphasis>rebase.autoStash</emphasis>
+        configuration variable (see <xref linkend="git-config(1)" />).
+</simpara>
+<simpara>This option is only valid when "--rebase" is used.</simpara>
 </listitem>
 </varlistentry>
 </variablelist>
@@ -404,10 +411,38 @@ unless you have read <xref linkend="git-rebase(1)" /> carefully.</simpara></note
 </term>
 <listitem>
 <simpara>
-        Deepen the history of a <emphasis>shallow</emphasis> repository created by
-        <emphasis>git clone</emphasis> with <emphasis>--depth=&lt;depth&gt;</emphasis> option (see <xref linkend="git-clone(1)" />)
-        to the specified number of commits from the tip of each remote
-        branch history. Tags for the deepened commits are not fetched.
+        Limit fetching to the specified number of commits from the tip of
+        each remote branch history. If fetching to a <emphasis>shallow</emphasis> repository
+        created by <emphasis>git clone</emphasis> with <emphasis>--depth=&lt;depth&gt;</emphasis> option (see
+        <xref linkend="git-clone(1)" />), deepen or shorten the history to the specified
+        number of commits. Tags for the deepened commits are not fetched.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--unshallow
+</term>
+<listitem>
+<simpara>
+        If the source repository is complete, convert a shallow
+        repository to a complete one, removing all the limitations
+        imposed by shallow repositories.
+</simpara>
+<simpara>If the source repository is shallow, fetch as much as possible so that
+the current repository has the same history as the source repository.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--update-shallow
+</term>
+<listitem>
+<simpara>
+        By default when fetching from a shallow repository,
+        <emphasis>git fetch</emphasis> refuses refs that require updating
+        .git/shallow. This option updates .git/shallow and accept such
+        refs.
 </simpara>
 </listitem>
 </varlistentry>
@@ -450,7 +485,7 @@ unless you have read <xref linkend="git-rebase(1)" /> carefully.</simpara></note
         By default, tags that point at objects that are downloaded
         from the remote repository are fetched and stored locally.
         This option disables this automatic tag following. The default
-        behavior for a remote may be specified with the remote.&lt;name&gt;.tagopt
+        behavior for a remote may be specified with the remote.&lt;name&gt;.tagOpt
         setting. See <xref linkend="git-config(1)" />.
 </simpara>
 </listitem>
@@ -501,6 +536,32 @@ unless you have read <xref linkend="git-rebase(1)" /> carefully.</simpara></note
 </varlistentry>
 <varlistentry>
 <term>
+-4
+</term>
+<term>
+--ipv4
+</term>
+<listitem>
+<simpara>
+        Use IPv4 addresses only, ignoring IPv6 addresses.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-6
+</term>
+<term>
+--ipv6
+</term>
+<listitem>
+<simpara>
+        Use IPv6 addresses only, ignoring IPv4 addresses.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 &lt;repository&gt;
 </term>
 <listitem>
@@ -518,67 +579,50 @@ unless you have read <xref linkend="git-rebase(1)" /> carefully.</simpara></note
 </term>
 <listitem>
 <simpara>
-        The format of a &lt;refspec&gt; parameter is an optional plus
-        <emphasis>+</emphasis>, followed by the source ref &lt;src&gt;, followed
-        by a colon <emphasis>:</emphasis>, followed by the destination ref &lt;dst&gt;.
+        Specifies which refs to fetch and which local refs to update.
+        When no &lt;refspec&gt;s appear on the command line, the refs to fetch
+        are read from <emphasis>remote.&lt;repository&gt;.fetch</emphasis> variables instead
+        (see <xref linkend="git-fetch(1)" />).
 </simpara>
+<simpara>The format of a &lt;refspec&gt; parameter is an optional plus
+<emphasis>+</emphasis>, followed by the source ref &lt;src&gt;, followed
+by a colon <emphasis>:</emphasis>, followed by the destination ref &lt;dst&gt;.
+The colon can be omitted when &lt;dst&gt; is empty.</simpara>
+<simpara><emphasis>tag &lt;tag&gt;</emphasis> means the same as <emphasis>refs/tags/&lt;tag&gt;:refs/tags/&lt;tag&gt;</emphasis>;
+it requests fetching everything up to the given tag.</simpara>
 <simpara>The remote ref that matches &lt;src&gt;
 is fetched, and if &lt;dst&gt; is not empty string, the local
 ref that matches it is fast-forwarded using &lt;src&gt;.
 If the optional plus <emphasis>+</emphasis> is used, the local ref
 is updated even if it does not result in a fast-forward
 update.</simpara>
-<note><simpara>If the remote branch from which you want to pull is
-modified in non-linear ways such as being rewound and
-rebased frequently, then a pull will attempt a merge with
-an older version of itself, likely conflict, and fail.
-It is under these conditions that you would want to use
-the <emphasis>+</emphasis> sign to indicate non-fast-forward updates will
-be needed.  There is currently no easy way to determine
-or declare that a branch will be made available in a
-repository with this behavior; the pulling user simply
+<note><simpara>When the remote branch you want to fetch is known to
+be rewound and rebased regularly, it is expected that
+its new tip will not be descendant of its previous tip
+(as stored in your remote-tracking branch the last time
+you fetched).  You would want
+to use the <emphasis>+</emphasis> sign to indicate non-fast-forward updates
+will be needed for such branches.  There is no way to
+determine or declare that a branch will be made available
+in a repository with this behavior; the pulling user simply
 must know this is the expected usage pattern for a branch.</simpara></note>
-<note><simpara>You never do your own development on branches that appear
-on the right hand side of a &lt;refspec&gt; colon on <emphasis>Pull:</emphasis> lines;
-they are to be updated by <emphasis>git fetch</emphasis>.  If you intend to do
-development derived from a remote branch <emphasis>B</emphasis>, have a <emphasis>Pull:</emphasis>
-line to track it (i.e. <emphasis>Pull: B:remote-B</emphasis>), and have a separate
-branch <emphasis>my-B</emphasis> to do your development on top of it.  The latter
-is created by <emphasis>git branch my-B remote-B</emphasis> (or its equivalent <emphasis>git
-checkout -b my-B remote-B</emphasis>).  Run <emphasis>git fetch</emphasis> to keep track of
-the progress of the remote side, and when you see something new
-on the remote branch, merge it into your development branch with
-<emphasis>git pull . remote-B</emphasis>, while you are on <emphasis>my-B</emphasis> branch.</simpara></note>
 <note><simpara>There is a difference between listing multiple &lt;refspec&gt;
 directly on <emphasis>git pull</emphasis> command line and having multiple
-<emphasis>Pull:</emphasis> &lt;refspec&gt; lines for a &lt;repository&gt; and running
+<emphasis>remote.&lt;repository&gt;.fetch</emphasis> entries in your configuration
+for a &lt;repository&gt; and running a
 <emphasis>git pull</emphasis> command without any explicit &lt;refspec&gt; parameters.
-&lt;refspec&gt; listed explicitly on the command line are always
+&lt;refspec&gt;s listed explicitly on the command line are always
 merged into the current branch after fetching.  In other words,
-if you list more than one remote refs, you would be making
-an Octopus.  While <emphasis>git pull</emphasis> run without any explicit &lt;refspec&gt;
-parameter takes default &lt;refspec&gt;s from <emphasis>Pull:</emphasis> lines, it
-merges only the first &lt;refspec&gt; found into the current branch,
-after fetching all the remote refs.  This is because making an
+if you list more than one remote ref, <emphasis>git pull</emphasis> will create
+an Octopus merge.  On the other hand, if you do not list any
+explicit &lt;refspec&gt; parameter on the command line, <emphasis>git pull</emphasis>
+will fetch all the &lt;refspec&gt;s it finds in the
+<emphasis>remote.&lt;repository&gt;.fetch</emphasis> configuration and merge
+only the first &lt;refspec&gt; found into the current branch.
+This is because making an
 Octopus from remote refs is rarely done, while keeping track
 of multiple remote heads in one-go by fetching more than one
 is often useful.</simpara></note>
-<simpara>Some short-cut notations are also supported.</simpara>
-<itemizedlist>
-<listitem>
-<simpara>
-<emphasis>tag &lt;tag&gt;</emphasis> means the same as <emphasis>refs/tags/&lt;tag&gt;:refs/tags/&lt;tag&gt;</emphasis>;
-  it requests fetching everything up to the given tag.
-</simpara>
-</listitem>
-<listitem>
-<simpara>
-A parameter &lt;ref&gt; without a colon is equivalent to
-  &lt;ref&gt;: when pulling/fetching, so it merges &lt;ref&gt; into the current
-  branch without storing the remote branch anywhere locally
-</simpara>
-</listitem>
-</itemizedlist>
 </listitem>
 </varlistentry>
 </variablelist>
@@ -591,9 +635,10 @@ address of the remote server, and the path to the repository.
 Depending on the transport protocol, some of this information may be
 absent.</simpara>
 <simpara>Git supports ssh, git, http, and https protocols (in addition, ftp,
-and ftps can be used for fetching and rsync can be used for fetching
-and pushing, but these are inefficient and deprecated; do not use
-them).</simpara>
+and ftps can be used for fetching, but this is inefficient and
+deprecated; do not use it).</simpara>
+<simpara>The native transport (i.e. git:// URL) does no authentication and
+should be used with caution on unsecured networks.</simpara>
 <simpara>The following syntaxes may be used with them:</simpara>
 <itemizedlist>
 <listitem>
@@ -616,11 +661,6 @@ http&#91;s&#93;://host.xz&#91;:port&#93;/path/to/repo.git/
 ftp&#91;s&#93;://host.xz&#91;:port&#93;/path/to/repo.git/
 </simpara>
 </listitem>
-<listitem>
-<simpara>
-rsync://host.xz/path/to/repo.git/
-</simpara>
-</listitem>
 </itemizedlist>
 <simpara>An alternative scp-like syntax may also be used with the ssh protocol:</simpara>
 <itemizedlist>
@@ -630,6 +670,11 @@ rsync://host.xz/path/to/repo.git/
 </simpara>
 </listitem>
 </itemizedlist>
+<simpara>This syntax is only recognized if there are no slashes before the
+first colon. This helps differentiate a local path that contains a
+colon. For example the local path <emphasis>foo:bar</emphasis> could be specified as an
+absolute path or <emphasis>./foo:bar</emphasis> to avoid being misinterpreted as an ssh
+url.</simpara>
 <simpara>The ssh and git protocols additionally support ~username expansion:</simpara>
 <itemizedlist>
 <listitem>
@@ -648,7 +693,7 @@ git://host.xz&#91;:port&#93;/~&#91;user&#93;/path/to/repo.git/
 </simpara>
 </listitem>
 </itemizedlist>
-<simpara>For local repositories, also supported by git natively, the following
+<simpara>For local repositories, also supported by Git natively, the following
 syntaxes may be used:</simpara>
 <itemizedlist>
 <listitem>
@@ -658,14 +703,14 @@ syntaxes may be used:</simpara>
 </listitem>
 <listitem>
 <simpara>
-<ulink url="file:///path/to/repo.git/">file:///path/to/repo.git/</ulink>
+file:///path/to/repo.git/
 </simpara>
 </listitem>
 </itemizedlist>
 <simpara>These two syntaxes are mostly equivalent, except when cloning, when
 the former implies --local option. See <xref linkend="git-clone(1)" /> for
 details.</simpara>
-<simpara>When git doesn't know how to handle a certain transport protocol, it
+<simpara>When Git doesn't know how to handle a certain transport protocol, it
 attempts to use the <emphasis>remote-&lt;transport&gt;</emphasis> remote helper, if one
 exists. To explicitly request a remote helper, the following syntax
 may be used:</simpara>
@@ -678,7 +723,7 @@ may be used:</simpara>
 </itemizedlist>
 <simpara>where &lt;address&gt; may be a path, a server and path, or an arbitrary
 URL-like string recognized by the specific remote helper being
-invoked. See <xref linkend="git-remote-helpers(1)" /> for details.</simpara>
+invoked. See <xref linkend="gitremote-helpers(1)" /> for details.</simpara>
 <simpara>If there are a large number of similarly-named remote repositories and
 you want to use a different format for them (such that the URLs you
 use will be rewritten into URLs that work), you can create a
@@ -709,7 +754,7 @@ of a URL as <emphasis>&lt;repository&gt;</emphasis> argument:</simpara>
 <itemizedlist>
 <listitem>
 <simpara>
-a remote in the git configuration file: <emphasis>$GIT_DIR/config</emphasis>,
+a remote in the Git configuration file: <emphasis>$GIT_DIR/config</emphasis>,
 </simpara>
 </listitem>
 <listitem>
@@ -778,10 +823,10 @@ refspecs, if you don't provide one on the command line.
 </simplesect>
 <simplesect id="git-pull(1)__merge_strategies">
 <title>MERGE STRATEGIES</title>
-<simpara>The merge mechanism (<emphasis>git-merge</emphasis> and <emphasis>git-pull</emphasis> commands) allows the
+<simpara>The merge mechanism (<emphasis>git merge</emphasis> and <emphasis>git pull</emphasis> commands) allows the
 backend <emphasis>merge strategies</emphasis> to be chosen with <emphasis>-s</emphasis> option.  Some strategies
 can also take their own options, which can be passed by giving <emphasis>-X&lt;option&gt;</emphasis>
-arguments to <emphasis>git-merge</emphasis> and/or <emphasis>git-pull</emphasis>.</simpara>
+arguments to <emphasis>git merge</emphasis> and/or <emphasis>git pull</emphasis>.</simpara>
 <variablelist>
 <varlistentry>
 <term>
@@ -809,7 +854,7 @@ recursive
         merged tree of the common ancestors and uses that as
         the reference tree for the 3-way merge.  This has been
         reported to result in fewer merge conflicts without
-        causing mis-merges by tests done on actual merge commits
+        causing mismerges by tests done on actual merge commits
         taken from Linux 2.6 kernel development history.
         Additionally this can detect and handle merges involving
         renames.  This is the default merge strategy when
@@ -854,6 +899,19 @@ patience
         matching lines (e.g., braces from distinct functions).  Use
         this when the branches to be merged have diverged wildly.
         See also <xref linkend="git-diff(1)" /> <emphasis>--patience</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+diff-algorithm=[patience|minimal|histogram|myers]
+</term>
+<listitem>
+<simpara>
+        Tells <emphasis>merge-recursive</emphasis> to use a different diff algorithm, which
+        can help avoid mismerges that occur due to unimportant matching
+        lines (such as braces from distinct functions).  See also
+        <xref linkend="git-diff(1)" /> <emphasis>--diff-algorithm</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -924,12 +982,34 @@ no-renormalize
 </varlistentry>
 <varlistentry>
 <term>
+no-renames
+</term>
+<listitem>
+<simpara>
+        Turn off rename detection.
+        See also <xref linkend="git-diff(1)" /> <emphasis>--no-renames</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+find-renames[=&lt;n&gt;]
+</term>
+<listitem>
+<simpara>
+        Turn on rename detection, optionally setting the similarity
+        threshold.  This is the default.
+        See also <xref linkend="git-diff(1)" /> <emphasis>--find-renames</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 rename-threshold=&lt;n&gt;
 </term>
 <listitem>
 <simpara>
-        Controls the similarity threshold used for rename detection.
-        See also <xref linkend="git-diff(1)" /> <emphasis>-M</emphasis>.
+        Deprecated synonym for <emphasis>find-renames=&lt;n&gt;</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -994,6 +1074,13 @@ subtree
 </listitem>
 </varlistentry>
 </variablelist>
+<simpara>With the strategies that use 3-way merge (including the default, <emphasis>recursive</emphasis>),
+if a change is made on both branches, but later reverted on one of the
+branches, that change will be present in the merged result; some people find
+this behavior confusing.  It occurs because only the heads and the merge base
+are considered when performing a merge, not the individual commits.  The merge
+algorithm therefore considers the reverted change as no change at all, and
+substitutes the changed version instead.</simpara>
 </simplesect>
 <simplesect id="git-pull(1)__default_behaviour">
 <title>DEFAULT BEHAVIOUR</title>
@@ -1075,7 +1162,7 @@ branches, the same can be done by invoking fetch and merge:</simpara>
 $ git merge origin/next</screen>
 </listitem>
 </itemizedlist>
-<simpara>If you tried a pull which resulted in a complex conflicts and
+<simpara>If you tried a pull which resulted in complex conflicts and
 would want to start over, you can recover with <emphasis>git reset</emphasis>.</simpara>
 </simplesect>
 <simplesect id="git-pull(1)__bugs">
@@ -1084,7 +1171,7 @@ would want to start over, you can recover with <emphasis>git reset</emphasis>.</
 out submodules right now. When e.g. upstream added a new submodule in the
 just fetched commits of the superproject the submodule itself can not be
 fetched, making it impossible to check out that submodule later without
-having to do a fetch again. This is expected to be fixed in a future git
+having to do a fetch again. This is expected to be fixed in a future Git
 version.</simpara>
 </simplesect>
 <simplesect id="git-pull(1)__see_also">

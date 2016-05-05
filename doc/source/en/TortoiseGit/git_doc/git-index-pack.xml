@@ -23,7 +23,7 @@
 <simpara>Reads a packed archive (.pack) from the specified file, and
 builds a pack index file (.idx) for it.  The packed archive
 together with the pack index can then be placed in the
-objects/pack/ directory of a git repository.</simpara>
+objects/pack/ directory of a Git repository.</simpara>
 </simplesect>
 <simplesect id="git-index-pack(1)__options">
 <title>OPTIONS</title>
@@ -62,7 +62,7 @@ objects/pack/ directory of a git repository.</simpara>
         When this flag is provided, the pack is read from stdin
         instead and a copy is then written to &lt;pack-file&gt;. If
         &lt;pack-file&gt; is not specified, the pack is written to
-        objects/pack/ directory of the current git repository with
+        objects/pack/ directory of the current Git repository with
         a default name determined from the pack content.  If
         &lt;pack-file&gt; is not specified consider using --keep to
         prevent a race condition between this process and
@@ -136,6 +136,16 @@ objects/pack/ directory of a git repository.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+--check-self-contained-and-connected
+</term>
+<listitem>
+<simpara>
+        Die if the pack contains broken links. For internal use only.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --threads=&lt;n&gt;
 </term>
 <listitem>
@@ -146,7 +156,7 @@ objects/pack/ directory of a git repository.</simpara>
         This is meant to reduce packing time on multiprocessor
         machines. The required amount of memory for the delta search
         window is however multiplied by the number of threads.
-        Specifying 0 will cause git to auto-detect the number of CPU's
+        Specifying 0 will cause Git to auto-detect the number of CPU's
         and use maximum 3 threads.
 </simpara>
 </listitem>
@@ -156,7 +166,7 @@ objects/pack/ directory of a git repository.</simpara>
 <simplesect id="git-index-pack(1)__note">
 <title>Note</title>
 <simpara>Once the index has been created, the list of object names is sorted
-and the SHA1 hash of that list is printed to stdout. If --stdin was
+and the SHA-1 hash of that list is printed to stdout. If --stdin was
 also used then this is prefixed by either "pack\t", or "keep\t" if a
 new .keep file was successfully created. This is useful to remove a
 .keep file used as a lock to prevent the race with <emphasis>git repack</emphasis>

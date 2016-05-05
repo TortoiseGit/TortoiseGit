@@ -22,12 +22,12 @@
 <simplesect id="git-p4(1)__description">
 <title>DESCRIPTION</title>
 <simpara>This command provides a way to interact with p4 repositories
-using git.</simpara>
-<simpara>Create a new git repository from an existing p4 repository using
+using Git.</simpara>
+<simpara>Create a new Git repository from an existing p4 repository using
 <emphasis>git p4 clone</emphasis>, giving it one or more p4 depot paths.  Incorporate
 new commits from p4 changes with <emphasis>git p4 sync</emphasis>.  The <emphasis>sync</emphasis> command
 is also used to include new branches from other p4 depot paths.
-Submit git changes back to p4 using <emphasis>git p4 submit</emphasis>.  The command
+Submit Git changes back to p4 using <emphasis>git p4 submit</emphasis>.  The command
 <emphasis>git p4 rebase</emphasis> does a sync plus rebases the current branch onto
 the updated p4 remote branch.</simpara>
 </simplesect>
@@ -42,7 +42,7 @@ Clone a repository:
 </listitem>
 <listitem>
 <simpara>
-Do some work in the newly created git repository:
+Do some work in the newly created Git repository:
 </simpara>
 <screen>$ cd project
 $ vi foo.h
@@ -50,7 +50,7 @@ $ git commit -a -m "edited foo.h"</screen>
 </listitem>
 <listitem>
 <simpara>
-Update the git repository with recent changes from p4, rebasing your
+Update the Git repository with recent changes from p4, rebasing your
   work on top:
 </simpara>
 <screen>$ git p4 rebase</screen>
@@ -67,20 +67,20 @@ Submit your commits back to p4:
 <title>COMMANDS</title>
 <section id="git-p4(1)__clone">
 <title>Clone</title>
-<simpara>Generally, <emphasis>git p4 clone</emphasis> is used to create a new git directory
+<simpara>Generally, <emphasis>git p4 clone</emphasis> is used to create a new Git directory
 from an existing p4 repository:</simpara>
 <screen>$ git p4 clone //depot/path/project</screen>
 <simpara>This:</simpara>
 <orderedlist numeration="arabic">
 <listitem>
 <simpara>
-Creates an empty git repository in a subdirectory called <emphasis>project</emphasis>.
+Creates an empty Git repository in a subdirectory called <emphasis>project</emphasis>.
 </simpara>
 </listitem>
 <listitem>
 <simpara>
 Imports the full contents of the head revision from the given p4
-depot path into a single commit in the git branch <emphasis>refs/remotes/p4/master</emphasis>.
+depot path into a single commit in the Git branch <emphasis>refs/remotes/p4/master</emphasis>.
 </simpara>
 </listitem>
 <listitem>
@@ -89,30 +89,34 @@ Creates a local branch, <emphasis>master</emphasis> from this remote and checks 
 </simpara>
 </listitem>
 </orderedlist>
-<simpara>To reproduce the entire p4 history in git, use the <emphasis>@all</emphasis> modifier on
+<simpara>To reproduce the entire p4 history in Git, use the <emphasis>@all</emphasis> modifier on
 the depot path:</simpara>
 <screen>$ git p4 clone //depot/path/project@all</screen>
 </section>
 <section id="git-p4(1)__sync">
 <title>Sync</title>
 <simpara>As development continues in the p4 repository, those changes can
-be included in the git repository using:</simpara>
+be included in the Git repository using:</simpara>
 <screen>$ git p4 sync</screen>
-<simpara>This command finds new changes in p4 and imports them as git commits.</simpara>
-<simpara>P4 repositories can be added to an existing git repository using
+<simpara>This command finds new changes in p4 and imports them as Git commits.</simpara>
+<simpara>P4 repositories can be added to an existing Git repository using
 <emphasis>git p4 sync</emphasis> too:</simpara>
 <screen>$ mkdir repo-git
 $ cd repo-git
 $ git init
 $ git p4 sync //path/in/your/perforce/depot</screen>
 <simpara>This imports the specified depot into
-<emphasis>refs/remotes/p4/master</emphasis> in an existing git repository.  The
+<emphasis>refs/remotes/p4/master</emphasis> in an existing Git repository.  The
 <emphasis>--branch</emphasis> option can be used to specify a different branch to
 be used for the p4 content.</simpara>
-<simpara>If a git repository includes branches <emphasis>refs/remotes/origin/p4</emphasis>, these
+<simpara>If a Git repository includes branches <emphasis>refs/remotes/origin/p4</emphasis>, these
 will be fetched and consulted first during a <emphasis>git p4 sync</emphasis>.  Since
 importing directly from p4 is considerably slower than pulling changes
-from a git remote, this can be useful in a multi-developer environment.</simpara>
+from a Git remote, this can be useful in a multi-developer environment.</simpara>
+<simpara>If there are multiple branches, doing <emphasis>git p4 sync</emphasis> will automatically
+use the "BRANCH DETECTION" algorithm to try to partition new changes
+into the right branch.  This can be overridden with the <emphasis>--branch</emphasis>
+option to specify just a single branch to update.</simpara>
 </section>
 <section id="git-p4(1)__rebase">
 <title>Rebase</title>
@@ -125,12 +129,12 @@ local commits on top of updated p4 changes.</simpara>
 </section>
 <section id="git-p4(1)__submit">
 <title>Submit</title>
-<simpara>Submitting changes from a git repository back to the p4 repository
+<simpara>Submitting changes from a Git repository back to the p4 repository
 requires a separate p4 client workspace.  This should be specified
-using the <emphasis>P4CLIENT</emphasis> environment variable or the git configuration
+using the <emphasis>P4CLIENT</emphasis> environment variable or the Git configuration
 variable <emphasis>git-p4.client</emphasis>.  The p4 client must exist, but the client root
 will be created and populated if it does not already exist.</simpara>
-<simpara>To submit all changes that are in the current git branch but not in
+<simpara>To submit all changes that are in the current Git branch but not in
 the <emphasis>p4/master</emphasis> branch, use:</simpara>
 <screen>$ git p4 submit</screen>
 <simpara>To specify a branch other than the current one, use:</simpara>
@@ -139,7 +143,7 @@ the <emphasis>p4/master</emphasis> branch, use:</simpara>
 be overridden using the <emphasis>--origin=</emphasis> command-line option.</simpara>
 <simpara>The p4 changes will be created as the user invoking <emphasis>git p4 submit</emphasis>. The
 <emphasis>--preserve-user</emphasis> option will cause ownership to be modified
-according to the author of the git commit.  This option requires admin
+according to the author of the Git commit.  This option requires admin
 privileges in p4, which can be granted using <emphasis>p4 protect</emphasis>.</simpara>
 </section>
 </simplesect>
@@ -161,7 +165,10 @@ privileges in p4, which can be granted using <emphasis>p4 protect</emphasis>.</s
 </varlistentry>
 <varlistentry>
 <term>
---verbose, -v
+-v
+</term>
+<term>
+--verbose
 </term>
 <listitem>
 <simpara>
@@ -178,17 +185,20 @@ subsequent <emphasis>sync</emphasis> operations.</simpara>
 <variablelist>
 <varlistentry>
 <term>
---branch &lt;branch&gt;
+--branch &lt;ref&gt;
 </term>
 <listitem>
 <simpara>
-        Import changes into given branch.  If the branch starts with
-        <emphasis>refs/</emphasis>, it will be used as is, otherwise the path <emphasis>refs/heads/</emphasis>
-        will be prepended.  The default branch is <emphasis>master</emphasis>.  If used
-        with an initial clone, no HEAD will be checked out.
+        Import changes into &lt;ref&gt; instead of refs/remotes/p4/master.
+        If &lt;ref&gt; starts with refs/, it is used as is.  Otherwise, if
+        it does not start with p4/, that prefix is added.
 </simpara>
+<simpara>By default a &lt;ref&gt; not starting with refs/ is treated as the
+name of a remote-tracking branch (under refs/remotes/).  This
+behavior can be modified using the --import-local option.</simpara>
+<simpara>The default &lt;ref&gt; is "master".</simpara>
 <simpara>This example imports a new remote "p4/proj2" into an existing
-git repository:</simpara>
+Git repository:</simpara>
 <screen>    $ git init
     $ git p4 sync --branch=refs/remotes/p4/proj2 //depot/proj2</screen>
 </listitem>
@@ -233,7 +243,7 @@ git repository:</simpara>
 <listitem>
 <simpara>
         Query p4 for labels associated with the depot paths, and add
-        them as tags in git. Limited usefulness as only imports labels
+        them as tags in Git. Limited usefulness as only imports labels
         associated with new changelists. Deprecated.
 </simpara>
 </listitem>
@@ -244,7 +254,7 @@ git repository:</simpara>
 </term>
 <listitem>
 <simpara>
-        Import labels from p4 into git.
+        Import labels from p4 into Git.
 </simpara>
 </listitem>
 </varlistentry>
@@ -269,9 +279,27 @@ git repository:</simpara>
 </term>
 <listitem>
 <simpara>
-        Limit the number of imported changes to <emphasis>n</emphasis>.  Useful to
-        limit the amount of history when using the <emphasis>@all</emphasis> p4 revision
-        specifier.
+        Import at most <emphasis>n</emphasis> changes, rather than the entire range of
+        changes included in the given revision specifier. A typical
+        usage would be use <emphasis>@all</emphasis> as the revision specifier, but then
+        to use <emphasis>--max-changes 1000</emphasis> to import only the last 1000
+        revisions rather than the entire revision history.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--changes-block-size &lt;n&gt;
+</term>
+<listitem>
+<simpara>
+        The internal block size to use when converting a revision
+        specifier such as <emphasis>@all</emphasis> into a list of specific change
+        numbers. Instead of using a single call to <emphasis>p4 changes</emphasis> to
+        find the full list of changes for the conversion, there are a
+        sequence of calls to <emphasis>p4 changes -m</emphasis>, each of which requests
+        one block of changes of the given size. The default block size
+        is 500, which should usually be suitable.
 </simpara>
 </listitem>
 </varlistentry>
@@ -281,12 +309,12 @@ git repository:</simpara>
 </term>
 <listitem>
 <simpara>
-        The mapping of file names from the p4 depot path to git, by
+        The mapping of file names from the p4 depot path to Git, by
         default, involves removing the entire depot path.  With this
-        option, the full p4 depot path is retained in git.  For example,
+        option, the full p4 depot path is retained in Git.  For example,
         path <emphasis>//depot/main/foo/bar.c</emphasis>, when imported from
         <emphasis>//depot/main/</emphasis>, becomes <emphasis>foo/bar.c</emphasis>.  With <emphasis>--keep-path</emphasis>, the
-        git path is instead <emphasis>depot/main/foo/bar.c</emphasis>.
+        Git path is instead <emphasis>depot/main/foo/bar.c</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -298,6 +326,16 @@ git repository:</simpara>
 <simpara>
         Use a client spec to find the list of interesting files in p4.
         See the "CLIENT SPEC" section below.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-/ &lt;path&gt;
+</term>
+<listitem>
+<simpara>
+        Exclude selected depot paths when cloning or syncing.
 </simpara>
 </listitem>
 </varlistentry>
@@ -314,7 +352,7 @@ options described above.</simpara>
 </term>
 <listitem>
 <simpara>
-        Where to create the git repository.  If not provided, the last
+        Where to create the Git repository.  If not provided, the last
         component in the p4 depot path is used to create a new
         directory.
 </simpara>
@@ -327,16 +365,6 @@ options described above.</simpara>
 <listitem>
 <simpara>
         Perform a bare clone.  See <xref linkend="git-clone(1)" />.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
--/ &lt;path&gt;
-</term>
-<listitem>
-<simpara>
-        Exclude selected depot paths when cloning.
 </simpara>
 </listitem>
 </varlistentry>
@@ -388,19 +416,22 @@ options described above.</simpara>
 </term>
 <listitem>
 <simpara>
-        Export tags from git as p4 labels. Tags found in git are applied
+        Export tags from Git as p4 labels. Tags found in Git are applied
         to the perforce working directory.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---dry-run, -n
+-n
+</term>
+<term>
+--dry-run
 </term>
 <listitem>
 <simpara>
         Show just what commits would be submitted to p4; do not change
-        state in git or p4.
+        state in Git or p4.
 </simpara>
 </listitem>
 </varlistentry>
@@ -429,6 +460,18 @@ options described above.</simpara>
         skip this commit and continue, or quit.  This option can be used
         to bypass the prompt, causing conflicting commits to be automatically
         skipped, or to quit trying to apply commits, without prompting.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--branch &lt;branch&gt;
+</term>
+<listitem>
+<simpara>
+        After submitting, sync this named branch instead of the default
+        p4/master.  See the "Sync options" section above for more
+        information.
 </simpara>
 </listitem>
 </varlistentry>
@@ -495,12 +538,12 @@ p4 revision specifier on the end:</simpara>
 <simpara>
     Import all changes from both named depot paths into a single
     repository.  Only files below these directories are included.
-    There is not a subdirectory in git for each "proj1" and "proj2".
+    There is not a subdirectory in Git for each "proj1" and "proj2".
     You must use the <emphasis>--destination</emphasis> option when specifying more
     than one depot path.  The revision specifier must be specified
     identically on each depot path.  If there are files in the
     depot paths with the same name, the path with the most recently
-    updated version of the file is the one that appears in git.
+    updated version of the file is the one that appears in Git.
 </simpara>
 </listitem>
 </varlistentry>
@@ -518,11 +561,11 @@ useClientSpec variable is automatically set in the repository
 configuration file.  This allows future <emphasis>git p4 submit</emphasis> commands to
 work properly; the submit command looks only at the variable and does
 not have a command-line option.</simpara>
-<simpara>The full syntax for a p4 view is documented in <emphasis>p4 help views</emphasis>.  <emphasis>Git p4</emphasis>
+<simpara>The full syntax for a p4 view is documented in <emphasis>p4 help views</emphasis>.  <emphasis>git p4</emphasis>
 knows only a subset of the view syntax.  It understands multi-line
 mappings, overlays with <emphasis>+</emphasis>, exclusions with <emphasis>-</emphasis> and double-quotes
 around whitespace.  Of the possible wildcards, <emphasis>git p4</emphasis> only handles
-<emphasis>&#8230;</emphasis>, and only when it is at the end of the path.  <emphasis>Git p4</emphasis> will complain
+<emphasis>&#8230;</emphasis>, and only when it is at the end of the path.  <emphasis>git p4</emphasis> will complain
 if it encounters an unhandled wildcard.</simpara>
 <simpara>Bugs in the implementation of overlap mappings exist.  If multiple depot
 paths map through overlays to the same location in the repository,
@@ -535,7 +578,7 @@ variable P4CLIENT, a file referenced by P4CONFIG, or the local host name.</simpa
 </simplesect>
 <simplesect id="git-p4(1)__branch_detection">
 <title>BRANCH DETECTION</title>
-<simpara>P4 does not have the same concept of a branch as git.  Instead,
+<simpara>P4 does not have the same concept of a branch as Git.  Instead,
 p4 organizes its content as a directory tree, where by convention
 different logical branches are in different locations in the tree.
 The <emphasis>p4 branch</emphasis> command is used to maintain mappings between
@@ -544,7 +587,7 @@ can use these mappings to determine branch relationships.</simpara>
 <simpara>If you have a repository where all the branches of interest exist as
 subdirectories of a single depot path, you can use <emphasis>--detect-branches</emphasis>
 when cloning or syncing to have <emphasis>git p4</emphasis> automatically find
-subdirectories in p4, and to generate these as branches in git.</simpara>
+subdirectories in p4, and to generate these as branches in Git.</simpara>
 <simpara>For example, if the P4 repository structure is:</simpara>
 <screen>//depot/main/...
 //depot/branch1/...</screen>
@@ -556,20 +599,22 @@ subdirectories in p4, and to generate these as branches in git.</simpara>
 called <emphasis>master</emphasis>, and one for //depot/branch1 called <emphasis>depot/branch1</emphasis>.</simpara>
 <simpara>However, it is not necessary to create branches in p4 to be able to use
 them like branches.  Because it is difficult to infer branch
-relationships automatically, a git configuration setting
+relationships automatically, a Git configuration setting
 <emphasis>git-p4.branchList</emphasis> can be used to explicitly identify branch
 relationships.  It is a list of "source:destination" pairs, like a
 simple p4 branch specification, where the "source" and "destination" are
 the path elements in the p4 repository.  The example above relied on the
 presence of the p4 branch.  Without p4 branches, the same result will
 occur with:</simpara>
-<screen>git config git-p4.branchList main:branch1
-git p4 clone --detect-branches //depot@all</screen>
+<screen>git init depot
+cd depot
+git config git-p4.branchList main:branch1
+git p4 clone --detect-branches //depot@all .</screen>
 </simplesect>
 <simplesect id="git-p4(1)__performance">
 <title>PERFORMANCE</title>
 <simpara>The fast-import mechanism used by <emphasis>git p4</emphasis> creates one pack file for
-each invocation of <emphasis>git p4 sync</emphasis>.  Normally, git garbage compression
+each invocation of <emphasis>git p4 sync</emphasis>.  Normally, Git garbage compression
 (<xref linkend="git-gc(1)" />) automatically compresses these to fewer pack files,
 but explicit invocation of <emphasis>git repack -adf</emphasis> may improve performance.</simpara>
 </simplesect>
@@ -649,9 +694,9 @@ git-p4.syncFromOrigin
 </term>
 <listitem>
 <simpara>
-        Because importing commits from other git repositories is much faster
+        Because importing commits from other Git repositories is much faster
         than importing them from p4, a mechanism exists to find p4 changes
-        first in git remotes.  If branches exist under <emphasis>refs/remote/origin/p4</emphasis>,
+        first in Git remotes.  If branches exist under <emphasis>refs/remote/origin/p4</emphasis>,
         those will be fetched and used when syncing from p4.  This
         variable can be set to <emphasis>false</emphasis> to disable this behavior.
 </simpara>
@@ -730,6 +775,107 @@ git-p4.useClientSpec
 </simpara>
 </listitem>
 </varlistentry>
+<varlistentry>
+<term>
+git-p4.pathEncoding
+</term>
+<listitem>
+<simpara>
+        Perforce keeps the encoding of a path as given by the originating OS.
+        Git expects paths encoded as UTF-8. Use this config to tell git-p4
+        what encoding Perforce had used for the paths. This encoding is used
+        to transcode the paths to UTF-8. As an example, Perforce on Windows
+        often uses "cp1252" to encode path names.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+git-p4.largeFileSystem
+</term>
+<listitem>
+<simpara>
+        Specify the system that is used for large (binary) files. Please note
+        that large file systems do not support the <emphasis>git p4 submit</emphasis> command.
+        Only Git LFS is implemented right now (see <ulink url="https://git-lfs.github.com/">https://git-lfs.github.com/</ulink>
+        for more information). Download and install the Git LFS command line
+        extension to use this option and configure it like this:
+</simpara>
+<screen>git config       git-p4.largeFileSystem GitLFS</screen>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+git-p4.largeFileExtensions
+</term>
+<listitem>
+<simpara>
+        All files matching a file extension in the list will be processed
+        by the large file system. Do not prefix the extensions with <emphasis>.</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+git-p4.largeFileThreshold
+</term>
+<listitem>
+<simpara>
+        All files with an uncompressed size exceeding the threshold will be
+        processed by the large file system. By default the threshold is
+        defined in bytes. Add the suffix k, m, or g to change the unit.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+git-p4.largeFileCompressedThreshold
+</term>
+<listitem>
+<simpara>
+        All files with a compressed size exceeding the threshold will be
+        processed by the large file system. This option might slow down
+        your clone/sync process. By default the threshold is defined in
+        bytes. Add the suffix k, m, or g to change the unit.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+git-p4.largeFilePush
+</term>
+<listitem>
+<simpara>
+        Boolean variable which defines if large files are automatically
+        pushed to a server.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+git-p4.keepEmptyCommits
+</term>
+<listitem>
+<simpara>
+        A changelist that contains only excluded files will be imported
+        as an empty commit if this boolean option is set to true.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+git-p4.mapUser
+</term>
+<listitem>
+<simpara>
+        Map a P4 user to a name and email address in Git. Use a string
+        with the following format to create a mapping:
+</simpara>
+<screen>git config --add git-p4.mapUser "p4user = First Last &lt;mail@address.com&gt;"</screen>
+<simpara>A mapping will override any user information from P4. Mappings for
+multiple P4 user can be defined.</simpara>
+</listitem>
+</varlistentry>
 </variablelist>
 </section>
 <section id="git-p4(1)__submit_variables">
@@ -773,7 +919,7 @@ git-p4.preserveUser
 </term>
 <listitem>
 <simpara>
-        On submit, re-author changes to reflect the git author,
+        On submit, re-author changes to reflect the Git author,
         regardless of who invokes <emphasis>git p4 submit</emphasis>.
 </simpara>
 </listitem>
@@ -859,7 +1005,7 @@ git-p4.exportLabels
 </term>
 <listitem>
 <simpara>
-        Export git tags to p4 labels, as per --export-labels.
+        Export Git tags to p4 labels, as per --export-labels.
 </simpara>
 </listitem>
 </varlistentry>
@@ -893,7 +1039,7 @@ git-p4.conflict
 <itemizedlist>
 <listitem>
 <simpara>
-Changesets from p4 are imported using git fast-import.
+Changesets from p4 are imported using Git fast-import.
 </simpara>
 </listitem>
 <listitem>
@@ -905,7 +1051,7 @@ Cloning or syncing does not require a p4 client; file contents are
 <listitem>
 <simpara>
 Submitting requires a p4 client, which is not in the same location
-  as the git repository.  Patches are applied, one at a time, to
+  as the Git repository.  Patches are applied, one at a time, to
   this p4 client and submitted from there.
 </simpara>
 </listitem>

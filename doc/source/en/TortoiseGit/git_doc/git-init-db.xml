@@ -8,7 +8,7 @@
 </indexterm>
 <simplesect id="git-init-db(1)__name">
 <title>NAME</title>
-<simpara>git-init-db - Creates an empty git repository</simpara>
+<simpara>git-init-db - Creates an empty Git repository</simpara>
 </simplesect>
 <simplesect id="git-init-db(1)__synopsis">
 <title>SYNOPSIS</title>

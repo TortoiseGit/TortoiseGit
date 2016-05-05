@@ -13,12 +13,12 @@
 <simplesect id="git-am(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git am</emphasis> [--signoff] [--keep] [--keep-cr | --no-keep-cr] [--utf8 | --no-utf8]
-         [--3way] [--interactive] [--committer-date-is-author-date]
+<literallayout><emphasis>git am</emphasis> [--signoff] [--keep] [--[no-]keep-cr] [--[no-]utf8]
+         [--[no-]3way] [--interactive] [--committer-date-is-author-date]
          [--ignore-date] [--ignore-space-change | --ignore-whitespace]
          [--whitespace=&lt;option&gt;] [-C&lt;n&gt;] [-p&lt;n&gt;] [--directory=&lt;dir&gt;]
          [--exclude=&lt;path&gt;] [--include=&lt;path&gt;] [--reject] [-q | --quiet]
-         [--scissors | --no-scissors]
+         [--[no-]scissors] [-S[&lt;keyid&gt;]] [--patch-format=&lt;format&gt;]
          [(&lt;mbox&gt; | &lt;Maildir&gt;)&#8230;]
 <emphasis>git am</emphasis> (--continue | --skip | --abort)</literallayout>
 </blockquote>
@@ -55,6 +55,7 @@ current branch.</simpara>
 <simpara>
         Add a <emphasis>Signed-off-by:</emphasis> line to the commit message, using
         the committer identity of yourself.
+        See the signoff option in <xref linkend="git-commit(1)" /> for more information.
 </simpara>
 </listitem>
 </varlistentry>
@@ -83,10 +84,7 @@ current branch.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---keep-cr
-</term>
-<term>
---no-keep-cr
+--[no-]keep-cr
 </term>
 <listitem>
 <simpara>
@@ -107,7 +105,8 @@ current branch.</simpara>
 <listitem>
 <simpara>
         Remove everything in body before a scissors line (see
-        <xref linkend="git-mailinfo(1)" />).
+        <xref linkend="git-mailinfo(1)" />). Can be activated by default using
+        the <emphasis>mailinfo.scissors</emphasis> configuration variable.
 </simpara>
 </listitem>
 </varlistentry>
@@ -118,6 +117,33 @@ current branch.</simpara>
 <listitem>
 <simpara>
         Ignore scissors lines (see <xref linkend="git-mailinfo(1)" />).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-m
+</term>
+<term>
+--message-id
+</term>
+<listitem>
+<simpara>
+        Pass the <emphasis>-m</emphasis> flag to <emphasis>git mailinfo</emphasis> (see <xref linkend="git-mailinfo(1)" />),
+        so that the Message-ID header is added to the commit message.
+        The <emphasis>am.messageid</emphasis> configuration variable can be used to specify
+        the default behaviour.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--no-message-id
+</term>
+<listitem>
+<simpara>
+        Do not add the Message-ID header to the commit message.
+        <emphasis>no-message-id</emphasis> is useful to override <emphasis>am.messageid</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -171,19 +197,21 @@ default.   You can use <emphasis>--no-utf8</emphasis> to override this.</simpara
 <term>
 --3way
 </term>
+<term>
+--no-3way
+</term>
 <listitem>
 <simpara>
         When the patch does not apply cleanly, fall back on
         3-way merge if the patch records the identity of blobs
         it is supposed to apply to and we have those blobs
-        available locally.
+        available locally. <emphasis>--no-3way</emphasis> can be used to override
+        am.threeWay configuration variable. For more information,
+        see am.threeWay in <xref linkend="git-config(1)" />.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
-<term>
---ignore-date
-</term>
 <term>
 --ignore-space-change
 </term>
@@ -216,6 +244,19 @@ default.   You can use <emphasis>--no-utf8</emphasis> to override this.</simpara
         These flags are passed to the <emphasis>git apply</emphasis> (see <xref linkend="git-apply(1)" />)
         program that applies
         the patch.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--patch-format
+</term>
+<listitem>
+<simpara>
+        By default the command will try to detect the patch format
+        automatically. This option allows the user to bypass the automatic
+        detection and specify the patch format that the patch(es) should be
+        interpreted as. Valid formats are mbox, stgit, stgit-series and hg.
 </simpara>
 </listitem>
 </varlistentry>
@@ -273,6 +314,21 @@ default.   You can use <emphasis>--no-utf8</emphasis> to override this.</simpara
 </varlistentry>
 <varlistentry>
 <term>
+-S[&lt;keyid&gt;]
+</term>
+<term>
+--gpg-sign[=&lt;keyid&gt;]
+</term>
+<listitem>
+<simpara>
+        GPG-sign commits. The <emphasis>keyid</emphasis> argument is optional and
+        defaults to the committer identity; if specified, it must be
+        stuck to the option without a space.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --continue
 </term>
 <term>
@@ -300,7 +356,7 @@ default.   You can use <emphasis>--no-utf8</emphasis> to override this.</simpara
 <simpara>
         When a patch failure occurs, &lt;msg&gt; will be printed
         to the screen before exiting.  This overrides the
-        standard message informing you to use <emphasis>--resolved</emphasis>
+        standard message informing you to use <emphasis>--continue</emphasis>
         or <emphasis>--skip</emphasis> to handle the failure.  This is solely
         for internal use between <emphasis>git rebase</emphasis> and <emphasis>git am</emphasis>.
 </simpara>
@@ -367,7 +423,7 @@ skip the current patch by re-running the command with the <emphasis>--skip</emph
 <simpara>
 hand resolve the conflict in the working directory, and update
   the index file to bring it into a state that the patch should
-  have produced.  Then run the command with the <emphasis>--resolved</emphasis> option.
+  have produced.  Then run the command with the <emphasis>--continue</emphasis> option.
 </simpara>
 </listitem>
 </orderedlist>
@@ -380,6 +436,12 @@ current branch.  This is useful if you have problems with multiple
 commits, like running <emphasis>git am</emphasis> on the wrong branch or an error in the
 commits that is more easily fixed by changing the mailbox (e.g.
 errors in the "From:" lines).</simpara>
+</simplesect>
+<simplesect id="git-am(1)__hooks">
+<title>HOOKS</title>
+<simpara>This command can run <emphasis>applypatch-msg</emphasis>, <emphasis>pre-applypatch</emphasis>,
+and <emphasis>post-applypatch</emphasis> hooks.  See <xref linkend="githooks(5)" /> for more
+information.</simpara>
 </simplesect>
 <simplesect id="git-am(1)__see_also">
 <title>SEE ALSO</title>

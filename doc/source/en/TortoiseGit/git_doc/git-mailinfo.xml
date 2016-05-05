@@ -13,7 +13,7 @@
 <simplesect id="git-mailinfo(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git mailinfo</emphasis> [-k|-b] [-u | --encoding=&lt;encoding&gt; | -n] [--scissors] &lt;msg&gt; &lt;patch&gt;</literallayout>
+<literallayout><emphasis>git mailinfo</emphasis> [-k|-b] [-u | --encoding=&lt;encoding&gt; | -n] [--[no-]scissors] &lt;msg&gt; &lt;patch&gt;</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-mailinfo(1)__description">
@@ -108,6 +108,20 @@ conversion, even with this flag.</simpara>
 <listitem>
 <simpara>
         Disable all charset re-coding of the metadata.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-m
+</term>
+<term>
+--message-id
+</term>
+<listitem>
+<simpara>
+        Copy the Message-ID header at the end of the commit message.  This
+        is useful in order to associate commits with mailing list discussions.
 </simpara>
 </listitem>
 </varlistentry>

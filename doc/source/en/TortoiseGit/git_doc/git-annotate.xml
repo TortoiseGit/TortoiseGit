@@ -46,7 +46,7 @@ familiar command name for people coming from other SCM systems.</simpara>
 <listitem>
 <simpara>
         Do not treat root commits as boundaries.  This can also be
-        controlled via the <emphasis>blame.showroot</emphasis> config option.
+        controlled via the <emphasis>blame.showRoot</emphasis> config option.
 </simpara>
 </listitem>
 </varlistentry>
@@ -64,11 +64,17 @@ familiar command name for people coming from other SCM systems.</simpara>
 <term>
 -L &lt;start&gt;,&lt;end&gt;
 </term>
+<term>
+-L :&lt;funcname&gt;
+</term>
 <listitem>
 <simpara>
-        Annotate only the given line range.  &lt;start&gt; and &lt;end&gt; can take
-        one of these forms:
+        Annotate only the given line range. May be specified multiple times.
+        Overlapping ranges are allowed.
 </simpara>
+<simpara>&lt;start&gt; and &lt;end&gt; are optional. -L &lt;start&gt; or -L &lt;start&gt;, spans from
+&lt;start&gt; to end of file. -L ,&lt;end&gt; spans from start of file to &lt;end&gt;.</simpara>
+<simpara>&lt;start&gt; and &lt;end&gt; can take one of these forms:</simpara>
 <itemizedlist>
 <listitem>
 <simpara>
@@ -82,7 +88,10 @@ absolute line number (lines count from 1).</simpara>
 /regex/
 </simpara>
 <simpara>This form will use the first line matching the given
-POSIX regex.  If &lt;end&gt; is a regex, it will search
+POSIX regex. If &lt;start&gt; is a regex, it will search from the end of
+the previous <emphasis>-L</emphasis> range, if any, otherwise from the start of file.
+If &lt;start&gt; is ^/regex/, it will search from the start of file.
+If &lt;end&gt; is a regex, it will search
 starting at the line given by &lt;start&gt;.</simpara>
 </listitem>
 <listitem>
@@ -93,6 +102,12 @@ starting at the line given by &lt;start&gt;.</simpara>
 of lines before or after the line given by &lt;start&gt;.</simpara>
 </listitem>
 </itemizedlist>
+<simpara>If :&lt;funcname&gt; is given in place of &lt;start&gt; and &lt;end&gt;, it is a
+regular expression that denotes the range from the first funcname line
+that matches &lt;funcname&gt;, up to the next funcname line. :&lt;funcname&gt;
+searches from the end of the previous <emphasis>-L</emphasis> range, if any, otherwise
+from the start of file. ^:&lt;funcname&gt; searches from the start of
+file.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -209,12 +224,25 @@ of lines before or after the line given by &lt;start&gt;.</simpara>
 </term>
 <listitem>
 <simpara>
-        The value is one of the following alternatives:
-        {relative,local,default,iso,rfc,short}. If --date is not
+        Specifies the format used to output dates. If --date is not
         provided, the value of the blame.date config variable is
         used. If the blame.date config variable is also not set, the
-        iso format is used. For more information, See the discussion
+        iso format is used. For supported values, see the discussion
         of the --date option at <xref linkend="git-log(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--[no-]progress
+</term>
+<listitem>
+<simpara>
+        Progress status is reported on the standard error stream
+        by default when it is attached to a terminal. This flag
+        enables progress reporting even if not attached to a
+        terminal. Can't use <emphasis>--progress</emphasis> together with <emphasis>--porcelain</emphasis>
+        or <emphasis>--incremental</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -235,7 +263,7 @@ of lines before or after the line given by &lt;start&gt;.</simpara>
         running extra passes of inspection.
 </simpara>
 <simpara>&lt;num&gt; is optional but it is the lower bound on the number of
-alphanumeric characters that git must detect as moving/copying
+alphanumeric characters that Git must detect as moving/copying
 within a file for it to associate those lines with the parent
 commit. The default value is 20.</simpara>
 </listitem>
@@ -256,7 +284,7 @@ commit. The default value is 20.</simpara>
         looks for copies from other files in any commit.
 </simpara>
 <simpara>&lt;num&gt; is optional but it is the lower bound on the number of
-alphanumeric characters that git must detect as moving/copying
+alphanumeric characters that Git must detect as moving/copying
 between files for it to associate those lines with the parent
 commit. And the default value is 40. If there are more than one
 <emphasis>-C</emphasis> options given, the &lt;num&gt; argument of the last <emphasis>-C</emphasis> will

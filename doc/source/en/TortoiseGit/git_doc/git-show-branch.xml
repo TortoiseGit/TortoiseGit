@@ -28,7 +28,7 @@ with &lt;rev&gt;s or &lt;globs&gt;s (or all refs under refs/heads
 and/or refs/tags) semi-visually.</simpara>
 <simpara>It cannot show more than 29 branches and commits at a time.</simpara>
 <simpara>It uses <emphasis>showbranch.default</emphasis> multi-valued configuration items if
-no &lt;rev&gt; nor &lt;glob&gt; is given on the command line.</simpara>
+no &lt;rev&gt; or &lt;glob&gt; is given on the command line.</simpara>
 </simplesect>
 <simplesect id="git-show-branch(1)__options">
 <title>OPTIONS</title>
@@ -39,7 +39,7 @@ no &lt;rev&gt; nor &lt;glob&gt; is given on the command line.</simpara>
 </term>
 <listitem>
 <simpara>
-        Arbitrary extended SHA1 expression (see <xref linkend="gitrevisions(7)" />)
+        Arbitrary extended SHA-1 expression (see <xref linkend="gitrevisions(7)" />)
         that typically names a branch head or a tag.
 </simpara>
 </listitem>
@@ -276,7 +276,7 @@ displayed, indented N places.  If a commit is on the I-th
 branch, the I-th indentation character shows a <emphasis>+</emphasis> sign;
 otherwise it shows a space.  Merge commits are denoted by
 a <emphasis>-</emphasis> sign.  Each commit shows a short name that
-can be used as an extended SHA1 to name that commit.</simpara>
+can be used as an extended SHA-1 to name that commit.</simpara>
 <simpara>The following example shows three branches, "master", "fixes"
 and "mhf":</simpara>
 <screen>$ git show-branch master fixes mhf

@@ -8,7 +8,7 @@
 </indexterm>
 <simplesect id="git-var(1)__name">
 <title>NAME</title>
-<simpara>git-var - Show a git logical variable</simpara>
+<simpara>git-var - Show a Git logical variable</simpara>
 </simplesect>
 <simplesect id="git-var(1)__synopsis">
 <title>SYNOPSIS</title>
@@ -18,7 +18,7 @@
 </simplesect>
 <simplesect id="git-var(1)__description">
 <title>DESCRIPTION</title>
-<simpara>Prints a git logical variable.</simpara>
+<simpara>Prints a Git logical variable.</simpara>
 </simplesect>
 <simplesect id="git-var(1)__options">
 <title>OPTIONS</title>
@@ -30,7 +30,7 @@
 <listitem>
 <simpara>
         Cause the logical variables to be listed. In addition, all the
-        variables of the git configuration file .git/config are listed
+        variables of the Git configuration file .git/config are listed
         as well. (However, the configuration variables listing functionality
         is deprecated in favor of <emphasis>git config -l</emphasis>.)
 </simpara>
@@ -62,7 +62,7 @@ GIT_COMMITTER_IDENT
 </term>
 <listitem>
 <simpara>
-    The person who put a piece of code into git.
+    The person who put a piece of code into Git.
 </simpara>
 </listitem>
 </varlistentry>
@@ -72,7 +72,7 @@ GIT_EDITOR
 </term>
 <listitem>
 <simpara>
-    Text editor for use by git commands.  The value is meant to be
+    Text editor for use by Git commands.  The value is meant to be
     interpreted by the shell when it is used.  Examples: <emphasis>~/bin/vi</emphasis>,
     <emphasis>$SOME_ENVIRONMENT_VARIABLE</emphasis>, <emphasis>"C:\Program Files\Vim\gvim.exe"
     --nofork</emphasis>.  The order of preference is the <emphasis>$GIT_EDITOR</emphasis>
@@ -88,7 +88,7 @@ GIT_PAGER
 </term>
 <listitem>
 <simpara>
-    Text viewer for use by git commands (e.g., <emphasis>less</emphasis>).  The value
+    Text viewer for use by Git commands (e.g., <emphasis>less</emphasis>).  The value
     is meant to be interpreted by the shell.  The order of preference
     is the <emphasis>$GIT_PAGER</emphasis> environment variable, then <emphasis>core.pager</emphasis>
     configuration, then <emphasis>$PAGER</emphasis>, and then the default chosen at

@@ -17,7 +17,7 @@
            [--dry-run] [(-c | -C | --fixup | --squash) &lt;commit&gt;]
            [-F &lt;file&gt; | -m &lt;msg&gt;] [--reset-author] [--allow-empty]
            [--allow-empty-message] [--no-verify] [-e] [--author=&lt;author&gt;]
-           [--date=&lt;date&gt;] [--cleanup=&lt;mode&gt;] [--status | --no-status]
+           [--date=&lt;date&gt;] [--cleanup=&lt;mode&gt;] [--[no-]status]
            [-i | -o] [-S[&lt;keyid&gt;]] [--] [&lt;file&gt;&#8230;]</literallayout>
 </blockquote>
 </simplesect>
@@ -45,7 +45,7 @@ by using <emphasis>git rm</emphasis> to remove files from the working tree
 by listing files as arguments to the <emphasis>commit</emphasis> command, in which
    case the commit will ignore changes staged in the index, and instead
    record the current content of the listed files (which must already
-   be known to git);
+   be known to Git);
 </simpara>
 </listitem>
 <listitem>
@@ -86,7 +86,7 @@ that, you can recover from it with <emphasis>git reset</emphasis>.</simpara>
 <simpara>
         Tell the command to automatically stage files that have
         been modified and deleted, but new files you have not
-        told git about are not affected.
+        told Git about are not affected.
 </simpara>
 </listitem>
 </varlistentry>
@@ -169,7 +169,7 @@ that, you can recover from it with <emphasis>git reset</emphasis>.</simpara>
 <simpara>
         When used with -C/-c/--amend options, or when committing after a
         a conflicting cherry-pick, declare that the authorship of the
-        resulting commit now belongs of the committer. This also renews
+        resulting commit now belongs to the committer. This also renews
         the author timestamp.
 </simpara>
 </listitem>
@@ -281,6 +281,8 @@ that, you can recover from it with <emphasis>git reset</emphasis>.</simpara>
 <listitem>
 <simpara>
         Use the given &lt;msg&gt; as the commit message.
+        If multiple <emphasis>-m</emphasis> options are given, their values are
+        concatenated as separate paragraphs.
 </simpara>
 </listitem>
 </varlistentry>
@@ -314,7 +316,11 @@ that, you can recover from it with <emphasis>git reset</emphasis>.</simpara>
 <listitem>
 <simpara>
         Add Signed-off-by line by the committer at the end of the commit
-        log message.
+        log message.  The meaning of a signoff depends on the project,
+        but it typically certifies that committer has
+        the rights to submit this work under the same license and
+        agrees to a Developer Certificate of Origin
+        (see <ulink url="http://developercertificate.org/">http://developercertificate.org/</ulink> for more information).
 </simpara>
 </listitem>
 </varlistentry>
@@ -364,15 +370,70 @@ that, you can recover from it with <emphasis>git reset</emphasis>.</simpara>
 </term>
 <listitem>
 <simpara>
-        This option sets how the commit message is cleaned up.
-        The  <emphasis>&lt;mode&gt;</emphasis> can be one of <emphasis>verbatim</emphasis>, <emphasis>whitespace</emphasis>, <emphasis>strip</emphasis>,
-        and <emphasis>default</emphasis>. The <emphasis>default</emphasis> mode will strip leading and
-        trailing empty lines and #commentary from the commit message
-        only if the message is to be edited. Otherwise only whitespace
-        removed. The <emphasis>verbatim</emphasis> mode does not change message at all,
-        <emphasis>whitespace</emphasis> removes just leading/trailing whitespace lines
-        and <emphasis>strip</emphasis> removes both whitespace and commentary.
+        This option determines how the supplied commit message should be
+        cleaned up before committing.  The <emphasis>&lt;mode&gt;</emphasis> can be <emphasis>strip</emphasis>,
+        <emphasis>whitespace</emphasis>, <emphasis>verbatim</emphasis>, <emphasis>scissors</emphasis> or <emphasis>default</emphasis>.
 </simpara>
+<variablelist>
+<varlistentry>
+<term>
+strip
+</term>
+<listitem>
+<simpara>
+        Strip leading and trailing empty lines, trailing whitespace,
+        commentary and collapse consecutive empty lines.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+whitespace
+</term>
+<listitem>
+<simpara>
+        Same as <emphasis>strip</emphasis> except #commentary is not removed.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+verbatim
+</term>
+<listitem>
+<simpara>
+        Do not change the message at all.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+scissors
+</term>
+<listitem>
+<simpara>
+        Same as <emphasis>whitespace</emphasis>, except that everything from (and
+        including) the line
+        "<emphasis># ------------------------ &gt;8 ------------------------</emphasis>"
+        is truncated if the message is to be edited. "<emphasis>#</emphasis>" can be
+        customized with core.commentChar.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+default
+</term>
+<listitem>
+<simpara>
+        Same as <emphasis>strip</emphasis> if the message is to be edited.
+        Otherwise <emphasis>whitespace</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+<simpara>The default can be changed by the <emphasis>commit.cleanup</emphasis> configuration
+variable (see <xref linkend="git-config(1)" />).</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -385,8 +446,8 @@ that, you can recover from it with <emphasis>git reset</emphasis>.</simpara>
 <listitem>
 <simpara>
         The message taken from file with <emphasis>-F</emphasis>, command line with
-        <emphasis>-m</emphasis>, and from file with <emphasis>-C</emphasis> are usually used as the
-        commit log message unmodified.  This option lets you
+        <emphasis>-m</emphasis>, and from commit object with <emphasis>-C</emphasis> are usually used as
+        the commit log message unmodified. This option lets you
         further edit the message taken from these sources.
 </simpara>
 </listitem>
@@ -409,14 +470,15 @@ that, you can recover from it with <emphasis>git reset</emphasis>.</simpara>
 </term>
 <listitem>
 <simpara>
-        Used to amend the tip of the current branch. Prepare the tree
-        object you would want to replace the latest commit as usual
-        (this includes the usual -i/-o and explicit paths), and the
-        commit log editor is seeded with the commit message from the
-        tip of the current branch. The commit you create replaces the
-        current tip -- if it was a merge, it will have the parents of
-        the current tip as parents -- so the current top commit is
-        discarded.
+        Replace the tip of the current branch by creating a new
+        commit. The recorded tree is prepared as usual (including
+        the effect of the <emphasis>-i</emphasis> and <emphasis>-o</emphasis> options and explicit
+        pathspec), and the message from the original commit is used
+        as the starting point, instead of an empty message, when no
+        other message is specified from the command line via options
+        such as <emphasis>-m</emphasis>, <emphasis>-F</emphasis>, <emphasis>-c</emphasis>, etc.  The new commit has the same
+        parents and author as the current one (the <emphasis>--reset-author</emphasis>
+        option can countermand this).
 </simpara>
 <simpara>It is a rough equivalent for:</simpara>
 <screen>        $ git reset --soft HEAD^
@@ -463,9 +525,10 @@ FROM UPSTREAM REBASE" section in <xref linkend="git-rebase(1)" />.)</simpara>
 </term>
 <listitem>
 <simpara>
-        Make a commit only from the paths specified on the
+        Make a commit by taking the updated working tree contents
+        of the paths specified on the
         command line, disregarding any contents that have been
-        staged so far. This is the default mode of operation of
+        staged for other paths. This is the default mode of operation of
         <emphasis>git commit</emphasis> if any paths are given on the command line,
         in which case this option can be omitted.
         If this option is specified together with <emphasis>--amend</emphasis>, then
@@ -522,9 +585,15 @@ configuration variable documented in <xref linkend="git-config(1)" />.</simpara>
 <simpara>
         Show unified diff between the HEAD commit and what
         would be committed at the bottom of the commit message
-        template.  Note that this diff output doesn't have its
-        lines prefixed with <emphasis>#</emphasis>.
+        template to help the user describe the commit by reminding
+        what changes the commit has.
+        Note that this diff output doesn't have its
+        lines prefixed with <emphasis>#</emphasis>. This diff will not be a part
+        of the commit message.
 </simpara>
+<simpara>If specified twice, show in addition the unified diff between
+what would be committed and the worktree files, i.e. the unstaged
+changes to tracked files.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -586,7 +655,20 @@ configuration variable documented in <xref linkend="git-config(1)" />.</simpara>
 </term>
 <listitem>
 <simpara>
-        GPG-sign commit.
+        GPG-sign commits. The <emphasis>keyid</emphasis> argument is optional and
+        defaults to the committer identity; if specified, it must be
+        stuck to the option without a space.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--no-gpg-sign
+</term>
+<listitem>
+<simpara>
+        Countermand <emphasis>commit.gpgSign</emphasis> configuration variable that is
+        set to force each and every commit to be signed.
 </simpara>
 </listitem>
 </varlistentry>
@@ -628,9 +710,9 @@ Git internal format
 </term>
 <listitem>
 <simpara>
-        It is <emphasis>&lt;unix timestamp&gt; &lt;timezone offset&gt;</emphasis>, where <emphasis>&lt;unix
+        It is <emphasis>&lt;unix timestamp&gt; &lt;time zone offset&gt;</emphasis>, where <emphasis>&lt;unix
         timestamp&gt;</emphasis> is the number of seconds since the UNIX epoch.
-        <emphasis>&lt;timezone offset&gt;</emphasis> is a positive or negative offset from UTC.
+        <emphasis>&lt;time zone offset&gt;</emphasis> is a positive or negative offset from UTC.
         For example CET (which is 2 hours ahead UTC) is <emphasis>+0200</emphasis>.
 </simpara>
 </listitem>
@@ -735,21 +817,11 @@ refuses to run when given pathnames (but see <emphasis>-i</emphasis> option).</s
 with a single short (less than 50 character) line summarizing the
 change, followed by a blank line and then a more thorough description.
 The text up to the first blank line in a commit message is treated
-as the commit title, and that title is used throughout git.
+as the commit title, and that title is used throughout Git.
 For example, <xref linkend="git-format-patch(1)" /> turns a commit into email, and it uses
 the title on the Subject line and the rest of the commit in the body.</simpara>
-<simpara>At the core level, git is character encoding agnostic.</simpara>
+<simpara>Git is to some extent character encoding agnostic.</simpara>
 <itemizedlist>
-<listitem>
-<simpara>
-The pathnames recorded in the index and in the tree objects
-   are treated as uninterpreted sequences of non-NUL bytes.
-   What readdir(2) returns are what are recorded and compared
-   with the data git keeps track of, which in turn are expected
-   to be what lstat(2) and creat(2) accepts.  There is no such
-   thing as pathname encoding translation.
-</simpara>
-</listitem>
 <listitem>
 <simpara>
 The contents of the blob objects are uninterpreted sequences
@@ -759,15 +831,37 @@ The contents of the blob objects are uninterpreted sequences
 </listitem>
 <listitem>
 <simpara>
-The commit log messages are uninterpreted sequences of non-NUL
-   bytes.
+Path names are encoded in UTF-8 normalization form C. This
+   applies to tree objects, the index file, ref names, as well as
+   path names in command line arguments, environment variables
+   and config files (<emphasis>.git/config</emphasis> (see <xref linkend="git-config(1)" />),
+   <xref linkend="gitignore(5)" />, <xref linkend="gitattributes(5)" /> and
+   <xref linkend="gitmodules(5)" />).
+</simpara>
+<simpara>Note that Git at the core level treats path names simply as
+sequences of non-NUL bytes, there are no path name encoding
+conversions (except on Mac and Windows). Therefore, using
+non-ASCII path names will mostly work even on platforms and file
+systems that use legacy extended ASCII encodings. However,
+repositories created on such systems will not work properly on
+UTF-8-based systems (e.g. Linux, Mac, Windows) and vice versa.
+Additionally, many Git-based tools simply assume path names to
+be UTF-8 and will fail to display other encodings correctly.</simpara>
+</listitem>
+<listitem>
+<simpara>
+Commit log messages are typically encoded in UTF-8, but other
+   extended ASCII encodings are also supported. This includes
+   ISO-8859-x, CP125x and many others, but <emphasis>not</emphasis> UTF-16/32,
+   EBCDIC and CJK multi-byte encodings (GBK, Shift-JIS, Big5,
+   EUC-x, CP9xx etc.).
 </simpara>
 </listitem>
 </itemizedlist>
 <simpara>Although we encourage that the commit log messages are encoded
-in UTF-8, both the core and git Porcelain are designed not to
+in UTF-8, both the core and Git Porcelain are designed not to
 force UTF-8 on projects.  If all participants of a particular
-project find it more convenient to use legacy encodings, git
+project find it more convenient to use legacy encodings, Git
 does not forbid it.  However, there are a few things to keep in
 mind.</simpara>
 <orderedlist numeration="arabic">
