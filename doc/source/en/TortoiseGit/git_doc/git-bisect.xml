@@ -372,7 +372,7 @@ help</emphasis> or <emphasis>git bisect -h</emphasis> to get a long usage descri
 </simplesect>
 <simplesect id="git-bisect(1)__see_also">
 <title>SEE ALSO</title>
-<simpara>link:git-bisect-lk2009.html[Fighting regressions with git bisect],
+<simpara><ulink url="https://www.kernel.org/pub/software/scm/git/docs/git-bisect-lk2009.html"><citetitle>Fighting regressions with git bisect</citetitle></ulink>,
 <xref linkend="git-blame(1)" />.</simpara>
 </simplesect>
 <simplesect id="git-bisect(1)__git">

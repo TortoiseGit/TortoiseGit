@@ -22,7 +22,7 @@
 changes to it, and share changes with other developers.</simpara>
 <simpara>If you are instead primarily interested in using Git to fetch a project,
 for example, to test the latest version, you may prefer to start with
-the first two chapters of link:user-manual.html[The Git User's Manual].</simpara>
+the first two chapters of <ulink url="https://www.kernel.org/pub/software/scm/git/docs/user-manual.html"><citetitle>The Git User's Manual</citetitle></ulink>.</simpara>
 <simpara>First, note that you can get documentation for a command such as
 <emphasis>git log --graph</emphasis> with:</simpara>
 <screen>$ man git-log</screen>
@@ -433,7 +433,7 @@ digressions that may be interesting at this point are:</simpara>
 <xref linkend="git-help(1)" />,
 <xref linkend="gitworkflows(7)" />,
 <xref linkend="giteveryday(7)" />,
-link:user-manual.html[The Git User's Manual]</simpara>
+<ulink url="https://www.kernel.org/pub/software/scm/git/docs/user-manual.html"><citetitle>The Git User's Manual</citetitle></ulink></simpara>
 </simplesect>
 <simplesect id="gittutorial(7)__git">
 <title>GIT</title>

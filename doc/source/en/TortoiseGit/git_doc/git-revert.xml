@@ -86,7 +86,7 @@ both will discard uncommitted changes in your working directory.</simpara>
 brought in by the merge.  As a result, later merges will only bring in tree
 changes introduced by commits that are not ancestors of the previously
 reverted merge.  This may or may not be what you want.</simpara>
-<simpara>See the link:howto/revert-a-faulty-merge.html[revert-a-faulty-merge How-To] for
+<simpara>See the <ulink url="https://www.kernel.org/pub/software/scm/git/docs/howto/revert-a-faulty-merge.html"><citetitle>revert-a-faulty-merge How-To</citetitle></ulink> for
 more details.</simpara>
 </listitem>
 </varlistentry>

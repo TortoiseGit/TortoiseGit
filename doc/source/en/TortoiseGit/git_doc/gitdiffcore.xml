@@ -270,7 +270,7 @@ t</screen>
 <xref linkend="git-format-patch(1)" />,
 <xref linkend="git-log(1)" />,
 <xref linkend="gitglossary(7)" />,
-link:user-manual.html[The Git User's Manual]</simpara>
+<ulink url="https://www.kernel.org/pub/software/scm/git/docs/user-manual.html"><citetitle>The Git User's Manual</citetitle></ulink></simpara>
 </simplesect>
 <simplesect id="gitdiffcore(7)__git">
 <title>GIT</title>

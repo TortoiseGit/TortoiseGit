@@ -1268,7 +1268,7 @@ The most notable example is <emphasis>HEAD</emphasis>.</simpara>
 <xref linkend="gittutorial-2(7)" />,
 <xref linkend="gitcvs-migration(7)" />,
 <xref linkend="giteveryday(7)" />,
-link:user-manual.html[The Git User's Manual]</simpara>
+<ulink url="https://www.kernel.org/pub/software/scm/git/docs/user-manual.html"><citetitle>The Git User's Manual</citetitle></ulink></simpara>
 </simplesect>
 <simplesect id="gitglossary(7)__git">
 <title>GIT</title>

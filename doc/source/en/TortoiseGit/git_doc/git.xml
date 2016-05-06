@@ -27,7 +27,7 @@ unusually rich command set that provides both high-level operations
 and full access to internals.</simpara>
 <simpara>See <xref linkend="gittutorial(7)" /> to get started, then see
 <xref linkend="giteveryday(7)" /> for a useful minimum set of
-commands.  The link:user-manual.html[Git User's Manual] has a more
+commands.  The <ulink url="https://www.kernel.org/pub/software/scm/git/docs/user-manual.html"><citetitle>Git User's Manual</citetitle></ulink> has a more
 in-depth introduction.</simpara>
 <simpara>After you mastered the basic concepts, you can come back to this
 page to learn what commands Git offers.  You can learn more about
@@ -2583,8 +2583,8 @@ any external helpers are named by their protocol (e.g., use
 <simplesect id="git(1)__discussion_anchor_id_git_1__discussion_xreflabel_discussion">
 <title>Discussion<anchor id="git(1)_Discussion" xreflabel="[Discussion]"/></title>
 <simpara>More detail on the following is available from the
-<link linkend="git-concepts">Git concepts chapter of the
-user-manual</link> and <xref linkend="gitcore-tutorial(7)" />.</simpara>
+<ulink url="https://www.kernel.org/pub/software/scm/git/docs/user-manual.html#git-concepts"><citetitle>Git concepts chapter of the
+user-manual</citetitle></ulink> and <xref linkend="gitcore-tutorial(7)" />.</simpara>
 <simpara>A Git project normally consists of a working directory with a ".git"
 subdirectory at the top level.  The .git directory contains, among other
 things, a compressed object database representing the complete history
@@ -2629,14 +2629,14 @@ unmerged version of a file when a merge is in progress.</simpara>
 <simpara>See the references in the "description" section to get started
 using Git.  The following is probably more detail than necessary
 for a first-time user.</simpara>
-<simpara>The <link linkend="git-concepts">Git concepts chapter of the
-user-manual</link> and <xref linkend="gitcore-tutorial(7)" /> both provide
+<simpara>The <ulink url="https://www.kernel.org/pub/software/scm/git/docs/user-manual.html#git-concepts"><citetitle>Git concepts chapter of the
+user-manual</citetitle></ulink> and <xref linkend="gitcore-tutorial(7)" /> both provide
 introductions to the underlying Git architecture.</simpara>
 <simpara>See <xref linkend="gitworkflows(7)" /> for an overview of recommended workflows.</simpara>
-<simpara>See also the link:howto-index.html[howto] documents for some useful
+<simpara>See also the <ulink url="https://www.kernel.org/pub/software/scm/git/docs/howto-index.html"><citetitle>howto</citetitle></ulink> documents for some useful
 examples.</simpara>
 <simpara>The internals are documented in the
-link:technical/api-index.html[Git API documentation].</simpara>
+<ulink url="https://www.kernel.org/pub/software/scm/git/docs/technical/api-index.html"><citetitle>Git API documentation</citetitle></ulink>.</simpara>
 <simpara>Users migrating from CVS may also want to
 read <xref linkend="gitcvs-migration(7)" />.</simpara>
 </simplesect>
@@ -2661,7 +2661,7 @@ subscribed to the list to send a message there.</simpara>
 <simpara><xref linkend="gittutorial(7)" />, <xref linkend="gittutorial-2(7)" />,
 <xref linkend="giteveryday(7)" />, <xref linkend="gitcvs-migration(7)" />,
 <xref linkend="gitglossary(7)" />, <xref linkend="gitcore-tutorial(7)" />,
-<xref linkend="gitcli(7)" />, link:user-manual.html[The Git User's Manual],
+<xref linkend="gitcli(7)" />, <ulink url="https://www.kernel.org/pub/software/scm/git/docs/user-manual.html"><citetitle>The Git User's Manual</citetitle></ulink>,
 <xref linkend="gitworkflows(7)" /></simpara>
 </simplesect>
 <simplesect id="git(1)__git">

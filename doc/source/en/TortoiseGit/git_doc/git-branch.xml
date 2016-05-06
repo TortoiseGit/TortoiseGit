@@ -568,8 +568,8 @@ but different purposes:</simpara>
 <simpara><xref linkend="git-check-ref-format(1)" />,
 <xref linkend="git-fetch(1)" />,
 <xref linkend="git-remote(1)" />,
-<link linkend="what-is-a-branch">Understanding history: What is
-a branch?</link> in the Git User's Manual.</simpara>
+<ulink url="https://www.kernel.org/pub/software/scm/git/docs/user-manual.html#what-is-a-branch"><citetitle>Understanding history: What is
+a branch?</citetitle></ulink> in the Git User's Manual.</simpara>
 </simplesect>
 <simplesect id="git-branch(1)__git">
 <title>GIT</title>

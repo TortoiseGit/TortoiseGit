@@ -628,7 +628,7 @@ and maintain access to the repository by developers.</simpara>
 </simpara>
 </listitem>
 </itemizedlist>
-<simpara>link:howto/update-hook-example.html[update hook howto] has a good
+<simpara><ulink url="https://www.kernel.org/pub/software/scm/git/docs/howto/update-hook-example.html"><citetitle>update hook howto</citetitle></ulink> has a good
 example of managing a shared central repository.</simpara>
 <simpara>In addition there are a number of other widely deployed hosting, browsing
 and reviewing solutions such as:</simpara>

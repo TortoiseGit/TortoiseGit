@@ -118,8 +118,8 @@ incremental imports.</simpara>
 points.  You can use these, for example, to send all commits to the shared
 repository to a mailing list.  See <xref linkend="githooks(5)" />.</simpara>
 <simpara>You can enforce finer grained permissions using update hooks.  See
-link:howto/update-hook-example.html[Controlling access to branches using
-update hooks].</simpara>
+<ulink url="https://www.kernel.org/pub/software/scm/git/docs/howto/update-hook-example.html"><citetitle>Controlling access to branches using
+update hooks</citetitle></ulink>.</simpara>
 </simplesect>
 <simplesect id="gitcvs-migration(7)__providing_cvs_access_to_a_git_repository">
 <title>Providing CVS Access to a Git Repository</title>
@@ -152,7 +152,7 @@ repositories without the need for a central maintainer.</simpara>
 <xref linkend="gitcore-tutorial(7)" />,
 <xref linkend="gitglossary(7)" />,
 <xref linkend="giteveryday(7)" />,
-link:user-manual.html[The Git User's Manual]</simpara>
+<ulink url="https://www.kernel.org/pub/software/scm/git/docs/user-manual.html"><citetitle>The Git User's Manual</citetitle></ulink></simpara>
 </simplesect>
 <simplesect id="gitcvs-migration(7)__git">
 <title>GIT</title>

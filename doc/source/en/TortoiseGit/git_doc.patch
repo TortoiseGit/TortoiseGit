@@ -19,11 +19,11 @@ diff --git a/Documentation/Makefile b/Documentation/Makefile
 index 9ad6a6a..adfe07a 100644
 --- a/Documentation/Makefile
 +++ b/Documentation/Makefile
-@@ -165,6 +165,8 @@ html: $(DOC_HTML)
+@@ -216,6 +216,8 @@ all: html man
  
- $(DOC_HTML) $(DOC_MAN1) $(DOC_MAN5) $(DOC_MAN7): asciidoc.conf
+ html: $(DOC_HTML)
  
-+xml: cmd-list.perl $(MAN_XML) user-manual.xml everyday.xml
++xml: cmd-list.perl $(MAN_XML) user-manual.xml
 +
  man: man1 man5 man7
  man1: $(DOC_MAN1)
@@ -38,14 +38,14 @@ index 9ad6a6a..adfe07a 100644
  
  user-manual.xml: user-manual.txt user-manual.conf
 diff --git a/Documentation/asciidoc.conf b/Documentation/asciidoc.conf
-index 1273a85..5223c99
+index 2c16c53..5b98e06
 --- a/Documentation/asciidoc.conf
 +++ b/Documentation/asciidoc.conf
 @@ -9,6 +9,7 @@
  
  [macros]
  (?su)[\\]?(?P<name>linkgit):(?P<target>\S*?)\[(?P<attrlist>.*?)\]=
-+(?su)(?<!\w)[\\]?(?P<name>link):\S*?#(?P<target>\S*?)\[(?P<attrlist>.*?)\]=
++(?su)[\\]?(?P<name>link):(?P<target>\S*?)\[(?P<attrlist>.*?)\]=
  
  [attributes]
  asterisk=&#42;
@@ -102,7 +102,7 @@ index 1273a85..5223c99
 +
 +[link-inlinemacro]
 +{0%{target}}
-+<link linkend="{target}">{0}</link>
++<ulink url="https://www.kernel.org/pub/software/scm/git/docs/{target}"><citetitle>{0}</citetitle></ulink>
 +
 +[sect1]
 +<simplesect{id? id="{doctitle}_{id}"}{role? role="{role}"}{reftext? xreflabel="{reftext}"}>

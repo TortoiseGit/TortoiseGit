@@ -461,7 +461,7 @@ which makes little sense.</simpara>
 reverting a topic branch merge, as this option recreates the topic branch with
 fresh commits so it can be remerged successfully without needing to "revert
 the reversion" (see the
-link:howto/revert-a-faulty-merge.html[revert-a-faulty-merge How-To] for details).</simpara>
+<ulink url="https://www.kernel.org/pub/software/scm/git/docs/howto/revert-a-faulty-merge.html"><citetitle>revert-a-faulty-merge How-To</citetitle></ulink> for details).</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -649,7 +649,7 @@ used to override and disable this setting.</simpara>
 <simpara>You may find this helpful after reverting a topic branch merge, as this option
 recreates the topic branch with fresh commits so it can be remerged
 successfully without needing to "revert the reversion" (see the
-link:howto/revert-a-faulty-merge.html[revert-a-faulty-merge How-To] for details).</simpara>
+<ulink url="https://www.kernel.org/pub/software/scm/git/docs/howto/revert-a-faulty-merge.html"><citetitle>revert-a-faulty-merge How-To</citetitle></ulink> for details).</simpara>
 </listitem>
 </varlistentry>
 </variablelist>

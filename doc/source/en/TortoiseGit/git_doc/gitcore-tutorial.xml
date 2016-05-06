@@ -20,7 +20,7 @@
 work with a Git repository.</simpara>
 <simpara>If you just need to use Git as a revision control system you may prefer
 to start with "A Tutorial Introduction to Git" (<xref linkend="gittutorial(7)" />) or
-link:user-manual.html[the Git User Manual].</simpara>
+<ulink url="https://www.kernel.org/pub/software/scm/git/docs/user-manual.html"><citetitle>the Git User Manual</citetitle></ulink>.</simpara>
 <simpara>However, an understanding of these low-level tools can be helpful if
 you want to understand Git's internals.</simpara>
 <simpara>The core Git is often called "plumbing", with the prettier user
@@ -1333,7 +1333,7 @@ to follow, not easier.</simpara>
 <xref linkend="gitcvs-migration(7)" />,
 <xref linkend="git-help(1)" />,
 <xref linkend="giteveryday(7)" />,
-link:user-manual.html[The Git User's Manual]</simpara>
+<ulink url="https://www.kernel.org/pub/software/scm/git/docs/user-manual.html"><citetitle>The Git User's Manual</citetitle></ulink></simpara>
 </simplesect>
 <simplesect id="gitcore-tutorial(7)__git">
 <title>GIT</title>
