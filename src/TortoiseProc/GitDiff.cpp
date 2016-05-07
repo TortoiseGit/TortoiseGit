@@ -483,22 +483,16 @@ int CGitDiff::Diff(const CTGitPath * pPath, const CTGitPath * pPath2, git_revnum
 		title2.Format( IDS_DIFF_WCNAME, pPath2->GetFileOrDirectoryName() );
 	}
 
-	if (pPath->m_Action == pPath->LOGACTIONS_ADDED)
-		CGitDiff::DiffNull(pPath, rev1, true, jumpToLine);
-	else if (pPath->m_Action == pPath->LOGACTIONS_DELETED)
-		CGitDiff::DiffNull(pPath, rev2, false, jumpToLine);
-	else
-	{
-		CAppUtils::DiffFlags flags;
-		CAppUtils::StartExtDiff(file2,file1,
-								title2,
-								title1,
-								g_Git.CombinePath(pPath2),
-								g_Git.CombinePath(pPath),
-								rev2,
-								rev1,
-								flags, jumpToLine);
-	}
+	CAppUtils::DiffFlags flags;
+	CAppUtils::StartExtDiff(file2,file1,
+							title2,
+							title1,
+							g_Git.CombinePath(pPath2),
+							g_Git.CombinePath(pPath),
+							rev2,
+							rev1,
+							flags, jumpToLine);
+
 	return 0;
 }
 
