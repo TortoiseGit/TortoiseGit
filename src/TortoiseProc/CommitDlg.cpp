@@ -1519,7 +1519,7 @@ void CCommitDlg::StartStatusThread()
 void CCommitDlg::StopStatusThread()
 {
 	InterlockedExchange(&m_bRunThread, FALSE);
-	WaitForSingleObject(m_pThread->m_hThread, 1000);
+	WaitForSingleObject(m_pThread->m_hThread, 5000);
 	if (!m_bThreadRunning)
 		return;
 
