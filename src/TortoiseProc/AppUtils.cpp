@@ -122,13 +122,10 @@ bool CAppUtils::StashSave(const CString& msg, bool showPull, bool pullShowPush, 
 		CString cmd;
 		cmd = _T("git.exe stash save");
 
-		if (CAppUtils::GetMsysgitVersion() >= 0x01070700)
-		{
-			if (dlg.m_bIncludeUntracked)
-				cmd += _T(" --include-untracked");
-			else if (dlg.m_bAll)
-				cmd += _T(" --all");
-		}
+		if (dlg.m_bIncludeUntracked)
+			cmd += L" --include-untracked";
+		else if (dlg.m_bAll)
+			cmd += L" --all";
 
 		if (!dlg.m_sMessage.IsEmpty())
 		{
@@ -957,9 +954,7 @@ bool CAppUtils::StartShowUnifiedDiff(HWND hWnd, const CTGitPath& url1, const git
 												bool bCombine,
 												bool bNoPrefix)
 {
-	int diffContext = 0;
-	if (GetMsysgitVersion() > 0x01080100)
-		diffContext = g_Git.GetConfigValueInt32(_T("diff.context"), -1);
+	int diffContext = g_Git.GetConfigValueInt32(L"diff.context", -1);
 	CString tempfile=GetTempFile();
 	if (g_Git.GetUnifiedDiff(url1, rev1, rev2, tempfile, bMerge, bCombine, diffContext, bNoPrefix))
 	{

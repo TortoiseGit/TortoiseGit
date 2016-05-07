@@ -574,8 +574,7 @@ void CPushDlg::OnBnClickedForceWithLease()
 void CPushDlg::OnBnClickedTags()
 {
 	UpdateData();
-	if (CAppUtils::GetMsysgitVersion() >= 0x01080500)
-		GetDlgItem(IDC_FORCE_WITH_LEASE)->EnableWindow(m_bTags || m_bForce ? FALSE : TRUE);
+	GetDlgItem(IDC_FORCE_WITH_LEASE)->EnableWindow(m_bTags || m_bForce ? FALSE : TRUE);
 }
 
 void CPushDlg::OnBnClickedProcPushSetUpstream()
