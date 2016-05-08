@@ -2,7 +2,7 @@
 Released: unreleased
 
 == Features ==
- * Updated libgit to 2.8.0
+ * Updated libgit to 2.8.2
 
 == Bug Fixes ==
  * Fixed issue #2745: TortoiseGit 2.1 crashes on broken git config 
