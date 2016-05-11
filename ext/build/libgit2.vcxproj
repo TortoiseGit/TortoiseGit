@@ -113,6 +113,7 @@
     <ClCompile Include="..\libgit2\src\indexer.c" />
     <ClCompile Include="..\libgit2\src\iterator.c" />
     <ClCompile Include="..\libgit2\src\merge.c" />
+    <ClCompile Include="..\libgit2\src\merge_driver.c" />
     <ClCompile Include="..\libgit2\src\merge_file.c" />
     <ClCompile Include="..\libgit2\src\message.c" />
     <ClCompile Include="..\libgit2\src\mwindow.c" />
@@ -134,6 +135,7 @@
     <ClCompile Include="..\libgit2\src\pool.c" />
     <ClCompile Include="..\libgit2\src\posix.c" />
     <ClCompile Include="..\libgit2\src\pqueue.c" />
+    <ClCompile Include="..\libgit2\src\proxy.c" />
     <ClCompile Include="..\libgit2\src\push.c" />
     <ClCompile Include="..\libgit2\src\rebase.c" />
     <ClCompile Include="..\libgit2\src\refdb.c" />
@@ -220,6 +222,7 @@
     <ClInclude Include="..\libgit2\include\git2\message.h" />
     <ClInclude Include="..\libgit2\include\git2\patch.h" />
     <ClInclude Include="..\libgit2\include\git2\pathspec.h" />
+    <ClInclude Include="..\libgit2\include\git2\proxy.h" />
     <ClInclude Include="..\libgit2\include\git2\rebase.h" />
     <ClInclude Include="..\libgit2\include\git2\refdb.h" />
     <ClInclude Include="..\libgit2\include\git2\reset.h" />
@@ -235,11 +238,13 @@
     <ClInclude Include="..\libgit2\include\git2\sys\hashsig.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\index.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\mempack.h" />
+    <ClInclude Include="..\libgit2\include\git2\sys\merge.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\odb_backend.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\openssl.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\refdb_backend.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\reflog.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\refs.h" />
+    <ClInclude Include="..\libgit2\include\git2\sys\remote.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\repository.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\stream.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\transport.h" />
@@ -291,6 +296,7 @@
     <ClInclude Include="..\libgit2\src\khash.h" />
     <ClInclude Include="..\libgit2\src\map.h" />
     <ClInclude Include="..\libgit2\src\merge.h" />
+    <ClInclude Include="..\libgit2\src\merge_driver.h" />
     <ClInclude Include="..\libgit2\src\message.h" />
     <ClInclude Include="..\libgit2\src\mwindow.h" />
     <ClInclude Include="..\libgit2\src\netops.h" />
@@ -309,6 +315,7 @@
     <ClInclude Include="..\libgit2\src\pool.h" />
     <ClInclude Include="..\libgit2\src\posix.h" />
     <ClInclude Include="..\libgit2\src\pqueue.h" />
+    <ClInclude Include="..\libgit2\src\proxy.h" />
     <ClInclude Include="..\libgit2\src\push.h" />
     <ClInclude Include="..\libgit2\src\refdb.h" />
     <ClInclude Include="..\libgit2\src\refdb_fs.h" />

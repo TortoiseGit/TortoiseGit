@@ -1723,7 +1723,9 @@ int CGit::GetRemoteTags(const CString& remote, STRING_VECTOR& list)
 		git_remote_callbacks callbacks = GIT_REMOTE_CALLBACKS_INIT;
 		callbacks.credentials = g_Git2CredCallback;
 		callbacks.certificate_check = g_Git2CheckCertificateCallback;
-		if (git_remote_connect(gitremote, GIT_DIRECTION_FETCH, &callbacks, nullptr) < 0)
+		git_proxy_options proxy = GIT_PROXY_OPTIONS_INIT;
+		proxy.type = GIT_PROXY_AUTO;
+		if (git_remote_connect(gitremote, GIT_DIRECTION_FETCH, &callbacks, &proxy, nullptr) < 0)
 			return -1;
 
 		const git_remote_head** heads = nullptr;
@@ -2108,6 +2110,8 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 	SetLibGit2SearchPath(GIT_CONFIG_LEVEL_XDG, g_Git.GetGitGlobalXDGConfigPath());
 	static git_smart_subtransport_definition ssh_wintunnel_subtransport_definition = { [](git_smart_subtransport **out, git_transport* owner, void*) -> int { return git_smart_subtransport_ssh_wintunnel(out, owner, FindExecutableOnPath(g_Git.m_Environment.GetEnv(_T("GIT_SSH")), g_Git.m_Environment.GetEnv(_T("PATH"))), g_Git.m_Environment); }, 0 };
 	git_transport_register("ssh", git_transport_smart, &ssh_wintunnel_subtransport_definition);
+	git_transport_register("ssh+git", git_transport_smart, &ssh_wintunnel_subtransport_definition);
+	git_transport_register("git+ssh", git_transport_smart, &ssh_wintunnel_subtransport_definition);
 	git_libgit2_opts(GIT_OPT_SET_USER_AGENT, "TortoiseGit libgit2");
 	if (!(ms_bCygwinGit || ms_bMsys2Git))
 		SetLibGit2TemplatePath(CGit::ms_MsysGitRootDir + _T("share\\git-core\\templates"));

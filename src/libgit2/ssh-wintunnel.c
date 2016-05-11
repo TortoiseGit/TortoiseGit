@@ -28,7 +28,8 @@
 
 #define OWNING_SUBTRANSPORT(s) ((ssh_subtransport *)(s)->parent.subtransport)
 
-static const char prefix_ssh[] = "ssh://";
+static const char *ssh_prefixes[] = { "ssh://", "ssh+git://", "git+ssh://" };
+
 static const char cmd_uploadpack[] = "git-upload-pack";
 static const char cmd_receivepack[] = "git-receive-pack";
 
@@ -58,14 +59,24 @@ static int gen_proto(git_buf *request, const char *cmd, const char *url)
 {
 	const char *repo;
 
-	if (!git__prefixcmp(url, prefix_ssh)) {
-		url = url + strlen(prefix_ssh);
-		repo = strchr(url, '/');
-	} else {
-		repo = strchr(url, ':');
-		if (repo) repo++;
-	}
+	size_t i;
 
+	for (i = 0; i < ARRAY_SIZE(ssh_prefixes); ++i) {
+		const char *p = ssh_prefixes[i];
+
+		if (!git__prefixcmp(url, p)) {
+			url = url + strlen(p);
+			repo = strchr(url, '/');
+			if (repo && repo[1] == '~')
+				++repo;
+
+			goto done;
+		}
+	}
+	repo = strchr(url, ':');
+	if (repo) repo++;
+
+done:
 	if (!repo) {
 		giterr_set(GITERR_NET, "Malformed git protocol URL");
 		return -1;
@@ -319,6 +330,7 @@ static int _git_ssh_setup_tunnel(
 	git_smart_subtransport_stream **stream)
 {
 	char *host = NULL, *port = NULL, *path = NULL, *user = NULL, *pass = NULL;
+	size_t i;
 	ssh_stream *s;
 	wchar_t *ssh = t->sshtoolpath;
 	wchar_t *wideParams = NULL;
@@ -335,14 +347,20 @@ static int _git_ssh_setup_tunnel(
 
 	s = (ssh_stream *)*stream;
 
-	if (!git__prefixcmp(url, prefix_ssh)) {
-		if (extract_url_parts(&host, &port, &path, &user, &pass, url, NULL) < 0)
-			goto on_error;
-	} else {
-		if (git_ssh_extract_url_parts(&host, &user, url) < 0)
-			goto on_error;
-	}
+	for (i = 0; i < ARRAY_SIZE(ssh_prefixes); ++i) {
+		const char *p = ssh_prefixes[i];
 
+		if (!git__prefixcmp(url, p)) {
+			if (extract_url_parts(&host, &port, &path, &user, &pass, url, NULL) < 0)
+				goto on_error;
+
+			goto post_extract;
+		}
+	}
+	if (git_ssh_extract_url_parts(&host, &user, url) < 0)
+		goto on_error;
+
+post_extract:
 	if (!ssh)
 	{
 		giterr_set(GITERR_SSH, "No GIT_SSH tool configured");
