@@ -324,7 +324,7 @@ UINT CMessageBox::ShowCheck(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, UIN
 		}
 		else
 			taskdlg.SetVerificationCheckboxText(lpCheckMessage);
-		int result = (int)taskdlg.DoModal(hWnd) - BTN_OFFSET;
+		int result = (int)taskdlg.DoModal(hWnd);
 		if (bChecked)
 			*bChecked = taskdlg.GetVerificationCheckboxState();
 		if (lpRegistry && *lpRegistry && taskdlg.GetVerificationCheckboxState())
