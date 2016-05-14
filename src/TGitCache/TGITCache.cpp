@@ -185,32 +185,6 @@ int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR lp
 	hTrayWnd = hWndHidden;
 	if (!hWndHidden)
 		return 0;
-	if (CRegStdDWORD(_T("Software\\TortoiseGit\\CacheTrayIcon"), FALSE)==TRUE)
-	{
-		SecureZeroMemory(&niData,sizeof(NOTIFYICONDATA));
-		niData.cbSize = sizeof(NOTIFYICONDATA);
-		niData.uID = TRAY_ID;		// own tray icon ID
-		niData.hWnd	 = hWndHidden;
-		niData.uFlags = NIF_ICON|NIF_MESSAGE;
-
-		// load the icon
-		niData.hIcon =
-			(HICON)LoadImage(hInstance,
-			MAKEINTRESOURCE(IDI_TGITCACHE),
-			IMAGE_ICON,
-			GetSystemMetrics(SM_CXSMICON),
-			GetSystemMetrics(SM_CYSMICON),
-			LR_DEFAULTCOLOR);
-
-		// set the message to send
-		// note: the message value should be in the
-		// range of WM_APP through 0xBFFF
-		niData.uCallbackMessage = TRAY_CALLBACK;
-		Shell_NotifyIcon(NIM_ADD,&niData);
-		// free icon handle
-		if(niData.hIcon && DestroyIcon(niData.hIcon))
-			niData.hIcon = nullptr;
-	}
 
 	// Create a thread which waits for incoming pipe connections
 	CAutoGeneralHandle hPipeThread = CreateThread(
@@ -236,6 +210,33 @@ int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR lp
 
 	if (!hCommandWaitThread)
 		return 0;
+
+	if (CRegStdDWORD(_T("Software\\TortoiseGit\\CacheTrayIcon"), FALSE) == TRUE)
+	{
+		SecureZeroMemory(&niData, sizeof(NOTIFYICONDATA));
+		niData.cbSize = sizeof(NOTIFYICONDATA);
+		niData.uID = TRAY_ID;		// own tray icon ID
+		niData.hWnd = hWndHidden;
+		niData.uFlags = NIF_ICON | NIF_MESSAGE;
+
+		// load the icon
+		niData.hIcon =
+			(HICON)LoadImage(hInstance,
+			MAKEINTRESOURCE(IDI_TGITCACHE),
+			IMAGE_ICON,
+			GetSystemMetrics(SM_CXSMICON),
+			GetSystemMetrics(SM_CYSMICON),
+			LR_DEFAULTCOLOR);
+
+		// set the message to send
+		// note: the message value should be in the
+		// range of WM_APP through 0xBFFF
+		niData.uCallbackMessage = TRAY_CALLBACK;
+		Shell_NotifyIcon(NIM_ADD, &niData);
+		// free icon handle
+		if (niData.hIcon && DestroyIcon(niData.hIcon))
+			niData.hIcon = nullptr;
+	}
 
 	// loop to handle window messages.
 	while (bRun)
