@@ -94,7 +94,7 @@ protected:
 
 		page->CheckRadioButton(IDC_RADIO_SETTINGS_EFFECTIVE, IDC_RADIO_SETTINGS_SYSTEM, IDC_RADIO_SETTINGS_EFFECTIVE + m_iConfigSource);
 
-		CMessageBox::ShowCheck(nullptr, IDS_HIERARCHICALCONFIG, IDS_APPNAME, MB_ICONINFORMATION | MB_OK, _T("HintHierarchicalConfig"), IDS_MSGBOX_DONOTSHOWAGAIN);
+		CMessageBox::ShowCheck(GetDialogHwnd(), IDS_HIERARCHICALCONFIG, IDS_APPNAME, MB_ICONINFORMATION | MB_OK, _T("HintHierarchicalConfig"), IDS_MSGBOX_DONOTSHOWAGAIN);
 
 		LoadData();
 	}
@@ -120,7 +120,7 @@ protected:
 		{
 			CString msg;
 			msg.Format(IDS_PROC_SAVECONFIGFAILED, (LPCTSTR)key, (LPCTSTR)value);
-			CMessageBox::Show(nullptr, g_Git.GetLibGit2LastErr(msg), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+			CMessageBox::Show(GetDialogHwnd(), g_Git.GetLibGit2LastErr(msg), L"TortoiseGit", MB_OK | MB_ICONERROR);
 			return false;
 		}
 		return true;
@@ -186,7 +186,7 @@ protected:
 			dest.LoadString(storeTo);
 			CString msg;
 			msg.Format(IDS_WARNUSERSAFEDIFFERENT, (LPCTSTR)dest);
-			if (CMessageBox::Show(nullptr, msg, _T("TortoiseGit"), 2, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_SAVEBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)
+			if (CMessageBox::Show(GetDialogHwnd(), msg, L"TortoiseGit", 2, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_SAVEBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)
 				return false;
 		}
 		return true;
@@ -229,6 +229,7 @@ protected:
 	virtual void LoadDataImpl(CAutoConfig& config) = 0;
 	virtual BOOL SafeDataImpl(CAutoConfig& config) = 0;
 	virtual void EnDisableControls() = 0;
+	virtual HWND GetDialogHwnd() const = 0;
 
 	static void AddTrueFalseToComboBox(CComboBox &combobox)
 	{

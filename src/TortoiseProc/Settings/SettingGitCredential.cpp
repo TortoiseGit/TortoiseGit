@@ -308,7 +308,7 @@ void CSettingGitCredential::OnLbnSelchangeListUrl()
 
 	if (m_ChangedMask)
 	{
-		if (CMessageBox::Show(nullptr, IDS_GITCREDENTIAL_SAVEHELPER, IDS_APPNAME, 1, IDI_QUESTION, IDS_SAVEBUTTON, IDS_DISCARDBUTTON) == 1)
+		if (CMessageBox::Show(GetSafeHwnd(), IDS_GITCREDENTIAL_SAVEHELPER, IDS_APPNAME, 1, IDI_QUESTION, IDS_SAVEBUTTON, IDS_DISCARDBUTTON) == 1)
 			OnApply();
 	}
 	SetModified(FALSE);

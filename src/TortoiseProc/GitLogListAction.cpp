@@ -96,7 +96,7 @@ int CGitLogList::RevertSelectedCommits(int parent)
 			str = g_Git.GetGitLastErr(str, CGit::GIT_CMD_REVERT);
 			if( GetSelectedCount() == 1)
 				CMessageBox::Show(nullptr, str, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
-			else if (CMessageBox::Show(nullptr, str, _T("TortoiseGit"), 2, IDI_ERROR, CString(MAKEINTRESOURCE(IDS_SKIPBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)
+			else if (CMessageBox::Show(GetSafeHwnd(), str, L"TortoiseGit", 2, IDI_ERROR, CString(MAKEINTRESOURCE(IDS_SKIPBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)
 				return ret;
 		}
 		else
@@ -152,7 +152,7 @@ int CGitLogList::DeleteRef(const CString& ref)
 	{
 		CString msg;
 		msg.Format(IDS_PROC_DELETEREMOTEBRANCH, (LPCTSTR)ref);
-		int result = CMessageBox::Show(nullptr, msg, _T("TortoiseGit"), 3, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_PROC_DELETEREMOTEBRANCH_LOCALREMOTE)), CString(MAKEINTRESOURCE(IDS_PROC_DELETEREMOTEBRANCH_LOCAL)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON)));
+		int result = CMessageBox::Show(GetSafeHwnd(), msg, L"TortoiseGit", 3, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_PROC_DELETEREMOTEBRANCH_LOCALREMOTE)), CString(MAKEINTRESOURCE(IDS_PROC_DELETEREMOTEBRANCH_LOCAL)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON)));
 		if (result == 1)
 		{
 			CString remoteName = shortname.Left(shortname.Find(L'/'));
@@ -191,7 +191,7 @@ int CGitLogList::DeleteRef(const CString& ref)
 		size_t count = !GitRevLoglist::GetRefLog(ref, stashList, err) ? stashList.size() : 0;
 		CString msg;
 		msg.Format(IDS_PROC_DELETEALLSTASH, count);
-		int choose = CMessageBox::Show(nullptr, msg, _T("TortoiseGit"), 3, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_DELETEBUTTON)), CString(MAKEINTRESOURCE(IDS_DROPONESTASH)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON)));
+		int choose = CMessageBox::Show(GetSafeHwnd(), msg, L"TortoiseGit", 3, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_DELETEBUTTON)), CString(MAKEINTRESOURCE(IDS_DROPONESTASH)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON)));
 		if (choose == 1)
 		{
 			CString sCmd;
@@ -215,7 +215,7 @@ int CGitLogList::DeleteRef(const CString& ref)
 
 	CString msg;
 	msg.Format(IDS_PROC_DELETEBRANCHTAG, (LPCTSTR)ref);
-	if (CMessageBox::Show(nullptr, msg, _T("TortoiseGit"), 2, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_DELETEBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 1)
+	if (CMessageBox::Show(GetSafeHwnd(), msg, L"TortoiseGit", 2, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_DELETEBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 1)
 	{
 		if (g_Git.DeleteRef(ref))
 		{
@@ -792,7 +792,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				else
 					str.Format(IDS_PROC_DELETEREF, (LPCTSTR)pSelLogEntry->m_Ref);
 
-				if (CMessageBox::Show(nullptr, str, _T("TortoiseGit"), 1, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_DELETEBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)
+				if (CMessageBox::Show(GetSafeHwnd(), str, L"TortoiseGit", 1, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_DELETEBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)
 					return;
 
 				std::vector<CString> refsToDelete;
