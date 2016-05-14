@@ -230,6 +230,17 @@ BOOL CRepositoryBrowser::OnInitDialog()
 	SetWindowTheme(m_RepoTree.GetSafeHwnd(), L"Explorer", nullptr);
 	SetWindowTheme(m_RepoList.GetSafeHwnd(), L"Explorer", nullptr);
 
+	int borderWidth = 0;
+	if (IsAppThemed())
+	{
+		HTHEME hTheme = OpenThemeData(m_RepoTree, L"TREEVIEW");
+		GetThemeMetric(hTheme, NULL, TVP_TREEITEM, TREIS_NORMAL, TMT_BORDERSIZE, &borderWidth);
+		CloseThemeData(hTheme);
+	}
+	else
+		borderWidth = GetSystemMetrics(SM_CYBORDER);
+	m_RepoTree.SetItemHeight((SHORT)(m_RepoTree.GetItemHeight() + 2 * borderWidth));
+
 	m_nIconFolder = SYS_IMAGE_LIST().GetDirIconIndex();
 	m_nOpenIconFolder = SYS_IMAGE_LIST().GetDirOpenIconIndex();
 
