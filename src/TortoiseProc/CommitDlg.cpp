@@ -1005,7 +1005,7 @@ void CCommitDlg::OnOK()
 
 		if (CAppUtils::SaveCommitUnicodeFile(tempfile, m_sLogMessage))
 		{
-			CMessageBox::Show(nullptr, _T("Could not save commit message"), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+			CMessageBox::Show(GetSafeHwnd(), L"Could not save commit message", L"TortoiseGit", MB_OK | MB_ICONERROR);
 			InterlockedExchange(&m_bBlock, FALSE);
 			return;
 		}
@@ -2615,7 +2615,7 @@ int CCommitDlg::CheckHeadDetach()
 	CString output;
 	if (CGit::GetCurrentBranchFromFile(g_Git.m_CurrentDir, output))
 	{
-		int retval = CMessageBox::Show(nullptr, IDS_PROC_COMMIT_DETACHEDWARNING, IDS_APPNAME, MB_YESNOCANCEL | MB_ICONWARNING);
+		int retval = CMessageBox::Show(GetSafeHwnd(), IDS_PROC_COMMIT_DETACHEDWARNING, IDS_APPNAME, MB_YESNOCANCEL | MB_ICONWARNING);
 		if(retval == IDYES)
 		{
 			if (CAppUtils::CreateBranchTag(FALSE, nullptr, true) == FALSE)

@@ -1006,7 +1006,7 @@ int CRebaseDlg::VerifyNoConflict()
 	}
 	if (hasConflicts)
 	{
-		CMessageBox::Show(nullptr, IDS_PROGRS_CONFLICTSOCCURED, IDS_APPNAME, MB_OK | MB_ICONEXCLAMATION);
+		CMessageBox::Show(GetSafeHwnd(), IDS_PROGRS_CONFLICTSOCCURED, IDS_APPNAME, MB_OK | MB_ICONEXCLAMATION);
 		return -1;
 	}
 	CleanUpRebaseActiveFolder();

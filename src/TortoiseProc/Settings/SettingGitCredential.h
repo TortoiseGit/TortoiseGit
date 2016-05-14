@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2015 - TortoiseGit
+// Copyright (C) 2013-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -65,6 +65,8 @@ protected:
 	void LoadList();
 	CString Load(CString key);
 	void Save(CString key, CString value);
+	int DeleteOtherKeys(int type);
+	bool SaveSimpleCredential(int type);
 
 	int			m_ChangedMask;
 

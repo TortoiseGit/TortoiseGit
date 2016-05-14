@@ -1524,7 +1524,7 @@ void CSyncDlg::RunPostAction()
 			{
 				CString temp;
 				temp.Format(IDS_ERR_HOOKFAILED, (LPCTSTR)error);
-				CMessageBox::Show(nullptr, temp,_T("TortoiseGit"), MB_OK | MB_ICONERROR);
+				CMessageBox::Show(GetSafeHwnd(), temp, L"TortoiseGit", MB_OK | MB_ICONERROR);
 				return;
 			}
 		}
