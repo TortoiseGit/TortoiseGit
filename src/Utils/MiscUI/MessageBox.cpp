@@ -96,6 +96,8 @@ UINT CMessageBox::ShowCheck(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, int
 
 	if (CTaskDialog::IsSupported())
 	{
+		if (!hWnd || !IsWindow(hWnd))
+			hWnd = CWnd::GetSafeOwner_(nullptr, nullptr);
 		CTaskDialog taskdlg(lpMessage, L"", lpCaption, 0, TDF_USE_COMMAND_LINKS | TDF_POSITION_RELATIVE_TO_WINDOW);
 		taskdlg.AddCommandControl(BTN_OFFSET + 1, lpButton1);
 		if (lpButton2 && *lpButton2)
@@ -161,6 +163,8 @@ UINT CMessageBox::Show(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, int nDef
 {
 	if (CTaskDialog::IsSupported())
 	{
+		if (!hWnd || !IsWindow(hWnd))
+			hWnd = CWnd::GetSafeOwner_(nullptr, nullptr);
 		CTaskDialog taskdlg(lpMessage, L"", lpCaption, 0, TDF_USE_COMMAND_LINKS | TDF_POSITION_RELATIVE_TO_WINDOW);
 		taskdlg.AddCommandControl(BTN_OFFSET + 1, lpButton1);
 		if (lpButton2 && *lpButton2)
@@ -242,6 +246,8 @@ UINT CMessageBox::ShowCheck(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, UIN
 	}
 	if (CTaskDialog::IsSupported() && !(uType & MB_HELP) && !((uType & 0xf) == MB_ABORTRETRYIGNORE) && !((uType & 0xf) == MB_CANCELTRYCONTINUE))
 	{
+		if (!hWnd || !IsWindow(hWnd))
+			hWnd = CWnd::GetSafeOwner_(nullptr, nullptr);
 		CTaskDialog taskdlg(lpMessage, L"", lpCaption, 0,  TDF_POSITION_RELATIVE_TO_WINDOW);
 		// set up icon
 		switch (uType & 0xf0)
@@ -376,6 +382,9 @@ UINT CMessageBox::Show(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, UINT uTy
 		box.SetHelpPath(sHelpPath);
 		return box.GoModal(CWnd::FromHandle(hWnd), lpCaption, lpMessage, box.FillBoxStandard(uType));
 	}
+
+	if (!hWnd || !IsWindow(hWnd))
+		hWnd = CWnd::GetSafeOwner_(nullptr, nullptr);
 	return ::MessageBox(hWnd, lpMessage, lpCaption, uType);
 }
 
@@ -395,6 +404,8 @@ UINT CMessageBox::Show(HWND hWnd, UINT nMessage, UINT nCaption, UINT uType, UINT
 		return box.GoModal(CWnd::FromHandle(hWnd), sCaption, sMessage, box.FillBoxStandard(uType));
 	}
 
+	if (!hWnd || !IsWindow(hWnd))
+		hWnd = CWnd::GetSafeOwner_(nullptr, nullptr);
 	return ::MessageBox(hWnd, sMessage, sCaption, uType);
 }
 

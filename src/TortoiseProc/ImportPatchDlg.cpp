@@ -379,7 +379,7 @@ UINT CImportPatchDlg::PatchThread()
 				if (m_pTaskbarList)
 					m_pTaskbarList->SetProgressState(m_hWnd, TBPF_ERROR);
 
-				int ret = CMessageBox::Show(nullptr, IDS_PROC_APPLYPATCH_REBASEDIRFOUND,
+				int ret = CMessageBox::Show(GetSafeHwnd(), IDS_PROC_APPLYPATCH_REBASEDIRFOUND,
 												  IDS_APPNAME,
 												   1, IDI_ERROR, IDS_ABORTBUTTON, IDS_SKIPBUTTON, IDS_RESOLVEDBUTTON);
 

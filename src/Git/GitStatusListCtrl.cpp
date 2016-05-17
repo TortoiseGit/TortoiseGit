@@ -4104,7 +4104,7 @@ void CGitStatusListCtrl::FilesExport()
 			{
 				CString out;
 				out.Format(IDS_STATUSLIST_CHECKOUTFILEFAILED, (LPCTSTR)fd->GetGitPathString(), (LPCTSTR)m_CurrentVersion, (LPCTSTR)filename);
-				if (CMessageBox::Show(nullptr, g_Git.GetGitLastErr(out, CGit::GIT_CMD_GETONEFILE), _T("TortoiseGit"), 2, IDI_WARNING, CString(MAKEINTRESOURCE(IDS_IGNOREBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)
+				if (CMessageBox::Show(GetSafeHwnd(), g_Git.GetGitLastErr(out, CGit::GIT_CMD_GETONEFILE), L"TortoiseGit", 2, IDI_WARNING, CString(MAKEINTRESOURCE(IDS_IGNOREBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)
 					return;
 			}
 		}
@@ -4139,7 +4139,7 @@ void CGitStatusListCtrl::FileSaveAs(CTGitPath *path)
 			if(g_Git.GetOneFile(m_CurrentVersion,*path,filename))
 			{
 				out.Format(IDS_STATUSLIST_CHECKOUTFILEFAILED, (LPCTSTR)path->GetGitPathString(), (LPCTSTR)m_CurrentVersion, (LPCTSTR)filename);
-				CMessageBox::Show(nullptr, g_Git.GetGitLastErr(out, CGit::GIT_CMD_GETONEFILE), _T("TortoiseGit"), MB_OK);
+				CMessageBox::Show(GetSafeHwnd(), g_Git.GetGitLastErr(out, CGit::GIT_CMD_GETONEFILE), L"TortoiseGit", MB_OK);
 				return;
 			}
 		}
@@ -4200,7 +4200,7 @@ int CGitStatusListCtrl::RevertSelectedItemToVersion(bool parent)
 		out += versionEntry + _T("\r\n");
 	}
 	if (!out.IsEmpty())
-		CMessageBox::Show(nullptr, out, _T("TortoiseGit"), MB_OK);
+		CMessageBox::Show(GetSafeHwnd(), out, L"TortoiseGit", MB_OK);
 	return 0;
 }
 
@@ -4227,7 +4227,7 @@ void CGitStatusListCtrl::OpenFile(CTGitPath*filepath,int mode)
 		if(g_Git.GetOneFile(m_CurrentVersion, *filepath, file))
 		{
 			out.Format(IDS_STATUSLIST_CHECKOUTFILEFAILED, (LPCTSTR)filepath->GetGitPathString(), (LPCTSTR)m_CurrentVersion, (LPCTSTR)file);
-			CMessageBox::Show(nullptr, g_Git.GetGitLastErr(out, CGit::GIT_CMD_GETONEFILE), _T("TortoiseGit"), MB_OK);
+			CMessageBox::Show(GetSafeHwnd(), g_Git.GetGitLastErr(out, CGit::GIT_CMD_GETONEFILE), L"TortoiseGit", MB_OK);
 			return;
 		}
 		SetFileAttributes(file, FILE_ATTRIBUTE_READONLY);

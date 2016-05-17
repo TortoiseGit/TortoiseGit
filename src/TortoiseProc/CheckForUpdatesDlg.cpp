@@ -125,7 +125,7 @@ BOOL CCheckForUpdatesDlg::OnInitDialog()
 
 	if (!AfxBeginThread(CheckThreadEntry, this))
 	{
-		CMessageBox::Show(nullptr, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
+		CMessageBox::Show(GetSafeHwnd(), IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
 	}
 
 	SetTimer(100, 1000, nullptr);
@@ -765,7 +765,7 @@ LRESULT CCheckForUpdatesDlg::OnEndDownload(WPARAM, LPARAM)
 		tmp.LoadString(IDS_ERR_FAILEDUPDATEDOWNLOAD);
 		if (!m_sErrors.IsEmpty())
 			tmp += _T("\r\n\r\nErrors:\r\n") + m_sErrors;
-		CMessageBox::Show(nullptr, tmp, _T("TortoiseGit"), MB_ICONERROR);
+		CMessageBox::Show(GetSafeHwnd(), tmp, L"TortoiseGit", MB_ICONERROR);
 		if (m_pTaskbarList)
 			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NOPROGRESS);
 	}

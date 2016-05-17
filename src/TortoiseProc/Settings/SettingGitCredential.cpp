@@ -245,7 +245,7 @@ void CSettingGitCredential::OnBnClickedButtonAdd()
 
 	if (m_strHelper.Trim().IsEmpty())
 	{
-		CMessageBox::Show(nullptr, IDS_GITCREDENTIAL_HELPEREMPTY, IDS_APPNAME, MB_OK | MB_ICONERROR);
+		CMessageBox::Show(GetSafeHwnd(), IDS_GITCREDENTIAL_HELPEREMPTY, IDS_APPNAME, MB_OK | MB_ICONERROR);
 		return;
 	}
 
@@ -261,7 +261,7 @@ void CSettingGitCredential::OnBnClickedButtonAdd()
 	{
 		CString msg;
 		msg.Format(IDS_GITCREDENTIAL_OVERWRITEHELPER, (LPCTSTR)m_strUrl);
-		if (CMessageBox::Show(nullptr, msg, _T("TortoiseGit"), MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2) == IDYES)
+		if (CMessageBox::Show(GetSafeHwnd(), msg, L"TortoiseGit", MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2) == IDYES)
 			m_ChangedMask &= ~CREDENTIAL_URL;
 		else
 			return;
@@ -308,7 +308,7 @@ void CSettingGitCredential::OnLbnSelchangeListUrl()
 
 	if (m_ChangedMask)
 	{
-		if (CMessageBox::Show(nullptr, IDS_GITCREDENTIAL_SAVEHELPER, IDS_APPNAME, 1, IDI_QUESTION, IDS_SAVEBUTTON, IDS_DISCARDBUTTON) == 1)
+		if (CMessageBox::Show(GetSafeHwnd(), IDS_GITCREDENTIAL_SAVEHELPER, IDS_APPNAME, 1, IDI_QUESTION, IDS_SAVEBUTTON, IDS_DISCARDBUTTON) == 1)
 			OnApply();
 	}
 	SetModified(FALSE);
@@ -574,7 +574,7 @@ void CSettingGitCredential::Save(CString key, CString value)
 	{
 		CString msg;
 		msg.Format(IDS_PROC_SAVECONFIGFAILED, (LPCTSTR)cmd, (LPCTSTR)value);
-		CMessageBox::Show(nullptr, msg, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+		CMessageBox::Show(GetSafeHwnd(), msg, L"TortoiseGit", MB_OK | MB_ICONERROR);
 	}
 	if (value.IsEmpty())
 	{
@@ -582,13 +582,13 @@ void CSettingGitCredential::Save(CString key, CString value)
 		{
 			CString msg;
 			msg.Format(IDS_PROC_SAVECONFIGFAILED, (LPCTSTR)cmd, (LPCTSTR)value);
-			CMessageBox::Show(nullptr, msg, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+			CMessageBox::Show(GetSafeHwnd(), msg, L"TortoiseGit", MB_OK | MB_ICONERROR);
 		}
 	}
 	g_Git.m_IsUseGitDLL = old;
 }
 
-static int DeleteOtherKeys(int type)
+int CSettingGitCredential::DeleteOtherKeys(int type)
 {
 	CString match;
 	if (type == SimpleCredentialType::LocalWincred)
@@ -644,7 +644,7 @@ static int DeleteOtherKeys(int type)
 			{
 				CString msg;
 				msg.Format(IDS_PROC_SAVECONFIGFAILED, (LPCTSTR)key, _T(""));
-				CMessageBox::Show(nullptr, msg, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+				CMessageBox::Show(GetSafeHwnd(), msg, L"TortoiseGit", MB_OK | MB_ICONERROR);
 				result = 1;
 				break;
 			}
@@ -655,7 +655,7 @@ static int DeleteOtherKeys(int type)
 	return result;
 }
 
-bool SaveSimpleCredential(int type)
+bool CSettingGitCredential::SaveSimpleCredential(int type)
 {
 	CONFIG_TYPE configLevel;
 	CString value;
@@ -710,7 +710,7 @@ bool SaveSimpleCredential(int type)
 	{
 		CString msg;
 		msg.Format(IDS_PROC_SAVECONFIGFAILED, _T("credential.helper"), (LPCTSTR)value);
-		CMessageBox::Show(nullptr, msg, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+		CMessageBox::Show(GetSafeHwnd(), msg, L"TortoiseGit", MB_OK | MB_ICONERROR);
 		return false;
 	}
 	g_Git.m_IsUseGitDLL = old;
@@ -762,7 +762,7 @@ BOOL CSettingGitCredential::OnApply()
 		//Add Helper
 		if (m_strHelper.IsEmpty())
 		{
-			CMessageBox::Show(nullptr, IDS_GITCREDENTIAL_HELPEREMPTY, IDS_APPNAME, MB_OK | MB_ICONERROR);
+			CMessageBox::Show(GetSafeHwnd(), IDS_GITCREDENTIAL_HELPEREMPTY, IDS_APPNAME, MB_OK | MB_ICONERROR);
 			return FALSE;
 		}
 		m_strUrl.Replace(L'\\', L'/');
@@ -810,7 +810,7 @@ void CSettingGitCredential::OnBnClickedButtonRemove()
 		m_ctrlUrlList.GetText(index, str);
 		CString msg;
 		msg.Format(IDS_WARN_REMOVE, (LPCTSTR)str);
-		if (CMessageBox::Show(nullptr, msg, _T("TortoiseGit"), MB_YESNO | MB_ICONQUESTION) == IDYES)
+		if (CMessageBox::Show(GetSafeHwnd(), msg, L"TortoiseGit", MB_YESNO | MB_ICONQUESTION) == IDYES)
 		{
 			CAutoConfig config(true);
 			int pos = str.Find(_T(':'));

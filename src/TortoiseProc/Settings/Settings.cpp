@@ -205,7 +205,7 @@ void CSettings::HandleRestart()
 	{
 		DWORD_PTR res = 0;
 		::SendMessageTimeout(HWND_BROADCAST, WM_SETTINGCHANGE, 0, 0, SMTO_ABORTIFHUNG, 20, &res);
-		CMessageBox::Show(nullptr, IDS_SETTINGS_RESTARTSYSTEM, IDS_APPNAME, MB_ICONINFORMATION);
+		CMessageBox::Show(GetSafeHwnd(), IDS_SETTINGS_RESTARTSYSTEM, IDS_APPNAME, MB_ICONINFORMATION);
 	}
 	if (restart & ISettingsPropPage::Restart_Cache)
 	{

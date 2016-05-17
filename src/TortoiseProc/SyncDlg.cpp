@@ -549,7 +549,7 @@ void CSyncDlg::FetchComplete()
 
 	if (g_Git.IsFastForward(_T("HEAD"), upstream))
 	{
-		UINT ret = CMessageBox::ShowCheck(nullptr, IDS_REBASE_BRANCH_FF, IDS_APPNAME, 2, IDI_QUESTION, IDS_MERGEBUTTON, IDS_REBASEBUTTON, IDS_ABORTBUTTON, _T("OpenRebaseRemoteBranchFastForwards"), IDS_MSGBOX_DONOTSHOWAGAIN);
+		UINT ret = CMessageBox::ShowCheck(GetSafeHwnd(), IDS_REBASE_BRANCH_FF, IDS_APPNAME, 2, IDI_QUESTION, IDS_MERGEBUTTON, IDS_REBASEBUTTON, IDS_ABORTBUTTON, L"OpenRebaseRemoteBranchFastForwards", IDS_MSGBOX_DONOTSHOWAGAIN);
 		if (ret == 3)
 			return;
 		if (ret == 1)
@@ -1524,7 +1524,7 @@ void CSyncDlg::RunPostAction()
 			{
 				CString temp;
 				temp.Format(IDS_ERR_HOOKFAILED, (LPCTSTR)error);
-				CMessageBox::Show(nullptr, temp,_T("TortoiseGit"), MB_OK | MB_ICONERROR);
+				CMessageBox::Show(GetSafeHwnd(), temp, L"TortoiseGit", MB_OK | MB_ICONERROR);
 				return;
 			}
 		}

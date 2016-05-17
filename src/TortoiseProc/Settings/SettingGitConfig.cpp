@@ -294,7 +294,7 @@ void CSettingGitConfig::OnBnClickedEditsystemgitconfig()
 	CString filename = g_Git.GetGitSystemConfig();
 	if (filename.IsEmpty())
 	{
-		CMessageBox::Show(nullptr, IDS_PROC_GITCONFIG_NOMSYSGIT, IDS_APPNAME, MB_ICONERROR);
+		CMessageBox::Show(GetSafeHwnd(), IDS_PROC_GITCONFIG_NOMSYSGIT, IDS_APPNAME, MB_ICONERROR);
 		return;
 	}
 	// use alternative editor because of LineEndings
@@ -308,7 +308,7 @@ void CSettingGitConfig::OnBnClickedViewsystemgitconfig()
 	CString filename = g_Git.GetGitSystemConfig();
 	if (filename.IsEmpty())
 	{
-		CMessageBox::Show(nullptr, IDS_PROC_GITCONFIG_NOMSYSGIT, IDS_APPNAME, MB_ICONERROR);
+		CMessageBox::Show(GetSafeHwnd(), IDS_PROC_GITCONFIG_NOMSYSGIT, IDS_APPNAME, MB_ICONERROR);
 		return;
 	}
 	// use alternative editor because of LineEndings
