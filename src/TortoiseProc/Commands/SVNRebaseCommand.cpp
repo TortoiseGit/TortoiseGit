@@ -98,6 +98,7 @@ bool SVNRebaseCommand::Execute()
 		return false;
 	}
 	CProgressDlg progress;
+	GitProgressAutoClose origAutoClose = progress.m_AutoClose;
 	progress.m_GitCmd=_T("git.exe svn fetch");
 	progress.m_AutoClose = AUTOCLOSE_IF_NO_ERRORS;
 
@@ -116,7 +117,9 @@ bool SVNRebaseCommand::Execute()
 	//everything updated
 	if(UpStreamNewHash==HeadHash)
 	{
-		MessageBox(hwndExplorer, g_Git.m_CurrentDir + _T("\r\n") + CString(MAKEINTRESOURCE(IDS_PROC_EVERYTHINGUPDATED)), _T("TortoiseGit"), MB_OK | MB_ICONQUESTION);
+		if (origAutoClose == AUTOCLOSE_NO)
+			MessageBox(hwndExplorer, g_Git.m_CurrentDir + _T("\r\n") + CString(MAKEINTRESOURCE(IDS_PROC_EVERYTHINGUPDATED)), _T("TortoiseGit"), MB_OK | MB_ICONQUESTION);
+
 		if(isStash)
 			askIfUserWantsToStashPop();
 
@@ -135,7 +138,9 @@ bool SVNRebaseCommand::Execute()
 			return false;
 		else
 		{
-			MessageBox(hwndExplorer, g_Git.m_CurrentDir + _T("\r\n") + CString(MAKEINTRESOURCE(IDS_PROC_FASTFORWARD)) + _T(":\n") + progressReset.m_LogText, _T("TortoiseGit"), MB_OK | MB_ICONQUESTION);
+			if (origAutoClose == AUTOCLOSE_NO)
+				MessageBox(hwndExplorer, g_Git.m_CurrentDir + _T("\r\n") + CString(MAKEINTRESOURCE(IDS_PROC_FASTFORWARD)) + _T(":\n") + progressReset.m_LogText, _T("TortoiseGit"), MB_OK | MB_ICONQUESTION);
+			
 			if(isStash)
 				askIfUserWantsToStashPop();
 
