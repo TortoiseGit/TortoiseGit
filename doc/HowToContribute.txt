@@ -2,32 +2,6 @@ Checklist (and a short version for the impatient):
 
 Please also see https://tortoisegit.org/contribute/!
 
-	Commits:
-
-	- make commits of (small) logical units
-	- check for unnecessary whitespace with "git diff --check"
-	  before committing
-	- do not check in commented out code or unneeded files
-	- the first line of the commit message should be a short
-	  description and should skip the full stop. If it is about a
-	  bug report/issue, prepend "Fixed issue #NUMBER: " to the subject.
-	- the body should provide a meaningful commit message, which:
-	  . explains the problem the change tries to solve, iow, what
-	    is wrong with the current code without the change.
-	  . justifies the way the change solves the problem, iow, why
-	    the result with the change is better.
-	  . alternate solutions considered but discarded, if any.
-	- describe changes in imperative mood, e.g. "make xyzzy do frotz"
-	  instead of "[This patch] makes xyzzy do frotz" or "[I] changed
-	  xyzzy to do frotz", as if you are giving orders to the codebase
-	  to change its behaviour.
-	- try to make sure your explanation can be understood without
-	  external resources. Instead of giving a URL to a mailing list
-	  archive, summarize the relevant points of the discussion.
-	- add a "Signed-off-by: Your Name <you@example.com>" line to the
-	  commit message (or just use the option "-s" when committing)
-	  to confirm that you agree to the Developer's Certificate of Origin
-
 	Submission:
 
 	- open an issue on https://tortoisegit.org/issues or go to an
@@ -39,6 +13,40 @@ Please also see https://tortoisegit.org/contribute/!
 
 	For exisiting issues it is recommended to start commenting on the issue
 	in order to discuss possible solutions before starting coding.
+
+	Commits:
+
+	- make commits of (small) logical units
+	- do not check in commented out code, unrelated changes or unneeded files
+	- the subject (first line of the commit message) should be a short
+	  description and should skip the full stop. If it is about a bug 
+	  report/issue, use "Fixed issue #NUMBER: ISSUE'S TITLE"
+	- the second line of commit message should be an empty line
+	- the body which starts from the third line should provide a meaningful
+	  commit message
+	- add a "Signed-off-by: Your Name <you@example.com>" line to the commit
+	  message to confirm that you agree to the Developer's Certificate of
+	  Origin.
+	  please use your real name.
+
+	Coding style:
+
+	- based on Visual Studio default coding style (try to copy & paste)
+	- the old code migrates to new coding style only when modifying it.
+	- variable definitions (as it is a type definition; e.g., CGitHash* name 
+	  and CGitHash& name)
+	- for `if`, `for`, `while` a spaces between the keyword and the 
+	  parenthesis (e.g., if ()).
+	- braces go on the next line for `if`, `for`, `else`, ...
+	- If an `if` contains only one action, no braces needed.
+	- function calls, there is no space before the parenthesis (e.g, method()).
+	- no spaces before and after parentheses (e.g., (something)).
+	- spaces between &&, + and other operands also after comma(,).
+	- no variable shadowing.
+	- for variable names: we don't have a strict rule here, should be speak 
+	  for it self.
+	- try not to nest too deeply and return as early as possible.
+	- Only use `this` if needed.
 
 Longer version:
 
