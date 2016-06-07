@@ -18,6 +18,7 @@
 //
 #pragma once
 #include "Command.h"
+#include "ProgressDlg.h"
 
 /**
  * \ingroup TortoiseProc
@@ -26,7 +27,7 @@
 class SVNRebaseCommand : public Command
 {
 private:
-	void	askIfUserWantsToStashPop();
+	void	askIfUserWantsToStashPop(bool autoPopIngore, bool autoPopStash, GitProgressAutoClose autoClose);
 
 public:
 	/**
