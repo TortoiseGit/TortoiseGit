@@ -29,6 +29,18 @@
 bool SVNRebaseCommand::Execute()
 {
 	bool isStash = false;
+	bool autoStashPop = false;
+	bool autoStashIgnore = false;
+
+	if (parser.HasKey(_T("stash")))
+	{
+		CString stash = parser.GetVal(_T("stash"));
+		stash.MakeLower();
+		if (stash == _T("pop"))
+			autoStashPop = true;
+		if (stash == _T("ignore"))
+			autoStashIgnore = true;
+	}
 
 	if(!g_Git.CheckCleanWorkTree())
 	{
@@ -120,8 +132,8 @@ bool SVNRebaseCommand::Execute()
 		if (origAutoClose == AUTOCLOSE_NO)
 			MessageBox(hwndExplorer, g_Git.m_CurrentDir + _T("\r\n") + CString(MAKEINTRESOURCE(IDS_PROC_EVERYTHINGUPDATED)), _T("TortoiseGit"), MB_OK | MB_ICONQUESTION);
 
-		if(isStash)
-			askIfUserWantsToStashPop();
+		if (isStash)
+			askIfUserWantsToStashPop(autoStashIgnore, autoStashPop, origAutoClose);
 
 		return true;
 	}
@@ -142,7 +154,7 @@ bool SVNRebaseCommand::Execute()
 				MessageBox(hwndExplorer, g_Git.m_CurrentDir + _T("\r\n") + CString(MAKEINTRESOURCE(IDS_PROC_FASTFORWARD)) + _T(":\n") + progressReset.m_LogText, _T("TortoiseGit"), MB_OK | MB_ICONQUESTION);
 			
 			if(isStash)
-				askIfUserWantsToStashPop();
+				askIfUserWantsToStashPop(autoStashIgnore, autoStashPop, origAutoClose);
 
 			return true;
 		}
@@ -154,7 +166,7 @@ bool SVNRebaseCommand::Execute()
 	if (response == IDOK || response == IDC_REBASE_POST_BUTTON)
 	{
 		if(isStash)
-			askIfUserWantsToStashPop();
+			askIfUserWantsToStashPop(autoStashIgnore, autoStashPop, origAutoClose);
 		if (response == IDC_REBASE_POST_BUTTON)
 		{
 			cmd = _T("/command:log");
@@ -166,8 +178,20 @@ bool SVNRebaseCommand::Execute()
 	return false;
 }
 
-void SVNRebaseCommand::askIfUserWantsToStashPop()
+void SVNRebaseCommand::askIfUserWantsToStashPop(bool autoPopIgnore, bool autoPopStash, GitProgressAutoClose autoClose)
 {
-	if (MessageBox(hwndExplorer, g_Git.m_CurrentDir + L"\r\n" + CString(MAKEINTRESOURCE(IDS_DCOMMIT_STASH_POP)), L"TortoiseGit", MB_YESNO | MB_ICONINFORMATION) == IDYES)
-		CAppUtils::StashPop();
+	//If the user has not requested to ignore stash and either the user has requested stash pop or requests when prompted, then pop the stash (with changes for message box, without changes for command line), otherwise do nothing.
+	if (!autoPopIgnore)
+	{
+		if (autoPopStash)
+		{
+			if (autoClose == AUTOCLOSE_NO)
+				CAppUtils::StashPop(1);
+			else
+				CAppUtils::StashPop(0);
+		}
+
+		if (MessageBox(hwndExplorer, g_Git.m_CurrentDir + L"\r\n" + CString(MAKEINTRESOURCE(IDS_DCOMMIT_STASH_POP)), L"TortoiseGit", MB_YESNO | MB_ICONINFORMATION) == IDYES)
+			CAppUtils::StashPop(1);
+	}
 }

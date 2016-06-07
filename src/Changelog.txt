@@ -3,6 +3,7 @@ Released: unreleased
 
 == Features ==
  * Updated libgit to 2.8.3
+ * Added stash parameter to SvnRebase command line to handle stash choice for unattended automation.
 
 == Bug Fixes ==
  * Fixed issue #2745: TortoiseGit 2.1 crashes on broken git config 
