@@ -147,6 +147,10 @@
 #define IDS_MENUDESCREMOVEKEEP          272
 #define IDS_YES                         273
 #define IDS_NO                          274
+#define IDS_MENUIGNOREMULTIPLEMASK2     282
+#define IDS_MENUIGNOREMULTIPLE2         283
+#define IDS_MENUDELETEIGNOREMULTIPLE2   284
+#define IDS_MENUDELETEIGNOREMULTIPLEMASK2 285
 #define IDS_git_DEPTH_INFINITE          300
 #define IDS_git_DEPTH_IMMEDIATE         301
 #define IDS_git_DEPTH_FILES             302

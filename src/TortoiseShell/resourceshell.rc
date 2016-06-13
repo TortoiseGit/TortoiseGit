@@ -422,6 +422,11 @@ BEGIN
     IDS_MENUDESCREMOVEKEEP  "Deletes files/folders from version control but keeps the file"
     IDS_YES                 "yes"
     IDS_NO                  "no"
+    IDS_MENUIGNOREMULTIPLEMASK2 "Ignore multiple items by &extension"
+    IDS_MENUIGNOREMULTIPLE2 "&Ignore multiple items by name"
+    IDS_MENUDELETEIGNOREMULTIPLE2 "Delete and &ignore multiple items by name"
+    IDS_MENUDELETEIGNOREMULTIPLEMASK2 
+                            "Delete and ignore multiple items by &extension"
 END
 
 STRINGTABLE

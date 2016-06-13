@@ -747,6 +747,10 @@ msgstr ""
 msgid "&Ignore %d items by name"
 msgstr ""
 
+#. Resource IDs: (IDS_MENUIGNOREMULTIPLE2)
+msgid "&Ignore multiple items by name"
+msgstr ""
+
 #. Resource IDs: (ID_VIEW_IGNORE_WHITESPACE - Menu)
 msgid "&Ignore whitespace"
 msgstr ""
@@ -3496,6 +3500,10 @@ msgstr ""
 msgid "Delete and &ignore %d items by name"
 msgstr ""
 
+#. Resource IDs: (IDS_MENUDELETEIGNOREMULTIPLE2)
+msgid "Delete and &ignore multiple items by name"
+msgstr ""
+
 #. Resource IDs: (IDS_MENUDELETEIGNORE)
 msgid "Delete and add to &ignore list"
 msgstr ""
@@ -3503,6 +3511,10 @@ msgstr ""
 #. Resource IDs: (IDS_MENUDELETEIGNOREMULTIPLEMASK)
 #, c-format
 msgid "Delete and ignore %d items by &extension"
+msgstr ""
+
+#. Resource IDs: (IDS_MENUDELETEIGNOREMULTIPLEMASK2)
+msgid "Delete and ignore multiple items by &extension"
 msgstr ""
 
 #. Resource IDs: (IDS_PROC_BROWSEREFS_DELETEBRANCH)
@@ -5569,6 +5581,10 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETMAINPAGE: Control id 1018)
 msgid "Ignore line &endings (recommended)"
+msgstr ""
+
+#. Resource IDs: (IDS_MENUIGNOREMULTIPLEMASK2)
+msgid "Ignore multiple items by &extension"
 msgstr ""
 
 #. Resource IDs: (IDS_DIFFOPTION_IGNORESPACEATEOL)
