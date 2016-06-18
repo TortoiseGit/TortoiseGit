@@ -74,15 +74,15 @@ bool SVNFetchCommand::Execute()
 
 		postCmdList.emplace_back(IDI_DIFF, _T("Fetched Diff"), [&]
 		{
-			CLogDlg dlg;
-			dlg.SetParams(CTGitPath(_T("")), CTGitPath(_T("")), _T(""), upstreamOldHash.ToString() + _T("..") + upstreamNewHash.ToString(), 0);
+			CFileDiffDlg dlg;
+			dlg.SetDiff(nullptr, upstreamOldHash.ToString(), upstreamNewHash.ToString());
 			dlg.DoModal();
 		});
 
 		postCmdList.emplace_back(IDI_LOG, _T("Fetched Log"), [&]
 		{
-			CFileDiffDlg dlg;
-			dlg.SetDiff(nullptr, upstreamOldHash.ToString(), upstreamNewHash.ToString());
+			CLogDlg dlg;
+			dlg.SetParams(CTGitPath(L""), CTGitPath(L""), L"", upstreamOldHash.ToString() + L".." + upstreamNewHash.ToString(), 0);
 			dlg.DoModal();
 		});
 	};
