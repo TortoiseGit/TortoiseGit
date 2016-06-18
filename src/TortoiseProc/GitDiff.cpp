@@ -506,13 +506,13 @@ int CGitDiff::DiffCommit(const CTGitPath &path1, const CTGitPath &path2, const G
 	if (path1.GetWinPathString().IsEmpty())
 	{
 		CFileDiffDlg dlg;
-		dlg.SetDiff(nullptr, *r1, *r2);
+		dlg.SetDiff(nullptr, *r2, *r1);
 		dlg.DoModal();
 	}
 	else if (path1.IsDirectory())
 	{
 		CFileDiffDlg dlg;
-		dlg.SetDiff(&path1, *r1, *r2);
+		dlg.SetDiff(&path1, *r2, *r1);
 		dlg.DoModal();
 	}
 	else
@@ -530,13 +530,13 @@ int CGitDiff::DiffCommit(const CTGitPath &path1, const CTGitPath &path2, const C
 	if (path1.GetWinPathString().IsEmpty())
 	{
 		CFileDiffDlg dlg;
-		dlg.SetDiff(nullptr, r1, r2);
+		dlg.SetDiff(nullptr, r2, r1);
 		dlg.DoModal();
 	}
 	else if (path1.IsDirectory())
 	{
 		CFileDiffDlg dlg;
-		dlg.SetDiff(&path1, r1, r2);
+		dlg.SetDiff(&path1, r2, r1);
 		dlg.DoModal();
 	}
 	else

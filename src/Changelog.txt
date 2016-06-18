@@ -11,6 +11,7 @@ Released: unreleased
  * Fixed issue #2772: Comparing with added file might result in comparison with empty file
  * Fixed issue #2774: Pull dialog with Russian LangPack has three defficiencies
  * Fixed issue #2783: "Delete and add to ignore list" does not work when more than 16 files are selected
+ * Fixed issue #2740: Order of compared references in revision graph is labelled inverted
 
 = Release 2.1.0 =
 Released: 2016-03-26

@@ -82,7 +82,7 @@ bool SVNFetchCommand::Execute()
 		postCmdList.emplace_back(IDI_LOG, _T("Fetched Log"), [&]
 		{
 			CFileDiffDlg dlg;
-			dlg.SetDiff(nullptr, upstreamNewHash.ToString(), upstreamOldHash.ToString());
+			dlg.SetDiff(nullptr, upstreamOldHash.ToString(), upstreamNewHash.ToString());
 			dlg.DoModal();
 		});
 	};

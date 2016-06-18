@@ -2435,7 +2435,7 @@ bool CAppUtils::Pull(bool showPush, bool showStashPop)
 				postCmdList.emplace_back(IDI_DIFF, IDS_PROC_PULL_DIFFS, [&]
 				{
 					CFileDiffDlg dlg;
-					dlg.SetDiff(nullptr, hashNew.ToString(), hashOld.ToString());
+					dlg.SetDiff(nullptr, hashOld.ToString(), hashNew.ToString());
 					dlg.DoModal();
 				});
 				postCmdList.emplace_back(IDI_LOG, IDS_PROC_PULL_LOG, [&]

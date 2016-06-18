@@ -127,8 +127,8 @@ void CResetDlg::OnBnClickedShowModifiedFiles()
 {
 		CFileDiffDlg dlg;
 
-		dlg.m_strRev1 = _T("0000000000000000000000000000000000000000");
-		dlg.m_strRev2 = _T("HEAD");
+		dlg.m_strRev1 = L"HEAD";
+		dlg.m_strRev2 = GIT_REV_ZERO;
 
 		dlg.DoModal();
 }

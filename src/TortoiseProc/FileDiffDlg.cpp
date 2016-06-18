@@ -112,7 +112,7 @@ BEGIN_MESSAGE_MAP(CFileDiffDlg, CResizableStandAloneDialog)
 END_MESSAGE_MAP()
 
 
-void CFileDiffDlg::SetDiff(const CTGitPath * path, const GitRev &rev1, const GitRev &rev2)
+void CFileDiffDlg::SetDiff(const CTGitPath* path, const GitRev& baseRev1, const GitRev& rev2)
 {
 	if (path)
 	{
@@ -120,11 +120,11 @@ void CFileDiffDlg::SetDiff(const CTGitPath * path, const GitRev &rev1, const Git
 		m_path2 = *path;
 		m_sFilter = path->GetGitPathString();
 	}
-	m_rev1 = rev1;
+	m_rev1 = baseRev1;
 	m_rev2 = rev2;
 }
 
-void CFileDiffDlg::SetDiff(const CTGitPath * path, const CString &hash1, const CString &hash2)
+void CFileDiffDlg::SetDiff(const CTGitPath* path, const CString &baseRev1, const CString& hash2)
 {
 	if (path)
 	{
@@ -135,14 +135,14 @@ void CFileDiffDlg::SetDiff(const CTGitPath * path, const CString &hash1, const C
 
 	BYTE_VECTOR logout;
 
-	if(hash1 == GIT_REV_ZERO)
+	if (baseRev1 == GIT_REV_ZERO)
 	{
 		m_rev1.m_CommitHash.Empty();
 		m_rev1.GetSubject().LoadString(IDS_git_DEPTH_WORKING);
 	}
 	else
 	{
-		if (m_rev1.GetCommit(hash1))
+		if (m_rev1.GetCommit(baseRev1))
 			MessageBox(m_rev1.GetLastErr(), _T("TortoiseGit"), MB_ICONERROR);
 	}
 
@@ -160,7 +160,7 @@ void CFileDiffDlg::SetDiff(const CTGitPath * path, const CString &hash1, const C
 	}
 }
 
-void CFileDiffDlg::SetDiff(const CTGitPath * path, const GitRev &rev1)
+void CFileDiffDlg::SetDiff(const CTGitPath* path, const GitRev &baseRev1)
 {
 	if (path)
 	{
@@ -168,7 +168,7 @@ void CFileDiffDlg::SetDiff(const CTGitPath * path, const GitRev &rev1)
 		m_path2 = *path;
 		m_sFilter = path->GetGitPathString();
 	}
-	m_rev1 = rev1;
+	m_rev1 = baseRev1;
 	m_rev2.m_CommitHash.Empty();
 	m_rev2.GetSubject().LoadString(IDS_PROC_PREVIOUSVERSION);
 
@@ -329,7 +329,7 @@ UINT CFileDiffDlg::DiffThread()
 	if( m_rev1.m_CommitHash.IsEmpty() || m_rev2.m_CommitHash.IsEmpty())
 		g_Git.RefreshGitIndex();
 
-	g_Git.GetCommitDiffList(m_rev1.m_CommitHash.ToString(), m_rev2.m_CommitHash.ToString(), m_arFileList, m_bIgnoreSpaceAtEol, m_bIgnoreSpaceChange, m_bIgnoreAllSpace, m_bIgnoreBlankLines);
+	g_Git.GetCommitDiffList(m_rev2.m_CommitHash.ToString(), m_rev1.m_CommitHash.ToString(), m_arFileList, m_bIgnoreSpaceAtEol, m_bIgnoreSpaceChange, m_bIgnoreAllSpace, m_bIgnoreBlankLines);
 	Sort();
 
 	SendMessage(WM_DIFFFINISHED);
@@ -416,26 +416,26 @@ void CFileDiffDlg::DoDiff(int selIndex, bool blame)
 	CGitDiff diff;
 	CTGitPath* fd2 = m_arFilteredList[selIndex];
 	CTGitPath* fd1 = fd2;
-	if (m_rev1.m_CommitHash.IsEmpty() && g_Git.IsInitRepos())
+	if (m_rev2.m_CommitHash.IsEmpty() && g_Git.IsInitRepos())
 	{
 		CGitDiff::DiffNull(fd2, GIT_REV_ZERO);
 		return;
 	}
-	if (fd2->m_Action & CTGitPath::LOGACTIONS_ADDED)
+	if (fd1->m_Action & CTGitPath::LOGACTIONS_ADDED)
 	{
-		CGitDiff::DiffNull(fd2, m_rev1.m_CommitHash.ToString(), true);
+		CGitDiff::DiffNull(fd1, m_rev2.m_CommitHash.ToString(), true);
 		return;
 	}
-	if (fd2->m_Action & CTGitPath::LOGACTIONS_DELETED)
+	if (fd1->m_Action & CTGitPath::LOGACTIONS_DELETED)
 	{
-		CGitDiff::DiffNull(fd2, m_rev2.m_CommitHash.ToString(), false);
+		CGitDiff::DiffNull(fd1, m_rev1.m_CommitHash.ToString(), false);
 		return;
 	}
-	if (fd2->m_Action & CTGitPath::LOGACTIONS_REPLACED)
-		fd1 = new CTGitPath(fd2->GetGitOldPathString());
-	diff.Diff(fd2, fd1, this->m_rev1.m_CommitHash.ToString(), this->m_rev2.m_CommitHash.ToString(), blame, FALSE);
+	if (fd1->m_Action & CTGitPath::LOGACTIONS_REPLACED)
+		fd2 = new CTGitPath(fd1->GetGitOldPathString());
+	diff.Diff(fd1, fd2, m_rev2.m_CommitHash.ToString(), m_rev1.m_CommitHash.ToString(), blame, FALSE);
 	if (fd1 != fd2)
-		delete fd1;
+		delete fd2;
 }
 
 
@@ -606,11 +606,11 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 				{
 					CTGitPath *fd2 = m_arFilteredList[m_cFileList.GetNextSelectedItem(pos)];
 					CTGitPath *fd1 = fd2;
-					if (fd2->m_Action & CTGitPath::LOGACTIONS_REPLACED)
-						fd1 = new CTGitPath(fd2->GetGitOldPathString());
-					CAppUtils::StartShowUnifiedDiff(m_hWnd, *fd2, m_rev2.m_CommitHash.ToString(), *fd1, m_rev1.m_CommitHash.ToString());
+					if (fd1->m_Action & CTGitPath::LOGACTIONS_REPLACED)
+						fd2 = new CTGitPath(fd2->GetGitOldPathString());
+					CAppUtils::StartShowUnifiedDiff(m_hWnd, *fd1, m_rev1.m_CommitHash.ToString(), *fd2, m_rev2.m_CommitHash.ToString());
 					if (fd1 != fd2)
-						delete fd1;
+						delete fd2;
 				}
 			}
 			break;
@@ -628,7 +628,7 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 				while (pos)
 				{
 					int index = m_cFileList.GetNextSelectedItem(pos);
-					CAppUtils::LaunchTortoiseBlame(m_arFilteredList[index]->GetWinPathString(), m_rev1.m_CommitHash.ToString());
+					CAppUtils::LaunchTortoiseBlame(m_arFilteredList[index]->GetWinPathString(), m_rev2.m_CommitHash.ToString());
 				}
 			}
 			break;
@@ -645,7 +645,7 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 					if (sCmd == ID_LOGSUBMODULE)
 						sCmd += _T(" /submodule");
 					sCmd += _T(" /path:\"") + m_arFilteredList[index]->GetWinPathString() + _T("\" ");
-					sCmd += _T(" /endrev:") + m_rev1.m_CommitHash.ToString();
+					sCmd += L" /endrev:" + m_rev2.m_CommitHash.ToString();
 					CAppUtils::RunTortoiseGitProc(sCmd);
 				}
 			}
@@ -717,7 +717,7 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 							continue;
 						CPathUtils::MakeSureDirectoryPathExists(m_strExportDir + _T("\\") + fd->GetContainingDirectory().GetWinPathString());
 						CString filename = m_strExportDir + _T("\\") + fd->GetWinPathString();
-						if(m_rev1.m_CommitHash.ToString() == GIT_REV_ZERO)
+						if (m_rev2.m_CommitHash.ToString() == GIT_REV_ZERO)
 						{
 							if(!CopyFile(g_Git.CombinePath(fd), filename, false))
 							{
@@ -727,10 +727,10 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 						}
 						else
 						{
-							if(g_Git.GetOneFile(m_rev1.m_CommitHash, *fd, filename))
+							if (g_Git.GetOneFile(m_rev2.m_CommitHash, *fd, filename))
 							{
 								CString out;
-								out.Format(IDS_STATUSLIST_CHECKOUTFILEFAILED, (LPCTSTR)fd->GetGitPathString(), (LPCTSTR)m_rev1.m_CommitHash.ToString(), (LPCTSTR)filename);
+								out.Format(IDS_STATUSLIST_CHECKOUTFILEFAILED, (LPCTSTR)fd->GetGitPathString(), (LPCTSTR)m_rev2.m_CommitHash.ToString(), (LPCTSTR)filename);
 								if (CMessageBox::Show(GetSafeHwnd(), g_Git.GetGitLastErr(out, CGit::GIT_CMD_GETONEFILE), L"TortoiseGit", 2, IDI_WARNING, CString(MAKEINTRESOURCE(IDS_IGNOREBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)
 									return;
 							}
@@ -834,14 +834,14 @@ void CFileDiffDlg::SetURLLabels(int mask)
 				CLoglistUtils::FormatDateAndTime(m_rev2.GetAuthorDate(), DATE_SHORTDATE) + _T("  ") + m_rev2.GetAuthorName());
 	}
 
-	this->GetDlgItem(IDC_REV2GROUP)->SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_FILEDIFF_VERSION2BASE)));
-	this->GetDlgItem(IDC_REV1GROUP)->SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_FILEDIFF_VERSION1)));
+	this->GetDlgItem(IDC_REV1GROUP)->SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_FILEDIFF_VERSION1BASE)));
+	this->GetDlgItem(IDC_REV2GROUP)->SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_FILEDIFF_VERSION2)));
 
-	if( (mask&0x3) == 0x3 && !m_rev1.m_CommitHash.IsEmpty() && !m_rev2.m_CommitHash.IsEmpty())
-		if(m_rev2.GetCommitterDate() > m_rev1.GetCommitterDate())
-			this->GetDlgItem(IDC_REV2GROUP)->SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_FILEDIFF_VERSION2BASENEWER)));
-		else if (m_rev2.GetCommitterDate() < m_rev1.GetCommitterDate())
-			this->GetDlgItem(IDC_REV1GROUP)->SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_FILEDIFF_VERSION1NEWER)));
+	if ((mask & 0x3) == 0x3 && !m_rev1.m_CommitHash.IsEmpty() && !m_rev2.m_CommitHash.IsEmpty())
+		if(m_rev1.GetCommitterDate() > m_rev2.GetCommitterDate())
+			GetDlgItem(IDC_REV1GROUP)->SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_FILEDIFF_VERSION1BASENEWER)));
+		else if (m_rev1.GetCommitterDate() < m_rev2.GetCommitterDate())
+			GetDlgItem(IDC_REV2GROUP)->SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_FILEDIFF_VERSION2NEWER)));
 }
 
 void CFileDiffDlg::ClearURLabels(int mask)
@@ -1341,7 +1341,7 @@ void CFileDiffDlg::OnBnClickedDiffoption()
 void CFileDiffDlg::OnBnClickedLog()
 {
 	CLogDlg dlg;
-	dlg.SetRange(m_rev2.m_CommitHash.ToString() + _T("..") + m_rev1.m_CommitHash.ToString());
+	dlg.SetRange(m_rev1.m_CommitHash.ToString() + L".." + m_rev2.m_CommitHash.ToString());
 	dlg.DoModal();
 }
 

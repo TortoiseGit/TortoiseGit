@@ -32,8 +32,8 @@ bool PrevDiffCommand::Execute()
 	{
 		CFileDiffDlg dlg;
 
-		dlg.m_strRev1 = GIT_REV_ZERO;
-		dlg.m_strRev2 = _T("HEAD~1");
+		dlg.m_strRev1 = L"HEAD~1";
+		dlg.m_strRev2 = GIT_REV_ZERO;
 		dlg.m_sFilter = this->cmdLinePath.GetGitPathString();
 
 		dlg.DoModal();

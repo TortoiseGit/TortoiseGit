@@ -10343,20 +10343,20 @@ msgstr ""
 msgid "Version %d.%d.%d.%d"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_DIFFFILES: Control id 1644, IDS_PROC_FILEDIFF_VERSION1)
-msgid "Version 1"
+#. Resource IDs: (Dialog IDD_DIFFFILES: Control id 1644, IDS_PROC_FILEDIFF_VERSION1BASE)
+msgid "Version 1 (Base)"
 msgstr ""
 
-#. Resource IDs: (IDS_PROC_FILEDIFF_VERSION1NEWER)
-msgid "Version 1 (Newer commit time)"
+#. Resource IDs: (IDS_PROC_FILEDIFF_VERSION1BASENEWER)
+msgid "Version 1 (Base, Newer commit time)"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_DIFFFILES: Control id 1645, IDS_PROC_FILEDIFF_VERSION2BASE)
-msgid "Version 2 (Base)"
+#. Resource IDs: (Dialog IDD_DIFFFILES: Control id 1645, IDS_PROC_FILEDIFF_VERSION2)
+msgid "Version 2"
 msgstr ""
 
-#. Resource IDs: (IDS_PROC_FILEDIFF_VERSION2BASENEWER)
-msgid "Version 2 (Base) (Newer commit time)"
+#. Resource IDs: (IDS_PROC_FILEDIFF_VERSION2NEWER)
+msgid "Version 2 (Newer commit time)"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_ABOUT: Control id 1075)
