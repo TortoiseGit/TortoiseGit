@@ -628,6 +628,19 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 				while (pos)
 				{
 					int index = m_cFileList.GetNextSelectedItem(pos);
+					if (m_arFilteredList[index]->m_Action & CTGitPath::LOGACTIONS_DELETED)
+					{
+						if (!m_rev1.m_CommitHash.IsEmpty())
+							CAppUtils::LaunchTortoiseBlame(m_arFilteredList[index]->GetWinPathString(), m_rev1.m_CommitHash.ToString());
+						continue;
+					}
+					if (m_rev2.m_CommitHash.IsEmpty() && (m_arFilteredList[index]->m_Action & CTGitPath::LOGACTIONS_ADDED))
+						continue;
+					if (m_rev2.m_CommitHash.IsEmpty() && (m_arFilteredList[index]->m_Action & CTGitPath::LOGACTIONS_REPLACED))
+					{
+						CAppUtils::LaunchTortoiseBlame(m_arFilteredList[index]->GetGitOldPathString(), m_rev1.m_CommitHash.ToString());
+						continue;
+					}
 					CAppUtils::LaunchTortoiseBlame(m_arFilteredList[index]->GetWinPathString(), m_rev2.m_CommitHash.ToString());
 				}
 			}
