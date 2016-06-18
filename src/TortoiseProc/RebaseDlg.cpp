@@ -2302,7 +2302,7 @@ void CRebaseDlg::OnBnClickedAbort()
 		goto end;
 	}
 
-	if (CMessageBox::Show(GetSafeHwnd(), IDS_PROC_REBASE_ABORT, IDS_APPNAME, MB_YESNO) != IDYES)
+	if (CMessageBox::Show(GetSafeHwnd(), IDS_PROC_REBASE_ABORT, IDS_APPNAME, MB_YESNO | MB_ICONQUESTION) != IDYES)
 		goto end;
 
 	if(this->m_IsFastForward)
