@@ -35,7 +35,6 @@
 #include "StringUtils.h"
 #include "UnicodeUtils.h"
 #include "TempFile.h"
-#include "FileDiffDlg.h"
 #include "CommitDlg.h"
 #include "RebaseDlg.h"
 #include "GitDiff.h"
@@ -402,8 +401,6 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 
 		case ID_COMPAREWITHPREVIOUS:
 			{
-				CFileDiffDlg dlg;
-
 				if (pSelLogEntry->m_ParentHash.empty())
 				{
 					if (pSelLogEntry->GetParentFromHash(pSelLogEntry->m_CommitHash))
