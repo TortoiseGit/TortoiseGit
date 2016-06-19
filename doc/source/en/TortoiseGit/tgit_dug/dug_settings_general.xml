@@ -118,7 +118,7 @@
 			<term>Cygwin Git</term>
 			<listitem>
 				<para>
-					As noted above: There is no official support for Cygwin git in TortoiseGit. The TortoiseGit developers only use Git for Windows. Bug reports, however, are welcome. If you really want to use it here are the steps you have to perform:
+					As noted above: There is no official support for Cygwin git in TortoiseGit (do not enable this for the "Git for Windows package!). The TortoiseGit developers only use Git for Windows. Bug reports, however, are welcome. If you really want to use it here are the steps you have to perform:
 				</para>
 				<para>
 					1) Select the <literal>[CYGWIN-INSTALL-PATH]\bin</literal>-folder as git.exe folder.
@@ -141,7 +141,7 @@
 			<term>Msys2 Git</term>
 			<listitem>
 				<para>
-					As noted above: There is no official support for Msys2 git in TortoiseGit. The TortoiseGit developers only use Git for Windows. Bugreports, however, are welcome. If you really want to use it here are the steps you have to perform:
+					As noted above: There is no official support for Msys2 git in TortoiseGit (do not enable this for the "Git for Windows package!). The TortoiseGit developers only use Git for Windows. Bugreports, however, are welcome. If you really want to use it here are the steps you have to perform:
 				</para>
 				<para>
 					1) Select the <literal>[MSYS2-INSTALL-PATH]\usr\bin</literal>-folder as git.exe folder.
