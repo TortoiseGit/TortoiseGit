@@ -1064,21 +1064,7 @@ void CGitStatusListCtrl::AddEntry(CTGitPath * GitPath, WORD /*langID*/, int list
 			entryname.AppendFormat(from, (LPCTSTR)GitPath->GetGitOldPathString());
 		}
 		else
-		{
-			CTGitPathList tgpl;
-			tgpl.AddPath(*GitPath);
-			CTGitPath old(GitPath->GetGitOldPathString());
-			tgpl.AddPath(old);
-			CString commonRoot = tgpl.GetCommonRoot().GetGitPathString();
-			if (!commonRoot.IsEmpty())
-				commonRoot += _T("/");
-			if (old.GetFileOrDirectoryName() == GitPath->GetFileOrDirectoryName() && old.GetContainingDirectory().GetGitPathString() != "" && GitPath->GetContainingDirectory().GetGitPathString())
-				entryname = commonRoot + _T("{") + GitPath->GetGitOldPathString().Mid(commonRoot.GetLength(), old.GetGitPathString().GetLength() - commonRoot.GetLength() - old.GetFileOrDirectoryName().GetLength() - 1) + _T(" => ") + GitPath->GetGitPathString().Mid(commonRoot.GetLength(), GitPath->GetGitPathString().GetLength() - commonRoot.GetLength() - old.GetFileOrDirectoryName().GetLength() - 1) +  _T("}/") + old.GetFileOrDirectoryName();
-			else if (!commonRoot.IsEmpty())
-				entryname = commonRoot + _T("{") + GitPath->GetGitOldPathString().Mid(commonRoot.GetLength()) + _T(" => ") + GitPath->GetGitPathString().Mid(commonRoot.GetLength()) + _T("}");
-			else
-				entryname = GitPath->GetGitOldPathString().Mid(commonRoot.GetLength()) + _T(" => ") + GitPath->GetGitPathString().Mid(commonRoot.GetLength());
-		}
+			entryname = GitPath->GetAbbreviatedRename();
 	}
 
 	InsertItem(index, entryname, icon_idx);

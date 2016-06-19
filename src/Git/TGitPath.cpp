@@ -1681,3 +1681,62 @@ int CTGitPathList::GetAction()
 	return m_Action;
 }
 
+CString CTGitPath::GetAbbreviatedRename()
+{
+	if (GetGitOldPathString().IsEmpty())
+		return GetFileOrDirectoryName();
+
+	// Find common prefix which ends with a slash
+	int prefix_length = 0;
+	for (int i = 0, maxLength = min(m_sOldFwdslashPath.GetLength(), m_sFwdslashPath.GetLength()); i < maxLength; ++i)
+	{
+		if (m_sOldFwdslashPath[i] != m_sFwdslashPath[i])
+			break;
+		if (m_sOldFwdslashPath[i] == L'/')
+			prefix_length = i + 1;
+	}
+
+	LPCTSTR oldName = (LPCTSTR)m_sOldFwdslashPath + m_sOldFwdslashPath.GetLength();
+	LPCTSTR newName = (LPCTSTR)m_sFwdslashPath + m_sFwdslashPath.GetLength();
+
+	int suffix_length = 0;
+	int prefix_adjust_for_slash = (prefix_length ? 1 : 0);
+	while ((LPCTSTR)m_sOldFwdslashPath + prefix_length - prefix_adjust_for_slash <= oldName &&
+		   (LPCTSTR)m_sFwdslashPath + prefix_length - prefix_adjust_for_slash <= newName &&
+		   *oldName == *newName)
+	{
+		if (*oldName == L'/')
+			suffix_length = m_sOldFwdslashPath.GetLength() - (int)(oldName - (LPCTSTR)m_sOldFwdslashPath);
+		--oldName;
+		--newName;
+	}
+
+	/*
+	* pfx{old_midlen => new_midlen}sfx
+	* {pfx-old => pfx-new}sfx
+	* pfx{sfx-old => sfx-new}
+	* name-old => name-new
+	*/
+	int old_midlen = m_sOldFwdslashPath.GetLength() - prefix_length - suffix_length;
+	int new_midlen = m_sFwdslashPath.GetLength() - prefix_length - suffix_length;
+	if (old_midlen < 0)
+		old_midlen = 0;
+	if (new_midlen < 0)
+		new_midlen = 0;
+
+	CString ret;
+	if (prefix_length + suffix_length)
+	{
+		ret = m_sOldFwdslashPath.Left(prefix_length);
+		ret += L'{';
+	}
+	ret += m_sOldFwdslashPath.Mid(prefix_length, old_midlen);
+	ret += L" => ";
+	ret += m_sFwdslashPath.Mid(prefix_length, new_midlen);
+	if (prefix_length + suffix_length)
+	{
+		ret += L'}';
+		ret += m_sFwdslashPath.Mid(m_sFwdslashPath.GetLength() - suffix_length, suffix_length);
+	}
+	return ret;
+}
