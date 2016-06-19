@@ -1152,6 +1152,10 @@ TEST(CTGitPath, GetAbbreviatedRename)
 	CTGitPath test;
 	CString newName, oldName;
 
+	// just a failsafe
+	test.SetFromGit(newName, &oldName);
+	EXPECT_STREQ(L"", test.GetAbbreviatedRename());
+
 	oldName = L"B";
 	newName = L"A";
 	test.SetFromGit(newName, &oldName);
@@ -1181,4 +1185,24 @@ TEST(CTGitPath, GetAbbreviatedRename)
 	newName = L"D/A";
 	test.SetFromGit(newName, &oldName);
 	EXPECT_STREQ(L"{C/D => D}/A", test.GetAbbreviatedRename());
+
+	oldName = L"A1/B/C/F";
+	newName = L"A2/B/C/F";
+	test.SetFromGit(newName, &oldName);
+	EXPECT_STREQ(L"{A1 => A2}/B/C/F", test.GetAbbreviatedRename());
+
+	oldName = L"C/D/E";
+	newName = L"D/E";
+	test.SetFromGit(newName, &oldName);
+	EXPECT_STREQ(L"{C/D => D}/E", test.GetAbbreviatedRename());
+
+	oldName = L"D/E";
+	newName = L"D/F/E";
+	test.SetFromGit(newName, &oldName);
+	EXPECT_STREQ(L"D/{ => F}/E", test.GetAbbreviatedRename());
+
+	oldName = L"D/F/E";
+	newName = L"D/F/F/E";
+	test.SetFromGit(newName, &oldName);
+	EXPECT_STREQ(L"D/F/{ => F}/E", test.GetAbbreviatedRename());
 }
