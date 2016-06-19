@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015 - TortoiseGit
+// Copyright (C) 2015-2016 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -1145,4 +1145,40 @@ TEST(CTGitPath, FillUnRev)
 	EXPECT_EQ(0, testList.FillUnRev(CTGitPath::LOGACTIONS_IGNORE, &selectList));
 	EXPECT_EQ(1, testList.GetCount());
 	EXPECT_STREQ(L"subdir/one", testList[0].GetGitPathString());
+}
+
+TEST(CTGitPath, GetAbbreviatedRename)
+{
+	CTGitPath test;
+	CString newName, oldName;
+
+	oldName = L"B";
+	newName = L"A";
+	test.SetFromGit(newName, &oldName);
+	EXPECT_STREQ(L"B => A", test.GetAbbreviatedRename());
+
+	oldName = L"C/B/A";
+	newName = L"A/B/C";
+	test.SetFromGit(newName, &oldName);
+	EXPECT_STREQ(L"C/B/A => A/B/C", test.GetAbbreviatedRename());
+
+	oldName = L"B/C";
+	newName = L"A/C";
+	test.SetFromGit(newName, &oldName);
+	EXPECT_STREQ(L"{B => A}/C", test.GetAbbreviatedRename());
+
+	oldName = L"C/B";
+	newName = L"C/A";
+	test.SetFromGit(newName, &oldName);
+	EXPECT_STREQ(L"C/{B => A}", test.GetAbbreviatedRename());
+
+	oldName = L"C/D/E";
+	newName = L"C/B/A";
+	test.SetFromGit(newName, &oldName);
+	EXPECT_STREQ(L"C/{D/E => B/A}", test.GetAbbreviatedRename());
+
+	oldName = L"C/D/A";
+	newName = L"D/A";
+	test.SetFromGit(newName, &oldName);
+	EXPECT_STREQ(L"{C/D => D}/A", test.GetAbbreviatedRename());
 }
