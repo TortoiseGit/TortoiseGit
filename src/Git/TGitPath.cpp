@@ -1681,3 +1681,22 @@ int CTGitPathList::GetAction()
 	return m_Action;
 }
 
+CString CTGitPath::GetAbbreviatedRename()
+{
+	if (GetGitOldPathString().IsEmpty())
+		return GetFileOrDirectoryName();
+
+	CTGitPathList tgpl;
+	tgpl.AddPath(*this);
+	CTGitPath old(GetGitOldPathString());
+	tgpl.AddPath(old);
+	CString commonRoot = tgpl.GetCommonRoot().GetGitPathString();
+	if (!commonRoot.IsEmpty())
+		commonRoot += L"/";
+	if (old.GetFileOrDirectoryName() == GetFileOrDirectoryName() && old.GetContainingDirectory().GetGitPathString() != "" && GetContainingDirectory().GetGitPathString())
+		return commonRoot + L"{" + GetGitOldPathString().Mid(commonRoot.GetLength(), old.GetGitPathString().GetLength() - commonRoot.GetLength() - old.GetFileOrDirectoryName().GetLength() - 1) + L" => " + GetGitPathString().Mid(commonRoot.GetLength(), GetGitPathString().GetLength() - commonRoot.GetLength() - old.GetFileOrDirectoryName().GetLength() - 1) + L"}/" + old.GetFileOrDirectoryName();
+	else if (!commonRoot.IsEmpty())
+		return commonRoot + L"{" + GetGitOldPathString().Mid(commonRoot.GetLength()) + L" => " + GetGitPathString().Mid(commonRoot.GetLength()) + L"}";
+	else
+		return GetGitOldPathString().Mid(commonRoot.GetLength()) + L" => " + GetGitPathString().Mid(commonRoot.GetLength());
+}

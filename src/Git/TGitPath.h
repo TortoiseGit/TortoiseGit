@@ -259,6 +259,8 @@ public:
 	 */
 	bool IsValidOnWindows() const;
 
+	CString GetAbbreviatedRename();
+
 private:
 	// All these functions are const, and all the data
 	// is mutable, in order that the hidden caching operations
