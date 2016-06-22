@@ -1235,7 +1235,7 @@ void CRebaseDlg::OnBnClickedContinue()
 				else
 					mgtUpdateIndex.AddFile(entry->GetGitPathString());
 
-				if (entry->m_Action & CTGitPath::LOGACTIONS_REPLACED)
+				if ((entry->m_Action & CTGitPath::LOGACTIONS_REPLACED) && !entry->GetGitOldPathString().IsEmpty())
 					mgtRm.AddFile(entry->GetGitOldPathString());
 			}
 			else
