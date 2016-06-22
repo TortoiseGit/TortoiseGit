@@ -2173,8 +2173,7 @@ void CRebaseDlg::ListConflictFile()
 	}
 
 	this->m_FileListCtrl.GetStatus(&list,true);
-	this->m_FileListCtrl.Show(CTGitPath::LOGACTIONS_UNMERGED|CTGitPath::LOGACTIONS_MODIFIED|CTGitPath::LOGACTIONS_ADDED|CTGitPath::LOGACTIONS_DELETED,
-							   CTGitPath::LOGACTIONS_UNMERGED);
+	m_FileListCtrl.Show(CTGitPath::LOGACTIONS_UNMERGED | CTGitPath::LOGACTIONS_MODIFIED | CTGitPath::LOGACTIONS_ADDED | CTGitPath::LOGACTIONS_DELETED | CTGitPath::LOGACTIONS_REPLACED, CTGitPath::LOGACTIONS_UNMERGED);
 
 	m_FileListCtrl.Check(GITSLC_SHOWFILES);
 	bool hasSubmoduleChange = false;
