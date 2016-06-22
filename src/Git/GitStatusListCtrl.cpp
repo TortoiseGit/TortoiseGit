@@ -346,6 +346,9 @@ void CGitStatusListCtrl::Init(DWORD dwColumns, const CString& sColumnInfoContain
 
 	m_ColumnManager.SetNames(standardColumnNames,GITSLC_NUMCOLUMNS);
 	m_ColumnManager.ReadSettings(m_dwDefaultColumns, 0xffffffff & ~(allowedColumns | m_dwDefaultColumns), sColumnInfoContainer, GITSLC_NUMCOLUMNS);
+	m_ColumnManager.SetRightAlign(4);
+	m_ColumnManager.SetRightAlign(5);
+	m_ColumnManager.SetRightAlign(7);
 
 	// enable file drops
 #if 0

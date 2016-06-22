@@ -245,6 +245,21 @@ int ColumnManager::SetNames(UINT* buffer, int size)
 	return 0;
 }
 
+void ColumnManager::SetRightAlign(int column) const
+{
+	assert(column < columns.size());
+
+	if (!IsVisible(column))
+		return;
+
+	LVCOLUMN col = { 0 };
+	col.mask = LVCF_FMT;
+	col.fmt = LVCFMT_RIGHT;
+	control->SetColumn(column, &col);
+
+	control->Invalidate(FALSE);
+}
+
 CString ColumnManager::GetName (int column) const
 {
 	// standard columns

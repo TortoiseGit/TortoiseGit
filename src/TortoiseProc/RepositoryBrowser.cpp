@@ -206,6 +206,7 @@ BOOL CRepositoryBrowser::OnInitDialog()
 	DWORD dwDefaultColumns = (1 << eCol_Name) | (1 << eCol_Extension) | (1 << eCol_FileSize);
 	m_ColumnManager.SetNames(columnNames, _countof(columnNames));
 	m_ColumnManager.ReadSettings(dwDefaultColumns, 0, _T("RepoBrowser"), _countof(columnNames), columnWidths);
+	m_ColumnManager.SetRightAlign(2);
 
 	// set up the list control
 	// set the extended style of the list control

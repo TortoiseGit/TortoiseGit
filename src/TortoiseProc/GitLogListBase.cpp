@@ -420,6 +420,7 @@ void CGitLogListBase::InsertGitColumn()
 
 	m_ColumnManager.SetNames(normal, _countof(normal));
 	m_ColumnManager.ReadSettings(m_dwDefaultColumns, hideColumns, m_ColumnRegKey+_T("loglist"), _countof(normal), with);
+	m_ColumnManager.SetRightAlign(2);
 
 	SetRedraw(true);
 }
