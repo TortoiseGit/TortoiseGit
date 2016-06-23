@@ -14,6 +14,7 @@ Released: unreleased
  * Fixed issue #2783: "Delete and add to ignore list" does not work when more than 16 files are selected
  * Fixed issue #2740: Order of compared references in revision graph is labelled inverted
  * Fixed issue #2785: Rebase/Cherry-pick with conflict in renamed file fails
+ * Fixed issue #2714: TortoiseGitMerge should redraw if font is changed
 
 = Release 2.1.0 =
 Released: 2016-03-26

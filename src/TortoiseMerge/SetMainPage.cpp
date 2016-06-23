@@ -1,7 +1,7 @@
 // TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2013-2014 - TortoiseGit
-// Copyright (C) 2006-2010, 2012-2014 - TortoiseSVN
+// Copyright (C) 2006-2010, 2012-2014, 2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -228,8 +228,8 @@ BEGIN_MESSAGE_MAP(CSetMainPage, CPropertyPage)
 	ON_EN_CHANGE(IDC_TABSIZE, &CSetMainPage::OnModified)
 	ON_BN_CLICKED(IDC_ENABLEEDITORCONFIG, &CSetMainPage::OnModified)
 	ON_EN_CHANGE(IDC_CONTEXTLINES, &CSetMainPage::OnModified)
-	ON_CBN_SELCHANGE(IDC_FONTSIZES, &CSetMainPage::OnModified)
-	ON_CBN_SELCHANGE(IDC_FONTNAMES, &CSetMainPage::OnModified)
+	ON_CBN_SELCHANGE(IDC_FONTSIZES, &CSetMainPage::OnModifiedWithReload)
+	ON_CBN_SELCHANGE(IDC_FONTNAMES, &CSetMainPage::OnModifiedWithReload)
 	ON_BN_CLICKED(IDC_CASEINSENSITIVE, &CSetMainPage::OnModified)
 	ON_BN_CLICKED(IDC_UTF8DEFAULT, &CSetMainPage::OnModified)
 	ON_BN_CLICKED(IDC_AUTOADD, &CSetMainPage::OnModified)
