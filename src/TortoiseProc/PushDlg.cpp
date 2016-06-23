@@ -185,6 +185,7 @@ BOOL CPushDlg::OnInitDialog()
 	m_BrowseLocalRef.m_bRightArrow = TRUE;
 	m_BrowseLocalRef.m_bDefaultClick = FALSE;
 	m_BrowseLocalRef.m_bMarkDefault = FALSE;
+	m_BrowseLocalRef.m_bShowCurrentItem = FALSE;
 	m_BrowseLocalRef.AddEntry(CString(MAKEINTRESOURCE(IDS_REFBROWSE)));
 	m_BrowseLocalRef.AddEntry(CString(MAKEINTRESOURCE(IDS_LOG)));
 	m_BrowseLocalRef.AddEntry(CString(MAKEINTRESOURCE(IDS_REFLOG)));

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011 - Sven Strickroth <email@cs-ware.de>
+// Copyright (C) 2011, 2016 - Sven Strickroth <email@cs-ware.de>
 
 //based on:
 // Copyright (C) 2003-2007 - TortoiseSVN
@@ -77,6 +77,9 @@ public:
 	void	RemoveAll();
 
 	bool	m_bMarkDefault;
+
+	/** Don't show text on Button */
+	bool	m_bShowCurrentItem;
 
 protected:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011,2015 - Sven Strickroth <email@cs-ware.de>
+// Copyright (C) 2011,2015-2016 - Sven Strickroth <email@cs-ware.de>
 
 //based on:
 // Copyright (C) 2003-2006,2008 - Stefan Kueng
@@ -35,6 +35,7 @@ IMPLEMENT_DYNCREATE(CMenuButton, CMFCMenuButton)
 CMenuButton::CMenuButton(void) : CMFCMenuButton()
 	, m_nDefault(-1)
 	, m_bMarkDefault(TRUE)
+	, m_bShowCurrentItem(true)
 	, m_bRealMenuIsActive(false)
 {
 	m_bOSMenu = TRUE;
@@ -52,7 +53,7 @@ CMenuButton::~CMenuButton(void)
 
 bool CMenuButton::SetCurrentEntry(INT_PTR entry)
 {
-	if (entry < 0 || entry >= m_sEntries.GetCount())
+	if (entry < 0 || entry >= m_sEntries.GetCount() || !m_bShowCurrentItem)
 		return false;
 
 	m_nDefault = entry + 1;
