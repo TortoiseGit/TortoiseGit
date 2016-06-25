@@ -183,7 +183,10 @@ public:
 	/// tracking column modifications
 
 	void ColumnMoved (int column, int position);
-	void ColumnResized (int column);
+	/**
+	manual: 0: automatic updates, 1: manual updates, 2: reset manual adjusted state
+	*/
+	void ColumnResized(int column, int manual = 0);
 
 	/// call these to update the user-prop list
 	/// (will also auto-insert /-remove new list columns)
@@ -196,6 +199,18 @@ public:
 
 	void ResetColumns (DWORD defaultColumns);
 
+	void OnHeaderDblClick(NMHDR* pNMHDR, LRESULT* pResult)
+	{
+		LPNMHEADER header = reinterpret_cast<LPNMHEADER>(pNMHDR);
+		if (header
+			&& (header->iItem >= 0)
+			&& (header->iItem < GetColumnCount()))
+		{
+			ColumnResized(header->iItem, 2);
+		}
+		*pResult = 0;
+	}
+
 	void OnColumnResized(NMHDR *pNMHDR, LRESULT *pResult)
 	{
 		LPNMHEADER header = reinterpret_cast<LPNMHEADER>(pNMHDR);
@@ -203,7 +218,7 @@ public:
 			&& (header->iItem >= 0)
 			&& (header->iItem < GetColumnCount()))
 		{
-			ColumnResized (header->iItem);
+			ColumnResized (header->iItem, 1);
 		}
 		*pResult = 0;
 	}
@@ -397,6 +412,7 @@ private:
 		int width;
 		bool visible;
 		bool relevant;      ///< set to @a visible, if no *shown* item has that property
+		bool adjusted;
 	};
 
 	std::vector<ColumnInfo> columns;
@@ -1040,6 +1056,7 @@ private:
 	afx_msg void OnLvnItemchanging(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg BOOL OnLvnItemchanged(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnColumnResized(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnHeaderDblClick(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnColumnMoved(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 

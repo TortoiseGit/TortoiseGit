@@ -126,6 +126,7 @@ void ColumnManager::ReadSettings
 			columns[i].width = widthlist[i];
 		columns[i].visible = true;
 		columns[i].relevant = !(hideColumns & power);
+		columns[i].adjusted = false;
 		power *= 2;
 	}
 
@@ -354,14 +355,22 @@ void ColumnManager::ColumnMoved (int column, int position)
 	ApplyColumnOrder();
 }
 
-void ColumnManager::ColumnResized (int column)
+void ColumnManager::ColumnResized(int column, int manual)
 {
 	size_t index = static_cast<size_t>(column);
 	assert (index < columns.size());
 	assert (columns[index].visible);
 
 	int width = control->GetColumnWidth (column);
-	columns[index].width = width;
+	if (manual != 0)
+		columns[index].adjusted = (manual == 1);
+	if (manual == 2)
+	{
+		control->SetColumnWidth(column, LVSCW_AUTOSIZE);
+		columns[index].width = 0;
+	}
+	else
+		columns[index].width = width;
 
 	control->Invalidate  (FALSE);
 }
@@ -431,6 +440,7 @@ void ColumnManager::ResetColumns (DWORD defaultColumns)
 	{
 		columns[i].width = 0;
 		columns[i].visible = (i < 32) && (((defaultColumns >> i) & 1) != 0);
+		columns[i].adjusted = false;
 	}
 
 	// update UI
@@ -453,8 +463,11 @@ void ColumnManager::ParseWidths (const CString& widths)
 		if (i < (int)itemName.size())
 		{
 			// a standard column
-
-			columns[i].width = width;
+			if (width != MAXLONG)
+			{
+				columns[i].width = width;
+				columns[i].adjusted = true;
+			}
 		}
 		else
 		{
@@ -574,7 +587,7 @@ CString ColumnManager::GetWidthString() const
 	TCHAR buf[10] = { 0 };
 	for (size_t i = 0; i < itemName.size(); ++i)
 	{
-		_stprintf_s (buf, 10, _T("%08X"), columns[i].width);
+		_stprintf_s (buf, 10, L"%08X", columns[i].adjusted ? columns[i].width : MAXLONG);
 		result += buf;
 	}
 

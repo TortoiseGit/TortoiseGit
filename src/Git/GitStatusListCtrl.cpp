@@ -197,6 +197,7 @@ BEGIN_MESSAGE_MAP(CGitStatusListCtrl, CListCtrl)
 	ON_NOTIFY(HDN_ITEMCLICKW, 0, OnHdnItemclick)
 	ON_NOTIFY(HDN_ENDTRACK, 0, OnColumnResized)
 	ON_NOTIFY(HDN_ENDDRAG, 0, OnColumnMoved)
+	ON_NOTIFY(HDN_DIVIDERDBLCLICK, 0, OnHeaderDblClick)
 	ON_NOTIFY_REFLECT_EX(LVN_ITEMCHANGED, OnLvnItemchanged)
 	ON_WM_CONTEXTMENU()
 	ON_NOTIFY_REFLECT(NM_DBLCLK, OnNMDblclk)
@@ -1225,6 +1226,13 @@ BOOL CGitStatusListCtrl::OnLvnItemchanged(NMHDR *pNMHDR, LRESULT *pResult)
 	NotifyCheck();
 
 	return FALSE;
+}
+
+void CGitStatusListCtrl::OnHeaderDblClick(NMHDR* pNMHDR, LRESULT* pResult)
+{
+	m_ColumnManager.OnHeaderDblClick(pNMHDR, pResult);
+
+	*pResult = FALSE;
 }
 
 void CGitStatusListCtrl::OnColumnResized(NMHDR *pNMHDR, LRESULT *pResult)
