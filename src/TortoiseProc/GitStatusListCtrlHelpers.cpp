@@ -248,7 +248,7 @@ int ColumnManager::SetNames(UINT* buffer, int size)
 
 void ColumnManager::SetRightAlign(int column) const
 {
-	assert(column < columns.size());
+	assert(column <= columns.size());
 
 	if (!IsVisible(column))
 		return;
