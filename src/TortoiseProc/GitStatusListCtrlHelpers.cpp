@@ -294,10 +294,10 @@ int ColumnManager::GetWidth (int column, bool useDefaults) const
 		{
 			int cx = control->GetStringWidth(GetName(column)) + 20; // 20 pixels for col separator and margin
 
-			for (int index = 0, itemCnt = control->GetItemCount(); index < itemCnt; ++index)
+			for (int i = 0, itemCnt = control->GetItemCount(); i < itemCnt; ++i)
 			{
 				// get the width of the string and add 14 pixels for the column separator and margins
-				int linewidth = control->GetStringWidth(control->GetItemText(index,column)) + 14;
+				int linewidth = control->GetStringWidth(control->GetItemText(i, column)) + 14;
 				if (cx < linewidth)
 					cx = linewidth;
 			}
