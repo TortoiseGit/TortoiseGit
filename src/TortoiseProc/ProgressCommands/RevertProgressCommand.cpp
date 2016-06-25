@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2014 - TortoiseGit
+// Copyright (C) 2009-2014, 2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -20,11 +20,14 @@
 #include "RevertProgressCommand.h"
 #include "ShellUpdater.h"
 #include "AppUtils.h"
+#include "../TGitCache/CacheInterface.h"
 
 bool RevertProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, int& m_itemCountTotal, int& m_itemCount)
 {
 	list->SetWindowTitle(IDS_PROGRS_TITLE_REVERT, g_Git.CombinePath(m_targetPathList.GetCommonRoot().GetUIPathString()), sWindowTitle);
 	list->SetBackgroundImage(IDI_REVERT_BKG);
+
+	CBlockCacheForPath block(g_Git.m_CurrentDir);
 
 	m_itemCountTotal = 2 * m_targetPathList.GetCount();
 	CTGitPathList delList;
