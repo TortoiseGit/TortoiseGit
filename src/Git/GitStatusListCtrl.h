@@ -158,7 +158,6 @@ public:
 	ColumnManager (CListCtrl* control) : control (control), m_dwDefaultColumns(0) {};
 	~ColumnManager() {};
 
-	DWORD m_dwDefaultColumns;
 	/// registry access
 
 	void ReadSettings (DWORD defaultColumns, DWORD hideColumns, const CString& containerName, int ReadSettings, int* withlist = nullptr);
@@ -362,6 +361,7 @@ public:
 		}
 	}
 
+private:
 	void AddMenuItem(CMenu *pop)
 	{
 		UINT uCheckedFlags = MF_STRING | MF_ENABLED | MF_CHECKED;
@@ -377,7 +377,8 @@ public:
 					, GetName(i));
 		}
 	}
-private:
+
+	DWORD m_dwDefaultColumns;
 
 	/// initialization utilities
 
