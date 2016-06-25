@@ -425,43 +425,6 @@ void CGitLogListBase::InsertGitColumn()
 	SetRedraw(true);
 }
 
-/**
- * Resizes all columns in a list control to values in registry.
- */
-void CGitLogListBase::ResizeAllListCtrlCols()
-{
-	// column max and min widths to allow
-	static const int nMinimumWidth = 10;
-	static const int nMaximumWidth = 1000;
-	CHeaderCtrl* pHdrCtrl = (CHeaderCtrl*)(GetDlgItem(0));
-	if (pHdrCtrl)
-	{
-		int numcols = pHdrCtrl->GetItemCount();
-		for (int col = 0; col < numcols; ++col)
-		{
-			// get width for this col last time from registry
-			CString regentry;
-			regentry.Format( _T("Software\\TortoiseGit\\%s\\ColWidth%d"), (LPCTSTR)m_ColumnRegKey, col);
-			CRegDWORD regwidth(regentry, 0);
-			int cx = regwidth;
-			if ( cx == 0 )
-			{
-				// no saved value, setup sensible defaults
-				if (col == this->LOGLIST_MESSAGE)
-					cx = LOGLIST_MESSAGE_MIN;
-				else
-					cx = ICONITEMBORDER+16*4;
-			}
-			if (cx < nMinimumWidth)
-				cx = nMinimumWidth;
-			else if (cx > nMaximumWidth)
-				cx = nMaximumWidth;
-
-			SetColumnWidth(col, cx);
-		}
-	}
-}
-
 void CGitLogListBase::FillBackGround(HDC hdc, DWORD_PTR Index, CRect &rect)
 {
 	LVITEM rItem = { 0 };

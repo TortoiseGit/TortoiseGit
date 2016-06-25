@@ -2956,7 +2956,6 @@ void CLogDlg::OnEnChangeSearchedit()
 		m_LogList.SetItemCountEx(ShownCountWithStopped());
 		m_LogList.RedrawItems(0, ShownCountWithStopped());
 		m_LogList.SetRedraw(false);
-		ResizeAllListCtrlCols();
 		m_LogList.SetRedraw(true);
 #endif
 		theApp.DoWaitCursor(-1);

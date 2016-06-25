@@ -382,7 +382,6 @@ public:
 	inline unsigned __int64 GetContextMenuBit(int i){ return ((unsigned __int64 )0x1)<<i ;}
 	static CString GetRebaseActionName(int action);
 	void InsertGitColumn();
-	void ResizeAllListCtrlCols();
 	void CopySelectionToClipBoard(int toCopy = ID_COPY_ALL);
 	void DiffSelectedRevWithPrevious();
 	bool IsSelectionContinuous();
