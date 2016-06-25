@@ -1,6 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2006-2015 - TortoiseSVN
+// Copyright (C) 2006-2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -461,6 +461,7 @@ CDiffData::DoTwoWayDiff(const CString& sBaseFilename, const CString& sYourFilena
 	// arbitrary length of 500
 	static const int maxstringlengthforwhitespacecheck = 500;
 	auto s1 = std::make_unique<wchar_t[]>(maxstringlengthforwhitespacecheck);
+	auto s2 = std::make_unique<wchar_t[]>(maxstringlengthforwhitespacecheck);
 	while (tempdiff)
 	{
 		if (tempdiff->type == svn_diff__type_common)
@@ -489,6 +490,7 @@ CDiffData::DoTwoWayDiff(const CString& sBaseFilename, const CString& sYourFilena
 							auto pLine1 = (LPCWSTR)sCurrentBaseLine;
 							auto pLine2 = (LPCWSTR)sCurrentYourLine;
 							auto pS1 = s1.get();
+							auto pS2 = s2.get();
 							while (*pLine1)
 							{
 								if ((*pLine1 == ' ') || (*pLine1 == '\t'))
@@ -505,20 +507,26 @@ CDiffData::DoTwoWayDiff(const CString& sBaseFilename, const CString& sYourFilena
 							{
 								if ((*pLine2 == ' ') || (*pLine2 == '\t'))
 								{
-									if (*pS1 != *pLine2)
-									{
-										bWhiteSpaceChanges = false;
-										break;
-									}
+									*pS2 = *pLine1;
+									++pS2;
 								}
 								++pLine2;
 							}
+							*pS2 = '\0';
+							bWhiteSpaceChanges = wcscmp(s1.get(), s2.get()) != 0;
 						}
 					}
 					if (changedWS || ((dwIgnoreWS == 0) && bWhiteSpaceChanges))
 					{
-						m_YourBaseLeft.AddData(sCurrentBaseLine, DIFFSTATE_WHITESPACE, baseline, endingBase, HIDESTATE_SHOWN, -1);
-						m_YourBaseRight.AddData(sCurrentYourLine, DIFFSTATE_WHITESPACE, yourline, endingYours, HIDESTATE_SHOWN, -1);
+						auto ds = DIFFSTATE_WHITESPACE;
+						if (!bWhiteSpaceChanges && (dwIgnoreWS == 0))
+						{
+							// if there are no whitespace changes but diffs only because of a regex filter,
+							// mark the lines as normal and not with whitespace changes.
+							ds = DIFFSTATE_NORMAL;
+						}
+						m_YourBaseLeft.AddData(sCurrentBaseLine, ds, baseline, endingBase, HIDESTATE_SHOWN, -1);
+						m_YourBaseRight.AddData(sCurrentYourLine, ds, yourline, endingYours, HIDESTATE_SHOWN, -1);
 					}
 					else
 					{
