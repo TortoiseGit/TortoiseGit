@@ -289,8 +289,22 @@ int ColumnManager::GetWidth (int column, bool useDefaults) const
 
 	int width = columns[index].width;
 	if ((width == 0) && useDefaults)
-		width = LVSCW_AUTOSIZE;
+	{
+		if (index > 0)
+		{
+			int cx = control->GetStringWidth(GetName(column)) + 20; // 20 pixels for col separator and margin
 
+			for (int index = 0, itemCnt = control->GetItemCount(); index < itemCnt; ++index)
+			{
+				// get the width of the string and add 14 pixels for the column separator and margins
+				int linewidth = control->GetStringWidth(control->GetItemText(index,column)) + 14;
+				if (cx < linewidth)
+					cx = linewidth;
+			}
+			return cx;
+		}
+		return LVSCW_AUTOSIZE_USEHEADER;
+	}
 	return width;
 }
 
@@ -363,11 +377,16 @@ void ColumnManager::ColumnResized(int column, int manual)
 
 	int width = control->GetColumnWidth (column);
 	if (manual != 0)
-		columns[index].adjusted = (manual == 1);
+		columns[index].adjusted = (manual < 3);
 	if (manual == 2)
 	{
 		control->SetColumnWidth(column, LVSCW_AUTOSIZE);
+		columns[index].width = control->GetColumnWidth(column);
+	}
+	else if (manual == 3)
+	{
 		columns[index].width = 0;
+		control->SetColumnWidth(column, GetWidth(column, true));
 	}
 	else
 		columns[index].width = width;

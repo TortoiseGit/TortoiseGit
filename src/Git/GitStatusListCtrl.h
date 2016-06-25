@@ -184,7 +184,7 @@ public:
 
 	void ColumnMoved (int column, int position);
 	/**
-	manual: 0: automatic updates, 1: manual updates, 2: reset manual adjusted state
+	manual: 0: automatic updates, 1: manual updates, 2: manual updates and set to optimal width, 3: reset manual adjusted state
 	*/
 	void ColumnResized(int column, int manual = 0);
 
@@ -206,7 +206,8 @@ public:
 			&& (header->iItem >= 0)
 			&& (header->iItem < GetColumnCount()))
 		{
-			ColumnResized(header->iItem, 2);
+			bool bShift = !!(GetAsyncKeyState(VK_SHIFT) & 0x8000);
+			ColumnResized(header->iItem, bShift ? 3: 2);
 		}
 		*pResult = 0;
 	}
