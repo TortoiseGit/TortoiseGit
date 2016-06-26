@@ -596,6 +596,18 @@ void CTortoiseProcApp::CheckUpgrade()
 	}
 
 	// version specific updates
+	if (lVersion <= 0x02010500)
+	{
+		// We updated GITSLC_COL_VERSION, but only significant changes were made for GitStatusList
+		// so, smoothly migrate GitLoglistBase settings
+		for (const CString& setting : { L"log", L"Blame", L"Rebase", L"reflog", L"SyncIn", L"SyncOut" })
+		{
+			CRegDWORD reg(L"Software\\TortoiseGit\\StatusColumns\\" + setting + L"loglistVersion", 0xff);
+			if ((DWORD)reg == 5)
+				reg = 6;
+		}
+	}
+
 	if (lVersion <= 0x01090000)
 	{
 		if (CRegDWORD(_T("Software\\TortoiseGit\\TGitCacheCheckContent"), TRUE) == FALSE)

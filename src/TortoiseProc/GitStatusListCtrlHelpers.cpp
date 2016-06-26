@@ -23,8 +23,8 @@
 #include "GitStatusListCtrl.h"
 #include <iterator>
 
-// registry version number of column-settings of GitLogListBase
-#define GITSLC_COL_VERSION 5
+// registry version number of column-settings of both GitLogListBase and GitStatusListCtrl
+#define GITSLC_COL_VERSION 6
 
 #ifndef assert
 #define assert(x) ATLASSERT(x)

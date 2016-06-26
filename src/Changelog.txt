@@ -4,6 +4,7 @@ Released: unreleased
 == Features ==
  * Updated libgit to 2.8.3
  * Fixed issue #2773: Directory renames should be displayed shorter
+ * GitStatusList now automatically adjusts the width of columns. This can be disabled by manually sizing it.
 
 == Bug Fixes ==
  * Fixed issue #2745: TortoiseGit 2.1 crashes on broken git config 
