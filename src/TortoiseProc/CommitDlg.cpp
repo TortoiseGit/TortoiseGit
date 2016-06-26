@@ -1525,7 +1525,7 @@ void CCommitDlg::StopStatusThread()
 
 	// we gave the thread a chance to quit. Since the thread didn't
 	// listen to us we have to kill it.
-	TerminateThread(m_pThread->m_hThread, (DWORD)-1);
+	g_Git.KillRelatedThreads(m_pThread);
 	InterlockedExchange(&m_bThreadRunning, FALSE);
 }
 

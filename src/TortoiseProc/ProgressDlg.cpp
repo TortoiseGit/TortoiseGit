@@ -722,7 +722,7 @@ void CProgressDlg::OnCancel()
 	if (m_pThread)
 	{
 		if (::WaitForSingleObject(m_pThread->m_hThread, 5000) == WAIT_TIMEOUT)
-			TerminateThread(m_pThread->m_hThread, (DWORD)-1);
+			g_Git.KillRelatedThreads(m_pThread);
 	}
 
 	WriteLog();

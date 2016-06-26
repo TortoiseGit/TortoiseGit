@@ -218,6 +218,7 @@ CGit::CGit(void)
 	this->m_bInitialized =false;
 	CheckMsysGitDir();
 	m_critGitDllSec.Init();
+	m_critSecThreadMap.Init();
 }
 
 CGit::~CGit(void)
@@ -233,6 +234,7 @@ CGit::~CGit(void)
 		m_GitSimpleListDiff=0;
 	}
 	git_libgit2_shutdown();
+	m_critSecThreadMap.Term();
 }
 
 bool CGit::IsBranchNameValid(const CString& branchname)
@@ -424,6 +426,20 @@ DWORD WINAPI CGit::AsyncReadStdErrThread(LPVOID lpParam)
 	return 0;
 }
 
+#ifdef _MFC_VER
+void CGit::KillRelatedThreads(CWinThread* thread)
+{
+	CAutoLocker lock(m_critSecThreadMap);
+	auto it = m_AsyncReadStdErrThreadMap.find(thread->m_nThreadID);
+	if (it != m_AsyncReadStdErrThreadMap.cend())
+	{
+		TerminateThread(it->second, (DWORD)-1);
+		m_AsyncReadStdErrThreadMap.erase(it);
+	}
+	TerminateThread(thread->m_hThread, (DWORD)-1);
+}
+#endif
+
 int CGit::Run(CGitCall* pcall)
 {
 	PROCESS_INFORMATION pi;
@@ -439,6 +455,12 @@ int CGit::Run(CGitCall* pcall)
 	threadArguments.pcall = pcall;
 	CAutoGeneralHandle thread = CreateThread(nullptr, 0, AsyncReadStdErrThread, &threadArguments, 0, nullptr);
 
+	if (thread)
+	{
+		CAutoLocker lock(m_critSecThreadMap);
+		m_AsyncReadStdErrThreadMap[GetCurrentThreadId()] = thread;
+	}
+
 	DWORD readnumber;
 	BYTE data[CALL_OUTPUT_READ_CHUNK_SIZE];
 	bool bAborted=false;
@@ -453,7 +475,12 @@ int CGit::Run(CGitCall* pcall)
 		pcall->OnEnd();
 
 	if (thread)
+	{
 		WaitForSingleObject(thread, INFINITE);
+
+		CAutoLocker lock(m_critSecThreadMap);
+		m_AsyncReadStdErrThreadMap.erase(GetCurrentThreadId());
+	}
 
 	WaitForSingleObject(pi.hProcess, INFINITE);
 	DWORD exitcode =0;
@@ -1195,13 +1222,24 @@ int CGit::RunLogFile(CString cmd, const CString &filename, CString *stdErr)
 	threadArguments.pcall = &pcall;
 	CAutoGeneralHandle thread = CreateThread(nullptr, 0, AsyncReadStdErrThread, &threadArguments, 0, nullptr);
 
+	if (thread)
+	{
+		CAutoLocker lock(m_critSecThreadMap);
+		m_AsyncReadStdErrThreadMap[GetCurrentThreadId()] = thread;
+	}
+
 	WaitForSingleObject(pi.hProcess,INFINITE);
 
 	hWriteErr.CloseHandle();
 	hReadErr.CloseHandle();
 
 	if (thread)
+	{
 		WaitForSingleObject(thread, INFINITE);
+
+		CAutoLocker lock(m_critSecThreadMap);
+		m_AsyncReadStdErrThreadMap.erase(GetCurrentThreadId());
+	}
 
 	stderrVector.push_back(0);
 	StringAppend(stdErr, &(stderrVector[0]), CP_UTF8);

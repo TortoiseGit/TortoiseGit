@@ -1013,7 +1013,7 @@ void CGitProgressList::OnClose()
 {
 	if (m_bCancelled)
 	{
-		TerminateThread(m_pThread->m_hThread, (DWORD)-1);
+		g_Git.KillRelatedThreads(m_pThread);
 		InterlockedExchange(&m_bThreadRunning, FALSE);
 	}
 	else

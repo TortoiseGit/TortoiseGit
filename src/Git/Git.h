@@ -258,6 +258,8 @@ public:
 	int Run(CString cmd, const GitReceiverFunc& recv, CString* outputErr = nullptr);
 
 private:
+	CComCriticalSection			m_critSecThreadMap;
+	std::map<DWORD, HANDLE>	m_AsyncReadStdErrThreadMap;
 	static DWORD WINAPI AsyncReadStdErrThread(LPVOID lpParam);
 	typedef struct AsyncReadStdErrThreadArguments
 	{
@@ -267,6 +269,9 @@ private:
 	CString GetUnifiedDiffCmd(const CTGitPath& path, const git_revnum_t& rev1, const git_revnum_t& rev2, bool bMerge, bool bCombine, int diffContext, bool bNoPrefix = false);
 
 public:
+#ifdef _MFC_VER
+	void KillRelatedThreads(CWinThread* thread);
+#endif
 	int RunAsync(CString cmd, PROCESS_INFORMATION* pi, HANDLE* hRead, HANDLE* hErrReadOut, CString* StdioFile = nullptr);
 	int RunLogFile(CString cmd, const CString &filename, CString *stdErr);
 
