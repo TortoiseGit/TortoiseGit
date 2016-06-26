@@ -6,6 +6,7 @@ Released: unreleased
  * Fixed issue #2773: Directory renames should be displayed shorter
  * GitStatusList now automatically adjusts the width of columns. This can be disabled by manually sizing it.
  * Fixed issue #2705: TGIT should allow cloning and/or creating from within a non-empty repository
+ * Update Scintilla to 3.6.6
 
 == Bug Fixes ==
  * Fixed issue #2745: TortoiseGit 2.1 crashes on broken git config 
