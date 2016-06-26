@@ -235,6 +235,7 @@ CGit::~CGit(void)
 	}
 	git_libgit2_shutdown();
 	m_critSecThreadMap.Term();
+	m_critGitDllSec.Term();
 }
 
 bool CGit::IsBranchNameValid(const CString& branchname)
