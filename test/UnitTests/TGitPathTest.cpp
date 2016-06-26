@@ -1206,3 +1206,41 @@ TEST(CTGitPath, GetAbbreviatedRename)
 	test.SetFromGit(newName, &oldName);
 	EXPECT_STREQ(L"D/F/{ => F}/E", test.GetAbbreviatedRename());
 }
+
+TEST(CTGitPath, HashStashDir)
+{
+	CAutoTempDir tmpDir;
+
+	CTGitPath path(tmpDir.GetTempDir());
+	// no repository -> no stash
+	EXPECT_FALSE(path.HasStashDir());
+
+	CAutoRepository repo = nullptr;
+	ASSERT_TRUE(git_repository_init(repo.GetPointer(), CUnicodeUtils::GetUTF8(tmpDir.GetTempDir()), false) == 0);
+
+	g_Git.m_CurrentDir = tmpDir.GetTempDir();
+
+	// empty repository no stash
+	EXPECT_FALSE(path.HasStashDir());
+
+	CString file(tmpDir.GetTempDir() + L"\\file");
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)file, L"don't care"));
+
+	CString output;
+	EXPECT_EQ(0, g_Git.Run(L"git add file", &output, CP_UTF8));
+	EXPECT_EQ(0, g_Git.Run(L"git commit -m \"test\"", &output, CP_UTF8));
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)file, L"don't care even more"));
+	EXPECT_EQ(0, g_Git.Run(L"git stash", &output, CP_UTF8));
+	EXPECT_TRUE(path.HasStashDir());
+
+	// check for packed stash
+	EXPECT_EQ(0, g_Git.Run(L"git pack-refs --all", &output, CP_UTF8));
+	EXPECT_TRUE(path.HasStashDir());
+
+	EXPECT_EQ(0, g_Git.Run(L"git stash clear", &output, CP_UTF8));
+	EXPECT_FALSE(path.HasStashDir());
+
+	file = tmpDir.GetTempDir() + L"\\.git\\packed-refs";
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)file, L"# pack-refs with: peeled fully-peeled\nf3a76c72d89aebd63a0346dd92ecafecdc780822 refs/stashNotReal\n"));
+	EXPECT_FALSE(path.HasStashDir());
+}
