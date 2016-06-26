@@ -287,7 +287,7 @@ private:
 
 	void UpdateAttributes() const;
 
-
+	bool HasStashDir(const CString& adminDirPath) const;
 
 private:
 	mutable CString m_sBackslashPath;

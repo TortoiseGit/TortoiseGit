@@ -773,7 +773,7 @@ int CTGitPath::GetAdminDirMask() const
 	if (PathFileExists(dotGitPath + _T("MERGE_HEAD")))
 		status |= ITEMIS_MERGEACTIVE;
 
-	if (PathFileExists(dotGitPath + _T("refs\\stash")))
+	if (HasStashDir(dotGitPath))
 		status |= ITEMIS_STASH;
 
 	if (PathFileExists(dotGitPath + _T("svn")))
@@ -785,22 +785,12 @@ int CTGitPath::GetAdminDirMask() const
 	return status;
 }
 
-bool CTGitPath::HasStashDir() const
+bool CTGitPath::HasStashDir(const CString& dotGitPath) const
 {
-	CString topdir;
-	if(!GitAdminDir::HasAdminDir(GetWinPathString(),&topdir))
-	{
-		return false;
-	}
-
-	CString dotGitPath;
-	GitAdminDir::GetAdminDirPath(topdir, dotGitPath);
-
-	if (!!PathFileExists(dotGitPath + _T("refs\\stash")))
+	if (PathFileExists(dotGitPath + L"refs\\stash"))
 		return true;
 
-	CAutoFile hfile = CreateFile(dotGitPath + _T("packed-refs"), GENERIC_READ, 
-		FILE_SHARE_READ | FILE_SHARE_DELETE | FILE_SHARE_WRITE, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+	CAutoFile hfile = CreateFile(dotGitPath + L"packed-refs", GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_DELETE | FILE_SHARE_WRITE, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
 	if (!hfile)
 		return false;
 
@@ -861,6 +851,19 @@ bool CTGitPath::HasStashDir() const
 	}
 	return false;
 }
+
+bool CTGitPath::HasStashDir() const
+{
+	CString topdir;
+	if (!GitAdminDir::HasAdminDir(GetWinPathString(), &topdir))
+		return false;
+
+	CString dotGitPath;
+	GitAdminDir::GetAdminDirPath(topdir, dotGitPath);
+
+	return HasStashDir(dotGitPath);
+}
+
 bool CTGitPath::HasGitSVNDir() const
 {
 	CString topdir;
