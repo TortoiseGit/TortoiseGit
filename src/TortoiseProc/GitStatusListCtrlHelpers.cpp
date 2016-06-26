@@ -248,10 +248,7 @@ int ColumnManager::SetNames(UINT* buffer, int size)
 
 void ColumnManager::SetRightAlign(int column) const
 {
-	assert(column <= columns.size());
-
-	if (!IsVisible(column))
-		return;
+	assert(column < columns.size());
 
 	LVCOLUMN col = { 0 };
 	col.mask = LVCF_FMT;
