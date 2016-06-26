@@ -113,7 +113,16 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 	m_bHasConflicts = FALSE;
 
 	size_t ecount = git_index_entrycount(index);
-	resize(ecount);
+	try
+	{
+		resize(ecount);
+	}
+	catch (std::bad_alloc ex)
+	{
+		repository.Free();
+		CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Could not resize index-vector: %s\n", ex.what());
+		return -1;
+	}
 	for (size_t i = 0; i < ecount; ++i)
 	{
 		const git_index_entry *e = git_index_get_byindex(index, i);
@@ -720,7 +729,15 @@ int CGitHeadFileList::ReadTree()
 	bool ret = repository;
 	ret = ret && !git_commit_lookup(commit.GetPointer(), repository, (const git_oid*)m_Head.m_hash);
 	ret = ret && !git_commit_tree(tree.GetPointer(), commit);
-	ret = ret && !ReadTreeRecursive(*repository, tree, "", CGitHeadFileList::CallBack, this);
+	try
+	{
+		ret = ret && !ReadTreeRecursive(*repository, tree, "", CGitHeadFileList::CallBack, this);
+	}
+	catch (std::bad_alloc ex)
+	{
+		CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Catched exception inside ReadTreeRecursive: %s\n", ex.what());
+		return -1;
+	}
 	if (!ret)
 	{
 		clear();
