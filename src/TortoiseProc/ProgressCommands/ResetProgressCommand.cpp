@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2014 - TortoiseGit
+// Copyright (C) 2013-2014, 2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -51,13 +51,29 @@ bool ResetProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, in
 	if (git_revparse_single(target.GetPointer(), repo, CUnicodeUtils::GetUTF8(m_revision)))
 		goto error;
 	checkout_options.progress_payload = &cbpayload;
-	checkout_options.progress_cb = [](const char* path, size_t completed_steps, size_t total_steps, void* payload)
+	checkout_options.progress_cb = [](const char*, size_t completed_steps, size_t total_steps, void* payload)
 	{
 		CGitProgressList::Payload* cbpayload = (CGitProgressList::Payload*)payload;
 		cbpayload->list->m_itemCountTotal = (int)total_steps;
 		cbpayload->list->m_itemCount = (int)completed_steps;
-		cbpayload->list->AddNotify(new CGitProgressList::WC_File_NotificationData(CUnicodeUtils::GetUnicode(path), CGitProgressList::WC_File_NotificationData::git_wc_notify_checkout));
 	};
+	checkout_options.notify_cb = [](git_checkout_notify_t, const char* pPath, const git_diff_file*, const git_diff_file*, const git_diff_file*, void* payload) -> int
+	{
+		CGitProgressList* list = (CGitProgressList*)payload;
+		CString path(CUnicodeUtils::GetUnicode(pPath));
+		if (DWORD(CRegDWORD(_T("Software\\TortoiseGit\\RevertWithRecycleBin"), TRUE)))
+		{
+			if (!CTGitPath(g_Git.CombinePath(path)).Delete(true, true))
+			{
+				list->ReportError(L"Could move \"" + path + L"\" to recycle bin");
+				return GIT_EUSER;
+			}
+		}
+		list->AddNotify(new CGitProgressList::WC_File_NotificationData(path, CGitProgressList::WC_File_NotificationData::git_wc_notify_checkout));
+		return 0;
+	};
+	checkout_options.notify_flags = GIT_CHECKOUT_NOTIFY_UPDATED;
+	checkout_options.notify_payload = list;
 	if (git_reset(repo, target, (git_reset_t)(m_resetType + 1), &checkout_options))
 		goto error;
 
