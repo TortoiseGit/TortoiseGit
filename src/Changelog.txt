@@ -7,6 +7,7 @@ Released: unreleased
  * GitStatusList now automatically adjusts the width of columns. This can be disabled by manually sizing it.
  * Fixed issue #2705: TGIT should allow cloning and/or creating from within a non-empty repository
  * Update Scintilla to 3.6.6
+ * Fixed issue #2271: "Check For Updates" dialog should be resizable
 
 == Bug Fixes ==
  * Fixed issue #2745: TortoiseGit 2.1 crashes on broken git config 

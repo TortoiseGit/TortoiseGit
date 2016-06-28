@@ -41,9 +41,9 @@
 #define WM_USER_ENDDOWNLOAD		(WM_USER + 2)
 #define WM_USER_FILLCHANGELOG	(WM_USER + 3)
 
-IMPLEMENT_DYNAMIC(CCheckForUpdatesDlg, CStandAloneDialog)
+IMPLEMENT_DYNAMIC(CCheckForUpdatesDlg, CResizableStandAloneDialog)
 CCheckForUpdatesDlg::CCheckForUpdatesDlg(CWnd* pParent /*=nullptr*/)
-	: CStandAloneDialog(CCheckForUpdatesDlg::IDD, pParent)
+	: CResizableStandAloneDialog(CCheckForUpdatesDlg::IDD, pParent)
 	, m_bShowInfo(FALSE)
 	, m_bForce(FALSE)
 	, m_bVisible(FALSE)
@@ -60,7 +60,7 @@ CCheckForUpdatesDlg::~CCheckForUpdatesDlg()
 
 void CCheckForUpdatesDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CStandAloneDialog::DoDataExchange(pDX);
+	CResizableStandAloneDialog::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_LINK, m_link);
 	DDX_Control(pDX, IDC_PROGRESSBAR, m_progress);
 	DDX_Control(pDX, IDC_LIST_DOWNLOADS, m_ctrlFiles);
@@ -68,7 +68,7 @@ void CCheckForUpdatesDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_LOGMESSAGE, m_cLogMessage);
 }
 
-BEGIN_MESSAGE_MAP(CCheckForUpdatesDlg, CStandAloneDialog)
+BEGIN_MESSAGE_MAP(CCheckForUpdatesDlg, CResizableStandAloneDialog)
 	ON_WM_TIMER()
 	ON_WM_WINDOWPOSCHANGING()
 	ON_WM_SETCURSOR()
@@ -83,7 +83,7 @@ END_MESSAGE_MAP()
 
 BOOL CCheckForUpdatesDlg::OnInitDialog()
 {
-	CStandAloneDialog::OnInitDialog();
+	CResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
 	CString temp;
@@ -106,6 +106,7 @@ BOOL CCheckForUpdatesDlg::OnInitDialog()
 	LONG bottomDistance = rectWindow.bottom - rectOKButton.bottom;
 	OffsetRect(&rectOKButton, 0, rectGroupDownloads.top - rectOKButton.top);
 	rectWindow.bottom = rectOKButton.bottom + bottomDistance;
+	SetMinTrackSize(CSize(rectWindow.right - rectWindow.left, rectWindow.bottom - rectWindow.top));
 	MoveWindow(&rectWindow);
 	::MapWindowPoints(nullptr, GetSafeHwnd(), (LPPOINT)&rectOKButton, 2);
 	GetDlgItem(IDOK)->MoveWindow(&rectOKButton);
@@ -128,6 +129,18 @@ BOOL CCheckForUpdatesDlg::OnInitDialog()
 		CMessageBox::Show(GetSafeHwnd(), IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
 	}
 
+	AddAnchor(IDC_YOURVERSION, TOP_LEFT, TOP_RIGHT);
+	AddAnchor(IDC_CURRENTVERSION, TOP_LEFT, TOP_RIGHT);
+	AddAnchor(IDC_CHECKRESULT, TOP_LEFT, TOP_RIGHT);
+	AddAnchor(IDC_LINK, TOP_LEFT, TOP_RIGHT);
+	AddAnchor(IDC_GROUP_CHANGELOG, TOP_LEFT, BOTTOM_RIGHT);
+	AddAnchor(IDC_LOGMESSAGE, TOP_LEFT, BOTTOM_RIGHT);
+	AddAnchor(IDC_GROUP_DOWNLOADS, BOTTOM_LEFT, BOTTOM_RIGHT);
+	AddAnchor(IDC_LIST_DOWNLOADS, BOTTOM_LEFT, BOTTOM_RIGHT);
+	AddAnchor(IDC_PROGRESSBAR, BOTTOM_LEFT, BOTTOM_RIGHT);
+	AddAnchor(IDC_BUTTON_UPDATE, BOTTOM_RIGHT);
+	AddAnchor(IDOK, BOTTOM_CENTER);
+
 	SetTimer(100, 1000, nullptr);
 	return TRUE;
 }
@@ -139,7 +152,7 @@ void CCheckForUpdatesDlg::OnDestroy()
 
 	delete m_updateDownloader;
 
-	CStandAloneDialog::OnDestroy();
+	CResizableStandAloneDialog::OnDestroy();
 }
 
 void CCheckForUpdatesDlg::OnOK()
@@ -147,14 +160,14 @@ void CCheckForUpdatesDlg::OnOK()
 	if (m_bThreadRunning || m_pDownloadThread)
 		return; // Don't exit while downloading
 
-	CStandAloneDialog::OnOK();
+	CResizableStandAloneDialog::OnOK();
 }
 
 void CCheckForUpdatesDlg::OnCancel()
 {
 	if (m_bThreadRunning || m_pDownloadThread)
 		return; // Don't exit while downloading
-	CStandAloneDialog::OnCancel();
+	CResizableStandAloneDialog::OnCancel();
 }
 
 UINT CCheckForUpdatesDlg::CheckThreadEntry(LPVOID pVoid)
@@ -317,6 +330,14 @@ UINT CCheckForUpdatesDlg::CheckThread()
 			FillChangelog(versioncheck, official);
 			FillDownloads(versioncheck, ver);
 
+			RemoveAnchor(IDC_GROUP_CHANGELOG);
+			RemoveAnchor(IDC_LOGMESSAGE);
+			RemoveAnchor(IDC_GROUP_DOWNLOADS);
+			RemoveAnchor(IDC_LIST_DOWNLOADS);
+			RemoveAnchor(IDC_PROGRESSBAR);
+			RemoveAnchor(IDC_BUTTON_UPDATE);
+			RemoveAnchor(IDOK);
+
 			// Show download controls
 			RECT rectWindow, rectProgress, rectGroupDownloads, rectOKButton;
 			GetWindowRect(&rectWindow);
@@ -326,6 +347,7 @@ UINT CCheckForUpdatesDlg::CheckThread()
 			LONG bottomDistance = rectWindow.bottom - rectOKButton.bottom;
 			OffsetRect(&rectOKButton, 0, (rectGroupDownloads.bottom + (rectGroupDownloads.bottom - rectProgress.bottom)) - rectOKButton.top);
 			rectWindow.bottom = rectOKButton.bottom + bottomDistance;
+			SetMinTrackSize(CSize(rectWindow.right - rectWindow.left, rectWindow.bottom - rectWindow.top));
 			MoveWindow(&rectWindow);
 			::MapWindowPoints(nullptr, GetSafeHwnd(), (LPPOINT)&rectOKButton, 2);
 			if (CRegDWORD(_T("Software\\TortoiseGit\\VersionCheck"), TRUE) != FALSE && !m_bForce && !m_bShowInfo)
@@ -337,6 +359,13 @@ UINT CCheckForUpdatesDlg::CheckThread()
 				rectOKButton.right += 160;
 			}
 			GetDlgItem(IDOK)->MoveWindow(&rectOKButton);
+			AddAnchor(IDC_GROUP_CHANGELOG, TOP_LEFT, BOTTOM_RIGHT);
+			AddAnchor(IDC_LOGMESSAGE, TOP_LEFT, BOTTOM_RIGHT);
+			AddAnchor(IDC_GROUP_DOWNLOADS, BOTTOM_LEFT, BOTTOM_RIGHT);
+			AddAnchor(IDC_LIST_DOWNLOADS, BOTTOM_LEFT, BOTTOM_RIGHT);
+			AddAnchor(IDC_PROGRESSBAR, BOTTOM_LEFT, BOTTOM_RIGHT);
+			AddAnchor(IDC_BUTTON_UPDATE, BOTTOM_RIGHT);
+			AddAnchor(IDOK, BOTTOM_CENTER);
 			m_ctrlFiles.ShowWindow(SW_SHOW);
 			GetDlgItem(IDC_GROUP_DOWNLOADS)->ShowWindow(SW_SHOW);
 			CenterWindow();
@@ -549,6 +578,7 @@ void CCheckForUpdatesDlg::OnTimer(UINT_PTR nIDEvent)
 	{
 		if (m_bThreadRunning == FALSE)
 		{
+			KillTimer(100);
 			if (m_bShowInfo)
 			{
 				m_bVisible = TRUE;
@@ -558,12 +588,12 @@ void CCheckForUpdatesDlg::OnTimer(UINT_PTR nIDEvent)
 				EndDialog(0);
 		}
 	}
-	CStandAloneDialog::OnTimer(nIDEvent);
+	CResizableStandAloneDialog::OnTimer(nIDEvent);
 }
 
 void CCheckForUpdatesDlg::OnWindowPosChanging(WINDOWPOS* lpwndpos)
 {
-	CStandAloneDialog::OnWindowPosChanging(lpwndpos);
+	CResizableStandAloneDialog::OnWindowPosChanging(lpwndpos);
 	if (m_bVisible == FALSE)
 		lpwndpos->flags &= ~SWP_SHOWWINDOW;
 }
@@ -572,7 +602,7 @@ BOOL CCheckForUpdatesDlg::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 {
 	HCURSOR hCur = LoadCursor(nullptr, IDC_ARROW);
 	SetCursor(hCur);
-	return CStandAloneDialogTmpl<CDialog>::OnSetCursor(pWnd, nHitTest, message);
+	return CResizableStandAloneDialog::OnSetCursor(pWnd, nHitTest, message);
 }
 
 void CCheckForUpdatesDlg::OnBnClickedButtonUpdate()
@@ -622,7 +652,7 @@ void CCheckForUpdatesDlg::OnBnClickedButtonUpdate()
 				if (m_ctrlFiles.GetCheck(i) == TRUE)
 					ShellExecute(GetSafeHwnd(), _T("open"), folder + data->m_filename, nullptr, nullptr, SW_SHOWNORMAL);
 			}
-			CStandAloneDialog::OnOK();
+			CResizableStandAloneDialog::OnOK();
 		}
 		else if (m_ctrlUpdate.GetCurrentEntry() == 1)
 			ShellExecute(GetSafeHwnd(), _T("open"), folder, nullptr, nullptr, SW_SHOWNORMAL);

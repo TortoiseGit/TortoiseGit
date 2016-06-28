@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2014 - TortoiseGit
+// Copyright (C) 2012-2014, 2016 - TortoiseGit
 // Copyright (C) 2003-2008 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
@@ -31,7 +31,7 @@
  * Helper dialog class, which checks if there are updated version of TortoiseSVN
  * available.
  */
-class CCheckForUpdatesDlg : public CStandAloneDialog
+class CCheckForUpdatesDlg : public CResizableStandAloneDialog
 {
 	DECLARE_DYNAMIC(CCheckForUpdatesDlg)
 
