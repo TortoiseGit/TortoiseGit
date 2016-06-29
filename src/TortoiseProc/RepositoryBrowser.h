@@ -191,4 +191,8 @@ private:
 	afx_msg void			OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void			OnLButtonUp(UINT nFlags, CPoint point);
 	afx_msg void			CopyHashToClipboard(TShadowFilesTreeList &selectedLeafs);
+	afx_msg void			OnLvnBegindragRepolist(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void			OnTvnBegindragRepotree(NMHDR* pNMHDR, LRESULT* pResult);
+	void					BeginDrag(const CWnd& window, CTGitPathList& files, const CString& root, POINT& point);
+	void					RecursivelyAdd(CTGitPathList& toExport, CShadowFilesTree* pTree);
 };

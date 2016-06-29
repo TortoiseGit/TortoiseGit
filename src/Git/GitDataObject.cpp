@@ -32,17 +32,19 @@ CLIPFORMAT CF_INETURL = (CLIPFORMAT)RegisterClipboardFormat(CFSTR_INETURL);
 CLIPFORMAT CF_SHELLURL = (CLIPFORMAT)RegisterClipboardFormat(CFSTR_SHELLURL);
 CLIPFORMAT CF_FILE_ATTRIBUTES_ARRAY = (CLIPFORMAT)RegisterClipboardFormat(CFSTR_FILE_ATTRIBUTES_ARRAY);
 
-GitDataObject::GitDataObject(const CTGitPathList& gitpaths, const CGitHash& rev)
+GitDataObject::GitDataObject(const CTGitPathList& gitpaths, const CGitHash& rev, int stripLength)
 	: m_gitPaths(gitpaths)
 	, m_revision(rev)
 	, m_bInOperation(FALSE)
 	, m_bIsAsync(TRUE)
 	, m_cRefCount(0)
+	, m_iStripLength(stripLength)
 {
+	ASSERT((m_revision.IsEmpty() && m_iStripLength == -1) || (!m_revision.IsEmpty() && m_iStripLength >= -1)); // m_iStripLength only possible if rev is set
 	m_containsExistingFiles = false;
 	for (int i = 0; i < m_gitPaths.GetCount(); ++i)
 	{
-		if (m_gitPaths[i].m_Action & ~(CTGitPath::LOGACTIONS_MISSING | CTGitPath::LOGACTIONS_DELETED) && !m_gitPaths[i].IsDirectory())
+		if ((m_gitPaths[i].m_Action == 0 || (m_gitPaths[i].m_Action & ~(CTGitPath::LOGACTIONS_MISSING | CTGitPath::LOGACTIONS_DELETED))) && !m_gitPaths[i].IsDirectory())
 		{
 			m_containsExistingFiles = true;
 			break;
@@ -173,7 +175,7 @@ STDMETHODIMP GitDataObject::GetData(FORMATETC* pformatetcIn, STGMEDIUM* pmedium)
 		int index = 0;
 		for (auto it = m_allPaths.cbegin(); it != m_allPaths.cend(); ++it)
 		{
-			CString temp(it->GetUIFileOrDirectoryName());
+			CString temp(m_iStripLength > 0 ? it->GetWinPathString().Mid(m_iStripLength + 1) : (m_iStripLength == 0 ? it->GetWinPathString() : it->GetUIFileOrDirectoryName()));
 			if (temp.GetLength() < MAX_PATH)
 				wcscpy_s(files->fgd[index].cFileName, (LPCTSTR)temp);
 			else

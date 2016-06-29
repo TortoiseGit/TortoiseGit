@@ -33,6 +33,8 @@
 #include "PathUtils.h"
 #include "StringUtils.h"
 #include "GitDiff.h"
+#include "DragDropImpl.h"
+#include "GitDataObject.h"
 
 #define OVERLAY_EXTERNAL	1
 #define OVERLAY_EXECUTABLE	2
@@ -176,6 +178,8 @@ BEGIN_MESSAGE_MAP(CRepositoryBrowser, CResizableStandAloneDialog)
 	ON_WM_MOUSEMOVE()
 	ON_WM_LBUTTONDOWN()
 	ON_WM_LBUTTONUP()
+	ON_NOTIFY(LVN_BEGINDRAG, IDC_REPOLIST, &CRepositoryBrowser::OnLvnBegindragRepolist)
+	ON_NOTIFY(TVN_BEGINDRAG, IDC_REPOTREE, &CRepositoryBrowser::OnTvnBegindragRepotree)
 END_MESSAGE_MAP()
 
 
@@ -1327,4 +1331,119 @@ void CRepositoryBrowser::CopyHashToClipboard(TShadowFilesTreeList &selectedLeafs
 		}
 		CStringUtils::WriteAsciiStringToClipboard(sClipdata, GetSafeHwnd());
 	}
+}
+
+void CRepositoryBrowser::OnLvnBegindragRepolist(NMHDR* pNMHDR, LRESULT* pResult)
+{
+	*pResult = 0;
+
+	// get selected paths
+	POSITION pos = m_RepoList.GetFirstSelectedItemPosition();
+	if (!pos)
+		return;
+
+	HTREEITEM hTreeItem = m_RepoTree.GetSelectedItem();
+	if (!hTreeItem)
+	{
+		ASSERT(FALSE);
+		return;
+	}
+	CShadowFilesTree* pTree = (CShadowFilesTree*)m_RepoTree.GetItemData(hTreeItem);
+	if (!pTree)
+	{
+		ASSERT(FALSE);
+		return;
+	}
+
+	CTGitPathList toExport;
+	int index = -1;
+	while ((index = m_RepoList.GetNextSelectedItem(pos)) >= 0)
+	{
+		CShadowFilesTree* item = (CShadowFilesTree*)m_RepoList.GetItemData(index);
+		if (item->m_bFolder)
+		{
+			RecursivelyAdd(toExport, item);
+			continue;
+		}
+
+		CTGitPath path;
+		path.SetFromGit(item->GetFullName(), item->m_bSubmodule);
+		toExport.AddPath(path);
+	}
+
+	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
+	BeginDrag(m_RepoList, toExport, pTree->GetFullName(), pNMLV->ptAction);
+}
+
+void CRepositoryBrowser::RecursivelyAdd(CTGitPathList& toExport, CShadowFilesTree* pTree)
+{
+	if (!pTree->m_bLoaded)
+	{
+		pTree->m_bLoaded = true;
+		ReadTree(pTree, pTree->GetFullName());
+	}
+	for (auto itShadowTree = pTree->m_ShadowTree.begin(); itShadowTree != pTree->m_ShadowTree.end(); ++itShadowTree)
+	{
+		if ((*itShadowTree).second.m_bFolder)
+		{
+			RecursivelyAdd(toExport, &(*itShadowTree).second);
+			continue;
+		}
+		CTGitPath path;
+		path.SetFromGit((*itShadowTree).second.GetFullName(), (*itShadowTree).second.m_bSubmodule);
+		toExport.AddPath(path);
+	}
+}
+
+void CRepositoryBrowser::OnTvnBegindragRepotree(NMHDR* pNMHDR, LRESULT* pResult)
+{
+	*pResult = 0;
+
+	LPNMTREEVIEW pNMTreeView = reinterpret_cast<LPNMTREEVIEW>(pNMHDR);
+
+	CShadowFilesTree* pTree = (CShadowFilesTree*)(m_RepoTree.GetItemData(pNMTreeView->itemNew.hItem));
+	if (!pTree)
+	{
+		ASSERT(FALSE);
+		return;
+	}
+
+	CTGitPathList toExport;
+	RecursivelyAdd(toExport, pTree);
+
+	BeginDrag(m_RepoTree, toExport, pTree->m_pParent ? pTree->m_pParent->GetFullName() : L"", pNMTreeView->ptDrag);
+}
+
+void CRepositoryBrowser::BeginDrag(const CWnd& window, CTGitPathList& files, const CString& root, POINT& point)
+{
+	CGitHash hash;
+	if (g_Git.GetHash(hash, m_sRevision))
+	{
+		MessageBox(g_Git.GetGitLastErr(L"Could not get hash of " + m_sRevision + L"."), L"TortoiseGit", MB_ICONERROR);
+		return;
+	}
+
+	// build copy source / content
+	std::unique_ptr<CIDropSource> pdsrc(new CIDropSource);
+	if (!pdsrc)
+		return;
+
+	pdsrc->AddRef();
+
+	GitDataObject* pdobj = new GitDataObject(files, hash, root.GetLength());
+	if (!pdobj)
+		return;
+	pdobj->AddRef();
+	pdobj->SetAsyncMode(TRUE);
+	CDragSourceHelper dragsrchelper;
+	dragsrchelper.InitializeFromWindow(window.GetSafeHwnd(), point, pdobj);
+	pdsrc->m_pIDataObj = pdobj;
+	pdsrc->m_pIDataObj->AddRef();
+
+	// Initiate the Drag & Drop
+	DWORD dwEffect;
+	::DoDragDrop(pdobj, pdsrc.get(), DROPEFFECT_MOVE | DROPEFFECT_COPY, &dwEffect);
+	pdsrc->Release();
+	pdsrc.release();
+	pdobj->Release();
 }

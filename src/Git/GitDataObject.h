@@ -47,7 +47,7 @@ public:
 	 * \param svnpaths a list of paths which must be inside a working tree.
 	 * \param rev      the revision
 	 */
-	GitDataObject(const CTGitPathList& gitpaths, const CGitHash& rev);
+	GitDataObject(const CTGitPathList& gitpaths, const CGitHash& rev, int stripLength = -1);
 	~GitDataObject();
 
 	//IUnknown
@@ -82,6 +82,7 @@ private:
 	CTGitPathList				m_gitPaths;
 	CGitHash					m_revision;
 	std::vector<CTGitPath>		m_allPaths;
+	int							m_iStripLength;
 	long						m_cRefCount;
 	bool						m_containsExistingFiles;
 	BOOL						m_bInOperation;
