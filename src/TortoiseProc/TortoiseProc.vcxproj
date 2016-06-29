@@ -54,6 +54,7 @@
   <ItemGroup>
     <ClCompile Include="..\Git\Git.cpp" />
     <ClCompile Include="..\Git\GitAdminDir.cpp" />
+    <ClCompile Include="..\Git\GitDataObject.cpp" />
     <ClCompile Include="..\Git\GitIndex.cpp" />
     <ClCompile Include="..\Git\GitRev.cpp" />
     <ClCompile Include="..\Git\GitRevLoglist.cpp" />
@@ -70,7 +71,6 @@
     <ClCompile Include="..\Utils\DebugOutput.cpp" />
     <ClCompile Include="..\Utils\DirFileEnum.cpp" />
     <ClCompile Include="..\Utils\DragDropImpl.cpp" />
-    <ClCompile Include="..\Utils\DropFiles.cpp" />
     <ClCompile Include="..\Utils\Graphviz.cpp" />
     <ClCompile Include="..\Utils\Hooks.cpp" />
     <ClCompile Include="..\Utils\HwSMTP.cpp" />
@@ -307,6 +307,7 @@
   <ItemGroup>
     <ClInclude Include="..\Git\Git.h" />
     <ClInclude Include="..\Git\GitAdminDir.h" />
+    <ClInclude Include="..\Git\GitDataObject.h" />
     <ClInclude Include="..\Git\GitForWindows.h" />
     <ClInclude Include="..\Git\GitHash.h" />
     <ClInclude Include="..\Git\gitindex.h" />
@@ -329,7 +330,6 @@
     <ClInclude Include="..\Utils\DebugOutput.h" />
     <ClInclude Include="..\Utils\DirFileEnum.h" />
     <ClInclude Include="..\Utils\DragDropImpl.h" />
-    <ClInclude Include="..\Utils\DropFiles.h" />
     <ClInclude Include="..\Utils\Graphviz.h" />
     <ClInclude Include="..\Utils\Hooks.h" />
     <ClInclude Include="..\Utils\HwSMTP.h" />
