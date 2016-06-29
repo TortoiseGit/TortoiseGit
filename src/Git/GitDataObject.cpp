@@ -42,7 +42,7 @@ GitDataObject::GitDataObject(const CTGitPathList& gitpaths, const CGitHash& rev)
 	m_containsExistingFiles = false;
 	for (int i = 0; i < m_gitPaths.GetCount(); ++i)
 	{
-		if (m_gitPaths[i].m_Action & ~(CTGitPath::LOGACTIONS_MISSING | CTGitPath::LOGACTIONS_DELETED))
+		if (m_gitPaths[i].m_Action & ~(CTGitPath::LOGACTIONS_MISSING | CTGitPath::LOGACTIONS_DELETED) && !m_gitPaths[i].IsDirectory())
 		{
 			m_containsExistingFiles = true;
 			break;
@@ -160,7 +160,7 @@ STDMETHODIMP GitDataObject::GetData(FORMATETC* pformatetcIn, STGMEDIUM* pmedium)
 	{
 		for (int i = 0; i < m_gitPaths.GetCount(); ++i)
 		{
-			if (m_gitPaths[i].m_Action & (CTGitPath::LOGACTIONS_MISSING | CTGitPath::LOGACTIONS_DELETED))
+			if (m_gitPaths[i].m_Action & (CTGitPath::LOGACTIONS_MISSING | CTGitPath::LOGACTIONS_DELETED) || m_gitPaths[i].IsDirectory())
 				continue;
 			m_allPaths.push_back(m_gitPaths[i]);
 		}
@@ -276,6 +276,9 @@ STDMETHODIMP GitDataObject::GetData(FORMATETC* pformatetcIn, STGMEDIUM* pmedium)
 
 		for (int i = 0; i < m_gitPaths.GetCount(); ++i)
 		{
+			if (m_gitPaths[i].m_Action & (CTGitPath::LOGACTIONS_MISSING | CTGitPath::LOGACTIONS_DELETED) || m_gitPaths[i].IsDirectory())
+				continue;
+
 			nLength += g_Git.CombinePath(m_gitPaths[i]).GetLength();
 			nLength += 1; // '\0' separator
 		}
@@ -294,6 +297,8 @@ STDMETHODIMP GitDataObject::GetData(FORMATETC* pformatetcIn, STGMEDIUM* pmedium)
 
 		for (int i = 0; i < m_gitPaths.GetCount(); ++i)
 		{
+			if (m_gitPaths[i].m_Action & (CTGitPath::LOGACTIONS_MISSING | CTGitPath::LOGACTIONS_DELETED) || m_gitPaths[i].IsDirectory())
+				continue;
 			CString str = g_Git.CombinePath(m_gitPaths[i]);
 			wcscpy_s(pCurrentFilename, str.GetLength() + 1, (LPCWSTR)str);
 			pCurrentFilename += str.GetLength();
