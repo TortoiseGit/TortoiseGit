@@ -1608,7 +1608,7 @@ void CTGitPathList::RemoveItem(CTGitPath & path)
 	PathVector::iterator it;
 	for(it = m_paths.begin(); it != m_paths.end(); ++it)
 	{
-		if (it->GetGitPathString()==path.GetGitPathString())
+		if (CTGitPath::ArePathStringsEqualWithCase(it->GetGitPathString(), path.GetGitPathString()))
 		{
 			m_paths.erase(it);
 			return;
@@ -1638,7 +1638,7 @@ const CTGitPath* CTGitPathList::LookForGitPath(const CString& path)
 	int i=0;
 	for (i = 0; i < this->GetCount(); ++i)
 	{
-		if((*this)[i].GetGitPathString() == path )
+		if (CTGitPath::ArePathStringsEqualWithCase((*this)[i].GetGitPathString(), path))
 			return (CTGitPath*)&(*this)[i];
 	}
 	return nullptr;

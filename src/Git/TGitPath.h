@@ -273,6 +273,8 @@ private:
 	void SetUTF8FwdslashPath(const CString& sPath) const;
 	void EnsureBackslashPathSet() const;
 	void EnsureFwdslashPathSet() const;
+
+public:
 	/**
 	 * Checks if two path strings are equal. No conversion of slashes is done!
 	 * \remark for slash-independent comparison, use IsEquivalentTo()
@@ -280,6 +282,7 @@ private:
 	static bool ArePathStringsEqual(const CString& sP1, const CString& sP2);
 	static bool ArePathStringsEqualWithCase(const CString& sP1, const CString& sP2);
 
+private:
 	/**
 	 * Adds the required trailing slash to local root paths such as 'C:'
 	 */
