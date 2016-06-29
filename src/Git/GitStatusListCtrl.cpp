@@ -38,7 +38,8 @@
 #include "registry.h"
 #include "InputDlg.h"
 #include "GitAdminDir.h"
-#include "DropFiles.h"
+#include "DragDropImpl.h"
+#include "GitDataObject.h"
 #include "ProgressCommands/AddProgressCommand.h"
 #include "IconMenu.h"
 #include "FormatMessageWrapper.h"
@@ -3356,74 +3357,56 @@ void CGitStatusListCtrl::OnDestroy()
 	CListCtrl::OnDestroy();
 }
 
-void CGitStatusListCtrl::OnBeginDrag(NMHDR* /*pNMHDR*/, LRESULT* pResult)
+void CGitStatusListCtrl::OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult)
 {
-	Locker lock(m_critSec);
-	CDropFiles dropFiles; // class for creating DROPFILES struct
+	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
 
-	int index;
-	POSITION pos = GetFirstSelectedItemPosition();
-	if (!pos)
+	Locker lock(m_critSec);
+
+	CTGitPathList pathList;
+	FillListOfSelectedItemPaths(pathList);
+	if (pathList.IsEmpty())
 		return;
 
-	bool bTempDirCreated = false;
-	CString tempDir;
-	while ( (index = GetNextSelectedItem(pos)) >= 0 )
-	{
-		CTGitPath *path = (CTGitPath *)GetItemData(index); // m_arStatusArray[index] does not work with SyncDlg
-		if (path->IsDirectory())
-			continue;
+	auto pdsrc = std::make_unique<CIDropSource>();
+	if (!pdsrc)
+		return;
+	pdsrc->AddRef();
 
-		CString version;
-		if (!this->m_CurrentVersion.IsEmpty() && this->m_CurrentVersion != GIT_REV_ZERO)
-		{
-			if (path->m_Action & CTGitPath::LOGACTIONS_DELETED)
-				version.Format(_T("%s^%d"), (LPCTSTR)m_CurrentVersion, (path->m_ParentNo + 1) & PARENT_MASK);
-			else
-				version = m_CurrentVersion;
-		}
-		else
-		{
-			if (path->m_Action & CTGitPath::LOGACTIONS_DELETED)
-				version = _T("HEAD");
-		}
+	GitDataObject* pdobj = new GitDataObject(pathList, m_CurrentVersion);
+	if (!pdobj)
+		return;
+	pdobj->AddRef();
 
-		CString tempFile;
-		if (version.IsEmpty())
-		{
-			TCHAR abspath[MAX_PATH] = {0};
-			PathCombine(abspath, g_Git.m_CurrentDir, path->GetWinPath());
-			tempFile = abspath;
-		}
-		else
-		{
-			if (!bTempDirCreated)
-			{
-				tempDir = GetTempFile();
-				::DeleteFile(tempDir);
-				::CreateDirectory(tempDir, nullptr);
-				bTempDirCreated = true;
-			}
-			tempFile = tempDir + _T("\\") + path->GetWinPathString();
-			CString tempSubDir = tempDir + _T("\\") + path->GetContainingDirectory().GetWinPathString();
-			CPathUtils::MakeSureDirectoryPathExists(tempSubDir);
-			if (g_Git.GetOneFile(version, *path, tempFile))
-			{
-				CString out;
-				out.Format(IDS_STATUSLIST_CHECKOUTFILEFAILED, (LPCTSTR)path->GetGitPathString(), (LPCTSTR)version, (LPCTSTR)tempFile);
-				MessageBox(g_Git.GetGitLastErr(out, CGit::GIT_CMD_GETONEFILE), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
-				return;
-			}
-		}
-		dropFiles.AddFile(tempFile);
-	}
+	CDragSourceHelper dragsrchelper;
 
-	if (!dropFiles.IsEmpty())
-	{
-		m_bOwnDrag = true;
-		dropFiles.CreateStructure();
-		m_bOwnDrag = false;
-	}
+	// Something strange is going on here:
+	// InitializeFromWindow() crashes bad if group view is enabled.
+	// Since I haven't been able to find out *why* it crashes, I'm disabling
+	// the group view right before the call to InitializeFromWindow() and
+	// re-enable it again after the call is finished.
+
+	SetRedraw(false);
+	BOOL bGroupView = IsGroupViewEnabled();
+	if (bGroupView)
+		EnableGroupView(false);
+	dragsrchelper.InitializeFromWindow(m_hWnd, pNMLV->ptAction, pdobj);
+	if (bGroupView)
+		EnableGroupView(true);
+	SetRedraw(true);
+	//dragsrchelper.InitializeFromBitmap()
+	pdsrc->m_pIDataObj = pdobj;
+	pdsrc->m_pIDataObj->AddRef();
+
+	// Initiate the Drag & Drop
+	DWORD dwEffect;
+	m_bOwnDrag = true;
+	::DoDragDrop(pdobj, pdsrc.get(), DROPEFFECT_MOVE | DROPEFFECT_COPY, &dwEffect);
+	m_bOwnDrag = false;
+	pdsrc->Release();
+	pdsrc.release();
+	pdobj->Release();
+
 	*pResult = 0;
 }
 

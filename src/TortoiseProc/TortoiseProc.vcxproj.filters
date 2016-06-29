@@ -800,9 +800,6 @@
     <ClCompile Include="..\Utils\PathWatcher.cpp">
       <Filter>Utils\General</Filter>
     </ClCompile>
-    <ClCompile Include="..\Utils\DropFiles.cpp">
-      <Filter>Utils\General</Filter>
-    </ClCompile>
     <ClCompile Include="..\Utils\MiscUI\DIB.cpp">
       <Filter>Utils\UI</Filter>
     </ClCompile>
@@ -907,6 +904,9 @@
     </ClCompile>
     <ClCompile Include="SendMailPatch.cpp">
       <Filter>Commands\SendMail</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Git\GitDataObject.cpp">
+      <Filter>Git</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1561,9 +1561,6 @@
     <ClInclude Include="..\Utils\PathWatcher.h">
       <Filter>Utils\General</Filter>
     </ClInclude>
-    <ClInclude Include="..\Utils\DropFiles.h">
-      <Filter>Utils\General</Filter>
-    </ClInclude>
     <ClInclude Include="..\Utils\MiscUI\DIB.h">
       <Filter>Utils\UI</Filter>
     </ClInclude>
@@ -1692,6 +1689,9 @@
     </ClInclude>
     <ClInclude Include="..\Utils\LruCache.h">
       <Filter>Utils\General</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Git\GitDataObject.h">
+      <Filter>Git</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
