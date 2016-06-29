@@ -83,6 +83,7 @@ private:
 	CGitHash					m_revision;
 	std::vector<CTGitPath>		m_allPaths;
 	long						m_cRefCount;
+	bool						m_containsExistingFiles;
 	BOOL						m_bInOperation;
 	BOOL						m_bIsAsync;
 	std::vector<FORMATETC*>		m_vecFormatEtc;
@@ -97,8 +98,8 @@ private:
 class CGitEnumFormatEtc : public IEnumFORMATETC
 {
 public:
-	CGitEnumFormatEtc(const std::vector<FORMATETC*>& vec, bool localonly);
-	CGitEnumFormatEtc(const std::vector<FORMATETC>& vec, bool localonly);
+	CGitEnumFormatEtc(const std::vector<FORMATETC*>& vec, bool localonly, bool containsExistingFiles);
+	CGitEnumFormatEtc(const std::vector<FORMATETC>& vec, bool localonly, bool containsExistingFiles);
 	//IUnknown members
 	STDMETHOD(QueryInterface)(REFIID, void**);
 	STDMETHOD_(ULONG, AddRef)(void);
@@ -110,12 +111,13 @@ public:
 	STDMETHOD(Reset)(void);
 	STDMETHOD(Clone)(IEnumFORMATETC**);
 private:
-	void						Init(bool localonly);
+	void						Init(bool localonly, bool containsExistingFiles);
 private:
 	std::vector<FORMATETC>		m_vecFormatEtc;
 	FORMATETC					m_formats[GITDATAOBJECT_NUMFORMATS];
 	ULONG						m_cRefCount;
 	size_t						m_iCur;
 	bool						m_localonly;
+	bool						m_containsExistingFiles;
 };
 

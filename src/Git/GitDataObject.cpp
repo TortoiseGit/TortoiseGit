@@ -39,6 +39,15 @@ GitDataObject::GitDataObject(const CTGitPathList& gitpaths, const CGitHash& rev)
 	, m_bIsAsync(TRUE)
 	, m_cRefCount(0)
 {
+	m_containsExistingFiles = false;
+	for (int i = 0; i < m_gitPaths.GetCount(); ++i)
+	{
+		if (m_gitPaths[i].m_Action & ~(CTGitPath::LOGACTIONS_MISSING | CTGitPath::LOGACTIONS_DELETED))
+		{
+			m_containsExistingFiles = true;
+			break;
+		}
+	}
 }
 
 GitDataObject::~GitDataObject()
@@ -366,7 +375,8 @@ STDMETHODIMP GitDataObject::QueryGetData(FORMATETC* pformatetc)
 
 	if ((pformatetc->tymed & TYMED_ISTREAM) &&
 		(pformatetc->dwAspect == DVASPECT_CONTENT) &&
-		(pformatetc->cfFormat == CF_FILECONTENTS))
+		(pformatetc->cfFormat == CF_FILECONTENTS) &&
+		m_containsExistingFiles)
 	{
 		return S_OK;
 	}
@@ -379,20 +389,23 @@ STDMETHODIMP GitDataObject::QueryGetData(FORMATETC* pformatetc)
 	if ((pformatetc->tymed & TYMED_HGLOBAL) &&
 		(pformatetc->dwAspect == DVASPECT_CONTENT) &&
 		(pformatetc->cfFormat == CF_FILEDESCRIPTOR) &&
-		!m_revision.IsEmpty())
+		!m_revision.IsEmpty() &&
+		m_containsExistingFiles)
 	{
 		return S_OK;
 	}
 	if ((pformatetc->tymed & TYMED_HGLOBAL) &&
 		(pformatetc->dwAspect == DVASPECT_CONTENT) &&
 		((pformatetc->cfFormat == CF_HDROP) || (pformatetc->cfFormat == CF_INETURL) || (pformatetc->cfFormat == CF_SHELLURL)) &&
-		m_revision.IsEmpty())
+		m_revision.IsEmpty() &&
+		m_containsExistingFiles)
 	{
 		return S_OK;
 	}
 	if ((pformatetc->tymed & TYMED_HGLOBAL) &&
 		(pformatetc->dwAspect == DVASPECT_CONTENT) &&
-		(pformatetc->cfFormat == CF_FILE_ATTRIBUTES_ARRAY))
+		(pformatetc->cfFormat == CF_FILE_ATTRIBUTES_ARRAY) &&
+		m_containsExistingFiles)
 	{
 		return S_OK;
 	}
@@ -472,7 +485,7 @@ STDMETHODIMP GitDataObject::EnumFormatEtc(DWORD dwDirection, IEnumFORMATETC** pp
 	switch (dwDirection)
 	{
 	case DATADIR_GET:
-		*ppenumFormatEtc = new (std::nothrow) CGitEnumFormatEtc(m_vecFormatEtc, m_revision.IsEmpty());
+		*ppenumFormatEtc = new (std::nothrow) CGitEnumFormatEtc(m_vecFormatEtc, m_revision.IsEmpty(), m_containsExistingFiles);
 		if (!*ppenumFormatEtc)
 			return E_OUTOFMEMORY;
 		(*ppenumFormatEtc)->AddRef();
@@ -606,7 +619,7 @@ HRESULT GitDataObject::SetDropDescription(DROPIMAGETYPE image, LPCTSTR format, L
 	return SetData(&fetc, &medium, TRUE);
 }
 
-void CGitEnumFormatEtc::Init(bool localonly)
+void CGitEnumFormatEtc::Init(bool localonly, bool containsExistingFiles)
 {
 	int index = 0;
 	m_formats[index].cfFormat = CF_UNICODETEXT;
@@ -630,7 +643,7 @@ void CGitEnumFormatEtc::Init(bool localonly)
 	m_formats[index].tymed = TYMED_HGLOBAL;
 	index++;
 
-	if (localonly)
+	if (containsExistingFiles && localonly)
 	{
 		m_formats[index].cfFormat = CF_INETURL;
 		m_formats[index].dwAspect = DVASPECT_CONTENT;
@@ -654,7 +667,7 @@ void CGitEnumFormatEtc::Init(bool localonly)
 	m_formats[index].tymed = TYMED_HGLOBAL;
 	index++;
 
-	if (localonly)
+	if (containsExistingFiles && localonly)
 	{
 		m_formats[index].cfFormat = CF_HDROP;
 		m_formats[index].dwAspect = DVASPECT_CONTENT;
@@ -663,7 +676,7 @@ void CGitEnumFormatEtc::Init(bool localonly)
 		m_formats[index].tymed = TYMED_HGLOBAL;
 		index++;
 	}
-	else
+	else if (containsExistingFiles)
 	{
 		m_formats[index].cfFormat = CF_FILECONTENTS;
 		m_formats[index].dwAspect = DVASPECT_CONTENT;
@@ -691,24 +704,26 @@ void CGitEnumFormatEtc::Init(bool localonly)
 	}
 }
 
-CGitEnumFormatEtc::CGitEnumFormatEtc(const std::vector<FORMATETC>& vec, bool localonly)
+CGitEnumFormatEtc::CGitEnumFormatEtc(const std::vector<FORMATETC>& vec, bool localonly, bool containsExistingFiles)
 	: m_cRefCount(0)
 	, m_iCur(0)
 	, m_localonly(localonly)
+	, m_containsExistingFiles(containsExistingFiles)
 {
 	for (size_t i = 0; i < vec.size(); ++i)
 		m_vecFormatEtc.push_back(vec[i]);
-	Init(localonly);
+	Init(localonly, containsExistingFiles);
 }
 
-CGitEnumFormatEtc::CGitEnumFormatEtc(const std::vector<FORMATETC*>& vec, bool localonly)
+CGitEnumFormatEtc::CGitEnumFormatEtc(const std::vector<FORMATETC*>& vec, bool localonly, bool containsExistingFiles)
 	: m_cRefCount(0)
 	, m_iCur(0)
 	, m_localonly(localonly)
+	, m_containsExistingFiles(containsExistingFiles)
 {
 	for (size_t i = 0; i < vec.size(); ++i)
 		m_vecFormatEtc.push_back(*vec[i]);
-	Init(localonly);
+	Init(localonly, containsExistingFiles);
 }
 
 STDMETHODIMP  CGitEnumFormatEtc::QueryInterface(REFIID refiid, void** ppv)
@@ -792,7 +807,7 @@ STDMETHODIMP CGitEnumFormatEtc::Clone(IEnumFORMATETC** ppCloneEnumFormatEtc)
 	if (!ppCloneEnumFormatEtc)
 		return E_POINTER;
 
-	CGitEnumFormatEtc *newEnum = new (std::nothrow) CGitEnumFormatEtc(m_vecFormatEtc, m_localonly);
+	CGitEnumFormatEtc *newEnum = new (std::nothrow) CGitEnumFormatEtc(m_vecFormatEtc, m_localonly, m_containsExistingFiles);
 	if (!newEnum)
 		return E_OUTOFMEMORY;
 
