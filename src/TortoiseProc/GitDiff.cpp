@@ -422,7 +422,7 @@ int CGitDiff::Diff(const CTGitPath * pPath, const CTGitPath * pPath2, git_revnum
 				(LPCTSTR)pPath->GetBaseFilename(),
 				(LPCTSTR)rev1.Left(g_Git.GetShortHASHLength()),
 				(LPCTSTR)pPath->GetFileExtension());
-		title1 = pPath->GetFileOrDirectoryName() + _T(":") + rev1.Left(g_Git.GetShortHASHLength());
+		title1 = pPath->GetGitPathString() + L": " + rev1.Left(g_Git.GetShortHASHLength());
 		if (g_Git.GetOneFile(rev1, *pPath, file1))
 		{
 			CString out;
@@ -435,7 +435,7 @@ int CGitDiff::Diff(const CTGitPath * pPath, const CTGitPath * pPath2, git_revnum
 	else
 	{
 		file1 = g_Git.CombinePath(pPath);
-		title1.Format(IDS_DIFF_WCNAME, (LPCTSTR)pPath->GetFileOrDirectoryName());
+		title1.Format(IDS_DIFF_WCNAME, (LPCTSTR)pPath->GetGitPathString());
 		if (!PathFileExists(file1))
 		{
 			CString sMsg;
@@ -444,7 +444,7 @@ int CGitDiff::Diff(const CTGitPath * pPath, const CTGitPath * pPath2, git_revnum
 				return 1;
 			if (!CCommonAppUtils::FileOpenSave(file1, nullptr, IDS_SELECTFILE, IDS_COMMONFILEFILTER, true))
 				return 1;
-			title1.Format(IDS_DIFF_WCNAME, (LPCTSTR)CTGitPath(file1).GetUIFileOrDirectoryName());
+			title1 = file1;
 		}
 	}
 
@@ -467,7 +467,7 @@ int CGitDiff::Diff(const CTGitPath * pPath, const CTGitPath * pPath2, git_revnum
 				(LPCTSTR)fileName.GetBaseFilename(),
 				(LPCTSTR)rev2.Left(g_Git.GetShortHASHLength()),
 				(LPCTSTR)fileName.GetFileExtension());
-		title2 = fileName.GetFileOrDirectoryName() + _T(":") + rev2.Left(g_Git.GetShortHASHLength());
+		title2 = fileName.GetGitPathString() + L": " + rev2.Left(g_Git.GetShortHASHLength());
 		if (g_Git.GetOneFile(rev2, fileName, file2))
 		{
 			CString out;
@@ -480,7 +480,7 @@ int CGitDiff::Diff(const CTGitPath * pPath, const CTGitPath * pPath2, git_revnum
 	else
 	{
 		file2 = g_Git.CombinePath(pPath2);
-		title2.Format( IDS_DIFF_WCNAME, pPath2->GetFileOrDirectoryName() );
+		title2.Format(IDS_DIFF_WCNAME, pPath2->GetGitPathString());
 	}
 
 	CAppUtils::DiffFlags flags;
