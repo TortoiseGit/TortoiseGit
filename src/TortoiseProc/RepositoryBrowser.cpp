@@ -374,10 +374,11 @@ void CRepositoryBrowser::Refresh()
 	EndWaitCursor();
 }
 
-int CRepositoryBrowser::ReadTreeRecursive(git_repository &repo, const git_tree * tree, CShadowFilesTree * treeroot)
+int CRepositoryBrowser::ReadTreeRecursive(git_repository& repo, const git_tree* tree, CShadowFilesTree* treeroot, bool recursive)
 {
 	size_t count = git_tree_entrycount(tree);
 	bool hasSubfolders = false;
+	treeroot->m_bLoaded = true;
 
 	for (size_t i = 0; i < count; ++i)
 	{
@@ -414,6 +415,17 @@ int CRepositoryBrowser::ReadTreeRecursive(git_repository &repo, const git_tree *
 			tvinsert.itemex.iSelectedImage = m_nOpenIconFolder;
 			pNextTree->m_hTree = m_RepoTree.InsertItem(&tvinsert);
 			base.ReleaseBuffer();
+			if (recursive)
+			{
+				CAutoTree subtree;
+				if (git_tree_lookup(subtree.GetPointer(), &repo, oid))
+				{
+					MessageBox(CGit::GetLibGit2LastErr(L"Could not lookup path."), L"TortoiseGit", MB_ICONERROR);
+					return -1;
+				}
+
+				ReadTreeRecursive(repo, subtree, pNextTree, recursive);
+			}
 		}
 		else
 		{
@@ -442,7 +454,7 @@ int CRepositoryBrowser::ReadTreeRecursive(git_repository &repo, const git_tree *
 	return 0;
 }
 
-int CRepositoryBrowser::ReadTree(CShadowFilesTree * treeroot, const CString& root)
+int CRepositoryBrowser::ReadTree(CShadowFilesTree* treeroot, const CString& root, bool recursive)
 {
 	CWaitCursor wait;
 	CAutoRepository repository(g_Git.GetGitRepository());
@@ -510,7 +522,7 @@ int CRepositoryBrowser::ReadTree(CShadowFilesTree * treeroot, const CString& roo
 	}
 
 	treeroot->m_hash = CGitHash((char *)git_tree_id(tree)->id);
-	ReadTreeRecursive(*repository, tree, treeroot);
+	ReadTreeRecursive(*repository, tree, treeroot, recursive);
 
 	// try to resolve hash to a branch name
 	if (m_sRevision == hash.ToString())
@@ -547,10 +559,7 @@ void CRepositoryBrowser::OnTvnItemExpandingRepoTree(NMHDR *pNMHDR, LRESULT *pRes
 	}
 
 	if (!pTree->m_bLoaded)
-	{
-		pTree->m_bLoaded = true;
 		ReadTree(pTree, pTree->GetFullName());
-	}
 }
 
 void CRepositoryBrowser::FillListCtrlForTreeNode(HTREEITEM treeNode)
@@ -568,10 +577,7 @@ void CRepositoryBrowser::FillListCtrlForTreeNode(HTREEITEM treeNode)
 	GetDlgItem(IDC_REPOBROWSER_URL)->SetWindowText(url);
 
 	if (!pTree->m_bLoaded)
-	{
-		pTree->m_bLoaded = true;
 		ReadTree(pTree, pTree->GetFullName());
-	}
 
 	FillListCtrlForShadowTree(pTree);
 }
@@ -1378,10 +1384,8 @@ void CRepositoryBrowser::OnLvnBegindragRepolist(NMHDR* pNMHDR, LRESULT* pResult)
 void CRepositoryBrowser::RecursivelyAdd(CTGitPathList& toExport, CShadowFilesTree* pTree)
 {
 	if (!pTree->m_bLoaded)
-	{
-		pTree->m_bLoaded = true;
-		ReadTree(pTree, pTree->GetFullName());
-	}
+		ReadTree(pTree, pTree->GetFullName(), true);
+
 	for (auto itShadowTree = pTree->m_ShadowTree.begin(); itShadowTree != pTree->m_ShadowTree.end(); ++itShadowTree)
 	{
 		if ((*itShadowTree).second.m_bFolder)

@@ -142,8 +142,8 @@ private:
 	bool					m_currSortDesc;
 
 	CShadowFilesTree		m_TreeRoot;
-	int						ReadTreeRecursive(git_repository &repo, const git_tree * tree, CShadowFilesTree * treeroot);
-	int						ReadTree(CShadowFilesTree * treeroot, const CString& root = L"");
+	int						ReadTreeRecursive(git_repository& repo, const git_tree* tree, CShadowFilesTree* treeroot, bool recursive);
+	int						ReadTree(CShadowFilesTree* treeroot, const CString& root = L"", bool recursive = false);
 	int						m_nIconFolder;
 	int						m_nOpenIconFolder;
 	int						m_nExternalOvl;
