@@ -1,5 +1,5 @@
 ﻿= Release 2.2.0 =
-Released: unreleased
+Released: 2016-07-02
 
 == Features ==
  * Updated libgit to 2.8.3
@@ -9,7 +9,7 @@ Released: unreleased
  * Update Scintilla to 3.6.6
  * Fixed issue #2271: "Check For Updates" dialog should be resizable
  * Add drag handler to Repository Browser
- * Fixed issue #2770: Include complete relative path in TortoiseGitDiff
+ * Fixed issue #2770: Include complete relative path in TortoiseGitMerge
 
 == Bug Fixes ==
  * Fixed issue #2745: TortoiseGit 2.1 crashes on broken git config 
@@ -22,7 +22,8 @@ Released: unreleased
  * Fixed issue #2785: Rebase/Cherry-pick with conflict in renamed file fails
  * Fixed issue #2714: TortoiseGitMerge should redraw if font is changed
  * Fixed issue #2756: TortoiseGitMerge: Regex Filter doesn't filter from "Previous diff", "Next diff" operation
- * Fixed issue #2736: stash list/ pop missing when refs are packed
+ * Fixed issue #2736: stash list/pop missing when refs are packed
+ * /revision1: and /revision2: parameters of /command:showcompare are no longer mixed up
 
 = Release 2.1.0 =
 Released: 2016-03-26
