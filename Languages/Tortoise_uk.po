@@ -6,9 +6,11 @@
 # Translators:
 # Alexander Stulnikov <alarstyle@gmail.com>, 2015
 # Віктор Лелейко <victor.leleyko@gmail.com>, 2013
+# bodyguard 1 <q20162018@gmail.com>, 2016
 # Dmytro Kutianskyi <dmytro.kutyansky@gmail.com>, 2015
 # ktretyak <ktretyak.in.ua@gmail.com>, 2016
 # ktretyak <ktretyak.in.ua@gmail.com>, 2013
+# ktretyak <ktretyak.in.ua@gmail.com>, 2013,2016
 # Max Lyashuk <m_lyashuk@ukr.net>, 2013
 # Max Lyashuk <m_lyashuk@ukr.net>, 2013
 # Max Lyashuk <m_lyashuk@ukr.net>, 2013
@@ -21,7 +23,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2016-02-23 21:07+0000\n"
+"PO-Revision-Date: 2016-06-19 11:53+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Ukrainian (http://www.transifex.com/lznuaa/tortoisegit/language/uk/)\n"
 "MIME-Version: 1.0\n"
@@ -383,7 +385,7 @@ msgstr "&Додатково..."
 
 #. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1701)
 msgid "&All"
-msgstr "Все"
+msgstr "Усе"
 
 #. Resource IDs: (Dialog IDD_LOGMESSAGE: Control id 3936)
 msgid "&All Branches"
@@ -419,7 +421,7 @@ msgstr "&Автоматично ховати"
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS2: Control id 65535)
 msgid "&Autoclose Git.exe dialog:"
-msgstr "&Автоматично закривати вікно Git.exe:"
+msgstr "&Автозакривання вікна Git.exe:"
 
 #. Resource IDs: (Dialog IDD_PUSH: Control id 1505)
 msgid "&Autoload Putty Key"
@@ -505,7 +507,7 @@ msgstr "&Очистити"
 
 #. Resource IDs: (Dialog IDD_REFLOG: Control id 1686)
 msgid "&Clear stash"
-msgstr ""
+msgstr "Очистити копилку"
 
 #. Resource IDs: (58112, Dialog IDD_CHECKFORUPDATES: Control id 1)
 msgid "&Close"
@@ -665,7 +667,7 @@ msgstr "&Редагувати..."
 
 #. Resource IDs: (Dialog IDD_REBASE: Control id 1827)
 msgid "&Edit/Split commit"
-msgstr ""
+msgstr "&Редагувати/розділити фіксування"
 
 #. Resource IDs: (Dialog IDD_SYNC: Control id 1614)
 msgid "&Email Patch"
@@ -673,7 +675,7 @@ msgstr "&Відправити Виправлення ел. листом"
 
 #. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 65535)
 msgid "&Email:"
-msgstr "&Електронна скринька:"
+msgstr "&Ел. скринька:"
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROXY: Control id 1023)
 msgid "&Enable Proxy Server"
@@ -759,7 +761,7 @@ msgstr "&Перейти\tCtrl+G"
 
 #. Resource IDs: (IDS_SHOWFILES_GRAYPATHS)
 msgid "&Gray Unrelated Changed Paths"
-msgstr ""
+msgstr "&Затінити не зв'язані змінені шляхи"
 
 #. Resource IDs: (65535)
 msgid "&Green:"
@@ -793,6 +795,10 @@ msgstr "&Ігнорувати"
 #, c-format
 msgid "&Ignore %d items by name"
 msgstr "&Ігнорувати %d елементів за назвою"
+
+#. Resource IDs: (IDS_MENUIGNOREMULTIPLE2)
+msgid "&Ignore multiple items by name"
+msgstr ""
 
 #. Resource IDs: (ID_VIEW_IGNORE_WHITESPACE - Menu)
 msgid "&Ignore whitespace"
@@ -1018,7 +1024,7 @@ msgstr "&Параметри"
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS3: Control id 65535)
 msgid "&Overlay Icon:"
-msgstr ""
+msgstr "Перекривати значки"
 
 #. Resource IDs: (ID_VIEW_OVERLAPIMAGES - Menu)
 msgid "&Overlay images\tO"
@@ -1069,7 +1075,7 @@ msgstr "&Витягнути"
 
 #. Resource IDs: (IDS_MENUPULL)
 msgid "&Pull..."
-msgstr ""
+msgstr "&Витягнути..."
 
 #. Resource IDs: (Dialog IDD_PUSH: Control id 1481)
 msgid "&Push all branches"
@@ -1126,7 +1132,7 @@ msgstr "&Віддалені гілки"
 #. Resource IDs: (Dialog IDD_PULLFETCH: Control id 1490, Dialog IDD_PUSH:
 #. Control id 1503)
 msgid "&Remote:"
-msgstr ""
+msgstr "&Віддалено:"
 
 #. Resource IDs: (16646, Dialog IDD_APPLY_PATCH_LIST: Control id 1385, Dialog
 #. IDD_SETTINGSCREDENTIAL: Control id 1385, Dialog IDD_SETTINGSPROGSADV:
@@ -1169,7 +1175,7 @@ msgstr "Пе&реініціалізувати типовим"
 
 #. Resource IDs: (IDS_RESOLVEDBUTTON)
 msgid "&Resolved"
-msgstr ""
+msgstr "&Вирправлено"
 
 #. Resource IDs: (IDS_RESTOREBUTTON)
 msgid "&Restore"
@@ -1246,7 +1252,7 @@ msgstr "По&казувати текстові мітки"
 
 #. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 65535)
 msgid "&Signing key ID:"
-msgstr ""
+msgstr "ID підпису"
 
 #. Resource IDs: (IDS_SKIPBUTTON)
 msgid "&Skip"
@@ -1271,7 +1277,7 @@ msgstr "По&чаткова група"
 
 #. Resource IDs: (IDS_STASHBUTTON)
 msgid "&Stash"
-msgstr ""
+msgstr "&Сховок"
 
 #. Resource IDs: (ID_VIEW_STATUS_BAR - Menu)
 msgid "&Status Bar"
@@ -1296,15 +1302,15 @@ msgstr "Документ з вкла&дками"
 #. Resource IDs: (Dialog IDD_MERGE: Control id 1513, Dialog
 #. IDD_NEW_BRANCH_TAG: Control id 1513)
 msgid "&Tag"
-msgstr ""
+msgstr "&Тег"
 
 #. Resource IDs: (IDS_VIEW_SHOWTAGLABELS)
 msgid "&Tags"
-msgstr "&Зрізи"
+msgstr "&Теги"
 
 #. Resource IDs: (Dialog IDD_DELETEREMOTETAG: Control id 65535)
 msgid "&Tags:"
-msgstr "&Зрізи:"
+msgstr "&Теги:"
 
 #. Resource IDs: (16915 - Menu)
 msgid "&Text"
@@ -1328,7 +1334,7 @@ msgstr "Назва рядка &знаряддь:"
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "&Toolbars and Docking Windows"
-msgstr ""
+msgstr "&Панелі інструментів та закріплюючи вікна"
 
 #. Resource IDs: (65535)
 msgid "&Toolbars:"
@@ -1349,7 +1355,7 @@ msgstr "&Trunk:"
 
 #. Resource IDs: (IDS_MSGBOX_TRYAGAIN)
 msgid "&Try Again"
-msgstr ""
+msgstr "&Спробувати знову"
 
 #. Resource IDs: (61506)
 msgid "&Two Page"
@@ -1370,7 +1376,7 @@ msgstr "&Об'єднані відмінності"
 
 #. Resource IDs: (IDS_LOG_POPUP_GNUDIFF_PARENT)
 msgid "&Unified diff with"
-msgstr ""
+msgstr "&Об'єднані відмінності з"
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 1061)
 msgid "&Unknown drives"
@@ -1378,11 +1384,11 @@ msgstr "&Невідомі диски"
 
 #. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1383)
 msgid "&Up"
-msgstr ""
+msgstr "&Вгору"
 
 #. Resource IDs: (IDS_LOG_POPUP_UPDATE)
 msgid "&Update item to revision"
-msgstr ""
+msgstr "&Обновити элемент до ревізії"
 
 #. Resource IDs: (Dialog IDD_REBASE: Control id 4567)
 msgid "&Upstream:"
@@ -1422,11 +1428,11 @@ msgstr "&Ціле слово"
 
 #. Resource IDs: (ID_VIEW_DETECT_MOVED_OR_COPIED_LINES_WITHIN_FILE - Menu)
 msgid "&Within file"
-msgstr ""
+msgstr "&У файлі"
 
 #. Resource IDs: (IDS_MSGBOX_YES)
 msgid "&Yes"
-msgstr ""
+msgstr "&Так"
 
 #. Resource IDs: (Dialog IDD_REBASE: Control id 1682)
 msgid "&add \"cherry picked from\""
@@ -1442,12 +1448,12 @@ msgstr "&відомі зміни"
 
 #. Resource IDs: (IDS_TORTOISEGITDEFAULT)
 msgid "(TortoiseGit default)"
-msgstr ""
+msgstr "(TortoiseGit за замовчуванням)"
 
 #. Resource IDs: (IDS_STATUSLIST_FROM)
 #, c-format
 msgid "(from %s)"
-msgstr ""
+msgstr "(з %s)"
 
 #. Resource IDs: (IDS_STATUSLIST_UNASSIGNED_CHANGESET)
 msgid "(no changelist)"
@@ -1525,7 +1531,7 @@ msgstr "....."
 
 #. Resource IDs: (IDS_CONFIG_LOCAL_TT)
 msgid ".git/config in the repository root"
-msgstr ""
+msgstr ".git/config у корні сховища"
 
 #. Resource IDs: (Dialog IDD_IGNORE: Control id 1691)
 msgid ".git/info/exclude"
@@ -1533,19 +1539,19 @@ msgstr ".git/info/exclude"
 
 #. Resource IDs: (Dialog IDD_IGNORE: Control id 1690)
 msgid ".gitignore in the containing directories of the items"
-msgstr ""
+msgstr ".gitignore у теках єлементів"
 
 #. Resource IDs: (Dialog IDD_IGNORE: Control id 1689)
 msgid ".gitignore in the repository root"
-msgstr ""
+msgstr ".gitignore у корні сховища"
 
 #. Resource IDs: (IDS_CONFIG_PROJECT_TT)
 msgid ".tgitconfig in the repository root"
-msgstr ""
+msgstr ".tgitconfig у корні сховища"
 
 #. Resource IDs: (Dialog IDD_FINDBAR: Control id 1020)
 msgid "< &Previous"
-msgstr ""
+msgstr "< &Попередній"
 
 #. Resource IDs: (16506)
 msgid "<.....>"
@@ -1559,7 +1565,7 @@ msgstr "<<"
 
 #. Resource IDs: (IDS_PROC_LOG_ALLBRANCHES)
 msgid "<All Branches>"
-msgstr "<Усі гілки>"
+msgstr "<Усі Гілки>"
 
 #. Resource IDs: (IDS_PROC_AUTOGENERATEDBYGIT)
 msgid "<Auto Generated by Git>"
@@ -1575,7 +1581,7 @@ msgstr "<Локальні гілки>"
 
 #. Resource IDs: (IDS_PROC_LOG_NOBRANCH)
 msgid "<No branch>"
-msgstr ""
+msgstr "<Нема гілки>"
 
 #. Resource IDs: (17095)
 msgid "<Separator>"
@@ -1584,79 +1590,6 @@ msgstr "<Розділювач>"
 #. Resource IDs: (16104)
 msgid "<Untitled>"
 msgstr "<Без назви>"
-
-#. Resource IDs: (IDS_PROC_RTFM)
-msgid ""
-"<b>TortoiseGit</b> is a shell extension.\n"
-"That means it is integrated into the Windows explorer.\n"
-"To use <b>TortoiseGit</b> please open the explorer and right-click on any folder you like\n"
-"to bring up the context menu where you will find all <b>TortoiseGit</b> commands.\n"
-"And <u>read the manual!</u>"
-msgstr ""
-
-#. Resource IDs: (IDS_PROC_BROWSEREFS_WARNINGNOMERGECHECK)
-msgid ""
-"<b>Warning:</b> It has not been checked if these branches have been fully "
-"merged into HEAD."
-msgstr ""
-
-#. Resource IDs: (IDS_PROC_BROWSEREFS_WARNINGDELETEREMOTEBRANCHES)
-msgid "<b>Warning:</b> This action will remove the branches on the remote."
-msgstr ""
-
-#. Resource IDs: (IDS_PROC_BROWSEREFS_WARNINGUNMERGED)
-msgid "<b>Warning:</b> This branch is not fully merged into HEAD."
-msgstr ""
-
-#. Resource IDs: (IDS_PROC_COMMIT_DETACHEDWARNING)
-msgid ""
-"<ct=0x0000FF>Current HEAD Detached</ct>, you are working on (no branch).\n"
-"Do you want to create a branch now?"
-msgstr ""
-
-#. Resource IDs: (IDS_PROC_DELETEALLSTASH)
-#, c-format
-msgid "<ct=0x0000FF>Do you really want to delete <b>ALL %d</b> stash?</ct>"
-msgstr ""
-
-#. Resource IDs: (IDS_PROC_STASHAPPLYFAILED)
-msgid "<ct=0x0000FF>Stash Apply failed!!!</ct>"
-msgstr ""
-
-#. Resource IDs: (IDS_PROC_STASHPOPFAILED)
-msgid "<ct=0x0000FF>Stash POP failed!!!</ct>"
-msgstr ""
-
-#. Resource IDs: (IDS_PROC_STASHFAILED)
-msgid "<ct=0x0000FF>Stash failed!!!</ct>"
-msgstr ""
-
-#. Resource IDs: (IDS_PROC_APPLYPATCH_REBASEDIRFOUND)
-msgid ""
-"<ct=0x0000FF>previous rebase directory rebase-apply still exists but mbox given</ct>\n"
-"\n"
-"Do you want to"
-msgstr ""
-
-#. Resource IDs: (IDS_PROC_STASHAPPLYFAILEDCONFLICTS)
-msgid "<ct=0x0000ff>Stash Apply failed, there are conflicts</ct>"
-msgstr ""
-
-#. Resource IDs: (IDS_PROC_STASHPOPFAILEDCONFLICTS)
-msgid "<ct=0x0000ff>Stash POP failed, there are conflicts</ct>"
-msgstr ""
-
-#. Resource IDs: (IDS_PROC_STASHAPPLYSUCCESS)
-msgid "<ct=0xff0000>Stash Apply successful</ct>"
-msgstr ""
-
-#. Resource IDs: (IDS_PROC_STASHPOPSUCCESS)
-msgid "<ct=0xff0000>Stash POP successful</ct>"
-msgstr ""
-
-#. Resource IDs: (IDS_PROC_STASHSUCCESS)
-msgid "<ct=0xff0000>Stash Success</ct>"
-msgstr ""
 
 #. Resource IDs: (16603)
 msgid "<descr>"
@@ -1678,7 +1611,7 @@ msgstr "?"
 msgid ""
 "A branch with the same name as your entered tag name already exists (so the short ref is ambiguous).\n"
 "This can cause problems so you should avoid it."
-msgstr ""
+msgstr "Гілка з тим самим ім'ям що ви як ім'я тегу ввели вже існуе (коротке посилання неоднозначне).\nЦе може викликати проблеми, так що ви повинні уникати цього."
 
 #. Resource IDs: (IDS_B_EXISTS)
 msgid "A branch with this name already exists."
@@ -1692,13 +1625,13 @@ msgstr ""
 
 #. Resource IDs: (IDS_CHECKNEWER_NEWERVERSIONAVAILABLE)
 msgid "A newer version is available. Please download the current version!"
-msgstr ""
+msgstr "Доступна нова версія. Будь ласка завантажте останню версію!"
 
 #. Resource IDs: (IDS_SETTINGS_INCLUDELIST_TT)
 msgid ""
 "A newline separated list of paths for which icon overlays are shown.\n"
 "If you add an '*' char at the end of a path, then all files and subdirs inside that path are included too."
-msgstr ""
+msgstr "Cписок шляхів для яких показуеться перекривання іконок\nЯкщо ви додасьте '*' у кіньці шляху, усі файли та теки у цьому шляху будить також додані"
 
 #. Resource IDs: (IDS_SETTINGS_EXCLUDECONTEXTLIST_TT)
 msgid ""
@@ -1712,7 +1645,7 @@ msgid ""
 "A newline separated list of paths for which no icon overlays are shown.\n"
 "If you add an '*' char at the end of a path, then all files and subdirs inside that path are excluded too.\n"
 "An empty list will allow overlays on all paths."
-msgstr ""
+msgstr "Список шляхів для яких не відображаеться перекриття піктограм\nЯкщо ви додасьте  символ '*'  у кінці шляху, усі файли та теки у цьому шляху також будуть виключені.\nПустий список дозволяе перекриття всім шляхам."
 
 #. Resource IDs: (61474)
 msgid "A required resource was unavailable."
@@ -1722,11 +1655,11 @@ msgstr "Необхідний ресурс виявився недоступни�
 msgid ""
 "A tag with the same name as your entered branch name already exists (so the short ref is ambiguous).\n"
 "This can cause problems so you should avoid it."
-msgstr ""
+msgstr "Тег з таким ім'я як ви ввели ім'я гілки вже існуе (якщо короткий ссилка множетсвена\nЦе може визивати проблеми, так що ви повинні ухилятися від цього."
 
 #. Resource IDs: (IDS_T_EXISTS)
 msgid "A tag with this name already exists."
-msgstr ""
+msgstr "Тег з таким ім'ям вже існуе"
 
 #. Resource IDs: (IDS_SETTINGS_DIFFVIEWER_TT)
 msgid ""
@@ -1736,7 +1669,7 @@ msgstr "Програма перегляду файлів відмінносте�
 
 #. Resource IDs: (IDS_ABORTBUTTON)
 msgid "A&bort"
-msgstr ""
+msgstr "П&рипинити"
 
 #. Resource IDs: (IDS_MENUABOUT)
 msgid "A&bout"
@@ -1744,15 +1677,15 @@ msgstr "&Про"
 
 #. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1)
 msgid "A&pply"
-msgstr ""
+msgstr "За&стосувати"
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 1128)
 msgid "Abbreviate renamings"
-msgstr ""
+msgstr "Скорочувати перейменування"
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 65535)
 msgid "Abbreviated size"
-msgstr ""
+msgstr "Розмір скорчення"
 
 #. Resource IDs: (Dialog IDD_GITPROGRESS: Control id 2, Dialog IDD_REBASE:
 #. Control id 1565, Dialog IDD_RESOLVE_CONFLICT: Control id 2)
@@ -1899,7 +1832,7 @@ msgstr "Додавання"
 
 #. Resource IDs: (IDS_MENUDESCADD)
 msgid "Adds file(s) to Git control"
-msgstr ""
+msgstr "Додати файл(-и) до контролю Git"
 
 #. Resource IDs: (IDS_MENUDESCIGNORE)
 msgid "Adds the selected file(s) or the filemask to the 'ignore' list"
@@ -1913,23 +1846,23 @@ msgstr "Коригувати налаштування\nНалаштування"
 
 #. Resource IDs: (Dialog IDD_SETTINGS_CONFIG: Control id 340, IDS_ADVANCED)
 msgid "Advanced"
-msgstr "Хитріше"
+msgstr "Просунуті"
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSADV: Control id 170)
 msgid "Advanced Diff/Merge Settings"
-msgstr "Хитріші налаштування Злиття/Відмінностей"
+msgstr "Додаткові налаштування Злиття/Відмінностей"
 
 #. Resource IDs: (IDS_DLGTITLE_ADV_DIFF)
 msgid "Advanced diff settings"
-msgstr "Хитріші налаштування відмінностей"
+msgstr "Додаткові налаштування відмінностей"
 
 #. Resource IDs: (IDS_DLGTITLE_ADV_MERGE)
 msgid "Advanced merge settings"
-msgstr "Хитріші налаштування злиття"
+msgstr "Додаткові налаштування злиття"
 
 #. Resource IDs: (IDS_ALL)
 msgid "All"
-msgstr "Все"
+msgstr "Усі"
 
 #. Resource IDs: (16110)
 msgid "All Commands"
@@ -1945,7 +1878,7 @@ msgstr "Усі файли (*.*)|*.*||"
 
 #. Resource IDs: (IDS_ALLPARENTS)
 msgid "All Parents"
-msgstr ""
+msgstr "Усі батьки"
 
 #. Resource IDs: (IDS_PROC_LOG_SELECT_BASIC_REFS)
 msgid "All basic refs"
@@ -1961,11 +1894,11 @@ msgstr ""
 
 #. Resource IDs: (IDS_ALLTAGS)
 msgid "All tags"
-msgstr ""
+msgstr "Усі теги"
 
 #. Resource IDs: (IDS_FETCH_TAGS_ONLY)
 msgid "All tags only"
-msgstr ""
+msgstr "Тільки усі теги"
 
 #. Resource IDs: (16112)
 msgid ""
@@ -1999,7 +1932,7 @@ msgstr ""
 
 #. Resource IDs: (IDS_SETTINGS_GRAVATARURL_TT)
 msgid "Allow to use custom Gravatar URL"
-msgstr ""
+msgstr "Дозволити використовувати користувацьки адреса (URL) Gravatar "
 
 #. Resource IDs: (IDS_COMMIT_MESSAGEONLY_TT)
 msgid ""
@@ -2021,7 +1954,7 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 1805)
 msgid "Always show long format"
-msgstr ""
+msgstr "Завжди показувати довгий формат"
 
 #. Resource IDs: (IDS_SETTINGS_USESYSTEMLOCALEFORDATES_TT)
 msgid "Always use the system locale settings to show times and dates"
@@ -2038,7 +1971,7 @@ msgstr ""
 #. Resource IDs: (IDS_SETTINGS_ALTERNATIVEEDITOR_TT)
 msgid ""
 "An alternative editor. Which should preferably support *nix line endings."
-msgstr ""
+msgstr "Інший редактор. Він повивен підтримувати закінчення строки як у *nix."
 
 #. Resource IDs: (IDS_SETTINGS_EXTDIFF_TT)
 #, c-format
@@ -2085,7 +2018,7 @@ msgstr "У рядку %d виявлено невідомий тип рядка!"
 
 #. Resource IDs: (IDS_ANNOTATEDTAGS)
 msgid "Annotated tags"
-msgstr ""
+msgstr "Анотовані теги"
 
 #. Resource IDs: (IDS_VIEWCONTEXTMENU_APPENDRIGHT)
 msgid "Append right block"
@@ -2130,7 +2063,7 @@ msgstr "Аква стиль"
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "Arabic"
-msgstr ""
+msgstr "Арабська"
 
 #. Resource IDs: (Dialog IDD_PULLFETCH: Control id 1492, Dialog IDD_PUSH:
 #. Control id 1495)
@@ -2152,18 +2085,18 @@ msgstr "Дійсно позначити конфліктні файли як в�
 #. Resource IDs: (IDS_PROC_WARNREVERT)
 #, c-format
 msgid ""
-"Are you sure you want to revert %d item(s)? You will lose <b>all</b> changes"
-" since the last update!"
+"Are you sure you want to revert %d item(s)? You will lose ALL changes since "
+"the last update!"
 msgstr ""
 
 #. Resource IDs: (IDS_WARNUSERSAFEDIFFERENT)
 #, c-format
 msgid "Are you sure you want to save to \"%s\"?"
-msgstr ""
+msgstr "Ви впевнені що хочете зберегти у \"%s\"?"
 
 #. Resource IDs: (ID_VIEW_ARRANGEVERTICAL - Menu)
 msgid "Arrange &vertical\tV"
-msgstr ""
+msgstr "Вирівняти &вертикально\tV"
 
 #. Resource IDs: (IDS_SVNACTION_CHANGELISTSET)
 #, c-format
@@ -2245,7 +2178,7 @@ msgstr "Автор"
 
 #. Resource IDs: (IDS_PROC_LOG_AUTHOREMAIL)
 msgid "Author Email"
-msgstr ""
+msgstr "Email автора"
 
 #. Resource IDs: (Dialog IDD_ABOUT: Control id 65535)
 msgid "Author:\t\t\t\tStefan Kueng"
@@ -2263,11 +2196,11 @@ msgstr "Автори чутливі до регістра"
 msgid ""
 "Authors:\tFrank Li (lznuaa@gmail.com),\n"
 "\t\tSven Strickroth (email@cs-ware.de)"
-msgstr ""
+msgstr "Автори: \tFrank Li (lznuaa@gmail.com),\n\t\tSven Strickroth (email@cs-ware.de)"
 
 #. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 65535)
 msgid "Auto CrLf convert"
-msgstr ""
+msgstr "Конвертувати CrLf автоматично"
 
 #. Resource IDs: (Dialog IDD_PROPPAGE: Control id 65535)
 msgid "Auto Crlf:"
@@ -2309,11 +2242,11 @@ msgstr "Автодоповнення під час набору повідомл
 
 #. Resource IDs: (Dialog IDD_PULLFETCH: Control id 1505)
 msgid "AutoLoad Putty &Key"
-msgstr ""
+msgstr "Автоматично завантажувати ключ Putty"
 
 #. Resource IDs: (Dialog IDD_SYNC: Control id 1619)
 msgid "Autoload Putty &Key"
-msgstr ""
+msgstr "Автоматично завантажувати ключ Putty"
 
 #. Resource IDs: (IDS_COLOURPICKER_DEFAULTTEXT)
 msgid "Automatic"
@@ -2321,7 +2254,7 @@ msgstr "Автоматичне"
 
 #. Resource IDs: (Dialog IDD_SETTINGSMAIN: Control id 1073)
 msgid "Automatically check for &newer versions every week"
-msgstr ""
+msgstr "Автоматично перевіряти на нові версії кожен тиждень"
 
 #. Resource IDs: (Dialog IDD_AUTOTEXTTESTDLG: Control id 306)
 msgid "Autotext Tester"
@@ -2352,7 +2285,8 @@ msgstr ""
 msgid "Bar Graph"
 msgstr "Гістограма"
 
-#. Resource IDs: (Dialog IDD_RESOLVESUBMODULECONFLICT: Control id 1385)
+#. Resource IDs: (Dialog IDD_RESOLVESUBMODULECONFLICT: Control id 1385,
+#. IDS_PROC_DIFF_BASE)
 msgid "Base"
 msgstr ""
 
@@ -2440,7 +2374,7 @@ msgstr "Блакитний стиль"
 
 #. Resource IDs: (IDS_BODY)
 msgid "Body"
-msgstr ""
+msgstr "Тіло"
 
 #. Resource IDs: (IDS_ERR_TWOLOGPARAMS)
 msgid ""
@@ -2463,7 +2397,7 @@ msgstr "Про&глянути..."
 
 #. Resource IDs: (Dialog IDD_CLONE: Control id 1510)
 msgid "Branc&h:"
-msgstr ""
+msgstr "Гілка"
 
 #. Resource IDs: (Dialog IDD_CLONE: Control id 1527, Dialog IDD_EXPORT:
 #. Control id 1512, Dialog IDD_GITSWITCH: Control id 1512, Dialog
@@ -2505,7 +2439,7 @@ msgstr "Гілка:"
 
 #. Resource IDs: (Dialog IDD_CLONE: Control id 1383)
 msgid "Bro&wse..."
-msgstr ""
+msgstr "Проглянути..."
 
 #. Resource IDs: (IDS_MENUREFBROWSE)
 msgid "Browse References"
@@ -2563,7 +2497,7 @@ msgstr "Button3"
 #. Resource IDs: (Dialog IDD_SETTINGSMAIN: Control id 1215, Dialog
 #. IDD_SETTINGSMAIN: Control id 1216)
 msgid "C&heck now"
-msgstr "Пе&ревірити вже"
+msgstr "Пе&ревірити зараз"
 
 #. Resource IDs: (65535)
 msgid "C&ommands:"
@@ -2571,11 +2505,11 @@ msgstr "&Команди:"
 
 #. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1, IDS_COMMIT_COMMIT)
 msgid "C&ommit"
-msgstr ""
+msgstr "&Фіксування"
 
 #. Resource IDs: (IDS_LOG_POPUP_COPY)
 msgid "C&reate branch/tag from revision"
-msgstr "С&творити гілку/зріз із модифікації"
+msgstr "С&творити гілку/тег із модифікації"
 
 #. Resource IDs: (65535)
 msgid "C&urrent Keys:"
@@ -2599,7 +2533,7 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 1127)
 msgid "Can double-click in log list to compare with previous revision"
-msgstr "Можна двічі клацнути у списку логу, щоб порівняти з попередньою модифікацією"
+msgstr "Подвійний клік у списку логу порівнюе з попередньою ревізіею"
 
 #. Resource IDs: (61824)
 msgid "Can not activate a static ActiveX object."
@@ -2612,7 +2546,7 @@ msgid ""
 "%s\n"
 "to\n"
 "%s"
-msgstr ""
+msgstr "Не можу скопіювати \n%s\nу\n%s"
 
 #. Resource IDs: (16010)
 msgid "Can't copy bitmap image into the clipboard!"
@@ -2789,12 +2723,12 @@ msgstr "Змінені файли"
 #. Resource IDs: (IDS_FILEDIFF_CHANGEDLISTINTROROOT)
 #, c-format
 msgid "Changed files between %s and %s"
-msgstr ""
+msgstr "Змінені файли між %s та %s"
 
 #. Resource IDs: (IDS_FILEDIFF_CHANGEDLISTINTRO)
 #, c-format
 msgid "Changed files between %s, %s and %s, %s"
-msgstr ""
+msgstr "Змінені файли між %s, %s та %s, %s"
 
 #. Resource IDs: (IDS_CHECKUPDATE_SUMMARY)
 #, c-format
@@ -2803,7 +2737,7 @@ msgstr "Змінені файли: %d"
 
 #. Resource IDs: (IDS_STATGRAPH_LINES_BYDATE_W_Y)
 msgid "Changed lines including added/deleted files"
-msgstr ""
+msgstr "Змінені строки включаючи добавлені/видалені"
 
 #. Resource IDs: (IDS_STATGRAPH_LINES_BYDATE_W)
 msgid "Changed lines including added/deleted files by date"
@@ -2840,7 +2774,7 @@ msgstr "Позначити"
 
 #. Resource IDs: (Dialog IDD_CHECKFORUPDATES: Control id 174)
 msgid "Check For Updates - TortoiseGit"
-msgstr "Перевірити наявність оновлень - TortoiseGit"
+msgstr "Перевіряння наявністі оновлень - TortoiseGit"
 
 #. Resource IDs: (Dialog IDD_ABOUT: Control id 1031)
 msgid "Check For Updates..."
@@ -2858,17 +2792,17 @@ msgstr "Первірте введений шлях і/або URL"
 msgid ""
 "Check those menu entries you want to appear in the top context menu instead "
 "of the TortoiseGit submenu"
-msgstr ""
+msgstr "Відмідьте пункти меню які ви хочете бачити на вищому рівні замість подменю TortoiseGit "
 
 #. Resource IDs: (IDS_SETTINGS_EXTMENULAYOUT_TT)
 msgid ""
 "Check those menu entries you want to appear only in the extended context "
 "menu (SHIFT + left click)"
-msgstr ""
+msgstr "Відмідьте ті пункти меню, які повинні з'являтися тільки у розширенному контекстному меню (SHIFT + лівий клік)"
 
 #. Resource IDs: (IDS_SETTINGS_RELATIVETIMES_TT)
 msgid "Check to show relative times in log messages"
-msgstr ""
+msgstr "Відмідьте щоб показувати відносний час у повідомленнях логу"
 
 #. Resource IDs: (IDS_SETTINGS_SHORTDATEFORMAT_TT)
 msgid "Check to use a less verbose date and time format in log messages"
@@ -2908,7 +2842,7 @@ msgstr ""
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "Chinese"
-msgstr ""
+msgstr "Китайська"
 
 #. Resource IDs: (IDS_CHOOSE_REPOSITORY)
 msgid "Choose Repository"
@@ -2944,7 +2878,7 @@ msgstr "Очищується"
 
 #. Resource IDs: (IDS_PROC_CLEANUP_INFO1)
 msgid "Cleaning up."
-msgstr ""
+msgstr "Очищення."
 
 #. Resource IDs: (IDS_PROC_CLEANUPFINISHED_FAILED)
 #, c-format
@@ -3019,13 +2953,13 @@ msgstr "Клацніть тут що вибрати нещодавно надр�
 msgid ""
 "Click on \"Advanced\" to specify alternate diff programs based on file "
 "extension"
-msgstr "Клацніть \"Хитріше\", щоб вказати альтернативні програми відмінностей, залежно від розширення файла"
+msgstr "Клацніть \"Додатково\", щоб вказати альтернативні програми відмінностей, залежно від розширення файла"
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSMERGE: Control id 65535)
 msgid ""
 "Click on \"Advanced\" to specify alternate merge programs based on file "
 "extension"
-msgstr "Клацніть \"Хитріше\", щоб вказати альтернативні програми злиття, залежно від розширення файла"
+msgstr "Клацніть \"Додатково\", щоб вказати альтернативні програми злиття, залежно від розширення файла"
 
 #. Resource IDs: (32914)
 msgid ""
@@ -3039,11 +2973,11 @@ msgstr "Буфер обміну"
 
 #. Resource IDs: (IDS_PROGRS_TITLE_CLONE, IDS_PROG_CLONE)
 msgid "Clone"
-msgstr ""
+msgstr "Клонування"
 
 #. Resource IDs: (Dialog IDD_CLONE: Control id 1572)
 msgid "Clone Existing Repository"
-msgstr ""
+msgstr "Клонування існуючого сховища"
 
 #. Resource IDs: (IDS_MENUDESCCLONE)
 msgid "Clone a repository"
@@ -3051,11 +2985,11 @@ msgstr "Клонувати сховище"
 
 #. Resource IDs: (Dialog IDD_CLONE: Control id 1653)
 msgid "Clone into Bare Repo"
-msgstr ""
+msgstr "Клонувати у Bare сховище"
 
 #. Resource IDs: (IDS_MENUCLONE)
 msgid "Clone..."
-msgstr ""
+msgstr "Клонування..."
 
 #. Resource IDs: (16032, 16105, 17023, 2, Dialog IDD_DELETEREMOTETAG: Control
 #. id 2, Dialog IDD_GITPROGRESS: Control id 1, Dialog IDD_SYNC: Control id 1)
@@ -3158,7 +3092,7 @@ msgstr "Команди"
 #. IDD_SETTINGSDIALOGS2: Control id 1083, Dialog IDD_SETTINGSDIALOGS3: Control
 #. id 65535, IDS_COMMITBUTTON, IDS_PROGRS_CMD_COMMIT, IDS_PROGRS_TITLE_COMMIT)
 msgid "Commit"
-msgstr "Зафіксувати"
+msgstr "Фіксування"
 
 #. Resource IDs: (IDS_LOG_NOT_VISIBLE)
 #, c-format
@@ -3184,15 +3118,15 @@ msgstr ""
 
 #. Resource IDs: (IDS_COMMIT_FINISH)
 msgid "Commit Finish"
-msgstr ""
+msgstr "Фіксування завершено"
 
 #. Resource IDs: (IDS_PROPERTIES_WND)
 msgid "Commit Info"
-msgstr ""
+msgstr "Інформація про фіксування"
 
 #. Resource IDs: (IDS_PROC_COMMITMESSAGE)
 msgid "Commit Message"
-msgstr ""
+msgstr "Повідомлення фіксації"
 
 #. Resource IDs: (IDS_LOG_COMMIT_NAME)
 msgid "Commit Name"
@@ -3225,7 +3159,7 @@ msgstr "Фіксування за датою"
 #. Resource IDs: (IDS_STATGRAPH_COMMITSBYUNIT)
 #, c-format
 msgid "Commits each %s"
-msgstr ""
+msgstr "Фіксування кожного %s"
 
 #. Resource IDs: (Dialog IDD_STATGRAPH: Control id 1135)
 msgid "Commits each week:"
@@ -3237,7 +3171,7 @@ msgstr "Фіксує зміни до сховища"
 
 #. Resource IDs: (IDS_PROC_LOG_COMMITTEREMAIL)
 msgid "Committer Email"
-msgstr ""
+msgstr "Email Фіксувальника"
 
 #. Resource IDs: (IDS_COMMITDLG_UNVERSIONEDFOLDERWARNING)
 msgid ""
@@ -3303,13 +3237,13 @@ msgstr "Готово"
 
 #. Resource IDs: (Dialog IDD_PROPPAGE: Control id 65535)
 msgid "Config"
-msgstr ""
+msgstr "Конфігурація"
 
 #. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 65535, Dialog
 #. IDD_SETTINGSBUGTRAQ_CONFIG: Control id 65535, Dialog IDD_SETTINGSDIALOGS3:
 #. Control id 65535)
 msgid "Config source"
-msgstr ""
+msgstr "Рівень конфігурації"
 
 #. Resource IDs: (Dialog IDD_SETTINGSCREDENTIAL: Control id 65535)
 msgid "Config type:"
@@ -3321,17 +3255,17 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSHOOKCONFIG: Control id 236)
 msgid "Configure Hook Scripts"
-msgstr "Конфігурувати скрипти зачіпки"
+msgstr "Конфігурування скриптів зачіпок (Hook Scripts)"
 
 #. Resource IDs: (Dialog IDD_SETTINGSBUGTRAQADV: Control id 284)
 msgid "Configure Issue Tracker Integration"
-msgstr "Конфігурувати інтеграцію проблемобліку"
+msgstr "Конфігурування інтеграції проблемо обліку (Issue Tracker)"
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSALTERNATIVEEDITOR: Control id 65535)
 msgid ""
 "Configure alternative editor. Preferably one which can handle *nix line "
 "endings."
-msgstr ""
+msgstr "налаштування зовнышнього редактору. Перевага тим які можуть обробляти кінець строки *nix."
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSDIFF: Control id 65535)
 msgid "Configure the program used for comparing different revisions of files"
@@ -3347,12 +3281,12 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS2: Control id 1768)
 msgid "Confirm to kill running git process"
-msgstr ""
+msgstr "Підтверження вбивство робочого процессу git"
 
 #. Resource IDs: (Dialog IDD_RESOLVE_CONFLICT: Control id 4568,
 #. IDS_PATHACTIONS_CONFLICT)
 msgid "Conflict"
-msgstr ""
+msgstr "Конфлікт"
 
 #. Resource IDs: (IDS_PROC_CONFLICTFILES)
 msgid "Conflict Files"
@@ -3394,11 +3328,11 @@ msgstr "Стиснути пристиковане вікно"
 
 #. Resource IDs: (IDS_EDIT_SPACE2TAB)
 msgid "Convert spaces to tabs"
-msgstr ""
+msgstr "Перетворення пробілів у таб"
 
 #. Resource IDs: (IDS_EDIT_TAB2SPACE)
 msgid "Convert tabs to spaces"
-msgstr ""
+msgstr "Перетворення таб у пробіли"
 
 #. Resource IDs: (IDS_SCIEDIT_COPY)
 msgid "Cop&y"
@@ -3416,11 +3350,11 @@ msgstr "Копіювати"
 #. Resource IDs: (IDS_PROGRS_CMD_COPY)
 #, c-format
 msgid "Copy %s to %s, Revision %s"
-msgstr ""
+msgstr "Копіювання %s у %s, Ревізія %s"
 
 #. Resource IDs: (IDS_BLAME_POPUP_COPYHASHTOCLIPBOARD, IDS_COPY_COMMIT_HASH)
 msgid "Copy SHA-1 to clipboard"
-msgstr ""
+msgstr "Копіювати  SHA-1 до буферу обміну"
 
 #. Resource IDs: (16907)
 msgid ""
@@ -3438,11 +3372,11 @@ msgstr "Копіювати та перейменувати"
 
 #. Resource IDs: (IDS_LOG_POPUP_COPYTOCLIPBOARDMESSAGES)
 msgid "Copy log messages to clipboard"
-msgstr ""
+msgstr "Копіювати повідомлення логу у буфер обміну"
 
 #. Resource IDs: (IDS_BLAME_POPUP_COPYLOGTOCLIPBOARD)
 msgid "Copy log to clipboard"
-msgstr ""
+msgstr "Копіювати логу у буфер обміну"
 
 #. Resource IDs: (IDS_STATUSLIST_CONTEXT_COPY)
 msgid "Copy paths to clipboard"
@@ -3474,7 +3408,7 @@ msgstr "Копіювання: Нове ім'я для %s"
 #. Resource IDs: (IDS_PROC_COPYINGPROG)
 #, c-format
 msgid "Copying %s"
-msgstr ""
+msgstr "Копіювання %s"
 
 #. Resource IDs: (IDS_PROC_COPYING)
 msgid "Copying..."
@@ -3482,11 +3416,11 @@ msgstr "Копіювання..."
 
 #. Resource IDs: (Dialog IDD_ABOUTBOX: Control id 1001)
 msgid "Copyright (C) 2009-2016 TortoiseGit"
-msgstr ""
+msgstr "Copyright (C) 2009-2016 TortoiseGit"
 
 #. Resource IDs: (IDS_SPELLEDIT_CORRECTIONS)
 msgid "Corrections"
-msgstr ""
+msgstr "Виправлення"
 
 #. Resource IDs: (IDS_ERR_FAILEDIGNOREPROPERTY)
 #, c-format
@@ -3521,7 +3455,7 @@ msgstr "Не вдалося визначити останню зафіксова
 
 #. Resource IDs: (IDS_ERR_NOTFOUND_SUPER_PRJECT)
 msgid "Could not find Super-project"
-msgstr ""
+msgstr "Не вдалося знайти Супер-проект"
 
 #. Resource IDs: (IDS_ERR_NOSTATUS)
 msgid "Could not get the status!"
@@ -3577,7 +3511,7 @@ msgstr ""
 
 #. Resource IDs: (IDS_ERR_TGITBLAME)
 msgid "Could not start TortoiseGitBlame"
-msgstr ""
+msgstr "Нк можливо запустити TortoiseGitBlame"
 
 #. Resource IDs: (IDS_ERR_DIFFVIEWSTART)
 #, c-format
@@ -3613,11 +3547,11 @@ msgid ""
 "Could not start text viewer!\n"
 "\n"
 "%s"
-msgstr ""
+msgstr "Не можливо запустити текстовий переглядач!\n\n%s"
 
 #. Resource IDs: (IDS_ERR_PAGEANT)
 msgid "Could not start the Putty Agent (pageant)."
-msgstr ""
+msgstr "Не можу запустити Putty Agent (pageant)"
 
 #. Resource IDs: (IDS_ERR_THREADSTARTFAILED)
 msgid "Could not start thread!"
@@ -3625,36 +3559,36 @@ msgstr "Не вдалося запустити нитку!"
 
 #. Resource IDs: (Dialog IDD_FIND: Control id 1501)
 msgid "Coun&t"
-msgstr ""
+msgstr "Кількіс&ть"
 
 #. Resource IDs: (IDS_FIND_COUNT)
 #, c-format
 msgid "Count: %u matches."
-msgstr ""
+msgstr "Кількість: %u збігаеться."
 
 #. Resource IDs: (IDS_MENUBRANCH)
 msgid "Create &Branch..."
-msgstr ""
+msgstr "Створити &Гілку..."
 
 #. Resource IDs: (Dialog IDD_SETTINGSMAIN: Control id 1683)
 msgid "Create &Library"
-msgstr ""
+msgstr "Створити бібліотеку"
 
 #. Resource IDs: (IDS_MENUTAG)
 msgid "Create &Tag..."
-msgstr ""
+msgstr "Створити &Тег"
 
 #. Resource IDs: (Dialog IDD_SVNIGNORE: Control id 1641)
 msgid "Create .gitignore file"
-msgstr ""
+msgstr "Створити файл .gitignore"
 
 #. Resource IDs: (IDS_PROGS_TITLE_CREATEBRANCH)
 msgid "Create Branch"
-msgstr ""
+msgstr "Створити Гілку"
 
 #. Resource IDs: (IDS_CREATE_BRANCH_AT_THIS)
 msgid "Create Branch at this version..."
-msgstr ""
+msgstr "Створити Гілку з ціеї ревізії..."
 
 #. Resource IDs: (Dialog IDD_CREATECHANGELIST: Control id 243)
 msgid "Create Changelist"
@@ -3670,17 +3604,17 @@ msgstr ""
 
 #. Resource IDs: (IDS_PROGS_TITLE_CREATETAG)
 msgid "Create Tag"
-msgstr ""
+msgstr "Створити Тег"
 
 #. Resource IDs: (IDS_CREATE_TAG_AT_THIS)
 msgid "Create Tag at this version..."
-msgstr ""
+msgstr "Створити Тег з цієї ревізії..."
 
 #. Resource IDs: (57600)
 msgid ""
 "Create a new document\n"
 "New"
-msgstr ""
+msgstr "Створити новий документ\nНовий"
 
 #. Resource IDs: (IDS_CLONE_DEPTH_TT)
 msgid ""
@@ -3694,7 +3628,7 @@ msgstr ""
 #. Resource IDs: (ID_EDIT_CREATEUNIFIEDDIFFFILE - Menu,
 #. ID_EDIT_CREATEUNIFIEDDIFFFILE - Ribbon name)
 msgid "Create patch file"
-msgstr ""
+msgstr "Створити файл патчу"
 
 #. Resource IDs: (IDS_PROC_REQUESTPULL)
 msgid "Create pull &request"
@@ -3702,19 +3636,19 @@ msgstr ""
 
 #. Resource IDs: (IDS_MENUCREATEREPOS)
 msgid "Create repositor&y here..."
-msgstr ""
+msgstr "Створити хранилище тут..."
 
 #. Resource IDs: (IDS_PROC_CREATED)
 msgid "Created"
-msgstr ""
+msgstr "Створено"
 
 #. Resource IDs: (IDS_MENUDESCCOPY)
 msgid "Creates a branch or tag"
-msgstr ""
+msgstr "Створення гілки або тегу"
 
 #. Resource IDs: (IDS_SETTINGS_CREATELIB_TT)
 msgid "Creates a library folder with special settings for Git working trees"
-msgstr ""
+msgstr "Створення бібліотчної теки з спеціальними налаштуваннями для робочого дерева Git"
 
 #. Resource IDs: (32828)
 msgid ""
@@ -3763,6 +3697,12 @@ msgstr "Поточна гілка"
 msgid "Current Branch:"
 msgstr "Поточна гілка:"
 
+#. Resource IDs: (IDS_PROC_COMMIT_DETACHEDWARNING)
+msgid ""
+"Current HEAD is detached, you are working on (no branch).\n"
+"Do you want to create a branch now?"
+msgstr ""
+
 #. Resource IDs: (IDS_REBASE_UPTODATE_FMT)
 #, c-format
 msgid ""
@@ -3806,7 +3746,7 @@ msgstr "Адаптувати Панель швидкого доступу..."
 
 #. Resource IDs: (IDS_TOOLBAR_CUSTOMIZE)
 msgid "Customize..."
-msgstr ""
+msgstr "Адаптувати..."
 
 #. Resource IDs: (57635)
 msgid ""
@@ -3816,7 +3756,7 @@ msgstr "Вирізати виділення та помістити його д�
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "Cyrillic"
-msgstr ""
+msgstr "Кирилический"
 
 #. Resource IDs: (Dialog IDD_SVNDCOMMITTYPE: Control id 1624)
 msgid "DCommit Type"
@@ -3832,7 +3772,7 @@ msgstr "Дата"
 
 #. Resource IDs: (IDS_DATELASTCOMMIT)
 msgid "Date Last Commit"
-msgstr ""
+msgstr "Дата останнюї фіксації"
 
 #. Resource IDs: (16114, IDS_DEFAULT)
 msgid "Default"
@@ -3848,7 +3788,7 @@ msgstr "Типове меню програми. З'являється, коли 
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 65535)
 msgid "Default limitation of log messages:"
-msgstr ""
+msgstr "Обмеження за замовчу. для повідом. логу:"
 
 #. Resource IDs: (Dialog IDD_SETMAINPAGE: Control id 1064)
 msgid "Default to UTF-8 encoding"
@@ -3857,7 +3797,7 @@ msgstr "Типово - в кодування UTF-8"
 #. Resource IDs: (16020, Dialog IDD_RESOLVE_CONFLICT: Control id 4571,
 #. IDS_DELETE_BRANCHTAG_SHORT)
 msgid "Delete"
-msgstr "Знищити"
+msgstr "Видалити"
 
 #. Resource IDs: (IDS_PROC_BROWSEREFS_DELETEBRANCHES)
 #, c-format
@@ -3884,21 +3824,29 @@ msgstr ""
 
 #. Resource IDs: (IDS_PROC_BROWSEREFS_DELETEALLTAGS)
 msgid "Delete all tags"
-msgstr ""
+msgstr "Видалити усі теги"
 
 #. Resource IDs: (IDS_MENUDELETEIGNOREMULTIPLE)
 #, c-format
 msgid "Delete and &ignore %d items by name"
 msgstr "Знищити й &ігнорувати %d елементів за назвою"
 
+#. Resource IDs: (IDS_MENUDELETEIGNOREMULTIPLE2)
+msgid "Delete and &ignore multiple items by name"
+msgstr ""
+
 #. Resource IDs: (IDS_MENUDELETEIGNORE)
 msgid "Delete and add to &ignore list"
-msgstr ""
+msgstr "Видалити та додати до списку &ігнорованих"
 
 #. Resource IDs: (IDS_MENUDELETEIGNOREMULTIPLEMASK)
 #, c-format
 msgid "Delete and ignore %d items by &extension"
 msgstr "Знищити й ігнорувати %d елементів за роз&ширенням"
+
+#. Resource IDs: (IDS_MENUDELETEIGNOREMULTIPLEMASK2)
+msgid "Delete and ignore multiple items by &extension"
+msgstr ""
 
 #. Resource IDs: (IDS_PROC_BROWSEREFS_DELETEBRANCH)
 msgid "Delete branch"
@@ -3906,7 +3854,7 @@ msgstr "Знищити гілку"
 
 #. Resource IDs: (IDS_DELETE_BRANCHTAG)
 msgid "Delete branch/tag"
-msgstr ""
+msgstr "Видалити гілку/тег"
 
 #. Resource IDs: (IDS_PROC_BROWSEREFS_DELETEREMOTEBRANCH)
 msgid "Delete remote branch"
@@ -3931,7 +3879,7 @@ msgstr ""
 
 #. Resource IDs: (IDS_PROC_BROWSEREFS_DELETETAG)
 msgid "Delete tag"
-msgstr ""
+msgstr "Видалити тег"
 
 #. Resource IDs: (IDS_B_DELETEORDIFFERENTNAME)
 msgid "Delete the existing branch or use a different name."
@@ -3941,7 +3889,7 @@ msgstr ""
 msgid ""
 "Delete\n"
 "The file is removed."
-msgstr ""
+msgstr "Видалення\nФайл видаленний"
 
 #. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1709, Dialog
 #. IDD_SETTINGSOVERLAYHANDLERS: Control id 1551, IDS_DELETED,
@@ -3960,11 +3908,11 @@ msgstr "Знищує та додає вибрані файли чи файлов
 
 #. Resource IDs: (IDS_MENUDESCREMOVE)
 msgid "Deletes files/folders from version control"
-msgstr ""
+msgstr "Видалити файл/теку з управління версіями"
 
 #. Resource IDs: (IDS_MENUDESCREMOVEKEEP)
 msgid "Deletes files/folders from version control but keeps the file"
-msgstr ""
+msgstr "Видалити файл/теку з управління версіями, але зберігти файл"
 
 #. Resource IDs: (IDS_SETTINGS_CLEARACTIONLOG_TT)
 msgid "Deletes the action log file"
@@ -3997,11 +3945,11 @@ msgstr " Глибина"
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 65535)
 msgid "Describe"
-msgstr ""
+msgstr "Опис"
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 65535)
 msgid "Describe Strategy"
-msgstr ""
+msgstr "Стратегія опису"
 
 #. Resource IDs: (16031, IDS_DESCRIPTION)
 msgid "Description"
@@ -4017,7 +3965,7 @@ msgstr "Зняти видилення зі списку змін"
 
 #. Resource IDs: (Dialog IDD_PUSH: Control id 1501)
 msgid "Destination"
-msgstr ""
+msgstr "Призначення"
 
 #. Resource IDs: (61730)
 msgid "Destination disk drive is full."
@@ -4057,11 +4005,11 @@ msgstr "Розміри та розташування діалогів"
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS3: Control id 65535)
 msgid "Dialogs"
-msgstr ""
+msgstr "Діалоги"
 
 #. Resource IDs: (156 - Ribbon element)
 msgid "Diff"
-msgstr ""
+msgstr "Відмінності (Diff)"
 
 #. Resource IDs: (Dialog IDD_DIFFFILES: Control id 1789)
 msgid "Diff Options"
@@ -4077,19 +4025,19 @@ msgstr "Переглядач Diff"
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSMERGE: Control id 193)
 msgid "Diff Viewer::Merge Tool"
-msgstr ""
+msgstr "Переглядач Diff::Інструмент злиття"
 
 #. Resource IDs: (Dialog IDD_SETTINGSUDIFF: Control id 65535)
 msgid "Diff added lines"
-msgstr ""
+msgstr "Diff додані строки"
 
 #. Resource IDs: (Dialog IDD_SETTINGSUDIFF: Control id 65535)
 msgid "Diff command"
-msgstr ""
+msgstr "Diff команда"
 
 #. Resource IDs: (Dialog IDD_SETTINGSUDIFF: Control id 65535)
 msgid "Diff comment"
-msgstr ""
+msgstr "Diff коментар"
 
 #. Resource IDs: (Dialog IDD_OPENDLG: Control id 65535)
 msgid "Diff file:"
@@ -4097,7 +4045,7 @@ msgstr "Файл відмінностей:"
 
 #. Resource IDs: (Dialog IDD_SETTINGSUDIFF: Control id 65535)
 msgid "Diff header"
-msgstr ""
+msgstr "Diff  "
 
 #. Resource IDs: (IDS_MENUDIFFLATER)
 msgid "Diff later"
@@ -4105,11 +4053,11 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSUDIFF: Control id 65535)
 msgid "Diff position"
-msgstr ""
+msgstr "Diff розташування"
 
 #. Resource IDs: (Dialog IDD_SETTINGSUDIFF: Control id 65535)
 msgid "Diff removed lines"
-msgstr ""
+msgstr "Diff виделені строки"
 
 #. Resource IDs: (IDS_MENUDIFFNOW)
 #, c-format
@@ -4148,7 +4096,7 @@ msgstr "Каталог:"
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS2: Control id 1796)
 msgid "Disable sounds"
-msgstr ""
+msgstr "Заборонити звуки"
 
 #. Resource IDs: (IDS_SETTINGS_RECURSIVE_TT)
 msgid ""
@@ -4162,7 +4110,7 @@ msgstr ""
 
 #. Resource IDs: (IDS_DETECT_MOVED_OR_COPIED_LINES_DISABLED)
 msgid "Disabled"
-msgstr ""
+msgstr "Заборонено"
 
 #. Resource IDs: (61869)
 #, c-format
@@ -4180,13 +4128,13 @@ msgstr "Відображати &кнопки у цій послідовност�
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 1910)
 msgid "Display branch revision number"
-msgstr ""
+msgstr "Відображати номер ревізії гілки"
 
 #. Resource IDs: (57609)
 msgid ""
 "Display full pages\n"
 "Print Preview"
-msgstr ""
+msgstr "Показувати повні сторінки\nу предпросмотрі друку"
 
 #. Resource IDs: (57669)
 msgid ""
@@ -4214,7 +4162,7 @@ msgstr "Відображати інформацію про програму, н�
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 1075)
 msgid "Display subject and body of commit messages"
-msgstr ""
+msgstr "Відображати опис та тіло повідомленнь фіксації"
 
 #. Resource IDs: (IDS_PROC_NOTSHOWAGAINCONTINUE)
 msgid "Do &not show me this warning again (if Continue is selected)"
@@ -4238,12 +4186,17 @@ msgstr "Не показувати контекстне меню для таки�
 
 #. Resource IDs: (Dialog IDD_CLEAN: Control id 1730)
 msgid "Do not use recycle bin"
-msgstr ""
+msgstr "Не використовувати корзину"
+
+#. Resource IDs: (IDS_PROC_DELETEALLSTASH)
+#, c-format
+msgid "Do you really want to delete ALL %d stash?"
+msgstr "Ви дійсно хочете видалити УСІ %d stash?"
 
 #. Resource IDs: (IDS_PROC_DELETEBRANCHTAG)
 #, c-format
-msgid "Do you really want to <ct=0x0000FF>delete</ct> <b>%s</b>?"
-msgstr ""
+msgid "Do you really want to delete \"%s\"?"
+msgstr "Ви дійсно хочете видалити \"%s\"?"
 
 #. Resource IDs: (16109)
 #, c-format
@@ -4255,7 +4208,7 @@ msgid ""
 "Do you really want to disable automatic update checks for TortoiseGit?\n"
 "\n"
 "Automatic update checks can be re-enabled in TortoiseGit settings on the General page."
-msgstr ""
+msgstr "Ви дійсно хочете заборонити автоматичне перевіряння обновлень TortoiseGit?\n\nАвтоматичне перевіряння обновлень може буте дозволено знов у налаштуваннях TortoiseGit на сторінці Загальне"
 
 #. Resource IDs: (IDS_PROC_MARK_ASSUMEVALID)
 msgid "Do you really want to mark the selected file(s) as assume-valid?"
@@ -4267,13 +4220,13 @@ msgstr ""
 
 #. Resource IDs: (IDS_PROC_FORCEMOVE)
 msgid "Do you really want to move this file or folder?"
-msgstr ""
+msgstr "Ви дійсно хочете перемістити ці файли або теки?"
 
 #. Resource IDs: (IDS_PROC_DELETENREFS)
 #, c-format
 msgid ""
-"Do you really want to permanently delete the %d selected refs? It can "
-"<ct=0x0000FF><b>NOT</b></ct> be recovered!"
+"Do you really want to permanently delete the %d selected refs? It can NOT be"
+" recovered!"
 msgstr ""
 
 #. Resource IDs: (IDS_WARN_DELETE_ONE_FROM_INDEX)
@@ -4284,7 +4237,7 @@ msgstr ""
 #. Resource IDs: (IDS_WARN_REMOVE)
 #, c-format
 msgid "Do you really want to remove \"%s\"?"
-msgstr ""
+msgstr "Ви дійсно хочете видалити \"%s\"?"
 
 #. Resource IDs: (IDS_WARN_DELETE_MANY_FROM_INDEX)
 #, c-format
@@ -4332,7 +4285,7 @@ msgstr ""
 
 #. Resource IDs: (IDS_WARNMODIFIEDOUTSIDE_TASK2)
 msgid "Do you want to load the changed files?"
-msgstr ""
+msgstr "Завантажити змінені файли?"
 
 #. Resource IDs: (IDS_MARKASRESOLVED)
 #, c-format
@@ -4393,23 +4346,23 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSEXTMENU: Control id 65535)
 msgid "Don't show the selected items: (press shift key to show them)"
-msgstr ""
+msgstr "Не показувати обрані пункти: (нажміть клавішу shift щоб показати)"
 
 #. Resource IDs: (IDS_MSGBOX_DONOTSHOW)
 msgid "Don't show this message again"
-msgstr ""
+msgstr "Не показувати це повідомлення знову"
 
 #. Resource IDs: (IDS_DONE)
 msgid "Done"
-msgstr ""
+msgstr "Виконано"
 
 #. Resource IDs: (Dialog IDD_REBASE: Control id 1385)
 msgid "Down"
-msgstr ""
+msgstr "Униз"
 
 #. Resource IDs: (Dialog IDD_CHECKFORUPDATES: Control id 1698)
 msgid "Download"
-msgstr ""
+msgstr "Завантажити"
 
 #. Resource IDs: (16028)
 msgid "Drag to make this menu float"
@@ -4421,7 +4374,7 @@ msgstr "Малювати"
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 1073)
 msgid "Draw tag/branch labels on right side"
-msgstr ""
+msgstr "Малювати імена тегів/гілок з правої сторони"
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 1079)
 msgid "Drive Types"
@@ -4462,7 +4415,7 @@ msgstr "&Експорт..."
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSDIFF: Control id 1097)
 msgid "E&xternal"
-msgstr ""
+msgstr "Зовнішний"
 
 #. Resource IDs: (Dialog IDD_ENCODING: Control id 303)
 msgid "EOL"
@@ -4483,15 +4436,15 @@ msgstr "Редагувати"
 
 #. Resource IDs: (IDS_PROC_EDITGLOBALGITCONFIG)
 msgid "Edit &global .gitconfig"
-msgstr ""
+msgstr "Редаг. &глоб. .gitconfig"
 
 #. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 1383)
 msgid "Edit &local .git/config"
-msgstr ""
+msgstr "Редаг. &лок. .git/config"
 
 #. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 1755)
 msgid "Edit .tgitconfig"
-msgstr ""
+msgstr "Редагувати .tgitconfig"
 
 #. Resource IDs: (16133)
 msgid "Edit Button Image"
@@ -4507,7 +4460,7 @@ msgstr "Редагувати автора"
 
 #. Resource IDs: (IDS_PROC_BROWSEREFS_EDITDESCRIPTION)
 msgid "Edit description"
-msgstr ""
+msgstr "Редагувати опис"
 
 #. Resource IDs: (IDS_DLGTITLE_EDIT_DIFF_TOOL)
 msgid "Edit extension specific diff program"
@@ -4519,7 +4472,7 @@ msgstr "Редагувати характерну для розширення п
 
 #. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 1382)
 msgid "Edit gl&obal .gitconfig"
-msgstr ""
+msgstr "Редаг. гл&обал. .gitconfig"
 
 #. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 1718)
 msgid "Edit global &XDG git/config"
@@ -4527,7 +4480,7 @@ msgstr ""
 
 #. Resource IDs: (IDS_PROC_GITCONFIG_EDITLOCALGONCFIG)
 msgid "Edit local git config"
-msgstr ""
+msgstr "Редаг. локальний git config"
 
 #. Resource IDs: (IDS_LOG_POPUP_EDITLOG)
 msgid "Edit log message"
@@ -4535,7 +4488,7 @@ msgstr "Редагувати повідомлення логу"
 
 #. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 1384)
 msgid "Edit s&ystemwide gitconfig"
-msgstr ""
+msgstr "Редаг. с&истем.  gitconfig"
 
 #. Resource IDs: (Dialog IDD_SETTINGSBUGTRAQ: Control id 1382, Dialog
 #. IDD_SETTINGSHOOKS: Control id 1331)
@@ -4546,7 +4499,7 @@ msgstr "Редагувати..."
 #. IDD_SETTINGSBUGTRAQ_CONFIG: Control id 1770, Dialog IDD_SETTINGSDIALOGS3:
 #. Control id 1770)
 msgid "Effective"
-msgstr ""
+msgstr "Поточні"
 
 #. Resource IDs: (IDS_SETTINGS_PROXYSERVER_TT)
 msgid "Either the name or IP of the proxy server"
@@ -4560,7 +4513,7 @@ msgstr "Знаряддя еліпса\nЕліпс"
 
 #. Resource IDs: (IDS_LOG_EMAIL)
 msgid "Email"
-msgstr ""
+msgstr "Email"
 
 #. Resource IDs: (IDS_ERR_ADDRESS_NO_EMPTY)
 msgid "Email Address To and CC can't empty at the same time."
@@ -4584,28 +4537,28 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 1766)
 msgid "Enable Gravatar"
-msgstr ""
+msgstr "Дозволити Gravatar "
 
 #. Resource IDs: (Dialog IDD_SETTINGSLOOKANDFEEL: Control id 1788)
 msgid "Enable drag context menu"
-msgstr ""
+msgstr "Дозв. перетяг. контекст. меню"
 
 #. Resource IDs: (IDS_SETTINGS_ENABLELOGCACHE_TT)
 msgid ""
 "Enable loading/saving log cache files (tortoisegit.data, tortoisegit.index)"
-msgstr ""
+msgstr "Дозволяе загружати/зберыгати файли кешу логу (tortoisegit.data, tortoisegit.index)"
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 1744)
 msgid "Enable log cache"
-msgstr ""
+msgstr "Дозволити кещувати лог"
 
 #. Resource IDs: (IDS_SETTINGS_ENABLEGRAVATAR_TT)
 msgid "Enable showing Gravatar image in Log Dialog"
-msgstr ""
+msgstr "Дозволити показувати картинки Gravatar  у діалозі логу"
 
 #. Resource IDs: (ID_VIEW_ENABLELEXER - Menu)
 msgid "Enable syntax highlighting"
-msgstr ""
+msgstr "Включити підсвітлювання синтаксису"
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAYHANDLERS: Control id 65535)
 msgid "Enabled Overlay Handlers"
@@ -4662,11 +4615,11 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_REQUESTPULL: Control id 1617)
 msgid "End"
-msgstr ""
+msgstr "Кінець"
 
 #. Resource IDs: (IDS_VIEWCONTEXTMENU_EOL)
 msgid "End of Line Style"
-msgstr ""
+msgstr "Стиль кінця строки"
 
 #. Resource IDs: (61187)
 msgid "Enlarge the window to full size"
@@ -4678,7 +4631,7 @@ msgstr "Введіть повідомлення для логу"
 
 #. Resource IDs: (IDS_PROC_ENTERURL)
 msgid "Enter URL"
-msgstr ""
+msgstr "Введіть URL"
 
 #. Resource IDs: (61722)
 msgid "Enter a GUID."
@@ -4770,14 +4723,14 @@ msgstr "Помилка перебудови кеша піктограм обол
 #. Resource IDs: (IDS_ERR_SSL_VALIDATE)
 #, c-format
 msgid "Error validating server certificate for \"%s\":"
-msgstr ""
+msgstr "Помилка перевірки сертіфікату сервера %s\":"
 
 #. Resource IDs: (IDS_REG_ERROR)
 #, c-format
 msgid ""
 "Error while reading/writing the registry key %s\n"
 "%s"
-msgstr ""
+msgstr "Помилка читання/запису ключа реестру %s\n%s"
 
 #. Resource IDs: (IDS_PROC_EVERYTHINGUPDATED)
 msgid "Everything updated."
@@ -4843,7 +4796,7 @@ msgstr "Експортувати також неверсійні файли"
 #. Resource IDs: (IDS_SVNPROGRESS_EXPORTING)
 #, c-format
 msgid "Exporting %s"
-msgstr ""
+msgstr "Експортування %s"
 
 #. Resource IDs: (IDS_PROC_EXPORT_3)
 msgid "Exporting..."
@@ -4851,7 +4804,7 @@ msgstr "Експортування..."
 
 #. Resource IDs: (IDS_MENUDESCEXPORT)
 msgid "Exports a revision to a zip file"
-msgstr ""
+msgstr "Єкспортувати ревізію до zip-файлу"
 
 #. Resource IDs: (IDS_FILEDIFF_EXT, IDS_PROGS_EXTCOL, IDS_STATUSLIST_COLEXT)
 msgid "Extension"
@@ -4863,11 +4816,11 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_TOOLASSOC: Control id 65535)
 msgid "Extension:"
-msgstr ""
+msgstr "Розширення:"
 
 #. Resource IDs: (Dialog IDD_SETTINGSMAIN: Control id 65535)
 msgid "Extern DLL Path:"
-msgstr ""
+msgstr "Шлях до DLL"
 
 #. Resource IDs: (IDS_SVNACTION_EXTERNAL)
 msgid "External"
@@ -4965,7 +4918,7 @@ msgstr ""
 msgid ""
 "Failed to start the issue tracker COM provider '%s'.\n"
 "%s"
-msgstr ""
+msgstr "Не вдалося запустити COM постачальника  issue tracker  '%s'.\n%s"
 
 #. Resource IDs: (IDS_ERR_PAEGENTTIMEOUT)
 msgid "Failed waiting for pageant to finish loading key."
@@ -4999,6 +4952,10 @@ msgstr ""
 
 #. Resource IDs: (IDS_PROC_SYNC_FETCHREBASE)
 msgid "Fetch && Re&base"
+msgstr ""
+
+#. Resource IDs: (IDS_PROC_SYNC_FETCHALL)
+msgid "Fetch all refs"
 msgstr ""
 
 #. Resource IDs: (IDS_MENUDESCFETCH)
@@ -5043,7 +5000,7 @@ msgstr "Кодування файлу"
 #. Resource IDs: (IDS_STATGRAPH_FILECHANGESBYUNIT)
 #, c-format
 msgid "File changes each %s"
-msgstr ""
+msgstr "Файл змінюються кожні %s"
 
 #. Resource IDs: (Dialog IDD_STATGRAPH: Control id 1138)
 msgid "File changes each week:"
@@ -5055,7 +5012,7 @@ msgstr "Відмінності файлів"
 
 #. Resource IDs: (IDS_MARKASRESOLVED_TASK2)
 msgid "File has no conflicts"
-msgstr ""
+msgstr "Файл немае конфліктів"
 
 #. Resource IDs: (IDS_DELETEWHENEMPTY_TASK2)
 msgid "File is empty."
@@ -5157,11 +5114,11 @@ msgstr "Фільтрувати шляхи"
 
 #. Resource IDs: (Dialog IDD_DIALOG_BROWSE_REFS: Control id 1479)
 msgid "Filter:"
-msgstr ""
+msgstr "Фільтр:"
 
 #. Resource IDs: (Dialog IDD_FIND: Control id 20090)
 msgid "Filter: "
-msgstr ""
+msgstr "Фільтр:"
 
 #. Resource IDs: (Dialog IDD_FIND: Control id 139, Dialog IDD_FIND: Control id
 #. 20100, ID_EDIT_FIND - Menu, ID_EDIT_FIND - Ribbon name)
@@ -5176,12 +5133,12 @@ msgstr "Знайти вказаний текст\nЗнайти"
 
 #. Resource IDs: (Dialog IDD_FINDBAR: Control id 65535)
 msgid "Find:"
-msgstr ""
+msgstr "Знайти:"
 
 #. Resource IDs: (IDS_FIND_NOTFOUND)
 #, c-format
 msgid "Find: Can't find the text \"%s\""
-msgstr ""
+msgstr "Пошук: Не можу знайти текст \"%s\""
 
 #. Resource IDs: (IDS_FIND_TOPREACHED)
 msgid ""
@@ -5194,7 +5151,7 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_CERTCHECK: Control id 65535)
 msgid "Fingerprints"
-msgstr ""
+msgstr "Відбиток пальців"
 
 #. Resource IDs: (IDS_FINISHBUTTON)
 msgid "Finish"
@@ -5230,7 +5187,7 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 1315)
 msgid "Floppy drives (A: B:)"
-msgstr ""
+msgstr "Приводи Дискет (A: B:)"
 
 #. Resource IDs: (16016)
 msgid "Folder"
@@ -5253,7 +5210,7 @@ msgstr "Щоб отримати Довідку, натисніть F1. Гори�
 msgid "For complete history deselect 'Stop on copy/rename'"
 msgstr "Для повної історії зніміть виділення зі 'Спинитися при копіюванні/перейменуванні'"
 
-#. Resource IDs: (IDS_PULL_SETTRACKEDBRANCH)
+#. Resource IDs: (IDS_NOTYET_SETTRACKEDBRANCH)
 #, c-format
 msgid ""
 "For the current branch \"%s\" no tracked branch is configured.\n"
@@ -5328,29 +5285,29 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_CLONE: Control id 1604)
 msgid "From &SVN Repository"
-msgstr ""
+msgstr "Зі сховища &SVN"
 
 #. Resource IDs: (ID_VIEW_DETECT_MOVED_OR_COPIED_LINES_FROM_EXISTING_FILES -
 #. Menu)
 msgid "From &existing files"
-msgstr ""
+msgstr "З &існуючого файлу"
 
 #. Resource IDs: (ID_VIEW_DETECT_MOVED_OR_COPIED_LINES_FROM_MODIFIED_FILES -
 #. Menu)
 msgid "From &modified files"
-msgstr ""
+msgstr "Зі &зміненного файлу"
 
 #. Resource IDs: (Dialog IDD_CLONE: Control id 1603)
 msgid "From SVN Repository"
-msgstr ""
+msgstr "Зі сховища SVN"
 
 #. Resource IDs: (IDS_DETECT_MOVED_OR_COPIED_LINES_FROM_EXISTING_FILES)
 msgid "From existing files"
-msgstr ""
+msgstr "З існуючого файлу"
 
 #. Resource IDs: (IDS_DETECT_MOVED_OR_COPIED_LINES_FROM_MODIFIED_FILES)
 msgid "From modified files"
-msgstr ""
+msgstr "Зі зміненного файлу"
 
 #. Resource IDs: (Dialog IDD_FORMAT_PATCH: Control id 65535, Dialog
 #. IDD_LOGMESSAGE: Control id 1200, Dialog IDD_REVGRAPHFILTER: Control id
@@ -5364,7 +5321,7 @@ msgstr "На повний екран"
 
 #. Resource IDs: (Dialog IDD_FIND: Control id 20086)
 msgid "Full text search"
-msgstr ""
+msgstr "Повно текстовий пошук"
 
 #. Resource IDs: (IDS_git_DEPTH_INFINITE)
 msgid "Fully recursive"
@@ -5372,15 +5329,15 @@ msgstr "Цілком рекурсивно"
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS2: Control id 65535)
 msgid "Further options for the commit dialog are on Dialogs 3 page."
-msgstr ""
+msgstr "Наступні опції діалогу фіксації на сторінці Діалоги 3"
 
 #. Resource IDs: (IDS_VIEW_SHOWGRAVATAR)
 msgid "G&ravatar"
-msgstr ""
+msgstr "G&ravatar"
 
 #. Resource IDs: (5061 - Menu)
 msgid "GB2312 (Simplified)"
-msgstr ""
+msgstr "GB2312 (Спрощена)"
 
 #. Resource IDs: (IDS_REVGRAPH_ERR_GDIINIT)
 msgid "GDI+ couldn't be initialized!"
@@ -5401,7 +5358,7 @@ msgstr "Збирається інформація. Зачекайте..."
 
 #. Resource IDs: (IDS_PROGS_TITLE_GATHERSTATISTICS)
 msgid "Gathering statistics"
-msgstr ""
+msgstr "Збір статистики"
 
 #. Resource IDs: (Dialog IDD_SETMAINPAGE: Control id 107, Dialog
 #. IDD_SETTINGSMAIN: Control id 143)
@@ -5410,19 +5367,19 @@ msgstr "Загальне"
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSALTERNATIVEEDITOR: Control id 333)
 msgid "General::Alternative editor"
-msgstr ""
+msgstr "Загальне::Альтернативний редактор"
 
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_1: Control id 315)
 msgid "General::Colors 1"
-msgstr ""
+msgstr "Загальне::Кольори 1"
 
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_2: Control id 212)
 msgid "General::Colors 2"
-msgstr ""
+msgstr "Загальне::Кольори 2"
 
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_3: Control id 316)
 msgid "General::Colors 3"
-msgstr ""
+msgstr "Загальне::Кольори 3"
 
 #. Resource IDs: (Dialog IDD_SETTINGSLOOKANDFEEL: Control id 195)
 msgid "General::Context Menu"
@@ -5438,11 +5395,11 @@ msgstr "Загальне::Діалоги 2"
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS3: Control id 4593)
 msgid "General::Dialogs 3"
-msgstr ""
+msgstr "Загальне::Діалоги 3"
 
 #. Resource IDs: (Dialog IDD_SETTINGSEXTMENU: Control id 4573)
 msgid "General::Set Extend Menu Item"
-msgstr ""
+msgstr "Загальне::Установки додаткових пунктів меню"
 
 #. Resource IDs: (IDS_LOG_POPUP_GETMERGELOGS)
 msgid "Get merge logs"
@@ -5451,12 +5408,12 @@ msgstr "Отримати логи злиття"
 #. Resource IDs: (IDS_PROGRESSGETFILE)
 #, c-format
 msgid "Getting file %s"
-msgstr ""
+msgstr "Отриммання файлу %s"
 
 #. Resource IDs: (IDS_PROGRESSGETFILEREVISION)
 #, c-format
 msgid "Getting file %s, revision %s"
-msgstr ""
+msgstr "Отриммання файлу %s, ревізія %s"
 
 #. Resource IDs: (IDS_PROGRESS_INFO)
 msgid "Getting information..."
@@ -5504,7 +5461,7 @@ msgstr ""
 
 #. Resource IDs: (IDS_MSYSGIT_PATH_TT)
 msgid "Git Install Path"
-msgstr ""
+msgstr "Шлях де встановлен Git "
 
 #. Resource IDs: (IDS_GIT_LOG_TAB)
 msgid "Git Log"
@@ -5540,19 +5497,19 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_CLONE: Control id 297)
 msgid "Git clone - TortoiseGit"
-msgstr ""
+msgstr "Git клонування - TortoiseGit"
 
 #. Resource IDs: (IDS_PROC_GITCONFIG_NOMSYSGIT)
 msgid "Git directory not set (see \"General\" settings page)."
-msgstr ""
+msgstr "Тека Git не встановлена (дивись сторінку налаштування \"Загальне\""
 
 #. Resource IDs: (Dialog IDD_SETTINGSMAIN: Control id 65535)
 msgid "Git for Windows"
-msgstr "Git for Windows"
+msgstr "Git для Windows"
 
 #. Resource IDs: (IDS_PROC_NOMSYSGIT)
 msgid "Git for Windows (https://git-for-windows.github.io/) not found."
-msgstr ""
+msgstr "Git для Windows (https://git-for-windows.github.io/) не знайдений."
 
 #. Resource IDs: (IDS_PROC_REPOCREATEERR)
 msgid "Git reported an error while creating a repository!\n"
@@ -5573,25 +5530,25 @@ msgid ""
 "The \"Effective\" tab shows you the effective values for the current scope (read-only).\n"
 "Select any level to see the values stored there.\n"
 "In order to change settings select a level, enter the values and select where to store to."
-msgstr ""
+msgstr "Git використовуе концепцію ієрархічної конфігурації.\nТ.е. декілька рівнів, налаштування у більш високих уровнях перекривають значення у низьких уровнях.\nВкладка \"Поточні\" відображае поточні значення для вибранного об'ему (тільки читання).\nВиберіть будьякий рівень щоб побачити значення збереженні на ньому.\nЩоб змінити налаштування, виберіть рівень, введіть значення, та виберіть де його зберігти."
 
 #. Resource IDs: (Dialog IDD_SETTINGSMAIN: Control id 65535)
 msgid "Git.exe Path:"
-msgstr ""
+msgstr "Шлях до Git.exe:"
 
 #. Resource IDs: (Dialog IDD_SETTINGSCREDENTIAL: Control id 4591)
 msgid "Git::Credential"
-msgstr ""
+msgstr "Git::Рекомендації"
 
 #. Resource IDs: (Dialog IDD_SETTINREMOTE: Control id 4570)
 msgid "Git::Remote"
-msgstr ""
+msgstr "Git::Віддалений"
 
 #. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 1773, Dialog
 #. IDD_SETTINGSBUGTRAQ_CONFIG: Control id 1773, Dialog IDD_SETTINGSDIALOGS3:
 #. Control id 1773, IDS_CONFIG_GLOBAL, IDS_SETTINGS_GLOBAL)
 msgid "Global"
-msgstr ""
+msgstr "Глобальний"
 
 #. Resource IDs: (Dialog IDD_GOTO: Control id 155)
 msgid "Go To Line"
@@ -5733,7 +5690,7 @@ msgstr "Шістнадцятковий"
 
 #. Resource IDs: (Dialog IDD_SETTINGSLOOKANDFEEL: Control id 1660)
 msgid "Hide Menus for unversioned paths"
-msgstr ""
+msgstr "Скривати меню для неверсіованних шляхів"
 
 #. Resource IDs: (IDS_PROC_COMMIT_HIDEPATCH)
 msgid "Hide Patch<<"
@@ -5769,7 +5726,7 @@ msgstr "Сховати/Показати список файлів-латок\nХ
 
 #. Resource IDs: (IDS_HINT)
 msgid "Hint"
-msgstr ""
+msgstr "Підказка"
 
 #. Resource IDs: (16519)
 msgid ""
@@ -5783,15 +5740,15 @@ msgstr "Початок"
 
 #. Resource IDs: (Dialog IDD_SETTINGSHOOKS: Control id 103)
 msgid "Hook Scripts"
-msgstr "Скрипти зачіпки"
+msgstr "Скрипти зачіпок"
 
 #. Resource IDs: (Dialog IDD_SETTINGSBUGTRAQ_CONFIG: Control id 4571)
 msgid "Hook Scripts::Issue Tracker Config"
-msgstr ""
+msgstr "Скрипти зачіпок::Налаштування обліку проблем (Issue Tracker)"
 
 #. Resource IDs: (Dialog IDD_SETTINGSBUGTRAQ: Control id 283)
 msgid "Hook Scripts::Issue Tracker Integration"
-msgstr "Скрипти зачіпок::Інтеграція проблемобліку"
+msgstr "Скрипти зачіпок::Інтеграція обліку проблем (Issue Tracker)"
 
 #. Resource IDs: (IDS_SETTINGS_HOOKS_TYPECOL)
 msgid "Hook Type"
@@ -5815,11 +5772,11 @@ msgstr "ID"
 
 #. Accelerator Entry for Menu ID:220; '&Go to\tCtrl+G'
 msgid "ID:220:V C +G"
-msgstr ""
+msgstr "ID:220:V C +G"
 
 #. Accelerator Entry for Menu ID:32771; '&Exit\tCtrl+W'
 msgid "ID:32771:V C +W"
-msgstr ""
+msgstr "ID:32771:V C +W"
 
 #. Accelerator Entry for Menu ID:32772; '&Overlay images\tO'
 msgid "ID:32772:V   +O"
@@ -5831,11 +5788,11 @@ msgstr "ID:32773:V C +O"
 
 #. Accelerator Entry for Menu ID:32773; 'Save &as...\tCtrl+Shift+S'
 msgid "ID:32773:V CS+S"
-msgstr ""
+msgstr "ID:32773:V CS+S"
 
 #. Accelerator Entry for Menu ID:32774; '&Open...\tCtrl+O'
 msgid "ID:32774:V C +O"
-msgstr ""
+msgstr "ID:32774:V C +O"
 
 #. Accelerator Entry for Menu ID:32774; 'Show Whitespaces'
 msgid "ID:32774:V C +T"
@@ -5848,7 +5805,7 @@ msgstr "ID:32775:V C +D"
 
 #. Accelerator Entry for Menu ID:32776; '&Save\tCtrl+S'
 msgid "ID:32776:V C +S"
-msgstr ""
+msgstr "ID:32776:V C +S"
 
 #. Accelerator Entry for Menu ID:32778; '&Fit images in window\tF'
 msgid "ID:32778:V   +F"
@@ -5860,20 +5817,20 @@ msgstr "ID:32779:V   +S"
 
 #. Accelerator Entry for Menu ID:32782; '&Print...\tCtrl+P'
 msgid "ID:32782:V C +P"
-msgstr ""
+msgstr "ID:32782:V C +P"
 
 #. Accelerator Entry for Menu ID:32787; ''
 #. Accelerator Entry for Menu ID:32787; '&Find\tCtrl+F'
 msgid "ID:32787:V C +F"
-msgstr ""
+msgstr "ID:32787:V C +F"
 
 #. Accelerator Entry for Menu ID:32789; ''
 msgid "ID:32789:VA  +N"
-msgstr ""
+msgstr "ID:32789:VA  +N"
 
 #. Accelerator Entry for Menu ID:32790; ''
 msgid "ID:32790:VA  +P"
-msgstr ""
+msgstr "ID:32790:VA  +P"
 
 #. Accelerator Entry for Menu ID:32793; 'Arrange &vertical\tV'
 msgid "ID:32793:V C +V"
@@ -5897,7 +5854,7 @@ msgstr "ID:32818:V   +H"
 
 #. Accelerator Entry for Menu ID:32822; ''
 msgid "ID:32822:V C +F"
-msgstr ""
+msgstr "ID:32822:V C +F"
 
 #. Accelerator Entry for Menu ID:32825; ''
 msgid "ID:32825:V C +L"
@@ -5909,11 +5866,11 @@ msgstr "ID:32825:VA  +D"
 
 #. Accelerator Entry for Menu ID:32837; ''
 msgid "ID:32837:VA  +M"
-msgstr ""
+msgstr "ID:32837:VA  +M"
 
 #. Accelerator Entry for Menu ID:32857; ''
 msgid "ID:32857:VA  +F"
-msgstr ""
+msgstr "ID:32857:VA  +F"
 
 #. Accelerator Entry for Menu ID:32870; 'Collapse'
 msgid "ID:32870:V C +L"
@@ -5921,7 +5878,7 @@ msgstr "ID:32809:V C +F"
 
 #. Accelerator Entry for Menu ID:32873; ''
 msgid "ID:32873:V C +E"
-msgstr ""
+msgstr "ID:32873:V C +E"
 
 #. Accelerator Entry for Menu ID:32881; 'Wrap long lines'
 msgid "ID:32881:V C +P"
@@ -6056,7 +6013,7 @@ msgstr "Перекривання піктограм::Набір піктогра
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAYHANDLERS: Control id 338)
 msgid "Icon Overlays::Overlay Handlers"
-msgstr ""
+msgstr "Перекривання піктограм::Overlay Handlers"
 
 #. Resource IDs: (IDS_ICONFILEFILTER)
 msgid ""
@@ -6070,7 +6027,7 @@ msgstr "Піктограми/Дизайн/Код:\t\tLuebbe Onken"
 
 #. Resource IDs: (IDS_SUBMODULEDIFF_IDENTICAL)
 msgid "Identical"
-msgstr ""
+msgstr "Ідентичні"
 
 #. Resource IDs: (IDS_SETTINGS_ONLYEXPLORER_TT)
 msgid ""
@@ -6099,13 +6056,13 @@ msgstr ""
 #. Resource IDs: (IDS_SETTINGS_CHECKNEWER_TT)
 msgid ""
 "If enabled, TortoiseGit checks once a week if a newer version is available"
-msgstr ""
+msgstr "Якщо встановлено, TortoiseGit  перевіряе один раз на тиждень наявність нових версій"
 
 #. Resource IDs: (IDS_SETTINGS_SHOWEXCLUDEDASNORMAL_TT)
 msgid ""
 "If enabled, working tree folders which are excluded from\n"
 "showing overlays still show the overlay for status 'normal'"
-msgstr ""
+msgstr "Якщо встановлено, виключені теки у робочому деріві \nпродовжують відображаютися іконкой зі статусом 'звичайний' "
 
 #. Resource IDs: (IDS_SETTINGS_UNVERSIONEDRECURSE_TT)
 msgid ""
@@ -6124,7 +6081,7 @@ msgid ""
 "If you plan to work inside this folder, leave this unchecked. Typically a "
 "bare repo can only have changes 'pushed' to it. (By convention, a bare repo "
 "folder should have a name that ends with '.git')"
-msgstr ""
+msgstr "Якщо ви плануете працювати у цій теці, повинно бути порожнім. Зазвичай очищенне сховище може мати тільки зміни які в ньго відправлені.(За угодою, тека очищеного сховища мае закінчуватися '.git')  "
 
 #. Resource IDs: (Dialog IDD_IGNORE: Control id 4577)
 msgid "Ignore"
@@ -6138,19 +6095,19 @@ msgstr "Ігнорувати %d елементів за роз&ширенням"
 #. Resource IDs: (ID_VIEW_IGNORECOMMENTS - Menu, ID_VIEW_IGNORECOMMENTS -
 #. Ribbon name)
 msgid "Ignore Comments"
-msgstr ""
+msgstr "Ігнорувати кометарі"
 
 #. Resource IDs: (Dialog IDD_IGNORE: Control id 1692)
 msgid "Ignore File"
-msgstr ""
+msgstr "Ігнорувати файл"
 
 #. Resource IDs: (Dialog IDD_IGNORE: Control id 1686)
 msgid "Ignore Type"
-msgstr ""
+msgstr "Ігнорувати Тип"
 
 #. Resource IDs: (IDS_DIFFOPTION_IGNOREALLSPACE)
 msgid "Ignore all space"
-msgstr ""
+msgstr "Ігнорувати усі пробіли"
 
 #. Resource IDs: (ID_VIEW_IGNOREALLWHITESPACECHANGES - Menu,
 #. ID_VIEW_IGNOREALLWHITESPACECHANGES - Ribbon name)
@@ -6159,7 +6116,7 @@ msgstr "Ігнорувати всі зміни пробілів"
 
 #. Resource IDs: (IDS_DIFFOPTION_IGNORBLANKLINES)
 msgid "Ignore blank lines"
-msgstr ""
+msgstr "Ігнорувати пусті строки"
 
 #. Resource IDs: (Dialog IDD_SETMAINPAGE: Control id 1067)
 msgid "Ignore case cha&nges"
@@ -6183,22 +6140,26 @@ msgstr ""
 msgid "Ignore line &endings (recommended)"
 msgstr "Ігнорувати &кінцівки рядків (рекомендовано)"
 
+#. Resource IDs: (IDS_MENUIGNOREMULTIPLEMASK2)
+msgid "Ignore multiple items by &extension"
+msgstr ""
+
 #. Resource IDs: (IDS_DIFFOPTION_IGNORESPACEATEOL)
 msgid "Ignore space at EOL"
-msgstr ""
+msgstr "Ігнорувати пробіли у кінці строки"
 
 #. Resource IDs: (IDS_DIFFOPTION_IGNORESPACECHANGE)
 msgid "Ignore space change"
-msgstr ""
+msgstr "Ігнорувати різницю у пробілах"
 
 #. Resource IDs: (Dialog IDD_SETTINGSTBLAME: Control id 1676)
 msgid "Ignore whitespace"
-msgstr ""
+msgstr "Ігнорувати не печатні символи"
 
 #. Resource IDs: (ID_VIEW_IGNOREWHITESPACECHANGES - Menu,
 #. ID_VIEW_IGNOREWHITESPACECHANGES - Ribbon name)
 msgid "Ignore whitespace changes"
-msgstr "Ігнорувати зміни пробілів"
+msgstr "Ігнорувати зміни не печатних символів"
 
 #. Resource IDs: (32786)
 msgid "Ignore whitespace when comparing the parents version and the child's "
@@ -6207,11 +6168,11 @@ msgstr ""
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAYHANDLERS: Control id 1432,
 #. IDS_PATHACTIONS_IGNORED)
 msgid "Ignored"
-msgstr ""
+msgstr "Проігноровано"
 
 #. Resource IDs: (IDS_STATUSLIST_GROUP_IGNOREDFILES)
 msgid "Ignored Files"
-msgstr ""
+msgstr "Проігноровані файли"
 
 #. Resource IDs: (32873)
 msgid ""
@@ -6248,7 +6209,7 @@ msgstr "Імпорт"
 #. Resource IDs: (IDS_PROGRS_CMD_IMPORT)
 #, c-format
 msgid "Import %s to %s%s"
-msgstr ""
+msgstr "Імпорт %s у %s%s"
 
 #. Resource IDs: (Dialog IDD_SVNIGNORE: Control id 329,
 #. IDS_MENUSVNIGNORE_DESC)
@@ -6267,7 +6228,7 @@ msgstr ""
 #. Resource IDs: (IDS_PROGRESSIMPORT)
 #, c-format
 msgid "Importing file %s"
-msgstr ""
+msgstr "Імпортувати %s"
 
 #. Resource IDs: (IDS_PROC_SYNC_INCHANGELIST)
 msgid "In ChangeList"
@@ -6283,15 +6244,15 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_PUSH: Control id 1499)
 msgid "Include &Tags"
-msgstr ""
+msgstr "Включити &Тег"
 
 #. Resource IDs: (Dialog IDD_ADD: Control id 1068)
 msgid "Include &ignored files"
-msgstr ""
+msgstr "Включити ігноровані файли"
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS2: Control id 1797)
 msgid "Include FETCH_HEAD in branch selection boxes"
-msgstr ""
+msgstr "Додавати  FETCH_HEAD до вибору гілки"
 
 #. Resource IDs: (Dialog IDD_REVGRAPHFILTER: Control id 65535)
 msgid "Include only the following revision range:"
@@ -6303,12 +6264,12 @@ msgstr "Невірне ім'я файла"
 
 #. Resource IDs: (IDS_IMPORT_DEFAULTMSG)
 msgid "Initial import"
-msgstr ""
+msgstr "Початковий імпорт"
 
 #. Resource IDs: (IDS_PROC_REPOCREATED)
 #, c-format
 msgid "Initialized empty Git repository in %s."
-msgstr ""
+msgstr "Створено порожне хранилище Git у %s."
 
 #. Resource IDs: (ID_VIEW_INLINEDIFF - Menu, ID_VIEW_INLINEDIFF - Ribbon name)
 msgid "Inline diff"
@@ -6347,10 +6308,15 @@ msgstr "Неправильна грошова одиниця."
 
 #. Resource IDs: (IDS_ERR_INVALIDREV)
 msgid "Invalid revision number!"
-msgstr ""
+msgstr "Невірний номер ревізії!"
 
 #. Resource IDs: (Dialog IDD_CERTCHECK: Control id 65535)
 msgid "Issuer:"
+msgstr ""
+
+#. Resource IDs: (IDS_PROC_BROWSEREFS_WARNINGNOMERGECHECK)
+msgid ""
+"It has not been checked if these branches have been fully merged into HEAD."
 msgstr ""
 
 #. Resource IDs: (IDS_PROC_CASERENAME)
@@ -6366,7 +6332,7 @@ msgstr "Пере&йти до першого конфлікту під час з�
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "Japanese"
-msgstr ""
+msgstr "Японьска"
 
 #. Resource IDs: (5068 - Menu)
 msgid "KOI8-R"
@@ -6408,39 +6374,39 @@ msgstr "Клавіші"
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "Korean"
-msgstr ""
+msgstr "Корейска"
 
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_3: Control id 65535)
 msgid "LINE1"
-msgstr ""
+msgstr "СТРОКА1"
 
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_3: Control id 65535)
 msgid "LINE2"
-msgstr ""
+msgstr "СТРОКА2"
 
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_3: Control id 65535)
 msgid "LINE3"
-msgstr ""
+msgstr "СТРОКА3"
 
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_3: Control id 65535)
 msgid "LINE4"
-msgstr ""
+msgstr "СТРОКА4"
 
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_3: Control id 65535)
 msgid "LINE5"
-msgstr ""
+msgstr "СТРОКА5"
 
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_3: Control id 65535)
 msgid "LINE6"
-msgstr ""
+msgstr "СТРОКА6"
 
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_3: Control id 65535)
 msgid "LINE7"
-msgstr ""
+msgstr "СТРОКА7"
 
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_3: Control id 65535)
 msgid "LINE8"
-msgstr ""
+msgstr "СТРОКА8"
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS3: Control id 65535)
 msgid "Language:"
@@ -6449,22 +6415,22 @@ msgstr "&Мова:"
 #. Resource IDs: (IDS_LAST_N_COMMITS)
 #, c-format
 msgid "Last %s commit(s)"
-msgstr ""
+msgstr "Останні %s фіксувань "
 
 #. Resource IDs: (IDS_LAST_N_MONTHS)
 #, c-format
 msgid "Last %s month(s)"
-msgstr ""
+msgstr "Останні %s місяців "
 
 #. Resource IDs: (IDS_LAST_N_WEEKS)
 #, c-format
 msgid "Last %s week(s)"
-msgstr ""
+msgstr "Останні %s тижнів "
 
 #. Resource IDs: (IDS_LAST_N_YEARS)
 #, c-format
 msgid "Last %s year(s)"
-msgstr ""
+msgstr "Останні %s років"
 
 #. Resource IDs: (IDS_LASTAUTHOR)
 msgid "Last Author"
@@ -6476,11 +6442,11 @@ msgstr "Остання фіксація"
 
 #. Resource IDs: (IDS_STATUSLIST_COLLASTMODIFIED)
 msgid "Last Modified"
-msgstr ""
+msgstr "Остання модіфікація"
 
 #. Resource IDs: (Dialog IDD_PROPPAGE: Control id 11030)
 msgid "Last Modified:"
-msgstr ""
+msgstr "Остання модіфікація:"
 
 #. Resource IDs: (Dialog IDD_BISECTSTART: Control id 1616)
 msgid "Last known &good:"
@@ -6488,11 +6454,11 @@ msgstr ""
 
 #. Resource IDs: (IDS_LAST_SEL_DATE)
 msgid "Last selected date"
-msgstr ""
+msgstr "Остання обрана дата"
 
 #. Resource IDs: (IDS_MENUDESCCONFLICT)
 msgid "Launches the external diff/merge program to solve the conflicts"
-msgstr ""
+msgstr "Старт зовнішньої прогамми різниці/злиття щоб розрішити конфлікт"
 
 #. Resource IDs: (Dialog IDD_STATGRAPH: Control id 1137)
 msgid "Least active author:"
@@ -6538,16 +6504,16 @@ msgstr "Відмінності рядків"
 #. Resource IDs: (IDS_MOVED_FROM_TT)
 #, c-format
 msgid "Line moved from line %ld"
-msgstr ""
+msgstr "Рядок переміщен у рядок %ld"
 
 #. Resource IDs: (IDS_MOVED_TO_TT)
 #, c-format
 msgid "Line moved to line %ld"
-msgstr ""
+msgstr "Рядок переміщен у рядок %ld"
 
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_3: Control id 65535)
 msgid "Line width"
-msgstr ""
+msgstr "Ширина лінії"
 
 #. Resource IDs: (Dialog IDD_GOTODLG: Control id 65535)
 msgid "Line:"
@@ -6576,7 +6542,7 @@ msgstr "Список тем довідки\nТеми довідки"
 msgid ""
 "List a renamed file as \"long/path/{to => for}/file.txt\" instead of "
 "\"long/path/for/file.txt (from long/path/to/file.txt)\"."
-msgstr ""
+msgstr "Список перейменованних файлів як  \"довге/шлях/{з => у}/файл.txt\" (\"long/path/{to => for}/file.txt\") замість  \"довге/шлях/з/файл.txt (довге/шлях/у/файл.txt)\" (\"long/path/for/file.txt (from long/path/to/file.txt)\")."
 
 #. Resource IDs: (16631, 16992)
 msgid "List1"
@@ -6589,13 +6555,13 @@ msgstr "Завантажити зображення"
 #. Resource IDs: (Dialog IDD_CLONE: Control id 1505, Dialog IDD_SUBMODULE_ADD:
 #. Control id 1505)
 msgid "Load Putty &Key"
-msgstr ""
+msgstr "&Ключ Putty"
 
 #. Resource IDs: (IDS_WARNMODIFIEDOUTSIDE_TASK3)
 msgid ""
 "Load changes\n"
 "Changes made in TortoiseGitMerge are lost and replaced with the new content."
-msgstr ""
+msgstr "Загрузити зміни\nЗміни зроблені у TortoiseGitMerge  будуть втрачені і замінені новим контентом"
 
 #. Resource IDs: (IDS_WARNMODIFIEDOUTSIDE_TASK4)
 msgid ""
@@ -6605,13 +6571,13 @@ msgstr ""
 
 #. Resource IDs: (IDS_LOADING, IDS_PROC_LOADING)
 msgid "Loading..."
-msgstr ""
+msgstr "Завантаження..."
 
 #. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 1771, Dialog
 #. IDD_SETTINGSBUGTRAQ_CONFIG: Control id 1771, Dialog IDD_SETTINGSDIALOGS3:
 #. Control id 1771, IDS_CONFIG_LOCAL, IDS_SETTINGS_LOCAL)
 msgid "Local"
-msgstr ""
+msgstr "Локальний"
 
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_2: Control id 65535)
 msgid "Local Branch"
@@ -6629,13 +6595,13 @@ msgstr "Локальний стан"
 
 #. Resource IDs: (Dialog IDD_RESOLVE_CONFLICT: Control id 65535)
 msgid "Local:"
-msgstr ""
+msgstr "Локальний:"
 
 #. Resource IDs: (IDS_EXPORTFILE_TT)
 msgid ""
 "Location where the contents of the\n"
 "selected revision of the repository will be saved to."
-msgstr ""
+msgstr "Місцезнаходження куди буде збережені вибрані ревізії"
 
 #. Resource IDs: (ID_VIEW_LOCATORBAR - Menu, ID_VIEW_LOCATORBAR - Ribbon name)
 msgid "Locator Bar"
@@ -6643,7 +6609,7 @@ msgstr "Пошукова смуга"
 
 #. Resource IDs: (Dialog IDD_SETTINGSTBLAME: Control id 65535, IDS_LOG)
 msgid "Log"
-msgstr ""
+msgstr "Журнал"
 
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_3: Control id 65535)
 msgid "Log Branch Line"
@@ -6651,15 +6617,15 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_2: Control id 65535)
 msgid "Log Graphic"
-msgstr ""
+msgstr "Кольори логу"
 
 #. Resource IDs: (Dialog IDD_HISTORYDLG: Control id 211)
 msgid "Log History"
-msgstr "Логова історія"
+msgstr "Історія Журналу"
 
 #. Resource IDs: (Dialog IDD_LOGMESSAGE: Control id 130)
 msgid "Log Messages"
-msgstr "Логові повідомлення"
+msgstr "Повідомлення Журналу (Логу)"
 
 #. Resource IDs: (Dialog IDD_LOGORDERING: Control id 345)
 msgid "Log commit ordering"
@@ -6667,19 +6633,19 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 65535)
 msgid "Log messages"
-msgstr "Логові повідомлення"
+msgstr "Повідомлення Журналу"
 
 #. Resource IDs: (Dialog IDD_SETTINGSSAVEDDATA: Control id 1274)
 msgid "Log messages (Input dialog)"
-msgstr "Логові повідомлення (діалог вводу)"
+msgstr "Повідомлення журналу (діалог вводу)"
 
 #. Resource IDs: (Dialog IDD_SETTINGSSAVEDDATA: Control id 1280)
 msgid "Log messages (Show log dialog)"
-msgstr "Логові повідомлення (діалог показу логу)"
+msgstr "Повідомлення журналу (Діалог показу журналу)"
 
 #. Resource IDs: (Dialog IDD_SETTINGSMTP: Control id 1760)
 msgid "Login:"
-msgstr ""
+msgstr "Ім'я(Login):"
 
 #. Resource IDs: (IDS_REPOSTATUS_WCINFO)
 #, c-format
@@ -6715,7 +6681,7 @@ msgstr "DLL поштової системи непридатна."
 
 #. Resource IDs: (Dialog IDD_CREATEREPO: Control id 1653)
 msgid "Make it Bare (No working directories)"
-msgstr ""
+msgstr "Створити очищеним (Bare) (нема робочих тек)"
 
 #. Resource IDs: (Dialog IDD_PUSH: Control id 1382)
 msgid "Mana&ge"
@@ -6739,7 +6705,7 @@ msgstr "Позначити владнаним"
 msgid ""
 "Mark as resolved\n"
 "The file status is changed to modified"
-msgstr ""
+msgstr "Позначити владнаним\nСтатус файлу змінется у модіфікований"
 
 #. Resource IDs: (IDS_PREPAREDIFF)
 msgid "Mark for comparison"
@@ -6747,7 +6713,7 @@ msgstr "Позначити для порівняння"
 
 #. Resource IDs: (IDS_VIEWCONTEXTMENU_MARKBLOCK)
 msgid "Mark this block"
-msgstr ""
+msgstr "Позначити цей блок"
 
 #. Resource IDs: (IDS_ASKFORSAVE_MARKEDBLOCKS)
 msgid "Marked Blocks"
@@ -6761,11 +6727,11 @@ msgstr ""
 
 #. Resource IDs: (IDS_MENUDESCBISECTBAD)
 msgid "Marks revision as bad"
-msgstr ""
+msgstr "Помітити ревізію як погану"
 
 #. Resource IDs: (IDS_MENUDESCBISECTGOOD)
 msgid "Marks revision as good"
-msgstr ""
+msgstr "Помітити ревізю як добру"
 
 #. Resource IDs: (Dialog IDD_FIND: Control id 1064, Dialog IDD_FIND: Control
 #. id 20084, Dialog IDD_FINDBAR: Control id 1021)
@@ -6826,7 +6792,7 @@ msgstr ""
 #. Resource IDs: (IDS_LOG_POPUP_MERGEREV, IDS_LOG_POPUP_MERGEREVS)
 #, c-format
 msgid "Merge to \"%s\"..."
-msgstr ""
+msgstr "Злиття у \"%s\"..."
 
 #. Resource IDs: (IDS_PATHACTIONS_MERGED, IDS_SVNACTION_MERGED,
 #. IDS_VIEWTITLE_MERGED)
@@ -6867,7 +6833,7 @@ msgstr "Повідомлення"
 
 #. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1719)
 msgid "Message onl&y"
-msgstr ""
+msgstr "Тільки повідомлення"
 
 #. Resource IDs: (Dialog IDD_BUGTRAQREGEXTESTER: Control id 1579)
 msgid "Message part &expression:"
@@ -6892,7 +6858,7 @@ msgstr "Мінімізувати Смужку"
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS3: Control id 65535)
 msgid "Minimum number of chars for a commit message:"
-msgstr ""
+msgstr "Мінімальна кількість символів у повідомленні фіксації"
 
 #. Resource IDs: (Dialog IDD_SETCOLORPAGE: Control id 65535, Dialog
 #. IDD_SETMAINPAGE: Control id 1023, Dialog IDD_SETTINGSDIALOGS2: Control id
@@ -6902,7 +6868,7 @@ msgstr "Різне"
 
 #. Resource IDs: (IDS_PATHACTIONS_MISSING)
 msgid "Missing"
-msgstr ""
+msgstr "Необхідно"
 
 #. Resource IDs: (62179, IDS_RESET_MIXED)
 msgid "Mixed"
@@ -6925,7 +6891,7 @@ msgstr "Модифіковано"
 
 #. Resource IDs: (IDS_STATUSLIST_GROUP_MODIFIEDFILES)
 msgid "Modified Files"
-msgstr ""
+msgstr "Змінені файли"
 
 #. Resource IDs: (17107)
 msgid "More"
@@ -6990,12 +6956,12 @@ msgstr "Перемістити: Нове ім'я для %s"
 
 #. Resource IDs: (IDS_SETTINGS_USERECYCLEBIN_TT)
 msgid "Moves the modified files to the recycle bin first before reverting"
-msgstr "Переносить перед відверненням змінені файли до смітника."
+msgstr "Переносить перед відверненням змінені файли до корзини."
 
 #. Resource IDs: (IDS_PROC_MOVINGPROG)
 #, c-format
 msgid "Moving %s"
-msgstr ""
+msgstr "Переміщення %s"
 
 #. Resource IDs: (IDS_PROC_MOVING)
 msgid "Moving..."
@@ -7011,12 +6977,12 @@ msgstr "NUM"
 
 #. Resource IDs: (17128)
 msgid "Name"
-msgstr ""
+msgstr "Ім'я"
 
 #. Resource IDs: (Dialog IDD_ADD_REMOTE: Control id 65535, Dialog
 #. IDD_REGEXFILTER: Control id 65535)
 msgid "Name:"
-msgstr ""
+msgstr "Ім'я:"
 
 #. Resource IDs: (156 - Ribbon element)
 msgid "Navigate"
@@ -7046,7 +7012,7 @@ msgstr "Мережа"
 
 #. Resource IDs: (Dialog IDD_SETTINGSMTP: Control id 321)
 msgid "Network::Email"
-msgstr ""
+msgstr "Мережа::Email"
 
 #. Resource IDs: (16017, 16027, 30721, 65535, IDS_NEW)
 msgid "New"
@@ -7075,19 +7041,19 @@ msgstr "Нове повідомлення"
 #. Resource IDs: (IDS_PROC_NEWNAME)
 #, c-format
 msgid "New name for %s"
-msgstr ""
+msgstr "Нове ім'я для %s"
 
 #. Resource IDs: (IDS_WARN_RENAMEREQUIRED)
 msgid "New name must not be empty or the same as the original name!"
-msgstr ""
+msgstr "Нове ім'я повинно бути порожнім або співпадати з початковим ім'ям!"
 
 #. Resource IDs: (IDS_PROC_NEWNAMELABEL)
 msgid "New name:"
-msgstr ""
+msgstr "Нове ім'я:"
 
 #. Resource IDs: (IDS_SUBMODULEDIFF_NEWSUBMODULE)
 msgid "New submodule"
-msgstr ""
+msgstr "Новий субмодуль"
 
 #. Resource IDs: (IDS_SUBMODULEDIFF_NEWERTIME)
 msgid "Newer commit time"
@@ -7095,11 +7061,11 @@ msgstr ""
 
 #. Resource IDs: (IDS_TEXTIDENTICAL_EOL)
 msgid "Newlines"
-msgstr ""
+msgstr "Нові строки"
 
 #. Resource IDs: (ID_VIEW_NEXT - Menu)
 msgid "Next"
-msgstr ""
+msgstr "Наступний"
 
 #. Resource IDs: (58114)
 msgid ""
@@ -7110,12 +7076,12 @@ msgstr "Наступна сторінка\nНаступна сторінка"
 #. Resource IDs: (ID_NAVIGATE_NEXTCONFLICT - Menu, ID_NAVIGATE_NEXTCONFLICT -
 #. Ribbon name)
 msgid "Next conflict"
-msgstr ""
+msgstr "Наступний конфлікт"
 
 #. Resource IDs: (ID_NAVIGATE_NEXTDIFFERENCE - Menu,
 #. ID_NAVIGATE_NEXTDIFFERENCE - Ribbon name)
 msgid "Next difference"
-msgstr ""
+msgstr "Наступне розходження"
 
 #. Resource IDs: (ID_NAVIGATE_NEXTINLINEDIFF - Menu,
 #. ID_NAVIGATE_NEXTINLINEDIFF - Ribbon name)
@@ -7133,12 +7099,12 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_CLONE: Control id 1716)
 msgid "No Checkout"
-msgstr ""
+msgstr "No Checkout"
 
 #. Resource IDs: (Dialog IDD_MERGE: Control id 1482, Dialog IDD_PULLFETCH:
 #. Control id 1482)
 msgid "No Co&mmit"
-msgstr ""
+msgstr "Нема фіксацій"
 
 #. Resource IDs: (IDS_PROC_NOHEAD)
 msgid "No HEAD found"
@@ -7157,7 +7123,7 @@ msgstr ""
 
 #. Resource IDs: (IDS_ERR_NOCOMMANDVALUE)
 msgid "No command value specified!"
-msgstr ""
+msgstr "Не вказано значення команди!"
 
 #. Resource IDs: (IDS_COMPAREREV_NODIFF, IDS_ERR_EMPTYDIFF)
 msgid "No differences found!"
@@ -7184,7 +7150,7 @@ msgstr ""
 msgid ""
 "No files or folders were modified. There is nothing for TortoiseGit to "
 "revert!"
-msgstr ""
+msgstr "Нема змінених файлів або тек. TortoiseGit  нічого відкачувати"
 
 #. Resource IDs: (IDS_REPOSTATUS_EMPTYFILELIST)
 msgid ""
@@ -7216,7 +7182,7 @@ msgstr "Не знайдено кодувальник зображень для %
 
 #. Resource IDs: (IDS_NO_LIMIT)
 msgid "No limitation"
-msgstr ""
+msgstr "Без обмежень"
 
 #. Resource IDs: (IDS_PROC_LOG_JUMPNOTFOUND)
 msgid "No more revisions found."
@@ -7250,7 +7216,7 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_3: Control id 65535)
 msgid "Node size"
-msgstr ""
+msgstr "Розмір вузла"
 
 #. Resource IDs: (17110, Dialog IDD_SETTINGSOVERLAY: Control id 1272,
 #. IDS_NONE)
@@ -7272,11 +7238,11 @@ msgstr ""
 
 #. Resource IDs: (IDS_STATUSLIST_GROUP_NOTVERSIONEDFILES)
 msgid "Not Versioned Files"
-msgstr ""
+msgstr "Не версіовані файли"
 
 #. Resource IDs: (IDS_ERR_FAILEDUPDATEDOWNLOAD)
 msgid "Not all files could be downloaded and verified."
-msgstr ""
+msgstr "Не всі файли можуть бути загружені та перевірені"
 
 #. Resource IDs: (61708)
 msgid "Not all of the system registry entries (or INI file) were removed."
@@ -7284,7 +7250,7 @@ msgstr "Не всі входження до системного реєстру 
 
 #. Resource IDs: (IDS_ERR_NOTENOUGHMEMORY)
 msgid "Not enough memory to complete operation."
-msgstr ""
+msgstr "Нема пам'яті для завершення операції"
 
 #. Resource IDs: (IDS_REVGRAPH_ERR_NOMEMORY)
 msgid ""
@@ -7337,7 +7303,7 @@ msgstr ""
 
 #. Resource IDs: (IDS_ERROR_NOTHING_COMMIT)
 msgid "Nothing to commit"
-msgstr ""
+msgstr "Нічого фіксувати"
 
 #. Resource IDs: (IDS_WARN_NOTE)
 msgid "Notice"
@@ -7345,12 +7311,12 @@ msgstr "Зауваження"
 
 #. Resource IDs: (Dialog IDD_FORMAT_PATCH: Control id 1534)
 msgid "Number Commits"
-msgstr ""
+msgstr "Кількість фіксувань"
 
 #. Resource IDs: (IDS_STATGRAPH_NUMBEROFUNIT)
 #, c-format
 msgid "Number of %s"
-msgstr ""
+msgstr "Кількість %s"
 
 #. Resource IDs: (Dialog IDD_STATGRAPH: Control id 1161)
 msgid "Number of authors:"
@@ -7402,7 +7368,7 @@ msgstr "OEM 858"
 
 #. Resource IDs: (5053 - Menu)
 msgid "OEM 860: Portuguese"
-msgstr ""
+msgstr "OEM 860: Португальска"
 
 #. Resource IDs: (5054 - Menu)
 msgid "OEM 861: Icelandic"
@@ -7414,7 +7380,7 @@ msgstr "OEM 862"
 
 #. Resource IDs: (5056 - Menu)
 msgid "OEM 863: French"
-msgstr ""
+msgstr "OEM 863: Французька"
 
 #. Resource IDs: (5057 - Menu)
 msgid "OEM 865: Nordic"
@@ -7491,11 +7457,11 @@ msgstr "Office XP"
 
 #. Resource IDs: (IDS_OLDHASH)
 msgid "Old hash"
-msgstr ""
+msgstr "Старий хеш"
 
 #. Resource IDs: (IDS_OLDMESSAGE)
 msgid "Old message"
-msgstr ""
+msgstr "Старе повідомлення"
 
 #. Resource IDs: (IDS_SUBMODULEDIFF_OLDERTIME)
 msgid "Older commit time"
@@ -7511,7 +7477,7 @@ msgstr ""
 
 #. Resource IDs: (62180)
 msgid "One or more auto-saved documents were found."
-msgstr ""
+msgstr "Знайден один або більше  авто-сохраненних документів"
 
 #. Resource IDs: (IDS_PROGRS_CONFLICTSOCCURED)
 msgid "One or more files are in a conflicted state."
@@ -7519,15 +7485,15 @@ msgstr "Деяка кількість файлів у конфліктному �
 
 #. Resource IDs: (Dialog IDD_REVGRAPHFILTER: Control id 1542)
 msgid "Only Current Branch"
-msgstr ""
+msgstr "Тільки поточна гілка"
 
 #. Resource IDs: (Dialog IDD_REVGRAPHFILTER: Control id 1543)
 msgid "Only Local Branches"
-msgstr ""
+msgstr "Тільки локальні Гілки"
 
 #. Resource IDs: (IDS_ONLYMERGEDFILES)
 msgid "Only Merged Files"
-msgstr ""
+msgstr "Тільки злити файли"
 
 #. Resource IDs: (IDS_git_DEPTH_FILES)
 msgid "Only file children"
@@ -7551,11 +7517,11 @@ msgstr "Відкрити"
 msgid ""
 "Open an existing document\n"
 "Open"
-msgstr ""
+msgstr "Відкрити існуючий документ\nВідкрити"
 
 #. Resource IDs: (Dialog IDD_CERTCHECK: Control id 1797)
 msgid "Open certificate"
-msgstr ""
+msgstr "Відкрити сертіфікат"
 
 #. Resource IDs: (57601)
 msgid ""
@@ -7578,12 +7544,12 @@ msgstr "Відкрити батьківський каталог"
 
 #. Resource IDs: (IDS_OPENPATCH)
 msgid "Open patch file"
-msgstr ""
+msgstr "Відкрити цей файл"
 
 #. Resource IDs: (57616, 57617, 57618, 57619, 57620, 57621, 57622, 57623,
 #. 57624, 57625, 57626, 57627, 57628, 57629, 57630, 57631)
 msgid "Open this document"
-msgstr ""
+msgstr "Відкрити цей документ"
 
 #. Resource IDs: (IDS_LOG_POPUP_OPENWITH)
 msgid "Open with..."
@@ -7620,7 +7586,7 @@ msgstr "&Первісний розмір\tS"
 
 #. Resource IDs: (Dialog IDD_CLONE: Control id 1531)
 msgid "Origin Name"
-msgstr ""
+msgstr "Нове ім'я"
 
 #. Resource IDs: (17024)
 msgid "Other Task Panes"
@@ -7644,7 +7610,7 @@ msgstr "Не вистарчає пам`яті."
 
 #. Resource IDs: (Dialog IDD_FORMAT_PATCH: Control id 1538)
 msgid "Output Directory"
-msgstr ""
+msgstr "Вихідна тека"
 
 #. Resource IDs: (61510)
 msgid "Output.prn"
@@ -7652,7 +7618,7 @@ msgstr "Output.prn"
 
 #. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1523)
 msgid "Override branch if exists"
-msgstr ""
+msgstr "Перекрити гілку якщо існуе"
 
 #. Resource IDs: (IDS_PROC_OVERWRITEEXPORT_OVERWRITE)
 msgid "Overwrite"
@@ -7660,11 +7626,11 @@ msgstr "Перезаписати"
 
 #. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1521)
 msgid "Overwrite working tree changes (force)"
-msgstr ""
+msgstr "Перезаписати зміни у робоч. дереві (примусово)"
 
 #. Resource IDs: (ID_FILE_PAGESETUP - Menu)
 msgid "P&age setup..."
-msgstr ""
+msgstr "Установки сторінки..."
 
 #. Resource IDs: (61507)
 #, c-format
@@ -7722,11 +7688,11 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_ABOUTBOX: Control id 65535)
 msgid "Part of code come from TortoiseSVN Blame"
-msgstr ""
+msgstr "Частина кода взята з TortoiseSVN Blame"
 
 #. Resource IDs: (Dialog IDD_USER_PASSWD: Control id 4585)
 msgid "Password"
-msgstr ""
+msgstr "Пароль"
 
 #. Resource IDs: (Dialog IDD_SETTINGSMTP: Control id 1761, IDS_AUTH_PASSWORD)
 msgid "Password:"
@@ -7786,7 +7752,7 @@ msgstr ""
 
 #. Resource IDs: (IDS_PATCHFILEFILTER)
 msgid "Patchfiles (*.diff, *.patch)|*.diff;*.patch|All Files (*.*)|*.*||"
-msgstr ""
+msgstr "Patchfiles (*.diff, *.patch)|*.diff;*.patch|Усі файли (*.*)|*.*||"
 
 #. Resource IDs: (IDS_PATCH_PROGTITLE)
 msgid "Patching"
@@ -7828,7 +7794,7 @@ msgstr ""
 
 #. Resource IDs: (IDS_STATGRAPH_PERCENTAGE_OF_AUTHORSHIPY)
 msgid "Percents"
-msgstr ""
+msgstr "Проценти"
 
 #. Resource IDs: (16538)
 msgid "Personalized Menus and Toolbars"
@@ -7866,13 +7832,13 @@ msgid ""
 "Pictures (*.svg, *.wmf, *.jpg, *.png, *.bmp, "
 "*.gif)|*.svg;*.wmf;*.jpg;*.jpeg;*.png;*.bmp;*.gif|Graphs (*.gv)|*.gv|All "
 "Files (*.*)|*.*||"
-msgstr ""
+msgstr "Малюнки (*.svg, *.wmf, *.jpg, *.png, *.bmp, *.gif)|*.svg;*.wmf;*.jpg;*.jpeg;*.png;*.bmp;*.gif|Graphs (*.gv)|*.gv|Усі файли (*.*)|*.*||"
 
 #. Resource IDs: (IDS_STATPICFILEFILTER)
 msgid ""
 "Pictures (*.wmf, *.jpg, *.png, *.bmp, "
 "*.gif)|*.wmf;*.jpg;*.jpeg;*.png;*.bmp;*.gif|All Files (*.*)|*.*||"
-msgstr ""
+msgstr "Малюнки (*.wmf, *.jpg, *.png, *.bmp, *.gif)|*.wmf;*.jpg;*.jpeg;*.png;*.bmp;*.gif|Усі файли (*.*)|*.*||"
 
 #. Resource IDs: (IDS_STATGRAPH_PIEBUTTON_TT)
 msgid "Pie Graph"
@@ -7981,7 +7947,7 @@ msgstr "Попередній перегляд:"
 
 #. Resource IDs: (ID_VIEW_PREV - Menu)
 msgid "Previous"
-msgstr ""
+msgstr "Попередній"
 
 #. Resource IDs: (58115)
 msgid ""
@@ -8022,13 +7988,13 @@ msgstr "Друкувати документ\n&Друкувати"
 msgid ""
 "Print the active document using current options\n"
 "Quick Print"
-msgstr ""
+msgstr "Друкувати актівний документ використовуючи поточні налаштування\nШвидкий Друк"
 
 #. Resource IDs: (57607)
 msgid ""
 "Print the active document\n"
 "Print"
-msgstr ""
+msgstr "Друкувати активний документ\nДрук"
 
 #. Resource IDs: (61512)
 msgid "Print to File"
@@ -8077,15 +8043,15 @@ msgstr "Постачальник"
 
 #. Resource IDs: (Dialog IDD_SETTINGSBUGTRAQ_CONFIG: Control id 1586)
 msgid "Provider para&meters:"
-msgstr ""
+msgstr "Пара&метри постачальника:"
 
 #. Resource IDs: (Dialog IDD_SETTINGSBUGTRAQ_CONFIG: Control id 1581)
 msgid "Provider uuid win&32:"
-msgstr ""
+msgstr "Постачал. uuid win&32:"
 
 #. Resource IDs: (Dialog IDD_SETTINGSBUGTRAQ_CONFIG: Control id 1583)
 msgid "Provider uuid x6&4:"
-msgstr ""
+msgstr "Постачальник uuid x6&4:"
 
 #. Resource IDs: (Dialog IDD_SETTINGSBUGTRAQADV: Control id 1475)
 msgid "Provider:"
@@ -8167,11 +8133,11 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINREMOTE: Control id 65535)
 msgid "Putty Key:"
-msgstr ""
+msgstr "Ключ Putty"
 
 #. Resource IDs: (IDS_PUTTYKEYFILEFILTER)
 msgid "Putty Private Key (*.ppk)|*.ppk|All Files (*.*)|*.*||"
-msgstr ""
+msgstr "Putty Private Key (*.ppk)|*.ppk|Усі файли (*.*)|*.*||"
 
 #. Resource IDs: (IDS_STATGRAPH_QUARTERLABEL)
 #, c-format
@@ -8188,7 +8154,7 @@ msgstr "Вийти з програми; пропонується зберегт�
 msgid ""
 "Quit\n"
 "Exit TortoiseGitMerge without saving the modifications"
-msgstr ""
+msgstr "Вихід\nВихід з TortoiseGitMerge без збереження змін"
 
 #. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 1633)
 msgid "QuotePath"
@@ -8204,7 +8170,7 @@ msgstr "Пе&реініціалізувати"
 
 #. Resource IDs: (IDS_RESTORE_FROM_INDEX)
 msgid "R&estore this file from index"
-msgstr ""
+msgstr "Відновити цей файл з індексу"
 
 #. Resource IDs: (IDS_LOG_POPUP_REVERTTOREV)
 msgid "R&evert to this revision"
@@ -8216,13 +8182,13 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS2: Control id 1769)
 msgid "Randomize Sync Dialog startup position"
-msgstr ""
+msgstr "Змінювати початкову позицію діалогу сінхронізації"
 
 #. Resource IDs: (IDS_SYNCDIALOGRANDOMPOS_TT)
 msgid ""
 "Randomize the startup position of Sync Dialog. This prevents from pressing "
 "the Pull button of same dialog"
-msgstr ""
+msgstr "Змінювати початкову позицію діалогу сінхронізації. Це запобігае натисканню на кнопку Pull у цьому діалозі"
 
 #. Resource IDs: (Dialog IDD_FORMAT_PATCH: Control id 1535)
 msgid "Range"
@@ -8234,11 +8200,11 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_PUSH: Control id 1494)
 msgid "Re&mote:"
-msgstr ""
+msgstr "Ві&далено:"
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 1048)
 msgid "Re&movable drives"
-msgstr "З&німні диски"
+msgstr "З&мінні диски"
 
 #. Resource IDs: (IDS_MENURENAME)
 msgid "Re&name..."
@@ -8292,7 +8258,7 @@ msgstr "Нещодавні"
 
 #. Resource IDs: (ID_FILE_MRU_FILE1 - Menu)
 msgid "Recent File"
-msgstr ""
+msgstr "Останій файл"
 
 #. Resource IDs: (Dialog IDD_SETTINGSTBLAME: Control id 65535)
 msgid "Recently modified lines"
@@ -8306,7 +8272,7 @@ msgstr "Тільки занотувати"
 msgid ""
 "Recover the auto-saved documents\n"
 "Open the auto-saved versions instead of the explicitly saved versions"
-msgstr ""
+msgstr "Відновлення авто-збереженних документів\nВідкрити авто-збережені версії замість явно збереженних версій"
 
 #. Resource IDs: (IDS_REBASE_ABORT_TT)
 msgid "Recover to the status before rebase"
@@ -8371,7 +8337,7 @@ msgstr "Оновити"
 
 #. Resource IDs: (IDS_PROC_SYNC_REFRESHING)
 msgid "Refreshing..."
-msgstr ""
+msgstr "Оновлення..."
 
 #. Resource IDs: (500, 65535 - PopupMenu, Dialog IDD_REGEXFILTER: Control id
 #. 165, ID_REGEXFILTER - Ribbon name)
@@ -8412,7 +8378,7 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 1072)
 msgid "Relative Times in log"
-msgstr ""
+msgstr "Відносний час у логу"
 
 #. Resource IDs: (ID_FILE_RELOAD - Menu, ID_FILE_RELOAD - Ribbon name)
 msgid "Reload"
@@ -8434,15 +8400,15 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_PULLFETCH: Control id 1573)
 msgid "Remote"
-msgstr ""
+msgstr "Віддалено"
 
 #. Resource IDs: (Dialog IDD_PULLFETCH: Control id 65535)
 msgid "Remote &Branch:"
-msgstr ""
+msgstr "Віддалена &Гілка:"
 
 #. Resource IDs: (Dialog IDD_SYNC: Control id 1618)
 msgid "Remote &URL:"
-msgstr ""
+msgstr "Віддалений URL:"
 
 #. Resource IDs: (Dialog IDD_SUBMODULE_UPDATE: Control id 1754)
 msgid "Remote &tracking branch"
@@ -8450,11 +8416,11 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_2: Control id 65535)
 msgid "Remote Branch"
-msgstr ""
+msgstr "Віддалене гілка"
 
 #. Resource IDs: (IDS_PROC_GITCONFIG_URLEMPTY)
 msgid "Remote URL must not be empty."
-msgstr ""
+msgstr "Віддалений URL повинен бути заповненний"
 
 #. Resource IDs: (IDS_PROC_SYNC_REMOTEUPDATE)
 msgid "Remote Update"
@@ -8472,7 +8438,7 @@ msgstr "Віддалений стан"
 #. IDD_RESOLVE_CONFLICT: Control id 65535, Dialog IDD_SETTINREMOTE: Control id
 #. 65535)
 msgid "Remote:"
-msgstr ""
+msgstr "Віддалено:"
 
 #. Resource IDs: (Dialog IDD_SETTINGSBUGTRAQ: Control id 1470, Dialog
 #. IDD_SETTINGSHOOKS: Control id 1332)
@@ -8495,7 +8461,7 @@ msgstr ""
 
 #. Resource IDs: (IDS_PROC_REMOVEBRANCH)
 msgid "Remove &branch"
-msgstr ""
+msgstr "Видаленя Гілки"
 
 #. Resource IDs: (Dialog IDD_CLEAN: Control id 1628)
 msgid "Remove &non-ignored untracked files (-f)"
@@ -8563,16 +8529,16 @@ msgstr "Перейменувати"
 #. Resource IDs: (IDS_PROC_RENAME)
 #, c-format
 msgid "Rename %s"
-msgstr ""
+msgstr "Перейменування %s"
 
 #. Resource IDs: (Dialog IDD_RENAME: Control id 151)
 msgid "Rename - TortoiseGit"
-msgstr ""
+msgstr "Перейменування - TortoiseGit"
 
 #. Resource IDs: (IDS_RENAME_INFO)
 #, c-format
 msgid "Rename \"%s\":"
-msgstr ""
+msgstr "Перейменування \"%s\""
 
 #. Resource IDs: (IDS_PROGRS_TITLE_RENAME)
 msgid "Rename/move"
@@ -8580,7 +8546,7 @@ msgstr "Перейменувати/перемістити"
 
 #. Resource IDs: (IDS_MENUDESCRENAME)
 msgid "Renames files/folders inside version control"
-msgstr ""
+msgstr "Перейменування файлів/тек у управління версіями"
 
 #. Resource IDs: (57640)
 msgid ""
@@ -8590,7 +8556,7 @@ msgstr "Повторити останню дію\nПоторити"
 
 #. Resource IDs: (Dialog IDD_FIND: Control id 1512)
 msgid "Replace &All"
-msgstr ""
+msgstr "Замінити &Усі"
 
 #. Resource IDs: (57641)
 msgid ""
@@ -8600,11 +8566,11 @@ msgstr "Замінити певний текст іншим текстом\nЗа
 
 #. Resource IDs: (Dialog IDD_FIND: Control id 65535)
 msgid "Replace with:"
-msgstr ""
+msgstr "Замінити на:"
 
 #. Resource IDs: (Dialog IDD_REGEXFILTER: Control id 65535)
 msgid "Replace:"
-msgstr ""
+msgstr "Замінити:"
 
 #. Resource IDs: (IDS_FIND_REPLACED)
 #, c-format
@@ -8617,7 +8583,7 @@ msgstr "Замінюється"
 
 #. Resource IDs: (Dialog IDD_REQUESTPULL: Control id 1618)
 msgid "Repository &URL"
-msgstr ""
+msgstr "&URL Сховища"
 
 #. Resource IDs: (Dialog IDD_REPOSITORY_BROWSER: Control id 153)
 msgid "Repository Browser"
@@ -8625,7 +8591,7 @@ msgstr "Оглядач сховища"
 
 #. Resource IDs: (Dialog IDD_SUBMODULE_ADD: Control id 65535)
 msgid "Repository:"
-msgstr ""
+msgstr "Сховище:"
 
 #. Resource IDs: (Dialog IDD_REQUESTPULL: Control id 334)
 msgid "Request pull"
@@ -8791,12 +8757,12 @@ msgstr "Модифікація"
 #. Resource IDs: (IDS_PROGRESSREVISION)
 #, c-format
 msgid "Revision %d"
-msgstr ""
+msgstr "Модифікація %d"
 
 #. Resource IDs: (IDS_PROGRESSREVISIONTEXT)
 #, c-format
 msgid "Revision %s"
-msgstr ""
+msgstr "Модифікація %s"
 
 #. Resource IDs: (IDS_MENUREVISIONGRAPH)
 msgid "Revision &graph"
@@ -8804,7 +8770,7 @@ msgstr "&Граф модифікацій"
 
 #. Resource IDs: (IDS_PROC_REVISIONFILES)
 msgid "Revision Files"
-msgstr ""
+msgstr "Файли модифікації"
 
 #. Resource IDs: (Dialog IDD_REVISIONGRAPH: Control id 4580)
 msgid "Revision Graph"
@@ -8829,7 +8795,7 @@ msgstr ""
 #. IDD_RESOLVESUBMODULECONFLICT: Control id 1713, Dialog
 #. IDD_RESOLVESUBMODULECONFLICT: Control id 1716)
 msgid "Revision:"
-msgstr ""
+msgstr "Модифікація:"
 
 #. Resource IDs: (IDS_SUBMODULEDIFF_REWIND)
 msgid "Rewind"
@@ -8866,11 +8832,11 @@ msgstr "Рядки %d-%d з %d"
 
 #. Resource IDs: (17116)
 msgid "Row Down"
-msgstr ""
+msgstr "Строку у Низ"
 
 #. Resource IDs: (17115)
 msgid "Row Up"
-msgstr ""
+msgstr "Строку в гору"
 
 #. Resource IDs: (17045)
 msgid "S&elect..."
@@ -8902,7 +8868,7 @@ msgstr "С&татистика"
 
 #. Resource IDs: (IDS_MENUSWITCH)
 msgid "S&witch/Checkout..."
-msgstr ""
+msgstr "Переключити/витягнути..."
 
 #. Resource IDs: (IDS_HASH, IDS_LOG_FILTER_REVS, IDS_LOG_HASH)
 msgid "SHA-1"
@@ -8918,11 +8884,11 @@ msgstr "SHA-256:"
 
 #. Resource IDs: (Dialog IDD_SETTINGSMTP: Control id 1585)
 msgid "SMTP Server requires authentication"
-msgstr ""
+msgstr "Сервер SMTP вимагае аутентіфікацію"
 
 #. Resource IDs: (Dialog IDD_SETTINGSMTP: Control id 1757)
 msgid "SMTP Server:"
-msgstr ""
+msgstr "SMTP Сервер:"
 
 #. Resource IDs: (IDS_SMTP_DIRECTLY)
 msgid "SMTP, directly to destination server"
@@ -8988,11 +8954,11 @@ msgid ""
 "Fixed issue #123\n"
 "Resolves issue #88.\n"
 "Closes issue #99.\n"
-msgstr ""
+msgstr "Приклад повідомлення логу для перевірки bugtraq: regex строки.\n\nTesting mentions of issues inside a text: Mention single issue #55. Mention issues #77, #78, and #79. Mention more issues #123, #124 and #125 and some more separate ones: Issue #45, issue #46 and issue #47.\n\n\nUpdate issue #101\nFixes issue #202\nFixed issue #123\nResolves issue #88.\nCloses issue #99.\n"
 
 #. Resource IDs: (Dialog IDD_BUGTRAQREGEXTESTER: Control id 1612)
 msgid "Sample text:"
-msgstr ""
+msgstr "Приклад тексту:"
 
 #. Resource IDs: (ID_FILE_SAVE - Menu, ID_FILE_SAVE - Ribbon name)
 msgid "Save"
@@ -9052,7 +9018,7 @@ msgstr ""
 msgid ""
 "Save all\n"
 "Both Files are saved"
-msgstr ""
+msgstr "Зберігти усе\nОбидва файли будуть збережені"
 
 #. Resource IDs: (IDS_MARKEDBLOCKSSAVEEXCLUDE)
 msgid ""
@@ -9093,7 +9059,7 @@ msgstr "Зерегти зміни у %1?"
 
 #. Resource IDs: (IDS_ASKFORSAVE_TASK2)
 msgid "Save modifications."
-msgstr ""
+msgstr "Зберігти зміни."
 
 #. Resource IDs: (IDS_SAVEPATCH)
 msgid "Save patch file"
@@ -9129,7 +9095,7 @@ msgstr "Зберегти  в буфері обміну"
 #. IDD_SETTINGSBUGTRAQ_CONFIG: Control id 65535, Dialog IDD_SETTINGSDIALOGS3:
 #. Control id 65535)
 msgid "Save to:"
-msgstr ""
+msgstr "Зберігти у :"
 
 #. Resource IDs: (Dialog IDD_CHANGEDFILES: Control id 1385)
 msgid "Save unified diff"
@@ -9188,7 +9154,7 @@ msgstr "Прокрутити праворуч"
 
 #. Resource IDs: (ID_FILE_SETTINGS - Menu)
 msgid "Se&ttings..."
-msgstr ""
+msgstr "Налаштування..."
 
 #. Resource IDs: (IDS_LOG_POPUP_FIND)
 msgid "Search &log messages..."
@@ -9196,7 +9162,7 @@ msgstr "Пошук &логових повідомлень..."
 
 #. Resource IDs: (Dialog IDD_FIND: Control id 1074)
 msgid "Search &up"
-msgstr ""
+msgstr "Пошук в&гору"
 
 #. Resource IDs: (Dialog IDD_FIND: Control id 65535)
 msgid "Search for:"
@@ -9213,7 +9179,7 @@ msgstr "Пошук зазнав невдачі на %1"
 
 #. Resource IDs: (IDS_SELECT)
 msgid "Select"
-msgstr ""
+msgstr "Вибрати"
 
 #. Resource IDs: (IDS_SCIEDIT_SELECTALL)
 msgid "Select &All"
@@ -9263,7 +9229,7 @@ msgstr "Виберіть програму для відмінностей"
 
 #. Resource IDs: (IDS_SELECTFILE)
 msgid "Select file"
-msgstr ""
+msgstr "Виберіть файл"
 
 #. Resource IDs: (IDS_SETTINGS_BUGTRAQ_SELECTFOLDERPATH)
 msgid "Select folder to associate with this issue tracker"
@@ -9314,7 +9280,7 @@ msgstr "Виділити документ цілком\nВиділити все"
 msgid ""
 "Select the language this project is using. This settings affects the spell "
 "checker used for commit messages."
-msgstr ""
+msgstr "Виберіть яку мову використовуе цей проект. Ця настройка діє на провірку ошибок у повідомленнях фіксації."
 
 #. Resource IDs: (IDS_PROC_BROWSEREFS_SETTRACKEDBRANCH)
 msgid "Select tracked branch"
@@ -9326,13 +9292,13 @@ msgstr "Виберіть переглядач для файлів відмінн
 
 #. Resource IDs: (IDS_ASKFORSAVEAS_MORE)
 msgid "Select what file you want to save as"
-msgstr ""
+msgstr "Виберіть який файл ви хочете зберігти як"
 
 #. Resource IDs: (IDS_ASKFORSAVEAS_MORECONFLICT)
 msgid ""
 "Select what file you want to save as\n"
 "Note: There is unresolved conflict!"
-msgstr ""
+msgstr "Виберіть який файл ви хочете зберігти як\nПримітка: Існуе не розв'язаний коніфлікт"
 
 #. Resource IDs: (Dialog IDD_ADD: Control id 1067, Dialog IDD_DELETEREMOTETAG:
 #. Control id 1067, Dialog IDD_RESOLVE: Control id 1067, Dialog IDD_REVERT:
@@ -9340,24 +9306,24 @@ msgstr ""
 #. IDD_SETTINGSLOOKANDFEEL: Control id 1067, Dialog IDD_SUBMODULE_UPDATE:
 #. Control id 1067)
 msgid "Select/deselect &all"
-msgstr ""
+msgstr "Вибрати/зняти усє"
 
 #. Resource IDs: (IDS_PROC_SELECTION_HISTORY)
 msgid "Selection History"
-msgstr ""
+msgstr "Істроія вибору"
 
 #. Resource IDs: (Dialog IDD_SENDMAIL: Control id 1)
 msgid "Send"
-msgstr ""
+msgstr "Відправити"
 
 #. Resource IDs: (IDS_PROGRS_CMD_SENDMAIL)
 msgid "Send Email"
-msgstr ""
+msgstr "Відправити Email"
 
 #. Resource IDs: (Dialog IDD_FORMAT_PATCH: Control id 1587, Dialog
 #. IDD_REQUESTPULL: Control id 1587)
 msgid "Send Mail after create"
-msgstr ""
+msgstr "Відправити Email після створення"
 
 #. Resource IDs: (61842)
 msgid "Send Mail failed to send message."
@@ -9365,19 +9331,19 @@ msgstr "Send Mail не зміг відправити повідомлення."
 
 #. Resource IDs: (IDS_MENUSENDMAIL, IDS_MENU_SENDMAIL)
 msgid "Send Mail..."
-msgstr ""
+msgstr "Відправити пошту..."
 
 #. Resource IDs: (Dialog IDD_SENDMAIL: Control id 320)
 msgid "Send Patch"
-msgstr ""
+msgstr "Відправити Патч"
 
 #. Resource IDs: (IDS_PROGRS_TITLE_SENDMAIL)
 msgid "Send Patch by Email"
-msgstr ""
+msgstr "Відправити Патч по Email"
 
 #. Resource IDs: (IDS_MENUDESSENDMAIL)
 msgid "Send Patch(es) by eMail"
-msgstr ""
+msgstr "Відправити Патч(и) по Email"
 
 #. Resource IDs: (IDS_SVNACTION_POSTFIX)
 msgid "Sending content"
@@ -9385,7 +9351,7 @@ msgstr "Надсилається вміст"
 
 #. Resource IDs: (IDS_SVNACTION_SENDMAIL_START)
 msgid "Sending..."
-msgstr ""
+msgstr "Відправка...."
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROXY: Control id 1409)
 msgid "Server &address:"
@@ -9397,7 +9363,7 @@ msgstr "Задати Прискорювач &для:"
 
 #. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1558)
 msgid "Set au&thor"
-msgstr ""
+msgstr "Встановити ав&тора"
 
 #. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1557)
 msgid "Set author &date"
@@ -9423,7 +9389,7 @@ msgstr "Налаштування"
 
 #. Resource IDs: (IDS_PROC_SETTINGS_TITLE)
 msgid "Settings - TortoiseGit"
-msgstr ""
+msgstr "Налаштування - TortoiseGit"
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 1270,
 #. IDS_STATUSLIST_CONTEXT_SHELL)
@@ -9469,7 +9435,7 @@ msgstr ""
 #. Resource IDs: (Dialog IDD_CHANGEDFILES: Control id 1203, Dialog
 #. IDD_COMMITDLG: Control id 1203, Dialog IDD_LOGMESSAGE: Control id 1203)
 msgid "Show &Whole Project"
-msgstr ""
+msgstr "Показати Проект &цілком"
 
 #. Resource IDs: (IDS_LOG_POPUP_DIFF)
 msgid "Show &changes"
@@ -9502,7 +9468,7 @@ msgstr "Показати під Смужкою"
 
 #. Resource IDs: (Dialog IDD_SETTINGSMAIN: Control id 1382)
 msgid "Show Environment Variables"
-msgstr ""
+msgstr "Показати налаштування оточення"
 
 #. Resource IDs: (17030)
 msgid "Show Fewer Buttons"
@@ -9543,7 +9509,7 @@ msgstr "Показувати Екранні &підказки на рядках 
 #. Resource IDs: (ID_VIEW_WHITESPACES - Menu, ID_VIEW_WHITESPACES - Ribbon
 #. name)
 msgid "Show Whitespaces"
-msgstr ""
+msgstr "Показати не друковані"
 
 #. Resource IDs: (32813)
 msgid "Show an overview of the whole graph"
@@ -9551,22 +9517,22 @@ msgstr "Показати огляд цілого графа"
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 1074)
 msgid "Show asterisk log prefix"
-msgstr ""
+msgstr "Відображати префікс логу (*)"
 
 #. Resource IDs: (IDS_SETTINGS_ASTERISKLOGPREFIX_TT)
 msgid "Show asterisk log prefix in log dialog"
-msgstr ""
+msgstr "Відображати префікс логу (*) у діалозі логу"
 
 #. Resource IDs: (ID_VIEW_SHOWAUTHOR - Menu)
 msgid "Show author"
-msgstr ""
+msgstr "Показати автора"
 
 #. Resource IDs: (IDS_SETTINGS_SHOWREVCOUNTER_TT)
 msgid ""
 "Show branch revision number (git rev-list --count --first-parent) in log "
 "dialog and after a push to a remote branch; this is not guaranteed to be "
 "unique, please see help"
-msgstr ""
+msgstr "Показувати номер ревізії гілки (git rev-list --count --first-parent) у діалозі лога та після a push до віддаленої гілки, це не гарантуе унікальності, будьласка дивиться поміч"
 
 #. Resource IDs: (IDS_LOG_POPUP_SHOWBRANCHES)
 msgid "Show branches this commit is on"
@@ -9586,19 +9552,19 @@ msgstr ""
 
 #. Resource IDs: (ID_VIEW_SHOWDATE - Menu)
 msgid "Show date"
-msgstr ""
+msgstr "Показати дату"
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 1804)
 msgid "Show describe in log"
-msgstr ""
+msgstr "Відображати опис у лозі"
 
 #. Resource IDs: (IDS_SETTINGS_SHOWDESCRIBE_TT)
 msgid "Show describe in log dialog"
-msgstr ""
+msgstr "Відображати опис у діалозі логу"
 
 #. Resource IDs: (IDS_CHECKUPDATE_DESTFOLDER)
 msgid "Show destination folder"
-msgstr ""
+msgstr "Показати цільову теку"
 
 #. Resource IDs: (Dialog IDD_DIFFSUBMODULE: Control id 1696,
 #. IDS_PROC_SHOWDIFF)
@@ -9611,7 +9577,7 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 1126)
 msgid "Show excluded folders as normal"
-msgstr ""
+msgstr "Показувати виключені теки як звичайні"
 
 #. Resource IDs: (IDS_DIFFWITHMERGE)
 msgid "Show extra changes after merge"
@@ -9623,15 +9589,15 @@ msgstr "Показати &повні меню після короткої зат
 
 #. Resource IDs: (32802, ID_VIEW_SHOWFILENAME - Menu)
 msgid "Show file name"
-msgstr ""
+msgstr "Показати ім'я файлу"
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS2: Control id 1782)
 msgid "Show git.exe execution timings and timestamp"
-msgstr ""
+msgstr "Выдображати для git.exe час роботи та  дату/час\\v"
 
 #. Resource IDs: (Dialog IDD_CHANGEDFILES: Control id 1264)
 msgid "Show i&gnored files"
-msgstr ""
+msgstr "Показати і&гноровані файли"
 
 #. Resource IDs: (Dialog IDD_CHANGEDFILES: Control id 1265)
 msgid "Show ignore local changes flagged files"
@@ -9653,7 +9619,7 @@ msgstr "Показати &номери рядків"
 #. Control id 1132, Dialog IDD_RESOLVE_CONFLICT: Control id 1695,
 #. IDS_BLAME_POPUP_LOG, IDS_FILEDIFF_LOG)
 msgid "Show log"
-msgstr ""
+msgstr "Показати лог"
 
 #. Resource IDs: (IDS_STATUSLIST_SHOWLOGOLDNAME)
 msgid "Show log &before rename/copy"
@@ -9662,7 +9628,7 @@ msgstr ""
 #. Resource IDs: (IDS_SHOWLOG_OF)
 #, c-format
 msgid "Show log of %s"
-msgstr ""
+msgstr "Показати лог %s"
 
 #. Resource IDs: (IDS_LOG_SUBMODULE)
 msgid "Show log of submodule"
@@ -9674,22 +9640,22 @@ msgstr ""
 
 #. Resource IDs: (IDS_LOG_POPUP_LOG)
 msgid "Show log..."
-msgstr ""
+msgstr "Показати лог..."
 
 #. Resource IDs: (IDS_SETTINGS_DESCRIBEALWAYSLONG_TT)
 msgid "Show long format even if a tag is exactly on that commit"
-msgstr ""
+msgstr "Показувати довгий формат навіть якщо тег явно у фіксуванні"
 
 #. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1383, Dialog IDD_RESET:
 #. Control id 1383)
 msgid "Show modified files in working tree"
-msgstr ""
+msgstr "Показати змінені файли у робочому дереві"
 
 #. Resource IDs: (20308)
 msgid ""
 "Show next change of selected commit\n"
 "Show next"
-msgstr ""
+msgstr "Показати наступну зміну  у вибраній фіксації\nПоказати наступну"
 
 #. Resource IDs: (32814)
 msgid "Show oldest node at top"
@@ -9711,7 +9677,7 @@ msgstr "Показати або заховати пошукову смугу\nП
 msgid ""
 "Show or hide the status bar\n"
 "Toggle Status Bar"
-msgstr ""
+msgstr "Показати або Скрити рядок статусу\nПереключення Рядку статусу"
 
 #. Resource IDs: (59393)
 msgid ""
@@ -9727,13 +9693,13 @@ msgstr "Показати або заховати рядок знарядь\nПе
 
 #. Resource IDs: (32803, ID_VIEW_SHOWORIGINALLINENUMBER - Menu)
 msgid "Show original line number"
-msgstr ""
+msgstr "Показувати орігінальний номер строки"
 
 #. Resource IDs: (20309)
 msgid ""
 "Show previous change of selected commit\n"
 "Show previous"
-msgstr ""
+msgstr "Показати попередьню зміну  у вибраній фіксації\nПоказати попредьню"
 
 #. Resource IDs: (IDS_REPOBROWSE_SHOWREVPROP)
 msgid "Show revision properties"
@@ -9747,11 +9713,11 @@ msgstr "Показувати гарячі &клавіші в Екранних п
 msgid ""
 "Show special characters for whitespaces and newlines\n"
 "Show Whitespaces"
-msgstr ""
+msgstr "Показувати спеціальні символи для непечатних символів та нових строк\nПоказати непечатні символи"
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 1314)
 msgid "Show status of subrepositories in parent folders"
-msgstr ""
+msgstr "Показувати статус підсховищ у батьківських теках"
 
 #. Resource IDs: (IDS_SETTINGS_SYMBOLIZEREFNAMES_TT)
 msgid "Show symbols on ref labels to substitute part of the ref names"
@@ -9759,11 +9725,11 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_CHANGEDFILES: Control id 1209)
 msgid "Show un&modified files"
-msgstr ""
+msgstr "Показувати не&модіфіковані файли."
 
 #. Resource IDs: (Dialog IDD_CHANGEDFILES: Control id 1073)
 msgid "Show un&versioned files"
-msgstr ""
+msgstr "Показувати не&версіонні файли"
 
 #. Resource IDs: (IDS_SETTINGS_HOOKS_SHOWCOL)
 msgid "Show/Hide"
@@ -9779,19 +9745,19 @@ msgstr ""
 msgid ""
 "Showing %ld revision(s), from revision %s to revision %s - %ld revision(s) "
 "selected, %ld file(s) selected"
-msgstr ""
+msgstr "Показано %ld ревізію(-й), з ревізії %s до ревізії %s - %ld обрано ревізій, %ld файлів обрано"
 
 #. Resource IDs: (IDS_MENUDESCREVISIONGRAPH)
 msgid "Shows a graphical representation of copies/tags/branches"
-msgstr "Показує графічне представлення копій/зрізів/гілок"
+msgstr "Показує графічне представлення копій/тегів/гілок"
 
 #. Resource IDs: (IDS_MENUDESCSHOWCHANGED)
 msgid "Shows all files which were changed since the last commit."
-msgstr ""
+msgstr "Показати усі файли які змінені з останньої фіксації"
 
 #. Resource IDs: (IDS_MENUDESCABOUT)
 msgid "Shows information about TortoiseGit"
-msgstr ""
+msgstr "Показати інформацію о TortoiseGit"
 
 #. Resource IDs: (IDS_MENUDESCREFLOG)
 msgid "Shows reference log"
@@ -9807,7 +9773,7 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_NEW_BRANCH_TAG: Control id 1523)
 msgid "Si&gn"
-msgstr ""
+msgstr "Пі&дпис"
 
 #. Resource IDs: (Dialog IDD_ABOUT: Control id 65535)
 msgid "Significant contributions by: (see Git repository for a complete list)"
@@ -9828,12 +9794,12 @@ msgstr "Розмір"
 
 #. Resource IDs: (IDS_PATHACTIONS_SKIP, IDS_REBASE_SKIP)
 msgid "Skip"
-msgstr ""
+msgstr "Пропустити"
 
 #. Resource IDs: (IDS_PROC_SKIPPATCH)
 #, c-format
 msgid "Skip Patch: %s"
-msgstr ""
+msgstr "Пропустити шляхи: %s"
 
 #. Resource IDs: (Dialog IDD_PROPPAGE: Control id 11029,
 #. IDS_PATHACTIONS_SKIPWORKTREE, IDS_STATUSLIST_SKIPWORKTREE)
@@ -9872,13 +9838,13 @@ msgstr ""
 msgid ""
 "Some file(s) have been changed outside TortoiseGitMerge.\n"
 "Do you want to load the changes?"
-msgstr ""
+msgstr "Деякі файли були змінені ззовні TortoiseGitMerge.\nЗагрузити зміни?"
 
 #. Resource IDs: (IDS_WARNMODIFIEDOUTSIDELOOSECHANGES)
 msgid ""
 "Some file(s) have been changed outside TortoiseGitMerge.\n"
 "Would you like to reload and lose your changes?"
-msgstr ""
+msgstr "Деякі файли були змінені ззовні TortoiseGitMerge.\nЗагрузити та втратит ваші зміни?"
 
 #. Resource IDs: (Dialog IDD_STATGRAPH: Control id 1126)
 msgid "Sort by commit count"
@@ -9886,7 +9852,7 @@ msgstr "Сортувати за кількістю фіксацій"
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS2: Control id 1795)
 msgid "Sort tag list in reversed order"
-msgstr ""
+msgstr "Сортувати список тегів у зворотньому напрямку"
 
 #. Resource IDs: (IDS_SETTINGS_MAXHISTORY_TT)
 msgid ""
@@ -9950,7 +9916,7 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAYHANDLERS: Control id 1542)
 msgid "Start registry editor"
-msgstr ""
+msgstr "Запуск редактора реестра"
 
 #. Resource IDs: (IDS_MENUDESCDAEMON)
 msgid "Starts a git server running git protocol"
@@ -9969,8 +9935,32 @@ msgstr ""
 msgid "Stash Apply"
 msgstr ""
 
+#. Resource IDs: (IDS_PROC_STASHAPPLYFAILED)
+msgid "Stash Apply failed!"
+msgstr ""
+
+#. Resource IDs: (IDS_PROC_STASHAPPLYFAILEDCONFLICTS)
+msgid "Stash Apply failed, there are conflicts"
+msgstr ""
+
+#. Resource IDs: (IDS_PROC_STASHAPPLYSUCCESS)
+msgid "Stash Apply successful"
+msgstr ""
+
 #. Resource IDs: (IDS_MENUSTASHLIST)
 msgid "Stash List"
+msgstr ""
+
+#. Resource IDs: (IDS_PROC_STASHPOPFAILED)
+msgid "Stash POP failed!"
+msgstr ""
+
+#. Resource IDs: (IDS_PROC_STASHPOPFAILEDCONFLICTS)
+msgid "Stash POP failed, there are conflicts"
+msgstr ""
+
+#. Resource IDs: (IDS_PROC_STASHPOPSUCCESS)
+msgid "Stash POP successful"
 msgstr ""
 
 #. Resource IDs: (IDS_MENUSTASHPOP)
@@ -9979,6 +9969,14 @@ msgstr ""
 
 #. Resource IDs: (IDS_MENUSTASHSAVE)
 msgid "Stash Save"
+msgstr ""
+
+#. Resource IDs: (IDS_PROC_STASHSUCCESS)
+msgid "Stash Success"
+msgstr ""
+
+#. Resource IDs: (IDS_PROC_STASHFAILED)
+msgid "Stash failed!"
 msgstr ""
 
 #. Resource IDs: (IDS_PROC_STASHRUNNING)
@@ -10006,7 +10004,7 @@ msgstr "Стан"
 
 #. Resource IDs: (ID_VIEW_STATUS_BAR - Ribbon name)
 msgid "Status Bar"
-msgstr ""
+msgstr "Рядок статуса"
 
 #. Resource IDs: (17087)
 msgid "Status Bar Configuration"
@@ -10063,7 +10061,7 @@ msgstr "Стиль"
 
 #. Resource IDs: (IDS_LOG_FILTER_SUBJECT, IDS_SUBJECT)
 msgid "Subject"
-msgstr ""
+msgstr "Тема"
 
 #. Resource IDs: (Dialog IDD_DIFFSUBMODULE: Control id 1714, Dialog
 #. IDD_DIFFSUBMODULE: Control id 1715, Dialog IDD_RESOLVESUBMODULECONFLICT:
@@ -10071,7 +10069,7 @@ msgstr ""
 #. Dialog IDD_RESOLVESUBMODULECONFLICT: Control id 1717, Dialog IDD_SENDMAIL:
 #. Control id 65535)
 msgid "Subject:"
-msgstr ""
+msgstr "Тема:"
 
 #. Resource IDs: (Dialog IDD_SYNC: Control id 1639)
 msgid "Submodule"
@@ -10128,7 +10126,7 @@ msgstr ""
 
 #. Resource IDs: (IDS_SUCCESS)
 msgid "Success"
-msgstr ""
+msgstr "Успішно"
 
 #. Resource IDs: (IDS_PROGRS_TITLE_SWITCH)
 msgid "Switch"
@@ -10141,7 +10139,7 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1522)
 msgid "Switch To"
-msgstr ""
+msgstr "Переключитись у"
 
 #. Resource IDs: (57681)
 msgid ""
@@ -10185,19 +10183,19 @@ msgstr "Перейти до вікна попереднього документ
 
 #. Resource IDs: (Dialog IDD_GITSWITCH: Control id 304)
 msgid "Switch/Checkout"
-msgstr ""
+msgstr "Переключити/витягнути"
 
 #. Resource IDs: (IDS_SWITCH_BRANCH)
 msgid "Switch/Checkout to"
-msgstr ""
+msgstr "Переключити/витягнути у"
 
 #. Resource IDs: (IDS_SWITCH_TO_THIS)
 msgid "Switch/Checkout to this..."
-msgstr ""
+msgstr "Переключити/витягнути до ціеї..."
 
 #. Resource IDs: (IDS_MENUDESCSWITCH)
 msgid "Switch/Checkout working tree to another branch/tag"
-msgstr ""
+msgstr "Переключити/витягнути робоче дерево до іншої гілки/тегу"
 
 #. Resource IDs: (IDS_FILEDIFF_SWITCHLEFTRIGHT_TT)
 msgid "Switches the comparison left<->right"
@@ -10223,7 +10221,7 @@ msgstr ""
 #. IDD_SETTINGSBUGTRAQ_CONFIG: Control id 1774, Dialog IDD_SETTINGSDIALOGS3:
 #. Control id 1774, IDS_SETTINGS_SYSTEM)
 msgid "System"
-msgstr ""
+msgstr "Системний"
 
 #. Resource IDs: (IDS_OFFLINEMODE)
 msgid "System in offline mode. Check Internet Explorer."
@@ -10249,7 +10247,7 @@ msgstr "TORTOISEGITUDIFF"
 
 #. Resource IDs: (Dialog IDD_CLONE: Control id 1513)
 msgid "Ta&gs:"
-msgstr ""
+msgstr "Те&ги:"
 
 #. Resource IDs: (16970)
 msgid "Tab Placeholder"
@@ -10264,7 +10262,7 @@ msgstr "Розмір табуляції:"
 #. Control id 1513, Dialog IDD_RESET: Control id 1513, Dialog
 #. IDD_SETTINGSCOLORS_2: Control id 65535, IDS_PROC_TAG)
 msgid "Tag"
-msgstr ""
+msgstr "Тег"
 
 #. Resource IDs: (IDS_PROC_TAG_FF)
 msgid "Tag (FF)"
@@ -10281,11 +10279,11 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_PULLFETCH: Control id 1485)
 msgid "Tags"
-msgstr ""
+msgstr "Теги"
 
 #. Resource IDs: (Dialog IDD_SETTINREMOTE: Control id 65535)
 msgid "Tags:"
-msgstr ""
+msgstr "Теги:"
 
 #. Resource IDs: (IDS_PROC_TASKS)
 msgid "Tasks"
@@ -10297,11 +10295,11 @@ msgstr "Панель завдань"
 
 #. Resource IDs: (Dialog IDD_SETTINGSSAVEDDATA: Control id 65535)
 msgid "Temp files (including Gravatar images)"
-msgstr ""
+msgstr "Тимчасові файли (включаючи картинки Gravatar)"
 
 #. Resource IDs: (Dialog IDD_SETTINGSBUGTRAQ_CONFIG: Control id 1787)
 msgid "Test"
-msgstr ""
+msgstr "Перевірка"
 
 #. Resource IDs: (IDS_PROGRS_DRYRUN)
 msgid "Test Only"
@@ -10309,7 +10307,7 @@ msgstr "Лише тест"
 
 #. Resource IDs: (IDS_TEXTFILEFILTER)
 msgid "Text Files (*.txt)|*.txt|All Files (*.*)|*.*||"
-msgstr ""
+msgstr "Текстові файли (*.txt)|*.txt|Усі файли (*.*)|*.*||"
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "Thai"
@@ -10330,9 +10328,9 @@ msgstr ""
 #. Resource IDs: (IDS_PROC_DELETEREMOTEBRANCH)
 #, c-format
 msgid ""
-"The branch \"%s\" is a <i>remote</i> branch.\n"
+"The branch \"%s\" is a remote branch.\n"
 "\n"
-"Do you really want to <ct=0x0000FF>delete</ct> it?"
+"Do you really want to delete it?"
 msgstr ""
 
 #. Resource IDs: (IDS_ERR_PATCH_CHUNKMISMATCH)
@@ -10341,7 +10339,7 @@ msgstr "Розмір кавалка не співпадає з кількіст�
 
 #. Resource IDs: (IDS_PROC_COMMITMESSAGE_EMPTY)
 msgid "The commit message must not be empty."
-msgstr ""
+msgstr "Повідомлення фіксації повинно бути заповнено"
 
 #. Resource IDs: (IDS_COMMIT_MERGE_HINT)
 msgid ""
@@ -10448,7 +10446,7 @@ msgid ""
 "The file\n"
 "%s\n"
 "is not a valid text file!"
-msgstr ""
+msgstr "Файл \n%s\nне текстовий файл!"
 
 #. Resource IDs: (IDS_PROC_REMOVEFORCEFOLDER)
 #, c-format
@@ -10464,7 +10462,7 @@ msgid ""
 "%s\n"
 "does not exist.\n"
 "Would you like to create it first?"
-msgstr ""
+msgstr "Тека \n%s\nне існуе.\nВи бажаете спочатку ії створити?"
 
 #. Resource IDs: (IDS_ERR_HOOKFAILED)
 #, c-format
@@ -10495,7 +10493,7 @@ msgstr "У рядку %d мав би бути рядок, який вказує 
 #. Resource IDs: (IDS_GOTO_OUTOFRANGE)
 #, c-format
 msgid "The line number must be in between %d and %d"
-msgstr ""
+msgstr "Номер строки повине бути між  %d та  %d"
 
 #. Resource IDs: (IDS_PROC_SYNC_NOFASTFORWARD)
 #, c-format
@@ -10579,7 +10577,7 @@ msgstr ""
 msgid ""
 "The regular expression is invalid!\n"
 "Please enter a valid regular expression."
-msgstr ""
+msgstr "Регулярне вираження невірне!\nБудьласка введіть правильне регулярне вираження."
 
 #. Resource IDs: (IDS_PROC_GITCONFIG_OVERWRITEREMOTE)
 #, c-format
@@ -10597,7 +10595,7 @@ msgstr ""
 
 #. Resource IDs: (IDS_PROC_REPOCREATEFINISHED)
 msgid "The repository was successfully created."
-msgstr ""
+msgstr "Сховище успішно створенно."
 
 #. Resource IDs: (IDS_PROGRS_REVERTMARKERS)
 msgid ""
@@ -10620,7 +10618,7 @@ msgid ""
 "%s\n"
 "is a special folder and is not supposed to be a repository root!\n"
 "Are you sure you want to initialize a git repository inside that folder?"
-msgstr ""
+msgstr "Цільова тека\n%s\nце спеціальна тека і не повинна бути корнем сховища!\nВи дійсно хочете ініціювати сховище git у цій теці?"
 
 #. Resource IDs: (IDS_WARN_GITINIT_FOLDERNOTEMPTY)
 #, c-format
@@ -10629,13 +10627,13 @@ msgid ""
 "%s\n"
 "is not empty!\n"
 "Are you sure you want to initialize a git repository inside that folder?"
-msgstr ""
+msgstr "Цільова тека\n%s\nне порожня!\nВи дійсно хочете ініціювати сховище git у цій теці?"
 
 #. Resource IDs: (IDS_TEXTIDENTICAL_MAIN)
 msgid ""
 "The text is identical, but the files do not match!\n"
 "The following differences were found:"
-msgstr ""
+msgstr "Тексти однакові, але файли не співпадають!\nЗнайдені наступні різниці:"
 
 #. Resource IDs: (IDS_SETTINGS_AUTOCOMPLETIONTIMEOUT_TT)
 msgid ""
@@ -10708,7 +10706,7 @@ msgid ""
 "There is nothing to add.\n"
 "All the files and folders are either under version control,\n"
 "have been ignored or the global ignore configuration setting."
-msgstr ""
+msgstr "Нічого додавати.\nУсі файли та теки під версіонним управлінням,\nігноровані або ігноровані глобальними налаштуваннями."
 
 #. Resource IDs: (IDS_SPELLEDIT_THESAURUS)
 msgid "Thesaurus"
@@ -10720,9 +10718,17 @@ msgid ""
 "changes that were made before the application closed."
 msgstr ""
 
+#. Resource IDs: (IDS_PROC_BROWSEREFS_WARNINGDELETEREMOTEBRANCHES)
+msgid "This action will remove the branches on the remote."
+msgstr ""
+
+#. Resource IDs: (IDS_PROC_BROWSEREFS_WARNINGUNMERGED)
+msgid "This branch is not fully merged into HEAD."
+msgstr ""
+
 #. Resource IDs: (IDS_ERR_MISSINGVALUE)
 msgid "This field is required and must not be empty."
-msgstr ""
+msgstr "Це обов'язкове поле і повинно бути заповнено."
 
 #. Resource IDs: (IDS_ERR_MUSTBEURL)
 msgid ""
@@ -10735,7 +10741,7 @@ msgid ""
 "This is not a valid path!\n"
 "A valid path must not contain '<<>|\"?*:' or one of the following device names:\n"
 "com1-com9, lpt1-lpt9, prn, aux, con, nul, clock$"
-msgstr ""
+msgstr "Це не вірний шлях\nВірний шлях не повинен мати '<<>|\"?*:' або наступних імен устройств:\ncom1-com9, lpt1-lpt9, prn, aux, con, nul, clock$"
 
 #. Resource IDs: (IDS_PROC_LOG_ONLYONCE)
 msgid ""
@@ -10797,7 +10803,7 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_DIFFSUBMODULE: Control id 1676)
 msgid "To"
-msgstr ""
+msgstr "До"
 
 #. Resource IDs: (IDS_PROC_GITCONFIG_ASKTAGOPT)
 msgid ""
@@ -10812,7 +10818,7 @@ msgid ""
 "\n"
 "If you wish to completely clear Gravatar images,\n"
 "you may also need to clear Internet Explorer Temporary Internet Files."
-msgstr ""
+msgstr "Щоб очистити тимчасові файли, ви повинні перевірити що нема інших запущенних TortoiseGit программ.\n\nЯкщо ви хочете повністью очистити картинку Gravatar,\nви також повинні очистити тимчасові файл Internet Explorer."
 
 #. Resource IDs: (Dialog IDD_FORMAT_PATCH: Control id 65535, Dialog
 #. IDD_LOGMESSAGE: Control id 1201, Dialog IDD_REVGRAPHFILTER: Control id
@@ -10882,7 +10888,7 @@ msgid ""
 "The commit dialog cannot handle this.\n"
 "\n"
 "Do you want to restore or remove it from the index?"
-msgstr ""
+msgstr "TortoiseGit виявив що файл \"%s\" не існуе, але мае статус \"Доданий\" або \"Змінений\".\nДіалог фіксації не може обробити це.\n\nВи хочете відновити або видалити його з індексу?"
 
 #. Resource IDs: (IDS_PROC_MULTIRENAME)
 #, c-format
@@ -10890,6 +10896,15 @@ msgid ""
 "TortoiseGit has detected similar filenames. Do you want the files:%s\n"
 "to be renamed too?"
 msgstr ""
+
+#. Resource IDs: (IDS_PROC_RTFM)
+msgid ""
+"TortoiseGit is a shell extension.\n"
+"That means it is integrated into the Windows explorer.\n"
+"To use TortoiseGit please open the explorer and right-click on any folder you like\n"
+"to bring up the context menu where you will find all TortoiseGit commands.\n"
+"And read the manual!"
+msgstr "TortoiseGit це розширення оболонки.\nЦе означає що він вбудован у Провідник Windows.\nЩоб використовувати TortoiseGit відкрийте провідник та зробить правий клік на будьякому файлі або будьякій теці\nдля відображення контекстного меню де ви можете знайти усі команди TortoiseGit.\nТа прочитайте посібник користувача!"
 
 #. Resource IDs: (IDS_SETTINGS_OVERLAYINFO2)
 #, c-format
@@ -11013,7 +11028,7 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1520)
 msgid "Track"
-msgstr ""
+msgstr "Выдслідковувати"
 
 #. Resource IDs: (Dialog IDD_PROPPAGE: Control id 11023)
 msgid "Tracked Remote Branch:"
@@ -11046,7 +11061,7 @@ msgstr "Спробуйте 'Прибрати'. Якщо це не спрацює
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "Turkish"
-msgstr ""
+msgstr "Турецький"
 
 #. Resource IDs: (IDS_MENUDESCSETTINGS)
 msgid "Tweak TortoiseGit"
@@ -11060,7 +11075,7 @@ msgstr "Тип"
 #. IDD_RESOLVESUBMODULECONFLICT: Control id 1720, Dialog
 #. IDD_RESOLVESUBMODULECONFLICT: Control id 1722)
 msgid "Type:"
-msgstr ""
+msgstr "Тип:"
 
 #. Resource IDs: (Dialog IDD_URL: Control id 164, IDS_STATUSLIST_COLURL)
 msgid "URL"
@@ -11183,7 +11198,7 @@ msgstr "Об'єднані ві&дмінності HEAD-модифікацій"
 
 #. Resource IDs: (IDS_PATHACTIONS_UNKNOWN, IDS_SUBMODULEDIFF_UNKNOWN)
 msgid "Unknown"
-msgstr ""
+msgstr "Невідомо"
 
 #. Resource IDs: (IDS_git_DEPTH_UNKNOWN)
 msgid "Unknown depth"
@@ -11362,7 +11377,7 @@ msgstr "Використовувати колір локальної гілки 
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS2: Control id 1432)
 msgid "Use recycle bin when reverting"
-msgstr "Використовувати смітник під час відвертання"
+msgstr "Використовувати корзину під час відвертання"
 
 #. Resource IDs: (IDS_LOG_FILTER_REGEX)
 msgid "Use regular expression"
@@ -11378,7 +11393,7 @@ msgstr "Використовувати пробіли"
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 1426)
 msgid "Use system locale for date/time"
-msgstr "Викорстовувати системну локаль для дати/часу"
+msgstr "Викор. системну локаль для дати/часу"
 
 #. Resource IDs: (IDS_VIEWCONTEXTMENU_USEYOURBLOCK)
 msgid "Use text block from '&mine'"
@@ -11495,7 +11510,7 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_CLONE: Control id 1650)
 msgid "User&name:"
-msgstr ""
+msgstr "Користувач:"
 
 #. Resource IDs: (Dialog IDD_SETTINGSCREDENTIAL: Control id 65535,
 #. IDS_AUTH_USERNAME)
@@ -11533,25 +11548,25 @@ msgstr "Версія"
 #. Resource IDs: (IDS_VERSION)
 #, c-format
 msgid "Version %d.%d.%d.%d"
-msgstr "Version %d.%d.%d.%d"
+msgstr "Версія %d.%d.%d.%d"
 
 #. Resource IDs: (Dialog IDD_DIFFFILES: Control id 1644,
-#. IDS_PROC_FILEDIFF_VERSION1)
-msgid "Version 1"
-msgstr "Версія 1"
+#. IDS_PROC_FILEDIFF_VERSION1BASE)
+msgid "Version 1 (Base)"
+msgstr ""
 
-#. Resource IDs: (IDS_PROC_FILEDIFF_VERSION1NEWER)
-msgid "Version 1 (Newer commit time)"
-msgstr "Версія 1 (Новіший час фіксації)"
+#. Resource IDs: (IDS_PROC_FILEDIFF_VERSION1BASENEWER)
+msgid "Version 1 (Base, Newer commit time)"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_DIFFFILES: Control id 1645,
-#. IDS_PROC_FILEDIFF_VERSION2BASE)
-msgid "Version 2 (Base)"
-msgstr "Версія 2 (Базова)"
+#. IDS_PROC_FILEDIFF_VERSION2)
+msgid "Version 2"
+msgstr ""
 
-#. Resource IDs: (IDS_PROC_FILEDIFF_VERSION2BASENEWER)
-msgid "Version 2 (Base) (Newer commit time)"
-msgstr "Версія 2 (Базова) (Новіший час фіксації)"
+#. Resource IDs: (IDS_PROC_FILEDIFF_VERSION2NEWER)
+msgid "Version 2 (Newer commit time)"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_ABOUT: Control id 1075)
 msgid "Version Information"
@@ -11600,7 +11615,7 @@ msgstr "Переглянути ревізію в сторонньому реда
 
 #. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 1717)
 msgid "View system&wide gitconfig"
-msgstr "Переглянути загально&системний gitconfig"
+msgstr "Перег. &системний gitconfig"
 
 #. Resource IDs: (Dialog IDD_ABOUT: Control id 1084)
 msgid "Visit our website"
@@ -11647,14 +11662,6 @@ msgstr "Попередження"
 msgid "Warning!"
 msgstr "Увага!"
 
-#. Resource IDs: (IDS_PROC_DELETEREF)
-#, c-format
-msgid ""
-"Warning: \"%s\" will be permanently deleted. It can <ct=0x0000FF><b>NOT</b></ct> be recovered!\n"
-"\n"
-"Do you really want to continue?"
-msgstr "Попередження: \"%s\" буде остаточно видалено. Його <ct=0x0000FF> <b>не</b> може буде відновлено! \n\nВи дійсно бажаєте продовжити?</ct=0x0000FF>"
-
 #. Resource IDs: (65535 - PopupMenu)
 msgid "Western European"
 msgstr "Західно-Європейський"
@@ -11663,7 +11670,7 @@ msgstr "Західно-Європейський"
 msgid ""
 "When activated, hold down the SHIFT key when right-clicking to get the "
 "TortoiseGit menus added to the context menu"
-msgstr ""
+msgstr "Коли вибране, утримуйте клавішу SHIFT коли визиваете меню  щоб TortoiseGit  меню було добавлене у контекстне меню "
 
 #. Resource IDs: (IDS_AM_IGNORE_SPACE_TT)
 msgid ""
@@ -11710,7 +11717,7 @@ msgstr ""
 
 #. Resource IDs: (IDS_SETTINGS_DESCRIBESTRATEGY_TT)
 msgid "Whether to reference only annotated tags, all tags or all refs"
-msgstr ""
+msgstr "Посилатися тільки анатовані теги, усі теги або усі refs"
 
 #. Resource IDs: (IDS_DAEMON_SECURITY_WARN)
 msgid ""
@@ -11821,7 +11828,7 @@ msgstr ""
 
 #. Resource IDs: (IDS_PROC_YESTOALL)
 msgid "Yes to all"
-msgstr ""
+msgstr "Так для усіх"
 
 #. Resource IDs: (IDS_CHECKNEWER_YOURUPTODATE)
 msgid "You already have the latest version installed."
@@ -11945,7 +11952,7 @@ msgstr "Слід вибрати зображення!"
 #. Resource IDs: (IDS_SETTINGS_ICONSETCHANGED)
 #, c-format
 msgid ""
-"You've changed the icon set from <i>%s</i> to <i>%s</i>.\n"
+"You've changed the icon set from \"%s\" to \"%s\".\n"
 "That change won't take effect until you restart your computer or logoff and logon again!"
 msgstr ""
 
@@ -11966,7 +11973,7 @@ msgstr "Ваша версія: %d.%d.%d.%d"
 
 #. Resource IDs: (Dialog IDD_EXPORT: Control id 1074)
 msgid "Zip File"
-msgstr ""
+msgstr "Zip Файл"
 
 #. Resource IDs: (ID_VIEW_ZOOMOUT - Menu)
 msgid "Zoo&m out\t-"
@@ -12066,11 +12073,19 @@ msgstr ""
 #. Resource IDs: (IDS_PROC_REFINVALID)
 #, c-format
 msgid "\"%s\" is invalid."
-msgstr ""
+msgstr "\"%s\" невірний."
 
 #. Resource IDs: (IDS_ERR_NOT_REPOSITORY)
 #, c-format
 msgid "\"%s\" is not git repository"
+msgstr "\"%s\" не є сховищем git"
+
+#. Resource IDs: (IDS_PROC_DELETEREF)
+#, c-format
+msgid ""
+"\"%s\" will be permanently deleted. It can NOT be recovered!\n"
+"\n"
+"Do you really want to continue?"
 msgstr ""
 
 #. Resource IDs: (IDS_PROC_APPLYPATCH_GITAMACTIVE)
@@ -12114,7 +12129,7 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_ABOUT: Control id 65535)
 msgid "based on TortoiseSVN (http://www.tortoisesvn.net/)"
-msgstr ""
+msgstr "засновано на TortoiseSVN (http://www.tortoisesvn.net/)"
 
 #. Resource IDs: (Dialog IDD_SETTINGSBUGTRAQ_CONFIG: Control id 65535)
 msgid "bugtraq.append"
@@ -12158,7 +12173,7 @@ msgstr "конфліктних"
 msgid ""
 "copied from\n"
 "%s - revision %ld"
-msgstr ""
+msgstr "скопіьовано з\n%s - ревізія %ld"
 
 #. Resource IDs: (IDS_STATGRAPH_COMMITSBYDATEXDAY)
 msgid "day"
@@ -12222,7 +12237,7 @@ msgstr "незавершено"
 #. Control id 1780, Dialog IDD_SETTINGSDIALOGS3: Control id 1781, Dialog
 #. IDD_SETTINGSDIALOGS3: Control id 1782)
 msgid "inherit"
-msgstr ""
+msgstr "успадкувати"
 
 #. Resource IDs: (IDS_STATUSLIST_KEEPLOCAL)
 msgid "item kept locally"
@@ -12279,7 +12294,7 @@ msgstr "відсутні"
 
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_1: Control id 65535)
 msgid "missing/deleted/replaced"
-msgstr ""
+msgstr "Выдсутні/видалені/замінені"
 
 #. Resource IDs: (IDS_STATUSMODIFIED)
 msgid "modified"
@@ -12287,7 +12302,7 @@ msgstr "змінено"
 
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_1: Control id 65535)
 msgid "modified/copied"
-msgstr ""
+msgstr "змінені/з копіювані"
 
 #. Resource IDs: (IDS_STATGRAPH_COMMITSBYDATEXMONTH)
 msgid "month"
@@ -12311,7 +12326,7 @@ msgstr "неверсійних"
 
 #. Resource IDs: (IDS_ENCRYPT_NONE)
 msgid "none"
-msgstr ""
+msgstr "нема"
 
 #. Resource IDs: (IDS_STATUSNORMAL)
 msgid "normal"
@@ -12319,7 +12334,7 @@ msgstr "нормально"
 
 #. Resource IDs: (IDS_NOTFOUND)
 msgid "not found"
-msgstr ""
+msgstr "не знайдено"
 
 #. Resource IDs: (IDS_STATUSOBSTRUCTED)
 msgid "obstructed"
@@ -12340,6 +12355,13 @@ msgstr "пікселі"
 
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_1: Control id 65535)
 msgid "possible or real conflict/obstructed"
+msgstr "можливі або дійсні конфлікти/перешкоди"
+
+#. Resource IDs: (IDS_PROC_APPLYPATCH_REBASEDIRFOUND)
+msgid ""
+"previous rebase directory rebase-apply still exists but mbox given.\n"
+"\n"
+"Do you want to"
 msgstr ""
 
 #. Resource IDs: (61509)
@@ -12352,11 +12374,11 @@ msgstr "квартал"
 
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_1: Control id 65535)
 msgid "renamed"
-msgstr ""
+msgstr "перейменовані"
 
 #. Resource IDs: (IDS_STATUSREPLACED)
 msgid "replaced"
-msgstr "замінено"
+msgstr "замінені"
 
 #. Resource IDs: (IDS_PATCH_SEARCHPATHLINE1)
 msgid "scanning path:"
@@ -12385,7 +12407,7 @@ msgstr "до %1"
 #. Resource IDs: (IDS_PROC_CPYMVPROG2, IDS_SVNPROGRESS_EXPORTINGTO)
 #, c-format
 msgid "to %s"
-msgstr ""
+msgstr "до %s"
 
 #. Resource IDs: (Dialog IDD_PUSH: Control id 1480)
 msgid "u&nknown changes"

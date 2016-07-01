@@ -11,7 +11,7 @@
 # Arkady Shapkin <arkadiy_s@inbox.ru>, 2011
 # KOLANICH, 2013-2015
 # _deniska <denis_levin@mail.ru>, 2011
-# Dimitriy Ryazantcev <DJm00n@mail.ru>, 2015
+# Dimitriy Ryazantcev <DJm00n@mail.ru>, 2015-2016
 # Дмитрий Сытьков <sytkov@gmail.com>, 2011
 # German Borisov <borisov.german@gmail.com>, 2012-2013
 # KOLANICH, 2013
@@ -30,8 +30,8 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2016-03-02 04:34+0000\n"
-"Last-Translator: Andrei Stepanov\n"
+"PO-Revision-Date: 2016-06-23 10:28+0000\n"
+"Last-Translator: Dimitriy Ryazantcev <DJm00n@mail.ru>\n"
 "Language-Team: Russian (http://www.transifex.com/lznuaa/tortoisegit/language/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -674,7 +674,7 @@ msgstr "&Исправить..."
 
 #. Resource IDs: (Dialog IDD_REBASE: Control id 1827)
 msgid "&Edit/Split commit"
-msgstr "&Редактировать/разделить фиксацию"
+msgstr "&Редактировать/разделить коммит"
 
 #. Resource IDs: (Dialog IDD_SYNC: Control id 1614)
 msgid "&Email Patch"
@@ -802,6 +802,10 @@ msgstr "&Игнорировать"
 #, c-format
 msgid "&Ignore %d items by name"
 msgstr "Игнорировать %d &элементов по имени"
+
+#. Resource IDs: (IDS_MENUIGNOREMULTIPLE2)
+msgid "&Ignore multiple items by name"
+msgstr ""
 
 #. Resource IDs: (ID_VIEW_IGNORE_WHITESPACE - Menu)
 msgid "&Ignore whitespace"
@@ -1417,7 +1421,7 @@ msgstr "&Вид:"
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS3: Control id 65535)
 msgid "&Warn on missing Signed-Off-By on commit"
-msgstr "&Предупреждать о неверной подписи фиксации"
+msgstr "&Предупреждать о неверной подписи коммита"
 
 #. Resource IDs: (Dialog IDD_EXPORT: Control id 1203, Dialog
 #. IDD_SUBMODULE_UPDATE: Control id 1203)
@@ -1594,79 +1598,6 @@ msgstr "<Разделитель>"
 msgid "<Untitled>"
 msgstr "<Неназванный>"
 
-#. Resource IDs: (IDS_PROC_RTFM)
-msgid ""
-"<b>TortoiseGit</b> is a shell extension.\n"
-"That means it is integrated into the Windows explorer.\n"
-"To use <b>TortoiseGit</b> please open the explorer and right-click on any folder you like\n"
-"to bring up the context menu where you will find all <b>TortoiseGit</b> commands.\n"
-"And <u>read the manual!</u>"
-msgstr "<b>TortoiseGit</b> - это расширение оболочки.\nЭто значит, что оно встроено в Проводник Windows.\nДля использования <b>TortoiseGit</b> откройте Проводник и щелкните правой кнопкой мыши на любой папке\nдля вызова контекстного меню, в котором можно найти все команды <b>TortoiseGit</b>.\nИ обязательно <u>читайте руководство</u>!"
-
-#. Resource IDs: (IDS_PROC_BROWSEREFS_WARNINGNOMERGECHECK)
-msgid ""
-"<b>Warning:</b> It has not been checked if these branches have been fully "
-"merged into HEAD."
-msgstr "<b>Предупреждение:</b> Не проверено, полностью ли влиты эти ветви в ГОЛОВНУЮ."
-
-#. Resource IDs: (IDS_PROC_BROWSEREFS_WARNINGDELETEREMOTEBRANCHES)
-msgid "<b>Warning:</b> This action will remove the branches on the remote."
-msgstr "<b>Предупреждение:</b> Это действие удалит ветви во внешнем хранилище."
-
-#. Resource IDs: (IDS_PROC_BROWSEREFS_WARNINGUNMERGED)
-msgid "<b>Warning:</b> This branch is not fully merged into HEAD."
-msgstr "<b>Предупреждение:</b> Эта ветвь не полностью влита в ГОЛОВНУЮ."
-
-#. Resource IDs: (IDS_PROC_COMMIT_DETACHEDWARNING)
-msgid ""
-"<ct=0x0000FF>Current HEAD Detached</ct>, you are working on (no branch).\n"
-"Do you want to create a branch now?"
-msgstr "<ct=0x0000FF>Текущая ГОЛОВНАЯ ветвь отсоединена</ct>, с которой вы работаете (нет ветви).\nВы хотите создать ветвь сейчас?"
-
-#. Resource IDs: (IDS_PROC_DELETEALLSTASH)
-#, c-format
-msgid "<ct=0x0000FF>Do you really want to delete <b>ALL %d</b> stash?</ct>"
-msgstr "<ct=0x0000FF>Вы действительно хотите удалить <b>ВСЮ %d</b> копилку?</ct>"
-
-#. Resource IDs: (IDS_PROC_STASHAPPLYFAILED)
-msgid "<ct=0x0000FF>Stash Apply failed!!!</ct>"
-msgstr "<ct=0x0000FF>Применение в копилку не удалось!!!</ct>"
-
-#. Resource IDs: (IDS_PROC_STASHPOPFAILED)
-msgid "<ct=0x0000FF>Stash POP failed!!!</ct>"
-msgstr "<ct=0x0000FF>Забрать из копилки не удалось!!!</ct>"
-
-#. Resource IDs: (IDS_PROC_STASHFAILED)
-msgid "<ct=0x0000FF>Stash failed!!!</ct>"
-msgstr "<ct=0x0000FF>Копилка не удалась!!!</ct>"
-
-#. Resource IDs: (IDS_PROC_APPLYPATCH_REBASEDIRFOUND)
-msgid ""
-"<ct=0x0000FF>previous rebase directory rebase-apply still exists but mbox given</ct>\n"
-"\n"
-"Do you want to"
-msgstr "<ct=0x0000FF>предыдущий каталог перебазирования все еще существует в режиме применения перебазирования, но почтовый ящик уже выдан</ct>\n\nВы хотите"
-
-#. Resource IDs: (IDS_PROC_STASHAPPLYFAILEDCONFLICTS)
-msgid "<ct=0x0000ff>Stash Apply failed, there are conflicts</ct>"
-msgstr "<ct=0x0000FF>Применение в копилку не удалось, появились конфликты</ct>"
-
-#. Resource IDs: (IDS_PROC_STASHPOPFAILEDCONFLICTS)
-msgid "<ct=0x0000ff>Stash POP failed, there are conflicts</ct>"
-msgstr "<ct=0x0000FF>Забрать из копилки не удалось, появились конфликты</ct>"
-
-#. Resource IDs: (IDS_PROC_STASHAPPLYSUCCESS)
-msgid "<ct=0xff0000>Stash Apply successful</ct>"
-msgstr "<ct=0xff0000>Применение в копилку успешно</ct>"
-
-#. Resource IDs: (IDS_PROC_STASHPOPSUCCESS)
-msgid "<ct=0xff0000>Stash POP successful</ct>"
-msgstr "<ct=0xff0000>Забралось из копилки успешно</ct>"
-
-#. Resource IDs: (IDS_PROC_STASHSUCCESS)
-msgid "<ct=0xff0000>Stash Success</ct>"
-msgstr "<ct=0xff0000>Копилка успешно создана</ct>"
-
 #. Resource IDs: (16603)
 msgid "<descr>"
 msgstr "<descr>"
@@ -1697,7 +1628,7 @@ msgstr "Ветка с таким именем уже существует."
 msgid ""
 "A merge process is active, so this commit will be a merge commit. In order "
 "to abort a merge, you have to perform a reset or forced checkout."
-msgstr "Процесс слияния активен, из-за чего эта фиксация будет фиксацией слияния. Чтобы прервать слияние, необходимо выполнить восстановление или сброс ветви."
+msgstr "Процесс слияния активен, из-за чего этот коммит будет коммитом-слиянием. Чтобы прервать слияние, необходимо выполнить восстановление или сброс ветви."
 
 #. Resource IDs: (IDS_CHECKNEWER_NEWERVERSIONAVAILABLE)
 msgid "A newer version is available. Please download the current version!"
@@ -1856,7 +1787,7 @@ msgstr "Добавить \"&Подписано\""
 
 #. Resource IDs: (IDS_REBASE_ADDANOTHERCOMMIT)
 msgid "Add another commit?"
-msgstr "Добавить ещё одну фиксацию?"
+msgstr "Добавить ещё один коммит?"
 
 #. Resource IDs: (IDS_DLGTITLE_ADD_DIFF_TOOL)
 msgid "Add extension specific diff program"
@@ -2161,9 +2092,9 @@ msgstr "Вы уверены, что желаете пометить конфли
 #. Resource IDs: (IDS_PROC_WARNREVERT)
 #, c-format
 msgid ""
-"Are you sure you want to revert %d item(s)? You will lose <b>all</b> changes"
-" since the last update!"
-msgstr "Вы действительно желаете убрать изменения в %d элементе(ах)? Вы потеряете <b>все</b> изменения с момента последнего обновления!"
+"Are you sure you want to revert %d item(s)? You will lose ALL changes since "
+"the last update!"
+msgstr ""
 
 #. Resource IDs: (IDS_WARNUSERSAFEDIFFERENT)
 #, c-format
@@ -2361,7 +2292,8 @@ msgstr "Балтийский"
 msgid "Bar Graph"
 msgstr "Гистограмма"
 
-#. Resource IDs: (Dialog IDD_RESOLVESUBMODULECONFLICT: Control id 1385)
+#. Resource IDs: (Dialog IDD_RESOLVESUBMODULECONFLICT: Control id 1385,
+#. IDS_PROC_DIFF_BASE)
 msgid "Base"
 msgstr "Основа"
 
@@ -3772,6 +3704,12 @@ msgstr "Текущая ветвь"
 msgid "Current Branch:"
 msgstr "Текущая ветвь:"
 
+#. Resource IDs: (IDS_PROC_COMMIT_DETACHEDWARNING)
+msgid ""
+"Current HEAD is detached, you are working on (no branch).\n"
+"Do you want to create a branch now?"
+msgstr ""
+
 #. Resource IDs: (IDS_REBASE_UPTODATE_FMT)
 #, c-format
 msgid ""
@@ -3900,6 +3838,10 @@ msgstr "Удалить все метки"
 msgid "Delete and &ignore %d items by name"
 msgstr "Удалить и игнорировать %d &элементов по имени"
 
+#. Resource IDs: (IDS_MENUDELETEIGNOREMULTIPLE2)
+msgid "Delete and &ignore multiple items by name"
+msgstr ""
+
 #. Resource IDs: (IDS_MENUDELETEIGNORE)
 msgid "Delete and add to &ignore list"
 msgstr "Удалить и добавить в список &игнорирования"
@@ -3908,6 +3850,10 @@ msgstr "Удалить и добавить в список &игнорирова
 #, c-format
 msgid "Delete and ignore %d items by &extension"
 msgstr "Удалить и игнорировать %d элементов по рас&ширению"
+
+#. Resource IDs: (IDS_MENUDELETEIGNOREMULTIPLEMASK2)
+msgid "Delete and ignore multiple items by &extension"
+msgstr ""
 
 #. Resource IDs: (IDS_PROC_BROWSEREFS_DELETEBRANCH)
 msgid "Delete branch"
@@ -4249,10 +4195,15 @@ msgstr "Не показывать контекстное меню для сле�
 msgid "Do not use recycle bin"
 msgstr "Удалять сразу, без корзины"
 
+#. Resource IDs: (IDS_PROC_DELETEALLSTASH)
+#, c-format
+msgid "Do you really want to delete ALL %d stash?"
+msgstr ""
+
 #. Resource IDs: (IDS_PROC_DELETEBRANCHTAG)
 #, c-format
-msgid "Do you really want to <ct=0x0000FF>delete</ct> <b>%s</b>?"
-msgstr "Вы действительно хотите <ct=0x0000FF>удалить</ct> <b>%s</b>?"
+msgid "Do you really want to delete \"%s\"?"
+msgstr ""
 
 #. Resource IDs: (16109)
 #, c-format
@@ -4281,9 +4232,9 @@ msgstr "Вы действительно желаете переместить э
 #. Resource IDs: (IDS_PROC_DELETENREFS)
 #, c-format
 msgid ""
-"Do you really want to permanently delete the %d selected refs? It can "
-"<ct=0x0000FF><b>NOT</b></ct> be recovered!"
-msgstr "Вы действительно хотите навсегда удалить %d выбранных ссылок? Они <ct=0x0000FF><b>НЕ</b></ct> смогут быть восстановлены!"
+"Do you really want to permanently delete the %d selected refs? It can NOT be"
+" recovered!"
+msgstr ""
 
 #. Resource IDs: (IDS_WARN_DELETE_ONE_FROM_INDEX)
 #, c-format
@@ -5010,6 +4961,10 @@ msgstr "Извлечь"
 msgid "Fetch && Re&base"
 msgstr "Извлечь && Пере&базировать"
 
+#. Resource IDs: (IDS_PROC_SYNC_FETCHALL)
+msgid "Fetch all refs"
+msgstr ""
+
 #. Resource IDs: (IDS_MENUDESCFETCH)
 msgid "Fetch commits from a remote repository."
 msgstr "Извлечь фиксации из внешнего хранилища"
@@ -5262,7 +5217,7 @@ msgstr "Для справки нажмите F1. Для горизонтальн
 msgid "For complete history deselect 'Stop on copy/rename'"
 msgstr "Для получения полного списка разотметьте 'Остановиться на копировании/переименовании'"
 
-#. Resource IDs: (IDS_PULL_SETTRACKEDBRANCH)
+#. Resource IDs: (IDS_NOTYET_SETTRACKEDBRANCH)
 #, c-format
 msgid ""
 "For the current branch \"%s\" no tracked branch is configured.\n"
@@ -6192,6 +6147,10 @@ msgstr "Игнорировать элемент(ы) рекурсивно"
 msgid "Ignore line &endings (recommended)"
 msgstr "Игнорировать &завершения строк(рекомендуется)"
 
+#. Resource IDs: (IDS_MENUIGNOREMULTIPLEMASK2)
+msgid "Ignore multiple items by &extension"
+msgstr ""
+
 #. Resource IDs: (IDS_DIFFOPTION_IGNORESPACEATEOL)
 msgid "Ignore space at EOL"
 msgstr "Игнорировать все пробелы в конце строки"
@@ -6361,6 +6320,11 @@ msgstr "Неверный номер ревизии!"
 #. Resource IDs: (Dialog IDD_CERTCHECK: Control id 65535)
 msgid "Issuer:"
 msgstr "Издатель:"
+
+#. Resource IDs: (IDS_PROC_BROWSEREFS_WARNINGNOMERGECHECK)
+msgid ""
+"It has not been checked if these branches have been fully merged into HEAD."
+msgstr ""
 
 #. Resource IDs: (IDS_PROC_CASERENAME)
 msgid ""
@@ -9978,9 +9942,33 @@ msgstr "&Сообщение копилки"
 msgid "Stash Apply"
 msgstr "Применить в копилку"
 
+#. Resource IDs: (IDS_PROC_STASHAPPLYFAILED)
+msgid "Stash Apply failed!"
+msgstr ""
+
+#. Resource IDs: (IDS_PROC_STASHAPPLYFAILEDCONFLICTS)
+msgid "Stash Apply failed, there are conflicts"
+msgstr ""
+
+#. Resource IDs: (IDS_PROC_STASHAPPLYSUCCESS)
+msgid "Stash Apply successful"
+msgstr ""
+
 #. Resource IDs: (IDS_MENUSTASHLIST)
 msgid "Stash List"
 msgstr "Лист копилки"
+
+#. Resource IDs: (IDS_PROC_STASHPOPFAILED)
+msgid "Stash POP failed!"
+msgstr ""
+
+#. Resource IDs: (IDS_PROC_STASHPOPFAILEDCONFLICTS)
+msgid "Stash POP failed, there are conflicts"
+msgstr ""
+
+#. Resource IDs: (IDS_PROC_STASHPOPSUCCESS)
+msgid "Stash POP successful"
+msgstr ""
 
 #. Resource IDs: (IDS_MENUSTASHPOP)
 msgid "Stash Pop"
@@ -9989,6 +9977,14 @@ msgstr "Забрать из копилки"
 #. Resource IDs: (IDS_MENUSTASHSAVE)
 msgid "Stash Save"
 msgstr "Сохранить в копилку"
+
+#. Resource IDs: (IDS_PROC_STASHSUCCESS)
+msgid "Stash Success"
+msgstr ""
+
+#. Resource IDs: (IDS_PROC_STASHFAILED)
+msgid "Stash failed!"
+msgstr ""
 
 #. Resource IDs: (IDS_PROC_STASHRUNNING)
 msgid "Stash operation running..."
@@ -10339,10 +10335,10 @@ msgstr "Значение \"количество\" для этих \"Послед
 #. Resource IDs: (IDS_PROC_DELETEREMOTEBRANCH)
 #, c-format
 msgid ""
-"The branch \"%s\" is a <i>remote</i> branch.\n"
+"The branch \"%s\" is a remote branch.\n"
 "\n"
-"Do you really want to <ct=0x0000FF>delete</ct> it?"
-msgstr "Ветвь \"%s\" является <i>внешней</i> ветвью.\n\nВы действительно хотите <ct=0x0000FF>удалить</ct> ее?"
+"Do you really want to delete it?"
+msgstr ""
 
 #. Resource IDs: (IDS_ERR_PATCH_CHUNKMISMATCH)
 msgid "The chunk size did not match the number of added/removed lines!"
@@ -10729,6 +10725,14 @@ msgid ""
 "changes that were made before the application closed."
 msgstr "Содержатся недавно сохранённые документы содержащие изменения, которые были сделаны до закрытия приложения."
 
+#. Resource IDs: (IDS_PROC_BROWSEREFS_WARNINGDELETEREMOTEBRANCHES)
+msgid "This action will remove the branches on the remote."
+msgstr ""
+
+#. Resource IDs: (IDS_PROC_BROWSEREFS_WARNINGUNMERGED)
+msgid "This branch is not fully merged into HEAD."
+msgstr ""
+
 #. Resource IDs: (IDS_ERR_MISSINGVALUE)
 msgid "This field is required and must not be empty."
 msgstr "Это поле обязательно и не может быть пустым."
@@ -10899,6 +10903,15 @@ msgid ""
 "TortoiseGit has detected similar filenames. Do you want the files:%s\n"
 "to be renamed too?"
 msgstr "TortoiseGit обнаружил похожие имена. Желаете ли вы, чтобы следующие файлы: %s\nтоже были бы переименованы?"
+
+#. Resource IDs: (IDS_PROC_RTFM)
+msgid ""
+"TortoiseGit is a shell extension.\n"
+"That means it is integrated into the Windows explorer.\n"
+"To use TortoiseGit please open the explorer and right-click on any folder you like\n"
+"to bring up the context menu where you will find all TortoiseGit commands.\n"
+"And read the manual!"
+msgstr ""
 
 #. Resource IDs: (IDS_SETTINGS_OVERLAYINFO2)
 #, c-format
@@ -11545,22 +11558,22 @@ msgid "Version %d.%d.%d.%d"
 msgstr "Версия: %d.%d.%d.%d"
 
 #. Resource IDs: (Dialog IDD_DIFFFILES: Control id 1644,
-#. IDS_PROC_FILEDIFF_VERSION1)
-msgid "Version 1"
-msgstr "Версия 1"
+#. IDS_PROC_FILEDIFF_VERSION1BASE)
+msgid "Version 1 (Base)"
+msgstr ""
 
-#. Resource IDs: (IDS_PROC_FILEDIFF_VERSION1NEWER)
-msgid "Version 1 (Newer commit time)"
-msgstr "Версия 1 (Более новое время фиксации)"
+#. Resource IDs: (IDS_PROC_FILEDIFF_VERSION1BASENEWER)
+msgid "Version 1 (Base, Newer commit time)"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_DIFFFILES: Control id 1645,
-#. IDS_PROC_FILEDIFF_VERSION2BASE)
-msgid "Version 2 (Base)"
-msgstr "Версия 2 (Базовая)"
+#. IDS_PROC_FILEDIFF_VERSION2)
+msgid "Version 2"
+msgstr ""
 
-#. Resource IDs: (IDS_PROC_FILEDIFF_VERSION2BASENEWER)
-msgid "Version 2 (Base) (Newer commit time)"
-msgstr "Версия 2 (Базовая) (Более новое время фиксации)"
+#. Resource IDs: (IDS_PROC_FILEDIFF_VERSION2NEWER)
+msgid "Version 2 (Newer commit time)"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_ABOUT: Control id 1075)
 msgid "Version Information"
@@ -11655,14 +11668,6 @@ msgstr "Предупреждение"
 #. Resource IDs: (IDS_PROGRS_CONFLICTSOCCURED_WARNING)
 msgid "Warning!"
 msgstr "Предупреждение!"
-
-#. Resource IDs: (IDS_PROC_DELETEREF)
-#, c-format
-msgid ""
-"Warning: \"%s\" will be permanently deleted. It can <ct=0x0000FF><b>NOT</b></ct> be recovered!\n"
-"\n"
-"Do you really want to continue?"
-msgstr "Предупреждение: \"%s\" будет удалён навсегда. Его будет <ct=0x0000FF><b>НЕВОЗМОЖНО</b></ct> восстановить!!!\n\nЖелаете продолжить?"
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "Western European"
@@ -11954,9 +11959,9 @@ msgstr "Вы должны выбрать изображение!"
 #. Resource IDs: (IDS_SETTINGS_ICONSETCHANGED)
 #, c-format
 msgid ""
-"You've changed the icon set from <i>%s</i> to <i>%s</i>.\n"
+"You've changed the icon set from \"%s\" to \"%s\".\n"
 "That change won't take effect until you restart your computer or logoff and logon again!"
-msgstr "Вы изменили набор значков с <i>%s</i> на <i>%s</i>.\nЭти изменения вступят в силу только после перезагрузки, или после нового входа в операционную систему!"
+msgstr ""
 
 #. Resource IDs: (IDS_COMMITDLG_HISTORYHINT_TT)
 msgid ""
@@ -12081,6 +12086,14 @@ msgstr "\"%s\" недействительна."
 #, c-format
 msgid "\"%s\" is not git repository"
 msgstr "\"%s\" не является git хранилищем"
+
+#. Resource IDs: (IDS_PROC_DELETEREF)
+#, c-format
+msgid ""
+"\"%s\" will be permanently deleted. It can NOT be recovered!\n"
+"\n"
+"Do you really want to continue?"
+msgstr ""
 
 #. Resource IDs: (IDS_PROC_APPLYPATCH_GITAMACTIVE)
 msgid ""
@@ -12350,6 +12363,13 @@ msgstr "пикселы"
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_1: Control id 65535)
 msgid "possible or real conflict/obstructed"
 msgstr "Конфликтующий/мешающий"
+
+#. Resource IDs: (IDS_PROC_APPLYPATCH_REBASEDIRFOUND)
+msgid ""
+"previous rebase directory rebase-apply still exists but mbox given.\n"
+"\n"
+"Do you want to"
+msgstr ""
 
 #. Resource IDs: (61509)
 msgid "prn"

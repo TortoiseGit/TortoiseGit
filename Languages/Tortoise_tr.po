@@ -33,8 +33,8 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2016-03-06 23:03+0000\n"
-"Last-Translator: Ozancan Karataş <ozancankaratas96@outlook.com>\n"
+"PO-Revision-Date: 2016-07-01 22:49+0000\n"
+"Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Turkish (http://www.transifex.com/lznuaa/tortoisegit/language/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -72,7 +72,7 @@ msgstr "%.2f MB aktarıldı"
 #. Resource IDs: (61878)
 #, c-format
 msgid "%1 contained an unexpected object."
-msgstr "%1 beklenmedik bir nesne içeriyor."
+msgstr "%1 beklenmeyen bir nesne içeriyor."
 
 #. Resource IDs: (61859)
 #, c-format
@@ -179,7 +179,7 @@ msgstr "%1!s!"
 msgid ""
 "%1!s!\n"
 "Showing %2!d! files, %3!d! submodules and %4!d! folders, %5!d! items in total"
-msgstr "%1!s!\n%2!d! dosya, %3!d! alt modül ve %4!d! klasör, toplam %5!d! öğe görüntüleniyor"
+msgstr "%1!s!\n%2!d! dosya, %3!d! altmodül ve %4!d! klasör, toplam %5!d! öğe gösteriliyor"
 
 #. Resource IDs: (IDS_REPOBROWSE_INFOFILE)
 #, c-format
@@ -201,12 +201,12 @@ msgid ""
 "%1\n"
 "Cannot find this file.\n"
 "Verify that the correct path and file name are given."
-msgstr "%1\nBu dosya bulunamadı.\nDosyanın yolunu ve adını doğru verdiğinizi doğrulayın."
+msgstr "%1\nBu dosya bulunamadı.\nDoğru yol ve dosya adının verildiğini doğrulayın."
 
 #. Resource IDs: (IDS_CONFIG_GLOBAL_TT)
 #, c-format
 msgid "%HOME%/.gitconfig or %XDGHOME%/git/config"
-msgstr "%HOME%/.gitconfig veya %XDGHOME%/git/config"
+msgstr "%HOME%/.gitconfig ya da %XDGHOME%/git/config"
 
 #. Resource IDs: (IDS_SVN_PROGRESS_TOTALBYTESTRANSFERRED)
 #, c-format
@@ -284,7 +284,7 @@ msgstr "%s içinde %s"
 #. Resource IDs: (IDS_GITVER_REQUIRED)
 #, c-format
 msgid "%s requires Git >= %s"
-msgstr "%s Git >= %s gerektiriyor"
+msgstr "%s Git >= %s gerektirir"
 
 #. Resource IDs: (IDS_SVN_PROGRESS_TOTALANDSPEED)
 #, c-format
@@ -294,7 +294,7 @@ msgstr "%s, %s"
 #. Resource IDs: (IDS_DIFF_WCNAME)
 #, c-format
 msgid "%s: Working Tree"
-msgstr "%s: Çalışma Ağacı"
+msgstr "%s: İş Ağacı"
 
 #. Resource IDs: (IDS_PROC_EXPORTFOLDERNAME2)
 #, c-format
@@ -805,6 +805,10 @@ msgstr "&Yoksay"
 #, c-format
 msgid "&Ignore %d items by name"
 msgstr "&Ada göre %d öğeyi yoksay"
+
+#. Resource IDs: (IDS_MENUIGNOREMULTIPLE2)
+msgid "&Ignore multiple items by name"
+msgstr ""
 
 #. Resource IDs: (ID_VIEW_IGNORE_WHITESPACE - Menu)
 msgid "&Ignore whitespace"
@@ -1597,79 +1601,6 @@ msgstr "<Ayraç>"
 msgid "<Untitled>"
 msgstr "<Başlıksız>"
 
-#. Resource IDs: (IDS_PROC_RTFM)
-msgid ""
-"<b>TortoiseGit</b> is a shell extension.\n"
-"That means it is integrated into the Windows explorer.\n"
-"To use <b>TortoiseGit</b> please open the explorer and right-click on any folder you like\n"
-"to bring up the context menu where you will find all <b>TortoiseGit</b> commands.\n"
-"And <u>read the manual!</u>"
-msgstr "<b>TortoiseGit</b> bir shell uzantısıdır.\nBu Windows explorer'a entegre ediliyor anlamına gelir.\n<b>TortoiseGit</b> programını kullanmak için lütfen explorer'ı açınız ve dilediğiniz klasörün\nüstüne sağ tuşla tıklayınız, böylece bütün <b>TortoiseGit</b> komutlarını bulabileceğiniz\niçerik menüsünü görebilirsiniz.\nve lütfen <u>kullanma kılavuzunu okuyunuz!</u>"
-
-#. Resource IDs: (IDS_PROC_BROWSEREFS_WARNINGNOMERGECHECK)
-msgid ""
-"<b>Warning:</b> It has not been checked if these branches have been fully "
-"merged into HEAD."
-msgstr ""
-
-#. Resource IDs: (IDS_PROC_BROWSEREFS_WARNINGDELETEREMOTEBRANCHES)
-msgid "<b>Warning:</b> This action will remove the branches on the remote."
-msgstr ""
-
-#. Resource IDs: (IDS_PROC_BROWSEREFS_WARNINGUNMERGED)
-msgid "<b>Warning:</b> This branch is not fully merged into HEAD."
-msgstr ""
-
-#. Resource IDs: (IDS_PROC_COMMIT_DETACHEDWARNING)
-msgid ""
-"<ct=0x0000FF>Current HEAD Detached</ct>, you are working on (no branch).\n"
-"Do you want to create a branch now?"
-msgstr ""
-
-#. Resource IDs: (IDS_PROC_DELETEALLSTASH)
-#, c-format
-msgid "<ct=0x0000FF>Do you really want to delete <b>ALL %d</b> stash?</ct>"
-msgstr ""
-
-#. Resource IDs: (IDS_PROC_STASHAPPLYFAILED)
-msgid "<ct=0x0000FF>Stash Apply failed!!!</ct>"
-msgstr "<ct=0x0000FF>Zula Onayı başarısız!!!</ct>"
-
-#. Resource IDs: (IDS_PROC_STASHPOPFAILED)
-msgid "<ct=0x0000FF>Stash POP failed!!!</ct>"
-msgstr "<ct=0x0000FF>Zula Çıkartma başarısız!!!</ct>"
-
-#. Resource IDs: (IDS_PROC_STASHFAILED)
-msgid "<ct=0x0000FF>Stash failed!!!</ct>"
-msgstr "<ct=0x0000FF>Zula başarısız!!!</ct>"
-
-#. Resource IDs: (IDS_PROC_APPLYPATCH_REBASEDIRFOUND)
-msgid ""
-"<ct=0x0000FF>previous rebase directory rebase-apply still exists but mbox given</ct>\n"
-"\n"
-"Do you want to"
-msgstr ""
-
-#. Resource IDs: (IDS_PROC_STASHAPPLYFAILEDCONFLICTS)
-msgid "<ct=0x0000ff>Stash Apply failed, there are conflicts</ct>"
-msgstr "<ct=0x0000ff>Zula Onayı başarısız, çakışmalar mevcut</ct>"
-
-#. Resource IDs: (IDS_PROC_STASHPOPFAILEDCONFLICTS)
-msgid "<ct=0x0000ff>Stash POP failed, there are conflicts</ct>"
-msgstr "<ct=0x0000ff>Zula Çıkartma başarısız, çakışmalar mevcut</ct>"
-
-#. Resource IDs: (IDS_PROC_STASHAPPLYSUCCESS)
-msgid "<ct=0xff0000>Stash Apply successful</ct>"
-msgstr "<ct=0xff0000>Zula Onayı başarılı</ct>"
-
-#. Resource IDs: (IDS_PROC_STASHPOPSUCCESS)
-msgid "<ct=0xff0000>Stash POP successful</ct>"
-msgstr "<ct=0xff0000>Zula Çıkartma başarılı</ct>"
-
-#. Resource IDs: (IDS_PROC_STASHSUCCESS)
-msgid "<ct=0xff0000>Stash Success</ct>"
-msgstr "<ct=0xff0000>Saklama Başarılı</ct>"
-
 #. Resource IDs: (16603)
 msgid "<descr>"
 msgstr "<descr>"
@@ -2164,9 +2095,9 @@ msgstr "Çakışan dosyayı(ları) çözümlendi olarak işaretlemek istediginiz
 #. Resource IDs: (IDS_PROC_WARNREVERT)
 #, c-format
 msgid ""
-"Are you sure you want to revert %d item(s)? You will lose <b>all</b> changes"
-" since the last update!"
-msgstr "%d eleman(lar)daki değişiklikleri geri almak istediğinizden emin misiniz? Son güncellemeden bu yana olan <b>bütün</b> değişiklikler silinir!"
+"Are you sure you want to revert %d item(s)? You will lose ALL changes since "
+"the last update!"
+msgstr ""
 
 #. Resource IDs: (IDS_WARNUSERSAFEDIFFERENT)
 #, c-format
@@ -2364,7 +2295,8 @@ msgstr "Baltık"
 msgid "Bar Graph"
 msgstr "Diyagram Çubuğu"
 
-#. Resource IDs: (Dialog IDD_RESOLVESUBMODULECONFLICT: Control id 1385)
+#. Resource IDs: (Dialog IDD_RESOLVESUBMODULECONFLICT: Control id 1385,
+#. IDS_PROC_DIFF_BASE)
 msgid "Base"
 msgstr ""
 
@@ -3775,6 +3707,12 @@ msgstr "Şu anki Dal"
 msgid "Current Branch:"
 msgstr "Şu anki Dal:"
 
+#. Resource IDs: (IDS_PROC_COMMIT_DETACHEDWARNING)
+msgid ""
+"Current HEAD is detached, you are working on (no branch).\n"
+"Do you want to create a branch now?"
+msgstr ""
+
 #. Resource IDs: (IDS_REBASE_UPTODATE_FMT)
 #, c-format
 msgid ""
@@ -3903,6 +3841,10 @@ msgstr ""
 msgid "Delete and &ignore %d items by name"
 msgstr "%d elemanı sil ve isme göre al&dırma"
 
+#. Resource IDs: (IDS_MENUDELETEIGNOREMULTIPLE2)
+msgid "Delete and &ignore multiple items by name"
+msgstr ""
+
 #. Resource IDs: (IDS_MENUDELETEIGNORE)
 msgid "Delete and add to &ignore list"
 msgstr "Sil ve &aldırmama listesine ekle"
@@ -3911,6 +3853,10 @@ msgstr "Sil ve &aldırmama listesine ekle"
 #, c-format
 msgid "Delete and ignore %d items by &extension"
 msgstr "%d kalemleri &uzantısına göre sil veya atla"
+
+#. Resource IDs: (IDS_MENUDELETEIGNOREMULTIPLEMASK2)
+msgid "Delete and ignore multiple items by &extension"
+msgstr ""
 
 #. Resource IDs: (IDS_PROC_BROWSEREFS_DELETEBRANCH)
 msgid "Delete branch"
@@ -4252,9 +4198,14 @@ msgstr "Aşağıdaki yollar için içerik menüsünü gösterme:"
 msgid "Do not use recycle bin"
 msgstr ""
 
+#. Resource IDs: (IDS_PROC_DELETEALLSTASH)
+#, c-format
+msgid "Do you really want to delete ALL %d stash?"
+msgstr ""
+
 #. Resource IDs: (IDS_PROC_DELETEBRANCHTAG)
 #, c-format
-msgid "Do you really want to <ct=0x0000FF>delete</ct> <b>%s</b>?"
+msgid "Do you really want to delete \"%s\"?"
 msgstr ""
 
 #. Resource IDs: (16109)
@@ -4284,8 +4235,8 @@ msgstr "Bu dosyayı gerçekten de bu klasöre taşımak istiyor musunuz?"
 #. Resource IDs: (IDS_PROC_DELETENREFS)
 #, c-format
 msgid ""
-"Do you really want to permanently delete the %d selected refs? It can "
-"<ct=0x0000FF><b>NOT</b></ct> be recovered!"
+"Do you really want to permanently delete the %d selected refs? It can NOT be"
+" recovered!"
 msgstr ""
 
 #. Resource IDs: (IDS_WARN_DELETE_ONE_FROM_INDEX)
@@ -5013,6 +4964,10 @@ msgstr "Getir/Al"
 msgid "Fetch && Re&base"
 msgstr ""
 
+#. Resource IDs: (IDS_PROC_SYNC_FETCHALL)
+msgid "Fetch all refs"
+msgstr ""
+
 #. Resource IDs: (IDS_MENUDESCFETCH)
 msgid "Fetch commits from a remote repository."
 msgstr ""
@@ -5265,7 +5220,7 @@ msgstr "Yardım için F1 tuşuna basın. Yatay olarak ilerlemek için Ctrl-Kayd�
 msgid "For complete history deselect 'Stop on copy/rename'"
 msgstr "Önceki tüm işlemleri görmek için 'Kopyalamada/Tekrar adlandırmada dur' işaretini kaldırın"
 
-#. Resource IDs: (IDS_PULL_SETTRACKEDBRANCH)
+#. Resource IDs: (IDS_NOTYET_SETTRACKEDBRANCH)
 #, c-format
 msgid ""
 "For the current branch \"%s\" no tracked branch is configured.\n"
@@ -6195,6 +6150,10 @@ msgstr ""
 msgid "Ignore line &endings (recommended)"
 msgstr "Satır &sonlarına aldırma (önerilir)"
 
+#. Resource IDs: (IDS_MENUIGNOREMULTIPLEMASK2)
+msgid "Ignore multiple items by &extension"
+msgstr ""
+
 #. Resource IDs: (IDS_DIFFOPTION_IGNORESPACEATEOL)
 msgid "Ignore space at EOL"
 msgstr ""
@@ -6363,6 +6322,11 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_CERTCHECK: Control id 65535)
 msgid "Issuer:"
+msgstr ""
+
+#. Resource IDs: (IDS_PROC_BROWSEREFS_WARNINGNOMERGECHECK)
+msgid ""
+"It has not been checked if these branches have been fully merged into HEAD."
 msgstr ""
 
 #. Resource IDs: (IDS_PROC_CASERENAME)
@@ -7111,7 +7075,7 @@ msgstr ""
 
 #. Resource IDs: (ID_VIEW_NEXT - Menu)
 msgid "Next"
-msgstr ""
+msgstr "Sonraki"
 
 #. Resource IDs: (58114)
 msgid ""
@@ -9686,7 +9650,7 @@ msgstr "Bu klasörün günlüğünü göster"
 
 #. Resource IDs: (IDS_LOG_POPUP_LOG)
 msgid "Show log..."
-msgstr "Günlüğü göster..."
+msgstr "Günlüğü görüntüle..."
 
 #. Resource IDs: (IDS_SETTINGS_DESCRIBEALWAYSLONG_TT)
 msgid "Show long format even if a tag is exactly on that commit"
@@ -9981,9 +9945,33 @@ msgstr "Zula &İletisi"
 msgid "Stash Apply"
 msgstr "Zulayı Uygula"
 
+#. Resource IDs: (IDS_PROC_STASHAPPLYFAILED)
+msgid "Stash Apply failed!"
+msgstr ""
+
+#. Resource IDs: (IDS_PROC_STASHAPPLYFAILEDCONFLICTS)
+msgid "Stash Apply failed, there are conflicts"
+msgstr ""
+
+#. Resource IDs: (IDS_PROC_STASHAPPLYSUCCESS)
+msgid "Stash Apply successful"
+msgstr ""
+
 #. Resource IDs: (IDS_MENUSTASHLIST)
 msgid "Stash List"
 msgstr "Zula Listesi"
+
+#. Resource IDs: (IDS_PROC_STASHPOPFAILED)
+msgid "Stash POP failed!"
+msgstr ""
+
+#. Resource IDs: (IDS_PROC_STASHPOPFAILEDCONFLICTS)
+msgid "Stash POP failed, there are conflicts"
+msgstr ""
+
+#. Resource IDs: (IDS_PROC_STASHPOPSUCCESS)
+msgid "Stash POP successful"
+msgstr ""
 
 #. Resource IDs: (IDS_MENUSTASHPOP)
 msgid "Stash Pop"
@@ -9992,6 +9980,14 @@ msgstr "Zulayı Çıkart"
 #. Resource IDs: (IDS_MENUSTASHSAVE)
 msgid "Stash Save"
 msgstr "Zulayı Kaydet"
+
+#. Resource IDs: (IDS_PROC_STASHSUCCESS)
+msgid "Stash Success"
+msgstr ""
+
+#. Resource IDs: (IDS_PROC_STASHFAILED)
+msgid "Stash failed!"
+msgstr ""
 
 #. Resource IDs: (IDS_PROC_STASHRUNNING)
 msgid "Stash operation running..."
@@ -10193,7 +10189,7 @@ msgstr "Bir sonraki pencereye geç\nSonraki pencere"
 
 #. Resource IDs: (61189)
 msgid "Switch to the previous document window"
-msgstr "Bir önceki belge penceresine geç"
+msgstr "Önceki belge görünümüne geç"
 
 #. Resource IDs: (Dialog IDD_GITSWITCH: Control id 304)
 msgid "Switch/Checkout"
@@ -10342,9 +10338,9 @@ msgstr ""
 #. Resource IDs: (IDS_PROC_DELETEREMOTEBRANCH)
 #, c-format
 msgid ""
-"The branch \"%s\" is a <i>remote</i> branch.\n"
+"The branch \"%s\" is a remote branch.\n"
 "\n"
-"Do you really want to <ct=0x0000FF>delete</ct> it?"
+"Do you really want to delete it?"
 msgstr ""
 
 #. Resource IDs: (IDS_ERR_PATCH_CHUNKMISMATCH)
@@ -10732,6 +10728,14 @@ msgid ""
 "changes that were made before the application closed."
 msgstr "Bunlar şu anda açık olan belgelerden daha sonra kaydedilmiş ve uygulama kapatılmadan önce yapılmış değişiklikler içeriyor."
 
+#. Resource IDs: (IDS_PROC_BROWSEREFS_WARNINGDELETEREMOTEBRANCHES)
+msgid "This action will remove the branches on the remote."
+msgstr ""
+
+#. Resource IDs: (IDS_PROC_BROWSEREFS_WARNINGUNMERGED)
+msgid "This branch is not fully merged into HEAD."
+msgstr ""
+
 #. Resource IDs: (IDS_ERR_MISSINGVALUE)
 msgid "This field is required and must not be empty."
 msgstr ""
@@ -10903,6 +10907,15 @@ msgid ""
 "to be renamed too?"
 msgstr "TortoiseGit benzer dosya isimleri algıladı. Bu dosyalarında tekrardan adlandırılmasını ister misiniz?\n%s"
 
+#. Resource IDs: (IDS_PROC_RTFM)
+msgid ""
+"TortoiseGit is a shell extension.\n"
+"That means it is integrated into the Windows explorer.\n"
+"To use TortoiseGit please open the explorer and right-click on any folder you like\n"
+"to bring up the context menu where you will find all TortoiseGit commands.\n"
+"And read the manual!"
+msgstr ""
+
 #. Resource IDs: (IDS_SETTINGS_OVERLAYINFO2)
 #, c-format
 msgid "TortoiseGit will not show the following overlays: %s"
@@ -11037,7 +11050,7 @@ msgstr ""
 
 #. Resource IDs: (IDS_TRACKEDBRANCH)
 msgid "Tracked branch"
-msgstr ""
+msgstr "İzlenen dal"
 
 #. Resource IDs: (IDS_SVN_PROGRESS_SPEED)
 #, c-format
@@ -11548,21 +11561,21 @@ msgid "Version %d.%d.%d.%d"
 msgstr "Sürüm %d.%d.%d.%d"
 
 #. Resource IDs: (Dialog IDD_DIFFFILES: Control id 1644,
-#. IDS_PROC_FILEDIFF_VERSION1)
-msgid "Version 1"
-msgstr "Sürüm 1"
+#. IDS_PROC_FILEDIFF_VERSION1BASE)
+msgid "Version 1 (Base)"
+msgstr ""
 
-#. Resource IDs: (IDS_PROC_FILEDIFF_VERSION1NEWER)
-msgid "Version 1 (Newer commit time)"
+#. Resource IDs: (IDS_PROC_FILEDIFF_VERSION1BASENEWER)
+msgid "Version 1 (Base, Newer commit time)"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_DIFFFILES: Control id 1645,
-#. IDS_PROC_FILEDIFF_VERSION2BASE)
-msgid "Version 2 (Base)"
-msgstr "Sürüm 2 (Taban)"
+#. IDS_PROC_FILEDIFF_VERSION2)
+msgid "Version 2"
+msgstr ""
 
-#. Resource IDs: (IDS_PROC_FILEDIFF_VERSION2BASENEWER)
-msgid "Version 2 (Base) (Newer commit time)"
+#. Resource IDs: (IDS_PROC_FILEDIFF_VERSION2NEWER)
+msgid "Version 2 (Newer commit time)"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_ABOUT: Control id 1075)
@@ -11658,14 +11671,6 @@ msgstr "Dikkat"
 #. Resource IDs: (IDS_PROGRS_CONFLICTSOCCURED_WARNING)
 msgid "Warning!"
 msgstr "Dikkat!"
-
-#. Resource IDs: (IDS_PROC_DELETEREF)
-#, c-format
-msgid ""
-"Warning: \"%s\" will be permanently deleted. It can <ct=0x0000FF><b>NOT</b></ct> be recovered!\n"
-"\n"
-"Do you really want to continue?"
-msgstr ""
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "Western European"
@@ -11957,9 +11962,9 @@ msgstr "Resim seçmelisiniz!"
 #. Resource IDs: (IDS_SETTINGS_ICONSETCHANGED)
 #, c-format
 msgid ""
-"You've changed the icon set from <i>%s</i> to <i>%s</i>.\n"
+"You've changed the icon set from \"%s\" to \"%s\".\n"
 "That change won't take effect until you restart your computer or logoff and logon again!"
-msgstr "Simge takımını <i>%s</i> de <i>%s</i>'ye değiştirdiniz.\nBu değişiklik bilgisayarınızı yeniden başlatmadığınız ya da oturumunuzu kapatıp açmadığınız sürece değişmeyecek!"
+msgstr ""
 
 #. Resource IDs: (IDS_COMMITDLG_HISTORYHINT_TT)
 msgid ""
@@ -12084,6 +12089,14 @@ msgstr "\"%s\" geçersiz."
 #, c-format
 msgid "\"%s\" is not git repository"
 msgstr "\"%s\" git deposu değil"
+
+#. Resource IDs: (IDS_PROC_DELETEREF)
+#, c-format
+msgid ""
+"\"%s\" will be permanently deleted. It can NOT be recovered!\n"
+"\n"
+"Do you really want to continue?"
+msgstr ""
 
 #. Resource IDs: (IDS_PROC_APPLYPATCH_GITAMACTIVE)
 msgid ""
@@ -12353,6 +12366,13 @@ msgstr "pikseller"
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_1: Control id 65535)
 msgid "possible or real conflict/obstructed"
 msgstr "mümkün ya da çakışan/engellenmiş"
+
+#. Resource IDs: (IDS_PROC_APPLYPATCH_REBASEDIRFOUND)
+msgid ""
+"previous rebase directory rebase-apply still exists but mbox given.\n"
+"\n"
+"Do you want to"
+msgstr ""
 
 #. Resource IDs: (61509)
 msgid "prn"

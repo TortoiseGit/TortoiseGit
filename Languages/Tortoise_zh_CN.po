@@ -15,15 +15,15 @@
 # RAMBOO <ramboooo@126.com>, 2013
 # Sven Strickroth <sstrickroth@googlemail.com>, 2012-2013
 # weicong <weicong@live.cn>, 2013
-# YF <yfdyh000@gmail.com>, 2013
-# YF <yfdyh000@gmail.com>, 2013-2016
+# Y.F Yang <yfdyh000@gmail.com>, 2013,2016
+# Y.F Yang <yfdyh000@gmail.com>, 2013-2016
 msgid ""
 msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2016-02-24 00:17+0000\n"
-"Last-Translator: YF <yfdyh000@gmail.com>\n"
+"PO-Revision-Date: 2016-06-20 20:22+0000\n"
+"Last-Translator: Y.F Yang <yfdyh000@gmail.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/lznuaa/tortoisegit/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -794,6 +794,10 @@ msgstr "忽略(&I)"
 #, c-format
 msgid "&Ignore %d items by name"
 msgstr "按照名称忽略 %d 项(&I)"
+
+#. Resource IDs: (IDS_MENUIGNOREMULTIPLE2)
+msgid "&Ignore multiple items by name"
+msgstr "根据名称忽略多项(&I)"
 
 #. Resource IDs: (ID_VIEW_IGNORE_WHITESPACE - Menu)
 msgid "&Ignore whitespace"
@@ -1586,79 +1590,6 @@ msgstr "<分隔符>"
 msgid "<Untitled>"
 msgstr "<未命名>"
 
-#. Resource IDs: (IDS_PROC_RTFM)
-msgid ""
-"<b>TortoiseGit</b> is a shell extension.\n"
-"That means it is integrated into the Windows explorer.\n"
-"To use <b>TortoiseGit</b> please open the explorer and right-click on any folder you like\n"
-"to bring up the context menu where you will find all <b>TortoiseGit</b> commands.\n"
-"And <u>read the manual!</u>"
-msgstr "<b>TortoiseGit</b> 是一个 Windows 外壳扩展。\n这意味着本程序会集成在 Windows 资源管理器中。\n要使用 <b>TortoiseGit</b>，请打开资源管理器，在任意文件夹中单击鼠标右键，\n在弹出的右键菜单中您可以找到所有的 <b>TortoiseGit</b> 命令。\n更详细的操作方法请阅读手册。"
-
-#. Resource IDs: (IDS_PROC_BROWSEREFS_WARNINGNOMERGECHECK)
-msgid ""
-"<b>Warning:</b> It has not been checked if these branches have been fully "
-"merged into HEAD."
-msgstr "<b>警告：</b>如果这些分支已经完全并入 HEAD，它将不被选中。"
-
-#. Resource IDs: (IDS_PROC_BROWSEREFS_WARNINGDELETEREMOTEBRANCHES)
-msgid "<b>Warning:</b> This action will remove the branches on the remote."
-msgstr "<b>警告：</b>此操作将删除远端服务器上的所有分支。"
-
-#. Resource IDs: (IDS_PROC_BROWSEREFS_WARNINGUNMERGED)
-msgid "<b>Warning:</b> This branch is not fully merged into HEAD."
-msgstr "<b>警告：</b>这个分支被没有完全并入 HEAD。"
-
-#. Resource IDs: (IDS_PROC_COMMIT_DETACHEDWARNING)
-msgid ""
-"<ct=0x0000FF>Current HEAD Detached</ct>, you are working on (no branch).\n"
-"Do you want to create a branch now?"
-msgstr "<ct=0x0000FF>当前的 HEAD 已分离</ct>，您将工作在 (无分支)。\n您要现在就创建一个分支吗？"
-
-#. Resource IDs: (IDS_PROC_DELETEALLSTASH)
-#, c-format
-msgid "<ct=0x0000FF>Do you really want to delete <b>ALL %d</b> stash?</ct>"
-msgstr "<ct=0x0000FF>您确定要删除<b>全部 %d 项</b>贮藏(stash)？</ct>"
-
-#. Resource IDs: (IDS_PROC_STASHAPPLYFAILED)
-msgid "<ct=0x0000FF>Stash Apply failed!!!</ct>"
-msgstr "<ct=0x0000FF>应用储藏(stash)失败!!!</ct>"
-
-#. Resource IDs: (IDS_PROC_STASHPOPFAILED)
-msgid "<ct=0x0000FF>Stash POP failed!!!</ct>"
-msgstr "<ct=0x0000FF>弹出储藏(stash)失败!!!</ct>"
-
-#. Resource IDs: (IDS_PROC_STASHFAILED)
-msgid "<ct=0x0000FF>Stash failed!!!</ct>"
-msgstr "<ct=0x0000FF>储藏(stash)失败!!!</ct>"
-
-#. Resource IDs: (IDS_PROC_APPLYPATCH_REBASEDIRFOUND)
-msgid ""
-"<ct=0x0000FF>previous rebase directory rebase-apply still exists but mbox given</ct>\n"
-"\n"
-"Do you want to"
-msgstr "<ct=0x0000FF>先前的变基目录仍然存在 rebase-apply，但是 mbox 也提供了一份</ct>\n\n您是否想要"
-
-#. Resource IDs: (IDS_PROC_STASHAPPLYFAILEDCONFLICTS)
-msgid "<ct=0x0000ff>Stash Apply failed, there are conflicts</ct>"
-msgstr "<ct=0x0000ff>应用储藏(stash)失败，有冲突存在</ct>"
-
-#. Resource IDs: (IDS_PROC_STASHPOPFAILEDCONFLICTS)
-msgid "<ct=0x0000ff>Stash POP failed, there are conflicts</ct>"
-msgstr "<ct=0x0000ff>弹出储藏(stash)失败，有冲突存在</ct>"
-
-#. Resource IDs: (IDS_PROC_STASHAPPLYSUCCESS)
-msgid "<ct=0xff0000>Stash Apply successful</ct>"
-msgstr "<ct=0xff0000>应用储藏(stash)成功</ct>"
-
-#. Resource IDs: (IDS_PROC_STASHPOPSUCCESS)
-msgid "<ct=0xff0000>Stash POP successful</ct>"
-msgstr "<ct=0xff0000>弹出储藏(stash)成功</ct>"
-
-#. Resource IDs: (IDS_PROC_STASHSUCCESS)
-msgid "<ct=0xff0000>Stash Success</ct>"
-msgstr "<ct=0xff0000>储藏(stash)成功</ct>"
-
 #. Resource IDs: (16603)
 msgid "<descr>"
 msgstr "<描述>"
@@ -2153,9 +2084,9 @@ msgstr "确定要将有冲突的文件标识为已解决吗？"
 #. Resource IDs: (IDS_PROC_WARNREVERT)
 #, c-format
 msgid ""
-"Are you sure you want to revert %d item(s)? You will lose <b>all</b> changes"
-" since the last update!"
-msgstr "您确定要还原 %d 个项目? 您将丢失上次更新之后的<b>所有</b>变更！"
+"Are you sure you want to revert %d item(s)? You will lose ALL changes since "
+"the last update!"
+msgstr "是否确定要复原 %d 个项目? 从上次更新之后的所有变更都会消失！"
 
 #. Resource IDs: (IDS_WARNUSERSAFEDIFFERENT)
 #, c-format
@@ -2353,7 +2284,8 @@ msgstr "Baltic"
 msgid "Bar Graph"
 msgstr "柱状图"
 
-#. Resource IDs: (Dialog IDD_RESOLVESUBMODULECONFLICT: Control id 1385)
+#. Resource IDs: (Dialog IDD_RESOLVESUBMODULECONFLICT: Control id 1385,
+#. IDS_PROC_DIFF_BASE)
 msgid "Base"
 msgstr "基础"
 
@@ -3764,6 +3696,12 @@ msgstr "当前分支"
 msgid "Current Branch:"
 msgstr "当前分支:"
 
+#. Resource IDs: (IDS_PROC_COMMIT_DETACHEDWARNING)
+msgid ""
+"Current HEAD is detached, you are working on (no branch).\n"
+"Do you want to create a branch now?"
+msgstr "当前的 HEAD 已分离，您目前其上工作 (无分支)。\n要创建一个分支吗？"
+
 #. Resource IDs: (IDS_REBASE_UPTODATE_FMT)
 #, c-format
 msgid ""
@@ -3892,6 +3830,10 @@ msgstr "删除全部标签"
 msgid "Delete and &ignore %d items by name"
 msgstr "根据名称删除和忽略 %d 项(&I)"
 
+#. Resource IDs: (IDS_MENUDELETEIGNOREMULTIPLE2)
+msgid "Delete and &ignore multiple items by name"
+msgstr "根据名称删除和忽略多项(&I)"
+
 #. Resource IDs: (IDS_MENUDELETEIGNORE)
 msgid "Delete and add to &ignore list"
 msgstr "删除并添加到忽略列表(&I)"
@@ -3900,6 +3842,10 @@ msgstr "删除并添加到忽略列表(&I)"
 #, c-format
 msgid "Delete and ignore %d items by &extension"
 msgstr "根据扩展名删除和忽略 %d 项(&E)"
+
+#. Resource IDs: (IDS_MENUDELETEIGNOREMULTIPLEMASK2)
+msgid "Delete and ignore multiple items by &extension"
+msgstr "根据扩展名删除和忽略多项(&E)"
 
 #. Resource IDs: (IDS_PROC_BROWSEREFS_DELETEBRANCH)
 msgid "Delete branch"
@@ -4241,10 +4187,15 @@ msgstr "对下述路径，不显示右键菜单:"
 msgid "Do not use recycle bin"
 msgstr "不使用回收站"
 
+#. Resource IDs: (IDS_PROC_DELETEALLSTASH)
+#, c-format
+msgid "Do you really want to delete ALL %d stash?"
+msgstr "您确定要删除 %d 个贮藏吗？"
+
 #. Resource IDs: (IDS_PROC_DELETEBRANCHTAG)
 #, c-format
-msgid "Do you really want to <ct=0x0000FF>delete</ct> <b>%s</b>?"
-msgstr "您确定要<ct=0x0000FF>删除</ct> <b>%s</b>吗？"
+msgid "Do you really want to delete \"%s\"?"
+msgstr "您真的要删除“%s”吗？"
 
 #. Resource IDs: (16109)
 #, c-format
@@ -4273,9 +4224,9 @@ msgstr "您确定要移动这个文件或文件夹吗？"
 #. Resource IDs: (IDS_PROC_DELETENREFS)
 #, c-format
 msgid ""
-"Do you really want to permanently delete the %d selected refs? It can "
-"<ct=0x0000FF><b>NOT</b></ct> be recovered!"
-msgstr "您确定要永久删除%d个选择的引用？这个操作<ct=0x0000FF><b>不能</b></ct>被恢复！"
+"Do you really want to permanently delete the %d selected refs? It can NOT be"
+" recovered!"
+msgstr "您确定要永久删除 %d 个选择的引用吗？这个操作不能恢复！"
 
 #. Resource IDs: (IDS_WARN_DELETE_ONE_FROM_INDEX)
 #, c-format
@@ -5002,6 +4953,10 @@ msgstr "获取"
 msgid "Fetch && Re&base"
 msgstr "获取，然后变基(&B)"
 
+#. Resource IDs: (IDS_PROC_SYNC_FETCHALL)
+msgid "Fetch all refs"
+msgstr "获取所有引用"
+
 #. Resource IDs: (IDS_MENUDESCFETCH)
 msgid "Fetch commits from a remote repository."
 msgstr "从远程版本库获取提交。"
@@ -5154,7 +5109,7 @@ msgstr "可筛选"
 
 #. Resource IDs: (IDS_FILEDIFF_FILTERCUE)
 msgid "Filter paths"
-msgstr "过滤器路径"
+msgstr "路径过滤"
 
 #. Resource IDs: (Dialog IDD_DIALOG_BROWSE_REFS: Control id 1479)
 msgid "Filter:"
@@ -5254,7 +5209,7 @@ msgstr "按 F1 键寻求帮助；用 Ctrl+鼠标滚轮横向滚动"
 msgid "For complete history deselect 'Stop on copy/rename'"
 msgstr "取消选择“复制/更名时停止”以查看完整的历史列表"
 
-#. Resource IDs: (IDS_PULL_SETTRACKEDBRANCH)
+#. Resource IDs: (IDS_NOTYET_SETTRACKEDBRANCH)
 #, c-format
 msgid ""
 "For the current branch \"%s\" no tracked branch is configured.\n"
@@ -6184,6 +6139,10 @@ msgstr "递归忽略文件或目录"
 msgid "Ignore line &endings (recommended)"
 msgstr "忽略行尾符号（推荐）(&E)"
 
+#. Resource IDs: (IDS_MENUIGNOREMULTIPLEMASK2)
+msgid "Ignore multiple items by &extension"
+msgstr "根据扩展名忽略多项(&E)"
+
 #. Resource IDs: (IDS_DIFFOPTION_IGNORESPACEATEOL)
 msgid "Ignore space at EOL"
 msgstr "忽略文件结束前的空行"
@@ -6353,6 +6312,11 @@ msgstr "无效的修订版本号！"
 #. Resource IDs: (Dialog IDD_CERTCHECK: Control id 65535)
 msgid "Issuer:"
 msgstr "签发者："
+
+#. Resource IDs: (IDS_PROC_BROWSEREFS_WARNINGNOMERGECHECK)
+msgid ""
+"It has not been checked if these branches have been fully merged into HEAD."
+msgstr "没有检查这些分支是否已完全合并到 HEAD。"
 
 #. Resource IDs: (IDS_PROC_CASERENAME)
 msgid ""
@@ -9658,7 +9622,7 @@ msgstr "显示日志"
 
 #. Resource IDs: (IDS_STATUSLIST_SHOWLOGOLDNAME)
 msgid "Show log &before rename/copy"
-msgstr "显示重命名和复制之前的日志(&B)"
+msgstr "显示重命名或复制前日志(&B)"
 
 #. Resource IDs: (IDS_SHOWLOG_OF)
 #, c-format
@@ -9970,9 +9934,33 @@ msgstr "贮藏日志(&M)"
 msgid "Stash Apply"
 msgstr "应用贮藏"
 
+#. Resource IDs: (IDS_PROC_STASHAPPLYFAILED)
+msgid "Stash Apply failed!"
+msgstr "应用贮藏失败！"
+
+#. Resource IDs: (IDS_PROC_STASHAPPLYFAILEDCONFLICTS)
+msgid "Stash Apply failed, there are conflicts"
+msgstr "应用贮藏失败，有冲突存在"
+
+#. Resource IDs: (IDS_PROC_STASHAPPLYSUCCESS)
+msgid "Stash Apply successful"
+msgstr "应用贮藏成功"
+
 #. Resource IDs: (IDS_MENUSTASHLIST)
 msgid "Stash List"
 msgstr "贮藏列表"
+
+#. Resource IDs: (IDS_PROC_STASHPOPFAILED)
+msgid "Stash POP failed!"
+msgstr "弹出贮藏失败！"
+
+#. Resource IDs: (IDS_PROC_STASHPOPFAILEDCONFLICTS)
+msgid "Stash POP failed, there are conflicts"
+msgstr "弹出贮藏失败，有冲突存在"
+
+#. Resource IDs: (IDS_PROC_STASHPOPSUCCESS)
+msgid "Stash POP successful"
+msgstr "弹出贮藏成功"
 
 #. Resource IDs: (IDS_MENUSTASHPOP)
 msgid "Stash Pop"
@@ -9981,6 +9969,14 @@ msgstr "弹出贮藏"
 #. Resource IDs: (IDS_MENUSTASHSAVE)
 msgid "Stash Save"
 msgstr "保存贮藏"
+
+#. Resource IDs: (IDS_PROC_STASHSUCCESS)
+msgid "Stash Success"
+msgstr "贮藏成功"
+
+#. Resource IDs: (IDS_PROC_STASHFAILED)
+msgid "Stash failed!"
+msgstr "贮藏失败！"
 
 #. Resource IDs: (IDS_PROC_STASHRUNNING)
 msgid "Stash operation running..."
@@ -10331,10 +10327,10 @@ msgstr "“最近 xx” 选项应该是数字值。\n应该 > 0"
 #. Resource IDs: (IDS_PROC_DELETEREMOTEBRANCH)
 #, c-format
 msgid ""
-"The branch \"%s\" is a <i>remote</i> branch.\n"
+"The branch \"%s\" is a remote branch.\n"
 "\n"
-"Do you really want to <ct=0x0000FF>delete</ct> it?"
-msgstr "分支“%s”是一个<i>远端分支</i>。\n\n您确定要<ct=0x0000FF>删除它</ct>吗？"
+"Do you really want to delete it?"
+msgstr "分支“%s”是一个远端分支。\n\n您确定要删除它吗？"
 
 #. Resource IDs: (IDS_ERR_PATCH_CHUNKMISMATCH)
 msgid "The chunk size did not match the number of added/removed lines!"
@@ -10353,7 +10349,7 @@ msgid ""
 "While merging conflicts can occur which need to be resolved manually (i.e., integrate your changes into a file which was also modified on another branch).\n"
 "\n"
 "See help for more information."
-msgstr "您正在撰写的提交是一个特殊的提交。它是一个合并提交，因此包含您的更改和合并树的更改。\n\n您不应该取消文件，除非您明确知道正在做什么。\n\n虽然合并冲突会出现，并且需要手动解决（即整合您的更改到另一个分支中修改后的文件）。\n\n查阅“帮助”了解更多信息"
+msgstr "您正在完成的是一个特殊提交。它是一个合并提交，因此包含您的更改和已合并树的更改。\n\n您不应该取消选中任何文件，除非您明确知道这是在做什么。\n\n在合并冲突出现时，它需要被手动解决，即整合您的更改到另一个分支中也被修改的文件中。\n\n查阅帮助了解更多信息。"
 
 #. Resource IDs: (IDS_GITCREDENTIAL_OVERWRITEHELPER)
 #, c-format
@@ -10721,6 +10717,14 @@ msgid ""
 "changes that were made before the application closed."
 msgstr "这里有比当前打开的文档更新的文档，包含了程序关闭前所做的修改。"
 
+#. Resource IDs: (IDS_PROC_BROWSEREFS_WARNINGDELETEREMOTEBRANCHES)
+msgid "This action will remove the branches on the remote."
+msgstr "此操作将删除远端服务器上的所有分支。"
+
+#. Resource IDs: (IDS_PROC_BROWSEREFS_WARNINGUNMERGED)
+msgid "This branch is not fully merged into HEAD."
+msgstr "这个分支没有完全合并到 HEAD。"
+
 #. Resource IDs: (IDS_ERR_MISSINGVALUE)
 msgid "This field is required and must not be empty."
 msgstr "此栏必填且不能为空。"
@@ -10891,6 +10895,15 @@ msgid ""
 "TortoiseGit has detected similar filenames. Do you want the files:%s\n"
 "to be renamed too?"
 msgstr "TortoiseGit 检测到类似的文件名。您要同时更名\n文件 %s 吗？"
+
+#. Resource IDs: (IDS_PROC_RTFM)
+msgid ""
+"TortoiseGit is a shell extension.\n"
+"That means it is integrated into the Windows explorer.\n"
+"To use TortoiseGit please open the explorer and right-click on any folder you like\n"
+"to bring up the context menu where you will find all TortoiseGit commands.\n"
+"And read the manual!"
+msgstr "TortoiseGit 是一个 Windows 外壳扩展，\\n这意味着该程序是集成在 Windows 资源管理器中的。\\n要使用 TortoiseGit 请打开资源管理器并在任意目录中单击鼠标右键，\\n在弹出的右键菜单中可以找到所有的 TortoiseGit 命令。\\n更详细的使用请阅读手册！"
 
 #. Resource IDs: (IDS_SETTINGS_OVERLAYINFO2)
 #, c-format
@@ -11537,22 +11550,22 @@ msgid "Version %d.%d.%d.%d"
 msgstr "版本 %d.%d.%d.%d"
 
 #. Resource IDs: (Dialog IDD_DIFFFILES: Control id 1644,
-#. IDS_PROC_FILEDIFF_VERSION1)
-msgid "Version 1"
-msgstr "版本1"
+#. IDS_PROC_FILEDIFF_VERSION1BASE)
+msgid "Version 1 (Base)"
+msgstr "版本1(基础)"
 
-#. Resource IDs: (IDS_PROC_FILEDIFF_VERSION1NEWER)
-msgid "Version 1 (Newer commit time)"
-msgstr "版本1 (较新提交时间)"
+#. Resource IDs: (IDS_PROC_FILEDIFF_VERSION1BASENEWER)
+msgid "Version 1 (Base, Newer commit time)"
+msgstr "版本1(基础)(提交日期较新)"
 
 #. Resource IDs: (Dialog IDD_DIFFFILES: Control id 1645,
-#. IDS_PROC_FILEDIFF_VERSION2BASE)
-msgid "Version 2 (Base)"
-msgstr "版本2 (基础)"
+#. IDS_PROC_FILEDIFF_VERSION2)
+msgid "Version 2"
+msgstr "版本2"
 
-#. Resource IDs: (IDS_PROC_FILEDIFF_VERSION2BASENEWER)
-msgid "Version 2 (Base) (Newer commit time)"
-msgstr "版本2 (基础) (较新提交时间)"
+#. Resource IDs: (IDS_PROC_FILEDIFF_VERSION2NEWER)
+msgid "Version 2 (Newer commit time)"
+msgstr "版本2(提交日期较新)"
 
 #. Resource IDs: (Dialog IDD_ABOUT: Control id 1075)
 msgid "Version Information"
@@ -11647,14 +11660,6 @@ msgstr "警告"
 #. Resource IDs: (IDS_PROGRS_CONFLICTSOCCURED_WARNING)
 msgid "Warning!"
 msgstr "警告！"
-
-#. Resource IDs: (IDS_PROC_DELETEREF)
-#, c-format
-msgid ""
-"Warning: \"%s\" will be permanently deleted. It can <ct=0x0000FF><b>NOT</b></ct> be recovered!\n"
-"\n"
-"Do you really want to continue?"
-msgstr "警告：“%s”将被永久删除。这个操作<ct=0x0000FF><b>不能</b></ct>被恢复！\n\n您确定要继续吗？"
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "Western European"
@@ -11946,9 +11951,9 @@ msgstr "您应该选择一个图片！"
 #. Resource IDs: (IDS_SETTINGS_ICONSETCHANGED)
 #, c-format
 msgid ""
-"You've changed the icon set from <i>%s</i> to <i>%s</i>.\n"
+"You've changed the icon set from \"%s\" to \"%s\".\n"
 "That change won't take effect until you restart your computer or logoff and logon again!"
-msgstr "您已经把图标集从 <i>%s</i> 修改为 <i>%s</i>。\n此更改将在您的计算机重启或您注销后再登录后生效！"
+msgstr "您已经把图标集从“%s”修改为“%s”。\n此更改将在您的计算机重启或您注销后再登录后生效！"
 
 #. Resource IDs: (IDS_COMMITDLG_HISTORYHINT_TT)
 msgid ""
@@ -12073,6 +12078,14 @@ msgstr "\"%s\" 无效。"
 #, c-format
 msgid "\"%s\" is not git repository"
 msgstr "\"%s\"不是git版本库"
+
+#. Resource IDs: (IDS_PROC_DELETEREF)
+#, c-format
+msgid ""
+"\"%s\" will be permanently deleted. It can NOT be recovered!\n"
+"\n"
+"Do you really want to continue?"
+msgstr "“%s”将被永久删除。这个操作不能恢复！\n\n您确定要继续吗？"
 
 #. Resource IDs: (IDS_PROC_APPLYPATCH_GITAMACTIVE)
 msgid ""
@@ -12342,6 +12355,13 @@ msgstr "像素"
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_1: Control id 65535)
 msgid "possible or real conflict/obstructed"
 msgstr "可能或确实有冲突/有障碍"
+
+#. Resource IDs: (IDS_PROC_APPLYPATCH_REBASEDIRFOUND)
+msgid ""
+"previous rebase directory rebase-apply still exists but mbox given.\n"
+"\n"
+"Do you want to"
+msgstr "先前的变基目录仍然存在 rebase-apply，但是 mbox 也提供了一份\n\n您是否想要"
 
 #. Resource IDs: (61509)
 msgid "prn"

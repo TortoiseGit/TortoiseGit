@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2016-02-24 08:23+0000\n"
+"PO-Revision-Date: 2016-06-20 09:20+0000\n"
 "Last-Translator: Zbyněk Schwarz <zbynek.schwarz@gmail.com>\n"
 "Language-Team: Czech (http://www.transifex.com/lznuaa/tortoisegit/language/cs/)\n"
 "MIME-Version: 1.0\n"
@@ -788,6 +788,10 @@ msgstr "&Ignorovat"
 #, c-format
 msgid "&Ignore %d items by name"
 msgstr "&Ignorovat %d položek podle názvu"
+
+#. Resource IDs: (IDS_MENUIGNOREMULTIPLE2)
+msgid "&Ignore multiple items by name"
+msgstr "&Ignorovat mnoho položek dle jména"
 
 #. Resource IDs: (ID_VIEW_IGNORE_WHITESPACE - Menu)
 msgid "&Ignore whitespace"
@@ -1580,79 +1584,6 @@ msgstr "<Oddělovač>"
 msgid "<Untitled>"
 msgstr "<Bez názvu>"
 
-#. Resource IDs: (IDS_PROC_RTFM)
-msgid ""
-"<b>TortoiseGit</b> is a shell extension.\n"
-"That means it is integrated into the Windows explorer.\n"
-"To use <b>TortoiseGit</b> please open the explorer and right-click on any folder you like\n"
-"to bring up the context menu where you will find all <b>TortoiseGit</b> commands.\n"
-"And <u>read the manual!</u>"
-msgstr "<b>TortoiseGit</b> je rozšíření shellu.\nTo znamená, že je začleněn do průzkumníka Windows.\nAbyste <b>TortoiseGit</b> použili, stačí otevřít průzkumníka a kliknout\npravým tlačítkem na jakoukoli složku, kterou chcete,\nabyste zobrazili kontextovou nabídku, kde najdete všechny příkazy <b>TortoiseGit</b>.\nA <u>přečtěte si manuál!</u>"
-
-#. Resource IDs: (IDS_PROC_BROWSEREFS_WARNINGNOMERGECHECK)
-msgid ""
-"<b>Warning:</b> It has not been checked if these branches have been fully "
-"merged into HEAD."
-msgstr "<b>Varování:</b> nebyla provedena kontrola úplného sloučení těchto větví do čela."
-
-#. Resource IDs: (IDS_PROC_BROWSEREFS_WARNINGDELETEREMOTEBRANCHES)
-msgid "<b>Warning:</b> This action will remove the branches on the remote."
-msgstr "<b>Varování:</b> Tato činnost odstraní větve ve vzdálené."
-
-#. Resource IDs: (IDS_PROC_BROWSEREFS_WARNINGUNMERGED)
-msgid "<b>Warning:</b> This branch is not fully merged into HEAD."
-msgstr "<b>Varování:</b> Tato větev není plně sloučena do čela."
-
-#. Resource IDs: (IDS_PROC_COMMIT_DETACHEDWARNING)
-msgid ""
-"<ct=0x0000FF>Current HEAD Detached</ct>, you are working on (no branch).\n"
-"Do you want to create a branch now?"
-msgstr "<ct=0x0000FF>Současné čelo odděleno</ct>, nyní pracujete na (žádná větev).\nChcete ji nyní vytvořit?"
-
-#. Resource IDs: (IDS_PROC_DELETEALLSTASH)
-#, c-format
-msgid "<ct=0x0000FF>Do you really want to delete <b>ALL %d</b> stash?</ct>"
-msgstr "<ct=0x0000FF>Opravdu chcete smazat <b>VŠECH %d</b> úschov?</ct>"
-
-#. Resource IDs: (IDS_PROC_STASHAPPLYFAILED)
-msgid "<ct=0x0000FF>Stash Apply failed!!!</ct>"
-msgstr "<ct=0x0000FF>Použití úschovy selhalo!!!</ct>"
-
-#. Resource IDs: (IDS_PROC_STASHPOPFAILED)
-msgid "<ct=0x0000FF>Stash POP failed!!!</ct>"
-msgstr "<ct=0x0000FF>Výběr z úschovy selhal!!!</ct>"
-
-#. Resource IDs: (IDS_PROC_STASHFAILED)
-msgid "<ct=0x0000FF>Stash failed!!!</ct>"
-msgstr "<ct=0x0000FF>Přidání do úschovy selhalo!!</ct>"
-
-#. Resource IDs: (IDS_PROC_APPLYPATCH_REBASEDIRFOUND)
-msgid ""
-"<ct=0x0000FF>previous rebase directory rebase-apply still exists but mbox given</ct>\n"
-"\n"
-"Do you want to"
-msgstr "<ct=0x0000FF>předchozí adresář přeskládání rebase-apply stále existuje, ale byl zadán mbox</ct>\n\nChcete"
-
-#. Resource IDs: (IDS_PROC_STASHAPPLYFAILEDCONFLICTS)
-msgid "<ct=0x0000ff>Stash Apply failed, there are conflicts</ct>"
-msgstr "<ct=0x0000ff>Použití úschovy selhalo, vyskytly se konflikty</ct>"
-
-#. Resource IDs: (IDS_PROC_STASHPOPFAILEDCONFLICTS)
-msgid "<ct=0x0000ff>Stash POP failed, there are conflicts</ct>"
-msgstr "<ct=0x0000ff>Vyjmutí z úschovy selhalo, vyskytly se konflikty</ct>"
-
-#. Resource IDs: (IDS_PROC_STASHAPPLYSUCCESS)
-msgid "<ct=0xff0000>Stash Apply successful</ct>"
-msgstr "<ct=0xff0000>Použití úschovy bylo úspěšné</ct>"
-
-#. Resource IDs: (IDS_PROC_STASHPOPSUCCESS)
-msgid "<ct=0xff0000>Stash POP successful</ct>"
-msgstr "<ct=0xff0000>Vyjmutí z úschovy bylo úspěšné</ct>"
-
-#. Resource IDs: (IDS_PROC_STASHSUCCESS)
-msgid "<ct=0xff0000>Stash Success</ct>"
-msgstr "<ct=0xff0000>Přidání do úschovy bylo úspěšné</ct>"
-
 #. Resource IDs: (16603)
 msgid "<descr>"
 msgstr "<popis>"
@@ -2147,9 +2078,9 @@ msgstr "Opravdu chcete označit konfliktní soubory jako vyřešené?"
 #. Resource IDs: (IDS_PROC_WARNREVERT)
 #, c-format
 msgid ""
-"Are you sure you want to revert %d item(s)? You will lose <b>all</b> changes"
-" since the last update!"
-msgstr "Opravdu chcete vrátit %d položek? Ztratíte <b>všechny</b> změny od poslední aktualizace!"
+"Are you sure you want to revert %d item(s)? You will lose ALL changes since "
+"the last update!"
+msgstr "Opravdu chcete vrátit %d položek? Ztratíte VŠECHNY změny od poslední aktualizace!"
 
 #. Resource IDs: (IDS_WARNUSERSAFEDIFFERENT)
 #, c-format
@@ -2347,7 +2278,8 @@ msgstr "Pobaltské"
 msgid "Bar Graph"
 msgstr "Sloupcový graf"
 
-#. Resource IDs: (Dialog IDD_RESOLVESUBMODULECONFLICT: Control id 1385)
+#. Resource IDs: (Dialog IDD_RESOLVESUBMODULECONFLICT: Control id 1385,
+#. IDS_PROC_DIFF_BASE)
 msgid "Base"
 msgstr "Základ"
 
@@ -3758,6 +3690,12 @@ msgstr "Současná větev"
 msgid "Current Branch:"
 msgstr "Současná větev:"
 
+#. Resource IDs: (IDS_PROC_COMMIT_DETACHEDWARNING)
+msgid ""
+"Current HEAD is detached, you are working on (no branch).\n"
+"Do you want to create a branch now?"
+msgstr "Současné čelo odděleno, nyní pracujete na (žádná větev).\nChcete ji nyní vytvořit?"
+
 #. Resource IDs: (IDS_REBASE_UPTODATE_FMT)
 #, c-format
 msgid ""
@@ -3886,6 +3824,10 @@ msgstr "Smazat všechny značky"
 msgid "Delete and &ignore %d items by name"
 msgstr "Smazat a &ignorovat %d položek podle názvu"
 
+#. Resource IDs: (IDS_MENUDELETEIGNOREMULTIPLE2)
+msgid "Delete and &ignore multiple items by name"
+msgstr "Smazat a &ignorovat mnoho položek dle jména"
+
 #. Resource IDs: (IDS_MENUDELETEIGNORE)
 msgid "Delete and add to &ignore list"
 msgstr "Smazat a přidat do &seznamu k ignorování"
@@ -3894,6 +3836,10 @@ msgstr "Smazat a přidat do &seznamu k ignorování"
 #, c-format
 msgid "Delete and ignore %d items by &extension"
 msgstr "Smazat a ignorovat %d položek podle &přípony"
+
+#. Resource IDs: (IDS_MENUDELETEIGNOREMULTIPLEMASK2)
+msgid "Delete and ignore multiple items by &extension"
+msgstr "Smazat a ignorovat mnoho položek podle &přípony"
 
 #. Resource IDs: (IDS_PROC_BROWSEREFS_DELETEBRANCH)
 msgid "Delete branch"
@@ -4235,10 +4181,15 @@ msgstr "Nezobrazovat kontextovou nabídku v následujících cestách:"
 msgid "Do not use recycle bin"
 msgstr "Nepoužívat Koš"
 
+#. Resource IDs: (IDS_PROC_DELETEALLSTASH)
+#, c-format
+msgid "Do you really want to delete ALL %d stash?"
+msgstr "Opravdu chcete smazat VŠECH %d úschov?"
+
 #. Resource IDs: (IDS_PROC_DELETEBRANCHTAG)
 #, c-format
-msgid "Do you really want to <ct=0x0000FF>delete</ct> <b>%s</b>?"
-msgstr "Opravdu chcete <ct=0x0000FF>smazat</ct> <b>%s</b>?"
+msgid "Do you really want to delete \"%s\"?"
+msgstr "Opravdu chcete smazat \"%s\"?"
 
 #. Resource IDs: (16109)
 #, c-format
@@ -4267,9 +4218,9 @@ msgstr "Opravdu chcete přesunout tento soubor nebo složku?"
 #. Resource IDs: (IDS_PROC_DELETENREFS)
 #, c-format
 msgid ""
-"Do you really want to permanently delete the %d selected refs? It can "
-"<ct=0x0000FF><b>NOT</b></ct> be recovered!"
-msgstr "Opravdu chcete smazat %d zvolených odkazů? <ct=0x0000FF><b>NEMOHOU</b></ct> být obnoveny!"
+"Do you really want to permanently delete the %d selected refs? It can NOT be"
+" recovered!"
+msgstr "Opravdu chcete natrvalo smazat %d zvolených odkazů? NELZE je znovu obnovit!"
 
 #. Resource IDs: (IDS_WARN_DELETE_ONE_FROM_INDEX)
 #, c-format
@@ -4996,6 +4947,10 @@ msgstr "Přinést"
 msgid "Fetch && Re&base"
 msgstr "&Přinést a přeskládat"
 
+#. Resource IDs: (IDS_PROC_SYNC_FETCHALL)
+msgid "Fetch all refs"
+msgstr "Získat všechny odkazy"
+
 #. Resource IDs: (IDS_MENUDESCFETCH)
 msgid "Fetch commits from a remote repository."
 msgstr "Získat odevzdání ze vzdáleného úložiště."
@@ -5248,7 +5203,7 @@ msgstr "Stiskněte F1 pro nápovědu. Použijte Ctrl-Kolečko myši pro posunov�
 msgid "For complete history deselect 'Stop on copy/rename'"
 msgstr "Pro celou historii odškrtněte 'Zastavit na kopírování/přejmenování'"
 
-#. Resource IDs: (IDS_PULL_SETTRACKEDBRANCH)
+#. Resource IDs: (IDS_NOTYET_SETTRACKEDBRANCH)
 #, c-format
 msgid ""
 "For the current branch \"%s\" no tracked branch is configured.\n"
@@ -6178,6 +6133,10 @@ msgstr "Ignorovat položky rekurzivně"
 msgid "Ignore line &endings (recommended)"
 msgstr "Ignorovat &ukončení řádků (doporučeno)"
 
+#. Resource IDs: (IDS_MENUIGNOREMULTIPLEMASK2)
+msgid "Ignore multiple items by &extension"
+msgstr "Ignorovat mnoho položek dle &přípony"
+
 #. Resource IDs: (IDS_DIFFOPTION_IGNORESPACEATEOL)
 msgid "Ignore space at EOL"
 msgstr "Ignorovat mezeru na konci řádku"
@@ -6347,6 +6306,11 @@ msgstr "Neplatné číslo revize!"
 #. Resource IDs: (Dialog IDD_CERTCHECK: Control id 65535)
 msgid "Issuer:"
 msgstr "Vydavatel:"
+
+#. Resource IDs: (IDS_PROC_BROWSEREFS_WARNINGNOMERGECHECK)
+msgid ""
+"It has not been checked if these branches have been fully merged into HEAD."
+msgstr "Nebyla provedena kontrola úplného sloučení těchto větví do čela."
 
 #. Resource IDs: (IDS_PROC_CASERENAME)
 msgid ""
@@ -9964,9 +9928,33 @@ msgstr "&Zpráva úschovy"
 msgid "Stash Apply"
 msgstr "Použití úschovy"
 
+#. Resource IDs: (IDS_PROC_STASHAPPLYFAILED)
+msgid "Stash Apply failed!"
+msgstr "Použití úschovy selhalo!"
+
+#. Resource IDs: (IDS_PROC_STASHAPPLYFAILEDCONFLICTS)
+msgid "Stash Apply failed, there are conflicts"
+msgstr "Použití úschovy selhalo, vyskytly se konflikty"
+
+#. Resource IDs: (IDS_PROC_STASHAPPLYSUCCESS)
+msgid "Stash Apply successful"
+msgstr "Použití úschovy bylo úspěšné"
+
 #. Resource IDs: (IDS_MENUSTASHLIST)
 msgid "Stash List"
 msgstr "Seznam úschov"
+
+#. Resource IDs: (IDS_PROC_STASHPOPFAILED)
+msgid "Stash POP failed!"
+msgstr "Výběr z úschovy selhal!"
+
+#. Resource IDs: (IDS_PROC_STASHPOPFAILEDCONFLICTS)
+msgid "Stash POP failed, there are conflicts"
+msgstr "Vyjmutí z úschovy selhalo, vyskytly se konflikty"
+
+#. Resource IDs: (IDS_PROC_STASHPOPSUCCESS)
+msgid "Stash POP successful"
+msgstr "Vyjmutí z úschovy bylo úspěšné"
 
 #. Resource IDs: (IDS_MENUSTASHPOP)
 msgid "Stash Pop"
@@ -9975,6 +9963,14 @@ msgstr "Výběr z úschovy"
 #. Resource IDs: (IDS_MENUSTASHSAVE)
 msgid "Stash Save"
 msgstr "Uložení do úschovy"
+
+#. Resource IDs: (IDS_PROC_STASHSUCCESS)
+msgid "Stash Success"
+msgstr "Uložení do úschovy bylo úspěšné"
+
+#. Resource IDs: (IDS_PROC_STASHFAILED)
+msgid "Stash failed!"
+msgstr "Uložení do úschovy selhalo"
 
 #. Resource IDs: (IDS_PROC_STASHRUNNING)
 msgid "Stash operation running..."
@@ -10325,10 +10321,10 @@ msgstr "Hodnota \"počet\" pro volby \"Posledních N\".\nMěla by být > 0"
 #. Resource IDs: (IDS_PROC_DELETEREMOTEBRANCH)
 #, c-format
 msgid ""
-"The branch \"%s\" is a <i>remote</i> branch.\n"
+"The branch \"%s\" is a remote branch.\n"
 "\n"
-"Do you really want to <ct=0x0000FF>delete</ct> it?"
-msgstr "Větev \"%s\" je <i>vzdálená</i> větev.\n\nOpravdu ji chcete <ct=0x0000FF>smazat</ct>?"
+"Do you really want to delete it?"
+msgstr "Větev \"%s\" je vzdálená větev.\n\nOpravdu ji chcete smazat?"
 
 #. Resource IDs: (IDS_ERR_PATCH_CHUNKMISMATCH)
 msgid "The chunk size did not match the number of added/removed lines!"
@@ -10715,6 +10711,14 @@ msgid ""
 "changes that were made before the application closed."
 msgstr "Tyto jsou uloženy později než právě otevřené dokumenty a obsahují změny, které byly udělány před zavřením aplikace."
 
+#. Resource IDs: (IDS_PROC_BROWSEREFS_WARNINGDELETEREMOTEBRANCHES)
+msgid "This action will remove the branches on the remote."
+msgstr "Tato činnost odstraní větve ve vzdálené."
+
+#. Resource IDs: (IDS_PROC_BROWSEREFS_WARNINGUNMERGED)
+msgid "This branch is not fully merged into HEAD."
+msgstr "Tato větev není plně sloučena do čela."
+
 #. Resource IDs: (IDS_ERR_MISSINGVALUE)
 msgid "This field is required and must not be empty."
 msgstr "Pole je povinné a nesmí být prázdné."
@@ -10885,6 +10889,15 @@ msgid ""
 "TortoiseGit has detected similar filenames. Do you want the files:%s\n"
 "to be renamed too?"
 msgstr "TortoiseGit zjistil podobné názvy souborů. Chcete aby soubory: %s\nbyly také přejmenovány?"
+
+#. Resource IDs: (IDS_PROC_RTFM)
+msgid ""
+"TortoiseGit is a shell extension.\n"
+"That means it is integrated into the Windows explorer.\n"
+"To use TortoiseGit please open the explorer and right-click on any folder you like\n"
+"to bring up the context menu where you will find all TortoiseGit commands.\n"
+"And read the manual!"
+msgstr "TortoiseGit je rozšíření shellu.\nTo znamená, že je začleněn do průzkumníka Windows.\nAbyste TortoiseGit použili, stačí otevřít průzkumníka a kliknout\npravým tlačítkem na jakoukoli složku, kterou chcete,\nabyste zobrazili kontextovou nabídku, kde najdete všechny příkazy TortoiseGit.\nA přečtěte si manuál!"
 
 #. Resource IDs: (IDS_SETTINGS_OVERLAYINFO2)
 #, c-format
@@ -11531,22 +11544,22 @@ msgid "Version %d.%d.%d.%d"
 msgstr "Verze %d.%d.%d.%d"
 
 #. Resource IDs: (Dialog IDD_DIFFFILES: Control id 1644,
-#. IDS_PROC_FILEDIFF_VERSION1)
-msgid "Version 1"
-msgstr "Verze 1"
+#. IDS_PROC_FILEDIFF_VERSION1BASE)
+msgid "Version 1 (Base)"
+msgstr "Verze 1 (Základní)"
 
-#. Resource IDs: (IDS_PROC_FILEDIFF_VERSION1NEWER)
-msgid "Version 1 (Newer commit time)"
-msgstr "Verze 1 (Novější čas odevzdání)"
+#. Resource IDs: (IDS_PROC_FILEDIFF_VERSION1BASENEWER)
+msgid "Version 1 (Base, Newer commit time)"
+msgstr "Verze 1 (Základní, Novější čas odevzdání)"
 
 #. Resource IDs: (Dialog IDD_DIFFFILES: Control id 1645,
-#. IDS_PROC_FILEDIFF_VERSION2BASE)
-msgid "Version 2 (Base)"
-msgstr "Verze 2 (Základní)"
+#. IDS_PROC_FILEDIFF_VERSION2)
+msgid "Version 2"
+msgstr "Verze 2"
 
-#. Resource IDs: (IDS_PROC_FILEDIFF_VERSION2BASENEWER)
-msgid "Version 2 (Base) (Newer commit time)"
-msgstr "Verze 2 (Základ) (Novější čas odevzdání)"
+#. Resource IDs: (IDS_PROC_FILEDIFF_VERSION2NEWER)
+msgid "Version 2 (Newer commit time)"
+msgstr "Verze 2 (Novější čas odevzdání)"
 
 #. Resource IDs: (Dialog IDD_ABOUT: Control id 1075)
 msgid "Version Information"
@@ -11641,14 +11654,6 @@ msgstr "Varování"
 #. Resource IDs: (IDS_PROGRS_CONFLICTSOCCURED_WARNING)
 msgid "Warning!"
 msgstr "Varování!"
-
-#. Resource IDs: (IDS_PROC_DELETEREF)
-#, c-format
-msgid ""
-"Warning: \"%s\" will be permanently deleted. It can <ct=0x0000FF><b>NOT</b></ct> be recovered!\n"
-"\n"
-"Do you really want to continue?"
-msgstr "Varování: \"%s\" bude natrvalo odstraněna. Toto <ct=0x0000FF><b>NEMŮŽETE</b></ct> vrátit!\n\nOpravdu chcete pokračovat?"
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "Western European"
@@ -11940,9 +11945,9 @@ msgstr "Měli byste vybrat obrázek!"
 #. Resource IDs: (IDS_SETTINGS_ICONSETCHANGED)
 #, c-format
 msgid ""
-"You've changed the icon set from <i>%s</i> to <i>%s</i>.\n"
+"You've changed the icon set from \"%s\" to \"%s\".\n"
 "That change won't take effect until you restart your computer or logoff and logon again!"
-msgstr "Změnili jste sadu ikon z <i>%s</i> na <i>%s</i>.\nTato změna se neprojeví, dokud svůj počítač nerestartujete, nebo se můžete odhlásit a znovu přihlásit!"
+msgstr "Změnili jste sadu ikon z \"%s\" na \"%s\".\nTato změna se neprojeví, dokud svůj počítač nerestartujete, nebo se můžete odhlásit a znovu přihlásit!"
 
 #. Resource IDs: (IDS_COMMITDLG_HISTORYHINT_TT)
 msgid ""
@@ -12067,6 +12072,14 @@ msgstr "\"%s\" je neplatné."
 #, c-format
 msgid "\"%s\" is not git repository"
 msgstr "\"%s\" není úložiště git"
+
+#. Resource IDs: (IDS_PROC_DELETEREF)
+#, c-format
+msgid ""
+"\"%s\" will be permanently deleted. It can NOT be recovered!\n"
+"\n"
+"Do you really want to continue?"
+msgstr "\"%s\" bude natrvalo odstraněna. Toto NEMŮŽETE vrátit!\n\nOpravdu chcete pokračovat?"
 
 #. Resource IDs: (IDS_PROC_APPLYPATCH_GITAMACTIVE)
 msgid ""
@@ -12336,6 +12349,13 @@ msgstr "pixelů"
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_1: Control id 65535)
 msgid "possible or real conflict/obstructed"
 msgstr "možný nebo skutečný konflikt/zablokováno"
+
+#. Resource IDs: (IDS_PROC_APPLYPATCH_REBASEDIRFOUND)
+msgid ""
+"previous rebase directory rebase-apply still exists but mbox given.\n"
+"\n"
+"Do you want to"
+msgstr "předchozí adresář přeskládání rebase-apply stále existuje, ale byl zadán mbox\n\nChcete"
 
 #. Resource IDs: (61509)
 msgid "prn"

@@ -12,9 +12,9 @@
 # Lübbe TortoiseSVN <luebbe.tortoisesvn@gmail.com>, 2011
 # Lübbe TortoiseSVN <luebbe.tortoisesvn@gmail.com>, 2011
 # spencea <pencea.simona@gmail.com>, 2014
-# radu.murzea <radu.murzea@gmail.com>, 2013
-# radu.murzea <radu.murzea@gmail.com>, 2013
-# radu.murzea <radu.murzea@gmail.com>, 2013
+# Radu Murzea <radu.murzea@gmail.com>, 2013
+# Radu Murzea <radu.murzea@gmail.com>, 2013
+# Radu Murzea <radu.murzea@gmail.com>, 2013,2016
 # SoboLAN <sobolanx@gmail.com>, 2014-2015
 # spencea <pencea.simona@gmail.com>, 2014
 # Sven Strickroth <sstrickroth@googlemail.com>, 2013,2015
@@ -25,8 +25,8 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2016-02-23 21:07+0000\n"
-"Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
+"PO-Revision-Date: 2016-06-22 14:45+0000\n"
+"Last-Translator: Radu Murzea <radu.murzea@gmail.com>\n"
 "Language-Team: Romanian (http://www.transifex.com/lznuaa/tortoisegit/language/ro/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -456,7 +456,7 @@ msgstr "&Margine"
 #. Resource IDs: (Dialog IDD_MERGE: Control id 1512, Dialog
 #. IDD_NEW_BRANCH_TAG: Control id 1512)
 msgid "&Branch"
-msgstr "&Ramifică"
+msgstr "&Ramură"
 
 #. Resource IDs: (Dialog IDD_REBASE: Control id 4566)
 msgid "&Branch:"
@@ -797,6 +797,10 @@ msgstr "&Ignoră"
 #, c-format
 msgid "&Ignore %d items by name"
 msgstr "&Ignoră %d elemente după nume"
+
+#. Resource IDs: (IDS_MENUIGNOREMULTIPLE2)
+msgid "&Ignore multiple items by name"
+msgstr ""
 
 #. Resource IDs: (ID_VIEW_IGNORE_WHITESPACE - Menu)
 msgid "&Ignore whitespace"
@@ -1589,79 +1593,6 @@ msgstr "<Separator>"
 msgid "<Untitled>"
 msgstr "<Fără titlu>"
 
-#. Resource IDs: (IDS_PROC_RTFM)
-msgid ""
-"<b>TortoiseGit</b> is a shell extension.\n"
-"That means it is integrated into the Windows explorer.\n"
-"To use <b>TortoiseGit</b> please open the explorer and right-click on any folder you like\n"
-"to bring up the context menu where you will find all <b>TortoiseGit</b> commands.\n"
-"And <u>read the manual!</u>"
-msgstr "<b>TortoiseGit</b> este o extensie a shell-ului.\nAcest lucru înseamnă că este integrat in Windows Explorer.\nPentru a folosi <b>TortoiseGit</b> deschideţi explorer-ul şi executaţi clic-dreapta pe directorul dorit\npentru a accesa meniul contextual unde veţi găsi toate comenzile <b>TortoiseGit</b>.\nŞi <u>citiţi manualul de utilizare!</u>"
-
-#. Resource IDs: (IDS_PROC_BROWSEREFS_WARNINGNOMERGECHECK)
-msgid ""
-"<b>Warning:</b> It has not been checked if these branches have been fully "
-"merged into HEAD."
-msgstr "<b>Avertisment:</b> Nu s-a verificat dacă aceste ramuri au fost îmbinate în HEAD."
-
-#. Resource IDs: (IDS_PROC_BROWSEREFS_WARNINGDELETEREMOTEBRANCHES)
-msgid "<b>Warning:</b> This action will remove the branches on the remote."
-msgstr "<b>Avertisment:</b> Această acţiune va şterge ramurile de la destinaţie."
-
-#. Resource IDs: (IDS_PROC_BROWSEREFS_WARNINGUNMERGED)
-msgid "<b>Warning:</b> This branch is not fully merged into HEAD."
-msgstr "<b>Avertisment:</b> Această ramură nu a fost îmbinată complet cu HEAD."
-
-#. Resource IDs: (IDS_PROC_COMMIT_DETACHEDWARNING)
-msgid ""
-"<ct=0x0000FF>Current HEAD Detached</ct>, you are working on (no branch).\n"
-"Do you want to create a branch now?"
-msgstr ""
-
-#. Resource IDs: (IDS_PROC_DELETEALLSTASH)
-#, c-format
-msgid "<ct=0x0000FF>Do you really want to delete <b>ALL %d</b> stash?</ct>"
-msgstr ""
-
-#. Resource IDs: (IDS_PROC_STASHAPPLYFAILED)
-msgid "<ct=0x0000FF>Stash Apply failed!!!</ct>"
-msgstr "<ct=0x0000FF>Nu s-a reuşit aplicarea tainei!!!</ct>"
-
-#. Resource IDs: (IDS_PROC_STASHPOPFAILED)
-msgid "<ct=0x0000FF>Stash POP failed!!!</ct>"
-msgstr "<ct=0x0000FF>Nu s-a reuşit scoaterea tainei!!!</ct>"
-
-#. Resource IDs: (IDS_PROC_STASHFAILED)
-msgid "<ct=0x0000FF>Stash failed!!!</ct>"
-msgstr "<ct=0x0000FF>Nu s-a reuşit tăinuirea!!!</ct>"
-
-#. Resource IDs: (IDS_PROC_APPLYPATCH_REBASEDIRFOUND)
-msgid ""
-"<ct=0x0000FF>previous rebase directory rebase-apply still exists but mbox given</ct>\n"
-"\n"
-"Do you want to"
-msgstr "<ct=0x0000FF>dosarul reamplasare-aplică de la reamplasarea anterioară încă există dar s-a furnizat mbox</ct>\n\nDoriţi să"
-
-#. Resource IDs: (IDS_PROC_STASHAPPLYFAILEDCONFLICTS)
-msgid "<ct=0x0000ff>Stash Apply failed, there are conflicts</ct>"
-msgstr "<ct=0x0000ff>Nu s-a reuşit aplicarea tainei, există conflicte</ct>"
-
-#. Resource IDs: (IDS_PROC_STASHPOPFAILEDCONFLICTS)
-msgid "<ct=0x0000ff>Stash POP failed, there are conflicts</ct>"
-msgstr "<ct=0x0000ff>Nu s-a reuşit scoaterea tainei, există conflicte</ct>"
-
-#. Resource IDs: (IDS_PROC_STASHAPPLYSUCCESS)
-msgid "<ct=0xff0000>Stash Apply successful</ct>"
-msgstr "<ct=0xff0000>Taina s-a aplicat cu succes</ct>"
-
-#. Resource IDs: (IDS_PROC_STASHPOPSUCCESS)
-msgid "<ct=0xff0000>Stash POP successful</ct>"
-msgstr "<ct=0xff0000>Scoaterea tainei s-a realizat cu succes</ct>"
-
-#. Resource IDs: (IDS_PROC_STASHSUCCESS)
-msgid "<ct=0xff0000>Stash Success</ct>"
-msgstr "<ct=0xff0000>Tăinuire reuşită</ct>"
-
 #. Resource IDs: (16603)
 msgid "<descr>"
 msgstr "<descr>"
@@ -2156,9 +2087,9 @@ msgstr "Sigur vreţi să marcaţi fişierul (fişierele) conflictuale ca fiind r
 #. Resource IDs: (IDS_PROC_WARNREVERT)
 #, c-format
 msgid ""
-"Are you sure you want to revert %d item(s)? You will lose <b>all</b> changes"
-" since the last update!"
-msgstr "Sunteţi sigur că doriţi să inversaţi %d element(e)? Veţi pierde <b>toate</b> modificările făcute după ultima actualizare!"
+"Are you sure you want to revert %d item(s)? You will lose ALL changes since "
+"the last update!"
+msgstr ""
 
 #. Resource IDs: (IDS_WARNUSERSAFEDIFFERENT)
 #, c-format
@@ -2356,7 +2287,8 @@ msgstr "Baltic"
 msgid "Bar Graph"
 msgstr "Grafic cu bare"
 
-#. Resource IDs: (Dialog IDD_RESOLVESUBMODULECONFLICT: Control id 1385)
+#. Resource IDs: (Dialog IDD_RESOLVESUBMODULECONFLICT: Control id 1385,
+#. IDS_PROC_DIFF_BASE)
 msgid "Base"
 msgstr "Baza"
 
@@ -3767,6 +3699,12 @@ msgstr "Ramură actuală"
 msgid "Current Branch:"
 msgstr "Ramură actuală:"
 
+#. Resource IDs: (IDS_PROC_COMMIT_DETACHEDWARNING)
+msgid ""
+"Current HEAD is detached, you are working on (no branch).\n"
+"Do you want to create a branch now?"
+msgstr ""
+
 #. Resource IDs: (IDS_REBASE_UPTODATE_FMT)
 #, c-format
 msgid ""
@@ -3895,6 +3833,10 @@ msgstr "Şterge toate etichetele"
 msgid "Delete and &ignore %d items by name"
 msgstr "Şterge şi &ignoră %d elemente după nume"
 
+#. Resource IDs: (IDS_MENUDELETEIGNOREMULTIPLE2)
+msgid "Delete and &ignore multiple items by name"
+msgstr ""
+
 #. Resource IDs: (IDS_MENUDELETEIGNORE)
 msgid "Delete and add to &ignore list"
 msgstr "Şterge şi adaugă la lista de &ignorări"
@@ -3903,6 +3845,10 @@ msgstr "Şterge şi adaugă la lista de &ignorări"
 #, c-format
 msgid "Delete and ignore %d items by &extension"
 msgstr "Şterge şi ignoră %d elemente după &extensie"
+
+#. Resource IDs: (IDS_MENUDELETEIGNOREMULTIPLEMASK2)
+msgid "Delete and ignore multiple items by &extension"
+msgstr ""
 
 #. Resource IDs: (IDS_PROC_BROWSEREFS_DELETEBRANCH)
 msgid "Delete branch"
@@ -4244,10 +4190,15 @@ msgstr "Nu afişa meniul contextual pentru următoarele căi:"
 msgid "Do not use recycle bin"
 msgstr "Nu folosi coşul de gunoi"
 
+#. Resource IDs: (IDS_PROC_DELETEALLSTASH)
+#, c-format
+msgid "Do you really want to delete ALL %d stash?"
+msgstr ""
+
 #. Resource IDs: (IDS_PROC_DELETEBRANCHTAG)
 #, c-format
-msgid "Do you really want to <ct=0x0000FF>delete</ct> <b>%s</b>?"
-msgstr "Chiar doriţi să <ct=0x0000FF>ştergeţi</ct> <b>%s</b>?"
+msgid "Do you really want to delete \"%s\"?"
+msgstr ""
 
 #. Resource IDs: (16109)
 #, c-format
@@ -4276,9 +4227,9 @@ msgstr "Chiar doriţi să mutaţi acest fişier sau dosar?"
 #. Resource IDs: (IDS_PROC_DELETENREFS)
 #, c-format
 msgid ""
-"Do you really want to permanently delete the %d selected refs? It can "
-"<ct=0x0000FF><b>NOT</b></ct> be recovered!"
-msgstr "Chiar doriţi să ştergeţi definitiv cele  %d referinţe selectate? <ct=0x0000FF><b>NU</b></ct> vor putea fi recuperate!"
+"Do you really want to permanently delete the %d selected refs? It can NOT be"
+" recovered!"
+msgstr ""
 
 #. Resource IDs: (IDS_WARN_DELETE_ONE_FROM_INDEX)
 #, c-format
@@ -4397,7 +4348,7 @@ msgstr "Nu salva\nReincarca vederile fara a salva modificarile"
 
 #. Resource IDs: (Dialog IDD_SETTINGSEXTMENU: Control id 65535)
 msgid "Don't show the selected items: (press shift key to show them)"
-msgstr ""
+msgstr "Nu arăta elementele selectate: (apasă tasta Shift pentru a le vedea)"
 
 #. Resource IDs: (IDS_MSGBOX_DONOTSHOW)
 msgid "Don't show this message again"
@@ -4550,7 +4501,7 @@ msgstr "Editează..."
 #. IDD_SETTINGSBUGTRAQ_CONFIG: Control id 1770, Dialog IDD_SETTINGSDIALOGS3:
 #. Control id 1770)
 msgid "Effective"
-msgstr ""
+msgstr "Efectiv"
 
 #. Resource IDs: (IDS_SETTINGS_PROXYSERVER_TT)
 msgid "Either the name or IP of the proxy server"
@@ -4662,7 +4613,7 @@ msgstr "S-a produs o eroare neaşteptată în timpul scrierii %1."
 
 #. Resource IDs: (Dialog IDD_SETTINGSMTP: Control id 1759)
 msgid "Encryption"
-msgstr ""
+msgstr "Criptare"
 
 #. Resource IDs: (Dialog IDD_REQUESTPULL: Control id 1617)
 msgid "End"
@@ -5005,6 +4956,10 @@ msgstr "Preia"
 msgid "Fetch && Re&base"
 msgstr "Preia && Reamplasează"
 
+#. Resource IDs: (IDS_PROC_SYNC_FETCHALL)
+msgid "Fetch all refs"
+msgstr ""
+
 #. Resource IDs: (IDS_MENUDESCFETCH)
 msgid "Fetch commits from a remote repository."
 msgstr ""
@@ -5180,7 +5135,7 @@ msgstr "Caută textul specificat\nCaută"
 
 #. Resource IDs: (Dialog IDD_FINDBAR: Control id 65535)
 msgid "Find:"
-msgstr ""
+msgstr "Găseşte:"
 
 #. Resource IDs: (IDS_FIND_NOTFOUND)
 #, c-format
@@ -5257,7 +5212,7 @@ msgstr "Pentru ajutor, apăsaţi F1. Derulaţi orizontal cu Ctrl + rotiţa de de
 msgid "For complete history deselect 'Stop on copy/rename'"
 msgstr "Pentru istoria completă, deselectaţi 'Opreşte când se copiază/redenumeşte'"
 
-#. Resource IDs: (IDS_PULL_SETTRACKEDBRANCH)
+#. Resource IDs: (IDS_NOTYET_SETTRACKEDBRANCH)
 #, c-format
 msgid ""
 "For the current branch \"%s\" no tracked branch is configured.\n"
@@ -6187,6 +6142,10 @@ msgstr "Ignoră element(-e) recursiv"
 msgid "Ignore line &endings (recommended)"
 msgstr "Ignoră caracterele de &linie nouă (recomandat)"
 
+#. Resource IDs: (IDS_MENUIGNOREMULTIPLEMASK2)
+msgid "Ignore multiple items by &extension"
+msgstr ""
+
 #. Resource IDs: (IDS_DIFFOPTION_IGNORESPACEATEOL)
 msgid "Ignore space at EOL"
 msgstr "Ignoră spațiile la sfarșitul liniilor"
@@ -6355,6 +6314,11 @@ msgstr "Numărul reviziei este invalid!"
 
 #. Resource IDs: (Dialog IDD_CERTCHECK: Control id 65535)
 msgid "Issuer:"
+msgstr ""
+
+#. Resource IDs: (IDS_PROC_BROWSEREFS_WARNINGNOMERGECHECK)
+msgid ""
+"It has not been checked if these branches have been fully merged into HEAD."
 msgstr ""
 
 #. Resource IDs: (IDS_PROC_CASERENAME)
@@ -7207,7 +7171,7 @@ msgid ""
 "No files were changed or added since\n"
 "the last commit.\n"
 "Do you want to see the unversioned files?"
-msgstr ""
+msgstr "Nici un fişier nu a fost modificat sau adăgat de la\nultimul commit.\nAţi dori să vedeţi fişierele ne-versionate?"
 
 #. Resource IDs: (IDS_REVGRAPH_ERR_NOGRAPH)
 msgid "No graph available"
@@ -9973,9 +9937,33 @@ msgstr "&Mesaj tăinuire"
 msgid "Stash Apply"
 msgstr "Aplică tăinuire"
 
+#. Resource IDs: (IDS_PROC_STASHAPPLYFAILED)
+msgid "Stash Apply failed!"
+msgstr ""
+
+#. Resource IDs: (IDS_PROC_STASHAPPLYFAILEDCONFLICTS)
+msgid "Stash Apply failed, there are conflicts"
+msgstr ""
+
+#. Resource IDs: (IDS_PROC_STASHAPPLYSUCCESS)
+msgid "Stash Apply successful"
+msgstr ""
+
 #. Resource IDs: (IDS_MENUSTASHLIST)
 msgid "Stash List"
 msgstr "Listă tăinuiri"
+
+#. Resource IDs: (IDS_PROC_STASHPOPFAILED)
+msgid "Stash POP failed!"
+msgstr ""
+
+#. Resource IDs: (IDS_PROC_STASHPOPFAILEDCONFLICTS)
+msgid "Stash POP failed, there are conflicts"
+msgstr ""
+
+#. Resource IDs: (IDS_PROC_STASHPOPSUCCESS)
+msgid "Stash POP successful"
+msgstr ""
 
 #. Resource IDs: (IDS_MENUSTASHPOP)
 msgid "Stash Pop"
@@ -9984,6 +9972,14 @@ msgstr "Scoate din tainiţă"
 #. Resource IDs: (IDS_MENUSTASHSAVE)
 msgid "Stash Save"
 msgstr "Salvează tăinuire"
+
+#. Resource IDs: (IDS_PROC_STASHSUCCESS)
+msgid "Stash Success"
+msgstr ""
+
+#. Resource IDs: (IDS_PROC_STASHFAILED)
+msgid "Stash failed!"
+msgstr ""
 
 #. Resource IDs: (IDS_PROC_STASHRUNNING)
 msgid "Stash operation running..."
@@ -10334,10 +10330,10 @@ msgstr ""
 #. Resource IDs: (IDS_PROC_DELETEREMOTEBRANCH)
 #, c-format
 msgid ""
-"The branch \"%s\" is a <i>remote</i> branch.\n"
+"The branch \"%s\" is a remote branch.\n"
 "\n"
-"Do you really want to <ct=0x0000FF>delete</ct> it?"
-msgstr "Ramura  \"%s\" este o ramură <i>destinaţie</i>.\n\nChiar doriţi să o<ct=0x0000FF>ştergeţi</ct>?"
+"Do you really want to delete it?"
+msgstr ""
 
 #. Resource IDs: (IDS_ERR_PATCH_CHUNKMISMATCH)
 msgid "The chunk size did not match the number of added/removed lines!"
@@ -10724,6 +10720,14 @@ msgid ""
 "changes that were made before the application closed."
 msgstr "Acestea au fost salvate mai recent decât documentele actual deschise și conțin schimbări făcute întainte de a fi închis aplicația."
 
+#. Resource IDs: (IDS_PROC_BROWSEREFS_WARNINGDELETEREMOTEBRANCHES)
+msgid "This action will remove the branches on the remote."
+msgstr ""
+
+#. Resource IDs: (IDS_PROC_BROWSEREFS_WARNINGUNMERGED)
+msgid "This branch is not fully merged into HEAD."
+msgstr ""
+
 #. Resource IDs: (IDS_ERR_MISSINGVALUE)
 msgid "This field is required and must not be empty."
 msgstr "Câmpul este necesar şi trebuie să nu fie nul."
@@ -10894,6 +10898,15 @@ msgid ""
 "TortoiseGit has detected similar filenames. Do you want the files:%s\n"
 "to be renamed too?"
 msgstr "TortoiseGit a detectat nume de fişiere similare. Doriţi ca fişierele:%s\nsa fie şi ele redenumite?"
+
+#. Resource IDs: (IDS_PROC_RTFM)
+msgid ""
+"TortoiseGit is a shell extension.\n"
+"That means it is integrated into the Windows explorer.\n"
+"To use TortoiseGit please open the explorer and right-click on any folder you like\n"
+"to bring up the context menu where you will find all TortoiseGit commands.\n"
+"And read the manual!"
+msgstr ""
 
 #. Resource IDs: (IDS_SETTINGS_OVERLAYINFO2)
 #, c-format
@@ -11540,22 +11553,22 @@ msgid "Version %d.%d.%d.%d"
 msgstr "Version %d.%d.%d.%d"
 
 #. Resource IDs: (Dialog IDD_DIFFFILES: Control id 1644,
-#. IDS_PROC_FILEDIFF_VERSION1)
-msgid "Version 1"
-msgstr "Versiunea 1"
+#. IDS_PROC_FILEDIFF_VERSION1BASE)
+msgid "Version 1 (Base)"
+msgstr ""
 
-#. Resource IDs: (IDS_PROC_FILEDIFF_VERSION1NEWER)
-msgid "Version 1 (Newer commit time)"
-msgstr "Versiunea 1 ( Timp de transmitere mai recent)"
+#. Resource IDs: (IDS_PROC_FILEDIFF_VERSION1BASENEWER)
+msgid "Version 1 (Base, Newer commit time)"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_DIFFFILES: Control id 1645,
-#. IDS_PROC_FILEDIFF_VERSION2BASE)
-msgid "Version 2 (Base)"
-msgstr "Versiunea 2 (Bază)"
+#. IDS_PROC_FILEDIFF_VERSION2)
+msgid "Version 2"
+msgstr ""
 
-#. Resource IDs: (IDS_PROC_FILEDIFF_VERSION2BASENEWER)
-msgid "Version 2 (Base) (Newer commit time)"
-msgstr "Versiunea 2 (Baza) (Timpul de transmitere mai recent)"
+#. Resource IDs: (IDS_PROC_FILEDIFF_VERSION2NEWER)
+msgid "Version 2 (Newer commit time)"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_ABOUT: Control id 1075)
 msgid "Version Information"
@@ -11650,14 +11663,6 @@ msgstr "Atenţie"
 #. Resource IDs: (IDS_PROGRS_CONFLICTSOCCURED_WARNING)
 msgid "Warning!"
 msgstr "Atenţie!"
-
-#. Resource IDs: (IDS_PROC_DELETEREF)
-#, c-format
-msgid ""
-"Warning: \"%s\" will be permanently deleted. It can <ct=0x0000FF><b>NOT</b></ct> be recovered!\n"
-"\n"
-"Do you really want to continue?"
-msgstr "Avertisment: \"%s\" va fi şters definitiv. <ct=0x0000FF><b>NU</b></ct> va putea fi recuperat!\n\nChiar doriţi să continuaţi?"
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "Western European"
@@ -11949,9 +11954,9 @@ msgstr "Ar trebui să selectaţi o imagine!"
 #. Resource IDs: (IDS_SETTINGS_ICONSETCHANGED)
 #, c-format
 msgid ""
-"You've changed the icon set from <i>%s</i> to <i>%s</i>.\n"
+"You've changed the icon set from \"%s\" to \"%s\".\n"
 "That change won't take effect until you restart your computer or logoff and logon again!"
-msgstr "Aţi schimbat setul de iconiţe de la <i>%s</i> la <i>%s</i>.\nAceastă schimbare nu va avea efect până nu veţi reporni calculatorul sau închideţi şi redeschideţi sesiunea!"
+msgstr ""
 
 #. Resource IDs: (IDS_COMMITDLG_HISTORYHINT_TT)
 msgid ""
@@ -12076,6 +12081,14 @@ msgstr "\"%s\" este invalid."
 #, c-format
 msgid "\"%s\" is not git repository"
 msgstr "\"%s\" nu este depozit git"
+
+#. Resource IDs: (IDS_PROC_DELETEREF)
+#, c-format
+msgid ""
+"\"%s\" will be permanently deleted. It can NOT be recovered!\n"
+"\n"
+"Do you really want to continue?"
+msgstr ""
 
 #. Resource IDs: (IDS_PROC_APPLYPATCH_GITAMACTIVE)
 msgid ""
@@ -12345,6 +12358,13 @@ msgstr "pixeli"
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_1: Control id 65535)
 msgid "possible or real conflict/obstructed"
 msgstr "conflict posibil sau real"
+
+#. Resource IDs: (IDS_PROC_APPLYPATCH_REBASEDIRFOUND)
+msgid ""
+"previous rebase directory rebase-apply still exists but mbox given.\n"
+"\n"
+"Do you want to"
+msgstr ""
 
 #. Resource IDs: (61509)
 msgid "prn"
