@@ -871,6 +871,10 @@ void CGitStatusListCtrl::Show(unsigned int /*dwShow*/, const CTGitPathList& chec
 	DeleteAllItems();
 	for (int i = 0; i < checkedList.GetCount(); ++i)
 		this->AddEntry((CTGitPath *)&checkedList[i],0,i);
+
+	int maxcol = ((CHeaderCtrl*)(GetDlgItem(0)))->GetItemCount()-1;
+	for (int col = 0; col <= maxcol; col++)
+		SetColumnWidth (col, m_ColumnManager.GetWidth (col, true));
 	return ;
 #if 0
 

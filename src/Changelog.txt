@@ -1,4 +1,10 @@
-﻿= Release 2.2.0 =
+﻿= Release 2.3.0 =
+Released: unreleased
+
+== Bug Fixes ==
+ * Fixed issue #2789: Sync Dialog In ChangeList tab auto-resize column not optimal
+
+= Release 2.2.0 =
 Released: 2016-07-02
 
 == Features ==
