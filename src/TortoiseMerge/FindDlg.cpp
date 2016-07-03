@@ -1,6 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2006, 2011-2014 - TortoiseSVN
+// Copyright (C) 2006, 2011-2014, 2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -40,11 +40,32 @@ CFindDlg::CFindDlg(CWnd* pParent /*=NULL*/)
 	, m_regMatchCase(L"Software\\TortoiseGitMerge\\FindMatchCase", FALSE)
 	, m_regLimitToDiffs(L"Software\\TortoiseGitMerge\\FindLimitToDiffs", FALSE)
 	, m_regWholeWord(L"Software\\TortoiseGitMerge\\FindWholeWord", FALSE)
+	, m_id(0)
 {
 }
 
 CFindDlg::~CFindDlg()
 {
+}
+
+void CFindDlg::Create(CWnd* pParent, int id /* = 0 */)
+{
+	CDialog::Create(IDD, pParent);
+	if (id && pParent)
+	{
+		m_id = id;
+		POINT pt = { 0 };
+		CString sRegPath;
+		sRegPath.Format(L"Software\\TortoiseGitMerge\\FindDlgPosX%d", id);
+		pt.x = (int)(DWORD)CRegDWORD(sRegPath, 0);
+		sRegPath.Format(L"Software\\TortoiseGitMerge\\FindDlgPosY%d", id);
+		pt.y = (int)(DWORD)CRegDWORD(sRegPath, 0);
+		pParent->ClientToScreen(&pt);
+		if (MonitorFromPoint(pt, MONITOR_DEFAULTTONULL))
+			SetWindowPos(NULL, pt.x, pt.y, 0, 0, SWP_NOACTIVATE | SWP_NOREDRAW | SWP_NOSIZE);
+	}
+	ShowWindow(SW_SHOW);
+	UpdateWindow();
 }
 
 void CFindDlg::DoDataExchange(CDataExchange* pDX)
@@ -74,12 +95,15 @@ END_MESSAGE_MAP()
 
 void CFindDlg::OnCancel()
 {
+	CWnd* pParent = m_pParent;
+	if (!pParent)
+		pParent = GetParent();
+	SaveWindowPos(pParent);
+
 	m_bTerminating = true;
 	SetStatusText(_T(""));
-	if (m_pParent)
-		m_pParent->SendMessage(m_FindMsg);
-	else if (GetParent())
-		GetParent()->SendMessage(m_FindMsg);
+	if (pParent)
+		pParent->SendMessage(m_FindMsg);
 	DestroyWindow();
 }
 
@@ -90,6 +114,11 @@ void CFindDlg::PostNcDestroy()
 
 void CFindDlg::OnOK()
 {
+	CWnd* pParent = m_pParent;
+	if (!pParent)
+		pParent = GetParent();
+	SaveWindowPos(pParent);
+
 	UpdateData();
 	SetStatusText(_T(""));
 	m_FindCombo.SaveHistory();
@@ -100,10 +129,8 @@ void CFindDlg::OnOK()
 	if (m_FindCombo.GetString().IsEmpty())
 		return;
 	m_bFindNext = true;
-	if (m_pParent)
-		m_pParent->SendMessage(m_FindMsg);
-	else if (GetParent())
-		GetParent()->SendMessage(m_FindMsg);
+	if (pParent)
+		pParent->SendMessage(m_FindMsg);
 	m_bFindNext = false;
 }
 
@@ -225,4 +252,21 @@ void CFindDlg::OnBnClickedReplaceall()
 	else if (GetParent())
 		GetParent()->SendMessage(m_FindMsg, FindType::ReplaceAll);
 	m_bFindNext = false;
+}
+
+void CFindDlg::SaveWindowPos(CWnd* pParent)
+{
+	if (pParent && m_id)
+	{
+		CRect rc;
+		GetWindowRect(&rc);
+		pParent->ScreenToClient(rc);
+		CString sRegPath;
+		sRegPath.Format(L"Software\\TortoiseGitMerge\\FindDlgPosX%d", m_id);
+		CRegDWORD regX(sRegPath);
+		regX = rc.left;
+		sRegPath.Format(L"Software\\TortoiseGitMerge\\FindDlgPosY%d", m_id);
+		CRegDWORD regY(sRegPath);
+		regY = rc.top;
+	}
 }

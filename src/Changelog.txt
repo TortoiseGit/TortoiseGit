@@ -1,6 +1,9 @@
 ﻿= Release 2.3.0 =
 Released: unreleased
 
+== Features ==
+ * Fixed issue #2755: TortoiseGitMerge: find dialog box does not remember desktop location between invocations 
+
 == Bug Fixes ==
  * Fixed issue #2789: Sync Dialog In ChangeList tab auto-resize column not optimal
 
