@@ -49,9 +49,9 @@
 				<graphic fileref="../images/ExplorerFileMenuFileShortcut.png"/>
 			</figure>
 			This example is for an unversioned shortcut within a versioned folder, and
-			in the Explorer file menu there are <emphasis>three</emphasis> entries
-			for TortoiseGit. One is for the folder, one for the shortcut itself,
-			and the third for the object the shortcut is pointing to.
+			in the Explorer file menu there are <emphasis>two</emphasis> entries
+			for TortoiseGit. One for the shortcut itself
+			and the second for the object the shortcut is pointing to.
 			To help you distinguish between them, the icons have an indicator in the
 			lower right corner to show whether the menu entry is for a file,
 			a folder, a shortcut or for multiple selected items.
