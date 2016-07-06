@@ -64,7 +64,6 @@ CSetMainPage::CSetMainPage()
 	m_regAutoAdd = CRegDWORD(_T("Software\\TortoiseGitMerge\\AutoAdd"), TRUE);
 	m_regMaxInline = CRegDWORD(_T("Software\\TortoiseGitMerge\\InlineDiffMaxLineLength"), 3000);
 	m_regUseRibbons = CRegDWORD(L"Software\\TortoiseGitMerge\\UseRibbons", TRUE);
-	m_regUseTaskDialog = CRegDWORD(L"Software\\TortoiseGitMerge\\UseTaskDialog", TRUE);
 	m_regContextLines = CRegDWORD(L"Software\\TortoiseGitMerge\\ContextLines", (DWORD)-1);
 
 	m_bBackup = m_regBackup;
@@ -83,7 +82,6 @@ CSetMainPage::CSetMainPage()
 	m_bAutoAdd = m_regAutoAdd;
 	m_nMaxInline = m_regMaxInline;
 	m_bUseRibbons = m_regUseRibbons;
-	m_bUseTaskDialog = CTaskDialog::IsSupported() && (DWORD)m_regUseTaskDialog;
 }
 
 CSetMainPage::~CSetMainPage()
@@ -120,7 +118,6 @@ void CSetMainPage::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_AUTOADD, m_bAutoAdd);
 	DDX_Text(pDX, IDC_MAXINLINE, m_nMaxInline);
 	DDX_Check(pDX, IDC_USERIBBONS, m_bUseRibbons);
-	DDX_Check(pDX, IDC_USETASKDIALOG, m_bUseTaskDialog);
 }
 
 void CSetMainPage::SaveData()
@@ -142,7 +139,6 @@ void CSetMainPage::SaveData()
 	m_regAutoAdd = m_bAutoAdd;
 	m_regMaxInline = m_nMaxInline;
 	m_regUseRibbons = m_bUseRibbons;
-	m_regUseTaskDialog = m_bUseTaskDialog;
 }
 
 BOOL CSetMainPage::OnApply()
@@ -181,10 +177,8 @@ BOOL CSetMainPage::OnInitDialog()
 	m_bAutoAdd = m_regAutoAdd;
 	m_nMaxInline = m_regMaxInline;
 	m_bUseRibbons = m_regUseRibbons;
-	m_bUseTaskDialog = CTaskDialog::IsSupported() && (DWORD)m_regUseTaskDialog;
 
 	DialogEnableWindow(IDC_FIRSTCONFLICTONLOAD, m_bFirstDiffOnLoad);
-	DialogEnableWindow(IDC_USETASKDIALOG, CTaskDialog::IsSupported());
 
 	CString temp;
 	int count = 0;
@@ -235,7 +229,6 @@ BEGIN_MESSAGE_MAP(CSetMainPage, CPropertyPage)
 	ON_BN_CLICKED(IDC_AUTOADD, &CSetMainPage::OnModified)
 	ON_EN_CHANGE(IDC_MAXINLINE, &CSetMainPage::OnModifiedWithReload)
 	ON_BN_CLICKED(IDC_USERIBBONS, &CSetMainPage::OnModified)
-	ON_BN_CLICKED(IDC_USETASKDIALOG, &CSetMainPage::OnModified)
 END_MESSAGE_MAP()
 
 

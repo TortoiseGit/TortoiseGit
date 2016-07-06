@@ -261,7 +261,6 @@ protected:
 	bool			m_bLineDiff;
 	bool			m_bLocatorBar;
 	bool			m_bUseRibbons;
-	bool			m_bUseTaskDialog;
 
 	CMFCRibbonBar				m_wndRibbonBar;
 	CMFCRibbonApplicationButton	m_MainButton;
@@ -272,7 +271,6 @@ protected:
 	CRegDWORD		m_regCollapsed;
 	CRegDWORD		m_regInlineDiff;
 	CRegDWORD		m_regUseRibbons;
-	CRegDWORD		m_regUseTaskDialog;
 	CRegDWORD		m_regIgnoreComments;
 
 	std::map<CString, std::tuple<CString, CString, CString>>	m_IgnoreCommentsMap;

@@ -30,14 +30,6 @@
             Default is set.
         </para>
         <para>
-            <guilabel>Use Task Dialog</guilabel>
-            when set, Task Dialog is used (a more powerful and user-friendly 
-            dialog for multiple choices).
-            When unset, traditional message box is used.
-            Note that this requires at least Windows Vista.
-            Default is set.
-        </para>
-        <para>
             <guilabel>Use spaces</guilabel>
             when set, pressing tab key inserts spaces.
             Default is unset (tab char is used).
