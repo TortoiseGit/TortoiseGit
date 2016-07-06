@@ -89,7 +89,6 @@ private:
 	CHyperLink	m_link;
 	CString		GetDownloadsDirectory();
 	CMenuButton	m_ctrlUpdate;
-	BOOL		VerifySignature(CString fileName);
 	void		FillDownloads(CAutoConfig& versionfile, const CString version);
 	CSciEdit	m_cLogMessage;
 	void		FillChangelog(CAutoConfig& versionfile, bool official);
