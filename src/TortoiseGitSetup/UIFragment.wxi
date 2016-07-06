@@ -2,7 +2,7 @@
 <Include>
 	<UI>
 		<!-- Add/Remove Programs (ARP) related properties ................................ -->
-		<Property Id="ARPCOMMENTS">$(var.PackageComments)</Property>
+		<Property Id="ARPCOMMENTS">$(var.PackageDescription)</Property>
 		<Property Id="ARPCONTACT">$(var.PackageManufacturer)</Property>
 		<Property Id="ARPHELPLINK">$(var.TortoiseGitOrg)</Property>
 		<Property Id="ARPPRODUCTICON">TGITIcon</Property>

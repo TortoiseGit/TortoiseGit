@@ -11,12 +11,12 @@
   Version='$(var.VersionNumberInternal)'
   Manufacturer='TortoiseGit'>
 
-    <Package Id='*' Keywords='Installer'
+    <Package Id='*' Keywords='Installer;TortoiseGit;LanguagePack'
       Description="$(var.LANGNATIVE) language pack for TortoiseGit, v$(var.VersionNumberUserVisible)"
       Comments='https://tortoisegit.org/' 
-      Manufacturer="Frank Li, Sven Strickroth" 
+      Manufacturer="TortoiseGit team"
       Platform="$(var.PackagePlatforms)"  
-      InstallerVersion='301' 
+      InstallerVersion='405' 
       Languages='1033' 
       Compressed='yes' 
       SummaryCodepage='1252' />
