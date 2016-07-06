@@ -81,6 +81,7 @@ private:
 	UINT		DownloadThread();
 	bool		Download(CString filename);
 	CUpdateDownloader* m_updateDownloader;
+	bool		VerifyUpdateFile(const CString& filename, const CString& filenameSignature, const CString& reportingFilename);
 
 	CUpdateListCtrl	m_ctrlFiles;
 
@@ -94,4 +95,5 @@ private:
 	void		FillChangelog(CAutoConfig& versionfile, bool official);
 	static CString GetWinINetError(DWORD err);
 	CString		m_sErrors;
+	CString		m_sNewVersionNumber;
 };

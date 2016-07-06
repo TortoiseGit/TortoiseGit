@@ -8,7 +8,7 @@
 	<?define ProductName="TortoiseGit" ?>
 
 	<?define PackageKeywords="Sourcecontrol;Git;TortoiseGit;Shell" ?>
-	<?define PackageDescription="Git Client" ?>
+	<?define PackageDescription="Windows Shell Integration For Git Source Control, v$(var.VersionNumberUserVisible)" ?>
 	<?define PackageComments="Windows Shell Integration For Git Source Control, v$(var.VersionNumberUserVisible)" ?>
 	<?define PackageManufacturer="TortoiseGit team" ?>
 	<?define TortoiseGitOrg="https://tortoisegit.org/"?>

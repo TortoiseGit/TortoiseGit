@@ -34,6 +34,10 @@
 #include "UnicodeUtils.h"
 #include "UpdateCrypto.h"
 #include "Win7.h"
+#include <MsiDefs.h>
+#include <MsiQuery.h>
+
+#pragma comment(lib, "msi.lib")
 
 #define SIGNATURE_FILE_ENDING _T(".rsa.asc")
 
@@ -306,11 +310,14 @@ UINT CCheckForUpdatesDlg::CheckThread()
 		else if ((build > TGIT_VERBUILD) && (micro == TGIT_VERMICRO) && (minor == TGIT_VERMINOR) && (major == TGIT_VERMAJOR))
 			bNewer = TRUE;
 
-		CString versionstr;
-		versionstr.Format(_T("%u.%u.%u.%u"), major, minor, micro, build);
-		if (versionstr != ver)
-			versionstr += _T(" (") + ver + _T(")");
-		temp.Format(IDS_CHECKNEWER_CURRENTVERSION, (LPCTSTR)versionstr);
+		m_sNewVersionNumber.Format(L"%u.%u.%u.%u", major, minor, micro, build);
+		if (m_sNewVersionNumber != ver)
+		{
+			CString versionstr = m_sNewVersionNumber + L" (" + ver + ")";
+			temp.Format(IDS_CHECKNEWER_CURRENTVERSION, (LPCTSTR)versionstr);
+		}
+		else
+			temp.Format(IDS_CHECKNEWER_CURRENTVERSION, (LPCTSTR)m_sNewVersionNumber);
 		SetDlgItemText(IDC_CURRENTVERSION, temp);
 
 		if (bNewer)
@@ -666,13 +673,66 @@ UINT CCheckForUpdatesDlg::DownloadThreadEntry(LPVOID pVoid)
 	return ((CCheckForUpdatesDlg*)pVoid)->DownloadThread();
 }
 
+bool CCheckForUpdatesDlg::VerifyUpdateFile(const CString& filename, const CString& filenameSignature, const CString& reportingFilename)
+{
+	if (VerifyIntegrity(filename, filenameSignature, m_updateDownloader) != 0)
+	{
+		m_sErrors += reportingFilename + SIGNATURE_FILE_ENDING + L": Invalid digital signature.\r\n";
+		return false;
+	}
+
+	MSIHANDLE hSummary;
+	DWORD ret = 0;
+	if ((ret = MsiGetSummaryInformation(NULL, filename, 0, &hSummary)) != 0)
+	{
+		CString sFileVer = CPathUtils::GetVersionFromFile(filename);
+		sFileVer.Trim();
+		if (sFileVer.IsEmpty())
+		{
+			m_sErrors.AppendFormat(L"%s: Invalid filetype found (neither executable nor MSI).\r\n", (LPCTSTR)reportingFilename);
+			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": MsiGetSummaryInformation reported: %s\n"), (LPCTSTR)CFormatMessageWrapper(ret));
+			return false;
+		}
+		else if (sFileVer == m_sNewVersionNumber)
+			return true;
+
+		m_sErrors.AppendFormat(L"%s: Version number of downloaded file doesn't match (expected: \"%s\", got: \"%s\").\r\n", (LPCTSTR)reportingFilename, (LPCTSTR)m_sNewVersionNumber, (LPCTSTR)sFileVer);
+		return false;
+	}
+	SCOPE_EXIT{ MsiCloseHandle(hSummary); };
+
+	UINT uiDataType = 0;
+	DWORD cchValue = 4096;
+	CString buffer;
+	if (MsiSummaryInfoGetProperty(hSummary, PID_SUBJECT, &uiDataType, nullptr, nullptr, CStrBuf(buffer, cchValue + 1), &cchValue))
+	{
+		m_sErrors.AppendFormat(L"%s: Error obtaining version of MSI file (%s).\r\n", (LPCTSTR)reportingFilename, (LPCTSTR)CFormatMessageWrapper(ret));
+		return false;
+	}
+
+	if (VT_LPSTR != uiDataType)
+	{
+		m_sErrors.AppendFormat(L"%s: Error obtaining version of MSI file (invalid data type returned).\r\n", (LPCTSTR)reportingFilename);
+		return false;
+	}
+
+	CString sFileVer = buffer.Right(m_sNewVersionNumber.GetLength() + 1);
+	if (sFileVer != L"v" + m_sNewVersionNumber)
+	{
+		m_sErrors.AppendFormat(L"%s: Version number of downloaded file doesn't match (expected: \"v%s\", got: \"%s\").\r\n", (LPCTSTR)reportingFilename, (LPCTSTR)m_sNewVersionNumber, (LPCTSTR)sFileVer);
+		return false;
+	}
+
+	return true;
+}
+
 bool CCheckForUpdatesDlg::Download(CString filename)
 {
 	CString url = m_sFilesURL + filename;
 	CString destFilename = GetDownloadsDirectory() + filename;
 	if (PathFileExists(destFilename) && PathFileExists(destFilename + SIGNATURE_FILE_ENDING))
 	{
-		if (VerifyIntegrity(destFilename, destFilename + SIGNATURE_FILE_ENDING, m_updateDownloader) == 0)
+		if (VerifyUpdateFile(destFilename, destFilename + SIGNATURE_FILE_ENDING, destFilename))
 			return true;
 		else
 		{
@@ -713,7 +773,7 @@ bool CCheckForUpdatesDlg::Download(CString filename)
 		m_sErrors += url + _T(": ") + GetWinINetError(ret) + _T("\r\n");
 	if (!ret)
 	{
-		if (VerifyIntegrity(tempfile, signatureTempfile, m_updateDownloader) == 0)
+		if (VerifyUpdateFile(tempfile, signatureTempfile, url))
 		{
 			DeleteFile(destFilename);
 			DeleteFile(destFilename + SIGNATURE_FILE_ENDING);
@@ -729,7 +789,6 @@ bool CCheckForUpdatesDlg::Download(CString filename)
 			}
 			return true;
 		}
-		m_sErrors += url + SIGNATURE_FILE_ENDING + _T(": Broken digital signature.\r\n");
 		DeleteUrlCacheEntry(url);
 		DeleteUrlCacheEntry(url + SIGNATURE_FILE_ENDING);
 	}
