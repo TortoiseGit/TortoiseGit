@@ -717,8 +717,16 @@ bool CCheckForUpdatesDlg::Download(CString filename)
 		{
 			DeleteFile(destFilename);
 			DeleteFile(destFilename + SIGNATURE_FILE_ENDING);
-			MoveFile(tempfile, destFilename);
-			MoveFile(signatureTempfile, destFilename + SIGNATURE_FILE_ENDING);
+			if (!MoveFile(tempfile, destFilename))
+			{
+				m_sErrors.AppendFormat(L"Could not move \"%s\" to \"%s\".\r\n", (LPCTSTR)filename, (LPCTSTR)tempfile, (LPCTSTR)destFilename);
+				return false;
+			}
+			if (!MoveFile(signatureTempfile, destFilename + SIGNATURE_FILE_ENDING))
+			{
+				m_sErrors.AppendFormat(L"Could not move \"%s\" to \"%s\".\r\n", (LPCTSTR)filename, (LPCTSTR)tempfile, (LPCTSTR)destFilename);
+				return false;
+			}
 			return true;
 		}
 		m_sErrors += url + SIGNATURE_FILE_ENDING + _T(": Broken digital signature.\r\n");
