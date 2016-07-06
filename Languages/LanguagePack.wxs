@@ -12,7 +12,7 @@
   Manufacturer='TortoiseGit'>
 
     <Package Id='*' Keywords='Installer'
-      Description="$LANGUI$ language pack for TortoiseGit"
+      Description="$(var.LANGNATIVE) language pack for TortoiseGit"
       Comments='https://tortoisegit.org/' 
       Manufacturer="Frank Li, Sven Strickroth" 
       Platform="$(var.PackagePlatforms)"  
