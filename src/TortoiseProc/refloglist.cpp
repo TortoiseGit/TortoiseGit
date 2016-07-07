@@ -129,3 +129,8 @@ void CRefLogList::OnNMCustomdrawLoglist(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 	// Take the default processing unless we set this to something else below.
 	*pResult = CDRF_DODEFAULT;
 }
+
+BOOL CRefLogList::OnToolTipText(UINT /*id*/, NMHDR* pNMHDR, LRESULT* pResult)
+{
+	return FALSE;
+}
