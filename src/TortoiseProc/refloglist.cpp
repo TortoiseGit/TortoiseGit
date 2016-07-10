@@ -130,7 +130,7 @@ void CRefLogList::OnNMCustomdrawLoglist(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 	*pResult = CDRF_DODEFAULT;
 }
 
-BOOL CRefLogList::OnToolTipText(UINT /*id*/, NMHDR* pNMHDR, LRESULT* pResult)
+BOOL CRefLogList::OnToolTipText(UINT /*id*/, NMHDR* /*pNMHDR*/, LRESULT* /*pResult*/)
 {
 	return FALSE;
 }
