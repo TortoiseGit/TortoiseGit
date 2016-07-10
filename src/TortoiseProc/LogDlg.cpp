@@ -832,7 +832,9 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 				tagInfo = _T("\n*") + CString(MAKEINTRESOURCE(IDS_PROC_LOG_TAGINFO)) + _T("*\n\n") + tagInfo;
 			msg += tagInfo;
 
+			HCURSOR old = GetCursor(); // hack to fix issue #2792
 			pMsgView->ReplaceSel(msg);
+			SetCursor(old);
 
 			CString text;
 			pMsgView->GetWindowText(text);
