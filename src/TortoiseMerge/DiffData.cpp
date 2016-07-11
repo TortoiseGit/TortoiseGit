@@ -507,7 +507,7 @@ CDiffData::DoTwoWayDiff(const CString& sBaseFilename, const CString& sYourFilena
 							{
 								if ((*pLine2 == ' ') || (*pLine2 == '\t'))
 								{
-									*pS2 = *pLine1;
+									*pS2 = *pLine2;
 									++pS2;
 								}
 								++pLine2;
