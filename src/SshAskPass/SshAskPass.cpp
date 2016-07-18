@@ -24,6 +24,7 @@
 #include "resource.h"
 #include <propsys.h>
 #include <PropKey.h>
+#include "UnicodeUtils.h"
 
 #include <commctrl.h>
 #pragma comment(lib, "comctl32.lib")
@@ -87,7 +88,7 @@ int APIENTRY _tWinMain(HINSTANCE	/*hInstance*/,
 	{
 		if (DialogBox(hInst, MAKEINTRESOURCE(IDD_ASK_PASSWORD), nullptr, PasswdDlg) == IDOK)
 		{
-			_tprintf(_T("%s\n"), (LPCTSTR)g_PassWord);
+			printf("%s\n", CUnicodeUtils::StdGetUTF8(g_PassWord).c_str());
 			return 0;
 		}
 		_tprintf(_T("\n"));
