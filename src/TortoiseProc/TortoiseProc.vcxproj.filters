@@ -159,6 +159,9 @@
     <Filter Include="Utils\TreePropSheet">
       <UniqueIdentifier>{e772451b-ebd6-46da-b8e2-f4794840702a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="TortoiseGitMerge">
+      <UniqueIdentifier>{69ffded7-2494-4d2b-b7d8-4681289c8b1e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AddRemoteDlg.cpp">
@@ -907,6 +910,9 @@
     </ClCompile>
     <ClCompile Include="..\Git\GitDataObject.cpp">
       <Filter>Git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TortoiseMerge\FileTextLines.cpp">
+      <Filter>TortoiseGitMerge</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1692,6 +1698,9 @@
     </ClInclude>
     <ClInclude Include="..\Git\GitDataObject.h">
       <Filter>Git</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TortoiseMerge\FileTextLines.h">
+      <Filter>TortoiseGitMerge</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

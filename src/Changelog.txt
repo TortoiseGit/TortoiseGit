@@ -8,6 +8,7 @@ Released: unreleased
  * Fixed issue #2789: Sync Dialog In ChangeList tab auto-resize column not optimal
  * Fixed issue #2792: Mouse pointer disappears for the log window's context menu under Windows 8.1 and Windows 10
  * Fixed issue #2800: Authentication with non-ascii password fails
+ * Fixed issue #2798: Commit message autocompletion doesn't work with UTF-8 encoded files
 
 = Release 2.2.0 =
 Released: 2016-07-02

@@ -40,6 +40,7 @@
 #include "LogDlg.h"
 #include "BstrSafeVector.h"
 #include "StringUtils.h"
+#include "FileTextLines.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -1833,24 +1834,59 @@ void CCommitDlg::ScanFile(const CString& sFilePath, const CString& sRegex, const
 			return;
 		}
 		// allocate memory to hold file contents
-		auto buffer = std::make_unique<char[]>(size);
-		DWORD readbytes;
-		if (!ReadFile(hFile, buffer.get(), size, &readbytes, nullptr))
-			return;
-		int opts = 0;
-		IsTextUnicode(buffer.get(), readbytes, &opts);
-		if (opts & IS_TEXT_UNICODE_NULL_BYTES)
-			return;
-		if (opts & IS_TEXT_UNICODE_UNICODE_MASK)
-			sFileContent = std::wstring((wchar_t*)buffer.get(), readbytes / sizeof(WCHAR));
-		if ((opts & IS_TEXT_UNICODE_NOT_UNICODE_MASK) || (opts == 0))
+		CBuffer oFile;
+		try
 		{
-			const int ret = MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, (LPCSTR)buffer.get(), readbytes, nullptr, 0);
-			auto pWideBuf = std::make_unique<wchar_t[]>(ret);
-			const int ret2 = MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, (LPCSTR)buffer.get(), readbytes, pWideBuf.get(), ret);
-			if (ret2 == ret)
-				sFileContent = std::wstring(pWideBuf.get(), ret);
+			oFile.SetLength(size);
 		}
+		catch (CMemoryException*)
+		{
+			return;
+		}
+		DWORD readbytes;
+		if (!ReadFile(hFile, oFile, size, &readbytes, nullptr))
+			return;
+		oFile.SetLength(readbytes);
+		CFileTextLines filetextlines;
+		CFileTextLines::UnicodeType type = filetextlines.CheckUnicodeType(oFile, readbytes);
+		try
+		{
+			CBaseFilter* pFilter = nullptr;
+			switch (type)
+			{
+			case CFileTextLines::BINARY:
+				return;
+			case CFileTextLines::UTF8:
+			case CFileTextLines::UTF8BOM:
+				pFilter = new CUtf8Filter(NULL);
+				break;
+			default:
+			case CFileTextLines::ASCII:
+				pFilter = new CAsciiFilter(NULL);
+				break;
+			case CFileTextLines::UTF16_BE:
+			case CFileTextLines::UTF16_BEBOM:
+				pFilter = new CUtf16beFilter(NULL);
+				break;
+			case CFileTextLines::UTF16_LE:
+			case CFileTextLines::UTF16_LEBOM:
+				pFilter = new CUtf16leFilter(NULL);
+				break;
+			case CFileTextLines::UTF32_BE:
+				pFilter = new CUtf32beFilter(NULL);
+				break;
+			case CFileTextLines::UTF32_LE:
+				pFilter = new CUtf32leFilter(NULL);
+				break;
+			}
+			pFilter->Decode(oFile);
+			delete pFilter;
+		}
+		catch (CMemoryException*)
+		{
+			return;
+		}
+		sFileContent = std::wstring((wchar_t*)oFile, oFile.GetLength());
 	}
 	if (sFileContent.empty() || !m_bRunThread)
 		return;
