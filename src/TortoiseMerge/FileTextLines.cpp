@@ -108,33 +108,30 @@ CFileTextLines::UnicodeType CFileTextLines::CheckUnicodeType(LPVOID pBuffer, int
 	int nNeedData = 0;
 	int i=0;
 	int nullcount = 0;
-	if (!bNonANSI)
+	for (; i < cb; ++i)
 	{
-		for (; i<cb; ++i)
+		if (pVal8[i] == 0)
 		{
-			if (pVal8[i] == 0)
+			++nullcount;
+			// count the null chars, we do not want to treat an ASCII/UTF8 file
+			// as UTF16 just because of some null chars that might be accidentally
+			// in the file.
+			// Use an arbitrary value of one fiftieth of the file length as
+			// the limit after which a file is considered UTF16.
+			if (nullcount >(cb / 50))
 			{
-				++nullcount;
-				// count the null chars, we do not want to treat an ASCII/UTF8 file
-				// as UTF16 just because of some null chars that might be accidentally
-				// in the file.
-				// Use an arbitrary value of one fiftieth of the file length as
-				// the limit after which a file is considered UTF16.
-				if (nullcount > (cb / 50))
-				{
-					// null-chars are not allowed for ASCII or UTF8, that means
-					// this file is most likely UTF16 encoded
-					if (i%2)
-						return CFileTextLines::UTF16_LE;
-					else
-						return CFileTextLines::UTF16_BE;
-				}
+				// null-chars are not allowed for ASCII or UTF8, that means
+				// this file is most likely UTF16 encoded
+				if (i % 2)
+					return CFileTextLines::UTF16_LE;
+				else
+					return CFileTextLines::UTF16_BE;
 			}
-			if ((pVal8[i] & 0x80)!=0) // non ASCII
-			{
-				bNonANSI = true;
-				break;
-			}
+		}
+		if ((pVal8[i] & 0x80) != 0) // non ASCII
+		{
+			bNonANSI = true;
+			break;
 		}
 	}
 	// check remaining text for UTF-8 validity
