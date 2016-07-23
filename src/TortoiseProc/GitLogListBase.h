@@ -21,7 +21,7 @@
 #pragma once
 
 #include "HintCtrl.h"
-#include "ColumnManager.h"
+#include "ResizableColumnsListCtrl.h"
 #include "Git.h"
 #include "ProjectProperties.h"
 #include "TGitPath.h"
@@ -200,7 +200,7 @@ public:
 	}
 };
 
-class CGitLogListBase : public CHintCtrl<CListCtrl>
+class CGitLogListBase : public CHintCtrl<CResizableColumnsListCtrl<CListCtrl>>
 {
 	DECLARE_DYNAMIC(CGitLogListBase)
 
@@ -513,10 +513,6 @@ protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 	afx_msg LRESULT OnLoad(WPARAM wParam, LPARAM lParam);
-	afx_msg void OnHdnBegintrack(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnHdnItemchanging(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnColumnResized(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnColumnMoved(NMHDR *pNMHDR, LRESULT *pResult);
 	void OnNMDblclkLoglist(NMHDR * /*pNMHDR*/, LRESULT *pResult);
 	afx_msg void OnLvnOdfinditemLoglist(NMHDR *pNMHDR, LRESULT *pResult);
 	void PreSubclassWindow();
@@ -663,7 +659,6 @@ protected:
 	bool				m_bSymbolizeRefNames;
 	bool				m_bIncludeBoundaryCommits;
 
-	ColumnManager		m_ColumnManager;
 	DWORD				m_dwDefaultColumns;
 	TCHAR               m_wszTip[8192];
 	char                m_szTip[8192];

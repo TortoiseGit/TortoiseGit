@@ -193,12 +193,9 @@ HRESULT CALLBACK dfmCallback(IShellFolder * /*psf*/, HWND /*hwnd*/, IDataObject 
 	return E_NOTIMPL;
 }
 
-BEGIN_MESSAGE_MAP(CGitStatusListCtrl, CListCtrl)
+BEGIN_MESSAGE_MAP(CGitStatusListCtrl, CResizableColumnsListCtrl<CListCtrl>)
 	ON_NOTIFY(HDN_ITEMCLICKA, 0, OnHdnItemclick)
 	ON_NOTIFY(HDN_ITEMCLICKW, 0, OnHdnItemclick)
-	ON_NOTIFY(HDN_ENDTRACK, 0, OnColumnResized)
-	ON_NOTIFY(HDN_ENDDRAG, 0, OnColumnMoved)
-	ON_NOTIFY(HDN_DIVIDERDBLCLICK, 0, OnHeaderDblClick)
 	ON_NOTIFY_REFLECT_EX(LVN_ITEMCHANGED, OnLvnItemchanged)
 	ON_WM_CONTEXTMENU()
 	ON_NOTIFY_REFLECT(NM_DBLCLK, OnNMDblclk)
@@ -209,18 +206,11 @@ BEGIN_MESSAGE_MAP(CGitStatusListCtrl, CListCtrl)
 	ON_NOTIFY_REFLECT(NM_RETURN, OnNMReturn)
 	ON_WM_KEYDOWN()
 	ON_WM_PAINT()
-	ON_NOTIFY(HDN_BEGINTRACKA, 0, &CGitStatusListCtrl::OnHdnBegintrack)
-	ON_NOTIFY(HDN_BEGINTRACKW, 0, &CGitStatusListCtrl::OnHdnBegintrack)
-	ON_NOTIFY(HDN_ITEMCHANGINGA, 0, &CGitStatusListCtrl::OnHdnItemchanging)
-	ON_NOTIFY(HDN_ITEMCHANGINGW, 0, &CGitStatusListCtrl::OnHdnItemchanging)
-	ON_WM_DESTROY()
 	ON_NOTIFY_REFLECT(LVN_BEGINDRAG, OnBeginDrag)
 	ON_NOTIFY_REFLECT(LVN_ITEMCHANGING, &CGitStatusListCtrl::OnLvnItemchanging)
 END_MESSAGE_MAP()
 
-
-
-CGitStatusListCtrl::CGitStatusListCtrl() : CListCtrl()
+CGitStatusListCtrl::CGitStatusListCtrl() : CResizableColumnsListCtrl<CListCtrl>()
 	//, m_HeadRev(GitRev::REV_HEAD)
 	, m_pbCanceled(nullptr)
 	, m_pStatLabel(nullptr)
@@ -242,7 +232,6 @@ CGitStatusListCtrl::CGitStatusListCtrl() : CListCtrl()
 	, m_bFileDropsEnabled(false)
 	, m_bOwnDrag(false)
 	, m_dwDefaultColumns(0)
-	, m_ColumnManager(this)
 	, m_bAscending(false)
 	, m_nSortedColumn(-1)
 	, m_bHasExternalsFromDifferentRepos(false)
@@ -318,14 +307,11 @@ void CGitStatusListCtrl::Init(DWORD dwColumns, const CString& sColumnInfoContain
 	m_bHasWC = bHasWC;
 
 	// set the extended style of the listcontrol
-	// the style LVS_EX_FULLROWSELECT interferes with the background watermark image but it's more important to be able to select in the whole row.
-	CRegDWORD regFullRowSelect(_T("Software\\TortoiseGit\\FullRowSelect"), TRUE);
-	DWORD exStyle = LVS_EX_HEADERDRAGDROP | LVS_EX_DOUBLEBUFFER | LVS_EX_INFOTIP | LVS_EX_SUBITEMIMAGES;
-	if (DWORD(regFullRowSelect))
-		exStyle |= LVS_EX_FULLROWSELECT;
+	DWORD exStyle = LVS_EX_DOUBLEBUFFER | LVS_EX_INFOTIP | LVS_EX_SUBITEMIMAGES;
 	exStyle |= (bHasCheckboxes ? LVS_EX_CHECKBOXES : 0);
 	SetRedraw(false);
 	SetExtendedStyle(exStyle);
+	CResizableColumnsListCtrl::Init();
 
 	SetWindowTheme(m_hWnd, L"Explorer", nullptr);
 
@@ -680,9 +666,7 @@ void CGitStatusListCtrl::Show(unsigned int dwShow, unsigned int dwCheck /*=0*/, 
 		}
 	}
 
-	int maxcol = ((CHeaderCtrl*)(GetDlgItem(0)))->GetItemCount()-1;
-	for (int col = 0; col <= maxcol; col++)
-		SetColumnWidth (col, m_ColumnManager.GetWidth (col, true));
+	AdjustColumnWidths();
 
 	SetRedraw(TRUE);
 	GetStatisticsString();
@@ -820,9 +804,7 @@ void CGitStatusListCtrl::Show(unsigned int dwShow, unsigned int dwCheck /*=0*/, 
 
 	m_ColumnManager.UpdateRelevance (m_arStatusArray, m_arListArray);
 
-	int maxcol = ((CHeaderCtrl*)(GetDlgItem(0)))->GetItemCount()-1;
-	for (int col = 0; col <= maxcol; col++)
-		SetColumnWidth (col, m_ColumnManager.GetWidth (col, true));
+	AdjustColumnWidths();
 
 	SetRedraw(TRUE);
 	GetStatisticsString();
@@ -872,9 +854,7 @@ void CGitStatusListCtrl::Show(unsigned int /*dwShow*/, const CTGitPathList& chec
 	for (int i = 0; i < checkedList.GetCount(); ++i)
 		this->AddEntry((CTGitPath *)&checkedList[i],0,i);
 
-	int maxcol = ((CHeaderCtrl*)(GetDlgItem(0)))->GetItemCount()-1;
-	for (int col = 0; col <= maxcol; col++)
-		SetColumnWidth (col, m_ColumnManager.GetWidth (col, true));
+	AdjustColumnWidths();
 	return ;
 #if 0
 
@@ -960,9 +940,7 @@ void CGitStatusListCtrl::Show(unsigned int /*dwShow*/, const CTGitPathList& chec
 
 	SetItemCount(listIndex);
 
-	int maxcol = ((CHeaderCtrl*)(GetDlgItem(0)))->GetItemCount()-1;
-	for (int col = 0; col <= maxcol; col++)
-		SetColumnWidth (col, m_ColumnManager.GetWidth (col, true));
+	AdjustColumnWidths();
 
 	SetRedraw(TRUE);
 	GetStatisticsString();
@@ -1231,27 +1209,6 @@ BOOL CGitStatusListCtrl::OnLvnItemchanged(NMHDR *pNMHDR, LRESULT *pResult)
 	NotifyCheck();
 
 	return FALSE;
-}
-
-void CGitStatusListCtrl::OnHeaderDblClick(NMHDR* pNMHDR, LRESULT* pResult)
-{
-	m_ColumnManager.OnHeaderDblClick(pNMHDR, pResult);
-
-	*pResult = FALSE;
-}
-
-void CGitStatusListCtrl::OnColumnResized(NMHDR *pNMHDR, LRESULT *pResult)
-{
-	m_ColumnManager.OnColumnResized(pNMHDR,pResult);
-
-	*pResult = FALSE;
-}
-
-void CGitStatusListCtrl::OnColumnMoved(NMHDR *pNMHDR, LRESULT *pResult)
-{
-	m_ColumnManager.OnColumnMoved(pNMHDR, pResult);
-
-	Invalidate(FALSE);
 }
 
 void CGitStatusListCtrl::CheckEntry(int index, int /*nListItems*/)
@@ -2437,7 +2394,6 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 								}
 							}
 							SetRedraw(TRUE);
-							SaveColumnWidths();
 #if 0 // revert an added file and some entry will be cloned (part 2/2)
 							Show(m_dwShow, 0, m_bShowFolders,updateStatusList,true);
 							NotifyCheck();
@@ -2628,20 +2584,11 @@ void CGitStatusListCtrl::SetGitIndexFlagsForSelectedFiles(UINT message, BOOL ass
 	SetRedraw(TRUE);
 }
 
-void CGitStatusListCtrl::OnContextMenuHeader(CWnd * pWnd, CPoint point)
-{
-	Locker lock(m_critSec);
-	m_ColumnManager.OnContextMenuHeader(pWnd,point,!!IsGroupViewEnabled());
-}
-
 void CGitStatusListCtrl::OnContextMenu(CWnd* pWnd, CPoint point)
 {
+	__super::OnContextMenu(pWnd, point);
 	if (pWnd == this)
-	{
 		OnContextMenuList(pWnd, point);
-	} // if (pWnd == this)
-	else if (pWnd == GetHeaderCtrl())
-		OnContextMenuHeader(pWnd, point);
 }
 
 void CGitStatusListCtrl::OnNMDblclk(NMHDR *pNMHDR, LRESULT *pResult)
@@ -3274,7 +3221,7 @@ void CGitStatusListCtrl::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 
 void CGitStatusListCtrl::PreSubclassWindow()
 {
-	CListCtrl::PreSubclassWindow();
+	__super::PreSubclassWindow();
 	EnableToolTips(TRUE);
 	SetWindowTheme(GetSafeHwnd(), L"Explorer", nullptr);
 }
@@ -3342,25 +3289,6 @@ void CGitStatusListCtrl::OnPaint()
 	}
 }
 
-// prevent users from extending our hidden (size 0) columns
-void CGitStatusListCtrl::OnHdnBegintrack(NMHDR *pNMHDR, LRESULT *pResult)
-{
-	m_ColumnManager.OnHdnBegintrack(pNMHDR, pResult);
-}
-
-// prevent any function from extending our hidden (size 0) columns
-void CGitStatusListCtrl::OnHdnItemchanging(NMHDR *pNMHDR, LRESULT *pResult)
-{
-	if(!m_ColumnManager.OnHdnItemchanging(pNMHDR, pResult))
-		Default();
-}
-
-void CGitStatusListCtrl::OnDestroy()
-{
-	SaveColumnWidths(true);
-	CListCtrl::OnDestroy();
-}
-
 void CGitStatusListCtrl::OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
@@ -3412,17 +3340,6 @@ void CGitStatusListCtrl::OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult)
 	pdobj->Release();
 
 	*pResult = 0;
-}
-
-void CGitStatusListCtrl::SaveColumnWidths(bool bSaveToRegistry /* = false */)
-{
-	int maxcol = ((CHeaderCtrl*)(GetDlgItem(0)))->GetItemCount()-1;
-	for (int col = 0; col <= maxcol; col++)
-		if (m_ColumnManager.IsVisible (col))
-			m_ColumnManager.ColumnResized (col);
-
-	if (bSaveToRegistry)
-		m_ColumnManager.WriteSettings();
 }
 
 bool CGitStatusListCtrl::EnableFileDrop()
@@ -3488,7 +3405,7 @@ BOOL CGitStatusListCtrl::PreTranslateMessage(MSG* pMsg)
 		}
 	}
 
-	return CListCtrl::PreTranslateMessage(pMsg);
+	return __super::PreTranslateMessage(pMsg);
 }
 
 bool CGitStatusListCtrl::CopySelectedEntriesToClipboard(DWORD dwCols)
@@ -4477,5 +4394,5 @@ BOOL CGitStatusListCtrl::OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LR
 		break;
 	}
 
-	return CListCtrl::OnWndMsg(message, wParam, lParam, pResult);
+	return __super::OnWndMsg(message, wParam, lParam, pResult);
 }

@@ -402,6 +402,7 @@
     <ClInclude Include="ProgressCommands\ResolveProgressCommand.h" />
     <ClInclude Include="ProgressCommands\RevertProgressCommand.h" />
     <ClInclude Include="ProgressCommands\SendMailProgressCommand.h" />
+    <ClInclude Include="ResizableColumnsListCtrl.h" />
     <ClInclude Include="SendMail.h" />
     <ClInclude Include="FindDlg.h" />
     <ClInclude Include="GitProgressList.h" />

@@ -22,7 +22,7 @@
 #include "GitStatus.h"
 #include "GitRev.h"
 #include "Colors.h"
-#include "ColumnManager.h"
+#include "ResizableColumnsListCtrl.h"
 
 #define GIT_WC_ENTRY_WORKING_SIZE_UNKNOWN (-1)
 
@@ -172,7 +172,7 @@ private:
  * work on.
  */
 class CGitStatusListCtrl :
-	public CListCtrl
+	public CResizableColumnsListCtrl<CListCtrl>
 {
 public:
 	enum
@@ -683,7 +683,6 @@ public:
 	}
 
 private:
-	void SaveColumnWidths(bool bSaveToRegistry = false);
 	//void AddEntry(FileEntry * entry, WORD langID, int listIndex);	///< add an entry to the control
 	void RemoveListEntry(int index);	///< removes an entry from the listcontrol and both arrays
 	bool BuildStatistics();	///< build the statistics and correct the case of files/folders
@@ -746,7 +745,6 @@ private:
 
 	void OnContextMenuList(CWnd * pWnd, CPoint point);
 	void OnContextMenuGroup(CWnd * pWnd, CPoint point);
-	void OnContextMenuHeader(CWnd * pWnd, CPoint point);
 	bool CheckMultipleDiffs();
 
 	void DeleteSelectedFiles();
@@ -759,9 +757,6 @@ private:
 	afx_msg void OnHdnItemclick(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnLvnItemchanging(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg BOOL OnLvnItemchanged(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnColumnResized(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnHeaderDblClick(NMHDR* pNMHDR, LRESULT* pResult);
-	afx_msg void OnColumnMoved(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 
 	void CreateChangeList(const CString& name);
@@ -774,10 +769,6 @@ private:
 	afx_msg void OnNMReturn(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 	afx_msg void OnPaint();
-	afx_msg void OnHdnBegintrack(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnHdnItemchanging(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnDestroy();
-
 
 	void FilesExport();
 	void FileSaveAs(CTGitPath *path);
@@ -858,8 +849,6 @@ private:
 
 	bool						m_bCheckChildrenWithParent;
 	CGitStatusListCtrlDropTarget * m_pDropTarget;
-
-	ColumnManager				m_ColumnManager;
 
 	std::map<CString,bool>		m_mapFilenameToChecked; ///< Remember de-/selected items
 	std::map<CString,bool>		m_mapDirectFiles;

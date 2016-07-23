@@ -1702,6 +1702,9 @@
     <ClInclude Include="..\Utils\MiscUI\HintCtrl.h">
       <Filter>Utils\UI</Filter>
     </ClInclude>
+    <ClInclude Include="ResizableColumnsListCtrl.h">
+      <Filter>Utility Dialogs</Filter>
+    </ClInclude>
     <ClInclude Include="ColumnManager.h">
       <Filter>Utility Dialogs</Filter>
     </ClInclude>
