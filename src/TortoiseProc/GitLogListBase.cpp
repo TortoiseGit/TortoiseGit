@@ -55,9 +55,9 @@ const UINT CGitLogListBase::m_FindDialogMessage = RegisterWindowMessage(FINDMSGS
 const UINT CGitLogListBase::m_ScrollToMessage = RegisterWindowMessage(_T("TORTOISEGIT_LOG_SCROLLTO"));
 const UINT CGitLogListBase::m_RebaseActionMessage = RegisterWindowMessage(_T("TORTOISEGIT_LOG_REBASEACTION"));
 
-IMPLEMENT_DYNAMIC(CGitLogListBase, CHintCtrl<CListCtrl>)
+IMPLEMENT_DYNAMIC(CGitLogListBase, CHintCtrl<CResizableColumnsListCtrl<CListCtrl>>)
 
-CGitLogListBase::CGitLogListBase() : CHintCtrl<CListCtrl>()
+CGitLogListBase::CGitLogListBase() : CHintCtrl<CResizableColumnsListCtrl<CListCtrl>>()
 	,m_regMaxBugIDColWidth(_T("Software\\TortoiseGit\\MaxBugIDColWidth"), 200)
 	,m_nSearchIndex(0)
 	,m_bNoDispUpdates(FALSE)
@@ -68,7 +68,6 @@ CGitLogListBase::CGitLogListBase() : CHintCtrl<CListCtrl>()
 	, m_bShowWC(false)
 	, m_logEntries(&m_LogCache)
 	, m_pFindDialog(nullptr)
-	, m_ColumnManager(this)
 	, m_dwDefaultColumns(0)
 	, m_arShownList(&m_critSec)
 	, m_hasWC(true)
@@ -282,7 +281,7 @@ CGitLogListBase::~CGitLogListBase()
 }
 
 
-BEGIN_MESSAGE_MAP(CGitLogListBase, CHintCtrl<CListCtrl>)
+BEGIN_MESSAGE_MAP(CGitLogListBase, CHintCtrl<CResizableColumnsListCtrl<CListCtrl>>)
 	ON_REGISTERED_MESSAGE(m_FindDialogMessage, OnFindDialogMessage)
 	ON_REGISTERED_MESSAGE(m_ScrollToMessage, OnScrollToMessage)
 	ON_NOTIFY_REFLECT(NM_CUSTOMDRAW, OnNMCustomdrawLoglist)
@@ -295,12 +294,6 @@ BEGIN_MESSAGE_MAP(CGitLogListBase, CHintCtrl<CListCtrl>)
 	ON_MESSAGE(MSG_LOADED,OnLoad)
 	ON_WM_MEASUREITEM()
 	ON_WM_MEASUREITEM_REFLECT()
-	ON_NOTIFY(HDN_BEGINTRACKA, 0, OnHdnBegintrack)
-	ON_NOTIFY(HDN_BEGINTRACKW, 0, OnHdnBegintrack)
-	ON_NOTIFY(HDN_ITEMCHANGINGA, 0, OnHdnItemchanging)
-	ON_NOTIFY(HDN_ITEMCHANGINGW, 0, OnHdnItemchanging)
-	ON_NOTIFY(HDN_ENDTRACK, 0, OnColumnResized)
-	ON_NOTIFY(HDN_ENDDRAG, 0, OnColumnMoved)
 	ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTW, 0, 0xFFFF, &OnToolTipText)
 	ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTA, 0, 0xFFFF, &OnToolTipText)
 END_MESSAGE_MAP()
@@ -344,11 +337,7 @@ void CGitLogListBase::InsertGitColumn()
 {
 	CString temp;
 
-	CRegDWORD regFullRowSelect(_T("Software\\TortoiseGit\\FullRowSelect"), TRUE);
-	DWORD exStyle = GetExtendedStyle() | LVS_EX_HEADERDRAGDROP;
-	if (DWORD(regFullRowSelect))
-		exStyle |= LVS_EX_FULLROWSELECT;
-	SetExtendedStyle(exStyle);
+	Init();
 
 	// only load properties if we have a repository
 	if (GitAdminDir::IsWorkingTreeOrBareRepo(g_Git.m_CurrentDir))
@@ -1658,8 +1647,10 @@ void CGitLogListBase::GetParentHashes(GitRev *pRev, GIT_REV_LIST &parentHash)
 
 void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 {
-	if (pWnd == GetHeaderCtrl())
-		return m_ColumnManager.OnContextMenuHeader(pWnd,point,!!IsGroupViewEnabled());
+	__super::OnContextMenu(pWnd, point);
+
+	if (pWnd != this)
+		return;
 
 	int selIndex = GetSelectionMark();
 	if (selIndex < 0)
@@ -3755,9 +3746,6 @@ void CGitLogListBase::Clear()
 
 void CGitLogListBase::OnDestroy()
 {
-	// save the column widths to the registry
-	SaveColumnWidths();
-
 	SafeTerminateThread();
 	SafeTerminateAsyncDiffThread();
 
@@ -3793,16 +3781,10 @@ LRESULT CGitLogListBase::OnLoad(WPARAM wParam,LPARAM /*lParam*/)
  */
 void CGitLogListBase::SaveColumnWidths()
 {
-	int maxcol = m_ColumnManager.GetColumnCount();
-
 	// HACK that graph column is always shown
 	SetColumnWidth(0, m_ColumnManager.GetWidth(0, false));
 
-	for (int col = 0; col < maxcol; ++col)
-		if (m_ColumnManager.IsVisible (col))
-			m_ColumnManager.ColumnResized (col);
-
-	m_ColumnManager.WriteSettings();
+	__super::SaveColumnWidths();
 }
 
 int CGitLogListBase::GetHeadIndex()
@@ -3829,15 +3811,7 @@ void CGitLogListBase::OnFind()
 		m_pFindDialog->Create(this);
 	}
 }
-void CGitLogListBase::OnHdnBegintrack(NMHDR *pNMHDR, LRESULT *pResult)
-{
-	m_ColumnManager.OnHdnBegintrack(pNMHDR, pResult);
-}
-void CGitLogListBase::OnHdnItemchanging(NMHDR *pNMHDR, LRESULT *pResult)
-{
-	if(!m_ColumnManager.OnHdnItemchanging(pNMHDR, pResult))
-		Default();
-}
+
 LRESULT CGitLogListBase::OnScrollToMessage(WPARAM itemToSelect, LPARAM /*lParam*/)
 {
 	if (GetSelectedCount() != 0)
@@ -4045,20 +4019,6 @@ LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*
 	}
 
 	return 0;
-}
-
-void CGitLogListBase::OnColumnResized(NMHDR *pNMHDR, LRESULT *pResult)
-{
-	m_ColumnManager.OnColumnResized(pNMHDR,pResult);
-
-	*pResult = FALSE;
-}
-
-void CGitLogListBase::OnColumnMoved(NMHDR *pNMHDR, LRESULT *pResult)
-{
-	m_ColumnManager.OnColumnMoved(pNMHDR, pResult);
-
-	Invalidate(FALSE);
 }
 
 INT_PTR CGitLogListBase::OnToolHitTest(CPoint point, TOOLINFO * pTI) const

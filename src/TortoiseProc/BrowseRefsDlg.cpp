@@ -163,7 +163,6 @@ CBrowseRefsDlg::CBrowseRefsDlg(CString cmdPath, CWnd* pParent /*=nullptr*/)
 	m_pListCtrlRoot(nullptr),
 	m_bHasWC(true),
 	m_SelectedFilters(LOGFILTER_ALL),
-	m_ColumnManager(&m_ListRefLeafs),
 	m_bPickOne(false),
 	m_bIncludeNestedRefs(TRUE),
 	m_bPickedRefSet(false)
@@ -285,17 +284,15 @@ BOOL CBrowseRefsDlg::OnInitDialog()
 	AddAnchor(IDC_INCLUDENESTEDREFS, BOTTOM_LEFT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
 
-	CRegDWORD regFullRowSelect(_T("Software\\TortoiseGit\\FullRowSelect"), TRUE);
-	DWORD exStyle = LVS_EX_INFOTIP;
-	if (DWORD(regFullRowSelect))
-		exStyle |= LVS_EX_FULLROWSELECT;
-	m_ListRefLeafs.SetExtendedStyle(m_ListRefLeafs.GetExtendedStyle() | exStyle);
+	m_ListRefLeafs.SetExtendedStyle(m_ListRefLeafs.GetExtendedStyle() | LVS_EX_INFOTIP);
 	static UINT columnNames[] = { IDS_BRANCHNAME, IDS_TRACKEDBRANCH, IDS_DATELASTCOMMIT, IDS_LASTCOMMIT, IDS_LASTAUTHOR, IDS_HASH, IDS_DESCRIPTION };
-	static int columnWidths[] = { 150, 100, 100, 300, 100, 80, 80 };
+	static int columnWidths[] = { 0, 0, 0, 300, 0, 0, 80 };
 	DWORD dwDefaultColumns = (1 << eCol_Name) | (1 << eCol_Upstream ) | (1 << eCol_Date) | (1 << eCol_Msg) |
 		(1 << eCol_LastAuthor) | (1 << eCol_Hash) | (1 << eCol_Description);
-	m_ColumnManager.SetNames(columnNames, _countof(columnNames));
-	m_ColumnManager.ReadSettings(dwDefaultColumns, 0, _T("BrowseRefs"), _countof(columnNames), columnWidths);
+	m_ListRefLeafs.m_bAllowHiding = false;
+	m_ListRefLeafs.Init();
+	m_ListRefLeafs.m_ColumnManager.SetNames(columnNames, _countof(columnNames));
+	m_ListRefLeafs.m_ColumnManager.ReadSettings(dwDefaultColumns, 0, _T("BrowseRefs"), _countof(columnNames), columnWidths);
 	m_bPickedRefSet = false;
 
 	AddAnchor(IDOK,BOTTOM_RIGHT);
@@ -576,7 +573,8 @@ void CBrowseRefsDlg::FillListCtrlForTreeNode(HTREEITEM treeNode)
 		return;
 	}
 	FillListCtrlForShadowTree(pTree,L"",true);
-	m_ColumnManager.SetVisible(eCol_Upstream, pTree->IsFrom(L"refs/heads"));
+	m_ListRefLeafs.m_ColumnManager.SetVisible(eCol_Upstream, pTree->IsFrom(L"refs/heads"));
+	m_ListRefLeafs.AdjustColumnWidths();
 }
 
 void CBrowseRefsDlg::FillListCtrlForShadowTree(CShadowTree* pTree, CString refNamePrefix, bool isFirstLevel)
@@ -1348,12 +1346,6 @@ void CBrowseRefsDlg::OnDestroy()
 {
 	if (!m_bPickedRefSet)
 		m_pickedRef = GetSelectedRef(true, false);
-
-	int maxcol = m_ColumnManager.GetColumnCount();
-	for (int col = 0; col < maxcol; ++col)
-		if (m_ColumnManager.IsVisible(col))
-			m_ColumnManager.ColumnResized(col);
-	m_ColumnManager.WriteSettings();
 
 	CResizableStandAloneDialog::OnDestroy();
 }

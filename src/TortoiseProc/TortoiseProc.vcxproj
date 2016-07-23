@@ -119,6 +119,7 @@
     <ClCompile Include="AutoTextTestDlg.cpp" />
     <ClCompile Include="BugtraqRegexTestDlg.cpp" />
     <ClCompile Include="CheckCertificateDlg.cpp" />
+    <ClCompile Include="ColumnManager.cpp" />
     <ClCompile Include="Commands\DaemonCommand.cpp" />
     <ClCompile Include="FindBar.cpp" />
     <ClCompile Include="GravatarPictureBox.cpp" />
@@ -386,6 +387,7 @@
     <ClInclude Include="BstrSafeVector.h" />
     <ClInclude Include="BugtraqRegexTestDlg.h" />
     <ClInclude Include="CheckCertificateDlg.h" />
+    <ClInclude Include="ColumnManager.h" />
     <ClInclude Include="Commands\AutoTextTestCommand.h" />
     <ClInclude Include="Commands\DaemonCommand.h" />
     <ClInclude Include="FindBar.h" />
@@ -400,6 +402,7 @@
     <ClInclude Include="ProgressCommands\ResolveProgressCommand.h" />
     <ClInclude Include="ProgressCommands\RevertProgressCommand.h" />
     <ClInclude Include="ProgressCommands\SendMailProgressCommand.h" />
+    <ClInclude Include="ResizableColumnsListCtrl.h" />
     <ClInclude Include="SendMail.h" />
     <ClInclude Include="FindDlg.h" />
     <ClInclude Include="GitProgressList.h" />

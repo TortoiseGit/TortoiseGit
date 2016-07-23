@@ -18,10 +18,9 @@
 //
 #pragma once
 
-#include <map>
 #include "StandAloneDlg.h"
 #include "FilterEdit.h"
-#include "GitStatusListCtrl.h"
+#include "ResizableColumnsListCtrl.h"
 #include "gittype.h"
 
 const int gPickRef_Head		= 1;
@@ -180,8 +179,7 @@ private:
 	CShadowTree		m_TreeRoot;
 	CShadowTree*	m_pListCtrlRoot;
 	CTreeCtrl		m_RefTreeCtrl;
-	CListCtrl		m_ListRefLeafs;
-	ColumnManager	m_ColumnManager;
+	CResizableColumnsListCtrl<CListCtrl>	m_ListRefLeafs;
 
 	CFilterEdit		m_ctrlFilter;
 	afx_msg void OnEnChangeEditFilter();
