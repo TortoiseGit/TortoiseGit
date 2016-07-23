@@ -1886,7 +1886,7 @@ void CCommitDlg::ScanFile(const CString& sFilePath, const CString& sRegex, const
 		{
 			return;
 		}
-		sFileContent = std::wstring((wchar_t*)oFile, oFile.GetLength());
+		sFileContent = std::wstring((wchar_t*)oFile, oFile.GetLength() / sizeof(wchar_t));
 	}
 	if (sFileContent.empty() || !m_bRunThread)
 		return;
