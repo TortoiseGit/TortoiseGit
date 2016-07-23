@@ -691,7 +691,8 @@ void CSciEdit::DoAutoCompletion(int nMinPrefixLength)
 
 	Call(SCI_AUTOCSETSEPARATOR, (WPARAM)CStringA(m_separator).GetAt(0));
 	Call(SCI_AUTOCSETTYPESEPARATOR, (WPARAM)m_typeSeparator);
-	Call(SCI_AUTOCSHOW, word.GetLength(), (LPARAM)(LPCSTR)StringForControl(sAutoCompleteList));
+	auto sForControl = StringForControl(sAutoCompleteList);
+	Call(SCI_AUTOCSHOW, StringForControl(word).GetLength(), (LPARAM)(LPCSTR)sForControl);
 }
 
 BOOL CSciEdit::OnChildNotify(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pLResult)

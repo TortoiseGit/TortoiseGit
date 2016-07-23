@@ -10,6 +10,7 @@ Released: unreleased
  * Fixed issue #2800: Authentication with non-ascii password fails
  * Fixed issue #2798: Commit message autocompletion doesn't work with UTF-8 encoded files
  * Fixed issue #2797: RebaseDlg: Make branch selectors adjust with resized dialog
+ * Autocompletion of filenames with umlauts in the commit dialog did not work
 
 = Release 2.2.0 =
 Released: 2016-07-02
