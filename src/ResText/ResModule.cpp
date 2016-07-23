@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2015 - TortoiseGit
-// Copyright (C) 2003-2008, 2010-2015 - TortoiseSVN
+// Copyright (C) 2003-2008, 2010-2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -2191,17 +2191,17 @@ size_t CResModule::ScanHeaderFile(const std::wstring & filepath)
 						value = std::stoul(text.substr(spacepos), nullptr, 16);
 					text = text.substr(0, spacepos);
 					trim(text);
-					if (text.find("IDS_") == 0)
+					if (text.compare(0, 4, "IDS_") == 0)
 					{
 						m_currentHeaderDataStrings[value] = CUnicodeUtils::StdGetUnicode(text);
 						++count;
 					}
-					else if (text.find("IDD_") == 0)
+					else if (text.compare(0, 4, "IDD_") == 0)
 					{
 						m_currentHeaderDataDialogs[value] = CUnicodeUtils::StdGetUnicode(text);
 						++count;
 					}
-					else if (text.find("ID_") == 0)
+					else if (text.compare(0, 3, "ID_") == 0)
 					{
 						m_currentHeaderDataMenus[value] = CUnicodeUtils::StdGetUnicode(text);
 						++count;
@@ -2237,17 +2237,17 @@ size_t CResModule::ScanHeaderFile(const std::wstring & filepath)
 						value = std::stoul(text.substr(spacepos), nullptr, 16);
 					text = text.substr(0, spacepos);
 					trim(text);
-					if (text.find(L"IDS_") == 0)
+					if (text.compare(0, 4, L"IDS_") == 0)
 					{
 						m_currentHeaderDataStrings[value] = text;
 						++count;
 					}
-					else if (text.find(L"IDD_") == 0)
+					else if (text.compare(0, 4, L"IDD_") == 0)
 					{
 						m_currentHeaderDataDialogs[value] = text;
 						++count;
 					}
-					else if (text.find(L"ID_") == 0)
+					else if (text.compare(0, 3, L"ID_") == 0)
 					{
 						m_currentHeaderDataMenus[value] = text;
 						++count;
