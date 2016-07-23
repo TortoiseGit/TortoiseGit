@@ -37,9 +37,6 @@
     <ClCompile>
       <AdditionalIncludeDirectories>..\..\src\TortoiseShell;..\..\ext\gitdll;..\..\src\Utils;..\..\src\Git;..\..\src\TortoiseProc;..\..\src\Utils\MiscUI;..\..\src\TGitCache;..\..\ext\libgit2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
-    <Link>
-      <AdditionalDependencies>version.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\Git\Git.cpp" />

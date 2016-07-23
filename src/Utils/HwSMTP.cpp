@@ -18,6 +18,8 @@
 
 #define IO_BUFFER_SIZE 0x10000
 
+#pragma comment(lib, "Dnsapi.lib")
+#pragma comment(lib, "Rpcrt4.lib")
 #pragma comment(lib, "Secur32.lib")
 
 DWORD dwProtocol = SP_PROT_TLS1; // SP_PROT_TLS1; // SP_PROT_PCT1; SP_PROT_SSL2; SP_PROT_SSL3; 0=default

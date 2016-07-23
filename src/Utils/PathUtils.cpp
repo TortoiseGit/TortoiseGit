@@ -399,6 +399,7 @@ CStringW CPathUtils::PathUnescape(const CStringW& path)
 	return ret;
 }
 #ifdef _MFC_VER
+#pragma comment(lib, "Version.lib")
 CString CPathUtils::GetVersionFromFile(const CString & p_strFilename)
 {
 	struct TRANSARRAY

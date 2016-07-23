@@ -42,9 +42,6 @@
     <ClCompile>
       <AdditionalIncludeDirectories>$(ProjectDir);..\Utils;..\Utils\MiscUI;..\..\ext\libgit2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
-    <Link>
-      <AdditionalDependencies>gdiplus.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Utils\CmdLineParser.cpp" />

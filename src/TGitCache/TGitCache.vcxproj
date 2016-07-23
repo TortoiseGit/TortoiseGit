@@ -42,9 +42,6 @@
       <AdditionalIncludeDirectories>$(ProjectDir);..\..\ext\gitdll;..\Utils;..\TortoiseShell;..\Git;..\..\ext\libgit2\include;..\..\ext\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>TGITCACHE;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
-    <Link>
-      <AdditionalDependencies>Crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Git\MassiveGitTaskBase.cpp" />

@@ -30,6 +30,7 @@
 #pragma warning(disable: 4458)
 #include <GdiPlus.h>
 #pragma warning(pop)
+#pragma comment(lib, "gdiplus.lib")
 
 #define APPID (_T("TGIT.TGIT.1"))
 

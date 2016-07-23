@@ -41,9 +41,6 @@
     <ClCompile>
       <AdditionalIncludeDirectories>$(ProjectDir);..\..\ext\scintilla\include;..\Utils;..\Utils\MiscUI;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
-    <Link>
-      <AdditionalDependencies>gdiplus.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Utils\CmdLineParser.cpp" />
