@@ -18,6 +18,9 @@
     <Filter Include="TortoiseProc">
       <UniqueIdentifier>{72614fd5-1346-4028-b739-2c1740f915d9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="TortoiseGitMerge">
+      <UniqueIdentifier>{6bdce77d-3a9a-458f-8e18-65f43a40657c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -136,6 +139,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\Utils\LruCache.h">
       <Filter>TortoiseProc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\TortoiseMerge\FileTextLines.h">
+      <Filter>TortoiseGitMerge</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -284,6 +290,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="LruCacheTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\TortoiseMerge\FileTextLines.cpp">
+      <Filter>TortoiseGitMerge</Filter>
+    </ClCompile>
+    <ClCompile Include="FileTextLinesTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
