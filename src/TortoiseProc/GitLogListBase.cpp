@@ -319,7 +319,7 @@ int CGitLogListBase:: OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 void CGitLogListBase::PreSubclassWindow()
 {
-	SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_SUBITEMIMAGES);
+	SetExtendedStyle(LVS_EX_INFOTIP | LVS_EX_DOUBLEBUFFER | LVS_EX_SUBITEMIMAGES);
 	// load the icons for the action columns
 //	m_Theme.Open(m_hWnd, L"ListView");
 	SetWindowTheme(m_hWnd, L"Explorer", nullptr);
@@ -345,7 +345,7 @@ void CGitLogListBase::InsertGitColumn()
 	CString temp;
 
 	CRegDWORD regFullRowSelect(_T("Software\\TortoiseGit\\FullRowSelect"), TRUE);
-	DWORD exStyle = LVS_EX_HEADERDRAGDROP | LVS_EX_DOUBLEBUFFER | LVS_EX_INFOTIP | LVS_EX_SUBITEMIMAGES;
+	DWORD exStyle = GetExtendedStyle() | LVS_EX_HEADERDRAGDROP;
 	if (DWORD(regFullRowSelect))
 		exStyle |= LVS_EX_FULLROWSELECT;
 	SetExtendedStyle(exStyle);
