@@ -911,6 +911,9 @@
     <ClCompile Include="..\TortoiseMerge\FileTextLines.cpp">
       <Filter>TortoiseGitMerge</Filter>
     </ClCompile>
+    <ClCompile Include="ColumnManager.cpp">
+      <Filter>Utility Dialogs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddRemoteDlg.h">
@@ -1698,6 +1701,9 @@
     </ClInclude>
     <ClInclude Include="..\Utils\MiscUI\HintCtrl.h">
       <Filter>Utils\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="ColumnManager.h">
+      <Filter>Utility Dialogs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

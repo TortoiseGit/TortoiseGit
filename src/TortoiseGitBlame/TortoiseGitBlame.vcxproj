@@ -58,6 +58,7 @@
     <ClCompile Include="..\Git\MassiveGitTaskBase.cpp" />
     <ClCompile Include="..\Git\TGitPath.cpp" />
     <ClCompile Include="..\TortoiseProc\Colors.cpp" />
+    <ClCompile Include="..\TortoiseProc\ColumnManager.cpp" />
     <ClCompile Include="..\TortoiseProc\GravatarPictureBox.cpp" />
     <ClCompile Include="..\Utils\CmdLineParser.cpp" />
     <ClCompile Include="..\Utils\CommonAppUtils.cpp" />
@@ -83,7 +84,6 @@
     <ClCompile Include="..\TortoiseProc\FindDlg.cpp" />
     <ClCompile Include="..\TortoiseProc\GitLogCache.cpp" />
     <ClCompile Include="..\TortoiseProc\GitLogListBase.cpp" />
-    <ClCompile Include="..\TortoiseProc\GitStatusListCtrlHelpers.cpp" />
     <ClCompile Include="..\TortoiseProc\lanes.cpp" />
     <ClCompile Include="..\TortoiseProc\LogDataVector.cpp" />
     <ClCompile Include="LogListBlameAction.cpp" />
@@ -113,6 +113,7 @@
     <ClInclude Include="..\Git\MassiveGitTaskBase.h" />
     <ClInclude Include="..\Git\TGitPath.h" />
     <ClInclude Include="..\Resources\LoglistCommonResource.h" />
+    <ClInclude Include="..\TortoiseProc\ColumnManager.h" />
     <ClInclude Include="..\Utils\CmdLineParser.h" />
     <ClInclude Include="..\Utils\DebugOutput.h" />
     <ClInclude Include="..\Utils\LruCache.h" />

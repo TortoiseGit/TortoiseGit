@@ -21,6 +21,7 @@
 #pragma once
 
 #include "HintCtrl.h"
+#include "ColumnManager.h"
 #include "Git.h"
 #include "ProjectProperties.h"
 #include "TGitPath.h"

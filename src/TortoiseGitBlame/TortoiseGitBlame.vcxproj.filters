@@ -132,9 +132,6 @@
     <ClCompile Include="..\TortoiseProc\GitLogListBase.cpp">
       <Filter>TortoiseGitProc</Filter>
     </ClCompile>
-    <ClCompile Include="..\TortoiseProc\GitStatusListCtrlHelpers.cpp">
-      <Filter>TortoiseGitProc</Filter>
-    </ClCompile>
     <ClCompile Include="..\TortoiseProc\lanes.cpp">
       <Filter>TortoiseGitProc</Filter>
     </ClCompile>
@@ -173,6 +170,9 @@
     </ClCompile>
     <ClCompile Include="..\Git\GitRevLoglist.cpp">
       <Filter>Git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TortoiseProc\ColumnManager.cpp">
+      <Filter>TortoiseGitProc</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -331,6 +331,9 @@
     </ClInclude>
     <ClInclude Include="..\Utils\MiscUI\HintCtrl.h">
       <Filter>Utils\MiscUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TortoiseProc\ColumnManager.h">
+      <Filter>TortoiseGitProc</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
