@@ -55,9 +55,9 @@ const UINT CGitLogListBase::m_FindDialogMessage = RegisterWindowMessage(FINDMSGS
 const UINT CGitLogListBase::m_ScrollToMessage = RegisterWindowMessage(_T("TORTOISEGIT_LOG_SCROLLTO"));
 const UINT CGitLogListBase::m_RebaseActionMessage = RegisterWindowMessage(_T("TORTOISEGIT_LOG_REBASEACTION"));
 
-IMPLEMENT_DYNAMIC(CGitLogListBase, CHintListCtrl)
+IMPLEMENT_DYNAMIC(CGitLogListBase, CHintCtrl<CListCtrl>)
 
-CGitLogListBase::CGitLogListBase():CHintListCtrl()
+CGitLogListBase::CGitLogListBase() : CHintCtrl<CListCtrl>()
 	,m_regMaxBugIDColWidth(_T("Software\\TortoiseGit\\MaxBugIDColWidth"), 200)
 	,m_nSearchIndex(0)
 	,m_bNoDispUpdates(FALSE)
@@ -282,7 +282,7 @@ CGitLogListBase::~CGitLogListBase()
 }
 
 
-BEGIN_MESSAGE_MAP(CGitLogListBase, CHintListCtrl)
+BEGIN_MESSAGE_MAP(CGitLogListBase, CHintCtrl<CListCtrl>)
 	ON_REGISTERED_MESSAGE(m_FindDialogMessage, OnFindDialogMessage)
 	ON_REGISTERED_MESSAGE(m_ScrollToMessage, OnScrollToMessage)
 	ON_NOTIFY_REFLECT(NM_CUSTOMDRAW, OnNMCustomdrawLoglist)
@@ -314,7 +314,7 @@ void CGitLogListBase::MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct)
 int CGitLogListBase:: OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	PreSubclassWindow();
-	return CHintListCtrl::OnCreate(lpCreateStruct);
+	return __super::OnCreate(lpCreateStruct);
 }
 
 void CGitLogListBase::PreSubclassWindow()
@@ -323,7 +323,7 @@ void CGitLogListBase::PreSubclassWindow()
 	// load the icons for the action columns
 //	m_Theme.Open(m_hWnd, L"ListView");
 	SetWindowTheme(m_hWnd, L"Explorer", nullptr);
-	CHintListCtrl::PreSubclassWindow();
+	__super::PreSubclassWindow();
 }
 
 CString CGitLogListBase::GetRebaseActionName(int action)
@@ -3775,7 +3775,7 @@ void CGitLogListBase::OnDestroy()
 		//					break;
 	}
 
-	CHintListCtrl::OnDestroy();
+	__super::OnDestroy();
 }
 
 LRESULT CGitLogListBase::OnLoad(WPARAM wParam,LPARAM /*lParam*/)

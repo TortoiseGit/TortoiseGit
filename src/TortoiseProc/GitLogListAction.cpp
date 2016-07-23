@@ -40,7 +40,7 @@
 #include "GitDiff.h"
 #include "../TGitCache/CacheInterface.h"
 
-IMPLEMENT_DYNAMIC(CGitLogList, CHintListCtrl)
+IMPLEMENT_DYNAMIC(CGitLogList, CHintCtrl<CListCtrl>)
 
 static void GetFirstEntryStartingWith(STRING_VECTOR& heystack, const CString& needle, CString& result)
 {

@@ -26,7 +26,7 @@
 #include "MainFrm.h"
 #include "CommonAppUtils.h"
 
-IMPLEMENT_DYNAMIC(CGitBlameLogList, CHintListCtrl)
+IMPLEMENT_DYNAMIC(CGitBlameLogList, CHintCtrl<CListCtrl>)
 
 void CGitBlameLogList::hideUnimplementedCommands()
 {

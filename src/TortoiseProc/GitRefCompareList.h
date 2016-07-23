@@ -20,11 +20,11 @@
 //
 #pragma once
 
-#include "HintListCtrl.h"
+#include "HintCtrl.h"
 #include "GitHash.h"
 #include "Git.h"
 
-class CGitRefCompareList : public CHintListCtrl
+class CGitRefCompareList : public CHintCtrl<CListCtrl>
 {
 	DECLARE_DYNAMIC(CGitRefCompareList);
 

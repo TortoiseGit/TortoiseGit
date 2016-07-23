@@ -29,9 +29,9 @@
 #include "..\TortoiseShell\resource.h"
 #include "LoglistCommonResource.h"
 
-IMPLEMENT_DYNAMIC(CGitRefCompareList, CHintListCtrl)
+IMPLEMENT_DYNAMIC(CGitRefCompareList, CHintCtrl<CListCtrl>)
 
-BEGIN_MESSAGE_MAP(CGitRefCompareList, CHintListCtrl)
+BEGIN_MESSAGE_MAP(CGitRefCompareList, CHintCtrl<CListCtrl>)
 	ON_WM_CONTEXTMENU()
 END_MESSAGE_MAP()
 
@@ -53,7 +53,7 @@ enum IDGITRCLH
 };
 
 CGitRefCompareList::CGitRefCompareList()
-	: CHintListCtrl()
+	: CHintCtrl<CListCtrl>()
 	, colRef(0)
 	, colChange(0)
 	, colOldHash(0)

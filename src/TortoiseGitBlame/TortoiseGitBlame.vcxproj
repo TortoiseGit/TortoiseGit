@@ -63,7 +63,6 @@
     <ClCompile Include="..\Utils\CommonAppUtils.cpp" />
     <ClCompile Include="..\Utils\DebugOutput.cpp" />
     <ClCompile Include="..\Utils\MiscUI\FilterEdit.cpp" />
-    <ClCompile Include="..\Utils\MiscUI\HintListCtrl.cpp" />
     <ClCompile Include="..\Utils\MiscUI\HistoryCombo.cpp" />
     <ClCompile Include="..\Utils\MiscUI\HTMLFormatter.cpp" />
     <ClCompile Include="..\Utils\MiscUI\IconBitmapUtils.cpp" />
@@ -118,7 +117,7 @@
     <ClInclude Include="..\Utils\DebugOutput.h" />
     <ClInclude Include="..\Utils\LruCache.h" />
     <ClInclude Include="..\Utils\MiscUI\FilterEdit.h" />
-    <ClInclude Include="..\Utils\MiscUI\HintListCtrl.h" />
+    <ClInclude Include="..\Utils\MiscUI\HintCtrl.h" />
     <ClInclude Include="..\Utils\MiscUI\HistoryCombo.h" />
     <ClInclude Include="..\Utils\MiscUI\HTMLFormatter.h" />
     <ClInclude Include="..\Utils\MiscUI\IconBitmapUtils.h" />

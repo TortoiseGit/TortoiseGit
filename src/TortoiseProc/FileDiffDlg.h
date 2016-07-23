@@ -23,7 +23,7 @@
 #include "Git.h"
 #include "TGitPath.h"
 #include "Git.h"
-#include "HintListCtrl.h"
+#include "HintCtrl.h"
 #include "Colors.h"
 #include "FilterEdit.h"
 #include "MessageBox.h"
@@ -138,7 +138,7 @@ private:
 
 	CMFCButton			m_SwitchButton;
 	CColors				m_colors;
-	CHintListCtrl		m_cFileList;
+	CHintCtrl<CListCtrl>	m_cFileList;
 	bool				m_bBlame;
 	CTGitPathList		m_arFileList;
 	std::vector<CTGitPath*> m_arFilteredList;

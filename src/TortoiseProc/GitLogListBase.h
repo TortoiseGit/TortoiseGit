@@ -20,7 +20,7 @@
 //
 #pragma once
 
-#include "HintListCtrl.h"
+#include "HintCtrl.h"
 #include "Git.h"
 #include "ProjectProperties.h"
 #include "TGitPath.h"
@@ -199,7 +199,7 @@ public:
 	}
 };
 
-class CGitLogListBase : public CHintListCtrl
+class CGitLogListBase : public CHintCtrl<CListCtrl>
 {
 	DECLARE_DYNAMIC(CGitLogListBase)
 

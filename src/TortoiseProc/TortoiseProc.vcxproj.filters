@@ -746,9 +746,6 @@
     <ClCompile Include="..\Utils\MiscUI\FilterEdit.cpp">
       <Filter>Utils\UI</Filter>
     </ClCompile>
-    <ClCompile Include="..\Utils\MiscUI\HintListCtrl.cpp">
-      <Filter>Utils\UI</Filter>
-    </ClCompile>
     <ClCompile Include="..\Utils\MiscUI\HistoryCombo.cpp">
       <Filter>Utils\UI</Filter>
     </ClCompile>
@@ -1510,9 +1507,6 @@
     <ClInclude Include="..\Utils\MiscUI\FilterEdit.h">
       <Filter>Utils\UI</Filter>
     </ClInclude>
-    <ClInclude Include="..\Utils\MiscUI\HintListCtrl.h">
-      <Filter>Utils\UI</Filter>
-    </ClInclude>
     <ClInclude Include="..\Utils\MiscUI\HistoryCombo.h">
       <Filter>Utils\UI</Filter>
     </ClInclude>
@@ -1701,6 +1695,9 @@
     </ClInclude>
     <ClInclude Include="..\TortoiseMerge\FileTextLines.h">
       <Filter>TortoiseGitMerge</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\HintCtrl.h">
+      <Filter>Utils\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -90,9 +90,6 @@
     <ClCompile Include="..\Utils\MiscUI\IconMenu.cpp">
       <Filter>Utils\MiscUI</Filter>
     </ClCompile>
-    <ClCompile Include="..\Utils\MiscUI\HintListCtrl.cpp">
-      <Filter>Utils\MiscUI</Filter>
-    </ClCompile>
     <ClCompile Include="..\Utils\MiscUI\FilterEdit.cpp">
       <Filter>Utils\MiscUI</Filter>
     </ClCompile>
@@ -248,9 +245,6 @@
     <ClInclude Include="..\Utils\MiscUI\IconMenu.h">
       <Filter>Utils\MiscUI</Filter>
     </ClInclude>
-    <ClInclude Include="..\Utils\MiscUI\HintListCtrl.h">
-      <Filter>Utils\MiscUI</Filter>
-    </ClInclude>
     <ClInclude Include="..\Utils\MiscUI\FilterEdit.h">
       <Filter>Utils\MiscUI</Filter>
     </ClInclude>
@@ -334,6 +328,9 @@
     </ClInclude>
     <ClInclude Include="..\Utils\LruCache.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\HintCtrl.h">
+      <Filter>Utils\MiscUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

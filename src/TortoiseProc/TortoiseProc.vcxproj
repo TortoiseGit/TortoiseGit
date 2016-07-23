@@ -83,7 +83,6 @@
     <ClCompile Include="..\Utils\MiscUI\DIB.cpp" />
     <ClCompile Include="..\Utils\MiscUI\FileDropEdit.cpp" />
     <ClCompile Include="..\Utils\MiscUI\FilterEdit.cpp" />
-    <ClCompile Include="..\Utils\MiscUI\HintListCtrl.cpp" />
     <ClCompile Include="..\Utils\MiscUI\HistoryCombo.cpp" />
     <ClCompile Include="..\Utils\MiscUI\HTMLFormatter.cpp" />
     <ClCompile Include="..\Utils\MiscUI\HyperLink.cpp" />
@@ -347,7 +346,7 @@
     <ClInclude Include="..\Utils\MiscUI\DIB.h" />
     <ClInclude Include="..\Utils\MiscUI\FileDropEdit.h" />
     <ClInclude Include="..\Utils\MiscUI\FilterEdit.h" />
-    <ClInclude Include="..\Utils\MiscUI\HintListCtrl.h" />
+    <ClInclude Include="..\Utils\MiscUI\HintCtrl.h" />
     <ClInclude Include="..\Utils\MiscUI\HistoryCombo.h" />
     <ClInclude Include="..\Utils\MiscUI\HTMLFormatter.h" />
     <ClInclude Include="..\Utils\MiscUI\HyperLink.h" />
