@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2015-2016 - TortoiseGit
 // Copyright (C) 2003-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -43,9 +44,6 @@ protected:
 	CStandAloneDialogTmpl(UINT nIDTemplate, CWnd* pParentWnd = nullptr) : BaseType(nIDTemplate, pParentWnd)
 	{
 		m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
-		m_nResizeBlock = 0;
-		m_height = 0;
-		m_width = 0;
 	}
 	virtual BOOL OnInitDialog()
 	{
@@ -56,10 +54,6 @@ protected:
 		SetIcon(m_hIcon, TRUE);			// Set big icon
 		SetIcon(m_hIcon, FALSE);		// Set small icon
 
-		RECT rect;
-		GetWindowRect(&rect);
-		m_height = rect.bottom - rect.top;
-		m_width = rect.right - rect.left;
 		EnableToolTips();
 		m_tooltips.Create(this);
 
@@ -107,9 +101,7 @@ protected:
 			dc.DrawIcon(x, y, m_hIcon);
 		}
 		else
-		{
 			BaseType::OnPaint();
-		}
 	}
 	/**
 	 * Wrapper around the CWnd::EnableWindow() method, but
@@ -252,23 +244,8 @@ protected:
 		SetCursorPos(pt.x, pt.y);
 	}
 
-	void BlockResize(int block)
-	{
-		m_nResizeBlock = block;
-	}
-
-	void EnableSaveRestore(LPCTSTR pszSection, bool bRectOnly = FALSE)
-	{
-		// call the base method with the bHorzResize and bVertResize parameters
-		// figured out from the resize block flags.
-		BaseType::EnableSaveRestore(pszSection, bRectOnly, (m_nResizeBlock & DIALOG_BLOCKHORIZONTAL) == 0, (m_nResizeBlock & DIALOG_BLOCKVERTICAL) == 0);
-	};
-
 protected:
 	CToolTips	m_tooltips;
-	int			m_nResizeBlock;
-	long		m_width;
-	long		m_height;
 
 	DECLARE_MESSAGE_MAP()
 
@@ -376,6 +353,7 @@ private:
 	DECLARE_DYNAMIC(CResizableStandAloneDialog)
 
 protected:
+	virtual BOOL	OnInitDialog();
 	afx_msg void	OnSizing(UINT fwSide, LPRECT pRect);
 	afx_msg void	OnMoving(UINT fwSide, LPRECT pRect);
 	afx_msg void	OnNcMButtonUp(UINT nHitTest, CPoint point);
@@ -383,6 +361,23 @@ protected:
 	afx_msg LRESULT OnNcHitTest(CPoint point);
 
 	DECLARE_MESSAGE_MAP()
+
+protected:
+	int			m_nResizeBlock;
+	long		m_width;
+	long		m_height;
+
+	void BlockResize(int block)
+	{
+		m_nResizeBlock = block;
+	}
+
+	void EnableSaveRestore(LPCTSTR pszSection, bool bRectOnly = FALSE)
+	{
+		// call the base method with the bHorzResize and bVertResize parameters
+		// figured out from the resize block flags.
+		__super::EnableSaveRestore(pszSection, bRectOnly, (m_nResizeBlock & DIALOG_BLOCKHORIZONTAL) == 0, (m_nResizeBlock & DIALOG_BLOCKVERTICAL) == 0);
+	};
 
 private:
 	bool		m_bVertical;

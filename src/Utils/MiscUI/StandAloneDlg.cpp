@@ -51,7 +51,22 @@ CResizableStandAloneDialog::CResizableStandAloneDialog(UINT nIDTemplate, CWnd* p
 	: CStandAloneDialogTmpl<CResizableDialog>(nIDTemplate, pParentWnd)
 	, m_bVertical(false)
 	, m_bHorizontal(false)
+	, m_nResizeBlock(0)
+	, m_height(0)
+	, m_width(0)
 {
+}
+
+BOOL CResizableStandAloneDialog::OnInitDialog()
+{
+	__super::OnInitDialog();
+
+	RECT rect;
+	GetWindowRect(&rect);
+	m_height = rect.bottom - rect.top;
+	m_width = rect.right - rect.left;
+
+	return FALSE;
 }
 
 BEGIN_MESSAGE_MAP(CResizableStandAloneDialog, CStandAloneDialogTmpl<CResizableDialog>)
