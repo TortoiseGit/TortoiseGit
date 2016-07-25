@@ -293,3 +293,12 @@ protected:
 private:
 	DECLARE_DYNAMIC(CStateStandAloneDialog)
 };
+
+const UINT TaskBarButtonCreated = RegisterWindowMessage(L"TaskbarButtonCreated");
+
+BEGIN_TEMPLATE_MESSAGE_MAP(CStandAloneDialogTmpl, BaseType, BaseType)
+	ON_WM_PAINT()
+	ON_WM_QUERYDRAGICON()
+	ON_REGISTERED_MESSAGE(TaskBarButtonCreated, OnTaskbarButtonCreated)
+END_MESSAGE_MAP()
+
