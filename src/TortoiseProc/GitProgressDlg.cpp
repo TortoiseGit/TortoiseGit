@@ -58,7 +58,7 @@ BEGIN_MESSAGE_MAP(CGitProgressDlg, CResizableStandAloneDialog)
 	ON_WM_CTLCOLOR()
 	ON_MESSAGE(WM_PROG_CMD_FINISH, OnCmdEnd)
 	ON_MESSAGE(WM_PROG_CMD_START, OnCmdStart)
-	ON_REGISTERED_MESSAGE(WM_TASKBARBTNCREATED, OnTaskbarBtnCreated)
+	ON_REGISTERED_MESSAGE(TaskBarButtonCreated, OnTaskbarBtnCreated)
 END_MESSAGE_MAP()
 
 
@@ -79,7 +79,7 @@ BOOL CGitProgressDlg::OnInitDialog()
 		ChangeWindowMessageFilterExDFN *pfnChangeWindowMessageFilterEx = (ChangeWindowMessageFilterExDFN*)GetProcAddress(hUser, "ChangeWindowMessageFilterEx");
 		if (pfnChangeWindowMessageFilterEx)
 		{
-			pfnChangeWindowMessageFilterEx(m_hWnd, WM_TASKBARBTNCREATED, MSGFLT_ALLOW, &cfs);
+			pfnChangeWindowMessageFilterEx(m_hWnd, TaskBarButtonCreated, MSGFLT_ALLOW, &cfs);
 		}
 	}
 	m_ProgList.m_pTaskbarList.Release();
@@ -133,12 +133,11 @@ BOOL CGitProgressDlg::OnInitDialog()
 	return TRUE;
 }
 
-LRESULT CGitProgressDlg::OnTaskbarBtnCreated(WPARAM /*wParam*/, LPARAM /*lParam*/)
+LRESULT CGitProgressDlg::OnTaskbarBtnCreated(WPARAM wParam, LPARAM lParam)
 {
 	m_ProgList.m_pTaskbarList.Release();
 	m_ProgList.m_pTaskbarList.CoCreateInstance(CLSID_TaskbarList);
-	SetUUIDOverlayIcon(m_hWnd);
-	return 0;
+	return __super::OnTaskbarButtonCreated(wParam, lParam);
 }
 
 void CGitProgressDlg::OnBnClickedLogbutton()

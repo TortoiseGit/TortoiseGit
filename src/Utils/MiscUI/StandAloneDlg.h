@@ -162,7 +162,7 @@ protected:
 			AfxMessageBox(AFX_IDP_FAILED_TO_LAUNCH_HELP);
 		}
 	}
-private:
+
 	afx_msg LRESULT OnTaskbarButtonCreated(WPARAM /*wParam*/, LPARAM /*lParam*/)
 	{
 		SetUUIDOverlayIcon(m_hWnd);

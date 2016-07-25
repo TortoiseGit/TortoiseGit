@@ -25,7 +25,6 @@
 #include "HistoryCombo.h"
 #include "GitLogList.h"
 #include "MenuButton.h"
-#include "Win7.h"
 #include "ProjectProperties.h"
 
 // CRebaseDlg dialog

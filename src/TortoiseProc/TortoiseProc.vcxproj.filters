@@ -1492,9 +1492,6 @@
     <ClInclude Include="..\Utils\UnicodeUtils.h">
       <Filter>Utils\General</Filter>
     </ClInclude>
-    <ClInclude Include="..\Utils\Win7.h">
-      <Filter>Utils\General</Filter>
-    </ClInclude>
     <ClInclude Include="..\Utils\DebugOutput.h">
       <Filter>Utils\General</Filter>
     </ClInclude>

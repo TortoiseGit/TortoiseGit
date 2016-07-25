@@ -44,7 +44,6 @@
 CCustomMFCRibbonButton button1;
 
 // CMainFrame
-const UINT TaskBarButtonCreated = RegisterWindowMessage(L"TaskbarButtonCreated");
 #define IDT_RELOADCHECKTIMER 123
 
 IMPLEMENT_DYNCREATE(CMainFrame, CFrameWndEx)
