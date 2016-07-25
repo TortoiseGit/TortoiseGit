@@ -117,6 +117,7 @@
     <ClInclude Include="..\Utils\CmdLineParser.h" />
     <ClInclude Include="..\Utils\DebugOutput.h" />
     <ClInclude Include="..\Utils\LruCache.h" />
+    <ClInclude Include="..\Utils\MiscUI\CommonDialogFunctions.h" />
     <ClInclude Include="..\Utils\MiscUI\FilterEdit.h" />
     <ClInclude Include="..\Utils\MiscUI\HintCtrl.h" />
     <ClInclude Include="..\Utils\MiscUI\HistoryCombo.h" />

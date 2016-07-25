@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2016 - TortoiseGit
 // Copyright (C) 2007-2010, 2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -19,12 +20,13 @@
 #pragma once
 #include "MessageBox.h"
 #include "Tooltip.h"
+#include "CommonDialogFunctions.h"
 
 /**
  * \ingroup TortoiseProc
  * Base class for all the settings property pages
  */
-class ISettingsPropPage : public CPropertyPage
+class ISettingsPropPage : public CPropertyPage, protected CommonDialogFunctions<CPropertyPage>
 {
 	DECLARE_DYNAMIC(ISettingsPropPage)
 public:
@@ -75,53 +77,6 @@ protected:
 
 	SettingsRestart m_restart;
 	CToolTips		m_tooltips;
-
-	/**
-	* Adjusts the size of a checkbox or radio button control.
-	* Since we always make the size of those bigger than 'necessary'
-	* for making sure that translated strings can fit in those too,
-	* this method can reduce the size of those controls again to only
-	* fit the text.
-	*/
-	void AdjustControlSize(UINT nID)
-	{
-		CWnd* pwndDlgItem = GetDlgItem(nID);
-		if (!pwndDlgItem)
-			return;
-		// adjust the size of the control to fit its content
-		CString sControlText;
-		pwndDlgItem->GetWindowText(sControlText);
-		// next step: find the rectangle the control text needs to
-		// be displayed
-
-		CDC* pDC = pwndDlgItem->GetWindowDC();
-		RECT controlrect;
-		RECT controlrectorig;
-		pwndDlgItem->GetWindowRect(&controlrect);
-		::MapWindowPoints(nullptr, GetSafeHwnd(), (LPPOINT)&controlrect, 2);
-		controlrectorig = controlrect;
-		if (pDC)
-		{
-			CFont* font = pwndDlgItem->GetFont();
-			CFont* pOldFont = pDC->SelectObject(font);
-			if (pDC->DrawText(sControlText, -1, &controlrect, DT_WORDBREAK | DT_EDITCONTROL | DT_EXPANDTABS | DT_LEFT | DT_CALCRECT))
-			{
-				// now we have the rectangle the control really needs
-				if ((controlrectorig.right - controlrectorig.left) > (controlrect.right - controlrect.left))
-				{
-					// we're dealing with radio buttons and check boxes,
-					// which means we have to add a little space for the checkbox
-					// the value of 3 pixels added here is necessary in case certain visual styles have
-					// been disabled. Without this, the width is calculated too short.
-					const int checkWidth = GetSystemMetrics(SM_CXMENUCHECK) + 2 * GetSystemMetrics(SM_CXEDGE) + 3;
-					controlrectorig.right = controlrectorig.left + (controlrect.right - controlrect.left) + checkWidth;
-					pwndDlgItem->MoveWindow(&controlrectorig);
-				}
-			}
-			pDC->SelectObject(pOldFont);
-			ReleaseDC(pDC);
-		}
-	}
 
 	/**
 	 * Utility method:

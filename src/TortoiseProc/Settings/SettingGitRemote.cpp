@@ -127,9 +127,7 @@ void CSettingGitRemote::OnTimer(UINT_PTR nIDEvent)
 	if (nIDEvent == TIMER_PREFILL)
 	{
 		if (m_strRemote.IsEmpty() && m_ctrlRemoteList.GetCount() == 0)
-		{
-			ShowEditBalloon(m_hWnd, IDC_EDIT_URL, IDS_B_T_PREFILL_ORIGIN, IDS_HINT, TTI_INFO);
-		}
+			ShowEditBalloon(IDC_EDIT_URL, IDS_B_T_PREFILL_ORIGIN, IDS_HINT, TTI_INFO);
 	
 		KillTimer(TIMER_PREFILL);
 	}
@@ -302,7 +300,7 @@ void CSettingGitRemote::OnEnChangeEditRemote()
 	this->UpdateData();
 
 	if (IsRemoteCollideWithRefspec(m_strRemote))
-		ShowEditBalloon(m_hWnd, IDC_EDIT_REMOTE, IDS_B_T_REMOTE_NAME_COLLIDE, IDS_HINT, TTI_WARNING);
+		ShowEditBalloon(IDC_EDIT_REMOTE, IDS_B_T_REMOTE_NAME_COLLIDE, IDS_HINT, TTI_WARNING);
 	if( (!this->m_strRemote.IsEmpty())&&(!this->m_strUrl.IsEmpty()) )
 		this->SetModified();
 }

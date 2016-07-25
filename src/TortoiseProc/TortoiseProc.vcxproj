@@ -343,6 +343,7 @@
     <ClInclude Include="..\Utils\MailMsg.h" />
     <ClInclude Include="..\Utils\MiscUI\BrowseFolder.h" />
     <ClInclude Include="..\Utils\MiscUI\BufferDC.h" />
+    <ClInclude Include="..\Utils\MiscUI\CommonDialogFunctions.h" />
     <ClInclude Include="..\Utils\MiscUI\ControlsBridge.h" />
     <ClInclude Include="..\Utils\MiscUI\DIB.h" />
     <ClInclude Include="..\Utils\MiscUI\FileDropEdit.h" />

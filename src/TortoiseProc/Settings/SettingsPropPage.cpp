@@ -1,6 +1,8 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2016 - TortoiseGit
 // Copyright (C) 2007 - TortoiseSVN
+
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
 // as published by the Free Software Foundation; either version 2
@@ -21,30 +23,35 @@
 IMPLEMENT_DYNAMIC(ISettingsPropPage, CPropertyPage)
 
 ISettingsPropPage::ISettingsPropPage() : CPropertyPage()
+	, CommonDialogFunctions(this)
 	, m_restart(Restart_None)
 {
 }
 
 ISettingsPropPage::ISettingsPropPage(LPCTSTR lpszTemplateName, UINT nIDCaption, UINT nIDHeaderTitle, UINT nIDHeaderSubTitle /* = 0 */, DWORD dwSize /* = sizeof */)
 : CPropertyPage(lpszTemplateName, nIDCaption, nIDHeaderTitle, nIDHeaderSubTitle, dwSize)
+, CommonDialogFunctions(this)
 , m_restart(Restart_None)
 {
 }
 
 ISettingsPropPage::ISettingsPropPage(UINT nIDTemplate, UINT nIDCaption, UINT nIDHeaderTitle, UINT nIDHeaderSubTitle /* = 0 */, DWORD dwSize /* = sizeof */)
 : CPropertyPage(nIDTemplate, nIDCaption, nIDHeaderTitle, nIDHeaderSubTitle, dwSize)
+, CommonDialogFunctions(this)
 , m_restart(Restart_None)
 {
 }
 
 ISettingsPropPage::ISettingsPropPage(LPCTSTR lpszTemplateName, UINT nIDCaption /* = 0 */, DWORD dwSize /* = sizeof */)
 : CPropertyPage(lpszTemplateName, nIDCaption, dwSize)
+, CommonDialogFunctions(this)
 , m_restart(Restart_None)
 {
 }
 
 ISettingsPropPage::ISettingsPropPage(UINT nIDTemplate, UINT nIDCaption /* = 0 */, DWORD dwSize /* = sizeof */)
 : CPropertyPage(nIDTemplate, nIDCaption, dwSize)
+, CommonDialogFunctions(this)
 , m_restart(Restart_None)
 {
 }
