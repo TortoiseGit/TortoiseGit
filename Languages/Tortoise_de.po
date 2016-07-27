@@ -200,7 +200,7 @@ msgstr "%I64d Bytes übertragen"
 #. Resource IDs: (IDS_SVN_PROGRESS_TOTALTRANSFERRED)
 #, c-format
 msgid "%I64d KiB transferred"
-msgstr "%I64d kiB übertragen"
+msgstr "%I64d KiB übertragen"
 
 #. Resource IDs: (IDS_PROC_SYNC_COMMITSAHEAD)
 #, c-format
@@ -225,7 +225,7 @@ msgstr "%d Dateien zurückgesetzt zu %s."
 #. Resource IDs: (IDS_COMMITDLG_STATISTICSFORMAT)
 #, c-format
 msgid "%d files selected, %d files total"
-msgstr "%d Dateien gewählt, %d Dateien insgesamt"
+msgstr "%d Dateien ausgewählt, %d Dateien insgesamt"
 
 #. Resource IDs: (IDS_STATGRAPH_AUTHORSLIDER_TT)
 #, c-format
@@ -302,7 +302,7 @@ msgstr "%s\n%s"
 msgid ""
 "%s\n"
 "Could not be cleanly patched."
-msgstr "%s\nKönnte nicht gepatchet werden."
+msgstr "%s\nKönnte nicht gepatcht werden."
 
 #. Resource IDs: (IDS_PROC_REMOVEFORCE)
 #, c-format
