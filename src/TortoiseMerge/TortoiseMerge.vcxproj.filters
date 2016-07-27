@@ -566,6 +566,9 @@
     <ClInclude Include="..\Utils\CreateProcessHelper.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\CommonDialogFunctions.h">
+      <Filter>Utils\MiscUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resources\download.avi">

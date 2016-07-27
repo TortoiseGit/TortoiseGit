@@ -33,7 +33,6 @@
 #include "DirFileEnum.h"
 #include "UnicodeUtils.h"
 #include "UpdateCrypto.h"
-#include "Win7.h"
 #include <MsiDefs.h>
 #include <MsiQuery.h>
 
@@ -81,7 +80,7 @@ BEGIN_MESSAGE_MAP(CCheckForUpdatesDlg, CResizableStandAloneDialog)
 	ON_MESSAGE(WM_USER_DISPLAYSTATUS, OnDisplayStatus)
 	ON_MESSAGE(WM_USER_ENDDOWNLOAD, OnEndDownload)
 	ON_MESSAGE(WM_USER_FILLCHANGELOG, OnFillChangelog)
-	ON_REGISTERED_MESSAGE(WM_TASKBARBTNCREATED, OnTaskbarBtnCreated)
+	ON_REGISTERED_MESSAGE(TaskBarButtonCreated, OnTaskbarBtnCreated)
 	ON_BN_CLICKED(IDC_DONOTASKAGAIN, &CCheckForUpdatesDlg::OnBnClickedDonotaskagain)
 END_MESSAGE_MAP()
 

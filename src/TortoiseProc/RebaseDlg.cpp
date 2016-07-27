@@ -99,7 +99,7 @@ BEGIN_MESSAGE_MAP(CRebaseDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_REBASE_POST_BUTTON, &CRebaseDlg::OnBnClickedRebasePostButton)
 	ON_BN_CLICKED(IDC_BUTTON_UP2, &CRebaseDlg::OnBnClickedButtonUp2)
 	ON_BN_CLICKED(IDC_BUTTON_DOWN2, &CRebaseDlg::OnBnClickedButtonDown2)
-	ON_REGISTERED_MESSAGE(WM_TASKBARBTNCREATED, OnTaskbarBtnCreated)
+	ON_REGISTERED_MESSAGE(TaskBarButtonCreated, OnTaskbarBtnCreated)
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_COMMIT_LIST, OnLvnItemchangedLoglist)
 	ON_REGISTERED_MESSAGE(CGitLogListBase::m_RebaseActionMessage, OnRebaseActionMessage)
 	ON_WM_CTLCOLOR()
@@ -164,7 +164,7 @@ BOOL CRebaseDlg::OnInitDialog()
 		ChangeWindowMessageFilterExDFN *pfnChangeWindowMessageFilterEx = (ChangeWindowMessageFilterExDFN*)GetProcAddress(hUser, "ChangeWindowMessageFilterEx");
 		if (pfnChangeWindowMessageFilterEx)
 		{
-			pfnChangeWindowMessageFilterEx(m_hWnd, WM_TASKBARBTNCREATED, MSGFLT_ALLOW, &cfs);
+			pfnChangeWindowMessageFilterEx(m_hWnd, TaskBarButtonCreated, MSGFLT_ALLOW, &cfs);
 		}
 	}
 	m_pTaskbarList.Release();
@@ -2519,12 +2519,11 @@ void CRebaseDlg::OnBnClickedButtonDown2()
 	}
 }
 
-LRESULT CRebaseDlg::OnTaskbarBtnCreated(WPARAM /*wParam*/, LPARAM /*lParam*/)
+LRESULT CRebaseDlg::OnTaskbarBtnCreated(WPARAM wParam, LPARAM lParam)
 {
 	m_pTaskbarList.Release();
 	m_pTaskbarList.CoCreateInstance(CLSID_TaskbarList);
-	SetUUIDOverlayIcon(m_hWnd);
-	return 0;
+	return __super::OnTaskbarButtonCreated(wParam, lParam);
 }
 
 void CRebaseDlg::OnLvnItemchangedLoglist(NMHDR *pNMHDR, LRESULT *pResult)

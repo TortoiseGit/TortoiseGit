@@ -21,14 +21,6 @@
 #include "Resource.h"
 #include "StandAloneDlg.h"
 
-const UINT TaskBarButtonCreated = RegisterWindowMessage(L"TaskbarButtonCreated");
-
-BEGIN_TEMPLATE_MESSAGE_MAP(CStandAloneDialogTmpl, BaseType, BaseType)
-	ON_WM_PAINT()
-	ON_WM_QUERYDRAGICON()
-	ON_REGISTERED_MESSAGE(TaskBarButtonCreated, OnTaskbarButtonCreated)
-END_MESSAGE_MAP()
-
 IMPLEMENT_DYNAMIC(CStandAloneDialog, CStandAloneDialogTmpl<CDialog>)
 CStandAloneDialog::CStandAloneDialog(UINT nIDTemplate, CWnd* pParentWnd /*= nullptr*/)
 : CStandAloneDialogTmpl<CDialog>(nIDTemplate, pParentWnd)

@@ -25,11 +25,11 @@
 #include "GitAdminDir.h"
 #include "AppUtils.h"
 
-IMPLEMENT_DYNAMIC(CSettings, CTreePropSheet)
+IMPLEMENT_DYNAMIC(CSettings, CStandAloneDialogTmpl<CTreePropSheet>)
 CSettings::CSettings(UINT nIDCaption, CTGitPath * /*cmdPath*/, CWnd* pParentWnd, UINT iSelectPage)
-	:CTreePropSheet(nIDCaption, pParentWnd, iSelectPage)
+: CStandAloneDialogTmpl<CTreePropSheet>(nIDCaption, pParentWnd)
 {
-	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+	SetActivePage(iSelectPage);
 	AddPropPages();
 }
 
@@ -217,18 +217,14 @@ void CSettings::HandleRestart()
 	}
 }
 
-BEGIN_MESSAGE_MAP(CSettings, CTreePropSheet)
-	ON_WM_QUERYDRAGICON()
-	ON_WM_PAINT()
+BEGIN_MESSAGE_MAP(CSettings, CStandAloneDialogTmpl<CTreePropSheet>)
 END_MESSAGE_MAP()
 
 BOOL CSettings::OnInitDialog()
 {
-	BOOL bResult = CTreePropSheet::OnInitDialog();
+	BOOL bResult = __super::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
-	SetIcon(m_hIcon, TRUE);			// Set big icon
-	SetIcon(m_hIcon, FALSE);		// Set small icon
 	if (GitAdminDir::IsWorkingTreeOrBareRepo(g_Git.m_CurrentDir))
 	{
 		CString title;
@@ -290,34 +286,4 @@ BOOL CSettings::OnInitDialog()
 	else if (GitAdminDir::IsWorkingTreeOrBareRepo(g_Git.m_CurrentDir))
 		this->SetActivePage(this->m_pGitConfig);
 	return bResult;
-}
-
-void CSettings::OnPaint()
-{
-	if (IsIconic())
-	{
-		CPaintDC dc(this); // device context for painting
-
-		SendMessage(WM_ICONERASEBKGND, reinterpret_cast<WPARAM>(dc.GetSafeHdc()), 0);
-
-		// Center icon in client rectangle
-		int cxIcon = GetSystemMetrics(SM_CXICON);
-		int cyIcon = GetSystemMetrics(SM_CYICON);
-		CRect rect;
-		GetClientRect(&rect);
-		int x = (rect.Width() - cxIcon + 1) / 2;
-		int y = (rect.Height() - cyIcon + 1) / 2;
-
-		// Draw the icon
-		dc.DrawIcon(x, y, m_hIcon);
-	}
-	else
-	{
-		CTreePropSheet::OnPaint();
-	}
-}
-
-HCURSOR CSettings::OnQueryDragIcon()
-{
-	return static_cast<HCURSOR>(m_hIcon);
 }

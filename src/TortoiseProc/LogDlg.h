@@ -34,7 +34,6 @@
 #include "GitLogList.h"
 #include "GitStatusListCtrl.h"
 #include "HyperLink.h"
-#include "Win7.h"
 #include "GravatarPictureBox.h"
 #include "PatchViewDlg.h"
 

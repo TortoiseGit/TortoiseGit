@@ -38,7 +38,6 @@ IMPLEMENT_DYNCREATE(CMainFrame, CFrameWndEx)
 const int  iMaxUserToolbars = 10;
 const UINT uiFirstUserToolBarId = AFX_IDW_CONTROLBAR_FIRST + 40;
 const UINT uiLastUserToolBarId = uiFirstUserToolBarId + iMaxUserToolbars - 1;
-const UINT TaskBarButtonCreated = RegisterWindowMessage(L"TaskbarButtonCreated");
 
 BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_WM_CREATE()

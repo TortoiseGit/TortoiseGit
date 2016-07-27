@@ -1492,9 +1492,6 @@
     <ClInclude Include="..\Utils\UnicodeUtils.h">
       <Filter>Utils\General</Filter>
     </ClInclude>
-    <ClInclude Include="..\Utils\Win7.h">
-      <Filter>Utils\General</Filter>
-    </ClInclude>
     <ClInclude Include="..\Utils\DebugOutput.h">
       <Filter>Utils\General</Filter>
     </ClInclude>
@@ -1707,6 +1704,9 @@
     </ClInclude>
     <ClInclude Include="ColumnManager.h">
       <Filter>Utility Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\CommonDialogFunctions.h">
+      <Filter>Utils\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
