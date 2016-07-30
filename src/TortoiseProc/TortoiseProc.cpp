@@ -609,6 +609,12 @@ void CTortoiseProcApp::CheckUpgrade()
 				CRegString(L"Software\\TortoiseGit\\TortoiseProc\\SendMail\\Password").removeValue();
 			}
 		}
+		for (const CString& setting : { L"SyncIn", L"SyncOut" })
+		{
+			CRegDWORD reg(L"Software\\TortoiseGit\\StatusColumns\\" + setting + L"loglistVersion", 0xff);
+			if ((DWORD)reg == 6)
+				reg.removeValue();
+		}
 	}
 
 	if (lVersion <= 0x02010500)
