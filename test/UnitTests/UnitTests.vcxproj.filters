@@ -143,6 +143,9 @@
     <ClInclude Include="..\..\src\TortoiseMerge\FileTextLines.h">
       <Filter>TortoiseGitMerge</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\Utils\WindowsCredentialsStore.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -296,6 +299,12 @@
       <Filter>TortoiseGitMerge</Filter>
     </ClCompile>
     <ClCompile Include="FileTextLinesTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Utils\WindowsCredentialsStore.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="WindowsCredentialsStoreTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009, 2013 - TortoiseGit
+// Copyright (C) 2009, 2013, 2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -56,8 +56,6 @@ private:
 	CRegDWORD		m_regPort;
 	CRegDWORD		m_regEncryption;
 	CRegDWORD		m_regAuthenticate;
-	CRegString		m_regUsername;
-	CRegString		m_regPassword;
 
 	DWORD m_dwDeliveryType;
 	DWORD m_dwSMTPEnrcyption;

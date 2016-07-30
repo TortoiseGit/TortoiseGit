@@ -22,6 +22,7 @@
 #include "HwSMTP.h"
 #include "MailMsg.h"
 #include "Git.h"
+#include "WindowsCredentialsStore.h"
 
 class CAppUtils;
 
@@ -117,7 +118,9 @@ int CSendMail::SendMail(const CString& FromName, const CString& FromMail, const 
 			CString recipients(To);
 			if (!CC.IsEmpty())
 				recipients += L";" + CC;
-			if (mail.SendEmail((CString)CRegString(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\Address"), _T("")), (CString)CRegString(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\Username"), _T("")), (CString)CRegString(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\Password"), _T("")), (BOOL)CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\AuthenticationRequired"), FALSE), sender, recipients, subject, body, nullptr, &attachments, CC, (DWORD)CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\Port"), 25), sender, To, (DWORD)CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\Encryption"), 0)) == TRUE)
+			CString username, password;
+			CWindowsCredentialsStore::GetCredential(L"TortoiseGit:SMTP-Credentials", username, password);
+			if (mail.SendEmail((CString)CRegString(L"Software\\TortoiseGit\\TortoiseProc\\SendMail\\Address", L""), username, password, (BOOL)CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\SendMail\\AuthenticationRequired", FALSE), sender, recipients, subject, body, nullptr, &attachments, CC, (DWORD)CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\SendMail\\Port", 25), sender, To, (DWORD)CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\SendMail\\Encryption", 0)) == TRUE)
 				return 0;
 			else
 			{

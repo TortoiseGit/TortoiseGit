@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009, 2013-2015 - TortoiseGit
+// Copyright (C) 2009, 2013-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -24,6 +24,7 @@
 #include "SettingSMTP.h"
 #include "SendMail.h"
 #include "MailMsg.h"
+#include "WindowsCredentialsStore.h"
 
 // CSettingSMTP dialog
 
@@ -36,16 +37,14 @@ CSettingSMTP::CSettingSMTP()
 	, m_regPort(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\Port"), 25)
 	, m_regEncryption(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\Encryption"), 0)
 	, m_regAuthenticate(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\AuthenticationRequired"), FALSE)
-	, m_regUsername(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\Username"), _T(""))
-	, m_regPassword(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\Password"), _T(""))
 {
 	m_dwDeliveryType = m_regDeliveryType;
 	m_Server = m_regServer;
 	m_Port = m_regPort;
 	m_dwSMTPEnrcyption = m_regEncryption;
 	m_bAuth = m_regAuthenticate;
-	m_User = m_regUsername;
-	m_Password = m_regPassword;
+
+	CWindowsCredentialsStore::GetCredential(L"TortoiseGit:SMTP-Credentials", m_User, m_Password);
 }
 
 CSettingSMTP::~CSettingSMTP()
@@ -156,8 +155,10 @@ BOOL CSettingSMTP::OnApply()
 	m_regPort = m_Port;
 	m_regAuthenticate = m_bAuth;
 	m_regEncryption = m_dwSMTPEnrcyption;
-	m_regUsername = m_User;
-	m_regPassword = m_Password;
+	if (m_User.IsEmpty() && m_Password.IsEmpty())
+		CWindowsCredentialsStore::DeleteCredential(L"TortoiseGit:SMTP-Credentials");
+	else
+		CWindowsCredentialsStore::SaveCredential(L"TortoiseGit:SMTP-Credentials", m_User, m_Password);
 
 	SetModified(FALSE);
 

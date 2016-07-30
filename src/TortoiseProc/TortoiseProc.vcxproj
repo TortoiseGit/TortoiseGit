@@ -114,6 +114,7 @@
     <ClCompile Include="..\Utils\TreePropSheet\PropPageFrameDefault.cpp" />
     <ClCompile Include="..\Utils\TreePropSheet\TreePropSheet.cpp" />
     <ClCompile Include="..\Utils\UnicodeUtils.cpp" />
+    <ClCompile Include="..\Utils\WindowsCredentialsStore.cpp" />
     <ClCompile Include="AddRemoteDlg.cpp" />
     <ClCompile Include="..\TGitCache\CacheInterface.cpp" />
     <ClCompile Include="AutoTextTestDlg.cpp" />
@@ -382,6 +383,7 @@
     <ClInclude Include="..\Utils\TreePropSheet\PropPageFrameDefault.h" />
     <ClInclude Include="..\Utils\TreePropSheet\TreePropSheet.h" />
     <ClInclude Include="..\Utils\UnicodeUtils.h" />
+    <ClInclude Include="..\Utils\WindowsCredentialsStore.h" />
     <ClInclude Include="AddRemoteDlg.h" />
     <ClInclude Include="AutoTextTestDlg.h" />
     <ClInclude Include="BstrSafeVector.h" />

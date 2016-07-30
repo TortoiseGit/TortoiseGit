@@ -45,6 +45,7 @@
 #include <math.h>
 #include <random>
 #include "SendMail.h"
+#include "WindowsCredentialsStore.h"
 
 #define STRUCT_IOVEC_DEFINED
 
@@ -596,6 +597,20 @@ void CTortoiseProcApp::CheckUpgrade()
 	}
 
 	// version specific updates
+	if (lVersion <= 0x02020100)
+	{
+		CString username = CRegString(L"Software\\TortoiseGit\\TortoiseProc\\SendMail\\Username", L""); 
+		CString password = CRegString(L"Software\\TortoiseGit\\TortoiseProc\\SendMail\\Password", L"");
+		if (!username.IsEmpty() && !password.IsEmpty())
+		{
+			if (CWindowsCredentialsStore::SaveCredential(L"TortoiseGit:SMTP-Credentials", username, password) == 0)
+			{
+				CRegString(L"Software\\TortoiseGit\\TortoiseProc\\SendMail\\Username").removeValue();
+				CRegString(L"Software\\TortoiseGit\\TortoiseProc\\SendMail\\Password").removeValue();
+			}
+		}
+	}
+
 	if (lVersion <= 0x02010500)
 	{
 		// We updated GITSLC_COL_VERSION, but only significant changes were made for GitStatusList

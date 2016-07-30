@@ -98,6 +98,7 @@
     <ClInclude Include="..\..\src\Utils\SysInfo.h" />
     <ClInclude Include="..\..\src\Utils\UnicodeUtils.h" />
     <ClInclude Include="..\..\src\Utils\UniqueQueue.h" />
+    <ClInclude Include="..\..\src\Utils\WindowsCredentialsStore.h" />
     <ClInclude Include="..\..\src\version.h" />
     <ClInclude Include="AutoTempDir.h" />
     <ClInclude Include="RepositoryFixtures.h" />
@@ -131,6 +132,7 @@
     <ClCompile Include="..\..\src\Utils\StringUtils.cpp" />
     <ClCompile Include="..\..\src\Utils\SysInfo.cpp" />
     <ClCompile Include="..\..\src\Utils\UnicodeUtils.cpp" />
+    <ClCompile Include="..\..\src\Utils\WindowsCredentialsStore.cpp" />
     <ClCompile Include="AutoTempDir.cpp" />
     <ClCompile Include="CmdLineParserTest.cpp" />
     <ClCompile Include="FileTextLinesTest.cpp" />
@@ -157,6 +159,7 @@
     <ClCompile Include="UniqueQueueTests.cpp" />
     <ClCompile Include="UnitTests.cpp" />
     <ClCompile Include="UpdateCryptoTest.cpp" />
+    <ClCompile Include="WindowsCredentialsStoreTests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\ext\build\gtest.vcxproj">

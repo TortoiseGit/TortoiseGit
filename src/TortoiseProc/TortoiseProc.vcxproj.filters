@@ -914,6 +914,9 @@
     <ClCompile Include="ColumnManager.cpp">
       <Filter>Utility Dialogs</Filter>
     </ClCompile>
+    <ClCompile Include="..\Utils\WindowsCredentialsStore.cpp">
+      <Filter>Utils\General</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddRemoteDlg.h">
@@ -1707,6 +1710,9 @@
     </ClInclude>
     <ClInclude Include="..\Utils\MiscUI\CommonDialogFunctions.h">
       <Filter>Utils\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\WindowsCredentialsStore.h">
+      <Filter>Utils\General</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
