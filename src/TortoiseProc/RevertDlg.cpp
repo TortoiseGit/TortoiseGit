@@ -114,6 +114,8 @@ UINT CRevertDlg::RevertThread()
 
 	m_RevertList.Clear();
 
+	g_Git.RefreshGitIndex();
+
 	if (!m_RevertList.GetStatus(&m_pathList))
 	{
 		m_RevertList.SetEmptyString(m_RevertList.GetLastErrorMessage());

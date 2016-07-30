@@ -2230,6 +2230,46 @@ TEST_P(CBasicGitWithEmptyRepositoryFixture, GetWorkingTreeChanges)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_ADDED, list[1].m_Action);
 }
 
+TEST_P(CBasicGitWithTestRepoFixture, GetWorkingTreeChanges_RefreshGitIndex)
+{
+	if (GetParam() != 0)
+		return;
+
+	// adding ansi2.txt (as a copy of ansi.txt) produces a warning
+	m_Git.SetConfigValue(_T("core.autocrlf"), _T("false"));
+
+	CString output;
+	EXPECT_EQ(0, m_Git.Run(_T("git.exe reset --hard master"), &output, CP_UTF8));
+	EXPECT_FALSE(output.IsEmpty());
+
+	CTGitPathList list;
+	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, false, nullptr));
+	EXPECT_TRUE(list.IsEmpty());
+
+	// touch file
+	HANDLE handle = CreateFile(m_Git.m_CurrentDir + L"\\ascii.txt", GENERIC_READ | GENERIC_WRITE, 0, nullptr, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
+	ASSERT_NE(handle, INVALID_HANDLE_VALUE);
+	FILETIME ft;
+	EXPECT_EQ(TRUE, GetFileTime(handle, nullptr, nullptr, &ft));
+	ft.dwLowDateTime -= 1000 * 60 * 1000;
+	EXPECT_NE(0, SetFileTime(handle, nullptr, nullptr, &ft));
+	CloseHandle(handle);
+
+	// START: this is the undesired behavior
+	// this test is just there so we notice when this change somehow
+	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, false, nullptr));
+	if (m_Git.ms_bCygwinGit || m_Git.ms_bMsys2Git)
+		EXPECT_EQ(0, list.GetCount());
+	else
+		EXPECT_EQ(1, list.GetCount());
+	list.Clear();
+	// END: this is the undesired behavior
+
+	m_Git.RefreshGitIndex(); // without this GetWorkingTreeChanges might report this file as modified (if no msys or cygwin hack is on)
+	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, false, nullptr));
+	EXPECT_EQ(0, list.GetCount());
+}
+
 TEST_P(CBasicGitWithTestRepoFixture, GetBisectTerms)
 {
 	if (m_Git.ms_bCygwinGit)

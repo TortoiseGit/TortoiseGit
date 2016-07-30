@@ -12,6 +12,7 @@ Released: unreleased
  * Fixed issue #2797: RebaseDlg: Make branch selectors adjust with resized dialog
  * Autocompletion of filenames with umlauts in the commit dialog did not work
  * Fixed issue #2799: Column sizes in "Browse references" dialog are not remembered
+ * Try harder to not report unchanged files as changed (if modification time changed)
 
 = Release 2.2.0 =
 Released: 2016-07-02

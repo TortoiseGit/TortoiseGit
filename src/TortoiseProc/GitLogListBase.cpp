@@ -197,6 +197,7 @@ int CGitLogListBase::AsyncDiffThread()
 				files.Clear();
 				pRev->m_ParentHash.clear();
 				pRev->m_ParentHash.push_back(m_HeadHash);
+				g_Git.RefreshGitIndex();
 				g_Git.GetWorkingTreeChanges(files);
 				int& action = pRev->GetAction(this);
 				action = 0;
