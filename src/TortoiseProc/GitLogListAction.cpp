@@ -341,7 +341,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				{
 					CString path1 = m_Path.GetGitPathString();
 					// start with 1 (0 = working copy changes)
-					for (int i = 1; i < FirstSelect; ++i)
+					for (int i = m_bShowWC ? 1 : 0; i < FirstSelect; ++i)
 					{
 						GitRevLoglist* first = m_arShownList.SafeGetAt(i);
 						CTGitPathList list = first->GetFiles(nullptr);
@@ -375,7 +375,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				{
 					CString path1 = m_Path.GetGitPathString();
 					// start with 1 (0 = working copy changes)
-					for (int i = 1; i < FirstSelect; ++i)
+					for (int i = m_bShowWC ? 1 : 0; i < FirstSelect; ++i)
 					{
 						GitRevLoglist* first = m_arShownList.SafeGetAt(i);
 						CTGitPathList list = first->GetFiles(nullptr);
@@ -422,7 +422,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 					{
 						CString path1 = m_Path.GetGitPathString();
 						// start with 1 (0 = working copy changes)
-						for (int i = 1; i < indexNext; ++i)
+						for (int i = m_bShowWC ? 1 : 0; i < indexNext; ++i)
 						{
 							GitRevLoglist* first = m_arShownList.SafeGetAt(i);
 							CTGitPathList list = first->GetFiles(nullptr);
