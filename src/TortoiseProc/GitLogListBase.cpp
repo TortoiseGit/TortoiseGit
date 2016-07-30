@@ -1231,14 +1231,12 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 							::FillRect(pLVCD->nmcd.hdc, rect, brush);
 							::DeleteObject(brush);
 						}
-						if (hTheme)
+						if (hTheme && txtState != LISS_NORMAL)
 						{
 							CRect rt;
 							// get rect of whole line
 							GetItemRect(index, rt, LVIR_BOUNDS);
 							CRect rect2 = rect;
-							if (txtState == LISS_NORMAL) // avoid drawing of grey borders
-								rect2.DeflateRect(1, 1, 1, 1);
 
 							// calculate background for rect of whole line, but limit redrawing to SubItem rect
 							DrawThemeBackground(hTheme, pLVCD->nmcd.hdc, LVP_LISTITEM, txtState, rt, rect2);
