@@ -67,6 +67,8 @@ protected:
 	{
 		if (pWnd == GetHeaderCtrl() && m_bAllowHiding)
 			OnContextMenuHeader(pWnd, point);
+		else if (pWnd == this && m_ContextMenuHandler)
+			m_ContextMenuHandler(point);
 	}
 
 	// prevent users from extending our hidden (size 0) columns
@@ -82,6 +84,9 @@ protected:
 			Default();
 	}
 
+	typedef std::function<void(CPoint point)> ContextMenuHandler;
+	ContextMenuHandler m_ContextMenuHandler;
+
 public:
 	void Init()
 	{
@@ -91,6 +96,12 @@ public:
 			exStyle |= LVS_EX_FULLROWSELECT;
 		SetExtendedStyle(GetExtendedStyle() | exStyle);
 	}
+
+	void SetListContextMenuHandler(ContextMenuHandler pContextMenuHandler)
+	{
+		m_ContextMenuHandler = pContextMenuHandler;
+	}
+
 	void AdjustColumnWidths()
 	{
 		int maxcol = ((CHeaderCtrl*)(GetDlgItem(0)))->GetItemCount() - 1;

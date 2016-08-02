@@ -54,6 +54,7 @@
 #include <fstream>
 #include <set>
 #include <algorithm>
+#include <functional>
 
 #define USE_GDI_GRADIENT
 #define HISTORYCOMBO_WITH_SYSIMAGELIST

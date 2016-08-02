@@ -291,6 +291,7 @@ BOOL CBrowseRefsDlg::OnInitDialog()
 		(1 << eCol_LastAuthor) | (1 << eCol_Hash) | (1 << eCol_Description);
 	m_ListRefLeafs.m_bAllowHiding = false;
 	m_ListRefLeafs.Init();
+	m_ListRefLeafs.SetListContextMenuHandler([&](CPoint point) {OnContextMenu_ListRefLeafs(point); });
 	m_ListRefLeafs.m_ColumnManager.SetNames(columnNames, _countof(columnNames));
 	m_ListRefLeafs.m_ColumnManager.ReadSettings(dwDefaultColumns, 0, _T("BrowseRefs"), _countof(columnNames), columnWidths);
 	m_bPickedRefSet = false;
@@ -806,14 +807,8 @@ CString CBrowseRefsDlg::GetFullRefName(CString partialRefName)
 
 void CBrowseRefsDlg::OnContextMenu(CWnd* pWndFrom, CPoint point)
 {
-	if(pWndFrom==&m_RefTreeCtrl)       OnContextMenu_RefTreeCtrl(point);
-	else if (pWndFrom == &m_ListRefLeafs)
-	{
-		CRect headerPosition;
-		m_ListRefLeafs.GetHeaderCtrl()->GetWindowRect(headerPosition);
-		if (!headerPosition.PtInRect(point))
-			OnContextMenu_ListRefLeafs(point);
-	}
+	if (pWndFrom == &m_RefTreeCtrl)
+		OnContextMenu_RefTreeCtrl(point);
 }
 
 void CBrowseRefsDlg::OnContextMenu_RefTreeCtrl(CPoint point)
@@ -1218,7 +1213,7 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 		break;
 	case eCmd_UnifiedDiff:
 		{
-			CAppUtils::StartShowUnifiedDiff(nullptr, CTGitPath(), selectedLeafs[0]->m_csRefHash, CTGitPath(), selectedLeafs[1]->m_csRefHash);
+			CAppUtils::StartShowUnifiedDiff(nullptr, CTGitPath(), selectedLeafs[0]->m_csRefHash, CTGitPath(), selectedLeafs[1]->m_csRefHash, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 		}
 		break;
 	case eCmd_EditBranchDescription:
