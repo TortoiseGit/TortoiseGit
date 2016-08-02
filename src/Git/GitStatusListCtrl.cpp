@@ -2792,7 +2792,7 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 							CMessageBox::Show(GetSafeHwnd(), IDS_STATUSLIST_FAILEDGETBASEFILE, IDS_APPNAME, MB_OK | MB_ICONERROR);
 					}
 				}
-				CAppUtils::StartExtMerge(base, theirs, mine, merge,_T("BASE"),_T("REMOTE"),_T("LOCAL"));
+				CAppUtils::StartExtMerge(!!(GetAsyncKeyState(VK_SHIFT) & 0x8000), base, theirs, mine, merge, L"BASE", L"REMOTE", L"LOCAL");
 			}
 			else
 			{

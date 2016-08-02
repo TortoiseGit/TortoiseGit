@@ -1450,6 +1450,8 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				break;
 			case ShellMenuConflictEditor:
 				AddPathCommand(gitCmd, L"conflicteditor", true);
+				if (GetAsyncKeyState(VK_SHIFT) & 0x8000)
+					gitCmd += L" /alternative";
 				break;
 			case ShellMenuGitSVNRebase:
 				AddPathCommand(gitCmd, L"svnrebase", false);

@@ -248,7 +248,7 @@ bool CAppUtils::StashPop(int showChanges /* = 1 */)
 	return false;
 }
 
-BOOL CAppUtils::StartExtMerge(
+BOOL CAppUtils::StartExtMerge(bool bAlternative,
 	const CTGitPath& basefile, const CTGitPath& theirfile, const CTGitPath& yourfile, const CTGitPath& mergedfile,
 	const CString& basename, const CString& theirname, const CString& yourname, const CString& mergedname, bool bReadOnly,
 	HWND resolveMsgHwnd, bool bDeleteBaseTheirsMineOnClose)
@@ -269,6 +269,14 @@ BOOL CAppUtils::StartExtMerge(
 	CRegString mergetool(_T("Software\\TortoiseGit\\MergeTools\\.") + mergedfile.GetFilename().MakeLower());
 	if (!CString(mergetool).IsEmpty())
 		com = mergetool;
+
+	if (bAlternative && !com.IsEmpty())
+	{
+		if (com.Left(1).Compare(L"#") == 0)
+			com.Delete(0);
+		else
+			com.Empty();
+	}
 
 	if (com.IsEmpty()||(com.Left(1).Compare(_T("#"))==0))
 	{
@@ -1650,7 +1658,7 @@ bool ParseHashesFromLsFile(const BYTE_VECTOR& out, CString& hash1, CString& hash
 	return false;
 }
 
-bool CAppUtils::ConflictEdit(const CTGitPath& path, bool /*bAlternativeTool = false*/, bool revertTheirMy /*= false*/, HWND resolveMsgHwnd /*= nullptr*/)
+bool CAppUtils::ConflictEdit(const CTGitPath& path, bool bAlternativeTool /*= false*/, bool revertTheirMy /*= false*/, HWND resolveMsgHwnd /*= nullptr*/)
 {
 	bool bRet = false;
 
@@ -1821,9 +1829,9 @@ bool CAppUtils::ConflictEdit(const CTGitPath& path, bool /*bAlternativeTool = fa
 	{
 		merge.SetFromWin(g_Git.CombinePath(merge));
 		if( revertTheirMy )
-			bRet = !!CAppUtils::StartExtMerge(base, mine, theirs, merge, _T("BASE"), _T("REMOTE"), _T("LOCAL"), CString(), false, resolveMsgHwnd, true);
+			bRet = !!CAppUtils::StartExtMerge(bAlternativeTool, base, mine, theirs, merge, L"BASE", L"REMOTE", L"LOCAL", CString(), false, resolveMsgHwnd, true);
 		else
-			bRet = !!CAppUtils::StartExtMerge(base, theirs, mine, merge, _T("BASE"), _T("REMOTE"), _T("LOCAL"), CString(), false, resolveMsgHwnd, true);
+			bRet = !!CAppUtils::StartExtMerge(bAlternativeTool, base, theirs, mine, merge, L"BASE", L"REMOTE", L"LOCAL", CString(), false, resolveMsgHwnd, true);
 	}
 	else
 	{

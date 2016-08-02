@@ -59,7 +59,7 @@ public:
 	 * Launches the external merge program if there is one.
 	 * \return TRUE if the program could be started
 	 */
-	static BOOL StartExtMerge(
+	static BOOL StartExtMerge(bool bAlternativeTool,
 		const CTGitPath& basefile, const CTGitPath& theirfile, const CTGitPath& yourfile, const CTGitPath& mergedfile,
 		const CString& basename = CString(), const CString& theirname = CString(), const CString& yourname = CString(),
 		const CString& mergedname = CString(), bool bReadOnly = false, HWND resolveMsgHwnd = nullptr, bool bDeleteBaseTheirsMineOnClose = false);
