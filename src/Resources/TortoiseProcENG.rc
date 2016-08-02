@@ -3614,6 +3614,7 @@ BEGIN
     IDS_REPOBROWSE_SAVEAS   "Save &as..."
     IDS_REPOBROWSE_SHOWLOG  "Show &log"
     IDS_REPOBROWSE_OPEN     "&Open"
+    IDS_REBASELOCKFILEFOUND "Found a lock file indicating that a TortoiseGit rebase process is running. This blocks this operation.\n\nIf you are not runnig a TortoiseGit rebase process right now, you can remove the stale lock file in order to continue."
 END
 
 STRINGTABLE
@@ -4746,6 +4747,7 @@ BEGIN
     IDS_NOTYET_SETTRACKEDBRANCH 
                             "For the current branch ""%s"" no tracked branch is configured.\nDo you want to set the selected branch ""%s"" as tracked branch?\nThis will automatically select it for push and pull in the future."
     IDS_PROC_DIFF_BASE      "Base"
+    IDS_REMOVESTALEBUTTON   "Remove stale lock file"
 END
 
 #endif    // English (U.S.) resources

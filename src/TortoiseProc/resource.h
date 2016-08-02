@@ -1265,6 +1265,7 @@
 #define IDS_NOTYET_SETTRACKEDBRANCH     1597
 #define IDS_PROC_DIFF_BASE              1598
 #define IDC_BUGTRAQ_URL                 1599
+#define IDS_REMOVESTALEBUTTON           1599
 #define IDS_REPOBROWSE_SAVEAS           1600
 #define IDC_BUGTRAQ_MESSAGE             1600
 #define IDS_REPOBROWSE_SHOWLOG          1601
@@ -1273,6 +1274,7 @@
 #define IDC_LANGCOMBO                   1602
 #define IDC_CLONE_GROUP_SVN             1603
 #define IDC_CHECK_PRUNE                 1603
+#define IDS_REBASELOCKFILEFOUND         1603
 #define IDC_CHECK_SVN                   1604
 #define IDC_CHECK_SVN_TRUNK             1605
 #define IDC_EDIT_SVN_TRUNK              1606

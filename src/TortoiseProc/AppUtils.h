@@ -237,6 +237,8 @@ public:
 
 	static int ResolveConflict(CTGitPath& path, resolve_with resolveWith);
 
+	static bool IsTGitRebaseActive();
+
 private:
 	static CString PickDiffTool(const CTGitPath& file1, const CTGitPath& file2);
 

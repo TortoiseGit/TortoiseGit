@@ -2347,6 +2347,9 @@ int CAppUtils::SaveCommitUnicodeFile(const CString& filename, CString &message)
 
 bool CAppUtils::Pull(bool showPush, bool showStashPop)
 {
+	if (IsTGitRebaseActive())
+		return false;
+
 	CPullFetchDlg dlg;
 	dlg.m_IsPull = TRUE;
 	if (dlg.DoModal() == IDOK)
@@ -3138,6 +3141,9 @@ BOOL CAppUtils::Merge(const CString* commit, bool showStashPop)
 	if (!CheckUserData())
 		return FALSE;
 
+	if (IsTGitRebaseActive())
+		return FALSE;
+
 	CMergeDlg dlg;
 	if(commit)
 		dlg.m_initialRefName = *commit;
@@ -3718,4 +3724,21 @@ bool CAppUtils::ShowOpenWithDialog(const CString& file, HWND hwnd /*= nullptr */
 	oi.pcszFile = file;
 	oi.oaifInFlags = OAIF_EXEC;
 	return SUCCEEDED(SHOpenWithDialog(hwnd, &oi));
+}
+
+bool CAppUtils::IsTGitRebaseActive()
+{
+	CString adminDir;
+	if (!GitAdminDir::GetAdminDirPath(g_Git.m_CurrentDir, adminDir))
+		return false;
+
+	if (!PathIsDirectory(adminDir + L"tgitrebase.active"))
+		return false;
+
+	if (CMessageBox::Show(nullptr, IDS_REBASELOCKFILEFOUND, IDS_APPNAME, 2, IDI_EXCLAMATION, IDS_REMOVESTALEBUTTON, IDS_ABORTBUTTON) == 2)
+		return true;
+
+	RemoveDirectory(adminDir + L"tgitrebase.active");
+
+	return false;
 }

@@ -4793,6 +4793,10 @@ msgstr ""
 msgid "Forward %d"
 msgstr ""
 
+#. Resource IDs: (IDS_REBASELOCKFILEFOUND)
+msgid "Found a lock file indicating that a TortoiseGit rebase process is running. This blocks this operation.\n\nIf you are not runnig a TortoiseGit rebase process right now, you can remove the stale lock file in order to continue."
+msgstr ""
+
 #. Resource IDs: (IDS_PROC_REBASE_EMPTYCOMMITMSG)
 msgid "Found an empty commit message. You have to enter one or rebase cannot proceed."
 msgstr ""
@@ -7722,6 +7726,10 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_CLEAN: Control id 1629)
 msgid "Remove ignored files (-fX)"
+msgstr ""
+
+#. Resource IDs: (IDS_REMOVESTALEBUTTON)
+msgid "Remove stale lock file"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_CLEAN: Control id 1626)

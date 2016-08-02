@@ -1119,6 +1119,8 @@ void CRebaseDlg::OnBnClickedContinue()
 	{
 		if (CheckRebaseCondition())
 			return;
+		if (CAppUtils::IsTGitRebaseActive())
+			return;
 	}
 
 	if( this->m_IsFastForward )
