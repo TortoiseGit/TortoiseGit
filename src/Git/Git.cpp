@@ -1203,7 +1203,13 @@ int CGit::RunLogFile(CString cmd, const CString &filename, CString *stdErr)
 	DWORD dwFlags = CREATE_UNICODE_ENVIRONMENT;
 
 	if (wcsncmp(cmd, L"git", 3) == 0)
-		cmd=CGit::ms_LastMsysGitDir+_T("\\")+cmd;
+	{
+		int firstSpace = cmd.Find(L' ');
+		if (firstSpace > 0)
+			cmd = L'"' + CGit::ms_LastMsysGitDir + L"\\" + cmd.Left(firstSpace) + L'"' + cmd.Mid(firstSpace);
+		else
+			cmd = L'"' + CGit::ms_LastMsysGitDir + L"\\" + cmd + L'"';
+	}
 
 	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": executing %s\n"), (LPCTSTR)cmd);
 	if (!CreateProcess(nullptr, (LPWSTR)cmd.GetString(), nullptr, nullptr, TRUE, dwFlags, pEnv, (LPWSTR)m_CurrentDir.GetString(), &si, &pi))
