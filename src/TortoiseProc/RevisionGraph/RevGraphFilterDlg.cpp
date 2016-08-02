@@ -76,25 +76,25 @@ BOOL CRevGraphFilterDlg::OnInitDialog()
 		m_ctrlFromRev.AddSearchString(list[i]);
 		m_ctrlToRev.AddSearchString(list[i]);
 
-		if(str.Find(_T("refs/")) == 0)
+		if (wcsncmp(str, L"refs/", 5) == 0)
 		{
 			m_ctrlFromRev.AddSearchString(list[i].Mid(5));
 			m_ctrlToRev.AddSearchString(list[i].Mid(5));
 		}
 
-		if(str.Find(_T("refs/heads/")) == 0)
+		if (wcsncmp(str, L"refs/heads/", 11) == 0)
 		{
 			m_ctrlFromRev.AddSearchString(list[i].Mid(11));
 			m_ctrlToRev.AddSearchString(list[i].Mid(11));
 		}
 
-		if(str.Find(_T("refs/remotes/")) == 0)
+		if (wcsncmp(str, L"refs/remotes/", 13) == 0)
 		{
 			m_ctrlFromRev.AddSearchString(list[i].Mid(13));
 			m_ctrlToRev.AddSearchString(list[i].Mid(13));
 		}
 
-		if(str.Find(_T("refs/tags/")) == 0)
+		if (wcsncmp(str, L"refs/tags/", 10) == 0)
 		{
 			m_ctrlFromRev.AddSearchString(list[i].Mid(10));
 			m_ctrlToRev.AddSearchString(list[i].Mid(10));

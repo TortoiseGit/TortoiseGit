@@ -155,9 +155,9 @@ bool CAppUtils::StashApply(CString ref, bool showChanges /* true */)
 {
 	CString cmd,out;
 	cmd = _T("git.exe stash apply ");
-	if (ref.Find(_T("refs/")) == 0)
+	if (wcsncmp(ref, L"refs/", 5) == 0)
 		ref = ref.Mid(5);
-	if (ref.Find(_T("stash{")) == 0)
+	if (wcsncmp(ref, L"stash{", 6) == 0)
 		ref = _T("stash@") + ref.Mid(5);
 	cmd += ref;
 
@@ -901,7 +901,7 @@ namespace {
 			return false;
 		for (const CString& prefix : { L"http://", L"https://", L"git://", L"ftp://", L"file://", L"mailto:" })
 		{
-			if (sText.Find(prefix) == 0 && sText.GetLength() != prefix.GetLength())
+			if (wcsncmp(sText, prefix, prefix.GetLength()) == 0 && sText.GetLength() != prefix.GetLength())
 				return true;
 		}
 		return false;
@@ -2169,20 +2169,11 @@ CString CAppUtils::GetClipboardLink(const CString &skipGitPrefix, int paramsCoun
 		if(sClipboardText[0] == _T('\"') && sClipboardText[sClipboardText.GetLength()-1] == _T('\"'))
 			sClipboardText=sClipboardText.Mid(1,sClipboardText.GetLength()-2);
 
-		if(sClipboardText.Find( _T("http://")) == 0)
-			return sClipboardText;
-
-		if(sClipboardText.Find( _T("https://")) == 0)
-			return sClipboardText;
-
-		if(sClipboardText.Find( _T("git://")) == 0)
-			return sClipboardText;
-
-		if(sClipboardText.Find( _T("ssh://")) == 0)
-			return sClipboardText;
-
-		if (sClipboardText.Find(_T("git@")) == 0)
-			return sClipboardText;
+		for (const CString& prefix : { L"http://", L"https://", L"git://", L"ssh://", L"git@" })
+		{
+			if (wcsncmp(sClipboardText, prefix, prefix.GetLength()) == 0 && sClipboardText.GetLength() != prefix.GetLength())
+				return sClipboardText;
+		}
 
 		if(sClipboardText.GetLength()>=2)
 			if( sClipboardText[1] == _T(':') )
@@ -2191,7 +2182,7 @@ CString CAppUtils::GetClipboardLink(const CString &skipGitPrefix, int paramsCoun
 					return sClipboardText;
 
 		// trim prefixes like "git clone "
-		if (!skipGitPrefix.IsEmpty() && sClipboardText.Find(skipGitPrefix) == 0)
+		if (!skipGitPrefix.IsEmpty() && wcsncmp(sClipboardText, skipGitPrefix, skipGitPrefix.GetLength()) == 0)
 		{
 			sClipboardText = sClipboardText.Mid(skipGitPrefix.GetLength()).Trim();
 			int spacePos = -1;

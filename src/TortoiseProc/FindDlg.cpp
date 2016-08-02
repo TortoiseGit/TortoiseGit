@@ -175,11 +175,11 @@ void CFindDlg::AddToList()
 	{
 		int nImage = -1;
 		CString ref = m_RefList[i];
-		if(ref.Find(_T("refs/tags")) == 0)
+		if (wcsncmp(ref, L"refs/tags", 9) == 0)
 			nImage = 0;
-		else if(ref.Find(_T("refs/remotes"))==0)
+		else if (wcsncmp(ref, L"refs/remotes", 12) ==0)
 			nImage = 2;
-		else if(ref.Find(_T("refs/heads"))== 0)
+		else if (wcsncmp(ref, L"refs/heads", 10) == 0)
 			nImage = 1;
 
 		if(ref.Find(filter)>=0)

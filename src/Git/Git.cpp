@@ -257,7 +257,7 @@ static bool IsPowerShell(CString cmd)
 
 	// found the word powershell, check that it is the command and not any parameter
 	int end = cmd.GetLength();
-	if (cmd.Find(_T('"')) == 0)
+	if (end > 0 && cmd[0] == L'"')
 	{
 		int secondDoubleQuote = cmd.Find(_T('"'), 1);
 		if (secondDoubleQuote > 0)
@@ -328,19 +328,20 @@ int CGit::RunAsync(CString cmd, PROCESS_INFORMATION *piOut, HANDLE *hReadOut, HA
 
 	memset(&this->m_CurrentGitPi,0,sizeof(PROCESS_INFORMATION));
 
-	if (ms_bMsys2Git && cmd.Find(_T("git")) == 0 && cmd.Find(L"git.exe config ") == -1)
+	bool startsWithGit = wcsncmp(cmd, L"git", 3) == 0;
+	if (ms_bMsys2Git && startsWithGit && wcsncmp(cmd, L"git.exe config ", 15) != 0)
 	{
 		cmd.Replace(_T("\\"), _T("\\\\\\\\"));
 		cmd.Replace(_T("\""), _T("\\\""));
 		cmd = _T('"') + CGit::ms_LastMsysGitDir + _T("\\bash.exe\" -c \"/usr/bin/") + cmd + _T('"');
 	}
-	else if (ms_bCygwinGit && cmd.Find(_T("git")) == 0 && cmd.Find(L"git.exe config ") == -1)
+	else if (ms_bCygwinGit && startsWithGit && wcsncmp(cmd, L"git.exe config ", 15) != 0)
 	{
 		cmd.Replace(_T('\\'), _T('/'));
 		cmd.Replace(_T("\""), _T("\\\""));
 		cmd = _T('"') + CGit::ms_LastMsysGitDir + _T("\\bash.exe\" -c \"/bin/") + cmd + _T('"');
 	}
-	else if (cmd.Find(_T("git")) == 0 || cmd.Find(_T("bash")) == 0)
+	else if (startsWithGit || wcsncmp(cmd, L"bash", 4) == 0)
 	{
 		int firstSpace = cmd.Find(_T(" "));
 		if (firstSpace > 0)
@@ -1201,7 +1202,7 @@ int CGit::RunLogFile(CString cmd, const CString &filename, CString *stdErr)
 	LPTSTR pEnv = m_Environment;
 	DWORD dwFlags = CREATE_UNICODE_ENVIRONMENT;
 
-	if(cmd.Find(_T("git")) == 0)
+	if (wcsncmp(cmd, L"git", 3) == 0)
 		cmd=CGit::ms_LastMsysGitDir+_T("\\")+cmd;
 
 	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": executing %s\n"), (LPCTSTR)cmd);
@@ -2804,13 +2805,13 @@ CString CGit::GetShortName(const CString& ref, REF_TYPE *out_type)
 		CString bisectBad;
 		g_Git.GetBisectTerms(&bisectGood, &bisectBad);
 		TCHAR c;
-		if (shortname.Find(bisectGood) == 0 && ((c = shortname.GetAt(bisectGood.GetLength())) == '-' || c == '\0'))
+		if (wcsncmp(shortname, bisectGood, bisectGood.GetLength()) == 0 && ((c = shortname.GetAt(bisectGood.GetLength())) == '-' || c == '\0'))
 		{
 			type = CGit::BISECT_GOOD;
 			shortname = bisectGood;
 		}
 
-		if (shortname.Find(bisectBad) == 0 && ((c = shortname.GetAt(bisectBad.GetLength())) == '-' || c == '\0'))
+		if (wcsncmp(shortname, bisectBad, bisectBad.GetLength()) == 0 && ((c = shortname.GetAt(bisectBad.GetLength())) == '-' || c == '\0'))
 		{
 			type = CGit::BISECT_BAD;
 			shortname = bisectBad;

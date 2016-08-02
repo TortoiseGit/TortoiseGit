@@ -561,7 +561,7 @@ void CGitPropertyPage::InitWorkfileView()
 		{
 			git_reference_lookup(head.GetPointer(), repository, "HEAD");
 			branch = CUnicodeUtils::GetUnicode(git_reference_symbolic_target(head));
-			if (branch.Find(_T("refs/heads/")) == 0)
+			if (wcsncmp(branch, L"refs/heads/", 11) == 0)
 				branch = branch.Mid(11); // 11 = len("refs/heads/")
 		}
 		else if (!git_repository_head(head.GetPointer(), repository))

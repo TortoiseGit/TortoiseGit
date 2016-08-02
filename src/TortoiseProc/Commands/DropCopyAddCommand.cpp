@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011,2013-2015 - TortoiseGit
+// Copyright (C) 2011, 2013-2016 - TortoiseGit
 // Copyright (C) 2007-2008,2010,2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -103,7 +103,7 @@ bool DropCopyAddCommand::Execute()
 					{
 						if (!lastRepo.IsEmpty())
 						{
-							if (filepath.Find(lastRepo) == 0)
+							if (wcsncmp(filepath, lastRepo, lastRepo.GetLength()) == 0)
 								continue;
 							else
 								lastRepo.Empty();

@@ -253,7 +253,7 @@ int CGitIndexList::GetStatus(const CString& gitdir, CString path, git_wc_status_
 
 	for (auto it = cbegin(), itend = cend(); it != itend; ++it)
 	{
-		if (!((*it).m_FileName.GetLength() > len && (*it).m_FileName.Left(len) == path))
+		if (!((*it).m_FileName.GetLength() > len && wcsncmp((*it).m_FileName, path, len) == 0))
 			continue;
 
 		if (!IsFull)
@@ -1093,7 +1093,7 @@ bool CGitIgnoreList::CheckAndUpdateCoreExcludefile(const CString &adminDir)
 	config.GetString(_T("core.excludesfile"), excludesFile);
 	if (excludesFile.IsEmpty())
 		excludesFile = GetWindowsHome() + _T("\\.config\\git\\ignore");
-	else if (excludesFile.Find(_T("~/")) == 0)
+	else if (wcsncmp(excludesFile, L"~/", 2) == 0)
 		excludesFile = GetWindowsHome() + excludesFile.Mid(1);
 
 	CAutoWriteLock lockMap(m_SharedMutex);

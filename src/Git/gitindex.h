@@ -106,7 +106,7 @@ public:
 		std::vector<CString> toRemove;
 		for (auto it = this->cbegin(); it != this->cend(); ++it)
 		{
-			if ((*it).first.Find(thePath) == 0)
+			if (wcsncmp((*it).first, thePath, thePath.GetLength()) == 0)
 				toRemove.push_back((*it).first);
 		}
 		for (auto it = toRemove.cbegin(); it != toRemove.cend(); ++it)
@@ -242,7 +242,7 @@ public:
 		std::vector<CString> toRemove;
 		for (auto it = this->cbegin(); it != this->cend(); ++it)
 		{
-			if ((*it).first.Find(thePath) == 0)
+			if (wcsncmp((*it).first, thePath, thePath.GetLength()) == 0)
 				toRemove.push_back((*it).first);
 		}
 		for (auto it = toRemove.cbegin(); it != toRemove.cend(); ++it)

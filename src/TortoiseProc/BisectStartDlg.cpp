@@ -128,10 +128,10 @@ void CBisectStartDlg::OnBnClickedOk()
 	m_LastGoodRevision = m_cLastGoodRevision.GetString().Trim();
 	m_FirstBadRevision = m_cFirstBadRevision.GetString().Trim();
 
-	if(m_FirstBadRevision.Find(_T("remotes/")) == 0)
+	if (wcsncmp(m_FirstBadRevision, L"remotes/", 8) == 0)
 		m_FirstBadRevision = m_FirstBadRevision.Mid(8);
 
-	if(m_FirstBadRevision.Find(_T("remotes/")) == 0)
+	if (wcsncmp(m_FirstBadRevision, L"remotes/", 8) == 0)
 		m_FirstBadRevision = m_FirstBadRevision.Mid(8);
 
 	CHorizontalResizableStandAloneDialog::OnOK();

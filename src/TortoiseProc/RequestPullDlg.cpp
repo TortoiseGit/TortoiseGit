@@ -129,7 +129,7 @@ void CRequestPullDlg::OnBnClickedOk()
 		return;
 	}
 
-	if(m_StartRevision.Find(_T("remotes/")) == 0)
+	if (wcsncmp(m_StartRevision, L"remotes/", 8) == 0)
 		m_StartRevision = m_StartRevision.Mid(8);
 
 	m_regSendMail = m_bSendMail;

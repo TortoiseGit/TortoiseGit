@@ -134,7 +134,7 @@ bool CloneCommand::Execute()
 		CString url=dlg.m_URL;
 
 		// is this a windows format UNC path, ie starts with \\?
-		if (url.Find(_T("\\\\")) == 0)
+		if (wcsncmp(url, L"\\\\", 2) == 0)
 		{
 			// yes, change all \ to /
 			// this should not be necessary but msysgit does not support the use \ here yet

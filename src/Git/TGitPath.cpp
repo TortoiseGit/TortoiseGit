@@ -373,7 +373,7 @@ CTGitPath CTGitPath::GetSubPath(const CTGitPath &root)
 {
 	CTGitPath path;
 
-	if(GetWinPathString().Left(root.GetWinPathString().GetLength()) == root.GetWinPathString())
+	if (wcsncmp(GetWinPathString(), root.GetWinPathString(), root.GetWinPathString().GetLength()) == 0)
 	{
 		CString str=GetWinPathString();
 		path.SetFromWin(str.Right(str.GetLength()-root.GetWinPathString().GetLength()-1));
@@ -1134,7 +1134,7 @@ int CTGitPathList::FillBasedOnIndexFlags(unsigned short flag, unsigned short fla
 
 			CString one = CUnicodeUtils::GetUnicode(e->path);
 
-			if (!(!list || (*list)[j].GetWinPathString().IsEmpty() || one == (*list)[j].GetGitPathString() || (PathIsDirectory(g_Git.CombinePath((*list)[j].GetWinPathString())) && one.Find((*list)[j].GetGitPathString() + _T("/")) == 0)))
+			if (!(!list || (*list)[j].GetWinPathString().IsEmpty() || one == (*list)[j].GetGitPathString() || (PathIsDirectory(g_Git.CombinePath((*list)[j].GetWinPathString())) && wcsncmp(one, (*list)[j].GetGitPathString() + L"/", (*list)[j].GetGitPathString().GetLength() + 1) == 0)))
 				continue;
 
 			//SetFromGit will clear all status

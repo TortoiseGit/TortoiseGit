@@ -2110,7 +2110,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 		if(!pSelLogEntry->m_Ref.IsEmpty())
 		{
 			popup.AppendMenuIcon(ID_REFLOG_DEL, IDS_REFLOG_DEL, IDI_DELETE);
-			if (GetSelectedCount() == 1 && pSelLogEntry->m_Ref.Find(_T("refs/stash")) == 0)
+			if (GetSelectedCount() == 1 && wcsncmp(pSelLogEntry->m_Ref, L"refs/stash", 10) == 0)
 				popup.AppendMenuIcon(ID_REFLOG_STASH_APPLY, IDS_MENUSTASHAPPLY, IDI_RELOCATE);
 			popup.AppendMenu(MF_SEPARATOR, NULL);
 		}
@@ -2213,7 +2213,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 			if (m_ContextMenuMask&GetContextMenuBit(ID_PUSH) && ((!isStash && !m_HashMap[pSelLogEntry->m_CommitHash].empty()) || showExtendedMenu))
 			{
 				// show the push-option only if the log entry has an associated local branch
-				bool isLocal = find_if(m_HashMap[pSelLogEntry->m_CommitHash], [](const CString& ref) { return ref.Find(_T("refs/heads/")) == 0; }) != m_HashMap[pSelLogEntry->m_CommitHash].cend();
+				bool isLocal = find_if(m_HashMap[pSelLogEntry->m_CommitHash], [](const CString& ref) { return wcsncmp(ref, L"refs/heads/", 11) == 0; }) != m_HashMap[pSelLogEntry->m_CommitHash].cend();
 				if (isLocal || showExtendedMenu)
 				{
 					CString str;
@@ -3414,7 +3414,7 @@ CString CGitLogListBase::GetTagInfo(GitRev* pLogEntry)
 		STRING_VECTOR &vector = m_HashMap[pLogEntry->m_CommitHash];
 		for (size_t i = 0; i < vector.size(); ++i)
 		{
-			if (vector[i].Find(_T("refs/tags/")) == 0)
+			if (wcsncmp(vector[i], L"refs/tags/", 10) == 0)
 			{
 				CString tag = vector[i];
 				int start = vector[i].Find(_T("^{}"));
