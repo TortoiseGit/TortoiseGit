@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2007-2008 - TortoiseSVN
-// Copyright (C) 2007-2011, 2013-2015 - TortoiseGit
+// Copyright (C) 2007-2011, 2013-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -51,9 +51,9 @@ bool DiffCommand::Execute()
 			if ( parser.HasKey(_T("startrev")) && parser.HasKey(_T("endrev")) )
 			{
 				if (parser.HasKey(_T("unified")))
-					bRet = !!CAppUtils::StartShowUnifiedDiff(nullptr, cmdLinePath, git_revnum_t(parser.GetVal(_T("endrev"))), cmdLinePath, git_revnum_t(parser.GetVal(_T("startrev"))));
+					bRet = !!CAppUtils::StartShowUnifiedDiff(nullptr, cmdLinePath, git_revnum_t(parser.GetVal(_T("endrev"))), cmdLinePath, git_revnum_t(parser.GetVal(_T("startrev"))), bAlternativeTool);
 				else
-					bRet = !!diff.Diff(&cmdLinePath, &cmdLinePath, git_revnum_t(parser.GetVal(_T("startrev"))), git_revnum_t(parser.GetVal(_T("endrev"))), false, parser.HasKey(_T("unified")) == TRUE, parser.GetLongVal(_T("line")));
+					bRet = !!diff.Diff(&cmdLinePath, &cmdLinePath, git_revnum_t(parser.GetVal(_T("startrev"))), git_revnum_t(parser.GetVal(_T("endrev"))), false, parser.HasKey(_T("unified")) == TRUE, parser.GetLongVal(_T("line")), bAlternativeTool);
 			}
 			else
 			{
@@ -89,8 +89,8 @@ bool DiffCommand::Execute()
 								{
 									CTGitPath oldPath(changedFiles[i].GetGitOldPathString());
 									if (parser.HasKey(_T("unified")))
-										return !!CAppUtils::StartShowUnifiedDiff(nullptr, cmdLinePath, git_revnum_t(_T("HEAD")), cmdLinePath, git_revnum_t(GIT_REV_ZERO));
-									return !!diff.Diff(&cmdLinePath, &oldPath, git_revnum_t(GIT_REV_ZERO), git_revnum_t(_T("HEAD")), false, parser.HasKey(_T("unified")) == TRUE, parser.GetLongVal(_T("line")));
+										return !!CAppUtils::StartShowUnifiedDiff(nullptr, cmdLinePath, git_revnum_t(_T("HEAD")), cmdLinePath, git_revnum_t(GIT_REV_ZERO), bAlternativeTool);
+									return !!diff.Diff(&cmdLinePath, &oldPath, git_revnum_t(GIT_REV_ZERO), git_revnum_t(_T("HEAD")), false, parser.HasKey(_T("unified")) == TRUE, parser.GetLongVal(_T("line")), bAlternativeTool);
 								}
 								break;
 							}
@@ -100,9 +100,9 @@ bool DiffCommand::Execute()
 				}
 
 				if (parser.HasKey(_T("unified")))
-					bRet = !!CAppUtils::StartShowUnifiedDiff(nullptr, cmdLinePath, git_revnum_t(_T("HEAD")), cmdLinePath, git_revnum_t(GIT_REV_ZERO));
+					bRet = !!CAppUtils::StartShowUnifiedDiff(nullptr, cmdLinePath, git_revnum_t(_T("HEAD")), cmdLinePath, git_revnum_t(GIT_REV_ZERO), bAlternativeTool);
 				else
-					bRet = !!diff.Diff(&cmdLinePath, &cmdLinePath, git_revnum_t(GIT_REV_ZERO), git_revnum_t(_T("HEAD")), false, parser.HasKey(_T("unified")) == TRUE, parser.GetLongVal(_T("line")));
+					bRet = !!diff.Diff(&cmdLinePath, &cmdLinePath, git_revnum_t(GIT_REV_ZERO), git_revnum_t(_T("HEAD")), false, parser.HasKey(_T("unified")) == TRUE, parser.GetLongVal(_T("line")), bAlternativeTool);
 			}
 		}
 	}
@@ -112,7 +112,7 @@ bool DiffCommand::Execute()
 		if ( parser.HasKey(_T("startrev")) && parser.HasKey(_T("endrev")) && path2.Left(g_Git.m_CurrentDir.GetLength() + 1) == g_Git.m_CurrentDir + _T("\\"))
 		{
 			CTGitPath tgitPath2 = path2.Mid(g_Git.m_CurrentDir.GetLength() + 1);
-			bRet = !!diff.Diff(&tgitPath2, &cmdLinePath, git_revnum_t(parser.GetVal(_T("startrev"))), git_revnum_t(parser.GetVal(_T("endrev"))), false, parser.HasKey(_T("unified")) == TRUE, parser.GetLongVal(_T("line")));
+			bRet = !!diff.Diff(&tgitPath2, &cmdLinePath, git_revnum_t(parser.GetVal(_T("startrev"))), git_revnum_t(parser.GetVal(_T("endrev"))), false, parser.HasKey(_T("unified")) == TRUE, parser.GetLongVal(_T("line")), bAlternativeTool);
 		}
 		else
 		{

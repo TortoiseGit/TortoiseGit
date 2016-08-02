@@ -235,6 +235,8 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 
 	GitRevLoglist* pSelLogEntry = m_arShownList.SafeGetAt(indexNext);
 
+	bool bShiftPressed = !!(GetAsyncKeyState(VK_SHIFT) & 0x8000);
+
 	theApp.DoWaitCursor(1);
 	switch (cmd&0xFFFF)
 		{
@@ -316,10 +318,10 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 								hash2 = r1->m_ParentHash[cmd-1].ToString();
 						}
 					}
-					CAppUtils::StartShowUnifiedDiff(nullptr, CTGitPath(), hash2, CTGitPath(), r1->m_CommitHash.ToString(), false, false, false, bMerge, bCombine);
+					CAppUtils::StartShowUnifiedDiff(nullptr, CTGitPath(), hash2, CTGitPath(), r1->m_CommitHash.ToString(), bShiftPressed, false, false, bMerge, bCombine);
 				}
 				else
-					CAppUtils::StartShowUnifiedDiff(nullptr, CTGitPath(), _T("HEAD"), CTGitPath(), GitRev::GetWorkingCopy(), false, false, false, bMerge, bCombine);
+					CAppUtils::StartShowUnifiedDiff(nullptr, CTGitPath(), _T("HEAD"), CTGitPath(), GitRev::GetWorkingCopy(), bShiftPressed, false, false, bMerge, bCombine);
 			}
 			break;
 
@@ -327,7 +329,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			{
 				GitRev* r1 = m_arShownList.SafeGetAt(FirstSelect);
 				GitRev* r2 = m_arShownList.SafeGetAt(LastSelect);
-				CAppUtils::StartShowUnifiedDiff(nullptr, CTGitPath(), r2->m_CommitHash.ToString(), CTGitPath(), r1->m_CommitHash.ToString());
+				CAppUtils::StartShowUnifiedDiff(nullptr, CTGitPath(), r2->m_CommitHash.ToString(), CTGitPath(), r1->m_CommitHash.ToString(), bShiftPressed);
 			}
 			break;
 
@@ -336,7 +338,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				GitRev* r1 = m_arShownList.SafeGetAt(FirstSelect);
 				GitRev* r2 = m_arShownList.SafeGetAt(LastSelect);
 				if (m_Path.IsDirectory() || !(m_ShowMask & CGit::LOG_INFO_FOLLOW))
-					CGitDiff::DiffCommit(this->m_Path, r1,r2);
+					CGitDiff::DiffCommit(m_Path, r1, r2, bShiftPressed);
 				else
 				{
 					CString path1 = m_Path.GetGitPathString();
@@ -358,7 +360,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 						if (file && !file->GetGitOldPathString().IsEmpty())
 							path2 = file->GetGitOldPathString();
 					}
-					CGitDiff::DiffCommit(CTGitPath(path1), CTGitPath(path2), r1, r2);
+					CGitDiff::DiffCommit(CTGitPath(path1), CTGitPath(path2), r1, r2, bShiftPressed);
 				}
 
 			}
@@ -370,7 +372,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				GitRevLoglist* r2 = pSelLogEntry;
 
 				if (m_Path.IsDirectory() || !(m_ShowMask & CGit::LOG_INFO_FOLLOW))
-					CGitDiff::DiffCommit(this->m_Path, r1,r2);
+					CGitDiff::DiffCommit(m_Path, r1, r2, bShiftPressed);
 				else
 				{
 					CString path1 = m_Path.GetGitPathString();
@@ -383,7 +385,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 						if (file && !file->GetGitOldPathString().IsEmpty())
 							path1 = file->GetGitOldPathString();
 					}
-					CGitDiff::DiffCommit(m_Path, CTGitPath(path1), r1, r2);
+					CGitDiff::DiffCommit(m_Path, CTGitPath(path1), r1, r2, bShiftPressed);
 				}
 
 				//user clicked on the menu item "compare with working copy"
@@ -417,7 +419,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 						cmd=1;
 
 					if (m_Path.IsDirectory() || !(m_ShowMask & CGit::LOG_INFO_FOLLOW))
-						CGitDiff::DiffCommit(m_Path, pSelLogEntry->m_CommitHash.ToString(), pSelLogEntry->m_ParentHash[cmd - 1].ToString());
+						CGitDiff::DiffCommit(m_Path, pSelLogEntry->m_CommitHash.ToString(), pSelLogEntry->m_ParentHash[cmd - 1].ToString(), bShiftPressed);
 					else
 					{
 						CString path1 = m_Path.GetGitPathString();
@@ -437,7 +439,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 						if (file && !file->GetGitOldPathString().IsEmpty())
 							path2 = file->GetGitOldPathString();
 
-						CGitDiff::DiffCommit(CTGitPath(path1), CTGitPath(path2), pSelLogEntry->m_CommitHash.ToString(), pSelLogEntry->m_ParentHash[cmd - 1].ToString());
+						CGitDiff::DiffCommit(CTGitPath(path1), CTGitPath(path2), pSelLogEntry->m_CommitHash.ToString(), pSelLogEntry->m_ParentHash[cmd - 1].ToString(), bShiftPressed);
 					}
 				}
 				else

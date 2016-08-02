@@ -93,7 +93,7 @@ int CGitDiff::SubmoduleDiffNull(const CTGitPath * pPath, const git_revnum_t &rev
 	return -1;
 }
 
-int CGitDiff::DiffNull(const CTGitPath *pPath, git_revnum_t rev1, bool bIsAdd, int jumpToLine)
+int CGitDiff::DiffNull(const CTGitPath *pPath, git_revnum_t rev1, bool bIsAdd, int jumpToLine, bool bAlternative)
 {
 	CString temppath;
 	GetTempPath(temppath);
@@ -153,7 +153,7 @@ int CGitDiff::DiffNull(const CTGitPath *pPath, git_revnum_t rev1, bool bIsAdd, i
 	::SetFileAttributes(tempfile, FILE_ATTRIBUTE_READONLY);
 
 	CAppUtils::DiffFlags flags;
-
+	flags.bAlternativeTool = bAlternative;
 	if(bIsAdd)
 		CAppUtils::StartExtDiff(tempfile,file1,
 							pPath->GetGitPathString(),
@@ -364,7 +364,7 @@ void CGitDiff::GetSubmoduleChangeType(CGit& subgit, const CString& oldhash, cons
 		changeType = Unknown;
 }
 
-int CGitDiff::Diff(const CTGitPath * pPath, const CTGitPath * pPath2, git_revnum_t rev1, git_revnum_t rev2, bool /*blame*/, bool /*unified*/, int jumpToLine)
+int CGitDiff::Diff(const CTGitPath* pPath, const CTGitPath* pPath2, git_revnum_t rev1, git_revnum_t rev2, bool /*blame*/, bool /*unified*/, int jumpToLine, bool bAlternativeTool)
 {
 	CString temppath;
 	GetTempPath(temppath);
@@ -484,6 +484,7 @@ int CGitDiff::Diff(const CTGitPath * pPath, const CTGitPath * pPath2, git_revnum
 	}
 
 	CAppUtils::DiffFlags flags;
+	flags.bAlternativeTool = bAlternativeTool;
 	CAppUtils::StartExtDiff(file2,file1,
 							title2,
 							title1,
@@ -496,12 +497,12 @@ int CGitDiff::Diff(const CTGitPath * pPath, const CTGitPath * pPath2, git_revnum
 	return 0;
 }
 
-int CGitDiff::DiffCommit(const CTGitPath &path, const GitRev *r1, const GitRev *r2)
+int CGitDiff::DiffCommit(const CTGitPath& path, const GitRev* r1, const GitRev* r2, bool bAlternative)
 {
-	return DiffCommit(path, path, r1, r2);
+	return DiffCommit(path, path, r1, r2, bAlternative);
 }
 
-int CGitDiff::DiffCommit(const CTGitPath &path1, const CTGitPath &path2, const GitRev *r1, const GitRev *r2)
+int CGitDiff::DiffCommit(const CTGitPath& path1, const CTGitPath& path2, const GitRev* r1, const GitRev* r2, bool bAlternative)
 {
 	if (path1.GetWinPathString().IsEmpty())
 	{
@@ -516,16 +517,16 @@ int CGitDiff::DiffCommit(const CTGitPath &path1, const CTGitPath &path2, const G
 		dlg.DoModal();
 	}
 	else
-		Diff(&path1, &path2, r1->m_CommitHash.ToString(), r2->m_CommitHash.ToString());
+		Diff(&path1, &path2, r1->m_CommitHash.ToString(), r2->m_CommitHash.ToString(), false, false, 0, bAlternative);
 	return 0;
 }
 
-int CGitDiff::DiffCommit(const CTGitPath &path, const CString &r1, const CString &r2)
+int CGitDiff::DiffCommit(const CTGitPath& path, const CString& r1, const CString& r2, bool bAlternative)
 {
-	return DiffCommit(path, path, r1, r2);
+	return DiffCommit(path, path, r1, r2, bAlternative);
 }
 
-int CGitDiff::DiffCommit(const CTGitPath &path1, const CTGitPath &path2, const CString &r1, const CString &r2)
+int CGitDiff::DiffCommit(const CTGitPath& path1, const CTGitPath& path2, const CString& r1, const CString& r2, bool bAlternative)
 {
 	if (path1.GetWinPathString().IsEmpty())
 	{
@@ -540,6 +541,6 @@ int CGitDiff::DiffCommit(const CTGitPath &path1, const CTGitPath &path2, const C
 		dlg.DoModal();
 	}
 	else
-		Diff(&path1, &path2, r1, r2);
+		Diff(&path1, &path2, r1, r2, false, false, 0, bAlternative);
 	return 0;
 }

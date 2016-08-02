@@ -506,6 +506,8 @@ void CTortoiseGitBlameView::ContextMenuAction(int cmd, GitRev *pRev, GIT_REV_LIS
 			procCmd += _T(" /command:diff");
 			procCmd += _T(" /startrev:") + startrev;
 			procCmd += _T(" /endrev:") + endrev;
+			if (!!(GetAsyncKeyState(VK_SHIFT) & 0x8000))
+				procCmd += L" /alternative";
 
 			CCommonAppUtils::RunTortoiseGitProc(procCmd);
 		}

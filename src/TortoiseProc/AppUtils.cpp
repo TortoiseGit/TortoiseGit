@@ -546,12 +546,26 @@ bool CAppUtils::StartExtDiff(
 	return LaunchApplication(viewer, IDS_ERR_EXTDIFFSTART, flags.bWait);
 }
 
-BOOL CAppUtils::StartUnifiedDiffViewer(const CString& patchfile, const CString& title, BOOL bWait)
+BOOL CAppUtils::StartUnifiedDiffViewer(const CString& patchfile, const CString& title, BOOL bWait, bool bAlternativeTool)
 {
 	CString viewer;
 	CRegString v = CRegString(_T("Software\\TortoiseGit\\DiffViewer"));
 	viewer = v;
-	if (viewer.IsEmpty() || (viewer.Left(1).Compare(_T("#"))==0))
+
+	// If registry entry for a diff program is commented out, use TortoiseGitMerge.
+	bool bCommentedOut = viewer.Left(1) == _T("#");
+	if (bAlternativeTool)
+	{
+		// Invert external vs. internal diff tool selection.
+		if (bCommentedOut)
+			viewer.Delete(0); // uncomment
+		else
+			viewer.Empty();
+	}
+	else if (bCommentedOut)
+		viewer.Empty();
+
+	if (viewer.IsEmpty())
 	{
 		// use TortoiseGitUDiff
 		viewer = CPathUtils::GetAppDirectory();
@@ -948,7 +962,7 @@ std::vector<CHARRANGE> CAppUtils::FindURLMatches(const CString& msg)
 bool CAppUtils::StartShowUnifiedDiff(HWND hWnd, const CTGitPath& url1, const git_revnum_t& rev1,
 												const CTGitPath& /*url2*/, const git_revnum_t& rev2,
 												//const GitRev& peg /* = GitRev */, const GitRev& headpeg /* = GitRev */,
-												bool /*bAlternateDiff*/ /* = false */, bool /*bIgnoreAncestry*/ /* = false */,
+												bool bAlternateDiff /* = false */, bool /*bIgnoreAncestry*/ /* = false */,
 												bool /* blame = false */, 
 												bool bMerge,
 												bool bCombine,
@@ -961,7 +975,7 @@ bool CAppUtils::StartShowUnifiedDiff(HWND hWnd, const CTGitPath& url1, const git
 		CMessageBox::Show(hWnd, g_Git.GetGitLastErr(_T("Could not get unified diff."), CGit::GIT_CMD_DIFF), _T("TortoiseGit"), MB_OK);
 		return false;
 	}
-	CAppUtils::StartUnifiedDiffViewer(tempfile, rev1 + _T(":") + rev2);
+	CAppUtils::StartUnifiedDiffViewer(tempfile, rev1 + L":" + rev2, FALSE, bAlternateDiff);
 
 #if 0
 	CString sCmd;

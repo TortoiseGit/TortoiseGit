@@ -118,6 +118,8 @@ void CGitBlameLogList::ContextMenuAction(int cmd, int /*FirstSelect*/, int /*Las
 					procCmd += _T(" /endrev:") + parentHash.ToString();
 					if ((cmd & 0xFFFF) == ID_GNUDIFF1)
 						procCmd += _T(" /unified");
+					if (!!(GetAsyncKeyState(VK_SHIFT) & 0x8000))
+						procCmd += L" /alternative";
 
 					CCommonAppUtils::RunTortoiseGitProc(procCmd);
 				}

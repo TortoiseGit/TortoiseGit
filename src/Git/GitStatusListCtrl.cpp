@@ -1938,6 +1938,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 
 			m_bBlock = TRUE;
 			AfxGetApp()->DoWaitCursor(1);
+			bShift = !!(GetAsyncKeyState(VK_SHIFT) & 0x8000);
 			//int iItemCountBeforeMenuCmd = GetItemCount();
 			//bool bForce = false;
 			switch (cmd)
@@ -1966,7 +1967,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 			case IDGITLC_PREPAREDIFF_COMPARE:
 				{
 					CTGitPath savedFile(m_sMarkForDiffFilename);
-					CGitDiff::Diff(filepath, &savedFile, m_CurrentVersion, m_sMarkForDiffVersion);
+					CGitDiff::Diff(filepath, &savedFile, m_CurrentVersion, m_sMarkForDiffVersion, false, false, 0, bShift);
 				}
 				break;
 
@@ -2079,6 +2080,8 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 
 						CString sCmd;
 						sCmd.Format(_T("/command:diff /path:\"%s\" /endrev:%s /path2:\"%s\" /startrev:%s /hwnd:%p"), firstfilepath->GetWinPath(), firstfilepath->Exists() ? GIT_REV_ZERO : _T("HEAD"), secondfilepath->GetWinPath(), secondfilepath->Exists() ? GIT_REV_ZERO : _T("HEAD"), (void*)m_hWnd);
+						if (bShift)
+							sCmd += L" /alternative";
 						CAppUtils::RunTortoiseGitProc(sCmd);
 					}
 				}
@@ -2097,19 +2100,19 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 							CString fromwhere;
 							if (m_amend)
 								fromwhere = _T("~1");
-							CAppUtils::StartShowUnifiedDiff(m_hWnd, *selectedFilepath, GitRev::GetHead() + fromwhere, *selectedFilepath, GitRev::GetWorkingCopy());
+							CAppUtils::StartShowUnifiedDiff(m_hWnd, *selectedFilepath, GitRev::GetHead() + fromwhere, *selectedFilepath, GitRev::GetWorkingCopy(), bShift);
 						}
 						else
 						{
 							if ((selectedFilepath->m_ParentNo & (PARENT_MASK | MERGE_MASK)) == 0)
-								CAppUtils::StartShowUnifiedDiff(m_hWnd, *selectedFilepath, m_CurrentVersion + _T("~1"), *selectedFilepath, m_CurrentVersion);
+								CAppUtils::StartShowUnifiedDiff(m_hWnd, *selectedFilepath, m_CurrentVersion + _T("~1"), *selectedFilepath, m_CurrentVersion, bShift);
 							else
 							{
 								CString str;
 								if (!(selectedFilepath->m_ParentNo & MERGE_MASK))
 									str.Format(_T("%s^%d"), (LPCTSTR)m_CurrentVersion, (selectedFilepath->m_ParentNo & PARENT_MASK) + 1);
 
-								CAppUtils::StartShowUnifiedDiff(m_hWnd, *selectedFilepath, str, *selectedFilepath, m_CurrentVersion, false, false, false, false, !!(selectedFilepath->m_ParentNo & MERGE_MASK));
+								CAppUtils::StartShowUnifiedDiff(m_hWnd, *selectedFilepath, str, *selectedFilepath, m_CurrentVersion, bShift, false, false, false, !!(selectedFilepath->m_ParentNo & MERGE_MASK));
 							}
 						}
 					}
@@ -2118,7 +2121,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 
 			case IDGITLC_GNUDIFF2REVISIONS:
 				{
-					CAppUtils::StartShowUnifiedDiff(m_hWnd, *filepath, m_Rev2, *filepath, m_Rev1);
+					CAppUtils::StartShowUnifiedDiff(m_hWnd, *filepath, m_Rev2, *filepath, m_Rev1, bShift);
 				}
 				break;
 
@@ -2184,7 +2187,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 
 			case IDGITLC_EDITCONFLICT:
 				{
-					if (CAppUtils::ConflictEdit(*filepath, false, m_bIsRevertTheirMy, GetLogicalParent() ? GetLogicalParent()->GetSafeHwnd() : nullptr))
+					if (CAppUtils::ConflictEdit(*filepath, bShift, m_bIsRevertTheirMy, GetLogicalParent() ? GetLogicalParent()->GetSafeHwnd() : nullptr))
 					{
 						CString conflictedFile = g_Git.CombinePath(filepath);
 						if (!PathFileExists(conflictedFile) && GetLogicalParent() && GetLogicalParent()->GetSafeHwnd())
@@ -2610,7 +2613,7 @@ void CGitStatusListCtrl::OnNMDblclk(NMHDR *pNMHDR, LRESULT *pResult)
 	}
 	if( file->m_Action&CTGitPath::LOGACTIONS_UNMERGED )
 	{
-		if (CAppUtils::ConflictEdit(*file, false, m_bIsRevertTheirMy, GetLogicalParent() ? GetLogicalParent()->GetSafeHwnd() : nullptr))
+		if (CAppUtils::ConflictEdit(*file, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000), m_bIsRevertTheirMy, GetLogicalParent() ? GetLogicalParent()->GetSafeHwnd() : nullptr))
 		{
 			CString conflictedFile = g_Git.CombinePath(file);
 			if (!PathFileExists(conflictedFile) && GetLogicalParent() && GetLogicalParent()->GetSafeHwnd())
@@ -2638,11 +2641,11 @@ void CGitStatusListCtrl::StartDiffTwo(int fileindex)
 	CTGitPath file1 = *ptr;
 
 	if (file1.m_Action & CTGitPath::LOGACTIONS_ADDED)
-		CGitDiff::DiffNull(&file1, m_Rev1, true);
+		CGitDiff::DiffNull(&file1, m_Rev1, true, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 	else if (file1.m_Action & CTGitPath::LOGACTIONS_DELETED)
-		CGitDiff::DiffNull(&file1, m_Rev2, false);
+		CGitDiff::DiffNull(&file1, m_Rev2, false, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 	else
-		CGitDiff::Diff(&file1, &file1, m_Rev1, m_Rev2);
+		CGitDiff::Diff(&file1, &file1, m_Rev1, m_Rev2, false, false, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 }
 
 void CGitStatusListCtrl::StartDiffWC(int fileindex)
@@ -2660,7 +2663,7 @@ void CGitStatusListCtrl::StartDiffWC(int fileindex)
 	CTGitPath file1 = *ptr;
 	file1.m_Action = 0; // reset action, so that diff is not started as added/deleted file; see issue #1757
 
-	CGitDiff::Diff(&file1,&file1, GIT_REV_ZERO, m_CurrentVersion);
+	CGitDiff::Diff(&file1, &file1, GIT_REV_ZERO, m_CurrentVersion, false, false, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 }
 
 void CGitStatusListCtrl::StartDiff(int fileindex)
@@ -2685,17 +2688,17 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 			fromwhere = _T("~1");
 		if( g_Git.IsInitRepos())
 			CGitDiff::DiffNull((CTGitPath*)GetItemData(fileindex),
-					GIT_REV_ZERO);
+			GIT_REV_ZERO, true, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 		else if( file1.m_Action&CTGitPath::LOGACTIONS_ADDED )
 			CGitDiff::DiffNull((CTGitPath*)GetItemData(fileindex),
-					m_CurrentVersion+fromwhere,true);
+			m_CurrentVersion + fromwhere, true, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 		else if( file1.m_Action&CTGitPath::LOGACTIONS_DELETED )
 			CGitDiff::DiffNull((CTGitPath*)GetItemData(fileindex),
-					GitRev::GetHead()+fromwhere,false);
+			GitRev::GetHead() + fromwhere, false, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 		else
 			CGitDiff::Diff(&file1,&file2,
 					CString(GIT_REV_ZERO),
-					GitRev::GetHead()+fromwhere);
+					GitRev::GetHead() + fromwhere, false, false, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 	}
 	else
 	{
@@ -2705,13 +2708,13 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 			fromwhere = m_CurrentVersion+_T("~2");
 		bool revfail = !!g_Git.GetHash(hash, fromwhere);
 		if (revfail || (file1.m_Action & file1.LOGACTIONS_ADDED))
-			CGitDiff::DiffNull(&file1,m_CurrentVersion,true);
+			CGitDiff::DiffNull(&file1, m_CurrentVersion, true, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 		else if (file1.m_Action & file1.LOGACTIONS_DELETED)
 		{
 			if (file1.m_ParentNo > 0)
 				fromwhere.Format(_T("%s^%d"), (LPCTSTR)m_CurrentVersion, file1.m_ParentNo + 1);
 
-			CGitDiff::DiffNull(&file1,fromwhere,false);
+			CGitDiff::DiffNull(&file1, fromwhere, false, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 		}
 		else
 		{
@@ -2800,7 +2803,7 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 					str.Format(_T("^%d"), (file1.m_ParentNo&PARENT_MASK)+1);
 				CGitDiff::Diff(&file1,&file2,
 					m_CurrentVersion,
-					m_CurrentVersion+str);
+					m_CurrentVersion + str, false, false, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 			}
 		}
 	}
@@ -3174,7 +3177,7 @@ void CGitStatusListCtrl::OnNMReturn(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 			OpenFile(file, OPEN);
 		else if ((file->m_Action & CTGitPath::LOGACTIONS_UNMERGED))
 		{
-			if (CAppUtils::ConflictEdit(*file, false, m_bIsRevertTheirMy, GetLogicalParent() ? GetLogicalParent()->GetSafeHwnd() : nullptr))
+			if (CAppUtils::ConflictEdit(*file, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000), m_bIsRevertTheirMy, GetLogicalParent() ? GetLogicalParent()->GetSafeHwnd() : nullptr))
 			{
 				CString conflictedFile = g_Git.CombinePath(file);
 				needsRefresh = needsRefresh || !PathFileExists(conflictedFile);

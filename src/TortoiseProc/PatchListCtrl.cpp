@@ -67,7 +67,7 @@ void CPatchListCtrl::OnNMDblclk(NMHDR *pNMHDR, LRESULT *pResult)
 	CTGitPath gitpath;
 	gitpath.SetFromWin(path);
 
-	CAppUtils::StartUnifiedDiffViewer(path,gitpath.GetFilename());
+	CAppUtils::StartUnifiedDiffViewer(path, gitpath.GetFilename(), 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 
 	*pResult = 0;
 }
@@ -111,7 +111,7 @@ void CPatchListCtrl::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 				CTGitPath gitpath;
 				gitpath.SetFromWin(path);
 
-				CAppUtils::StartUnifiedDiffViewer(path,gitpath.GetFilename());
+				CAppUtils::StartUnifiedDiffViewer(path, gitpath.GetFilename(), 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 				break;
 			}
 		case MENU_VIEWWITHMERGE:
