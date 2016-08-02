@@ -28,6 +28,7 @@
 bool PrevDiffCommand::Execute()
 {
 	bool bAlternativeTool = !!parser.HasKey(_T("alternative"));
+	bool bUnified = !!parser.HasKey(_T("unified"));
 	if (this->orgCmdLinePath.IsDirectory())
 	{
 		CFileDiffDlg dlg;
@@ -52,5 +53,5 @@ bool PrevDiffCommand::Execute()
 	}
 
 	CGitDiff diff;
-	return !!diff.Diff(&cmdLinePath, &cmdLinePath, GIT_REV_ZERO, revs.GetGitRevAt(1).m_CommitHash.ToString(), false, false, 0, bAlternativeTool);
+	return !!diff.Diff(&cmdLinePath, &cmdLinePath, GIT_REV_ZERO, revs.GetGitRevAt(1).m_CommitHash.ToString(), false, bUnified, 0, bAlternativeTool);
 }
