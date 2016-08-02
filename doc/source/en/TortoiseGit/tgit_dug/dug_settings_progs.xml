@@ -124,11 +124,13 @@ C:\Path-To\compare.exe /max /wait /title1:%bname /title2:%yname
     %base %mine
 </screen>
 		</para>
+<!--
 		<para>
 			You can also specify a different diff tool to use on Git
 			properties. Since these tend to be short simple text strings, you
 			may want to use a simpler more compact viewer.
 		</para>
+-->
 		<para>
 			If you have configured an alternate diff tool, you can access
 			TortoiseGitMerge <emphasis>and</emphasis> the third party tool
