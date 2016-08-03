@@ -618,29 +618,8 @@ int CMessageBox::FillBoxStandard(UINT uType)
 
 UINT CMessageBox::GoModal(CWnd * pWnd, const CString& title, const CString& msg, int nDefaultButton)
 {
-	// pre Vista struct, needed for Windows XP
-	struct OLD_NONCLIENTMETRICS
-	{
-		UINT	cbSize;
-		int		iBorderWidth;
-		int		iScrollWidth;
-		int		iScrollHeight;
-		int		iCaptionWidth;
-		int		iCaptionHeight;
-		LOGFONT	lfCaptionFont;
-		int		iSmCaptionWidth;
-		int		iSmCaptionHeight;
-		LOGFONT	lfSmCaptionFont;
-		int		iMenuWidth;
-		int		iMenuHeight;
-		LOGFONT	lfMenuFont;
-		LOGFONT	lfStatusFont;
-		LOGFONT	lfMessageFont;
-	};
-	const UINT cbProperSize = sizeof(OLD_NONCLIENTMETRICS);
-
 	NONCLIENTMETRICS ncm = { 0 };
-	ncm.cbSize = cbProperSize;
+	ncm.cbSize = sizeof(NONCLIENTMETRICS);
 	SystemParametersInfo(SPI_GETNONCLIENTMETRICS, sizeof(NONCLIENTMETRICS), &ncm, 0);
 
 	memcpy(&m_LogFont, &(ncm.lfMessageFont), sizeof(LOGFONT));
