@@ -276,7 +276,7 @@ static bool IsPowerShell(CString cmd)
 int CGit::RunAsync(CString cmd, PROCESS_INFORMATION *piOut, HANDLE *hReadOut, HANDLE *hErrReadOut, CString *StdioFile)
 {
 	CAutoGeneralHandle hRead, hWrite, hReadErr, hWriteErr;
-	CAutoGeneralHandle hStdioFile;
+	CAutoFile hStdioFile;
 
 	SECURITY_ATTRIBUTES sa = { 0 };
 	sa.nLength = sizeof(SECURITY_ATTRIBUTES);
