@@ -83,7 +83,6 @@ static BOOL WantRealVersion(void)
 	WCHAR ModuleName[MAX_PATH] = {0};
 
 	HKEY hKey = HKEY_CURRENT_USER;
-	LONG Result = ERROR;
 	DWORD Type = REG_DWORD;
 	DWORD Len = sizeof(DWORD);
 
@@ -91,7 +90,7 @@ static BOOL WantRealVersion(void)
 
 	TRACE(_T("WantRealVersion() - Enter\n"));
 
-	Result = RegOpenKeyEx(HKEY_CURRENT_USER, TGitRootKey, 0, KEY_READ, &hKey);
+	LONG Result = RegOpenKeyEx(HKEY_CURRENT_USER, TGitRootKey, 0, KEY_READ, &hKey);
 	if (Result == ERROR_SUCCESS)
 	{
 		Result = RegQueryValueEx(hKey, ExplorerOnlyValue, nullptr, &Type, (BYTE*)&bExplorerOnly, &Len);

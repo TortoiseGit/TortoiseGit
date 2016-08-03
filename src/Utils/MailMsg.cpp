@@ -276,10 +276,8 @@ BOOL CMailMsg::Send()
 		pRecipients[nIndex].lpEntryID = nullptr;
 	}
 
-	nIndex=0;
 	// add attachments
-	for (p = m_attachments.begin(), nIndex = 0;
-		p != m_attachments.end(); p++, nIndex++)
+	for (p = m_attachments.begin(), nIndex = 0; p != m_attachments.end(); ++p, ++nIndex)
 	{
 		pAttachments[nIndex].ulReserved		= 0;
 		pAttachments[nIndex].flFlags		= 0;

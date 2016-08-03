@@ -149,17 +149,13 @@ BOOL CDib::Draw(CDC* pDC, CPoint ptDest)
     CSize size = GetSize();
     CPoint SrcOrigin = CPoint(0,0);
 
-    BOOL resVal = FALSE;
-
-    resVal = SetDIBitsToDevice(pDC->GetSafeHdc(),
+    return SetDIBitsToDevice(pDC->GetSafeHdc(),
                                 ptDest.x, ptDest.y,
                                 size.cx, size.cy,
                                 SrcOrigin.x, SrcOrigin.y,
                                 SrcOrigin.y, size.cy - SrcOrigin.y,
                                 GetDIBits(), &m_BMinfo,
                                 DIB_RGB_COLORS);
-
-    return resVal;
 }
 
 COLORREF CDib::FixColorRef(COLORREF clr)

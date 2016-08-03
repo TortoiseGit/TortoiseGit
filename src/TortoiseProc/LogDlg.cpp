@@ -1018,9 +1018,7 @@ void CLogDlg::TogglePatchView()
 	m_patchViewdlg.m_ParentDlg = this;
 	if (!IsWindow(m_patchViewdlg.m_hWnd))
 	{
-		BOOL viewPatchEnabled = FALSE;
-		viewPatchEnabled = g_Git.GetConfigValueBool(_T("tgit.logshowpatch"));
-		if (viewPatchEnabled == FALSE)
+		if (g_Git.GetConfigValueBool(L"tgit.logshowpatch") == FALSE)
 			g_Git.SetConfigValue(_T("tgit.logshowpatch"), _T("true"));
 		m_patchViewdlg.Create(IDD_PATCH_VIEW, this);
 		m_patchViewdlg.m_ctrlPatchView.Call(SCI_SETSCROLLWIDTHTRACKING, TRUE);
