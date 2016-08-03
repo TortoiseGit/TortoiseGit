@@ -248,7 +248,6 @@ protected:
 	void SetupCppLexer();
 	COLORREF GetLineColor(int line);
 	COLORREF InterColor(COLORREF c1, COLORREF c2, int Slider);
-	CString GetAppDirectory();
 	CFont					m_font;
 	CFont					m_italicfont;
 	LONG					m_blamewidth;

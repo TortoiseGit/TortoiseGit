@@ -558,26 +558,6 @@ CTortoiseGitBlameDoc* CTortoiseGitBlameView::GetDocument() const // non-debug ve
 #endif //_DEBUG
 
 
-// CTortoiseGitBlameView message handlers
-CString CTortoiseGitBlameView::GetAppDirectory()
-{
-	CString path;
-	DWORD len = 0;
-	DWORD bufferlen = MAX_PATH;		// MAX_PATH is not the limit here!
-	do
-	{
-		bufferlen += MAX_PATH;		// MAX_PATH is not the limit here!
-		auto pBuf = std::make_unique<TCHAR[]>(bufferlen);
-		len = GetModuleFileName(nullptr, pBuf.get(), bufferlen);
-		path = CString(pBuf.get(), len);
-	} while(len == bufferlen);
-
-	path = path.Left(path.ReverseFind(_T('\\')));
-	//path = path.substr(0, path.rfind('\\') + 1);
-
-	return path;
-}
-
 // Return a color which is interpolated between c1 and c2.
 // Slider controls the relative proportions as a percentage:
 // Slider = 0 	represents pure c1
