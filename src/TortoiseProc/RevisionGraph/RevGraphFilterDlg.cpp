@@ -23,6 +23,7 @@
 #include "gittype.h"
 #include "Git.h"
 #include "BrowseRefsDlg.h"
+#include "StringUtils.h"
 
 IMPLEMENT_DYNAMIC(CRevGraphFilterDlg, CDialog)
 
@@ -76,25 +77,25 @@ BOOL CRevGraphFilterDlg::OnInitDialog()
 		m_ctrlFromRev.AddSearchString(list[i]);
 		m_ctrlToRev.AddSearchString(list[i]);
 
-		if (wcsncmp(str, L"refs/", 5) == 0)
+		if (CStringUtils::StartsWith(str, L"refs/"))
 		{
 			m_ctrlFromRev.AddSearchString(list[i].Mid(5));
 			m_ctrlToRev.AddSearchString(list[i].Mid(5));
 		}
 
-		if (wcsncmp(str, L"refs/heads/", 11) == 0)
+		if (CStringUtils::StartsWith(str, L"refs/heads/"))
 		{
 			m_ctrlFromRev.AddSearchString(list[i].Mid(11));
 			m_ctrlToRev.AddSearchString(list[i].Mid(11));
 		}
 
-		if (wcsncmp(str, L"refs/remotes/", 13) == 0)
+		if (CStringUtils::StartsWith(str, L"refs/remotes/"))
 		{
 			m_ctrlFromRev.AddSearchString(list[i].Mid(13));
 			m_ctrlToRev.AddSearchString(list[i].Mid(13));
 		}
 
-		if (wcsncmp(str, L"refs/tags/", 10) == 0)
+		if (CStringUtils::StartsWith(str, L"refs/tags/"))
 		{
 			m_ctrlFromRev.AddSearchString(list[i].Mid(10));
 			m_ctrlToRev.AddSearchString(list[i].Mid(10));

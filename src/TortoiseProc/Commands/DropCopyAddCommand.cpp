@@ -103,7 +103,7 @@ bool DropCopyAddCommand::Execute()
 					{
 						if (!lastRepo.IsEmpty())
 						{
-							if (wcsncmp(filepath, lastRepo, lastRepo.GetLength()) == 0)
+							if (CStringUtils::StartsWith(filepath, lastRepo))
 								continue;
 							else
 								lastRepo.Empty();

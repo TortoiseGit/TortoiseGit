@@ -110,7 +110,11 @@ public:
 	static void ParseEmailAddress(CString mailaddress, CString& parsedAddress, CString* parsedName = nullptr);
 
 	static bool IsPlainReadableASCII(const CString& text);
+
+	static bool StartsWith(const wchar_t* heystack, const CString& needle);
 #endif
+	static bool StartsWith(const wchar_t* heystack, const wchar_t* needle);
+
 	/**
 	 * Writes the string \text to the file \path, either in utf16 or utf8 encoding,
 	 * depending on the \c bUTF8 param.

@@ -1,7 +1,7 @@
 
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2015 - TortoiseGit
+// Copyright (C) 2009-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -23,6 +23,7 @@
 #include "gittype.h"
 #include "Git.h"
 #include "GitRevRefBrowser.h"
+#include "StringUtils.h"
 
 GitRevRefBrowser::GitRevRefBrowser() : GitRev()
 {
@@ -64,7 +65,7 @@ int GitRevRefBrowser::GetGitRevRefMap(MAP_REF_GITREVREFBROWSER& map, CString& er
 		CString date = singleRef.Tokenize(L"\04", valuePos).Trim();
 		ref.m_AuthorDate = StrToInt(date);
 
-		if (wcsncmp(refName, L"refs/heads/", 11) == 0)
+		if (CStringUtils::StartsWith(refName, L"refs/heads/"))
 			ref.m_Description = descriptions[refName.Mid(11)];
 
 		map.emplace(refName, ref);

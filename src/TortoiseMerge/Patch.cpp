@@ -25,6 +25,7 @@
 #include "TortoiseMerge.h"
 #include "GitAdminDir.h"
 #include "Patch.h"
+#include "StringUtils.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -83,7 +84,7 @@ BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
 			case 0:
 			{
 				// diff
-				if (wcsncmp(sLine, L"diff ", 5) == 0)
+				if (CStringUtils::StartsWith(sLine, L"diff "))
 				{
 					if (chunks)
 					{
@@ -103,7 +104,7 @@ BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
 			case 1:
 			{
 				//index
-				if (wcsncmp(sLine, L"index", 5) == 0)
+				if (CStringUtils::StartsWith(sLine, L"index"))
 				{
 					int dotstart=sLine.Find(_T(".."));
 					if(dotstart>=0 && chunks)
@@ -115,7 +116,7 @@ BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
 				}
 
 				//---
-				if (wcsncmp(sLine, L"--- ", 4) == 0)
+				if (CStringUtils::StartsWith(sLine, L"--- "))
 				{
 					if (state == 0)
 					{
@@ -149,12 +150,12 @@ BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
 
 					if (chunks->sFilePath.Find('\t')>=0)
 						chunks->sFilePath = chunks->sFilePath.Left(chunks->sFilePath.Find('\t'));
-					if (wcsncmp(chunks->sFilePath, L"\"", 1) == 0 && chunks->sFilePath.ReverseFind(_T('"')) == chunks->sFilePath.GetLength() - 1)
+					if (CStringUtils::StartsWith(chunks->sFilePath, L"\"") && chunks->sFilePath.ReverseFind(_T('"')) == chunks->sFilePath.GetLength() - 1)
 						chunks->sFilePath=chunks->sFilePath.Mid(1, chunks->sFilePath.GetLength() - 2);
-					if (wcsncmp(chunks->sFilePath, L"a/", 2) == 0)
+					if (CStringUtils::StartsWith(chunks->sFilePath, L"a/"))
 						chunks->sFilePath=chunks->sFilePath.Mid(2);
 
-					if (wcsncmp(chunks->sFilePath, L"b/", 2) == 0)
+					if (CStringUtils::StartsWith(chunks->sFilePath, L"b/"))
 						chunks->sFilePath=chunks->sFilePath.Mid(2);
 
 
@@ -167,7 +168,7 @@ BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
 				}
 				if (state == 0)
 				{
-					if (wcsncmp(sLine,L"@@", 2) == 0)
+					if (CStringUtils::StartsWith(sLine, L"@@"))
 					{
 						if (chunks)
 						{
@@ -184,7 +185,7 @@ BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
 			case 3:
 			{
 				// +++
-				if (wcsncmp(sLine, L"+++", 3) != 0)
+				if (!CStringUtils::StartsWith(sLine, L"+++"))
 				{
 					// no starting "+++" found
 					m_sErrorMessage.Format(IDS_ERR_PATCH_NOADDFILELINE, nIndex);
@@ -205,12 +206,12 @@ BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
 					chunks->sFilePath2 = sLine.Left(bracket-1).Trim();
 				if (chunks->sFilePath2.Find('\t')>=0)
 					chunks->sFilePath2 = chunks->sFilePath2.Left(chunks->sFilePath2.Find('\t'));
-				if (wcsncmp(chunks->sFilePath2, L"\"", 1) == 0 && chunks->sFilePath2.ReverseFind(_T('"')) == chunks->sFilePath2.GetLength() - 1)
+				if (CStringUtils::StartsWith(chunks->sFilePath2, L"\"") && chunks->sFilePath2.ReverseFind(_T('"')) == chunks->sFilePath2.GetLength() - 1)
 					chunks->sFilePath2=chunks->sFilePath2.Mid(1, chunks->sFilePath2.GetLength() - 2);
-				if (wcsncmp(chunks->sFilePath2, L"a/", 2) == 0)
+				if (CStringUtils::StartsWith(chunks->sFilePath2, L"a/"))
 					chunks->sFilePath2=chunks->sFilePath2.Mid(2);
 
-				if (wcsncmp(chunks->sFilePath2, L"b/", 2) == 0)
+				if (CStringUtils::StartsWith(chunks->sFilePath2, L"b/"))
 					chunks->sFilePath2=chunks->sFilePath2.Mid(2);
 
 				chunks->sFilePath2.Replace(_T('/'),_T('\\'));
@@ -225,7 +226,7 @@ BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
 			case 4:
 			{
 				//start of a new chunk
-				if (wcsncmp(sLine, L"@@", 2) != 0)
+				if (!CStringUtils::StartsWith(sLine, L"@@"))
 				{
 					//chunk doesn't start with "@@"
 					//so there's garbage in between two file diffs

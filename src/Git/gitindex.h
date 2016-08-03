@@ -23,6 +23,7 @@
 #include "UnicodeUtils.h"
 #include "ReaderWriterLock.h"
 #include "GitAdminDir.h"
+#include "StringUtils.h"
 
 class CGitIndex
 {
@@ -106,7 +107,7 @@ public:
 		std::vector<CString> toRemove;
 		for (auto it = this->cbegin(); it != this->cend(); ++it)
 		{
-			if (wcsncmp((*it).first, thePath, thePath.GetLength()) == 0)
+			if (CStringUtils::StartsWith((*it).first, thePath))
 				toRemove.push_back((*it).first);
 		}
 		for (auto it = toRemove.cbegin(); it != toRemove.cend(); ++it)
@@ -242,7 +243,7 @@ public:
 		std::vector<CString> toRemove;
 		for (auto it = this->cbegin(); it != this->cend(); ++it)
 		{
-			if (wcsncmp((*it).first, thePath, thePath.GetLength()) == 0)
+			if (CStringUtils::StartsWith((*it).first, thePath))
 				toRemove.push_back((*it).first);
 		}
 		for (auto it = toRemove.cbegin(); it != toRemove.cend(); ++it)

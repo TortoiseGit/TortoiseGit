@@ -255,7 +255,6 @@ bool CStringUtils::ReadStringFromTextFile(const CString& path, CString& text)
 	}
 	return true;
 }
-
 #endif // #ifdef _MFC_VER
 
 #if defined(CSTRING_AVAILABLE) || defined(_MFC_VER)
@@ -574,7 +573,17 @@ void CStringUtils::ParseEmailAddress(CString mailaddress, CString& parsedAddress
 	if (parsedName && parsedName->IsEmpty())
 		get_sane_name(parsedName, &mailaddress, parsedAddress);
 }
+
+bool CStringUtils::StartsWith(const wchar_t* heystack, const CString& needle)
+{
+	return wcsncmp(heystack, needle, needle.GetLength()) == 0;
+}
 #endif // #if defined(CSTRING_AVAILABLE) || defined(_MFC_VER)
+
+bool CStringUtils::StartsWith(const wchar_t* heystack, const wchar_t* needle)
+{
+	return wcsncmp(heystack, needle, wcslen(needle)) == 0;
+}
 
 bool CStringUtils::WriteStringToTextFile(const std::wstring& path, const std::wstring& text, bool bUTF8 /* = true */)
 {

@@ -23,7 +23,7 @@
 #include "stdafx.h"
 #include "TortoiseProc.h"
 #include "PushDlg.h"
-
+#include "StringUtils.h"
 #include "Git.h"
 #include "registry.h"
 #include "AppUtils.h"
@@ -256,14 +256,14 @@ void CPushDlg::Refresh()
 		m_BranchSource.SetList(list);
 	else
 		MessageBox(g_Git.GetGitLastErr(_T("Could not get list of local branches.")), _T("TortoiseGit"), MB_ICONERROR);
-	if (wcsncmp(m_BranchSourceName, _T("refs/"), 5) == 0)
+	if (CStringUtils::StartsWith(m_BranchSourceName, L"refs/"))
 		m_BranchSourceName = m_BranchSourceName.Mid(5);
-	if (wcsncmp(m_BranchSourceName, _T("heads/"), 6) == 0)
+	if (CStringUtils::StartsWith(m_BranchSourceName, L"heads/"))
 	{
 		m_BranchSourceName = m_BranchSourceName.Mid(6);
 		m_BranchSource.SetCurSel(m_BranchSource.FindStringExact(-1, m_BranchSourceName));
 	}
-	else if (wcsncmp(m_BranchSourceName, _T("remotes/"), 8) == 0)
+	else if (CStringUtils::StartsWith(m_BranchSourceName, L"remotes/"))
 		m_BranchSource.SetCurSel(m_BranchSource.FindStringExact(-1, m_BranchSourceName));
 	else if (m_BranchSourceName.IsEmpty())
 		m_BranchSource.SetCurSel(current);

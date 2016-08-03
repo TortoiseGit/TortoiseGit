@@ -24,6 +24,7 @@
 #include "GitAdminDir.h"
 #include "gitdll.h"
 #include <functional>
+#include "StringUtils.h"
 
 #define REG_MSYSGIT_PATH _T("Software\\TortoiseGit\\MSysGit")
 #define REG_SYSTEM_GITCONFIGPATH _T("Software\\TortoiseGit\\SystemConfig")
@@ -460,7 +461,7 @@ public:
 	static BOOL GetShortName(const CString& ref, CString& shortname, const CString& prefix)
 	{
 		//TRACE(_T("%s %s\r\n"),ref,prefix);
-		if (ref.Left(prefix.GetLength()) ==  prefix)
+		if (CStringUtils::StartsWith(ref, prefix))
 		{
 			shortname = ref.Right(ref.GetLength() - prefix.GetLength());
 			if (shortname.Right(3) == _T("^{}"))

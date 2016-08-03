@@ -37,6 +37,7 @@
 #include "SysProgressDlg.h"
 #include "LoglistUtils.h"
 #include "GitRevRefBrowser.h"
+#include "StringUtils.h"
 
 static int SplitRemoteBranchName(CString ref, CString &remote, CString &branch)
 {
@@ -392,9 +393,9 @@ CString CBrowseRefsDlg::GetSelectedRef(bool onlyIfLeaf, bool pickFirstSelIfMulti
 		while ((index = m_ListRefLeafs.GetNextSelectedItem(pos)) >= 0)
 		{
 			CString ref = ((CShadowTree*)m_ListRefLeafs.GetItemData(index))->GetRefName();
-			if(wcsncmp(ref, L"refs/", 5) == 0)
+			if (CStringUtils::StartsWith(ref, L"refs/"))
 				ref = ref.Mid(5);
-			if(wcsncmp(ref, L"heads/", 6) == 0)
+			if (CStringUtils::StartsWith(ref, L"heads/"))
 				ref = ref.Mid(6);
 			refs += ref + _T(" ");
 		}
@@ -444,13 +445,13 @@ void CBrowseRefsDlg::Refresh(CString selectRef)
 	if (GitRevRefBrowser::GetGitRevRefMap(refMap, err, [&](const CString& refName)
 	{
 		//Use ref based on m_pickRef_Kind
-		if (wcsncmp(refName, L"refs/heads/", 11) == 0 && !(m_pickRef_Kind & gPickRef_Head))
+		if (CStringUtils::StartsWith(refName, L"refs/heads/") && !(m_pickRef_Kind & gPickRef_Head))
 			return false; //Skip
-		if (wcsncmp(refName, L"refs/tags/", 10) == 0 && !(m_pickRef_Kind & gPickRef_Tag))
+		if (CStringUtils::StartsWith(refName, L"refs/tags/") && !(m_pickRef_Kind & gPickRef_Tag))
 			return false; //Skip
-		if (wcsncmp(refName, L"refs/remotes/", 13) == 0 && !(m_pickRef_Kind & gPickRef_Remote))
+		if (CStringUtils::StartsWith(refName, L"refs/remotes/") && !(m_pickRef_Kind & gPickRef_Remote))
 			return false; //Skip
-		if (m_pickRef_Kind == gPickRef_Remote && wcsncmp(refName, L"refs/remotes/", 13) != 0) // do not show refs/stash if only remote branches are requested
+		if (m_pickRef_Kind == gPickRef_Remote && !CStringUtils::StartsWith(refName, L"refs/remotes/")) // do not show refs/stash if only remote branches are requested
 			return false;
 		return true;
 	}))
@@ -490,7 +491,7 @@ bool CBrowseRefsDlg::SelectRef(CString refName, bool bExactMatch)
 			refName = newRefName;
 		//else refName is not a valid ref. Try to select as good as possible.
 	}
-	if (_wcsnicmp(refName, L"refs", 4) != 0)
+	if (!CStringUtils::StartsWith(refName, L"refs"))
 		return false; // Not a ref name
 
 	CShadowTree& treeLeafHead = GetTreeNode(refName, nullptr, false);
@@ -524,7 +525,7 @@ CShadowTree& CBrowseRefsDlg::GetTreeNode(CString refName, CShadowTree* pTreePos,
 {
 	if (!pTreePos)
 	{
-		if(_wcsnicmp(refName, L"refs/", 5) == 0)
+		if (CStringUtils::StartsWith(refName, L"refs/"))
 			refName=refName.Mid(5);
 		pTreePos=&m_TreeRoot;
 	}
@@ -745,8 +746,13 @@ bool CBrowseRefsDlg::DoDeleteRef(CString completeRefName)
 {
 	bool bIsRemoteBranch = false;
 	bool bIsBranch = false;
-	if		(wcsncmp(completeRefName, L"refs/remotes/",13) == 0)	{bIsBranch = true; bIsRemoteBranch = true;}
-	else if	(wcsncmp(completeRefName, L"refs/heads/",11) == 0)		{bIsBranch = true;}
+	if (CStringUtils::StartsWith(completeRefName, L"refs/remotes/"))
+	{
+		bIsBranch = true;
+		bIsRemoteBranch = true;
+	}
+	else if (CStringUtils::StartsWith(completeRefName, L"refs/heads/"))
+		bIsBranch = true;
 
 	if (bIsRemoteBranch)
 	{
@@ -785,7 +791,7 @@ bool CBrowseRefsDlg::DoDeleteRef(CString completeRefName)
 			return false;
 		}
 	}
-	else if (wcsncmp(completeRefName, L"refs/tags/", 10) == 0)
+	else if (CStringUtils::StartsWith(completeRefName, L"refs/tags/"))
 	{
 		if (g_Git.DeleteRef(completeRefName))
 		{
@@ -1389,7 +1395,7 @@ bool CBrowseRefsDlg::PickRefForCombo(CComboBoxEx* pComboBox, int pickRef_Kind)
 	CString resultRef = PickRef(false,origRef,pickRef_Kind);
 	if(resultRef.IsEmpty())
 		return false;
-	if(wcsncmp(resultRef,L"refs/",5)==0)
+	if (CStringUtils::StartsWith(resultRef, L"refs/"))
 		resultRef = resultRef.Mid(5);
 //	if(wcsncmp(resultRef,L"heads/",6)==0)
 //		resultRef = resultRef.Mid(6);
@@ -1448,7 +1454,7 @@ void CBrowseRefsDlg::OnLvnEndlabeleditListRefLeafs(NMHDR *pNMHDR, LRESULT *pResu
 		newName = m_pListCtrlRoot->GetRefName() + L'/';
 	newName += pDispInfo->item.pszText;
 
-	if(wcsncmp(newName,L"refs/heads/",11)!=0)
+	if (!CStringUtils::StartsWith(newName, L"refs/heads/"))
 	{
 		CMessageBox::Show(m_hWnd, IDS_PROC_BROWSEREFS_NOCHANGEOFTYPE, IDS_APPNAME, MB_OK | MB_ICONERROR);
 		return;

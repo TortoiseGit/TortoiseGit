@@ -228,3 +228,24 @@ TEST(CStringUtils, IsPlainReadableASCII)
 	EXPECT_FALSE(CStringUtils::IsPlainReadableASCII(L"\u570B"));
 	EXPECT_FALSE(CStringUtils::IsPlainReadableASCII(L"\u7ACB"));
 }
+
+TEST(CStringUtils, StartsWith)
+{
+	CString heystack = L"sometest";
+	EXPECT_TRUE(CStringUtils::StartsWith(heystack, L"sometest"));
+	EXPECT_TRUE(CStringUtils::StartsWith(heystack, L""));
+	EXPECT_TRUE(CStringUtils::StartsWith(heystack, L"sometes"));
+	EXPECT_FALSE(CStringUtils::StartsWith(heystack, L"someteste"));
+	EXPECT_FALSE(CStringUtils::StartsWith(heystack, L"sometess"));
+
+	CString empty;
+	CString sometest = L"sometest";
+	CString sometes = L"sometes";
+	CString someteste = L"someteste";
+	CString sometess = L"sometess";
+	EXPECT_TRUE(CStringUtils::StartsWith(heystack, sometest));
+	EXPECT_TRUE(CStringUtils::StartsWith(heystack, empty));
+	EXPECT_TRUE(CStringUtils::StartsWith(heystack, sometes));
+	EXPECT_FALSE(CStringUtils::StartsWith(heystack, someteste));
+	EXPECT_FALSE(CStringUtils::StartsWith(heystack, sometess));
+}

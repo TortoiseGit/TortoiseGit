@@ -44,7 +44,7 @@ IMPLEMENT_DYNAMIC(CGitLogList, CHintCtrl<CListCtrl>)
 
 static void GetFirstEntryStartingWith(STRING_VECTOR& heystack, const CString& needle, CString& result)
 {
-	auto it = std::find_if(heystack.cbegin(), heystack.cend(), [&needle](const CString& entry) { return wcsncmp(entry, needle, needle.GetLength()) == 0; });
+	auto it = std::find_if(heystack.cbegin(), heystack.cend(), [&needle](const CString& entry) { return CStringUtils::StartsWith(entry, needle); });
 	if (it == heystack.cend())
 		return;
 	result = *it;
@@ -799,7 +799,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				while (pos2)
 				{
 					CString ref = m_arShownList.SafeGetAt(GetNextSelectedItem(pos2))->m_Ref;
-					if (wcsncmp(ref, L"refs/", 5) == 0)
+					if (CStringUtils::StartsWith(ref, L"refs/"))
 						ref = ref.Mid(5);
 					int refpos = ref.ReverseFind('{');
 					if (refpos > 0 && ref.Mid(refpos - 1, 2) != _T("@{"))
@@ -811,7 +811,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				{
 					CString ref = *revIt;
 					CString sCmd, out;
-					if (wcsncmp(ref, L"stash", 5) == 0)
+					if (CStringUtils::StartsWith(ref, L"stash"))
 						sCmd.Format(_T("git.exe stash drop %s"), (LPCTSTR)ref);
 					else
 						sCmd.Format(_T("git.exe reflog delete %s"), (LPCTSTR)ref);

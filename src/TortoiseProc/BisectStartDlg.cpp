@@ -26,6 +26,7 @@
 #include "LogDlg.h"
 #include "MessageBox.h"
 #include "AppUtils.h"
+#include "StringUtils.h"
 
 IMPLEMENT_DYNAMIC(CBisectStartDlg, CHorizontalResizableStandAloneDialog)
 
@@ -128,10 +129,10 @@ void CBisectStartDlg::OnBnClickedOk()
 	m_LastGoodRevision = m_cLastGoodRevision.GetString().Trim();
 	m_FirstBadRevision = m_cFirstBadRevision.GetString().Trim();
 
-	if (wcsncmp(m_FirstBadRevision, L"remotes/", 8) == 0)
+	if (CStringUtils::StartsWith(m_FirstBadRevision, L"remotes/"))
 		m_FirstBadRevision = m_FirstBadRevision.Mid(8);
 
-	if (wcsncmp(m_FirstBadRevision, L"remotes/", 8) == 0)
+	if (CStringUtils::StartsWith(m_FirstBadRevision, L"remotes/"))
 		m_FirstBadRevision = m_FirstBadRevision.Mid(8);
 
 	CHorizontalResizableStandAloneDialog::OnOK();

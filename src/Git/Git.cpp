@@ -328,20 +328,20 @@ int CGit::RunAsync(CString cmd, PROCESS_INFORMATION *piOut, HANDLE *hReadOut, HA
 
 	memset(&this->m_CurrentGitPi,0,sizeof(PROCESS_INFORMATION));
 
-	bool startsWithGit = wcsncmp(cmd, L"git", 3) == 0;
-	if (ms_bMsys2Git && startsWithGit && wcsncmp(cmd, L"git.exe config ", 15) != 0)
+	bool startsWithGit = CStringUtils::StartsWith(cmd, L"git");
+	if (ms_bMsys2Git && startsWithGit && !CStringUtils::StartsWith(cmd, L"git.exe config "))
 	{
 		cmd.Replace(_T("\\"), _T("\\\\\\\\"));
 		cmd.Replace(_T("\""), _T("\\\""));
 		cmd = _T('"') + CGit::ms_LastMsysGitDir + _T("\\bash.exe\" -c \"/usr/bin/") + cmd + _T('"');
 	}
-	else if (ms_bCygwinGit && startsWithGit && wcsncmp(cmd, L"git.exe config ", 15) != 0)
+	else if (ms_bCygwinGit && startsWithGit && !CStringUtils::StartsWith(cmd, L"git.exe config "))
 	{
 		cmd.Replace(_T('\\'), _T('/'));
 		cmd.Replace(_T("\""), _T("\\\""));
 		cmd = _T('"') + CGit::ms_LastMsysGitDir + _T("\\bash.exe\" -c \"/bin/") + cmd + _T('"');
 	}
-	else if (startsWithGit || wcsncmp(cmd, L"bash", 4) == 0)
+	else if (startsWithGit || CStringUtils::StartsWith(cmd, L"bash"))
 	{
 		int firstSpace = cmd.Find(_T(" "));
 		if (firstSpace > 0)
@@ -887,9 +887,9 @@ CString CGit::GetFullRefName(const CString& shortRefName)
 
 CString CGit::StripRefName(CString refName)
 {
-	if(wcsncmp(refName, L"refs/heads/", 11) == 0)
+	if (CStringUtils::StartsWith(refName, L"refs/heads/"))
 		refName = refName.Mid(11);
-	else if(wcsncmp(refName, L"refs/", 5) == 0)
+	else if (CStringUtils::StartsWith(refName, L"refs/"))
 		refName = refName.Mid(5);
 	return refName.TrimRight();
 }
@@ -1202,7 +1202,7 @@ int CGit::RunLogFile(CString cmd, const CString &filename, CString *stdErr)
 	LPTSTR pEnv = m_Environment;
 	DWORD dwFlags = CREATE_UNICODE_ENVIRONMENT;
 
-	if (wcsncmp(cmd, L"git", 3) == 0)
+	if (CStringUtils::StartsWith(cmd, L"git"))
 	{
 		int firstSpace = cmd.Find(L' ');
 		if (firstSpace > 0)
@@ -2811,13 +2811,13 @@ CString CGit::GetShortName(const CString& ref, REF_TYPE *out_type)
 		CString bisectBad;
 		g_Git.GetBisectTerms(&bisectGood, &bisectBad);
 		TCHAR c;
-		if (wcsncmp(shortname, bisectGood, bisectGood.GetLength()) == 0 && ((c = shortname.GetAt(bisectGood.GetLength())) == '-' || c == '\0'))
+		if (CStringUtils::StartsWith(shortname, bisectGood) && ((c = shortname.GetAt(bisectGood.GetLength())) == '-' || c == '\0'))
 		{
 			type = CGit::BISECT_GOOD;
 			shortname = bisectGood;
 		}
 
-		if (wcsncmp(shortname, bisectBad, bisectBad.GetLength()) == 0 && ((c = shortname.GetAt(bisectBad.GetLength())) == '-' || c == '\0'))
+		if (CStringUtils::StartsWith(shortname, bisectBad) && ((c = shortname.GetAt(bisectBad.GetLength())) == '-' || c == '\0'))
 		{
 			type = CGit::BISECT_BAD;
 			shortname = bisectBad;

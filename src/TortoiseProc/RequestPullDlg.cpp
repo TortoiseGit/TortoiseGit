@@ -26,6 +26,7 @@
 #include "LogDlg.h"
 #include "MessageBox.h"
 #include "AppUtils.h"
+#include "StringUtils.h"
 
 IMPLEMENT_DYNAMIC(CRequestPullDlg, CHorizontalResizableStandAloneDialog)
 
@@ -129,7 +130,7 @@ void CRequestPullDlg::OnBnClickedOk()
 		return;
 	}
 
-	if (wcsncmp(m_StartRevision, L"remotes/", 8) == 0)
+	if (CStringUtils::StartsWith(m_StartRevision, L"remotes/"))
 		m_StartRevision = m_StartRevision.Mid(8);
 
 	m_regSendMail = m_bSendMail;

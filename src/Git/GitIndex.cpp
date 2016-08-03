@@ -1093,7 +1093,7 @@ bool CGitIgnoreList::CheckAndUpdateCoreExcludefile(const CString &adminDir)
 	config.GetString(_T("core.excludesfile"), excludesFile);
 	if (excludesFile.IsEmpty())
 		excludesFile = GetWindowsHome() + _T("\\.config\\git\\ignore");
-	else if (wcsncmp(excludesFile, L"~/", 2) == 0)
+	else if (CStringUtils::StartsWith(excludesFile, L"~/"))
 		excludesFile = GetWindowsHome() + excludesFile.Mid(1);
 
 	CAutoWriteLock lockMap(m_SharedMutex);

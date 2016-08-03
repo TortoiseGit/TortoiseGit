@@ -23,6 +23,7 @@
 #include "Git.h"
 #include "MessageBox.h"
 #include "SmartHandle.h"
+#include "StringUtils.h"
 
 bool CatCommand::Execute()
 {
@@ -92,7 +93,7 @@ bool CatCommand::Execute()
 		return false;
 	}
 
-	if (wcsncmp(output, L"blob", 4) == 0)
+	if (CStringUtils::StartsWith(output, L"blob"))
 		cmd.Format(_T("git.exe cat-file -p %s"), (LPCTSTR)revision);
 	else
 		cmd.Format(_T("git.exe show %s -- \"%s\""), (LPCTSTR)revision, (LPCTSTR)this->cmdLinePath.GetWinPathString());

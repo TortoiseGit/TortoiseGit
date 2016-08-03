@@ -20,7 +20,7 @@
 #include "stdafx.h"
 #include "resource.h"
 #include "FindDlg.h"
-
+#include "StringUtils.h"
 
 // CFindDlg dialog
 
@@ -175,11 +175,11 @@ void CFindDlg::AddToList()
 	{
 		int nImage = -1;
 		CString ref = m_RefList[i];
-		if (wcsncmp(ref, L"refs/tags", 9) == 0)
+		if (CStringUtils::StartsWith(ref, L"refs/tags"))
 			nImage = 0;
-		else if (wcsncmp(ref, L"refs/remotes", 12) ==0)
+		else if (CStringUtils::StartsWith(ref, L"refs/remotes"))
 			nImage = 2;
-		else if (wcsncmp(ref, L"refs/heads", 10) == 0)
+		else if (CStringUtils::StartsWith(ref, L"refs/heads"))
 			nImage = 1;
 
 		if(ref.Find(filter)>=0)

@@ -1237,7 +1237,7 @@ LRESULT CFileDiffDlg::OnRefLoad(WPARAM /*wParam*/, LPARAM /*lParam*/)
 	{
 		CString str=m_Reflist[i];
 
-		if (wcsncmp(str, L"remotes/", 8) == 0)
+		if (CStringUtils::StartsWith(str, L"remotes/"))
 			str=str.Mid(8);
 
 		m_ctrRev1Edit.AddSearchString(str);

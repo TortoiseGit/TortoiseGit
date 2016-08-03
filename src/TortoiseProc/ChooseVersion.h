@@ -22,6 +22,7 @@
 #include "BrowseRefsDlg.h"
 #include "MessageBox.h"
 #include "registry.h"
+#include "StringUtils.h"
 
 static UINT WM_GUIUPDATES = RegisterWindowMessage(_T("TORTOISEGIT_CHOOSEVERSION_GUIUPDATES"));
 
@@ -157,22 +158,22 @@ protected:
 				refName = fullRefName;
 		}
 
-		if(wcsncmp(refName,L"refs/",5)==0)
+		if (CStringUtils::StartsWith(refName, L"refs/"))
 			refName = refName.Mid(5);
-		if(wcsncmp(refName,L"heads/",6)==0)
+		if (CStringUtils::StartsWith(refName, L"heads/"))
 		{
 			refName = refName.Mid(6);
 			SetDefaultChoose(IDC_RADIO_BRANCH);
 			m_ChooseVersioinBranch.SetCurSel(
 				m_ChooseVersioinBranch.FindStringExact(-1, refName));
 		}
-		else if(wcsncmp(refName,L"remotes/",8)==0)
+		else if (CStringUtils::StartsWith(refName, L"remotes/"))
 		{
 			SetDefaultChoose(IDC_RADIO_BRANCH);
 			m_ChooseVersioinBranch.SetCurSel(
 				m_ChooseVersioinBranch.FindStringExact(-1, refName));
 		}
-		else if(wcsncmp(refName,L"tags/",5)==0)
+		else if (CStringUtils::StartsWith(refName, L"tags/"))
 		{
 			refName = refName.Mid(5);
 			refName.Replace(_T("^{}"), _T(""));

@@ -276,16 +276,16 @@ BOOL CTortoiseProcApp::InitInstance()
 	if (parser.HasKey(_T("urlhandler")))
 	{
 		CString url = parser.GetVal(_T("urlhandler"));
-		if (wcsncmp(url, L"tgit://clone/", 13) == 0)
+		if (CStringUtils::StartsWith(url, L"tgit://clone/"))
 			url = url.Mid(13); // 21 = "tgit://clone/".GetLength()
-		else if (wcsncmp(url, L"github-windows://openRepo/", 26) == 0)
+		else if (CStringUtils::StartsWith(url, L"github-windows://openRepo/"))
 		{
 			url = url.Mid(26); // 26 = "github-windows://openRepo/".GetLength()
 			int questioMark = url.Find('?');
 			if (questioMark > 0)
 				url = url.Left(questioMark);
 		}
-		else if (wcsncmp(url, L"smartgit://cloneRepo/", 21) == 0)
+		else if (CStringUtils::StartsWith(url, L"smartgit://cloneRepo/"))
 			url = url.Mid(21); // 21 = "smartgit://cloneRepo/".GetLength()
 		else
 		{
