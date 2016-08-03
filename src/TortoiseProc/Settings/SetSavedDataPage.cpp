@@ -373,7 +373,7 @@ void CSetSavedDataPage::OnBnClickedStoreddecisionsclear()
 	static const CString tmergevalues[] = {
 		L"DeleteFileWhenEmpty",
 	};
-	for (const auto& value : tgitvalues)
+	for (const auto& value : tmergevalues)
 	{
 		CRegDWORD regkey(_T("Software\\TortoiseGitMerge\\") + value);
 		regkey.removeValue();
