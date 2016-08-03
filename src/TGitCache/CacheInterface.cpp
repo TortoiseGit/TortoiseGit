@@ -59,7 +59,6 @@ CString GetCacheID()
 
 bool SendCacheCommand(BYTE command, const WCHAR* path /* = nullptr */)
 {
-	int retrycount = 2;
 	CAutoFile hPipe;
 	CString pipeName = GetCacheCommandPipeName();
 	for (int retry = 0; retry < 2; ++retry)
@@ -107,7 +106,7 @@ bool SendCacheCommand(BYTE command, const WCHAR* path /* = nullptr */)
 		if (path)
 			_tcsncpy_s(cmd.path, path, _TRUNCATE);
 
-		retrycount = 2;
+		int retrycount = 2;
 		BOOL fSuccess = FALSE;
 		do
 		{

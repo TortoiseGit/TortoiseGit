@@ -865,7 +865,6 @@ int CBaseView::GetScreenLines()
 	{
 		CRect rect;
 		GetClientRect(&rect);
-		int scrollBarHeight = 0;
 		SCROLLBARINFO sbi = { sizeof(sbi) };
 		if (GetScrollBarInfo(OBJID_HSCROLL, &sbi))
 		{
@@ -874,7 +873,7 @@ int CBaseView::GetScreenLines()
 			// and calculate the screen lines without it.
 			if (!(sbi.rgstate[0] & STATE_SYSTEM_INVISIBLE) && !(sbi.rgstate[0] & STATE_SYSTEM_UNAVAILABLE))
 			{
-				scrollBarHeight = sbi.rcScrollBar.bottom - sbi.rcScrollBar.top;
+				int scrollBarHeight = sbi.rcScrollBar.bottom - sbi.rcScrollBar.top;
 				m_nScreenLines = (rect.Height() - HEADERHEIGHT - scrollBarHeight) / GetLineHeight();
 				if (m_nScreenLines < 0)
 					m_nScreenLines = 0;

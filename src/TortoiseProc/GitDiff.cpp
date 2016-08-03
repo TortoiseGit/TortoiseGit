@@ -337,11 +337,10 @@ void CGitDiff::GetSubmoduleChangeType(CGit& subgit, const CString& oldhash, cons
 	}
 	else if (oldhash != newhash)
 	{
-		bool ffNewer = false, ffOlder = false;
-		ffNewer = subgit.IsFastForward(oldhash, newhash);
+		bool ffNewer = subgit.IsFastForward(oldhash, newhash);
 		if (!ffNewer)
 		{
-			ffOlder = subgit.IsFastForward(newhash, oldhash);
+			bool ffOlder = subgit.IsFastForward(newhash, oldhash);
 			if (!ffOlder)
 			{
 				if (newTime > oldTime)

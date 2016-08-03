@@ -71,18 +71,16 @@ void CPathUtils::Unescape(char * psz)
 			}
 
 			char nValue = '?';
-			const char* pszLow = nullptr;
-			const char* pszHigh = nullptr;
 			++pszSource;
 
 			*pszSource = (char) toupper(*pszSource);
-			pszHigh = strchr(szHex, *pszSource);
+			const char* pszHigh = strchr(szHex, *pszSource);
 
 			if (pszHigh)
 			{
 				++pszSource;
 				*pszSource = (char) toupper(*pszSource);
-				pszLow = strchr(szHex, *pszSource);
+				const char* pszLow = strchr(szHex, *pszSource);
 
 				if (pszLow)
 				{

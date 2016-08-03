@@ -2292,12 +2292,10 @@ BOOL CGit::CheckCleanWorkTree(bool stagedOk /* false */)
 }
 int CGit::Revert(const CString& commit, const CTGitPathList &list, CString& err)
 {
-	int ret;
 	for (int i = 0; i < list.GetCount(); ++i)
 	{
-		ret = Revert(commit, (CTGitPath&)list[i], err);
-		if(ret)
-			return ret;
+		if (Revert(commit, (CTGitPath&)list[i], err))
+			return -1;
 	}
 	return 0;
 }
@@ -3392,13 +3390,13 @@ int CGit::GetGitVersion(CString* versiondebug, CString* errStr)
 		return -1;
 	}
 
-	int start = 0;
 	int ver = 0;
 	if (versiondebug)
 		*versiondebug = version;
 
 	try
 	{
+		int start = 0;
 		CString str = version.Tokenize(_T("."), start);
 		int space = str.ReverseFind(_T(' '));
 		str = str.Mid(space + 1, start);
