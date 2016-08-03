@@ -297,8 +297,6 @@ private:
 	mutable CString m_sLongBackslashPath;
 	mutable CString m_sFwdslashPath;
 	mutable CString m_sUIPath;
-	mutable	CStringA m_sUTF8FwdslashPath;
-	mutable CStringA m_sUTF8FwdslashPathEscaped;
 	mutable CString m_sProjectRoot;
 
 	//used for rename case

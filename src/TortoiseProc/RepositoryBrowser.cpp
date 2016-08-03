@@ -794,7 +794,6 @@ void CRepositoryBrowser::ShowContextMenu(CPoint point, TShadowFilesTreeList &sel
 
 	if (bAddSeparator)
 		popupMenu.AppendMenu(MF_SEPARATOR);
-	bAddSeparator = false;
 
 	if (selectedLeafs.size() == 1 && selType == ONLY_FILES)
 	{

@@ -1598,7 +1598,7 @@ CString CGit::DerefFetchHead()
 		bool forMerge = pos == prevPos;
 		++pos; prevPos = pos; pos = line.size(); if(pos == std::string::npos) continue;
 
-		std::string remoteBranch = line.substr(prevPos, pos - prevPos);
+		//std::string remoteBranch = line.substr(prevPos, pos - prevPos);
 
 		//Process this line
 		if(forMerge)

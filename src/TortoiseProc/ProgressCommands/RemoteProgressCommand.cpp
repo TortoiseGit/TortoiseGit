@@ -42,14 +42,14 @@ int RemoteProgressCommand::RemoteCompletionCallback(git_remote_completion_type /
 int RemoteProgressCommand::RemoteUpdatetipsCallback(const char* refname, const git_oid* oldOid, const git_oid* newOid, void* data)
 {
 	auto ptr = (CGitProgressList::Payload*)data;
-	bool nonff = false;
+	/*bool nonff = false;
 	if (!git_oid_iszero(oldOid) && !git_oid_iszero(newOid))
 	{
 		git_oid baseOid = { 0 };
 		if (!git_merge_base(&baseOid, ptr->repo, newOid, oldOid))
 			if (!git_oid_equal(oldOid, &baseOid))
 				nonff = true;
-	}
+	}*/
 
 	CString change;
 	if (!git_oid_iszero(oldOid) && !git_oid_iszero(newOid))

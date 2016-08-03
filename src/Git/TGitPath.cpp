@@ -246,8 +246,6 @@ void CTGitPath::SetFwdslashPath(const CString& sPath) const
 
 	path.Replace(_T("file:////"), _T("file://"));
 	m_sFwdslashPath = path;
-
-	m_sUTF8FwdslashPath.Empty();
 }
 
 void CTGitPath::SetBackslashPath(const CString& sPath) const
@@ -257,11 +255,6 @@ void CTGitPath::SetBackslashPath(const CString& sPath) const
 	path.TrimRight('\\');
 	SanitizeRootPath(path, false);
 	m_sBackslashPath = path;
-}
-
-void CTGitPath::SetUTF8FwdslashPath(const CString& sPath) const
-{
-	m_sUTF8FwdslashPath = CUnicodeUtils::GetUTF8(sPath);
 }
 
 void CTGitPath::SanitizeRootPath(CString& sPath, bool bIsForwardPath) const
@@ -414,7 +407,6 @@ void CTGitPath::Reset()
 
 	m_sBackslashPath.Empty();
 	m_sFwdslashPath.Empty();
-	m_sUTF8FwdslashPath.Empty();
 	this->m_Action=0;
 	this->m_StatAdd.Empty();
 	this->m_StatDel.Empty();
