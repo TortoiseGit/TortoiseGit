@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2015 - TortoiseGit
+// Copyright (C) 2008-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -156,7 +156,7 @@ int GitRev::GetCommitFromHash(git_repository* repo, const CGitHash& hash)
 
 int GitRev::GetCommit(git_repository* repo, const CString& refname)
 {
-	if (refname.GetLength() >= 8 && refname.Find(_T("00000000")) == 0)
+	if (refname.GetLength() >= 8 && wcsncmp(refname, GitRev::GetWorkingCopy(), refname.GetLength()) == 0)
 	{
 		Clear();
 		m_Subject = _T("Working Copy");
@@ -272,7 +272,7 @@ int GitRev::GetCommit(const CString& refname)
 	}
 
 	if(refname.GetLength() >= 8)
-		if(refname.Find(_T("00000000")) == 0)
+		if (refname.GetLength() >= 8 && wcsncmp(refname, GitRev::GetWorkingCopy(), refname.GetLength()) == 0)
 		{
 			this->m_CommitHash.Empty();
 			this->m_Subject=_T("Working Copy");
