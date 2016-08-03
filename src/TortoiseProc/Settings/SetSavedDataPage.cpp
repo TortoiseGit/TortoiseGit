@@ -361,6 +361,8 @@ void CSetSavedDataPage::OnBnClickedStoreddecisionsclear()
 		L"NoStashIncludeUntrackedWarning",
 		L"CommitMergeHint",
 		L"AskSetTrackedBranch",
+		L"StashPopShowChanges",
+		L"StashPopShowConflictChanges",
 	};
 	for (const auto& value : tgitvalues)
 	{

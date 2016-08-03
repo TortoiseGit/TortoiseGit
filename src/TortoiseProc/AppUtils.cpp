@@ -229,7 +229,7 @@ bool CAppUtils::StashPop(int showChanges /* = 1 */)
 			message.LoadString(IDS_PROC_STASHPOPFAILEDCONFLICTS);
 		if (showChanges == 1 || (showChanges == 0 && hasConflicts))
 		{
-			if (CMessageBox::Show(nullptr, message + L'\n' + CString(MAKEINTRESOURCE(IDS_SEECHANGES)), L"TortoiseGit", MB_YESNO | (hasConflicts ? MB_ICONEXCLAMATION : MB_ICONINFORMATION)) == IDYES)
+			if (CMessageBox::ShowCheck(nullptr, message + L'\n' + CString(MAKEINTRESOURCE(IDS_SEECHANGES)), L"TortoiseGit", MB_YESNO | (hasConflicts ? MB_ICONEXCLAMATION : MB_ICONINFORMATION), hasConflicts ? L"StashPopShowConflictChanges" : L"StashPopShowChanges") == IDYES)
 			{
 				CChangedDlg dlg;
 				dlg.m_pathList.AddPath(CTGitPath());

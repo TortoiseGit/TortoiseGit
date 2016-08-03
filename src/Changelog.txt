@@ -4,6 +4,7 @@ Released: unreleased
 == Features ==
  * Fixed issue #2755: TortoiseGitMerge: find dialog box does not remember desktop location between invocations 
  * When an alternative/external diff or merge tool is configured, you can now press the shift key while opening the diff to fall back to TortoiseGitMerge
+ * Fixed issue #2812: Better indicate conflicts on stash pop and allow to automatically show changes
 
 == Bug Fixes ==
  * Fixed issue #2789: Sync Dialog In ChangeList tab auto-resize column not optimal
