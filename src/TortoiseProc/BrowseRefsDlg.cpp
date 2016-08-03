@@ -1518,7 +1518,7 @@ LRESULT CBrowseRefsDlg::OnClickedInfoIcon(WPARAM /*wParam*/, LPARAM lParam)
 	CPoint point;
 	CString temp;
 	point = CPoint(rect->left, rect->bottom);
-#define LOGMENUFLAGS(x) (MF_STRING | MF_ENABLED | (m_SelectedFilters & x ? MF_CHECKED : MF_UNCHECKED))
+#define LOGMENUFLAGS(x) (MF_STRING | MF_ENABLED | ((m_SelectedFilters & x) ? MF_CHECKED : MF_UNCHECKED))
 	CMenu popup;
 	if (popup.CreatePopupMenu())
 	{
