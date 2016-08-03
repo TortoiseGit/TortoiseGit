@@ -117,7 +117,7 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 	{
 		resize(ecount);
 	}
-	catch (std::bad_alloc ex)
+	catch (const std::bad_alloc& ex)
 	{
 		repository.Free();
 		CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Could not resize index-vector: %s\n", ex.what());
@@ -733,7 +733,7 @@ int CGitHeadFileList::ReadTree()
 	{
 		ret = ret && !ReadTreeRecursive(*repository, tree, "", CGitHeadFileList::CallBack, this);
 	}
-	catch (std::bad_alloc ex)
+	catch (const std::bad_alloc& ex)
 	{
 		CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Catched exception inside ReadTreeRecursive: %s\n", ex.what());
 		return -1;
