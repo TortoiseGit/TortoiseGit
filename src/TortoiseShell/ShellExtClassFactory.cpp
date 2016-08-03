@@ -22,11 +22,9 @@
 
 
 CShellExtClassFactory::CShellExtClassFactory(FileState state)
+	: m_StateToMake(state)
+	, m_cRef(0L)
 {
-	m_StateToMake = state;
-
-	m_cRef = 0L;
-
 	InterlockedIncrement(&g_cRefThisDll);
 }
 

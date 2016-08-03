@@ -577,7 +577,7 @@ void CImportPatchDlg::SaveSplitterPos()
 {
 	if (!IsIconic())
 	{
-		CRegDWORD regPos = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\ResizableState\\AMDlgSizer"));
+		CRegDWORD regPos(L"Software\\TortoiseGit\\TortoiseProc\\ResizableState\\AMDlgSizer");
 		RECT rectSplitter;
 		m_wndSplitter.GetWindowRect(&rectSplitter);
 		ScreenToClient(&rectSplitter);

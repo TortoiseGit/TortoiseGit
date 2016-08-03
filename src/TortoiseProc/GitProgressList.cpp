@@ -1094,8 +1094,8 @@ void CGitProgressList::SetProgressLabelText(const CString& str)
 
 CGitProgressList::WC_File_NotificationData::WC_File_NotificationData(const CTGitPath& path, git_wc_notify_action_t action)
 : NotificationData()
+, action(action)
 {
-	this->action = action;
 	this->path = path;
 	sPathColumnText = path.GetGitPathString();
 
