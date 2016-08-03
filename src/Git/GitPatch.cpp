@@ -280,9 +280,10 @@ CString GitPatch::CheckPatchPath(const CString& path)
 
 	// now go up the tree and try again
 	CString upperpath = path;
-	while (upperpath.ReverseFind('\\')>0)
+	int trimPos;
+	while ((trimPos = upperpath.ReverseFind(L'\\')) > 0)
 	{
-		upperpath = upperpath.Left(upperpath.ReverseFind('\\'));
+		upperpath.Truncate(trimPos);
 		progress.SetLine(2, upperpath, true);
 		if (progress.HasUserCancelled())
 			return path;
@@ -311,9 +312,9 @@ CString GitPatch::CheckPatchPath(const CString& path)
 	// But: we can compare paths strings without the filenames
 	// and check if at least those match
 	upperpath = path;
-	while (upperpath.ReverseFind('\\')>0)
+	while ((trimPos = upperpath.ReverseFind(L'\\')) > 0)
 	{
-		upperpath = upperpath.Left(upperpath.ReverseFind('\\'));
+		upperpath.Truncate(trimPos);
 		progress.SetLine(2, upperpath, true);
 		if (progress.HasUserCancelled())
 			return path;
@@ -350,7 +351,7 @@ int GitPatch::CountDirMatches(const CString& path) const
 		if (PathIsRelative(temp))
 			temp = path + _T("\\")+ temp;
 		// remove the filename
-		temp = temp.Left(temp.ReverseFind('\\'));
+		temp.Truncate(max(0, temp.ReverseFind(L'\\')));
 		if (PathFileExists(temp))
 			++matches;
 	}

@@ -1967,7 +1967,7 @@ int CGit::GetMapHashToFriendName(MAP_HASH_NAME &map)
 			return;
 
 		CGitHash hash;
-		hash.ConvertFromStrA(lineA.Left(start));
+		hash.ConvertFromStrA(lineA);
 		map[hash].push_back(CUnicodeUtils::GetUnicode(lineA.Mid(start + 1)));
 	});
 

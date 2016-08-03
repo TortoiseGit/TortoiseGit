@@ -465,7 +465,7 @@ public:
 		{
 			shortname = ref.Right(ref.GetLength() - prefix.GetLength());
 			if (shortname.Right(3) == _T("^{}"))
-				shortname=shortname.Left(shortname.GetLength() - 3);
+				shortname.Truncate(shortname.GetLength() - 3);
 			return TRUE;
 		}
 		return FALSE;

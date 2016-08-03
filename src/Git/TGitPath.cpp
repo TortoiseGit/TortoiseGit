@@ -501,9 +501,8 @@ CString CTGitPath::GetBaseFilename() const
 	CString filename=GetFilename();
 	dot = filename.ReverseFind(_T('.'));
 	if(dot>0)
-		return filename.Left(dot);
-	else
-		return filename;
+		filename.Truncate(dot);
+	return filename;
 }
 
 bool CTGitPath::ArePathStringsEqual(const CString& sP1, const CString& sP2)

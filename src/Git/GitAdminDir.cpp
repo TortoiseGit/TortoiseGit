@@ -45,7 +45,7 @@ CString GitAdminDir::GetSuperProjectRoot(const CString& path)
 				return _T("");
 		}
 
-		projectroot = projectroot.Left(projectroot.ReverseFind('\\'));
+		projectroot.Truncate(max(0, projectroot.ReverseFind(L'\\')));
 
 		// don't check for \\COMPUTERNAME\.git
 		if (projectroot[0] == _T('\\') && projectroot[1] == _T('\\') && projectroot.Find(_T('\\'), 2) < 0)
@@ -87,7 +87,7 @@ bool GitAdminDir::HasAdminDir(const CString& path, bool bDir, CString* ProjectTo
 		// e.g "C:\"
 		if (path.GetLength() <= 3)
 			return false;
-		sDirName = path.Left(path.ReverseFind(_T('\\')));
+		sDirName.Truncate(max(0, sDirName.ReverseFind(L'\\')));
 	}
 
 	// a .git dir or anything inside it should be left out, only interested in working copy files -- Myagi
@@ -124,7 +124,7 @@ bool GitAdminDir::HasAdminDir(const CString& path, bool bDir, CString* ProjectTo
 		if (x < 2)
 			break;
 
-		sDirName = sDirName.Left(x);
+		sDirName.Truncate(x);
 		// don't check for \\COMPUTERNAME\.git
 		if (sDirName[0] == _T('\\') && sDirName[1] == _T('\\') && sDirName.Find(_T('\\'), 2) < 0)
 			break;

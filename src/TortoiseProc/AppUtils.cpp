@@ -2194,7 +2194,7 @@ CString CAppUtils::GetClipboardLink(const CString &skipGitPrefix, int paramsCoun
 					break;
 			}
 			if (spacePos > 0 && paramsCount < 0)
-				sClipboardText = sClipboardText.Left(spacePos);
+				sClipboardText.Truncate(spacePos);
 			return sClipboardText;
 		}
 	}
@@ -2328,7 +2328,7 @@ int CAppUtils::SaveCommitUnicodeFile(const CString& filename, CString &message)
 			CString line = message.Mid(oldStart);
 			if (start != -1)
 			{
-				line = line.Left(start - oldStart);
+				line.Truncate(start - oldStart);
 				++start; // move forward so we don't find the same char again
 			}
 			if (stripComments && (!line.IsEmpty() && line.GetAt(0) == commentChar) || (start < 0 && line.IsEmpty()))
@@ -2947,7 +2947,7 @@ void CAppUtils::RemoveTrailSlash(CString &path)
 
 	while(path[path.GetLength()-1] == _T('\\') || path[path.GetLength()-1] == _T('/' ) )
 	{
-		path=path.Left(path.GetLength()-1);
+		path.Truncate(path.GetLength() - 1);
 		if(path.IsEmpty())
 			return;
 	}
@@ -3587,7 +3587,7 @@ int CAppUtils::ExploreTo(HWND hwnd, CString path)
 		int pos = path.ReverseFind(_T('\\'));
 		if (pos <= 3)
 			break;
-		path = path.Left(pos);
+		path.Truncate(pos);
 	} while (!PathFileExists(path));
 	return (INT_PTR)ShellExecute(hwnd, _T("explore"), path, nullptr, nullptr, SW_SHOW) > 32 ? 0 : -1;
 }

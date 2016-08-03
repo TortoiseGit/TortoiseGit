@@ -700,7 +700,7 @@ bool GitStatus::IsExistIndexLockFile(CString sDirName)
 		if (x < 2)
 			return false;
 
-		sDirName = sDirName.Left(x);
+		sDirName.Truncate(x);
 	}
 
 	for (;;)
@@ -717,7 +717,7 @@ bool GitStatus::IsExistIndexLockFile(CString sDirName)
 		if (x < 2)
 			return false;
 
-		sDirName = sDirName.Left(x);
+		sDirName.Truncate(x);
 	}
 }
 #endif

@@ -1672,7 +1672,7 @@ void CCommitDlg::ParseRegexFile(const CString& sFile, std::map<CString, CString>
 		{
 			if (strLine.IsEmpty())
 				continue;
-			if (strLine.Left(1) == L'#')
+			if (strLine[0] == L'#')
 				continue;
 			int eqpos = strLine.Find('=');
 			CString rgx;
@@ -1705,7 +1705,7 @@ void CCommitDlg::ParseSnippetFile(const CString& sFile, std::map<CString, CStrin
 		{
 			if (strLine.IsEmpty())
 				continue;
-			if (strLine.Left(1) == _T('#')) // comment char
+			if (strLine[0] == _T('#')) // comment char
 				continue;
 			int eqpos = strLine.Find('=');
 			CString key = strLine.Left(eqpos);

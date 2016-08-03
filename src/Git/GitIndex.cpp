@@ -769,7 +769,7 @@ int CGitIgnoreItem::FetchIgnoreList(const CString &projectroot, const CString &f
 		int start = base.ReverseFind(_T('/'));
 		if(start > 0)
 		{
-			base = base.Left(start);
+			base.Truncate(start);
 			this->m_BaseDir = CUnicodeUtils::GetMulti(base, CP_UTF8) + "/";
 		}
 	}
@@ -907,7 +907,7 @@ bool CGitIgnoreList::CheckIgnoreChanged(const CString &gitdir, const CString &pa
 	{
 		int x = temp.ReverseFind(_T('\\'));
 		if (x >= 2)
-			temp = temp.Left(x);
+			temp.Truncate(x);
 	}
 
 	while(!temp.IsEmpty())
@@ -948,7 +948,7 @@ bool CGitIgnoreList::CheckIgnoreChanged(const CString &gitdir, const CString &pa
 				break;
 		}
 
-		temp = temp.Left(i);
+		temp.Truncate(i);
 	}
 	return true;
 }
@@ -980,7 +980,7 @@ int CGitIgnoreList::LoadAllIgnoreFile(const CString &gitdir, const CString &path
 	{
 		int x = temp.ReverseFind(_T('\\'));
 		if (x >= 2)
-			temp = temp.Left(x);
+			temp.Truncate(x);
 	}
 
 	while (!temp.IsEmpty())
@@ -1032,7 +1032,7 @@ int CGitIgnoreList::LoadAllIgnoreFile(const CString &gitdir, const CString &path
 				break;
 		}
 
-		temp = temp.Left(i);
+		temp.Truncate(i);
 	}
 	return 0;
 }
@@ -1126,7 +1126,7 @@ bool CGitIgnoreList::IsIgnore(CString str, const CString& projectroot, bool isDi
 	str.Replace(_T('\\'),_T('/'));
 
 	if (!str.IsEmpty() && str[str.GetLength() - 1] == _T('/'))
-		str = str.Left(str.GetLength() - 1);
+		str.Truncate(str.GetLength() - 1);
 
 	int ret;
 	ret = CheckIgnore(str, projectroot, isDir);
@@ -1136,7 +1136,7 @@ bool CGitIgnoreList::IsIgnore(CString str, const CString& projectroot, bool isDi
 		if(start < 0)
 			return (ret == 1);
 
-		str = str.Left(start);
+		str.Truncate(start);
 		ret = CheckIgnore(str, projectroot, isDir);
 	}
 
@@ -1166,7 +1166,7 @@ int CGitIgnoreList::CheckIgnore(const CString &path, const CString &projectroot,
 		// we do not need to check for a .ignore file inside a directory we might ignore
 		int i = temp.ReverseFind(_T('\\'));
 		if (i >= 0)
-			temp = temp.Left(i);
+			temp.Truncate(i);
 	}
 	else
 	{
@@ -1174,7 +1174,7 @@ int CGitIgnoreList::CheckIgnore(const CString &path, const CString &projectroot,
 
 		int x = temp.ReverseFind(_T('\\'));
 		if (x >= 2)
-			temp = temp.Left(x);
+			temp.Truncate(x);
 	}
 
 	int pos = patha.ReverseFind('/');
@@ -1223,7 +1223,7 @@ int CGitIgnoreList::CheckIgnore(const CString &path, const CString &projectroot,
 				break;
 		}
 
-		temp = temp.Left(i);
+		temp.Truncate(i);
 	}
 
 	return ret;
