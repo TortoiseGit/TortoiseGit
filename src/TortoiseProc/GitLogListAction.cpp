@@ -305,6 +305,8 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 					}
 					else
 					{
+						if (cmd == 0)
+							cmd = 1;
 						if ((size_t)cmd > r1->m_ParentHash.size())
 						{
 							CString str;
