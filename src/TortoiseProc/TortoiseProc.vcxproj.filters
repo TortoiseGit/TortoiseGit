@@ -917,6 +917,9 @@
     <ClCompile Include="..\Utils\WindowsCredentialsStore.cpp">
       <Filter>Utils\General</Filter>
     </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\FileDlgEventHandler.cpp">
+      <Filter>Utils\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddRemoteDlg.h">
@@ -1713,6 +1716,9 @@
     </ClInclude>
     <ClInclude Include="..\Utils\WindowsCredentialsStore.h">
       <Filter>Utils\General</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\FileDlgEventHandler.h">
+      <Filter>Utils\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
