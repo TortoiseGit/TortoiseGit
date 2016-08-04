@@ -66,10 +66,10 @@ public:
 
 	static BOOL m_bCheck;		///< state of the checkbox on closing the dialog
 	static BOOL m_bCheck2;
-	TCHAR m_title[200];
 protected:
 	static CString m_sDefaultPath;
-	static TCHAR m_CheckText[200];
-	static TCHAR m_CheckText2[200];
-	static bool m_DisableCheckbox2WhenCheckbox1IsChecked;
+	TCHAR m_title[200];
+	CString m_CheckText;
+	CString m_CheckText2;
+	bool m_DisableCheckbox2WhenCheckbox1IsChecked;
 };
