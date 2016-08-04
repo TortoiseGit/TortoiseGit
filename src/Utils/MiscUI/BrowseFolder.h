@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2008, 2010, 2013 - TortoiseSVN
+// Copyright (C) 2003-2008, 2010, 2013, 2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -20,7 +20,6 @@
 
 /**
  * \ingroup Utils
- * A simple wrapper class for the SHBrowseForFolder API on XP.
  * On Vista and later, the IFileDialog is used with the FOS_PICKFOLDERS flag.
  */
 class CBrowseFolder
@@ -69,19 +68,7 @@ public:
 	static BOOL m_bCheck2;
 	TCHAR m_title[200];
 protected:
-	static void SetFont(HWND hwnd,LPTSTR FontName,int FontSize);
-
-	static int CALLBACK BrowseCallBackProc(HWND  hwnd,UINT  uMsg,LPARAM  lParam,LPARAM  lpData);
-	static LRESULT APIENTRY CheckBoxSubclassProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam);
-	static LRESULT APIENTRY CheckBoxSubclassProc2(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam);
-
-	static WNDPROC CBProc;
-	static HWND checkbox;
-	static HWND checkbox2;
-	static HWND ListView;
 	static CString m_sDefaultPath;
-	TCHAR m_displayName[200];
-	PCIDLIST_ABSOLUTE m_root;
 	static TCHAR m_CheckText[200];
 	static TCHAR m_CheckText2[200];
 	static bool m_DisableCheckbox2WhenCheckbox1IsChecked;
