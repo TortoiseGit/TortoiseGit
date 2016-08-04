@@ -162,6 +162,9 @@
     <Filter Include="TortoiseGitMerge">
       <UniqueIdentifier>{69ffded7-2494-4d2b-b7d8-4681289c8b1e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Commands\CommitIsOnRefs">
+      <UniqueIdentifier>{c9518b55-36f2-4643-ab1a-c9e6d30ad1b6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AddRemoteDlg.cpp">
@@ -919,6 +922,12 @@
     </ClCompile>
     <ClCompile Include="..\Utils\MiscUI\FileDlgEventHandler.cpp">
       <Filter>Utils\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="CommitIsOnRefsDlg.cpp">
+      <Filter>Commands\CommitIsOnRefs</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\CommitIsOnRefsCommand.cpp">
+      <Filter>Commands\CommitIsOnRefs</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1719,6 +1728,12 @@
     </ClInclude>
     <ClInclude Include="..\Utils\MiscUI\FileDlgEventHandler.h">
       <Filter>Utils\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="CommitIsOnRefsDlg.h">
+      <Filter>Commands\CommitIsOnRefs</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\CommitIsOnRefsCommand.h">
+      <Filter>Commands\CommitIsOnRefs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

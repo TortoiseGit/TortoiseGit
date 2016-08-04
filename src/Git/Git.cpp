@@ -1720,6 +1720,126 @@ int CGit::GetBranchList(STRING_VECTOR &list,int *current,BRANCH_TYPE type)
 	return ret;
 }
 
+int CGit::GetRefsCommitIsOn(STRING_VECTOR& list, const CGitHash& hash, bool includeTags, bool includeBranches, BRANCH_TYPE type)
+{
+	if (!includeTags && !includeBranches || hash.IsEmpty())
+		return 0;
+
+	size_t prevCount = list.size();
+	if (m_IsUseLibGit2)
+	{
+		CAutoRepository repo(GetGitRepository());
+		if (!repo)
+			return -1;
+
+		CAutoReferenceIterator it;
+		if (git_reference_iterator_new(it.GetPointer(), repo))
+			return -1;
+
+		auto checkDescendent = [&list, &hash, &repo](const git_oid* oid, const git_reference* ref) {
+			if (git_oid_equal(oid, (const git_oid*)hash.m_hash) || git_graph_descendant_of(repo, oid, (const git_oid*)hash.m_hash) == 1)
+			{
+				const char* name = git_reference_name(ref);
+				if (!name)
+					return;
+
+				list.push_back(CUnicodeUtils::GetUnicode(name));
+			}
+		};
+
+		CAutoReference ref;
+		while (git_reference_next(ref.GetPointer(), it) == 0)
+		{
+			const git_oid* oid = git_reference_target(ref);
+			if (git_reference_is_tag(ref))
+			{
+				if (!includeTags)
+					continue;
+
+				CAutoTag tag;
+				if (git_tag_lookup(tag.GetPointer(), repo, oid) == 0)
+				{
+					CAutoObject obj;
+					git_tag_peel(obj.GetPointer(), tag);
+					oid = git_object_id(obj);
+					checkDescendent(git_object_id(obj), ref);
+					continue;
+				}
+			}
+			else if (git_reference_is_remote(ref))
+			{
+				if (!includeBranches || !(type & BRANCH_REMOTE))
+					continue;
+			}
+			else if (git_reference_is_branch(ref))
+			{
+				if (!includeBranches || !(type & GIT_BRANCH_LOCAL))
+					continue;
+			}
+			else
+				continue;
+
+			checkDescendent(oid, ref);
+		}
+	}
+	else
+	{
+		if (includeBranches)
+		{
+			CString cmd = L"git.exe branch --no-color";
+			if ((type & BRANCH_ALL) == BRANCH_ALL)
+				cmd += L" -a";
+			else if (type & BRANCH_REMOTE)
+				cmd += L" -r";
+			cmd += L" --contains " + hash.ToString();
+
+			if (Run(cmd, [&](CStringA lineA)
+			{
+				lineA.Trim(" \r\n\t");
+				if (lineA.IsEmpty())
+					return;
+				if (lineA.Find(" -> ") >= 0)
+					return; // skip something like: refs/origin/HEAD -> refs/origin/master
+
+				CString branch = CUnicodeUtils::GetUnicode(lineA);
+				if (lineA[0] == '*')
+				{
+					branch = branch.Mid(2);
+					CString currentHead;
+					if (branch[0] == L'(' && GetCurrentBranchFromFile(m_CurrentDir, currentHead) == 1)
+						return;
+				}
+
+				if ((type & BRANCH_REMOTE) != 0 && (type & BRANCH_LOCAL) == 0)
+					branch = L"refs/remotes/" + branch;
+				else if (CStringUtils::StartsWith(branch, L"remotes/"))
+					branch = L"refs/" + branch;
+				else
+					branch = L"refs/heads/" + branch;
+				list.push_back(branch);
+			}))
+				return -1;
+		}
+
+		if (includeTags)
+		{
+			CString cmd = L"git.exe tag --contains " + hash.ToString();
+			if (Run(cmd, [&list](CStringA lineA)
+			{
+				if (lineA.IsEmpty())
+					return;
+				list.push_back(L"refs/tags/" + CUnicodeUtils::GetUnicode(lineA));
+			}))
+				return -1;
+		}
+	}
+
+	std::sort(list.begin() + prevCount, list.end(), LogicalCompareBranchesPredicate);
+	list.erase(std::unique(list.begin() + prevCount, list.end()), list.end());
+
+	return 0;
+}
+
 int CGit::GetRemoteList(STRING_VECTOR &list)
 {
 	size_t prevCount = list.size();

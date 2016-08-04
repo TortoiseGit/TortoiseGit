@@ -2301,3 +2301,80 @@ TEST_P(CBasicGitWithTestRepoFixture, GetBisectTerms)
 
 	EXPECT_EQ(0, m_Git.Run(_T("git.exe bisect reset"), &output, CP_UTF8));
 }
+
+TEST_P(CBasicGitWithTestRepoFixture, GetRefsCommitIsOn)
+{
+	STRING_VECTOR list;
+	EXPECT_EQ(0, m_Git.GetRefsCommitIsOn(list, CGitHash(L"7c3cbfe13a929d2291a574dca45e4fd2d2ac1aa6"), false, false));
+	EXPECT_TRUE(list.empty());
+
+	list.clear();
+	EXPECT_EQ(0, m_Git.GetRefsCommitIsOn(list, CGitHash(L"7c3cbfe13a929d2291a574dca45e4fd2d2ac1aa6"), true, true));
+	ASSERT_EQ(1, list.size());
+	EXPECT_STREQ(L"refs/heads/master", list[0]);
+	
+	list.clear();
+	EXPECT_EQ(0, m_Git.GetRefsCommitIsOn(list, CGitHash(L"1fc3c9688e27596d8717b54f2939dc951568f6cb"), true, true));
+	ASSERT_EQ(1, list.size());
+	EXPECT_STREQ(L"refs/heads/master", list[0]);
+
+	list.clear();
+	EXPECT_EQ(0, m_Git.GetRefsCommitIsOn(list, CGitHash(L"1fc3c9688e27596d8717b54f2939dc951568f6cb"), false, true));
+	ASSERT_EQ(1, list.size());
+	EXPECT_STREQ(L"refs/heads/master", list[0]);
+
+	list.clear();
+	EXPECT_EQ(0, m_Git.GetRefsCommitIsOn(list, CGitHash(L"1fc3c9688e27596d8717b54f2939dc951568f6cb"), true, true, CGit::BRANCH_REMOTE));
+	EXPECT_TRUE(list.empty());
+
+	list.clear();
+	EXPECT_EQ(0, m_Git.GetRefsCommitIsOn(list, CGitHash(L"1fc3c9688e27596d8717b54f2939dc951568f6cb"), false, true, CGit::BRANCH_ALL));
+	ASSERT_EQ(1, list.size());
+	EXPECT_STREQ(L"refs/heads/master", list[0]);
+
+	list.clear();
+	EXPECT_EQ(0, m_Git.GetRefsCommitIsOn(list, CGitHash(L"1fc3c9688e27596d8717b54f2939dc951568f6cb"), true, false));
+	EXPECT_TRUE(list.empty());
+
+	list.clear();
+	EXPECT_EQ(0, m_Git.GetRefsCommitIsOn(list, CGitHash(L"b9ef30183497cdad5c30b88d32dc1bed7951dfeb"), true, false));
+	ASSERT_EQ(2, list.size());
+	EXPECT_STREQ(L"refs/tags/also-signed", list[0]);
+	EXPECT_STREQ(L"refs/tags/normal-tag", list[1]);
+
+	list.clear();
+	EXPECT_EQ(0, m_Git.GetRefsCommitIsOn(list, CGitHash(L"35c91b4ae2f77f4f21a7aba56d3c473c705d89e6"), true, true));
+	ASSERT_EQ(3, list.size());
+	EXPECT_STREQ(L"refs/heads/master", list[0]);
+	EXPECT_STREQ(L"refs/heads/master2", list[1]);
+	EXPECT_STREQ(L"refs/tags/also-signed", list[2]);
+
+	list.clear();
+	EXPECT_EQ(0, m_Git.GetRefsCommitIsOn(list, CGitHash(L"313a41bc88a527289c87d7531802ab484715974f"), false, true));
+	ASSERT_EQ(5, list.size());
+	EXPECT_STREQ(L"refs/heads/forconflict", list[0]);
+	EXPECT_STREQ(L"refs/heads/master", list[1]);
+	EXPECT_STREQ(L"refs/heads/master2", list[2]);
+	EXPECT_STREQ(L"refs/heads/simple-conflict", list[3]);
+	EXPECT_STREQ(L"refs/heads/subdir/branch", list[4]);
+
+	list.clear();
+	EXPECT_EQ(0, m_Git.GetRefsCommitIsOn(list, CGitHash(L"313a41bc88a527289c87d7531802ab484715974f"), false, true, CGit::BRANCH_REMOTE));
+	ASSERT_EQ(1, list.size());
+	EXPECT_STREQ(L"refs/remotes/origin/master", list[0]);
+
+	list.clear();
+	EXPECT_EQ(0, m_Git.GetRefsCommitIsOn(list, CGitHash(L"313a41bc88a527289c87d7531802ab484715974f"), false, true, CGit::BRANCH_LOCAL));
+	ASSERT_EQ(5, list.size());
+	EXPECT_STREQ(L"refs/heads/forconflict", list[0]);
+	EXPECT_STREQ(L"refs/heads/master", list[1]);
+	EXPECT_STREQ(L"refs/heads/master2", list[2]);
+	EXPECT_STREQ(L"refs/heads/simple-conflict", list[3]);
+	EXPECT_STREQ(L"refs/heads/subdir/branch", list[4]);
+
+	list.clear();
+	EXPECT_EQ(0, m_Git.GetRefsCommitIsOn(list, CGitHash(L"313a41bc88a527289c87d7531802ab484715974f"), false, true, CGit::BRANCH_ALL));
+	ASSERT_EQ(6, list.size());
+	EXPECT_STREQ(L"refs/heads/forconflict", list[0]);
+	EXPECT_STREQ(L"refs/remotes/origin/master", list[5]);
+}

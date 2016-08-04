@@ -1536,6 +1536,8 @@
 #define IDC_DEFAULT_NUMBER_OF           1831
 #define IDC_DEFAULT_SCALE               1832
 #define IDC_STOREDDECISIONS             1833
+#define IDC_LABEL_FILTER                1834
+#define IDC_SELREF                      1835
 #define IDS_LOG_FILTER_BY               1850
 #define IDS_LOG_FILTER_PATHS            1851
 #define IDS_LOG_FILTER_AUTHORS          1852
@@ -1809,6 +1811,7 @@
 #define IDD_SETTINGSDIALOGS3            4593
 #define IDD_CERTCHECK                   4594
 #define IDD_RESOLVESUBMODULECONFLICT    4595
+#define IDD_COMMITISONREFS              4596
 #define IDC_COMBOBOXEX_LOCAL_BRANCH     5000
 #define IDC_COMBOBOXEX_REMOTE_BRANCH    5001
 #define IDC_COMBOBOXEX_BAD              5001
@@ -1985,7 +1988,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        359
 #define _APS_NEXT_COMMAND_VALUE         32874
-#define _APS_NEXT_CONTROL_VALUE         1834
+#define _APS_NEXT_CONTROL_VALUE         1836
 #define _APS_NEXT_SYMED_VALUE           201
 #endif
 #endif
