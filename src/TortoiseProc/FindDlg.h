@@ -57,6 +57,9 @@ protected:
 	virtual void OnOK();
 	virtual BOOL OnInitDialog();
 	afx_msg void OnCbnEditchangeFindcombo();
+	afx_msg void OnNMClickListRef(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnEnChangeEditFilter();
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
 
 	DECLARE_MESSAGE_MAP()
 
@@ -81,7 +84,4 @@ protected:
 public:
 	CListCtrl m_ctrlRefList;
 	CEdit m_ctrlFilter;
-	afx_msg void OnNMClickListRef(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnEnChangeEditFilter();
-	afx_msg void OnTimer(UINT_PTR nIDEvent);
 };
