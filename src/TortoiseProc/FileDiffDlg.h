@@ -22,7 +22,6 @@
 #include "StandAloneDlg.h"
 #include "Git.h"
 #include "TGitPath.h"
-#include "Git.h"
 #include "HintCtrl.h"
 #include "Colors.h"
 #include "FilterEdit.h"
@@ -149,7 +148,6 @@ private:
 
 	bool				m_bIsBare;
 	CTGitPath			m_path1;
-	GitRev				m_peg;
 	GitRev				m_rev1;
 	CTGitPath			m_path2;
 	GitRev				m_rev2;

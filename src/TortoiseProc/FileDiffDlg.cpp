@@ -828,9 +828,6 @@ void CFileDiffDlg::OnBnClickedSwitchleftright()
 
 void CFileDiffDlg::SetURLLabels(int mask)
 {
-//	m_cRev1Btn.SetWindowText(m_rev1.m_CommitHash.ToString().Left(6));
-//	m_cRev2Btn.SetWindowText(m_rev2.m_CommitHash.ToString().Left(6));
-
 	if(mask &0x1)
 	{
 		SetDlgItemText(IDC_FIRSTURL, m_rev1.m_CommitHash.ToString().Left(8)+_T(": ")+m_rev1.GetSubject());
