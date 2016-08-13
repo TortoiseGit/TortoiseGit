@@ -294,7 +294,7 @@ void CGitPropertyPage::PageProcOnCommand(WPARAM wParam)
 void CGitPropertyPage::RunCommand(const tstring& command)
 {
 	tstring tortoiseProcPath = CPathUtils::GetAppDirectory(g_hmodThisDll) + _T("TortoiseGitProc.exe");
-	if (CCreateProcessHelper::CreateProcessDetached(tortoiseProcPath.c_str(), const_cast<TCHAR*>(command.c_str())))
+	if (CCreateProcessHelper::CreateProcessDetached(tortoiseProcPath.c_str(), command.c_str()))
 	{
 		// process started - exit
 		return;

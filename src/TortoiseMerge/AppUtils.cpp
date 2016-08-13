@@ -61,7 +61,7 @@ BOOL CAppUtils::GetVersionedFile(CString sPath, CString sVersion, CString sSaveP
 	sSCMPath.Replace(_T("%4"), sTemp);
 	// start the external SCM program to fetch the specific version of the file
 	PROCESS_INFORMATION process;
-	if (!CCreateProcessHelper::CreateProcess(nullptr, (LPTSTR)(LPCTSTR)sSCMPath, &process))
+	if (!CCreateProcessHelper::CreateProcess(nullptr, sSCMPath.GetBuffer(), &process))
 	{
 		CFormatMessageWrapper errorDetails;
 		MessageBox(nullptr, errorDetails, _T("TortoiseGitMerge"), MB_OK | MB_ICONERROR);

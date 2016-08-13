@@ -104,7 +104,7 @@ bool CCommonAppUtils::LaunchApplication(const CString& sCommandLine, UINT idErrM
 	startup.cb = sizeof(startup);
 
 	CString cleanCommandLine(sCommandLine);
-	if (CreateProcess(nullptr, const_cast<TCHAR*>((LPCTSTR)cleanCommandLine), nullptr, nullptr, FALSE, CREATE_UNICODE_ENVIRONMENT, nullptr, theCWD, &startup, &process) == 0)
+	if (CreateProcess(nullptr, cleanCommandLine.GetBuffer(), nullptr, nullptr, FALSE, CREATE_UNICODE_ENVIRONMENT, nullptr, theCWD, &startup, &process) == 0)
 	{
 		if (idErrMessageFormat)
 		{

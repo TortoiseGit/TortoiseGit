@@ -40,6 +40,7 @@ public:
                     LPCTSTR lpCurrentDirectory);
     static bool CreateProcessDetached(LPCTSTR lpApplicationName,
                     LPTSTR lpCommandLine);
+    static bool CreateProcessDetached(LPCTSTR lpApplicationName, LPCTSTR lpCommandLine);
 };
 
 inline bool CCreateProcessHelper::CreateProcess(LPCTSTR applicationName,
@@ -76,4 +77,22 @@ inline bool CCreateProcessHelper::CreateProcessDetached(LPCTSTR lpApplicationNam
     LPTSTR lpCommandLine)
 {
     return CreateProcessDetached(lpApplicationName, lpCommandLine, 0);
+}
+
+inline bool CCreateProcessHelper::CreateProcessDetached(LPCTSTR lpApplicationName, LPCTSTR lpCommandLine)
+{
+	// CreateProcess may modify buffer specified by lpCommandLine:
+	// https://msdn.microsoft.com/en-us/library/windows/desktop/ms682425
+	// [[
+	// The Unicode version of this function, CreateProcessW, can modify
+	// the contents of this string. Therefore, this parameter cannot be a
+	// pointer to read - only memory(such as a const variable or a literal
+	// string).If this parameter is a constant string, the function may
+	// cause an access violation.
+	// ]]
+	LPWSTR commandLineBuf = nullptr;
+	if (lpCommandLine)
+		commandLineBuf = _tcsdup(lpCommandLine);
+
+	return CreateProcessDetached(lpApplicationName, commandLineBuf, 0);
 }

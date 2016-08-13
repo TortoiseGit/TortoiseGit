@@ -1212,7 +1212,7 @@ int CGit::RunLogFile(CString cmd, const CString &filename, CString *stdErr)
 	}
 
 	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": executing %s\n"), (LPCTSTR)cmd);
-	if (!CreateProcess(nullptr, (LPWSTR)cmd.GetString(), nullptr, nullptr, TRUE, dwFlags, pEnv, (LPWSTR)m_CurrentDir.GetString(), &si, &pi))
+	if (!CreateProcess(nullptr, cmd.GetBuffer(), nullptr, nullptr, TRUE, dwFlags, pEnv, m_CurrentDir.GetBuffer(), &si, &pi))
 	{
 		CString err = CFormatMessageWrapper();
 		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": failed to create Process: %s\n"), (LPCTSTR)err.Trim());

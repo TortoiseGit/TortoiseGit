@@ -263,7 +263,7 @@ LRESULT CMainWindow::DoCommand(int id)
 			command += m_filename;
 			command += L"\"";
 			std::wstring tortoiseMergePath = GetAppDirectory() + _T("TortoiseGitMerge.exe");
-			CCreateProcessHelper::CreateProcessDetached(tortoiseMergePath.c_str(), const_cast<TCHAR*>(command.c_str()));
+			CCreateProcessHelper::CreateProcessDetached(tortoiseMergePath.c_str(), command.c_str());
 		}
 		break;
 	case ID_FILE_PAGESETUP:
@@ -538,7 +538,7 @@ std::wstring CMainWindow::GetAppDirectory()
 void CMainWindow::RunCommand(const std::wstring& command)
 {
 	tstring tortoiseProcPath = GetAppDirectory() + _T("TortoiseGitProc.exe");
-	CCreateProcessHelper::CreateProcessDetached(tortoiseProcPath.c_str(), const_cast<TCHAR*>(command.c_str()));
+	CCreateProcessHelper::CreateProcessDetached(tortoiseProcPath.c_str(), command.c_str());
 }
 
 LRESULT CMainWindow::SendEditor(UINT Msg, WPARAM wParam, LPARAM lParam)
