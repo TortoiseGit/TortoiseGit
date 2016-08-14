@@ -241,7 +241,7 @@ void CGitRefCompareList::OnContextMenuList(CWnd * /*pWnd*/, CPoint point)
 		popup.AppendMenuIcon(IDGITRCL_COMPARE, IDS_LOG_POPUP_COMPAREWITHPREVIOUS, IDI_DIFF);
 	popup.AppendMenuIcon(IDGITRCL_REFLOG, IDS_MENUREFLOG, IDI_LOG);
 
-	int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this, 0);
+	int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this);
 	AfxGetApp()->DoWaitCursor(1);
 	switch (cmd)
 	{
@@ -287,7 +287,7 @@ void CGitRefCompareList::OnContextMenuHeader(CWnd * /*pWnd*/, CPoint point)
 	{
 		AppendMenuChecked(popup, IDS_HIDEUNCHANGED, IDGITRCLH_HIDEUNCHANGED, m_bHideUnchanged);
 
-		int selection = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this, 0);
+		int selection = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this);
 		switch (selection)
 		{
 			case IDGITRCLH_HIDEUNCHANGED:

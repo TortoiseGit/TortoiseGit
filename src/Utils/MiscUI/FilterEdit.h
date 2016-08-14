@@ -57,7 +57,7 @@ public:
  *     popup.AppendMenu(MF_STRING | MF_ENABLED, 3, _T("string 3"));
  *     popup.AppendMenu(MF_STRING | MF_ENABLED, 4, _T("string 4"));
  *     popup.AppendMenu(MF_STRING | MF_ENABLED, 5, _T("string 5"));
- *     popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this, 0);
+ *     popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this);
  *   }
  *   return 0;
  * }

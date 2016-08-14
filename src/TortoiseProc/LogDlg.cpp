@@ -1313,7 +1313,7 @@ void CLogDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 			}
 		}
 
-		int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this, 0);
+		int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this);
 		if (cmd == 0)
 			return;
 		else if (cmd == 1)
@@ -1403,7 +1403,7 @@ void CLogDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 			popup.AppendMenuIcon(++cnt, item);
 		}
 
-		int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this, 0);
+		int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this);
 		if (cmd <= 0)
 			return;
 		else if (cmd == 1)
@@ -1462,7 +1462,7 @@ void CLogDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 				popup.AppendMenuIcon(CGitLogList::ID_EDITNOTE, sMenuItemText, IDI_EDIT);
 			}
 
-			int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this, 0);
+			int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this);
 			switch (cmd)
 			{
 			case 0:
@@ -2144,7 +2144,7 @@ LRESULT CLogDlg::OnClickedInfoIcon(WPARAM wParam, LPARAM lParam)
 		popup.AppendMenu(MF_STRING | MF_ENABLED | (m_bFilterCaseSensitively ? MF_CHECKED : MF_UNCHECKED), LOGFILTER_CASE, temp);
 
 		m_tooltips.Pop();
-		int selection = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this, 0);
+		int selection = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this);
 		if (selection != 0)
 		{
 			if (selection == LOGFILTER_REGEX)
@@ -3163,7 +3163,7 @@ void CLogDlg::OnBnClickedWalkBehaviour()
 		m_tooltips.Pop();
 		RECT rect;
 		GetDlgItem(IDC_WALKBEHAVIOUR)->GetWindowRect(&rect);
-		int selection = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, rect.left, rect.top, this, 0);
+		int selection = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, rect.left, rect.top, this);
 		switch (selection)
 		{
 		case WALKBEHAVIOUR_FIRSTPARENT:
@@ -3225,7 +3225,7 @@ void CLogDlg::OnBnClickedView()
 		m_tooltips.Pop();
 		RECT rect;
 		GetDlgItem(IDC_VIEW)->GetWindowRect(&rect);
-		int selection = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, rect.left, rect.top, this, 0);
+		int selection = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, rect.left, rect.top, this);
 		switch (selection)
 		{
 		case VIEW_HIDEPATHS:

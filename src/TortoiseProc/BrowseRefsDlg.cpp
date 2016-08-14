@@ -242,7 +242,7 @@ void CBrowseRefsDlg::OnBnClickedOk()
 
 	RECT rect;
 	GetDlgItem(IDOK)->GetWindowRect(&rect);
-	int selection = popupMenu.TrackPopupMenuEx(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, rect.left, rect.top, this, 0);
+	int selection = popupMenu.TrackPopupMenuEx(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, rect.left, rect.top, this, nullptr);
 	switch (selection)
 	{
 	case 1:
@@ -1083,7 +1083,7 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 	}
 
 
-	int selection = popupMenu.TrackPopupMenuEx(TPM_LEFTALIGN | TPM_RETURNCMD, point.x, point.y, this, 0);
+	int selection = popupMenu.TrackPopupMenuEx(TPM_LEFTALIGN | TPM_RETURNCMD, point.x, point.y, this, nullptr);
 	switch ((eCmd)(selection & 0xFFFF))
 	{
 	case eCmd_ViewLog:
@@ -1537,7 +1537,7 @@ LRESULT CBrowseRefsDlg::OnClickedInfoIcon(WPARAM /*wParam*/, LPARAM lParam)
 		temp.LoadString(IDS_LOG_FILTER_TOGGLE);
 		popup.AppendMenu(MF_STRING | MF_ENABLED, LOGFILTER_TOGGLE, temp);
 
-		int selection = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this, 0);
+		int selection = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this);
 		if (selection != 0)
 		{
 			if (selection == LOGFILTER_TOGGLE)

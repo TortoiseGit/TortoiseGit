@@ -630,7 +630,7 @@ void ColumnManager::OnContextMenuHeader(CWnd* pWnd, CPoint point, bool isGroundE
 
 		// show menu & let user pick an entry
 
-		int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, pWnd, 0);
+		int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, pWnd);
 		if ((cmd >= 1) && (cmd < columnCount))
 			SetVisible(cmd, !IsVisible(cmd));
 		else if (cmd == columnCount)

@@ -921,7 +921,7 @@ void CGitProgressList::OnContextMenu(CWnd* pWnd, CPoint point)
 	if (actions.empty())
 		return;
 
-	int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this, 0);
+	int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this);
 
 	if (cmd <= 0 || (size_t)cmd > actions.size())
 		return;

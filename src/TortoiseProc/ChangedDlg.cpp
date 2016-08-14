@@ -394,7 +394,7 @@ void CChangedDlg::OnBnClickedStash()
 
 		POINT cursorPos;
 		GetCursorPos(&cursorPos);
-		int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, cursorPos.x, cursorPos.y, this, 0);
+		int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, cursorPos.x, cursorPos.y, this);
 
 		switch (cmd & 0xFFFF)
 		{

@@ -463,7 +463,7 @@ void CTortoiseGitBlameView::OnRButtonUp(UINT /*nFlags*/, CPoint point)
 		popup.AppendMenuIcon(ID_COPYHASHTOCLIPBOARD, IDS_BLAME_POPUP_COPYHASHTOCLIPBOARD, IDI_BLAME_POPUP_COPY);
 		popup.AppendMenuIcon(ID_COPYLOGTOCLIPBOARD, IDS_BLAME_POPUP_COPYLOGTOCLIPBOARD, IDI_BLAME_POPUP_COPY);
 
-		int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this, 0);
+		int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this);
 		this->ContextMenuAction(cmd, pRev, parentHashWithFile, parentFilename);
 	}
 }
