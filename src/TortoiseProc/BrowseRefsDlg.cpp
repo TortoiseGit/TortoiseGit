@@ -912,6 +912,12 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 		if(bShowReflogOption)
 			popupMenu.AppendMenuIcon(eCmd_ShowReflog, IDS_MENUREFLOG, IDI_LOG);
 
+		if (m_bHasWC)
+		{
+			popupMenu.AppendMenu(MF_SEPARATOR);
+			popupMenu.AppendMenuIcon(eCmd_DiffWC, IDS_LOG_POPUP_COMPARE, IDI_DIFF);
+		}
+
 		popupMenu.AppendMenu(MF_SEPARATOR);
 		bAddSeparator = false;
 
@@ -1212,6 +1218,16 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 	case eCmd_UnifiedDiff:
 		{
 			CAppUtils::StartShowUnifiedDiff(nullptr, CTGitPath(), selectedLeafs[0]->m_csRefHash, CTGitPath(), selectedLeafs[1]->m_csRefHash, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
+		}
+		break;
+	case eCmd_DiffWC:
+		{
+			CString sCmd;
+			sCmd.Format(_T("/command:showcompare /path:\"%s\" /revision1:%s /revision2:%s"), (LPCTSTR)g_Git.m_CurrentDir, (LPCTSTR)selectedLeafs[0]->GetRefName(), (LPCTSTR)GitRev::GetWorkingCopy());
+			if (!!(GetAsyncKeyState(VK_SHIFT) & 0x8000))
+				sCmd += L" /alternative";
+
+			CAppUtils::RunTortoiseGitProc(sCmd);
 		}
 		break;
 	case eCmd_EditBranchDescription:

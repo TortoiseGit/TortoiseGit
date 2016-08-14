@@ -127,6 +127,7 @@ public:
 		eCmd_UnifiedDiff,
 		eCmd_UpstreamDrop,
 		eCmd_UpstreamSet,
+		eCmd_DiffWC,
 	};
 
 	enum eCol

@@ -51,6 +51,7 @@ public:
 		eCmd_ViewLogRangeReachableFromOnlyOne,
 		eCmd_UnifiedDiff,
 		eCmd_Copy,
+		eCmd_DiffWC,
 	};
 
 protected:
@@ -104,4 +105,5 @@ private:
 	CACEdit				m_cRevEdit;
 	CMenuButton			m_cSelRevBtn;
 	CFilterEdit			m_cFilter;
+	bool				m_bHasWC;
 };

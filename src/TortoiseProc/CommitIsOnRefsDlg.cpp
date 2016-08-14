@@ -37,6 +37,7 @@ CCommitIsOnRefsDlg::CCommitIsOnRefsDlg(CWnd* pParent /*=nullptr*/)
 	: CResizableStandAloneDialog(CCommitIsOnRefsDlg::IDD, pParent)
 	, m_bThreadRunning(FALSE)
 	, m_bRefsLoaded(false)
+	, m_bHasWC(true)
 {
 }
 
@@ -87,6 +88,8 @@ BOOL CCommitIsOnRefsDlg::OnInitDialog()
 	AddAnchor(IDC_LIST_REF_LEAFS, TOP_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDC_LOG, TOP_RIGHT);
 	AddOthersToAnchor();
+
+	m_bHasWC = !GitAdminDir::IsBareRepo(g_Git.m_CurrentDir);
 
 	m_cSelRevBtn.m_bRightArrow = TRUE;
 	m_cSelRevBtn.m_bDefaultClick = FALSE;
@@ -278,6 +281,11 @@ void CCommitIsOnRefsDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 			popup.AppendMenuIcon(eCmd_ViewLog, IDS_FILEDIFF_LOG, IDI_LOG);
 			popup.AppendMenu(MF_SEPARATOR, NULL);
 			popup.AppendMenuIcon(eCmd_RepoBrowser, IDS_LOG_BROWSEREPO, IDI_REPOBROWSE);
+			if (m_bHasWC)
+			{
+				popup.AppendMenu(MF_SEPARATOR);
+				popup.AppendMenuIcon(eCmd_DiffWC, IDS_LOG_POPUP_COMPARE, IDI_DIFF);
+			}
 			needSep = true;
 		}
 
@@ -333,6 +341,16 @@ void CCommitIsOnRefsDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 		case eCmd_Copy:
 			CopySelectionToClipboard();
 			break;
+		case eCmd_DiffWC:
+		{
+			CString sCmd;
+			sCmd.Format(_T("/command:showcompare /path:\"%s\" /revision1:%s /revision2:%s"), (LPCTSTR)g_Git.m_CurrentDir, (LPCTSTR)selectedRefs[0], (LPCTSTR)GitRev::GetWorkingCopy());
+			if (!!(GetAsyncKeyState(VK_SHIFT) & 0x8000))
+				sCmd += L" /alternative";
+
+			CAppUtils::RunTortoiseGitProc(sCmd);
+		}
+		break;
 		}
 	}
 }
