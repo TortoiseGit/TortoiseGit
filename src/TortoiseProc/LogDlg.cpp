@@ -1693,6 +1693,13 @@ BOOL CLogDlg::PreTranslateMessage(MSG* pMsg)
 			return TRUE;
 		}
 	}
+	else if (pMsg->message == WM_KEYDOWN  && pMsg->wParam == VK_ESCAPE && GetFocus() == GetDlgItem(IDC_FILTER) && m_cFileFilter.GetWindowTextLength())
+	{
+		m_cFileFilter.SetWindowText(L"");
+		KillTimer(FILEFILTER_TIMER);
+		FillLogMessageCtrl();
+		return TRUE;
+	}
 	else if (pMsg->message == WM_XBUTTONUP)
 	{
 		bool select = (pMsg->wParam & MK_SHIFT) == 0;

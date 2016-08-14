@@ -916,6 +916,14 @@ BOOL CFileDiffDlg::PreTranslateMessage(MSG* pMsg)
 				OnTimer(IDT_INPUT);
 			}
 			break;
+		case VK_ESCAPE:
+			if (GetFocus() == GetDlgItem(IDC_FILTER) && m_cFilter.GetWindowTextLength())
+			{
+				m_cFilter.SetWindowText(L"");
+				OnClickedCancelFilter(NULL, NULL);
+				return TRUE;
+			}
+			break;
 		}
 	}
 	return __super::PreTranslateMessage(pMsg);

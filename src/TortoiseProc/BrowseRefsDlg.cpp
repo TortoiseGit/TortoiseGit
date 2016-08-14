@@ -1325,6 +1325,13 @@ BOOL CBrowseRefsDlg::PreTranslateMessage(MSG* pMsg)
 				}
 			}
 			break;
+		case VK_ESCAPE:
+			if (GetFocus() == GetDlgItem(IDC_BROWSEREFS_EDIT_FILTER) && m_ctrlFilter.GetWindowTextLength())
+			{
+				OnClickedCancelFilter(NULL, NULL);
+				return TRUE;
+			}
+			break;
 		}
 	}
 
