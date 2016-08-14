@@ -141,7 +141,7 @@ public:
 	};
 
 // Dialog Data
-	enum { IDD = IDD_DIALOG_BROWSE_REFS };
+	enum { IDD = IDD_BROWSE_REFS };
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support

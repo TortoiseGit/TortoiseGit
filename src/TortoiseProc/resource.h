@@ -126,7 +126,7 @@
 #define IDI_GITREMOTE                   320
 #define IDD_SENDMAIL                    320
 #define IDD_SETTINGSMTP                 321
-#define IDD_DIALOG_BROWSE_REFS          322
+#define IDD_BROWSE_REFS                 322
 #define IDD_ADD_REMOTE                  323
 #define IDR_ACC_COMMITDLG               325
 #define IDD_SYNC                        326

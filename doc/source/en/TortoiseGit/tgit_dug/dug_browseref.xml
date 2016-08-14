@@ -2,7 +2,7 @@
 <!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
 <sect1 id="tgit-dug-browse-ref">
   <title>Browse All Refs</title>
-  <?dbhh topicname="HIDD_DIALOG_BROWSE_REFS"?>
+  <?dbhh topicname="HIDD_BROWSE_REFS"?>
   <indexterm>
     <primary>Browse All Refs</primary>
   </indexterm>
