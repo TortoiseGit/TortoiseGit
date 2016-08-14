@@ -257,6 +257,8 @@ void CGitRefCompareList::OnContextMenuList(CWnd * /*pWnd*/, CPoint point)
 		{
 			CString sCmd;
 			sCmd.Format(_T("/command:showcompare /path:\"%s\" /revision1:\"%s\" /revision2:\"%s\""), (LPCTSTR)g_Git.m_CurrentDir, (LPCTSTR)oldHash, (LPCTSTR)newHash);
+			if (!!(GetAsyncKeyState(VK_SHIFT) & 0x8000))
+				sCmd += L" /alternative";
 			CAppUtils::RunTortoiseGitProc(sCmd);
 			break;
 		}

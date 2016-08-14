@@ -431,7 +431,7 @@ void CRevisionGraphWnd::CompareRevs(const CString& revTo)
 	ASSERT(m_SelectedEntry1);
 	ASSERT(!revTo.IsEmpty() || m_SelectedEntry2);
 
-//	bool alternativeTool = !!(GetAsyncKeyState(VK_SHIFT) & 0x8000);
+	bool alternativeTool = !!(GetAsyncKeyState(VK_SHIFT) & 0x8000);
 
 	CString sCmd;
 
@@ -439,6 +439,9 @@ void CRevisionGraphWnd::CompareRevs(const CString& revTo)
 			this->m_sPath.IsEmpty() ?  _T("") : (LPCTSTR)(_T("/path:\"") + this->m_sPath + _T("\"")),
 			(LPCTSTR)GetFriendRefName(m_SelectedEntry1),
 			!revTo.IsEmpty() ? (LPCTSTR)revTo : (LPCTSTR)GetFriendRefName(m_SelectedEntry2));
+
+	if (alternativeTool)
+		sCmd += L" /alternative";
 
 	CAppUtils::RunTortoiseGitProc(sCmd);
 }

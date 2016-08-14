@@ -608,7 +608,7 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 					CTGitPath *fd1 = fd2;
 					if (fd1->m_Action & CTGitPath::LOGACTIONS_REPLACED)
 						fd2 = new CTGitPath(fd2->GetGitOldPathString());
-					CAppUtils::StartShowUnifiedDiff(m_hWnd, *fd1, m_rev1.m_CommitHash.ToString(), *fd2, m_rev2.m_CommitHash.ToString());
+					CAppUtils::StartShowUnifiedDiff(m_hWnd, *fd1, m_rev1.m_CommitHash.ToString(), *fd2, m_rev2.m_CommitHash.ToString(), !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 					if (fd1 != fd2)
 						delete fd2;
 				}

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2013 - TortoiseGit
+// Copyright (C) 2012-2013, 2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -33,8 +33,10 @@ bool ShowCompareCommand::Execute()
 	if (parser.HasVal(_T("revision2")))
 		rev2 = parser.GetVal(_T("revision2"));
 
+	bool bAlternativeTool = !!parser.HasKey(_T("alternative"));
+
 	if (unified)
-		return !!CAppUtils::StartShowUnifiedDiff(nullptr, CTGitPath(), rev1, CTGitPath(), rev2);
+		return !!CAppUtils::StartShowUnifiedDiff(nullptr, CTGitPath(), rev1, CTGitPath(), rev2, bAlternativeTool);
 	else
-		return !!CGitDiff::DiffCommit(cmdLinePath, rev2, rev1);
+		return !!CGitDiff::DiffCommit(cmdLinePath, rev2, rev1, bAlternativeTool);
 }

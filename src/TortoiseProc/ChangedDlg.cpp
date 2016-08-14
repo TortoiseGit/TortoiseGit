@@ -429,7 +429,7 @@ void CChangedDlg::OnBnClickedButtonUnifieddiff()
 	bool bSingleFile = ((m_pathList.GetCount()==1)&&(!m_pathList[0].IsEmpty())&&(!m_pathList[0].IsDirectory()));
 	if (bSingleFile)
 		commonDirectory = m_pathList[0];
-	CAppUtils::StartShowUnifiedDiff(m_hWnd, commonDirectory, GitRev::GetHead(), commonDirectory, GitRev::GetWorkingCopy());
+	CAppUtils::StartShowUnifiedDiff(m_hWnd, commonDirectory, GitRev::GetHead(), commonDirectory, GitRev::GetWorkingCopy(), !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 }
 
 void CChangedDlg::OnBnClickedWholeProject()

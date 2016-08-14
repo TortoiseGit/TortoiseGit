@@ -246,7 +246,11 @@ void CSubmoduleDiffDlg::OnBnClickedLog2()
 void CSubmoduleDiffDlg::OnBnClickedShowDiff()
 {
 	CString sCmd;
-	sCmd.Format(_T("/command:showcompare /path:\"%s\" /revision1:%s /revision2:%s"), (LPCTSTR)g_Git.CombinePath(m_sPath), (LPCTSTR)m_sFromHash, ((m_bDirty && m_nChangeType == CGitDiff::Unknown) || m_ctrlShowDiffBtn.GetCurrentEntry() == 1) ? GIT_REV_ZERO : (LPCTSTR)m_sToHash);
+	sCmd.Format(_T("/command:showcompare /path:\"%s\" /revision1:%s /revision2:%s"), (LPCTSTR)g_Git.CombinePath(m_sPath), (LPCTSTR)m_sFromHash, ((m_bDirty && m_nChangeType == CGitDiff::Unknown) || m_ctrlShowDiffBtn.GetCurrentEntry() == 1) ? GIT_REV_ZERO : (LPCTSTR)m_sToHash);//TODO
+
+	if (!!(GetAsyncKeyState(VK_SHIFT) & 0x8000))
+		sCmd += L" /alternative";
+
 	CAppUtils::RunTortoiseGitProc(sCmd, false, false);
 }
 

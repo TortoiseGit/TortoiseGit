@@ -260,5 +260,5 @@ void CFormatPatchDlg::OnBnClickedButtonUnifieddiff()
 {
 	UpdateData(TRUE);
 	m_regNoPrefix = m_bNoPrefix;
-	CAppUtils::StartShowUnifiedDiff(m_hWnd, CTGitPath(), GitRev::GetHead(), CTGitPath(), GitRev::GetWorkingCopy(), false, false, false, false, false, !!m_bNoPrefix);
+	CAppUtils::StartShowUnifiedDiff(m_hWnd, CTGitPath(), GitRev::GetHead(), CTGitPath(), GitRev::GetWorkingCopy(), !!(GetAsyncKeyState(VK_SHIFT) & 0x8000), false, false, false, false, !!m_bNoPrefix);
 }
