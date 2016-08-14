@@ -73,14 +73,11 @@ BOOL CCreateBranchTagDlg::OnInitDialog()
 	CResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
-	AddAnchor(IDC_BRANCH_TAG, TOP_LEFT, TOP_RIGHT);
-
 	CHOOSE_VERSION_ADDANCHOR;
 
+	AddAnchor(IDC_BRANCH_TAG, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_GROUP_BRANCH, TOP_LEFT, TOP_RIGHT);
-
 	AddAnchor(IDC_GROUP_OPTION, TOP_LEFT, TOP_RIGHT);
-
 	AddAnchor(IDOK,BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL,BOTTOM_RIGHT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
