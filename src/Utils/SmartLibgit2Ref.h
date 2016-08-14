@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2014-2015 - TortoiseGit
+// Copyright (C) 2014-2016 - TortoiseGit
 // based on SmartHandle of TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -425,6 +425,32 @@ protected:
 	}
 };
 
+class CAutoTag : public CSmartLibgit2Ref<git_tag>
+{
+public:
+	CAutoTag() {}
+
+	CAutoTag(git_tag* h)
+	{
+		m_Ref = h;
+	}
+
+	~CAutoTag()
+	{
+		CleanUp();
+	}
+
+private:
+	CAutoTag(const CAutoTag&) = delete;
+	CAutoTag& operator=(const CAutoTag&) = delete;
+
+protected:
+	virtual void FreeRef()
+	{
+		git_tag_free(m_Ref);
+	}
+};
+
 class CAutoTreeEntry : public CSmartLibgit2Ref<git_tree_entry>
 {
 public:
@@ -611,6 +637,27 @@ protected:
 	virtual void FreeRef()
 	{
 		git_branch_iterator_free(m_Ref);
+	}
+};
+
+class CAutoReferenceIterator : public CSmartLibgit2Ref<git_reference_iterator>
+{
+public:
+	CAutoReferenceIterator() {};
+
+	~CAutoReferenceIterator()
+	{
+		CleanUp();
+	}
+
+private:
+	CAutoReferenceIterator(const CAutoReferenceIterator&) = delete;
+	CAutoReferenceIterator& operator=(const CAutoReferenceIterator&) = delete;
+
+protected:
+	virtual void FreeRef()
+	{
+		git_reference_iterator_free(m_Ref);
 	}
 };
 

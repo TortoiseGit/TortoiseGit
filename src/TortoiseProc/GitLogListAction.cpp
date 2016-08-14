@@ -952,11 +952,8 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 		case ID_SHOWBRANCHES:
 			{
 				CString sCmd;
-				sCmd.Format(_T("git.exe branch -a --contains %s"), (LPCTSTR)pSelLogEntry->m_CommitHash.ToString());
-				CProgressDlg progress;
-				progress.m_AutoClose = AUTOCLOSE_NO;
-				progress.m_GitCmd = sCmd;
-				progress.DoModal();
+				sCmd.Format(L"/command:commitisonrefs /rev:%s", (LPCTSTR)pSelLogEntry->m_CommitHash.ToString());
+				CAppUtils::RunTortoiseGitProc(sCmd);
 			}
 			break;
 		case ID_DELETE:

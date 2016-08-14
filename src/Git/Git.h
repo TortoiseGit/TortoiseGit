@@ -380,6 +380,7 @@ public:
 	int GetRemoteList(STRING_VECTOR &list);
 	int GetBranchList(STRING_VECTOR &list, int *Current,BRANCH_TYPE type=BRANCH_LOCAL);
 	int GetTagList(STRING_VECTOR &list);
+	int GetRefsCommitIsOn(STRING_VECTOR& list, const CGitHash& hash, bool includeTags, bool includeBranches, BRANCH_TYPE type = BRANCH_LOCAL);
 	int GetRemoteTags(const CString& remote, STRING_VECTOR& list);
 	int DeleteRemoteRefs(const CString& remote, const STRING_VECTOR& list);
 	int GetBranchDescriptions(MAP_STRING_STRING& map);

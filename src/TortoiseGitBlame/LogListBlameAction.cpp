@@ -42,6 +42,7 @@ void CGitBlameLogList::hideUnimplementedCommands()
 		GetContextMenuBit(ID_CREATE_TAG) |
 		GetContextMenuBit(ID_SWITCHTOREV) |
 		GetContextMenuBit(ID_LOG) |
+		GetContextMenuBit(ID_SHOWBRANCHES) |
 		GetContextMenuBit(ID_REPOBROWSE)
 		, true);
 }
@@ -156,6 +157,9 @@ void CGitBlameLogList::ContextMenuAction(int cmd, int /*FirstSelect*/, int /*Las
 			break;
 		case ID_REPOBROWSE:
 			RunTortoiseGitProcWithCurrentRev(_T("repobrowser"), pRev, ((CMainFrame*)::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName());
+			break;
+		case ID_SHOWBRANCHES:
+			RunTortoiseGitProcWithCurrentRev(_T("commitisonrefs"), pRev);
 			break;
 		default:
 			//CMessageBox::Show(nullptr, _T("Have not implemented"), _T("TortoiseGit"), MB_OK);

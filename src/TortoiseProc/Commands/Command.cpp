@@ -77,6 +77,7 @@
 #include "RevisiongraphCommand.h"
 #include "ShowCompareCommand.h"
 #include "DaemonCommand.h"
+#include "CommitIsOnRefsCommand.h"
 
 #if 0
 #include "CrashCommand.h"
@@ -155,6 +156,7 @@ typedef enum
 	cmdRevisionGraph,
 	cmdDaemon,
 	cmdPGPFP,
+	cmdCommitIsOnRefs,
 } TGitCommand;
 
 static const struct CommandInfo
@@ -228,6 +230,7 @@ static const struct CommandInfo
 	{	cmdRevisionGraph,	_T("revisiongraph")		},
 	{	cmdDaemon,			_T("daemon")			},
 	{	cmdPGPFP,			_T("pgpfp")				},
+	{	cmdCommitIsOnRefs,	_T("commitisonrefs")	},
 };
 
 
@@ -366,6 +369,8 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new ShowCompareCommand;
 	case cmdDaemon:
 		return new DaemonCommand;
+	case cmdCommitIsOnRefs:
+		return new CommitIsOnRefsCommand;
 
 #if 0
 	case cmdCrash:

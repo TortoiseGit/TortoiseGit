@@ -907,15 +907,10 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 				fetchFromCmd.Format(IDS_PROC_BROWSEREFS_FETCHFROM, (LPCTSTR)remoteName);
 		}
 
-		CString temp;
-		temp.LoadString(IDS_MENULOG);
-		popupMenu.AppendMenuIcon(eCmd_ViewLog, temp, IDI_LOG);
+		popupMenu.AppendMenuIcon(eCmd_ViewLog, IDS_MENULOG, IDI_LOG);
 		popupMenu.AppendMenuIcon(eCmd_RepoBrowser, IDS_LOG_BROWSEREPO, IDI_REPOBROWSE);
 		if(bShowReflogOption)
-		{
-			temp.LoadString(IDS_MENUREFLOG);
-			popupMenu.AppendMenuIcon(eCmd_ShowReflog, temp, IDI_LOG);
-		}
+			popupMenu.AppendMenuIcon(eCmd_ShowReflog, IDS_MENUREFLOG, IDI_LOG);
 
 		popupMenu.AppendMenu(MF_SEPARATOR);
 		bAddSeparator = false;
@@ -938,26 +933,25 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 				str.Format(IDS_LOG_POPUP_MERGEREV, (LPCTSTR)g_Git.GetCurrentBranch());
 				popupMenu.AppendMenuIcon(eCmd_Merge, str, IDI_MERGE);
 			}
-			popupMenu.AppendMenuIcon(eCmd_Switch, CString(MAKEINTRESOURCE(IDS_SWITCH_TO_THIS)), IDI_SWITCH);
+			popupMenu.AppendMenuIcon(eCmd_Switch, IDS_SWITCH_TO_THIS, IDI_SWITCH);
 			popupMenu.AppendMenu(MF_SEPARATOR);
 		}
 
 		if(bShowCreateBranchOption)
 		{
 			bAddSeparator = true;
-			temp.LoadString(IDS_MENUBRANCH);
-			popupMenu.AppendMenuIcon(eCmd_CreateBranch, temp, IDI_COPY);
+			popupMenu.AppendMenuIcon(eCmd_CreateBranch, IDS_MENUBRANCH, IDI_COPY);
 		}
 
 		if (bShowEditBranchDescriptionOption)
 		{
 			bAddSeparator = true;
-			popupMenu.AppendMenuIcon(eCmd_EditBranchDescription, CString(MAKEINTRESOURCE(IDS_PROC_BROWSEREFS_EDITDESCRIPTION)), IDI_RENAME);
+			popupMenu.AppendMenuIcon(eCmd_EditBranchDescription, IDS_PROC_BROWSEREFS_EDITDESCRIPTION, IDI_RENAME);
 		}
 		if(bShowRenameOption)
 		{
 			bAddSeparator = true;
-			popupMenu.AppendMenuIcon(eCmd_Rename, CString(MAKEINTRESOURCE(IDS_PROC_BROWSEREFS_RENAME)), IDI_RENAME);
+			popupMenu.AppendMenuIcon(eCmd_Rename, IDS_PROC_BROWSEREFS_RENAME, IDI_RENAME);
 		}
 
 		if (m_bHasWC && selectedLeafs[0]->IsFrom(L"refs/heads/"))
@@ -966,15 +960,15 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 				popupMenu.AppendMenu(MF_SEPARATOR);
 			bAddSeparator = true;
 			if (!selectedLeafs[0]->m_csUpstream.IsEmpty())
-				popupMenu.AppendMenuIcon(eCmd_UpstreamDrop, CString(MAKEINTRESOURCE(IDS_PROC_BROWSEREFS_DROPTRACKEDBRANCH)));
-			popupMenu.AppendMenuIcon(eCmd_UpstreamSet, CString(MAKEINTRESOURCE(IDS_PROC_BROWSEREFS_SETTRACKEDBRANCH)));
+				popupMenu.AppendMenuIcon(eCmd_UpstreamDrop, IDS_PROC_BROWSEREFS_DROPTRACKEDBRANCH);
+			popupMenu.AppendMenuIcon(eCmd_UpstreamSet, IDS_PROC_BROWSEREFS_SETTRACKEDBRANCH);
 		}
 	}
 	else if(selectedLeafs.size() == 2)
 	{
 		bAddSeparator = true;
-		popupMenu.AppendMenuIcon(eCmd_Diff, CString(MAKEINTRESOURCE(IDS_PROC_BROWSEREFS_COMPAREREFS)), IDI_DIFF);
-		popupMenu.AppendMenuIcon(eCmd_UnifiedDiff, CString(MAKEINTRESOURCE(IDS_LOG_POPUP_GNUDIFF)), IDI_DIFF);
+		popupMenu.AppendMenuIcon(eCmd_Diff, IDS_PROC_BROWSEREFS_COMPAREREFS, IDI_DIFF);
+		popupMenu.AppendMenuIcon(eCmd_UnifiedDiff, IDS_LOG_POPUP_GNUDIFF, IDI_DIFF);
 		CString menu;
 		menu.Format(IDS_SHOWLOG_OF, (LPCTSTR)GetTwoSelectedRefs(selectedLeafs, m_sLastSelected, _T("..")));
 		popupMenu.AppendMenuIcon(eCmd_ViewLogRange, menu, IDI_LOG);
@@ -1033,7 +1027,7 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 		{
 			if(bAddSeparator)
 				popupMenu.AppendMenu(MF_SEPARATOR);
-			popupMenu.AppendMenuIcon(eCmd_ManageRemotes, CString(MAKEINTRESOURCE(IDS_PROC_BROWSEREFS_MANAGEREMOTES)), IDI_SETTINGS);
+			popupMenu.AppendMenuIcon(eCmd_ManageRemotes, IDS_PROC_BROWSEREFS_MANAGEREMOTES, IDI_SETTINGS);
 			bAddSeparator = true;
 			if(selectedLeafs.empty())
 			{
@@ -1064,17 +1058,15 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 		{
 			if(bAddSeparator)
 				popupMenu.AppendMenu(MF_SEPARATOR);
-			CString temp;
-			temp.LoadString(IDS_MENUTAG);
-			popupMenu.AppendMenuIcon(eCmd_CreateTag, temp, IDI_TAG);
-			temp.LoadString(IDS_PROC_BROWSEREFS_DELETEALLTAGS);
-			popupMenu.AppendMenuIcon(eCmd_DeleteAllTags, temp, IDI_DELETE);
+			popupMenu.AppendMenuIcon(eCmd_CreateTag, IDS_MENUTAG, IDI_TAG);
+			popupMenu.AppendMenuIcon(eCmd_DeleteAllTags, IDS_PROC_BROWSEREFS_DELETEALLTAGS, IDI_DELETE);
 			if (!remotes.empty())
 			{
 				popupMenu.AppendMenu(MF_SEPARATOR);
 				int i = 0;
 				for (auto it = remotes.cbegin(); it != remotes.cend(); ++it, ++i)
 				{
+					CString temp;
 					temp.Format(IDS_DELETEREMOTETAGON, (LPCTSTR)*it);
 					popupMenu.AppendMenuIcon(eCmd_DeleteRemoteTag | (i << 16), temp, IDI_DELETE);
 				}
