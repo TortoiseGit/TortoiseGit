@@ -2377,4 +2377,16 @@ TEST_P(CBasicGitWithTestRepoFixture, GetRefsCommitIsOn)
 	ASSERT_EQ(6, list.size());
 	EXPECT_STREQ(L"refs/heads/forconflict", list[0]);
 	EXPECT_STREQ(L"refs/remotes/origin/master", list[5]);
+
+	// test for symbolic refs
+	CString adminDir;
+	ASSERT_TRUE(GitAdminDir::GetAdminDirPath(g_Git.m_CurrentDir, adminDir));
+	adminDir += L"refs\\remotes\\origin\\HEAD";
+	ASSERT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)adminDir, L"ref: refs/remotes/origin/master"));
+	list.clear();
+	EXPECT_EQ(0, m_Git.GetRefsCommitIsOn(list, CGitHash(L"313a41bc88a527289c87d7531802ab484715974f"), false, true, CGit::BRANCH_ALL));
+	ASSERT_EQ(7, list.size());
+	EXPECT_STREQ(L"refs/heads/forconflict", list[0]);
+	EXPECT_STREQ(L"refs/remotes/origin/HEAD", list[5]);
+	EXPECT_STREQ(L"refs/remotes/origin/master", list[6]);
 }

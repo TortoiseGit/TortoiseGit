@@ -1737,6 +1737,8 @@ int CGit::GetRefsCommitIsOn(STRING_VECTOR& list, const CGitHash& hash, bool incl
 			return -1;
 
 		auto checkDescendent = [&list, &hash, &repo](const git_oid* oid, const git_reference* ref) {
+			if (!oid)
+				return;
 			if (git_oid_equal(oid, (const git_oid*)hash.m_hash) || git_graph_descendant_of(repo, oid, (const git_oid*)hash.m_hash) == 1)
 			{
 				const char* name = git_reference_name(ref);
@@ -1750,17 +1752,17 @@ int CGit::GetRefsCommitIsOn(STRING_VECTOR& list, const CGitHash& hash, bool incl
 		CAutoReference ref;
 		while (git_reference_next(ref.GetPointer(), it) == 0)
 		{
-			const git_oid* oid = git_reference_target(ref);
 			if (git_reference_is_tag(ref))
 			{
 				if (!includeTags)
 					continue;
 
 				CAutoTag tag;
-				if (git_tag_lookup(tag.GetPointer(), repo, oid) == 0)
+				if (git_tag_lookup(tag.GetPointer(), repo, git_reference_target(ref)) == 0)
 				{
 					CAutoObject obj;
-					git_tag_peel(obj.GetPointer(), tag);
+					if (git_tag_peel(obj.GetPointer(), tag) < 0)
+						continue;
 					checkDescendent(git_object_id(obj), ref);
 					continue;
 				}
@@ -1778,7 +1780,17 @@ int CGit::GetRefsCommitIsOn(STRING_VECTOR& list, const CGitHash& hash, bool incl
 			else
 				continue;
 
-			checkDescendent(oid, ref);
+			if (git_reference_type(ref) == GIT_REF_SYMBOLIC)
+			{
+				CAutoReference peeledRef;
+				if (git_reference_resolve(peeledRef.GetPointer(), ref) < 0)
+					continue;
+
+				checkDescendent(git_reference_target(peeledRef), ref);
+				continue;
+			}
+
+			checkDescendent(git_reference_target(ref), ref);
 		}
 	}
 	else
@@ -1797,8 +1809,8 @@ int CGit::GetRefsCommitIsOn(STRING_VECTOR& list, const CGitHash& hash, bool incl
 				lineA.Trim(" \r\n\t");
 				if (lineA.IsEmpty())
 					return;
-				if (lineA.Find(" -> ") >= 0)
-					return; // skip something like: refs/origin/HEAD -> refs/origin/master
+				if (lineA.Find(" -> ") >= 0) // normalize symbolic refs: "refs/origin/HEAD -> refs/origin/master" to "refs/origin/HEAD"
+					lineA.Truncate(lineA.Find(" -> "));
 
 				CString branch = CUnicodeUtils::GetUnicode(lineA);
 				if (lineA[0] == '*')
