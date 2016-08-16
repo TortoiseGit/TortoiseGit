@@ -1761,7 +1761,6 @@ int CGit::GetRefsCommitIsOn(STRING_VECTOR& list, const CGitHash& hash, bool incl
 				{
 					CAutoObject obj;
 					git_tag_peel(obj.GetPointer(), tag);
-					oid = git_object_id(obj);
 					checkDescendent(git_object_id(obj), ref);
 					continue;
 				}
