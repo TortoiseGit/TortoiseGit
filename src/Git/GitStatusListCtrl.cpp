@@ -1732,9 +1732,6 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					popup.AppendMenuIcon(IDGITLC_VIEWREV, IDS_LOG_POPUP_VIEWREV);
 					popup.AppendMenuIcon(IDGITLC_OPEN, IDS_REPOBROWSE_OPEN, IDI_OPEN);
 					popup.AppendMenuIcon(IDGITLC_OPENWITH, IDS_LOG_POPUP_OPENWITH, IDI_OPEN);
-					if (wcStatus & (CTGitPath::LOGACTIONS_UNVER | CTGitPath::LOGACTIONS_IGNORE)) {
-						popup.SetDefaultItem(IDGITLC_OPEN, FALSE);
-					}
 				}
 
 				if (m_dwContextMenus & GITSLC_POPEXPLORE && !(wcStatus & CTGitPath::LOGACTIONS_DELETED) && m_bHasWC)
@@ -2607,7 +2604,7 @@ void CGitStatusListCtrl::OnNMDblclk(NMHDR *pNMHDR, LRESULT *pResult)
 	CTGitPath *file=(CTGitPath*)GetItemData(pNMLV->iItem);
 
 	if (file->m_Action & (CTGitPath::LOGACTIONS_UNVER | CTGitPath::LOGACTIONS_IGNORE)) {
-		OpenFile(file, OPEN);
+		StartDiffWC(pNMLV->iItem);
 		return;
 	}
 	if( file->m_Action&CTGitPath::LOGACTIONS_UNMERGED )
@@ -2653,8 +2650,8 @@ void CGitStatusListCtrl::StartDiffWC(int fileindex)
 		return;
 
 	CString Ver;
-	if(this->m_CurrentVersion.IsEmpty() || m_CurrentVersion== GIT_REV_ZERO)
-		return;
+	if (m_CurrentVersion.IsEmpty())
+		m_CurrentVersion == GIT_REV_ZERO;
 
 	auto ptr = (CTGitPath*)GetItemData(fileindex);
 	if (!ptr)
@@ -3173,7 +3170,7 @@ void CGitStatusListCtrl::OnNMReturn(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 		if (file == nullptr)
 			return;
 		if (file->m_Action & (CTGitPath::LOGACTIONS_UNVER | CTGitPath::LOGACTIONS_IGNORE))
-			OpenFile(file, OPEN);
+			StartDiffWC(index);
 		else if ((file->m_Action & CTGitPath::LOGACTIONS_UNMERGED))
 		{
 			if (CAppUtils::ConflictEdit(*file, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000), m_bIsRevertTheirMy, GetLogicalParent() ? GetLogicalParent()->GetSafeHwnd() : nullptr))

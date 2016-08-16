@@ -17,6 +17,7 @@ Released: unreleased
  * Fixed issue #2799: Column sizes in "Browse references" dialog are not remembered
  * Try harder to not report unchanged files as changed (if modification time changed)
  * Fixed issue #2809: TortoiseGitMerge: Block Control Button is always disabled on conflict resolution
+ * Fixed issue #2814: "Git Check for modifications" and Commit dialog runs batch files for unversioned or ignored files
 
 = Release 2.2.0 =
 Released: 2016-07-02
