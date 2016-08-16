@@ -1,5 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
+// Copyright (C) 2016 - TortoiseGit
 // Copyright (C) 2007-2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -646,7 +647,7 @@ const wchar_t * CFileTextLines::GetEncodingName(UnicodeType eEncoding)
 bool CFileTextLines::StripComments( CString& sLine, bool bInBlockComment )
 {
 	int startpos = 0;
-
+	int oldStartPos = -1;
 	do
 	{
 		if (bInBlockComment)
@@ -695,6 +696,9 @@ bool CFileTextLines::StripComments( CString& sLine, bool bInBlockComment )
 					sLine = sLine.Left(startpos2);
 					startpos = -1;
 				}
+				if (startpos == oldStartPos)
+					return false;
+				oldStartPos = startpos;
 			}
 			else if (startpos >= 0)
 			{

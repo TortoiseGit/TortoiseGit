@@ -19,6 +19,7 @@ Released: unreleased
  * Try harder to not report unchanged files as changed (if modification time changed)
  * Fixed issue #2809: TortoiseGitMerge: Block Control Button is always disabled on conflict resolution
  * Fixed issue #2814: "Git Check for modifications" and Commit dialog runs batch files for unversioned or ignored files
+ * Fixed issue #2815: TortoiseGitMerge might hang with ignore comments enabled
 
 = Release 2.2.0 =
 Released: 2016-07-02
