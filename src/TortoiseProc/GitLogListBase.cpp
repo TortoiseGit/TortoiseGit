@@ -3840,6 +3840,7 @@ LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*
 	}
 
 	int cnt = (int)m_arShownList.size();
+	bool bShift = (GetAsyncKeyState(VK_SHIFT) & 0x8000) != 0;
 
 	if(m_pFindDialog->IsRef())
 	{
@@ -4000,7 +4001,7 @@ LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*
 	{
 		m_nSearchIndex = i;
 		EnsureVisible(i, FALSE);
-		if ((GetAsyncKeyState(VK_SHIFT) & 0x8000) == 0)
+		if (!bShift)
 		{
 			SetItemState(GetSelectionMark(), 0, LVIS_SELECTED);
 			SetItemState(i, LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
