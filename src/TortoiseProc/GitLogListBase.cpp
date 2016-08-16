@@ -53,6 +53,7 @@ const_iterator<Cont> find_if(Cont& c, Pred p)
 
 const UINT CGitLogListBase::m_FindDialogMessage = RegisterWindowMessage(FINDMSGSTRING);
 const UINT CGitLogListBase::m_ScrollToMessage = RegisterWindowMessage(_T("TORTOISEGIT_LOG_SCROLLTO"));
+const UINT CGitLogListBase::m_ScrollToRef = RegisterWindowMessage(_T("TORTOISEGIT_LOG_SCROLLTOREF"));
 const UINT CGitLogListBase::m_RebaseActionMessage = RegisterWindowMessage(_T("TORTOISEGIT_LOG_REBASEACTION"));
 
 IMPLEMENT_DYNAMIC(CGitLogListBase, CHintCtrl<CResizableColumnsListCtrl<CListCtrl>>)
@@ -285,6 +286,7 @@ CGitLogListBase::~CGitLogListBase()
 BEGIN_MESSAGE_MAP(CGitLogListBase, CHintCtrl<CResizableColumnsListCtrl<CListCtrl>>)
 	ON_REGISTERED_MESSAGE(m_FindDialogMessage, OnFindDialogMessage)
 	ON_REGISTERED_MESSAGE(m_ScrollToMessage, OnScrollToMessage)
+	ON_REGISTERED_MESSAGE(m_ScrollToRef, OnScrollToRef)
 	ON_NOTIFY_REFLECT(NM_CUSTOMDRAW, OnNMCustomdrawLoglist)
 	ON_NOTIFY_REFLECT(LVN_GETDISPINFO, OnLvnGetdispinfoLoglist)
 	ON_WM_CONTEXTMENU()
@@ -3826,6 +3828,56 @@ LRESULT CGitLogListBase::OnScrollToMessage(WPARAM itemToSelect, LPARAM /*lParam*
 	EnsureVisible((int)itemToSelect, FALSE);
 	return 0;
 }
+
+LRESULT CGitLogListBase::OnScrollToRef(WPARAM wParam, LPARAM /*lParam*/)
+{
+	CString* ref = reinterpret_cast<CString*>(wParam);
+	if (!ref || ref->IsEmpty())
+		return 1;
+
+	bool bShift = (GetAsyncKeyState(VK_SHIFT) & 0x8000) != 0;
+
+	CGitHash hash;
+	if (g_Git.GetHash(hash, *ref + _T("^{}"))) // add ^{} in order to get the correct SHA-1 (especially for signed tags)
+		MessageBox(g_Git.GetGitLastErr(L"Could not get hash of ref \"" + *ref + L"^{}\"."), L"TortoiseGit", MB_ICONERROR);
+
+	if (hash.IsEmpty())
+		return 1;
+
+	bool bFound = false;
+	int cnt = (int)m_arShownList.size();
+	int i;
+	for (i = 0; i < cnt; ++i)
+	{
+		GitRev* pLogEntry = m_arShownList.SafeGetAt(i);
+		if (pLogEntry && pLogEntry->m_CommitHash == hash)
+		{
+			bFound = true;
+			break;
+		}
+	}
+	if (!bFound)
+		return 1;
+
+	EnsureVisible(i, FALSE);
+	if (!bShift)
+	{
+		SetItemState(GetSelectionMark(), 0, LVIS_SELECTED);
+		SetItemState(i, LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
+		SetSelectionMark(i);
+	}
+	else
+	{
+		GitRev* pLogEntry = m_arShownList.SafeGetAt(i);
+		if (pLogEntry)
+			m_highlight = pLogEntry->m_CommitHash;
+	}
+	Invalidate();
+	UpdateData(FALSE);
+
+	return 0;
+}
+
 LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*/)
 {
 	ASSERT(m_pFindDialog);

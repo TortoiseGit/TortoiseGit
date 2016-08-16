@@ -38,6 +38,7 @@ class CCommitIsOnRefsDlg : public CResizableStandAloneDialog
 public:
 	CCommitIsOnRefsDlg(CWnd* pParent = nullptr);   // standard constructor
 	virtual ~CCommitIsOnRefsDlg();
+	void Create(CWnd* pParent = nullptr) { m_bNonModalParentHWND = pParent->GetSafeHwnd(); CDialog::Create(IDD, pParent); ShowWindow(SW_SHOW); UpdateWindow(); }
 
 // Dialog Data
 	enum { IDD = IDD_COMMITISONREFS };
@@ -59,12 +60,14 @@ protected:
 	virtual void OnCancel();
 	virtual BOOL OnInitDialog();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	virtual void PostNcDestroy();
 	afx_msg void OnEnChangeEditFilter();
 	afx_msg void OnBnClickedSelRevBtn();
 	afx_msg void OnBnClickedShowLog();
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg LRESULT OnEnChangeCommit(WPARAM wParam, LPARAM lParam);
 	afx_msg void OnItemChangedListRefs(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnNMDblClickListRefs(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 	afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
 	afx_msg LRESULT OnGettingRefsFinished(WPARAM, LPARAM);
@@ -93,6 +96,7 @@ public:
 	CString				m_Rev;
 
 private:
+	HWND				m_bNonModalParentHWND;
 	static UINT			WM_GETTINGREFSFINISHED;
 	void				StartGetRefsThread();
 	static UINT			GetRefsThreadEntry(LPVOID pVoid);

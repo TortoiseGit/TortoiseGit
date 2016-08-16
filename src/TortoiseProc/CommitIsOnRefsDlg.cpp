@@ -38,6 +38,7 @@ CCommitIsOnRefsDlg::CCommitIsOnRefsDlg(CWnd* pParent /*=nullptr*/)
 	, m_bThreadRunning(FALSE)
 	, m_bRefsLoaded(false)
 	, m_bHasWC(true)
+	, m_bNonModalParentHWND(nullptr)
 {
 }
 
@@ -59,6 +60,7 @@ BEGIN_MESSAGE_MAP(CCommitIsOnRefsDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_LOG, OnBnClickedShowLog)
 	ON_EN_CHANGE(IDC_FILTER, OnEnChangeEditFilter)
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST_REF_LEAFS, OnItemChangedListRefs)
+	ON_NOTIFY(NM_DBLCLK, IDC_LIST_REF_LEAFS, OnNMDblClickListRefs)
 	ON_MESSAGE(ENAC_UPDATE, OnEnChangeCommit)
 	ON_WM_TIMER()
 	ON_WM_CONTEXTMENU()
@@ -73,7 +75,19 @@ void CCommitIsOnRefsDlg::OnCancel()
 	if (m_bThreadRunning)
 		return;
 
+	if (m_bNonModalParentHWND)
+	{
+		DestroyWindow();
+		return;
+	}
+
 	__super::OnCancel();
+}
+
+void CCommitIsOnRefsDlg::PostNcDestroy()
+{
+	if (m_bNonModalParentHWND)
+		delete this;
 }
 
 BOOL CCommitIsOnRefsDlg::OnInitDialog()
@@ -362,6 +376,18 @@ void CCommitIsOnRefsDlg::OnItemChangedListRefs(NMHDR* pNMHDR, LRESULT* pResult)
 
 	if (pNMListView->iItem >= 0 && m_RefList.size() > pNMListView->iItem && (pNMListView->uNewState & LVIS_SELECTED))
 		m_sLastSelected = m_RefList[pNMListView->iItem];
+}
+
+void CCommitIsOnRefsDlg::OnNMDblClickListRefs(NMHDR* pNMHDR, LRESULT* pResult)
+{
+	*pResult = 0;
+
+	LPNMLISTVIEW pNMListView = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
+	if (m_bNonModalParentHWND && pNMListView->iItem >= 0 && m_RefList.size() > pNMListView->iItem)
+	{
+		if (::SendMessage(m_bNonModalParentHWND, CGitLogListBase::m_ScrollToRef, (WPARAM)&m_RefList[pNMListView->iItem], 0) != 0)
+			FlashWindowEx(FLASHW_ALL, 2, 100);
+	}
 }
 
 CString CCommitIsOnRefsDlg::GetTwoSelectedRefs(const STRING_VECTOR& selectedRefs, const CString& lastSelected, const CString& separator)

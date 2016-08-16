@@ -37,6 +37,7 @@
 #include "TempFile.h"
 #include "CommitDlg.h"
 #include "RebaseDlg.h"
+#include "CommitIsOnRefsDlg.h"
 #include "GitDiff.h"
 #include "../TGitCache/CacheInterface.h"
 
@@ -951,9 +952,10 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			break;
 		case ID_SHOWBRANCHES:
 			{
-				CString sCmd;
-				sCmd.Format(L"/command:commitisonrefs /rev:%s", (LPCTSTR)pSelLogEntry->m_CommitHash.ToString());
-				CAppUtils::RunTortoiseGitProc(sCmd);
+				CCommitIsOnRefsDlg* dlg = new CCommitIsOnRefsDlg(this);
+				dlg->m_Rev = (LPCTSTR)pSelLogEntry->m_CommitHash.ToString();
+				dlg->Create(this);
+				// pointer won't leak as it is destroyed within PostNcDestroy()
 			}
 			break;
 		case ID_DELETE:
