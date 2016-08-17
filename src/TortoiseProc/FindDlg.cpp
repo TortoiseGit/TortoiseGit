@@ -146,6 +146,8 @@ BOOL CFindDlg::OnInitDialog()
 	m_ctrlRefList.GetClientRect(&rect);
 
 	this->m_ctrlRefList.InsertColumn(0,_T("Ref"),0, rect.Width()-50);
+	if (CRegDWORD(L"Software\\TortoiseGit\\FullRowSelect", TRUE))
+		m_ctrlRefList.SetExtendedStyle(m_ctrlRefList.GetExtendedStyle() | LVS_EX_FULLROWSELECT);
 	RefreshList();
 	return FALSE;
 }

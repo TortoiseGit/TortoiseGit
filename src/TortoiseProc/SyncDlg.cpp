@@ -988,7 +988,9 @@ BOOL CSyncDlg::OnInitDialog()
 	m_GitProgressList.m_pTaskbarList = m_pTaskbarList;
 
 	dwStyle = LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP | WS_CHILD | WS_VISIBLE;
-	DWORD exStyle = LVS_EX_HEADERDRAGDROP | LVS_EX_DOUBLEBUFFER | LVS_EX_INFOTIP | LVS_EX_FULLROWSELECT;
+	DWORD exStyle = LVS_EX_HEADERDRAGDROP | LVS_EX_DOUBLEBUFFER | LVS_EX_INFOTIP;
+	if (CRegDWORD(L"Software\\TortoiseGit\\FullRowSelect", TRUE))
+		exStyle |= LVS_EX_FULLROWSELECT;
 	if (g_Git.m_IsUseLibGit2)
 	{
 		m_refList.Create(dwStyle, rectDummy, &m_ctrlTabCtrl, IDC_REFLIST);

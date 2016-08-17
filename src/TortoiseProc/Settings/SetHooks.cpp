@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2016 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -53,7 +54,7 @@ BOOL CSetHooks::OnInitDialog()
 {
 	ISettingsPropPage::OnInitDialog();
 
-	m_cHookList.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_DOUBLEBUFFER | LVS_EX_INFOTIP);
+	m_cHookList.SetExtendedStyle((CRegDWORD(L"Software\\TortoiseGit\\FullRowSelect", TRUE) ? LVS_EX_FULLROWSELECT : 0) | LVS_EX_DOUBLEBUFFER | LVS_EX_INFOTIP);
 
 	// clear all previously set header columns
 	m_cHookList.DeleteAllItems();

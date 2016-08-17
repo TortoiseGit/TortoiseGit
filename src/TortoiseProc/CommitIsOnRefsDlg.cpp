@@ -122,6 +122,8 @@ BOOL CCommitIsOnRefsDlg::OnInitDialog()
 	CRect rect;
 	m_cRefList.GetClientRect(&rect);
 	m_cRefList.InsertColumn(0, L"Ref", 0, rect.Width() - 50);
+	if (CRegDWORD(L"Software\\TortoiseGit\\FullRowSelect", TRUE))
+		m_cRefList.SetExtendedStyle(m_cRefList.GetExtendedStyle() | LVS_EX_FULLROWSELECT);
 
 	m_cFilter.SetCancelBitmaps(IDI_CANCELNORMAL, IDI_CANCELPRESSED);
 	m_cFilter.SetInfoIcon(IDI_FILTEREDIT);

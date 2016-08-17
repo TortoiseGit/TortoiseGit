@@ -66,7 +66,7 @@ BOOL CSetOverlayIcons::OnInitDialog()
 	AdjustControlSize(IDC_LISTRADIO);
 	AdjustControlSize(IDC_SYMBOLRADIO);
 
-	m_cIconList.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_DOUBLEBUFFER | LVS_EX_INFOTIP | LVS_EX_SUBITEMIMAGES);
+	m_cIconList.SetExtendedStyle(LVS_EX_DOUBLEBUFFER | LVS_EX_INFOTIP | LVS_EX_SUBITEMIMAGES);
 	// get the path to our icon sets
 	TCHAR buf[MAX_PATH] = {0};
 	SHGetSpecialFolderPath(m_hWnd, buf, CSIDL_PROGRAM_FILES_COMMON, true);

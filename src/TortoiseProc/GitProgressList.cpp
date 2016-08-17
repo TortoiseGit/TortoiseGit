@@ -979,7 +979,7 @@ void CGitProgressList::OnSize(UINT nType, int cx, int cy)
 
 void CGitProgressList::Init()
 {
-	SetExtendedStyle (LVS_EX_FULLROWSELECT | LVS_EX_DOUBLEBUFFER);
+	SetExtendedStyle((CRegDWORD(L"Software\\TortoiseGit\\FullRowSelect", TRUE) ? LVS_EX_FULLROWSELECT : 0) | LVS_EX_DOUBLEBUFFER);
 
 	DeleteAllItems();
 	int c = ((CHeaderCtrl*)(GetDlgItem(0)))->GetItemCount()-1;

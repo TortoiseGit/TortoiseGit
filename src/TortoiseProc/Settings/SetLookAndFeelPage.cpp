@@ -192,7 +192,7 @@ BOOL CSetLookAndFeelPage::OnInitDialog()
 	m_tooltips.AddTool(IDC_NOCONTEXTPATHS, IDS_SETTINGS_EXCLUDECONTEXTLIST_TT);
 	m_tooltips.AddTool(IDC_ENABLEDRAGCONTEXTMENU, IDS_SETTINGS_ENABLEDRAGCONTEXTMENU_TT);
 
-	m_cMenuList.SetExtendedStyle(LVS_EX_CHECKBOXES | LVS_EX_FULLROWSELECT | LVS_EX_DOUBLEBUFFER);
+	m_cMenuList.SetExtendedStyle(LVS_EX_CHECKBOXES | (CRegDWORD(L"Software\\TortoiseGit\\FullRowSelect", TRUE) ? LVS_EX_FULLROWSELECT : 0) | LVS_EX_DOUBLEBUFFER);
 
 	m_cMenuList.DeleteAllItems();
 	int c = m_cMenuList.GetHeaderCtrl()->GetItemCount() - 1;
@@ -331,7 +331,7 @@ BOOL CSetExtMenu::OnInitDialog()
 	m_tooltips.AddTool(IDC_MENULIST, IDS_SETTINGS_EXTMENULAYOUT_TT);
 	//m_tooltips.AddTool(IDC_NOCONTEXTPATHS, IDS_SETTINGS_EXCLUDECONTEXTLIST_TT);
 
-	m_cMenuList.SetExtendedStyle(LVS_EX_CHECKBOXES | LVS_EX_FULLROWSELECT | LVS_EX_DOUBLEBUFFER);
+	m_cMenuList.SetExtendedStyle(LVS_EX_CHECKBOXES | (CRegDWORD(L"Software\\TortoiseGit\\FullRowSelect", TRUE) ? LVS_EX_FULLROWSELECT : 0) | LVS_EX_DOUBLEBUFFER);
 
 	m_cMenuList.DeleteAllItems();
 	int c = m_cMenuList.GetHeaderCtrl()->GetItemCount() - 1;

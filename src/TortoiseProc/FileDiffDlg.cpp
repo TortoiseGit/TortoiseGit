@@ -194,7 +194,9 @@ BOOL CFileDiffDlg::OnInitDialog()
 
 	m_cFileList.SetRedraw(false);
 	m_cFileList.DeleteAllItems();
-	DWORD exStyle = LVS_EX_FULLROWSELECT | LVS_EX_DOUBLEBUFFER | LVS_EX_INFOTIP;
+	DWORD exStyle = LVS_EX_DOUBLEBUFFER | LVS_EX_INFOTIP;
+	if (CRegDWORD(L"Software\\TortoiseGit\\FullRowSelect", TRUE))
+		exStyle |= LVS_EX_FULLROWSELECT;
 	m_cFileList.SetExtendedStyle(exStyle);
 
 	m_nIconFolder = SYS_IMAGE_LIST().GetDirIconIndex();
