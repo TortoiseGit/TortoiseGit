@@ -2967,7 +2967,7 @@ void CGitStatusListCtrl::OnLvnGetInfoTip(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMLVGETINFOTIP pGetInfoTip = reinterpret_cast<LPNMLVGETINFOTIP>(pNMHDR);
 	*pResult = 0;
-	if (m_bBlock)
+	if (m_bBlock || CRegDWORD(L"Software\\TortoiseGit\\ShowListFullPathTooltip", TRUE) != TRUE)
 		return;
 
 	CTGitPath *entry=(CTGitPath *)GetItemData(pGetInfoTip->iItem);
