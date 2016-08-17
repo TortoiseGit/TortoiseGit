@@ -338,8 +338,7 @@ BEGIN
     GROUPBOX        "TortoiseGit",IDC_STATIC,7,7,286,92
     LTEXT           "&Language:",IDC_STATIC,14,20,86,8
     COMBOBOX        IDC_LANGUAGECOMBO,108,18,176,64,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
-    CONTROL         "Automatically check for &newer versions every week",IDC_CHECKNEWERVERSION,
-                    "Button",BS_AUTOCHECKBOX | BS_VCENTER | BS_MULTILINE | WS_TABSTOP,14,34,195,26
+    CHECKBOX        "Automatically check for &newer versions every week",IDC_CHECKNEWERVERSION,14,34,195,26,BS_VCENTER | BS_MULTILINE
     PUSHBUTTON      "C&heck now",IDC_CHECKNEWERBUTTON,212,38,72,14
     PUSHBUTTON      "Create &Library",IDC_CREATELIB,212,59,72,14
     GROUPBOX        "Git for Windows",IDC_STATIC,7,113,286,98

@@ -69,7 +69,7 @@ void CSetMainPage::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CSetMainPage, ISettingsPropPage)
 	ON_CBN_SELCHANGE(IDC_LANGUAGECOMBO, OnModified)
 //	ON_EN_CHANGE(IDC_TEMPEXTENSIONS, OnModified)
-	ON_BN_CLICKED(IDC_CHECKNEWERVERSION, OnModified)
+	ON_BN_CLICKED(IDC_CHECKNEWERVERSION, OnClickVersioncheck)
 	ON_BN_CLICKED(IDC_CHECKNEWERBUTTON, OnBnClickedChecknewerbutton)
 	ON_BN_CLICKED(IDC_MSYSGIT_BROWSE,OnBrowseDir)
 	ON_BN_CLICKED(IDC_MSYSGIT_CHECK,OnCheck)
@@ -143,6 +143,15 @@ BOOL CSetMainPage::OnInitDialog()
 
 	UpdateData(FALSE);
 	return TRUE;
+}
+
+void CSetMainPage::OnClickVersioncheck()
+{
+	if (m_bCheckNewer && CMessageBox::Show(GetSafeHwnd(), IDS_DISABLEUPDATECHECKS, IDS_APPNAME, 2, IDI_QUESTION, IDS_DISABLEUPDATECHECKSBUTTON, IDS_ABORTBUTTON) != 1)
+		return;
+	m_bCheckNewer = !m_bCheckNewer;
+	UpdateData(FALSE);
+	SetModified();
 }
 
 void CSetMainPage::OnModified()
