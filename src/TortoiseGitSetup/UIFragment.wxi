@@ -353,7 +353,7 @@
 
 		<Dialog Id="ExitDlg" Width="370" Height="270" Title="[ProductName] [Setup]" NoMinimize="yes">
 			<Control Id="Finish" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Cancel="yes" Text="[ButtonText_Finish]">
-				<Publish Event="DoAction" Value="ShowChangelogAction">(NOT Installed) AND (ShowChangelogCheck = 1)</Publish>
+				<Publish Event="DoAction" Value="ShowChangelogAction">(NOT Installed) AND (SHOWCHANGELOG = 1)</Publish>
 				<Publish Event="EndDialog" Value="Return">1</Publish>
 			</Control>
 			<Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Disabled="yes" Text="[ButtonText_Back]" />
@@ -364,7 +364,7 @@
 			</Control>
 			<!-- Since Checkboxes aren't transparent, reduce the checkbox control to the actual box alone, and add
 					 a normal text control adjacent to it, with the text control being transparent -->
-			<Control Id="ChangeLog" Type="CheckBox" X="135" Y="120" Width="12" Height="12" Property='ShowChangelogCheck' CheckBoxValue='1'>
+			<Control Id="ChangeLog" Type="CheckBox" X="135" Y="120" Width="12" Height="12" Property='SHOWCHANGELOG' CheckBoxValue='1'>
 				<Condition Action="hide">(Installed)</Condition>
 			</Control>
 			<Control Id="Changelogtext" Type="Text" X="150" Y="120" Width="150" Height="20" Transparent="yes" NoPrefix="yes">
