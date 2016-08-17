@@ -8,6 +8,8 @@
 			<!-- upgrade is flagged if current-install is newer than or equal to package -->
 			<UpgradeVersion Property="NEWERVERSIONDETECTED" Minimum="$(var.VersionNumberInternal)" OnlyDetect="yes" />
 
+			<UpgradeVersion Property="CLOSETGITCACHE" Maximum="2.2.2.0" IncludeMaximum="no" OnlyDetect="yes" />
+
 			<!-- flag is set if the install will trigger an upgrade of an existing install -->
 			<UpgradeVersion Property="PREVIOUSVERSIONSINSTALLED" Maximum="$(var.VersionNumberInternal)" IncludeMaximum="no" MigrateFeatures="yes" />
 		</Upgrade>
@@ -91,7 +93,7 @@
 			<AppSearch Sequence="1" />
 			<LaunchConditions After="AppSearch" />
 			<Custom Action="DefaultTargetDir" After="LaunchConditions">INSTALLDIR=""</Custom>
-			<Custom Action="KillCache" After="RemoveExistingProducts">Installed</Custom>
+			<Custom Action="KillCache" After="ValidateProductID">Installed OR REMOVE OR CLOSETGITCACHE</Custom>
 		</InstallExecuteSequence>
 
 		<!-- UI Sequencing ...................................................................................................... -->
