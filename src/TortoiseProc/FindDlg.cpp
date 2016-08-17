@@ -113,7 +113,7 @@ void CFindDlg::OnOK()
 
 BOOL CFindDlg::OnInitDialog()
 {
-	CDialog::OnInitDialog();
+	__super::OnInitDialog();
 	m_FindMsg = RegisterWindowMessage(FINDMSGSTRING);
 
 	m_bMatchCase = (BOOL)(DWORD)m_regMatchCase;
