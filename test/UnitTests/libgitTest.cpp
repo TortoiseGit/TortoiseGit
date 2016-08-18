@@ -41,3 +41,87 @@ TEST(libgit, BrokenConfig)
 
 	EXPECT_THROW(g_Git.CheckAndInitDll(), const char*);
 }
+
+TEST(libgit, Mailmap)
+{
+	CAutoTempDir tempdir;
+	g_Git.m_CurrentDir = tempdir.GetTempDir();
+	// libgit relies on CWD being set to working tree
+	SetCurrentDirectory(g_Git.m_CurrentDir);
+
+	GIT_MAILMAP mailmap = (void*)0x12345678;
+	git_read_mailmap(&mailmap);
+	EXPECT_EQ(nullptr, mailmap);
+
+	CString mailmapFile = tempdir.GetTempDir() + L"\\.mailmap";
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)mailmapFile, L""));
+
+	mailmap = (void*)0x12345678;
+	git_read_mailmap(&mailmap);
+	EXPECT_EQ(nullptr, mailmap);
+
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)mailmapFile, L"Sven Strickroth <sven@tortoisegit.org>"));
+	git_read_mailmap(&mailmap);
+	EXPECT_NE(nullptr, mailmap);
+	const char* email1 = nullptr;
+	const char* author1 = nullptr;
+	EXPECT_EQ(-1, git_lookup_mailmap(mailmap, &email1, &author1, "email@cs-ware.de", nullptr, [](void*) { return "Sven S."; }));
+	EXPECT_EQ(0, git_lookup_mailmap(mailmap, &email1, &author1, "sven@tortoisegit.org", nullptr, [](void*) { return "Sven S."; }));
+	EXPECT_EQ(nullptr, email1);
+	EXPECT_STREQ("Sven Strickroth", author1);
+
+	email1 = nullptr;
+	author1 = nullptr;
+	EXPECT_EQ(0, git_lookup_mailmap(mailmap, &email1, &author1, "Sven@tortoisegit.org", nullptr, [](void*) { return "Sven S."; }));
+	EXPECT_EQ(nullptr, email1);
+	EXPECT_STREQ("Sven Strickroth", author1);
+
+	git_free_mailmap(mailmap);
+	CString content;
+	for (auto& entry : { L"", L"1", L"2", L"A", L"4", L"5", L"b", L"7" })
+		content.AppendFormat(L"Sven%s Strickroth <sven%s@tortoisegit.org> <email%s@cs-ware.de>\n", entry, entry, entry);
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)mailmapFile, (LPCTSTR)content));
+	git_read_mailmap(&mailmap);
+	EXPECT_NE(nullptr, mailmap);
+	email1 = nullptr;
+	author1 = nullptr;
+	EXPECT_EQ(-1, git_lookup_mailmap(mailmap, &email1, &author1, "sven@tortoisegit.org", nullptr, [](void*) { return "Sven S."; }));
+	EXPECT_EQ(-1, git_lookup_mailmap(mailmap, &email1, &author1, "aaa@tortoisegit.org", nullptr, [](void*) { return "Sven S."; }));
+	EXPECT_EQ(-1, git_lookup_mailmap(mailmap, &email1, &author1, "zzz@tortoisegit.org", nullptr, [](void*) { return "Sven S."; }));
+	for (auto& entry : { "", "1", "2", "A", "4", "5", "b", "7" })
+	{
+		CStringA maillookup, mail, name;
+		maillookup.Format("email%s@cs-ware.de", entry);
+		mail.Format("sven%s@tortoisegit.org", entry);
+		name.Format("Sven%s Strickroth", entry);
+		email1 = nullptr;
+		author1 = nullptr;
+		EXPECT_EQ(0, git_lookup_mailmap(mailmap, &email1, &author1, maillookup, nullptr, [](void*) { return "Sven S."; }));
+		EXPECT_STREQ(mail, email1);
+		EXPECT_STREQ(name, author1);
+	}
+
+	email1 = nullptr;
+	author1 = nullptr;
+	EXPECT_EQ(0, git_lookup_mailmap(mailmap, &email1, &author1, "email@cs-ware.de", nullptr, [](void*) { return "Sven Strickroth"; }));
+	EXPECT_STREQ("sven@tortoisegit.org", email1);
+	EXPECT_STREQ("Sven Strickroth", author1);
+
+	git_free_mailmap(mailmap);
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)mailmapFile, L"<sven@tortoisegit.org> <email@cs-ware.de>\nSven S. <sven@tortoisegit.org> Sven Strickroth <email@cs-ware.de>"));
+	git_read_mailmap(&mailmap);
+	EXPECT_NE(nullptr, mailmap);
+	email1 = nullptr;
+	author1 = nullptr;
+	EXPECT_EQ(-1, git_lookup_mailmap(mailmap, &email1, &author1, "sven@tortoisegit.org", nullptr, [](void*) { return "Sven S."; }));
+	EXPECT_EQ(-1, git_lookup_mailmap(mailmap, &email1, &author1, "aaa@tortoisegit.org", nullptr, [](void*) { return "Sven S."; }));
+	EXPECT_EQ(-1, git_lookup_mailmap(mailmap, &email1, &author1, "zzz@tortoisegit.org", nullptr, [](void*) { return "Sven S."; }));
+	EXPECT_EQ(0, git_lookup_mailmap(mailmap, &email1, &author1, "email@cs-ware.de", nullptr, [](void*) { return "Sven S."; }));
+	EXPECT_STREQ("sven@tortoisegit.org", email1);
+	EXPECT_STREQ(nullptr, author1);
+	email1 = nullptr;
+	author1 = nullptr;
+	EXPECT_EQ(0, git_lookup_mailmap(mailmap, &email1, &author1, "email@cs-ware.de", nullptr, [](void*) { return "Sven Strickroth"; }));
+	EXPECT_STREQ("sven@tortoisegit.org", email1);
+	EXPECT_STREQ("Sven S.", author1);
+}
