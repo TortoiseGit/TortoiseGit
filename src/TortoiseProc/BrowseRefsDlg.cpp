@@ -422,7 +422,7 @@ void CBrowseRefsDlg::Refresh(CString selectRef)
 
 	if(!selectRef.IsEmpty())
 	{
-		if(selectRef == "HEAD")
+		if (selectRef == L"HEAD")
 		{
 			if (g_Git.GetCurrentBranchFromFile(g_Git.m_CurrentDir, selectRef))
 				selectRef.Empty();
@@ -436,7 +436,7 @@ void CBrowseRefsDlg::Refresh(CString selectRef)
 	m_RefTreeCtrl.DeleteAllItems();
 	m_ListRefLeafs.DeleteAllItems();
 	m_TreeRoot.m_ShadowTree.clear();
-	m_TreeRoot.m_csRefName = "refs";
+	m_TreeRoot.m_csRefName = L"refs";
 	m_TreeRoot.m_hTree = m_RefTreeCtrl.InsertItem(L"refs", nullptr, nullptr);
 	m_RefTreeCtrl.SetItemData(m_TreeRoot.m_hTree,(DWORD_PTR)&m_TreeRoot);
 
@@ -590,7 +590,7 @@ void CBrowseRefsDlg::FillListCtrlForShadowTree(CShadowTree* pTree, CString refNa
 		if (!positive)
 			filter = filter.Mid(1);
 		CString ref = refNamePrefix + pTree->m_csRefName;
-		if (!(pTree->m_csRefName.IsEmpty() || pTree->m_csRefName == "refs" && !pTree->m_pParent) && IsMatchFilter(pTree, ref, filter, positive))
+		if (!(pTree->m_csRefName.IsEmpty() || pTree->m_csRefName == L"refs" && !pTree->m_pParent) && IsMatchFilter(pTree, ref, filter, positive))
 		{
 			int indexItem = m_ListRefLeafs.InsertItem(m_ListRefLeafs.GetItemCount(), L"");
 
