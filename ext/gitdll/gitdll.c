@@ -1041,6 +1041,14 @@ int git_read_mailmap(GIT_MAILMAP *mailmap)
 	if ((result = read_mailmap(map, NULL)) != 0)
 		return result;
 
+	if (!map->items)
+	{
+		clear_mailmap(map);
+		free(map);
+		 
+		return -1;
+	}
+
 	*mailmap = map;
 	return 0;
 }
