@@ -154,7 +154,7 @@ void CRevertDlg::OnOK()
 			m_bRecursive = FALSE;
 		else
 		{
-			m_selectedPathList.AddPath(*(CTGitPath*)m_RevertList.GetItemData(i));
+			m_selectedPathList.AddPath(*m_RevertList.GetListEntry(i));
 #if 0
 			CGitStatusListCtrl::FileEntry * entry = m_RevertList.GetListEntry(i);
 			// add all selected entries to the list, except the ones with 'added'

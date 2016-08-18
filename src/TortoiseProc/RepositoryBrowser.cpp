@@ -295,7 +295,7 @@ void CRepositoryBrowser::OnOK()
 		POSITION pos = m_RepoList.GetFirstSelectedItemPosition();
 		if (pos)
 		{
-			CShadowFilesTree *item = (CShadowFilesTree *)m_RepoList.GetItemData(m_RepoList.GetNextSelectedItem(pos));
+			auto item = GetListEntry(m_RepoList.GetNextSelectedItem(pos));
 			if (item->m_bFolder)
 			{
 				FillListCtrlForShadowTree(item);
@@ -325,7 +325,7 @@ void CRepositoryBrowser::OnNMDblclk_RepoList(NMHDR *pNMHDR, LRESULT *pResult)
 	if (pNmItemActivate->iItem < 0)
 		return;
 
-	CShadowFilesTree * pItem = (CShadowFilesTree *)m_RepoList.GetItemData(pNmItemActivate->iItem);
+	auto pItem = GetListEntry(pNmItemActivate->iItem);
 	if (!pItem )
 		return;
 
@@ -551,12 +551,9 @@ void CRepositoryBrowser::OnTvnItemExpandingRepoTree(NMHDR *pNMHDR, LRESULT *pRes
 	LPNMTREEVIEW pNMTreeView = reinterpret_cast<LPNMTREEVIEW>(pNMHDR);
 	*pResult = 0;
 
-	CShadowFilesTree* pTree = (CShadowFilesTree*)(m_RepoTree.GetItemData(pNMTreeView->itemNew.hItem));
+	auto pTree = GetTreeEntry(pNMTreeView->itemNew.hItem);
 	if (!pTree)
-	{
-		ASSERT(FALSE);
 		return;
-	}
 
 	if (!pTree->m_bLoaded)
 		ReadTree(pTree, pTree->GetFullName());
@@ -566,12 +563,9 @@ void CRepositoryBrowser::FillListCtrlForTreeNode(HTREEITEM treeNode)
 {
 	m_RepoList.DeleteAllItems();
 
-	CShadowFilesTree* pTree = (CShadowFilesTree*)(m_RepoTree.GetItemData(treeNode));
+	auto pTree = GetTreeEntry(treeNode);
 	if (!pTree)
-	{
-		ASSERT(FALSE);
 		return;
-	}
 
 	CString url = _T("/") + pTree->GetFullName();
 	GetDlgItem(IDC_REPOBROWSER_URL)->SetWindowText(url);
@@ -637,7 +631,7 @@ void CRepositoryBrowser::UpdateInfoLabel()
 		else
 		{
 			int index = m_RepoList.GetNextSelectedItem(pos);
-			CShadowFilesTree *item = (CShadowFilesTree *)m_RepoList.GetItemData(index);
+			auto item = GetListEntry(index);
 			if (item->m_bSubmodule)
 				temp.FormatMessage(IDS_REPOBROWSE_INFOEXT, (LPCTSTR)m_RepoList.GetItemText(index, eCol_Name), item->m_hash.ToString());
 			else if (item->m_bFolder)
@@ -651,7 +645,7 @@ void CRepositoryBrowser::UpdateInfoLabel()
 		HTREEITEM hTreeItem = m_RepoTree.GetSelectedItem();
 		if (hTreeItem != nullptr)
 		{
-			CShadowFilesTree* pTree = (CShadowFilesTree*)m_RepoTree.GetItemData(hTreeItem);
+			auto pTree = GetTreeEntry(hTreeItem);
 			if (pTree != nullptr)
 			{
 				size_t files = 0, submodules = 0;
@@ -698,7 +692,7 @@ void CRepositoryBrowser::OnContextMenu_RepoTree(CPoint point)
 		return;
 
 	TShadowFilesTreeList selectedLeafs;
-	selectedLeafs.push_back((CShadowFilesTree *)m_RepoTree.GetItemData(hTreeItem));
+	selectedLeafs.push_back(GetTreeEntry(hTreeItem));
 
 	ShowContextMenu(point, selectedLeafs, ONLY_FOLDERS);
 }
@@ -715,7 +709,7 @@ void CRepositoryBrowser::OnContextMenu_RepoList(CPoint point)
 	POSITION pos = m_RepoList.GetFirstSelectedItemPosition();
 	while (pos)
 	{
-		CShadowFilesTree * item = (CShadowFilesTree *)m_RepoList.GetItemData(m_RepoList.GetNextSelectedItem(pos));
+		auto item = GetListEntry(m_RepoList.GetNextSelectedItem(pos));
 		if (item->m_bSubmodule)
 			submodulesSelected = true;
 		if (item->m_bFolder)
@@ -1353,18 +1347,15 @@ void CRepositoryBrowser::OnLvnBegindragRepolist(NMHDR* pNMHDR, LRESULT* pResult)
 		ASSERT(FALSE);
 		return;
 	}
-	CShadowFilesTree* pTree = (CShadowFilesTree*)m_RepoTree.GetItemData(hTreeItem);
+	auto pTree = GetTreeEntry(hTreeItem);
 	if (!pTree)
-	{
-		ASSERT(FALSE);
 		return;
-	}
 
 	CTGitPathList toExport;
 	int index = -1;
 	while ((index = m_RepoList.GetNextSelectedItem(pos)) >= 0)
 	{
-		CShadowFilesTree* item = (CShadowFilesTree*)m_RepoList.GetItemData(index);
+		auto item = GetListEntry(index);
 		if (item->m_bFolder)
 		{
 			RecursivelyAdd(toExport, item);
@@ -1404,12 +1395,9 @@ void CRepositoryBrowser::OnTvnBegindragRepotree(NMHDR* pNMHDR, LRESULT* pResult)
 
 	LPNMTREEVIEW pNMTreeView = reinterpret_cast<LPNMTREEVIEW>(pNMHDR);
 
-	CShadowFilesTree* pTree = (CShadowFilesTree*)(m_RepoTree.GetItemData(pNMTreeView->itemNew.hItem));
+	auto pTree = GetTreeEntry(pNMTreeView->itemNew.hItem);
 	if (!pTree)
-	{
-		ASSERT(FALSE);
 		return;
-	}
 
 	CTGitPathList toExport;
 	RecursivelyAdd(toExport, pTree);
@@ -1449,4 +1437,19 @@ void CRepositoryBrowser::BeginDrag(const CWnd& window, CTGitPathList& files, con
 	pdsrc->Release();
 	pdsrc.release();
 	pdobj->Release();
+}
+
+
+CShadowFilesTree* CRepositoryBrowser::GetListEntry(int index)
+{
+	auto entry = reinterpret_cast<CShadowFilesTree*>(m_RepoList.GetItemData(index));
+	ASSERT(entry);
+	return entry;
+}
+
+CShadowFilesTree* CRepositoryBrowser::GetTreeEntry(HTREEITEM treeItem)
+{
+	auto entry = reinterpret_cast<CShadowFilesTree*>(m_RepoTree.GetItemData(treeItem));
+	ASSERT(entry);
+	return entry;
 }

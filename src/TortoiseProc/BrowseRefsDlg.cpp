@@ -381,9 +381,7 @@ CString CBrowseRefsDlg::GetSelectedRef(bool onlyIfLeaf, bool pickFirstSelIfMulti
 	if(pos && (pickFirstSelIfMultiSel || m_ListRefLeafs.GetSelectedCount() == 1))
 	{
 		//A leaf is selected
-		CShadowTree* pTree=(CShadowTree*)m_ListRefLeafs.GetItemData(
-				m_ListRefLeafs.GetNextSelectedItem(pos));
-		return pTree->GetRefName();
+		return GetListEntry(m_ListRefLeafs.GetNextSelectedItem(pos))->GetRefName();
 	}
 	else if (pos && !pickFirstSelIfMultiSel)
 	{
@@ -392,7 +390,7 @@ CString CBrowseRefsDlg::GetSelectedRef(bool onlyIfLeaf, bool pickFirstSelIfMulti
 		int index;
 		while ((index = m_ListRefLeafs.GetNextSelectedItem(pos)) >= 0)
 		{
-			CString ref = ((CShadowTree*)m_ListRefLeafs.GetItemData(index))->GetRefName();
+			CString ref = GetListEntry(index)->GetRefName();
 			if (CStringUtils::StartsWith(ref, L"refs/"))
 				ref = ref.Mid(5);
 			if (CStringUtils::StartsWith(ref, L"heads/"))
@@ -406,10 +404,7 @@ CString CBrowseRefsDlg::GetSelectedRef(bool onlyIfLeaf, bool pickFirstSelIfMulti
 		//Tree ctrl selection?
 		HTREEITEM hTree=m_RefTreeCtrl.GetSelectedItem();
 		if (hTree)
-		{
-			CShadowTree* pTree=(CShadowTree*)m_RefTreeCtrl.GetItemData(hTree);
-			return pTree->GetRefName();
-		}
+			return GetTreeEntry(hTree)->GetRefName();
 	}
 	return CString();//None
 }
@@ -510,7 +505,7 @@ bool CBrowseRefsDlg::SelectRef(CString refName, bool bExactMatch)
 
 	for(int indexPos = 0; indexPos < m_ListRefLeafs.GetItemCount(); ++indexPos)
 	{
-		CShadowTree* pCurrShadowTree = (CShadowTree*)m_ListRefLeafs.GetItemData(indexPos);
+		auto pCurrShadowTree = GetListEntry(indexPos);
 		if(pCurrShadowTree == &treeLeafHead)
 		{
 			m_ListRefLeafs.SetItemState(indexPos,LVIS_SELECTED,LVIS_SELECTED);
@@ -568,12 +563,10 @@ void CBrowseRefsDlg::FillListCtrlForTreeNode(HTREEITEM treeNode)
 {
 	m_ListRefLeafs.DeleteAllItems();
 
-	CShadowTree* pTree=(CShadowTree*)(m_RefTreeCtrl.GetItemData(treeNode));
+	auto pTree = GetTreeEntry(treeNode);
 	if (!pTree)
-	{
-		ASSERT(FALSE);
 		return;
-	}
+
 	FillListCtrlForShadowTree(pTree,L"",true);
 	m_ListRefLeafs.m_ColumnManager.SetVisible(eCol_Upstream, pTree->IsFrom(L"refs/heads"));
 	m_ListRefLeafs.AdjustColumnWidths();
@@ -836,7 +829,7 @@ void CBrowseRefsDlg::GetSelectedLeaves(VectorPShadowTree& selectedLeafs)
 	POSITION pos = m_ListRefLeafs.GetFirstSelectedItemPosition();
 	while (pos)
 	{
-		selectedLeafs.push_back((CShadowTree*)m_ListRefLeafs.GetItemData(m_ListRefLeafs.GetNextSelectedItem(pos)));
+		selectedLeafs.push_back(GetListEntry(m_ListRefLeafs.GetNextSelectedItem(pos)));
 	}
 }
 
@@ -1028,7 +1021,7 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 
 	if (hTreePos && selectedLeafs.empty())
 	{
-		CShadowTree* pTree=(CShadowTree*)m_RefTreeCtrl.GetItemData(hTreePos);
+		auto pTree = GetTreeEntry(hTreePos);
 		if(pTree->IsFrom(L"refs/remotes"))
 		{
 			if(bAddSeparator)
@@ -1198,7 +1191,7 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 			for (int i = 0; i < m_ListRefLeafs.GetItemCount(); ++i)
 			{
 				m_ListRefLeafs.SetItemState(i, LVIS_SELECTED, LVIS_SELECTED);
-				selectedLeafs.push_back((CShadowTree*)m_ListRefLeafs.GetItemData(i));
+				selectedLeafs.push_back(GetListEntry(i));
 			}
 			if (ConfirmDeleteRef(selectedLeafs))
 				DoDeleteRefs(selectedLeafs);
@@ -1371,7 +1364,7 @@ void CBrowseRefsDlg::OnItemChangedListRefLeafs(NMHDR *pNMHDR, LRESULT *pResult)
 	LPNMLISTVIEW pNMListView = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
 	*pResult = 0;
 
-	CShadowTree *item = (CShadowTree*)m_ListRefLeafs.GetItemData(pNMListView->iItem);
+	auto item = GetListEntry(pNMListView->iItem);
 	if (item && pNMListView->uNewState == LVIS_SELECTED)
 		m_sLastSelected = item->GetRefName();
 
@@ -1446,8 +1439,7 @@ void CBrowseRefsDlg::OnLvnEndlabeleditListRefLeafs(NMHDR *pNMHDR, LRESULT *pResu
 	if (!pDispInfo->item.pszText)
 		return; //User canceled changing
 
-	CShadowTree* pTree=(CShadowTree*)m_ListRefLeafs.GetItemData(pDispInfo->item.iItem);
-
+	auto pTree = GetListEntry(pDispInfo->item.iItem);
 	if(!pTree->IsFrom(L"refs/heads/"))
 	{
 		CMessageBox::Show(m_hWnd, IDS_PROC_BROWSEREFS_RENAMEONLYBRANCHES, IDS_APPNAME, MB_OK | MB_ICONERROR);
@@ -1458,7 +1450,7 @@ void CBrowseRefsDlg::OnLvnEndlabeleditListRefLeafs(NMHDR *pNMHDR, LRESULT *pResu
 	HTREEITEM hTree = m_RefTreeCtrl.GetSelectedItem();
 	if (!hTree)
 	{
-		CShadowTree* pTree2 = (CShadowTree*)m_RefTreeCtrl.GetItemData(hTree);
+		auto pTree2 = GetTreeEntry(hTree);
 		selectedTreeRef = pTree2->GetRefName();
 	}
 
@@ -1498,8 +1490,7 @@ void CBrowseRefsDlg::OnLvnBeginlabeleditListRefLeafs(NMHDR *pNMHDR, LRESULT *pRe
 	NMLVDISPINFO *pDispInfo = reinterpret_cast<NMLVDISPINFO*>(pNMHDR);
 	*pResult = FALSE;
 
-	CShadowTree* pTree=(CShadowTree*)m_ListRefLeafs.GetItemData(pDispInfo->item.iItem);
-
+	auto pTree = GetListEntry(pDispInfo->item.iItem);
 	if(!pTree->IsFrom(L"refs/heads/"))
 	{
 		*pResult = TRUE; //Dont allow renaming any other things then branches at the moment.
@@ -1627,4 +1618,18 @@ void CBrowseRefsDlg::OnBnClickedIncludeNestedRefs()
 	UpdateData(TRUE);
 	m_regIncludeNestedRefs = m_bIncludeNestedRefs;
 	Refresh();
+}
+
+CShadowTree* CBrowseRefsDlg::GetListEntry(int index)
+{
+	auto entry = reinterpret_cast<CShadowTree*>(m_ListRefLeafs.GetItemData(index));
+	ASSERT(entry);
+	return entry;
+}
+
+CShadowTree* CBrowseRefsDlg::GetTreeEntry(HTREEITEM treeItem)
+{
+	auto entry = reinterpret_cast<CShadowTree*>(m_RefTreeCtrl.GetItemData(treeItem));
+	ASSERT(entry);
+	return entry;
 }

@@ -170,6 +170,9 @@ protected:
 
 	CString			GetFullRefName(CString partialRefName);
 
+	CShadowTree*	GetListEntry(int index);
+	CShadowTree*	GetTreeEntry(HTREEITEM treeItem);
+
 private:
 	bool			m_bHasWC;
 

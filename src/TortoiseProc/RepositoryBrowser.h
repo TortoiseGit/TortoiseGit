@@ -150,6 +150,9 @@ private:
 	int						m_nExecutableOvl;
 	int						m_nSymlinkOvl;
 
+	CShadowFilesTree*		GetListEntry(int index);
+	CShadowFilesTree*		GetTreeEntry(HTREEITEM treeItem);
+
 	bool					m_bHasWC;
 
 	void					Refresh();

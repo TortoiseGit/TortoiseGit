@@ -492,7 +492,7 @@ public:
 	/**
 	 * Returns the file entry data for the list control index.
 	 */
-	//CGitStatusListCtrl::FileEntry * GetListEntry(UINT_PTR index);
+	CTGitPath* GetListEntry(int index);
 
 	/**
 	 * Returns the file entry data for the specified path.
