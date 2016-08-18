@@ -1037,7 +1037,8 @@ int CTGitPathList::ParserFromLsFile(BYTE_VECTOR &out,bool /*staged*/)
 	}
 	return 0;
 }
-int CTGitPathList::FillUnRev(unsigned int action, CTGitPathList *list, CString *err)
+
+int CTGitPathList::FillUnRev(unsigned int action, const CTGitPathList* list, CString* err)
 {
 	this->Clear();
 	CTGitPath path;
@@ -1096,7 +1097,8 @@ int CTGitPathList::FillUnRev(unsigned int action, CTGitPathList *list, CString *
 	}
 	return 0;
 }
-int CTGitPathList::FillBasedOnIndexFlags(unsigned short flag, unsigned short flagextended, CTGitPathList* list /*nullptr*/)
+
+int CTGitPathList::FillBasedOnIndexFlags(unsigned short flag, unsigned short flagextended, const CTGitPathList* list /*nullptr*/)
 {
 	Clear();
 	CTGitPath path;
@@ -1665,7 +1667,8 @@ CString CTGitPath::GetActionName(int action)
 
 	return MAKEINTRESOURCE(IDS_PATHACTIONS_UNKNOWN);
 }
-CString CTGitPath::GetActionName()
+
+CString CTGitPath::GetActionName() const
 {
 	return GetActionName(m_Action);
 }

@@ -62,7 +62,7 @@ public:
 	bool    m_Checked;
 	int	ParserAction(BYTE action);
 	int ParserAction(git_delta_t action);
-	CString GetActionName();
+	CString GetActionName() const;
 	static CString GetActionName(int action);
 	/**
 	 * Set the path as an UTF8 string with forward slashes
@@ -353,8 +353,8 @@ public:
 	const CTGitPath* LookForGitPath(const CString& path);
 	int	ParserFromLog(BYTE_VECTOR &log, bool parseDeletes = false);
 	int ParserFromLsFile(BYTE_VECTOR &out,bool staged=true);
-	int FillUnRev(unsigned int Action, CTGitPathList *list = nullptr, CString *err = nullptr);
-	int FillBasedOnIndexFlags(unsigned short flag, unsigned short flagextended, CTGitPathList* list = nullptr);
+	int FillUnRev(unsigned int Action, const CTGitPathList* filterlist = nullptr, CString* err = nullptr);
+	int FillBasedOnIndexFlags(unsigned short flag, unsigned short flagextended, const CTGitPathList* filterlist = nullptr);
 	int GetAction();
 	/**
 	 * Load from the path argument string, when the 'path' parameter is used

@@ -3331,7 +3331,7 @@ bool CGit::LoadTextFile(const CString &filename, CString &msg)
 	return true; // load no further files
 }
 
-int CGit::GetWorkingTreeChanges(CTGitPathList& result, bool amend, CTGitPathList* filterlist)
+int CGit::GetWorkingTreeChanges(CTGitPathList& result, bool amend, const CTGitPathList* filterlist)
 {
 	if (IsInitRepos())
 		return GetInitAddList(result);

@@ -382,7 +382,7 @@ BOOL CGitStatusListCtrl::GetStatus ( const CTGitPathList* pathList
 		mask|= CGitStatusListCtrl::FILELIST_UNVER;
 	if (bShowLocalChangesIgnored)
 		mask |= CGitStatusListCtrl::FILELIST_LOCALCHANGESIGNORED;
-	this->UpdateFileList(mask,bUpdate,(CTGitPathList*)pathList);
+	this->UpdateFileList(mask, bUpdate, pathList);
 
 	if (pathList && m_mapDirectFiles.empty())
 	{
@@ -626,13 +626,13 @@ void CGitStatusListCtrl::Show(unsigned int dwShow, unsigned int dwCheck /*=0*/, 
 	{
 		m_arStatusArray.clear();
 		for (int i = 0; i < m_StatusFileList.GetCount(); ++i)
-			m_arStatusArray.push_back((CTGitPath*)&m_StatusFileList[i]);
+			m_arStatusArray.push_back(&m_StatusFileList[i]);
 
 		for (int i = 0; i < m_UnRevFileList.GetCount(); ++i)
-			m_arStatusArray.push_back((CTGitPath*)&m_UnRevFileList[i]);
+			m_arStatusArray.push_back(&m_UnRevFileList[i]);
 
 		for (int i = 0; i < m_IgnoreFileList.GetCount(); ++i)
-			m_arStatusArray.push_back((CTGitPath*)&m_IgnoreFileList[i]);
+			m_arStatusArray.push_back(&m_IgnoreFileList[i]);
 	}
 	PrepareGroups();
 	if (m_nSortedColumn >= 0)
@@ -645,7 +645,7 @@ void CGitStatusListCtrl::Show(unsigned int dwShow, unsigned int dwCheck /*=0*/, 
 	for (size_t i = 0; i < m_arStatusArray.size(); ++i)
 	{
 		//set default checkbox status
-		CTGitPath* entry = ((CTGitPath*)m_arStatusArray[i]);
+		auto entry = const_cast<CTGitPath*>(m_arStatusArray[i]);
 		CString path = entry->GetGitPathString();
 		if (!m_mapFilenameToChecked.empty() && m_mapFilenameToChecked.find(path) != m_mapFilenameToChecked.end())
 			entry->m_Checked=m_mapFilenameToChecked[path];
@@ -1357,10 +1357,10 @@ bool CGitStatusListCtrl::BuildStatistics()
 
 	for (size_t i = 0; i < m_arStatusArray.size(); ++i)
 	{
-		int status=((CTGitPath*)m_arStatusArray[i])->m_Action;
+		int status = m_arStatusArray[i]->m_Action;
 
-		m_nLineAdded += _tstol(((CTGitPath*)m_arStatusArray[i])->m_StatAdd);
-		m_nLineDeleted += _tstol(((CTGitPath*)m_arStatusArray[i])->m_StatDel);
+		m_nLineAdded += _tstol(m_arStatusArray[i]->m_StatAdd);
+		m_nLineDeleted += _tstol(m_arStatusArray[i]->m_StatDel);
 
 		if(status&(CTGitPath::LOGACTIONS_ADDED|CTGitPath::LOGACTIONS_COPY))
 			m_nAdded++;
@@ -1380,7 +1380,7 @@ bool CGitStatusListCtrl::BuildStatistics()
 		if(status&(CTGitPath::LOGACTIONS_REPLACED))
 			m_nRenamed++;
 
-		if(((CTGitPath*)m_arStatusArray[i])->m_Checked)
+		if (m_arStatusArray[i]->m_Checked)
 			m_nSelected++;
 	}
 	return !bRefetchStatus;
@@ -3663,7 +3663,7 @@ void CGitStatusListCtrl::NotifyCheck()
 	}
 }
 
-int CGitStatusListCtrl::UpdateFileList(CTGitPathList *list)
+int CGitStatusListCtrl::UpdateFileList(const CTGitPathList* list)
 {
 	m_CurrentVersion = GIT_REV_ZERO;
 
@@ -3674,7 +3674,7 @@ int CGitStatusListCtrl::UpdateFileList(CTGitPathList *list)
 	bool needsRefresh = false;
 	for (int i = 0; i < m_StatusFileList.GetCount(); ++i)
 	{
-		CTGitPath * gitpatch=(CTGitPath*)&m_StatusFileList[i];
+		auto gitpatch = const_cast<CTGitPath*>(&m_StatusFileList[i]);
 		gitpatch->m_Checked = TRUE;
 
 		if ((gitpatch->m_Action & (CTGitPath::LOGACTIONS_ADDED | CTGitPath::LOGACTIONS_REPLACED | CTGitPath::LOGACTIONS_MODIFIED)) && !gitpatch->Exists())
@@ -3703,7 +3703,7 @@ int CGitStatusListCtrl::UpdateFileList(CTGitPathList *list)
 			}
 		}
 
-		m_arStatusArray.push_back((CTGitPath*)&m_StatusFileList[i]);
+		m_arStatusArray.push_back(&m_StatusFileList[i]);
 	}
 
 	if (needsRefresh)
@@ -3717,13 +3717,13 @@ int CGitStatusListCtrl::UpdateWithGitPathList(CTGitPathList &list)
 	m_arStatusArray.clear();
 	for (int i = 0; i < list.GetCount(); ++i)
 	{
-		CTGitPath * gitpath=(CTGitPath*)&list[i];
+		auto gitpath = const_cast<CTGitPath*>(&list[i]);
 
 		if(gitpath ->m_Action & CTGitPath::LOGACTIONS_HIDE)
 			continue;
 
 		gitpath->m_Checked = TRUE;
-		m_arStatusArray.push_back((CTGitPath*)&list[i]);
+		m_arStatusArray.push_back(&list[i]);
 	}
 	return 0;
 }
@@ -3733,14 +3733,14 @@ int CGitStatusListCtrl::UpdateUnRevFileList(CTGitPathList &list)
 	m_UnRevFileList = list;
 	for (int i = 0; i < m_UnRevFileList.GetCount(); ++i)
 	{
-		CTGitPath * gitpatch=(CTGitPath*)&m_UnRevFileList[i];
+		auto gitpatch = const_cast<CTGitPath*>(&m_UnRevFileList[i]);
 		gitpatch->m_Checked = FALSE;
-		m_arStatusArray.push_back((CTGitPath*)&m_UnRevFileList[i]);
+		m_arStatusArray.push_back(&m_UnRevFileList[i]);
 	}
 	return 0;
 }
 
-int CGitStatusListCtrl::UpdateUnRevFileList(CTGitPathList *List)
+int CGitStatusListCtrl::UpdateUnRevFileList(const CTGitPathList* List)
 {
 	CString err;
 	if (m_UnRevFileList.FillUnRev(CTGitPath::LOGACTIONS_UNVER, List, &err))
@@ -3751,14 +3751,14 @@ int CGitStatusListCtrl::UpdateUnRevFileList(CTGitPathList *List)
 
 	for (int i = 0; i < m_UnRevFileList.GetCount(); ++i)
 	{
-		CTGitPath * gitpatch=(CTGitPath*)&m_UnRevFileList[i];
+		auto gitpatch = const_cast<CTGitPath*>(&m_UnRevFileList[i]);
 		gitpatch->m_Checked = FALSE;
-		m_arStatusArray.push_back((CTGitPath*)&m_UnRevFileList[i]);
+		m_arStatusArray.push_back(&m_UnRevFileList[i]);
 	}
 	return 0;
 }
 
-int CGitStatusListCtrl::UpdateIgnoreFileList(CTGitPathList *List)
+int CGitStatusListCtrl::UpdateIgnoreFileList(const CTGitPathList* List)
 {
 	CString err;
 	if (m_IgnoreFileList.FillUnRev(CTGitPath::LOGACTIONS_IGNORE, List, &err))
@@ -3769,26 +3769,26 @@ int CGitStatusListCtrl::UpdateIgnoreFileList(CTGitPathList *List)
 
 	for (int i = 0; i < m_IgnoreFileList.GetCount(); ++i)
 	{
-		CTGitPath * gitpatch=(CTGitPath*)&m_IgnoreFileList[i];
+		auto gitpatch = const_cast<CTGitPath*>(&m_IgnoreFileList[i]);
 		gitpatch->m_Checked = FALSE;
-		m_arStatusArray.push_back((CTGitPath*)&m_IgnoreFileList[i]);
+		m_arStatusArray.push_back(&m_IgnoreFileList[i]);
 	}
 	return 0;
 }
 
-int CGitStatusListCtrl::UpdateLocalChangesIgnoredFileList(CTGitPathList *list)
+int CGitStatusListCtrl::UpdateLocalChangesIgnoredFileList(const CTGitPathList* list)
 {
 	m_LocalChangesIgnoredFileList.FillBasedOnIndexFlags(GIT_IDXENTRY_VALID, GIT_IDXENTRY_SKIP_WORKTREE, list);
 	for (int i = 0; i < m_LocalChangesIgnoredFileList.GetCount(); ++i)
 	{
-		CTGitPath * gitpatch = (CTGitPath*)&m_LocalChangesIgnoredFileList[i];
+		auto gitpatch = const_cast<CTGitPath*>(&m_LocalChangesIgnoredFileList[i]);
 		gitpatch->m_Checked = FALSE;
-		m_arStatusArray.push_back((CTGitPath*)&m_LocalChangesIgnoredFileList[i]);
+		m_arStatusArray.push_back(&m_LocalChangesIgnoredFileList[i]);
 	}
 	return 0;
 }
 
-int CGitStatusListCtrl::UpdateFileList(int mask,bool once,CTGitPathList *List)
+int CGitStatusListCtrl::UpdateFileList(int mask, bool once, const CTGitPathList* List)
 {
 	if(mask&CGitStatusListCtrl::FILELIST_MODIFY)
 	{

@@ -788,7 +788,7 @@ private:
 	bool						m_bHasChangeLists;
 	//typedef std::vector<FileEntry*> FileEntryVector;
 	//FileEntryVector				m_arStatusArray;
-	std::vector<CTGitPath*>		m_arStatusArray;
+	std::vector<const CTGitPath*>	m_arStatusArray;
 	std::vector<size_t>			m_arListArray;
 	std::map<CString, int>	    m_changelists;
 	bool						m_bHasIgnoreGroup;
@@ -864,13 +864,13 @@ public:
 		FILELIST_LOCALCHANGESIGNORED = 0x8, // assume valid & skip worktree files
 	};
 private:
-	int UpdateFileList(CTGitPathList* List = nullptr);
+	int UpdateFileList(const CTGitPathList* list = nullptr);
 public:
-	int UpdateFileList(int mask, bool once = true, CTGitPathList* List = nullptr);
+	int UpdateFileList(int mask, bool once = true, const CTGitPathList* list = nullptr);
 	int UpdateUnRevFileList(CTGitPathList &list);
-	int UpdateUnRevFileList(CTGitPathList* List = nullptr);
-	int UpdateIgnoreFileList(CTGitPathList* List = nullptr);
-	int UpdateLocalChangesIgnoredFileList(CTGitPathList* list = nullptr);
+	int UpdateUnRevFileList(const CTGitPathList* list = nullptr);
+	int UpdateIgnoreFileList(const CTGitPathList* list = nullptr);
+	int UpdateLocalChangesIgnoredFileList(const CTGitPathList* list = nullptr);
 
 	int UpdateWithGitPathList(CTGitPathList &list);
 

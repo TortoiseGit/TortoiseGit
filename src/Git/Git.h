@@ -428,7 +428,7 @@ public:
 
 	int GetCommitDiffList(const CString &rev1, const CString &rev2, CTGitPathList &outpathlist, bool ignoreSpaceAtEol = false, bool ignoreSpaceChange = false, bool ignoreAllSpace = false, bool ignoreBlankLines = false);
 	int GetInitAddList(CTGitPathList &outpathlist);
-	int GetWorkingTreeChanges(CTGitPathList& result, bool amend = false, CTGitPathList* filterlist = nullptr);
+	int GetWorkingTreeChanges(CTGitPathList& result, bool amend = false, const CTGitPathList* filterlist = nullptr);
 
 	static __int64 filetime_to_time_t(const FILETIME *ft)
 	{

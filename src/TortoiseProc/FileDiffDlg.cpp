@@ -394,10 +394,10 @@ int CFileDiffDlg::AddEntry(const CTGitPath * fd)
 			icon_idx = SYS_IMAGE_LIST().GetPathIconIndex(fd->GetGitPathString());
 
 		ret = m_cFileList.InsertItem(index, fd->GetGitPathString(), icon_idx);
-		m_cFileList.SetItemText(index, 1, ((CTGitPath*)fd)->GetFileExtension());
-		m_cFileList.SetItemText(index, 2, ((CTGitPath*)fd)->GetActionName());
-		m_cFileList.SetItemText(index, 3, ((CTGitPath*)fd)->m_StatAdd);
-		m_cFileList.SetItemText(index, 4, ((CTGitPath*)fd)->m_StatDel);
+		m_cFileList.SetItemText(index, 1, fd->GetFileExtension());
+		m_cFileList.SetItemText(index, 2, fd->GetActionName());
+		m_cFileList.SetItemText(index, 3, fd->m_StatAdd);
+		m_cFileList.SetItemText(index, 4, fd->m_StatDel);
 	}
 	return ret;
 }
