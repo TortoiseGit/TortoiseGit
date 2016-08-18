@@ -129,7 +129,7 @@ void CResolveDlg::OnBnClickedSelectall()
 
 UINT CResolveDlg::ResolveThreadEntry(LPVOID pVoid)
 {
-	return ((CResolveDlg*)pVoid)->ResolveThread();
+	return reinterpret_cast<CResolveDlg*>(pVoid)->ResolveThread();
 }
 UINT CResolveDlg::ResolveThread()
 {

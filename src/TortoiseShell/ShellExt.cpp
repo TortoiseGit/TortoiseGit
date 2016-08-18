@@ -134,7 +134,7 @@ void LoadLangDll()
 							&lpFixedPointer,
 							&nFixedLength))
 						{
-							TRANSARRAY* lpTransArray = (TRANSARRAY*)lpFixedPointer;
+							auto lpTransArray = reinterpret_cast<TRANSARRAY*>(lpFixedPointer);
 							TCHAR strLangProductVersion[MAX_PATH] = { 0 };
 
 							_stprintf_s(strLangProductVersion, _T("\\StringFileInfo\\%04x%04x\\ProductVersion"),

@@ -187,7 +187,7 @@ redo:
 
 UINT CProgressDlg::ProgressThreadEntry(LPVOID pVoid)
 {
-	return ((CProgressDlg*)pVoid)->ProgressThread();
+	return reinterpret_cast<CProgressDlg*>(pVoid)->ProgressThread();
 }
 
 //static function, Share with SyncDialog

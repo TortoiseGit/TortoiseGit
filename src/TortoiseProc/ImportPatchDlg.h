@@ -54,7 +54,7 @@ protected:
 
 	static UINT ThreadEntry(LPVOID pVoid)
 	{
-		return ((CImportPatchDlg*)pVoid)->PatchThread();
+		return reinterpret_cast<CImportPatchDlg*>(pVoid)->PatchThread();
 	}
 
 	UINT PatchThread();

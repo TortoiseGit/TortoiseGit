@@ -321,7 +321,7 @@ BOOL CFileDiffDlg::OnInitDialog()
 
 UINT CFileDiffDlg::DiffThreadEntry(LPVOID pVoid)
 {
-	return ((CFileDiffDlg*)pVoid)->DiffThread();
+	return reinterpret_cast<CFileDiffDlg*>(pVoid)->DiffThread();
 }
 
 UINT CFileDiffDlg::DiffThread()
@@ -1290,7 +1290,7 @@ int CFileDiffDlg::RevertSelectedItemToVersion(CString rev)
 	while ((index = m_cFileList.GetNextSelectedItem(pos)) >= 0)
 	{
 		CString cmd, out;
-		CTGitPath *fentry = (CTGitPath *)m_arFilteredList[index];
+		CTGitPath* fentry = m_arFilteredList[index];
 		cmd.Format(_T("git.exe checkout %s -- \"%s\""), (LPCTSTR)rev, (LPCTSTR)fentry->GetGitPathString());
 		if (g_Git.Run(cmd, &out, CP_UTF8))
 		{

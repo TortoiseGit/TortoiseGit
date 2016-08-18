@@ -183,8 +183,7 @@ LRESULT CALLBACK CHyperLink::_HyperlinkParentProc(HWND hwnd, UINT message,
 		{
 			HDC hdc = (HDC) wParam;
 			HWND hwndCtl = (HWND) lParam;
-			CHyperLink *pHyperLink = (CHyperLink *)GetProp(hwndCtl,
-				                                           PROP_OBJECT_PTR);
+			auto pHyperLink = reinterpret_cast<CHyperLink*>(GetProp(hwndCtl, PROP_OBJECT_PTR));
 
 			if(pHyperLink)
 			{
@@ -266,7 +265,7 @@ inline void CHyperLink::DrawFocusRect(HWND hwnd)
 LRESULT CALLBACK CHyperLink::_HyperlinkProc(HWND hwnd, UINT message,
 		                                   WPARAM wParam, LPARAM lParam)
 {
-	CHyperLink *pHyperLink = (CHyperLink *)GetProp(hwnd, PROP_OBJECT_PTR);
+	auto pHyperLink = reinterpret_cast<CHyperLink*>(GetProp(hwnd, PROP_OBJECT_PTR));
 
 	switch (message)
 	{

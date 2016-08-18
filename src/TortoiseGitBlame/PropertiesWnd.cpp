@@ -261,7 +261,7 @@ void CPropertiesWnd::UpdateProperties(GitRevLoglist* pRev)
 
 		RemoveParent();
 
-		CLogDataVector *pLogEntry = &((CMainFrame*)AfxGetApp()->GetMainWnd())->m_wndOutput.m_LogList.m_logEntries;
+		CLogDataVector* pLogEntry = &static_cast<CMainFrame*>(AfxGetApp()->GetMainWnd())->m_wndOutput.m_LogList.m_logEntries;
 
 		CGitHashMap & hashMap = pLogEntry->m_pLogCache->m_HashMap;
 		for (size_t i = 0; i < pRev->m_ParentHash.size(); ++i)

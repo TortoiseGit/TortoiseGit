@@ -62,7 +62,7 @@ static bool GetSubmodulePathList(SubmodulePayload &payload);
 
 static int SubmoduleCallback(git_submodule *sm, const char * /*name*/, void *payload)
 {
-	auto spayload = (SubmodulePayload *)payload;
+	auto spayload = reinterpret_cast<SubmodulePayload*>(payload);
 	CString path = CUnicodeUtils::GetUnicode(git_submodule_path(sm));
 	CString fullPath(spayload->basePath);
 	fullPath += _T("\\");

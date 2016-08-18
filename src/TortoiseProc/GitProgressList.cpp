@@ -440,7 +440,7 @@ void CGitProgressList::ReportString(CString sMessage, const CString& sMsgKind, C
 
 UINT CGitProgressList::ProgressThreadEntry(LPVOID pVoid)
 {
-	return ((CGitProgressList*)pVoid)->ProgressThread();
+	return reinterpret_cast<CGitProgressList*>(pVoid)->ProgressThread();
 }
 
 UINT CGitProgressList::ProgressThread()

@@ -125,7 +125,7 @@ void CSetBugTraq::OnBnClickedEditbutton()
 	if (index == -1)
 		return;
 
-	CBugTraqAssociation *assoc = (CBugTraqAssociation *)m_cBugTraqList.GetItemData(index);
+	auto assoc = reinterpret_cast<CBugTraqAssociation*>(m_cBugTraqList.GetItemData(index));
 	if (!assoc)
 		return;
 
@@ -182,7 +182,7 @@ void CSetBugTraq::OnBnClickedBugTraqcopybutton()
 	if (index == -1)
 		return;
 
-	CBugTraqAssociation *assoc = (CBugTraqAssociation *)m_cBugTraqList.GetItemData(index);
+	auto assoc = reinterpret_cast<CBugTraqAssociation*>(m_cBugTraqList.GetItemData(index));
 	if (!assoc)
 		return;
 

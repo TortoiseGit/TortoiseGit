@@ -48,7 +48,7 @@ BOOL CALLBACK PageProc (HWND hwnd, UINT uMessage, WPARAM wParam, LPARAM lParam)
 		sheetpage->SetHwnd(hwnd);
 	}
 	else
-		sheetpage = (CGitPropertyPage*) GetWindowLongPtr (hwnd, GWLP_USERDATA);
+		sheetpage = reinterpret_cast<CGitPropertyPage*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
 
 	if (sheetpage)
 		return sheetpage->PageProc(hwnd, uMessage, wParam, lParam);
@@ -61,8 +61,7 @@ UINT CALLBACK PropPageCallbackProc ( HWND /*hwnd*/, UINT uMsg, LPPROPSHEETPAGE p
 	// Delete the page before closing.
 	if (PSPCB_RELEASE == uMsg)
 	{
-		CGitPropertyPage* sheetpage = (CGitPropertyPage*) ppsp->lParam;
-		delete sheetpage;
+		delete reinterpret_cast<CGitPropertyPage*>(ppsp->lParam);
 	}
 	return 1;
 }
@@ -348,7 +347,7 @@ struct TreewalkStruct
 
 static int TreewalkCB_FindFileRecentCommit(const char *root, const git_tree_entry *entry, void *payload)
 {
-	TreewalkStruct *treewalkstruct = (TreewalkStruct *)payload;
+	auto treewalkstruct = reinterpret_cast<TreewalkStruct*>(payload);
 	char folder[MAX_PATH] = {0};
 	strcpy_s(folder, root);
 	strcat_s(folder, git_tree_entry_name(entry));
@@ -508,7 +507,7 @@ int CGitPropertyPage::LogThread()
 	CAutoCommit commit(FindFileRecentCommit(repository, relatepath.GetGitPathString()));
 	if (commit)
 	{
-		SendMessage(m_hwnd, m_UpdateLastCommit, NULL, (LPARAM)(git_commit*)commit);
+		SendMessage(m_hwnd, m_UpdateLastCommit, NULL, reinterpret_cast<LPARAM>(static_cast<git_commit*>(commit)));
 	}
 	else
 	{
@@ -520,7 +519,7 @@ int CGitPropertyPage::LogThread()
 
 void CGitPropertyPage::LogThreadEntry(void *param)
 {
-	((CGitPropertyPage*)param)->LogThread();
+	reinterpret_cast<CGitPropertyPage*>(param)->LogThread();
 }
 
 void CGitPropertyPage::InitWorkfileView()

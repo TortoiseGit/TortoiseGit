@@ -136,7 +136,7 @@ void CFolderCrawler::ReleasePathForUpdate(const CTGitPath& path)
 
 unsigned int CFolderCrawler::ThreadEntry(void* pContext)
 {
-	((CFolderCrawler*)pContext)->WorkerThread();
+	reinterpret_cast<CFolderCrawler*>(pContext)->WorkerThread();
 	return 0;
 }
 

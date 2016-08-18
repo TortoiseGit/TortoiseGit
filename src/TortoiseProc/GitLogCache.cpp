@@ -99,10 +99,10 @@ ULONGLONG CLogCache::GetOffset(const CGitHash& hash, SLogCacheIndexFile* pData)
 	if (!pData)
 		return 0;
 
-	SLogCacheIndexItem *p=(SLogCacheIndexItem *)bsearch(hash.m_hash,pData->m_Item,
+	SLogCacheIndexItem* p=reinterpret_cast<SLogCacheIndexItem*>(bsearch(hash.m_hash, pData->m_Item,
 			pData->m_Header.m_ItemCount,
 			sizeof(SLogCacheIndexItem),
-			Compare);
+			Compare));
 
 	if(p)
 		return p->m_Offset;
@@ -145,7 +145,7 @@ int CLogCache::FetchCacheIndex(CString GitDir)
 
 		if (!m_pCacheIndex)
 		{
-			m_pCacheIndex = (SLogCacheIndexFile*)MapViewOfFile(m_IndexFileMap,FILE_MAP_READ,0,0,0);
+			m_pCacheIndex = reinterpret_cast<SLogCacheIndexFile*>(MapViewOfFile(m_IndexFileMap, FILE_MAP_READ, 0, 0, 0));
 			if (!m_pCacheIndex)
 				break;
 		}
@@ -192,7 +192,7 @@ int CLogCache::FetchCacheIndex(CString GitDir)
 				break;
 		}
 
-		if(!CheckHeader( (SLogCacheDataFileHeader*)m_pCacheData))
+		if (!CheckHeader(reinterpret_cast<SLogCacheDataFileHeader*>(m_pCacheData)))
 			break;
 
 		if (m_DataFileLength < sizeof(SLogCacheDataFileHeader) + m_pCacheIndex->m_Header.m_ItemCount * sizeof(SLogCacheDataFileHeader))
@@ -275,8 +275,7 @@ int CLogCache::LoadOneItem(GitRevLoglist& Rev,ULONGLONG offset)
 	if (offset + sizeof(SLogCacheRevItemHeader) > m_DataFileLength)
 		return -2;
 
-	SLogCacheRevItemHeader *header;
-	header = (SLogCacheRevItemHeader *)(this->m_pCacheData + offset);
+	SLogCacheRevItemHeader* header = reinterpret_cast<SLogCacheRevItemHeader*>(m_pCacheData + offset);
 
 	if( !CheckHeader(header))
 		return -2;
@@ -285,7 +284,7 @@ int CLogCache::LoadOneItem(GitRevLoglist& Rev,ULONGLONG offset)
 	SLogCacheRevFileHeader *fileheader;
 
 	offset += sizeof(SLogCacheRevItemHeader);
-	fileheader =(SLogCacheRevFileHeader *)(this->m_pCacheData + offset);
+	fileheader = reinterpret_cast<SLogCacheRevFileHeader*>(m_pCacheData + offset);
 
 	for (DWORD i = 0; i < header->m_FileCount; ++i)
 	{
@@ -329,7 +328,7 @@ int CLogCache::LoadOneItem(GitRevLoglist& Rev,ULONGLONG offset)
 		Rev.m_Files.AddPath(path);
 
 		offset += sizeof(*fileheader) + fileheader->m_OldFileNameSize*sizeof(TCHAR) + fileheader->m_FileNameSize*sizeof(TCHAR) - sizeof(TCHAR);
-		fileheader = (SLogCacheRevFileHeader *) (this->m_pCacheData + offset);
+		fileheader = reinterpret_cast<SLogCacheRevFileHeader*>(m_pCacheData + offset);
 	}
 	return 0;
 }
@@ -377,8 +376,7 @@ int CLogCache::SaveCache()
 	SLogCacheIndexFile* pIndex = nullptr;
 	if(this->m_pCacheIndex)
 	{
-		pIndex = (SLogCacheIndexFile *)malloc(sizeof(SLogCacheIndexFile)
-					+sizeof(SLogCacheIndexItem) * (m_pCacheIndex->m_Header.m_ItemCount) );
+		pIndex = reinterpret_cast<SLogCacheIndexFile*>(malloc(sizeof(SLogCacheIndexFile) + sizeof(SLogCacheIndexItem) * (m_pCacheIndex->m_Header.m_ItemCount)));
 		if (!pIndex)
 			return -1;
 
@@ -483,7 +481,7 @@ int CLogCache::SaveCache()
 		if(m_IndexFileMap == INVALID_HANDLE_VALUE)
 			break;
 
-		m_pCacheIndex = (SLogCacheIndexFile*)MapViewOfFile(m_IndexFileMap,FILE_MAP_WRITE,0,0,0);
+		m_pCacheIndex = reinterpret_cast<SLogCacheIndexFile*>(MapViewOfFile(m_IndexFileMap, FILE_MAP_WRITE, 0, 0, 0));
 		if (!m_pCacheIndex)
 			break;
 

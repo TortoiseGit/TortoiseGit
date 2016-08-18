@@ -232,7 +232,7 @@ bool CDirectoryWatcher::IsPathWatched(const CTGitPath& path)
 
 unsigned int CDirectoryWatcher::ThreadEntry(void* pContext)
 {
-	((CDirectoryWatcher*)pContext)->WorkerThread();
+	reinterpret_cast<CDirectoryWatcher*>(pContext)->WorkerThread();
 	return 0;
 }
 

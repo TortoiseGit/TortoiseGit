@@ -102,7 +102,7 @@ protected:
 	void Refresh();
 	volatile LONG m_bThreadRunning;
 	int  RebaseThread();
-	static UINT RebaseThreadEntry(LPVOID pVoid){return ((CRebaseDlg *)pVoid)->RebaseThread();};
+	static UINT RebaseThreadEntry(LPVOID pVoid) { return reinterpret_cast<CRebaseDlg*>(pVoid)->RebaseThread(); };
 	BOOL IsEnd();
 
 	int IsCommitEmpty(const CGitHash& hash);

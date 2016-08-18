@@ -74,13 +74,13 @@ public:
 
 	static int CALLBACK StaticCompare(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort)
 	{
-		return ((CRepoListCompareFunc *) lParamSort)->Compare(lParam1, lParam2);
+		return reinterpret_cast<CRepoListCompareFunc*>(lParamSort)->Compare(lParam1, lParam2);
 	}
 
 	int Compare(LPARAM lParam1, LPARAM lParam2)
 	{
-		CShadowFilesTree * pLeft	= (CShadowFilesTree *)m_pList->GetItemData((int)lParam1);
-		CShadowFilesTree * pRight	= (CShadowFilesTree *)m_pList->GetItemData((int)lParam2);
+		auto pLeft	= reinterpret_cast<CShadowFilesTree*>(m_pList->GetItemData((int)lParam1));
+		auto pRight	= reinterpret_cast<CShadowFilesTree*>(m_pList->GetItemData((int)lParam2));
 
 		int result = 0;
 		switch(m_col)

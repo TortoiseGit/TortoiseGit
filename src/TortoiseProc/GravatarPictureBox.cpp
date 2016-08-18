@@ -93,7 +93,7 @@ void CGravatar::Init()
 		if (m_gravatarThread == nullptr)
 		{
 			m_gravatarExit = new bool(false);
-			m_gravatarThread = AfxBeginThread([] (LPVOID lpVoid) -> UINT { ((CGravatar *)lpVoid)->GravatarThread(); return 0; }, this, THREAD_PRIORITY_BELOW_NORMAL);
+			m_gravatarThread = AfxBeginThread([](LPVOID lpVoid) -> UINT { reinterpret_cast<CGravatar*>(lpVoid)->GravatarThread(); return 0; }, this, THREAD_PRIORITY_BELOW_NORMAL);
 			if (m_gravatarThread == nullptr)
 			{
 				CMessageBox::Show(GetSafeHwnd(), IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);

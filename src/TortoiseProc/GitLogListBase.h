@@ -568,15 +568,16 @@ protected:
 	CWinThread*			m_DiffingThread;
 	volatile LONG m_AsyncThreadRunning;
 
-	static int DiffAsync(GitRevLoglist* rev, void* data)
+	static int DiffAsync(GitRevLoglist* rev, void* pdata)
 	{
-		ULONGLONG offset=((CGitLogListBase*)data)->m_LogCache.GetOffset(rev->m_CommitHash);
-		if (!offset || ((CGitLogListBase*)data)->m_LogCache.LoadOneItem(*rev, offset))
+		auto data = reinterpret_cast<CGitLogListBase*>(pdata);
+		ULONGLONG offset = data->m_LogCache.GetOffset(rev->m_CommitHash);
+		if (!offset || data->m_LogCache.LoadOneItem(*rev, offset))
 		{
-			((CGitLogListBase*)data)->m_AsynDiffListLock.Lock();
-			((CGitLogListBase*)data)->m_AsynDiffList.push_back(rev);
-			((CGitLogListBase*)data)->m_AsynDiffListLock.Unlock();
-			::SetEvent(((CGitLogListBase*)data)->m_AsyncDiffEvent);
+			data->m_AsynDiffListLock.Lock();
+			data->m_AsynDiffList.push_back(rev);
+			data->m_AsynDiffListLock.Unlock();
+			::SetEvent(data->m_AsyncDiffEvent);
 			return 0;
 		}
 
@@ -585,15 +586,15 @@ protected:
 			return 0;
 		InterlockedExchange(&rev->m_IsFull, TRUE);
 		// we might need to signal that the changed files are now available
-		if (((CGitLogListBase*)data)->GetSelectedCount() == 1)
+		if (data->GetSelectedCount() == 1)
 		{
-			POSITION pos = ((CGitLogListBase*)data)->GetFirstSelectedItemPosition();
-			int nItem = ((CGitLogListBase*)data)->GetNextSelectedItem(pos);
+			POSITION pos = data->GetFirstSelectedItemPosition();
+			int nItem = data->GetNextSelectedItem(pos);
 			if (nItem >= 0)
 			{
-				GitRevLoglist* data2 = (GitRevLoglist*)((CGitLogListBase*)data)->m_arShownList.SafeGetAt(nItem);
+				GitRevLoglist* data2 = data->m_arShownList.SafeGetAt(nItem);
 				if (data2 && data2->m_CommitHash == rev->m_CommitHash)
-					((CGitLogListBase*)data)->GetParent()->PostMessage(WM_COMMAND, MSG_FETCHED_DIFF, 0);
+					data->GetParent()->PostMessage(WM_COMMAND, MSG_FETCHED_DIFF, 0);
 			}
 		}
 		return 0;
@@ -601,7 +602,7 @@ protected:
 
 	static UINT AsyncThread(LPVOID data)
 	{
-		return ((CGitLogListBase*)data)->AsyncDiffThread();
+		return reinterpret_cast<CGitLogListBase*>(data)->AsyncDiffThread();
 	}
 
 	int AsyncDiffThread();

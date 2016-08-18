@@ -201,7 +201,7 @@ public:
 	int				m_seq;
 
 protected:
-	static UINT		ProgressThreadEntry(LPVOID pVoid){ return ((CSyncDlg*)pVoid) ->ProgressThread(); };
+	static UINT		ProgressThreadEntry(LPVOID pVoid) { return reinterpret_cast<CSyncDlg*>(pVoid)->ProgressThread(); };
 	UINT			ProgressThread();
 
 	CHistoryCombo	m_ctrlURL;

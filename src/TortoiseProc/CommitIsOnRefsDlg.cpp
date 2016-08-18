@@ -432,7 +432,7 @@ void CCommitIsOnRefsDlg::StartGetRefsThread()
 
 UINT CCommitIsOnRefsDlg::GetRefsThreadEntry(LPVOID pVoid)
 {
-	return ((CCommitIsOnRefsDlg*)pVoid)->GetRefsThread();
+	return reinterpret_cast<CCommitIsOnRefsDlg*>(pVoid)->GetRefsThread();
 }
 
 UINT CCommitIsOnRefsDlg::GetRefsThread()

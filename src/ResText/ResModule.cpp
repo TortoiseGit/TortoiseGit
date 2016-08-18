@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015 - TortoiseGit
+// Copyright (C) 2015-2016 - TortoiseGit
 // Copyright (C) 2003-2008, 2010-2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -2045,7 +2045,7 @@ DONE_ERROR:
 
 BOOL CALLBACK CResModule::EnumResNameCallback(HMODULE /*hModule*/, LPCTSTR lpszType, LPTSTR lpszName, LONG_PTR lParam)
 {
-	CResModule* lpResModule = (CResModule*)lParam;
+	auto lpResModule = reinterpret_cast<CResModule*>(lParam);
 
 	if (lpszType == RT_STRING)
 	{
@@ -2095,7 +2095,7 @@ BOOL CALLBACK CResModule::EnumResNameCallback(HMODULE /*hModule*/, LPCTSTR lpszT
 #pragma warning(disable: 4189)
 BOOL CALLBACK CResModule::EnumResNameWriteCallback(HMODULE hModule, LPCTSTR lpszType, LPTSTR lpszName, LONG_PTR lParam)
 {
-	CResModule* lpResModule = (CResModule*)lParam;
+	auto lpResModule = reinterpret_cast<CResModule*>(lParam);
 	return EnumResourceLanguages(hModule, lpszType, lpszName, (ENUMRESLANGPROC)&lpResModule->EnumResWriteLangCallback, lParam);
 }
 #pragma warning(pop)
@@ -2103,7 +2103,7 @@ BOOL CALLBACK CResModule::EnumResNameWriteCallback(HMODULE hModule, LPCTSTR lpsz
 BOOL CALLBACK CResModule::EnumResWriteLangCallback(HMODULE /*hModule*/, LPCTSTR lpszType, LPTSTR lpszName, WORD wLanguage, LONG_PTR lParam)
 {
 	BOOL bRes = FALSE;
-	CResModule* lpResModule = (CResModule*)lParam;
+	auto lpResModule = reinterpret_cast<CResModule*>(lParam);
 
 	if (lpszType == RT_STRING)
 	{

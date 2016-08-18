@@ -132,7 +132,7 @@ BOOL CChangedDlg::OnInitDialog()
 
 UINT CChangedDlg::ChangedStatusThreadEntry(LPVOID pVoid)
 {
-	return ((CChangedDlg*)pVoid)->ChangedStatusThread();
+	return reinterpret_cast<CChangedDlg*>(pVoid)->ChangedStatusThread();
 }
 
 UINT CChangedDlg::ChangedStatusThread()

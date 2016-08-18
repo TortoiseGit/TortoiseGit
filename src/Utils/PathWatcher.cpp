@@ -179,7 +179,7 @@ bool CPathWatcher::AddPath(const CTGitPath& path)
 
 unsigned int CPathWatcher::ThreadEntry(void* pContext)
 {
-	((CPathWatcher*)pContext)->WorkerThread();
+	reinterpret_cast<CPathWatcher*>(pContext)->WorkerThread();
 	return 0;
 }
 

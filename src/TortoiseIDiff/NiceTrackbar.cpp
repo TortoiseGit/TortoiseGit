@@ -25,7 +25,7 @@
 
 LRESULT CALLBACK CNiceTrackbar::NiceTrackbarProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-    CNiceTrackbar* self = (CNiceTrackbar*)GetWindowLongPtr(hwnd, GWLP_USERDATA);
+    auto self = reinterpret_cast<CNiceTrackbar*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
 
     switch (message) {
     case WM_LBUTTONDOWN:

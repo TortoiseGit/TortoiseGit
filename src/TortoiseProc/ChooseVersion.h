@@ -36,7 +36,7 @@ private:
 	CWinThread*			m_pLoadingThread;
 	static UINT LoadingThreadEntry(LPVOID pVoid)
 	{
-		return ((CChooseVersion*)pVoid)->LoadingThread();
+		return reinterpret_cast<CChooseVersion*>(pVoid)->LoadingThread();
 	};
 	volatile LONG 		m_bLoadingThreadRunning;
 

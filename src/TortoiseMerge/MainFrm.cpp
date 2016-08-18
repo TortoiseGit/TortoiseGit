@@ -535,7 +535,7 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT /*lpcs*/, CCreateContext* pContex
 		TRACE0("Failed to create first pane\n");
 		return FALSE;
 	}
-	m_pwndBottomView = (CBottomView *)m_wndSplitter.GetPane(1,0);
+	m_pwndBottomView = static_cast<CBottomView*>(m_wndSplitter.GetPane(1, 0));
 	m_pwndBottomView->m_pwndLocator = &m_wndLocatorBar;
 	m_pwndBottomView->m_pwndLineDiffBar = &m_wndLineDiffBar;
 	if (m_bUseRibbons)
@@ -552,7 +552,7 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT /*lpcs*/, CCreateContext* pContex
 		TRACE0("Failed to create second pane\n");
 		return FALSE;
 	}
-	m_pwndLeftView = (CLeftView *)m_wndSplitter2.GetPane(0,0);
+	m_pwndLeftView = static_cast<CLeftView*>(m_wndSplitter2.GetPane(0, 0));
 	m_pwndLeftView->m_pwndLocator = &m_wndLocatorBar;
 	m_pwndLeftView->m_pwndLineDiffBar = &m_wndLineDiffBar;
 	if (m_bUseRibbons)
@@ -567,7 +567,7 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT /*lpcs*/, CCreateContext* pContex
 		TRACE0("Failed to create third pane\n");
 		return FALSE;
 	}
-	m_pwndRightView = (CRightView *)m_wndSplitter2.GetPane(0,1);
+	m_pwndRightView = static_cast<CRightView*>(m_wndSplitter2.GetPane(0, 1));
 	m_pwndRightView->m_pwndLocator = &m_wndLocatorBar;
 	m_pwndRightView->m_pwndLineDiffBar = &m_wndLineDiffBar;
 	if (m_bUseRibbons)

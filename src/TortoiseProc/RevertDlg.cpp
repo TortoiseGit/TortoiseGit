@@ -101,7 +101,7 @@ BOOL CRevertDlg::OnInitDialog()
 
 UINT CRevertDlg::RevertThreadEntry(LPVOID pVoid)
 {
-	return ((CRevertDlg*)pVoid)->RevertThread();
+	return reinterpret_cast<CRevertDlg*>(pVoid)->RevertThread();
 }
 
 UINT CRevertDlg::RevertThread()

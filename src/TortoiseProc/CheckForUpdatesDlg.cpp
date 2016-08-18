@@ -175,7 +175,7 @@ void CCheckForUpdatesDlg::OnCancel()
 
 UINT CCheckForUpdatesDlg::CheckThreadEntry(LPVOID pVoid)
 {
-	return ((CCheckForUpdatesDlg*)pVoid)->CheckThread();
+	return reinterpret_cast<CCheckForUpdatesDlg*>(pVoid)->CheckThread();
 }
 
 UINT CCheckForUpdatesDlg::CheckThread()
@@ -669,7 +669,7 @@ void CCheckForUpdatesDlg::OnBnClickedButtonUpdate()
 
 UINT CCheckForUpdatesDlg::DownloadThreadEntry(LPVOID pVoid)
 {
-	return ((CCheckForUpdatesDlg*)pVoid)->DownloadThread();
+	return reinterpret_cast<CCheckForUpdatesDlg*>(pVoid)->DownloadThread();
 }
 
 bool CCheckForUpdatesDlg::VerifyUpdateFile(const CString& filename, const CString& filenameSignature, const CString& reportingFilename)

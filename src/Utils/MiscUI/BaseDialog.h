@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2016 - TortoiseGit
 // Copyright (C) 2003-2007, 2010, 2012-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -47,7 +48,7 @@ protected:
 	// returns a pointer the dialog (stored as the WindowLong)
 	inline static CDialog * GetObjectFromWindow(HWND hWnd)
 	{
-		return (CDialog *)GetWindowLongPtr(hWnd, GWLP_USERDATA);
+		return reinterpret_cast<CDialog*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
 	}
 };
 

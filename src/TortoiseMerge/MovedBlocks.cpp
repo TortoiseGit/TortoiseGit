@@ -128,7 +128,7 @@ LineToGroupMap::~LineToGroupMap()
 
 tsvn_svn_diff_t_extension * CreateDiffExtension(svn_diff_t * base, apr_pool_t * pool)
 {
-	tsvn_svn_diff_t_extension * ext = (tsvn_svn_diff_t_extension *)apr_palloc(pool, sizeof(tsvn_svn_diff_t_extension));
+	auto ext = static_cast<tsvn_svn_diff_t_extension*>(apr_palloc(pool, sizeof(tsvn_svn_diff_t_extension)));
 	ext->next = NULL;
 	ext->moved_to = -1;
 	ext->moved_from = -1;

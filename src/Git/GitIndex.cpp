@@ -656,7 +656,7 @@ int CGitHeadFileList::CallBack(const unsigned char *sha1, const char *base, int 
 {
 #define S_IFGITLINK	0160000
 
-	CGitHeadFileList *p = (CGitHeadFileList*)context;
+	CGitHeadFileList* p = reinterpret_cast<CGitHeadFileList*>(context);
 
 	if ((mode & S_IFDIR) && (mode & S_IFMT) != S_IFGITLINK)
 		return READ_TREE_RECURSIVE;

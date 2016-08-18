@@ -135,7 +135,7 @@ void CAddDlg::OnBnClickedSelectall()
 
 UINT CAddDlg::AddThreadEntry(LPVOID pVoid)
 {
-	return ((CAddDlg*)pVoid)->AddThread();
+	return reinterpret_cast<CAddDlg*>(pVoid)->AddThread();
 }
 
 UINT CAddDlg::AddThread()

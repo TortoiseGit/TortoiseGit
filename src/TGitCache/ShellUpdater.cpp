@@ -83,7 +83,7 @@ void CShellUpdater::AddPathForUpdate(const CTGitPath& path)
 
 unsigned int CShellUpdater::ThreadEntry(void* pContext)
 {
-	((CShellUpdater*)pContext)->WorkerThread();
+	reinterpret_cast<CShellUpdater*>(pContext)->WorkerThread();
 	return 0;
 }
 

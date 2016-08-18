@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2016 - TortoiseGit
 // Copyright (C) 2003-2007, 2010, 2013-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -99,6 +100,6 @@ protected:
     // returns a pointer the window (stored as the WindowLong)
     inline static CWindow * GetObjectFromWindow(HWND hWnd)
     {
-        return (CWindow *)GetWindowLongPtr(hWnd, GWLP_USERDATA);
+        return reinterpret_cast<CWindow*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
     }
 };

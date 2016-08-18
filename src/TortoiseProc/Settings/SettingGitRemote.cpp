@@ -197,7 +197,7 @@ struct CheckRefspecStruct
 
 static int CheckRemoteCollideWithRefspec(const git_config_entry *entry, void * payload)
 {
-	auto crs = (CheckRefspecStruct *)payload;
+	auto crs = reinterpret_cast<CheckRefspecStruct*>(payload);
 	crs->result = false;
 	if (entry->name == "remote." + crs->remote + ".fetch")
 		return 0;

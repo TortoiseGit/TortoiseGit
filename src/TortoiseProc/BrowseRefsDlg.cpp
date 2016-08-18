@@ -103,14 +103,14 @@ public:
 
 	static int CALLBACK StaticCompare(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort)
 	{
-		return ((CRefLeafListCompareFunc*)lParamSort)->Compare(lParam1,lParam2);
+		return reinterpret_cast<CRefLeafListCompareFunc*>(lParamSort)->Compare(lParam1, lParam2);
 	}
 
 	int Compare(LPARAM lParam1, LPARAM lParam2)
 	{
 		return Compare(
-			(CShadowTree*)m_pList->GetItemData((int)lParam1),
-			(CShadowTree*)m_pList->GetItemData((int)lParam2));
+			reinterpret_cast<CShadowTree*>(m_pList->GetItemData((int)lParam1)),
+			reinterpret_cast<CShadowTree*>(m_pList->GetItemData((int)lParam2)));
 	}
 
 	int Compare(const CShadowTree* pLeft, const CShadowTree* pRight)

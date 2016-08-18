@@ -1939,7 +1939,7 @@ void CTortoiseGitBlameView::OnViewDetectMovedOrCopiedLines(DWORD dwDetectMovedOr
 
 	theApp.WriteInt(_T("DetectMovedOrCopiedLines"), m_dwDetectMovedOrCopiedLines);
 
-	CTortoiseGitBlameDoc *document = (CTortoiseGitBlameDoc *) m_pDocument;
+	auto document = static_cast<CTortoiseGitBlameDoc*>(m_pDocument);
 	if (!document->m_CurrentFileName.IsEmpty())
 	{
 		document->m_lLine = (int)SendEditor(SCI_GETFIRSTVISIBLELINE) + 1;
@@ -2002,7 +2002,7 @@ void CTortoiseGitBlameView::OnUpdateViewDetectMovedOrCopiedLinesToggleFromExisti
 void CTortoiseGitBlameView::ReloadDocument()
 {
 	theApp.DoWaitCursor(1);
-	CTortoiseGitBlameDoc *document = (CTortoiseGitBlameDoc *) m_pDocument;
+	auto document = static_cast<CTortoiseGitBlameDoc*>(m_pDocument);
 	if (!document->m_CurrentFileName.IsEmpty())
 	{
 		document->m_lLine = (int)SendEditor(SCI_GETFIRSTVISIBLELINE) + 1;

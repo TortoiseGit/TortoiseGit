@@ -215,13 +215,9 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 		{
 			CWnd* pWnd = GetMainFrame()->GetDescendantWindow(AFX_IDW_PANE_FIRST, TRUE);
 			if (pWnd && pWnd->IsKindOf(RUNTIME_CLASS(CTortoiseGitBlameView)))
-			{
-				pView = (CTortoiseGitBlameView*)pWnd;
-			}
+				pView = static_cast<CTortoiseGitBlameView*>(pWnd);
 			else
-			{
 				return FALSE;
-			}
 		}
 		pView->ParseBlame();
 

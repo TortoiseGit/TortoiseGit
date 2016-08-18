@@ -343,7 +343,7 @@ void CSyncDlg::OnBnClickedButtonPull()
 				refspec.Format(_T("refs/heads/%s:refs/remotes/%s/%s"), (LPCTSTR)m_strRemoteBranch, (LPCTSTR)m_strURL, (LPCTSTR)m_strRemoteBranch);
 
 			progressCommand = std::make_unique<FetchProgressCommand>();
-			FetchProgressCommand* fetchProgressCommand = reinterpret_cast<FetchProgressCommand*>(progressCommand.get());
+			FetchProgressCommand* fetchProgressCommand = static_cast<FetchProgressCommand*>(progressCommand.get());
 			fetchProgressCommand->SetUrl(m_strURL);
 			fetchProgressCommand->SetRefSpec(refspec);
 			m_GitProgressList.SetCommand(progressCommand.get());

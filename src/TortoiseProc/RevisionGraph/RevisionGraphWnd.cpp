@@ -704,7 +704,7 @@ void CRevisionGraphWnd::OnLButtonUp(UINT nFlags, CPoint point)
 		fact = fZoomfactor/m_fZoomFactor;
 	}
 
-	CRevisionGraphDlg * pDlg = (CRevisionGraphDlg*)GetParent();
+	auto pDlg = static_cast<CRevisionGraphDlg*>(GetParent());
 	if (pDlg)
 	{
 		m_fZoomFactor = fZoomfactor;

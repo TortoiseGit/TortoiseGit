@@ -413,12 +413,12 @@ int LoadStringEx(HINSTANCE hInstance, UINT uID, LPTSTR lpBuffer, int nBufferMax,
 		return 0;
 
 	nResourceSize = ::SizeofResource(hInstance, hResource);
-	pImageEnd = (const STRINGRESOURCEIMAGE*)(LPBYTE(pImage)+nResourceSize);
+	pImageEnd = reinterpret_cast<const STRINGRESOURCEIMAGE*>(LPBYTE(pImage) + nResourceSize);
 	iIndex = uID&0x000f;
 
 	while ((iIndex > 0) && (pImage < pImageEnd))
 	{
-		pImage = (const STRINGRESOURCEIMAGE*)(LPBYTE(pImage)+(sizeof(STRINGRESOURCEIMAGE)+(pImage->nLength*sizeof(WCHAR))));
+		pImage = reinterpret_cast<const STRINGRESOURCEIMAGE*>(LPBYTE(pImage) + (sizeof(STRINGRESOURCEIMAGE) + (pImage->nLength * sizeof(WCHAR))));
 		iIndex--;
 	}
 	if (pImage >= pImageEnd)
