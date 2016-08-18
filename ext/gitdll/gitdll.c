@@ -47,11 +47,11 @@ extern void handle_error(const char* err, va_list params);
 extern void handle_warning(const char* warn, va_list params);
 extern int die_is_recursing_dll(void);
 
-extern void free_all_pack();
-extern void reset_git_env();
-extern void drop_attr_stack();
-extern void git_atexit_dispatch();
-extern void git_atexit_clear();
+extern void free_all_pack(void);
+extern void reset_git_env(void);
+extern void drop_attr_stack(void);
+extern void git_atexit_dispatch(void);
+extern void git_atexit_clear(void);
 extern void invalidate_ref_cache(const char* submodule);
 extern void cmd_log_init(int argc, const char** argv, const char* prefix, struct rev_info* rev, struct setup_revision_opt* opt);
 extern int estimate_commit_count(struct rev_info* rev, struct commit_list* list);
@@ -87,7 +87,7 @@ static int convert_slash(char * path)
 	return 0;
 }
 
-int git_init()
+int git_init(void)
 {
 	char path[MAX_PATH+1];
 
