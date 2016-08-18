@@ -1068,7 +1068,7 @@ const char * git_get_mailmap_author(GIT_MAILMAP mailmap, const char *email2, voi
 		int i = imin + ((imax - imin) / 2);
 		struct string_list_item *si = (struct string_list_item *)&map->items[i];
 		struct mailmap_entry *me = (struct mailmap_entry *)si->util;
-		int comp = strcmp(si->string, email2);
+		int comp = map->cmp(si->string, email2);
 
 		if (!comp)
 		{
@@ -1080,8 +1080,8 @@ const char * git_get_mailmap_author(GIT_MAILMAP mailmap, const char *email2, voi
 				{
 					struct string_list_item *sj = (struct string_list_item *)&me->namemap.items[j];
 					struct mailmap_info *mi = (struct mailmap_info *)sj->util;
-					
-					if (!strcmp(sj->string, author2))
+
+					if (!map->cmp(sj->string, author2))
 						return mi->name;
 				}
 			}
