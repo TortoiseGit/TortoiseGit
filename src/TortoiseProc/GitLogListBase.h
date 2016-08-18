@@ -667,4 +667,6 @@ protected:
 	char                m_szTip[8192];
 	std::map<CString, CRect> m_RefLabelPosMap; // ref name vs. label position
 	int					m_OldTopIndex;
+
+	GIT_MAILMAP			m_pMailmap;
 };

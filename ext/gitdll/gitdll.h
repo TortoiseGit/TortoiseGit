@@ -199,7 +199,7 @@ GITDLL_API const wchar_t *wget_program_data_config(void);
 typedef void *GIT_MAILMAP;
 
 GITDLL_API int git_read_mailmap(GIT_MAILMAP *mailmap);
-GITDLL_API const char * git_get_mailmap_author(GIT_MAILMAP mailmap, const char *email2, void *payload, const char *(*author2_cb)(void *));
+GITDLL_API int git_lookup_mailmap(GIT_MAILMAP mailmap, const char** email1, const char** name1, const char* email2, void* payload, const char* (*author2_cb)(void*));
 GITDLL_API void git_free_mailmap(GIT_MAILMAP mailmap);
 
 #endif

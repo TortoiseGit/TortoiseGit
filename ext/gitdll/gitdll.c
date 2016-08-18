@@ -1053,13 +1053,13 @@ int git_read_mailmap(GIT_MAILMAP *mailmap)
 	return 0;
 }
 
-const char * git_get_mailmap_author(GIT_MAILMAP mailmap, const char *email2, void *payload, const char *(*author2_cb)(void *))
+int git_lookup_mailmap(GIT_MAILMAP mailmap, const char** email1, const char** name1, const char* email2, void* payload, const char *(*author2_cb)(void*))
 {
 	struct string_list *map;
 	int imax, imin = 0;
 
 	if (!mailmap)
-		return NULL;
+		return -1;
 
 	map = (struct string_list *)mailmap;
 	imax = map->nr - 1;
@@ -1082,11 +1082,21 @@ const char * git_get_mailmap_author(GIT_MAILMAP mailmap, const char *email2, voi
 					struct mailmap_info *mi = (struct mailmap_info *)sj->util;
 
 					if (!map->cmp(sj->string, author2))
-						return mi->name;
+					{
+						if (email1)
+							*email1 = mi->email;
+						if (name1)
+							*name1 = mi->name;
+						return 0;
+					}
 				}
 			}
 
-			return me->name;
+			if (email1)
+				*email1 = me->email;
+			if (name1)
+				*name1 = me->name;
+			return 0;
 		}
 		else if (comp < 0)
 			imin = i + 1;
@@ -1094,7 +1104,7 @@ const char * git_get_mailmap_author(GIT_MAILMAP mailmap, const char *email2, voi
 			imax = i - 1;
 	}
 
-	return NULL;
+	return -1;
 }
 
 void git_free_mailmap(GIT_MAILMAP mailmap)

@@ -760,7 +760,8 @@ int CStatGraphDlg::GatherData(BOOL fetchdiff, BOOL keepFetchedData)
 			CStringA email2A = CUnicodeUtils::GetUTF8(pLogEntry->GetAuthorEmail());
 			struct payload_struct { GitRev* rev; const char *authorName; };
 			payload_struct payload = { pLogEntry, nullptr };
-			const char *author1 = git_get_mailmap_author(mailmap, email2A, &payload, 
+			const char* author1 = nullptr;
+			git_lookup_mailmap(mailmap, nullptr, &author1, email2A, &payload, 
 				[](void* payload) -> const char* { return reinterpret_cast<payload_struct*>(payload)->authorName = _strdup(CUnicodeUtils::GetUTF8(reinterpret_cast<payload_struct*>(payload)->rev->GetAuthorName())); });
 			free((void *)payload.authorName);
 			if (author1)

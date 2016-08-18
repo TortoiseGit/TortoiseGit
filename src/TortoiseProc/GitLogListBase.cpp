@@ -79,6 +79,7 @@ CGitLogListBase::CGitLogListBase() : CHintCtrl<CResizableColumnsListCtrl<CListCt
 	, m_AsyncThreadRunning(FALSE)
 	, m_AsyncThreadExit(FALSE)
 	, m_bIsCherryPick(false)
+	, m_pMailmap(nullptr)
 {
 	// use the default GUI font, create a copy of it and
 	// change the copy to BOLD (leave the rest of the font
@@ -169,6 +170,9 @@ CGitLogListBase::CGitLogListBase() : CHintCtrl<CResizableColumnsListCtrl<CListCt
 
 	m_LineWidth = max(1, CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\Graph\\LogLineWidth"), 2));
 	m_NodeSize = max(1, CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\Graph\\LogNodeSize"), 10));
+
+	if (CRegDWORD(L"Software\\TortoiseGit\\LogDialog\\UseMailmap", FALSE) == TRUE)
+		git_read_mailmap(&m_pMailmap);
 
 	m_AsyncDiffEvent = ::CreateEvent(nullptr, FALSE, TRUE, nullptr);
 	m_AsynDiffListLock.Init();
@@ -274,6 +278,8 @@ CGitLogListBase::~CGitLogListBase()
 	DestroyIcon(m_hAddedIcon);
 	DestroyIcon(m_hDeletedIcon);
 	m_logEntries.ClearAll();
+
+	git_free_mailmap(m_pMailmap);
 
 	SafeTerminateThread();
 	SafeTerminateAsyncDiffThread();
@@ -1502,6 +1508,37 @@ CString CGitLogListBase::MessageDisplayStr(GitRev* pLogEntry)
 
 // CGitLogListBase message handlers
 
+static const char* GetMailmapMapping(GIT_MAILMAP mailmap, const CString& email, const CString& name, bool returnEmail)
+{
+	struct payload_struct { const CString* name; const char* authorName; };
+	payload_struct payload = { &name, nullptr };
+	const char* author1 = nullptr;
+	const char* email1 = nullptr;
+	git_lookup_mailmap(mailmap, &email1, &author1, CUnicodeUtils::GetUTF8(email), &payload,
+		[](void* payload) -> const char* { return reinterpret_cast<payload_struct*>(payload)->authorName = _strdup(CUnicodeUtils::GetUTF8(*reinterpret_cast<payload_struct*>(payload)->name)); });
+	free((void *)payload.authorName);
+	if (returnEmail)
+		return email1;
+	return author1;
+}
+
+static void CopyMailmapProcessedData(GIT_MAILMAP mailmap, LV_ITEM* pItem, const CString& email, const CString& name, bool returnEmail)
+{
+	if (mailmap)
+	{
+		const char* translated = GetMailmapMapping(mailmap, email, name, returnEmail);
+		if (translated)
+		{
+			lstrcpyn(pItem->pszText, CUnicodeUtils::GetUnicode(translated), pItem->cchTextMax - 1);
+			return;
+		}
+	}
+	if (returnEmail)
+		lstrcpyn(pItem->pszText, (LPCTSTR)email, pItem->cchTextMax - 1);
+	else
+		lstrcpyn(pItem->pszText, (LPCTSTR)name, pItem->cchTextMax - 1);
+}
+
 void CGitLogListBase::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	NMLVDISPINFO *pDispInfo = reinterpret_cast<NMLVDISPINFO*>(pNMHDR);
@@ -1556,7 +1593,7 @@ void CGitLogListBase::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 		lstrcpyn(pItem->pszText, (LPCTSTR)MessageDisplayStr(pLogEntry), pItem->cchTextMax - 1);
 		break;
 	case LOGLIST_AUTHOR: //Author
-		lstrcpyn(pItem->pszText, (LPCTSTR)pLogEntry->GetAuthorName(), pItem->cchTextMax - 1);
+		CopyMailmapProcessedData(m_pMailmap, pItem, pLogEntry->GetAuthorEmail(), pLogEntry->GetAuthorName(), false);
 		break;
 	case LOGLIST_DATE: //Date
 		if (!pLogEntry->m_CommitHash.IsEmpty())
@@ -1566,15 +1603,15 @@ void CGitLogListBase::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 		break;
 
 	case LOGLIST_EMAIL:
-		lstrcpyn(pItem->pszText, (LPCTSTR)pLogEntry->GetAuthorEmail(), pItem->cchTextMax - 1);
+		CopyMailmapProcessedData(m_pMailmap, pItem, pLogEntry->GetAuthorEmail(), pLogEntry->GetAuthorName(), true);
 		break;
 
 	case LOGLIST_COMMIT_NAME: //Commit
-		lstrcpyn(pItem->pszText, (LPCTSTR)pLogEntry->GetCommitterName(), pItem->cchTextMax - 1);
+		CopyMailmapProcessedData(m_pMailmap, pItem, pLogEntry->GetCommitterEmail(), pLogEntry->GetCommitterName(), false);
 		break;
 
 	case LOGLIST_COMMIT_EMAIL: //Commit Email
-		lstrcpyn(pItem->pszText, (LPCTSTR)pLogEntry->GetCommitterEmail(), pItem->cchTextMax - 1);
+		CopyMailmapProcessedData(m_pMailmap, pItem, pLogEntry->GetCommitterEmail(), pLogEntry->GetCommitterName(), true);
 		break;
 
 	case LOGLIST_COMMIT_DATE: //Commit Date
@@ -3017,6 +3054,12 @@ void CGitLogListBase::Refresh(BOOL IsCleanFilter)
 	ResetWcRev();
 
 	ShowGraphColumn((m_ShowMask & CGit::LOG_INFO_FOLLOW) ? false : true);
+
+	if (m_pMailmap)
+	{
+		git_free_mailmap(m_pMailmap);
+		git_read_mailmap(&m_pMailmap);
+	}
 
 	//Update branch and Tag info
 	ReloadHashMap();

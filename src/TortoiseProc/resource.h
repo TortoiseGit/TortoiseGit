@@ -1566,6 +1566,7 @@
 #define IDC_STATIC_PRUNE                1909
 #define IDC_SHOWREVCOUNTER              1910
 #define IDS_SETTINGS_SHOWREVCOUNTER_TT  1911
+#define IDC_USEMAILMAP                  1911
 #define IDS_INPUT_REMOVEONE             2014
 #define IDS_INPUT_REMOVEMORE            2015
 #define IDS_MENUREFRESH                 2150

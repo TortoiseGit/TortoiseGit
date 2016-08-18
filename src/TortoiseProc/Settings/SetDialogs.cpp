@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2015 - TortoiseGit
+// Copyright (C) 2008-2016 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -44,6 +44,7 @@ CSetDialogs::CSetDialogs()
 	, m_DescribeAbbreviatedSize(GIT_DESCRIBE_DEFAULT_ABBREVIATED_SIZE)
 	, m_bDescribeAlwaysLong(FALSE)
 	, m_bFullCommitMessageOnLogLine(FALSE)
+	, m_bMailmapOnLog(FALSE)
 {
 	m_regDefaultLogs = CRegDWORD(_T("Software\\TortoiseGit\\LogDialog\\NumberOfLogs"), 1);
 	m_regDefaultLogsScale = CRegDWORD(_T("Software\\TortoiseGit\\LogDialog\\NumberOfLogsScale"), CFilterData::SHOW_NO_LIMIT);
@@ -66,6 +67,7 @@ CSetDialogs::CSetDialogs()
 	m_regDescribeAbbreviatedSize = CRegDWORD(_T("Software\\TortoiseGit\\DescribeAbbreviatedSize"), GIT_DESCRIBE_DEFAULT_ABBREVIATED_SIZE);
 	m_regDescribeAlwaysLong = CRegDWORD(_T("Software\\TortoiseGit\\DescribeAlwaysLong"), FALSE);
 	m_regFullCommitMessageOnLogLine = CRegDWORD(_T("Software\\TortoiseGit\\FullCommitMessageOnLogLine"), FALSE);
+	m_regMailmapOnLog = CRegDWORD(L"Software\\TortoiseGit\\LogDialog\\UseMailmap", FALSE);
 }
 
 CSetDialogs::~CSetDialogs()
@@ -106,6 +108,7 @@ void CSetDialogs::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_DESCRIBEALWAYSLONG, m_bDescribeAlwaysLong);
 	DDX_Check(pDX, IDC_FULLCOMMITMESSAGEONLOGLINE, m_bFullCommitMessageOnLogLine);
 	DDX_Control(pDX, IDC_DEFAULT_NUMBER_OF, m_DefaultNumberOfCtl);
+	DDX_Check(pDX, IDC_USEMAILMAP, m_bMailmapOnLog);
 }
 
 BEGIN_MESSAGE_MAP(CSetDialogs, ISettingsPropPage)
@@ -130,6 +133,7 @@ BEGIN_MESSAGE_MAP(CSetDialogs, ISettingsPropPage)
 	ON_EN_CHANGE(IDC_DESCRIBEABBREVIATEDSIZE, OnChange)
 	ON_BN_CLICKED(IDC_DESCRIBEALWAYSLONG, OnChange)
 	ON_BN_CLICKED(IDC_FULLCOMMITMESSAGEONLOGLINE, OnChange)
+	ON_BN_CLICKED(IDC_USEMAILMAP, OnChange)
 END_MESSAGE_MAP()
 
 // CSetDialogs message handlers
@@ -153,6 +157,7 @@ BOOL CSetDialogs::OnInitDialog()
 	AdjustControlSize(IDC_SHOWREVCOUNTER);
 	AdjustControlSize(IDC_DESCRIBEALWAYSLONG);
 	AdjustControlSize(IDC_FULLCOMMITMESSAGEONLOGLINE);
+	AdjustControlSize(IDC_USEMAILMAP);
 
 	EnableToolTips();
 
@@ -175,6 +180,7 @@ BOOL CSetDialogs::OnInitDialog()
 	m_DescribeAbbreviatedSize = m_regDescribeAbbreviatedSize;
 	m_bDescribeAlwaysLong = m_regDescribeAlwaysLong;
 	m_bFullCommitMessageOnLogLine = m_regFullCommitMessageOnLogLine;
+	m_bMailmapOnLog = m_regMailmapOnLog;
 
 	CString temp;
 
@@ -317,6 +323,7 @@ BOOL CSetDialogs::OnApply()
 	Store(m_DescribeAbbreviatedSize, m_regDescribeAbbreviatedSize);
 	Store(m_bDescribeAlwaysLong, m_regDescribeAlwaysLong);
 	Store(m_bFullCommitMessageOnLogLine, m_regFullCommitMessageOnLogLine);
+	Store(m_bMailmapOnLog, m_regMailmapOnLog);
 
 	SetModified(FALSE);
 	return ISettingsPropPage::OnApply();
