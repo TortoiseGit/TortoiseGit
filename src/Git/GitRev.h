@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2015 - TortoiseGit
+// Copyright (C) 2008-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -56,42 +56,42 @@ protected:
 
 public:
 	GitRev(void);
-	CString GetAuthorName()
+	CString GetAuthorName() const
 	{
 		return m_AuthorName;
 	}
 
-	CString GetAuthorEmail()
+	CString GetAuthorEmail() const
 	{
 		return m_AuthorEmail;
 	}
 
-	CTime GetAuthorDate()
+	CTime GetAuthorDate() const
 	{
 		return m_AuthorDate;
 	}
 
-	CString GetCommitterName()
+	CString GetCommitterName() const
 	{
 		return m_CommitterName;
 	}
 
-	CString GetCommitterEmail()
+	CString GetCommitterEmail() const
 	{
 		return m_CommitterEmail;
 	}
 
-	CTime GetCommitterDate()
+	CTime GetCommitterDate() const
 	{
 		return m_CommitterDate;
 	}
 
-	CString GetSubject()
+	CString GetSubject() const
 	{
 		return m_Subject;
 	}
 
-	CString GetBody()
+	CString GetBody() const
 	{
 		return m_Body;
 	}
@@ -127,7 +127,7 @@ public:
 	int GetCommitFromHash(const CGitHash& hash);
 	int GetCommit(const CString& rev);
 
-	CString GetLastErr() { return m_sErr; }
+	CString GetLastErr() const { return m_sErr; }
 
 	void DbgPrint();
 
