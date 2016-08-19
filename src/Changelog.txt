@@ -9,6 +9,7 @@ Released: unreleased
  * Fixed issue #2026: Allow to navigate to branch shown on "Show branches this commit is on" dialog
  * Fixed issue #2806: Allow to turn off tooltips in file lists (in advanced settings using ShowListFullPathTooltip)
  * Fixed issue #2475: Allow to use mailmap translations in log dialog
+ * Add mnemonics to Reset, Switch, Merge Abort and Export dialogs
 
 == Bug Fixes ==
  * Fixed issue #2789: Sync Dialog In ChangeList tab auto-resize column not optimal

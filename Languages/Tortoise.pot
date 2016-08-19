@@ -414,7 +414,7 @@ msgstr ""
 msgid "&Border:"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_MERGE: Control id 1512, Dialog IDD_NEW_BRANCH_TAG: Control id 1512)
+#. Resource IDs: (Dialog IDD_EXPORT: Control id 1512, Dialog IDD_GITSWITCH: Control id 1512, Dialog IDD_MERGE: Control id 1512, Dialog IDD_NEW_BRANCH_TAG: Control id 1512, Dialog IDD_RESET: Control id 1512)
 msgid "&Branch"
 msgstr ""
 
@@ -482,7 +482,7 @@ msgstr ""
 msgid "&Command:"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_MERGE: Control id 1514, Dialog IDD_NEW_BRANCH_TAG: Control id 1514, Dialog IDD_SYNC: Control id 1625)
+#. Resource IDs: (Dialog IDD_EXPORT: Control id 1514, Dialog IDD_GITSWITCH: Control id 1514, Dialog IDD_MERGE: Control id 1514, Dialog IDD_NEW_BRANCH_TAG: Control id 1514, Dialog IDD_RESET: Control id 1514, Dialog IDD_SYNC: Control id 1625)
 msgid "&Commit"
 msgstr ""
 
@@ -718,8 +718,12 @@ msgstr ""
 msgid "&Green:"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_NEW_BRANCH_TAG: Control id 1511)
+#. Resource IDs: (Dialog IDD_EXPORT: Control id 1511, Dialog IDD_NEW_BRANCH_TAG: Control id 1511)
 msgid "&HEAD"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1552, Dialog IDD_RESET: Control id 1552)
+msgid "&Hard: Reset working tree and index (discard all local changes)"
 msgstr ""
 
 #. Resource IDs: (57670, 65535 - PopupMenu, IDS_MENUHELP)
@@ -864,7 +868,7 @@ msgstr ""
 msgid "&Menu contents:"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_SUBMODULE_UPDATE: Control id 1735, IDS_MERGEBUTTON)
+#. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1526, Dialog IDD_SUBMODULE_UPDATE: Control id 1735, IDS_MERGEBUTTON)
 msgid "&Merge"
 msgstr ""
 
@@ -886,6 +890,10 @@ msgstr ""
 
 #. Resource IDs: (16925)
 msgid "&Minimize"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1551, Dialog IDD_RESET: Control id 1551)
+msgid "&Mixed: Leave working tree untouched, reset index"
 msgstr ""
 
 #. Resource IDs: (ID_VIEW_MOVEDBLOCKS - Menu)
@@ -978,6 +986,10 @@ msgstr ""
 
 #. Resource IDs: (ID_VIEW_OVERLAPIMAGES - Menu)
 msgid "&Overlay images\tO"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1523)
+msgid "&Override branch if exists"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROXY: Control id 1411, Dialog IDD_SIMPLEPROMPT: Control id 65535, Dialog IDD_USER_PASSWD: Control id 5002)
@@ -1200,6 +1212,10 @@ msgstr ""
 msgid "&Skip"
 msgstr ""
 
+#. Resource IDs: (Dialog IDD_RESET: Control id 1550)
+msgid "&Soft: Leave working tree and index untouched"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_MERGE: Control id 1524, Dialog IDD_PULLFETCH: Control id 1524)
 msgid "&Squash"
 msgstr ""
@@ -1240,7 +1256,7 @@ msgstr ""
 msgid "&Tabbed Document"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_MERGE: Control id 1513, Dialog IDD_NEW_BRANCH_TAG: Control id 1513)
+#. Resource IDs: (Dialog IDD_EXPORT: Control id 1513, Dialog IDD_GITSWITCH: Control id 1513, Dialog IDD_MERGE: Control id 1513, Dialog IDD_NEW_BRANCH_TAG: Control id 1513, Dialog IDD_RESET: Control id 1513)
 msgid "&Tag"
 msgstr ""
 
@@ -2229,7 +2245,7 @@ msgstr ""
 msgid "Branc&h:"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_CLONE: Control id 1527, Dialog IDD_EXPORT: Control id 1512, Dialog IDD_GITSWITCH: Control id 1512, Dialog IDD_LOGMESSAGE: Control id 1579, Dialog IDD_RESET: Control id 1512, Dialog IDD_SUBMODULE_ADD: Control id 1586, IDS_PROC_BRANCH)
+#. Resource IDs: (Dialog IDD_CLONE: Control id 1527, Dialog IDD_LOGMESSAGE: Control id 1579, Dialog IDD_SUBMODULE_ADD: Control id 1586, IDS_PROC_BRANCH)
 msgid "Branch"
 msgstr ""
 
@@ -2819,7 +2835,7 @@ msgstr ""
 msgid "Commands"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_CHANGEDFILES: Control id 1383, Dialog IDD_COMMITDLG: Control id 135, Dialog IDD_EXPORT: Control id 1514, Dialog IDD_GITSWITCH: Control id 1514, Dialog IDD_RESET: Control id 1514, Dialog IDD_SETTINGSDIALOGS2: Control id 1083, Dialog IDD_SETTINGSDIALOGS3: Control id 65535, IDS_COMMITBUTTON, IDS_PROGRS_CMD_COMMIT, IDS_PROGRS_TITLE_COMMIT)
+#. Resource IDs: (Dialog IDD_CHANGEDFILES: Control id 1383, Dialog IDD_COMMITDLG: Control id 135, Dialog IDD_SETTINGSDIALOGS2: Control id 1083, Dialog IDD_SETTINGSDIALOGS3: Control id 65535, IDS_COMMITBUTTON, IDS_PROGRS_CMD_COMMIT, IDS_PROGRS_TITLE_COMMIT)
 msgid "Commit"
 msgstr ""
 
@@ -3262,6 +3278,10 @@ msgstr ""
 msgid "Create &Library"
 msgstr ""
 
+#. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1527)
+msgid "Create &New Branch"
+msgstr ""
+
 #. Resource IDs: (IDS_MENUTAG)
 msgid "Create &Tag..."
 msgstr ""
@@ -3280,10 +3300,6 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_CREATECHANGELIST: Control id 243)
 msgid "Create Changelist"
-msgstr ""
-
-#. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1527)
-msgid "Create New Branch"
 msgstr ""
 
 #. Resource IDs: (IDS_MENUFORMATPATCH)
@@ -5127,7 +5143,7 @@ msgstr ""
 msgid "H&ue:"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_DIFFFILES: Control id 1353, Dialog IDD_DIFFFILES: Control id 1354, Dialog IDD_EXPORT: Control id 1511, Dialog IDD_REPOSITORY_BROWSER: Control id 1684)
+#. Resource IDs: (Dialog IDD_DIFFFILES: Control id 1353, Dialog IDD_DIFFFILES: Control id 1354, Dialog IDD_REPOSITORY_BROWSER: Control id 1684)
 msgid "HEAD"
 msgstr ""
 
@@ -5137,10 +5153,6 @@ msgstr ""
 
 #. Resource IDs: (IDS_RESET_HARD)
 msgid "Hard"
-msgstr ""
-
-#. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1552, Dialog IDD_RESET: Control id 1552)
-msgid "Hard: Reset working tree and index (discard all local changes)"
 msgstr ""
 
 #. Resource IDs: (65535 - PopupMenu)
@@ -6167,7 +6179,7 @@ msgstr ""
 msgid "Menu s&hadows"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1526, Dialog IDD_MERGE: Control id 313, IDS_PROGRS_TITLE_MERGE)
+#. Resource IDs: (Dialog IDD_MERGE: Control id 313, IDS_PROGRS_TITLE_MERGE)
 msgid "Merge"
 msgstr ""
 
@@ -6264,10 +6276,6 @@ msgstr ""
 
 #. Resource IDs: (62179, IDS_RESET_MIXED)
 msgid "Mixed"
-msgstr ""
-
-#. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1551, Dialog IDD_RESET: Control id 1551)
-msgid "Mixed: Leave working tree untouched, reset index"
 msgstr ""
 
 #. Resource IDs: (IDS_STATUSLIST_COLMODIFICATIONDATE)
@@ -6924,16 +6932,12 @@ msgstr ""
 msgid "Output.prn"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1523)
-msgid "Override branch if exists"
-msgstr ""
-
 #. Resource IDs: (IDS_PROC_OVERWRITEEXPORT_OVERWRITE)
 msgid "Overwrite"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1521)
-msgid "Overwrite working tree changes (force)"
+msgid "Overwrite working tree changes (&force)"
 msgstr ""
 
 #. Resource IDs: (ID_FILE_PAGESETUP - Menu)
@@ -8074,6 +8078,10 @@ msgstr ""
 msgid "S&how Quick Access Toolbar below the Ribbon"
 msgstr ""
 
+#. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1383, Dialog IDD_RESET: Control id 1383)
+msgid "S&how modified files in working tree"
+msgstr ""
+
 #. Resource IDs: (IDS_PROC_REBASE_UNSELECTED_SKIP)
 msgid "S&kip unselected"
 msgstr ""
@@ -8781,10 +8789,6 @@ msgstr ""
 msgid "Show long format even if a tag is exactly on that commit"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1383, Dialog IDD_RESET: Control id 1383)
-msgid "Show modified files in working tree"
-msgstr ""
-
 #. Resource IDs: (20308)
 msgid "Show next change of selected commit\nShow next"
 msgstr ""
@@ -8942,10 +8946,6 @@ msgstr ""
 
 #. Resource IDs: (IDS_RESET_SOFT)
 msgid "Soft"
-msgstr ""
-
-#. Resource IDs: (Dialog IDD_RESET: Control id 1550)
-msgid "Soft: Leave working tree and index untouched"
 msgstr ""
 
 #. Resource IDs: (IDS_WARNMODIFIEDOUTSIDE)
@@ -9310,6 +9310,10 @@ msgstr ""
 msgid "System registry entries have been removed and the INI file (if any) was deleted."
 msgstr ""
 
+#. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1520)
+msgid "T&rack"
+msgstr ""
+
 #. Resource IDs: (5065 - Menu)
 msgid "TIS-620"
 msgstr ""
@@ -9334,7 +9338,7 @@ msgstr ""
 msgid "Tab size:"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_EXPORT: Control id 1513, Dialog IDD_GITSWITCH: Control id 1513, Dialog IDD_RESET: Control id 1513, Dialog IDD_SETTINGSCOLORS_2: Control id 65535, IDS_PROC_TAG)
+#. Resource IDs: (Dialog IDD_SETTINGSCOLORS_2: Control id 65535, IDS_PROC_TAG)
 msgid "Tag"
 msgstr ""
 
@@ -9893,10 +9897,6 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_NEW_BRANCH_TAG: Control id 1520)
 msgid "Trac&k"
-msgstr ""
-
-#. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1520)
-msgid "Track"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_PROPPAGE: Control id 11023)
