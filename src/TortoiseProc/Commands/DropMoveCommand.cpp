@@ -33,7 +33,7 @@ bool DropMoveCommand::Execute()
 	if (!CTGitPath(droppath).HasAdminDir(&ProjectTop))
 		return FALSE;
 
-	if (ProjectTop != g_Git.m_CurrentDir )
+	if (g_Git.m_CurrentDir.CompareNoCase(ProjectTop) != 0)
 	{
 		MessageBox(hwndExplorer, _T("Target and source must be the same git repository"), _T("TortoiseGit"), MB_OK | MB_ICONEXCLAMATION);
 		return FALSE;

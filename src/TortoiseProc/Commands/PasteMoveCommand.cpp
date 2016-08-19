@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008 - TortoiseGit
+// Copyright (C) 2008, 2012-2013, 2015-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -69,7 +69,7 @@ bool PasteMoveCommand::Execute()
 		top.Empty();
 		orgPathList[nPath].HasAdminDir(&top);
 		git_wc_status_kind s = status.GetAllStatus(orgPathList[nPath]);
-		if ((s == git_wc_status_none)||(s == git_wc_status_unversioned)||(s == git_wc_status_ignored)||top != g_Git.m_CurrentDir)
+		if (s == git_wc_status_none || s == git_wc_status_unversioned || s == git_wc_status_ignored || top.CompareNoCase(g_Git.m_CurrentDir) != 0)
 		{
 			// source file is unversioned: move the file to the target, then add it
 			MoveFile(orgPathList[nPath].GetWinPath(), destPath.GetWinPath());
