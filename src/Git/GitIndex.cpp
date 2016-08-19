@@ -948,7 +948,7 @@ bool CGitIgnoreList::CheckIgnoreChanged(const CString &gitdir, const CString &pa
 				break;
 		}
 
-		temp.Truncate(i);
+		temp.Truncate(max(0, i));
 	}
 	return true;
 }
@@ -1032,7 +1032,7 @@ int CGitIgnoreList::LoadAllIgnoreFile(const CString &gitdir, const CString &path
 				break;
 		}
 
-		temp.Truncate(i);
+		temp.Truncate(max(0, i));
 	}
 	return 0;
 }
@@ -1223,7 +1223,7 @@ int CGitIgnoreList::CheckIgnore(const CString &path, const CString &projectroot,
 				break;
 		}
 
-		temp.Truncate(i);
+		temp.Truncate(max(0, i));
 	}
 
 	return ret;
