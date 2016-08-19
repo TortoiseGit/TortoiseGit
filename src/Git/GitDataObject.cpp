@@ -126,7 +126,7 @@ STDMETHODIMP GitDataObject::GetData(FORMATETC* pformatetcIn, STGMEDIUM* pmedium)
 		// to *read* from a remote stream but so that the library *writes* to a stream we pass.
 		// Since we can't get such a read stream, we have to fetch the file in whole first to
 		// a temp location and then pass the shell an IStream for that temp file.
-		
+
 		if (m_revision.IsEmpty())
 		{
 			if ((pformatetcIn->lindex >= 0) && (pformatetcIn->lindex < (LONG)m_allPaths.size()))

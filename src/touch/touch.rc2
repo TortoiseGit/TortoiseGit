@@ -20,7 +20,6 @@
 //
 // Version
 //
-#include "..\version.h"
 VS_VERSION_INFO VERSIONINFO
  FILEVERSION FILEVER
  PRODUCTVERSION PRODUCTVER
@@ -38,11 +37,11 @@ BEGIN
     BEGIN
         BLOCK "040004e4"
         BEGIN
-			VALUE "CompanyName", "https://tortoisegit.org/\0"
+            VALUE "CompanyName", "https://tortoisegit.org/\0"
             VALUE "FileDescription", "Creates a file.\0"
             VALUE "FileVersion", STRFILEVER
             VALUE "InternalName", "tgittouch.exe\0"
-            VALUE "LegalCopyright", "Copyright (C) 2010-2014 - TortoiseGit\0"
+            VALUE "LegalCopyright", "Copyright (C) 2010-2016 - TortoiseGit\0"
             VALUE "OriginalFilename", "tgittouch.exe\0"
             VALUE "ProductName", "tgittouch\0"
             VALUE "ProductVersion", STRPRODUCTVER

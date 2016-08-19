@@ -49,7 +49,7 @@ END
 3 TEXTINCLUDE 
 BEGIN
     "\r\n"
-    "#include ""touch.rc2""  // non-Microsoft Visual C++ edited resources\r\0"
+    "#include ""touch.rc2""  // non-Microsoft Visual C++ edited resources\r\n\0"
 END
 
 #endif    // APSTUDIO_INVOKED
