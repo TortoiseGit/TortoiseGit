@@ -23,6 +23,7 @@
 #include "RenameDlg.h"
 #include "AppUtils.h"
 #include "ControlsBridge.h"
+#include "Git.h"
 
 IMPLEMENT_DYNAMIC(CRenameDlg, CHorizontalResizableStandAloneDialog)
 CRenameDlg::CRenameDlg(CWnd* pParent /*=nullptr*/)
@@ -46,6 +47,7 @@ void CRenameDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CRenameDlg, CHorizontalResizableStandAloneDialog)
 	ON_EN_SETFOCUS(IDC_NAME, &CRenameDlg::OnEnSetfocusName)
+	ON_BN_CLICKED(IDC_BUTTON_BROWSE_REF, &CRenameDlg::OnBnClickedButtonBrowseRef)
 END_MESSAGE_MAP()
 
 BOOL CRenameDlg::OnInitDialog()
@@ -129,4 +131,34 @@ void CRenameDlg::OnCancel()
 void CRenameDlg::OnEnSetfocusName()
 {
 	m_bBalloonVisible = false;
+}
+
+void CRenameDlg::OnBnClickedButtonBrowseRef()
+{
+	CString ext;
+	CString path;
+	if (!m_originalName.IsEmpty())
+	{
+		CTGitPath origname(g_Git.CombinePath(m_originalName));
+		ext = origname.GetFileExtension();
+		path = origname.GetWinPathString();
+	}
+
+	if (CAppUtils::FileOpenSave(path, nullptr, AFX_IDD_FILESAVE, 0, false, GetSafeHwnd(), ext))
+	{
+		GetDlgItem(IDC_NAME)->SetFocus();
+		CTGitPath target(path);
+		CString targetRoot;
+		if (!target.HasAdminDir(&targetRoot) || g_Git.m_CurrentDir.CompareNoCase(targetRoot) != 0)
+		{
+			MessageBox(L"Target and source must be the same git repository", L"TortoiseGit", MB_OK | MB_ICONEXCLAMATION);
+			return;
+		}
+		if (g_Git.m_CurrentDir.GetLength() > 3)
+			path = path.Mid(g_Git.m_CurrentDir.GetLength() + 1);
+		else
+			path = path.Mid(g_Git.m_CurrentDir.GetLength());
+		m_name = path;
+		UpdateData(FALSE);
+	}
 }

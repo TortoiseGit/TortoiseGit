@@ -290,7 +290,7 @@ msgstr ""
 msgid "%s\nis a directory, not a file!\nTortoiseGitMerge can't diff directories."
 msgstr ""
 
-#. Resource IDs: (16923)
+#. Resource IDs: (16923, Dialog IDD_RENAME: Control id 1483)
 msgid "&..."
 msgstr ""
 

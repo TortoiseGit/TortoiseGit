@@ -44,6 +44,7 @@ protected:
 	virtual void OnCancel();
 
 	afx_msg void OnEnSetfocusName();
+	afx_msg void OnBnClickedButtonBrowseRef();
 
 	DECLARE_MESSAGE_MAP()
 

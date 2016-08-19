@@ -10,6 +10,7 @@ Released: unreleased
  * Fixed issue #2806: Allow to turn off tooltips in file lists (in advanced settings using ShowListFullPathTooltip)
  * Fixed issue #2475: Allow to use mailmap translations in log dialog
  * Add mnemonics to Reset, Switch, Merge Abort and Export dialogs
+ * Fixed issue #491: Rename dialog should have a browse button
 
 == Bug Fixes ==
  * Fixed issue #2789: Sync Dialog In ChangeList tab auto-resize column not optimal
