@@ -354,6 +354,7 @@
 		<Dialog Id="ExitDlg" Width="370" Height="270" Title="[ProductName] [Setup]" NoMinimize="yes">
 			<Control Id="Finish" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Cancel="yes" Text="[ButtonText_Finish]">
 				<Publish Event="DoAction" Value="ShowChangelogAction">(NOT Installed) AND (SHOWCHANGELOG = 1)</Publish>
+				<Publish Event="DoAction" Value="RestartExplorer">1</Publish>
 				<Publish Event="EndDialog" Value="Return">1</Publish>
 			</Control>
 			<Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Disabled="yes" Text="[ButtonText_Back]" />

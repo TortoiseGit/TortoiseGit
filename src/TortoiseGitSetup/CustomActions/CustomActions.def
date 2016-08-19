@@ -6,3 +6,4 @@ LIBRARY    "CustomActions"
 EXPORTS
     TerminateCache
     OpenDonatePage
+	RestartExplorer
