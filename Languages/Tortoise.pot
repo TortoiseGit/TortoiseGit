@@ -9363,6 +9363,10 @@ msgstr ""
 msgid "Tags:"
 msgstr ""
 
+#. Resource IDs: (IDS_ERR_MUSTBESAMEWT)
+msgid "Target and source must be in the same working tree!"
+msgstr ""
+
 #. Resource IDs: (IDS_PROC_TASKS)
 msgid "Tasks"
 msgstr ""

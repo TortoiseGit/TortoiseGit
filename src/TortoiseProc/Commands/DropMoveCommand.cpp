@@ -35,7 +35,7 @@ bool DropMoveCommand::Execute()
 
 	if (g_Git.m_CurrentDir.CompareNoCase(ProjectTop) != 0)
 	{
-		MessageBox(hwndExplorer, _T("Target and source must be the same git repository"), _T("TortoiseGit"), MB_OK | MB_ICONEXCLAMATION);
+		CMessageBox::Show(hwndExplorer, IDS_ERR_MUSTBESAMEWT, IDS_APPNAME, MB_OK | MB_ICONEXCLAMATION);
 		return FALSE;
 	}
 

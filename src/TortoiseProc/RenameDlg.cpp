@@ -24,6 +24,7 @@
 #include "AppUtils.h"
 #include "ControlsBridge.h"
 #include "Git.h"
+#include "MessageBox.h"
 
 IMPLEMENT_DYNAMIC(CRenameDlg, CHorizontalResizableStandAloneDialog)
 CRenameDlg::CRenameDlg(CWnd* pParent /*=nullptr*/)
@@ -151,7 +152,7 @@ void CRenameDlg::OnBnClickedButtonBrowseRef()
 		CString targetRoot;
 		if (!target.HasAdminDir(&targetRoot) || g_Git.m_CurrentDir.CompareNoCase(targetRoot) != 0)
 		{
-			MessageBox(L"Target and source must be the same git repository", L"TortoiseGit", MB_OK | MB_ICONEXCLAMATION);
+			CMessageBox::Show(GetSafeHwnd(), IDS_ERR_MUSTBESAMEWT, IDS_APPNAME, MB_OK | MB_ICONEXCLAMATION);
 			return;
 		}
 		if (g_Git.m_CurrentDir.GetLength() > 3)

@@ -1276,6 +1276,7 @@
 #define IDC_CHECK_PRUNE                 1603
 #define IDS_REBASELOCKFILEFOUND         1603
 #define IDC_CHECK_SVN                   1604
+#define IDS_ERR_MUSTBESAMEWT            1604
 #define IDC_CHECK_SVN_TRUNK             1605
 #define IDC_EDIT_SVN_TRUNK              1606
 #define IDC_REBASE_CHECK_FORCE          1607
