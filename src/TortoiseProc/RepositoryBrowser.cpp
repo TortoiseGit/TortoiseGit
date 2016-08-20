@@ -1415,7 +1415,7 @@ void CRepositoryBrowser::BeginDrag(const CWnd& window, CTGitPathList& files, con
 	}
 
 	// build copy source / content
-	std::unique_ptr<CIDropSource> pdsrc(new CIDropSource);
+	auto pdsrc = std::make_unique<CIDropSource>();
 	if (!pdsrc)
 		return;
 

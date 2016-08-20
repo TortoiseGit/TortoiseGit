@@ -295,7 +295,7 @@ bool CRevisionGraphWnd::AnalyzeRevisionData()
 		CSyncPointer<CAllRevisionGraphOptions> options (m_state.GetOptions());
 		options->Prepare();
 
-		std::unique_ptr<CVisibleGraph> visibleGraph (new CVisibleGraph());
+		auto visibleGraph = std::make_unique<CVisibleGraph>();
 		CVisibleGraphBuilder builder ( *fullGraph
 									 , *visibleGraph
 									 , options->GetCopyFilterOptions());
@@ -308,7 +308,7 @@ bool CRevisionGraphWnd::AnalyzeRevisionData()
 
 		// layout nodes
 
-		std::unique_ptr<CStandardLayout> newLayout
+		auto newLayout = std::make_unique<CStandardLayout>
 			( new CStandardLayout ( m_state.GetFullHistory()->GetCache()
 								, visibleGraph.get()
 								, m_state.GetFullHistory()->GetWCInfo()));

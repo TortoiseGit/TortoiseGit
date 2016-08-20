@@ -286,8 +286,7 @@ STDMETHODIMP GitDataObject::GetData(FORMATETC* pformatetcIn, STGMEDIUM* pmedium)
 		}
 
 		int nBufferSize = sizeof(DROPFILES) + (nLength + 1) * sizeof(TCHAR);
-		std::unique_ptr<char[]> pBuffer(new char[nBufferSize]);
-
+		auto pBuffer = std::make_unique<char[]>(nBufferSize);
 		SecureZeroMemory(pBuffer.get(), nBufferSize);
 
 		DROPFILES* df = (DROPFILES*)pBuffer.get();
@@ -324,8 +323,7 @@ STDMETHODIMP GitDataObject::GetData(FORMATETC* pformatetcIn, STGMEDIUM* pmedium)
 	else if ((pformatetcIn->tymed & TYMED_HGLOBAL) && (pformatetcIn->dwAspect == DVASPECT_CONTENT) && (pformatetcIn->cfFormat == CF_FILE_ATTRIBUTES_ARRAY))
 	{
 		int nBufferSize = sizeof(FILE_ATTRIBUTES_ARRAY) + m_gitPaths.GetCount() * sizeof(DWORD);
-		std::unique_ptr<char[]> pBuffer(new char[nBufferSize]);
-
+		auto pBuffer = std::make_unique<char[]>(nBufferSize);
 		SecureZeroMemory(pBuffer.get(), nBufferSize);
 
 		FILE_ATTRIBUTES_ARRAY* cf = (FILE_ATTRIBUTES_ARRAY*)pBuffer.get();
