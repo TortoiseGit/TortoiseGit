@@ -59,6 +59,7 @@ BEGIN_MESSAGE_MAP(CCommitIsOnRefsDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_SELREF, OnBnClickedSelRevBtn)
 	ON_BN_CLICKED(IDC_LOG, OnBnClickedShowLog)
 	ON_EN_CHANGE(IDC_FILTER, OnEnChangeEditFilter)
+	ON_MESSAGE(WM_FILTEREDIT_CANCELCLICKED, OnClickedCancelFilter)
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST_REF_LEAFS, OnItemChangedListRefs)
 	ON_NOTIFY(NM_DBLCLK, IDC_LIST_REF_LEAFS, OnNMDblClickListRefs)
 	ON_MESSAGE(ENAC_UPDATE, OnEnChangeCommit)
@@ -186,6 +187,12 @@ void CCommitIsOnRefsDlg::OnTimer(UINT_PTR nIDEvent)
 	}
 
 	__super::OnTimer(nIDEvent);
+}
+
+LRESULT CCommitIsOnRefsDlg::OnClickedCancelFilter(WPARAM /*wParam*/, LPARAM /*lParam*/)
+{
+	OnTimer(IDT_FILTER);
+	return TRUE;
 }
 
 void CCommitIsOnRefsDlg::OnBnClickedShowLog()

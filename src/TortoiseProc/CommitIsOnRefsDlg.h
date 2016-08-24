@@ -62,6 +62,7 @@ protected:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	virtual void PostNcDestroy();
 	afx_msg void OnEnChangeEditFilter();
+	afx_msg LRESULT OnClickedCancelFilter(WPARAM wParam, LPARAM lParam);
 	afx_msg void OnBnClickedSelRevBtn();
 	afx_msg void OnBnClickedShowLog();
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
