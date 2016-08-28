@@ -177,6 +177,7 @@
     <ClCompile Include="..\libgit2\src\tree.c" />
     <ClCompile Include="..\libgit2\src\tsort.c" />
     <ClCompile Include="..\libgit2\src\util.c" />
+    <ClCompile Include="..\libgit2\src\varint.c" />
     <ClCompile Include="..\libgit2\src\vector.c" />
     <ClCompile Include="..\libgit2\src\win32\dir.c" />
     <ClCompile Include="..\libgit2\src\win32\error.c" />
@@ -282,6 +283,7 @@
     <ClInclude Include="..\libgit2\src\diff_driver.h" />
     <ClInclude Include="..\libgit2\src\diff_file.h" />
     <ClInclude Include="..\libgit2\src\diff_generate.h" />
+    <ClInclude Include="..\libgit2\src\diff_parse.h" />
     <ClInclude Include="..\libgit2\src\diff_tform.h" />
     <ClInclude Include="..\libgit2\src\diff_xdiff.h" />
     <ClInclude Include="..\libgit2\src\fetch.h" />
@@ -354,6 +356,7 @@
     <ClInclude Include="..\libgit2\src\tree-cache.h" />
     <ClInclude Include="..\libgit2\src\tree.h" />
     <ClInclude Include="..\libgit2\src\util.h" />
+    <ClInclude Include="..\libgit2\src\varint.h" />
     <ClInclude Include="..\libgit2\src\vector.h" />
     <ClInclude Include="..\libgit2\src\win32\dir.h" />
     <ClInclude Include="..\libgit2\src\win32\error.h" />
