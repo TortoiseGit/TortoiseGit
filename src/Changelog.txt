@@ -12,6 +12,7 @@ Released: unreleased
  * Add mnemonics to Reset, Switch, Merge Abort and Export dialogs
  * Fixed issue #491: Rename dialog should have a browse button
  * TortoiseGit now uses latest libgit2 which supports git index version 4
+ * Added support for GIT_ASK_YESNO wrapper
 
 == Bug Fixes ==
  * Fixed issue #2789: Sync Dialog In ChangeList tab auto-resize column not optimal

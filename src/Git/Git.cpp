@@ -2242,6 +2242,7 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 			m_Environment.SetEnv(_T("DISPLAY"),_T(":9999"));
 			m_Environment.SetEnv(_T("SSH_ASKPASS"),sAskPass);
 			m_Environment.SetEnv(_T("GIT_ASKPASS"),sAskPass);
+			m_Environment.SetEnv(L"GIT_ASK_YESNO", sAskPass);
 		}
 	}
 

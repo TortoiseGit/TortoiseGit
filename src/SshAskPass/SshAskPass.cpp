@@ -63,6 +63,7 @@ int APIENTRY _tWinMain(HINSTANCE	/*hInstance*/,
 
 	const TCHAR *yesno=_T("(yes/no)");
 	const size_t lens = _tcslen(yesno);
+	const TCHAR* shallretry = L"Should I try again?";
 	const TCHAR *p = lpCmdLine;
 	BOOL bYesNo=FALSE;
 
@@ -72,6 +73,13 @@ int APIENTRY _tWinMain(HINSTANCE	/*hInstance*/,
 		{
 			bYesNo = TRUE;
 			break;
+		}
+		else if (_tcsncicmp(p, shallretry, _tcslen(shallretry)) == 0)
+		{
+			if (::MessageBox(nullptr, g_Prompt, L"TortoiseGit - git CLI yes/no wrapper", MB_YESNO | MB_ICONQUESTION) == IDYES)
+				return 0;
+
+			return 1;
 		}
 		++p;
 	}
