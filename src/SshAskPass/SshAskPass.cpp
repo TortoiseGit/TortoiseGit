@@ -36,7 +36,7 @@
 HINSTANCE hInst;								// current instance
 
 const TCHAR g_Promptphrase[] = _T("Enter your OpenSSH passphrase:");
-const TCHAR *g_Prompt = g_Promptphrase;
+const TCHAR* g_Prompt = g_Promptphrase;
 
 TCHAR g_PassWord[MAX_LOADSTRING];
 
@@ -52,56 +52,39 @@ int APIENTRY _tWinMain(HINSTANCE	/*hInstance*/,
 
 	InitCommonControls();
 
-	size_t cmdlineLen =_tcslen(lpCmdLine);
+	size_t cmdlineLen = _tcslen(lpCmdLine);
 	if (lpCmdLine[0] == '"' && cmdlineLen > 1 && lpCmdLine[cmdlineLen - 1] == '"')
 	{
-		lpCmdLine[cmdlineLen - 1] = 0;
+		lpCmdLine[cmdlineLen - 1] = L'\0';
 		++lpCmdLine;
 	}
-	if (lpCmdLine[0] != 0)
+	if (lpCmdLine[0] != L'\0')
 		g_Prompt = lpCmdLine;
 
-	const TCHAR *yesno=_T("(yes/no)");
-	const size_t lens = _tcslen(yesno);
-	const TCHAR* shallretry = L"Should I try again?";
-	const TCHAR *p = lpCmdLine;
-	BOOL bYesNo=FALSE;
-
-	while(*p)
+	if (StrStrI(lpCmdLine, L"(yes/no)"))
 	{
-		if (_tcsncicmp(p, yesno, lens) == 0)
-		{
-			bYesNo = TRUE;
-			break;
-		}
-		else if (_tcsncicmp(p, shallretry, _tcslen(shallretry)) == 0)
-		{
-			if (::MessageBox(nullptr, g_Prompt, L"TortoiseGit - git CLI yes/no wrapper", MB_YESNO | MB_ICONQUESTION) == IDYES)
-				return 0;
-
-			return 1;
-		}
-		++p;
-	}
-
-	if(bYesNo)
-	{
-		if (::MessageBox(nullptr, g_Prompt, _T("TortoiseGit - git CLI stdin wrapper"), MB_YESNO | MB_ICONQUESTION) == IDYES)
-			_tprintf(_T("yes"));
+		if (::MessageBox(nullptr, g_Prompt, L"TortoiseGit - git CLI stdin wrapper", MB_YESNO | MB_ICONQUESTION) == IDYES)
+			wprintf(L"yes");
 		else
-			_tprintf(_T("no"));
+			wprintf(L"no");
 		return 0;
 	}
-	else
+	
+	if (StrStrI(lpCmdLine, L"Should I try again?"))
 	{
-		if (DialogBox(hInst, MAKEINTRESOURCE(IDD_ASK_PASSWORD), nullptr, PasswdDlg) == IDOK)
-		{
-			printf("%s\n", CUnicodeUtils::StdGetUTF8(g_PassWord).c_str());
+		if (::MessageBox(nullptr, g_Prompt, L"TortoiseGit - git CLI yes/no wrapper", MB_YESNO | MB_ICONQUESTION) == IDYES)
 			return 0;
-		}
-		_tprintf(_T("\n"));
-		return -1;
+
+		return 1;
 	}
+
+	if (DialogBox(hInst, MAKEINTRESOURCE(IDD_ASK_PASSWORD), nullptr, PasswdDlg) == IDOK)
+	{
+		printf("%s\n", CUnicodeUtils::StdGetUTF8(g_PassWord).c_str());
+		return 0;
+	}
+	wprintf(L"\n");
+	return -1;
 }
 
 void MarkWindowAsUnpinnable(HWND hWnd)
@@ -145,23 +128,9 @@ INT_PTR CALLBACK PasswdDlg(HWND hDlg, UINT message, WPARAM wParam, LPARAM /*lPar
 			y=(dwHeight - (rect.bottom-rect.top))/2;
 
 			::MoveWindow(hDlg,x,y,rect.right-rect.left,rect.bottom-rect.top,TRUE);
-			HWND title=::GetDlgItem(hDlg,IDC_STATIC_TITLE);
-			::SetWindowText(title,g_Prompt);
-
-			const TCHAR *pass =_T("pass");
-			const size_t passlens = _tcslen(pass);
-			const TCHAR *p = g_Prompt;
-			bool password = false;
-			while (*p)
-			{
-				if (_tcsncicmp(p, pass, passlens) == 0)
-				{
-					password = true;
-					break;
-				}
-				++p;
-			}
-			if (!password)
+			HWND title = ::GetDlgItem(hDlg, IDC_STATIC_TITLE);
+			::SetWindowText(title, g_Prompt);
+			if (!StrStrI(g_Prompt, L"pass"))
 				SendMessage(::GetDlgItem(hDlg, IDC_PASSWORD), EM_SETPASSWORDCHAR, 0, 0);
 			::FlashWindow(hDlg, TRUE);
 		}
