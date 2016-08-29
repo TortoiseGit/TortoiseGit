@@ -63,7 +63,7 @@ extern void free_diffstat_info(struct diffstat_t* diffstat);
 extern int for_each_reflog_ent(const char* refname, each_reflog_ent_fn fn, void* cb_data);
 extern int for_each_ref_in(const char* prefix, each_ref_fn fn, void* cb_data);
 
-void dll_entry()
+void dll_entry(void)
 {
 	set_die_routine(die_dll);
 	set_error_routine(handle_error);

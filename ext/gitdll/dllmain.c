@@ -19,7 +19,7 @@
 
 // dllmain.cpp : Defines the entry point for the DLL application.
 #include "stdafx.h"
-void dll_entry();
+void dll_entry(void);
 
 BOOL APIENTRY DllMain( HMODULE hModule,
                        DWORD  ul_reason_for_call,
