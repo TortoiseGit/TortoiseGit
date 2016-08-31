@@ -794,7 +794,7 @@ int git_checkout_file(const char* ref, const char* path, char* outputpath)
 	parse_pathspec(&pathspec, PATHSPEC_ALL_MAGIC, PATHSPEC_PREFER_CWD, path, matchbuf);
 	pathspec.items[0].nowildcard_len = pathspec.items[0].len;
 	ret = read_tree_recursive(root, "", 0, 0, &pathspec, update_some, ce);
-	free_pathspec(&pathspec);
+	clear_pathspec(&pathspec);
 
 	if(ret)
 	{

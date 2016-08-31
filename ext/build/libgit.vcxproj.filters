@@ -863,6 +863,15 @@
     <ClCompile Include="..\tgit\worktree.c">
       <Filter>git</Filter>
     </ClCompile>
+    <ClCompile Include="..\tgit\dir-iterator.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\mru.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\refs\iterator.c">
+      <Filter>git\refs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\tgit\compat\msvc.h">
@@ -1201,5 +1210,18 @@
     <ClInclude Include="..\tgit\worktree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\tgit\dir-iterator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\iterator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\list.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\mru.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="libgit-defines.h" />
   </ItemGroup>
 </Project>

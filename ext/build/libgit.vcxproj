@@ -113,6 +113,7 @@
     <ClCompile Include="..\tgit\diffcore-order.c" />
     <ClCompile Include="..\tgit\diffcore-pickaxe.c" />
     <ClCompile Include="..\tgit\diffcore-rename.c" />
+    <ClCompile Include="..\tgit\dir-iterator.c" />
     <ClCompile Include="..\tgit\dir.c" />
     <ClCompile Include="..\tgit\editor.c" />
     <ClCompile Include="..\tgit\entry.c" />
@@ -145,6 +146,7 @@
     <ClCompile Include="..\tgit\merge-recursive.c" />
     <ClCompile Include="..\tgit\merge.c" />
     <ClCompile Include="..\tgit\mergesort.c" />
+    <ClCompile Include="..\tgit\mru.c" />
     <ClCompile Include="..\tgit\name-hash.c" />
     <ClCompile Include="..\tgit\notes-cache.c" />
     <ClCompile Include="..\tgit\notes-merge.c" />
@@ -176,6 +178,7 @@
     <ClCompile Include="..\tgit\reflog-walk.c" />
     <ClCompile Include="..\tgit\refs.c" />
     <ClCompile Include="..\tgit\refs\files-backend.c" />
+    <ClCompile Include="..\tgit\refs\iterator.c" />
     <ClCompile Include="..\tgit\remote.c" />
     <ClCompile Include="..\tgit\replace_object.c" />
     <ClCompile Include="..\tgit\rerere.c" />
@@ -389,6 +392,7 @@
     <ClInclude Include="..\tgit\delta.h" />
     <ClInclude Include="..\tgit\diff.h" />
     <ClInclude Include="..\tgit\diffcore.h" />
+    <ClInclude Include="..\tgit\dir-iterator.h" />
     <ClInclude Include="..\tgit\dir.h" />
     <ClInclude Include="..\tgit\ewah\ewok.h" />
     <ClInclude Include="..\tgit\ewah\ewok_rlw.h" />
@@ -401,17 +405,20 @@
     <ClInclude Include="..\tgit\grep.h" />
     <ClInclude Include="..\tgit\hashmap.h" />
     <ClInclude Include="..\tgit\help.h" />
+    <ClInclude Include="..\tgit\iterator.h" />
     <ClInclude Include="..\tgit\kwset.h" />
     <ClInclude Include="..\tgit\levenshtein.h" />
     <ClInclude Include="..\tgit\line-log.h" />
     <ClInclude Include="..\tgit\line-range.h" />
     <ClInclude Include="..\tgit\list-objects.h" />
+    <ClInclude Include="..\tgit\list.h" />
     <ClInclude Include="..\tgit\ll-merge.h" />
     <ClInclude Include="..\tgit\log-tree.h" />
     <ClInclude Include="..\tgit\mailmap.h" />
     <ClInclude Include="..\tgit\merge-blobs.h" />
     <ClInclude Include="..\tgit\merge-recursive.h" />
     <ClInclude Include="..\tgit\mergesort.h" />
+    <ClInclude Include="..\tgit\mru.h" />
     <ClInclude Include="..\tgit\notes-merge.h" />
     <ClInclude Include="..\tgit\notes-utils.h" />
     <ClInclude Include="..\tgit\notes.h" />
@@ -479,6 +486,7 @@
     <ClInclude Include="..\tgit\xdiff\xprepare.h" />
     <ClInclude Include="..\tgit\xdiff\xtypes.h" />
     <ClInclude Include="..\tgit\xdiff\xutils.h" />
+    <ClInclude Include="libgit-defines.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
