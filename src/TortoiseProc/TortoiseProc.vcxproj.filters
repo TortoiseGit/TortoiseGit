@@ -1699,9 +1699,6 @@
     <ClInclude Include="SendMailPatch.h">
       <Filter>Commands\SendMail</Filter>
     </ClInclude>
-    <ClInclude Include="..\Utils\CreateProcessHelper.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
     <ClInclude Include="..\Utils\LruCache.h">
       <Filter>Utils\General</Filter>
     </ClInclude>
@@ -1734,6 +1731,9 @@
     </ClInclude>
     <ClInclude Include="Commands\CommitIsOnRefsCommand.h">
       <Filter>Commands\CommitIsOnRefs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\CreateProcessHelper.h">
+      <Filter>Utils\General</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
