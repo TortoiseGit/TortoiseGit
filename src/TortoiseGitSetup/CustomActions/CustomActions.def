@@ -6,4 +6,3 @@ LIBRARY    "CustomActions"
 EXPORTS
     TerminateCache
     OpenDonatePage
-	MsgBox

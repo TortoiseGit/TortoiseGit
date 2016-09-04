@@ -67,9 +67,3 @@ UINT __stdcall OpenDonatePage(MSIHANDLE /*hModule*/)
 	ShellExecute(nullptr, _T("open"), _T("https://tortoisegit.org/donate"), nullptr, nullptr, SW_SHOW);
 	return ERROR_SUCCESS;
 }
-
-UINT __stdcall MsgBox(MSIHANDLE /*hModule*/)
-{
-	MessageBox(nullptr, _T("CustomAction \"MsgBox\" running"), _T("Installer"), MB_ICONINFORMATION);
-	return ERROR_SUCCESS;
-}
