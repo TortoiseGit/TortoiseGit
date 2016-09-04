@@ -159,7 +159,7 @@ int GitRev::GetCommit(git_repository* repo, const CString& refname)
 	if (refname.GetLength() >= 8 && wcsncmp(refname, GitRev::GetWorkingCopy(), refname.GetLength()) == 0)
 	{
 		Clear();
-		m_Subject = _T("Working Copy");
+		m_Subject = L"Working Tree";
 		return 0;
 	}
 
@@ -275,7 +275,7 @@ int GitRev::GetCommit(const CString& refname)
 		if (refname.GetLength() >= 8 && wcsncmp(refname, GitRev::GetWorkingCopy(), refname.GetLength()) == 0)
 		{
 			this->m_CommitHash.Empty();
-			this->m_Subject=_T("Working Copy");
+			this->m_Subject = L"Working Tree";
 			m_sErr.Empty();
 			return 0;
 		}

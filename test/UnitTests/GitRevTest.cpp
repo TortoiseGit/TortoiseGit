@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015 - TortoiseGit
+// Copyright (C) 2015-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -59,7 +59,7 @@ static void GetRevParsingTests()
 	EXPECT_STREQ(_T(""), rev.GetAuthorEmail());
 	EXPECT_STREQ(_T(""), rev.GetCommitterName());
 	EXPECT_STREQ(_T(""), rev.GetCommitterEmail());
-	EXPECT_STREQ(_T("Working Copy"), rev.GetSubject());
+	EXPECT_STREQ(_T("Working Tree"), rev.GetSubject());
 	EXPECT_STREQ(_T(""), rev.GetBody());
 	EXPECT_EQ(0, rev.ParentsCount());
 	EXPECT_TRUE(rev.GetLastErr().IsEmpty());

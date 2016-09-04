@@ -10588,7 +10588,7 @@ msgid "Working Tree Path:"
 msgstr ""
 
 #. Resource IDs: (IDS_LOG_WORKINGDIRCHANGES)
-msgid "Working dir changes"
+msgid "Working tree changes"
 msgstr ""
 
 #. Resource IDs: (ID_VIEW_WRAPLONGLINES - Menu, ID_VIEW_WRAPLONGLINES - Ribbon name)
