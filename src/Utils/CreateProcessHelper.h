@@ -18,6 +18,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #pragma once
+#include "scope_exit_noexcept.h"
 
 /**
  * A helper class for invoking CreateProcess(). The lpProcessInformation
@@ -93,6 +94,7 @@ inline bool CCreateProcessHelper::CreateProcessDetached(LPCTSTR lpApplicationNam
 	LPWSTR commandLineBuf = nullptr;
 	if (lpCommandLine)
 		commandLineBuf = _tcsdup(lpCommandLine);
+	SCOPE_EXIT { free((void*)lpCommandLine); };
 
 	return CreateProcessDetached(lpApplicationName, commandLineBuf, 0);
 }

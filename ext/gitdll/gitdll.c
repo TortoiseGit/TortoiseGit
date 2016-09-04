@@ -1039,7 +1039,11 @@ int git_read_mailmap(GIT_MAILMAP *mailmap)
 		return -1;
 
 	if ((result = read_mailmap(map, NULL)) != 0)
+	{
+		clear_mailmap(map);
+		free(map);
 		return result;
+	}
 
 	if (!map->items)
 	{
