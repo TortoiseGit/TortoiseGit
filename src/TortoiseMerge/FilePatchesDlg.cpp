@@ -178,15 +178,11 @@ BOOL CFilePatchesDlg::Init(GitPatch * pPatch, CPatchFilesDlgCallBack * pCallBack
 	int height = windowrect.bottom - windowrect.top;
 	windowrect.right = parentrect.left;
 	windowrect.left = windowrect.right - width;
-	if (windowrect.left < 0)
-	{
-		windowrect.left = 0;
-		windowrect.right = width;
-	}
 	windowrect.top = parentrect.top;
 	windowrect.bottom = windowrect.top + height;
-
-	SetWindowPos(NULL, windowrect.left, windowrect.top, width, height, SWP_NOACTIVATE | SWP_NOZORDER);
+	auto hMonitor = MonitorFromRect(&windowrect, MONITOR_DEFAULTTONULL);
+	if (hMonitor)
+		SetWindowPos(nullptr, windowrect.left, windowrect.top, width, height, SWP_NOACTIVATE | SWP_NOZORDER);
 
 	m_nWindowHeight = windowrect.bottom - windowrect.top;
 	m_pMainFrame = pParent;
