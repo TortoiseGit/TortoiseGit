@@ -121,8 +121,7 @@ langs="1031;de"
 			Using a <emphasis>issuesurl</emphasis> line, it is possible to control the URL to which the issues are linked to (default is https://tortoisegit.org/issue/%BUGID%; can also be empty to disable linking),
 		</para>
 		<para>
-			Clicking on <guibutton>Download</guibutton> downloads the selected files as well as their digital signature files (filename.asc) to <filename><ulink url="http://msdn.microsoft.com/en-us/library/windows/desktop/dd378457%28v=vs.85%29.aspx">FOLDERID_Downloads</ulink></filename> (Vista or later) or
-			<filename><ulink url="http://msdn.microsoft.com/en-us/library/windows/desktop/bb762494%28v=vs.85%29.aspx">CSIDL_PERSONAL</ulink>\Downloads</filename> or <filename>CSIDL_PERSONAL</filename>.
+			Clicking on <guibutton>Download</guibutton> downloads the selected files as well as their digital signature files (filename.asc) to <filename><ulink url="http://msdn.microsoft.com/en-us/library/windows/desktop/dd378457%28v=vs.85%29.aspx">FOLDERID_Downloads</ulink></filename>.
 			After downloading the digital signature is verified - the file is only kept if the file is digitally signed and could be verified correctly.
 		</para>
 		<para>
