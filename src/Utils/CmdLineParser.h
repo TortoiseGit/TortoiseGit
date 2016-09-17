@@ -1,6 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2007, 2009, 2013 - TortoiseSVN 
+// Copyright (C) 2016 - TortoiseGit
+// Copyright (C) 2003-2007, 2009, 2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -62,7 +63,6 @@ public:
 	 * \param sCmdLine the command line
 	 */
 	CCmdLineParser(LPCTSTR sCmdLine = nullptr);
-	virtual ~CCmdLineParser();
 
 	/**
 	 * returns the command line string this object was created on.

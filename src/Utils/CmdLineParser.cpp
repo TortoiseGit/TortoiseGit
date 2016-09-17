@@ -33,11 +33,6 @@ CCmdLineParser::CCmdLineParser(LPCTSTR sCmdLine)
 		Parse(sCmdLine);
 }
 
-CCmdLineParser::~CCmdLineParser()
-{
-	m_valueMap.clear();
-}
-
 BOOL CCmdLineParser::Parse(LPCTSTR sCmdLine)
 {
 	const tstring sEmpty = _T("");			//use this as a value if no actual value is given in commandline
