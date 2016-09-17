@@ -232,7 +232,7 @@ BOOL CTortoiseGitBlameApp::InitInstance()
 		return FALSE;
 	AddDocTemplate(pDocTemplate);
 
-	CCmdLineParser parser = CCmdLineParser(this->m_lpCmdLine);
+	CCmdLineParser parser(m_lpCmdLine);
 	g_sGroupingUUID = parser.GetVal(L"groupuuid");
 
 	// Parse command line for standard shell commands, DDE, file open

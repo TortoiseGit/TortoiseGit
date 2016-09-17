@@ -213,7 +213,7 @@ BOOL CTortoiseMergeApp::InitInstance()
 		RUNTIME_CLASS (CMFCToolTipCtrl),
 		&params);
 
-	CCmdLineParser parser = CCmdLineParser(this->m_lpCmdLine);
+	CCmdLineParser parser(m_lpCmdLine);
 
 	g_sGroupingUUID = parser.GetVal(L"groupuuid");
 

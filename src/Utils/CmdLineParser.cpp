@@ -33,6 +33,13 @@ CCmdLineParser::CCmdLineParser(LPCTSTR sCmdLine)
 		Parse(sCmdLine);
 }
 
+CCmdLineParser& CCmdLineParser::operator=(CCmdLineParser&& other)
+{
+	m_sCmdLine = std::move(other.m_sCmdLine);
+	m_valueMap = std::move(other.m_valueMap);
+	return *this;
+}
+
 BOOL CCmdLineParser::Parse(LPCTSTR sCmdLine)
 {
 	const tstring sEmpty = _T("");			//use this as a value if no actual value is given in commandline

@@ -64,6 +64,10 @@ public:
 	 */
 	CCmdLineParser(LPCTSTR sCmdLine = nullptr);
 
+	CCmdLineParser(const CCmdLineParser&) = default;
+	CCmdLineParser& operator=(const CCmdLineParser&) = default;
+	CCmdLineParser& operator=(CCmdLineParser&& other);
+
 	/**
 	 * returns the command line string this object was created on.
 	 * \return the command line
