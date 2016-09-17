@@ -25,3 +25,6 @@
 [submodule "ext/gtest"]
 	path = ext/gtest
 	url = https://chromium.googlesource.com/external/gtest.git
+[submodule "ext/simpleini"]
+	path = ext/simpleini
+	url = https://github.com/brofield/simpleini.git

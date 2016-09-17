@@ -154,7 +154,7 @@ void CRegexFiltersDlg::SetupListControl()
 	int index = 0;
 	for (const auto& section : sections)
 	{
-		m_RegexList.InsertItem(index++, section);
+		m_RegexList.InsertItem(index++, section.pItem);
 	}
 
 	m_RegexList.SetRedraw(true);

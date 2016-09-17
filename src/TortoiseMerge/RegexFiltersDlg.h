@@ -18,7 +18,7 @@
 //
 #pragma once
 #include "afxcmn.h"
-#include "SimpleIni.h"
+#include "../../ext/SimpleIni/SimpleIni.h"
 
 // CRegexFiltersDlg dialog
 

@@ -3136,8 +3136,8 @@ void CMainFrame::OnRegexfilter(UINT cmd)
 						break;
 					try
 					{
-						std::wregex rx(m_regexIni.GetValue(section, L"regex", L""));
-						m_Data.SetRegexTokens(rx, m_regexIni.GetValue(section, L"replace", L""));
+						std::wregex rx(m_regexIni.GetValue(section.pItem, L"regex", L""));
+						m_Data.SetRegexTokens(rx, m_regexIni.GetValue(section.pItem, L"replace", L""));
 					}
 					catch (std::exception &ex)
 					{
@@ -3208,7 +3208,7 @@ void CMainFrame::BuildRegexSubitems(CMFCPopupMenu* pMenuPopup)
 				int cmdIndex = 2;
 				for (const auto& section : sections)
 				{
-					pButton->AddSubItem(new CMFCRibbonButton(ID_REGEXFILTER + cmdIndex, section, 46, 46));
+					pButton->AddSubItem(new CMFCRibbonButton(ID_REGEXFILTER + cmdIndex, section.pItem, 46, 46));
 					cmdIndex++;
 				}
 			}
@@ -3225,7 +3225,7 @@ void CMainFrame::BuildRegexSubitems(CMFCPopupMenu* pMenuPopup)
 			int cmdIndex = 2;
 			for (const auto& section : sections)
 			{
-				pMenuPopup->InsertItem(CMFCToolBarMenuButton(ID_REGEXFILTER + cmdIndex, NULL, -1, (LPCWSTR)section), iIndex + cmdIndex);
+				pMenuPopup->InsertItem(CMFCToolBarMenuButton(ID_REGEXFILTER + cmdIndex, NULL, -1, (LPCWSTR)section.pItem), iIndex + cmdIndex);
 				cmdIndex++;
 			}
 		}

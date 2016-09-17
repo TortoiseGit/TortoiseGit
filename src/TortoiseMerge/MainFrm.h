@@ -26,7 +26,7 @@
 #include "TempFile.h"
 #include "XSplitter.h"
 #include "GitPatch.h"
-#include "SimpleIni.h"
+#include "../../ext/SimpleIni/SimpleIni.h"
 #include "CustomMFCRibbonStatusBar.h"
 #include <tuple>
 
