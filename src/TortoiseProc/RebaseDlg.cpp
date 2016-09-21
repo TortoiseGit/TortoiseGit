@@ -825,6 +825,20 @@ BOOL CRebaseDlg::PreTranslateMessage(MSG*pMsg)
 				return TRUE;
 			}
 			break;
+		case 'U':
+			if (LogListHasFocus(pMsg->hwnd))
+			{
+				OnBnClickedButtonDown2();
+				return TRUE;
+			}
+			break;
+		case 'D':
+			if (LogListHasFocus(pMsg->hwnd))
+			{
+				OnBnClickedButtonUp2();
+				return TRUE;
+			}
+			break;
 		case 'A':
 			if(LogListHasFocus(pMsg->hwnd) && GetAsyncKeyState(VK_CONTROL) & 0x8000)
 			{
