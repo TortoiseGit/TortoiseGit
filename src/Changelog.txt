@@ -14,6 +14,7 @@ Released: unreleased
  * TortoiseGit now uses latest libgit2 which supports git index version 4
  * Added support for GIT_ASK_YESNO wrapper
  * Updated libgit to 2.10.0
+ * Fixed issue #2830: Log from Repository Browser should use selected branch by default
 
 == Bug Fixes ==
  * Fixed issue #2789: Sync Dialog In ChangeList tab auto-resize column not optimal

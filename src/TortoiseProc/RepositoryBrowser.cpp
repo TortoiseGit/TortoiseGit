@@ -826,6 +826,8 @@ void CRepositoryBrowser::ShowContextMenu(CPoint point, TShadowFilesTreeList &sel
 			sCmd.Format(_T("/command:log /path:\"%s\""), (LPCTSTR)g_Git.CombinePath(selectedLeafs.at(0)->GetFullName()));
 			if (cmd == eCmd_ViewLog && selectedLeafs.at(0)->m_bSubmodule)
 				sCmd += _T(" /submodule");
+			if (cmd == eCmd_ViewLog)
+				sCmd += L" /endrev:" + m_sRevision;
 			CAppUtils::RunTortoiseGitProc(sCmd);
 		}
 		break;
