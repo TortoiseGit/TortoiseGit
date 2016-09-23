@@ -47,6 +47,13 @@ CMessageBox::~CMessageBox(void)
 		::DestroyIcon(m_hIcon);
 }
 
+static HWND GetMainHWND(HWND hWnd)
+{
+	if (!hWnd || !IsWindow(hWnd))
+		return CWnd::GetSafeOwner_(nullptr, nullptr);
+	return hWnd;
+}
+
 UINT CMessageBox::ShowCheck(HWND hWnd, UINT nMessage, UINT nCaption, int nDef, LPCTSTR icon, UINT nButton1, UINT nButton2, UINT nButton3, LPCTSTR lpRegistry, UINT nCheckMessage/* = nullptr*/, BOOL* bChecked)
 {
 	CString sButton1;
@@ -96,8 +103,6 @@ UINT CMessageBox::ShowCheck(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, int
 
 	if (CTaskDialog::IsSupported())
 	{
-		if (!hWnd || !IsWindow(hWnd))
-			hWnd = CWnd::GetSafeOwner_(nullptr, nullptr);
 		CTaskDialog taskdlg(lpMessage, L"", lpCaption, 0, TDF_USE_COMMAND_LINKS | TDF_POSITION_RELATIVE_TO_WINDOW);
 		taskdlg.AddCommandControl(BTN_OFFSET + 1, lpButton1);
 		if (lpButton2 && *lpButton2)
@@ -118,7 +123,7 @@ UINT CMessageBox::ShowCheck(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, int
 		}
 		else
 			taskdlg.SetVerificationCheckboxText(lpCheckMessage);
-		int result = (int)taskdlg.DoModal(hWnd) - BTN_OFFSET;
+		int result = (int)taskdlg.DoModal(GetMainHWND(hWnd)) - BTN_OFFSET;
 		if (bChecked)
 			*bChecked = taskdlg.GetVerificationCheckboxState();
 		if (lpRegistry && *lpRegistry && taskdlg.GetVerificationCheckboxState())
@@ -163,8 +168,6 @@ UINT CMessageBox::Show(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, int nDef
 {
 	if (CTaskDialog::IsSupported())
 	{
-		if (!hWnd || !IsWindow(hWnd))
-			hWnd = CWnd::GetSafeOwner_(nullptr, nullptr);
 		CTaskDialog taskdlg(lpMessage, L"", lpCaption, 0, TDF_USE_COMMAND_LINKS | TDF_POSITION_RELATIVE_TO_WINDOW);
 		taskdlg.AddCommandControl(BTN_OFFSET + 1, lpButton1);
 		if (lpButton2 && *lpButton2)
@@ -173,7 +176,7 @@ UINT CMessageBox::Show(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, int nDef
 			taskdlg.AddCommandControl(BTN_OFFSET + 3, lpButton3);
 		taskdlg.SetDefaultCommandControl(BTN_OFFSET + nDef);
 		taskdlg.SetMainIcon(icon);
-		return (UINT)taskdlg.DoModal(hWnd) - BTN_OFFSET;
+		return (UINT)taskdlg.DoModal(GetMainHWND(hWnd)) - BTN_OFFSET;
 	}
 	CMessageBox box;
 	box.m_sButton1 = lpButton1;
@@ -246,8 +249,6 @@ UINT CMessageBox::ShowCheck(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, UIN
 	}
 	if (CTaskDialog::IsSupported() && !(uType & MB_HELP) && !((uType & 0xf) == MB_ABORTRETRYIGNORE) && !((uType & 0xf) == MB_CANCELTRYCONTINUE))
 	{
-		if (!hWnd || !IsWindow(hWnd))
-			hWnd = CWnd::GetSafeOwner_(nullptr, nullptr);
 		CTaskDialog taskdlg(lpMessage, L"", lpCaption, 0,  TDF_POSITION_RELATIVE_TO_WINDOW);
 		// set up icon
 		switch (uType & 0xf0)
@@ -330,7 +331,7 @@ UINT CMessageBox::ShowCheck(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, UIN
 		}
 		else
 			taskdlg.SetVerificationCheckboxText(lpCheckMessage);
-		int result = (int)taskdlg.DoModal(hWnd);
+		int result = (int)taskdlg.DoModal(GetMainHWND(hWnd));
 		if (bChecked)
 			*bChecked = taskdlg.GetVerificationCheckboxState();
 		if (lpRegistry && *lpRegistry && taskdlg.GetVerificationCheckboxState())
@@ -383,9 +384,7 @@ UINT CMessageBox::Show(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, UINT uTy
 		return box.GoModal(CWnd::FromHandle(hWnd), lpCaption, lpMessage, box.FillBoxStandard(uType));
 	}
 
-	if (!hWnd || !IsWindow(hWnd))
-		hWnd = CWnd::GetSafeOwner_(nullptr, nullptr);
-	return ::MessageBox(hWnd, lpMessage, lpCaption, uType);
+	return ::MessageBox(GetMainHWND(hWnd), lpMessage, lpCaption, uType);
 }
 
 UINT CMessageBox::Show(HWND hWnd, UINT nMessage, UINT nCaption, UINT uType, UINT nHelpID)
@@ -404,9 +403,7 @@ UINT CMessageBox::Show(HWND hWnd, UINT nMessage, UINT nCaption, UINT uType, UINT
 		return box.GoModal(CWnd::FromHandle(hWnd), sCaption, sMessage, box.FillBoxStandard(uType));
 	}
 
-	if (!hWnd || !IsWindow(hWnd))
-		hWnd = CWnd::GetSafeOwner_(nullptr, nullptr);
-	return ::MessageBox(hWnd, sMessage, sCaption, uType);
+	return ::MessageBox(GetMainHWND(hWnd), sMessage, sCaption, uType);
 }
 
 bool CMessageBox::RemoveRegistryKey(LPCTSTR lpRegistry)
