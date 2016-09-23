@@ -95,8 +95,8 @@ int CGitLogList::RevertSelectedCommits(int parent)
 			str.LoadString(IDS_SVNACTION_FAILEDREVERT);
 			str = g_Git.GetGitLastErr(str, CGit::GIT_CMD_REVERT);
 			if( GetSelectedCount() == 1)
-				CMessageBox::Show(GetSafeHwnd(), str, L"TortoiseGit", MB_OK | MB_ICONERROR);
-			else if (CMessageBox::Show(GetSafeHwnd(), str, L"TortoiseGit", 2, IDI_ERROR, CString(MAKEINTRESOURCE(IDS_SKIPBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)
+				CMessageBox::Show(GetSafeOwner()->GetSafeHwnd(), str, L"TortoiseGit", MB_OK | MB_ICONERROR);
+			else if (CMessageBox::Show(GetSafeOwner()->GetSafeHwnd(), str, L"TortoiseGit", 2, IDI_ERROR, CString(MAKEINTRESOURCE(IDS_SKIPBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)
 				return ret;
 		}
 		else
@@ -152,7 +152,7 @@ int CGitLogList::DeleteRef(const CString& ref)
 	{
 		CString msg;
 		msg.Format(IDS_PROC_DELETEREMOTEBRANCH, (LPCTSTR)ref);
-		int result = CMessageBox::Show(GetSafeHwnd(), msg, L"TortoiseGit", 3, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_PROC_DELETEREMOTEBRANCH_LOCALREMOTE)), CString(MAKEINTRESOURCE(IDS_PROC_DELETEREMOTEBRANCH_LOCAL)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON)));
+		int result = CMessageBox::Show(GetSafeOwner()->GetSafeHwnd(), msg, L"TortoiseGit", 3, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_PROC_DELETEREMOTEBRANCH_LOCALREMOTE)), CString(MAKEINTRESOURCE(IDS_PROC_DELETEREMOTEBRANCH_LOCAL)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON)));
 		if (result == 1)
 		{
 			CString remoteName = shortname.Left(shortname.Find(L'/'));
@@ -169,7 +169,7 @@ int CGitLogList::DeleteRef(const CString& ref)
 			STRING_VECTOR list;
 			list.push_back(_T("refs/heads/") + shortname);
 			if (g_Git.DeleteRemoteRefs(remoteName, list))
-				CMessageBox::Show(GetSafeHwnd(), g_Git.GetGitLastErr(L"Could not delete remote ref.", CGit::GIT_CMD_PUSH), L"TortoiseGit", MB_OK | MB_ICONERROR);
+				CMessageBox::Show(GetSafeOwner()->GetSafeHwnd(), g_Git.GetGitLastErr(L"Could not delete remote ref.", CGit::GIT_CMD_PUSH), L"TortoiseGit", MB_OK | MB_ICONERROR);
 			sysProgressDlg.Stop();
 			return TRUE;
 		}
@@ -177,7 +177,7 @@ int CGitLogList::DeleteRef(const CString& ref)
 		{
 			if (g_Git.DeleteRef(ref))
 			{
-				CMessageBox::Show(GetSafeHwnd(), g_Git.GetGitLastErr(L"Could not delete reference.", CGit::GIT_CMD_DELETETAGBRANCH), L"TortoiseGit", MB_OK | MB_ICONERROR);
+				CMessageBox::Show(GetSafeOwner()->GetSafeHwnd(), g_Git.GetGitLastErr(L"Could not delete reference.", CGit::GIT_CMD_DELETETAGBRANCH), L"TortoiseGit", MB_OK | MB_ICONERROR);
 				return FALSE;
 			}
 			return TRUE;
@@ -191,14 +191,14 @@ int CGitLogList::DeleteRef(const CString& ref)
 		size_t count = !GitRevLoglist::GetRefLog(ref, stashList, err) ? stashList.size() : 0;
 		CString msg;
 		msg.Format(IDS_PROC_DELETEALLSTASH, count);
-		int choose = CMessageBox::Show(GetSafeHwnd(), msg, L"TortoiseGit", 3, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_DELETEBUTTON)), CString(MAKEINTRESOURCE(IDS_DROPONESTASH)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON)));
+		int choose = CMessageBox::Show(GetSafeOwner()->GetSafeHwnd(), msg, L"TortoiseGit", 3, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_DELETEBUTTON)), CString(MAKEINTRESOURCE(IDS_DROPONESTASH)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON)));
 		if (choose == 1)
 		{
 			CString sCmd;
 			sCmd.Format(_T("git.exe stash clear"));
 			CString out;
 			if (g_Git.Run(sCmd, &out, CP_UTF8))
-				CMessageBox::Show(GetSafeHwnd(), out, L"TortoiseGit", MB_OK | MB_ICONERROR);
+				CMessageBox::Show(GetSafeOwner()->GetSafeHwnd(), out, L"TortoiseGit", MB_OK | MB_ICONERROR);
 			return TRUE;
 		}
 		else if (choose == 2)
@@ -207,7 +207,7 @@ int CGitLogList::DeleteRef(const CString& ref)
 			sCmd.Format(_T("git.exe stash drop refs/stash@{0}"));
 			CString out;
 			if (g_Git.Run(sCmd, &out, CP_UTF8))
-				CMessageBox::Show(GetSafeHwnd(), out, L"TortoiseGit", MB_OK | MB_ICONERROR);
+				CMessageBox::Show(GetSafeOwner()->GetSafeHwnd(), out, L"TortoiseGit", MB_OK | MB_ICONERROR);
 			return TRUE;
 		}
 		return FALSE;
@@ -215,11 +215,11 @@ int CGitLogList::DeleteRef(const CString& ref)
 
 	CString msg;
 	msg.Format(IDS_PROC_DELETEBRANCHTAG, (LPCTSTR)ref);
-	if (CMessageBox::Show(GetSafeHwnd(), msg, L"TortoiseGit", 2, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_DELETEBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 1)
+	if (CMessageBox::Show(GetSafeOwner()->GetSafeHwnd(), msg, L"TortoiseGit", 2, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_DELETEBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 1)
 	{
 		if (g_Git.DeleteRef(ref))
 		{
-			CMessageBox::Show(GetSafeHwnd(), g_Git.GetGitLastErr(L"Could not delete reference.", CGit::GIT_CMD_DELETETAGBRANCH), L"TortoiseGit", MB_OK | MB_ICONERROR);
+			CMessageBox::Show(GetSafeOwner()->GetSafeHwnd(), g_Git.GetGitLastErr(L"Could not delete reference.", CGit::GIT_CMD_DELETETAGBRANCH), L"TortoiseGit", MB_OK | MB_ICONERROR);
 			return FALSE;
 		}
 		return TRUE;
@@ -292,7 +292,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 							bool more = isHash && file.ReadString(strLine) && !strLine.IsEmpty();
 							if (!more)
 							{
-								CMessageBox::Show(GetSafeHwnd(), IDS_NOCHANGEAFTERMERGE, IDS_APPNAME, MB_OK);
+								CMessageBox::Show(GetSafeOwner()->GetSafeHwnd(), IDS_NOCHANGEAFTERMERGE, IDS_APPNAME, MB_OK);
 								break;
 							}
 						}
@@ -447,7 +447,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				}
 				else
 				{
-					CMessageBox::Show(GetSafeHwnd(), IDS_PROC_NOPREVIOUSVERSION, IDS_APPNAME, MB_OK);
+					CMessageBox::Show(GetSafeOwner()->GetSafeHwnd(), IDS_PROC_NOPREVIOUSVERSION, IDS_APPNAME, MB_OK);
 				}
 				//if (PromptShown())
 				//{
@@ -600,7 +600,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			GitRev* pLastEntry = m_arShownList.SafeGetAt(LastSelect);
 			if(pFirstEntry->m_CommitHash != hashFirst || pLastEntry->m_CommitHash != hashLast)
 			{
-				CMessageBox::Show(GetSafeHwnd(), IDS_PROC_CANNOTCOMBINE, IDS_APPNAME, MB_OK | MB_ICONEXCLAMATION);
+				CMessageBox::Show(GetSafeOwner()->GetSafeHwnd(), IDS_PROC_CANNOTCOMBINE, IDS_APPNAME, MB_OK | MB_ICONEXCLAMATION);
 				break;
 			}
 
@@ -619,7 +619,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 
 			if(!g_Git.CheckCleanWorkTree())
 			{
-				CMessageBox::Show(GetSafeHwnd(), IDS_PROC_NOCLEAN, IDS_APPNAME, MB_OK | MB_ICONEXCLAMATION);
+				CMessageBox::Show(GetSafeOwner()->GetSafeHwnd(), IDS_PROC_NOCLEAN, IDS_APPNAME, MB_OK | MB_ICONEXCLAMATION);
 				break;
 			}
 			CString sCmd, out;
@@ -711,7 +711,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			}
 			catch(std::exception& e)
 			{
-				CMessageBox::Show(GetSafeHwnd(), CUnicodeUtils::GetUnicode(CStringA(e.what())), L"TortoiseGit", MB_OK | MB_ICONERROR);
+				CMessageBox::Show(GetSafeOwner()->GetSafeHwnd(), CUnicodeUtils::GetUnicode(CStringA(e.what())), L"TortoiseGit", MB_OK | MB_ICONERROR);
 				sCmd.Format(_T("git.exe reset --hard %s --"), (LPCTSTR)headhash.ToString());
 				out.Empty();
 				if(g_Git.Run(sCmd, &out, CP_UTF8))
@@ -725,7 +725,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			{
 				if (m_bThreadRunning)
 				{
-					CMessageBox::Show(GetSafeHwnd(), IDS_PROC_LOG_ONLYONCE, IDS_APPNAME, MB_ICONEXCLAMATION);
+					CMessageBox::Show(GetSafeOwner()->GetSafeHwnd(), IDS_PROC_LOG_ONLYONCE, IDS_APPNAME, MB_ICONEXCLAMATION);
 					break;
 				}
 				CRebaseDlg dlg;
@@ -750,7 +750,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			{
 				if (m_bThreadRunning)
 				{
-					CMessageBox::Show(GetSafeHwnd(), IDS_PROC_LOG_ONLYONCE, IDS_APPNAME, MB_ICONEXCLAMATION);
+					CMessageBox::Show(GetSafeOwner()->GetSafeHwnd(), IDS_PROC_LOG_ONLYONCE, IDS_APPNAME, MB_ICONEXCLAMATION);
 					break;
 				}
 				CRebaseDlg dlg;
@@ -794,7 +794,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				else
 					str.Format(IDS_PROC_DELETEREF, (LPCTSTR)pSelLogEntry->m_Ref);
 
-				if (CMessageBox::Show(GetSafeHwnd(), str, L"TortoiseGit", 1, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_DELETEBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)
+				if (CMessageBox::Show(GetSafeOwner()->GetSafeHwnd(), str, L"TortoiseGit", 1, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_DELETEBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)
 					return;
 
 				std::vector<CString> refsToDelete;
@@ -963,7 +963,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				const CString* branch = popmenu ? (const CString*)((CIconMenu*)popmenu)->GetMenuItemData(cmd) : nullptr;
 				if (!branch)
 				{
-					CMessageBox::Show(GetSafeHwnd(), IDS_ERROR_NOREF, IDS_APPNAME, MB_OK | MB_ICONERROR);
+					CMessageBox::Show(GetSafeOwner()->GetSafeHwnd(), IDS_ERROR_NOREF, IDS_APPNAME, MB_OK | MB_ICONERROR);
 					return;
 				}
 				CString shortname;
