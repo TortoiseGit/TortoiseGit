@@ -197,10 +197,10 @@ static void ParserFromLogTests()
 
 	logCache.m_HashMap.clear();
 	logDataVector.ClearAll();
-	EXPECT_EQ(0, logDataVector.ParserFromLog(nullptr, 0, CGit::LOG_INFO_ALL_BRANCH, &range));
-	ASSERT_EQ(13, logDataVector.size());
-	EXPECT_EQ(13, logDataVector.m_HashMap.size());
-	EXPECT_EQ(13, logCache.m_HashMap.size());
+	EXPECT_EQ(0, logDataVector.ParserFromLog(nullptr, 0, CGit::LOG_INFO_ALL_BRANCH, &range)); // useless test?, all branches has higher precedence
+	ASSERT_EQ(23, logDataVector.size());
+	EXPECT_EQ(23, logDataVector.m_HashMap.size());
+	EXPECT_EQ(23, logCache.m_HashMap.size());
 
 	logCache.m_HashMap.clear();
 	logDataVector.ClearAll();

@@ -396,7 +396,7 @@ public:
 	CString	FixBranchName_Mod(CString& branchName);
 	CString	FixBranchName(const CString& branchName);
 
-	CString GetLogCmd(const CString& range, const CTGitPath* path, int InfoMask, CFilterData* filter, int logOrderBy);
+	CString GetLogCmd(CString range, const CTGitPath* path, int InfoMask, CFilterData* filter, int logOrderBy);
 
 	int GetHash(CGitHash &hash, const CString& friendname);
 	static int GetHash(git_repository * repo, CGitHash &hash, const CString& friendname, bool skipFastCheck = false);

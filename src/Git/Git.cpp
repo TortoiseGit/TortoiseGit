@@ -989,7 +989,7 @@ int CGit::BuildOutputFormat(CString &format,bool IsFull)
 	return 0;
 }
 
-CString CGit::GetLogCmd(const CString& range, const CTGitPath* path, int mask, CFilterData* Filter, int logOrderBy)
+CString CGit::GetLogCmd(CString range, const CTGitPath* path, int mask, CFilterData* Filter, int logOrderBy)
 {
 	CString param;
 
@@ -1005,7 +1005,10 @@ CString CGit::GetLogCmd(const CString& range, const CTGitPath* path, int mask, C
 		param += _T(" --left-right --boundary");
 
 	if(mask& CGit::LOG_INFO_ALL_BRANCH)
+	{
 		param += _T(" --all");
+		range.Empty();
+	}
 
 	if (mask& CGit::LOG_INFO_BASIC_REFS)
 	{
@@ -1014,10 +1017,14 @@ CString CGit::GetLogCmd(const CString& range, const CTGitPath* path, int mask, C
 		param += _T(" --remotes");
 		param += _T(" --glob=stas[h]"); // require at least one glob operator
 		param += _T(" --glob=bisect");
+		range.Empty();
 	}
 
 	if(mask & CGit::LOG_INFO_LOCAL_BRANCHES)
+	{
 		param += _T(" --branches");
+		range.Empty();
+	}
 
 	if(mask& CGit::LOG_INFO_DETECT_COPYRENAME)
 		param += _T(" -C");
