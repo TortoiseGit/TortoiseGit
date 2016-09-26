@@ -213,7 +213,7 @@ public:
 		{
 			if (allowEmpty)
 				return SHARED_TREE_PTR();
-			return SHARED_TREE_PTR(new CGitHeadFileList);
+			return std::make_shared<CGitHeadFileList>();
 		}
 		return lookup->second;
 	}

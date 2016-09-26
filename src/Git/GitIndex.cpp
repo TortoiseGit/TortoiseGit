@@ -334,7 +334,7 @@ int CGitIndexFileMap::Check(const CString &gitdir, bool *isChanged)
 
 int CGitIndexFileMap::LoadIndex(const CString &gitdir)
 {
-	SHARED_INDEX_PTR pIndex(new CGitIndexList);
+	SHARED_INDEX_PTR pIndex = std::make_shared<CGitIndexList>();
 
 	if (pIndex->ReadIndex(g_AdminDirMap.GetAdminDir(gitdir)))
 		return -1;
@@ -1236,7 +1236,7 @@ bool CGitHeadFileMap::CheckHeadAndUpdate(const CString &gitdir, bool readTree /*
 	if (ptr.get() && !ptr->CheckHeadUpdate() && (!readTree || ptr->HeadHashEqualsTreeHash()))
 		return false;
 
-	ptr = SHARED_TREE_PTR(new CGitHeadFileList);
+	ptr = std::make_shared<CGitHeadFileList>();
 	ptr->ReadHeadHash(gitdir);
 	if (readTree)
 		ptr->ReadTree();
