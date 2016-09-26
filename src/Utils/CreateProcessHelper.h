@@ -94,7 +94,7 @@ inline bool CCreateProcessHelper::CreateProcessDetached(LPCTSTR lpApplicationNam
 	LPWSTR commandLineBuf = nullptr;
 	if (lpCommandLine)
 		commandLineBuf = _tcsdup(lpCommandLine);
-	SCOPE_EXIT { free((void*)lpCommandLine); };
+	SCOPE_EXIT { free((void*)commandLineBuf); };
 
 	return CreateProcessDetached(lpApplicationName, commandLineBuf, 0);
 }
