@@ -61,7 +61,7 @@ protected:
 	int GetFileStatus(const CString &gitdir, const CString &path, git_wc_status_kind * status, __int64 time, __int64 filesize, FILL_STATUS_CALLBACK callback = nullptr, void *pData = nullptr, CGitHash *pHash = nullptr, bool * assumeValid = nullptr, bool * skipWorktree = nullptr);
 };
 
-typedef std::tr1::shared_ptr<CGitIndexList> SHARED_INDEX_PTR;
+typedef std::shared_ptr<CGitIndexList> SHARED_INDEX_PTR;
 typedef CComCritSecLock<CComCriticalSection> CAutoLocker;
 
 class CGitIndexFileMap:public std::map<CString, SHARED_INDEX_PTR>
@@ -194,7 +194,7 @@ public:
 	static int CallBack(const unsigned char *, const char *, int, const char *, unsigned int, int, void *);
 };
 
-typedef std::tr1::shared_ptr<CGitHeadFileList> SHARED_TREE_PTR;
+typedef std::shared_ptr<CGitHeadFileList> SHARED_TREE_PTR;
 class CGitHeadFileMap:public std::map<CString,SHARED_TREE_PTR>
 {
 public:
