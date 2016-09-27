@@ -2603,13 +2603,8 @@ static bool DoFetch(const CString& url, const bool fetchAllRemotes, const bool l
 		{
 			if (url == *it)
 			{
-				CString remote, trackedBranch;
-				g_Git.GetRemoteTrackedBranchForHEAD(remote, trackedBranch);
-				if (!remote.IsEmpty() && !trackedBranch.IsEmpty())
-				{
-					upstream = L"remotes/" + remote + L"/" + trackedBranch;
-					g_Git.GetHash(oldUpstreamHash, upstream);
-				}
+				upstream = L"remotes/" + *it + L'/' + remoteBranch;
+				g_Git.GetHash(oldUpstreamHash, upstream);
 				break;
 			}
 		}

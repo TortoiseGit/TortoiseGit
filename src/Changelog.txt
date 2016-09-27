@@ -34,6 +34,7 @@ Released: unreleased
  * /command:showcompare /unified did not honor path filters correctly
  * Fixed issue #2870: Save unified diff can cause TortoiseGit to not respond
  * Fixed issue #2217: LogDlg: Refresh working tree status and file list after changes to working tree
+ * Fixed issue #2833: Pull with 'pull.rebase=preserve' does rebase on invalid upstream
 
 = Release 2.3.0 =
 Released: 2016-10-01
