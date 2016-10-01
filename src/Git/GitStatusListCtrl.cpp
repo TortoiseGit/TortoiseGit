@@ -1061,6 +1061,8 @@ void CGitStatusListCtrl::AddEntry(CTGitPath * GitPath, WORD /*langID*/, int list
 		m_nShownModified++;
 		break;
 	case CTGitPath::LOGACTIONS_UNMERGED:
+	case CTGitPath::LOGACTIONS_UNMERGED | CTGitPath::LOGACTIONS_ADDED:
+	case CTGitPath::LOGACTIONS_UNMERGED | CTGitPath::LOGACTIONS_MODIFIED:
 		m_nShownConflicted++;
 		break;
 	case CTGitPath::LOGACTIONS_UNVER:
