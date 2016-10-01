@@ -1230,7 +1230,7 @@ void CRebaseDlg::OnBnClickedContinue()
 		CMassiveGitTask mgtReset(_T("reset"), TRUE, true);
 		for (int i = 0; i < m_FileListCtrl.GetItemCount(); i++)
 		{
-			CTGitPath *entry = (CTGitPath *)m_FileListCtrl.GetItemData(i);
+			auto entry = m_FileListCtrl.GetListEntry(i);
 			if (entry->m_Checked)
 			{
 				if (entry->m_Action & CTGitPath::LOGACTIONS_UNVER)
@@ -2184,7 +2184,7 @@ void CRebaseDlg::ListConflictFile()
 	bool hasSubmoduleChange = false;
 	for (int i = 0; i < m_FileListCtrl.GetItemCount(); i++)
 	{
-		CTGitPath *entry = (CTGitPath *)m_FileListCtrl.GetItemData(i);
+		auto entry = m_FileListCtrl.GetListEntry(i);
 		if (entry->IsDirectory())
 		{
 			hasSubmoduleChange = true;

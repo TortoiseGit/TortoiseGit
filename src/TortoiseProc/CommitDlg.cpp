@@ -646,7 +646,7 @@ void CCommitDlg::OnOK()
 	int nListItems = m_ListCtrl.GetItemCount();
 	for (int i = 0; i < nListItems && !m_bCommitMessageOnly; ++i)
 	{
-		CTGitPath *entry = (CTGitPath *)m_ListCtrl.GetItemData(i);
+		auto entry = m_ListCtrl.GetListEntry(i);
 		if (!entry->m_Checked || !entry->IsDirectory())
 			continue;
 
@@ -770,7 +770,7 @@ void CCommitDlg::OnOK()
 
 			for (int j = 0; j < nListItems; ++j)
 			{
-				CTGitPath *entry = (CTGitPath*)m_ListCtrl.GetItemData(j);
+				auto entry = m_ListCtrl.GetListEntry(j);
 
 				if (sysProgressDlg.IsVisible())
 				{
@@ -847,7 +847,7 @@ void CCommitDlg::OnOK()
 				bAddSuccess = false;
 
 			for (int j = 0; bAddSuccess && j < nListItems; ++j)
-				CShellUpdater::Instance().AddPathForUpdate(*(CTGitPath*)m_ListCtrl.GetItemData(j));
+				CShellUpdater::Instance().AddPathForUpdate(*m_ListCtrl.GetListEntry(j));
 		} while (0);
 	}
 	else
@@ -866,7 +866,7 @@ void CCommitDlg::OnOK()
 		CMassiveGitTask mgtReset(resetCmd, TRUE, true);
 		for (int j = 0; j < nListItems; ++j)
 		{
-			CTGitPath *entry = (CTGitPath*)m_ListCtrl.GetItemData(j);
+			auto entry = m_ListCtrl.GetListEntry(j);
 
 			if (entry->m_Checked && !m_bCommitMessageOnly)
 			{
@@ -921,7 +921,7 @@ void CCommitDlg::OnOK()
 			bAddSuccess = false;
 
 		for (int j = 0; bAddSuccess && j < nListItems; ++j)
-			CShellUpdater::Instance().AddPathForUpdate(*(CTGitPath*)m_ListCtrl.GetItemData(j));
+			CShellUpdater::Instance().AddPathForUpdate(*m_ListCtrl.GetListEntry(j));
 	}
 
 	if (sysProgressDlg.HasUserCancelled())
@@ -1776,7 +1776,7 @@ void CCommitDlg::GetAutocompletionList()
 		if ((!m_bRunThread) || (GetTickCount64() - starttime > timeoutvalue))
 			return;
 
-		CTGitPath *path = (CTGitPath*)m_ListCtrl.GetItemData(i);
+		auto path = m_ListCtrl.GetListEntry(i);
 
 		if (!path)
 			continue;
@@ -1990,7 +1990,7 @@ bool CCommitDlg::HandleMenuItemClick(int cmd, CSciEdit * pSciEdit)
 		int nListItems = m_ListCtrl.GetItemCount();
 		for (int i=0; i<nListItems; ++i)
 		{
-			CTGitPath * entry = (CTGitPath*)m_ListCtrl.GetItemData(i);
+			auto entry = m_ListCtrl.GetListEntry(i);
 			if (entry&&entry->m_Checked)
 			{
 				CString status = entry->GetActionName();
@@ -2211,7 +2211,7 @@ void CCommitDlg::FillPatchView(bool onlySetTimer)
 		while(pos)
 		{
 			int nSelect = m_ListCtrl.GetNextSelectedItem(pos);
-			CTGitPath * p=(CTGitPath*)m_ListCtrl.GetItemData(nSelect);
+			auto p = m_ListCtrl.GetListEntry(nSelect);
 			if(p && !(p->m_Action&CTGitPath::LOGACTIONS_UNVER) )
 			{
 				CString head = _T("HEAD");

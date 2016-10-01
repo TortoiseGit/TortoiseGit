@@ -2079,7 +2079,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					POSITION pos = GetFirstSelectedItemPosition();
 					while (pos)
 					{
-						auto selectedFilepath = reinterpret_cast<CTGitPath*>(GetItemData(GetNextSelectedItem(pos)));
+						auto selectedFilepath = GetListEntry(GetNextSelectedItem(pos));
 						if (m_CurrentVersion.IsEmpty() || m_CurrentVersion == GIT_REV_ZERO)
 						{
 							CString fromwhere;
