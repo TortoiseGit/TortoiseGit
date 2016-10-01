@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2016-06-19 11:53+0000\n"
+"PO-Revision-Date: 2016-09-04 13:40+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Vietnamese (http://www.transifex.com/lznuaa/tortoisegit/language/vi/)\n"
 "MIME-Version: 1.0\n"
@@ -317,7 +317,7 @@ msgid ""
 "TortoiseGitMerge can't diff directories."
 msgstr "%s\nlà một thư mục, không phải là một tập tin!\nTortoiseGitMerge không thể tìm ra điểm khác nhau giữa các thư mục."
 
-#. Resource IDs: (16923)
+#. Resource IDs: (16923, Dialog IDD_RENAME: Control id 1483)
 msgid "&..."
 msgstr "&..."
 
@@ -443,8 +443,9 @@ msgstr "&Xanh Dương:"
 msgid "&Border:"
 msgstr "&Đường viền:"
 
-#. Resource IDs: (Dialog IDD_MERGE: Control id 1512, Dialog
-#. IDD_NEW_BRANCH_TAG: Control id 1512)
+#. Resource IDs: (Dialog IDD_EXPORT: Control id 1512, Dialog IDD_GITSWITCH:
+#. Control id 1512, Dialog IDD_MERGE: Control id 1512, Dialog
+#. IDD_NEW_BRANCH_TAG: Control id 1512, Dialog IDD_RESET: Control id 1512)
 msgid "&Branch"
 msgstr "&Nhánh"
 
@@ -513,8 +514,10 @@ msgstr "&Đóng (các)cửa sổ"
 msgid "&Command:"
 msgstr "&Lệnh:"
 
-#. Resource IDs: (Dialog IDD_MERGE: Control id 1514, Dialog
-#. IDD_NEW_BRANCH_TAG: Control id 1514, Dialog IDD_SYNC: Control id 1625)
+#. Resource IDs: (Dialog IDD_EXPORT: Control id 1514, Dialog IDD_GITSWITCH:
+#. Control id 1514, Dialog IDD_MERGE: Control id 1514, Dialog
+#. IDD_NEW_BRANCH_TAG: Control id 1514, Dialog IDD_RESET: Control id 1514,
+#. Dialog IDD_SYNC: Control id 1625)
 msgid "&Commit"
 msgstr "&Đệ trình"
 
@@ -759,9 +762,15 @@ msgstr ""
 msgid "&Green:"
 msgstr "&Xanh lá cây:"
 
-#. Resource IDs: (Dialog IDD_NEW_BRANCH_TAG: Control id 1511)
+#. Resource IDs: (Dialog IDD_EXPORT: Control id 1511, Dialog
+#. IDD_NEW_BRANCH_TAG: Control id 1511)
 msgid "&HEAD"
 msgstr "&HEAD"
+
+#. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1552, Dialog IDD_RESET:
+#. Control id 1552)
+msgid "&Hard: Reset working tree and index (discard all local changes)"
+msgstr ""
 
 #. Resource IDs: (57670, 65535 - PopupMenu, IDS_MENUHELP)
 msgid "&Help"
@@ -905,8 +914,8 @@ msgstr "&Hoạt ảnh cho thực đơn"
 msgid "&Menu contents:"
 msgstr "&Nội dung thực đơn"
 
-#. Resource IDs: (Dialog IDD_SUBMODULE_UPDATE: Control id 1735,
-#. IDS_MERGEBUTTON)
+#. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1526, Dialog
+#. IDD_SUBMODULE_UPDATE: Control id 1735, IDS_MERGEBUTTON)
 msgid "&Merge"
 msgstr "&Nhập"
 
@@ -929,6 +938,11 @@ msgstr "&Tin nhắn:"
 #. Resource IDs: (16925)
 msgid "&Minimize"
 msgstr "&Thu nhỏ"
+
+#. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1551, Dialog IDD_RESET:
+#. Control id 1551)
+msgid "&Mixed: Leave working tree untouched, reset index"
+msgstr ""
 
 #. Resource IDs: (ID_VIEW_MOVEDBLOCKS - Menu)
 msgid "&Moved blocks"
@@ -1021,6 +1035,10 @@ msgstr ""
 #. Resource IDs: (ID_VIEW_OVERLAPIMAGES - Menu)
 msgid "&Overlay images\tO"
 msgstr "&Ảnh nạp chồng\tO"
+
+#. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1523)
+msgid "&Override branch if exists"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROXY: Control id 1411, Dialog
 #. IDD_SIMPLEPROMPT: Control id 65535, Dialog IDD_USER_PASSWD: Control id
@@ -1250,6 +1268,10 @@ msgstr "&Gán chỉ mục khóa:"
 msgid "&Skip"
 msgstr ""
 
+#. Resource IDs: (Dialog IDD_RESET: Control id 1550)
+msgid "&Soft: Leave working tree and index untouched"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_MERGE: Control id 1524, Dialog IDD_PULLFETCH:
 #. Control id 1524)
 msgid "&Squash"
@@ -1291,8 +1313,9 @@ msgstr "&Kích cỡ thanh Tab:"
 msgid "&Tabbed Document"
 msgstr "&Tài liệu theo mục"
 
-#. Resource IDs: (Dialog IDD_MERGE: Control id 1513, Dialog
-#. IDD_NEW_BRANCH_TAG: Control id 1513)
+#. Resource IDs: (Dialog IDD_EXPORT: Control id 1513, Dialog IDD_GITSWITCH:
+#. Control id 1513, Dialog IDD_MERGE: Control id 1513, Dialog
+#. IDD_NEW_BRANCH_TAG: Control id 1513, Dialog IDD_RESET: Control id 1513)
 msgid "&Tag"
 msgstr ""
 
@@ -2391,10 +2414,9 @@ msgstr "&Duyệt..."
 msgid "Branc&h:"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_CLONE: Control id 1527, Dialog IDD_EXPORT:
-#. Control id 1512, Dialog IDD_GITSWITCH: Control id 1512, Dialog
-#. IDD_LOGMESSAGE: Control id 1579, Dialog IDD_RESET: Control id 1512, Dialog
-#. IDD_SUBMODULE_ADD: Control id 1586, IDS_PROC_BRANCH)
+#. Resource IDs: (Dialog IDD_CLONE: Control id 1527, Dialog IDD_LOGMESSAGE:
+#. Control id 1579, Dialog IDD_SUBMODULE_ADD: Control id 1586,
+#. IDS_PROC_BRANCH)
 msgid "Branch"
 msgstr "Nhánh"
 
@@ -2441,7 +2463,7 @@ msgstr ""
 msgid "Browse for the external diff program"
 msgstr "Duyệt tìm đến cho chương trình so sánh bên ngoài"
 
-#. Resource IDs: (Dialog IDD_DIALOG_BROWSE_REFS: Control id 322)
+#. Resource IDs: (Dialog IDD_BROWSE_REFS: Control id 322)
 msgid "Browse references"
 msgstr ""
 
@@ -2558,13 +2580,13 @@ msgstr "Không thể dán ảnh từ bộ đệm!"
 
 #. Resource IDs: (17101, 2, Dialog IDD_ADD: Control id 2, Dialog
 #. IDD_ADD_REMOTE: Control id 2, Dialog IDD_BISECTSTART: Control id 2, Dialog
-#. IDD_BUGTRAQREGEXTESTER: Control id 2, Dialog IDD_CERTCHECK: Control id 2,
-#. Dialog IDD_CLEAN: Control id 2, Dialog IDD_CLONE: Control id 2, Dialog
-#. IDD_COMMITDLG: Control id 2, Dialog IDD_CREATECHANGELIST: Control id 2,
-#. Dialog IDD_CREATEREPO: Control id 2, Dialog IDD_DIALOG_BROWSE_REFS: Control
-#. id 2, Dialog IDD_ENCODING: Control id 2, Dialog IDD_EXPORT: Control id 2,
-#. Dialog IDD_FIND: Control id 2, Dialog IDD_FORMAT_PATCH: Control id 2,
-#. Dialog IDD_GITSWITCH: Control id 2, Dialog IDD_GOTO: Control id 2, Dialog
+#. IDD_BROWSE_REFS: Control id 2, Dialog IDD_BUGTRAQREGEXTESTER: Control id 2,
+#. Dialog IDD_CERTCHECK: Control id 2, Dialog IDD_CLEAN: Control id 2, Dialog
+#. IDD_CLONE: Control id 2, Dialog IDD_COMMITDLG: Control id 2, Dialog
+#. IDD_CREATECHANGELIST: Control id 2, Dialog IDD_CREATEREPO: Control id 2,
+#. Dialog IDD_ENCODING: Control id 2, Dialog IDD_EXPORT: Control id 2, Dialog
+#. IDD_FIND: Control id 2, Dialog IDD_FORMAT_PATCH: Control id 2, Dialog
+#. IDD_GITSWITCH: Control id 2, Dialog IDD_GOTO: Control id 2, Dialog
 #. IDD_GOTODLG: Control id 2, Dialog IDD_HISTORYDLG: Control id 2, Dialog
 #. IDD_IGNORE: Control id 2, Dialog IDD_INPUTDLG: Control id 2, Dialog
 #. IDD_INPUTLOGDLG: Control id 2, Dialog IDD_LOGMESSAGE: Control id 2, Dialog
@@ -3079,10 +3101,9 @@ msgid "Commands"
 msgstr "Các lệnh"
 
 #. Resource IDs: (Dialog IDD_CHANGEDFILES: Control id 1383, Dialog
-#. IDD_COMMITDLG: Control id 135, Dialog IDD_EXPORT: Control id 1514, Dialog
-#. IDD_GITSWITCH: Control id 1514, Dialog IDD_RESET: Control id 1514, Dialog
-#. IDD_SETTINGSDIALOGS2: Control id 1083, Dialog IDD_SETTINGSDIALOGS3: Control
-#. id 65535, IDS_COMMITBUTTON, IDS_PROGRS_CMD_COMMIT, IDS_PROGRS_TITLE_COMMIT)
+#. IDD_COMMITDLG: Control id 135, Dialog IDD_SETTINGSDIALOGS2: Control id
+#. 1083, Dialog IDD_SETTINGSDIALOGS3: Control id 65535, IDS_COMMITBUTTON,
+#. IDS_PROGRS_CMD_COMMIT, IDS_PROGRS_TITLE_COMMIT)
 msgid "Commit"
 msgstr "Cam kết"
 
@@ -3566,6 +3587,10 @@ msgstr ""
 msgid "Create &Library"
 msgstr "Tạo &thư viện"
 
+#. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1527)
+msgid "Create &New Branch"
+msgstr ""
+
 #. Resource IDs: (IDS_MENUTAG)
 msgid "Create &Tag..."
 msgstr ""
@@ -3585,10 +3610,6 @@ msgstr ""
 #. Resource IDs: (Dialog IDD_CREATECHANGELIST: Control id 243)
 msgid "Create Changelist"
 msgstr "Tạo danh sách thay đổi"
-
-#. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1527)
-msgid "Create New Branch"
-msgstr "Tạo một nhánh mới"
 
 #. Resource IDs: (IDS_MENUFORMATPATCH)
 msgid "Create Patch Serial..."
@@ -3680,7 +3701,7 @@ msgstr "&Cắt"
 msgid "Current"
 msgstr "Hiện tại"
 
-#. Resource IDs: (Dialog IDD_DIALOG_BROWSE_REFS: Control id 1784, Dialog
+#. Resource IDs: (Dialog IDD_BROWSE_REFS: Control id 1784, Dialog
 #. IDD_SETTINGSCOLORS_2: Control id 65535)
 msgid "Current Branch"
 msgstr "Nhánh hiện tại"
@@ -4373,7 +4394,7 @@ msgid "Drive Types"
 msgstr "Loại ổ đĩa"
 
 #. Resource IDs: (IDS_DROPONESTASH)
-msgid "Drop one stash"
+msgid "Drop &one stash"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_CLEAN: Control id 1731)
@@ -5104,11 +5125,12 @@ msgstr "Lọc bởi"
 msgid "Filter paths"
 msgstr "Lọc đường dẫn"
 
-#. Resource IDs: (Dialog IDD_DIALOG_BROWSE_REFS: Control id 1479)
+#. Resource IDs: (Dialog IDD_BROWSE_REFS: Control id 1479)
 msgid "Filter:"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_FIND: Control id 20090)
+#. Resource IDs: (Dialog IDD_COMMITISONREFS: Control id 1834, Dialog IDD_FIND:
+#. Control id 20090)
 msgid "Filter: "
 msgstr ""
 
@@ -5258,6 +5280,13 @@ msgstr "Tiến tới"
 #. Resource IDs: (IDS_FORWARDN)
 #, c-format
 msgid "Forward %d"
+msgstr ""
+
+#. Resource IDs: (IDS_REBASELOCKFILEFOUND)
+msgid ""
+"Found a lock file indicating that a TortoiseGit rebase process is running. This blocks this operation.\n"
+"\n"
+"If you are not runnig a TortoiseGit rebase process right now, you can remove the stale lock file in order to continue."
 msgstr ""
 
 #. Resource IDs: (IDS_PROC_REBASE_EMPTYCOMMITMSG)
@@ -5619,8 +5648,7 @@ msgid "H&ue:"
 msgstr "&Màu sắc"
 
 #. Resource IDs: (Dialog IDD_DIFFFILES: Control id 1353, Dialog IDD_DIFFFILES:
-#. Control id 1354, Dialog IDD_EXPORT: Control id 1511, Dialog
-#. IDD_REPOSITORY_BROWSER: Control id 1684)
+#. Control id 1354, Dialog IDD_REPOSITORY_BROWSER: Control id 1684)
 msgid "HEAD"
 msgstr "HEAD"
 
@@ -5632,22 +5660,17 @@ msgstr "HEAD:"
 msgid "Hard"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1552, Dialog IDD_RESET:
-#. Control id 1552)
-msgid "Hard: Reset working tree and index (discard all local changes)"
-msgstr ""
-
 #. Resource IDs: (65535 - PopupMenu)
 msgid "Hebrew"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_ADD: Control id 9, Dialog IDD_ADD_REMOTE: Control
 #. id 9, Dialog IDD_APPLY_PATCH_LIST: Control id 9, Dialog IDD_BISECTSTART:
-#. Control id 9, Dialog IDD_CLEAN: Control id 9, Dialog IDD_CLONE: Control id
-#. 9, Dialog IDD_COMMITDLG: Control id 9, Dialog IDD_CREATEREPO: Control id 9,
-#. Dialog IDD_DIALOG_BROWSE_REFS: Control id 9, Dialog IDD_EXPORT: Control id
-#. 9, Dialog IDD_FORMAT_PATCH: Control id 9, Dialog IDD_GITSWITCH: Control id
-#. 9, Dialog IDD_IGNORE: Control id 9, Dialog IDD_LOGMESSAGE: Control id 9,
+#. Control id 9, Dialog IDD_BROWSE_REFS: Control id 9, Dialog IDD_CLEAN:
+#. Control id 9, Dialog IDD_CLONE: Control id 9, Dialog IDD_COMMITDLG: Control
+#. id 9, Dialog IDD_CREATEREPO: Control id 9, Dialog IDD_EXPORT: Control id 9,
+#. Dialog IDD_FORMAT_PATCH: Control id 9, Dialog IDD_GITSWITCH: Control id 9,
+#. Dialog IDD_IGNORE: Control id 9, Dialog IDD_LOGMESSAGE: Control id 9,
 #. Dialog IDD_MERGE: Control id 9, Dialog IDD_MERGEABORT: Control id 9, Dialog
 #. IDD_NEW_BRANCH_TAG: Control id 9, Dialog IDD_OPENDLG: Control id 9, Dialog
 #. IDD_PULLFETCH: Control id 9, Dialog IDD_PUSH: Control id 9, Dialog
@@ -6758,8 +6781,7 @@ msgstr "Thanh thực đơn"
 msgid "Menu s&hadows"
 msgstr "&Bóng mờ của thực đơn"
 
-#. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1526, Dialog IDD_MERGE:
-#. Control id 313, IDS_PROGRS_TITLE_MERGE)
+#. Resource IDs: (Dialog IDD_MERGE: Control id 313, IDS_PROGRS_TITLE_MERGE)
 msgid "Merge"
 msgstr "Hợp nhất"
 
@@ -6865,11 +6887,6 @@ msgstr ""
 #. Resource IDs: (62179, IDS_RESET_MIXED)
 msgid "Mixed"
 msgstr "Đủ thứ"
-
-#. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1551, Dialog IDD_RESET:
-#. Control id 1551)
-msgid "Mixed: Leave working tree untouched, reset index"
-msgstr ""
 
 #. Resource IDs: (IDS_STATUSLIST_COLMODIFICATIONDATE)
 msgid "Modification date"
@@ -7392,34 +7409,33 @@ msgstr "OEM-US"
 
 #. Resource IDs: (1, Dialog IDD_ABOUT: Control id 1, Dialog IDD_ABOUTBOX:
 #. Control id 1, Dialog IDD_ADD: Control id 1, Dialog IDD_ADD_REMOTE: Control
-#. id 1, Dialog IDD_BISECTSTART: Control id 1, Dialog IDD_BUGTRAQREGEXTESTER:
-#. Control id 1, Dialog IDD_CHANGEDFILES: Control id 1, Dialog IDD_CLEAN:
-#. Control id 1, Dialog IDD_CLONE: Control id 1, Dialog IDD_CREATECHANGELIST:
-#. Control id 1, Dialog IDD_CREATEREPO: Control id 1, Dialog
-#. IDD_DIALOG_BROWSE_REFS: Control id 1, Dialog IDD_ENCODING: Control id 1,
-#. Dialog IDD_EXPORT: Control id 1, Dialog IDD_FORMAT_PATCH: Control id 1,
-#. Dialog IDD_GITSWITCH: Control id 1, Dialog IDD_GOTO: Control id 1, Dialog
-#. IDD_GOTODLG: Control id 1, Dialog IDD_HISTORYDLG: Control id 1, Dialog
-#. IDD_IGNORE: Control id 1, Dialog IDD_INPUTDLG: Control id 1, Dialog
-#. IDD_INPUTLOGDLG: Control id 1, Dialog IDD_LOGMESSAGE: Control id 1, Dialog
-#. IDD_LOGORDERING: Control id 1, Dialog IDD_MERGE: Control id 1, Dialog
-#. IDD_MERGEABORT: Control id 1, Dialog IDD_NEW_BRANCH_TAG: Control id 1,
-#. Dialog IDD_OPEN: Control id 1, Dialog IDD_OPENDLG: Control id 1, Dialog
-#. IDD_PROMPT: Control id 1, Dialog IDD_PULLFETCH: Control id 1, Dialog
-#. IDD_PUSH: Control id 1, Dialog IDD_REFLOG: Control id 1, Dialog
-#. IDD_REGEXFILTER: Control id 1, Dialog IDD_REGEXFILTERS: Control id 1,
-#. Dialog IDD_RENAME: Control id 1, Dialog IDD_REPOSITORY_BROWSER: Control id
-#. 1, Dialog IDD_REQUESTPULL: Control id 1, Dialog IDD_RESET: Control id 1,
-#. Dialog IDD_RESOLVE: Control id 1, Dialog IDD_RESOLVE_CONFLICT: Control id
-#. 4569, Dialog IDD_REVERT: Control id 1, Dialog IDD_SETTINGSBUGTRAQADV:
-#. Control id 1, Dialog IDD_SETTINGSHOOKCONFIG: Control id 1, Dialog
-#. IDD_SETTINGSPROGSADV: Control id 1, Dialog IDD_SIMPLEPROMPT: Control id 1,
-#. Dialog IDD_STASH: Control id 1, Dialog IDD_STATGRAPH: Control id 1, Dialog
-#. IDD_SUBMODULE_ADD: Control id 1, Dialog IDD_SUBMODULE_UPDATE: Control id 1,
-#. Dialog IDD_SVNDCOMMITTYPE: Control id 1, Dialog IDD_SVNIGNORE: Control id
-#. 1, Dialog IDD_SVNPROGRESS: Control id 1, Dialog IDD_TOOLASSOC: Control id
-#. 1, Dialog IDD_URL: Control id 1, Dialog IDD_USER_PASSWD: Control id 1,
-#. IDS_MSGBOX_OK)
+#. id 1, Dialog IDD_BISECTSTART: Control id 1, Dialog IDD_BROWSE_REFS: Control
+#. id 1, Dialog IDD_BUGTRAQREGEXTESTER: Control id 1, Dialog IDD_CHANGEDFILES:
+#. Control id 1, Dialog IDD_CLEAN: Control id 1, Dialog IDD_CLONE: Control id
+#. 1, Dialog IDD_CREATECHANGELIST: Control id 1, Dialog IDD_CREATEREPO:
+#. Control id 1, Dialog IDD_ENCODING: Control id 1, Dialog IDD_EXPORT: Control
+#. id 1, Dialog IDD_FORMAT_PATCH: Control id 1, Dialog IDD_GITSWITCH: Control
+#. id 1, Dialog IDD_GOTO: Control id 1, Dialog IDD_GOTODLG: Control id 1,
+#. Dialog IDD_HISTORYDLG: Control id 1, Dialog IDD_IGNORE: Control id 1,
+#. Dialog IDD_INPUTDLG: Control id 1, Dialog IDD_INPUTLOGDLG: Control id 1,
+#. Dialog IDD_LOGMESSAGE: Control id 1, Dialog IDD_LOGORDERING: Control id 1,
+#. Dialog IDD_MERGE: Control id 1, Dialog IDD_MERGEABORT: Control id 1, Dialog
+#. IDD_NEW_BRANCH_TAG: Control id 1, Dialog IDD_OPEN: Control id 1, Dialog
+#. IDD_OPENDLG: Control id 1, Dialog IDD_PROMPT: Control id 1, Dialog
+#. IDD_PULLFETCH: Control id 1, Dialog IDD_PUSH: Control id 1, Dialog
+#. IDD_REFLOG: Control id 1, Dialog IDD_REGEXFILTER: Control id 1, Dialog
+#. IDD_REGEXFILTERS: Control id 1, Dialog IDD_RENAME: Control id 1, Dialog
+#. IDD_REPOSITORY_BROWSER: Control id 1, Dialog IDD_REQUESTPULL: Control id 1,
+#. Dialog IDD_RESET: Control id 1, Dialog IDD_RESOLVE: Control id 1, Dialog
+#. IDD_RESOLVE_CONFLICT: Control id 4569, Dialog IDD_REVERT: Control id 1,
+#. Dialog IDD_SETTINGSBUGTRAQADV: Control id 1, Dialog IDD_SETTINGSHOOKCONFIG:
+#. Control id 1, Dialog IDD_SETTINGSPROGSADV: Control id 1, Dialog
+#. IDD_SIMPLEPROMPT: Control id 1, Dialog IDD_STASH: Control id 1, Dialog
+#. IDD_STATGRAPH: Control id 1, Dialog IDD_SUBMODULE_ADD: Control id 1, Dialog
+#. IDD_SUBMODULE_UPDATE: Control id 1, Dialog IDD_SVNDCOMMITTYPE: Control id
+#. 1, Dialog IDD_SVNIGNORE: Control id 1, Dialog IDD_SVNPROGRESS: Control id
+#. 1, Dialog IDD_TOOLASSOC: Control id 1, Dialog IDD_URL: Control id 1, Dialog
+#. IDD_USER_PASSWD: Control id 1, IDS_MSGBOX_OK)
 msgid "OK"
 msgstr "OK"
 
@@ -7608,16 +7624,12 @@ msgstr ""
 msgid "Output.prn"
 msgstr "Output.pm"
 
-#. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1523)
-msgid "Override branch if exists"
-msgstr ""
-
 #. Resource IDs: (IDS_PROC_OVERWRITEEXPORT_OVERWRITE)
 msgid "Overwrite"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1521)
-msgid "Overwrite working tree changes (force)"
+msgid "Overwrite working tree changes (&force)"
 msgstr ""
 
 #. Resource IDs: (ID_FILE_PAGESETUP - Menu)
@@ -8319,6 +8331,10 @@ msgstr ""
 msgid "RefLog"
 msgstr ""
 
+#. Resource IDs: (Dialog IDD_COMMITISONREFS: Control id 4596)
+msgid "References commit is on"
+msgstr ""
+
 #. Resource IDs: (IDS_LOG_FILTER_REFNAME)
 msgid "Refname"
 msgstr ""
@@ -8479,6 +8495,10 @@ msgstr "Loại bỏ khỏi danh sách bỏ qua"
 
 #. Resource IDs: (Dialog IDD_CLEAN: Control id 1629)
 msgid "Remove ignored files (-fX)"
+msgstr ""
+
+#. Resource IDs: (IDS_REMOVESTALEBUTTON)
+msgid "Remove stale lock file"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_CLEAN: Control id 1626)
@@ -8845,6 +8865,11 @@ msgstr "&Hiện nút bấm trên hai dòng"
 #. Resource IDs: (17078)
 msgid "S&how Quick Access Toolbar below the Ribbon"
 msgstr "&Hiện Thanh Công Cụ Truy Cập Nhanh dưới Ribbon"
+
+#. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1383, Dialog IDD_RESET:
+#. Control id 1383)
+msgid "S&how modified files in working tree"
+msgstr ""
 
 #. Resource IDs: (IDS_PROC_REBASE_UNSELECTED_SKIP)
 msgid "S&kip unselected"
@@ -9442,7 +9467,7 @@ msgstr "Hiển thị &tường trình"
 msgid "Show &log..."
 msgstr "Hiển thị &tường trình..."
 
-#. Resource IDs: (Dialog IDD_DIALOG_BROWSE_REFS: Control id 1830)
+#. Resource IDs: (Dialog IDD_BROWSE_REFS: Control id 1830)
 msgid "Show &nested refs"
 msgstr ""
 
@@ -9603,9 +9628,10 @@ msgstr ""
 msgid "Show linenumber&s"
 msgstr "Hiển thị số thứ tự &dòng"
 
-#. Resource IDs: (Dialog IDD_DIFFFILES: Control id 1132, Dialog
-#. IDD_DIFFSUBMODULE: Control id 1132, Dialog IDD_DIFFSUBMODULE: Control id
-#. 1695, Dialog IDD_RESOLVESUBMODULECONFLICT: Control id 1132, Dialog
+#. Resource IDs: (Dialog IDD_COMMITISONREFS: Control id 1132, Dialog
+#. IDD_DIFFFILES: Control id 1132, Dialog IDD_DIFFSUBMODULE: Control id 1132,
+#. Dialog IDD_DIFFSUBMODULE: Control id 1695, Dialog
+#. IDD_RESOLVESUBMODULECONFLICT: Control id 1132, Dialog
 #. IDD_RESOLVESUBMODULECONFLICT: Control id 1695, Dialog
 #. IDD_RESOLVESUBMODULECONFLICT: Control id 1698, Dialog IDD_RESOLVE_CONFLICT:
 #. Control id 1132, Dialog IDD_RESOLVE_CONFLICT: Control id 1695,
@@ -9636,11 +9662,6 @@ msgstr ""
 
 #. Resource IDs: (IDS_SETTINGS_DESCRIBEALWAYSLONG_TT)
 msgid "Show long format even if a tag is exactly on that commit"
-msgstr ""
-
-#. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1383, Dialog IDD_RESET:
-#. Control id 1383)
-msgid "Show modified files in working tree"
 msgstr ""
 
 #. Resource IDs: (20308)
@@ -9821,10 +9842,6 @@ msgstr ""
 #. Resource IDs: (IDS_RESET_SOFT)
 msgid "Soft"
 msgstr ""
-
-#. Resource IDs: (Dialog IDD_RESET: Control id 1550)
-msgid "Soft: Leave working tree and index untouched"
-msgstr "Mềm: Rời bỏ cây làm việc cũng như chỉ mục mà không tác động"
 
 #. Resource IDs: (IDS_WARNMODIFIEDOUTSIDE)
 msgid ""
@@ -10225,6 +10242,10 @@ msgid ""
 "deleted."
 msgstr "Regitry hệ thống đã được loại bỏ và tập tin INI (nếu có) đã được xóa"
 
+#. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1520)
+msgid "T&rack"
+msgstr ""
+
 #. Resource IDs: (5065 - Menu)
 msgid "TIS-620"
 msgstr "TIS-620"
@@ -10250,9 +10271,7 @@ msgstr "Giữ chỗ cho dấu tab"
 msgid "Tab size:"
 msgstr "Kích thước dấu tab:"
 
-#. Resource IDs: (Dialog IDD_EXPORT: Control id 1513, Dialog IDD_GITSWITCH:
-#. Control id 1513, Dialog IDD_RESET: Control id 1513, Dialog
-#. IDD_SETTINGSCOLORS_2: Control id 65535, IDS_PROC_TAG)
+#. Resource IDs: (Dialog IDD_SETTINGSCOLORS_2: Control id 65535, IDS_PROC_TAG)
 msgid "Tag"
 msgstr ""
 
@@ -10275,6 +10294,10 @@ msgstr "Các thẻ đánh dấu"
 
 #. Resource IDs: (Dialog IDD_SETTINREMOTE: Control id 65535)
 msgid "Tags:"
+msgstr ""
+
+#. Resource IDs: (IDS_ERR_MUSTBESAMEWT)
+msgid "Target and source must be in the same working tree!"
 msgstr ""
 
 #. Resource IDs: (IDS_PROC_TASKS)
@@ -11018,10 +11041,6 @@ msgstr "Tổng số thay đổi tập tin:"
 msgid "Trac&k"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1520)
-msgid "Track"
-msgstr "Theo dõi"
-
 #. Resource IDs: (Dialog IDD_PROPPAGE: Control id 11023)
 msgid "Tracked Remote Branch:"
 msgstr ""
@@ -11285,16 +11304,16 @@ msgstr "Sử dụng khối 'của họ'"
 msgid "Use 'theirs' text block then 'mine'"
 msgstr "Sử dụng khối văn bản 'của họ' rồi đến 'của tôi'"
 
+#. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 1911)
+msgid "Use .mailmap"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_SETTINGSCREDENTIAL: Control id 1761)
 msgid "Use HTTP path component"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETMAINPAGE: Control id 1066)
 msgid "Use Ribbons"
-msgstr ""
-
-#. Resource IDs: (Dialog IDD_SETMAINPAGE: Control id 1500)
-msgid "Use Task Dialog"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_PUSH: Control id 1497)
@@ -11804,7 +11823,7 @@ msgid "Working Tree Path:"
 msgstr ""
 
 #. Resource IDs: (IDS_LOG_WORKINGDIRCHANGES)
-msgid "Working dir changes"
+msgid "Working tree changes"
 msgstr ""
 
 #. Resource IDs: (ID_VIEW_WRAPLONGLINES - Menu, ID_VIEW_WRAPLONGLINES - Ribbon

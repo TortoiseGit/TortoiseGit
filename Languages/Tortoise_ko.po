@@ -6,6 +6,7 @@
 # Translators:
 # Ian Yoon <learder@gmail.com>, 2012
 # jeiea <solum5013@gmail.com>, 2013
+# Jinbaek Lee <jinb92@gmail.com>, 2016
 # Kim KiHyeon <kmkh12@paran.com>, 2011
 # kmshts, 2012
 # Lübbe TortoiseSVN <luebbe.tortoisesvn@gmail.com>, 2011
@@ -21,7 +22,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2016-06-19 11:53+0000\n"
+"PO-Revision-Date: 2016-09-04 13:40+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Korean (http://www.transifex.com/lznuaa/tortoisegit/language/ko/)\n"
 "MIME-Version: 1.0\n"
@@ -323,7 +324,7 @@ msgid ""
 "TortoiseGitMerge can't diff directories."
 msgstr "%s\n는 디렉토리이며, 파일이 아닙니다.\nTortoiseGitMerge는 디렉토리에 대한 diff를 지원하지 않습니다."
 
-#. Resource IDs: (16923)
+#. Resource IDs: (16923, Dialog IDD_RENAME: Control id 1483)
 msgid "&..."
 msgstr "&..."
 
@@ -333,7 +334,7 @@ msgstr "&3 way merge"
 
 #. Resource IDs: (IDS_MSGBOX_ABORT)
 msgid "&Abort"
-msgstr ""
+msgstr "중단(&A)"
 
 #. Resource IDs: (ID_APP_ABOUT - Menu)
 msgid "&About TortoiseGitBlame..."
@@ -449,8 +450,9 @@ msgstr "파랑색(&B):"
 msgid "&Border:"
 msgstr "테두리(&B)"
 
-#. Resource IDs: (Dialog IDD_MERGE: Control id 1512, Dialog
-#. IDD_NEW_BRANCH_TAG: Control id 1512)
+#. Resource IDs: (Dialog IDD_EXPORT: Control id 1512, Dialog IDD_GITSWITCH:
+#. Control id 1512, Dialog IDD_MERGE: Control id 1512, Dialog
+#. IDD_NEW_BRANCH_TAG: Control id 1512, Dialog IDD_RESET: Control id 1512)
 msgid "&Branch"
 msgstr "브랜치(&B)"
 
@@ -519,8 +521,10 @@ msgstr "창 닫기(&C)"
 msgid "&Command:"
 msgstr "명령(&C):"
 
-#. Resource IDs: (Dialog IDD_MERGE: Control id 1514, Dialog
-#. IDD_NEW_BRANCH_TAG: Control id 1514, Dialog IDD_SYNC: Control id 1625)
+#. Resource IDs: (Dialog IDD_EXPORT: Control id 1514, Dialog IDD_GITSWITCH:
+#. Control id 1514, Dialog IDD_MERGE: Control id 1514, Dialog
+#. IDD_NEW_BRANCH_TAG: Control id 1514, Dialog IDD_RESET: Control id 1514,
+#. Dialog IDD_SYNC: Control id 1625)
 msgid "&Commit"
 msgstr "커밋(&C)"
 
@@ -765,9 +769,15 @@ msgstr "관련없는 변경 경로는 회색으로 표시(&G)"
 msgid "&Green:"
 msgstr "녹색(&G):"
 
-#. Resource IDs: (Dialog IDD_NEW_BRANCH_TAG: Control id 1511)
+#. Resource IDs: (Dialog IDD_EXPORT: Control id 1511, Dialog
+#. IDD_NEW_BRANCH_TAG: Control id 1511)
 msgid "&HEAD"
 msgstr "&HEAD"
+
+#. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1552, Dialog IDD_RESET:
+#. Control id 1552)
+msgid "&Hard: Reset working tree and index (discard all local changes)"
+msgstr ""
 
 #. Resource IDs: (57670, 65535 - PopupMenu, IDS_MENUHELP)
 msgid "&Help"
@@ -911,8 +921,8 @@ msgstr "메뉴 애니메이션(&M):"
 msgid "&Menu contents:"
 msgstr "메뉴 내용(&M):"
 
-#. Resource IDs: (Dialog IDD_SUBMODULE_UPDATE: Control id 1735,
-#. IDS_MERGEBUTTON)
+#. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1526, Dialog
+#. IDD_SUBMODULE_UPDATE: Control id 1735, IDS_MERGEBUTTON)
 msgid "&Merge"
 msgstr "병합(&M)"
 
@@ -935,6 +945,11 @@ msgstr "메시지(&M):"
 #. Resource IDs: (16925)
 msgid "&Minimize"
 msgstr "최소화(&M)"
+
+#. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1551, Dialog IDD_RESET:
+#. Control id 1551)
+msgid "&Mixed: Leave working tree untouched, reset index"
+msgstr ""
 
 #. Resource IDs: (ID_VIEW_MOVEDBLOCKS - Menu)
 msgid "&Moved blocks"
@@ -1027,6 +1042,10 @@ msgstr "오버레이 아이콘(&O)"
 #. Resource IDs: (ID_VIEW_OVERLAPIMAGES - Menu)
 msgid "&Overlay images\tO"
 msgstr "오버레이 이미지들(&O)\tO"
+
+#. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1523)
+msgid "&Override branch if exists"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROXY: Control id 1411, Dialog
 #. IDD_SIMPLEPROMPT: Control id 65535, Dialog IDD_USER_PASSWD: Control id
@@ -1256,6 +1275,10 @@ msgstr "서명 키 ID(&S):"
 msgid "&Skip"
 msgstr "&Skip"
 
+#. Resource IDs: (Dialog IDD_RESET: Control id 1550)
+msgid "&Soft: Leave working tree and index untouched"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_MERGE: Control id 1524, Dialog IDD_PULLFETCH:
 #. Control id 1524)
 msgid "&Squash"
@@ -1297,8 +1320,9 @@ msgstr "탭 크기(&T):"
 msgid "&Tabbed Document"
 msgstr "탭으로 나열된 문서(&T)"
 
-#. Resource IDs: (Dialog IDD_MERGE: Control id 1513, Dialog
-#. IDD_NEW_BRANCH_TAG: Control id 1513)
+#. Resource IDs: (Dialog IDD_EXPORT: Control id 1513, Dialog IDD_GITSWITCH:
+#. Control id 1513, Dialog IDD_MERGE: Control id 1513, Dialog
+#. IDD_NEW_BRANCH_TAG: Control id 1513, Dialog IDD_RESET: Control id 1513)
 msgid "&Tag"
 msgstr "꼬리표(&T)"
 
@@ -2397,10 +2421,9 @@ msgstr "찾아보기(&O)"
 msgid "Branc&h:"
 msgstr "브랜치(&H):"
 
-#. Resource IDs: (Dialog IDD_CLONE: Control id 1527, Dialog IDD_EXPORT:
-#. Control id 1512, Dialog IDD_GITSWITCH: Control id 1512, Dialog
-#. IDD_LOGMESSAGE: Control id 1579, Dialog IDD_RESET: Control id 1512, Dialog
-#. IDD_SUBMODULE_ADD: Control id 1586, IDS_PROC_BRANCH)
+#. Resource IDs: (Dialog IDD_CLONE: Control id 1527, Dialog IDD_LOGMESSAGE:
+#. Control id 1579, Dialog IDD_SUBMODULE_ADD: Control id 1586,
+#. IDS_PROC_BRANCH)
 msgid "Branch"
 msgstr "브랜치"
 
@@ -2447,7 +2470,7 @@ msgstr "참조 탐색"
 msgid "Browse for the external diff program"
 msgstr "외부 비교 프로그램 찾아보기..."
 
-#. Resource IDs: (Dialog IDD_DIALOG_BROWSE_REFS: Control id 322)
+#. Resource IDs: (Dialog IDD_BROWSE_REFS: Control id 322)
 msgid "Browse references"
 msgstr "참조 탐색"
 
@@ -2564,13 +2587,13 @@ msgstr "클립보드로부터 비트맵 이미지를 붙여 넣을 수 없습니
 
 #. Resource IDs: (17101, 2, Dialog IDD_ADD: Control id 2, Dialog
 #. IDD_ADD_REMOTE: Control id 2, Dialog IDD_BISECTSTART: Control id 2, Dialog
-#. IDD_BUGTRAQREGEXTESTER: Control id 2, Dialog IDD_CERTCHECK: Control id 2,
-#. Dialog IDD_CLEAN: Control id 2, Dialog IDD_CLONE: Control id 2, Dialog
-#. IDD_COMMITDLG: Control id 2, Dialog IDD_CREATECHANGELIST: Control id 2,
-#. Dialog IDD_CREATEREPO: Control id 2, Dialog IDD_DIALOG_BROWSE_REFS: Control
-#. id 2, Dialog IDD_ENCODING: Control id 2, Dialog IDD_EXPORT: Control id 2,
-#. Dialog IDD_FIND: Control id 2, Dialog IDD_FORMAT_PATCH: Control id 2,
-#. Dialog IDD_GITSWITCH: Control id 2, Dialog IDD_GOTO: Control id 2, Dialog
+#. IDD_BROWSE_REFS: Control id 2, Dialog IDD_BUGTRAQREGEXTESTER: Control id 2,
+#. Dialog IDD_CERTCHECK: Control id 2, Dialog IDD_CLEAN: Control id 2, Dialog
+#. IDD_CLONE: Control id 2, Dialog IDD_COMMITDLG: Control id 2, Dialog
+#. IDD_CREATECHANGELIST: Control id 2, Dialog IDD_CREATEREPO: Control id 2,
+#. Dialog IDD_ENCODING: Control id 2, Dialog IDD_EXPORT: Control id 2, Dialog
+#. IDD_FIND: Control id 2, Dialog IDD_FORMAT_PATCH: Control id 2, Dialog
+#. IDD_GITSWITCH: Control id 2, Dialog IDD_GOTO: Control id 2, Dialog
 #. IDD_GOTODLG: Control id 2, Dialog IDD_HISTORYDLG: Control id 2, Dialog
 #. IDD_IGNORE: Control id 2, Dialog IDD_INPUTDLG: Control id 2, Dialog
 #. IDD_INPUTLOGDLG: Control id 2, Dialog IDD_LOGMESSAGE: Control id 2, Dialog
@@ -3085,10 +3108,9 @@ msgid "Commands"
 msgstr "명령"
 
 #. Resource IDs: (Dialog IDD_CHANGEDFILES: Control id 1383, Dialog
-#. IDD_COMMITDLG: Control id 135, Dialog IDD_EXPORT: Control id 1514, Dialog
-#. IDD_GITSWITCH: Control id 1514, Dialog IDD_RESET: Control id 1514, Dialog
-#. IDD_SETTINGSDIALOGS2: Control id 1083, Dialog IDD_SETTINGSDIALOGS3: Control
-#. id 65535, IDS_COMMITBUTTON, IDS_PROGRS_CMD_COMMIT, IDS_PROGRS_TITLE_COMMIT)
+#. IDD_COMMITDLG: Control id 135, Dialog IDD_SETTINGSDIALOGS2: Control id
+#. 1083, Dialog IDD_SETTINGSDIALOGS3: Control id 65535, IDS_COMMITBUTTON,
+#. IDS_PROGRS_CMD_COMMIT, IDS_PROGRS_TITLE_COMMIT)
 msgid "Commit"
 msgstr "커밋"
 
@@ -3572,6 +3594,10 @@ msgstr ""
 msgid "Create &Library"
 msgstr "라이브러리 생성(&L)"
 
+#. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1527)
+msgid "Create &New Branch"
+msgstr ""
+
 #. Resource IDs: (IDS_MENUTAG)
 msgid "Create &Tag..."
 msgstr ""
@@ -3591,10 +3617,6 @@ msgstr "이 버전을 기준으로 브랜치 만들기..."
 #. Resource IDs: (Dialog IDD_CREATECHANGELIST: Control id 243)
 msgid "Create Changelist"
 msgstr "변경 리스트 생성"
-
-#. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1527)
-msgid "Create New Branch"
-msgstr "새 브랜치 만들기"
 
 #. Resource IDs: (IDS_MENUFORMATPATCH)
 msgid "Create Patch Serial..."
@@ -3686,7 +3708,7 @@ msgstr "잘라내기(&T)"
 msgid "Current"
 msgstr "현재"
 
-#. Resource IDs: (Dialog IDD_DIALOG_BROWSE_REFS: Control id 1784, Dialog
+#. Resource IDs: (Dialog IDD_BROWSE_REFS: Control id 1784, Dialog
 #. IDD_SETTINGSCOLORS_2: Control id 65535)
 msgid "Current Branch"
 msgstr "현재 브랜치"
@@ -4379,7 +4401,7 @@ msgid "Drive Types"
 msgstr "드라이브 종류"
 
 #. Resource IDs: (IDS_DROPONESTASH)
-msgid "Drop one stash"
+msgid "Drop &one stash"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_CLEAN: Control id 1731)
@@ -5110,11 +5132,12 @@ msgstr "다음에 의한 필터"
 msgid "Filter paths"
 msgstr "필터 경로"
 
-#. Resource IDs: (Dialog IDD_DIALOG_BROWSE_REFS: Control id 1479)
+#. Resource IDs: (Dialog IDD_BROWSE_REFS: Control id 1479)
 msgid "Filter:"
 msgstr "필터:"
 
-#. Resource IDs: (Dialog IDD_FIND: Control id 20090)
+#. Resource IDs: (Dialog IDD_COMMITISONREFS: Control id 1834, Dialog IDD_FIND:
+#. Control id 20090)
 msgid "Filter: "
 msgstr "필터:"
 
@@ -5265,6 +5288,13 @@ msgstr "다음"
 #, c-format
 msgid "Forward %d"
 msgstr "%d 앞으로"
+
+#. Resource IDs: (IDS_REBASELOCKFILEFOUND)
+msgid ""
+"Found a lock file indicating that a TortoiseGit rebase process is running. This blocks this operation.\n"
+"\n"
+"If you are not runnig a TortoiseGit rebase process right now, you can remove the stale lock file in order to continue."
+msgstr ""
 
 #. Resource IDs: (IDS_PROC_REBASE_EMPTYCOMMITMSG)
 msgid ""
@@ -5625,8 +5655,7 @@ msgid "H&ue:"
 msgstr "색상(&U):"
 
 #. Resource IDs: (Dialog IDD_DIFFFILES: Control id 1353, Dialog IDD_DIFFFILES:
-#. Control id 1354, Dialog IDD_EXPORT: Control id 1511, Dialog
-#. IDD_REPOSITORY_BROWSER: Control id 1684)
+#. Control id 1354, Dialog IDD_REPOSITORY_BROWSER: Control id 1684)
 msgid "HEAD"
 msgstr "HEAD"
 
@@ -5638,22 +5667,17 @@ msgstr "HEAD:"
 msgid "Hard"
 msgstr "Hard"
 
-#. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1552, Dialog IDD_RESET:
-#. Control id 1552)
-msgid "Hard: Reset working tree and index (discard all local changes)"
-msgstr "세게: 작업 공간과 관리 영역 전부 되돌리기 (모든 변경사항을 되돌림)"
-
 #. Resource IDs: (65535 - PopupMenu)
 msgid "Hebrew"
 msgstr "히브리어"
 
 #. Resource IDs: (Dialog IDD_ADD: Control id 9, Dialog IDD_ADD_REMOTE: Control
 #. id 9, Dialog IDD_APPLY_PATCH_LIST: Control id 9, Dialog IDD_BISECTSTART:
-#. Control id 9, Dialog IDD_CLEAN: Control id 9, Dialog IDD_CLONE: Control id
-#. 9, Dialog IDD_COMMITDLG: Control id 9, Dialog IDD_CREATEREPO: Control id 9,
-#. Dialog IDD_DIALOG_BROWSE_REFS: Control id 9, Dialog IDD_EXPORT: Control id
-#. 9, Dialog IDD_FORMAT_PATCH: Control id 9, Dialog IDD_GITSWITCH: Control id
-#. 9, Dialog IDD_IGNORE: Control id 9, Dialog IDD_LOGMESSAGE: Control id 9,
+#. Control id 9, Dialog IDD_BROWSE_REFS: Control id 9, Dialog IDD_CLEAN:
+#. Control id 9, Dialog IDD_CLONE: Control id 9, Dialog IDD_COMMITDLG: Control
+#. id 9, Dialog IDD_CREATEREPO: Control id 9, Dialog IDD_EXPORT: Control id 9,
+#. Dialog IDD_FORMAT_PATCH: Control id 9, Dialog IDD_GITSWITCH: Control id 9,
+#. Dialog IDD_IGNORE: Control id 9, Dialog IDD_LOGMESSAGE: Control id 9,
 #. Dialog IDD_MERGE: Control id 9, Dialog IDD_MERGEABORT: Control id 9, Dialog
 #. IDD_NEW_BRANCH_TAG: Control id 9, Dialog IDD_OPENDLG: Control id 9, Dialog
 #. IDD_PULLFETCH: Control id 9, Dialog IDD_PUSH: Control id 9, Dialog
@@ -6764,8 +6788,7 @@ msgstr "메뉴 바"
 msgid "Menu s&hadows"
 msgstr "메뉴 그림자(&H)"
 
-#. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1526, Dialog IDD_MERGE:
-#. Control id 313, IDS_PROGRS_TITLE_MERGE)
+#. Resource IDs: (Dialog IDD_MERGE: Control id 313, IDS_PROGRS_TITLE_MERGE)
 msgid "Merge"
 msgstr "병합"
 
@@ -6871,11 +6894,6 @@ msgstr ""
 #. Resource IDs: (62179, IDS_RESET_MIXED)
 msgid "Mixed"
 msgstr "Mixed"
-
-#. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1551, Dialog IDD_RESET:
-#. Control id 1551)
-msgid "Mixed: Leave working tree untouched, reset index"
-msgstr "중간: 작업 공간은 그대로 두고, 관리 영역만 되돌리기"
 
 #. Resource IDs: (IDS_STATUSLIST_COLMODIFICATIONDATE)
 msgid "Modification date"
@@ -7398,34 +7416,33 @@ msgstr "OEM-US"
 
 #. Resource IDs: (1, Dialog IDD_ABOUT: Control id 1, Dialog IDD_ABOUTBOX:
 #. Control id 1, Dialog IDD_ADD: Control id 1, Dialog IDD_ADD_REMOTE: Control
-#. id 1, Dialog IDD_BISECTSTART: Control id 1, Dialog IDD_BUGTRAQREGEXTESTER:
-#. Control id 1, Dialog IDD_CHANGEDFILES: Control id 1, Dialog IDD_CLEAN:
-#. Control id 1, Dialog IDD_CLONE: Control id 1, Dialog IDD_CREATECHANGELIST:
-#. Control id 1, Dialog IDD_CREATEREPO: Control id 1, Dialog
-#. IDD_DIALOG_BROWSE_REFS: Control id 1, Dialog IDD_ENCODING: Control id 1,
-#. Dialog IDD_EXPORT: Control id 1, Dialog IDD_FORMAT_PATCH: Control id 1,
-#. Dialog IDD_GITSWITCH: Control id 1, Dialog IDD_GOTO: Control id 1, Dialog
-#. IDD_GOTODLG: Control id 1, Dialog IDD_HISTORYDLG: Control id 1, Dialog
-#. IDD_IGNORE: Control id 1, Dialog IDD_INPUTDLG: Control id 1, Dialog
-#. IDD_INPUTLOGDLG: Control id 1, Dialog IDD_LOGMESSAGE: Control id 1, Dialog
-#. IDD_LOGORDERING: Control id 1, Dialog IDD_MERGE: Control id 1, Dialog
-#. IDD_MERGEABORT: Control id 1, Dialog IDD_NEW_BRANCH_TAG: Control id 1,
-#. Dialog IDD_OPEN: Control id 1, Dialog IDD_OPENDLG: Control id 1, Dialog
-#. IDD_PROMPT: Control id 1, Dialog IDD_PULLFETCH: Control id 1, Dialog
-#. IDD_PUSH: Control id 1, Dialog IDD_REFLOG: Control id 1, Dialog
-#. IDD_REGEXFILTER: Control id 1, Dialog IDD_REGEXFILTERS: Control id 1,
-#. Dialog IDD_RENAME: Control id 1, Dialog IDD_REPOSITORY_BROWSER: Control id
-#. 1, Dialog IDD_REQUESTPULL: Control id 1, Dialog IDD_RESET: Control id 1,
-#. Dialog IDD_RESOLVE: Control id 1, Dialog IDD_RESOLVE_CONFLICT: Control id
-#. 4569, Dialog IDD_REVERT: Control id 1, Dialog IDD_SETTINGSBUGTRAQADV:
-#. Control id 1, Dialog IDD_SETTINGSHOOKCONFIG: Control id 1, Dialog
-#. IDD_SETTINGSPROGSADV: Control id 1, Dialog IDD_SIMPLEPROMPT: Control id 1,
-#. Dialog IDD_STASH: Control id 1, Dialog IDD_STATGRAPH: Control id 1, Dialog
-#. IDD_SUBMODULE_ADD: Control id 1, Dialog IDD_SUBMODULE_UPDATE: Control id 1,
-#. Dialog IDD_SVNDCOMMITTYPE: Control id 1, Dialog IDD_SVNIGNORE: Control id
-#. 1, Dialog IDD_SVNPROGRESS: Control id 1, Dialog IDD_TOOLASSOC: Control id
-#. 1, Dialog IDD_URL: Control id 1, Dialog IDD_USER_PASSWD: Control id 1,
-#. IDS_MSGBOX_OK)
+#. id 1, Dialog IDD_BISECTSTART: Control id 1, Dialog IDD_BROWSE_REFS: Control
+#. id 1, Dialog IDD_BUGTRAQREGEXTESTER: Control id 1, Dialog IDD_CHANGEDFILES:
+#. Control id 1, Dialog IDD_CLEAN: Control id 1, Dialog IDD_CLONE: Control id
+#. 1, Dialog IDD_CREATECHANGELIST: Control id 1, Dialog IDD_CREATEREPO:
+#. Control id 1, Dialog IDD_ENCODING: Control id 1, Dialog IDD_EXPORT: Control
+#. id 1, Dialog IDD_FORMAT_PATCH: Control id 1, Dialog IDD_GITSWITCH: Control
+#. id 1, Dialog IDD_GOTO: Control id 1, Dialog IDD_GOTODLG: Control id 1,
+#. Dialog IDD_HISTORYDLG: Control id 1, Dialog IDD_IGNORE: Control id 1,
+#. Dialog IDD_INPUTDLG: Control id 1, Dialog IDD_INPUTLOGDLG: Control id 1,
+#. Dialog IDD_LOGMESSAGE: Control id 1, Dialog IDD_LOGORDERING: Control id 1,
+#. Dialog IDD_MERGE: Control id 1, Dialog IDD_MERGEABORT: Control id 1, Dialog
+#. IDD_NEW_BRANCH_TAG: Control id 1, Dialog IDD_OPEN: Control id 1, Dialog
+#. IDD_OPENDLG: Control id 1, Dialog IDD_PROMPT: Control id 1, Dialog
+#. IDD_PULLFETCH: Control id 1, Dialog IDD_PUSH: Control id 1, Dialog
+#. IDD_REFLOG: Control id 1, Dialog IDD_REGEXFILTER: Control id 1, Dialog
+#. IDD_REGEXFILTERS: Control id 1, Dialog IDD_RENAME: Control id 1, Dialog
+#. IDD_REPOSITORY_BROWSER: Control id 1, Dialog IDD_REQUESTPULL: Control id 1,
+#. Dialog IDD_RESET: Control id 1, Dialog IDD_RESOLVE: Control id 1, Dialog
+#. IDD_RESOLVE_CONFLICT: Control id 4569, Dialog IDD_REVERT: Control id 1,
+#. Dialog IDD_SETTINGSBUGTRAQADV: Control id 1, Dialog IDD_SETTINGSHOOKCONFIG:
+#. Control id 1, Dialog IDD_SETTINGSPROGSADV: Control id 1, Dialog
+#. IDD_SIMPLEPROMPT: Control id 1, Dialog IDD_STASH: Control id 1, Dialog
+#. IDD_STATGRAPH: Control id 1, Dialog IDD_SUBMODULE_ADD: Control id 1, Dialog
+#. IDD_SUBMODULE_UPDATE: Control id 1, Dialog IDD_SVNDCOMMITTYPE: Control id
+#. 1, Dialog IDD_SVNIGNORE: Control id 1, Dialog IDD_SVNPROGRESS: Control id
+#. 1, Dialog IDD_TOOLASSOC: Control id 1, Dialog IDD_URL: Control id 1, Dialog
+#. IDD_USER_PASSWD: Control id 1, IDS_MSGBOX_OK)
 msgid "OK"
 msgstr "확인"
 
@@ -7614,16 +7631,12 @@ msgstr "저장할 폴더"
 msgid "Output.prn"
 msgstr "Output.prn"
 
-#. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1523)
-msgid "Override branch if exists"
-msgstr "브랜치가 이미 있으면 덮어쓰기"
-
 #. Resource IDs: (IDS_PROC_OVERWRITEEXPORT_OVERWRITE)
 msgid "Overwrite"
 msgstr "덮어쓰기"
 
 #. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1521)
-msgid "Overwrite working tree changes (force)"
+msgid "Overwrite working tree changes (&force)"
 msgstr ""
 
 #. Resource IDs: (ID_FILE_PAGESETUP - Menu)
@@ -8325,6 +8338,10 @@ msgstr "RefBrowse"
 msgid "RefLog"
 msgstr "참조 기록"
 
+#. Resource IDs: (Dialog IDD_COMMITISONREFS: Control id 4596)
+msgid "References commit is on"
+msgstr ""
+
 #. Resource IDs: (IDS_LOG_FILTER_REFNAME)
 msgid "Refname"
 msgstr "별명"
@@ -8486,6 +8503,10 @@ msgstr "변경 리스트에서 제거"
 #. Resource IDs: (Dialog IDD_CLEAN: Control id 1629)
 msgid "Remove ignored files (-fX)"
 msgstr "무시목록에 있는 파일을 지우기 [-fX]"
+
+#. Resource IDs: (IDS_REMOVESTALEBUTTON)
+msgid "Remove stale lock file"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_CLEAN: Control id 1626)
 msgid "Remove untracked directories (-d)"
@@ -8851,6 +8872,11 @@ msgstr "두 개의 행에 버튼을 보여줍니다(&H)"
 #. Resource IDs: (17078)
 msgid "S&how Quick Access Toolbar below the Ribbon"
 msgstr "리본 아래에 빠른 접근 툴바 보여주기(&H)"
+
+#. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1383, Dialog IDD_RESET:
+#. Control id 1383)
+msgid "S&how modified files in working tree"
+msgstr ""
 
 #. Resource IDs: (IDS_PROC_REBASE_UNSELECTED_SKIP)
 msgid "S&kip unselected"
@@ -9448,7 +9474,7 @@ msgstr "로그 보기(&L)"
 msgid "Show &log..."
 msgstr "로그 보기(&L)..."
 
-#. Resource IDs: (Dialog IDD_DIALOG_BROWSE_REFS: Control id 1830)
+#. Resource IDs: (Dialog IDD_BROWSE_REFS: Control id 1830)
 msgid "Show &nested refs"
 msgstr ""
 
@@ -9609,9 +9635,10 @@ msgstr "이름이 붙은 커밋만 보기(&B)"
 msgid "Show linenumber&s"
 msgstr "줄 번호 보기(&S)"
 
-#. Resource IDs: (Dialog IDD_DIFFFILES: Control id 1132, Dialog
-#. IDD_DIFFSUBMODULE: Control id 1132, Dialog IDD_DIFFSUBMODULE: Control id
-#. 1695, Dialog IDD_RESOLVESUBMODULECONFLICT: Control id 1132, Dialog
+#. Resource IDs: (Dialog IDD_COMMITISONREFS: Control id 1132, Dialog
+#. IDD_DIFFFILES: Control id 1132, Dialog IDD_DIFFSUBMODULE: Control id 1132,
+#. Dialog IDD_DIFFSUBMODULE: Control id 1695, Dialog
+#. IDD_RESOLVESUBMODULECONFLICT: Control id 1132, Dialog
 #. IDD_RESOLVESUBMODULECONFLICT: Control id 1695, Dialog
 #. IDD_RESOLVESUBMODULECONFLICT: Control id 1698, Dialog IDD_RESOLVE_CONFLICT:
 #. Control id 1132, Dialog IDD_RESOLVE_CONFLICT: Control id 1695,
@@ -9643,11 +9670,6 @@ msgstr "로그 보기..."
 #. Resource IDs: (IDS_SETTINGS_DESCRIBEALWAYSLONG_TT)
 msgid "Show long format even if a tag is exactly on that commit"
 msgstr ""
-
-#. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1383, Dialog IDD_RESET:
-#. Control id 1383)
-msgid "Show modified files in working tree"
-msgstr "작업 공간에서 수정된 파일 보기"
 
 #. Resource IDs: (20308)
 msgid ""
@@ -9827,10 +9849,6 @@ msgstr "스마트 탭 문자"
 #. Resource IDs: (IDS_RESET_SOFT)
 msgid "Soft"
 msgstr "Soft"
-
-#. Resource IDs: (Dialog IDD_RESET: Control id 1550)
-msgid "Soft: Leave working tree and index untouched"
-msgstr "약하게: 작업 공간과 관리 영역을 그대로 남겨둠"
 
 #. Resource IDs: (IDS_WARNMODIFIEDOUTSIDE)
 msgid ""
@@ -10231,6 +10249,10 @@ msgid ""
 "deleted."
 msgstr "레지스트리 영역을 모두 삭제하였으며, INI 파일을 제거했습니다."
 
+#. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1520)
+msgid "T&rack"
+msgstr ""
+
 #. Resource IDs: (5065 - Menu)
 msgid "TIS-620"
 msgstr "TIS-620"
@@ -10256,9 +10278,7 @@ msgstr "탭 플레이스홀더"
 msgid "Tab size:"
 msgstr "탭 크기:"
 
-#. Resource IDs: (Dialog IDD_EXPORT: Control id 1513, Dialog IDD_GITSWITCH:
-#. Control id 1513, Dialog IDD_RESET: Control id 1513, Dialog
-#. IDD_SETTINGSCOLORS_2: Control id 65535, IDS_PROC_TAG)
+#. Resource IDs: (Dialog IDD_SETTINGSCOLORS_2: Control id 65535, IDS_PROC_TAG)
 msgid "Tag"
 msgstr "꼬리표"
 
@@ -10282,6 +10302,10 @@ msgstr "꼬리표"
 #. Resource IDs: (Dialog IDD_SETTINREMOTE: Control id 65535)
 msgid "Tags:"
 msgstr "꼬리표:"
+
+#. Resource IDs: (IDS_ERR_MUSTBESAMEWT)
+msgid "Target and source must be in the same working tree!"
+msgstr ""
 
 #. Resource IDs: (IDS_PROC_TASKS)
 msgid "Tasks"
@@ -11024,10 +11048,6 @@ msgstr "총 변경 파일 수:"
 msgid "Trac&k"
 msgstr "Trac&k"
 
-#. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1520)
-msgid "Track"
-msgstr "Track"
-
 #. Resource IDs: (Dialog IDD_PROPPAGE: Control id 11023)
 msgid "Tracked Remote Branch:"
 msgstr "Tracked Remote Branch:"
@@ -11291,6 +11311,10 @@ msgstr "'theirs' 테스트 블럭을 사용"
 msgid "Use 'theirs' text block then 'mine'"
 msgstr "'theirs'→'mine'의 순서로 텍스트 블럭을 사용"
 
+#. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 1911)
+msgid "Use .mailmap"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_SETTINGSCREDENTIAL: Control id 1761)
 msgid "Use HTTP path component"
 msgstr "Use HTTP path component"
@@ -11298,10 +11322,6 @@ msgstr "Use HTTP path component"
 #. Resource IDs: (Dialog IDD_SETMAINPAGE: Control id 1066)
 msgid "Use Ribbons"
 msgstr "리본 사용"
-
-#. Resource IDs: (Dialog IDD_SETMAINPAGE: Control id 1500)
-msgid "Use Task Dialog"
-msgstr "Use Task Dialog"
 
 #. Resource IDs: (Dialog IDD_PUSH: Control id 1497)
 msgid "Use Thin &Pack (For slow network connections)"
@@ -11810,8 +11830,8 @@ msgid "Working Tree Path:"
 msgstr "작업 공간 경로:"
 
 #. Resource IDs: (IDS_LOG_WORKINGDIRCHANGES)
-msgid "Working dir changes"
-msgstr "작업 공간 변경항목"
+msgid "Working tree changes"
+msgstr ""
 
 #. Resource IDs: (ID_VIEW_WRAPLONGLINES - Menu, ID_VIEW_WRAPLONGLINES - Ribbon
 #. name)

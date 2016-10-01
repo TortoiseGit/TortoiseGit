@@ -4,11 +4,11 @@
 # This file is distributed under the same license as TortoiseGit
 # 
 # Translators:
-# Hydriz Scholz <admin@alphacorp.tk>, 2013
+# Hydriz Scholz <hydriz@jorked.com>, 2013
 # ch cooli <ch3cooli@gmail.com>, 2012
 # ch cooli <ch3cooli@gmail.com>, 2012-2015
-# Hydriz Scholz <admin@alphacorp.tk>, 2013
-# Hydriz Scholz <admin@alphacorp.tk>, 2013,2015
+# Hydriz Scholz <hydriz@jorked.com>, 2013
+# Hydriz Scholz <hydriz@jorked.com>, 2013,2015
 # Sven Strickroth <sstrickroth@googlemail.com>, 2013
 # Yue Lin Ho <yuelinho777@gmail.com>, 2014-2016
 # ch cooli <ch3cooli@gmail.com>, 2012-2013
@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2016-06-20 01:22+0000\n"
+"PO-Revision-Date: 2016-09-24 10:42+0000\n"
 "Last-Translator: Yue Lin Ho <yuelinho777@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/lznuaa/tortoisegit/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -319,7 +319,7 @@ msgid ""
 "TortoiseGitMerge can't diff directories."
 msgstr "「%s」\n是目錄，並不是檔案！\nTortoiseGitMerge 無法比較目錄差異。"
 
-#. Resource IDs: (16923)
+#. Resource IDs: (16923, Dialog IDD_RENAME: Control id 1483)
 msgid "&..."
 msgstr "&..."
 
@@ -445,8 +445,9 @@ msgstr "藍色(&B):"
 msgid "&Border:"
 msgstr "邊界(&B)："
 
-#. Resource IDs: (Dialog IDD_MERGE: Control id 1512, Dialog
-#. IDD_NEW_BRANCH_TAG: Control id 1512)
+#. Resource IDs: (Dialog IDD_EXPORT: Control id 1512, Dialog IDD_GITSWITCH:
+#. Control id 1512, Dialog IDD_MERGE: Control id 1512, Dialog
+#. IDD_NEW_BRANCH_TAG: Control id 1512, Dialog IDD_RESET: Control id 1512)
 msgid "&Branch"
 msgstr "分支(&B)"
 
@@ -515,8 +516,10 @@ msgstr "關閉視窗(&C)"
 msgid "&Command:"
 msgstr "命令(&C)："
 
-#. Resource IDs: (Dialog IDD_MERGE: Control id 1514, Dialog
-#. IDD_NEW_BRANCH_TAG: Control id 1514, Dialog IDD_SYNC: Control id 1625)
+#. Resource IDs: (Dialog IDD_EXPORT: Control id 1514, Dialog IDD_GITSWITCH:
+#. Control id 1514, Dialog IDD_MERGE: Control id 1514, Dialog
+#. IDD_NEW_BRANCH_TAG: Control id 1514, Dialog IDD_RESET: Control id 1514,
+#. Dialog IDD_SYNC: Control id 1625)
 msgid "&Commit"
 msgstr "提交(&C)"
 
@@ -761,9 +764,15 @@ msgstr "以灰色顯示無關的變動路徑(&G)"
 msgid "&Green:"
 msgstr "綠(&G)："
 
-#. Resource IDs: (Dialog IDD_NEW_BRANCH_TAG: Control id 1511)
+#. Resource IDs: (Dialog IDD_EXPORT: Control id 1511, Dialog
+#. IDD_NEW_BRANCH_TAG: Control id 1511)
 msgid "&HEAD"
 msgstr "&HEAD"
+
+#. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1552, Dialog IDD_RESET:
+#. Control id 1552)
+msgid "&Hard: Reset working tree and index (discard all local changes)"
+msgstr "&Hard：重設「工作目錄」和「索引」（放棄本地變更）。"
 
 #. Resource IDs: (57670, 65535 - PopupMenu, IDS_MENUHELP)
 msgid "&Help"
@@ -907,8 +916,8 @@ msgstr "選單動畫效果(&M)："
 msgid "&Menu contents:"
 msgstr "選單內容(&M)："
 
-#. Resource IDs: (Dialog IDD_SUBMODULE_UPDATE: Control id 1735,
-#. IDS_MERGEBUTTON)
+#. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1526, Dialog
+#. IDD_SUBMODULE_UPDATE: Control id 1735, IDS_MERGEBUTTON)
 msgid "&Merge"
 msgstr "合併 (&M)"
 
@@ -931,6 +940,11 @@ msgstr "訊息(&M)："
 #. Resource IDs: (16925)
 msgid "&Minimize"
 msgstr "最小化(&M)"
+
+#. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1551, Dialog IDD_RESET:
+#. Control id 1551)
+msgid "&Mixed: Leave working tree untouched, reset index"
+msgstr "&Mixed：保持「工作目錄」不變，重設「索引」。"
 
 #. Resource IDs: (ID_VIEW_MOVEDBLOCKS - Menu)
 msgid "&Moved blocks"
@@ -1023,6 +1037,10 @@ msgstr "覆蓋圖示(&O)："
 #. Resource IDs: (ID_VIEW_OVERLAPIMAGES - Menu)
 msgid "&Overlay images\tO"
 msgstr "覆蓋圖示(&O)\tO"
+
+#. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1523)
+msgid "&Override branch if exists"
+msgstr "覆寫已存在的分支 (&O)"
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROXY: Control id 1411, Dialog
 #. IDD_SIMPLEPROMPT: Control id 65535, Dialog IDD_USER_PASSWD: Control id
@@ -1252,6 +1270,10 @@ msgstr "&Signing key ID："
 msgid "&Skip"
 msgstr "跳過(&S)"
 
+#. Resource IDs: (Dialog IDD_RESET: Control id 1550)
+msgid "&Soft: Leave working tree and index untouched"
+msgstr "&Soft：保持「工作目錄」和「索引」不變。"
+
 #. Resource IDs: (Dialog IDD_MERGE: Control id 1524, Dialog IDD_PULLFETCH:
 #. Control id 1524)
 msgid "&Squash"
@@ -1293,8 +1315,9 @@ msgstr "&Tab 寬度："
 msgid "&Tabbed Document"
 msgstr "分頁的文件(&T)"
 
-#. Resource IDs: (Dialog IDD_MERGE: Control id 1513, Dialog
-#. IDD_NEW_BRANCH_TAG: Control id 1513)
+#. Resource IDs: (Dialog IDD_EXPORT: Control id 1513, Dialog IDD_GITSWITCH:
+#. Control id 1513, Dialog IDD_MERGE: Control id 1513, Dialog
+#. IDD_NEW_BRANCH_TAG: Control id 1513, Dialog IDD_RESET: Control id 1513)
 msgid "&Tag"
 msgstr "標籤(&T)"
 
@@ -2393,10 +2416,9 @@ msgstr "瀏覽(&O)..."
 msgid "Branc&h:"
 msgstr "分支(&H)："
 
-#. Resource IDs: (Dialog IDD_CLONE: Control id 1527, Dialog IDD_EXPORT:
-#. Control id 1512, Dialog IDD_GITSWITCH: Control id 1512, Dialog
-#. IDD_LOGMESSAGE: Control id 1579, Dialog IDD_RESET: Control id 1512, Dialog
-#. IDD_SUBMODULE_ADD: Control id 1586, IDS_PROC_BRANCH)
+#. Resource IDs: (Dialog IDD_CLONE: Control id 1527, Dialog IDD_LOGMESSAGE:
+#. Control id 1579, Dialog IDD_SUBMODULE_ADD: Control id 1586,
+#. IDS_PROC_BRANCH)
 msgid "Branch"
 msgstr "分支"
 
@@ -2443,7 +2465,7 @@ msgstr "瀏覽參照"
 msgid "Browse for the external diff program"
 msgstr "尋找外部比較差異工具"
 
-#. Resource IDs: (Dialog IDD_DIALOG_BROWSE_REFS: Control id 322)
+#. Resource IDs: (Dialog IDD_BROWSE_REFS: Control id 322)
 msgid "Browse references"
 msgstr "瀏覽參照"
 
@@ -2560,13 +2582,13 @@ msgstr "無法從剪貼簿上貼上點陣圖!"
 
 #. Resource IDs: (17101, 2, Dialog IDD_ADD: Control id 2, Dialog
 #. IDD_ADD_REMOTE: Control id 2, Dialog IDD_BISECTSTART: Control id 2, Dialog
-#. IDD_BUGTRAQREGEXTESTER: Control id 2, Dialog IDD_CERTCHECK: Control id 2,
-#. Dialog IDD_CLEAN: Control id 2, Dialog IDD_CLONE: Control id 2, Dialog
-#. IDD_COMMITDLG: Control id 2, Dialog IDD_CREATECHANGELIST: Control id 2,
-#. Dialog IDD_CREATEREPO: Control id 2, Dialog IDD_DIALOG_BROWSE_REFS: Control
-#. id 2, Dialog IDD_ENCODING: Control id 2, Dialog IDD_EXPORT: Control id 2,
-#. Dialog IDD_FIND: Control id 2, Dialog IDD_FORMAT_PATCH: Control id 2,
-#. Dialog IDD_GITSWITCH: Control id 2, Dialog IDD_GOTO: Control id 2, Dialog
+#. IDD_BROWSE_REFS: Control id 2, Dialog IDD_BUGTRAQREGEXTESTER: Control id 2,
+#. Dialog IDD_CERTCHECK: Control id 2, Dialog IDD_CLEAN: Control id 2, Dialog
+#. IDD_CLONE: Control id 2, Dialog IDD_COMMITDLG: Control id 2, Dialog
+#. IDD_CREATECHANGELIST: Control id 2, Dialog IDD_CREATEREPO: Control id 2,
+#. Dialog IDD_ENCODING: Control id 2, Dialog IDD_EXPORT: Control id 2, Dialog
+#. IDD_FIND: Control id 2, Dialog IDD_FORMAT_PATCH: Control id 2, Dialog
+#. IDD_GITSWITCH: Control id 2, Dialog IDD_GOTO: Control id 2, Dialog
 #. IDD_GOTODLG: Control id 2, Dialog IDD_HISTORYDLG: Control id 2, Dialog
 #. IDD_IGNORE: Control id 2, Dialog IDD_INPUTDLG: Control id 2, Dialog
 #. IDD_INPUTLOGDLG: Control id 2, Dialog IDD_LOGMESSAGE: Control id 2, Dialog
@@ -3081,10 +3103,9 @@ msgid "Commands"
 msgstr "命令"
 
 #. Resource IDs: (Dialog IDD_CHANGEDFILES: Control id 1383, Dialog
-#. IDD_COMMITDLG: Control id 135, Dialog IDD_EXPORT: Control id 1514, Dialog
-#. IDD_GITSWITCH: Control id 1514, Dialog IDD_RESET: Control id 1514, Dialog
-#. IDD_SETTINGSDIALOGS2: Control id 1083, Dialog IDD_SETTINGSDIALOGS3: Control
-#. id 65535, IDS_COMMITBUTTON, IDS_PROGRS_CMD_COMMIT, IDS_PROGRS_TITLE_COMMIT)
+#. IDD_COMMITDLG: Control id 135, Dialog IDD_SETTINGSDIALOGS2: Control id
+#. 1083, Dialog IDD_SETTINGSDIALOGS3: Control id 65535, IDS_COMMITBUTTON,
+#. IDS_PROGRS_CMD_COMMIT, IDS_PROGRS_TITLE_COMMIT)
 msgid "Commit"
 msgstr "提交"
 
@@ -3568,6 +3589,10 @@ msgstr "建立分支(&B)..."
 msgid "Create &Library"
 msgstr "建立媒體櫃(&L)"
 
+#. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1527)
+msgid "Create &New Branch"
+msgstr "建立新分支(&N)"
+
 #. Resource IDs: (IDS_MENUTAG)
 msgid "Create &Tag..."
 msgstr "建立標籤(&T)..."
@@ -3587,10 +3612,6 @@ msgstr "在這版本建立分支..."
 #. Resource IDs: (Dialog IDD_CREATECHANGELIST: Control id 243)
 msgid "Create Changelist"
 msgstr "建立變更列表"
-
-#. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1527)
-msgid "Create New Branch"
-msgstr "建立新分支"
 
 #. Resource IDs: (IDS_MENUFORMATPATCH)
 msgid "Create Patch Serial..."
@@ -3682,7 +3703,7 @@ msgstr "剪下(&T)"
 msgid "Current"
 msgstr "目前"
 
-#. Resource IDs: (Dialog IDD_DIALOG_BROWSE_REFS: Control id 1784, Dialog
+#. Resource IDs: (Dialog IDD_BROWSE_REFS: Control id 1784, Dialog
 #. IDD_SETTINGSCOLORS_2: Control id 65535)
 msgid "Current Branch"
 msgstr "目前分支"
@@ -4375,8 +4396,8 @@ msgid "Drive Types"
 msgstr "磁碟機類型"
 
 #. Resource IDs: (IDS_DROPONESTASH)
-msgid "Drop one stash"
-msgstr "丟棄最後一個收藏（stash）"
+msgid "Drop &one stash"
+msgstr "丟棄最後一個收藏（stash）(&O)"
 
 #. Resource IDs: (Dialog IDD_CLEAN: Control id 1731)
 msgid "Dry run"
@@ -4912,7 +4933,7 @@ msgstr "無法「設定／移除」變更列表：「%s」"
 msgid ""
 "Failed to start the issue tracker COM provider '%s'.\n"
 "%s"
-msgstr "無法啟動 Bug 追踪系統的 COM 提供者「%s」。\n%s"
+msgstr "無法啟動 Bug 追蹤系統的 COM 提供者「%s」。\n%s"
 
 #. Resource IDs: (IDS_ERR_PAEGENTTIMEOUT)
 msgid "Failed waiting for pageant to finish loading key."
@@ -5106,11 +5127,12 @@ msgstr "過濾由"
 msgid "Filter paths"
 msgstr "過濾路徑"
 
-#. Resource IDs: (Dialog IDD_DIALOG_BROWSE_REFS: Control id 1479)
+#. Resource IDs: (Dialog IDD_BROWSE_REFS: Control id 1479)
 msgid "Filter:"
 msgstr "過濾器："
 
-#. Resource IDs: (Dialog IDD_FIND: Control id 20090)
+#. Resource IDs: (Dialog IDD_COMMITISONREFS: Control id 1834, Dialog IDD_FIND:
+#. Control id 20090)
 msgid "Filter: "
 msgstr "過濾器："
 
@@ -5261,6 +5283,13 @@ msgstr "向前"
 #, c-format
 msgid "Forward %d"
 msgstr "向前 %d"
+
+#. Resource IDs: (IDS_REBASELOCKFILEFOUND)
+msgid ""
+"Found a lock file indicating that a TortoiseGit rebase process is running. This blocks this operation.\n"
+"\n"
+"If you are not runnig a TortoiseGit rebase process right now, you can remove the stale lock file in order to continue."
+msgstr "找到了一個鎖定檔案，它被用來表示正在執行 TortoiseGit 變基（Rebase）操作，而這個檔會阻擋目前的操作。\n\n如果你並沒有正在執行 TortoiseGit 變基操作，你可以移除這個不適用的鎖定檔案，以便繼續往下操作。"
 
 #. Resource IDs: (IDS_PROC_REBASE_EMPTYCOMMITMSG)
 msgid ""
@@ -5621,8 +5650,7 @@ msgid "H&ue:"
 msgstr "色相(&U)："
 
 #. Resource IDs: (Dialog IDD_DIFFFILES: Control id 1353, Dialog IDD_DIFFFILES:
-#. Control id 1354, Dialog IDD_EXPORT: Control id 1511, Dialog
-#. IDD_REPOSITORY_BROWSER: Control id 1684)
+#. Control id 1354, Dialog IDD_REPOSITORY_BROWSER: Control id 1684)
 msgid "HEAD"
 msgstr "HEAD"
 
@@ -5634,22 +5662,17 @@ msgstr "HEAD："
 msgid "Hard"
 msgstr "Hard"
 
-#. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1552, Dialog IDD_RESET:
-#. Control id 1552)
-msgid "Hard: Reset working tree and index (discard all local changes)"
-msgstr "Hard：重設「工作目錄」和「索引」（放棄本地變更）"
-
 #. Resource IDs: (65535 - PopupMenu)
 msgid "Hebrew"
 msgstr "希伯來文"
 
 #. Resource IDs: (Dialog IDD_ADD: Control id 9, Dialog IDD_ADD_REMOTE: Control
 #. id 9, Dialog IDD_APPLY_PATCH_LIST: Control id 9, Dialog IDD_BISECTSTART:
-#. Control id 9, Dialog IDD_CLEAN: Control id 9, Dialog IDD_CLONE: Control id
-#. 9, Dialog IDD_COMMITDLG: Control id 9, Dialog IDD_CREATEREPO: Control id 9,
-#. Dialog IDD_DIALOG_BROWSE_REFS: Control id 9, Dialog IDD_EXPORT: Control id
-#. 9, Dialog IDD_FORMAT_PATCH: Control id 9, Dialog IDD_GITSWITCH: Control id
-#. 9, Dialog IDD_IGNORE: Control id 9, Dialog IDD_LOGMESSAGE: Control id 9,
+#. Control id 9, Dialog IDD_BROWSE_REFS: Control id 9, Dialog IDD_CLEAN:
+#. Control id 9, Dialog IDD_CLONE: Control id 9, Dialog IDD_COMMITDLG: Control
+#. id 9, Dialog IDD_CREATEREPO: Control id 9, Dialog IDD_EXPORT: Control id 9,
+#. Dialog IDD_FORMAT_PATCH: Control id 9, Dialog IDD_GITSWITCH: Control id 9,
+#. Dialog IDD_IGNORE: Control id 9, Dialog IDD_LOGMESSAGE: Control id 9,
 #. Dialog IDD_MERGE: Control id 9, Dialog IDD_MERGEABORT: Control id 9, Dialog
 #. IDD_NEW_BRANCH_TAG: Control id 9, Dialog IDD_OPENDLG: Control id 9, Dialog
 #. IDD_PULLFETCH: Control id 9, Dialog IDD_PUSH: Control id 9, Dialog
@@ -5738,11 +5761,11 @@ msgstr "掛鉤指令檔"
 
 #. Resource IDs: (Dialog IDD_SETTINGSBUGTRAQ_CONFIG: Control id 4571)
 msgid "Hook Scripts::Issue Tracker Config"
-msgstr "掛鉤指令檔::Bug 追踪組態"
+msgstr "掛鉤指令檔::Bug 追蹤組態"
 
 #. Resource IDs: (Dialog IDD_SETTINGSBUGTRAQ: Control id 283)
 msgid "Hook Scripts::Issue Tracker Integration"
-msgstr "掛鉤指令檔::Bug 追踪整合"
+msgstr "掛鉤指令檔::Bug 追蹤整合"
 
 #. Resource IDs: (IDS_SETTINGS_HOOKS_TYPECOL)
 msgid "Hook Type"
@@ -6760,8 +6783,7 @@ msgstr "選單列"
 msgid "Menu s&hadows"
 msgstr "選單陰影(&H)"
 
-#. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1526, Dialog IDD_MERGE:
-#. Control id 313, IDS_PROGRS_TITLE_MERGE)
+#. Resource IDs: (Dialog IDD_MERGE: Control id 313, IDS_PROGRS_TITLE_MERGE)
 msgid "Merge"
 msgstr "合併"
 
@@ -6867,11 +6889,6 @@ msgstr "遺失"
 #. Resource IDs: (62179, IDS_RESET_MIXED)
 msgid "Mixed"
 msgstr "混合"
-
-#. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1551, Dialog IDD_RESET:
-#. Control id 1551)
-msgid "Mixed: Leave working tree untouched, reset index"
-msgstr "Mixed：保持「工作目錄」不變，重設「索引」。"
 
 #. Resource IDs: (IDS_STATUSLIST_COLMODIFICATIONDATE)
 msgid "Modification date"
@@ -7394,34 +7411,33 @@ msgstr "OEM-US"
 
 #. Resource IDs: (1, Dialog IDD_ABOUT: Control id 1, Dialog IDD_ABOUTBOX:
 #. Control id 1, Dialog IDD_ADD: Control id 1, Dialog IDD_ADD_REMOTE: Control
-#. id 1, Dialog IDD_BISECTSTART: Control id 1, Dialog IDD_BUGTRAQREGEXTESTER:
-#. Control id 1, Dialog IDD_CHANGEDFILES: Control id 1, Dialog IDD_CLEAN:
-#. Control id 1, Dialog IDD_CLONE: Control id 1, Dialog IDD_CREATECHANGELIST:
-#. Control id 1, Dialog IDD_CREATEREPO: Control id 1, Dialog
-#. IDD_DIALOG_BROWSE_REFS: Control id 1, Dialog IDD_ENCODING: Control id 1,
-#. Dialog IDD_EXPORT: Control id 1, Dialog IDD_FORMAT_PATCH: Control id 1,
-#. Dialog IDD_GITSWITCH: Control id 1, Dialog IDD_GOTO: Control id 1, Dialog
-#. IDD_GOTODLG: Control id 1, Dialog IDD_HISTORYDLG: Control id 1, Dialog
-#. IDD_IGNORE: Control id 1, Dialog IDD_INPUTDLG: Control id 1, Dialog
-#. IDD_INPUTLOGDLG: Control id 1, Dialog IDD_LOGMESSAGE: Control id 1, Dialog
-#. IDD_LOGORDERING: Control id 1, Dialog IDD_MERGE: Control id 1, Dialog
-#. IDD_MERGEABORT: Control id 1, Dialog IDD_NEW_BRANCH_TAG: Control id 1,
-#. Dialog IDD_OPEN: Control id 1, Dialog IDD_OPENDLG: Control id 1, Dialog
-#. IDD_PROMPT: Control id 1, Dialog IDD_PULLFETCH: Control id 1, Dialog
-#. IDD_PUSH: Control id 1, Dialog IDD_REFLOG: Control id 1, Dialog
-#. IDD_REGEXFILTER: Control id 1, Dialog IDD_REGEXFILTERS: Control id 1,
-#. Dialog IDD_RENAME: Control id 1, Dialog IDD_REPOSITORY_BROWSER: Control id
-#. 1, Dialog IDD_REQUESTPULL: Control id 1, Dialog IDD_RESET: Control id 1,
-#. Dialog IDD_RESOLVE: Control id 1, Dialog IDD_RESOLVE_CONFLICT: Control id
-#. 4569, Dialog IDD_REVERT: Control id 1, Dialog IDD_SETTINGSBUGTRAQADV:
-#. Control id 1, Dialog IDD_SETTINGSHOOKCONFIG: Control id 1, Dialog
-#. IDD_SETTINGSPROGSADV: Control id 1, Dialog IDD_SIMPLEPROMPT: Control id 1,
-#. Dialog IDD_STASH: Control id 1, Dialog IDD_STATGRAPH: Control id 1, Dialog
-#. IDD_SUBMODULE_ADD: Control id 1, Dialog IDD_SUBMODULE_UPDATE: Control id 1,
-#. Dialog IDD_SVNDCOMMITTYPE: Control id 1, Dialog IDD_SVNIGNORE: Control id
-#. 1, Dialog IDD_SVNPROGRESS: Control id 1, Dialog IDD_TOOLASSOC: Control id
-#. 1, Dialog IDD_URL: Control id 1, Dialog IDD_USER_PASSWD: Control id 1,
-#. IDS_MSGBOX_OK)
+#. id 1, Dialog IDD_BISECTSTART: Control id 1, Dialog IDD_BROWSE_REFS: Control
+#. id 1, Dialog IDD_BUGTRAQREGEXTESTER: Control id 1, Dialog IDD_CHANGEDFILES:
+#. Control id 1, Dialog IDD_CLEAN: Control id 1, Dialog IDD_CLONE: Control id
+#. 1, Dialog IDD_CREATECHANGELIST: Control id 1, Dialog IDD_CREATEREPO:
+#. Control id 1, Dialog IDD_ENCODING: Control id 1, Dialog IDD_EXPORT: Control
+#. id 1, Dialog IDD_FORMAT_PATCH: Control id 1, Dialog IDD_GITSWITCH: Control
+#. id 1, Dialog IDD_GOTO: Control id 1, Dialog IDD_GOTODLG: Control id 1,
+#. Dialog IDD_HISTORYDLG: Control id 1, Dialog IDD_IGNORE: Control id 1,
+#. Dialog IDD_INPUTDLG: Control id 1, Dialog IDD_INPUTLOGDLG: Control id 1,
+#. Dialog IDD_LOGMESSAGE: Control id 1, Dialog IDD_LOGORDERING: Control id 1,
+#. Dialog IDD_MERGE: Control id 1, Dialog IDD_MERGEABORT: Control id 1, Dialog
+#. IDD_NEW_BRANCH_TAG: Control id 1, Dialog IDD_OPEN: Control id 1, Dialog
+#. IDD_OPENDLG: Control id 1, Dialog IDD_PROMPT: Control id 1, Dialog
+#. IDD_PULLFETCH: Control id 1, Dialog IDD_PUSH: Control id 1, Dialog
+#. IDD_REFLOG: Control id 1, Dialog IDD_REGEXFILTER: Control id 1, Dialog
+#. IDD_REGEXFILTERS: Control id 1, Dialog IDD_RENAME: Control id 1, Dialog
+#. IDD_REPOSITORY_BROWSER: Control id 1, Dialog IDD_REQUESTPULL: Control id 1,
+#. Dialog IDD_RESET: Control id 1, Dialog IDD_RESOLVE: Control id 1, Dialog
+#. IDD_RESOLVE_CONFLICT: Control id 4569, Dialog IDD_REVERT: Control id 1,
+#. Dialog IDD_SETTINGSBUGTRAQADV: Control id 1, Dialog IDD_SETTINGSHOOKCONFIG:
+#. Control id 1, Dialog IDD_SETTINGSPROGSADV: Control id 1, Dialog
+#. IDD_SIMPLEPROMPT: Control id 1, Dialog IDD_STASH: Control id 1, Dialog
+#. IDD_STATGRAPH: Control id 1, Dialog IDD_SUBMODULE_ADD: Control id 1, Dialog
+#. IDD_SUBMODULE_UPDATE: Control id 1, Dialog IDD_SVNDCOMMITTYPE: Control id
+#. 1, Dialog IDD_SVNIGNORE: Control id 1, Dialog IDD_SVNPROGRESS: Control id
+#. 1, Dialog IDD_TOOLASSOC: Control id 1, Dialog IDD_URL: Control id 1, Dialog
+#. IDD_USER_PASSWD: Control id 1, IDS_MSGBOX_OK)
 msgid "OK"
 msgstr "確定"
 
@@ -7610,17 +7626,13 @@ msgstr "輸出目錄"
 msgid "Output.prn"
 msgstr "Output.prn"
 
-#. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1523)
-msgid "Override branch if exists"
-msgstr "覆寫已存在的分支"
-
 #. Resource IDs: (IDS_PROC_OVERWRITEEXPORT_OVERWRITE)
 msgid "Overwrite"
 msgstr "覆寫"
 
 #. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1521)
-msgid "Overwrite working tree changes (force)"
-msgstr "強制覆寫工作目錄的變更"
+msgid "Overwrite working tree changes (&force)"
+msgstr "強制覆寫工作目錄的變更 (&F)"
 
 #. Resource IDs: (ID_FILE_PAGESETUP - Menu)
 msgid "P&age setup..."
@@ -8321,6 +8333,10 @@ msgstr "參照瀏覽"
 msgid "RefLog"
 msgstr "參照日誌"
 
+#. Resource IDs: (Dialog IDD_COMMITISONREFS: Control id 4596)
+msgid "References commit is on"
+msgstr "提交位於哪些參照上"
+
 #. Resource IDs: (IDS_LOG_FILTER_REFNAME)
 msgid "Refname"
 msgstr "參照名稱"
@@ -8482,6 +8498,10 @@ msgstr "自變更列表移除"
 #. Resource IDs: (Dialog IDD_CLEAN: Control id 1629)
 msgid "Remove ignored files (-fX)"
 msgstr "移除已忽略檔案(-fX)"
+
+#. Resource IDs: (IDS_REMOVESTALEBUTTON)
+msgid "Remove stale lock file"
+msgstr "移除不適用的鎖定檔案"
 
 #. Resource IDs: (Dialog IDD_CLEAN: Control id 1626)
 msgid "Remove untracked directories (-d)"
@@ -8847,6 +8867,11 @@ msgstr "以兩列方式顯示按鈕(&H)"
 #. Resource IDs: (17078)
 msgid "S&how Quick Access Toolbar below the Ribbon"
 msgstr "在功能區下方顯示快速存取工具列(&H)"
+
+#. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1383, Dialog IDD_RESET:
+#. Control id 1383)
+msgid "S&how modified files in working tree"
+msgstr "顯示工作目錄中已修改的檔案 (&H)"
 
 #. Resource IDs: (IDS_PROC_REBASE_UNSELECTED_SKIP)
 msgid "S&kip unselected"
@@ -9227,7 +9252,7 @@ msgstr "選擇檔案"
 
 #. Resource IDs: (IDS_SETTINGS_BUGTRAQ_SELECTFOLDERPATH)
 msgid "Select folder to associate with this issue tracker"
-msgstr "請選擇要和此 bug 追踪程式關聯的資料匣"
+msgstr "請選擇要和此 bug 追蹤程式關聯的資料匣"
 
 #. Resource IDs: (IDS_PROC_EXPORT_1)
 msgid ""
@@ -9444,7 +9469,7 @@ msgstr "顯示日誌(&L)"
 msgid "Show &log..."
 msgstr "顯示日誌(&L)..."
 
-#. Resource IDs: (Dialog IDD_DIALOG_BROWSE_REFS: Control id 1830)
+#. Resource IDs: (Dialog IDD_BROWSE_REFS: Control id 1830)
 msgid "Show &nested refs"
 msgstr "顯示巢狀參照"
 
@@ -9605,9 +9630,10 @@ msgstr "僅僅顯示有標記的提交(&B)"
 msgid "Show linenumber&s"
 msgstr "顯示行號(&S)"
 
-#. Resource IDs: (Dialog IDD_DIFFFILES: Control id 1132, Dialog
-#. IDD_DIFFSUBMODULE: Control id 1132, Dialog IDD_DIFFSUBMODULE: Control id
-#. 1695, Dialog IDD_RESOLVESUBMODULECONFLICT: Control id 1132, Dialog
+#. Resource IDs: (Dialog IDD_COMMITISONREFS: Control id 1132, Dialog
+#. IDD_DIFFFILES: Control id 1132, Dialog IDD_DIFFSUBMODULE: Control id 1132,
+#. Dialog IDD_DIFFSUBMODULE: Control id 1695, Dialog
+#. IDD_RESOLVESUBMODULECONFLICT: Control id 1132, Dialog
 #. IDD_RESOLVESUBMODULECONFLICT: Control id 1695, Dialog
 #. IDD_RESOLVESUBMODULECONFLICT: Control id 1698, Dialog IDD_RESOLVE_CONFLICT:
 #. Control id 1132, Dialog IDD_RESOLVE_CONFLICT: Control id 1695,
@@ -9639,11 +9665,6 @@ msgstr "顯示日誌..."
 #. Resource IDs: (IDS_SETTINGS_DESCRIBEALWAYSLONG_TT)
 msgid "Show long format even if a tag is exactly on that commit"
 msgstr "即使標籤已位於該提交上，仍然顯示長格式。"
-
-#. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1383, Dialog IDD_RESET:
-#. Control id 1383)
-msgid "Show modified files in working tree"
-msgstr "僅顯示工作目錄中有變更的部分"
 
 #. Resource IDs: (20308)
 msgid ""
@@ -9823,10 +9844,6 @@ msgstr "智慧 Tab"
 #. Resource IDs: (IDS_RESET_SOFT)
 msgid "Soft"
 msgstr "Soft"
-
-#. Resource IDs: (Dialog IDD_RESET: Control id 1550)
-msgid "Soft: Leave working tree and index untouched"
-msgstr "Soft：保持「工作目錄」和「索引」不變。"
 
 #. Resource IDs: (IDS_WARNMODIFIEDOUTSIDE)
 msgid ""
@@ -10227,6 +10244,10 @@ msgid ""
 "deleted."
 msgstr "已經移除系統登錄項目，而且 INI 檔已經刪除 (如果有)。"
 
+#. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1520)
+msgid "T&rack"
+msgstr "追蹤 (&R)"
+
 #. Resource IDs: (5065 - Menu)
 msgid "TIS-620"
 msgstr "TIS-620"
@@ -10252,9 +10273,7 @@ msgstr "分隔線"
 msgid "Tab size:"
 msgstr "Tab 寬度："
 
-#. Resource IDs: (Dialog IDD_EXPORT: Control id 1513, Dialog IDD_GITSWITCH:
-#. Control id 1513, Dialog IDD_RESET: Control id 1513, Dialog
-#. IDD_SETTINGSCOLORS_2: Control id 65535, IDS_PROC_TAG)
+#. Resource IDs: (Dialog IDD_SETTINGSCOLORS_2: Control id 65535, IDS_PROC_TAG)
 msgid "Tag"
 msgstr "標籤"
 
@@ -10278,6 +10297,10 @@ msgstr "標籤"
 #. Resource IDs: (Dialog IDD_SETTINREMOTE: Control id 65535)
 msgid "Tags:"
 msgstr "標籤："
+
+#. Resource IDs: (IDS_ERR_MUSTBESAMEWT)
+msgid "Target and source must be in the same working tree!"
+msgstr "目的和來源資料夾必需是同一個工作根目錄下的資料夾。"
 
 #. Resource IDs: (IDS_PROC_TASKS)
 msgid "Tasks"
@@ -10473,11 +10496,11 @@ msgstr "無法顯示圖片"
 msgid ""
 "The issue-tracker provider could not be created. Please check that it is "
 "installed correctly."
-msgstr "無法成功建立 bug 追踪提供者。請檢查是否有正確安裝。"
+msgstr "無法成功建立 bug 追蹤提供者。請檢查是否有正確安裝。"
 
 #. Resource IDs: (IDS_ERR_PROVIDER_VALIDATE_FAILED)
 msgid "The issue-tracker provider was unable to validate the parameter string"
-msgstr "bug 追踪程式提供者無法檢驗參數的正確性"
+msgstr "bug 追蹤程式提供者無法檢驗參數的正確性"
 
 #. Resource IDs: (IDS_ERR_PATCH_NOADDFILELINE)
 #, c-format
@@ -10678,7 +10701,7 @@ msgstr "尚有可編輯的視窗。\n您要儲存那一側的視窗？"
 
 #. Resource IDs: (IDS_ERR_NO_AVAILABLE_BUGTRAQ_PROVIDERS)
 msgid "There are no issue-tracker providers available."
-msgstr "目前沒有可用的 bug 追踪程式提供者。"
+msgstr "目前沒有可用的 bug 追蹤程式提供者。"
 
 #. Resource IDs: (IDS_ERR_MAINFRAME_FILEHASCONFLICTS)
 #, c-format
@@ -11020,10 +11043,6 @@ msgstr "總檔案變更："
 msgid "Trac&k"
 msgstr "追蹤(&K)"
 
-#. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1520)
-msgid "Track"
-msgstr "追蹤"
-
 #. Resource IDs: (Dialog IDD_PROPPAGE: Control id 11023)
 msgid "Tracked Remote Branch:"
 msgstr "追蹤遠端分支："
@@ -11287,6 +11306,10 @@ msgstr "使用 「對方的」"
 msgid "Use 'theirs' text block then 'mine'"
 msgstr "對方的 ＋ 我的"
 
+#. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 1911)
+msgid "Use .mailmap"
+msgstr "使用 .mailmap"
+
 #. Resource IDs: (Dialog IDD_SETTINGSCREDENTIAL: Control id 1761)
 msgid "Use HTTP path component"
 msgstr "使用 HTTP 路徑部分"
@@ -11294,10 +11317,6 @@ msgstr "使用 HTTP 路徑部分"
 #. Resource IDs: (Dialog IDD_SETMAINPAGE: Control id 1066)
 msgid "Use Ribbons"
 msgstr "使用 Ribbon 介面"
-
-#. Resource IDs: (Dialog IDD_SETMAINPAGE: Control id 1500)
-msgid "Use Task Dialog"
-msgstr "使用 Task Dialog"
 
 #. Resource IDs: (Dialog IDD_PUSH: Control id 1497)
 msgid "Use Thin &Pack (For slow network connections)"
@@ -11806,8 +11825,8 @@ msgid "Working Tree Path:"
 msgstr "工作目錄路徑："
 
 #. Resource IDs: (IDS_LOG_WORKINGDIRCHANGES)
-msgid "Working dir changes"
-msgstr "工作目錄改動"
+msgid "Working tree changes"
+msgstr "工作目錄變更"
 
 #. Resource IDs: (ID_VIEW_WRAPLONGLINES - Menu, ID_VIEW_WRAPLONGLINES - Ribbon
 #. name)

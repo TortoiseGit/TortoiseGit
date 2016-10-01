@@ -6,6 +6,7 @@
 # Translators:
 # Bas <duvel3@gmail.com>, 2013
 # Danny Beeckman <dannybeeckman@gmail.com>, 2016
+# dragnadh <dragnadh@gmail.com>, 2016
 # Eric van Aert <ericvanaert@gmail.com>, 2012
 # Jean-Marc van Leerdam <j.m.van.leerdam@gmail.com>, 2011-2012
 # Jelle Raaijmakers <jelle@gmta.nl>, 2013
@@ -23,7 +24,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2016-06-19 11:53+0000\n"
+"PO-Revision-Date: 2016-09-04 13:40+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/lznuaa/tortoisegit/language/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -325,7 +326,7 @@ msgid ""
 "TortoiseGitMerge can't diff directories."
 msgstr "%s\nis geen bestand maar een map!\nTortoiseGitMerge kan geen verschillen in mappen tonen."
 
-#. Resource IDs: (16923)
+#. Resource IDs: (16923, Dialog IDD_RENAME: Control id 1483)
 msgid "&..."
 msgstr "&..."
 
@@ -451,8 +452,9 @@ msgstr "&Blauw:"
 msgid "&Border:"
 msgstr "&Rand:"
 
-#. Resource IDs: (Dialog IDD_MERGE: Control id 1512, Dialog
-#. IDD_NEW_BRANCH_TAG: Control id 1512)
+#. Resource IDs: (Dialog IDD_EXPORT: Control id 1512, Dialog IDD_GITSWITCH:
+#. Control id 1512, Dialog IDD_MERGE: Control id 1512, Dialog
+#. IDD_NEW_BRANCH_TAG: Control id 1512, Dialog IDD_RESET: Control id 1512)
 msgid "&Branch"
 msgstr "&Branch"
 
@@ -521,8 +523,10 @@ msgstr "&Sluit venster(s)"
 msgid "&Command:"
 msgstr "&Commando:"
 
-#. Resource IDs: (Dialog IDD_MERGE: Control id 1514, Dialog
-#. IDD_NEW_BRANCH_TAG: Control id 1514, Dialog IDD_SYNC: Control id 1625)
+#. Resource IDs: (Dialog IDD_EXPORT: Control id 1514, Dialog IDD_GITSWITCH:
+#. Control id 1514, Dialog IDD_MERGE: Control id 1514, Dialog
+#. IDD_NEW_BRANCH_TAG: Control id 1514, Dialog IDD_RESET: Control id 1514,
+#. Dialog IDD_SYNC: Control id 1625)
 msgid "&Commit"
 msgstr "&Vastleggen"
 
@@ -767,9 +771,15 @@ msgstr ""
 msgid "&Green:"
 msgstr "&Groen:"
 
-#. Resource IDs: (Dialog IDD_NEW_BRANCH_TAG: Control id 1511)
+#. Resource IDs: (Dialog IDD_EXPORT: Control id 1511, Dialog
+#. IDD_NEW_BRANCH_TAG: Control id 1511)
 msgid "&HEAD"
 msgstr "&HEAD"
+
+#. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1552, Dialog IDD_RESET:
+#. Control id 1552)
+msgid "&Hard: Reset working tree and index (discard all local changes)"
+msgstr ""
 
 #. Resource IDs: (57670, 65535 - PopupMenu, IDS_MENUHELP)
 msgid "&Help"
@@ -913,8 +923,8 @@ msgstr "&Menu-animaties:"
 msgid "&Menu contents:"
 msgstr "&Menu-inhoud:"
 
-#. Resource IDs: (Dialog IDD_SUBMODULE_UPDATE: Control id 1735,
-#. IDS_MERGEBUTTON)
+#. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1526, Dialog
+#. IDD_SUBMODULE_UPDATE: Control id 1735, IDS_MERGEBUTTON)
 msgid "&Merge"
 msgstr "&Samenvoegen"
 
@@ -937,6 +947,11 @@ msgstr "&Bericht:"
 #. Resource IDs: (16925)
 msgid "&Minimize"
 msgstr "&Minimaliseren"
+
+#. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1551, Dialog IDD_RESET:
+#. Control id 1551)
+msgid "&Mixed: Leave working tree untouched, reset index"
+msgstr ""
 
 #. Resource IDs: (ID_VIEW_MOVEDBLOCKS - Menu)
 msgid "&Moved blocks"
@@ -1029,6 +1044,10 @@ msgstr "&Overlay Icoon:"
 #. Resource IDs: (ID_VIEW_OVERLAPIMAGES - Menu)
 msgid "&Overlay images\tO"
 msgstr "Afbeeldingen &overlappen\tO"
+
+#. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1523)
+msgid "&Override branch if exists"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROXY: Control id 1411, Dialog
 #. IDD_SIMPLEPROMPT: Control id 65535, Dialog IDD_USER_PASSWD: Control id
@@ -1258,6 +1277,10 @@ msgstr "&Signeer sleutel ID:"
 msgid "&Skip"
 msgstr "Over&slaan"
 
+#. Resource IDs: (Dialog IDD_RESET: Control id 1550)
+msgid "&Soft: Leave working tree and index untouched"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_MERGE: Control id 1524, Dialog IDD_PULLFETCH:
 #. Control id 1524)
 msgid "&Squash"
@@ -1299,8 +1322,9 @@ msgstr "&Tabstop:"
 msgid "&Tabbed Document"
 msgstr "&Document met tabbladen"
 
-#. Resource IDs: (Dialog IDD_MERGE: Control id 1513, Dialog
-#. IDD_NEW_BRANCH_TAG: Control id 1513)
+#. Resource IDs: (Dialog IDD_EXPORT: Control id 1513, Dialog IDD_GITSWITCH:
+#. Control id 1513, Dialog IDD_MERGE: Control id 1513, Dialog
+#. IDD_NEW_BRANCH_TAG: Control id 1513, Dialog IDD_RESET: Control id 1513)
 msgid "&Tag"
 msgstr "&Tag"
 
@@ -1573,7 +1597,7 @@ msgstr "<Automatisch Gegenereerd door Git>"
 
 #. Resource IDs: (IDS_PROC_LOG_BASIC_REFS)
 msgid "<Basic Refs>"
-msgstr ""
+msgstr "<Basic Refs>"
 
 #. Resource IDs: (IDS_PROC_LOG_LOCAL_BRANCHES)
 msgid "<Local Branches>"
@@ -2034,7 +2058,7 @@ msgstr "Menu's van applicatievenster:"
 
 #. Resource IDs: (ID_FILE_APPLYPATCH - Menu)
 msgid "Apply &Patch..."
-msgstr ""
+msgstr "&Patch toepassen..."
 
 #. Resource IDs: (IDS_MENUIMPORTPATCH)
 msgid "Apply Patch Serial..."
@@ -2399,10 +2423,9 @@ msgstr "&Bladeren..."
 msgid "Branc&h:"
 msgstr "Branc&h:"
 
-#. Resource IDs: (Dialog IDD_CLONE: Control id 1527, Dialog IDD_EXPORT:
-#. Control id 1512, Dialog IDD_GITSWITCH: Control id 1512, Dialog
-#. IDD_LOGMESSAGE: Control id 1579, Dialog IDD_RESET: Control id 1512, Dialog
-#. IDD_SUBMODULE_ADD: Control id 1586, IDS_PROC_BRANCH)
+#. Resource IDs: (Dialog IDD_CLONE: Control id 1527, Dialog IDD_LOGMESSAGE:
+#. Control id 1579, Dialog IDD_SUBMODULE_ADD: Control id 1586,
+#. IDS_PROC_BRANCH)
 msgid "Branch"
 msgstr "Branch"
 
@@ -2439,7 +2462,7 @@ msgstr "Branch:"
 
 #. Resource IDs: (Dialog IDD_CLONE: Control id 1383)
 msgid "Bro&wse..."
-msgstr ""
+msgstr "Bro&wse..."
 
 #. Resource IDs: (IDS_MENUREFBROWSE)
 msgid "Browse References"
@@ -2449,7 +2472,7 @@ msgstr "Bladeren door Referenties"
 msgid "Browse for the external diff program"
 msgstr "Zoeken naar de externe Diff-applicatie"
 
-#. Resource IDs: (Dialog IDD_DIALOG_BROWSE_REFS: Control id 322)
+#. Resource IDs: (Dialog IDD_BROWSE_REFS: Control id 322)
 msgid "Browse references"
 msgstr "Bladeren door referenties"
 
@@ -2505,7 +2528,7 @@ msgstr "&Commando's:"
 
 #. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1, IDS_COMMIT_COMMIT)
 msgid "C&ommit"
-msgstr ""
+msgstr "C&ommit"
 
 #. Resource IDs: (IDS_LOG_POPUP_COPY)
 msgid "C&reate branch/tag from revision"
@@ -2566,13 +2589,13 @@ msgstr "Kan afbeelding van klembord niet plakken!"
 
 #. Resource IDs: (17101, 2, Dialog IDD_ADD: Control id 2, Dialog
 #. IDD_ADD_REMOTE: Control id 2, Dialog IDD_BISECTSTART: Control id 2, Dialog
-#. IDD_BUGTRAQREGEXTESTER: Control id 2, Dialog IDD_CERTCHECK: Control id 2,
-#. Dialog IDD_CLEAN: Control id 2, Dialog IDD_CLONE: Control id 2, Dialog
-#. IDD_COMMITDLG: Control id 2, Dialog IDD_CREATECHANGELIST: Control id 2,
-#. Dialog IDD_CREATEREPO: Control id 2, Dialog IDD_DIALOG_BROWSE_REFS: Control
-#. id 2, Dialog IDD_ENCODING: Control id 2, Dialog IDD_EXPORT: Control id 2,
-#. Dialog IDD_FIND: Control id 2, Dialog IDD_FORMAT_PATCH: Control id 2,
-#. Dialog IDD_GITSWITCH: Control id 2, Dialog IDD_GOTO: Control id 2, Dialog
+#. IDD_BROWSE_REFS: Control id 2, Dialog IDD_BUGTRAQREGEXTESTER: Control id 2,
+#. Dialog IDD_CERTCHECK: Control id 2, Dialog IDD_CLEAN: Control id 2, Dialog
+#. IDD_CLONE: Control id 2, Dialog IDD_COMMITDLG: Control id 2, Dialog
+#. IDD_CREATECHANGELIST: Control id 2, Dialog IDD_CREATEREPO: Control id 2,
+#. Dialog IDD_ENCODING: Control id 2, Dialog IDD_EXPORT: Control id 2, Dialog
+#. IDD_FIND: Control id 2, Dialog IDD_FORMAT_PATCH: Control id 2, Dialog
+#. IDD_GITSWITCH: Control id 2, Dialog IDD_GOTO: Control id 2, Dialog
 #. IDD_GOTODLG: Control id 2, Dialog IDD_HISTORYDLG: Control id 2, Dialog
 #. IDD_IGNORE: Control id 2, Dialog IDD_INPUTDLG: Control id 2, Dialog
 #. IDD_INPUTLOGDLG: Control id 2, Dialog IDD_LOGMESSAGE: Control id 2, Dialog
@@ -3087,10 +3110,9 @@ msgid "Commands"
 msgstr "Commando's"
 
 #. Resource IDs: (Dialog IDD_CHANGEDFILES: Control id 1383, Dialog
-#. IDD_COMMITDLG: Control id 135, Dialog IDD_EXPORT: Control id 1514, Dialog
-#. IDD_GITSWITCH: Control id 1514, Dialog IDD_RESET: Control id 1514, Dialog
-#. IDD_SETTINGSDIALOGS2: Control id 1083, Dialog IDD_SETTINGSDIALOGS3: Control
-#. id 65535, IDS_COMMITBUTTON, IDS_PROGRS_CMD_COMMIT, IDS_PROGRS_TITLE_COMMIT)
+#. IDD_COMMITDLG: Control id 135, Dialog IDD_SETTINGSDIALOGS2: Control id
+#. 1083, Dialog IDD_SETTINGSDIALOGS3: Control id 65535, IDS_COMMITBUTTON,
+#. IDS_PROGRS_CMD_COMMIT, IDS_PROGRS_TITLE_COMMIT)
 msgid "Commit"
 msgstr "Vastleggen"
 
@@ -3574,6 +3596,10 @@ msgstr "Creëer &Branch..."
 msgid "Create &Library"
 msgstr "Maak &bibliotheek"
 
+#. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1527)
+msgid "Create &New Branch"
+msgstr "&Nieuwe branch aanmaken"
+
 #. Resource IDs: (IDS_MENUTAG)
 msgid "Create &Tag..."
 msgstr "Creëer &Tag..."
@@ -3593,10 +3619,6 @@ msgstr "Maak Branch vanaf deze versie..."
 #. Resource IDs: (Dialog IDD_CREATECHANGELIST: Control id 243)
 msgid "Create Changelist"
 msgstr "Maak werkset"
-
-#. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1527)
-msgid "Create New Branch"
-msgstr "Nieuwe branch aanmaken"
 
 #. Resource IDs: (IDS_MENUFORMATPATCH)
 msgid "Create Patch Serial..."
@@ -3666,7 +3688,7 @@ msgstr "Maakt een unified diff bestand met al uw wijzigingen"
 
 #. Resource IDs: (IDS_PROC_CREATINGPULLREUQEST)
 msgid "Creating pull-request..."
-msgstr ""
+msgstr "Pull aanvraag aanmaken"
 
 #. Resource IDs: (IDS_GITCREDENTIAL_HELPEREMPTY)
 msgid "Credential helper must not be empty."
@@ -3688,7 +3710,7 @@ msgstr "Kn&ippen"
 msgid "Current"
 msgstr "Huidig"
 
-#. Resource IDs: (Dialog IDD_DIALOG_BROWSE_REFS: Control id 1784, Dialog
+#. Resource IDs: (Dialog IDD_BROWSE_REFS: Control id 1784, Dialog
 #. IDD_SETTINGSCOLORS_2: Control id 65535)
 msgid "Current Branch"
 msgstr "Huidige branch"
@@ -3837,7 +3859,7 @@ msgstr ""
 
 #. Resource IDs: (IDS_MENUDELETEIGNORE)
 msgid "Delete and add to &ignore list"
-msgstr ""
+msgstr "Verwijderen en toevoegen aan &negeerlijst"
 
 #. Resource IDs: (IDS_MENUDELETEIGNOREMULTIPLEMASK)
 #, c-format
@@ -4191,7 +4213,7 @@ msgstr "Gebruik niet de prullenbak"
 #. Resource IDs: (IDS_PROC_DELETEALLSTASH)
 #, c-format
 msgid "Do you really want to delete ALL %d stash?"
-msgstr ""
+msgstr "Bent u zeker dat u alle %d stash wilt verwijderen?"
 
 #. Resource IDs: (IDS_PROC_DELETEBRANCHTAG)
 #, c-format
@@ -4232,7 +4254,7 @@ msgstr ""
 #. Resource IDs: (IDS_WARN_DELETE_ONE_FROM_INDEX)
 #, c-format
 msgid "Do you really want to remove \"%s\" from the index?"
-msgstr ""
+msgstr "Weet u zeker u  \"%s\" wilt verwijderen van de inhoud?"
 
 #. Resource IDs: (IDS_WARN_REMOVE)
 #, c-format
@@ -4381,7 +4403,7 @@ msgid "Drive Types"
 msgstr "Type station"
 
 #. Resource IDs: (IDS_DROPONESTASH)
-msgid "Drop one stash"
+msgid "Drop &one stash"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_CLEAN: Control id 1731)
@@ -4930,17 +4952,17 @@ msgstr "Mislukt!"
 
 #. Resource IDs: (IDS_PROC_FASTFORWARD, IDS_SUBMODULEDIFF_FASTFORWARD)
 msgid "Fast Forward"
-msgstr ""
+msgstr "Snel vooruit"
 
 #. Resource IDs: (Dialog IDD_MERGE: Control id 1484, Dialog IDD_PULLFETCH:
 #. Control id 1484)
 msgid "Fast Forward O&nly"
-msgstr ""
+msgstr "A&lleen  snel vooruit"
 
 #. Resource IDs: (IDS_PROC_REBASE_FFTO)
 #, c-format
 msgid "Fast forward to %s"
-msgstr ""
+msgstr "Snel vooruit naar %s"
 
 #. Resource IDs: (IDS_PROC_SYNC_FETCH)
 msgid "Fetc&h"
@@ -5112,11 +5134,12 @@ msgstr "Filter op"
 msgid "Filter paths"
 msgstr "Filter paden"
 
-#. Resource IDs: (Dialog IDD_DIALOG_BROWSE_REFS: Control id 1479)
+#. Resource IDs: (Dialog IDD_BROWSE_REFS: Control id 1479)
 msgid "Filter:"
 msgstr "Filteren:"
 
-#. Resource IDs: (Dialog IDD_FIND: Control id 20090)
+#. Resource IDs: (Dialog IDD_COMMITISONREFS: Control id 1834, Dialog IDD_FIND:
+#. Control id 20090)
 msgid "Filter: "
 msgstr "Filteren:"
 
@@ -5266,6 +5289,13 @@ msgstr "Vooruit"
 #. Resource IDs: (IDS_FORWARDN)
 #, c-format
 msgid "Forward %d"
+msgstr ""
+
+#. Resource IDs: (IDS_REBASELOCKFILEFOUND)
+msgid ""
+"Found a lock file indicating that a TortoiseGit rebase process is running. This blocks this operation.\n"
+"\n"
+"If you are not runnig a TortoiseGit rebase process right now, you can remove the stale lock file in order to continue."
 msgstr ""
 
 #. Resource IDs: (IDS_PROC_REBASE_EMPTYCOMMITMSG)
@@ -5627,8 +5657,7 @@ msgid "H&ue:"
 msgstr "&Toon:"
 
 #. Resource IDs: (Dialog IDD_DIFFFILES: Control id 1353, Dialog IDD_DIFFFILES:
-#. Control id 1354, Dialog IDD_EXPORT: Control id 1511, Dialog
-#. IDD_REPOSITORY_BROWSER: Control id 1684)
+#. Control id 1354, Dialog IDD_REPOSITORY_BROWSER: Control id 1684)
 msgid "HEAD"
 msgstr "HEAD"
 
@@ -5640,22 +5669,17 @@ msgstr "HEAD:"
 msgid "Hard"
 msgstr "Hard"
 
-#. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1552, Dialog IDD_RESET:
-#. Control id 1552)
-msgid "Hard: Reset working tree and index (discard all local changes)"
-msgstr "Sterk: Herstel de werkmap en index (maak alle lokale wijzigingen ongedaan)"
-
 #. Resource IDs: (65535 - PopupMenu)
 msgid "Hebrew"
 msgstr "Hebreeuws"
 
 #. Resource IDs: (Dialog IDD_ADD: Control id 9, Dialog IDD_ADD_REMOTE: Control
 #. id 9, Dialog IDD_APPLY_PATCH_LIST: Control id 9, Dialog IDD_BISECTSTART:
-#. Control id 9, Dialog IDD_CLEAN: Control id 9, Dialog IDD_CLONE: Control id
-#. 9, Dialog IDD_COMMITDLG: Control id 9, Dialog IDD_CREATEREPO: Control id 9,
-#. Dialog IDD_DIALOG_BROWSE_REFS: Control id 9, Dialog IDD_EXPORT: Control id
-#. 9, Dialog IDD_FORMAT_PATCH: Control id 9, Dialog IDD_GITSWITCH: Control id
-#. 9, Dialog IDD_IGNORE: Control id 9, Dialog IDD_LOGMESSAGE: Control id 9,
+#. Control id 9, Dialog IDD_BROWSE_REFS: Control id 9, Dialog IDD_CLEAN:
+#. Control id 9, Dialog IDD_CLONE: Control id 9, Dialog IDD_COMMITDLG: Control
+#. id 9, Dialog IDD_CREATEREPO: Control id 9, Dialog IDD_EXPORT: Control id 9,
+#. Dialog IDD_FORMAT_PATCH: Control id 9, Dialog IDD_GITSWITCH: Control id 9,
+#. Dialog IDD_IGNORE: Control id 9, Dialog IDD_LOGMESSAGE: Control id 9,
 #. Dialog IDD_MERGE: Control id 9, Dialog IDD_MERGEABORT: Control id 9, Dialog
 #. IDD_NEW_BRANCH_TAG: Control id 9, Dialog IDD_OPENDLG: Control id 9, Dialog
 #. IDD_PULLFETCH: Control id 9, Dialog IDD_PUSH: Control id 9, Dialog
@@ -6415,22 +6439,22 @@ msgstr "Taal:"
 #. Resource IDs: (IDS_LAST_N_COMMITS)
 #, c-format
 msgid "Last %s commit(s)"
-msgstr ""
+msgstr "Laatste %s vastlegging(en)"
 
 #. Resource IDs: (IDS_LAST_N_MONTHS)
 #, c-format
 msgid "Last %s month(s)"
-msgstr ""
+msgstr "Laatste %s maand(en)"
 
 #. Resource IDs: (IDS_LAST_N_WEEKS)
 #, c-format
 msgid "Last %s week(s)"
-msgstr ""
+msgstr "Laatste %s week(en)"
 
 #. Resource IDs: (IDS_LAST_N_YEARS)
 #, c-format
 msgid "Last %s year(s)"
-msgstr ""
+msgstr "Laatste %s jaar(en)"
 
 #. Resource IDs: (IDS_LASTAUTHOR)
 msgid "Last Author"
@@ -6454,7 +6478,7 @@ msgstr "Laatst bekende &correct:"
 
 #. Resource IDs: (IDS_LAST_SEL_DATE)
 msgid "Last selected date"
-msgstr ""
+msgstr "Laatst geselecteerde datum"
 
 #. Resource IDs: (IDS_MENUDESCCONFLICT)
 msgid "Launches the external diff/merge program to solve the conflicts"
@@ -6468,7 +6492,7 @@ msgstr "Minst actieve auteur:"
 msgid ""
 "Leave as conflicted\n"
 "The conflict status of the file is kept"
-msgstr ""
+msgstr "Laat als strijdig\nDe conflictstatus van het bestand wordt gehouden"
 
 #. Resource IDs: (IDS_VIEWCONTEXTMENU_LEAVEONLYMARKEDBLOCKS)
 msgid "Leave only marked blocks"
@@ -6587,7 +6611,7 @@ msgstr "Lokale branch"
 msgid ""
 "Local changes ignored (assumed valid/unchanged or skip worktree flagged "
 "files)"
-msgstr ""
+msgstr "Lokale wijzigingen genegeerd (veronderstel geldig/ongewijzigd of sla werkboom gemarkeerde bestanden over )"
 
 #. Resource IDs: (IDS_CHSTAT_WCCOL)
 msgid "Local status"
@@ -6766,8 +6790,7 @@ msgstr "Menubalk"
 msgid "Menu s&hadows"
 msgstr "&Schaduwen van menu's"
 
-#. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1526, Dialog IDD_MERGE:
-#. Control id 313, IDS_PROGRS_TITLE_MERGE)
+#. Resource IDs: (Dialog IDD_MERGE: Control id 313, IDS_PROGRS_TITLE_MERGE)
 msgid "Merge"
 msgstr "Samenvoegen"
 
@@ -6873,11 +6896,6 @@ msgstr "Ontbrekend"
 #. Resource IDs: (62179, IDS_RESET_MIXED)
 msgid "Mixed"
 msgstr "Gemengd"
-
-#. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1551, Dialog IDD_RESET:
-#. Control id 1551)
-msgid "Mixed: Leave working tree untouched, reset index"
-msgstr "Gemengd: Verander de werkmap niet, herstel de index"
 
 #. Resource IDs: (IDS_STATUSLIST_COLMODIFICATIONDATE)
 msgid "Modification date"
@@ -7091,7 +7109,7 @@ msgstr "Volgend inline-verschil"
 #. Resource IDs: (Dialog IDD_MERGE: Control id 1481, Dialog IDD_PULLFETCH:
 #. Control id 1481)
 msgid "No &Fast Forward"
-msgstr ""
+msgstr "Niet &snel vooruit"
 
 #. Resource IDs: (IDS_WALKBEHAVIOUR_NOMERGES)
 msgid "No &merges"
@@ -7099,7 +7117,7 @@ msgstr "Geen sa&menvoegingen"
 
 #. Resource IDs: (Dialog IDD_CLONE: Control id 1716)
 msgid "No Checkout"
-msgstr ""
+msgstr "Niet ophalen"
 
 #. Resource IDs: (Dialog IDD_MERGE: Control id 1482, Dialog IDD_PULLFETCH:
 #. Control id 1482)
@@ -7144,7 +7162,7 @@ msgstr "Geen fouten opgetreden."
 
 #. Resource IDs: (IDS_NOCHANGEAFTERMERGE)
 msgid "No extra changes after merge"
-msgstr ""
+msgstr "Geen extra wijzigingen na het samenvoegen"
 
 #. Resource IDs: (IDS_ERR_NOTHINGTOREVERT)
 msgid ""
@@ -7162,14 +7180,14 @@ msgstr ""
 msgid ""
 "No files were changed or added since\n"
 "the last commit."
-msgstr ""
+msgstr "Geen bestanden zijn gewijzigd of toegevoegd sinds\nde laatste commit"
 
 #. Resource IDs: (IDS_COMMITDLG_NOTHINGTOCOMMITUNVERSIONED)
 msgid ""
 "No files were changed or added since\n"
 "the last commit.\n"
 "Do you want to see the unversioned files?"
-msgstr ""
+msgstr "Geen bestanden zijn gewijzigd of toegevoegd sinds\nde laatste commit\nWilt u de bestanden zonder versiebeheer zien?"
 
 #. Resource IDs: (IDS_REVGRAPH_ERR_NOGRAPH)
 msgid "No graph available"
@@ -7400,34 +7418,33 @@ msgstr "OEM-US"
 
 #. Resource IDs: (1, Dialog IDD_ABOUT: Control id 1, Dialog IDD_ABOUTBOX:
 #. Control id 1, Dialog IDD_ADD: Control id 1, Dialog IDD_ADD_REMOTE: Control
-#. id 1, Dialog IDD_BISECTSTART: Control id 1, Dialog IDD_BUGTRAQREGEXTESTER:
-#. Control id 1, Dialog IDD_CHANGEDFILES: Control id 1, Dialog IDD_CLEAN:
-#. Control id 1, Dialog IDD_CLONE: Control id 1, Dialog IDD_CREATECHANGELIST:
-#. Control id 1, Dialog IDD_CREATEREPO: Control id 1, Dialog
-#. IDD_DIALOG_BROWSE_REFS: Control id 1, Dialog IDD_ENCODING: Control id 1,
-#. Dialog IDD_EXPORT: Control id 1, Dialog IDD_FORMAT_PATCH: Control id 1,
-#. Dialog IDD_GITSWITCH: Control id 1, Dialog IDD_GOTO: Control id 1, Dialog
-#. IDD_GOTODLG: Control id 1, Dialog IDD_HISTORYDLG: Control id 1, Dialog
-#. IDD_IGNORE: Control id 1, Dialog IDD_INPUTDLG: Control id 1, Dialog
-#. IDD_INPUTLOGDLG: Control id 1, Dialog IDD_LOGMESSAGE: Control id 1, Dialog
-#. IDD_LOGORDERING: Control id 1, Dialog IDD_MERGE: Control id 1, Dialog
-#. IDD_MERGEABORT: Control id 1, Dialog IDD_NEW_BRANCH_TAG: Control id 1,
-#. Dialog IDD_OPEN: Control id 1, Dialog IDD_OPENDLG: Control id 1, Dialog
-#. IDD_PROMPT: Control id 1, Dialog IDD_PULLFETCH: Control id 1, Dialog
-#. IDD_PUSH: Control id 1, Dialog IDD_REFLOG: Control id 1, Dialog
-#. IDD_REGEXFILTER: Control id 1, Dialog IDD_REGEXFILTERS: Control id 1,
-#. Dialog IDD_RENAME: Control id 1, Dialog IDD_REPOSITORY_BROWSER: Control id
-#. 1, Dialog IDD_REQUESTPULL: Control id 1, Dialog IDD_RESET: Control id 1,
-#. Dialog IDD_RESOLVE: Control id 1, Dialog IDD_RESOLVE_CONFLICT: Control id
-#. 4569, Dialog IDD_REVERT: Control id 1, Dialog IDD_SETTINGSBUGTRAQADV:
-#. Control id 1, Dialog IDD_SETTINGSHOOKCONFIG: Control id 1, Dialog
-#. IDD_SETTINGSPROGSADV: Control id 1, Dialog IDD_SIMPLEPROMPT: Control id 1,
-#. Dialog IDD_STASH: Control id 1, Dialog IDD_STATGRAPH: Control id 1, Dialog
-#. IDD_SUBMODULE_ADD: Control id 1, Dialog IDD_SUBMODULE_UPDATE: Control id 1,
-#. Dialog IDD_SVNDCOMMITTYPE: Control id 1, Dialog IDD_SVNIGNORE: Control id
-#. 1, Dialog IDD_SVNPROGRESS: Control id 1, Dialog IDD_TOOLASSOC: Control id
-#. 1, Dialog IDD_URL: Control id 1, Dialog IDD_USER_PASSWD: Control id 1,
-#. IDS_MSGBOX_OK)
+#. id 1, Dialog IDD_BISECTSTART: Control id 1, Dialog IDD_BROWSE_REFS: Control
+#. id 1, Dialog IDD_BUGTRAQREGEXTESTER: Control id 1, Dialog IDD_CHANGEDFILES:
+#. Control id 1, Dialog IDD_CLEAN: Control id 1, Dialog IDD_CLONE: Control id
+#. 1, Dialog IDD_CREATECHANGELIST: Control id 1, Dialog IDD_CREATEREPO:
+#. Control id 1, Dialog IDD_ENCODING: Control id 1, Dialog IDD_EXPORT: Control
+#. id 1, Dialog IDD_FORMAT_PATCH: Control id 1, Dialog IDD_GITSWITCH: Control
+#. id 1, Dialog IDD_GOTO: Control id 1, Dialog IDD_GOTODLG: Control id 1,
+#. Dialog IDD_HISTORYDLG: Control id 1, Dialog IDD_IGNORE: Control id 1,
+#. Dialog IDD_INPUTDLG: Control id 1, Dialog IDD_INPUTLOGDLG: Control id 1,
+#. Dialog IDD_LOGMESSAGE: Control id 1, Dialog IDD_LOGORDERING: Control id 1,
+#. Dialog IDD_MERGE: Control id 1, Dialog IDD_MERGEABORT: Control id 1, Dialog
+#. IDD_NEW_BRANCH_TAG: Control id 1, Dialog IDD_OPEN: Control id 1, Dialog
+#. IDD_OPENDLG: Control id 1, Dialog IDD_PROMPT: Control id 1, Dialog
+#. IDD_PULLFETCH: Control id 1, Dialog IDD_PUSH: Control id 1, Dialog
+#. IDD_REFLOG: Control id 1, Dialog IDD_REGEXFILTER: Control id 1, Dialog
+#. IDD_REGEXFILTERS: Control id 1, Dialog IDD_RENAME: Control id 1, Dialog
+#. IDD_REPOSITORY_BROWSER: Control id 1, Dialog IDD_REQUESTPULL: Control id 1,
+#. Dialog IDD_RESET: Control id 1, Dialog IDD_RESOLVE: Control id 1, Dialog
+#. IDD_RESOLVE_CONFLICT: Control id 4569, Dialog IDD_REVERT: Control id 1,
+#. Dialog IDD_SETTINGSBUGTRAQADV: Control id 1, Dialog IDD_SETTINGSHOOKCONFIG:
+#. Control id 1, Dialog IDD_SETTINGSPROGSADV: Control id 1, Dialog
+#. IDD_SIMPLEPROMPT: Control id 1, Dialog IDD_STASH: Control id 1, Dialog
+#. IDD_STATGRAPH: Control id 1, Dialog IDD_SUBMODULE_ADD: Control id 1, Dialog
+#. IDD_SUBMODULE_UPDATE: Control id 1, Dialog IDD_SVNDCOMMITTYPE: Control id
+#. 1, Dialog IDD_SVNIGNORE: Control id 1, Dialog IDD_SVNPROGRESS: Control id
+#. 1, Dialog IDD_TOOLASSOC: Control id 1, Dialog IDD_URL: Control id 1, Dialog
+#. IDD_USER_PASSWD: Control id 1, IDS_MSGBOX_OK)
 msgid "OK"
 msgstr "OK"
 
@@ -7586,7 +7603,7 @@ msgstr "&Origineel formaat\tS"
 
 #. Resource IDs: (Dialog IDD_CLONE: Control id 1531)
 msgid "Origin Name"
-msgstr ""
+msgstr "Originele naam"
 
 #. Resource IDs: (17024)
 msgid "Other Task Panes"
@@ -7616,16 +7633,12 @@ msgstr "Doelmap"
 msgid "Output.prn"
 msgstr "Output.prn"
 
-#. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1523)
-msgid "Override branch if exists"
-msgstr "Overschrijf bestaande branch"
-
 #. Resource IDs: (IDS_PROC_OVERWRITEEXPORT_OVERWRITE)
 msgid "Overwrite"
 msgstr "Overschrijven"
 
 #. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1521)
-msgid "Overwrite working tree changes (force)"
+msgid "Overwrite working tree changes (&force)"
 msgstr ""
 
 #. Resource IDs: (ID_FILE_PAGESETUP - Menu)
@@ -7704,11 +7717,11 @@ msgstr "Plakken"
 
 #. Resource IDs: (IDS_COMMITDLG_POPUP_PASTEFILELIST)
 msgid "Paste &filename list"
-msgstr ""
+msgstr "Plak &Bestandsnamen lijst"
 
 #. Resource IDs: (IDS_COMMITDLG_POPUP_PASTELASTMESSAGE)
 msgid "Paste &last commit message"
-msgstr ""
+msgstr "Plak &laatste commit berichten"
 
 #. Resource IDs: (16908)
 msgid ""
@@ -7718,7 +7731,7 @@ msgstr "Plakgereedschap\nPlakken"
 
 #. Resource IDs: (IDS_COMMITDLG_POPUP_LOGHISTORY)
 msgid "Paste r&ecent message..."
-msgstr ""
+msgstr "Plak r&ecente berichten"
 
 #. Resource IDs: (IDS_MENUDESCCLIPPASTE)
 msgid ""
@@ -8327,6 +8340,10 @@ msgstr "Referentiebrowser"
 msgid "RefLog"
 msgstr "Referentielogboek"
 
+#. Resource IDs: (Dialog IDD_COMMITISONREFS: Control id 4596)
+msgid "References commit is on"
+msgstr ""
+
 #. Resource IDs: (IDS_LOG_FILTER_REFNAME)
 msgid "Refname"
 msgstr "Referentienaam"
@@ -8488,6 +8505,10 @@ msgstr "Verwijderen uit werkset"
 #. Resource IDs: (Dialog IDD_CLEAN: Control id 1629)
 msgid "Remove ignored files (-fX)"
 msgstr "Verwijder genegeerde bestanden (-fX)"
+
+#. Resource IDs: (IDS_REMOVESTALEBUTTON)
+msgid "Remove stale lock file"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_CLEAN: Control id 1626)
 msgid "Remove untracked directories (-d)"
@@ -8853,6 +8874,11 @@ msgstr "&Toon knoppen op twee regels"
 #. Resource IDs: (17078)
 msgid "S&how Quick Access Toolbar below the Ribbon"
 msgstr "&Toon Snelle Toegang werkbalk onder het Ribbon"
+
+#. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1383, Dialog IDD_RESET:
+#. Control id 1383)
+msgid "S&how modified files in working tree"
+msgstr ""
 
 #. Resource IDs: (IDS_PROC_REBASE_UNSELECTED_SKIP)
 msgid "S&kip unselected"
@@ -9367,7 +9393,7 @@ msgstr "Au&teur instellen"
 
 #. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1557)
 msgid "Set author &date"
-msgstr ""
+msgstr "Auteur &datum instellen"
 
 #. Resource IDs: (IDS_PUSHDLG_PUSHREMOTE_TT)
 msgid "Sets the remote as the \"pushremote\" for the selected local branch."
@@ -9398,7 +9424,7 @@ msgstr "Shell"
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 1271)
 msgid "Shell Extended"
-msgstr ""
+msgstr "Uitgebreide Shell"
 
 #. Resource IDs: (IDS_PROC_ICONCACHEREBUILT)
 msgid "Shell Icon Cache was rebuilt!"
@@ -9450,7 +9476,7 @@ msgstr "Toon &logboek"
 msgid "Show &log..."
 msgstr "Toon &logboek..."
 
-#. Resource IDs: (Dialog IDD_DIALOG_BROWSE_REFS: Control id 1830)
+#. Resource IDs: (Dialog IDD_BROWSE_REFS: Control id 1830)
 msgid "Show &nested refs"
 msgstr "Too&n onderliggende referenties"
 
@@ -9611,9 +9637,10 @@ msgstr ""
 msgid "Show linenumber&s"
 msgstr "Toon regel&nummers"
 
-#. Resource IDs: (Dialog IDD_DIFFFILES: Control id 1132, Dialog
-#. IDD_DIFFSUBMODULE: Control id 1132, Dialog IDD_DIFFSUBMODULE: Control id
-#. 1695, Dialog IDD_RESOLVESUBMODULECONFLICT: Control id 1132, Dialog
+#. Resource IDs: (Dialog IDD_COMMITISONREFS: Control id 1132, Dialog
+#. IDD_DIFFFILES: Control id 1132, Dialog IDD_DIFFSUBMODULE: Control id 1132,
+#. Dialog IDD_DIFFSUBMODULE: Control id 1695, Dialog
+#. IDD_RESOLVESUBMODULECONFLICT: Control id 1132, Dialog
 #. IDD_RESOLVESUBMODULECONFLICT: Control id 1695, Dialog
 #. IDD_RESOLVESUBMODULECONFLICT: Control id 1698, Dialog IDD_RESOLVE_CONFLICT:
 #. Control id 1132, Dialog IDD_RESOLVE_CONFLICT: Control id 1695,
@@ -9645,11 +9672,6 @@ msgstr "Toon logboek..."
 #. Resource IDs: (IDS_SETTINGS_DESCRIBEALWAYSLONG_TT)
 msgid "Show long format even if a tag is exactly on that commit"
 msgstr "Toon lang formaat zelfs als een tag zich precies op die commit bevindt"
-
-#. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1383, Dialog IDD_RESET:
-#. Control id 1383)
-msgid "Show modified files in working tree"
-msgstr "Toon gewijzigde bestanden in de werkmap"
 
 #. Resource IDs: (20308)
 msgid ""
@@ -9830,10 +9852,6 @@ msgstr "Slim tabkarakter"
 msgid "Soft"
 msgstr "Zacht"
 
-#. Resource IDs: (Dialog IDD_RESET: Control id 1550)
-msgid "Soft: Leave working tree and index untouched"
-msgstr "Zwak: Verander de werkmap en index niet"
-
 #. Resource IDs: (IDS_WARNMODIFIEDOUTSIDE)
 msgid ""
 "Some file(s) have been changed outside TortoiseGitMerge.\n"
@@ -9900,7 +9918,7 @@ msgstr ""
 
 #. Resource IDs: (IDS_PROC_REBASE_STARTCHERRYPICK)
 msgid "Start Cherry Pick"
-msgstr ""
+msgstr "Cherry Pick starten"
 
 #. Resource IDs: (IDS_HOOKTYPE_STARTCOMMIT)
 msgid "Start Commit Hook"
@@ -9937,15 +9955,15 @@ msgstr "Stash Toepassen"
 
 #. Resource IDs: (IDS_PROC_STASHAPPLYFAILED)
 msgid "Stash Apply failed!"
-msgstr ""
+msgstr "Stash toepassen mislukt!"
 
 #. Resource IDs: (IDS_PROC_STASHAPPLYFAILEDCONFLICTS)
 msgid "Stash Apply failed, there are conflicts"
-msgstr ""
+msgstr "Stash toepassen mislukt, er zijn conflicten"
 
 #. Resource IDs: (IDS_PROC_STASHAPPLYSUCCESS)
 msgid "Stash Apply successful"
-msgstr ""
+msgstr "Stash succesvol toegepast"
 
 #. Resource IDs: (IDS_MENUSTASHLIST)
 msgid "Stash List"
@@ -9953,15 +9971,15 @@ msgstr "Stashlijst"
 
 #. Resource IDs: (IDS_PROC_STASHPOPFAILED)
 msgid "Stash POP failed!"
-msgstr ""
+msgstr "Stash POP mislukt!"
 
 #. Resource IDs: (IDS_PROC_STASHPOPFAILEDCONFLICTS)
 msgid "Stash POP failed, there are conflicts"
-msgstr ""
+msgstr "Stash POP mislukt, er zijn conflicten"
 
 #. Resource IDs: (IDS_PROC_STASHPOPSUCCESS)
 msgid "Stash POP successful"
-msgstr ""
+msgstr "Stash POP geslaagd"
 
 #. Resource IDs: (IDS_MENUSTASHPOP)
 msgid "Stash Pop"
@@ -9973,11 +9991,11 @@ msgstr "Stash Opslaan"
 
 #. Resource IDs: (IDS_PROC_STASHSUCCESS)
 msgid "Stash Success"
-msgstr ""
+msgstr "Stash geslaagd"
 
 #. Resource IDs: (IDS_PROC_STASHFAILED)
 msgid "Stash failed!"
-msgstr ""
+msgstr "Stash mislukt!"
 
 #. Resource IDs: (IDS_PROC_STASHRUNNING)
 msgid "Stash operation running..."
@@ -9985,7 +10003,7 @@ msgstr "Bezig met stashwerkzaamheden..."
 
 #. Resource IDs: (IDS_STATE)
 msgid "State"
-msgstr ""
+msgstr "Status"
 
 #. Resource IDs: (16514, Dialog IDD_GITPROGRESS: Control id 1487, Dialog
 #. IDD_RESOLVE_CONFLICT: Control id 4572, Dialog IDD_RESOLVE_CONFLICT: Control
@@ -10004,7 +10022,7 @@ msgstr "Status"
 
 #. Resource IDs: (ID_VIEW_STATUS_BAR - Ribbon name)
 msgid "Status Bar"
-msgstr ""
+msgstr "Statusbalk"
 
 #. Resource IDs: (17087)
 msgid "Status Bar Configuration"
@@ -10233,6 +10251,10 @@ msgid ""
 "deleted."
 msgstr "Registersleutels zijn verwijderd, evenals het INI bestand (als dat er was)."
 
+#. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1520)
+msgid "T&rack"
+msgstr ""
+
 #. Resource IDs: (5065 - Menu)
 msgid "TIS-620"
 msgstr "TIS-620"
@@ -10258,9 +10280,7 @@ msgstr "Tab-positie"
 msgid "Tab size:"
 msgstr "Tabstop:"
 
-#. Resource IDs: (Dialog IDD_EXPORT: Control id 1513, Dialog IDD_GITSWITCH:
-#. Control id 1513, Dialog IDD_RESET: Control id 1513, Dialog
-#. IDD_SETTINGSCOLORS_2: Control id 65535, IDS_PROC_TAG)
+#. Resource IDs: (Dialog IDD_SETTINGSCOLORS_2: Control id 65535, IDS_PROC_TAG)
 msgid "Tag"
 msgstr "Tag"
 
@@ -10284,6 +10304,10 @@ msgstr "Tags"
 #. Resource IDs: (Dialog IDD_SETTINREMOTE: Control id 65535)
 msgid "Tags:"
 msgstr "Tags:"
+
+#. Resource IDs: (IDS_ERR_MUSTBESAMEWT)
+msgid "Target and source must be in the same working tree!"
+msgstr ""
 
 #. Resource IDs: (IDS_PROC_TASKS)
 msgid "Tasks"
@@ -11026,10 +11050,6 @@ msgstr "Totaal aantal bestandswijzigingen:"
 msgid "Trac&k"
 msgstr "&Volg"
 
-#. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1520)
-msgid "Track"
-msgstr "Volg"
-
 #. Resource IDs: (Dialog IDD_PROPPAGE: Control id 11023)
 msgid "Tracked Remote Branch:"
 msgstr "Gevolgde Externe Branch:"
@@ -11083,7 +11103,7 @@ msgstr "URL"
 
 #. Resource IDs: (IDS_PROC_CLONE_URLDIREMPTY)
 msgid "URL and directory must not be empty."
-msgstr ""
+msgstr "URL en map mogen niet leeg zijn."
 
 #. Resource IDs: (Dialog IDD_SETTINGSSAVEDDATA: Control id 1272)
 msgid "URL history"
@@ -11293,17 +11313,17 @@ msgstr "Gebruik 'hun' tekstblok"
 msgid "Use 'theirs' text block then 'mine'"
 msgstr "Gebruik 'hun' tekstblok en dan 'mijn' tekstblok"
 
+#. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 1911)
+msgid "Use .mailmap"
+msgstr ".Mailmap gebruiken"
+
 #. Resource IDs: (Dialog IDD_SETTINGSCREDENTIAL: Control id 1761)
 msgid "Use HTTP path component"
 msgstr "Gebruik HTTP padcomponent"
 
 #. Resource IDs: (Dialog IDD_SETMAINPAGE: Control id 1066)
 msgid "Use Ribbons"
-msgstr ""
-
-#. Resource IDs: (Dialog IDD_SETMAINPAGE: Control id 1500)
-msgid "Use Task Dialog"
-msgstr ""
+msgstr "Ribbons gebruiken"
 
 #. Resource IDs: (Dialog IDD_PUSH: Control id 1497)
 msgid "Use Thin &Pack (For slow network connections)"
@@ -11359,7 +11379,7 @@ msgstr "Gebruik beide tekstgedeeltes (deze laatst)"
 
 #. Resource IDs: (IDS_SMTP_CONFIGURED)
 msgid "Use configured server"
-msgstr ""
+msgstr "Geconfigureerde server gebruiken"
 
 #. Resource IDs: (ID_EDIT_USELEFTBLOCK - Menu, ID_EDIT_USELEFTBLOCK - Ribbon
 #. name)
@@ -11553,20 +11573,20 @@ msgstr "Version %d.%d.%d.%d"
 #. Resource IDs: (Dialog IDD_DIFFFILES: Control id 1644,
 #. IDS_PROC_FILEDIFF_VERSION1BASE)
 msgid "Version 1 (Base)"
-msgstr ""
+msgstr "Versie 1 (Basis)"
 
 #. Resource IDs: (IDS_PROC_FILEDIFF_VERSION1BASENEWER)
 msgid "Version 1 (Base, Newer commit time)"
-msgstr ""
+msgstr "Versie 1 (Basis, Recentere commit tijd)"
 
 #. Resource IDs: (Dialog IDD_DIFFFILES: Control id 1645,
 #. IDS_PROC_FILEDIFF_VERSION2)
 msgid "Version 2"
-msgstr ""
+msgstr "Versie 2"
 
 #. Resource IDs: (IDS_PROC_FILEDIFF_VERSION2NEWER)
 msgid "Version 2 (Newer commit time)"
-msgstr ""
+msgstr "Versie 2 (Recentere commit tijd)"
 
 #. Resource IDs: (Dialog IDD_ABOUT: Control id 1075)
 msgid "Version Information"
@@ -11812,8 +11832,8 @@ msgid "Working Tree Path:"
 msgstr "Pad Werkmap:"
 
 #. Resource IDs: (IDS_LOG_WORKINGDIRCHANGES)
-msgid "Working dir changes"
-msgstr "Wijzigingen werkmap"
+msgid "Working tree changes"
+msgstr ""
 
 #. Resource IDs: (ID_VIEW_WRAPLONGLINES - Menu, ID_VIEW_WRAPLONGLINES - Ribbon
 #. name)
