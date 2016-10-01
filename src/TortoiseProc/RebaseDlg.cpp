@@ -1010,6 +1010,21 @@ int CRebaseDlg::VerifyNoConflict()
 	if (hasConflicts)
 	{
 		CMessageBox::Show(GetSafeHwnd(), IDS_PROGRS_CONFLICTSOCCURED, IDS_APPNAME, MB_OK | MB_ICONEXCLAMATION);
+		auto pos = m_FileListCtrl.GetFirstSelectedItemPosition();
+		while (pos)
+			m_FileListCtrl.SetItemState(m_FileListCtrl.GetNextSelectedItem(pos), 0, LVIS_SELECTED);
+		int nListItems = m_FileListCtrl.GetItemCount();
+		for (int i = 0; i < nListItems; ++i)
+		{
+			auto entry = m_FileListCtrl.GetListEntry(i);
+			if (entry->m_Action & CTGitPath::LOGACTIONS_UNMERGED)
+			{
+				m_FileListCtrl.EnsureVisible(i, FALSE);
+				m_FileListCtrl.SetItemState(i, LVIS_SELECTED, LVIS_SELECTED);
+				m_FileListCtrl.SetFocus();
+				return -1;
+			}
+		}
 		return -1;
 	}
 	CleanUpRebaseActiveFolder();

@@ -572,7 +572,24 @@ void CCommitDlg::OnOK()
 	this->UpdateData();
 
 	if (m_ListCtrl.GetConflictedCount() != 0 && CMessageBox::ShowCheck(GetSafeHwnd(), IDS_PROGRS_CONFLICTSOCCURED, IDS_APPNAME, 1, IDI_EXCLAMATION, IDS_OKBUTTON, IDS_IGNOREBUTTON, 0, L"CommitWarnOnUnresolved") == 1)
+	{
+		auto pos = m_ListCtrl.GetFirstSelectedItemPosition();
+		while (pos)
+			m_ListCtrl.SetItemState(m_ListCtrl.GetNextSelectedItem(pos), 0, LVIS_SELECTED);
+		int nListItems = m_ListCtrl.GetItemCount();
+		for (int i = 0; i < nListItems; ++i)
+		{
+			auto entry = m_ListCtrl.GetListEntry(i);
+			if (entry->m_Action & CTGitPath::LOGACTIONS_UNMERGED)
+			{
+				m_ListCtrl.EnsureVisible(i, FALSE);
+				m_ListCtrl.SetItemState(i, LVIS_SELECTED, LVIS_SELECTED);
+				m_ListCtrl.SetFocus();
+				return;
+			}
+		}
 		return;
+	}
 
 	if (m_bCreateNewBranch)
 	{
