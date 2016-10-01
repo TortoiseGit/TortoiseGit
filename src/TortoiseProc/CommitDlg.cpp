@@ -1340,6 +1340,7 @@ UINT CCommitDlg::StatusThread()
 		m_ListCtrl.Block(FALSE, FALSE);
 	}
 	SendMessage(WM_UPDATEOKBUTTON);
+	m_ListCtrl.Invalidate();
 	if (m_bRunThread)
 	{
 		DialogEnableWindow(IDC_SHOWUNVERSIONED, true);
