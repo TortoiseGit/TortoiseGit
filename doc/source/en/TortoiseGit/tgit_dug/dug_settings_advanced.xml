@@ -302,6 +302,15 @@
             </listitem>
         </varlistentry>
         <varlistentry>
+            <term condition="pot">RememberFileListPosition</term>
+            <listitem>
+                <para>
+                    This option toggles whether the file lists of the add, commit, revert, resolve and rebase dialog remember the last selected
+                    line on a refresh. The default is <literal>true</literal>.
+                </para>
+            </listitem>
+        </varlistentry>
+        <varlistentry>
             <term condition="pot">SanitizeCommitMsg</term>
             <listitem>
                 <para>

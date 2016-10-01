@@ -986,7 +986,7 @@ void CGitStatusListCtrl::StoreScrollPos()
 
 void CGitStatusListCtrl::RestoreScrollPos()
 {
-	if (!m_sScrollPos.enabled)
+	if (!m_sScrollPos.enabled || CRegDWORD(L"Software\\TortoiseGit\\RememberFileListPosition", TRUE) != TRUE)
 		return;
 
 	if (m_sScrollPos.nSelectedEntry)
