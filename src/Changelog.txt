@@ -1,5 +1,5 @@
 ﻿= Release 2.3.0 =
-Released: unreleased
+Released: 2016-10-01
 
 == Features ==
  * Fixed issue #2755: TortoiseGitMerge: find dialog box does not remember desktop location between invocations 
@@ -9,13 +9,13 @@ Released: unreleased
  * Fixed issue #2026: Allow to navigate to branch shown on "Show branches this commit is on" dialog
  * Fixed issue #2806: Allow to turn off tooltips in file lists (in advanced settings using ShowListFullPathTooltip)
  * Fixed issue #2475: Allow to use mailmap translations in log dialog
- * Add mnemonics to Reset, Switch, Merge Abort and Export dialogs
+ * Fixed issue #2816: Add mnemonics to Reset, Switch, Merge Abort and Export dialogs
  * Fixed issue #491: Rename dialog should have a browse button
  * TortoiseGit now uses latest libgit2 which supports git index version 4
  * Added support for GIT_ASK_YESNO wrapper
  * Updated libgit to 2.10.0
  * Fixed issue #2830: Log from Repository Browser should use selected branch by default
- * Add, Commit, Rebase, Repository Status, Resolve, and Revert dialogs try to remember the last selected line on refresh (e.g., after resolving a conflict)
+ * Fixed issue #2829: Add, Commit, Rebase, Repository Status, Resolve, and Revert dialogs try to remember the last selected line on refresh (e.g., after resolving a conflict)
  * Rebase and Commit Dialog: When clicking on OK or resolve and a conflicted file is detected, jump to it (aka goto next conflict)
 
 == Bug Fixes ==
