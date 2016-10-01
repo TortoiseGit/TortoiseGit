@@ -84,6 +84,7 @@ CCommitDlg::CCommitDlg(CWnd* pParent /*=nullptr*/)
 	, m_hAccel(nullptr)
 	, m_bWarnDetachedHead(true)
 	, m_hAccelOkButton(nullptr)
+	, m_bDoNotStoreLastSelectedLine(true)
 {
 	this->m_bCommitAmend=FALSE;
 }
@@ -1180,6 +1181,7 @@ void CCommitDlg::OnOK()
 	}
 	else if (m_PostCmd == GIT_POSTCOMMIT_CMD_RECOMMIT)
 	{
+		m_bDoNotStoreLastSelectedLine = true;
 		this->Refresh();
 		this->BringWindowToTop();
 	}
@@ -1254,6 +1256,8 @@ UINT CCommitDlg::StatusThread()
 		SendMessage(WM_UPDATEDATAFALSE);
 	}
 
+	if (!m_bDoNotStoreLastSelectedLine)
+		m_ListCtrl.StoreScrollPos();
 	// Initialise the list control with the status of the files/folders below us
 	m_ListCtrl.Clear();
 	BOOL success;
@@ -1296,7 +1300,7 @@ UINT CCommitDlg::StatusThread()
 
 		SetDlgItemText(IDC_COMMIT_TO, g_Git.GetCurrentBranch());
 		m_tooltips.AddTool(GetDlgItem(IDC_STATISTICS), m_ListCtrl.GetStatisticsString());
-		if (m_ListCtrl.GetItemCount() != 0)
+		if (m_ListCtrl.GetItemCount() != 0 && m_ListCtrl.GetTopIndex() == 0 && (m_bDoNotStoreLastSelectedLine || CRegDWORD(L"Software\\TortoiseGit\\RememberFileListPosition", TRUE) != TRUE))
 			m_ListCtrl.SetItemState(0, LVIS_SELECTED, LVIS_SELECTED);
 	}
 	if (!success)
@@ -1305,6 +1309,7 @@ UINT CCommitDlg::StatusThread()
 			m_ListCtrl.SetEmptyString(m_ListCtrl.GetLastErrorMessage());
 		m_ListCtrl.Show(dwShow);
 	}
+	m_bDoNotStoreLastSelectedLine = false;
 
 	if ((m_ListCtrl.GetItemCount()==0)&&(m_ListCtrl.HasUnversionedItems())
 		 && !PathFileExists(dotGitPath + _T("MERGE_HEAD")))
@@ -1549,6 +1554,7 @@ void CCommitDlg::OnBnClickedShowunversioned()
 			else
 				m_ListCtrl.GetStatus(&this->m_pathList,false,false,true);
 		}
+		m_ListCtrl.StoreScrollPos();
 		m_ListCtrl.Show(dwShow, 0, true, dwShow & ~(CTGitPath::LOGACTIONS_UNVER), true);
 		UpdateCheckLinks();
 	}
@@ -2526,6 +2532,7 @@ void CCommitDlg::OnBnClickedWholeProject()
 		else
 			dwShow &= ~GITSLC_SHOWUNVERSIONED;
 
+		m_ListCtrl.StoreScrollPos();
 		m_ListCtrl.Show(dwShow, dwShow & ~(CTGitPath::LOGACTIONS_UNVER), true);
 		UpdateCheckLinks();
 	}

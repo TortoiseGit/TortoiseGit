@@ -2162,8 +2162,10 @@ int CRebaseDlg::RebaseThread()
 	return ret;
 }
 
-void CRebaseDlg::ListConflictFile()
+void CRebaseDlg::ListConflictFile(bool noStoreScrollPosition)
 {
+	if (!noStoreScrollPosition)
+		m_FileListCtrl.StoreScrollPos();
 	this->m_FileListCtrl.Clear();
 	m_FileListCtrl.SetHasCheckboxes(true);
 	CTGitPathList list;
@@ -2234,7 +2236,7 @@ LRESULT CRebaseDlg::OnRebaseUpdateUI(WPARAM,LPARAM)
 	case REBASE_CONFLICT:
 	case REBASE_SQUASH_CONFLICT:
 		{
-		ListConflictFile();
+		ListConflictFile(true);
 		this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_CONFLICT);
 		if (m_pTaskbarList)
 			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_ERROR);
@@ -2422,7 +2424,7 @@ void CRebaseDlg::Refresh()
 {
 	if (m_RebaseStage == REBASE_CONFLICT || m_RebaseStage == REBASE_SQUASH_CONFLICT)
 	{
-		ListConflictFile();
+		ListConflictFile(false);
 		return;
 	}
 

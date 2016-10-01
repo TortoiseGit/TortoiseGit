@@ -687,22 +687,8 @@ void CGitStatusListCtrl::Show(unsigned int dwShow, unsigned int dwCheck /*=0*/, 
 		pHeader->SetItem(m_nSortedColumn, &HeaderItem);
 	}
 
-#if 0
-	if (nSelectedEntry)
-	{
-		SetItemState(nSelectedEntry, LVIS_SELECTED, LVIS_SELECTED);
-		EnsureVisible(nSelectedEntry, false);
-	}
-	else
-	{
-		// Restore the item at the top of the list.
-		for (int i=0;GetTopIndex() != nTopIndex;i++)
-		{
-			if ( !EnsureVisible(nTopIndex+i,false) )
-				break;
-		}
-	}
-#endif
+	RestoreScrollPos();
+
 	if (pApp)
 		pApp->DoWaitCursor(-1);
 
@@ -855,6 +841,9 @@ void CGitStatusListCtrl::Show(unsigned int /*dwShow*/, const CTGitPathList& chec
 		this->AddEntry((CTGitPath *)&checkedList[i],0,i);
 
 	AdjustColumnWidths();
+
+	RestoreScrollPos();
+
 	return ;
 #if 0
 
@@ -983,6 +972,45 @@ void CGitStatusListCtrl::Show(unsigned int /*dwShow*/, const CTGitPathList& chec
 	Invalidate();
 #endif
 }
+
+void CGitStatusListCtrl::StoreScrollPos()
+{
+	m_sScrollPos.enabled = true;
+	m_sScrollPos.nTopIndex = GetTopIndex();
+	m_sScrollPos.selMark = GetSelectionMark();
+	POSITION posSelectedEntry = GetFirstSelectedItemPosition();
+	m_sScrollPos.nSelectedEntry = 0;
+	if (posSelectedEntry)
+		m_sScrollPos.nSelectedEntry = GetNextSelectedItem(posSelectedEntry);
+}
+
+void CGitStatusListCtrl::RestoreScrollPos()
+{
+	if (!m_sScrollPos.enabled || CRegDWORD(L"Software\\TortoiseGit\\RememberFileListPosition", TRUE) != TRUE)
+		return;
+
+	if (m_sScrollPos.nSelectedEntry)
+	{
+		SetItemState(m_sScrollPos.nSelectedEntry, LVIS_SELECTED, LVIS_SELECTED);
+		EnsureVisible(m_sScrollPos.nSelectedEntry, false);
+	}
+	else
+	{
+		// Restore the item at the top of the list.
+		for (int i = 0; GetTopIndex() != m_sScrollPos.nTopIndex; ++i)
+		{
+			if (!EnsureVisible(m_sScrollPos.nTopIndex + i, false))
+				break;
+		}
+	}
+	if (m_sScrollPos.selMark >= 0)
+	{
+		SetSelectionMark(m_sScrollPos.selMark);
+		SetItemState(m_sScrollPos.selMark, LVIS_FOCUSED, LVIS_FOCUSED);
+	}
+	m_sScrollPos.enabled = false;
+}
+
 int CGitStatusListCtrl::GetColumnIndex(int mask)
 {
 	for (int i = 0; i < 32; ++i)

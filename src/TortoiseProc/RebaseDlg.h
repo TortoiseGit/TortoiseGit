@@ -95,7 +95,7 @@ protected:
 	void SetControlEnable();
 	void UpdateProgress();
 	void UpdateCurrentStatus();
-	void ListConflictFile();
+	void ListConflictFile(bool noStoreScrollPosition);
 	int	RunGitCmdRetryOrAbort(const CString& cmd);
 	int  DoRebase();
 	afx_msg LRESULT OnGitStatusListCtrlNeedsRefresh(WPARAM, LPARAM);

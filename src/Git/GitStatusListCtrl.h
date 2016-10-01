@@ -884,6 +884,18 @@ public:
 
 	HMENU			m_hShellMenu;
 	LPCONTEXTMENU	m_pContextMenu;
+
+	void			StoreScrollPos();
+
+private:
+	void			RestoreScrollPos();
+	struct ScrollPos
+	{
+		bool enabled = false;
+		int nTopIndex;
+		int selMark;
+		int nSelectedEntry;
+	} m_sScrollPos;
 };
 
 #if 0
