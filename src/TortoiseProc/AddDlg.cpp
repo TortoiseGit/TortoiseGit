@@ -144,6 +144,7 @@ UINT CAddDlg::AddThread()
 	// and show the ones which the user can add (i.e. the unversioned ones)
 	DialogEnableWindow(IDOK, false);
 	m_bCancelled = false;
+	m_addListCtrl.StoreScrollPos();
 	m_addListCtrl.Clear();
 	if (!m_addListCtrl.GetStatus(&m_pathList, false, m_bIncludeIgnored != FALSE, true))
 		m_addListCtrl.SetEmptyString(m_addListCtrl.GetLastErrorMessage());

@@ -15,6 +15,7 @@ Released: unreleased
  * Added support for GIT_ASK_YESNO wrapper
  * Updated libgit to 2.10.0
  * Fixed issue #2830: Log from Repository Browser should use selected branch by default
+ * Add, Commit, Rebase, Repository Status, Resolve, and Revert dialogs try to remember the last selected line on refresh (e.g., after resolving a conflict)
 
 == Bug Fixes ==
  * Fixed issue #2789: Sync Dialog In ChangeList tab auto-resize column not optimal

@@ -1254,6 +1254,7 @@ UINT CCommitDlg::StatusThread()
 		SendMessage(WM_UPDATEDATAFALSE);
 	}
 
+	m_ListCtrl.StoreScrollPos();
 	// Initialise the list control with the status of the files/folders below us
 	m_ListCtrl.Clear();
 	BOOL success;
@@ -1296,7 +1297,7 @@ UINT CCommitDlg::StatusThread()
 
 		SetDlgItemText(IDC_COMMIT_TO, g_Git.GetCurrentBranch());
 		m_tooltips.AddTool(GetDlgItem(IDC_STATISTICS), m_ListCtrl.GetStatisticsString());
-		if (m_ListCtrl.GetItemCount() != 0)
+		if (m_ListCtrl.GetItemCount() != 0 && m_ListCtrl.GetTopIndex() == 0 && m_ListCtrl.GetSelectionMark() == -1)
 			m_ListCtrl.SetItemState(0, LVIS_SELECTED, LVIS_SELECTED);
 	}
 	if (!success)
@@ -1549,6 +1550,7 @@ void CCommitDlg::OnBnClickedShowunversioned()
 			else
 				m_ListCtrl.GetStatus(&this->m_pathList,false,false,true);
 		}
+		m_ListCtrl.StoreScrollPos();
 		m_ListCtrl.Show(dwShow, 0, true, dwShow & ~(CTGitPath::LOGACTIONS_UNVER), true);
 		UpdateCheckLinks();
 	}
@@ -2526,6 +2528,7 @@ void CCommitDlg::OnBnClickedWholeProject()
 		else
 			dwShow &= ~GITSLC_SHOWUNVERSIONED;
 
+		m_ListCtrl.StoreScrollPos();
 		m_ListCtrl.Show(dwShow, dwShow & ~(CTGitPath::LOGACTIONS_UNVER), true);
 		UpdateCheckLinks();
 	}

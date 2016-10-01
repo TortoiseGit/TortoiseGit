@@ -149,6 +149,7 @@ UINT CChangedDlg::ChangedStatusThread()
 	DialogEnableWindow(IDC_SHOWIGNORED, FALSE);
 	DialogEnableWindow(IDC_SHOWLOCALCHANGESIGNORED, FALSE);
 	CString temp;
+	m_FileListCtrl.StoreScrollPos();
 	m_FileListCtrl.Clear();
 	if (!m_FileListCtrl.GetStatus(m_bWholeProject ? nullptr : &m_pathList, m_bRemote, m_bShowIgnored != FALSE, m_bShowUnversioned != FALSE, m_bShowLocalChangesIgnored != FALSE))
 	{
@@ -249,6 +250,7 @@ void CChangedDlg::OnBnClickedShowunversioned()
 	m_regAddBeforeCommit = m_bShowUnversioned;
 	if(m_FileListCtrl.m_FileLoaded & CGitStatusListCtrl::FILELIST_UNVER)
 	{
+		m_FileListCtrl.StoreScrollPos();
 		m_FileListCtrl.Show(UpdateShowFlags());
 	}
 	else
@@ -265,6 +267,7 @@ void CChangedDlg::OnBnClickedShowunversioned()
 void CChangedDlg::OnBnClickedShowUnmodified()
 {
 	UpdateData();
+	m_FileListCtrl.StoreScrollPos();
 	m_FileListCtrl.Show(UpdateShowFlags());
 	m_regAddBeforeCommit = m_bShowUnversioned;
 	UpdateStatistics();
@@ -273,6 +276,7 @@ void CChangedDlg::OnBnClickedShowUnmodified()
 void CChangedDlg::OnBnClickedShowignored()
 {
 	UpdateData();
+	m_FileListCtrl.StoreScrollPos();
 	if (m_FileListCtrl.m_FileLoaded & CGitStatusListCtrl::FILELIST_IGNORE)
 		m_FileListCtrl.Show(UpdateShowFlags());
 	else if (m_bShowIgnored)
@@ -286,6 +290,7 @@ void CChangedDlg::OnBnClickedShowignored()
 void CChangedDlg::OnBnClickedShowlocalchangesignored()
 {
 	UpdateData();
+	m_FileListCtrl.StoreScrollPos();
 	if (m_FileListCtrl.m_FileLoaded & CGitStatusListCtrl::FILELIST_LOCALCHANGESIGNORED)
 		m_FileListCtrl.Show(UpdateShowFlags());
 	else if (m_bShowLocalChangesIgnored)

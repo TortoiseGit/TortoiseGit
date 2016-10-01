@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2013 - TortoiseGit
+// Copyright (C) 2009-2013, 2016 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -112,6 +112,7 @@ UINT CRevertDlg::RevertThread()
 	DialogEnableWindow(IDOK, false);
 	m_bCancelled = false;
 
+	m_RevertList.StoreScrollPos();
 	m_RevertList.Clear();
 
 	g_Git.RefreshGitIndex();
