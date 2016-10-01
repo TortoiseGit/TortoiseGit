@@ -571,6 +571,9 @@ void CCommitDlg::OnOK()
 	}
 	this->UpdateData();
 
+	if (m_ListCtrl.GetConflictedCount() != 0 && CMessageBox::ShowCheck(GetSafeHwnd(), IDS_PROGRS_CONFLICTSOCCURED, IDS_APPNAME, 1, IDI_EXCLAMATION, IDS_OKBUTTON, IDS_IGNOREBUTTON, 0, L"CommitWarnOnUnresolved") == 1)
+		return;
+
 	if (m_bCreateNewBranch)
 	{
 		if (!g_Git.IsBranchNameValid(m_sCreateNewBranch))

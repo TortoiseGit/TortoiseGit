@@ -363,6 +363,7 @@ void CSetSavedDataPage::OnBnClickedStoreddecisionsclear()
 		L"AskSetTrackedBranch",
 		L"StashPopShowChanges",
 		L"StashPopShowConflictChanges",
+		L"CommitWarnOnUnresolved",
 	};
 	for (const auto& value : tgitvalues)
 	{
