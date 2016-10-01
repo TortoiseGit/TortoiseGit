@@ -177,6 +177,7 @@ protected:
 	CString				m_sCreateNewBranch;
 	BOOL				m_bSetAuthor;
 	CString				m_sAuthor;
+	volatile bool		m_bDoNotStoreLastSelectedLine; // true on first start of commit dialog and set on recommit
 
 	int					CheckHeadDetach();
 

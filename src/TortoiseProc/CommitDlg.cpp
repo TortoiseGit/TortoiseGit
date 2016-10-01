@@ -84,6 +84,7 @@ CCommitDlg::CCommitDlg(CWnd* pParent /*=nullptr*/)
 	, m_hAccel(nullptr)
 	, m_bWarnDetachedHead(true)
 	, m_hAccelOkButton(nullptr)
+	, m_bDoNotStoreLastSelectedLine(true)
 {
 	this->m_bCommitAmend=FALSE;
 }
@@ -1180,6 +1181,7 @@ void CCommitDlg::OnOK()
 	}
 	else if (m_PostCmd == GIT_POSTCOMMIT_CMD_RECOMMIT)
 	{
+		m_bDoNotStoreLastSelectedLine = true;
 		this->Refresh();
 		this->BringWindowToTop();
 	}
@@ -1254,7 +1256,8 @@ UINT CCommitDlg::StatusThread()
 		SendMessage(WM_UPDATEDATAFALSE);
 	}
 
-	m_ListCtrl.StoreScrollPos();
+	if (!m_bDoNotStoreLastSelectedLine)
+		m_ListCtrl.StoreScrollPos();
 	// Initialise the list control with the status of the files/folders below us
 	m_ListCtrl.Clear();
 	BOOL success;
@@ -1297,7 +1300,7 @@ UINT CCommitDlg::StatusThread()
 
 		SetDlgItemText(IDC_COMMIT_TO, g_Git.GetCurrentBranch());
 		m_tooltips.AddTool(GetDlgItem(IDC_STATISTICS), m_ListCtrl.GetStatisticsString());
-		if (m_ListCtrl.GetItemCount() != 0 && m_ListCtrl.GetTopIndex() == 0 && m_ListCtrl.GetSelectionMark() == -1)
+		if (m_ListCtrl.GetItemCount() != 0 && m_ListCtrl.GetTopIndex() == 0 && m_bDoNotStoreLastSelectedLine)
 			m_ListCtrl.SetItemState(0, LVIS_SELECTED, LVIS_SELECTED);
 	}
 	if (!success)
@@ -1306,6 +1309,7 @@ UINT CCommitDlg::StatusThread()
 			m_ListCtrl.SetEmptyString(m_ListCtrl.GetLastErrorMessage());
 		m_ListCtrl.Show(dwShow);
 	}
+	m_bDoNotStoreLastSelectedLine = false;
 
 	if ((m_ListCtrl.GetItemCount()==0)&&(m_ListCtrl.HasUnversionedItems())
 		 && !PathFileExists(dotGitPath + _T("MERGE_HEAD")))
