@@ -415,7 +415,6 @@ void CFileDiffDlg::EnableInputControl(bool b)
 
 void CFileDiffDlg::DoDiff(int selIndex, bool blame)
 {
-	CGitDiff diff;
 	CTGitPath* fd2 = m_arFilteredList[selIndex];
 	CTGitPath* fd1 = fd2;
 	if (m_rev2.m_CommitHash.IsEmpty() && g_Git.IsInitRepos())
@@ -435,7 +434,7 @@ void CFileDiffDlg::DoDiff(int selIndex, bool blame)
 	}
 	if (fd1->m_Action & CTGitPath::LOGACTIONS_REPLACED)
 		fd2 = new CTGitPath(fd1->GetGitOldPathString());
-	diff.Diff(fd1, fd2, m_rev2.m_CommitHash.ToString(), m_rev1.m_CommitHash.ToString(), blame, FALSE);
+	CGitDiff::Diff(fd1, fd2, m_rev2.m_CommitHash.ToString(), m_rev1.m_CommitHash.ToString(), blame, FALSE);
 	if (fd1 != fd2)
 		delete fd2;
 }
