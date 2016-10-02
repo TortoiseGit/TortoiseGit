@@ -105,14 +105,6 @@ static struct last_accepted_cert {
 
 static bool DoFetch(const CString& url, const bool fetchAllRemotes, const bool loadPuttyAgent, const int prune, const bool bDepth, const int nDepth, const int fetchTags, const CString& remoteBranch, int runRebase, const bool rebasePreserveMerges);
 
-CAppUtils::CAppUtils(void)
-{
-}
-
-CAppUtils::~CAppUtils(void)
-{
-}
-
 bool CAppUtils::StashSave(const CString& msg, bool showPull, bool pullShowPush, bool showMerge, const CString& mergeRev)
 {
 	CStashSaveDlg dlg;

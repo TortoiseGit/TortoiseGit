@@ -50,9 +50,7 @@ public:
 		DiffFlags& AlternativeTool(bool b = true) { bAlternativeTool = b; return *this; }
 	};
 
-private:
-	CAppUtils(void);
-	~CAppUtils(void);
+	CAppUtils() = delete;
 
 public:
 	/**

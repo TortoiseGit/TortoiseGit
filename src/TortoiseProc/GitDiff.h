@@ -25,8 +25,7 @@
 class CGitDiff
 {
 public:
-	CGitDiff(void);
-	~CGitDiff(void);
+	CGitDiff() = delete;
 
 	// if you change something here, also update SubmoduleDiffDlg.cpp and SubmoduleResolveConflictDlg.cpp!
 	enum ChangeType

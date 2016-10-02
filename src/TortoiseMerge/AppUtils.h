@@ -29,8 +29,7 @@ class CSysProgressDlg;
 class CAppUtils : public CCommonAppUtils
 {
 public:
-	CAppUtils(void);
-	~CAppUtils(void);
+	CAppUtils() = delete;
 
 	/**
 	 * Starts an external program to get a file with a specific revision.

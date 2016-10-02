@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012, 2015 - TortoiseGit
+// Copyright (C) 2008-2012, 2015-2016 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -23,8 +23,8 @@
 class GitAdminDir
 {
 private:
-	GitAdminDir(void);
-	~GitAdminDir(void);
+	GitAdminDir() = delete;
+
 public:
 	/// Returns true if the path points to or below an admin directory
 	static bool IsAdminDirPath(const CString& path);

@@ -22,8 +22,7 @@
 class CWindowsCredentialsStore
 {
 private:
-	CWindowsCredentialsStore();
-	~CWindowsCredentialsStore();
+	CWindowsCredentialsStore() = delete;
 public:
 	static int GetCredential(const CString& entryName, CString& username, CString& password);
 	static int SaveCredential(const CString& entryName, const CString& username, const CString& password);

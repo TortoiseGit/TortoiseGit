@@ -103,8 +103,6 @@ public:
 
 public:
 	GitStatus();
-	~GitStatus(void);
-
 
 	/**
 	 * Reads the git status of the working copy entry. No

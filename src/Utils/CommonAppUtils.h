@@ -48,7 +48,5 @@ public:
 	static void SetCharFormat(CWnd* window, DWORD mask, DWORD effects, const std::vector<CHARRANGE>& positions);
 	static void SetCharFormat(CWnd* window, DWORD mask, DWORD effects);
 
-protected:
-	CCommonAppUtils(void){};
-	~CCommonAppUtils(void){};
+	CCommonAppUtils() = delete;
 };

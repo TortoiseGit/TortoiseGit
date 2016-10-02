@@ -39,10 +39,6 @@ GitStatus::GitStatus()
 	m_status.prop_status = m_status.text_status = git_wc_status_none;
 }
 
-GitStatus::~GitStatus(void)
-{
-}
-
 // static method
 #ifndef TGITCACHE
 git_wc_status_kind GitStatus::GetAllStatus(const CTGitPath& path, git_depth_t depth, bool * assumeValid, bool * skipWorktree)

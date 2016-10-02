@@ -50,11 +50,3 @@ int CWindowsCredentialsStore::DeleteCredential(const CString& entryName)
 {
 	return CredDelete(entryName, CRED_TYPE_GENERIC, 0) == TRUE ? 0 : -1;
 }
-
-CWindowsCredentialsStore::CWindowsCredentialsStore()
-{
-}
-
-CWindowsCredentialsStore::~CWindowsCredentialsStore()
-{
-}

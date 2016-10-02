@@ -20,14 +20,6 @@
 #include "stdafx.h"
 #include "UnicodeUtils.h"
 
-CUnicodeUtils::CUnicodeUtils(void)
-{
-}
-
-CUnicodeUtils::~CUnicodeUtils(void)
-{
-}
-
 #if defined(_MFC_VER) || defined(CSTRING_AVAILABLE)
 
 struct CodeMap

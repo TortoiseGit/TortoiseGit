@@ -59,6 +59,7 @@ int wcswildcmp(const wchar_t * wild, const wchar_t * string);
 class CStringUtils
 {
 public:
+	CStringUtils() = delete;
 #ifdef _MFC_VER
 
 	/**

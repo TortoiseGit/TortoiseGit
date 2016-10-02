@@ -30,6 +30,7 @@
 class CPathUtils
 {
 public:
+	CPathUtils() = delete;
 	static BOOL			MakeSureDirectoryPathExists(LPCTSTR path);
 	static void			ConvertToBackslash(LPTSTR dest, LPCTSTR src, size_t len);
 	/**

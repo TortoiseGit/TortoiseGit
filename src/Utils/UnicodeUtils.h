@@ -30,8 +30,7 @@
 class CUnicodeUtils
 {
 public:
-	CUnicodeUtils(void);
-	~CUnicodeUtils(void);
+	CUnicodeUtils() = delete;
 #if defined(_MFC_VER) || defined(CSTRING_AVAILABLE)
 	static CStringA GetUTF8(const CStringW& string);
 	static CStringA GetMulti(const CStringW& string, int acp);

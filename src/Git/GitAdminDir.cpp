@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2015 - TortoiseGit
+// Copyright (C) 2008-2016 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -22,14 +22,6 @@
 #include "GitAdminDir.h"
 #include "Git.h"
 #include "SmartHandle.h"
-
-GitAdminDir::GitAdminDir()
-{
-}
-
-GitAdminDir::~GitAdminDir()
-{
-}
 
 CString GitAdminDir::GetSuperProjectRoot(const CString& path)
 {

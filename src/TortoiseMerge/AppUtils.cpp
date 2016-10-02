@@ -36,14 +36,6 @@
 #include "CreateProcessHelper.h"
 #include "FormatMessageWrapper.h"
 
-CAppUtils::CAppUtils(void)
-{
-}
-
-CAppUtils::~CAppUtils(void)
-{
-}
-
 BOOL CAppUtils::GetVersionedFile(CString sPath, CString sVersion, CString sSavePath, CSysProgressDlg* progDlg, HWND hWnd /*=nullptr*/)
 {
 	CString sSCMPath = CRegString(_T("Software\\TortoiseGitMerge\\SCMPath"), _T(""));

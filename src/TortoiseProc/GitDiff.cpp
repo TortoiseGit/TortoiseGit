@@ -26,13 +26,6 @@
 #include "FileDiffDlg.h"
 #include "SubmoduleDiffDlg.h"
 
-CGitDiff::CGitDiff(void)
-{
-}
-
-CGitDiff::~CGitDiff(void)
-{
-}
 int CGitDiff::SubmoduleDiffNull(const CTGitPath * pPath, const git_revnum_t &rev1)
 {
 	CString oldhash = GIT_REV_ZERO;
