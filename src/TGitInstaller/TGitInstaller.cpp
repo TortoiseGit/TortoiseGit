@@ -7,11 +7,10 @@
 #include <PropKey.h>
 
 #include "UpdateDownloader.h"
-#include "Win7.h"
 #include "DirFileEnum.h"
 #include "PathUtils.h"
 #include "UpdateCrypto.h"
-#include "SimpleIni.h"
+#include "..\..\ext\simpleini\SimpleIni.h"
 
 #include <commctrl.h>
 #pragma comment(lib, "comctl32.lib")
@@ -319,7 +318,7 @@ void FillDownloads(CSimpleIni& versioncheck, const CString version)
 	versioncheck.GetAllValues(L"tortoisegit", L"langs", values);
 	for (const auto& value : values)
 	{
-		CString langs(GetConfigValue(value));
+		CString langs(GetConfigValue(value.pItem));
 		if (langs.IsEmpty())
 			continue;
 		int nextTokenPos = langs.Find(_T(";"), 5); // be extensible for the future
