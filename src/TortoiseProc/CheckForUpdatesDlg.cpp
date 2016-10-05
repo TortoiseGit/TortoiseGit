@@ -341,6 +341,7 @@ UINT CCheckForUpdatesDlg::CheckThread()
 			RemoveAnchor(IDC_GROUP_DOWNLOADS);
 			RemoveAnchor(IDC_LIST_DOWNLOADS);
 			RemoveAnchor(IDC_PROGRESSBAR);
+			RemoveAnchor(IDC_DONOTASKAGAIN);
 			RemoveAnchor(IDC_BUTTON_UPDATE);
 			RemoveAnchor(IDOK);
 
@@ -370,6 +371,7 @@ UINT CCheckForUpdatesDlg::CheckThread()
 			AddAnchor(IDC_GROUP_DOWNLOADS, BOTTOM_LEFT, BOTTOM_RIGHT);
 			AddAnchor(IDC_LIST_DOWNLOADS, BOTTOM_LEFT, BOTTOM_RIGHT);
 			AddAnchor(IDC_PROGRESSBAR, BOTTOM_LEFT, BOTTOM_RIGHT);
+			AddAnchor(IDC_DONOTASKAGAIN, BOTTOM_CENTER);
 			AddAnchor(IDC_BUTTON_UPDATE, BOTTOM_RIGHT);
 			AddAnchor(IDOK, BOTTOM_CENTER);
 			m_ctrlFiles.ShowWindow(SW_SHOW);
