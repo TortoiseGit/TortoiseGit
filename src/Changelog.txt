@@ -1,4 +1,10 @@
-﻿= Release 2.3.0 =
+﻿= Release 2.4.0 =
+Released: unreleased
+
+== Bug Fixes ==
+ * Fixed issue #2837: Layout of overlapping icons settings dialog
+
+= Release 2.3.0 =
 Released: 2016-10-01
 
 == Features ==
