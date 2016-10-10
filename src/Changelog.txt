@@ -4,6 +4,7 @@ Released: unreleased
 == Bug Fixes ==
  * Fixed issue #2837: Layout of overlapping icons settings dialog
  * Fixed issue #2839: The dialog "check for updates" has a resize issue
+ * Fixed issue #2845: Sticky button when resizing the "Rename dialog"
 
 = Release 2.3.0 =
 Released: 2016-10-01
