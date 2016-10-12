@@ -284,6 +284,18 @@ BOOL CSciEdit::LoadDictionaries(LONG lLanguageID)
 		{
 			pChecker = std::make_unique<Hunspell>(CStringA(sFolderUp + _T("Languages\\") + sFile + _T(".aff")), CStringA(sFolderUp + _T("Languages\\") + sFile + _T(".dic")));
 		}
+		if (pChecker)
+		{
+			const char* encoding = pChecker->get_dic_encoding();
+			CTraceToOutputDebugString::Instance()(__FUNCTION__ ": %s\n", encoding);
+			m_spellcodepage = 0;
+			for (int i = 0; i < _countof(enc2locale); ++i)
+			{
+				if (strcmp(encoding, enc2locale[i].def_enc) == 0)
+					m_spellcodepage = atoi(enc2locale[i].cp);
+			}
+			m_personalDict.Init(lLanguageID);
+		}
 	}
 #if THESAURUS
 	if (!pThesaur)
@@ -300,19 +312,6 @@ BOOL CSciEdit::LoadDictionaries(LONG lLanguageID)
 		}
 	}
 #endif
-	if (pChecker)
-	{
-		const char * encoding = pChecker->get_dic_encoding();
-		CTraceToOutputDebugString::Instance()(__FUNCTION__ ": %s\n", encoding);
-		int n = _countof(enc2locale);
-		m_spellcodepage = 0;
-		for (int i = 0; i < n; i++)
-		{
-			if (strcmp(encoding,enc2locale[i].def_enc) == 0)
-				m_spellcodepage = atoi(enc2locale[i].cp);
-		}
-		m_personalDict.Init(lLanguageID);
-	}
 	if ((pThesaur)||(pChecker))
 		return TRUE;
 	return FALSE;
