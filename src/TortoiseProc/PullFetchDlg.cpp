@@ -208,6 +208,7 @@ BOOL CPullFetchDlg::OnInitDialog()
 	if(!m_IsPull)
 	{
 		m_RemoteBranch.EnableWindow(FALSE);
+		m_RemoteBranch.SetCaseSensitive(TRUE);
 		GetDlgItem(IDC_BUTTON_BROWSE_REF)->EnableWindow(FALSE);
 	}
 
