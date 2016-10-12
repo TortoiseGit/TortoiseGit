@@ -186,9 +186,9 @@ void CSciEdit::Init(LONG lLanguage)
 	m_bDoStyle = ((DWORD)CRegStdDWORD(_T("Software\\TortoiseGit\\StyleCommitMessages"), TRUE))==TRUE;
 	m_nAutoCompleteMinChars = (int)(DWORD)CRegStdDWORD(_T("Software\\TortoiseGit\\AutoCompleteMinChars"), 3);
 	// look for dictionary files and use them if found
-	if ((lLanguage >= 0) && (((DWORD)CRegStdDWORD(L"Software\\TortoiseGit\\Spellchecker", FALSE)) == FALSE))
+	if ((lLanguage >= 0) && (((DWORD)CRegStdDWORD(L"Software\\TortoiseGit\\Spellchecker", TRUE)) == TRUE))
 	{
-		if (!((lLanguage)&&(!LoadDictionaries(lLanguage))))
+		if (!lLanguage || (lLanguage && !LoadDictionaries(lLanguage)))
 		{
 			long langId = GetUserDefaultLCID();
 			do
