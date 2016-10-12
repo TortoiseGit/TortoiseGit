@@ -186,29 +186,26 @@ void CSciEdit::Init(LONG lLanguage)
 	m_bDoStyle = ((DWORD)CRegStdDWORD(_T("Software\\TortoiseGit\\StyleCommitMessages"), TRUE))==TRUE;
 	m_nAutoCompleteMinChars = (int)(DWORD)CRegStdDWORD(_T("Software\\TortoiseGit\\AutoCompleteMinChars"), 3);
 	// look for dictionary files and use them if found
-	long langId = GetUserDefaultLCID();
-
-	if (lLanguage >= 0)
+	if ((lLanguage >= 0) && (((DWORD)CRegStdDWORD(L"Software\\TortoiseGit\\Spellchecker", FALSE)) == FALSE))
 	{
-		if ((lLanguage != 0)||(((DWORD)CRegStdDWORD(_T("Software\\TortoiseGit\\Spellchecker"), FALSE))==FALSE))
+		if (!((lLanguage)&&(!LoadDictionaries(lLanguage))))
 		{
-			if (!((lLanguage)&&(!LoadDictionaries(lLanguage))))
+			long langId = GetUserDefaultLCID();
+			do
 			{
-				do
-				{
-					LoadDictionaries(langId);
-					DWORD lid = SUBLANGID(langId);
-					lid--;
-					if (lid > 0)
-						langId = MAKELANGID(PRIMARYLANGID(langId), lid);
-					else if (langId == 1033)
-						langId = 0;
-					else
-						langId = 1033;
-				} while (langId && (!pChecker || !pThesaur));
-			}
+				LoadDictionaries(langId);
+				DWORD lid = SUBLANGID(langId);
+				lid--;
+				if (lid > 0)
+					langId = MAKELANGID(PRIMARYLANGID(langId), lid);
+				else if (langId == 1033)
+					langId = 0;
+				else
+					langId = 1033;
+			} while (langId && (!pChecker || !pThesaur));
 		}
 	}
+
 	Call(SCI_SETEDGEMODE, EDGE_NONE);
 	Call(SCI_SETWRAPMODE, SC_WRAP_WORD);
 	Call(SCI_ASSIGNCMDKEY, SCK_END, SCI_LINEENDWRAP);
