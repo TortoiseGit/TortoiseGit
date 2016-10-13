@@ -3136,6 +3136,125 @@ BOOL CAppUtils::SVNDCommit()
 	return FALSE;
 }
 
+static bool DoMerge(bool noFF, bool ffOnly, bool squash, bool noCommit, const int* log, bool unrelated, const CString& mergeStrategy, const CString& strategyOption, const CString& strategyParam, const CString& logMessage, const CString& version, bool isBranch, bool showStashPop)
+{
+	CString args;
+	if (noFF)
+		args += L" --no-ff";
+	else if (ffOnly)
+		args += L" --ff-only";
+
+	if (squash)
+		args += L" --squash";
+
+	if (noCommit)
+		args += L" --no-commit";
+
+	if (unrelated)
+		args += L" --allow-unrelated-histories";
+
+	if (log)
+		args.AppendFormat(L" --log=%d", *log);
+
+	if (!mergeStrategy.IsEmpty())
+	{
+		args += L" --strategy=" + mergeStrategy;
+		if (!strategyOption.IsEmpty())
+		{
+			args += L" --strategy-option=" + strategyOption;
+			if (!strategyParam.IsEmpty())
+				args += L'=' + strategyParam;
+		}
+	}
+
+	if (!logMessage.IsEmpty())
+	{
+		CString logmsg = logMessage;
+		logmsg.Replace(L"\\\"", L"\\\\\"");
+		logmsg.Replace(L"\"", L"\\\"");
+		args += L" -m \"" + logmsg + L"\"";
+	}
+
+	CString mergeVersion = g_Git.FixBranchName(version);
+	CString cmd;
+	cmd.Format(L"git.exe merge%s %s", (LPCTSTR)args, (LPCTSTR)mergeVersion);
+
+	CProgressDlg Prodlg;
+	Prodlg.m_GitCmd = cmd;
+
+	Prodlg.m_PostCmdCallback = [&](DWORD status, PostCmdList& postCmdList)
+	{
+		if (status)
+		{
+			int hasConflicts = g_Git.HasWorkingTreeConflicts();
+			if (hasConflicts < 0)
+				CMessageBox::Show(nullptr, g_Git.GetGitLastErr(L"Checking for conflicts failed.", CGit::GIT_CMD_CHECKCONFLICTS), L"TortoiseGit", MB_ICONEXCLAMATION);
+			else if (hasConflicts)
+			{
+				// there are conflict files
+
+				postCmdList.emplace_back(IDI_RESOLVE, IDS_PROGRS_CMD_RESOLVE, []
+				{
+					CString sCmd;
+					sCmd.Format(L"/command:commit /path:\"%s\"", (LPCTSTR)g_Git.m_CurrentDir);
+					CAppUtils::RunTortoiseGitProc(sCmd);
+				});
+			}
+
+			if (CAppUtils::GetMsysgitVersion() >= 0x02090000)
+			{
+				CGitHash common;
+				g_Git.IsFastForward(L"HEAD", mergeVersion, &common);
+				if (common.IsEmpty())
+					postCmdList.emplace_back(IDI_MERGE, IDS_MERGE_UNRELATED, [=] { DoMerge(noFF, ffOnly, squash, noCommit, log, true, mergeStrategy, strategyOption, strategyParam, logMessage, version, isBranch, showStashPop); });
+			}
+
+			postCmdList.emplace_back(IDI_COMMIT, IDS_MENUSTASHSAVE, [=]{ CAppUtils::StashSave(L"", false, false, true, mergeVersion); });
+
+			return;
+		}
+
+		if (showStashPop)
+			postCmdList.emplace_back(IDI_RELOCATE, IDS_MENUSTASHPOP, []{ CAppUtils::StashPop(); });
+
+		if (noCommit)
+		{
+			postCmdList.emplace_back(IDI_COMMIT, IDS_MENUCOMMIT, []
+			{
+				CString sCmd;
+				sCmd.Format(L"/command:commit /path:\"%s\"", (LPCTSTR)g_Git.m_CurrentDir);
+				CAppUtils::RunTortoiseGitProc(sCmd);
+			});
+			return;
+		}
+
+		if (isBranch && version.Find(L"remotes/") == -1) // do not ask to remove remote branches
+		{
+			postCmdList.emplace_back(IDI_DELETE, IDS_PROC_REMOVEBRANCH, [&]
+			{
+				CString msg;
+				msg.Format(IDS_PROC_DELETEBRANCHTAG, version);
+				if (CMessageBox::Show(nullptr, msg, L"TortoiseGit", 2, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_DELETEBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 1)
+				{
+					CString cmd, out;
+					cmd.Format(L"git.exe branch -D -- %s", (LPCTSTR)version);
+					if (g_Git.Run(cmd, &out, CP_UTF8))
+						MessageBox(nullptr, out, _T("TortoiseGit"), MB_OK);
+				}
+			});
+		}
+		if (isBranch)
+			postCmdList.emplace_back(IDI_PUSH, IDS_MENUPUSH, []{ CAppUtils::Push(); });
+
+		BOOL hasGitSVN = CTGitPath(g_Git.m_CurrentDir).GetAdminDirMask() & ITEMIS_GITSVN;
+		if (hasGitSVN)
+			postCmdList.emplace_back(IDI_COMMIT, IDS_MENUSVNDCOMMIT, []{ CAppUtils::SVNDCommit(); });
+	};
+
+	Prodlg.DoModal();
+	return !Prodlg.m_GitStatus;
+}
+
 BOOL CAppUtils::Merge(const CString* commit, bool showStashPop)
 {
 	if (!CheckUserData())
@@ -3145,115 +3264,13 @@ BOOL CAppUtils::Merge(const CString* commit, bool showStashPop)
 		return FALSE;
 
 	CMergeDlg dlg;
-	if(commit)
+	if (commit)
 		dlg.m_initialRefName = *commit;
 
-	if(dlg.DoModal()==IDOK)
-	{
-		CString cmd;
-		CString args;
+	if (dlg.DoModal() == IDOK)
+		return DoMerge(dlg.m_bNoFF == BST_CHECKED, dlg.m_bFFonly == BST_CHECKED, dlg.m_bSquash == BST_CHECKED, dlg.m_bNoCommit == BST_CHECKED, dlg.m_bLog ? &dlg.m_nLog : nullptr, false, dlg.m_MergeStrategy, dlg.m_StrategyOption, dlg.m_StrategyParam, dlg.m_strLogMesage, dlg.m_VersionName, dlg.m_bIsBranch, showStashPop);
 
-		if(dlg.m_bNoFF)
-			args += _T(" --no-ff");
-		else if (dlg.m_bFFonly)
-			args += _T(" --ff-only");
-
-		if(dlg.m_bSquash)
-			args += _T(" --squash");
-
-		if(dlg.m_bNoCommit)
-			args += _T(" --no-commit");
-
-		if (dlg.m_bLog)
-			args.AppendFormat(L" --log=%d", dlg.m_nLog);
-
-		if (!dlg.m_MergeStrategy.IsEmpty())
-		{
-			args += _T(" --strategy=") + dlg.m_MergeStrategy;
-			if (!dlg.m_StrategyOption.IsEmpty())
-			{
-				args += _T(" --strategy-option=") + dlg.m_StrategyOption;
-				if (!dlg.m_StrategyParam.IsEmpty())
-					args += _T("=") + dlg.m_StrategyParam;
-			}
-		}
-
-		if(!dlg.m_strLogMesage.IsEmpty())
-		{
-			CString logmsg = dlg.m_strLogMesage;
-			logmsg.Replace(_T("\\\""), _T("\\\\\""));
-			logmsg.Replace(_T("\""), _T("\\\""));
-			args += _T(" -m \"") + logmsg + _T("\"");
-		}
-		cmd.Format(_T("git.exe merge%s %s"), (LPCTSTR)args, (LPCTSTR)g_Git.FixBranchName(dlg.m_VersionName));
-
-		CProgressDlg Prodlg;
-		Prodlg.m_GitCmd = cmd;
-
-		Prodlg.m_PostCmdCallback = [&](DWORD status, PostCmdList& postCmdList)
-		{
-			if (status)
-			{
-				int hasConflicts = g_Git.HasWorkingTreeConflicts();
-				if (hasConflicts < 0)
-					CMessageBox::Show(nullptr, g_Git.GetGitLastErr(L"Checking for conflicts failed.", CGit::GIT_CMD_CHECKCONFLICTS), _T("TortoiseGit"), MB_ICONEXCLAMATION);
-				else if (hasConflicts)
-				{
-					// there are conflict files
-
-					postCmdList.emplace_back(IDI_RESOLVE, IDS_PROGRS_CMD_RESOLVE, []
-					{
-						CString sCmd;
-						sCmd.Format(_T("/command:commit /path:\"%s\""), (LPCTSTR)g_Git.m_CurrentDir);
-						CAppUtils::RunTortoiseGitProc(sCmd);
-					});
-				}
-
-				postCmdList.emplace_back(IDI_COMMIT, IDS_MENUSTASHSAVE, [&]{ CAppUtils::StashSave(_T(""), false, false, true, g_Git.FixBranchName(dlg.m_VersionName)); });
-				return;
-			}
-
-			if (showStashPop)
-				postCmdList.emplace_back(IDI_RELOCATE, IDS_MENUSTASHPOP, []{ StashPop(); });
-
-			if (dlg.m_bNoCommit)
-			{
-				postCmdList.emplace_back(IDI_COMMIT, IDS_MENUCOMMIT, []
-				{
-					CString sCmd;
-					sCmd.Format(_T("/command:commit /path:\"%s\""), (LPCTSTR)g_Git.m_CurrentDir);
-					CAppUtils::RunTortoiseGitProc(sCmd);
-				});
-				return;
-			}
-
-			if (dlg.m_bIsBranch && dlg.m_VersionName.Find(L"remotes/") == -1) // do not ask to remove remote branches
-			{
-				postCmdList.emplace_back(IDI_DELETE, IDS_PROC_REMOVEBRANCH, [&]
-				{
-					CString msg;
-					msg.Format(IDS_PROC_DELETEBRANCHTAG, dlg.m_VersionName);
-					if (CMessageBox::Show(nullptr, msg, _T("TortoiseGit"), 2, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_DELETEBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 1)
-					{
-						CString cmd, out;
-						cmd.Format(_T("git.exe branch -D -- %s"), (LPCTSTR)dlg.m_VersionName);
-						if (g_Git.Run(cmd, &out, CP_UTF8))
-							MessageBox(nullptr, out, _T("TortoiseGit"), MB_OK);
-					}
-				});
-			}
-			if (dlg.m_bIsBranch)
-				postCmdList.emplace_back(IDI_PUSH, IDS_MENUPUSH, []{ Push(); });
-
-			BOOL hasGitSVN = CTGitPath(g_Git.m_CurrentDir).GetAdminDirMask() & ITEMIS_GITSVN;
-			if (hasGitSVN)
-				postCmdList.emplace_back(IDI_COMMIT, IDS_MENUSVNDCOMMIT, []{ SVNDCommit(); });
-		};
-
-		Prodlg.DoModal();
-		return !Prodlg.m_GitStatus;
-	}
-	return false;
+	return FALSE;
 }
 
 BOOL CAppUtils::MergeAbort()

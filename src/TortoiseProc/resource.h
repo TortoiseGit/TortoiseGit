@@ -1278,6 +1278,7 @@
 #define IDC_CHECK_SVN                   1604
 #define IDS_ERR_MUSTBESAMEWT            1604
 #define IDC_CHECK_SVN_TRUNK             1605
+#define IDS_MERGE_UNRELATED             1605
 #define IDC_EDIT_SVN_TRUNK              1606
 #define IDC_REBASE_CHECK_FORCE          1607
 #define IDC_EDIT_DEPTH                  1607
