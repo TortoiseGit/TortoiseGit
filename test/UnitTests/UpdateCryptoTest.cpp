@@ -22,7 +22,6 @@
 #include "../version.h"
 #include "StringUtils.h"
 #include "UpdateCrypto.h"
-#include "SmartHandle.h"
 
 TEST(UpdateCrypto, SimpleVerify)
 {

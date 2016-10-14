@@ -5,6 +5,9 @@ Released: unreleased
  * Fixed issue #2837: Layout of overlapping icons settings dialog
  * Fixed issue #2839: The dialog "check for updates" has a resize issue
  * Fixed issue #2845: Sticky button when resizing the "Rename dialog"
+ * Fixed issue #2846: Spell checker won't add unknown words to dictionary. The dictionaries are now saved as UTF-8. 
+   If you have non ascii chars in your dictionary and want to keep those, you need to manually convert these to UTF-8.
+   The dictionaries can be found in %APPDATA%\TortoiseGit\*.dic.
 
 = Release 2.3.0 =
 Released: 2016-10-01
