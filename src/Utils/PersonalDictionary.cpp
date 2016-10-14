@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2011-2016 - TortoiseGit
-// Copyright (C) 2003-2006, 2008, 2014 - TortoiseSVN
+// Copyright (C) 2003-2006, 2008, 2014, 2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -20,6 +20,7 @@
 
 #include "stdafx.h"
 #include <fstream>
+#include <codecvt>
 #include "PersonalDictionary.h"
 #include "PathUtils.h"
 
@@ -42,6 +43,9 @@ static void OpenFileStream(T& file, LONG lLanguage, std::ios_base::openmode open
 	char filepath[MAX_PATH + 1] = { 0 };
 	WideCharToMultiByte(CP_ACP, 0, path, -1, filepath, MAX_PATH, nullptr, nullptr);
 
+	std::locale ulocale(std::locale(), new std::codecvt_utf8<wchar_t>);
+	file.imbue(ulocale);
+
 	file.open(filepath, openmode);
 }
 
@@ -63,6 +67,8 @@ bool CPersonalDictionary::Load()
 	{
 		File.getline(line, _countof(line));
 		sWord = line;
+		if (sWord.IsEmpty())
+			continue;
 		dict.insert(sWord);
 	} while (File.gcount() > 0);
 	File.close();
@@ -74,7 +80,7 @@ bool CPersonalDictionary::AddWord(const CString& sWord)
 {
 	if (!m_bLoaded)
 		Load();
-	if (sWord.GetLength() >= PDICT_MAX_WORD_LENGTH)
+	if (sWord.GetLength() >= PDICT_MAX_WORD_LENGTH || sWord.IsEmpty())
 		return false;
 	dict.insert(sWord);
 	return true;
