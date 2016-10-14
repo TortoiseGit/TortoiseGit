@@ -144,7 +144,7 @@ BOOL CImportPatchDlg::OnInitDialog()
 		TRACE0("Failed to create log message control");
 		return FALSE;
 	}
-	m_PatchCtrl.Init(0);
+	m_PatchCtrl.Init(-1);
 	m_PatchCtrl.Call(SCI_SETREADONLY, TRUE);
 	m_PatchCtrl.SetUDiffStyle();
 
