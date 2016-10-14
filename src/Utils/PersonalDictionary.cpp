@@ -67,6 +67,7 @@ bool CPersonalDictionary::Load()
 	{
 		File.getline(line, _countof(line));
 		sWord = line;
+		sWord.TrimRight();
 		if (sWord.IsEmpty())
 			continue;
 		dict.insert(sWord);

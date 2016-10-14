@@ -46,6 +46,8 @@
 #include "scope_exit_noexcept.h"
 #include "DebugOutput.h"
 
+#include "SmartHandle.h"
+
 // Header for gtest
 #include "gtest/gtest.h"
 
