@@ -214,7 +214,7 @@ UINT CCheckForUpdatesDlg::CheckThread()
 		}
 	}
 
-	if (!official && sCheckURL.Find(_T("://versioncheck.tortoisegit.org/")) > 0)
+	if (!official && CStringUtils::StartsWith(sCheckURL, L"https://versioncheck.tortoisegit.org/"))
 		official = true;
 
 	if (!official)

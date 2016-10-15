@@ -180,12 +180,12 @@ static int LogicalCompareBranchesPredicate(const CString &left, const CString &r
 {
 	if (g_bSortLocalBranchesFirst)
 	{
-		int leftIsRemote = left.Find(_T("remotes/"));
-		int rightIsRemote = right.Find(_T("remotes/"));
+		bool leftIsRemote = CStringUtils::StartsWith(left, L"remotes/");
+		bool rightIsRemote = CStringUtils::StartsWith(right, L"remotes/");
 
-		if (leftIsRemote == 0 && rightIsRemote < 0)
+		if (leftIsRemote && !rightIsRemote)
 			return false;
-		else if (leftIsRemote < 0 && rightIsRemote == 0)
+		else if (!leftIsRemote && rightIsRemote)
 			return true;
 	}
 	if (g_bSortLogical)

@@ -2044,7 +2044,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					std::vector<const CString*> branchs;
 					auto addCheck = [&](const CString& ref)
 					{
-						if (ref.Find(_T("refs/heads/")) != 0 || ref == currentBranch)
+						if (!CStringUtils::StartsWith(ref, L"refs/heads/") || ref == currentBranch)
 							return;
 						branchs.push_back(&ref);
 					};

@@ -3258,7 +3258,7 @@ static bool DoMerge(bool noFF, bool ffOnly, bool squash, bool noCommit, const in
 			return;
 		}
 
-		if (isBranch && version.Find(L"remotes/") == -1) // do not ask to remove remote branches
+		if (isBranch && !CStringUtils::StartsWith(version, L"remotes/")) // do not ask to remove remote branches
 		{
 			postCmdList.emplace_back(IDI_DELETE, IDS_PROC_REMOVEBRANCH, [&]
 			{
