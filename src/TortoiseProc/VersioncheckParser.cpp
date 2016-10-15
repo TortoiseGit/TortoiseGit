@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2017 - TortoiseGit
+// Copyright (C) 2013-2018 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -19,10 +19,9 @@
 #include "stdafx.h"
 #include "VersioncheckParser.h"
 #include "UnicodeUtils.h"
-#include "Git.h"
 
 CVersioncheckParser::CVersioncheckParser()
-	: m_versioncheckfile(true)
+	: m_versioncheckfile(true, true)
 {
 }
 
@@ -30,16 +29,62 @@ CVersioncheckParser::~CVersioncheckParser()
 {
 }
 
-bool CVersioncheckParser::Load(const CString& filename, CString& err)
+static const wchar_t *escapes = L"ntb\"\\";
+static const wchar_t *escaped = L"\n\t\b\"\\";
+static CString GetConfigValue(const wchar_t* ptr)
 {
-	git_config_add_file_ondisk(m_versioncheckfile, CUnicodeUtils::GetUTF8(filename), GIT_CONFIG_LEVEL_GLOBAL, nullptr, 0);
+	if (!ptr)
+		return L"";
 
-	if (m_versioncheckfile.GetString(L"tortoisegit.version", m_version.version))
+	CString value;
 	{
-		err = L"Could not parse version check file: " + g_Git.GetLibGit2LastErr();
-		return false;
+		CStrBuf working(value, (int)min(wcslen(ptr), UINT16_MAX));
+		wchar_t* fixed = working;
+		bool quoted = false;
+
+		while (*ptr)
+		{
+			if (*ptr == L'"')
+				quoted = !quoted;
+			else if (*ptr != L'\\')
+			{
+				if (!quoted && (*ptr == L'#' || *ptr == L';'))
+					break;
+				*fixed++ = *ptr;
+			}
+			else
+			{
+				/* backslash, check the next char */
+				++ptr;
+				const wchar_t* esc = wcschr(escapes, *ptr);
+				if (esc)
+					*fixed++ = escaped[esc - escapes];
+				else
+					return L"";
+			}
+			++ptr;
+		}
+		*fixed = L'\0';
 	}
 
+	return value;
+}
+
+CString CVersioncheckParser::GetStringValue(const CString& section, const CString& entry)
+{
+	return GetConfigValue(m_versioncheckfile.GetValue(section, entry));
+}
+
+bool CVersioncheckParser::Load(const CString& filename, CString& err)
+{
+	m_versioncheckfile.LoadFile(filename);
+
+	m_version.version = GetStringValue(L"tortoisegit", L"version");
+	if (m_version.version.IsEmpty())
+	{
+		err = L"Invalid version check file.";
+		return false;
+	}
 	unsigned __int64 version = 0;
 	CString vertemp = m_version.version;
 	m_version.major = _ttoi(vertemp);
@@ -58,11 +103,14 @@ bool CVersioncheckParser::Load(const CString& filename, CString& err)
 	version += m_version.build;
 
 	if (version == 0)
+	{
+		err = L"Invalid version check file.";
 		return false;
+	}
 
 	// another versionstring for the filename can be provided
 	// this is needed for preview releases
-	m_versioncheckfile.GetString(L"tortoisegit.versionstring", m_version.version_for_filename);
+	m_version.version_for_filename = GetStringValue(L"tortoisegit", L"versionstring");
 	if (m_version.version_for_filename.IsEmpty())
 		m_version.version_for_filename = m_version.version;
 
@@ -76,30 +124,26 @@ CVersioncheckParser::Version CVersioncheckParser::GetTortoiseGitVersion()
 
 CString CVersioncheckParser::GetTortoiseGitInfoText()
 {
-	CString infotext;
-	m_versioncheckfile.GetString(L"tortoisegit.infotext", infotext);
-	return infotext;
+	return GetStringValue(L"tortoisegit", L"infotext");;
 }
 
 CString CVersioncheckParser::GetTortoiseGitInfoTextURL()
 {
-	CString infotexturl;
-	m_versioncheckfile.GetString(L"tortoisegit.infotexturl", infotexturl);
-	return infotexturl;
+	return GetStringValue(L"tortoisegit", L"infotexturl");;
 }
 
 CString CVersioncheckParser::GetTortoiseGitIssuesURL()
 {
-	CString issueurl;
-	if (m_versioncheckfile.GetString(L"tortoisegit.issuesurl", issueurl))
+	CString issueurl = GetStringValue(L"tortoisegit", L"issuesurl");
+	auto section = m_versioncheckfile.GetSection(L"TortoiseGit");
+	if (issueurl.IsEmpty() && section && section->find(L"issuesurl") == section->cend())
 		issueurl = L"https://tortoisegit.org/issue/%BUGID%";
 	return issueurl;
 }
 
 CString CVersioncheckParser::GetTortoiseGitChangelogURL()
 {
-	CString changelogurl;
-	m_versioncheckfile.GetString(L"tortoisegit.changelogurl", changelogurl);
+	CString changelogurl = GetStringValue(L"tortoisegit", L"changelogurl");
 	if (changelogurl.IsEmpty())
 		changelogurl = L"https://versioncheck.tortoisegit.org/changelog.txt";
 	return changelogurl;
@@ -107,8 +151,7 @@ CString CVersioncheckParser::GetTortoiseGitChangelogURL()
 
 CString CVersioncheckParser::GetTortoiseGitBaseURL()
 {
-	CString baseurl;
-	m_versioncheckfile.GetString(L"tortoisegit.baseurl", baseurl);
+	CString baseurl = GetStringValue(L"tortoisegit", L"baseurl");
 	if (baseurl.IsEmpty())
 		baseurl.Format(L"http://updater.download.tortoisegit.org/tgit/%s/", (LPCTSTR)m_version.version_for_filename);
 	return baseurl;
@@ -116,9 +159,7 @@ CString CVersioncheckParser::GetTortoiseGitBaseURL()
 
 bool CVersioncheckParser::GetTortoiseGitIsHotfix()
 {
-	bool ishotfix = false;
-	m_versioncheckfile.GetBool(L"tortoisegit.hotfix", ishotfix);
-	return ishotfix;
+	return m_versioncheckfile.GetBoolValue(L"tortoisegit", L"hotfix", false);
 }
 
 static inline CString x86x64()
@@ -132,8 +173,7 @@ static inline CString x86x64()
 
 CString CVersioncheckParser::GetTortoiseGitMainfilename()
 {
-	CString mainfilenametemplate;
-	m_versioncheckfile.GetString(L"tortoisegit.mainfilename", mainfilenametemplate);
+	CString mainfilenametemplate = GetStringValue(L"tortoisegit", L"mainfilename");
 	if (mainfilenametemplate.IsEmpty())
 		mainfilenametemplate = L"TortoiseGit-%1!s!-%2!s!bit.msi";
 	CString mainfilename;
@@ -143,8 +183,7 @@ CString CVersioncheckParser::GetTortoiseGitMainfilename()
 
 CString CVersioncheckParser::GetTortoiseGitLanguagepackFilenameTemplate()
 {
-	CString languagepackfilenametemplate;
-	m_versioncheckfile.GetString(L"tortoisegit.languagepackfilename", languagepackfilenametemplate);
+	CString languagepackfilenametemplate = GetStringValue(L"tortoisegit", L"languagepackfilename");
 	if (languagepackfilenametemplate.IsEmpty())
 		languagepackfilenametemplate = L"TortoiseGit-LanguagePack-%1!s!-%2!s!bit-%3!s!.msi";
 	return languagepackfilenametemplate;
@@ -154,11 +193,12 @@ CVersioncheckParser::LANGPACK_VECTOR CVersioncheckParser::GetTortoiseGitLanguage
 {
 	CString languagepackfilenametemplate = GetTortoiseGitLanguagepackFilenameTemplate();
 	LANGPACK_VECTOR vec;
-	git_config_get_multivar_foreach(m_versioncheckfile, "tortoisegit.langs", nullptr, [](const git_config_entry* configentry, void* payload) -> int
-	{
-		LANGPACK_VECTOR* languagePacks = (LANGPACK_VECTOR*)payload;
-		CString langs = CUnicodeUtils::GetUnicode(configentry->value);
 
+	CSimpleIni::TNamesDepend values;
+	m_versioncheckfile.GetAllValues(L"tortoisegit", L"langs", values);
+	for (const auto& value : values)
+	{
+		CString langs = GetConfigValue(value.pItem);
 		LanguagePack pack;
 
 		int nextTokenPos = langs.Find(L";", 5); // be extensible for the future
@@ -179,13 +219,9 @@ CVersioncheckParser::LANGPACK_VECTOR CVersioncheckParser::GetTortoiseGitLanguage
 			pack.m_LangName += L')';
 		}
 
-		languagePacks->push_back(pack);
-
-		return 0;
-	}, &vec);
-
-	for (auto& pack : vec)
 		pack.m_filename.FormatMessage(languagepackfilenametemplate, (LPCTSTR)m_version.version_for_filename, (LPCTSTR)x86x64(), (LPCTSTR)pack.m_LangCode, pack.m_LocaleID);
 
+		vec.push_back(pack);
+	}
 	return vec;
 }
