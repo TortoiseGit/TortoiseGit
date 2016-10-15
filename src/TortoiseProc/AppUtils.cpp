@@ -2350,6 +2350,139 @@ int CAppUtils::SaveCommitUnicodeFile(const CString& filename, CString &message)
 	}
 }
 
+bool DoPull(const CString& url, bool bAutoLoad, BOOL bFetchTags, bool bNoFF, bool bFFonly, bool bSquash, bool bNoCommit, int* nDepth, BOOL bPrune, const CString& remoteBranchName, bool showPush, bool showStashPop, bool bUnrelated)
+{
+	if (bAutoLoad)
+		CAppUtils::LaunchPAgent(nullptr, &url);
+
+	CGitHash hashOld;
+	if (g_Git.GetHash(hashOld, L"HEAD"))
+	{
+		MessageBox(nullptr, g_Git.GetGitLastErr(L"Could not get HEAD hash."), L"TortoiseGit", MB_ICONERROR);
+		return false;
+	}
+
+	CString args;
+	if (CRegDWORD(L"Software\\TortoiseGit\\PullRebaseBehaviorLike1816", FALSE) == FALSE)
+		args += L" --no-rebase";
+
+	if (bFetchTags == BST_UNCHECKED)
+		args += L" --no-tags";
+	else if (bFetchTags == BST_CHECKED)
+		args += L" --tags";
+
+	if (bNoFF)
+		args += L" --no-ff";
+
+	if (bFFonly)
+		args += L" --ff-only";
+
+	if (bSquash)
+		args += L" --squash";
+
+	if (bNoCommit)
+		args += L" --no-commit";
+
+	if (nDepth)
+		args.AppendFormat(L" --depth %d", *nDepth);
+
+	if (bPrune == BST_CHECKED)
+		args += L" --prune";
+	else if (bPrune == BST_UNCHECKED)
+		args += L" --no-prune";
+
+	if (bUnrelated)
+		args += L" --allow-unrelated-histories";
+
+	CString cmd;
+	cmd.Format(L"git.exe pull --progress -v%s \"%s\" %s", (LPCTSTR)args, (LPCTSTR)url, (LPCTSTR)remoteBranchName);
+	CProgressDlg progress;
+	progress.m_GitCmd = cmd;
+
+	CGitHash hashNew; // declare outside lambda, because it is captured by reference
+	progress.m_PostCmdCallback = [&](DWORD status, PostCmdList& postCmdList)
+	{
+		if (status)
+		{
+			if (CAppUtils::GetMsysgitVersion() >= 0x02090000)
+			{
+				STRING_VECTOR remotes;
+				g_Git.GetRemoteList(remotes);
+				if (std::find(remotes.begin(), remotes.end(), url) != remotes.end())
+				{
+					CString currentBranch;
+					if (g_Git.GetCurrentBranchFromFile(g_Git.m_CurrentDir, currentBranch))
+						currentBranch.Empty();
+					CString remoteRef = L"remotes/" + url + L"/" + remoteBranchName;
+					if (!currentBranch.IsEmpty() && remoteBranchName.IsEmpty())
+					{
+						CString pullRemote, pullBranch;
+						g_Git.GetRemoteTrackedBranch(currentBranch, pullRemote, pullBranch);
+						if (!pullRemote.IsEmpty() && !pullBranch.IsEmpty())
+							remoteRef = L"remotes/" + pullRemote + L"/" + pullBranch;
+					}
+					CGitHash common;
+					g_Git.IsFastForward(L"HEAD", remoteRef, &common);
+					if (common.IsEmpty())
+						postCmdList.emplace_back(IDI_MERGE, IDS_MERGE_UNRELATED, [=] { DoPull(url, bAutoLoad, bFetchTags, bNoFF, bFFonly, bSquash, bNoCommit, nDepth, bPrune, remoteBranchName, showPush, showStashPop, true); });
+				}
+			}
+
+			postCmdList.emplace_back(IDI_PULL, IDS_MENUPULL, [&]{ CAppUtils::Pull(); });
+			postCmdList.emplace_back(IDI_COMMIT, IDS_MENUSTASHSAVE, [&]{ CAppUtils::StashSave(L"", true); });
+			return;
+		}
+
+		if (showStashPop)
+			postCmdList.emplace_back(IDI_RELOCATE, IDS_MENUSTASHPOP, []{ CAppUtils::StashPop(); });
+
+		if (g_Git.GetHash(hashNew, L"HEAD"))
+			MessageBox(nullptr, g_Git.GetGitLastErr(L"Could not get HEAD hash after pulling."), L"TortoiseGit", MB_ICONERROR);
+		else
+		{
+			postCmdList.emplace_back(IDI_DIFF, IDS_PROC_PULL_DIFFS, [&]
+			{
+				CFileDiffDlg dlg;
+				dlg.SetDiff(nullptr, hashOld.ToString(), hashNew.ToString());
+				dlg.DoModal();
+			});
+			postCmdList.emplace_back(IDI_LOG, IDS_PROC_PULL_LOG, [&]
+			{
+				CLogDlg dlg;
+				dlg.SetParams(CTGitPath(L""), CTGitPath(L""), L"", hashOld.ToString() + L".." + hashNew.ToString(), 0);
+				dlg.DoModal();
+			});
+		}
+
+		if (showPush)
+			postCmdList.emplace_back(IDI_PUSH, IDS_MENUPUSH, []{ CAppUtils::Push(); });
+
+		CTGitPath gitPath = g_Git.m_CurrentDir;
+		if (gitPath.HasSubmodules())
+		{
+			postCmdList.emplace_back(IDI_UPDATE, IDS_PROC_SUBMODULESUPDATE, []
+			{
+				CString sCmd;
+				sCmd.Format(L"/command:subupdate /bkpath:\"%s\"", (LPCTSTR)g_Git.m_CurrentDir);
+				CAppUtils::RunTortoiseGitProc(sCmd);
+			});
+		}
+	};
+
+	INT_PTR ret = progress.DoModal();
+
+	if (ret == IDOK && progress.m_GitStatus == 1 && progress.m_LogText.Find(L"CONFLICT") >= 0 && CMessageBox::Show(nullptr, IDS_SEECHANGES, IDS_APPNAME, MB_YESNO | MB_ICONINFORMATION) == IDYES)
+	{
+		CChangedDlg changeddlg;
+		changeddlg.m_pathList.AddPath(CTGitPath());
+		changeddlg.DoModal();
+
+		return true;
+	}
+
+	return ret == IDOK;
+}
+
 bool CAppUtils::Pull(bool showPush, bool showStashPop)
 {
 	if (IsTGitRebaseActive())
@@ -2372,110 +2505,7 @@ bool CAppUtils::Pull(bool showPush, bool showStashPop)
 							dlg.m_bRebaseActivatedInConfigForPull ? 2 : 1, // Rebase after fetching
 							dlg.m_bRebasePreserveMerges == TRUE); // Preserve merges on rebase
 
-		CString url = dlg.m_RemoteURL;
-
-		if (dlg.m_bAutoLoad)
-			CAppUtils::LaunchPAgent(nullptr, &dlg.m_RemoteURL);
-
-		CGitHash hashOld;
-		if (g_Git.GetHash(hashOld, _T("HEAD")))
-		{
-			MessageBox(nullptr, g_Git.GetGitLastErr(_T("Could not get HEAD hash.")), _T("TortoiseGit"), MB_ICONERROR);
-			return false;
-		}
-
-		CString args;
-		if (CRegDWORD(L"Software\\TortoiseGit\\PullRebaseBehaviorLike1816", FALSE) == FALSE)
-			args += L" --no-rebase";
-
-		if (dlg.m_bFetchTags == BST_UNCHECKED)
-			args += L" --no-tags";
-		else if (dlg.m_bFetchTags == BST_CHECKED)
-			args += L" --tags";
-
-		if (dlg.m_bNoFF)
-			args += L" --no-ff";
-
-		if (dlg.m_bFFonly)
-			args += L" --ff-only";
-
-		if (dlg.m_bSquash)
-			args += L" --squash";
-
-		if (dlg.m_bNoCommit)
-			args += L" --no-commit";
-
-		if (dlg.m_bDepth)
-			args.AppendFormat(L" --depth %d", dlg.m_nDepth);
-
-		if (dlg.m_bPrune == BST_CHECKED)
-			args += L" --prune";
-		else if (dlg.m_bPrune == BST_UNCHECKED)
-			args += L" --no-prune";
-
-		CString cmd;
-		cmd.Format(L"git.exe pull --progress -v%s \"%s\" %s", (LPCTSTR)args, (LPCTSTR)url, (LPCTSTR)dlg.m_RemoteBranchName);
-		CProgressDlg progress;
-		progress.m_GitCmd = cmd;
-
-		CGitHash hashNew; // declare outside lambda, because it is captured by reference
-		progress.m_PostCmdCallback = [&](DWORD status, PostCmdList& postCmdList)
-		{
-			if (status)
-			{
-				postCmdList.emplace_back(IDI_PULL, IDS_MENUPULL, [&]{ Pull(); });
-				postCmdList.emplace_back(IDI_COMMIT, IDS_MENUSTASHSAVE, [&]{ StashSave(_T(""), true); });
-				return;
-			}
-
-			if (showStashPop)
-				postCmdList.emplace_back(IDI_RELOCATE, IDS_MENUSTASHPOP, []{ StashPop(); });
-
-			if (g_Git.GetHash(hashNew, _T("HEAD")))
-				MessageBox(nullptr, g_Git.GetGitLastErr(_T("Could not get HEAD hash after pulling.")), _T("TortoiseGit"), MB_ICONERROR);
-			else
-			{
-				postCmdList.emplace_back(IDI_DIFF, IDS_PROC_PULL_DIFFS, [&]
-				{
-					CFileDiffDlg dlg;
-					dlg.SetDiff(nullptr, hashOld.ToString(), hashNew.ToString());
-					dlg.DoModal();
-				});
-				postCmdList.emplace_back(IDI_LOG, IDS_PROC_PULL_LOG, [&]
-				{
-					CLogDlg dlg;
-					dlg.SetParams(CTGitPath(_T("")), CTGitPath(_T("")), _T(""), hashOld.ToString() + _T("..") + hashNew.ToString(), 0);
-					dlg.DoModal();
-				});
-			}
-
-			if (showPush)
-				postCmdList.emplace_back(IDI_PUSH, IDS_MENUPUSH, []{ Push(); });
-
-			CTGitPath gitPath = g_Git.m_CurrentDir;
-			if (gitPath.HasSubmodules())
-			{
-				postCmdList.emplace_back(IDI_UPDATE, IDS_PROC_SUBMODULESUPDATE, []
-				{
-					CString sCmd;
-					sCmd.Format(_T("/command:subupdate /bkpath:\"%s\""), (LPCTSTR)g_Git.m_CurrentDir);
-					CAppUtils::RunTortoiseGitProc(sCmd);
-				});
-			}
-		};
-
-		INT_PTR ret = progress.DoModal();
-
-		if (ret == IDOK && progress.m_GitStatus == 1 && progress.m_LogText.Find(_T("CONFLICT")) >= 0 && CMessageBox::Show(nullptr, IDS_SEECHANGES, IDS_APPNAME, MB_YESNO | MB_ICONINFORMATION) == IDYES)
-		{
-			CChangedDlg changeddlg;
-			changeddlg.m_pathList.AddPath(CTGitPath());
-			changeddlg.DoModal();
-
-			return true;
-		}
-
-		return ret == IDOK;
+		return DoPull(dlg.m_RemoteURL, dlg.m_bAutoLoad == BST_CHECKED, dlg.m_bFetchTags, dlg.m_bNoFF == BST_CHECKED, dlg.m_bFFonly == BST_CHECKED, dlg.m_bSquash == BST_CHECKED, dlg.m_bNoCommit == BST_CHECKED, dlg.m_bDepth ? &dlg.m_nDepth : nullptr, dlg.m_bPrune, dlg.m_RemoteBranchName, showPush, showStashPop, false);
 	}
 
 	return false;
