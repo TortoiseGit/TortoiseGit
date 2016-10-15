@@ -149,6 +149,9 @@
     <ClInclude Include="..\..\src\Utils\PersonalDictionary.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\TortoiseProc\VersioncheckParser.h">
+      <Filter>TortoiseProc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -315,6 +318,12 @@
     </ClCompile>
     <ClCompile Include="..\..\src\Utils\PersonalDictionary.cpp">
       <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\TortoiseProc\VersioncheckParser.cpp">
+      <Filter>TortoiseProc</Filter>
+    </ClCompile>
+    <ClCompile Include="VersioncheckParserTest.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
