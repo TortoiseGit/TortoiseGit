@@ -22,6 +22,7 @@
 #include "StandAloneDlg.h"
 #include "UpdateListCtrl.h"
 #include "UpdateDownloader.h"
+#include "VersioncheckParser.h"
 #include "HyperLink.h"
 #include "MenuButton.h"
 #include "SciEdit.h"
@@ -90,9 +91,9 @@ private:
 	CHyperLink	m_link;
 	CString		GetDownloadsDirectory();
 	CMenuButton	m_ctrlUpdate;
-	void		FillDownloads(CAutoConfig& versionfile, const CString version);
+	void		FillDownloads(CVersioncheckParser& versionfile);
 	CSciEdit	m_cLogMessage;
-	void		FillChangelog(CAutoConfig& versionfile, bool official);
+	void		FillChangelog(CVersioncheckParser& versionfile, bool official);
 	static CString GetWinINetError(DWORD err);
 	CString		m_sErrors;
 	CString		m_sNewVersionNumber;

@@ -929,6 +929,9 @@
     <ClCompile Include="Commands\CommitIsOnRefsCommand.cpp">
       <Filter>Commands\CommitIsOnRefs</Filter>
     </ClCompile>
+    <ClCompile Include="VersioncheckParser.cpp">
+      <Filter>Commands\UpdateCheck</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddRemoteDlg.h">
@@ -1734,6 +1737,9 @@
     </ClInclude>
     <ClInclude Include="..\Utils\CreateProcessHelper.h">
       <Filter>Utils\General</Filter>
+    </ClInclude>
+    <ClInclude Include="VersioncheckParser.h">
+      <Filter>Commands\UpdateCheck</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

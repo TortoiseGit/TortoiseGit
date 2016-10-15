@@ -308,6 +308,7 @@
     </ClCompile>
     <ClCompile Include="TortoiseProc.cpp" />
     <ClCompile Include="UserPassword.cpp" />
+    <ClCompile Include="VersioncheckParser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Git\Git.h" />
@@ -578,6 +579,7 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="TortoiseProc.h" />
     <ClInclude Include="UserPassword.h" />
+    <ClInclude Include="VersioncheckParser.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Resources\actionadded.ico" />

@@ -220,9 +220,9 @@ UINT CCheckForUpdatesDlg::CheckThread()
 	if (!official)
 		SetDlgItemText(IDC_SOURCE, _T("Using (unofficial) release channel: ") + sCheckURL);
 
-	CString ver;
-	CAutoConfig versioncheck(true);
 	CString errorText;
+	CVersioncheckParser versioncheck;
+	CVersioncheckParser::Version version;
 	DWORD ret = m_updateDownloader->DownloadFile(sCheckURL, tempfile, false);
 	if (!ret && official)
 	{
@@ -250,69 +250,37 @@ UINT CCheckForUpdatesDlg::CheckThread()
 		goto finish;
 	}
 
-	git_config_add_file_ondisk(versioncheck, CUnicodeUtils::GetUTF8(tempfile), GIT_CONFIG_LEVEL_GLOBAL, 0);
-
-	unsigned int major, minor, micro, build;
-	major = minor = micro = build = 0;
-	unsigned __int64 version = 0;
-
-	if (!versioncheck.GetString(_T("tortoisegit.version"), ver))
+	if (!versioncheck.Load(tempfile, errorText))
 	{
-		CString vertemp = ver;
-		major = _ttoi(vertemp);
-		vertemp = vertemp.Mid(vertemp.Find('.') + 1);
-		minor = _ttoi(vertemp);
-		vertemp = vertemp.Mid(vertemp.Find('.') + 1);
-		micro = _ttoi(vertemp);
-		vertemp = vertemp.Mid(vertemp.Find('.') + 1);
-		build = _ttoi(vertemp);
-		version = major;
-		version <<= 16;
-		version += minor;
-		version <<= 16;
-		version += micro;
-		version <<= 16;
-		version += build;
-
-		if (version == 0)
+		if (!errorText.IsEmpty())
+			SetDlgItemText(IDC_CHECKRESULT, errorText);
+		else
 		{
 			temp.LoadString(IDS_CHECKNEWER_NETERROR);
 			SetDlgItemText(IDC_CHECKRESULT, temp);
-			goto finish;
 		}
-
-		// another versionstring for the filename can be provided
-		// this is needed for preview releases
-		vertemp.Empty();
-		versioncheck.GetString(_T("tortoisegit.versionstring"), vertemp);
-		if (!vertemp.IsEmpty())
-			ver = vertemp;
-	}
-	else
-	{
-		errorText = _T("Could not parse version check file: ") + g_Git.GetLibGit2LastErr();
-		SetDlgItemText(IDC_CHECKRESULT, errorText);
 		DeleteUrlCacheEntry(sCheckURL);
 		goto finish;
 	}
 
+	version = versioncheck.GetTortoiseGitVersion();
 	{
 		BOOL bNewer = FALSE;
 		if (m_bForce)
 			bNewer = TRUE;
-		else if (major > TGIT_VERMAJOR)
+		else if (version.major > TGIT_VERMAJOR)
 			bNewer = TRUE;
-		else if ((minor > TGIT_VERMINOR) && (major == TGIT_VERMAJOR))
+		else if ((version.minor > TGIT_VERMINOR) && (version.major == TGIT_VERMAJOR))
 			bNewer = TRUE;
-		else if ((micro > TGIT_VERMICRO) && (minor == TGIT_VERMINOR) && (major == TGIT_VERMAJOR))
+		else if ((version.micro > TGIT_VERMICRO) && (version.minor == TGIT_VERMINOR) && (version.major == TGIT_VERMAJOR))
 			bNewer = TRUE;
-		else if ((build > TGIT_VERBUILD) && (micro == TGIT_VERMICRO) && (minor == TGIT_VERMINOR) && (major == TGIT_VERMAJOR))
+		else if ((version.build > TGIT_VERBUILD) && (version.micro == TGIT_VERMICRO) && (version.minor == TGIT_VERMINOR) && (version.major == TGIT_VERMAJOR))
 			bNewer = TRUE;
 
-		m_sNewVersionNumber.Format(L"%u.%u.%u.%u", major, minor, micro, build);
-		if (m_sNewVersionNumber != ver)
+		m_sNewVersionNumber.Format(L"%u.%u.%u.%u", version.major, version.minor, version.micro, version.build);
+		if (m_sNewVersionNumber != version.version_for_filename)
 		{
-			CString versionstr = m_sNewVersionNumber + L" (" + ver + ")";
+			CString versionstr = m_sNewVersionNumber + L" (" + version.version_for_filename + L")";
 			temp.Format(IDS_CHECKNEWER_CURRENTVERSION, (LPCTSTR)versionstr);
 		}
 		else
@@ -321,11 +289,10 @@ UINT CCheckForUpdatesDlg::CheckThread()
 
 		if (bNewer)
 		{
-			versioncheck.GetString(_T("tortoisegit.infotext"), temp);
+			temp = versioncheck.GetTortoiseGitInfoText();
 			if (!temp.IsEmpty())
 			{
-				CString tempLink;
-				versioncheck.GetString(_T("tortoisegit.infotexturl"), tempLink);
+				CString tempLink = versioncheck.GetTortoiseGitInfoTextURL();
 				if (!tempLink.IsEmpty()) // find out the download link-URL, if any
 					m_sUpdateDownloadLink = tempLink;
 			}
@@ -334,7 +301,7 @@ UINT CCheckForUpdatesDlg::CheckThread()
 			SetDlgItemText(IDC_CHECKRESULT, temp);
 
 			FillChangelog(versioncheck, official);
-			FillDownloads(versioncheck, ver);
+			FillDownloads(versioncheck);
 
 			RemoveAnchor(IDC_GROUP_CHANGELOG);
 			RemoveAnchor(IDC_LOGMESSAGE);
@@ -398,30 +365,16 @@ finish:
 	return 0;
 }
 
-void CCheckForUpdatesDlg::FillDownloads(CAutoConfig& versioncheck, const CString version)
+void CCheckForUpdatesDlg::FillDownloads(CVersioncheckParser& versioncheck)
 {
-#if WIN64
-	const CString x86x64 = _T("64");
-#else
-	const CString x86x64 = _T("32");
-#endif
+	m_sFilesURL = versioncheck.GetTortoiseGitBaseURL();
 
-	versioncheck.GetString(_T("tortoisegit.baseurl"), m_sFilesURL);
-	if (m_sFilesURL.IsEmpty())
-		m_sFilesURL.Format(_T("http://updater.download.tortoisegit.org/tgit/%s/"), (LPCTSTR)version);
-
-	bool isHotfix = false;
-	versioncheck.GetBool(_T("tortoisegit.hotfix"), isHotfix);
-
+	bool isHotfix = versioncheck.GetTortoiseGitIsHotfix();
 	if (isHotfix)
 		m_ctrlFiles.InsertItem(0, _T("TortoiseGit Hotfix"));
 	else
 		m_ctrlFiles.InsertItem(0, _T("TortoiseGit"));
-	CString filenameMain, filenamePattern;
-	versioncheck.GetString(_T("tortoisegit.mainfilename"), filenamePattern);
-	if (filenamePattern.IsEmpty())
-		filenamePattern = _T("TortoiseGit-%1!s!-%2!s!bit.msi");
-	filenameMain.FormatMessage(filenamePattern, version, x86x64);
+	CString filenameMain = versioncheck.GetTortoiseGitMainfilename();
 	m_ctrlFiles.SetItemData(0, (DWORD_PTR)(new CUpdateListCtrl::Entry(filenameMain, CUpdateListCtrl::STATUS_NONE)));
 	m_ctrlFiles.SetCheck(0 , TRUE);
 
@@ -433,17 +386,11 @@ void CCheckForUpdatesDlg::FillDownloads(CAutoConfig& versioncheck, const CString
 
 	struct LangPack
 	{
-		CString m_PackName;
-		CString m_LangName;
-		DWORD m_LocaleID;
-		CString m_LangCode;
+		CVersioncheckParser::LanguagePack languagepack;
 		bool m_Installed;
 	};
-	struct LanguagePacks
-	{
-		std::vector<LangPack> availableLangs;
-		std::vector<DWORD> installedLangs;
-	} languagePacks;
+	std::vector<LangPack> availableLangs;
+	std::vector<DWORD> installedLangs;
 	{
 		// set up the language selecting combobox
 		CString path = CPathUtils::GetAppParentDirectory();
@@ -464,55 +411,26 @@ void CCheckForUpdatesDlg::FillDownloads(CAutoConfig& versioncheck, const CString
 				if ((sLoc.Left(2) == L"32") && (sLoc.GetLength() > 5))
 					continue;
 				DWORD loc = _tstoi(filename.Mid(12));
-				languagePacks.installedLangs.push_back(loc);
+				installedLangs.push_back(loc);
 			}
 		}
 	}
 
-	git_config_get_multivar_foreach(versioncheck, "tortoisegit.langs", nullptr, [](const git_config_entry* configentry, void* payload) -> int
+	for (auto& languagepack : versioncheck.GetTortoiseGitLanguagePacks())
 	{
-		LanguagePacks* languagePacks = (LanguagePacks*)payload;
-		CString langs = CUnicodeUtils::GetUnicode(configentry->value);
-
-		int nextTokenPos = langs.Find(_T(";"), 5); // be extensible for the future
-		if (nextTokenPos > 0)
-			langs = langs.Left(nextTokenPos);
-		CString sLang = _T("TortoiseGit Language Pack ") + langs.Mid(5);
-
-		DWORD loc = _tstoi(langs.Mid(0, 4));
-		TCHAR buf[MAX_PATH] = { 0 };
-		GetLocaleInfo(loc, LOCALE_SNATIVELANGNAME, buf, _countof(buf));
-		CString sLang2(buf);
-		GetLocaleInfo(loc, LOCALE_SNATIVECTRYNAME, buf, _countof(buf));
-		if (buf[0])
-		{
-			sLang2 += _T(" (");
-			sLang2 += buf;
-			sLang2 += _T(")");
-		}
-
-		bool installed = std::find(languagePacks->installedLangs.cbegin(), languagePacks->installedLangs.cend(), loc) != languagePacks->installedLangs.cend();
-		LangPack pack = { sLang, sLang2, loc, langs.Mid(5), installed };
-		languagePacks->availableLangs.push_back(pack);
-
-		return 0;
-	}, &languagePacks);
-	std::stable_sort(languagePacks.availableLangs.begin(), languagePacks.availableLangs.end(), [&](const LangPack& a, const LangPack& b) -> int
+		bool installed = std::find(installedLangs.cbegin(), installedLangs.cend(), languagepack.m_LocaleID) != installedLangs.cend();
+		LangPack pack = { languagepack, installed };
+		availableLangs.push_back(pack);
+	}
+	std::stable_sort(availableLangs.begin(), availableLangs.end(), [&](const LangPack& a, const LangPack& b) -> int
 	{
-		return (a.m_Installed && !b.m_Installed) ? 1 : (!a.m_Installed && b.m_Installed) ? 0 : (a.m_PackName.Compare(b.m_PackName) < 0);
+		return (a.m_Installed && !b.m_Installed) ? 1 : (!a.m_Installed && b.m_Installed) ? 0 : (a.languagepack.m_PackName.Compare(b.languagepack.m_PackName) < 0);
 	});
-	filenamePattern.Empty();
-	versioncheck.GetString(_T("tortoisegit.languagepackfilename"), filenamePattern);
-	if (filenamePattern.IsEmpty())
-		filenamePattern = _T("TortoiseGit-LanguagePack-%1!s!-%2!s!bit-%3!s!.msi");
-	for (const auto& langs : languagePacks.availableLangs)
+	for (const auto& langs : availableLangs)
 	{
-		int pos = m_ctrlFiles.InsertItem(m_ctrlFiles.GetItemCount(), langs.m_PackName);
-		m_ctrlFiles.SetItemText(pos, 1, langs.m_LangName);
-
-		CString filename;
-		filename.FormatMessage(filenamePattern, version, x86x64, langs.m_LangCode, langs.m_LocaleID);
-		m_ctrlFiles.SetItemData(pos, (DWORD_PTR)(new CUpdateListCtrl::Entry(filename, CUpdateListCtrl::STATUS_NONE)));
+		int pos = m_ctrlFiles.InsertItem(m_ctrlFiles.GetItemCount(), langs.languagepack.m_PackName);
+		m_ctrlFiles.SetItemText(pos, 1, langs.languagepack.m_LangName);
+		m_ctrlFiles.SetItemData(pos, (DWORD_PTR)(new CUpdateListCtrl::Entry(langs.languagepack.m_filename, CUpdateListCtrl::STATUS_NONE)));
 
 		if (langs.m_Installed)
 			m_ctrlFiles.SetCheck(pos , TRUE);
@@ -520,12 +438,11 @@ void CCheckForUpdatesDlg::FillDownloads(CAutoConfig& versioncheck, const CString
 	DialogEnableWindow(IDC_BUTTON_UPDATE, TRUE);
 }
 
-void CCheckForUpdatesDlg::FillChangelog(CAutoConfig& versioncheck, bool official)
+void CCheckForUpdatesDlg::FillChangelog(CVersioncheckParser& versioncheck, bool official)
 {
 	ProjectProperties pp;
 	pp.lProjectLanguage = -1;
-	if (versioncheck.GetString(_T("tortoisegit.issuesurl"), pp.sUrl))
-		pp.sUrl = _T("https://tortoisegit.org/issue/%BUGID%");
+	pp.sUrl = versioncheck.GetTortoiseGitIssuesURL();
 	if (!pp.sUrl.IsEmpty())
 	{
 		pp.SetCheckRe(_T("[Ii]ssues?:?(\\s*(,|and)?\\s*#?\\d+)+"));
@@ -534,14 +451,7 @@ void CCheckForUpdatesDlg::FillChangelog(CAutoConfig& versioncheck, bool official
 	m_cLogMessage.Init(pp);
 
 	CString sChangelogURL;
-	versioncheck.GetString(_T("TortoiseGit.changelogurl"), sChangelogURL);
-	if (sChangelogURL.IsEmpty())
-		sChangelogURL = _T("https://versioncheck.tortoisegit.org/changelog.txt");
-	else
-	{
-		CString tmp(sChangelogURL);
-		sChangelogURL.FormatMessage(tmp, TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, m_updateDownloader->m_sWindowsPlatform, m_updateDownloader->m_sWindowsVersion, m_updateDownloader->m_sWindowsServicePack);
-	}
+	sChangelogURL.FormatMessage(versioncheck.GetTortoiseGitChangelogURL(), TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, m_updateDownloader->m_sWindowsPlatform, m_updateDownloader->m_sWindowsVersion, m_updateDownloader->m_sWindowsServicePack);
 
 	CString tempchangelogfile = CTempFiles::Instance().GetTempFilePath(true).GetWinPathString();
 	DWORD err;
