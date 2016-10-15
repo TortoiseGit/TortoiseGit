@@ -101,7 +101,7 @@ TEST_P(GitIndexCBasicGitWithTestRepoFixture, ReadIndex)
 	ReadAndCheckIndex(indexList, m_Dir.GetTempDir());
 
 	CString testFile = m_Dir.GetTempDir() + L"\\1.txt";
-	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)testFile, L"this is testing file."));
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(testFile, L"this is testing file."));
 	CString output;
 	EXPECT_EQ(0, m_Git.Run(_T("git.exe add 1.txt"), &output, CP_UTF8));
 	EXPECT_TRUE(output.IsEmpty());
@@ -119,7 +119,7 @@ TEST_P(GitIndexCBasicGitWithTestRepoFixture, ReadIndex)
 	ReadAndCheckIndex(indexList, m_Dir.GetTempDir());
 
 	output.Empty();
-	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)testFile, L"this is testing file."));
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(testFile, L"this is testing file."));
 	EXPECT_EQ(0, m_Git.Run(_T("git.exe add -N 1.txt"), &output, CP_UTF8));
 	EXPECT_TRUE(output.IsEmpty());
 
@@ -157,17 +157,17 @@ TEST_P(GitIndexCBasicGitWithTestRepoFixture, GetFileStatus)
 	EXPECT_EQ(0, indexList.GetFileStatus(m_Dir.GetTempDir(), L"ansi.txt", &status, time, filesize));
 	EXPECT_EQ(git_wc_status_normal, status);
 
-	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)CombinePath(m_Dir.GetTempDir(), L"ansi.txt"), L"this is testing file."));
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(CombinePath(m_Dir.GetTempDir(), L"ansi.txt"), L"this is testing file."));
 	EXPECT_EQ(0, CGit::GetFileModifyTime(CombinePath(m_Dir.GetTempDir(), L"ansi.txt"), &time, nullptr, &filesize));
 	status = git_wc_status_none;
 	EXPECT_EQ(0, indexList.GetFileStatus(m_Dir.GetTempDir(), L"ansi.txt", &status, time, filesize, nullptr, nullptr, nullptr, nullptr, &skipworktree));
 	EXPECT_EQ(git_wc_status_modified, status);
 	EXPECT_FALSE(skipworktree);
 
-	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)CombinePath(m_Dir.GetTempDir(), L"just-added.txt"), L"this is testing file."));
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(CombinePath(m_Dir.GetTempDir(), L"just-added.txt"), L"this is testing file."));
 	EXPECT_EQ(0, m_Git.Run(_T("git.exe add -- just-added.txt"), &output, CP_UTF8));
 
-	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)CombinePath(m_Dir.GetTempDir(), L"noted-as-added.txt"), L"this is testing file."));
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(CombinePath(m_Dir.GetTempDir(), L"noted-as-added.txt"), L"this is testing file."));
 	EXPECT_EQ(0, m_Git.Run(_T("git.exe add -N -- noted-as-added.txt"), &output, CP_UTF8));
 
 	EXPECT_EQ(0, m_Git.Run(_T("git.exe update-index --skip-worktree -- ansi.txt"), &output, CP_UTF8));
@@ -191,7 +191,7 @@ TEST_P(GitIndexCBasicGitWithTestRepoFixture, GetFileStatus)
 	EXPECT_EQ(0, m_Git.Run(_T("git.exe update-index --no-skip-worktree ansi.txt"), &output, CP_UTF8));
 
 	Sleep(1000);
-	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)CombinePath(m_Dir.GetTempDir(), L"just-added.txt"), L"this IS testing file."));
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(CombinePath(m_Dir.GetTempDir(), L"just-added.txt"), L"this IS testing file."));
 	EXPECT_EQ(0, CGit::GetFileModifyTime(CombinePath(m_Dir.GetTempDir(), L"just-added.txt"), &time, nullptr, &filesize));
 	status = git_wc_status_none;
 	EXPECT_EQ(0, indexList.GetFileStatus(m_Dir.GetTempDir(), L"just-added.txt", &status, time, filesize));
@@ -403,29 +403,29 @@ TEST(GitIndex, CGitIgnoreItem)
 
 	CString ignoreFile = tempDir.GetTempDir() + L"\\.gitignore";
 
-	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)ignoreFile, L""));
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(ignoreFile, L""));
 	EXPECT_EQ(0, ignoreItem.FetchIgnoreList(tempDir.GetTempDir(), ignoreFile, false));
 	EXPECT_STREQ("", ignoreItem.m_BaseDir);
 	EXPECT_EQ(0, ignoreItem.FetchIgnoreList(tempDir.GetTempDir(), ignoreFile, true));
 	EXPECT_STREQ("", ignoreItem.m_BaseDir);
 
-	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)ignoreFile, L"#"));
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(ignoreFile, L"#"));
 	EXPECT_EQ(0, ignoreItem.FetchIgnoreList(tempDir.GetTempDir(), ignoreFile, false));
 	EXPECT_EQ(0, ignoreItem.FetchIgnoreList(tempDir.GetTempDir(), ignoreFile, true));
 
-	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)ignoreFile, L"# comment"));
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(ignoreFile, L"# comment"));
 	EXPECT_EQ(0, ignoreItem.FetchIgnoreList(tempDir.GetTempDir(), ignoreFile, false));
 	EXPECT_EQ(0, ignoreItem.FetchIgnoreList(tempDir.GetTempDir(), ignoreFile, true));
 
-	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)ignoreFile, L"\n"));
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(ignoreFile, L"\n"));
 	EXPECT_EQ(0, ignoreItem.FetchIgnoreList(tempDir.GetTempDir(), ignoreFile, false));
 	EXPECT_EQ(0, ignoreItem.FetchIgnoreList(tempDir.GetTempDir(), ignoreFile, true));
 
-	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)ignoreFile, L"\n#"));
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(ignoreFile, L"\n#"));
 	EXPECT_EQ(0, ignoreItem.FetchIgnoreList(tempDir.GetTempDir(), ignoreFile, false));
 	EXPECT_EQ(0, ignoreItem.FetchIgnoreList(tempDir.GetTempDir(), ignoreFile, true));
 
-	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)ignoreFile, L"*.tmp\n"));
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(ignoreFile, L"*.tmp\n"));
 	EXPECT_EQ(0, ignoreItem.FetchIgnoreList(tempDir.GetTempDir(), ignoreFile, false));
 	type = DT_DIR;
 	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("not-ignored", type));
@@ -449,7 +449,7 @@ TEST(GitIndex, CGitIgnoreItem)
 	EXPECT_EQ(1, ignoreItem.IsPathIgnored("subdir/text.tmp", type));
 	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("1.tmp.1", type));
 
-	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)ignoreFile, L"some-file\n"));
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(ignoreFile, L"some-file\n"));
 	EXPECT_EQ(0, ignoreItem.FetchIgnoreList(tempDir.GetTempDir(), ignoreFile, false));
 	type = DT_DIR;
 	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("not-ignored", type));
@@ -473,7 +473,7 @@ TEST(GitIndex, CGitIgnoreItem)
 	EXPECT_EQ(1, ignoreItem.IsPathIgnored("some-file", type));
 	EXPECT_EQ(1, ignoreItem.IsPathIgnored("subdir/some-file", type));
 
-	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)ignoreFile, L"\n\nsome-file\n"));
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(ignoreFile, L"\n\nsome-file\n"));
 	EXPECT_EQ(0, ignoreItem.FetchIgnoreList(tempDir.GetTempDir(), ignoreFile, false));
 	type = DT_DIR;
 	EXPECT_EQ(1, ignoreItem.IsPathIgnored("some-file", type));
@@ -489,7 +489,7 @@ TEST(GitIndex, CGitIgnoreItem)
 	EXPECT_EQ(1, ignoreItem.IsPathIgnored("some-file", type));
 	EXPECT_EQ(1, ignoreItem.IsPathIgnored("subdir/some-file", type));
 
-	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)ignoreFile, L"/some-file"));
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(ignoreFile, L"/some-file"));
 	EXPECT_EQ(0, ignoreItem.FetchIgnoreList(tempDir.GetTempDir(), ignoreFile, false));
 	type = DT_DIR;
 	EXPECT_EQ(1, ignoreItem.IsPathIgnored("some-file", type));
@@ -505,7 +505,7 @@ TEST(GitIndex, CGitIgnoreItem)
 	EXPECT_EQ(1, ignoreItem.IsPathIgnored("some-file", type));
 	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("subdir/some-file", type));
 
-	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)ignoreFile, L"some-dir/"));
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(ignoreFile, L"some-dir/"));
 	EXPECT_EQ(0, ignoreItem.FetchIgnoreList(tempDir.GetTempDir(), ignoreFile, false));
 	type = DT_DIR;
 	EXPECT_EQ(1, ignoreItem.IsPathIgnored("some-dir", type));
@@ -523,7 +523,7 @@ TEST(GitIndex, CGitIgnoreItem)
 	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("some-dir", type));
 	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("some-dir/some-file", type));
 
-	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)ignoreFile, L"some-*\n!some-file"));
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(ignoreFile, L"some-*\n!some-file"));
 	EXPECT_EQ(0, ignoreItem.FetchIgnoreList(tempDir.GetTempDir(), ignoreFile, false));
 	type = DT_DIR;
 	EXPECT_EQ(1, ignoreItem.IsPathIgnored("some-dir", type));
@@ -543,7 +543,7 @@ TEST(GitIndex, CGitIgnoreItem)
 	EXPECT_EQ(0, ignoreItem.IsPathIgnored("some-file", type));
 	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("something", type));
 
-	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)ignoreFile, L"some-file\nanother/dir/*"));
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(ignoreFile, L"some-file\nanother/dir/*"));
 	EXPECT_EQ(0, ignoreItem.FetchIgnoreList(tempDir.GetTempDir(), ignoreFile, false));
 	type = DT_DIR;
 	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("some-dir", type));
@@ -573,7 +573,7 @@ TEST(GitIndex, CGitIgnoreItem)
 
 	EXPECT_TRUE(::CreateDirectory(tempDir.GetTempDir() + L"\\subdir", nullptr));
 	ignoreFile = tempDir.GetTempDir() + L"\\subdir\\.gitignore";
-	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)ignoreFile, L"/something"));
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(ignoreFile, L"/something"));
 	EXPECT_EQ(0, ignoreItem.FetchIgnoreList(tempDir.GetTempDir(), ignoreFile, false));
 	EXPECT_STREQ("subdir/", ignoreItem.m_BaseDir);
 	type = DT_DIR;
@@ -607,7 +607,7 @@ TEST(GitIndex, CGitIgnoreItem)
 	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("subdir/something/more", type));
 	EXPECT_EQ(-1, ignoreItem.IsPathIgnored("subdir/some-dir/something", type));
 
-	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)ignoreFile, L"something"));
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(ignoreFile, L"something"));
 	EXPECT_EQ(0, ignoreItem.FetchIgnoreList(tempDir.GetTempDir(), ignoreFile, false));
 	EXPECT_STREQ("subdir/", ignoreItem.m_BaseDir);
 	type = DT_DIR;

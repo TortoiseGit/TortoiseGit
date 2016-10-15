@@ -1106,14 +1106,14 @@ void CRebaseDlg::RewriteNotes()
 		return;
 	CString tmpfile = GetTempFile();
 	tmpfile.Replace(L"\\", L"/");
-	if (!CStringUtils::WriteStringToTextFile((LPCTSTR)tmpfile, (LPCTSTR)rewrites))
+	if (!CStringUtils::WriteStringToTextFile(tmpfile, rewrites))
 		return;
 	SCOPE_EXIT{ ::DeleteFile(tmpfile); };
 	CString pipefile = GetTempFile();
 	pipefile.Replace(L"\\", L"/");
 	CString pipecmd;
 	pipecmd.Format(L"git notes copy --for-rewrite=rebase < %s", (LPCTSTR)tmpfile);
-	if (!CStringUtils::WriteStringToTextFile((LPCTSTR)pipefile, (LPCTSTR)pipecmd))
+	if (!CStringUtils::WriteStringToTextFile(pipefile, pipecmd))
 		return;
 	SCOPE_EXIT{ ::DeleteFile(pipefile); };
 	CString out;

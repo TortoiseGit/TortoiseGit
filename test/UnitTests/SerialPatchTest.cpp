@@ -29,7 +29,7 @@ TEST(CSerialPatch, Parse)
 	CStringA patch1 = patch1header + patch1body;
 
 	CString tmpfile = GetTempFile();
-	ASSERT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)tmpfile, (LPCTSTR)CString(patch1)));
+	ASSERT_TRUE(CStringUtils::WriteStringToTextFile(tmpfile, CString(patch1)));
 
 	CSerialPatch parser;
 	ASSERT_EQ(0, parser.Parse(tmpfile, false));
@@ -50,7 +50,7 @@ TEST(CSerialPatch, Parse)
 	CStringA patch2longheader = "From c445609da424a6e6229c469e01ce3df5ef099ddd Mon Sep 17 00:00:00 2001\nFrom: Sven Strickroth <email@cs-ware.de>\nDate: Sun, 27 Dec 2015 15:49:34 +0100\nSubject: [PATCH 2/3] Remove dynamic linking using GetProcAddress() for APIs\n that are available on Vista now that XP support is no longer needed\n\n";
 	CStringA patch2body = patch1body;
 	CStringA patch2 = patch2longheader + patch2body;
-	ASSERT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)tmpfile, (LPCTSTR)CString(patch2)));
+	ASSERT_TRUE(CStringUtils::WriteStringToTextFile(tmpfile, CString(patch2)));
 	CSerialPatch parser3;
 	ASSERT_EQ(0, parser3.Parse(tmpfile, false));
 	ASSERT_STREQ(L"Sven Strickroth <email@cs-ware.de>", parser3.m_Author);
@@ -70,7 +70,7 @@ TEST(CSerialPatch, Parse)
 	CStringA patch3header = "From 8bf757a62dab483e738fb0ea20d2240c6d554462 Mon Sep 17 00:00:00 2001\nFrom: Sven Strickroth <email@cs-ware.de>\nDate: Thu, 25 Feb 2016 04:07:55 +0100\nSubject: [PATCH] =?UTF-8?q?=C3=B6d=C3=B6=C3=A4=C3=BC?=\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\n\n";
 	CStringA patch3body = patch1body;
 	CStringA patch3 = patch3header + patch3body;
-	ASSERT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)tmpfile, (LPCTSTR)CString(patch3)));
+	ASSERT_TRUE(CStringUtils::WriteStringToTextFile(tmpfile, CString(patch3)));
 	CSerialPatch parser5;
 	ASSERT_EQ(0, parser5.Parse(tmpfile, false));
 	ASSERT_STREQ(L"Sven Strickroth <email@cs-ware.de>", parser5.m_Author);
@@ -89,7 +89,7 @@ TEST(CSerialPatch, Parse)
 	// CRLF in headers
 	patch1header.Replace("\n", "\r\n");
 	patch1 = patch1header + patch1body;
-	ASSERT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)tmpfile, (LPCTSTR)CString(patch1)));
+	ASSERT_TRUE(CStringUtils::WriteStringToTextFile(tmpfile, CString(patch1)));
 	CSerialPatch parser7;
 	ASSERT_EQ(0, parser7.Parse(tmpfile, true));
 	ASSERT_STREQ(L"Sven Strickroth <email@cs-ware.de>", parser7.m_Author);

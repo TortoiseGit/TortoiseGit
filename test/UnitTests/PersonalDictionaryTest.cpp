@@ -81,7 +81,7 @@ TEST(CPersonalDictionary, LoadDictionary)
 	CPersonalDictionary dict;
 	dict.Init(LCID_INVALID);
 
-	ASSERT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)GetPath(LCID_INVALID), L"\nTest\n\u0440\u0435\u0444\u0430\u043A\u0442\u043E\u0440\u0438\u043D\u0433\r\nTäst\n"));
+	ASSERT_TRUE(CStringUtils::WriteStringToTextFile(GetPath(LCID_INVALID), L"\nTest\n\u0440\u0435\u0444\u0430\u043A\u0442\u043E\u0440\u0438\u043D\u0433\r\nTäst\n"));
 
 	EXPECT_FALSE(dict.FindWord(L""));
 	for (const CString& word : { L"Test", L"Täst", L"\u0440\u0435\u0444\u0430\u043A\u0442\u043E\u0440\u0438\u043D\u0433" })

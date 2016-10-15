@@ -578,6 +578,12 @@ bool CStringUtils::StartsWith(const wchar_t* heystack, const CString& needle)
 {
 	return wcsncmp(heystack, needle, needle.GetLength()) == 0;
 }
+
+bool CStringUtils::WriteStringToTextFile(LPCTSTR path, LPCTSTR text, bool bUTF8 /* = true */)
+{
+	return WriteStringToTextFile((const std::wstring&)path, (const std::wstring&)text, bUTF8);
+}
+
 #endif // #if defined(CSTRING_AVAILABLE) || defined(_MFC_VER)
 
 bool CStringUtils::StartsWith(const wchar_t* heystack, const wchar_t* needle)

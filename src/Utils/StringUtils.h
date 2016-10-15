@@ -113,6 +113,7 @@ public:
 	static bool IsPlainReadableASCII(const CString& text);
 
 	static bool StartsWith(const wchar_t* heystack, const CString& needle);
+	static bool WriteStringToTextFile(LPCTSTR path, LPCTSTR text, bool bUTF8 = true);
 #endif
 	static bool StartsWith(const wchar_t* heystack, const wchar_t* needle);
 

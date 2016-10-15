@@ -25,26 +25,26 @@
 TEST(CVersioncheckParser, Invalid)
 {
 	CString tmpfile = GetTempFile();
-	CStringUtils::WriteStringToTextFile((LPCTSTR)tmpfile, L"");
+	CStringUtils::WriteStringToTextFile(tmpfile, L"");
 	
 	CVersioncheckParser parser;
 	CString err;
 	EXPECT_FALSE(parser.Load(tmpfile, err));
 
-	CStringUtils::WriteStringToTextFile((LPCTSTR)tmpfile, L"something\nversion\nblabla");
+	CStringUtils::WriteStringToTextFile(tmpfile, L"something\nversion\nblabla");
 	EXPECT_FALSE(parser.Load(tmpfile, err));
 
-	CStringUtils::WriteStringToTextFile((LPCTSTR)tmpfile, L"[TortoiseGit]\nversion=def");
+	CStringUtils::WriteStringToTextFile(tmpfile, L"[TortoiseGit]\nversion=def");
 	EXPECT_FALSE(parser.Load(tmpfile, err));
 
-	CStringUtils::WriteStringToTextFile((LPCTSTR)tmpfile, L"[TortoiseGit]\nversion=d4ef");
+	CStringUtils::WriteStringToTextFile(tmpfile, L"[TortoiseGit]\nversion=d4ef");
 	EXPECT_FALSE(parser.Load(tmpfile, err));
 }
 
 TEST(CVersioncheckParser, ParseTestMinimal)
 {
 	CString tmpfile = GetTempFile();
-	CStringUtils::WriteStringToTextFile((LPCTSTR)tmpfile, L"[TortoiseGit]\r\nversion=2.3.4.0\r\n");
+	CStringUtils::WriteStringToTextFile(tmpfile, L"[TortoiseGit]\r\nversion=2.3.4.0\r\n");
 
 	CVersioncheckParser parser;
 	CString err;
@@ -79,7 +79,7 @@ TEST(CVersioncheckParser, ParseTestMinimal)
 TEST(CVersioncheckParser, ParseTestRelease)
 {
 	CString tmpfile = GetTempFile();
-	CStringUtils::WriteStringToTextFile((LPCTSTR)tmpfile, L"[TortoiseGit]\nversion=2.3.4.5\ninfotext=\"Hallo\\ntest\"\ninfotexturl=someurl\nissuesurl=https://tortoisegit.org/issue/%BUGID%\r\nbaseurl=https://updater.download.tortoisegit.org/tgit/2.3.0.0/\nlangs=\"1031;de\"\nlangs=\"1046;pt_BR\"\nlangs=\"2074;sr-latin\"\nlangs=\"1028;zh_TW\"");
+	CStringUtils::WriteStringToTextFile(tmpfile, L"[TortoiseGit]\nversion=2.3.4.5\ninfotext=\"Hallo\\ntest\"\ninfotexturl=someurl\nissuesurl=https://tortoisegit.org/issue/%BUGID%\r\nbaseurl=https://updater.download.tortoisegit.org/tgit/2.3.0.0/\nlangs=\"1031;de\"\nlangs=\"1046;pt_BR\"\nlangs=\"2074;sr-latin\"\nlangs=\"1028;zh_TW\"");
 
 	CVersioncheckParser parser;
 	CString err;
@@ -136,7 +136,7 @@ TEST(CVersioncheckParser, ParseTestRelease)
 TEST(CVersioncheckParser, ParseTestPreview)
 {
 	CString tmpfile = GetTempFile();
-	CStringUtils::WriteStringToTextFile((LPCTSTR)tmpfile, L"[TortoiseGit]\nversion=1.8.14.2\nversionstring=preview-1.8.14.2-20150705-92b29f6\nchangelogurl=https://versioncheck.tortoisegit.org/changelog-preview.txt\nbaseurl=http://updater.download.tortoisegit.org/tgit/previews/");
+	CStringUtils::WriteStringToTextFile(tmpfile, L"[TortoiseGit]\nversion=1.8.14.2\nversionstring=preview-1.8.14.2-20150705-92b29f6\nchangelogurl=https://versioncheck.tortoisegit.org/changelog-preview.txt\nbaseurl=http://updater.download.tortoisegit.org/tgit/previews/");
 
 	CVersioncheckParser parser;
 	CString err;
@@ -168,7 +168,7 @@ TEST(CVersioncheckParser, ParseTestPreview)
 TEST(CVersioncheckParser, ParseTestHotfix)
 {
 	CString tmpfile = GetTempFile();
-	CStringUtils::WriteStringToTextFile((LPCTSTR)tmpfile, L"[TortoiseGit]\nversion=1.8.14.2\nversionstring=hfüx\nmainfilename=TortoiseGit-%2!s!bit-%1!s!-hotfix.exe\nhotfix=true\nissuesurl=");
+	CStringUtils::WriteStringToTextFile(tmpfile, L"[TortoiseGit]\nversion=1.8.14.2\nversionstring=hfüx\nmainfilename=TortoiseGit-%2!s!bit-%1!s!-hotfix.exe\nhotfix=true\nissuesurl=");
 
 	CVersioncheckParser parser;
 	CString err;

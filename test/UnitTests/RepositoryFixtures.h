@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015 - TortoiseGit
+// Copyright (C) 2015-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -115,7 +115,7 @@ protected:
 		CString text;
 		ASSERT_TRUE(CStringUtils::ReadStringFromTextFile(configFile, text));
 		text += _T("\n[core]\n  autocrlf = false\n[user]\n  name = User\n  email = user@example.com\n");
-		EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)configFile, (LPCTSTR)text));
+		EXPECT_TRUE(CStringUtils::WriteStringToTextFile(configFile, text));
 	}
 	CString prefix;
 };
@@ -133,7 +133,7 @@ protected:
 		CString text;
 		ASSERT_TRUE(CStringUtils::ReadStringFromTextFile(configFile, text));
 		EXPECT_EQ(1, text.Replace(_T("bare = false"), _T("bare = true")));
-		EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)configFile, (LPCTSTR)text));
+		EXPECT_TRUE(CStringUtils::WriteStringToTextFile(configFile, text));
 	}
 };
 

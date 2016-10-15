@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015 - TortoiseGit
+// Copyright (C) 2015-2016 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -24,7 +24,7 @@ TEST(libgit2, Config)
 {
 	CAutoTempDir tempdir;
 	CString testFile = tempdir.GetTempDir() + _T("\\config");
-	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)testFile, L"[core]\nemail=dummy@example.com\ntrue=true\nfalse=false\n"));
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(testFile, L"[core]\nemail=dummy@example.com\ntrue=true\nfalse=false\n"));
 	CAutoConfig config(true);
 	EXPECT_EQ(0, git_config_add_file_ondisk(config, CUnicodeUtils::GetUTF8(testFile), GIT_CONFIG_LEVEL_LOCAL, 1));
 	bool ret = false;
@@ -58,13 +58,13 @@ TEST(libgit2, TGitPatches)
 	ASSERT_EQ(0, git_repository_index(index.GetPointer(), repo2));
 
 	CString testFile = tempdir.GetTempDir() + _T("\\safecrlf-failure.txt");
-	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)testFile, L"crlf\r\ncrlf\r\n"));
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(testFile, L"crlf\r\ncrlf\r\n"));
 	EXPECT_EQ(0, git_index_add_bypath(index, "safecrlf-failure.txt"));
 
-	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)testFile, L"lf\nlf\n"));
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(testFile, L"lf\nlf\n"));
 	EXPECT_EQ(-1, git_index_add_bypath(index, "safecrlf-failure.txt"));
 
-	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)testFile, L"crlf\r\ncr\rcrlf\r\n"));
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(testFile, L"crlf\r\ncr\rcrlf\r\n"));
 	EXPECT_EQ(0, git_index_add_bypath(index, "safecrlf-failure.txt"));
 
 	EXPECT_EQ(0, git_config_set_string(config, "core.autocrlf", "input"));
@@ -72,6 +72,6 @@ TEST(libgit2, TGitPatches)
 	ASSERT_TRUE(repo3.IsValid());
 	ASSERT_EQ(0, git_repository_index(index.GetPointer(), repo3));
 
-	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)testFile, L"crlf\r\ncrlf\r\n"));
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(testFile, L"crlf\r\ncrlf\r\n"));
 	EXPECT_EQ(-1, git_index_add_bypath(index, "safecrlf-failure.txt"));
 }

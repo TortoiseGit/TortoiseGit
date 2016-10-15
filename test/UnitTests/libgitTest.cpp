@@ -37,7 +37,7 @@ TEST(libgit, BrokenConfig)
 	EXPECT_EQ(0, g_Git.Run(_T("git.exe init"), &output, CP_UTF8));
 	EXPECT_FALSE(output.IsEmpty());
 	CString testFile = tempdir.GetTempDir() + _T("\\.git\\config");
-	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)testFile, L"[push]\ndefault=something-that-is-invalid\n"));
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(testFile, L"[push]\ndefault=something-that-is-invalid\n"));
 
 	EXPECT_THROW(g_Git.CheckAndInitDll(), const char*);
 }
@@ -54,13 +54,13 @@ TEST(libgit, Mailmap)
 	EXPECT_EQ(nullptr, mailmap);
 
 	CString mailmapFile = tempdir.GetTempDir() + L"\\.mailmap";
-	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)mailmapFile, L""));
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(mailmapFile, L""));
 
 	mailmap = (void*)0x12345678;
 	git_read_mailmap(&mailmap);
 	EXPECT_EQ(nullptr, mailmap);
 
-	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)mailmapFile, L"Sven Strickroth <sven@tortoisegit.org>"));
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(mailmapFile, L"Sven Strickroth <sven@tortoisegit.org>"));
 	git_read_mailmap(&mailmap);
 	EXPECT_NE(nullptr, mailmap);
 	const char* email1 = nullptr;
@@ -80,7 +80,7 @@ TEST(libgit, Mailmap)
 	CString content;
 	for (auto& entry : { L"", L"1", L"2", L"A", L"4", L"5", L"b", L"7" })
 		content.AppendFormat(L"Sven%s Strickroth <sven%s@tortoisegit.org> <email%s@cs-ware.de>\n", entry, entry, entry);
-	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)mailmapFile, (LPCTSTR)content));
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(mailmapFile, content));
 	git_read_mailmap(&mailmap);
 	EXPECT_NE(nullptr, mailmap);
 	email1 = nullptr;
@@ -108,7 +108,7 @@ TEST(libgit, Mailmap)
 	EXPECT_STREQ("Sven Strickroth", author1);
 
 	git_free_mailmap(mailmap);
-	EXPECT_TRUE(CStringUtils::WriteStringToTextFile((LPCTSTR)mailmapFile, L"<sven@tortoisegit.org> <email@cs-ware.de>\nSven S. <sven@tortoisegit.org> Sven Strickroth <email@cs-ware.de>"));
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(mailmapFile, L"<sven@tortoisegit.org> <email@cs-ware.de>\nSven S. <sven@tortoisegit.org> Sven Strickroth <email@cs-ware.de>"));
 	git_read_mailmap(&mailmap);
 	EXPECT_NE(nullptr, mailmap);
 	email1 = nullptr;
