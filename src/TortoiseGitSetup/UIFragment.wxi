@@ -155,7 +155,7 @@
 			<Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="[ButtonText_Cancel]">
 				<Publish Event="SpawnDialog" Value="CancelPopup">1</Publish>
 			</Control>
-			<Control Id="BackgroundBitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="234" TabSkip="no" Text="[DialogBitmap]" />
+			<Control Id="BackgroundBitmap" Type="Bitmap" X="0" Y="0" Width="123" Height="234" TabSkip="no" Text="[DialogBitmap]" />
 			<Control Id="Title" Type="Text" X="135" Y="20" Width="220" Height="60" Transparent="yes" NoPrefix="yes">
 				<Text>{\VerdanaBold13}Welcome to the [ProductName] [Wizard]</Text>
 			</Control>
@@ -359,7 +359,7 @@
 			</Control>
 			<Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Disabled="yes" Text="[ButtonText_Back]" />
 			<Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Disabled="yes" Text="[ButtonText_Cancel]" />
-			<Control Id="BackgroundBitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="234" TabSkip="no" Text="[DialogBitmap]" />
+			<Control Id="BackgroundBitmap" Type="Bitmap" X="0" Y="0" Width="123" Height="234" TabSkip="no" Text="[DialogBitmap]" />
 			<Control Id="Title" Type="Text" X="135" Y="20" Width="220" Height="60" Transparent="yes" NoPrefix="yes">
 				<Text>{\VerdanaBold13}Completing the [ProductName] [Wizard]</Text>
 			</Control>
@@ -396,7 +396,7 @@
 			<Control Id="Description2" Type="Text" X="135" Y="115" Width="220" Height="20" Transparent="yes" NoPrefix="yes">
 				<Text>Click the Finish button to exit the [Wizard].</Text>
 			</Control>
-			<Control Id="BackgroundBitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="234" TabSkip="no" Text="[DialogBitmap]" />
+			<Control Id="BackgroundBitmap" Type="Bitmap" X="0" Y="0" Width="123" Height="234" TabSkip="no" Text="[DialogBitmap]" />
 			<Control Id="Title" Type="Text" X="135" Y="20" Width="220" Height="60" Transparent="yes" NoPrefix="yes">
 				<Text>{\VerdanaBold13}[ProductName] [Wizard] ended prematurely</Text>
 			</Control>
@@ -546,7 +546,7 @@
 			<Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="[ButtonText_Cancel]">
 				<Publish Event="SpawnDialog" Value="CancelPopup">1</Publish>
 			</Control>
-			<Control Id="BackgroundBitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="234" TabSkip="no" Text="[DialogBitmap]" />
+			<Control Id="BackgroundBitmap" Type="Bitmap" X="0" Y="0" Width="123" Height="234" TabSkip="no" Text="[DialogBitmap]" />
 			<Control Id="Title" Type="Text" X="135" Y="20" Width="220" Height="60" Transparent="yes" NoPrefix="yes">
 				<Text>{\VerdanaBold13}Welcome to the [ProductName] [Wizard]</Text>
 			</Control>
@@ -617,7 +617,7 @@
 			<Control Id="ActionData" Type="Text" X="135" Y="125" Width="220" Height="30" Transparent="yes" NoPrefix="yes">
 				<Subscribe Event="ActionData" Attribute="Text" />
 			</Control>
-			<Control Id="BackgroundBitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="234" TabSkip="no" Text="[DialogBitmap]" />
+			<Control Id="BackgroundBitmap" Type="Bitmap" X="0" Y="0" Width="123" Height="234" TabSkip="no" Text="[DialogBitmap]" />
 			<Control Id="Title" Type="Text" X="135" Y="20" Width="220" Height="60" Transparent="yes" NoPrefix="yes">
 				<Text>{\VerdanaBold13}Welcome to the [ProductName] [Wizard]</Text>
 			</Control>
@@ -670,7 +670,7 @@
 			<Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="[ButtonText_Cancel]">
 				<Publish Event="SpawnDialog" Value="CancelPopup">1</Publish>
 			</Control>
-			<Control Id="BackgroundBitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="234" TabSkip="no" Text="[DialogBitmap]" />
+			<Control Id="BackgroundBitmap" Type="Bitmap" X="0" Y="0" Width="123" Height="234" TabSkip="no" Text="[DialogBitmap]" />
 			<Control Id="Title" Type="Text" X="135" Y="20" Width="220" Height="60" Transparent="yes" NoPrefix="yes">
 				<Text>{\VerdanaBold13}Resuming the [ProductName] [Wizard]</Text>
 			</Control>
@@ -692,7 +692,7 @@
 			<Control Id="Description2" Type="Text" X="135" Y="115" Width="220" Height="20" Transparent="yes" NoPrefix="yes">
 				<Text>Click the Finish button to exit the [Wizard].</Text>
 			</Control>
-			<Control Id="BackgroundBitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="234" TabSkip="no" Text="[DialogBitmap]" />
+			<Control Id="BackgroundBitmap" Type="Bitmap" X="0" Y="0" Width="123" Height="234" TabSkip="no" Text="[DialogBitmap]" />
 			<Control Id="Title" Type="Text" X="135" Y="20" Width="220" Height="60" Transparent="yes" NoPrefix="yes">
 				<Text>{\VerdanaBold13}[ProductName] [Wizard] was interrupted</Text>
 			</Control>
@@ -806,7 +806,7 @@
 			<Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="[ButtonText_Cancel]">
 				<Publish Event="SpawnDialog" Value="CancelPopup">1</Publish>
 			</Control>
-			<Control Id="BackgroundBitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="234" TabSkip="no" Text="[DialogBitmap]" />
+			<Control Id="BackgroundBitmap" Type="Bitmap" X="0" Y="0" Width="123" Height="234" TabSkip="no" Text="[DialogBitmap]" />
 			<Control Id="Title" Type="Text" X="135" Y="20" Width="220" Height="60" Transparent="yes" NoPrefix="yes">
 				<Text>{\VerdanaBold13}Welcome to the [ProductName] [Wizard]</Text>
 			</Control>
