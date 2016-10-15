@@ -2377,7 +2377,6 @@ bool CAppUtils::Pull(bool showPush, bool showStashPop)
 		if (dlg.m_bAutoLoad)
 			CAppUtils::LaunchPAgent(nullptr, &dlg.m_RemoteURL);
 
-		CString cmd;
 		CGitHash hashOld;
 		if (g_Git.GetHash(hashOld, _T("HEAD")))
 		{
@@ -2385,41 +2384,37 @@ bool CAppUtils::Pull(bool showPush, bool showStashPop)
 			return false;
 		}
 
-		CString noff;
-		CString ffonly;
-		CString squash;
-		CString nocommit;
-		CString depth;
-		CString notags;
-		CString prune;
+		CString args;
+		if (CRegDWORD(L"Software\\TortoiseGit\\PullRebaseBehaviorLike1816", FALSE) == FALSE)
+			args += L" --no-rebase";
 
-		if (!dlg.m_bFetchTags)
-			notags = _T("--no-tags ");
-
-		if (dlg.m_bFetchTags == TRUE)
-			notags = _T("--tags ");
+		if (dlg.m_bFetchTags == BST_UNCHECKED)
+			args += L" --no-tags";
+		else if (dlg.m_bFetchTags == BST_CHECKED)
+			args += L" --tags";
 
 		if (dlg.m_bNoFF)
-			noff=_T("--no-ff ");
+			args += L" --no-ff";
 
 		if (dlg.m_bFFonly)
-			ffonly = _T("--ff-only ");
+			args += L" --ff-only";
 
 		if (dlg.m_bSquash)
-			squash = _T("--squash ");
+			args += L" --squash";
 
 		if (dlg.m_bNoCommit)
-			nocommit = _T("--no-commit ");
+			args += L" --no-commit";
 
 		if (dlg.m_bDepth)
-			depth.Format(_T("--depth %d "), dlg.m_nDepth);
+			args.AppendFormat(L" --depth %d", dlg.m_nDepth);
 
-		if (dlg.m_bPrune == TRUE)
-			prune = _T("--prune ");
-		else if (dlg.m_bPrune == FALSE)
-			prune = _T("--no-prune ");
+		if (dlg.m_bPrune == BST_CHECKED)
+			args += L" --prune";
+		else if (dlg.m_bPrune == BST_UNCHECKED)
+			args += L" --no-prune";
 
-		cmd.Format(_T("git.exe pull --progress%s -v %s%s%s%s%s%s%s\"%s\" %s"), CRegDWORD(L"Software\\TortoiseGit\\PullRebaseBehaviorLike1816", FALSE) == FALSE ? L" --no-rebase" : L"", (LPCTSTR)noff, (LPCTSTR)ffonly, (LPCTSTR)squash, (LPCTSTR)nocommit, (LPCTSTR)depth, (LPCTSTR)notags, (LPCTSTR)prune, (LPCTSTR)url, (LPCTSTR)dlg.m_RemoteBranchName);
+		CString cmd;
+		cmd.Format(L"git.exe pull --progress -v%s \"%s\" %s", (LPCTSTR)args, (LPCTSTR)url, (LPCTSTR)dlg.m_RemoteBranchName);
 		CProgressDlg progress;
 		progress.m_GitCmd = cmd;
 
