@@ -3641,6 +3641,7 @@ BEGIN
     IDS_REPOBROWSE_OPEN     "&Open"
     IDS_REBASELOCKFILEFOUND "Found a lock file indicating that a TortoiseGit rebase process is running. This blocks this operation.\n\nIf you are not runnig a TortoiseGit rebase process right now, you can remove the stale lock file in order to continue."
     IDS_ERR_MUSTBESAMEWT    "Target and source must be in the same working tree!"
+    IDS_MERGE_UNRELATED     "&Merge unrelated history"
 END
 
 STRINGTABLE

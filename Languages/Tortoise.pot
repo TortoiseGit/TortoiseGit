@@ -6204,6 +6204,10 @@ msgstr ""
 msgid "Merge to \"%s\"..."
 msgstr ""
 
+#. Resource IDs: (IDS_MERGE_UNRELATED)
+msgid "&Merge unrelated history"
+msgstr ""
+
 #. Resource IDs: (IDS_PATHACTIONS_MERGED, IDS_SVNACTION_MERGED, IDS_VIEWTITLE_MERGED)
 msgid "Merged"
 msgstr ""
