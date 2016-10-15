@@ -171,9 +171,7 @@ static int LogicalComparePredicate(const CString &left, const CString &right)
 
 static int LogicalCompareReversedPredicate(const CString &left, const CString &right)
 {
-	if (g_bSortLogical)
-		return StrCmpLogicalW(left, right) > 0;
-	return StrCmpI(left, right) > 0;
+	return LogicalComparePredicate(right, left);
 }
 
 static int LogicalCompareBranchesPredicate(const CString &left, const CString &right)
@@ -188,9 +186,7 @@ static int LogicalCompareBranchesPredicate(const CString &left, const CString &r
 		else if (!leftIsRemote && rightIsRemote)
 			return true;
 	}
-	if (g_bSortLogical)
-		return StrCmpLogicalW(left, right) < 0;
-	return StrCmpI(left, right) < 0;
+	return LogicalComparePredicate(left, right);
 }
 
 #define CALL_OUTPUT_READ_CHUNK_SIZE 1024
