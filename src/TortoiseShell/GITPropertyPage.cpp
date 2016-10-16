@@ -308,8 +308,8 @@ void CGitPropertyPage::Time64ToTimeString(__time64_t time, TCHAR * buf, size_t b
 	SYSTEMTIME systime;
 
 	LCID locale = LOCALE_USER_DEFAULT;
-	if (!CRegDWORD(_T("Software\\TortoiseGit\\UseSystemLocaleForDates"), TRUE))
-		locale = MAKELCID((WORD)CRegStdDWORD(_T("Software\\TortoiseGit\\LanguageID"), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT)), SORT_DEFAULT);
+	if (!CRegDWORD(L"Software\\TortoiseGit\\UseSystemLocaleForDates", TRUE, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY))
+		locale = MAKELCID((WORD)CRegStdDWORD(L"Software\\TortoiseGit\\LanguageID", MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), false, HKEY_CURRENT_USER, KEY_WOW64_64KEY), SORT_DEFAULT);
 
 	*buf = '\0';
 	if (time)
@@ -326,7 +326,7 @@ void CGitPropertyPage::Time64ToTimeString(__time64_t time, TCHAR * buf, size_t b
 		systime.wMonth = (WORD)newtime.tm_mon+1;
 		systime.wSecond = (WORD)newtime.tm_sec;
 		systime.wYear = (WORD)newtime.tm_year+1900;
-		if (CRegStdDWORD(_T("Software\\TortoiseGit\\LogDateFormat")) == 1)
+		if (CRegStdDWORD(L"Software\\TortoiseGit\\LogDateFormat", 0, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY) == 1)
 			GetDateFormat(locale, DATE_SHORTDATE, &systime, nullptr, datebuf, MAX_STRING_LENGTH);
 		else
 			GetDateFormat(locale, DATE_LONGDATE, &systime, nullptr, datebuf, MAX_STRING_LENGTH);

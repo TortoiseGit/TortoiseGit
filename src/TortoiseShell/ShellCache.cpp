@@ -23,27 +23,27 @@
 
 ShellCache::ShellCache()
 {
-	cachetype = CRegStdDWORD(L"Software\\TortoiseGit\\CacheType", GetSystemMetrics(SM_REMOTESESSION) ? dll : exe);
-	showrecursive = CRegStdDWORD(L"Software\\TortoiseGit\\RecursiveOverlay", TRUE);
-	folderoverlay = CRegStdDWORD(L"Software\\TortoiseGit\\FolderOverlay", TRUE);
-	driveremote = CRegStdDWORD(L"Software\\TortoiseGit\\DriveMaskRemote");
-	drivefixed = CRegStdDWORD(L"Software\\TortoiseGit\\DriveMaskFixed", TRUE);
-	drivecdrom = CRegStdDWORD(L"Software\\TortoiseGit\\DriveMaskCDROM");
-	driveremove = CRegStdDWORD(L"Software\\TortoiseGit\\DriveMaskRemovable");
-	drivefloppy = CRegStdDWORD(L"Software\\TortoiseGit\\DriveMaskFloppy");
-	driveram = CRegStdDWORD(L"Software\\TortoiseGit\\DriveMaskRAM");
-	driveunknown = CRegStdDWORD(L"Software\\TortoiseGit\\DriveMaskUnknown");
-	shellmenuaccelerators = CRegStdDWORD(L"Software\\TortoiseGit\\ShellMenuAccelerators", TRUE);
-	excludelist = CRegStdString(L"Software\\TortoiseGit\\OverlayExcludeList");
-	includelist = CRegStdString(L"Software\\TortoiseGit\\OverlayIncludeList");
-	simplecontext = CRegStdDWORD(L"Software\\TortoiseGit\\SimpleContext", FALSE);
-	unversionedasmodified = CRegStdDWORD(L"Software\\TortoiseGit\\UnversionedAsModified", FALSE);
-	recursesubmodules = CRegStdDWORD(L"Software\\TortoiseGit\\TGitCacheRecurseSubmodules", FALSE);
-	hidemenusforunversioneditems = CRegStdDWORD(L"Software\\TortoiseGit\\HideMenusForUnversionedItems", FALSE);
-	showunversionedoverlay = CRegStdDWORD(L"Software\\TortoiseGit\\ShowUnversionedOverlay", TRUE);
-	showignoredoverlay = CRegStdDWORD(L"Software\\TortoiseGit\\ShowIgnoredOverlay", TRUE);
-	getlocktop = CRegStdDWORD(L"Software\\TortoiseGit\\GetLockTop", TRUE);
-	excludedasnormal = CRegStdDWORD(L"Software\\TortoiseGit\\ShowExcludedAsNormal", TRUE);
+	cachetype = CRegStdDWORD(L"Software\\TortoiseGit\\CacheType", GetSystemMetrics(SM_REMOTESESSION) ? dll : exe, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
+	showrecursive = CRegStdDWORD(L"Software\\TortoiseGit\\RecursiveOverlay", TRUE, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
+	folderoverlay = CRegStdDWORD(L"Software\\TortoiseGit\\FolderOverlay", TRUE, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
+	driveremote = CRegStdDWORD(L"Software\\TortoiseGit\\DriveMaskRemote", FALSE, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
+	drivefixed = CRegStdDWORD(L"Software\\TortoiseGit\\DriveMaskFixed", TRUE, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
+	drivecdrom = CRegStdDWORD(L"Software\\TortoiseGit\\DriveMaskCDROM", FALSE, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
+	driveremove = CRegStdDWORD(L"Software\\TortoiseGit\\DriveMaskRemovable", FALSE, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
+	drivefloppy = CRegStdDWORD(L"Software\\TortoiseGit\\DriveMaskFloppy", FALSE, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
+	driveram = CRegStdDWORD(L"Software\\TortoiseGit\\DriveMaskRAM", FALSE, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
+	driveunknown = CRegStdDWORD(L"Software\\TortoiseGit\\DriveMaskUnknown", FALSE, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
+	shellmenuaccelerators = CRegStdDWORD(L"Software\\TortoiseGit\\ShellMenuAccelerators", TRUE, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
+	excludelist = CRegStdString(L"Software\\TortoiseGit\\OverlayExcludeList", L"", false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
+	includelist = CRegStdString(L"Software\\TortoiseGit\\OverlayIncludeList", L"", false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
+	simplecontext = CRegStdDWORD(L"Software\\TortoiseGit\\SimpleContext", FALSE, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
+	unversionedasmodified = CRegStdDWORD(L"Software\\TortoiseGit\\UnversionedAsModified", FALSE, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
+	recursesubmodules = CRegStdDWORD(L"Software\\TortoiseGit\\TGitCacheRecurseSubmodules", FALSE, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
+	hidemenusforunversioneditems = CRegStdDWORD(L"Software\\TortoiseGit\\HideMenusForUnversionedItems", FALSE, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
+	showunversionedoverlay = CRegStdDWORD(L"Software\\TortoiseGit\\ShowUnversionedOverlay", TRUE, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
+	showignoredoverlay = CRegStdDWORD(L"Software\\TortoiseGit\\ShowIgnoredOverlay", TRUE, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
+	getlocktop = CRegStdDWORD(L"Software\\TortoiseGit\\GetLockTop", TRUE, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
+	excludedasnormal = CRegStdDWORD(L"Software\\TortoiseGit\\ShowExcludedAsNormal", TRUE, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
 	cachetypeticker = GetTickCount64();
 	recursiveticker = cachetypeticker;
 	folderoverlayticker = cachetypeticker;
@@ -65,22 +65,22 @@ ShellCache::ShellCache()
 	excontextticker = cachetypeticker;
 
 	unsigned __int64 entries = (DEFAULTMENUTOPENTRIES);
-	menulayoutlow = CRegStdDWORD(L"Software\\TortoiseGit\\ContextMenuEntries", entries & 0xFFFFFFFF);
-	menulayouthigh = CRegStdDWORD(L"Software\\TortoiseGit\\ContextMenuEntrieshigh", entries >> 32);
+	menulayoutlow = CRegStdDWORD(L"Software\\TortoiseGit\\ContextMenuEntries", entries & 0xFFFFFFFF, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
+	menulayouthigh = CRegStdDWORD(L"Software\\TortoiseGit\\ContextMenuEntrieshigh", entries >> 32, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
 	layoutticker = cachetypeticker;
 
 	unsigned __int64 ext = (DEFAULTMENUEXTENTRIES);
-	menuextlow = CRegStdDWORD(L"Software\\TortoiseGit\\ContextMenuExtEntriesLow", ext & 0xFFFFFFFF);
-	menuexthigh = CRegStdDWORD(L"Software\\TortoiseGit\\ContextMenuExtEntriesHigh", ext >> 32);
+	menuextlow = CRegStdDWORD(L"Software\\TortoiseGit\\ContextMenuExtEntriesLow", ext & 0xFFFFFFFF, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
+	menuexthigh = CRegStdDWORD(L"Software\\TortoiseGit\\ContextMenuExtEntriesHigh", ext >> 32, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
 	exticker = cachetypeticker;
 
-	menumasklow_lm = CRegStdDWORD(L"Software\\TortoiseGit\\ContextMenuEntriesMaskLow", 0, FALSE, HKEY_LOCAL_MACHINE);
-	menumaskhigh_lm = CRegStdDWORD(L"Software\\TortoiseGit\\ContextMenuEntriesMaskHigh", 0, FALSE, HKEY_LOCAL_MACHINE);
-	menumasklow_cu = CRegStdDWORD(L"Software\\TortoiseGit\\ContextMenuEntriesMaskLow", 0);
-	menumaskhigh_cu = CRegStdDWORD(L"Software\\TortoiseGit\\ContextMenuEntriesMaskHigh", 0);
+	menumasklow_lm = CRegStdDWORD(L"Software\\TortoiseGit\\ContextMenuEntriesMaskLow", 0, FALSE, HKEY_LOCAL_MACHINE, KEY_WOW64_64KEY);
+	menumaskhigh_lm = CRegStdDWORD(L"Software\\TortoiseGit\\ContextMenuEntriesMaskHigh", 0, FALSE, HKEY_LOCAL_MACHINE, KEY_WOW64_64KEY);
+	menumasklow_cu = CRegStdDWORD(L"Software\\TortoiseGit\\ContextMenuEntriesMaskLow", 0, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
+	menumaskhigh_cu = CRegStdDWORD(L"Software\\TortoiseGit\\ContextMenuEntriesMaskHigh", 0, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
 	menumaskticker = cachetypeticker;
-	langid = CRegStdDWORD(L"Software\\TortoiseGit\\LanguageID", 1033);
-	blockstatus = CRegStdDWORD(L"Software\\TortoiseGit\\BlockStatus", 0);
+	langid = CRegStdDWORD(L"Software\\TortoiseGit\\LanguageID", 1033, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
+	blockstatus = CRegStdDWORD(L"Software\\TortoiseGit\\BlockStatus", 0, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
 	blockstatusticker = cachetypeticker;
 	std::fill_n(drivetypecache, 27, (UINT)-1);
 	if (DWORD(drivefloppy) == 0)
@@ -91,7 +91,7 @@ ShellCache::ShellCache()
 	}
 	drivetypepathcache[0] = L'\0';
 	sAdminDirCacheKey.reserve(MAX_PATH);		// MAX_PATH as buffer reservation ok.
-	nocontextpaths = CRegStdString(L"Software\\TortoiseGit\\NoContextPaths", L"");
+	nocontextpaths = CRegStdString(L"Software\\TortoiseGit\\NoContextPaths", L"", false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
 	m_critSec.Init();
 }
 

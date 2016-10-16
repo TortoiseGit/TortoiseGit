@@ -90,7 +90,7 @@ static BOOL WantRealVersion(void)
 
 	TRACE(_T("WantRealVersion() - Enter\n"));
 
-	LONG Result = RegOpenKeyEx(HKEY_CURRENT_USER, TGitRootKey, 0, KEY_READ, &hKey);
+	LONG Result = RegOpenKeyEx(HKEY_CURRENT_USER, TGitRootKey, 0, KEY_READ | KEY_WOW64_64KEY, &hKey);
 	if (Result == ERROR_SUCCESS)
 	{
 		Result = RegQueryValueEx(hKey, ExplorerOnlyValue, nullptr, &Type, (BYTE*)&bExplorerOnly, &Len);

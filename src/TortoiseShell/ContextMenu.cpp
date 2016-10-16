@@ -82,7 +82,7 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 		{
 			if (m_State == FileStateDropHandler)
 			{
-				if (!CRegStdDWORD(L"Software\\TortoiseGit\\EnableDragContextMenu", TRUE))
+				if (!CRegStdDWORD(L"Software\\TortoiseGit\\EnableDragContextMenu", TRUE, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY))
 				{
 					ReleaseStgMedium(&medium);
 					return S_OK;
@@ -769,7 +769,7 @@ tstring CShellExt::WriteFileListToTempFile()
 
 STDMETHODIMP CShellExt::QueryDropContext(UINT uFlags, UINT idCmdFirst, HMENU hMenu, UINT &indexMenu)
 {
-	if (!CRegStdDWORD(L"Software\\TortoiseGit\\EnableDragContextMenu", TRUE))
+	if (!CRegStdDWORD(L"Software\\TortoiseGit\\EnableDragContextMenu", TRUE, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY))
 		return S_OK;
 
 	PreserveChdir preserveChdir;
@@ -1007,7 +1007,7 @@ STDMETHODIMP CShellExt::QueryContextMenu_Wrap(HMENU hMenu,
 	bool bMenuEmpty = true;
 	// insert separator at start
 	InsertMenu(hMenu, indexMenu++, MF_SEPARATOR | MF_BYPOSITION, 0, nullptr); idCmd++;
-	bool bShowIcons = !!DWORD(CRegStdDWORD(_T("Software\\TortoiseGit\\ShowContextMenuIcons"), TRUE));
+	bool bShowIcons = !!DWORD(CRegStdDWORD(_T("Software\\TortoiseGit\\ShowContextMenuIcons"), TRUE, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY));
 
 	while (menuInfo[menuIndex].command != ShellMenuLastEntry)
 	{
