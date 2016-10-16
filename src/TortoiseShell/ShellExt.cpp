@@ -26,6 +26,7 @@
 #include "ShellExt.h"
 #include "ShellObjects.h"
 #include "..\version.h"
+#include "GitAdminDir.h"
 #undef swprintf
 
 extern ShellObjects g_shellObjects;

@@ -22,6 +22,7 @@
 #include "ItemIDList.h"
 #include "PreserveChdir.h"
 #include "UnicodeUtils.h"
+#include "Git.h"
 #include "GitStatus.h"
 #include "TGitPath.h"
 #include "PathUtils.h"

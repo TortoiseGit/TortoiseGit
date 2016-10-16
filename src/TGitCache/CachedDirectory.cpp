@@ -19,6 +19,7 @@
 //
 #include "stdafx.h"
 #include "CachedDirectory.h"
+#include "GitAdminDir.h"
 #include "GitStatusCache.h"
 #include "GitStatus.h"
 #include <set>

@@ -93,6 +93,9 @@
     <ClCompile Include="..\Git\MassiveGitTaskBase.cpp">
       <Filter>Git</Filter>
     </ClCompile>
+    <ClCompile Include="..\TortoiseShell\ShellCache.cpp">
+      <Filter>TortoiseShell</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CachedDirectory.h">

@@ -117,6 +117,9 @@
     <ClCompile Include="..\Git\MassiveGitTaskBase.cpp">
       <Filter>Git</Filter>
     </ClCompile>
+    <ClCompile Include="ShellCache.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="ShellExt.def">

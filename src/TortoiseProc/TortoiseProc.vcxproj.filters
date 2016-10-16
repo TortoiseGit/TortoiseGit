@@ -932,6 +932,9 @@
     <ClCompile Include="VersioncheckParser.cpp">
       <Filter>Commands\UpdateCheck</Filter>
     </ClCompile>
+    <ClCompile Include="..\TortoiseShell\ShellCache.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddRemoteDlg.h">
@@ -1740,6 +1743,9 @@
     </ClInclude>
     <ClInclude Include="VersioncheckParser.h">
       <Filter>Commands\UpdateCheck</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TortoiseShell\ShellCache.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

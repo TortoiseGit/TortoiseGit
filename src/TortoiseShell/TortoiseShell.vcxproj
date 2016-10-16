@@ -79,6 +79,7 @@
     <ClCompile Include="PreserveChdir.cpp" />
     <ClCompile Include="..\Utils\Registry.cpp" />
     <ClCompile Include="RemoteCacheLink.cpp" />
+    <ClCompile Include="ShellCache.cpp" />
     <ClCompile Include="ShellExt.cpp" />
     <ClCompile Include="ShellExtClassFactory.cpp" />
     <ClCompile Include="ShellObjects.cpp" />

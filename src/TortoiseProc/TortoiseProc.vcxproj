@@ -63,6 +63,7 @@
     <ClCompile Include="..\Git\MassiveGitTaskBase.cpp" />
     <ClCompile Include="..\Git\TGitPath.cpp" />
     <ClCompile Include="..\TortoiseMerge\FileTextLines.cpp" />
+    <ClCompile Include="..\TortoiseShell\ShellCache.cpp" />
     <ClCompile Include="..\Utils\ACEdit.cpp" />
     <ClCompile Include="..\Utils\ACListWnd.cpp" />
     <ClCompile Include="..\Utils\BugTraqAssociations.cpp" />
@@ -326,6 +327,7 @@
     <ClInclude Include="..\Git\TGitPath.h" />
     <ClInclude Include="..\Resources\LoglistCommonResource.h" />
     <ClInclude Include="..\TortoiseMerge\FileTextLines.h" />
+    <ClInclude Include="..\TortoiseShell\ShellCache.h" />
     <ClInclude Include="..\Utils\ACEdit.h" />
     <ClInclude Include="..\Utils\ACListWnd.h" />
     <ClInclude Include="..\Utils\BugTraqAssociations.h" />

@@ -20,6 +20,7 @@
 
 #include "stdafx.h"
 #include <ShlObj.h>
+#include "GitAdminDir.h"
 #include "GitStatusCache.h"
 
 CShellUpdater::CShellUpdater(void)
