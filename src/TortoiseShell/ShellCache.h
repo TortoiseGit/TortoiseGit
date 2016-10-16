@@ -157,7 +157,7 @@ public:
 	}
 	CacheType GetCacheType()
 	{
-		if ((GetTickCount64() - REGISTRYTIMEOUT) > cachetypeticker)
+		if ((GetTickCount64() - cachetypeticker) > REGISTRYTIMEOUT)
 		{
 			cachetypeticker = GetTickCount64();
 			cachetype.read();
@@ -166,7 +166,7 @@ public:
 	}
 	DWORD BlockStatus()
 	{
-		if ((GetTickCount64() - REGISTRYTIMEOUT) > blockstatusticker)
+		if ((GetTickCount64() - blockstatusticker) > REGISTRYTIMEOUT)
 		{
 			blockstatusticker = GetTickCount64();
 			blockstatus.read();
@@ -175,7 +175,7 @@ public:
 	}
 	unsigned __int64 GetMenuLayout()
 	{
-		if ((GetTickCount64() - REGISTRYTIMEOUT) > layoutticker)
+		if ((GetTickCount64() - layoutticker) > REGISTRYTIMEOUT)
 		{
 			layoutticker = GetTickCount64();
 			menulayoutlow.read();
@@ -188,7 +188,7 @@ public:
 
 	unsigned __int64 GetMenuExt()
 	{
-		if ((GetTickCount64() - REGISTRYTIMEOUT) > exticker)
+		if ((GetTickCount64() - exticker) > REGISTRYTIMEOUT)
 		{
 			exticker = GetTickCount64();
 			menuextlow.read();
@@ -201,7 +201,7 @@ public:
 
 	unsigned __int64 GetMenuMask()
 	{
-		if ((GetTickCount64() - REGISTRYTIMEOUT) > menumaskticker)
+		if ((GetTickCount64() - menumaskticker) > REGISTRYTIMEOUT)
 		{
 			menumaskticker = GetTickCount64();
 			menumasklow_lm.read();
@@ -217,7 +217,7 @@ public:
 	}
 	BOOL IsRecursive()
 	{
-		if ((GetTickCount64() - REGISTRYTIMEOUT) > recursiveticker)
+		if ((GetTickCount64() - recursiveticker) > REGISTRYTIMEOUT)
 		{
 			recursiveticker = GetTickCount64();
 			showrecursive.read();
@@ -226,7 +226,7 @@ public:
 	}
 	BOOL IsFolderOverlay()
 	{
-		if ((GetTickCount64() - REGISTRYTIMEOUT) > folderoverlayticker)
+		if ((GetTickCount64() - folderoverlayticker) > REGISTRYTIMEOUT)
 		{
 			folderoverlayticker = GetTickCount64();
 			folderoverlay.read();
@@ -235,7 +235,7 @@ public:
 	}
 	BOOL IsSimpleContext()
 	{
-		if ((GetTickCount64() - REGISTRYTIMEOUT) > simplecontextticker)
+		if ((GetTickCount64() - simplecontextticker) > REGISTRYTIMEOUT)
 		{
 			simplecontextticker = GetTickCount64();
 			simplecontext.read();
@@ -253,7 +253,7 @@ public:
 	}
 	BOOL IsUnversionedAsModified()
 	{
-		if ((GetTickCount64() - REGISTRYTIMEOUT) > unversionedasmodifiedticker)
+		if ((GetTickCount64() - unversionedasmodifiedticker) > REGISTRYTIMEOUT)
 		{
 			unversionedasmodifiedticker = GetTickCount64();
 			unversionedasmodified.read();
@@ -262,7 +262,7 @@ public:
 	}
 	BOOL IsRecurseSubmodules()
 	{
-		if ((GetTickCount64() - REGISTRYTIMEOUT) > recursesubmodulesticker)
+		if ((GetTickCount64() - recursesubmodulesticker) > REGISTRYTIMEOUT)
 		{
 			recursesubmodulesticker = GetTickCount64();
 			recursesubmodules.read();
@@ -271,7 +271,7 @@ public:
 	}
 	BOOL ShowUnversionedOverlay()
 	{
-		if ((GetTickCount64() - REGISTRYTIMEOUT) > showunversionedoverlayticker)
+		if ((GetTickCount64() - showunversionedoverlayticker) > REGISTRYTIMEOUT)
 		{
 			showunversionedoverlayticker = GetTickCount64();
 			showunversionedoverlay.read();
@@ -280,7 +280,7 @@ public:
 	}
 	BOOL ShowIgnoredOverlay()
 	{
-		if ((GetTickCount64() - REGISTRYTIMEOUT) > showignoredoverlayticker)
+		if ((GetTickCount64() - showignoredoverlayticker) > REGISTRYTIMEOUT)
 		{
 			showignoredoverlayticker = GetTickCount64();
 			showignoredoverlay.read();
@@ -289,7 +289,7 @@ public:
 	}
 	BOOL IsGetLockTop()
 	{
-		if ((GetTickCount64() - REGISTRYTIMEOUT) > getlocktopticker)
+		if ((GetTickCount64() - getlocktopticker) > REGISTRYTIMEOUT)
 		{
 			getlocktopticker = GetTickCount64();
 			getlocktop.read();
@@ -298,7 +298,7 @@ public:
 	}
 	BOOL ShowExcludedAsNormal()
 	{
-		if ((GetTickCount64() - REGISTRYTIMEOUT) > excludedasnormalticker)
+		if ((GetTickCount64() - excludedasnormalticker) > REGISTRYTIMEOUT)
 		{
 			excludedasnormalticker = GetTickCount64();
 			excludedasnormal.read();
@@ -391,7 +391,7 @@ public:
 		if ((drivenumber >=0)&&(drivenumber < 25))
 		{
 			drivetype = drivetypecache[drivenumber];
-			if ((drivetype == -1)|| ((GetTickCount64() - DRIVETYPETIMEOUT) > drivetypeticker))
+			if ((drivetype == -1)|| ((GetTickCount64() - drivetypeticker) > DRIVETYPETIMEOUT))
 			{
 				if ((DWORD(drivefloppy) == 0) && ((drivenumber == 0) || (drivenumber == 1)))
 					drivetypecache[drivenumber] = DRIVE_REMOVABLE;
@@ -460,7 +460,7 @@ public:
 	}
 	DWORD GetLangID()
 	{
-		if ((GetTickCount64() - REGISTRYTIMEOUT) > langticker)
+		if ((GetTickCount64() - langticker) > REGISTRYTIMEOUT)
 		{
 			langticker = GetTickCount64();
 			langid.read();
@@ -478,7 +478,7 @@ public:
 			if (ptr != 0)
 				*ptr = 0;
 		}
-		if ((GetTickCount64() - ADMINDIRTIMEOUT) < admindirticker)
+		if ((GetTickCount64() - admindirticker) < ADMINDIRTIMEOUT)
 		{
 			std::map<tstring, AdminDir_s>::iterator iter;
 			sAdminDirCacheKey.assign(buf.get());
@@ -509,7 +509,7 @@ public:
 private:
 	void DriveValid()
 	{
-		if ((GetTickCount64() - REGISTRYTIMEOUT) > driveticker)
+		if ((GetTickCount64() - driveticker) > REGISTRYTIMEOUT)
 		{
 			driveticker = GetTickCount64();
 			driveremote.read();
@@ -521,7 +521,7 @@ private:
 	}
 	void ExcludeContextValid()
 	{
-		if ((GetTickCount64() - EXCLUDELISTTIMEOUT) > excontextticker)
+		if ((GetTickCount64() - excontextticker) > EXCLUDELISTTIMEOUT)
 		{
 			Locker lock(m_critSec);
 			excontextticker = GetTickCount64();
@@ -548,7 +548,7 @@ private:
 	}
 	void ExcludeListValid()
 	{
-		if ((GetTickCount64() - EXCLUDELISTTIMEOUT) > excludelistticker)
+		if ((GetTickCount64() - excludelistticker) > EXCLUDELISTTIMEOUT)
 		{
 			Locker lock(m_critSec);
 			excludelistticker = GetTickCount64();
@@ -573,7 +573,7 @@ private:
 	}
 	void IncludeListValid()
 	{
-		if ((GetTickCount64() - EXCLUDELISTTIMEOUT) > includelistticker)
+		if ((GetTickCount64() - includelistticker) > EXCLUDELISTTIMEOUT)
 		{
 			Locker lock(m_critSec);
 			includelistticker = GetTickCount64();
