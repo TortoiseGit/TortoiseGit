@@ -153,7 +153,6 @@ BOOL CSetOverlayPage::OnInitDialog()
 	}
 	GetDlgItem(IDC_UNVERSIONEDASMODIFIED)->EnableWindow(m_dwCacheType == 1);
 	GetDlgItem(IDC_RECURSIVESUBMODULES)->EnableWindow(m_dwCacheType == 1);
-	GetDlgItem(IDC_FLOPPY)->EnableWindow(m_bRemovable);
 
 	m_tooltips.AddTool(IDC_ONLYEXPLORER, IDS_SETTINGS_ONLYEXPLORER_TT);
 	m_tooltips.AddTool(IDC_EXCLUDEPATHS, IDS_SETTINGS_EXCLUDELIST_TT);
@@ -192,7 +191,6 @@ void CSetOverlayPage::OnChange()
 	}
 	GetDlgItem(IDC_UNVERSIONEDASMODIFIED)->EnableWindow(m_dwCacheType == 1);
 	GetDlgItem(IDC_RECURSIVESUBMODULES)->EnableWindow(m_dwCacheType == 1);
-	GetDlgItem(IDC_FLOPPY)->EnableWindow(m_bRemovable);
 	SetModified();
 }
 

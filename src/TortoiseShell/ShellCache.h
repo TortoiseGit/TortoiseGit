@@ -114,9 +114,12 @@ public:
 		{
 			drivetypecache[i] = (UINT)-1;
 		}
-		// A: and B: are floppy disks
-		drivetypecache[0] = DRIVE_REMOVABLE;
-		drivetypecache[1] = DRIVE_REMOVABLE;
+		if (DWORD(drivefloppy) == 0)
+		{
+			// A: and B: are floppy disks
+			drivetypecache[0] = DRIVE_REMOVABLE;
+			drivetypecache[1] = DRIVE_REMOVABLE;
+		}
 		drivetypepathcache[0] = 0;
 		sAdminDirCacheKey.reserve(MAX_PATH);		// MAX_PATH as buffer reservation ok.
 		nocontextpaths = CRegStdString(_T("Software\\TortoiseGit\\NoContextPaths"), _T(""));
@@ -393,7 +396,7 @@ public:
 			drivetype = drivetypecache[drivenumber];
 			if ((drivetype == -1)|| ((GetTickCount64() - DRIVETYPETIMEOUT) > drivetypeticker))
 			{
-				if ((drivenumber == 0)||(drivenumber == 1))
+				if ((DWORD(drivefloppy) == 0) && ((drivenumber == 0) || (drivenumber == 1)))
 					drivetypecache[drivenumber] = DRIVE_REMOVABLE;
 				else
 				{
@@ -430,8 +433,6 @@ public:
 			}
 		}
 		if ((drivetype == DRIVE_REMOVABLE)&&(!IsRemovable()))
-			return FALSE;
-		if ((drivetype == DRIVE_REMOVABLE)&&(drivefloppy == 0)&&((drivenumber==0)||(drivenumber==1)))
 			return FALSE;
 		if ((drivetype == DRIVE_FIXED)&&(!IsFixed()))
 			return FALSE;

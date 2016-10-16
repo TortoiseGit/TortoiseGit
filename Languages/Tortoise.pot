@@ -872,6 +872,10 @@ msgstr ""
 msgid "&Merge"
 msgstr ""
 
+#. Resource IDs: (IDS_MERGE_UNRELATED)
+msgid "&Merge unrelated history"
+msgstr ""
+
 #. Resource IDs: (IDS_MENUMERGE)
 msgid "&Merge..."
 msgstr ""
@@ -4014,6 +4018,10 @@ msgstr ""
 msgid "Drive Types"
 msgstr ""
 
+#. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 1315)
+msgid "Drives A: and B:"
+msgstr ""
+
 #. Resource IDs: (IDS_DROPONESTASH)
 msgid "Drop &one stash"
 msgstr ""
@@ -4737,10 +4745,6 @@ msgstr ""
 
 #. Resource IDs: (ID_VIEW_FITIMAGEWIDTHS - Menu)
 msgid "Fit image &widths\tW"
-msgstr ""
-
-#. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 1315)
-msgid "Floppy drives (A: B:)"
 msgstr ""
 
 #. Resource IDs: (16016)
@@ -6202,10 +6206,6 @@ msgstr ""
 #. Resource IDs: (IDS_LOG_POPUP_MERGEREV, IDS_LOG_POPUP_MERGEREVS)
 #, c-format
 msgid "Merge to \"%s\"..."
-msgstr ""
-
-#. Resource IDs: (IDS_MERGE_UNRELATED)
-msgid "&Merge unrelated history"
 msgstr ""
 
 #. Resource IDs: (IDS_PATHACTIONS_MERGED, IDS_SVNACTION_MERGED, IDS_VIEWTITLE_MERGED)
