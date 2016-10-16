@@ -110,10 +110,7 @@ public:
 		langid = CRegStdDWORD(_T("Software\\TortoiseGit\\LanguageID"), 1033);
 		blockstatus = CRegStdDWORD(_T("Software\\TortoiseGit\\BlockStatus"), 0);
 		blockstatusticker = cachetypeticker;
-		for (int i = 0; i < 27; ++i)
-		{
-			drivetypecache[i] = (UINT)-1;
-		}
+		std::fill_n(drivetypecache, 27, (UINT)-1);
 		if (DWORD(drivefloppy) == 0)
 		{
 			// A: and B: are floppy disks
