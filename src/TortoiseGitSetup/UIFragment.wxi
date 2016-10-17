@@ -363,12 +363,7 @@
 			<Control Id="Title" Type="Text" X="135" Y="20" Width="220" Height="60" Transparent="yes" NoPrefix="yes">
 				<Text>{\VerdanaBold13}Completing the [ProductName] [Wizard]</Text>
 			</Control>
-			<!-- Since Checkboxes aren't transparent, reduce the checkbox control to the actual box alone, and add
-					 a normal text control adjacent to it, with the text control being transparent -->
-			<Control Id="ChangeLog" Type="CheckBox" X="135" Y="120" Width="12" Height="12" Property='SHOWCHANGELOG' CheckBoxValue='1'>
-				<Condition Action="hide">(Installed)</Condition>
-			</Control>
-			<Control Id="Changelogtext" Type="Text" X="150" Y="120" Width="150" Height="20" Transparent="yes" NoPrefix="yes">
+			<Control Id="ChangeLog" Type="CheckBox" X="135" Y="120" Width="200" Height="12" Property='SHOWCHANGELOG' CheckBoxValue='1'>
 				<Text>Show Changelog</Text>
 				<Condition Action="hide">(Installed)</Condition>
 			</Control>
