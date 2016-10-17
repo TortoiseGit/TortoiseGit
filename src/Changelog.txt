@@ -4,6 +4,9 @@ Released: unreleased
 == Features ==
  * Fixed issue #2505: Add support for bisect skip
  * Fixed issue #2757: Allow to use quotes in command line arguments, like /logmsg:"Some text ""Quoted text"" another text"
+ * Fixed issue #2849: Include and exclude paths
+   We synced the include/exclude paths code with TortoiseSVN. Now you can exclude paths in an included path.
+   Some people might need to update their include/exclude paths, see our manual for more information.
 
 == Bug Fixes ==
  * Fixed issue #2837: Layout of overlapping icons settings dialog

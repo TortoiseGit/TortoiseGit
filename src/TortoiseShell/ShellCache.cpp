@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2012-2016 - TortoiseGit
-// Copyright (C) 2003-2008 - Stefan Kueng
+// Copyright (C) 2003-2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -34,8 +34,6 @@ ShellCache::ShellCache()
 	driveram = CRegStdDWORD(L"Software\\TortoiseGit\\DriveMaskRAM", FALSE, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
 	driveunknown = CRegStdDWORD(L"Software\\TortoiseGit\\DriveMaskUnknown", FALSE, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
 	shellmenuaccelerators = CRegStdDWORD(L"Software\\TortoiseGit\\ShellMenuAccelerators", TRUE, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
-	excludelist = CRegStdString(L"Software\\TortoiseGit\\OverlayExcludeList", L"", false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
-	includelist = CRegStdString(L"Software\\TortoiseGit\\OverlayIncludeList", L"", false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
 	simplecontext = CRegStdDWORD(L"Software\\TortoiseGit\\SimpleContext", FALSE, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
 	unversionedasmodified = CRegStdDWORD(L"Software\\TortoiseGit\\UnversionedAsModified", FALSE, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
 	recursesubmodules = CRegStdDWORD(L"Software\\TortoiseGit\\TGitCacheRecurseSubmodules", FALSE, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
@@ -48,11 +46,10 @@ ShellCache::ShellCache()
 	recursiveticker = cachetypeticker;
 	folderoverlayticker = cachetypeticker;
 	driveticker = cachetypeticker;
-	drivetypeticker = cachetypeticker;
+	drivetypeticker = 0;
 	langticker = cachetypeticker;
-	excludelistticker = cachetypeticker;
-	includelistticker = cachetypeticker;
 	simplecontextticker = cachetypeticker;
+	pathfilterticker = 0;
 	shellmenuacceleratorsticker = cachetypeticker;
 	unversionedasmodifiedticker = cachetypeticker;
 	recursesubmodulesticker = cachetypeticker;
@@ -105,8 +102,6 @@ void ShellCache::ForceRefresh()
 	drivefloppy.read();
 	driveram.read();
 	driveunknown.read();
-	excludelist.read();
-	includelist.read();
 	simplecontext.read();
 	shellmenuaccelerators.read();
 	unversionedasmodified.read();
@@ -125,6 +120,8 @@ void ShellCache::ForceRefresh()
 	menumasklow_cu.read();
 	menumaskhigh_cu.read();
 	nocontextpaths.read();
+
+	pathFilter.Refresh();
 }
 
 ShellCache::CacheType ShellCache::GetCacheType()
@@ -358,27 +355,12 @@ BOOL ShellCache::IsContextPathAllowed(LPCTSTR path)
 
 BOOL ShellCache::IsPathAllowed(LPCTSTR path)
 {
+	ValidatePathFilter();
 	Locker lock(m_critSec);
-	IncludeListValid();
-	for (const auto& pathAllowed : invector)
-	{
-		if (pathAllowed.empty())
-			continue;
-		if (pathAllowed.at(pathAllowed.size() - 1) == '*')
-		{
-			tstring str = pathAllowed.substr(0, pathAllowed.size() - 1);
-			if (_tcsnicmp(str.c_str(), path, str.size()) == 0)
-				return TRUE;
-			if (!str.empty() && (str.at(str.size() - 1) == '\\') && (_tcsnicmp(str.c_str(), path, str.size() - 1) == 0))
-				return TRUE;
-		}
-		else if (_tcsicmp(pathAllowed.c_str(), path) == 0)
-			return TRUE;
-		else if ((pathAllowed.at(pathAllowed.size() - 1) == '\\') &&
-			((_tcsnicmp(pathAllowed.c_str(), path, pathAllowed.size()) == 0) || (_tcsicmp(pathAllowed.c_str(), path) == 0)))
-			return TRUE;
+	tristate_t allowed = pathFilter.IsPathAllowed(path);
+	if (allowed != tristate_unknown)
+		return allowed == tristate_true ? TRUE : FALSE;
 
-	}
 	UINT drivetype = 0;
 	int drivenumber = PathGetDriveNumber(path);
 	if ((drivenumber >= 0) && (drivenumber < 25))
@@ -392,7 +374,7 @@ BOOL ShellCache::IsPathAllowed(LPCTSTR path)
 			{
 				drivetypeticker = GetTickCount64();
 				TCHAR pathbuf[MAX_PATH + 4] = { 0 };		// MAX_PATH ok here. PathStripToRoot works with partial paths too.
-				_tcsncpy_s(pathbuf, MAX_PATH + 4, path, MAX_PATH + 3);
+				wcsncpy_s(pathbuf, path, _countof(pathbuf) - 1);
 				PathStripToRoot(pathbuf);
 				PathAddBackslash(pathbuf);
 				CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": GetDriveType for %s, Drive %d\n", pathbuf, drivenumber);
@@ -404,21 +386,21 @@ BOOL ShellCache::IsPathAllowed(LPCTSTR path)
 	else
 	{
 		TCHAR pathbuf[MAX_PATH + 4] = { 0 };		// MAX_PATH ok here. PathIsUNCServer works with partial paths too.
-		_tcsncpy_s(pathbuf, MAX_PATH + 4, path, MAX_PATH + 3);
+		wcsncpy_s(pathbuf, path, _countof(pathbuf) - 1);
 		if (PathIsUNCServer(pathbuf))
 			drivetype = DRIVE_REMOTE;
 		else
 		{
 			PathStripToRoot(pathbuf);
 			PathAddBackslash(pathbuf);
-			if (_tcsncmp(pathbuf, drivetypepathcache, MAX_PATH - 1) == 0)		// MAX_PATH ok.
+			if (wcsncmp(pathbuf, drivetypepathcache, MAX_PATH - 1) == 0) // MAX_PATH ok.
 				drivetype = drivetypecache[26];
 			else
 			{
 				CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L"GetDriveType for %s\n", pathbuf);
 				drivetype = GetDriveType(pathbuf);
 				drivetypecache[26] = drivetype;
-				_tcsncpy_s(drivetypepathcache, MAX_PATH, pathbuf, MAX_PATH - 1);			// MAX_PATH ok.
+				wcsncpy_s(drivetypepathcache, pathbuf, MAX_PATH - 1); // MAX_PATH ok.
 			}
 		}
 	}
@@ -435,20 +417,6 @@ BOOL ShellCache::IsPathAllowed(LPCTSTR path)
 	if ((drivetype == DRIVE_UNKNOWN) && (IsUnknown()))
 		return FALSE;
 
-	ExcludeListValid();
-	for (const auto& exPath : exvector)
-	{
-		if (exPath.empty())
-			continue;
-		if (exPath.at(exPath.size() - 1) == '*')
-		{
-			tstring str = exPath.substr(0, exPath.size() - 1);
-			if (_tcsnicmp(str.c_str(), path, str.size()) == 0)
-				return FALSE;
-		}
-		else if (_tcsicmp(exPath.c_str(), path) == 0)
-			return FALSE;
-	}
 	return TRUE;
 }
 
@@ -539,54 +507,224 @@ void ShellCache::ExcludeContextValid()
 	}
 }
 
-void ShellCache::ExcludeListValid()
+void ShellCache::ValidatePathFilter()
 {
-	if ((GetTickCount64() - excludelistticker) > EXCLUDELISTTIMEOUT)
+	auto ticks = GetTickCount64();
+	if ((ticks - pathfilterticker) > EXCLUDELISTTIMEOUT)
 	{
 		Locker lock(m_critSec);
-		excludelistticker = GetTickCount64();
-		excludelist.read();
-		if (excludeliststr.compare((tstring)excludelist) == 0)
-			return;
-		excludeliststr = (tstring)excludelist;
-		exvector.clear();
-		size_t pos = 0, pos_ant = 0;
-		pos = excludeliststr.find(L"\n", pos_ant);
-		while (pos != tstring::npos)
-		{
-			tstring token = excludeliststr.substr(pos_ant, pos - pos_ant);
-			exvector.push_back(token);
-			pos_ant = pos + 1;
-			pos = excludeliststr.find(L"\n", pos_ant);
-		}
-		if (!excludeliststr.empty())
-			exvector.push_back(excludeliststr.substr(pos_ant, excludeliststr.size() - 1));
-		excludeliststr = (tstring)excludelist;
+
+		pathfilterticker = ticks;
+		pathFilter.Refresh();
 	}
 }
 
-void ShellCache::IncludeListValid()
+// construct \ref data content
+void ShellCache::CPathFilter::AddEntry(const tstring& s, bool include)
 {
-	if ((GetTickCount64() - includelistticker) > EXCLUDELISTTIMEOUT)
+	static wchar_t pathbuf[MAX_PATH * 4] = { 0 };
+	if (s.empty())
+		return;
+
+	TCHAR lastChar = *s.rbegin();
+
+	SEntry entry;
+	entry.hasSubFolderEntries = false;
+	entry.recursive = lastChar != L'?';
+	entry.included = include ? tristate_true : tristate_false;
+	entry.subPathIncluded = include == entry.recursive ? tristate_true : tristate_false;
+
+	entry.path = s;
+	if ((lastChar == L'?') || (lastChar == L'*'))
+		entry.path.erase(s.length() - 1);
+	if (!entry.path.empty() && (*entry.path.rbegin() == L'\\'))
+		entry.path.erase(entry.path.length() - 1);
+
+	auto ret = ExpandEnvironmentStrings(entry.path.c_str(), pathbuf, _countof(pathbuf));
+	if ((ret > 0) && (ret < _countof(pathbuf)))
+		entry.path = pathbuf;
+
+	data.push_back(entry);
+}
+
+void ShellCache::CPathFilter::AddEntries(const tstring& s, bool include)
+{
+	size_t pos = 0, pos_ant = 0;
+	pos = s.find(L'\n', pos_ant);
+	while (pos != tstring::npos)
 	{
-		Locker lock(m_critSec);
-		includelistticker = GetTickCount64();
-		includelist.read();
-		if (includeliststr.compare((tstring)includelist) == 0)
-			return;
-		includeliststr = (tstring)includelist;
-		invector.clear();
-		size_t pos = 0, pos_ant = 0;
-		pos = includeliststr.find(L"\n", pos_ant);
-		while (pos != tstring::npos)
-		{
-			tstring token = includeliststr.substr(pos_ant, pos - pos_ant);
-			invector.push_back(token);
-			pos_ant = pos + 1;
-			pos = includeliststr.find(L"\n", pos_ant);
-		}
-		if (!includeliststr.empty())
-			invector.push_back(includeliststr.substr(pos_ant, includeliststr.size() - 1));
-		includeliststr = (tstring)includelist;
+		AddEntry(s.substr(pos_ant, pos - pos_ant), include);
+		pos_ant = pos + 1;
+		pos = s.find(L'\n', pos_ant);
 	}
+
+	if (!s.empty())
+		AddEntry(s.substr(pos_ant, s.size() - 1), include);
+}
+
+// for all paths, have at least one entry in data
+void ShellCache::CPathFilter::PostProcessData()
+{
+	if (data.empty())
+		return;
+
+	std::sort(data.begin(), data.end());
+
+	// update subPathIncluded props and remove duplicate entries
+	auto begin = data.begin();
+	auto end = data.end();
+	auto dest = begin;
+	for (auto source = begin; source != end; ++source)
+	{
+		if (_wcsicmp(source->path.c_str(), dest->path.c_str()) == 0)
+		{
+			// multiple entries for the same path -> merge them
+
+			// update subPathIncluded
+			// (all relevant parent info has already been normalized)
+			if (!source->recursive)
+				source->subPathIncluded = IsPathAllowed(source->path.c_str(), begin, dest);
+
+			// multiple specs for the same path
+			// -> merge them into the existing entry @ dest
+			if (!source->recursive && dest->recursive)
+			{
+				// reset the marker for the this case
+				dest->recursive = false;
+				dest->included = source->included;
+			}
+			else
+			{
+				// include beats exclude
+				if (source->included == tristate_true)
+					dest->included = tristate_true;
+				if (source->recursive && source->subPathIncluded == tristate_true)
+					dest->subPathIncluded = tristate_true;
+			}
+		}
+		else
+		{
+			// new path -> don't merge this entry
+			size_t destSize = dest->path.size();
+			dest->hasSubFolderEntries = (source->path.size() > destSize) && (source->path[destSize] == L'\\') && (_wcsnicmp(source->path.substr(0, destSize).c_str(), dest->path.c_str(), destSize) == 0);
+
+			*++dest = *source;
+
+			// update subPathIncluded
+			// (all relevant parent info has already been normalized)
+			if (!dest->recursive)
+				dest->subPathIncluded = IsPathAllowed(source->path.c_str(), begin, dest);
+		}
+	}
+
+	// remove duplicate info
+	if (begin != end)
+		data.erase(++dest, end);
+}
+
+// lookup. default result is "unknown".
+// We must look for *every* parent path because of situations like:
+// excluded: C:, C:\some\deep\path
+// include: C:\some
+// lookup for C:\some\deeper\path
+tristate_t ShellCache::CPathFilter::IsPathAllowed(LPCTSTR path, TData::const_iterator begin, TData::const_iterator end) const
+{
+	tristate_t result = tristate_unknown;
+
+	// handle special cases
+	if (begin == end)
+		return result;
+
+	size_t maxLength = wcslen(path);
+	if (maxLength == 0)
+		return result;
+
+	// look for the most specific entry, start at the root
+	size_t pos = 0;
+	do
+	{
+		LPCTSTR backslash = wcschr(path + pos + 1,L'\\');
+		pos = backslash == nullptr ? maxLength : backslash - path;
+
+		std::pair<LPCTSTR, size_t> toFind(path, pos);
+		TData::const_iterator iter = std::lower_bound(begin, end, toFind);
+
+		// found a relevant entry?
+		if ((iter != end) && (iter->path.length() == pos) && (_wcsnicmp(iter->path.c_str(), path, pos) == 0))
+		{
+			// exact match?
+			if (pos == maxLength)
+				return iter->included;
+
+			// parent match
+			result = iter->subPathIncluded;
+
+			// done?
+			if (iter->hasSubFolderEntries)
+				begin = iter;
+			else
+				return result;
+		}
+		else
+		{
+			// set a (potentially) closer lower limit
+			if (iter != begin)
+				begin = --iter;
+		}
+
+		// set a (potentially) closer upper limit
+		end = std::upper_bound(begin, end, toFind);
+	} while ((pos < maxLength) && (begin != end));
+
+	// nothing more specific found
+	return result;
+}
+
+// construction
+
+ShellCache::CPathFilter::CPathFilter()
+	: excludelist(L"Software\\TortoiseGit\\OverlayExcludeList", L"", false, HKEY_CURRENT_USER, KEY_WOW64_64KEY)
+	, includelist(L"Software\\TortoiseGit\\OverlayIncludeList", L"", false, HKEY_CURRENT_USER, KEY_WOW64_64KEY)
+{
+	Refresh();
+}
+
+// notify of (potential) registry settings
+
+void ShellCache::CPathFilter::Refresh()
+{
+	excludelist.read();
+	includelist.read();
+
+	if ((excludeliststr.compare((tstring)excludelist) == 0) && (includeliststr.compare((tstring)includelist) == 0))
+		return;
+
+	excludeliststr = (tstring)excludelist;
+	includeliststr = (tstring)includelist;
+	data.clear();
+	AddEntries(excludeliststr, false);
+	AddEntries(includeliststr, true);
+
+	PostProcessData();
+}
+
+// data access
+tristate_t ShellCache::CPathFilter::IsPathAllowed(LPCTSTR path) const
+{
+	if (!path)
+		return tristate_unknown;
+	// always ignore the recycle bin
+	PTSTR pFound = StrStrI(path, L":\\RECYCLER");
+	if (pFound)
+	{
+		if ((*(pFound + 10) == L'\0') || (*(pFound + 10) == L'\\'))
+			return tristate_false;
+	}
+	pFound = StrStrI(path, L":\\$Recycle.Bin");
+	if (pFound)
+	{
+		if ((*(pFound + 14) == '\0') || (*(pFound + 14) == L'\\'))
+			return tristate_false;
+	}
+	return IsPathAllowed(path, data.begin(), data.end());
 }

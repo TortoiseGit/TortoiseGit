@@ -1552,7 +1552,7 @@ msgid "A newer version is available. Please download the current version!"
 msgstr ""
 
 #. Resource IDs: (IDS_SETTINGS_INCLUDELIST_TT)
-msgid "A newline separated list of paths for which icon overlays are shown.\nIf you add an '*' char at the end of a path, then all files and subdirs inside that path are included too."
+msgid "A newline separated list of paths for which icon overlays are shown.\nIf you add an '?' char at the end of a path, then only this path will be included.\nIf you add an '*' or no char at all at the end of a path, then all files and subdirs inside that path are included too."
 msgstr ""
 
 #. Resource IDs: (IDS_SETTINGS_EXCLUDECONTEXTLIST_TT)
@@ -1560,7 +1560,7 @@ msgid "A newline separated list of paths for which no context menu is shown.\nIf
 msgstr ""
 
 #. Resource IDs: (IDS_SETTINGS_EXCLUDELIST_TT)
-msgid "A newline separated list of paths for which no icon overlays are shown.\nIf you add an '*' char at the end of a path, then all files and subdirs inside that path are excluded too.\nAn empty list will allow overlays on all paths."
+msgid "A newline separated list of paths for which no icon overlays are shown.\nIf you add an '?' char at the end of a path, then only this path will be excluded.\nIf you add an '*' or no char at all at the end of a path, then all files and subdirs inside that path are excluded too.\nAn empty list will allow overlays on all paths."
 msgstr ""
 
 #. Resource IDs: (61474)
