@@ -1615,11 +1615,11 @@ CString CAppUtils::GetMergeTempFile(const CString& type, const CTGitPath &merge)
 
 bool ParseHashesFromLsFile(const BYTE_VECTOR& out, CString& hash1, CString& hash2, CString& hash3)
 {
-	int pos = 0;
+	size_t pos = 0;
 	CString one;
 	CString part;
 
-	while (pos >= 0 && pos < (int)out.size())
+	while (pos < out.size())
 	{
 		one.Empty();
 

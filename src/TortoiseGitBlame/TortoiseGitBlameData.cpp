@@ -1,6 +1,6 @@
 // TortoiseGitBlame - a Viewer for Git Blames
 
-// Copyright (C) 2008-2015 - TortoiseGit
+// Copyright (C) 2008-2016 - TortoiseGit
 // Copyright (C) 2003 Don HO <donho@altern.org>
 
 // This program is free software; you can redistribute it and/or
@@ -101,9 +101,9 @@ void CTortoiseGitBlameData::ParseBlameOutput(BYTE_VECTOR &data, CGitHashMap & Ha
 	int numberOfSubsequentLines = 0;
 	CString filename;
 
-	int pos = 0;
+	size_t pos = 0;
 	bool expectHash = true;
-	while (pos >= 0 && (size_t)pos < data.size())
+	while (pos < data.size())
 	{
 		if (data[pos] == 0)
 		{
@@ -111,10 +111,10 @@ void CTortoiseGitBlameData::ParseBlameOutput(BYTE_VECTOR &data, CGitHashMap & Ha
 			continue;
 		}
 
-		int lineBegin = pos;
-		int lineEnd = data.find('\n', lineBegin);
-		if (lineEnd < 0)
-			lineEnd = (int)data.size();
+		size_t lineBegin = pos;
+		size_t lineEnd = data.find('\n', lineBegin);
+		if (lineEnd == BYTE_VECTOR::npos)
+			lineEnd = data.size();
 
 		if (lineEnd > lineBegin)
 		{
@@ -127,22 +127,22 @@ void CTortoiseGitBlameData::ParseBlameOutput(BYTE_VECTOR &data, CGitHashMap & Ha
 					{
 						hash.ConvertFromStrA((char*)&data[lineBegin]);
 
-						int hashEnd = lineBegin + 40;
-						int originalLineNumberBegin = hashEnd + 1;
-						int originalLineNumberEnd = data.find(' ', originalLineNumberBegin);
-						if (originalLineNumberEnd >= 0)
+						size_t hashEnd = lineBegin + 40;
+						size_t originalLineNumberBegin = hashEnd + 1;
+						size_t originalLineNumberEnd = data.find(' ', originalLineNumberBegin);
+						if (originalLineNumberEnd != BYTE_VECTOR::npos)
 						{
-							originalLineNumber = atoi(CStringA((LPCSTR)&data[originalLineNumberBegin], originalLineNumberEnd - originalLineNumberBegin));
-							int finalLineNumberBegin = originalLineNumberEnd + 1;
-							int finalLineNumberEnd = (numberOfSubsequentLines == 0) ? data.find(' ', finalLineNumberBegin) : lineEnd;
-							if (finalLineNumberEnd >= 0)
+							originalLineNumber = atoi(CStringA((LPCSTR)&data[originalLineNumberBegin], (int)(originalLineNumberEnd - originalLineNumberBegin)));
+							size_t finalLineNumberBegin = originalLineNumberEnd + 1;
+							size_t finalLineNumberEnd = (numberOfSubsequentLines == 0) ? data.find(' ', finalLineNumberBegin) : lineEnd;
+							if (finalLineNumberEnd != BYTE_VECTOR::npos)
 							{
-								finalLineNumber = atoi(CStringA((LPCSTR)&data[finalLineNumberBegin], finalLineNumberEnd - finalLineNumberBegin));
+								finalLineNumber = atoi(CStringA((LPCSTR)&data[finalLineNumberBegin], (int)(finalLineNumberEnd - finalLineNumberBegin)));
 								if (numberOfSubsequentLines == 0)
 								{
-									int numberOfSubsequentLinesBegin = finalLineNumberEnd + 1;
-									int numberOfSubsequentLinesEnd = lineEnd;
-									numberOfSubsequentLines = atoi(CStringA((LPCSTR)&data[numberOfSubsequentLinesBegin], numberOfSubsequentLinesEnd - numberOfSubsequentLinesBegin));
+									size_t numberOfSubsequentLinesBegin = finalLineNumberEnd + 1;
+									size_t numberOfSubsequentLinesEnd = lineEnd;
+									numberOfSubsequentLines = atoi(CStringA((LPCSTR)&data[numberOfSubsequentLinesBegin], (int)(numberOfSubsequentLinesEnd - numberOfSubsequentLinesBegin)));
 								}
 							}
 							else
@@ -174,15 +174,15 @@ void CTortoiseGitBlameData::ParseBlameOutput(BYTE_VECTOR &data, CGitHashMap & Ha
 				}
 				else
 				{
-					int tokenBegin = lineBegin;
-					int tokenEnd = data.find(' ', tokenBegin);
-					if (tokenEnd >= 0)
+					size_t tokenBegin = lineBegin;
+					size_t tokenEnd = data.find(' ', tokenBegin);
+					if (tokenEnd != BYTE_VECTOR::npos)
 					{
 						if (!strncmp("filename", (const char*)&data[tokenBegin], tokenEnd - tokenBegin))
 						{
-							int filenameBegin = tokenEnd + 1;
-							int filenameEnd = lineEnd;
-							CStringA filenameA = CStringA((LPCSTR)&data[filenameBegin], filenameEnd - filenameBegin);
+							size_t filenameBegin = tokenEnd + 1;
+							size_t filenameEnd = lineEnd;
+							CStringA filenameA = CStringA((LPCSTR)&data[filenameBegin], (int)(filenameEnd - filenameBegin));
 							filename = UnquoteFilename(filenameA);
 							auto r = hashToFilename.emplace(hash, filename);
 							if (!r.second)

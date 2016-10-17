@@ -988,13 +988,13 @@ CTGitPathList::CTGitPathList(const CTGitPath& firstEntry)
 }
 int CTGitPathList::ParserFromLsFile(BYTE_VECTOR &out,bool /*staged*/)
 {
-	int pos=0;
+	size_t pos = 0;
 	CString one;
 	CTGitPath path;
 	CString part;
 	this->Clear();
 
-	while (pos >= 0 && pos < (int)out.size())
+	while (pos < out.size())
 	{
 		one.Empty();
 		path.Reset();
@@ -1051,8 +1051,6 @@ int CTGitPathList::FillUnRev(unsigned int action, const CTGitPathList* list, CSt
 	for (int i = 0; i < count; ++i)
 	{
 		CString cmd;
-		int pos = 0;
-
 		CString ignored;
 		if(action & CTGitPath::LOGACTIONS_IGNORE)
 			ignored= _T(" -i");
@@ -1078,9 +1076,9 @@ int CTGitPathList::FillUnRev(unsigned int action, const CTGitPathList* list, CSt
 			return -1;
 		}
 
-		pos=0;
+		size_t pos = 0;
 		CString one;
-		while (pos >= 0 && pos < (int)out.size())
+		while (pos < out.size())
 		{
 			one.Empty();
 			CGit::StringAppend(&one, &out[pos], CP_UTF8);
@@ -1146,11 +1144,11 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log, bool parseDeletes /*false*/)
 {
 	this->Clear();
 	std::map<CString, size_t> duplicateMap;
-	int pos=0;
+	size_t pos = 0;
 	CTGitPath path;
 	m_Action=0;
-	int logend = (int)log.size();
-	while (pos >= 0 && pos < logend)
+	size_t logend = log.size();
+	while (pos < logend)
 	{
 		path.Reset();
 		if(log[pos]=='\n')
@@ -1166,22 +1164,22 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log, bool parseDeletes /*false*/)
 				return -1;
 			if(log[pos+1] ==':')
 				merged=true;
-			int end=log.find(0,pos);
-			int actionstart=-1;
-			int file1=-1,file2=-1;
-			if( end>0 )
+			size_t end = log.find(0, pos);
+			size_t actionstart = BYTE_VECTOR::npos;
+			size_t file1 = BYTE_VECTOR::npos, file2 = BYTE_VECTOR::npos;
+			if (end != BYTE_VECTOR::npos && end > 0)
 			{
 				actionstart=log.find(' ',end-6);
 				pos=actionstart;
 			}
-			if( actionstart>0 )
+			if (actionstart != BYTE_VECTOR::npos && actionstart > 0)
 			{
 				++actionstart;
 				if (actionstart >= logend)
 					return -1;
 
 				file1 = log.find(0,actionstart);
-				if( file1>=0 )
+				if (file1 != BYTE_VECTOR::npos)
 				{
 					++file1;
 					pos=file1;
@@ -1201,12 +1199,12 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log, bool parseDeletes /*false*/)
 			CString pathname1;
 			CString pathname2;
 
-			if( file1>=0 )
+			if (file1 != BYTE_VECTOR::npos)
 				CGit::StringAppend(&pathname1, &log[file1], CP_UTF8);
-			if( file2>=0 )
+			if (file2 != BYTE_VECTOR::npos)
 				CGit::StringAppend(&pathname2, &log[file2], CP_UTF8);
 
-			if (actionstart < 0)
+			if (actionstart == BYTE_VECTOR::npos)
 				return -1;
 
 			auto existing = duplicateMap.find(pathname1);
@@ -1235,15 +1233,14 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log, bool parseDeletes /*false*/)
 		}
 		else
 		{
-			int tabstart=0;
 			path.Reset();
 			CString StatAdd;
 			CString StatDel;
 			CString file1;
 			CString file2;
 
-			tabstart=log.find('\t',pos);
-			if(tabstart >=0)
+			size_t tabstart = log.find('\t', pos);
+			if (tabstart != BYTE_VECTOR::npos)
 			{
 				log[tabstart]=0;
 				CGit::StringAppend(&StatAdd, &log[pos], CP_UTF8);
@@ -1251,7 +1248,7 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log, bool parseDeletes /*false*/)
 			}
 
 			tabstart=log.find('\t',pos);
-			if(tabstart >=0)
+			if (tabstart != BYTE_VECTOR::npos)
 			{
 				log[tabstart]=0;
 
@@ -1263,8 +1260,8 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log, bool parseDeletes /*false*/)
 			{
 				++pos;
 				CGit::StringAppend(&file2, &log[pos], CP_UTF8);
-				int sec=log.find(0,pos);
-				if(sec>=0)
+				size_t sec = log.find(0, pos);
+				if (sec != BYTE_VECTOR::npos)
 				{
 					++sec;
 					CGit::StringAppend(&file1, &log[sec], CP_UTF8);
