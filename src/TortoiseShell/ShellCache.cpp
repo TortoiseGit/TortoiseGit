@@ -58,7 +58,6 @@ ShellCache::ShellCache()
 	recursesubmodulesticker = cachetypeticker;
 	showunversionedoverlayticker = cachetypeticker;
 	showignoredoverlayticker = cachetypeticker;
-	admindirticker = cachetypeticker;
 	getlocktopticker = cachetypeticker;
 	excludedasnormalticker = cachetypeticker;
 	hidemenusforunversioneditemsticker = cachetypeticker;
@@ -90,7 +89,6 @@ ShellCache::ShellCache()
 		drivetypecache[1] = DRIVE_REMOVABLE;
 	}
 	drivetypepathcache[0] = L'\0';
-	sAdminDirCacheKey.reserve(MAX_PATH);		// MAX_PATH as buffer reservation ok.
 	nocontextpaths = CRegStdString(L"Software\\TortoiseGit\\NoContextPaths", L"", false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
 	m_critSec.Init();
 }
@@ -466,33 +464,32 @@ DWORD ShellCache::GetLangID()
 
 BOOL ShellCache::HasGITAdminDir(LPCTSTR path, BOOL bIsDir, CString* ProjectTopDir /*= nullptr*/)
 {
-	size_t len = _tcslen(path);
-	auto buf = std::make_unique<TCHAR[]>(len + 1);
-	_tcscpy_s(buf.get(), len + 1, path);
+	tstring folder(path);
 	if (!bIsDir)
 	{
-		TCHAR* ptr = _tcsrchr(buf.get(), L'\\');
-		if (ptr != 0)
-			*ptr = 0;
+		size_t pos = folder.rfind(_T('\\'));
+		if (pos != tstring::npos)
+			folder.erase(pos);
 	}
-	if ((GetTickCount64() - admindirticker) < ADMINDIRTIMEOUT)
+	std::map<tstring, AdminDir_s>::const_iterator iter;
+	if ((iter = admindircache.find(folder)) != admindircache.cend())
 	{
-		std::map<tstring, AdminDir_s>::iterator iter;
-		sAdminDirCacheKey.assign(buf.get());
-		if ((iter = admindircache.find(sAdminDirCacheKey)) != admindircache.end())
+		Locker lock(m_critSec);
+		if ((GetTickCount64() - iter->second.timeout) < ADMINDIRTIMEOUT)
 		{
 			if (ProjectTopDir && iter->second.bHasAdminDir)
 				*ProjectTopDir = iter->second.sProjectRoot.c_str();
 			return iter->second.bHasAdminDir;
 		}
 	}
+
 	CString sProjectRoot;
-	BOOL hasAdminDir = GitAdminDir::HasAdminDir(buf.get(), true, &sProjectRoot);
-	admindirticker = GetTickCount64();
+	BOOL hasAdminDir = GitAdminDir::HasAdminDir(folder.c_str(), true, &sProjectRoot);
 
 	Locker lock(m_critSec);
-	AdminDir_s& ad = admindircache[buf.get()];
+	AdminDir_s& ad = admindircache[folder];
 	ad.bHasAdminDir = hasAdminDir;
+	ad.timeout = GetTickCount64();
 	if (hasAdminDir)
 	{
 		ad.sProjectRoot.assign(sProjectRoot);

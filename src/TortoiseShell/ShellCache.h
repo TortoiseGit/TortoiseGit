@@ -93,6 +93,7 @@ private:
 	{
 		BOOL bHasAdminDir;
 		tstring sProjectRoot;
+		ULONGLONG timeout;
 	};
 
 public:
@@ -157,11 +158,9 @@ public:
 	TCHAR szDecSep[5];
 	TCHAR szThousandsSep[5];
 	std::map<tstring, AdminDir_s> admindircache;
-	tstring sAdminDirCacheKey;
 	CRegStdString nocontextpaths;
 	tstring excludecontextstr;
 	std::vector<tstring> excontextvector;
 	ULONGLONG excontextticker;
-	ULONGLONG admindirticker;
 	CComCriticalSection m_critSec;
 };
