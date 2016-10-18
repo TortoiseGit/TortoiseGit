@@ -51,7 +51,8 @@ BOOL CCmdLineParser::Parse(LPCTSTR sCmdLine)
 	m_valueMap.clear();
 	m_sCmdLine = sCmdLine;
 
-	LPCTSTR sCurrent = sCmdLine;
+	tstring working = sCmdLine;
+	LPTSTR sCurrent = &working[0];
 
 	for(;;)
 	{
@@ -116,6 +117,19 @@ BOOL CCmdLineParser::Parse(LPCTSTR sCmdLine)
 						// string with quotes (defined in m_sQuotes, e.g. '")
 						sQuote = _tcsinc(sVal);
 						sEndQuote = _tcspbrk(sQuote, m_sQuotes);
+
+						// search for double quotes
+						while (sEndQuote)
+						{
+							auto nextQuote = _tcsinc(sEndQuote);
+							if (nextQuote[0] == L'"')
+							{
+								working.erase(working.begin() + (sEndQuote - &working[0]));
+								sEndQuote = _tcspbrk(nextQuote, m_sQuotes);
+								continue;
+							}
+							break;
+						}
 					}
 					else
 					{

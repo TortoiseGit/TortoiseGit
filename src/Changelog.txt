@@ -3,6 +3,7 @@ Released: unreleased
 
 == Features ==
  * Fixed issue #2505: Add support for bisect skip
+ * Fixed issue #2757: Allow to use quotes in command line arguments, like /logmsg:"Some text ""Quoted text"" another text"
 
 == Bug Fixes ==
  * Fixed issue #2837: Layout of overlapping icons settings dialog
